@@ -1,0 +1,700 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array,longtable}
+\usepackage{microtype,enumitem,xcolor,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage{listings}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,keepspaces=true,frame=single}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{0.25em}
+\setlist{itemsep=0.2em,topsep=0.4em}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Rooted disc-component kernels}
+\fancyhead[R]{\small ProveIt research contribution}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\comp}{\operatorname{comp}}
+\newcommand{\cost}{\operatorname{cost}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Opt}{\operatorname{Opt}}
+\newcommand{\ind}[1]{\mathbf 1\{#1\}}
+\newcommand{\pin}{\texttt{66098968e88bba797143ac1bf7ad0ac4c5f697df}}
+\input{results/measurement_macros.tex}
+\title{\vspace{-1em}\textbf{Rooted Disc Components and\\Sharp Ternary Completion Kernels}\\[0.7em]
+\large Component-local topology, peripheral charges, and\\single-exponential finite-interface search}
+\author{Research contribution prepared for the ProveIt project\\
+\small Mathematical development and reference implementation prepared with ChatGPT}
+\date{9 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+A compressing disc can occur as one component of a disconnected normal surface. Recent ProveIt completion kernels preserve assemblies that are themselves one disc; applying their whole-surface rejection rules to a component-existence query would discard valid witnesses. We develop a rooted alternative which permits arbitrary unrelated non-disc components and cycles. On $r$ labelled boundary intervals, its binary compatibility matrix has rank exactly $3^{r-1}$. With additive charges in $H=(\F_2)^k$, each exact-charge matrix has rank exactly $|H|3^{r-1}$; for $k\geq1$ the nonzero-charge matrix has the same rank. A ternary exterior feature gives the upper bounds, and a tensor family of discs and annuli gives matching lower bounds. The resulting minimum-cost original-witness subfamily bound is also sharp for exact-charge completion queries.
+
+We prove componentwise defect monotonicity, safe forgetting of non-root components, a continuation theorem for finite patch languages, and a root-selection theorem with at most a factor-two increase of seam frontier width. Two peripheral bits characterize an essential boundary when the distinguished component is a disc in an authenticated knot exterior. A supplied rooted layered language of width $b$, with the marker excluded from $b$, can be searched in $\poly(I,B,b)|H|^3 27^b$ bit time using elementary elimination. This is not a construction of such a language for every knot.
+
+The standard-library package passes 42 test methods, 191,309 exhaustive compatibility comparisons, 10,000 randomized optimum queries, 1,000 triangulated pair gluings, and all 3,200 assignments of 200 small languages. Paired complete abstract searches show approximately $\WideMinSpeedup$--$\WideMaxSpeedup$ times lower median running times on three wider workloads, and slowdowns on two controls. These are not native knot-recognition benchmarks. The representative-family principle is classical; the contribution is the rooted component interface, its exact rank and weighted lower bound, and its checked topological use.
+\end{abstract}
+\vfill
+\noindent\small\textbf{Reviewed repository snapshot.} \pin.\\
+\textbf{Status.} Self-contained proofs and executed research code. No proof-assistant verification, production modification, or general quasi-polynomial recognition theorem is claimed.
+\thispagestyle{empty}\clearpage
+\tableofcontents\clearpage
+
+\section{Research position and the improvement}
+\subsection{The current recognition programme}
+The requested repository contains an exact recognition pipeline and several independent routes toward better asymptotic bounds. Its top-level description distinguishes these implementations from a proved general quasi-polynomial implementation. The reviewed source includes much more recent component and geometric work than some of that file's historical test checkpoints. In particular, the maintained weighted normal-surface modules compute componentwise Euler characteristic and peripheral parity, and source-authenticated cocycle certificates can already prove that suitable surfaces in the input knot exterior are connected \cite{repo,weighted,cocycle}. We do not describe the programme as lacking every source-to-geometry bridge.
+
+Lackenby's hierarchy algorithm is a relevant larger setting, but not a runtime theorem that can simply be imported into this implementation. Section 9 of the inspected 2026 preprint expressly separates the topological algorithm from the precision needed for runtime estimates \cite{lackenby}. Our work concerns a finite-interface search operation that could occur inside an assembly or hierarchy procedure. It does not replace its unresolved geometric construction and accounting obligations.
+
+The incoming articles \emph{Optimal Disc-Completion Bases}, \emph{Disk-Completion Kernels}, and \emph{Signed Continuation Bases and Euler-Optimal Disk Completion} already establish single-exponential representative bounds for whole-disc or connected Euler-optimal completion \cite{incoming-optimal,incoming-kernel,incoming-signed}. In particular, the sharp $2^{r-1}$ whole-disc rank, its exterior-algebra proof, and typed finite-grammar replacement are prior results for this contribution. Merely repeating that rank calculation, or rephrasing a supplied grammar as a directed acyclic graph, would not advance the present baseline.
+
+\subsection{A different query: one component is enough}
+A surface containing an essential disc is useful even when other components are annuli, higher-genus surfaces, vertex links, or additional discs. The maintained component census recognizes this distinction: two parallel meridian discs can have zero aggregate mod-two boundary class while each component is essential \cite{weighted}. However, a census of a supplied surface is not a representative-family theorem for searching over many possible surfaces.
+
+We address the latter problem. Select one marked interval and ask whether the component containing that interval becomes a disc with a specified, or merely nonzero, peripheral charge. The remainder of the assembled surface may be completely unsuitable as a disc. Its components are irrelevant only while they remain disconnected from the distinguished component; their possible future attachments still matter and are retained in the interface state.
+
+This changes a necessary pruning rule. In a search for one whole disc, any intermediate cycle or non-disc component is fatal under interval gluing. In the present search, only a defect that reaches the distinguished component is fatal. Similarly, a non-root component that has no remaining attachment interval can be forgotten, regardless of its topology. This is not deletion of part of an embedded witness: the completed component remains in the witness and its total cost remains charged.
+
+\subsection{What is classical and what is proved here}
+Rank-based weighted representative families and exterior-algebra representatives are established methods \cite{bckn,flps}. Acyclic weighted partitions are also a known application \cite{bk}. We use the standard cost-ordered basis argument, rather than claim a new general principle of optimization by linear algebra.
+
+The specific results developed here are the rooted disc-component compatibility relation with irrelevant non-disc components; the exact ternary rank and matching weighted lower bound; a component-local finite-charge extension; and the gluing, forgetting, rooting, and replay contracts needed to use those statements in a disc-component search. They are new relative to the inspected ProveIt sections and incoming results just listed. An exhaustive priority claim over all work on rooted connection matrices is not made.
+
+\subsection{Main statements in operational form}
+Let $r\geq1$ count individually labelled boundary intervals, one of which is distinguished, and let $q=2^k$ count possible component charges. The main conclusions are
+\begin{align}
+ \rank_{\F_2} K_\eta&=q3^{r-1},\label{eq:mainrank}\\
+ \rank_{\F_2} K_{\ne0}&=q3^{r-1}\quad(k\geq1),\label{eq:mainranknz}\\
+ |\mathcal R|&\leq q3^{r-1},\label{eq:mainrep}
+\end{align}
+where $K_\eta$ asks for a rooted disc component of exact charge $\eta$, $K_{\ne0}$ asks for nonzero charge, and $\mathcal R$ retains actual candidates while preserving every relevant completion optimum. The bound in \eqref{eq:mainrep} is sharp for universal exact-charge weighted queries. The rank statement alone is not used to assert sharpness of the nonzero-charge weighted bound.
+
+For a supplied layered patch language with $b$ actual live seams and one permanent root marker, a conservative bit bound is
+\begin{equation}
+ \poly(I,B,b)q^3 27^b.\label{eq:mainruntime}
+\end{equation}
+Here $I$ is the explicit input size and $B$ bounds input integer lengths. With $q=4$ and polynomial auxiliary data, $b=O((\log n)^2)$ would give $n^{O(\log n)}$ search. Producing a complete, source-faithful language with those bounds is an additional theorem, not a consequence of \eqref{eq:mainrank}.
+
+\section{The surface contract and componentwise defect}
+\subsection{Individually specified intervals}
+We work with compact surfaces whose connected components have nonempty boundary. A fragment carries a finite set of marked, collared, closed intervals in its boundary. These intervals are pairwise disjoint, including their endpoints; unused boundary arcs remain between them. Each gluing identifies one marked interval with another by a specified homeomorphism, and the collar data make the quotient a surface. No further point identifications are performed.
+
+For the basic two-sided interface, both surfaces carry intervals labelled by
+\[
+ U_r=\{0,1,\ldots,r-1\}.
+\]
+Each of their components meets at least one interval. Interval $0$ is distinguished. Components without interface intervals can be removed from the interface description when they cannot meet the distinguished component; their already incurred costs are not removed.
+
+The assumptions refer to actual intervals, not merely to populations of points in a compressed orbit system. A record encoding $2^B$ parallel seams does not make their number equal to one. Establishing a legitimate quotient of such seams requires a separate geometric argument. The contract also does not model the formation of a closed component by gluing entire polygon boundaries with shared seam endpoints. A pre-existing closed component has no boundary intervals and may be omitted from the interface only when it cannot meet the root; it remains part of the full witness and its cost.
+
+\subsection{A graph of connected surface pieces}
+Let $S,T$ be fragments. Their components are vertices of a bipartite multigraph $G$. For every interval label $i$, add an edge between the component of $S$ carrying $i$ and the component of $T$ carrying $i$. Parallel edges are retained. Let $C$ be a graph component, let $F_C$ be the corresponding glued surface component, and write $S_v$ for the surface piece at a vertex $v$ of $C$.
+
+\begin{lemma}[Componentwise first-homology defect]\label{lem:defect}
+Under the interval contract, every $F_C$ has nonempty boundary and
+\begin{equation}
+ \beta_1(F_C;\F_2)=\sum_{v\in V(C)}\beta_1(S_v;\F_2)
+                          +|E(C)|-|V(C)|+1.\label{eq:defect}
+\end{equation}
+In particular, $F_C$ is a disc if and only if every $S_v$ in $C$ is a disc and $C$ is a tree.
+\end{lemma}
+\begin{proof}
+Paths in the quotient pass between input components exactly along the graph edges, so graph components and quotient components agree. Triangulate compatibly with the marked intervals. Inclusion--exclusion, or a cell count that includes seam endpoints, gives
+\[
+ \chi(F_C)=\sum_{v\in V(C)}\chi(S_v)-|E(C)|.
+\]
+Unused boundary arcs on the input pieces are not identified with anything; hence each output component has boundary. For a connected compact surface with boundary, $H_2(-;\F_2)=0$ and $\beta_1=1-\chi$. Substitution proves \eqref{eq:defect}.
+
+All terms on the right are nonnegative: the last three terms are the cycle rank of the connected graph. The classification of compact surfaces with boundary gives $\beta_1=2g+b_\partial-1$ in the orientable case and $\beta_1=h+b_\partial-1$ in the nonorientable case. Thus $\beta_1=0$ characterizes a disc. Equality in \eqref{eq:defect} is equivalent to the asserted conditions.
+\end{proof}
+
+\begin{corollary}[Local irreversibility, not global rejection]\label{cor:bad}
+Within an interval-gluing-only phase, a non-disc connected component can never become a disc after further attachments. A cycle in a component-incidence graph likewise creates permanent non-disc defect. Neither event prevents some other component from being a disc.
+\end{corollary}
+\begin{proof}
+Treat each present connected component as one vertex in the next gluing graph and apply \eqref{eq:defect}. Its nonzero first Betti number remains a nonnegative summand in the component containing it. The statement about other components follows because \eqref{eq:defect} is componentwise.
+\end{proof}
+
+The same proof permits an edge joining two boundary intervals of one present component: it adds a graph loop and hence one unit of cycle rank. The implementation processes a collection of pairwise seams with union--find; an edge whose ends already have the same representative marks that output component non-disc.
+
+\begin{example}[A valid witness rejected by whole-disc rules]\label{ex:junk}
+Take two copies of the partition $(\{0\},\{1,2\})$, realizing every block by a disc, and glue equal labels. The component containing seam $0$ is a disc. The other component is formed from two discs along two seams, so it has first Betti number one. With compatible orientations it is an annulus. A global cycle rejection would discard the rooted disc, whereas Corollary~\ref{cor:bad} rejects only after that annulus becomes connected to the root.
+\end{example}
+
+\section{Rooted states, charges, and completion matrices}
+\subsection{Decorated partitions}
+Fix the finite group $H=(\F_2)^k$ with addition written $+$, and write $q=|H|=2^k$. The case $k=0$ is allowed and is the uncharged case.
+
+\begin{definition}[Rooted decorated state]
+A state $s=(p,g,h)$ consists of a partition $p$ of $U_r$, a flag $g(B)\in\{\mathrm{good},\mathrm{bad}\}$ for each block, and a charge $h(B)\in H$ for each good block. Good means that the realized component is a disc; bad means it is not a disc. Bad-block charges are set to zero by convention. The block containing $0$ is the root block $R_s$.
+\end{definition}
+
+Discarding a bad block's charge is safe for the intended query. A successful rooted disc cannot contain that block, by Lemma~\ref{lem:defect}. If the block remains outside the root, its charge is irrelevant to that root. This canonicalization is not a statement about aggregate charge of the full surface.
+
+Given states $s,t$, form their component-incidence graph $G(s,t)$ using the underlying partitions. Let $C_0(s,t)$ be the graph component containing edge $0$. Define
+\begin{equation}
+ K_\eta(s,t)=\ind{C_0\text{ is a tree, every vertex of }C_0\text{ is good, }
+             \sum_{v\in C_0}h(v)=\eta}.\label{eq:K}
+\end{equation}
+The charge summation counts each input component once, not once per interval. Define $K_{\ne0}$ by replacing the equality to $\eta$ by inequality to zero. The matrices include all states on $U_r$; states with bad root blocks have zero rows and columns.
+
+By Lemma~\ref{lem:defect}, these are exact topological predicates under the surface contract. In the charge-free case write simply $K$. No orientation bit is required: first Betti number zero and nonempty boundary already force an orientable disc.
+
+\subsection{How large the unreduced state space is}
+With root required good, the number of distinct canonical states is
+\begin{equation}
+ N_{r,q}=q\sum_{j=1}^{r}\left\{\begin{matrix}r\\j\end{matrix}\right\}(q+1)^{j-1},\label{eq:statecount}
+\end{equation}
+where the braces are Stirling numbers of the second kind. The root block has $q$ possible charges; each other block is either bad or one of $q$ good charged blocks. For fixed $q$, this is $2^{\Theta(r\log(r+1))}$. The lower bound already follows from all-good zero-charge partitions, and the upper bound follows by labelling at most $r$ blocks and their decorations.
+
+For $q=4$, the counts for $r=1,\ldots,6$ are
+\[
+ 4,\ 24,\ 164,\ 1244,\ 10304,\ 92124,
+\]
+whereas the feature dimensions will be
+\[
+ 4,\ 12,\ 36,\ 108,\ 324,\ 972.
+\]
+The algorithm need not enumerate the family in \eqref{eq:statecount} before reducing. A finite language generates only its local transitions from already reduced tables.
+
+\subsection{Distinguished seam versus permanent marker}\label{sec:marker}
+The exact-rank theorem permits the complementary fragment's block containing $0$ to carry other labels. The implemented layered search instead keeps an unglued marker on the distinguished component. To interpret a future continuation as a matrix query, add a zero-cost, zero-charge dummy disc along that marker. Its only interface label is $0$. Attaching such a disc preserves the rooted component's topology and formal charge. The dummy disc is only an auxiliary algebraic cap: it is not appended to the source-bound output, and the original physical-boundary ownership data are not changed.
+
+Thus the universal matrix bounds apply to permanent-marker contexts, but those contexts use a restricted set of columns. We do not infer that their smallest possible representation has the full universal rank. In particular, sharpness below is a statement about the distinguished-seam interface, not an assertion that every particular pipeline must attain the bound.
+
+\section{A ternary exterior factorization}
+\subsection{A forest coordinate lemma}
+For a nonempty subset $X\subseteq U_r$ containing $0$, let $V_X$ be the even-coordinate-sum subspace of $\F_2^X$. It has basis
+\[
+ f_i=e_i+e_0,\qquad i\in X\setminus\{0\}.
+\]
+For a partition $p_X$ of $X$, choose a spanning tree inside each block, replace every tree edge $ij$ by $e_i+e_j$, and wedge all these vectors. Write the resulting element as $\omega(p_X)$. Its degree is
+\[
+ d(p_X)=|X|-|p_X|.
+\]
+It is independent of the chosen within-block trees over $\F_2$: they are bases of the same subspace, and every nonzero determinant in $\F_2$ equals one.
+
+\begin{lemma}[Rooted-transversal coordinates]\label{lem:transversal}
+For $A\subseteq X\setminus\{0\}$, the coefficient of $\bigwedge_{i\in A}f_i$ in $\omega(p_X)$ is one precisely when $X\setminus A$ contains exactly one point from each block of $p_X$.
+\end{lemma}
+\begin{proof}
+Coordinates of the chosen edge vectors in the basis $f_i$ form a forest incidence matrix with the row indexed by $0$ removed. The coefficient is the corresponding minor on row set $A$; it is zero unless $|A|=|X|-|p_X|$. Its columns split by the partition blocks. For a tree on a block of size $a$, selecting $a-1$ vertex rows gives a nonsingular minor exactly when one vertex row is omitted. That minor has determinant one over $\F_2$, by deleting a leaf inductively. Choosing too few rows in one block makes the total minor singular, and choosing too many forces too few in another. Thus nonsingularity is equivalent to omitting exactly one vertex from every block. The root block must omit $0$, since its row is not available.
+\end{proof}
+
+\begin{lemma}[Whole-tree pairing on a selected subset]\label{lem:wholepair}
+Let $p_X,t_X$ be partitions of $X$. Pair complementary exterior grades by their top-degree coefficient. Then
+\begin{equation}
+ [\omega(p_X)\wedge\omega(t_X)]_{\mathrm{top}}
+ =\ind{G(p_X,t_X)\text{ is a tree}}.\label{eq:wholepair}
+\end{equation}
+Equivalently, the coefficient is the sum over $A\subseteq X\setminus\{0\}$ of the coordinate of $A$ in the first factor times the coordinate of $(X\setminus\{0\})\setminus A$ in the second.
+\end{lemma}
+\begin{proof}
+The combined within-block forests span a subspace of dimension $|X|-|p_X\vee t_X|$: their generated edge relations connect exactly the blocks of the join partition. The exterior product is top-degree and nonzero exactly when the combined columns are an independent spanning set of $V_X$. This requires
+\[
+ |p_X\vee t_X|=1,\qquad (|X|-|p_X|)+(|X|-|t_X|)=|X|-1.
+\]
+These equations say that the bipartite incidence graph is connected and has one fewer edge than vertices. It is therefore a tree. Conversely a tree satisfies both conditions, and its determinant is one over $\F_2$. Expanding the exterior product proves the complementary-coordinate formula; signs disappear in characteristic two.
+\end{proof}
+
+\subsection{Selecting the possible root-component support}
+Call $X$ \emph{admissible for $s$} when $0\in X$ and $X$ is a union of good blocks of $p_s$. Set
+\[
+ \sigma_s(X)=\sum_{B\subseteq X}h_s(B).
+\]
+Define the binary vector $v_s$ with coordinates $(X,A,\sigma)$, where $0\in X$, $A\subseteq X\setminus\{0\}$ and $\sigma\in H$, by
+\begin{equation}
+ v_s(X,A,\sigma)=\ind{X\text{ admissible for }s,\ X\setminus A\text{ is a block transversal,}\
+                          \sigma=\sigma_s(X)}.\label{eq:feature}
+\end{equation}
+There are
+\begin{equation}
+ d_{r,q}=q\sum_{X\ni0}2^{|X|-1}=q3^{r-1}\label{eq:dimension}
+\end{equation}
+coordinates. Each non-root label has three possibilities: outside $X$, inside $A$, or in the transversal $X\setminus A$.
+
+\begin{theorem}[Rooted charged factorization]\label{thm:factor}
+For every pair of decorated states,
+\begin{equation}
+ K_\eta(s,t)=\sum_{\substack{X\ni0,\ A\subseteq X\setminus\{0\}\\\sigma\in H}}
+ v_s(X,A,\sigma)\,
+ v_t\bigl(X,(X\setminus\{0\})\setminus A,\eta+\sigma\bigr)
+ \quad\text{in }\F_2.\label{eq:factor}
+\end{equation}
+Moreover,
+\begin{equation}
+ K_{\ne0}(s,t)=\sum_{\substack{X\ni0,\ A\subseteq X\setminus\{0\}\\\sigma,\tau\in H,\ \sigma\ne\tau}}
+ v_s(X,A,\sigma)v_t\bigl(X,(X\setminus\{0\})\setminus A,\tau\bigr).
+ \label{eq:factor-nz}
+\end{equation}
+Consequently all these matrices have binary rank at most $q3^{r-1}$.
+\end{theorem}
+\begin{proof}
+Fix $X$ admissible for both states. By Lemmas~\ref{lem:transversal} and \ref{lem:wholepair}, the sum over $A$ equals one precisely when the component-incidence graph restricted to $X$ is a tree. The charge coordinates add the exact condition $\sigma_s(X)+\sigma_t(X)=\eta$.
+
+Admissibility means saturation under each full partition. Hence no vertex incident to an edge in $X$ has another incident edge outside $X$. Thus $X$ is a union of entire graph components. If the restricted graph is connected and contains edge $0$, $X$ must be exactly the edge set of $C_0(s,t)$. There is at most one such $X$. It is admissible exactly when every vertex in that root component is good. Therefore the total sum is not an uncontrolled parity count of several possible disc components: its only possible nonzero contribution is the actual distinguished component. This proves \eqref{eq:factor}.
+
+Summing the exact-charge formula over nonzero $\eta$ proves \eqref{eq:factor-nz}. Equivalently, in a group of exponent two, $\sigma+\tau\ne0$ is $\sigma\ne\tau$. Each formula factors through the vector space of dimension \eqref{eq:dimension}, proving the rank upper bounds.
+\end{proof}
+
+\subsection{A sparse product formula and an executable encoding}\label{sec:product}
+Introduce symbols $x_i,y_i$ for each $i\ne0$ and group-algebra basis elements $z^h$, satisfying $z^h z^{h'}=z^{h+h'}$. A coordinate word chooses one of $1,x_i,y_i$ at every label. For a good root block $R$, the entire vector is the coefficient array of
+\begin{equation}
+ v_s=z^{h(R)}\prod_{i\in R\setminus\{0\}}x_i
+       \prod_{\substack{B\ne R\\g(B)=\mathrm{good}}}
+       \left(1+z^{h(B)}\sum_{j\in B}y_j\prod_{i\in B\setminus\{j\}}x_i\right).
+ \label{eq:product}
+\end{equation}
+A bad root gives the zero vector. Bad non-root blocks contribute no factor; their variables stay absent. The factors use disjoint label sets, so there is no issue of higher powers of $x_i$ or $y_i$.
+
+For a non-root good block, the term $1$ omits the block, while selecting the summand indexed by $j$ includes it and chooses $j$ as its unique transversal point. The root's unique transversal point is forced to be $0$. This proves \eqref{eq:product} directly from \eqref{eq:feature}. It also gives the exact support size
+\begin{equation}
+ |\supp v_s|=\prod_{\substack{B\ne R\\g(B)=\mathrm{good}}}(1+|B|)
+               \leq 2^{r-|R|}.\label{eq:support}
+\end{equation}
+Distinct choices give distinct ternary words, even if their charges coincide.
+
+The code maps $1,x_i,y_i$ to ternary digits $0,1,2$ at position $i-1$, then maps a word of integer code $c$ and charge $h$ to bit position $qc+h$. Complementary exterior coordinates swap digits $1$ and $2$ and leave $0$ fixed. A feature row is stored as a Python integer. The independent checker instead enumerates ternary words and tests saturation and transversal conditions from Definition~\eqref{eq:feature}; it does not call the producer's product expansion.
+
+\section{Exact ranks and weighted lower bounds}
+\subsection{A tensor family with discs and annuli}
+For every non-root label $i$, choose one of three types:
+\[
+ \mathsf R:\ i\text{ joins the good root block};\qquad
+ \mathsf G:\ i\text{ is a good singleton};\qquad
+ \mathsf B:\ i\text{ is a bad singleton}.
+\]
+This specifies $3^{r-1}$ states. Realize each good block by a disc and each bad singleton by an annulus, with the required separated boundary intervals. These are genuine abstract surface fragments, not merely formal partitions.
+
+For two such states the local compatibility table at a non-root label, in order $(\mathsf R,\mathsf G,\mathsf B)$, is
+\begin{equation}
+ M=\begin{pmatrix}
+ 0&1&0\\
+ 1&1&1\\
+ 0&1&1
+ \end{pmatrix},\qquad \det M=-1.\label{eq:localM}
+\end{equation}
+Indeed, $\mathsf R/\mathsf R$ creates a second edge between the root vertices, and $\mathsf R/\mathsf B$ introduces a bad vertex into the root. A singleton on each side creates a separate component and causes no root obstruction. All labels act independently in this family.
+
+\begin{theorem}[Sharp binary rank]\label{thm:rank}
+For $r\geq1$ and $H=(\F_2)^k$,
+\[
+ \rank_{\F_2}K_\eta=q3^{r-1}
+\]
+for every $\eta\in H$. For $k\geq1$,
+\[
+ \rank_{\F_2}K_{\ne0}=q3^{r-1}.
+\]
+In particular the uncharged rank is $3^{r-1}$.
+\end{theorem}
+\begin{proof}
+Assign an arbitrary charge $\gamma$ to the root block of each tensor state and zero charge to every other good block. For exact charge $\eta$, the resulting square submatrix is
+\[
+ P_\eta\otimes M^{\otimes(r-1)},\qquad
+ P_\eta[\gamma,\delta]=\ind{\gamma+\delta=\eta}.
+\]
+The charge matrix is a permutation matrix and $M$ is invertible over $\F_2$. The submatrix therefore has rank $q3^{r-1}$. Theorem~\ref{thm:factor} gives the opposite inequality.
+
+For the nonzero predicate the charge factor is $Q=J+I$, where $J$ is the $q\times q$ all-ones matrix over $\F_2$. Since $q$ is even, $J^2=qJ=0$ and $(J+I)^2=I$. Thus $Q$ is invertible, and the same tensor argument proves the second equality. When $q=1$ the nonzero predicate is identically false, which is why $k\geq1$ is required.
+\end{proof}
+
+These are characteristic-two statements. The integral determinant in \eqref{eq:localM} also proves a lower bound in other characteristics, but the characteristic-two upper factorization is not a proof of an exact rank over every field.
+
+\subsection{Cost-dominating representative families}
+A candidate $a$ consists of a state $s_a$, an integer total cost $c_a$, and a reference to an original realized fragment or assembly. All candidates in a reduction share a geometric type, defined precisely in Section~\ref{sec:context}. For a fixed completion $t$, put
+\[
+ \Opt_\eta(\mathcal A,t)=\min\{c_a:a\in\mathcal A,\ K_\eta(s_a,t)=1\},
+\]
+with the minimum of the empty set equal to $+\infty$. Define $\Opt_{\ne0}$ analogously.
+
+\begin{theorem}[Rooted minimum-cost basis]\label{thm:basis}
+Sort $\mathcal A$ by nondecreasing cost, with deterministic tie breaking. Retain a candidate exactly when its feature row is linearly independent of rows previously retained. The resulting original-candidate subfamily $\mathcal R$ has at most $q3^{r-1}$ members and preserves every exact-charge and every nonzero-charge completion optimum simultaneously.
+
+More strongly, for every $a\in\mathcal A$ there is a subset $I_a\subseteq\mathcal R$ such that
+\begin{equation}
+ v_{s_a}=\sum_{u\in I_a}v_{s_u},\qquad c_u\leq c_a\quad(u\in I_a).\label{eq:dominating}
+\end{equation}
+\end{theorem}
+\begin{proof}
+A retained row represents itself. A discarded row is a sum of previously retained rows, all of whose costs are no larger. The retained original rows are never removed, so \eqref{eq:dominating} holds in the final family. There are at most $q3^{r-1}$ independent rows.
+
+Pair \eqref{eq:dominating} with the dual vector of any completion using \eqref{eq:factor} or \eqref{eq:factor-nz}. If candidate $a$ succeeds, the left side is one. At least one retained term on the right must be one, and its cost is no larger. Applying this to a minimum-cost feasible candidate proves $\Opt(\mathcal R,t)\leq\Opt(\mathcal A,t)$. The reverse inequality holds because $\mathcal R\subseteq\mathcal A$. An infeasible full family cannot gain a feasible member by taking a subfamily.
+\end{proof}
+
+The proof is valid for signed costs and arbitrarily large binary costs; the tests include a 20,000-bit cost serialization and replay. It depends on their ordering, not on enumerating their magnitudes. The same retained family works for every $\eta$ and for the nonzero predicate. A formal sum of feature rows is never treated as an embedded surface; the outputs are original witnesses.
+
+\begin{theorem}[Sharp weighted subfamily size for exact charges]\label{thm:weightedsharp}
+For every $r,q$ and fixed $\eta$, there is a weighted family of $q3^{r-1}$ realized abstract fragments such that every subfamily preserving all exact-charge $\eta$ completion optima contains the entire family. Costs can be chosen in $\{0,1,\ldots,2(r-1)\}$.
+\end{theorem}
+\begin{proof}
+Use the tensor states in Theorem~\ref{thm:rank}, with arbitrary root charge $\gamma$ and all other charges zero. Assign the additive local costs
+\[
+ c(\mathsf R)=0,\qquad c(\mathsf B)=1,\qquad c(\mathsf G)=2.
+\]
+Fix a desired candidate. For each of its labels, choose the complementary type by
+\[
+ \mathsf R\mapsto\mathsf G,\qquad
+ \mathsf B\mapsto\mathsf B,\qquad
+ \mathsf G\mapsto\mathsf R.
+\]
+In the corresponding column of \eqref{eq:localM}, the desired row is the unique minimum-cost compatible row: respectively the options are all three types, only $\mathsf B,\mathsf G$, or only $\mathsf G$. Tensoring the independent choices makes the desired word the unique global minimum. Give the completion root charge $\eta+\gamma$, which forces the candidate root charge to be $\gamma$. Deleting this candidate changes that query's optimum. This applies to every family member.
+\end{proof}
+
+\begin{remark}[What the sharpness statements do not imply]
+Theorem~\ref{thm:weightedsharp} concerns weighted exact-charge queries in the universal distinguished-seam model. It does not establish an unweighted subfamily lower bound of the same size, or a matching weighted lower bound for the nonzero-charge predicate, or a lower bound after fixing an ambient manifold and restricting its allowed completions. None of those conclusions follows from matrix rank alone.
+\end{remark}
+
+\subsection{Varying active label sets}
+If a permanent marker and a pool of $b$ other possible labels are fixed, but any subset of the pool may be active, reduce separately for each active set. Summing the universal bound gives
+\begin{equation}
+ \sum_{A\subseteq[b]}q3^{|A|}=q4^b.\label{eq:active}
+\end{equation}
+This does not justify mixing active sets: different sets specify different gluing operations. If there are $t$ independent geometric types, the bound is multiplied by $t$, or more accurately summed over their individual widths.
+
+\section{From charges to essential discs in a knot exterior}\label{sec:peripheral}
+\subsection{A local charge ownership contract}
+Let $M$ be an authenticated compact exterior of the input knot, with boundary torus $T$. Choose two simplicial $\F_2$ cocycles $\alpha,\beta$ whose evaluations give an isomorphism
+\[
+ H_1(T;\F_2)\longrightarrow\F_2^2.
+\]
+The native component machinery already uses two independent boundary parity values \cite{weighted}. The following contract explains how analogous values may be attached before full assembly.
+
+Every fragment component owns a specified physical-boundary $1$-chain on $T$. Its charge is the pair of evaluations of that chain under $\alpha,\beta$. An individual owned chain need not be closed. Every physical boundary edge of a completed component must be owned exactly once, and internal seams on cutting faces contribute no physical-boundary charge. Any model with nonzero seam contributions must instead include its explicit correction; the zero-correction version is used here.
+
+Under these hypotheses the sum of the fragment charges in one completed component is exactly the evaluation of that component's closed boundary chain. This is linearity of cochain evaluation, not an inference from a global total over all components. Authenticating the cocycles, ownership, and source embedding belongs to the geometric checker.
+
+\begin{theorem}[Two component-local bits suffice]\label{thm:essential}
+Suppose the interval assembly is realized by properly embedded surface pieces in source-authenticated disjoint regions of a knot exterior, with correct matching boundary maps and the ownership contract above. Its distinguished component is a compressing disc if and only if it is a disc and its charge in $\F_2^2$ is nonzero. Consequently a rooted representative basis of size at most $4\cdot3^{r-1}$ preserves the minimum total cost of all rooted essential-disc completions of a uniform type.
+\end{theorem}
+\begin{proof}
+A disc has one embedded simple closed boundary curve $c\subset T$. An inessential such curve bounds a disc in $T$, so its homology class is zero. An essential simple closed curve on a torus has primitive integral slope $(a,b)$: cutting the torus along it gives an annulus, or equivalently it can be completed to a torus homology basis. Primitivity implies that $a,b$ are not both even, so the mod-two class is nonzero. Thus $c$ is essential exactly when its two parity evaluations are not both zero. By the ownership contract these are precisely the rooted component charge. A properly embedded disc with essential boundary is a compressing disc. Apply Theorem~\ref{thm:basis} with $q=4$ and the nonzero predicate for the final assertion.
+\end{proof}
+
+A compressing disc of the boundary torus of a knot exterior certifies the unknot; this is the topological interface used by the repository and the hierarchy programme \cite{repo,lackenby}. That conclusion requires authentication of the exterior of the \emph{given} knot, not just an arbitrary manifold with a torus boundary. The algebra does not perform that authentication.
+
+\subsection{Why component-local values cannot be replaced by totals}
+Two parallel meridian discs each have the same nonzero mod-two charge, but their sum is zero. A whole-surface charge test therefore loses both witnesses. Conversely, an inessential root disc of charge zero can coexist with a different component of nonzero charge. The total charge is then nonzero even though the chosen root disc is not essential.
+
+Our feature stores the charge of a \emph{selected union of good blocks}, separately for every possible root-component support $X$. The factorization selects the one support actually connected to the root. This is the additional bookkeeping needed to avoid both errors. Keeping a single global charge beside a connectivity partition would not implement \eqref{eq:feature}.
+
+The same warning applies to Euler characteristic. Aggregate value one does not imply that the distinguished component is a disc. Existing native cocycle work contains a source-level counterexample to an aggregate primitivity-and-Euler shortcut \cite{cocycle}. Here the good/bad flag is certified componentwise, and Lemma~\ref{lem:defect} propagates it componentwise.
+
+\section{Safe continuation, forgetting, and costs}\label{sec:context}
+\subsection{Uniform geometric types}
+A \emph{uniform type} specifies more than the number of ports. It includes the source region, active labels, attachment maps, collar and endpoint conventions, and all external boundary constraints that can affect later legality. The chosen peripheral basis and charge-ownership convention, normal matching data, cyclic order, or a boundary framing must be included when relevant. Within one type, the same outside assemblies and their maps must remain legal independently of the candidate's hidden internal connectivity.
+
+A finite patch language is \emph{source-faithful} only when its local pieces actually embed in the prescribed disjoint regions, all interface matching is valid, and the final witness is related to the specified source manifold. The standalone code's type is an abstract separated-arc type. A string identifying that type is not itself a proof of these geometric facts.
+
+\begin{theorem}[Replacement in a rooted continuation]\label{thm:context}
+Consider a finite interval-assembly language with uniform types, additive total costs, and a distinguished component retained by a marker. Replacing the candidates of one type and active set by the basis of Theorem~\ref{thm:basis} preserves the minimum total cost of every successful final rooted disc query, with exact or nonzero component charge. Repeating such replacements in evaluation order preserves the optimum in the supplied language.
+\end{theorem}
+\begin{proof}
+Fix a successful completed assembly using candidate $a$ at the selected stage. Glue all remaining pieces to each other, but not to $a$. The resulting outside surface meets $a$ exactly along the stored interface. Add the dummy disc at the marker as in Section~\ref{sec:marker}. Ignore outside components with no interface contact; they cannot meet the root and their costs are a fixed outside contribution.
+
+Every remaining outside component has a partition block, a good/bad status, and its accumulated charge if good. Thus it gives a valid matrix completion $t$. The chosen candidate satisfies the required predicate. By Theorem~\ref{thm:basis}, some retained candidate $u$ succeeds against this same $t$ and has $c_u\leq c_a$. Uniformity guarantees that the original outside assembly and all its geometric maps are still legal for $u$. The root component remains a disc with the required charge. Additivity gives a total cost no larger than before.
+
+The substituted successful final disc cannot encounter a non-disc root at an earlier stage, by Corollary~\ref{cor:bad}. It therefore survives legitimate intermediate pruning. Conversely, retained candidates are original candidates, so replacement cannot create a new cheaper assembly outside the supplied language. The optimum is unchanged. Induction over the finite sequence of replacements proves the final assertion.
+\end{proof}
+
+\begin{proposition}[Safe forgetting of a non-root component]\label{prop:forget}
+A current component with no active interface interval and no root marker can be removed from the dynamic-programming state, whether it is a disc or not. Its past contribution to total cost remains unchanged. If it still has an active interval, it cannot in general be forgotten.
+\end{proposition}
+\begin{proof}
+By the type contract all future intersections occur along active intervals. A component without one can never join the root. Its topology and charge are irrelevant to the root predicate, while its cost is already a fixed summand in that candidate. A component with a remaining interval might be attached to the root later; a bad component would then destroy success and a good component could change its charge. Such a component still affects a future query.
+\end{proof}
+
+\subsection{The precise optimization objective}
+The cost in Theorem~\ref{thm:context} is the total additive cost of the complete selected assembly, including unrelated components. It is not the cost of the distinguished component alone. For example, two candidates can have the same interface row but root costs $1,2$ and unrelated costs $100,0$. Total-cost reduction retains the second candidate, whose total cost is $2$ rather than $101$, but it has not preserved the smallest root-only cost. A root-only objective needs additional component-local accounting and a new representativity argument.
+
+Negative total costs are allowed in a finite acyclic language. Forgetting does not subtract their past contributions. The reference code accumulates complete option costs before dropping any expired non-root component.
+
+\subsection{Guards and operations outside the contract}
+A rule permitted only when two specified current ports lie on the same component is not automatically preserved by a root-disc basis. Such a condition must be encoded in the type or proved to be a consequence of the final continuation predicate. Adding enough type data may destroy a small type count; that cost cannot be hidden.
+
+Capping a boundary circle is also outside the monotone interval model. An annulus capped along one boundary circle becomes a disc. Thus a bad flag that is permanent for interval gluing is not permanent for arbitrary surgery or circle attachment. The rooted kernel is appropriate inside certified gluing-only phases; after other operations, topology may need to be recomputed by the maintained geometric machinery.
+
+\section{A complete finite-language algorithm and its bit bound}
+\subsection{The implemented language}
+The input specifies an initial finite family of rooted fragments on one marker and $b_0$ actual live intervals. Layer $i$ lists finitely many options, each a fragment with $b_{i-1}$ incoming and $b_i$ outgoing intervals. Equal incoming labels are glued to the previous live intervals. The final layer has $b_i=0$. All options at one layer share their incoming and outgoing type. Components may be good or bad; each must have at least one input or output interval. An empty patch is allowed when both arities are zero.
+
+Every assignment of one initial option and one option per layer belongs to the abstract language. In particular, success is not supplied as an assumption. The algorithm searches the whole finite option product without enumerating it explicitly.
+
+\subsection{A whole-layer transition}
+Create one vertex for each current connected component and each selected patch component. Initialize its good/bad flag and charge. For each incoming seam, join its two vertices. When the ends already belong to the same quotient component, mark that component bad. Otherwise merge its flags by conjunction and add its charges, setting the charge to canonical zero if it is now bad.
+
+Retain the root marker and outgoing intervals, restrict the quotient partition to those labels, and forget all components with no surviving label. Reject only when the root is bad. Canonicalize the surviving blocks. Candidates with the same complete state are dominated by the one of least total cost; then optionally apply the rooted basis reduction.
+
+This is a symbolic whole-layer calculation. It does not generate an exterior feature on the temporary union of incoming, outgoing, and internal labels. Feature dimension is charged only at checkpoints, where there are at most $b+1$ labels including the marker. Patch size is still part of the explicit input and transition work.
+
+\begin{theorem}[Finite-language correctness]\label{thm:solver}
+The exact-state and basis-reduced layered solvers both return the minimum total cost of a rooted disc with the requested charge in the supplied language, or correctly report that there is no such assembly in that language. A positive result carries the original option indices. A resource limit yields no nonexistence conclusion.
+\end{theorem}
+\begin{proof}
+Lemma~\ref{lem:defect} proves the transition flags, and charge addition counts each input component once. Proposition~\ref{prop:forget} proves the restriction to surviving labels. Pruning a bad root is sound by Corollary~\ref{cor:bad}. Exact-state dominance preserves future results because complete states of one uniform type have the same abstract transitions, and the smaller total cost dominates.
+
+The exact solver therefore preserves every successful assignment at its minimum cost. Theorem~\ref{thm:context} proves that the additional basis replacements preserve the same final optimum. At termination only the marker remains; its component is a disc exactly when its flag is good. The terminal charge test is precisely the requested exact or nonzero predicate. Option indices recover an original assignment. An interrupted enumeration or reduction has not exhausted the language and is represented by an exception, not a negative verdict.
+\end{proof}
+
+\subsection{Bit accounting, not just a state count}
+Let $I$ denote the explicit input bit length, $L$ the number of layers, $K$ the maximum number of options in a layer, and $B$ an upper bound on the input cost bit lengths. Let $b=\max_i b_i$ and
+\[
+ D=q3^b.
+\]
+A table after reduction has at most $D$ candidates. A layer therefore generates at most $KD$ candidates before state dominance. Current total costs have $B+O(\log(L+1))$ bits. Union--find, label canonicalization, and patch validation require polynomial work in the explicit arities and description sizes.
+
+Elementary elimination of $M$ binary rows of length at most $D$ takes at most $MD$ row additions, each using $O(D)$ bit operations. Keeping expressions in the retained original rows has the same order of cost. Product-form row construction takes at most $2^b$ support insertions by \eqref{eq:support}; charging a full $D$-bit operation for each insertion gives $O(2^b D\poly(b))\subseteq O(D^2\poly(b))$ per row. This conservative accounting does not treat a Python big-integer operation as unit cost.
+
+\begin{theorem}[Supplied-language bit bound]\label{thm:complexity}
+For the explicit abstract layered language, with dimension and work caps disabled, minimum-cost rooted disc search and algebraic reduction evidence can be computed in
+\begin{equation}
+ \poly(I,B,b)D^3=\poly(I,B,b)q^3 27^b\label{eq:bit}
+\end{equation}
+bit time. Without storing all historical reduction evidence, memory is bounded by
+\begin{equation}
+ O(D^2)+\poly(I,B,b)D
+\end{equation}
+plus the chosen explicit input representation. The constants in the polynomial do not depend on $b$ or $q$.
+\end{theorem}
+\begin{proof}
+The initial family contributes at most its explicit size times $O(D^2\poly(b))$. Each later layer contributes at most $KD$ row constructions and reductions, each costing $O(D^2\poly(b))$, along with the polynomial local transition and cost-ordering work. Summing over $L$ and absorbing $K,L$ into the explicit input polynomial gives \eqref{eq:bit}. The independent reference checker can reconstruct a row by at most $3^b$ ternary tests and $D$-bit insertions, again within $O(D^2\poly(b))$; replaying the stored expressions has the same overall bound.
+
+The elimination basis stores at most $D$ rows and $D$ expressions of $D$ bits. A layer stores at most $KD$ candidate descriptions. Witness histories may be stored by pointers, or as the length-$L$ tuples used by this reference implementation; either contributes a polynomial factor in $I$ times $D$. Storing all reduction records increases memory by their explicit output size and is not included in the displayed streaming memory bound.
+\end{proof}
+
+This is single-exponential in $b+k$, since $q=2^k$, not polynomial in an unbounded group described only by $k$ bits. For the torus application $k=2$ is fixed. The prototype uses a configurable dimension cap to prevent accidental enormous allocation; the cap is an operational safeguard, not part of the uncapped mathematical bound.
+
+\subsection{Geometry and verification overhead}
+For an embedded rather than abstract language, every local validation, type conversion, and final witness replay must also have its cost charged. If all these encoded operations are bounded by $P$ and the number of types is bounded by $A$, the same proof gives $2^{O(b+k)}\poly(I,B,A,P)$ for a supplied typed language. A type matching or producer step that secretly enumerates exponentially many normal pieces is not covered by a polynomial $P$ merely because its input integers have short encodings.
+
+In the implemented language the recovered witness selects explicit discs or annuli with explicit seam maps; its triangle replay has size polynomial in the total chosen port incidence. More general compressed geometric witnesses need their own replay theorem.
+
+\section{Selecting a root without a Bell-sized search}\label{sec:root-selection}
+The algebra is rooted, but existence of an essential disc component need not come with a chosen root. The following reduction isolates the extra cost for a finite site system. It is a theorem for the described input model; the delivered executable is the simpler layered solver of Section 8, not a general site-order compiler.
+
+A site system has finitely many sites, a fixed multigraph of seams between their ports, and explicit patch options at each site. Options of a site share the same port labels and geometry type. Every option component meets a port, and every seam uses a distinct collared interval. Assume all choices are legal under that fixed interface contract. A site order has frontier width $b$ when at most $b$ seams cross every prefix cut, counting parallel seams separately.
+
+\begin{lemma}[Rotating an order costs at most a factor two]\label{lem:rotate}
+Every cyclic rotation of a site order of frontier width $b$ has frontier width at most $2b$.
+\end{lemma}
+\begin{proof}
+An initial segment of a rotated order is a consecutive interval of the original order, or its complement. The edge boundary of an interval from positions $i$ through $j$ is contained in the union of the prefix-cut boundaries just before $i$ and just after $j$. Each has size at most $b$. The complement has the same edge boundary. The proof counts multigraph edges individually.
+\end{proof}
+
+\begin{theorem}[Finite-language unrooted disc-component search]\label{thm:unrooted}
+In a supplied finite site system as above, existence of any disc component of nonzero charge can be decided by polynomially many rooted searches with at most $2b$ live seams and one marker. The running time is $2^{O(b+k)}$ times the encoded polynomial overhead. Under additive costs, taking the least successful rooted optimum also gives the minimum total cost among all successful assignments.
+\end{theorem}
+\begin{proof}
+Enumerate every site, every option at that site, and every component of that option. Their number is bounded by the explicit input size up to a fixed encoding factor. Fix the chosen option, place the root marker on the selected component, and rotate the order to begin at its site. If the selected component is bad, discard that run. Otherwise process sites in the rotated order, retaining unchanged live seams between steps and using the whole-site form of the transition from Section 8. This construction uses at most $2b$ crossing seams by Lemma~\ref{lem:rotate}.
+
+Every successful full assembly has a nonzero-charge disc component containing some original option component. Lemma~\ref{lem:defect} implies that this original component is good. The corresponding enumerated run includes the assignment and marks the desired component. Conversely every positive rooted run supplies a successful full assignment. Taking a union of the answers therefore decides existence; taking the least total cost gives the stated optimum. Each rooted run is covered by the same continuation proof and elementary elimination bound, and there are only polynomially many runs.
+\end{proof}
+
+Components of input options with no seam ports can be treated separately, or included by an explicit local-root case; they are excluded from the theorem's stated model to keep its port encoding unambiguous. The order-rotation argument says nothing about obtaining a small frontier order from a general knot diagram. Nor does it identify multiple physical copies of a seam because they happen to have the same endpoints in a compressed description.
+
+\section{Relation to the quasi-polynomial target}\label{sec:global}
+\begin{corollary}[Conditional source-complete route]\label{cor:qp}
+Suppose an input knot diagram of size $n$ can be transformed in $n^{O(\log n)}$ time into a source-faithful finite surface-assembly system with the following properties: there exists an assignment containing a nonzero-charge disc component exactly when the knot is trivial; the encoded input, type count, local operations, and final source-bound replay have $n^{O(\log n)}$ bounds; and an available site order has $b=O((\log n)^2)$. Then the rooted reduction and root-selection algorithms decide unknot recognition within $n^{O(\log n)}$ total bit time.
+\end{corollary}
+\begin{proof}
+Theorem~\ref{thm:essential} identifies the successful geometric witness. Theorem~\ref{thm:unrooted} gives $2^{O(b)}$ search for the fixed torus charge group. The width assumption makes this factor $2^{O((\log n)^2)}=n^{O(\log n)}$. Multiplying and adding the stated producer, type, local-operation, and replay bounds preserves that asymptotic form. Completeness supplies the negative direction; source faithfulness and replay supply the positive direction.
+\end{proof}
+
+The hypotheses are intentionally not limited to a polynomial-size producer: quasi-polynomial auxiliary work still composes to the target. A polynomial producer would be a stronger and particularly useful sufficient condition. This corollary is an accounting implication, not evidence that such a producer exists for every diagram.
+
+The practical research advance is more local. Exact partition tables for the rooted component query may have Bell-type size \eqref{eq:statecount}. The new kernel replaces their retention by single-exponential width while keeping unrelated topology and component-local essentiality correct. It does not improve the earlier $2^{r-1}$ bound for the \emph{different} task in which the entire completion must be a disc. It removes a larger state-space obstacle for a more permissive and natively relevant query.
+
+For the maintained programme, at least four costs remain distinct: construction of candidate embedded pieces; construction or reuse of their labelled seam interfaces; search over the resulting alternatives; and independent authentication of a completed disc in the source exterior. This note improves the third cost under explicit contracts and supplies checking tools for its abstract algebra. Existing weighted AHT routines improve aspects of the second and fourth costs for supplied normal vectors \cite{weighted,aht}. Neither improvement implies a small complete search language by itself.
+
+\section{Executed implementation, audits, and measurements}
+\subsection{Delivered modules and trust boundaries}
+The implementation uses only the Python standard library. The producer module \path{rooted_disc/kernel.py} implements states, product-form feature rows, the charge pairing, direct graph compatibility, and cost-ordered reduction. The checker \path{rooted_disc/verify.py} independently reconstructs rows from saturation and transversal conditions and verifies cost-dominating expressions. The layered solver is \path{rooted_disc/assembly.py}. The complete-language checker \path{rooted_disc/search_verify.py} rebuilds every local option product using a separate breadth-first component graph, checks exact-state cost dominance and every reduction, and recomputes the final verdict and deterministic work counts.
+
+The independent surface checker \path{rooted_disc/mesh.py} constructs actual triangulated discs and annuli, identifies only the specified separated boundary edges, checks edge incidence and every vertex link, finds triangle-connected components, and counts vertices, edges, triangles, boundary edges, and formal charge. It does not invoke the feature generator or frontier transition code. The same dataclass syntax and source serialization are shared interfaces, not independently reimplemented parsing libraries.
+
+This checker validates a finite abstract realization. Its charges are formal additive labels placed on original component triangles. It does not prove that those labels arose from boundary-torus cocycles or that the surface embeds in the input knot exterior. Those tasks remain with a native geometric adapter and final source-bound verifier.
+
+\subsection{Algebraic and weighted audits}
+All 42 test methods pass on the recorded CPython \RuntimePython{} Linux environment. The tests include invalid partition and charge syntax, mixed arities, empty families, bad roots, unrelated annuli and cycles, component-local charge counterexamples, resource limits, large signed costs, witness round trips, and source or expression tampering. Checker tests disable the producer's feature, transition, and search entry points during replay. A separate omission test supplies fresh valid linear evidence for a deliberately incomplete local candidate family; complete-language replay rejects it.
+
+The exhaustive uncharged audit covers every good-root decorated state through $r=5$:
+\begin{table}[ht]
+\centering\input{results/algebra_table.tex}
+\caption{Executed uncharged audit. The rank is calculated from the feature rows and the graph predicate is checked for every ordered pair.}\label{tab:algebra}
+\end{table}
+There are 53,869 ordered pairs in this table. For $q=4$, all states through $r=3$ are checked against all four exact targets and the nonzero target, giving another 137,440 pair-target comparisons. The total is 191,309. Both constructions of the feature row are also compared on every state in these exhaustive ranges.
+
+Separate direct graph matrices check the tensor rank family through $r=6$ uncharged and $r=5$ with four charges, including the nonzero-charge ranks. These use 302,622 additional matrix entries. The weighted exposing construction is checked on all 81 uncharged candidates at $r=5$ and all 108 four-charge candidates at $r=4$, for 189 unique optima. These finite checks support, but do not replace, the proofs for arbitrary width.
+
+A seeded randomized audit reduces 1,000 families, independently verifies every reduction certificate, and compares 10,000 optimum queries against direct graph scanning. Costs include negative values and values with more than 100 bits. All compared optima agree.
+
+\subsection{Literal surface and complete-language checks}
+The pair-gluing audit constructs 1,000 triangulated surface quotients, with randomized seam orientation choices, checking 24,567 triangles in total. The direct component predicate agrees with the mesh outcome in every case, including 160 successful rooted queries. The unit suite separately tests every seam orientation choice for selected three-seam pairs.
+
+The complete-language audit generates 200 small layered systems. It literally replays all 3,200 assignments as triangle meshes, computes their exact optimum, and compares both dynamic programs. There are 91 positive languages, and every returned reduced witness is independently replayed again. All results agree, including the negative languages. Every one of the 200 reduced search transcripts also passes the independent complete-language checker, which rebuilds the option products and checks the negative verdicts as well as the positive ones. A negative answer here is only about the explicitly generated language.
+
+The saved example in \path{examples/workload.json} has a checked optimum of zero. Its selected witness has 99 triangles and four components with $(\chi,\text{boundary-edge count},\text{formal charge})$
+\[
+ (1,43,1),\quad(1,4,0),\quad(0,15,2),\quad(0,7,0).
+\]
+The first component is the distinguished disc. The two Euler-zero components illustrate the intended difference from a whole-disc assembly query. These charge integers encode formal elements of $\F_2^2$; they are not a claim of a torus embedding for this example.
+
+\subsection{Paired complete abstract searches}
+The benchmark compares two complete searches of the same finite language. Both perform identical transitions, exact-state cost dominance, terminal tests, and source binding. The basis variant additionally generates features and reduces its tables. Grammar generation and independent mesh replay are excluded from both timers; every returned witness is replayed outside the timed region. Feature caches start empty on every timed call.
+
+Options consist of through-discs, pairwise joins, charge changes, and non-root component expiration followed by a new disc or annulus. All costs and option choices come from a fixed recorded seed. The three wider workloads use respectively three, four, and five live seams with six layers before a cap. Two controls use a narrow interface or no expiration/reset options. These are deliberately inspectable finite languages, not native knot diagrams.
+
+There are three completed repetitions per arm. Each repetition runs an exact arm, a basis arm, and an identical second exact arm in seeded randomized order. The A/A ratio compares the two exact-arm medians. It exposes appreciable noise on the sub-millisecond control and is close to one on the larger cases. Ratios below one favor the exact baseline, not the basis method.
+
+\begin{table}[ht]
+\centering\small\input{results/timing_table.tex}
+\caption{Median wall times from completed runs. Ratio is exact divided by basis; A/A compares identical exact algorithms.}\label{tab:timing}
+\end{table}
+\begin{table}[ht]
+\centering\small\input{results/state_table.tex}
+\caption{Machine-independent work and retained-state counts for the same runs. ``Peak'' counts candidates after each route's reductions.}\label{tab:states}
+\end{table}
+
+The width-five workload reduces 286,112 attempted transitions to 22,564 and the peak retained table from 10,232 to 324. Its median measured improvement is approximately $\WFiveRatio$ times. The width-three and width-four cases improve by approximately $\WThreeRatio$ and $\WFourRatio$ times. In contrast, the no-reset control performs nearly the same number of transitions and slows down from $\NoResetExactMS$ to $\NoResetBasisMS$ milliseconds; basis construction is extra work with little pruning. The narrow control is also slower and has noticeable A/A variability.
+
+These are local algorithmic comparisons, not estimates of a speedup for the maintained recognizer. The production pipeline, native knot corpus, and its optional Regina-dependent tests were not run in this delivery. No production default is changed. Raw samples, order, source digests, deterministic counts, and the environment are retained in \path{results/benchmark.json}; the article tables are regenerated from that file.
+
+\subsection{Abandoned pilot and reproducibility scope}
+An earlier timing attempt used five repetitions and seven width-five layers, and exceeded the execution allowance before producing a complete data file. Its partial timing lines and its exploratory parameters are not merged into the reported sample. The final experiment was rerun from scratch with the three-repetition, six-layer specification above. A timeout is not converted into a recognition failure or a completed-time ratio.
+
+\section{Integration plan and remaining mathematical obligations}
+\subsection{An opt-in adapter, not a replacement recognizer}
+A suitable first integration point is a research search stage that already generates alternative partial embedded surfaces with a fixed boundary-arc type. The new code should sit between generation and continuation, reducing a table while preserving original witness references. It should not be inserted into a component census as though a single supplied surface were a family of alternatives.
+
+The following maintained interfaces are relevant sources of componentwise information and independent final checks \cite{weighted}:
+\begin{quote}\small
+\path{normal_surface_components.normal_component_census}\\
+\path{normal_component_verify.verify_normal_component_certificate}\\
+\path{normal_disk_kernel.normal_compressing_disk_count}
+\end{quote} They do not by themselves supply the collared interval maps needed by this kernel. A native adapter must recover or certify that additional information and bind it to the same source.
+
+The proposed admission gate is: first authenticate the source and type; next certify each candidate's component partition, disc flags, and owned peripheral charges; then reduce within that type; finally replay a successful selected assembly with the existing source-bound geometric checker. Reduction evidence proves only the algebraic preservation step. Failure or a resource cap in this optional stage must return control to the existing complete fallback.
+
+\subsection{Research questions with concrete targets}
+\paragraph{1. Source-complete patch production.}
+Can the maintained normal-surface or hierarchy producers emit a complete family of alternatives whose partial assembly language satisfies the root-component contract? A useful first target is a restricted, explicitly stated family of triangulations or decompositions, with a completeness proof and an emitted language certificate. Completeness must mean that every positive source instance has a represented witness, not that some tested positive instances do.
+
+\paragraph{2. Binary parallel seams without expansion.}
+When can a binary population of parallel normal arcs be represented by a smaller number of algebraic seam variables while preserving root-component defect and all future maps? Existing weighted orbit information may certify connectivity and additive values, but attachment order and endpoint maps are extra data. A valid quotient theorem must control both those maps and the cost of extracting the quotient.
+
+\paragraph{3. The permanent-marker rank.}
+The universal exact rank uses completions in which the distinguished seam can lie in a multi-label complementary block. Actual marker continuations have a singleton dummy block at that label. Determine the exact rank of this restricted-column matrix, including charge and good/bad decorations. This could improve the constants in the implemented search beyond the universal $3^b$ factor without weakening its geometric contract.
+
+\paragraph{4. Removing the bad-component allowance when justified.}
+Some producers may certify that every live component is a disc. What is the exact root-component rank after restricting both sides to all-good partitions, rather than requiring the entire completion to be one disc? This is a different matrix from the whole-disc matrix of the incoming reports. A sharp formula, with a cost-preserving basis construction, would identify when the ternary allowance is unnecessarily large.
+
+\paragraph{5. Nonzero-charge weighted sharpness.}
+The matrix rank for $K_{\ne0}$ is sharp, but this note proves a matching weighted subfamily lower bound only for exact-charge queries. Determine the optimal universal minimum-cost subfamily size for nonzero charge, especially for $H=\F_2^2$. A rank lower bound alone does not settle this optimization question.
+
+\paragraph{6. Root-only objectives and several target components.}
+Can a small interface preserve the least weight of the essential disc component itself, or the best collection of several disjoint essential discs? Whole-assembly additive cost is insufficient for these objectives. Multiple roots also require knowing whether marked components coincide; naive independent rooting can overcount or change topology constraints.
+
+\paragraph{7. Certified transitions between monotone phases.}
+How should a rooted representative basis be transported through compressed cutting, circle capping, or hierarchy operations that can lower defect? Corollary~\ref{cor:bad} does not apply across such operations. A useful result would specify a small sufficient interface for one concrete native operation and prove a new continuation theorem, rather than reuse the bad flag outside its contract.
+
+\paragraph{8. Native performance and adaptive reduction.}
+The controls show that unconditional basis construction can be slower. Measure table growth, transition costs, rank, and row density on source-authenticated native searches. An adaptive policy could delay reduction until its measured or safely estimated transition savings justify the cost, while preserving the same exact fallback and shared resource budget. Any speed claim should include identical-arm controls and completed whole-recognition timings.
+
+\paragraph{9. Formal verification of the algebraic core.}
+The rooted-transversal lemma, the unique-supported-component argument in Theorem~\ref{thm:factor}, and the tensor lower bound are small finite-algebra targets for Lean formalization. Formalizing these would not by itself authenticate a knot exterior or establish source-complete bounded-width production; the theorem dependency boundary should remain explicit.
+
+\section{Conclusion}
+The correct existential target is often a component, not an entire surface. By allowing arbitrary irrelevant components while retaining every possible future root interaction, the rooted completion matrix has exactly ternary rather than Bell-type width dependence. Component-local charges add a fixed factor of four for an essential-disc query on a torus boundary. Cost-ordered original-witness bases, componentwise defect propagation, and safe forgetting turn that rank statement into a complete finite-language search with explicit bit accounting and independent replay.
+
+The result is a proved extension of the current completion-kernel programme, accompanied by executed code and both positive and negative performance measurements. The global quasi-polynomial recognition target still requires the source-complete small-interface construction and authenticated compressed geometry stated in Corollary~\ref{cor:qp}. The local theorem is useful without assuming those remaining obligations away.
+
+\appendix
+\section{Certificate format and checking algorithm}\label{app:certificate}
+A \texttt{rooted-disc-basis-v1} certificate contains a geometry-key string, a SHA-256 digest of the ordered input candidates and key, the retained input indices, and one hexadecimal bit mask per input candidate. Bit $j$ in that mask means that retained original row $j$ occurs in its expression \eqref{eq:dominating}. Costs are serialized as hexadecimal strings, avoiding interpreter limits on enormous decimal conversions; candidate witness indices are part of the source digest.
+
+The independent verifier reconstructs every needed feature by ternary enumeration, not by the producer's sparse formula. It checks that retained indices are distinct and valid, retained rows are independent, every input expression reconstructs the correct row, and every row used in an expression has cost no larger than the represented input cost. It also checks the format and the input binding. An empty input family has an empty valid basis and no expressions.
+
+The digest prevents accidental or adversarial replay against a different ordered input. Correctness of the algebraic statement rests on recomputation and the displayed identities, not on trusting the digest as a theorem about geometry. A caller that mislabels incompatible geometric candidates with the same key has violated the contract even if all binary equations verify.
+
+The independent checker has an allocation limit. Exhaustion raises \texttt{ResourceLimit}; malformed evidence returns false. There is no path that converts allocation exhaustion into a negative knot verdict. The JSON language runner follows the same distinction and reports only abstract-language status strings.
+
+
+\begin{proposition}[Sound complete-language replay]
+If the independent complete-language checker accepts a transcript, its reported optimum or nonexistence verdict is correct for the supplied abstract language, including every listed option at every layer.
+\end{proposition}
+\begin{proof}
+The checker begins from the entire supplied initial list, with authentic option indices and costs. At each later stage it enumerates every ordered pair of a previously retained candidate and a listed patch option. Its breadth-first graph construction determines quotient components, flags, and charges by Lemma~\ref{lem:defect}. It independently computes the cheapest candidate of each exact state and requires the transcript's candidate family to equal that collection, including costs and witness indices.
+
+It then verifies the source-bound cost-dominating expressions of the reduction. Theorem~\ref{thm:basis}, followed by Theorem~\ref{thm:context}, preserves every future rooted optimum. Induction therefore establishes the complete-language invariant at every checkpoint. The checker recomputes the final charge test and minimum, so an accepted positive or negative verdict is correct within that invariant. It does not call the producer transition or search. Its work fits the bit bound of Theorem~\ref{thm:complexity}, since it enumerates the same bounded option products and replays the same-size algebraic evidence.
+\end{proof}
+
+This is stronger than checking isolated linear reduction records: those alone cannot detect an omitted local option. It remains weaker than a source-complete knot certificate, because the input is a finite abstract language, not a proof that all necessary embedded discs of a knot exterior have been represented.
+
+\section{Theorem dependency and scope ledger}
+\small
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}p{0.65\textwidth}}
+\toprule
+Conclusion & Required hypotheses and proof ingredients\\\midrule
+\endhead
+Component is a disc & Actual compact surface quotient, separated collared intervals, nonempty boundary; componentwise Euler and first-Betti formula.\\
+Ternary factorization & Good/bad decorated partitions, rooted-transversal minors, and uniqueness of the saturated connected support containing label $0$.\\
+Exact rank & Factorization upper bound; tensor states with local invertible matrix $M$; permutation or $J+I$ charge factor.\\
+Weighted representatives & Nondecreasing total-cost basis, bilinear predicate, and retention of original candidates.\\
+Exact-charge weighted sharpness & Tensor family, costs $0,1,2$, and one uniquely exposing completion for each word and root charge.\\
+Safe continuation & Uniform geometry type, all future intersections in the stored interface, additive total costs, and the dummy-marker convention.\\
+Essentiality on a torus & Source-authenticated proper embedding, valid boundary cocycle basis, correct ownership, and a rooted disc component.\\
+Finite-language runtime & Explicit local option lists, checkpoint width bound, elementary bit-cost elimination, and charged input/replay overhead.\\
+Unrooted lifting & Fixed site-port system, enumeration of an initial option component, cyclic order rotation, and no hidden choice-dependent seam types.\\
+General quasi-polynomial recognition & All preceding relevant conditions plus a source-complete bounded-width producer and the size bounds of Corollary~\ref{cor:qp}. These are not established by this delivery.\\\bottomrule
+\end{longtable}
+\normalsize
+
+\section{Source audit and reproducibility}
+The GitHub connector was used to read the two requested directory listings, the branch record, the top-level README, selected synthesis text, and exact file blobs. The branch record identifies snapshot \pin. Selected prior articles were inspected through their Library text and page images. The incoming archive names were observed in the repository listing; their ZIP bytes were not downloaded or compared byte-for-byte against the Library copies. This is a selected-source review, not a claim to have audited every repository module or reproduced all historical results.
+
+The source audit file records exact inspected paths and blob identifiers. The current work leaves the repository unchanged. A proposed destination is
+\begin{quote}\small
+\path{Topology/UnknotRecognition/research/rooted_disc_components/}.
+\end{quote}
+This is a suggested new directory, not a statement that it already exists. The separate \path{INTEGRATION.md} gives the interface and acceptance gates.
+
+To reproduce the delivered local checks and article from the package root:
+\begin{lstlisting}
+python -m unittest discover -s tests -v
+python -m experiments.audit
+python -m experiments.benchmark
+sh build.sh
+python -m rooted_disc examples/workload.json --check
+\end{lstlisting}
+The benchmark uses three repetitions and may take longer on a slower host. It is not required to verify the mathematical certificate in the saved example. The source, successful test log, raw audit data, raw timing samples, example language, example reduction evidence, and build instructions are included. No third-party paper or font files are redistributed.
+
+\begingroup\small\raggedright
+\begin{thebibliography}{99}
+\bibitem{repo} Vladimir Reshetnikov, \emph{ProveIt: Topology/UnknotRecognition}, repository snapshot \pin, inspected 9 October 2026. \url{https://github.com/VladimirReshetnikov/ProveIt/tree/66098968e88bba797143ac1bf7ad0ac4c5f697df/Topology/UnknotRecognition}.
+\bibitem{weighted} ProveIt contributors, \emph{Native weighted normal components and essential-disc counts}, \path{synthesis/weighted_components.tex} in \cite{repo}, blob \texttt{758a0cbd58ba0a34af0eb74771e621dd2de905cf}; inspected lines 1--180.
+\bibitem{cocycle} ProveIt contributors, \emph{Checking cocycle connectedness without an orbit search}, \path{synthesis/cocycle_connectivity.tex} in \cite{repo}, blob \texttt{8db6863ffa7a7eb547828a684083c20b3166174b}.
+\bibitem{incoming-optimal} ProveIt research contribution prepared with OpenAI, \emph{Optimal Disc-Completion Bases: Exterior-algebra compression for certified unknot search}, 9 October 2026, reviewed snapshot \texttt{3a90fb34146c915328ab8eac6250cc2514f74ed0}; incoming archive \path{ProveIt_Disc_Completion_Bases_2026-10-09.zip}. Selected abstract and Sections 1--2 inspected in the Library PDF.
+\bibitem{incoming-kernel} OpenAI, research continuation prepared for ProveIt, \emph{Disk-Completion Kernels: Optimal Single-Exponential Representative Families for Surface Frontiers}, 9 October 2026; incoming archive \path{ProveIt_Disk_Completion_Kernels_2026-10-09.zip}. Selected abstract, signed-rank statement, and Section 6 inspected in the Library PDF.
+\bibitem{incoming-signed} ProveIt research contribution prepared with ChatGPT, \emph{Signed Continuation Bases and Euler-Optimal Disk Completion}, 9 October 2026; incoming archive \path{ProveIt_Signed_Continuation_Bases_20261009.zip}. Selected abstract, weighted-basis and Euler-completion statements, and continuation material inspected in the Library PDF.
+\bibitem{bckn} Hans L. Bodlaender, Marek Cygan, Stefan Kratsch, and Jesper Nederlof, \emph{Deterministic single exponential time algorithms for connectivity problems parameterized by treewidth}, Information and Computation \textbf{243} (2015), 86--111. doi:10.1016/j.ic.2014.12.008. Preprint: \emph{Solving weighted and counting variants of connectivity problems parameterized by treewidth deterministically in single exponential time}, \url{https://arxiv.org/abs/1211.1505}.
+\bibitem{flps} Fedor V. Fomin, Daniel Lokshtanov, Fahad Panolan, and Saket Saurabh, \emph{Efficient Computation of Representative Sets with Applications in Parameterized and Exact Algorithms}, arXiv:1304.4626v4, 2016. \url{https://arxiv.org/abs/1304.4626}.
+\bibitem{bk} Benjamin Bergougnoux and Mamadou Moustapha Kant\'e, \emph{More Applications of the $d$-Neighbor Equivalence: Acyclicity and Connectivity Constraints}, SIAM Journal on Discrete Mathematics (2021). doi:10.1137/20M1350571.
+\bibitem{aht} Ian Agol, Joel Hass, and William P. Thurston, \emph{The computational complexity of knot genus and spanning area}, Transactions of the American Mathematical Society \textbf{358} (2006), 3821--3850. Preprint arXiv:math/0205057v2. \url{https://arxiv.org/abs/math/0205057}.
+\bibitem{lackenby} Marc Lackenby, \emph{Incompressible surfaces, hierarchies and unknot recognition}, arXiv:2607.23350v1, 25 July 2026, particularly Sections 9--10. \url{https://arxiv.org/abs/2607.23350}.
+\end{thebibliography}
+\endgroup
+\end{document}

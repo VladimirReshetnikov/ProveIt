@@ -1,0 +1,180 @@
+\section{Deriving a weighted normal double from coorientation}
+\label{sec:weighted-coorientation}
+
+The first native topology-spectrum integration of
+Section~\ref{sec:topology-spectra-native} used one boundary query and two
+weighted surface queries. The ordinary component-count API already had a
+finite sufficient certificate that the normal double is two copies of its
+source (Section~\ref{sec:normal-coorientation}). This section extends that
+certificate to the entire weighted histogram. A successful finite colouring
+now removes the second weighted discovery and its replay, rather than merely
+predicting its number of orbits. An unsuccessful colouring uses the complete
+double query. The returned topology spectrum remains exact in both cases.
+
+\subsection{A weight-preserving cover isomorphism}
+
+The base normal interval system has points $j$ and the doubled system has
+adjacent lifts $2j+s$, $s\in\{0,1\}$. A base arc pairing $\phi$ has reversal
+bit $r$. Its doubled pairing is
+\[
+ 2j+s\longmapsto2\phi(j)+(s\mathbin\oplus r).
+\]
+For a preserving map this follows by doubling its translation and interval
+endpoints. For a reversing map, its doubled endpoint is $2d+1$ rather than
+$2d$, and substitution reverses the sheet bit. The bit is still necessary
+when the base interval contains just one point; forgetting it loses the
+normal orientation cover.
+
+Give each nonempty ambient-edge block a bit $\epsilon_u$. For every base
+pairing from block $u$ to block $v$, require
+\[
+ \epsilon_u\mathbin\oplus\epsilon_v=r.
+\]
+These are the established block-constant coorientation constraints. Blocks
+with no incident pairing may take bit zero. Failure is only failure of this
+sufficient finite representation: an actual coorientation may vary within
+one large block.
+
+\begin{proposition}[Weighted double trivialization]
+If these constraints are satisfied, let the base point weight be any vector
+$w(j)\in\mathbb Z^d$ and suppose the doubled weight obeys
+$w_2(2j+s)=w(j)$. If $H(v)$ is the base orbit histogram and $K(v)$ the
+doubled histogram, then $K(v)=2H(v)$ for every weight vector $v$.
+\end{proposition}
+\begin{proof}
+The corrected sheet label
+$\sigma(j,s)=s\mathbin\oplus\epsilon_{\mathrm{block}(j)}$ is invariant
+under every doubled pairing, by the displayed constraint. The map
+$(j,s)\mapsto(j,\sigma(j,s))$ is a bijection from the doubled point set to
+two labelled copies of the base set and conjugates each generator to the
+base generator within a fixed label. Thus each doubled orbit maps
+bijectively to one base orbit. By the point-weight hypothesis that bijection
+preserves its sum. Each base orbit has one copy of each label, proving the
+histogram identity, including zero or negative weight entries and binary
+multiplicities.
+\end{proof}
+
+The multiplicity doubles; the signature does not. A base component of
+signature $(\chi,b)$ gives two components of signature $(\chi,b)$,
+not a component of signature $(2\chi,2b)$. The result is an interval-cover
+theorem for arbitrary additive weights. The maintained application uses
+$d=2$ and does not introduce a general new weighted-proof API.
+
+\subsection{Both topology weights satisfy the hypothesis}
+
+The Euler weight is the sum of point ownership for vertices, minus arc
+ownership for surface edges, plus corner ownership for discs. Every original
+half-open ownership interval $[a,b)$ becomes $[2a,2b)$ at scale two with
+the same integer weight. Hence both lifts of every point receive its old
+Euler contribution, even where many ownership intervals overlap.
+
+For the second coordinate, the boundary transversal selects one original
+point on each actual boundary circle. The embedding into the full point
+universe preserves edge-block offsets. Its doubled interval selects both
+adjacent lifts of that point. These are precisely the two lifted boundary
+markers, so the boundary-marker point weight also pulls back unchanged.
+No new doubled boundary transversal is required.
+
+In an orientable ambient manifold the normal double is the orientation
+cover. The colouring therefore also proves every source component
+orientable. The usual identities $H=O+N$ and
+$K(v)=2O(v)+N(v/2)$ then agree with $O=H$, $N=0$. The maintained sparse
+inversion and its independent forward checks are still used, avoiding a
+second special spectrum-restoration implementation. At the zero signature,
+$N(0)=2H(0)-K(0)=0$ and $O(0)=H(0)$, so tori/Klein-bottle ambiguity is
+resolved by the geometric certificate, not by an Euler-value heuristic.
+The existing one-sided scaling and vertex-link restoration remain unchanged
+on fallback inputs.
+
+The finite colouring is never inferred from a primitive cohomology class,
+from positive Euler characteristic, or from a primitive coordinate vector.
+The disconnected primitive fibre of
+Section~\ref{sec:completion-theorems} illustrates why source-specific
+proofs matter. Even an orientable even multiple of a M\"obius band can fail
+the block-constant test. Such an input receives a complete ordinary double
+query, not a nonorientability verdict.
+
+\subsection{Native planning, replay and work accounting}
+
+After the base weighted query completes, discovery reconstructs the finite
+graph from the actual base pairings. A parity search either supplies vertex
+bits or finds an odd cycle. A zero-parity witness is independently checked
+before use. Success constructs the doubled histogram by doubling each
+retained multiplicity and skips construction and weighted discovery of the
+scale-two system. Failure continues the previous query schedule. The
+geometry, boundary selector and base weighted observer are unchanged.
+
+There are $O(t)$ nonempty edge blocks and pairings. The graph implementation
+locates the block of each endpoint by binary search, and the parity producer
+sorts its vertex keys, giving $O(t\log(t+1))$ indexed arithmetic operations
+besides source preparation. Endpoint comparisons have the source's binary
+bit bound. The colouring has $O(t\log(t+1))$ encoded bits, and constructing
+the histogram takes one checked binary multiplication per retained row.
+Neither normal points nor components are expanded. On a miss this finite
+work is extra overhead; it is not silently free in the timings. The entire
+observer retains its polynomial encoded-input bound. Fewer local queries
+do not prove a bound on the outer recognition search or hierarchy states.
+
+The option \code{coorientation=True} is now the default of
+\code{normal\_topology\_spectrum}; it requires a strict Boolean. Setting it
+false reproduces the old schedule, statistics and certificate exactly.
+The CLI exposes \code{--no-coorientation}. Pure vertex-link reduced inputs
+still require no orbit query and retain their original certificate.
+
+Successful derivation uses outer schema \code{normal-topology-spectrum-v2},
+with the same eight fields as version one. Its query still contains the
+boundary transversal, base surface proof, double proof and core spectrum.
+The new inner \code{normal-topology-double-coorientation-v1} has exactly
+four fields: schema, dimension two, zero-parity colouring and histogram.
+It is not an ordinary weighted-orbit certificate and is accepted only through
+the source-bound outer protocol. The colouring cannot be transplanted to
+another source graph merely because the claimed histogram is plausible.
+
+Independent replay first rebuilds source geometry and canonical reduction,
+checks the boundary selector and fully verifies the base weighted proof.
+It then reconstructs the graph from that actual base system, checks every
+colour constraint, and compares the complete proposed double histogram
+with twice the already certified base histogram. It subsequently checks the
+spectrum and multiplicity restoration through their existing forward
+identities. Replay invokes neither the colouring search, orbit discovery,
+weighted producer, sparse inversion nor canonical-core producer. Finite
+geometry helpers are shared trusted definitions. Version-one proofs retain
+their full explicit double replay; a schema swap cannot turn one proof
+language into the other.
+
+Statistics count actual discoveries. Derivation uses two calls rather than
+three and records zero double orbit cycles. A shared cycle allowance can
+therefore admit a complete derived proof where the old schedule is
+inconclusive. Preparation, colouring and verification remain governed by
+the cooperative callback, rather than being counted as orbit cycles.
+An incomplete base query cannot acquire a derived certificate, and a missed
+colouring cannot bypass an exhausted double allowance.
+
+\subsection{Validation and performance}
+
+The accompanying validation compares the complete maintained observer with
+a frozen pre-change producer \emph{and} checker, under both periodic rules
+and both coordinate-reduction modes. It also compares each complete spectrum
+with the independent component records retained in report 53. The disabled
+option must reproduce every complete old result, and each failed colouring
+must do the same. Successful cases must save exactly the old double cycle
+count and return only orientable components. Retained source-bound proofs
+are replayed with producer entry points disabled.
+
+Tests independently expand small lifted point systems to check
+$w_2(2j+s)=w(j)$ and the generator conjugacy, including reversal bits. They
+also cover relabelings, huge binary scalings, orientable coarse misses,
+one-sided inputs, strict proof fields, Boolean/integer confusion, altered
+weights and multiplicities, duplicate rows, colour flips and missing vertices,
+legacy replay, exact cycle allowances and caller cancellation. A simultaneous
+colour reversal is accepted because it is a legitimate alternate labelling
+of the two sheets.
+
+\input{weighted_coorientation_results.tex}
+
+This change improves supplied-vector observation and certificate replay.
+It adds no diagram recognition coverage and no general quasipolynomial
+theorem. Its relevance to the wider programme is that a proof already used
+for scalar counts now transports the full additive interface without a
+redundant expensive orbit pass. Controlled complete witness discovery and
+geometric continuation remain the outstanding global obligations.

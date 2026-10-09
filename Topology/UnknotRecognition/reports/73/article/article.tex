@@ -1,0 +1,94 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage{graphicx,xcolor}
+\usepackage{fancyhdr}
+\usepackage{xurl}
+\usepackage{hyperref}
+\definecolor{navy}{HTML}{15395B}
+\definecolor{teal}{HTML}{087F8C}
+\hypersetup{colorlinks=true,linkcolor=navy,citecolor=teal,urlcolor=teal,
+  pdftitle={Active Normal Faces and Batched Geometric Descent for Unknot Recognition},
+  pdfauthor={Research continuation for the ProveIt project}}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,
+  frame=single,rulecolor=\color{black!15},backgroundcolor=\color{black!2},
+  showstringspaces=false}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\spanof}{\operatorname{span}}
+\newcommand{\peel}{\operatorname{peel}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\M}{\mathsf M}
+\newcommand{\basecommit}{\texttt{66098968e88bba797143ac1bf7ad0ac4c5f697df}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{navy}Active faces and geometric descent}
+\fancyhead[R]{\small ProveIt research}
+\fancyfoot[C]{\thepage}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{2em}
+
+\begin{document}
+\begin{titlepage}
+\color{navy}
+\noindent\textsf{PROVEIT / TOPOLOGY / UNKNOT RECOGNITION}\par
+\vspace{1.0in}
+\noindent{\Huge\bfseries Active Normal Faces\par}
+\vspace{0.15in}
+\noindent{\Huge\bfseries and Batched\par}
+\vspace{0.15in}
+\noindent{\Huge\bfseries Geometric Descent\par}
+\vspace{0.35in}
+\noindent{\Large Certified improvements for unknot recognition}\par
+\vspace{0.5in}
+\noindent{\large Research continuation for Vladimir Reshetnikov}\par
+\vspace{0.15in}
+\noindent 9 October 2026\par
+\vfill
+\color{black}
+\noindent\textbf{Scope.} Exact support certificates, a structural obstruction to
+root-level propagation, simultaneous Pachner reductions, and dynamic
+vertex-link scoring. The complete recognizer's general quasipolynomial
+complexity remains unproved.\par
+\vspace{0.25in}
+\noindent\textbf{Reproducible baseline.}\par
+\noindent\basecommit\par
+\smallskip
+\noindent\url{https://github.com/VladimirReshetnikov/ProveIt}
+\end{titlepage}
+
+\input{abstract}
+\tableofcontents
+\clearpage
+\input{introduction}
+\input{setting}
+\input{active_faces}
+\input{batch_moves}
+\input{dynamic_peeling}
+\input{implementation}
+\input{experiments}
+\input{complexity}
+\input{research}
+\appendix
+\input{reproduction}
+\input{references}
+\end{document}

@@ -1,0 +1,171 @@
+\section{Implementation and integration}\label{sec:implementation}
+
+\subsection{An additive research path}
+
+Five new runtime modules implement the results. The existing recognizer,
+the exact simplex engine, the earlier propagation producer, and the geometric
+certificate checkers retain their pinned bytes. This makes the comparison
+auditable and permits callers to adopt either improvement separately.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+Module in \path{fastunknot/} & Responsibility\\
+\midrule
+\path{pachner_commitments.py} & Shared legal-event engine; naive, commitment and sleep-set searches; exact identity tracking\\
+\path{pachner_commitments_verify.py} & Independent endpoint replay, upward count and protected-original checks\\
+\path{pachner_regions.py} & Canonical-parent region enumeration and aggregate bounded search\\
+\path{normal_pachner_search.py} & Diagram-to-exterior preparation and unchanged source-bound disc certificate\\
+\path{normal_propagation_cached.py} & Exact local-witness and bounded antichain screening of deletion LPs\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The maintained \path{fast/README.md} is preserved. Each new research driver
+has its own documentation. The dependency layer contains only additions from
+the incoming archives that are absent from the pinned fast tree. The new
+overlay is separate from that layer; every added file has a digest and a
+declared origin. The full reproduction snapshot also includes historical
+reference modules required by the inherited regression suite.
+
+\subsection{Exact geometric event representation}
+
+An event key is a tuple containing its direction and the sorted pairs
+\code{(incarnation\_id, local\_port)} for all its consumed cells. The local
+port is an edge number for a downward event and a face number for an upward
+event. Multiple local occurrences of the same global edge are reduced to
+one candidate. A transition is executed only after the existing formal move
+producer and the independent move and marking checkers accept its candidate.
+
+The canonical local frame of the producer is anchored at the least persistent
+identity in its support, rather than at the least current row number. This
+is necessary: executing a disjoint move can change row numbers and otherwise
+change the new cells' corner labels. A birth key records the exact parent
+event and an output slot. The shared interning table gives equal birth keys
+equal handles across different commuting search histories. Tuple equality,
+not a bare hash value, resolves equality.
+
+For endpoint-query deduplication, a state is serialized under persistent
+incarnation order with the corresponding normalized heights and face maps.
+This removes the representation changes that the proved commutations cause.
+It is not a general graph-isomorphism canonicalizer. Distinct, noncommuting
+histories can remain distinct even when their underlying unmarked
+triangulations are isomorphic. The current theorem does not require finding or merging
+all of those coincidences.
+
+\subsection{The three search methods}
+
+The naive method supplies a finite completeness oracle on tiny examples.
+It explores every legal move continuation, including different orders of
+independent moves. It uses the same geometric event engine and the same
+endpoint checker as the optimized methods, so measured differences isolate
+enumeration policy rather than a replacement of verification by trust.
+
+The commitment method follows the proof directly. In particular, it branches
+over local symbols even when many assignments will never enable a move. It
+is useful for checking the encoding construction and for detecting accidental
+dependence on downward confluence. Its large constant makes it a poor default
+on the tested examples.
+
+The sleep method performs geometric transitions only. Its sleep updates use
+exact consumed identities, and its endpoint table suppresses repeated
+predicate calls without suppressing continuation expansion. It is the default
+of the region and diagram wrappers. All three methods use the same
+total-upward measure, source protection and callback boundary.
+
+The region wrapper applies one aggregate node and cooperative-work allowance
+across all selected initial regions. The empty region is included and checks
+the source endpoint. In the current implementation, the wrapper may repeat
+that endpoint check in several region searches; the theorem already pays for
+each region. Sharing a source-independent endpoint cache across region
+searches is a possible further optimization, provided it does not merge
+continuations with different permissions.
+
+\subsection{Representative usage}
+
+All examples below run from the packaged \path{repro/fast/} directory or
+from an integrated \path{Topology/UnknotRecognition/fast/} directory.
+An unrestricted bounded search on a supplied, validated source is:
+
+\begin{lstlisting}[language=Python]
+from fastunknot.pachner_commitments import search_pachner_endpoints
+from fastunknot.pachner_commitments_verify import inspect_pachner_endpoint
+
+answer = search_pachner_endpoints(
+    triangulation, heights, method="sleep", max_upward=2,
+    max_nodes=100000, seek_disc=True)
+if answer["status"] == "DISC_FOUND":
+    assert inspect_pachner_endpoint(
+        triangulation, heights, answer["certificate"]) is not None
+\end{lstlisting}
+
+A connected-region search substitutes:
+
+\begin{lstlisting}[language=Python]
+from fastunknot.pachner_regions import search_pachner_regions
+
+answer = search_pachner_regions(
+    triangulation, heights, max_region_size=8, max_components=1,
+    max_upward=2, method="sleep", max_nodes=100000,
+    max_work=5000000, seek_disc=True)
+\end{lstlisting}
+
+For diagram input, use the provenance-preserving adapter:
+
+\begin{lstlisting}[language=Python]
+from fastunknot.diagram import Diagram
+from fastunknot.normal_pachner_search import pachner_seed_decide
+from fastunknot.normal_transport_verify import (
+    verify_transport_disk_certificate,
+)
+
+diagram = Diagram.from_json({"braid": {"strands": 2, "word": [1]}})
+answer = pachner_seed_decide(
+    diagram, shellings=True, max_upward=0, max_nodes=10000)
+if answer["status"] == "UNKNOT":
+    assert verify_transport_disk_certificate(
+        diagram, answer["certificate"])
+\end{lstlisting}
+
+The algebraic improvement has the same producer signature as its baseline,
+with a cache-capacity option:
+
+\begin{lstlisting}[language=Python]
+from fastunknot.normal_propagation_cached import search_positive_euler
+from fastunknot.normal_propagation_verify import (
+    verify_normal_propagation_certificate,
+)
+
+answer = search_positive_euler(
+    triangulation, max_pivots=100000, max_cached_witnesses=256)
+if "certificate" in answer:
+    assert verify_normal_propagation_certificate(
+        triangulation, answer["certificate"])
+\end{lstlisting}
+
+The positive-Euler propagation statuses retain their algebraic-normal-surface
+scope. They do not establish that the supplied triangulation is the exterior
+of a particular knot diagram. This distinction remains visible in the APIs.
+
+\subsection{Policy compatibility and maintained costs}
+
+The cached propagation implementation is an additive fork because changing
+the baseline would invalidate the paired comparison. Its construction script
+requires the exact SHA-256 of the original producer before applying its
+specific transformations. Runtime use does not execute that script. A future
+maintained integration can factor the common policy into a shared internal
+engine after separately verifying the resulting behavior.
+
+Witness reuse preserves the existing completed proof bytes; geometric search
+instead expands the set of positive proofs the caller may discover. Neither
+changes the default recognition pipeline in this artifact. The package
+therefore does not report a speedup for the entire pre-existing recognizer.
+It reports the measured cost of the newly exposed search and propagation
+operations, together with a tested optional source-bound entry point.
+
+The main implementation costs still include rebuilding incidence structures,
+exact rational node LPs, terminal component analysis, and certificate copying.
+The work and pivot counters deliberately remain separate. A smaller pivot
+count need not reduce Python overhead on a tiny instance, and a smaller
+number of geometric traces does not make each transition constant-time.

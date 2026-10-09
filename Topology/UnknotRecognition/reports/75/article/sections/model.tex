@@ -1,0 +1,117 @@
+\section{The geometric search model}\label{sec:model}
+
+\subsection{Face-paired triangulations and legal replacements}
+
+A triangulation is a finite list of abstract tetrahedra with local vertices
+$0,1,2,3$. Each triangular face is either a boundary face or is paired to
+another face by a full vertex permutation. Global vertices and edges may
+have multiple local representatives. The existing validator checks the
+manifold and matching requirements of the normal-surface interfaces.
+This is the usual generalized triangulation setting used in computational
+three-manifold topology, rather than a requirement that every global vertex
+set specify a unique simplex \cite{BurtonPachner}.
+
+A legal $2$--$3$ replacement consumes two distinct tetrahedra sharing a face.
+Their formal union is a triangular bipyramid. It is replaced by the three
+tetrahedra around the other diagonal, preserving all six labelled boundary
+facets and their attaching permutations. A legal $3$--$2$ replacement consumes
+three distinct tetrahedra constituting the entire degree-three star of an
+interior edge, with the formal triangular-link consistency checked by the
+existing producer. It performs the inverse relative-boundary replacement.
+
+These conventions are substantive. All independence statements below use the
+repository's formal-bipyramid legality. If one additionally imposed strict
+simplicial-complex conditions forbidding a new edge or face already present
+elsewhere, disjoint consumed supports would require a fresh independence
+analysis. The source code does not silently switch between these conventions.
+
+\begin{definition}[Incarnation and event]
+A tetrahedron incarnation is one specific tetrahedron from its creation until
+its destruction. An event is a legal replacement together with the identities
+of all consumed incarnations and the local edge or face selected in each.
+Surviving incarnations keep their local vertex labels; replacement outputs
+receive new identities and the canonical local labels of the producer.
+\end{definition}
+
+An incarnation is not a row number. After deleting three rows, a survivor's
+row number can change even though its identity, local corners and commitment
+remain unchanged. The implementation keeps this distinction explicit.
+
+\subsection{Cocycles and the endpoint surface}
+
+The input marking is a list of four integral heights $h_{t,0},\dots,h_{t,3}$
+per tetrahedron. The signed differences on identified edges must agree; they
+therefore define an integral cocycle. Adding a constant to one height row
+does not change the marking. The implementation normalizes each row by
+subtracting its first entry.
+
+For bit-complexity statements, $B$ bounds the bit lengths of both the supplied
+height entries and their edge differences. If rows are already normalized,
+the edge data alone suffice. Including the supplied entries charges the
+input-reading and normalization cost even when a row has an unnecessarily
+large additive constant.
+
+If $a,b,c,d$ order the corners so that
+$h_a\le h_b\le h_c\le h_d$, the corresponding coherent normal vector has
+triangle coordinates $h_b-h_a$ at $a$ and $h_d-h_c$ at $d$, and the single
+quadrilateral coordinate $h_c-h_b$ separating $\{a,b\}$ from $\{c,d\}$.
+All other local coordinates vanish. Ties cause zero coordinates and cause no
+ambiguity in the resulting normal vector.
+
+The five formal bipyramid heights determine the transported cocycle on the
+new tetrahedra. This preserves the global cohomology class. It can change the
+topology of the coherent normal surface: the incoming transport package gives
+a checked example in which a disc becomes a disc and two spheres. Thus raw
+Euler characteristic is not used as a terminal unknot criterion.
+
+\begin{definition}[Bounded-upward family]
+For a source $(T,h)$ and integer $U\ge0$, let $\Reach_U(T,h)$ be the marked
+endpoints of all finite legal $2$--$3$/$3$--$2$ traces containing at most $U$
+\emph{total} $2$--$3$ events, with the prescribed cocycle transport at every
+event. The empty trace and all intermediate endpoints are included.
+\end{definition}
+
+If a trace contains $u$ upward and $d$ downward events, its tetrahedron count is
+\begin{equation}\label{eq:tet-account}
+ t'=t+u-d.
+\end{equation}
+In particular, $d\le t+u$ and the trace length is at most $t+2U$. The maximum
+tetrahedron count is at most $t+U$. These coarse inequalities also cover
+degenerate stopping points without requiring a special minimum-size constant.
+
+The parameter $U$ is different from the maximum excess tetrahedron count and
+from the number of upward bursts. Repeated expansion--collapse pairs can have
+excess height one and arbitrarily many upward events. Our completeness proof
+permutes independent upward and downward events; it preserves total counts,
+but does not preserve every prescribed burst pattern.
+
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Symbol & Meaning\\
+\midrule
+$n$ & Number of crossings when a knot diagram is the original input\\
+$t$ & Number of tetrahedra in the source of one geometric search\\
+$U$ & Allowed total number of $2$--$3$ events\\
+$F,r$ & Allowed set of original tetrahedra and its size bound\\
+$c$ & Maximum number of connected components of the allowed region\\
+$B$ & Initial bit-length bound including supplied heights and edge values\\
+$Q$ & Number of outer searches in a conditional recognition analysis\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Endpoints, traces and decision predicates}
+
+Two adjacent events with disjoint consumed supports will be shown to commute.
+Trace equivalence is generated by such adjacent interchanges, carrying local
+labels and the marking through the induced isomorphisms. Endpoint predicates
+must respect this transported isomorphism. The existence of an essential-disc
+component does; a predicate inspecting the arbitrary order of rows in a
+certificate need not.
+
+The code supports an arbitrary callback for experimentation, but
+\status{ENDPOINT\_SELECTED} means only that this callback selected a supplied
+state. A \status{DISC\_FOUND} result additionally carries an independently
+checked component-disc proof. Source geometry is then needed to turn the latter
+into \status{UNKNOT} for a given diagram.

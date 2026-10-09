@@ -1,0 +1,144 @@
+\section{Implementation, certificates, and integration}
+\label{sec:implementation}
+
+\subsection{Additive modules and inherited dependencies}
+
+The implementation is an additive research overlay on the pinned revision.
+It does not replace the recognizer's production decision policy or its
+complete fallback. This is a deliberate interface choice: the geometric
+results are ready to be used for supplied cocycles, whereas choosing a
+complete family of useful cocycles remains a separate theorem obligation.
+The active LP is useful for certificates and experiments but does not yet
+justify a performance-oriented default change.
+
+\begin{longtable}{p{0.32\textwidth}p{0.61\textwidth}}
+\toprule
+Module & Responsibility \\
+\midrule
+\endhead
+\texttt{normal\_active.py} & Complete active-support certificates, conflict
+branching, and the finite normal-anchor wrapper. \\
+\texttt{normal\_active\_verify.py} & Solver-free arithmetic, branching, anchor,
+and source checks. \\
+\texttt{pachner\_batch.py} & Legal-region census, disjoint packing, and one
+simultaneous geometric/cocycle producer. \\
+\texttt{pachner\_batch\_verify.py} & Independent port, manifold, cocycle, and
+normal-coordinate replay. \\
+\texttt{corner\_minima.py} & Deterministic AVL trees with thirteen-record
+summaries, exact hypothetical edits, and committed updates. \\
+\texttt{cocycle\_peeling.py} & Stable geometric identities, complete candidate
+scoring, collective scoring, and optimum packed subbatches. \\
+\texttt{cocycle\_peeling\_verify.py} & Full independent endpoint reconstruction
+of each batch's six raw and peeled score quantities. \\
+\texttt{peeled\_batch\_selection.py} & Exact reward reduction, the small-cover
+selector, optional general matching, and certificate-value/dual checks. \\
+\bottomrule
+\end{longtable}
+
+Three necessary modules are inherited without claiming new authorship of
+their algorithms: \texttt{exact\_lp.py} from the incoming dual report, and
+\texttt{cocycle\_transport.py} with its verifier from the incoming transport
+report. They are absent from the pinned maintained tree and are included
+explicitly in the overlay. All other supporting maintained files retain
+their pinned contents. The integration manifest distinguishes these
+dependencies, new code, tests, research scripts, and supporting fixtures.
+
+\subsection{State ownership and cancellation}
+
+\texttt{CocyclePeelingState} owns a private triangulation, coherent heights,
+stable global-vertex names, and stable corner identifiers. Canonical
+tetrahedron renumbering changes positions but preserves the identities of
+surviving records. Each inserted corner obtains a fresh identifier. The
+ordered key is the pair consisting of its triangle multiplicity and this
+identifier; equal multiplicities therefore cause no ambiguity in deletion
+or prefix maintenance.
+
+Candidate objects are scoped to the current immutable state. The cheap
+collective scorer assumes an unmodified subset of the current legal census;
+it is not an independent validator of user-edited region dictionaries.
+Committing a batch reconstructs and verifies the actual geometric moves
+before using their score to change the cache. The diagnostic
+\texttt{audit\_index()} also rebuilds the global vertex equivalence relation
+and boundary/interior link types independently, then checks all records and
+AVL invariants. This protects against the subtler possibility of internally
+consistent records assigned to incorrect stable vertex classes.
+
+Work callbacks propagate cancellation. If interruption occurs during a
+cache commit, the object is explicitly invalidated; a subsequent query
+requires reconstruction instead of using partially updated summaries.
+Neither callback limits nor LP pivot limits are interpreted as mathematical
+negative answers. Integer serialization uses the maintained codec, including
+its large hexadecimal representation, so a 20,001-bit scale is not limited
+by Python's decimal-string conversion guard.
+
+\subsection{Three different kinds of verification}
+
+\paragraph{Arithmetic and search coverage.}
+The active-support consumer recomputes all residuals with exact rational
+arithmetic. The conflict-tree consumer checks the selected disjunction and
+both children at a negative branch. The normal wrapper reconstructs the
+anchor product from the source; a proof cannot omit an inconvenient anchor.
+It returns a positive-Euler normal vector or a certified absence for that
+specific anchored search problem. It does not certify that a positive
+vector is connected.
+
+\paragraph{Geometry and attained score.}
+The batch consumer imports no batch producer. It reconstructs the two
+manifolds, all local region labels, and both ends of every boundary-port
+attachment. It checks the transported cochain and normal coordinates, and
+compares global cell counts. The separate peeling consumer imports neither
+the dynamic index nor the peeling producer: it scans both endpoints and
+checks raw Euler gain, raw piece saving, link Euler change, link piece
+change, peeled Euler gain, and peeled piece saving. This deliberately more
+expensive endpoint verification is the small trusted boundary around the
+fast incremental calculations.
+
+\paragraph{Policy optimality and the topological endpoint.}
+The matching reduction is an exact mathematical algorithm. The small-cover
+path enumerates the constant number of possible matching forms after a
+linear summary pass. The general path relies on the matching backend unless
+an independent dual certificate is supplied. Recomputing an attained score
+alone does not certify maximality. In either case, a suboptimal policy choice
+cannot make an invalid geometric transition pass its consumer.
+
+After obtaining a promising supplied normal vector, the maintained
+\path{normal_compressing_disk_count} remains the relevant component
+query. Its independently replayable certificate peels vertex links and
+uses the existing compressed component machinery. The positive control in
+the active-search audit passes through this endpoint. Neither a favorable
+peeled Euler score nor the matching output is substituted for a compressing
+disc with essential boundary. Finally, turning that disc into an unknot
+verdict requires the accepted diagram-to-exterior correspondence.
+
+\subsection{A bounded, replayable descent driver}
+
+The research driver composes the complete census, greedy packing, exact
+subbatch selection, and verified commit until it stalls or reaches a
+specified round limit. It requires at most two interior vertices and
+keeps the original triangulation and cocycle bound to its certificate.
+A separate chain checker replays each endpoint through the geometry and
+peeling consumers. A stopping status is a producer diagnostic, not a
+certificate that all useful global geometric paths have been exhausted.
+Optional final disc counting uses the maintained component certificate on
+the actual final coherent vector. Work-limit and callback exceptions
+propagate without returning a partially accepted trajectory. This driver
+makes the collapse-only algorithm of \cref{prop:collapse-trajectory}
+concrete without asserting a new complete recognition policy.
+
+\subsection{Recommended order of integration}
+
+First integrate the independent consumers and retained fixtures, then the
+simultaneous batch producer. The fixed-site equivalence tests isolate this
+change from policy questions. Next integrate the minima index and compare
+its entire candidate census with full singleton replay. Enable optimum
+subbatch selection only after checking the actual global vertex types; the
+two-interior-vertex fast path must not be inferred from a filename or knot
+label. Keep the active LP optional until a sparse or reused-basis producer
+beats the simpler probes on matched inputs.
+
+The supplied patch only adds files. The supporting snapshot makes the
+experiments reproducible without assuming that the three incoming packages
+have already been integrated. If a later repository revision has introduced
+files under the same names, reviewers should reconcile those additions
+against their recorded dependency lineage instead of overwriting them.
+

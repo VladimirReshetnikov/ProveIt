@@ -1,0 +1,119 @@
+\section{Research question and precise contribution}
+
+The computational objective is a complete unknot recognizer with a
+quasipolynomial worst-case bound in the crossing number. The maintained
+ProveIt implementation combines exact filters, group-theoretic methods,
+normal-surface certificates, and a complete fallback. Many local operations
+are now substantially faster than their first implementations. The central
+research issue is whether the number and encoded size of the states visited
+can be bounded without expanding exponentially large surfaces or returning
+to an exhaustive search over all normal-coordinate sectors.
+
+This continuation works on two interfaces where the existing research
+packages leave concrete opportunities. In the normal-coordinate search,
+syntactically allowed quadrilateral types need not be geometrically
+possible. A certificate of the entire active support makes it possible to
+remove these spurious choices in one operation and define the remaining
+ambiguity intrinsically. In geometric descent, many currently legal
+Pachner reductions have disjoint tetrahedral supports. They can be verified
+and applied together, avoiding repeated emission and validation of almost
+identical triangulations. Vertex-link peeling then requires careful
+collective scoring: disjoint tetrahedral supports can still share a global
+vertex, so their peeled scores need not add.
+
+\subsection{What is established here}
+
+The mathematical results fall into five groups.
+\begin{enumerate}
+\item A primal--dual description of the maximal active support of a
+nonnegative homogeneous matching cone. A single aggregate dual witness
+certifies every universally zero coordinate. Combining this with a
+positive objective gives a complete support certificate, independently
+checkable without rerunning the search procedure. The underlying
+polyhedral principle is classical strict complementarity; the contribution
+is its concrete certificate use at this repository interface.
+\item An ambiguity parameter for restricted quadrilateral search, together
+with a finite search-tree bound, and a negative result: on an unrestricted
+one-vertex anchored root that has a positive-Euler witness, the ambiguity
+rank is at least $t-1$. More generally it is at least $t-v(T)$,
+and at least $16\max\{1,n\}-2$ on the maintained pulling source. The obstruction is explicit and comes from local
+directions invisible to all face-arc equations.
+\item A simultaneous relative-boundary replacement theorem for disjoint
+$3$--$2$ regions. The conflict graph of distinct legal degree-three central
+edges has maximum degree at most nine. A greedy maximal batch therefore
+contains at least a tenth of the current candidates. The cocycle transport
+and unpeeled cell changes commute and add.
+\item A deterministic data structure that maintains vertex-link minima
+under repeated local replacements. Cached thirteen-record prefixes give
+constant-operation hypothetical singleton scoring, while balanced-tree
+updates replenish these prefixes after commits. Collective scoring accounts
+for shared vertices. A realized solid-torus example proves that singleton
+peeled gains cannot simply be added.
+\item An exact maximum-weight-matching reduction for the best peeled-Euler
+subbatch of any fixed disjoint family. A minimum-omission optimum omits
+at most one move per relevant interior vertex. On the maintained pulling
+source, which has exactly two interior poles, a linear arithmetic-time
+selector omits at most two moves. Thus the packed optimum retains at least
+$\max\{0,\lceil M/10\rceil-2\}$ current candidates.
+\end{enumerate}
+
+All statements are scoped to their actual inputs. A positive-Euler relaxed
+matching vector may violate the quadrilateral constraints. A legal Pachner
+move preserves the ambient manifold, but coherent surfaces transported
+through it can change topology. A positive total Euler characteristic is
+therefore not an unknot certificate. The supplied code retains the
+repository's independently verified component-disc query as the relevant
+terminal geometric test.
+
+\subsection{Position relative to the latest incoming work}
+
+The source revision inspected is \basecommit. Its \texttt{fast/} and
+\texttt{synthesis/} files used here were verified against their Git blob
+identities. The three relevant archives in \texttt{docs/incoming/} were
+also verified byte-for-byte against the repository's recorded blobs:
+the dual-certificates report, the support-sensitive-certificates report,
+and the geometric-transport report, all dated 9 October 2026
+\cite{priorDual,priorSupport,priorTransport}. They are prior work, not new
+deliverables of this continuation.
+
+The dual report introduced independently replayable LP objective
+certificates and forced-type propagation. The support report sharpened
+component-incidence bounds and primitive ray certification. The transport
+report established the exact five-height Pachner score, coherent cocycle
+transport, and the thirteen-record lemma for a \emph{fixed} scoring pass.
+It explicitly left that last lemma unimplemented and warned that a short
+prefix must be replenished after repeated deletions. The present dynamic
+construction supplies that missing maintenance mechanism and connects it
+to simultaneous geometric replacements.
+
+The package contains a pinned supporting snapshot, a small overlay for
+the new modules, an integration patch, exact proof fixtures, retained
+measurements, and reproduction scripts. It is prepared for review and
+integration; no remote repository modification is part of this task.
+
+\subsection{The literature does not remove the global gap}
+
+Lackenby's technical announcement describes a hierarchy strategy with a
+quasipolynomial running-time target \cite{LackenbyTalk}. The particular
+Oxford handout gives $2^{O((\log n)^3)}$, which is
+$n^{O((\log n)^2)}$. This should not be silently replaced by the sharper
+$n^{O(\log n)}$ expression sometimes quoted in public descriptions.
+Both are quasipolynomial, but the exponent matters in a rigorous cost
+ledger.
+
+The July 2026 preprint gives a substantial hierarchy-based recognition
+algorithm and new certificate results \cite{Lackenby2026}. Its discussion
+of running time explicitly leaves algorithmic precision and speed-up
+for further work. Proposition~10.2 bounds the length of a partial
+hierarchy by a linear function of quadrilateral handle complexity; it
+does not establish the missing polylogarithmic effective-depth statement
+for the code developed here.
+
+The normal-coordinate part also has important established precedents.
+Burton--Ozlen's tree traversal uses LP feasibility and greedy support
+minimization to obtain a connected positive-Euler surface
+\cite{BurtonOzlen}. Burton's admissible-face theory identifies compatibility
+with the geometry of nonnegative normal cones \cite{BurtonFaces}. The new
+support certificate must be understood against those results. We neither
+claim that LP support reduction is new nor infer a polynomial recognition
+algorithm from the polynomial solvability of a single LP.

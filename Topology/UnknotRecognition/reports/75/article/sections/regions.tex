@@ -1,0 +1,199 @@
+\section{Locality replaces the full tetrahedron count}\label{sec:regions}
+
+The uniform commitment bound still has an exponent linear in $t$, even when
+only a small part of a triangulation participates in a useful sequence. The
+next result charges the exponent to the \emph{initial} region that the trace
+is allowed to consume. Newly created tetrahedra are included automatically
+in the incarnation accounting.
+
+\begin{definition}[Allowed initial region]
+Let $G_T$ be the simple graph on the original tetrahedra, with adjacency when
+they share a paired face. An allowed initial region is a set
+$F\subseteq V(G_T)$. A trace is supported in $F$ if no original tetrahedron
+outside $F$ is consumed. It may consume every subsequently created tetrahedron.
+For $r,c,U\ge0$, let $\Reach_{r,c,U}(T,h)$ be the union of bounded-upward
+families supported in regions $F$ with $|F|\le r$ and at most $c$ connected
+components in $G_T[F]$.
+\end{definition}
+
+We use effective integer caps $0\le r\le t$ and $0\le c\le r$;
+larger supplied caps can be reduced to these values without changing the
+family. The empty region is included, so zero caps still allow the source
+endpoint to be checked.
+
+The region is a \emph{cover} of the actual initial consumption footprint.
+Some members of $F$ may survive. An actual consumed set can have several
+components while lying inside one connected allowed region. This distinction
+matches the executable search and is useful when a small connecting corridor
+is included in the supplied region.
+
+\subsection{A supplied region}
+
+\begin{theorem}[Region-sensitive commitment bound]\label{thm:fixed-region}
+For a supplied region $F$ of size $i$, the family supported in $F$ with at
+most $U$ upward events has at most $11^{3i+5U}$ commuting trace classes.
+When $U=0$, the bound is $7^{3i}$. Both the commitment search and the sleep
+search exhaust this family with polynomial overhead per encoding or
+representative, apart from endpoint-predicate work.
+\end{theorem}
+\begin{proof}
+Give every original tetrahedron outside $F$ the forced symbol idle. Such
+tetrahedra are protected forever. After $u$ upward and $d$ downward events,
+at least $t-i$ original tetrahedra remain, so
+\[
+ t+u-d\ge t-i,\qquad d\le i+u.
+\]
+Only the $i$ initially eligible tetrahedra and all newly born tetrahedra need
+freely chosen commitments. Their number is
+\begin{equation}\label{eq:active-incarnations}
+ i+3u+2d\le3i+5u\le3i+5U.
+\end{equation}
+The proof of Theorem~\ref{thm:commitment} preserves the identities of consumed
+original tetrahedra under every interchange, so it remains valid with the
+protection restriction. The sleep-set proof also preserves this restriction.
+Every generated trace is supported in $F$, and every trace supported in $F$
+has its prescribed idle commitments on the protected originals.
+\end{proof}
+
+The number of events in such a trace is at most $i+2U$, even when the
+surrounding triangulation is much larger. The code checks the two inequalities
+in this proof at every search frame. A bad bookkeeping update therefore
+cannot silently invalidate the claimed measure.
+
+\subsection{Counting and enumerating regions}
+
+The maximum number of distinct neighbours of a vertex of $G_T$ is four.
+Loops and repeated face adjacencies do not increase this bound.
+
+\begin{lemma}[Counting connected regions]\label{lem:connected-count}
+In a graph with $t\ge1$ vertices and maximum degree at most four, the number
+of connected $i$-vertex subsets is at most $t16^{i-1}$ for $i\ge1$.
+The number of subsets of size at most $r$ with at most $c$ connected
+components, including the empty set, is at most
+\begin{equation}\label{eq:region-count}
+ (r+1)(c+1)t^c32^r.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Root a connected set at its least-labelled vertex. Choose a deterministic
+spanning tree of the induced graph and traverse its edges depth first,
+each twice. Record the root and the chosen local neighbour port at each
+of the $2(i-1)$ steps. There are at most four choices at each step. The
+walk reconstructs the visited vertex set, so the encoding is injective
+on the connected sets selected by the deterministic rule. This proves
+$t4^{2(i-1)}$.
+
+For a set of size $i$ with $j\ge1$ components, order the components by their
+least vertex. Encode their $j$ roots, their positive sizes summing to $i$,
+and their walks. This gives the upper bound
+\[
+ t^j\binom{i-1}{j-1}16^{i-j}\le t^j32^i.
+\]
+Summing over $1\le i\le r$ and $1\le j\le\min(c,i)$, then adding the empty
+set, proves the intentionally coarse uniform bound
+\eqref{eq:region-count}. It also holds for $r=0$ or $c=0$.
+\end{proof}
+
+Counting alone would not give a useful algorithm if finding those regions
+required enumerating all $t^r$ subsets. The artifact uses the following
+explicit reverse search.
+
+\begin{lemma}[Canonical parent and complete reverse search]\label{lem:reverse}
+For a connected set $A$ with root $\rho=\min A$ and $|A|>1$, delete the
+largest $x\in A\setminus\{\rho\}$ for which $G_T[A\setminus\{x\}]$ stays
+connected. This defines a unique parent. Starting from every singleton,
+and accepting an added frontier vertex precisely when this rule returns
+the current set as parent, enumerates each connected region once, with
+polynomial overhead in its size.
+\end{lemma}
+\begin{proof}
+A spanning tree of $G_T[A]$ has a leaf other than $\rho$. Deleting that leaf
+leaves a spanning tree on the other vertices, hence preserves connectivity
+of the induced graph. At least one eligible deletion therefore exists.
+The largest-label rule makes it unique. Iterating the parent decreases
+size and preserves the root, eventually reaching $\{\rho\}$.
+
+Any child of $A$ adds a vertex adjacent to $A$: otherwise it is not connected.
+The algorithm therefore considers it among the frontier vertices and accepts
+it at its unique parent. It cannot be accepted at another parent. There are
+at most $4|A|$ distinct frontier candidates; each parent computation needs
+at most $|A|$ connectivity tests on at most $|A|+1$ vertices. This is
+polynomial overhead, with no enumeration of vertex-addition permutations.
+\end{proof}
+
+For several components, the code selects connected pieces in increasing
+order of their least vertex. After choosing a component, it excludes its
+closed neighbourhood from later components. The pieces are consequently
+the actual components of the permitted region. Every allowed region has
+exactly one such ordered decomposition. The same reverse-search argument
+works in the remaining induced graph. An explicit stack avoids a recursion
+limit tied to the number of vertices.
+
+\subsection{The constructive locality theorem}
+
+\begin{theorem}[Complete local reachability]\label{thm:local}
+Let $(T,h)$ be a valid source with $t\ge1$ tetrahedra and initial cocycle
+bit bound $B$. Suppose a chosen endpoint predicate is invariant under the
+tracked marked isomorphisms and has polynomial bit complexity. Then
+$\Reach_{r,c,U}(T,h)$ can be searched exhaustively in
+\begin{equation}\label{eq:local-bound}
+ t^c2^{O(r+U)}\poly(t+U+B)
+\end{equation}
+bit operations. A precise sufficient counting factor is
+\[
+ (r+1)(c+1)t^c32^r11^{3r+5U}.
+\]
+Every successful endpoint is geometrically replayable from the supplied
+source. If the endpoint predicate has a different worst-case cost, that
+cost must be included as an additional factor.
+\end{theorem}
+\begin{proof}
+Enumerate the regions by Lemma~\ref{lem:reverse} and its component extension.
+For each region use Theorem~\ref{thm:fixed-region}. The union is exactly the
+defined family: membership requires containment in at least one such region.
+Repeated endpoints across different regions do not affect correctness or
+the upper bound. Lemma~\ref{lem:connected-count} bounds the number of regions.
+The polynomial marking and geometric costs are established in
+Section~\ref{sec:verification}. Multiplying these factors proves the claim.
+\end{proof}
+
+\begin{corollary}[Polynomial and quasi-polynomial classes]\label{cor:quasi}
+For one connected allowed region, $r+U=O(\log t)$ gives a polynomial search
+bound, and $r+U=O(\log^2 t)$ gives $t^{O(\log t)}\poly(B)$.
+More generally, $c=O(\log t)$ together with $r+U=O(\log^2 t)$ gives the
+latter quasi-polynomial bound.
+\end{corollary}
+\begin{proof}
+Take logarithms of the non-polynomial factor in
+\eqref{eq:local-bound}: it is $O(c\log t+r+U)$. Substitute the stated
+conditions. The fixed polynomial factors do not change these classifications.
+\end{proof}
+
+This improves what a direct move-string analysis provides for the same
+locality conditions. A trace has at most $r+2U$ events but can choose among
+$O(t+U)$ locations at each event. That direct bound pays
+$O((r+U)\log(t+U))$ in the exponent. The region theorem pays
+$O(c\log t+r+U)$, isolating the cost of choosing the spatial components.
+The improvement concerns the explicit search model, not a lower bound on
+every alternative way to recognize knots.
+
+\subsection{A precise remaining global obligation}
+
+Suppose an outer, source-certified algorithm makes $Q(n)$ calls of this
+kind on sources with parameters $t_i,B_i,r_i,c_i,U_i$. Its accumulated cost
+is bounded by the sum of the individual costs, plus its other work:
+\begin{equation}\label{eq:outer-sum}
+ \sum_{i=1}^{Q(n)}t_i^{c_i}2^{O(r_i+U_i)}\poly(t_i+U_i+B_i).
+\end{equation}
+Thus polynomially bounded source sizes and markings, a quasi-polynomial
+number of outer calls, and the bounds in Corollary~\ref{cor:quasi} would
+yield a quasi-polynomial total. This is a sufficient accounting statement.
+It does not prove completeness of such an outer algorithm or bound its
+restarts. In particular, the existence of a short successful trace for an
+unknot alone says nothing about how a negative instance is decided.
+
+The outstanding geometric target is now concrete: establish a useful
+small-region coverage theorem for a specified source construction and
+surface family, including its behavior after certified reductions. The
+existing coherent-height obstruction shows that coverage cannot be asserted
+without allowing changes of triangulation or a richer surface representation.

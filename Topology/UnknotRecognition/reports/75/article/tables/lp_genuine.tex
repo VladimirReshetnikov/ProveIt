@@ -1,0 +1,27 @@
+\begin{table}[tbp]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\caption{Exact LP screening on genuine triangulations. Each paired entry is baseline/screened; times are seconds.}
+\label{tab:lp-genuine}
+\begin{tabular}{@{}lrrrrl@{}}
+\toprule
+Source & LP calls & Pivots & Median seconds & Ratio & Result\\
+\midrule
+Layered, 1 tet. & 3/3 & 7/7 & 0.001/0.001 & 0.927 & +\\
+Layered, 2 tet. & 7/6 & 59/50 & 0.018/0.016 & 1.171 & +\\
+Layered, 4 tet. & 15/10 & 354/264 & 0.356/0.267 & 1.332 & +\\
+Layered, 6 tet. & 23/14 & 1,073/784 & 2.105/1.559 & 1.350 & +\\
+Layered, 8 tet. & 31/18 & 2,620/1,948 & 9.682/8.151 & 1.188 & +\\
+Branching torus & 41/22 & 1,134/648 & 1.684/0.908 & 1.855 & +\\
+Finite trefoil & 20/20 & 1,554/1,554 & 2.397/2.445 & 0.981 & 0\\
+Figure-eight, frozen & 2/2 & 600/600 & 3.872/4.054 & 0.955 & cap\\
+Figure-eight, relabelled & 2/2 & 600/600 & 3.976/3.995 & 0.995 & cap\\
+Figure-eight, native & 1/1 & 600/600 & 4.358/4.121 & 1.057 & cap\\
+\bottomrule
+\end{tabular}
+\par\smallskip
+\begin{minipage}{0.97\textwidth}
+\footnotesize $+$: completed positive-Euler query; $0$: completed negative positive-Euler query; cap: inconclusive at 600 pivots. Three alternating-order pairs per case; ratio of arm medians. The result concerns the stated surface query, not an unauthenticated knot-diagram verdict.
+\end{minipage}
+\end{table}

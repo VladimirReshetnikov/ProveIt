@@ -17,19 +17,25 @@ from .topology_spectrum import recover_topology_spectrum, scale_core_spectrum
 
 def normal_topology_spectrum(triangulation, coordinates, *, reduce_core=True,
                              max_cycles=None, periodic_rule='fine_wilf',
-                             check=lambda: None, record_certificate=False):
+                             check=lambda: None, record_certificate=False,
+                             coorientation=True):
     """Compute every connected topological type with two orbit-weight entries.
 
-    One shared cycle allowance covers the boundary, surface and double-surface
+    One shared cycle allowance covers the boundary, surface and any double-surface
     orbit discoveries. Validation, weight replay and certificate verification
     are controlled by the cooperative callback instead of that cycle counter.
     A depleted allowance emits no spectrum, summary, or certificate.
 
     ``reduce_core`` peels vertex links and divides by quadrilateral content.
     Recovery treats one-sided components through paired orientation covers.
+    A checked block-constant coorientation can derive the entire double
+    histogram from the base histogram, avoiding its second weighted query.
+    Failure of that sufficient test retains the complete double query.
     """
     if type(reduce_core) is not bool or type(record_certificate) is not bool:
         raise ValueError('reduce_core and record_certificate must be bool')
+    if type(coorientation) is not bool:
+        raise ValueError('coorientation must be bool')
     if max_cycles is not None and (type(max_cycles) is not int or max_cycles < 0):
         raise ValueError('max_cycles must be a nonnegative integer or None')
     if periodic_rule not in ('fine_wilf', 'aht'):
@@ -58,6 +64,7 @@ def normal_topology_spectrum(triangulation, coordinates, *, reduce_core=True,
                     stage=stage, reduced_core=reduce_core, stats=stats)
 
     query_proof = None
+    trivialization = None
     if reduce_core and not divisor:
         core_rows = []
     else:
@@ -77,6 +84,17 @@ def normal_topology_spectrum(triangulation, coordinates, *, reduce_core=True,
         histograms, proofs = [], []
         for scale in (1, 2):
             check()
+            if scale == 2 and trivialization is not None:
+                histogram = []
+                for row in histograms[0]:
+                    check()
+                    histogram.append(dict(weight=row['weight'].copy(), orbits=2*row['orbits']))
+                histograms.append(histogram)
+                stats['double'] = dict(orbit_cycles=0, derived_coorientation=True)
+                if record_certificate:
+                    proofs.append(dict(schema='normal-topology-double-coorientation-v1',
+                        dimension=2, coorientation=trivialization, histogram=histogram))
+                continue
             system = topology_weight_system(prepared, query, marks, scale=scale, check=check)
             result = weighted_orbit_histogram(system['size'], system['pairings'],
                 system['weights'], dimension=2, max_cycles=remaining(),
@@ -90,6 +108,15 @@ def normal_topology_spectrum(triangulation, coordinates, *, reduce_core=True,
             histograms.append(result['histogram'])
             if record_certificate:
                 proofs.append(result['certificate'])
+            if scale == 1 and coorientation:
+                from .normal_coorientation import _coorientation_graph
+                from .normal_surface_parity import _parity_certificate, _verify_parity
+                graph = _coorientation_graph(query, system['pairings'], check)
+                candidate = _parity_certificate(graph, check)
+                if not candidate['nonzero']:
+                    if not _verify_parity(graph, candidate, check):
+                        raise ArithmeticError('coorientation failed independent parity replay')
+                    trivialization = candidate
         core_rows = recover_topology_spectrum(*histograms, check=check)
         if record_certificate:
             query_proof = dict(boundary_transversal=transversal['certificate'],
@@ -107,7 +134,8 @@ def normal_topology_spectrum(triangulation, coordinates, *, reduce_core=True,
         trust='homeomorphism types of components of this supplied normal vector; '
               'boundary essentiality and knot-diagram provenance are separate')
     if record_certificate:
-        result['certificate'] = dict(schema='normal-topology-spectrum-v1',
+        result['certificate'] = dict(schema='normal-topology-spectrum-v2' if trivialization is not None
+                                            else 'normal-topology-spectrum-v1',
             input_sha256=source_digest, reduced_core=reduce_core,
             coordinate_divisor=divisor, vertex_links=links,
             core_coordinates=core, query=query_proof, summary=summary)
@@ -129,6 +157,8 @@ def _main():
     census.add_argument('input', help='JSON with triangulation and coordinates')
     census.add_argument('--direct', action='store_true', help='disable coordinate core reduction')
     census.add_argument('--certificate', action='store_true')
+    census.add_argument('--no-coorientation', action='store_true',
+                        help='always discover the weighted normal double')
     census.add_argument('--max-cycles', type=int)
     census.add_argument('--timeout', type=float)
     census.add_argument('--periodic-rule', choices=('fine_wilf', 'aht'), default='fine_wilf')
@@ -153,7 +183,8 @@ def _main():
             answer = normal_topology_spectrum(source['triangulation'], source['coordinates'],
                 reduce_core=not args.direct, max_cycles=args.max_cycles,
                 periodic_rule=args.periodic_rule, check=check,
-                record_certificate=args.certificate)
+                record_certificate=args.certificate,
+                coorientation=not args.no_coorientation)
         else:
             from .normal_topology_verify import verify_normal_topology_spectrum
             proof = json.loads(Path(args.certificate).read_text())

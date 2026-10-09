@@ -1,0 +1,184 @@
+\section{Reproduction, provenance and integration}\label{sec:reproduction}
+
+\subsection{Archive organization}
+
+The ZIP is designed to be both a readable research record and an additive
+integration proposal. Its root directory contains the report sources and
+compiled PDF, a runnable source snapshot, raw evidence and an integration
+tool. The file manifest records byte lengths and SHA-256 digests. The
+integration manifest additionally identifies which additions come from the
+earlier incoming packages and which are introduced by this continuation.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+Location & Contents\\
+\midrule
+\path{article/} & Main TeX, section sources, bibliography, generated tables, figure PDF/PNG and compiled article\\
+\path{repro/fast/} & Pinned fast tree plus dependency additions and the five new runtime modules; tests and research drivers\\
+\path{repro/reports/}, \path{repro/synthesis/} & Exact historical reference modules and fixtures needed by inherited tests\\
+\path{integration/} & Dependency and new-work overlays, code-review patch, preflight/apply tool and origin manifest\\
+\path{provenance/} & Pinned source digests, incoming archive digests, integration audit and complete regression logs\\
+\path{scripts/} & Evidence-table/figure regeneration and package integrity verification\\
+\path{README.md} & Entry points, dependency notes, theorem scope and reproduction commands\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The source snapshot avoids a dependency on the current GitHub main branch.
+The external mathematical literature is cited by stable versions or precise
+document URLs. Full third-party papers are not copied into the archive.
+The three prior incoming archives remain identified by their repository
+paths and immutable Git objects; the executable additions needed from them
+are included directly.
+
+\subsection{Run the new focused tests}
+
+The new runtime code uses the Python standard library. The optional topology
+cross-check uses Regina. Plot regeneration additionally uses Matplotlib;
+building the report uses a normal \LaTeX{} installation with the listed
+packages. Python 3.12.14 and Regina 7.4 describe the recorded execution, not
+a promise that every other version gives identical timings or simplex
+implementation behavior after source changes.
+
+From \path{repro/fast/}:
+
+\begin{lstlisting}
+python -m unittest \
+  tests.test_pachner_commitments \
+  tests.test_pachner_regions \
+  tests.test_normal_pachner_search \
+  tests.test_normal_propagation_cached -v
+\end{lstlisting}
+
+These four modules contain 29 new tests. The inherited test suite is much
+larger and includes historical reference imports outside \path{fast/};
+the supplied companion directories preserve those relative paths.
+
+\subsection{Replay saved evidence before rerunning timings}
+
+The following commands independently replay the saved geometric and
+source-bound evidence. They do not rerun the expensive benchmark search.
+
+\begin{lstlisting}
+python -m commitment_research.run replay \
+  --input commitment_research/results/audit.json \
+  --output commitment_research/results/reproduced_audit_replay.json
+python -m commitment_research.run replay \
+  --input commitment_research/results/benchmark.json \
+  --output commitment_research/results/reproduced_benchmark_replay.json
+python -m region_research.audit \
+  --replay region_research/results/audit.json \
+  --output region_research/results/reproduced_replay.json
+\end{lstlisting}
+
+The LP evidence has a separate verifier-only command:
+
+\begin{lstlisting}
+python -m lp_cache_research.replay \
+  --output lp_cache_research/reproduced_replay.json
+\end{lstlisting}
+
+It independently checks all seven distinct completed genuine certificates,
+42 paired-sample certificate-digest references and ten genuine source
+digests. It reconciles all fifteen summary rows, but excludes the three
+inconclusive genuine cases and five algebraic certificates from geometric
+certificate replay. No search, LP solver or native constructor is imported.
+The focused cache test suite repeats the positive, negative and policy
+controls. The algebraic harness intentionally substitutes model construction
+and final analysis; its certificates must not be passed off as geometric
+normal-surface certificates.
+
+To reconstruct the finite audits and paired measurements:
+
+\begin{lstlisting}
+python -m commitment_research.run audit \
+  --output commitment_research/results/reproduced_audit.json
+python -m commitment_research.run benchmark --repeats 3 \
+  --output commitment_research/results/reproduced_benchmark.json
+python -m region_research.audit \
+  --output region_research/results/reproduced_audit.json
+python -m lp_cache_research.audit --rounds 3 --timeout 35 \
+  --figure-pivots 600 --output lp_cache_research/reproduced_results.json
+\end{lstlisting}
+
+The optional external move inventory check is documented in
+\path{commitment_research/README.md}. It requires Regina and compares
+exact source and target triangulations. Replaying a saved file and
+regenerating a constructor-dependent fixture are different tasks, and the
+drivers retain that distinction.
+
+\subsection{The complete regression gate}
+
+The final gate covers the complete inventory of test modules under the
+combined fast tree. It uses six fresh Python processes with each module
+assigned exactly once; the machine-readable record lists module and test
+identities, source digests, counts, statuses and per-batch logs. This avoids
+depending on a single long-lived process for a suite with many historical
+and optional native-library tests.
+
+\input{tables/regression_gate}
+
+The preliminary history is retained. An initial single-process discovery
+run encountered omitted historical companion files and later ended without
+a normal unittest summary. Those files were restored byte-for-byte from
+the pinned revision. A focused retry of the affected modules passed.
+During the complete inventory run, one newly added optional test incorrectly
+required a freshly simplified Regina figure-eight exterior to equal a
+particular frozen triangulation. The test was corrected to validate each
+source against its own construction or saved record. The affected batch
+was then rerun; its initial failure and corrected source digest remain in
+the provenance. The producer, baseline LP engine and benchmarks were not
+changed to resolve that test assumption.
+
+The passing gate is therefore a claim about a precise final source snapshot,
+not a claim that every preliminary run passed. Source hashes also make
+clear which post-measurement edits only improved documentation.
+The portable \path{scripts/rerun_regression.py} lists the exact partition by
+default and repeats it with \code{--run}, writing fresh logs without replacing
+the recorded evidence.
+
+\subsection{Apply the proposed additions}
+
+The integration tool preflights every target path and baseline prerequisite
+before creating any files. It accepts an existing addition only when its
+bytes are identical, refuses conflicting content and performs no replacement
+of a maintained file. It defaults to a review operation; the explicit apply
+option creates the missing additions. From the archive root:
+
+\begin{lstlisting}
+python integration/apply_overlay.py --repo /path/to/ProveIt --check
+python integration/apply_overlay.py --repo /path/to/ProveIt --apply
+\end{lstlisting}
+
+The pinned-revision check and the prerequisite digests prevent an apparently
+successful integration against incompatible source APIs. A later repository
+revision should be reviewed explicitly, rather than patched by relaxing a
+digest mismatch. The full overlay includes reproducibility material;
+the code-review patch is a convenient view of Python changes, not a substitute
+for the dependency and evidence layers.
+
+The packaging audit applies the additions to a clean local copy of the
+pinned fast source, checks all resulting file hashes, confirms that no
+maintained source bytes changed, and checks a second application for
+idempotence. It does not publish or push anything to GitHub.
+
+\subsection{Rebuild and verify the report}
+
+From the archive root, first verify the shipped bytes, then regenerate
+the tables and figure from the saved measurements and compile:
+
+\begin{lstlisting}
+python scripts/verify_manifest.py
+python scripts/build_evidence.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error \
+  -cd article/article.tex
+\end{lstlisting}
+
+The shipped PDF was compiled with resolved citations and references, then
+rendered page by page for visual inspection. The generated plots use the
+recorded integer operation counts and clearly distinguish genuine
+triangulations from the algebraic control. Recompilation can change PDF
+metadata or engine-dependent byte layout; the integrity manifest authenticates
+the shipped bytes, not every future rebuild of equivalent content.

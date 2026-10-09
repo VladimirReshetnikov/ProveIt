@@ -5733,6 +5733,19 @@ the decomposition with these named constants, but not `Theorem162At 3`.
          `ξ₀ − ξ₁ = ξ₂ − ξ₃`. Still to do: the per-triple splitting into
          span balls, θ's values growing the index sets, and the
          iteration.
+         The splitting toolkit is done (`Proofs16SpanBallSplit`).
+         `mem_spanBall_iff` describes `spanBall Γ R` by plain coefficient
+         functions `n : G → ℤ`.
+         `boundedFrequencySpan_subset_spanBall` converts Theorem 27's
+         centered bounded span over `K` into `spanBall K R`, via
+         `valMinAbs`. `spanBall_union_split` splits
+         `spanBall (Γ₁ ∪ Γ₂) R ⊆ spanBall Γ₁ R + spanBall Γ₂ R`. So an
+         escaping `ξ ∈ ⟨K⟩ ∩ ⟨L⟩` with `K = Γ_{x+a} ∪ Γ_x` and
+         `L = Γ_{y+a} ∪ Γ_y` gives `ξ = ξ₀ + ξ₁′ = ξ₂ + ξ₃′`, each piece in
+         its own span ball. Negating the second and fourth pieces
+         (`neg_mem_spanBall`) and raising both radii to a common `R`
+         (`spanBall_mono`) gives `escape_split`, which is exactly
+         `claim_9_4_core`'s per-triple decomposition `ξ₀ − ξ₁ = ξ₂ − ξ₃`.
        - **Termination.** Each round raises some `|I_{x,y}|` on a dense set
          of pairs, and the size is capped at `s₀`. So the iteration stops
          after polynomially many rounds.

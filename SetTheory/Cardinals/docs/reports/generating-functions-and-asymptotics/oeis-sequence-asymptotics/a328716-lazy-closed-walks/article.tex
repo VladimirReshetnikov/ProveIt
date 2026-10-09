@@ -990,7 +990,19 @@ as amplitude. Each leading term is therefore the count times
 $1+O_K(1/D)$, so the two agree to relative $O(1/D)$; at $N=D=40,41,100,101$
 and $u=1$ the write's evaluation gives Part~II's over Part~I's minus one
 $=-1.86\cdot10^{-3}$, $-3.65\cdot10^{-4}$, $-7.57\cdot10^{-4}$,
-$-1.86\cdot10^{-4}$. Neither theorem contains the other: Part~II has no
+$-1.86\cdot10^{-4}$. \textup{(Corrected by the independent check of
+9~October 2026: these four values compare Part~II's $L_n$ with Part~I's
+diagonal leading term $C_\epsilon(dn)^n$ of~\eqref{lcw:eq:main}, which is
+Theorem~\ref{lcw:thm:ratio}'s leading term only after Stirling's expansion
+of $N!$ (the paragraph after its proof). With $N!$ retained exactly, as
+in~\eqref{lcw:eq:ratio}, the four values are $-3.94\cdot10^{-3}$,
+$-2.39\cdot10^{-3}$, $-1.59\cdot10^{-3}$, $-1.01\cdot10^{-3}$; the two
+Part~I forms differ by $N!/(\sqrt{2\pi N}(N/e)^N)=1+1/(12N)+O(N^{-2})$.
+Against the exact $a_n$ (A328716), $a_n/L_n-1=-3.60\cdot10^{-3}$,
+$-3.61\cdot10^{-3}$, $-1.44\cdot10^{-3}$, $-1.44\cdot10^{-3}$, and $a_n$ over
+the leading term of~\eqref{lcw:eq:ratio} minus one is $-7.52\cdot10^{-3}$,
+$-6.00\cdot10^{-3}$, $-3.02\cdot10^{-3}$, $-2.45\cdot10^{-3}$. The relative
+$O(1/D)$ agreement is unaffected.)} Neither theorem contains the other: Part~II has no
 complex marker, no absolute remainder at the zeros of $E_\epsilon(ru)$
 (Remark~\ref{lcw:rem:zeros}) and no zero-step law in this range; Part~I has
 no uniformity in $\rho$ or in anisotropic activities. \emph{At fixed $D\ge1$},
@@ -1191,7 +1203,12 @@ range $m^2/D=O(1)$ (Theorem~\ref{lcw:ulb:sp:thm:law}). Open: those laws when
 $N/D\to\infty$ with $D\to\infty$, and when $N/D\to0$ with $N^2/D\to\infty$
 (Part~II's own questions in
 Sections~\ref{lcw:ulb:sec:outlook}.4 and~\ref{lcw:ulb:sec:outlook}.6 are
-related). \emph{Question~3}: advanced only in that sparse range, where the
+related). \textup{(Precision added by the independent check of 9~October
+2026, which applies equally to the table of
+Section~\ref{lcw:ulb:sec:answers}: the laws are not treated at fixed $D$
+either. For $N\to\infty$ with $D$ fixed, neither Part proves a law of the
+zero steps or of the occupied axes; Remark~\ref{lcw:rem:rows} and
+Theorem~\ref{lcw:ulb:thm:dense-gaussian}(i) concern the counts only.)} \emph{Question~3}: advanced only in that sparse range, where the
 occupied axes are not Gaussian: a joint discrete law of zero steps and
 repeated axes with error $O(1/m)$ in exponentially weighted $\ell^1$, and the
 occupied-axis deficit $m-K_{\rm occ}$ in total variation; the local theorem
@@ -3614,7 +3631,76 @@ Section~\ref{lcw:sec:further}). On Section~\ref{lcw:ulb:sec:outlook}.8: no
 Lean or Rocq declaration exists for any statement of this report. On
 Section~\ref{lcw:ulb:sec:outlook}.9: Felker and Lyons's rigorous bounds use
 the inequality only in dimensions $3$ to $6$ (note at the end of
-Section~\ref{lcw:ulb:sec:lyons-counterexample}).
+Section~\ref{lcw:ulb:sec:lyons-counterexample}). \textup{(Precision added
+by the independent check of 9~October 2026: their rigorous bounds for
+$h_3,\dots,h_6$ do; their bounds for the body-centred constants
+$h_3^{\rm bcc}$, $h_4^{\rm bcc}$ use (2.3) for a lower bound too, in
+dimension~$1$ (the bcc return probability is $p_1(k)^d$), where it is
+proved. The 2012 erratum \cite{felkererratum}, read by the check, corrects
+their formula (2.4) for these constants to $p_1(2k)^d$ and states that the
+upper bounds of these two pairs are not correct (the constants lie above
+them); it concerns neither (2.3) nor the lower bounds.)}
+\end{writenote}
+\begin{writenote}[Independent check of the Part~II write, 9 October 2026]
+An adversarial check made by the intake after the second write (commit
+\file{3257a20bd}) re-derived the statements marked [write] in Part~II and the
+Part~II notes of Part~I with its own code. \emph{The counterexample}, checked
+the hardest. The closed walks of length~26 in $\Z^{16}$ were counted by a
+fourth route, a dynamic programme over the sorted vector of absolute
+coordinates (a valid lumping of the walk; no multinomial sum, power series or
+recurrence in the dimension), and by a fifth, binomial convolution in the
+dimension by doubling from $d=1$: both give
+$23{,}062{,}502{,}564{,}288{,}544{,}059{,}408{,}295{,}833{,}600$. Then
+$C_{13,16}$, $A$ (odd, the count over $2^{12}$), $p=A/2^{118}$, the
+reduction to $A\cdot4329^8>2^{143}53^8$ ($13\cdot333=4329$, $4\cdot106=8\cdot53$),
+the printed positive integer, the $4001/4000$ comparison, the Machin bound
+and every printed decimal (all truncations) agree; an interval evaluation of
+the ratio at 60 digits lies in $[1.00055938338287171766560,\,1.00055938338287171766561]$.
+The finite scan was redone with the check's own counts: the same violation
+runs for every $d\le40$, $n\le200$ (for instance $n=12,\dots,16$ at $d=17$,
+$n=19,\dots,86$ at $d=40$, largest ratio $1.32256\ldots$ at $n=28$), none for
+$d\le15$ up to $n=500$, only $n=13$ at $d=16$; no comparison undecided.
+\emph{The sources.} Both papers were fetched again from the cited URLs
+(byte-identical to the write's copies) and read at the cited places: the
+readings of Ball--Sterbenz (1.3) (for $n\ge0$), Proposition~1, Remark~1 and
+the checks for $d=3,\dots,6$, and of Felker--Lyons's belief and qualified
+display (2.3) on page~4, are exact. The 2012 erratum, not read by the write,
+was read: it concerns the body-centred formula (2.4) and two pairs of
+numerical bounds, as the manuscript says; the note at the end of
+Section~\ref{lcw:ulb:sec:outlook} above gets a precision on the bounds that
+use (2.3). \emph{Part~I's questions.} The re-scoping was re-derived against
+the theorems' hypotheses (Corollary~\ref{lcw:ulb:cor:explicit} applies to
+$a_n$ with $N=D=n$, $\lambda=1$, $m=\lfloor n/2\rfloor\ge1$; Theorem~\ref{lcw:ulb:sp:thm:law}
+needs only $\theta\le K$, $\beta\le B$; Theorem~\ref{lcw:ulb:thm:dense-gaussian}(i)
+at fixed $D$ gives Remark~\ref{lcw:rem:rows}'s formula). One precision, at
+the end of Section~\ref{lcw:sec:further}: the laws at fixed $D$ are not
+treated either. \emph{One correction}, at the end of
+Section~\ref{lcw:sec:ratio}: the four Part~I/Part~II comparisons use Part~I's
+Stirling-expanded leading term $C_\epsilon(dn)^n$, not the leading term
+of~\eqref{lcw:eq:ratio} with $N!$ exact. \emph{Numerics}, all with the
+check's own code: $E_1$, $E_2$ from~\eqref{lcw:ulb:eq:Es}; the anisotropic
+envelope example (largest error after $E_1+E_2$: $2.21\cdot10^{-5}$, within the
+stated $2.3\cdot10^{-5}$); all sixteen entries of
+Table~\ref{lcw:ulb:tab:verification-sparse} and the further sparse cases,
+from $[t^k]F^D=[t^k]\exp(D\log F)$ in exact rationals; $m\,\E U$; the exact
+$R/G$ at $D=100$ (by convolution in the dimension) and all 24 entries and
+three limits of Table~\ref{lcw:ulb:tab:verification-dense} by its own saddle
+code; with SymPy, \eqref{lcw:ulb:eq:dense-v-expansion},
+\eqref{lcw:ulb:eq:dense-rate-series}, the prefactor, both totals, $A(x)$,
+$B(x)$, and $\E A=-3D/16$, $\E B+\frac12\E A^2=D(32D^2-21D-8)/1536$ as
+polynomials in $D$ (exact Gaussian moments at $D=1,\dots,5$). A three-point
+Richardson extrapolation from exact counts at $N=400,800,1600$ gives
+$0.0019531250$, $0.1015625003$, $0.4238281467$ for the second coefficient at
+$D=1,2,3$, against $0.001953125$, $0.1015625$, $0.423828125$.
+\emph{Provenance}: archive size, SHA-256, 24 files, the 12 staged files
+byte-identical, 2{,}139 lines and 88{,}397 bytes, input order, author lines,
+the pin and its order relative to Part~I's write and check, the ledger
+counts (115 exact companions and 5 open at this check), reports 65 and 69,
+and the absence of Felker or Sterbenz before the placement confirmed.
+\emph{Numbering}: against builds of the delivered manuscript and of the text
+before this write, all 76 Part~I and 76 Part~II labels as stated; 161 labels.
+Apart from the correction and the two precisions, no defect was found in the
+write, and no claim of Part~II was found wrong.
 \end{writenote}
 
 \begin{thebibliography}{99}

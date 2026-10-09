@@ -1,0 +1,505 @@
+\chapter{Algebraic arguments, integrals and ladders}
+\label{ch:03-algebraic}
+
+Away from roots of unity, functional equations still move values onto
+structured sets of arguments. Vertical lines and half-angle substitutions give
+tractable examples; unit relations in number fields lead to longer ladders.
+The organizing principle is to understand the map of arguments before choosing
+the constants in an integer-relation search.
+
+\section{The problem and the key geometric fact}
+\href{https://math.stackexchange.com/q/1410276}{MSE 1410276} records
+\begin{equation}\label{vertical:eq:mse}
+  \Real\Li_2(1\pm\iu\sqrt3)=\frac{\pi^2}{24}-\tfrac12\ln^2 2-\tfrac14\Li_2(\tfrac14),
+\end{equation}
+with $\Imag\Li_2(1+\iu\sqrt3)=\tfrac{\pi\ln2}{2}+\tfrac{5\sqrt3}{72}\bigl[\psi_1(\tfrac13)-\psi_1(\tfrac23)\bigr]$
+(\href{https://math.stackexchange.com/a/1410829}{a/1410829}, \href{https://math.stackexchange.com/a/1410705}{a/1410705}).
+The point $1+\iu\sqrt3=2e^{\iu\pi/3}$, but the structurally decisive fact is that for any $z=1+\iu y$ the
+reflection point $1-z=-\iu y$ is \emph{purely imaginary}. This is exactly what makes the dilogarithm
+functional equations collapse.
+
+\section{The weight-2 vertical-line theorem}
+\begin{theorem}\label{vertical:thm:wt2}
+For $y>0$,
+\begin{align}
+  \Real\Li_2(1+\iu y)&=\frac{\pi^2}{6}-\tfrac12\ln(1{+}y^2)\ln y-\frac\pi2\arctan y-\tfrac14\Li_2(-y^2),
+  \label{vertical:eq:Re2}\\
+  \Imag\Li_2(1+\iu y)&=\frac\pi4\ln(1{+}y^2)-\arctan y\,\ln y+\Ti_2(y),\qquad \Ti_2(y)=\Imag\Li_2(\iu y).
+  \label{vertical:eq:Im2}
+\end{align}
+\end{theorem}
+\begin{proof}
+The reflection law $\Li_2(z)+\Li_2(1-z)=\zeta(2)-\ln z\ln(1-z)$ at $z=1+\iu y$, $1-z=-\iu y$, gives
+$\Li_2(1+\iu y)=\zeta(2)-\ln(1+\iu y)\ln(-\iu y)-\Li_2(-\iu y)$. The duplication law
+$\Li_2(\iu y)+\Li_2(-\iu y)=\tfrac12\Li_2(-y^2)$ together with $\overline{\Li_2(w)}=\Li_2(\bar w)$ yields
+$\Real\Li_2(-\iu y)=\tfrac12\bigl(\Li_2(\iu y)+\Li_2(-\iu y)\bigr)=\tfrac14\Li_2(-y^2)$ and
+$\Imag\Li_2(-\iu y)=-\Ti_2(y)$. Expanding $\ln(1+\iu y)=\tfrac12\ln(1{+}y^2)+\iu\arctan y$ and
+$\ln(-\iu y)=\ln y-\tfrac{\iu\pi}2$ and taking real and imaginary parts gives~\eqref{vertical:eq:Re2}--\eqref{vertical:eq:Im2}.
+\end{proof}
+On the line $\Real z=1$ the dilogarithm thus splits into a \emph{real} part carried by the even real
+dilogarithm $\Li_2(-y^2)$ and an \emph{imaginary} part carried by the odd inverse-tangent integral
+$\Ti_2(y)$. Equation~\eqref{vertical:eq:mse} is the case $y=\sqrt3$ (using
+$\Li_2(-3)=\Li_2(\tfrac14)-\zeta(2)+2\ln2\ln\tfrac23$), and the trigamma form of the imaginary part is just
+$\Ti_2(\sqrt3)=\tfrac{\pi}6\ln3+\tfrac{5\sqrt3}{72}[\psi_1(\tfrac13)-\psi_1(\tfrac23)]$ substituted
+into~\eqref{vertical:eq:Im2}.
+
+\section{The Clausen form at $y=\tan\theta$}
+Since $1+\iu\tan\theta=e^{\iu\theta}/\cos\theta$, Theorem~\ref{vertical:thm:wt2} combines with Ramanujan's
+$\Ti_2(\tan\theta)=\theta\ln\tan\theta+\tfrac12\bigl[\Cl_2(2\theta)+\Cl_2(\pi-2\theta)\bigr]$ so that the
+$\theta\ln\tan\theta$ terms cancel, leaving a pure-Clausen imaginary part:
+\begin{equation}\label{vertical:eq:clausen}
+  \Imag\Li_2(1+\iu\tan\theta)=-\frac\pi2\ln\cos\theta+\tfrac12\bigl[\Cl_2(2\theta)+\Cl_2(\pi-2\theta)\bigr].
+\end{equation}
+\begin{corollary}\label{vertical:cor:specials}
+$\Real\Li_2(1+\iu)=\dfrac{\pi^2}{16}$ and $\Imag\Li_2(1+\iu)=\dfrac{\pi\ln2}{4}+G$ (with $G$ Catalan's
+constant), from $y=1$ in Theorem~\ref{vertical:thm:wt2} (using $\Li_2(-1)=-\pi^2/12$, $\Ti_2(1)=G$).
+\end{corollary}
+
+\section{Weight 3: a half-lifted symmetry}
+At weight $3$ the real/imaginary split survives only in part. The \emph{real} part still closes at special
+$y$:
+\begin{equation}\label{vertical:eq:Re3}
+  \Real\Li_3(1+\iu)=\frac{35}{64}\zeta(3)+\frac{\pi^2\ln2}{32},\qquad
+  \Real\Li_3(1+\iu\sqrt3)=\frac{35\zeta(3)+18\Li_3(\tfrac14)+6\pi^2\ln2-24\ln^3 2}{144},
+\end{equation}
+the second being the exact weight-3 analogue of the $\Li_2(\tfrac14)$ in~\eqref{vertical:eq:mse}. But the general
+real part does \emph{not} close: differentiating, $\partial_y\Real\Li_3(1+\iu y)=-\bigl(\Imag\Li_2(1+\iu y)-y\,\Real\Li_2(1+\iu y)\bigr)/(1+y^2)$,
+and integrating the $\Ti_2$ contribution produces $\int_0^y\arctan^2(t)/t\,dt$, a weight-three inverse-tangent-square integral. The displayed special cases at $y=1,\sqrt3$ simplify, without giving an elementary-value classification for every rational angle. Meanwhile the \emph{imaginary} part is no longer elementary at all: it is the
+central-binomial Gaussian tower constant
+\begin{equation}\label{vertical:eq:Im3}
+  \Imag\Li_3(1+\iu)=\mathcal F_3-\frac{\pi^3}{192},\qquad
+  \mathcal F_3=\sqrt2\,{}_4F_3\bigl(\{\tfrac12\}^4;\{\tfrac32\}^3;\tfrac12\bigr),
+\end{equation}
+the $n=3$ entry of the $\Imag\Li_n(1+\iu)$ tower (companion report
+\texttt{gaussian-1plusi-tower}). So on $\Real z=1$ the imaginary part is precisely the deep object that
+the central-binomial ladder measures, while the real part remains tractable---the two halves of the
+polylogarithm part ways at weight $3$.
+\section{The integral and its provenance}
+The object (Math.StackExchange \href{https://math.stackexchange.com/q/564816}{question 564816}) is
+\begin{equation}\label{cleo:eq:I}
+  I=\int_0^{\pi/2}\arctan^2\!\left(\frac{6\sin x}{3+\cos2x}\right)dx=1.330970396842566666125327\ldots
+\end{equation}
+\href{https://math.stackexchange.com/a/570815}{Cleo} gave the dilogarithmic form
+\begin{multline}\label{cleo:eq:cleo}
+  I=\frac{\pi}{2}\Bigl(2\Li_2\bigl((1-\sqrt2)(2-\sqrt5)\bigr)-2\Li_2\bigl((1-\sqrt2)(\sqrt5-2)\bigr)\\
+  +\Li_2(3-\sqrt8)-\Li_2(\sqrt8-3)+\Li_2(9-\sqrt{80})-\Li_2(\sqrt{80}-9)\Bigr),
+\end{multline}
+while \href{https://math.stackexchange.com/a/571079}{Sangchul Lee} gave the Legendre-chi form
+\begin{equation}\label{cleo:eq:lee}
+  I=\pi\Bigl(\chitwo(3-2\sqrt2)+\chitwo(9-4\sqrt5)+2\chitwo\bigl((\sqrt2-1)(\sqrt5-2)\bigr)\Bigr),
+\end{equation}
+where $\chitwo(x)=\tfrac12\bigl(\Li_2(x)-\Li_2(-x)\bigr)=\sum_{k\ge0}\frac{x^{2k+1}}{(2k+1)^2}$. These are
+identical: $\Li_2(x)-\Li_2(-x)=2\chitwo(x)$ turns each $\Li_2$ pair in~\eqref{cleo:eq:cleo} into a $\chitwo$, and
+$3-\sqrt8=(\sqrt2-1)^2$, $9-\sqrt{80}=(\sqrt5-2)^2$, $(1-\sqrt2)(2-\sqrt5)=(\sqrt2-1)(\sqrt5-2)$, so both
+equal
+\begin{equation}\label{cleo:eq:canon}
+  I=\pi\Bigl[\chitwo\bigl((\sqrt2-1)^2\bigr)+\chitwo\bigl((\sqrt5-2)^2\bigr)
+  +2\,\chitwo\bigl((\sqrt2-1)(\sqrt5-2)\bigr)\Bigr].
+\end{equation}
+The arguments are a silver$\,\otimes\,$golden pair: $\sqrt2-1=\tan\frac\pi8=\dS^{-1}$ (reciprocal silver
+ratio $\dS=1+\sqrt2$) and $\sqrt5-2=\phi^{-3}$ (golden $\phi=\tfrac{1+\sqrt5}2$, $\phi^3=\sqrt5+2$), so
+$I=\pi[\chitwo(\dS^{-2})+\chitwo(\phi^{-6})+2\chitwo(\dS^{-1}\phi^{-3})]$.
+
+\section{The master formula (Reshetnikov--Lee) and a differentiation proof}
+The closed forms~\eqref{cleo:eq:cleo}--\eqref{cleo:eq:lee} are instances of a two-parameter master formula. Its
+seed is Reshetnikov's single-arctangent ladder
+$\int_0^{\pi/2}\arctan(t\sin x)\,dx=2\chitwo(u_t)$; inspired by it, Lee
+(\href{https://math.stackexchange.com/a/562492}{a/562492}, 2013) conjectured and proved
+\begin{theorem}[Lee 2013]\label{cleo:thm:master}
+For real $p,q$,
+\begin{equation}\label{cleo:eq:master}
+\begin{aligned}
+  J(p,q)&:=\int_0^{\pi/2}\arctan(p\sin x)\,\arctan(q\sin x)\,dx=\pi\,\chitwo\!\bigl(\up\uq\bigr),\\
+  &\qquad\text{where}\quad\up=\frac{\sqrt{1+p^2}-1}{p}=\tan\!\bigl(\tfrac12\arctan p\bigr).
+\end{aligned}
+\end{equation}
+\end{theorem}
+Lee gives two proofs (a triple integral and a Fourier-orthogonality argument). We record a short third
+proof by differentiation, which is the most direct route and is machine-verifiable.
+\begin{proof}
+Both sides vanish on the axes, and $\partial_pJ(p,0)=\partial_p[\pi\chitwo(\up u_0)]=0$ (since $u_0=0$),
+symmetrically in $q$; hence each side equals the double integral of its mixed partial over
+$[0,p]\times[0,q]$, and it suffices to match mixed partials. Differentiating under the integral and using
+the partial fraction $\frac{s^2}{(1+p^2s^2)(1+q^2s^2)}=\frac{1}{p^2-q^2}\bigl(\frac1{1+q^2s^2}-\frac1{1+p^2s^2}\bigr)$
+together with $\int_0^{\pi/2}\frac{dx}{1+c\sin^2x}=\frac{\pi}{2\sqrt{1+c}}$,
+\begin{equation}\label{cleo:eq:lhsmixed}
+  \partial_p\partial_q J=\frac{\pi}{2(p^2-q^2)}\Bigl(\frac{1}{\sqrt{1+q^2}}-\frac{1}{\sqrt{1+p^2}}\Bigr).
+\end{equation}
+On the right, $\chitwo'(w)=\arctanh(w)/w$ gives
+$\partial_p\partial_q[\pi\chitwo(\up\uq)]=\pi\,\up'\uq'/(1-\up^2\uq^2)$. The substitution
+$p=\frac{2\up}{1-\up^2}$ yields $\sqrt{1+p^2}=\frac{1+\up^2}{1-\up^2}$ and $\up'=\frac{(1-\up^2)^2}{2(1+\up^2)}$,
+whence both sides reduce to the same rational function
+$\frac{\pi(1-\up^2)^2(1-\uq^2)^2}{4(1+\up^2)(1+\uq^2)(1-\up^2\uq^2)}$. (Wolfram confirms this reconciliation
+symbolically: \texttt{FullSimplify} of the difference returns $0$.)
+\end{proof}
+
+\section{Cleo's integral as the perfect-square instance}\label{cleo:sec:square}
+The argument in~\eqref{cleo:eq:I} collapses to a sum of arctangents. With $\cos2x=1-2\sin^2x$,
+\[
+  \frac{6\sin x}{3+\cos2x}=\frac{3\sin x}{2-\sin^2x}=\frac{(1+\tfrac12)\sin x}{1-(1\cdot\tfrac12)\sin^2x},
+\]
+the tangent-addition shape with roots $1,\tfrac12$ of $t^2-\tfrac32t+\tfrac12$, so for $0\le x\le\frac\pi2$
+\begin{equation}\label{cleo:eq:collapse}
+  \arctan\!\left(\frac{6\sin x}{3+\cos2x}\right)=\arctan(\sin x)+\arctan(\tfrac12\sin x),
+\end{equation}
+so that $I=\int_0^{\pi/2}\bigl(\arctan(\sin x)+\arctan(\tfrac12\sin x)\bigr)^2 dx$.
+Applying Theorem~\ref{cleo:thm:master} to the expanded square, with $u_1=\sqrt2-1$, $u_{1/2}=\sqrt5-2$,
+reproduces~\eqref{cleo:eq:canon}. The coefficient pattern $1,2,1$ is a perfect square: writing $a=\sqrt2-1$,
+$b=\sqrt5-2$,
+\begin{equation}\label{cleo:eq:squareseries}
+  \frac{I}{\pi}=\sum_{k\ge0}\frac{\bigl((\sqrt2-1)^{2k+1}+(\sqrt5-2)^{2k+1}\bigr)^2}{(2k+1)^2}.
+\end{equation}
+The coefficients $a^{2k+1}+b^{2k+1}$ are the $\sin$-power Fourier coefficients of
+$\arctan(\sin x)+\arctan(\tfrac12\sin x)$; \eqref{cleo:eq:squareseries} is the Parseval form underlying Lee's
+Fourier proof.
+
+\section{Closed values and a bounded experimental survey}
+Three classical values supply useful exact specializations. With
+$\phi=(1+\sqrt5)/2$,
+\begin{equation}\label{cleo:eq:elem}
+\begin{aligned}
+\chi_2(\phi^{-1})&=\frac{\pi^2}{12}-\frac34\log^2\phi,\\
+\chi_2(\phi^{-3})&=\frac{\pi^2}{24}-\frac34\log^2\phi,\\
+\chi_2(\sqrt2-1)&=\frac{\pi^2}{16}-\frac14\log^2(1+\sqrt2).
+\end{aligned}
+\end{equation}
+The source surveyed inverse metallic means $m_n^{-k}$ with $1\le n,k\le6$,
+selected rational points, and $\tan(\pi/k)$ for $k=5,8,10,12$ and their
+squares. Searches at $130$--$140$ digits found no further accepted
+reduction in their selected logarithmic and $\pi^2$ baskets. This does not
+classify all elementary values. Nor would independence of the individual
+terms alone prove that their sum cannot simplify.
+
+\section{New closed-form integrals from elementary $\chitwo$}
+Conversely,~\eqref{cleo:eq:elem} feeds the master formula to produce integrals that \emph{do} close. The
+cleanest cross integral uses $u_2=\phi^{-1}$, $u_{2/\sqrt5}=\phi^{-2}$, so $u_2u_{2/\sqrt5}=\phi^{-3}$:
+\begin{equation}\label{cleo:eq:A}
+  \boxed{\;\int_0^{\pi/2}\arctan(2\sin x)\,\arctan\!\bigl(\tfrac2{\sqrt5}\sin x\bigr)\,dx
+  =\frac{\pi^3}{24}-\frac{3\pi}{4}\ln^2\phi\;}\qquad(=0.7463164407\ldots).
+\end{equation}
+The diagonal $\int_0^{\pi/2}\arctan^2(\lambda\sin x)\,dx=\pi\,\chitwo(u_\lambda^2)$ closes at three clean
+$\lambda$, since $u_{\sqrt\phi}^2=\phi^{-3}$, $u_{\sqrt{2+2\sqrt2}}^2=\sqrt2-1$, and $u_{2\phi^{3/2}}^2=\phi^{-1}$:
+\begin{equation}\label{cleo:eq:diag}
+  \int_0^{\pi/2}\!\arctan^2(\sqrt\phi\,\sin x)\,dx=\frac{\pi^3}{24}-\frac{3\pi}{4}\ln^2\phi,\quad
+  \int_0^{\pi/2}\!\arctan^2\!\bigl(2\phi^{3/2}\sin x\bigr)\,dx=\frac{\pi^3}{12}-\frac{3\pi}{4}\ln^2\phi.
+\end{equation}
+The simplest non-elementary diagonal is the $(1,1)$ case $\int_0^{\pi/2}\arctan^2(\sin x)\,dx=\pi\,\chitwo(3-2\sqrt2)$.
+
+\section{A sibling trichotomy}
+The master formula has two siblings under the companion half-angle substitution
+$\vp=\frac{1-\sqrt{1-p^2}}{p}=\tanh(\tfrac12\arctanh p)$ (for $|p|<1$). Replacing one or both
+arctangents by $\arctanh$ produces:
+\begin{equation}\label{cleo:eq:trich}
+  \int_0^{\pi/2}\!\!\begin{cases}\arctan(p\sin x)\,\arctan(q\sin x)\\[2pt]
+  \arctanh(p\sin x)\,\arctanh(q\sin x)\\[2pt]
+  \arctan(p\sin x)\,\arctanh(q\sin x)\end{cases}\!\!dx=
+  \begin{cases}\pi\,\chitwo(\up\uq),\\[2pt]\pi\,\chitwo(\vp\vq),\\[2pt]\pi\,\Ti_2(\up\vq),\end{cases}
+\end{equation}
+where $\Ti_2(z)=\Im\Li_2(\mathrm iz)=\int_0^z\frac{\arctan t}{t}\,dt$ is the inverse-tangent integral: like
+pairs give the Legendre chi, the mixed pair gives the inverse-tangent integral. The linear shadows are
+$\int_0^{\pi/2}\arctan(\lambda\sin x)\,dx=2\chitwo(u_\lambda)$ (Reshetnikov) and, with $\theta=\arcsin\lambda$,
+\begin{equation}\label{cleo:eq:lintanh}
+  \int_0^{\pi/2}\arctanh(\lambda\sin x)\,dx=\theta\,\ln\tan\tfrac\theta2+2\Cl_2(\theta)-\tfrac12\Cl_2(2\theta),
+\end{equation}
+the latter showing that the $\arctanh$ branch is \emph{not} a clean $2\chitwo(v_\lambda)$ mirror---that
+coincidence is special to $\arctan$. By $x\mapsto\frac\pi2-x$ the $\cos$ versions of all of these equal the
+$\sin$ versions. The weight-$3$ analogue $\int_0^{\pi/2}\arctan(p\sin x)\arctan(q\sin x)/\sin x\,dx$ does not factor by the same mechanism into a single $\chi_3$: its coefficient $\frac{4^N}{(2N+1)\binom{2N}{N}}$ couples the two
+summation indices only through $N=m+n$, so it does not factor through $\up\uq$ (numerically no clean
+$\chi_3$ relation appears up to height $10^8$).
+
+\section{An alternate form, and minimality}\label{cleo:sec:minimal}
+\paragraph{Landen-mirror form.} Applying the $\chitwo$ Landen law
+\begin{equation}\label{cleo:eq:landen}
+  \chitwo(x)+\chitwo\!\left(\frac{1-x}{1+x}\right)=\frac{\pi^2}{8}-\frac12\ln x\,\ln\frac{1-x}{1+x}
+  \qquad(0<x<1)
+\end{equation}
+to the three arguments of~\eqref{cleo:eq:canon} sends $(\sqrt2-1)^2\mapsto\tfrac1{\sqrt2}$,
+$(\sqrt2-1)(\sqrt5-2)\mapsto\sqrt5-\sqrt2$, $(\sqrt5-2)^2\mapsto\tfrac2{\sqrt5}$, giving a second three-term
+representation
+\begin{equation}\label{cleo:eq:mirror}
+  \frac{I}{\pi}=\mathcal E-\Bigl[\chitwo(\tfrac1{\sqrt2})+2\,\chitwo(\sqrt5-\sqrt2)+\chitwo(\tfrac2{\sqrt5})\Bigr],
+\end{equation}
+with the elementary constant
+$\mathcal E=\frac{\pi^2}{2}-\frac12\ln2\,\ln(1+\sqrt2)+3\ln2\,\ln\phi-\frac32\ln5\,\ln\phi
++\bigl(\ln(1+\sqrt2)+3\ln\phi\bigr)\ln(\sqrt5-\sqrt2)$.
+This representation trades the small original arguments for larger ones
+and explicit logarithms. It follows directly by applying the Landen law
+three times.
+
+\paragraph{Search for shorter forms.}
+The source tested $209$ algebraic arguments in
+$\mathbb Q(\sqrt2,\sqrt5,\sqrt{10})$ at at least $120$ digits, with
+residual threshold $10^{-105}$. It found no accepted one-term or two-term
+representation in the tested baskets. The three-term formula is an exact
+evaluation, while its minimality and non-elementarity remain unproved.
+
+\section{Unit relations and the golden family}
+With $\phi=\tfrac{1+\sqrt5}2$, $\rho=\phi^{-1}$, the defining relation $1-\rho^2=\rho$ is the seed of the
+golden ladders. Reshetnikov's conjectures live among the values $\Li_n(\phi^{-2k})$; all coefficients below were
+obtained or verified by PSLQ (\texttt{mpmath}, $130$--$420$ digits, Champernowne canary) and, where the
+cancellation depth allows, cross-checked in Wolfram.
+\begin{remark}
+These golden combinations cancel $\sim10^8$-sized terms down to zero across $100$+ digits. The historical Wolfram evaluation under-resolved some cancellations; independently controlled precision in mpmath supplied a comparator. Neither engine is an accuracy oracle. (Per-term polylogarithm values agree between the two engines.)
+\end{remark}
+
+\section{Reshetnikov's conjectures, verified}
+The tetralogarithm conjecture (\href{https://math.stackexchange.com/q/1373123}{MSE 1373123},
+\href{https://mathoverflow.net/q/261408}{MO 261408}) holds: with $\alpha=\ln2,\beta=\ln3$,
+\begin{multline}\label{golden:eq:tetra}
+  720\Li_4(\tfrac12)-2160\Li_4(\tfrac13)+2160\Li_4(\tfrac23)\\+270\Li_4(\tfrac14)+540\Li_4(\tfrac34)+135\Li_4(\tfrac19)\\
+  =19\pi^4+30(\pi^2-\beta^2)(10\alpha^2-12\alpha\beta+3\beta^2)-30\alpha^2(19\alpha^2-24\alpha\beta+8\beta^2),
+\end{multline}
+The source recovered this relation in its weight-four basket; uniqueness of all numerical relations is not established.
+The three $\Li_5$ golden conjectures also hold (verified to $\sim10^{-257}$):
+{\scriptsize
+\begin{align}
+  4455\Li_5(\phi^{-2})-1215\Li_5(\phi^{-4})-360\Li_5(\phi^{-6})+15\Li_5(\phi^{-12})
+  &=3015\zeta(5)-702\lp^5+180\pi^2\lp^3-38\pi^4\lp,\notag\\
+  45000\Li_5(\phi^{-2})-16875\Li_5(\phi^{-4})-144\Li_5(\phi^{-10})+9\Li_5(\phi^{-20})
+  &=28944\zeta(5)-6000\lp^5+1600\pi^2\lp^3-356\pi^4\lp,\notag\\
+  15660\Li_5(\phi^{-2})-19440\Li_5(\phi^{-4})+7680\Li_5(\phi^{-6})
+  &\notag\\[-2pt]
+  \quad+2430\Li_5(\phi^{-8})-15\Li_5(\phi^{-24})
+  &=5025\zeta(5)+2088\lp^5-240\pi^2\lp^3-28\pi^4\lp.\notag
+\end{align}}
+
+\section{Completing Tito's family: the unwritten weight-6 and weight-7 ladders}
+Tito's ``old answer'' lists the golden family at weights $2$--$5$ (all verified here), then states the weight-$6$
+and weight-$7$ ladders only schematically, the integer coefficients ``too tedious to write.'' We recover them by
+PSLQ. On the six-argument set $\{\phi^{-2},\phi^{-4},\phi^{-6},\phi^{-8},\phi^{-12},\phi^{-24}\}$:
+{\footnotesize
+\begin{align}
+\label{golden:eq:Li6}
+  &98820\Li_6(\phi^{-2})-104490\Li_6(\phi^{-4})+33120\Li_6(\phi^{-6})+7290\Li_6(\phi^{-8})-50\Li_6(\phi^{-12})-15\Li_6(\phi^{-24})\notag\\
+  &\qquad=-13032\lp^6+3240\pi^2\lp^4-424\pi^4\lp^2+\mathbf{32155}\,\zeta(6),\\
+\label{golden:eq:Li7}
+  &74707920\Li_7(\phi^{-2})-39497220\Li_7(\phi^{-4})+8346240\Li_7(\phi^{-6})+1377810\Li_7(\phi^{-8})-6300\Li_7(\phi^{-12})-945\Li_7(\phi^{-24})\notag\\
+  &\qquad=2814912\lp^7-979776\pi^2\lp^5+213696\pi^4\lp^3-51448\pi^6\lp+\mathbf{44689995}\,\zeta(7).
+\end{align}}
+The $\zeta(6)$ and $\zeta(7)$ coefficients reproduce Tito's stated $32155$ and $44689995$ \emph{exactly}---an
+independent confirmation that the reconstructions~\eqref{golden:eq:Li6}--\eqref{golden:eq:Li7} are correct (residuals
+$10^{-117}$, $10^{-114}$ by direct substitution; coefficients primitive).
+
+\section{Two weights beyond: explicit ladders at weight 8 and 9}
+Tito remarks that the index-$24$ ladder ``can be extended even to $n=9$'' but gives no formula. We find the
+explicit ladders. The searches on the six-argument set of~\eqref{golden:eq:Li6}--\eqref{golden:eq:Li7} found reductions at weights $2$--$7$ and none at $8$ or $9$. The accepted higher-weight formulas use the \emph{eight}-argument union of the index-$12$, $20$, $24$
+sets, $\mathcal A=\{\phi^{-2},\phi^{-4},\phi^{-6},\phi^{-8},\phi^{-10},\phi^{-12},\phi^{-20},\phi^{-24}\}$:
+{\scriptsize
+\begin{align}
+\label{golden:eq:Li8}
+  &{-}490795200\Li_8(\phi^{-2})+636131475\Li_8(\phi^{-4})-388684800\Li_8(\phi^{-6})+82668600\Li_8(\phi^{-8})\notag\\
+  &\quad+9507456\Li_8(\phi^{-10})+5250000\Li_8(\phi^{-12})-74277\Li_8(\phi^{-20})-18900\Li_8(\phi^{-24})\notag\\
+  &\qquad=-23641920\lp^8+7956480\pi^2\lp^6-1434720\pi^4\lp^4+184432\pi^6\lp^2-148565886\,\zeta(8),\\
+\label{golden:eq:Li9}
+  &220857840000\Li_9(\phi^{-2})-143129581875\Li_9(\phi^{-4})+58302720000\Li_9(\phi^{-6})-9300217500\Li_9(\phi^{-8})\notag\\
+  &\quad-855671040\Li_9(\phi^{-10})-393750000\Li_9(\phi^{-12})+3342465\Li_9(\phi^{-20})+708750\Li_9(\phi^{-24})\notag\\
+  &\qquad=-2364192000\lp^9+1022976000\pi^2\lp^7-258249600\pi^4\lp^5\notag\\ &\qquad\quad+55329600\pi^6\lp^3-14149132\pi^8\lp+125596001790\,\zeta(9).
+\end{align}}
+Both are verified by direct substitution (residuals $0$ at $150$ digits for~\eqref{golden:eq:Li8}, $10^{-190}$ at $200$
+digits for~\eqref{golden:eq:Li9}); coefficients are primitive. The weight-$9$ ladder appeared identically across three
+independent searches with different padding arguments (the extra arguments returned coefficient $0$), a strong
+guard against over-fitting.
+\begin{remark}
+So the golden family does \emph{not} cap at weight $7$: the closure persists, but the argument set grows---four
+or five arguments per index at weight $5$, six arguments at weights $6$--$7$, eight arguments (the full union) at
+weights $8$--$9$. Whether the growth can be sustained to arbitrarily high weight is exactly the question
+Abouzahra--Lewin address in the negative; our data are consistent with an eventual stop once the required
+argument set outgrows the available golden multiplicative relations.
+\end{remark}
+
+\section{Reducing the tetralogarithm relation to a functional identity}
+The tetralogarithm relation~\eqref{golden:eq:tetra} follows from
+duplication together with the following cross-base functional identity.
+No independence claim about the six individual values is needed.
+
+Two duplications
+$\Li_4(\tfrac14)=8\bigl(\Li_4(\tfrac12)+\Li_4(-\tfrac12)\bigr)$ and
+$\Li_4(\tfrac19)=8\bigl(\Li_4(\tfrac13)+\Li_4(-\tfrac13)\bigr)$ reduce the left side to the reflected arguments,
+and a single \emph{cross-base Kummer relation} then cancels every tetralogarithm:
+{\footnotesize
+\begin{multline}\label{golden:eq:kummer}
+  \Li_4(\tfrac34)+4\Li_4(\tfrac23)=-\tfrac{16}3\Li_4(\tfrac12)-4\Li_4(-\tfrac12)+2\Li_4(\tfrac13)-2\Li_4(-\tfrac13)
+  +\tfrac{19}{540}\pi^4+\tfrac59\pi^2\ln^2 2+\tfrac16\pi^2\ln^2 3\\
+  -\tfrac23\pi^2\ln2\ln3-\tfrac{19}{18}\ln^4 2-\tfrac16\ln^4 3+\tfrac43\ln^3 2\ln3-\ln^2 2\ln^2 3+\tfrac23\ln2\ln^3 3.
+\end{multline}}
+Substituting the two duplication identities into
+\eqref{golden:eq:kummer} cancels the tetralogarithms in
+\eqref{golden:eq:tetra}. A complete proof from Kummer's general functional
+equation requires its branch conditions; the displayed specialized identity
+was checked numerically in the source and is retained as the explicit
+intermediate relation.
+
+\section{Canonical index-20/24 ladders and a $\zeta$-elimination chain}
+Reshetnikov's $\Li_5$ conjectures are the weight-$5$ entries of three first-degree golden ladders (Abouzahra--Lewin).
+In canonical (monic, $a^{n-1}$-normalized) form, with $\rho=\phi^{-1}$, $\ell=\ln\rho$, and
+$\mathrm{tw}(n)=D_1\tfrac{\ell^n}{n!}+D_2\zeta(2)\tfrac{\ell^{n-2}}{(n-2)!}+D_3\zeta(4)\tfrac{\ell^{n-4}}{(n-4)!}$:
+\begin{align*}
+L_{20}(n)&=\frac{\Li_n(\rho^{20})}{20^{n-1}}
+-\frac{\Li_n(\rho^{10})}{10^{n-1}}-3\frac{\Li_n(\rho^4)}{4^{n-1}}
++\frac12\frac{\Li_n(\rho^2)}{2^{n-1}}+\mathrm{tw}(n),\\
+L_{24}(n)&=\frac{\Li_n(\rho^{24})}{24^{n-1}}
+-\frac43\frac{\Li_n(\rho^{12})}{12^{n-1}}
+-2\frac{\Li_n(\rho^8)}{8^{n-1}}\\
+&\quad+\frac73\frac{\Li_n(\rho^4)}{4^{n-1}}
+-\frac{205}{576}\frac{\Li_n(\rho^2)}{2^{n-1}}+\mathrm{tw}(n).
+\end{align*}
+The coefficient triples are respectively
+$(-1/2,1/25,-89/4000)$ and $(179/576,-5/192,629/41472)$, and
+\[
+L_{20}(5)=\frac{201}{10000}\zeta(5),\qquad
+L_{24}(5)=-\frac{1541}{110592}\zeta(5).
+\]
+\!each vanishing for $n\le4$. The shared factor $67$ in $201=3\cdot67$, $1541=23\cdot67$ is what lets the three
+indices jointly eliminate $\zeta(5)$. Combining them removes higher zetas: $M_{20}=L_{20}-\tfrac{1296}{625}L_{12}$ and
+$M_{24}=L_{24}+\tfrac{23}{16}L_{12}$ kill $\zeta(5)$ and reach weight $7$, and
+$T=M_{24}+\tfrac{409375}{373248}M_{20}$ kills $\zeta(7)$ and reaches weight $9$, with
+$T(9)=\tfrac{66452911}{41278242816000}\zeta(9)+\tfrac{3537283}{2063912140800}\zeta(8)\ell-\tfrac{11527}{2866544640}\zeta(6)\tfrac{\ell^3}{3!}$
+(confirmed by direct substitution and an independent PSLQ at $460$ digits). This is the Abouzahra--Lewin route to
+weight $9$, distinct from the single eight-argument ladders~\eqref{golden:eq:Li8}--\eqref{golden:eq:Li9}.
+
+\section{A new ladder base: the minimal Pisot number}
+Beyond the golden ratio, the reciprocal of the minimal Pisot number $\omega=0.7548776\ldots$ (the real root of $x^3+x^2-1$, the base
+Abouzahra--Lewin deferred to a never-published sequel) carries its own ladder. Its seeds are pure units---$1-\omega=\omega^5$,
+$1-\omega^2=\omega^3$, $1-\omega^3=\omega^2$, $1-\omega^5=\omega$---and the first-degree ladder climbs to weight $4$
+(with $\lambda=\ln\omega$):
+{\footnotesize
+\begin{align*}
+  &\tfrac12\Li_2(\omega^2)-\Li_2(\omega^5)-\lambda^2=0,\qquad
+  -\Li_3(\omega)+\tfrac64\Li_3(\omega^2)+\tfrac39\Li_3(\omega^3)-\Li_3(\omega^5)-\tfrac{6\lambda^3}{3!}=0,\\
+  &-71\Li_4(\omega)-\tfrac{120}8\Li_4(\omega^2)+\tfrac{1053}{27}\Li_4(\omega^3)-17\Li_4(\omega^5)+\tfrac{5488}{343}\Li_4(\omega^7)-\Li_4(\omega^{14})+51\zeta(4)+\tfrac{2010\lambda^4}{4!}-\tfrac{84\zeta(2)\lambda^2}{2!}=0.
+\end{align*}}
+The weight-four formula uses the extra legs $\omega^7,\omega^{14}$.
+The later Bloch-framework investigation identifies higher ladders for this
+field; the earlier assertion that the tower stops at weight four is
+discarded. A fixed argument set can stop yielding detected relations while
+larger sets continue to produce them.
+
+\section{Hunting more ladder bases, and a methodological caveat}
+Pure-unit seeds $1-\rho^a=\rho^b$ offer a useful way to discover ladders.
+They do not exhaust general multiplicative relations, and a bounded search
+over polynomial coefficients does not cover all monic polynomials of a
+given degree. Root disguises are easy to miss: the root of $x^4+x^2-1$
+becomes a golden reciprocal after squaring. The following two cubic and
+quartic relations illustrate why negative searches require this care.
+
+Two bases the earlier survey had dismissed as ``weight-$2$ only'' do, in fact, carry weight-$3$ ladders. With
+$\rho$ the root of $x^3+x-1$ (the supergolden reciprocal) and of $x^4+x-1$ (the reciprocal of the second-smallest
+Pisot number $x^4-x^3-1$),
+{\footnotesize
+\begin{align*}
+  -60\Li_3(\rho)+54\Li_3(\rho^2)-32\Li_3(\rho^3)-3\Li_3(\rho^6)&=24\ln^3\rho-4\pi^2\ln\rho-36\zeta(3),\\
+  -12\Li_3(\rho)+12\Li_3(\rho^3)-12\Li_3(\rho^4)-3\Li_3(\rho^6)&=22\ln^3\rho-2\pi^2\ln\rho-12\zeta(3),
+\end{align*}}
+\!each verified in two engines (and by direct substitution to $400$+ digits). The lesson is methodological:
+\textbf{a PSLQ ``no relation'' is not a proof of non-existence.} The first relation above was \emph{missed} by a
+pure-tower PSLQ search at $300$ digits, yet holds by direct substitution to $400$---so the survey's negative
+verdicts were false negatives. The reliable test is to take a candidate relation and substitute it at precision far
+above where it was found. Whether these two bases climb past weight $3$ is left open here; the question is delicate
+precisely because PSLQ negatives cannot settle it.
+\section{The modified polylogarithm}
+Zagier's one-valued modified polylogarithm (his eq.~(33)) is
+\begin{equation}\label{bloch:eq:Pm}
+  P_m(x)=\Real_m\!\Bigl(\sum_{j=0}^{m-1} \frac{2^j B_j}{j!}\,(\log|x|)^j\,\Li_{m-j}(x)\Bigr),\qquad
+  \Real_m=\begin{cases}\Real,&m\text{ odd},\\ \operatorname{Im},&m\text{ even},\end{cases}
+\end{equation}
+with $B_j$ the Bernoulli numbers and $\Li_1(x)=-\log(1-x)$. It is continuous on the Riemann sphere away from
+$\{0,1,\infty\}$, satisfies $P_m(\bar x)=(-1)^{m-1}P_m(x)$, and $P_m(1)=\zeta(m)$ for odd $m$, $0$ for even $m$;
+$P_2(\mathrm i)$ is Catalan's constant. We verified our implementation against Zagier's worked examples
+$P_5(-\tfrac18)-126P_5(\tfrac12)-162P_5(-\tfrac12)=\tfrac{403}{16}\zeta(5)$ (his eq.~(825)) and the long
+thirteen-term relation (825)/(833), to $60$ digits.
+
+\section{Ladders are Bloch-group elements}
+The Bloch-group viewpoint records the obstruction to simplifying a
+dilogarithm combination. At weight two the boundary sends
+$[x]\mapsto x\wedge(1-x)$; a vanishing boundary makes a combination a
+candidate for the Bloch group, modulo the five-term relation. Higher weights
+require further relations and compatibility conditions: a weight-one unit
+relation alone does not prove that its pseudointegrations are higher
+Bloch-group elements. Modified polylogarithms remove explicit logarithmic
+tails and make the following ladder combinations transparent:
+
+\begin{align}
+  \text{golden}:&\quad 15\,P_3(\phi^{-2})=12\,\zeta(3),\label{bloch:eq:goldenP3}\\
+  \text{supergolden}:&\quad -60\,P_3(\rho)+54\,P_3(\rho^2)-32\,P_3(\rho^3)-3\,P_3(\rho^6)=-36\,\zeta(3),
+  \label{bloch:eq:sgP3}
+\end{align}
+both exact. Compare~\eqref{bloch:eq:goldenP3} with the ``raw'' form $15\Li_3(\phi^{-2})=10\ln^3\phi-2\pi^2\ln\phi+12\zeta(3)$:
+the modified polylogarithm is simply the natural coordinate in which a ladder \emph{is} its $\zeta$-value. The
+higher golden ladders (weights $5$ through $9$ in the companion report) become, in the same way, the stated
+$\zeta(5),\zeta(6),\zeta(7),\zeta(9)$ multiples.
+
+\section{The bases as number fields}
+\begin{center}\small
+\begin{tabular}{lllll}
+\toprule
+base $\rho$ & minimal polynomial of $1/\rho$ & field $F$ & signature & disc \\
+\midrule
+golden $\phi^{-1}$ & $x^2-x-1$ & $\mathbb Q(\sqrt5)$ & $(2,0)$ totally real & $5$ \\
+minimal Pisot $\omega$ & $x^3-x-1$ & $\mathbb Q(\theta)$ & $(1,1)$ & $-23$ \\
+supergolden recip.\ & $x^3-x^2-1$ & $\mathbb Q(\sigma)$ & $(1,1)$ & $-31$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+The middle row is Zagier's own running example (\S4--5, \S9C): the field $\mathbb Q(\theta)$, $\theta^3-\theta-1=0$,
+whose ladder he calls ``particularly spectacular,'' and whose defining unit relations
+$1-\theta=-\theta^{-4},\,1+\theta=\theta^3,\dots$ are precisely the seeds we rediscovered. Our supergolden base
+gives a \emph{different} complex cubic field, discriminant $-31$.
+
+\section{Regulator parity and the limits of ladder counting}
+For $m\ge2$, Borel's rank theorem gives rank $r_1+r_2$ for
+$K_{2m-1}(F)$ when $m$ is odd, and $r_2$ when $m$ is even.
+The modified polylogarithm uses its real part at odd weight and imaginary
+part at even weight. In particular $P_{2m}$ vanishes on real arguments,
+even when the number field has nonzero regulator directions at its complex
+embeddings. This explains why a real-argument search can miss arithmetic
+content visible at a complex embedding.
+
+Cyclotomic unit searches compute
+$\operatorname{Norm}\Phi_k(\rho)=\operatorname{Res}(p,\Phi_k)$ and select
+the unit cases. For a fixed finite seed set, imposing successive regulator
+constraints is a finite linear-algebra problem. A dimension count can give
+a lower bound for a kernel or exhaust that chosen construction. It does
+not prove there are no additional seeds, no dependencies among constraints,
+and no other functional identities at higher weight.
+
+The later source identifies the minimal-Pisot ladders through weight six
+and points to Cohen--Lewin--Zagier's published sixteenth-order Lehmer
+ladder. These supersede earlier negative searches. Its stronger assertion
+that the supergolden field has no weight-five real ladder is not justified
+by exhausting its selected seed set, and is omitted. Determining a maximal
+ladder weight requires a completeness theorem for the chosen class of
+relations.
+
+\section{What was verified}
+All to $\ge38$ digits (\code{tools/scratch/dilog-inverse-binomial/}); a representative selection:
+\begin{itemize}
+\item \textbf{Sun's open conjecture} (eq.\ (24)), proved in the paper via the $\mathbb{Q}(\sqrt3)$
+  evaluation (25):
+  \[ \sum_{n\ge0}\frac{\binom{2n}{n}}{(2n+1)8^{n}}\Bigl(\sum_{0\le k<n}\frac{(-1)^k}{2k+1}-\frac{(-1)^n}{2n+1}\Bigr)=-\frac{\sqrt2}{16}\pi^2. \]
+\item \textbf{Theorem 2} ($\mathbb{Q}(\sqrt3)$):
+  $8\Li_2(2-\sqrt3)-\Li_2(4\sqrt3-7)=\tfrac{5\pi^2}{12}+\ln(2-\sqrt3)\ln(2+\sqrt3)$,
+  and $3\Li_2(7-4\sqrt3)=6\Li_2(2-\sqrt3)+6\Li_2(\sqrt3-2)$.
+\item \textbf{Lima's identity} ($\mathbb{Q}(\sqrt2)$, eq.\ (26)):
+  $\Li_2(\tfrac1{\sqrt2})-\Li_2(1-\sqrt2)=\tfrac{\pi^2}6-\tfrac{\ln^2 2}8+\tfrac12\ln2\,\ln(\sqrt2-1)$.
+\item \textbf{Zagier's four-term} (eq.\ (27)): $3L(-\tfrac16)-L(\tfrac18)+L(\tfrac19)+L(\tfrac1{28})=-\tfrac{\pi^2}{12}$,
+  with the (unnormalized) Rogers $L(x)=\Li_2(x)+\tfrac12\ln|x|\ln|1-x|$; and its compressed three-term form.
+\item the rational-argument $\tfrac{\pi^2}{18}+2\ln2\ln3-2\ln^2 2-\tfrac23\ln^2 3=\Li_2(\tfrac14)+\tfrac13\Li_2(\tfrac19)$,
+  the inverse-tangent/$\Cl_2(\tfrac\pi3)$ relation (30), and $\Li_2(\tfrac43)+\Li_2(4)=\tfrac12(\pi^2-\ln^2 3)$ (real parts).
+\item the \textbf{engine}: $\,{}_4F_3(\{1,1,1,\tfrac32\};\{\tfrac52,\tfrac52,\tfrac52\};1)=\tfrac{27}2\bigl(7\zeta(3)+(3-2G)\pi-12\bigr)$
+  (D'Aurizio) and the cube-binomial $_4F_3$ of eq.\ (1).
+\item the paper's \textbf{claimed-original elliptic $_4F_3(1)$ evaluations} (eqs.\ 32, 33, 35):
+  \begin{align*}
+   \Cl_2(\tfrac\pi3)&=\tfrac{\sqrt3}2\,{}_4F_3\bigl(\{1,\tfrac12,\tfrac12,\tfrac12\};\{\tfrac32,\tfrac56,\tfrac76\};1\bigr),\\
+   {}_4F_3\bigl(\{1,\tfrac12,\tfrac23,\tfrac13\};\{\tfrac32,\tfrac54,\tfrac34\};1\bigr)&=\tfrac{3\sqrt3}4\bigl(2\ln(4+3\sqrt2)+\ln(\tfrac72-2\sqrt3)\bigr),\\
+   \ln^2\!\Bigl(\tfrac{5+\sqrt{13}}{2\sqrt3}\Bigr)-\tfrac{\pi^2}{12}&=\tfrac1{180}\,{}_4F_3\bigl(\{1,1,1,\tfrac32\};\{\tfrac76,\tfrac{11}6,2\};-\tfrac1{324}\bigr).
+  \end{align*}
+\end{itemize}
+\textbf{All check out.} One caution worth recording: equation (27) uses the \emph{unnormalized} Rogers
+$L$ (so the right side is $-\tfrac{\pi^2}{12}$, not a pure rational); with the $\tfrac6{\pi^2}$-normalized
+$L$ the identity reads $3L(-\tfrac16)-L(\tfrac18)+L(\tfrac19)+L(\tfrac1{28})=-\tfrac12$.
+
+\paragraph{Connection.} The paper evaluates inverse-binomial series with $\binom{2n}{n}^{\!2}$ and
+$\binom{3n}{n}$ via beta integrals; this is the reciprocal-binomial sibling of the central-binomial
+ladder $\sum\binom{2n}{n}4^{-n}(2n{+}1)^{-p}$ studied in \code{harvested-central-binomial-arcsin.wl}.
+The verified identities are stored (with attribution) in
+\code{src/PolyLog/identities/harvested-dilogarithm-ladders-2506.10206.wl}.
