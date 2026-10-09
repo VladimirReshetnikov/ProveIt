@@ -1,0 +1,59 @@
+NORMAL SECTOR ADDITIVE INTEGRATION CHECK
+UTC: 2026-10-09T05:01:48.988966+00:00
+Python: 3.12.14
+Repository: VladimirReshetnikov/ProveIt
+Retrieved baseline commit: fdeb5b1a20b84b93cb150e0232031837bb7d30cb
+Last listed UnknotRecognition commit: 3a6c7e99fe0ea9fc37ab505d261e0d747acb8cf2
+Retrieved baseline files matched to manifest Git blob IDs: 166
+Baseline fast files fingerprinted before and after: 166; unchanged
+
+Patch paths are relative to the ProveIt repository root.
+Patch is additive: three new files, zero edits or deletions to existing files.
+git apply --check --whitespace=error-all: PASS on a temporary baseline copy
+git apply: PASS; all three resulting files are byte-identical to package files
+git apply --reverse --check: PASS
+Third-party site packages disabled with Python -S; PYTHONPATH removed.
+Integration tests use only stdlib, fastunknot, and local literal fixtures.
+Command from fast/: python -B -S -m unittest discover -s tests -p test_normal_sector_integration.py -v
+
+PATCH NUMSTAT (added, deleted, repository path):
+474	0	Topology/UnknotRecognition/fast/fastunknot/normal_sector.py
+266	0	Topology/UnknotRecognition/fast/fastunknot/normal_sector_verify.py
+151	0	Topology/UnknotRecognition/fast/tests/test_normal_sector_integration.py
+
+PACKAGE TEST RUN:
+test_empty_sector_and_exhausted_allowances (test_normal_sector_integration.NormalSectorIntegrationTests.test_empty_sector_and_exhausted_allowances) ... ok
+test_false_valued_cancellation_propagates (test_normal_sector_integration.NormalSectorIntegrationTests.test_false_valued_cancellation_propagates) ... ok
+test_false_witness_and_exhaustion_assertions_are_rejected (test_normal_sector_integration.NormalSectorIntegrationTests.test_false_witness_and_exhaustion_assertions_are_rejected) ... ok
+test_invalid_support_is_rejected (test_normal_sector_integration.NormalSectorIntegrationTests.test_invalid_support_is_rejected) ... ok
+test_meridian_witness_and_replay (test_normal_sector_integration.NormalSectorIntegrationTests.test_meridian_witness_and_replay) ... ok
+test_outer_search_reports_restricted_scope_and_caps (test_normal_sector_integration.NormalSectorIntegrationTests.test_outer_search_reports_restricted_scope_and_caps) ... ok
+test_positive_euler_does_not_imply_essential_disc (test_normal_sector_integration.NormalSectorIntegrationTests.test_positive_euler_does_not_imply_essential_disc) ... ok
+test_standard_methods_match_literal_two_type_ray_set (test_normal_sector_integration.NormalSectorIntegrationTests.test_standard_methods_match_literal_two_type_ray_set) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.020s
+
+OK
+
+PATCHED BASELINE TEST RUN:
+test_empty_sector_and_exhausted_allowances (test_normal_sector_integration.NormalSectorIntegrationTests.test_empty_sector_and_exhausted_allowances) ... ok
+test_false_valued_cancellation_propagates (test_normal_sector_integration.NormalSectorIntegrationTests.test_false_valued_cancellation_propagates) ... ok
+test_false_witness_and_exhaustion_assertions_are_rejected (test_normal_sector_integration.NormalSectorIntegrationTests.test_false_witness_and_exhaustion_assertions_are_rejected) ... ok
+test_invalid_support_is_rejected (test_normal_sector_integration.NormalSectorIntegrationTests.test_invalid_support_is_rejected) ... ok
+test_meridian_witness_and_replay (test_normal_sector_integration.NormalSectorIntegrationTests.test_meridian_witness_and_replay) ... ok
+test_outer_search_reports_restricted_scope_and_caps (test_normal_sector_integration.NormalSectorIntegrationTests.test_outer_search_reports_restricted_scope_and_caps) ... ok
+test_positive_euler_does_not_imply_essential_disc (test_normal_sector_integration.NormalSectorIntegrationTests.test_positive_euler_does_not_imply_essential_disc) ... ok
+test_standard_methods_match_literal_two_type_ray_set (test_normal_sector_integration.NormalSectorIntegrationTests.test_standard_methods_match_literal_two_type_ray_set) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.020s
+
+OK
+
+SHA-256:
+integration.patch e2bae0faa021b18a0702c92e6c6e9240eebc718c121ed9a6780d0351e6428e33
+fast/fastunknot/normal_sector.py f2c3d82d2c557e0facd204d568e9da3022e78854e24d096b6db4b3aa6323b483
+fast/fastunknot/normal_sector_verify.py f1afa73ff0b58f60564e8af389de53f3855bb86abfd042eea954efe95adc0cb5
+fast/tests/test_normal_sector_integration.py 6dee89d4fab8267651539cd668d1ab7f6cfc688881b95215b0ba1a06d9f0c83d
+Both audited core-module SHA-256 values remain unchanged.

@@ -1,0 +1,223 @@
+\section{Orientability from two sparse histograms}
+\label{sec:inversion}
+
+\subsection{A general two-sheeted-cover identity}
+
+Let an orbit relation carry additive weights in $\Z^d$ and let a
+two-sheeted parity cover of the relation be specified. Lift each point's
+weight unchanged to both of its lifts. A component with trivial parity
+monodromy lifts to two components with its original weight $v$. A component
+with nontrivial parity monodromy lifts to one component of weight $2v$.
+
+Write $H(v)$ for the base histogram, $K(v)$ for the cover histogram, and
+$O(v),A(v)$ for the trivial- and nontrivial-monodromy parts of $H$.
+The letter $A$ will denote nonorientable surface components in the normal
+application. Then
+\begin{align}
+ H(v)&=O(v)+A(v),\\
+ K(v)&=2O(v)+A(v/2).
+ \label{eq:cover}
+\end{align}
+Here $A(v/2)=0$ if $v$ has an odd coordinate, or if the integral half does
+not belong to the base support. All histograms have finite support.
+
+\begin{theorem}[Sparse doubling inversion]
+\label{thm:inversion}
+The pair $(H,K)$ uniquely determines finite-support functions $O,A$ that
+satisfy \eqref{eq:cover}, whenever such nonnegative integer functions exist.
+For $v\ne0$, process base keys in increasing $\ell^1$ norm and set
+\begin{equation}
+ A(v)=\frac{2H(v)+A(v/2)-K(v)}{2},\qquad O(v)=H(v)-A(v).
+ \label{eq:inversion}
+\end{equation}
+At zero use
+\begin{equation}
+ A(0)=2H(0)-K(0),\qquad O(0)=K(0)-H(0).
+ \label{eq:zero}
+\end{equation}
+For fixed $d$ and $s=|\supp H|+|\supp K|$, an implementation using
+balanced ordered maps requires
+$O(s\log(s+1))$ comparisons and $O(s)$ integer arithmetic operations,
+including complete forward verification of the resulting histograms.
+\end{theorem}
+\begin{proof}
+Eliminate $O(v)$ from \eqref{eq:cover}. A nonzero integral half has strictly
+smaller norm, so its $A$ value is already known if it occurs in the base
+support; otherwise it is zero because $0\le A\le H$. This gives
+\eqref{eq:inversion}. At zero the half is zero itself, and solving the two
+linear equations gives \eqref{eq:zero}. These arguments prove uniqueness.
+
+For existence, reject a nonintegral numerator or a value outside
+$0\le A(v)\le H(v)$. Construct $O=H-A$, then reconstruct the entire cover
+histogram by adding $2O(v)$ at $v$ and $A(v)$ at $2v$. The reconstructed
+base and cover histograms must agree with both inputs on their full
+supports. This final comparison rejects extraneous cover-only keys and
+missing doubled contributions. Thus a successful result satisfies exactly
+the required equations.
+
+Only actual base keys are processed. No intermediate missing values along
+a doubling chain need to be generated. Sorting costs the stated number of
+comparisons, and each key contributes a constant number of dictionary
+lookups and arithmetic operations. Balanced ordered maps give a
+deterministic comparison implementation with the same conservative
+logarithmic overhead. These bounds count vector operations at fixed $d$;
+if $d$ varies, reading and comparing a signature also charges its dimension.
+\end{proof}
+
+For fixed $d$, with each coordinate and multiplicity, including temporary
+sums, of at most $\ell$ bits, the ordered-map bit bound is
+$O(s\ell\log(s+1))$, apart from container allocation costs. If input
+fields have at most $L$ bits, $\ell=L+O(\log(s+1))$ suffices even for
+inconsistent histograms rejected by the final check.
+The algorithm does not depend on the numerical length of a sparse gap
+between two present signatures.
+
+The delivered Python code uses dictionaries. Its usual lookup behaviour
+is efficient, but adversarial integer-key hash collisions preclude claiming
+the ordered-map bound as its deterministic worst-case runtime. A
+conservative dictionary bound is $O(s^2\ell+s\ell\log(s+1))$ here.
+The overall supplied-vector census remains polynomial; the sharper sparse
+bound describes the stated comparison-map implementation of the same
+recurrence. The row-merging estimate below uses the same ordered-map
+convention.
+
+\begin{example}[A collision between an annulus and a doubled M\"obius band]
+Suppose a surface has three M\"obius bands and five annuli. Its base keys are
+$H(0,1)=3$ and $H(0,2)=5$. The cover has thirteen annuli, so
+$K(0,2)=13$ and $K(0,1)=0$. Equation \eqref{eq:inversion} first gives
+$A(0,1)=3$, and then
+$A(0,2)=(10+3-13)/2=0$. Comparing $K(v)$ to $2H(v)$ independently at
+each key would miss the contribution arriving from the half-signature.
+\end{example}
+
+\begin{example}[The zero signature cannot be treated recursively]
+A torus and a Klein bottle both have $(\chi,b)=(0,0)$. If there are $a$
+tori and $c$ Klein bottles, then $H(0)=a+c$ and $K(0)=2a+c$.
+Equation \eqref{eq:zero} recovers them. Substituting $A(v/2)=0$ at zero
+would generally give a false answer. The geometric test corpus includes
+a closed normal Klein bottle and its multiples in an orientable manifold
+with one torus boundary.
+\end{example}
+
+\subsection{Why torsion coordinates need a different formula}
+
+The displayed inversion relies on the uniqueness of an integral half in
+$\Z^d$ and on strict norm decrease away from zero. If weight coordinates
+are reduced modulo two beforehand, doubling is no longer injective; the
+incoming term must sum over all preimages, and the same recurrence is
+invalid. This is why the delivered construction keeps exactly the integral
+pair $(\chi,b)$. A future extension can retain further \emph{integer}
+weights, invert in $\Z^d$, and only then reduce a display field modulo two.
+An extension with torsion weights requires a separately proved inversion.
+
+\section{Normal orientation doubles and the topology census}
+\label{sec:census}
+
+\begin{lemma}[Normal double and boundary lifts]
+\label{lem:normal-double}
+Let $F(x)$ be a compact properly embedded normal surface in an orientable
+three-manifold. The surface $F(2x)$ is the normal orientation double of
+$F(x)$: an orientable component contributes two copies, and a
+nonorientable component contributes its connected orientation double.
+Every boundary circle has two distinct lifts. In the maintained edge-point
+ordering, the projection from doubled to original points is
+$q\mapsto\lfloor q/2\rfloor$.
+\end{lemma}
+\begin{proof}
+Take a small normal interval neighbourhood of the surface. Its horizontal
+boundary has two local sheets over every normal disc, so its normal
+coordinates are $2x$. The sheet transition across a face either preserves
+or reverses order. Trivial normal monodromy gives two global sheets;
+nontrivial monodromy exchanges them and gives a connected cover. In an
+orientable ambient three-manifold, orientability of a surface is equivalent
+to orientability of its normal line bundle, so this is precisely the
+orientation double. This is the classical normal-coordinate doubling
+principle used by AHT \cite{aht}.
+
+The restriction of the orientation character to a boundary circle is
+trivial. Indeed its tangent line is orientable and the inward collar line
+inside the surface is trivial. Hence that circle has two distinct lifts,
+even on a nonorientable surface.
+
+For the explicit point indexing, each original point $p$ is replaced by
+the adjacent points $2p,2p+1$. A scaled translation preserves the second
+coordinate; a scaled reflection reverses it. Global edge-block offsets
+and lengths also double. Therefore the projection is the asserted floor
+map, and a base interval $[a,b)$ has full inverse image $[2a,2b)$.
+\end{proof}
+
+\begin{lemma}[One boundary transversal suffices]
+\label{lem:one-boundary}
+Lift the two weights \eqref{eq:two-weights} to $F(2x)$ by replacing every
+weight interval $[a,b)$ by $[2a,2b)$ and keeping its vector value. The
+weighted sum on each doubled component is its actual pair $(\chi,b)$.
+No boundary-orbit discovery on $\partial F(2x)$ is needed.
+\end{lemma}
+\begin{proof}
+Every owned cell of the original Euler weighting lifts to two owned cells,
+with one charge on the corresponding owned point of each lift. Thus the
+first coordinate is Euler characteristic on each doubled component.
+For a boundary circle, its chosen base representative has one lift on
+each of the two lifted circles from \cref{lem:normal-double}. Accordingly
+the second coordinate has exactly one marker per lifted boundary circle.
+The conclusion is componentwise, including when both lifts lie in one
+connected orientation double.
+\end{proof}
+
+\begin{theorem}[Two-weight connected-topology census]
+\label{thm:census}
+For an admissible normal vector $x$ in the supported ambient manifold,
+the entire type spectrum $\Spec(x)$ can be computed by the following
+operations:
+\begin{enumerate}
+\item one boundary orbit discovery and its least-transversal compilation;
+\item one two-weight orbit histogram on $F(x)$;
+\item one two-weight orbit histogram on $F(2x)$, using lifted original weights;
+\item sparse inversion of the two histograms and surface classification.
+\end{enumerate}
+The algorithm is polynomial in the binary encoded input size and never
+lists individual normal discs, points, or components. Its output rows have
+exact binary multiplicities and determine every component homeomorphism
+type, grouped by that type.
+\end{theorem}
+\begin{proof}
+\Cref{thm:transversal,thm:nested} and the Euler ownership construction
+identify the first histogram with $(\chi,b)$ on each component.
+\Cref{lem:normal-double,lem:one-boundary} identify the second histogram
+with the normal orientation-cover histogram and establish
+\eqref{eq:cover} with $O$ orientable and $A$ nonorientable components.
+\Cref{thm:inversion} recovers their separate multiplicities.
+The classification of compact connected surfaces then determines the
+genus or crosscap number from $(\chi,b)$ and orientability. The
+implementation rejects impossible or nonintegral classification data.
+
+The normal-arc relations have $O(t)$ pairings and
+$O(B+\log(t+1))$-bit endpoints. The boundary selector has at most
+$G_\partial$ intervals; after its inclusion in the full universe there
+are $O(t+G_\partial)$ weight intervals. The inherited AHT bounds and
+\cref{thm:transversal} make all these quantities polynomial in $t,B$.
+Weighted AHT in fixed dimension and the sparse final inversion preserve
+that bound.
+\end{proof}
+
+\begin{center}
+\begin{tabular}{lrrcl}
+\toprule
+Connected type & $\chi$ & $b$ & Orientable? & Recovered parameter\\
+\midrule
+Sphere & 2 & 0 & yes & $g=0$\\
+Disc & 1 & 1 & yes & $g=0$\\
+Annulus & 0 & 2 & yes & $g=0$\\
+M\"obius band & 0 & 1 & no & $k=1$\\
+Torus & 0 & 0 & yes & $g=1$\\
+Klein bottle & 0 & 0 & no & $k=2$\\
+Projective plane & 1 & 0 & no & $k=1$\\
+Genus $g$, $b$ boundary circles & $2-2g-b$ & $b$ & yes & $g$\\
+$k$ crosscaps, $b$ boundary circles & $2-k-b$ & $b$ & no & $k$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The projective-plane row is retained because the ambient contract does not
+assume irreducibility. Deleting it as an alleged impossibility would make
+the implementation incorrect on a supported fixture.

@@ -1,0 +1,153 @@
+\section{Research objective and source audit}
+\label{sec:background}
+
+The project already has an exact recognition pipeline with several
+independent positive certificates and negative obstructions. The relevant
+question is which repeated operations can be replaced by a provably smaller
+computation, while preserving the source binding and the certificate
+checker. This continuation makes two such replacements. It also identifies
+the transformations that the new theorems do not cover, so the next
+complexity question is explicit.
+
+\subsection{A pinned and executable baseline}
+
+All implementation comparisons use commit
+\texttt{fdeb5b1a20b84b93cb150e0232031837bb7d30cb}
+of \texttt{VladimirReshetnikov/ProveIt}, observed at the start of this work.
+The repository's upstream branch may continue to move. A manifest records
+the exact Git blob identifiers of the retrieved source files, and the
+benchmark outputs record SHA256 hashes of the modules actually loaded.
+The archive contains a reference snapshot for the paired group comparisons
+and the additional reference modules required by the maintained test suite.
+
+The immediately relevant maintained components are:
+\begin{itemize}
+\item \path{fastunknot/compressed_words.py}: exact shared word grammars,
+  compressed equality, slicing, inversion, and free reduction;
+\item \path{elimination_batch.py} and its independent verifiers:
+  simultaneous acyclic singleton definitions, with source relator slots
+  retained throughout replay;
+\item \path{compressed_search.py}: the optional group search, including
+  normalization boundaries, Whitehead transformations, overlap moves,
+  and arithmetic terminal tests;
+\item \path{interval_orbits.py} and \path{interval_orbit_verify.py}:
+  binary interval-orbit counting and independent local-trace replay;
+\item the native normal-surface geometry and weighted-component modules,
+  which interpret interval orbits as components of a supplied surface.
+\end{itemize}
+The associated synthesis sections already discuss raw acyclic batches,
+incremental reachability, memoized word frontiers, weighted components,
+and normal-surface certificates~\cite{repo}. The present work does not
+reintroduce those operations as new results. The substantive additions are
+the completeness characterization of an entire raw epoch, its source
+closure producer, and the reusable component-query interface.
+
+\subsection{What the quasi-polynomial target currently means}
+
+For input size $n$, quasi-polynomial time means
+$\exp((\log n)^{O(1)})$. The more specific target
+$n^{O(\log n)}=\exp(O((\log n)^2))$ is stronger than
+$\exp(O((\log n)^3))$. These bounds should not be interchanged.
+
+Lackenby's publicly available March 2021 handout states the latter bound,
+$2^{O((\log n)^3)}$, for a diagram with $n$ crossings. Its hierarchy
+outline combines a quadratic bound on its surface-complexity parameter $g$ with
+depth $O((\log n)^2)$~\cite{lackenby-talk}. His July 2026 preprint provides
+substantial detailed hierarchy machinery and proves an
+$\mathrm{NP}\cap\mathrm{coNP}$ result for essential boundary patterns.
+However, its Section 9 explicitly leaves the costs of individual steps
+insufficiently specified, and bounds their number in terms of two
+parameters by $L(g+1)^L$~\cite{lackenby-2026}. We have not identified a
+complete public specification of the announced quasi-polynomial algorithm
+that can simply be translated into this codebase.
+
+This distinction does not diminish the role of the published compressed
+primitives. Agol--Hass--Thurston (AHT) already give polynomial orbit counting
+in the pairing count and logarithmic interval length, and a weighted
+version for topology of a supplied normal surface~\cite{aht}. Lackenby's
+2026 curve algorithms similarly give polynomial dependence on surface
+triangulation size and logarithmic curve weights~\cite{lackenby-curves}.
+The remaining difficulty includes producing appropriate objects and
+controlling how many successive objects or search states arise.
+
+\subsection{Two distinct sources of repeated work}
+
+The algebraic computation repeatedly substitutes generator definitions
+into shared grammars. A local batch can be small relative to the grammar
+at its start, while multiplying a coarse bound across many phases gives
+an exponential factor in phase depth. We ask whether the intermediate
+phases are needed at all when no cancellation or other transformation
+occurs between them. The answer is no: complete raw reachability is a
+query on the original source support.
+
+The geometric computation has a different redundancy. After certifying
+one interval equivalence relation, it can be asked repeatedly whether
+marked points lie on the same component. The existing general membership
+test creates an additional identification and recounts orbits. We instead
+retain the point transport implicit in one checked trace. This removes
+repeated schedule discovery, without changing the relation or replacing
+binary coordinates by explicit points.
+
+Both improvements distinguish discovery from verification. The group
+producer returns an established certificate format that the old verifier
+already understands. The orbit index first checks its entire source trace,
+then answers queries using an audited transport implementation. The second
+interface does not claim to produce a separate independently checkable
+proof for every point answer.
+
+\section{Preliminaries and cost conventions}
+\label{sec:preliminaries}
+
+\subsection{Presentations and raw words}
+
+Let $X$ be a finite set of positive generator names. A raw word is a finite
+sequence in $X^{\pm1}$. Its \emph{absolute occurrence count} of $x$ counts
+both $x$ and $x^{-1}$, while its exponent sum subtracts negative from
+positive occurrences. Its support is the set of generator names occurring
+at least once. Raw word equality, equality after free reduction, and
+equality in a presented group are three different relations.
+
+Relators are stored in numbered slots. Empty words and repeated roots may
+occur. Consuming a donor empties that slot; it does not renumber the other
+slots. A source for a new raw epoch may be obtained after a previously
+verified presentation transformation. Thus the theorem applies to general
+current source words, and is not limited to the length-four Wirtinger
+relators of the initial knot diagram.
+
+The native arena represents words by an acyclic straight-line grammar with
+letter leaves and binary concatenation nodes. Children are allocated before
+parents. Multiple roots share subgraphs, and repeated uses of a child are
+repeated occurrences in the expanded word. Exact compressed free-group
+operations are established polynomial primitives~\cite{schleimer}; they
+are not probabilistic hash tests. The saturation query itself requires
+only raw presence and repetition information.
+
+\subsection{Parameters that are kept separate}
+
+For one source presentation write
+\[
+ r=|X|,\qquad m=\text{number of relator slots},\qquad
+ I=\sum_{j=1}^{m}|\supp(R_j)|,
+\]
+and let $M$ and $H$ be its reachable grammar size and height. The term $m$
+must remain in cost bounds even if many slots are empty or share one root.
+On a fresh compact source grammar, $H\le M$ and the maximum expanded-word
+length has $O(M+1)$ bits. Generator names and node identifiers have their
+own encoded lengths; dense local renaming handles large names without
+allocating arrays up to the largest name.
+
+Structural-operation estimates use ordinary random-access arrays and
+indices. Python's dictionary accounting is stated where relevant. For a
+strict deterministic bit bound, label sorting and array indices can replace
+hash lookup, or its worst-case polynomial overhead can be charged. None of
+the decisions depends on random hashing. The maintained arena may retain
+an alphabet and caches from earlier search states. Its historical storage
+and mask widths must be charged to that history, rather than silently
+identified with the current rank or reachable subgrammar.
+
+For interval systems, $N$ is the represented point count, $k$ the pairing
+count, and $B$ the maximum bit length of coordinates and accumulated
+counters. A trace has $E$ events. A claim polynomial in $B$ is very
+different from a loop with $N$ iterations. Likewise, the number of
+components may require only $B$ bits while an explicit component list is
+infeasible. The algorithms below never require that list.

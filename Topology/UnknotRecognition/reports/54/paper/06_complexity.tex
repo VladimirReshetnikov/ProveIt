@@ -1,0 +1,136 @@
+\section{End-to-end cost of one fixed-source phase}
+\label{sec:complexity}
+
+\subsection{Compilation, observations and monotone updates}
+
+Write $P(k,m,B)$ for a valid polynomial bound on source-profile compilation
+through weighted AHT, including decoding and exact source validation.
+Let $s$ be the number of profile rows, $e$ its support incidence count,
+and let $Q$ later observations each have dimension at most $d$ and weight
+entries of at most $D$ bits. A conservative batch bound is
+\begin{equation}
+ P(k,m,B)+O\bigl(Qsmd\,\mathsf M(B+D+\log(m+1))\bigr)
+ \label{eq:batch-cost}
+\end{equation}
+plus canonical histogram grouping. This replaces $Q$ separate weighted
+trace transports by one compilation and $Q$ explicit linear maps on the
+table. It can lose for a small number of low-dimensional queries, because
+compiling all source coordinates may cost more than answering them directly.
+No unconditional speed ordering between these strategies is asserted.
+
+For an explicit monotone cone sequence, define the index work
+\[
+ U(s,m,e,u)=(s+m+e+u)\alpha(s+m)+u\log(m+1).
+\]
+The online count bound is $O(smB)$ for reading the already validated dense
+coordinates, followed by $O(U)$ index operations and at most
+$O(s+m)$ effective count changes with $B$-bit arithmetic. A simple all-bit
+upper bound charges $O(\log(s+m+1)+B)$ to every index-level operation;
+it is intentionally conservative. Census output, when requested, adds
+$O(sm\,\mathsf M(B))$ arithmetic and sorting. Repeatedly requesting a full
+dense census is output work, not a violation of the online count bound.
+
+The row bound in \cref{thm:quotient} is useful here. Within a fixed-source
+phase, quotient profiles never require more than the original $s$ rows,
+and every coordinate remains at most its original atom capacity. Thus
+neither histogram length nor coordinate bit size grows through these
+quotients. This statement concerns the chosen observer, not the size of
+future geometric descriptions.
+
+\subsection{Compressed schedule accounting}
+
+Let $T_{\rm trial}$ bound cloning a quotient state and applying one stored
+summary. A safe choice in index operations is
+\[
+ T_{\rm trial}=O\bigl((s+m+e)\alpha(s+m)+m\log(m+1)\bigr),
+\]
+with the preceding count-bit charges. A summary has at most $m$ atom
+entries, so it never contains an expanded program. The immutable adjacency
+lists are shared across clones, and their initial $O(sm)$ construction is
+not repeated by a clone.
+
+After source compilation and grammar preparation, the first-threshold
+algorithm costs $O(gT_{\rm trial}+gH)$ in the separated model, while all
+history events cost
+\[
+ O\bigl((h+1)g(T_{\rm trial}+H)\bigr),\qquad h\le2m-1.
+\]
+Full grammar preparation additionally pays for its explicit leaf occurrences,
+canonical summary joins, and $g$ binary length computations. There is no
+factor equal to the numerical expanded length $L(P)$.
+
+The independent checker has its own polynomial cost. Its graph-based summary
+join can use quadratic atom work, and it may rebuild the grammar data for
+several prefix queries. These are deliberate simplicity choices, not costs
+silently charged to the producer. A host measuring a certified operation
+must include both generation and replay. The timing tables below measure
+production search, with answer checks outside the timed region, and do not
+label those times as certified end-to-end native performance.
+
+\begin{corollary}[Polynomial fixed-source observer]
+\label{cor:local-poly}
+A binary interval-pairing source, a fixed atom partition, and a finite
+straight-line program of full-port cones admit exact final census,
+first-count-threshold and complete count-change history computations in
+time polynomial in their encoded input sizes. Corresponding algebra-level
+claims admit polynomial independent replay. A source-bound replay additionally
+requires a verified weighted orbit certificate.
+\end{corollary}
+
+\begin{proof}
+Compilation is polynomial by weighted AHT and \cref{thm:packing}.
+Its compressed output has polynomial $s$ and hence polynomial $e\le sm$.
+All arithmetic uses polynomially many bits, and the grammar's length bits
+are bounded by its encoded exponents and node count. Apply the preceding
+bounds and \cref{thm:history,prop:history-cert}.
+\end{proof}
+
+\subsection{How this enters a quasi-polynomial programme}
+
+Consider a prospective recognizer divided into $R$ fixed-source phases.
+For phase $i$, record its source parameters, actual compilation cost bound,
+number of observation coordinates, grammar size, and event count. Let
+$\mathcal G$ denote all work outside this observer: source generation,
+normal-vector discovery, actual topological cuts, verification of attachment
+semantics, and transfers between phases. The honest total ledger is
+\begin{align}
+ T_{\rm total}\ \le\ \mathcal G+
+ \sum_{i=1}^{R}\bigl[&P(k_i,m_i,B_i)+\cost(\text{grammar}_i)
+ +\cost(\text{observations}_i)\notag\\
+ &+O((h_i+1)g_i(T_{{\rm trial},i}+H_i))
+ +\cost(\text{replay}_i)\bigr].
+ \label{eq:global-ledger}
+\end{align}
+If $R$ and all encoded phase descriptions are at most
+$2^{O((\log n)^c)}$, for fixed $c$, then the displayed observer sum is
+quasi-polynomial in the crossing input size $n$. This is a consequence of
+polynomial closure of that size bound, not a proof that the required
+phases exist. In particular, \eqref{eq:global-ledger} says nothing favorable
+about $\mathcal G$ without additional theorems.
+
+There is nevertheless a concrete strengthening over per-instruction
+accounting. A phase with exponentially many redundant fixed-port operations
+can be processed through its grammar and at most $2m-1$ effective changes.
+This removes its expanded instruction count from the ledger. A mere
+termination proof based on a binary counter could not make that replacement.
+The achievement is local and structural: a small-height quotient algebra
+has replaced a potentially huge operation sequence.
+
+\subsection{Why no global recognition theorem follows}
+
+Several missing links are mathematically separate. A supplied normal surface
+can be analyzed without finding a useful one. A valid triangulation can be
+analyzed without proving that it is the exterior of the input knot. A
+full-port coning operation can be evaluated without proving that it models
+a particular hierarchy move. Finally, a bounded-height phase can terminate
+quickly while the number of phases or the required source refinements is
+large.
+
+The four-point example proves that one cannot simply place all future
+attachment maps behind this interface. The fixed-atom potential also resets
+when fresh atoms or changed source relations are introduced. A useful
+continuation should therefore target a specific geometric phase in which
+these semantics can actually be proved, and then measure how often that
+phase is rebuilt. Treating a local polynomial observer as a complete
+quasi-polynomial recognizer would skip precisely the hard accounting that
+\eqref{eq:global-ledger} makes explicit.

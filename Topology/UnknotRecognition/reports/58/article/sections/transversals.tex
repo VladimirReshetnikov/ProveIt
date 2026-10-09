@@ -1,0 +1,231 @@
+\section{Compressed least representatives from an orbit trace}
+\label{sec:transversal}
+
+An orbit count alone cannot reveal which boundary circles lie in a particular
+surface component. We therefore compile a stronger output from the existing
+trace: one original point of each orbit, still encoded as intervals.
+
+\begin{definition}
+For an equivalence relation $\sim$ on $[0,N)\cap\Z$, its least transversal is
+\[
+ R(\sim)=\{\min O:O\text{ is a }\sim\text{-class}\}.
+\]
+An interval representation of $R$ is its canonical union of nonempty,
+pairwise disjoint and nonadjacent half-open integer intervals.
+\end{definition}
+
+An output interval $[a,b)$ means that each of its $b-a$ integer points is a
+representative of a different orbit. It does not mean that those points form
+one orbit. For a relation with no pairings, the complete answer is the single
+interval $[0,N)$, even when $N$ is enormous.
+
+\begin{theorem}[Least-transversal compiler]
+\label{thm:transversal}
+Let a complete valid maintained AHT trace have $E$ local events and a total
+of $G$ static gap intervals. Its least original transversal can be computed
+as at most $G$ half-open intervals. The producer and an independently
+implemented verifier take time polynomial in $E$, $G$, and
+$\log(N+1)$, in addition to the inherited cost of validating the trace.
+Their output is independent of which valid complete AHT schedule was used.
+For $N=0$, the output is empty.
+\end{theorem}
+
+\subsection{Forward construction and invariant}
+
+Maintain an increasing injection $\iota$ from the current ordered point
+universe into the original universe. Store its image as a sorted list of
+original intervals. Concatenating the lengths of these intervals gives
+current ranks, so a current interval can be pulled back to original labels
+by splitting only at the interval-list boundaries.
+
+Initially the live list is $[0,N)$ and nothing has been emitted. We maintain
+three assertions: emitted points are the least points of distinct completed
+original orbits; every uncompleted original orbit has live points, including
+its least point; and the current relation, transported by $\iota$, is the
+restriction of the original relation to these live points.
+
+Identity deletion, trimming, merging, and transmission preserve the point
+universe and its orbit relation. They leave the live list unchanged.
+Only contractions and truncations require additional work.
+
+A certified suffix truncation retains the prefix $[0,c)$ of the current
+universe. Every deleted point is equivalent to a retained point. For a
+translation carrier, iterated inverse translation reaches that prefix; the
+operation computes this by division, not iteration over the number of
+periods. For a trimmed reflection, the relevant domain precedes the deleted
+image, and one reflection reaches it. The inherited local preconditions
+also ensure that the retained relation is the induced relation on the
+prefix. As $\iota$ is increasing, every deleted point has a smaller original
+point in its orbit that survives. No uncompleted orbit loses its minimum.
+Replace the live list by the intervals representing its first $c$ points.
+
+A static contraction removes uncovered current intervals. Each point there
+is a singleton of the current relation. By the invariant it is the sole live
+point of one original orbit, and that point is its minimum. Intersect the
+current gaps with the live interval list, emit the corresponding original
+interval pieces, delete those pieces, and close the current-rank gaps.
+An original point is emitted at most once. When the trace ends, no live
+points remain, so the emitted union is exactly $R(\sim)$. This proves the
+semantic assertion and schedule independence in \cref{thm:transversal}.
+
+\subsection{A different reverse construction}
+
+The certificate checker first replays the source-bound AHT proof with the
+existing independent checker. It then reconstructs the selected set
+\emph{backwards}, starting with the empty final universe. Undoing a
+truncation appends an unselected suffix. Undoing a contraction reinserts
+every static gap as selected points and lifts the previously selected
+points across those insertions. Other events leave point indices unchanged.
+This method uses neither forward live-interval tracking nor orbit discovery.
+
+Here is an explicit formula. Let the half-open gaps before a contraction be
+$[a_i,b_i)$ in increasing order. Put
+\[
+ \ell_i=b_i-a_i,\qquad
+ c_i=a_i-\sum_{j<i}\ell_j.
+\]
+The contracted position of gap $i$ is $c_i$. A surviving contracted point
+$q$ lifts to
+\begin{equation}
+ \lambda(q)=q+\sum_{i:c_i\le q}\ell_i.
+ \label{eq:gap-lift}
+\end{equation}
+For an existing selected interval $[u,v)$, add the hull
+\[
+ [\lambda(u),\lambda(v-1)+1)
+\]
+and add every reinserted gap $[a_i,b_i)$. The extra points introduced by the
+hull are exclusively gap points, which are themselves selected. Thus the
+union is exact. Prefix sums and binary searches evaluate \eqref{eq:gap-lift}
+without visiting any represented point.
+
+\begin{lemma}[Interval bound]
+\label{lem:selector-size}
+The final selected set has at most $G$ intervals. During forward compilation
+there are at most $1+G$ live original intervals, and at most $1+2G$ raw
+emitted interval pieces in total.
+\end{lemma}
+\begin{proof}
+In the reverse construction, inserting $g$ selected gaps increases the
+number of selected intervals by at most $g$. An existing selected interval,
+together with the gaps crossed by its lift, still has a single selected
+hull. Additional isolated gaps account for at most $g$ new intervals.
+Reverse truncation adds no selected interval. Starting with zero proves
+the bound $G$.
+
+For the live-list bound, deleting one current gap can split at most one
+live original interval into two retained pieces; deleting a suffix cannot
+increase the count. For raw emissions, splitting a live list of $p$
+intervals at the $2g$ endpoints of a contraction yields at most $p+2g$
+pieces. Each piece is retained or emitted. Summing this inequality over
+contractions telescopes the live-list counts; suffix deletions only decrease
+them. The initial list has at most one interval, giving $1+2G$ raw emissions.
+Sorting and coalescing do not increase their number.
+\end{proof}
+
+\subsection{Costs and certificate obligations}
+
+A straightforward list implementation takes
+\[
+ O\bigl(E(1+G)+G\log(G+1)\bigr)
+\]
+endpoint operations for the forward construction. A conservative bound for
+the reverse selector is
+\[
+ O\bigl((E+G)(G+1)\log(G+2)\bigr)
+\]
+endpoint operations, besides inherited orbit-proof replay. All endpoints
+have $O(\log(N+1))$ bits. These bounds establish polynomial encoded cost;
+they are not claimed to be degree-optimal. The displayed dependence on $G$
+also identifies where a persistent interval tree could improve the current
+list implementation.
+
+The certificate contains the exact original size, its orbit proof, the
+claimed orbit count, and canonical representative intervals. The verifier
+checks the orbit proof against the caller's actual pairing list, reconstructs
+the reverse selector, and compares the entire interval list and its
+cardinality. Matching cardinality alone would be unsound: a different
+transversal can have the correct number of points but fail the least-point
+claim, and an arbitrary set of that size need not be a transversal at all.
+
+The discovery cycle allowance applies to the inherited discovery phase.
+Trace compilation and later independent checking use cooperative cancellation
+and explicit trace size as their resource parameters. Incomplete discovery
+produces neither a transversal certificate nor a purported completed count.
+
+\section{Turning nested component counts into additive weights}
+\label{sec:nested}
+
+\begin{theorem}[Fine components inside coarse components]
+\label{thm:nested}
+Let $\sim_f$ and $\sim_c$ be finite interval-encoded equivalence relations.
+Suppose an injective interval map $i$ from the fine universe into the coarse
+universe sends each fine orbit into a single coarse orbit. If $R_f$ is a
+transversal for $\sim_f$, then the weight $\mathbf1_{i(R_f)}$ has sum
+\[
+ \sum_{p\in O}\mathbf1_{i(R_f)}(p)
+ =\#\{A\text{ a fine orbit}:i(A)\subseteq O\}
+\]
+on every coarse orbit $O$.
+\end{theorem}
+\begin{proof}
+Every fine orbit contributes exactly its unique representative, and that
+representative lies in the same coarse orbit as all its fine-orbit points.
+Distinct fine representatives remain distinct under the injection. Thus
+the contributions are exactly one for each contained fine orbit and zero
+otherwise.
+\end{proof}
+
+The interval encoding of the injection is a hypothesis, not something that
+can be inferred from two lists of component counts. In the application,
+the fine relation is the boundary-arc relation, the coarse relation is the
+full surface relation, and the injection is the literal inclusion of
+boundary edge points. All these data are reconstructed from the original
+validated triangulation and vector.
+
+\subsection{Boundary markers in the full edge order}
+
+Boundary points are grouped by boundary edge in increasing global edge
+order. Full surface points are grouped by all edges in that same order.
+For a boundary edge $e$, let $o_\partial(e)$ and $o_F(e)$ be its two block
+offsets, and let $n_e$ be its intersection count. The inclusion on its block is
+\[
+ [o_\partial(e),o_\partial(e)+n_e)\longrightarrow
+ [o_F(e),o_F(e)+n_e),\qquad
+ p\longmapsto p+o_F(e)-o_\partial(e).
+\]
+Both orders use the same global edge orientation, so no further reflection
+is needed. A selector interval is split where it crosses boundary-edge
+block endpoints and each piece is translated by this formula.
+
+If the boundary selector has $r$ intervals and there are $e_\partial$
+boundary-edge blocks, the total number of pieces is $O(r+e_\partial)$.
+This follows by merging two sorted endpoint lists; it is not a product
+bound $r e_\partial$. Since $r\le G_\partial$ and
+$e_\partial=O(t)$, the embedded markers remain polynomially encoded.
+
+\subsection{Integral Euler ownership}
+
+Give each surface vertex weight $+1$, place weight $-1$ for each surface
+arc at one of its endpoints, and place weight $+1$ for each normal disc at
+one chosen corner. Every charge is located within its cell's surface
+component. Thus the orbit sum is the Euler characteristic of that component.
+
+This ownership is compressed explicitly. The full edge-point universe
+receives $+1$. The source interval of each original face-arc pairing
+receives $-1$, with its inclusive endpoint changed to a half-open stop.
+For each nonempty normal disc type, the chosen corners are consecutive
+along a suitable tetrahedron edge, so one interval carries their $+1$
+charges. The original arc list is used for these cell charges, before
+deleting identity pairings or otherwise reducing the orbit relation.
+Deleting a generator is not a license to omit a geometric edge charge.
+
+Combine the Euler weight with the boundary-marker weight:
+\begin{equation}
+ w(p)=\bigl(w_\chi(p),\mathbf1_{i(R_\partial)}(p)\bigr)\in\Z^2.
+ \label{eq:two-weights}
+\end{equation}
+By \cref{thm:nested}, the weighted orbit sum on a connected component $C$ is
+exactly $(\chi(C),b(C))$. In particular, a closed component has second
+coordinate zero, and an annulus has second coordinate two regardless of
+how many normal arcs subdivide either boundary circle.

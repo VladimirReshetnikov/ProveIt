@@ -1,0 +1,306 @@
+\section{A conditional route to quasi-polynomial recognition}
+\label{sec:research-agenda}
+
+The two results remove identifiable costs from a larger recognition
+argument. Theorem~\ref{thm:raw-closure-equivalence} replaces every successful
+raw singleton epoch by one source query and one polynomial compilation;
+its cost need not contain a factor exponential in the number of raw
+batches. The orbit index replaces repeated schedule discovery for a fixed
+interval relation by one verified preparation. Neither result chooses the
+next presentation or surface. A global complexity theorem must account
+for that choice, for the number of objects chosen, and for their full
+encoded descriptions.
+
+\subsection{Three obligations that cannot be interchanged}
+
+\paragraph{Deterministic discovery.}
+A short certificate with a polynomial verifier need not be findable in
+polynomial time. For the algebraic operation studied here, this gap is
+closed: a prescribed survivor set is decided by Horn closure, and every
+one-element survivor set can be tried in polynomial time. For normal
+surfaces and hierarchy moves, a comparable discovery theorem is still
+required. Counting or interpreting the components of a supplied normal
+surface, as in AHT~\cite{aht}, does not find a suitable compressing disc or
+prove that a small candidate list contains one. Candidate generation must
+charge rejected candidates and unsuccessful subsidiary searches, including
+those that never produce a certificate.
+
+\paragraph{Hierarchy depth and the generated frontier.}
+After each certified normalization or geometric cut, another local query
+may be cheap, yet exponentially many distinct states may arise. One needs
+a bound on the total states generated, or a depth bound together with a
+branching bound, or a proved bound on the frontier after justified
+identifications. Memoization provides a bound only after the number of
+keys is bounded. Likewise, a polynomial bound on the size of each boundary
+pattern does not bound the number of admissible patterns. The hierarchy
+outline in the announced algorithm~\cite{lackenby-talk} and the detailed
+2026 development~\cite{lackenby-2026} motivate this separation; the latter
+does not supply all costs needed for the proposed implementation.
+
+\paragraph{Bit complexity, provenance, and attachments.}
+The cost of a state includes its reachable word grammar, binary lengths,
+source-slot records, triangulation or handle data, verified trace, and
+the maps specifying how boundary and attachment marks are identified.
+Generator provenance and the evidence connecting the native input to the
+original diagram are part of the state. So are historical masks, retained
+arena nodes, and caches when operations can inspect them. Polynomial
+compressed word and curve primitives~\cite{schleimer,lackenby-curves}
+apply to the size of their supplied encodings. They cannot be charged
+against a smaller crossing count without a bound relating the two.
+
+The following accounting statement makes a sufficient target precise. It
+is conditional on a complete recognition scheme, rather than a claim that
+the scheme described in its hypotheses has been constructed.
+
+\begin{proposition}[A sufficient global accounting contract]
+\label{prop:qp-accounting}
+Let $n\ge2$ be the bit length of a knot diagram encoding. Suppose a
+deterministic recognition scheme has sound decomposition rules, complete
+successor generation, and correct terminal tests. Suppose its whole
+execution processes at most $F(n)$ state occurrences, counting repeated
+states unless their suppression is justified. At each occurrence assume:
+\begin{enumerate}
+\item all discovery work, including rejected candidates, takes at most
+      $D(n)$ bit operations;
+\item all representations and relevant historical data have at most
+      $P(n)$ bits, and their construction, verification, terminal tests,
+      and composition cost $P(n)^{O(1)}$;
+\item at most $Q(n)$ prepared local queries are made, each costing
+      $P(n)^{O(1)}$ bit operations.
+\end{enumerate}
+If the initial faithful conversion costs $n^{O(1)}$, then, for a fixed
+constant $c$, the running time is bounded by
+\[
+ n^{O(1)}+F(n)\bigl(D(n)+(1+Q(n))P(n)^c\bigr).
+ \tag{A}\label{eq:global-accounting}
+\]
+In particular, quasi-polynomial bounds on $F,D,P,Q$ imply a
+quasi-polynomial bound for this complete scheme.
+\end{proposition}
+
+\begin{proof}
+Charge preparation and verification when each state is processed, then
+charge its discovery and queries. Summing these bounds gives
+\eqref{eq:global-accounting}. A finite product or fixed power of functions
+bounded by $\exp((\log n)^{O(1)})$ has the same form. Completeness and
+correct terminal interpretation are hypotheses; the estimate does not
+derive them from certificate verification.
+\end{proof}
+
+For example, depth $h(n)$ and at most $b(n)$ generated successors per
+state give $F(n)\le\sum_{i=0}^{h(n)}b(n)^i$. Polynomial branching and
+$h(n)=O((\log n)^2)$ yield $\exp(O((\log n)^3))$ states. To obtain the
+stronger $\exp(O((\log n)^2))$ by this particular argument would require
+$h(n)=O(\log n)$, or a compensating smaller frontier. If at most $W(n)$
+state occurrences are processed at each level, the alternative bound is
+$F(n)\le(h(n)+1)W(n)$. Each formulation still needs the independent
+$D,P,Q$ bounds. A complete fallback preserves correctness but contributes
+its own running time whenever reached; the new local results do not
+remove that contribution.
+
+\subsection{Algebraic questions after saturation}
+
+\paragraph{1. Which source presentations admit small survivor sets?}
+For a fixed source define
+\[
+ \kappa(R)=\min\{|S|:S\subseteq X,\ \cl(S)=X\}.
+\]
+Enumeration gives a concrete quasi-polynomial procedure for the query
+$\kappa(R)\le O(\log n)$ on polynomially encoded sources. The next study
+should identify presentation classes with a proved small value, together
+with a terminal method for their residual presentations. Reducing to a
+small alphabet alone is not a recognition algorithm. General uniquely
+restricted matching optimization has hardness results~\cite{golumbic};
+whether useful parameterized structure survives the source-word
+restrictions is a separate question. Any proposed improvement should
+state its parameter and compare against the explicit
+$\binom rk(r+m+I)$ enumeration bound.
+
+This question must distinguish original meridians from transformed
+generators. On standard unreduced crossing words, the implications recover
+the familiar Wirtinger propagation mechanism~\cite{wirtinger}. When
+crossing labels coincide, freely reducing those words can introduce
+additional implications; ordinary diagrammatic coloring is then not
+automatically identical to source closure. After Whitehead or other
+verified presentation transformations, current generators also need not
+be meridians. Corollary~4.3 of~\cite{incompatibility} supplies unknot
+diagrams with arbitrarily large diagrammatic Wirtinger number. Thus a
+fixed-diagram bounded-seed completeness conjecture for ordinary coloring
+is already false. A useful new theorem must specify the permitted
+transformations and charge their discovery.
+
+\paragraph{2. Can cancellation boundaries be controlled?}
+The example $xy,xy^2$ shows that a single free-reduction boundary can
+enable eliminations absent from the original closure. A precise next
+problem is to parameterize the interactions across such boundaries:
+for instance by a stated bound on the number of participating source
+factors or on an explicitly defined interaction graph. The desired
+theorem would construct a finite successor list, bound its total encoded
+size, and prove that some listed successor preserves a successful
+continuation. Merely bounding the number of letters cancelled in an
+expanded word would be unsuitable for highly compressed inputs.
+Counterexample families should force cancellation across many shared
+grammar subwords, so that a proposed parameter cannot hide an exponential
+number of distinct contexts.
+
+\paragraph{3. Which witness choices preserve later search behavior?}
+Same-donor rematching preserves the induced map in the free group; closure
+over all source rows may choose another donor set and need not preserve
+that map. Can one optimize a closure witness for compiled size, attachment
+description, or the next verified move without enumerating exponentially
+many donor sets? A first falsifiable target is an efficiently computable
+cost model for a restricted source class, with either a proved
+approximation bound or a counterexample to greedy choice. Experiments
+must compare semantic endpoints when donor sets agree, and complete
+subsequent search outcomes when they differ. Equality of immediate ranks
+does not establish interchangeability of these states. Classical matching
+acyclicity and Horn propagation~\cite{kozen,dowling} remain the underlying
+tools, rather than additional novelty claims.
+
+\paragraph{4. Is there a potential controlling successive normalized epochs?}
+The removed raw-phase factor should now be replaced by an explicit measure
+of the transformations that remain. A promising theorem would associate
+each normalized state with a potential and show a decrease, a bounded
+number of neutral moves, or a balanced decomposition along every required
+branch. The potential must account for encoded grammar complexity as well
+as generator count: long sequences of rank-preserving transformations are
+not ruled out by rank reduction. Record proposed potentials on adversarial
+families and actively search for increasing cycles before using them in a
+depth argument. A bound observed on successful examples is not a bound on
+the failed branches required by deterministic recognition.
+
+\subsection{Geometric representations and complete discovery}
+
+\paragraph{5. Can the prepared point map be accelerated further?}
+The present index stores the entire minimum set as at most $g$ ordinary
+intervals and answers canonical minimum rank and selection in
+$O(B\log(g+2))$ bit work. An arbitrary point query still follows the
+contraction and truncation program; its stated bound is
+$O(sB^2\log(k+2))$. These are different query problems. A concrete next
+target is near-linear preparation in the stored trace size, followed by
+polylogarithmic dependence on $s$ for point transport, with binary
+arithmetic charged. Test whether balanced composition of partial affine,
+reflection, and remainder maps produces a controlled representation, or
+whether its number of pieces necessarily grows rapidly. The compactness
+of the minimum set alone does not bound this composition. Existing
+compressed tracing histories~\cite{erickson-nayyeri} are essential prior
+art for this question.
+
+\paragraph{6. Which attachment descriptions stay compact under cutting?}
+Minimum representatives identify components of one fixed source relation.
+They neither identify components across different triangulations nor
+encode arbitrary permutations of attachment points. Choose an explicit
+attachment language---for example, ordered marked intervals with specified
+partial isometries and source charts---and prove closure of that language
+under each proposed cut, gluing, and simplification. The measurable target
+is a bound on chart count, map size, coordinate bits, and provenance length
+after a sequence of operations. A counterexample with exponentially many
+required chart pieces would refute that representation choice even if all
+individual component queries remain polynomial. Signed variants must
+transport the established geometric orientation data; an interval
+reflection by itself is not an orientation character of a surface.
+
+\paragraph{7. What makes a useful surface deterministically discoverable?}
+The next hierarchy implementation should specify one exact move and its
+input contract, then prove both a complete candidate description and a
+producer with an encoded running-time bound. This is preferable to
+assuming an unspecified oracle for a useful normal surface. Separate the
+number of surface candidates, the weight bits of each, and the boundary
+patterns created by cutting. AHT and the new index handle supplied
+component data; the curve algorithms can handle supplied compressed curves
+\cite{aht,lackenby-curves}. The missing theorem must explain why the
+necessary supplied objects can be found within the budget. The 2026
+hierarchy preprint~\cite{lackenby-2026} gives a serious source of structural
+lemmas, but each imported statement must retain its hypotheses and cost
+parameters.
+
+\paragraph{8. Can equivalent marked frontiers be recognized and counted?}
+A frontier compression theorem needs an equivalence relation preserving
+all permitted continuations, a procedure to recognize that equivalence,
+and a bound on the number of resulting classes. Equal component counts,
+equal lists of minimum ranks, or isomorphic unmarked graphs need not
+preserve attachment maps or peripheral information. Start with a restricted
+surface class and a fixed attachment language from Question~6. Construct
+pairs with identical coarse summaries but different marked behavior; these
+are direct tests of any proposed state key. Only after such distinctions
+are resolved can canonicalization justify a smaller $W(n)$ in the global
+contract.
+
+\paragraph{9. Can marked component data be returned without listing components?}
+The most direct next geometric extension is to associate the maintained
+weighted terminal runs with canonical minimum keys. Given one marked
+point, return its component's Euler characteristic, boundary information,
+or complete normal coordinate vector, using compressed weight transport.
+The target is preparation polynomial in the source trace and requested
+weight channels, followed by queries that depend on the encoded answer
+size. The minimum-set interval bound does not automatically bound the
+number of weight changes within those intervals. Prove an additional
+bound on the joint representation, or exhibit a family in which the
+chosen weight language requires too many pieces. The signed-cover
+corollary supplies path parity, provided that the geometric character
+has already been certified; it does not replace this weighted analysis.
+
+\paragraph{10. Which proof obligations can be mechanically formalized first?}
+A focused formalization should begin with the positive-pivot matching
+injection, the same-donor free-group homomorphism argument, and the
+orbit minimum-set invariant. Each has a small mathematical interface and
+an independent finite oracle already available for examples. A second
+stage should prove refinement from immutable grammar masks and the
+queue invariant to the mathematical closure, and from the six verified
+interval operations to the retained transport program. The distinction
+between equality of raw strings and equality in a free group must appear
+in the formal statement. No machine-checked proof is included in this
+delivery: the supplied proofs are mathematical manuscripts, and the
+independent certificate replayers and tests remain software evidence.
+
+\subsection{An adversarial validation and integration programme}
+
+The next experiments should test explicit claims and expose their limits.
+They should retain the pinned baseline and independently verified outputs
+used in this continuation~\cite{repo}. Three complementary designs would
+make progress assessable.
+
+\paragraph{Algebraic stress tests.}
+Extend the finite matrix audit with structured unique-matching families,
+bad pivot orders, repeated donor roots, and entries of large binary size.
+For word-level tests vary signs independently of absolute incidence,
+include empty slots and sparse generator names, and require same-donor
+flattening to preserve every freely reduced generator image and residual
+relator. Include presentations in which one normalization changes closure,
+and knot families built from the Wirtinger obstruction examples. Record
+closure work, compiled nodes, retained historical storage, normalization
+boundaries, and all explored branches separately. The matrix checks
+support implementation correctness; they do not replace the proof or
+model the distribution of knot diagrams.
+
+\paragraph{Orbit and attachment stress tests.}
+Vary endpoint bit length independently of pairing count, trace length,
+gap count, and query count. Combine reflections, periodic carriers, and
+separated static gaps; compare different valid traces for identical
+minimum maps and canonical order. Test huge component counts with few
+minimum intervals, as well as families attaining the interval bound.
+Cross-check small cases by explicit union--find and large structured cases
+by independent formulas. For performance, compare the same requested
+representatives and include a baseline sharing the original orbit count.
+Report verification and preparation separately from prepared queries and
+also as a complete workload, so the break-even query count is visible.
+
+\paragraph{End-to-end and negative tests.}
+Use held-out diagram families, verified diagram transformations, and
+nontrivial knots, rather than only successful local certificates. Report
+success, certified rejection, and resource exhaustion separately.
+Mutations should target source bindings, donor reuse, ranks outside the
+minimum set, attachment maps, incomplete traces, and arithmetic limits.
+Record actual encoded sizes, peak retained memory, source hashes, raw
+timings, and discovered-state counts. No finite timing fit establishes
+the exponent in an asymptotic theorem; the useful outcome is either a
+counterexample to a proposed bound or data identifying which obligation
+in~\eqref{eq:global-accounting} dominates.
+
+The resulting milestones are concrete: first, an exact and measured
+normalization-boundary model; second, a closed language of marked
+geometric states with composable provenance; third, a complete candidate
+producer for a specified hierarchy move; and finally a proved frontier or
+depth bound. The present saturation and indexing results supply reliable
+local operations for that programme. The remaining global hypotheses are
+research problems, not consequences of those local operations.

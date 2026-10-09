@@ -1,0 +1,3287 @@
+diff --git a/Topology/UnknotRecognition/fast/COMPILED_CERTIFICATES.md b/Topology/UnknotRecognition/fast/COMPILED_CERTIFICATES.md
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/COMPILED_CERTIFICATES.md
+@@ -0,0 +1,114 @@
++# Raw singleton saturation and compiled interval-orbit queries
++
++This continuation targets ProveIt commit
++`fdeb5b1a20b84b93cb150e0232031837bb7d30cb`.
++
++It adds two exact operations. It does not establish general quasi-polynomial
++unknot recognition. The complete mathematical article and experimental records
++are supplied with the integration archive.
++
++## Complete raw singleton discovery
++
++`fastunknot.raw_saturation` computes source Horn closure using exact raw
++occurrences in the shared word grammar. For specified survivors, it decides
++whether **any** sequence of raw singleton Tietze eliminations can eliminate
++all other generators. Free/cyclic reduction and other presentation moves
++between eliminations are outside that theorem.
++
++The production option tries every singleton survivor, then compiles a successful
++source plan into the existing version-eight `elimination_batch` format. The
++original independent verifiers are unchanged. All residual relators must pass
++the existing rank-one exponent-zero check.
++
++```python
++from fastunknot import Diagram, recognize
++from fastunknot.group_certificate import group_decide
++
++diagram = Diagram.from_braid(64, list(range(1, 64)))
++result = group_decide(
++    diagram, seconds=None, max_work=10_000_000,
++    raw_saturation=True,
++)
++assert result['status'] == 'UNKNOT'
++
++# Full recognition retains the usual earlier filters.
++answer = recognize(diagram, use_group=True, group_raw_saturation=True)
++assert answer.is_unknot
++```
++
++CLI:
++
++```bash
++python3 -m fastunknot recognize examples/unknot_braid40.json \
++  --group-raw-saturation
++```
++
++The CLI switch enables the group stage. In the library API, use
++`use_group=True` with `group_raw_saturation=True`. The default is false.
++The option implies compressed group search and compressed verification.
++
++The low-level interfaces are `build_index`, `seed_closure`, and
++`find_rank_one_plan`. Discovery does not change roots, the live alphabet, or
++grammar nodes. Source caches bind arena identity, ordered roots, and live
++labels. An uncapped completed failure is exact only for raw singleton
++reachability; an interrupted query or attempt cap has no negative knot meaning.
++
++After source metadata, fixed-seed closure costs O(r+m+I) structural operations;
++all singleton seeds cost O(r(r+m+I)). Source-summary bit costs and historical
++arena storage are additional and remain explicit in the article. A complete
++raw epoch can be compiled into O(M+qH+q) grammar nodes from its frozen source.
++Only same-donor flattening is guaranteed to preserve the previous epoch's
++free-group homomorphism; raw spellings can differ.
++
++## Prepared orbit membership and canonical rank/select
++
++```python
++from fastunknot.interval_orbits import IntervalPairing
++from fastunknot.orbit_index import prepare_orbit_index
++
++index, discovery = prepare_orbit_index(
++    24, [IntervalPairing(0, 15, 8, 23)]
++)
++assert discovery.complete
++assert index.representative(22) == 6
++assert index.same_orbit(2, 18)
++assert index.minimum_intervals == ((0, 8),)
++assert index.orbit_rank(22) == 6
++assert index.select_minimum(6) == 6
++```
++
++`OrbitIndex.from_certificate` verifies a complete source-bound orbit trace and
++compiles immutable retained data. It does not call the orbit producer. The
++representative is the least **original** integer point in the component and
++agrees across valid traces of the same source relation.
++
++`minimum_intervals` is the sorted union of half-open intervals containing all
++component minima. If the trace contains g static gaps, there are at most g
++intervals. Canonical `minimum_rank` and `select_minimum` use binary search and
++O(B log(g+2)) bit work after preparation. `orbit_rank` first finds the queried
++point's minimum. The older `select` interface uses trace-emission ordinals;
++those ordinals can differ between valid traces.
++
++The factory is the verification boundary. Query arithmetic is audited trusted
++code; there is no separate per-query proof format. The index does not change
++recognition dispatch, find normal vectors, or encode arbitrary attachment maps.
++The mathematical signed-cover corollary is not a new implemented signed API.
++
++## Evidence and scope
++
++The final combined suite passes 1,114 tests, compared with 1,090 at the pinned
++baseline. The independent raw audit checks 85,303 occurrence matrices and
++1,896 completed signed raw epochs. Source replay checks use both old and new
++verifiers. Orbit audits make 315,554 explicit minimum comparisons, in addition
++to membership and canonical rank/select checks.
++
++Recorded improvements include a 46.720 median paired ratio for the complete
++group stage on an elementary 255-crossing unknot closure, and ratios 15.629
++and 20.686 for complete 32-query orbit workloads on two supplied normal systems.
++The full recognizer corpus does not show a broad speedup. Negative controls,
++failed probes, and resource-limited outcomes are retained; the article explains
++the timing boundaries and the reasons for keeping the group option opt-in.
++
++See `raw_saturation_research/`, `orbit_index_research/`, and `results/` for
++reproduction drivers and full evidence. The article provides complete proofs,
++counterexamples, encoded-cost conventions, and ten further research questions.
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/__main__.py b/Topology/UnknotRecognition/fast/fastunknot/__main__.py
+--- a/Topology/UnknotRecognition/fast/fastunknot/__main__.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/__main__.py
+@@ -69,6 +69,7 @@
+         ("--group-compressed", None, False, None, "enable group certificates with exact compressed-word replay"),
+         ("--group-compressed-search", None, False, None, "enable compressed group search and replay; overlaps expand within a fixed cap"),
+         ("--group-elimination-batch", None, False, None, "enable checked acyclic singleton elimination batches"),
++        ("--group-raw-saturation", None, False, None, "enable complete raw rank-one elimination queries with checked batch replay"),
+         ("--group-primitive-forest", None, False, None, "enable checked acyclic unit-coordinate primitive forests"),
+         ("--group-primitive-projection", None, False, None, "enable compressed disjoint primitive-pair rounds with independent replay"),
+         ("--group-adaptive", None, False, None, "start group search explicitly and switch to compressed words before exceeding the letter allowance"),
+@@ -322,12 +323,13 @@
+                            use_rational=not args.no_rational,
+                            use_treewidth_two=args.treewidth_two, treewidth_two_seconds=args.treewidth_two_seconds,
+                            use_regina=args.regina, regina_seconds=args.regina_seconds,
+-                           use_group=args.group or args.group_elimination_batch or args.group_primitive_forest or args.group_primitive_projection or args.group_relators or args.group_compressed or args.group_compressed_search or args.group_adaptive or args.group_switch_letters is not None,
++                           use_group=args.group or args.group_raw_saturation or args.group_elimination_batch or args.group_primitive_forest or args.group_primitive_projection or args.group_relators or args.group_compressed or args.group_compressed_search or args.group_adaptive or args.group_switch_letters is not None,
+                            group_seconds=args.group_seconds, group_compressed=args.group_compressed,
+                            group_compressed_search=args.group_compressed_search,
+                            group_primitive_projection=args.group_primitive_projection,
+                            group_primitive_forest=args.group_primitive_forest,
+                            group_elimination_batch=args.group_elimination_batch,
++                           group_raw_saturation=args.group_raw_saturation,
+                            group_adaptive=args.group_adaptive or args.group_switch_letters is not None,
+                            group_switch_letters=args.group_switch_letters,
+                            group_relators=args.group_relators, group_max_work=args.group_max_work,
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/compressed_search.py b/Topology/UnknotRecognition/fast/fastunknot/compressed_search.py
+--- a/Topology/UnknotRecognition/fast/fastunknot/compressed_search.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/compressed_search.py
+@@ -10,7 +10,8 @@
+ 
+ 
+ def _search(arena, roots, alive, moves, *, relator_moves=False, max_letters=200000,
+-            primitive_terminal=None, primitive_projection=False, rank_two_terminal=True, primitive_forest=False, elimination_batch=False):
++            primitive_terminal=None, primitive_projection=False, rank_two_terminal=True,
++            primitive_forest=False, elimination_batch=False, raw_saturation=False):
+     """Return algebraic success; an optional output dict enables the new terminal.
+ 
+     Without that dict, True retains the old rank-one, no-relator contract.
+@@ -19,12 +20,13 @@
+     source-reconstructing wrapper can turn this into a verdict.
+     """
+     primitive_projection = primitive_projection or primitive_forest
+-    if (primitive_projection or elimination_batch) and primitive_terminal is None:
++    if (primitive_projection or elimination_batch or raw_saturation) and primitive_terminal is None:
+         raise ValueError('raw batch search requires an explicit terminal output')
+     raw = False
+     normalization_cache = {} if primitive_projection or elimination_batch else None
+     elimination_cache = {} if elimination_batch else None
+     projection_cache = {} if primitive_projection else None
++    saturation_cache = {} if raw_saturation else None
+     while len(alive) > 1:
+         if rank_two_terminal and primitive_terminal is not None and len(alive) == 2:
+             from .primitive_power import primitive_power_terminal
+@@ -32,6 +34,20 @@
+             if evidence is not None:
+                 primitive_terminal.update(evidence)
+                 return True
++
++        if raw_saturation and not raw:
++            # Exhaust the normalization-free rank-one move class on this
++            # immutable source. A declined query changes no relator or live
++            # label. A successful plan reuses the independently checked v8
++            # batch format; no new trusted certificate move is introduced.
++            from .raw_saturation import find_rank_one_plan
++            plan = find_rank_one_plan(arena, roots, alive, saturation_cache)
++            if plan is not None:
++                from .elimination_batch import apply_batch
++                apply_batch(arena, roots, alive, plan['entries'])
++                moves.append(dict(kind='elimination_batch', entries=plan['entries']))
++                raw = True
++                break
+ 
+         if elimination_batch and len(alive) >= 3:
+             from .elimination_batch import plan_batch, apply_batch
+@@ -188,7 +204,7 @@
+ def compressed_certificate(diagram, *, check=lambda: None, max_letters=200000,
+                            max_work=2000000, max_nodes=100000, relator_moves=False, stats=None,
+                            primitive_power=True, primitive_projection=False, primitive_forest=False, elimination_batch=False,
+-                           post_recovery_work=None):
++                           post_recovery_work=None, raw_saturation=False):
+     """Find a trace or None; resource exhaustion raises GroupLimit.
+ 
+     max_letters caps the initial presentation and optional overlap expansion.
+@@ -204,11 +220,16 @@
+     primitive_projection; both modes are optional.
+     elimination_batch separately enables acyclic singleton definitions with
+     arbitrary word images and emits version eight on activation.
++    raw_saturation completely queries normalization-free rank-one elimination
++    at each normalized source boundary, compiling a hit as one version-eight
++    batch. It is optional and consumes the ordinary shared producer budget.
+     post_recovery_work optionally limits producer work after rebuilding the
+     source presentation; max_work still caps recovery and search together.
+     Disable both projection options to retain the version-five search; disabling
+     both primitive options retains the historical rank-one contract.
+     """
++    if type(raw_saturation) is not bool:
++        raise ValueError('raw_saturation must be boolean')
+     if type(elimination_batch) is not bool:
+         raise ValueError('elimination_batch must be boolean')
+     if post_recovery_work is not None and (type(post_recovery_work) is not int or post_recovery_work < 0):
+@@ -235,10 +256,11 @@
+             arena.left = min(arena.left, post_recovery_work)
+             arena.stats['post_recovery_limit'] = arena.left
+         moves = []
+-        terminal = {} if primitive_power or primitive_projection or elimination_batch else None
++        terminal = {} if primitive_power or primitive_projection or elimination_batch or raw_saturation else None
+         if not _search(arena, roots, alive, moves, relator_moves=relator_moves, max_letters=max_letters,
+                        primitive_terminal=terminal, primitive_projection=primitive_projection,
+-                       rank_two_terminal=primitive_power, primitive_forest=primitive_forest, elimination_batch=elimination_batch):
++                       rank_two_terminal=primitive_power, primitive_forest=primitive_forest,
++                       elimination_batch=elimination_batch, raw_saturation=raw_saturation):
+             return None
+         batched = any(move['kind'] == 'elimination_batch' for move in moves)
+         forested = any(move['kind'] == 'primitive_forest' for move in moves)
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/group_certificate.py b/Topology/UnknotRecognition/fast/fastunknot/group_certificate.py
+--- a/Topology/UnknotRecognition/fast/fastunknot/group_certificate.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/group_certificate.py
+@@ -536,7 +536,8 @@
+ def group_decide(diagram, *, seconds=0.05, max_letters=200000, max_work=2000000,
+                  relator_moves=False, compressed_verification=False,
+                  compressed_search=False, adaptive_search=False, switch_letters=None,
+-                 max_nodes=100000, check=lambda: None, primitive_projection=False, primitive_forest=False, elimination_batch=False):
++                 max_nodes=100000, check=lambda: None, primitive_projection=False,
++                 primitive_forest=False, elimination_batch=False, raw_saturation=False):
+     """Bounded search AND independent verification sharing one wall allowance.
+ 
+     primitive_projection opts into raw disjoint-pair rounds and implies
+@@ -546,6 +547,8 @@
+     with at most max_work//4 total producer work and a 50000-work cap after
+     source recovery, then restarts the prior compressed policy on nondecision. Both attempts
+     share the producer work allowance and the existing wall deadline.
++    raw_saturation optionally probes the complete raw rank-one elimination
++    class at normalized states and implies compressed search and replay.
+     """
+     from math import isfinite
+     start = monotonic()
+@@ -553,6 +556,8 @@
+         raise ValueError('compressed_verification must be boolean')
+     if type(compressed_search) is not bool:
+         raise ValueError('compressed_search must be boolean')
++    if type(raw_saturation) is not bool:
++        raise ValueError('raw_saturation must be boolean')
+     if type(elimination_batch) is not bool:
+         raise ValueError('elimination_batch must be boolean')
+     if type(primitive_projection) is not bool:
+@@ -560,7 +565,7 @@
+     if type(primitive_forest) is not bool:
+         raise ValueError('primitive_forest must be boolean')
+     primitive_projection = primitive_projection or primitive_forest
+-    compressed_search = compressed_search or primitive_projection or elimination_batch
++    compressed_search = compressed_search or primitive_projection or elimination_batch or raw_saturation
+     if type(adaptive_search) is not bool:
+         raise ValueError('adaptive_search must be boolean')
+     if compressed_search and adaptive_search:
+@@ -599,7 +604,7 @@
+                     certificate = compressed_certificate(diagram, check=tick, max_letters=max_letters,
+                         max_work=probe_limit, max_nodes=max_nodes, relator_moves=relator_moves, stats=probe_stats,
+                         primitive_projection=primitive_projection, primitive_forest=primitive_forest, elimination_batch=True,
+-                        post_recovery_work=50000)
++                        post_recovery_work=50000, raw_saturation=raw_saturation)
+                 except GroupLimit as exc:
+                     tick();certificate=None;reason=str(exc)
+                 # Recovery failure can precede arena accounting. Once the
+@@ -612,14 +617,16 @@
+                     try:
+                         certificate = compressed_certificate(diagram, check=tick, max_letters=max_letters,
+                             max_work=max(0,max_work-probe_work), max_nodes=max_nodes, relator_moves=relator_moves, stats=search_stats,
+-                            primitive_projection=primitive_projection, primitive_forest=primitive_forest)
++                            primitive_projection=primitive_projection, primitive_forest=primitive_forest,
++                            raw_saturation=raw_saturation)
+                     finally:search_stats['work']=search_stats.get('work',0)+probe_work
+                 else:search_stats.update(probe_stats)
+                 search_stats['elimination_probe']=dict(limit=probe_limit,search_limit=50000,charged_work=probe_work,reason=reason,stats=probe_stats)
+             else:
+                 certificate = compressed_certificate(diagram, check=tick, max_letters=max_letters,
+                     max_work=max_work, max_nodes=max_nodes, relator_moves=relator_moves, stats=search_stats,
+-                    primitive_projection=primitive_projection, primitive_forest=primitive_forest)
++                    primitive_projection=primitive_projection, primitive_forest=primitive_forest,
++                    raw_saturation=raw_saturation)
+         else:
+             certificate = group_certificate(diagram, check=tick, max_letters=max_letters, max_work=max_work,
+                 relator_moves=relator_moves, adaptive=adaptive_search, switch_letters=switch_letters,
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/orbit_index.py b/Topology/UnknotRecognition/fast/fastunknot/orbit_index.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/orbit_index.py
+@@ -0,0 +1,346 @@
++"""Compile a verified binary interval-orbit trace into exact point queries.
++
++This module is additive to fastunknot: the existing producer and independent
++trace checker are unchanged.  A prepared index maps each source point to the
++minimum original point of its orbit.  Preparation and queries never enumerate
++the represented interval.  Ordinal labels follow trace emission order and are
++not canonical; minimum representatives are canonical across valid traces.
++"""
++
++from bisect import bisect_right
++from copy import deepcopy
++from dataclasses import dataclass
++from math import gcd
++
++from fastunknot.integer_codec import encoded_integer
++from fastunknot.interval_orbit_verify import (
++    _public_pairings, _transmitted_row, verify_orbit_certificate,
++)
++
++
++def _number(value, name, lower=0):
++    try:
++        value = encoded_integer(value)
++    except ValueError as exc:
++        raise ValueError(f'{name} must be an integer or hexadecimal string') from exc
++    if value < lower:
++        raise ValueError(f'{name} must be at least {lower}')
++    return value
++
++
++def _poll(check):
++    if check is not None:
++        check()
++
++
++def _minimum_ranges(contractions, count, check):
++    """Lift static gaps to source hulls and form the canonical minimum set.
++
++    Between the source images of a current gap's endpoints, the only missing
++    original points are minima emitted by previous contractions.  Points
++    removed by earlier suffix truncations lie beyond the current live prefix.
++    Thus adjoining the entire source hull adds exactly new minima, possibly
++    joining old minimum intervals.  There is at most one hull per static gap.
++    """
++    hulls = []
++    inverse_steps = 0
++    for position, contraction in enumerate(contractions):
++        _poll(check)
++        earlier = contractions[:position]
++        for lo, stop in zip(contraction.starts, contraction.stops):
++            _poll(check)
++            hi = stop - 1
++            for old in reversed(earlier):
++                _poll(check)
++                lo, hi = old.backward(lo), old.backward(hi)
++                inverse_steps += 2
++            hulls.append((lo, hi + 1))
++    ranges = []
++    for lo, stop in sorted(hulls):
++        _poll(check)
++        if ranges and lo <= ranges[-1][1]:
++            ranges[-1] = (ranges[-1][0], max(ranges[-1][1], stop))
++        else:
++            ranges.append((lo, stop))
++    prefix = [0]
++    for lo, stop in ranges:
++        prefix.append(prefix[-1] + stop - lo)
++    if prefix[-1] != count:
++        raise ArithmeticError('minimum source intervals disagree with the orbit count')
++    return (tuple(ranges), tuple(lo for lo, _ in ranges), tuple(prefix), inverse_steps)
++
++
++@dataclass(frozen=True, slots=True)
++class _Contraction:
++    starts: tuple
++    stops: tuple
++    prefix: tuple
++    collapsed: tuple
++    first_orbit: int
++    position: int
++
++    @classmethod
++    def from_gaps(cls, gaps, first_orbit, position):
++        starts, stops, prefix, collapsed = [], [], [0], []
++        for lo, hi in gaps:
++            starts.append(lo)
++            stops.append(hi + 1)
++            collapsed.append(lo - prefix[-1])
++            prefix.append(prefix[-1] + hi - lo + 1)
++        return cls(tuple(starts), tuple(stops), tuple(prefix),
++                   tuple(collapsed), first_orbit, position)
++
++    @property
++    def emitted(self):
++        return self.prefix[-1]
++
++    def forward(self, point):
++        i = bisect_right(self.starts, point) - 1
++        if i >= 0 and point < self.stops[i]:
++            return None, self.first_orbit + self.prefix[i] + point - self.starts[i]
++        removed = self.prefix[bisect_right(self.stops, point)]
++        return point - removed, None
++
++    def backward(self, point):
++        # This is the order-preserving inverse on surviving points.  Adjacent
++        # gaps, if supplied by another valid schema, are also handled by <=.
++        return point + self.prefix[bisect_right(self.collapsed, point)]
++
++    def emitted_point(self, ordinal):
++        offset = ordinal - self.first_orbit
++        i = bisect_right(self.prefix, offset) - 1
++        return self.starts[i] + offset - self.prefix[i]
++
++
++@dataclass(frozen=True, slots=True)
++class _Truncation:
++    cut: int
++    period: int
++    reflection_sum: int | None
++
++    def forward(self, point):
++        if point < self.cut:
++            return point
++        if self.reflection_sum is not None:
++            return self.reflection_sum - point
++        base = self.cut - self.period
++        return base + (point - base) % self.period
++
++
++@dataclass(frozen=True, slots=True)
++class OrbitLocation:
++    representative: int
++    ordinal: int
++    forward_steps: int
++    reverse_contractions: int
++
++
++@dataclass(frozen=True, slots=True)
++class OrbitIndex:
++    size: int
++    count: int
++    _steps: tuple
++    _contractions: tuple
++    _emission_starts: tuple
++    _event_count: int
++    _gap_count: int
++    _max_gap_count: int
++    _minimum_intervals: tuple
++    _minimum_starts: tuple
++    _minimum_prefix: tuple
++    _minimum_inverse_steps: int
++
++    @classmethod
++    def from_certificate(cls, size, pairings, certificate, check=None):
++        """Verify a complete source-bound trace and compile an immutable index.
++
++        The checker is the maintained independent checker, not count_orbits.
++        Copying supplied proof data prevents later caller mutation from
++        changing the prepared index.  A malformed or incomplete proof raises
++        ValueError; caller cancellation propagates.
++        """
++        _poll(check)
++        size = _number(size, 'size')
++        proof = deepcopy(certificate)
++        supplied = deepcopy(list(pairings))
++        if not verify_orbit_certificate(size, supplied, proof, check=check):
++            raise ValueError('a complete source-bound orbit certificate is required')
++        rows = _public_pairings(size, supplied)
++        initial_size = size
++        steps, contractions, emission_starts = [], [], []
++        emitted = gap_count = max_gap_count = 0
++        for event in proof['operations']:
++            _poll(check)
++            op = event['op']
++            if op == 'delete':
++                rows.pop(encoded_integer(event['index']))
++            elif op == 'trim':
++                i = encoded_integer(event['index'])
++                a, _, _, d, _ = rows[i]
++                b = (a + d - 1) // 2
++                rows[i] = [a, b, a + d - b, d, -1]
++            elif op == 'merge':
++                i, j = sorted((encoded_integer(event['left']),
++                               encoded_integer(event['right'])))
++                a, _, c, d, _ = rows[i]
++                aa, _, cc, dd, _ = rows[j]
++                period = gcd(c - a, cc - aa)
++                lo, hi = min(a, aa), max(d, dd)
++                rows[i] = [lo, hi - period, lo + period, hi, 1]
++                rows.pop(j)
++            elif op == 'transmit':
++                i = encoded_integer(event['transmitter'])
++                j = encoded_integer(event['target'])
++                rows[j] = _transmitted_row(rows[i], rows[j],
++                                          event['source_power'],
++                                          event['target_power'], size)
++            elif op == 'contract':
++                gaps = tuple(tuple(encoded_integer(x) for x in gap)
++                             for gap in event['gaps'])
++                record = _Contraction.from_gaps(gaps, emitted, len(steps))
++                steps.append(record)
++                contractions.append(record)
++                emission_starts.append(emitted)
++                emitted += record.emitted
++                gap_count += len(gaps)
++                max_gap_count = max(max_gap_count, len(gaps))
++                size -= record.emitted
++                rows = [[record.forward(x)[0] for x in row[:4]] + [row[4]]
++                        for row in rows]
++            elif op == 'truncate':
++                i = encoded_integer(event['index'])
++                cut = encoded_integer(event['new_size'])
++                a, b, c, _, sign = rows[i]
++                steps.append(_Truncation(cut, c - a,
++                                         a + size - 1 if sign == -1 else None))
++                removed = size - cut
++                if cut == c:
++                    rows.pop(i)
++                elif sign == 1:
++                    rows[i] = [a, b - removed, c, cut - 1, 1]
++                else:
++                    rows[i] = [a + removed, b, c, cut - 1, -1]
++                size = cut
++            else:
++                raise ArithmeticError('unknown verified event')
++        if size or rows or emitted != encoded_integer(proof['orbit_count']):
++            raise ArithmeticError('index compilation did not finish')
++        minima = _minimum_ranges(contractions, emitted, check)
++        return cls(initial_size, emitted, tuple(steps), tuple(contractions),
++                   tuple(emission_starts), len(proof['operations']), gap_count,
++                   max_gap_count, *minima)
++
++    @property
++    def statistics(self):
++        return dict(source_events=self._event_count, point_steps=len(self._steps),
++                    contractions=len(self._contractions), gap_records=self._gap_count,
++                    maximum_gaps=self._max_gap_count,
++                    truncations=len(self._steps) - len(self._contractions),
++                    minimum_intervals=len(self._minimum_intervals),
++                    minimum_inverse_steps=self._minimum_inverse_steps)
++
++    @property
++    def minimum_intervals(self):
++        """Canonical sorted, disjoint half-open intervals of all orbit minima."""
++        return self._minimum_intervals
++
++    def _point(self, point):
++        point = _number(point, 'point')
++        if point >= self.size:
++            raise ValueError('point must lie inside the original universe')
++        return point
++
++    def _original(self, point, stop, check):
++        used = 0
++        for contraction in reversed(self._contractions):
++            if contraction.position >= stop:
++                continue
++            _poll(check)
++            point = contraction.backward(point)
++            used += 1
++        return point, used
++
++    def locate(self, point, check=None):
++        """Return a canonical minimum and a trace-dependent binary ordinal."""
++        _poll(check)
++        point = self._point(point)
++        for step_number, step in enumerate(self._steps, 1):
++            _poll(check)
++            if isinstance(step, _Truncation):
++                point = step.forward(point)
++            else:
++                surviving, ordinal = step.forward(point)
++                if ordinal is not None:
++                    original, used = self._original(point, step.position, check)
++                    return OrbitLocation(original, ordinal, step_number, used)
++                point = surviving
++        raise ArithmeticError('a verified complete index failed to emit a point')
++
++    def representative(self, point, check=None):
++        return self.locate(point, check=check).representative
++
++    def same_orbit(self, first, second, check=None):
++        _poll(check)
++        first, second = self._point(first), self._point(second)
++        return (first == second or self.representative(first, check=check)
++                == self.representative(second, check=check))
++
++    def select(self, ordinal, check=None):
++        """Select a minimum representative by trace emission ordinal.
++
++        No loop depends on the ordinal's numeric value or the orbit count.
++        The order of selected minima can differ between valid traces.
++        """
++        _poll(check)
++        ordinal = _number(ordinal, 'ordinal')
++        if ordinal >= self.count:
++            raise ValueError('ordinal must lie below the orbit count')
++        i = bisect_right(self._emission_starts, ordinal) - 1
++        contraction = self._contractions[i]
++        point = contraction.emitted_point(ordinal)
++        return self._original(point, contraction.position, check)[0]
++
++    def minimum_rank(self, representative, check=None):
++        """Return the rank of a minimum in the sorted canonical minimum set.
++
++        Reject points that are not minima.  This performs only interval binary
++        search, and does not run a point through the reduction program.
++        """
++        _poll(check)
++        representative = self._point(representative)
++        i = bisect_right(self._minimum_starts, representative) - 1
++        if i < 0 or representative >= self._minimum_intervals[i][1]:
++            raise ValueError('the supplied point is not an orbit minimum')
++        return self._minimum_prefix[i] + representative - self._minimum_starts[i]
++
++    def orbit_rank(self, point, check=None):
++        """Return the source-canonical sorted-minimum rank of a point's orbit."""
++        return self.minimum_rank(self.representative(point, check=check), check=check)
++
++    def select_minimum(self, rank, check=None):
++        """Select the rank-th smallest original orbit minimum by binary search."""
++        _poll(check)
++        rank = _number(rank, 'rank')
++        if rank >= self.count:
++            raise ValueError('rank must lie below the orbit count')
++        i = bisect_right(self._minimum_prefix, rank) - 1
++        return self._minimum_starts[i] + rank - self._minimum_prefix[i]
++
++
++def prepare_orbit_index(size, pairings, *, max_cycles=None,
++                        periodic_rule='fine_wilf', check=None):
++    """Discover one trace, then independently verify and compile it.
++
++    Return ``(index, result)``; index is None when discovery is incomplete.
++    max_cycles controls discovery only, just as in weighted trace reuse.
++    Verification and compilation use cooperative cancellation.
++    """
++    from fastunknot.interval_orbits import count_orbits
++    pairs = list(pairings)
++    result = count_orbits(size, pairs, max_cycles=max_cycles,
++                          periodic_rule=periodic_rule, check=check,
++                          record_certificate=True)
++    if not result.complete:
++        return None, result
++    index = OrbitIndex.from_certificate(size, pairs, result.certificate, check=check)
++    return index, result
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/raw_saturation.py b/Topology/UnknotRecognition/fast/fastunknot/raw_saturation.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/raw_saturation.py
+@@ -0,0 +1,226 @@
++"""Complete raw-singleton saturation of an immutable presentation state.
++
++The plan is a producer proposal, not a knot verdict. Its entries use the
++existing version-eight ``elimination_batch`` schema, whose independent
++replayer remains responsible for source-bound validation.
++
++No word is expanded, normalized, substituted or allocated during discovery.
++The arena's immutable occurrence metadata and cooperative-work counters may
++be populated. The supplied root list and live generator set are never changed.
++"""
++from collections import deque
++from dataclasses import dataclass
++
++
++@dataclass(frozen=True)
++class SourceIndex:
++    """Exact source occurrence incidence, with dense local label positions."""
++
++    roots: tuple
++    labels: tuple
++    incidence: tuple
++    singletons: tuple
++    degrees: tuple
++    xors: tuple
++
++
++@dataclass(frozen=True)
++class ClosureResult:
++    seeds: tuple
++    known: tuple
++    entries: tuple
++    complete: bool
++
++    def certificate_entries(self):
++        return [dict(relation=slot, generator=g) for slot, g in self.entries]
++
++
++def _stat(arena, name, amount=1):
++    arena.stats[name] = arena.stats.get(name, 0) + amount
++
++
++def build_index(arena, roots, alive):
++    """Index presence and exact-once incidence using WordArena's raw masks."""
++    roots = tuple(roots)
++    supplied = tuple(alive)
++    arena.tick(len(roots) + len(supplied) + 1)
++    if any(type(g) is not int or g <= 0 for g in supplied):
++        raise ValueError('live generator labels must be positive integers')
++    if len(set(supplied)) != len(supplied):
++        raise ValueError('live generator labels must be distinct')
++    if any(type(root) is not int or not 0 <= root < len(arena.rules)
++           for root in roots):
++        raise ValueError('invalid source word node')
++    labels = tuple(sorted(supplied))
++    position = {g: i for i, g in enumerate(labels)}
++    incidence = [[] for _ in labels]
++    singletons, degrees, xors = [], [], []
++
++    # This maintained operation is the sole owner of mask computation. It
++    # deduplicates shared grammar traversal and counts repeated child edges.
++    arena.singletons(roots)
++    for slot, root in enumerate(roots):
++        arena.tick()
++        present, repeated = arena._letter_masks[root]
++        unique, degree, xor = set(), 0, 0
++        while present:
++            arena.tick()
++            bit = present & -present
++            g = arena._letter_labels[bit.bit_length() - 1]
++            if g not in position:
++                raise ValueError('source word contains a non-live generator')
++            p = position[g]
++            incidence[p].append(slot)
++            degree += 1
++            xor ^= p
++            if not repeated & bit:
++                unique.add(p)
++            present ^= bit
++        singletons.append(frozenset(unique))
++        degrees.append(degree)
++        xors.append(xor)
++    _stat(arena, 'raw_saturation_indices')
++    _stat(arena, 'raw_saturation_source_incidence', sum(degrees))
++    return SourceIndex(roots, labels, tuple(map(tuple, incidence)),
++                       tuple(singletons), tuple(degrees), tuple(xors))
++
++
++def seed_closure(arena, index, seeds):
++    """Compute the least source Horn closure of one specified seed set.
++
++Rule R -> x is enabled exactly when x occurs once in the original raw R
++and every other generator in R is known. Each donor slot can fire only
++once: afterward every generator in that source row is known.
++    """
++    seeds = tuple(seeds)
++    arena.tick(len(index.labels) + 2 * len(index.degrees) + len(seeds) + 1)
++    if any(type(g) is not int or g <= 0 for g in seeds):
++        raise ValueError('seed labels must be positive integers')
++    if len(set(seeds)) != len(seeds):
++        raise ValueError('seed labels must be distinct')
++    position = {g: i for i, g in enumerate(index.labels)}
++    if any(g not in position for g in seeds):
++        raise ValueError('seed is not a live source generator')
++    known = [False] * len(index.labels)
++    missing = list(index.degrees)
++    remaining_xor = list(index.xors)
++    for seed in seeds:
++        arena.tick()
++        p = position[seed]
++        known[p] = True
++        for slot in index.incidence[p]:
++            arena.tick()
++            missing[slot] -= 1
++            remaining_xor[slot] ^= p
++    queue = deque()
++    for slot, count in enumerate(missing):
++        arena.tick()
++        if count == 1 and remaining_xor[slot] in index.singletons[slot]:
++            queue.append(slot)
++    count_known = len(seeds)
++    entries = []
++    while queue and count_known < len(index.labels):
++        arena.tick()
++        slot = queue.popleft()
++        if missing[slot] != 1:
++            continue
++        p = remaining_xor[slot]
++        if known[p] or p not in index.singletons[slot]:
++            raise ArithmeticError('inconsistent raw-saturation index')
++        known[p] = True
++        count_known += 1
++        entries.append((slot, index.labels[p]))
++        _stat(arena, 'raw_saturation_rule_firings')
++        for follower in index.incidence[p]:
++            arena.tick()
++            missing[follower] -= 1
++            remaining_xor[follower] ^= p
++            if (missing[follower] == 1 and
++                    remaining_xor[follower] in index.singletons[follower]):
++                queue.append(follower)
++    result = ClosureResult(tuple(sorted(seeds)),
++                           tuple(g for p, g in enumerate(index.labels) if known[p]),
++                           tuple(entries), count_known == len(index.labels))
++    _stat(arena, 'raw_saturation_closures')
++    return result
++
++
++def find_rank_one_plan(arena, roots, alive, cache=None, *, max_attempts=None):
++    """Find the first successful singleton seed, or decline without mutation.
++
++With ``max_attempts=None`` and sufficient arena resources, failure is complete
++for reaching rank one by *any* sequence of raw singleton eliminations from
++this frozen source, including different donor assignments and batch orders.
++It says nothing about moves involving normalization, relator overlap,
++Whitehead transformations, proper-power root extraction or knot type.
++    """
++    if max_attempts is not None and (type(max_attempts) is not int or max_attempts < 0):
++        raise ValueError('max_attempts must be a nonnegative integer or None')
++    if cache is not None and type(cache) is not dict:
++        raise ValueError('cache must be a dictionary or None')
++    _stat(arena, 'raw_saturation_queries')
++    roots, alive = tuple(roots), tuple(alive)
++    arena.tick(len(roots) + len(alive) + 1)
++    # Strict validation precedes equality comparisons against cached integer
++    # tuples, so Boolean aliases cannot reuse an otherwise valid source key.
++    if any(type(g) is not int or g <= 0 for g in alive):
++        raise ValueError('live generator labels must be positive integers')
++    if len(set(alive)) != len(alive):
++        raise ValueError('live generator labels must be distinct')
++    if any(type(root) is not int or not 0 <= root < len(arena.rules)
++           for root in roots):
++        raise ValueError('invalid source word node')
++    labels = tuple(sorted(alive))
++    index = None if cache is None else cache.get('_raw_saturation_index')
++    if (index is None or cache.get('_raw_saturation_arena') is not arena
++            or index.roots != roots or index.labels != labels):
++        if len(labels) > 1:
++            # Reject impossible first firings before materializing the full
++            # source incidence. The maintained singleton operation owns mask
++            # construction; cached root masks need no singleton enumeration.
++            missing_roots = [root for root in roots
++                             if root not in arena._letter_masks]
++            if missing_roots:
++                arena.singletons(missing_roots)
++            live_mask = 0
++            for g in labels:
++                arena.tick()
++                live_mask |= arena._letter_bits.get(g, 0)
++            first_firing = False
++            for root in roots:
++                arena.tick()
++                present, repeated = arena._letter_masks[root]
++                if present & ~live_mask:
++                    raise ValueError('source word contains a non-live generator')
++                if present.bit_count() <= 2 and present & ~repeated:
++                    first_firing = True
++            _stat(arena, 'raw_saturation_preindex_checks')
++            if not first_firing:
++                _stat(arena, 'raw_saturation_first_firing_failures')
++                _stat(arena, 'raw_saturation_exhaustive_failures')
++                return None
++        index = build_index(arena, roots, alive)
++        if cache is not None:
++            cache['_raw_saturation_arena'] = arena
++            cache['_raw_saturation_index'] = index
++    if not index.labels:
++        raise ValueError('raw saturation must retain a live generator')
++    for attempt, seed in enumerate(index.labels):
++        arena.tick()
++        if max_attempts is not None and attempt >= max_attempts:
++            _stat(arena, 'raw_saturation_attempt_exhaustions')
++            return None
++        _stat(arena, 'raw_saturation_seed_attempts')
++        result = seed_closure(arena, index, (seed,))
++        if result.complete:
++            _stat(arena, 'raw_saturation_successes')
++            arena.stats['raw_saturation_selected_seed'] = seed
++            return dict(seed=seed, entries=result.certificate_entries())
++    _stat(arena, 'raw_saturation_exhaustive_failures')
++    return None
++
++
++def plan_rank_one(arena, roots, alive, *, max_attempts=None):
++    """Return only the version-eight entries for a successful rank-one plan."""
++    plan = find_rank_one_plan(arena, roots, alive, max_attempts=max_attempts)
++    return None if plan is None else plan['entries']
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/recognize.py b/Topology/UnknotRecognition/fast/fastunknot/recognize.py
+--- a/Topology/UnknotRecognition/fast/fastunknot/recognize.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/recognize.py
+@@ -381,7 +381,7 @@
+               group_relators: bool = False, group_max_work: int = 2000000,
+               group_compressed: bool = False, group_compressed_search: bool = False,
+               group_primitive_projection: bool = False, group_primitive_forest: bool = False,
+-              group_elimination_batch: bool = False,
++              group_elimination_batch: bool = False, group_raw_saturation: bool = False,
+               group_adaptive: bool = False, group_switch_letters: int | None = None,
+               use_two_meridian: bool = False, two_meridian_seconds: float | None = 0.05,
+               two_meridian_max_work: int | None = 2_000_000,
+@@ -446,9 +446,13 @@
+         raise ValueError("group_primitive_projection must be boolean")
+     if type(group_elimination_batch) is not bool:
+         raise ValueError("group_elimination_batch must be boolean")
++    if type(group_raw_saturation) is not bool:
++        raise ValueError("group_raw_saturation must be boolean")
+     if type(group_primitive_forest) is not bool:
+         raise ValueError("group_primitive_forest must be boolean")
+-    group_compressed_search = group_compressed_search or group_primitive_projection or group_primitive_forest or group_elimination_batch
++    group_compressed_search = (group_compressed_search or group_primitive_projection
++                               or group_primitive_forest or group_elimination_batch
++                               or group_raw_saturation)
+     if type(group_adaptive) is not bool:
+         raise ValueError("group_adaptive must be boolean")
+     if group_adaptive and group_compressed_search:
+@@ -722,6 +726,7 @@
+                                           primitive_projection=group_primitive_projection,
+                                           primitive_forest=group_primitive_forest,
+                                           elimination_batch=group_elimination_batch,
++                                          raw_saturation=group_raw_saturation,
+                                           adaptive_search=group_adaptive, switch_letters=group_switch_letters,
+                                           max_work=group_max_work) if use_group else None,
+                        window_options=None if window_radius is None else dict(
+diff --git a/Topology/UnknotRecognition/fast/orbit_index_research/README.md b/Topology/UnknotRecognition/fast/orbit_index_research/README.md
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/orbit_index_research/README.md
+@@ -0,0 +1,111 @@
++# Compiled interval-orbit point queries
++
++This additive experiment compiles an independently verified AHT orbit trace
++into exact point queries. The original orbit producer, independent verifier,
++normal geometry adapter and default recognizer remain unchanged.
++
++## Public API
++
++```python
++from fastunknot.interval_orbits import IntervalPairing
++from fastunknot.orbit_index import prepare_orbit_index
++
++pairings = [IntervalPairing(0, 15, 8, 23)]
++index, discovery = prepare_orbit_index(24, pairings)
++assert discovery.complete
++assert index.representative(22) == 6
++assert index.same_orbit(2, 18)
++assert index.count == 8
++assert {index.select(i) for i in range(index.count)} == set(range(8))
++assert index.minimum_intervals == ((0, 8),)
++assert index.orbit_rank(22) == 6
++assert index.select_minimum(6) == 6
++```
++
++`OrbitIndex.from_certificate(size, pairings, certificate)` accepts a complete
++source-bound certificate without rediscovering an orbit schedule. It first
++runs the maintained independent verifier. Preparation copies both source
++pairings and the supplied certificate; the retained index data are immutable.
++Invalid or unfinished certificates raise `ValueError`.
++
++`representative(x)` returns the **minimum original point** of the orbit and is
++independent of the valid reduction trace used. `locate(x)` additionally returns
++a binary ordinal and operation counters. `select(i)` recovers the minimum of
++the orbit with that ordinal, without enumerating earlier orbits. Ordinals use
++trace emission order; they are not stable component names across traces.
++
++The additional `minimum_intervals` property lists the complete set of original
++orbit minima as immutable, sorted, disjoint half-open intervals. The number of
++intervals is at most the number of static gaps in the source trace, even when
++the number of components is exponentially larger. `minimum_rank(minimum)` and
++`select_minimum(rank)` use binary search over this union and are inverse
++canonical rank/select operations. `minimum_rank` rejects a source point that
++is not a minimum. `orbit_rank(point)` first finds the point's minimum. These
++sorted ranks are stable across valid traces of the same source relation.
++
++The documented factory is the verification boundary. As with other in-process
++Python objects, manually constructing or modifying private class internals is
++outside that contract. Query arithmetic is a small trusted implementation of
++the proved point-transport formulas, not a new independently replayed proof for
++each returned minimum. The compiler shares canonical row and transmission
++reconstruction with the existing trace verifier. The audit independently
++checks all returned minima against literal union-find graphs.
++
++All functions accept cooperative `check` callbacks. The discovery factory
++returns `(None, discovery)` if the existing `max_cycles` allowance expires.
++That allowance measures discovery cycles; it does not meter verification,
++compilation or later queries. Supplied integer endpoints and queried points
++accept exact integer/hexadecimal transport. No represented points are expanded.
++
++## Reproduction
++
++Run from the repository's `Topology/UnknotRecognition/fast` directory:
++
++```bash
++python orbit_index_research/audit.py
++python orbit_index_research/benchmark.py --rounds 7
++python orbit_index_research/rank_select.py --rounds 7
++```
++
++The audit writes `results/orbit_index_audit.json` and
++`results/orbit_index_tests.log`. The benchmark writes
++`results/orbit_index.json`; redirect stdout if a separate human-readable timing
++log is wanted. Both drivers pin the source files they use before and after
++execution. The third driver writes `results/orbit_rank_select.json`; it compares
++prepared emission-order selection to prepared canonical sorted selection, with
++corresponding ranks chosen to request the same original representative. It
++also measures canonical rank queries. Preparation is reported separately and
++excluded from every lookup timer. No optional native package is required.
++
++The eleven tests cover every at-most-two-generator system on universes through
++five points, up to generator order (7,398 indices across both merger rules),
++3,200 random relations under both maintained merger
++rules, 67 supplied normal vectors under both rules and both surface/boundary
++arc graphs, every local event type, original-minimum recovery after coordinate
++contraction, noncanonical emission orders, malformed proofs, source rebinding,
++disabled producer entry points, cooperative cancellation, and binary endpoints
++with 16,000 to 20,000 bits. Complete minimum sets and canonical sorted
++rank/select agree with literal graph calculations. A separate fixture attains
++the sharp 512-interval minimum-set bound while representing a 4,107-bit
++universe and a 4,106-bit component count.
++
++The benchmark has five shuffled arms and one excluded warmup. The compiled arm
++includes trace discovery, independent verification, compilation and all point
++comparisons. The current `same_orbit` API is one baseline. A stronger baseline
++shares the initial count and applies exact connected/singleton shortcuts before
++discovering augmented relations. Identical controls accompany the shared and
++compiled arms. Normal triangulation/vector construction and conversion to
++interval systems are outside every timer: this measures repeated queries on a
++supplied interval relation, not a complete normal-surface call or unknot search.
++
++## Integration boundary
++
++Only `fastunknot/orbit_index.py` is new runtime code. Its direct dependencies
++are existing `integer_codec`, `interval_orbit_verify`, and (for discovery only)
++`interval_orbits`. The test and research drivers are additive. No public import
++in `fastunknot/__init__.py` or default recognition dispatch is changed.
++
++The mathematical section also proves a signed-cover point-query corollary.
++There is no new signed wrapper in this delivery. Component keys refer to one
++source interval presentation and retain neither arbitrary attachment maps nor
++a bound on the number of states in a knot hierarchy.
+diff --git a/Topology/UnknotRecognition/fast/orbit_index_research/audit.py b/Topology/UnknotRecognition/fast/orbit_index_research/audit.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/orbit_index_research/audit.py
+@@ -0,0 +1,59 @@
++"""Run the independent graph/minimum audit and retain machine-readable evidence."""
++
++import argparse
++from contextlib import redirect_stdout
++import hashlib
++import io
++import json
++from pathlib import Path
++import sys
++import time
++import unittest
++
++FAST_ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(FAST_ROOT))
++from orbit_index_research.benchmark import source_manifest
++
++
++def manifest():
++    result = source_manifest()
++    result['orbit_index_research/audit.py'] = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
++    return result
++
++
++def main():
++    parser = argparse.ArgumentParser()
++    parser.add_argument('--output', type=Path,
++                        default=FAST_ROOT / 'results' / 'orbit_index_audit.json')
++    parser.add_argument('--log', type=Path,
++                        default=FAST_ROOT / 'results' / 'orbit_index_tests.log')
++    args = parser.parse_args()
++    before = manifest()
++    suite = unittest.defaultTestLoader.discover(str(FAST_ROOT / 'tests'),
++                                               pattern='test_orbit_index.py')
++    log = io.StringIO()
++    stdout = io.StringIO()
++    start = time.perf_counter()
++    with redirect_stdout(stdout):
++        result = unittest.TextTestRunner(stream=log, verbosity=2).run(suite)
++    seconds = time.perf_counter() - start
++    after = manifest()
++    if before != after:
++        raise AssertionError('a pinned source changed during the audit')
++    content = log.getvalue() + stdout.getvalue()
++    counts = [json.loads(line) for line in stdout.getvalue().splitlines()
++              if line.startswith('{')]
++    evidence = dict(schema='compiled-orbit-index-audit-v1', success=result.wasSuccessful(),
++                    tests_run=result.testsRun, elapsed_seconds=seconds,
++                    failures=len(result.failures), errors=len(result.errors),
++                    counters=counts, source_manifest_before=before, source_manifest_after=after)
++    args.output.parent.mkdir(parents=True, exist_ok=True)
++    args.log.parent.mkdir(parents=True, exist_ok=True)
++    args.output.write_text(json.dumps(evidence, indent=2) + '\n')
++    args.log.write_text(content)
++    print(json.dumps(evidence, indent=2))
++    return 0 if result.wasSuccessful() else 1
++
++
++if __name__ == '__main__':
++    raise SystemExit(main())
+diff --git a/Topology/UnknotRecognition/fast/orbit_index_research/benchmark.py b/Topology/UnknotRecognition/fast/orbit_index_research/benchmark.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/orbit_index_research/benchmark.py
+@@ -0,0 +1,186 @@
++"""Paired benchmarks for repeated certified interval-component membership.
++
++All timed arms receive an already constructed interval system.  The compiled
++arm includes discovery, independent verification, compilation and all queries.
++This is a repeated supplied-relation benchmark, not a knot recognition test.
++"""
++
++import argparse
++import hashlib
++import json
++from pathlib import Path
++import platform
++import random
++import statistics
++import sys
++import time
++
++HERE = Path(__file__).resolve().parent
++UPSTREAM = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(UPSTREAM))
++
++from fastunknot.interval_orbits import IntervalPairing, count_orbits, same_orbit
++from fastunknot.integer_codec import json_safe
++from fastunknot.normal_surface_geometry import normal_arc_pairings
++from normal_orbit_research.fixtures import layered_torus, interior_vertex_torus
++from fastunknot.orbit_index import prepare_orbit_index
++
++
++def source_manifest():
++    files = [UPSTREAM / 'fastunknot' / 'orbit_index.py', HERE / 'benchmark.py',
++             UPSTREAM / 'tests' / 'test_orbit_index.py']
++    files += [UPSTREAM / 'fastunknot' / filename for filename in
++              ('interval_orbits.py', 'interval_orbit_verify.py', 'integer_codec.py',
++               'normal_surface_geometry.py')]
++    files += [UPSTREAM / 'normal_orbit_research' / 'fixtures.py']
++    return {str(path.relative_to(UPSTREAM)):
++            hashlib.sha256(path.read_bytes()).hexdigest() for path in files}
++
++
++def cases():
++    output = []
++    for tetrahedra, scale, counts in ((8, (1 << 512) + 1, (1, 8, 32)),
++                                     (24, (1 << 128) + 1, (1, 8, 32)),
++                                     (8, 1, (32,))):
++        raw, vector = layered_torus(tetrahedra)
++        scaled = [[scale * entry for entry in row] for row in vector]
++        size, pairs = normal_arc_pairings(raw, scaled)
++        for queries in counts:
++            output.append(dict(name=f'layered_{tetrahedra}_scale_{scale.bit_length()}bit_q{queries}',
++                               size=size, pairings=pairs, queries=queries,
++                               topology='parallel meridian discs',
++                               tetrahedra=tetrahedra, coordinate_scale=scale))
++    raw, _ = layered_torus(1)
++    scale = (1 << 1024) + 1
++    size, pairs = normal_arc_pairings(raw, [[0, 0, 0, 0, 0, scale, 0]])
++    output.append(dict(name='mobius_1025bit_q32', size=size, pairings=pairs, queries=32,
++                       topology='odd multiple of a one-sided Mobius band',
++                       tetrahedra=1, coordinate_scale=scale))
++    raw, basis = interior_vertex_torus()
++    coefficients = [(1 << 256) + 1, (1 << 257) + 7, (1 << 258) + 9]
++    vector = [[sum(a * values[j] for a, values in zip(coefficients,
++                         (basis['sphere'][i], basis['boundary_disk'][i], basis['mobius'][i])))
++               for j in range(7)] for i in range(4)]
++    size, pairs = normal_arc_pairings(raw, vector)
++    output.append(dict(name='mixed_native_4_q32', size=size, pairings=pairs, queries=32,
++                       topology='sphere, boundary disc and one-sided band mixture',
++                       tetrahedra=4))
++    period = (1 << 1024) + 3
++    pairs = [IntervalPairing(i * period, (i + 1) * period - 1,
++                             (i + 1) * period, (i + 2) * period - 1)
++             for i in range(64)]
++    output.append(dict(name='periodic_chain_64_q32', size=65 * period,
++                       pairings=pairs, queries=32, topology='abstract interval relation'))
++    return output
++
++
++def make_queries(case, rng):
++    size, pairs, requested = case['size'], case['pairings'], case['queries']
++    samples = []
++    while len(samples) < requested:
++        if len(samples) % 2 == 0 and pairs:
++            pairing = rng.choice(pairs)
++            first = pairing.a + rng.randrange(pairing.b - pairing.a + 1)
++            second = (pairing.a + pairing.d - first if pairing.reverse
++                      else first + pairing.c - pairing.a)
++        else:
++            first, second = rng.randrange(size), rng.randrange(size)
++        if first != second:
++            samples.append((first, second))
++    return samples
++
++
++def legacy(size, pairs, samples):
++    return [same_orbit(size, pairs, first, second) for first, second in samples]
++
++
++def shared(size, pairs, samples):
++    # This stronger baseline shares the original count, and uses exact connected
++    # or wholly static shortcuts. It still discovers each augmented relation.
++    result = count_orbits(size, pairs)
++    if result.orbits == 1:
++        return [True] * len(samples)
++    if result.orbits == size:
++        return [first == second for first, second in samples]
++    answer = []
++    for first, second in samples:
++        if first == second:
++            answer.append(True)
++        else:
++            augmented = pairs + [IntervalPairing(first, first, second, second)]
++            answer.append(count_orbits(size, augmented).orbits == result.orbits)
++    return answer
++
++
++def compiled(size, pairs, samples):
++    index, _ = prepare_orbit_index(size, pairs)
++    return [index.same_orbit(first, second) for first, second in samples]
++
++
++def run(output, rounds):
++    rng = random.Random(202610090742)
++    manifest = source_manifest()
++    result = dict(schema='compiled-orbit-index-benchmark-v1', seed=202610090742,
++                  python=sys.version, platform=platform.platform(), rounds=rounds,
++                  warmup_rounds=1, source_manifest_before=manifest, cases=[])
++    arms = dict(legacy=legacy, shared=shared, shared_control=shared,
++                compiled=compiled, compiled_control=compiled)
++    for case in cases():
++        samples = make_queries(case, rng)
++        size, pairs = case['size'], case['pairings']
++        expected = shared(size, pairs, samples)
++        index, proof_result = prepare_orbit_index(size, pairs)
++        locations = [index.locate(point) for sample in samples for point in sample]
++        batch = 3 if case['queries'] == 1 else 1
++        records = []
++        for round_index in range(rounds + 1):
++            order = list(arms)
++            rng.shuffle(order)
++            elapsed = {}
++            for arm in order:
++                start = time.perf_counter_ns()
++                answers = [arms[arm](size, pairs, samples) for _ in range(batch)]
++                duration = (time.perf_counter_ns() - start) / (1e9 * batch)
++                if any(answer != expected for answer in answers):
++                    raise AssertionError((case['name'], arm, 'different answers'))
++                elapsed[arm] = duration
++            records.append(dict(round=round_index, warmup=round_index == 0,
++                                order=order, seconds=elapsed))
++        measured = [record['seconds'] for record in records if not record['warmup']]
++        median_times = {arm: statistics.median(record[arm] for record in measured)
++                        for arm in arms}
++        paired = {label: statistics.median(record[left] / record[right]
++                                           for record in measured)
++                  for label, left, right in (
++                      ('legacy_over_compiled', 'legacy', 'compiled'),
++                      ('shared_over_compiled', 'shared', 'compiled'),
++                      ('shared_control', 'shared', 'shared_control'),
++                      ('compiled_control', 'compiled', 'compiled_control'))}
++        details = {key: value for key, value in case.items() if key != 'pairings'}
++        details.update(pairings=[[p.a, p.b, p.c, p.d, -1 if p.reverse else 1]
++                                 for p in pairs], samples=samples, answers=expected,
++                       batch=batch, pairing_count=len(pairs), universe_bits=size.bit_length(),
++                       orbit_count=index.count, index_statistics=index.statistics,
++                       count_cycles=proof_result.cycles,
++                       point_forward_steps=sum(location.forward_steps for location in locations),
++                       point_reverse_contractions=sum(location.reverse_contractions for location in locations),
++                       minimum_representatives=[location.representative for location in locations],
++                       records=records, median_seconds=median_times, paired_ratios=paired)
++        result['cases'].append(details)
++        print(case['name'], json.dumps(dict(median_seconds=median_times, paired_ratios=paired)), flush=True)
++    after = source_manifest()
++    if manifest != after:
++        raise AssertionError('a pinned benchmark source changed during execution')
++    result['source_manifest_after'] = after
++    output.write_text(json.dumps(json_safe(result), indent=2) + '\n')
++    return result
++
++
++if __name__ == '__main__':
++    parser = argparse.ArgumentParser()
++    parser.add_argument('--output', type=Path, default=UPSTREAM / 'results' / 'orbit_index.json')
++    parser.add_argument('--rounds', type=int, default=7)
++    args = parser.parse_args()
++    if args.rounds < 3:
++        parser.error('use at least three measured rounds')
++    run(args.output, args.rounds)
+diff --git a/Topology/UnknotRecognition/fast/orbit_index_research/orbit_index_results.tex b/Topology/UnknotRecognition/fast/orbit_index_research/orbit_index_results.tex
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/orbit_index_research/orbit_index_results.tex
+@@ -0,0 +1,83 @@
++\subsection{Independent graph audit and paired timings}
++
++The eleven focused tests pass.  An exhaustive audit covers all systems with at most two interval generators
++on universes of size at most five, up to input-generator order: $7{,}398$
++indices across both merger rules and $34{,}026$ literal point checks.
++The random audit prepares indices for $3{,}200$ random
++interval relations under both maintained merger rules, giving $6{,}400$
++checked indices and $208{,}000$ literal minimum comparisons.  A union-find
++oracle explicitly expands only these bounded test inputs.  It also checks
++$64{,}000$ sampled pair queries and all selected representatives, and all six
++trace event types occur. The exhaustive and random tests also check the
++complete canonical minimum interval set, sorted selection and ranks against
++the literal graph. Two deliberately different valid traces establish
++the distinction between canonical minimum labels and emission ordinals.
++
++The geometric audit uses $67$ supplied normal vectors: parallel meridians
++in one through ten tetrahedra and compatible mixtures of an interior
++vertex sphere, a boundary vertex disc, and a one-sided M\"obius band in a
++four-tetrahedron solid torus.  Both surface and boundary arc graphs are
++tested under both merger rules, giving $268$ indices and another $73{,}528$
++literal minimum comparisons.  These checks use the maintained exact
++normal-coordinate adapter, with no native topology package required.
++Separate tests cover $16{,}000$--$20{,}000$-bit endpoints, malformed and
++unfinished proofs, source rebinding, caller mutation, disabled producer
++entry points, and cancellation through false-valued callable objects.  A
++separate exact fixture has $512$ disjoint minimum intervals and a $4{,}107$-bit
++universe; its component count has $4{,}106$ bits, and the predicted $g=512$
++interval bound is attained without enumerating components.
++
++The portable paired benchmark has ten workloads, five shuffled arms,
++one excluded warmup and seven measured rounds.  Single-query cases are
++batched three times.  This gives $490$ measured complete arm calls and
++$70$ warmup calls.  The compiled arm includes discovery, independent
++verification, compilation and all requested comparisons.  The comparison
++baseline shares the initial count and uses exact connected and singleton
++shortcuts; only unresolved comparisons require augmented count schedules.
++The original two-count API and identical controls are retained as separate
++arms.  Every answer is compared outside the timer.
++
++\begin{center}
++\begin{tabular}{lrrrr}
++\hline
++Supplied relation & Queries & Shared (ms) & Compiled (ms) & Paired ratio\\
++\hline
++8-tetrahedron meridian, scale $2^{512}+1$ & 1 & 2.845 & 2.993 & 0.925\\
++8-tetrahedron meridian, scale $2^{512}+1$ & 8 & 12.880 & 2.852 & 4.582\\
++8-tetrahedron meridian, scale $2^{512}+1$ & 32 & 46.957 & 2.996 & 15.629\\
++24-tetrahedron meridian, scale $2^{128}+1$ & 1 & 25.157 & 20.437 & 1.224\\
++24-tetrahedron meridian, scale $2^{128}+1$ & 8 & 111.298 & 20.308 & 5.502\\
++24-tetrahedron meridian, scale $2^{128}+1$ & 32 & 422.509 & 20.539 & 20.686\\
++8-tetrahedron primitive meridian & 32 & 1.231 & 2.546 & 0.461\\
++One-sided band, scale $2^{1024}+1$ & 32 & 1.540 & 0.321 & 4.447\\
++4-tetrahedron compatible mixture & 32 & 29.527 & 2.124 & 13.915\\
++64-pair periodic chain & 32 & 14.182 & 1.629 & 8.757\\
++\hline
++\end{tabular}
++\end{center}
++
++Times are separate medians; the ratio is the median of paired ratios and
++need not equal their quotient.  For the eight-tetrahedron source, the full
++trace has $128$ events but the query program has $13$ point steps.  For
++$24$ tetrahedra these figures are $832$ and $29$.  The periodic chain
++compiles $65$ trace events to two point steps.  These are exact reductions
++in work representation, independent of timer variation.
++
++The primitive meridian is a necessary control: its first count proves the
++relation connected, so the shared baseline answers all comparisons
++immediately and is faster than index preparation.  The single-query
++eight-tetrahedron case likewise shows no improvement.  Across all cases,
++identical shared-control ratios range from $0.959$ to $1.040$, and
++identical compiled-control ratios range from $0.969$ to $1.050$.  Thus the
++large repeated-query effects are supported, while small percentage
++differences should not be overinterpreted.
++
++Raw records, inputs, query points, expected answers, reduction counts,
++all shuffled arm orders and timings, and pre/post source hashes are in
++\path{results/orbit_index.json}.  Audit evidence is in
++\path{results/orbit_index_audit.json}; the portable drivers are in
++\path{orbit_index_research/}.  The historical prototype run is retained
++separately and is not mixed into this table.  Normal triangulation creation,
++vector construction and conversion to interval relations are outside every
++timer.  These results measure repeated queries on a supplied interval system,
++not complete normal-surface calls or unknot-recognition runtime.
+diff --git a/Topology/UnknotRecognition/fast/orbit_index_research/orbit_index_section.tex b/Topology/UnknotRecognition/fast/orbit_index_research/orbit_index_section.tex
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/orbit_index_research/orbit_index_section.tex
+@@ -0,0 +1,257 @@
++\section{Compiled point queries from an interval-orbit certificate}
++\label{sec:compiled-orbit-index}
++
++The maintained interval kernel implements the polynomial, binary-encoded
++orbit algorithm of Agol--Hass--Thurston.  Its current \texttt{same\_orbit}
++interface performs two orbit counts for a pair of points: count the original
++relation, then adjoin their identification and count again.  Reusing only the
++original count still leaves one new reduction schedule for each distinct
++query.  We give an additive interface that prepares one checked trace and
++answers subsequent point queries by arithmetic transport.  This is a
++data-structure refinement of the existing orbit kernel, rather than a new
++orbit-counting theorem.
++
++An input has $k$ partial interval isometries on $[0,N)$, with integer endpoints
++and either translation or reflection on each domain.  Its components are the
++equivalence classes generated by the isometries.  A complete source-bound AHT
++trace contains identity deletion, reflection trimming, periodic merger,
++transmission, static contraction and suffix truncation.  We first replay it
++with the maintained independent verifier.  No maximality assumption is used
++for the correctness of a supplied trace; maximality belongs to the producer's
++polynomial progress theorem.
++
++\subsection{Every truncation moves a point to an earlier representative}
++
++The first four operations preserve the relation on the same point universe
++and require no change of a queried point.  Suppose a suffix truncation reduces
++the current universe $[0,n)$ to $[0,c)$.  For a positive carrier of period
++$p>0$, its valid truncation conditions imply $c-p\ge0$, and the point map is
++\[
++ f(x)=\begin{cases}
++ x,&x<c,\\
++ c-p+((x-(c-p))\bmod p),&x\ge c.
++ \end{cases}
++\]
++For a reflection with left domain endpoint $a$ it is
++\[
++ f(x)=\begin{cases}x,&x<c,\\a+n-1-x,&x\ge c.\end{cases}
++\]
++The latter carrier is already trimmed, so its domain lies strictly to the
++left of its range.  In either case a removed point maps to a surviving point
++in its old orbit, and $f(x)<x$ on the removed suffix.  Division and remainder
++evaluate an arbitrarily long translation chain in one binary operation.
++
++For a static contraction let its disjoint inclusive gaps be
++$[a_i,b_i]$, in increasing order, and set
++\[
++ P_0=0,\qquad P_i=\sum_{j<i}(b_j-a_j+1).
++\]
++Here the displayed indexing is read with $i$ starting at zero, so $P_i$ is
++the total length of preceding gaps.  Every point in a gap is currently a
++singleton orbit and is emitted.  A surviving point becomes
++\[
++ x\longmapsto x-\sum_{b_i<x}(b_i-a_i+1).
++\]
++Binary search among the gap endpoints evaluates both gap membership and
++this rank shift.  Its inverse on survivors inserts the preceding gap
++lengths.  The collapsed breakpoints are $a_i-P_i$; a breakpoint not greater
++than the survivor coordinate contributes its gap length to the inverse.
++Suffix truncation needs no inverse map when recovering the original
++coordinate of a surviving representative.
++
++\begin{theorem}[Canonical minimum representatives from a checked trace]
++For every complete valid AHT trace there is a compiled index $m$ such that
++\[
++ m(x)=\min\{y\in[0,N):y\sim x\}.
++\]
++It is obtained without listing points or components.  In particular,
++$x\sim y$ if and only if $m(x)=m(y)$, and minimum representatives agree
++between any two valid traces for the same source relation.
++\end{theorem}
++\begin{proof}
++Follow $x$ through the displayed rank shifts and folds until it reaches
++a static gap.  The local replay theorem says that surviving equivalence
++classes and emitted singleton representatives together describe exactly
++the previous relation; therefore two original points receive the same
++terminal emission precisely when they were equivalent.
++
++For minimality, associate each current point with its original source
++coordinate.  The current source-coordinate map is increasing: a contraction
++deletes points and closes gaps, while a truncation retains a prefix.
++Inductively, the source coordinate associated with each current point is
++the least original point transported to it.  Contraction preserves this
++property.  Under truncation, every removed current point moves strictly to
++the left, so all original points transported with it are larger than the
++source coordinate already associated with the surviving target.  Thus the
++property is preserved by folds as well.  Once a singleton is emitted, no
++other live point remains in its equivalence class, and its source coordinate
++is the minimum of the entire original orbit.  Reverse all preceding static
++rank shifts to recover that source coordinate.  This proves the formula
++and hence its independence from the chosen trace.
++\end{proof}
++
++The index also numbers emitted singleton points by a binary ordinal in
++$[0,C)$, where $C$ is the orbit count, and supports selecting the minimum
++representative of a supplied ordinal.  Store the cumulative number emitted
++before each contraction and before each gap.  Two binary searches find its
++emission coordinate; reversing earlier contractions returns its source
++minimum.  This order is deliberately not claimed to be canonical.  For the
++identity relation on three points with an explicit identity generator at
++zero, one valid trace deletes that generator before contracting, producing
++order $(0,1,2)$.  Another first contracts the static points one and two,
++then deletes the generator, producing order $(1,2,0)$.  Their minimum maps
++are nevertheless identical.
++
++\subsection{The entire canonical minimum set has few ordinary intervals}
++
++There is a stronger consequence of the one-directional truncations.
++Although the orbit count can be enormous, all original minimum
++representatives admit a small description as ordinary intervals; no
++arithmetic-progression encoding is needed for this particular set.
++
++\begin{theorem}[Compact canonical minimum set]
++If a valid complete trace has $g$ static-gap records, its set of original
++orbit minima is a union of at most $g$ disjoint integer intervals.  This
++canonical union can be constructed in polynomial time from the checked
++trace.  After storing prefix lengths, selection by increasing minimum
++and ranking a supplied minimum require $O(\log(g+2))$ comparisons and
++binary additions.  Their order is independent of the trace.
++\end{theorem}
++\begin{proof}
++Let $M$ be the original minimum representatives emitted so far, and let
++$L$ be the original source coordinates of current live points.  We maintain
++the invariant
++\[
++ L=[0,b)\setminus M
++\]
++for some source cutoff $b$; $M$ is allowed to have members beyond $b$.
++Initially $b=N$ and $M$ is empty.  A suffix truncation retains an initial
++segment of the ordered live set, so it only decreases $b$.  A static
++contraction moves some live source points from $L$ into $M$ and leaves
++the same equation valid with unchanged $b$.
++
++Consider one current static gap, whose endpoint source coordinates are
++$u\le v$.  In the source interval $[u,v]$, the currently live points are
++exactly those represented by this gap.  Every other point in that source
++interval already belongs to $M$, by the invariant.  Thus emitting the gap
++changes the minimum set by the exact update
++\[
++ M\longmapsto M\cup[u,v].
++\]
++Previously truncated nonminimum points cannot lie between $u$ and $v$:
++they lie beyond the cutoff of the current live prefix.  Apply this update
++once per recorded gap.  The final minimum set is therefore the union of
++at most $g$ source intervals.  Lift each gap's endpoints by reversing only
++the preceding static contractions, sort their source hulls, and merge
++overlap and adjacency.  A prefix sum of the resulting interval lengths
++gives both stated rank/selection queries by binary search.  The first
++theorem identifies this set intrinsically as all orbit minima, establishing
++its trace independence.
++\end{proof}
++
++The interval bound is sharp.  Take $r$ disjoint consecutive pairs of
++blocks of width $w$, with the translation identifying the two blocks in
++each pair.  There are $rw$ components, whose minima form exactly
++\[
++ \bigcup_{i=0}^{r-1}[2iw,(2i+1)w).
++\]
++A right-to-left valid trace has one static gap per block pair, so $g=r$.
++The component count grows with the binary width $w$ without increasing
++the number of intervals.
++
++The implementation preserves the earlier \texttt{select} method's emission
++ordinal semantics.  Its additional \texttt{minimum\_intervals} property
++returns the immutable canonical union as sorted disjoint half-open intervals.
++\texttt{select\_minimum(rank)} selects by increasing source minimum;
++\texttt{minimum\_rank(minimum)} returns that order rank and rejects points
++outside the minimum set; \texttt{orbit\_rank(point)} first computes the
++point's minimum and then returns its canonical rank.
++
++\subsection{Encoded costs and the amortized improvement}
++
++Let $E$ be the number of supplied trace events, $s$ the number of contraction
++and truncation events, $g$ the total number of recorded static gaps, and $B$
++a bound for integer bit lengths, including counters.  The pairing count
++never increases during replay, so each contraction has at most $2k+1$ gaps
++and $g=O(s(k+1))$. After independent verification, a direct list-based compiler
++uses $\operatorname{poly}(E,k,B)$ bit operations, in addition to reading and
++copying the explicit supplied source and certificate.  Lifting all
++minimum-set hull endpoints uses at most $O(gs)$ inverse rank operations;
++sorting the hulls adds $O(g\log(g+2))$ comparisons.  It retains only
++$O(s+g)$ binary integers and indices, costing $O((s+g)B)$ bits.  It discards
++the generator-maintenance events from the query program.
++
++One point query uses at most $s$ forward steps and $s$ inverse rank steps.
++With elementary integer arithmetic its bit cost is
++\[
++ O\bigl(s B^2\log(k+2)\bigr).
++\]
++Emission-ordinal selection uses binary search and inverse rank steps and
++satisfies the same conservative bound.  Canonical minimum rank and selection
++instead cost $O(B\log(g+2))$ bit work, including output arithmetic.
++None of these costs depends on $N$ or $C$ as an
++iteration count.  The supplied implementation is intentionally simple:
++it does not claim a balanced-tree compiler or logarithmic query time in
++the trace length.  On a maintained producer trace, $s$ is at most twice
++the number of orbit cycles, even if the trace contains many transmission
++and merger events.
++
++For $q$ point comparisons, the complete cost is one discovery, one
++independent replay and compilation, followed by
++\[
++ O\bigl(qs B^2\log(k+2)\bigr)
++\]
++bit work.  The old interface discovers two schedules per nontrivial
++comparison; a stronger shared-count baseline discovers one initial schedule
++and at most one augmented schedule per comparison.  The compiled interface
++performs one discovery for the entire batch.  This is an exact count of
++scheduled orbit computations, not a claim of a universal elapsed speedup.
++If a prior count already proves the relation connected, membership is
++immediate and further indexing may be unnecessary.
++
++The documented index factory accepts only a complete independently checked
++certificate, copies its input before compilation, and stores immutable
++compiled data.  Later mutation of the caller's proof does not change the
++index.  Invalid and unfinished traces yield no prepared index.  Discovery
++retains the existing cycle allowance; verification, compilation and queries
++use cooperative cancellation.  In particular, the cycle allowance is not
++misrepresented as a budget for all subsequent arithmetic.
++
++\subsection{Application to marked surfaces and signed relations}
++
++In the maintained normal-arc model, interval orbits are precisely the
++connected components of the supplied normal surface.  The compiled minimum
++therefore supplies an exact, source-bound component key for any specified
++edge-intersection point.  It can group an ordered list of attachment marks
++by component and select a component representative without enumerating all
++normal discs or all components.  These keys identify components within
++one source presentation; they are not invariants under a change of
++triangulation or an assertion that two attached surfaces are isomorphic.
++
++There is also a useful signed corollary.  Suppose each pairing independently
++carries a parity label, and use the existing two-sheet interval construction
++on $[0,2N)$.  Let $m_2$ be a compiled minimum map for this cover.  Then the
++set of attainable path parities from $x$ to $y$ is exactly
++\[
++ \{e\in\{0,1\}:m_2(x)=m_2(y+eN)\}.
++\]
++It is empty for different base components, a singleton for a component with
++consistent parity, and both bits for a component containing an odd closed
++walk.  Moreover, the minimum of the underlying base component is
++\[
++ \min\bigl(m_2(x),m_2(x+N)\bigr).
++\]
++Indeed, the union of the two lifted components contains both lifts of every
++base point, and at least one of its two minimum labels lies in the first
++sheet.  Thus one prepared cover index suffices for these point queries,
++without a separate base-component search.  This corollary is a mathematical
++deduction, not an implemented new signed API.  The geometric interpretation
++as orientability requires a separately established orientation character;
++interval reversal alone does not supply it.
++
++This contribution makes repeated queries on one certified compressed object
++cheaper.  It does not bound the number of marked states generated by a
++hierarchy, compute arbitrary attachment maps, find a compressing normal
++disc, or certify correspondence between a supplied triangulation and an
++input knot diagram.  Those global requirements remain separate from the
++local orbit-index theorem.
+diff --git a/Topology/UnknotRecognition/fast/orbit_index_research/orbit_rank_results.tex b/Topology/UnknotRecognition/fast/orbit_index_research/orbit_rank_results.tex
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/orbit_index_research/orbit_rank_results.tex
+@@ -0,0 +1,47 @@
++\subsection{Prepared canonical rank and selection}
++
++The additional lookup experiment uses the sharp family of disjoint paired
++blocks.  A supplied deterministic right-to-left trace is independently
++verified before any query is timed.  The canonical minimum intervals and
++every queried answer are checked against the direct block formulas, including
++the conversion between emission ordinal and increasing-minimum rank.  Both
++selection arms request the same original representatives on the same prepared
++index; their numerical ordinal arguments differ because the orders differ.
++
++Each measured call contains $512$ lookups, batched three times.  There are
++seven shuffled measured rounds, one excluded warmup, and identical controls
++for canonical rank and canonical selection.  Index construction is reported
++separately and excluded from every lookup timer.  The original trace-ordinal
++selection method reverses contractions; the canonical method searches the
++compact minimum-interval union.
++
++\begin{center}
++\begin{tabular}{rrrrrr}
++\hline
++Minimum intervals & Endpoint bits & Emission (ms) & Canonical (ms)
++ & Paired ratio & Rank (ms)\\
++\hline
++1 & 130 & 0.218 & 0.123 & 1.756 & 0.154\\
++16 & 134 & 0.794 & 0.138 & 5.922 & 0.168\\
++128 & 4105 & 7.600 & 0.327 & 23.791 & 0.348\\
++512 & 4107 & 29.732 & 0.365 & 81.511 & 0.408\\
++\hline
++\end{tabular}
++\end{center}
++
++All times concern a complete $512$-query call.  Preparation took respectively
++$0.101$, $0.863$, $37.003$ and $557.962$ milliseconds in separately recorded
++single observations.  Thus the submillisecond prepared lookup times do not
++describe construction of the index.  Identical canonical-selection control
++ratios range from $1.007$ to $1.034$, and rank-control ratios from $0.977$ to
++$1.026$.  The final case has $512(2^{4096}+3)$ components while storing just
++$512$ minimum intervals.  The bit-complexity conclusion is logarithmic in
++the number of stored intervals, with binary-integer and output costs charged;
++the finite timings are not a constant-time claim.
++
++Full inputs, queried canonical ranks and corresponding emission ordinals,
++analytic expected minima, source hashes, certificate hashes and all raw
++samples are retained in \path{results/orbit_rank_select.json}.  The standalone
++driver is \path{orbit_index_research/rank_select.py}.  This experiment measures
++prepared representative lookups, separately from the preceding complete
++membership-batch benchmark and from all unknot-recognition work.
+diff --git a/Topology/UnknotRecognition/fast/orbit_index_research/rank_select.py b/Topology/UnknotRecognition/fast/orbit_index_research/rank_select.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/orbit_index_research/rank_select.py
+@@ -0,0 +1,123 @@
++"""Prepared canonical minimum rank/select benchmark with an analytic oracle.
++
++All measured lookup arms use the same already prepared index.  Preparation is
++reported separately and is excluded from every lookup timer.  The trace is a
++deterministic, independently verified schedule for disjoint paired blocks.
++"""
++
++import argparse
++import hashlib
++import json
++from pathlib import Path
++import platform
++import random
++import statistics
++import sys
++import time
++
++FAST_ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(FAST_ROOT))
++from fastunknot.interval_orbits import IntervalPairing
++from fastunknot.integer_codec import json_safe
++from fastunknot.orbit_index import OrbitIndex
++from orbit_index_research.benchmark import source_manifest
++
++
++def source_hashes():
++    result = source_manifest()
++    result['orbit_index_research/rank_select.py'] = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
++    return result
++
++
++def paired_blocks(blocks, width):
++    pairs = [IntervalPairing(2 * i * width, (2 * i + 1) * width - 1,
++                             (2 * i + 1) * width, (2 * i + 2) * width - 1)
++             for i in range(blocks)]
++    events = []
++    for i in reversed(range(blocks)):
++        events.append(dict(op='truncate', index=i, new_size=(2 * i + 1) * width))
++        events.append(dict(op='contract', gaps=[[2 * i * width, (2 * i + 1) * width - 1]]))
++    proof = dict(version=2, size=2 * blocks * width,
++                 pairings=[[p.a, p.b, p.c, p.d, 1] for p in pairs],
++                 orbit_count=blocks * width, operations=events)
++    return pairs, proof
++
++
++def run(output, rounds, query_count):
++    rng = random.Random(202610090836)
++    manifest = source_hashes()
++    result = dict(schema='compiled-minimum-rank-select-v1', seed=202610090836,
++                  python=sys.version, platform=platform.platform(), rounds=rounds,
++                  warmup_rounds=1, queries_per_call=query_count, batch=3,
++                  source_manifest_before=manifest, cases=[])
++    for blocks, bits in ((1, 128), (16, 128), (128, 4096), (512, 4096)):
++        width = (1 << bits) + 3
++        pairs, proof = paired_blocks(blocks, width)
++        started = time.perf_counter_ns()
++        index = OrbitIndex.from_certificate(2 * blocks * width, pairs, proof)
++        preparation = (time.perf_counter_ns() - started) / 1e9
++        expected_intervals = tuple((2 * i * width, (2 * i + 1) * width) for i in range(blocks))
++        if index.minimum_intervals != expected_intervals:
++            raise AssertionError('canonical minimum interval union differs from the analytic formula')
++        ranks = [rng.randrange(blocks * width) for _ in range(query_count)]
++        minima, ordinals = [], []
++        for rank in ranks:
++            block, offset = divmod(rank, width)
++            minima.append(2 * block * width + offset)
++            ordinals.append((blocks - 1 - block) * width + offset)
++        arms = dict(
++            emission_select=lambda: [index.select(i) for i in ordinals],
++            canonical_select=lambda: [index.select_minimum(i) for i in ranks],
++            select_control=lambda: [index.select_minimum(i) for i in ranks],
++            canonical_rank=lambda: [index.minimum_rank(i) for i in minima],
++            rank_control=lambda: [index.minimum_rank(i) for i in minima],
++        )
++        records = []
++        for round_index in range(rounds + 1):
++            order = list(arms)
++            rng.shuffle(order)
++            samples = {}
++            for name in order:
++                started = time.perf_counter_ns()
++                answers = [arms[name]() for _ in range(3)]
++                seconds = (time.perf_counter_ns() - started) / (1e9 * 3)
++                expected = ranks if name in ('canonical_rank', 'rank_control') else minima
++                if any(answer != expected for answer in answers):
++                    raise AssertionError((blocks, bits, name, 'lookup disagrees with analytic answer'))
++                samples[name] = seconds
++            records.append(dict(round=round_index, warmup=round_index == 0,
++                                order=order, seconds=samples))
++        measured = [r['seconds'] for r in records if not r['warmup']]
++        medians = {name: statistics.median(r[name] for r in measured) for name in arms}
++        ratios = {key: statistics.median(r[left] / r[right] for r in measured)
++                  for key, left, right in (
++                      ('emission_over_canonical', 'emission_select', 'canonical_select'),
++                      ('select_control', 'canonical_select', 'select_control'),
++                      ('rank_control', 'canonical_rank', 'rank_control'))}
++        case = dict(blocks=blocks, width=width, endpoint_bits=(2 * blocks * width).bit_length(),
++                    queries=query_count, preparation_seconds=preparation,
++                    index_statistics=index.statistics, ranks=ranks, emission_ordinals=ordinals,
++                    minima=minima, median_seconds=medians, paired_ratios=ratios, records=records,
++                    certificate_sha256=hashlib.sha256(json.dumps(json_safe(proof), sort_keys=True,
++                        separators=(',', ':')).encode()).hexdigest())
++        result['cases'].append(case)
++        print(json.dumps(dict(blocks=blocks, endpoint_bits=case['endpoint_bits'],
++                              preparation_seconds=preparation, median_seconds=medians,
++                              paired_ratios=ratios)), flush=True)
++    after = source_hashes()
++    if manifest != after:
++        raise AssertionError('a pinned source changed during the experiment')
++    result['source_manifest_after'] = after
++    output.write_text(json.dumps(json_safe(result), indent=2) + '\n')
++
++
++if __name__ == '__main__':
++    parser = argparse.ArgumentParser()
++    parser.add_argument('--output', type=Path,
++                        default=FAST_ROOT / 'results' / 'orbit_rank_select.json')
++    parser.add_argument('--rounds', type=int, default=7)
++    parser.add_argument('--queries', type=int, default=512)
++    args = parser.parse_args()
++    if args.rounds < 3 or args.queries < 1:
++        parser.error('at least three rounds and one query are required')
++    run(args.output, args.rounds, args.queries)
+diff --git a/Topology/UnknotRecognition/fast/raw_saturation_research/audit_epoch.py b/Topology/UnknotRecognition/fast/raw_saturation_research/audit_epoch.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/raw_saturation_research/audit_epoch.py
+@@ -0,0 +1,238 @@
++"""Independent small exact audits for the raw-singleton epoch theorem.
++
++This deliberately does not import the maintained group implementation.
++"""
++from __future__ import annotations
++
++import itertools
++import json
++import random
++import time
++from functools import lru_cache
++from pathlib import Path
++
++
++def permanent(a):
++    n = len(a)
++    return sum(
++        prod(a[i][p[i]] for i in range(n))
++        for p in itertools.permutations(range(n))
++    )
++
++
++def prod(xs):
++    y = 1
++    for x in xs:
++        y *= x
++    return y
++
++
++def pivot(a, row, col):
++    assert a[row][col] == 1
++    return tuple(
++        tuple(a[i][j] + a[i][col] * a[row][j]
++              for j in range(len(a)) if j != col)
++        for i in range(len(a)) if i != row
++    )
++
++
++@lru_cache(maxsize=None)
++def has_complete_raw_epoch(a):
++    if not a:
++        return True
++    return any(
++        has_complete_raw_epoch(pivot(a, i, j))
++        for i in range(len(a)) for j in range(len(a))
++        if a[i][j] == 1
++    )
++
++
++def peel(a):
++    """Return (original row, original column) dependencies-first matching."""
++    rows = list(range(len(a)))
++    cols = set(rows)
++    trace = []
++    while rows:
++        found = None
++        for i in rows:
++            nonzero = [j for j in cols if a[i][j]]
++            if len(nonzero) == 1 and a[i][nonzero[0]] == 1:
++                found = i, nonzero[0]
++                break
++        if found is None:
++            return None
++        trace.append(found)
++        rows.remove(found[0])
++        cols.remove(found[1])
++    return trace
++
++
++def inv(w):
++    return tuple(-x for x in reversed(w))
++
++
++def subst(w, x, image):
++    inverse = inv(image)
++    return tuple(y for a in w for y in (image if a == x else
++                 inverse if a == -x else (a,)))
++
++
++def reduce(w):
++    out = []
++    for a in w:
++        if out and out[-1] == -a:
++            out.pop()
++        else:
++            out.append(a)
++    return tuple(out)
++
++
++def solve(w, x):
++    where = [i for i, a in enumerate(w) if abs(a) == x]
++    assert len(where) == 1
++    i = where[0]
++    left, right = w[:i], w[i + 1:]
++    return inv(left) + inv(right) if w[i] == x else right + left
++
++
++def old_epoch(words, selected_order):
++    current = list(words)
++    all_letters = {abs(x) for word in words for x in word}
++    images = {x: (x,) for x in all_letters}
++    for slot, x in selected_order:
++        image = solve(current[slot], x)
++        current = [() if j == slot else subst(w, x, image)
++                   for j, w in enumerate(current)]
++        images = {g: subst(w, x, image) for g, w in images.items()}
++        if max(map(len, images.values()), default=0) > 100_000:
++            return None
++    return current, images
++
++
++def flatten(words, slots, eliminated):
++    matrix = tuple(tuple(sum(abs(a) == x for a in words[j])
++                         for x in eliminated) for j in slots)
++    order = peel(matrix)
++    assert order is not None
++    images = {abs(x): (abs(x),) for w in words for x in w}
++    for local_slot, local_x in order:
++        x = eliminated[local_x]
++        word = solve(words[slots[local_slot]], x)
++        for y, image in images.items():
++            if y != x:
++                word = subst(word, y, image)
++        images[x] = word
++    out = []
++    for j, word in enumerate(words):
++        if j in slots:
++            out.append(())
++            continue
++        for x in eliminated:
++            word = subst(word, x, images[x])
++        out.append(word)
++    return out, images, [(slots[i], eliminated[j]) for i, j in order]
++
++
++def audit_matrices():
++    records = []
++    for n, alphabet in [(1, range(3)), (2, range(3)),
++                        (3, range(3)), (4, range(2))]:
++        count = unique = successful = 0
++        for entries in itertools.product(alphabet, repeat=n*n):
++            a = tuple(tuple(entries[i*n:(i+1)*n]) for i in range(n))
++            p = permanent(a)
++            possible = has_complete_raw_epoch(a)
++            peeling = peel(a) is not None
++            assert possible == (p == 1) == peeling, (a, p, possible, peeling)
++            # Every reverse step with a uniquely matched residual must also
++            # have an original matrix with permanent one.
++            for i in range(n):
++                for j in range(n):
++                    if a[i][j] == 1:
++                        b = pivot(a, i, j)
++                        if permanent(b) == 1:
++                            assert p == 1
++            count += 1
++            unique += p == 1
++            successful += possible
++        records.append(dict(n=n, alphabet=list(alphabet), count=count,
++                            unique_permanent=unique, successful=successful))
++    return records
++
++
++def audit_signed_words(seed=92763, trials=2000):
++    rng = random.Random(seed)
++    completed = compared = reordered = spelling_differences = 0
++    for _ in range(trials):
++        k = rng.randrange(1, 6)
++        survivors = [k+1, k+2]
++        words = []
++        # A triangular source with one occurrence of its matched variable;
++        # repeat earlier dependencies and survivor letters arbitrarily.
++        for x in range(1, k+1):
++            support = list(range(1, x)) + survivors
++            left = tuple(rng.choice(support) * rng.choice([-1, 1])
++                         for _ in range(rng.randrange(4)))
++            right = tuple(rng.choice(support) * rng.choice([-1, 1])
++                          for _ in range(rng.randrange(4)))
++            words.append(left + (x * rng.choice([-1, 1]),) + right)
++        words += [tuple(rng.randrange(1, k+3) * rng.choice([-1, 1])
++                        for _ in range(rng.randrange(1, 9)))
++                  for _ in range(2)]
++        current = list(words)
++        unused = set(range(k))
++        unknown = set(range(1, k+1))
++        sequence = []
++        while unused:
++            choices = [(j, x) for j in unused for x in unknown
++                       if sum(abs(a) == x for a in current[j]) == 1]
++            if not choices:
++                break
++            j, x = rng.choice(choices)
++            image = solve(current[j], x)
++            current = [() if z == j else subst(w, x, image)
++                       for z, w in enumerate(current)]
++            unused.remove(j)
++            unknown.remove(x)
++            sequence.append((j, x))
++            if max(map(len, current)) > 50_000:
++                break
++        if unused or unknown:
++            continue
++        completed += 1
++        sequential = old_epoch(words, sequence)
++        if sequential is None:
++            continue
++        flat_words, flat_images, order = flatten(words, list(range(k)),
++                                               list(range(1, k+1)))
++        seq_words, seq_images = sequential
++        assert [reduce(w) for w in flat_words] == [reduce(w) for w in seq_words]
++        assert {x: reduce(w) for x, w in flat_images.items()} == {
++            x: reduce(w) for x, w in seq_images.items()}
++        compared += 1
++        reordered += set(sequence) != set(order)
++        spelling_differences += flat_words != seq_words
++    return dict(seed=seed, trials=trials, completed=completed,
++                compared=compared, donor_reassignments=reordered,
++                unequal_raw_spelling=spelling_differences)
++
++
++def main():
++    import argparse
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--output', type=Path,
++                        default=Path(__file__).resolve().parents[1] /
++                        'results' / 'raw_epoch_audit.json')
++    args = parser.parse_args()
++    start = time.perf_counter()
++    matrices = audit_matrices()
++    words = audit_signed_words()
++    result = dict(matrix_exhaustion=matrices, signed_words=words,
++                  elapsed_seconds=time.perf_counter()-start)
++    args.output.parent.mkdir(parents=True, exist_ok=True)
++    args.output.write_text(json.dumps(result, indent=2) + "\n")
++    print(json.dumps(result, indent=2))
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/Topology/UnknotRecognition/fast/raw_saturation_research/benchmark.py b/Topology/UnknotRecognition/fast/raw_saturation_research/benchmark.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/raw_saturation_research/benchmark.py
+@@ -0,0 +1,341 @@
++"""Paired complete-call measurements for optional raw singleton saturation.
++
++Run from fast/:
++  python raw_saturation_research/benchmark.py --mode stage --output results/raw_stage.json
++The default baseline path is ../baseline/fast; --baseline accepts a pinned checkout.
++Every measured group call includes fresh PD validation, source reconstruction,
++search and independent verification. Pipeline calls retain the default filters.
++Resource-limited outcomes remain censored and are never speedup denominators.
++"""
++import argparse
++from copy import deepcopy
++import hashlib
++import importlib
++import importlib.util
++import json
++from pathlib import Path
++import platform
++import random
++from statistics import median
++import sys
++from time import perf_counter
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT))
++from fastunknot import Diagram, recognize
++from fastunknot.group_certificate import group_decide, verify_group_certificate
++from fastunknot.compressed_words import CompressedLimit, WordArena
++from fastunknot.compressed_search import _search
++from fastunknot.raw_saturation import find_rank_one_plan
++from fastunknot.elimination_batch import apply_batch, plan_batch
++from fastunknot.elimination_batch_verify import replay_compressed_batch
++from fastunknot.primitive_projection import rank_one_zero
++
++EVENT_SINK = lambda event: None
++
++
++def load_baseline(path):
++    package = path / 'fastunknot'
++    spec = importlib.util.spec_from_file_location(
++        'saturation_baseline', package / '__init__.py',
++        submodule_search_locations=[str(package)])
++    module = importlib.util.module_from_spec(spec)
++    sys.modules[spec.name] = module
++    spec.loader.exec_module(module)
++    group = importlib.import_module(spec.name + '.group_certificate')
++    return module, group
++
++
++def hashes(path):
++    return {str(p.relative_to(path)): hashlib.sha256(p.read_bytes()).hexdigest()
++            for p in sorted((path / 'fastunknot').rglob('*.py'))
++            if p.name != 'orbit_index.py'}
++
++
++def corpus():
++    from hard_unknots import SURVIVORS
++    from fastunknot.simplify import simplify
++    rows = []
++    for i, (_, strands, word) in enumerate(SURVIVORS):
++        diagram, _ = simplify(Diagram.from_braid(strands, word), r3=True)
++        rows.append((f'survivor-{i:02d}', diagram.pd, 'surviving unknot diagram'))
++    for name in ('trefoil', 'conway', 'kinoshita_terasaka', 'hard_unknot_8',
++                 'grid_determinant_one_knot', 'unknot_braid40', 'stress_braid5_36'):
++        diagram = Diagram.from_json(json.loads((ROOT / 'examples' / (name + '.json')).read_text()))
++        rows.append((name, diagram.pd, 'repository named fixture'))
++    for name in ('monster', 'gst', 'gordian'):
++        diagram = Diagram.from_json(json.loads((ROOT / 'normal_research' / (name + '.json')).read_text()))
++        rows.append((name, diagram.pd, 'repository normal-research fixture'))
++    return rows
++
++
++def small_audit_cases():
++    rng = random.Random(2026100902)
++    cases = []
++    while len(cases) < 80:
++        strands = rng.randrange(2, 6)
++        word = [rng.choice((-1, 1)) * rng.randrange(1, strands)
++                for _ in range(rng.randrange(1, 15))]
++        try:
++            diagram = Diagram.from_braid(strands, word)
++        except ValueError:
++            continue
++        cases.append((f'heldout-{len(cases):02d}', diagram.pd, 'seeded braid closure'))
++    return cases
++
++
++def call(arm, pd, mode, base, old_group):
++    enabled = arm == 'saturation'
++    old = arm == 'baseline'
++    module = base if old else sys.modules['fastunknot']
++    start = perf_counter()
++    diagram = module.Diagram.from_pd(pd)
++    if mode == 'stage':
++        options = dict(seconds=None, max_work=10_000_000, compressed_search=True,
++                       relator_moves=True)
++        if not old:
++            options['raw_saturation'] = enabled
++        result = (old_group.group_decide if old else group_decide)(diagram, **options)
++    else:
++        options = dict(seconds=1.0, max_objects=50000, use_group=True,
++                       group_seconds=0.15, group_compressed_search=True,
++                       group_relators=True)
++        if not old:
++            options['group_raw_saturation'] = enabled
++        result_object = module.recognize(diagram, **options)
++        result = result_object.to_json()
++    elapsed = perf_counter() - start
++    return dict(seconds=elapsed, result=result)
++
++
++def paired(mode, cases, rounds, base, old_group):
++    rng = random.Random(2026100903)
++    rows = []
++    for name, pd, family in cases:
++        samples = []
++        warmup = None
++        for repetition in range(rounds + 1):
++            order = ['baseline', 'control', 'saturation']
++            rng.shuffle(order)
++            records = {}
++            for arm in order:
++                records[arm] = call(arm, pd, mode, base, old_group)
++                EVENT_SINK(dict(mode=mode, name=name, repetition=repetition,
++                                warmup=repetition == 0, arm=arm, record=records[arm]))
++            conclusive = {r['result']['status'] for r in records.values()
++                          if r['result']['status'] not in ('INCONCLUSIVE', 'UNKNOWN')}
++            assert len(conclusive) <= 1, (name, conclusive)
++            if repetition:
++                samples.append(dict(order=order, arms=records))
++            else:
++                warmup = dict(order=order, arms=records)
++        observed = {arm: median(s['arms'][arm]['seconds'] for s in samples)
++                    for arm in order}
++        complete = {arm: [s['arms'][arm]['seconds'] for s in samples
++                          if s['arms'][arm]['result']['status'] not in
++                          ('INCONCLUSIVE', 'UNKNOWN')] for arm in order}
++        medians = {arm: median(values) if values else None
++                   for arm, values in complete.items()}
++        ratios = {}
++        for arm in ('control', 'saturation'):
++            values = [s['arms']['baseline']['seconds'] / s['arms'][arm]['seconds']
++                      for s in samples
++                      if s['arms']['baseline']['result']['status'] == s['arms'][arm]['result']['status']
++                      and s['arms'][arm]['result']['status'] not in ('INCONCLUSIVE', 'UNKNOWN')]
++            ratios[arm] = median(values) if len(values) == rounds else None
++        row = dict(name=name, family=family, crossings=len(pd), pd=pd,
++                   median_seconds=medians, median_observed_seconds=observed,
++                   completion_counts={arm: len(values) for arm, values in complete.items()},
++                   paired_ratios=ratios, warmup=warmup,
++                   outcomes={arm: [s['arms'][arm]['result']['status'] for s in samples]
++                             for arm in order}, samples=samples)
++        rows.append(row)
++        print(name, {a: None if t is None else round(t, 6) for a, t in medians.items()},
++              ratios, row['completion_counts'], flush=True)
++    return rows
++
++
++def audit(base, old_group):
++    rows = []
++    for name, pd, family in small_audit_cases() + corpus():
++        old = old_group.group_decide(base.Diagram.from_pd(pd), seconds=None,
++                                    max_work=2_000_000, compressed_search=True,
++                                    relator_moves=True)
++        control = group_decide(Diagram.from_pd(pd), seconds=None, max_work=2_000_000,
++                               compressed_search=True, relator_moves=True)
++        explicit_false = group_decide(Diagram.from_pd(pd), seconds=None,
++                                     max_work=2_000_000, compressed_search=True,
++                                     relator_moves=True, raw_saturation=False)
++        new = group_decide(Diagram.from_pd(pd), seconds=None, max_work=2_000_000,
++                           raw_saturation=True, relator_moves=True)
++        assert old['status'] == control['status'], name
++        assert old.get('certificate') == control.get('certificate'), name
++        assert explicit_false['status'] == control['status'], name
++        assert explicit_false.get('certificate') == control.get('certificate'), name
++        assert explicit_false['search_stats'] == control['search_stats'], name
++        replayed = []
++        for arm, result in [('baseline', old), ('saturation', new)]:
++            if result['status'] != 'UNKNOT':
++                continue
++            proof = result['certificate']
++            assert verify_group_certificate(Diagram.from_pd(pd), proof, compressed=True,
++                                            max_work=10_000_000), name
++            assert old_group.verify_group_certificate(base.Diagram.from_pd(pd), proof,
++                                                      compressed=True,
++                                                      max_work=10_000_000), name
++            # Literal replay may legitimately exceed the expansion allowance.
++            if len(pd) <= 16:
++                assert verify_group_certificate(Diagram.from_pd(pd), proof,
++                                                max_work=10_000_000,
++                                                max_letters=2_000_000), name
++                assert old_group.verify_group_certificate(base.Diagram.from_pd(pd), proof,
++                                                          max_work=10_000_000,
++                                                          max_letters=2_000_000), name
++            altered = deepcopy(proof)
++            altered['input_pd'].append([0, 0, 0, 0])
++            assert not verify_group_certificate(Diagram.from_pd(pd), altered,
++                                                compressed=True), name
++            assert not old_group.verify_group_certificate(base.Diagram.from_pd(pd),
++                                                          altered, compressed=True), name
++            replayed.append(arm)
++        rows.append(dict(name=name, family=family, pd=pd, baseline=old, control=control,
++                         explicit_false=explicit_false, saturation=new,
++                         replayed=replayed, source_binding_rejections=2*len(replayed)))
++        EVENT_SINK(dict(mode='audit', row=rows[-1]))
++        print('audit', name, old['status'], new['status'], replayed, flush=True)
++    return rows
++
++
++def adversarial(bits):
++    arena = WordArena(max_nodes=2_000_000, max_work=100_000_000)
++    power = 1 << bits
++    roots = [arena.from_word([1, 2, 3]),
++             arena.from_word([1, 3] + [4] * 10),
++             arena.from_word([1] + [4] * 10),
++             arena.power(arena.letter(3), power),
++             arena.power(arena.from_word([2] + [-4] * 10), power)]
++    return arena, roots, {1, 2, 3, 4}
++
++
++def kernels(rounds, search_allowance):
++    rng = random.Random(2026100904)
++    rows = []
++    for bits in (8, 64, 512, 2048, 4096):
++        samples = []
++        warmup = None
++        for repetition in range(rounds + 1):
++            order = ['ordinary', 'control', 'saturation']
++            rng.shuffle(order)
++            records = {}
++            for arm in order:
++                arena, roots, alive = adversarial(bits)
++                initial_nodes = len(arena.rules) - 1
++                initial_work = arena.stats['work']
++                arena.left = search_allowance
++                moves, terminal = [], {}
++                start = perf_counter()
++                reason = None
++                try:
++                    result = _search(arena, roots, alive, moves, primitive_terminal=terminal,
++                                     rank_two_terminal=False, raw_saturation=arm == 'saturation')
++                except CompressedLimit as exc:
++                    result = False
++                    reason = str(exc)
++                elapsed = perf_counter() - start
++                search_stats = deepcopy(arena.stats)
++                if result:
++                    assert len(alive) == 1, (bits, arm, alive)
++                    assert rank_one_zero(arena, roots, alive)
++                records[arm] = dict(seconds=elapsed, source_nodes=initial_nodes,
++                                    status='COMPLETE' if result else 'INCONCLUSIVE',
++                                    reason=reason or (None if result else 'search stalled'),
++                                    surviving_generators=sorted(alive),
++                                    source_work=initial_work,
++                                    search_work=search_stats['work'] - initial_work,
++                                    nodes=len(arena.rules) - 1, stats=search_stats,
++                                    moves=moves, terminal=terminal)
++                EVENT_SINK(dict(mode='kernels', bits=bits, repetition=repetition,
++                                warmup=repetition == 0, arm=arm, record=records[arm]))
++            if repetition:
++                samples.append(dict(order=order, arms=records))
++            else:
++                warmup = dict(order=order, arms=records)
++        complete = {arm: [s['arms'][arm]['seconds'] for s in samples
++                          if s['arms'][arm]['status'] == 'COMPLETE'] for arm in order}
++        ratios = {}
++        for arm in ('control', 'saturation'):
++            pairs = [s['arms']['ordinary']['seconds']/s['arms'][arm]['seconds']
++                     for s in samples if s['arms']['ordinary']['status'] ==
++                     s['arms'][arm]['status'] == 'COMPLETE']
++            ratios[arm] = median(pairs) if len(pairs) == rounds else None
++        rows.append(dict(bits=bits, family='abstract redundant cyclic presentation',
++                         median_seconds={a: median(v) if v else None
++                                         for a, v in complete.items()},
++                         median_observed_seconds={a: median(s['arms'][a]['seconds']
++                                                           for s in samples) for a in order},
++                         completion_counts={a: len(v) for a, v in complete.items()},
++                         paired_ratio=ratios['saturation'], control_ratio=ratios['control'],
++                         warmup=warmup, samples=samples))
++        print('kernel', bits, rows[-1]['median_seconds'], rows[-1]['paired_ratio'],
++              rows[-1]['completion_counts'], flush=True)
++    return rows
++
++
++def main():
++    global EVENT_SINK
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--baseline', type=Path, default=ROOT.parent / 'baseline' / 'fast')
++    parser.add_argument('--mode', choices=('audit', 'stage', 'pipeline', 'kernels'), required=True)
++    parser.add_argument('--rounds', type=int, default=5)
++    parser.add_argument('--kernel-work', type=int, default=2_000_000)
++    parser.add_argument('--candidate-label', default='candidate')
++    parser.add_argument('--output', type=Path, required=True)
++    args = parser.parse_args()
++    if args.rounds < 1:
++        parser.error('--rounds must be positive')
++    if args.kernel_work < 1:
++        parser.error('--kernel-work must be positive')
++    args.output.parent.mkdir(parents=True, exist_ok=True)
++    journal = args.output.with_suffix('.journal.jsonl')
++    journal.write_text('')
++    def record_event(event):
++        with journal.open('a') as stream:
++            stream.write(json.dumps(event, separators=(',', ':')) + '\n')
++    EVENT_SINK = record_event
++    base, old_group = load_baseline(args.baseline.resolve())
++    before = dict(baseline=hashes(args.baseline), current=hashes(ROOT))
++    driver_hash = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
++    start = perf_counter()
++    if args.mode == 'audit':
++        rows = audit(base, old_group)
++    elif args.mode == 'kernels':
++        rows = kernels(args.rounds, args.kernel_work)
++    else:
++        cases = corpus()
++        if args.mode == 'stage':
++            cases = [(f'circle-{n-1}', Diagram.from_braid(n, list(range(1, n))).pd,
++                      'elementary unknot closure; mechanism control')
++                     for n in (16, 32, 64, 128, 256, 512)] + cases
++        rows = paired(args.mode, cases, args.rounds, base, old_group)
++    after = dict(baseline=hashes(args.baseline), current=hashes(ROOT))
++    assert before == after, 'measured source changed during run'
++    assert hashlib.sha256(Path(__file__).read_bytes()).hexdigest() == driver_hash
++    output = dict(mode=args.mode, baseline_commit='fdeb5b1a20b84b93cb150e0232031837bb7d30cb',
++                  candidate_label=args.candidate_label,
++                  python=sys.version, platform=platform.platform(), rounds=args.rounds,
++                  warmup_rounds=1 if args.mode != 'audit' else 0,
++                  elapsed_seconds=perf_counter() - start, source_hashes=before,
++                  driver_sha256=driver_hash,
++                  excluded_hash_paths={'fastunknot/orbit_index.py':
++                                       'unrelated rank/select implementation concurrently developed'},
++                  kernel_search_allowance=args.kernel_work if args.mode == 'kernels' else None,
++                  journal_file=journal.name,
++                  timing='fresh complete calls; see script for exact contracts',
++                  censoring='INCONCLUSIVE and UNKNOWN are never completion-time ratios', rows=rows)
++    args.output.parent.mkdir(parents=True, exist_ok=True)
++    args.output.write_text(json.dumps(output, indent=2) + '\n')
++    print('saved', args.output, flush=True)
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/Topology/UnknotRecognition/fast/raw_saturation_research/summarize.py b/Topology/UnknotRecognition/fast/raw_saturation_research/summarize.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/raw_saturation_research/summarize.py
+@@ -0,0 +1,179 @@
++"""Build compact tables from preserved final raw-saturation measurements."""
++from collections import Counter
++import json
++from pathlib import Path
++from statistics import median
++
++ROOT = Path(__file__).resolve().parents[1]
++RESULTS = ROOT / 'results'
++
++
++def load(name):
++    return json.loads((RESULTS / name).read_text())
++
++
++def number(value, scale=1):
++    return '--' if value is None else f'{scale*value:,.3f}'
++
++
++def tex_name(name):
++    return name.replace('_', r'\_')
++
++
++def table(caption, label, header, rows, columns):
++    return '\n'.join([
++        r'\begin{table}[htbp]', r'\centering\small',
++        r'\begin{tabular}{' + columns + '}', r'\toprule',
++        ' & '.join(header) + r' \\', r'\midrule',
++        *[' & '.join(map(str, row)) + r' \\' for row in rows],
++        r'\bottomrule', r'\end{tabular}',
++        r'\caption{' + caption + '}', r'\label{' + label + '}',
++        r'\end{table}', '',
++    ])
++
++
++def main():
++    data = {mode: load(f'raw_saturation_{mode}.json')
++            for mode in ('audit', 'kernels', 'stage', 'pipeline')}
++    assert len({x['driver_sha256'] for x in data.values()}) == 1
++    for x in data.values():
++        assert x['candidate_label'] == 'final-preindex-guard'
++        assert x['source_hashes'] == data['audit']['source_hashes']
++    initial = load('raw_saturation_initial_audit.json')
++    assert all(a['saturation']['status'] == b['saturation']['status'] and
++               a['saturation'].get('certificate') == b['saturation'].get('certificate')
++               for a, b in zip(data['audit']['rows'], initial['rows']))
++
++    summary = {'final_source_hashes_identical_across_modes': True,
++               'final_driver_sha256': data['audit']['driver_sha256'],
++               'timing_scope': {
++                   'kernels': 'internal search on preconstructed abstract SLP presentations; no PD provenance or mandatory source replay',
++                   'stage': 'fresh PD validation, presentation reconstruction, group search, and mandatory independent source replay',
++                   'pipeline': 'fresh full recognizer with ordinary earlier filters and resource caps'},
++               'initial_final_audit_status_and_certificate_equality': True,
++               'modes': {}, 'guard_work_comparison': []}
++    for mode in ('stage', 'pipeline'):
++        rows = data[mode]['rows']
++        aa = [r['paired_ratios']['control'] for r in rows
++              if r['paired_ratios']['control'] is not None]
++        summary['modes'][mode] = {
++            'inputs': len(rows), 'measured_calls': 15*len(rows),
++            'warmup_calls': 3*len(rows), 'elapsed_seconds': data[mode]['elapsed_seconds'],
++            'completed': {arm: sum(r['completion_counts'][arm] for r in rows)
++                          for arm in ('baseline', 'control', 'saturation')},
++            'aa_ratio_range': [min(aa), max(aa)],
++            'outcomes': {arm: dict(Counter(s['arms'][arm]['result']['status']
++                                         for r in rows for s in r['samples']))
++                         for arm in ('baseline', 'control', 'saturation')},
++            'reasons': {arm: dict(Counter(s['arms'][arm]['result'].get('reason') or
++                                        s['arms'][arm]['result'].get('method') or
++                                        s['arms'][arm]['result']['status']
++                                        for r in rows for s in r['samples']))
++                        for arm in ('baseline', 'control', 'saturation')},
++            'rows': [{key: r[key] for key in ('name', 'crossings', 'median_seconds',
++                                            'paired_ratios', 'completion_counts')}
++                     for r in rows],
++        }
++    rows = data['kernels']['rows']
++    summary['modes']['kernels'] = {
++        'inputs': len(rows), 'measured_calls': 15*len(rows),
++        'warmup_calls': 3*len(rows), 'elapsed_seconds': data['kernels']['elapsed_seconds'],
++        'completed_calls': sum(sum(r['completion_counts'].values()) for r in rows),
++        'search_work_allowance': data['kernels']['kernel_search_allowance'],
++        'rows': [{key: r[key] for key in ('bits', 'median_seconds', 'paired_ratio',
++                                        'control_ratio', 'completion_counts')}
++                 for r in rows],
++    }
++    rows = data['audit']['rows']
++    summary['modes']['audit'] = {
++        'inputs': len(rows), 'elapsed_seconds': data['audit']['elapsed_seconds'],
++        'outcomes': {arm: dict(Counter(r[arm]['status'] for r in rows))
++                     for arm in ('baseline', 'control', 'explicit_false', 'saturation')},
++        'compressed_source_replays': sum(2*len(r['replayed']) for r in rows),
++        'literal_source_replays': sum(2*len(r['replayed']) for r in rows if len(r['pd']) <= 16),
++        'source_binding_rejections': sum(r['source_binding_rejections'] for r in rows),
++        'new_version_eight_certificates': sum(r['saturation'].get('certificate', {}).get('version') == 8 for r in rows),
++    }
++    for name in ('survivor-00', 'monster', 'gordian'):
++        old = next(r for r in initial['rows'] if r['name'] == name)
++        new = next(r for r in data['audit']['rows'] if r['name'] == name)
++        summary['guard_work_comparison'].append({
++            'name': name, 'baseline_work': new['baseline']['search_stats']['work'],
++            'initial_saturation_work': old['saturation']['search_stats']['work'],
++            'final_saturation_work': new['saturation']['search_stats']['work'],
++            'initial_incidence': old['saturation']['search_stats'].get('raw_saturation_source_incidence', 0),
++            'final_incidence': new['saturation']['search_stats'].get('raw_saturation_source_incidence', 0),
++        })
++    (RESULTS/'raw_saturation_summary.json').write_text(json.dumps(summary, indent=2)+'\n')
++
++    tables = []
++    kernel_rows = []
++    for row in data['kernels']['rows']:
++        arms = row['samples'][0]['arms']
++        kernel_rows.append([
++            r'$2^{' + str(row['bits']) + '}$', arms['saturation']['source_nodes'],
++            number(row['median_seconds']['ordinary'], 1000),
++            number(row['median_seconds']['saturation'], 1000),
++            number(row['paired_ratio']), number(row['control_ratio']),
++        ])
++    tables.append(table(
++        'Internal algebraic search on the fixed compressed redundant-presentation family. '
++        'Source construction is outside these timings; these are not full knot-recognition calls. '
++        'All three arms have the same two-million search-work allowance. '
++        'Dashes denote work-limited ordinary/control arms; no ratio uses their censored times. '
++        'The ratio is the median of five complete paired ratios, not the ratio of displayed medians.',
++        'tab:raw-saturation-kernels',
++        ['Power $N$', 'Source nodes', 'Ordinary ms', 'New ms', 'Paired ratio', 'A/A'],
++        kernel_rows, 'lrrrrr'))
++
++    chosen = [f'circle-{n}' for n in (15, 31, 63, 127, 255, 511)] + [
++        'unknot_braid40', 'hard_unknot_8', 'monster', 'gordian']
++    stage_rows = []
++    for name in chosen:
++        row = next(r for r in data['stage']['rows'] if r['name'] == name)
++        stage_rows.append([
++            tex_name(name), row['crossings'], number(row['median_seconds']['baseline'], 1000),
++            number(row['median_seconds']['saturation'], 1000),
++            number(row['paired_ratios']['saturation']), number(row['paired_ratios']['control']),
++        ])
++    tables.append(table(
++        'Selected complete group-stage calls, including fresh PD validation, source reconstruction, '
++        'search, and mandatory independent replay. All 28 inputs and all outcomes are retained in the JSON data. '
++        'The circle family is an elementary mechanism control. On circle-511, the earlier arms hit '
++        'the unchanged 100,000-node allowance; only the new arm completes. '
++        'No wall-time limit is imposed in this stage experiment.',
++        'tab:raw-saturation-stage',
++        ['Source', '$n$', 'Old ms', 'New ms', 'Paired ratio', 'A/A'],
++        stage_rows, 'lrrrrr'))
++
++    pipeline_rows = []
++    for row in data['pipeline']['rows']:
++        pipeline_rows.append([
++            tex_name(row['name']), number(row['median_seconds']['baseline'], 1000),
++            number(row['median_seconds']['saturation'], 1000),
++            number(row['paired_ratios']['saturation']), number(row['paired_ratios']['control']),
++        ])
++    tables.append(table(
++        'All full-pipeline inputs, with the ordinary preceding filters, a one-second global allowance, '
++        'and a 0.15-second group-stage allowance. Gordian is resource-limited in every arm. '
++        'Earlier-filter controls do not exercise the new planner. Five measured rounds follow one excluded warmup.',
++        'tab:raw-saturation-pipeline',
++        ['Source', 'Old ms', 'New ms', 'Paired ratio', 'A/A'],
++        pipeline_rows, 'lrrrr'))
++
++    guard_rows = [[tex_name(row['name']), f"{row['baseline_work']:,}",
++                   f"{row['initial_saturation_work']:,}", f"{row['final_saturation_work']:,}"]
++                  for row in summary['guard_work_comparison']]
++    tables.append(table(
++        'Deterministic producer work before and after moving the exact first-firing guard '
++        'ahead of incidence construction. All initial/final audit outcomes and certificates agree. '
++        'These are cooperative work counts, not bit-operation counts or wall-time ratios.',
++        'tab:raw-saturation-guard',
++        ['Source', 'Baseline', 'Initial probe', 'Final probe'], guard_rows, 'lrrr'))
++    (RESULTS/'raw_saturation_tables.tex').write_text('\n'.join(tables))
++    print(json.dumps({mode: {k: v for k, v in info.items() if k not in ('rows', 'reasons')}
++                      for mode, info in summary['modes'].items()}, indent=2))
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/Topology/UnknotRecognition/fast/tests/test_orbit_index.py b/Topology/UnknotRecognition/fast/tests/test_orbit_index.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_orbit_index.py
+@@ -0,0 +1,334 @@
++"""Exact graph oracle and adversarial tests for compiled AHT point queries."""
++
++import copy
++from itertools import chain, combinations_with_replacement
++import json
++import random
++import unittest
++
++from fastunknot.interval_orbits import IntervalPairing, count_orbits
++from fastunknot.orbit_index import OrbitIndex, prepare_orbit_index
++
++
++def explicit_minima(size, pairings):
++    parents = list(range(size))
++
++    def root(x):
++        while parents[x] != x:
++            parents[x] = parents[parents[x]]
++            x = parents[x]
++        return x
++
++    for pairing in pairings:
++        for x in range(pairing.a, pairing.b + 1):
++            y = pairing.a + pairing.d - x if pairing.reverse else x + pairing.c - pairing.a
++            left, right = sorted((root(x), root(y)))
++            parents[right] = left
++    return [root(x) for x in range(size)]
++
++
++def explicit_intervals(points):
++    result = []
++    for point in sorted(set(points)):
++        if result and result[-1][1] == point:
++            result[-1] = (result[-1][0], point + 1)
++        else:
++            result.append((point, point + 1))
++    return tuple(result)
++
++
++class OrbitIndexTests(unittest.TestCase):
++    def test_exhaustive_relations_with_up_to_two_generators(self):
++        systems = points = 0
++        for size in range(1, 6):
++            generators = [IntervalPairing(a, a + width - 1, c, c + width - 1, reverse)
++                          for width in range(1, size + 1)
++                          for a in range(size - width + 1)
++                          for c in range(a, size - width + 1)
++                          for reverse in (False, True)]
++            sources = chain([()], ((p,) for p in generators),
++                            combinations_with_replacement(generators, 2))
++            for pairings in sources:
++                expected = explicit_minima(size, pairings)
++                minima = sorted(set(expected))
++                for rule in ('aht', 'fine_wilf'):
++                    index, _ = prepare_orbit_index(size, pairings, periodic_rule=rule)
++                    self.assertEqual([index.representative(x) for x in range(size)], expected)
++                    self.assertEqual(index.minimum_intervals, explicit_intervals(minima))
++                    self.assertEqual([index.select_minimum(i) for i in range(index.count)], minima)
++                    self.assertEqual([index.orbit_rank(x) for x in range(size)],
++                                     [minima.index(x) for x in expected])
++                    systems += 1
++                    points += size
++        print(json.dumps(dict(exhaustive_indices=systems, exhaustive_point_checks=points,
++                              maximum_universe=5, maximum_generators=2)))
++
++    def test_random_literal_graphs(self):
++        rng = random.Random(202610090731)
++        systems = points = comparisons = 0
++        event_types = set()
++        for size in range(1, 65):
++            for _ in range(50):
++                pairings = []
++                for __ in range(rng.randrange(0, 14)):
++                    width = rng.randint(1, size)
++                    a = rng.randrange(size - width + 1)
++                    c = rng.randrange(size - width + 1)
++                    pairings.append(IntervalPairing(a, a + width - 1,
++                                                    c, c + width - 1,
++                                                    bool(rng.randrange(2))))
++                expected = explicit_minima(size, pairings)
++                previous = None
++                for rule in ('aht', 'fine_wilf'):
++                    index, raw = prepare_orbit_index(size, pairings, periodic_rule=rule)
++                    self.assertIsNotNone(index)
++                    actual = [index.representative(x) for x in range(size)]
++                    self.assertEqual(actual, expected)
++                    self.assertEqual(index.count, len(set(expected)))
++                    minima = sorted(set(expected))
++                    ranks = {minimum: rank for rank, minimum in enumerate(minima)}
++                    self.assertEqual(index.minimum_intervals, explicit_intervals(expected))
++                    self.assertLessEqual(len(index.minimum_intervals), index.statistics['gap_records'])
++                    self.assertEqual([index.select_minimum(i) for i in range(index.count)], minima)
++                    selected = [index.select(i) for i in range(index.count)]
++                    self.assertEqual(set(selected), set(expected))
++                    self.assertEqual(len(selected), len(set(selected)))
++                    for x in range(size):
++                        location = index.locate(x)
++                        self.assertEqual(index.select(location.ordinal), expected[x])
++                        self.assertLessEqual(location.representative, x)
++                        self.assertEqual(index.orbit_rank(x), ranks[expected[x]])
++                    for rank, minimum in enumerate(minima):
++                        self.assertEqual(index.minimum_rank(minimum), rank)
++                    for __ in range(10):
++                        x, y = rng.randrange(size), rng.randrange(size)
++                        self.assertEqual(index.same_orbit(x, y), expected[x] == expected[y])
++                        comparisons += 1
++                    if previous is not None:
++                        self.assertEqual(previous, actual)
++                    previous = actual
++                    event_types.update(event['op'] for event in raw.certificate['operations'])
++                    points += size
++                    systems += 1
++        self.assertEqual(event_types, {'delete', 'contract', 'trim', 'merge',
++                                      'transmit', 'truncate'})
++        print(json.dumps(dict(systems=systems, point_minimum_checks=points,
++                              sampled_membership_checks=comparisons,
++                              event_types=sorted(event_types))))
++
++    def test_binary_scale_and_periods(self):
++        width = (1 << 16000) + 7
++        size = width * 3 + 19
++        pairings = [IntervalPairing(5, 5 + 2 * width - 1,
++                                   5 + width, 5 + 3 * width - 1)]
++        index, _ = prepare_orbit_index(size, pairings)
++        for x in (0, 4, 5, 6, 5 + width, 4 + 3 * width, size - 1):
++            expected = x if x < 5 or x >= 5 + 3 * width else 5 + (x - 5) % width
++            self.assertEqual(index.representative(x), expected)
++        self.assertEqual(index.count, width + 19)
++        self.assertEqual(index.minimum_intervals, ((0, 5 + width),
++                                                   (5 + 3 * width, size)))
++        for label in (0, 4, index.count // 2, index.count - 1):
++            representative = index.select(label)
++            self.assertEqual(index.representative(representative), representative)
++        self.assertLess(index.statistics['point_steps'], 20)
++
++    def test_reflection_and_singletons(self):
++        size = (1 << 17000) + 1
++        index, _ = prepare_orbit_index(size, [IntervalPairing(0, size - 1,
++                                                             0, size - 1, True)])
++        self.assertEqual(index.count, (size + 1) // 2)
++        for x in (0, 1, size // 2, size // 2 + 1, size - 1):
++            self.assertEqual(index.representative(x), min(x, size - 1 - x))
++
++    def test_static_empty_and_validation(self):
++        empty, _ = prepare_orbit_index(0, [])
++        self.assertEqual(empty.count, 0)
++        for method in (empty.select, empty.representative, empty.minimum_rank,
++                       empty.orbit_rank, empty.select_minimum):
++            with self.assertRaises(ValueError):
++                method(0)
++        size = 1 << 20000
++        index, raw = prepare_orbit_index(size, [])
++        for x in (0, 1, size - 1):
++            self.assertEqual(index.representative(x), x)
++            self.assertEqual(index.select(x), x)
++            self.assertEqual(index.select_minimum(x), x)
++            self.assertEqual(index.minimum_rank(x), x)
++        for bad in (True, False, -1, size, 0.5, '1'):
++            with self.assertRaises(ValueError):
++                index.representative(bad)
++            with self.assertRaises(ValueError):
++                index.select(bad)
++            with self.assertRaises(ValueError):
++                index.select_minimum(bad)
++        self.assertEqual(index.representative(hex(size - 1)), size - 1)
++        snapshot = copy.deepcopy(raw.certificate)
++        raw.certificate['operations'].clear()
++        self.assertEqual(index.representative(size - 1), size - 1)
++        with self.assertRaises(ValueError):
++            OrbitIndex.from_certificate(size, [], raw.certificate)
++        with self.assertRaises(ValueError):
++            OrbitIndex.from_certificate(size + 1, [], snapshot)
++
++    def test_source_binding_and_mutations(self):
++        pairings = [IntervalPairing(0, 10, 5, 15), IntervalPairing(12, 14, 17, 19, True)]
++        index, raw = prepare_orbit_index(23, pairings)
++        mutations = []
++        proof = copy.deepcopy(raw.certificate)
++        proof['orbit_count'] += 1
++        mutations.append(proof)
++        proof = copy.deepcopy(raw.certificate)
++        proof['operations'].pop()
++        mutations.append(proof)
++        proof = copy.deepcopy(raw.certificate)
++        proof['pairings'][0][0] += 1
++        mutations.append(proof)
++        for event_index, event in enumerate(raw.certificate['operations']):
++            if event['op'] == 'truncate':
++                proof = copy.deepcopy(raw.certificate)
++                proof['operations'][event_index]['new_size'] += 1
++                mutations.append(proof)
++                break
++        for proof in mutations:
++            with self.assertRaises(ValueError):
++                OrbitIndex.from_certificate(23, pairings, proof)
++        with self.assertRaises(ValueError):
++            OrbitIndex.from_certificate(23, pairings[:-1], raw.certificate)
++        self.assertEqual(index.count, len(set(explicit_minima(23, pairings))))
++
++    def test_ordinals_are_not_canonical_but_minima_are(self):
++        pairing = IntervalPairing(0, 0, 0, 0)
++        common = dict(version=2, size=3, pairings=[[0, 0, 0, 0, 1]], orbit_count=3)
++        first = dict(common, operations=[dict(op='delete', index=0),
++                                        dict(op='contract', gaps=[[0, 2]])])
++        second = dict(common, operations=[dict(op='contract', gaps=[[1, 2]]),
++                                         dict(op='delete', index=0),
++                                         dict(op='contract', gaps=[[0, 0]])])
++        left = OrbitIndex.from_certificate(3, [pairing], first)
++        right = OrbitIndex.from_certificate(3, [pairing], second)
++        self.assertEqual([left.representative(x) for x in range(3)], [0, 1, 2])
++        self.assertEqual([right.representative(x) for x in range(3)], [0, 1, 2])
++        self.assertEqual([left.select(x) for x in range(3)], [0, 1, 2])
++        self.assertEqual([right.select(x) for x in range(3)], [1, 2, 0])
++        self.assertEqual(left.minimum_intervals, right.minimum_intervals)
++        self.assertEqual([left.select_minimum(x) for x in range(3)], [0, 1, 2])
++        self.assertEqual([right.select_minimum(x) for x in range(3)], [0, 1, 2])
++        shifted, _ = prepare_orbit_index(10, [IntervalPairing(5, 5, 8, 8)])
++        self.assertEqual(shifted.representative(8), 5)
++        with self.assertRaises(ValueError):
++            shifted.minimum_rank(8)
++
++    def test_genuine_normal_arc_systems(self):
++        from fastunknot.normal_surface_geometry import normal_arc_pairings
++        from normal_orbit_research.fixtures import layered_torus, interior_vertex_torus
++        systems = points = 0
++        sources = []
++        for tetrahedra in range(1, 11):
++            raw, primitive = layered_torus(tetrahedra)
++            for scale in (1, 2, 3, 7):
++                vector = [[scale * entry for entry in row] for row in primitive]
++                sources.append((raw, vector))
++        raw, basis = interior_vertex_torus()
++        for first in range(3):
++            for second in range(3):
++                for third in range(3):
++                    vector = [[first * a + second * b + third * c
++                               for a, b, c in zip(x, y, z)]
++                              for x, y, z in zip(basis['sphere'], basis['boundary_disk'],
++                                                 basis['mobius'])]
++                    sources.append((raw, vector))
++        for raw, vector in sources:
++            for boundary in (False, True):
++                size, pairings = normal_arc_pairings(raw, vector, boundary=boundary)
++                expected = explicit_minima(size, pairings)
++                for rule in ('aht', 'fine_wilf'):
++                    index, _ = prepare_orbit_index(size, pairings, periodic_rule=rule)
++                    self.assertEqual([index.representative(x) for x in range(size)], expected)
++                    self.assertEqual(set(index.select(i) for i in range(index.count)), set(expected))
++                    self.assertEqual(index.minimum_intervals, explicit_intervals(expected))
++                    self.assertEqual([index.select_minimum(i) for i in range(index.count)],
++                                     sorted(set(expected)))
++                    systems += 1
++                    points += size
++        print(json.dumps(dict(native_arc_systems=systems, native_point_checks=points,
++                              normal_vectors=len(sources))))
++
++    def test_many_minimum_intervals_with_huge_binary_multiplicity(self):
++        blocks, width = 512, (1 << 4096) + 3
++        size = 2 * blocks * width
++        pairs = [IntervalPairing(2 * i * width, (2 * i + 1) * width - 1,
++                                  (2 * i + 1) * width, (2 * i + 2) * width - 1)
++                 for i in range(blocks)]
++        operations = []
++        for i in reversed(range(blocks)):
++            operations.append(dict(op='truncate', index=i, new_size=(2 * i + 1) * width))
++            operations.append(dict(op='contract', gaps=[[2 * i * width, (2 * i + 1) * width - 1]]))
++        proof = dict(version=2, size=size,
++                     pairings=[[p.a, p.b, p.c, p.d, 1] for p in pairs],
++                     orbit_count=blocks * width, operations=operations)
++        index = OrbitIndex.from_certificate(size, pairs, proof)
++        expected = tuple((2 * i * width, (2 * i + 1) * width) for i in range(blocks))
++        self.assertEqual(index.minimum_intervals, expected)
++        self.assertEqual(index.statistics['gap_records'], blocks)
++        self.assertEqual(index.statistics['minimum_intervals'], blocks)
++        for rank in (0, width - 1, width, width + 1, 257 * width + 13, index.count - 1):
++            block, offset = divmod(rank, width)
++            minimum = 2 * block * width + offset
++            self.assertEqual(index.select_minimum(rank), minimum)
++            self.assertEqual(index.minimum_rank(minimum), rank)
++            self.assertEqual(index.orbit_rank(minimum + width), rank)
++            self.assertEqual(index.representative(minimum + width), minimum)
++            with self.assertRaises(ValueError):
++                index.minimum_rank(minimum + width)
++        print(json.dumps(dict(large_gap_records=blocks, minimum_intervals=blocks,
++                              universe_bits=size.bit_length(),
++                              orbit_count_bits=index.count.bit_length())))
++
++    def test_no_producer_during_preparation_or_queries(self):
++        import fastunknot.interval_orbits as producer
++        pairings = [IntervalPairing(0, 15, 8, 23)]
++        raw = producer.count_orbits(24, pairings, record_certificate=True)
++        original = producer.count_orbits
++
++        def disabled(*args, **kwargs):
++            raise AssertionError('orbit discovery was called')
++
++        producer.count_orbits = disabled
++        try:
++            index = OrbitIndex.from_certificate(24, pairings, raw.certificate)
++            self.assertEqual(index.representative(22), 6)
++            self.assertTrue(index.same_orbit(2, 18))
++            self.assertEqual(set(index.select(i) for i in range(index.count)), set(range(8)))
++        finally:
++            producer.count_orbits = original
++
++    def test_budget_and_cancellation(self):
++        pairings = [IntervalPairing(0, 12, 7, 19)]
++        index, raw = prepare_orbit_index(20, pairings, max_cycles=0)
++        self.assertIsNone(index)
++        self.assertFalse(raw.complete)
++        index, raw = prepare_orbit_index(20, pairings)
++
++        class Cancelled(RuntimeError):
++            pass
++
++        class Cancel:
++            def __bool__(self):
++                return False
++            def __call__(self):
++                raise Cancelled
++
++        for call in (lambda: OrbitIndex.from_certificate(20, pairings, raw.certificate, check=Cancel()),
++                     lambda: index.representative(10, check=Cancel()),
++                     lambda: index.select(0, check=Cancel()),
++                     lambda: index.select_minimum(0, check=Cancel()),
++                     lambda: index.minimum_rank(0, check=Cancel()),
++                     lambda: index.orbit_rank(10, check=Cancel()),
++                     lambda: index.same_orbit(0, 0, check=Cancel())):
++            with self.assertRaises(Cancelled):
++                call()
++
++
++if __name__ == '__main__':
++    unittest.main(verbosity=2)
+diff --git a/Topology/UnknotRecognition/fast/tests/test_raw_saturation.py b/Topology/UnknotRecognition/fast/tests/test_raw_saturation.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_raw_saturation.py
+@@ -0,0 +1,252 @@
++"""Independent oracles and maintained replay tests for raw saturation."""
++import random
++import unittest
++
++from fastunknot.compressed_words import CompressedLimit, WordArena
++from fastunknot.elimination_batch import apply_batch, plan_batch
++from fastunknot.elimination_batch_verify import (
++    replay_compressed_batch, replay_literal_batch,
++)
++from fastunknot.raw_saturation import build_index, find_rank_one_plan, seed_closure
++
++
++def literal_closure(words, alive, seeds):
++    known = set(seeds)
++    while True:
++        before = set(known)
++        for word in words:
++            support = {abs(x) for x in word}
++            unknown = support - known
++            if len(unknown) == 1:
++                g = next(iter(unknown))
++                if sum(abs(x) == g for x in word) == 1:
++                    known.add(g)
++        if before == known:
++            return known
++
++
++class LiteralBudget:
++    def tick(self, amount=1):
++        pass
++
++    def size(self, amount):
++        if amount > 1_000_000:
++            raise RuntimeError('test literal allocation cap exceeded')
++
++
++def make_arena(words):
++    arena = WordArena(max_nodes=100_000, max_work=10_000_000)
++    return arena, [arena.from_word(word) for word in words]
++
++
++class RawSaturationTests(unittest.TestCase):
++    def test_fixed_seed_closure_matches_literal_fixed_points(self):
++        rng = random.Random(57831)
++        for _ in range(400):
++            rank = rng.randrange(1, 7)
++            alive = set(range(1, rank + 1))
++            words = [[rng.randrange(1, rank + 1) * rng.choice([-1, 1])
++                      for _ in range(rng.randrange(8))]
++                     for _ in range(rng.randrange(9))]
++            arena, roots = make_arena(words)
++            index = build_index(arena, roots, alive)
++            nodes_before = len(arena.rules)
++            for bits in range(1 << rank):
++                seeds = {g for g in alive if bits & (1 << (g - 1))}
++                got = seed_closure(arena, index, seeds)
++                expected = literal_closure(words, alive, seeds)
++                self.assertEqual(set(got.known), expected)
++                self.assertEqual(got.complete, expected == alive)
++                self.assertEqual(len({slot for slot, _ in got.entries}), len(got.entries))
++                already = set(seeds)
++                for slot, g in got.entries:
++                    self.assertNotIn(g, already)
++                    self.assertEqual(sum(abs(x) == g for x in words[slot]), 1)
++                    self.assertLessEqual({abs(x) for x in words[slot]} - {g}, already)
++                    already.add(g)
++                self.assertEqual(already, expected)
++            self.assertEqual(len(arena.rules), nodes_before)
++
++    def test_all_seed_search_and_independent_existing_replay(self):
++        rng = random.Random(476918)
++        successes = 0
++        for _ in range(600):
++            rank = rng.randrange(2, 7)
++            alive = set(range(1, rank + 1))
++            words = [[rng.randrange(1, rank + 1) * rng.choice([-1, 1])
++                      for _ in range(rng.randrange(1, 7))]
++                     for _ in range(rng.randrange(1, 9))]
++            arena, roots = make_arena(words)
++            before = list(roots), set(alive), len(arena.rules)
++            expected = next((g for g in sorted(alive)
++                             if literal_closure(words, alive, {g}) == alive), None)
++            plan = find_rank_one_plan(arena, roots, alive)
++            self.assertEqual(None if plan is None else plan['seed'], expected)
++            self.assertEqual((roots, alive, len(arena.rules)), before)
++            if plan is None:
++                continue
++            successes += 1
++            move = dict(kind='elimination_batch', entries=plan['entries'])
++            checker, checked_roots = make_arena(words)
++            checked_alive = set(alive)
++            literal, literal_alive = [list(w) for w in words], set(alive)
++            apply_batch(arena, roots, alive, plan['entries'])
++            self.assertTrue(replay_compressed_batch(checker, checked_roots,
++                                                   checked_alive, move))
++            self.assertTrue(replay_literal_batch(literal, literal_alive, move,
++                                                LiteralBudget()))
++            self.assertEqual(alive, {plan['seed']})
++            self.assertEqual(checked_alive, alive)
++            self.assertEqual(literal_alive, alive)
++            self.assertEqual([arena.expand(r) for r in roots], literal)
++            self.assertEqual([checker.expand(r) for r in checked_roots], literal)
++        self.assertGreater(successes, 50)
++
++    def test_original_slots_empty_rows_and_duplicate_roots(self):
++        words = [[], [1, 4], [1, 5], [], [1, 4]]
++        arena, roots = make_arena(words)
++        index = build_index(arena, roots, {1, 4, 5})
++        result = seed_closure(arena, index, {4, 5})
++        self.assertTrue(result.complete)
++        self.assertEqual(result.entries, ((1, 1),))
++        self.assertEqual(result.certificate_entries(), [dict(relation=1, generator=1)])
++
++    def test_complete_closure_recovers_from_greedy_donor_obstruction(self):
++        arena = WordArena(max_nodes=100_000, max_work=10_000_000)
++        x, y, z, a = [arena.letter(g) for g in range(1, 5)]
++        a10 = arena.power(a, 10)
++        roots = [arena.from_word([1, 2, 3]),
++                 arena.concat(arena.from_word([1, 3]), a10),
++                 arena.concat(x, a10), arena.power(z, 1 << 64),
++                 arena.power(arena.concat(y, arena.inverse(a10)), 1 << 64)]
++        alive = {1, 2, 3, 4}
++        self.assertEqual(plan_batch(arena, roots, alive),
++                         [dict(relation=0, generator=1)])
++        plan = find_rank_one_plan(arena, roots, alive)
++        self.assertEqual(plan, dict(seed=4, entries=[dict(relation=2, generator=1),
++                                                    dict(relation=1, generator=3),
++                                                    dict(relation=0, generator=2)]))
++        apply_batch(arena, roots, alive, plan['entries'])
++        self.assertEqual(alive, {4})
++        self.assertEqual([arena.reduce(root) for root in roots], [0] * 5)
++
++    def test_raw_occurrences_do_not_use_exponents_or_free_reduction(self):
++        # Both original source rows are freely reduced. After x <- y^-1,
++        # the second becomes y^-1 y y; reduction would enable y, but raw
++        # elimination cannot. This source has weighted permanent three.
++        words = [[1, 2], [1, 2, 2]]
++        arena, roots = make_arena(words)
++        index = build_index(arena, roots, {1, 2, 3})
++        self.assertEqual(seed_closure(arena, index, {3}).known, (3,))
++        self.assertIsNone(find_rank_one_plan(arena, roots, {1, 2, 3}))
++        # A repeated shared child contributes multiplicity two even though
++        # only one grammar node holds the symbol.
++        arena = WordArena()
++        x, a = arena.letter(1), arena.letter(2)
++        root = arena.concat(a, arena.concat(x, x))
++        index = build_index(arena, [root], {1, 2})
++        self.assertEqual(seed_closure(arena, index, {2}).known, (2,))
++
++    def test_huge_shared_words_without_expansion(self):
++        arena = WordArena(max_nodes=40_000, max_work=30_000_000)
++        x, y, a = [arena.letter(g) for g in (1, 2, 3)]
++        huge = arena.power(a, 1 << 4096)
++        roots = [arena.concat(x, huge), arena.concat(y, arena.inverse(x)),
++                 arena.concat(x, arena.inverse(y))]
++        alive = {1, 2, 3}
++        nodes = len(arena.rules)
++        arena.expand = lambda *args, **kwargs: self.fail('discovery expanded a word')
++        plan = find_rank_one_plan(arena, roots, alive)
++        self.assertEqual(plan, dict(seed=3, entries=[dict(relation=0, generator=1),
++                                                    dict(relation=1, generator=2)]))
++        self.assertEqual(nodes, len(arena.rules))
++        apply_batch(arena, roots, alive, plan['entries'])
++        self.assertEqual(alive, {3})
++        self.assertEqual(arena.reduce(roots[2]), 0)
++
++    def test_cache_tracks_arena_roots_order_and_live_set(self):
++        arena, roots = make_arena([[1, 2], [2, 3]])
++        cache = {}
++        first = find_rank_one_plan(arena, roots, {1, 2, 3}, cache)
++        self.assertEqual(first['seed'], 1)
++        self.assertEqual(arena.stats['raw_saturation_indices'], 1)
++        self.assertEqual(find_rank_one_plan(arena, roots, {1, 2, 3}, cache), first)
++        self.assertEqual(arena.stats['raw_saturation_indices'], 1)
++        swapped = find_rank_one_plan(arena, list(reversed(roots)), {1, 2, 3}, cache)
++        self.assertEqual(swapped['entries'][0]['relation'], 1)
++        self.assertEqual(arena.stats['raw_saturation_indices'], 2)
++        find_rank_one_plan(arena, roots, {1, 2, 3, 4}, cache)
++        self.assertEqual(arena.stats['raw_saturation_indices'], 3)
++        second, second_roots = make_arena([[1, 2], [2, 3]])
++        self.assertEqual(find_rank_one_plan(second, second_roots, {1, 2, 3}, cache), first)
++        self.assertEqual(second.stats['raw_saturation_indices'], 1)
++
++    def test_first_firing_guard_is_exact_and_does_not_skip_unary_rules(self):
++        words = [[1, 2, 3], [2, 3, 4], [1, 4, 4, 1]]
++        arena, roots = make_arena(words)
++        self.assertIsNone(find_rank_one_plan(arena, roots, {1, 2, 3, 4}))
++        self.assertEqual(arena.stats['raw_saturation_first_firing_failures'], 1)
++        self.assertEqual(arena.stats.get('raw_saturation_seed_attempts', 0), 0)
++        self.assertEqual(arena.stats.get('raw_saturation_indices', 0), 0)
++        # Even a rejected source must be checked against the entire live
++        # alphabet; the guard must not hide a non-live label in a later row.
++        with self.assertRaises(ValueError):
++            find_rank_one_plan(arena, roots, {1, 2, 3})
++        # Cached masks avoid calling the list-producing singleton interface
++        # again when the exact guard can already decide the source.
++        arena.singletons = lambda *args: self.fail('cached guard decoded singletons')
++        self.assertIsNone(find_rank_one_plan(arena, roots, {1, 2, 3, 4}))
++        # Empty-premise source rule x=1 can start closure from any other seed.
++        arena, roots = make_arena([[1], [1, 2, 3]])
++        plan = find_rank_one_plan(arena, roots, {1, 2, 3})
++        self.assertEqual(plan['seed'], 2)
++        self.assertEqual(plan['entries'][0], dict(relation=0, generator=1))
++        self.assertEqual(arena.stats.get('raw_saturation_first_firing_failures', 0), 0)
++
++    def test_strict_arguments_attempt_cap_and_nonlive_source(self):
++        arena, roots = make_arena([[1, 2]])
++        for cap in [-1, True, 1.5]:
++            with self.assertRaises(ValueError):
++                find_rank_one_plan(arena, roots, {1, 2}, max_attempts=cap)
++        self.assertIsNone(find_rank_one_plan(arena, roots, {1, 2}, max_attempts=0))
++        for live in [[1, True], [1, 1], [0, 1], []]:
++            with self.assertRaises(ValueError):
++                find_rank_one_plan(arena, roots, live)
++        with self.assertRaises(ValueError):
++            build_index(arena, roots, {1})
++        with self.assertRaises(ValueError):
++            find_rank_one_plan(arena, [True], {1, 2})
++        with self.assertRaises(ValueError):
++            find_rank_one_plan(arena, roots, {1, 2}, cache=[])
++        index = build_index(arena, roots, {1, 2})
++        for seeds in [[True], [1, 1], [3]]:
++            with self.assertRaises(ValueError):
++                seed_closure(arena, index, seeds)
++
++    def test_resource_and_external_cancellation_preserve_source(self):
++        words = [[g, g + 1] for g in range(1, 40)]
++        for failure in ['work', 'cancel']:
++            arena, roots = make_arena(words)
++            alive = set(range(1, 41))
++            before = list(roots), set(alive), len(arena.rules)
++            if failure == 'work':
++                arena.left = 23
++                exception = CompressedLimit
++            else:
++                seen = [0]
++                def cancel():
++                    seen[0] += 1
++                    if seen[0] == 23:
++                        raise ValueError('external cancellation')
++                arena.check = cancel
++                exception = ValueError
++            with self.assertRaises(exception):
++                find_rank_one_plan(arena, roots, alive)
++            self.assertEqual((roots, alive, len(arena.rules)), before)
++            arena.check = lambda: None
++            arena.left = 1_000_000
++            self.assertIsNotNone(find_rank_one_plan(arena, roots, alive))
++
++
++if __name__ == '__main__':
++    unittest.main()
+diff --git a/Topology/UnknotRecognition/fast/tests/test_raw_saturation_integration.py b/Topology/UnknotRecognition/fast/tests/test_raw_saturation_integration.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_raw_saturation_integration.py
+@@ -0,0 +1,93 @@
++"""Source-bound saturation certificates, independent replay, and dispatch."""
++from copy import deepcopy
++import json
++from pathlib import Path
++import random
++import subprocess
++import sys
++import unittest
++from unittest.mock import patch
++
++from fastunknot import Diagram, recognize
++from fastunknot.compressed_search import compressed_certificate
++from fastunknot.group_certificate import group_decide, verify_group_certificate
++from fastunknot.scan import khovanov_rank
++
++
++class RawSaturationIntegrationTests(unittest.TestCase):
++    def test_actual_source_uses_existing_batch_certificate_and_independent_replay(self):
++        for strands in (4, 8, 17, 33):
++            diagram = Diagram.from_braid(strands, list(range(1, strands)))
++            old = compressed_certificate(diagram)
++            self.assertEqual(old, compressed_certificate(diagram, raw_saturation=False))
++            proof = compressed_certificate(diagram, raw_saturation=True)
++            self.assertEqual(proof['version'], 8)
++            self.assertEqual(len(proof['moves']), 1)
++            self.assertEqual(proof['moves'][0]['kind'], 'elimination_batch')
++            for compressed in (False, True):
++                with patch('fastunknot.raw_saturation.find_rank_one_plan',
++                           side_effect=AssertionError('producer called')), \
++                     patch('fastunknot.elimination_batch.apply_batch',
++                           side_effect=AssertionError('producer called')):
++                    self.assertTrue(verify_group_certificate(diagram, proof,
++                                                             compressed=compressed))
++                    self.assertTrue(verify_group_certificate(diagram, old,
++                                                             compressed=compressed))
++            bad = deepcopy(proof)
++            bad['moves'][0]['entries'][0]['generator'] = True
++            self.assertFalse(verify_group_certificate(diagram, bad, compressed=True))
++            foreign = Diagram.from_braid(2, [1, 1, 1])
++            bad = deepcopy(proof)
++            bad['input_pd'] = [list(row) for row in foreign.pd]
++            self.assertFalse(verify_group_certificate(foreign, bad, compressed=True))
++
++    def test_small_actual_diagrams_agree_with_complete_homology(self):
++        rng = random.Random(2026100901)
++        tested = positive = 0
++        while tested < 50:
++            strands = rng.randrange(2, 5)
++            word = [rng.choice((-1, 1)) * rng.randrange(1, strands)
++                    for _ in range(rng.randrange(1, 10))]
++            try:
++                diagram = Diagram.from_braid(strands, word)
++            except ValueError:
++                continue
++            tested += 1
++            result = group_decide(diagram, raw_saturation=True, seconds=None,
++                                  max_work=1_000_000, relator_moves=True)
++            if result['status'] == 'UNKNOT':
++                positive += 1
++                self.assertEqual(khovanov_rank(diagram.pd)['reduced_rank'], 1)
++                self.assertTrue(verify_group_certificate(diagram, result['certificate'],
++                                                         compressed=True))
++        self.assertGreater(positive, 10)
++
++    def test_options_limits_cancellation_and_cli(self):
++        diagram = Diagram.from_braid(5, [1, 2, 3, 4])
++        for bad in (1, None, 'yes'):
++            with self.assertRaises(ValueError):
++                compressed_certificate(diagram, raw_saturation=bad)
++            with self.assertRaises(ValueError):
++                group_decide(diagram, raw_saturation=bad)
++            with self.assertRaises(ValueError):
++                recognize(diagram, group_raw_saturation=bad)
++        with self.assertRaises(ValueError):
++            group_decide(diagram, raw_saturation=True, adaptive_search=True)
++        for limits in ({'max_work': 0}, {'max_nodes': 0}, {'max_letters': 0}):
++            self.assertEqual(group_decide(diagram, raw_saturation=True, seconds=None,
++                                          **limits)['status'], 'INCONCLUSIVE')
++        def cancel():
++            raise ValueError('caller cancellation')
++        with self.assertRaisesRegex(ValueError, 'caller cancellation'):
++            group_decide(diagram, raw_saturation=True, check=cancel)
++        proc = subprocess.run(
++            [sys.executable, '-B', '-m', 'fastunknot', 'recognize', '-',
++             '--group-raw-saturation', '--group-seconds', '2'],
++            input=json.dumps({'pd': diagram.pd}), text=True, capture_output=True,
++            cwd=Path(__file__).resolve().parents[1])
++        self.assertEqual(proc.returncode, 0, proc.stderr)
++        self.assertEqual(json.loads(proc.stdout)['status'], 'UNKNOT')
++
++
++if __name__ == '__main__':
++    unittest.main()

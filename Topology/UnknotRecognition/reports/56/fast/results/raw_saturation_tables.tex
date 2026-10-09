@@ -1,0 +1,87 @@
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{lrrrrr}
+\toprule
+Power $N$ & Source nodes & Ordinary ms & New ms & Paired ratio & A/A \\
+\midrule
+$2^{8}$ & 41 & 0.871 & 0.276 & 2.787 & 0.988 \\
+$2^{64}$ & 153 & 321.108 & 0.650 & 498.136 & 0.997 \\
+$2^{512}$ & 1049 & -- & 3.218 & -- & -- \\
+$2^{2048}$ & 4121 & -- & 13.043 & -- & -- \\
+$2^{4096}$ & 8217 & -- & 27.200 & -- & -- \\
+\bottomrule
+\end{tabular}
+\caption{Internal algebraic search on the fixed compressed redundant-presentation family. Source construction is outside these timings; these are not full knot-recognition calls. All three arms have the same two-million search-work allowance. Dashes denote work-limited ordinary/control arms; no ratio uses their censored times. The ratio is the median of five complete paired ratios, not the ratio of displayed medians.}
+\label{tab:raw-saturation-kernels}
+\end{table}
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{lrrrrr}
+\toprule
+Source & $n$ & Old ms & New ms & Paired ratio & A/A \\
+\midrule
+circle-15 & 15 & 3.751 & 1.325 & 2.814 & 1.066 \\
+circle-31 & 31 & 14.620 & 2.712 & 5.311 & 1.008 \\
+circle-63 & 63 & 57.965 & 5.498 & 10.290 & 0.994 \\
+circle-127 & 127 & 234.973 & 11.059 & 20.393 & 1.055 \\
+circle-255 & 255 & 1,036.076 & 22.204 & 46.720 & 1.075 \\
+circle-511 & 511 & -- & 44.922 & -- & -- \\
+unknot\_braid40 & 40 & 22.536 & 3.387 & 6.625 & 1.056 \\
+hard\_unknot\_8 & 8 & 1.277 & 1.440 & 0.891 & 1.037 \\
+monster & 10 & 2.095 & 2.202 & 0.912 & 0.977 \\
+gordian & 141 & 393.890 & 380.828 & 1.010 & 1.022 \\
+\bottomrule
+\end{tabular}
+\caption{Selected complete group-stage calls, including fresh PD validation, source reconstruction, search, and mandatory independent replay. All 28 inputs and all outcomes are retained in the JSON data. The circle family is an elementary mechanism control. On circle-511, the earlier arms hit the unchanged 100,000-node allowance; only the new arm completes. No wall-time limit is imposed in this stage experiment.}
+\label{tab:raw-saturation-stage}
+\end{table}
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{lrrrr}
+\toprule
+Source & Old ms & New ms & Paired ratio & A/A \\
+\midrule
+survivor-00 & 9.901 & 10.219 & 0.997 & 0.980 \\
+survivor-01 & 7.899 & 8.089 & 0.980 & 1.027 \\
+survivor-02 & 8.498 & 8.977 & 0.968 & 1.005 \\
+survivor-03 & 6.067 & 6.183 & 0.980 & 1.011 \\
+survivor-04 & 5.256 & 5.425 & 0.962 & 0.990 \\
+survivor-05 & 10.436 & 10.756 & 0.971 & 1.004 \\
+survivor-06 & 4.238 & 4.314 & 0.982 & 1.010 \\
+survivor-07 & 11.189 & 11.394 & 0.982 & 1.033 \\
+survivor-08 & 4.159 & 4.241 & 0.974 & 1.009 \\
+survivor-09 & 4.279 & 4.423 & 0.979 & 1.028 \\
+survivor-10 & 3.971 & 4.051 & 0.980 & 1.019 \\
+survivor-11 & 3.960 & 3.960 & 1.001 & 1.023 \\
+trefoil & 0.036 & 0.034 & 1.053 & 1.024 \\
+conway & 0.645 & 0.645 & 0.960 & 1.045 \\
+kinoshita\_terasaka & 0.599 & 0.631 & 1.027 & 0.956 \\
+hard\_unknot\_8 & 1.427 & 1.496 & 0.954 & 1.003 \\
+grid\_determinant\_one\_knot & 0.069 & 0.064 & 1.005 & 0.975 \\
+unknot\_braid40 & 0.213 & 0.211 & 1.011 & 0.981 \\
+stress\_braid5\_36 & 0.628 & 0.630 & 0.973 & 0.969 \\
+monster & 2.993 & 3.297 & 0.903 & 0.964 \\
+gst & 1.336 & 1.312 & 0.989 & 1.037 \\
+gordian & -- & -- & -- & -- \\
+\bottomrule
+\end{tabular}
+\caption{All full-pipeline inputs, with the ordinary preceding filters, a one-second global allowance, and a 0.15-second group-stage allowance. Gordian is resource-limited in every arm. Earlier-filter controls do not exercise the new planner. Five measured rounds follow one excluded warmup.}
+\label{tab:raw-saturation-pipeline}
+\end{table}
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{lrrr}
+\toprule
+Source & Baseline & Initial probe & Final probe \\
+\midrule
+survivor-00 & 14,150 & 16,720 & 15,108 \\
+monster & 5,357 & 6,316 & 5,936 \\
+gordian & 789,805 & 986,374 & 852,357 \\
+\bottomrule
+\end{tabular}
+\caption{Deterministic producer work before and after moving the exact first-firing guard ahead of incidence construction. All initial/final audit outcomes and certificates agree. These are cooperative work counts, not bit-operation counts or wall-time ratios.}
+\label{tab:raw-saturation-guard}
+\end{table}

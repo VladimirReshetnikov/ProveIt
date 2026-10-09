@@ -1,0 +1,156 @@
+\section{Implementation and independent verification}
+\label{sec:implementation}
+
+\subsection{Module structure}
+
+The six new runtime modules are listed below. Their only dependencies are
+Python's standard library and the pinned existing \code{fastunknot}
+modules. Regina is optional and used by the external audit, not by the
+new producer or its certificate checker.
+
+\begin{center}\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.45\linewidth}>{\raggedright\arraybackslash}p{0.47\linewidth}}
+\toprule
+Module under \path{fastunknot/} & Responsibility\\
+\midrule
+\path{orbit_transversal.py} & Forward original-label interval tracking and
+least-transversal production.\\
+\path{orbit_transversal_verify.py} & Independent reverse gap-insertion
+reconstruction after source-bound trace replay.\\
+\path{topology_spectrum.py} & Sparse cover inversion, surface classification,
+normal scaling, and independent forward-equation checkers.\\
+\path{normal_topology_geometry.py} & Boundary inclusion, integral Euler and
+marker weights, vertex-link classification.\\
+\path{normal_topology.py} & Validated three-query producer, optional
+quadrilateral-core reduction, and command-line entry point.\\
+\path{normal_topology_verify.py} & Original-source core reconstruction,
+independent local replays, spectrum and restoration verification.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\Needspace{18\baselineskip}
+\subsection{The public API}
+
+The main call is
+\begin{lstlisting}[language=Python]
+from fastunknot.normal_topology import normal_topology_spectrum
+from fastunknot.normal_topology_verify import verify_normal_topology_spectrum
+
+answer = normal_topology_spectrum(
+    triangulation, coordinates,
+    reduce_core=True,
+    max_cycles=None,
+    periodic_rule="fine_wilf",
+    record_certificate=True,
+)
+assert answer["status"] == "COMPLETE"
+assert verify_normal_topology_spectrum(
+    triangulation, coordinates, answer["certificate"]
+)
+\end{lstlisting}
+The output has \code{topology\_spectrum} rows with fields \code{chi},
+\code{boundary\_components}, \code{orientable}, \code{multiplicity},
+and exactly one of \code{genus} and \code{crosscaps}. It also gives total
+components, orientable and nonorientable counts, boundary circles and Euler
+characteristic. These mathematical claims concern the original source,
+even when the statistics describe smaller core queries.
+
+The public \code{reduce\_core=False} setting exposes the direct observer for
+comparison and for inputs on which preprocessing is not helpful.
+The two inherited periodic rules are available. The default uses the
+existing Fine--Wilf merger; \code{aht} uses the older threshold. Both
+represent the same orbit relation, and the resulting least transversal and
+type spectrum must agree.
+
+The certificate schema is \code{normal-topology-spectrum-v1}. It binds the
+exact normalized coordinate vector and face records by a digest, retains
+the requested reduction mode, and includes the divisor, peeled vertex-link
+multiplicities, exact core vector, boundary-transversal proof, two weighted
+proofs, the core spectrum, and the restored original summary. The pure
+vertex-link case has divisor zero and no orbit-query proof: validated link
+classification and exact coordinate decomposition suffice.
+
+\subsection{Verification architecture and trusted boundary}
+
+The geometry validator, normal-arc conventions, cell ownership, and exact
+integer codec are shared trusted reconstruction code. Producer/checker
+independence does not mean that two unrelated triangulation engines are
+embedded in the runtime. Independent checking is instead structured around
+the vulnerable arithmetic and reduction layers:
+\begin{enumerate}
+\item The original triangulation and coordinates are revalidated, and the
+original source digest is checked.
+\item The checker rebuilds corner groups, independently recomputes minima
+and quadrilateral gcd, and checks exact divisibility and all supplied core
+fields. It does not call the producer's core routine.
+\item The boundary orbit proof is replayed against its actual reconstructed
+source. The checker reconstructs its transversal backwards rather than
+calling the forward producer.
+\item Both weighted proofs are checked by the existing independent weight
+transport checker against freshly reconstructed two-coordinate weights.
+\item The claimed core spectrum is checked by \emph{forward} reconstruction
+of the entire base and cover histograms, without invoking sparse inversion.
+\item The restored spectrum is checked with independent typewise scaling
+equations, and all original totals are reconstructed independently.
+\end{enumerate}
+Tests disable producer discovery, forward selector construction, producer
+weight replay, spectrum inversion, and producer scaling while verifying a
+completed certificate. Separate Regina comparisons provide an external
+check on the shared geometry boundary for bounded cases.
+
+A source digest alone is not treated as a mathematical proof. It prevents
+accidental reassociation of a proof with another input, while each local
+certificate is still checked against the actual reconstructed relation and
+weights. Mutating the original peeled vertex-link multiplicity while keeping
+the same core must fail verification.
+
+\subsection{Resource and transport contracts}
+
+One shared \code{max\_cycles} budget covers boundary, full-surface, and
+doubled-surface orbit discoveries. If a call exhausts this allowance, it
+returns \code{INCONCLUSIVE} with stage and statistics, and no completed
+spectrum, component count, or certificate. An allowance of exactly the
+sum of the required cycles succeeds. The cycle budget is not silently
+reinterpreted as a bound on validation or weight transport.
+
+A cooperative \code{check()} callback is polled throughout validation,
+discovery, interval compilation, weight transport, algebraic recovery and
+verification. Its exceptions propagate. False-valued callable objects are
+respected rather than replaced by a default callback. The command-line
+wrapper exposes a wall-clock deadline through this mechanism and reports
+an inconclusive result on timeout.
+
+Arbitrary-size integers remain supported without changing Python's global
+decimal-conversion limit. The existing \code{json\_safe} codec serializes
+large integers as signed hexadecimal strings; certificate checkers decode
+the declared integer fields exactly and reject Boolean values in their
+place. Large output multiplicities remain a single encoded integer.
+
+An arbitrary caller-supplied valid trace need not have the maintained
+producer's short length. Verification and transversal compilation are
+polynomial in the explicit certificate size; the short-trace guarantee
+belongs to the maintained discovery algorithm. This distinction is necessary
+for honest time accounting on adversarial serialized inputs.
+
+\subsection{Command-line use and integration}
+
+From the delivered \path{code/fast} directory, an input JSON file contains
+\code{triangulation} and \code{coordinates}. The two commands are
+\begin{lstlisting}
+python3 -m fastunknot.normal_topology census \
+  topology_research/data/klein_torus.json --certificate -o klein_result.json
+
+python3 -m fastunknot.normal_topology verify \
+  topology_research/data/klein_torus.json klein_result.json
+\end{lstlisting}
+Add \code{--direct} to disable the core, or \code{--max-cycles} and
+\code{--timeout} to bound a discovery run. Verification accepts either a
+certificate object or a complete result containing one.
+
+The repository integration patch adds the runtime modules, their focused
+tests, and the reproducible research inputs/drivers. It is prepared against
+the pinned baseline; no remote commit or pull request is created by this
+delivery. The complete existing recognition pipeline is not wired to invent
+or accept normal vectors automatically. The new API is a verified observer
+that future surface-discovery and hierarchy code can call explicitly.

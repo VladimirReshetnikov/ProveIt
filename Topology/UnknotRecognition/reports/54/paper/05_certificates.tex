@@ -1,0 +1,123 @@
+\section{Certificates, source binding and independent replay}
+\label{sec:certificates}
+
+\subsection{Three distinct trust layers}
+
+An algebraically well-formed table is not automatically the census of a
+particular interval relation. The implementation separates three assertions.
+
+\paragraph{Table validity.}
+\texttt{Profiles} checks nonempty positive-length atoms, nonzero nonnegative
+profile vectors, positive integer multiplicities, sorted unique rows, and
+all coordinate mass equations \eqref{eq:mass}. These checks establish a
+valid abstract finite census. They do not authenticate the source pairings.
+Boolean values are rejected where exact integers are required.
+
+\paragraph{Source compilation.}
+The native adapter invokes the maintained scalar weighted producer and
+wraps its certificate with the original universe, exact atom cuts, and
+packing mode. Independent verification reconstructs the radix weights,
+checks the native weighted certificate against the original pairing list,
+and decodes its authenticated scalar histogram using separate arithmetic
+code. It returns a newly constructed trusted table. It does not return a
+Boolean that a caller might mistakenly apply to an unrelated mutable table.
+
+\paragraph{Quotient or program claim.}
+Given an authenticated table, independent graph replay constructs the
+quotient without calling the incremental engine. Independent grammar replay
+validates backward references and computes summaries through a separate
+graph-based join rather than the producer's set-union code. These checkers
+establish the subsequent claim relative to that source table. They do not
+turn an unauthenticated table into a knot certificate.
+
+\subsection{A quotient certificate need not reproduce union-find decisions}
+
+The graph in \cref{thm:quotient} depends only on the original census and
+cone groups. A verifier can reconstruct it from scratch and compare the
+complete claimed output census. There is no need to trust the producer's
+choice of roots, compression history, activation order, or internal count
+updates. Equal count totals alone are insufficient: different profiles can
+have the same number of components. The checker therefore compares the
+entire canonical table when a census is claimed.
+
+A bounded literal oracle supplies a further level of independence in the
+finite tests. It explicitly builds the relation on points, adds actual
+full-port equivalences, and counts each component's atom intersections.
+It neither uses profile-type collapse nor relies on the graph quotient
+formula. The literal oracle has a point cap and is not used on huge
+multiplicities.
+
+\subsection{First-threshold certificates}
+
+A compact claim consists of the source table, validated grammar, target $K$,
+and claimed position $t$. A trusted source table may be referenced by an
+already checked compilation certificate rather than recopied.
+
+\begin{proposition}[Two adjacent prefixes certify the first threshold]
+\label{prop:threshold-cert}
+For $1\le t\le L(P)$, the equations
+\[
+ C(t-1)>K\ge C(t)
+\]
+certify that $t$ is the first qualifying prefix. A claim $t=0$ is checked
+against the initial count. A claim that the threshold is never attained is
+checked against the final count.
+\end{proposition}
+
+\begin{proof}
+Every earlier prefix has count at least $C(t-1)$ by monotonicity, so none
+qualifies. The second inequality shows that $t$ does. The endpoint cases
+are the same monotonicity argument.
+\end{proof}
+
+The verifier reconstructs both prefixes independently using
+\cref{prop:prefix}, then performs graph quotients. No list of the first
+$t$ instructions is required. The bit length of $t$ is part of the
+certificate size. An out-of-range prefix, forged source cut, negative
+exponent, forward grammar reference, or changed cone group is rejected.
+
+\subsection{Certifying the complete event history}
+
+Suppose events are claimed at
+$0<t_1<\cdots<t_h\le L(P)$ with before/after counts $b_i,a_i$. Check
+\[
+ C(t_i-1)=b_i>a_i=C(t_i)
+\]
+for every event. Also check that $b_1=C(0)$, that $b_{i+1}=a_i$, and that
+$C(L(P))=a_h$. For an empty list, require $C(L(P))=C(0)$.
+
+\begin{proposition}[Plateau completeness]
+\label{prop:history-cert}
+The preceding checks prove both correctness of every listed event and
+absence of every omitted count-changing event.
+\end{proposition}
+
+\begin{proof}
+The adjacent-prefix comparisons validate the listed drops. Between two
+listed drops, the checked endpoints have equal counts. A nonincreasing
+integer-valued sequence with equal endpoint values is constant throughout
+that interval. The same argument handles the initial and final gaps.
+\end{proof}
+
+This is stronger than checking only that the final count is correct. A
+producer that silently omits an interior event will violate one of the
+plateau equalities. The tests delete the first and last events from sharp
+examples, mutate event indices and counts, and disable producer functions
+while executing the independent checker.
+
+\subsection{What is not certified}
+
+The full source binding reaches an interval relation, not automatically a
+manifold homeomorphism type or knot diagram. Likewise, summing an old Euler
+charge over a merged equivalence class gives a sum of old charges. It does
+not automatically give the Euler characteristic of a topological object
+formed by attaching new cells. Such cells need correctly signed ownership
+charges and a separate geometric proof. Orientation, cyclic order, slope,
+and pointwise attachment maps are not supplied by the profile table.
+
+The optional native adapter also does not claim an independent proof of the
+classical AHT theorem. It relies on the maintained local trace verifier for
+that layer. The added checker is independent of the new compilation and
+quotient producers at the layers it actually verifies. Independence is thus
+an explicit dependency boundary, not the claim that no code or mathematical
+lemma is shared anywhere.

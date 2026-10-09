@@ -1,0 +1,147 @@
+\section{Research question and precise status}
+\label{sec:context}
+
+\subsection{What is being accelerated}
+
+The input to the local problem is a finite equivalence relation encoded by
+isometries between integer intervals. The integer universe may be enormous,
+while the number of interval pairings and their endpoint bit lengths are
+small. A connected normal surface component can be represented by an orbit
+of such a relation. The immediate computational objective is to avoid
+repeatedly rediscovering or transporting the same component information when
+many observations share one fixed source.
+
+An important distinction is between a \emph{new weight query} and a
+\emph{new relation}. A reusable unweighted reduction trace avoids a fresh
+orbit search, but a new weight query still performs transport through that
+trace. On the other hand, adding genuine identifications changes the
+relation, so blindly reusing the old final histogram is unsound. We identify
+an intermediate interface: new additive observations may be constant on a
+fixed source partition, and new relations may collapse whole unions of its
+atoms. For this interface, a single compiled table is both sufficient and
+closed under all subsequent operations.
+
+Here a \emph{cone} is an equivalence-relation operation, not a statement that
+a particular topological cone or manifold attachment is valid. It identifies
+every point in a specified union. A gluing that identifies one point in an
+interval with one corresponding point in another interval is a different
+operation. Keeping these meanings separate is essential to every result
+below.
+
+\subsection{Relationship to the inspected repository}
+
+The repository was inspected through its GitHub interface, then pinned at
+commit
+\nolinkurl{1fab6d945be52857cce48b6459075e6194622001}. The scope is
+\path{Topology/UnknotRecognition}; the inspected source paths and blob hashes
+are recorded in \path{integration/source_audit.json}. Earlier overview text
+lagged behind the newer modules. The present article therefore treats the
+newer native sparse and weighted implementations as prior work, rather than
+re-presenting their results as new contributions \cite{repo,sparserepo,weightedrepo}.
+
+In particular, the baseline already has a sparse positive component-incidence
+interface, a generic weighted orbit histogram, independent weighted replay,
+and normal-surface component queries. It also supports reusing a verified
+unweighted trace for another weighted query. The contribution here is the
+compiled profile interface, its exact quotient action, the sharp height and
+compressed-history bounds, and the corresponding additive reference package.
+It is not a replacement implementation of the underlying orbit algorithm.
+
+The source was readable, but a runnable native checkout was not available in
+the execution environment. Thus the adapter's function signatures were
+checked against the pinned files, while its native execution gate remains
+\texttt{NOT\_RUN}. The reference implementation and its independent finite
+oracles were executed. No maintained production module is modified by this
+package, no complete maintained test-suite result is asserted, and no
+whole-knot speedup is reported.
+
+\subsection{Classical input and the global target}
+
+Weighted orbit counting is classical. Agol--Hass--Thurston give a polynomial
+algorithm in the pairing count, weight-run count, weight dimension, and
+binary numerical sizes; their output uses compressed constant-weight blocks,
+not a separate expanded record for every represented orbit
+\cite[Theorem~16]{aht}. We use this theorem as a compilation primitive.
+Union by rank with path compression supplies the standard amortized
+set-union bound \cite{tarjan}. Neither ingredient is claimed as a new
+algorithmic theorem here.
+
+Lackenby's 2026 hierarchy algorithm is relevant to the larger programme.
+Section~9 separates iteration counting from step costs and does not give a
+complete runtime estimate. Its Proposition~9.1 bounds iterations using
+hierarchy length and pattern complexity; the refinement in Section~10
+bounds hierarchy length linearly in initial $q$-complexity
+\cite{lackenby}. This does not supply the missing end-to-end
+quasi-polynomial implementation bound.
+
+Our narrow question is therefore concrete: after a relation has been encoded
+and its future full-port operations described compactly, can the component
+observer process the entire phase in time polynomial in that description,
+rather than in its expanded number of operations? The answer is yes. The
+much stronger question---whether all operations needed by an unknot
+recognizer can be organized into a controlled number of such phases---is
+not answered here.
+
+\subsection{Main statements at a glance}
+
+The central theorem package has four parts. First, a carry-free scalar weight
+recovers the full profile census with binary width determined by the
+individual atom capacities. Second, a small graph computes the exact action
+of a collection of full-port cones, including multiplicity collapse. Third,
+the algebra of these cones has height at most $2m-1$, sharply. Fourth, this
+algebra permits direct navigation of compressed operation programs, including
+all effective event positions.
+
+The results are presented with proofs, not inferred from experiments. The
+experiments instead test the implementation, expose interface mistakes, and
+measure the particular kernel improvements. The article makes no assertion
+of priority over all literature on finite partition algebras or compressed
+program evaluation. Its contribution is the derived theorem package and
+implementation for this precisely specified ProveIt observer interface.
+
+\section{Input model, source atoms and bit costs}
+\label{sec:model}
+
+Let $X=\{0,\ldots,N-1\}$. An interval pairing has inclusive domain $[a,b]$
+and range $[c,d]$, equal lengths, and map either
+\[
+ x\longmapsto x+c-a
+ \qquad\text{or}\qquad
+ x\longmapsto a+d-x.
+\]
+The equivalence relation $E$ is generated by the pairs $(x,f(x))$ for all
+supplied pairings $f$. The maps are not expanded point by point. There are
+$k$ pairings and every endpoint has at most
+$B=\max(1,\lceil\log_2(N+1)\rceil)$ bits.
+
+Fix cuts
+\[
+ 0=c_0<c_1<\cdots<c_m=N,
+ \qquad J_j=[c_j,c_{j+1})\cap\Z,
+ \qquad \ell_j=c_{j+1}-c_j
+ \quad(0\le j<m).
+\]
+These half-open \emph{source atoms} partition the whole universe. Gaps between
+marked ports must be included as atoms; otherwise unmarked components could
+have zero profile and be lost. For $N=0$ there are no atoms, no orbits, and a
+single cut $0$. This case is handled separately by the software.
+
+Every future port is a union of complete source atoms. If the initial
+interface supplies $M$ half-open intervals, their endpoints and the two
+universe endpoints yield at most $2M+1$ nonempty atoms. Endpoints of any
+additional weight functions must also be inserted before compilation.
+Nothing in this construction authorizes a later cut inside an existing atom.
+
+For arithmetic accounting, let $\mathsf M(b)$ bound multiplication of
+$b$-bit integers; using schoolbook multiplication gives the safe choice
+$\mathsf M(b)=O(b^2)$. Additions and comparisons of $b$-bit counts cost
+$O(b)$, not unit time. Set-union operation counts are distinguished from
+these integer costs. We use $H$ for the largest bit length of an expanded
+program length or a reported event index. A result independent of the
+\emph{value} of the expanded length can still depend on $H$.
+
+The implementation is exact Python. Dictionaries give ordinary expected
+lookup costs; sorting or balanced dictionaries can replace them with
+polynomial comparison overhead. Cooperative cancellation is supported at the
+native adapter boundary. The package is not a hostile-input process-memory
+sandbox, and none of its count bounds is a timeout guarantee.
