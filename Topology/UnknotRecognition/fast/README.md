@@ -3145,3 +3145,31 @@ python -B -m normal_orbit_research.planar audit --output ../synthesis/data/cocyc
 python -B -m normal_orbit_research.planar survey --output ../synthesis/data/cocycle-planar-survey.json
 python -B -m normal_orbit_research.planar recognize --rounds 5 --output ../synthesis/data/cocycle-planar-recognize.json
 ```
+
+### Shared discovery geometry and positive-only source replay
+
+The native search now retains the validated geometry produced during rank-one
+seed construction. Tree trials and optional face/planar queries reuse that
+per-call representation. Public seed and tree APIs retain their own input
+validation and existing result formats.
+
+Raw and optimized candidates first receive a cell-count prefilter from their
+coherent heights: sum absolute global edge differences, subtract global face
+spans, and add tetrahedral spans. This computes Euler characteristic without
+expanding normal pieces. It is discovery code, not a source or connectedness
+certificate. Possible disc and annulus positives still receive full independent
+cocycle replay; planar positives still receive full source and boundary replay.
+No verifier accepts cached geometry from the producer. Continuing misses are
+still inconclusive, and no negative knot claim follows from the prefilter.
+
+The candidate schedule and defaults are unchanged. Shared guard totals change:
+continuing searches avoid repeated preparation and negative replay, while an
+immediate positive pays for the cheap prefilter before its existing verifier.
+The comparison driver loads the old native-search body from its recorded Git
+commit and checks that it reproduces the previous audit before timing it.
+
+```sh
+python -B -m normal_orbit_research.reuse audit --output ../synthesis/data/cocycle-reuse-audit.json
+python -B -m normal_orbit_research.reuse survey --output ../synthesis/data/cocycle-reuse-survey.json
+python -B -m normal_orbit_research.reuse recognize --rounds 9 --output ../synthesis/data/cocycle-reuse-recognize.json
+```

@@ -1,0 +1,72 @@
+\subsection{Tests and complete-call measurements}
+
+All 38 focused tests pass in 4.469 seconds, and all 1,214 maintained tests
+pass in 235.344 seconds. The final source audit takes 135.085 seconds and
+the cell-count survey takes 20.777 seconds. Those correctness runs partly
+overlap the test suite; their elapsed times are not paired performance
+measurements. The audit, survey and both timing runs pin 496 source files.
+The six existing seed, cocycle, annulus, planar, span and weighted-orbit
+verifier modules remain byte-identical to the baseline revision.
+
+Timing endpoints start from input diagrams and include complete
+recognition, any exact fallback, independent replay of returned native
+certificates and certificate hashing. Earlier shortcuts are disabled to
+reach the native stage. Both implementations have no local seed cap and
+retain the twelve-second global recognition deadline. The comparison
+selects the published or current native search body while retaining the
+same public construction and verification APIs. No tests, audits, builds
+or commits overlap the timed runs.
+
+The first five-round experiment shows noticeable variation in the raw-disc
+old-arm A/A ratio, 1.115, and one later-tree control, 1.074. It is retained,
+and a nine-round repeat supplies the final table. Each experiment includes
+one warm-up round per case and randomizes old, old A/A, new and new A/A
+calls within each round. All 616 measured calls and 88 warm-ups complete.
+Per-arm verdicts, certificate hashes and native work counts are stable
+across both runs. The initial run takes 24.056 seconds; the final run,
+with 396 measured calls and 44 warm-ups, takes 49.367 seconds.
+
+The two later-tree annuli and the later planar cap request 24 tree trials;
+other cases request four. Only the two labeled planar cases enable planar
+queries. The face-disc case disables annulus recognition and requests four
+face roots, so it exercises the actual face-search path. All other cases
+retain the existing annulus criterion and zero face roots. The table shows
+primary-arm median times and median paired ratios; these ratios need not
+equal quotients of the displayed median times.
+
+\begin{center}
+\small\input{tables/cocycle_reuse_recognize.tex}
+\end{center}
+
+The optimized disc and annulus improve by paired factors 1.281 and 1.262.
+The two later-tree annuli improve 1.509 and 1.466. Optional planar cases
+improve 1.283 and 1.179, and the optional face-disc endpoint improves 1.400.
+The trefoil and genus-one continuing misses improve 2.002 and 1.887,
+including the same exact fallback used before. These are gains on complete
+calls through the selected native paths, rather than just on a standalone
+geometry helper.
+
+The immediate disc and annulus are adverse controls: their paired ratios
+are 0.983 and 0.980, approximately two percent slower. They pay for the
+prefilter before their existing independent replay and avoid none of the
+old negative replay work. There is no claim of a uniform speedup. Absolute
+late-planar times also vary substantially between runs, while its paired
+factor remains about 1.18. Comparing raw elapsed levels across experiments
+would overstate what those measurements establish.
+
+The default candidate schedule is retained because discovery geometry
+reuse improves continuing searches while preserving every positive gate;
+no additional search is introduced. The planar and face queries remain
+opt-in, and the whole native stage remains optional in the ordinary
+portfolio. Its nineteen control sources still finish before that stage,
+so this experiment supplies no new ordinary-portfolio speedup claim.
+
+Reproduce using \path{../fast/normal_orbit_research/reuse.py} in
+\code{audit}, \code{survey} or \code{recognize --rounds 9} mode. The
+source audit verifies that the loaded baseline search reproduces the
+previous records before comparing the new implementation. The checked
+incoming inventory and \code{openai/math} head \code{fd4aeeb2e} are
+unchanged. This removes redundant polynomial work and supplies a linear
+cell-count prefilter; it does not complete the surface candidate search,
+normal capped-disc extraction or hierarchy operations, and establishes no
+general subexponential or quasipolynomial recognition bound.
