@@ -3164,3 +3164,12 @@ The four modules contain fourteen theorem declarations and compile in a
 95-module closure. The subsequent averaging over four index patterns and
 the final structure theorem are not yet proved. No numbered statement
 changes status, and the existing paper-fidelity caveats remain in force.
+
+
+The combined small-generator audit passes: 6,373 public Gowers theorems,
+a 4,978-module facade (4,152 OAI modules), and 4,980 modules including the
+audit and import-compatibility check. All fourteen new declarations also
+pass individual transitive axiom checks. Only propext, Classical.choice,
+and Quot.sound occur. The source ledger remains 115/5 with its existing
+fidelity caveats. The selected upstream module closure and license notices
+are unchanged.
