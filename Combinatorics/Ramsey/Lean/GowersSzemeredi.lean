@@ -388,6 +388,7 @@ import GowersSzemeredi.Proofs16Corollary20Dense
 import GowersSzemeredi.Proofs16Corollary20Bohr
 import GowersSzemeredi.Proofs16Corollary20AllTriples
 import GowersSzemeredi.Proofs16BohrSpectrum
+import GowersSzemeredi.Proofs16DirichletBound
 import GowersSzemeredi.Proofs16StructuredExtraction
 import GowersSzemeredi.Proofs16BaseCaseZero
 import GowersSzemeredi.Proofs05ProgressionMoments

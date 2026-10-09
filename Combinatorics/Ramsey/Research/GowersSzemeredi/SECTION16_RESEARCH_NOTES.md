@@ -1543,6 +1543,21 @@ the elementary lemmas of its §2:
   therefore forces e(bξ) ≈ 1 on the whole smaller Bohr set. What remains
   of Theorem 27 is the duality: e(bξ) ≈ 1 on B(K;ρ′) implies
   ξ ∈ ⟨K⟩_R. That is geometry of numbers.
+- **Correction: the span duality is Fourier, not geometry of numbers.**
+  [49]'s Proposition 26: if B(γ;ρ) is weakly regular,
+  |B(ρ+η) ∖ B(ρ)| ≤ (ε/2)|G|, and |B̂(χ)| ≥ ε, then χ = Σ aᵢγᵢ with
+  |aᵢ| ≤ K = O(k/(εη)). That is polynomial. The proof sandwiches 1_B
+  between products of trapezoids, truncates their Fourier series
+  (coefficients decay like 1/ξ²), and expands the product. Weak
+  regularity holds at every radius in ℤ/N (`bohr_annulus_card_le`).
+  Formalization on ℤ/N, discretely:
+  - **brick 1 done** (`Proofs16DirichletBound`, kernel-checked):
+    `interval_exponential_sum_le` (interval sums ≤ N/(2|ξ|)). It reuses
+    the corpus's `four_centeredAbs_div_le_phase_norm`
+    (`Proofs05PhaseMetric`, |e(ξ) − 1| ≥ 4|ξ|/N);
+  - next: the discrete trapezoid and its sandwich, its DFT via
+    convolution (decay ≤ N²/(4|J|v²)), truncation, the telescoping product
+    bound, and the expansion.
 - **Open dependencies for step 3:** Theorem 27 (Bohr-set sums vs span
   intersections, needing lattices or duality), Theorem 31, Proposition 18,
   Theorem 33 (algebraic regularity), Corollary 16 (robust
