@@ -3732,3 +3732,31 @@ python -B -m normal_orbit_research.window_geometry benchmark --rounds 5 --output
 [Sparse geometry theory](../synthesis/window_geometry.tex) gives the unchanged
 complete equations, exact access paths and `O((k+p)*(d+1))` stored-coefficient
 bound. Full timing, source and replay evidence is retained in the article data.
+
+Window disc proofs now use a lazily constructed verifier-owned source context.
+It snapshots and independently validates the actual source, compares every
+query source with type-preserving structural equality, and validates each
+coordinate vector and reduction afresh. Only independently derived source
+geometry and boundary homology are reused. Producer preparations and analyses
+are never accepted by this context. Fresh public replay and final canonical
+diagram-source verification remain available; ordinary proof formats stay
+unchanged.
+
+All 1,415 maintained tests pass. Source mutation, equal Boolean/integer aliases,
+proof tampering, enormous scale and interrupted cache construction are covered.
+The 85-source audit preserves all verdicts and 31 positives, with seven fresh
+Regina disc checks; work caps fall from 28 to 22. Complete enabled-recognition
+gains are 1.18–1.26x on the measured window cases. A longer native/full trefoil
+repeat confirms about 1.22x gains with stable controls. Legacy component-based
+version-one proofs also receive fresh/context producer-disabled replay.
+Radius zero remains the default; no general quasi-polynomial theorem follows.
+
+```sh
+python -B -m normal_orbit_research.disc_context audit --fresh-regina --output /tmp/disc-context-audit.json
+python -B -m normal_orbit_research.disc_context benchmark --rounds 5 --output /tmp/disc-context-benchmark.json
+```
+
+[Independent replay theory](../synthesis/disc_context.tex) proves fixed-source
+acceptance equivalence and states ownership, per-proof work and cost limits.
+Raw source/timing/repeat records and disabled-context publication replay are
+retained in the article data.

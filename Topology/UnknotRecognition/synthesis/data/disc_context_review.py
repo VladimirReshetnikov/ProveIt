@@ -14,6 +14,7 @@ ROOT=Path(__file__).resolve().parents[2];DATA=ROOT/'synthesis/data'
 sys.path.insert(0,str(ROOT/'fast'))
 from fastunknot import Diagram
 from fastunknot.normal_seed_verify import verify_normal_seed_certificate
+from fastunknot.normal_disk_kernel import _DiskCertificateVerifier,verify_normal_disk_count_certificate
 
 def read(name):return json.loads((DATA/name).read_text())
 def frozen(revision,pins,current=False):
@@ -68,6 +69,17 @@ with ExitStack()as stack:
     for name in disabled:stack.enter_context(patch(name,side_effect=AssertionError('producer called during replay')))
     for proof in audit['source_proofs']:
         assert verify_normal_seed_certificate(Diagram.from_pd(proof['input_pd']),proof)
+generic=read('disc-context-generic-replay.json')
+assert generic['status']=='PASS'and len(generic['records'])==8
+with ExitStack()as stack:
+    for name in disabled:
+        if '_DiskCertificateVerifier.'not in name:
+            stack.enter_context(patch(name,side_effect=AssertionError('producer called during generic replay')))
+    verifier=_DiskCertificateVerifier(generic['triangulation'])
+    for r in generic['records']:
+        assert r['certificate']['schema']=='normal-disc-count-v1'
+        assert verify_normal_disk_count_certificate(generic['triangulation'],r['coordinates'],r['certificate'])
+        assert verifier.verify(generic['triangulation'],r['coordinates'],r['certificate'])
 assert len(audit['source_proofs'])==audit['new_radius_two_positives']
 for record,calls,warm in ((bench,200,40),(repeat,120,8)):
     assert record['completed_calls']==record['measured_calls']==calls and record['warmup_calls']==warm
@@ -84,7 +96,7 @@ result=dict(runtime_revision='c302eb097',source_pins=604,incumbent_evidence_pins
     unchanged_enabled_verdicts=sum(r['old_radius_two_status']==r['new_radius_two_status']for r in audit['source_cases']),
     preserved_native_positives=audit['new_radius_two_positives'],fresh_regina_window_discs=audit['fresh_regina_window_discs'],
     work_caps=caps,completed_window_misses=misses,
-    producer_disabled_positive_replays=len(audit['source_proofs']),measured_calls=200,warmups=40,
+    generic_v1_fresh_and_context_replays=8,producer_disabled_positive_replays=len(audit['source_proofs']),measured_calls=200,warmups=40,
     control_repeat_measured_calls=120,control_repeat_warmups=8)
 if '--publication'in sys.argv:
     log=(ROOT/'synthesis/report.log').read_text()
@@ -96,7 +108,7 @@ if '--publication'in sys.argv:
     end=int(re.search(r'\\numberline \{144\}Assessment and recommendations\}\{(\d+)\}',(ROOT/'synthesis/report.toc').read_text()).group(1))
     visual=read('disc-context-visual-review.json')
     assert visual['pdf_sha256']==sha256((ROOT/'synthesis/report.pdf').read_bytes()).hexdigest()
-    assert visual['inspected_pages']==list(range(start,end+2))
+    assert visual['inspected_pages']==list(range(start,end+3))
     result.update(pdf_pages=pages,new_section_start=start,assessment_page=end,
         preexisting_overfull_warnings=warnings,visual_review=visual)
     (DATA/'disc-context-latex.txt').write_text('\n'.join(line.rstrip()for line in log.splitlines()).rstrip()+'\n')
