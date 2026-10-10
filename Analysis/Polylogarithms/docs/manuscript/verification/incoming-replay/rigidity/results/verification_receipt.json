@@ -1,0 +1,72 @@
+{
+  "status": "passed",
+  "completed_at_utc": "2026-10-10T01:16:38.634721+00:00",
+  "python_version": "3.14.4",
+  "scope": "Exact finite replays plus high-precision diagnostics; analytic proofs are in the article.",
+  "jobs": [
+    {
+      "name": "Gaussian exact certificate",
+      "command": [
+        "python",
+        "code/verify_s4.py",
+        "results/S4_certificate.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.066,
+      "verification": {
+        "arithmetic": "exact rational",
+        "duality_relations": 1,
+        "relation_counts": {
+          "ds": 713,
+          "lift": 17,
+          "regularized_ds": 181
+        },
+        "residual_terms": 0,
+        "standard_relations": 911,
+        "verified": true
+      }
+    },
+    {
+      "name": "Complement classification and plastic identities",
+      "command": [
+        "python",
+        "code/certify_ladders.py",
+        "--bound",
+        "30",
+        "--degree-limit",
+        "12",
+        "--out",
+        "results"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 25.799
+    },
+    {
+      "name": "Reflected gamma moments",
+      "command": [
+        "python",
+        "code/verify_reflected_moments.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 93.999
+    },
+    {
+      "name": "Independent Gaussian quadrature",
+      "command": [
+        "python",
+        "code/check_s4_numeric.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 11.1
+    },
+    {
+      "name": "Proportional harmonic depth",
+      "command": [
+        "python",
+        "code/verify_saddle.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 27.616
+    }
+  ]
+}

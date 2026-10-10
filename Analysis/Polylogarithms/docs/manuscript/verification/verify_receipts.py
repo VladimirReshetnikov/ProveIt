@@ -5,7 +5,7 @@ This reads pinned receipts; it does not rerun mathematics or perform visual QA.
 from pathlib import Path
 from fractions import Fraction
 from decimal import Decimal
-import hashlib, json, sys
+import hashlib, json, sys, subprocess
 # The committed exact endpoints contain up to several thousand integer digits.
 sys.set_int_max_str_digits(100000)
 B=Path(__file__).resolve().parents[1]
@@ -64,12 +64,54 @@ x=read('Herglotz-truncation-results.json')
 # These finite records are asymptotic diagnostics, not tests of a universal theorem.
 diagnostic_records=dict(transition=len(x['transition_checks']),remainder=len(x['remainder_checks']),quadrature=len(x['independent_gamma_quadrature_checks']))
 outcomes['Herglotz-quadrature']=all(Decimal(c['absolute_residual'])<Decimal('1e-40') for c in x['independent_gamma_quadrature_checks'])
+archive_errors=[]
+archives=read('incoming-archives.json')
+for archive in archives:
+    p=B.parents[3]/archive['archive']
+    blob=p.read_bytes() if p.is_file() else subprocess.check_output(['git','show',archive['archive_git_revision']+':'+archive['archive']],cwd=B.parents[3])
+    if hashlib.sha256(blob).hexdigest()!=archive['archive_sha256']:
+        archive_errors.append(archive['archive'])
+    for member in archive['files']:
+        p=B.parent/member['path']
+        if not p.is_file() or digest(p,False)!=member['sha256']:
+            archive_errors.append(member['path'])
+outcomes['incoming-archive-preservation']=len(archives)==5 and sum(len(a['files']) for a in archives)==174 and not archive_errors
+for part,count in [('rigidity',1),('distribution',7),('conductor',4),('complement',5),('reflection',8)]:
+    x=read(f'incoming-replay/{part}/replay-summary.json')
+    outcomes['incoming-replay/'+part]=x['passed'] and len(x['commands'])==count and all(c['exit_code']==0 for c in x['commands']) and all((V/'incoming-replay'/part/p).is_file() for p in x['fresh_result_files'])
+x=read('incoming-replay/rigidity/results/S4_verification.json')
+outcomes['S4-exact-certificate']=x['verified'] and x['residual_terms']==0 and x['duality_relations']==1 and x['standard_relations']==911 and x['relation_counts']=={'ds':713,'lift':17,'regularized_ds':181}
+x=read('incoming-replay/rigidity/results/ladder_certificates.json')
+outcomes['complement-classification']=x['status']=='all checks passed' and x['check_count']==2012 and x['trinomial_survey']['exact_quotient_irreducibility_checks']==435
+x=read('incoming-replay/rigidity/results/reflected_exact.json')
+outcomes['reflected-exact']=x['status']=='passed' and x['exact_assertions']==119
+x=read('incoming-replay/distribution/data/exact_summary.json')
+outcomes['distribution-incoming']=x['all_checks_passed'] and x['rank_cases']==295 and x['normal_form_cases']==295 and x['maximum_q']==60
+x=read('incoming-replay/conductor/certificates/exact_checks.json')
+outcomes['conductor-incoming']=x['all_passed'] and x['q12_normal_form'] and all(len(x[k])==n and all(c['passed'] for c in x[k]) for k,n in [('rank_checks',295),('composite_checks',29),('jet_checks',18)])
+x=read('incoming-replay/conductor/certificates/trace_coefficients.json')
+outcomes['trace-coefficients']=x['all_passed'] and len(x['principal_checks'])==6 and x['chi4_level260']['passed']
+x=read('incoming-replay/complement/certificates/exact_report.json')
+outcomes['complement-depth-exact']=x['status']=='PASS' and all(x['checks'][k]==n for k,n in [('trailing_zero_reexpansions',511),('one_zero_independent_matches',66),('two_zero_independent_matches',10),('high_depth_catalogue_entries',142),('lyndon_triangular_checks',1023)])
+x=read('incoming-replay/complement/certificates/certificate_replay_report.json')
+outcomes['complement-independent-replay']=x['status']=='PASS' and x['catalogue_entries_replayed']==142 and x['rational_component_width_checks']==6
+x=read('incoming-replay/reflection/data/relation_space_certificates.json')
+outcomes['restricted-relation-spaces']=len(x['checks'])==30 and all(c['nullity']==c['predicted_nullity'] for c in x['checks'])
+x=read('incoming-replay/reflection/data/s6_rational_certificate.json')
+r=x['integer_normalized_residual_interval']
+outcomes['S6-residual-enclosure']=x['euler_terms']==900 and x['residual_interval_contains_zero'] and Decimal(r['lower'])<=0<=Decimal(r['upper']) and max(abs(Decimal(r['lower'])),abs(Decimal(r['upper'])))<Decimal('1e-260') and x['coefficients']==[485683200,-665395200,-36864000,401080320,-258247,11750400,109347840,971366400]
+x=read('incoming-native-results.json')
+outcomes['incoming-native']=x['all_pass'] and len(x['checks'])==5
+x=read('reflected-sharp-results.json')
+outcomes['reflected-sharp-diagnostics']=x['all_pass'] and len(x['checks'])==9 and all(c['passed'] for c in x['checks'])
+visual=read('visual-review.json')
+outcomes['recorded-visual-review']=visual['passed'] and visual['pdf_sha256']==pdfhash and visual['page_count']==287 and visual['all_contact_sheets_reviewed']==18 and visual['scientific_figures_reviewed']==8 and not visual['findings']
 result=dict(changed_sources=changed,changed_dependencies=changed_dependencies,pdf_sha256=pdfhash,
  pdf_matches_build=pdfhash==build['pdf_sha256'],pdf_matches_render=pdfhash==render['pdf_sha256'],
  page_count=render['page_count'],source_documents=doc['source_documents'],converged_build=build['passed'],
  pdf_static_checks=render['static_passed'],document_integrity=doc['passed'],recorded_outcomes=outcomes,
- asymptotic_diagnostic_records=diagnostic_records,
+ asymptotic_diagnostic_records=diagnostic_records,incoming_archive_errors=archive_errors,
  scope='Recorded evidence integrity only; visual review and scientific replay are separate activities.')
-result['passed']=not changed and not changed_dependencies and all(outcomes.values()) and all(result[k] for k in ['pdf_matches_build','pdf_matches_render','converged_build','pdf_static_checks','document_integrity']) and result['page_count']==228 and result['source_documents']==109 and render.get('pdf_author')=='ProveIt Contributors'
+result['passed']=not changed and not changed_dependencies and all(outcomes.values()) and all(result[k] for k in ['pdf_matches_build','pdf_matches_render','converged_build','pdf_static_checks','document_integrity']) and result['page_count']==287 and result['source_documents']==179 and render.get('pdf_author')=='ProveIt Contributors'
 (V/'receipt-integrity.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
 print(json.dumps(result,indent=2));raise SystemExit(0 if result['passed'] else 1)

@@ -17,8 +17,8 @@ and Coq proofs; the Fabius project is currently a Lean statement formalization.
   statements of every result in arXiv:1702.06487v3.  Proofs are the next
   formalization phase.
 - [`Polylogarithms/`](Polylogarithms/) collects Vladimir Reshetnikov's PolyLog
-  research programme in a 228-page [unified manuscript](Polylogarithms/docs/manuscript/polylogarithms.pdf), with source drafts moved from the private Smithereens repository: eight
-  articles and thirty-one reports, supplemented by six continuation packages,
+  research programme in a collective 287-page [unified manuscript](Polylogarithms/docs/manuscript/polylogarithms.pdf), with source drafts moved from the private Smithereens repository: eight
+  articles and thirty-one reports, supplemented by eleven continuation packages,
   on multiple polylogarithms at roots of unity,
   the polylogarithm–polygamma bridge, the Γ-value lattice, polygamma at CM
   points, generalized Stieltjes constants and their antiderivatives and
@@ -28,8 +28,11 @@ and Coq proofs; the Fabius project is currently a Lean statement formalization.
   merged by thematic spine under `docs/reports/`, each with an `OVERVIEW.md`
   reconciliation note: five reports from batch 138 of
   [`docs/incoming`](../docs/incoming/README.md) (`06039f479`) and
-  `gaussian-parity-reductions` from batch 139 (`d4dead2c6`). The project
-  README's "Status of claims" records the corrections they propose.
+  `gaussian-parity-reductions` from batch 139 (`d4dead2c6`). The five batch-141 packages are integrated in the canonical manuscript,
+  including the exact S4 proof, conductor descent and trace jets, complementary
+  depth and rigidity, and sharp moment/Herglotz asymptotics. Its author is
+  ProveIt Contributors. The project README's "Status of claims" records
+  the source-specific corrections and remaining conjectures.
 - [`ErdosSimilarity/`](ErdosSimilarity/), opened on 7 October 2026, holds one
   research report,
   [`Research/uniform-geometric-avoidance`](ErdosSimilarity/Research/uniform-geometric-avoidance/README.md),

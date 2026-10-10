@@ -1,0 +1,135 @@
+\subsection{A positive summand form and an explicit tail bound}
+
+The combination in \eqref{gaussian:eq:cubic-compact} can be computed without cancellation
+between separate Tornheim constants.  For $k=m+n$, define
+\[
+ R_A(m,n)=A^2+2A\log k+\log m\log k+\log n\log k-\log m\log n.
+\]
+Since $A>0$, $\log k\ge\log m,\log n\ge0$, we have $R_A(m,n)>0$.
+Writing $p=\log m,q=\log n,r=\log k$, one also has
+$r(p+q)-pq\le r^2$: for fixed $r$, the expression is increasing separately
+in $p,q\in[0,r]$.  Consequently
+\[
+ 0<R_A(m,n)\le(A+\log k)^2.
+\]
+Therefore the diagonal partial sums
+\[
+ C_N=\frac3{32}\sum_{m+n\le N}\frac1{mn(m+n)}
+    +\frac{3}{8\pi^2}
+       \sum_{m+n\le N}\frac{R_A(m,n)}{mn(m+n)}
+\]
+increase to the centered cubic moment $M_3-a^3-3aV$.  Moreover,
+\begin{align*}
+ 0<(M_3-a^3-3aV)-C_N
+ &\le\sum_{k>N}\frac{2(1+\log k)}{k^2}
+       \left(\frac3{32}+\frac{3(A+\log k)^2}{8\pi^2}\right).
+\end{align*}
+This gives a transparent computable enclosure, although its convergence
+is only $O(\log^3N/N)$.  An integral bound may be used once the explicit
+summand is decreasing; direct summation can handle the finite initial range.
+This positivity observation is an immediate corollary of the Fourier
+calculation, not a claim of a new classical-constant evaluation.
+
+\subsection{Exponentially convergent numerical reproduction}
+
+For $t>0$, put
+\[
+ C(t)=\operatorname{Li}_1(e^{-t})=-\log(1-e^{-t}),\qquad
+ F(t)=\left.\partial_s\operatorname{Li}_s(e^{-t})\right|_{s=1}.
+\]
+The usual Mellin representation of the Tornheim sum gives
+\begin{equation}\label{tornheim:cubic:mellinpartials}
+ T_{12}=\int_0^\infty F(t)^2\,dt,\quad
+ T_{13}=\int_0^\infty F(t)C(t)(\log t+\gamma)\,dt,\quad
+ T_3=\int_0^\infty C(t)^2(\log t+\gamma)\,dt.
+\end{equation}
+For $0<t<2\pi$, cancellation of the two poles in Jonqui\`ere's expansion
+produces
+\begin{align*}
+ C(t)&=-\log t+\sum_{k\ge1}c_kt^k,
+ &c_k&=\frac{(-1)^k\zeta(1-k)}{k!},\\
+ F(t)&=-\alpha-\gamma\log t-\tfrac12\log^2t+\sum_{k\ge1}b_kt^k,
+ &b_k&=\frac{(-1)^k\zeta'(1-k)}{k!},\\
+ \alpha&=\gamma_1+\frac{\gamma^2}2+\frac{\pi^2}{12}.
+\end{align*}
+Here the Stieltjes convention is
+$\zeta(1+z)=z^{-1}+\sum_{j\ge0}(-1)^j\gamma_jz^j/j!$.
+For computational stability the coefficient formulas can be rewritten as
+\begin{align*}
+ c_1&=\tfrac12,&b_1&=\tfrac12\log(2\pi),\\
+ c_{2j}&=\frac{(-1)^j\zeta(2j)}{j(2\pi)^{2j}},&
+ b_{2j}&=c_{2j}\left(\log(2\pi)-\psi(2j)-\frac{\zeta'(2j)}{\zeta(2j)}\right),\\
+ c_{2j+1}&=0\quad(j\ge1),&
+ b_{2j+1}&=\frac{(-1)^{j+1}\pi\zeta(2j+1)}{(2j+1)(2\pi)^{2j+1}}
+ \quad(j\ge1).
+\end{align*}
+The functional equation of the Riemann zeta function proves these identities.
+Elementary bounds $\zeta(k)<2$, $|\zeta'(k)|<2$, $H_{k-1}\le k-1$,
+$\gamma<1$, $\log(2\pi)<2$, and $2\pi>6$ give, for $k\ge2$,
+\[
+ |b_k|\le12\,6^{-k},\qquad |c_k|\le2\,6^{-k}.
+\]
+Thus after degree $K\ge1$ their remainders on $0<t\le1$ are at most
+\[
+ \epsilon_b=\frac{12}{5}6^{-K},\qquad
+ \epsilon_c=\frac25 6^{-K}.
+\]
+All integrals of the resulting polynomials in $t$ and $\log t$ are evaluated
+using $\int_0^1t^k\log^jt\,dt=(-1)^jj!/(k+1)^{j+1}$.
+
+On $t\ge1$, insert
+$C(t)=\sum_{n\ge1}e^{-nt}/n$ and
+$F(t)=-\sum_{n\ge1}(\log n)e^{-nt}/n$.  The integral with the logarithmic
+factor uses
+\[
+ \int_1^\infty e^{-kt}(\log t+\gamma)\,dt
+ =\frac{E_1(k)+\gamma e^{-k}}k.
+\]
+Truncate this sum at $m+n\le N$.  A common upper bound for the three
+omitted tails is
+\[
+ B_N=4\sum_{k>N}ke^{-k}
+ =\frac{4e^{-(N+1)}((N+1)-Ne^{-1})}{(1-e^{-1})^2}.
+\]
+For the three integrals in the order $T_{12},T_{13},T_3$, safe total
+series-truncation bounds are respectively
+\[
+ \epsilon_b(12+\epsilon_b)+B_N,\qquad
+ 5\epsilon_b+15\epsilon_c+2\epsilon_b\epsilon_c+B_N,\qquad
+ 10\epsilon_c+2\epsilon_c^2+B_N.
+\]
+For example the elementary estimates
+$C(t)\le-\log t+1$ and
+$|F(t)|\le4-\log t+\tfrac12\log^2t$ on $(0,1]$ imply all the constants
+above.  The sharper bound $\int_0^1|F(t)|dt<6$ follows directly from its
+coefficient expansion (one may use $0<\alpha<2$).
+An elementary verification of the latter constant bound is available:
+the defining limit for $\gamma_1$ and the total variation of
+$x\mapsto\log x/x$ on $[1,\infty)$ give $|\gamma_1|\le2/e<3/4$;
+combine this with $0<\gamma<3/5$ and $3<\pi<\sqrt{12}$.
+This is an analytic truncation certificate; floating-point rounding must
+be handled separately to turn an implementation into interval arithmetic.
+
+The independent implementation \texttt{verify\_tornheim.py} evaluates the
+three partials and compares \eqref{gaussian:eq:cubic-compact} against direct log-gamma
+quadrature.  Its output explicitly labels the rounding qualification.
+
+\subsection{A sign check for an auxiliary identity}
+
+If the June 2012 preprint is used, an auxiliary sign should be checked
+before copying its Remark~3.  Put
+\[
+ S_\gamma=\sum_{m,n\ge1}
+        \frac{(\gamma+\log m)(\gamma+\log n)}{mn(m+n)}.
+\]
+Directly expanding the numerator, with absolutely convergent sums, gives
+\[
+ T_{12}=S_\gamma+2\gamma\bigl(\zeta'(2,1)+\zeta'(3)\bigr)
+                  -2\gamma^2\zeta(3).
+\]
+The coefficient of $S_\gamma$ is positive.  The displayed minus sign in
+equations~(63) and~(65) of the author-hosted June 2012 preprint would make
+their right side negative, although $T_{12}>0$.  This issue does not
+affect the cubic formula proved above.  This note does not assert that
+the same typographical error occurs in the final journal typesetting.
+

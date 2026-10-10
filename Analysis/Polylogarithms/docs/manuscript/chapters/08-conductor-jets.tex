@@ -1,0 +1,879 @@
+\section{Primitive-grid determinants, local defects and finite descent}\label{jets:sec:det}
+The polynomial character normal form above remains valid over arbitrary
+complex coefficient algebras. Here identify the prime weights $A_p$ with
+$t_p$, write $\mathcal D_q$ for that quotient, and put
+$v_{m,\chi}=Y_{m,\chi}$, $b_\chi=Y_{f,\chi}$ for
+$f=\operatorname{cond}(\chi)$. The coefficient $E_{m,\chi}$ is
+$A_{m,\chi}$ of Theorem~\ref{dist:thm:dist-normal-form}. Thus
+\begin{equation}\label{jets:eq:conductor-normal}
+ [v_{m,\chi}]=E_{m,\chi}b_\chi.
+\end{equation}
+No Euler-factor division is used.
+Let $U_q=\{u\bmod q:(u,q)=1\}$, and use $r=0$ for the Hurwitz endpoint
+$x_r=1$. Distinguish the rank of the full quotient from the image of
+its primitive-grid coordinate map.
+
+Conductor coordinates are polynomial and globally valid, but it is often
+more convenient to use the $\varphi(q)$ primitive-grid points
+$e_{u/q}$, $u\in U_q$. Fourier-transforming those points gives
+$v_{q,\chi}$. By Theorem~\ref{dist:thm:dist-normal-form}, the map from their formal
+span into $\D_q$ is diagonal in character coordinates:
+\begin{equation}\label{jets:eq:primitive-diagonal}
+ v_{q,\chi}\longmapsto E_{q,\chi}b_\chi.
+\end{equation}
+Its determinant in these specified Fourier and conductor bases is
+$\Delta_q=\prod_{\chi\bmod q}E_{q,\chi}$.
+
+For $p^e\Vert q$, write
+\[
+ M_p=q/p^e,\qquad h_p=\ord_{M_p}(p),
+\]
+with $h_p=1$ when $M_p=1$.
+
+\begin{theorem}[Determinant factorization]\label{jets:thm:determinant}
+One has the polynomial identity
+\begin{equation}\label{jets:eq:determinant}
+ \boxed{\displaystyle
+ \Delta_q(\mathbf A)=
+ \prod_{p^e\Vert q}
+ A_p^{\varphi(M_p)(p^{e-1}-1)}
+ \bigl(A_p^{h_p}-1\bigr)^{\varphi(M_p)/h_p}.}
+\end{equation}
+Thus primitive-grid coordinates form a basis precisely when all the
+factors in \eqref{jets:eq:determinant} are invertible in a field
+specialization. Their failure does not change the rank of $\D_q$.
+\end{theorem}
+\begin{proof}
+Fix $p^e\Vert q$ and inspect the $p$ factor of
+$\prod_\chi E_{q,\chi}$. Characters whose conductor is not divisible by
+$p$ are exactly the characters of $U_{M_p}$. Their additional factors
+are $A_p-\chi(p)$. In the character group of $U_{M_p}$, the values
+$\chi(p)$ run through every $h_p$th root of unity with multiplicity
+$\varphi(M_p)/h_p$. This follows by duality from the fact that $p$ has
+order $h_p$ in $U_{M_p}$. Their product is therefore
+$(A_p^{h_p}-1)^{\varphi(M_p)/h_p}$.
+
+It remains to count the pure powers of $A_p$. If $a=v_p(f)$, the
+exponent contributed by one character is $e-\max(1,a)$. Writing this
+as a sum of indicators gives
+\[
+ \sum_{\chi\bmod q}\bigl(e-\max(1,v_p(f_\chi))\bigr)
+ =\sum_{j=1}^{e-1}\#\{\chi:v_p(f_\chi)\le j\}.
+\]
+The count in the last sum is $\varphi(p^j)\varphi(M_p)$, since these
+are exactly the characters induced from level $p^jM_p$. Hence the
+exponent is
+$\varphi(M_p)\sum_{j=1}^{e-1}\varphi(p^j)
+=\varphi(M_p)(p^{e-1}-1)$. Multiply over the primes.
+\end{proof}
+
+\begin{example}[Level twelve]
+Let $\chi_3$ and $\chi_4$ be the nonprincipal quadratic characters of
+conductors three and four, and let $\chi_{12}=\chi_3\chi_4$.
+Their conductor generators are
+\begin{align*}
+ b_3&=e_{1/3}-e_{2/3},&
+ b_4&=e_{1/4}-e_{3/4},\\
+ b_{12}&=e_{1/12}-e_{5/12}-e_{7/12}+e_{11/12}.
+\end{align*}
+For $r\in U_{12}$, the normal form reads
+\begin{align}\label{jets:eq:q12-normal}
+ [e_{r/12}]=\frac14\bigl[&A_2(A_2-1)(A_3-1)e_0
+ +\chi_3(r)A_2(A_2+1)b_3\notag\\
+ &+\chi_4(r)(A_3+1)b_4+\chi_{12}(r)b_{12}\bigr].
+\end{align}
+Consequently
+\[
+ \Delta_{12}=A_2^2(A_2^2-1)(A_3^2-1).
+\]
+At $A_2=A_3=1$, the primitive-grid span misses the principal conductor
+coordinate, even though the full quotient still has rank four.
+\end{example}
+
+\subsection{Local jet defects of the primitive-grid map}
+Specialize to $A_p(s)=p^s$, and let $s=s_0+t$. All exponential factors
+are nonzero. A factor $p^s-\chi(p)$ vanishes precisely when
+$p^{s_0}=\chi(p)$, and any such zero is simple because its derivative
+is $p^{s_0}\log p\ne0$.
+
+\begin{theorem}[Local Smith factors and primitive-jet ranks]\label{jets:thm:smith}
+Define
+\begin{equation}\label{jets:eq:rho-general}
+ \rho_\chi(s_0)=\#\{p\mid q:p\nmid f_\chi,\ p^{s_0}=\chi(p)\}.
+\end{equation}
+Over $\C[[t]]$, the diagonal factors of the primitive-grid map are
+units times $t^{\rho_\chi(s_0)}$. Consequently its rank on order-$N$
+truncated jets, as a complex linear map, is
+\begin{equation}\label{jets:eq:primitive-jet-rank}
+ \sum_{\chi\bmod q}\max\{N+1-\rho_\chi(s_0),0\}.
+\end{equation}
+At $s_0=0$, this is determined by
+$\rho_\chi(0)=\#\{p\mid q:p\nmid f_\chi,\ \chi(p)=1\}$.
+\end{theorem}
+\begin{proof}
+Factor $E_{q,\chi}(s_0+t)$ into its simple vanishing factors and a unit.
+The primitive Fourier matrix is constant and invertible, so these are
+also the local invariant factors, up to permutation and units.
+Multiplication by $t^r$ on $\C[t]/(t^{N+1})$ has rank
+$\max(N+1-r,0)$. Summing over the diagonal coordinates proves the
+formula. This is the rank of a \emph{coordinate inclusion map}, not
+the rank of the distribution relation matrix.
+\end{proof}
+
+\begin{corollary}[Multiple-prime resonances are central]\label{jets:cor:central}
+If $s_0\ne0$, at most one prime can satisfy
+$p^{s_0h_p}=1$. At a nonzero resonant point for that prime $p$, the
+primitive-grid rank defect is $\varphi(M_p)/h_p$, and every affected
+local factor has order one. The order-$N$ inclusion rank is then
+$(N+1)\varphi(q)-\varphi(M_p)/h_p$ for all $N\ge0$.
+\end{corollary}
+\begin{proof}
+A resonance forces $s_0$ to be purely imaginary. Resonances at distinct
+primes would make $\log p/\log\ell$ rational, because each phase is a
+rational multiple of $2\pi$. Unique prime factorization rules this out
+unless $s_0=0$. For the one resonant prime, the multiplicity count in
+Theorem~\ref{jets:thm:determinant} gives the number of affected characters.
+Apply Theorem~\ref{jets:thm:smith}.
+\end{proof}
+
+\begin{example}[Two exact jet-rank profiles]
+At level $12$ and $s_0=0$, the principal character has $\rho=2$ and the
+other three characters have $\rho=0$. For $N=0,1,2$, the primitive-jet
+ranks are $3,6,10$, while the full quotient dimensions are $4,8,12$.
+At level $21$, the principal character has $\rho=2$, the character
+induced from conductor three has $\rho=1$, and the other ten
+characters have $\rho=0$. The inclusion ranks are $10,21,33$, compared
+with full quotient dimensions $12,24,36$. Indeed,
+\[
+ \Delta_{21}=(A_3^6-1)(A_7-1)^2.
+\]
+Exact character-phase certificates for these examples are supplied.
+\end{example}
+
+\section{Explicit primitive-grid reduction coefficients}\label{jets:sec:primitive}
+
+Away from the exceptional locus, the conductor normal form can be
+inverted to express all grid points through the primitive ones. For
+Hurwitz weights there is a particularly concrete answer that avoids
+character-field arithmetic.
+
+Let $\mathcal S_q$ be the multiplicative semigroup of positive integers
+whose prime factors divide $q$, including $1$. For $\Real s>0$, define
+\begin{equation}\label{jets:eq:C-smooth}
+ C_{r,u}(s)=\sum_{\substack{d\in\mathcal S_q\\du\equiv r\; (q)}}d^{-s},
+ \qquad 0\le r<q,\quad u\in U_q.
+\end{equation}
+The series is absolutely convergent, since
+$\sum_{d\in\mathcal S_q}d^{-\sigma}
+=\prod_{p\mid q}(1-p^{-\sigma})^{-1}$ for $\sigma>0$.
+
+\begin{theorem}[Primitive-grid extension]\label{jets:thm:primitive}
+For $\Real s>0$, the $q\times\varphi(q)$ matrix $C(s)$ satisfies every
+prime and divisor distribution relation with weights $p^s$, and its
+primitive rows form the identity matrix. It is the unique extension
+matrix from primitive-grid data. In particular,
+\begin{equation}\label{jets:eq:Hurwitz-C}
+ \zeta(s,r/q)=\sum_{u\in U_q}C_{r,u}(s)\zeta(s,u/q)
+\end{equation}
+with the endpoint convention for $r=0$, initially for $\Real s>1$ and
+then meromorphically wherever the coefficients are defined.
+\end{theorem}
+\begin{proof}
+For a primitive row $r$, the congruence $du\equiv r\pmod q$ forces
+$d$ to be prime to $q$, hence $d=1$. This gives the identity submatrix.
+For a prime distribution row indexed by $a\equiv0\pmod p$,
+\[
+ \sum_{pr\equiv a\;(q)}C_{r,u}(s)
+ =\sum_{\substack{d\in\mathcal S_q\\pdu\equiv a\;(q)}}d^{-s}
+ =p^s\sum_{\substack{d'\in\mathcal S_q\\d'u\equiv a\;(q)}}(d')^{-s}.
+\]
+In the last step $d'=pd$; conversely every $d'$ in the last sum is
+divisible by $p$, because $u$ is a unit and $a$ is divisible by $p$.
+The last expression is $p^sC_{a,u}(s)$. Prime sufficiency gives all
+divisor rows. Theorem~\ref{dist:thm:dist-normal-form} and the identity submatrix
+show that these $\varphi(q)$ independent columns exhaust the solution
+space. Hurwitz zeta satisfies the same distribution equations by
+regrouping its absolutely convergent defining series, proving
+\eqref{jets:eq:Hurwitz-C}.
+\end{proof}
+
+\subsection{A finite formula, including negative spectral parameters}
+For $0\le r<q$, let
+\[
+ g=\gcd(r,q),\quad m=q/g,\quad a=r/g,
+ \quad P_r=\{p\mid q:p\nmid m\}.
+\]
+When $r=0$, this means $g=q$, $m=1$, $a=0$.
+For $p\in P_r$, put $h_{p,m}=\ord_m(p)$, with order one modulo one.
+
+\begin{theorem}[Finite residue formula]\label{jets:thm:finite-C}
+The meromorphic continuation of \eqref{jets:eq:C-smooth} is
+\begin{equation}\label{jets:eq:C-finite}
+ C_{r,u}(s)=g^{-s}
+ \frac{\displaystyle
+ \sum_{\substack{0\le b_p<h_{p,m}\;(p\in P_r)\\
+ u\prod_{p\in P_r}p^{b_p}\equiv a\;(m)}}
+ \prod_{p\in P_r}p^{-s b_p}}
+ {\displaystyle\prod_{p\in P_r}(1-p^{-s h_{p,m}})}.
+\end{equation}
+Empty products have their usual value one. In particular,
+\begin{equation}\label{jets:eq:C-endpoint}
+ C_{0,u}(s)=q^{-s}\prod_{p\mid q}(1-p^{-s})^{-1},
+\end{equation}
+independently of $u$.
+\end{theorem}
+\begin{proof}
+The congruence in \eqref{jets:eq:C-smooth} forces the valuation of $d$ at
+an unsaturated prime, one dividing $m$, to be exactly $v_p(g)$.
+At a saturated prime, one not dividing $m$, it is at least $v_p(g)$.
+Thus $d=g\prod_{p\in P_r}p^{c_p}$ with $c_p\ge0$, and the remaining
+congruence is $u\prod p^{c_p}\equiv a\pmod m$.
+Write $c_p=b_p+h_{p,m}j_p$ and sum the independent geometric series in
+$j_p$. This proves the formula in $\Real s>0$ and hence its meromorphic
+continuation. The endpoint has trivial congruence modulo one.
+\end{proof}
+
+Formula \eqref{jets:eq:C-finite}, \emph{not} the divergent smooth-number
+series, is the definition used at negative real $s$. It has no pole at
+any nonzero real $s$, and the continued distribution identities remain
+valid there. At a zero of a displayed denominator, one should use the
+polynomial conductor normal form rather than cancel poles numerically.
+Some individual coefficients may have removable singularities, but
+Theorem~\ref{jets:thm:determinant} gives the criterion for the entire
+primitive-grid coordinate system.
+
+\begin{corollary}[Exact support and signs]\label{jets:cor:support}
+Let $H_r$ be the subgroup of $U_m$ generated by the classes of the
+primes in $P_r$. For every nonzero real $s$,
+\[
+ C_{r,u}(s)\ne0\quad\Longleftrightarrow\quad au^{-1}\in H_r.
+\]
+The number of supported primitive coordinates is
+\begin{equation}\label{jets:eq:support-count}
+ \frac{\varphi(q)}{\varphi(m)}|H_r|.
+\end{equation}
+All supported coefficients are positive for $s>0$. For $s<0$, they
+all have sign $(-1)^{|P_r|}$.
+\end{corollary}
+\begin{proof}
+The numerator of \eqref{jets:eq:C-finite} is a sum of positive real terms
+and is nonempty exactly under the subgroup condition. The reduction
+map $U_q\to U_m$ has fibers of cardinality
+$\varphi(q)/\varphi(m)$, giving \eqref{jets:eq:support-count}.
+For $s>0$ every denominator factor is positive. For $s<0$ each of the
+$|P_r|$ denominator factors is negative, while the numerator and
+$g^{-s}$ are positive.
+\end{proof}
+
+\begin{corollary}[Complete monotonicity and normalization]\label{jets:cor:monotone}
+For $s>0$ and $j\ge0$, put
+\begin{equation}\label{jets:eq:W-definition}
+ W_{r,u}^{[j]}(s)=(-1)^j\frac{d^j}{ds^j}C_{r,u}(s)
+ =\sum_{\substack{d\in\mathcal S_q\\du\equiv r\;(q)}}
+ \frac{(\log d)^j}{d^s}.
+\end{equation}
+These quantities are nonnegative. Moreover,
+$\sum_u C_{r,u}(1)=1$ for every $r$, and
+$0\le C_{r,u}(k)\le1$ for integer $k\ge1$.
+\end{corollary}
+\begin{proof}
+The logarithmically weighted semigroup series converges locally
+uniformly in $\Real s>0$, so termwise differentiation is valid.
+The constant grid vector satisfies the distribution equations at
+$s=1$, and its primitive entries are all one. Uniqueness of extension
+proves the row-sum identity. Monotonicity gives
+$C_{r,u}(k)\le C_{r,u}(1)\le1$.
+\end{proof}
+
+\begin{example}[Two reductions at denominator six]\label{jets:ex:q6}
+The nontrivial coefficients for $r=2$ are
+\[
+ C_{2,1}(s)=\frac{2^s}{2^{2s}-1},\qquad
+ C_{2,5}(s)=\frac1{2^{2s}-1}.
+\]
+Thus, meromorphically,
+\begin{align}
+ \zeta(s,1/3)&=
+ \frac{2^s\zeta(s,1/6)+\zeta(s,5/6)}{2^{2s}-1},\label{jets:eq:q6-one}\\
+ \zeta(s,1/2)&=
+ \frac{\zeta(s,1/6)+\zeta(s,5/6)}{3^s-1}.
+ \label{jets:eq:q6-two}
+\end{align}
+At $s=1$, the coefficients in \eqref{jets:eq:q6-one} are $2/3$ and $1/3$.
+At $s=-1$ they are $-2/3$ and $-4/3$, illustrating the sign theorem
+without using a divergent series. The poles at $s=0$ reflect a
+singular primitive basis, not a failure of the underlying distribution
+relations.
+\end{example}
+
+\subsection{Denominator certificates and construction cost}
+Let $M_p$ also denote, in this paragraph only, the pushforward matrix
+on grid vectors defined by
+\[
+ (M_pf)_r=\sum_{pu\equiv r\;(q)}f_u.
+\]
+To avoid confusion with the integer complement in
+Section~\ref{jets:sec:det}, write that complement as $q_p=q/p^e$ here and
+put $h_p=\ord_{q_p}(p)$. Multiplication of residues gives
+$M_p^{e+h_p}=M_p^e$. For $z=p^{-s}$,
+\begin{equation}\label{jets:eq:operator-inverse}
+ (I-zM_p)^{-1}
+ =\sum_{j=0}^{e-1}z^jM_p^j
+ +\frac{z^e}{1-z^{h_p}}\sum_{j=0}^{h_p-1}z^jM_p^{e+j}.
+\end{equation}
+This follows first from a geometric series for $|z|<1$, then as a
+rational matrix identity. The commuting product of these inverses,
+applied to vectors supported on $U_q$, is the extension $C(s)$.
+
+\begin{proposition}[A uniform rational denominator]\label{jets:prop:denominator}
+For integer $k\ge1$, every reduced denominator of $C_{r,u}(k)$ divides
+\begin{equation}\label{jets:eq:denominator-bound}
+ D_q(k)=\prod_{p^e\Vert q}
+ p^{k(e-1)}\bigl(p^{kh_p}-1\bigr).
+\end{equation}
+Its bit length is $O(kq\log q)$. The coefficients of the raw derivative
+$C_{r,u}^{(j)}(k)$, viewed as a polynomial in the symbols $\log p$,
+have denominators dividing $D_q(k)^{j+1}$.
+\end{proposition}
+\begin{proof}
+Every scalar coefficient on the right of
+\eqref{jets:eq:operator-inverse} has denominator dividing
+$p^{k(e-1)}(p^{kh_p}-1)$. Multiplication over primes proves the first
+claim. Since $h_p\le q$ and $\sum_{p\mid q}\log p\le\log q$, its
+logarithm is at most a constant times $kq\log q$.
+The matrix product can be written as a ratio of integer polynomials in
+$p^s$, with denominator obtained from \eqref{jets:eq:denominator-bound} by
+replacing $k$ with $s$. Repeated differentiation introduces polynomial
+factors in $\log p$ and raises the denominator power by at most one
+each time. For normalized Taylor coefficients, an additional factor
+$j!$ may be needed.
+\end{proof}
+
+The implementation computes \eqref{jets:eq:C-finite} by convolution on
+residue classes modulo $m$, separately for each $m\mid q$. At a fixed
+$m$, each prime update takes at most $\varphi(m)^2$ rational arithmetic
+operations. A complete matrix can therefore be constructed in
+\[
+ O\!\left(\omega(q)\sum_{m\mid q}\varphi(m)^2+q\varphi(q)\right)
+ =O\bigl(\omega(q)q^2\bigr)
+\]
+rational arithmetic operations, using $\sum_{m\mid q}\varphi(m)=q$.
+This is an arithmetic-operation bound, not a constant-cost bit model
+or a claim of optimality. The denominator estimate supplies a
+conservative size control at positive integer orders.
+
+\section{All-orders Hurwitz--Stieltjes identities}\label{jets:sec:stieltjes}
+
+Write the Laurent expansion as
+\begin{equation}\label{jets:eq:stieltjes-laurent}
+ \zeta(1+t,x)=\frac1t+
+ \sum_{n\ge0}\frac{(-1)^n}{n!}\gamma_n(x)t^n,
+ \qquad x>0.
+\end{equation}
+Here $\gamma_n^{(k)}$ always means $k$ derivatives in $x$; a derivative
+on $C(s)$ is in the spectral variable. The coefficient identities in
+this section are analytic theorems, distinct from formal rank claims.
+
+\begin{theorem}[Derived Stieltjes reduction]\label{jets:thm:derived-stieltjes}
+For $k\ge1$, $n\ge0$, and $x_r=r/q$ with the endpoint convention,
+\begin{equation}\label{jets:eq:derived-stieltjes}
+ \boxed{\displaystyle
+ \gamma_n^{(k)}(x_r)=
+ \sum_{u\in U_q}\sum_{j=0}^n\binom nj
+ W_{r,u}^{[j]}(k+1)\,
+ \gamma_{n-j}^{(k)}(u/q).}
+\end{equation}
+All the coefficient functions are given by the finite formula
+\eqref{jets:eq:C-finite} and its derivatives.
+\end{theorem}
+\begin{proof}
+Differentiating Hurwitz zeta in its parameter yields
+\[
+ \partial_x^k\zeta(1+t,x)=(-1)^k(1+t)_k\zeta(k+1+t,x).
+\]
+The pole in \eqref{jets:eq:stieltjes-laurent} is independent of $x$, so for
+$k\ge1$ the left side is
+$\sum_n(-1)^n\gamma_n^{(k)}(x)t^n/n!$.
+Apply \eqref{jets:eq:Hurwitz-C} at spectral parameter $k+1+t$ and multiply
+by the common scalar $(-1)^k(1+t)_k$. Taylor multiplication gives
+\eqref{jets:eq:derived-stieltjes}, because
+$(-1)^j C_{r,u}^{(j)}=W_{r,u}^{[j]}$.
+\end{proof}
+
+This proof also explains why the harmonic-number master identity in
+Chapter 8 is compatible with the same reduction matrix at every
+Stieltjes order: the rising factorial is common to every rational
+argument. It does not create new independent distribution coordinates.
+
+\begin{theorem}[Underived Stieltjes reduction, with the pole term]\label{jets:thm:underived}
+For $n\ge0$,
+\begin{equation}\label{jets:eq:underived-stieltjes}
+ \boxed{\displaystyle
+ \gamma_n(x_r)=
+ \sum_{u\in U_q}\sum_{j=0}^n\binom nj
+ W_{r,u}^{[j]}(1)\gamma_{n-j}(u/q)
+ -\frac1{n+1}\sum_{u\in U_q}W_{r,u}^{[n+1]}(1).}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Apply \eqref{jets:eq:Hurwitz-C} at $s=1+t$. The coefficients are analytic
+there. Multiplying their Taylor expansions by
+\eqref{jets:eq:stieltjes-laurent}, the coefficient of $t^n$ receives the
+usual product terms and also
+$\sum_u C_{r,u}^{(n+1)}(1)/(n+1)!$ from the pole $1/t$.
+Multiplication by $(-1)^n n!$ converts that additional term to the
+negative last term of \eqref{jets:eq:underived-stieltjes}. The coefficient
+of $1/t$ agrees because $\sum_u C_{r,u}(1)=1$.
+\end{proof}
+
+Omitting the last term would already give an incorrect formula for
+$\gamma_0$. The point is not a rank correction: a known scalar right
+side does not change a homogeneous rank. It is a correction to the
+actual analytic value identity.
+
+\begin{example}[An explicit first-order identity]
+From \eqref{jets:eq:q6-one}, direct differentiation at $s=1$ gives
+\[
+ W_{2,1}^{[1]}(1)=\frac{10}{9}\log2,\qquad
+ W_{2,5}^{[1]}(1)=\frac89\log2.
+\]
+Consequently
+\begin{equation}\label{jets:eq:gamma0-six}
+ \gamma_0(1/3)=\frac23\gamma_0(1/6)+\frac13\gamma_0(5/6)-2\log2.
+\end{equation}
+At $s=2$, the analogous coefficients give
+\begin{align}\label{jets:eq:gamma1prime-six}
+ \gamma_1'(1/3)={}&\frac4{15}\gamma_1'(1/6)
+ +\frac1{15}\gamma_1'(5/6)\notag\\
+ &+\frac{68\log2}{225}\gamma_0'(1/6)
+ +\frac{32\log2}{225}\gamma_0'(5/6).
+\end{align}
+Since $\gamma_0'=-\psi'$, the signs can also be checked against the
+parameter-differentiated digamma multiplication identity.
+The verification program checks \eqref{jets:eq:underived-stieltjes} through
+$n=2$ and \eqref{jets:eq:gamma1prime-six} by numerical parameter
+differentiation of Stieltjes functions.
+\end{example}
+
+\section{Finite conductor descent for all Stieltjes layers}
+
+For a primitive character $\chi$ of conductor $f\mid d$, define
+\begin{equation}
+G_{d,\chi}^{(n,k)}=
+\sum_{a\in\U_d}\chi(a)\gamma_n^{(k)}(a/d).
+\end{equation}
+Set
+\begin{equation}\label{conductor:eq:Rdf}
+R(d,f)=\prod_{\substack{p\mid d\\p\nmid f}}p,
+\qquad m_r=\frac{d}{fr}\quad(r\mid R(d,f)).
+\end{equation}
+Each $m_r$ is a positive integer. Upon substituting $t_p=p^s$,
+\eqref{dist:eq:dist-normal-coefficient} becomes the entire exponential polynomial
+\begin{align}\label{conductor:eq:Aanalytic}
+A_{d,f,\chi}(s)
+&=\left(\frac df\right)^s
+\prod_{\substack{p\mid d\\p\nmid f}}(1-\chi(p)p^{-s})\notag\\
+&=\sum_{r\mid R(d,f)}\mu(r)\chi(r)m_r^s.
+\end{align}
+In particular,
+\begin{equation}\label{conductor:eq:Aderivative}
+A_{d,f,\chi}^{(j)}(s)
+=\sum_{r\mid R(d,f)}\mu(r)\chi(r)m_r^s\log^j m_r.
+\end{equation}
+
+\begin{theorem}[All-index, all-parameter-order descent]\label{conductor:thm:stieltjes}
+For $n\ge0$, $k\ge1$ and $f\mid d$,
+\begin{align}\label{conductor:eq:stieldescent}
+G_{d,\chi}^{(n,k)}
+={}&\sum_{r\mid R(d,f)}\mu(r)\chi(r)m_r^{k+1}\notag\\
+&\quad\cdot\sum_{j=0}^{n}(-1)^j\binom nj\log^j m_r\,
+G_{f,\chi}^{(n-j,k)}.
+\end{align}
+No Euler-factor denominator occurs. Equivalently,
+\begin{equation}\label{conductor:eq:stielA}
+G_{d,\chi}^{(n,k)}=
+\sum_{j=0}^{n}(-1)^j\binom nj A_{d,f,\chi}^{(j)}(k+1)
+G_{f,\chi}^{(n-j,k)}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+For $\Real s>1$, sorting a Dirichlet series by residue classes gives
+\[
+\sum_{a\in\U_d}\chi(a)\zeta(s,a/d)=d^sL(s,\chi_d),
+\]
+where $\chi_d$ is the induced character modulo $d$. Removing the extra
+Euler factors from its primitive $L$-series yields
+\[
+L(s,\chi_d)=L(s,\chi)
+\prod_{\substack{p\mid d\\p\nmid f}}(1-\chi(p)p^{-s}).
+\]
+Thus the character sum at $d$ is $A_{d,f,\chi}(s)$ times the character
+sum at $f$. This is also the analytic realization of
+Theorem~\ref{dist:thm:dist-normal-form}.
+
+Insert $s=k+1+\eps$, multiply by the common factor
+$(-1)^k(1+\eps)_k$, and use \eqref{tower:eq:masterN}. Comparison of
+$(-1)^n\eps^n/n!$ gives \eqref{conductor:eq:stielA}; the sign $(-1)^j$ comes
+from the Stieltjes Laurent convention. Finally apply
+\eqref{conductor:eq:Aderivative}.
+\end{proof}
+
+\subsection{Concrete second-index identities at level twelve}
+
+The multipliers are
+\[
+A_{12,3,\chi_3}(s)=4^s+2^s,\qquad
+A_{12,4,\chi_4}(s)=3^s+1.
+\]
+Therefore, at $n=2$, $k=1$,
+\begin{align}\label{conductor:eq:examplegamma}
+G_{12,\chi_3}^{(2,1)}
+&=20G_{3,\chi_3}^{(2,1)}
+-72\log2\,G_{3,\chi_3}^{(1,1)}
++68\log^22\,G_{3,\chi_3}^{(0,1)},\\
+G_{12,\chi_4}^{(2,1)}
+&=10G_{4,\chi_4}^{(2,1)}
+-18\log3\,G_{4,\chi_4}^{(1,1)}
++9\log^23\,G_{4,\chi_4}^{(0,1)}.
+\end{align}
+For instance,
+\[
+G_{12,\chi_3}^{(2,1)}=
+\gamma_2'(1/12)-\gamma_2'(5/12)+\gamma_2'(7/12)-\gamma_2'(11/12),
+\]
+and $G_{3,\chi_3}^{(2,1)}=\gamma_2'(1/3)-\gamma_2'(2/3)$.
+These are exact identities between explicitly specified signed sums; they
+require no integer-relation search. The two identities were also checked
+numerically using independent finite Hurwitz character sums.
+
+\subsection{The undifferentiated layer and its pole correction}
+
+For $k=0$, a principal character sum still contains the Hurwitz pole.
+The same formula without a correction would be wrong.
+
+\begin{proposition}[The $k=0$ correction]\label{conductor:prop:kzero}
+For nonprincipal primitive $\chi$ the formula
+\eqref{conductor:eq:stielA} remains valid with $k=0$. For $f=1$, put
+$A_d(s)=A_{d,1,1}(s)$. Then
+\begin{equation}\label{conductor:eq:kzero}
+G_{d,1}^{(n,0)}=
+\sum_{j=0}^{n}(-1)^j\binom nj A_d^{(j)}(1)\gamma_{n-j}(1)
++\frac{(-1)^n}{n+1}A_d^{(n+1)}(1).
+\end{equation}
+\end{proposition}
+\begin{proof}
+For a nonprincipal character, the sum of its values over units is zero,
+so the $1/\eps$ residues cancel. Coefficient comparison is unchanged.
+For the principal conductor, multiply
+\[
+A_d(1+\eps)\left(\frac1\eps+
+\sum_{n\ge0}\frac{(-1)^n\gamma_n(1)}{n!}\eps^n\right).
+\]
+The pole term contributes $A_d^{(n+1)}(1)/(n+1)!$ to the coefficient of
+$\eps^n$. Multiplying by $(-1)^n n!$ gives the correction in
+\eqref{conductor:eq:kzero}. The residue itself is
+$A_d(1)=d\prod_{p\mid d}(1-p^{-1})=\varphi(d)$, as required.
+\end{proof}
+
+For the non-character multiplication formula this specializes to
+\begin{equation}\label{conductor:eq:classicalstieldist}
+\sum_{j=0}^{d-1}\gamma_n\!\left(\frac{a+j}{d}\right)
+=d\sum_{r=0}^{n}\binom nr(-\log d)^r\gamma_{n-r}(a)
++\frac{(-1)^n d\log^{n+1}d}{n+1}.
+\end{equation}
+The inhomogeneous term is the residue contribution, not an optional
+normalization.
+
+
+\section{Cyclotomic polylogarithm traces}\label{jets:sec:traces}
+
+The same finite module applies to a second evaluation. Put
+$\zeta_m=\exp(2\pi\iu/m)$ and evaluate
+$e_x\mapsto\Li_s(\ee^{2\pi\iu x})$.
+For $\Real s>1$, grouping the defining series by multiples of $p$ gives
+\[
+ \sum_{py=x}\Li_s(\ee^{2\pi\iu y})
+ =p^{1-s}\Li_s(\ee^{2\pi\iu x}).
+\]
+Thus the weights are now $A_p=p^{1-s}$, and analytic continuation
+extends the identity wherever the individual expressions are defined.
+
+For a primitive character $\chi$ of conductor $f\mid q$, define
+\begin{equation}\label{jets:eq:trace-definition}
+ \cP_{q,\chi}(s)=
+ \sum_{u\in U_q}\chi(u)\Li_s(\zeta_q^u),\qquad
+ \tau(\chi)=\sum_{a\in U_f}\chi(a)\zeta_f^a.
+\end{equation}
+At conductor one take $\tau(\mathbf1)=1$ and $L(s,\mathbf1)=\zeta(s)$.
+
+\begin{theorem}[Conductor-lifted trace identity]\label{jets:thm:trace}
+As a meromorphic identity, and with removable singularities interpreted
+by continuation,
+\begin{equation}\label{jets:eq:trace-formula}
+ \boxed{\displaystyle
+ \cP_{q,\chi}(s)=
+ (q/f)^{1-s}
+ \prod_{\substack{p\mid q\\p\nmid f}}
+ \bigl(1-\chi(p)p^{s-1}\bigr)
+ \tau(\chi)L(s,\overline\chi).}
+\end{equation}
+For every $q>1$, the left side is an entire function of the spectral
+variable $s$.
+\end{theorem}
+\begin{proof}
+At primitive conductor $f>1$, absolute convergence and the primitive
+Gauss-sum identity give
+\[
+ \sum_{a\in U_f}\chi(a)\Li_s(\zeta_f^a)
+ =\sum_{n\ge1}\frac{\sum_a\chi(a)\zeta_f^{an}}{n^s}
+ =\tau(\chi)L(s,\overline\chi).
+\]
+The Gauss-sum convention, including the complex conjugate on $\chi$,
+is the one in~\cite{jets:dlmf-dirichlet}. Applying
+\eqref{jets:eq:conductor-normal} with $A_p=p^{1-s}$ multiplies this
+primitive trace by $E_{q,\chi}$. Extracting $p^{1-s}$ from each
+first-appearance factor gives precisely the factor in
+\eqref{jets:eq:trace-formula}. The conductor-one case follows directly
+from $\Li_s(1)=\zeta(s)$ and the same polynomial identity.
+
+For completeness, when $z=\zeta_q^u\ne1$, regrouping by residues gives
+\begin{equation}\label{jets:eq:polylog-Hurwitz-DFT}
+ \Li_s(z)=q^{-s}\sum_{a=1}^q z^a\zeta(s,a/q).
+\end{equation}
+Hurwitz zeta has only its simple pole at $s=1$, whose coefficient in
+this finite sum is $\sum_a z^a=0$. Hence $\Li_s(z)$ is entire in $s$.
+All arguments in the primitive level-$q$ trace differ from one.
+\end{proof}
+
+\begin{remark}[The character phase is consequential]
+For the order-four character modulo five with $\chi(2)=\iu$, the
+level-ten lifting factor is $2^{1-s}-\iu$, not
+$2^{1-s}+\iu$. A complex-character numerical check is included to
+catch an accidental interchange of $\chi$ and $\overline\chi$.
+Real quadratic examples alone would not detect that error.
+\end{remark}
+
+\subsection{Exact nonprincipal vanishing orders}
+For a nonprincipal primitive $\chi$, set
+\[
+ \rho_\chi=\#\{p\mid q:p\nmid f,\ \chi(p)=1\}.
+\]
+These are the same conductor statistics that controlled the
+primitive-grid jet defects at Hurwitz order zero.
+
+\begin{theorem}[Character trace zeros at order one]\label{jets:thm:trace-zero}
+The entire function $\cP_{q,\chi}(s)$ has a zero of exact order
+$\rho_\chi$ at $s=1$, where order zero means a nonzero value.
+All lower derivatives vanish, and
+\begin{align}\label{jets:eq:trace-leading}
+ \cP_{q,\chi}^{(\rho_\chi)}(1)
+ ={}&(-1)^{\rho_\chi}\rho_\chi!\,
+ \tau(\chi)L(1,\overline\chi)\notag\\
+ &\times\prod_{\substack{p\mid q,\ p\nmid f\\\chi(p)=1}}\log p
+ \prod_{\substack{p\mid q,\ p\nmid f\\\chi(p)\ne1}}(1-\chi(p)).
+\end{align}
+\end{theorem}
+\begin{proof}
+Each factor with $\chi(p)=1$ in \eqref{jets:eq:trace-formula} is
+$1-p^{s-1}=-(s-1)\log p+O((s-1)^2)$.
+All other displayed factors are nonzero at $s=1$.
+A primitive Gauss sum is nonzero, and Dirichlet's nonvanishing theorem
+states $L(1,\overline\chi)\ne0$ for nonprincipal characters
+\cite[Eq.~25.15.9]{jets:dlmf-dirichlet}. Thus there is no additional zero.
+Taking the first nonzero Taylor coefficient proves the formula.
+\end{proof}
+
+Increasing the exponents of primes already present in $q$ changes
+higher Taylor coefficients but not this first nonzero derivative:
+$(q/f)^{1-s}$ equals one at $s=1$. This invariance provides an
+additional family of identities between traces at different levels.
+
+\subsection{The principal trace and its pole cancellation}
+Write $\cP_q=\cP_{q,\mathbf1}$ and define
+\[
+ r=\omega(q),\quad P=\prod_{p\mid q}\log p,\qquad
+ B=\log q-\tfrac12\log\rad(q).
+\]
+The conductor-one factor contains a pole, so the vanishing order is
+one less than the number of primes, not equal to that number.
+
+\begin{theorem}[Principal trace jet generator]\label{jets:thm:principal}
+In a neighborhood of $t=0$,
+\begin{equation}\label{jets:eq:principal-generator}
+ \boxed{\displaystyle
+ \cP_q(1+t)=(-1)^rP\,t^{r-1}\,
+ \ee^{-Bt}\,[t\zeta(1+t)]
+ \prod_{p\mid q}\frac{\sinh(t\log p/2)}{t\log p/2}.}
+\end{equation}
+In particular its zero at $s=1$ has exact order $r-1$, and
+\begin{align}
+ \cP_q^{(j)}(1)&=0 &&(0\le j<r-1),\label{jets:eq:principal-vanish}\\
+ \cP_q^{(r-1)}(1)&=(-1)^r(r-1)!P,\label{jets:eq:principal-first}\\
+ \cP_q^{(r)}(1)&=(-1)^r r!P(\gamma-B),\label{jets:eq:principal-second}\\
+ \cP_q^{(r+1)}(1)&=(-1)^r(r+1)!P
+ \left[-\gamma_1-B\gamma+\frac{B^2}{2}
+ +\frac1{24}\sum_{p\mid q}(\log p)^2\right].
+ \label{jets:eq:principal-third}
+\end{align}
+Here $\gamma_1$ is the ordinary first Stieltjes constant in
+\eqref{jets:eq:stieltjes-laurent}.
+\end{theorem}
+\begin{proof}
+The principal case of \eqref{jets:eq:trace-formula} is
+\[
+ \cP_q(1+t)=q^{-t}\prod_{p\mid q}(1-p^t)\zeta(1+t).
+\]
+Use $1-\ee^x=-x\ee^{x/2}\sinh(x/2)/(x/2)$ in every factor.
+This proves \eqref{jets:eq:principal-generator}.
+The factors in square brackets and in the hyperbolic-sine product are
+analytic and equal to one at zero. Expanding them gives
+\[
+ t\zeta(1+t)=1+\gamma t-\gamma_1t^2+O(t^3),\qquad
+ \prod_p\frac{\sinh(t\log p/2)}{t\log p/2}
+ =1+\frac{t^2}{24}\sum_p(\log p)^2+O(t^4).
+\]
+Multiplication by $\ee^{-Bt}$ gives all the displayed derivatives.
+\end{proof}
+
+\subsection{Concrete exact identities}
+The following examples are proved consequences of the preceding
+theorems, not integer-relation conjectures. The derivatives are in the
+\emph{order} of the polylogarithm, not its argument.
+
+At level thirty,
+\begin{align}
+ \sum_{u\in U_{30}}\Li_1(\zeta_{30}^u)&=0,\label{jets:eq:q30-zero}\\
+ \sum_{u\in U_{30}}\Liord{1}{\zeta_{30}^u}&=0,\label{jets:eq:q30-first}\\
+ \sum_{u\in U_{30}}\Liord{2}{\zeta_{30}^u}
+ &=\boxed{-2\log2\log3\log5}.\label{jets:eq:q30-second}
+\end{align}
+The third derivative of this trace is
+$-6\log2\log3\log5\,[\gamma-\frac12\log30]$.
+At level $210$, derivatives of orders zero, one, and two vanish, while
+\begin{equation}\label{jets:eq:q210}
+ \sum_{u\in U_{210}}\Liord{3}{\zeta_{210}^u}
+ =6\log2\log3\log5\log7.
+\end{equation}
+
+For the quadratic character $\chi_3$ with $\chi_3(1)=1$ and
+$\chi_3(2)=-1$, the primitive trace at order one is
+$\tau(\chi_3)L(1,\chi_3)=\iu\pi/3$. Since
+$\chi_3(7)=\chi_3(13)=1$, one obtains
+\begin{align}
+ \sum_{u\in U_{21}}\chi_3(u)\Liord{1}{\zeta_{21}^u}
+ &=-\frac{\iu\pi}{3}\log7,\label{jets:eq:chi3-21}\\
+ \sum_{u\in U_{273}}\chi_3(u)\Liord{2}{\zeta_{273}^u}
+ &=\frac{2\iu\pi}{3}\log7\log13.\label{jets:eq:chi3-273}
+\end{align}
+In the first equation the order-zero trace vanishes; in the second,
+both order-zero and first-order traces vanish.
+Likewise the character $\chi_4$ gives
+\begin{equation}\label{jets:eq:chi4-20}
+ \sum_{u\in U_{20}}\chi_4(u)\Liord{1}{\zeta_{20}^u}
+ =-\frac{\iu\pi}{2}\log5.
+\end{equation}
+These primitive trace constants follow directly from
+$\Li_1(z)=-\log(1-z)$ with the values continued from inside the unit
+disk, so the signs do not depend on an unspecified logarithm branch.
+
+For the real quadratic character $\chi_5$, positive on residues
+$1,4$ and negative on $2,3$, let $\phi=(1+\sqrt5)/2$.
+Pairing conjugates in the primitive trace gives
+\[
+ \cP_{5,\chi_5}(1)
+ =2\log\frac{\sin(2\pi/5)}{\sin(\pi/5)}=2\log\phi.
+\]
+As $\chi_5(11)=1$,
+\begin{equation}\label{jets:eq:chi5-55}
+ \sum_{u\in U_{55}}\chi_5(u)\Liord{1}{\zeta_{55}^u}
+ =-2\log\phi\log11.
+\end{equation}
+This derivation needs no numerical integer-relation search or
+unproved independence statement about logarithms.
+
+\subsection{A stable independent formula for numerical checks}
+Differentiation of \eqref{jets:eq:polylog-Hurwitz-DFT} at its cancelled pole
+gives, for $z=\zeta_q^u\ne1$,
+\begin{equation}\label{jets:eq:stable-polylog-jet}
+ \Liord{k}{z}
+ =\frac{(-1)^k}{q}\sum_{a=1}^q z^a
+ \sum_{j=0}^k\binom kj(\log q)^{k-j}\gamma_j(a/q).
+\end{equation}
+There is no pole term, because its complete Fourier coefficient
+vanishes identically. This supplies a finite Stieltjes-coordinate
+evaluator for the trace identities, independently of their
+Euler-factor right sides. In development, direct tiny-step numerical
+differentiation of a polylogarithm routine near integral order gave
+an unreliable trace derivative; the pole-cancelled formula avoids
+that cancellation problem. This observation is an implementation
+diagnostic, not a claimed theorem about all versions of a library.
+
+\subsection{A level-260 specialization and convention reconciliation}
+We use the unbarred weight $\chi(a)$ in $\mathcal P_{q,\chi}$.
+An alternative convention weights the trace by $\overline\chi(a)$; it
+conjugates the character factors and interchanges the primitive $L$-character.
+All formulas here use the first convention. The following exact specialization
+adds two primes with character value one.
+
+
+
+Let $\chi$ be primitive of conductor $f>1$, and $f\mid q$.
+Among the added primes, define
+\[
+\mathcal S=\{p\mid q:p\nmid f,\ \chi(p)=1\},\qquad r_\chi=|\mathcal S|.
+\]
+The remaining added primes form $\mathcal N$.
+
+\begin{theorem}[Twisted leading jet]\label{conductor:thm:twisted}
+The trace $\cP_{q,\chi}$ vanishes to order at least $r_\chi$ at one, and
+\begin{equation}\label{conductor:eq:twistedlead}
+\cP_{q,\chi}^{(r_\chi)}(1)=
+(-1)^{r_\chi}r_\chi!\,
+\cP_{f,\chi}(1)
+\prod_{p\in\mathcal S}\log p
+\prod_{p\in\mathcal N}(1-\chi(p)).
+\end{equation}
+Its order is exactly $r_\chi$ whenever $\cP_{f,\chi}(1)\ne0$.
+More generally its exact order is $r_\chi+\ord_{s=1}\cP_{f,\chi}(s)$.
+\end{theorem}
+\begin{proof}
+The multiplier is
+\[
+B_{q,f,\chi}(1+\eps)=
+(q/f)^{-\eps}
+\prod_{\substack{p\mid q\\p\nmid f}}(1-\chi(p)p^\eps).
+\]
+The factors indexed by $\mathcal S$ have simple zeros with leading
+coefficient $-\log p$. All other factors are nonzero at zero and have
+value $1-\chi(p)$. Multiply their leading terms by the Taylor series
+of $\cP_{f,\chi}(1+\eps)$.
+\end{proof}
+
+For primitive nonprincipal characters, the classical nonvanishing
+$L(1,\overline\chi)\ne0$, together with the nonzero primitive Gauss sum in
+\eqref{jets:eq:trace-formula}, supplies the stated nonvanishing hypothesis
+\cite{jets:dlmf-dirichlet}. The explicit example below does not need that theorem;
+its primitive trace is computed directly from logarithms.
+
+For $\chi_4(a)=(-1)^{(a-1)/2}$ on odd integers,
+\[
+\cP_{4,\chi_4}(1)=\Li_1(\iu)-\Li_1(-\iu)=\frac{\iu\pi}{2}.
+\]
+Take $q=260=4\cdot5\cdot13$. Both added primes have $\chi_4(p)=1$.
+Consequently
+\begin{align}\label{conductor:eq:260}
+\sum_{a\in\U_{260}}\chi_4(a)\Li_1(\zeta_{260}^a)&=0,\\
+\sum_{a\in\U_{260}}\chi_4(a)\Liord{1}{\zeta_{260}^a}&=0,\\
+\sum_{a\in\U_{260}}\chi_4(a)\Liord{2}{\zeta_{260}^a}
+&=\iu\pi\log5\log13.
+\end{align}
+This is a proved identity, not an integer-relation conjecture. More generally,
+for distinct primes $p_1,\ldots,p_r\equiv1\pmod4$ and
+$q=4p_1\cdots p_r$,
+\begin{equation}\label{conductor:eq:chi4family}
+\sum_{a\in\U_q}\chi_4(a)\Liord{r}{\zeta_q^a}
+=(-1)^r r!\frac{\iu\pi}{2}\prod_{j=1}^r\log p_j,
+\end{equation}
+with all lower order traces vanishing. The same leading identity persists
+if the added prime factors occur with higher exponents.
+
