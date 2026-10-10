@@ -1,0 +1,102 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=0.98in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{graphicx,microtype,xcolor,enumitem,xurl}
+\definecolor{ink}{HTML}{183F58}
+\definecolor{teal}{HTML}{247974}
+\usepackage[colorlinks=true,linkcolor=ink,citecolor=teal,urlcolor=ink]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Complementary powers and Gaussian polylogarithms}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{3pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\Rea}{Re}
+\DeclareMathOperator{\Ima}{Im}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\hypersetup{
+ pdftitle={Complementary-Power Rigidity, a Gaussian Euler-Sum Identity, and Reflected Gamma Moments},
+ pdfauthor={Research continuation prepared for Vladimir Reshetnikov with OpenAI assistance},
+ pdfsubject={Exact polylogarithm identities, complementary powers, and asymptotic moment expansions}}
+\title{\color{ink}Complementary-Power Rigidity,\\
+ a Gaussian Euler-Sum Identity,\\
+ and Reflected Gamma Moments}
+\author{Research continuation prepared for Vladimir Reshetnikov\\
+\small with OpenAI assistance}
+\date{October 10, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We continue the ProveIt polylogarithm manuscript and its recent research
+packages. A classification theorem shows that two distinct positive
+integer pairs satisfying $r^a+r^b=1$ can occur only for a root of the
+reciprocal plastic number, with pairs $(d,5d)$ and $(2d,3d)$. It gives
+the sharp bound of twelve ordered solutions of $x+y=1$ inside the signed
+cyclic group $\{\pm r^k:k\in\mathbb Z\}$ and an effective degree bound
+for an exhaustive search. Classical functional equations then prove the
+manuscript's plastic dilogarithm and trilogarithm identities and give
+further identities without logarithmic terms.
+
+We also prove the manuscript's weight-five Gaussian $S_4$ identity by
+an exact rational certificate built from double shuffle, distribution,
+and one explicit M\"obius path duality. The certificate is independently
+replayable and does not use numerical integer-relation evidence as a
+proof. On the analytic side, we determine the exponential cancellation
+rate and first correction for alternating harmonic polylogarithms at
+proportional depth, and prove meromorphic continuation, finite-order
+asymptotics, late-coefficient asymptotics, and an explicit growing-order
+remainder bound for reflected log-gamma moments. A finite identity among
+their residues and a formal proof of a recorded log-sine coefficient
+conjecture complete the development. We state the exact scope of each
+result, document proposed manuscript corrections, and formulate further
+questions. No numerical period independence or general maximal ladder
+weight is claimed.
+\end{abstract}
+\newpage
+{\fontsize{9.5pt}{11pt}\selectfont\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+\input{article/sections/scope}
+\input{article/sections/ladders}
+\input{article/sections/gaussian}
+\input{article/sections/saddle}
+\begin{figure}[tbp]
+ \centering
+ \includegraphics[width=\textwidth]{figures/saddle_rate.pdf}
+ \caption{The proved rate $I(\alpha)$ and prefactor $C(\alpha,1/2)$
+ from Section~\ref{sec:saddle}. The dashed curve is the leading
+ large-$\alpha$ approximation $e^{-\alpha}/2$. This plot illustrates
+ the exact formulas; it supplies no additional proof or error bound.}
+ \label{fig:saddle}
+\end{figure}
+\input{article/sections/gamma}
+\input{article/sections/audit}
+\input{article/sections/research}
+\input{article/sections/verification}
+\clearpage
+\input{article/references}
+\end{document}

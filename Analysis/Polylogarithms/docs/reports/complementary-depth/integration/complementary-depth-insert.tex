@@ -1,0 +1,144 @@
+% Proposed additive insert for Chapter 4 of the ProveIt manuscript.
+% Requires the manuscript's existing \Li macro and theorem environments.
+% Full proofs, branch details, and certificates are in the companion article
+% ``Complementary depth, classical ladders, and exact shuffle ranks''.
+% All new labels have the prefix cd: to avoid existing label collisions.
+
+\section{Classical ladders and complementary depth}
+\label{cd:sec:ladders}
+Here the one-variable abbreviation is
+$\Li_{s_1,\ldots,s_d}(z)=\Li_{s_1,\ldots,s_d}(z,1,\ldots,1)$.
+Put
+\[
+ D=\mathbb C\setminus[0,\infty),\qquad
+ q=(1-z)^{-1},\qquad L=\log q=-\log(1-z),
+\]
+with principal branches. At $z=\mathrm i$ these are
+$q=(1+\mathrm i)/2$ and $L=-\tfrac12\log2+\mathrm i\pi/4$.
+At $z=e^{2\pi\mathrm i/3}$ they are
+$q=\tfrac12+\mathrm i\sqrt3/6$ and
+$L=-\tfrac12\log3+\mathrm i\pi/6$.
+
+\begin{theorem}[One-zero classical reduction]\label{cd:thm:onezero}
+For $r\ge1$, define $F_r(z)=\Li_{2,\{1\}^{r-1}}(z)$. Then
+\[
+ F_r(z)=\sum_{k=1}^{r+1}
+ \frac{(-1)^kL^{r+1-k}}{(r+1-k)!}\Li_k(q)
+ +(-1)^r\zeta(r+1)-\frac{L^{r+1}}{(r+1)!}.
+\]
+For every $a,b\ge0$,
+\[
+ \Li_{\{1\}^a,2,\{1\}^b}(z)
+ =\sum_{j=0}^{a}(-1)^j\binom{b+j+1}{j}
+ \frac{L^{a-j}}{(a-j)!}F_{b+j+1}(z).
+\]
+These are exact functional identities on $D$.
+\end{theorem}
+\begin{proof}
+For $z<0$, integrate the repeated $dt/(1-t)$ letters first. This gives
+\[
+ F_r(z)=\frac1{r!}\int_0^z\frac{[-\log(1-t)]^r}{t}\,dt.
+\]
+Set $u=(1-t)^{-1}$ and integrate by parts, retaining the endpoint
+$u=1$, to obtain the first formula. More generally, integrating the
+$a$ outer $dt/(1-t)$ letters gives
+\[
+ \Li_{\{1\}^a,2,\{1\}^b}(z)=\frac1{a!(b+1)!}
+ \int_0^z\frac{(L+\log(1-t))^a[-\log(1-t)]^{b+1}}{t}\,dt.
+\]
+Binomial expansion proves the second formula. Analytic continuation
+from $z<0$ proves the identities on $D$.
+\end{proof}
+
+The terminal-$2$ case simplifies to
+\begin{align}
+ \Li_{\{1\}^a,2}(z)
+ ={}&-\frac{L^{a+2}}{(a+2)!}
+ -\sum_{m=2}^{a+1}\frac{(m-1)L^{a+2-m}}{(a+2-m)!}\zeta(m)
+ \notag\\
+ &-L\Li_{a+1}(q)+(a+1)\Li_{a+2}(q)-(a+1)\zeta(a+2).
+ \label{cd:eq:terminal}
+\end{align}
+Its derivative with respect to $L$ is the preceding case, and its
+value tends to zero at $z=0^-$, which also proves it directly.
+
+In particular, the three previously numerical weight-four Gaussian
+triple displays are exact. Before specializing, the stronger complex
+formulas are
+\begin{align}
+\Li_{2,1,1}(z)
+={}&\Li_4(q)-L\Li_3(q)+\tfrac12L^2\Li_2(q)
+ -\tfrac16L^3\Li_1(q)-\zeta(4)-\tfrac1{24}L^4,\notag\\
+\Li_{1,2,1}(z)
+={}&-3\Li_4(q)+2L\Li_3(q)-\tfrac12L^2\Li_2(q)
+ +L\zeta(3)+3\zeta(4)-\tfrac1{24}L^4,\notag\\
+\Li_{1,1,2}(z)
+={}&3\Li_4(q)-L\Li_3(q)-2L\zeta(3)
+ -\tfrac12L^2\zeta(2)-3\zeta(4)-\tfrac1{24}L^4.
+\label{cd:eq:triples}
+\end{align}
+Their imaginary parts at $z=\mathrm i$ are precisely the three
+printed formulas. The companion article supplies the classical
+half-point evaluations and the exact symbolic substitution certificate.
+
+\begin{theorem}[Complementary-depth upper bound]\label{cd:thm:complement}
+A one-variable MPL of weight $w$ and depth $d$ has a finite rational
+representation by terms
+\[
+ L^j\Li_{\boldsymbol a}(q)\zeta(\boldsymbol b),\qquad
+ j+|\boldsymbol a|+|\boldsymbol b|=w,\qquad
+ \operatorname{depth}(\boldsymbol a)+
+ \operatorname{depth}(\boldsymbol b)\le w-d.
+\]
+The nonempty MZV indices are convergent. Empty indices denote $1$;
+$|\boldsymbol a|$ denotes the sum of indices, not their number.
+\end{theorem}
+\begin{proof}
+The binary word has $w-d$ zero letters. Under $u=(1-t)^{-1}$,
+\[
+ \frac{dt}{t}=-\frac{du}{u}-\frac{du}{1-u},\qquad
+ \frac{dt}{1-t}=\frac{du}{u}.
+\]
+Every transformed word ends in zero and contains at most $w-d$ ones.
+Transport its basepoint from $1$ to $0$ by splitting the word and
+reversing each endpoint suffix. The reversed nonempty suffix begins
+in zero, so its value at $1$ is convergent. Shuffle removal of trailing
+zeros produces powers of $\log q$ and convergent MZVs, preserving the
+total number of ones. The detailed endpoint justification and exact
+word formula are in the companion article.
+\end{proof}
+This is a depth bound with logarithmic coefficients in an enlarged
+argument family. It is not an assertion of reduction inside the
+unchanged Gaussian or Eisenstein root-of-unity basket.
+
+\subsection{The formal rank of the triple shuffle system}
+In the formal shuffle algebra of binary words ending in one, the
+weight-$w$, depth-$d$ indecomposable dimension is
+\[
+ \frac1w\sum_{k\mid\gcd(w,d)}\mu(k)\binom{w/k}{d/k}.
+\]
+There are $\binom{w-1}{d-1}$ original coordinates; subtracting the
+above dimension gives the rank of the homogeneous product subspace.
+This follows from the polynomial Lyndon-word basis and the primitive
+necklace count. At $(w,d)=(6,3)$ the rank is seven on ten coordinates,
+with the three Lyndon representatives $(4,1,1),(3,2,1),(3,1,2)$.
+The supplied seven-row matrix is exact. None of this proves numerical
+independence after taking values, real parts, or imaginary parts.
+
+\subsection{A correction at mixed points}
+The stuffle involution swaps both indices and colors:
+\[
+ \Li_{a,b}(x,y)+\Li_{b,a}(y,x)
+ =\Li_a(x)\Li_b(y)-\Li_{a+b}(xy).
+\]
+Thus its antisymmetric complement is
+$\Li_{a,b}(x,y)-\Li_{b,a}(y,x)$. It does not in general vanish
+when $a=b$ and $x\ne y$. In fact,
+\[
+ \Li_{1,1}(\mathrm i,-1)-\Li_{1,1}(-1,\mathrm i)
+ =\frac{\pi^2}{24}-\frac{\log^2 2}{4}
+ +\mathrm i\left(G-\frac\pi2\log2\right)\ne0.
+\]
+This follows by integrating $-\log(1+x)/(1-x)$ from $0$ to
+$\mathrm i$, and using the symmetric stuffle sum. Its real part is
+positive. The original symmetric stuffle identities remain valid.

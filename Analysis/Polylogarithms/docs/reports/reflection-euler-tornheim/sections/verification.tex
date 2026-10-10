@@ -1,0 +1,160 @@
+\section{Reproducibility, numerical evidence, and limitations}
+\label{sec:verification}
+
+The package includes the complete LaTeX source, generated figures, exact
+relation-space code, numerical diagnostics, rational certificates, a
+claim ledger, and a proposed source patch. Computations are separated
+into exact arithmetic and ordinary high-precision arithmetic. The
+analytic proofs are in the article; the numerical checks provide
+independent diagnostics for constants, signs, branches, and truncation
+scales.
+
+\subsection{Moment coefficients and least-term errors}
+
+The recurrence in Section~\ref{sec:moments} generates \(b_k\)
+without numerically inverting gamma. The script
+\texttt{verify\_moments.py} also checks the first eight coefficient
+polynomials against a separate formal exponential-series expansion.
+For direct moments it substitutes \(x=e^{-t}\) and integrates
+\[
+ m_n=\int_0^\infty
+  \exp\bigl(n\log(\log\Gamma(e^{-t}))-t-\log\Gamma(n+1)\bigr)\dd t.
+\]
+The upper limit is infinity. A fixed short cutoff may approximate
+\(m_n\) accurately while corrupting the far smaller least-term error,
+so it is unsuitable for this check unless its tail is explicitly
+controlled.
+
+The computations use 180 decimal working digits. Orders 20 and 80
+are repeated at 215 digits; the respective differences between
+normalized remainder ratios are below \(3\times10^{-162}\) and
+\(6\times10^{-67}\). The latter loses many digits through the
+deliberate subtraction of a remainder of order \(10^{-113}\);
+the extra precision is therefore material.
+
+\begin{center}
+\small
+\begin{tabular}{rrrrr}
+\toprule
+\(n\)&\(N\)&\(\eta=N\Lambda-n\)&
+error / first omitted term&
+\(N^3\)(error after two corrections)\\
+\midrule
+10&9 &1.388939&0.503338844959&0.059202\\
+20&17&1.512440&0.499910660977&0.056121\\
+30&25&1.635941&0.498697774004&0.055539\\
+40&33&1.759442&0.498075743812&0.052612\\
+60&49&2.006443&0.497442625716&0.042058\\
+80&64&0.988008&0.501995818744&0.046583\\
+\bottomrule
+\end{tabular}
+\end{center}
+The final column refers to the normalized ratio in
+\eqref{eq:moment-second}, not to \(M_n\) itself.
+The bounded values corroborate the predicted \(O(N^{-3})\) term;
+they are not used to prove it.
+
+\subsection{Herglotz derivatives}
+
+The finite rational formula is compared against a separate positive
+real integral at eight rational arguments and five derivative orders,
+giving 40 comparisons. The maximum observed residual at 70 working
+digits is about \(1.27\times10^{-70}\).
+The coefficient construction uses exact SymPy Bernoulli polynomials;
+the numerical integral uses independently generated Eulerian
+coefficients for \(\Li_{1-r}\).
+
+Seven higher-order checks, at \(r=10,20,30,50,80,100,150\), increase
+working precision with the size of the Bernoulli sum and repeat at
+40 additional digits. This avoids mistaking cancellation error for
+the exponentially small \(E_r\). Selected values at \(x=1\) are
+\[
+\begin{array}{r|r}
+ r&E_r(1)\\ \hline
+ 20& 9.5700353115338104\times10^{-8}\\
+ 30&-1.8039764729798573\times10^{-9}\\
+ 50&-4.2383422584491617\times10^{-12}\\
+ 100&6.4956183476241665\times10^{-17}\\
+ 150&-1.2668021540982769\times10^{-20}
+\end{array}
+\]
+Three finite divisor-\(U\) sums are compared with the exact rational
+derivative formula and both available analytic tail bounds.
+Twelve checks of the single-sector saddle expansion cover
+\(x=1/2,1,2\) and four derivative orders. The figure uses 57 further
+exact-formula evaluations through \(r=300\), with precision chosen
+to cover cancellation. These checks confirm the implementation and
+the phase normalization; the sign theorem is analytic.
+
+\subsection{Cyclotomic relation spaces and the conjecture certificate}
+
+The exact row generator checks both levels through weight 16:
+30 rational rank calculations, together with verification that
+the proposed polynomial bases annihilate every row and have full
+predicted rank. The weight-five separating functional is checked
+entry by entry. The all-weight proofs in the article establish the
+dimensions beyond that finite range.
+
+Separate 90-digit integral diagnostics verify the two weight-five
+shuffle rows, both versions of \(S_4\), its equivalent \(A_{1,4}\)
+form, and the inverse-argument weight-six identities. Residuals for
+the two \(S_4\) forms are about \(1.53\times10^{-92}\).
+This is new corroboration of an existing conjecture, not its proof.
+
+The \(S_6\) evidence has three independent layers: a 220-digit
+Mellin-integral computation, a 300-digit Euler-series computation,
+and an exact rational enclosure. The last uses only Python's
+standard library and the proved tails in
+Theorem~\ref{thm:euler-certificate}. It is therefore a certificate of
+the bound \eqref{eq:S6-certificate}, including rounding, rather than
+a heuristic precision report. The residual interval contains zero;
+it cannot distinguish an exact identity from a sufficiently small
+nonzero value.
+
+\subsection{Reproduction of the classical cubic evaluation}
+
+Using small-\(t\) degree 120, large-\(t\) diagonal cutoff 240, and
+80 working digits, the Tornheim implementation gives
+\begin{align*}
+ T_3&=-4.85147944680912469492172639886220773949\ldots,\\
+ T_{12}&=4.30244762034222643331985179818698942752\ldots,\\
+ T_{13}&=8.71447281121431423816300785446242065162\ldots,\\
+ M_3&=5.74038880722947428001957168810246146296\ldots.
+\end{align*}
+The direct moment integral and the Tornheim expression differ by
+about \(1.69\times10^{-80}\).
+The three analytic series-truncation bounds are respectively below
+\(1.3\times10^{-92}\), \(7.6\times10^{-93}\), and
+\(1.7\times10^{-93}\).
+These bounds control series truncation, while the implementation's
+floating-point rounding and quadrature remain separately qualified.
+The mismatch between the sizes of the truncation bounds and the
+observed residual is expected at 80-digit working precision.
+
+\subsection{Running the package}
+
+The root \texttt{README.md} and \texttt{Makefile} give the complete
+commands. A typical sequence is
+\begin{verbatim}
+python3 -m pip install -r requirements.txt
+make exact
+make numeric
+make figures
+make pdf
+\end{verbatim}
+The exact \(S_6\) certificate alone requires no third-party package:
+\begin{verbatim}
+python3 scripts/certify_s6.py \
+  --output data/s6_rational_certificate.json
+\end{verbatim}
+The PDF build uses ordinary \texttt{pdflatex}/\texttt{latexmk} and
+standard TeX packages; its input figures are included.
+All output data needed to inspect the delivered computations are
+already present, so rerunning every numerical calculation is optional.
+
+A source manifest pins the research baseline, and a SHA-256 manifest
+covers the delivered artifacts. The correction patch is a proposal
+for the pinned source; it should be reviewed against any newer
+upstream revision before application. No external service is needed
+to run the certificate, relation-space checks, or article build.
+

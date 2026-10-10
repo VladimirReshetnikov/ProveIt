@@ -1,4 +1,29 @@
-# Completed collective manuscript
+# Active integration of five new incoming reports
+
+The active goal is to integrate all five new packages placed from incoming
+archives into reports/conductor-descent, reflection-euler-tornheim,
+rigidity-and-reflected-moments, complementary-depth and distribution-jets.
+Their raw archive/member hashes and exact placement are recorded in
+verification/incoming-archives.json. The previous 228-page release remains
+a historical validated checkpoint; refresh the new manuscript evidence only
+after integration, exact/numerical replays, build and rendered review.
+
+An initial exact replay of rigidity/code/verify_s4.py passed: one convergent
+octahedral duality plus 911 standard rows, zero rational residual. Audit its
+analytic schemas before promoting S4; they add higher-depth/lifted laws absent
+from the old finite obstructions. S6 in reflection-euler-tornheim remains a
+conjecture with a certified residual. New work also includes complementary
+depth transport, conductor/primitive-grid determinant and jet defects, trace
+vanishing and all-index Stieltjes descent, pure-complement classification and
+plastic proofs, proportional harmonic saddle, sharp moment remainder, reflected
+moment/Appell theory and rational/large-order Herglotz derivatives. Preserve
+stronger existing shared results and collective author ProveIt Contributors.
+
+Original author/source files were copied byte-for-byte and must remain intact.
+Run imported code only in isolated scratch copies, preserving original data.
+Commit and publish milestones after synchronizing main, using normal ff pushes.
+
+# Previous completed checkpoint
 
 The final artifact is 228 pages, twelve chapters and 65 references, authored
 by ProveIt Contributors on the title and in PDF metadata. It reconciles all

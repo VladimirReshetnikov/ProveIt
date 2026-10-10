@@ -1,0 +1,225 @@
+\section{Corrections, integration notes, and further research}
+\label{sec:corrections}
+
+\subsection{Proposed corrections to the pinned manuscript}
+
+The following corrections are scoped to the pinned source, so that
+a maintainer can distinguish a stale manuscript statement from a gap
+in the repository as a whole. Some relevant identities are already
+present in existing continuation material or its exact coefficient
+code. The proposed patch updates a few local statements; this article
+supplies the fuller proofs and context.
+
+\paragraph{C1. The cubic moment has a named evaluation.}
+Chapter~7, at \texttt{integral:neg:cubic}, calls the identification of a
+named depth-two atom an open problem. Bailey--Borwein--Borwein
+\cite[Theorem~6]{BBB} already provide a Tornheim--Witten derivative
+evaluation. Replace that description by the formula in
+Section~\ref{sec:cubic}, or a reference to it, and state the narrower
+remaining problem: reduction of the prescribed derivative combination
+to a specifically defined smaller basket. The cubic-moment discovery
+paragraph in Chapter~10 should make the same distinction.
+A failed numerical search in a smaller basket establishes no
+nonmembership statement.
+
+\paragraph{C2. Two weight-five coordinates suffice.}
+The paragraph before \texttt{gauss:eq:S4-closed} in Chapter~4 infers
+only an at-most-three spanning statement from its sporadic relation.
+Proposition~\ref{prop:two-g} supplies two independent exact shuffle rows,
+so at most two \(g\)-coordinates remain over the displayed single
+products. The sporadic relation is a proved consequence. Its proof
+status and its rank consequence should both be updated, while the
+mixed \(S_4\) equation itself remains conjectural.
+
+\paragraph{C3. The imaginary weight-six mixed survivors disappear.}
+The statements around \texttt{mixed:sec:eisdim} and
+\texttt{mixed:thm:parallel} propose imaginary weight-six mixed
+directions at both levels. Equations~\eqref{eq:mixed-weight-six}
+and~\eqref{eq:eisenstein-weight-six} give explicit reductions.
+The all-weight inverse-argument coefficient function in the existing
+report-10 code
+\texttt{10-exact-structure-verify\_mixed\_and\_euler.py}
+already contains the relevant reduction mechanism.
+These manuscript survivor counts should therefore be revised.
+The real weight-five question is unaffected by this argument and
+should be treated separately.
+
+\paragraph{C4. A coefficient label in the sixth-point proof.}
+In Chapter~7's proof of \texttt{stieltjes:\allowbreak thm:\allowbreak G1half}, the text
+describes
+\(\log^2 6-\log^2 3-\log^2 2\) as a coefficient of \(\zeta''(0)\).
+It is the coefficient of \(\zeta(0)\).
+Indeed, for \(P(s)=6^s-3^s-2^s+1\),
+\[
+ P(0)=P'(0)=0,\qquad
+ (P\zeta)''(0)=P''(0)\zeta(0)
+       =(\log^2 6-\log^2 3-\log^2 2)\zeta(0).
+\]
+The displayed final identity in that proof is unchanged.
+
+\paragraph{C5. Scope of dimension and independence language.}
+All matrix-rank statements should specify the formal space, background
+basket, convergence or regularization rules, and exact row family.
+Theorems~\ref{thm:level-four} and~\ref{thm:level-three} provide such
+a specification for one imaginary quotient. They do not validate
+claims about the dimensions of all actual periods. Likewise,
+non-reduction in a bounded-height search should be recorded as a
+search result with the basket and bounds, not as a theorem of
+arithmetic independence. The existing manuscript often gives this
+warning; the surviving stronger wording should be made consistent.
+
+\paragraph{C6. An auxiliary sign in a cited preprint.}
+The June 2012 author-hosted version of \cite{BBB}, equations~(63)
+and~(65), prints a minus sign before a manifestly positive quadratic
+sum. Section~\ref{sec:cubic} gives a direct sign check and the corrected
+plus sign. This observation is restricted to the inspected preprint.
+It should not be generalized to an uninspected journal version.
+
+\subsection{Integration and claim status}
+
+A practical integration sequence is to update the short correction
+paragraphs first, then add the quantitative moment and Herglotz
+sections as separate research continuations, and finally replace
+finite experimental dimension summaries by explicitly scoped theorems
+where applicable. The selected \(S_6\) equation belongs in the
+conjecture ledger with its frozen integer vector and exact residual
+certificate.
+
+The machine-readable \texttt{claim\_ledger.json} distinguishes
+analytic theorems, exact formal-algebra theorems, classical
+rederivations, source corrections, and unresolved conjectures.
+The package excludes exploratory rejected candidates and does not
+turn a small residual into an accepted identity. All paths needed
+to rebuild the article are relative, and no repository-specific
+absolute path is required by the LaTeX source.
+
+\subsection{A proposed research programme}
+
+The following questions have concrete starting points and distinct
+success criteria. Their order reflects likely usefulness rather than
+a claim that any is easy.
+
+\begin{enumerate}[leftmargin=*,label=\textbf{R\arabic*.},itemsep=0.65em]
+
+\item \textbf{Prove the two even-index harmonic reductions.}
+Find a functional or iterated-integral relation proving
+Conjecture~\ref{conj:S4} and then Conjecture~\ref{conj:S6}.
+The separating functional shows that re-solving the same
+single-product matrix cannot suffice. Candidate routes include
+relations lifted through higher depth and the extra symmetries of
+the level-four punctured sphere. A useful certificate would give
+the new relation explicitly and show that its image under
+\(\ell\) is nonzero before eliminating it with the other rows.
+Zhao~\cite{Zhao} supplies relevant broader context, but the current
+obstruction does not prove that any one of those routes is necessary.
+
+\item \textbf{Determine an even-index family with a justified basket.}
+For \(S_{2m}\), decide which \(g\)-coordinates and single products
+are actually sufficient at each weight. The \(S_4\) and \(S_6\)
+equations suggest structured reductions, but two examples do not
+determine a general coefficient law. Choose the basket from exact
+relations, freeze it, record a height bound before each search, and
+validate any candidate with the rational Euler method.
+The desired outcome is a uniform formula or a precise counterexample
+to a proposed family, rather than an unqualified claim that odd
+weights require new constants.
+
+\item \textbf{Extend the formal quotient to other levels.}
+Compute the analogue of \(V_{L,w}\) first for \(L=5\) and \(6\),
+with exactly the same row conventions. Determine whether its
+polynomial description comes from a finite group, a module over an
+invariant ring, or a more complicated relation. An all-weight Hilbert
+series should be accompanied by explicit spanning and separating
+families, not inferred from a short table.
+
+\item \textbf{Compare restricted and larger relation presentations.}
+Add depth-two distribution, weight-one relations, and lifted
+higher-depth rows in a documented order. At each step compute the
+kernel induced on the polynomial parameters of
+Theorems~\ref{thm:level-four} and~\ref{thm:level-three}.
+This would show exactly which new rows remove which obstructions.
+A later comparison with motivic bounds must keep formal dimension,
+period dimension, and conditional period conjectures distinct.
+
+\item \textbf{Uniform moment truncation beyond the least-term window.}
+Theorem~\ref{thm:optimal-moment} treats bounded
+\(\eta=N\Lambda-n\). Develop a uniform expansion when \(N/n\)
+varies over a positive interval, and then when it tends to zero or
+infinity. The inverse remainder kernel and gamma concentration
+suggest the relevant starting formula. The challenge is to retain
+uniform error estimates through the changing concentration region.
+A second target is a fully explicit finite-\(n,N\) remainder bound.
+
+\item \textbf{Global analytic structure of the inverse gamma branch.}
+Locate the next singularities reached by analytic continuation of
+the particular branch \(g\), including which critical values
+actually lie on that branch. Determine their contributions after
+the leading square-root expansion is removed. The local slit-disk
+argument used here deliberately avoids an unsupported assertion
+about a global inverse. Understanding the further singularities
+could explain exponentially smaller corrections to the late
+coefficients and constrain possible global sign bounds.
+
+\item \textbf{Higher Herglotz corrections and transition in the argument.}
+Compute several more half-integer terms in the oscillatory expansion
+and give explicit error constants. More substantially, analyze
+simultaneous limits such as \(x/r\to\xi>0\) or \(x\to0\) with \(r\).
+The fixed-\(x\), compact-uniform theorem does not automatically cover
+these regimes: the optimal Mellin contour and the contributing
+arithmetic sectors change. A useful result would identify the
+transition from one dominant sector to a collective contribution.
+
+\item \textbf{Quantitative Herglotz sign locations.}
+Theorem~\ref{thm:herglotz-oscillation} gives infinitely many signs,
+but does not identify every sign for every large integer \(r\).
+Use higher corrections and explicit bounds to locate the changes
+near the zeros of the leading cosine. Because the phase increment
+tends to zero, an additive error estimate is essential near these
+zeros. The target is an eventually certified sign algorithm and an
+asymptotic count of transitions.
+
+\item \textbf{Arithmetic twists of the high-derivative theorem.}
+Replace the divisor coefficients by character-twisted coefficients
+or consider higher Herglotz functions. The functional-equation
+framework of \cite{RZ,DSS} is a natural starting point.
+Determine how parity, conductor, and vanishing of the first
+arithmetic coefficient alter the exponential rate and oscillatory
+phase. The sum of all sectors must again be bounded uniformly;
+a single special-function asymptotic is not enough.
+
+\item \textbf{Minimal derivative coordinates for the cubic moment.}
+The cubic formula singles out \(2T_{13}-T_{12}\), together with
+\(T_3=2Z'(2)\). Determine the exact relations among Tornheim
+derivatives at \((1,1,1)\) obtained from symmetry, integration by
+parts, and differentiated functional equations. State a candidate
+basis before asking whether this combination reduces to ordinary
+zeta derivatives. Failure of such a reduction search should not be
+confused with the already solved problem of finding a named
+depth-two representation.
+
+\item \textbf{Certified evaluation of the asymptotic quantities.}
+Combine the explicit tail estimates with interval implementations
+of gamma, polygamma, Hurwitz zeta, and the remaining finite
+integrals. For moments, the cutoff identity
+\eqref{eq:cutoff} provides a convergent route; for Herglotz remainders,
+\eqref{eq:herglotz-simple-tail} provides a simple arithmetic cutoff.
+The rational \(S_6\) certificate is a model of the distinction between
+a proved truncation bound and an actual certified implementation.
+
+\item \textbf{Repository-level mathematical provenance.}
+Attach to every accepted identity its exact normalization,
+definition of the basis, proof source, executable check, and status.
+For dimension claims also store the row generator and a basis or
+separating witness. For numerical conjectures store the frozen
+coefficients separately from discovery logs, with an independent
+holdout computation. This would prevent a correction already
+proved in a continuation from remaining an open claim in the
+consolidated manuscript.
+
+\end{enumerate}
+
+These questions connect the analytic and algebraic sides of the
+programme: good coordinates make strong conjectures visible, while
+controlled remainders and explicit relation spaces show exactly
+what has, and has not, been proved.
+

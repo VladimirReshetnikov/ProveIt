@@ -1,0 +1,84 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{booktabs,longtable,array,enumitem,graphicx,xcolor,microtype,xurl}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!40!black,citecolor=blue!40!black,urlcolor=blue!50!black]{hyperref}
+\usepackage{bookmark}
+\definecolor{ink}{RGB}{25,45,65}
+\definecolor{accent}{RGB}{20,91,120}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Repart}{Re}
+\DeclareMathOperator{\Impart}{Im}
+\DeclareMathOperator{\Res}{Res}
+\newcommand{\ii}{\mathrm{i}}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\C}{\mathbb C}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\smallO}{\mathrm O}
+\numberwithin{equation}{section}
+\setcounter{tocdepth}{2}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{ink}{Polylogarithm arithmetic bridges}}
+\fancyhead[R]{\small\textcolor{ink}{Sharp remainders and exact reductions}}
+\fancyfoot[C]{\thepage}
+\emergencystretch=3em
+\hypersetup{pdftitle={Sharp Remainders and Exact Reductions in Polylogarithm Arithmetic Bridges},pdfauthor={Research continuation for the ProveIt Polylogarithms project with OpenAI assistance}}
+\title{\textcolor{ink}{Sharp Remainders and Exact Reductions\\in Polylogarithm Arithmetic Bridges}\\[7pt]
+\large Log-gamma moments, Herglotz derivatives, and a Gaussian relation obstruction}
+\author{A research continuation for the ProveIt Polylogarithms project\\
+\small with OpenAI assistance}
+\date{10 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We continue the Polylogarithms programme with two quantitative asymptotic
+developments and exact algebraic support. For the classical factorial
+expansion of log-gamma moments, we identify the coefficient-generating inverse,
+prove its square-root singularity and complete late-coefficient expansion,
+and derive an asymptotic error equal to half the first omitted term at the
+least-term scale, including two correction terms. For normalized high
+derivatives of the Herglotz function, an exact two-term expression has an
+explicit remainder smaller than every power, with a stretched-exponential
+bound and an explicit oscillatory leading term. A finite rational algorithm gives all derivatives at positive rational
+arguments in Hurwitz-zeta, hence depth-one cyclotomic, coordinates. A sparse
+linear witness and all-weight dimension theorems explain a limitation of
+a specified depth-two relation presentation in the Gaussian \(S_4\) problem.
+A new weight-seven harmonic-sum reduction is proposed with two independent
+high-precision checks and an exact rational residual bound of \(10^{-260}\).
+Finally, we correct the manuscript's description of
+the cubic log-gamma moment: a Tornheim--Witten derivative evaluation is
+classical, and we rederive it with convergence proofs and a reproducible
+evaluator. Every new claim is distinguished from classical input, formal
+algebra, numerical corroboration, and the conjectures left unresolved.
+\end{abstract}
+\tableofcontents
+\newpage
+\input{sections/introduction}
+\input{sections/moments}
+\input{sections/herglotz}
+\input{sections/gaussian}
+\input{sections/euler_certificate}
+\input{sections/cubic}
+\input{sections/corrections_research}
+\input{sections/verification}
+\input{references}
+\end{document}
+

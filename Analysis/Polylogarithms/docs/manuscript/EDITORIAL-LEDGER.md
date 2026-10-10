@@ -136,3 +136,19 @@ log exceptions, and correct the parity of the determined shifted-polygamma
 component. The mixed diagonal counterexample has a positive exact integral.
 Fresh parts 18 and 19 replay 588 exact/interval cases, 75 Holder certificates
 and their independent nested-sum centers, alongside diagnostic asymptotics.
+
+## Incoming integration (in progress)
+
+- conductor-descent and distribution-jets: merge their common polynomial
+  conductor normal form through the already proved universal presentation;
+  add determinant/Smith defects, finite coefficients, all-index/pole-corrected
+  Stieltjes descent, trace vanishing and exact examples.
+- complementary-depth: add general complementary-depth transport and the
+  two-zero family; retain existing one-two, triple and Lyndon proofs.
+- rigidity-and-reflected-moments: audit and integrate the S4 certificate,
+  pure-complement classification/plastic proofs, proportional saddle and
+  reflected moment/Appell theory; correct the even modified-polylog statement.
+- reflection-euler-tornheim: add sharp moment remainder and Herglotz derivative
+  formulas/asymptotics, specified cyclotomic relation-space ranks and the S6
+  candidate; reconcile repeated cubic moments and annotate the inspected
+  external preprint sign correction.
