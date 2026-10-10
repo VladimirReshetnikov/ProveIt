@@ -1,0 +1,155 @@
+\section{Native bounded Pachner descent and diagram-bound disc search}
+\label{sec:pachner-native}
+
+Report 79's bounded-descent theorem was preserved in
+Section~\ref{sec:incoming-eaad}, but its marked search implementation remained
+separate from the maintained source interfaces. This continuation integrates
+the transport, commitment, region, shared-cover and causal modules, together
+with their independent source checkers. It also connects a bounded positive
+search to the exact diagram recognizer. The move primitives, their checkers,
+primitive cocycle kernel and integer codec are byte-identical to the delivered
+snapshot; the integration therefore preserves those maintained dependencies.
+The delivered report and historical evidence remain unchanged.
+
+\subsection{What the complete parameterized primitive decides}
+
+Let $t$ be the initial number of tetrahedra and $U$ the \emph{total} number
+of upward $2\to3$ events allowed in a trace. This is not a bound on maximum
+excess tetrahedra. The formal relative-boundary replacements preserve the
+source manifold and transport an integral cochain with independently
+checked source maps. An incarnation destroyed by a replacement does not
+reappear, even when later geometry resembles an earlier state.
+
+The first-descent locality theorem of report 79 says that any descending
+trace with at most $U$ upward events has a connected first-descent witness
+using $u\le U$ upward and $d=u+1$ downward events, and consuming at most
+$3u+3$ original tetrahedra. The event birth DAG decomposes traces into
+components with disjoint original consumption. Project to a component
+with positive loss and truncate at its first descent, repeating until
+stable. Relative-boundary persistence permits these projections and
+commutations; truncation alone need not produce connected consumption.
+This is a theorem for the formal move model, not an assumed locality
+property of arbitrary input traces.
+
+The native \code{find\_pachner\_descent} searches connected original covers
+of cardinality at most $\min(t,3U+3)$. On complete exhaustion it decides
+absence of \emph{bounded-upward descent}. A found descent is independently
+replayed, and its final tetrahedron count must equal $t+u-d<t$. A smaller
+explicit cover limit gives only a local conclusion. Search, index and work
+caps remain inconclusive; no such result is a knottedness certificate.
+
+\subsection{Connected covers and constant-alphabet trace classes}
+
+The original dual graph has maximum degree four. A deterministic spanning
+walk encodes each rooted connected $i$-vertex set with $2(i-1)$ local ports,
+so there are at most $t16^{i-1}$ such sets. The native enumerator uses a
+canonical parent: delete the largest non-root vertex whose deletion leaves
+a connected set. Every non-singleton connected set has a non-root tree
+leaf, so this parent exists. Reverse search enumerates each set once with
+polynomial work per set, using an explicit stack.
+
+Each eligible incarnation can commit to idle, one of four upward face
+ports, or one of six downward edge ports. Two ready events cannot share an
+incarnation, because each local port specifies its unique event. They thus
+commute. The deterministic scheduler's encoding uses at most
+\[
+                  i+3u+2d\le i+5U+2
+\]
+assigned symbols before first descent. With $i\le3U+3$, the complete
+bounded-descent geometry has $2^{O(U)}\operatorname{poly}(t+B)$ bit cost.
+The native sleep-set engine keeps one representative of each commuting
+class; naive enumeration remains available as a finite differential oracle.
+Surviving incarnations preserve commitments and sleeping obligations; source
+names do not resurrect. Marked geometry and exact cochain values, not a
+probabilistic hash alone, govern endpoint equality.
+
+Consequently bounded descent is polynomial for $U=O(\log(t+2))$ and
+quasi-polynomial for $U=O(\log^2(t+2))$. The sufficient connected-cover
+cardinality and total upward-event bound are both charged. The theorem
+supplies no universal such allowance for all unknots.
+
+\subsection{One search over overlapping source regions}
+
+Let $\mathcal R$ be the permitted original covers and
+$I(v)=\{R\in\mathcal R:v\in R\}$. A frame that has consumed original
+footprint $F$ keeps
+\[
+                  C(F)=\bigcap_{v\in F} I(v).
+\]
+The root represents the whole family by a sentinel. Newly consumed original
+cells intersect this set with their incidence lists. Consuming a born cell
+adds no new original identity: its ancestors entered the footprint when
+that incarnation was created. An empty compatible-cover set rejects the
+branch; any surviving cover supplies a concrete source certificate.
+
+Induction proves that a frame is admitted exactly when some cover contains
+its whole original consumption. Every prefix then belongs to that same
+cover, so this is the exact union of the independently restarted search
+languages. Admitted swaps of independent events retain that property,
+which makes the existing sleep-set reduction valid on the shared language.
+Endpoint query deduplication does not discard continuation frames merely
+because an endpoint was seen: remaining budget, sleeping events and
+compatible covers can differ.
+
+The complete cover index can have $t2^{O(U)}$ incidences. It is explicitly
+constructed and charged; neither constant memory nor a free index is claimed.
+Transitions and integral transport are evaluated only when queued branches
+are visited. Independent replay checks move geometry, cochain transport,
+original consumption and the advertised cover bound. Constructive birth
+analysis and disjoint trace composition are also integrated, preserving
+source labels and additive event counts. The report's deterministic
+multiunit splitter construction remains a theorem rather than a new runtime
+implementation here.
+
+\subsection{A positive diagram adapter with an inexpensive first probe}
+
+The optional diagram adapter constructs and independently binds the native
+knot exterior, optionally applies certified boundary shellings, chooses an
+integral cocycle and optionally minimizes its span. Its bounded search
+observes coherent normal surfaces at marked endpoints. The represented
+fibre may change topology during cochain transport; final positive evidence
+must be an actual essential normal-disc component, not positive Euler
+characteristic or an asserted transport of the original embedded fibre.
+
+A bounded-region sleep/naive call now probes the unchanged source endpoint
+before building any cover index. That endpoint belongs to every permitted
+cover. A verified source disc returns immediately; an ordinary miss triggers
+the shared-cover engine. Both calls share the same node and cooperative
+work allowance. No index is constructed after the node allowance has
+already been consumed. An incomplete per-endpoint disc query can still be
+followed by the full search when another node remains; its later exhaustion
+retains the engine's inconclusive semantics.
+
+The returned \code{diagram-transport-disc-v1} proof includes the original
+PD source, authenticated exterior, optional shellings, initial cochain,
+every actual move and transport map, final coordinates and component proof.
+The independent checker imports no source constructor, cocycle solver,
+move producer, search planner or component search. It replays the source
+binding and complete move chain, validates the final coherent coordinates,
+and requires a positive independently verified essential-disc count.
+A proof for one input cannot substitute the exterior of another diagram.
+
+\code{recognize(..., use\_pachner\_seed=True)} inserts this positive stage
+after the ordinary native seed attempt and before the complete fallback.
+It defaults off. The CLI exposes \code{--pachner-seed} and shared upward,
+node and work allowances. Its local cover limit is $3U+3$, with $U=1$ by
+default. Only a replayed positive returns \code{UNKNOT}; bounded exhaustion
+or any local cap proceeds to the maintained complete recognizer. The global
+deadline remains global, so a caller interruption cannot manufacture a
+local negative or a positive whose replay did not finish.
+
+\subsection{Scope of the asymptotic consequence}
+
+The complete first-descent primitive now has a maintained implementation
+with the report's parameterized guarantee. The optional disc adapter searches
+a bounded marked family and has separately charged component queries and
+replay. A complete negative family result remains inconclusive for a knot:
+there is no theorem that every unknot has a disc or a descent in this family.
+Neither universally small upward allowance nor a recognized terminal
+structure and globally controlled marked hierarchy is established.
+Thus this closes an implementation gap in an actual bounded geometric
+operation, while the six general obligations of Section~\ref{sec:missing}
+and the recognizer's exponential worst-case bound remain.
+
+\subsection{Maintained source checks and complete measurements}
+\input{pachner_native_results.tex}

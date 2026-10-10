@@ -1405,3 +1405,27 @@ warnings. Reproduce publication checks with
 They check 612 runtime pins, 609 incumbent pins, every source verdict and
 timing outcome, all 61 linear-support source proofs and all 31 saved diagram
 witnesses with producers disabled during replay.
+
+[pachner_native.tex](pachner_native.tex) integrates report 79's complete
+bounded Pachner descent, exact shared covers, integral source transport and
+independent replay. It connects an optional positive disc stage to actual
+diagram recognition, with source-first probing and shared node/work budgets.
+All 1,499 tests and 66 focused integration tests pass. The native audit
+checks identical exact endpoint classes, 124 independent source replays,
+two upward-required strict descents and thirteen preserved diagram verdicts.
+Fresh Regina checks confirm source/endpoint tori and the saved diagram disc.
+Complete first-descent ratios are 37.7x and 79.7x; small actual-diagram
+recognition is slower with the extra stage and no new nonempty-diagram
+coverage is demonstrated. The stage remains off by default. The local
+FPT theorem does not establish the general recognition closure hypothesis.
+Records are `data/pachner-native-*`.
+
+The current [PDF](report.pdf) has 588 pages. Section 148 starts on page 580;
+the assessment is section 149 on page 584. Rendered pages 580–586 pass visual
+review, including the full theory, timing tables, assessment continuation and
+references. All references resolve; only the four existing overflow warnings
+remain. Reproduce publication checks with
+`python -B data/pachner_native_review.py --publication` from this directory.
+They check 641 source pins, exact diagram verdicts, complete timing outcomes,
+all 124 retained endpoint proofs, both strict descents and the diagram proof
+with producers disabled during independent replay.
