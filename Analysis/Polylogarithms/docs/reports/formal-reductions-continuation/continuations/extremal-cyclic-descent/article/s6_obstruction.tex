@@ -1,0 +1,145 @@
+\section{A certified obstruction in the weight-seven reduction search}
+\label{s6bounded:sec}
+
+The weight-seven identity in the pinned manuscript \cite{repo} remains conjectural.
+Here $S_6=\sum_{n\ge0}(-1)^nH_n/(2n+1)^6$ and $H_0=0$.
+Its equivalent short form is
+\begin{align}
+ S_6={}&-\frac{12334}{527}g_{6,1}-\frac{384}{31}g_{5,2}
+ -\frac{2136}{527}g_{4,3}+\frac{3179\pi^7}{5713920}\notag\\
+ &-\frac{801}{2108}\beta(4)\zeta(3)-2\beta(6)\log2.
+ \label{s6bounded:eq:conjecture}
+\end{align}
+The earlier formal obstruction involves products of two single values.
+We tested a substantially larger finite family, allowing double-shuffle
+rows through depth four, convergent distribution and its lifts,
+products of the already proved $S_2$ and $S_4$ relations, and a specified
+family of Cayley identities whose expansions stay within depth four.
+An exact integer functional separates the target from this enlarged
+span. This is a result about the stated formal presentation; it neither
+disproves the numerical conjecture nor excludes identities outside that
+presentation.
+
+Use the forms
+\[
+ z=dt/t,\quad c=dt/(1-t),\quad
+ A=i\,dt/(1-it),\quad B=-dt/(1+t),\quad
+ \bar A=-i\,dt/(1+it),
+\]
+and outer-letter-first iterated integrals on $[0,1]$. Admissible words
+have first letter different from $c$ and last letter different from $z$.
+Their depth is the number of letters different from $z$. Let $\mathcal W$
+be the rational space on imaginary admissible words of weight seven and
+depth at most four, with conjugates identified with opposite signs.
+It has dimension $2546$. More explicitly, the dimensions at exact
+depths one through four are $1,35,390,2120$; they count formal words,
+not independent periods.
+
+The interval-reversing Cayley substitution $\phi(t)=(1-t)/(1+t)$
+acts by reversal and the
+letter map
+\[
+ \tau z=c-B,\quad \tau c=z+B,\quad
+ \tau A=B-\bar A,\quad \tau B=B,\quad
+ \tau\bar A=B-A.
+\]
+The displayed letter map is $\tau=-\phi^*$, with the reversed
+orientation included; it is not the unadjusted pullback. Regularized
+double shuffle is used with the standard single-divergence convention
+\cite{zhao,racinet}.
+It becomes especially convenient on the combinations
+\begin{gather*}
+ x=c-B,\qquad y=A-\bar A,\qquad h=A+\bar A-B,\\
+ \tau z=x,\quad\tau x=z,\quad\tau y=y,\quad
+ \tau h=-h,\quad\tau B=B.
+\end{gather*}
+For an abstract word $u$ on $\{z,x,y,h,B\}$ let $\widehat u$ denote
+its expansion in the original alphabet. If its first letter is not
+$x$ and its last letter is not $z$, every expanded word and every
+Cayley-transformed expanded word is admissible. If $u$ has length $l$
+and contains $n_z$ copies of $z$ and $n_x$ copies of $x$, the two
+expansions have depths at most $l-n_z$ and $l-n_x$. In particular,
+the $z^3x^3y$ permutations supply weight-seven Cayley rows that remain
+in $\mathcal W$ on both sides. This is a useful way to add geometric
+relations without immediately introducing all depth-seven coordinates.
+
+The certificate fixes the following finite row family. Each row is
+projected to its imaginary part, nonzero rational multiples are
+identified, and duplicates are removed.
+\begin{enumerate}
+\item All weight-seven shuffle-minus-stuffle rows whose two input
+      depths sum to at most four. Inputs are admissible, except that
+      one factor may be $\operatorname{Li}_1(1)$, using the standard
+      one-divergence comparison whose divergent word cancels.
+\item All convergent level-two-to-level-four distribution rows,
+      and their products with admissible words, when total weight is
+      seven and the sum of depths is at most four. Products are
+      expanded by stuffle. In relative-color notation, the seed is
+      \[
+      Z(\boldsymbol s;2\boldsymbol c)
+      -2^{|\boldsymbol s|-d}
+        \sum_{\boldsymbol\epsilon\in\{0,2\}^d}
+        Z(\boldsymbol s;\boldsymbol c+\boldsymbol\epsilon),
+      \qquad c_j\in\{0,1\}.
+      \]
+\item The imaginary $S_2$ and $S_4$ relations already proved in the
+      manuscript, multiplied by real parts of all admissible words
+      of the complementary weight, with total depth at most four.
+\item For every $1\le l\le7$, every abstract word $u$ as above with
+      $\min(n_z,n_x)\ge1$, take its convergent Cayley row and multiply
+      it by each admissible word of weight $7-l$, provided
+      $l-\min(n_z,n_x)$ plus the multiplier's depth is at most four.
+      The empty multiplier is allowed when $l=7$.
+\end{enumerate}
+This prescription gives $5131$ distinct nonzero rows: $3460$ in the
+first family, $1394$ newly added distribution rows, $40$ newly added
+$S_2/S_4$ lifts, and $237$ newly added balanced Cayley lifts.
+``Newly added'' here concerns duplicate removal in this finite row list,
+not claims of new mathematical identities.
+
+Let $T\in\mathcal W$ represent $128588$ times the left side minus the
+right side of~\eqref{s6bounded:eq:conjecture}. The normalization uses
+$S_6=g_{6,1}+\operatorname{Im}\operatorname{Li}_{6,1}(i,-1)$ and
+$\beta(7)=61\pi^7/184320$. Before projecting and expanding the two
+products, it is
+\begin{align*}
+ T=\operatorname{Im}\{&128588\operatorname{Li}_{6,1}(i,-1)
+ +3138084\operatorname{Li}_{6,1}(i,1)
+ +1592832\operatorname{Li}_{5,2}(i,1)\\
+ &+521184\operatorname{Li}_{4,3}(i,1)
+ -216172\operatorname{Li}_7(i)
+ +48861\operatorname{Li}_4(i)\operatorname{Li}_3(1)\\
+ &-257176\operatorname{Li}_6(i)\operatorname{Li}_1(-1)\}.
+\end{align*}
+Here $T$ denotes the corresponding formal vector, not its as-yet
+unproved evaluation as a number.
+
+\begin{theorem}[A finite enlarged-span obstruction]
+The target $T$ does not belong to the rational span of the $5131$
+rows specified above.
+\end{theorem}
+\begin{proof}
+The supplementary file \texttt{S6\_depth\_bounded\_separator.json}
+contains an integer functional $\ell$ on $\mathcal W$. The independent
+program \texttt{verify\_s6\_separator.py} reconstructs every prescribed
+row from its descriptor, using placement shuffles and stack-enumerated
+index merges. It checks admissibility, weight seven, and depth at most
+four. For Cayley rows it performs the raw five-letter substitution,
+independently of the diagonalized-letter shortcut used during discovery.
+It also independently re-enumerates the full prescribed family and verifies
+that its normalized row set equals the stored descriptor list. It then
+verifies, using only integers, that every row $R$ has
+$\ell(R)=0$, whereas $\ell(T)\ne0$. The explicit nonzero pairing is
+recorded in the receipt. Linear algebra now proves the assertion.
+The replay uses no rank assumption, modular arithmetic, numerical
+polylogarithm, or integer-relation search.
+\end{proof}
+
+This certificate narrows one proof-search strategy. The family is still
+smaller than all relations obtainable through arbitrary higher-depth
+elimination. Even within a depth-bounded ansatz, other convergent linear
+combinations of Cayley words need not be generated by these balanced
+seeds. Thus the theorem does not prove that every possible proof must
+pass through depth five. Its concrete recommendation is to enlarge
+this specified row family or change its coordinate system, rather than
+repeat the same search at higher numerical precision.

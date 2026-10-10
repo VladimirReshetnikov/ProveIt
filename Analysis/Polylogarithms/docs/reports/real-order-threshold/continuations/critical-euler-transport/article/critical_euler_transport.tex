@@ -1,0 +1,1407 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable,microtype,xurl,fancyhdr}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage{bookmark}
+\emergencystretch=3em
+\setlength{\parskip}{3pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\E}{\mathbb E}
+\newcommand{\cut}{\C\setminus[1,\infty)}
+\newcommand{\Cstar}{C_*}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\Impart}{Im}
+\DeclareMathOperator{\Repart}{Re}
+\DeclareMathOperator{\Beta}{Beta}
+\DeclareMathOperator{\GammaLaw}{Gamma}
+\newcommand{\basecommit}{\nolinkurl{a0a90ef31877f98be437191c48b46f02d5456867}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Critical Euler errors for harmonic polylogarithms}
+\fancyhead[R]{\small ProveIt}
+\fancyfoot[C]{\thepage}
+\hypersetup{pdftitle={Critical Euler Errors for Harmonic Polylogarithms},pdfauthor={Research continuation prepared for Vladimir Reshetnikov},pdfsubject={Sharp constants, positive surplus kernels, and a drifting extremizer}}
+\title{\textbf{Critical Euler Errors\\for Harmonic Polylogarithms}\\[7pt]
+\large Sharp constants, positive surplus kernels, and a drifting extremizer}
+\author{Research continuation prepared for Vladimir Reshetnikov\\
+\small Prepared with OpenAI assistance for the ProveIt programme}
+\date{9 October 2026 (America/Los\_Angeles)}
+\begin{document}
+\maketitle\thispagestyle{empty}
+\begin{abstract}
+Let $F_{a,b}(z)=\sum_{n\ge1}H_{n-1}^{(b)}z^n/n^a$, with principal
+continuation to $\cut$, and let $g_{a,b}=\Impart F_{a,b}(\ii)$.
+We prove the sharp-critical-constant conjecture in the incoming report
+\emph{The Sharp Real-Order Threshold for Harmonic Polylogarithms}:
+$a\mapsto-2g_{a,1-a}$ is strictly decreasing on $(0,1)$, and the optimal
+uniform constant in its one-sided Euler bound is
+$\Cstar=\pi/4+(\log2)/2$.
+The proof comes from a fixed-total-order beta--gamma transport. It gives
+strict order monotonicity for every total order $a+b>0$ at imaginary
+radii up to $\sqrt3$, as well as exact endpoint comparisons on the real
+slit interval.
+
+A second argument proves that the critical negative density is strictly
+larger than Lebesgue density. The resulting positive surplus has an exact
+balanced Bose-kernel representation, strengthens the harmonic-defect
+Hausdorff moment inequalities, and yields a zero-free Stieltjes
+factorization for a difference of polylogarithms.
+
+For the scaled Euler error $R_N(a)=2^N(E_N-g_{a,1-a})$, we establish a
+uniform asymptotic and determine its moving maximizer. With
+$L=\frac12\log N$ and $\ell=\log L$, every maximizing outer order $a_N$
+satisfies $(1-a_N)\ell\to1$, while
+$\max_aR_N(a)=\frac{\sqrt\pi}{2\sqrt N}
+[1+(1+o(1))/(eL\ell)]$.
+A refinement identifies a coefficient involving the first Stieltjes
+constant. Exact rational certificates demonstrate the finite-depth
+reversal $R_{128}(1/2)>R_{128}(1/4)$.
+Thus the proved monotonicity of the sharp all-depth constant does not
+extend to each individual scaled error. All analytic assertions are
+proved in the text; exact arithmetic, numerical diagnostics, and remaining
+conjectures are explicitly separated.
+\end{abstract}
+\clearpage
+\begingroup\small\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\clearpage
+
+\section{Scope, baseline, and the question resolved}
+\label{sec:scope}
+The canonical ProveIt manuscript \emph{Polylogarithms and their Arithmetic
+Bridges} develops signed kernels and certified evaluation alongside
+cyclotomic reductions and arithmetic special values \cite{manuscript}.
+The incoming report \emph{The Sharp Real-Order Threshold for Harmonic
+Polylogarithms} extends the finite signed moment representation to the
+sharp domain $a+b\ge1$ and identifies the required atom on its boundary
+\cite{threshold}. Its Conjecture~12.3, labelled
+\texttt{conj:constant} in the delivered source, asks for the strict decrease
+of $-2g_{a,1-a}$ and the optimal uniform Euler constant. We settle that
+conjecture and then examine an optimization problem it does not settle:
+which parameter is worst at a prescribed finite Euler depth?
+
+The repository revision inspected for this delivery is
+\begin{center}\small\basecommit.\end{center}
+The incoming archive \texttt{ProveIt\_RealOrder\_Threshold.zip} was read
+in its delivered form; the accessible copy agrees with the incoming
+repository blob. The precise source path, archive identity, and audit
+boundary are recorded in \texttt{data/provenance.json}. This is a targeted
+continuation, not a line-by-line audit of every incoming archive or every
+chapter. No upstream file or branch has been changed.
+
+The finite-measure threshold, the basic double kernel, critical angular
+uniqueness, and the fixed-parameter Euler remainder formula below are
+\emph{prior results}. We include short derivations of the identities needed
+here so that the new arguments can be checked independently. The new
+results are the fixed-total-order comparisons, proof of the named
+conjecture, strict surplus density, strengthened moment consequences,
+uniform critical error expansion, and extremizer drift. We do not claim
+global literature priority for every identity, and none of the analytic
+proofs has been formalized in a proof assistant or independently refereed.
+The classical beta, gamma, and zeta facts are cited at their point of use.
+
+\subsection{Notation and summation conventions}
+For real $a,b>0$, define
+\begin{equation}\label{eq:def}
+ c_n(a,b)=\frac{H_{n-1}^{(b)}}{n^a},\qquad
+ H_m^{(b)}=\sum_{j=1}^m j^{-b},\qquad
+ F_{a,b}(z)=\sum_{n=1}^\infty c_n(a,b)z^n\quad(|z|<1).
+\end{equation}
+Thus $c_1=0$ and $c_2=2^{-a}$. At positive integer orders,
+$F_{a,b}(z)=\Li_{a,b}(z,1)$ in the decreasing-index convention.
+We write
+\[
+ G_{a,b}(\rho)=-\Impart F_{a,b}(\ii\rho),\qquad
+ g_{a,b}=\Impart F_{a,b}(\ii),\qquad w=a+b.
+\]
+The principal polylogarithm conventions are those of DLMF~25.12
+\cite{dlmf-polylog}. On $a+b=1$ the coefficients tend to $1/a$, so the
+ordinary boundary series fails the term test. All Gaussian values on
+that line mean the analytic continuation, equivalently the Abel value.
+Euler transformation below is justified by a measure identity, not by
+pretending the original boundary series converges.
+
+Unless stated otherwise, a constant implicit in $O(\cdot)$ may depend on
+fixed parameters. The word \emph{uniform} always identifies the parameter
+set over which the constant and the threshold are independent. We use
+$\Delta Q_n=Q_n-Q_{n+1}$ for the decreasing finite-difference convention.
+
+\section{Fixed-total-order beta--gamma transport}
+\label{sec:transport}
+\subsection{A positive double kernel and a different coupling}
+The useful part of the earlier double integral is not merely its positivity.
+A change of variables makes the total order, rather than the two separate
+orders, the gamma shape.
+
+\begin{lemma}[Double kernel, recalled with proof]\label{lem:double}
+For $a,b>0$ and $z\in\cut$,
+\begin{equation}\label{eq:double}
+ F_{a,b}(z)=z^2\int_{0<y<x<1}
+ \frac{(-\log x)^{a-1}(\log(x/y))^{b-1}}
+ {\Gamma(a)\Gamma(b)(1-zx)(1-zy)}\dd y\dd x.
+\end{equation}
+The positive weight, without the two denominator factors, has mass $2^{-a}$.
+\end{lemma}
+\begin{proof}
+Expand the denominators for $|z|<1$. For nonnegative integers $j,k$,
+substitution $y=xv$ and two gamma integrals give
+\[
+ \int_{0<y<x<1}
+ \frac{(-\log x)^{a-1}(\log(x/y))^{b-1}}
+ {\Gamma(a)\Gamma(b)}x^jy^k\dd y\dd x
+ =\frac1{(j+k+2)^a(k+1)^b}.
+\]
+Summation over $j+k=n-2$ yields $c_n$. Absolute convergence justifies the
+expansion, and $j=k=0$ gives the mass. On compact subsets of the slit plane
+both denominators stay uniformly away from zero. Dominated holomorphic
+integration then continues the identity to the claimed domain.
+\end{proof}
+
+\begin{theorem}[Fixed-weight transport identity]\label{thm:transport}
+Let $T\sim\GammaLaw(w,1)$ and $V\sim\Beta(a,b)$ be independent, where
+$w=a+b$. Put $X=e^{-TV}$ and $Y=e^{-T}$. For $z\in\cut$,
+\begin{equation}\label{eq:transport}
+ \frac{F_{a,b}(z)}{z^2}
+ =\E\left[\frac{X}{(1-zX)(1-zY)}\right],
+\end{equation}
+with the quotient continuously extended at zero. In particular,
+\begin{equation}\label{eq:Gtransport}
+ G_{a,b}(\rho)=\rho^3\E[H_\rho(X,Y)],\qquad
+ H_\rho(x,y)=\frac{x(x+y)}{(1+\rho^2x^2)(1+\rho^2y^2)}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+In \eqref{eq:double}, set $U=-\log x$, $S=\log(x/y)$,
+$T=U+S$, and $V=U/T$. Then $x=e^{-TV}$, $y=e^{-T}$, and
+\[
+ \dd x\dd y=e^{-2U-S}\dd U\dd S,
+ \qquad \dd U\dd S=T\dd T\dd V.
+\]
+Since $e^{-2U-S}=e^{-T}e^{-TV}$, the resulting measure is $X$ times
+\[
+ \frac{e^{-T}T^{w-1}}{\Gamma(w)}\dd T\;
+ \frac{V^{a-1}(1-V)^{b-1}}{\mathrm B(a,b)}\dd V.
+\]
+Euler's beta identity $\mathrm B(a,b)=\Gamma(a)\Gamma(b)/\Gamma(a+b)$
+\cite{dlmf-beta} proves \eqref{eq:transport}. The imaginary part at
+$z=\ii\rho$ is obtained by rationalizing the two denominator factors.
+\end{proof}
+
+\begin{remark}[The extra factor is essential]
+The expectation in \eqref{eq:transport} has the numerator $X$. Omitting
+it would produce the wrong coefficients and invalidate the monotonicity
+argument. The earlier normalization using independent gamma variables at
+rates two and one instead has a prefactor $2^{-a}$. The coupling here
+uses rate one for the common total $T$ and keeps the extra factor inside
+the expectation. This is a change of representation, not a correction
+to the earlier correctly normalized formula.
+\end{remark}
+
+\subsection{Strict stochastic comparison}
+\begin{lemma}[Beta score covariance]\label{lem:beta}
+Fix $w>0$. If $V_a\sim\Beta(a,w-a)$, $0<a<w$, and $f$ is bounded and
+strictly decreasing on $(0,1)$, then $\E f(V_a)$ is strictly decreasing
+in $a$. On compact subintervals of $(0,w)$,
+\begin{equation}\label{eq:covariance}
+ \frac{\dd}{\dd a}\E f(V_a)
+ =\Cov\left(f(V_a),\log\frac{V_a}{1-V_a}\right)<0.
+\end{equation}
+The derivative formula also holds for bounded measurable $f$ without a
+strictness assertion.
+\end{lemma}
+\begin{proof}
+Differentiate the normalized beta density. Its score is the centered
+version of $\log(v/(1-v))$, so differentiation gives
+\eqref{eq:covariance}. The logarithmic factors are integrable uniformly
+on compact shape-parameter intervals. If $V_a'$ is an independent copy,
+then the covariance equals
+\[
+ \frac12\E\left[(f(V_a)-f(V_a'))
+ \left(\log\frac{V_a}{1-V_a}-\log\frac{V_a'}{1-V_a'}\right)\right].
+\]
+The product is strictly negative whenever the two variables differ.
+Their densities are positive and continuous in the interior, so equality
+has probability zero. This proves strictness.
+\end{proof}
+
+\begin{theorem}[Fixed-total-order comparisons]\label{thm:monotonicity}
+For every $w>0$ and $0<\rho\le\sqrt3$, the function
+\begin{equation}\label{eq:orderdecrease}
+ a\longmapsto G_{a,w-a}(\rho),\qquad 0<a<w,
+\end{equation}
+is strictly decreasing. For every real $z<1$, the function
+$a\mapsto F_{a,w-a}(z)/z^2$ is also strictly decreasing, with its
+continuous interpretation at $z=0$.
+\end{theorem}
+\begin{proof}
+For $0<y<x<1$, direct differentiation gives
+\begin{equation}\label{eq:Hderivative}
+ \partial_xH_\rho(x,y)=
+ \frac{2x+y-\rho^2x^2y}
+ {(1+\rho^2y^2)(1+\rho^2x^2)^2}>0.
+\end{equation}
+Indeed, for $\rho^2\le3$ the numerator is at least
+$2x+y-3x^2y\ge3y(1-x^2)>0$.
+For fixed $T>0$, $Y=e^{-T}$ is fixed and $X=e^{-TV}$ decreases strictly
+with $V$. Thus $H_\rho(e^{-TV},e^{-T})$ is bounded and strictly
+decreasing in $V$. Apply Lemma~\ref{lem:beta} conditionally on $T$ and
+then integrate its strict inequality against the common gamma law.
+This proves \eqref{eq:orderdecrease}.
+
+For real $z<1$, replace $H_\rho$ by
+$x/((1-zx)(1-zy))$. Its $x$-derivative is
+\[
+ \frac1{(1-zy)(1-zx)^2}>0.
+\]
+The same proof applies. At $z=0$, the quotient is $2^{-a}$, consistently
+with the continuous extension. All integrands used here are uniformly
+bounded for the fixed values of $z$ or $\rho$ in the theorem.
+\end{proof}
+
+The radius $\sqrt3$ is a sufficient domain obtained from the pointwise
+kernel inequality. We do not assert that it is the maximal domain of
+integrated order monotonicity. When $\rho>\sqrt3$, the numerator in
+\eqref{eq:Hderivative} can be negative near $x=y=1$, but that fact alone
+is not a counterexample for the expectation.
+
+\subsection{Endpoint identities and explicit Gaussian bounds}
+\begin{proposition}[Order-zero endpoints]\label{prop:endpoints}
+For fixed $w>0$, locally uniformly for $z\in\cut$,
+\begin{align}
+ \lim_{a\downarrow0}F_{a,w-a}(z)
+ &=\frac{z}{1-z}\Li_w(z),\label{eq:endleft}\\
+ \lim_{a\uparrow w}F_{a,w-a}(z)
+ &=\Li_{w-1}(z)-\Li_w(z).\label{eq:endright}
+\end{align}
+\end{proposition}
+\begin{proof}
+The beta variable tends in probability to zero as $a\downarrow0$ and
+to one as $a\uparrow w$: its respective means or complementary means
+tend to zero. Bounded convergence in \eqref{eq:transport} therefore
+supplies both limiting holomorphic functions, uniformly on compact
+slit sets. In the disk their coefficients are respectively
+$H_{n-1}^{(w)}$ and $(n-1)n^{-w}$. Summing the first sequence by a
+geometric series and splitting the second proves the displayed formulas.
+\end{proof}
+
+Define $\beta(s)=\Impart\Li_s(\ii)$ and
+$\eta(s)=-\Li_s(-1)$ by continuation for real $s$.
+For positive $w$ the second quantity is the usual Dirichlet eta value.
+The parity split in the absolutely convergent disk series, continued to
+$z=\ii$, gives
+$\Repart\Li_w(\ii)=-2^{-w}\eta(w)$.
+Consequently Theorem~\ref{thm:monotonicity} implies the strict bounds
+\begin{equation}\label{eq:Gaussianbounds}
+ \beta(w)-\beta(w-1)
+ <-g_{a,b}<\frac{\beta(w)+2^{-w}\eta(w)}2,
+ \qquad a,b>0,\quad a+b=w.
+\end{equation}
+Both endpoints are sharp as limiting parameter values. On the real
+interval $z<1$, the analogous strict comparison is
+\begin{equation}\label{eq:realbounds}
+ \frac{\Li_{w-1}(z)-\Li_w(z)}{z^2}
+ <\frac{F_{a,b}(z)}{z^2}
+ <\frac{\Li_w(z)}{z(1-z)},
+\end{equation}
+with continuous values at zero. These are exact analytic inequalities,
+not numerical integer-relation discoveries.
+
+\section{The critical measure and the sharp Euler constant}
+\label{sec:constant}
+\subsection{The critical representation}
+From now on $0<a<1$, $b=1-a$. Define
+\begin{equation}\label{eq:hka}
+ k_a(T)=\frac{T^{a-1}}{\Gamma(a)},\qquad
+ h(t)=\frac1{1-e^{-t}}-\frac1t.
+\end{equation}
+The function $h$ increases from $1/2$ to $1$, since
+$h'(t)=t^{-2}-[4\sinh^2(t/2)]^{-1}>0$.
+Put
+\begin{align}
+ C_a(T)&=\frac1{\Gamma(a)\Gamma(b)}
+       \int_0^T(T-t)^{a-1}t^{b-1}h(t)\dd t,
+       \label{eq:C}\\
+ p_a(T)&=-\zeta(b)k_a(T)+C_a(T).
+       \label{eq:p}
+\end{align}
+Here $C_a(T)=\E h(TV)$ for $V\sim\Beta(b,a)$; note that the order of
+these beta parameters differs from the transport variable in
+Section~\ref{sec:transport}. In particular $1/2<C_a(T)<1$.
+
+\begin{lemma}[Critical signed measure, prior identity]\label{lem:measure}
+The density $p_a(-\log u)$ is positive, has mass $1/a$ on $(0,1)$,
+and
+\begin{equation}\label{eq:mu}
+ \mu_a=\frac1a\delta_1-p_a(-\log u)\dd u
+\end{equation}
+has moments $\int u^{n-1}\dd\mu_a=c_n(a,1-a)$. Thus
+\begin{equation}\label{eq:Stieltjes}
+ F_{a,1-a}(z)=\int_{[0,1]}\frac{z}{1-zu}\dd\mu_a(u)
+ \quad(z\in\cut).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The regularized Hurwitz integral \cite{dlmf-hurwitz} is
+\[
+ \zeta(b,q)=\frac{q^{1-b}}{b-1}
+ +\frac1{\Gamma(b)}\int_0^\infty e^{-qt}t^{b-1}h(t)\dd t
+ \qquad(0<b<1,\ q>0).
+\]
+It follows by splitting the standard integral for $b>1$ and continuing
+the bounded-regularizer integral to $\Re b>0$.
+Taking the Laplace transform of \eqref{eq:C}, and using $a+b=1$,
+gives
+\begin{equation}\label{eq:plaplace}
+ \int_0^\infty e^{-qT}p_a(T)\dd T
+ =\frac1a-q^{-a}\bigl(\zeta(b)-\zeta(b,q)\bigr).
+\end{equation}
+The finite Hurwitz difference at $q=n$ is $H_{n-1}^{(b)}$.
+The case $n=1$ gives the mass $1/a$. Positivity follows from
+$\zeta(b)<0$, $k_a>0$, and $C_a>0$. One may obtain the zeta sign from
+its positive alternating eta series and $1-2^{1-b}<0$.
+Expansion of the resolvent in the disk and dominated continuation
+prove \eqref{eq:Stieltjes}. This reproduces the critical part of
+\cite[Theorem~3.1]{threshold}, not a new threshold assertion.
+\end{proof}
+
+\subsection{Euler errors and the conjecture}
+Define, exactly as in the incoming report,
+\begin{equation}\label{eq:eulerdef}
+ f(n)=c_{2n+1}(a,1-a),\qquad
+ d_k=\sum_{n=0}^k(-1)^n\binom kn f(n),\qquad
+ E_N=\sum_{k=0}^{N-1}\frac{d_k}{2^{k+1}}.
+\end{equation}
+For $N\ge1$, let
+\begin{equation}\label{eq:Rdef}
+ R_N(a)=2^N(E_N-g_{a,1-a}),\qquad
+ q_N(u)=\frac{(1-u^2)^N}{1+u^2}.
+\end{equation}
+The binomial theorem, followed by a geometric summation under the finite
+signed measure, gives
+\begin{equation}\label{eq:Rintegral}
+ R_N(a)=\int_0^1q_N(u)p_a(-\log u)\dd u>0.
+\end{equation}
+The endpoint atom contributes zero because $N\ge1$. For fixed $a$,
+these integrals decrease strictly to zero, and
+\begin{equation}\label{eq:R1}
+ R_1(a)=-2g_{a,1-a},\qquad
+ 0<E_N-g_{a,1-a}<\frac1a\,2^{-N}.
+\end{equation}
+These facts were already established in \cite[Section~9]{threshold}.
+
+\begin{theorem}[Resolution of the sharp-critical-constant conjecture]
+\label{thm:sharp}
+The map $a\mapsto R_1(a)=-2g_{a,1-a}$ decreases strictly on $(0,1)$.
+Its endpoint limits are
+\begin{equation}\label{eq:criticalends}
+ R_1(0)=\frac\pi4+\frac{\log2}{2}=\Cstar,
+ \qquad R_1(1)=\frac\pi2-1.
+\end{equation}
+For every $0<a<1$ and every integer $N\ge1$,
+\begin{equation}\label{eq:sharpbound}
+ 0<E_N-g_{a,1-a}<\Cstar\,2^{-N}.
+\end{equation}
+No smaller constant works uniformly over this open parameter interval
+and all such $N$.
+\end{theorem}
+\begin{proof}
+Set $w=\rho=1$ in Theorem~\ref{thm:monotonicity}.
+At the two order endpoints use \eqref{eq:endleft}--\eqref{eq:endright},
+$\Li_1(z)=-\log(1-z)$, and $\Li_0(z)=z/(1-z)$.
+Equivalently, \eqref{eq:Gaussianbounds} uses
+$\beta(1)=\pi/4$, $\beta(0)=1/2$, and $\eta(1)=\log2$.
+This proves \eqref{eq:criticalends} and strict decrease.
+Since $R_N(a)\le R_1(a)<\Cstar$, \eqref{eq:sharpbound} follows.
+If $C<\Cstar$, choose $a$ sufficiently close to zero that $R_1(a)>C$;
+then $N=1$ contradicts the proposed bound. Thus the constant is sharp.
+\end{proof}
+
+Numerically $\Cstar=1.13197175367742096432427690655\ldots$.
+The theorem proves both components of the prior conjecture, not just an
+upper estimate. The distinction between a strict uniform bound on an
+open parameter domain and an attained maximum matters: $\Cstar$ is a
+supremum at $a=0,N=1$, not a maximum with $0<a<1$.
+For one fixed interior parameter, the smallest constant in a
+\emph{non-strict} all-$N$ bound is $R_1(a)$ and is attained at $N=1$.
+
+\section{A strictly positive surplus over Lebesgue density}
+\label{sec:surplus}
+The critical density contains a large cancellation when written as
+$-\zeta(b)k_a+C_a$. Its residual above one has an unexpectedly clean
+sign. This sign will be the source of stronger moment inequalities and
+a sharp lower envelope for Euler errors.
+
+\begin{lemma}[Critical power balance]\label{lem:balance}
+For $0<a<1$, $b=1-a$, and $T>0$,
+\begin{equation}\label{eq:balance}
+ \int_0^T[k_a(T-t)-k_a(T)]t^{b-2}\dd t
+ =k_a(T)\int_T^\infty t^{b-2}\dd t
+ =\frac{k_a(T)T^{-a}}a.
+\end{equation}
+\end{lemma}
+\begin{proof}
+After $t=Tv$, the required scalar integral is
+\[
+ \int_0^1\bigl[(1-v)^{a-1}-1\bigr]v^{-a-1}\dd v=\frac1a.
+\]
+An antiderivative is
+$-a^{-1}[(1-v)^a-1]v^{-a}$. Its lower limit is zero because
+$[(1-v)^a-1]v^{-a}=O(v^{1-a})$; its upper limit is $1/a$.
+Both endpoint singularities of the integrand are integrable.
+Rescaling proves the identity.
+\end{proof}
+
+Set $\phi(t)=t/(e^t-1)$, which decreases strictly on $(0,\infty)$.
+Its derivative has numerator $e^t(1-t)-1<0$: that numerator vanishes
+at zero and has derivative $-te^t<0$.
+
+\begin{theorem}[Positive surplus identity]\label{thm:surplus}
+For every $0<a<1$ and $T>0$, the density in \eqref{eq:p} satisfies
+$p_a(T)>1$. More precisely,
+\begin{align}\label{eq:positive-surplus}
+ p_a(T)-1={}&\frac1{\Gamma(b)}
+ \int_0^T[k_a(T-t)-k_a(T)]t^{b-2}
+          [\phi(t)-\phi(T)]\dd t\notag\\
+ &+\frac{k_a(T)}{\Gamma(b)}
+ \int_T^\infty t^{b-2}[\phi(T)-\phi(t)]\dd t.
+\end{align}
+Both integrals are finite and strictly positive.
+\end{theorem}
+\begin{proof}
+For $0<b<1$, the standard subtracted Bose integral is
+\begin{equation}\label{eq:zetasubtracted}
+ \zeta(b)=\frac1{\Gamma(b)}\int_0^\infty
+ t^{b-1}\left(\frac1{e^t-1}-\frac1t\right)\dd t.
+\end{equation}
+For clarity, its continuation can be justified by splitting at one:
+subtract $1/t$ only on $(0,1)$ in the usual zeta integral, add
+$1/(b-1)$, and then use
+$-\int_1^\infty t^{b-2}\dd t=1/(b-1)$.
+The resulting integral converges at both ends for $0<b<1$.
+
+Write $h(t)=1+r(t)$, where $r(t)=(e^t-1)^{-1}-t^{-1}$.
+The beta convolution of $k_a$ with $k_b$ is $k_1=1$. Substituting
+\eqref{eq:zetasubtracted} into \eqref{eq:p} therefore gives
+\begin{align*}
+ p_a(T)-1={}&\frac1{\Gamma(b)}
+ \int_0^T[k_a(T-t)-k_a(T)]t^{b-1}r(t)\dd t\\
+ &-\frac{k_a(T)}{\Gamma(b)}\int_T^\infty t^{b-1}r(t)\dd t.
+\end{align*}
+All terms are now separately integrable. Since
+$t^{b-1}r(t)=t^{b-2}(\phi(t)-1)$, the two contributions from the
+constant $-1$ cancel by Lemma~\ref{lem:balance}. Subtracting the
+constant $\phi(T)$ against the same balanced signed weight proves
+\eqref{eq:positive-surplus}.
+
+On $(0,T)$, $k_a(T-t)>k_a(T)$ because $a<1$, and
+$\phi(t)>\phi(T)$. On $(T,\infty)$ the other bracket is also strictly
+positive. The local behavior at zero is $O(t^{b-1})$, the singularity
+at $T$ is integrable, and the tail has power $t^{b-2}$ with exponent
+less than $-1$. This proves finiteness and strict positivity.
+\end{proof}
+
+An equivalent form, useful for large $T$, is
+\begin{align}\label{eq:Bose-surplus}
+ p_a(T)-1={}&\frac1{\Gamma(b)}
+ \int_0^T\frac{[k_a(T-t)-k_a(T)]t^{b-1}}{e^t-1}\dd t\notag\\
+ &-\frac{k_a(T)}{\Gamma(b)}
+ \int_T^\infty\frac{t^{b-1}}{e^t-1}\dd t.
+\end{align}
+The second term is negative, so this version is not by itself a
+positivity proof. Formula~\eqref{eq:positive-surplus}, not a guessed sign
+of an asymptotic expansion, supplies that proof.
+
+\subsection{Stronger harmonic and Hurwitz moment inequalities}
+\begin{theorem}[Strict critical surplus moments]\label{thm:moments}
+For $0<a<1$, put
+\begin{equation}\label{eq:Qn}
+ Q_n(a)=\frac1a-\frac{H_{n-1}^{(1-a)}}{n^a}-\frac1n,
+ \qquad n\ge1.
+\end{equation}
+Then
+\begin{equation}\label{eq:Qmoment}
+ Q_n(a)=\int_0^1u^{n-1}[p_a(-\log u)-1]\dd u.
+\end{equation}
+Every $\Delta^kQ_n(a)$ is strictly positive, including $k=0$.
+Every matrix $(Q_{j+k+1})_{j,k=0}^r$ is positive definite, and
+$Q_nQ_{n+2}>Q_{n+1}^2$. In particular,
+\begin{align}
+ \frac{H_{n-1}^{(1-a)}}{n^a}&<\frac1a-\frac1n,
+ \label{eq:hbound}\\
+ \frac{H_n^{(1-a)}}{(n+1)^a}
+ -\frac{H_{n-1}^{(1-a)}}{n^a}&>\frac1{n(n+1)}.
+ \label{eq:increment}
+\end{align}
+\end{theorem}
+\begin{proof}
+Subtract the Lebesgue moment $1/n$ from the density moment in
+Lemma~\ref{lem:measure}. Theorem~\ref{thm:surplus} gives a positive,
+nonzero density on every open subinterval of $(0,1)$. Hence
+\[
+ \Delta^kQ_n=\int_0^1u^{n-1}(1-u)^k[p_a(-\log u)-1]\dd u>0.
+\]
+For any nonzero polynomial $P$, the integral of $P(u)^2$ against this
+density is positive. This is precisely positive definiteness of the
+Hankel matrices. Strict Cauchy--Schwarz with the weighted measure
+$u^{n-1}[p_a(-\log u)-1]\dd u$ gives strict log-convexity.
+The cases $k=0$ and $k=1$ give \eqref{eq:hbound} and
+\eqref{eq:increment}. The general Hausdorff-moment mechanism is
+classical; see \cite{liu-pego} for the associated generating-function
+viewpoint. The new input here is the specific positive surplus density.
+\end{proof}
+
+The corresponding continuous identity is
+\begin{equation}\label{eq:Qcontinuous}
+ Q_a(q)=\frac1a-q^{-a}\bigl[\zeta(1-a)-\zeta(1-a,q)\bigr]-\frac1q
+ =\int_0^\infty e^{-qT}[p_a(T)-1]\dd T>0.
+\end{equation}
+For every $q>0$ and integer $j\ge0$, differentiation gives
+$(-1)^jQ_a^{(j)}(q)>0$. Exponential domination at infinity and the
+integrable local density justify all derivatives. This strengthens the
+prior positivity of the uncorrected critical defect: a full Lebesgue
+moment may be subtracted while retaining strict complete monotonicity.
+
+There are also two exact normalization identities:
+\begin{equation}\label{eq:surplusnormalizations}
+ \int_0^\infty[p_a(T)-1]\dd T=\frac1a,
+ \qquad
+ \int_0^\infty e^{-T}[p_a(T)-1]\dd T=\frac1a-1.
+\end{equation}
+For the first, the Hurwitz shift relation and its Taylor expansion at one give
+$\zeta(b,q)=q^{-b}+\zeta(b)-b\zeta(b+1)q+O(q^2)$ as $q\downarrow0$.
+Equation~\eqref{eq:Qcontinuous} becomes
+$Q_a(q)=a^{-1}-b\zeta(b+1)q^b+O(q^{b+1})$.
+Monotone convergence against the positive density gives the first identity;
+the second is $Q_a(1)=1/a-1$. In particular $a[p_a(T)-1]\dd T$ is a
+probability measure on $(0,\infty)$ whose exponential moment
+$\E(e^{-T})$ equals $1-a$.
+
+\subsection{A zero-free difference of polylogarithms}
+\begin{corollary}[Surplus Stieltjes factorization]\label{cor:factor}
+For $0<a<1$ and $z\in\cut$,
+\begin{equation}\label{eq:surplusfactor}
+ \frac{1-z}{z^2}
+ \bigl[F_{a,1-a}(z)-\Li_0(z)+\Li_1(z)\bigr]
+ =\int_0^1\frac{(1-u)[p_a(-\log u)-1]}{1-zu}\dd u.
+\end{equation}
+The right side is positive for real $z<1$ and has strictly positive
+imaginary part for $\Impart z>0$. Consequently
+$F_{a,1-a}-\Li_0+\Li_1$ has no zero on the slit plane except a double
+zero at zero, whose leading coefficient is $2^{-a}-1/2$.
+\end{corollary}
+\begin{proof}
+The endpoint function $\Li_0-\Li_1$ has measure $\delta_1-\dd u$.
+Subtract it from \eqref{eq:mu}; the resulting signed measure is
+$(1/a-1)\delta_1-[p_a(-\log u)-1]\dd u$ and has total mass zero.
+Subtracting $z/(1-z)$ times that zero mass gives
+\eqref{eq:surplusfactor}. The numerator defines a strictly positive
+measure. The imaginary part of its resolvent is
+\[
+ (\Impart z)\int_0^1
+ \frac{u(1-u)[p_a(-\log u)-1]}{|1-zu|^2}\dd u,
+\]
+which is strict. The real case is immediate from positive denominators.
+Finally, comparing the $z^2$ coefficients yields $2^{-a}-1/2>0$.
+\end{proof}
+
+This is a zero-free theorem for a \emph{difference} of functions; it is
+not a reannouncement of the earlier zero-free theorem for $F_{a,b}$.
+Nor does it decide angular uniqueness below $a+b=1$.
+
+\section{Finite Euler depth: endpoints, lower bounds, and a reversal}
+\label{sec:finite}
+\begin{proposition}[Endpoint error identities and sharp lower envelope]
+\label{prop:RNends}
+For each fixed $N\ge1$, $R_N$ extends continuously to $[0,1]$, with
+\begin{equation}\label{eq:RNends}
+ R_N(0)=J_N^*:=\int_0^1\frac{q_N(u)}{1-u}\dd u,
+ \qquad
+ R_N(1)=I_N:=\int_0^1q_N(u)\dd u.
+\end{equation}
+For every $0<a<1$, $R_N(a)>I_N$. Thus $I_N$ is the sharp lower
+envelope over the critical line.
+\end{proposition}
+\begin{proof}
+For fixed $T>0$, \eqref{eq:p} and the endpoint beta laws give
+\[
+ \lim_{a\downarrow0}p_a(T)=\frac1{1-e^{-T}},
+ \qquad \lim_{a\uparrow1}p_a(T)=1.
+\]
+Indeed, $-\zeta(1-a)/\Gamma(a)\to1$ at zero and tends to $1/2$ at
+one; the respective beta averages tend to $h(T)$ and $1/2$.
+The coefficient $-\zeta(1-a)/\Gamma(a)$ is bounded on the closed
+parameter interval after these continuous extensions. Consequently,
+with an absolute constant,
+\begin{equation}\label{eq:pglobalbound}
+ 0<p_a(T)\le C(1+T^{-1})\quad(T>0,\ 0<a<1).
+\end{equation}
+For $T=-\log u$, the right side is at most $C'(1-u)^{-1}$.
+The weight $q_N(u)/(1-u)$ is integrable for $N\ge1$, so dominated
+convergence proves the endpoint limits and continuity. Strict surplus
+positivity proves $R_N(a)>I_N$.
+\end{proof}
+
+The limiting density at $a=0$ has infinite total mass. Only its filtered
+integral in \eqref{eq:RNends} is finite; it must not be substituted as a
+finite signed measure into \eqref{eq:mu}.
+
+There are elementary finite recurrences for these endpoint values. Let
+\begin{equation}\label{eq:BNpoly}
+ B_j^{\rm pol}=\int_0^1(1-u^2)^j\dd u
+ =\frac{4^j(j!)^2}{(2j+1)!}.
+\end{equation}
+Then
+\begin{align}
+ I_0&=\frac\pi4,& I_{N+1}&=2I_N-B_N^{\rm pol}\quad(N\ge0),
+ \label{eq:Irec}\\
+ J_1^*&=\frac\pi4+\frac{\log2}{2},&
+ J_{N+1}^*&=2J_N^*-B_{N-1}^{\rm pol}-\frac1{2N}\quad(N\ge1).
+ \label{eq:Jrec}
+\end{align}
+To prove these, use $q_{N+1}=2q_N-(1-u^2)^N$ and
+$(1-u^2)^N/(1-u)=(1+u)(1-u^2)^{N-1}$.
+The recurrences are exact identities, but their subtractive form may be
+poor for floating-point evaluation at large $N$.
+
+\begin{theorem}[A certified finite-depth reversal]\label{thm:reversal}
+Strictly,
+\begin{align}
+ 0.084208864068217362453965253610
+ &<R_{128}(1/4)
+ <0.084208864068217362453965253612,
+ \label{eq:certquarter}\\
+ 0.084523512538326867477886761599
+ &<R_{128}(1/2)
+ <0.084523512538326867477886761601.
+ \label{eq:certhalf}
+\end{align}
+In particular $R_{128}(1/2)>R_{128}(1/4)$, whereas
+$R_1(1/2)<R_1(1/4)$.
+\end{theorem}
+\begin{proof}
+The last inequality is also an instance of Theorem~\ref{thm:sharp}.
+The two displayed enclosures follow from the standard-library-only
+certificate \texttt{code/certify.py}. Its finite arithmetic and tail
+contract are described in Section~\ref{sec:verification}; a verifier
+replays integer-root acceptance inequalities and outward interval
+operations. In particular the assertion is not inferred from decimal
+agreement between two floating-point calculations.
+\end{proof}
+
+This counterexample refutes a \emph{stronger extrapolation}, namely that
+$R_N(a)$ decreases in $a$ for each $N$. The incoming report does not
+assert that extrapolation. Its actual conjecture concerns $R_1$, or
+equivalently the optimal constant after taking the supremum over $N$;
+that conjecture is proved, not contradicted, here.
+
+\section{Large-logarithm structure of the critical density}
+\label{sec:densityasymp}
+Put $b=1-a$ and define the positive coefficients
+\begin{equation}\label{eq:alphaj}
+ \alpha_j(b)=\frac{(b)_j^2\zeta(b+j)}{j!\Gamma(1-b)},
+ \qquad j\ge1,
+ \qquad A(b)=\alpha_1(b)=\frac{b^2\zeta(1+b)}{\Gamma(1-b)}.
+\end{equation}
+Here $(b)_j=b(b+1)\cdots(b+j-1)$ is a rising factorial.
+
+\begin{theorem}[All-orders density expansion]\label{thm:densityall}
+For fixed $0<b<1$ and every integer $M\ge1$,
+\begin{equation}\label{eq:densityall}
+ p_{1-b}(T)=1+\sum_{j=1}^M\alpha_j(b)T^{-b-j}
+             +O(T^{-b-M-1})\quad(T\to\infty).
+\end{equation}
+The remainder is uniform when $b$ ranges over a compact subinterval of
+$(0,1)$. This is a Poincar\'e asymptotic expansion, not a claim of
+convergence for a fixed $T$ or a globally signed truncation theorem.
+\end{theorem}
+\begin{proof}
+Write \eqref{eq:Bose-surplus} as
+\begin{align}\label{eq:scaledBose}
+ p_{1-b}(T)-1=\frac{T^{-b}}{\Gamma(1-b)\Gamma(b)}
+ \left\{\int_0^T\frac{[(1-t/T)^{-b}-1]t^{b-1}}{e^t-1}\dd t
+ -\int_T^\infty\frac{t^{b-1}}{e^t-1}\dd t\right\}.
+\end{align}
+On $0\le t\le T/2$, expand
+$(1-t/T)^{-b}-1=\sum_{j=1}^M(b)_j(t/T)^j/j!
++O((t/T)^{M+1})$. The remainder constant is uniform on compact
+$b$-sets. Integrating termwise and extending each exponentially decaying
+moment to infinity introduces exponentially small errors. The moments
+are $\Gamma(b+j)\zeta(b+j)$, so their coefficients are exactly
+\eqref{eq:alphaj}. On $T/2<t<T$, the integrable singularity
+$(T-t)^{-b}$ is multiplied by an exponentially small Bose factor;
+its contribution and the last integral are smaller than every displayed
+power, uniformly on the same compact sets. This proves the result.
+\end{proof}
+
+The maximizer will approach a parameter endpoint. A merely compact-uniform
+statement is insufficient for optimizing over all $a$. The following
+estimate supplies the missing endpoint uniformity.
+
+\begin{lemma}[A uniform first-term estimate]\label{lem:uniformdensity}
+There are absolute constants $C,T_0$ such that for all $0<b<1$ and
+$T\ge T_0$,
+\begin{equation}\label{eq:uniformdensity}
+ \left|p_{1-b}(T)-1-A(b)T^{-1-b}\right|
+ \le C A(b)T^{-2-b}+C e^{-T/2}.
+\end{equation}
+One may take $T_0=2$ with a sufficiently large absolute $C$.
+\end{lemma}
+\begin{proof}
+For $0\le s\le1/2$ and $0<b<1$, Taylor's formula gives
+\[
+ 0\le(1-s)^{-b}-1-bs\le8bs^2.
+\]
+Use this in \eqref{eq:scaledBose} on $(0,T/2)$.
+Its leading integral, when extended to infinity, is
+$A(b)T^{-1-b}$. The remainder is at most
+\[
+ \frac{8b\Gamma(b+2)\zeta(b+2)}
+ {\Gamma(1-b)\Gamma(b)}T^{-b-2}
+ =8(b+1)\frac{\zeta(b+2)}{\zeta(b+1)}A(b)T^{-b-2}
+ \le16A(b)T^{-b-2}.
+\]
+The omitted tail of the leading moment is $O(e^{-T/2})$ uniformly:
+for $x\ge1$ and $0<b<1$,
+$\int_x^\infty t^be^{-t}\dd t\le2x^be^{-x}$, while reciprocal
+gamma factors are bounded on the parameter interval.
+
+For the singular contribution on $T/2<t<T$, use
+$(e^t-1)^{-1}\le(1-e^{-1})^{-1}e^{-t}$ and retain the complete beta
+weight rather than bounding its endpoint exponent separately. The
+term containing $(1-t/T)^{-b}$ is bounded by a constant times
+\[
+ \frac{e^{-T/2}}{\Gamma(1-b)\Gamma(b)}
+ \int_0^T(T-t)^{-b}t^{b-1}\dd t=e^{-T/2}.
+\]
+The remaining nonsingular tails in \eqref{eq:scaledBose} are bounded
+by the same type of estimate, using $T\ge2$. This avoids a spurious
+factor diverging as $b\uparrow1$. Combining the bounds proves
+\eqref{eq:uniformdensity}.
+\end{proof}
+
+\section{Uniform Euler asymptotics and the drifting extremizer}
+\label{sec:optimization}
+For the remainder of this section set
+\begin{equation}\label{eq:Lell}
+ L=\tfrac12\log N,\qquad \ell=\log L,\qquad
+ B_N=\frac{\sqrt\pi}{2\sqrt N}.
+\end{equation}
+Statements using $\ell$ concern $N\to\infty$; they are not proposed as
+accurate low-depth formulas.
+
+\subsection{A uniform localization lemma}
+\begin{lemma}[Gaussian logarithmic averaging]\label{lem:logaverage}
+Uniformly for $1\le s\le3$,
+\begin{equation}\label{eq:logaverage}
+ \int_0^{N^{-1/4}}q_N(u)(-\log u)^{-s}\dd u
+ =B_NL^{-s}\bigl(1+O(L^{-1})\bigr).
+\end{equation}
+Also
+\begin{equation}\label{eq:INasymp}
+ I_N=B_N\left(1-\frac7{8N}+O(N^{-2})\right).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Set $u=t/\sqrt N$. Then $-\log u=L-\log t$ and
+$0<t<N^{1/4}$. On this interval
+\[
+ q_N(t/\sqrt N)=e^{-t^2}
+ +O\left(N^{-1}(t^2+t^4)e^{-t^2}\right),
+\]
+in the sense of an absolute pointwise bound with a fixed constant for
+large $N$. This follows from
+$-v-v^2/[2(1-v)]\le\log(1-v)\le-v$ and
+$1-e^{-x}\le x$, with $v=t^2/N\le N^{-1/2}$.
+On $e^{-L/2}\le t\le e^{L/2}$, the mean-value theorem gives, uniformly
+for $1\le s\le3$,
+\[
+ \left|\left(1-\frac{\log t}{L}\right)^{-s}-1\right|
+ \le C\frac{|\log t|}{L}.
+\]
+The Gaussian logarithmic moment is integrable. On $0<t<e^{-L/2}$
+the normalized factor lies between zero and one and the interval has
+length $e^{-L/2}$. Gaussian tails above $e^{L/2}$ are negligible.
+This proves \eqref{eq:logaverage} with constants independent of $s$.
+
+For \eqref{eq:INasymp}, expand one term further on a central interval
+and bound its complement by Gaussian decay:
+\[
+ q_N(t/\sqrt N)=e^{-t^2}
+ \left[1-\frac{t^2+t^4/2}{N}+O(N^{-2}P(t))\right],
+\]
+where a fixed polynomial $P$ suffices on a growing central interval.
+The normalized half-Gaussian moments of $t^2$ and $t^4$ are $1/2$ and
+$3/4$. Hence the coefficient is $1/2+(3/4)/2=7/8$.
+Taylor remainders on, for example, $t\le N^{1/12}$ and exponential
+bounds on the complement justify the integrated $O(N^{-2})$ term.
+\end{proof}
+
+\begin{theorem}[Uniform critical Euler expansion]\label{thm:uniformEuler}
+Uniformly for every $0<b<1$ as $N\to\infty$,
+\begin{equation}\label{eq:uniformEuler}
+ R_N(1-b)=I_N+B_NA(b)L^{-1-b}\bigl(1+O(L^{-1})\bigr)
+                   +O(N^{-3/4}).
+\end{equation}
+More explicitly, the absolute difference after subtracting
+$I_N+B_NA(b)L^{-1-b}$ is at most
+$C B_NA(b)L^{-2-b}+C N^{-3/4}$ with an absolute constant.
+In particular,
+\begin{equation}\label{eq:uniformlimit}
+ \sup_{0<a<1}\left|\frac{R_N(a)}{B_N}-1\right|\longrightarrow0.
+\end{equation}
+\end{theorem}
+\begin{proof}
+By \eqref{eq:Rintegral}, the difference $R_N-I_N$ is the integral of
+$q_N(u)[p_a(-\log u)-1]$. First restrict to $u\le N^{-1/4}$, so that
+$T=-\log u\ge L/2\ge2$ for large $N$. Apply
+Lemma~\ref{lem:uniformdensity}. The leading term is evaluated by
+Lemma~\ref{lem:logaverage} with $s=1+b$; the algebraic error uses
+$s=2+b$. The exponential density error integrates to at most
+\[
+ C\int_0^1q_N(u)u^{1/2}\dd u
+ \le C\int_0^\infty e^{-Nu^2}u^{1/2}\dd u=O(N^{-3/4}).
+\]
+For the complementary interval, use \eqref{eq:pglobalbound} and
+\[
+ \frac{q_N(u)}{1-u}
+ =\frac{1+u}{1+u^2}(1-u^2)^{N-1}
+ \le2e^{-(N-1)N^{-1/2}}\qquad(u\ge N^{-1/4}).
+\]
+Its total contribution is exponentially small uniformly in $a$.
+This proves the explicit remainder. Finally, $A(b)$ is bounded on
+$(0,1)$ and extends continuously with value zero at both endpoints,
+so \eqref{eq:uniformlimit} follows from \eqref{eq:INasymp}.
+\end{proof}
+
+\subsection{Fixed-parameter coefficients to all orders}
+Let
+\begin{equation}\label{eq:logmoments}
+ m_r=\frac{2}{\sqrt\pi}\int_0^\infty e^{-t^2}(\log t)^r\dd t
+ =\frac{\Gamma^{(r)}(1/2)}{2^r\Gamma(1/2)}.
+\end{equation}
+In particular $m_0=1$, $m_1=-\gamma/2-\log2$, and
+$m_2=m_1^2+\pi^2/8$.
+For $m\ge1$ define the explicit zeta--gamma coefficient
+\begin{equation}\label{eq:Dm}
+ D_m(b)=\sum_{j=1}^m\alpha_j(b)
+ \frac{(b+j)_{m-j}}{(m-j)!}\,m_{m-j}.
+\end{equation}
+
+\begin{corollary}[All logarithmic orders]\label{cor:allEuler}
+For fixed $0<b<1$ and any integer $M\ge1$,
+\begin{equation}\label{eq:allEuler}
+ R_N(1-b)=I_N+B_N\sum_{m=1}^M D_m(b)L^{-b-m}
+                     +O\bigl(B_NL^{-b-M-1}\bigr).
+\end{equation}
+The result is uniform on compact $b$-subintervals of $(0,1)$.
+The first three coefficients are
+\begin{align*}
+ D_1&=\alpha_1,\\
+ D_2&=\alpha_2+(b+1)m_1\alpha_1,\\
+ D_3&=\alpha_3+(b+2)m_1\alpha_2
+                +\tfrac12(b+1)(b+2)m_2\alpha_1.
+\end{align*}
+\end{corollary}
+\begin{proof}
+Insert Theorem~\ref{thm:densityall} into the localized error integral.
+For each density term expand
+\[
+ (L-\log t)^{-b-j}
+ =L^{-b-j}\sum_{r=0}^{M-j}
+ \frac{(b+j)_r}{r!}\frac{(\log t)^r}{L^r}
+ +\text{remainder}.
+\]
+On $|\log t|\le L/2$ Taylor's remainder is controlled by the next
+Gaussian logarithmic moment. The omitted small-$t$ interval has
+exponentially small length, and the large-$t$ interval has Gaussian
+decay. The $q_N$ replacement error is polynomially small in $N$, hence
+smaller than every fixed inverse logarithmic order. Integrate termwise
+using \eqref{eq:logmoments}, and collect terms with $j+r=m$ to obtain
+\eqref{eq:Dm}. Compact-uniform constants follow from the same estimates.
+\end{proof}
+
+This finite coefficient formula gives an entire family of proved
+asymptotic identities. The positivity of the density coefficients
+$\alpha_j$ does not imply that every $D_m$ is positive: logarithmic
+Gaussian moments can have either sign.
+
+\subsection{Maximization over the critical line}
+Let $R_N(0)$ and $R_N(1)$ have their continuous endpoint meanings from
+Proposition~\ref{prop:RNends}, and define
+\begin{equation}\label{eq:CN}
+ C_N=\max_{0\le a\le1}R_N(a).
+\end{equation}
+A maximizer exists by continuity. Its value is also the supremum over
+the open critical line.
+
+\begin{theorem}[Drift of every worst-case parameter]\label{thm:drift}
+For all sufficiently large $N$, every maximizer $a_N$ in
+\eqref{eq:CN} lies in $(0,1)$. As $N\to\infty$,
+\begin{align}
+ (1-a_N)\ell&\longrightarrow1,
+ \label{eq:drift}\\
+ C_N&=B_N\left[1+\frac{1+o(1)}{eL\ell}\right].
+ \label{eq:CNasymp}
+\end{align}
+No uniqueness of the finite-$N$ maximizer is assumed or concluded.
+\end{theorem}
+\begin{proof}
+Extend $A$ to $[0,1]$ by zero at both endpoints. Since the zeta pole
+has residue one and $\Gamma(1)=1$,
+\begin{equation}\label{eq:Afirst}
+ A(b)=b(1+O(b))\quad(b\downarrow0),
+ \qquad A(b)\le Cb\quad(0\le b\le1).
+\end{equation}
+Define $f_\ell(b)=A(b)e^{-\ell b}$. We claim
+\begin{equation}\label{eq:surrogatemax}
+ \max_{0\le b\le1}f_\ell(b)\sim\frac1{e\ell},
+ \qquad \ell b_\ell\to1
+\end{equation}
+for every maximizing $b_\ell$ and also every asymptotically maximizing
+sequence. Testing $b=1/\ell$ gives the lower estimate. For
+$t=\ell b$ in a fixed compact interval,
+$\ell f_\ell(t/\ell)\to te^{-t}$ uniformly. The upper bound in
+\eqref{eq:Afirst} makes the contribution for large $t$ uniformly small,
+and the same bound makes the contribution for small $t$ small.
+The function $te^{-t}$ has a unique maximum $1/e$ at $t=1$, proving
+\eqref{eq:surrogatemax}.
+
+Theorem~\ref{thm:uniformEuler}, after multiplication by $L/B_N$, is
+\begin{equation}\label{eq:normalizedopt}
+ \frac{L}{B_N}\bigl(R_N(1-b)-I_N\bigr)
+ =f_\ell(b)+O\bigl(f_\ell(b)/L\bigr)+O(LN^{-1/4}),
+\end{equation}
+uniformly on the open interval. At $a=1$ the left side is zero.
+At $a=0$, a direct substitution $u=t/\sqrt N$ gives
+\begin{equation}\label{eq:JminusI}
+ J_N^*-I_N
+ =\int_0^1q_N(u)\frac{u}{1-u}\dd u
+ =\frac1{2N}+O(N^{-3/2}).
+\end{equation}
+Thus \eqref{eq:normalizedopt} is valid at the endpoints as well with
+an error of the stated or smaller size. Its errors are $o(1/\ell)$,
+whereas the largest surrogate value is asymptotic to $1/(e\ell)$.
+Every true maximizer is therefore asymptotically maximizing for the
+surrogate and obeys \eqref{eq:drift}. It cannot be an endpoint for
+large $N$. The maximum excess is
+$B_N/(eL\ell)(1+o(1))$. Finally
+$I_N/B_N=1+O(N^{-1})$ proves \eqref{eq:CNasymp}.
+\end{proof}
+
+A useful consequence of the same proof is that, for \emph{every fixed}
+$0<a<1$, $R_N(a)>R_N(0)$ once $N$ is sufficiently large (depending on
+$a$). Indeed its positive excess over $I_N$ has order
+$N^{-1/2}L^{-1-b}$, while the $a=0$ excess has order $N^{-1}$.
+This supplies an analytic explanation for the finite-depth reversal,
+independent of the particular certified pair.
+
+\subsection{A Stieltjes-constant correction}
+Use the convention
+\[
+ \zeta(1+b)=\frac1b+\gamma-\gamma_1b+O(b^2)
+\]
+for the first Stieltjes constant $\gamma_1$ \cite{dlmf-zeta}.
+The gamma expansion \cite{dlmf-gamma} gives
+\begin{equation}\label{eq:Acubic}
+ A(b)=b-db^3+O(b^4),\qquad
+ d=\gamma_1+\frac{\gamma^2+\zeta(2)}2
+ =0.916240149844295830534809275626\ldots.
+\end{equation}
+In particular the quadratic coefficient vanishes exactly.
+
+\begin{theorem}[Refined drift and optimal excess]\label{thm:refined}
+For every maximizer $a_N$ and the notation \eqref{eq:Lell},
+\begin{align}
+ 1-a_N&=\frac1\ell-\frac{2d}{\ell^3}+O(\ell^{-4}),
+ \label{eq:refinedlocation}\\
+ C_N&=B_N\left[1+\frac1{eL\ell}
+       \left\{1-\frac d{\ell^2}+O(\ell^{-3})\right\}\right].
+ \label{eq:refinedvalue}
+\end{align}
+The location estimate applies to all maximizing choices, even if some
+finite depth has more than one maximizer.
+\end{theorem}
+\begin{proof}
+Expansion of the reciprocal gamma factor in \eqref{eq:alphaj} gives
+\[
+ \Gamma(1-b)^{-1}
+ =1-\gamma b+\tfrac12(\gamma^2-\zeta(2))b^2+O(b^3),
+\]
+which proves \eqref{eq:Acubic}. Near $b=0$ it follows that
+\[
+ \frac{A'(b)}{A(b)}=\frac1b-2db+O(b^2).
+\]
+By \eqref{eq:surrogatemax}, all surrogate maximizers eventually lie
+in $3/(4\ell)<b<5/(4\ell)$. On that interval $f_\ell''(b)$ is
+negative and bounded above by $-c\ell$ for some $c>0$: differentiating
+$A(b)e^{-\ell b}$ and using $A(b)=b+O(b^3)$ gives
+$f_\ell''(b)=e^{-\ell b}(\ell^2b-2\ell+O(\ell^{-1}))$.
+Hence there is one surrogate maximum $b_\ell^*$ in this interval.
+Its equation $A'/A=\ell$ implies
+\[
+ b_\ell^*=\ell^{-1}-2d\ell^{-3}+O(\ell^{-4}),
+ \qquad
+ f_\ell(b_\ell^*)=\frac1{e\ell}
+             \bigl(1-d\ell^{-2}+O(\ell^{-3})\bigr).
+\]
+
+It remains to transfer location, not just value, to the true error.
+Theorem~\ref{thm:drift} places every true maximizer in the same
+interval for large $N$. On it the uniform error in
+\eqref{eq:normalizedopt} is
+$O((\ell L)^{-1}+LN^{-1/4})$.
+Comparing the true maximum with the value at $b_\ell^*$ bounds the
+surrogate value loss by twice this error. Strict concavity therefore
+implies
+\[
+ |(1-a_N)-b_\ell^*|^2
+ \le C\left(\frac1{\ell^2L}+\frac{LN^{-1/4}}\ell\right).
+\]
+Since $L=e^\ell$ and $N=e^{2L}$, this location difference is smaller
+than every fixed inverse power of $\ell$. This proves
+\eqref{eq:refinedlocation} without differentiating the true error
+remainder. The same uniform comparison transfers the surrogate maximum
+value with an error smaller than any displayed inverse-$\ell$ order;
+\eqref{eq:INasymp} then gives \eqref{eq:refinedvalue}.
+\end{proof}
+
+\begin{remark}[Why the two extremal statements are compatible]
+The sharp constant after optimizing over \emph{both} $a$ and $N$ is
+$\Cstar$, approached at $a\downarrow0,N=1$.
+At a large \emph{prescribed} depth $N$, the maximum instead occurs at
+an interior parameter approaching $a=1$. The rate is inverse
+$\log\log N$, more precisely \eqref{eq:refinedlocation} with
+$\ell=\log(\frac12\log N)$. This slow rate makes the limiting formulas
+poor low-depth predictors. The statements concern different
+optimizations; neither reverses or weakens Theorem~\ref{thm:sharp}.
+\end{remark}
+
+\section{Exact certificates and independent computations}
+\label{sec:verification}
+\subsection{Arithmetic contract of the rational verifier}
+All certified quantities use the already proved bound
+$0<E_K-g<(1/a)2^{-K}$ with $K=256$. In particular, the verifier does
+not assume the new constant $\Cstar$ to certify its examples.
+The finite sum is formed with the identity
+\begin{equation}\label{eq:Eulerweights}
+ E_N=2^{-N}\sum_{n=0}^{N-1}(-1)^nf(n)
+                   \sum_{j=n+1}^N\binom Nj.
+\end{equation}
+To prove it, substitute the finite definition of $d_k$ and use
+\[
+ \sum_{k=n}^{N-1}2^{N-k-1}\binom kn
+ =\sum_{j=n+1}^N\binom Nj.
+\]
+Pascal's identity proves the coefficient relation by induction.
+This avoids constructing a large interval difference table.
+
+For an inverse rational power $n^{-p/q}$, choose $S=10^{210}$ and
+compute an integer proposal $r$ for the $q$th root of $n^pS^q$.
+The verifier accepts it only after checking
+\begin{equation}\label{eq:rootcertificate}
+ r^q\le n^pS^q<(r+1)^q.
+\end{equation}
+If the left equality does not hold, $S/(r+1)<n^{-p/q}<S/r$.
+In either case these rational endpoints are rounded outward to the
+grid $S^{-1}\mathbb Z$ using integer division. Positive products,
+signed linear combinations, and division by positive integers are
+also rounded outward. The root-finding iteration is a proposal method;
+\eqref{eq:rootcertificate}, not the iteration history, is its guarantee.
+
+An enclosure for $g$ is obtained by subtracting $(1/a)2^{-256}$ from
+the lower endpoint of the finite $E_{256}$ enclosure and leaving the
+upper endpoint unchanged. Subtract this $g$ interval from the finite
+$E_N$ interval and multiply by $2^N$ to obtain $R_N$. At $N=128$ the
+analytic tail width is at most $(1/a)2^{-128}$, well below the displayed
+30-place comparison. Finally the program tests the human-readable
+rational endpoints in \eqref{eq:certquarter}--\eqref{eq:certhalf}
+directly by integer cross multiplication.
+
+\subsection{Recorded exact checks}
+The supplied run passes 2,555 integer-root acceptance checks. It
+certifies Gaussian values and six scaled-error depths for each of
+$a=1/10,1/4,1/2,3/4,9/10$, hence 30 positive-error enclosures. It also
+checks 56 strict surplus finite differences for each parameter, for
+280 such tests in total. These finite tests illustrate
+Theorem~\ref{thm:moments}; the theorem's all-index content comes from
+the positive integral proof, not from extrapolating the test grid.
+The exact difference certificate is
+\begin{equation}\label{eq:reversaldiff}
+ \begin{split}
+ 0.000314648470109505023921507988
+ &<R_{128}(1/2)-R_{128}(1/4)\\
+ &<0.000314648470109505023921507989.
+ \end{split}
+\end{equation}
+The JSON stores outward intervals rather than unsupported point values.
+A separate SymPy script checks eight algebraic identities and 528 finite
+instances of the binomial weight identity. It does not check analytic
+continuation, dominated convergence, or the uniformity of asymptotic
+remainders; those arguments are in the article.
+
+\subsection{Independent numerical diagnostics}
+The floating-point program uses 180 decimal digits for finite Euler
+calculations. Five Gaussian values are separately checked by
+beta--gamma quadrature, which evaluates \eqref{eq:Gtransport} rather
+than an Euler difference table. Nine density tests compare the beta
+average \eqref{eq:p} with the regularized Bose expression
+\eqref{eq:Bose-surplus} at $a=1/4,1/2,3/4$ and $T=2,10,50$.
+These checks also compare one- and two-term density asymptotics.
+They are diagnostics, not rigorous quadrature error bounds.
+
+A grid scan followed by bounded local optimization gives the following
+\emph{proposals}; uniqueness and global optimality at these particular
+depths are not certified by the optimizer.
+\begin{center}
+\small
+\begin{tabular}{@{}rrr@{}}
+\toprule
+$N$ & proposed maximizing $a$ & proposed $\max R_N$\\
+\midrule
+8   & 0.10599483 & 0.359993461628\\
+16  & 0.21532658 & 0.249985265562\\
+32  & 0.29829873 & 0.173968759177\\
+64  & 0.36226668 & 0.121253639850\\
+128 & 0.41230987 & 0.084666552368\\
+256 & 0.45206073 & 0.059234316775\\
+\bottomrule
+\end{tabular}
+\end{center}
+The movement is consistent with the proved drift, but the proof is
+independent of the table. The program additionally optimizes the
+surrogate $A(b)e^{-\ell b}$ for larger $\ell$; those surrogate results
+are explicitly labelled and are not presented as astronomical-$N$
+computations of the original error.
+
+\subsection{Reproduction}
+From the package directory, run
+\begin{verbatim}
+python code/certify.py
+python code/symbolic_checks.py
+python code/diagnostics.py
+python code/build_article.py
+\end{verbatim}
+Only the first command is needed to replay the rational certificates;
+it uses the Python standard library. The optional diagnostics require
+mpmath, NumPy, SciPy, and SymPy at the versions listed in
+\texttt{requirements-diagnostics.txt}. The build requires a local
+\texttt{pdflatex}. All scripts resolve their paths relative to their
+own location, accept no external numerical oracle, and write their
+results to the package's \texttt{data/} directory. Run them on a copy
+when preserving a delivered evidence snapshot.
+
+\section{Audit conclusions and integration}
+\label{sec:audit}
+\subsection{What should change in the claim ledger}
+The incoming report's Conjecture~12.3 can be promoted to a theorem with
+Theorem~\ref{thm:sharp} as its proof reference. Its question about sharp
+$N$-dependence is answered by Theorems~\ref{thm:uniformEuler},
+\ref{thm:drift}, and \ref{thm:refined}. The new proof route relies on
+the existing positive double kernel and critical measure, not on any
+unproved numerical relation among special values.
+
+No error in the \emph{stated} critical measure or Euler bound of the
+reviewed incoming report was established. The relevant corrections are
+to possible extensions or editorial wording: do not replace the
+critical measure by a density without its atom; do not describe its
+boundary series as ordinarily convergent; do not omit the factor $X$
+from the new rate-one beta--gamma coupling; and do not extend the
+proved decrease of $R_1$ to the functions $R_N$ individually.
+The last overextension is now excluded by an exact certificate.
+
+The asymptotic expansion \eqref{eq:densityall} must not be advertised as
+a convergent global series or as a signed remainder theorem. For
+parameter optimization use \eqref{eq:uniformdensity}, which is uniform
+up to both parameter endpoints, rather than the compact-uniform
+fixed-order expansion. Finally, the stationary point of the surrogate
+is not the exact finite-$N$ optimizer; Theorem~\ref{thm:refined} proves
+their asymptotic proximity and the numerical records keep them separate.
+
+\subsection{Suggested repository placement}
+The complete delivery can be placed under
+\begin{center}\small
+\nolinkurl{Analysis/Polylogarithms/docs/reports/critical-euler-transport/}.
+\end{center}
+Its thematic predecessor is the incoming real-order-threshold report.
+The manuscript insertion supplied in \texttt{integration/} uses the
+prefix \texttt{criticaleuler:} and is a summary with references to the
+full proofs, not a replacement for them. The main proof of the sharp
+constant belongs near the signed-kernel and certified-evaluation
+material; the positive surplus moments connect naturally to the
+Hurwitz-jet chapters. Intake should preserve the original delivery and
+record the change of conjecture status in the programme ledger.
+
+The existing $S_6$ identity, subcritical angular uniqueness, and the
+broad normalized-radius conjecture are not resolved by this article.
+No new independence, minimal-depth, or transcendence assertion follows
+from these positive kernels. This distinction is especially important
+because a new numerical evaluation method does not by itself reduce a
+constant to a prescribed arithmetic period basis.
+
+\section{Further research questions}
+\label{sec:future}
+\subsection{Uniqueness and monotonic motion of the finite-depth maximizer}
+The asymptotic theory localizes every maximizer but does not exclude
+several extremely close maxima at a finite depth. The numerical samples
+suggest a stronger statement.
+\begin{conjecture}[Eventual unimodality]\label{conj:unimodal}
+For every sufficiently large integer $N$, $a\mapsto R_N(a)$ has exactly
+one critical point in $(0,1)$, a strict global maximum. The maximizing
+outer order increases strictly with $N$ once $N$ is sufficiently large.
+\end{conjecture}
+A route to proof is to differentiate the balanced density identity in
+the shape parameter and establish uniform derivative remainders. The
+function-value argument in Theorem~\ref{thm:refined} deliberately avoids
+such estimates and therefore cannot supply uniqueness. A useful finite
+problem is to determine the first depth at which the maximum leaves
+$a=0$, with certified endpoint derivative signs and an exhaustive
+zero count for the derivative.
+
+\subsection{An explicit nonasymptotic optimal-depth bound}
+Theorem~\ref{thm:uniformEuler} gives absolute uniform constants but does
+not optimize or enumerate them. An implementable bound of the form
+\[
+ R_N(a)\le\frac{\sqrt\pi}{2\sqrt N}
+ \left(1+\frac{K}{\log N\,\log\log N}\right)
+\]
+with explicit $K$ and a verified threshold would improve practical
+certificates for all critical orders at once. Below that threshold one
+could combine the sharp all-depth constant with a finite exact
+parameter enclosure. This requires interval control over a continuum
+of $a$, not merely a table of rational sample orders.
+
+\subsection{The exact radial domain of order transport}
+Determine for which pairs $(w,\rho)$ the strict decrease of
+$G_{a,w-a}(\rho)$ holds for all $a\in(0,w)$. Our theorem covers
+$0<\rho\le\sqrt3$ for every $w>0$. Beyond that radius the pointwise
+kernel changes derivative sign, but the beta--gamma average may preserve
+the comparison in a larger domain. A proof or a rigorously enclosed
+counterexample should distinguish these two mechanisms.
+
+\subsection{Other Gaussian filters and cyclotomic points}
+The filter $(1-u^2)^N/(1+u^2)$ is particularly suited to the Gaussian
+point. Root-of-unity filters of higher order lead to different localized
+moments and may change the worst-order drift. It is natural to ask
+whether balanced critical densities give similarly sharp constants and
+explicit Stieltjes-constant corrections for Eisenstein or other
+cyclotomic evaluations. The positivity of the present filter cannot
+simply be presumed for a complex-valued generalization.
+
+\subsection{Higher-depth critical defects}
+Replacing $H_{n-1}^{(b)}$ by nested harmonic sums should introduce more
+than one critical balance. A precise objective is to identify the
+largest elementary positive moment measure that can be subtracted from
+the corresponding defect while retaining positivity. At depth two the
+answer supplied here includes the entire Lebesgue measure. At higher
+depth, an endpoint atom and an unproved sign pattern must not be
+confused with a fully established signed Hausdorff representation.
+
+\subsection{Remaining arithmetic and geometric questions}
+The $S_6$ reduction and the subcritical angular-zero conjecture remain
+separate worthwhile targets. The present surplus factorization may
+help compare critical functions, but it does not construct a finite
+signed measure below the known threshold. On the computational side,
+the finite integer-root verifier is a small candidate for formal
+verification; the analytic layer would additionally require beta--gamma
+integration, signed measure transforms, and uniform asymptotics.
+
+\section*{Conclusion}
+\addcontentsline{toc}{section}{Conclusion}
+The critical constant is now determined by a strict beta-order comparison,
+not by numerical optimization. A balanced Bose-kernel identity reveals a
+positive density surplus, giving stronger harmonic moment inequalities
+and a new zero-free difference factorization. That same surplus explains
+why the worst finite-depth Euler parameter moves in the opposite
+direction from the endpoint controlling the sharp all-depth constant.
+The uniform error theorem and its Stieltjes-constant refinement identify
+this movement quantitatively, while a rational certificate exhibits the
+reversal at a concrete finite depth. These results are a continuation of
+the inspected real-order programme, with unresolved arithmetic and
+geometric questions left explicitly separate.
+
+\appendix
+\section{Claim-status summary}
+\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.38\textwidth}>{\raggedright\arraybackslash}p{.56\textwidth}@{}}
+\toprule
+Claim & Evidence and status\\\midrule\endhead
+Double kernel; critical measure; Euler remainder & Prior analytic identities, rederived where needed and attributed.\\[3pt]
+Fixed-total-order transport and comparisons & Proved in Section~\ref{sec:transport}; imaginary radii through $\sqrt3$ only.\\[3pt]
+Incoming Conjecture 12.3 & Proved, including strict monotonicity and sharp uniform constant.\\[3pt]
+Strict surplus density and positive moments & Proved by a balanced integral, with all-index and continuous-parameter consequences.\\[3pt]
+Zero-free surplus difference & Proved for the principal branch on the slit plane.\\[3pt]
+Uniform Euler expansion and extremizer drift & Proved with endpoint-uniform error; no uniqueness premise.\\[3pt]
+Refined Stieltjes-constant coefficient & Proved by surrogate comparison and curvature, not a fitted numerical coefficient.\\[3pt]
+Finite-depth reversal & Exact outward rational certificate using a proved infinite-tail bound.\\[3pt]
+Quadrature and numerical optimizer tables & Diagnostics only; no interval-certified global optimum claim.\\[3pt]
+Eventual unimodality and monotone maximizing parameter & Conjectural.\\[3pt]
+$S_6$, subcritical angular uniqueness, broad normalized-radius claim & Not settled here.\\[3pt]
+Global novelty; proof-assistant formalization; exhaustive source audit & Not claimed.\\
+\bottomrule
+\end{longtable}
+\normalsize
+
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{9}
+\bibitem{manuscript}
+ProveIt Contributors, \emph{Polylogarithms and their Arithmetic Bridges:
+Special Values, Zeta Jets, Lattices and Experimental Discovery}.
+Canonical manuscript, repository \texttt{VladimirReshetnikov/ProveIt},
+revision \basecommit.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/a0a90ef31877f98be437191c48b46f02d5456867/Analysis/Polylogarithms/docs/manuscript}.
+
+\bibitem{threshold}
+ProveIt Contributors, \emph{The Sharp Real-Order Threshold for Harmonic
+Polylogarithms: Endpoint atoms, zero geometry, and certified fractional-order
+identities}, incoming research delivery, 9 October 2026.
+\texttt{ProveIt\_RealOrder\_Threshold.zip}, especially Theorem~3.1,
+Section~9, Proposition~12.2, and Conjecture~12.3.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/a0a90ef31877f98be437191c48b46f02d5456867/docs/incoming/ProveIt_RealOrder_Threshold.zip}.
+
+\bibitem{dlmf-beta}
+NIST Digital Library of Mathematical Functions, \S5.12,
+\emph{Beta Function}, especially Euler's beta integral 5.12.1.
+Version 1.2.8; accessed 9 October 2026 (Pacific time).
+\url{https://dlmf.nist.gov/5.12}.
+
+\bibitem{dlmf-hurwitz}
+NIST Digital Library of Mathematical Functions, \S25.11,
+\emph{Hurwitz Zeta Function}, especially its regularized integral
+representations. \url{https://dlmf.nist.gov/25.11}.
+
+\bibitem{dlmf-polylog}
+NIST Digital Library of Mathematical Functions, \S25.12,
+\emph{Polylogarithms}. \url{https://dlmf.nist.gov/25.12}.
+
+\bibitem{dlmf-zeta}
+NIST Digital Library of Mathematical Functions, \S25.2,
+\emph{Definition and Expansions}, including the Laurent expansion and
+Stieltjes constants. \url{https://dlmf.nist.gov/25.2}.
+
+\bibitem{dlmf-gamma}
+NIST Digital Library of Mathematical Functions, \S5.7,
+\emph{Series Expansions} of the gamma function.
+\url{https://dlmf.nist.gov/5.7}.
+
+\bibitem{liu-pego}
+J.-G. Liu and R. L. Pego, \emph{On generating functions of Hausdorff
+moment sequences}, Transactions of the American Mathematical Society
+\textbf{368} (2016), 8499--8518. Consult the updated arXiv version and
+its corrigendum when using its statements.
+\url{https://arxiv.org/abs/1401.8052}.
+\end{thebibliography}
+\end{document}

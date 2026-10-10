@@ -1,0 +1,95 @@
+\section{A positive secant kernel for every Euler remainder}
+\label{sec:secant}
+Let $a,b>0$, $w=a+b>0$, and let $R_N=2^N(E_N-g_{a,b})$
+use the Euler partial sums defined in \eqref{eq:eulerdef}, now for arbitrary $a,b>0$. Define
+\[
+ H_N(s)=\frac{(1-s^{-2})^N}{1+s^{-2}},\qquad s\ge1.
+\]
+\begin{theorem}[Positive secant identity]
+For every $a,b>0$, the Euler series converges absolutely to the analytic
+value $g_{a,b}$. Its partial sums decrease strictly to that value.
+For every integer $N\ge1$, with $V\sim\mathrm{Beta}(a,b)$,
+\begin{equation}\label{secant:eq:remainder}
+ R_N=\mathbb E\!\left[\frac1{\Gamma(w)}\int_0^\infty
+ r^{w-1}\frac{H_N(e^r)-H_N(e^{Vr})}{e^r-e^{Vr}}\,dr\right].
+\end{equation}
+The quotient is positive for $0<V<1$. Its extension to $V=1$ is
+$H_N'(e^r)$. Formula~\eqref{secant:eq:remainder} gives a positive
+integral. When a finite signed Hausdorff representation exists, its
+formula for the same remainder instead uses cancellation between
+positive and negative parts. The positive secant formula also works
+below the signed-measure threshold.
+\end{theorem}
+\begin{proof}
+
+Start with the positive Mellin representation, where $f(n)=f_n$,
+\[
+ f(n)=\frac1{\Gamma(a)\Gamma(b)}\int_0^\infty\!\int_0^\infty
+ u^{a-1}t^{b-1}\frac{e^{-u}}{e^t-1}
+ \bigl(e^{-2nu}-e^{-2n(u+t)}\bigr)\,du\,dt.
+\]
+This is the finite geometric-sum formula for $H_{2n}^{(b)}$ followed
+by the gamma integral for $(2n+1)^{-a}$. Applying the finite binomial
+transform gives
+\[
+ -d_k=\frac1{\Gamma(a)\Gamma(b)}\int_0^\infty\!\int_0^\infty
+ u^{a-1}t^{b-1}\frac{e^{-u}}{e^t-1}
+ \left((1-e^{-2(u+t)})^k-(1-e^{-2u})^k\right)du\,dt.
+\]
+Every displayed integrand is nonnegative. Tonelli's theorem therefore
+permits summing $\sum_{k\ge N}2^{N-k-1}(-d_k)$ under the double
+integral. Summing the two geometric tails produces
+\[
+ \frac{e^{-u}}{e^t-1}
+ \left(H_N(e^{u+t})-H_N(e^u)\right)
+ =\frac{H_N(e^{u+t})-H_N(e^u)}{e^{u+t}-e^u}.
+\]
+The beta change of variables $r=u+t$, $v=u/r$ gives the asserted
+integral for this nonnegative series. To establish its finiteness and
+identify the Euler sum without a restriction on $w$, first take $N=1$.
+Direct simplification shows that its secant kernel is twice the
+kernel in \eqref{eq:Jw}. Therefore
+\[
+ \sum_{k\ge1}\frac{-d_k}{2^{k+1}}
+   =\mathbb E J_w(V)=-g_{a,b}<\infty.
+\]
+This proves absolute convergence to the analytic value for every
+positive pair. Also $d_k<0$ for $k\ge1$, since its displayed positive
+integrand is strictly positive. Hence the partial sums decrease
+strictly. Every later geometric tail is finite and equals
+$2^N(E_N-g_{a,b})$, proving the formula for all $N\ge1$.
+No conditionally convergent rearrangement is needed.
+\end{proof}
+
+For $N=1$, $H_1(s)=(s^2-1)/(s^2+1)$ and
+\[
+ H_1''(s)=\frac{4(1-3s^2)}{(1+s^2)^3}<0\qquad(s\ge1).
+\]
+Consequently its secant slope decreases as the lower endpoint $e^{vr}$
+increases. Direct simplification gives
+\[
+ \frac{H_1(e^r)-H_1(e^{vr})}{e^r-e^{vr}}
+ =\frac{e^{-vr}+e^{-r}}{2\cosh(vr)\cosh r},
+\]
+which is exactly twice the kernel used in the allocation theorem.
+For $N=2$, however, $H_2(1+h)=2h^2+O(h^3)$, so $H_2$ is convex near
+one. The same pointwise concavity proof does not extend to every $N$.
+
+There is a particularly small exact obstruction to monotonicity in Euler
+order away from the critical line. At $(a,b)=(1,1)$,
+\[
+ g_{1,1}=\operatorname{Im}\frac12\log^2(1-i)
+       =-\frac{\pi\log2}{8},\qquad f(1)=\frac{H_2}{3}=\frac12.
+\]
+Since $E_1=0$ and $E_2=-f(1)/4=-1/8$,
+\[
+ R_1=\frac{\pi\log2}{4},\qquad
+ R_2=\frac{\pi\log2}{2}-\frac12,
+ \qquad R_2-R_1=\frac{\pi\log2-2}{4}>0.
+\]
+The last inequality follows already from $\pi>3$ and
+$\log2=2\operatorname{artanh}(1/3)>2/3$.
+This does not challenge the critical-line monotonicity theorem, whose
+endpoint atom supplies a different argument. It shows why the sharp
+bound for $-2g$ and the first Euler remainder cannot be declared the
+sharp bound for every Euler order without an additional argument.

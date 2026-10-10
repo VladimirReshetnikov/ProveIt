@@ -1,0 +1,85 @@
+% Additive insertion. Requires amsmath, amssymb, amsthm and theorem/proof.
+% Full proofs: reports/beta-transfer-critical-euler/article/beta_transfer.tex.
+% All labels are deliberately prefixed betatransfer:.
+\subsection{Beta transfer and the sharp critical Euler constant}
+\label{betatransfer:section}
+
+For positive real orders, write
+\[
+ F_{a,b}(z)=\sum_{n\ge1}\frac{H_{n-1}^{(b)}}{n^a}z^n,
+ \qquad g_{a,b}=\operatorname{Im}F_{a,b}(\mathrm i),
+\]
+using the principal analytic continuation at the boundary. Define the
+profile
+\[
+ \mathcal H_w(v;z)=\frac1{\Gamma(w)}\int_0^\infty
+ T^{w-1}\frac{z^2e^{-(1+v)T}}
+ {(1-ze^{-vT})(1-ze^{-T})}\,\mathrm dT.
+\]
+Changing variables in the positive double gamma integral gives
+\begin{equation}\label{betatransfer:beta}
+ F_{a,b}(z)=\frac1{\mathrm B(a,b)}\int_0^1
+ v^{a-1}(1-v)^{b-1}\mathcal H_{a+b}(v;z)\,\mathrm dv.
+\end{equation}
+
+\begin{theorem}[Order transfer and the critical constant]
+\label{betatransfer:main}
+For every $w>0$ and $0<\rho\le\sqrt3$, the function
+$a\mapsto-\operatorname{Im}F_{a,w-a}(\mathrm i\rho)$ decreases
+strictly on $(0,w)$. On the critical line,
+\[
+ \frac\pi2-1<-2g_{a,1-a}<\frac\pi4+\frac{\log2}{2}
+ \quad(0<a<1).
+\]
+Let
+\[
+ f(n)=\frac{H_{2n}^{(1-a)}}{(2n+1)^a},\qquad
+ E_N=\sum_{k=0}^{N-1}\frac1{2^{k+1}}
+       \sum_{n=0}^k(-1)^n\binom kn f(n).
+\]
+Then, uniformly over $0<a<1$ and $N\ge1$,
+\begin{equation}\label{betatransfer:criticalbound}
+ 0<E_N-g_{a,1-a}
+ <\left(\frac\pi4+\frac{\log2}{2}\right)2^{-N}.
+\end{equation}
+The constant is optimal. This resolves Conjecture 12.3
+(\texttt{conj:constant}) of the preserved real-order-threshold report.
+\end{theorem}
+\begin{proof}
+The negative imaginary part of the elementary Gaussian kernel is
+\[
+ \frac{\rho^3xy(x+y)}{(1+\rho^2x^2)(1+\rho^2y^2)},\qquad 0<y<x<1.
+\]
+Its derivative in $x$ has the sign of $2x+y-\rho^2x^2y$, positive
+for $\rho\le\sqrt3$. Therefore the negative imaginary profile
+strictly decreases with $v$. The beta density in
+\eqref{betatransfer:beta} shifts to the right in monotone likelihood
+ratio order as $a$ increases at fixed $a+b=w$; its derivative formula
+is the strictly negative covariance with $\log(v/(1-v))$.
+The endpoint profiles are
+$z\operatorname{Li}_w(z)/(1-z)$ and
+$\operatorname{Li}_{w-1}(z)-\operatorname{Li}_w(z)$, giving the
+critical endpoint constants.
+
+The detailed report constructs
+$\mu_a=a^{-1}\delta_1-\nu_a(-\log u)\,\mathrm du$ with
+$\nu_a(T)>1$ and the required critical moments. Consequently
+\[
+ 2^N(E_N-g_{a,1-a})
+ =\int_0^1\frac{(1-u^2)^N}{1+u^2}\nu_a(-\log u)\,\mathrm du
+ \le -2g_{a,1-a}.
+\]
+Strict positivity and the endpoint comparison prove the bound.
+Its optimality follows from $N=1$ and $a\downarrow0$.
+\end{proof}
+
+The same report proves one-sided Euler convergence for all $a,b>0$
+with the elementary bound $0<E_N-g_{a,b}<2(N+1)2^{-N}$, by integrating
+positive divided differences. Below $a+b=1$ this is not a signed
+Hausdorff-measure proof. The boundary values on and below that line
+are analytic/Abel values, not ordinarily convergent boundary sums.
+The stronger assertion that every $2^N(E_N-g_{a,1-a})$ decreases with
+$a$ is false: an exact rational certificate gives
+$A_8(1/10)-A_8(0)>13/10000$, where the value at $a=0$ is an endpoint
+limit. Neither the broad angular-zero conjectures nor the $S_6$
+identity is resolved by these results.

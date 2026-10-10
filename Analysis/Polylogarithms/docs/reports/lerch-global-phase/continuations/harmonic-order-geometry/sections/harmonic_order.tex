@@ -1,0 +1,583 @@
+\section{Notation for the order interpolation}
+\label{sec:order-notation}
+
+Write $H_0=0$, $H_n=\sum_{j=1}^n1/j$ and
+\begin{equation}\label{sorder:def:S}
+ S(s)=\sum_{n=0}^{\infty}\frac{(-1)^nH_n}{(2n+1)^s},\qquad \Re s>0.
+\end{equation}
+Use the positive real logarithm in the denominator, and let
+$\beta(s)=\sum_{n\ge0}(-1)^n(2n+1)^{-s}$ denote the Dirichlet beta
+function and its entire continuation. Put
+\[
+ c=\frac\pi2,\qquad G=\beta(2),\qquad
+ L(x)=\gamma+\Re\psi\left(\frac{1+ix}{2}\right)\quad(x\ge0).
+\]
+The gamma logarithmic derivative is $\psi$, and $\gamma=-\psi(1)$.
+In particular, $L(0)=-2\log2$.
+
+Analytic continuation of alternating Euler sums and their values at
+negative integers belong to an established subject; see
+Boyadzhiev--Gadiyar--Padma \cite{BGP}. Our continuation argument is an
+elementary instance of that method. The result developed here is the
+complete real zero classification for this specific odd-denominator
+harmonic interpolation, together with quantitative zero asymptotics.
+No exhaustive literature priority claim is made.
+
+\section{Entire continuation and a zero-free real ray}
+
+Define, for $t\ge0$,
+\begin{equation}\label{sorder:def:K}
+ K(t)=\frac{e^{-t}\log(1+e^{-2t})}{1+e^{-2t}}
+     =\frac{\log(2\cosh t)-t}{2\cosh t}.
+\end{equation}
+The second equality holds on the real line; near zero both sides have
+the same analytic germ. The generating function of the harmonic
+numbers gives
+\[
+ -K(t)=\sum_{n\ge0}(-1)^nH_n e^{-(2n+1)t}\qquad(t>0).
+\]
+Consequently, initially by absolute convergence for $\Re s>1$,
+\begin{equation}\label{sorder:eq:Mellin}
+ S(s)=-\frac1{\Gamma(s)}\int_0^\infty t^{s-1}K(t)\,dt.
+\end{equation}
+The original series is locally uniformly convergent for $\Re s>0$:
+summation by parts applies because $H_n(2n+1)^{-s}\to0$ and the
+successive differences are $O_C(n^{-1-\sigma}\log n)$ on every compact
+set $C\subset\{\Re s\ge\sigma>0\}$. Thus \eqref{sorder:eq:Mellin}
+represents \eqref{sorder:def:S} throughout that half-plane.
+
+\begin{proposition}\label{sorder:prop:entire}
+The function $S$ extends to an entire function, real on the real axis.
+For every integer $j\ge0$,
+\begin{equation}\label{sorder:eq:negative-derivative}
+ S(-j)=(-1)^{j+1}K^{(j)}(0).
+\end{equation}
+Moreover $S(s)<0$ for every real $s\ge-2$.
+\end{proposition}
+\begin{proof}
+The function $K$ is analytic near zero and is $O(e^{-3t})$ at positive
+infinity, as are each of its fixed-order derivatives. Subtract its
+Taylor polynomial on $[0,1]$. The Mellin integral then continues
+meromorphically across any finite part of the plane, with possible
+simple poles at $s=-j$ and residues $K^{(j)}(0)/j!$.
+The reciprocal gamma function has a simple zero there with leading
+coefficient $(-1)^j j!$. This cancels every pole and gives
+\eqref{sorder:eq:negative-derivative}. The construction uses real
+Taylor coefficients and a real kernel, proving the reality assertion.
+
+For the sign assertion we show $K''(t)>0$ on $[0,\infty)$. Set
+$y=e^{-2t}\in(0,1]$. Direct differentiation gives
+\begin{equation}\label{sorder:eq:Ksecond}
+ K''(t)=\frac{\sqrt y}{(1+y)^3}
+ \left((y^2-6y+1)\log(1+y)-4y^2+8y\right).
+\end{equation}
+If $y^2-6y+1\ge0$, the bracket is positive. Otherwise
+$\log(1+y)<y$, so the bracket is strictly greater than
+\[
+ (y^2-6y+1)y-4y^2+8y=y(y-1)(y-9)\ge0.
+\]
+Two integrations by parts in \eqref{sorder:eq:Mellin} give
+\begin{equation}\label{sorder:eq:twice-parts}
+ S(s)=-\frac1{\Gamma(s+2)}
+       \int_0^\infty t^{s+1}K''(t)\,dt,
+       \qquad \Re s>-2.
+\end{equation}
+The integrations are first justified for $\Re s>0$; analyticity then
+extends the identity to the stated half-plane. For real $s>-2$ all
+factors in the integral and the gamma denominator are positive, so
+$S(s)<0$. At the endpoint,
+$S(-2)=-K''(0)=(\log2-1)/2<0$.
+\end{proof}
+
+\begin{corollary}[A complex zero-free half-plane]\label{sorder:cor:right-half-plane}
+For every $s\in\mathbb C$ with $\Re s\ge3$,
+\[
+ |3^sS(s)+1|<\frac56.
+\]
+In particular $S$ has no zero in that half-plane.
+\end{corollary}
+\begin{proof}
+The $n=1$ term of $3^sS(s)$ is $-1$, and absolute convergence gives
+\[
+ |3^sS(s)+1|\le27\sum_{n=2}^\infty\frac{H_n}{(2n+1)^3}.
+\]
+For $n\ge6$, use $H_n\le1+\log n$ and
+$(2n+1)^3>8n^3$. The function $(1+\log x)x^{-3}$ decreases for
+$x\ge5$, so the tail from $n=6$ is at most
+$(3+2\log5)/800<7/800$. Therefore
+\[
+ \sum_{n=2}^\infty\frac{H_n}{(2n+1)^3}
+ <\sum_{n=2}^5\frac{H_n}{(2n+1)^3}+\frac7{800}
+ =\frac{122481517493}{3993750684000}.
+\]
+Multiplication by $27$ gives a rational number strictly below $5/6$.
+\end{proof}
+
+\subsection{Exact values at the negative integers}
+
+Define the generalized secant numbers by
+\[
+ (\sec z)^\alpha=\sum_{m\ge0}E_{2m}(\alpha)\frac{z^{2m}}{(2m)!},
+ \qquad E_{2m}=E_{2m}(1)>0.
+\]
+A prime on $E_{2m}(\alpha)$ will mean differentiation with respect
+to $\alpha$. Comparison of the even and odd parts of \eqref{sorder:def:K}
+gives the following exact formulas.
+\begin{corollary}\label{sorder:cor:negative-values}
+For $m\ge0$,
+\begin{align}
+ S(-2m)&=\frac{(-1)^m}{2}
+       \left(E'_{2m}(1)-E_{2m}\log2\right),\label{sorder:eq:negative-even}\\
+ S(-2m-1)&=\frac{(-1)^{m+1}}2(2m+1)E_{2m}.
+ \label{sorder:eq:negative-odd}
+\end{align}
+For $m\ge1$, $(-1)^mS(-2m)>0$.
+\end{corollary}
+\begin{proof}
+The even part of $K$ is
+$\tfrac12\sech t\,[\log2+\log\cosh t]$ and its odd part is
+$-\tfrac12t\sech t$. Use
+$\partial_\alpha(\sech t)^\alpha|_{\alpha=1}
+=-\sech t\log\cosh t$ and $\sech t=\sec(it)$ in
+\eqref{sorder:eq:negative-derivative}. This proves both identities.
+The Taylor coefficients of $\log\sec z$ in positive even degrees are
+positive: its derivative is $\tan z$, whose positive coefficients
+follow recursively from $u'=1+u^2$, $u(0)=0$.
+Therefore, when $m\ge1$, $E_{2m}(\alpha)$ is a nonzero polynomial
+in positive powers of $\alpha$ with nonnegative coefficients.
+It follows that $E'_{2m}(1)\ge E_{2m}$, proving the sign because
+$\log2<1$.
+\end{proof}
+For example,
+\[
+\begin{array}{c|rrrrrrr}
+ s&0&-1&-2&-3&-4&-5&-6\\\hline
+ S(s)&-\frac{\log2}{2}&-\frac12&\frac{\log2-1}{2}&\frac32&
+ 4-\frac52\log2&-\frac{25}2&\frac{61\log2-121}{2}
+\end{array}
+\]
+The sign change between $-2m-1$ and $-2m$ already proves the existence
+of at least one zero in each interval. It gives neither uniqueness nor
+exclusion of other real zeros; those require the next argument.
+
+\section{A Fourier--beta identity}
+
+For real $\alpha>0$ define
+\[
+ B_\alpha(s)=\frac1{\Gamma(s)}\int_0^\infty
+        \frac{t^{s-1}}{(2\cosh t)^\alpha}\,dt,
+ \qquad\Re s>0.
+\]
+In particular $B_1(s)=\beta(s)$. From the kernels, or from the
+binomial series and $(\alpha)_n$ differentiated at $\alpha=1$,
+\begin{equation}\label{sorder:eq:parameter-derivative}
+ S(s)=s\beta(s+1)+\left.\partial_\alpha B_\alpha(s)\right|_{\alpha=1}.
+\end{equation}
+This identity extends wherever its two sides are continued.
+
+\begin{lemma}\label{sorder:lem:Fourier}
+For $\Re s<1$,
+\begin{equation}\label{sorder:eq:Fourier-B}
+ B_\alpha(s)=\frac{\cos(\pi s/2)}{2\pi\Gamma(\alpha)}
+ \int_0^\infty x^{-s}
+ \Gamma\left(\frac{\alpha+ix}{2}\right)
+ \Gamma\left(\frac{\alpha-ix}{2}\right)\,dx.
+\end{equation}
+On the left this means analytic continuation. Differentiation with
+respect to $\alpha$ is valid locally uniformly near $\alpha=1$.
+\end{lemma}
+\begin{proof}
+The substitution $u=e^{2t}$ and the beta integral show
+\[
+ \int_{-\infty}^\infty\frac{e^{ixt}}{(2\cosh t)^\alpha}\,dt
+ =\frac{\Gamma((\alpha+ix)/2)\Gamma((\alpha-ix)/2)}{2\Gamma(\alpha)}.
+\]
+Fourier inversion and the Mellin transform of the cosine prove
+\eqref{sorder:eq:Fourier-B} first in $0<\Re s<1$. For a direct
+justification of the interchange, insert $e^{-\varepsilon t}$ before
+the Mellin integral, integrate in $t$, and then send
+$\varepsilon\downarrow0$. The resulting kernels are bounded near
+zero by a constant times $x^{-\Re s}$, and the gamma product decays
+exponentially at infinity. Dominated convergence applies.
+The right side is holomorphic in $\Re s<1$, so it supplies the
+claimed continuation. Differentiation in $\alpha$ only introduces
+digamma factors growing logarithmically at infinity; the same
+domination applies on a compact positive $\alpha$-interval.
+\end{proof}
+
+For real $q>0$ put
+\begin{align}
+ J(q)&=\int_0^\infty x^q\sech(cx)\,dx,
+ \label{sorder:def:J}\\
+ A(q)&=\int_0^\infty x^q\sech(cx)L(x)\,dx,
+ \label{sorder:def:A}\\
+ D(q)&=\int_0^\infty x^q\sech(cx)\tanh(cx)\,dx,
+ \label{sorder:def:D}\\
+ R(q)&=\frac{A(q)}{cD(q)}.
+ \label{sorder:def:R}
+\end{align}
+The letter $D$ here denotes a positive integral, not differentiation.
+
+\begin{proposition}\label{sorder:prop:reflected}
+For $q>0$,
+\begin{equation}\label{sorder:eq:reflected}
+ S(-q)=\frac{cD(q)}2
+       \left(R(q)\cos(cq)-\sin(cq)\right).
+\end{equation}
+Moreover,
+\begin{equation}\label{sorder:eq:moments}
+ J(q)=2\Gamma(q+1)c^{-q-1}\beta(q+1),\qquad
+ D(q)=\frac q c J(q-1).
+\end{equation}
+\end{proposition}
+\begin{proof}
+At $\alpha=1$ the reflection formula gives
+$\Gamma((1+ix)/2)\Gamma((1-ix)/2)=\pi\sech(cx)$.
+The logarithmic $\alpha$ derivative of the full gamma quotient in
+\eqref{sorder:eq:Fourier-B} is $L(x)$.
+Thus the derivative term in \eqref{sorder:eq:parameter-derivative}
+at $s=-q$ is $\tfrac12\cos(cq)A(q)$.
+Applying the same Fourier formula to $\beta(1-q)$ gives
+$\beta(1-q)=\tfrac12\sin(cq)J(q-1)$.
+Since $D(q)=qJ(q-1)/c$ by integration by parts, the remaining term is
+$-\tfrac12 c\sin(cq)D(q)$. This proves \eqref{sorder:eq:reflected}.
+The expansion $\sech(cx)=2\sum_{n\ge0}(-1)^ne^{-(2n+1)cx}$
+gives the stated formula for $J(q)$ for $q>0$ by absolute integration.
+The integration-by-parts identity for $D$ is valid for every $q>0$.
+\end{proof}
+
+\section{The derivative bound that forces uniqueness}
+
+The next estimate is the central analytic input. Its numerical constant
+is deliberately coarse; it is small enough for the tangent comparison
+and needs no numerical certification.
+
+\begin{lemma}\label{sorder:lem:r}
+Let $r(x)=L(x)\coth(cx)/c$ for $x>0$. Then
+\begin{equation}\label{sorder:eq:r-derivative}
+ 0<xr'(x)\le a+\frac b x,\qquad
+ a=\frac2c=\frac4\pi,\qquad
+ b=\frac{2+2\log2}{c^2}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The digamma series gives
+\begin{align}
+ L(x)&=-2\log2+2\sum_{\substack{k\ge1\\k\text{ odd}}}
+          \frac{x^2}{k(k^2+x^2)},\label{sorder:eq:L-series}\\
+ L'(x)&=4x\sum_{\substack{k\ge1\\k\text{ odd}}}
+          \frac{k}{(k^2+x^2)^2}>0.\label{sorder:eq:L-prime}
+\end{align}
+These series converge locally uniformly in $x$. Also
+\[
+ L'(x)=\int_0^\infty\frac{u\sin(xu)}{\sinh u}\,du.
+\]
+Writing $h(u)=u/\sinh u$, integration by parts yields
+\[
+ xL'(x)=1+\int_0^\infty h'(u)\cos(xu)\,du.
+\]
+Here $h$ decreases from $1$ to $0$, so
+$\int_0^\infty|h'(u)|\,du=1$ and $0<xL'(x)\le2$.
+
+Now
+\[
+ r'(x)=\frac{L'(x)}c\coth(cx)-L(x)\csch^2(cx).
+\]
+This is positive whenever $L(x)\le0$. If $L(x)>0$, comparison term
+by term in \eqref{sorder:eq:L-series}--\eqref{sorder:eq:L-prime}
+gives
+\[
+ L(x)<L(x)+2\log2\le\frac{1+x^2}{2}\,xL'(x).
+\]
+It follows that
+\[
+ r'(x)>\frac{L'(x)}c\coth(cx)
+ \left(1-\frac{cx(1+x^2)}{\sinh(2cx)}\right)>0.
+\]
+The last inequality follows from
+$\sinh(\pi x)\ge\pi x+(\pi x)^3/6>cx(1+x^2)$.
+Finally $L(x)\ge-2\log2$, $\coth y\le1+1/y$ and $\sinh y\ge y$
+give
+\[
+ xr'(x)\le\frac2c\left(1+\frac1{cx}\right)
+       +\frac{2\log2}{c^2x},
+\]
+which is \eqref{sorder:eq:r-derivative}.
+\end{proof}
+
+For completeness we give the needed one-dimensional form of the
+Brascamp--Lieb variance inequality \cite{BL}.
+\begin{lemma}\label{sorder:lem:BL}
+For a probability density proportional to $e^{-V(x)}$ on an interval,
+with $V''(x)>0$,
+\[
+ \Var(f)\le\E\frac{f'(x)^2}{V''(x)}.
+\]
+Consequently
+$|\Cov(f,g)|^2\le
+\E(f'^2/V'')\E(g'^2/V'')$ whenever the displayed quantities exist.
+\end{lemma}
+\begin{proof}
+It suffices first to work on a compact interval $[a,b]$ and subtract
+the mean of $f$. Put
+$u(x)=e^{V(x)}\int_a^x f(t)e^{-V(t)}\,dt$.
+Then $u(a)=u(b)=0$ and $f=u'-V'u$. Integration by parts gives
+\[
+ \E f^2=-\E(f'u),\qquad
+ \E f^2=\E u'^2+\E(V''u^2).
+\]
+Cauchy--Schwarz with weights $V''$ implies
+$(\E f^2)^2\le\E(f'^2/V'')\E(V''u^2)
+\le\E(f'^2/V'')\E f^2$. Division proves the variance bound.
+Exhaust the original interval by compact intervals and use truncation
+and convergence of the stated integrals. The covariance assertion
+then follows from Cauchy--Schwarz and the two variance bounds.
+\end{proof}
+
+\begin{theorem}\label{sorder:thm:R}
+For every real $q\ge2$,
+\begin{equation}\label{sorder:eq:R-bound}
+ R(q)>0,\qquad
+ 0<R'(q)<\frac1q\sqrt{\frac{181}{27}}<\frac\pi2.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Give $(0,\infty)$ the probability density
+\[
+ d\nu_q(x)=\frac{x^q\sech(cx)\tanh(cx)}{D(q)}\,dx.
+\]
+Then $R(q)=\E_{\nu_q}r(X)$ and differentiation in $q$ gives
+$R'(q)=\Cov_{\nu_q}(r(X),\log X)>0$, because both functions are
+strictly increasing and the density has full support. Differentiation
+is justified by absolute integrability of the additional logarithm.
+Since $S(-2)=(\log2-1)/2$, \eqref{sorder:eq:reflected} gives
+$A(2)=1-\log2>0$, whence $R(2)>0$ and $R(q)>0$ for all $q\ge2$.
+
+The negative logarithm of the density, up to a constant, is
+\[
+ V_q(x)=-q\log x+\log\cosh(cx)-\log\tanh(cx).
+\]
+Its second derivative is
+\[
+ V_q''(x)=\frac q{x^2}+c^2\sech^2(cx)
+     +4c^2\frac{\cosh(2cx)}{\sinh^2(2cx)}\ge\frac q{x^2}.
+\]
+Lemma~\ref{sorder:lem:BL}, applied to $r$ and $\log x$, therefore yields
+\begin{equation}\label{sorder:eq:covariance-bound}
+ R'(q)\le\frac1q\sqrt{\E_{\nu_q}(Xr'(X))^2}.
+\end{equation}
+There is no endpoint assumption hidden here: as $x\downarrow0$,
+$r(x)=O(x^{-1})$, $xr'(x)=O(x^{-1})$, and the density is
+$O(x^{q+1})$. All second moments and energy integrals used in the
+lemma are finite for $q\ge2$. The tails are exponentially integrable.
+
+For $j=1,2$, $\E_{\nu_q}X^{-j}$ decreases with $q$ by the same
+covariance differentiation, now applied to a decreasing function and
+$\log x$. At $q=2$ the two inverse moments coincide. Indeed,
+\[
+ D(0)=\frac1c,\quad D(1)=\frac1c,\quad D(2)=\frac{4G}{c^3},
+\]
+so
+\[
+ \E_{\nu_q}X^{-1},\ \E_{\nu_q}X^{-2}
+ \le\mu:=\frac{\pi^2}{16G}<\frac34.
+\]
+Here $G>1-1/9=8/9$ by the alternating-series estimate and
+$\pi^2<10$, so even $\mu<45/64$ suffices. The elementary inequalities
+$\pi>3$ and $\log2<3/4$ give $a<4/3$ and $b<14/9$ in
+Lemma~\ref{sorder:lem:r}. Consequently
+\[
+ \E_{\nu_q}(Xr'(X))^2
+ \le a^2+2ab\mu+b^2\mu
+ <\frac{16}{9}+\frac{28}{9}+\frac{49}{27}
+ =\frac{181}{27}.
+\]
+This proves the first derivative bound. For $q\ge2$ its square is
+at most $181/108<9/4<c^2$, proving the final strict inequality.
+\end{proof}
+
+\section{Complete classification of the real zeros}
+
+\begin{theorem}\label{sorder:thm:all-real-zeros}
+For each integer $m\ge1$, $S$ has exactly one real zero
+\[
+ \sigma_m\in(-2m-1,-2m).
+\]
+Every such zero is simple. These are all the real zeros of $S$.
+The displacements $\varepsilon_m=\sigma_m+2m+1$ strictly decrease
+with $m$. In particular, $\sigma_m-\sigma_{m+1}>2$.
+\end{theorem}
+\begin{proof}
+There are no zeros on $[-2,\infty)$ by
+Proposition~\ref{sorder:prop:entire}. Write $q=-s>2$.
+On $(2m,2m+1)$, equation \eqref{sorder:eq:reflected} is equivalent to
+\[
+ \tan(c(q-2m))=R(q).
+\]
+The left side increases from $0$ to $+\infty$. The right side is
+positive and finite, and the derivative of their difference is
+$c\sec^2(c(q-2m))-R'(q)>0$ by Theorem~\ref{sorder:thm:R}.
+There is therefore exactly one solution. At that solution the same
+strict inequality and $\cos(cq)\ne0$ show that the derivative of
+$S(-q)$ is nonzero, proving simplicity.
+
+On $(2m+1,2m+2)$, $\cos(cq)$ and $-\sin(cq)$ have the same sign.
+Since $R(q)>0$ and $D(q)>0$, \eqref{sorder:eq:reflected} cannot vanish.
+At the integer endpoints one of the sine and cosine is zero and the
+other is nonzero, while $R,D>0$. This exhausts $q>2$.
+
+For the monotonicity write $q_m=2m+\delta_m$, where
+$\delta_m\in(0,1)$ and $\tan(c\delta_m)=R(2m+\delta_m)$.
+Increasing $m$ strictly increases the right side at every fixed
+$\delta$. Since the difference between the left and right sides is
+strictly increasing in $\delta$, its unique zero moves to the right.
+Thus $\delta_{m+1}>\delta_m$, or
+$\varepsilon_{m+1}<\varepsilon_m$, as claimed.
+\end{proof}
+
+\section{All-orders asymptotics of the zero displacement}
+
+For $k\ge1$ define
+\[
+ d_k=\frac{(-1)^{k+1}2^{2k}B_{2k}(1/2)}{2k},
+ \quad d_1=-\frac16,\quad d_2=-\frac7{60},\quad d_3=-\frac{31}{126}.
+\]
+Here $B_n(x)$ is the Bernoulli polynomial. Let
+$q^{\underline j}=q(q-1)\cdots(q-j+1)$.
+
+\begin{lemma}\label{sorder:lem:R-asymptotic}
+For every fixed integer $K\ge1$, as real $q\to+\infty$,
+\begin{equation}\label{sorder:eq:R-asymptotic}
+ cR(q)=\psi(q+1)+\gamma-\log\pi
+       +\sum_{k=1}^{K-1}\frac{d_kc^{2k}}{q^{\underline{2k}}}
+       +O_K(q^{-2K}).
+\end{equation}
+In particular,
+\begin{equation}\label{sorder:eq:R-first}
+ cR(q)=\log(q/\pi)+\gamma+\frac1{2q}
+                  -\frac{2+\pi^2}{24q^2}+O(q^{-3}).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The ordinary sectorial digamma expansion \cite[\S5.11]{DLMF}, applied on the vertical
+line with real part $1/2$, gives
+\[
+ L(x)=\gamma+\log(x/2)+\sum_{k=1}^{K-1}d_kx^{-2k}
+                     +O_K(x^{-2K})\qquad(x\to\infty).
+\]
+The coefficient formula follows either from the shifted Bernoulli
+expansion of $\psi(z+1/2)$ or by expanding the ordinary formula in
+$1/(ix/2)$. The error may be bounded globally by $C_Kx^{-2K}$ for
+all $x>0$: on $(0,1]$ the actual function $L$ is bounded, and each
+subtracted power and logarithm is bounded by a constant times
+$x^{-2K}$. Hence for $q>2K-1$,
+\[
+ A(q)=J'(q)+(\gamma-\log2)J(q)
+       +\sum_{k=1}^{K-1}d_kJ(q-2k)+O_K(J(q-2K)).
+\]
+Use \eqref{sorder:eq:moments}. The first quotient, multiplied by $c$,
+is
+\[
+ \frac{\beta(q+1)}{\beta(q)}
+ \left(\psi(q+1)+\gamma-\log\pi+
+                         \frac{\beta'(q+1)}{\beta(q+1)}\right).
+\]
+The $k$th remaining quotient is
+$d_kc^{2k}\beta(q-2k+1)/(q^{\underline{2k}}\beta(q))$.
+For fixed shifts, the beta ratios are $1+O_K(3^{-q})$, and the
+logarithmic derivative is $O_K(3^{-q})$, directly from their
+absolutely convergent Dirichlet series. The integrated error divided
+by $qJ(q-1)/c$ is $O_K(q^{-2K})$. This proves
+\eqref{sorder:eq:R-asymptotic}; expanding $\psi(q+1)$ gives
+\eqref{sorder:eq:R-first}.
+\end{proof}
+
+\begin{theorem}\label{sorder:thm:zero-asymptotic}
+Write
+\[
+ N=2m+1,\quad \sigma_m=-N+\varepsilon_m,\quad
+ \Lambda=\log(N/\pi)+\gamma,\quad Q=\Lambda^2+c^2,
+ \quad e_0=\frac1c\arctan\frac c\Lambda.
+\]
+Then $0<\varepsilon_m<1$ and
+\begin{equation}\label{sorder:eq:zero-two-scales}
+ \varepsilon_m=e_0-
+       \frac{\tfrac12-e_0}{NQ}
+       +O\left(\frac1{N^2\Lambda^2}\right)
+       \qquad(m\to\infty).
+\end{equation}
+For every fixed $K\ge1$,
+\begin{equation}\label{sorder:eq:zero-log-series}
+ \varepsilon_m=
+ \sum_{j=0}^{K-1}\frac{(-1)^jc^{2j}}{(2j+1)\Lambda^{2j+1}}
+       +O_K(\Lambda^{-2K-1}).
+\end{equation}
+Thus the first three logarithmic terms are
+$\Lambda^{-1}-\pi^2/(12\Lambda^3)+\pi^4/(80\Lambda^5)$.
+The consecutive-zero gaps satisfy
+\begin{equation}\label{sorder:eq:zero-gaps}
+ \sigma_m-\sigma_{m+1}
+ =2+\frac{2}{N(\Lambda^2+c^2)}
+       +O\left(\frac1{N^2\Lambda^2}\right).
+\end{equation}
+\end{theorem}
+\begin{proof}
+The exact zero equation is
+\begin{equation}\label{sorder:eq:epsilon-equation}
+ c\cot(c\varepsilon_m)=cR(N-\varepsilon_m).
+\end{equation}
+Lemma~\ref{sorder:lem:R-asymptotic}, uniformly for $0\le\varepsilon\le1$,
+gives
+\[
+ cR(N-\varepsilon)
+ =\Lambda+\frac{\tfrac12-\varepsilon}{N}+O(N^{-2}).
+\]
+The solution of $c\cot(ce_0)=\Lambda$ is the stated $e_0$ for all
+sufficiently large $N$. The right side of the preceding estimate
+shows that the left side at $\varepsilon_m$ differs from $\Lambda$
+by $O(N^{-1})$. Its inverse has derivative
+$-1/(\Lambda^2+c^2)$ at $\Lambda$, so
+$\varepsilon_m-e_0=O(N^{-1}\Lambda^{-2})$.
+Taylor expansion of the left side about $e_0$, whose first derivative
+is $-Q$ and second derivative is $2Q\Lambda$, now yields
+\[
+ -Q(\varepsilon_m-e_0)
+ =\frac{\tfrac12-e_0}{N}+O(N^{-2}).
+\]
+The quadratic error is $O(N^{-2}/\Lambda)$ and is absorbed in the
+displayed bound; the displacement inside the right side is even
+smaller. Division by $Q$ proves \eqref{sorder:eq:zero-two-scales}.
+Finally expand the arctangent. Its Taylor remainder gives the error
+in \eqref{sorder:eq:zero-log-series}, while the inverse-index correction
+is smaller than every fixed power of $1/\Lambda$.
+For \eqref{sorder:eq:zero-gaps}, regard the displayed approximation
+as a smooth function of real $N$. Its leading term has derivative
+$e_0'(N)=-1/(N(\Lambda^2+c^2))$, and the derivative of the explicit
+inverse-index correction is $O(N^{-2}\Lambda^{-2})$.
+Take the difference at $N$ and $N+2$ in
+\eqref{sorder:eq:zero-two-scales}; its two remainder values have the
+same $O(N^{-2}\Lambda^{-2})$ bound.
+\end{proof}
+
+\paragraph{An algorithm for every inverse-index correction.}
+Equation \eqref{sorder:eq:R-asymptotic} supplies a full expansion in
+$1/q$. Substituting
+$\varepsilon=e_0+\sum_{j\ge1}a_j(\Lambda)N^{-j}$ into
+\eqref{sorder:eq:epsilon-equation} and comparing coefficients determines
+$a_j$ recursively: the coefficient of the new unknown is always
+$-Q\ne0$. The functions $a_j$ belong to
+$\mathbb Q[c^2,\Lambda,e_0,Q^{-1}]$, with Bernoulli numbers as rational
+coefficients, and $a_j=O_j(\Lambda^{-2})$.
+For each fixed $J\ge1$ the truncation through $a_{J-1}N^{1-J}$ has
+error $O_J(N^{-J}\Lambda^{-2})$. To justify this statement, first use
+the full remainder in \eqref{sorder:eq:R-asymptotic} to bound the
+residual after any fixed formal substitution by $O_J(N^{-J})$.
+Derivatives of $c\cot(c\varepsilon)$ at $e_0$ are polynomials in
+$\Lambda,c^2$ of degree at most the derivative order plus one.
+Induction then gives $a_j=O_j(\Lambda^{-2})$ and controls all Taylor
+remainders. The derivative of the exact implicit equation has magnitude
+comparable to $Q$, by \eqref{sorder:eq:R-bound} and
+$\varepsilon\asymp1/\Lambda$. The mean value theorem divides the
+residual by $Q$, proving the stated error. This is an asymptotic
+recursion; no convergence of the resulting infinite formal series is asserted.
+
