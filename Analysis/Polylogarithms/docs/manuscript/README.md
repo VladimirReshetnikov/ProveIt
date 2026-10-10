@@ -12,7 +12,10 @@ registers. The [editorial ledger](EDITORIAL-LEDGER.md) maps their mathematical
 status and identifies pending research integration. Twenty-one incoming
 archives are preserved as **865 byte-identical members**. All their isolated
 replay suites pass; preservation and successful finite replay do not imply
-that every new analytic theorem has already been integrated.
+that every new analytic theorem has already been integrated. The imported
+ZIPs have been retired from the drop zone under its intake procedure; the
+arrival commits and recovery paths remain recorded in
+`verification/*incoming-archives.json` and `verification/incoming-retirement.json`.
 
 The preceding milestone proves the CM class-product formulas and the recorded
 genus ratios, develops a rational principal-point nonvanishing bound, and

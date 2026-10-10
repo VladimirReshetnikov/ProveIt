@@ -78,6 +78,10 @@ for archive in archives:
         if not p.is_file() or digest(p,False)!=member['sha256']:
             archive_errors.append(member['path'])
 outcomes['incoming-archive-preservation']=len(archives)==21 and sum(len(a['files']) for a in archives)==865 and not archive_errors
+x=read('incoming-retirement.json')
+archive_by_path={a['archive']:a for a in archives}
+outcomes['imported-archive-retirement']=x['archive_count']==16 and x['preserved_members']==691 and len(x['archives'])==16 and sum(a['members'] for a in x['archives'])==691 and (B.parents[3]/'docs/incoming/README.md').is_file() and all(
+    not (B.parents[3]/a['archive']).exists() and a['all_members_match_placement_blobs'] and a['archive'] in archive_by_path and a['arrival_commit']==archive_by_path[a['archive']]['archive_git_revision'] and a['members']==len(archive_by_path[a['archive']]['files']) and (B.parents[3]/a['destination']).is_dir() for a in x['archives'])
 for part,count in [('rigidity',1),('distribution',7),('conductor',4),('complement',5),('reflection',8)]:
     x=read(f'incoming-replay/{part}/replay-summary.json')
     outcomes['incoming-replay/'+part]=x['passed'] and len(x['commands'])==count and all(c['exit_code']==0 for c in x['commands']) and all((V/'incoming-replay'/part/p).is_file() for p in x['fresh_result_files'])

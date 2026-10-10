@@ -1,3 +1,9 @@
+# October 10: retire imported incoming ZIPs
+
+Read docs/incoming/README.md and completed its previously missed section-7 retirement step. The sixteen tracked ZIPs had already been imported; all 691 retained members match their original placement blobs at 0c9bf73f27, 6ae95edc29 and 5537940fde. Explicit git rm operations retire only the named archives. The drop-zone README and all report evidence remain; incoming-retirement.json records every arrival commit, placement and recovery path. The existing five earlier retirements remain recorded separately.
+
+The manuscript PDF is unchanged. The source/dependency and archive-preservation gate now validates all twenty-one ZIPs from their arrival commits. Canonical integration of the still-pending research claims remains open. The possible universal Euler bound is being investigated separately; the initial finite scan found no counterexample, which is not a proof.
+
 # October 10: reviewed real-order manuscript milestone
 
 The canonical artifact now has 375 pages, twelve chapters, thirteen figures
