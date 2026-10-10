@@ -53,6 +53,34 @@ class SourceEuler:
             value-=weight*min(_dot(forms[c],parameters)for c in group)
         return value
 
+    def aggregate(self,support,basis,forms,check):
+        """Compile anchor-shifted distinct forms once for this Q section.
+
+        Constant vertex groups contribute only a linear term. Every other
+        minimum uses its distinct nonzero differences from a fixed anchor.
+        Hash grouping is exact, with no approximate equality or threshold.
+        """
+        linear=[sum(self.linear[3*t+typ]*row[i]for i,(t,typ)in enumerate(support))for row in basis]
+        groups=[];distinct=0
+        for corners,weight in self.groups:
+            check();anchor=forms[corners[0]];unique={}
+            for corner in corners:
+                check();unique.setdefault(forms[corner],None)
+            for i,value in enumerate(anchor):
+                if value:linear[i]-=weight*value
+            if len(unique)>1:
+                differences=tuple(tuple(a-b for a,b in zip(form,anchor))for form in unique if form!=anchor)
+                groups.append((weight,differences));distinct+=len(differences)+1
+        return tuple(linear),tuple(groups),distinct
+
+    @staticmethod
+    def aggregated_value(envelope,parameters,check):
+        linear,groups,_=envelope;value=_dot(linear,parameters)
+        for weight,differences in groups:
+            check()
+            value-=weight*min(0,min(_dot(form,parameters)for form in differences))
+        return value
+
     def excludes_positive(self, support, basis, forms, check, stats):
         """Check every Q corner at nullity <=3; return False above that.
 
@@ -79,9 +107,17 @@ class SourceEuler:
         stats['euler_screens']+=1
         chart=_section_chart(basis,check);corners=_section_polygon(chart,check)
         free=[next(i for i in range(len(support)-1,-1,-1)if row[i])for row in basis]
-        for point in corners:
+        envelope=None
+        for index,point in enumerate(corners):
             check();stats['euler_corners']+=1
             parameters=tuple(_value(chart['forms'][i],point)for i in free)
-            if self.canonical_value(support,basis,forms,parameters,check)>0:return False
+            if index==0:value=self.canonical_value(support,basis,forms,parameters,check)
+            else:
+                if envelope is None:
+                    envelope=self.aggregate(support,basis,forms,check)
+                    stats['euler_aggregations']=stats.get('euler_aggregations',0)+1
+                    stats['euler_distinct_forms']=stats.get('euler_distinct_forms',0)+envelope[2]
+                value=self.aggregated_value(envelope,parameters,check)
+            if value>0:return False
         stats['euler_pruned_sectors']+=1
         return True
