@@ -141,6 +141,16 @@ ids (`reports/herglotz-cyclotomic-obstructions/data/proposed_corrections.json`).
   diverges (terms `(−1)ⁿHₙ`; its Abel value is `−log2/2`) (C06, X7); the
   comparison with `ζ(2,1,1) + ζ(1,2,1) + ζ(1,1,2)` at line 351 uses two divergent
   series in the article's own convention (C08).
+- **`gaussian-multiple-polylog-depth`, "A sporadic relation: the generator space is
+  three-dimensional"** (lines 284-292). The two same-argument shuffles
+  `Li₁(i)Li₄(i)` and `Li₂(i)Li₃(i)` give two independent relations among the four
+  weight-5 generators `g_{a,b} = Im Li_{a,b}(i,1)`: `eq:wt5-sporadic` is their
+  `π`-free combination, and the other gives
+  `g₂₃ = −6g₄₁ − 3g₃₂ − (3/32)Gζ(3) − π⁵/1536`. The generators therefore span at most
+  two directions modulo `π⁵`, `Gζ(3)`, `β(4)log2`; "the single relation" and the
+  "basis" `{g₄₁, g₃₂, g₂₃}` of `eq:S4-closed` are false, and `eq:S4-closed` is
+  equivalent to `S₄ = (58g₄₁ + 24g₃₂)/7 + 19π⁵/3584 − 2β(4)log2` (batch 139: 14, 15,
+  17; checked at intake).
 - **`ladders-as-bloch-elements`, `eq:Pm`.** Zagier's `P_m` sums to `j = m − 1`; the
   extra `Li₀` term changes even-`m` values (excess `2log²2/15` at `m = 2`, `z = i/2`).
   The supergolden value at line 96 is `P₄(z₋) = −0.916010467826…`, not
@@ -205,6 +215,13 @@ wording (X16h) of `eisenstein-row-sums-cm-polygamma`; the claimed finite-field
 counterexample to an identity of the inspected arXiv v1 of Radchenko–Zagier
 (EXT001, third-party, outside this tree).
 
+Batch 139 (9 October 2026) adds two items, also not checked at intake:
+`reports/binet-malmsten-lambert-bridge` section 2 calls the cubic moment
+`∫₀¹ log³Γ` open; 14 cites its Tornheim-derivative evaluation by Bailey–Borwein–Borwein
+(Ramanujan J. 36 (2015), Thm 6), leaving reduction in a specified smaller algebra open.
+`stieltjes-antiderivative-ladder` line 1073 ("forces genuinely new constants"): the
+formal rank gives residual formal directions, not new constants (15).
+
 ### Conditional, not a theorem
 
 - `gamma-lattice-and-certificates`, `law:ko`: completeness of the
@@ -260,6 +277,18 @@ Each is an open question, not a defect of the numerics.
   `S_{2m+1} = (2m+1)β(2m+2) − 2β(2m+1)log2 − Σ_{j=1}^{m}(2 − 2^{−2j})β(2m−2j+1)ζ(2j+1)`
   (three independent proofs; `S₅`, `S₇` are the cases `m = 2, 3`).
 
+### Proved since intake (9 October 2026 continuations)
+
+- `gaussian-multiple-polylog-depth`: `eq:wt5-sporadic` and the five weight-6 identities
+  `2048g₅₁ = …` to `92160g₁₅ = …` (four independent proofs: by the depth-two parity
+  theorem of Panzer (2017), specialized, and by shuffles; `reports/gaussian-parity-reductions/`),
+  and the three weight-4 triple evaluations (14). Coefficients unchanged.
+- `eisenstein-gaussian-mixed-cuberoot-doubles` `eq:gauss-w2`, `eq:eis-w2`:
+  `Li₁,₁(z,1/z) = −Li₂(z/(z−1))` on the unit circle (15, 17).
+- The supergolden and `x⁴+x−1` trilogarithm ladders of `golden-polylog-ladders`
+  (lines 181-182; `ladders-as-bloch-elements` line 59) (14).
+- Still open: `eq:S4-closed`, and every independence or minimal-depth statement.
+
 ### Stale PDFs
 
 The PDFs of `herglotz-bridges`, `herglotz-rational-values` and
@@ -276,7 +305,7 @@ found wrong. Results reconfirmed include the `F(1/q)` theorem at `q = 7`, the
 `F(n/(n+1))` family at `n = 6`, `J(2/3)`, `J(2/5)`, the log-gamma examples at
 `1/3`, `1/4`, `1/6`, and `G₁₂ = (18G₄³ + 25G₆²)/143` in the unnormalized convention.
 
-## Continuations (batch 138, 8 October 2026)
+## Continuations (batches 138-139, 8-9 October 2026)
 
 Six external continuations, all AI-assisted research drafts pinned to `c78c7c3dc2`
 or `3a6d80ed61` (whose Polylogarithms tree equals `a87af186c`), are placed as five
@@ -290,6 +319,7 @@ edited; files of merge members carry the prefix of their manuscript number.
 | `alternating-harmonic-polylogarithms/` | `S_{2m+1}` at every weight; reflection for `T_{p,r}`; depth-exponent transition; inverse-argument mixed doubles | 11 (`polylogarithms_reflection_depth_transition_2026-10-07`) | 10, 12 |
 | `herglotz-cyclotomic-obstructions/` | all-conductor relations of `β_q(a)`, exact five-term reduction criterion, `J(2/q)` classification, optimal truncation | 09 (`herglotz_research`, single source) | corrections credited from 12 (C15-C19) |
 | `corpus-corrections/` | the correction registers of all six deliveries | 12 (`polylogarithms_research`, C01-C22) | 06, 10, 11, 13 registers; 09's `data/proposed_corrections.json` |
+| `gaussian-parity-reductions/` | proofs of the manuscript's Gaussian weight-5/6 candidates by parity and shuffle; triples; ladders; log-gamma moments; certified evaluators at mixed roots | 14 (`polylogarithms_exact_reductions_20261009`) | 15 (`polylogarithm_research_20261009`), 16 (`ProveIt_Gaussian_Polylogarithms_Research`), 17 (`proveit_polylog_gap_reductions_2026-10-09`) |
 
 ## Notation
 
