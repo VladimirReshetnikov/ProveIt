@@ -6123,6 +6123,77 @@ the decomposition with these named constants, but not `Theorem162At 3`.
                 on the iteration. **This appears to be a gap in the printed
                 proof of Proposition 9.3**, not only in our formalization.
                 Resolving it needs a new idea, or a different Step 5.
+              - *Where the gap comes from (2026-10-10).* In the vector-space
+                predecessor (`F_p^n`), the `θ_i` are linear maps on
+                subspaces of bounded codimension. A linear map on a
+                subspace always extends to all of `F_p^n`, so coherence is
+                free there: every `θ_i` is defined everywhere and `X` lies
+                in every domain. The general-group version replaces
+                subspaces by coset progressions or Bohr sets, and this
+                extension step fails.
+              - *Checked in ℤ/N.*
+                - Take a Freiman-linear map on a sub-Bohr set
+                  `K = C₀(ν) ∩ B(Γ′)` of a proper progression `C₀`. It need
+                  not extend to `C₀` even when `C₀` has rank 1. `K`'s index
+                  set in `ℤ` is a Bohr set of `ℤ`, roughly a proper rank-2
+                  progression `{m₁q + m₂r′}`. A Freiman-linear map there is
+                  `m₁v₁ + m₂v₂`, which need not be a function of `n`
+                  linearly.
+                - The lattice route fails too. The relevant sublattice
+                  `{n : ⟨n, w_γ⟩ ≡ 0}` has index a power of `N`, so the
+                  "invertible index" extension is unavailable. Quantitative
+                  lattice regularization (Milićević §2.6, Lemma 2.32 and
+                  Theorem 2.33) could at best control *small* relations; it
+                  does not make the extension exist.
+              - *What a repair must supply.* Either:
+                (a) new frequency maps that are born Freiman on one fixed
+                    centred set `C₀ ⊇` all `a`'s. Claims 9.4/9.5 only define
+                    them on the escaping `a`'s plus Bohr thickenings; or
+                (b) a Step 6 (Proposition 10.1) that works with per-column
+                    index sets `S_a ⊆ J`, with `θ_i` Freiman only on its own
+                    `D_i ∋ a` for `i ∈ S_a`, rather than with one uniform
+                    Freiman `Θ` on `C`.
+
+                Both remain research questions. The F_p^n argument does not
+                transfer verbatim to general abelian groups at this step.
+              - *How [49] gets coherence (Discrete Analysis 2024:20, p. 31,
+                after Corollary 20).* It uses Hosseini–Lovett averaging.
+                1. Only `ℓ₀ = log^O(1)` of the `m` maps cover each `U_y`.
+                2. Average over `ℓ₀`-subsets to pin the patterns
+                   `I_{y+z} = J₁`, `I_z = J₂`, `I_{y+w} = J₃`,
+                   `I_{w} = J₄`, then *fix* `z, w`.
+                3. For the varying `y`, every `J₁`-map is defined at
+                   `y + z`, because its index was used there. So
+                   `Y² ⊆ ⋂_{J₁}(C_i − z) ∩ ⋂_{J₃}(C_i − w)`.
+                4. Proposition 18 then finds one proper coset progression in
+                   that intersection that meets `Y²` densely.
+
+                This works there because the target is a dense set with a
+                *pointwise* property. Pinning loses a proportional factor,
+                and no failure count has to be beaten.
+              - *The analogue for Proposition 9.3: fix the final pair.*
+                - Choose one pair `(x*, y*)` for *all* `a`, rather than
+                  `(x_a, y_a)` per `a`. Then `S_a = I_{x*,a} ∪ I_{y*,a}`, so
+                  pinning `S_a = J*` gives coherence exactly as in [49].
+                - The containment (24) for the triples `(x*, y*, a)` costs
+                  only an average over `(x*, y*)`, which is proportional.
+                - The x-side 8-tuples become original quadruples
+                  `(x* + a_j)_j`, also proportional.
+                - The obstruction is (26). It is now needed on *diagonal*
+                  12-tuples (`x_j = x*`, `y_j = y*`). There are `N⁵` of
+                  these against `N¹¹` general ones, and the iteration
+                  controls only the general ones.
+                - A diagonal Claim 9.5 loses the two-sided separation that
+                  makes the new map Freiman. With a shared `x`, the value
+                  `F_j(x, a_j)` is determined only together with `x`, through
+                  the other coordinates `F_k(x, a_k)`.
+                - Grouping coordinates restores separation only for sums
+                  such as `ψ₀ + ψ₃(· + a₁ − a₂)`. The iteration's
+                  pair-level escape needs a single coordinate.
+                - Open sub-questions: a diagonal Claim 9.5 with a
+                  grouped-coordinate invariant, or a derivation of diagonal
+                  (26) from (24) using Lemma 2.40-type genericity of the
+                  frequencies.
          2. *Explicit exponents (done, `Proofs16PropNineThreeBudget`).*
             With `L = d·log(2R+1)` and `ℓ = log(1/ε)`:
             - `log(1/claimNineFourDensity) ≤ 6540·log 2 + 37264·L + 9316·ℓ`;
