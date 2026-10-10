@@ -1,0 +1,157 @@
+\section{A sharp Euler constant at every positive real order}
+\label{univeuler:sec:main}
+The Gaussian maximum does not bound arbitrary Euler errors merely because
+it bounds the value of the function. A contraction inequality for the
+Euler kernel supplies the missing implication. It removes the divergent
+parameter-dependent budgets near the signed-measure threshold, while
+retaining the stronger constant one on the earlier domain $a\ge1$.
+
+\begin{lemma}[A difference-of-powers bound]\label{univeuler:lem:powers}
+For $m\ge2$, $0\le r\le1$ and $0\le v\le1$,
+\[
+ 0\le(1-rv)^m-(1-r)^m\le\frac{1-v}{1+v}.
+\]
+For $0<v<1$, equality on the right is possible only when $m=2$,
+and then it holds precisely at $r=1/(1+v)$.
+\end{lemma}
+\begin{proof}
+The endpoints $v=0,1$ are immediate. Fix $0<v<1$ and put
+$q=v^{1/(m-1)}$. Differentiation shows that the unique maximum over
+$r\in[0,1]$ is at $r=(1-q)/(1-vq)$, where its value is
+\[
+ \frac{(1-v)^m}{(1-v^{m/(m-1)})^{m-1}}.
+\]
+Let $p=m/(m-1)\in(1,2]$. The function
+$p\mapsto\log(1-v^p)$ has strictly negative second derivative
+$-(\log v)^2v^p/(1-v^p)^2$. Its chord between $p=1$ and $p=2$
+therefore gives
+\[
+ 1-v^p\ge(1-v)(1+v)^{p-1},
+\]
+strictly when $1<p<2$. Substitution in the maximum proves the bound
+and both equality assertions.
+\end{proof}
+
+\begin{lemma}[Contraction of the Euler tail kernel]
+\label{univeuler:lem:contraction}
+For an integer $N\ge1$, set $H_N(t)=(1-t)^N/(1+t)$ on $[0,1]$.
+For $0\le r,v\le1$,
+\begin{equation}\label{univeuler:eq:contraction}
+ 0\le H_N(rv)-H_N(r)\le\frac{1-v}{1+v}.
+\end{equation}
+If $0<v<1$, equality on the right holds precisely when $N=1$ and $r=1$.
+\end{lemma}
+\begin{proof}
+For $N=1$, the difference between the right side and the middle
+expression factors exactly as
+\[
+ \frac{(1-v)(1-r)(1-rv)}{(1+v)(1+rv)(1+r)}.
+\]
+For $N\ge2$, the uniformly convergent positive expansion
+\[
+ H_N(t)=\sum_{k\ge0}\frac{(1-t)^{N+k}}{2^{k+1}}
+\]
+expresses its difference as a probability-weighted sum of the preceding
+power differences. Each is bounded as claimed, and the terms with
+$N+k>2$ make the upper inequality strict for $0<v<1$. Decrease of
+$H_N$ proves the lower inequality.
+\end{proof}
+
+Let $\omega_b$ be the probability measure
+\[
+ d\omega_b(v)=\frac{(-\log v)^{b-1}}{\Gamma(b)}\,dv,
+ \qquad 0<v<1.
+\]
+Let $\pi_a$ be the law of $X=e^{-T_a}$ with
+$T_a\sim\mathrm{Gamma}(a,1)$ when $a>0$, and put $\pi_0=\delta_1$.
+These measures are independent. They retain ordinary probability mass
+throughout the parameter domain, including the critical and subcritical
+regions where the unweighted one-variable moment measure is not finite.
+
+\begin{theorem}[All-order Euler representation and the sharp universal constant]
+\label{univeuler:thm:sharp}
+For every $a\ge0,b>0$, define $d_k$ and $E_N$ from the coefficients
+$c_{2n+1}$ as in \eqref{rw:eq:eulerdef}, and use the analytic value
+$g_{a,b}=\Imag F_{a,b}(i)$. Then $d_0=0$, $d_k<0$ for $k\ge1$,
+and $E_N$ decreases strictly to $g_{a,b}$. Its exact error is
+\begin{equation}\label{univeuler:eq:tail}
+ 2^N(E_N-g_{a,b})=
+ \int\!\!\int
+ \frac{H_N(x^2v^2)-H_N(x^2)}{1-v}\,d\pi_a(x)\,d\omega_b(v).
+\end{equation}
+Consequently, for every $N\ge1$,
+\begin{equation}\label{univeuler:eq:axisbudget}
+ 0<2^N(E_N-g_{a,b})\le C(b),\qquad
+ C(b)=\beta(b)+2^{-b}\eta(b).
+\end{equation}
+Equality in the upper bound holds exactly when $a=0$ and $N=1$.
+The sharp uniform constant over all nonnegative outer orders is
+\[
+ C_* = C(b_*),
+\]
+where $b_*$ is the unique nondegenerate maximum from
+Theorem~\ref{subpick:thm:axis-maximum}. It satisfies
+\[
+ \frac{227}{200}<C_*<\frac{1+\sqrt2}{2}<\frac54.
+\]
+For positive $a,b$ the strict inequality
+$0<E_N-g_{a,b}<C_*2^{-N}$ holds, and $C_*$ is its least possible
+uniform constant. When $a=0$ is included, the non-strict upper bound
+is attained only at $a=0,b=b_*,N=1$.
+\end{theorem}
+\begin{proof}
+The elementary moment laws give, for $n\ge0$,
+\[
+ c_{2n+1}=\int\!\!\int x^{2n}
+             \frac{1-v^{2n}}{1-v}\,d\pi_a(x)\,d\omega_b(v).
+\]
+Indeed the two factors integrate to $(2n+1)^{-a}$ and $H_{2n}^{(b)}$.
+The quotient is a finite geometric sum, so this identity includes $n=0$
+without an endpoint singularity. Finite binomial expansion now gives
+\[
+ d_k=\int\!\!\int
+       \frac{(1-x^2)^k-(1-x^2v^2)^k}{1-v}
+                 \,d\pi_a(x)\,d\omega_b(v).
+\]
+For $k\ge1$ its integrand is strictly negative and has absolute value
+at most $2k$, by the mean-value theorem. Finite summation is therefore
+legitimate for every pair of parameters.
+
+The Gaussian double kernel, or the axis formula when $a=0$, gives
+\[
+ g_{a,b}=\int\!\!\int
+ \frac{(1+x^2)^{-1}-(1+x^2v^2)^{-1}}{1-v}
+                    \,d\pi_a(x)\,d\omega_b(v).
+\]
+Its integrand is $-x^2(1+v)/((1+x^2)(1+x^2v^2))$, hence bounded.
+Subtract the finite geometric sum defining $E_N$ from this identity
+to obtain \eqref{univeuler:eq:tail}; no divergent boundary series is used.
+
+Apply Lemma~\ref{univeuler:lem:contraction} with $r=x^2$ and its
+variable $v$ replaced by $v^2$. The resulting majorant is
+\[
+ \frac{1-v^2}{(1-v)(1+v^2)}=\frac{1+v}{1+v^2}.
+\]
+Its $\omega_b$ integral is $C(b)$ by the axis identity.
+It is bounded by $(1+\sqrt2)/2$, so the exact error tends to zero
+at least geometrically. The strict signs of $d_k$ give the strict
+decrease of $E_N$. The contraction equality criterion and the positive
+densities of both probability measures prove the fixed-$b$ equality claim.
+
+The unique axis maximum supplies the uniform constant and its bounds.
+Sharpness over $a,b>0$ follows by fixing $b=b_*$, taking $a\downarrow0$
+at $N=1$, and using bounded convergence in the Gaussian probability
+integral. Thus the supremum is approached at the axis, while inclusion
+of the axis gives the stated unique attaining triple.
+\end{proof}
+
+This theorem closes the previously open universal real-order Euler-budget
+question. The separate contraction argument is essential: Gaussian
+magnitude alone would not control later scaled errors. In particular,
+this result does not say that their maximum at each positive parameter
+pair is the first error, nor that the scaled errors always decrease.
+The constant one remains sharper on $a\ge1$, and the sharp critical
+constant $\pi/4+\log2/2$ remains sharper on $a+b\le1$.
+The decimal diagnostic $C_*\approx1.13656110333950956095$ inherits the
+axis experiment's status; the exact definition and inequalities above
+are proved without relying on those digits.

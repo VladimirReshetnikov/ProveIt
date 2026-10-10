@@ -1,3 +1,9 @@
+# Universal Euler source checkpoint
+
+The new written power/chord and Euler-kernel contraction proofs establish the sharp all-parameter budget C(b*) for a>=0,b>0, with equality only at the axis maximum and N=1. Exact finite checks pass: 7581 kernel inequalities, 12369 power inequalities, 560 tail-normalization identities plus a corruption control, 352 negative Euler signs and 66 scaled-tail enclosures across eleven rational parameter pairs. The uniform rational budget 5/4 follows from the written proof.
+
+Native Wolfram session 49418 and isolated three-pass build session 6319 are still running; preserve their handles. Current publication and acceptance manifests still refer to the previously reviewed 375-page PDF. A final build/render/manual review and receipt refresh will follow this source checkpoint. The broader research goal remains active and imported ZIPs remain retired under the intake procedure.
+
 # October 10: retire imported incoming ZIPs
 
 Read docs/incoming/README.md and completed its previously missed section-7 retirement step. The sixteen tracked ZIPs had already been imported; all 691 retained members match their original placement blobs at 0c9bf73f27, 6ae95edc29 and 5537940fde. Explicit git rm operations retire only the named archives. The drop-zone README and all report evidence remain; incoming-retirement.json records every arrival commit, placement and recovery path. The existing five earlier retirements remain recorded separately.
