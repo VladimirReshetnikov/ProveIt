@@ -1,0 +1,109 @@
+\section{Gamma coefficients prove every harmonic-order identity}
+\label{ghharm:sec:main}
+The continuous Gamma correlations above have a discrete counterpart.
+Finite harmonic products are coefficients of a Gamma ratio; a normally
+convergent Gauss sum therefore evaluates an entire family at once.
+This gives corrected all-order forms of the fifth- and sixth-order
+conjectures in Choi~\cite{ghharm:Choi}, rather than isolated numerical
+relations. The harmonic-resonance continuation supplies this route and
+its broader mixed-jet context~\cite{ghharm:report}.
+
+For $n,r\ge0$, define
+\begin{equation}\label{ghharm:eq:finite-product}
+ \prod_{j=1}^n\left(1+\frac uj\right)
+   =\sum_{r=0}^n\frac{\mathcal E_r(n)}{r!}u^r,
+ \qquad \mathcal E_0(n)=1.
+\end{equation}
+Thus $\mathcal E_r(n)$ is $r!$ times the elementary symmetric
+polynomial in $1,1/2,\ldots,1/n$. In particular
+$\mathcal E_1(n)=H_n$ and
+$\mathcal E_2(n)=H_n^2-H_n^{(2)}$. Equivalently it is the complete
+exponential Bell polynomial with arguments
+$H_n,-H_n^{(2)},2H_n^{(3)},\ldots,
+(-1)^{r-1}(r-1)!H_n^{(r)}$.
+
+\begin{theorem}[Every pair of harmonic coefficient orders]
+\label{ghharm:thm:generator}
+For $u,v$ in a neighborhood of zero,
+\begin{equation}\label{ghharm:eq:generator}
+ \sum_{n=0}^{\infty}
+ \frac{(1+u)_n(1+v)_n}{(n!)^2(n+1)(n+2)}
+ =\frac{\Gamma(1-u-v)}{\Gamma(2-u)\Gamma(2-v)}.
+\end{equation}
+Every fixed Taylor coefficient can be taken termwise. Consequently,
+for all $r,t\ge0$,
+\begin{align}\label{ghharm:eq:mixed}
+ \sum_{n=1}^{\infty}
+ \frac{\mathcal E_r(n)\mathcal E_t(n)}{(n+1)(n+2)}
+ ={}&r!t![u^rv^t]
+       \frac{\Gamma(1-u-v)}{\Gamma(2-u)\Gamma(2-v)}
+       -\frac12\mathbf1_{r=t=0}.
+\end{align}
+These are ordinary absolutely convergent series.
+\end{theorem}
+\begin{proof}
+Since $(3)_n=n!(n+1)(n+2)/2$, the series in
+\eqref{ghharm:eq:generator} is
+$\tfrac12{}_2F_1(1+u,1+v;3;1)$. Gauss summation
+\cite{ghharm:Gauss} evaluates it as the displayed Gamma quotient.
+On a sufficiently small closed polydisc, its summands are uniformly
+$O(n^{-2+\operatorname{Re}(u+v)})$ by the Gamma-ratio asymptotic.
+Enlarging that polydisc slightly and applying Cauchy's coefficient
+formula justifies each derivative or coefficient extraction.
+Formula~\eqref{ghharm:eq:finite-product} now proves
+\eqref{ghharm:eq:mixed}. The $n=0$ summand is $1/2$ and contributes
+only at $r=t=0$.
+\end{proof}
+
+\begin{corollary}[Two explicit all-order families]
+\label{ghharm:cor:two-families}
+For every $r\ge1$ and every $t\ge0$, respectively,
+\begin{align}
+ \sum_{n=1}^{\infty}\frac{\mathcal E_r(n)}{(n+1)(n+2)}
+   &=r!,\label{ghharm:eq:pure}\\
+ \sum_{n=1}^{\infty}\frac{H_n\mathcal E_t(n)}{(n+1)(n+2)}
+   &=t!\left(1+\sum_{j=2}^{t+1}\zeta(j)\right).
+   \label{ghharm:eq:one-harmonic}
+\end{align}
+The sum on the second right side is empty at $t=0$.
+\end{corollary}
+\begin{proof}
+Set $v=0$ in \eqref{ghharm:eq:generator}. Its right side is
+$1/(1-u)$, proving \eqref{ghharm:eq:pure}.
+Differentiate first in $v$ and then put $v=0$. The result is
+\[
+ \frac{\psi(2)-\psi(1-u)}{1-u}
+   =\frac{1+\sum_{j\ge1}\zeta(j+1)u^j}{1-u},\qquad |u|<1.
+\]
+The normally convergent digamma Taylor expansion at one proves this
+last equality. Taking the coefficient of $u^t$ proves
+\eqref{ghharm:eq:one-harmonic}. Its $n=0$ derivative is zero, so no
+additional constant occurs.
+\end{proof}
+
+The cases $r=5,6$ prove the intended pure harmonic identities in
+Choi's Conjecture~4; the cases $t=5,6$ prove corrected versions of
+Conjecture~6. His printed formulas (41)--(46) carry twice the
+multiplier in \eqref{ghharm:eq:one-harmonic}. The finite-product
+definition also fixes the harmonic orders in every numerator, including
+the sixth-order term $-120H_n^{(6)}$ and, after multiplication by
+$H_n$, the partition term $45H_n^3(H_n^{(2)})^2$.
+The unambiguous coefficient formula is the corrected statement at all
+orders. The source comparison and its text-versus-visual evidence
+boundary are recorded in \src{verification/ninth-analytic-audit.md}.
+
+For a short independent check of the simplest normalization, summation
+by parts gives
+\begin{align*}
+ \sum_{n\ge1}\frac{H_n^2}{(n+1)(n+2)}
+ &=\sum_{k\ge1}\frac{H_k^2-H_{k-1}^2}{k+1}\\
+ &=2\sum_{k\ge1}\frac{H_{k-1}}{k(k+1)}
+       +\sum_{k\ge1}\frac1{k^2(k+1)}\\
+ &=2+\zeta(2)-1=1+\zeta(2).
+\end{align*}
+Indeed Tonelli's theorem gives
+$\sum_{k\ge1}H_{k-1}/(k(k+1))
+=\sum_{j\ge1}1/(j(j+1))=1$.
+This isolates the factor of two without any special-function
+differentiation. Higher mixed orders are finite Gamma Taylor
+coefficients; no arithmetic-independence assumption is needed.

@@ -448,6 +448,55 @@ independent symbolic controls comprise 224 exact checks and one rejected
 corruption; fifteen 60-digit numerical checks remain non-interval diagnostics.
 Wolfram 15.0.1 independently passes 36 exact identities and four 70-digit direct
 subtracted-integral diagnostics. No period-independence or literature-priority
-claim is inferred. The canonical release has 446 pages and 111 references;
+claim is inferred. The eighth milestone has 446 pages and 111 references;
 its three-pass build, full-page raster review and exact receipt checks are
 separate evidence records.
+
+## Ninth intake: harmonic resonance and unequal dilation
+
+Five further packages are preserved in placement 912c50e302, with 200 tracked
+original members and two ignored SHA256SUMS members recoverable in the
+committed arrivals. Their imported ZIPs are retired; the incoming README is
+unchanged. The new stieltjes-harmonic-resonance spine groups the discrete
+Gamma-coefficient and nested-regulator developments. Shared distributional
+dilation conventions continue the existing correlation spine.
+
+| Source group | Reconciliation and pending analytic scope |
+|---|---|
+| stieltjes-harmonic-resonance | Dependency map for Gauss subtraction, harmonic coefficients and nested spectral resonance. |
+| gauss-hurwitz-pole-cancellation | Normally convergent all-integer subtraction, exact resonance values, degenerate reciprocal-Gamma jets, complete harmonic-tail identities and endpoint polylogarithmic subtraction. Independent analytic integration is pending. |
+| mellin-lerch-dilation | Mellin-Lerch finite formulas, harmonic mixed reflection, every ambient-coordinate covering contact and unequal disjoint-grid products. The collective undifferentiated covering and trace laws are already integrated; differentiated covering and unequal products extend them and remain pending audit. |
+| nested-harmonic-jets | Holomorphic cutoff limits, Gamma slices, exact regulator conversion, higher-genus cyclotomic products and fixed versus moving equal-order resonance. Full analytic integration is pending; the depth claim concerns its explicitly defined logarithmic-sum class. |
+| polylog-stieltjes-critical-transition | Gamma translation identities and cusp polynomials overlap earlier work. The claimed near-critical crossing proof, exact velocity finite parts and Cayley depth retraction remain pending audit; the thirty-term formal S6 normal form does not settle the period conjecture. |
+| stieltjes-harmonic-identities | Unequal dilation and Gauss jets overlap the other new continuations. The corrected Choi coefficient families now have an independent all-order proof and are integrated. Separated triple Tornheim correlations, rational harmonic kernels and the remaining Gauss/dilation claims need canonical analytic integration. |
+
+Full isolated replay results are recorded separately from analytic acceptance.
+Original supplied receipts remain historical evidence. These reports
+leave S6 and S8 conjectural. No delivered statement is silently promoted or
+used as an additional theorem assumption.
+
+The ninth analytic audit proves the corrected Choi pure and mixed harmonic
+families at every order by a normally convergent two-parameter Gauss sum.
+The fifth- and sixth-order conjecture cases follow exactly; the n=0 term
+at zero total order is retained. A separate elementary summation-by-parts
+argument proves the first mixed value 1+zeta(2), rejecting the printed factor
+of two. Native Wolfram independently checks seven mixed coefficients, the
+pure generator and an integrated harmonic generating function. Primary
+publisher text was checked; fresh visual inspection of the two typography
+misprints remains unavailable because direct downloads returned HTTP 403.
+This distinction is recorded in ninth-analytic-audit.md and does not weaken
+the unambiguous all-order finite-product statement proved in the book.
+
+All five ninth-batch full isolated suites now pass. Gauss-Hurwitz supplies
+512 exact checks and 64 diagnostics at 65 digits. Nested harmonic jets supply
+826 exact assertions, 960 higher-jet comparisons, 99 general comparisons
+and 16 cyclotomic comparisons at 60 digits. Harmonic identities supply
+128 exact checks, 37 rational-kernel diagnostics, six independent trilinear
+checks and 48 mixed Gauss jets. Mellin-dilation runs all nine entry points,
+with 742 exact assertions and 77 diagnostics. Critical-transition runs its
+full exact, numeric and Euler suites: 780 Eulerian word checks, 2150 shuffle
+products, exact ideal ranks, the nonzero thirty-term formal S6 projection,
+translation diagnostics and all nine transition samples. Numerical outcomes
+remain non-interval evidence; general theorems retain the acceptance status
+of their individual ledger rows. The final release has 448 pages and 114
+references, with 721 source documents and 47 archived arrivals accounted for.
