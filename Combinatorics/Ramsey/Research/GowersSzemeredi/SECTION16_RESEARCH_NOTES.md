@@ -11940,4 +11940,10 @@ are not used. No upstream modules or licensing scope are added.
 a 435-module closure; the first global exact transfer in 450; the
 progression eight-tuple extension in 436; the fully exact global
 transfer in 452; and the native interface in 551. These closures include
-up-to-date dependencies. The combined audit is pending for this checkpoint.
+up-to-date dependencies. The completed combined audit includes all 19 new
+named proofs and checks 9,818 public Gowers theorems across 5,604 modules;
+the facade closure contains 5,602 modules. Only `propext`,
+`Classical.choice` and `Quot.sound` occur. The selected OAI audit closure
+remains 4,152 modules, and its 4,134-upstream / 17-compatibility scope check
+passes. The source ledger remains byte-identical at 115 companions and
+five open statements. The incoming local-input retraction is synchronized.
