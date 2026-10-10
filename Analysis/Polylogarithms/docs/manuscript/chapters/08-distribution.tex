@@ -1,0 +1,523 @@
+\section{Weighted distribution modules and exact rational-grid ranks}
+\label{dist:sec:distribution}
+
+The distribution relations in the Stieltjes drafts have a simple
+representation-theoretic structure. The relevant dimension is the
+dimension of a formal quotient by specified relations. The classical
+theory of universal distributions provides the broader setting
+\cite{dist:Kubert,dist:Ouyang}. Here we give an explicit character normal form,
+including its behavior at exceptional weights and in finite Taylor
+jets. This proves the two all-denominator rank statements suggested by
+the source computations, without making an independence assertion about
+evaluated special values.
+
+\subsection{The relation module and its complete character decomposition}
+
+Fix \(q\geq2\), and put
+\[
+ G_q=\frac1q\Z/\Z,\qquad U(q)=(\Z/q\Z)^\times.
+\]
+Let \(\mathcal A\) be a commutative unital \(\C\)-algebra and choose
+arbitrary \(t_p\in\mathcal A\), one for each prime \(p\mid q\).
+The choices may vanish or be nilpotent. Let
+\[
+ \mathcal V_q=\bigoplus_{x\in G_q}\mathcal A[x].
+\]
+For \(p\mid q\) and \(x\in pG_q\), define the prime distribution row
+\begin{equation}
+ D_p(x)=\sum_{\substack{y\in G_q\\py=x}}[y]-t_p[x].
+ \label{dist:eq:dist-prime-row}
+\end{equation}
+Write \(\mathcal R_q\) for the \(\mathcal A\)-span of these rows and
+\(\mathcal U_q=\mathcal V_q/\mathcal R_q\).
+The unit group acts by \(u[x]=[ux]\), and each relation map is
+equivariant.
+
+For \(d\mid q\), set \(t_d=\prod_{p\mid d}t_p^{v_p(d)}\).
+Rows for composite divisors introduce no additional relations. Indeed,
+if \(ab\mid q\) and \(x\in abG_q\), then
+\begin{equation}
+ D_{ab}(x)=
+ \sum_{\substack{z\in G_q\\az=x}}D_b(z)+t_bD_a(x).
+ \label{dist:eq:dist-composite-row}
+\end{equation}
+Every \(z\) in this sum belongs to \(bG_q\), so the rows on the right
+are legitimate grid rows. Expanding the two sums proves the identity.
+Induction on the number of prime factors of \(d\), counted with
+multiplicity, proves the assertion for every divisor.
+
+Let \(\chi\) run through all characters of \(U(q)\), and let \(f=f_\chi\)
+be the conductor of its primitive inducing character \(\chi^*\).
+For \(f\mid d\mid q\), let \(\chi_d\) denote the induced character
+modulo \(d\), and define
+\begin{equation}
+ Y_{d,\chi}=\sum_{a\in U(d)}\chi_d(a)[a/d].
+ \label{dist:eq:dist-character-vector}
+\end{equation}
+For the principal character at \(d=1\), this means
+\(Y_{1,\mathbf1}=[0]\). These are formal vectors; no numerical
+\(L\)-value is being declared independent.
+
+\begin{lemma}[All character components of the rows]
+\label{dist:lem:dist-all-components}
+The \(\chi^{-1}\)-eigenspace of \(\mathcal V_q\) is free over
+\(\mathcal A\), with basis
+\[
+ \{Y_{d,\chi}: f_\chi\mid d\mid q\}.
+\]
+Its relation submodule is generated exactly by the edges
+\begin{equation}
+ \begin{aligned}
+ Y_{pd,\chi}-t_pY_{d,\chi},
+     &\qquad p\mid d,\\
+ Y_{pd,\chi}-(t_p-\chi^*(p))Y_{d,\chi},
+     &\qquad p\nmid d,
+ \end{aligned}
+ \qquad f_\chi\mid d,\quad pd\mid q.
+ \label{dist:eq:dist-character-edges}
+\end{equation}
+In particular, there are no additional character relations arising
+from denominators smaller than, or not divisible by, \(f_\chi\).
+\end{lemma}
+
+\begin{proof}
+The elements of \(G_q\) of exact denominator \(d\) form a single
+\(U(q)\)-orbit, naturally identified with \(U(d)\). Reduction
+\(U(q)\to U(d)\) is surjective. The character \(\chi\) factors through
+this map exactly when \(f_\chi\mid d\); otherwise its projection on
+that orbit is zero. More explicitly, the idempotent
+\[
+ E_\chi=\frac1{\varphi(q)}\sum_{u\in U(q)}\chi(u)u
+\]
+satisfies, for \(a\in U(d)\),
+\begin{equation}
+ E_\chi[a/d]=
+ \begin{cases}
+ \displaystyle\frac{\chi_d(a)^{-1}}{\varphi(d)}Y_{d,\chi},
+       &f_\chi\mid d,\\[6pt]
+ 0,&f_\chi\nmid d.
+ \end{cases}
+ \label{dist:eq:dist-projector}
+\end{equation}
+This follows by grouping \(u\) according to its residue modulo \(d\)
+and using character orthogonality on the kernel of reduction.
+The idempotents are mutually orthogonal and sum to the identity.
+All their scalar denominators are units in \(\mathcal A\), so the
+argument applies equally to a nonreduced algebra.
+
+For a fixed \(p\mid q\), consider the equivariant map
+\[
+ D_p:\mathcal A[pG_q]\longrightarrow\mathcal V_q,\qquad
+ [x]\longmapsto D_p(x).
+\]
+The exact-denominator orbits in its domain have \(pd\mid q\).
+By \eqref{dist:eq:dist-projector}, their only nonzero \(\chi\)-components
+have \(f_\chi\mid d\), and each such component has the single
+generator \(Y_{d,\chi}\). Consequently, computing
+\(D_p(Y_{d,\chi})\) computes \emph{every} projected relation for
+that \(p\); an orbit on which the projector vanishes cannot create
+a hidden relation in the target.
+
+If \(p\mid d\), all \(p\) preimages of each \(a/d\), \(a\in U(d)\),
+have exact denominator \(pd\). Summing with weights \(\chi_d(a)\)
+therefore gives \(Y_{pd,\chi}-t_pY_{d,\chi}\).
+If \(p\nmid d\), one preimage has denominator \(d\), while the other
+\(p-1\) have denominator \(pd\). In the former preimage,
+\(pc\equiv a\pmod d\), so its character coefficient is
+\(\chi_d(a)=\chi^*(p)\chi_d(c)\). Thus the sum is
+\[
+ Y_{pd,\chi}+\chi^*(p)Y_{d,\chi}-t_pY_{d,\chi}.
+ \]
+Here \(p\nmid f_\chi\), as \(f_\chi\mid d\), so \(\chi^*(p)\)
+is a nonzero root of unity. This proves both the edge formulas
+and their completeness.
+\end{proof}
+
+\begin{theorem}[Polynomial normal form]
+\label{dist:thm:dist-normal-form}
+For \(f=f_\chi\mid d\mid q\), define
+\begin{equation}
+ A_{d,\chi}(\mathbf t)=
+ \prod_{p\mid f}t_p^{\,v_p(d)-v_p(f)}
+ \prod_{\substack{p\mid d\\p\nmid f}}
+       t_p^{\,v_p(d)-1}(t_p-\chi^*(p)).
+ \label{dist:eq:dist-normal-coefficient}
+\end{equation}
+Empty products are \(1\), so \(A_{f,\chi}=1\).
+Then the full \(\chi\)-relation submodule is
+\begin{equation}
+ \mathcal R_{q,\chi}
+ =\bigoplus_{\substack{f\mid d\mid q\\d\ne f}}
+   \mathcal A\bigl(Y_{d,\chi}-A_{d,\chi}Y_{f,\chi}\bigr).
+ \label{dist:eq:dist-triangular-relations}
+\end{equation}
+In particular,
+\begin{equation}
+ \mathcal U_q\cong
+ \bigoplus_{\chi\in\widehat{U(q)}}\mathcal A\,Y_{f_\chi,\chi}
+ \cong\mathcal A^{\varphi(q)}.
+ \label{dist:eq:dist-free}
+\end{equation}
+The character normal form of every vector is obtained by replacing
+\(Y_{d,\chi}\) with \(A_{d,\chi}Y_{f_\chi,\chi}\).
+\end{theorem}
+
+\begin{proof}
+The polynomials \(A_{d,\chi}\) satisfy precisely the edge recursions
+\eqref{dist:eq:dist-character-edges}: a prime already dividing \(d\)
+contributes \(t_p\), and a prime introduced for the first time
+outside \(f\) contributes \(t_p-\chi^*(p)\).
+The factors for distinct primes commute.
+
+Follow any chain of prime extensions from \(f\) to \(d\).
+Successively eliminating the intermediate \(Y\)'s expresses
+\(Y_{d,\chi}-A_{d,\chi}Y_{f,\chi}\) as a combination of the
+edge relations. Conversely, write an edge as
+\(Y_{pd,\chi}-cY_{d,\chi}\), where
+\(A_{pd,\chi}=cA_{d,\chi}\). It equals
+\[
+ \bigl(Y_{pd,\chi}-A_{pd,\chi}Y_{f,\chi}\bigr)
+ -c\bigl(Y_{d,\chi}-A_{d,\chi}Y_{f,\chi}\bigr).
+ \]
+Lemma~\ref{dist:lem:dist-all-components} therefore gives equality of the
+two relation spans.
+
+The displayed generators in \eqref{dist:eq:dist-triangular-relations}
+are independent: the coefficient of \(Y_{d,\chi}\), for \(d\ne f\),
+in a linear combination is exactly the coefficient of its own
+generator. Together with \(Y_{f,\chi}\), they form a triangular
+basis of the whole character block. Its quotient is consequently
+free of rank one. Summing over all \(\varphi(q)\) characters proves
+\eqref{dist:eq:dist-free}.
+\end{proof}
+
+\begin{remark}
+The proof divides by neither \(t_p\) nor \(t_p-\chi^*(p)\).
+It proves freeness first over \(\C[t_p:p\mid q]\) and then over
+every \(\C\)-algebra obtained by specialization. Exceptional weights
+can therefore make a preferred coordinate vanish, but cannot change
+the rank of the full quotient. This distinction is essential when
+Euler factors are used to solve a relation system.
+\end{remark}
+
+\subsection{Anchors, reflection, and the ranks in the drafts}
+
+In this subsection take \(\mathcal A=\C\).
+In a Hurwitz-zeta grid, use the representatives \(0<a\leq1\):
+the group element \(0\) represents \(a=1\), not the singular
+Hurwitz parameter \(a=0\). Treating the endpoint as known means
+imposing the homogeneous anchor \([0]=0\). It removes exactly the
+principal generator \(Y_{1,\mathbf1}\). Hence
+\begin{equation}
+ \dim_\C\mathcal V_q/(\mathcal R_q+\C[0])=\varphi(q)-1.
+ \label{dist:eq:dist-anchor-dimension}
+\end{equation}
+There are \(q-1\) remaining grid variables, so their distribution
+coefficient matrix has rank \(q-\varphi(q)\). At rational weights
+\(t_p\), the matrix has rational entries and this is also its rank
+over \(\Q\).
+
+Let \(J[x]=[-x]\). On the \(\chi\)-block, \(J\) acts as
+\(\chi(-1)\). Thus the additional homogeneous reflection rows
+\begin{equation}
+ [x]+(-1)^k[-x]=0,\qquad x\ne0,
+ \label{dist:eq:dist-reflection-rows}
+\end{equation}
+retain exactly the characters with
+\(\chi(-1)=(-1)^{k+1}\). After anchoring, the omission of \(x=0\)
+in \eqref{dist:eq:dist-reflection-rows} has no effect.
+
+\begin{corollary}[All-denominator formal ranks]
+\label{dist:cor:dist-all-ranks}
+For \(q\geq3\) and every integer \(k\geq0\), the formal quotient
+by distribution, endpoint, and the reflection rows
+\eqref{dist:eq:dist-reflection-rows} has dimension
+\begin{equation}
+ r_{q,k}=
+ \begin{cases}
+ \varphi(q)/2-1,&k\ \text{odd},\\
+ \varphi(q)/2,&k\ \text{even}.
+ \end{cases}
+ \label{dist:eq:dist-parity-dimension}
+\end{equation}
+This conclusion holds for arbitrary prime weights.
+In particular it proves the all-\(q\), all-\(k\) formal rank law
+for the negative Hurwitz-zeta derivative ladder.
+The formal distribution-only rank in the Stieltjes parameter
+derivative tower is \(q-\varphi(q)\) for every \(q\geq2\),
+every parameter derivative order \(k\geq1\), and every Stieltjes
+index \(n\geq1\), relative to the endpoint and lower-index data.
+\end{corollary}
+
+\begin{proof}
+For \(q\geq3\), the element \(-1\) is a nonidentity involution in
+\(U(q)\). Character orthogonality gives
+\(\sum_\chi\chi(-1)=0\), and each summand is \(1\) or \(-1\).
+There are consequently \(\varphi(q)/2\) characters of each parity.
+Reflection retains the parity stated above. The principal
+character is even, so the endpoint removes one additional
+dimension exactly when \(k\) is odd. This proves
+\eqref{dist:eq:dist-parity-dimension}.
+
+For the negative ladder, differentiation of the Hurwitz
+multiplication formula at \(s=-k\) gives
+\begin{equation}
+ \sum_{j=0}^{d-1}
+ \zeta'\!\left(-k,\frac{a+j}{d}\right)
+ =d^{-k}\bigl(\zeta'(-k,a)+\log d\,\zeta(-k,a)\bigr).
+ \label{dist:eq:dist-negative-jet}
+\end{equation}
+The Bernoulli-polynomial values \(\zeta(-k,a)\) are lower data.
+Thus the homogeneous distribution weight is \(t_p=p^{-k}\).
+The homogeneous reflection is
+\eqref{dist:eq:dist-reflection-rows}; an explicit right-hand side is
+given below. This applies the first part to the ladder in the
+source article.
+
+For the parameter derivative tower, the Laurent expansion is
+\begin{equation}
+ \zeta(s,a)=\frac1{s-1}
+   +\sum_{n\geq0}\frac{(-1)^n}{n!}\gamma_n(a)(s-1)^n.
+ \label{dist:eq:dist-stieltjes-laurent}
+\end{equation}
+For \(k\geq1\), its pole disappears after differentiation in \(a\):
+\begin{equation}
+ F_k(\epsilon,a):=
+ \partial_a^k\zeta(1+\epsilon,a)
+ =(-1)^k(1+\epsilon)_k\zeta(k+1+\epsilon,a)
+ =\sum_{n\geq0}\frac{(-1)^n}{n!}
+          \gamma_n^{(k)}(a)\epsilon^n.
+ \label{dist:eq:dist-stieltjes-generating}
+\end{equation}
+This standard identity is the starting point of the all-order
+parameter derivative formula of Coffey \cite{stieltjes:Coffey}.
+Differentiating the Hurwitz multiplication formula \(k\) times
+in \(a\), including its chain-rule factors, gives
+\[
+ \sum_{j=0}^{d-1}
+ F_k\!\left(\epsilon,\frac{a+j}{d}\right)
+ =d^{k+1+\epsilon}F_k(\epsilon,a).
+\]
+Comparing coefficients yields the exact triangular identity
+\begin{equation}
+ \sum_{j=0}^{d-1}
+ \gamma_n^{(k)}\!\left(\frac{a+j}{d}\right)
+ =d^{k+1}\sum_{r=0}^{n}
+   \binom nr(-\log d)^{n-r}\gamma_r^{(k)}(a).
+ \label{dist:eq:dist-stieltjes-multiplication}
+\end{equation}
+With lower indices \(r<n\) treated as specified data, the
+homogeneous weight is \(t_p=p^{k+1}\), independently of \(n\).
+Equation~\eqref{dist:eq:dist-anchor-dimension} now gives rank
+\(q-\varphi(q)\).
+\end{proof}
+
+For completeness, the right-hand side of the negative reflection
+can be written without introducing another Hurwitz derivative.
+For \(0<a<1\), set
+\[
+ C_j(a)=\sum_{m\geq1}\frac{\cos(2\pi ma)}{m^j},
+ \qquad
+ S_j(a)=\sum_{m\geq1}\frac{\sin(2\pi ma)}{m^j}.
+\]
+For \(k\geq1\), these series at \(j=k+1\) converge absolutely, and
+the Fourier form of the Hurwitz functional equation \cite{hstruct:DLMF}
+gives
+\begin{equation}
+ \zeta'(-k,a)+(-1)^k\zeta'(-k,1-a)
+ =\frac{(-1)^{\lfloor k/2\rfloor}k!}{(2\pi)^k}
+ \begin{cases}
+ C_{k+1}(a),&k\ \text{even},\\
+ S_{k+1}(a),&k\ \text{odd}.
+ \end{cases}
+ \label{dist:eq:dist-negative-reflection}
+\end{equation}
+Indeed, the Fourier expansion of \(\zeta(s,a)\) has the factor
+\[
+ \frac{2\Gamma(1-s)}{(2\pi)^{1-s}}
+ \left(\sin\frac{\pi s}{2}\,C_{1-s}(a)
+       +\cos\frac{\pi s}{2}\,S_{1-s}(a)\right).
+\]
+The indicated reflection selects a sine or cosine prefactor
+that vanishes at \(s=-k\). Only the derivative of that prefactor
+survives, giving \eqref{dist:eq:dist-negative-reflection}.
+This also explains why reflection is an inhomogeneous relation
+with depth-one data in the inventory.
+
+\begin{corollary}[The formal gamma grid]
+\label{dist:cor:dist-gamma-rank}
+For \(q\geq3\), the \(q-1\) formal coordinates
+\(\log\Gamma(a/q)\), \(1\leq a<q\), modulo multiplication and
+reflection and relative to their stated elementary right-hand
+sides, have quotient dimension \(\varphi(q)/2\).
+\end{corollary}
+
+\begin{proof}
+Lerch's identity
+\(\zeta'(0,a)=\log\Gamma(a)-\tfrac12\log(2\pi)\)
+translates gamma multiplication into
+\eqref{dist:eq:dist-negative-jet} with \(k=0\), hence \(t_p=1\).
+The reflection formula
+\[
+ \zeta'(0,a)+\zeta'(0,1-a)=-\log(2\sin\pi a)
+\]
+has homogeneous part \([x]+[-x]=0\). Apply
+\eqref{dist:eq:dist-parity-dimension} with \(k=0\).
+\end{proof}
+
+\begin{remark}[What these rank theorems settle]
+\label{dist:rem:dist-formal-only}
+The first Stieltjes source states a finite verification followed
+by an all-denominator conjecture; the parameter-derivative source
+states a general rank theorem while reporting only a finite
+calculation. Corollary~\ref{dist:cor:dist-all-ranks} supplies a proof
+for the specified relation modules in both cases. The README
+had already identified the second proof gap.
+Corollary~\ref{dist:cor:dist-gamma-rank} likewise determines the rank
+of the stated gamma relation matrix. None of these results says
+that the evaluated numbers admit no further relations.
+In particular, the claim that multiplication and reflection
+generate every algebraic multiplicative relation among rational
+gamma values remains part of the conjectural completeness
+problem, not a consequence of the matrix rank.
+\end{remark}
+
+\subsection{Analytic weights, exceptional coordinates, and finite jets}
+
+Specialize \(t_p=p^s=\exp(s\log p)\), using the real logarithm
+of the prime. Formula~\eqref{dist:eq:dist-normal-coefficient} becomes
+\begin{equation}
+ A_{d,\chi}(s)=
+ \left(\frac d{f_\chi}\right)^s
+ \prod_{\substack{p\mid d\\p\nmid f_\chi}}
+       \left(1-\chi^*(p)p^{-s}\right).
+ \label{dist:eq:dist-euler-coefficient}
+\end{equation}
+This is exactly the familiar imprimitive Euler-factor pattern
+for Dirichlet \(L\)-functions \cite{hstruct:DLMF}. The normal-form proof
+shows why it appears in the formal relations before any
+evaluation is made.
+
+The symbols of exact denominator \(q\) have character coordinates
+\(Y_{q,\chi}\). In the quotient, their \(\chi\)-coordinate is
+\begin{equation}
+ Y_{q,\chi}=A_{q,\chi}(s)Y_{f_\chi,\chi}.
+ \label{dist:eq:dist-top-coordinate}
+\end{equation}
+They form a basis of the full quotient precisely when every
+\(A_{q,\chi}(s)\) is nonzero. In particular this holds when
+\(\Real s\ne0\), since \(\chi^*(p)\) has modulus one.
+All nonzero integer weights in the two Stieltjes articles are
+therefore free of this coordinate obstruction. On the imaginary
+axis the top-denominator coordinates can fail, while the
+conductor coordinates of Theorem~\ref{dist:thm:dist-normal-form}
+remain a basis.
+
+\begin{theorem}[Exact defect of top-denominator jets]
+\label{dist:thm:dist-jet-defect}
+Fix \(s_0\in\C\) and \(N\geq0\), and work over
+\(\mathcal A_N=\C[\epsilon]/(\epsilon^{N+1})\) with
+\(t_p=p^{s_0+\epsilon}\), truncated in this ring.
+The full distribution module is free of rank \(\varphi(q)\)
+over \(\mathcal A_N\), hence has complex dimension
+\((N+1)\varphi(q)\).
+Set
+\begin{equation}
+ r_\chi(s_0)=
+ \#\{p\mid q:p\nmid f_\chi,\ p^{s_0}=\chi^*(p)\}.
+ \label{dist:eq:dist-resonance-count}
+\end{equation}
+The image of the top-denominator submodule in its \(\chi\)-block
+has complex dimension
+\begin{equation}
+ \max\{N+1-r_\chi(s_0),0\},
+ \label{dist:eq:dist-jet-image}
+\end{equation}
+and its cokernel has dimension
+\(\min\{r_\chi(s_0),N+1\}\).
+An endpoint anchor or a fixed-parity reflection restricts these
+formulas to the retained characters. The resulting full quotient
+remains free over \(\mathcal A_N\) with the ranks already computed.
+\end{theorem}
+
+\begin{proof}
+Freeness is Theorem~\ref{dist:thm:dist-normal-form}, applied to
+\(\mathcal A_N\). A resonant factor in
+\eqref{dist:eq:dist-euler-coefficient} has a simple zero at \(s_0\):
+\[
+ \left.\frac{d}{ds}
+ (1-\chi^*(p)p^{-s})\right|_{s=s_0}=\log p\ne0.
+\]
+All other factors, including \((q/f_\chi)^s\), are nonzero
+there. In the ring of analytic germs,
+\[
+ A_{q,\chi}(s_0+\epsilon)
+   =\epsilon^{r_\chi(s_0)}u_\chi(\epsilon),
+ \qquad u_\chi(0)\ne0.
+\]
+After truncation, \(u_\chi\) is a unit. The
+top-denominator image in the free rank-one block is therefore
+the ideal \(\epsilon^{r_\chi(s_0)}\mathcal A_N\).
+Its basis consists of the powers
+\(\epsilon^{r_\chi},\ldots,\epsilon^N\) when \(r_\chi\leq N\),
+and it is zero otherwise. This proves both dimensions.
+Anchoring and reflection remove entire character blocks,
+so the same calculation applies to each retained block.
+\end{proof}
+
+Comparing Taylor coefficients of a weighted distribution identity
+gives the corresponding stacked finite-jet system. If one identifies
+the coefficient at order \(j\) with
+\(\epsilon^{N-j}[x]\), its relation space is the
+\(\mathcal A_N\)-span above; factorial normalizations merely
+rescale coordinates. Thus freeness also gives the rank of the
+complete simultaneous jet system, rather than just its successive
+highest layers.
+
+\begin{proposition}[Multiplicity of nonzero resonances]
+\label{dist:prop:dist-resonance-multiplicity}
+Resonances occur only on \(\Real s_0=0\).
+For \(s_0\ne0\), each \(r_\chi(s_0)\) is at most one.
+Multiple resonant primes in a single character block can occur
+only at \(s_0=0\).
+\end{proposition}
+
+\begin{proof}
+Taking absolute values in \(p^{s_0}=\chi^*(p)\) gives
+\(\Real s_0=0\). Write \(s_0=\iu t\), with \(t\ne0\).
+Because every character value is a root of unity, resonance
+at \(p\) implies
+\(t\log p/(2\pi)\in\Q\). This rational number is nonzero.
+If distinct primes \(p\) and \(\ell\) both resonate, then
+\(\log p/\log\ell\in\Q\). Writing this positive rational as
+\(a/b\) would give \(p^b=\ell^a\) for positive integers \(a,b\),
+contradicting unique factorization.
+\end{proof}
+
+For a concrete origin resonance, take \(q=14\) and let \(\chi^*\)
+be the quadratic character modulo \(7\). Its conductor is \(7\),
+its parity is odd, and \(\chi^*(2)=1\). Then
+\begin{equation}
+ Y_{14,\chi}(s)=(2^s-1)Y_{7,\chi}(s).
+ \label{dist:eq:dist-resonance-example}
+\end{equation}
+At \(s=0\), the top-denominator coordinate vanishes although the
+conductor direction persists. For any analytic realization of
+this relation,
+\begin{align}
+ Y_{14,\chi}'(0)&=\log2\,Y_{7,\chi}(0),\notag\\
+ Y_{14,\chi}''(0)&=
+ 2\log2\,Y_{7,\chi}'(0)+(\log2)^2Y_{7,\chi}(0).
+ \label{dist:eq:dist-resonance-example-jets}
+\end{align}
+Thus recovering the first conductor derivative from these
+top-denominator data requires the second top-denominator jet.
+The actual realization
+\[
+ Y_{d,\chi}(s)
+ =\sum_{a\in U(d)}\chi_d(a)\zeta(s,a/d)
+ =d^sL(s,\chi_d)
+\]
+obeys the same identity. This example concerns an imprimitive
+Euler factor; it is distinct from the trivial-zero regularization
+of the primitive \(L\)-function in the next section.

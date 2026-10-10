@@ -301,7 +301,7 @@ The \emph{upper} bound $d_w\le$ (the recursion value) is a theorem, proved indep
 
 \subsection*{A table of low-weight reductions}
 
-The following table records all admissible MZVs through weight $5$ together with their reductions to the conjectural basis $\{1\}$ (weight $\le2$), $\{\zeta(3)\}$, $\{\zeta(4)\}\sim\{\pi^4\}$, $\{\zeta(5),\zeta(2)\zeta(3)\}$. Every entry has been verified symbolically.
+The following table records all admissible MZVs through weight $5$ together with their reductions to the standard spanning sets $\{\zeta(2)\}$, $\{\zeta(3)\}$, $\{\zeta(4)\}\sim\{\pi^4\}$, $\{\zeta(5),\zeta(2)\zeta(3)\}$. Every entry has been verified symbolically.
 
 \begin{center}
 \renewcommand{\arraystretch}{1.25}
@@ -315,6 +315,8 @@ $4$ & $1$ & $\zeta(4)=\dfrac{\pi^4}{90}$; \quad $\zeta(3,1)=\dfrac{\pi^4}{360}$,
 $5$ & $2$ & $\zeta(5),\ \zeta(2)\zeta(3)$ span; \quad $\zeta(4,1)=2\zeta(5)-\zeta(2)\zeta(3)$,\\
     &     & $\zeta(3,2)=-\tfrac{11}{2}\zeta(5)+3\,\zeta(2)\zeta(3)$, \quad $\zeta(2,3)=\tfrac{9}{2}\zeta(5)-2\,\zeta(2)\zeta(3)$,\\
     &     & $\zeta(3,1,1)=2\zeta(5)-\zeta(2)\zeta(3)$, \quad $\zeta(2,1,1,1)=\zeta(5)$ (duality of $\zeta(5)$)\\
+    &     & $\zeta(2,2,1)=\zeta(3,2)=-\tfrac{11}{2}\zeta(5)+3\zeta(2)\zeta(3)$,\\
+    &     & $\zeta(2,1,2)=\zeta(2,3)=\tfrac92\zeta(5)-2\zeta(2)\zeta(3)$ (duality)\\
 \hline
 \end{tabular}
 \end{center}
@@ -328,7 +330,7 @@ direction beyond the polynomial algebra of single zetas.
 
 \section{Harmonic polylogarithms}
 
-The multiple polylogarithms of the previous sections are nested \emph{sums}. For the practitioner who must actually manipulate weight-$w$ transcendentals---most insistently the particle physicist computing Feynman integrals---it is the \emph{iterated-integral} avatar that is decisive, because integration variables, differential equations, and analytic continuation all speak the language of integrals. The harmonic polylogarithms (HPLs) of Remiddi and Vermaseren (1999) are precisely this avatar, specialised to the three integration kernels that arise when a rational integrand has singularities only at $t=0,1,-1$. They have become the de facto standard basis for one-scale problems, and Wolfram~15 exposes them directly as \texttt{HarmonicPolyLog}.
+The multiple polylogarithms of the previous sections are nested \emph{sums}. For the practitioner who must actually manipulate weight-$w$ transcendentals---most insistently the particle physicist computing Feynman integrals---it is the \emph{iterated-integral} avatar that is decisive, because integration variables, differential equations, and analytic continuation all speak the language of integrals. The harmonic polylogarithms (HPLs) of Remiddi and Vermaseren~\cite{RemiddiVermaseren} are precisely this avatar, specialised to the three integration kernels that arise when a rational integrand has singularities only at $t=0,1,-1$. They have become the de facto standard basis for one-scale problems, and Wolfram~15 exposes them directly as \texttt{HarmonicPolyLog}.
 
 \subsection{Definition: kernels and iterated integrals}
 
@@ -392,13 +394,13 @@ which is the statement $\ln z\cdot(-\ln(1-z))=\Li_2(z)+\bigl(-\Li_2(z)-\ln z\,\l
 
 \subsection{Values at \texorpdfstring{$z=1$}{z=1}: Euler sums and colored MZVs}
 
-Setting $z=1$ turns admissible HPLs (those whose word does not begin with $1$, so that the boundary integral converges) into constants. Because the kernels live on the fourth-root-of-unity locus $\{0,\pm1\}$, these constants are exactly the level-$2$, or \emph{alternating}, multiple zeta values---the Euler sums. Words over $\{0,1\}$ give the ordinary MZVs,
+Setting $z=1$ turns admissible HPLs (those whose word does not begin with $1$, so that the boundary integral converges) into constants. Because the kernels live on the level-two alphabet $\{0,\pm1\}$, these constants are exactly the level-$2$, or \emph{alternating}, multiple zeta values---the Euler sums. Words over $\{0,1\}$ give the ordinary MZVs,
 \begin{equation}\label{found:eq:hpl-mzv}
   H(\underbrace{0,\dots,0}_{s_1-1},1,\underbrace{0,\dots,0}_{s_2-1},1,\dots;1)=\zeta(s_1,s_2,\dots),
 \end{equation}
 so for instance $H(0,1;1)=\Li_2(1)=\zeta(2)$ and $H(0,0,1;1)=\zeta(3)$. Admitting the letter $-1$ produces the alternating Euler sums: with $\bar s$ marking a sign,
 \[
-  H(0,-1;1)=-\Li_2(-1)=\tfrac{\pi^2}{12}=\zeta(\bar2),\qquad
+  H(0,-1;1)=-\Li_2(-1)=\tfrac{\pi^2}{12}=-\zeta(\bar2),\qquad
   H(0,0,-1;1)=-\Li_3(-1)=\tfrac34\zeta(3),
 \]
 in the alternating-MZV notation $\zeta(\bar s_1,\dots)=\sum_{n_1>\cdots}\prod(\operatorname{sgn})^{n_i}/n_i^{s_i}$. Thus the $\mathbb{Q}$-algebra of HPL values at $1$ is the algebra of alternating MZVs; its dimensions and the structure of its relations were mapped by Borwein--Bradley--Broadhurst--Lisone\v{k} and, on the motivic side, Deligne and Goncharov. This is the practical reason HPLs are the right basis: the boundary data of a Feynman integral land automatically in a well-understood number-theoretic ring.
@@ -564,9 +566,7 @@ which is exactly Euler's reflection for $\Li_2$. At weight $3$ the genuinely new
 \end{equation}
 We verified \eqref{found:eq:refl-w3} to $40$ digits at several rational and one negative argument. Two consistency checks are worth noting. Putting $z=1$ collapses the right side to $\zeta(3)-\Li_3(0)+0+0=\zeta(3)$, reproducing \eqref{found:eq:Snp-one-col}; and adding \eqref{found:eq:refl-w3} to its $z\mapsto1-z$ image recovers the symmetric Euler relation $S_{1,2}(z)+S_{1,2}(1-z)=2\zeta(3)-\Li_3(z)-\Li_3(1-z)+\cdots$ with the logarithmic tails arranging themselves into the $\zeta(3)+\Li_3$ shuffle. Identity \eqref{found:eq:refl-w3} is precisely the statement that the iterated integral of $011$ from $0$ to $z$ and from $0$ to $1-z$ differ by an explicit lower-weight boundary correction -- the weight-$3$ avatar of the dilogarithm reflection.
 
-\subsubsection*{Inversion $z\mapsto 1/z$ and Landen}
-
-The inversion does \emph{not} close on $S_{n,p}$ alone at weight $\ge3$: $S_{1,2}(1/z)$ is not a $\mathbb{Q}$-combination of $S_{1,2}(z)$, $\zeta(3)$, $\pi^2\ln z$ and $\ln^3 z$ (an integer-relation search over that ad hoc basis returns only spurious large-coefficient vectors). What is true is the structural statement that $z\mapsto 1/z$, like $z\mapsto1-z$ and the Landen map $z\mapsto z/(z-1)$, is one of the $S_3$ (in fact $\mathfrak{S}$-group) argument transformations under which the \emph{whole} weight-$w$ harmonic-polylogarithm space is closed. Concretely, writing $S_{n,p}$ in the word $0^{n}1^{p}$ and applying the HPL substitution rules of the previous section expresses $S_{n,p}(1/z)$ -- and, separately, $S_{n,p}(z/(z-1))$ -- as an explicit $\mathbb{Q}$-linear combination of all weight-$(n+p)$ harmonic polylogarithms in $z$ together with products of $\ln z$, $\ln(1-z)$ and lower-weight $S$'s and $\zeta$'s. Thus the Nielsen polylogarithms inherit the dilogarithm's full transformation calculus, but only after one leaves the two-index Nielsen subfamily for the ambient HPL algebra; the inversion is the cheapest illustration that $\{S_{n,p}\}$ is \emph{not} closed under the group of fractional-linear argument changes, whereas the HPLs are.
+\input{chapters/01-nielsen-inversion}
 
 \subsection{Placement inside the multiple-polylogarithm world}
 
@@ -595,7 +595,7 @@ For the dilogarithm the differential
 $d\Li_2(z)=-\log(1-z)d\log z$ makes this elementary; differentiating
 Euler reflection and evaluating an endpoint proves the identity exactly.
 
-Motivic MZVs provide an algebraic setting in which dimension and spanning
+Motivic MZVs~\cite{Brown2012} provide an algebraic setting in which dimension and spanning
 theorems can be proved. The numerical period map transports identities
 and upper bounds. Its injectivity, and thus the corresponding lower bounds
 for numerical periods, is a separate conjectural issue. The same caution

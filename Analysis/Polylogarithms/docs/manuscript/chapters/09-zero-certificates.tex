@@ -1,0 +1,76 @@
+\subsection{A reproducible Euler--Maclaurin sign certificate}
+The finite certificates above can be checked without floating-point special
+functions. Put $p=k+1$, and define
+\[
+R_{n,\ell}(v)=n!\sum_{j=0}^n
+ e_{n-j}(\ell)\frac{(-v)^j}{j!}.
+\]
+The master identity gives the absolutely convergent spectral representation
+\[
+\mathcal V_{n,k}(a)=\sum_{m\ge0}
+ \left(\frac a{a+m}\right)^p R_{n,k}(\log(a+m)).
+\]
+For positive rational $a$, integers $M,R\ge1$, $A=a+M>1$ and $L=k+2R$,
+let
+\begin{align*}
+\mathcal E_{M,R}={}&\sum_{m=0}^{M-1}
+ \left(\frac a{a+m}\right)^p R_{n,k}(\log(a+m))\\
+&+\left(\frac aA\right)^p\left[
+ \frac Ak R_{n,k-1}(\log A)+\frac12R_{n,k}(\log A)\right]\\
+&+\left(\frac aA\right)^p
+ \sum_{r=1}^R\frac{B_{2r}}{(2r)!}
+ \left(\prod_{j=1}^{2r-1}\frac{k+j}{A}\right)
+ R_{n,k+2r-1}(\log A).
+\end{align*}
+\begin{proposition}[An explicit rational-certifiable remainder]
+One has
+\begin{align*}
+\left|\mathcal V_{n,k}(a)-\mathcal E_{M,R}\right|
+&\le\left(\frac aA\right)^p
+ \frac{|B_{2R}|}{(2R)!}
+ \left(\prod_{j=1}^{2R-1}\frac{k+j}{A}\right)
+ \mathcal B_{n,L}(\log A),\\
+\mathcal B_{n,L}(v)
+&=\sum_{i=0}^{\min(n,L)}\sum_{j=0}^{n-i}
+ \frac{n!e_i(L)}{(n-i-j)!L^j}v^{n-i-j}.
+\end{align*}
+Every factor in the bound is nonnegative.
+\end{proposition}
+\begin{proof}
+Apply Euler--Maclaurin through the $R$th Bernoulli term to the spectral
+sum, or equivalently apply it to the Hurwitz series before extracting the
+$n$th spectral coefficient. The integral and half-endpoint terms give the
+second line of $\mathcal E_{M,R}$. The identity
+$(1+u)_k(k+1+u)_{2r-1}=(1+u)_{k+2r-1}$ gives its correction terms.
+
+The periodic Bernoulli remainder has absolute kernel bound $|B_{2R}|$.
+After differentiation, bound the absolute value of $R_{n,L}(\log t)$
+by $n!\sum_i e_i(L)(\log t)^{n-i}/(n-i)!$ for $t\ge A>1$.
+For each $d\ge0$,
+\[
+\int_A^\infty t^{-L-1}\log^d t\,dt
+=\frac{A^{-L}}L\sum_{j=0}^d
+ \frac{d!}{(d-j)!L^j}\log^{d-j}A.
+\]
+The last factor in $(k+1)_{2R}$ cancels the leading $L$ in this
+integral. Substitution yields precisely the displayed bound.
+\end{proof}
+
+Logarithms of positive rationals have elementary rational enclosures.
+Reduce their argument to $1\le y<2$ by a power of two, put
+$u=(y-1)/(y+1)$, and use
+\[
+0\le\log y-2\sum_{j=0}^{T-1}\frac{u^{2j+1}}{2j+1}
+\le\frac{2u^{2T+1}}{(2T+1)(1-u^2)}.
+\]
+The interval verifier uses integer endpoints scaled by $10^{90}$ and
+rounds every operation outward. The Bernoulli numbers and $e_i(\ell)$
+are exact rationals. A final enclosure lying strictly on one side of
+zero is therefore a sign certificate; the proof of the analytic remainder
+and the rational arithmetic play separate roles.
+
+The fresh replay verified fourteen base signs for $n\le4$ and sixteen
+endpoint signs isolating the unique $n=1$ roots for
+$k=1,2,5,10,20,50,100,200$. The endpoint pairs have width $10^{-20}$.
+These are global root certificates because the zero-count theorem proves
+uniqueness, rather than merely sampled sign changes near a candidate root.
