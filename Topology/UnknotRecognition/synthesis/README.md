@@ -1362,3 +1362,25 @@ The review checks 607 runtime pins, 605 incumbent evidence pins, all timing
 outcomes, twelve negative source proofs, all 31 saved native positives and
 eight generic legacy proofs with the Q iterator, Euler compiler and producers
 disabled during independent replay.
+
+[feasible_span.tex](feasible_span.tex) proves and implements complete-Q support
+removal, effective matching dimension and independently authenticated smaller
+standard reconstruction. Parent certificates still state the original sector.
+The full source audit preserves all 188 verdicts and complete standard surfaces;
+65 sectors have forced-zero types, 61 reach recompilation, 22 enter the planar
+producer and two fall from dimension five to four. Fresh Regina enumerations
+confirm all involved sources. All 1,427 tests and 28 focused tests pass; eleven
+proof mutations are rejected with producers disabled. Complete source-query
+ratios are 3.86x and 23.86x on the measured dimension reductions, while controls
+remain near parity. The original Q search and source recompilation are charged;
+no new general recognition bound is claimed. Records are `data/feasible-span-*`.
+
+The current [PDF](report.pdf) has 580 pages. Section 146 starts on page 573;
+the assessment is section 147 on page 576. Rendered pages 573–578 pass visual
+review, including the full proof, timing table, assessment continuation and
+references. All references resolve and only the four pre-existing overflow
+warnings remain. Reproduce publication checks with
+`python -B data/feasible_span_review.py --publication` from this directory.
+The review checks 609 runtime pins, 607 incumbent pins, all 188 source verdicts,
+65 forced-zero supports, complete timing outcomes and all 61 augmented source
+proofs plus 31 saved diagram witnesses with the producers disabled.

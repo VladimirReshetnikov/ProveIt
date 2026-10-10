@@ -1747,3 +1747,7 @@ if os.path.exists('data/euler-aggregate-benchmark.json'):
 if os.path.exists('data/generic-euler-benchmark.json'):
     import runpy
     runpy.run_path('data/generic_euler_tables.py')
+
+if os.path.exists('data/feasible-span-benchmark.json'):
+    import runpy
+    runpy.run_path('data/feasible_span_tables.py')
