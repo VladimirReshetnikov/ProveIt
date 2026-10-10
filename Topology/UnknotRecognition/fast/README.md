@@ -3654,3 +3654,29 @@ python -B -m normal_orbit_research.window_basis benchmark --rounds 5 --output /t
 kernels, exact replacement restrictions, canonical gauge and projected
 geometry. Frozen baseline/current source checks, positive certificate
 replay and the longer microsecond control are retained in the article data.
+
+Updated windows now compile the source Euler functional once and screen every
+Q corner at matching nullity at most three before constructing standard
+geometry. Empty or nonpositive sectors need no ray lifts; a positive corner
+resumes the existing complete standard search. Above nullity three, the
+existing generic fallback remains. Positive disc queries share the source
+and freshly validated coordinate analysis with a private observer. Public
+disc APIs and independent source-proof reconstruction retain validation.
+
+All 1,407 maintained tests pass. The 85-source audit preserves all disabled
+outputs, enabled verdicts and 31 native positives, with seven fresh Regina
+disc checks. Work caps fall from 30 to 28. Complete enabled recognition is
+1.23–1.32x faster on the measured window cases than the preceding updated
+kernel implementation. A 60-call repeat resolves a noisy native timing row.
+The default radius remains zero; these local gains do not prove general
+quasi-polynomial recognition or justify enabling windows on small inputs.
+
+```sh
+python -B -m normal_orbit_research.window_euler audit --fresh-regina --output /tmp/window-euler-audit.json
+python -B -m normal_orbit_research.window_euler benchmark --rounds 5 --output /tmp/window-euler-benchmark.json
+```
+
+[Euler-screening theory](../synthesis/window_euler.tex) derives the exact
+source functional, canonical formula and complete corner exclusion. Raw
+pilot/final/repeat records, source snapshots and producer-disabled positive
+replay are retained under `../synthesis/data/window-euler-*`.

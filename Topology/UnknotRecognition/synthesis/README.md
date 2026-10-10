@@ -1237,3 +1237,24 @@ Reproduce publication checks with
 `python -B data/window_basis_review.py --publication` from this directory.
 They verify 595 frozen/current runtime pins, 592 preceding-release evidence
 pins and all 31 positive source proofs with the producers disabled.
+
+[window_euler.tex](window_euler.tex) implements the Euler-corner criterion
+preserved from report 81 before constructing updated standard geometry.
+It derives the source V-E+F functional and canonical minimum formula, proves
+the complete nonpositive exclusion, and documents the unchanged higher-nullity
+fallback. Prepared producer disc queries share validated geometry while
+independent certificate replay reconstructs it afresh. All 1,407 tests pass;
+all 85 verdicts and 31 native positives remain, with seven fresh Regina disc
+checks. Work caps fall from 30 to 28. Complete enabled recognition gains are
+1.23–1.32x against the preceding updated-kernel implementation, with windows
+still off by default. The modest Euler-only pilot, 200-call final comparison,
+60-call noisy-row repeat and all source provenance are in `data/window-euler-*`.
+
+The current [PDF](report.pdf) has 561 pages. Section 140 starts on page 553;
+the assessment is section 141 on page 557. Rendered pages 553–558 pass
+visual review, with only the four pre-existing overflow warnings and no
+unresolved references. Reproduce publication checks with
+`python -B data/window_euler_review.py --publication` from this directory.
+They verify 598 frozen/current runtime pins, 595 preceding-release evidence
+pins, the recoverable pilot, both final timing records and all 31 positive
+proofs with the producers disabled.

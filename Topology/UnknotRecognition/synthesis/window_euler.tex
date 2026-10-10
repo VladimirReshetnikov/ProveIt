@@ -1,0 +1,137 @@
+\section{Euler screening before window geometry and shared disc observers}
+\label{sec:window-euler}
+
+The kernel update removes wide matching elimination, but repeated source
+geometry still costs time. This continuation implements the Euler-corner
+criterion preserved from report 81 in
+Section~\ref{sec:planar-overlay-refinements}. It screens updated windows
+before building their standard matching geometry. Positive-Euler windows
+retain their ordinary standard-ray and independently replayed disc queries.
+A second change shares validated producer geometry with those disc queries,
+while leaving independent certificate reconstruction in place.
+
+\subsection{Compile Euler characteristic from the actual source}
+
+For each global edge choose one local representative. A normal surface's
+intersection weight there is
+\[
+ w_{\{a,b\}}(x)=x_a+x_b+\sum_{q=0}^2x_{4+q}
+                                  -x_{4+Q(a,b)},
+\]
+where $Q(a,b)$ is the quadrilateral type disjoint from that edge.
+Matching makes this weight independent of the representative. Count normal
+arcs on every boundary face and one representative of every paired face;
+on face $f$ their count is $\sum_{v\ne f}x_v+\sum_qx_{4+q}$.
+Each elementary normal disc supplies one face of the induced surface cell
+structure. Thus
+\[
+ \chi(x)=\sum_{\text{global edges}}w_e(x)
+       -\sum_{\text{global faces}}\operatorname{arcs}_f(x)
+       +\sum_{t,j}x_{t,j}=\beta\cdot x.
+\]
+The native compiler forms the integer vector $\beta$ by precisely these
+three sums. It neither expands discs nor assumes that a local edge is a
+separate global edge. Independent native coordinate analysis remains the
+reference for the resulting Euler values.
+
+Let $P$ be the retained all-Q source forest potentials of
+Section~\ref{sec:window-basis}. The signed standard extension is
+$U(q)=(Pq,q)$. Compile once the coefficients
+\[
+ \gamma_j=\beta_{Q,j}+\sum_c\beta_{\triangle,c}P_{c,j},
+ \qquad \lambda_v=\sum_{c\in G_v}\beta_{\triangle,c}.
+\]
+The second sum evaluates $\beta$ on the actual vertex link. The compact
+manifold source has $\lambda_v\in\{1,2\}$; the compiler checks these values.
+For an updated basis $K'$ and parameters $z$, the existing projection gives
+corner forms $\ell_c(z)=(PK')_c z$. Canonical normalization subtracts the
+minimum in each global vertex group. Consequently
+\[
+ \chi(\operatorname{lift}(q))=\gamma\cdot q
+                   -\sum_v\lambda_v\min_{c\in G_v}\ell_c(z),
+ \qquad q=\sum_a z_aK'_a.
+\]
+This evaluates the exact Euler value without allocating the full coordinate
+vector or reconstructing matching and edge-weight geometry for that vector.
+It includes every physical corner, even those that the later projected
+kernel would contract or omit as a pure link factor.
+
+\subsection{A complete nonpositive screen and a conservative positive branch}
+
+The displayed formula is positively homogeneous and convex: the minima of
+linear forms are concave and all link coefficients are positive. On the
+compact normalized nonnegative Q section, a convex combination of corners
+has Euler value at most the same combination of their values. Nonpositive
+values at every corner therefore exclude positive Euler everywhere in the
+sector. An essential normal disc is canonical and has nonzero Q coordinates
+and Euler characteristic one, so it cannot occur in an excluded sector.
+Positive Euler alone still proves neither connectedness nor essentiality.
+
+The implementation uses the existing exact normalized chart and polygon
+clipping at matching nullity at most three. Empty, point and segment sections
+remain possible even when the raw nullity is larger. It evaluates every
+corner needed for a nonpositive answer; a callback interruption propagates
+and cannot supply an exclusion. As soon as a positive corner is found,
+ordinary standard discovery resumes. The projected forms are reused when
+building the standard kernel, so the screen does not project the source a
+second time. At nullity above three it continues through the existing
+complete generic arrangement/support paths without an Euler exclusion.
+
+Nullity one has a cheaper branch. The canonical basis row has a positive
+unit free coordinate; any negative entry therefore makes its nonnegative
+cone empty. This check precedes corner projection. Otherwise the sole
+primitive direction's Euler sign can be evaluated directly from scalar
+corner forms. No normalized rational rescaling or affine chart is needed.
+The sign, rather than an unnormalized numerical maximum, is the criterion.
+
+These exclusions are internal search decisions, not portable negative knot
+certificates. The original radius-one/two window, its candidate order and
+its positive proof format are retained. A completed nonpositive sector can
+be skipped, while any positive-Euler sector still receives the full ordinary
+standard-ray query. Finite shared work and orbit caps remain inconclusive.
+The radius-zero recognizer path stays unchanged.
+
+\subsection{Reuse producer geometry without weakening source replay}
+
+The public disc-count interface continues to validate the actual source,
+coordinates and all options. It then delegates to a private observer on that
+validated geometry. The window already owns a read-only prepared source and
+has freshly analysed each candidate vector against it; it can call the same
+private observer directly. This removes an additional source preparation
+and coordinate analysis from each positive-Euler candidate query.
+
+The canonical disc core is also compared exactly with the analysed input
+rows. If they agree, its geometry is already available. Otherwise the reduced
+core is analysed afresh. Equality handles genuine primitive canonical rays
+without assuming that every supplied normal vector has those properties.
+Orbit-census fallbacks retain their established behavior.
+
+No certificate verifier uses this private observer. Independent disc replay
+still reconstructs the source and input geometry, removes links and scale
+arithmetically, and checks the core proof separately. Successful diagram
+proofs still authenticate the canonical diagram exterior. The reused producer
+records are not an accepted substitute for any of these checks.
+
+\subsection{Cost and scope}
+
+The source Euler compilation costs $O(T+\operatorname{nnz}P)$ integer
+additions after the planner has supplied $P$. For a $d$-row updated basis,
+projection costs $O(d\operatorname{nnz}P_S)$ arithmetic operations.
+The implementation scans physical corner forms at each tested Q corner;
+with $m$ such corners its Euler work is
+$O(m d(T+k))$ plus the exact normalized-chart construction.
+It does not claim the fully aggregated $O(T+k^2)$ precheck proposed in
+report 81. Eliminating the remaining repeated physical-corner scans is a
+separate possible improvement.
+
+Excluded sectors avoid standard matrix allocation, minimum-envelope/overlay
+construction, full ray lifts and their topology queries. Positive sectors
+pay for screening before their unchanged complete standard search.
+Producer geometry reuse removes repeated validation rather than changing
+compressed observer mathematics. Bit costs, coefficient growth, output and
+independent replay remain charged. The preceding local quasi-polynomial
+bound for logarithmic nullity/radius survives; no universal centre family,
+distance bound or general quasi-polynomial unknot algorithm follows.
+
+\subsection{Validation and measured behavior}
+\input{window_euler_results.tex}

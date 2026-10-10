@@ -1723,3 +1723,7 @@ if os.path.exists('data/sector-windows-benchmark.json'):
 if os.path.exists('data/window-basis-benchmark.json'):
     import runpy
     runpy.run_path('data/window_basis_tables.py')
+
+if os.path.exists('data/window-euler-benchmark.json'):
+    import runpy
+    runpy.run_path('data/window_euler_tables.py')
