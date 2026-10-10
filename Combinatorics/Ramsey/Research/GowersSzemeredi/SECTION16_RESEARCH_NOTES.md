@@ -6075,7 +6075,16 @@ the decomposition with these named constants, but not `Theorem162At 3`.
               Possibly every `C_i` contains the small `C₀` in which the
               `a`'s live. That would need the Theorem 2.26 progressions to
               contain `C₀`, which is not stated.
-         2. *Explicit exponents* for the regime check above.
+         2. *Explicit exponents (done, `Proofs16PropNineThreeBudget`).*
+            With `L = d·log(2R+1)` and `ℓ = log(1/ε)`:
+            - `log(1/claimNineFourDensity) ≤ 6540·log 2 + 37264·L + 9316·ℓ`;
+            - `log(1/claimNineFiveDensity) ≤ 25172·log 2 + 149056·L + 9316·ℓ`;
+            - the window loss satisfies `C(m + k, k) ≤ (m + k)^k`.
+
+            So `log(1/final density) = O(s₀·log(s₀/δ))`, which is
+            polynomial in `d`, `log R` and `log(1/ε)`. Here
+            `R = propNineThreeRadius` is `(r/4)^(−O(d))`. This confirms the
+            regime check.
          3. **The rank obstruction, and why Theorem 2.26 is needed here
             (2026-10-10).** Domain coherence hides a rank problem.
             - *The obstruction.* In Claims 9.4/9.5 the Freiman step runs at
