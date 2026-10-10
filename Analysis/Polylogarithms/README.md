@@ -1,6 +1,6 @@
 # Polylogarithms
 
-The canonical reading artifact is the unified manuscript [Polylogarithms and their Arithmetic Bridges](docs/manuscript/polylogarithms.pdf), with [editable LaTeX source](docs/manuscript/polylogarithms.tex) and a [source reconciliation ledger](docs/manuscript/EDITORIAL-LEDGER.md). It consolidates the 39 drafts into a single mathematical development and corrects superseded claims. The original articles, reports and PDFs described below are historical source evidence; the manuscript supersedes them. Its final layout audit is in progress.
+The canonical reading artifact is the unified manuscript [Polylogarithms and their Arithmetic Bridges](docs/manuscript/polylogarithms.pdf), with [editable LaTeX source](docs/manuscript/polylogarithms.tex) and a [source reconciliation ledger](docs/manuscript/EDITORIAL-LEDGER.md). Its 177 pages and eleven chapters consolidate the original 39 drafts and all five nested continuation packages into a single mathematical development. The inventory covers 79 textual provenance files. The original articles, reports and PDFs described below remain historical evidence; the manuscript supersedes them as a reading artifact. The [validation record](docs/manuscript/VALIDATION.md) documents fresh native Wolfram and independent Python checks, exact rational certificates, the converged build and all-page visual review.
 
 Special values and functional equations of polylogarithms and their relatives:
 - multiple polylogarithms and multiple zeta values at roots of unity;
@@ -310,7 +310,8 @@ found wrong. Results reconfirmed include the `F(1/q)` theorem at `q = 7`, the
 Six external continuations, all AI-assisted research drafts pinned to `c78c7c3dc2`
 or `3a6d80ed61` (whose Polylogarithms tree equals `a87af186c`), are placed as five
 merged reports under `docs/reports/`, one per thematic spine. Manuscripts are not
-edited; files of merge members carry the prefix of their manuscript number.
+edited; files of merge members carry the prefix of their manuscript number. Batch 139 (9 October 2026, `d4dead2c6b`) adds four further continuations as a sixth
+merged report, `gaussian-parity-reductions/` (base 14, members 15-17).
 
 | Report | Spine | Base | Other sources |
 |---|---|---|---|

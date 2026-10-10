@@ -17,21 +17,33 @@ and Coq proofs; the Fabius project is currently a Lean statement formalization.
   statements of every result in arXiv:1702.06487v3.  Proofs are the next
   formalization phase.
 - [`Polylogarithms/`](Polylogarithms/) collects Vladimir Reshetnikov's PolyLog
-  research programme, moved from the private Smithereens repository: eight
-  articles and thirty-one reports on multiple polylogarithms at roots of unity,
+  research programme in a 177-page [unified manuscript](Polylogarithms/docs/manuscript/polylogarithms.pdf), with source drafts moved from the private Smithereens repository: eight
+  articles and thirty-one reports, supplemented by five continuation packages,
+  on multiple polylogarithms at roots of unity,
   the polylogarithm–polygamma bridge, the Γ-value lattice, polygamma at CM
   points, generalized Stieltjes constants and their antiderivatives and
   parameter derivatives, polylogarithm ladders, Clausen values and the
   Herglotz function. Results are classical, derived or numerically verified,
-  as each document states; nothing is formalized.
+  as each document states; nothing is formalized. External continuations are
+  merged by thematic spine under `docs/reports/`, each with an `OVERVIEW.md`
+  reconciliation note: five reports from batch 138 of
+  [`docs/incoming`](../docs/incoming/README.md) (`06039f479`) and
+  `gaussian-parity-reductions` from batch 139 (`d4dead2c6`). The project
+  README's "Status of claims" records the corrections they propose.
 - [`ErdosSimilarity/`](ErdosSimilarity/), opened on 7 October 2026, holds one
-  research report, `Research/uniform-geometric-avoidance`: a closed set of
-  measure at least `1 − ε/2` in every unit interval that omits infinitely
-  many terms of every progression `x + s qⁿ` (`s ≠ 0`, `0 < q < 1`) at once,
-  which answers Question 1 of
-  Burgin–Goldberg–Keleti–MacMahon–Wang negatively. It adapts an external
-  openai/math construction under a nested Apache-2.0 licence, is placed with
-  its delivered layout (its write is pending) and is not formalized.
+  research report,
+  [`Research/uniform-geometric-avoidance`](ErdosSimilarity/Research/uniform-geometric-avoidance/README.md),
+  from four manuscripts. The first gives a closed set of measure at least
+  `1 − ε/2` in every unit interval that omits infinitely many terms of every
+  progression `x + s qⁿ` (`s ≠ 0`, `0 < q < 1`) at once, which answers
+  Question 1 of Burgin–Goldberg–Keleti–MacMahon–Wang negatively. The other
+  three (batch 138, `cd984a34c`) prove independently one common avoiding set
+  for every convergent, non-eventually-constant real C-finite sequence,
+  which answers the report's Question 5; the fourth adds a supergeometric
+  theorem. A README of reconciliation notes (`3d0303836`) relates the four;
+  no further write is planned. The report adapts an external
+  openai/math construction under a nested Apache-2.0 licence, keeps its
+  delivered layout, and is not formalized.
 
 The Coq developments are mathematical ports rather than generated
 translations. The tiny-exponent proof uses `coq-interval`; the trigonometric

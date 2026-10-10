@@ -10753,10 +10753,23 @@ or licensing scope is added at this checkpoint.
 
 **Verification.** The original-data production closure compiles across
 409 modules. All 31 named proofs are included in the completed combined
-axiom audit: 9,367 public Gowers theorems across 5,550 modules, with 5,548
+axiom audit: 9,394 public Gowers theorems across 5,552 modules, with 5,550
 modules in the facade closure. Only `propext`, `Classical.choice`, and
 `Quot.sound` occur. The selected OAI audit closure remains 4,152 modules,
 and its port scope check passes. The regenerated catalogue is
 byte-identical to the 115-companion / five-open ledger, retaining the
 existing fidelity qualifications. Independent main updates were merged
 before the full audit.
+
+**Final merged verification.** The incoming Claim 9.5 twelve-tuple
+construction and sharp common-value counting are included in a second
+completed combined audit. The final counts are 9,394 public Gowers
+theorems in 5,552 modules, with 5,550 facade modules and the unchanged
+4,152-module selected OAI audit closure. The catalogue remains
+byte-identical at 115 companions and five open statements.
+
+The density comparison in this checkpoint uses the specific parent
+parameter `p` supplied by the column sampling construction. It does not
+prove that this parameter is polynomial in `log(alpha^-1)`, or that all
+initial and final controls meet `milicevicBound D alpha` or the printed
+Gowers numerical contract. Those parameter comparisons remain required.

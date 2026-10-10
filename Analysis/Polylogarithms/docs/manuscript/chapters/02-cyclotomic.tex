@@ -8,6 +8,14 @@ elementary at a given weight and which character values remain to be studied.
 
 \section{The two-way exact DFT}\label{bridge:sec:dft}
 
+We use the Clausen convention
+\[
+\Cl_{2m}(\theta)=\Im\Li_{2m}(e^{i\theta}),\qquad
+\Cl_{2m+1}(\theta)=\Re\Li_{2m+1}(e^{i\theta}).
+\]
+The sine series at odd weight is a different function; its rational-angle
+values reduce to powers of $\pi$ through Bernoulli polynomials.
+
 \begin{law}[forward direction; classical]\label{bridge:law:forward}
 For every $n\ge2$, every $q\ge1$, and $\gcd(p,q)=1$,
 \[
@@ -44,9 +52,9 @@ multiplication theorem, and polylogarithm inversion/reflection corresponds to th
 $k\leftrightarrow q-k$ of the $\psi$-grid. This is \emph{why} the two relation lattices ---
 computed independently by the project's two reducers --- carry identical dimension counts
 $\varphi(q)/2$ per denominator grid.
-\item \textbf{The parity split, and Catalan as the $q=4$ odd component.} Clausen-type
-values ($\operatorname{Im}\Li_n$ at even $n$, etc.)\ are the odd part of the $\psi$-grid
-under $k\mapsto q-k$; in particular
+\item \textbf{The parity split, and Catalan as the $q=4$ odd component.} The imaginary parts are the odd Fourier sector under $k\mapsto q-k$.
+The usual even-weight Clausen values belong to this sector, while odd-weight
+Clausen values are real parts in the even sector. In particular
 \[
 \Catalan=\operatorname{Im}\Li_2(i)=\frac{\psi^{(1)}(1/4)-\psi^{(1)}(3/4)}{16},
 \]
