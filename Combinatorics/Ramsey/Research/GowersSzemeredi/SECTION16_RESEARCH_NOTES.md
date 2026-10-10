@@ -11613,3 +11613,14 @@ required for the five numbered open statements. A bound in the parent
 sampling parameter `p` does not by itself establish the modern
 `milicevicBound D alpha` interface or the printed Gowers contract.
 No upstream code or licensing scope is added here.
+
+**Verification.** The full-domain original-data transfer compiles in a
+434-module production closure. All 26 named proofs are included in the
+completed combined audit: 9,683 public Gowers theorems across 5,594 modules,
+with 5,592 modules in the facade closure. Only `propext`, `Classical.choice`,
+and `Quot.sound` occur. The selected OAI audit closure remains 4,152 modules,
+and its port scope check passes. The source ledger is byte-identical to
+the 115-companion / five-open catalogue, retaining its fidelity caveats.
+Incoming Sanders linear-part/thickening results, Proposition 9.3
+prerequisites, single-piece anchor/section/spectrum lemmas and the
+linearity-bound correction are included in the same full audit.
