@@ -2275,20 +2275,61 @@ Lemma 16.9).
     nesting depth in the density, which is polynomial for fixed `k` when
     `C` is.
 
-**Next.**
-1. Instantiate with Gowers's objects. The pieces are:
-   - Lemma 16.7's dense `B₁` (`θ₂N^(k+1)`);
-   - the identity `Section16PhiOneIdentity`;
-   - `φ′`'s Bohr linearity (`Section16InducedSelection`);
-   - the spectrum relation `Δ`, with its product property (Lemma 14.3)
-     and fibres `≤ δ⁻²`.
+**Fifth piece, done: the single-piece lift is a theorem.**
+`Proofs16SinglePieceLift.single_piece_lift`.
+- *Input.* A pair `(B, φ)` in `(ℤ/N)^(k+1)` with Lemma 16.4's arrangement
+  conditions (ii) and (iii) and the product property.
+- *Output.* One proper box `S` and one multilinear `μ` with
+  `ρ·|S| ≤ |{z ∈ B ∩ S : φ z = μ z}|`, where
+  `ρ = singlePieceDensity c (spectrumPieceRho c_R ρ₁) 1` and
+  `ρ₁ = C^[2^k−1](θ₂)`.
+- *Named inputs, all local and all pieces or local covers:*
+  - `LocalRelationCoverAt k δ` for the spectrum relation;
+  - `LocalMultilinearPieceAt k` for the slices of `φ₁`;
+  - vertex providers `(C, W)`. `vertex_providers_of_low` supplies them
+    from `LocalMultilinearPieceAt l` for `l ≤ k`.
 
-   Combine `remainder_piece` (giving `M″` on a dense subset of `B₁` in a
-   sub-box) with `single_piece_of_spectrum_cover` (`φ₁ = (−1)^k φ′ + M″`
-   there) to get one `(k+1)`-piece of `φ₁`. The inputs are
-   `LocalRelationCoverAt k` and `LocalMultilinearPieceAt l`, `l ≤ k`.
-2. Compare with the length-6 budget of K.4 through
-   `section16_joint_frequency_box`'s output form.
+  The rest is proved:
+  - Lemma 16.5 without condition (i), via the new
+    `section16_dense_induced_selection_of_arrangements`;
+  - Lemma 16.7;
+  - the identity `φ₁ = (−1)^k φ′ + φ″`;
+  - the spectrum relation's product property (Lemma 14.3) and fibre bound;
+  - the polynomial retiled linearity
+    (`Section16RetiledLinearityBound`, a hypothesis with its witness
+    `exists_polynomial_retiled_linearity_profile`);
+  - all geometry.
+- *Condition (i) is never used.* Lemma 16.4's cover-form cross-section
+  hypothesis is where Gowers's induction pays exponentially. The
+  single-piece route replaces it by the vertex providers.
+- *Degree count for the first open case* (`k = 2`, a trilinear piece, as
+  `section16_joint_frequency_box` at `k = 2` needs). Write
+  `θ₁ = (θγ/4)^(2^128)` and `θ₂ = 2^(−32)θ₁^8`. Suppose the inputs are
+  polynomial: `C(t) ≈ t^{D_C}`, `c_R(t) ≈ t^{D_R}`, `c(t) ≈ t^{D_c}`.
+  - Then `ρ₁ ≈ θ₂^(D_C³)`.
+  - The final density is about `(θγ)^E` with
+    `E ≈ 2^131·D_C³·(1+D_R)·3·(1+D_c²)`.
+  - With `θ, γ` polynomial in `α`, this is `α^(2^132·poly(D))`. That is far
+    inside K.4's polynomial budget `D_total ≲ 2^32768/728`. The input
+    exponent `D` enters six times (`D_C³·D_R·D_c²`), so `D` up to roughly
+    `2^5400` would fit.
+  - The widths stay polynomial in `N`: each step takes a power, a square
+    root, or a factor `8`, and `ζ = 2^(−s(θ,γ,k))` costs only a threshold
+    `N ≥ exp(poly(1/α))`.
+
+  This is an order-of-magnitude count, not yet a kernel-checked
+  comparison.
+
+**Next.**
+1. Connect to the consumer. Follow
+   `f` not uniform → `section16_large_frequency_graph` (`B`, `φ`, product
+   property) → conditions (ii), (iii) (Lemma 15.6; check whether the
+   corpus derives them without the cover-form dichotomy of Lemma 16.4) →
+   `single_piece_lift` → `section16LargeMultilinearFrequencyCount` on `S`.
+   This is a conditional, polynomial-density replacement for
+   `section16_joint_frequency_box`.
+2. Then the kernel-checked K.4 comparison: under polynomial inputs, the
+   length-6 discrepancy threshold falls below `szemerediThreshold`.
 
 ## F. Routes
 
