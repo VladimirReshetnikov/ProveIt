@@ -1,0 +1,57 @@
+\section{Independent rational logarithm and Gaussian controls}
+\label{ado:app:controls}
+The exact controls use only rational arithmetic and elementary remainder
+bounds. They do not share the centered-moment evaluator's recurrence.
+For $0<x<1$, let
+\[
+ A_N(x)=\sum_{j=0}^{N-1}\frac{(-1)^jx^{2j+1}}{2j+1}.
+\]
+The alternating-series estimate gives
+\[
+ \arctan x\in
+ \begin{cases}
+ [A_N(x),\ A_N(x)+x^{2N+1}/(2N+1)],&N\text{ even},\\
+ [A_N(x)-x^{2N+1}/(2N+1),\ A_N(x)],&N\text{ odd}.
+ \end{cases}
+\]
+The identity
+\begin{equation}\label{ado:eq:machin}
+ \pi=16\arctan(1/5)-4\arctan(1/239)
+\end{equation}
+is verified by tangent addition: if $a=\arctan(1/5)$, then
+$\tan(4a)=120/119$, and
+$\tan(4a-\arctan(1/239))=1$. Elementary bounds put the angle in
+$(0,\pi/2)$, so it equals $\pi/4$ and not another tangent branch.
+The implementation uses $N=120$ and $N=40$ for the two arctangent
+series.
+
+For the logarithm, set
+\[
+ B_N=2\sum_{j=0}^{N-1}\frac{(1/3)^{2j+1}}{2j+1}.
+\]
+Integrating the geometric series for $2/(1-x^2)$, or using the
+power series of $2\operatorname{arctanh}x$, gives
+\begin{equation}\label{ado:eq:log2interval}
+ B_N<\log2<
+ B_N+\frac{2(1/3)^{2N+1}}{(2N+1)(1-1/9)}.
+\end{equation}
+The code uses $N=160$. Both interval endpoints are exact rational
+numbers. Cartesian complex interval multiplication then encloses
+$(-\tfrac12\log2+\tfrac{\ii\pi}{4})^d/d!$.
+
+For each depth $1\le d\le8$, the independently generated real and
+imaginary intervals lie wholly inside the corresponding coordinate
+intervals returned by the centered evaluator with 240 terms. This is
+an exact containment check, not a decimal comparison. It is a strong
+normalization and branch control, while the identity
+\eqref{ado:eq:allonesLi} still rests on its differential-equation proof.
+
+The exact evaluator also supplies a dyadic upper bound on $\sqrt{x}$
+for a nonnegative rational $x=a/b$. With an integer precision $p$, set
+\[
+ q=\frac{\lfloor\sqrt{\lfloor 2^{2p}a/b\rfloor}\rfloor+1}{2^p}.
+\]
+Then $q^2>x$. This is computed by integer square root and exact
+comparison. If its use in the generic geometric-tail formula fails to
+produce an upper bound smaller than one for $|w|$, the code stops
+rather than accepting a possibly divergent bound.

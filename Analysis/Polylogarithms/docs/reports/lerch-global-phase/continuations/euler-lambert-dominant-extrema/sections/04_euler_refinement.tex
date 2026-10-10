@@ -1,0 +1,389 @@
+% Standalone manuscript sections; insert after the eventual axis theorem.
+% Dependencies: definitions R_N, W_N, F_N, J_N and the proven eventual axis reduction.
+% Labels use the requested eul: namespace.  All constants are reintroduced.
+
+\section{A second asymptotic scale from the gamma transition region}
+\label{eul:sec:second-scale}
+The elementary Taylor envelope gives a power remainder and proves the
+matching leading constant.  Its positive remainder has a more precise
+asymptotic.  The relevant gamma mass is centered at the transition
+$t=\tfrac12\log N$, rather than at either of the two moment saddles
+that produce $2^{-b}$ and $N3^{-b}$.
+
+Retain
+\[
+ d=\log(3/2),\quad \lambda=d^{-1},\quad p=\lambda\log2,
+ \quad q=\frac{\log3}{\log2},\quad
+ B_0=\lambda\log q,\quad
+ \widehat b_N=\lambda\log N+B_0.
+\]
+Since $q=1+1/p$, the leading amplitude has the equivalent form
+\begin{equation}\label{eul:eq:c-simplified}
+ c=(1-q^{-1})q^{-p}=\frac{p^p}{(p+1)^{p+1}}.
+\end{equation}
+Introduce the additional constants
+\begin{align}
+ \alpha&=\lambda-\tfrac12,\qquad \rho=2\lambda-1=2\alpha,
+ &\mu&=\tfrac12-\lambda+\lambda\log(2\lambda),\label{eul:eq:mu}\\
+ D_0&=\frac{\Gamma(-\alpha)}2
+       \sqrt{\frac{2\lambda}{\pi}}(2\lambda)^{-B_0},
+ &K&=(\log2)dq^{-p},\label{eul:eq:second-amplitudes}\\
+ D_1&=\frac{\log(2\lambda)D_0}{K}.
+ \nonumber
+\end{align}
+Here $1<\alpha<2$, so $\Gamma(-\alpha)>0$.
+The exponents obey
+\begin{equation}\label{eul:eq:exponent-order}
+ p<\mu<2p-1.
+\end{equation}
+For orientation, numerical evaluations are
+\[
+ \mu=1.9695904144700607703\ldots,\quad
+ \mu-p=0.2600791231186059934\ldots,
+\]
+\[
+ D_0=1.5677702007103631657\ldots,\qquad
+ D_1=19.562981709827216349\ldots.
+\]
+The exact formulas, rather than these decimals, enter the proofs.
+
+\begin{theorem}[The next term and the direction of the maximizing shift]
+\label{eul:thm:second-term}
+Let $b_N$ be the unique axis maximizer, which also gives the global
+constant $C_N$ for every sufficiently large $N$.  Then
+\begin{align}
+ C_N&=1+cN^{-p}
+       +D_0\frac{N^{-\mu}}{\sqrt{\log N}}
+       +o\!\left(\frac{N^{-\mu}}{\sqrt{\log N}}\right),
+       \label{eul:eq:CN-second}\\
+ b_N&=\widehat b_N
+       -D_1\frac{N^{-(\mu-p)}}{\sqrt{\log N}}
+       +o\!\left(\frac{N^{-(\mu-p)}}{\sqrt{\log N}}\right).
+       \label{eul:eq:bN-second}
+\end{align}
+In particular the true maximizing inner order is eventually smaller
+than $\widehat b_N$, and the leading approximation
+$1+cN^{-p}$ eventually underestimates the sharp constant.
+\end{theorem}
+
+\subsection{The exact remainder and its transition limit}
+Put
+\[
+ G_N(z)=\frac{(1-z)^{N-1}}{1+z},\qquad
+ r_N(z)=G_N(z)-1+Nz.
+\]
+The earlier exact axis expansion reads
+\begin{equation}\label{eul:eq:axis-second-start}
+ R_N(0,b)=1+2^{-b}-N3^{-b}-N4^{-b}+\varepsilon_N(b),
+\end{equation}
+where
+\begin{equation}\label{eul:eq:epsilon-integral}
+ \varepsilon_N(b)=\frac1{\Gamma(b)}\int_0^\infty
+ t^{b-1}e^{-t}(1+e^{-t})r_N(e^{-2t})\,dt.
+\end{equation}
+The nonnegative Taylor remainder satisfies both bounds
+\begin{equation}\label{eul:eq:two-remainder-bounds}
+ 0\leq r_N(z)\leq\min\{Nz,A_Nz^2\},\qquad
+ A_N=(N^2-N+2)/2.
+\end{equation}
+The quadratic bound is the previous Taylor theorem.  The linear bound
+uses $0\leq G_N(z)\leq1$.
+
+\begin{lemma}[Uniform transition asymptotics with two derivatives]
+\label{eul:lem:transition-C2}
+Let $\ell=\log N$, let $B$ range over any fixed compact real interval,
+and set $b=\lambda\ell+B$.  Uniformly in $B$, for $j=0,1,2$,
+\begin{equation}\label{eul:eq:epsilon-C2}
+ \frac{d^j}{db^j}\varepsilon_N(b)
+ =\frac{\Gamma(-\alpha)}2\sqrt{\frac{2\lambda}{\pi}}
+  (2\lambda)^{-B}\{-\log(2\lambda)\}^{j}
+  \frac{N^{-\mu}}{\sqrt\ell}
+  +o\!\left(\frac{N^{-\mu}}{\sqrt\ell}\right).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Set $L=\ell/2$ and
+\[
+ P_N(B)=\frac{e^{-L}L^{b-1}}{\Gamma(b)}.
+\]
+With $t=L+y$, equation \eqref{eul:eq:epsilon-integral} becomes
+\begin{equation}\label{eul:eq:transition-rescaling}
+ \frac{\varepsilon_N(b)}{P_N(B)}
+ =\int_{-L}^\infty D_{N,B}(y)
+       (1+N^{-1/2}e^{-y})r_N(N^{-1}e^{-2y})\,dy,
+\end{equation}
+where
+\[
+ D_{N,B}(y)=
+  \exp\{(b-1)\log(1+y/L)-y\}.
+\]
+For each fixed $y$, uniformly for bounded $B$,
+\[
+ D_{N,B}(y)\longrightarrow e^{\rho y},\qquad
+ r_N(N^{-1}e^{-2y})\longrightarrow
+              e^{-e^{-2y}}-1+e^{-2y}.
+\]
+The integrands vanish below $-L$.
+
+Choose a fixed $\epsilon>0$ so small that
+$2<\rho-3\epsilon<\rho+3\epsilon<4$.
+The inequality $\log(1+u)\leq u$ and boundedness of $B$ give, for
+all sufficiently large $N$,
+\[
+ D_{N,B}(y)\leq
+ \begin{cases}
+   e^{(\rho+\epsilon)y},&y\geq0,\\
+   e^{(\rho-\epsilon)y},&-L<y<0.
+ \end{cases}
+\]
+Also $1+N^{-1/2}e^{-y}\leq2$ on this domain.  Equation
+\eqref{eul:eq:two-remainder-bounds} bounds the remaining factor by
+$\min(e^{-2y},C e^{-4y})$, with a fixed $C$.
+The resulting dominating function is integrable at both infinities:
+use the quartic bound for $y\geq0$ and the quadratic-in-$e^{-y}$
+bound for $y<0$.  Dominated convergence therefore gives
+\begin{equation}\label{eul:eq:Mellin-limit}
+ \frac{\varepsilon_N(b)}{P_N(B)}
+ \longrightarrow
+ I_\rho:=\int_{-\infty}^{\infty}
+      e^{\rho y}(e^{-e^{-2y}}-1+e^{-2y})\,dy
+ =\frac12\Gamma(-\alpha).
+\end{equation}
+To verify the last evaluation, set $x=e^{-2y}$:
+\[
+ I_\rho=\frac12\int_0^\infty
+          x^{-\alpha-1}(e^{-x}-1+x)\,dx.
+\]
+Two integrations by parts have zero boundary terms because
+$1<\alpha<2$, and give
+$I_\rho=\Gamma(2-\alpha)/(2\alpha(\alpha-1))
+       =\Gamma(-\alpha)/2$.
+
+For clarity, the same domination controls parameter derivatives;
+this is not an inference from differentiating an asymptotic formula.
+The first two derivatives of the gamma density insert the factors
+\[
+ S_{N,B}(y)=\log(L+y)-\psi(b),\qquad
+ S_{N,B}(y)^2-\psi_1(b).
+\]
+At each fixed $y$ these tend uniformly to $-\log(2\lambda)$ and
+$\log^2(2\lambda)$, respectively.
+For $y\geq0$, their absolute values are bounded by a fixed multiple
+of $1+y^2$, which is integrable against the preceding exponential
+majorant after a harmless adjustment of $\epsilon$.
+For negative $y$ write $u=1+y/L\in(0,1)$.
+For $j=1,2$ and large $L$,
+\[
+ u^{b-1}|\log u|^j\leq C_j u^{b-1-\epsilon L},
+\]
+because $\sup_{v\geq0}v^j e^{-\epsilon L v}$ is uniformly bounded.
+Replacing $b-1$ by $b-1-\epsilon L$ in the preceding exponential
+estimate still leaves an exponent strictly greater than two on the
+negative half-line.  The terms $\log L-\psi(b)$ and $\psi_1(b)$
+are uniformly bounded.  This supplies a common integrable majorant
+for the differentiated integrands as well.
+
+Convergence is uniform for bounded $B$: the pointwise convergences
+are uniform on each compact $y$ interval and the same integrable
+majorants apply to every $B$ in the prescribed compact interval.
+Finally, uniform Stirling asymptotics \cite{DLMFGamma} at $b=\lambda\ell+B$ give
+\begin{equation}\label{eul:eq:gamma-window-density}
+ P_N(B)=\sqrt{\frac{2\lambda}{\pi}}(2\lambda)^{-B}
+           \frac{N^{-\mu}}{\sqrt\ell}\{1+O(\ell^{-1})\}.
+\end{equation}
+Combining this with the three dominated-convergence limits proves
+\eqref{eul:eq:epsilon-C2}.
+\end{proof}
+
+\subsection{Optimization at the second scale}
+\begin{proof}[Proof of Theorem~\ref{eul:thm:second-term}]
+We first record exact inequalities between the exponents, to avoid
+using numerical approximations as premises.  The elementary bounds
+$2/5<\log(3/2)<5/12$ give $12/5<\lambda<5/2$.
+The function
+$x\mapsto\tfrac12-x+x\log x$ is increasing for $x>1$, and is
+positive at $x=12/5$; for the latter assertion,
+$\log(12/5)>2(12/5-1)/(12/5+1)=14/17$ suffices.
+It follows that $\mu-p>0$.
+Also
+\[
+ \mu-(2p-1)=\tfrac32-\lambda+\lambda\log(\lambda/2)<0:
+\]
+the expression is increasing on $2<\lambda<5/2$, and at $5/2$ it
+is $-1+(5/2)\log(5/4)<-3/8$.
+This proves \eqref{eul:eq:exponent-order}.
+
+Define the two scales
+\[
+ h_N=\frac{N^{-\mu}}{\sqrt\ell},\qquad
+ t_N=N^ph_N=\frac{N^{-(\mu-p)}}{\sqrt\ell}.
+\]
+For bounded $s$, set
+\[
+ f(s)=q^{-p}2^{-s}-q^{-(p+1)}3^{-s},\qquad
+ g(s)=D_0(2\lambda)^{-s}.
+\]
+Equation \eqref{eul:eq:axis-second-start}, Lemma
+\ref{eul:lem:transition-C2}, and $\mu<2p-1$ give the expansion
+\begin{equation}\label{eul:eq:two-scale-C2}
+ R_N(0,\widehat b_N+s)
+   =1+N^{-p}f(s)+h_Ng(s)+o(h_N),
+\end{equation}
+uniformly with its first two derivatives in $s$ on every compact
+interval.  In fact the omitted term $N4^{-b}$ and both of its
+derivatives are $O(N^{-(2p-1)})=o(h_N)$.
+
+The already proved localization gives $s_N=b_N-\widehat b_N\to0$.
+Differentiating the integral through the justified
+\eqref{eul:eq:two-scale-C2}, the stationary equation is
+\[
+ 0=f'(s_N)+t_Ng'(s_N)+o(t_N).
+\]
+Since $f'(0)=0$ and $f''(0)=-K<0$, this first implies
+$s_N=O(t_N)$, and then
+\[
+ -Ks_N-t_N\log(2\lambda)D_0+o(t_N)=0.
+\]
+This is \eqref{eul:eq:bN-second}.
+Finally $f(s_N)=c+O(t_N^2)$ and $g(s_N)=D_0+O(t_N)$.
+The displacement changes the height by
+$O(N^{-p}t_N^2)=O(h_Nt_N)=o(h_N)$.
+Substituting into \eqref{eul:eq:two-scale-C2} proves
+\eqref{eul:eq:CN-second}.
+\end{proof}
+
+\subsection{The first inverse-logarithmic correction}
+The convergence of the second-scale amplitude is particularly slow
+because $\alpha$ is close to two.  The first correction describes
+this effect explicitly.  Let $\psi$ and $\psi_1$ denote the digamma
+and trigamma functions, continued to $-\alpha$, which is not a pole.
+Put
+\begin{equation}\label{eul:eq:T-B}
+ T(B)=-(B-1)\psi(-\alpha)
+ -\frac\lambda2\{\psi_1(-\alpha)+\psi(-\alpha)^2\}
+ -\frac{B^2-B+1/6}{2\lambda}.
+\end{equation}
+
+\begin{proposition}[An explicit logarithmic refinement]
+\label{eul:prop:logarithmic-refinement}
+Uniformly for bounded $B$,
+\begin{equation}\label{eul:eq:epsilon-log-refinement}
+ \varepsilon_N(\lambda\ell+B)
+ =\frac{\Gamma(-\alpha)}2\sqrt{\frac{2\lambda}{\pi}}
+   (2\lambda)^{-B}\frac{N^{-\mu}}{\sqrt\ell}
+   \left\{1+\frac{T(B)}\ell+O(\ell^{-2})\right\}.
+\end{equation}
+Consequently the global constant has the refinement
+\begin{equation}\label{eul:eq:CN-log-refinement}
+ C_N=1+cN^{-p}
+  +D_0\frac{N^{-\mu}}{\sqrt\ell}
+     \left\{1+\frac{T(B_0)}\ell+O(\ell^{-2})\right\}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+All moments in $y$ of the limiting integrand in
+\eqref{eul:eq:Mellin-limit} are finite, by the same two exponential
+tail bounds.  On a central interval $|y|\leq M\log\ell$, Taylor
+expansion gives
+\[
+ D_{N,B}(y)=e^{\rho y}
+ \left\{1+\frac{(B-1)y-\lambda y^2}{L}
+     +O\!\left(\frac{1+|y|^6}{L^2}\right)\right\},
+\]
+uniformly for bounded $B$; the harmless constant in the remainder
+can be chosen uniformly for all sufficiently large $\ell$.
+On the same interval the finite-$N$ kernel can be replaced by its
+limit with an error smaller than every fixed negative power of
+$\ell$.  Indeed $e^{-2y}=O(\ell^{2M})$,
+$N^{-1}e^{-2y}\to0$ faster than every power of $1/\ell$,
+and expanding $\log G_N(N^{-1}e^{-2y})$ around zero gives this
+assertion; the factor $1+N^{-1/2}e^{-y}$ has the same property.
+For each fixed target power of $1/\ell$, choose $M$ large enough
+that the two uniform exponential tail bounds from Lemma
+\ref{eul:lem:transition-C2} make the integrals outside this central
+interval smaller than that power.  Integrating the displayed Taylor
+expansion, and extending its polynomial moments to the entire real
+line, therefore gives
+\[
+ \frac{\varepsilon_N(\lambda\ell+B)}{P_N(B)}
+ =I_\rho+\frac{(B-1)I_\rho'-\lambda I_\rho''}{L}
+       +O(L^{-2}).
+\]
+Here primes differentiate the explicit function
+$I_\rho=\Gamma(-\rho/2)/2$ in $\rho$; hence
+\[
+ \frac{I_\rho'}{I_\rho}=-\tfrac12\psi(-\alpha),\qquad
+ \frac{I_\rho''}{I_\rho}=
+       \tfrac14\{\psi_1(-\alpha)+\psi(-\alpha)^2\}.
+\]
+The uniform Stirling expansion one order beyond
+\eqref{eul:eq:gamma-window-density} is
+\[
+ P_N(B)=\sqrt{\frac{2\lambda}{\pi}}(2\lambda)^{-B}
+ \frac{N^{-\mu}}{\sqrt\ell}
+ \left\{1-\frac{B^2-B+1/6}{2\lambda\ell}
+              +O(\ell^{-2})\right\}.
+\]
+Multiplication and $L=\ell/2$ give
+\eqref{eul:eq:epsilon-log-refinement}.
+For \eqref{eul:eq:CN-log-refinement}, the optimizing shift changes
+the height by $O(h_Nt_N)=o(h_N\ell^{-2})$, and
+$N4^{-\widehat b_N}=o(h_N\ell^{-2})$ by the strict exponent
+inequality.  Thus one can evaluate the refined remainder at $B=B_0$.
+\end{proof}
+
+For orientation, $T(B_0)=-2098.4287350903144\ldots$.
+This large coefficient explains why numerical indices such as $10^8$
+already illustrate the leading law well but do not yet closely
+approximate the second-scale amplitude $D_0$.  The theorem is an
+asymptotic statement as $N$ tends to infinity; no practical onset
+index for the second expansion is asserted.
+
+\section{Strict log-convexity of the axis envelope}
+\label{eul:sec:axis-logconvex}
+For real $t\geq1$, define the continuous interpolation
+\[
+ \mathcal A(t)=\sup_{b>0}\frac1{\Gamma(b)}\int_0^\infty
+ u^{b-1}e^{-u}
+ \frac{(1+e^{-u})(1-e^{-2u})^{t-1}}{1+e^{-2u}}\,du.
+\]
+At integer indices, $\mathcal A(N)$ is the optimized axis constant.
+For every real $t\geq1$, the supremum is a finite maximum greater
+than one.  To verify existence, note the endpoint limits in $b$:
+the limit at infinity is one, while the limit at zero is zero if
+$t>1$ and one if $t=1$.  Also the kernel has expansion
+$1+v-tv^2+O_t(v^3)$ at $v=0$.  Its gamma average consequently equals
+$1+2^{-b}-t3^{-b}+O_t(4^{-b})$ as $b\to\infty$, and is greater
+than one for sufficiently large $b$.
+The last big-oh bound follows by extending the bounded Taylor
+remainder divided by $v^3$ continuously near zero and bounding it
+on the rest of $[0,1]$.
+
+\begin{theorem}[Strict log-convex envelope]
+\label{eul:thm:axis-logconvex}
+For distinct real $s,t\geq1$ and $0<\theta<1$,
+\[
+ \mathcal A(\theta s+(1-\theta)t)
+     <\mathcal A(s)^\theta\mathcal A(t)^{1-\theta}.
+\]
+In particular, at every integer $N\geq2$,
+\[
+ \mathcal A(N)^2<\mathcal A(N-1)\mathcal A(N+1).
+\]
+The globally optimized Euler constants satisfy
+$C_N^2<C_{N-1}C_{N+1}$ for every sufficiently large $N$.
+\end{theorem}
+\begin{proof}
+For fixed $b$, its axis integral is a positive moment of
+$(1-e^{-2u})^{t-1}$.  Strict H\"older inequality gives strict
+log-convexity in $t$, since $\log(1-e^{-2u})$ is not constant
+under its positive gamma-weighted density.
+Choose a finite maximizing $b$ for the intermediate argument
+$\theta s+(1-\theta)t$.  Apply strict H\"older at that one value
+of $b$, and bound its two endpoint integrals by their respective
+maxima.  This yields the asserted strict inequality; it avoids
+the false general inference that an arbitrary supremum preserves
+\emph{strict} convexity without an attained maximizer.
+The discrete conclusions follow by $\theta=1/2$ and the eventual
+axis reduction.
+\end{proof}

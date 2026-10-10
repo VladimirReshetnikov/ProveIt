@@ -1,0 +1,122 @@
+\section{Critical review, corrections, and limits of the conclusions}
+\label{sec:review}
+
+The pinned manuscript already contains important corrections to earlier
+stages of this project. Its $S_4$ reduction is a theorem, its constant-one
+Euler enclosure has a stated domain, and several low-index Lerch motion
+heuristics have already been replaced by proved phase information.
+Those corrections should survive integration. The present review found
+no reason to retract those proved results. The changes proposed below
+update open items that the new arguments settle and prevent stronger
+interpretations that the arguments do not support.
+
+\subsection{The Gaussian maximum now controls every Euler index}
+
+The caution in the caption of the Gaussian-axis figure in
+\code{05-subcritical-stieltjes.tex}, and the corresponding paragraph in
+\code{10-discovery.tex}, distinguish a first-remainder maximum from a
+universal Euler constant. That distinction was justified: knowing the
+largest value of $-2g_{a,b}$ alone does not bound the later scaled tails.
+Lemma~\ref{newEuler:lem:scalar} supplies the missing comparison. The
+replacement should state Theorem~\ref{newEuler:thm:domination} and
+Corollary~\ref{newEuler:cor:sharp}, including the strict positive-order
+inequality and the limiting equality at $a=0$.
+
+The existing counterexample to a universal constant one remains valid.
+The improved theorem changes the constant to the optimal $C_*>1$;
+it does not extend the old constant-one theorem with its hypotheses
+removed. Similarly, the stronger bounds already proved on smaller
+parameter regions should remain available.
+
+\begin{proposition}[Scaled Euler errors need not decrease]
+\label{prop:scaled-error-counterexample}
+For the positive integer pair $(a,b)=(2,1)$,
+\[
+ R_2(2,1)-R_1(2,1)>\frac1{60}>0.
+\]
+Nevertheless $R_N(2,1)\to0$. Thus, even at integer orders, the largest
+scaled error need not occur at $N=1$.
+\end{proposition}
+\begin{proof}
+The first relevant coefficients are
+$c_3=1/6$, $c_5=1/12$, and $c_7=1/20$. Hence
+$d_1=-1/6$, $d_2=-1/4$, $d_3=-3/10$, and
+\[
+ E_1=0,\qquad E_2=-\frac1{24},\qquad E_4=-\frac{11}{120}.
+\]
+The strict one-sided enclosure gives $g_{2,1}<E_4$. Therefore
+\[
+ R_2-R_1=4E_2-2E_1-2g_{2,1}
+       =-\frac16-2g_{2,1}>\frac1{60}.
+\]
+The limit follows from Theorem~\ref{newEuler:thm:domination}.
+This is a finite symbolic counterexample, independent of a numerical
+plot or a floating-point evaluation of $g_{2,1}$.
+\end{proof}
+
+For a fixed positive pair, the positive sequence $R_N$ tends to zero,
+so its supremum is attained at at least one finite index. Determining
+that index and its dependence on $(a,b)$ is a separate problem from
+the sharp constant uniform in both orders.
+
+\subsection{Uniformity must be attached to an approximation and a domain}
+
+The former compact-ratio moment theorem should retain its original
+statement. Theorem~\ref{thm:all-ratio} supplies an additional expansion
+whose relative remainder is uniform on $0\le m\le n$. The two phases
+place different parts of the Jacobian in the exponential, and their
+saddles need not agree exactly at finite exponents. Asymptotic
+equivalence does not justify identifying those saddles term by term.
+
+The all-ratio theorem gives any prescribed algebraic order in $n^{-1}$.
+It does not replace exponentially accurate fixed-$m$ residue expansions,
+or their least-term remainder estimates, by a bound of the same strength.
+A future matched theorem must state the approximation and error scale
+explicitly in each overlap.
+
+For Lerch zeros, the new threshold $K_n$ proves completeness by sign
+transfer and a multiplicity bound. A numerical scan would not suffice.
+The threshold should always be described as sufficient. At index two
+the source already proves saturation for every $k\ge1$, much stronger
+than either of our general-purpose quantitative bounds. The new result
+is useful because it applies to arbitrary $n$, arbitrary branches, and
+the full closed deformation interval simultaneously.
+
+\subsection{Formal coordinates and numerical periods}
+
+The quotient in Corollary~\ref{oi:cor:basket} is defined by the
+specified $m$ shuffle rows. Its dimension is exactly $m$ by an invertible
+minor. Evaluating at $i$, or imposing additional functional equations,
+may create further relations. Thus neither this dimension nor the Smith
+form proves linear independence of the corresponding real constants.
+
+The determinant of the related double-zeta matrix and its inverse have
+published antecedents \cite{Zagier,Ma,MaTeo}. The central-factorial
+construction is presented as a direct proof and an arithmetic extension
+in these coordinates; exhaustive worldwide priority for its consequences
+has not been established. A repository integration should preserve this
+attribution instead of marking the known determinant as a newly settled
+open conjecture.
+
+\subsection{The mixed-color obstruction remains}
+
+The weight-seven $S_6$ identity remains unresolved. The existing
+coordinate change between $(g_{6,1},g_{4,3},g_{2,5})$ and
+$(g_{6,1},g_{5,2},g_{4,3})$ uses two shuffle rows and is already proved
+in the source. Its restricted-presentation obstructions likewise have
+their own exact meanings. Integral diagonalization controls the
+single-color doubles; it does not supply the missing mixed-color
+functional equation.
+
+A full weight-seven imaginary-word presentation would have 24514
+admissible conjugation coordinates in the scoped convention. No
+completed rank computation or reduction certificate for that enlarged
+presentation is asserted here. This size is a planning datum, not an
+independence result or an explanation that the conjecture must be true.
+
+The retained $S_{10}$ and $S_{12}$ relations are also conjectures.
+Their exact proximity intervals contain zero, so they cannot decide
+equality. The rejected first $S_{12}$ vector, by contrast, has an interval
+strictly separated from zero and is rigorously false. The archive keeps
+the rejected search record for reproducibility and identifies the
+retained vectors in a separate canonical input file.

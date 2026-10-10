@@ -1,0 +1,496 @@
+% Research notes for the parent article.  Not a standalone document.
+% Source snapshot: 3447bc59b78d138a7f0d536b66ac6e5cc5d5e49f.
+
+\section{Integral diagonalization of an odd-weight shuffle minor}
+\label{oi:sec:shuffle}
+
+The following is a theorem about an integral relation presentation.
+It says nothing about arithmetic independence of evaluated periods.
+Its immediate analytic consequence is a uniformly justified choice of
+Gaussian double-polylogarithm coordinates at every odd weight.
+
+\subsection{The relation matrix and its arithmetic structure}
+
+Let $m\geq1$, set $w=2m+1$, and use the convention
+\[
+ F_{a,b}(z)=\operatorname{Li}_{a,b}(z,1)
+ =\sum_{n>r\geq1}\frac{z^n}{n^a r^b}.
+\]
+The standard same-point integral shuffle gives
+\begin{equation}\label{oi:eq:shuffle}
+ \operatorname{Li}_{p}(z)\operatorname{Li}_{w-p}(z)
+ =\sum_{a=1}^{2m}
+ \left\{\binom{a-1}{p-1}+\binom{a-1}{2m-p}\right\}F_{a,w-a}(z),
+ \qquad 1\leq p\leq m.
+\end{equation}
+Binomial coefficients outside their usual range are zero.  This holds
+as a holomorphic identity for $|z|<1$, and also at $z=i$ with the
+ordinary convergent boundary values.  In particular, the possible outer
+index one is harmless there: summation by parts applied to
+$H_{n-1}^{(b)}/n$ gives ordinary convergence, and the corresponding
+iterated integral has no singular endpoint letter.
+
+Select the columns with odd outer index $a=2k+1$, so their inner indices
+are even.  With $p,k$ now zero based, the resulting $m\times m$ matrix is
+\begin{equation}\label{oi:eq:M}
+ (M_m)_{p,k}=
+ \binom{2k}{p}+\binom{2k}{2m-1-p},
+ \qquad 0\leq p,k<m.
+\end{equation}
+
+\begin{theorem}[Integral diagonalization of the shuffle minor]
+\label{oi:thm:integral}
+There are explicitly constructible matrices $U_m,V_m\in
+\operatorname{GL}_m(\mathbb Z)$ such that
+\begin{equation}\label{oi:eq:diagonal}
+ U_mM_mV_m=\operatorname{diag}(1,3,5,\ldots,2m-1).
+\end{equation}
+Consequently:
+\begin{enumerate}
+ \item $\det M_m=(2m-1)!!$.
+ \item $\operatorname{coker}_{\mathbb Z}M_m\cong
+       \bigoplus_{j=0}^{m-1}\mathbb Z/(2j+1)\mathbb Z$.
+       This direct-sum display is an integral diagonal form, not generally
+       the ordered Smith invariant-factor display.
+ \item The least positive integer $L$ for which every entry of
+       $LM_m^{-1}$ is an integer is
+       $L_m=\operatorname{lcm}(1,3,5,\ldots,2m-1)$.
+ \item Over characteristic two the matrix has full rank.  Over a field
+       of odd characteristic $\ell$ its rank is
+       \[
+       m-\left\lfloor\frac{2m+\ell-1}{2\ell}\right\rfloor.
+       \]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Put $n=2m-1$.  The palindromic polynomials
+\[
+ Q_k(x)=(1+x)^{2k}(1+x^{n-2k}),\qquad 0\leq k<m,
+\]
+have degree $n$, and their coefficients of $x^p$, $0\leq p<m$, are
+precisely $(M_m)_{p,k}$.  Define
+\[
+ b_j(x)=x^j(1+x)^{n-2j},\qquad 0\leq j<m,
+ \qquad
+ B_{p,j}=\binom{n-2j}{p-j}.
+\]
+The coefficient matrix $B$ is lower triangular with diagonal entries
+one, hence belongs to $\operatorname{GL}_m(\mathbb Z)$.
+
+Let $E_r(t)$ be the polynomial defined by
+\[
+ E_r(y(1-y))=y^r+(1-y)^r.
+\]
+Its existence with integer coefficients follows, for example, from
+$E_0=2$, $E_1=1$, and $E_r=E_{r-1}-tE_{r-2}$.
+Let $E$ be the $m\times m$ integer matrix whose column $j$ is the
+coefficient vector of $E_{2j+1}(t)$ in $1,t,\ldots,t^{m-1}$.
+Under $y=x/(1+x)$, $t=x/(1+x)^2$, one has
+\[
+ Q_k(x)=(1+x)^n E_{n-2k}\!\left(\frac{x}{(1+x)^2}\right).
+\]
+If $R$ is the column-reversal matrix, this identity gives the exact
+factorization
+\begin{equation}\label{oi:eq:BER}
+ M_m=BER.
+\end{equation}
+
+It remains to diagonalize $E$ over the integers.  Use the monic odd
+polynomials
+\[
+ p_j(y)=y\prod_{r=1}^j(y^2-r^2),\qquad 0\leq j<m,
+\]
+and the integer polynomials
+\[
+ q_j(t)=(-1)^j\prod_{r=1}^j\bigl(t+r(r-1)\bigr).
+\]
+Their respective leading coefficients are $1$ and $(-1)^j$.
+Let $P$ be the coefficient matrix of $p_j$ in
+$y,y^3,\ldots,y^{2m-1}$, and let $Q$ be the coefficient matrix of
+$q_j$ in $1,t,\ldots,t^{m-1}$.  Both are integer triangular matrices
+with unit diagonal up to signs, so both are unimodular.
+
+The central-factorial finite-difference identity is
+\begin{align*}
+ p_j(y)+p_j(1-y)
+ &=p_j(y)-p_j(y-1)\\
+ &=(2j+1)\prod_{r=1-j}^{j}(y-r)\\
+ &=(2j+1)(-1)^j
+       \prod_{r=1}^j\bigl(y(1-y)+r(r-1)\bigr)\\
+ &=(2j+1)q_j(y(1-y)).
+\end{align*}
+For the middle equality, write
+$p_j(y)=(y+j)^{\underline{2j+1}}$ and use
+$z^{\underline n}-(z-1)^{\underline n}
+=n(z-1)^{\underline{n-1}}$; this is a polynomial identity and needs no
+restriction on $y$.  Since substitution $t\mapsto y(1-y)$ is injective
+on $\mathbb Z[t]$, comparison in the $t$ basis gives
+\[
+ EP=QD,\qquad D=\operatorname{diag}(1,3,\ldots,2m-1).
+\]
+Combining this with \eqref{oi:eq:BER},
+\[
+ U_m=(BQ)^{-1},\qquad V_m=RP
+\]
+are integral unimodular matrices and satisfy \eqref{oi:eq:diagonal}.
+
+The determinant sign is also fixed by these formulas:
+$\det B=\det P=1$, while
+$\det Q=\det R=(-1)^{m(m-1)/2}$.  Thus $\det M_m=\det D>0$.
+The cokernel and field-rank assertions follow from integral equivalence.
+For odd $\ell$, the number of positive odd multiples of $\ell$ not
+exceeding $2m-1$ is the displayed floor.
+
+Finally, $M_m^{-1}=V_mD^{-1}U_m$, with integral $U_m,V_m$ and integral
+inverses.  Therefore $LM_m^{-1}$ is integral if and only if $LD^{-1}$
+is integral, if and only if every $2j+1$ divides $L$.  This proves the
+optimal denominator assertion.
+\end{proof}
+
+\paragraph{Smith factors without ambiguity.}
+For each prime $\ell$, sort the $m$ integers
+$v_\ell(1),v_\ell(3),\ldots,v_\ell(2m-1)$ into
+$e_{\ell,1}\leq\cdots\leq e_{\ell,m}$.  The ordered Smith invariant
+factors are exactly
+$d_r=\prod_\ell\ell^{e_{\ell,r}}$.  For $m=5$, for example, they are
+$(1,1,1,3,315)$, while the determinant is $945$ and the optimal inverse
+denominator is $315$.  At $m=8$ they are
+$(1,1,1,1,1,3,15,45045)$.  Thus determinant size and the required common
+denominator of the inverse are quite different quantities.
+
+\subsection{The uniform odd-inner-index basis}
+
+\begin{corollary}[An integral justification for the discovery basket]
+\label{oi:cor:basket}
+In the rational vector space on the $2m$ formal double coordinates
+$F_{a,2m+1-a}$, modulo the $m$ same-point shuffle product rows, the $m$
+classes
+\[
+ F_{2m,1},F_{2m-2,3},\ldots,F_{2,2m-1}
+\]
+form a basis.  Before taking the quotient, every double is an explicit
+linear combination of these odd-inner-index coordinates and products
+$\operatorname{Li}_p\operatorname{Li}_{2m+1-p}$, with all coefficients
+in $L_m^{-1}\mathbb Z$.
+\end{corollary}
+\begin{proof}
+Separate \eqref{oi:eq:shuffle} into even-inner coordinates $X$ and
+odd-inner coordinates $Y$.  If $N$ is the integer coefficient matrix
+of the latter, the equation is $M_mX+NY=P$, where $P$ is the product
+vector.  Hence $X=M_m^{-1}P-M_m^{-1}NY$.  The theorem proves both
+existence and the coefficient-ring assertion.  It also proves that the
+$m$ rows have rank $m$, so the $m$ surviving coordinates are independent
+in this specified formal quotient.  Additional functional equations
+or numerical evaluation may introduce further relations.
+\end{proof}
+
+\paragraph{Relation to Zagier's matrix.}
+Zagier's 2012 paper \cite{Zagier}, Section 5, equation (36), defines the
+$(m-1)\times(m-1)$ matrix
+\[
+ (A_m)_{r,s}=\binom{2m-2s}{2r-1}
+             +\binom{2m-2s}{2m-2r},\qquad 1\leq r,s<m.
+\]
+It is permutation-equivalent to the minor of $M_m$ obtained by removing
+row zero and column zero: reverse the columns, and fold the odd row
+indices $2r-1$ using $p\leftrightarrow2m-1-p$.  These folded row
+indices cover $1,\ldots,m-1$ exactly once.  The first column of $M_m$
+is $(1,0,\ldots,0)^T$, so integer column subtraction removes its first
+row's other entries.  Therefore
+\[
+ A_m\ \text{is integrally equivalent to}\
+ \operatorname{diag}(3,5,\ldots,2m-1).
+\]
+In particular $|\det A_m|=(2m-1)!!$, the determinant formula conjectured
+in Zagier's equation (37); its sign is determined by the explicit
+permutations.  The paper's inverse formula was proved by Ding Ma~\cite{Ma} and subsequently by Yawen Ma and
+Lee-Peng Teo~\cite{MaTeo},
+\emph{Another Proof of Zagier's Matrix Conjecture}, Journal of Integer
+Sequences 25 (2022), Article 22.6.4.  We do not claim priority for the
+determinant identity or for the known inverse formula.  The direct
+integral diagonalization above supplies all Smith factors and the exact
+denominator statement in the manuscript's shuffle coordinates.
+
+\subsection{A short exact weight-eleven identity}
+
+The arithmetic theorem supplies concrete identities as well as a basis
+count.  A useful example has a four-row certificate.
+
+\begin{corollary}[A weight-eleven Gaussian double reduction]
+\begin{align*}
+ &105g_{9,2}+210g_{10,1}+35g_{8,3}-7g_{6,5}+5g_{4,7}-7g_{2,9}\\
+ &\quad=\frac{223339}{29727129600}\pi^{11}
+ +\frac{1785}{131072}\beta(2)\zeta(9)
+ +\frac{63}{512}\beta(4)\zeta(7)\\
+ &\qquad\quad-\frac{15}{64}\beta(6)\zeta(5)
+ -\frac{21}{16}\beta(8)\zeta(3).
+\end{align*}
+\end{corollary}
+\begin{proof}
+At general $z$ the stronger functional identity is
+\begin{align*}
+ &105F_{9,2}(z)+210F_{10,1}(z)+35F_{8,3}(z)
+       -7F_{6,5}(z)+5F_{4,7}(z)-7F_{2,9}(z)\\
+ &\quad=-7\operatorname{Li}_2(z)\operatorname{Li}_9(z)
+       +14\operatorname{Li}_3(z)\operatorname{Li}_8(z)
+       -16\operatorname{Li}_4(z)\operatorname{Li}_7(z)
+       +8\operatorname{Li}_5(z)\operatorname{Li}_6(z).
+\end{align*}
+It is $-7,14,-16,8$ times the shuffle rows with $p=2,3,4,5$,
+respectively.  Direct coefficient comparison gives, in increasing
+outer-index order, the vector
+$(0,-7,0,5,0,-7,0,35,105,210)$.  This is the complete small
+certificate of the functional identity.  Specialize to $z=i$, take
+imaginary parts, and use
+\[
+ \operatorname{Re}\operatorname{Li}_k(i)
+ =-2^{-k}(1-2^{1-k})\zeta(k),\qquad k>1,
+ \quad
+ \operatorname{Im}\operatorname{Li}_k(i)=\beta(k).
+\]
+The even-zeta and odd-beta evaluations give the displayed rational
+coefficient of $\pi^{11}$ and the remaining four products.
+\end{proof}
+
+\section{Frozen Gaussian candidates at weights eleven and thirteen}
+\label{sec:candidates}
+
+Retain $g_{a,b}=\operatorname{Im}F_{a,b}(i)$ and
+$S_p=\sum_{n\geq0}(-1)^nH_n/(2n+1)^p$.
+The following identity is conjectural; the exact matrix theorem above
+justifies the choice of comparison coordinates, but does not imply
+membership of the mixed sum in their span.
+
+\begin{conjecture}[Weight eleven]\label{conj:S10}
+\begin{align*}
+ S_{10}={}&\frac{570649054}{415912609}g_{10,1}
+ +\frac{30750200}{415912609}g_{8,3}
+ -\frac{14642272}{415912609}g_{6,5}\\
+ &+\frac{15009920}{415912609}g_{4,7}
+ -\frac{641796160}{1247737827}g_{2,9}
+ +\frac{15870231535729}{2649404577860812800}\pi^{11}\\
+ &-\frac{852385525}{851789023232}\beta(2)\zeta(9)
+ -\frac{88141815}{7605259136}\beta(4)\zeta(7)\\
+ &-\frac{437907815}{6654601744}\beta(6)\zeta(5)
+ -\frac{468343007}{1663650436}\beta(8)\zeta(3)
+ -2\beta(10)\log2.
+\end{align*}
+\end{conjecture}
+
+In the ordered basket
+\[
+ (S_{10},g_{10,1},g_{8,3},g_{6,5},g_{4,7},g_{2,9},\pi^{11},
+ \beta(2)\zeta(9),\beta(4)\zeta(7),\beta(6)\zeta(5),
+ \beta(8)\zeta(3),\beta(10)\log2),
+\]
+the frozen primitive integer vector is
+\[
+\begin{split}
+ (&2649404577860812800,-3635091082366156800,
+ -195881824419840000,93272725153382400,\\
+ &-95614679384064000,1362768401793024000,-15870231535729,
+ 2651259936960000,\\
+ &30705505754112000,174344763875328000,
+ 745847853554073600,5298809155721625600).
+\end{split}
+\]
+The search used 1600 finite Euler weights computed as exact integers,
+550-digit arithmetic for the values, then PSLQ at 300 working digits,
+tolerance $10^{-280}$, coefficient bound $10^{30}$, and at most 30000
+iterations.  After freezing the vector, the residual evaluated using the
+retained 550-digit values was approximately $2.575\times10^{-464}$.
+This number is a diagnostic and is consistent with the finite Euler
+truncation.  The accompanying exact rational certificate is the
+authoritative finite proximity claim.  Neither small residuals nor a
+residual interval containing zero prove this conjecture.
+
+An independent 120-digit quadrature audit used
+\[
+ S_{10}=-\frac1{9!}\int_0^\infty
+ \frac{t^9e^{-t}\log(1+e^{-2t})}{1+e^{-2t}}\,dt,
+\]
+and
+\[
+ g_{a,b}=\frac1{(a-1)!}\int_0^1(-\log x)^{a-1}
+ \operatorname{Im}\frac{i\operatorname{Li}_b(ix)}{1-ix}\,dx.
+\]
+For $b=1$, it instead used the integrated logarithmic formula
+\[
+ g_{a,1}=-\frac1{2(a-2)!}\int_0^1
+ \frac{(-\log x)^{a-2}\log(1+x^2)\arctan x}{x}\,dx.
+\]
+The normalized residual was approximately $3.49\times10^{-121}$.
+This confirms the normalization by a different representation, with
+floating-point quadrature rather than the finite Euler sums.  No
+rigorous quadrature error estimate is asserted, and this audit is not
+a premise of the rational proximity proof.
+
+\begin{proposition}[Certified weight-eleven proximity]\label{prop:S10-proximity}
+Let $R_{10}$ be $S_{10}$ minus the displayed conjectural right side.
+Then
+\[
+ -10^{-650}<R_{10}<10^{-650}.
+\]
+The delivered rational residual interval contains zero.  This statement
+is a proved enclosure for the normalized residual; the conjectural
+assertion $R_{10}=0$ remains open.
+\end{proposition}
+\begin{proof}
+Apply the rational bounds proved immediately below with $N=2200$ Euler
+terms, 600 terms in each of the two arctangent series, and 800 terms in
+the logarithm series.  The standard-library program
+\texttt{verify\_gaussian\_proximity.py} reconstructs all twelve basket
+intervals from these finite integer/rational formulas, reads the frozen
+primitive vector from \texttt{gaussian\_candidates.json}, and performs
+ordinary exact rational interval addition and multiplication.  It
+divides the integer dot product by its first coefficient
+$2649404577860812800$, so the output is precisely $R_{10}$, rather than
+the unnormalized integer residual.  Direct rational comparison proves
+that the lower endpoint exceeds $-10^{-650}$ and the upper endpoint is
+below $10^{-650}$.  Exact endpoints of this residual and all basket
+values are in \texttt{gaussian\_proximity\_certificate.json}.
+No floating-point approximation enters this verification.
+\end{proof}
+
+\subsection{A further candidate at weight thirteen}
+
+The same structured basket yields one additional frozen conjecture.
+Let
+\[
+\begin{split}
+ \mathbf b_{12}={}&(S_{12},g_{12,1},g_{10,3},g_{8,5},g_{6,7},g_{4,9},
+ g_{2,11},\pi^{13},\\
+ &\beta(2)\zeta(11),\beta(4)\zeta(9),\beta(6)\zeta(7),
+ \beta(8)\zeta(5),\beta(10)\zeta(3),\beta(12)\log2).
+\end{split}
+\]
+The conjecture is $\mathbf c_{12}\cdot\mathbf b_{12}=0$, where
+\[
+\begin{split}
+\mathbf c_{12}=(&67206362357091388096512000,
+-92814968433857420014387200,\\
+&-5035645608385269517516800,
+2454053342295358816911360,\\
+&-2557982490705884558131200,
+4600624150682630105333760,\\
+&10639593135931482596966400,-43411484181262303199,\\
+&5190040482548669193600,71048339137356985958400,\\
+&743250995585205475737600,5397522019420435985203200,\\
+&22801241978065356167577600,134412724714182776193024000).
+\end{split}
+\]
+It has greatest common divisor one.  A 440-digit PSLQ calculation with
+tolerance $10^{-420}$, coefficient bound $10^{30}$, and at most 50000
+iterations produced this vector from the 550-digit/1600-Euler-term
+values.  Its retained-precision integer residual was approximately
+$2.581\times10^{-457}$.
+The same exact rational calculation as for $S_{10}$ proves
+\[
+ \left|\frac{\mathbf c_{12}\cdot\mathbf b_{12}}
+ {67206362357091388096512000}\right|<10^{-650}.
+\]
+The delivered normalized interval contains zero.  This remains a
+conjectural identity, supported by a proved proximity enclosure.
+
+The first, weaker search at 300 digits and tolerance $10^{-280}$
+returned a different vector.  Its higher-precision residual failed
+immediately.  That discarded vector is preserved in
+\texttt{gaussian\_candidates.json}, separately from the retained vector.
+Using the same rigorous basket intervals, its \emph{unnormalized}
+integer residual $R_{\mathrm{bad}}$ satisfies
+\[
+ -\frac{2191}{10^{277}}<R_{\mathrm{bad}}
+ <-\frac{2190}{10^{277}}<0.
+\]
+Thus the original weight-thirteen vector is rigorously false, not merely
+unconfirmed.  The exact endpoints are included in the certificate and
+the optional \texttt{--s12} replay verifies both the retained proximity
+statement and this rejection.  This is a practical example of why
+discovery precision must not be reused as validation precision.
+
+\subsection{The exact rational error bound used by the certificate}
+
+For clarity, the error bound is rederived here.  It is the direct
+one-sided Euler bound already used in the pinned manuscript, not a
+new proof of the proposed identity.  For a sequence $f_n$, write
+\[
+ \Delta^kf_0=\sum_{n=0}^k(-1)^n\binom{k}{n}f_n,
+ \qquad
+ E_N(f)=\sum_{k=0}^{N-1}\frac{\Delta^kf_0}{2^{k+1}}.
+\]
+The exact finite identity
+\begin{equation}\label{oi:eq:euler-finite}
+ E_N(f)=\frac1{2^N}\sum_{n=0}^{N-1}(-1)^n
+ \left(\sum_{r=n+1}^{N}\binom Nr\right)f_n
+\end{equation}
+follows by interchanging the two finite sums and using Pascal's
+identity.  It is convenient computationally because its weights are
+integers divided by one power of two; the implementation does not
+form an unstable floating-point finite-difference triangle.
+
+For $a\geq2$ and integer $b\geq1$, put
+$f_n=H_{2n}^{(b)}/(2n+1)^a$.  The elementary Mellin formulas give
+\[
+ f_n=\frac1{\Gamma(a)\Gamma(b)}
+ \int_0^1\int_0^1
+ \frac{(-\log x)^{a-1}(-\log t)^{b-1}}{1-t}
+ \bigl((x^2)^n-(x^2t^2)^n\bigr)\,dt\,dx.
+\]
+Each grouped difference is integrable, including at $b=1$; the
+individual terms should not be separated there.  Finite differences
+turn the bracket into
+$(1-x^2)^k-(1-x^2t^2)^k$, which is nonpositive when $k\geq1$.
+Summing the geometric tail yields the exact remainder expression
+\begin{align*}
+ g_{a,b}-E_N(f)
+ =\frac{2^{-N}}{\Gamma(a)\Gamma(b)}
+ \int_0^1\int_0^1
+ \frac{(-\log x)^{a-1}(-\log t)^{b-1}}{1-t}
+ \left\{\frac{(1-x^2)^N}{1+x^2}
+       -\frac{(1-x^2t^2)^N}{1+x^2t^2}\right\}\,dt\,dx.
+\end{align*}
+One justification is to start with the convergent original series:
+for $a\geq2$ it is absolutely summable since $b\geq1$.  The displayed
+integral equals its sum by dominated convergence of grouped kernels.
+Alternatively, the uniform bound below makes the series of Euler
+remainders absolutely integrable and identifies the same sum.
+
+The function $B_N(u)=(1-u)^N/(1+u)$ decreases on $[0,1]$ and obeys
+$|B_N'(u)|\leq N+1$.  Thus the bracket lies between
+$-(N+1)x^2(1-t^2)$ and zero.  Integrating this bound gives
+\begin{equation}\label{oi:eq:gaussian-bound}
+ E_N(f)-\frac{N+1}{2^N3^a}\left(1+2^{-b}\right)
+ \leq g_{a,b}\leq E_N(f).
+\end{equation}
+The integral of $x^2(1-t^2)$ against the positive Mellin weight is
+exactly $f_1=H_2^{(b)}/3^a$, explaining every factor in the bound.
+For $f_n=H_n/(2n+1)^p$, $p\geq2$, replace $x^2t^2$ by $x^2t$.
+The same argument gives
+\begin{equation}\label{oi:eq:mixed-bound}
+ E_N(f)-\frac{N+1}{2^N3^p}\leq S_p\leq E_N(f).
+\end{equation}
+
+The single-value sequences $(2n+1)^{-s}$ and $(n+1)^{-s}$ are
+Hausdorff moment sequences with mass one.  Their omitted Euler tails
+are nonnegative and bounded by $2^{-N}$.  This encloses $\beta(s)$
+and $\eta(s)$; the relation
+$\zeta(s)=\eta(s)/(1-2^{1-s})$ encloses every odd zeta value needed.
+The elementary constants are evaluated independently with
+\[
+ \pi=16\arctan(1/5)-4\arctan(1/239),\qquad
+ \log2=2\sum_{n\geq0}\frac1{(2n+1)3^{2n+1}}.
+\]
+The alternating arctangent series is enclosed by its first omitted
+term.  For $M$ terms in the logarithm series, the positive tail is at
+most $9/[4(2M+1)3^{2M+1}]$.  Machin's identity uses the real principal
+arctangent: the tangent of $4\arctan(1/5)-\arctan(1/239)$ is one,
+and this angle lies in $(0,\pi/2)$, fixing the branch.
+
+All these bounds are rational.  The certificate applies
+\eqref{oi:eq:euler-finite} using an integer common denominator
+$D=\operatorname{lcm}(1,\ldots,2N)$, and performs only integer and
+rational interval operations.  It encloses every basket value before
+forming the fixed linear combination.  Thus it does not assume that
+the conjectural residual is zero at any stage.
+

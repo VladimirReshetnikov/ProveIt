@@ -1,0 +1,261 @@
+\section{A uniform saddle expansion for all reflected exponent ratios}
+\label{sec:all-ratios}
+
+Let $f(x)=\log\Gamma(x)$ and $F(x)=-\psi(x)$ on $0<x<1$.
+Both functions are positive. For real $n,m\ge0$ put
+\[
+ M_{n,m}=\int_0^1 f(x)^n f(1-x)^m\,dx.
+\]
+Reflection gives $M_{n,m}=M_{m,n}$, so it is enough to consider
+$n\ge m$. The previously proved compact-ratio theorem does not provide a uniform
+estimate on the entire range $n/m\ge1$: its saddle in the $x$ coordinate
+approaches an endpoint. The following construction uses a coordinate
+and a phase which remain uniformly suitable in that limit.
+
+\subsection{The inverse coordinate and the one needed inherited lemma}
+
+Write $x(y)$ for the decreasing inverse of $f$, and define, for $y>0$,
+\begin{equation}\label{eq:ratio-definitions}
+ q(y)=f(1-x(y)),\qquad
+ d(y)=\frac{e^y}{F(x(y))},\qquad
+ r(y)=-\frac{yq'(y)}{q(y)}.
+\end{equation}
+Thus $q$ is positive and decreasing, while $d$ is positive. Direct
+differentiation gives
+\begin{equation}\label{eq:ratio-J}
+ r(y)=\frac{1}{J(x(y))},\qquad
+ J(x)=\frac{F(x)f(1-x)}{F(1-x)f(x)}.
+\end{equation}
+We use the following established result from the pinned repository.
+
+\begin{lemma}[Inherited global slope inequality]\label{lem:inherited-J}
+The function $J$ is an increasing real-analytic bijection
+$(0,1)\longrightarrow(0,\infty)$, and
+$J'(x)/J(x)>176/225$. Consequently $r$ is an increasing
+real-analytic bijection $(0,\infty)\longrightarrow(0,\infty)$,
+with $r'(y)>0$.
+\end{lemma}
+
+The source is the theorem entitled ``Certified global log-gamma slope
+ratio'' in the report \emph{Uniform Transitions and Integral Structures},
+at the revision recorded in the provenance appendix. This is an inherited
+theorem, not a new assertion of this article. Its proof treats the
+endpoints analytically and proves the compact inequality with 256 exact
+dyadic interval computations. The dependency is included with its source
+attribution and freshly replayed in this package. To verify the consequence,
+differentiate \eqref{eq:ratio-J}, using $x'(y)=-1/F(x(y))$.
+
+We also need elementary quantitative information at infinity. Put
+\[
+ c=\frac{\zeta(2)}{2\gamma}-\gamma>0.
+\]
+The inverse-function theorem applied to
+$x=e^{-y}\Gamma(1+x)$ and the convergent log-gamma series yield
+\begin{align}
+ x(y)&=e^{-y}-\gamma e^{-2y}+O(e^{-3y}),\notag\\
+ q(y)&=\gamma e^{-y}\{1+c e^{-y}+O(e^{-2y})\},\label{eq:inverse-infinity}\\
+ d(y)&=1-2\gamma e^{-y}+O(e^{-2y}),\notag\\
+ r(y)&=y\{1+c e^{-y}+O(e^{-2y})\}.\notag
+\end{align}
+Every fixed number of derivatives may be taken in these expansions.
+More precisely, the correction functions in $q(y)e^y/\gamma$ and
+$d(y)$ are analytic functions of $e^{-y}$ near zero. In particular,
+for each fixed $j\ge2$,
+\begin{equation}\label{eq:derivative-bounds}
+ (\log q)^{(j)}(y)=O_j(e^{-y}),\qquad
+ d^{(j)}(y)=O_j(e^{-y}),\qquad r'(y)\longrightarrow1.
+\end{equation}
+The statement for $d^{(j)}$ also holds for $j=1$.
+Near zero, $x(y)=1-y/\gamma+O(y^2)$, so
+$q(y)=\log(\gamma/y)+o(1)$ and $d(y)\to1/\gamma$.
+Consequently $d$ has positive finite global upper and lower bounds.
+
+\subsection{The all-ratio theorem}
+
+Define
+\begin{equation}\label{eq:uniform-phase}
+ \Phi_{n,m}(y)=n\log y+m\log q(y)-y.
+\end{equation}
+The last term incorporates the exponential part of the Jacobian; keeping
+it in the phase is essential when $m$ is small. The exact change of
+variables is
+\begin{equation}\label{eq:exact-y-moment}
+ M_{n,m}=\int_0^\infty e^{\Phi_{n,m}(y)}d(y)\,dy.
+\end{equation}
+
+\begin{theorem}[Uniform expansion without a ratio restriction]
+\label{thm:all-ratio}
+For every real $n>0$ and $m\ge0$ there is exactly one positive solution
+$s=s(n,m)$ of
+\begin{equation}\label{eq:uniform-saddle}
+ n=s+m r(s).
+\end{equation}
+It is the unique global maximizer of \eqref{eq:uniform-phase}, and
+\[
+ H=-\Phi_{n,m}''(s)=\frac{1+m r'(s)}{s}>0.
+\]
+For each fixed integer $K\ge0$, as $n\to\infty$,
+\begin{equation}\label{eq:uniform-moment-expansion}
+ M_{n,m}=e^{\Phi_{n,m}(s)}d(s)\sqrt{\frac{2\pi}{H}}
+ \left\{\sum_{j=0}^{K}\frac{L_j(n,m)}{n^j}
+                  +O_K(n^{-K-1})\right\},
+ \qquad 0\le m\le n.
+\end{equation}
+The error constant is independent of $m$, and each coefficient
+$L_j(n,m)$ is bounded on $n\ge2$, $0\le m\le n$.
+Here $L_0=1$. With derivatives evaluated at $s$,
+\begin{equation}\label{eq:uniform-first}
+ \frac{L_1}{n}=
+ \frac{d''}{2dH}
+ +\frac{d'\Phi^{(3)}}{2dH^2}
+ +\frac{\Phi^{(4)}}{8H^2}
+ +\frac{5(\Phi^{(3)})^2}{24H^3}.
+\end{equation}
+The leading factor can equivalently be written
+\begin{equation}\label{eq:uniform-leading-x}
+ \frac{s^n q(s)^m}{F(x(s))}
+       \sqrt{\frac{2\pi s}{1+m r'(s)}}.
+\end{equation}
+Thus reflection supplies an expansion for every pair $n,m\ge0$ as
+$\max(n,m)\to\infty$.
+\end{theorem}
+
+\begin{proof}
+First,
+\[
+ \Phi_{n,m}'(y)=\frac{n-y-mr(y)}{y}.
+\]
+The function $h_m(y)=y+mr(y)$ increases strictly from zero to infinity.
+The derivative of the phase is therefore positive before its unique
+zero and negative afterwards. At that zero its second derivative is
+$-h_m'(s)/s$, proving the existence, uniqueness and curvature assertions.
+
+The issue is uniformity, rather than this stationary calculation.
+Choose $s_0>0$ so small that $s_0<1/2$ and $r(s_0)<1/2$.
+For $n\ge2$, $0\le m\le n$, the saddle equation precludes $s\le s_0$:
+otherwise $n=s+mr(s)<1/2+n/2<n$. Thus $s>s_0$ uniformly.
+On $[s_0/2,\infty)$, positivity, continuity and
+\eqref{eq:inverse-infinity} give constants $c_0,C_0,c_1,C_1>0$ such that
+\begin{equation}\label{eq:uniform-comparability}
+ c_0\le r(y)/y\le C_0,\qquad c_1\le r'(y)\le C_1.
+\end{equation}
+It follows from the saddle equation that
+\[
+ n\asymp(m+1)s,\qquad H\asymp n/s^2,
+\]
+with absolute constants throughout the stated parameter range.
+
+For $y,s\ge s_0/2$, the mean-value estimate
+$h_m'\ge c(m+1)$ gives a global phase bound. Integrating
+$\Phi'=(h_m(s)-h_m(y))/y$ on either side of $s$ yields
+\begin{equation}\label{eq:uniform-gap}
+ \Phi(y)-\Phi(s)
+ \le-c_2n\{y/s-1-\log(y/s)\}
+ \qquad(y\ge s_0/2)
+\end{equation}
+for one constant $c_2>0$. This calculation has the same sign on both
+sides: if $y<s$, integrate the positive derivative from $y$ to $s$.
+The portion $0<y<s_0/2$ is also harmless. The phase is increasing there,
+so its integral is at most a constant times
+$e^{\Phi(s_0/2)}$. In \eqref{eq:uniform-gap},
+$(s_0/2)/s\le1/2$; hence this contribution is exponentially small
+relative to $e^{\Phi(s)}s/\sqrt n$.
+
+Now put $u=y/s$ and
+\[
+ \varphi(u)=\frac{\Phi(su)-\Phi(s)}n,
+ \qquad b(u)=\frac{d(su)}{d(s)},
+ \qquad A=-\varphi''(1)=\frac{s(1+mr'(s))}{n}.
+\]
+The number $A$ is bounded above and bounded away from zero. Every fixed
+derivative of $\varphi$ and $b$ is bounded uniformly on $1/2\le u\le3/2$.
+For example, for $j\ge2$,
+\[
+ \varphi^{(j)}(u)
+ =(-1)^{j-1}(j-1)!u^{-j}
+   +\frac{m}{n}s^j(\log q)^{(j)}(su),
+\]
+and the second term is bounded by \eqref{eq:derivative-bounds}, compactness
+on bounded $s$, and $\sup_{s\ge s_0}s^j e^{-s/2}<\infty$.
+The same argument bounds the derivatives of $b$.
+
+These estimates give a parameter-independent neighborhood of $u=1$
+on which $\varphi(u)\le-c_3(u-1)^2$. Outside that neighborhood,
+\eqref{eq:uniform-gap} gives an exponentially small integrable tail.
+For clarity, integrability on the unbounded part follows from the linear
+growth of $u-1-\log u$ as $u\to\infty$; near zero it follows from its
+growth like $-\log u$.
+
+Here is a more explicit remainder argument. Put $u=1+v/\sqrt n$ and
+first restrict $|v|\le n^\epsilon$, with a positive $\epsilon$ chosen
+sufficiently small for the desired fixed order $K$. On this interval,
+the cubic and all higher phase terms are uniformly small relative to
+the quadratic term. Taylor-expand the amplitude and the exponential
+of those higher terms, retaining all powers through $n^{-K-1/2}$.
+Using, for example, phase and amplitude derivatives through order
+$4K+8$ and then decreasing $\epsilon$ if necessary bounds the omitted
+integrand by $C_K n^{-K-1}(1+|v|^{D_K})e^{-c_4v^2}$ for a fixed
+integer $D_K$. The uniform derivative bounds established above justify
+these Taylor remainders. The region $|v|>n^\epsilon$ within the common
+neighborhood is smaller than every power of $n^{-1}$ by the quadratic
+gap; the preceding global bound handles the rest. All retained odd
+powers integrate to zero after extension to the whole real line,
+whose error is again smaller than every power. This proves the stated
+uniform $O_K(n^{-K-1})$ normalized remainder. Boundedness of the
+coefficient functions follows from the derivative bounds and the
+lower bound on $A$.
+
+For an explicit finite prescription, set
+$\kappa_j=s^j\Phi^{(j)}(s)/n$ and
+$b_j=s^j d^{(j)}(s)/d(s)$. If $Z$ is centered Gaussian of variance
+$A^{-1}$, then $L_j$ is the coefficient of $t^{2j}$ in
+\begin{equation}\label{eq:uniform-coefficient-rule}
+ \mathbb E\left[
+ \left(\sum_{r\ge0}\frac{b_r Z^r t^r}{r!}\right)
+ \exp\left\{\sum_{r\ge3}\frac{\kappa_rZ^r t^{r-2}}{r!}\right\}
+ \right].
+\end{equation}
+Each coefficient uses finitely many terms. The degree-two coefficient
+gives \eqref{eq:uniform-first}; substitution of $d=e^s/F(x(s))$
+gives \eqref{eq:uniform-leading-x}.
+\end{proof}
+
+\subsection{What uniformity does and does not imply}
+
+The theorem includes balanced moments, fixed positive exponent ratios,
+the logarithmic transition, fixed reflected exponent, and the axis $m=0$.
+No lower bound on $m$ is needed. If $m$ is fixed, then
+\[
+ s=\frac{n}{m+1}+O_m(ne^{-n/(m+1)}),
+\]
+and the leading factor in \eqref{eq:uniform-moment-expansion} reduces to
+the leading Stirling approximation of
+$\gamma^m\Gamma(n+1)/(m+1)^{n+1}$. In the ideal limiting kernel
+$q(y)=\gamma e^{-y}$, $d(y)=1$, the first coefficient is exactly
+$L_1=1/12$, independently of $m$. This recovers the first Stirling
+correction and checks the Jacobian and normalization.
+
+The error in the theorem is uniform relative error of algebraic order
+in the larger exponent. It does not claim the exponentially small
+accuracy of the fixed-$m$ residue expansion. Likewise, the inherited
+sharp least-term remainder concerns a different approximation. These
+are complementary theorems with distinct error scales.
+
+There is a useful probabilistic consequence. Give $Y$ the density
+proportional to $e^{\Phi_{n,m}(y)}d(y)$. Uniformly for $0\le m\le n$,
+\[
+ \sqrt H\,(Y-s)\ \Longrightarrow\ N(0,1)
+ \qquad(n\to\infty).
+\]
+Precisely, for each fixed bounded continuous $h$ and $Z\sim N(0,1)$,
+\[
+ \sup_{0\le m\le n}
+ \left|\mathbb E h\bigl(\sqrt H(Y-s)\bigr)-\mathbb E h(Z)\right|
+ \longrightarrow0.
+\]
+This follows from the same scaled Gaussian domination and uniform
+tightness. The variance scale is $H^{-1}$;
+unlike the original $x$-coordinate scale, it remains valid when the
+exponent ratio tends to infinity. Higher local expansions follow from
+the coefficient prescription, while a quantitative global normal-distance
+bound would require an explicitly stated metric and is left for future work.

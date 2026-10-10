@@ -1,0 +1,66 @@
+\section{Scope, conventions, and the questions being continued}
+\label{sec:intro}
+The canonical manuscript at the stated revision is a 379-page synthesis;
+its six incoming archives contain further overlapping continuations
+\cite{ProveIt,IncomingSharp,IncomingBounds,IncomingUniform,IncomingMixed,
+IncomingRadial,IncomingDepth}. In particular, the $S_4$ Gaussian identity,
+the three recorded golden-ratio weight-five formulas, and the sharp
+Euler constant uniform in all positive orders have already been proved.
+They are background here. The existing $S_6$ and higher mixed Gaussian
+evaluations must still be assessed within their stated relation systems.
+
+Our first point of departure is the positive remainder kernel
+\begin{equation}\label{eq:intro-kernel}
+ f_N(v)=\frac{(1-v)^N}{1+v},\qquad
+ K_N(p,y)=\frac{f_N(py^2)-f_N(p)}{1-y},\qquad 0\le p,y\le1.
+\end{equation}
+The quotient uses its continuous value at $y=1$.
+The archive \cite[Section 8]{IncomingSharp} conjectures convergence of
+its global maxima to an exponential limiting kernel. A local scaling
+limit had been proved there; the missing global compactness argument
+and uniqueness of the limit are supplied below. Its finite-index
+uniqueness and monotonicity conjecture receives an exact answer at
+$N=2$ and an eventual answer for large $N$.
+
+The second point of departure is the zero geometry of the Stieltjes--Lerch
+derivative family. Its Laplace representation uses the Appell polynomials
+\[
+ \frac{e^{xz}}{\Gamma(1+z)}
+   =\sum_{n\ge0}Q_n(x)\frac{z^n}{n!}.
+\]
+The effective incoming theorem \cite[Section 4]{IncomingUniform}
+uses an exponentially small lower bound on their root separation.
+Replacing that bound by a polynomial estimate changes the permitted
+growth of the Laurent index substantially.
+
+Throughout, a multiple polylogarithm has decreasing summation indices:
+\[
+ \Li_{a,b}(z,w)=\sum_{n>m\ge1}\frac{z^nw^m}{n^am^b}
+\]
+in its domain of absolute convergence, followed by the specified analytic
+continuation. Put
+\begin{equation}\label{eq:F-def}
+ F_{a,b}(z)=\Li_{a,b}(z,1)
+   =\sum_{n\ge1}\frac{H_{n-1}^{(b)}}{n^a}z^n,
+ \qquad H_m^{(b)}=\sum_{j=1}^m j^{-b},\qquad
+ g_{a,b}=\Ima F_{a,b}(\ii).
+\end{equation}
+For $a\ge0,b>0$ we use the principal continuation on
+$\C\setminus[1,\infty)$. Negative integer outer orders are obtained
+by powers of $\D=z\,\mathrm d/\mathrm dz$. The Dirichlet functions are
+\[
+ \beta(s)=\sum_{m\ge0}\frac{(-1)^m}{(2m+1)^s},\qquad
+ \eta(s)=\sum_{m\ge1}\frac{(-1)^{m-1}}{m^s}
+\]
+where these series converge, and their analytic continuations elsewhere.
+Our logarithms of positive real quantities are real logarithms.
+
+\paragraph{Status of the mathematics.}
+All statements marked theorem, proposition, lemma, or corollary are
+proved in this article, with any inherited input explicitly identified
+and justified as needed. The higher-weight relation marked conjecture
+has a frozen coefficient vector and an exact rational residual enclosure;
+an enclosure containing zero is not a proof of equality. None of the
+ordinary proofs or finite replay scripts is a proof-assistant
+formalization. The claims of advancement refer to the audited repository
+snapshot, not to an exhaustive assertion of priority over the literature.

@@ -1,0 +1,184 @@
+\begin{abstract}
+This article continues two analytic programs in the ProveIt polylogarithm
+manuscript: sharp Euler remainder estimates at arbitrary real orders,
+and the motion of real zeros under harmonic and Lerch deformation.
+For the optimal normalized remainder $C_N$, we prove eventual exact
+reduction to the outer-order boundary $a=0$, uniqueness of the optimizing
+inner order, and the conjectured law
+$C_N=1+cN^{-p}+O(N^{-p-\delta})$, with explicit positive constants.
+For the pointwise remainder kernel, we prove global convergence of all
+maximizers to a unique interior scaled limit, a convergent expansion in
+$1/N$, and eventual strict decrease of its optimum. The first later
+truncation, $N=2$, has an exact algebraic optimum of degree seven.
+For the inverse equation $e^U=A+tU$, an exact rectangular barrier selects
+the relevant analytic sheet and its two dominant square-root
+singularities for every $A>1$. This makes the repository's conditional
+velocity asymptotic unconditional, yields all-order oscillatory
+expansions, bounded sign gaps, convergent boundary identities, and an
+explicit limiting distribution of the zero-velocity lattice parameters.
+The inverse series is identified with earlier work of Kalugin and
+Jeffrey, and the coefficient polynomials with Cohen's Lambert
+polynomials. For the latter we prove real-rootedness, strict interlacing,
+an all-orders fixed-parameter expansion of the largest roots with the
+polynomial coefficient degrees conjectured by Cohen, and a Bessel
+limit at the smallest-root endpoint. The first two largest-root
+corrections are explicit combinations of zeta values. All claims are
+separated from numerical evidence and from
+questions that remain open. Exact algebraic verification, numerical
+diagnostics, source provenance, and integration notes accompany the
+article.
+\end{abstract}
+
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{Research scope, results, and relation to the baseline}
+\label{sec:introduction}
+
+The organizing question is how a global extremum or a global inverse
+sheet can be recovered from a local asymptotic calculation. In both
+problems considered here, the local calculation was substantially
+available in the source material, but it did not by itself settle the
+global conclusion. For Euler remainders, a trial family on the axis
+gave the right candidate correction to the optimal constant; one still
+had to exclude all other order parameters. For harmonic zero velocities,
+formal critical points and local square-root expansions were known;
+one still had to prove that the selected inverse branch actually reaches
+exactly the proposed dominant pair. The proofs below supply those
+global steps.
+
+\subsection{A fixed and reproducible source comparison}
+
+The repository baseline is revision
+\texttt{4c173c06cc32c9cea554b39be1837ad2ae897fc1},
+dated October 10, 2026. The review covered the modular manuscript,
+its editorial ledger and validation notes, the harmonic-order geometry
+continuation, and all six archives then present in \src{docs/incoming}.
+The provenance manifest records the paths and Git blob hashes of the
+retrieved sources. Statements about what was already proved or left
+open refer to this revision, rather than to an evolving branch
+\cite{ProveItSnapshot,HarmonicBaseline,UniformBoundsIncoming,SharpEulerIncoming}.
+
+Several substantial problems have already been settled in that baseline.
+In particular, the sharp constant uniform in \emph{all} positive real
+orders and \emph{all} truncation indices is already known; so are the
+$S_2$ and $S_4$ reductions and the certified radial double-extremum
+phenomenon. They are not reported here as fresh results. The unresolved
+$S_6$ reduction is not claimed. The selected targets are the remaining
+global large-index Euler problem and the dominant-sheet question for
+diagonal harmonic velocities, together with consequences naturally
+forced by their proofs.
+
+\subsection{The main analytic conclusions}
+
+Use the precise normalization of \cref{sec:setup}. The first result is
+\[
+ C_N=\max_{b>0}R_N(0,b)\quad\hbox{for all sufficiently large }N,
+\]
+with a unique maximizing order $b_N$. Put
+\[
+ d=\log(3/2),\qquad p=\frac{\log2}{d},\qquad
+ q=\frac{\log3}{\log2},\qquad
+ c=\frac{p^p}{(p+1)^{p+1}},\qquad
+ \delta=\frac{\log(10/9)}d.
+\]
+Then
+\begin{align}
+ b_N&=\frac{\log(Nq)}d+O(N^{-\delta}),\label{eq:intro-b}\\
+ C_N&=1+cN^{-p}+O(N^{-p-\delta}).\label{eq:intro-C}
+\end{align}
+Here $p=1.70951129135\ldots$ and $c=0.167947796543\ldots$.
+The positive-quadrant supremum is approached as $a\downarrow0$ and is
+not attained there. The proof also gives a necessary scale for any
+near-optimal outer order, sharpened to a necessary and sufficient
+criterion and a joint profile with exact linear loss $\sqrt\pi$.
+It uses probability kernels and positive
+Taylor remainders, so no cancellation-sensitive finite Euler sum is
+needed as a proof premise.
+
+The pointwise kernel optimum $M_N$ is a different quantity. Its limit is
+\[
+ M_\infty=1.053861930362711626\ldots>1,
+\]
+whereas $C_N\to1$. Every global kernel maximizer satisfies
+$Nr_N\to3.941064831647250668\ldots$ and
+$y_N\to0.145303859259358424\ldots$. The optimized kernel value and
+location have convergent expansions in $1/N$ near zero. The exact
+degree-seven answer for $M_2$ gives a finite-index anchor for this
+asymptotic theory.
+
+For the harmonic problem, let $A=1+h>1$ encode the lattice spacing.
+There is a unique $\theta\in(0,\pi)$ such that
+\begin{equation}\label{eq:intro-angle}
+ \log A=1-\theta\cot\theta+\log\frac\theta{\sin\theta}.
+\end{equation}
+Writing $a_*=1-\theta\cot\theta$, $u_*=a_*+i\theta$, and
+$R=e^{a_*}$, the selected inverse of $e^U=A+tU$ has precisely the
+two singularities $Re^{\pm i\theta}$ on its convergence circle.
+If $v_n(A)$ is the initial velocity of the $n$th diagonal zero, then
+\[
+ v_n(A)=\frac{R^{-n}}{\sqrt\pi\,n^{3/2}}
+          \Re\!\left(e^{-in\theta}\sqrt{-2u_*}\right)
+          +O_A(R^{-n}n^{-5/2}),
+\]
+with an explicitly selected square root. The article gives its next
+coefficient and an algorithm for every subsequent one. The error is
+additive; no relative approximation is asserted near a cosine zero.
+
+The same phase describes the distribution of the positive zeros of
+the velocity polynomials. In the angle coordinate their limiting
+distribution is uniform on $(0,\pi)$. In the logarithmic coordinate
+$L=\log A$ its density is
+\[
+ \frac{\theta}{\pi\bigl((1-\theta\cot\theta)^2+\theta^2\bigr)}.
+\]
+Thus complex singularity geometry determines both oscillation in the
+index and the distribution of real parameters where an initial
+velocity vanishes.
+
+The Lambert-polynomial identification also leads to an all-orders
+solution of the fixed-parameter extreme-root questions in Cohen's
+Conjecture 7.1 \cite{Cohen2021}. If $X_{n,k,j}$ is the $j$th largest
+positive root of $L_{n,k}$, then for fixed positive integers $j,k$ and
+any fixed $M$,
+\begin{equation}\label{eq:intro-Cohen}
+ X_{n,k,j}=\frac{n+k-1}{j}+\log n+\gamma-H_{j-1}
+       +\sum_{m=1}^{M}\frac{C_{j,m}(k-1)}{n^m}
+       +O_{j,k,M}(n^{-M-1}).
+\end{equation}
+Each $C_{j,m}$ is a polynomial of degree exactly $m-1$. The first
+largest-root coefficient is
+\[
+ C_{1,1}=-\frac32-\zeta(2)-\zeta(3),
+\]
+and the next coefficient is given explicitly in
+\cref{sec:cohen-edges}. Euler's constant occurs only in the leading
+shift; every later coefficient lies in a specified algebra generated
+by ordinary zeta values. A different endpoint scaling gives
+$n^2x_{n,k,j}\to z_{k,j}^2/2$ for the $j$th smallest positive root,
+where $z_{k,j}$ is a positive zero of $J_k$. The bulk, large-root,
+and Bessel limits have separately stated regimes.
+
+\subsection{Attribution and the meaning of a result here}
+
+Kalugin and Jeffrey's 2012 Lambert-$W$ series already contains the
+inverse coefficient array and the convergence-radius criterion after
+an explicit change of variables \cite{KaluginJeffrey2012}. Cohen's
+Lambert polynomials are the same coefficient polynomials up to a sign
+\cite{Cohen2021}. These are substantive identifications, not merely
+analogies. They correct a gap in the source comparison and make it
+possible to connect the repository's questions to the existing
+literature. The barrier proof, its detailed continuation statement,
+and the derived velocity and zero-distribution results are presented
+with this antecedent made explicit.
+
+Throughout the article, ``proved'' means proved in ordinary mathematics
+with the hypotheses stated. The exact polynomial computations have
+independent finite verifiers. Numerical calculations illustrate scales,
+locate examples, and test formulas; they are not substituted for
+global analytic arguments. No assertion of literature-wide priority
+or machine-checked formalization is made. The final sections give
+precise proposed source amendments and distinguish completed targets
+from the remaining finite-index, edge-scaling, and arithmetic questions.
+

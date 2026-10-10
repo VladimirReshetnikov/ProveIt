@@ -1,0 +1,237 @@
+% Reviewable replacement/insertion blocks for ProveIt.
+% Pinned commit: 3447bc59b78d138a7f0d536b66ac6e5cc5d5e49f.
+% Chapter paths are relative to Analysis/Polylogarithms/docs/manuscript/chapters/.
+% Companion report paths are stated separately.
+% Do NOT input this entire file: copy each selected block into its stated context.
+% Integrate the new proof sections first and preserve/update their labels.
+
+% E1 -- 05-subcritical-stieltjes.tex, subpick:thm:Gaussian-order.
+% Replace only the final paragraph beginning "This is a magnitude bound;".
+This theorem gives the magnitude comparison. The additional scalar
+comparison in Theorem~\ref{newEuler:thm:domination} proves that the same
+axis quantity $C(b)=\beta(b)+2^{-b}\eta(b)$ bounds every scaled Euler
+remainder, uniformly over $a>0$. That conclusion uses a separate
+remainder argument and does not follow from magnitude monotonicity alone.
+
+% E2 -- 05-subcritical-stieltjes.tex, after subpick:thm:axis-maximum.
+% Replace the paragraph beginning "The numerical axis experiment finds".
+The original numerical axis experiment locates the maximum near
+$b_*=1.30221658710124120959$, with height near
+$C(b_*)=1.13656110333950956095$. Proposition~\ref{newEuler:prop:narrow}
+now certifies rational enclosures for both quantities, including
+\[
+1.3022165871012412095923717014
+<b_*<1.3022165871012412095923717017.
+\]
+The original uniqueness proof remains independent of the numerical
+stationary-point solver. Corollary~\ref{newEuler:cor:sharp} identifies
+this maximum as the sharp universal real-order Euler constant.
+
+% E3 -- 05-subcritical-stieltjes.tex, caption of subpick:fig:Gaussian-axis.
+% Replace only the caption; keep the existing image and figure label.
+\caption{Numerical values of the exact Gaussian axis expression and its
+stationary-point marker. The shaded interval is the original proved
+bracket $1<b_*<2$; the horizontal line is the sharp critical Euler
+constant. Proposition~\ref{newEuler:prop:narrow} supplies independent
+exact narrow enclosures for the maximizing point and height.
+The additional remainder comparison in
+Theorem~\ref{newEuler:thm:domination} proves that this larger Gaussian
+maximum is also the sharp universal Euler constant for all positive
+real orders.}
+
+% E4 -- 10-discovery.tex, Real-order geometry after the positive-difference theorem.
+% Replace the paragraph beginning "The Gaussian experiments have also led to proofs"
+% and ending "does not furnish that universal Euler bound.".
+The Gaussian experiments have also led to proofs rather than just
+narrower searches. Fixed-total monotonicity is proved in
+Theorem~\ref{subpick:thm:fixed-total}, and
+Theorem~\ref{subpick:thm:axis-maximum} gives the unique global axis
+maximum. Its point and height now have exact narrow enclosures in
+Proposition~\ref{newEuler:prop:narrow}. Writing
+$C(b)=\beta(b)+2^{-b}\eta(b)$ and $C_*=\max_{b>0}C(b)$,
+Theorem~\ref{newEuler:thm:domination} proves
+\[
+0<2^N(E_N-g_{a,b})<C(b)\le C_*
+\qquad(a,b>0,\ N\ge1).
+\]
+Corollary~\ref{newEuler:cor:sharp} proves that $C_*$ is the least
+universal constant; the bound is approached as $a\downarrow0$ at
+$b=b_*$ and $N=1$. The convenient rational budget $57/50$ is valid
+throughout the positive quadrant. The sharper critical/subcritical
+constant $\pi/4+\log(2)/2$ in
+Corollary~\ref{subpick:cor:sharp-critical} remains available on its
+original domain. The number of quartic transition points and the
+Bessel continuation remain open; the effective Lerch zero results
+are described below.
+
+% M1 -- 07-reflected-moments.tex, immediately after reflected:cor:sharp proof.
+% Replace the two-sentence paragraph beginning "This fixed-$m$ corollary does not supply".
+This fixed-$m$ corollary retains an error constant that may depend on $m$;
+it does not provide its stated relative accuracy when $m$ grows with $n$.
+Theorem~\ref{thm:all-ratio} supplies a different approximation, with
+relative algebraic error through every fixed order uniformly for
+$0\le m\le n$ as $n\to\infty$. Reflection covers the other half of
+the nonnegative quadrant. Uniformity of the present exponentially
+accurate or least-term approximation for growing $m$ remains separate.
+
+% M2 -- 07-reflected-moments.tex, final status paragraph under
+% \paragraph{Verification and remaining questions.}
+% Replace from "The fixed-reflected-exponent signed remainder is now supplied"
+% through the end of the file; preserve the preceding verification paragraph.
+The fixed-reflected-exponent signed remainder is supplied by
+Corollary~\ref{reflected:cor:sharp}. Theorem~\ref{thm:all-ratio} now
+provides a uniform algebraic expansion when both exponents increase,
+including the full range of their ratios. Its phase uses the inverse
+coordinate $y=\log\Gamma(x)$ and includes the exponential Jacobian
+term. This does not make the endpoint replacement
+$B(x)^m\approx\gamma^m x^m$ uniformly valid, nor does it extend the
+fixed-$m$ least-term remainder law to growing $m$. Matching that sharper
+error scale uniformly remains a further question.
+
+% M3 -- COMPANION REPORT, not a current manuscript chapter input:
+% Analysis/Polylogarithms/docs/reports/uniform-transition-continuation/
+% sections/04b-proportional-moments.tex.
+% Replace the final paragraph headed "What remains open after this theorem.".
+\paragraph{What remains open after this theorem.}
+The proportional regime on compact positive exponent ratios is resolved,
+including uniqueness, curvature and all fixed asymptotic orders.
+Theorem~\ref{thm:all-ratio} now supplies a uniform algebraic expansion
+joining that regime to the logarithmic transition and continuing over
+all nonnegative exponent ratios. It uses a different phase, so its
+finite-exponent saddle should not be identified term by term with the
+saddle in the present theorem. A proof of the global slope inequality
+using only an analytic inequality, without the finite interval
+certificate, remains a worthwhile simplification problem. Uniform
+exponentially accurate matching and growing-exponent least-term laws
+remain open. The original compact-ratio theorem itself retains its
+stated hypotheses and error constants.
+
+% M4 -- COMPANION REPORT:
+% Analysis/Polylogarithms/docs/reports/uniform-transition-continuation/
+% sections/04-joint-moments.tex.
+% Replace only the paragraph headed "Editorial correction to the research status.".
+\paragraph{Editorial update to the research status.}
+The fixed-$m$ statements and their warnings against substituting a
+growing reflected exponent remain valid. Theorem~\ref{thm:all-ratio}
+now supplies a different uniform expansion through every fixed algebraic
+order over all ratios of the two nonnegative exponents. This closes the
+uniform algebraic bridge question beyond the compact transition and
+proportional regimes. It does not claim that the transition-specific
+polynomials in the present theorem have uniform relative remainders for
+every unbounded transition parameter. Explicit matching of those
+polynomials to the new expansion, and uniform sharp truncation on the
+inverse-gamma least-term scale, remain separate questions. These are
+extensions of the existing theorems, not corrections to their proofs.
+
+% M5 -- 10-discovery.tex.
+% Insert immediately before \subsection{A focused path toward formal verification}.
+\subsection{A uniform bridge for reflected log-gamma moments}
+Theorem~\ref{thm:all-ratio} gives a complete expansion to every fixed
+algebraic order, uniformly for real $0\le m\le n$ as $n\to\infty$.
+Reflection covers every pair of nonnegative exponents as their maximum
+tends to infinity, including either axis. The proof uses the previously
+certified global log-gamma slope inequality and a phase that includes
+the exponential Jacobian. It establishes a uniform Gaussian limit on
+the same parameter range. Effective remainder constants, uniform
+matching to the older transition polynomials, and exponentially accurate
+growing-exponent truncation remain useful next problems. The fixed-$m$
+residue and least-term theorems retain their distinct stronger error
+scales on their stated domains.
+
+% M6 -- COMPANION REPORT 04-joint-moments.tex, Further research questions.
+% Replace the first list item beginning "Prove a uniform continuation of the transition when".
+\item Determine the maximal noncompact ranges of
+$\lambda=me^{-t}$ on which the present transition-specific coefficient
+polynomials admit useful uniform relative remainder bounds. Theorem~\ref{thm:all-ratio}
+already supplies a different all-ratio algebraic approximation; the
+remaining question concerns the validity and matching of this polynomial
+representation when $\lambda$ tends to zero or infinity.
+
+% M7 -- Same companion list.
+% Replace the item beginning "Build a uniform approximation joining the interior saddle to".
+\item Derive explicit uniform matching laws between
+Theorem~\ref{thm:all-ratio}, the proportional saddle expansion, and the
+transition at $x\asymp1/m$. Quantify their overlap domains and compare
+truncation errors without identifying their finite-exponent saddles or
+claiming uniform exponential accuracy from an algebraic expansion.
+
+% L1 -- 09-zero-geometry.tex, remark after zeros:thm:expansion.
+% Replace the complete remark titled "What uniformity does not say".
+\begin{remark}[Scope of the concentration expansion]
+The constants in Theorem~\ref{zeros:thm:expansion} may depend on $n$
+and on the compact $c$-interval. Its full expansion therefore retains
+its fixed-index, compact-scale scope. Theorem~\ref{efflerch:thm:explicit}
+provides a different leading zero-location estimate with an explicit
+sufficient threshold, uniformly in every root branch and in
+$0\le\rho\le1$, without a compact-scale assumption.
+Corollary~\ref{efflerch:cor:growing} extends that leading estimate to
+a stated growing-index range. It does not extend every coefficient or
+remainder in the present $k^{-1}$ expansion uniformly to that range.
+\end{remark}
+
+% L2 -- 09-zero-geometry.tex, zeros:thm:zeroasympt.
+% Insert after the COMPLETE proof of that theorem, without changing its statement.
+For $n\ge2$, Theorem~\ref{efflerch:thm:explicit} gives the sufficient
+choice $K_n=576n^2(3n)^{2n-4}$ for saturation, uniformly on
+$0\le\rho\le1$, and bounds the logarithmic relative error of every
+zero by $8n/\sqrt{k}$. This explicit bound is deliberately conservative.
+The fixed-index offsets and higher corrections proved above remain
+sharper asymptotic information at fixed $n$; the new estimate controls
+the index dependence and the extreme branches.
+
+% L3 -- 10-discovery.tex.
+% Replace the complete paragraph under
+% \subsection{Zero geometry beyond a fixed Laurent index}.
+The complete classical counts are known through Laurent index seven.
+The fifth-index transition has threshold three, and
+Theorem~\ref{higherzeros:thm:thresholds} proves sharp thresholds four
+and five at indices six and seven. These exact small-order results
+remain stronger than the general sufficient bound.
+Theorem~\ref{efflerch:thm:explicit} now proves saturation at all indices
+$n\ge2$ whenever $k\ge576n^2(3n)^{2n-4}$, uniformly in
+$0\le\rho\le1$, with simultaneous logarithmic relative error
+$8n/\sqrt{k}$ for all zero branches.
+Corollary~\ref{efflerch:cor:growing} consequently proves moving-zero
+asymptotics for $n\le\alpha\log k/\log\log k$, for each fixed
+$0<\alpha<1/2$. The full $n=O(\log k)$ moving-zero expansion remains
+open; the existing spectral coefficient theorem does not supply it by
+itself. Sharp general thresholds and small-order classification at
+higher indices also remain open. Proposition~\ref{efflerch:prop:terminal}
+proves strict leftward motion of a simple persistent terminal zero at
+arbitrary index, including strict decrease on $[0,1]$ in the saturated
+regime. Global monotonicity of all nonterminal branches remains a
+separate question; no finite derivative at $\rho=1$ is asserted.
+
+% L4 -- 09-higher-zero-transitions.tex.
+% Replace the final paragraph beginning "This finite sequence suggests further threshold questions;".
+This finite sequence suggests further threshold questions; it does not
+prove a formula in the index. In particular, the assertion
+$K_n^{\rm cl}=n-2$ for every $n\ge5$ remains unproved.
+Theorem~\ref{efflerch:thm:explicit} supplies an explicit sufficient
+saturation threshold for all indices and all $0\le\rho\le1$.
+Combining that upper bound with the terminating critical-point method
+to determine sharp thresholds remains a concrete next problem.
+
+% C1 -- 10-discovery.tex, append after the last paragraph of research:sec:S8-rejected.
+The new weight-eleven and weight-thirteen candidates in
+Section~\ref{sec:candidates} extend this collection of frozen research
+targets. The retained $S_{10}$ and $S_{12}$ relations are conjectures:
+their exact proximity intervals contain zero and prove no identity.
+The rejected first $S_{12}$ search vector is a separate record whose
+residual interval excludes zero. Neither that rejection nor the earlier
+$S_8$ rejection excludes every relation in the corresponding basket.
+The $S_6$ mixed reduction remains unresolved. Integral diagonalization
+of the single-color shuffle minor does not supply the missing
+mixed-color identity or a period-independence theorem.
+
+% A1 -- 10-discovery.tex, append at end of subsection
+% \subsection{Certificates, integral structure and arithmetic evaluation}.
+Theorem~\ref{oi:thm:integral} additionally gives an integral
+diagonalization of the specified odd-weight shuffle minor, determining
+its cokernel, Smith factors, ranks over fields, and optimal common
+inverse denominator. Its relation to the published double-zeta matrix
+and determinant should retain the accompanying attribution.
+Corollary~\ref{oi:cor:basket} concerns the quotient by the stated shuffle
+rows. Evaluation at a special point, or adjoining further functional
+equations, may create additional relations; no numerical period
+independence follows from this formal dimension calculation.

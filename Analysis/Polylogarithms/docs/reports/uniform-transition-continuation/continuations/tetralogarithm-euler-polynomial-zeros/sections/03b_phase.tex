@@ -1,0 +1,418 @@
+% Independent audit and further results for research/fractional_notes.txt.
+% This section uses the compensated density and Euler remainder definitions there.
+% It is a fragment for the root article, not a standalone document.
+
+\section{An exact phase diagram for fixed-total Euler comparisons}
+\label{phasefrac:sec:main}
+
+Retain the compensated density $K_{a,b}$, the scaled remainder $R_N(a,b)$,
+and $w=a+b$ from the preceding fractional expansion. Let
+\[
+ D_{a,b}(T)=K_{a,b}(T)-K_{0,w}(T),\qquad
+ q(T)=1-e^{-2T}.
+\]
+The exact remainder identity gives, for integers $N\ge1$,
+\begin{equation}\label{phasefrac:eq:difference}
+ R_N(a,b)-R_N(0,w)
+ =-\int_0^\infty
+ D_{a,b}(T)\frac{e^{-T}q(T)^N}{1+e^{-2T}}\,dT.
+\end{equation}
+The formula also defines a natural interpolation in real $N\ge1$.
+All integrals below are ordinary absolutely convergent integrals after
+this vanishing test factor is included. No unweighted finite-measure
+assertion is made in the subcritical case.
+
+\subsection{All truncation orders on and above the outer-order threshold}
+
+\begin{theorem}[Axis domination and complete monotonicity]
+\label{phasefrac:thm:above}
+For every $a\ge1$, $b>0$, and integer $N\ge1$,
+\[
+ R_N(a,b)<R_N(0,a+b).
+\]
+Writing $B_N=R_N(0,a+b)-R_N(a,b)$ and
+$\Delta B_N=B_{N+1}-B_N$, one has the stronger inequalities
+\[
+ (-1)^r\Delta^rB_N>0\qquad(r\ge0,\ N\ge1).
+\]
+In particular, $B_N$ is strictly decreasing and
+$B_NB_{N+2}>B_{N+1}^2$ for every $N\ge1$.
+\end{theorem}
+\begin{proof}
+The density formulas give the exact identity
+\begin{equation}\label{phasefrac:eq:positive-density}
+ D_{a,b}(T)=(I^a h_b)'(T)
+    +\frac{T^{w-1}}{\Gamma(w)(e^T-1)}.
+\end{equation}
+For $a>1$ the first term is $I^{a-1}h_b(T)>0$, while for $a=1$
+it is $h_b(T)>0$. Thus $D_{a,b}$ is strictly positive on $(0,\infty)$.
+Substitution in \eqref{phasefrac:eq:difference} proves the comparison.
+Taking finite differences under the integral gives
+\[
+ (-1)^r\Delta^rB_N
+ =\int_0^\infty D_{a,b}(T)
+   \frac{e^{-T}q(T)^N(1-q(T))^r}{1+e^{-2T}}\,dT>0.
+\]
+The same formula is a Hausdorff moment representation, with a positive
+measure supported throughout $(0,1)$ after the change of variable $x=q(T)$.
+Strict log-convexity follows from strict Cauchy--Schwarz for that measure.
+Here $a+b>1$, so its unweighted mass is also finite; the statements
+only require the moments starting at $N=1$.
+\end{proof}
+
+\begin{proposition}[The smaller scale at the threshold]
+\label{phasefrac:prop:critical}
+For fixed $b>0$, with $L=\tfrac12\log N$,
+\[
+ R_N(1,b)-R_N(0,b+1)
+ \sim-\frac{L^b}{2\Gamma(b+1)N}.
+\]
+Thus the comparison at $a=1$ occurs on a smaller power of $N$ than
+the $N^{-1/2}$ scale of the generic fractional correction.
+\end{proposition}
+\begin{proof}
+At $a=1$, \eqref{phasefrac:eq:positive-density} becomes
+\[
+ D_{1,b}(T)=h_b(T)+\frac{T^b}{\Gamma(b+1)(e^T-1)}
+ =\frac{e^{-T}T^b}{\Gamma(b+1)}
+        \left(1+O(T^{-1})\right)
+ \quad(T\to\infty).
+\]
+The first term $h_b(T)=O(e^{-T}T^{b-1})$ follows directly by
+integrating its exponentially decaying density. Set
+$t=\sqrt N e^{-T}$ in \eqref{phasefrac:eq:difference}. On the
+central range, the additional $e^{-T}$ factor changes $N^{-1/2}$
+to $N^{-1}$ and changes the limiting Gaussian weight to $t e^{-t^2}$.
+The same dominated tail estimates used for the fractional expansion
+apply, giving
+\[
+ R_N(0,b+1)-R_N(1,b)
+ =\frac1{N\Gamma(b+1)}
+   \int_{N^{-1/4}}^{N^{1/4}} t e^{-t^2}(L-\log t)^b\,dt
+   +O(N^{-1}L^{b-1}),
+\]
+All powers here have positive arguments. Taylor expansion on this
+central range and extension of the Gaussian logarithmic moments to
+$(0,\infty)$ give the leading term
+$L^b\int_0^\infty t e^{-t^2}\,dt=L^b/2$.
+\end{proof}
+
+\subsection{Exactly one reversal below the threshold}
+
+The fractional integral admits a useful alternative expression. Put
+\[
+ \phi_a(u)=
+ \begin{cases}
+ 1-(1-u)^{a-1},&0<u<1,\\
+ 1,&u>1.
+ \end{cases}
+\]
+When $0<a<1$, this function is strictly negative below one and strictly
+positive above one.
+
+\begin{lemma}[A density with exactly one change of sign]
+\label{phasefrac:lem:density}
+For $0<a<1$ and $b>0$, the difference density $D_{a,b}$ has exactly
+one zero $T_*=T_*(a,b)$ on $(0,\infty)$. It is positive for $T<T_*$,
+negative for $T>T_*$, and $D_{a,b}'(T_*)<0$.
+\end{lemma}
+\begin{proof}
+First derive the exact identity
+\begin{equation}\label{phasefrac:eq:bose}
+ \Gamma(a)\Gamma(b)T^{1-w}D_{a,b}(T)
+ =\int_0^\infty\frac{\phi_a(u)u^{b-1}}{e^{Tu}-1}\,du
+       +\frac{B(a,b)}{e^T-1},
+ \qquad B(a,b)=\frac{\Gamma(a)\Gamma(b)}{\Gamma(w)}.
+\end{equation}
+Indeed, Tonelli's theorem in the definition of $I^ah_b$ gives
+\[
+ I^ah_b(T)=\frac1{\Gamma(a+1)\Gamma(b)}
+   \int_0^\infty\frac{v^{b-1}}{e^v-1}
+        \bigl(T^a-(T-v)_+^a\bigr)\,dv.
+\]
+Differentiation yields
+\[
+ (I^ah_b)'(T)=\frac1{\Gamma(a)\Gamma(b)}
+ \left\{\int_0^T\frac{v^{b-1}
+       [T^{a-1}-(T-v)^{a-1}]}{e^v-1}\,dv
+       +T^{a-1}\int_T^\infty\frac{v^{b-1}}{e^v-1}\,dv\right\}.
+\]
+The cancellation in the first integral must be retained if $b\le1$.
+Its integrand is $O(v^{b-1})$ at zero, and its moving-endpoint
+singularity has exponent $a-1>-1$. One may justify differentiation
+first with a lower cutoff in $v$, split at a fixed neighborhood of
+$v=T$, and then pass to the limit; the displayed bounds give locally
+uniform convergence of the derivative. Scaling $v=Tu$ and using
+\eqref{phasefrac:eq:positive-density} proves \eqref{phasefrac:eq:bose}.
+
+Let $A(T)$ denote the right side of \eqref{phasefrac:eq:bose}.
+It is the transform by $K(T,u)=(e^{Tu}-1)^{-1}$ of the signed measure
+\[
+ d\nu(u)=\phi_a(u)u^{b-1}\,du+B(a,b)\,\delta_1(du).
+\]
+This measure is negative on $(0,1)$ and positive on $(1,\infty)$,
+with a positive atom at the dividing point. All its transforms and
+their $T$ derivatives converge absolutely on compact positive
+$T$ intervals. At zero in $u$, the density is $O(u^b)$; its
+singularity at $u=1$ is integrable, and the kernel controls infinity.
+
+For $T_2>T_1>0$, the kernel ratio
+\[
+ r(u)=\frac{K(T_2,u)}{K(T_1,u)}
+      =\frac{e^{T_1u}-1}{e^{T_2u}-1}
+\]
+is strictly decreasing in $u$. For example, differentiate its
+logarithm and use strict increase of $x/(1-e^{-x})$ on $(0,\infty)$.
+If $A(T_1)=0$, subtraction of the constant $r(1)$ gives
+\[
+ A(T_2)=\int_0^\infty[r(u)-r(1)]K(T_1,u)\,d\nu(u)<0.
+\]
+Both open intervals give strictly negative contributions, while the
+atom contributes zero. Reversing this comparison shows $A(T)>0$
+for every $T<T_1$. Thus $A$ can have at most one zero, and that zero
+has the stated sign orientation.
+
+The endpoint signs can also be checked explicitly. As $T\downarrow0$,
+\[
+ D_{a,b}(T)\sim
+ \begin{cases}
+ \displaystyle\frac{a}{(1-b)\Gamma(w)}T^{w-2},&0<b<1,\\[5pt]
+ \displaystyle\frac{T^{a-1}\log(1/T)}{\Gamma(a)},&b=1,\\[5pt]
+ \displaystyle\frac{\zeta(b)}{\Gamma(a)}T^{a-1},&b>1.
+ \end{cases}
+\]
+For the first line, the leading term of $h_b$ is
+$T^{b-1}/[(1-b)\Gamma(b)]$; differentiating its fractional integral
+and adding the last term of \eqref{phasefrac:eq:positive-density}
+produces the positive coefficient $a/(1-b)$, including $w=1$.
+The other two lines follow from $h_1(T)\sim\log(1/T)$ and
+$h_b(0)=\zeta(b)$ for $b>1$.
+At infinity, the density expansion gives
+\[
+ D_{a,b}(T)\sim\frac{b\zeta(b+1)}{\Gamma(a-1)}T^{a-2}<0.
+\]
+Continuity therefore gives a zero, and the comparison proves uniqueness.
+
+Finally, the logarithmic derivative
+\[
+ s_T(u)=\partial_T\log K(T,u)=-\frac{u}{1-e^{-Tu}}
+\]
+is strictly decreasing in $u$. At the zero,
+\[
+ A'(T_*)=\int[s_{T_*}(u)-s_{T_*}(1)]K(T_*,u)\,d\nu(u)<0.
+\]
+The positive prefactor in \eqref{phasefrac:eq:bose} proves
+$D_{a,b}'(T_*)<0$.
+\end{proof}
+
+\begin{theorem}[A unique truncation-order reversal]
+\label{phasefrac:thm:unique}
+For every $0<a<1$ and $b>0$ there is a unique real number
+$\nu(a,b)>1$ such that the interpolation in
+\eqref{phasefrac:eq:difference} satisfies
+\[
+ R_s(a,b)-R_s(0,a+b)
+ \begin{cases}
+ <0,&1\le s<\nu(a,b),\\
+ =0,&s=\nu(a,b),\\
+ >0,&s>\nu(a,b).
+ \end{cases}
+\]
+Its derivative with respect to $s$ is strictly positive at the zero.
+Consequently the comparison for integral truncation orders reverses
+exactly once, allowing equality at one integer if $\nu(a,b)$ is integral.
+\end{theorem}
+\begin{proof}
+Write $G(s)$ for minus the interpolated difference, namely the
+integral on the right of \eqref{phasefrac:eq:difference} without
+the minus sign. It converges with its $s$ derivative for all $s\ge1$.
+Near zero one may use
+$D_{a,b}(T)=O((T^{w-2}+T^{a-1})(1+|\log T|))$.
+The test $q(T)^s=O(T^s)$ makes both powers integrable because
+$s+w>1$ and $s+a>0$ for $s\ge1$.
+Additional logarithms from the $s$ derivatives are harmless.
+
+For $s_2>s_1\ge1$, the ratio of the weights is
+$r(T)=q(T)^{s_2-s_1}$, strictly increasing in $T$. At any zero
+$G(s_1)=0$, subtracting $r(T_*)$ and using
+Lemma~\ref{phasefrac:lem:density} gives
+\[
+ G(s_2)=\int D_{a,b}(T)
+ \frac{e^{-T}q(T)^{s_1}}{1+e^{-2T}}
+       [r(T)-r(T_*)]\,dT<0.
+\]
+The same comparison backwards gives $G(s)>0$ before that zero.
+At a zero, replacing the bracket by
+$\log q(T)-\log q(T_*)$ proves $G'(s)<0$.
+
+It remains to establish existence. The manuscript's fixed-total Gaussian monotonicity theorem
+\cite[\texttt{subpick:thm:fixed-total}]{baseline}, together with $E_1=0$,
+gives $G(1)=R_1(0,w)-R_1(a,b)>0$. Its short comparison can be
+recalled explicitly. For independent $T\sim\mathrm{Gamma}(w,1)$ and
+$R\sim\mathrm{Beta}(a,b)$, the positive double kernel gives
+\[
+ -g_{a,b}=\mathbb E\frac{X(X+Y)}{(1+X^2)(1+Y^2)},
+ \qquad X=e^{-RT},\quad Y=e^{-T}.
+\]
+For fixed $T>0$, the derivative with respect to $X$ is
+$(2X+Y-YX^2)/((1+X^2)^2(1+Y^2))>0$.
+Thus the integrand decreases strictly in $R$, and its expectation
+is below the $R=0$ axis value. This proves the required initial sign.
+For an independent elementary proof of the eventual negative sign,
+absorb the $s=1$ weight into the signed integrable density.
+Its positive part is supported below $T_*$, where $q(T)\le q(T_*)$.
+Choose a fixed closed interval strictly above $T_*$; the negative
+part has strictly positive mass there and $q(T)\ge q_1>q(T_*)$.
+Thus, for suitable $C,c>0$,
+\[
+ G(s)\le Cq(T_*)^{s-1}-c q_1^{s-1}<0
+\]
+for sufficiently large $s$. Continuity gives a zero, and the preceding
+strict comparisons prove the full statement.
+\end{proof}
+
+For every fixed $a>0$, $a\ne1$, the leading total-order powers
+cancel exactly in the density difference. Its first nonzero term is
+$b\zeta(b+1)T^{a-2}/\Gamma(a-1)$, with relative error $O(T^{-1})$.
+The Gaussian transfer in Theorem~\ref{frac:thm:allorders} therefore gives
+\begin{equation}\label{phasefrac:eq:genericscale}
+ R_N(a,b)-R_N(0,a+b)
+ \sim-\frac{b\zeta(b+1)\sqrt\pi}{2\Gamma(a-1)}N^{-1/2}L^{a-2}.
+\end{equation}
+In particular, the eventual positive side for $0<a<1$ is
+\[
+ R_N(a,b)-R_N(0,a+b)
+ \sim-\frac{b\zeta(b+1)\sqrt\pi}{2\Gamma(a-1)}
+             N^{-1/2}L^{a-2}>0\quad(0<a<1).
+\]
+The unique-crossing proof itself needs only the exact densities and
+their sign structure, so it is logically independent of the detailed
+all-order logarithmic expansion.
+
+\begin{corollary}[A unique maximum and the derivative zero sequence]
+\label{phasefrac:cor:derivatives}
+For $0<a<1$ and $b>0$, let
+$\mathcal D(s)=R_s(a,b)-R_s(0,a+b)$ denote the interpolation above.
+For every $r\ge0$, the derivative $\mathcal D^{(r)}$ has exactly one
+zero $\nu_r$ on $[1,\infty)$. These zeros are simple and satisfy
+\[
+ 1<\nu_0<\nu_1<\nu_2<\cdots,\qquad \nu_r\longrightarrow\infty.
+\]
+The sign of $\mathcal D^{(r)}$ before its zero is $(-1)^{r+1}$,
+and its sign afterwards is $(-1)^r$. In particular, $\mathcal D$
+increases to a unique positive maximum at $\nu_1$ and then decreases
+to zero.
+\end{corollary}
+\begin{proof}
+Set $\ell(T)=-\log q(T)>0$ and
+\[
+ H_r(s)=\int_0^\infty D_{a,b}(T)
+ \frac{e^{-T}q(T)^s\ell(T)^r}{1+e^{-2T}}\,dT.
+\]
+Then $\mathcal D^{(r)}=(-1)^{r+1}H_r$ and $H_r'=-H_{r+1}$.
+Every $H_r$ has the same single-change density signs as $D_{a,b}$.
+The preceding ratio argument shows that it has at most one zero,
+with strictly negative derivative there, and support separation shows
+that it is negative for all sufficiently large $s$.
+
+Theorem~\ref{phasefrac:thm:unique} supplies the first zero $\nu_0$.
+At any zero of $H_r$, one has
+$H_{r+1}(\nu_r)=-H_r'(\nu_r)>0$. Thus $H_{r+1}$ has exactly one
+zero $\nu_{r+1}>\nu_r$. This proves induction and all sign assertions.
+To see that the zero sequence diverges, fix $s\ge1$. The negative
+part of the integrand is supported where $\ell(T)\le\ell(T_*)$.
+Choose a positive-mass closed interval below $T_*$ on which
+$\ell(T)\ge\ell_1>\ell(T_*)$. Its positive contribution dominates
+the entire negative part as $r\to\infty$. Hence $H_r(s)>0$ for
+large $r$, so $s<\nu_r$. Finally $\mathcal D(s)\to0$ by dominated
+convergence using the $s=1$ absolute integrable weight.
+\end{proof}
+
+\paragraph{A precise next asymptotic question.}
+For fixed $b>0$, the unique crossing order tends to infinity as
+$a\uparrow1$: continuity at each fixed $s$ and the strict comparison
+at $a=1$ imply this directly. Balancing the generic fractional
+correction against the critical $N^{-1}$ term suggests a boundary
+regime for $\nu(a,b)$, but proving that regime requires an expansion
+uniform in $1-a$ and $N$. It is not asserted here.
+
+\subsection{An exact discrete transition at half orders}
+
+\begin{corollary}[The first positive integer comparison is $21$]
+\label{phasefrac:cor:twentyone}
+Let $\Delta_N=R_N(1/2,1/2)-R_N(0,1)$. Then
+\[
+ \Delta_N<0\quad(1\le N\le20),\qquad
+ \Delta_N>0\quad(N\ge21).
+\]
+In the continuous interpolation,
+$20<\nu(1/2,1/2)<21$.
+\end{corollary}
+\begin{proof}
+The exact rational interval calculation supplied with the article gives
+\begin{align*}
+ -0.000325283275869852646927
+ &<\Delta_{20}<-0.000325283275869852646926,\\
+  \phantom{-}0.000023323498144449794846
+ &<\Delta_{21}<\phantom{-}0.000023323498144449794847.
+\end{align*}
+Theorem~\ref{phasefrac:thm:unique} then proves the whole integer
+classification.
+\end{proof}
+
+Here are the details of the finite certificate. For each $N\in\{20,21\}$,
+put $M=N+100$ and compute
+\[
+ 2^N\{E_N(1/2,1/2)-E_M(1/2,1/2)
+       -E_N(0,1)+E_M(0,1)\}.
+\]
+The inherited bound $0<R_M<57/50$~\cite{incoming-sharp} makes its
+distance from $\Delta_N$ less than $(57/50)2^{N-M}$. This is one
+radius: the difference of two numbers in $(0,57/50)$ has magnitude
+less than $57/50$. The direct finite Euler weights are
+\[
+ E_N=\sum_{n=0}^{N-1}
+ \frac{(-1)^n}{2^N}\left(\sum_{j=n+1}^{N}\binom Nj\right)f_n.
+\]
+For every positive integer $r$, integer square roots produce rational
+dyadic bounds on $r^{-1/2}$:
+\[
+ k=\left\lfloor\sqrt{\left\lfloor 2^{2p}/r\right\rfloor}\right\rfloor,
+ \qquad
+ \frac{k}{2^p}\le r^{-1/2}<\frac{k+1}{2^p},
+ \qquad p=N+200.
+\]
+All harmonic sums, products, Euler weights, and tail additions then
+use rational interval arithmetic. No floating-point operation
+contributes to acceptance of the signs.
+
+\begin{table}[tbp]
+\centering\small
+\begin{tabular}{@{}rr@{}}
+\toprule
+$N$ & Outward rounded enclosure for $\Delta_N$\\
+\midrule
+1 & $(-0.324097778244,\,-0.324097778243)$\\
+8 & $(-0.015731327706,\,-0.015731327705)$\\
+16 & $(-0.002351554584,\,-0.002351554583)$\\
+20 & $(-0.000325283276,\,-0.000325283275)$\\
+21 & $(0.000023323498,\,0.000023323499)$\\
+32 & $(0.001999520010,\,0.001999520011)$\\
+64 & $(0.002856035510,\,0.002856035511)$\\
+128 & $(0.002540045225,\,0.002540045226)$\\
+256 & $(0.001952284331,\,0.001952284332)$\\
+\bottomrule
+\end{tabular}
+\caption{Exact rational enclosures for the fixed-total half-order
+comparison. The certificate files retain all rational endpoints and
+24 outward rounded decimal places. Only the signs at $20$ and $21$
+are needed for Corollary~\ref{phasefrac:cor:twentyone}; the remaining
+rows illustrate the subsequent positive maximum and decay.}
+\label{phasefrac:tab:reversal}
+\end{table}
+
+The threshold replay imports the adjacent general fractional verifier.
+Its dependency and source hash are recorded explicitly; it is not a
+second arithmetic implementation. The global sign theorem and the
+finite enclosure computation provide different parts of the proof.
+

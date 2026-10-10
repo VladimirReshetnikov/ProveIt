@@ -1,0 +1,109 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{mathrsfs}
+\usepackage{graphicx,booktabs,longtable,array}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage[capitalise,noabbrev]{cleveref}
+\definecolor{ResearchTeal}{HTML}{176B70}
+\definecolor{ResearchNavy}{HTML}{19344A}
+\definecolor{ResearchGray}{HTML}{53616E}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Rea}{Re}
+\DeclareMathOperator{\Ima}{Im}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\supp}{supp}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\iu}{\mathrm{i}}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\newcommand{\baseline}{\nolinkurl{3447bc59b78d138a7f0d536b66ac6e5cc5d5e49f}}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ResearchGray}Polylogarithm research continuation}
+\fancyhead[R]{\small\color{ResearchGray}10 October 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\hypersetup{
+ pdftitle={Sharp Euler Bounds, Golden Ladders, and Double Radial Turning Points},
+ pdfauthor={ProveIt research continuation},
+ pdfsubject={Exact polylogarithm identities, universal Euler remainder, local bifurcations, and constructive Cayley quotients}
+}
+\title{\color{ResearchNavy}\bfseries Sharp Euler Bounds, Golden Ladders,\\
+ and Double Radial Turning Points\\[8pt]
+ \large\normalfont Exact certificates and constructive continuation\\
+ of the ProveIt polylogarithm manuscript}
+\author{ProveIt research continuation\\
+ \normalsize Prepared for Vladimir Reshetnikov}
+\date{10 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We continue the polylogarithm manuscript at the pinned revision specified
+in Section~\ref{sec:scope}. The first main result settles its open universal real-order
+Euler remainder problem. For
+$F_{a,b}(z)=\sum_{n\ge2}H_{n-1}^{(b)}z^n/n^a$ and all $a,b>0$, the
+Euler error satisfies $0<E_N-\Im F_{a,b}(i)<(9/8)2^{-N}$ for $N\ge2$.
+The optimal constant valid simultaneously for every $N\ge1$ is exactly
+$\max_{b>0}\{\beta(b)+2^{-b}\eta(b)\}$; its unique maximizer belongs to
+the previously proved Gaussian axis theorem. The new ingredient is a
+positive probability-kernel representation and three finite polynomial
+positivity certificates, one of which controls every $N\ge4$.
+
+We also give explicit functional certificates for the two remaining
+golden weight-five formulas with indices 20 and 24, together with a
+finite descent to their lower-weight companions. In the real-order zero
+geometry, an exact rational interval calculation certifies a simultaneous
+zero of the quadratic and quartic radial coefficients. Its negative
+sextic coefficient and nonsingular parameter map yield a region with two
+small-radius turning points, and a fourth-root radius law on a transverse
+slice. A constructive Cayley quotient projector supplies a further
+formal obstruction for the frozen $S_6$ target. The distinction between
+analytic identities, exact finite certificates, formal relation-space
+obstructions, and numerical diagnostics is retained throughout. The
+package includes source, executable verifiers, exact records, proposed
+manuscript updates, and a focused research agenda.
+\end{abstract}
+\vfill
+\noindent\textbf{Scope.} The claims of progress are relative to the audited
+repository and identified previous continuations. Classical identities,
+the Euler transformation, and the underlying Hopf-algebra machinery are
+credited as such. No claim of proof-assistant formalization or exhaustive
+priority assessment is made.
+\newpage
+\tableofcontents
+\newpage
+\input{sections/01_scope}
+\input{sections/02_euler}
+\input{sections/03_golden}
+\input{sections/04_turning}
+\input{sections/05_cayley}
+\input{sections/06_audit_research}
+\input{references}
+\end{document}

@@ -1,0 +1,126 @@
+% Proposed canonical-manuscript excerpt. Labels and citation are namespaced.
+% Include immediately after the existing 05-real-turning.tex section.
+% Add bibliography-entry.tex to the manuscript's thebibliography environment.
+% Full proofs and finite certificates are in the companion research report.
+\section{The unique quartic transition and two radial turning points}
+\label{rbif:int:section}
+The remaining finite-coefficient question from the preceding section admits
+an exact computer-assisted resolution. The following results are proved
+in the companion report \cite{rbif:continuation}; the global assertion is
+supported by an exhaustive interval cover, not by a numerical sweep.
+
+Write $p_n=n^{-a}H_{n-1}^{(b)}$, $\mu=p_3/(2p_2)$, and
+$\eta_{a,b}(\rho)=\mu+K\rho^2+Q\rho^4+R\rho^6+O(\rho^8)$.
+Let $a=A(b)$ be the unique quadratic threshold $K(A(b),b)=0$ for
+$0<b<1$, and put $q(b)=Q(A(b),b)$. Here $A$ denotes the threshold,
+not the polynomial used below.
+
+\begin{theorem}[Unique quartic transition]
+\label{rbif:int:quartic}
+There is exactly one $b_\dagger\in(0,1)$ with $q(b_\dagger)=0$.
+One has $q<0$ below $b_\dagger$, $q>0$ above it, and
+$q'(b_\dagger)>0$. With $a_\dagger=A(b_\dagger)$, certified
+rational enclosures include
+\[
+ 0.99749378987342042107460<b_\dagger
+       <0.99749378987342042107461,
+\]
+\[
+ 1.00143018096149513812935<a_\dagger
+       <1.00143018096149513812936.
+\]
+At this point,
+\[
+ -3.368744536\cdot10^{-11}<R_\dagger<-3.368744535\cdot10^{-11},
+\]
+\[
+ -8.315139844\cdot10^{-10}
+ <\det D(K,Q)(a_\dagger,b_\dagger)<-8.315139843\cdot10^{-10}.
+\]
+\end{theorem}
+\begin{proof}[Proof outline with replay dependencies]
+The exact interval verifier covers $[0,9/10]$ by $2048$ cells and
+$[9/10,1]$ by $256$ cells. It verifies all $4609$ endpoint/midpoint
+root brackets and implicit-graph barriers, and proves
+\[
+ q'>10^{-6}\quad(0\le b\le9/10),\qquad
+ q''<-29\cdot10^{-6}\quad(9/10\le b\le1).
+\]
+It also certifies $q(9/10)<0<q(999/1000)$; $q(1)=0$ is exact.
+Increasing behavior on the first interval and strict concavity on the
+second therefore imply exactly one interior zero. A rationally
+preconditioned contraction gives a unique simultaneous zero of $K,Q$ in
+the report's narrower 40-decimal rectangle, and direct interval evaluation
+gives the displayed nondegeneracy signs. The full inclusion arithmetic,
+logarithm/exponential tails and the replay programs
+\texttt{verify\_global.py}, \texttt{verify\_local.py} are in the report.
+\end{proof}
+
+For completeness the new coefficient is obtained without fitting.
+Set
+\[
+ A_1(y)=4p_3y^2-4p_4y+p_5,\qquad
+ B_1(y)=8p_4y^3-12p_5y^2+6p_6y-p_7,
+\]
+\[
+ C_1(y)=16p_5y^4-32p_6y^3+24p_7y^2-8p_8y+p_9.
+\]
+Then the exact coefficient identity is
+\[
+ R=-\frac{A_1'(\mu)Q+4p_3K^2+B_1'(\mu)K+C_1(\mu)}{2p_2}.
+\]
+At $K=Q=0$, this reduces to $R=-C_1(\mu)/(2p_2)$.
+
+\begin{theorem}[Local two-extremum region]
+\label{rbif:int:fold}
+The map $(a,b)\mapsto(\kappa,\lambda)=(K,Q)$ is an analytic local
+coordinate system at $(a_\dagger,b_\dagger)$. There is an analytic curve
+\[
+ \kappa=\varphi(\lambda),\qquad
+ \varphi(\lambda)=\frac{\lambda^2}{3R_\dagger}+O(\lambda^3),
+\]
+and a fixed sufficiently small radius interval such that the region
+$\lambda>0$, $\varphi(\lambda)<\kappa<0$ has exactly two critical
+points in that interval: a strict minimum followed by a strict maximum.
+At fixed $b=b_\dagger$, as $a\uparrow a_\dagger$ from below,
+\[
+ \rho_{\max}(a,b_\dagger)
+ =\left(\frac{K_a(a_\dagger,b_\dagger)}{3R_\dagger}\right)^{1/4}
+    (a_\dagger-a)^{1/4}+O((a_\dagger-a)^{3/4}).
+\]
+\end{theorem}
+\begin{proof}
+Put $t=\rho^2$, $\eta=\Phi(t)$ and $U=\Phi_t$. Then
+$U=\kappa+2\lambda t+3R(\kappa,\lambda)t^2+O(t^3)$.
+Since $U_{tt}=6R_\dagger<0$ at the base point, $U$ is strictly
+concave locally. Its unique local maximum crosses zero on the analytic
+curve displayed above. Between that curve and $\kappa=0$, two simple
+positive roots occur, with the stated extremum types. Rescaling
+$t=(a_\dagger-a)^{1/2}s$ at fixed $b=b_\dagger$ proves the
+fourth-root law. The report proves the complete local phase classification
+and separately certifies an explicit rational pair with at least two
+extrema below $\rho=1/\sqrt{4000}$.
+\end{proof}
+
+\begin{corollary}[Constant-curve rigidity]
+\label{rbif:int:rigidity}
+For $a\ge1$, $b>0$, the normalized-radius curve is constant on a
+nonempty interval adjacent to zero if and only if $(a,b)=(1,1)$.
+In that case $\eta_{1,1}=1/2$ on $0<\rho\le1$.
+\end{corollary}
+\begin{proof}
+Constancy forces $K=Q=R=0$. The established quadratic classification
+reduces $K=0$ to $(1,1)$ or the fractional threshold. On that threshold,
+Theorem~\ref{rbif:int:quartic} makes $Q=0$ possible only at the unique
+transition, where $R<0$. Finally
+$F_{1,1}(z)=\tfrac12\log^2(1-z)$ gives the stated constant curve.
+\end{proof}
+
+\paragraph{Scope.}
+Quartic uniqueness is global in $b$ along the quadratic threshold.
+The two-extremum count is local in radius and parameters. The separate
+rational witness certifies at least two extrema, not a global count on the
+unit disk. Neither the full-radius integer-outer-order conjecture nor
+constant-curve classification for $0<a<1$ is settled here. The report also
+proves all-order reversion and M\"obius-transport identities, including the
+first order-nine symmetry defect at $(a_\dagger,b_\dagger)$.

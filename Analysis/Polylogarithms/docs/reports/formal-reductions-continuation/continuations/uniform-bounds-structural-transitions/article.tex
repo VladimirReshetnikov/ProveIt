@@ -1,0 +1,109 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx,booktabs,longtable,array,enumitem,xcolor,microtype,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!40!black,
+ citecolor=blue!40!black,urlcolor=blue!50!black]{hyperref}
+\usepackage{bookmark}
+\usepackage[section]{placeins}
+\emergencystretch=3em
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\Sym}{Sym}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Span}{span}
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\SL}{SL}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\newcommand{\sh}{\mathbin{\rotatebox[origin=c]{180}{\ensuremath{\amalg}}}}
+\newcommand{\ones}[1]{\{1\}^{#1}}
+\newcommand{\wt}{\operatorname{wt}}
+\newcommand{\dep}{\operatorname{dep}}
+\newcommand{\F}{\mathcal F}
+\newcommand{\Lcal}{\mathcal L}
+\newcommand{\Ecal}{\mathcal E}
+\newcommand{\eps}{\varepsilon}
+\title{Polylogarithms: Uniform Bounds and Structural Transitions\\[6pt]
+\large Sharp Euler constants, M\"obius depth, radial degeneracies,\\
+and a square-root scale for reflected log-gamma coefficients}
+\author{A research continuation prepared for Vladimir Reshetnikov\\
+\small ProveIt research programme}
+\date{10 October 2026}
+\hypersetup{pdftitle={Polylogarithms: Uniform Bounds and Structural Transitions},
+ pdfauthor={ProveIt research continuation, prepared with OpenAI assistance}}
+\begin{document}
+\maketitle
+\begin{abstract}
+We continue the current ProveIt manuscript along four concrete open
+directions. First, a sharp two-point inequality for the Euler remainder
+kernel proves one-sided enclosures for every real outer order $a\geq0$
+and inner order $b>0$. The optimal uniform constant is the previously
+identified Gaussian axis maximum
+$C_*=\max_{b>0}\{\beta(b)+2^{-b}\eta(b)\}$; the new result is the
+remainder comparison that makes this magnitude extremum an error
+constant. An exact finite certificate gives $C_*<57/50$. A positive gamma-series
+identity yields a moving-order phase law and the asymptotically optimal
+global scaled-error constant one, with an explicit lower asymptotic
+for its approach.
+Second, a binary free-Lie decomposition and confluent interpolation
+compute the formal depth reached by any prescribed number of projective
+letter directions, including the six M\"obius transformations. Certificates for an established
+Nielsen reduction and a corresponding weight-eight obstruction illustrate
+the distinction between a formal certificate and a numerical period relation.
+Third, rational interval arithmetic isolates a simultaneous quadratic
+and quartic radial degeneracy and proves a negative sixth coefficient.
+The resulting local families exhibit a quarter-power birth of a maximum
+and a region with a minimum followed by a maximum. Finally, a uniform
+saddle analysis proves Gaussian damping when the reflected exponent
+is of order the square root of the late coefficient index, together
+with a growing-exponent half-term truncation law. A shifted saddle
+extends the coefficient result to a small proportional range and
+resolves a further cubic transition. Proofs, exact
+certificates, diagnostic computations, proposed manuscript changes,
+and a focused research agenda are supplied. No numerical residual
+is promoted to an identity, and no claim of numerical period
+independence or global priority is made.
+\end{abstract}
+\vspace{1em}
+\noindent\textbf{Repository baseline.}
+\src{3447bc59b78d138a7f0d536b66ac6e5cc5d5e49f}.\\
+\textbf{Primary manuscript.}
+\src{Analysis/Polylogarithms/docs/manuscript/polylogarithms.tex}.\\
+\textbf{Proof status.} Ordinary mathematical proofs and exact finite
+arithmetic certificates; no proof-assistant formalization.
+\clearpage
+{\small\tableofcontents}
+\clearpage
+\input{sections/introduction}
+\input{sections/euler}
+\input{sections/depth}
+\input{sections/radial}
+\input{sections/reflection}
+\input{sections/proportional}
+\input{sections/audit}
+\input{sections/research}
+{\small\input{references}}
+\end{document}

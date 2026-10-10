@@ -1,0 +1,106 @@
+% Reviewable insertion, not a patch and not included automatically by article.tex.
+% Base commit: 4c173c06cc32c9cea554b39be1837ad2ae897fc1.
+% Include only after the corresponding proof sections and bibliography entries
+% have been integrated, so the ker:/ord:/mesh:/neg:/mix: references resolve.
+% This text changes status and scope; it does not replace the proofs.
+
+\subsection*{Status updates from the extremizers and zero-threshold continuation}
+
+The following updates refer to the immutable ProveIt snapshot
+\texttt{4c173c06cc32c9cea554b39be1837ad2ae897fc1} and its six incoming
+archives. They record ordinary proved results and precise remaining
+questions; they are not a claim of proof-assistant formalization or an
+exhaustive priority claim over the literature.
+
+\paragraph{Pointwise Euler-kernel maxima.}
+The global limiting-kernel conjecture labelled \texttt{conj:limit}
+in \cite[Section 8]{IncomingSharp} is proved by
+Theorem~\ref{ker:thm:limit}, including the unique limiting maximizer
+and the global control missing from the earlier compact scaling limit.
+The all-finite-index conjecture \texttt{conj:maxima} is only partly
+settled: Theorem~\ref{ker:thm:N2} proves the case $N=2$, while
+Theorem~\ref{ker:thm:analytic} proves eventual uniqueness, strict decrease,
+and a convergent expansion. The assertion at every intermediate finite
+index remains open.
+
+\paragraph{Optimal averaged Euler constants.}
+The conjecture \texttt{conj:euler-rate} in
+\cite[Section 9]{IncomingBounds} is proved. With
+\[
+ p=\frac{\log2}{\log(3/2)},\qquad
+ q=\frac{\log3}{\log2},\qquad c=(1-q^{-1})q^{-p},
+\]
+Theorem~\ref{ord:thm:leading} gives $C_N-1\sim cN^{-p}$.
+The global step is Theorem~\ref{ord:thm:axis-reduction}: for all
+sufficiently large $N$, the positive-order supremum equals the attained
+maximum on the outer-order axis. Positive outer orders do not attain
+that value. This exact reduction also proves eventual strict decrease
+of $C_N$. The axis maximizer is eventually unique.
+
+Theorem~\ref{ord:thm:second} adds the threshold correction
+$DN^{-\kappa}(\log N)^{-1/2}$ and its inverse-log expansion.
+Proposition~\ref{ord:prop:order-profile} and
+Corollary~\ref{ord:cor:near-maximizers} give the exact criterion for an
+$o(C_N-1)$ near maximizer. These statements should retain their accuracy
+scale and eventual quantifiers. No moderate-index error guarantee or
+numerical starting index is supplied by the asymptotic theorem.
+The pointwise constants $M_N$, averaged constants $C_N$, and the already
+proved all-index universal constant $C_*$ remain distinct.
+
+\paragraph{Polynomial reciprocal-gamma Appell separation.}
+The polynomial-separation question in
+\cite[Sections 4 and 8]{IncomingUniform} is answered by
+Theorem~\ref{mesh:thm:polynomial}:
+\[
+ \operatorname{mesh}(Q_n)\ge\frac1{10n^2}\qquad(n\ge2).
+\]
+Retain the earlier exponential mesh bound; it is compatible with the
+new result and may be stronger at a small degree. The effective zero
+framework is strengthened by Theorems~\ref{mesh:thm:saturation} and
+\ref{mesh:thm:transfer}. In particular,
+\[
+ K_n=\left\lceil(16+240n^2H_{n-1})^2\right\rceil
+\]
+is a sufficient derivative threshold, uniformly for $0\le\rho\le1$,
+and the simultaneous logarithmic location error is less than
+$8/\sqrt k$. This is not an optimal-threshold assertion. At $\rho=1$
+the theorem concerns the derivative family $k\ge1$, not the generally
+divergent undifferentiated Lerch series.
+
+\paragraph{The first two negative outer orders below minus one.}
+Keep the prior negativity theorem for every real outer order at least
+$-1$, and retain the provenance of the previously evaluated points.
+Theorem~\ref{neg:thm:transitions} proves that for each $m=2,3$ the
+function $b\mapsto g_{-m,b}$ has exactly one positive zero, which is
+simple, with positive sign before it and negative sign after it.
+The two zeros satisfy $0<b_2<1<b_3$. No all-negative-order one-crossing
+claim follows from this result.
+
+\paragraph{Exact mixed-generator identities and unresolved periods.}
+Theorems~\ref{mix:thm:shift}, \ref{mix:thm:rational}, and
+\ref{mix:thm:integer}, together with
+Corollary~\ref{mix:cor:resummation}, add exact shift, rational sampling,
+parameter-jet, integer-sampling and finite-part formulas for the mixed
+Gaussian generator. The resulting convergent identities combine weights;
+they do not prove the individual unresolved fixed-weight reductions.
+
+The $S_4$ formula is already a theorem. Its original aliases
+\texttt{s4proof:thm:s4}, \texttt{gaussian:thm:S4}, and
+\texttt{gaussian:conj:S4} should retain that status, notwithstanding the
+historical name of the last alias. By contrast, the $S_6$ and $S_8$
+statements labelled \texttt{cycloquot:conj:S6} and
+\texttt{s8new:conj:S8}, and the incoming $S_{10},S_{12}$ vectors,
+remain conjectural. Conjecture~\ref{mix:conj:S14} appends a frozen
+candidate of total weight fifteen. Proposition~\ref{mix:prop:proximity}
+proves the normalized residual bound $|R_{14}|<10^{-775}$ by exact
+rational arithmetic. The delivered interval contains zero; exact
+vanishing is still conjectured.
+
+\paragraph{Evidence and integration scope.}
+The source identities and hashes are recorded in the companion
+provenance. No theorem-level error was established in the inherited
+inputs used here; the changes above are status updates and scope
+qualifications. Restricted relation-space obstructions are not claims
+of period independence. The analytic proofs, finite exact certificates,
+and numerical diagnostics should continue to be distinguished when
+these sections are incorporated into the manuscript.

@@ -1,0 +1,86 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,graphicx,xcolor}
+\usepackage{enumitem,fancyhdr,xurl,hyperref}
+\definecolor{deepblue}{HTML}{173B58}
+\definecolor{teal}{HTML}{087F8C}
+\hypersetup{colorlinks=true,linkcolor=deepblue,citecolor=teal,urlcolor=teal,
+ pdftitle={Polylogarithm Certificates and Sharp Euler Bounds},
+ pdfauthor={ProveIt research continuation}}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Rea}{Re}
+\DeclareMathOperator{\Ima}{Im}
+\DeclareMathOperator{\mesh}{mesh}
+\DeclareMathOperator{\lmesh}{lmesh}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\src}[1]{{\small\nolinkurl{#1}}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{deepblue}Polylogarithm research continuation}
+\fancyhead[R]{\small 10 October 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{18mm}
+{\large\color{teal}\sffamily PROVEIT\quad /\quad RESEARCH CONTINUATION\par}
+\vspace{12mm}
+{\LARGE\bfseries\color{deepblue}Polylogarithm Certificates\par
+\vspace{3mm}and Sharp Euler Bounds\par}
+\vspace{6mm}
+{\Large\color{deepblue}Fractional asymptotics and\par
+\vspace{2mm}polynomial Lerch zero thresholds\par}
+\vspace{12mm}
+{\large Complete proofs, exact certificates, and a revised research agenda\par}
+\vspace{12mm}
+{\large 10 October 2026\par}
+\vspace{6mm}
+{\normalsize Prepared for Vladimir Reshetnikov's ProveIt project\par}
+\vfill
+\begin{minipage}{0.95\textwidth}
+\textbf{Source baseline.} The manuscript and six pending incoming archives
+were inspected at commit
+\texttt{4c173c06cc32c9cea554b39be1837ad2ae897fc1}.
+The status claims in this article are relative to that snapshot.
+\medskip
+
+\textbf{Proof policy.} Infinite statements are supported by ordinary
+mathematical proofs. Finite algebraic identities and sign enclosures
+have reproducible exact certificates. Numerical illustrations are
+identified separately. No numerical independence or proof-assistant
+formalization is claimed.
+\end{minipage}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+
+\input{abstract}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+\input{sections/01_introduction}
+\input{sections/02_tetralogarithm}
+\input{sections/03_fractional}
+\input{sections/03b_phase}
+\input{sections/04_extremal}
+\input{sections/05_lerch}
+\input{sections/06_audit_research}
+\input{references}
+\end{document}

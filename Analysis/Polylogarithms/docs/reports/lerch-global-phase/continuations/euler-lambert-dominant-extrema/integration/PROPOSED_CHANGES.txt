@@ -1,0 +1,359 @@
+PROPOSED INTEGRATION CHANGES
+Polylogarithms: dominant singularities, sharp Euler asymptotics, and root limits
+
+BASELINE
+
+Repository: VladimirReshetnikov/ProveIt
+Pinned revision: 4c173c06cc32c9cea554b39be1837ad2ae897fc1
+Source comparison date: 2026-10-10
+
+These are proposed editorial and mathematical integration changes. The only
+machine-applicable patch supplied here changes two notation typos in one
+canonical source file. No remote repository, original archive, article section,
+or repository build configuration was modified in preparing these proposals.
+
+All repository paths below are relative to the repository root. Paths described
+as "member" are paths INSIDE the specified committed ZIP; they are not loose
+files at that location in the repository. The distinction matters because the
+instructions in docs/incoming/README.md treat those ZIPs as incoming deliveries,
+not as already integrated research material. Preserve their historical wording;
+record supersession in the curated report or manuscript when it is integrated.
+
+1. THE TWO CANONICAL NOTATION CORRECTIONS
+
+Repository file:
+  Analysis/Polylogarithms/docs/manuscript/chapters/05-real-positive-kernel.tex
+Source theorem label:
+  rw:thm:transport
+Patch:
+  integration/notation-cleanup.patch
+
+In that theorem's proof:
+  - Change "with $q=n$" to "with $x=n$".
+  - In the following sentence, change "$h$, and $b>0$" to
+    "$q$, and $b>0$".
+
+The relevant definitions are in:
+  Analysis/Polylogarithms/docs/manuscript/chapters/05-real-orders.tex
+with labels subunit:eq:q and subunit:eq:hurwitz. The latter equation uses x
+as its Hurwitz argument; q(t)=1/(1-exp(-t))-1/t is the bounded regularizer.
+No mathematical hypothesis, equation, or theorem conclusion changes.
+
+The unified diff uses a/ and b/ repository-root paths. To check applicability
+from a checkout of the pinned repository, use:
+  git apply --check /path/to/notation-cleanup.patch
+After review, the corresponding application command is:
+  git apply /path/to/notation-cleanup.patch
+Only the --check operation was used during preparation, against a local copy
+of the pinned source. The source itself was not patched.
+
+2. GLOBAL OPTIMAL EULER CONSTANT: PROMOTE THE MATCHING ASYMPTOTIC
+
+Committed archive:
+  docs/incoming/ProveIt_Polylogarithms_Research_2026-10-10.zip
+Archive members:
+  polylogarithms_uniform_bounds_20261010/sections/research.tex
+  polylogarithms_uniform_bounds_20261010/sections/euler.tex
+Source labels:
+  conj:euler-rate
+  prop:euler-axis-lower
+  thm:euler-asymptotic-budget
+
+Proposed status for conj:euler-rate: PROVED by the present article.
+The incoming lower asymptotic already establishes the candidate exponent and
+amplitude. Credit that result; the present work supplies the matching global
+upper bound and localization. With
+  d=log(3/2), p=log(2)/d, q=log(3)/log(2),
+  c=(1-q^(-1))*q^(-p), delta=log(10/9)/d,
+the optimal constant satisfies
+  C_N=1+c*N^(-p)+O(N^(-p-delta)).
+
+Current package support:
+  sections/03_global_euler.tex
+    eul:thm:main
+    eul:prop:axisunique
+    eul:thm:near
+    eul:thm:joint-profile
+  sections/04_euler_refinement.tex
+    eul:thm:second-term
+    eul:prop:logarithmic-refinement
+    eul:thm:axis-logconvex
+
+Additional proved scope:
+  - For every sufficiently large integer N, the two-order supremum equals
+    the maximum on the boundary a=0. It is approached, but not attained,
+    in the strictly positive quadrant.
+  - The axis optimization itself has one nondegenerate maximum at EVERY
+    integer N>=1. This does not establish axis reduction of the two-order
+    problem at every finite N.
+  - The boundary maximizing inner order is asymptotic to
+    b_hat=log(N*q)/d, with the stated power correction and sharper negative
+    shift in the next-scale theorem.
+  - The joint profile is uniform on compact sets of xi>=0 and real s:
+      N^p*(R_N(xi*N^(-(p-1/2))*log N,b_hat+s)-1)
+        -> q^(-p)*2^(-s)-q^(-p-1)*3^(-s)-sqrt(pi)*xi.
+    It gives the necessary AND sufficient conditions for an error within
+    o(N^(-p)) of the supremum.
+  - With lambda=1/d and mu=1/2-lambda+lambda*log(2*lambda), the next
+    term has size N^(-mu)/sqrt(log N), with explicit positive
+    gamma-function amplitude, and the inverse-logarithmic refinement is
+    proved. Do not replace its scale by an integer power of 1/N.
+  - The attained axis envelope is strictly decreasing and strictly
+    log-convex for real interpolation parameter t>=1; the corresponding
+    statements for global C_N follow once the eventual axis reduction applies.
+
+Retain as open the all-index global axis-reduction assertion. Its explicit
+new formulation is conj:all-index-axis in sections/10_research_agenda.tex.
+The existence proof for a sufficiently large threshold does not supply a
+verified finite threshold or cover every small index.
+
+Canonical placement anchors:
+  Analysis/Polylogarithms/docs/manuscript/chapters/05-real-euler.tex
+    rw:thm:euler, rw:prop:fixedconstant
+  Analysis/Polylogarithms/docs/manuscript/chapters/05-universal-euler.tex
+    univeuler:thm:sharp
+The existing sharp constant uniform over ALL orders AND ALL indices is
+already proved at the pinned revision. The new result concerns C_N for a
+fixed truncation index tending to infinity, and must not be presented as
+the first proof of the all-orders/all-indices uniform constant.
+
+3. KERNEL MAXIMA: LIMIT PROVED, ALL-INDEX CLAIM STILL PARTIAL
+
+Committed archive:
+  docs/incoming/ProveIt_Sharp_Universal_Euler_2026-10-10.zip
+Archive members:
+  ProveIt_Sharp_Universal_Euler/sections/08-questions.tex
+  ProveIt_Sharp_Universal_Euler/CLAIM_STATUS.json
+
+Source target conj:limit; recorded claim ID MAXIMUM-LIMIT:
+  Proposed status: PROVED.
+  The present theorem proves both M_N -> max B and convergence of EVERY
+  sequence of global maximizing coordinates after scaling the first one
+  by N. It excludes escape to infinity and to the boundary; compact kernel
+  convergence alone was not the missing proof.
+  Support: sections/03_kernel_extrema.tex, thm:kernel-global-limit.
+
+Source target conj:maxima; recorded claim ID KERNEL-MAXIMA:
+  Proposed status: PARTIALLY PROVED; retain the all-index conjecture.
+  It combines two assertions: unique interior maximizers for every N>=2,
+  and M_(N+1)<M_N for every N>=2.
+  The uniqueness/interiority assertion is proved at N=2.
+  Both uniqueness and strict decrease are proved for all sufficiently
+  large N, with a convergent analytic expansion in 1/N.
+  The N=2 result alone does NOT prove the separate comparison M_3<M_2.
+  Support: thm:kernel-expansion and thm:M2.
+  The current open formulation is conj:all-index-kernel in
+  sections/10_research_agenda.tex.
+
+Unlabelled elimination target immediately following conj:maxima:
+  Proposed status: COMPLETED.
+  Support: sections/04_exact_M2.tex, thm:M2; exact certificate in
+  code/verify_kernel_algebra.py and data/kernel_algebra.json.
+  There is exactly one global maximizing point of K_2 in the open square.
+  Its value M_2 has algebraic degree exactly seven, not merely a
+  degree-seven annihilating equation:
+    32 M^7-416 M^6+2538 M^5-4523 M^4-32216 M^3
+      -66352 M^2+99072 M+20736=0.
+  The script checks irreducibility modulo 5 and rational isolation as
+  well as the elimination and boundary-related algebra.
+
+Notation during integration:
+  The incoming report calls the first kernel coordinate p. The current
+  article calls it r, reserving p for log(2)/log(3/2). The exact algebra
+  script retains p as its polynomial variable. These are coordinate-name
+  differences, not different kernels. Also distinguish M_N, the maximum
+  of the scalar kernel on a square, from C_N, the optimized Euler error
+  over the order parameters. Their limits differ.
+
+4. HARMONIC SELECTED-SHEET DOMINANCE AND ITS CONSEQUENCES
+
+Repository files:
+  Analysis/Polylogarithms/docs/reports/lerch-global-phase/continuations/harmonic-order-geometry/sections/diagonal_conjecture.tex
+  Analysis/Polylogarithms/docs/reports/lerch-global-phase/continuations/harmonic-order-geometry/sections/diagonal_velocities.tex
+
+Source target diag:q:dominance:
+  Proposed status: PROVED, and extended from A=2 to every real A>1.
+  Support: sections/05_harmonic.tex, thm:selected-sheet.
+  Keep all parts of the original question: accessibility from the
+  distinguished germ, the correct square-root sign, exactly two dominant
+  singularities, and continuation to a disk with the two outward radial
+  slits removed. The proof is not a minimization over the critical values
+  of all inverse sheets.
+
+Source target diag:q:conditional-asymptotic:
+  Proposed status: UNCONDITIONAL after the preceding theorem is inserted.
+  Preserve credit for the already obtained local Puiseux calculation and
+  two-term coefficient expression. The new proof establishes the missing
+  hypothesis. Keep the error additive; no uniform relative error is
+  justified near cancellation of the leading cosine.
+  Support: thm:velocity-asymptotics and the selected-sheet theorem.
+
+Related existing labels in diagonal_velocities.tex:
+  diag:thm:generator
+  diag:eq:velocity-stirling
+  diag:eq:velocity-generator
+  diag:cor:recurrence
+  diag:lem:central
+  diag:thm:oscillation
+The generator, Stirling coefficients, elementary real-rootedness mechanism,
+and infinite oscillation were already established in the pinned continuation.
+Treat bounded sign gaps, quantitative asymptotics, sign densities, critical
+summation identities, and the zero distributions as extensions. Update the
+discussion following diag:q:conditional-asymptotic and the final open-problem
+paragraph accordingly. Historical numerical diagnostics may remain useful,
+but do not recast them as a proof of the continuation theorem.
+
+The fixed-A asymptotic estimates are uniform on compact subintervals of
+A in (1,infinity). This supports the bulk zero law. It is not uniform
+control as A approaches either endpoint. The Bessel and largest-root
+regimes have their own separate proofs.
+
+5. TWO REQUIRED LITERATURE IDENTIFICATIONS
+
+5.1 Kalugin--Jeffrey antecedent
+
+G. A. Kalugin and D. J. Jeffrey, "Convergence in C of series for the
+Lambert W Function", arXiv:1208.0754v1 (2012).
+Primary source: https://arxiv.org/abs/1208.0754
+Relevant locations: Theorem 1 and equations (1.3), (1.4), (2.2), (2.9).
+
+Use the explicit change of variables
+  lambda=log A, sigma=-t/A, v=V_A(t)=log A-U_A(t).
+Their equation becomes
+  1-exp(-v)+sigma*v-sigma*lambda=0,
+equivalent to exp(U_A)=A+t*U_A. The fixed-lambda inverse series and
+radius criterion are antecedents of the corresponding formulas here.
+Credit them beside the generating function and radius discussion. The
+new article gives a self-contained selected-sheet barrier proof and
+additional consequences; it does not claim the radius formula first
+appears here.
+
+5.2 Cohen's Lambert polynomials and precise conjecture scope
+
+Henri Cohen, "Lambert W-Function Branch Identities",
+arXiv:2012.11698v2, version submitted 2021-01-18.
+Primary source: https://arxiv.org/abs/2012.11698
+Relevant locations: Proposition 4.8 and Conjecture 7.1.
+
+Make the identification L_n(X)=(-1)^n*p_n(X) explicit. The generalized
+operator normalization is given in eq:cohen-operator of the current
+article. The polynomial family and coefficient array are not new.
+
+Current package support:
+  sections/07_cohen_extremes.tex
+    prop:cohen-interlacing
+    thm:cohen-extreme-roots
+    cor:cohen-two-constants
+    cor:cohen-coefficient-algebra
+  sections/06_zero_distribution.tex
+    thm:velocity-zero-law
+  sections/08_bessel_edge.tex
+    thm:bessel-edge
+
+Comparison with the cited version of Conjecture 7.1:
+  (1) Real-rootedness and the stated asymptotic largest-root bound follow.
+      The elementary real-rootedness method already occurs in the
+      pinned harmonic continuation and should receive that credit.
+  (2) The extreme-root statement is proved for each FIXED positive
+      root index j, with a full expansion. Do not imply uniformity
+      for j growing with n.
+  (3) Successive L_n interlace; their common zero is only 0, and
+      the interlacing inequalities for nonzero roots are strict.
+  (4) For each FIXED POSITIVE INTEGER k, the all-orders largest-root
+      expansion and the exact polynomial degree of each coefficient
+      in k are proved. The current article does not claim the separate
+      derivative interpretation for k<=0. Do not describe the scope
+      as all real k, growing k, or an unrestricted joint n,j,k limit.
+
+The all-orders root expansions are ASYMPTOTIC to every finite order;
+their formal series are not asserted convergent. By contrast, the
+kernel-maximizer expansion in 1/N is genuinely convergent near 0.
+
+For the largest root in Cohen's indexing:
+  X_(n,k,1)=n+k-1+log n+gamma+C0/n+C1(k)/n^2+O_k(n^(-3)),
+  C0=-3/2-zeta(2)-zeta(3),
+  C1(k)=(k-1)*(zeta(2)+zeta(3))+zeta(2)^2-zeta(2)*zeta(3)
+          +2*zeta(3)+3*zeta(5)-1/12.
+For the article's fixed-j coefficient at order n^(-m), the coefficient
+ring is Q[zeta(2),...,zeta(2m+1)][k-1].
+
+Cohen's earlier primary question used a different leading normalization:
+  https://mathoverflow.net/questions/378900/stirling-number-bounds-and-polynomials-and-the-lambert-w-function
+It asks for a in n+H_n+a/n+... . That constant is
+  a=-2-zeta(2)-zeta(3)=C0-1/2.
+The discrepancy of 1/2 is exactly the 1/(2n) term in H_n; keep the
+normalizations separate. These are comparisons with the cited sources,
+not an assertion of an exhaustive bibliographic priority search.
+
+6. CURATED PLACEMENT AND EDITORIAL RECORDS
+
+The supplied modular article can first be placed as a research report
+under the repository's intake procedure in docs/incoming/README.md.
+Use the eventual curated report as the proof source for the promotions
+above, leaving the original delivered archives recoverable and unchanged.
+The precise new report directory and intake numbering are editorial
+choices for the repository maintainer, not preassigned by this package.
+
+Suggested mathematical inclusion points:
+  - Append the global C_N asymptotics and the axis/boundary results to the
+    existing real-order and universal-Euler development in Chapter 5.
+  - Keep scalar-kernel optimization and the N=2 algebra together; cite
+    them as separate kernel theorems, not as identities C_N=M_N.
+  - Insert the selected-sheet proof before removing the hypothesis from
+    diag:q:conditional-asymptotic in the harmonic continuation.
+  - Place the polynomial identification before the bulk and endpoint
+    zero laws. Explain the opposite ascending/descending root index
+    conventions used by the Bessel and largest-root statements.
+
+Existing bibliography locations to update with the primary antecedents:
+  Analysis/Polylogarithms/docs/manuscript/references.tex
+  Analysis/Polylogarithms/docs/reports/lerch-global-phase/continuations/harmonic-order-geometry/sections/bibliography.tex
+The current package's bibliography.tex contains the relevant entries and
+locators. Reconcile citation keys with the destination's existing keys.
+
+Existing editorial record:
+  Analysis/Polylogarithms/docs/manuscript/EDITORIAL-LEDGER.md
+In its "Fifth incoming continuation batch, October 10" table, the
+harmonic-order-lerch-geometry row ends with accessible-singularity
+dominance still conjectural. After integration, replace that status
+with the proved A>1 selected-sheet result and its stated consequences.
+Do not silently promote the row's other broad interpolation or complete
+real-zero-classification questions; they are different claims.
+
+Existing validation record:
+  Analysis/Polylogarithms/docs/manuscript/VALIDATION.md
+Record the finite exact certificates and the analytic proof review in
+their respective roles. The scripts do not formally verify complex
+analysis, gamma-kernel localization, or asymptotic uniformity.
+Keep stable source labels where practical; if an environment changes
+from conjecture to theorem, update its surrounding references and
+wording consistently. Do not treat these notes as an automatic rewrite
+of the manuscript's editorial ledger or generated source inventory.
+
+7. REPLAY AND REMAINING QUESTIONS
+
+Run verification on a SCRATCH COPY of the package, as directed by the
+repository intake README. From that copy, the two standard-library exact
+checks can be replayed with:
+  python code/verify_kernel_algebra.py data/kernel_algebra.replay.json
+  python code/verify_cohen_c1.py data/cohen_c1_certificate.replay.json
+Use py or another appropriate Python launcher on platforms where python
+does not resolve. Both scripts accept the output filename as a positional
+argument. Compare their mathematical results with the delivered records;
+the files record exact rational algebra, not floating-point evidence.
+Other figures and diagnostic scripts are described in the package's
+README and computation section and must retain their diagnostic status.
+
+Preserve as research questions, rather than consequences already proved:
+  - all-index axis reduction of the two-order Euler optimization;
+  - all-index uniqueness and decrease of scalar-kernel maxima;
+  - an effective finite threshold for the eventual theorems;
+  - a uniform bridge between fixed smallest roots, bulk roots, and
+    fixed largest roots, including growing j or k;
+  - the indexed bulk-phase formula, conj:bulk-quantization in the
+    current research agenda;
+  - the mixed-period S_6 identity, which is not resolved by this article.
+
+Already integrated S_2/S_4 reductions, the universal all-order/all-index
+Euler constant, and the later incoming radial double-extremum certificates
+must not be counted again as new results of this package.

@@ -1,0 +1,62 @@
+\section{The sharp universal Euler constant}
+\label{ue:sec:universal}
+The Gaussian axis maximum becomes the sharp Euler constant only after a
+separate theorem controls all later scaled errors. The following result
+supplies that missing implication; complete proofs and exact rational
+certificates accompany \cite{UniversalEulerReport}.
+
+\begin{theorem}[Universal real-order Euler bound]\label{ue:thm:universal}
+For $a,b>0$, let $g_{a,b}=\Imag\Li_{a,b}(\mathrm i,1)$ have its principal
+analytic meaning, and set
+\[
+ A_k=H_{2k}^{(b)}/(2k+1)^a,\qquad
+ E_N=\sum_{j=0}^{N-1}2^{-j-1}\sum_{k=0}^j(-1)^k\binom jk A_k.
+\]
+Then
+\[
+ 0<E_N-g_{a,b}<\frac98\,2^{-N}\qquad(N\ge2).
+\]
+The least constant uniform in $a,b>0$ and $N\ge1$ is
+\[
+ C_* = \max_{b>0}\{\beta(b)+2^{-b}\eta(b)\},\qquad
+ 1.1365611033<C_*<1.1365611046.
+\]
+Its supremum is approached at $N=1$, $a\downarrow0$, and the unique
+maximizing inner order $b_*$, which satisfies $1.3021<b_*<1.3023$.
+\end{theorem}
+\begin{proof}
+For independent rate-one gamma variables $S,T$ of shapes $a,b$, put
+$X=e^{-S}$, $Y=e^{-T}$, $p=X^2$. Gamma moments and finite geometric summation give
+\[
+ 2^N(E_N-g_{a,b})=\mathbb E\left[
+ \frac{f_N(pY^2)-f_N(p)}{1-Y}\right],\qquad
+ f_N(v)=\frac{(1-v)^N}{1+v}.
+\]
+This is strictly positive, without any assumption on convergence of the
+original boundary series. The rational kernel is strictly less than
+$9/8$ for every $N\ge2$ and $0\le p,Y\le1$ with continuous endpoint
+interpretation. For $N=2,3$ this follows from two polynomial Bernstein
+certificates. For $N\ge4$, expand $1/(1+v)$ geometrically and bound the
+binomial divided differences by
+\[
+ (1+Y)\left(\frac{1-Y^2}{1-Y^{2m/(m-1)}}\right)^{m-1}.
+\]
+These envelopes decrease in $m$; the fourth is below $9/8$ by a third
+polynomial certificate. The report supplies all 1542 positive rational
+coefficients and two independent exact replay routes.
+
+For $N=1$ the kernel is
+$2p(1+Y)/((1+p)(1+pY^2))$, strictly increasing in $p$. Its expectation
+is strictly below the axis value $\beta(b)+2^{-b}\eta(b)$ for $a>0$
+and tends to it as $a\downarrow0$. The inherited unique Gaussian maximum
+therefore controls $N=1$. Since $\pi/4+\log(2)/2>9/8$, every later
+truncation is strictly below that maximum. Exact finite Euler intervals
+and an analytic curvature bound give the stated rational enclosures.
+\end{proof}
+
+The restricted constant-one and sharp critical/subcritical bounds remain
+stronger on their respective domains. Scaled errors are not generally
+monotone: at $(a,b)=(4,1)$ one has
+$2^2(E_2-g)>2(E_1-g)$. Thus the later-truncation theorem cannot be replaced
+by an unproved monotonicity assertion. The global integer normalized-radius
+and mixed $S_6$ conjectures are unaffected.

@@ -1,0 +1,344 @@
+% Research continuation at source commit 3447bc59b78d138a7f0d536b66ac6e5cc5d5e49f.
+% New result: the global real-order Euler constant is the existing axis maximum.
+% This is a self-contained section fragment, not a standalone document.
+
+\section{The sharp universal Euler constant at all positive real orders}
+\label{newEuler:sec}
+
+Write
+\[
+ c_n=\frac{H_{n-1}^{(b)}}{n^a},\qquad
+ F_{a,b}(z)=\sum_{n\ge1}c_nz^n,
+ \qquad a\ge0,\quad b>0,
+\]
+where values away from the disk use the principal continuation to
+$\mathbb C\setminus[1,\infty)$. Set
+\[
+ g_{a,b}=\operatorname{Im}F_{a,b}(i),\quad
+ d_j=\sum_{k=0}^j(-1)^k\binom jk c_{2k+1},\quad
+ E_N=\sum_{j=0}^{N-1}2^{-j-1}d_j\quad(N\ge1).
+\]
+The manuscript proves one-sided Euler convergence throughout this domain,
+but explicitly leaves a universal error constant in the supercritical
+fractional-order region open. The Gaussian maximum established there
+controls only the first Euler remainder. The following scalar inequality
+supplies the missing comparison for every later remainder.
+
+\subsection{An elementary comparison of scalar Euler kernels}
+
+For an integer $N\ge1$ put
+\[
+ \Phi_N(t)=\frac{(1-t)^N}{1+t}\qquad(0\le t\le1).
+\]
+\begin{lemma}[Uniform multiplicative-increment bound]
+\label{newEuler:lem:scalar}
+For every integer $N\ge1$ and $q,t\in[0,1]$,
+\begin{equation}\label{newEuler:eq:scalar}
+ 0\le\Phi_N(qt)-\Phi_N(t)\le\frac{1-q}{1+q}.
+\end{equation}
+The upper inequality is strict when $0<q<1$ and $0<t<1$.
+For $0<q<1$ and $t=1$, equality in the upper inequality occurs
+exactly when $N=1$.
+\end{lemma}
+\begin{proof}
+The first inequality follows from the decrease of $\Phi_N$. For the
+second define $f_N(u)=u^N/(2-u)$ on $[0,1]$ and set
+$A=1-qt$, $B=1-t$, and $p=A+B$. The cases $q=1$ or $t=0$ are
+immediate, so suppose $A>B$. The desired inequality is equivalent to
+\begin{equation}\label{newEuler:eq:divided}
+ \frac{f_N(A)-f_N(B)}{A-B}\le\frac1{2-A-B}.
+\end{equation}
+The exceptional case $A=B=1$ has already been excluded.
+
+The derivative $f_N'$ is strictly convex on $(0,1)$: expand
+\[
+ f_N(u)=\sum_{j=0}^{\infty}\frac{u^{N+j}}{2^{j+1}}
+\]
+and differentiate three times; the result is strictly positive for
+$0<u<1$. The average of a convex function over a centered interval
+is nondecreasing as its length increases. Explicitly, if
+$h\mapsto (2h)^{-1}\int_{c-h}^{c+h}g(v)\,dv$ is differentiated,
+the result is nonnegative by the trapezoid bound for a convex $g$.
+It is strictly positive for a strictly convex $g$ and a nondegenerate
+interval. Applying this to $g=f_N'$ shows that the divided difference
+on the left of \eqref{newEuler:eq:divided}, at fixed sum $p$, increases
+as the endpoints move apart.
+
+If $p\le1$, enlarge $[B,A]$ to $[0,p]$. Then
+\[
+ \frac{f_N(A)-f_N(B)}{A-B}
+ \le\frac{f_N(p)-f_N(0)}p
+ =\frac{p^{N-1}}{2-p}\le\frac1{2-p}.
+\]
+If $p\ge1$, enlarge it instead to $[p-1,1]$. Since $f_N(1)=1$
+and $f_N(p-1)\ge0$,
+\[
+ \frac{f_N(A)-f_N(B)}{A-B}
+ \le\frac{1-f_N(p-1)}{2-p}\le\frac1{2-p}.
+\]
+When $0<t<1$ and $0<q<1$, both original endpoints are interior
+to $[0,1]$, so the interval is strictly enlarged in the appropriate
+case and strict convexity gives a strict inequality. At $t=1$ the
+original difference equals $(1-q)^N/(1+q)$, proving the equality
+statement. The endpoint $q=0$ follows directly from
+$\Phi_N(0)-\Phi_N(t)=1-\Phi_N(t)\le1$.
+\end{proof}
+
+\subsection{A probability formula for every Euler remainder}
+
+For $a>0$ let $S\sim\operatorname{Gamma}(a,1)$ and
+$T\sim\operatorname{Gamma}(b,1)$ be independent, and set
+$X=e^{-S}$, $V=e^{-T}$. When $a=0$, define $S=0$, $X=1$
+deterministically. A finite geometric sum and the Gamma integral give
+\begin{equation}\label{newEuler:eq:moments}
+ c_n=\mathbb E\!\left[
+       \frac{X^{n-1}-(XV)^{n-1}}{1-V}\right]\quad(n\ge1).
+\end{equation}
+Indeed the expectation factors as
+$n^{-a}\sum_{k=0}^{n-2}(k+1)^{-b}$, including the empty sum at
+$n=1$. For $a>0$ this is the existing positive double kernel in
+probability coordinates; no signed moment measure is required.
+
+\begin{theorem}[Universal one-sided remainder identity and domination]
+\label{newEuler:thm:domination}
+For every $a\ge0$, $b>0$ and integer $N\ge1$, the Euler series
+converges absolutely, $d_0=0$, $d_j<0$ for $j\ge1$, and
+$E_N$ decreases strictly to $g_{a,b}$. More precisely, with
+$R_N(a,b)=2^N(E_N-g_{a,b})$,
+\begin{equation}\label{newEuler:eq:R}
+ R_N(a,b)=\mathbb E\!\left[
+ \frac{\Phi_N(X^2V^2)-\Phi_N(X^2)}{1-V}\right]>0.
+\end{equation}
+Define
+\begin{equation}\label{newEuler:eq:C}
+ C(b)=\beta(b)+2^{-b}\eta(b)
+     =\mathbb E\!\left[\frac{1+V}{1+V^2}\right],
+\end{equation}
+where $\beta$ is the Dirichlet beta function and
+$\eta(b)=\sum_{n\ge1}(-1)^{n-1}n^{-b}$. Then
+\begin{equation}\label{newEuler:eq:fixedb}
+ R_N(a,b)<C(b)\qquad(a>0,b>0,N\ge1).
+\end{equation}
+At $a=0$, the same estimate is non-strict, and equality holds exactly
+when $N=1$. In addition, $R_N(a,b)\to0$ as $N\to\infty$ for every
+fixed pair in the stated domain.
+\end{theorem}
+\begin{proof}
+Applying a finite binomial sum to \eqref{newEuler:eq:moments} gives
+\[
+ d_j=\mathbb E\!\left[
+  \frac{(1-X^2)^j-(1-X^2V^2)^j}{1-V}\right].
+\]
+This is zero for $j=0$ and strictly negative for $j\ge1$. Every
+fixed integrand is bounded by $2j$, by the mean-value theorem, so
+all displayed finite expectations are legitimate.
+
+The positive double-kernel continuation at $i$ gives
+\begin{equation}\label{newEuler:eq:Gaussian}
+ -g_{a,b}=\mathbb E\!\left[
+ \frac{X^2(1+V)}{(1+X^2)(1+X^2V^2)}\right]>0.
+\end{equation}
+This remains valid on the axis $a=0$ from
+$F_{0,b}(z)=z\operatorname{Li}_b(z)/(1-z)$.
+Alternatively, expanding the two denominators in the disk gives
+\eqref{newEuler:eq:moments}, and dominated continuation gives
+\eqref{newEuler:eq:Gaussian}.
+
+Tonelli's theorem, applied to the nonnegative functions $-d_j$, permits
+summing the infinite Euler series before proving its finiteness. The
+geometric sum gives
+\[
+ \sum_{j\ge0}\frac{-d_j}{2^{j+1}}
+ =\mathbb E\!\left[
+  \frac{(1+X^2V^2)^{-1}-(1+X^2)^{-1}}{1-V}\right]
+ =-g_{a,b}<\infty.
+\]
+Thus the Euler series is absolutely convergent and its sum is $g$.
+The same geometric summation beginning at $j=N$ proves
+\eqref{newEuler:eq:R}. The positivity and strict decrease of $E_N$
+follow from the strict signs of $d_j$ for $j\ge1$.
+
+Apply Lemma~\ref{newEuler:lem:scalar} with $t=X^2$ and $q=V^2$.
+It gives the pointwise domination
+\[
+ 0<\frac{\Phi_N(X^2V^2)-\Phi_N(X^2)}{1-V}
+ \le\frac{1-V^2}{(1+V^2)(1-V)}
+ =\frac{1+V}{1+V^2}.
+\]
+The upper inequality is strict almost surely for $a>0$. On the axis
+it is equality precisely at $N=1$. Taking expectations proves
+\eqref{newEuler:eq:fixedb}. To identify $C(b)$, write the density
+of $V$ as $(-\log v)^{b-1}\,dv/\Gamma(b)$ on $(0,1)$, and
+integrate the even and odd geometric series for $(1+v)/(1+v^2)$.
+Their partial sums are bounded uniformly, justifying dominated
+convergence; the resulting alternating Dirichlet series are exactly
+$\beta(b)+2^{-b}\eta(b)$ for every $b>0$.
+
+For every $0<X\le1$ and $0<V<1$, both powers in the numerator of
+\eqref{newEuler:eq:R} tend to zero as $N\to\infty$.
+The same integrable domination, independent of $N$, proves $R_N\to0$.
+\end{proof}
+
+\subsection{The least constant uniform in both real orders}
+
+The preceding manuscript already proves that $C$ has exactly one
+stationary point $b_*$, a nondegenerate global maximum, with
+$1<b_*<2$. Denote its value by
+\[
+ C_*:=C(b_*)=\max_{b>0}\{\beta(b)+2^{-b}\eta(b)\}.
+\]
+Its reported numerical diagnostics are
+\[
+ b_*\approx1.30221658710124120959,\qquad
+ C_*\approx1.13656110333950956095;
+\]
+these decimal values are not needed for the theorem. The existing exact
+bounds $227/200<C_*<(1+\sqrt2)/2$ may be retained.
+
+\begin{corollary}[Sharp universal real-order Euler bound]
+\label{newEuler:cor:sharp}
+For all $a,b>0$ and all integers $N\ge1$,
+\begin{equation}\label{newEuler:eq:universal}
+ E_N-C_*2^{-N}<g_{a,b}<E_N.
+\end{equation}
+The number $C_*$ is the least constant for which this assertion holds
+uniformly over the entire positive quadrant. With $a=0$ included,
+$0<R_N\le C_*$, and equality occurs exactly at
+$(a,b,N)=(0,b_*,1)$. For each fixed $b>0$, the least constant uniform
+in $a>0$ and $N\ge1$ is $C(b)$.
+\end{corollary}
+\begin{proof}
+The upper bound follows from \eqref{newEuler:eq:fixedb} and
+$C(b)\le C_*$. For sharpness, take $N=1$, for which $E_1=0$ and
+$R_1=-2g$. As $a\downarrow0$, $S\sim\operatorname{Gamma}(a,1)$
+tends to zero in probability (its mean is $a$), so $X\to1$.
+The bounded integrand in \eqref{newEuler:eq:Gaussian}, or the
+pointwise domination already proved, gives
+\[
+ \lim_{a\downarrow0}R_1(a,b)=C(b).
+\]
+Taking $b=b_*$ shows that every smaller universal constant fails for
+some positive $a$. The same argument at a fixed $b$ proves its
+claimed sharp constant. Strictness and the sole equality case on the
+closed outer-order axis follow from the theorem and the uniqueness
+of the maximum of $C$.
+\end{proof}
+
+The derivative of $(1+v)/(1+v^2)$ is
+$(1-2v-v^2)/(1+v^2)^2$, so its maximum on $[0,1]$ is
+$(1+\sqrt2)/2<5/4$, attained at $v=\sqrt2-1$.
+Theorem~\ref{newEuler:thm:domination} therefore supplies the
+self-contained budget $R_N(a,b)<5/4$ throughout the domain.
+The explicit algebraic choice $(1+\sqrt2)/2$ gives an immediate
+universal enclosure without optimization in $b$.
+The established constant one for $a\ge1$ remains sharper on that
+restricted region. The new result resolves precisely the outstanding
+supercritical fractional-order question; it does not assert that the
+scaled errors are monotone in $N$ there, nor that the fixed-pair
+constant equals $-2g$ there.
+
+\subsection{A convenient rational certificate for the universal constant}
+\begin{proposition}[An elementary rational error budget]
+\label{newEuler:prop:rational}
+The sharp universal constant satisfies $C_*<57/50$. Consequently
+\[
+ E_N-\frac{57}{50}\,2^{-N}<g_{a,b}<E_N
+ \qquad(a,b>0,\ N\ge1).
+\]
+\end{proposition}
+\begin{proof}
+The existing axis-maximum theorem gives $b_*\in(1,2)$. By its positive
+Mellin representation, $M(b)=\Gamma(b)C(b)$ is log-convex. Also
+\[
+ (\log\Gamma)''(b)=\sum_{j\ge0}\frac1{(j+b)^2}
+ \le\frac{\pi^2}{6}<\frac53\qquad(1\le b\le2).
+\]
+On an interval $[u,u+h]\subset[1,2]$, the error of linear
+interpolation of $\log\Gamma$ is therefore at most $5h^2/24$.
+Combining this with the convexity inequality for $\log M$ yields
+\[
+ C(b)\le\max\{C(u),C(u+h)\}\exp(5h^2/24).
+\]
+The accompanying exact standard-library verifier
+\texttt{certify\_rational\_euler\_constant.py} proves
+\[
+ C(k/10)<\frac{1137}{1000}\qquad(k=10,11,\ldots,20).
+\]
+It uses 80 terms of the axis Euler enclosure with error
+budget $5/4$, which follows directly from the scalar domination above
+and was also available in the preceding manuscript. Every $n^{-k/10}$ is enclosed on a $2^{-160}$ grid
+by integer inequalities: if
+$r=\lfloor (2^{1600}/n^k)^{1/10}\rfloor$, then
+$r^{10}n^k\le2^{1600}<(r+1)^{10}n^k$. All subsequent operations
+are exact rational arithmetic. The full rational intervals are saved
+in \texttt{rational\_euler\_constant\_certificate.json}; none of the
+displayed decimal diagnostics is used for a sign decision.
+Taking $h=1/10$ gives
+\[
+ C_*<\frac{1137}{1000}e^{1/480}
+ <\frac{1137}{1000}\frac{480}{479}
+ =\frac{13644}{11975}<\frac{57}{50}.
+\]
+The exponential inequality follows from its positive series and
+$e^x<(1-x)^{-1}$ for $0<x<1$.
+\end{proof}
+
+\begin{proposition}[A narrow exact enclosure of the sharp constant]
+\label{newEuler:prop:narrow}
+The unique maximizer and its value satisfy
+\[
+ 1.3022165871012412095923717014
+ <b_*<1.3022165871012412095923717017,
+\]
+\[
+ \begin{gathered}
+ 1.136561103339509560952586375779942387681723540765044951\\
+ <C_*<\\
+ 1.136561103339509560952586375779942387681723540765044952.
+ \end{gathered}
+\]
+These are exact rational enclosures, not estimates from a
+floating-point stationary-point calculation.
+\end{proposition}
+\begin{proof}
+Let $L,R$ be the displayed endpoints for $b_*$, and put
+$c=1.30221658710124120959237170155$. The standard-library verifier
+\texttt{certify\_axis\_maximum.py} encloses $C(L)$, $C(c)$ and
+$C(R)$ by exact rational intervals and proves
+\[
+ C(c)>C(L),\qquad C(c)>C(R).
+\]
+The previously proved strict unimodality implies $L<b_*<R$.
+
+Here are all arithmetic ingredients of that finite certificate.
+The computation uses 224 axis Euler terms, with the self-contained
+error budget $5/4$ proved above. To enclose $n^{-b}$ for rational $b$, write
+$n=2^k r$, $1\le r<2$, and use
+\[
+ \log n=k\log2+2\sum_{j=0}^{127}\frac{z^{2j+1}}{2j+1}
+             +\mathcal R,\qquad z=\frac{r-1}{r+1},
+ \quad 0\le\mathcal R\le\frac{2z^{257}}{257(1-z^2)}.
+\]
+The same formula with $z=1/3$ encloses $\log2$. For each resulting
+$0\le x=b\log n<8$, sum the positive exponential series through
+$x^{200}/200!$, with tail bounded by
+\[
+ \frac{x^{201}}{201!}\frac1{1-x/202},
+\]
+and reciprocate the interval. Every operation is rounded outwards
+on the dyadic grid $2^{-384}$. All sum weights and error budgets
+are exact rational numbers. The complete rational intervals, along
+with the strict comparisons above, are recorded in
+\texttt{axis\_maximum\_certificate.json}.
+
+For the upper enclosure on the maximum, the interpolation argument
+in Proposition~\ref{newEuler:prop:rational} gives, with
+$\delta=5(R-L)^2/24$,
+\[
+ C(c)\le C_*\le\max\{C(L),C(R)\}e^{\delta}
+ <\frac{\max\{C(L),C(R)\}}{1-\delta}.
+\]
+Applying the rational lower endpoint for $C(c)$ and the two rational upper
+endpoints at $L,R$, then rounding the final bounds outwards to
+54 decimal places, proves the displayed enclosure.
+\end{proof}

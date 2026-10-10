@@ -1,0 +1,137 @@
+\section{A common probability representation for Euler remainders}
+\label{sec:setup}
+
+For $a\geq0$ and $b>0$, start in $|z|<1$ with
+\begin{equation}\label{eq:polylog-definition}
+ F_{a,b}(z)=\sum_{n\geq1}\frac{H_{n-1}^{(b)}}{n^a}z^n,
+ \qquad H_m^{(b)}=\sum_{j=1}^m j^{-b},\qquad H_0^{(b)}=0.
+\end{equation}
+At integer orders this is a depth-two polylogarithmic family; the
+probability representation below also handles arbitrary real orders.
+Let $T_a,U_b$ be independent gamma variables of rate one and shapes
+$a,b$, with $T_0=0$. Put $X=e^{-T_a}$ and $V=e^{-U_b}$. Their moments are
+\[
+ \E X^{m-1}=m^{-a},\qquad \E V^{m-1}=m^{-b}\qquad(m\geq1).
+\]
+In particular,
+\begin{equation}\label{eq:moment-law}
+ \frac{H_{n-1}^{(b)}}{n^a}
+    =\E\left[X^{n-1}\frac{1-V^{n-1}}{1-V}\right].
+\end{equation}
+The quotient at $n=1$ means zero, and otherwise is a finite geometric
+sum. Summing in $z$ gives the analytic continuation
+\begin{equation}\label{eq:polylog-continuation}
+ F_{a,b}(z)=\E\frac{z^2X}{(1-zX)(1-zXV)},
+ \qquad z\in\mathbb C\setminus[1,\infty).
+\end{equation}
+Indeed the integrand is uniformly bounded on compact subsets of the
+slit plane, and the identity holds first in the unit disk. Thus the
+Gaussian value $g_{a,b}=\Im F_{a,b}(i)$ is unambiguous even when the
+corresponding unregularized boundary series fails to converge. Explicitly,
+\begin{equation}\label{eq:gaussian-value}
+ g_{a,b}=-\E\frac{X^2(1+V)}{(1+X^2)(1+X^2V^2)}.
+\end{equation}
+
+For an integer $N\geq1$, define
+\begin{align}
+ f_n&=\frac{H_{2n}^{(b)}}{(2n+1)^a},\qquad
+ d_j=\sum_{n=0}^j(-1)^n\binom jn f_n,
+ \label{eq:euler-differences}\\
+ E_N&=\sum_{j=0}^{N-1}\frac{d_j}{2^{j+1}},\qquad
+ R_N(a,b)=2^N(E_N-g_{a,b}),\qquad
+ C_N=\sup_{a,b>0}R_N(a,b).
+ \label{eq:euler-normalization}
+\end{align}
+The sign convention is essential: $E_N$ is an upper approximation to
+the negative value $g_{a,b}$. Euler's classical series transformation is
+the background for this normalization \cite{DLMFEuler}; here all
+identities can be obtained directly from finite sums.
+
+\begin{proposition}[Exact positive remainder and a boundary extension]
+\label{prop:gamma-remainder}
+With
+\[
+ W_N(r)=\frac{(1-r)^N}{1+r},\qquad
+ K_N(r,v)=\frac{W_N(rv^2)-W_N(r)}{1-v},
+\]
+one has, for every $a\geq0$, $b>0$, and $N\geq1$,
+\begin{equation}\label{eq:gamma-remainder}
+ R_N(a,b)=\E K_N(X^2,V)
+ =\E\frac{W_N(e^{-2(T_a+U_b)})-W_N(e^{-2T_a})}
+             {1-e^{-U_b}}>0.
+\end{equation}
+Moreover $d_0=0$, $d_j<0$ for $j\geq1$, and $E_N$ decreases to
+$g_{a,b}$. The remainder is continuous as $a\downarrow0$ at every
+fixed $b>0$.
+\end{proposition}
+\begin{proof}
+The finite binomial identity from \eqref{eq:moment-law} gives
+\[
+ d_j=\E\frac{(1-X^2)^j-(1-X^2V^2)^j}{1-V}.
+\]
+Its signs are immediate. Summing the finite geometric series defining
+$E_N$ and using \eqref{eq:gaussian-value} proves
+\eqref{eq:gamma-remainder}. Decrease of $W_N$ gives strict positivity.
+The contraction estimate already established in the manuscript is
+\begin{equation}\label{eq:universal-pointwise-bound}
+ 0\leq K_N(r,v)\leq\frac{1+v}{1+v^2}
+       \leq\frac{1+\sqrt2}{2}.
+\end{equation}
+For a self-contained verification when $N\geq2$, use the power envelope
+in \cref{lem:power-envelope} and the positive geometric expansion of
+$W_N$ in \cref{lem:kernel-scale}; its $m=2$ envelope is precisely the
+first upper bound. For $N=1$, subtraction from that upper bound leaves
+\[
+ \frac{(1+v)(1-r)(1-rv^2)}
+       {(1+v^2)(1+rv^2)(1+r)}\geq0.
+\]
+Thus $E_N-g_{a,b}=O(2^{-N})$, which proves convergence. Gamma
+variables $T_a$ tend in probability to zero as $a\downarrow0$; bounded
+convergence using \eqref{eq:universal-pointwise-bound} proves the
+boundary continuity.
+\end{proof}
+
+The representation and contraction bound are inherited results
+\cite{ProveItSnapshot,SharpEulerIncoming}. The following short
+conditioning argument supplies a useful direct proof of another
+inherited bound, without the signed-measure machinery needed elsewhere
+in the manuscript.
+
+\begin{lemma}[The outer-order region $a\geq1$]
+\label{lem:outer-order-one}
+For all $a\geq1$, $b>0$, and $N\geq1$, one has $R_N(a,b)<1$.
+\end{lemma}
+\begin{proof}
+Decompose $T_a=T_1+T_{a-1}$ independently. Since $e^{-T_1}$ is
+uniform on $(0,1)$, condition on $Z=e^{-T_{a-1}}\in(0,1]$ and
+$V=v\in(0,1)$. The conditional expectation of the kernel is
+\begin{align*}
+ &\int_0^1 K_N(Z^2u^2,v)\,du\\
+ &\qquad=\frac{v^{-1}\int_0^{Zv}W_N(t^2)\,dt
+                         -\int_0^Z W_N(t^2)\,dt}{Z(1-v)}\\
+ &\qquad\leq\frac1{Zv}\int_0^{Zv}W_N(t^2)\,dt<1.
+\end{align*}
+The first inequality uses $W_N\geq0$, and the second uses
+$W_N(t^2)<1$ for $t>0$. Taking expectations proves the claim.
+\end{proof}
+
+\subsection{Three constants that must be distinguished}
+
+Write
+\[
+ C_N^{\mathrm{ax}}=\max_{b>0}R_N(0,b),\qquad
+ M_N=\max_{(r,v)\in[0,1]^2}K_N(r,v),
+\]
+where existence of the axis maximum is proved below. The boundary
+continuity and the probability representation give
+\begin{equation}\label{eq:constant-hierarchy}
+ C_N^{\mathrm{ax}}\leq C_N\leq M_N.
+\end{equation}
+The already known all-index constant is
+$C_*:=\sup_{N\geq1}C_N=1.13656\ldots$, attained only after adjoining
+$a=0$ and then at $N=1$ and a unique inner order
+\cite{ProveItSnapshot,SharpEulerIncoming}. The present global theorem
+proves $C_N^{\mathrm{ax}}=C_N$ for sufficiently large $N$ and $C_N\to1$. The separate
+kernel theorem proves $M_N\to M_\infty>1$. Maximization before and after
+gamma averaging cannot be interchanged without proof.
+

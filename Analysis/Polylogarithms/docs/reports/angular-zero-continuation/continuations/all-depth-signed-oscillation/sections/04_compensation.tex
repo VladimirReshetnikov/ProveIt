@@ -1,0 +1,131 @@
+\section{Canonical positive compensation and slit-plane nonvanishing}
+\label{ado:sec:compensation}
+Fix $\svec$ and abbreviate $\kappa=\kappa_{\svec}$,
+$P=P_{\svec}$, $D=D_{\svec}$, and $C=C_{\svec}$. Empty products
+at depth one are one. The preceding section proves that
+\begin{equation}\label{ado:eq:positiveweight}
+ P(u)\kappa(u)>0
+ \quad\text{for all }u\in(0,1)\setminus\{r_1,\ldots,r_{d-1}\}.
+\end{equation}
+Since $P$ is bounded on $[0,1]$, the positive measure
+$\dd\mu=P\kappa\dd u$ is finite.
+
+\begin{lemma}[Polynomial cancellation]
+\label{ado:lem:polycancel}
+Suppose $m_1(\kappa)=\cdots=m_{d-1}(\kappa)=0$. For any real
+polynomial $E$ of degree at most $d-1$, the removable quotient at zero
+satisfies
+\begin{equation}\label{ado:eq:generalcompensator}
+ E(z)\frac{L(z)}{z^d}
+ =\int_0^1\frac{u^{d-1}E(1/u)\kappa(u)}{1-zu}\dd u.
+\end{equation}
+Here $u^{d-1}E(1/u)$ is a polynomial, including at $u=0$.
+\end{lemma}
+\begin{proof}
+First subtract the initial $d-1$ zero moments in
+\eqref{ado:eq:signedtransform} to obtain
+\[
+ L(z)=z^d\int_0^1\frac{u^{d-1}\kappa(u)}{1-zu}\dd u.
+\]
+For $0\le j\le d-1$, multiplying this last transform by $z^j$
+and moving the factor $z^j$ to the density changes it to
+$u^{d-1-j}\kappa(u)$. The difference is a finite linear combination
+of the moments of degrees $d-1-j,\ldots,d-2$, all zero. Applying
+this monomial identity to every coefficient of $E$ proves
+\eqref{ado:eq:generalcompensator} in the disk and hence throughout $\Om$.
+\end{proof}
+
+\begin{theorem}[Positive factorization and nonvanishing]
+\label{ado:thm:factorization}
+The measure $\mu$ has mass $C$, and
+\begin{equation}\label{ado:eq:factorization}
+ D(z)L(z)=z^d\int_0^1\frac{\dd\mu(u)}{1-zu}.
+\end{equation}
+Its transform $H$ has strictly positive imaginary part when
+$\Imn z>0$, strictly negative imaginary part when $\Imn z<0$, and
+$H(x)>0$ for every real $x<1$. The only zero of $L$ on $\Om$ is its
+zero of multiplicity $d$ at zero.
+\end{theorem}
+\begin{proof}
+We have $u^{d-1}D(1/u)=P(u)$, so the preceding lemma gives
+\eqref{ado:eq:factorization}. Its value after division by $z^d$ at
+zero is $\int P\kappa=C$, as already shown in the oscillation proof.
+For nonreal $z$,
+\[
+ \Imn H(z)=(\Imn z)\int_0^1
+              \frac{u\dd\mu(u)}{|1-zu|^2}.
+\]
+The integral is strictly positive because the measure has positive
+density except at finitely many interior points. For real $x<1$,
+the integrand defining $H(x)$ is positive. Thus $H$ has no zero on
+$\Om$. All zeros of $D$ are $1/r_j>1$, outside $\Om$, while
+$D(0)=1$ and $H(0)=C>0$. The factorization proves the claimed
+multiplicity and the global nonvanishing assertion.
+\end{proof}
+
+\begin{theorem}[Minimality and uniqueness of the compensator]
+\label{ado:thm:minimality}
+Among real polynomials $E$ with $E(0)>0$ for which $E(z)L(z)/z^d$
+is the transform of a finite positive measure on $[0,1]$, the smallest
+possible degree is $d-1$. Every such polynomial of degree $d-1$ is
+$E(0)D(z)$. In particular the normalization $E(0)=1$ singles out $D$.
+\end{theorem}
+\begin{proof}
+Existence in degree $d-1$ follows from
+Theorem~\ref{ado:thm:factorization}. Suppose that $\deg E\le d-1$.
+Lemma~\ref{ado:lem:polycancel} already realizes the transform as the
+finite signed measure with density
+\[
+ Q_E(u)\kappa(u),\qquad Q_E(u)=u^{d-1}E(1/u).
+\]
+Uniqueness of finite Hausdorff moments implies that any purported
+positive representing measure must be this signed measure. Its density
+must therefore be nonnegative almost everywhere. Since $\kappa$
+changes sign at every $r_j$, continuity forces $Q_E(r_j)=0$.
+As $r_j\ne0$, these are $d-1$ distinct roots $1/r_j$ of $E$.
+Consequently $\deg E\ge d-1$. At equality those roots determine
+$E$ up to its constant factor, which is fixed by $E(0)$.
+\end{proof}
+This is minimality of \emph{polynomial compensation for an ordinary
+positive Stieltjes representation}. It is not minimal depth in an
+algebra of numerical periods and not a minimal generalized Stieltjes
+order. Those are different questions.
+
+\subsection{Quantitative consequences}
+For $x>0$, positivity and $0<u<1$ give
+\begin{equation}\label{ado:eq:negativebounds}
+ \frac{Cx^d}{(1+x)D(-x)}
+ <(-1)^dL(-x)<\frac{Cx^d}{D(-x)}.
+\end{equation}
+Indeed $C/(1+x)<H(-x)<C$ and $D(-x)>0$. Without computing the
+compensator roots one still has the coarser bounds
+\begin{equation}\label{ado:eq:coarsebounds}
+ C\left(\frac{x}{1+x}\right)^d
+ <(-1)^dL(-x)<Cx^d,
+\end{equation}
+because $1\le D(-x)\le(1+x)^{d-1}$, with the relevant strictness
+supplied by $H$ even at depth one.
+
+Write $P(u)=\sum_{j=0}^{d-1}p_ju^j$ and
+\begin{equation}\label{ado:eq:compensatedmoments}
+ h_n=\int_0^1u^n\dd\mu(u)
+     =\sum_{j=0}^{d-1}p_jc_{\svec}(n+j+1),\qquad n\ge0.
+\end{equation}
+For all $n,k\ge0$,
+\begin{equation}\label{ado:eq:completepositivity}
+ (-1)^k\Delta^kh_n
+ =\int_0^1u^n(1-u)^k\dd\mu(u)>0,
+ \qquad \Delta h_n=h_{n+1}-h_n.
+\end{equation}
+Every finite Hankel matrix $(h_{i+j})_{0\le i,j\le m}$ is positive
+definite. The same is true of $(h_{i+j+1})$ and
+$(h_{i+j}-h_{i+j+1})$. To see this, pair each matrix with a nonzero
+real vector and integrate the square of its polynomial against,
+respectively, $\mu$, $u\mu$, or $(1-u)\mu$. Each integral is strictly
+positive. In particular,
+\[
+ h_nh_{n+2}-h_{n+1}^2>0.
+\]
+These are exact nonlinear positivity constraints on the original nested
+harmonic coefficients and the compensator roots. They should not be
+mistaken for rational-coefficient identities among special values.

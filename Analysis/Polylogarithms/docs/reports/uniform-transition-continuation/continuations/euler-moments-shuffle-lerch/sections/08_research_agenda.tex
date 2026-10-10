@@ -1,0 +1,153 @@
+\section{Further research questions and a proposed programme}
+\label{sec:agenda}
+
+The strongest next steps are those that convert the new structural
+information into a sharper theorem or a finite exact identity
+certificate. The following questions are separated by their mathematical
+obstruction and the kind of evidence that would count as progress.
+
+\subsection{Sharp fixed-pair Euler errors}
+
+For fixed $a,b>0$, determine
+\[
+ C(a,b)=\max_{N\ge1}R_N(a,b)
+\]
+and the set of maximizing indices. Existence follows from positivity and
+$R_N\to0$, but the maximizer can occur after the first remainder.
+Does the sequence have at most one local maximum outside the parameter
+regions where monotonicity is already proved? Are there curves in the
+$(a,b)$ plane across which the maximizing integer changes? A useful
+first goal is an analytic classification of the sign of $R_{N+1}-R_N$
+using the two-variable positive probability kernel.
+
+The limit $a\downarrow0$ at fixed $b$ gives $C(a,b)\to C(b)$ by the
+first-index lower bound and the uniform upper bound. Determine
+a uniform first correction in $a$, and whether the maximizing index is
+eventually $1$ on compact $b$ intervals. Joint limits where $a$ or $b$
+approach zero while $N$ grows may reveal additional transition scales.
+They cannot be inferred from the fixed-pair limit $R_N\to0$ alone.
+
+The scalar proof suggests a broader approximation problem: characterize
+families $f$ whose fixed-midpoint divided differences are monotone and
+whose endpoint secants yield optimal multiplicative-increment bounds.
+For Euler-type transformations, this could produce universal constants
+for positive kernels beyond the harmonic double polylogarithms.
+
+\subsection{Effective all-ratio moment asymptotics}
+
+The theorem proves the existence of a remainder constant for each fixed
+order. Produce explicit numerical constants valid for all $0\le m\le n$
+above a stated $n_0$. This requires quantitative bounds on the normalized
+phase and amplitude derivatives, plus the global phase-gap constant.
+The existing interval proof of the slope inequality provides a concrete
+starting point rather than an abstract compactness argument.
+
+Can the inherited monotonicity of $J$ be proved by a short analytic
+inequality, eliminating the compact interval computation? Ordinary
+convexity of $\log\Gamma$ is insufficient, as the source already explains.
+A successful proof would make the all-ratio theorem fully analytic and
+could sharpen its uniform curvature bounds.
+
+Find a uniform approximation retaining the exponentially small
+fixed-$m$ corrections while also handling the balanced region. The
+current theorem controls every algebraic order, but matching it to the
+residue expansion requires analysis of the correction
+$q(y)e^y/\gamma-1$ when $m e^{-s}$ changes scale. One target is an
+explicit overlap theorem that recovers both expansions with their own
+natural error budgets.
+
+The probabilistic corollary invites quantitative questions. Establish a
+uniform Kolmogorov or total-variation error bound for
+$\sqrt H(Y-s)$, then a uniform Edgeworth expansion with tail control.
+The metric, centering and normalization must be fixed before a rate is
+claimed. Related questions concern logarithmic derivatives of $M_{n,m}$,
+which encode the mean and covariance of $\log f(x)$ and $\log f(1-x)$
+under the tilted moment measure.
+
+\subsection{Appell mesh, saturation, and growing zero configurations}
+
+The bound $\operatorname{mesh}(Q_n)\ge(3n)^{-(n-2)}$ is deliberately
+coarse. Determine the actual asymptotic size of the smallest gap. Even a
+polynomial lower bound $\operatorname{mesh}(Q_n)\gg n^{-A}$ would, through
+the proved transfer argument, give a polynomial sufficient threshold
+$k\gg n^{2A+2}$. Such an improvement would extend the growing-index regime
+far beyond $n=O(\log k/\log\log k)$.
+
+The current proof estimates the product over roots by its worst distance
+to any root. Replace that bound with local reciprocal-gap sums such as
+\[
+ \sum_{\ell\ne j}|x_{n,j}-x_{n,\ell}|^{-1}
+ \quad\hbox{and}\quad
+ \sum_{\ell\ne j}|x_{n,j}-x_{n,\ell}|^{-2}.
+\]
+Together with centered gamma moments, this may improve the location
+error $O(n/\sqrt{k})$ and recover constant offsets uniformly for growing
+$n$. It would also distinguish extreme roots from interior roots when
+their local geometries differ.
+
+For each small index, determine the least $k$ that guarantees saturation
+for every $\rho\in[0,1]$, and the least $k$ for each global motion law.
+Certified continuation, exact endpoint analysis and the global
+multiplicity bound should be used together. The new terminal-branch
+theorem settles its direction whenever that branch is simple, but it
+does not order the motion of all interior branches at small $k$.
+
+More generally, replace $W_\rho$ by a positive family with a uniformly
+bounded logarithmic derivative. The sign-transfer proof then changes
+only through that bound. Determine which non-Lerch deformations inherit
+effective saturation, and which require additional endpoint integrability.
+This would isolate the root-stability mechanism from its original
+special-function setting.
+
+\subsection{Integral presentations and exact Gaussian identities}
+
+The immediate identity target remains a finite rational certificate for
+the existing $S_6$ formula. Use the integral shuffle diagonalization to
+remove redundant coordinates before building Cayley, distribution,
+conjugation and regularized double-shuffle rows. Each regularized row
+must carry an analytic justification. A successful computation should
+return an exact row combination producing the target, not only a rank
+or a floating-point null vector.
+
+\begin{conjecture}[A uniform Gaussian span question]
+\label{conj:uniform-span}
+For every integer $m\ge1$, the number
+$S_{2m}+2\beta(2m)\log2$ belongs to the rational span of
+\[
+ \{g_{2m-2j,\,2j+1}:0\le j<m\}
+ \cup\{\pi^{2m+1}\}
+ \cup\{\beta(2j)\zeta(2m+1-2j):1\le j<m\}.
+\]
+\end{conjecture}
+
+The proved $S_2,S_4$ cases in the repository and the conjectural
+$S_6,S_8,S_{10},S_{12}$ relations motivate this formulation. Their
+different evidential status is essential. The all-weight matrix theorem
+justifies the chosen coordinates but does not prove that a mixed sum
+belongs to their span. An appropriate generating-function identity could
+settle many weights at once; until it is found, exact certificates at
+successive weights are meaningful intermediate goals.
+
+Determine analogous integral diagonal forms at even weights, other roots
+of unity, and greater depth. The odd-weight proof uses the reflection
+$y\leftrightarrow1-y$ and central factorials in a precise way; it does
+not automatically furnish a higher-depth presentation. Integral data
+would identify torsion primes and optimal denominator budgets before
+expensive exact linear algebra is attempted.
+
+\subsection{A practical order of attack}
+
+The nearest finite targets are the $S_6$ row certificate, sharper
+certified Appell mesh bounds, and explicit constants in the first-order
+all-ratio moment error. The more structural targets are an analytic
+global slope proof, a general mixed-Gaussian generating identity, and
+an asymptotic theory for the Appell mesh. These tasks can proceed in
+parallel because their proof dependencies are largely separate.
+
+For every proposed identity, freeze the basis and integer vector before
+validation; recompute it by an independent representation; produce exact
+residual bounds; and pursue an algebraic or analytic certificate of
+equality. For every asymptotic claim, state all joint parameter ranges
+and preserve the distinction between finite diagnostics and a uniform
+remainder proof. The present package supplies examples of both successful
+proofs and a rigorously rejected numerical candidate.

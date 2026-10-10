@@ -1,0 +1,277 @@
+\section{Exactly \texorpdfstring{$d-1$}{d-1} angular zeros on every upper semicircle}
+\label{ado:sec:angular}
+The signed transform gives, for $0<\rho\le1$ and $0<\theta<\pi$,
+\begin{equation}\label{ado:eq:angulartransform}
+ \Imn L(\rho e^{\ii\theta})
+ =\rho\sin\theta\,J_\rho(\cos\theta),\qquad
+ J_\rho(c)=\int_0^1
+       \frac{\kappa(u)}{1-2\rho cu+\rho^2u^2}\dd u.
+\end{equation}
+A bound based only on simple sign-change arguments would leave open the
+possibility of tangencies. We therefore prove a multiplicity-sensitive
+upper bound before proving existence.
+
+\subsection{An elementary confluent Cauchy-kernel bound}
+\begin{lemma}[Angular variation bound with multiplicities]
+\label{ado:lem:variation}
+Suppose $\kappa\in L^1(0,1)$ is continuous, has exactly $m$ sign
+changes at $r_1<\cdots<r_m$, and has a nonzero fixed sign on each
+complementary interval. Then $J_\rho$ has at most $m$ zeros in
+$(-1,1)$, counted with analytic multiplicity, for every $0<\rho\le1$.
+\end{lemma}
+\begin{proof}
+The function
+\begin{equation}\label{ado:eq:cauchymap}
+ t(u)=\frac{1+\rho^2u^2}{2\rho u}
+\end{equation}
+is strictly decreasing on $(0,1)$, since
+$t'(u)=(\rho^2u^2-1)/(2\rho u^2)<0$. Its values are at least one,
+and it tends to infinity as $u\downarrow0$. Thus
+\[
+ J_\rho(c)=\int_0^1\frac{\kappa(u)}{2\rho u}
+                         \frac1{t(u)-c}\dd u.
+\]
+The factor $\kappa(u)/u$ need not be integrable by itself; this causes
+no difficulty because the displayed Cauchy factor is $O(u)$ at zero.
+All the integrals below are interpreted with their complete kernels.
+
+Suppose there are distinct zeros $c_1,\ldots,c_q\in(-1,1)$ with
+positive multiplicities $\ell_1,\ldots,\ell_q$ summing to $m+1$.
+If more zeros are available, retain any subcollection of total
+multiplicity $m+1$. Form the proper rational function
+\begin{equation}\label{ado:eq:variationrational}
+ R(t)=\frac{\prod_{j=1}^m(t-t(r_j))}
+             {\prod_{a=1}^q(t-c_a)^{\ell_a}}.
+\end{equation}
+Its partial fractions are linear combinations of
+$(t-c_a)^{-h}$ for $1\le h\le\ell_a$. Differentiation of $J_\rho$
+under the integral is valid locally for $c\in(-1,1)$; explicitly,
+\[
+ J_\rho^{(h-1)}(c)
+ =(h-1)!\int_0^1\frac{\kappa(u)}{2\rho u}
+                         \frac1{(t(u)-c)^h}\dd u.
+\]
+The selected zero multiplicities therefore imply
+\begin{equation}\label{ado:eq:contradictoryintegral}
+ \int_0^1\frac{\kappa(u)}{2\rho u}R(t(u))\dd u=0.
+\end{equation}
+This integral is absolutely convergent: near zero $R(t)=O(1/t)=O(u)$,
+and near one its denominators stay positive and bounded away from zero.
+
+But each factor $t(u)-t(r_j)$ changes sign exactly where $\kappa$
+changes sign. The denominator of $R(t(u))$ is strictly positive, because
+$t(u)\ge1>c_a$. Hence the integrand in
+\eqref{ado:eq:contradictoryintegral} has one fixed nonzero sign except
+at the $r_j$. Its integral cannot vanish. This contradiction proves the
+bound and also excludes an identically zero $J_\rho$.
+\end{proof}
+The proof is a finite partial-fraction argument, including repeated poles.
+No unproved strict-total-positivity assertion is being used.
+
+\subsection{Positive compensation supplies the missing zeros}
+For $0<\theta<\pi$ and $0\le u\le1$, put
+\[
+ \beta_u(\theta)=-\Arg(1-\rho u e^{\ii\theta}).
+\]
+For $0<u<1$ one has
+\begin{equation}\label{ado:eq:betasector}
+ 0<\beta_u(\theta)<\beta_1(\theta)<\frac\pi2.
+\end{equation}
+The angle is strictly increasing in $u$, since differentiation with
+respect to $u$ gives $\rho\sin\theta/|1-\rho u e^{\ii\theta}|^2>0$.
+A positive mixture of the resolvents $(1-zu)^{-1}$ stays strictly inside
+this sector. Consequently, with $H$ as in
+\eqref{ado:eq:factorization},
+\begin{equation}\label{ado:eq:Hsector}
+ 0<\Arg H(\rho e^{\ii\theta})<\beta_1(\theta).
+\end{equation}
+For example, the second inequality follows by rotating each resolvent
+through $-\beta_1$ and observing that its imaginary part is strictly
+negative for $0<u<1$. All rays lie in an angle of width less than
+$\pi/2$, so no argument ambiguity arises.
+
+\begin{theorem}[Complete angular count and signs]
+\label{ado:thm:angular}
+For \eqref{ado:eq:domain} and every $0<\rho\le1$,
+$\Imn L(\rho e^{\ii\theta})$ has exactly $d-1$ simple zeros in
+$0<\theta<\pi$. They have the signs and bounds stated in
+Theorem~\ref{ado:thm:main}.
+\end{theorem}
+\begin{proof}
+A continuous unwrapped argument of $L$ along the upper arc is
+\begin{equation}\label{ado:eq:unwrappedphase}
+ \Phi(\theta)=d\theta+
+       \sum_{j=1}^{d-1}\beta_{r_j}(\theta)
+       +\Arg H(\rho e^{\ii\theta}).
+\end{equation}
+The factorization proves this formula exactly; $\Phi$ is not reduced
+modulo $2\pi$. The sector bounds imply
+\begin{equation}\label{ado:eq:phasebounds}
+ d\theta<\Phi(\theta)<d\bigl(\theta+\beta_1(\theta)\bigr)<d\pi.
+\end{equation}
+At the other end of the arc, $\Phi(\theta)\to d\pi$ as
+$\theta\uparrow\pi$, since all resolvents approach positive real
+values and $H(-\rho)>0$.
+
+If $\rho<1$, then $\Phi(\theta)\to0$ as $\theta\downarrow0$.
+The case $\rho=1$ requires more care: $L(1)$ may be singular, and
+there is no reason to assign it argument zero. Instead, each fixed
+$r_j<1$ gives $\beta_{r_j}(\theta)\to0$, while
+\eqref{ado:eq:Hsector} gives
+\[
+ \limsup_{\theta\downarrow0}\Arg H(e^{\ii\theta})\le\pi/2.
+\]
+It follows that $0<\Phi(\theta)<\pi$ for sufficiently small positive
+$\theta$. This weaker endpoint statement is all that is needed.
+
+By continuity, the phase crosses each of $\pi,2\pi,\ldots,(d-1)\pi$.
+These yield at least $d-1$ distinct zeros of the imaginary part. On the
+other hand, Lemma~\ref{ado:lem:variation} with $m=d-1$, together
+with \eqref{ado:eq:angulartransform}, gives at most $d-1$ zeros
+counted with multiplicities. The change of variable $c=\cos\theta$
+has nonzero derivative in the open arc, and the prefactor
+$\rho\sin\theta$ is positive. Thus multiplicities are preserved.
+Every zero is simple, and there is exactly one crossing of each listed
+phase level. The levels must occur in their stated order, since a
+reversal would force a repeated crossing of an earlier level.
+
+The initial phase lies in $(0,\pi)$, so the imaginary part starts
+positive. Simplicity forces alternating signs thereafter. At the
+$k$th zero, the phase is $k\pi$ and the modulus is nonzero, so the real
+value has sign $(-1)^k$.
+
+For the location bounds, write $\alpha_k=k\pi/d$. At a zero,
+\eqref{ado:eq:phasebounds} gives
+\[
+ \theta_k<\alpha_k<\theta_k+\beta_1(\theta_k).
+\]
+The function $h(\theta)=\theta+\beta_1(\theta)$ is strictly
+increasing, because
+\[
+ h'(\theta)=\frac{1-\rho\cos\theta}
+                  {1-2\rho\cos\theta+\rho^2}>0.
+\]
+For $\rho<1$, solving $h(\theta)=\alpha$ gives
+$\theta=\alpha-\arcsin(\rho\sin\alpha)$. At $\rho=1$ the same
+expression is the solution when $\alpha>\pi/2$; when
+$\alpha\le\pi/2$ it is zero, and the strict lower bound follows
+from $\theta_k>0$. This proves \eqref{ado:eq:mainangles}.
+\end{proof}
+The argument proves the needed crossings without asserting that
+$\Phi$ is globally monotone. Such an assertion is unnecessary here.
+
+\begin{corollary}[Analytic motion and no interior collisions]
+\label{ado:cor:analyticbranches}
+For fixed integer leading indices, each angular branch is real analytic
+in $(\rho,b)\in(0,1)\times(0,\infty)$, and extends real analytically
+across $\rho=1$ locally at each of its nontrivial upper-arc zeros.
+The density roots $r_j$ are real analytic in $b>0$. No two of the
+angular branches collide for $0<\rho\le1$.
+\end{corollary}
+\begin{proof}
+On compact subsets of $\Ren b>0$, the seed $f_b$ is holomorphic as
+an $L^1$-valued function; factors $|\log(-\log u)|^j$ arising from
+parameter differentiation have an integrable common majorant on smaller
+compact subsets. The bounded operators preserve this holomorphic
+parameter dependence. The signed transform is locally holomorphic in
+$z\in\Om$ and in $b$. Simplicity of its angular zeros permits the
+real analytic implicit-function theorem. The unit-radius zeros remain
+away from the cut, so the same local argument crosses $\rho=1$.
+The density derivative formulas give joint real analyticity in $u,b$
+in the open interval, and their simple roots obey the same theorem.
+Distinctness follows from Theorem~\ref{ado:thm:angular}.
+\end{proof}
+The local extension across radius one does not imply that the global
+count persists at all larger radii; Section~\ref{ado:sec:audit} gives
+an explicit obstruction.
+
+\subsection{Strict radial motion of every angular branch}
+The compensation yields more than a zero count. It also turns a
+monotonicity property of ordinary positive Stieltjes transforms into
+strict motion of all the strict-depth angular zeros.
+
+\begin{lemma}[Radial argument monotonicity for positive transforms]
+\label{ado:lem:radialPick}
+Let $\nu$ be a nonzero finite positive measure on $[0,1]$ and
+$Q(z)=\int(1-uz)^{-1}\dd\nu(u)$. For $0<\theta<\pi$ and
+$0<\rho\le1$,
+\begin{equation}\label{ado:eq:radialPick}
+ \frac{\partial}{\partial\rho}\Arg Q(\rho e^{\ii\theta})\ge0.
+\end{equation}
+The argument is chosen continuously from $Q(0)>0$.
+\end{lemma}
+\begin{proof}
+First take a finite measure with positive weights at distinct points
+$0<u_1<\cdots<u_n<1$. The rational function
+$\sum_j w_j/(t-u_j)$ is strictly decreasing between consecutive poles,
+with limits $+\infty$ and $-\infty$ at the two ends. Its numerator
+therefore has exactly one root $v_j\in(u_j,u_{j+1})$ in each such
+interval. Factoring the numerator gives
+\[
+ Q(z)=Q(0)\frac{\prod_{j=1}^{n-1}(1-v_jz)}
+                      {\prod_{j=1}^n(1-u_jz)}.
+\]
+Consequently the radial derivative of its argument is
+\[
+ \sin\theta\left\{f(u_1)+
+          \sum_{j=1}^{n-1}\bigl(f(u_{j+1})-f(v_j)\bigr)\right\},
+ \qquad f(t)=\frac{t}{1-2\rho t\cos\theta+\rho^2t^2}.
+\]
+Every summand is nonnegative, because
+\[
+ f'(t)=\frac{1-\rho^2t^2}
+            {(1-2\rho t\cos\theta+\rho^2t^2)^2}\ge0
+ \qquad(0\le t\le1).
+\]
+
+Approximate an arbitrary finite positive $\nu$ weakly by such finite
+measures, with their masses converging to $\nu([0,1])$. For each
+compact subset of $\Om$, the integrands defining the transform and
+its first complex derivative are bounded and continuous uniformly in
+$u\in[0,1]$. The transforms and derivatives converge locally uniformly.
+Also $Q(\rho e^{\ii\theta})\ne0$: it has positive imaginary part
+unless the measure is supported at zero, in which case it is a positive
+constant. Passing to the limit in
+$\Imn(e^{\ii\theta}Q'(z)/Q(z))$ proves the nonnegative derivative.
+The same argument works at $\rho=1$ because $\theta$ is strictly
+between zero and $\pi$.
+\end{proof}
+
+\begin{theorem}[Strict inward angular motion]
+\label{ado:thm:radialmotion}
+For $d\ge2$ and \eqref{ado:eq:domain}, every angular branch satisfies
+\begin{equation}\label{ado:eq:strictmotion}
+ \frac{\dd\theta_k}{\dd\rho}<0,
+ \qquad 0<\rho\le1,\quad 1\le k\le d-1.
+\end{equation}
+The derivative at one is the one-sided derivative, or equivalently the
+derivative of the local continuation. The same result holds for the
+positive-seed and shifted-terminal families of
+Theorem~\ref{ado:thm:seedextension}.
+\end{theorem}
+\begin{proof}
+At fixed $\theta$, differentiate the unwrapped phase
+\eqref{ado:eq:unwrappedphase} with respect to the radius:
+\[
+ \Phi_\rho
+ =\sum_{j=1}^{d-1}
+      \frac{r_j\sin\theta}{1-2\rho r_j\cos\theta+\rho^2r_j^2}
+   +\partial_\rho\Arg H(\rho e^{\ii\theta})>0.
+\]
+The first sum is strictly positive since $d\ge2$ and $r_j>0$; the
+last term is nonnegative by Lemma~\ref{ado:lem:radialPick}.
+At the unique simple crossing of the phase level $k\pi$, one has
+$\Phi_\theta>0$. Indeed the phase starts below that level, ends
+above it, and crosses it exactly once; simplicity excludes a zero
+phase derivative there. Implicit differentiation of
+$\Phi(\theta_k(\rho),\rho)=k\pi$ now gives
+\[
+ \theta_k'(\rho)=-\frac{\Phi_\rho}{\Phi_\theta}<0.
+\]
+All ingredients also hold for a general positive seed.
+\end{proof}
+For depth two, this does \emph{not} settle the manuscript's conjecture
+about $\eta(\rho)=\cos\theta(\rho)/\rho$: the derivative of that
+quotient has a second term, and its sign is not implied by
+$\theta'(\rho)<0$. The two kinds of radial monotonicity must remain
+separate in the integration ledger.

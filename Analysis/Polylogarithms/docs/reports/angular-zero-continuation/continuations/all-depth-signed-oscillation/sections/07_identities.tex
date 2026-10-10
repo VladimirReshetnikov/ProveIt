@@ -1,0 +1,191 @@
+\section{Explicit logistic kernels and positive integral identities}
+\label{ado:sec:identities}
+The compensator is generally implicit: its roots are the zeros of a
+signed density. The all-ones family makes every part explicit and gives
+an infinite collection of exact positive integral identities.
+
+\subsection{The all-ones density and its roots}
+Let $\one_d=(1,\ldots,1)$ and define
+\[
+ \ell(u)=\log\frac{u}{1-u},\qquad 0<u<1.
+\]
+The familiar identity
+\begin{equation}\label{ado:eq:allonesLi}
+ L_{\one_d}(z)=\frac{(-\log(1-z))^d}{d!}
+\end{equation}
+follows recursively from
+$(1-z)L'_{\one_d}(z)=L_{\one_{d-1}}(z)$ and the vanishing initial
+value at zero. We use it as a classical identity with a short proof,
+not as a new reduction of multiple polylogarithms.
+
+\begin{theorem}[Explicit signed kernels and logistic roots]
+\label{ado:thm:logistickernels}
+For every $d\ge1$,
+\begin{align}
+ \kappa_{\one_d}(u)
+ &=\frac{\Imn(\ell(u)+\ii\pi)^d}{\pi d!}\notag\\
+ &=\sum_{j=0}^{\lfloor(d-1)/2\rfloor}
+ \frac{(-1)^j\pi^{2j}\ell(u)^{d-1-2j}}
+ {(2j+1)!(d-1-2j)!}.
+ \label{ado:eq:logistickernels}
+\end{align}
+Its increasing list of roots is
+\begin{equation}\label{ado:eq:logisticroots}
+ r_j=\frac1{1+\exp(\pi\cot(j\pi/d))},
+ \qquad 1\le j\le d-1.
+\end{equation}
+In particular, $r_j+r_{d-j}=1$.
+\end{theorem}
+\begin{proof}
+Consider the generating function
+\begin{equation}\label{ado:eq:kernelgenerator}
+ G(t,u)=e^{t\ell(u)}\frac{\sin\pi t}{\pi t}
+       =\sum_{d\ge1}K_d(u)t^{d-1}.
+\end{equation}
+For $|\Ren t|<1$, its integral at moment one is the beta integral
+\[
+ \int_0^1G(t,u)\dd u
+ =\frac{\sin\pi t}{\pi t}\Gamma(1+t)\Gamma(1-t)=1.
+\]
+The reflection formula supplies the last equality, with removable values
+understood at zero. Thus $\int K_1=1$ and $\int K_d=0$ for $d\ge2$.
+Coefficient extraction is legitimate on a smaller complex neighborhood
+of zero, since $u^{\Ren t}(1-u)^{-\Ren t}$ and its logarithmic
+parameter derivatives have an integrable majorant.
+
+Now $K_1=1$ and
+\[
+ \frac{\dd}{\dd u}G(t,u)=\frac{t}{u(1-u)}G(t,u),
+\]
+so $K_d'=K_{d-1}/(u(1-u))$. This is exactly the derivative of
+$\Bop K_{d-1}$. Their difference is constant, and both have zero
+integral for $d\ge2$, so $K_d=\Bop K_{d-1}$. Hence these are the
+constructed all-ones kernels. Expanding the exponential and sine gives
+\eqref{ado:eq:logistickernels}.
+
+The imaginary part of $(\ell+\ii\pi)^d$ vanishes when
+$\Arg(\ell+\ii\pi)$ is one of $j\pi/d$. This gives
+$\ell=\pi\cot(j\pi/d)$. Reversing the order of these real values
+and solving $u/(1-u)=e^\ell$ yields \eqref{ado:eq:logisticroots}.
+The symmetry follows from $\cot(\pi-x)=-\cot x$.
+\end{proof}
+
+\begin{proposition}[A continuous Mellin identity and Stirling moments]
+\label{ado:prop:mellin}
+For real $x>0$ and complex $t$ satisfying $-x<\Ren t<1$,
+\begin{equation}\label{ado:eq:mellin}
+ \int_0^1u^{x-1}e^{t\ell(u)}\frac{\sin\pi t}{\pi t}\dd u
+ =\frac{\Gamma(x+t)}{\Gamma(x+1)\Gamma(1+t)}.
+\end{equation}
+The values at removable singularities are obtained by continuation.
+For every integer $n\ge1$,
+\begin{equation}\label{ado:eq:stirlingmoments}
+ \int_0^1u^{n-1}\kappa_{\one_d}(u)\dd u
+ =\frac{\bracks{n}{d}}{n!},
+\end{equation}
+where $\bracks{n}{d}$ is the unsigned Stirling number of the first kind,
+zero for $d>n$.
+\end{proposition}
+\begin{proof}
+The integral equals
+$\sin(\pi t)B(x+t,1-t)/(\pi t)$. The beta formula and Gamma
+reflection simplify it to \eqref{ado:eq:mellin}. At integer $x=n$,
+the right side is
+\[
+ \frac{(t+1)(t+2)\cdots(t+n-1)}{n!}.
+\]
+Its coefficient of $t^{d-1}$ is $\bracks{n}{d}/n!$, proving
+\eqref{ado:eq:stirlingmoments} by \eqref{ado:eq:kernelgenerator}.
+\end{proof}
+These beta and Stirling identities provide an independent normalization
+check on the general signed-moment construction.
+
+\subsection{An explicit infinite family of compensated identities}
+For the roots \eqref{ado:eq:logisticroots}, define
+\[
+ P_d(u)=\prod_{j=1}^{d-1}(u-r_j),\qquad
+ D_d(z)=\prod_{j=1}^{d-1}(1-r_jz).
+\]
+The integrable function $P_d\kappa_{\one_d}$ is strictly positive
+away from its finitely many zeros. Combining
+\eqref{ado:eq:factorization} and \eqref{ado:eq:allonesLi} gives the
+exact identity
+\begin{equation}\label{ado:eq:generalidentity}
+ \boxed{\quad
+ \int_0^1\frac{P_d(u)\kappa_{\one_d}(u)}{1-zu}\dd u
+ =\frac{D_d(z)}{d!}
+       \left(\frac{-\log(1-z)}z\right)^d,
+ \qquad z\in\Om.
+ \quad}
+\end{equation}
+At $z=0$ the removable value is $1/d!$. At $z=-1$ this becomes
+\begin{equation}\label{ado:eq:negativeoneidentity}
+ \int_0^1\frac{P_d(u)\kappa_{\one_d}(u)}{1+u}\dd u
+ =\frac{D_d(-1)}{d!}\log^d2.
+\end{equation}
+The content is not a new formula for $L_{\one_d}$; it is the explicit
+positive density, its canonical compensation, and the resulting
+positive-integrand identities. They remain valid at every depth without
+a numerical relation search.
+
+\subsection{Depth three}
+Put
+\[
+ h_3=\frac\pi{\sqrt3},\qquad
+ q_3=\frac1{2+2\cosh h_3}.
+\]
+Then
+\[
+ P_3(u)=u^2-u+q_3,\qquad
+ D_3(z)=1-z+q_3z^2,\qquad
+ \kappa_{\one_3}(u)=\frac{\ell(u)^2-\pi^2/3}{2}.
+\]
+Both factors $P_3$ and $\ell^2-\pi^2/3$ are negative between the
+same two roots and positive outside them. Hence their product is
+nonnegative throughout the interval. Formula
+\eqref{ado:eq:negativeoneidentity} gives
+\begin{equation}\label{ado:eq:depththreeidentity}
+ \boxed{
+ \int_0^1\frac{(u^2-u+q_3)(\ell(u)^2-\pi^2/3)}{1+u}\dd u
+ =\frac{2+q_3}{3}\log^3 2.}
+\end{equation}
+The companion normalization is
+\begin{equation}\label{ado:eq:depththreenormalization}
+ \int_0^1 (u^2-u+q_3)(\ell(u)^2-\pi^2/3)\dd u=\frac13.
+\end{equation}
+These identities are proved statements, not high-precision conjectures.
+
+\subsection{Depth four}
+Set
+\[
+ q_4=\frac1{2+2\cosh\pi},\qquad
+ P_4(u)=\left(u-\frac12\right)(u^2-u+q_4).
+\]
+Now
+\[
+ D_4(z)=\left(1-\frac z2\right)(1-z+q_4z^2),\qquad
+ \kappa_{\one_4}(u)=\frac{\ell(u)^3-\pi^2\ell(u)}6.
+\]
+The roots are the logistic images of $-\pi,0,\pi$, so again the
+product $P_4\kappa_{\one_4}$ is nonnegative. The corresponding pair
+of identities is
+\begin{align}
+ \int_0^1\frac{P_4(u)(\ell(u)^3-\pi^2\ell(u))}{1+u}\dd u
+ &=\frac{3(2+q_4)}8\log^4 2,
+ \label{ado:eq:depthfouridentity}\\
+ \int_0^1P_4(u)(\ell(u)^3-\pi^2\ell(u))\dd u&=\frac14.
+ \label{ado:eq:depthfournormalization}
+\end{align}
+All endpoint singularities are logarithmic powers and are integrable.
+Thus no principal-value convention is implicit in these formulas.
+
+\subsection{An explicit density-edge asymptotic}
+The smallest all-ones density root gives a simple large-depth benchmark:
+\begin{equation}\label{ado:eq:edgeasymptotic}
+ \log r_1=-d+\frac{\pi^2}{3d}+\frac{\pi^4}{45d^3}
+             +O(d^{-5})+O(e^{-d}).
+\end{equation}
+Indeed $\log r_1=-\pi\cot(\pi/d)
+-\log(1+e^{-\pi\cot(\pi/d)})$, and the Taylor expansion of $\cot$
+at zero gives the displayed terms. This concerns a density root, not
+an angular zero. Symmetry supplies $1-r_{d-1}=r_1$.

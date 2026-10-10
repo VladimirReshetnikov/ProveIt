@@ -1,0 +1,150 @@
+\section{An error generating function and all-order identities}
+\label{sec:identities}
+\subsection{Generating the complete error sequence}
+The remainder analysis gives more than a numerical estimate. Write
+\[
+ G_{a,b}(r)=\Imag F_{a,b}(\ii r),\qquad r>0,
+\]
+using the same analytic continuation as before. The positive imaginary axis never meets the principal cut.
+
+\begin{theorem}[Euler-error generating identity]\label{thm:generating}
+For $a\ge0$, $b>0$, and $0<q<2$, $q\ne1$,
+\begin{equation}\label{eq:error-generating}
+ \boxed{\sum_{N=1}^{\infty}e_Nq^{N-1}
+ =\frac{G_{a,b}\!\left(\sqrt{q/(2-q)}\right)/\sqrt{q(2-q)}-g_{a,b}}{1-q}.}
+\end{equation}
+The series is absolutely convergent, locally uniformly for $|q|<2$. The singularity displayed at $q=1$ is removable.
+\end{theorem}
+\begin{proof}
+For sufficiently small positive $t$, the binomial-transform generating function gives
+\[
+ \sum_{j\ge0}d_jt^j
+ =\frac1{1-t}\sum_{k\ge0}A_k\left(\frac{-t}{1-t}\right)^k
+ =\frac{G_{a,b}(r)}{r(1-t)},\qquad r=\sqrt{\frac{t}{1-t}}.
+\]
+All series here converge absolutely for small $t$; the coefficients $A_k$ have at most polynomial growth, with a possible logarithmic factor. From $E_{N+1}-E_N=d_N/2^{N+1}$ we get
+\[
+ R_{N+1}=2R_N+d_N,\qquad R_0=-g_{a,b}.
+\]
+Consequently
+\begin{equation}\label{eq:scaled-generating}
+ \sum_{N\ge0}R_Nt^N
+ =\frac{rG_{a,b}(r)-g_{a,b}}{1-2t}.
+\end{equation}
+Set $t=q/2$, remove the $N=0$ term and divide by $q$. This is \eqref{eq:error-generating} near zero.
+
+The uniform remainder theorem proves absolute convergence of the left side throughout $|q|<2$. On the real interval $0<q<2$, the numerator on the right is real analytic, vanishes at $q=1$, and therefore has a removable quotient there. Real analytic continuation proves equality on the entire interval. Equivalently, one can complexify with the odd analytic function $[F(\ii r)-F(-\ii r)]/(2\ii)$; it agrees with $G(r)$ for real $r$. This avoids treating an imaginary-part operation as a holomorphic function of a complex variable.
+\end{proof}
+
+\subsection{Order-lowering polynomials}
+Define $P_n(\lambda)\in\Q[\lambda]$ by
+\begin{equation}\label{eq:momentPgen}
+ \sum_{n\ge0}P_n(\lambda)x^n
+ =(1-x^2)^{-1/2}\exp\{\lambda\operatorname{arctanh}x\}.
+\end{equation}
+They obey the finite recurrence
+\begin{equation}\label{eq:momentPrec}
+ P_0=1,\quad P_1=\lambda,\qquad
+ (n+1)P_{n+1}=\lambda P_n+nP_{n-1}\quad(n\ge1).
+\end{equation}
+Indeed $(1-x^2)$ times the derivative of the generating function equals $(\lambda+x)$ times that function. In particular,
+\begin{align*}
+ P_2&=\frac{\lambda^2+1}{2},&
+ P_3&=\frac{\lambda^3+5\lambda}{6},\\
+ P_4&=\frac{\lambda^4+14\lambda^2+9}{24},&
+ P_5&=\frac{\lambda^5+30\lambda^3+89\lambda}{120}.
+\end{align*}
+Every nonzero coefficient is positive, and $P_n$ has the parity of $n$.
+
+Let $\D=z\,\mathrm d/\mathrm dz$. Termwise differentiation in the disk and analytic continuation give
+\begin{equation}\label{eq:lowering}
+ \D^j F_{a,b}(z)=F_{a-j,b}(z).
+\end{equation}
+When $a-j<0$, the right side is defined first by the same disk series and then by this derivative continuation. The definition is consistent: choosing a larger positive starting order gives the same analytic function because the disk series agree. Set $g_{a-j,b}=\Imag F_{a-j,b}(\ii)$. The notation $P_n(\D)g_{a,b}$ below means apply the operator to $F$ first and then take its imaginary value at $\ii$; it is not differentiation of a number with respect to $z$.
+
+\begin{theorem}[All-order binomial moments of the error]\label{thm:moments}
+For every integer $k\ge0$, $a\ge0$ and $b>0$,
+\begin{equation}\label{eq:momentidentity}
+ \boxed{\sum_{N\ge1}\binom{N-1}{k}(E_N-g_{a,b})
+ =-\sum_{j=0}^{k+1}[\lambda^j]P_{k+1}(\lambda)\,g_{a-j,b}.}
+\end{equation}
+Every series on the left converges absolutely. Thus the following are exact identities, not fitted relations:
+\begin{align}
+ \sum_{N\ge1}e_N&=-g_{a-1,b},\label{eq:moment0}\\
+ \sum_{N\ge1}(N-1)e_N&=-\frac{g_{a-2,b}+g_{a,b}}{2},\label{eq:moment1}\\
+ \sum_{N\ge1}\binom{N-1}{2}e_N
+ &=-\frac{g_{a-3,b}+5g_{a-1,b}}{6}.\label{eq:moment2}
+\end{align}
+\end{theorem}
+\begin{proof}
+Put $q=1+x$ in \eqref{eq:error-generating}. Then
+\[
+ \sqrt{\frac{q}{2-q}}=e^{\operatorname{arctanh}x},\qquad
+ \frac1{\sqrt{q(2-q)}}=(1-x^2)^{-1/2}.
+\]
+The Taylor expansion in the logarithm of the radius, together with \eqref{eq:lowering}, identifies the numerator as
+\[
+ \sum_{n\ge0}\left\{\sum_j[\lambda^j]P_n(\lambda)g_{a-j,b}\right\}x^n-g_{a,b}.
+\]
+Dividing by $-x$ and comparing the coefficient of $x^k$ proves the formula. The left-hand coefficient is obtained by expanding $(1+x)^{N-1}$. The estimate $e_N<(9/8)2^{-N}$ for $N\ge2$ justifies all termwise differentiations in a neighborhood of $q=1$.
+\end{proof}
+
+\begin{corollary}[A certified tail for every moment]\label{cor:momenttail}
+If $M\ge2$ and $M>2k$, then the omitted tail of \eqref{eq:momentidentity} satisfies
+\begin{equation}\label{eq:momenttail}
+ 0<\sum_{N\ge M}\binom{N-1}{k}e_N
+ <\frac98\,\frac{2(M-k)}{M-2k}\binom{M-1}{k}2^{-M}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+For $t_N=\binom{N-1}{k}2^{-N}$, the ratio $t_{N+1}/t_N=N/[2(N-k)]$ is at most $M/[2(M-k)]<1$ when $N\ge M$. Apply the geometric majorant and the remainder theorem. This also supplies explicit certified evaluation budgets for the new identities.
+\end{proof}
+
+\subsection{A Gaussian sign theorem at negative outer orders}
+\begin{corollary}[Negativity through outer order minus one]\label{cor:negativeorder}
+For every real $s\ge-1$ and every $b>0$,
+\begin{equation}\label{eq:negativeorder}
+ g_{s,b}<0.
+\end{equation}
+\end{corollary}
+\begin{proof}
+In \eqref{eq:moment0} take $a=s+1\ge0$. Every error is strictly positive, so the right side $-g_{s,b}$ is strictly positive.
+\end{proof}
+This corollary concerns analytic Gaussian values; it does not assert convergence of their original boundary series. Nor does it extend the Euler bound to negative outer orders. Higher moments provide additional strict linear inequalities among shifted-order values. For example,
+\[
+ g_{a-2,b}+g_{a,b}<0,\qquad
+ g_{a-3,b}+5g_{a-1,b}<0\quad(a\ge0,b>0).
+\]
+A fixed sign cannot persist at all negative orders: the direct elementary evaluation below gives $g_{-3,1}=1+\pi/4>0$.
+
+\subsection{Explicit identities with rational harmonic Euler sums}
+For $(a,b)=(1,1)$, the classical disk identity is
+\[
+ F_{1,1}(z)=\frac12\log^2(1-z),\qquad
+ g_{1,1}=-\frac{\pi\log2}{8}.
+\]
+It follows by differentiating both sides and checking the zero value at the origin. The principal logarithm at $z=\ii$ is
+$\log(1-\ii)=\tfrac12\log2-\ii\pi/4$. Let $E_N=E_N(1,1)$ as defined in \eqref{eq:Euler}; each $E_N$ is rational. Repeated application of $\D$ gives
+\begin{align*}
+ g_{0,1}&=-\frac\pi8-\frac{\log2}{4},&
+ g_{-1,1}&=-\frac12-\frac\pi8,\\
+ g_{-2,1}&=-\frac34+\frac{\log2}{4},&
+ g_{-3,1}&=1+\frac\pi4.
+\end{align*}
+Substitution into the first three moment identities proves
+\begin{align}
+ \sum_{N\ge1}\left(E_N+\frac{\pi\log2}{8}\right)
+ &=\frac\pi8+\frac{\log2}{4},\label{eq:explicit0}\\
+ \sum_{N\ge1}(N-1)\left(E_N+\frac{\pi\log2}{8}\right)
+ &=\frac14+\frac{\pi(1+\log2)}{16},\label{eq:explicit1}\\
+ \sum_{N\ge1}\binom{N-1}{2}\left(E_N+\frac{\pi\log2}{8}\right)
+ &=\frac18+\frac{\log2}{6}+\frac{5\pi}{48}.\label{eq:explicit2}
+\end{align}
+The parenthesized summands must be kept together. Separately summing the rational $E_N$ and the added constant would split an absolutely convergent error series into divergent pieces.
+
+There is also an exact axis derivative identity for every $b>0$:
+\begin{equation}\label{eq:negativeaxis}
+ g_{-1,b}=-\frac12\left\{\beta(b)+\beta(b-1)
+                         +2^{1-b}\eta(b-1)\right\}.
+\end{equation}
+To verify it, apply $\D$ to $F_{0,b}(z)=z\Li_b(z)/(1-z)$, use $\D\Li_b=\Li_{b-1}$, and evaluate at $\ii$. The beta and eta terms at $b-1\le0$ have their analytic meanings. Corollary~\ref{cor:negativeorder} shows that the braces are strictly positive for every $b>0$, an inequality that is not obvious from their individual continued-series notation.

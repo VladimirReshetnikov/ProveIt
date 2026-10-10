@@ -1,0 +1,71 @@
+\appendix
+\section{Source provenance and integration map}
+\label{app:provenance}
+
+All comparisons to the repository refer to commit
+\begin{center}\sourcecommit\end{center}
+in \url{https://github.com/VladimirReshetnikov/ProveIt}.
+The commit is dated 10 October 2026 and publishes the reviewed
+375-page real-order manuscript milestone. The present article is a
+separate continuation prepared against that version. The archive's
+\code{provenance.json} records hashes of the relevant original files,
+the inherited verifier, and the provenance of each main claim.
+
+\begin{longtable}{@{}P{0.28\textwidth}P{0.40\textwidth}P{0.26\textwidth}@{}}
+\toprule
+New section & Suggested manuscript location & Status update\\
+\midrule
+\endhead
+Sharp universal Euler bound & After the real-order Euler and Gaussian
+axis analysis in Chapter 5. & Close the universal-constant question;
+retain stronger restricted bounds.\\
+All-ratio moments & After Chapter 7, together with the companion report's joint-moment and
+certified proportional saddle material. & Add an unrestricted-ratio algebraic
+expansion; retain fixed-order exponential results.\\
+Effective Lerch zeros & After the global variation bound and fixed-index
+concentration material in Chapter 9. & Replace a purely existential
+threshold by an explicit sufficient one; add the growing-index regime.\\
+Integral shuffle minor & With the Gaussian reduction and relation-matrix
+material in Chapters 4--5. & Add the integral presentation and denominator
+theorem with the Zagier/Ma attribution.\\
+$S_{10}$ and $S_{12}$ & Alongside the frozen $S_6$ and $S_8$ candidates. &
+Mark both as conjectural; attach exact proximity certificates.\\
+Research agenda & Revise the corresponding open items in Chapter 10. &
+Keep fixed-pair constants, sharp thresholds and mixed reductions open.\\
+\bottomrule
+\end{longtable}
+
+The inherited global-slope theorem is sourced from the report
+\code{uniform-transition-continuation}, in its section file
+\code{sections/04b-proportional-moments.tex}.
+An unchanged copy is included as \code{integration/inherited_global_slope.tex},
+and its original exact verifier is included under \code{code/moments/}.
+The original file includes its endpoint argument, compact certificate,
+and proportional theorem. It is reference material, not a second new
+proof or a required input to compiling this article.
+
+For an explicit view of that dependency, write $P=\psi_1$ and
+\[
+ \frac{J'}J=
+ \frac{F(x)}{f(x)}+\frac{F(1-x)}{f(1-x)}
+ -\frac{P(x)}{F(x)}-\frac{P(1-x)}{F(1-x)}.
+\]
+The source bounds this expression below by $176/225$ on
+$(0,1/16]$ using convergent gamma series and elementary inequalities;
+reflection handles $[15/16,1)$. Its 256 rational intervals cover
+$[1/16,1/2]$ completely. The replayed minimum lower endpoint is
+\[
+ \frac{2237344070433247164830307425599}
+      {1267650600228229401496703205376}>\frac74.
+\]
+Every rounding is outward on a $2^{-100}$ grid, and all special constants
+are enclosed by rational sums with explicit tails. Thus this inherited
+input is a computer-assisted theorem with a portable exact replay,
+not a sampled monotonicity assertion.
+
+The supplied integration notes include exact replacement wording for
+the superseded Euler caution and the research-status entries. They do
+not propose removing the original hypotheses or recasting a numerical
+period relation as a proved identity. No change to the remote repository
+is part of this deliverable; the modular sections and complete source
+are ready for review and integration.

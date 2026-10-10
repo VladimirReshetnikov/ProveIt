@@ -1,0 +1,74 @@
+\section{A positive divided-difference representation}
+\label{sec:kernel}
+\subsection{Independent gamma variables}
+For $a,b>0$, let $S$ and $T$ be independent gamma variables of shapes $a,b$ and rate one, and put
+\[
+ X=e^{-S},\qquad Y=e^{-T},\qquad p=X^2.
+\]
+Then $0<X,Y<1$ almost surely. The elementary gamma integral gives
+\begin{equation}\label{eq:moments}
+ \E X^{n-1}=n^{-a},\qquad \E Y^{m-1}=m^{-b}.
+\end{equation}
+Consequently
+\begin{equation}\label{eq:Ak-kernel}
+ A_k=\E\left[\frac{p^k-(pY^2)^k}{1-Y}\right].
+\end{equation}
+For each fixed integer $k$, the quotient extends continuously at $Y=1$: it is $p^k(1+Y+\cdots+Y^{2k-1})$, with the value zero when $k=0$. Thus its expectation is finite even near $T=0$.
+
+Summing \eqref{eq:F} absolutely in the disk yields
+\begin{equation}\label{eq:positive-F}
+ F_{a,b}(z)=z^2\E\left[\frac{X}{(1-zX)(1-zXY)}\right].
+\end{equation}
+For each compact subset of the slit plane, $|1-zv|$ has a positive lower bound uniform in $0\le v\le1$. The integrand is then bounded and holomorphic. Dominated differentiation gives the asserted continuation. This argument has no signed-measure threshold.
+
+At the axis $a=0$, take $S=0$ and $X=1$ deterministically. Equations \eqref{eq:Ak-kernel} and \eqref{eq:positive-F} remain valid, and
+\begin{equation}\label{eq:axis-F}
+ F_{0,b}(z)=\frac{z\Li_b(z)}{1-z}.
+\end{equation}
+The gamma variables converge to this axis model as $a\downarrow0$. This probabilistic convention is only a convenient notation for the corresponding positive integrals.
+
+\subsection{The remainder kernel}
+For $N\ge0$ define
+\begin{equation}\label{eq:fN}
+ f_N(v)=\frac{(1-v)^N}{1+v}\quad(0\le v\le1),
+ \qquad
+ K_N(p,y)=\frac{f_N(py^2)-f_N(p)}{1-y}\quad(0\le y<1).
+\end{equation}
+For $N\ge1$, $f_N$ is strictly decreasing on $[0,1]$. The continuous boundary value at $y=1$ is
+\begin{equation}\label{eq:kernel-boundary}
+ K_N(p,1)=-2p f_N'(p)
+ =\frac{2p(1-p)^{N-1}\{N+1+(N-1)p\}}{(1+p)^2}.
+\end{equation}
+All formulas below use the continuous endpoint interpretation. In particular, no uncontrolled division by a small $1-y$ is needed in a numerical implementation.
+
+\begin{proposition}[Exact positive remainder]\label{prop:remainder}
+For $a\ge0$, $b>0$ and $N\ge1$,
+\begin{equation}\label{eq:remainder}
+ R_N(a,b)=\E K_N(X^2,Y)>0.
+\end{equation}
+Furthermore $d_j<0$ for $j\ge1$, and the $E_N$ decrease strictly.
+\end{proposition}
+\begin{proof}
+The binomial theorem applied to the finite expression \eqref{eq:Ak-kernel} gives
+\[
+ d_j=\E\left[\frac{(1-p)^j-(1-pY^2)^j}{1-Y}\right].
+\]
+It is strictly negative for $j\ge1$. For fixed $v$, the finite geometric identity is
+\[
+ \sum_{j=0}^{N-1}\frac{(1-v)^j}{2^{j+1}}
+ =\frac{1}{1+v}-2^{-N}\frac{(1-v)^N}{1+v}.
+\]
+Apply it to the difference of the two kernels. On the other hand, rationalizing \eqref{eq:positive-F} at $z=\ii$ gives
+\begin{equation}\label{eq:g-kernel}
+ g_{a,b}
+ =\E\left[\frac{(1+p)^{-1}-(1+pY^2)^{-1}}{1-Y}\right]
+ =-\E\left[\frac{p(1+Y)}{(1+p)(1+pY^2)}\right].
+\end{equation}
+Subtracting proves \eqref{eq:remainder} directly. Every operation so far involves bounded rational functions or finite sums. In particular, an infinite alternating series has not been interchanged with an integral. Strict positivity follows because $p>0$ and $0<Y<1$ almost surely, including on the axis.
+\end{proof}
+
+The order variables now occur only in the probability distribution of $(p,Y)$. A pointwise bound on $K_N$ simultaneously covers supercritical, critical and subcritical orders. This removes the blow-up of the individual Jordan-mass estimates near $a+b=1$.
+
+\begin{remark}[What this representation does not say]
+The signed-moment representation of the original coefficients need not exist below the threshold. The present representation is a positive expectation of a \emph{difference quotient}, not a replacement signed measure with incorrectly assumed finite mass. The cancellation in the numerator is retained throughout.
+\end{remark}

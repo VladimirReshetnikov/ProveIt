@@ -1,0 +1,504 @@
+\section{The extreme roots of Cohen's Lambert polynomials}
+\label{sec:cohen-edges}
+
+The diagonal polynomials are a previously studied family.  In the
+notation of Cohen~\cite[Proposition~4.8]{Cohen2021},
+\begin{equation}\label{eq:cohen-identification}
+ L_n(X)=(-1)^n p_n(X).
+\end{equation}
+Cohen's Conjecture~7.1 concerns their real roots, interlacing, and
+extreme-root asymptotics, including a numerical constant in the largest
+root.  We prove a full fixed-index extreme-root expansion, establish
+the conjectured polynomial dependence of every coefficient on the
+integer parameter, and identify the first constant.  The proof
+also applies to Cohen's generalized polynomials
+$L_{n,k}$ for each fixed positive integer $k$.  All references to that
+conjecture below concern the version dated 18 January 2021; no claim is
+made that every aspect of the conjecture remains unresolved elsewhere.
+
+\subsection{An operator normalization and a reciprocal transform}
+
+Let $n,k\geq1$, set $N=n+k-1$, and put $D=d/dx$.  Cohen's signed-Stirling
+formula is equivalently
+\begin{equation}\label{eq:cohen-operator}
+ L_{n,k}(X)=\frac{(-1)^n k}{n}
+   \left.\left(\prod_{r=1}^{n-1}(1+D/r)\right)x^N\right|_{x=-X}.
+\end{equation}
+An empty product is one.  For $k=1$, this gives
+\eqref{eq:cohen-identification}.  The operator argument in
+Lemma~\ref{lem:zero-law-inputs} proves immediately that $L_{n,k}$ has
+a zero of multiplicity $k$ at the origin and exactly $n-1$ additional
+zeros, all simple and positive.  Indeed each application of $1+cD$,
+$c>0$, removes one multiplicity at zero and introduces one negative
+simple root, with the other negative roots strictly interlacing those
+of the preceding polynomial.  Thus this elementary argument proves
+the real-rooted portions of Cohen's Conjecture~7.1(1),(4).
+
+\begin{proposition}[Interlacing of successive Lambert polynomials]
+\label{prop:cohen-interlacing}
+The zeros of $L_n$ and $L_{n+1}$ interlace.  Their only common zero
+is $0$, and all interlacing inequalities between positive zeros are
+strict.
+\end{proposition}
+
+\begin{proof}
+Write $T_n=\prod_{r=1}^{n-1}(1+D/r)$ and $P_n(x)=T_nx^n$.
+For every real $t$,
+\[
+ P_{n+1}(x)+tP_n(x)
+    =T_n\bigl[x^n(x+(n+1)/n+t)\bigr]
+\]
+is real-rooted, because its input polynomial is real-rooted and
+each factor $1+D/r$ preserves that property.  The elementary
+real-rooted pencil criterion implies weak interlacing.
+To recall why that criterion applies, cancel common factors in
+$R/P$, where every $R+tP$ is real-rooted.  This real rational
+function cannot take a real value in the upper half-plane.  Its
+imaginary part therefore has constant sign there; the monic degree
+difference one makes that sign positive.  Its residues at the
+remaining real poles are negative, which forces strict interlacing
+of the remaining zeros and poles.  Reintroducing common factors
+gives weak interlacing.
+
+In the present case no nonzero root can be shared.  The identity
+\[
+ P_{n+1}'=(n+1)(P_n+P_n'/n)
+\]
+would make a shared nonzero root a multiple root of
+$P_{n+1}-(n+1)P_n/n=T_nx^{n+1}$.  The operator argument proves that
+this last polynomial has only simple nonzero roots, with zero
+of multiplicity two, a contradiction.  Changing $x$ to $-X$
+proves the assertion.  This also proves the interlacing assertion
+in Cohen's Conjecture~7.1(3).
+\end{proof}
+
+For $1\leq j\leq n-1$, write $X_{n,k,j}$ for the positive roots in
+\emph{decreasing} order.  This indexing is intentionally opposite to
+the bulk indexing in Section~\ref{sec:velocity-zero-law}.
+Let $e_r=e_r(1,1/2,\ldots,1/(n-1))$ be elementary symmetric functions,
+with $e_0=1$, and use $N^{\underline r}=N(N-1)\cdots(N-r+1)$.
+The reciprocal polynomial
+\begin{equation}\label{eq:reciprocal-lambert-polynomial}
+ Q_{n,N}(w)=\sum_{r=0}^{n-1}(-1)^r
+       \frac{N^{\underline r}}{N^r}e_r w^r
+\end{equation}
+has its $n-1$ roots at $w=N/X_{n,k,j}$, in increasing order.
+It is obtained from $L_{n,k}(N/w)$ by multiplication by
+$n(w/N)^N/((-1)^{k-1}k)$, so the transform introduces no finite
+nonzero roots.  Define also
+\begin{equation}\label{eq:gamma-product-fn}
+ f_n(w)=\prod_{r=1}^{n-1}(1-w/r)
+       =\frac{\Gamma(n-w)}{\Gamma(n)\Gamma(1-w)},\qquad
+ g(w)=\frac1{\Gamma(1-w)}.
+\end{equation}
+At the apparent poles the gamma quotient is understood through the
+polynomial product.  Coefficient extraction gives the exact identity
+\begin{equation}\label{eq:reciprocal-coefficient-integral}
+ Q_{n,N}(w)=\frac{N!}{N^N}[z^N]\,e^{Nz}f_n(wz).
+\end{equation}
+
+\subsection{An exact logarithmic shift and a uniform saddle expansion}
+
+The important simplification is to remove $\log n$ \emph{before}
+expanding a zero.  Set $\ell=\log n$ and define
+\begin{equation}\label{eq:log-shifted-transform}
+ h_n(v)=n^v f_n(v),\qquad
+ T_{n,N}(v)=\frac{N!}{N^N}[z^N]e^{Nz}h_n(vz).
+\end{equation}
+Combining exponentials in \eqref{eq:reciprocal-coefficient-integral}
+and rescaling its coefficient variable gives the exact identity
+\begin{equation}\label{eq:exact-logarithmic-shift}
+ Q_{n,N}(w)=r^N T_{n,N}(v),\qquad
+ r=1-\frac{w\ell}{N},\qquad v=\frac wr.
+\end{equation}
+Indeed $e^{Nz}f_n(wz)=e^{(N-w\ell)z}h_n(wz)$, and replacing
+$z$ by $z/r$ proves the formula.  At a root corresponding to
+$X=N/w$, the new coordinate is simply
+\begin{equation}\label{eq:shifted-reciprocal-coordinate}
+ v=\frac{N}{X-\log n},\qquad X=\log n+\frac Nv.
+\end{equation}
+All these transformations are used near a fixed positive $v$, where
+$r$ is nonzero for large $n$.  Zeros far from this region need not
+be classified to determine any fixed number of largest roots.
+
+The uniform gamma-ratio expansion \cite[\S5.11]{DLMFGamma} gives,
+locally uniformly in the complex plane and with every fixed number
+of derivatives,
+\begin{equation}\label{eq:gamma-ratio-full}
+ h_n(v)\sim g(v)R(v;1/n),\qquad
+ R(v;\epsilon)=\exp\left(\sum_{a\geq1}\lambda_a(v)\epsilon^a\right),
+\end{equation}
+where
+\begin{equation}\label{eq:gamma-ratio-Bernoulli}
+ \lambda_a(v)=\frac{(-1)^{a+1}}{a(a+1)}
+      \bigl(B_{a+1}(-v)-B_{a+1}(0)\bigr).
+\end{equation}
+Here $B_m(x)$ are the Bernoulli polynomials defined by
+$t e^{xt}/(e^t-1)=\sum_{m\geq0}B_m(x)t^m/m!$.
+The symbol $\sim$ denotes an asymptotic expansion to every finite
+order; no convergence of the formal series $R(v;\epsilon)$ is
+assumed.  Its first coefficient is
+\begin{equation}\label{eq:gamma-ratio-edge}
+ R(v;\epsilon)=1+q_1(v)\epsilon+O(\epsilon^2),\qquad
+ q_1(v)=\frac{v(v+1)}2.
+\end{equation}
+In particular $h_n$ and each of its fixed derivatives are uniformly
+bounded on every fixed compact set.  The gamma quotient is analytic
+on a fixed compact set for large $n$, and its expansion there follows
+from uniform Stirling expansion; derivative estimates follow by
+Cauchy's formula on a slightly larger compact set.
+
+\begin{lemma}[An all-orders coefficient-extraction estimate]
+\label{lem:reciprocal-saddle}
+For $r\geq0$, define polynomials $m_r(\eta)$ by
+\begin{equation}\label{eq:saddle-moment-generating-function}
+ \sum_{r\geq0}m_r(\eta)\frac{s^r}{r!}
+  =\exp\left(\sum_{q\geq2}
+        \frac{(-1)^{q-1}}q s^q\eta^{q-1}\right),
+\end{equation}
+and differential operators
+\begin{equation}\label{eq:saddle-operator-definition}
+ \mathcal D_b F(v)=\sum_{r=0}^{2b}
+       [\eta^b]m_r(\eta)\,\frac{v^r}{r!}F^{(r)}(v).
+\end{equation}
+Then, for each fixed integer $M\geq0$ and compact $K\subset\mathbb C$,
+\begin{equation}\label{eq:log-free-saddle-expansion}
+ T_{n,N}(v)=\sum_{b=0}^{M}N^{-b}\mathcal D_bh_n(v)
+             +O_{K,M}(N^{-M-1})
+\end{equation}
+uniformly for $v\in K$ and all sufficiently large independent
+positive integers $n,N$.  In particular,
+\begin{align}\label{eq:first-saddle-operators}
+ \mathcal D_0F&=F,\qquad
+ \mathcal D_1F=-\frac{v^2}{2}F'',\\
+ \mathcal D_2F&=\frac{v^3}{3}F'''+\frac{v^4}{8}F^{(4)},\notag\\
+ \mathcal D_3F&=-\frac{v^4}{4}F^{(4)}
+                 -\frac{v^5}{6}F^{(5)}
+                 -\frac{v^6}{48}F^{(6)}.\notag
+\end{align}
+Consequently $T_{n,N}\to g$ locally uniformly as $n,N\to\infty$.
+\end{lemma}
+
+\begin{proof}
+On $z=e^{i\varphi}$ the exact coefficient integral is
+\[
+ \frac{N!}{2\pi N^N}\int_{-\pi}^{\pi}
+       e^{N e^{i\varphi}-iN\varphi}h_n(ve^{i\varphi})\,d\varphi.
+\]
+After extracting $e^N$, Stirling's formula bounds its prefactor by
+$O(\sqrt N)$, while the modulus of its exponential factor is
+$e^{N(\cos\varphi-1)}$.  On $|\varphi|\leq N^{-2/5}$, expand the
+amplitude about $z=1$ through degree $2M+1$.  The uniform compact
+bounds on $h_n^{(2M+2)}$ bound the Taylor remainder by
+$C_{K,M}|e^{i\varphi}-1|^{2M+2}$, independently of large $n$.
+Its integral is $O_{K,M}(N^{-M-1})$, since
+\[
+ \sqrt N\int e^{-cN\varphi^2}|\varphi|^{2M+2}\,d\varphi
+            =O_M(N^{-M-1}).
+\]
+On the complementary arc the exponential is at most
+$e^{-cN^{1/5}}$.  The amplitude and its finite Taylor polynomial
+remain uniformly bounded on a fixed compact set, so this arc is
+negligible.  We may therefore integrate the Taylor polynomial over
+the whole circle.
+
+Its exact moments are
+\[
+ M_r(N)=\frac{N!}{N^N}[z^N]e^{Nz}(z-1)^r
+       =\sum_{a=0}^r(-1)^{r-a}\binom ra
+            \frac{N^{\underline a}}{N^a}.
+\]
+Their exponential generating function is exactly
+\[
+ \sum_{r\geq0}M_r(N)\frac{s^r}{r!}
+       =e^{-s}(1+s/N)^N
+       =\exp\left(\sum_{q\geq2}
+               \frac{(-1)^{q-1}s^q}{qN^{q-1}}\right).
+\]
+Thus $M_r(N)=m_r(1/N)$.  Moreover $m_0=1$, $m_1=0$, and for
+$r\geq2$ the least possible power of $\eta$ is $\lceil r/2\rceil$:
+a product of terms $s^q\eta^{q-1}$ has $s$-degree at most twice
+its $\eta$-degree.  This proves both the finite range in
+\eqref{eq:saddle-operator-definition} and the fact that the
+Taylor term of degree $2M+1$ contributes only $O(N^{-M-1})$.
+Grouping the other terms by powers of $1/N$ proves
+\eqref{eq:log-free-saddle-expansion}.  The displayed operators
+follow directly from the generating function.
+\end{proof}
+
+\subsection{All-orders edge asymptotics and polynomial parameter dependence}
+
+Write $H_m^{(r)}=\sum_{a=1}^m a^{-r}$, $H_0^{(r)}=0$, and
+$H_m=H_m^{(1)}$.  Let $\gamma$ be Euler's constant.
+
+\begin{theorem}[All-orders fixed-index largest roots]
+\label{thm:cohen-extreme-roots}
+Fix positive integers $j,k$.  There are explicitly computable
+polynomials $C_{j,m}(\kappa)$, $m\geq1$, with
+$\deg C_{j,m}=m-1$, such that for every fixed integer $M\geq0$,
+\begin{equation}\label{eq:cohen-extreme-root-all-orders}
+ X_{n,k,j}=\frac{n+k-1}{j}+\log n+\gamma-H_{j-1}
+     +\sum_{m=1}^{M}\frac{C_{j,m}(k-1)}{n^m}
+     +O_{j,k,M}(n^{-M-1}).
+\end{equation}
+The sum is empty when $M=0$.  Put
+\[
+ s_2=H_{j-1}^{(2)}+\zeta(2),\qquad
+ s_3=H_{j-1}^{(3)}-\zeta(3).
+\]
+The first coefficient, independent of $\kappa$, is
+\begin{equation}\label{eq:cohen-Cj}
+ C_{j,1}(\kappa)=j^2s_3-js_2-j-\frac12=:C_j.
+\end{equation}
+For $m\geq2$, the coefficient of $\kappa^{m-1}$ in
+$C_{j,m}(\kappa)$ is
+\begin{equation}\label{eq:cohen-leading-parameter-coefficient}
+ (-1)^{m-1}(j^2s_3-js_2),
+\end{equation}
+which is nonzero.  In particular, for every fixed $k\geq1$,
+\begin{equation}\label{eq:cohen-largest-root}
+ X_{n,k,1}=n+k-1+\log n+\gamma
+     -\frac{\frac32+\zeta(2)+\zeta(3)}{n}+O_k(n^{-2}).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+First identify the relevant roots.  The limit in
+Lemma~\ref{lem:reciprocal-saddle} is
+$g(v)=1/\Gamma(1-v)$, whose zeros are the positive integers,
+all simple.  Rouch\'e's theorem on small disjoint circles about
+$1,\ldots,j$ and uniform nonvanishing on the intervening compact
+real intervals, including the interval starting at $0$, show that
+$T_{n,N}$ has one root near each of $1,\ldots,j$ and no additional
+smaller positive roots.  The nearby roots are real, either by
+conjugation and uniqueness in each circle or by the real-rootedness
+already established for the original polynomials.  For large $n$,
+\eqref{eq:exact-logarithmic-shift} maps each of these roots to a
+positive root $X=\log n+N/v$.  Positive $v$ correspond precisely to
+roots with $X>\log n$ and preserve decreasing order in $X$.
+Roots with $v<0$ give $X<\log n$ and cannot intervene among these
+largest roots.  Hence the root approaching $j$ is exactly
+\[
+ v_{n,k,j}=\frac{N}{X_{n,k,j}-\log n}.
+\]
+
+We now use formal series only as a finite-order computational device.
+Introduce independent formal variables $\epsilon,\eta$ and define
+\begin{equation}\label{eq:formal-edge-equation}
+ \mathcal T(v;\epsilon,\eta)
+   =\sum_{b\geq0}\eta^b
+           \mathcal D_b\bigl(g(v)R(v;\epsilon)\bigr).
+\end{equation}
+The gamma expansion and Lemma~\ref{lem:reciprocal-saddle} show that
+this is the full two-parameter asymptotic expansion of $T_{n,N}$
+when $\epsilon=1/n$ and $\eta=1/N$.  More precisely, its truncation
+through total degree $d$ has error $O_{K,d}((1/n+1/N)^{d+1})$
+on compact sets.  This follows by expanding $h_n$ to order $d-b$
+in the term with $N^{-b}$ in
+\eqref{eq:log-free-saddle-expansion}; the finitely many remainders
+have exactly the asserted total order.
+
+Since $g'(j)\ne0$, the formal implicit function theorem gives a
+unique series $v_j(\epsilon,\eta)$ with constant term $j$ satisfying
+$\mathcal T(v_j;\epsilon,\eta)=0$.  Crucially,
+\[
+ \mathcal T(v;\epsilon,0)=g(v)R(v;\epsilon).
+\]
+The factor $R$ is a formal unit and $g$ has its simple zero at $j$.
+Thus $v_j(\epsilon,0)=j$, and $v_j-j$ is divisible by $\eta$.
+The formal series
+\begin{equation}\label{eq:formal-height-series}
+ B_j(\epsilon,\eta)=\frac1\eta
+          \left(\frac1{v_j(\epsilon,\eta)}-\frac1j\right)
+\end{equation}
+therefore contains only nonnegative powers of $\epsilon,\eta$.
+All its coefficients are obtained recursively from
+\eqref{eq:formal-edge-equation}.  Neither that series nor the
+implicit series is asserted to converge.
+
+These formal coefficients give genuine asymptotic expansions.
+Indeed, restrict $N/n$ to a fixed compact subinterval of $(0,\infty)$,
+which includes $N=n+k-1$ for fixed $k$ and large $n$.  Truncate the
+formal root to any prescribed total degree and insert it into the
+finite expansion of $T_{n,N}$.  The residual has the next total
+order.  Locally uniform convergence $T_{n,N}\to g$, also for its
+first derivative, and $g'(j)\ne0$ convert that residual into a root
+error of the same order.  For real parameters this follows directly
+from the mean value theorem.  Computing the root through total
+order $M+1$, with residual $O(n^{-M-2})$, gives the height
+$\log n+N/v$ with error $O(n^{-M-1})$.  This accounts explicitly
+for the factor $N$ introduced by taking the reciprocal.
+
+It remains to determine the polynomial degrees and the first
+coefficients.  Set
+\[
+ c=H_{j-1}-\gamma.
+\]
+The local reciprocal-gamma expansion is
+\begin{equation}\label{eq:reciprocal-gamma-at-integer}
+ g(j+\delta)=g'(j)\delta
+     \exp\left(c\delta-\frac{s_2}2\delta^2
+                   +\frac{s_3}3\delta^3+O_j(\delta^4)\right),
+ \qquad g'(j)=(-1)^j(j-1)!.
+\end{equation}
+It follows from
+$g(j+\delta)=(-1)^j\delta\prod_{a=1}^{j-1}(a+\delta)/\Gamma(1-\delta)$
+and the convergent Taylor expansion of $\log\Gamma(1-\delta)$.
+In particular,
+\[
+ \frac{g''(j)}{g'(j)}=2c,\qquad
+ \frac{g'''(j)}{g'(j)}=3(c^2-s_2),\qquad
+ \frac{g^{(4)}(j)}{g'(j)}=4(c^3-3cs_2+2s_3).
+\]
+Use \eqref{eq:first-saddle-operators} and
+\eqref{eq:gamma-ratio-edge} to solve
+\eqref{eq:formal-edge-equation} through total degree two.  The result is
+\begin{align}\label{eq:formal-reciprocal-root-two-terms}
+ v_j(\epsilon,\eta)=j
+   &+j^2c\eta+j^2q_1'(j)\epsilon\eta\\
+   &+\bigl(j^3c^2+j^3s_2-j^4s_3\bigr)\eta^2
+       +\text{terms of total degree at least three}.\notag
+\end{align}
+For example, the $\eta$ coefficient is
+$-\mathcal D_1g(j)/g'(j)=j^2c$.  At $\epsilon=0$, the coefficient
+of $\eta^2$ is
+\[
+ -\frac{\frac12g''(j)(j^2c)^2
+      +(\mathcal D_1g)'(j)j^2c+\mathcal D_2g(j)}{g'(j)},
+\]
+which simplifies to the displayed value.  At first order in $\eta$,
+replacing $g$ by $gR$ replaces $c$ by
+$c+\partial_v\log R(j;\epsilon)$, giving the $\epsilon\eta$ term.
+Consequently
+\begin{equation}\label{eq:formal-height-first-coefficients}
+ B_j(\epsilon,\eta)=-c
+       -(j+\tfrac12)\epsilon+(j^2s_3-js_2)\eta
+       +\text{terms of total degree at least two}.
+\end{equation}
+
+Now put $\kappa=k-1$ and substitute
+\begin{equation}\label{eq:two-small-parameter-substitution}
+ \eta=\frac{\epsilon}{1+\kappa\epsilon}.
+\end{equation}
+This defines the polynomials $C_{j,m}$ by
+\begin{equation}\label{eq:Cjm-coefficient-recipe}
+ B_j\left(\epsilon,\frac{\epsilon}{1+\kappa\epsilon}\right)
+       =-c+\sum_{m\geq1}C_{j,m}(\kappa)\epsilon^m.
+\end{equation}
+Every nonconstant monomial $\epsilon^a\eta^b$ has $a+b\geq1$.
+If $b\geq1$, its contribution to the coefficient of $\epsilon^m$
+is a constant times $\kappa^{m-a-b}$, and if $b=0$ it is
+independent of $\kappa$.  Therefore $\deg C_{j,m}\leq m-1$.
+For $m\geq2$, the only possible term of degree $m-1$ comes from
+$\eta$ itself; by \eqref{eq:formal-height-first-coefficients} its
+coefficient is \eqref{eq:cohen-leading-parameter-coefficient}.
+Since $s_3=-\sum_{a=j}^{\infty}a^{-3}<0$ and $s_2>0$, this
+coefficient is nonzero.  At $m=1$ the constant polynomial is
+$C_j=j^2s_3-js_2-j-1/2<0$, also nonzero.  This proves the exact
+degree assertions and the stated formulas.  The formal-to-asymptotic
+argument above completes \eqref{eq:cohen-extreme-root-all-orders}.
+\end{proof}
+
+\begin{corollary}[The first two largest-root corrections]
+\label{cor:cohen-two-constants}
+For every fixed positive integer $k$,
+\begin{equation}\label{eq:cohen-two-corrections}
+ X_{n,k,1}=n+k-1+\log n+\gamma
+     +\frac{C_0(k)}n+\frac{C_1(k)}{n^2}+O_k(n^{-3}),
+\end{equation}
+where, in Cohen's indexing,
+\begin{align}\label{eq:cohen-exact-constants}
+ C_0(k)&=-\frac32-\zeta(2)-\zeta(3),\\
+ C_1(k)&=(k-1)\bigl(\zeta(2)+\zeta(3)\bigr)
+       +\zeta(2)^2-\zeta(2)\zeta(3)+2\zeta(3)+3\zeta(5)-\frac1{12}.
+       \notag
+\end{align}
+Thus $C_0(k)=-4.346990970007820721872\ldots$ and
+$C_1(1)=6.160067472396514377053\ldots$.
+\end{corollary}
+
+\begin{proof}
+The first identity is \eqref{eq:cohen-Cj} at $j=1$.  For the second,
+the gamma-ratio coefficient following $q_1$ is
+$q_2(v)=v(v+1)(v+2)(3v+1)/24$.  Write, near $v=1$,
+\[
+ \frac{g(1+z)}{g'(1)}=z\exp\left(cz-\frac{s_2}2z^2
+       +\frac{s_3}3z^3-\frac{s_4}4z^4+\frac{s_5}5z^5+O(z^6)\right),
+\]
+where $c=-\gamma$, $s_2=\zeta(2)$, $s_3=-\zeta(3)$,
+$s_4=\zeta(4)$ and $s_5=-\zeta(5)$.  Substitute $q_1,q_2$ and
+$\mathcal D_1,\mathcal D_2,\mathcal D_3$ into
+\eqref{eq:formal-edge-equation}, then use
+\eqref{eq:two-small-parameter-substitution}.  Equating three successive
+coefficients in the simple-root equation and taking the reciprocal
+in \eqref{eq:formal-height-series} gives
+\[
+ C_1(k)=-s_2^2+s_2s_3+(k-1)(s_2-s_3)-2s_3+5s_4-3s_5-\frac1{12}.
+\]
+The formal symbol $c$ cancels.  Since $5\zeta(4)=2\zeta(2)^2$,
+this is \eqref{eq:cohen-exact-constants}.  This is a finite
+coefficient calculation by the recursion already specified in
+\eqref{eq:formal-edge-equation}; a rational-arithmetic replay is
+included among the accompanying verification artifacts.  The
+remainder follows from Theorem~\ref{thm:cohen-extreme-roots} with $M=2$.
+\end{proof}
+
+\begin{corollary}[Arithmetic form of every correction coefficient]
+\label{cor:cohen-coefficient-algebra}
+For fixed positive integers $j,m$,
+\[
+ C_{j,m}(\kappa)\in
+   \mathbb Q[\zeta(2),\zeta(3),\ldots,\zeta(2m+1)][\kappa].
+\]
+Thus Euler's constant is confined to the leading shift in
+\eqref{eq:cohen-extreme-root-all-orders}; it is absent from every
+subsequent coefficient produced by the construction.
+\end{corollary}
+
+\begin{proof}
+Fix $j$ and set $c=H_{j-1}-\gamma$.  Extract one more exponential,
+writing $h_n(v)=e^{cv}a_n(v)$.  Exactly as in
+\eqref{eq:exact-logarithmic-shift},
+\[
+ T_{n,N}(v)=(1+cv/N)^N
+   \frac{N!}{N^N}[z^N]e^{Nz}a_n(sz),\qquad
+ s=\frac{v}{1+cv/N}.
+\]
+The height is now $X=\log n-c+N/s$.  Up to the irrelevant nonzero
+constant $e^{-cj}g'(j)$, the local asymptotic amplitude at $j$ is
+\[
+ \delta\exp\left(\sum_{r\geq2}
+    \frac{(-1)^{r-1}H_{j-1}^{(r)}-\zeta(r)}r\delta^r\right)
+       R(j+\delta;\epsilon).
+\]
+The finite harmonic sums are rational and the coefficients of $R$
+are rational polynomials.  The recursion for a height coefficient
+of order $n^{-m}$ uses the root through total degree $m+1$, hence
+amplitude derivatives of order at most $2m+2$.  The initial zero
+factor $\delta$ reduces the largest needed zeta index to $2m+1$.
+After the displayed normalization, all divisions in the simple-root
+recursion are by nonzero rational numbers.  This proves the claim.
+\end{proof}
+
+The theorem proves the fixed-$j$ assertion in Cohen's
+Conjecture~7.1(2), since $H_n=\log n+\gamma+O(1/n)$, and proves
+his full all-orders assertion in Conjecture~7.1(4) for every fixed
+positive integer $k$.  In his indexing the coefficient called
+$C_m(k)$ is our $C_{1,m+1}(k-1)$, which has degree exactly $m$.
+The first numerical constant proposed there is identified exactly
+in Corollary~\ref{cor:cohen-two-constants}.
+The largest-root estimate, together with real-rootedness, also gives
+Conjecture~7.1(1), and Proposition~\ref{prop:cohen-interlacing}
+gives Conjecture~7.1(3).  These are statements about the precise
+conjectures in the cited version; no exhaustive priority claim is
+intended.  The derivative interpretation proposed for $k\leq0$
+is not needed here.  The theorem is a fixed-$j$, fixed-$k$ result:
+its remainder constants are not asserted uniform for growing indices.
+
+The bulk law and the edge theorem describe different scales.
+A positive fraction of the zeros stays in a bounded interval of the
+logarithmic coordinate $X=L$, whereas every fixed number of largest
+zeros grows linearly with $n$.  The $L^{-1}$ tail of the bulk limiting
+measure agrees with the leading edge scale $n/j$.  A uniform
+transition for $j\to\infty$ with $j/n\to0$, and a regime in which
+$k$ also grows, remain natural research problems.

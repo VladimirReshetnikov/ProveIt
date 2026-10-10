@@ -1,0 +1,308 @@
+\section{Further research: precise questions and next steps}
+\label{sec:research}
+
+The results above close several concrete gaps, but each also
+identifies a natural boundary. The following programme separates
+conjectures with specific existing evidence from broader questions.
+The proposed tasks are intended to lead to additional theorems
+or falsifiable identities, not merely more decimal tables.
+
+\subsection{Euler bounds: rates, extremizers, and further moment families}
+
+\paragraph{Sharp bounds for a fixed truncation index.}
+The global constant $C_*$ is forced by $N=1$ and $a\downarrow0$.
+For practical computations with large $N$, it leaves substantial
+room. Define the exact pointwise envelope
+\[
+ K_N(v)=\max_{0\leq x\leq1}\{W_N(vx)-W_N(x)\},
+ \qquad 0<v<1.
+\]
+Theorem~\ref{thm:kernel} determines the supremum over all $N$,
+but does not determine $K_N(v)$ in a useful closed form for
+$N\geq2$. Find its maximizing point, its dependence on $N$,
+and the strongest integrated bound it yields for fixed $a,b$.
+A derivative equation for the maximizing point is elementary,
+so the challenge is an interpretable exact inequality rather
+than a numerical maximization.
+
+The scaling $x=y/N$ suggests the limiting comparison
+$e^{-vy}-e^{-y}$, whose maximum is
+$(1-v)v^{v/(1-v)}$. This suggests asking for an error-controlled
+limit of $K_N(v)$, including its behavior as $v\downarrow0$
+and $v\uparrow1$. Uniformity at those endpoints matters
+before integrating against an order-dependent measure.
+The elementary limiting calculation alone does not supply
+that uniformity.
+
+\paragraph{Fractional-order late Euler errors.}
+The integer-order manuscript already gives a polynomial in
+$\tfrac12\log N$ multiplying $2^{-N}N^{-1/2}$, with leading
+coefficient determined by the total weight. Extend the full
+expansion to positive nonintegral $a,b$, explicitly tracking
+the extra endpoint terms that appear when an exponent crosses
+an integer. In particular, establish a uniform version of the
+fixed-order leading behavior suggested by the two-measure
+convolution,
+\[
+ E_N-g_{a,b}\sim
+ \frac{\sqrt{\pi}}{2^{a+b}\Gamma(a+b)}
+ \frac{2^{-N}(\log N)^{a+b-1}}{\sqrt N}.
+\]
+For positive integral orders this is already a theorem in
+\src{chapters/05-signed-kernels.tex}; the research target is
+the fractional continuation and its uniform error structure.
+A proof should separate the region where both logarithmic
+moment variables are large from the boundary layers in which
+only one is large. The signed-measure representation can fail
+to have finite mass, so the positive two-measure difference
+is a promising starting point.
+
+\paragraph{The rate of approach to the asymptotic global constant.}
+Theorem~\ref{thm:euler-asymptotic-budget} proves $C_N\to1$, and
+Proposition~\ref{prop:euler-axis-lower} gives a concrete lower
+asymptotic. The natural next target is the matching upper bound.
+
+\begin{conjecture}[Asymptotic optimal Euler constant]
+\label{conj:euler-rate}
+With
+\[
+ p=\frac{\log2}{\log(3/2)},\qquad
+ q=\frac{\log3}{\log2},\qquad c=(1-q^{-1})q^{-p},
+\]
+the optimal scaled-error constant satisfies
+\[
+ C_N-1\sim cN^{-p}.
+\]
+\end{conjecture}
+
+The matching lower bound is proved. The global upper bound over
+positive $a$ is open, and even the sharp upper asymptotic for
+the supremum over all $b$ on the axis requires an argument.
+The moving-order phase law supplies a broad region with $R_N\to1$,
+but that limit does not distinguish errors of order $N^{-p}$.
+Any statement about near maximizers must specify the accuracy:
+an error $o(C_N-1)$ is relevant here, whereas an error merely
+$o(1)$ need not force $a\to0$. Monotonicity of $C_N$ is also
+not asserted.
+
+The diagnostic program \src{code/axis_remainder_diagnostics.py}
+evaluates finite Euler sums at $210$ decimal digits.
+For the following indices it finds numerical axis stationary
+points, with the displayed scaled excess:
+\begin{center}
+\small
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$N$ & $\widehat b_N$ & Stationary $b$ &
+$(R_N(0,b)-1)/(cN^{-p})$\\
+\midrule
+4   & 4.5549051506  & 4.7024351462  & 0.8809410\\
+16  & 7.9739277333  & 7.8500957399  & 1.0384240\\
+64  & 11.3929503160 & 11.2260085539 & 1.0760668\\
+256 & 14.8119728987 & 14.6711951089 & 1.0684372\\
+\bottomrule
+\end{tabular}
+\end{center}
+Their global optimality is not certified. At $b=\widehat b_N$,
+the three tested positive values $a=10^{-4},10^{-2},10^{-1}$
+all give smaller remainders than $a=0$. These are limited axis
+and local checks; they do not establish the conjecture or
+monotone convergence of the displayed ratios. An effective
+compact-rectangle estimate, combined with a sharp analysis
+of the axis scaling, is one possible route to an upper bound.
+
+\paragraph{Further moving-order boundaries.}
+Theorem~\ref{thm:euler-moving} treats two orders growing
+proportionally to $\log N$. Determine the finer behavior
+when one of the leading coefficients $A,B$ tends to zero,
+or when one order remains fixed while the other crosses
+the logarithmic threshold. The bounded-width gamma variable
+then interacts with the smoothed threshold itself, and the
+two normal profiles need not describe the first correction.
+Also study orders tending to zero, where endpoint
+concentration affects the fractional late-error expansion.
+A useful result would connect the several scaling regimes
+with explicit overlapping error bounds.
+
+\paragraph{Other moment products.}
+Theorem~\ref{thm:moment-general} applies to any two finite
+positive measures. Explore shifted harmonic numbers,
+Hurwitz-type inner sums, mixtures of orders, and products
+arising from completely monotone sequences. For each family,
+identify the sharp measure-specific constant rather than
+automatically using $(1+\sqrt2)/2$.
+Higher-depth nested partial sums lead to higher divided
+differences of the same kernel. Determine which of those
+differences have a fixed sign and what sharp moduli replace
+the two-point inequality. This is a concrete route toward
+certified Euler algorithms for real-order higher-depth
+polylogarithms.
+
+\subsection{Formal depth and genuine functional reduction}
+
+\paragraph{Exploit the full binary formula constructively.}
+The finite-direction dimension theorem gives the rank but
+does not choose the best basis for an identity search.
+Construct rational bases adapted to the irreducible
+$\operatorname{Sym}^{w-2j}V\otimes\det^j$ summands and
+their confluent interpolation conditions. This should make
+it possible to solve reduction problems without forming
+all $2^w$ words. The weight-seven product correction is
+explicit but lengthy; a basis respecting reversal,
+complementation, and endpoint regularization may produce a
+much shorter analytic expression.
+
+\paragraph{Compare with the Nielsen literature at each weight.}
+The height-one results must be compared with the known
+Nielsen reductions, including their meaning modulo products
+and their exact symbol spaces. A useful next deliverable is
+a table that gives, for every weight in a practical range,
+the published reduction, a word certificate in the repository's
+conventions, and the endpoint correction on a stated branch
+domain. It should identify equivalence of relations, not
+count the same identity multiple times because of a change
+of notation.
+
+\paragraph{Go beyond three punctures.}
+The six transformations act on only three projective letter
+directions. A general rational substitution may introduce
+additional singularities and therefore a larger alphabet;
+it is not represented by an arbitrary $2\times2$ change of
+the old letters. Extend the rank problem to a specified
+puncture set and a specified collection of rational maps.
+Describe the kernel of specialization back to the original
+periods. The weight-eight obstruction here is a useful test
+case: which genuinely new pullbacks or distribution
+relations remove it, and what new constants do they introduce?
+
+\paragraph{Separate formal and period questions.}
+For the unresolved Gaussian $S_6$ and $S_8$ evaluations,
+specify the expected algebra of constants before searching.
+Construct the corresponding functional relation space,
+map it to the target specialization, and compare the proposed
+identity with that image. A formal failure would indicate
+that the chosen tools are insufficient. It would not prove
+period independence. Conversely, an exact functional
+certificate with controlled endpoint constants would settle
+an evaluation without relying on an integer-relation residual.
+
+\subsection{The global radial phase portrait}
+
+Let $a_*(b)$ be the already proved unique solution of $K=0$
+in $(1,2)$ for $0<b<1$, and put $q(b)=Q(a_*(b),b)$.
+The pinned manuscript proves opposite signs at two rational
+parameters and reports a wider diagnostic scan. The exact
+certificate here proves one simple zero near the upper
+endpoint of that interval.
+
+\begin{conjecture}[Unique quartic transition on the quadratic threshold]
+\label{conj:quartic-global}
+The function $q$ has exactly one zero on $0<b<1$, namely
+the certified $b_\dagger$. It is negative for
+$0<b<b_\dagger$ and positive for $b_\dagger<b<1$.
+\end{conjecture}
+
+The local sign at the certified zero is proved, and the
+existing finite scan supports the global statement. Neither
+fact excludes additional zeros away from the isolating box.
+A rigorous approach should combine asymptotic analysis as
+$b\downarrow0$ and $b\uparrow1$ with a finite interval cover
+of the remaining compact region. Direct interval evaluation
+may be inefficient near $b=1$, where several low-order
+coefficients nearly cancel. Factoring the known degeneration
+at $(a,b)=(1,1)$ before bounding remainders is likely to be
+essential.
+
+\paragraph{Global continuation of the two-extremum region.}
+The local fold and the explicit rational example prove that
+a minimum followed by a maximum can occur. Follow the two
+critical branches to larger radii and determine how they
+end: collision, escape through $\rho=1$, or interaction with
+another branch. Can more than two radial critical points
+occur for some positive orders? The local concavity proof
+does not address this global question. A plausible first
+step is an interval continuation of the coupled equations
+for the angular zero and its radial derivative, with a
+separate proof that no branch is missed.
+
+\paragraph{The older integer-order monotonicity question.}
+The conjectured full-radius decrease for integer $a\geq2$,
+and the special $a=1$ behavior, remain interesting.
+The fractional examples do not refute them: their parameters
+are close to, but different from, $(1,1)$.
+Look for a sign-definite integral expression for the radial
+derivative in the integer range. A proof based only on the
+coefficient $K$ would establish local behavior and leave the
+rest of the radius interval untreated.
+
+\paragraph{Higher degeneracies.}
+The binomial implicit equation gives every radial coefficient
+without guessing higher Chebyshev expansions. Search for
+families with $K=Q=R=0$ after adding a deformation parameter,
+such as a Lerch shift or an extra inner moment. If a first
+nonzero coefficient appears at $\rho^{2\ell}$, generic
+one-parameter perturbation suggests turning radii with
+power $1/(2\ell-2)$. State the transversality hypotheses
+explicitly and prove the local normal form before drawing
+a global bifurcation diagram.
+
+\subsection{Growing reflected exponents and optimal truncation}
+
+\paragraph{The maximal proportional-exponent regime.}
+The shifted-saddle continuation establishes a nonzero
+interval of proportional growth. Determine the largest
+admissible interval by analyzing the real saddle equation
+and competing complex saddles. Positivity of the Taylor
+coefficients of $\Gamma(1-u)$ is available, but
+$-\log\Gamma(1+u)$ does not have a positive coefficient
+sequence. A local stationary point alone therefore does
+not prove global contour dominance for all $m/k$.
+Locate the first loss of dominance or the first saddle
+collision, and give an exact or certified description of
+the transition.
+
+\paragraph{Move the optimal truncation index as well.}
+When $m/N$ is no longer small, the exponential rate of the
+coefficients changes. The optimal truncation index must
+then be determined from that joint rate, rather than
+retaining $N\Lambda\approx n$ without adjustment.
+Derive the correct stationarity equation when $n,m,N$
+grow together, and test whether a half-term law persists.
+The signed jump on the negative cut requires absolute
+moment estimates; eventual coefficient signs do not by
+themselves make the cut density positive.
+
+\paragraph{Effective constants and preasymptotic behavior.}
+Turn the present uniform big-$O$ statements into explicit
+inequalities in a chosen practical range. The diagnostic
+examples show why this matters: a fixed range parameter
+can be mathematically admissible while its asymptotic
+behavior appears only at much larger indices.
+Effective contour radii, bounds on logarithmic derivatives,
+and a computable separation of the central arc from the
+outer contour would turn the theorem into a usable
+certified truncation prescription.
+
+\paragraph{Connect the different moment scales.}
+The coefficient scale $m\asymp\sqrt{k}$ and the direct-moment
+scale involving $n/(m+1)-\log m$ arise from different
+representations. Determine their overlap after the
+optimal index is chosen, and compare the resulting
+asymptotic expansions term by term. A matching theorem
+would explain which representation is stable in each
+region and where cancellations make one numerically
+preferable.
+
+\subsection{A practical order of attack}
+
+The most bounded next tasks are an exact global sign study
+for $q(b)$, a basis-efficient implementation of the finite-direction
+rank theorem, and effective constants for the shifted saddle.
+Each has a clearly specified output and can be checked
+against the certificates in this article. The longer
+projects are a global radial classification, an extension
+to larger puncture alphabets, and a joint optimal-truncation
+theory for proportional reflected exponents. The special-value
+conjectures should remain visible throughout, but their
+status should change only when an exact functional or
+arithmetic certificate becomes available.
