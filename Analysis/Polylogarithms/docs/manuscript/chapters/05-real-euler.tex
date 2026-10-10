@@ -1,0 +1,224 @@
+\section{Euler enclosures and the failure of an unrestricted constant one}
+\label{rw:sec:euler}
+
+Let $a,b>0$ with $w\ge1$. Define
+\begin{equation}\label{rw:eq:eulerdef}
+ f(n)=c_{2n+1}=\frac{H_{2n}^{(b)}}{(2n+1)^a},\qquad
+ d_k=\sum_{n=0}^k(-1)^n\binom kn f(n),\qquad
+ E_N=\sum_{k=0}^{N-1}\frac{d_k}{2^{k+1}}.
+\end{equation}
+The error is measured against $g_{a,b}=\Imag F_{a,b}(\iu)$.
+On the critical line this is an Abel value; the ordinary alternating
+series with terms $(-1)^nf(n)$ diverges by the term test.
+
+\begin{theorem}[Extended one-sided Euler bounds]\label{rw:thm:euler}
+For every $k\ge1$ one has $d_k<0$, while $d_0=0$. The $E_N$ decrease
+strictly to $g_{a,b}$, and
+\begin{equation}\label{rw:eq:exacteuler}
+ E_N-g_{a,b}=-2^{-N}\int_{[0,1]}
+       \frac{(1-u^2)^N}{1+u^2}\dd\nu_{a,b}(u)>0.
+\end{equation}
+Consequently
+\begin{equation}\label{rw:eq:eulerenclosure}
+ E_N-M(a,b)2^{-N}<g_{a,b}<E_N\qquad(N\ge1),
+\end{equation}
+with the following elementary choices:
+\begin{equation}\label{rw:eq:Mchoices}
+ M(a,b)=
+ \begin{cases}
+ 1,&a\ge1,\\
+ (1-b)^{-1},&0<a<1,\ 0<b<1,\ w\ge1,\\
+ b/(b-1),&0<a<1,\ b>1,\\
+ 1+1/a,&0<a<1,\ b=1.
+ \end{cases}
+\end{equation}
+On the critical line the sharper uniform choice is proved in
+Corollary~\ref{subpick:cor:sharp-critical}; its matching subcritical
+Euler theorem uses the positive difference measure.
+The choice one in the first line is the prior optimal universal
+constant on that restricted domain; it is not asserted to work in
+the other lines.
+\end{theorem}
+\begin{proof}
+The binomial theorem and \eqref{subunit:eq:moments} give
+$d_k=\int(1-u^2)^k\dd\nu(u)$. Thus $d_0=0$, while the strictly
+decreasing weight gives $d_k<0$ for $k\ge1$. With
+$m=m(\nu)$, we have $|d_k|\le m$. Therefore the Euler series is
+absolutely convergent and may be summed under the measure integral:
+\[
+ \sum_{k\ge0}\frac{d_k}{2^{k+1}}
+ =\int\frac{\dd\nu(u)}{1+u^2}=\Imag F(\iu).
+\]
+Summing the geometric tail gives \eqref{rw:eq:exacteuler}. Its weight
+is strictly decreasing, bounded by one, and strictly less than one
+for every $u>0$. Since the negative Jordan part has no atom at zero,
+$0<E_N-g<m2^{-N}$. It remains to bound $m$.
+
+For $b<1,w>1$, rewrite \eqref{subunit:eq:generalK} as
+\[
+ K_{a,b}=\frac{k_{w-1}}{1-b}
+          -\bigl[-\zeta(b)k_a+C_{a,b}\bigr].
+\]
+The two displayed densities are positive, and each has mass
+$1/(1-b)$ in the $u$ measure, by zero total mass. Hence
+$m<1/(1-b)$. On $w=1$ the exact Jordan mass is $1/a=1/(1-b)$.
+For $b>1$, \eqref{subunit:eq:generalK} is a difference of positive densities
+$\zeta(b)k_a$ and $k_{w-1}/(b-1)+C_{a,b}$, so
+$m<\zeta(b)<1+1/(b-1)=b/(b-1)$.
+
+For $b=1$ and $0<a<1$, use a translation estimate rather than the
+singular limit of either of these bounds. Let $\sigma_a$ be the
+probability law of $u=e^{-Y}$ with $Y\sim\mathrm{Gamma}(a,1)$.
+Its logarithmic density $p_a(s)=e^{-s}s^{a-1}/\Gamma(a)$ decreases
+strictly. If $D_{e^{-t}}$ denotes pushforward under $u\mapsto e^{-t}u$,
+then direct comparison of $p_a(s)$ and $p_a(s-t)$ gives
+\[
+ \|\sigma_a-D_{e^{-t}}\sigma_a\|_{\mathrm{TV}}
+ =2\int_0^tp_a(s)\dd s
+ \le\frac{2t^a}{\Gamma(a+1)}.
+\]
+The signed-measure integral
+\[
+ \widetilde\nu=\int_0^\infty
+       \frac{\sigma_a-D_{e^{-t}}\sigma_a}{e^t-1}\dd t
+\]
+converges in total variation. Its $(n-1)$st moment is
+$n^{-a}\int_0^\infty(1-e^{-(n-1)t})(e^t-1)^{-1}\dd t=c_n$.
+By uniqueness it is $\nu_{a,1}$, and
+\[
+ m\le\frac1{\Gamma(a+1)}\int_0^\infty\frac{t^a}{e^t-1}\dd t
+ =\zeta(a+1)<1+1/a.
+\]
+
+Finally, for $a\ge1$ the earlier sharper bound can be recovered
+without any fractional-order gap. At $a=1$ the equivalent base density is
+\[
+ K_{1,b}(T)=-\frac{T^b}{\Gamma(b+1)}
+ +\frac1{\Gamma(b)}\int_T^\infty\frac{t^{b-1}}{e^t-1}\dd t.
+\]
+Its $n$th Laplace value is
+$-n^{-b-1}+n^{-1}\sum_{j=1}^n j^{-b}=H_{n-1}^{(b)}/n$,
+by Tonelli and a finite geometric sum. Moment uniqueness therefore
+identifies this base density with \eqref{subunit:eq:generalK} or \eqref{subunit:eq:bOne}.
+Both positive terms in this difference have $e^{-T}\dd T$ integral
+one. For the second term, interchange the integrals and use
+$(1-e^{-t})/(e^t-1)=e^{-t}$; the first is a gamma integral.
+Their positive overlap makes the Jordan mass strictly less than one.
+For $a>1$, convolution by $k_{a-1}$ in the $T$ coordinate preserves
+moments after multiplication by $n^{-(a-1)}$ and contracts the
+$L^1(e^{-T}\dd T)$ norm, because
+$\int_0^\infty e^{-T}k_{a-1}(T)\dd T=1$.
+Moment uniqueness identifies the result with the present kernel,
+so $m<1$ for every real $a\ge1$. This proves all four choices.
+\end{proof}
+
+The same translation proof gives, when $0<a\le1$ and $a+b>1$,
+the optional non-elementary bound
+\[
+ m\le\frac{\Gamma(a+b)\zeta(a+b)}{\Gamma(a+1)\Gamma(b)}.
+\]
+It may improve a particular estimate, but diverges as $a+b\downarrow1$.
+The critical atomic construction is therefore not replaced by this
+translation argument.
+
+\begin{proposition}[Exact finite Euler weights]\label{rw:prop:weights}
+For $N\ge1$,
+\begin{equation}\label{rw:eq:weights}
+ E_N=2^{-N}\sum_{n=0}^{N-1}(-1)^nf(n)
+                  \sum_{j=n+1}^N\binom Nj.
+\end{equation}
+Thus the finite sum can be formed without constructing a triangular
+difference table.
+\end{proposition}
+\begin{proof}
+Substitute the definition of $d_k$ and interchange the finite sums.
+The coefficient identity is
+\[
+ \sum_{k=n}^{N-1}2^{N-k-1}\binom kn=\sum_{j=n+1}^N\binom Nj,
+\]
+which follows by induction from Pascal's identity. Harmonic numbers
+and binomial tails can then each be updated successively. This
+rearrangement is already used in the integer-order manuscript; the
+new feature in the implementation here is certified rational
+interval arithmetic for fractional powers.
+\end{proof}
+
+\begin{theorem}[A certified scope obstruction]\label{rw:thm:counterexample}
+For $a=1/10$ and $b=9/10$,
+\begin{align}\label{rw:eq:counterinterval}
+ -0.5297619322857712630946293655
+ &<g_{1/10,9/10}\notag\\
+ &<-0.5297619322857712630946293653.
+\end{align}
+In particular, $g_{1/10,9/10}<-13/25<-1/2$.
+Since $E_1=0$, the inequality $E_N-2^{-N}<g_{a,b}$ fails at $N=1$
+for this pair. A uniform constant one cannot be extended to the
+entire region $a+b\ge1$. The failure also occurs strictly above
+the threshold, with ordinary boundary convergence:
+\begin{align}\label{rw:eq:counterordinary}
+ -0.5308442529661593261720712602
+ &<g_{1/10,1}\notag\\
+ &<-0.5308442529661593261720712600<-0.53.
+\end{align}
+\end{theorem}
+\begin{proof}
+The accompanying standard-library program \texttt{code/certify.py}
+evaluates \eqref{rw:eq:weights} with $N=96$ by outward rational interval
+arithmetic. Every fractional power is bounded by integer tenth-root
+inequalities, as detailed in Section~\ref{rw:sec:certificates}. The
+critical mass bound is the exact rational $M=10$. Subtracting
+$10\,2^{-96}$ from the lower endpoint of the finite Euler enclosure
+and leaving its upper endpoint unchanged gives the interval recorded
+in \texttt{data/exact\_certificates.json}. Outward decimal rounding
+yields \eqref{rw:eq:counterinterval}; exact rational comparisons verify
+its upper endpoint is less than $-13/25$. No numerical polylogarithm,
+floating-point root, or unproved identity enters this certificate.
+For $(a,b)=(1/10,1)$ the same computation uses $M=1+1/a=11$
+and proves \eqref{rw:eq:counterordinary}. Its ordinary boundary
+convergence follows from $a+b=11/10>1$ and
+Corollary~\ref{rw:cor:boundary}.
+\end{proof}
+
+This is \emph{not} a counterexample to the baseline theorem, which
+explicitly assumes $a\ge1$. It is a counterexample to dropping that
+hypothesis while retaining the same universal error constant.
+
+\begin{proposition}[The exact critical constant for fixed parameters]
+\label{rw:prop:fixedconstant}
+On $a+b=1$, put $d\sigma=-K_{1-b,b}(-\log u)\,du$. The scaled errors $2^N(E_N-g_{a,b})$ decrease strictly
+to zero for $N\ge1$. The smallest constant in the non-strict estimate
+$E_N-g_{a,b}\le C2^{-N}$, valid for all integers $N\ge1$ at that fixed
+pair, is $C=-2g_{a,b}$.
+\end{proposition}
+\begin{proof}
+The endpoint atom contributes zero to \eqref{rw:eq:exacteuler} when
+$N\ge1$. Hence
+\[
+ 2^N(E_N-g)=\int_0^1\frac{(1-u^2)^N}{1+u^2}\dd\sigma(u).
+\]
+Strict pointwise decrease and dominated convergence prove the first
+claim. Its largest value occurs at $N=1$ and is $2(E_1-g)=-2g$.
+For the corresponding strict inequality the infimum of admissible
+constants is the same, but equality at $N=1$ prevents attaining it.
+\end{proof}
+
+
+\subsection{Exact arithmetic and independent native evidence}
+\label{rw:sec:certificates}
+The new standard-library verifier encloses every rational fractional power
+by integer root inequalities on a $10^{100}$ grid. Products, harmonic sums
+and finite Euler weights are then combined as exact rational intervals.
+It certifies 616 strictly positive Hausdorff-difference signs, 112 negative
+Euler increments and seven Gaussian analytic-value enclosures at 192
+Euler terms. The six triangle cases use the rational budget $57/50$;
+the remaining axis case uses $5/4$. The axis case $b=3/2$ also proves
+$-2g_{0,3/2}>227/200$, supplying the finite arithmetic premise in the
+axis-maximum theorem.
+
+A separate native Wolfram calculation at 100 working digits evaluates
+the outer Gamma integral of a depth-one polylogarithm, or the direct
+axis value. All seven values lie inside their rational Euler enclosures.
+The native quadrature is a numerical diagnostic, not interval quadrature.
+The sign and remainder theorems depend on the written positive-measure
+proofs. The original threshold report's tenth-root certificates are
+preserved unchanged with its delivered code and data.

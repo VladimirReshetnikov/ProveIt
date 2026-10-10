@@ -1,0 +1,186 @@
+\section{Formation of the endpoint atom}
+
+\begin{theorem}[Boundary-layer scale and weak convergence]
+\label{subunit:thm:boundarylayer}
+Fix $0<b<1$, let $a=1-b+\varepsilon$ with $\varepsilon>0$, and
+let $T_\varepsilon=-\log r_{a,b}$. Define
+\[
+ \tau_\varepsilon=
+ \left(\frac{\Gamma(1-b+\varepsilon)}
+ {(1-b)(-\zeta(b))\Gamma(\varepsilon)}\right)^{1/(1-b)}.
+\]
+Then, as $\varepsilon\downarrow0$,
+\begin{equation}\label{subunit:eq:layerexact}
+ T_\varepsilon=\tau_\varepsilon
+ \left(1+O_b\left(\frac{\tau_\varepsilon}{\varepsilon}\right)\right),
+ \qquad 0<T_\varepsilon<\tau_\varepsilon,
+\end{equation}
+and in particular
+\begin{equation}\label{subunit:eq:layerleading}
+ 1-r_{1-b+\varepsilon,b}\sim
+ \left(\frac{\Gamma(1-b)}{(1-b)(-\zeta(b))}
+       \varepsilon\right)^{1/(1-b)}.
+\end{equation}
+The measures converge weakly to the critical measure in
+Theorem~\ref{subunit:thm:domain}, and their positive masses converge
+to $(1-b)^{-1}$ while their positive supports shrink to $u=1$.
+\end{theorem}
+
+\begin{proof}
+In \eqref{subunit:eq:rescaledLowB}, put
+$A_\varepsilon=((1-b)\Gamma(\varepsilon))^{-1}$ and
+$B_\varepsilon=(-\zeta(b))/\Gamma(1-b+\varepsilon)$.
+The zero equation is
+\[
+ A_\varepsilon-B_\varepsilon T^{1-b}-T C_\varepsilon(T)=0,
+ \quad
+ C_\varepsilon(T)=\frac1{\Gamma(a)\Gamma(b)}
+ \int_0^1(1-v)^{a-1}v^{b-1}q(Tv)\,dv.
+\]
+Since $1/2<q<1$ and $a+b=1+\varepsilon$,
+\[
+ \frac1{2\Gamma(1+\varepsilon)}
+ <C_\varepsilon(T)<\frac1{\Gamma(1+\varepsilon)}.
+\]
+By definition $B_\varepsilon\tau_\varepsilon^{1-b}
+=A_\varepsilon$, so the equation at $T=\tau_\varepsilon$ has
+strictly negative left side and $T_\varepsilon<\tau_\varepsilon$.
+Furthermore
+\[
+ 0\leq1-(T_\varepsilon/\tau_\varepsilon)^{1-b}
+ =\frac{T_\varepsilon C_\varepsilon(T_\varepsilon)}
+       {A_\varepsilon}
+ \leq\frac{(1-b)\tau_\varepsilon}{\varepsilon}.
+\]
+The final equality in the upper bound uses
+$\Gamma(1+\varepsilon)=\varepsilon\Gamma(\varepsilon)$.
+Now $\tau_\varepsilon=O_b(\varepsilon^{1/(1-b)})$, hence
+$\tau_\varepsilon/\varepsilon\to0$. The last inequality proves
+\eqref{subunit:eq:layerexact}. Expanding the Gamma ratio and using
+$1-e^{-T}\sim T$ proves \eqref{subunit:eq:layerleading}.
+
+For weak convergence, the positive term in
+\eqref{subunit:eq:generalK}, regarded as a measure in the $T$
+coordinate, is
+\[
+ \frac1{1-b}\frac{e^{-T}T^{\varepsilon-1}}
+ {\Gamma(\varepsilon)}\,dT.
+\]
+It is $(1-b)^{-1}$ times a Gamma$(\varepsilon,1)$ law. Its mean
+is $\varepsilon$, so it converges weakly to mass $(1-b)^{-1}$
+at $T=0$, equivalently at $u=1$. The two negative components in
+\eqref{subunit:eq:generalK} converge in $L^1(e^{-T}\,dT)$ to
+those in \eqref{subunit:eq:criticaldensity}. For the power term,
+dominated convergence holds with an exponent bounded above $-1$.
+For the convolution, either use the rescaled beta integral and the
+same domination, or use $L^1$ continuity of the Gamma densities and
+the integrable convolution factor $e^{-t}t^{b-1}q(t)$.
+
+The unique positive support is $0<T<T_\varepsilon$, which shrinks
+to zero. The Gamma$(\varepsilon,1)$ mass in this interval tends to
+one: since $T_\varepsilon$ is a fixed power of $\varepsilon$ to
+leading order,
+\[
+ \frac1{\Gamma(\varepsilon)}\int_0^{T_\varepsilon}
+ e^{-T}T^{\varepsilon-1}\,dT
+ =\frac{T_\varepsilon^\varepsilon}{\Gamma(1+\varepsilon)}(1+o(1))
+ \longrightarrow1.
+\]
+The negative components have vanishing mass on the shrinking interval
+by their $L^1$ convergence to an integrable limit. Thus the actual
+positive mass of the signed density tends to $(1-b)^{-1}$, completing
+the proof.
+\end{proof}
+
+\subsection{The other edge and the logarithmic corner}
+
+The second atomic edge has a complementary power law. The corner $b=1$
+has an exponential scale and no finite limiting measure.
+
+\begin{proposition}[Two further endpoint scales]
+\label{subunit:prop:otheredges}
+For fixed $b>1$, as $a\downarrow0$,
+\begin{equation}\label{subunit:eq:otheredge}
+ 1-r_{a,b}\sim\bigl(\Gamma(b)\zeta(b)a\bigr)^{1/(b-1)}.
+\end{equation}
+The measures converge weakly to $\nu_{0,b}$, and their positive masses
+converge to $\zeta(b)$. For $b=1$, set
+$\sigma_a=\exp(\gamma+\psi(a))$. Then
+\begin{equation}\label{subunit:eq:logcorner}
+ -\log r_{a,1}=\sigma_a\bigl(1+O(\sigma_a/a)\bigr),
+ \qquad 0<-\log r_{a,1}<\sigma_a,
+\end{equation}
+where
+\[
+ \sigma_a=\exp\bigl(-1/a+\zeta(2)a-\zeta(3)a^2+O(a^3)\bigr).
+\]
+If $M_{a,1}$ denotes either signed mass of $\nu_{a,1}$, then
+\begin{equation}\label{subunit:eq:divergingmass}
+ M_{a,1}\sim\frac1{e a}.
+\end{equation}
+Thus the finite signed measures have unbounded total variation at this
+corner, consistently with the impossibility of a finite measure at
+$a=0,b=1$.
+\end{proposition}
+
+\begin{proof}
+For $b>1$, the equation obtained from
+\eqref{subunit:eq:generalK} after division by $T^{a-1}$ is
+\[
+ 0=\frac{\zeta(b)}{\Gamma(a)}
+ -\frac{T^{b-1}}{(b-1)\Gamma(a+b-1)}
+ -\frac{T^b}{\Gamma(a)\Gamma(b)}
+       \int_0^1(1-v)^{a-1}v^{b-1}q(Tv)\,dv.
+\]
+The last integral, after its Gamma normalization, lies between
+$1/(2\Gamma(a+b))$ and $1/\Gamma(a+b)$. The ratio of this
+last term to the preceding negative term is therefore $O_b(T)$,
+uniformly for small positive $a$. The balancing point of the first
+two terms is
+\[
+ \left(\frac{(b-1)\Gamma(a+b-1)\zeta(b)}{\Gamma(a)}\right)^{1/(b-1)}
+ \sim\bigl(\Gamma(b)\zeta(b)a\bigr)^{1/(b-1)}.
+\]
+The strict monotonicity of the rescaled density, or the same two-sided
+comparison used in Theorem~\ref{subunit:thm:boundarylayer}, makes the
+actual zero asymptotic to this point. The positive term is $\zeta(b)$
+times a Gamma$(a,1)$ law in the $T$ coordinate. The negative term in
+\eqref{subunit:eq:largeB}, after multiplication by $e^{-T}$, is the
+convolution of that Gamma probability density with
+$e^{-t}t^{b-1}/(\Gamma(b)(1-e^{-t}))$, an integrable function of mass
+$\zeta(b)$. As $a\downarrow0$, this convolution converges in $L^1$
+to the latter function; Gamma$(a,1)$ is an approximate identity since
+its mean tends to zero. This proves weak convergence. As before,
+the Gamma mass below the crossing tends to one, since $a\log T\to0$,
+and the limiting negative density is integrable. Hence the positive
+mass tends to $\zeta(b)$.
+
+For $b=1$, put
+$J_a(T)=\int_0^1(1-v)^{a-1}q(Tv)\,dv$, so that
+$1/(2a)<J_a(T)<1/a$. At the crossing $T_a$, formula
+\eqref{subunit:eq:bOne} says
+\[
+ \log(\sigma_a/T_a)=T_aJ_a(T_a),\qquad
+ 0<\log(\sigma_a/T_a)<\sigma_a/a.
+\]
+This gives \eqref{subunit:eq:logcorner}. The digamma expansion
+$\psi(a)=-1/a-\gamma+\zeta(2)a-\zeta(3)a^2+O(a^3)$ gives
+the stated scale.
+
+Finally the positive mass is the integral of
+$e^{-T}T^{a-1}[\log(\sigma_a/T)-T J_a(T)]/\Gamma(a)$
+over $0<T<T_a$. Omitting the factor $e^{-T}$, the $TJ_a$ term,
+and the vanishing interval between $T_a$ and $\sigma_a$ changes
+the result by a relative $o(1)$. To see this explicitly, the first
+omission has relative error at most $\sigma_a$; the $TJ_a$ integral
+is at most $\sigma_a^{a+1}/(a(a+1)\Gamma(a))$, whereas the main
+integral is $\sigma_a^a/(a^2\Gamma(a))$. For the removed interval,
+write $T=\sigma_a v$ and use
+$1-T_a/\sigma_a=O(\sigma_a/a)$; its relative contribution is
+$O(\sigma_a^2)$. Therefore
+\[
+ M_{a,1}\sim\frac{\sigma_a^a}{a^2\Gamma(a)}
+ \sim\frac1{ea},
+\]
+as asserted.
+\end{proof}

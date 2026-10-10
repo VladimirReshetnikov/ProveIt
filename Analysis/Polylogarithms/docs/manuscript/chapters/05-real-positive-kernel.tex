@@ -1,0 +1,120 @@
+\section{A positive two-variable representation at all positive orders}
+\label{rw:sec:double}
+
+The threshold in Theorem~\ref{subunit:thm:domain} concerns a
+\emph{one-variable finite signed measure}. It is not a threshold for
+analytic continuation or every positivity property.
+
+\begin{theorem}[Positive double kernel]\label{rw:thm:double}
+For every $a,b>0$ and $z\in\realcut$,
+\begin{equation}\label{rw:eq:double}
+ F_{a,b}(z)=z^2\int_{0<y<x<1}
+ \frac{W_{a,b}(x,y)}{(1-xz)(1-yz)}\dd y\dd x,
+\end{equation}
+where
+\begin{equation}\label{rw:eq:W}
+ W_{a,b}(x,y)=\frac{(-\log x)^{a-1}(\log(x/y))^{b-1}}
+ {\Gamma(a)\Gamma(b)}.
+\end{equation}
+The weight is strictly positive and has total mass $2^{-a}$.
+\end{theorem}
+\begin{proof}
+For $|z|<1$, expand the two denominators. Substitution $y=xv$
+gives, for nonnegative integers $j,k$,
+\[
+ \int_{0<y<x<1}W_{a,b}(x,y)x^jy^k\dd y\dd x
+ =\frac1{(j+k+2)^a(k+1)^b}.
+\]
+Summing over $j+k=n-2$ yields $c_n$. Absolute convergence justifies
+the rearrangement, and taking $j=k=0$ gives the total mass.
+On each compact subset of $\realcut$, both denominators are bounded
+away from zero uniformly in $x,y\in[0,1]$. The integral is consequently
+holomorphic there and supplies the stated continuation.
+\end{proof}
+
+\begin{corollary}[Disk nonvanishing below and above the threshold]
+\label{rw:cor:disk}
+For all $a,b>0$, $F_{a,b}$ has no nonzero zeros in
+$\{z:|z|\le1,\ z\ne1\}$. More precisely, when $\Imag z>0$ and
+$|z|\le1$,
+\begin{equation}\label{rw:eq:diskpick}
+ \Imag\frac{F_{a,b}(z)}z>0.
+\end{equation}
+At any upper-half-disk zero of $\Imag F_{a,b}(z)$, the value
+$F_{a,b}(z)$ itself is strictly negative real.
+\end{corollary}
+\begin{proof}
+A direct calculation gives
+\[
+ \Imag\frac{z}{(1-xz)(1-yz)}
+ =\frac{(\Imag z)(1-xy|z|^2)}{|1-xz|^2|1-yz|^2}>0
+\]
+for $0<y<x<1$, proving \eqref{rw:eq:diskpick}. The lower half follows
+by conjugation. On the real interval $z<1$, the integral
+$F(z)/z^2$ is strictly positive. Finally, if $F(z)=R\in\R$ with
+$\Imag z>0$, then $\Imag(R/z)=-R\Imag z/|z|^2>0$, so $R<0$.
+\end{proof}
+
+\begin{corollary}[Gaussian negativity and strict log-convexity]
+\label{rw:cor:gaussian}
+For every $a,b>0$,
+\begin{equation}\label{rw:eq:gaussianpositive}
+ -g_{a,b}=\int_{0<y<x<1}W_{a,b}(x,y)
+       \frac{x+y}{(1+x^2)(1+y^2)}\dd y\dd x>0,
+\end{equation}
+and
+\begin{equation}\label{rw:eq:gaussianbounds}
+ \frac{H_2^{(b)}}{4\,3^a}<-g_{a,b}<\frac{H_2^{(b)}}{3^a}.
+\end{equation}
+The function $(a,b)\mapsto\Gamma(a)\Gamma(b)(-g_{a,b})$ is strictly
+log-convex on the positive quadrant.
+\end{corollary}
+\begin{proof}
+Set $z=\iu$ in \eqref{rw:eq:double} and rationalize the denominator.
+Since $1<(1+x^2)(1+y^2)<4$ and
+$\int W(x+y)=c_3=H_2^{(b)}/3^a$, the bounds follow.
+For log-convexity apply H\"older's inequality to the positive integral
+with the gamma factors removed. Its parameter dependence is the
+exponential of
+$(a-1)\log(-\log x)+(b-1)\log\log(x/y)$.
+Equality in H\"older would require a nontrivial real linear combination
+of these two logarithms to be constant almost everywhere on the open
+triangle, which is impossible. This proves strictness for every
+nontrivial line segment of parameter pairs.
+\end{proof}
+
+\subsection{All-order integral identities}
+\begin{theorem}[Hurwitz--polylogarithm transport]\label{rw:thm:transport}
+For $a,b>0$, $b\ne1$, and $z\in\realcut$,
+\begin{align}\label{rw:eq:transport}
+ F_{a,b}(z)={}&\zeta(b)\Li_a(z)-\frac{\Li_{a+b-1}(z)}{b-1}\notag\\
+ &-\frac1{\Gamma(b)}\int_0^\infty t^{b-1}q(t)\Li_a(ze^{-t})\dd t.
+\end{align}
+At $b=1$ the pole-free identity is
+\begin{equation}\label{rw:eq:transport1}
+ F_{a,1}(z)=\gamma\Li_a(z)-\partial_a\Li_a(z)
+       -\int_0^\infty q(t)\Li_a(ze^{-t})\dd t.
+\end{equation}
+In particular, the index $a+b-1$ in \eqref{rw:eq:transport} is allowed
+to be zero or negative.
+\end{theorem}
+\begin{proof}
+Inside the disk, multiply \eqref{subunit:eq:hurwitz}, with $q=n$, by
+$n^{-a}z^n$ and sum. Exponential decay at infinity, boundedness of
+$h$, and $b>0$ justify termwise integration. The Hurwitz difference
+is $H_{n-1}^{(b)}$, so coefficient comparison gives
+\eqref{rw:eq:transport}. At $b=1$, use
+$H_{n-1}=\gamma+\log n-\int_0^\infty e^{-nt}q(t)\dd t$;
+the sum of $(\log n)n^{-a}z^n$ is $-\partial_a\Li_a(z)$.
+The integral expressions on the right are locally holomorphic on the
+slit plane. Near $t=0$, $\Li_a(ze^{-t})$ stays bounded on compact
+slit sets, and at infinity it is $O(e^{-t})$. Analytic continuation
+therefore proves the identities throughout the claimed domain.
+Standard conventions for $\Li_s$ are those of DLMF 25.12
+\cite{rw:DLMFPolylog}.
+\end{proof}
+
+These identities are useful even when no signed Hausdorff measure
+exists. They are transformations to a depth-one polylogarithm integral,
+not assertions that a depth-two constant has been reduced to a finite
+basis of depth-one periods.

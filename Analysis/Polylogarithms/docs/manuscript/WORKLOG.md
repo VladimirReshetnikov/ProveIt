@@ -1,3 +1,97 @@
+# Verified real-order research source checkpoint
+
+New unrestricted Stieltjes/zero/angular/radial proofs, the Gaussian fixed-total
+monotonicity theorem, unique axis maximum, and sharp critical/subcritical
+Euler constant are now ready as an audited source checkpoint. Exact evidence:
+616 positive difference signs, 112 negative Euler increments, seven Gaussian
+enclosures and 3064 integer-root inequalities. All seven independent native
+Wolfram checks pass at 100 working digits. The 55-digit axis exploration is
+a diagnostic; the proven stationary-point bracket is 1<b*<2.
+
+Canonical source integration is underway and the latest structural audit
+passes. The published PDF and acceptance manifests still describe the previous
+reviewed 340-page artifact. Do not apply that historical acceptance to the
+working real-order source. The initial build failed at a missing inline math
+delimiter; it is repaired and the affected paragraph-dollar audit is clean.
+No build remains live from session 53221. A new final build/review is required.
+
+Fresh threshold diagnostics are running in session 64615 and golden geometry
+in session 30127. The golden boundary replay completed successfully with one
+fresh JSON receipt. Keep those original handles until authoritative completion;
+never restart because observation expired. All replays use isolated copies.
+
+Still required for this milestone: integrate the Cartesian-motion consequence
+and stronger two-scale boundary theorem, complete notation/proof audit, finish
+replays, rebuild three serial passes, inspect final pages, refresh README,
+ledger/VALIDATION/hashes and strict evidence gates, then publish the artifact.
+Broader research remains ACTIVE and all incoming raw evidence is preserved.
+The latest two heartbeat fetches found unrelated Ramsey changes and no new
+polylogarithm/incoming paths. Merge fresh origin/main before every push.
+
+The detailed derivation and historical context follow.
+
+# Active real-order and unrestricted Stieltjes research milestone
+
+The previous turn made verified progress and published the 340-page
+integral/multivariable milestone via 1a7b6370a6 / 5cb07b5b64.
+This turn has found and written a stronger positive-difference theorem
+below the finite signed-measure threshold. A hypersingular positive
+measure has finite (1-u)-weighted mass, giving a unique positive
+Hausdorff measure for consecutive harmonic-polylogarithm coefficients.
+It proves the complete slit-plane zero-free theorem for ALL a>=0,b>0,
+subcritical angular uniqueness, strict normalized-radius increase on
+and below the critical line and on the outer-order axis, and analytic
+Euler convergence even when the ordinary boundary series diverges.
+
+Further new proofs: a sharp complementary Bernstein/Hausdorff-difference
+classification; exact axis Gaussian identity; strict Gaussian magnitude
+decrease with outer order and at every fixed total order; a unique,
+nondegenerate global axis maximum; and the SHARP critical/subcritical
+uniform Euler constant pi/4+log(2)/2. The critical strict-monotonicity
+conjecture is also proved. The axis maximum has exact location 1<b*<2;
+55-digit diagnostics suggest b*=1.302216587101241... and
+C*=1.136561103339509..., without claiming those digits are certified.
+The independent exact axis case b=3/2 proves C(3/2)>227/200 and
+supports the rigorous maximum comparisons.
+
+The standard-library certifier passes 616 positive difference signs,
+112 negative Euler increments, seven 192-term Gaussian enclosures and
+3064 integer-root inequalities. Six triangle cases now use 57/50;
+the full-axis b=3/2 case keeps 5/4, avoiding a circular maximum argument.
+Seven independent native Wolfram 100-digit quadratures/axis evaluations
+all lie in those exact enclosures. The native process is terminal, exit 0.
+
+The three overlapping real-order report cores are being integrated into
+Chapter 5. New files 05-real-*.tex and 05-subcritical-stieltjes.tex are
+canonical adaptations; raw reports remain byte-identical. Current
+structural audit passes with 64 TeX files and 381 provenance sources.
+The initial new build session 53221 ended with a missing inline math
+delimiter in the new fixed-total theorem. It is repaired; no live build
+remains from that handle. Start a fresh build after the remaining source
+integration and notation audit.
+Do not apply the historical 340-page PDF hash/review to the working PDF.
+
+Required final source repairs/audits: critical-defect Cauchy-Schwarz weight
+must be sigma (positive), not nu (signed); explicitly define w=a+b and
+c_n=A_n early. The defects/Euler fragments use sigma for positive negative
+parts and nu for the signed measure. Generic threshold labels now map
+to subunit:thm:domain. Core auxiliary Cbeta/Cbounds/CLaplace are numbered.
+Audit all imported notation and proofs, especially the three measure names.
+
+Remaining real-order integration: retain the golden Cartesian-motion result
+and stronger two-scale endpoint concentration theorem with its first
+correction/TV exponential law; adapt its proof directly from the common
+regularized convolution rather than importing duplicate kernel machinery.
+Consider the new Gaussian-axis plot. Run new density/geometry/boundary
+replays in isolated copies; preserve originals. Then rebuild, inspect
+all final pages, update README/ledger/VALIDATION and strict receipt gates,
+commit and push with fresh main merges and ff-only ancestry checks.
+No new incoming commits were present at this turn's initial fetch.
+The broader research goal and hourly incoming-report watch remain ACTIVE;
+S6/S8, general Lerch/uniform/golden/Herglotz/Cayley/Bessel agenda remains.
+
+Historical checkpoints follow.
+
 # Reviewed 340-page integral and multivariable milestone
 
 The integral reports are reconciled in Chapter 9 and the separable
