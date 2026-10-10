@@ -5,11 +5,18 @@ from .normal_sector import _nullspace,_rref,SectorKernel,_dot
 from .normal_surface_geometry import _coordinates
 
 
-def canonical_matching_basis(vectors,width,check):
+def canonical_matching_basis(vectors,width,check,*,return_transform=False):
     """Use the native nullspace gauge: rightmost independent free columns."""
-    reduced,pivots=_rref([list(reversed(row))for row in vectors],width,check)
-    ordered=sorted((width-1-p,tuple(reversed(row)))for p,row in zip(pivots,reduced))
-    return tuple(row for _,row in ordered)
+    rows=[list(reversed(row))for row in vectors]
+    if return_transform:
+        for i,row in enumerate(rows):row.extend(Fraction(i==j)for j in range(len(rows)))
+    # Only matching columns are eligible pivots. The trailing identity, if
+    # supplied, records exactly the same row operations on the thin modes.
+    reduced,pivots=_rref(rows,width,check)
+    ordered=sorted((width-1-p,tuple(reversed(row[:width])),tuple(row[width:]))
+                   for p,row in zip(pivots,reduced))
+    basis=tuple(row for _,row,_ in ordered)
+    return (basis,tuple(transform for _,_,transform in ordered))if return_transform else basis
 
 
 class WindowBasis:
@@ -24,10 +31,14 @@ class WindowBasis:
         self.residuals=residuals
         self.coefficients=coefficients
         self.potentials=potentials
+        self._base_modes=None
+        self._column_modes={}
+        self._potential_columns=None
 
-    def for_edits(self,edits,check):
+    def for_edits(self,edits,check,*,projection=False):
         k=len(self.base_support);added=tuple(edits);width=k+len(added)
         vectors=[tuple(row)+(Fraction(0),)*len(added)for row in self.base_basis]
+        new_modes=[]
         if len(added)==1 or (len(added)==2 and not self.residuals[added[0]]and not self.residuals[added[1]]):
             for a,item in enumerate(added):
                 check()
@@ -35,6 +46,7 @@ class WindowBasis:
                 coefficients=self.coefficients[item]
                 vectors.append(tuple(-coefficients.get(i,0)for i in range(k))+
                     tuple(Fraction(i==a)for i in range(len(added))))
+                new_modes.append(((item,Fraction(1)),))
         elif len(added)==2:
             first,second=added;left,right=self.residuals[first],self.residuals[second]
             if not left or not right:raise ArithmeticError('mixed zero/nonzero residual pair')
@@ -43,18 +55,89 @@ class WindowBasis:
                 raise ArithmeticError('pair residuals do not cancel positively')
             a,b=self.coefficients[first],self.coefficients[second]
             vectors.append(tuple(-a.get(i,0)-ratio*b.get(i,0)for i in range(k))+(Fraction(1),ratio))
+            new_modes.append(((first,Fraction(1)),(second,ratio)))
         elif added:raise ValueError('matching updates accept at most two edits')
+        if projection:
+            mode_parameters=tuple(tuple(Fraction(i==j)for j in range(len(vectors)))for i in range(len(vectors)))
         replaced={t for t,_ in added}
         removed=[i for i,(t,_)in enumerate(self.base_support)if t in replaced]
         if removed:
             parameters=_nullspace([[row[i]for row in vectors]for i in removed],len(vectors),check)
+            if projection:mode_parameters=parameters
             vectors=[tuple(sum(z*row[i]for z,row in zip(parameter,vectors))for i in range(width))
                      for parameter in parameters]
         labelled=[(item,i)for i,item in enumerate(self.base_support)if i not in removed]
         labelled += [(item,k+i)for i,item in enumerate(added)]
         labelled.sort();support=tuple(item for item,_ in labelled)
         restricted=[tuple(row[i]for _,i in labelled)for row in vectors]
-        return support,canonical_matching_basis(restricted,len(support),check)
+        if not projection:return support,canonical_matching_basis(restricted,len(support),check)
+        basis,transform=canonical_matching_basis(restricted,len(support),check,return_transform=True)
+        weights=tuple(tuple(sum(a*row[i]for a,row in zip(z,mode_parameters))
+                            for i in range(len(self.base_basis)+len(new_modes)))for z in transform)
+        return support,basis,(tuple(new_modes),weights)
+
+    def _corrected_column(self,item,check,stats):
+        check()
+        if item not in self._column_modes:
+            if self._potential_columns is None:
+                columns={}
+                for corner,potential in enumerate(self.potentials):
+                    check()
+                    for j,value in potential.items():columns.setdefault(j,[]).append((corner,value))
+                self._potential_columns=columns
+                if stats is not None:stats['potential_transpositions']+=1
+            t,q=item;terms={3*t+q:Fraction(1)}
+            for i,value in self.coefficients[item].items():
+                a,b=self.base_support[i];terms[3*a+b]=-value
+            values={}
+            for j,coefficient in terms.items():
+                check()
+                for corner,value in self._potential_columns.get(j,()):
+                    check();values[corner]=values.get(corner,0)+coefficient*value
+                    if not values[corner]:del values[corner]
+            # Publish only a completed column; an interrupted construction
+            # never leaves a partial cached vector for another query.
+            self._column_modes[item]=values
+            if stats is not None:stats['potential_columns_cached']=len(self._column_modes)
+        return self._column_modes[item]
+
+    def project_modes(self,plan,check,stats=None):
+        """Apply tracked small row operations to lazily cached source modes.
+
+        A corrected column is P_j-P_S*c_j. It need not be a matching mode
+        alone when its residual is nonzero; the recorded cancelling pair
+        and subsequent replacement/gauge operations give the actual kernel.
+        """
+        check();new_modes,weights=plan;d0=len(self.base_basis)
+        entries=[]
+        for row in weights:
+            check();terms=[]
+            for i,value in enumerate(row[:d0]):
+                if not value:continue
+                if self._base_modes is None:
+                    forms=projected_corner_forms(self.base_support,self.base_basis,self.potentials,check)
+                    self._base_modes=tuple({c:form[j]for c,form in enumerate(forms)if form[j]}for j in range(d0))
+                    if stats is not None:stats['base_potential_builds']+=1
+                terms.append((self._base_modes[i],value))
+            for mode,value in zip(new_modes,row[d0:]):
+                if value:
+                    for item,scale in mode:
+                        terms.append((self._corrected_column(item,check,stats),value*scale))
+            entries.append(terms)
+        projected=[]
+        for terms in entries:
+            values={}
+            for column,coefficient in terms:
+                check()
+                for corner,value in column.items():
+                    values[corner]=values.get(corner,0)+(value if coefficient==1 else coefficient*value)
+            projected.append(values)
+        forms=[]
+        for corner in range(len(self.potentials)):
+            check()
+            forms.append(tuple(values.get(corner,0)for values in projected))
+        if stats is not None:stats['mode_projections']+=1
+        return tuple(forms)
 
 
 class ProjectedWindowKernel(SectorKernel):

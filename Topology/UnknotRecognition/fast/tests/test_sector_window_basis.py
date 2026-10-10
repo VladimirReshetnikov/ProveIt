@@ -10,7 +10,7 @@ from fastunknot.cocycle_span import minimize_cocycle_span
 from fastunknot.normal_sector import sector_rays
 from fastunknot.sector_sparse import PreparedSectorSource
 from fastunknot.sector_residual import _plan_window,search_sector_window
-from fastunknot.sector_window_basis import projected_window_kernel
+from fastunknot.sector_window_basis import projected_window_kernel,projected_corner_forms
 from fastunknot.normal_seed_verify import verify_normal_seed_certificate
 from planar_sector_research.fixtures import double_capped_fibonacci,vector_key
 
@@ -28,11 +28,14 @@ class WindowBasisTests(unittest.TestCase):
             support=[(t,q)for t,row in enumerate(rows)for q in range(3)if row[4+q]]
             base=source.build(support);plan=_plan_window(source.prepared,rows,2,lambda:None,base.basis)
             for edits in plan['edits']:
-                allowed,basis=plan['_matching_updates'].for_edits(edits,lambda:None)
+                model=plan['_matching_updates']
+                allowed,basis,projection=model.for_edits(edits,lambda:None,projection=True)
                 fresh=source.build(allowed)
                 self.assertEqual(basis,fresh.basis)
+                forms=model.project_modes(projection,lambda:None)
+                self.assertEqual(forms,projected_corner_forms(allowed,basis,model.potentials,lambda:None))
                 updated=projected_window_kernel(raw,source.prepared,allowed,basis,
-                    plan['_matching_updates'].potentials,lambda:None)
+                    model.potentials,lambda:None,corner_forms=forms)
                 actual=list(sector_rays(updated));expected=list(sector_rays(fresh))
                 self.assertEqual({vector_key(v)for v in actual},{vector_key(v)for v in expected})
                 self.assertEqual(len(actual),len(expected))
@@ -52,6 +55,8 @@ class WindowBasisTests(unittest.TestCase):
         self.assertEqual(calls.call_count,1);self.assertEqual(answer['status'],'DISC_FOUND')
         self.assertEqual(answer['stats']['full_basis_builds'],1)
         self.assertEqual(answer['stats']['basis_updates'],31)
+        self.assertLessEqual(answer['stats']['base_potential_builds'],1)
+        self.assertGreater(answer['stats']['mode_projections'],0)
         proof=dict(schema='diagram-normal-disc-v1',input_pd=[list(r)for r in d.pd],triangulation=raw,
             coordinates=answer['coordinates'],disc_certificate=answer['disc_certificate'])
         self.assertTrue(verify_normal_seed_certificate(d,proof))
@@ -65,14 +70,41 @@ class WindowBasisTests(unittest.TestCase):
         rows=[[sum(r[t][j]for r in old)for j in range(7)]for t in range(4)]
         plan=_plan_window(source.prepared,rows,1,lambda:None,base.basis)
         for q in range(3):
-            allowed,basis=plan['_matching_updates'].for_edits(((3,q),),lambda:None)
+            model=plan['_matching_updates']
+            allowed,basis,projection=model.for_edits(((3,q),),lambda:None,projection=True)
             self.assertEqual(len(basis),4)
+            forms=model.project_modes(projection,lambda:None)
+            self.assertEqual(forms,projected_corner_forms(allowed,basis,model.potentials,lambda:None))
             updated=projected_window_kernel(raw,source.prepared,allowed,basis,
-                plan['_matching_updates'].potentials,lambda:None)
+                model.potentials,lambda:None,corner_forms=forms)
             fresh=source.build(allowed)
             for method in ('arrangement','supports'):
                 self.assertEqual({vector_key(r)for r in sector_rays(updated,method=method)},
                     {vector_key(r)for r in sector_rays(fresh,method=method)})
+
+    def test_interrupted_column_projection_is_not_published_to_the_cache(self):
+        fixture=double_capped_fibonacci(1);source=PreparedSectorSource(fixture['triangulation'])
+        base=source.build(fixture['allowed_types']);rays=list(sector_rays(base))
+        rows=[[sum(r[t][j]for r in rays)for j in range(7)]for t in range(3)]
+        model=_plan_window(source.prepared,rows,2,lambda:None,base.basis)['_matching_updates']
+        item=next(iter(model.coefficients))
+        class Interrupted(RuntimeError):pass
+        calls=0
+        def stop_during_column():
+            nonlocal calls
+            calls+=1
+            if calls==3:raise Interrupted
+        with self.assertRaises(Interrupted):model._corrected_column(item,stop_during_column,None)
+        self.assertNotIn(item,model._column_modes)
+        completed=model._corrected_column(item,lambda:None,None)
+        j=3*item[0]+item[1]
+        expected=tuple(p.get(j,0)-sum(value*p.get(3*model.base_support[i][0]+model.base_support[i][1],0)
+                                     for i,value in model.coefficients[item].items())for p in model.potentials)
+        self.assertEqual(tuple(completed.get(c,0)for c in range(len(model.potentials))),expected)
+        with patch.object(model,'_corrected_column',side_effect=AssertionError('unexpected new column')):
+            support,basis,projection=model.for_edits((),lambda:None,projection=True)
+            self.assertEqual(model.project_modes(projection,lambda:None),
+                projected_corner_forms(support,basis,model.potentials,lambda:None))
 
 
 if __name__=='__main__':unittest.main()
