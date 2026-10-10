@@ -28,7 +28,7 @@ noncomputable section
 namespace LeanProofs.GowersSzemeredi
 open Classical
 
-variable {A : Type*} {N q : Nat}
+variable {A : Type*} [DecidableEq A] {N q : Nat}
 
 /-- The class of a point: same first coordinate, same label. -/
 def anchorClass (D : Finset (A × ZMod N)) (cls : A × ZMod N → Fin q) (p : A × ZMod N) :

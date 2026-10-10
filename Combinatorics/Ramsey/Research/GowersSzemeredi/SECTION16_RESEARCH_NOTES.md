@@ -2158,14 +2158,55 @@ Two multilinear graphs, one for each cross-section, give one
 `(k+1)`-multilinear piece. The `r²`-pair union, and its exponent
 `p = 4r²γ⁻²s`, does not arise.
 
+**Second piece, done:** `Proofs16SinglePieceSections`.
+- The dimension-`k` input is now a named hypothesis,
+  `LocalMultilinearPieceAt k γ c w`. Let `B` have density `θ` in a proper
+  box `P` and carry a function with the product property. Then some proper
+  sub-box `R`, with `width R ≥ w θ (width P)`, and one multilinear `μ`
+  agree on `c θ·|R|` points of `B ∩ R`.
+  - It is a *piece* statement, not a cover. That is the form the consumer
+    needs: `section16_joint_frequency_box` outputs one box and one
+    multilinear map with dense large-frequency agreement.
+  - It holds trivially with `w θ L = min 1 L` (single-point boxes). Its
+    content is a growing `w` at polynomial `c`.
+- `single_piece_on_line_cell` proves the lift on one line-covered cell
+  `T × J`. Setting: `D` has density `θ`, fibres split into `q` classes, and
+  `φ(h, ·)` is affine on each class. Output: one proper `(k+1)`-box
+  `S ⊆ T × J` and one multilinear `μ` with
+  `θ₁·c(c(θ₁))·|S|` agreements in `D ∩ S`, where `θ₁ = θ³/(4q²)`, and
+  `width S ≥ ⌊√(w(c θ₁)(w θ₁ (width T)) − 1)⌋ − 1`.
+- The proof chains five steps:
+  1. one anchor pair (step 1);
+  2. popular fibres (`popular_fibres`: `θ₁|T|` base points, each with
+     `≥ θ₁|J|` captured points);
+  3. the input applied to `φ(·, a)`, then **nested** to `φ(·, b)` on the
+     agreement set inside the first box. Nesting replaces "common cells"
+     and costs `c∘c` instead of a union over graph pairs;
+  4. `anchor_reconstruction`, giving `φ = section16TwoAnchorLift a b μ_a μ_b`;
+  5. the corpus's synchronized retiling
+     (`box_product_tiling_of_contained_axis`), whose cells cost only the
+     square root in width, and a mediant pick of the densest cell.
+- With `c t = t^D` and `w t L = L^(t^E)`:
+  - the density is `θ₁^(D²+1)`;
+  - the width exponent is `½·θ₁^E·c(θ₁)^E`.
+  Both are polynomial in `θ` and `1/q`. **The lift itself loses only
+  polynomially.** The exponential losses of Lemma 16.10 analysed in Part A
+  come from covering all of `φ₁`, not from the lift step. Whether the
+  line-covered cell itself (item 1 below) can be had at polynomial cost is
+  still open.
+- Hypotheses kept explicit: `T`'s first axis is no longer than `J` and at
+  most `N/2` (as `Box.short_parent_partition` arranges), and
+  `|J| ≥ 2q²/θ³`.
+
 **Next.**
-1. Cross-section single graphs on a common cell, at loss polynomial in
-   `Q`.
-2. A single-piece Lemma 16.9 that picks one graph of each remainder
-   `φ_ε` instead of the union.
-3. Assemble a `DenseMultilinearPiece (k+1)` statement, conditional on a
-   named polynomial-count dimension-`k` hypothesis, and compare it with
-   the length-6 discrepancy budget of K.4.
+1. A single-piece Lemma 16.9: from a dense `(k+1)`-dimensional
+   product-property set, produce one line-covered cell of density
+   `poly(θ)` with `q = poly(1/θ)` classes. This is where the slope relation
+   and the remainders `φ_ε` enter, so it needs the structure of
+   `Proofs16Lemma9`.
+2. Assemble `LocalMultilinearPieceAt (k+1)` from `LocalMultilinearPieceAt k`
+   plus item 1. Then compare it with the length-6 discrepancy budget of
+   K.4, through `section16_joint_frequency_box`'s output form.
 
 ## F. Routes
 
