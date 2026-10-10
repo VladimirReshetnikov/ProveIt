@@ -11960,7 +11960,7 @@ The same original witness system and source-agreement families are kept.
 eight consecutive differences define nine prefix vertices. A padded
 sixteen-entry signed word bounds every vertex in the full parent
 progression when endpoints lie in its `1/256` shrinking. The last vertex
-equals the first when the index sum is zero. Thus only eight distinct
+equals the first when the index sum is zero. Thus at most eight
 anchor positions are charged, including the starting vertex. Every
 quadruple step has the required index equality; the eight map defects
 telescope to the original sixteen-endpoint defect. Repeated endpoints
@@ -12044,4 +12044,10 @@ license scope is introduced.
 **Production checks.** The chain source compiles in a 437-module closure;
 the sixteen-endpoint relation in 438; the native fibre interface in 439;
 the active graph in 440; and the complete global integration in 457.
-The combined axiom audit is pending for this checkpoint.
+The completed combined audit includes all 23 new named proofs and checks
+9,860 public Gowers theorems across 5,609 modules; the facade closure has
+5,607 modules. Only `propext`, `Classical.choice` and `Quot.sound` occur.
+The selected OAI audit closure remains 4,152 modules, and its
+4,134-upstream / 17-compatibility scope check passes. The source ledger
+remains byte-identical at 115 companions and five open statements.
+Independent incoming reports and polylogarithm updates are synchronized.
