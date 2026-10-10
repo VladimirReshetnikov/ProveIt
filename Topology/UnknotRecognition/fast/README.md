@@ -3567,3 +3567,33 @@ See [edge-first theory](../synthesis/cocycle_lex.tex),
 The latter preserves sharper crossing, effective-support and Q-corner Euler
 theorems; its alternative patch and proposed aggregated Euler precheck are
 not installed. No general QP recognition bound follows.
+
+
+Automatic STANDARD discovery at nullity three now tests projective Q-corners
+before building the minimum overlay. It refines only after the corner
+prelude finds no disc, reuses the chart, and shares one actual-ray cap across
+both stages. Exhaustion still includes every standard ray and uses the
+existing independent certificate checker. Complete enumeration retains its
+previous canonical order. The bounded-support search also reuses one
+producer matching kernel across Q and STANDARD phases of each sector;
+independent source checks remain in place.
+
+All 1,396 tests pass. The audit checks 9,807 complete adaptive ray sets and
+463 discovery queries: all 44 observed positives finish before refinement,
+and all 419 negative proofs replay. Complete discovery with proof replay
+and serialization improves 1.64–2.68x on the tested two-cap families against
+the preceding planar release. Full negative, low-nullity and enumeration
+controls stay near parity. A longer repeat records 4–5% kernel-reuse gains
+in the two supplied capped-exterior bounded-support scans. These are local
+API scopes; the default diagram portfolio is separate.
+
+```sh
+python -B -m normal_orbit_research.planar_adaptive audit --fresh-regina --output /tmp/adaptive-audit.json
+python -B -m normal_orbit_research.planar_adaptive benchmark --rounds 5 --output /tmp/adaptive-benchmark.json
+```
+
+[The progress-driven discovery chapter](../synthesis/planar_adaptive.tex)
+proves complete fallback and uniform first-corner meridian selection on the
+Fibonacci family. It also records the general arrangement bound
+`poly(t+k+B) * (1+k)^O(d)`: logarithmic matching nullity permits complete
+local QP enumeration, while a complete global sector producer remains open.

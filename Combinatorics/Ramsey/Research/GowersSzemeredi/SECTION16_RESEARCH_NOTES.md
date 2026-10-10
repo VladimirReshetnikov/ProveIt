@@ -5978,6 +5978,17 @@ the decomposition with these named constants, but not `Theorem162At 3`.
              (`additiveQuadruplesIn`).
            - `markov_large_fibers`: at least `(1 − 2η)N` values of `a`
              have `|G_a| ≥ M/2`.
+         - *Deterministic links (done, `Proofs16PropNineThreeGlue`).*
+           - `good_pair_domain` (Lemma A): a good pair's glued map is
+             Freiman-linear on a domain containing
+             `B(θ_i(a) : i ∈ J; η)` for every `J ⊇ I_{x,a} ∪ I_{y,a}`.
+           - `twelve_good_respected` (Lemma B): a quadruple whose 12-tuple
+             is not bad, has both 8-tuples respected, and has compatible
+             chosen pairs, is respected by the glued maps (`chosenGlued`)
+             on `⋂_j B(θ_i(q_j) : i ∈ J; η)`.
+
+           What remains is the counting theorem chaining the iteration,
+           good pairs, Markov, F3, the quadruple window and Lemmas A/B.
          Quantitatively, `s₀ = O(d log(dR))`, and
          `δ` is polynomial in `ε` and `(2R+1)^(−d)`. With
          `R = (ρ^(−1))^O(d)`, this makes `m ≤ s₀/δ = exp(O(d² log 1/ρ))`

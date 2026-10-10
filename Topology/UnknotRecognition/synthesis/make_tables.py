@@ -1711,3 +1711,7 @@ if os.path.exists('data/envelopes-benchmark.json'):
 if os.path.exists('data/planar-sectors-benchmark.json'):
     import runpy
     runpy.run_path('data/planar_sectors_tables.py')
+
+if os.path.exists('data/planar-adaptive-benchmark.json'):
+    import runpy
+    runpy.run_path('data/planar_adaptive_tables.py')

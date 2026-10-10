@@ -1168,3 +1168,29 @@ and checks all eighteen rendered pages from 527 through the updated
 references. The only later native change is a docstring update, verified
 to preserve the executable syntax tree. Run `python -B data/planar_sectors_review.py --publication`
 from this directory to reproduce the saved review.
+
+
+[planar_adaptive.tex](planar_adaptive.tex) makes nullity-three discovery
+progress-driven: test Q-corners first, request the complete overlay only
+on resumed search, and retain one shared actual-ray allowance. It proves
+complete fallback, uniform first-corner meridian selection for every
+Fibonacci family size, and the general arrangement fallback's local
+`poly(t+k+B) * (1+k)^O(d)` bit bound. The latter gives complete local
+QP enumeration at logarithmic nullity, without a global sector-family
+coverage theorem. The bounded-support outer search reuses one producer
+kernel across its two phases. All 1,396 tests pass, and 9,807 complete
+streams plus 463 discovery certificates match the incumbent/oracle.
+Complete tested discovery gains are 1.64–2.68x relative to the preceding
+planar release, including proof replay and serialization. The full negative,
+lower-nullity and complete-enumeration controls remain near parity.
+A fifteen-round repeat supports 4–5% gains in the two bounded-support scans;
+those API calls do not emit portable complete-family exhaustion proofs.
+Raw evidence, all A/A controls, source pins and producer-disabled publication
+replay are retained in `data/planar-adaptive-*`.
+
+The current [PDF](report.pdf) has 548 pages. Section 137 starts on page 540;
+the assessment is now section 138 on page 544. Rendered pages 540–545 pass
+visual review with no new LaTeX overflow/reference warnings. Reproduce
+publication checks with `python -B data/planar_adaptive_review.py --publication`
+from this directory; they check the 589 frozen/current runtime pins and
+producer-disabled saved proof replay.
