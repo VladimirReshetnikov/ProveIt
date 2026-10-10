@@ -1,0 +1,81 @@
+{
+  "mode": "quick",
+  "started_utc": "2026-10-09T23:39:55.812827+00:00",
+  "status": "passed",
+  "jobs": [
+    {
+      "name": "weight6_ode_derivation",
+      "category": "parity",
+      "script": "code/independent/parity/derive.py",
+      "exit_code": 0,
+      "duration_seconds": 0.364,
+      "log": "results/independent/parity/logs/weight6_ode_derivation.log",
+      "status": "passed"
+    },
+    {
+      "name": "weight8_ode_derivation",
+      "category": "parity",
+      "script": "code/independent/parity/extend_weight8.py",
+      "exit_code": 0,
+      "duration_seconds": 0.48,
+      "log": "results/independent/parity/logs/weight8_ode_derivation.log",
+      "status": "passed"
+    },
+    {
+      "name": "parity_symbolic_comparison",
+      "category": "parity",
+      "script": "code/independent/parity/gaussian_parity.py",
+      "exit_code": 0,
+      "duration_seconds": 2.214,
+      "log": "results/independent/parity/logs/parity_symbolic_comparison.log",
+      "output": "results/independent/parity/gaussian_coefficients.json",
+      "validated_counts": {
+        "parity_rows": 12,
+        "general_formula_comparisons": 100
+      },
+      "status": "passed"
+    },
+    {
+      "name": "one_two_coefficient_derivation",
+      "category": "one_two",
+      "script": "code/independent/one_two/derive_rows.py",
+      "exit_code": 0,
+      "duration_seconds": 0.662,
+      "log": "results/independent/one_two/logs/one_two_coefficient_derivation.log",
+      "output": "results/independent/one_two/coefficients.json",
+      "validated_counts": {
+        "one_two_component_rows": 24
+      },
+      "status": "passed"
+    },
+    {
+      "name": "mixed_symbolic_derivation",
+      "category": "parity",
+      "script": "code/independent/parity/mixed_candidates.py",
+      "exit_code": 0,
+      "duration_seconds": 0.312,
+      "log": "results/independent/parity/logs/mixed_symbolic_derivation.log",
+      "output": "results/independent/parity/mixed_symbolic_checks.json",
+      "validated_counts": {
+        "mixed_symbolic_rows": 4
+      },
+      "status": "passed"
+    },
+    {
+      "name": "audit_exact_radius_checks",
+      "category": "audit",
+      "script": "code/independent/audit/verify_corrections.py",
+      "exit_code": 0,
+      "duration_seconds": 0.046,
+      "log": "results/independent/audit/logs/audit_exact_radius_checks.log",
+      "output": "results/independent/audit/exact_radius_checks.json",
+      "validated_counts": {
+        "exact_rational_radius_cases": 160
+      },
+      "status": "passed"
+    }
+  ],
+  "interpretation": "Symbolic identities and rational bounds are exact; quadrature residuals are independent numerical cross-checks.",
+  "duration_seconds": 4.084,
+  "finished_utc": "2026-10-09T23:39:59.896965+00:00"
+}

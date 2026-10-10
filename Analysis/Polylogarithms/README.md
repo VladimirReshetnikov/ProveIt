@@ -125,6 +125,17 @@ ids (`reports/herglotz-cyclotomic-obstructions/data/proposed_corrections.json`).
 - **Same article, `eq:eis-single`.** `Im Li_n(ρ) = Cl_n(2π/3)` holds for even `n`
   only under the corpus's (Lewin) Clausen convention; at `n = 3`,
   `Im Li₃(ρ) = 2π³/81` while `Cl₃(2π/3) = Re Li₃(ρ) = −4ζ(3)/9` (C22).
+- **Same article, lines 214-216** ("all depth-2 content of the Gaussian doubles lives
+  in the antisymmetric parts `Li_{a,b}(P) − Li_{b,a}(P)`, which vanish on the
+  diagonal"). At the mixed points the stuffle pairs `Li_{a,b}(x,y)` with
+  `Li_{b,a}(y,x)` (`eq:g-sym-mix`), so the complementary part is the colour-swapped
+  difference `Li_{a,b}(x,y) − Li_{b,a}(y,x)`, which need not vanish when `a = b`:
+  `Im(Li₁,₁(−1,i) − Li₁,₁(i,−1)) = (π/2)log2 − G ≈ 0.1728` (batch 140: 19; checked
+  at intake).
+- **Same article, lines 201-203 and 397.** "`Re Li_n(i)` and `Li_n(−1)` are rational
+  multiples of `ζ(n)`" (and the same for `Re Li_n(ρ)`) holds for `n ≥ 2` only; the
+  `Li₁` values that occur in Family 1 are `Re Li₁(i) = −log2/2`, `Li₁(−1) = −log2`,
+  `Li₁(ρ) = −log3/2 + iπ/6` (19).
 - **`multiple-polylogarithms-introduction`.**
   - "Domain of absolute convergence" (lines 231-235): `Li₁(i)` meets the printed
     hypotheses but is not absolutely convergent; a sufficient condition is
@@ -160,6 +171,14 @@ ids (`reports/herglotz-cyclotomic-obstructions/data/proposed_corrections.json`).
   fail for complex characters by `−0.143865275…i` (odd quartic mod 5) and
   `−0.033916259…i` (even cubic mod 7). The two Stieltjes articles print the
   conjugate correctly (X8).
+- **`eisenstein-row-sums-cm-polygamma`, lines 168-170** (and
+  `reports/polygamma-complex-arguments-cm-lattices`, lines 96-97). "The alternating
+  component (`Re` at odd weight, `Im` at even weight) stays opaque" is reversed: the
+  differentiated line law displayed just above evaluates exactly those components
+  (`Im` at weight 2, `Re` at weight 3; in general
+  `Re(iᵐ(ψ⁽ᵐ⁾(z+c) − ψ⁽ᵐ⁾(z))) = R_c⁽ᵐ⁾(t)` on `Re z = (1−c)/2`); it leaves the
+  complementary components (`Im` at odd, `Re` at even weight) undetermined. The
+  displayed identities stand (19; checked at intake).
 - **`polylog-polygamma-bridge`.** The Clausen component of the polygamma grid has
   parity `(−1)^{n+1}`: odd at even weight, even at odd weight, not always odd
   (lines 149-151; X13, B001, `13-tower-bundle` C6). The prediction of `sec:psim2`
@@ -222,6 +241,11 @@ Batch 139 (9 October 2026) adds two items, also not checked at intake:
 `stieltjes-antiderivative-ladder` line 1073 ("forces genuinely new constants"): the
 formal rank gives residual formal directions, not new constants (15).
 
+Batch 140 (9 October 2026): `gaussian-eisenstein-double-polylogs` lines 207-211 say a
+kernel returns `Li₃,₃(i,i)` "in `β(4)`, `π⁴`, `ζ(3)`"; the stuffle gives
+`Li₃,₃(i,i) = 9ζ(3)²/2048 + 47π⁶/1935360 − 3iπ³ζ(3)/1024` (19; the value was
+checked at intake, the remark about software output was not reproduced).
+
 ### Conditional, not a theorem
 
 - `gamma-lattice-and-certificates`, `law:ko`: completeness of the
@@ -280,14 +304,18 @@ Each is an open question, not a defect of the numerics.
 ### Proved since intake (9 October 2026 continuations)
 
 - `gaussian-multiple-polylog-depth`: `eq:wt5-sporadic` and the five weight-6 identities
-  `2048g₅₁ = …` to `92160g₁₅ = …` (four independent proofs: by the depth-two parity
-  theorem of Panzer (2017), specialized, and by shuffles; `reports/gaussian-parity-reductions/`),
-  and the three weight-4 triple evaluations (14). Coefficients unchanged.
+  `2048g₅₁ = …` to `92160g₁₅ = …` (six independent proofs, sources 14-19 of `reports/gaussian-parity-reductions/`: by the
+  depth-two parity theorem of Panzer (2017), specialized, by shuffles, and (19) by a
+  differential recurrence with exact double-zeta boundary data), and the three weight-4
+  triple evaluations (14, 19). Coefficients unchanged.
 - `eisenstein-gaussian-mixed-cuberoot-doubles` `eq:gauss-w2`, `eq:eis-w2`:
   `Li₁,₁(z,1/z) = −Li₂(z/(z−1))` on the unit circle (15, 17).
 - The supergolden and `x⁴+x−1` trilogarithm ladders of `golden-polylog-ladders`
   (lines 181-182; `ladders-as-bloch-elements` line 59) (14).
-- Still open: `eq:S4-closed`, and every independence or minimal-depth statement.
+- Still open: `eq:S4-closed` (18 encloses the difference in `[−10⁻¹¹⁸, 10⁻¹¹⁸]` and
+  shows it is not a rational combination of the rows of one specified weight-5
+  depth-two system; the witness was checked exactly at intake), and every
+  independence or minimal-depth statement.
 
 ### Stale PDFs
 
@@ -305,12 +333,14 @@ found wrong. Results reconfirmed include the `F(1/q)` theorem at `q = 7`, the
 `F(n/(n+1))` family at `n = 6`, `J(2/3)`, `J(2/5)`, the log-gamma examples at
 `1/3`, `1/4`, `1/6`, and `G₁₂ = (18G₄³ + 25G₆²)/143` in the unnormalized convention.
 
-## Continuations (batches 138-139, 8-9 October 2026)
+## Continuations (batches 138-140, 8-9 October 2026)
 
 Six external continuations, all AI-assisted research drafts pinned to `c78c7c3dc2`
 or `3a6d80ed61` (whose Polylogarithms tree equals `a87af186c`), are placed as five
 merged reports under `docs/reports/`, one per thematic spine. Manuscripts are not
-edited; files of merge members carry the prefix of their manuscript number.
+edited; files of merge members carry the prefix of their manuscript number. Batch 139 (9 October 2026, `d4dead2c6b`) adds four further continuations as a sixth
+merged report, `gaussian-parity-reductions/` (base 14, members 15-17); batch 140
+(`49a6356865`) adds members 18 and 19.
 
 | Report | Spine | Base | Other sources |
 |---|---|---|---|
@@ -319,7 +349,7 @@ edited; files of merge members carry the prefix of their manuscript number.
 | `alternating-harmonic-polylogarithms/` | `S_{2m+1}` at every weight; reflection for `T_{p,r}`; depth-exponent transition; inverse-argument mixed doubles | 11 (`polylogarithms_reflection_depth_transition_2026-10-07`) | 10, 12 |
 | `herglotz-cyclotomic-obstructions/` | all-conductor relations of `β_q(a)`, exact five-term reduction criterion, `J(2/q)` classification, optimal truncation | 09 (`herglotz_research`, single source) | corrections credited from 12 (C15-C19) |
 | `corpus-corrections/` | the correction registers of all six deliveries | 12 (`polylogarithms_research`, C01-C22) | 06, 10, 11, 13 registers; 09's `data/proposed_corrections.json` |
-| `gaussian-parity-reductions/` | proofs of the manuscript's Gaussian weight-5/6 candidates by parity and shuffle; triples; ladders; log-gamma moments; certified evaluators at mixed roots | 14 (`polylogarithms_exact_reductions_20261009`) | 15 (`polylogarithm_research_20261009`), 16 (`ProveIt_Gaussian_Polylogarithms_Research`), 17 (`proveit_polylog_gap_reductions_2026-10-09`) |
+| `gaussian-parity-reductions/` | proofs of the manuscript's Gaussian weight-5/6 candidates by parity and shuffle; triples; ladders; log-gamma moments; certified evaluators at mixed roots; signed kernels and the unique unit-circle zero; Euler and Hölder certificates | 14 (`polylogarithms_exact_reductions_20261009`) | 15 (`polylogarithm_research_20261009`), 16 (`ProveIt_Gaussian_Polylogarithms_Research`), 17 (`proveit_polylog_gap_reductions_2026-10-09`), 18 (`polylogarithms_gaussian_continuation`), 19 (`gaussian_polylogarithms_research_package_20261009`) |
 
 ## Notation
 
