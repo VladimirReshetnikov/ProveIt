@@ -1,0 +1,95 @@
+\section{Sparse standard geometry in free quadrilateral coordinates}
+\label{sec:window-geometry}
+
+The propagated potentials of Section~\ref{sec:window-modes} already have
+only $d$ parameters. The old window constructor expands each form into
+$k$ coefficients and every standard constraint into $p+k$ coefficients,
+where $p$ is the number of retained triangle classes. Low-dimensional
+producers then multiply those expansions, including their zeros. This
+continuation keeps the actual coefficients sparse and materializes dense
+rows only for rank computations that request them.
+
+\subsection{The unchanged complete matching equations}
+
+Let $F_a$ be the free Q coordinates of the canonical updated basis $K'$,
+so $q_{F_a}=z_a$. Every dependent Q coordinate obeys
+\[
+                 q_j-\sum_{a=1}^d K'_{a,j}q_{F_a}=0.
+\]
+Each such equation has at most $d+1$ nonzero coefficients. A class potential
+$\phi_c(z)$ has at most $d$ coefficients, all in the free physical slots.
+For a vertex-group anchor $b$, the standard equation is
+\[
+ x_c-x_b-\sum_{a=1}^d(\phi_{c,a}-\phi_{b,a})q_{F_a}=0,
+\]
+with at most $d+2$ nonzeros. Together these are the same complete standard
+matching space as the preceding projected kernel, including its link-offset
+factors. The representation change neither drops constraints nor replaces
+standard rays with Q rays.
+
+\subsection{Exact forms with two access paths}
+
+The native \code{SparseLinearForm} stores the width and the nonzero
+coefficient dictionary. Its sparse dot product visits only stored entries.
+Its chart projection visits the same entries for each chart coordinate.
+Indexing returns the exact coefficient, including omitted zeros; iteration
+returns the full dense sequence. Coordinate-face restrictions can therefore
+index the sparse row directly, while the existing rational rank routines
+can materialize the same dense row by iteration.
+
+\begin{proposition}[Representation preserves all kernel queries]
+Sparse window constraints and potentials define exactly the previous
+projected kernel. Their sparse dot and chart projection values equal dense
+arithmetic; every coordinate-face restriction and dense rank calculation
+receives exactly the previous coefficient values.
+\end{proposition}
+\begin{proof}
+Only exact zero coefficients are omitted. Summation over nonzero entries
+is equal to summation over the full row, for every vector or chart form.
+Indexing and iteration restore zero at each omitted slot and retain every
+other value. Thus both matching equations and restricted matrices are
+identical. The basis, normalized potentials, canonical lifts, extrema and
+rank/nullspace tests consequently remain unchanged.
+\end{proof}
+
+The projected lift evaluates its Q constraints and potentials sparsely,
+then checks integrality and validates the full coordinate vector against
+the actual source as before. Envelope line construction uses sparse dot
+products. Planar chart construction uses sparse form projection. Other
+kernel constructors still use their existing dense tuples. Their fallback
+arithmetic is retained. The generic arrangement/support paths see the
+complete restored rows when needed; no low-dimensional promise is applied
+to a higher-nullity source.
+
+\subsection{Storage and arithmetic accounting}
+
+There are $k-d$ dependent-Q rows and $p-g$ triangle-difference rows, with
+$g$ retained vertex groups. The stored standard coefficient count is at most
+\[
+          (k-d)(d+1)+(p-g)(d+2).
+\]
+Stored potentials use at most $pd$ entries. Thus standard coefficient and
+potential storage is $O((k+p)(d+1))$, instead of expanded row storage with
+quadratic dependence on $k+p$. Widths and basis storage remain separately
+charged. Source class identification still uses its existing exact
+form-group dictionary; its hash costs are not replaced by a claimed
+deterministic linear-time bound.
+
+After the basis and propagated forms are available, filling the sparse
+coefficient records requires $O((k+p)(d+1))$ scalar operations. Checking a
+Q vector costs $O(k(d+1))$ sparse coefficient operations. Canonical potential
+evaluation costs $O(pd)$, followed by the existing minima, physical-corner
+reconstruction and independent source validation. A one-dimensional
+direction therefore avoids the old dense $k^2$ cycle-row dot products.
+Envelope and planar projections likewise avoid multiplying zero physical
+Q slots; their fan, clipping and actual-ray costs remain charged.
+
+Generic Gaussian elimination still pays for any dense matrix it constructs.
+Exact coefficient bits, indexing/hash costs, output and certificate replay
+also remain charged. With logarithmic matching nullity this reduces
+storage and a polynomial factor of the supplied-window computation. It
+supplies neither the missing global window family nor a general
+quasi-polynomial recognition theorem.
+
+\subsection{Source validation and measured behavior}
+\input{window_geometry_results.tex}

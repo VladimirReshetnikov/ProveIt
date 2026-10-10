@@ -3707,3 +3707,28 @@ python -B -m normal_orbit_research.window_modes benchmark --rounds 5 --output /t
 explains lazy cache ownership and separates preparation, arithmetic, storage,
 bit costs and independent source replay. Raw pilot/final/repeat evidence and
 recoverable historical source snapshots are in the article data.
+
+Projected windows now retain standard constraints and potentials as exact
+sparse linear forms in the free Q coordinates. Low-dimensional lifts,
+envelope lines and planar chart projections visit only nonzero coefficients.
+The complete dense sequence remains available to generic rank calculations;
+coordinate-face restrictions can index sparse rows directly. Independent
+source validation and positive certificate formats remain unchanged.
+
+All 1,411 maintained tests pass. Genuine nullity-one/two/three producers run
+with dense form iteration disabled; nullity-four generic methods and huge
+scaled lifts still agree with fresh source geometry. The 85-source audit
+preserves all verdicts, guard counts and 31 positives, with seven fresh
+Regina disc checks. A longer complete-recognition repeat shows gains of
+about 4.6% on trefoil and 5.2% on figure-eight against the preceding cached
+mode implementation. These include the complete fallback. Windows remain
+off by default; no general quasi-polynomial bound follows.
+
+```sh
+python -B -m normal_orbit_research.window_geometry audit --fresh-regina --output /tmp/window-geometry-audit.json
+python -B -m normal_orbit_research.window_geometry benchmark --rounds 5 --output /tmp/window-geometry-benchmark.json
+```
+
+[Sparse geometry theory](../synthesis/window_geometry.tex) gives the unchanged
+complete equations, exact access paths and `O((k+p)*(d+1))` stored-coefficient
+bound. Full timing, source and replay evidence is retained in the article data.
