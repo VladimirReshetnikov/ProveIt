@@ -6,7 +6,7 @@ from pathlib import Path
 import unittest
 from unittest.mock import patch
 
-from fastunknot.normal_sector import discover_in_sector,build_sector_kernel,sector_rays
+from fastunknot.normal_sector import _discover_in_kernel,build_sector_kernel,sector_rays
 from fastunknot.normal_sector_verify import verify_sector_exhaustion
 
 BANK=Path(__file__).resolve().parents[2]/'reports/57/results/discovery_corpus.json'
@@ -15,6 +15,12 @@ def fixture(caps=2):
     raw=next(r['triangulation']for r in json.loads(BANK.read_text())['records']if r['id']==f'cap_3_5_{caps}')
     support=[(0,0),(1,1),(2,2),(3,0),(4,1)]if caps==2 else [(0,0),(1,1),(2,2),(3,0),(4,2),(5,2)]
     return raw,support
+
+
+def discover_in_sector(raw,support,**kwargs):
+    # Exercise the complete-Q support route independently of the newer
+    # sufficient matching-row preprocessor.
+    return _discover_in_kernel(build_sector_kernel(raw,support),matching_first=False,**kwargs)
 
 
 class FeasibleSupportTests(unittest.TestCase):

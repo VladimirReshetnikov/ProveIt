@@ -204,6 +204,48 @@ def verify_sector_witness(triangulation, certificate, *, check=lambda: None):
         return False
 
 
+def _matching_support_indices(prepared,support,proof,digest,check):
+    """Replay each implication directly on the source matching equations."""
+    if (type(proof)is not dict or proof.get('schema')!='normal-sector-matching-support-v1'
+            or proof.get('source_sha256')!=digest
+            or 'matching_support_certificate'in proof or 'q_support_certificate'in proof):return None
+    try:
+        if _allowed(proof.get('allowed_types'),len(prepared['tetrahedra']))!=support:return None
+    except ValueError:return None
+    steps=proof.get('steps')
+    if type(steps)is not list or not steps:return None
+    forced=set();equations=prepared['matching']
+    for step in steps:
+        check()
+        if type(step)is not dict:return None
+        combination=step.get('row_combination');claimed=step.get('forced_indices')
+        if type(combination)is not list or not combination or type(claimed)is not list:return None
+        row={};previous=-1
+        for term in combination:
+            check()
+            if (type(term)is not list or len(term)!=3 or type(term[0])is not int
+                    or not previous<term[0]<len(equations)):return None
+            previous=term[0]
+            try:
+                numerator=encoded_integer(term[1]);denominator=encoded_integer(term[2])
+            except (ValueError,TypeError):return None
+            if not numerator or denominator<=0:return None
+            weight=Fraction(numerator,denominator)
+            for column,value in equations[term[0]].items():
+                row[column]=row.get(column,0)+weight*value
+        if any(value for column,value in row.items()if column%7<4):return None
+        positive=[]
+        for i,(t,q)in enumerate(support):
+            check()
+            if i in forced:continue
+            value=row.get(7*t+4+q,0)
+            if value<0:return None
+            if value>0:positive.append(i)
+        if (not positive or any(type(i)is not int for i in claimed)or claimed!=positive):return None
+        forced.update(positive)
+    return [i for i in range(len(support))if i not in forced]
+
+
 def verify_sector_exhaustion(triangulation, certificate, *, check=lambda: None):
     """Independently reconstruct every ray, its Euler value and negative disc proof.
 
@@ -227,6 +269,12 @@ def verify_sector_exhaustion(triangulation, certificate, *, check=lambda: None):
         support = _allowed(certificate.get('allowed_types'), len(prepared['tetrahedra']))
     except ValueError:
         return False
+    working_indices=list(range(len(support)))
+    if 'matching_support_certificate'in certificate:
+        working_indices=_matching_support_indices(prepared,support,certificate['matching_support_certificate'],
+            certificate['source_sha256'],check)
+        if working_indices is None:return False
+    working_support=[support[i]for i in working_indices]
     if 'q_support_certificate'in certificate:
         qproof=certificate['q_support_certificate']
         # No producer data or inferred support is trusted. Independently
@@ -235,28 +283,33 @@ def verify_sector_exhaustion(triangulation, certificate, *, check=lambda: None):
         if (phase!='standard' or type(qproof)is not dict
                 or qproof.get('phase')!='quadrilateral'
                 or qproof.get('status')!='POSITIVE_EULER_ONLY'
-                or qproof.get('allowed_types')!=certificate.get('allowed_types')
-                or 'q_support_certificate'in qproof):return False
+                or qproof.get('allowed_types')!=[list(x)for x in working_support]
+                or 'q_support_certificate'in qproof or 'matching_support_certificate'in qproof):return False
         if not verify_sector_exhaustion(triangulation,qproof,check=check):return False
-        present=[False]*len(support)
+        present=[False]*len(working_support)
         for entry in qproof['rays']:
             check()
             for i,value in enumerate(entry['quadrilaterals']):
                 check()
                 if value:present[i]=True
         retained=[i for i,value in enumerate(present)if value]
-        if not retained or len(retained)==len(support):return False
-        reduced_support=[support[i]for i in retained]
+        if not retained or len(retained)==len(working_support):return False
+        reduced_support=[working_support[i]for i in retained]
         model=dense_sector_model(triangulation,reduced_support,check=check)
         reduced_expected=dense_reference_rays(model,phase,check=check)
         expected={}
         for q,value in reduced_expected.items():
             check();full=[0]*len(support)
-            for i,count in zip(retained,q):full[i]=count
+            for i,count in zip(retained,q):full[working_indices[i]]=count
             expected[tuple(full)]=value
     else:
-        model = dense_sector_model(triangulation, support, check=check)
-        expected = dense_reference_rays(model, phase, check=check)
+        model = dense_sector_model(triangulation, working_support, check=check)
+        reduced_expected = dense_reference_rays(model, phase, check=check)
+        expected={}
+        for q,value in reduced_expected.items():
+            check();full=[0]*len(support)
+            for i,count in zip(working_indices,q):full[i]=count
+            expected[tuple(full)]=value
     entries = certificate.get('rays')
     if type(entries) is not list or len(entries) != len(expected):
         return False
