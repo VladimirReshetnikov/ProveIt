@@ -1,3 +1,35 @@
+# Completed incoming integration
+
+The five incoming packages are integrated by mathematical dependency in the
+collective 287-page, twelve-chapter manuscript, with 79 bibliography entries.
+The author on the title and in PDF metadata is ProveIt Contributors. S4 now
+has a written analytic justification and an independently regenerated exact
+911-row certificate with empty residual. S6 remains conjectural. The two
+moment packages also yield a proved fixed-reflected-exponent sharp-remainder
+corollary, checked by nine 180-digit diagnostics.
+
+All five isolated replay suites and five additional native Wolfram checks
+passed. Three serial LuaLaTeX passes converge without layout/reference
+warnings. All 287 pages were checked statically and visually in eighteen
+contact sheets; selected new proof pages, title and all eight figures were
+reviewed at full size. The final PDF SHA-256 is
+d589b97556c858d9bd4444adda1b06d949e93179b1de44f1412cea75aef8975d.
+
+All 174 delivered archive members remain byte-identical in their full
+packages. Upstream's twenty duplicate editorial fragments and five updated
+overviews are reconciled; the textual inventory contains 179 files. Retired
+arrival ZIPs are pinned to a recoverable Git revision. Source/dependency
+hashes and strict recorded-outcome/PDF integrity checks were refreshed after
+the final review. VALIDATION.md distinguishes earlier core replays, new
+replays, ordinary analytic proofs, exact finite certificates and diagnostics.
+
+Publication uses a fresh merge of origin/main followed by a non-forced
+HEAD:main push and an exact remote-tip/ancestry check. The prior source
+checkpoint's race with advancing main was handled by merging again.
+
+The following material is historical continuation context, superseded by
+this completed scientific and artifact checkpoint.
+
 # Current integration checkpoint
 
 All five incoming reports have been integrated by mathematical dependency.

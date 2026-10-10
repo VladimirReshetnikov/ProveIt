@@ -1,7 +1,7 @@
 # Source reconciliation and mathematical corrections
 
 The reading manuscript is `polylogarithms.tex` / `polylogarithms.pdf`.
-The inventory now covers 159 textual source files: the original 39 flat drafts
+The inventory now covers 179 textual source files: the original 39 flat drafts
 and the scientific sources, correction registers and supporting prose of eleven
 later continuation packages (seventeen deliveries). Repeated assembled source and
 section fragments are counted as provenance files, not as independent results.
@@ -68,7 +68,7 @@ distinguished from fresh verification.
 | herglotz-cyclotomic-obstructions | The Herglotz chapter now contains the exterior-symbol kernel theorem, positive cyclotomic Gram matrix, all-conductor rank and zero list, normalized-norm separation, exact five-term criterion, recurrence parametrization, constructive rational cores, formal J classification and successful analytic evaluations. Its positive Binet measure, rational certificates, sharp optimal cutoff, transition sequence and beyond-all-orders arithmetic displacement are retained with their hypotheses. Formal obstructions are not numerical-independence theorems. |
 | corpus-corrections | All C01–C22 and X1–X17 registers are reconciled with the existing edits. The missing q=5 log-gamma derivative term, classical half-unit bracket, exact low-index zero counts and five cubic class-number certificates are incorporated. Duplicate assembled/section manuscripts supply provenance for these same results; their audit prose and obsolete finite-only rank reservations are superseded. A third-party preprint counterexample is tracked separately from the internal identities on which the book relies. |
 
-| gaussian-parity-reductions | The four overlapping deliveries 14–17 are fused by result: Chapter 4 contains the all-depth Lyndon shuffle count and exact normal forms, two-product weight-five proof, all-weight binomial parity theorem and five weight-six specializations, arbitrary-depth one-two family and all three weight-four triples. Chapter 3 contains the complementary-power family and exact cubic/quartic ladder certificates. Chapter 8 contains the known cubic Tornheim moment, pole/residue calculus, late-coefficient growth, divergence and effective growing truncation with an integer interval certificate. The certified Chebyshev evaluator, optimal kernel rate, cancellation safeguards and positive-measure midpoint alternative follow the existing evaluator in Chapter 4. Repeated inverse-color and distribution proofs are superseded by the earlier integrated uniform results; S4 and numerical independence remain open. Delivery 16's complete analytic evaluator source was inspected in its arrival archive at eaad5886ed, under docs/incoming/ProveIt_Gaussian_Polylogarithms_Research.zip; the placed code and integration map preserve its provenance. |
+| gaussian-parity-reductions | The four overlapping deliveries 14–17 are fused by result: Chapter 4 contains the all-depth Lyndon shuffle count and exact normal forms, two-product weight-five proof, all-weight binomial parity theorem and five weight-six specializations, arbitrary-depth one-two family and all three weight-four triples. Chapter 3 contains the complementary-power family and exact cubic/quartic ladder certificates. Chapter 8 contains the known cubic Tornheim moment, pole/residue calculus, late-coefficient growth, divergence and effective growing truncation with an integer interval certificate. The certified Chebyshev evaluator, optimal kernel rate, cancellation safeguards and positive-measure midpoint alternative follow the existing evaluator in Chapter 4. Repeated inverse-color and distribution proofs are superseded by the earlier integrated uniform results; S4 was open in these deliveries and is now proved by the later rigidity package; numerical independence remains open. Delivery 16's complete analytic evaluator source was inspected in its arrival archive at eaad5886ed, under docs/incoming/ProveIt_Gaussian_Polylogarithms_Research.zip; the placed code and integration map preserve its provenance. |
 
 All chapter numbers use the final twelve-chapter organization. The inserted
 zero-geometry chapter is Chapter 10, Herglotz is Chapter 11, and experimental
@@ -137,7 +137,7 @@ component. The mixed diagonal counterexample has a positive exact integral.
 Fresh parts 18 and 19 replay 588 exact/interval cases, 75 Holder certificates
 and their independent nested-sum centers, alongside diagnostic asymptotics.
 
-## Incoming integration (in progress)
+## Incoming integration (completed)
 
 - conductor-descent and distribution-jets: merge their common polynomial
   conductor normal form through the already proved universal presentation;
@@ -174,3 +174,24 @@ The remaining even modified-polylog assertion and the zeta(0) coefficient
 label were corrected. The auxiliary Tornheim sign check is confined to the
 inspected June 27, 2012 author preprint at carmamaths.org, whose equation
 numbers differ from the later author copy. The delivered inputs remain intact.
+
+## Upstream placement and the fixed-reflected-exponent corollary
+
+The upstream placement at 14e4900472 flattened these same five packages as
+deliveries 20-24 into gaussian-parity-reductions and
+rational-grid-distribution-ranks. Twenty newly listed editorial fragments
+match full-package members after LF normalization; five updated OVERVIEW
+notes were read and reconciled. These copies add provenance files, not new
+mathematical deliveries. The placement map is recorded in
+verification/upstream-placement-reconciliation.json. The retired arrival
+ZIPs remain recoverable from the pinned Git revision recorded in
+verification/incoming-archives.json; all 174 full-package members are retained
+byte for byte. The census now covers 179 textual source files.
+
+The inverse-gamma singularity proof and reflected residue composition combine
+to give Chapter 8's sharp remainder for every fixed reflected exponent. Its
+leading value is half the first omitted term; two explicit corrections use
+the reflected late-coefficient parameter. Nine 180-digit diagnostics support
+the calculation. The analytic proof supplies the asymptotic statement; these
+finite diagnostics are not interval certificates or a proof of uniformity
+when both exponents grow.

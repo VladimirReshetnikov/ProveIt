@@ -68,3 +68,29 @@ These runs read the immutable prefixed sources and write fresh receipts in
 `gaussian-replay/18`, `/19` and `/19b`. The complete analytic arrival excerpts
 in `gaussian-arrival-sources/` came from commit 412dbd0048 and are provenance
 inputs; the canonical text is the edited chapter files.
+
+## Five incoming packages
+
+```powershell
+python verification/replay_incoming.py --part rigidity
+python verification/replay_incoming.py --part distribution
+python verification/replay_incoming.py --part conductor
+python verification/replay_incoming.py --part complement
+python verification/replay_incoming.py --part reflection
+wolfram -script verification/check-incoming.wls
+python verification/check_reflected_sharp.py
+```
+
+The five wrappers restore full delivered layouts in `.scratch-incoming/`.
+They never run the upstream flattening or manuscript patchers. Result files
+are copied only if freshly modified by the run. Replays distinguish exact
+finite arithmetic, outward rational certificates and floating-point
+diagnostics; their summaries preserve the specific configurations. The
+reflected sharp-corollary script uses 180-digit diagnostics, not intervals.
+
+For a new release, run `check_document.py`, `build.py` (three serial passes),
+`inspect_pdf.py`, and manually review the rendered PDF before running
+`refresh_manifests.py` and `verify_receipts.py`. The refresher refuses changed
+immutable package dependencies and raw archive/member hashes; when an arrival
+archive has been retired upstream, it reads its pinned Git blob. It records
+hashes and cannot itself confer a mathematical or visual review.

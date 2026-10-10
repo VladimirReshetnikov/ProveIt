@@ -345,6 +345,71 @@ Finally, $\Gamma(n,s)\le\Gamma(n)$ and
 $n!\ge\sqrt{2\pi n}(n/e)^n$ yield \eqref{reflected:gam:eq:optimized}.
 \end{proof}
 
+\subsection{Sharp truncation for every fixed reflected exponent}
+The reflected coefficient expansion and the sharp inverse remainder now
+combine. This statement uses the two incoming developments together;
+it is stronger than their separate absolute-bound and unreflected results.
+Write $\Lambda=-\log\rho$, and retain $\beta_m$ from
+\eqref{reflected:gam:eq:beta}.
+
+\begin{corollary}[Half the first omitted reflected term]
+\label{reflected:cor:sharp}
+Fix an integer $m\ge0$. Let $n,N\to\infty$ through positive integers,
+with $\eta=N\Lambda-n$ in a fixed bounded interval. Then
+\begin{align}\label{reflected:eq:sharp}
+ \frac{M_{n,m}/n!-\sum_{k=1}^{N-1}A_{k,m}/k^n}{A_{N,m}/N^n}
+ ={}&\frac12+\frac{3-2\eta}{8N}\notag\\
+ &+\frac1{N^2}\left[\frac{\beta_m}{4}
+       +\frac{\Lambda(6\eta-13)}{96}\right]+O_m(N^{-3}),
+\end{align}
+uniformly for bounded $\eta$. In particular the error eventually has
+sign $(-1)^{N+m-1}$ and is asymptotic to half the first omitted term.
+The denominator is nonzero for every sufficiently large $N$.
+\end{corollary}
+\begin{proof}
+Set $W_m(x)=\int_0^x B(u)^m\,du$ and $G_m(t)=W_m(g(t))$, where $g$ is
+the real inverse used in the preceding sharp-moment section.
+Lagrange--B\"urmann inversion gives
+$G_m(t)=\sum_{k\ge1}A_{k,m}t^k$ near zero. The layer-cake formula
+\eqref{reflected:gam:eq:layercake} becomes
+\[
+ M_{n,m}/n!=\frac1{\Gamma(n)}\int_0^\infty y^{n-1}G_m(e^{-y})\,dy.
+\]
+Since $W_m$ is holomorphic on $|x|<1$, it can be composed with the
+slit-disk inverse of Lemma~\ref{sharp:lem:slit}. At the dominant point
+$g(-\rho)=-\tau$ its derivative is
+\[
+ W_m'(-\tau)=B(-\tau)^m
+       =\bigl(\log\Gamma(1+\tau)\bigr)^m=(-b)^m\ne0.
+\]
+Thus $G_m$ has the same sole dominant square-root singularity, with a
+nonzero leading amplitude. Its late coefficients have the relative
+coefficient $\beta_m$ established in Theorem~\ref{reflected:gam:thm:late}.
+The Cauchy cut-contour argument in Lemma~\ref{sharp:lem:inverse-remainder}
+therefore applies to $G_m$ with the same leading kernel
+$1/(1+t/\rho)$ and the same $3/(2N)$ endpoint-moment correction.
+The sign of the leading jump cancels against $A_{N,m}$ in this ratio.
+The second normalized cut coefficient at $t=\rho$ is $\beta_m/4$,
+by the same square-root transfer and beta-moment calculation used in
+Corollary~\ref{sharp:cor:moment-second}.
+
+The outer real-interval bounds also persist. Above the convergence
+radius, the finite coefficient sum is bounded using
+$|A_{k,m}|\asymp_m\rho^{-k}k^{-3/2}$, while $0\le G_m(t)\le m!$ for
+$0\le t\le1$. The finitely many exceptional early coefficients contribute
+only an exponentially small term after normalization. Below the radius,
+the absolute Taylor tail gives the corresponding uniform bound.
+Average the normalized remainder against the gamma density with shape
+$n$ and rate $N$. Its signed moments are exactly those used in the
+unreflected calculation. The first two corrections are consequently
+\eqref{reflected:eq:sharp}, with $d_1$ replaced by $\beta_m$; the analytic
+cut expansion and moments through degree six give the stated uniform
+$O_m(N^{-3})$ remainder. Eventual nonvanishing and the sign follow from
+\eqref{reflected:gam:eq:late}.
+\end{proof}
+This fixed-$m$ corollary does not supply uniform relative estimates when
+$m$ grows with $n$. That joint regime remains a separate problem.
+
 \subsection{An exact identity coupling all reflected residues}
 
 The coefficients across different $m$ satisfy a finite identity in which
@@ -464,8 +529,9 @@ quadrature with the fixed-order expansion.  It also compares the late
 coefficients with \eqref{reflected:gam:eq:late} and \eqref{reflected:gam:eq:beta}.
 The numerical calculations are diagnostics; the preceding analytic and
 formal arguments are the proofs.
-Two substantive next questions are uniformity when $m$ increases with
-$n$ and a signed remainder at the least term for each reflected exponent.
+The fixed-reflected-exponent signed remainder is now supplied by
+Corollary~\ref{reflected:cor:sharp}. Uniformity when $m$ increases with
+$n$ remains a substantive next question.
 In the former regime the endpoint approximation
 $B(x)^m\approx\gamma^m x^m$ need not be uniform, so the fixed-$m$
 theorem does not settle the simultaneous large-exponent problem.
