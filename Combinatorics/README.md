@@ -38,7 +38,8 @@ and exact growth-rate bounds for square-lattice polyominoes.
   formalized and gains no formal status from its placement.  Three more
   research reports sit under `Ramsey/Research/`, placed on 7 October 2026
   from manuscripts that arrived with the Gowers batches but do not concern
-  Gowers's argument, with their delivered layout and their writes pending:
+  Gowers's argument, with their delivered layout; under Vladimir's rule of 9 October 2026
+  they are placement only, with no write planned:
   [`VanDerWaerden/superexponential-lower-bounds`](Ramsey/Research/VanDerWaerden/superexponential-lower-bounds/)
   (superexponential lower bounds for two-colour van der Waerden numbers by
   robust colourings),
