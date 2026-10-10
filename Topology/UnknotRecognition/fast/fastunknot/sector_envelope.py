@@ -16,6 +16,8 @@ from .normal_surface_geometry import _coordinates
 
 def _dot(left, right, check):
     check()
+    sparse_dot=getattr(left,'dot',None)
+    if sparse_dot is not None:return sparse_dot(right)
     return sum(a * b for a, b in zip(left, right))
 
 
