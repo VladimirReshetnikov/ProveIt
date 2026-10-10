@@ -1,0 +1,110 @@
+\section{Analytic conventions and finite parts}
+\label{sec:conventions}
+
+For $\Re a>0$, the Hurwitz zeta function has the normalization
+\begin{equation}\label{eq:global-stieltjes}
+ \zeta(1+u,a)=\frac1u+
+   \sum_{m=0}^{\infty}\frac{(-1)^m\gamma_m(a)}{m!}u^m,
+ \qquad \gamma_0(a)=-\psi(a).
+\end{equation}
+Here $\psi=\Gamma'/\Gamma$, $\psi^{(j)}$ denotes an argument derivative,
+and $\gamma=\gamma_0(1)$ is Euler's constant.  A prime on $\zeta(s,a)$
+denotes an order derivative unless its variable is explicitly stated.
+The same convention applies to $\partial_s\Li_s(z)$.
+Powers of positive real numbers use real logarithms; powers of $n+a$
+in the right half-plane use the principal logarithm.  At a nontrivial
+unit-circle twist, the polylogarithm is the continuation from the open
+unit disk \cite{dlmf-hurwitz,dlmf-polylog}.
+
+The basic argument identities used repeatedly below are
+\begin{align}
+ \partial_a^k\zeta(s,a)&=(-1)^k(s)_k\zeta(s+k,a),\label{eq:zeta-arg}\\
+ \psi^{(j)}(a)&=(-1)^{j+1}j!\,\zeta(j+1,a),\qquad j\ge1,\label{eq:psi-hurwitz}\\
+ \zeta'(0,a)&=\log\Gamma(a)-\tfrac12\log(2\pi).\label{eq:lerch-gamma}
+\end{align}
+These identities, with meromorphic continuation where needed, are
+standard \cite{dlmf-hurwitz}.  In particular,
+$\gamma_m(t)=t^{-1}\log^m t+\gamma_m(1+t)$, which identifies the
+complete leading endpoint singularity of each Stieltjes function.
+
+\subsection{Periodic distributions and the endpoint coordinate}
+
+Identify the unit circle with $\mathbb T=\mathbb R/\mathbb Z$, and write
+$\{x\}$ for the fractional part away from its isolated endpoints.
+For $\Re s<1$ define $Z(s)$ by the locally integrable periodic function
+$\zeta(s,\{x\})$.  Its Fourier coefficient convention is
+$\widehat T(n)=\langle T,e^{-2\pi inx}\rangle$.  For $n\ne0$,
+\begin{equation}\label{eq:global-fourier}
+ \widehat Z(1-z)(n)=
+ \Gamma(z)(2\pi|n|)^{-z}
+      e^{-i\pi z\operatorname{sgn}(n)/2};
+ \qquad\widehat Z(1-z)(0)=0.
+\end{equation}
+The formula first holds in an ordinary convergent domain and then as a
+meromorphic distribution identity \cite{dlmf-hurwitz}.
+
+For clarity, its local expansion at $z=0$ is
+\begin{equation}\label{eq:periodic-family}
+ Z(1-z)=\frac{\delta_0-1}{z}
+              +\sum_{m\ge0}\frac{G_m}{m!}z^m.
+\end{equation}
+Here $1$ is the constant distribution, $\delta_0$ has unit mass, and
+\begin{equation}\label{eq:G-definition}
+ \langle G_m,\phi\rangle
+ =\CT_{\varepsilon\downarrow0}
+         \int_\varepsilon^1\gamma_m(x)\phi(x)\,dx
+\end{equation}
+for a smooth periodic test function $\phi$.  The symbol $\CT$ retains
+the constant term after removing divergent powers and nonconstant
+logarithmic terms.  The cutoff here is the ordinary coordinate $x$.
+To verify \eqref{eq:periodic-family}, split
+$\zeta(1-z,x)=x^{z-1}+\zeta(1-z,1+x)$ and write
+\[
+ \int_0^1x^{z-1}\phi(x)\,dx
+   =\frac{\phi(0)}z+
+      \int_0^1x^{z-1}\bigl(\phi(x)-\phi(0)\bigr)\,dx.
+\]
+The second integral is holomorphic near zero.  The other Hurwitz term
+contributes $-z^{-1}\int\phi$ and its ordinary regular coefficients.
+Expansion gives exactly \eqref{eq:G-definition}.  This also proves
+$\langle G_m,1\rangle=0$, either directly or from the zero Fourier
+coefficient.
+
+At a translated singularity $x_0$, a fixed-coordinate finite part means
+the right coordinate $t=x-x_0$ on the circle.  The coordinates $t$ and
+$pt$ give different finite constants.  For example,
+\[
+ \CT_{\varepsilon\downarrow0}\int_\varepsilon^h
+              \frac{\log^m(pt)}{pt}\,dt
+ =\frac{\log^{m+1}(ph)-\log^{m+1}p}{p(m+1)}.
+\]
+The explicit second term is the source of the scale corrections in
+Section~\ref{dil:section}.  A spectral finite part is a different
+operation: it is a Laurent coefficient in a spectral variable.  The
+article relates the two by local continuation and does not silently
+identify them.
+
+\subsection{Products, regular coefficients, and legitimate exchanges}
+
+If periodic factors have disjoint singular supports, their product as
+distributions is defined locally by multiplying a single singular
+distribution by smooth functions.  A partition of unity makes this
+definition global and independent of that partition.  This elementary
+criterion applies to the separated two- and three-factor products in
+this article.  It does not define a product at a collision.
+
+Spectral coefficient extraction is justified after endpoint subtraction,
+on compact parameter sets.  A local term $t^{z-1}g(t)$ is replaced by
+$g(0)h^z/z+\int_0^h t^{z-1}(g(t)-g(0))\,dt$; the remainder has an
+integrable uniform majorant.  At simultaneous parameter poles, we
+multiply by the corresponding pole factors and use Cauchy's formula
+on a closed polydisk.  For positive derivative orders in the local
+coordinate, a higher Taylor polynomial is subtracted.  These are
+analytic arguments for exchanging limits, derivatives, and integrals;
+no divergent series is rearranged by formal cancellation alone.
+
+For a formal holomorphic series, $[u^kv^\ell]F$ always denotes the
+ordinary Taylor coefficient, without factorials.  Thus
+$\partial_u^k\partial_v^\ell F(0,0)=k!\ell![u^kv^\ell]F$.
+The factorial convention is stated again whenever two common harmonic
+normalizations occur together.

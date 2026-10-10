@@ -1,0 +1,79 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,tabularx,array}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem,xurl,fancyhdr}
+\usepackage{hyperref}
+\definecolor{inkblue}{HTML}{183B56}
+\definecolor{teal}{HTML}{087F8C}
+\hypersetup{colorlinks=true,linkcolor=inkblue,citecolor=teal,urlcolor=inkblue,
+  pdftitle={Mellin-Lerch transforms and dilation identities for Stieltjes correlations},
+  pdfauthor={Research continuation prepared for the ProveIt project}}
+\setlength{\emergencystretch}{2em}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\setlist{itemsep=3pt,topsep=5pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\FP}{\operatorname{FP}}
+\newcommand{\CT}{\operatorname{CT}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\ii}{\mathrm{i}}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\T}{\mathbb T}
+\newcommand{\e}{\mathrm e}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\src}[1]{\texttt{\small\detokenize{#1}}}
+\newcommand{\zetaj}[3]{\zeta^{[#1]}(#2,#3)}
+\newcommand{\Lij}[3]{\Li_{#2}^{[#1]}(#3)}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{inkblue}Exact transforms and Stieltjes dilation}
+\fancyhead[R]{\small ProveIt continuation}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\title{\color{inkblue}\bfseries Mellin--Lerch Transforms and Dilation Identities\par for Stieltjes Correlations\\[8pt]
+  \large Polylogarithms, generalized harmonic sums, and exact finite parts}
+\author{Research continuation prepared for the ProveIt project\\
+  \small Analytic derivations and computational audit with OpenAI assistance}
+\date{10 October 2026}
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\input{sections/00-abstract}
+\vfill
+\begingroup
+\noindent\small\textbf{Repository snapshot.}\quad
+\src{fc4d3bf80534ad7c901d3b8c9e71baf2df0064ed}.\\
+This article is a proposed research addition. Its analytic proofs are given in full;
+finite symbolic checks and numerical diagnostics are supplied separately.
+\par\endgroup
+\clearpage
+\tableofcontents
+\clearpage
+\input{sections/01-scope}
+\input{sections/02-mellin}
+\input{sections/03-jets}
+\input{sections/04-harmonic}
+\input{sections/05-dilation}
+\input{sections/06-audit-research}
+\appendix
+\input{sections/07-reproduction}
+\input{references}
+\end{document}

@@ -1,0 +1,103 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=22mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,tabularx,longtable,array}
+\usepackage{enumitem}
+\usepackage{xcolor,microtype}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Exact Stieltjes and harmonic identities}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.25pt}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{1.8em}
+\setlist{itemsep=3pt,topsep=5pt}
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\FP}{FP}
+\DeclareMathOperator{\CT}{CT}
+\DeclareMathOperator{\supp}{supp}
+\hypersetup{
+ pdftitle={Exact Stieltjes and Harmonic Identities},
+ pdfauthor={Research continuation prepared for Vladimir Reshetnikov},
+ pdfsubject={Integer dilations, triple Stieltjes products, Gamma coefficients, and corrected harmonic conjectures},
+ pdfkeywords={Stieltjes constants, Hurwitz zeta, polylogarithm, Tornheim, harmonic numbers, polygamma, finite part}
+}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\thispagestyle{empty}
+\vspace*{13mm}
+{\large\scshape ProveIt\quad Research continuation\par}
+\vspace{17mm}
+{\huge\bfseries Exact Stieltjes and\par Harmonic Identities\par}
+\vspace{8mm}
+{\Large Integer dilations, three-factor products,\par Gamma coefficients, and corrected conjectures\par}
+\vspace{16mm}
+{\large Prepared for Vladimir Reshetnikov\par}
+\vspace{3mm}
+{10 October 2026\par}
+\vfill
+\begin{abstract}
+We develop exact identities extending the periodic Hurwitz--Stieltjes
+calculus in the ProveIt manuscript and its incoming research reports.
+For two affine integer frequencies we prove a complete reduction to the
+unit-frequency shifted correlation, including every Stieltjes index and
+the finite polynomial that records changes of local cutoff scale and
+argument differentiation.  For three distinct translations we give a
+six-term colored Tornheim formula, prove its entire kernel continuation,
+and extract all finite-part Stieltjes products and ordinary correlations
+of their normalized antiderivatives.  A separate Gamma-quotient calculus
+reduces shifted elementary harmonic sums with arbitrary convergent rational
+kernels to finite polygamma expressions and determines their complete
+principal parts and constants at the moving spectral pole.  Gauss
+summation supplies convergent series for every generalized Stieltjes
+constant, all mixed parameter derivatives, and successive negative-integer
+resonances.  Finally, one generating identity proves corrected versions
+of two displayed harmonic conjecture families in a 2014 paper and
+identifies the accompanying normalization and harmonic-order errors.
+Every principal result has an analytic proof.  Exact symbolic generators,
+independent numerical diagnostics, a source audit, and a prioritized
+research agenda accompany the article.  Classical ingredients and results
+already in the repository are explicitly distinguished from the present
+extensions; historical priority is not asserted.
+\end{abstract}
+\vspace{9mm}
+{\small Repository snapshot: \texttt{fc4d3bf80534ad7c901d3b8c9e71baf2df0064ed}.\par
+Research manuscript for review and integration; no upstream files have been changed.\par}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+\input{sections/scope}
+\input{sections/conventions}
+\input{sections/dilation}
+\input{sections/trilinear}
+\input{sections/harmonic}
+\input{sections/gauss_stieltjes}
+\input{sections/audit_verification}
+\input{sections/further_research}
+\appendix
+\input{sections/exact_tables}
+\clearpage
+\begin{thebibliography}{99}
+\input{references}
+\end{thebibliography}
+\end{document}

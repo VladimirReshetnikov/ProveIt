@@ -1,0 +1,363 @@
+\section{A two-shift reflection for generalized harmonic sums}
+\label{mld:gh:sec:reflection}\label{mld:sec:harmonic}
+
+The generalized harmonic order and the elementary-symmetric harmonic index
+in the repository are different parameters. We use new notation to keep
+them separate. Put
+\[
+ h_n^{(r)}(u)=\sum_{j=1}^n\frac1{(j-u)^r},\qquad
+ Q_{p,r}=\sum_{n=1}^{\infty}\frac{(-1)^nH_n^{(r)}}{(2n+1)^p},
+ \qquad p,r\geq1.
+\]
+Thus $h_n^{(r)}(0)=H_n^{(r)}$, and $Q_{p,1}=S_p$ in the manuscript.
+In contrast, the manuscript's $S_{p,r}$ uses
+$e_r(n)=[v^r]\prod_{j=1}^n(1+v/j)$; it is not $Q_{p,r}$.
+
+The unshifted even-weight evaluations belong to the established theory
+of linear Euler $R$-sums. In the normalization of Xu--Wang
+\cite[Section~3.4, equation~(20)]{XuWang},
+\begin{equation}\label{mld:gh:eq:normalization}
+ R_{r,p}^{1,-1}=2^p Q_{p,r}.
+\end{equation}
+We derive a two-variable digamma resummation, its arbitrary mixed
+derivatives, and a concrete rational-shift evaluation. The scalar parity
+theorem is credited to that literature. The priority of the particular
+two-variable formulation below has not been established.
+
+\subsection{Ordinary convergence, including the first outer power}
+
+Define
+\begin{align}
+ A(z,u)&=\sum_{n=1}^{\infty}
+       \frac{(-1)^n h_n^{(1)}(u)}{2n+1-z},\label{mld:gh:eq:A}\\
+ D(v)&=\frac14\left\{
+       \psi\left(\frac{v+3}{4}\right)
+       -\psi\left(\frac{v+1}{4}\right)\right\}.
+       \label{mld:gh:eq:D}
+\end{align}
+Initially, $D(v)=\int_0^1x^v/(1+x^2)\,dx$ for $\Re v>-1$;
+the displayed expression supplies its meromorphic continuation.
+The first sum in \eqref{mld:gh:eq:A} is an ordinary convergent alternating
+series.
+
+\begin{lemma}[Local uniform convergence]\label{mld:gh:lem:convergence}
+For positive integers $p,r$, the series
+\[
+ \sum_{n=1}^{\infty}
+ \frac{(-1)^n h_n^{(r)}(u)}{(2n+1-z)^p}
+\]
+converges locally uniformly on
+\[
+ \Omega_+=
+ \bigl(\mathbb C\setminus\{3,5,7,\ldots\}\bigr)
+ \times\bigl(\mathbb C\setminus\{1,2,3,\ldots\}\bigr).
+\]
+It is holomorphic there and can be differentiated term by term any
+finite number of times in $z$ and $u$. It is absolutely convergent
+when $p\geq2$.
+\end{lemma}
+\begin{proof}
+Fix a compact subset of $\Omega_+$. Uniformly on that subset,
+$h_n^{(1)}(u)=O(1+\log n)$, while $h_n^{(r)}(u)=O(1)$ for $r\geq2$.
+For
+$f_n=h_n^{(r)}(u)(2n+1-z)^{-p}$, the exact difference is
+\begin{align*}
+ f_{n+1}-f_n
+ ={}&\frac{1}{(n+1-u)^r(2n+3-z)^p}\\
+ &+h_n^{(r)}(u)
+       \left\{(2n+3-z)^{-p}-(2n+1-z)^{-p}\right\}.
+\end{align*}
+Consequently $f_n\to0$ uniformly and
+$f_{n+1}-f_n=O(n^{-p-r}+(1+\log n)n^{-p-1})$ uniformly.
+The sum of these differences is absolutely convergent, so grouping
+successive even and odd indices proves local uniform convergence of
+the original alternating series. Its individual terms are holomorphic.
+The same estimates apply to every termwise derivative, because
+derivatives increase $p$ or $r$. This proves the assertion, including
+the conditionally convergent case $p=1$. The stated absolute convergence
+follows directly from the bounds for $h_n^{(r)}$.
+\end{proof}
+
+\subsection{The exact bivariate identity}
+
+\begin{theorem}[Two-shift reflection]\label{mld:gh:thm:reflection}
+On
+\[
+ \Omega=
+ \bigl(\mathbb C\setminus\{\pm3,\pm5,\pm7,\ldots\}\bigr)
+ \times\bigl(\mathbb C\setminus(\mathbb Z\setminus\{0\})\bigr),
+\]
+one has
+\begin{equation}\label{mld:gh:eq:reflection}
+ \boxed{A(z,u)+A(-z,-u)=B(z,u),}
+\end{equation}
+where
+\begin{align}
+ B(z,u)={}&-\frac{\pi}{2\cos(\pi z/2)}
+   \left\{\psi(1-u)-\psi\left(\frac{1+z}{2}-u\right)\right\}
+       \notag\\
+ &+\frac{\pi D(z-2u)}{\sin\pi u}-\frac{D(z)}{u}.
+       \label{mld:gh:eq:B}
+\end{align}
+Apparent singularities of the complete expression on $\Omega$ are
+removable. This convention applies in particular at $u=0$, at $z=\pm1$,
+and where an individual digamma term in \eqref{mld:gh:eq:B} has a pole.
+There is no assertion that its summands can be evaluated separately
+at such points.
+
+For $|z|<3$ and $|u|<1$, the ordinary Taylor expansion of $A$ is
+\begin{equation}\label{mld:gh:eq:Agenerating}
+ A(z,u)=\sum_{p,r\geq1} Q_{p,r}\,z^{p-1}u^{r-1}.
+\end{equation}
+Thus $B$ determines precisely the terms with $p+r$ even in this germ.
+\end{theorem}
+
+\begin{proof}
+We first prove the identity near $(z,u)=(0,0)$. Set
+\[
+ G_r(z)=\int_0^1
+      \frac{x^{-z}\operatorname{Li}_r(-x^2)}{1+x^2}\,dx.
+\]
+The harmonic generating function
+$\operatorname{Li}_r(w)/(1-w)=\sum_{n\geq1}H_n^{(r)}w^n$
+gives
+$G_r(z)=\sum_{p\geq1}Q_{p,r}z^{p-1}$.
+One can first insert a common Abel factor and then pass to its limit;
+the preceding lemma identifies that limit with the ordinary sum.
+Alternatively, the logarithmic moment representation is
+\begin{equation}\label{mld:gh:eq:moment}
+ Q_{p,r}=\frac1{(p-1)!}\int_0^1
+   \frac{(-\log x)^{p-1}\operatorname{Li}_r(-x^2)}{1+x^2}\,dx.
+\end{equation}
+For $0\leq y\leq1$ and integer $r\geq1$,
+$|\operatorname{Li}_r(-y)|\leq y$ by the alternating-series test.
+It follows from \eqref{mld:gh:eq:moment} that
+$|Q_{p,r}|\leq3^{-p}$. Hence the double power series in
+\eqref{mld:gh:eq:Agenerating} converges normally for the stated radii.
+Its coefficients also follow by the justified derivatives of
+\eqref{mld:gh:eq:A} at the origin.
+
+The full Mellin identity, after the substitution $y=x^2$, is
+\begin{equation}\label{mld:gh:eq:fullMellin}
+ M_r(z):=\int_0^\infty
+     \frac{x^{-z}\operatorname{Li}_r(-x^2)}{1+x^2}\,dx
+ =-\frac{\pi}{2\cos(\pi z/2)}
+   \left\{\zeta\left(r,\frac{1+z}{2}\right)-\zeta(r)\right\}.
+\end{equation}
+It initially suffices to take $|\Re z|<1$. At $r=1$, the expression
+in braces denotes the finite difference
+$\psi(1)-\psi((1+z)/2)$.
+
+For $L\in\mathbb R$, define the polynomial
+\begin{equation}\label{mld:gh:eq:Pr}
+ P_r(L)=\frac{(2L)^r}{r!}
+     +2\sum_{j=1}^{\lfloor r/2\rfloor}
+       \eta(2j)\frac{(2L)^{r-2j}}{(r-2j)!},
+ \qquad \eta(s)=(1-2^{1-s})\zeta(s).
+\end{equation}
+Then
+\begin{equation}\label{mld:gh:eq:inversion}
+ \operatorname{Li}_r(-e^{2L})
+   +(-1)^r\operatorname{Li}_r(-e^{-2L})=-P_r(L).
+\end{equation}
+Here the signs and branch convention can be checked without invoking
+a complex inversion formula. The derivative of the left side is twice
+the corresponding expression for $r-1$. At $r=0$ that expression
+equals $-1$. At $L=0$ it is zero for odd $r$, and $-2\eta(r)$ for
+even positive $r$. These data give exactly \eqref{mld:gh:eq:Pr}.
+
+Splitting \eqref{mld:gh:eq:fullMellin} at $1$ and substituting $x\mapsto1/x$
+in its second part gives
+\begin{equation}\label{mld:gh:eq:integerreflection}
+ G_r(z)-(-1)^rG_r(-z)
+ =M_r(z)+(-1)^r\int_0^1\frac{x^zP_r(\log x)}{1+x^2}\,dx.
+\end{equation}
+Now sum with multiplier $u^{r-1}$ over $r\geq1$. In a sufficiently
+small neighborhood, for example $|z|+2|u|<1$, all the integrations and
+sums involved are dominated by integrable powers of $x$ at their
+endpoints. The two elementary generating identities are
+\begin{align}
+ \sum_{r\geq1}u^{r-1}\{\zeta(r,b)-\zeta(r)\}
+   &=\psi(1-u)-\psi(b-u),\label{mld:gh:eq:zetasum}\\
+ \sum_{r\geq0}P_r(L)u^r
+   &=\frac{\pi u}{\sin\pi u}e^{2uL},
+       \qquad P_0=1.\label{mld:gh:eq:Psum}
+\end{align}
+In \eqref{mld:gh:eq:zetasum}, the $r=1$ value is interpreted as above;
+the formula follows by summing
+$(n+b-u)^{-1}-(n+1-u)^{-1}$ over $n\geq0$.
+Equation \eqref{mld:gh:eq:Psum} follows from
+$\pi u/\sin\pi u=1+2\sum_{j\geq1}\eta(2j)u^{2j}$.
+
+The sum of the left sides of \eqref{mld:gh:eq:integerreflection} is
+$A(z,u)+A(-z,-u)$. Equation \eqref{mld:gh:eq:zetasum} gives the first
+line of \eqref{mld:gh:eq:B}; equation \eqref{mld:gh:eq:Psum}, with $u$
+replaced by $-u$, gives
+\[
+ \int_0^1\frac{x^z}{1+x^2}
+   \left\{\frac{\pi x^{-2u}}{\sin\pi u}-\frac1u\right\}\,dx
+ =\frac{\pi D(z-2u)}{\sin\pi u}-\frac{D(z)}u.
+\]
+This proves the claimed identity as an analytic germ.
+
+The paired series in Lemma~\ref{mld:gh:lem:convergence} gives a meromorphic
+continuation of $A$ to $\mathbb C^2$: near any candidate polar
+hyperplane, multiply by its local linear factors; the same uniform
+tail estimates apply. Its possible polar hyperplanes are
+$z=3,5,\ldots$ and $u=1,2,\ldots$.
+The right side of \eqref{mld:gh:eq:B} is also meromorphic on $\mathbb C^2$.
+The identity theorem for meromorphic functions extends the equality
+from the germ to the whole connected domain. The left side is
+holomorphic on $\Omega$, so all apparent poles of the complete
+right side there cancel. Finally, the sign in the Taylor projection
+is $(-1)^{(p-1)+(r-1)}=(-1)^{p+r}$, proving the final assertion.
+\end{proof}
+
+\begin{corollary}[Every reflected shifted harmonic sum]
+\label{mld:gh:cor:derivatives}
+For positive integers $p,r$ and $(z,u)\in\Omega$,
+\begin{align}
+ &\sum_{n=1}^{\infty}(-1)^n
+   \left\{\frac{h_n^{(r)}(u)}{(2n+1-z)^p}
+       +(-1)^{p+r}\frac{h_n^{(r)}(-u)}{(2n+1+z)^p}\right\}
+       \notag\\
+ &\hspace{14mm}=
+ \frac{\partial_z^{p-1}\partial_u^{r-1}B(z,u)}
+      {(p-1)!(r-1)!}.\label{mld:gh:eq:allmixed}
+\end{align}
+The right side is a finite expression in polygamma functions and
+elementary trigonometric functions. The equality holds for ordinary
+conditionally convergent sums when $p=1$.
+\end{corollary}
+\begin{proof}
+Differentiate \eqref{mld:gh:eq:reflection}. Lemma~\ref{mld:gh:lem:convergence}
+justifies the operation, including $p=1$. The identities
+$\partial_u^{r-1}h_n^{(1)}(u)=(r-1)!h_n^{(r)}(u)$ and
+$\partial_z^{p-1}(2n+1-z)^{-1}=(p-1)!(2n+1-z)^{-p}$
+give the first term. Applying the chain rule to $A(-z,-u)$ contributes
+the factor $(-1)^{p+r}$.
+\end{proof}
+
+At rational parameter pairs in the domain, the right side uses only
+polygamma values at rational arguments and elementary constants. The
+digamma differences reduce by Gauss's formula to logarithms of algebraic
+numbers and algebraic multiples of $\pi$. Positive polygamma orders
+reduce to Hurwitz zeta values, and hence by residue-class filters to
+depth-one polylogarithms at roots of unity. This gives an explicit
+depth-one expression for the reflected combination; it does not assert
+the same for either summand separately.
+
+\subsection{A finite formula for the unshifted parity coefficients}
+
+Write $\beta(s)=\sum_{n\ge0}(-1)^n/(2n+1)^s$ for the Dirichlet
+beta function, initially on $\Re s>0$ and continued analytically.
+For $j\geq0$, define
+\[
+ d_0(r)=
+ \begin{cases}2\log2,&r=1,\\(2^r-2)\zeta(r),&r>1,\end{cases}
+ \qquad
+ d_j(r)=\frac{(r)_j(2^{r+j}-1)\zeta(r+j)}{2^j j!}
+ \quad(j\geq1),
+\]
+and let
+$c_{2\ell}=|E_{2\ell}|\pi^{2\ell}/(2^{2\ell}(2\ell)!)$, where
+$\sec t=\sum_{\ell\geq0}|E_{2\ell}|t^{2\ell}/(2\ell)!$.
+Put
+\begin{align}
+ C_{p,r}={}&2^r\binom{p+r-1}{r}\beta(p+r)\notag\\
+ &+2\sum_{j=1}^{\lfloor r/2\rfloor}
+      2^{r-2j}\eta(2j)
+      \binom{p+r-2j-1}{r-2j}\beta(p+r-2j).
+      \label{mld:gh:eq:Cpr}
+\end{align}
+The coefficient form of the reflection is
+\begin{equation}\label{mld:gh:eq:finiteparity}
+ \boxed{
+ Q_{p,r}=\frac{(-1)^{r+1}}2
+ \left\{C_{p,r}-\frac\pi2
+   \sum_{\ell=0}^{\lfloor(p-1)/2\rfloor}
+        c_{2\ell}d_{p-1-2\ell}(r)\right\},
+ \qquad p+r\ \text{even}.}
+\end{equation}
+Indeed, extract $z^{p-1}$ in \eqref{mld:gh:eq:integerreflection}; the
+coefficient on its left is $2Q_{p,r}$ in the indicated parity.
+Taylor expansion of the Hurwitz zeta gives the $d_j$ terms.
+Integration of each monomial in \eqref{mld:gh:eq:Pr} gives the beta
+terms in \eqref{mld:gh:eq:Cpr}; the common sign is $(-1)^{r+1}$.
+This is a finite coefficient algorithm for every $p,r$, with no
+integer-relation search.
+
+For example, writing $G=\beta(2)$,
+\begin{align}
+ Q_{2,2}&=\frac{7\pi}{4}\zeta(3)-6\beta(4)-\frac{\pi^2G}{12},
+       \label{mld:gh:eq:Q22}\\
+ Q_{1,3}&=4\beta(4)+\frac{\pi^2G}{6}
+                     -\frac{3\pi}{2}\zeta(3),\\
+ Q_{4,2}&=\frac{31\pi}{8}\zeta(5)+\frac{7\pi^3}{32}\zeta(3)
+                     -20\beta(6)-\frac{\pi^2}{12}\beta(4),\\
+ Q_{3,3}&=40\beta(6)+\frac{\pi^2}{2}\beta(4)
+                     -\frac{93\pi}{8}\zeta(5)
+                     -\frac{3\pi^3}{16}\zeta(3),\\
+ Q_{4,4}&=-280\beta(8)-\frac{10\pi^2}{3}\beta(6)
+                     -\frac{7\pi^4}{720}\beta(4)
+                     +\frac{635\pi}{8}\zeta(7)
+                     +\frac{31\pi^3}{16}\zeta(5).
+\end{align}
+Every term has total weight $p+r$. Only odd zeta values, even beta
+values, $\pi$, and, in the $r=1$ case, $\log2$ occur.
+
+\subsection{A rational-shift identity with an elementary answer}
+
+\begin{corollary}\label{mld:gh:cor:quartershift}
+The ordinary convergent nested sum satisfies
+\begin{equation}\label{mld:gh:eq:quartershift}
+ \boxed{
+ \sum_{n=1}^{\infty}\frac{(-1)^n}{2n+1}
+  \sum_{j=1}^n\left\{\frac1{j-\frac14}+\frac1{j+\frac14}\right\}
+ =\pi\bigl(\log(1+\sqrt2)-1\bigr).}
+\end{equation}
+Equivalently, dividing by $32$, the inner summand is
+$j/(16j^2-1)$ and the right side is
+$\pi(\log(1+\sqrt2)-1)/32$.
+\end{corollary}
+\begin{proof}
+Set $(z,u)=(0,1/4)$ in \eqref{mld:gh:eq:reflection}.
+The digamma reflection formula gives
+$\psi(3/4)-\psi(1/4)=\pi$, and $D(0)=\pi/4$.
+The remaining resolvent is
+\[
+ D(-1/2)=2\int_0^1\frac{dt}{1+t^4}
+ =\frac{\pi}{2\sqrt2}
+       +\frac{\log(1+\sqrt2)}{\sqrt2}.
+\]
+The last integral follows by factoring
+$1+t^4=(t^2+\sqrt2t+1)(t^2-\sqrt2t+1)$ and integrating the two
+partial fractions. Substitution into \eqref{mld:gh:eq:B} gives
+$-\pi^2/2+\pi\sqrt2D(-1/2)-\pi$, which is the stated answer.
+\end{proof}
+
+\subsection{Verification and the unresolved odd-weight direction}
+
+The accompanying \texttt{derive\_parity.py} generates the finite symbolic
+formula \eqref{mld:gh:eq:finiteparity}. It independently compares all $25$
+ordered pairs with $p+r\leq10$ and $p+r$ even against real quadrature
+of \eqref{mld:gh:eq:moment} at $60$ decimal working digits. The largest
+absolute discrepancy is less than $3\times10^{-58}$.
+Three separate $450$-term Euler evaluations of \eqref{mld:gh:eq:A}, including
+a complex parameter pair and a point outside the initial small-parameter
+proof neighborhood, agree with \eqref{mld:gh:eq:B} to more than $115$
+decimal places. The JSON file records every tested pair and residual.
+Three mixed-derivative checks, including $p=1,r=2$, and the quarter-shift
+specialization are checked by the same independent series method; their
+absolute discrepancies are below $3\times10^{-136}$.
+These checks audit the signs and normalizations; the arbitrary-order
+proof is the analytic argument above.
+
+At $(z,u)=(0,0)$, equation \eqref{mld:gh:eq:allmixed} has coefficient
+$1+(-1)^{p+r}$. It therefore gives no value for $Q_{p,r}$ when
+$p+r$ is odd. In particular, $S_6=Q_{6,1}$ and $S_8=Q_{8,1}$ remain
+outside the scalar parity projection. This is a precise limitation
+of the reflection method, not a proof of arithmetic irreducibility.
+The repository already exhibits a nonzero separating functional for
+the restricted depth-two product presentation of the $S_6$ candidate;
+the present identity does not supply the missing odd-weight relation.

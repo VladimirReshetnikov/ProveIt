@@ -1,0 +1,123 @@
+\section{Scope, principal results, and relation to the source material}
+\label{sec:scope}
+
+This report continues the polylogarithm manuscript and the active incoming
+research of the \repo\ project. It is based on the fixed repository commit
+\begin{center}\small\texttt{\baselinecommit}\end{center}
+The consolidated manuscript and the newer
+continuation reports must be read together: several questions still visible
+in older fragments have already been settled in later reports. The source
+comparison, exact paths, and proposed integration actions are supplied in
+the accompanying claim ledger and provenance manifest.
+
+The results here fall into four connected developments. The first is a
+translation calculus for the Hurwitz order jets that generate balanced
+Stieltjes antiderivatives. The second resolves an explicit joint-limit
+conjecture for Gaussian polylogarithmic Euler remainders. The third studies
+the exact signs and critical sums of the Lerch deformation velocities
+already identified in the latest continuation. The fourth gives an
+algebraic reduction preserving depth in the formal Cayley quotient.
+Each development has its own hypotheses; none is used as a substitute for
+an unproved arithmetic relation among numerical periods.
+
+\subsection{Results at a glance}
+
+\begin{enumerate}
+\item \textbf{Exact translated Hurwitz pairings.}
+Theorem~\ref{thm:translation} expresses the bilinear periodic translation
+of two Hurwitz functions as a Gamma--trigonometric kernel times a
+symmetric Hurwitz difference. Its polylogarithmic form permits every
+order derivative. Theorem~\ref{thm:cusp} identifies the complete
+logarithmic endpoint polynomial and an ordinary convergent even power
+series remainder at every derivative order.
+
+\item \textbf{A sharp Gamma translation inequality.}
+The squared $L^2$ change in $\log\Gamma$ under a periodic translation is
+strictly concave on $(0,1)$ and has its unique maximum at $1/2$
+(Theorem~\ref{thm:gamma-max}). Its three exact representations yield
+an accelerated odd-zeta series for $\gamma_1$ with an explicit geometric
+tail (Corollary~\ref{cor:gamma1-fast}). Higher derivatives connect this
+energy to polygamma functions and Hurwitz order derivatives; explicit
+primitives follow from the same kernel.
+
+\item \textbf{Proof of the near-critical Euler conjecture.}
+For outer order $a=1-\varepsilon$, fixed inner order $b>0$, and
+$\lambda=\log(1/\varepsilon)$, the unique reversal index satisfies
+\[
+ \nu(1-\varepsilon,b)\sim
+ \frac{\lambda^{2b+2}}
+ {\pi b^2\Gamma(b+1)^2\zeta(b+1)^2\varepsilon^2}.
+\]
+Theorem~\ref{eutrans:thm:crossing} proves the source conjecture
+\texttt{research:conj:crossing}, including a first inverse-logarithmic
+correction uniformly for $b$ in compact positive intervals. The proof
+retains the exponentially small seed and an $\varepsilon$ factor in
+the algebraic remainder. A rescaled profile is
+$x^{-1/2}-x^{-1}$; the later maximum occurs at an index asymptotic
+to $4\nu$.
+
+\item \textbf{Optimal sign blocks and all-order critical finite parts.}
+For the Lerch velocities $v_n(A)$, let $\theta(A)$ be the phase of
+the dominant inverse singularity. The least eventual block length
+containing both signs is exactly $\lceil\pi/\theta\rceil+1$
+(Theorem~\ref{newdiag:thm:sharp-block}). At $A=2$ it is four.
+Theorem~\ref{newdiag:thm:finiteparts} computes the finite part of every
+sharp sum $\sum_{n\leq N}n^pv_n(A)\tau^n$. Both conjugate singularities
+are required for the divergent subtractions once $p\geq2$.
+
+\item \textbf{A depth-preserving formal Cayley reduction.}
+An oriented choice of shuffle generators yields a multiplicative
+retraction whose kernel is the full Cayley ideal and whose output
+does not increase depth. Its generator counts give the exact depth
+filtration of the quotient. This is a structural algebraic result;
+the mixed $S_6$ period identity remains conjectural.
+\end{enumerate}
+
+\subsection{Classical antecedents and what is claimed here}
+
+Hurwitz's Fourier expansion, the parameter recurrence, and the
+order-zero Gamma evaluation are classical \cite{DLMFHurwitz}.
+Espinosa and Moll developed product integrals and antiderivatives involving
+Hurwitz zeta \cite{EM1,EM2}, and a generalized polygamma framework
+\cite{EMPoly}. These works supply the appropriate context for the first
+two sections. We give a direct analytic derivation of the translated
+identities and their sharp consequences; the underlying unshifted product
+integral is explicitly credited. The standard polylogarithm conventions
+are those summarized in \cite{DLMFPolylog}.
+
+The Euler section uses the exact density and the global one-crossing
+theorem already proved in the newest applicable source \cite{RepoEuler}.
+Its new work is the uniform estimate in the singular joint limit, the
+corrected root law, and the profile consequences. The Lerch sections use
+the selected-sheet continuation and additive coefficient asymptotic from
+\cite{RepoLerch}; they answer two further questions posed there. Lagrange
+inversion and singularity transfer are standard tools
+\cite{Gessel,FlajoletOdlyzko}. Earlier Lambert polynomial and branch
+expansions provide further context \cite{KaluginJeffrey,Cohen}.
+
+Throughout, ``new'' means established here relative to the checked
+repository baseline. This source audit is not a claim of worldwide
+priority for every identity or special case. The classical tools are
+identified, inherited repository theorems are marked, and new assertions
+are supplied with proofs. The unresolved $S_6$ and current $S_8$ candidates
+retain their conjectural status even when numerical residuals are tiny.
+
+\subsection{Conventions and logical boundaries}
+
+The Laurent convention is
+$\zeta(1+u,a)=u^{-1}+\sum_{n\geq0}(-1)^n\gamma_n(a)u^n/n!$;
+in particular $\gamma_0(a)=-\psi(a)$. Superscripts on $\zeta$ denote
+derivatives with respect to its order, while superscripts on
+$\gamma_n$ and $\psi$ denote derivatives with respect to their real
+argument. Rising factorials are $(z)_m$ and falling factorials are
+$(z)_{\underline m}$. Endpoint values of periodic $L^2$ functions are
+understood almost everywhere. Branches of complex powers and square
+roots are fixed where first used.
+
+The analytic arguments, exact rational algebra, and floating-point
+diagnostics play different roles. Proofs justify every limiting operation
+that enters a theorem. Exact finite calculations check implementations
+and stated ranks in specified spaces. Floating-point calculations test
+formulas independently and illustrate asymptotic accuracy; they are not
+interval certificates. The package does not claim proof-assistant
+formalization or arithmetic independence from numerical experiments.

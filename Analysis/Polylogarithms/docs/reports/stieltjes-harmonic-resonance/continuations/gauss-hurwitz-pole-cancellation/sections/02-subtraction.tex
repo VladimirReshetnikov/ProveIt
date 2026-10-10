@@ -1,0 +1,122 @@
+\section{The normally convergent Gauss--Hurwitz difference}\label{sec:subtraction}
+
+\subsection{The summand and its exact summation}
+Define
+\begin{equation}\label{eq:rn}
+ r_n(u)=\frac{\Gamma(n+a)\Gamma(n+b)}
+ {\Gamma(n+1)\Gamma(n+a+b+u)},\qquad
+ G(u)=\frac{\Gamma(a)\Gamma(b)\Gamma(u)}
+ {\Gamma(a+u)\Gamma(b+u)}.
+\end{equation}
+For $\Rea u>0$ one has
+\begin{equation}\label{eq:gauss}
+ \sum_{n=0}^\infty r_n(u)=G(u).
+\end{equation}
+Here is a direct proof, which also fixes the normalization.  The beta
+integral gives
+\[
+ r_n(u)=\frac{\Gamma(n+a)}{\Gamma(n+1)\Gamma(a+u)}
+ \int_0^1 t^{n+b-1}(1-t)^{a+u-1}\,\dd t.
+\]
+Summing $\Gamma(n+a)t^n/n!=\Gamma(a)(1-t)^{-a}$ gives
+$\Gamma(a)B(b,u)/\Gamma(a+u)=G(u)$.
+For real positive parameters Tonelli's theorem applies; on compact subsets
+of $\Rea u>0$ the same calculation follows by absolute convergence and
+analytic continuation.  This is Gauss's classical summation
+\cite[15.4.20]{dlmf-gauss}.
+
+\subsection{Explicit coefficient polynomials}
+Let $B_k(y)$ denote the Bernoulli polynomial, with
+$B_1(y)=y-\tfrac12$.  For $k\ge1$ put
+\begin{equation}\label{eq:ell}
+ \ell_k(u;c)=\frac{(-1)^{k+1}}{k(k+1)}
+ \left\{
+ B_{k+1}(a-c)+B_{k+1}(b-c)-B_{k+1}(1-c)
+ -B_{k+1}(a+b+u-c)\right\}.
+\end{equation}
+Define $A_0=1$ and, successively,
+\begin{equation}\label{eq:Arec}
+ j A_j(u;c)=\sum_{k=1}^j k\ell_k(u;c)A_{j-k}(u;c).
+\end{equation}
+These are polynomials with rational coefficients in $a,b,u,c$.
+The first nontrivial one is
+\begin{equation}\label{eq:A1}
+ A_1(u;c)=c-ab+(c-a-b+\tfrac12)u-\tfrac12u^2.
+\end{equation}
+The recurrence is a finite exact formula at every prescribed order; no
+infinite asymptotic expansion is numerically summed.
+
+\begin{lemma}[Uniform finite-order expansion]\label{lem:asymptotic}
+For any fixed $K\ge1$,
+\begin{equation}\label{eq:asymptotic}
+ r_n(u)=(n+c)^{-1-u}
+ \left\{\sum_{j=0}^{K-1}\frac{A_j(u;c)}{(n+c)^j}
+ +O\bigl((n+c)^{-K}\bigr)\right\}.
+\end{equation}
+The error is uniform on compact subsets of the stated parameter domain,
+including compact sets of complex $u$.  Arbitrary fixed-order parameter
+and spectral derivatives have the corresponding uniform expansions;
+spectral differentiation introduces at most fixed powers of $\log(n+c)$.
+\end{lemma}
+\begin{proof}
+Apply the finite Stirling expansion for $\log\Gamma(X+d)$, with
+$X=n+c$, to the two numerator and two denominator factors.  The common
+$X\log X-X$ and constant terms cancel.  The coefficient of $\log X$ is
+$-1-u$, and the inverse-power coefficients are exactly \eqref{eq:ell}.
+Exponentiating a finite expansion with its remainder gives
+\eqref{eq:asymptotic}.  Differentiating the formal exponential yields
+\eqref{eq:Arec}.  Uniformity follows from the uniform remainder on compact
+sets of shifts in the Stirling expansion \cite[\S5.11]{dlmf-gamma}.
+For a fully analytic justification of derivatives, enlarge a given compact
+parameter set slightly, apply the uniform expansion there, and use Cauchy's
+integral formula for the remainder.  Only the explicit factor
+$X^{-u}$ contributes the possible logarithmic powers.  Finitely many small
+$n$ are handled separately by entire reciprocal gamma.
+\end{proof}
+
+\begin{theorem}[Gauss--Hurwitz subtraction]\label{thm:subtraction}
+For $K\ge1$, the series
+\begin{equation}\label{eq:RK}
+ R_K(u;c)=\sum_{n=0}^\infty
+ \left\{r_n(u)-\sum_{j=0}^{K-1}
+       \frac{A_j(u;c)}{(n+c)^{1+u+j}}\right\}
+\end{equation}
+converges absolutely and locally normally on $\Rea u>-K$.
+It is holomorphic there, and
+\begin{equation}\label{eq:master}
+ \boxed{R_K(u;c)=G(u)-\sum_{j=0}^{K-1}
+ A_j(u;c)\zeta(1+u+j,c).}
+\end{equation}
+Every apparent pole of the right side inside this half-plane is removable.
+Arbitrary fixed-order spectral and parameter derivatives can be taken
+termwise in the \emph{bracketed} series.
+\end{theorem}
+\begin{proof}
+On a compact subset with $\Rea u\ge-K+\delta$, Lemma~\ref{lem:asymptotic}
+bounds the bracket by a constant times $(n+c)^{-1-\delta}$; derivatives
+add only a fixed logarithmic factor.  These majorants are summable.
+The Weierstrass theorem and the differentiated version of the same estimate
+prove normal convergence and holomorphy.  In $\Rea u>0$, both separate
+series converge and \eqref{eq:master} follows from \eqref{eq:gauss} and
+the defining Dirichlet series for Hurwitz zeta.  The identity theorem gives
+\eqref{eq:master} on the larger domain, with all singularities removable
+because its left side is holomorphic.
+\end{proof}
+
+\begin{remark}[Ordinary sums, not unassigned divergent sums]
+At $u=-N$, $N<K$, the two components inside the braces in
+\eqref{eq:RK} usually have divergent sums separately.  The theorem evaluates
+the single absolutely convergent sum of their difference.  It does not
+assign values to either divergent series or authorize rearranging the
+separate pieces.  The value depends on the stated reference shift $c$;
+Section~\ref{sec:primitives} gives its exact dependence.
+\end{remark}
+
+Increasing the number of counterterms gives the exact relation
+\begin{equation}\label{eq:Krec}
+ R_{K+1}(u;c)=R_K(u;c)-A_K(u;c)\zeta(1+u+K,c),
+ \qquad \Rea u>-K.
+\end{equation}
+Thus additional subtractions improve summability without creating a new
+unknown constant.  The meromorphic continuation of this relation remains
+valid wherever its combined terms are defined.

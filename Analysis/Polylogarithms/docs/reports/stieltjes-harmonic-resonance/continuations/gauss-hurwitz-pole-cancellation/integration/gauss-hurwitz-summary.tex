@@ -1,0 +1,55 @@
+% Manuscript-facing entry point; full proofs are in the accompanying article.
+% Uses standard amsmath syntax and a proposition environment.
+\section{A Gauss--Hurwitz bridge to harmonic and Stieltjes identities}
+\label{gh:sec:summary}
+For $a,b,c>0$ put
+\[
+ r_n(u)=\frac{\Gamma(n+a)\Gamma(n+b)}
+ {\Gamma(n+1)\Gamma(n+a+b+u)}.
+\]
+Let $A_j(u;c)$ be its asymptotic coefficient polynomials, uniquely specified by
+\[
+ r_n(u)\sim(n+c)^{-1-u}\sum_{j\ge0}\frac{A_j(u;c)}{(n+c)^j},
+ \qquad A_0=1.
+\]
+The explicit Bernoulli recursion and all analytic details are proved in the
+accompanying report \emph{Gauss--Hurwitz Pole Cancellation}.
+For $K\ge1$, the bracketed series
+\[
+ R_K(u;c)=\sum_{n\ge0}\left\{r_n(u)-
+              \sum_{j=0}^{K-1}\frac{A_j(u;c)}{(n+c)^{1+u+j}}\right\}
+\]
+is locally normally convergent for $\operatorname{Re}u>-K$ and equals
+\[
+ \frac{\Gamma(a)\Gamma(b)\Gamma(u)}{\Gamma(a+u)\Gamma(b+u)}
+ -\sum_{j=0}^{K-1}A_j(u;c)\zeta(1+u+j,c).
+\]
+Its apparent poles cancel.  In particular, for every $N\ge0$,
+\[
+ R_{N+1}(-N;c)=\frac{(-1)^N(1-a)_N(1-b)_N}{N!}
+ \bigl(H_N-\gamma-\psi(a)-\psi(b)+\psi(c)\bigr).
+\]
+The report gives every Taylor coefficient at $u=-N$ as a finite formula
+in generalized Stieltjes constants, nonpositive-integer Hurwitz-zeta
+order derivatives, and gamma/polygamma values.  Zero reciprocal-gamma
+summands must be expanded before differentiating.
+
+A balanced numerator variation also proves, for every $x>0$ and $k\ge1$,
+\[
+ \sum_{n\ge0}\frac{\Gamma(n+x)^2}{\Gamma(n+1)\Gamma(n+2x)}
+ \sum_{n\le j_1\le\cdots\le j_k}
+ \frac1{(j_1+x)^2\cdots(j_k+x)^2}=2\zeta(2k+1,x).
+\]
+The reference-parameter derivative telescopes exactly:
+\[
+ \partial_cR_K(u;c)=(u+K)A_{K-1}(u;c)\zeta(1+u+K,c).
+\]
+Finally, replacing each power counterterm by the matching Lerch series
+(and by $z^{-1}\operatorname{Li}_s(z)$ for $c=1$) produces a continuous
+combined endpoint at $z=1$, with all fixed spectral jets commuting with
+that limit on the same half-plane.
+
+The Gauss summation and classical hypergeometric constant-term context,
+including overlap with B\"uhring's work, must be credited when integrating
+these statements.  These results do not settle the separate $S_6$ and
+$S_8$ conjectures or prove independence of special values.

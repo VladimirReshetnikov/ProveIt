@@ -1,0 +1,139 @@
+\section{Polylogarithmic endpoint identities and \texorpdfstring{$z$}{z}-primitives}\label{sec:polylog}
+
+\subsection{Regularized hypergeometric notation}
+For $|z|<1$ define
+\begin{equation}\label{eq:F}
+ F(u,z)=\sum_{n\ge0}r_n(u)z^n
+ =\Gamma(a)\Gamma(b)\,{}_2\mathbf F_1(a,b;a+b+u;z),
+\end{equation}
+where ${}_2\mathbf F_1(a,b;d;z)={}_2F_1(a,b;d;z)/\Gamma(d)$
+is the \emph{regularized} function, defined by its coefficient series.
+This convention is indispensable when $d$ is a nonpositive integer:
+separate floating-point evaluation of an ordinary hypergeometric pole and
+a reciprocal-gamma zero is not the definition.
+
+The Lerch transcendent satisfies
+\begin{equation}\label{eq:Lerch}
+ \Phi(z,s,c)=\sum_{n\ge0}\frac{z^n}{(n+c)^s},\qquad
+ z\Phi(z,s,1)=\Li_s(z),
+\end{equation}
+initially on $|z|<1$ \cite{dlmf-lerch}.
+
+\begin{theorem}[Polylogarithmic endpoint subtraction, with all jets]\label{thm:endpoint}
+Let $K\ge1$.  The combined function
+\begin{equation}\label{eq:FK}
+ F_K(u,z;c)=F(u,z)-\sum_{j=0}^{K-1}
+                         A_j(u;c)\Phi(z,1+u+j,c)
+\end{equation}
+has the absolutely convergent coefficient representation
+\[
+ F_K(u,z;c)=\sum_{n\ge0}\left\{r_n(u)
+       -\sum_{j=0}^{K-1}\frac{A_j(u;c)}{(n+c)^{1+u+j}}\right\}z^n
+\]
+for every $|z|\le1$ and $\Rea u>-K$.
+It is continuous in $z$ on the closed disk and holomorphic in $u$.
+The convergence and every fixed-order $u$ derivative are uniform on the
+closed disk and compact subsets of that half-plane.  In particular,
+\begin{equation}\label{eq:endpoint}
+ \lim_{z\to1,\ |z|\le1}[t^m]F_K(-N+t,z;c)
+ =S_{N,m}^{(K)}(c),\qquad N<K.
+\end{equation}
+For $c=1$ this is an endpoint identity with finitely many ordinary
+polylogarithms and their spectral derivatives:
+\begin{equation}\label{eq:polyendpoint}
+ zF_K(u,z;1)=zF(u,z)-\sum_{j=0}^{K-1}
+                                    A_j(u;1)\Li_{1+u+j}(z).
+\end{equation}
+\end{theorem}
+\begin{proof}
+The coefficient bracket is the one in Theorem~\ref{thm:subtraction}.
+The same summable majorant works for every $|z|\le1$, since $|z^n|\le1$.
+The Weierstrass test, also after a fixed number of spectral derivatives,
+proves uniform convergence, continuity, and interchange of endpoint limits
+with coefficient extraction.  Equations \eqref{eq:FK} and
+\eqref{eq:polyendpoint} first hold inside the disk by absolutely convergent
+power series, and then represent the claimed continuous extension of the
+\emph{combined} expression.
+\end{proof}
+
+\begin{remark}[The separate pieces can still be singular]
+The theorem does not assert that each Lerch or polylogarithm term has a
+finite endpoint separately.  Nor does it rely on identifying two
+independently regularized boundary values.  The coefficient differences
+already form an ordinary uniformly convergent series, which fixes the
+limit uniquely.  The spectral-derivative formula is therefore meaningful
+at negative integer polylogarithm orders and at order one alike.
+\end{remark}
+
+\subsection{Explicit endpoint examples}
+In the half-parameter case, write
+$\Fcal(z)=\sum_{n\ge0}w_nz^n=\pi{}_2F_1(\tfrac12,\tfrac12;1;z)$
+and $\theta=z\partial_z$.  For $N\ge0$, the resonant series is
+$F(-N,z)=\theta(\theta-1)\cdots(\theta-N+1)\Fcal(z)$.
+For instance,
+\begin{align}
+ \lim_{z\to1^-}\{z\Fcal(z)-\Li_1(z)\}
+ &=4\log2,\label{eq:z0}\\
+ \lim_{z\to1^-}\{z\theta\Fcal(z)-\Li_0(z)+\tfrac14\Li_1(z)\}
+ &=-\log2-\tfrac14,\label{eq:z1}\\
+ \lim_{z\to1^-}\{z\theta(\theta-1)\Fcal(z)-\Li_{-1}(z)
+       +\tfrac94\Li_0(z)-\tfrac9{32}\Li_1(z)\}
+ &=\tfrac98\log2+\tfrac{27}{64}.\label{eq:z2}
+\end{align}
+These are ordinary limits of the displayed expressions.  They are
+instances of the all-$N$ formula, not numerical extrapolations.
+
+The first order-derivative example is
+\begin{align}
+ \lim_{z\to1^-}\left\{
+ z\left.\partial_uF(u,z)\right|_{u=0}
+ -\left.\partial_s\Li_s(z)\right|_{s=1}\right\}
+ =\frac{(\gamma+4\log2)^2-5\zeta(2)}2+\gamma_1.
+ \label{eq:zstieltjes}
+\end{align}
+All higher orders and all negative resonances follow by the explicit finite
+formula \eqref{eq:alljets}.  This is the direct connection between the
+polylogarithmic order calculus and the Stieltjes layer in this construction.
+
+\subsection{Exact Euler derivatives and normalized antiderivatives}
+The operator $\theta$ multiplies a coefficient of $z^n$ by $n$.
+After $q$ applications, the endpoint majorant becomes
+$O(n^{q-1-\Rea u-K}\log^m n)$.  Thus the same endpoint statement for
+$\theta^qF_K$ is valid on the smaller half-plane
+\begin{equation}\label{eq:thetadomain}
+ \Rea u>q-K.
+\end{equation}
+One cannot differentiate the boundary formula arbitrarily often while
+keeping the original number of counterterms.
+
+For $c>0$, define the zero-basepoint normalized primitive
+\begin{equation}\label{eq:Ic}
+ (\mathcal I_cf)(z)=z^{-c}\int_0^z t^{c-1}f(t)\,\dd t.
+\end{equation}
+It is first interpreted for real $0<z<1$, and then by its analytic power
+series.  Coefficientwise, $\mathcal I_c(z^n)=z^n/(n+c)$; hence
+\begin{equation}\label{eq:IcLerch}
+ \mathcal I_c^{\ell}\Phi(z,s,c)=\Phi(z,s+\ell,c),\qquad \ell\ge0.
+\end{equation}
+For the gamma-ratio term this gives the exact lift
+\begin{align}
+ \mathcal I_c^{\ell}F(u,z)
+ ={}&\frac{\Gamma(a)\Gamma(b)}{\Gamma(a+b+u)c^{\ell}}
+ {}_{\ell+2}F_{\ell+1}
+ \left(\begin{matrix}a,b,\underbrace{c,\ldots,c}_{\ell}\\
+ a+b+u,\underbrace{c+1,\ldots,c+1}_{\ell}\end{matrix};z\right).
+ \label{eq:hyperlift}
+\end{align}
+As in \eqref{eq:F}, reciprocal-gamma regularization is understood at an
+exceptional lower parameter.  The proof is the elementary identity
+$(c)_n/(c+1)_n=c/(n+c)$ in every coefficient.
+
+Applying \eqref{eq:IcLerch}--\eqref{eq:hyperlift} to \eqref{eq:FK} provides
+exact antiderivatives of all the endpoint-subtracted families.
+Spectral differentiation commutes with these primitives inside the disk,
+and with their endpoint limits whenever the corresponding coefficient
+majorant is summable.  This is an integration ladder, not a claim that
+arbitrary higher hypergeometric endpoint values reduce to gamma values.
+Likewise, the generic function $F(u,z)$ is not asserted to be an ordinary
+polylogarithm.  The proved polylogarithmic statement is the finite
+subtraction and the exact evaluation of its combined endpoint.

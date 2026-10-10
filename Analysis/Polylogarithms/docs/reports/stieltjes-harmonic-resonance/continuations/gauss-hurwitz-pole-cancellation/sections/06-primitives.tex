@@ -1,0 +1,85 @@
+\section{An exact telescoping antiderivative calculus}\label{sec:primitives}
+
+\begin{theorem}[Reference-parameter telescoping]\label{thm:primitive}
+For $K\ge1$ and $\Rea u>-K$,
+\begin{equation}\label{eq:primitiveDerivative}
+ \boxed{\partial_c R_K(u;c)
+ =(u+K)A_{K-1}(u;c)\zeta(1+u+K,c).}
+\end{equation}
+Consequently an exact primitive is
+\begin{equation}\label{eq:primitive}
+ \int A_{K-1}(u;c)\zeta(1+u+K,c)\,\dd c
+ =-\frac1{u+K}\sum_{j=0}^{K-1}
+ A_j(u;c)\zeta(1+u+j,c)+C.
+\end{equation}
+At a removable resonance, the finite sum on the right is evaluated as a
+combined Laurent expression; any residual pole is independent of $c$ and
+can be absorbed into the integration constant before taking the limit.
+Equivalently, $R_K(u;c)/(u+K)$ is a primitive that is holomorphic throughout
+the stated half-plane.
+\end{theorem}
+\begin{proof}
+Differentiate the finite counterterm sum in \eqref{eq:master}, using
+\eqref{eq:cderiv} and
+$\partial_c\zeta(s,c)=-s\zeta(s+1,c)$.
+For $j\ge1$ the derivative of the coefficient contributes
+$(u+j)A_{j-1}\zeta(1+u+j,c)$, which cancels the derivative of the preceding
+zeta factor.  Only
+$-(u+K)A_{K-1}\zeta(1+u+K,c)$ remains from differentiating the sum.
+The $c$-independent $G(u)$ contributes zero, proving
+\eqref{eq:primitiveDerivative}.  Division by $u+K$ is harmless on
+$\Rea u>-K$ and gives the primitive.  The last statement explains how to
+read its meromorphic finite-sum form at a resonance.
+\end{proof}
+
+For $K=N+1$ and $u=-N+t$, the all-jet primitive law is particularly simple:
+\begin{equation}\label{eq:primitivejets}
+ \partial_c S_{N,m}^{(N+1)}(c)
+ =[t^m]\{(1+t)A_N(-N+t;c)\zeta(2+t,c)\}.
+\end{equation}
+Thus the finite Stieltjes expression in \eqref{eq:alljets} is an explicitly
+evaluated antiderivative of a polynomial-weighted combination of spectral
+zeta derivatives at $2$.  This is stronger than merely leaving the
+antiderivative as an unevaluated integral.
+
+The first level recovers
+\begin{equation}\label{eq:stieltjesderivative}
+ \gamma_1'(c)=\zeta(2,c)+\zeta^{[1]}(2,c),
+\end{equation}
+by differentiating \eqref{eq:stieltjes} in $c$.
+For $N=1$, let $\rho=-(1-a)(1-b)$ and
+$e_2=[t^2]E_1(t)$.  Since
+\[
+ A_1(-1+t;c)=\rho+(c-a-b+\tfrac32)t-\tfrac12t^2,
+\]
+Theorem~\ref{thm:jets} becomes
+\begin{align}
+ S_{1,1}^{(2)}(c)={}&e_2+\frac12+\frac12\log(2\pi)
+ -\log\Gamma(c)+(c-a-b+\tfrac32)\psi(c)+\rho\gamma_1(c).
+ \label{eq:firstprimitiveclosed}
+\end{align}
+Taking the $c$ derivative yields the concrete integral identity
+\begin{align}
+ &\int\bigl\{(c-a-b+\tfrac32+\rho)\zeta(2,c)
+                  +\rho\zeta^{[1]}(2,c)\bigr\}\,\dd c\notag\\
+ &\hspace{8mm}=-\log\Gamma(c)+(c-a-b+\tfrac32)\psi(c)
+                   +\rho\gamma_1(c)+C.
+ \label{eq:explicitprimitive}
+\end{align}
+For $a=b=\tfrac12$ this reads
+\begin{equation}\label{eq:halfprimitive}
+ \int\left\{(c+\tfrac14)\psi'(c)-\tfrac14\zeta^{[1]}(2,c)\right\}\dd c
+ =-\log\Gamma(c)+(c+\tfrac12)\psi(c)-\tfrac14\gamma_1(c)+C.
+\end{equation}
+The all-order theorem gives the analogous formulas with higher spectral
+jets, rather than requiring separate integration-by-parts calculations.
+
+At zeroth order, \eqref{eq:primitivejets} says
+$\partial_c R_{N+1}(-N;c)=\rho_N\zeta(2,c)$.
+Integrating from $c$ to $d$ gives the exact reference-change rule
+\begin{equation}\label{eq:resreference}
+ R_{N+1}(-N;d)-R_{N+1}(-N;c)=\rho_N\{\psi(d)-\psi(c)\}.
+\end{equation}
+This makes the subtraction convention fully visible.  The finite constant
+is not invariant under replacing $(n+c)^{-1}$ by an unspecified harmonic
+reference term.
