@@ -2198,15 +2198,59 @@ Two multilinear graphs, one for each cross-section, give one
   most `N/2` (as `Box.short_parent_partition` arranges), and
   `|J| ≥ 2q²/θ³`.
 
+**Third piece, done:** `Proofs16SinglePieceSpectrum` (the spectrum half of
+a single-piece Lemma 16.9).
+- *Why a piece input is not enough.* Lemma 16.9 writes
+  `φ₁ = (−1)^k φ′ + φ″`. `φ′(h, ·)` is linear on short progressions whose step
+  lies in the Bohr set of the **whole** large spectrum `K_h`. So every
+  frequency of `K_h` must lie on one of few multilinear graphs: a cover
+  requirement on a dense set of `h`. Peeling the `≤ δ⁻²` spectrum layers one
+  piece at a time would nest `c` up to `δ⁻²` times, at `exp(poly)` cost.
+  That is the stackability problem of H.3/H.4 again.
+- So the dimension-`k` open core is a **relation** statement,
+  `LocalRelationCoverAt k δ Qc c w`. Take a product-property relation with
+  fibres `≤ M` and a set `H` of density `θ` in a proper box. Then on one
+  proper sub-box `R` (width `≥ w θ (width P)`), a set `G ⊆ H ∩ R` with
+  `|G| ≥ c θ·|R|` has every value on `q ≤ Qc θ M` multilinear graphs.
+  - It is trivial with `w θ L = min 1 L`.
+  - Its content is polynomial `c` and `Qc` at growing `w`.
+  - `LocalRelationCoverAt.localMultilinearPieceAt` derives the function
+    form of step 2 at density `c/Qc`, by pigeonhole. **One hypothesis
+    therefore drives the whole lift.**
+- `single_piece_of_spectrum_cover` assembles step 3 with step 2.
+  - *Setting.* A dense `E` in a cell `T₀ × J₀` with
+    `φ = s·f + M″` on `E`, where `M″` is one multilinear map. `f(h, ·)` is
+    Bohr-linear for `K_h`, and `K_h` lies in a product-property relation
+    with fibres `≤ M_sp`. Both conditions are needed only at base points
+    that carry points of `E`, the form Lemma 16.5's good set gives.
+  - *Output.* One proper `(k+1)`-box inside `T₀ × J₀` and one multilinear
+    map agreeing with `φ` on a `singlePieceDensity c ρ 1` fraction, where
+    `ρ = (θ/2)·c_R(θ/2)`.
+  - *Proof.* Popular fibres, the cover hypothesis, and the corpus's
+    single-box Lemma 16.6 core. The core's statement shape
+    `Section16RetiledLinearityBound` was moved to the light module
+    `Proofs16RetiledLinearityBound`. `exists_polynomial_retiled_linearity_profile`
+    supplies it at width exponent `1/(2p(q+1)^(2^(k+2)))`, polynomial in `q`.
+    Then a dense cell (`exists_dense_cell`), a short-parent sub-cell, and
+    step 2 with one class (`single_piece_on_affine_cell`: `M″` is affine in
+    the last variable, so each fibre is affine).
+- With polynomial `c`, `c_R` and `Q_c`, every density in the chain is
+  polynomial in `θ`. The widths lose
+  - the input widths `w`, `w_R`;
+  - one square root and a factor `8` (retiling);
+  - the reciprocal-polynomial exponent `ε(q)`.
+
 **Next.**
-1. A single-piece Lemma 16.9: from a dense `(k+1)`-dimensional
-   product-property set, produce one line-covered cell of density
-   `poly(θ)` with `q = poly(1/θ)` classes. This is where the slope relation
-   and the remainders `φ_ε` enter, so it needs the structure of
-   `Proofs16Lemma9`.
-2. Assemble `LocalMultilinearPieceAt (k+1)` from `LocalMultilinearPieceAt k`
-   plus item 1. Then compare it with the length-6 discrepancy budget of
-   K.4, through `section16_joint_frequency_box`'s output form.
+1. The remainder half: one multilinear `M″` for
+   `φ″ = Σ_{ε≠1} ±φ_ε` on a dense set. Each `φ_ε` is a cross-section
+   function of `|ε| + 1 ≤ k` variables (Lemma 16.9's proof). Nested pieces
+   of the `2^k − 1` terms, each lifted to a cylinder in the unused
+   variables, give a single `M″` at density `c^{∘(2^k−1)}`. That is
+   polynomial for fixed `k`.
+2. Instantiate with Gowers's objects (Lemmas 16.4–16.7: `φ′`, `B₁`, the
+   spectrum relation `Δ` via Lemma 14.3). Then compare the result with the
+   length-6 budget of K.4 through `section16_joint_frequency_box`'s output
+   form.
 
 ## F. Routes
 

@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs16RetiledRecurrence
+import GowersSzemeredi.Proofs16RetiledLinearityBound
 import GowersSzemeredi.Proofs16PolynomialRecurrenceComparison
 
 /-! The reciprocal-polynomial recurrence bound survives final-axis tiling.
@@ -55,28 +55,6 @@ theorem retiled_linearity_of_recurrence_scale {N k q : Nat} [NeZero N]
     exact hlinear x hxG v (by omega) (J j) (hJlength j).2
       (product_recurrence_bohr_mem mu K x (J j).step _ zeta v
         (hcover x (hTsub j hx) hxG) (fun a => hsmall a j x hx) hvbudget)
-
-/-- The quantitative conclusion of the retiled linearity argument at a
-specified width exponent and integer input threshold. -/
-def Section16RetiledLinearityBound (k q : Nat) (epsilon : Real) (threshold : Nat) : Prop :=
-  ∀ (N m : Nat) [NeZero N] (P : Box N k) (B I : ModAP N) (i : Fin k) (u : (ZMod N)ˣ),
-    P.IsProper → I.IsProper → B.step = (↑u : ZMod N) → I.step = B.step →
-    (P.axis i).carrier ⊆ B.carrier → 2 * B.length ≤ N → B.length ≤ I.length →
-    ∀ mu : Fin q → Point N k → ZMod N, (∀ a, IsMultilinear (mu a)) →
-    threshold ≤ m → m ≤ P.width →
-    ∀ (K : Point N k → Finset (ZMod N)) (G : Finset (Point N k))
-      (A : Point N k → Finset (ZMod N)) (f : Point N k → ZMod N → ZMod N)
-      (zeta : Real), 0 < zeta → zeta ≤ 1 / 2 →
-    (∀ x ∈ P.carrier, x ∈ G → ∀ r ∈ K x, ∃ a, r = mu a x) →
-    (∀ x ∈ G, ∀ v : Nat, 0 < v → ∀ J : ModAP N, J.length ≤ v →
-      J.step ∈ bohr (K x) (zeta / v) → LinearOn (J.carrier ∩ A x) (f x)) →
-    1 < (zeta / 2) * Real.sqrt ((m : Real) ^ epsilon) →
-    ∃ M : Nat, ∃ S : Fin M → Box N (k + 1), ∃ T : Fin M → Box N k,
-      ∃ J : Fin M → ModAP N,
-      IsPartition (fun j => (S j).carrier) (lastProductSet P.carrier I.carrier) ∧
-      (∀ j, (S j).IsProper ∧ (zeta / 2) * Real.sqrt ((m : Real) ^ epsilon) ≤ (S j).width) ∧
-      (∀ j, IsLastCoordinateBoxProduct (S j) (T j) (J j)) ∧
-      ∀ j x, x ∈ (T j).carrier → x ∈ G → LinearOn ((J j).carrier ∩ A x) (f x)
 
 /-- The statement of `exists_polynomial_retiled_linearity_profile` at fixed constants. -/
 def PolynomialRetiledLinearityProfileAt (k : Nat) (K p : Nat) : Prop :=
