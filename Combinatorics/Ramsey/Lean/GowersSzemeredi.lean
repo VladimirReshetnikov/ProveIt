@@ -999,6 +999,9 @@ import GowersSzemeredi.Proofs16FinalPairChoice
 import GowersSzemeredi.Proofs16FinalWindow
 import GowersSzemeredi.Proofs16FinalAssemblyTools
 import GowersSzemeredi.Proofs16PropNineThreeGlue
+import GowersSzemeredi.Proofs16PropNineThreeGoodPairs
+import GowersSzemeredi.Proofs16PropNineThree
+import GowersSzemeredi.Proofs16GlobalSourceAgreementCore
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

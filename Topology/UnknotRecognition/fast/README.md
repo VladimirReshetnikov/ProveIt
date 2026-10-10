@@ -3597,3 +3597,34 @@ proves complete fallback and uniform first-corner meridian selection on the
 Fibonacci family. It also records the general arrangement bound
 `poly(t+k+B) * (1+k)^O(d)`: logarithmic matching nullity permits complete
 local QP enumeration, while a complete global sector producer remains open.
+
+
+The optional `normal_seed_sector_radius=1` or `2` recognition switch searches
+nearby compatible type assignments after coherent misses; its CLI flag is
+`--normal-seed-sector-radius`, used with `--normal-seed`. The default is zero.
+Exact signed residuals in the full matching quotient group zero columns and
+opposite proportional pairs. Coordinate-face dominance preserves every
+standard ray in the full radius-one/two window, including replacements.
+Queries share the native work and remaining orbit limits. Positive results
+use the existing `diagram-normal-disc-v1` proof; the independent source
+checker also supports its transport through boundary shelling traces.
+
+The 85-source audit preserves all disabled outputs exactly and increases
+native witnesses from 24 to 31 (seven added cases, six distinct canonical
+PD codes). All seven discs receive fresh Regina confirmation. All 1,401
+tests pass. The motivating radius-two disc is found after 31 filtered
+queries in about 0.41 seconds, compared with 4,920 unfiltered queries in
+36.46 seconds. Complete small-portfolio recognition is slower with extra
+windows, and 34 audit cases hit the work cap; keep the stage optional.
+A missed or capped window never supplies a knot verdict.
+
+```sh
+python -B -m normal_orbit_research.sector_windows audit --fresh-regina --output /tmp/sector-window-audit.json
+python -B -m normal_orbit_research.sector_windows benchmark --rounds 5 --output /tmp/sector-window-benchmark.json
+```
+
+[Signed residual theory](../synthesis/sector_windows.tex) proves full small-window
+coverage, the candidate bound, and conditional local QP enumeration for
+logarithmic initial nullity/radius. A complete global centre/distance theorem
+remains unproved. The separated native and full-recognition timings, noisy
+control repeat and producer-disabled source replay are retained.

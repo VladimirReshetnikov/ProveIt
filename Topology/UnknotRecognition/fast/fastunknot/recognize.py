@@ -245,7 +245,7 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
         check()
         evidence["normal_seed"] = witness
         if witness["status"] == "UNKNOT":
-            return "UNKNOT", "native-normal-cocycle"
+            return "UNKNOT", witness.get("method", "native-normal-cocycle")
     if normal_options is not None and diagram.crossings >= 32:
         # Startup dominates the small survivors in our corpus. Once cheap
         # filters fail on a larger diagram, try a different complete algorithm
@@ -390,6 +390,7 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
               normal_seed_planar: bool = False,
               normal_seed_shellings: bool = False,
               normal_seed_edge_span: bool = False,
+              normal_seed_sector_radius: int = 0,
               use_group: bool = False, group_seconds: float | None = 0.05,
               group_relators: bool = False, group_max_work: int = 2000000,
               group_compressed: bool = False, group_compressed_search: bool = False,
@@ -446,6 +447,8 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
         raise ValueError("normal_seed_tree_trials must be a nonnegative integer")
     if type(normal_seed_face_roots) is not int or normal_seed_face_roots < 0:
         raise ValueError("normal_seed_face_roots must be a nonnegative integer")
+    if type(normal_seed_sector_radius) is not int or normal_seed_sector_radius not in (0,1,2):
+        raise ValueError("normal_seed_sector_radius must be zero, one or two")
     if normal_seed_max_work is not None and (type(normal_seed_max_work) is not int or normal_seed_max_work < 0):
         raise ValueError("normal_seed_max_work must be a nonnegative integer or None")
     if type(use_group) is not bool:
@@ -741,7 +744,8 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
                        normal_seed_options=dict(max_work=normal_seed_max_work,
                            optimize=normal_seed_optimize, tree_trials=normal_seed_tree_trials,
                            face_roots=normal_seed_face_roots, annulus=normal_seed_annulus, planar=normal_seed_planar,
-                           shellings=normal_seed_shellings, edge_span=normal_seed_edge_span) if use_normal_seed else None,
+                           shellings=normal_seed_shellings, edge_span=normal_seed_edge_span,
+                           sector_radius=normal_seed_sector_radius) if use_normal_seed else None,
                        two_meridian_options=dict(seconds=two_meridian_seconds,
                            max_work=two_meridian_max_work,
                            max_attempts=two_meridian_max_attempts) if use_two_meridian else None,

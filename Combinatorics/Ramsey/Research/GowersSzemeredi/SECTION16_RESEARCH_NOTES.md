@@ -5987,8 +5987,138 @@ the decomposition with these named constants, but not `Theorem162At 3`.
              chosen pairs, is respected by the glued maps (`chosenGlued`)
              on `⋂_j B(θ_i(q_j) : i ∈ J; η)`.
 
-           What remains is the counting theorem chaining the iteration,
-           good pairs, Markov, F3, the quadruple window and Lemmas A/B.
+         **Proposition 9.3 is kernel-checked:** `milicevic_prop_9_3`
+         (`Proofs16PropNineThree`). It depends only on `propext`,
+         `Classical.choice` and `Quot.sound`.
+         - *Input.*
+           - Column maps `L x`, Freiman-linear on `B(T x; r)` with
+             `L x 0 = 0`, `|T x| ≤ d`, `0 < r < 4`.
+           - At most `ε₁N³` incompatible quadruples
+             (`incompatibleTriples (colComp T L r)`).
+           - At most `ε₂N¹¹` 12-tuples with an unrespected x- or y-side
+             8-tuple.
+           - The iteration parameters: a rank cap `rk ≥ 8d`; `M` with
+             `2 ≤ (r/4)M`; `s₀`; `η` with `32s₀η ≤ 1/4`; `ε > 0`; and
+             `5ε₁ + ε ≤ 1/2`.
+         - *Output.*
+           - `θ_i` Freiman 8-homomorphisms on `D_i` for `i < m`, and a
+             window `J` with `|J| = 8s₀`.
+           - A set `X` and chosen pairs `c(a)`. Every index `a` uses lies
+             in `J`, below `m`, and has `a ∈ D_i`.
+           - `ψ_a = chosenGlued T L r c a` is normalized and Freiman-linear
+             on `U_a = B(θ_i(a) : i ∈ J; η)`.
+           - Relating back: `x_a` is compatible with at least `N/2`
+             columns `z`, and `ψ_a = φ_{z+a} − φ_z` on the common quarter
+             Bohr set.
+           - `C(m + 8s₀, 8s₀) · #{respected additive quadruples in X} ≥
+             ((1 − 2η′)³ − 2η′ − 16(ε + 2ε₂))N³ − 6N²`, with
+             `η′ = 5ε₁ + ε`.
+           - `⌈δN²⌉·m ≤ N²s₀`.
+         - *Audit.*
+           - The count bound is positive for small `ε, ε₁, ε₂`, so `X` is
+             not empty.
+           - Indices `i ≥ m` in `J` carry `θ_i = 0` from the iteration's
+             initial state, so they add no constraint.
+           - **Open point, domain coherence.** For `i ∈ J ∖ S_a` with
+             `i < m`, nothing ensures `a ∈ D_i`. So `θ_i` need not be
+             Freiman on a set containing `X`. Respected quadruples are
+             unaffected, since extra frequencies only shrink `U_a`. But
+             Prop 10.1 needs the `Θ_i` Freiman on one domain `C ⊇ X`.
+             Milićević's coset-progression domains raise the same
+             intersection question, and the printed proof does not
+             address it.
+           - Candidate repairs:
+             (i) choose `J` among quadruples whose entries lie in
+             `⋂_{i∈J} D_i`, which needs a density argument for
+             intersections of the `D_i`;
+             (ii) replace each `θ_i` by its Lemma 7.8 linear extension on
+             a Bohr set (`freiman_common_value` already yields one), and
+             intersect Bohr sets, which have polynomial-density
+             intersections.
+           - Option (ii) looks natural: the linear parts are Freiman
+             2-homomorphisms on `B(spec; ρ′)`, and an intersection of
+             `8s₀` such Bohr sets has density `≥ ∏ρ′^{|spec|}`.
+           - Recorded under "Further questions (Step 5)" below until settled.
+         - *Regime check against the contract.* `DeepStructureAt Bnd`
+           bounds ranks (`|Γ|, |Ψ|, r`) by `Bnd(c)`, and radius and
+           agreement density from below by `exp(−Bnd(c))`, with
+           `Bnd ≤ (4/c)^K`. So polynomial ranks and `exp(−poly)` densities
+           are what is required. Proposition 9.3's output fits:
+           - rank `|J| = 8s₀ = poly(d, log 1/r)`;
+           - radius `η ≈ 1/s₀`;
+           - `log(1/density) ≈ 8s₀·log m`, with `m ≤ s₀/δ` and
+             `log(1/δ) = O(d log R)`, also polynomial.
+
+           An explicit-exponent audit is still to be written.
+
+         **Further questions (Step 5).**
+         1. *Domain coherence.* The final structure needs frequency maps
+            Freiman-linear on one centered Bohr set
+            (`IsFreimanLinearOn (bohr Ψ ρ) (L i)` in
+            `MilicevicDeepVarietyStructure`). The current `θ_i` are Freiman
+            8-homomorphisms on uncentered dense sets `D_i`, and `a ∈ D_i`
+            is known only for `i ∈ S_a`.
+            - *Partial repair.* Following the paper's `θ = φ^lin − u`:
+              `shift_agreement` gives `ψ₁ = Ψ + u` on a dense fiber, and
+              Lemma 7.8 gives `Ψ`'s linear part `λ` on a centered Bohr set
+              `K`. Then `Θ(a) = λ(a) − u` wherever `x, x + a` lie in `Ψ`'s
+              affine domain and `a ∈ K`. So the new frequency map can be
+              taken affine on a centered Bohr set.
+            - *What this does not settle.* It still does not put `a ∈ K_i`
+              for `i ∈ J ∖ S_a`.
+            - *A dead end.* Localizing every round to `⋂_{i≤m} K_i` would
+              multiply the rank by `m`. Since `m = exp(poly)`, the density
+              would become doubly exponential.
+            - *The paper.* Milićević's statement intersects the coset
+              progressions of the `J` maps, but the printed proof does not
+              show that `X` meets the intersection with many quadruples.
+              Possibly every `C_i` contains the small `C₀` in which the
+              `a`'s live. That would need the Theorem 2.26 progressions to
+              contain `C₀`, which is not stated.
+         2. *Explicit exponents* for the regime check above.
+         3. **The rank obstruction, and why Theorem 2.26 is needed here
+            (2026-10-10).** Domain coherence hides a rank problem.
+            - *The obstruction.* In Claims 9.4/9.5 the Freiman step runs at
+              density `κ = 2^(−1882)((c/2)^4)^1164·…` with
+              `c = (ε/K⁴)²` and `K = (2R+1)^d`, so `κ = exp(−poly(d))`. The
+              polynomial substitute for Theorem 2.26 (Corollary 7.6 +
+              Lemma 7.8, as in `milicevic_lemma_9_2_pair`) puts the linear
+              part on a Bohr set of rank `16κ^(−2) = exp(poly(d))`. But the
+              deep contract needs the frequency maps Freiman-linear on
+              `bohr Ψ ρ` with `|Ψ| ≤ Bnd(c) ≤ (4/c)^K`. So any structured
+              domain built from the substitute violates the contract.
+            - *What suffices.* Sanders-strength Theorem 2.26 gives rank
+              `(log 1/κ)^O(1) = poly(d)`, which fits. So at this step the
+              Milićević route cannot use the polynomial substitute.
+            - *Available input.* `lib/openai-math` already supplies the
+              Sanders-type estimate in `ℤ/N`:
+              `OAI.Erdos3.CyclicCrootSisask.exists_quartic_bogolyubov`
+              (`Estimates/LocalizedSiftingAlmostPeriods`). For `A` of
+              density `e^(−p)` it gives a rank-regular Bohr set in
+              `2A − 2A` with rank `≤ 1 + C(p+1)⁴` and radius
+              `≥ exp(−C(p+1))`. The `…_progression` variant gives a proper
+              centred GAP of the same rank with volume
+              `exp(−C(p+1)⁸)N`. The corpus already uses these: Theorem 7.1
+              in `Proofs07FreimanClosure`, via `exists_dense_cyclic_model`
+              and `exists_bounded_affine_box_of_cyclic_model`, and the
+              peer's `Proofs16RobustDifferenceBohr`.
+            - *Plan, "Theorem 2.26 at Sanders strength" in `ℤ/N`.*
+              1. Start from an approximate homomorphism: many respected
+                 quadruples, i.e. the graph has energy `≥ c|A|³`.
+              2. The graph BSG, which is polynomial (Proposition 7.3 /
+                 `abstract_bsg_core`), gives a graph piece of doubling
+                 `poly(1/c)`.
+              3. A dense cyclic model of order 8 follows from
+                 `exists_dense_cyclic_model`.
+              4. The Bogolyubov affine box in the model comes from
+                 `exists_bounded_affine_box_of_cyclic_model`, with rank
+                 `polylog(1/c)`.
+              5. Pull back: the graph meets a low-rank affine box. On it
+                 the graph is the graph of a Freiman-affine function,
+                 because a graph piece projects injectively.
+
+              This replaces Lemma 7.8 wherever a structured domain must
+              have low rank, and is the next large task on this route.
          Quantitatively, `s₀ = O(d log(dR))`, and
          `δ` is polynomial in `ε` and `(2R+1)^(−d)`. With
          `R = (ρ^(−1))^O(d)`, this makes `m ≤ s₀/δ = exp(O(d² log 1/ρ))`
@@ -10885,3 +11015,131 @@ parameter `p` supplied by the column sampling construction. It does not
 prove that this parameter is polynomial in `log(alpha^-1)`, or that all
 initial and final controls meet `milicevicBound D alpha` or the printed
 Gowers numerical contract. Those parameter comparisons remain required.
+
+### J.151. Joint selection and a source-agreeing compatible core
+
+Continuation checkpoint 296, 2026-10-09. Fourteen original modules add
+28 named proofs. They supply the missing joint representative selection
+and retain source agreement on the same core as all-quadruple compatibility.
+
+**Exact replacement counting.** `alternative_coordinate_total` counts
+replacements in a finite choice box. Each original bad configuration
+contributes exactly one term for each possible unused old coordinate:
+
+```
+sum_b number_of_bad_replacements(b,i) = |F_i| * |Bad|.
+```
+
+A fixed four-term sum has at most `N^3` representations, by projecting
+onto its first three coordinates. Hence configurations with more than
+`kappa*N^3/2` bad alternatives at one row have cardinality at most
+`(2/kappa)*|Bad|`. Union the four heavy replacement events with the
+selected bad 16-tuple event. Their summed query mass is at most
+`(1+8/kappa)*|Bad16|`, charged to the same original tuple family by the
+injective flattening argument.
+
+**One joint selection.** `exists_joint_progression_representatives`
+uses the existing four-coordinate product law to choose one global
+assignment with at most `9*|Bad16|/(kappa^5*N^12)` bad distinct-index
+queries, for `0<kappa<=1`. All other coordinate products cancel.
+Every good query has a good selected original 16-tuple and at least
+`kappa*N^3/2` good alternatives in each of its four rows. The factor
+`kappa^-5` uses the `N^3` upper bound for the unused row; it is a fixed
+local loss, with no power depending on the number of progression points.
+
+`exists_joint_selected_progression_maps` retains the actual valid
+representatives, normalized local-map data and index-zero value. It
+explicitly marks the at most `6N^2` repeated-index queries. Normalized
+quadruple image failures are a subset of the joint exceptional queries.
+The full error bound is
+
+```
+9*epsilon*N^3/(2*kappa^5) + 6*N^2.
+```
+
+**Original alternatives compare with the raw selected maps.** A good
+selected 16-tuple and a good row replacement have bounded images on their
+actual original domains. Subtract the defects, reversing their order in
+the two negative rows. This gives the selected raw four-column map minus
+the alternative original four-column map. Its endpoint spectrum has size
+at most `8d`; the three remaining selected rows contribute at most `12d`
+auxiliary frequencies. Keep those frequencies in the intermediate domain,
+then remove them through the linear-cap theorem. The resulting comparison
+has image cap
+
+```
+K^2 * refinementKernelCap (8d) (12d) (rho/2) (rho/2)
+```
+
+on its endpoint-only Bohr set at radius `rho/4`. No reference-map value is
+cancelled from a source comparison: these statements use the raw
+representation maps, before index-zero normalization.
+`query_original_representation_agreement` gives the half-mass family of
+actual original alternatives for every coordinate of every good query.
+
+**Original-data joint queries.**
+`global_joint_progression_maps_with_source_queries` uses
+`epsilon = eta*kappa^5/9`, with the existing condition `N>=12/eta`, to
+bound both query events by `eta*N^3`. Its witness system, witness masses,
+column data, robust original representation families, progression geometry,
+and normalized maps remain linked to the original dense bihomomorphism.
+The source comparison holds at `1/(16*pi)`, with its explicit image cap,
+for every coordinate of every nonexceptional query.
+
+**Query participation gives good vertices.** A vertex `x` in `Q/16`
+and two points `y,z` in `Q/32` form the parent query
+`(x,y,z,x-y+z)`. The final point lies in `Q/8`; signed-coordinate bounds
+prove all parent memberships. This completion is injective in the three
+free points. Therefore vertices with no good query satisfy
+
+```
+number_of_bad_vertices * |Q/32|^2 <= number_of_bad_queries.
+```
+
+If `|Q|>=delta*N` and there are at most `eta*N^3` bad queries, the vertex
+exception mass is at most `eta*4096^rank*N/delta^2`. A vertex with too few
+original agreement alternatives belongs only to bad queries. Thus the
+same bound controls the actual source-agreement exceptions, rather than
+assuming good-vertex participation separately.
+
+**Preserve the anchor reserve while pruning.** The stronger accuracy
+
+```
+eta <= delta^3 / (4096 * 4194304^rank)
+```
+
+absorbs both the earlier quadruple-core loss and the new source-vertex
+loss. `exists_source_agreement_quad_core` retains a single core in `Q/16`
+whose missing mass is at most `delta*N/(16*1024^rank)`. Every quadruple
+on that core satisfies the prior endpoint image bound, and every core
+vertex has at least `kappa*N^3/2` original source-agreement alternatives.
+
+`global_source_agreement_quad_core` chooses that accuracy from the
+original density and the uniform rank ceiling. It constructs the actual
+core and preserves the original witnesses, representation choices and
+normalized map data. The core is nonempty, with density at least the
+previous `globalProgressionPurificationCoreDensity`; the stronger pruning
+accuracy does not change its proved degree-eight density scale in the
+parent parameter. Quadruple compatibility holds at `1/(32*pi)`, and
+pointwise raw source comparison at `1/(16*pi)`.
+
+This supplies the joint and vertex source-agreement inputs to the final
+map transfer. A full `N^7` family of original eight-tuples still needs to
+be assembled from the valid anchor pairs and the two alternative families,
+with its map-value and domain identities proved. That assembly must use
+this same jointly selected system; the independently chosen system in
+J.150 cannot be combined with it merely because both have compatible
+maps. The five numbered statements and the final parameter comparisons
+remain open. No upstream modules or licensing scope are added here.
+
+**Verification.** The original-data source-agreement core compiles in a
+413-module production closure. All 28 new named proofs are included in
+the completed combined audit: 9,525 public Gowers theorems across 5,572
+modules, with 5,570 modules in the facade closure. Only `propext`,
+`Classical.choice`, and `Quot.sound` occur. The selected OAI audit closure
+remains 4,152 modules, and its port scope check passes. The source ledger
+is byte-identical to the 115-companion / five-open catalogue, with the
+existing fidelity qualifications. Incoming twelve-tuple iteration, glued
+pair maps, final pair/window choices and deterministic assembly tools are
+included in the same full audit. No source agreement for an `N^7` family
+or final printed bound is inferred from these checks.
