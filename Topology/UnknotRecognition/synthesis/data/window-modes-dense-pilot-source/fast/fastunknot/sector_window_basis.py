@@ -89,15 +89,14 @@ class WindowBasis:
             t,q=item;terms={3*t+q:Fraction(1)}
             for i,value in self.coefficients[item].items():
                 a,b=self.base_support[i];terms[3*a+b]=-value
-            values={}
+            values=[0]*len(self.potentials)
             for j,coefficient in terms.items():
                 check()
                 for corner,value in self._potential_columns.get(j,()):
-                    check();values[corner]=values.get(corner,0)+coefficient*value
-                    if not values[corner]:del values[corner]
+                    check();values[corner]+=coefficient*value
             # Publish only a completed column; an interrupted construction
             # never leaves a partial cached vector for another query.
-            self._column_modes[item]=values
+            self._column_modes[item]=tuple(values)
             if stats is not None:stats['potential_columns_cached']=len(self._column_modes)
         return self._column_modes[item]
 
@@ -116,7 +115,7 @@ class WindowBasis:
                 if not value:continue
                 if self._base_modes is None:
                     forms=projected_corner_forms(self.base_support,self.base_basis,self.potentials,check)
-                    self._base_modes=tuple({c:form[j]for c,form in enumerate(forms)if form[j]}for j in range(d0))
+                    self._base_modes=tuple(tuple(form[j]for form in forms)for j in range(d0))
                     if stats is not None:stats['base_potential_builds']+=1
                 terms.append((self._base_modes[i],value))
             for mode,value in zip(new_modes,row[d0:]):
@@ -124,18 +123,11 @@ class WindowBasis:
                     for item,scale in mode:
                         terms.append((self._corrected_column(item,check,stats),value*scale))
             entries.append(terms)
-        projected=[]
-        for terms in entries:
-            values={}
-            for column,coefficient in terms:
-                check()
-                for corner,value in column.items():
-                    values[corner]=values.get(corner,0)+(value if coefficient==1 else coefficient*value)
-            projected.append(values)
         forms=[]
         for corner in range(len(self.potentials)):
             check()
-            forms.append(tuple(values.get(corner,0)for values in projected))
+            forms.append(tuple(sum(values[corner]if value==1 else value*values[corner]
+                                   for values,value in terms)for terms in entries))
         if stats is not None:stats['mode_projections']+=1
         return tuple(forms)
 

@@ -3680,3 +3680,30 @@ python -B -m normal_orbit_research.window_euler benchmark --rounds 5 --output /t
 source functional, canonical formula and complete corner exclusion. Raw
 pilot/final/repeat records, source snapshots and producer-disabled positive
 replay are retained under `../synthesis/data/window-euler-*`.
+
+Residual windows now carry their thin replacement and canonical-gauge row
+operations through lazily cached sparse potential modes. Each corrected
+column is `P_j-P_S*c_j`; cancelling pairs and old basis modes are combined
+with the exact recorded row coefficients. This reproduces direct source
+projection at every physical corner while avoiding repeated wide scans.
+Source transposition and each needed correction are prepared at most once;
+interrupted construction never publishes a partial column.
+
+All 1,408 maintained tests pass, including exact propagated/direct forms,
+fresh source bases/rays and genuine nullity-four fallbacks. The 85-source
+audit preserves all verdicts, all 31 positives and all 28 work-capped cases,
+with seven fresh Regina disc checks. Small complete-recognition timings are
+close to parity: a longer trefoil repeat gives only a 1.015x gain. The
+improvement is in the amortized projection bound; it is not a uniform timing
+claim. Guard counts can increase with cache preparation. Radius zero stays
+the default, and general quasi-polynomial recognition remains unproved.
+
+```sh
+python -B -m normal_orbit_research.window_modes audit --fresh-regina --output /tmp/window-modes-audit.json
+python -B -m normal_orbit_research.window_modes benchmark --rounds 5 --output /tmp/window-modes-benchmark.json
+```
+
+[Cached-mode theory](../synthesis/window_modes.tex) proves exact propagation,
+explains lazy cache ownership and separates preparation, arithmetic, storage,
+bit costs and independent source replay. Raw pilot/final/repeat evidence and
+recoverable historical source snapshots are in the article data.
