@@ -5931,10 +5931,43 @@ the decomposition with these named constants, but not `Theorem162At 3`.
            `|Z(φ_a − φ_{z+a} + φ_z)| ≥ (ρ/4)^{4d}|G₂|`; the Bohr lower bound
            gives the size.
 
-         Still to do: assemble the Prop 9.3 output statement from F1–F5,
-         the iteration's final state, and the respected-tuple densities of
-         the input system. This means fixing which sets of `a` and
-         `(x, y)` are "good" and checking the averaging thresholds.
+         **Assembly design (and a trap avoided).**
+         - *Order.*
+           1. Run the iteration to a state with fewer than `εN³` bad
+              triples and fewer than `εN¹¹` bad 12-tuples.
+           2. Call a pair `(x, y)` good for `a` when
+              `(x+a, x, y+a, y)` is compatible and the triple is not bad.
+              Let `A′ = {a : |G_a| ≥ N²/2}`. By Markov,
+              `|A′| ≥ (1 − 2(ε + ε₁))N`, where `ε₁N³` bounds the
+              incompatible quadruples of the input.
+           3. Choose the pairs by F3 with
+              `Bad = Bad12 ∪ {12-tuples with an unrespected 8-tuple}`.
+              Then `|Bad| ≤ (ε + 2ε₂)N¹¹`, where `ε₂N⁷` bounds the
+              unrespected 8-tuples, and `D = (N²/2)⁴`. So at most
+              `16(ε + 2ε₂)N³` distinct quadruples in `A′` fail. Every
+              other quadruple is respected by the glued maps on
+              `⋂_j U_{a_j}`, by F2.
+           4. Choose `J` *for quadruples*, not for single `a`'s: apply
+              `exists_index_window` to the respected quadruples `q`, with
+              `S_q = ⋃_j (I_{x_{a_j},a_j} ∪ I_{y_{a_j},a_j})`, `|S_q| ≤ 8s₀`.
+              The output set is `X = {a ∈ A′ : S_a ⊆ J}`. It contains all
+              four entries of at least `C(m, 8s₀)^(−1)·#respected`
+              quadruples, which also bounds `|X|` from below.
+         - *The trap.* Choosing `J` to maximize `|X|` first, and only then
+           counting respected quadruples inside `X`, is circular. The
+           failure bound would need `ε ≪ C(m, k)^(−4)`, but `m ≤ s₀/δ(ε)`
+           grows as `ε` shrinks. Choosing `J` for quadruples is why
+           Milićević takes `|J| = 8s₀`. With it, `ε, ε₁, ε₂` only need to
+           be small absolute constants.
+         - *Counting quadruples in `A′`.* No energy bound is needed. Since
+           `A′` has density `1 − O(ε + ε₁)`, at least
+           `|A′|³ − |ℤ/N ∖ A′|·N²` triples `(a₀, a₁, a₂)` in `A′` have
+           `a₀ + a₁ − a₂ ∈ A′`. Repeated-index quadruples number at most
+           `6N²` (`repeated_additive_quadruples_card_le`).
+         - *Identification.* `twelveK Γ u` is `columnTupleFrequencies T v`
+           for the x-side 8-tuple `v` of `u`. So "not bad" is exactly F2's
+           split hypothesis `hd` at radius `r/4`: run the iteration at
+           `ρ = r/4`.
          Quantitatively, `s₀ = O(d log(dR))`, and
          `δ` is polynomial in `ε` and `(2R+1)^(−d)`. With
          `R = (ρ^(−1))^O(d)`, this makes `m ≤ s₀/δ = exp(O(d² log 1/ρ))`
