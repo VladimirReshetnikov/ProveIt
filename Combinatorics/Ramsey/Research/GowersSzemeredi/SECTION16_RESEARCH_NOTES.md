@@ -2094,6 +2094,78 @@ section collects what every examined route needs.
   task. The Milićević Step 5 work (J.5c) bears on `Theorem162At 3` through
   the dimension-two deep structure, but by K.4 it does not reach
   Corollary 18.7 at `k = 6`.
+- **The direct trilinear attack (analysed the same day).**
+  - *Target.* `theorem_18_2_of_function_discrepancy_budget` reduces
+    length 6 to a degree-4 `FunctionDiscrepancyBound`. Its `β` must be
+    `≥ α^D` with `D ≲ 2^32768/728` for 18.2, or quasi-polynomial with
+    exponent `A ≲ 3400` for 18.7.
+  - *Locality is the lever.* Gowers's method needs structure only on boxes
+    of width `N^(poly α)`. That is why dimension 1 → 2 kept polynomial loss
+    (18.2 at `k = 5` via the polynomial cubic discrepancy).
+  - *Where dimension 2 → 3 still loses.* The width loss of Lemma 16.1 is
+    already removed (J.3: the Schmidt recurrence). The loss that remains is
+    the dimension-two graph count `exp(poly)` entering the joint box's
+    budget `G` (K.4). A single trilinear piece only needs one lift. But the
+    slices' frequency relation `Δ`, with fibres `≤ δ⁻²`, must be handled
+    simultaneously, which is the stackability problem (H.3, H.4).
+  - *Reduction.* The trilinear piece follows from a **local**
+    dimension-two structure theorem whose graph count, or Bohr rank, is
+    `poly` (for 18.2) or `quasi-poly` with explicit exponent (for 18.7), via
+    a single-piece lift with polynomial loss.
+  - *Why the deep contract does not suffice.* It is global, and its
+    density `exp(−poly)` is too weak for `k = 6`.
+  - *Sources.* The only known dimension-two source with quasi-polynomial
+    loss is Milićević 2026, whose Proposition 9.3 has the coherence gap of
+    J.5c. Repairing that gap is therefore on the critical path for 18.7 at
+    `k = 6` as well. For 18.2 at `k = 6`, no polynomial dimension-two
+    source is known: a *global* one would be PFR-strength over `ℤ`. Whether
+    locality makes a polynomial local dimension-two theorem accessible is
+    the open question this route turns on.
+
+### L.1 The single-piece lift: plan and first piece (2026-10-10)
+
+The user chose to build the single-piece dimension `k → k+1` lift (Notes L).
+
+**Plan.** Gowers's Lemma 16.10 covers all of `φ₁` and loses in three
+unions:
+- over `r²` anchor pairs;
+- over the `2^k − 1` cross-section remainders in Lemma 16.9;
+- over the graphs of each cross-section cover.
+
+For one dense piece, make one choice in each:
+- the largest class on a cell, of density `≥ 1/q`;
+- one anchor pair;
+- one graph per cross-section, on a common cell (synchronized retiling,
+  already in the corpus).
+
+The density is then `poly(1/q, 1/Q, θ)`, where `q` is Lemma 16.9's class
+count and `Q` is the dimension-`k` count per cell. So the lift is
+polynomial exactly when the dimension-`k` input has polynomial counts.
+That input is Notes L's open core.
+
+**First piece, done:** `Proofs16SinglePieceAnchor`.
+- `exists_anchor_pair_capture`: on a cell `T × J` whose fibres are split
+  into at most `q` classes, one anchor pair `a ≠ b` captures `W` (the
+  points whose class contains `(h, a)` and `(h, b)`) with
+  `|D|³ ≤ (q|T|)²(|J|²|W| + |J||D|)`. The proof uses two Cauchy–Schwarz
+  steps over class sizes and averages over anchor pairs.
+- `anchor_reconstruction`: if `φ(h, ·)` is affine on each class (the form
+  of Lemma 16.9's `Section16LineCover`), then on `W`
+  `φ(h, x) = φ(h, a) + (φ(h, a) − φ(h, b))(a − b)⁻¹(x − a)`.
+
+So on the captured set `φ` is fixed by its cross-sections at `a` and `b`.
+Two multilinear graphs, one for each cross-section, give one
+`(k+1)`-multilinear piece. The `r²`-pair union, and its exponent
+`p = 4r²γ⁻²s`, does not arise.
+
+**Next.**
+1. Cross-section single graphs on a common cell, at loss polynomial in
+   `Q`.
+2. A single-piece Lemma 16.9 that picks one graph of each remainder
+   `φ_ε` instead of the union.
+3. Assemble a `DenseMultilinearPiece (k+1)` statement, conditional on a
+   named polynomial-count dimension-`k` hypothesis, and compare it with
+   the length-6 discrepancy budget of K.4.
 
 ## F. Routes
 
