@@ -5811,8 +5811,45 @@ the decomposition with these named constants, but not `Theorem162At 3`.
            `2s₀η ≤ 1/4` is the triangle-inequality condition of the
            escape step.
 
-         Still to do: Claim 9.5 (the 12-tuple version, the same pattern
-         with four escapes), and the final selection of pairs `(x_a, y_a)`
+         **Claim 9.5 (kernel-checked):** `claim_9_5`
+         (`Proofs16ClaimNineFive`).
+         - *Coordinates.* A 12-tuple `(x[4], y[4], a[4])` with
+           `a₀ + a₁ = a₂ + a₃` is stored as `u : Fin 11 → ZMod N`, with
+           `a₃ = u₈ + u₉ − u₁₀` (`twelveX`, `twelveY`, `twelveA`).
+           `twelveRest j` keeps the nine coordinates other than `x_j` and
+           one `a`-coordinate. `twelve_agree_off` shows they determine the
+           tuple off `x_j` (the index tables are checked by `decide`).
+         - *Input.* Frequencies `ξ_{j,k}` in the span balls at the 16 points
+           `x_j + a_j, x_j, y_j + a_j, y_j`, with
+           `∑_j(ξ_{j,0} − ξ_{j,1}) = ∑_j(ξ_{j,2} − ξ_{j,3})`, and *some*
+           `ξ_{j,0} − ξ_{j,1}` outside `S(x_j, a_j)`. This is what the
+           escape gives: a sum of forbidden elements is excluded only if
+           some summand escapes.
+         - *Proof.*
+           1. Select 16 maps (`exists_good_selection_indexed_le`, the
+              `n`-point selection lemma), at a loss `K^(−16)`.
+           2. Pigeonhole an escaping coordinate `j` on a quarter of the
+              tuples.
+           3. `F_j(x_j, a_j) = ∑_k G_k − ∑_{k≠j} F_k` is determined by
+              `(a_j, twelveRest j u)`, so `exists_common_value_det` gives
+              `Θ(a_j)`. Only one common value is needed, not one per
+              coordinate as in Milićević's application of Lemma 9.2 to all
+              16 maps.
+           4. Each pair `(x_j, a_j)` carries at most `N⁹` tuples. Then
+              `freiman_common_value` applies.
+         - *Sharp counting.* `exists_common_value_sharp`
+           (`Proofs16CommonValueSharp`) replaces the AM–GM factor
+           `((|X|+|Y|)/2)²` by `|X|·|Y|`, through
+           `∑_v √x_v √y_v ≤ √(∑x_v)√(∑y_v)`. With `|X| = N` and `|Y| = N⁹`,
+           the AM–GM form would lose a power of `N`.
+         - *Output.* The same shape as `claim_9_4`, with
+           `claimNineFiveDensity ε R d = κ(c/2)²` and
+           `c = (ε/(4K¹⁶))²`, again polynomial.
+
+         Still to do: feed Claim 9.5 into the round lemma. The 12-tuple
+         escape uses Theorem 27 on the unions `⋃_j K_j`, `⋃_j L_j`, since
+         `⋂_j B(K_j; ρ) ⊆ ∑_j B(K_j; ρ)`, at rank `8d`, and an iterated
+         union split. Then the final selection of pairs `(x_a, y_a)`
          with gluing by Lemma 9.1 (`compatible_bohr_sum_quadruple`) and
          the random index set `J`. Quantitatively, `s₀ = O(d log(dR))`, and
          `δ` is polynomial in `ε` and `(2R+1)^(−d)`. With
