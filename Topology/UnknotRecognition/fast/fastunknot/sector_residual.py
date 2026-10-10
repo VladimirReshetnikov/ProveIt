@@ -12,7 +12,7 @@ from math import gcd,lcm
 from .normal_surface_geometry import _prepare,_coordinates
 from .normal_sector import sector_rays
 from .sector_sparse import PreparedSectorSource
-from .normal_disk_kernel import _count_prepared_discs,verify_normal_disk_count_certificate
+from .normal_disk_kernel import _count_prepared_discs,_DiskCertificateVerifier
 
 
 def _add(vector,other,scale,check):
@@ -173,9 +173,9 @@ def search_sector_window(triangulation,coordinates,*,radius=2,max_cycles=None,
                  base_potential_builds=0,potential_transpositions=0,potential_columns_cached=0,mode_projections=0)
     source=PreparedSectorSource(triangulation,check=check)
     rows=_coordinates(source.prepared,coordinates,check)['rows'];base=_signature(rows)
-    base_kernel=None;source_euler=None
+    base_kernel=None;source_euler=None;disc_verifier=None
     def query(edits,matching_basis=None,matching_model=None,projection=None):
-        nonlocal base_kernel
+        nonlocal base_kernel,disc_verifier
         signature=list(base)
         for t,q in edits:signature[t]=q
         allowed=[(t,q)for t,q in enumerate(signature)if q>=0]
@@ -214,7 +214,8 @@ def search_sector_window(triangulation,coordinates,*,radius=2,max_cycles=None,
             if count['status']!='COMPLETE':
                 stats['incomplete_disc_queries']+=1;continue
             proof=count['certificate']
-            if not verify_normal_disk_count_certificate(triangulation,vector,proof,check=check):
+            if disc_verifier is None:disc_verifier=_DiskCertificateVerifier(triangulation,check)
+            if not disc_verifier.verify(triangulation,vector,proof,check=check):
                 raise ArithmeticError('independent sector-window disc replay rejected')
             if count['contains_compressing_disk']:
                 return dict(status='DISC_FOUND',coordinates=vector,disc_certificate=proof,
