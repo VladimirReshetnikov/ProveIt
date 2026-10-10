@@ -429,8 +429,27 @@ def discover_in_sector(triangulation, allowed_types, *, phase='quadrilateral',
 
 
 def _discover_in_kernel(kernel, *, phase, method='auto', max_bases=None,
-                        max_orbit_cycles=None, check=lambda: None, corner_first=True):
+                        max_orbit_cycles=None, check=lambda: None, corner_first=True,
+                        matching_first=True):
     """Reuse one prepared kernel; the caller owns validation and source."""
+    if matching_first and phase=='standard' and method=='auto' and len(kernel.basis)>3:
+        from .sector_matching_support import matching_support
+        keep,proof=matching_support(kernel,check)
+        if proof is not None:
+            reduced=build_sector_kernel(kernel.triangulation,[kernel.support[i]for i in keep],check=check)
+            result=_discover_in_kernel(reduced,phase=phase,method=method,max_bases=max_bases,
+                max_orbit_cycles=max_orbit_cycles,check=check,corner_first=corner_first,matching_first=False)
+            result['stats']['matching_support_reduction']=dict(requested_kernel=dict(kernel.stats),
+                retained_indices=keep,forced_zero_types=len(kernel.support)-len(keep),proof_steps=len(proof['steps']))
+            if 'certificate'in result:
+                certificate=result['certificate'];certificate['allowed_types']=[list(x)for x in kernel.support]
+                if certificate['schema']=='normal-sector-exhaustion-v1':
+                    for entry in certificate['rays']:
+                        check();expanded=[0]*len(kernel.support)
+                        for i,value in zip(keep,entry['quadrilaterals']):expanded[i]=value
+                        entry['quadrilaterals']=expanded
+                    certificate['matching_support_certificate']=proof
+            return result
     if corner_first and phase=='standard' and method=='auto' and len(kernel.basis)>3:
         # In higher dimensions the Q arrangement has <=k hyperplanes; the
         # standard arrangement can have O(k^2). A completed nonpositive Q
@@ -438,7 +457,7 @@ def _discover_in_kernel(kernel, *, phase, method='auto', max_bases=None,
         # replayable Q certificate. Positive Euler alone resumes the complete
         # standard phase. Both phases share the candidate allowance.
         screened=_discover_in_kernel(kernel,phase='quadrilateral',max_bases=max_bases,
-            max_orbit_cycles=max_orbit_cycles,check=check,corner_first=False)
+            max_orbit_cycles=max_orbit_cycles,check=check,corner_first=False,matching_first=False)
         if screened['status']!='POSITIVE_EULER_ONLY':
             screened['stats']['q_screen_only']=True
             return screened
@@ -458,7 +477,7 @@ def _discover_in_kernel(kernel, *, phase, method='auto', max_bases=None,
             # standard enumeration uses the actual feasible span dimension.
             reduced=build_sector_kernel(kernel.triangulation,[kernel.support[i]for i in keep],check=check)
         result=_discover_in_kernel(reduced,phase='standard',max_bases=remaining,
-            max_orbit_cycles=max_orbit_cycles,check=check,corner_first=False)
+            max_orbit_cycles=max_orbit_cycles,check=check,corner_first=False,matching_first=False)
         if reduced is not kernel:
             result['stats']['support_reduction']=dict(requested_kernel=dict(kernel.stats),
                 retained_indices=keep,forced_zero_types=len(kernel.support)-len(keep))

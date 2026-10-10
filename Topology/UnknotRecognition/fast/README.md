@@ -3830,3 +3830,29 @@ geometry improvement, with the original complete Q phase still charged. It
 does not establish general quasi-polynomial knot recognition. Reproduce with
 `python -B -m normal_orbit_research.feasible_span audit --fresh-regina --output /tmp/feasible-audit.json`
 and the driver's `benchmark` mode.
+
+Automatic standard discovery above nullity three now tries sufficient
+polynomial matching implications before its generic Q phase. Canonical
+reduced equations are recovered from the existing kernel; one-sided sign
+propagation proves coordinate zeros. Only useful reductions compile a source
+forest and exact matching-row provenance, then rebuild the source kernel.
+The complete Q/standard fallback remains available at a mixed-sign fixed
+point, which is not a proof of maximal support or a complete LP solver.
+
+Negative proofs optionally carry `matching_support_certificate`. Independent
+replay adds the stated actual source matching equations, requires cancellation
+of all triangles, and validates each forced coordinate by exact nonnegative
+Q coefficients. The final proof still states the original sector and restores
+its coordinate width; partial matching proofs can compose with Q support
+proofs on an authenticated intermediate sector. Ordinary positive proofs and
+legacy full-source replay remain available.
+
+All 1,433 tests and 34 focused tests pass. All 188 source verdicts and complete
+standard surfaces remain; the procedure finds 126 oracle zeros in 65 selected
+sectors and admits all 22 effective-dimension-three sectors without the
+original Q prelude. Fresh Regina enumerations confirm the involved sources.
+Complete affected source queries improve 1.16–1.61x over the preceding
+complete-Q implementation, including provenance preparation, independent
+replay and serialization. These are local source improvements, with no general
+quasi-polynomial recognition claim. Reproduce using the
+`normal_orbit_research.matching_support` audit and benchmark driver.

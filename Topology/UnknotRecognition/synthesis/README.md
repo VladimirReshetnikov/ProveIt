@@ -1384,3 +1384,24 @@ warnings remain. Reproduce publication checks with
 The review checks 609 runtime pins, 607 incumbent pins, all 188 source verdicts,
 65 forced-zero supports, complete timing outcomes and all 61 augmented source
 proofs plus 31 saved diagram witnesses with the producers disabled.
+
+[matching_support.tex](matching_support.tex) adds sufficient polynomial
+source-equation forcing before the Q prelude and direct independent linear
+replay. It preserves original-sector proof semantics and the complete fallback
+when mixed signs prevent a conclusion. All 1,433 tests and 34 focused tests
+pass. The 188-sector audit preserves every verdict and source surface;
+126 oracle zeros in 65 sectors are found without Q enumeration, with fresh
+Regina confirmation. Complete affected queries gain 1.16–1.61x over the
+preceding complete-Q route; no control or general recognition gain is claimed.
+The implementation is not a full maximal-support LP solver. Records are
+`data/matching-support-*`.
+
+The current [PDF](report.pdf) has 584 pages. Section 147 starts on page 576;
+the assessment is section 148 on page 579. Rendered pages 576–581 pass visual
+review, including the full proof, timing table, assessment continuation and
+references. All references resolve, with only the four pre-existing overflow
+warnings. Reproduce publication checks with
+`python -B data/matching_support_review.py --publication` from this directory.
+They check 612 runtime pins, 609 incumbent pins, every source verdict and
+timing outcome, all 61 linear-support source proofs and all 31 saved diagram
+witnesses with producers disabled during replay.
