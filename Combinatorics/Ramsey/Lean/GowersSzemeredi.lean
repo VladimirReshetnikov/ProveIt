@@ -1002,6 +1002,8 @@ import GowersSzemeredi.Proofs16PropNineThreeGlue
 import GowersSzemeredi.Proofs16PropNineThreeGoodPairs
 import GowersSzemeredi.Proofs16PropNineThree
 import GowersSzemeredi.Proofs16GlobalSourceAgreementCore
+import GowersSzemeredi.Proofs16SandersLinearPart
+import GowersSzemeredi.Proofs16CommonValueSanders
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

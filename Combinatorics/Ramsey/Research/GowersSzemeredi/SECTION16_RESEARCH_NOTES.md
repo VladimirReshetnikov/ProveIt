@@ -6119,6 +6119,26 @@ the decomposition with these named constants, but not `Theorem162At 3`.
 
               This replaces Lemma 7.8 wherever a structured domain must
               have low rank, and is the next large task on this route.
+            - *Done (2026-10-10): the low-rank half needs no graph model.*
+              - `sanders_linear_part` (`Proofs16SandersLinearPart`) is
+                Lemma 7.8 at Sanders strength.
+              - A Freiman 8-homomorphism `f` on `A` of density `e^(−p)`
+                extends to `ψ` on `2A − 2A` by
+                `ψ(a₁+a₂−a₃−a₄) = f a₁ + f a₂ − f a₃ − f a₄`
+                (`quadSumExt`).
+              - `ψ` is well defined for a Freiman 4-homomorphism, and is
+                Freiman-linear on `2A − 2A` for a Freiman 8-homomorphism.
+              - `f a − f a′ = ψ(a − a′)` holds for *all* `a, a′ ∈ A`.
+              - `exists_quartic_bogolyubov` puts a Bohr set of rank
+                `≤ 1 + C(p+1)⁴` inside `2A − 2A`.
+                `bohr_subset_oai_carrier` converts its chord radius `ρ` to
+                the corpus's phase radius `ρ/(2π)`.
+              - `freiman_common_value_sanders`
+                (`Proofs16CommonValueSanders`) attaches this to the new map
+                of Claim 9.4. `Θ`'s linear part lives on a Bohr set of rank
+                `1 + C(log(1/δ) + 1)⁴`, polylogarithmic in the density `δ`
+                of its value set, which satisfies `|B| ≥ δN`.
+              - Domain coherence (item 1) remains open.
          Quantitatively, `s₀ = O(d log(dR))`, and
          `δ` is polynomial in `ε` and `(2R+1)^(−d)`. With
          `R = (ρ^(−1))^O(d)`, this makes `m ≤ s₀/δ = exp(O(d² log 1/ρ))`
