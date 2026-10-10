@@ -1,0 +1,141 @@
+--- a/Analysis/Polylogarithms/docs/manuscript/chapters/04-depth.tex
++++ b/Analysis/Polylogarithms/docs/manuscript/chapters/04-depth.tex
+@@ -85,9 +85,10 @@
+ weight five. Historical residuals range from about $10^{-193}$ to
+ $10^{-690}$. The source scripts for every such relation are not present in
+ this checkout, so these remain numerically supported identities unless an
+-analytic derivation is explicitly supplied. In particular the weight-five
+-relation gives a spanning set of at most three directions, rather than an
+-independence theorem.
++analytic derivation is explicitly supplied. In particular, two same-color shuffle relations displayed below prove
++that the four weight-five $g$ values require at most two coordinates
++over the stated single-value products. This is a spanning statement,
++not an independence theorem. The mixed $S_4$ equation remains conjectural.
+ \begin{equation}
+   \label{gauss:eq:S4-closed}
+   S_4 \;=\; \sum_{n\ge0}\frac{(-1)^n H_n}{(2n+1)^4}
+@@ -102,6 +103,31 @@
+   576\,g_{41}+288\,g_{32}+736\,g_{23}+960\,g_{14}
+   \;=\; 21\,G\,\zeta(3)-480\,\beta(4)\log 2,
+ \end{equation}
++
++The weight-five sporadic relation has the following direct proof.
++The same-color shuffles of $\Li_2(\iu)\Li_3(\iu)$ and
++$\Li_1(\iu)\Li_4(\iu)$ give
++\begin{align}
++g_{23}+3g_{32}+6g_{41}
++ &= -\frac{3}{32}G\zeta(3)-\frac{\pi^5}{1536},
++ \label{gauss:eq:wt5-shuffle23-proved}\\
++g_{14}+g_{23}+g_{32}+2g_{41}
++ &= -\frac12\beta(4)\log2-\frac{7\pi^5}{46080}.
++ \label{gauss:eq:wt5-shuffle14-proved}
++\end{align}
++Indeed, use
++$\Li_2(\iu)=-\zeta(2)/8+\iu G$,
++$\Li_3(\iu)=-3\zeta(3)/32+\iu\pi^3/32$,
++$\Li_1(\iu)=-\log2/2+\iu\pi/4$, and
++$\Li_4(\iu)=-7\zeta(4)/128+\iu\beta(4)$.
++Multiplying the first row by $-224$ and the second by $960$
++gives \eqref{gauss:eq:wt5-sporadic}; the two rows have rank two
++in their $g$ coefficients. In particular, \eqref{gauss:eq:S4-closed}
++is equivalently the still-conjectural formula
++\[
++ S_4=\frac{10g_{41}-8g_{23}}7+\frac{7\pi^5}{1536}
++            -\frac3{28}G\zeta(3)-2\beta(4)\log2.
++\]
+ 
+ \begin{align}
+   \label{gauss:eq:g51}
+--- a/Analysis/Polylogarithms/docs/manuscript/chapters/07-integration.tex
++++ b/Analysis/Polylogarithms/docs/manuscript/chapters/07-integration.tex
+@@ -117,20 +117,34 @@
+ The quadratic-moment layer adds $\zeta''(2)$ to the atom inventory.
+ \end{result}
+ 
+-\begin{negative}[the cubic moment stays open]\label{integral:neg:cubic}
+-\[
+-\int_0^1\bigl[\log\Gamma(x)\bigr]^3dx
+-=5.7403888072294742800195716881024614629610130074549\ldots
+-\]
+-($50$ digits, tanh-sinh quadrature cross-calibrated by the second moment). PSLQ over the
+-natural weight-mixed basket ($\gamma^3,\dots,L^3$, $\pi^2\gamma$, $\pi^2L$,
+-$\zeta(3)$, $(\gamma{+}L)\zeta'(2)/\pi^2$, $(\gamma{+}L)\zeta''(2)/\pi^2$,
+-$\zeta'''(2)/\pi^2$, $\zeta'(2)^2/\pi^4$, $\zeta'(3)$, $\gamma\zeta'(2)/\pi^2$) returns
+-only uniform-height junk at $60$ dps --- consistent with Espinosa--Moll and Bailey et al.
+-The Kummer-cube resonance $k_1\pm k_2\pm k_3=0$ suggests a depth-two candidate
+-(Tornheim--Witten-derivative flavour); finding the right \emph{named} atom is the open
+-problem, not search depth.
+-\end{negative}
++\begin{result}[The cubic moment in Tornheim--Witten derivatives]
++\label{integral:neg:cubic}
++A named depth-two evaluation is already known: see
++Bailey--Borwein--Borwein~\cite[Theorem~6]{integral:BBB2015}.
++Define
++\[
++ T(s,t,u)=\sum_{m,n\ge1}\frac{1}{m^s n^t(m+n)^u},
++ \qquad T_j=\partial_jT(1,1,1),\quad
++ T_{jk}=\partial_j\partial_kT(1,1,1),
++\]
++and put $a=\frac12\log(2\pi)$, $A=\gamma+\log(2\pi)$, and
++\[
++ V=\frac{\pi^2}{48}+\frac{A^2}{12}
++       -\frac{A\zeta'(2)}{\pi^2}+\frac{\zeta''(2)}{2\pi^2}.
++\]
++Then
++\[
++ \int_0^1\log^3\Gamma(x)\,dx
++ =a^3+3aV+\frac{3\zeta(3)}{16}
++ +\frac{3}{8\pi^2}
++     \left(2A^2\zeta(3)-2AT_3+2T_{13}-T_{12}\right).
++\]
++The derivatives are ordinary locally absolutely convergent derivatives
++at $(1,1,1)$. This is equivalent to the cited classical formula.
++A further reduction to a specified smaller basket of ordinary zeta
++values and derivatives is a separate research question. Failure of
++a finite PSLQ search in such a basket is not a nonmembership theorem.
++\end{result}
+ 
+ \section{The Stieltjes layer}\label{integral:sec:stieltjes}
+ 
+@@ -644,7 +658,7 @@
+ $\zeta(s,\tfrac14)+\zeta(s,\tfrac34)=(4^s-2^s)\zeta(s)$,
+ $\zeta(s,\tfrac16)+\zeta(s,\tfrac56)=(6^s-3^s-2^s+1)\zeta(s)$, twice
+ differentiated at $s=0$, give the even sums (for $q=6$ the
+-$\zeta''(0)$-coefficient $\ln^26-\ln^23-\ln^22=2\ln2\ln3$ and the
++$\zeta(0)$-coefficient $\ln^26-\ln^23-\ln^22=2\ln2\ln3$ and the
+ $\zeta'(0)$-coefficient $\ln6-\ln3-\ln2=0$ produce the strikingly short
+ third identity). Apply Theorem~\ref{stieltjes:thm:G1law}.
+ \end{proof}
+--- a/Analysis/Polylogarithms/docs/manuscript/chapters/10-discovery.tex
++++ b/Analysis/Polylogarithms/docs/manuscript/chapters/10-discovery.tex
+@@ -117,9 +117,11 @@
+ and unit definitions for the regulator candidates before they become
+ locally replayable, followed by the relevant Stark argument.
+ 
+-The cubic log-gamma moment and the opaque individual CM components are
+-good discovery targets because their defining integrals are accessible,
+-but the naive single-value baskets miss their likely depth or modular
+-structure. A richer representation is often more productive than a
++The cubic log-gamma moment already has a Tornheim--Witten derivative
++evaluation~\cite[Theorem~6]{integral:BBB2015}. A further reduction of its
++specific derivative combination to a prescribed smaller basket remains
++a useful discovery target. The opaque individual CM components likewise
++have accessible defining integrals, while naive single-value baskets
++may miss their depth or modular structure. A richer representation is often more productive than a
+ larger unstructured search. The scientific value of the experiments is
+ that they tell us which representation to seek next.
+--- a/Analysis/Polylogarithms/docs/manuscript/references.tex
++++ b/Analysis/Polylogarithms/docs/manuscript/references.tex
+@@ -222,4 +222,12 @@
+   \emph{Computation and structure of character polylogarithms with
+   applications to character Mordell--Tornheim--Witten sums},
+   Math.\ Comp.\ \textbf{85} (2016), 295--324.
++
++\bibitem{integral:BBB2015}
++D.~H.~Bailey, D.~Borwein, and J.~M.~Borwein,
++\emph{On Eulerian log-gamma integrals and Tornheim--Witten zeta functions},
++Ramanujan J.\ \textbf{36} (2015), 43--68.
++DOI: 10.1007/s11139-012-9427-1.
++(Theorem~6 gives the cubic log-gamma moment in Tornheim derivatives.)
++
+ \end{thebibliography}
