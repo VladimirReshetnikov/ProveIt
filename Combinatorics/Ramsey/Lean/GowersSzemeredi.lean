@@ -1006,6 +1006,7 @@ import GowersSzemeredi.Proofs16SandersLinearPart
 import GowersSzemeredi.Proofs16CommonValueSanders
 import GowersSzemeredi.Proofs16FreimanThickening
 import GowersSzemeredi.Proofs16PropNineThreeBudget
+import GowersSzemeredi.Proofs16SinglePieceAnchor
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
