@@ -1,0 +1,101 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,
+ pdftitle={Gauss--Hurwitz Pole Cancellation: Resonant Sums and Stieltjes Jets},
+ pdfauthor={Research continuation prepared for Vladimir Reshetnikov with OpenAI assistance}}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\FP}{FP}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\Rea}{Re}
+\newcommand{\N}{\mathbb N}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\dd}{\mathrm d}
+\newcommand{\coeff}[2]{[#1^{#2}]}
+\newcommand{\fall}[2]{#1^{\underline{#2}}}
+\newcommand{\Bcal}{\mathcal B}
+\newcommand{\Fcal}{\mathcal F}
+\newcommand{\Rcal}{\mathcal R}
+\newcommand{\Zjet}[2]{\zeta^{[#1]}(#2)}
+\newcommand{\src}[1]{\texttt{\detokenize{#1}}}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Gauss--Hurwitz pole cancellation}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\title{\textbf{Gauss--Hurwitz Pole Cancellation}\\[6pt]
+\Large Resonant gamma-ratio sums, harmonic identities,\\
+Stieltjes jets, and polylogarithmic endpoint subtraction}
+\author{Prepared for Vladimir Reshetnikov\\
+\small Mathematical derivations and computational audit with OpenAI assistance}
+\date{10 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We construct a common exact calculus for a Gauss gamma-ratio series and its
+Hurwitz-zeta counterterms.  Subtracting the first $K$ explicit asymptotic
+coefficients gives an ordinary normally convergent series on
+$\Rea u>-K$.  At every nonpositive integer excess $u=-N$, its value is
+\[
+ \frac{(-1)^N(1-a)_N(1-b)_N}{N!}
+ \bigl(H_N-\gamma-\psi(a)-\psi(b)+\psi(c)\bigr).
+\]
+A coefficient differential identity explains the otherwise substantial
+Bernoulli-polynomial cancellation.  An all-order Taylor formula then
+expresses every resonant spectral derivative in a finite collection of
+generalized Stieltjes constants, nonpositive-integer Hurwitz-zeta derivatives,
+and gamma/polygamma data.  Reciprocal-gamma zeros are handled by entire
+Taylor expansions; terms vanishing at resonance can contribute to the
+first and subsequent derivatives.
+
+A second consequence is an all-weight identity for gamma-weighted complete
+harmonic tails: the entire family collapses to $2\zeta(2k+1,x)$.  In the
+central-binomial-square case this gives, for example, a trigamma-tail sum
+of value $14\zeta(3)$ and a quadratic-tail sum of value $62\zeta(5)$.
+We also prove an exact telescoping antiderivative formula and a
+polylogarithmic endpoint-subtraction theorem, including all spectral jets.
+
+The underlying Gauss summation and hypergeometric constant-term theory are
+classical.  Their overlap with B\"uhring's work is explicitly acknowledged;
+no global priority claim is made.  The contribution here is a self-contained
+all-resonance, all-jet synthesis with exact coefficient recurrences,
+explicit identities, and reproducible checks for integration into ProveIt.
+\end{abstract}
+\thispagestyle{empty}
+\clearpage
+\tableofcontents
+\clearpage
+\input{sections/01-scope}
+\input{sections/02-subtraction}
+\input{sections/03-resonances}
+\input{sections/04-jets}
+\input{sections/05-harmonics}
+\input{sections/06-primitives}
+\input{sections/07-polylogarithms}
+\input{sections/08-audit}
+\input{sections/09-research}
+\appendix
+\input{sections/10-implementation}
+\input{references}
+\end{document}

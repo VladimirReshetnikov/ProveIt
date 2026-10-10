@@ -1,0 +1,712 @@
+% Research fragment; no document preamble. All labels are prefixed gs:.
+% Derived at repository commit fc4d3bf80534ad7c901d3b8c9e71baf2df0064ed.
+
+\section{Gauss summation at zero balance and Stieltjes jets}
+\label{gs:section}
+
+The circular correlation identities in the incoming manuscripts concern
+products of periodic Hurwitz functions.  The present section develops a
+different, discrete construction: a gamma-ratio coefficient is compared
+term by term with its leading Hurwitz-zeta coefficient.  At zero balance,
+this subtraction converts the pole in Gauss summation into an ordinary,
+absolutely convergent series.  Its complete parameter jet contains
+generalized Stieltjes constants, polygamma functions, and nonlinear
+generalized harmonic sums.
+
+Gauss summation, gamma-ratio asymptotics, and the use of hypergeometric
+parameter derivatives to evaluate harmonic sums are classical
+\cite{gs:DLMF,gs:ChenChu,gs:Choi}.  Hypergeometric representations of
+Stieltjes constants also have an established literature
+\cite{gs:Coffey}.  The contribution here is an explicit common
+normalization at zero balance, an every-index mixed-jet statement, its
+polylogarithmic boundary interpretation, and concrete corrected formulas
+for a group of historically printed conjectures.  No claim of first
+discovery of Gauss differentiation, or of the present-day open status of
+those conjectures, is made.
+
+\subsection{A convergent master identity}
+
+Use the convention
+\begin{equation}\label{gs:stieltjes-convention}
+ \zeta(1+s,c)=\frac1s+
+ \sum_{k=0}^{\infty}\frac{(-1)^k\gamma_k(c)}{k!}s^k.
+\end{equation}
+Initially $a,b,c>0$.  All statements below extend holomorphically to
+$\Re a,\Re b,\Re c>0$, with the principal logarithms of $n+c$.
+Define
+\begin{align}
+ W_n(a,b;s)&=
+ \frac{\Gamma(n+a)\Gamma(n+b)}
+ {\Gamma(n+a+b+s)\Gamma(n+1)},\label{gs:weight}\\
+ R_{a,b}(s)&=
+ \frac{\Gamma(1+s)\Gamma(a)\Gamma(b)}
+ {\Gamma(a+s)\Gamma(b+s)}.\label{gs:R}
+\end{align}
+Reciprocal gamma factors are interpreted as entire functions; a zero
+of such a factor is not an excluded parameter value.
+
+\begin{theorem}[Gauss--Stieltjes subtraction]\label{gs:master}
+For $\Re a,\Re b,\Re c>0$ and $\Re s>-1$, the series
+\begin{equation}\label{gs:series}
+ \mathcal F_{a,b,c}(s)=
+ \sum_{n=0}^{\infty}
+ \left(W_n(a,b;s)-(n+c)^{-1-s}\right)
+\end{equation}
+converges normally on compact subsets of the full parameter domain and
+is jointly holomorphic.  It satisfies
+\begin{equation}\label{gs:master-equation}
+ \mathcal F_{a,b,c}(s)
+ =\frac{R_{a,b}(s)-1}{s}
+  -\left(\zeta(1+s,c)-\frac1s\right).
+\end{equation}
+Both quotients on the right have their removable values at $s=0$.
+Consequently, every finite mixed derivative in $a,b,c,s$ may be taken
+term by term in \eqref{gs:series}.
+\end{theorem}
+
+\begin{proof}
+The gamma-ratio expansion gives, uniformly on any compact subset of
+the parameter domain,
+\[
+ W_n(a,b;s)=n^{-1-s}\bigl(1+O(n^{-1})\bigr),\qquad
+ (n+c)^{-1-s}=n^{-1-s}\bigl(1+O(n^{-1})\bigr).
+\]
+For precision concerning uniformity, apply the logarithmic Stirling
+expansion on a fixed sector containing all sufficiently large $n+a$,
+$n+b$, $n+a+b+s$, and $n+1$.  On a compact parameter set the shifts are
+bounded, and the remainder after its first correction is uniform.
+Exponentiating gives the displayed estimates; this is the standard
+gamma-ratio expansion recorded in DLMF~5.11.13.
+If $\Re s\ge -1+\eta$ on the compact set, with $\eta>0$, the difference
+is $O(n^{-1-\eta})$.  Thus the series converges normally and defines a
+jointly holomorphic function.  Cauchy's formula on slightly larger
+compact polydiscs justifies all finite parameter derivatives.
+
+For $\Re s>0$, both series can be summed separately.  Gauss summation,
+DLMF~15.4.20, gives
+\[
+ \sum_{n=0}^{\infty}W_n(a,b;s)
+ =\frac{\Gamma(a)\Gamma(b)}{\Gamma(a+b+s)}
+ {}_2F_1(a,b;a+b+s;1)
+ =\frac{\Gamma(a)\Gamma(b)\Gamma(s)}
+ {\Gamma(a+s)\Gamma(b+s)}.
+\]
+Subtract $\zeta(1+s,c)$ and use $\Gamma(1+s)=s\Gamma(s)$.
+Since $R_{a,b}(0)=1$, both sides extend holomorphically through zero.
+The identity theorem in $s$ proves \eqref{gs:master-equation} throughout
+$\Re s>-1$ for every permitted $a,b,c$.  Joint holomorphy has already
+been established by normal convergence.
+\end{proof}
+
+This is an ordinary convergent difference series.  Splitting the two
+summands into separately divergent series at $s=0$ would lose the
+specified normalization.  The arbitrary comparison shift $c$ is useful:
+the gamma-ratio coefficient does not change, while its logarithmic
+comparison term selects the generalized constant $\gamma_k(c)$.
+
+\subsection{Every spectral derivative in Bell-polynomial form}
+
+Let $Y_k$ denote the complete exponential Bell polynomial, defined by
+\begin{equation}\label{gs:Bell-definition}
+ \exp\left(\sum_{j\ge1}x_j\frac{t^j}{j!}\right)
+ =\sum_{k\ge0}Y_k(x_1,\ldots,x_k)\frac{t^k}{k!}.
+\end{equation}
+In particular $Y_0=1$, $Y_1=x_1$,
+$Y_2=x_1^2+x_2$, and $Y_3=x_1^3+3x_1x_2+x_3$.
+Write
+\begin{equation}\label{gs:kappa}
+ \kappa_j(a,b)=
+ \psi^{(j-1)}(1)-\psi^{(j-1)}(a)-\psi^{(j-1)}(b),\qquad j\ge1.
+\end{equation}
+
+\begin{theorem}[All Stieltjes indices]\label{gs:spectral-jets}
+For every integer $k\ge0$,
+\begin{align}
+ &\sum_{n=0}^{\infty}\left[
+ W_n(a,b;0)\,
+ Y_k\bigl(-\psi(n+a+b),\ldots,-\psi^{(k-1)}(n+a+b)\bigr)
+ -\frac{(-\log(n+c))^k}{n+c}\right]\notag\\
+ &\hspace{18mm}=
+ \frac{Y_{k+1}(\kappa_1,\ldots,\kappa_{k+1})}{k+1}
+ -(-1)^k\gamma_k(c).\label{gs:all-index}
+\end{align}
+For $k=0$, the Bell factor in the summand is $1$ and has no arguments.
+The series is absolutely convergent, locally uniformly in the shift
+parameters.  Its summand is $O((1+\log n)^k/n^2)$ on real compact
+parameter sets.
+\end{theorem}
+
+\begin{proof}
+The $k$th $s$ derivative of $W_n$ at zero is the first term in brackets,
+because the $j$th logarithmic derivative of its sole $s$-dependent gamma
+factor is $-\psi^{(j-1)}(n+a+b)$.  On the other hand,
+\[
+ R_{a,b}^{(k+1)}(0)=Y_{k+1}(\kappa_1,\ldots,\kappa_{k+1}),
+ \qquad
+ \left.\frac{d^k}{ds^k}\frac{R_{a,b}(s)-1}{s}\right|_{s=0}
+ =\frac{R_{a,b}^{(k+1)}(0)}{k+1}.
+\]
+Differentiate \eqref{gs:master-equation} using
+\eqref{gs:stieltjes-convention}.  Normal convergence follows from
+Theorem~\ref{gs:master}.  The explicit logarithmic summand estimate follows
+by differentiating the locally uniform gamma-ratio expansion, or by
+using the corresponding polygamma expansions.
+\end{proof}
+
+The first three identities are
+\begin{align}
+ \sum_{n\ge0}\left(W_n-\frac1{n+c}\right)
+ &=\kappa_1-\gamma_0(c),\label{gs:k0}\\
+ \sum_{n\ge0}\left(W_n\psi(n+a+b)
+                   -\frac{\log(n+c)}{n+c}\right)
+ &=-\frac{\kappa_1^2+\kappa_2}{2}-\gamma_1(c),\label{gs:k1}\\
+ \sum_{n\ge0}\left(W_n\bigl(\psi(n+a+b)^2-\psi'(n+a+b)\bigr)
+                   -\frac{\log^2(n+c)}{n+c}\right)
+ &=\frac{\kappa_1^3+3\kappa_1\kappa_2+\kappa_3}{3}
+   -\gamma_2(c),\label{gs:k2}
+\end{align}
+where $W_n=W_n(a,b;0)$.
+
+\subsection{A complete mixed-parameter coefficient rule}
+
+The finite-dimensional Bell expression has a direct multivariate
+version.  Put $q_n=n+a+b$ and introduce formal increments $u,v,s$.
+Define
+\begin{align}
+ \mathcal K_n(u,v,s)
+ &=\sum_{j\ge1}\frac1{j!}
+ \left[\psi^{(j-1)}(n+a)u^j+\psi^{(j-1)}(n+b)v^j
+       -\psi^{(j-1)}(q_n)(u+v+s)^j\right],\label{gs:Kn}\\
+ \mathcal R(u,v,s)
+ &=\frac{\Gamma(1+s)\Gamma(a+u)\Gamma(b+v)}
+ {\Gamma(a+u+s)\Gamma(b+v+s)}.\label{gs:mixed-R}
+\end{align}
+Its logarithm is the explicit formal series
+\begin{align}
+ \log\mathcal R(u,v,s)
+ =\sum_{j\ge1}\frac1{j!}\bigl[&\psi^{(j-1)}(1)s^j
+ +\psi^{(j-1)}(a)\{u^j-(u+s)^j\}\notag\\
+ &+\psi^{(j-1)}(b)\{v^j-(v+s)^j\}\bigr].\label{gs:mixed-logR}
+\end{align}
+For fixed indices, only finitely many terms of these exponentials are
+needed.
+
+\begin{theorem}[All mixed jets]\label{gs:mixed-jets}
+For all integers $p,q,k\ge0$,
+\begin{align}
+ &\sum_{n\ge0}\left[
+ W_n(a,b;0)[u^pv^qs^k]e^{\mathcal K_n(u,v,s)}
+ -\delta_{p0}\delta_{q0}\frac{(-\log(n+c))^k}{k!(n+c)}\right]
+ \notag\\
+ &\qquad=[u^pv^qs^{k+1}]\mathcal R(u,v,s)
+ -\delta_{p0}\delta_{q0}\frac{(-1)^k\gamma_k(c)}{k!}.
+ \label{gs:mixed-coefficient}
+\end{align}
+All series are ordinary absolutely convergent series.  Multiplying by
+$p!q!k!$ converts this coefficient formula into the mixed derivative
+formula.  When $p+q>0$, no logarithmic subtraction and no Stieltjes
+constant remain.
+\end{theorem}
+
+\begin{proof}
+Taylor expansion of the three nonconstant gamma factors in
+$W_n(a+u,b+v;s)$ gives
+$W_n(a+u,b+v;s)=W_n(a,b;0)e^{\mathcal K_n(u,v,s)}$.
+Apply Theorem~\ref{gs:master} at $(a+u,b+v,c)$ and compare the indicated
+coefficient.  The identity $\mathcal R(u,v,0)=1$ explains the shift from
+$s^k$ to $s^{k+1}$ without any division ambiguity.  Normal convergence
+justifies the coefficient extraction under the sum.
+\end{proof}
+
+One useful consequence is a cancellation at every positive mixed
+tangential order:
+\begin{equation}\label{gs:tangential}
+ \sum_{n\ge0}\partial_a^p\partial_b^q W_n(a,b;0)=0,
+ \qquad p,q\ge1.
+\end{equation}
+Indeed, the $s^1$ coefficient of $\mathcal R$ is
+$\psi(1)-\psi(a+u)-\psi(b+v)$, which has no mixed $u,v$ terms.
+The pure derivatives satisfy
+\begin{equation}\label{gs:pure-tangential}
+ \sum_{n\ge0}\partial_a^p W_n(a,b;0)=-\psi^{(p)}(a),
+ \qquad p\ge1,
+\end{equation}
+and the analogous identity holds for $b$.
+
+For an explicit quadratic identity, set
+$A_n=\psi(n+a)-\psi(q_n)$ and
+$B_n=\psi(n+b)-\psi(q_n)$.  Then
+\begin{equation}\label{gs:quadratic}
+ \sum_{n\ge0}W_n(a,b;0)
+ \left(A_nB_n-\psi'(q_n)\right)=0.
+\end{equation}
+The first spectral lift is also closed:
+\begin{align}
+ \sum_{n\ge0}W_n(a,b;0)\bigl[&-\psi(q_n)
+             \{A_nB_n-\psi'(q_n)\}
+ -\psi'(q_n)(A_n+B_n)-\psi''(q_n)\bigr]
+ =\psi'(a)\psi'(b).\label{gs:quadratic-lift}
+\end{align}
+This follows either from \eqref{gs:mixed-coefficient} at $(p,q,k)=(1,1,1)$
+or by differentiating \eqref{gs:k1} with its original negative spectral
+sign retained.  At $a=b=1$, \eqref{gs:quadratic} is the classical
+$\zeta(2,1)=\zeta(3)$ identity written as a polygamma series.  We therefore
+do not present that specialization as a new evaluation.
+
+\subsection{Ordinary and central-binomial Stieltjes series}
+
+Let $H_n^{(r)}=\sum_{j=1}^n j^{-r}$, with $H_0^{(r)}=0$, and write
+$H_n=H_n^{(1)}$.  At $a=b=c=1$ the weight is $1/(n+1)$ and
+$(\kappa_1,\kappa_2,\kappa_3)=(\gamma,-\zeta(2),2\zeta(3))$.
+Equations~\eqref{gs:k1}--\eqref{gs:k2} become
+\begin{align}
+ \sum_{m=1}^{\infty}\frac{H_m-\gamma-\log m}{m}
+ &=\frac{\zeta(2)-\gamma^2}{2}-\gamma_1,\label{gs:ordinary1}\\
+ \sum_{m=1}^{\infty}
+ \frac{(H_m-\gamma)^2+H_m^{(2)}-\zeta(2)-\log^2m}{m}
+ &=\frac{\gamma^3-3\gamma\zeta(2)+2\zeta(3)}3-\gamma_2.
+ \label{gs:ordinary2}
+\end{align}
+The all-order form follows from \eqref{gs:all-index}; for $j\ge2$ its
+local Bell arguments are
+$-\psi^{(j-1)}(m+1)=(-1)^{j+1}(j-1)!
+\{\zeta(j)-H_m^{(j)}\}$.
+
+A less elementary weight is obtained at $a=b=\tfrac12$, $c=1$.
+Put
+\[
+ d_n=\frac{\binom{2n}{n}^2}{16^n},\qquad
+ L=\log2,\qquad K=\gamma+4L.
+\]
+The duplication formula gives $W_n=\pi d_n$, while
+\begin{equation}\label{gs:central-kappa}
+ \kappa_1=K,\qquad
+ \kappa_j=(3-2^{j+1})(-1)^j(j-1)!\zeta(j)\quad(j\ge2).
+\end{equation}
+Thus
+\begin{align}
+ \sum_{n=0}^{\infty}\left(\pi d_n-\frac1{n+1}\right)
+ &=4\log2,\label{gs:central0}\\
+ \sum_{n=0}^{\infty}\left(
+ \pi d_n(H_n-\gamma)-\frac{\log(n+1)}{n+1}\right)
+ &=\frac52\zeta(2)-\frac{K^2}2-\gamma_1,\label{gs:central1}\\
+ \sum_{n=0}^{\infty}\left(
+ \pi d_n\{(H_n-\gamma)^2+H_n^{(2)}-\zeta(2)\}
+ -\frac{\log^2(n+1)}{n+1}\right)
+ &=\frac{K^3}{3}-5K\zeta(2)+\frac{26}{3}\zeta(3)-\gamma_2.
+ \label{gs:central2}
+\end{align}
+For every $k$, the same squared central-binomial weight gives
+$\gamma_k$ through \eqref{gs:all-index} with
+\eqref{gs:central-kappa}; no empirical relation search is involved.
+
+The tangential identities yield convergent harmonic sums without a
+Stieltjes subtraction.  Since
+$\psi(n+\tfrac12)-\psi(n+1)=2(H_{2n}-H_n-L)$, they imply
+\begin{align}
+ \sum_{n=0}^{\infty}d_n(H_{2n}-H_n-L)&=-\frac\pi4,
+ \label{gs:central-linear}\\
+ \sum_{n=0}^{\infty}d_n\left[
+ 4(H_{2n}-H_n-L)^2+H_n^{(2)}-\zeta(2)\right]&=0.
+ \label{gs:central-quadratic}
+\end{align}
+The brackets must remain grouped: some of their separately summed
+pieces diverge.  The summands displayed above are $O(n^{-2})$.
+
+\subsection{Polylogarithmic boundary values}
+
+For $|z|<1$, define
+\begin{align}
+ \mathcal F_{a,b,c}(s;z)
+ &=\sum_{n\ge0}
+ \left(W_n(a,b;s)-(n+c)^{-1-s}\right)z^n\notag\\
+ &=\frac{\Gamma(a)\Gamma(b)}{\Gamma(a+b+s)}
+ {}_2F_1(a,b;a+b+s;z)-\Phi(z,1+s,c).
+ \label{gs:polylog-generator}
+\end{align}
+At lower hypergeometric parameters that are nonpositive integers, the
+first expression specifies the regularized meaning of the normalized
+hypergeometric factor.  Uniform absolute convergence on $|z|\le1$,
+locally in $\Re s>-1$, proves the exact boundary identity
+\begin{equation}\label{gs:boundary}
+ \lim_{z\to1,\ |z|\le1}\partial_a^p\partial_b^q\partial_s^k
+ \mathcal F_{a,b,c}(s;z)
+ =\partial_a^p\partial_b^q\partial_s^k\mathcal F_{a,b,c}(s).
+\end{equation}
+The limit is not restricted to a radial approach.  In particular, for
+$c=1$ the Lerch factor is
+\begin{equation}\label{gs:Li-bridge}
+ \Phi(z,1+s,1)=\frac{\operatorname{Li}_{1+s}(z)}z,
+\end{equation}
+so \eqref{gs:all-index} is also a family of exact boundary constants
+for polylogarithm order derivatives after an explicit hypergeometric
+subtraction.
+
+For rational $c=r/q$, $1\le r\le q$, let $\omega=e^{2\pi i/q}$ and,
+for example, take $0<z<1$.  The root-of-unity filter gives
+\begin{equation}\label{gs:rational-Lerch}
+ \Phi(z,1+s,r/q)=q^s z^{-r/q}
+ \sum_{j=0}^{q-1}\omega^{-jr}
+ \operatorname{Li}_{1+s}(\omega^jz^{1/q}).
+\end{equation}
+Indeed the sum selects positive exponents congruent to $r$ modulo $q$;
+after writing those exponents as $qn+r$, the prefactor becomes exactly
+$(n+r/q)^{-1-s}$.  Finite translation reduces every positive rational
+$c$ to this range.  All $s$ derivatives bring only finite binomial
+combinations with powers of $\log q$, in addition to polylogarithm order
+derivatives.
+
+At the central-binomial point $s=0$, the first term in
+\eqref{gs:polylog-generator} is a classical complete elliptic integral
+$\pi\,{}_2F_1(\tfrac12,\tfrac12;1;z)$.
+It is twice the complete elliptic integral with parameter $z$.
+Consequently \eqref{gs:central0} is its logarithmic boundary constant,
+whereas \eqref{gs:central1} and \eqref{gs:central2} describe the next
+spectral layers of the same cancellation.
+
+% Additional research fragment; requires the definitions in gauss_stieltjes_notes.tex.
+
+\section{Successive subtractions and every negative balance}
+\label{gs:higher-balance}
+
+The first subtraction in Theorem~\ref{gs:master} has an exact extension
+through every negative integer balance.  Its coefficients are finite
+polynomials, and residue cancellation gives an identity among those
+polynomials that is independent of the comparison shift.
+
+Let $B_j(x)$ be the Bernoulli polynomials, defined by
+\[
+ \frac{te^{xt}}{e^t-1}=\sum_{j\ge0}B_j(x)\frac{t^j}{j!}.
+\]
+For $j\ge1$, set
+\begin{align}
+ D_j(a,b,s;c)=\frac{(-1)^{j+1}}{j(j+1)}
+ \bigl[&B_{j+1}(a-c)+B_{j+1}(b-c)\notag\\
+       &-B_{j+1}(a+b+s-c)-B_{j+1}(1-c)\bigr].
+ \label{gs:Dj}
+\end{align}
+Define polynomials $A_j=A_j(a,b,s;c)$ by the formal identity
+\begin{equation}\label{gs:Aj-definition}
+ \sum_{j\ge0}A_jt^j
+ =\exp\left(\sum_{j\ge1}D_jt^j\right).
+\end{equation}
+Equivalently,
+\begin{equation}\label{gs:Aj-recursion}
+ A_0=1,\qquad
+ A_m=\frac1m\sum_{j=1}^m jD_jA_{m-j}\quad(m\ge1).
+\end{equation}
+This definition is purely finite for any fixed $m$.  The series in
+\eqref{gs:Aj-definition} is used formally; it need not converge as an
+infinite series in $t$.
+
+\begin{theorem}[Exact continuation by successive coefficient subtraction]
+\label{gs:successive-subtraction}
+Fix an integer $M\ge0$.  On the domain
+\[
+ \Re a>0,\quad \Re b>0,\quad \Re c>0,\quad \Re s>-M-1,
+\]
+the series
+\begin{equation}\label{gs:FM}
+ \mathcal F^{[M]}_{a,b,c}(s)=
+ \sum_{n=0}^{\infty}\left[
+ W_n(a,b;s)-\sum_{j=0}^M
+ A_j(a,b,s;c)(n+c)^{-1-s-j}\right]
+\end{equation}
+converges normally on compact subsets and is jointly holomorphic.  It
+equals the holomorphic continuation of
+\begin{equation}\label{gs:FM-closed}
+ \frac{\Gamma(a)\Gamma(b)\Gamma(s)}
+ {\Gamma(a+s)\Gamma(b+s)}
+ -\sum_{j=0}^M A_j(a,b,s;c)\zeta(1+s+j,c).
+\end{equation}
+Every apparent pole at $s=0,-1,\ldots,-M$ is removable in this complete
+expression.  For every integer $r\ge0$, the finite polynomial identity
+\begin{equation}\label{gs:residue-rigidity}
+ A_r(a,b,-r;c)
+ =\frac{(-1)^r\Gamma(a)\Gamma(b)}
+        {r!\,\Gamma(a-r)\Gamma(b-r)}
+ =\frac{(-1)^r}{r!}(1-a)_r(1-b)_r
+\end{equation}
+holds.  In particular its left side is independent of $c$.
+\end{theorem}
+
+\begin{proof}
+Write $x=n+c$.  The locally uniform logarithmic gamma expansion in a
+fixed sector around the positive real axis gives
+\begin{equation}\label{gs:log-asymptotic}
+ \log W_n(a,b;s)
+ =-(1+s)\log x+\sum_{j=1}^M\frac{D_j(a,b,s;c)}{x^j}
+   +O(x^{-M-1}).
+\end{equation}
+For all sufficiently large $n$ the gamma factors have no zeros or poles
+on the compact parameter set, so a logarithm may be chosen consistently
+there.  The coefficient formula follows directly by substituting the
+four shifts $a-c$, $b-c$, $a+b+s-c$, $1-c$ into the logarithmic gamma
+expansion in Bernoulli polynomials.  Its leading powers combine to
+$-(1+s)\log x$, while the constant terms cancel.
+The remainder is uniform on compact parameter sets: all four shifts
+are bounded, and all four large gamma arguments lie in a common closed
+sector that avoids the negative real axis.
+
+Exponentiating \eqref{gs:log-asymptotic} to finite order and using
+\eqref{gs:Aj-definition} yields
+\[
+ W_n(a,b;s)=x^{-1-s}
+ \left(\sum_{j=0}^M A_j(a,b,s;c)x^{-j}+O(x^{-M-1})\right).
+\]
+Thus the bracket in \eqref{gs:FM} is
+$O(n^{-M-2-\Re s})$.  On a compact subset of the stated domain it is
+$O(n^{-1-\eta})$ for some $\eta>0$.  This proves normal convergence and
+joint holomorphy.  The finitely many small $n$ cause no difficulty:
+$W_n$ is defined using the entire reciprocal gamma factor in
+\eqref{gs:weight}, including at its zeros.
+
+For $\Re s>0$, every series can be summed separately and Gauss
+summation gives \eqref{gs:FM-closed}.  Its meromorphic continuation in
+the larger half-plane has possible poles only at $s=0,-1,\ldots,-M$.
+The identity theorem, first away from those points and then across
+them, identifies it with the holomorphic left side.  All its residues
+there must vanish.  At $s=-r$, only the term indexed by $j=r$ in the
+zeta sum can have a pole, and its residue is $A_r(a,b,-r;c)$.
+The gamma quotient has residue
+\[
+ \frac{(-1)^r\Gamma(a)\Gamma(b)}
+ {r!\,\Gamma(a-r)\Gamma(b-r)}.
+\]
+This expression is interpreted through reciprocal gamma if either
+denominator argument is a nonpositive integer; its value is then zero,
+and the corresponding gamma pole is canceled.  Equating the two
+residues proves the first equality in \eqref{gs:residue-rigidity}.
+The gamma recurrence proves the polynomial expression in the second
+equality.  Since $M$ can be any integer at least $r$, the result holds
+for every $r$.
+\end{proof}
+
+The quotient in \eqref{gs:residue-rigidity} is holomorphic on the stated
+$a,b$ domain even when $a-r$ or $b-r$ is a nonpositive integer.  The
+Pochhammer expression makes this particularly transparent.  One must
+not replace such a reciprocal gamma factor by an undefined division
+by an infinite gamma value, nor differentiate a logarithm through one
+of its zeros.
+
+\subsection{An exact jet formula at a negative integer}
+
+Fix $0\le r\le M$.  Suppress $a,b,c$ from the notation for $A_j$ and
+write $A_j^{(k)}$ for its $k$th derivative in $s$.  Define the analytic
+germ
+\begin{equation}\label{gs:Rr}
+ \mathcal R_r(\varepsilon)=
+ \frac{\Gamma(1+\varepsilon)\Gamma(a)\Gamma(b)}
+ {\displaystyle\prod_{h=1}^{r}(\varepsilon-h)}
+ \frac1{\Gamma(a-r+\varepsilon)\Gamma(b-r+\varepsilon)}.
+\end{equation}
+The empty product is $1$.  This germ is analytic for sufficiently small
+$\varepsilon$, also when either reciprocal gamma factor vanishes at
+zero.  It equals $\varepsilon$ times the meromorphic gamma quotient
+in \eqref{gs:FM-closed} evaluated at $s=-r+\varepsilon$.
+
+\begin{corollary}[Every resonant spectral jet]\label{gs:resonant-jet}
+For each integer $k\ge0$,
+\begin{align}
+ \left(\mathcal F^{[M]}_{a,b,c}\right)^{(k)}(-r)
+ ={}&\frac{\mathcal R_r^{(k+1)}(0)-A_r^{(k+1)}(-r)}{k+1}
+ \notag\\
+ &-\sum_{\ell=0}^k\binom{k}{\ell}
+ A_r^{(k-\ell)}(-r)(-1)^\ell\gamma_\ell(c)
+ \notag\\
+ &-\sum_{\substack{0\le j\le M\\j\ne r}}
+ \sum_{\ell=0}^k\binom{k}{\ell}
+ A_j^{(k-\ell)}(-r)\zeta^{(\ell)}(1-r+j,c).
+ \label{gs:resonant-jet-formula}
+\end{align}
+The derivatives on the left are given by termwise derivatives of the
+convergent brackets in \eqref{gs:FM}.  This formula remains valid at
+all admissible $a,b,c$, including the parameter values at which a gamma
+factor in an unregularized logarithmic expression would have a pole.
+\end{corollary}
+
+\begin{proof}
+Put $Z(\varepsilon,c)=\zeta(1+\varepsilon,c)-1/\varepsilon$.
+Equations~\eqref{gs:FM-closed} and \eqref{gs:Rr} give the exact germ
+\begin{align*}
+ \mathcal F^{[M]}(-r+\varepsilon)
+ ={}&\frac{\mathcal R_r(\varepsilon)-A_r(-r+\varepsilon)}{\varepsilon}
+ -A_r(-r+\varepsilon)Z(\varepsilon,c)\\
+ &-\sum_{j\ne r}A_j(-r+\varepsilon)
+ \zeta(1-r+j+\varepsilon,c).
+\end{align*}
+The numerator of the first term vanishes at zero by
+\eqref{gs:residue-rigidity}.  Taking $k$ derivatives and using
+\eqref{gs:stieltjes-convention} gives the formula.  Normal convergence
+on slightly larger compact polydiscs justifies its series version.
+\end{proof}
+
+If neither $a-r$ nor $b-r$ is a nonpositive integer, put
+$Q_r=A_r(a,b,-r;c)$.  The finite value $k=0$ can then be written
+\begin{align}
+ \mathcal F^{[M]}(-r)
+ ={}&Q_r\bigl(\psi(r+1)-\psi(a-r)-\psi(b-r)\bigr)
+ -A_r'(-r)-Q_r\gamma_0(c)\notag\\
+ &-\sum_{j\ne r}A_j(-r)\zeta(1-r+j,c).
+ \label{gs:resonant-finite}
+\end{align}
+At the excluded logarithmic parameter values the analytic germ
+\eqref{gs:Rr}, rather than an informal $0\cdot\infty$ convention,
+specifies the value.  Higher derivatives of this germ can also be
+written as Bell polynomials.  When $Q_r\ne0$, its logarithmic arguments
+are
+\[
+ \psi^{(j-1)}(1)+(j-1)!H_r^{(j)}
+ -\psi^{(j-1)}(a-r)-\psi^{(j-1)}(b-r),\qquad j\ge1.
+\]
+
+\subsection{An exact central-binomial identity at balance minus one}
+
+Take $a=b=1/2$, $c=1$, $M=r=1$.  Formula~\eqref{gs:Dj} gives
+\[
+ A_1(s)=\frac34+\frac s2-\frac{s^2}{2},\qquad
+ A_1(-1)=-\frac14,\qquad A_1'(-1)=\frac32.
+\]
+Moreover,
+\[
+ W_n(1/2,1/2;-1)=\pi n\frac{\binom{2n}{n}^2}{16^n}.
+\]
+At $n=0$ this equality has its literal value $0$: the original gamma
+ratio contains $1/\Gamma(0)=0$, interpreted through the entire
+reciprocal gamma function.  The rest of the $n=0$ bracket remains
+$-1+1/4=-3/4$ and is included in the sum.
+
+Using $\psi(2)=1-\gamma$,
+$\psi(-1/2)=2-\gamma-2\log2$,
+$\zeta(0)=-1/2$, and $\gamma_0(1)=\gamma$ in
+\eqref{gs:resonant-finite} yields the exact identity
+\begin{equation}\label{gs:central-minus-one}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}\left[
+ \pi n\frac{\binom{2n}{n}^2}{16^n}
+ -1+\frac1{4(n+1)}\right]
+ =-\log2-\frac14.}
+\end{equation}
+The bracket is $O(n^{-2})$.  Its three displayed pieces must be summed
+together; the individual series do not converge.
+
+The numerical verification evaluates this bracket directly, then uses
+the independent gamma-ratio asymptotic tail
+\[
+ \sum_{j=2}^K A_j(1/2,1/2,-1;1)\zeta(j,N+1).
+\]
+It checks stability under two choices of $N,K$.  The same script verifies
+\eqref{gs:residue-rigidity} symbolically for $r=0,1,2,3,4$ with all of
+$a,b,c$ indeterminate.  These computational checks support, and are
+separate from, the all-order proof above.
+
+\section{Correcting and proving a historical family of harmonic conjectures}
+\label{gs:choi-section}
+
+The paper of Choi \cite{gs:Choi} uses the standard definition
+$H_n=\sum_{j=1}^n1/j$.  Its printed page~6 contains Conjecture~4,
+Corollary~5, and Conjecture~6.  The formulas can be checked and extended
+uniformly by the following generating identity.  This discussion
+concerns those displayed statements, and does not assert that they
+remain open or that no correction has appeared elsewhere.
+
+\begin{theorem}[A two-parameter harmonic generating identity]
+\label{gs:choi-master}
+For $u,v$ in a neighborhood of zero,
+\begin{equation}\label{gs:choi-G}
+ \sum_{n=0}^{\infty}
+ \frac{(1+u)_n(1+v)_n}{(n!)^2(n+1)(n+2)}
+ =\frac{\Gamma(1-u-v)}{\Gamma(2-u)\Gamma(2-v)}.
+\end{equation}
+Define
+\begin{equation}\label{gs:En}
+ E_r(n)=Y_r\bigl(H_n,-H_n^{(2)},2H_n^{(3)},\ldots,
+              (-1)^{r-1}(r-1)!H_n^{(r)}\bigr),\qquad E_0(n)=1.
+\end{equation}
+Then
+\begin{align}
+ \sum_{n=1}^{\infty}\frac{E_r(n)}{(n+1)(n+2)}
+ &=r!,&&r\ge1,\label{gs:choi-pure}\\
+ \sum_{n=1}^{\infty}\frac{H_nE_r(n)}{(n+1)(n+2)}
+ &=r!\left(1+\sum_{j=2}^{r+1}\zeta(j)\right),&&r\ge0.
+ \label{gs:choi-mixed}
+\end{align}
+Every mixed sum with $E_r(n)E_t(n)$ is likewise given by the finite
+Taylor coefficient $r!t![u^rv^t]$ of the gamma quotient in
+\eqref{gs:choi-G}, except that the $r=t=0$ formula must retain the
+$n=0$ term or subtract its value $1/2$.
+\end{theorem}
+
+\begin{proof}
+Since $(3)_n=n!(n+1)(n+2)/2$, the series in
+\eqref{gs:choi-G} is
+$\tfrac12{}_2F_1(1+u,1+v;3;1)$.
+Gauss summation proves the stated gamma quotient.  Uniform convergence
+and differentiation follow, for instance, from
+$O(n^{-2+\Re(u+v)})$ on a small closed polydisc around zero.
+The coefficient identity
+\[
+ \frac{(1+u)_n}{n!}
+ =\prod_{j=1}^n\left(1+\frac uj\right)
+ =\sum_{r\ge0}\frac{E_r(n)}{r!}u^r
+\]
+follows from \eqref{gs:Bell-definition}; it also shows that $E_r(n)$ is
+$r!$ times an elementary symmetric polynomial in $1,1/2,\ldots,1/n$.
+
+Set $v=0$ in \eqref{gs:choi-G}.  Its right side becomes $1/(1-u)$,
+which proves \eqref{gs:choi-pure}.  For the second identity,
+differentiate in $v$ at zero to obtain
+\[
+ \left.\partial_v
+ \frac{\Gamma(1-u-v)}{\Gamma(2-u)\Gamma(2-v)}\right|_{v=0}
+ =\frac{\psi(2)-\psi(1-u)}{1-u}
+ =\frac{1+\sum_{j\ge1}\zeta(j+1)u^j}{1-u}.
+\]
+Taking the coefficient of $u^r$ proves \eqref{gs:choi-mixed}.
+The zero-th summand has zero derivative in every case used in those
+two identities, which explains their lower limit $n=1$.
+\end{proof}
+
+In the notation of Theorem~\ref{harm:thm:gamma-generating},
+$E_r(n)=r!E_{n,r}$.  The pure identity also follows independently from
+the resolvent difference at $a=1,b=2$, since $F(1,y)=1$ and
+$F(2,y)=(1-y)^{-1}$.  The product with $H_n$ requires the two-parameter
+coefficient in the theorem.
+
+The theorem gives the intended fifth- and sixth-order cases of
+Conjecture~4 through \eqref{gs:choi-pure}.  It also gives corrected
+versions of all six displayed formulas (41)--(46) through
+\eqref{gs:choi-mixed}.  The precise corrections are:
+\begin{enumerate}
+ \item The right sides in (41)--(46) must be divided by two; for (46),
+ the numerator correction below is also required.  With those
+ corrections, the multiplier in the row indexed by $r$ is $r!$, for
+ $r=1,\ldots,6$, instead of the printed $2r!$.
+ \item In the second identity of (40), the final harmonic term in the
+ sixth-order Bell polynomial must be $-120H_n^{(6)}$; the printed
+ version has $-120H_n^{(5)}$.
+ \item In (46), the term belonging to the partition $2+2+1+1$ must
+ be $45H_n^3(H_n^{(2)})^2$ after the outer factor $H_n$ is included.
+ The printed formula has $45H_n^3(H_n)^2$ at that position.
+\end{enumerate}
+These readings were checked against the publisher's PDF, not inferred
+from its mathematical-text extraction.  The useful correction is the
+unambiguous Bell-polynomial statement, which also fixes all higher
+orders without enumerating partitions individually.
+
+The simplest factor-two error admits a short proof independent of
+hypergeometric differentiation.  By summation by parts and Tonelli's
+theorem for the nonnegative terms,
+\begin{align*}
+ \sum_{n=1}^{\infty}\frac{H_n^2}{(n+1)(n+2)}
+ &=\sum_{k=1}^{\infty}\frac{H_k^2-H_{k-1}^2}{k+1}\\
+ &=2\sum_{k=1}^{\infty}\frac{H_{k-1}}{k(k+1)}
+   +\sum_{k=1}^{\infty}\frac1{k^2(k+1)}\\
+ &=2\sum_{j=1}^{\infty}\frac1{j(j+1)}+\zeta(2)-1
+ =1+\zeta(2).
+\end{align*}
+This disproves the printed value $2(1+\zeta(2))$ in (41) with its
+stated definitions.  It also isolates the origin of the normalization:
+the hypergeometric function is twice the left side of
+\eqref{gs:choi-G}, rather than equal to it.
+

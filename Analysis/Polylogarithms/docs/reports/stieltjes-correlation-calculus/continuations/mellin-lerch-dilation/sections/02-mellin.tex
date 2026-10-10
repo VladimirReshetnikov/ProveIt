@@ -1,0 +1,302 @@
+\section{A finite Mellin--Lerch calculus}\label{mld:sec:mellin}
+
+\subsection{The analytic difference that removes the Lerch cut}
+
+Put $\mathcal S=\C\setminus(-\infty,0]$. For $z\in\mathcal S$ we use $\log z$ with imaginary part in $(-\pi,\pi)$. The natural expression in the transform is
+\begin{equation}\label{mld:eq:Lerch-difference}
+ \mathcal L(s,q;z)=z^q\Phi(z,s,q)-\Li_s(z),\qquad \Re q>0.
+\end{equation}
+Initially this is defined by the two convergent series for $0<z<1$. The individual summands have the usual positive-axis continuation cut; their difference does not.
+
+\begin{lemma}[Cancellation and the unit-argument germ]\label{mld:lem:Lerch-cancellation}
+The expression \eqref{mld:eq:Lerch-difference} extends to a holomorphic function of $z\in\mathcal S$, holomorphic in $\Re q>0$, and entire in $s$. Its value at $z=1$ is
+\begin{equation}\label{mld:eq:Lerch-unit}
+ \mathcal L(s,q;1)=\zeta(s,q)-\zeta(s),
+\end{equation}
+where the pole at $s=1$ cancels. For $z>1$, either consistent lateral continuation of the two terms in \eqref{mld:eq:Lerch-difference} gives this same function. Locally at $z=1$, with $\mu=\log z$,
+\begin{equation}\label{mld:eq:Lerch-germ}
+ \mathcal L(s,q;\e^\mu)
+ =\sum_{k\ge0}\frac{\zeta(s-k,q)-\zeta(s-k)}{k!}\mu^k,
+ \qquad |\mu|<2\pi,
+\end{equation}
+understood on the local logarithm sheet. The series and its fixed-order parameter derivatives converge locally uniformly.
+\end{lemma}
+
+\begin{proof}
+For $\Re s>0$ the Lerch integral writes the first term as
+\[
+ \frac{z^q}{\Gamma(s)}\int_0^\infty
+          \frac{t^{s-1}\e^{-qt}}{1-z\e^{-t}}\dd t.
+\]
+For $z>1$, the residue at $t=\log z$ is
+$(\log z)^{s-1}/\Gamma(s)$, independent of $q$. It is therefore the same as the residue for $q=1$, which gives $\Li_s(z)$. The two lateral jumps cancel. This argument first applies away from exceptional spectral orders and extends to them analytically.
+
+At $\mu=0$ the classical Lerch expansion \cite[\S25.14]{DLMFlerch} has the form
+\[
+ \e^{q\mu}\Phi(\e^\mu,s,q)
+ =\Gamma(1-s)(-\mu)^{s-1}
+       +\sum_{k\ge0}\zeta(s-k,q)\frac{\mu^k}{k!}.
+\]
+Subtract its $q=1$ version. The nonanalytic term is independent of $q$ and cancels exactly, giving \eqref{mld:eq:Lerch-germ}. At integer $s$, subtract first and continue in $s$; each coefficient is a difference of two Hurwitz zeta functions with the same residue. This proves regularity at $z=1$ and \eqref{mld:eq:Lerch-unit}. Local uniform convergence follows from the convergent Lerch expansion on smaller $\mu$-disks and Cauchy estimates on compact parameter sets. The series definition gives entire dependence on $s$ for $0<z<1$, and continuation preserves it. There are no remaining obstructions in $\mathcal S$: the positive-axis jumps have cancelled, $z=1$ is removable, and $z=0$ is excluded by the chosen domain. Equivalently, the integral representation in Theorem~\ref{mld:thm:Mellin-master} below independently supplies this continuation when $0<\Re q<2$, after which the finite Lerch shift identity extends it to every $\Re q>0$.
+\end{proof}
+
+\begin{remark}
+The local logarithm qualification in \eqref{mld:eq:Lerch-germ} matters. It is a power series in $\mu$, not a license to replace $\log z$ by an arbitrary logarithm while keeping the other branches fixed. In computations at $z>1$, taking inconsistent lateral values before subtraction introduces a spurious imaginary term.
+\end{remark}
+
+\subsection{The master transform at every denominator order}
+
+For an integer $N\ge1$ define
+\begin{equation}\label{mld:eq:JN-definition}
+ J_N(a,s;z)=\int_0^\infty
+       \frac{x^{a-1}\Li_s(-zx)}{(1+x)^N}\dd x.
+\end{equation}
+Let the rational polynomials $q_{N,j}(a)$ be determined by
+\begin{equation}\label{mld:eq:q-polynomial}
+ Q_{N,a}(X):=\binom{X+a-1}{N-1}
+ =\frac1{(N-1)!}\prod_{r=1}^{N-1}(X+a-r)
+ =\sum_{j=0}^{N-1}q_{N,j}(a)X^j.
+\end{equation}
+For $N=1$ the product is $1$.
+
+\begin{theorem}[Finite Mellin--Lerch transform]\label{mld:thm:Mellin-master}
+Let $N\ge1$, $z\in\mathcal S$, $s\in\C$, and
+\begin{equation}\label{mld:eq:Mellin-strip}
+ -1<\Re a<N.
+\end{equation}
+Then \eqref{mld:eq:JN-definition} is an ordinary convergent integral, holomorphic in these parameters and entire in $s$. For noninteger $a$,
+\begin{equation}\label{mld:eq:Mellin-master}
+ \boxed{\displaystyle
+ J_N(a,s;z)=\frac{(-1)^N\pi}{\sin\pi a}
+       \sum_{j=0}^{N-1}q_{N,j}(a)
+          \mathcal L(s-j,N-a;z).}
+\end{equation}
+All the apparent singularities at $a=0,1,\ldots,N-1$ are removable. The same formula, continued as a whole, holds there. The strip \eqref{mld:eq:Mellin-strip} is the maximal common strip for all spectral orders: already $s=0,z=1$ forces both endpoints.
+\end{theorem}
+
+\begin{proof}
+We first establish uniform convergence and spectral holomorphy, including negative spectral orders. Fix compact sets of $s$ and $z\in\mathcal S$. Choose an integer $r\ge0$ such that $\Re(s+r)>0$ throughout a neighborhood of the spectral compact set. The Fermi integral gives
+\[
+ \Li_{s+r}(-zx)=-\frac1{\Gamma(s+r)}
+   \int_0^\infty t^{s+r-1}\frac{zx\e^{-t}}{1+zx\e^{-t}}\dd t.
+\]
+Apply $(x\partial_x)^r$ to obtain $\Li_s(-zx)$. The differentiated rational kernel is bounded by a constant times $\min(x\e^{-t},1)$, uniformly in these compact sets: the ray of $zx\e^{-t}$ remains a positive angular distance from the negative real axis, and its denominator is bounded away from zero relative to $1+|zx\e^{-t}|$. Integrating this bound, splitting at $t=\log x$ when $x>1$, shows
+\[
+ \Li_s(-zx)=O(x)\quad(x\downarrow0),\qquad
+ \Li_s(-zx)=O((1+\log x)^M)\quad(x\to\infty)
+\]
+for some finite $M$, uniformly on the chosen compacts. These estimates give an integrable majorant in every smaller strip in \eqref{mld:eq:Mellin-strip}. They justify holomorphy of \eqref{mld:eq:JN-definition}. They also justify arbitrary fixed powers of $\log x$, and spectral differentiation follows either directly or from Cauchy estimates. For $s=0,z=1$, $\Li_0(-x)=-x/(1+x)$ shows the sharpness of the common strip.
+
+For $N=1$, take initially $0<z<1$, $0<\Re a<1$, and $\Re s>0$. Fubini's theorem applies to the Fermi integral. If $b>0$, partial fractions and the beta integral give
+\begin{equation}\label{mld:eq:beta-resolvent}
+ \int_0^\infty\frac{x^a}{(1+x)(x+b)}\dd x
+       =\frac{\pi}{\sin\pi a}\frac{b^a-1}{b-1}.
+\end{equation}
+At $b=1$ the right side is interpreted by continuity. One can prove \eqref{mld:eq:beta-resolvent} first for $-1<\Re a<0$, where the two partial fractions are separately integrable, and then continue to $-1<\Re a<1$, where their difference is integrable. This avoids separating divergent integrals.
+
+Substitute $b=\e^t/z$ into \eqref{mld:eq:beta-resolvent}. The result is
+\begin{align*}
+ J_1(a,s;z)
+ &=-\frac{\pi}{\Gamma(s)\sin\pi a}
+   \int_0^\infty t^{s-1}
+      \frac{z^{1-a}\e^{at}-z}{\e^t-z}\dd t\\
+ &=-\frac{\pi}{\sin\pi a}
+       \big[z^{1-a}\Phi(z,s,1-a)-\Li_s(z)\big].
+\end{align*}
+This proves \eqref{mld:eq:Mellin-master} for $N=1$ on an open set.
+
+Let $E$ be the spectral backward shift, $(Ef)(s)=f(s-1)$. Integration of the derivative of $x^a(1+x)^{-N}\Li_s(-zx)$, with vanishing endpoint terms, gives
+\begin{equation}\label{mld:eq:JN-recurrence}
+ J_{N+1}(a,s;z)
+       =\frac{(N-a)J_N(a,s;z)-J_N(a,s-1;z)}{N}.
+\end{equation}
+Consequently, in a common strip,
+\[
+ J_N=\frac1{(N-1)!}\prod_{r=1}^{N-1}(r-a-E)J_1.
+\]
+Applying this polynomial in $E$ to the Lerch series annihilates its first $N-1$ terms, because
+\begin{equation}\label{mld:eq:annihilation}
+ Q_{N,a}(n+1-a)=\binom n{N-1}=0
+       \quad(0\le n<N-1).
+\end{equation}
+Shift the remaining index by $N-1$. The Lerch parameter becomes $N-a$, and the power $z^{1-a}$ becomes $z^{N-a}$. Since
+\[
+ Q_{N,a}(n+N-a)=\binom{n+N-1}{N-1},
+\]
+the resulting expression is exactly \eqref{mld:eq:Mellin-master}. The parameter $N-a$ has positive real part on the entire strip \eqref{mld:eq:Mellin-strip}. Holomorphic continuation in $a$ and $s$, followed by Lemma~\ref{mld:lem:Lerch-cancellation} in $z$, proves the identity throughout the asserted domain. The original integral is holomorphic at every integer in that strip, so the remaining cosecant poles are removable. The next theorem gives their values without relying on an unspecified limit.
+\end{proof}
+
+The first two cases illustrate the finite character of the result:
+\begin{align}
+ J_1(a,s;z)&=-\pi\csc(\pi a)\mathcal L(s,1-a;z),\label{mld:eq:J1}\\
+ J_2(a,s;z)&=\pi\csc(\pi a)
+       \big[\mathcal L(s-1,2-a;z)
+                    +(a-1)\mathcal L(s,2-a;z)\big].\label{mld:eq:J2}
+\end{align}
+For general $N$, only $N$ Lerch differences occur. The shift to $N-a$ is essential: retaining $1-a$ term by term would leave the safe Hurwitz half-plane when $\Re a>1$ and obscure the cancellations in \eqref{mld:eq:annihilation}.
+
+\subsection{Integer Mellin parameters and complete logarithmic moments}
+
+Define the entire spectral function
+\begin{equation}\label{mld:eq:F-definition}
+ F_s(z)=s\Li_{s+1}(z)-\log z\,\Li_s(z),
+\end{equation}
+with the same consistent continuation across $z>1$. At $z=1$ this means
+\begin{equation}\label{mld:eq:F-unit}
+ F_s(1)=s\zeta(s+1),\qquad F_0(1)=1.
+\end{equation}
+The last value is a removable value, not the undefined product $0\cdot\zeta(1)$.
+
+\begin{theorem}[Every integer resonance]\label{mld:thm:integer-resonance}
+For $0\le m\le N-1$,
+\begin{equation}\label{mld:eq:integer-resonance}
+ \boxed{\displaystyle
+ J_N(m,s;z)=(-1)^{N+m}
+       \sum_{j=0}^{N-1}q_{N,j}(m)F_{s-j}(z).}
+\end{equation}
+More strongly, for sufficiently small $\delta$,
+\begin{equation}\label{mld:eq:local-resonance}
+ J_N(m+\delta,s;z)=(-1)^{N+m-1}
+       \sum_{j=0}^{N-1}q_{N,j}(m+\delta)
+                                  J_1(\delta,s-j;z).
+\end{equation}
+Thus every $\log^h x$ moment at an integer Mellin parameter is a finite combination of ordinary polylogarithms, powers of $\log z$, and even zeta values, with coefficients polynomial in $s$ and rational coefficients.
+\end{theorem}
+
+\begin{proof}
+Write $L=N-m$. The finite Lerch shift formula is
+\[
+ \mathcal L(s,L-\delta;z)=\mathcal L(s,1-\delta;z)
+       -\sum_{k=1}^{L-1}\frac{z^{k-\delta}}{(k-\delta)^s}.
+\]
+Multiply its shifted spectral versions by $q_{N,j}(m+\delta)$ and sum in $j$. Every term in the finite sum vanishes identically in $\delta$, since
+\[
+ Q_{N,m+\delta}(k-\delta)
+       =\binom{k+m-1}{N-1}=0\quad(1\le k<L).
+\]
+Using $\sin\pi(m+\delta)=(-1)^m\sin\pi\delta$ proves \eqref{mld:eq:local-resonance}. The first Taylor coefficient in
+\[
+ \mathcal L(s,1-\delta;z)
+ =\e^{-\delta\log z}
+       \sum_{r\ge0}\frac{(s)_r}{r!}\Li_{s+r}(z)\delta^r
+       -\Li_s(z)
+\]
+is $F_s(z)$. This series calculation is first made for $0<z<1$,
+where every coefficient is finite, and then continued as a combined
+analytic germ. At $z=1$ and spectral resonances the removable
+products are evaluated only after combination. Hence $J_1(0,s;z)=-F_s(z)$, proving \eqref{mld:eq:integer-resonance}. Further coefficient extraction proves the last assertion, made explicit below.
+\end{proof}
+
+Let
+\[
+ \frac{\pi t}{\sin\pi t}=\sum_{j\ge0}e_{2j}t^{2j},\qquad
+ e_0=1,\quad e_{2j}=2(1-2^{1-2j})\zeta(2j)\quad(j\ge1),
+\]
+and define, for $r\ge1$,
+\begin{equation}\label{mld:eq:dr}
+ d_r(s,z)=\sum_{v=0}^{r}
+       \frac{(-\log z)^{r-v}(s)_v}{(r-v)!v!}\Li_{s+v}(z).
+\end{equation}
+Then
+\begin{equation}\label{mld:eq:M-moments}
+ \mathcal M_h(s;z):=\int_0^\infty
+       \frac{\log^h x\,\Li_s(-zx)}{x(1+x)}\dd x
+ =-h!\sum_{j=0}^{\lfloor h/2\rfloor}e_{2j}\,d_{h+1-2j}(s,z).
+\end{equation}
+Combining this with \eqref{mld:eq:local-resonance} gives the completely finite rule
+\begin{align}\label{mld:eq:all-integer-moments}
+ &\int_0^\infty\frac{x^{m-1}\log^h x\,\Li_s(-zx)}{(1+x)^N}\dd x\notag\\
+ &\quad=(-1)^{N+m-1}
+   \sum_{j=0}^{N-1}\sum_{v=0}^{h}\binom hv
+           q_{N,j}^{(v)}(m)\,\mathcal M_{h-v}(s-j;z).
+\end{align}
+Terms with $v>N-1$ vanish automatically. All parameter differentiations under these integrals are justified by the uniform majorants in the proof of Theorem~\ref{mld:thm:Mellin-master}.
+
+At $z=1$, the especially short version is
+\begin{equation}\label{mld:eq:unit-moments}
+ \boxed{\displaystyle
+ \mathcal M_h(s;1)=-h!\sum_{j=0}^{\lfloor h/2\rfloor}
+   e_{2j}\frac{(s)_{h+1-2j}}{(h+1-2j)!}
+                      \zeta(s+h+1-2j).}
+\end{equation}
+For example,
+\begin{align*}
+ \mathcal M_0(s;1)&=-s\zeta(s+1),\\
+ \mathcal M_1(s;1)&=-\frac{s(s+1)}2\zeta(s+2),\\
+ \mathcal M_2(s;1)&=-\frac{s(s+1)(s+2)}3\zeta(s+3)
+                          -2\zeta(2)s\zeta(s+1),\\
+ \mathcal M_3(s;1)&=-\frac{(s)_4}{4}\zeta(s+4)
+                          -3\zeta(2)(s)_2\zeta(s+2).
+\end{align*}
+In particular, the $s=1,h=2$ case gives the ordinary integral
+\[
+ \int_0^\infty\frac{\log^2x\log(1+x)}{x(1+x)}\dd x=7\zeta(4).
+\]
+
+\begin{example}[Two finite higher-pole reductions]
+The $N=3$ integer rows are
+\begin{align*}
+ J_3(1,s;z)&=\tfrac12\big(F_{s-2}(z)-F_{s-1}(z)\big),\\
+ J_3(2,s;z)&=-\tfrac12\big(F_{s-2}(z)+F_{s-1}(z)\big).
+\end{align*}
+At $z=1,s=1$ they equal $-1/4$ and $-3/4$. The necessary input is $F_0(1)=1$; simply dropping a factor proportional to $s-1$ would give wrong answers.
+\end{example}
+
+\subsection{Finite algebra, negative orders, and rational kernels}
+
+The coefficient table in \eqref{mld:eq:integer-resonance} is nondegenerate as a finite polynomial transformation.
+\begin{proposition}[Invertible integer table]\label{mld:prop:table-invertible}
+For $0\le m,j\le N-1$,
+\begin{equation}\label{mld:eq:table-determinant}
+ \det\big(q_{N,j}(m)\big)
+       =\frac{(-1)^{N(N-1)/2}}{\prod_{j=0}^{N-1}j!}.
+\end{equation}
+Consequently the $N$ Mellin integrals in \eqref{mld:eq:integer-resonance}
+determine, by rational linear algebra, the functions
+\[
+ F_s(z),\quad F_{s-1}(z),\quad\ldots,\quad F_{s-N+1}(z).
+\]
+\end{proposition}
+\begin{proof}
+Replace the rows indexed by $m$ by their successive forward differences at $m=0$. The row operation has determinant one. Pascal's identity gives
+\[
+ \Delta_m^k Q_{N,m}(X)\big|_{m=0}
+       =\binom{X-1}{N-1-k}.
+\]
+These rows have descending degrees $N-1-k$ and leading coefficients $1/(N-1-k)!$. Their coefficient matrix is triangular after reversing the column order. The reversal contributes $(-1)^{N(N-1)/2}$, proving \eqref{mld:eq:table-determinant}.
+\end{proof}
+This is a statement about a finite coefficient matrix. It makes no claim about arithmetic independence of values at one spectral order.
+
+For a separate exact check at negative spectral orders, let $\left\{\begin{smallmatrix}n\\k\end{smallmatrix}\right\}$ denote a Stirling number of the second kind. The rational expression for the negative-order polylogarithm yields
+\begin{equation}\label{mld:eq:negative-beta}
+ J_N(a,-r;1)=\sum_{k=0}^{r}(-1)^{k+1}k!
+   \left\{\begin{matrix}r+1\\k+1\end{matrix}\right\}
+                     B(a+k+1,N-a),\qquad r\ge0.
+\end{equation}
+Indeed,
+\[
+ \Li_{-r}(-x)=\sum_{k=0}^{r}(-1)^{k+1}k!
+   \left\{\begin{matrix}r+1\\k+1\end{matrix}\right\}
+                  \frac{x^{k+1}}{(1+x)^{k+1}},
+\]
+and each term integrates to the beta factor in \eqref{mld:eq:negative-beta}. Differentiating this finite beta expression gives an independent gamma/polygamma evaluation of the logarithmic moments at those orders. It checks the spectral-pole cancellations without evaluating a singular zeta product numerically.
+
+\begin{corollary}[Proper rational kernels with negative real poles]\label{mld:cor:rational-kernel}
+Let
+\[
+ R(x)=\sum_{\nu=1}^{M}\sum_{k=1}^{N_\nu}
+                        \frac{c_{\nu,k}}{(x+b_\nu)^k},\qquad b_\nu>0.
+\]
+For $-1<\Re a<1$,
+\begin{equation}\label{mld:eq:rational-kernel}
+ \int_0^\infty x^{a-1}R(x)\Li_s(-zx)\dd x
+       =\sum_{\nu,k}c_{\nu,k}b_\nu^{a-k}
+                          J_k(a,s;zb_\nu).
+\end{equation}
+In particular every logarithmic moment at $a=0$ reduces finitely by \eqref{mld:eq:all-integer-moments}; spectral derivatives reduce in the same way. If cancellation in $R$ gives a larger convergence strip, \eqref{mld:eq:rational-kernel} continues there as a combined expression.
+\end{corollary}
+\begin{proof}
+Partial fractions are finite, so the common strip permits termwise integration. Substitute $x=b_\nu y$ in each term. Logarithmic moments follow by differentiating in $a$, including the elementary factors $b_\nu^{a-k}$. Analytic continuation applies to the complete finite sum on any larger strip where the original integral is holomorphic.
+\end{proof}
+
+This corollary is an exact reduction procedure: denominator multiplicity, Mellin resonance, logarithmic moments, and spectral derivatives are handled by finite operations. It does not assert a comparable reduction for products of two arbitrary polylogarithms; that extension is a separate problem.

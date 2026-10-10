@@ -1,0 +1,99 @@
+\section{Exact coefficient checks and explicit correction polynomials}
+\label{app:exact}
+
+\subsection{The leading triple pole}
+
+There is a simple exact check on the six-cone normalization.  Put
+$z_j=e(a_j)$, with the three $z_j$ distinct.  Since
+$\Li_0(z)=z/(1-z)$, equation~\eqref{eq:cones} at zero gives
+\begin{equation}\label{eq:sixcone-zero-check}
+ S(0,0,0;\boldsymbol a)=
+ \sum_{k=1}^3\frac{z_i z_j+z_k^2}{(z_k-z_i)(z_k-z_j)}=2,
+ \qquad\{i,j,k\}=\{1,2,3\}.
+\end{equation}
+For an exact proof let $e_1=z_1+z_2+z_3$ and
+$e_2=z_1z_2+z_1z_3+z_2z_3$.  Then
+$z_i z_j=z_k^2-e_1z_k+e_2$.  The Lagrange interpolation formulas for
+$1,t,t^2$ give respectively zero, zero, and one when their values at
+$z_k$ are divided by $\prod_{j\ne k}(z_k-z_j)$ and summed.  The
+displayed rational identity follows.  Consequently the leading
+spectral pole is $2/(\lambda_1\lambda_2\lambda_3)$.
+
+The same sign follows from the separated singular supports:
+$\int\prod_{j=1}^3(\delta_{x_j}-1)=3-1=2$.
+This is a normalization check, not a substitute for the full
+coefficient-extraction proof.
+
+\subsection{First bilinear closure coefficients}
+
+Theorem~\ref{base:theorem} gives, with $b=1-c$,
+\begin{align}
+ J_{00}(c)&=\gamma_1(c)+\gamma_1(b)-2\zeta(2),\\
+ J_{01}(c)&=\gamma_2(c)+\tfrac12\gamma_2(b)
+   +\zeta(2)\bigl(\gamma_0(c)+\gamma_0(b)\bigr)-\zeta(3),\\
+ J_{11}(c)&=\tfrac12\bigl(\gamma_3(c)+\gamma_3(b)\bigr)
+   +2\zeta(2)\bigl(\gamma_1(c)+\gamma_1(b)\bigr)\notag\\
+ &\qquad+\zeta(3)\bigl(\gamma_0(c)+\gamma_0(b)\bigr)
+       -\zeta(2)^2-\zeta(4).
+ \label{eq:base-first-rows}
+\end{align}
+Here $\zeta(2)^2+\zeta(4)=7\zeta(4)/2$.  The reflection
+$J_{10}(c)=J_{01}(1-c)$ fixes the orientation of the indices.
+These are rederived base identities already covered by the incoming
+closure results; the extension is their systematic use with unequal
+dilations and the explicit scale terms.
+
+The first two nontrivial contact polynomials are
+\begin{align}
+ b_{0,k}(L)&=L-H_k,\\
+ b_{1,k}(L)&=\frac{L^2}{2}-H_kL
+           +\frac{H_k^2-H_k^{(2)}}2,\\
+ b_{2,k}(L)&=\frac{L^3}{3}-H_kL^2
+       +(H_k^2-H_k^{(2)})L
+       -\frac{H_k^3-3H_kH_k^{(2)}+2H_k^{(3)}}3.
+ \label{eq:contact-first-rows}
+\end{align}
+The empty harmonic sums at $k=0$ vanish.  Thus the same formulas include
+the pure scale term $L^{n+1}/(n+1)$ without a separate convention.
+
+\subsection{The fifth and sixth correction polynomials}
+
+To make the corrected historical conjectures explicit, write $h_j$ for
+$H_n^{(j)}$, including $h_1=H_n$.  The complete polynomials in
+Theorem~\ref{gs:choi-master} are
+\begin{align}
+ E_5(n)={}&h_1^5-10h_1^3h_2+20h_1^2h_3+15h_1h_2^2
+           -30h_1h_4-20h_2h_3+24h_5,\label{eq:E5}\\
+ E_6(n)={}&h_1^6-15h_1^4h_2+40h_1^3h_3+45h_1^2h_2^2
+           -90h_1^2h_4\notag\\
+ &-120h_1h_2h_3+144h_1h_5-15h_2^3
+           +90h_2h_4+40h_3^2-120h_6.\label{eq:E6}
+\end{align}
+Therefore
+\begin{align}
+ \sum_{n\ge1}\frac{E_5(n)}{(n+1)(n+2)}&=120,&
+ \sum_{n\ge1}\frac{E_6(n)}{(n+1)(n+2)}&=720,\\
+ \sum_{n\ge1}\frac{H_nE_5(n)}{(n+1)(n+2)}
+   &=120\left(1+\sum_{j=2}^{6}\zeta(j)\right),\notag\\
+ \sum_{n\ge1}\frac{H_nE_6(n)}{(n+1)(n+2)}
+   &=720\left(1+\sum_{j=2}^{7}\zeta(j)\right).
+ \label{eq:corrected-five-six}
+\end{align}
+In the last numerator, the term arising from $45h_1^2h_2^2$ is exactly
+$45H_n^3(H_n^{(2)})^2$.  The final term of $E_6$ is exactly
+$-120H_n^{(6)}$.  These are the two positions requiring harmonic-order
+corrections in the printed formulas.
+
+For arbitrary $r,t$, the finite coefficient expression used by the
+exact generator can be written without Gamma functions as
+\begin{equation}\label{eq:choi-exact-generator}
+ \frac{\Gamma(1-u-v)}{\Gamma(2-u)\Gamma(2-v)}
+ =\frac1{(1-u)(1-v)}
+ \exp\left(\sum_{j=2}^{\infty}\frac{\zeta(j)}j
+       \bigl((u+v)^j-u^j-v^j\bigr)\right).
+\end{equation}
+Only terms through total degree $r+t$ are required for the coefficient
+$r!t![u^rv^t]$.  When $r=t=0$, the complete $n\ge0$ sum is $1$ and
+the $n\ge1$ sum is $1/2$; for all positive total orders the $n=0$ term
+vanishes.  Recording this exception prevents another normalization
+error at the first coefficient.

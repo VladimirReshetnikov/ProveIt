@@ -1,0 +1,128 @@
+\subsection{The undilated kernel and an explicit finite coefficient rule}
+\label{mld:dil:undilated-algorithm}
+
+The unequal-dilation theorem below uses a known undilated closure from
+the incoming reports \cite{IncomingClosure,IncomingShifted}. We record its
+generating function and derivation so that the resulting algorithm is
+self-contained. These undilated statements are prior results within the
+supplied material.
+
+For $0<t<1$ and $\Re s,\Re v<1$, set
+\[
+ C(s,v;t)=\int_0^1\zeta(s,x)\zeta(v,\{x+t\})\dd x.
+\]
+The integral is ordinary: the two singularities are separated. Its two
+equivalent continuations are
+\begin{align}
+ C(s,v;t)={}&\Gamma(1-s)\Gamma(1-v)(2\pi)^{s+v-2}
+ \bigl\{e^{-\pi\ii(s-v)/2}\Li_{2-s-v}(e^{2\pi\ii t})\notag\\
+ &\hspace{38mm}+e^{\pi\ii(s-v)/2}\Li_{2-s-v}(e^{-2\pi\ii t})\bigr\},
+ \label{mld:dil:C-polylog}\\
+ C(s,v;t)={}&\Gamma(s+v-1)
+ \left\{\frac{\Gamma(1-s)}{\Gamma(v)}\zeta(s+v-1,t)
+       +\frac{\Gamma(1-v)}{\Gamma(s)}\zeta(s+v-1,1-t)\right\}.
+ \label{mld:dil:C-hurwitz}
+\end{align}
+All apparent singularities are interpreted in the complete expression.
+To prove the first formula, start with $\Re s,\Re v<0$ and the absolutely
+convergent Hurwitz Fourier series, whose nonzero coefficients are
+\[
+ \widehat\zeta_s(k)=\Gamma(1-s)(2\pi\ii k)^{s-1},\qquad k\ne0.
+\]
+The zero coefficient is zero. Integrating the product retains the
+opposite frequencies and yields \eqref{mld:dil:C-polylog}. For the second
+formula, insert the same Fourier expansion with spectral order $s+v-1$
+on its right. Euler's gamma reflection identity reduces the coefficient
+of the positive-argument polylogarithm by
+\[
+ \frac{\sin(\pi s)e^{-\pi\ii(s+v)/2}
+       +\sin(\pi v)e^{\pi\ii(s+v)/2}}{\sin\pi(s+v)}
+       =e^{-\pi\ii(s-v)/2}.
+\]
+The other coefficient is obtained by reversing the signs in the phases.
+This calculation holds off the integer hyperplanes; analytic continuation
+extends it across their removable singularities. The local decomposition
+$\zeta(s,x)=x^{-s}+\zeta(s,1+x)$ justifies joint holomorphy of the
+integral on $\Re s,\Re v<1$, and hence the continuation to that region.
+This is the classical Fourier and product-integral mechanism
+\cite{DLMFhurwitz,EspinosaMoll} in the circular-translation convention.
+
+Define, near $(u,v)=(0,0)$,
+\begin{align*}
+ \mathcal A(u,v)&=
+  \frac{\Gamma(1+u+v)\Gamma(1-v)}{\Gamma(1+u)},
+ &\mathcal B(u,v)&=\mathcal A(v,u),\\
+ \mathcal K(u,v;t)&=uv\,C(1+u,1+v;t).
+\end{align*}
+Equation~\eqref{mld:dil:C-hurwitz} gives
+\begin{equation}
+ \mathcal K(u,v;t)=
+ -u\mathcal A(u,v)\zeta(1+u+v,1-t)
+ -v\mathcal B(u,v)\zeta(1+u+v,t).
+ \label{mld:dil:K-hurwitz}
+\end{equation}
+This function is holomorphic at the origin. Indeed,
+$\mathcal A(u,-u)=\mathcal B(u,-u)=1$, so
+$(u\mathcal A+v\mathcal B)/(u+v)$ has a removable denominator. Removing
+the common Hurwitz pole in \eqref{mld:dil:K-hurwitz} leaves the negative of that
+quotient plus analytic Stieltjes series.
+
+For the canonical undilated finite part one consequently has the
+terminating coefficient rule
+\begin{equation}
+ \boxed{I_{mn}(t)=(-1)^{m+n}m!n!
+       [u^{m+1}v^{n+1}]\mathcal K(u,v;t).}
+ \label{mld:dil:I-coefficient}
+\end{equation}
+Here $I_{mn}$ denotes the constant term of
+$\int\gamma_m(x)\gamma_n(\{x+t\})\dd x$ with the two ambient cutoffs.
+For clarity, the matching to a finite part can be justified before
+extracting any coefficients. Put
+$\mathcal H(u,x)=\zeta(1+u,x)-1/u$ and $b=1-t$.
+The following locally convergent expression is analytic for small $u,v$:
+\begin{align*}
+ &\int_0^b\left\{
+ x^{-1-u}[\mathcal H(v,t+x)-\mathcal H(v,t)]
+       +\mathcal H(u,1+x)\mathcal H(v,t+x)\right\}\dd x\\
+ &+\int_0^t\left\{
+ y^{-1-v}[\mathcal H(u,b+y)-\mathcal H(u,b)]
+       +\mathcal H(v,1+y)\mathcal H(u,b+y)\right\}\dd y\\
+ &+\mathcal H(v,t)\frac{1-b^{-u}}u
+       +\mathcal H(u,b)\frac{1-t^{-v}}v.
+\end{align*}
+The bracketed differences vanish linearly; both quotients have removable
+values at zero. The coefficient of $u^mv^n$ is exactly
+$(-1)^{m+n}I_{mn}(t)/(m!n!)$, by direct integration of the subtracted
+logarithmic singularities. In a left spectral half-plane the displayed
+expression is also
+\[
+ C(1+u,1+v;t)+\frac1{uv}
+       +\frac{\mathcal H(v,t)}u+\frac{\mathcal H(u,b)}v.
+\]
+Using the axis values of \eqref{mld:dil:K-hurwitz}, it equals
+\[
+ \frac{\mathcal K(u,v;t)-\mathcal K(u,0;t)
+            -\mathcal K(0,v;t)+\mathcal K(0,0;t)}{uv}.
+\]
+This proves \eqref{mld:dil:I-coefficient} with the specified normalization.
+
+The coefficient calculation uses rational polynomial arithmetic and
+positive integer zeta values only, because
+\begin{equation}
+ \log\mathcal A(u,v)=\sum_{j\ge2}\frac{\zeta(j)}j
+       \left\{(-1)^j\bigl((u+v)^j-u^j\bigr)+v^j\right\}.
+ \label{mld:dil:logA}
+\end{equation}
+For an explicit finite algorithm, let $\ell_j$ be the homogeneous summand
+of degree $j$ here. The homogeneous terms of $\mathcal A$ satisfy
+\[
+ \mathcal A_0=1,\qquad\mathcal A_1=0,\qquad
+ \mathcal A_d=\frac1d\sum_{j=2}^d j\ell_j\mathcal A_{d-j}.
+\]
+Only $d\le m+n+2$ can contribute to \eqref{mld:dil:I-coefficient}. This proves
+finite linear closure in the single values $\gamma_j(t)$ and
+$\gamma_j(1-t)$, with $j\le m+n+1$. Their top coefficients are
+$1/(m+1)$ and $1/(n+1)$; the coefficients at order $m+n$ vanish since
+$\mathcal A_1=0$. These are the incoming closure theorem and its
+missing-order rule, now available as an explicit input to the new
+dilation calculation.

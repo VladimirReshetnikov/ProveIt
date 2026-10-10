@@ -1,0 +1,384 @@
+\section{Three translated factors and colored Tornheim jets}
+\label{sec:triple}
+
+The incoming reports ask whether three separated Stieltjes factors admit a
+finite coordinate description in colored Tornheim or multiple Lerch jets.
+We give an affirmative answer, with an explicit coefficient formula and
+the local subtraction convention included.  The general relation between
+Hurwitz products and Tornheim sums is classical
+\cite{espinosa-tornheim,zhao-colored,zhao-zhou}; the contribution here is
+the separated-shift, all-Stieltjes-index formulation and its regularization.
+
+Write $e(x)=e^{2\pi i x}$.  For $|X|=|Y|=1$ with $X,Y\ne1$, define initially
+in an absolutely convergent right half-space
+\begin{equation}\label{eq:Tdef}
+ \mathcal T(A,B,C;X,Y)
+ =\sum_{m,n\ge1}\frac{X^mY^n}{m^A n^B(m+n)^C}.
+\end{equation}
+All powers of positive integers use their real logarithms.  A superscript
+$\mathcal T^{(r,s,t)}$ below denotes derivatives in these three order
+variables, with $X,Y$ fixed.
+
+\begin{lemma}[Entire continuation for two nontrivial twists]
+\label{lem:Tentire}
+For the stated twists, $\mathcal T$ extends to an entire function of
+$(A,B,C)\in\mathbb C^3$.  For $\Re C>0$ its continuation is
+\begin{equation}\label{eq:Tmellin}
+ \mathcal T(A,B,C;X,Y)=\frac1{\Gamma(C)}
+ \int_0^\infty t^{C-1}\Li_A(Xe^{-t})\Li_B(Ye^{-t})\,dt.
+\end{equation}
+The integral is locally normally convergent in $A,B,C$ in that region.
+At every integer $N\ge0$,
+\begin{equation}\label{eq:Tnegative}
+ \mathcal T(A,B,-N;X,Y)
+ =\sum_{j=0}^{N}\binom Nj\Li_{A-j}(X)\Li_{B-N+j}(Y).
+\end{equation}
+\end{lemma}
+\begin{proof}
+In an initial region, insert the Gamma integral for $(m+n)^{-C}$ and
+interchange absolutely convergent sums and the integral.  This gives
+\eqref{eq:Tmellin}.  The polylogarithm is entire in its order at each fixed
+argument on these two radial segments, and is holomorphic in $t$ near
+zero because neither segment starts at $1$.  Consequently
+\[
+ f(t)=\Li_A(Xe^{-t})\Li_B(Ye^{-t})
+      =\sum_{j=0}^{M}f_j(A,B)t^j+O_K(t^{M+1})
+\]
+uniformly on compact sets $K$ of orders.  The small neighborhood in $t$
+can be chosen uniformly on $K$.  The expansion need not converge all the
+way to $t=1$; its Taylor remainder still has the asserted local estimate,
+which is all that subtraction requires.  Thus
+\begin{align}\label{eq:Tcontinuation}
+ \mathcal T(A,B,C;X,Y)=\frac1{\Gamma(C)}\bigg\{
+ &\sum_{j=0}^{M}\frac{f_j(A,B)}{C+j}
+ +\int_0^1 t^{C-1}\left(f(t)-\sum_{j=0}^{M}f_j(A,B)t^j\right)dt\notag\\
+ &+\int_1^\infty t^{C-1}f(t)\,dt\bigg\}.
+\end{align}
+The subtracted integral is holomorphic for $\Re C>-M-1$.  The tail is
+entire, since each polylogarithm decays exponentially, uniformly on
+compact order sets.  The simple zeros of $1/\Gamma(C)$ cancel the apparent
+poles at $C=0,-1,\ldots,-M$.  Increasing $M$ proves joint entire
+continuation.  At $C=-N$, the value is $(-1)^N f^{(N)}(0)$.
+Applying $d\Li_A(Xe^{-t})/dt=-\Li_{A-1}(Xe^{-t})$ and Leibniz's rule gives
+\eqref{eq:Tnegative}.
+\end{proof}
+
+\subsection{A meromorphic identity before coefficient extraction}
+
+Fix $a_1,a_2,a_3\in\mathbb R/\mathbb Z$, pairwise distinct.  Fractional
+parts at isolated endpoints are immaterial in ordinary integrals.  Put
+\begin{equation}\label{eq:Kdef}
+ K(\boldsymbol\lambda;\boldsymbol a)
+ =\int_0^1\prod_{j=1}^{3}
+    \zeta(1-\lambda_j,\{x+a_j\})\,dx,
+ \qquad \Re\lambda_j>0.
+\end{equation}
+For each $k\in\{1,2,3\}$, let $i<j$ be the other two indices and set
+\[
+ X_k=e(a_i-a_k),\qquad Y_k=e(a_j-a_k),\qquad
+ \theta_k(\boldsymbol\lambda)=\frac\pi2(\lambda_i+\lambda_j-\lambda_k).
+\]
+The twists are nontrivial by the separation assumption.  Define
+\begin{align}\label{eq:cones}
+ S(\boldsymbol\lambda;\boldsymbol a)
+ =\sum_{k=1}^{3}\bigl\{&e^{-i\theta_k(\boldsymbol\lambda)}
+ \mathcal T(\lambda_i,\lambda_j,\lambda_k;X_k,Y_k)\notag\\
+ &+e^{i\theta_k(\boldsymbol\lambda)}
+ \mathcal T(\lambda_i,\lambda_j,\lambda_k;X_k^{-1},Y_k^{-1})\bigr\}.
+\end{align}
+
+\begin{theorem}[Six-cone identity]\label{thm:sixcone}
+For $\Re\lambda_j>0$,
+\begin{equation}\label{eq:sixcone}
+ K(\boldsymbol\lambda;\boldsymbol a)
+ =\frac{\prod_{j=1}^{3}\Gamma(\lambda_j)}
+ {(2\pi)^{\lambda_1+\lambda_2+\lambda_3}}
+ S(\boldsymbol\lambda;\boldsymbol a).
+\end{equation}
+The right side gives a meromorphic continuation to $\mathbb C^3$.
+\end{theorem}
+\begin{proof}
+First assume $\Re\lambda_j>1$.  The nonzero Fourier coefficients of the
+periodic Hurwitz function are
+\begin{equation}\label{eq:hurwitz-fourier-lambda}
+ \widehat{\zeta(1-\lambda,\cdot)}(n)
+ =\frac{\Gamma(\lambda)}{(2\pi |n|)^\lambda}
+    e^{-i\pi\lambda\operatorname{sgn}(n)/2},\qquad n\ne0,
+\end{equation}
+and the zero coefficient is zero \cite[Eq.~25.11.9]{dlmf-hurwitz}.
+The three Fourier series converge absolutely, so integration keeps
+exactly $n_1+n_2+n_3=0$ with every $n_j\ne0$.  Every such triple has either
+two positive frequencies and one negative frequency, or the opposite
+sign pattern.  In the first case the negative index is a unique $k$ and
+the frequencies are $m,n,-m-n$.  Their phase and denominator give the
+first term of the $k$th summand in \eqref{eq:cones}.  Reversing all signs
+gives its second term.  This is a disjoint decomposition, so no factor
+of two or ordering multiplicity is missing.
+
+The integral in \eqref{eq:Kdef} is jointly holomorphic on
+$\Re\lambda_j>0$.  Near a singular point of one factor, the other two
+factors are smooth and uniformly bounded on compact order sets.  The
+local majorants are $t^{\sigma-1}(1+|\log t|^M)$ with $\sigma>0$.
+The right side is also holomorphic there by Lemma~\ref{lem:Tentire}.
+The identity theorem extends the equality from the smaller right
+half-space to the claimed domain.  The same formula supplies its
+meromorphic continuation.
+\end{proof}
+
+\subsection{The precise endpoint finite part}
+
+For $m\ge0$, use
+\begin{equation}\label{eq:gamma-local}
+ \gamma_m(t)=\frac{\log^m t}{t}+\gamma_m(1+t),\qquad 0<t<1.
+\end{equation}
+Let $x_k=\{-a_k\}$ and remove a right-hand arc of length $\varepsilon$
+from each $x_k$, using the ordinary unit coordinate on the circle.
+For sufficiently small $\varepsilon$ these arcs are disjoint.  Denote
+the remaining set by $E_\varepsilon$, and put
+\[
+ A_k(\boldsymbol m;\boldsymbol a)
+ =\prod_{j\ne k}\gamma_{m_j}(\{a_j-a_k\}).
+\]
+
+\begin{definition}[Separated triple finite part]\label{def:triplefp}
+For $m_1,m_2,m_3\ge0$, define
+\begin{align}\label{eq:triplefp}
+ I_{\boldsymbol m}(\boldsymbol a)
+ =\lim_{\varepsilon\downarrow0}\bigg\{
+ &\int_{E_\varepsilon}\prod_{j=1}^{3}
+      \gamma_{m_j}(\{x+a_j\})\,dx\notag\\
+ &+\sum_{k=1}^{3}
+ A_k(\boldsymbol m;\boldsymbol a)
+       \frac{\log^{m_k+1}\varepsilon}{m_k+1}\bigg\}.
+\end{align}
+\end{definition}
+The limit exists: after subtracting its displayed leading singular term,
+the local product is $O(1+|\log t|^{m_k})$, hence integrable.  No product
+of distributions with common singular support is used.
+
+\begin{theorem}[All-index triple Stieltjes identity]
+\label{thm:triple-jets}
+Let
+\begin{equation}\label{eq:Qtriple}
+ Q(\boldsymbol\lambda;\boldsymbol a)
+ =\prod_{j=1}^{3}\left\{\Gamma(1+\lambda_j)(2\pi)^{-\lambda_j}\right\}
+       S(\boldsymbol\lambda;\boldsymbol a).
+\end{equation}
+This function is holomorphic near $\boldsymbol\lambda=0$, and
+\begin{equation}\label{eq:triple-jets}
+ \boxed{\quad
+ I_{\boldsymbol m}(\boldsymbol a)
+ =\left(\prod_{j=1}^{3}m_j!\right)
+ [\lambda_1^{m_1+1}\lambda_2^{m_2+1}\lambda_3^{m_3+1}]
+        Q(\boldsymbol\lambda;\boldsymbol a).
+ \quad}
+\end{equation}
+Thus the answer uses finitely many derivatives of six colored Tornheim
+kernels, of total order at most $m_1+m_2+m_3+3$.
+\end{theorem}
+\begin{proof}
+In a local right coordinate $t$ at $x_k$, split the $k$th Hurwitz factor
+as $t^{\lambda_k-1}+\zeta(1-\lambda_k,1+t)$.
+For a smooth local multiplier $g$, analytic continuation of the singular
+term is obtained from
+\[
+ \int_0^h t^{\lambda-1}g(t)\,dt
+ =\frac{g(0)h^\lambda}{\lambda}
+  +\int_0^h t^{\lambda-1}(g(t)-g(0))\,dt.
+\]
+The constant and higher Laurent coefficients of this formula are the
+Hadamard finite parts of $\log^m(t)g(t)/t$, divided by $m!$.
+Use disjoint neighborhoods of the three singularities and an ordinary
+integral on their complement.  The other factors are smooth in the
+local coordinate, although meromorphic in their own order variables.
+Here is a uniform justification for extracting all three coefficients.
+Let $g_k(t)$ be the product of those other factors, and define
+\[
+ F_\varepsilon(\boldsymbol\lambda)=
+ \int_{E_\varepsilon}\prod_j\zeta(1-\lambda_j,\{x+a_j\})\,dx
+ +\sum_k\frac{\varepsilon^{\lambda_k}g_k(0)}{\lambda_k}.
+\]
+On a small closed polydisk $|\lambda_j|\le\rho<1$, with $i,j\ne k$,
+one has $\lambda_i\lambda_j(g_k(t)-g_k(0))=O(t)$ and
+$\lambda_k\zeta(1-\lambda_k,1+t)=O(1)$ uniformly.  The local
+decomposition therefore gives
+\[
+ \lambda_1\lambda_2\lambda_3(K-F_\varepsilon)
+       =O(\varepsilon^{1-\rho})
+\]
+uniformly on that polydisk.  After the indicated pole factors are
+removed, all these expressions are holomorphic.  Cauchy's coefficient
+formula permits passage to the limit.  The counterterms contribute
+exactly those in \eqref{eq:triplefp}, and hence
+\[
+ [\lambda_1^{m_1}\lambda_2^{m_2}\lambda_3^{m_3}]
+ K=\frac{I_{\boldsymbol m}}{m_1!m_2!m_3!}.
+\]
+The convention $\zeta(1-\lambda,t)=-1/\lambda+
+\sum_{m\ge0}\gamma_m(t)\lambda^m/m!$ explains why this equation has no
+extra alternating signs.  Finally $K=Q/(\lambda_1\lambda_2\lambda_3)$
+by $\Gamma(1+\lambda)=\lambda\Gamma(\lambda)$, proving
+\eqref{eq:triple-jets}.
+\end{proof}
+
+\subsection{An explicit formula for three digamma factors}
+
+Set $L=\gamma+\log(2\pi)$, where $\gamma=\gamma_0(1)$, and introduce
+\[
+ D_+=\partial-L-\frac{i\pi}{2},\qquad
+ D_-=\partial-L+\frac{i\pi}{2}.
+\]
+The variable differentiated by each operator is specified by a subscript.
+Since $\Gamma(1+\lambda)=1-\gamma\lambda+O(\lambda^2)$,
+Theorem~\ref{thm:triple-jets} immediately gives
+\begin{equation}\label{eq:triple-digamma}
+ \boxed{\quad
+ \FP\int_0^1\prod_{j=1}^{3}\psi(\{x+a_j\})\,dx
+ =-2\Re\sum_{k=1}^{3}
+ \left.
+  D_{+,A}D_{+,B}D_{-,C}\mathcal T(A,B,C;X_k,Y_k)
+ \right|_{A=B=C=0}.
+ \quad}
+\end{equation}
+The finite part on the left is the negative of
+$I_{(0,0,0)}$, because $\gamma_0=-\psi$.  This settles the specific
+three-digamma coordinate question in the shifted-jets report.
+It does not assert that these double-zeta derivatives reduce to ordinary
+single zeta or Stieltjes values.
+
+For example, for shifts $0,1/3,2/3$, write $\omega=e(1/3)$.  Symmetry of
+$\mathcal T$ in $(A,X)$ and $(B,Y)$ shows that all three terms agree:
+\begin{equation}\label{eq:triple-third}
+ \FP\int_0^1\psi(x)\psi(\{x+\tfrac13\})
+              \psi(\{x+\tfrac23\})\,dx
+ =-6\Re\left.
+ D_{+,A}D_{+,B}D_{-,C}\mathcal T(A,B,C;\omega,\omega^2)
+ \right|_{A=B=C=0}.
+\end{equation}
+This is an exact root-of-unity specialization with a fully specified
+regularization, not a numerical relation guess.
+
+\subsection{A convergent representation of the first spectral derivative}
+
+The first derivative in the final Tornheim order is especially convenient
+for independent numerical checking.  With
+$f(t)=\Li_A(Xe^{-t})\Li_B(Ye^{-t})$, equation
+\eqref{eq:Tcontinuation} at $M=0$ gives
+\begin{equation}\label{eq:Tfirst}
+ \left.\partial_C\mathcal T(A,B,C;X,Y)\right|_{C=0}
+ =\gamma f(0)+\int_0^1\frac{f(t)-f(0)}t\,dt
+                    +\int_1^\infty\frac{f(t)}t\,dt.
+\end{equation}
+All $A,B$ derivatives pass through these convergent integrals on compact
+sets.  Let
+\[
+ F_X(t)=\left.\partial_s\Li_s(Xe^{-t})\right|_{s=0}
+            -(L+i\pi/2)\Li_0(Xe^{-t}),\qquad h(t)=F_X(t)F_Y(t).
+\]
+Then the quantity in one summand of \eqref{eq:triple-digamma} is
+\begin{equation}\label{eq:triple-computable}
+ \int_0^1\frac{h(t)-h(0)}t\,dt+
+ \int_1^\infty\frac{h(t)}t\,dt+
+       \left(-\log(2\pi)+\frac{i\pi}{2}\right)h(0).
+\end{equation}
+The Euler constant in the last coefficient has canceled against the
+$\gamma f(0)$ term in \eqref{eq:Tfirst}.  Dropping that term would give
+an incorrect finite constant.
+
+\subsection{Integral inner orders and multiple polylogarithms}
+
+For positive integers $A,B$ and initially sufficiently large $\Re C$,
+partial fractions give the classical colored Tornheim reduction
+\cite{zhao-colored}:
+\begin{align}\label{eq:TtoMPL}
+ \mathcal T(A,B,C;X,Y)
+ ={}&\sum_{j=0}^{A-1}\binom{B+j-1}{j}
+       \Li_{B+C+j,A-j}(Y,X/Y)\notag\\
+ &+\sum_{j=0}^{B-1}\binom{A+j-1}{j}
+       \Li_{A+C+j,B-j}(X,Y/X),
+\end{align}
+where $\Li_{p,q}(z,w)=\sum_{k>m\ge1}z^kw^m/(k^p m^q)$.
+For completeness, multiply the elementary identity
+\[
+ \frac1{m^A n^B}
+ =\sum_{j=0}^{A-1}\binom{B+j-1}{j}
+       \frac1{m^{A-j}(m+n)^{B+j}}
+ +\sum_{j=0}^{B-1}\binom{A+j-1}{j}
+       \frac1{n^{B-j}(m+n)^{A+j}}
+\]
+by $X^mY^n(m+n)^{-C}$ and substitute $k=m+n$.
+The displayed elementary identity follows inductively from
+$1/(mn)=(1/m+1/n)/(m+n)$.
+Analytic continuation then extends the complete expression in $C$.
+At rational shifts, all the colors in \eqref{eq:TtoMPL} are roots of
+unity.  One may differentiate this identity in $C$.  One must not
+differentiate it in the discrete positive-integer parameters $A,B$;
+it provides no such identity for those derivatives at zero.
+
+\subsection{Ordinary triple log-Gamma correlations}
+
+Let $G(x)=\log\Gamma(x)-\tfrac12\log(2\pi)=\zeta'(0,x)$.
+Each translated $G$ has only a logarithmic singularity, so its triple
+product is integrable.  Since $s_j=1-\lambda_j$, differentiating
+\eqref{eq:Kdef} once in each $s_j$ at zero proves the ordinary identity
+\begin{equation}\label{eq:triple-loggamma}
+ \int_0^1\prod_{j=1}^{3}G(\{x+a_j\})\,dx
+ =-\left.
+ \partial_{\lambda_1}\partial_{\lambda_2}\partial_{\lambda_3}
+ \left\{
+  \frac{\prod_j\Gamma(\lambda_j)}{(2\pi)^{\sum_j\lambda_j}}
+  S(\boldsymbol\lambda;\boldsymbol a)
+ \right\}\right|_{\lambda_1=\lambda_2=\lambda_3=1}.
+\end{equation}
+Here no finite part is present.  More generally, any fixed spectral
+derivatives at $s_j=-N_j\le0$ give convergent triple integrals of
+Hurwitz jets, which include the normalized Stieltjes antiderivatives.
+The local estimates are products of powers of $\log t$ times
+nonnegative powers of $t$, so differentiation under the integral is
+justified.  This extends the same six-coordinate mechanism from
+singular Stieltjes functions to their ordinary integrated relatives.
+
+Here is an explicit version at every primitive order.  For $r\ge1$ set
+\begin{equation}\label{eq:Vprimitive}
+ V_{m,r}(x)=(-1)^{m+1}m![u^{m+1}]
+ \frac{\zeta(1-r+u,x)}{(r-1)!\prod_{j=1}^{r-1}(1-u/j)}.
+\end{equation}
+Empty products equal one.  These are finite linear combinations of
+Hurwitz order derivatives at $1-r$ and have mean zero on the unit
+interval.  In particular $V_{0,1}=-G$.
+\begin{corollary}[All triple Stieltjes primitive correlations]
+\label{cor:triple-primitives}
+The pointwise identity $\partial_x^rV_{m,r}(x)=\gamma_m(x)$ holds on
+$0<x<1$.  For pairwise distinct shifts and integers $r_j\ge1,m_j\ge0$,
+\begin{align}\label{eq:triple-primitives}
+ &\int_0^1\prod_{j=1}^{3}V_{m_j,r_j}(\{x+a_j\})\,dx\notag\\
+ &\quad=(-1)^{m_1+m_2+m_3+3}\prod_{j=1}^{3}m_j!
+ [u_1^{m_1+1}u_2^{m_2+1}u_3^{m_3+1}]
+ \frac{K(\boldsymbol r-\boldsymbol u;\boldsymbol a)}
+ {\prod_{j=1}^{3}\left\{(r_j-1)!
+                   \prod_{h=1}^{r_j-1}(1-u_j/h)\right\}}.
+\end{align}
+In this formula $K$ is explicitly the six-cone right side of
+\eqref{eq:sixcone}, and the integral is ordinary and absolutely
+convergent.
+\end{corollary}
+\begin{proof}
+The repeated Hurwitz derivative law gives
+\[
+ \partial_x^r\zeta(1-r+u,x)
+ =-u(r-1)!\prod_{j=1}^{r-1}(1-u/j)\zeta(1+u,x).
+\]
+Extract the coefficient in \eqref{eq:Vprimitive} and use the defining
+Stieltjes Laurent expansion.  This proves the primitive identity,
+including its sign and normalization.  The identity
+$\int_0^1\zeta(1-r+u,x)\,dx=0$ for small $u$ proves the asserted
+mean-zero normalization.  Near $x=0$, write the zeta function as
+$x^{r-1-u}+\zeta(1-r+u,1+x)$.  On $|u|\le\rho<1$, its derivatives
+of any fixed order are bounded by a constant times
+$1+x^{r-1-\rho}(1+|\log x|^M)$ for some finite $M$.
+This is integrable even at $r=1$.  At each singularity of the product,
+the other two shifted factors are smooth; the majorant is therefore
+uniform on a sufficiently small polydisk of the $u_j$.
+One can extract all coefficients under the integral, obtaining
+\eqref{eq:triple-primitives}.
+\end{proof}

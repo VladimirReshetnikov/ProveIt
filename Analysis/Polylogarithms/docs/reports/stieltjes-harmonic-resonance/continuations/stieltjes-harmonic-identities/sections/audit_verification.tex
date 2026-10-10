@@ -1,0 +1,147 @@
+\section{Source audit, proof checks, and reproducibility}
+\label{sec:audit}
+
+\subsection{The five incoming reports}
+
+The source audit distinguishes the following archives at the pinned
+commit.  The short names in this section are only reading aids; the
+machine-readable record preserves every full filename and internal path.
+\begin{description}[style=nextline,leftmargin=13mm]
+\item[RC] \nolinkurl{ProveIt_Resonance_Correlations_2026-10-10.zip}.
+Existing Gamma and Hurwitz-jet correlations supply background.
+The present triple formula answers the coordinate part of item G3
+in \nolinkurl{sections/07_questions.tex}; minimal character spaces
+and arithmetic independence remain separate.
+\item[RJ] \nolinkurl{ProveIt_Shifted_Hurwitz_Jets_2026-10-10.zip}.
+Its bilinear kernel and unit-scale contact terms are retained.
+The questions on three shifted factors and on dilation, traces, and
+subtraction scales in \nolinkurl{sections.tex} are answered here under
+the stated separation and positive-integer hypotheses.
+\item[SC] \nolinkurl{ProveIt_Stieltjes_Convolution_2026-10-10.zip}.
+Its periodic convolution algebra and one-factor derivative anomalies
+are established input.  The affine-frequency future-work sentence
+requires the qualification described below.
+\item[CL] \nolinkurl{ProveIt_Stieltjes_Correlation_Closure_2026-10-10.zip}.
+Its all-index bilinear linear closure and missing-order rule are
+rederived compactly in Theorem~\ref{base:theorem}.  The trilinear and
+unequal-integer-dilation questions in its final section are answered
+for separated singularities.
+\item[CC] \nolinkurl{Stieltjes_Convolution_Calculus_2026-10-10.zip}.
+Its derivative and primitive ladders overlap the other reports.
+The first further-research item, concerning a triple generating
+function and subtraction rule, is answered here; the period and
+coordinate question is answered for affine integer rescaling.
+\end{description}
+
+The exact anchors and Git blob identifiers appear in
+\nolinkurl{integration/source_audit.json}.  Overlap is recorded as
+established background, not counted again as a present result.
+
+\subsection{Proposed source corrections}
+
+The only definite correction proposed to the reviewed repository text
+is to SC's future-work discussion, \nolinkurl{article.tex},
+lines 1118--1121.  Two nonzero integer affine frequencies leave one free
+integer in $pn+qm=0$.  Thus a different integer frequency alone does not
+force a higher-dimensional summation index.  The replacement text in
+\nolinkurl{integration/proposed_corrections.tex} states the precise
+bilinear theorem and reserves the higher-dimensional issue for three
+or more independent factors.  This correction does not invalidate
+SC's convolution identities.
+
+The external corrections to Choi's printed p.~6 are mathematically
+different: the displayed identities (41)--(46), with the stated
+definitions, have twice the correct right side, and two harmonic
+orders are misprinted.  Theorem~\ref{gs:choi-master} gives corrected
+formulas and a proof for every order.  The correction record includes
+the DOI, page, and equation numbers.  The publisher PDF was visually
+checked.  Neither the absence of a located erratum nor numerical
+agreement is used to infer historical priority.
+
+The independent proof audit of this article checked the Fourier phase
+convention, the six disjoint frequency cones, the pole residues, the
+Gamma and harmonic factorials, and the mixed parameter domains.  It
+also sharpened the uniform local estimate used for primitive
+correlations and the Cauchy argument at simultaneous spectral poles.
+These improvements are incorporated into the proofs as delivered.
+
+\input{sections/surviving_conjectures}
+
+\subsection{Independent numerical diagnostics}
+
+The programs evaluate two mathematically different sides whenever
+practical.  They are numerical diagnostics, not interval certificates;
+the proofs in the preceding sections establish the identities.
+Working precision is larger than the number of digits reported.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{30mm}X >{\raggedright\arraybackslash}p{29mm}@{}}
+\toprule
+Component & Independent comparison & Largest observed residual\\
+\midrule
+Integer dilations & Local digamma subtraction against the scale formula;
+four frequency pairs at 60 digits & $7.4\times10^{-58}$\\
+Ordinary log-Gamma & Direct split quadrature against polylogarithmic
+order finite differences, step $10^{-7}$ & $1.9\times10^{-31}$\\
+Triple products & Local three-digamma subtraction against a separate
+Mellin and polylogarithm-order evaluation, at 42 working digits
+& $8.7\times10^{-42}$\\
+Shifted harmonic sums & 37 Mellin and local-subtraction comparisons
+against explicit polygamma formulas, at 70 digits
+& $1.82\times10^{-56}$\\
+Gauss mixed jets & 48 direct sums with Bernoulli-polynomial tails
+against mixed Gamma coefficients, at 75 digits
+& $5.14\times10^{-58}$\\
+Negative balance & Direct central-binomial bracket with an independent
+tail, at 75 digits & $1.97\times10^{-58}$\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The reported maxima are rounded upward from the stored results.  For
+the Gauss checks the change when the tail parameters are refined from
+$(N,K)=(70,24)$ to $(110,32)$ is below $6.00\times10^{-42}$.
+This refinement is useful evidence about numerical stability and is
+not itself a rigorous error estimate.  The log-Gamma finite-difference
+comparison has deliberately lower accuracy than the digamma finite
+part; its error is dominated by the derivative approximation.
+
+The dilation check computes the unit-frequency base integral by its own
+local subtraction.  Consequently it checks the new frequency and scale
+formula without assuming the closed evaluation of $J_{00}$.  The
+triple check additionally compares the six-cone formula at
+$\boldsymbol\lambda=(1,1,1)$ and $(2,1,3)$, with rational shifts
+$0,1/5,7/10$, against exact piecewise Bernoulli-polynomial integration.
+The exact values are respectively $-1/1000$ and
+$-124409/7560000000$.
+
+For the equal-thirds digamma example, the two numerical routes give
+\begin{equation}\label{eq:numeric-triple}
+ \FP\int_0^1\psi(x)\psi(\{x+\tfrac13\})
+                     \psi(\{x+\tfrac23\})\,dx
+ =27.805592568749290182019060698117\ldots.
+\end{equation}
+This decimal is a numerical evaluation of the exact Tornheim formula
+\eqref{eq:triple-third}, not a replacement for it.
+
+\subsection{Exact arithmetic and reproducible artifacts}
+
+The exact coefficient generator in
+\nolinkurl{code/exact_coefficients.py} uses SymPy arithmetic to produce
+Gamma coefficients, rational-kernel reductions, local contact
+polynomials, bilinear Stieltjes coefficients, and the corrected
+two-parameter harmonic sums.  Its inputs and outputs are exact; no
+integer-relation search is used.  The formal Stieltjes symbols in a
+coefficient table are named atoms, with no assumed arithmetic
+independence.  A separate exact six-cone check is explained in
+Appendix~\ref{app:exact}.
+
+The included scripts and JSON results make each numerical comparison
+reproducible.  \nolinkurl{README.md} gives the build and check commands,
+\nolinkurl{requirements.txt} records the Python packages, and
+\nolinkurl{MANIFEST.sha256} records checksums of the final files.
+\nolinkurl{integration/INTEGRATION_NOTES.md} maps theorem labels to
+source questions and lists the necessary finite-part conventions.
+These files are a research supplement.  No Lean, Isabelle, or other
+proof-assistant certification is claimed.

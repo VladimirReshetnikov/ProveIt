@@ -1,0 +1,262 @@
+\section{Exact harmonic-number and binomial families}\label{sec:harmonics}
+
+\subsection{Every falling-factorial moment of the binomial-square weight}
+For the weights $w_n$ in \eqref{eq:wn}, Theorem~\ref{thm:resonant} gives
+\begin{equation}\label{eq:binomialall}
+ \boxed{\sum_{n\ge0}\left\{
+ w_n\fall nN-\sum_{j=0}^N A_j(-N;1)(n+1)^{N-1-j}\right\}
+ =\frac{(-1)^N(\tfrac12)_N^2}{N!}\bigl(H_N+4\log2\bigr).}
+\end{equation}
+Here and throughout this subsection $A_j$ is specialized to
+$a=b=\tfrac12$.  Three low-order examples are
+\begin{align}
+ \sum_{n\ge0}\left(w_n-\frac1{n+1}\right)
+ &=4\log2,\label{eq:bin0}\\
+ \sum_{n\ge0}\left(nw_n-1+\frac1{4(n+1)}\right)
+ &=-\log2-\frac14,\label{eq:bin1}\\
+ \sum_{n\ge0}\left(n(n-1)w_n-n+\frac54-\frac9{32(n+1)}\right)
+ &=\frac98\log2+\frac{27}{64}.\label{eq:bin2}
+\end{align}
+The $n=0$ terms in these ordinary sums must be retained.
+The recurrence \eqref{eq:Arec} generates the counterterms at every order.
+The accompanying JSON table records them through $N=10$.
+
+\begin{center}
+\begin{tabular}{@{}rrr@{}}
+\toprule
+$N$ & $\rho_N$ & $\rho_N H_N$\\
+\midrule
+0 & $1$ & $0$\\
+1 & $-1/4$ & $-1/4$\\
+2 & $9/32$ & $27/64$\\
+3 & $-75/128$ & $-275/256$\\
+4 & $3675/2048$ & $30625/8192$\\
+5 & $-59535/8192$ & $-543753/32768$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every value is $4\rho_N\log2+\rho_NH_N$; the growing counterterm
+polynomials do not introduce an additional unevaluated constant.
+
+\subsection{A directly evaluated Stieltjes--harmonic sum}
+At $a=b=\tfrac12$, the Bell parameters in \eqref{eq:Lk} are
+\begin{equation}\label{eq:halfL}
+ L_1=\gamma+4\log2,\qquad L_2=-5\zeta(2),\qquad L_3=26\zeta(3).
+\end{equation}
+Using $\psi(n+1)=H_n-\gamma$ in \eqref{eq:Bellone}, and then
+\eqref{eq:bin0}, gives
+\begin{equation}\label{eq:harmonicstieltjes}
+ \boxed{\sum_{n\ge0}\left\{
+ w_nH_n-\frac{\log(n+1)+\gamma}{n+1}\right\}
+ =\frac52\zeta(2)-8\log^22-\frac{\gamma^2}{2}-\gamma_1.}
+\end{equation}
+This is an exact convergent series representation, not a relation inferred
+from a numerical search.  All higher analogues follow from
+\eqref{eq:Bellzero}; for example \eqref{eq:Belltwo} with \eqref{eq:halfL}
+expresses a quadratic harmonic combination using $\gamma_2$.
+
+The first negative-resonance jet is also explicit.  With
+$A=\gamma+4\log2$,
+\begin{align}
+ &\pi-\frac32+
+ \sum_{n=1}^\infty\left\{
+ nw_n(\gamma-H_{n-1})+\log(n+1)
+ -\frac{\tfrac32+\tfrac14\log(n+1)}{n+1}\right\}\notag\\
+ &\hspace{6mm}=-\frac{(A-3)^2}{8}+\frac58\zeta(2)+\frac{11}{8}
+ -\frac32\gamma-\frac14\gamma_1+\frac12\log(2\pi).
+ \label{eq:firstnegativeexplicit}
+\end{align}
+The initial $\pi$ is precisely the revived zero term of
+\eqref{eq:piwarning}.  Formula \eqref{eq:alljets} proves the evaluation;
+the separately executed series diagnostic agrees with this displayed
+specialization.
+
+\subsection{Complete finite harmonic numbers: an all-order family}
+Define the complete harmonic numbers by
+\[
+ h_n^{(m)}=\sum_{1\le j_1\le\cdots\le j_m\le n}
+                \frac1{j_1\cdots j_m},\qquad h_n^{(0)}=1.
+\]
+For $m>0$, $h_0^{(m)}=0$.  In particular
+$h_n^{(1)}=H_n$ and
+$h_n^{(2)}=(H_n^2+H_n^{(2)})/2$.
+
+\begin{proposition}[Complete harmonic binomial differences]\label{prop:finiteharmonic}
+For every $m\ge0$,
+\begin{equation}\label{eq:finiteharmonic}
+ (-1)^m\sum_{n\ge0}
+ \left\{w_n h_n^{(m)}-\frac{h_{n+1}^{(m)}}{n+1}\right\}
+ =[t^{m+1}]\frac{\pi\Gamma(1+t)^2}{\Gamma(\tfrac12+t)^2}.
+\end{equation}
+Equivalently the right side is
+$\Bcal_{m+1}(\lambda_1,\ldots,\lambda_{m+1})/(m+1)!$, where
+\begin{equation}\label{eq:lambda}
+ \lambda_1=4\log2,\qquad
+ \lambda_k=2(-1)^k(k-1)!(2-2^k)\zeta(k)\quad(k\ge2).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Multiplication of the half-parameter summand by $\Gamma(1+t)$ gives
+\[
+ \Gamma(1+t)r_n(t)
+ =w_n\prod_{j=1}^n(1+t/j)^{-1}.
+\]
+For $a=b=1$, the analogous expression is
+$(n+1)^{-1}\prod_{j=1}^{n+1}(1+t/j)^{-1}$.
+Their coefficient difference is $(-1)^m$ times the summand in
+\eqref{eq:finiteharmonic}.  The leading asymptotic coefficient of both
+gamma-ratio sequences is one, independent of $a,b$, so their difference
+and all fixed jets are normally summable near $t=0$.
+For $\Rea t>0$, Gauss summation gives the difference of sums as
+\[
+ \frac1t\left\{\frac{\pi\Gamma(1+t)^2}
+                         {\Gamma(\tfrac12+t)^2}-1\right\}.
+\]
+Analytic continuation to zero and coefficient extraction prove
+\eqref{eq:finiteharmonic}.  Logarithmic differentiation of the gamma quotient
+proves \eqref{eq:lambda}.
+\end{proof}
+
+For example,
+\begin{align}
+ \sum_{n\ge0}\left\{w_nH_n-\frac{H_{n+1}}{n+1}\right\}
+ &=2\zeta(2)-8\log^22,\label{eq:finiteh1}\\
+ \sum_{n\ge0}\left(w_n-\frac1{n+1}\right)H_n
+ &=3\zeta(2)-8\log^22,\label{eq:finiteh1b}\\
+ \sum_{n\ge0}\left\{
+ w_n\frac{H_n^2+H_n^{(2)}}2
+ -\frac{H_{n+1}^2+H_{n+1}^{(2)}}{2(n+1)}\right\}
+ &=\frac{32}{3}\log^32-8\log2\,\zeta(2)+4\zeta(3).
+ \label{eq:finiteh2}
+\end{align}
+The final coefficient is $4\zeta(3)$: it follows from
+$\lambda_3=24\zeta(3)$ and the Taylor factorial $3!$.
+This explicit normalization is useful in transcribing higher formulas.
+
+\subsection{A balanced parameter identity and complete harmonic tails}
+An especially simple all-weight result follows by varying the two numerator
+parameters in opposite directions.
+
+\begin{proposition}[Balanced gamma-difference identity]\label{prop:balanced}
+Let $a,b>0$ and $-a<\Rea t<b$.  Then
+\begin{align}
+ &\sum_{n\ge0}\frac{\Gamma(n+a)\Gamma(n+b)}
+                    {\Gamma(n+1)\Gamma(n+a+b)}
+ \left\{\frac{\Gamma(n+a+t)\Gamma(n+b-t)}
+                    {\Gamma(n+a)\Gamma(n+b)}-1\right\}\notag\\
+ &\hspace{15mm}=\psi(a)+\psi(b)-\psi(a+t)-\psi(b-t).
+ \label{eq:balanced}
+\end{align}
+The series is absolutely locally normally convergent in this strip.
+\end{proposition}
+\begin{proof}
+Subtract \eqref{eq:closedresonance} for $N=0$ at the parameter pairs
+$(a+t,b-t)$ and $(a,b)$, keeping the same $c$.  The denominator
+$n+a+b$ is unchanged and the $1/(n+c)$ counterterms cancel.
+The numerator parameter sum is fixed, so the leading asymptotic coefficient
+remains one; the difference is $O(n^{-2})$, uniformly on compact subsets
+of the strip.  Holomorphy extends the initially real-parameter identity
+throughout the strip.
+\end{proof}
+
+For $x>0$ define the complete harmonic tails
+\begin{equation}\label{eq:taildefinition}
+ T_{n,k}(x)=\sum_{n\le j_1\le\cdots\le j_k}
+       \frac1{(j_1+x)^2\cdots(j_k+x)^2},\qquad k\ge1.
+\end{equation}
+These are finite real numbers, although the nested tails are infinite.
+They are complete homogeneous polynomials in the tail power sums:
+\begin{equation}\label{eq:tailbell}
+ \sum_{k\ge0}T_{n,k}(x)y^k
+ =\exp\left(\sum_{r\ge1}\frac{\zeta(2r,n+x)}r y^r\right),
+ \quad T_{n,0}=1.
+\end{equation}
+In particular
+\[
+ T_{n,1}=\zeta(2,n+x),\qquad
+ T_{n,2}=\tfrac12\bigl\{\zeta(2,n+x)^2+\zeta(4,n+x)\bigr\}.
+\]
+
+\begin{theorem}[All-weight gamma-weighted harmonic-tail collapse]\label{thm:tail}
+For $x>0$ and every integer $k\ge1$,
+\begin{equation}\label{eq:tailmain}
+ \boxed{\sum_{n=0}^\infty
+ \frac{\Gamma(n+x)^2}{\Gamma(n+1)\Gamma(n+2x)}
+ T_{n,k}(x)=2\zeta(2k+1,x).}
+\end{equation}
+The sum is absolutely convergent.
+\end{theorem}
+\begin{proof}
+Put $a=b=x$ in \eqref{eq:balanced}.
+For $|t|<x$, the gamma-product expansion is
+\begin{align*}
+ \frac{\Gamma(n+x+t)\Gamma(n+x-t)}{\Gamma(n+x)^2}
+ &=\exp\left(\sum_{r\ge1}\frac{\zeta(2r,n+x)}r t^{2r}\right)\\
+ &=\sum_{k\ge0}T_{n,k}(x)t^{2k}.
+\end{align*}
+The first equality follows by adding the Taylor expansions of the two
+log-gamma functions, using
+$\psi^{(2r-1)}(y)=(2r-1)!\zeta(2r,y)$.
+It also follows from the convergent product
+$\prod_{j=n}^{\infty}(1-t^2/(j+x)^2)^{-1}$.
+The right side of \eqref{eq:balanced} expands as
+\[
+ 2\psi(x)-\psi(x+t)-\psi(x-t)
+ =2\sum_{k\ge1}\zeta(2k+1,x)t^{2k}.
+\]
+Local normal convergence in Proposition~\ref{prop:balanced} permits
+coefficient extraction, proving \eqref{eq:tailmain}.  Alternatively, for
+real $0<t<x$ all tail coefficients are nonnegative, and Tonelli followed
+by uniqueness of the power series gives the same conclusion.  Absolute
+convergence is also immediate from $T_{n,k}(x)=O(n^{-k})$ and the
+weight $O(n^{-1})$, or from the coefficient theorem itself.
+\end{proof}
+
+At $x=1$, the left side is the familiar starred multiple sum
+$\zeta^\star(\{2\}^k,1)$; the theorem includes its value
+$2\zeta(2k+1)$.  We do not claim priority for that specialization.
+At $x=\tfrac12$, set
+\begin{equation}\label{eq:Un}
+ U_{n,r}=\zeta(2r,n+\tfrac12)
+ =(2^{2r}-1)\zeta(2r)-2^{2r}H_{2n}^{(2r)}+H_n^{(2r)}.
+\end{equation}
+Then the all-weight result becomes
+\begin{equation}\label{eq:tailhalf}
+ \sum_{n\ge0}w_n T_{n,k}(\tfrac12)
+ =2(2^{2k+1}-1)\zeta(2k+1).
+\end{equation}
+Three explicit evaluations are
+\begin{align}
+ \sum_{n\ge0}w_n U_{n,1}&=14\zeta(3),\label{eq:tail3}\\
+ \sum_{n\ge0}w_n\frac{U_{n,1}^2+U_{n,2}}2&=62\zeta(5),\label{eq:tail5}\\
+ \sum_{n\ge0}w_n\frac{U_{n,1}^3+3U_{n,1}U_{n,2}+2U_{n,3}}6
+ &=254\zeta(7).\label{eq:tail7}
+\end{align}
+The combinations in \eqref{eq:Un} are small harmonic \emph{tails}; one must
+not split their zeta and harmonic parts into divergent weighted sums.
+
+\subsection{Other rational-parameter exact families}
+Take $b=1-a$, $c=1$, and define
+$v_n(a)=\Gamma(n+a)\Gamma(n+1-a)/\Gamma(n+1)^2$.
+Then $r_n(-N)=v_n(a)\fall nN$, and the closed value is
+\begin{equation}\label{eq:complementfamily}
+ \frac{(-1)^N(a)_N(1-a)_N}{N!}
+ \bigl(H_N+C_a\bigr),\qquad
+ C_a=-2\gamma-\psi(a)-\psi(1-a),
+\end{equation}
+after the same explicit polynomial/harmonic subtraction.
+Standard rational digamma identities give
+\[
+ C_{1/2}=4\log2,\quad C_{1/3}=3\log3,\quad
+ C_{1/4}=6\log2,\quad C_{1/6}=4\log2+3\log3.
+\]
+For example,
+\[
+ v_n(1/3)=\frac{2\pi}{\sqrt3}\frac{(3n)!}{27^n(n!)^3},
+ \qquad
+ v_n(1/4)=\pi\sqrt2\frac{(4n)!}{64^n(2n)!(n!)^2}.
+\]
+Thus every falling-factorial moment in these two factorial-ratio families
+has an exact subtracted evaluation in a single logarithm and rational
+numbers.  The general jet theorem supplies their Stieltjes analogues
+without a new summation argument.

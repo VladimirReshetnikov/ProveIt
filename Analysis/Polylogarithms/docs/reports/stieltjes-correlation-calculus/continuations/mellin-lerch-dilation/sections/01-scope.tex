@@ -1,0 +1,59 @@
+\section{Scope, source audit, and mathematical status}\label{mld:sec:scope}
+
+The canonical manuscript already contains extensive polylogarithmic reduction, gamma arithmetic, Hurwitz-parameter differentiation, and Stieltjes antiderivative theory. The latest incoming reports add periodic Hurwitz convolution, shifted correlations, their spectral derivatives, and contact terms under differentiation. A useful continuation must therefore distinguish an additional identity from a repackaging of an existing result.
+
+We inspected the manuscript text and status files and all five archives in the incoming directory at commit
+\src{fc4d3bf80534ad7c901d3b8c9e71baf2df0064ed}
+\cite{ProveIt,IncomingResonance,IncomingShifted,IncomingConvolution,IncomingClosure,IncomingCalculus}.
+The source manifest records the retrieved bytes and their hashes. The audit was directed at the identity questions relevant to this article; it is not a claim to have re-proved every theorem in the manuscript.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth}Y@{}}
+\toprule
+Source strand & Consequence for the present work\\
+\midrule
+Manuscript integration and differentiation chapters & The elementary-symmetric harmonic derivative tower and Hurwitz-jet antiderivatives are established starting points.\\
+Manuscript Gaussian harmonic sums & The recorded $S_4$ evaluation has an exact proof. The residual certificates for $S_6$ and $S_8$ do not prove equality.\\
+Incoming shifted Hurwitz jets & The explicit question about dilation, traces, and subtraction scale is answered in Section~\ref{mld:sec:dilation}.\\
+Other four incoming packages & Their convolution, resonance, and correlation identities constrain the novelty and normalization claims here.\\
+Published Euler-sum literature & The unshifted parity reductions in Section~\ref{mld:sec:harmonic} are consistent with Xu--Wang's prior formulas.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{What is proved here}
+
+The main additions are an explicit finite transform formula for arbitrary denominator order, its complete treatment at integer Mellin resonances, a shifted harmonic reflection generator, and a dilation theorem that retains the local finite-part terms. These are identity results. Estimates appear only when needed to justify convergence, parameter differentiation, or continuation.
+
+The Mellin formula is derived from the classical Fermi integral, Euler's beta integral, and elementary partial fractions. The higher-pole reduction and its integer-parameter formulas organize those ingredients into a uniform calculation. The two-shift harmonic theorem packages an infinite family into one identity of analytic functions. The dilation result closes a question explicitly proposed in the incoming material, with a precise choice of subtraction coordinate.
+
+None of these descriptions asserts global literature priority for every specialization. The standard special-function conventions follow the DLMF \cite{DLMFpoly,DLMFlerch,DLMFhurwitz,DLMFgamma}. The relevant Euler-sum antecedent is Xu and Wang \cite{XuWang}; the underlying Hurwitz product-integral method goes back at least to the work of Espinosa and Moll \cite{EspinosaMoll}. The article supplies its own proofs of every formula used as a new addition to the repository.
+
+\subsection{Conventions}
+
+For $|z|<1$ and $\Re q>0$,
+\[
+ \Li_s(z)=\sum_{n\ge1}\frac{z^n}{n^s},\qquad
+ \Phi(z,s,q)=\sum_{n\ge0}\frac{z^n}{(n+q)^s}.
+\]
+Thus $\Li_s(z)=z\Phi(z,s,1)$. Powers of $n+q$ use the principal logarithm on the right half-plane; more generally principal logarithms are used unless a continuation is specified. We write $\psi(q)=\Gamma'(q)/\Gamma(q)$. The gamma logarithm is the analytic $\log\Gamma(q)$ on $\Re q>0$, normalized by $\log\Gamma(1)=0$.
+
+Spectral derivatives are denoted by square brackets:
+\[
+ \Li_s^{[m]}(z)=\partial_s^m\Li_s(z),\qquad
+ \zeta^{[m]}(s,q)=\partial_s^m\zeta(s,q).
+\]
+An ordinary superscript in $\psi^{(r)}(q)$ or $\gamma_m^{(r)}(q)$ means differentiation in $q$. The normalization of the generalized Stieltjes constants is
+\begin{equation}\label{mld:eq:stieltjes-definition}
+ \zeta(1+u,q)=\frac1u+
+       \sum_{m\ge0}\frac{(-1)^m}{m!}\gamma_m(q)u^m,
+ \qquad \gamma_0(q)=-\psi(q).
+\end{equation}
+We write $\gamma_m=\gamma_m(1)$ and $\gamma=\gamma_0$. Generalized harmonic numbers are
+\[
+ H_n^{(r)}=\sum_{j=1}^n j^{-r},\qquad H_0^{(r)}=0,
+ \qquad H_n=H_n^{(1)}.
+\]
+The rising factorial is $(s)_r=s(s+1)\cdots(s+r-1)$, with $(s)_0=1$. Coefficient extraction, such as $[u^m]F(u)$, always refers to an analytic germ or to a specified formal power series. A removable product such as $u\zeta(1+u)$ is evaluated as a whole.
+
+There are two different regularization operations later in the article. Distributional pullback transports an already extended distribution. Ambient-coordinate finite part instead extends the dilated pointwise function by deleting divergent terms in the original integration coordinate. Their difference is explicit and generally nonzero. Throughout the Mellin and harmonic sections, the integrals are ordinary convergent integrals and no finite-part convention is involved.

@@ -1,0 +1,91 @@
+\section{Scope, provenance, and conventions}\label{sec:scope}
+
+\subsection{What this continuation establishes}
+The requested direction is exact special-function identities, rather than
+inequalities or numerical nonreduction.  The present development connects
+five objects: gamma ratios, generalized harmonic numbers, spectral
+Hurwitz-zeta derivatives, generalized Stieltjes constants, and polylogarithmic
+endpoint counterterms.  Asymptotic expansions enter only to prove that
+certain explicitly displayed differences are genuinely summable and
+that differentiation is legitimate.  The final statements are identities.
+
+There are three main mechanisms.  First, the poles of Gauss's summation
+formula cancel the poles of the matching Hurwitz-zeta counterterms.
+Second, the asymptotic coefficients satisfy a parameter differential law,
+which collapses every zeroth-order resonance to a short digamma expression.
+Third, Taylor coefficients preserve the cancellation and produce Stieltjes
+constants at precisely the colliding pole.  A different, balanced parameter
+variation generates the all-weight harmonic-tail identity of
+Theorem~\ref{thm:tail}.
+
+The initial canonical repository README reports an exact proof of $S_4$
+and keeps $S_6$ and the revised $S_8$ conjectural.  It also distinguishes
+analytic proofs, finite exact certificates, and small numerical residuals
+\cite{repo-readme}.  Those distinctions are retained here.  We do not
+reprove $S_4$, promote either remaining Gaussian conjecture, or infer any
+independence statement from numerical searches.
+
+The three inspected incoming packages on shifted Hurwitz jets and
+Stieltjes correlations already develop circular convolution, contact terms,
+and primitive ladders.  Our construction instead starts from a
+hypergeometric coefficient sequence.  The full incoming directory was
+changing during the investigation; the audit is not exhaustive.  The latest
+observed repository head was
+\src{e0d9463bdee9685dfb1dddb819059cc738540c57}.
+Individual inspected files and limitations are recorded in
+\src{notes/SOURCE_AUDIT.md}.  A small wording correction was rechecked at
+that exact commit; no repository file was modified.
+
+\subsection{Classical inputs and the priority boundary}
+Gauss's ${}_2F_1(1)$ evaluation, Stirling--Bernoulli gamma-ratio expansions,
+and the defining identities for Hurwitz zeta are classical
+\cite{dlmf-gauss,dlmf-gamma,dlmf-hurwitz}.
+B\"uhring's treatment of hypergeometric partial sums includes zero and
+negative integer excess and their constant terms \cite{buhring2004}.
+In particular, the zeroth-order evaluation below belongs to that classical
+constant-term setting; its short coefficient proof is an independent
+organization, not a claim to have discovered hypergeometric finite parts.
+Our coefficients $A_j$ are \emph{not} B\"uhring's coefficients
+$A_k^{(p)}$: the latter encode a different continuation expansion.
+The present fixed-shift subtraction basis, all-order Stieltjes coefficient
+formula, degeneracy-safe implementation, and combined primitive calculus
+are the specific development supplied to the repository.
+
+Parameter differentiation of classical summations is likewise an
+established source of harmonic identities.  We give complete proofs of
+our particular all-weight formulas, but do not claim that every
+specialization is absent from the literature.  A full priority audit of
+individual binomial sums would require comparison with a much larger
+hypergeometric literature.  No famous open problem is declared solved.
+
+\subsection{Notation and analytic domains}
+Unless a local complex extension is explicitly invoked, $a,b,c,x$ are
+positive real numbers, $N,m$ are nonnegative integers, and $K$ is a positive
+integer.  We use $H_0=0$ and
+\[
+ H_n^{(r)}=\sum_{j=1}^n\frac1{j^r},\qquad H_n=H_n^{(1)},
+ \qquad (y)_N=\prod_{j=0}^{N-1}(y+j).
+\]
+Empty products equal one.  The falling factorial is
+$\fall nN=n(n-1)\cdots(n-N+1)$.
+The generalized Stieltjes constants have the convention
+\begin{equation}\label{eq:stieltjes}
+ \zeta(1+t,c)=\frac1t+
+ \sum_{h=0}^\infty\frac{(-1)^h\gamma_h(c)}{h!}t^h,
+ \qquad \gamma_0(c)=-\psi(c).
+\end{equation}
+We reserve $\zeta^{[q]}(s,c)=\partial_s^q\zeta(s,c)$ for derivatives in
+\emph{order}; $\psi^{(q)}$ means a derivative in \emph{argument}.
+A jet means an ordinary Taylor coefficient:
+$[t^m]f(t)=f^{(m)}(0)/m!$.
+This normalization matters in every all-order formula.
+
+Our complete exponential Bell polynomials are specified by
+\begin{equation}\label{eq:bell}
+ \exp\left(\sum_{k\ge1}X_k\frac{t^k}{k!}\right)
+ =\sum_{m\ge0}\Bcal_m(X_1,\ldots,X_m)\frac{t^m}{m!}.
+\end{equation}
+Thus $\Bcal_1=X_1$, $\Bcal_2=X_1^2+X_2$, and
+$\Bcal_3=X_1^3+3X_1X_2+X_3$.
+Reciprocal gamma is always interpreted as the entire function $1/\Gamma$,
+not as a separately evaluated division by an infinite number.

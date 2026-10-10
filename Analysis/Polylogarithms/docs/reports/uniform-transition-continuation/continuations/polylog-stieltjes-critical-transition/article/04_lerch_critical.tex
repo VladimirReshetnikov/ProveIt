@@ -1,0 +1,348 @@
+% Research notes for parent agent.  New relative to ProveIt commit
+% 570b0567f311cf1890865065896be2665f469e4f, specifically the most recent
+% lerch-global-phase/continuations/euler-lambert-dominant-extrema report.
+% This is a section fragment, not a standalone LaTeX document.
+
+\section{Sharp sign blocks for diagonal Lerch velocities}
+\label{newdiag:sec:blocks}
+
+We use the notation and theorems of the latest Euler--Lambert
+continuation \cite{RepoLerch}.  To make the connection with the original special
+functions explicit, define for $h>0$, $0\leq\rho\leq1$,
+\[
+ f_{n,k}(x)=(-1)^{n+k}\frac{d^k}{dx^k}
+                    \frac{\log^n x}{x},\qquad
+ \mathcal F_{n,k}^{\rho,h}(x)
+       =\sum_{m\geq0}\rho^m f_{n,k}(x+mh).
+\]
+For $k\geq1$ this series converges locally uniformly for $x>0$
+even at $\rho=1$.  At $h=1$, it equals $(-1)^{n+k}$ times the
+$k$th parameter derivative of the logarithmic Lerch coefficient
+$(-1)^n\partial_s^n\Phi(\rho,s,x)|_{s=1}$ when $\rho<1$,
+and $(-1)^{n+k}\gamma_n^{(k)}(x)$ when $\rho=1$.
+At $n\geq2$, $k=n-1$, the local expansion
+$\log^n x/x=(x-1)^n+O((x-1)^{n+1})$ gives
+$f_{n,n-1}(1)=0$ and $f_{n,n-1}'(1)=-n!$.
+The implicit function theorem therefore gives a real analytic zero
+branch $a_n^{(h)}(\rho)$ with $a_n^{(h)}(0)=1$.
+Differentiating its equation at zero proves
+\[
+ (a_n^{(h)})'(0)=\frac{f_{n,n-1}(1+h)}{n!}.
+\]
+The real-rooted elementary polynomial argument in the cited baseline
+also shows that this is the smallest positive zero branch for
+sufficiently small $\rho\geq0$.
+
+For $A=1+h>1$, put
+\[
+ v_n(A)=-\frac1{n!}\left.\frac{d^{n-1}}{dx^{n-1}}
+               \frac{\log^n x}{x}\right|_{x=A},
+ \qquad
+ \sum_{n\geq1}v_n(A)t^n=\log A-U_A(t),
+ \qquad e^{U_A(t)}=A+tU_A(t).
+\]
+Thus $v_n(A)$ is exactly that initial velocity.  The auxiliary
+coefficient at $n=1$ completes the generating function.  For completeness,
+apply Lagrange inversion \cite{Gessel} to $X=A+t\log X$ with outer function
+$\log X$.  It gives
+\[
+ [t^n]\log X(t)=\frac1{n!}
+       \left.\frac{d^{n-1}}{dx^{n-1}}
+                \frac{\log^n x}{x}\right|_{x=A}=-v_n(A).
+\]
+Setting $U_A=\log X$ proves the displayed inverse identity as an
+identity of analytic germs.  Equivalently, with unsigned Stirling
+numbers of the first kind,
+\[
+ v_n(A)=A^{-n}\sum_{j=1}^n
+             \genfrac{[}{]}{0pt}{}{n}{n-j+1}\frac{(-\log A)^j}{j!}.
+\]
+These generating and coefficient identities are inherited results,
+not new claims of this section.  Define $\theta\in(0,\pi)$, $a$, $u_*$,
+$\tau$, $R$, and $\chi$ by
+\begin{gather*}
+ \log A=1-\theta\cot\theta+
+       \log\frac{\theta}{\sin\theta},\\
+ a=1-\theta\cot\theta,
+ \qquad u_*=a+i\theta,
+ \qquad \tau=e^{u_*},\quad R=e^a,
+ \qquad \chi=\sqrt{-2u_*},
+\end{gather*}
+where $\Re\chi>0$ and $\Im\chi<0$.  Write
+$\phi=-\arg\chi\in(\pi/4,\pi/2)$.  The selected-sheet theorem in
+the source report proves the additive estimate
+\begin{equation}\label{newdiag:eq:cosine}
+ \frac{\sqrt\pi R^n n^{3/2}}{|\chi|}\,v_n(A)
+       =\cos(n\theta+\phi)+O_A(n^{-1}).
+\end{equation}
+No new inverse-sheet claim is needed here.
+
+\begin{theorem}[The least eventual block length]
+\label{newdiag:thm:sharp-block}
+For each fixed $A>1$, the least positive integer $K$ such that every
+sufficiently late block of $K$ consecutive velocities contains both a
+strictly positive and a strictly negative velocity is
+\begin{equation}\label{newdiag:eq:sharp-K}
+ K(A)=\left\lceil\frac\pi{\theta(A)}\right\rceil+1.
+\end{equation}
+In particular, $K(2)=4$, and infinitely many blocks of three
+consecutive velocities $v_n(2)$ have one strict sign.
+\end{theorem}
+
+\begin{proof}
+First suppose $\pi/\theta$ is not an integer, and put
+$m=\lfloor\pi/\theta\rfloor$.  The $m+2$ points
+$0,\theta,\ldots,(m+1)\theta$ have largest circular gap
+\[
+ g=\max\{\theta,\ 2\pi-(m+1)\theta\}<\pi.
+\]
+There is consequently a fixed $\eta>0$ such that every rotation of
+these points contains one point with cosine at least $\eta$ and one
+with cosine at most $-\eta$.  Indeed choose an arc length strictly
+between $g$ and $\pi$, and take the two opposite closed arcs of that
+length inside the positive and negative cosine semicircles.  A gap
+bound forces each arc to meet the rotated point set.  The error in
+\eqref{newdiag:eq:cosine} is eventually smaller than $\eta/2$.
+Thus $m+2=K(A)$ always suffices.
+
+To prove sharpness, $m+1$ consecutive phase points all lie in an open
+cosine semicircle precisely for starting phases in either of two
+antipodal open intervals, each of length
+$\delta=\pi-m\theta>0$.  If $\theta/(2\pi)$ is irrational, density
+of the rotation orbit supplies infinitely many starting phases in a
+closed subinterval of one of these intervals.  They have a uniform
+nonzero cosine margin, so \eqref{newdiag:eq:cosine} gives infinitely
+many strict same-sign velocity blocks of length $m+1$.
+
+Now suppose $\theta/(2\pi)=p/q$ in lowest terms.  The finite phase
+orbit modulo $\pi$ has spacing $\pi/q$ when $q$ is odd, and spacing
+$2\pi/q$ when $q$ is even.  The two antipodal admissible intervals
+project to one open interval modulo $\pi$ of length
+\[
+ \delta=\frac{\pi(q-2mp)}q.
+\]
+The positive integer $q-2mp$ is odd when $q$ is odd, and even when
+$q$ is even.  Thus $\delta$ is at least one spacing in either case.
+No point of the phase orbit can be an endpoint of this interval:
+an endpoint would make one of the finitely many cosines zero.  We
+recall the elementary exclusion.  If such a cosine vanished, then
+$\phi/\pi$ would be rational, so
+$b=\theta/a=\tan(\pi-2\phi)>0$ would be algebraic.  Since
+$\cot\theta$ is also algebraic, the identity
+\[
+ \theta(1+b\cot\theta)=b
+\]
+would make $\theta$ algebraic; its coefficient on the left cannot
+vanish because $b>0$.  This contradicts the transcendence of $\pi$.
+The interval therefore contains a phase point strictly inside.
+Its residue class gives infinitely many same-sign blocks, and its
+positive cosine margin again absorbs the error.  This proves
+sharpness in the rational case as well.
+
+Finally suppose $\theta=\pi/m$ for an integer $m\geq2$.
+The phase orbit is rational and, by the preceding exclusion, has no
+zero cosine.  In every block of $m+1$ phases, the first and last
+are antipodal, so both strict signs occur, with a uniform margin.
+Blocks of $m$ phases of one sign also occur: their admissible interval
+modulo $\pi$ has length $\theta$, exactly the orbit spacing, and
+its endpoints are excluded.  Thus $K=m+1$, as stated.
+For $A=2$, the already proved bounds $\pi/3<\theta(2)<\pi/2$
+give $K(2)=4$.
+\end{proof}
+
+This answers the least-block-length question in the newest report.
+It does not decide whether $\theta(2)/(2\pi)$ is irrational.
+In the exceptional reciprocal-angle case, the formula also improves
+the earlier sufficient bound by one.
+
+\section{Higher critically weighted sums and their finite constants}
+\label{newdiag:sec:finiteparts}
+
+The selected branch has a convergent Puiseux expansion at $\tau$,
+\begin{equation}\label{newdiag:eq:puiseux}
+ U_A(t)=u_*+\sum_{m\geq1}c_m(1-t/\tau)^{m/2},
+ \qquad c_1=\chi.
+\end{equation}
+The first coefficients, with $U=u_*$, are
+\begin{align}
+ c_2&=\frac U3-1,\notag\\
+ c_3&=\chi\left(\frac12-\frac U{18}-\frac1{4U}\right),\label{newdiag:eq:c1234}\\
+ c_4&=-\frac{2U^2}{135}+\frac U3-\frac23.\notag
+\end{align}
+The first three are in the source; the fourth follows from the
+coefficient of $z^{5/2}$ in
+$e^w-1-w+z(U+w)=0$.
+
+For integers $p\geq1$ consider the sharp partial sums
+\[
+ S_p(N)=\sum_{n=1}^N n^p v_n(A)\tau^n.
+\]
+For $p\geq2$ these sums contain divergent oscillatory terms arising
+from the conjugate singularity.  Subtracting only nonoscillatory
+fractional powers does not give a finite limit.  The following
+explicit formula includes both contributions.
+
+Put $q=\overline\tau/\tau=e^{-2i\theta}\ne1$ and
+\[
+ B_N(\beta)=(-1)^N\binom\beta N
+     =\frac{\Gamma(N-\beta)}{\Gamma(-\beta)\Gamma(N+1)}
+       \qquad(\beta\notin\{0,1,2,\ldots\}).
+\]
+Let $\genfrac{\{}{\}}{0pt}{}{p}{l}$ be a Stirling number of the second
+kind and $(\alpha)_{\underline l}$ a falling factorial.  Define the
+following finite explicit sums, with $\alpha_j=j+1/2$:
+\begin{align}
+ T_p(N)={}&-\sum_{j=0}^{p-1}c_{2j+1}
+   \sum_{l=j+1}^{p}\genfrac{\{}{\}}{0pt}{}{p}{l}
+       (-1)^l(\alpha_j)_{\underline l}
+   \sum_{i=0}^{l-j-1}(-1)^i\binom li
+       B_N(\alpha_j-l+i-1),\label{newdiag:eq:T}\\
+ E_p(N)={}&-q^{-N}\sum_{j=0}^{p-2}\overline{c_{2j+1}}
+   \sum_{l=j+2}^{p}\genfrac{\{}{\}}{0pt}{}{p}{l}
+       (-1)^l(\alpha_j)_{\underline l}\notag\\
+ &\hspace{6mm}\cdot
+   \sum_{\substack{i,h\geq0\\i+h\leq l-j-2}}
+       (-1)^{i+h}\binom li\frac{q^h}{(1-q)^{h+1}}
+       B_N(\alpha_j-l+i+h).
+       \label{newdiag:eq:E}
+\end{align}
+An empty sum is zero, so $E_1=0$.
+
+\begin{theorem}[All-order sharp-cutoff finite parts]
+\label{newdiag:thm:finiteparts}
+For each fixed $A>1$ and integer $p\geq1$,
+\begin{equation}\label{newdiag:eq:finitepart}
+ S_p(N)=T_p(N)+E_p(N)+C_p(u_*)+O_{A,p}(N^{-1/2}),
+\end{equation}
+where the finite constant is the universal rational polynomial
+\begin{equation}\label{newdiag:eq:Cp}
+ C_p(U)=\sum_{j=1}^p(-1)^{j+1}j!
+                 \genfrac{\{}{\}}{0pt}{}{p}{j}c_{2j}(U).
+\end{equation}
+The even Puiseux coefficients, and hence the constant, have the
+explicit coefficient-extraction formula
+\begin{equation}\label{newdiag:eq:even-coefficients}
+ c_{2j}(U)=\frac{(-1)^j}{2j}[w^{2j-1}]
+       \left(\frac{(U+w)w^2}{e^w-1-w}\right)^j.
+\end{equation}
+In particular, $c_{2j}$ and $C_p$ have rational coefficients and
+degrees at most $j$ and $p$, respectively.  The gamma ratios in
+$T_p,E_p$ can equivalently be expanded and truncated through every
+nonnegative power of $N$; only strictly positive half-integer powers
+occur, and the limit in \eqref{newdiag:eq:finitepart} is unchanged.
+\end{theorem}
+
+\begin{proof}
+Let $F(r)=\log A-U_A(\tau r)$ and
+$\Theta=r\,d/dr$.  Exact coefficient extraction gives
+\begin{equation}\label{newdiag:eq:partialsumgf}
+ S_p(N)=[r^N]\frac{\Theta^pF(r)}{1-r}.
+\end{equation}
+The known slit continuation places its only dominant singularities
+at $r=1$ and $r=q$.  Use
+\[
+ \Theta^p=\sum_{l=1}^p\genfrac{\{}{\}}{0pt}{}{p}{l}
+                      r^l\frac{d^l}{dr^l}.
+\]
+Near $r=1$, write $z=1-r$.  Applying this differential operator to
+$-c_{2j+1}z^{\alpha_j}$ and dividing by $z$ produces the powers
+\[
+ -c_{2j+1}\genfrac{\{}{\}}{0pt}{}{p}{l}
+ (-1)^{l+i}(\alpha_j)_{\underline l}\binom li
+ z^{\alpha_j-l+i-1}.
+\]
+Precisely the exponents at most $-3/2$ produce divergent
+coefficient terms.  Their ranges are $0\leq j\leq p-1$,
+$j+1\leq l\leq p$, and $0\leq i\leq l-j-1$; their coefficients
+are exactly \eqref{newdiag:eq:T}.  The analytic part of $F$ is
+$\log A-U-\sum_{j\geq1}c_{2j}z^j$.  Its contribution to the
+simple pole after division by $z$ is
+\[
+ (\Theta^p F_{\mathrm{analytic}})(1)
+   =\sum_{j=1}^p(-1)^{j+1}j!
+                  \genfrac{\{}{\}}{0pt}{}{p}{j}c_{2j}=C_p(U).
+\]
+The remaining nonintegral exponents are at least $-1/2$.
+
+At $r=q$, write $w=1-r/q$.  The same differential operator has
+the same expression in this coordinate, while
+\[
+ \frac1{1-r}=\frac1{1-q+qw}
+   =\sum_{h\geq0}\frac{(-1)^hq^h}{(1-q)^{h+1}}w^h.
+\]
+Combining this with the conjugate Puiseux series gives exponents
+$\alpha_j-l+i+h$.  Those at most $-3/2$ are precisely the terms
+of \eqref{newdiag:eq:E}.  At the conjugate point there is no
+additional simple pole: the denominator is nonzero and the
+analytic part stays analytic.  The remaining nonintegral exponents
+are again at least $-1/2$.
+
+After subtracting the finitely many displayed singular terms and
+$C_p(U)/(1-r)$, singularity transfer \cite{FlajoletOdlyzko} gives coefficients
+$O_{A,p}(N^{-1/2})$.  The hypotheses are exactly the proved radial-slit
+continuation and convergent local Puiseux expansions; the usual
+finite-singularity form of transfer applies.  The exact binomial
+coefficient identity gives \eqref{newdiag:eq:finitepart}.  Its
+gamma-ratio expansion proves the equivalent fractional-power
+subtraction statement.
+
+Finally the local implicit equation is
+$z=-(e^w-1-w)/(U+w)$.  In the source's Lagrange formula
+\[
+ c_m=\frac{\chi^m}{m}[w^{m-1}]
+ \left(\frac{2U(e^w-1-w)}{w^2(U+w)}\right)^{-m/2},
+\]
+substitute $m=2j$ and $\chi^{2j}=(-2U)^j$.  This gives
+\eqref{newdiag:eq:even-coefficients}; its polynomial assertion follows
+because $w^2/(e^w-1-w)$ is analytic with rational Taylor coefficients.
+\end{proof}
+
+\begin{corollary}[An explicit second-derivative identity]
+\label{newdiag:cor:p2}
+For the same parameters,
+\begin{align}
+ \sum_{n=1}^N n^2v_n(A)\tau^n
+ ={}&\frac{\chi}{3\sqrt\pi}N^{3/2}\notag\\
+ &+\frac{\sqrt N}{\sqrt\pi}
+   \left(\frac{5\chi}{8}-\frac{3c_3}{2}
+       +\frac{\overline\chi e^{2iN\theta}}
+                    {2(1-e^{-2i\theta})}\right)\notag\\
+ &+\frac{4u_*^2}{135}-\frac{u_*}{3}+\frac13
+       +O_A(N^{-1/2}).\label{newdiag:eq:p2}
+\end{align}
+\end{corollary}
+
+\begin{proof}
+The finite sums simplify to
+\[
+ T_2(N)=\frac\chi4 B_N(-5/2)-\frac{3c_3}4B_N(-3/2),
+ \qquad
+ E_2(N)=\frac{\overline\chi q^{-N}}{4(1-q)}B_N(-3/2).
+\]
+Use
+$B_N(-5/2)=\frac4{3\sqrt\pi}N^{3/2}
+ (1+15/(8N)+O(N^{-2}))$ and
+$B_N(-3/2)=\frac2{\sqrt\pi}N^{1/2}(1+O(N^{-1}))$.
+The constant is $c_2-2c_4$, giving the stated polynomial.
+\end{proof}
+
+For $p=1$, the theorem recovers the established formula
+$\sum_{n\leq N}nv_n(A)\tau^n
+=\chi\sqrt{N/\pi}+u_*/3-1+O_A(N^{-1/2})$.
+The new second-order term displays the obstruction at higher orders:
+the conjugate critical point contributes a rotating term of size
+$\sqrt N$.  Higher $p$ produce the analogous finite collection of
+rotating half-integer powers, with an explicitly defined finite
+constant after subtraction.
+
+\paragraph{Provenance and scope.}
+These two results answer the least-block-length and higher-critical-sum
+questions in
+\texttt{sections/10\_research\_agenda.tex} of the Euler--Lambert continuation \cite{RepoLerch}
+at ProveIt commit
+\texttt{570b0567f311cf1890865065896be2665f469e4f}.
+They use, and do not re-label as new, the selected-sheet theorem,
+all-order Puiseux expansion and additive coefficient asymptotics in
+that continuation's \texttt{sections/05\_harmonic.tex}.
+The word ``new'' refers to the checked repository baseline;
+no worldwide priority assertion follows from that comparison.

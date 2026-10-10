@@ -1,0 +1,101 @@
+\section{Implementation formulas and replay instructions}\label{sec:implementation}
+
+\subsection{Exact Taylor coefficients without large symbolic expressions}
+For rational $a,b,c,u_0$, the implementation directly computes
+$[t^q]\ell_k(u_0+t;c)$.  The constant coefficient is \eqref{eq:ell}; for
+$q\ge1$ it is
+\begin{equation}\label{eq:elljet}
+ [t^q]\ell_k(u_0+t;c)=
+ \frac{(-1)^{k+2}}{k(k+1)}\binom{k+1}{q}
+ B_{k+1-q}(a+b+u_0-c),\qquad q\le k+1,
+\end{equation}
+and zero for larger $q$.  Truncated Cauchy multiplication in
+\eqref{eq:Arec} then produces $[t^q]A_j(u_0+t;c)$ by rational arithmetic.
+Only the coefficients actually needed by \eqref{eq:alljets} are generated.
+
+An independently parameterized routine follows the path
+$(a+\alpha t,b+\beta t,u_0+\eta t)$.
+For $q\ge1$, its coefficient of $\ell_k$ is
+\begin{align}
+ &\frac{(-1)^{k+1}}{k(k+1)}\binom{k+1}{q}
+ \bigl\{\alpha^q B_{k+1-q}(a-c)+\beta^q B_{k+1-q}(b-c)\notag\\
+ &\hspace{49mm}-(\alpha+\beta+\eta)^q
+                    B_{k+1-q}(a+b+u_0-c)\bigr\}.
+ \label{eq:pathjet}
+\end{align}
+It reduces to \eqref{eq:elljet} when $(\alpha,\beta,\eta)=(0,0,1)$.
+The balanced harmonic-tail computation uses $(1,-1,0)$ and extracts the
+coefficient of $t^{2k}$.  This avoids evaluating large symbolic gamma
+derivatives at a singular lower parameter.
+
+\subsection{Independent series-side diagnostics}
+For the spectral jet at $u=-N$, the diagnostic computes the first $M$
+terms of \eqref{eq:jetseries} directly.  Its tail is approximated by
+\begin{equation}\label{eq:numerictail}
+ \sum_{j=K}^{J-1}\sum_{q=0}^m
+ a_{j,q}\frac{\zeta^{[m-q]}(1-N+j,M+c)}{(m-q)!}.
+\end{equation}
+These zeta arguments are $>1$ for the minimal choice $K=N+1$;
+there is no Stieltjes constant or Gauss closed sum on this side of the
+comparison.  The calculation is repeated with different $(M,J)$.
+Because the omitted asymptotic remainder is not enclosed by interval
+arithmetic in the supplied script, the result remains a diagnostic rather
+than a certified error bound.
+
+For reciprocal-gamma zeros the direct summand jet is computed from
+\eqref{eq:rgamma}.  Elsewhere it is obtained by the exponential recurrence
+for the Taylor coefficients of
+$-\log\Gamma(n+a+b-N+t)$, multiplied by the nonzero constant value.
+The closed side computes $E_N$ from \eqref{eq:E0}--\eqref{eq:EN}, without
+forming singular polygamma values at $a-N$ or $b-N$.
+
+\subsection{Stable evaluation inside the unit disk}
+A useful exact formula for the regularized generating function is
+\begin{align}
+ F(u,z)={}&\sum_{n=0}^{L-1}r_n(u)z^n\notag\\
+ &+r_L(u)z^L\,
+ {}_3F_2\left(\begin{matrix}1,L+a,L+b\\L+1,L+a+b+u\end{matrix};z\right),
+ \label{eq:stableF}
+\end{align}
+provided $L$ is chosen so that the displayed tail parameters are
+nonexceptional locally.  It follows by shifting the power-series index;
+the upper parameter $1$ cancels the hypergeometric $k!$.
+This formula keeps all finite-head reciprocal-gamma zeros and permits
+ordinary Taylor differentiation of a regular tail.
+The numerical suite uses it to check the interior identities separately
+from the coefficient construction.
+
+\subsection{Files and commands}
+The package contains the complete \LaTeX\ source, compiled PDF, section
+sources, and the following principal artifacts:
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.42\linewidth}p{0.53\linewidth}@{}}
+\toprule
+File & Purpose\\
+\midrule
+\src{code/gauss_hurwitz.py} & Exact coefficient jets and numerical evaluators.\\
+\src{code/verify_exact.py} & Polynomial and rational regression tests.\\
+\src{code/verify_numeric.py} & Independently constructed numerical comparisons.\\
+\src{results/exact_checks.json} & Names and status of all finite exact checks.\\
+\src{results/numerical_checks.json} & Precision, configurations, values, and residuals.\\
+\src{results/central_binomial_table.json} & Exact counterterms and values through $N=10$.\\
+\src{integration/README.md} & Suggested placement and notation requirements.\\
+\src{integration/pslq-wording.patch} & Minimal proposed editorial correction.\\
+\src{notes/SOURCE_AUDIT.md} & Source provenance and audit limitations.\\
+\bottomrule
+\end{tabular}
+\end{center}
+From the extracted package directory, run
+\begin{verbatim}
+python -m pip install -r requirements.txt
+python code/verify_exact.py
+python code/verify_numeric.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The tested environment was Python 3.13.5, SymPy 1.14.0, and mpmath 1.3.0.
+The code is intended for Python 3.10 or later; only the recorded environment
+was executed for this delivery.  The build does not require network access
+once the Python dependencies and TeX packages are installed.  The manifest
+checksums describe the delivered files; rerunning tests updates timing
+fields in the result files and therefore changes their checksums.

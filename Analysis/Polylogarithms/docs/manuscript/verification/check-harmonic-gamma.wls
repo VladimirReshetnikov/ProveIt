@@ -1,0 +1,11 @@
+ClearAll[u,v,quot,mixed,pure,rows,wrong,integral];
+quot=Gamma[1-u-v]/(Gamma[2-u] Gamma[2-v]);
+pure=FullSimplify[quot/.v->0];
+mixed=FullSimplify[D[quot,v]/.v->0];
+rows=Table[TrueQ[FullSimplify[Coefficient[Normal[Series[mixed,{u,0,r}]],u,r]-(1+Sum[Zeta[j],{j,2,r+1}])]===0],{r,0,6}];
+integral=Integrate[PolyLog[2,x]+Log[1-x]^2,{x,0,1}];
+wrong=FullSimplify[integral-2(1+Zeta[2])];
+record=<|"engine"->$Version,"pure_generator_pass"->TrueQ[pure===1/(1-u)],"mixed_exact_checks"->Length[rows],"all_mixed_exact_pass"->And@@rows,"independent_elementary_integral_pass"->TrueQ[FullSimplify[integral-(1+Zeta[2])]===0],"printed_factor_two_rejected"->TrueQ[wrong===-(1+Pi^2/6)],"scope"->"Native exact Gamma coefficient expansions and an independent integrated harmonic generating function; the all-order identity is proved analytically."|>;
+AssociateTo[record,"all_pass"->And@@Lookup[record,{"pure_generator_pass","all_mixed_exact_pass","independent_elementary_integral_pass","printed_factor_two_rejected"}]];
+Export[FileNameJoin[{DirectoryName[$InputFileName],"harmonic-gamma-native.json"}],record,"RawJSON"];
+Print[ExportString[record,"RawJSON"]];Exit[If[TrueQ[record["all_pass"]],0,1]];

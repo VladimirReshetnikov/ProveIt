@@ -1,0 +1,150 @@
+\section{The all-integer resonant evaluation}\label{sec:resonances}
+
+\subsection{Reference shifts and a coefficient differential identity}
+The coefficient polynomials have more structure than their recursive
+definition initially suggests.
+
+\begin{lemma}[Exact transport in the reference shift]\label{lem:shift}
+For arbitrary reference shifts $c,d$,
+\begin{equation}\label{eq:shift}
+ A_j(u;c)=\sum_{l=0}^j A_l(u;d)
+ \frac{(1+u+l)_{j-l}}{(j-l)!}(c-d)^{j-l}.
+\end{equation}
+In particular, $A_j$ has degree at most $j$ in $c$, and
+\begin{equation}\label{eq:cderiv}
+ \partial_c A_j(u;c)=(u+j)A_{j-1}(u;c),\qquad j\ge1.
+\end{equation}
+\end{lemma}
+\begin{proof}
+In the expansion with reference $d$, write
+$n+d=(n+c)-(c-d)$ and expand each factor by the binomial theorem.
+Uniqueness of asymptotic coefficients gives \eqref{eq:shift}.
+Taking its first-order variation in $c-d$ proves \eqref{eq:cderiv}.
+Since these are polynomial identities, establishing them for positive
+references proves their algebraic form without further restrictions.
+\end{proof}
+
+\begin{lemma}[Coefficient differential law]\label{lem:parameterlaw}
+For $j\ge1$,
+\begin{equation}\label{eq:parameterlaw}
+ (\partial_a+\partial_b-\partial_u)A_j
+ =-(u+j)A_{j-1}+
+ \sum_{k=1}^j\zeta(1-k,c)A_{j-k}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Treating $n$ temporarily as a positive real variable, logarithmic
+differentiation of \eqref{eq:rn} gives the exact identity
+\begin{equation}\label{eq:termparameter}
+ (\partial_a+\partial_b-\partial_u)r_n(u)
+ =\partial_n r_n(u)+\psi(n+1)r_n(u).
+\end{equation}
+The digamma asymptotic expansion at the same reference is
+\begin{equation}\label{eq:digammaasymp}
+ \psi(n+1)\sim\log(n+c)+
+ \sum_{k\ge1}\frac{\zeta(1-k,c)}{(n+c)^k}.
+\end{equation}
+Indeed, its coefficients are $-B_k(c)/k=\zeta(1-k,c)$, using Bernoulli
+reflection.  Substitute the finite expansions into \eqref{eq:termparameter}.
+The logarithmic terms cancel because $-\partial_u(n+c)^{-1-u}$
+is $\log(n+c)(n+c)^{-1-u}$.  At inverse-power order $j$,
+$\partial_n r_n$ contributes $-(u+j)A_{j-1}$ and the nonlogarithmic
+digamma terms contribute the sum in \eqref{eq:parameterlaw}.
+Uniqueness of the asymptotic expansion completes the proof.
+\end{proof}
+
+\subsection{Residue cancellation at every nonpositive integer}
+Set
+\begin{equation}\label{eq:rho}
+ \rho_N(a,b)=\frac{(-1)^N(1-a)_N(1-b)_N}{N!}.
+\end{equation}
+This is a polynomial, including when one of the factors vanishes.
+
+\begin{proposition}[Two exact resonant coefficient identities]\label{prop:rho}
+For every $N\ge0$,
+\begin{align}
+ A_N(-N;c)&=\rho_N(a,b),\label{eq:residueid}\\
+ \partial_u A_N(-N;c)
+ +\sum_{j=0}^{N-1}A_j(-N;c)\zeta(1-N+j,c)
+ &=(\partial_a+\partial_b)\rho_N(a,b).
+ \label{eq:bernoulliresonance}
+\end{align}
+The sum in the second identity is empty for $N=0$.
+\end{proposition}
+\begin{proof}
+Take $K=N+1$ in Theorem~\ref{thm:subtraction}.
+The only zeta factor with a pole at $u=-N$ has index $j=N$ and residue
+$A_N(-N;c)$.  On the other hand,
+$\Res_{u=-N}G(u)=\rho_N$, by the gamma residue formula and
+$\Gamma(a)/\Gamma(a-N)=(a-N)_N=(-1)^N(1-a)_N$.
+Since $R_{N+1}$ is holomorphic, its residue vanishes, proving
+\eqref{eq:residueid}.  For generic parameters this is a direct residue
+calculation; continuity gives the polynomial statement at degeneracies.
+
+For $N\ge1$, put $j=N$, $u=-N$ in \eqref{eq:parameterlaw}.
+The factor $u+j$ vanishes.  Use \eqref{eq:residueid} for the
+$a,b$ derivatives and rearrange.  This proves
+\eqref{eq:bernoulliresonance}.  For $N=0$, both sides are zero because
+$A_0=\rho_0=1$.
+\end{proof}
+
+The second identity is an explicit finite Bernoulli-polynomial identity,
+not merely a residue statement.  It is the cancellation needed to turn a
+long finite-part formula into a short evaluation.
+
+\begin{theorem}[Closed evaluation at every resonance]\label{thm:resonant}
+For positive $a,b,c$ and every $N\ge0$,
+\begin{align}
+ &\sum_{n=0}^\infty\left\{
+ \frac{\Gamma(n+a)\Gamma(n+b)}
+      {\Gamma(n+1)\Gamma(n+a+b-N)}
+ -\sum_{j=0}^{N}A_j(-N;c)(n+c)^{N-1-j}\right\}\notag\\
+ &\hspace{15mm}=
+ \boxed{\rho_N(a,b)
+ \bigl(H_N-\gamma-\psi(a)-\psi(b)+\psi(c)\bigr).}
+ \label{eq:closedresonance}
+\end{align}
+The series is absolutely convergent, including at positive integer
+parameters for which $\rho_N=0$.
+\end{theorem}
+\begin{proof}
+The case of nondegenerate parameters is enough initially.  Put $u=-N+t$.
+The gamma Laurent expansion gives
+\[
+ G(-N+t)=\frac{\rho_N}{t}+
+ \rho_N\{\psi(N+1)-\psi(a-N)-\psi(b-N)\}+O(t).
+\]
+Writing $A_N(-N+t;c)=\rho_N+t\partial_uA_N(-N;c)+O(t^2)$
+and using \eqref{eq:stieltjes}, its matching zeta product has constant term
+$\partial_uA_N(-N;c)-\rho_N\psi(c)$.
+Consequently \eqref{eq:master} gives
+\begin{align*}
+ R_{N+1}(-N;c)
+ ={}&\rho_N\{\psi(N+1)-\psi(a-N)-\psi(b-N)+\psi(c)\}\\
+ &-\partial_uA_N(-N;c)
+ -\sum_{j=0}^{N-1}A_j(-N;c)\zeta(1-N+j,c).
+\end{align*}
+The last line is $-(\partial_a+\partial_b)\rho_N$ by
+\eqref{eq:bernoulliresonance}.  Also
+\[
+ \frac{\partial_a\rho_N}{\rho_N}=
+ \psi(a)-\psi(a-N),\qquad
+ \frac{\partial_b\rho_N}{\rho_N}=
+ \psi(b)-\psi(b-N).
+\]
+Substitution cancels the shifted digammas, leaving
+$\rho_N\{\psi(N+1)-\psi(a)-\psi(b)+\psi(c)\}$.
+Finally $\psi(N+1)=H_N-\gamma$.
+Both the normally convergent bracketed sum and this last expression are
+continuous, indeed locally holomorphic, in the positive parameters.
+The identity therefore extends across all zeros of $\rho_N$.
+\end{proof}
+
+\begin{remark}[What is classical, and what the proof adds]
+The value theorem is consistent with the classical hypergeometric
+constant-term analysis discussed in Section~\ref{sec:scope}.  The proof
+above explains its simplification entirely within the fixed-shift
+coefficient algebra, supplies an exact recurrence for every subtraction,
+and remains valid at reciprocal-gamma degeneracies.  The next section
+retains the entire Taylor expansion rather than only its constant term.
+\end{remark}

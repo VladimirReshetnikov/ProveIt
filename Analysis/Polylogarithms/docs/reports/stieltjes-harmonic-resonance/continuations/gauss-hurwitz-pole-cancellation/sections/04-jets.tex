@@ -1,0 +1,151 @@
+\section{All resonant spectral jets and Stieltjes constants}\label{sec:jets}
+
+\subsection{An analytic gamma factor without singular intermediate terms}
+The direct Laurent expansion at $-N$ can be awkward when $a-N$ or $b-N$
+is a nonpositive integer.  The following exact factorization removes that
+problem.  Define
+\begin{align}
+ E_0(t)&=\frac{\Gamma(a)\Gamma(b)\Gamma(1+t)}
+               {\Gamma(a+t)\Gamma(b+t)},\label{eq:E0}\\
+ E_N(t)&=E_0(t)\prod_{r=1}^N
+              \frac{(a+t-r)(b+t-r)}{t-r}.
+              \label{eq:EN}
+\end{align}
+Every denominator $t-r$ is nonzero near $t=0$, and the formula is valid
+also when numerator factors vanish.  The gamma functional equation gives
+\begin{equation}\label{eq:Eidentity}
+ E_N(t)=tG(-N+t),\qquad E_N(0)=\rho_N.
+\end{equation}
+Write
+\[
+ e_q=[t^q]E_N(t),\qquad a_{j,q}=[t^q]A_j(-N+t;c).
+\]
+The coefficients $a_{j,q}$ are finite polynomial data.  Those of $E_0$ are
+Bell polynomials in ordinary polygamma values at positive arguments,
+and \eqref{eq:EN} then uses only finite products and divisions by
+nonvanishing linear factors.
+
+\begin{theorem}[All-order resonant Stieltjes formula]\label{thm:jets}
+Let $K>N$ and $m\ge0$.  Define
+$S_{N,m}^{(K)}(c)=[t^m]R_K(-N+t;c)$.  Then
+\begin{align}
+ S_{N,m}^{(K)}(c)={}&e_{m+1}-a_{N,m+1}
+ -\sum_{h=0}^m a_{N,m-h}\frac{(-1)^h\gamma_h(c)}{h!}
+ \notag\\
+ &-\sum_{\substack{0\le j<K\\j\ne N}}\ 
+   \sum_{q=0}^m a_{j,q}
+      \frac{\zeta^{[m-q]}(1-N+j,c)}{(m-q)!}.
+ \label{eq:alljets}
+\end{align}
+Its left side is the absolutely convergent ordinary series
+\begin{equation}\label{eq:jetseries}
+ \sum_{n=0}^\infty [t^m]\left\{
+ r_n(-N+t)-\sum_{j=0}^{K-1}
+ A_j(-N+t;c)(n+c)^{N-1-j}e^{-t\log(n+c)}\right\}.
+\end{equation}
+For the smallest uniform choice $K=N+1$, the only zeta derivatives in the
+last line of \eqref{eq:alljets} occur at $0,-1,\ldots,1-N$.
+\end{theorem}
+\begin{proof}
+Theorem~\ref{thm:subtraction} permits coefficient extraction from
+\eqref{eq:master} and termwise from \eqref{eq:RK}.
+The gamma term is $E_N(t)/t$, so its coefficient of $t^m$ is $e_{m+1}$.
+The singular counterterm is
+\[
+ A_N(-N+t;c)\left\{\frac1t+
+ \sum_{h\ge0}\frac{(-1)^h\gamma_h(c)}{h!}t^h\right\}.
+\]
+Its coefficient is $a_{N,m+1}$ plus the first sum in
+\eqref{eq:alljets}.  All other zeta factors are analytic at $t=0$, and the
+Cauchy product gives the remaining finite double sum.
+The coefficient of $t^{-1}$ cancels by \eqref{eq:residueid}.
+This proves the formula, with no appeal to a numerical limiting procedure.
+\end{proof}
+
+\begin{corollary}[Finite closure of each jet]\label{cor:closure}
+At fixed $N,m$ and $K=N+1$, the resonant jet belongs to the algebra generated
+by gamma/polygamma data at $a,b,1$, the constants
+$\gamma_0(c),\ldots,\gamma_m(c)$, and
+$\zeta^{[q]}(-r,c)$ for $0\le r\le N-1$, $0\le q\le m$,
+with polynomial coefficients in $a,b,c$ and rational numerical factors.
+Only finitely many members of these lists occur in any one evaluation.
+\end{corollary}
+This is a proved representation statement, not a claim of algebraic
+independence or minimality.  Lerch's identity
+$\zeta^{[1]}(0,c)=\log\Gamma(c)-\tfrac12\log(2\pi)$ already reduces
+some of the listed terms \cite[25.11.18]{dlmf-hurwitz}.
+Negative spectral arguments connect the formula to the integrated
+Hurwitz-zeta/negative-polygamma framework in the canonical manuscript and
+in the classical work of Espinosa and Moll \cite{espinosa-moll}.
+
+\subsection{Explicit Bell formula at zero excess}
+Set
+\begin{align}
+ L_1&=-\gamma-\psi(a)-\psi(b),\notag\\
+ L_k&=(-1)^k(k-1)!\zeta(k)-\psi^{(k-1)}(a)-\psi^{(k-1)}(b),
+ \qquad k\ge2.\label{eq:Lk}
+\end{align}
+Then $\log E_0(t)=\sum_{k\ge1}L_k t^k/k!$.
+For $N=0$, $K=1$, Theorem~\ref{thm:jets} becomes the all-order identity
+\begin{align}
+ &\sum_{n=0}^\infty\left\{
+ r_n(0)\Bcal_m\bigl(-\psi(n+a+b),-\psi'(n+a+b),\ldots,
+                    -\psi^{(m-1)}(n+a+b)\bigr)
+ -\frac{(-\log(n+c))^m}{n+c}\right\}\notag\\
+ &\hspace{12mm}=
+ \frac{\Bcal_{m+1}(L_1,\ldots,L_{m+1})}{m+1}
+ -(-1)^m\gamma_m(c).
+ \label{eq:Bellzero}
+\end{align}
+For $m=0$ the Bell polynomial in the summand is one.
+The expression is a derivative formula; its right side has been multiplied
+by $m!$ relative to \eqref{eq:alljets}.
+
+For instance, the first two nontrivial levels are
+\begin{align}
+ \sum_{n\ge0}\left\{-r_n(0)\psi(n+a+b)
+              +\frac{\log(n+c)}{n+c}\right\}
+ &=\frac{L_1^2+L_2}{2}+\gamma_1(c),\label{eq:Bellone}\\
+ \sum_{n\ge0}\left\{r_n(0)\bigl(\psi(n+a+b)^2-\psi'(n+a+b)\bigr)
+              -\frac{\log^2(n+c)}{n+c}\right\}
+ &=\frac{L_1^3+3L_1L_2+L_3}{3}-\gamma_2(c).
+ \label{eq:Belltwo}
+\end{align}
+The paired counterterms are essential; the separate logarithmic sums
+are divergent.
+
+\subsection{Terms that vanish at resonance can revive under differentiation}
+For $k\ge0$, the exact local reciprocal-gamma identity is
+\begin{equation}\label{eq:rgamma}
+ \frac1{\Gamma(-k+t)}
+ =(-1)^k k!\,t\,
+ \frac{\displaystyle\prod_{r=1}^k(1-t/r)}{\Gamma(1+t)}.
+\end{equation}
+It follows directly by applying the gamma functional equation $k+1$
+times.  In particular,
+\begin{equation}\label{eq:rgammafirst}
+ \frac1{\Gamma(-k+t)}=(-1)^k k!\,t+O(t^2).
+\end{equation}
+Thus a zero summand at $t=0$ is not a zero Taylor series.
+
+For $a=b=\tfrac12$, define
+\begin{equation}\label{eq:wn}
+ w_n=\pi\frac{\binom{2n}{n}^{\!2}}{16^n}.
+\end{equation}
+At $u=-N$, $r_n(-N)=w_n\fall nN$, so every $n<N$ term vanishes.
+For $n<N$, put $k=N-n-1$.  Formula \eqref{eq:rgamma} gives
+\begin{align}
+ r_n(-N+t)={}&w_n n!(-1)^k k!\,t\notag\\
+ &\times\exp\left\{(\gamma-H_k)t
+ -\sum_{r\ge2}\frac{(-1)^r\zeta(r)+H_k^{(r)}}r t^r\right\}.
+ \label{eq:revival}
+\end{align}
+This produces every missing finite-head coefficient explicitly.
+The simplest case is
+\begin{equation}\label{eq:piwarning}
+ r_0(-1)=0,\qquad [t]r_0(-1+t)=\pi.
+\end{equation}
+Discarding this term after setting $u=-1$ and then differentiating would
+change the first-jet evaluation by exactly $\pi$.
+This is a concrete guard against an invalid extension procedure, not an
+allegation that the canonical manuscript already contains that mistake.
