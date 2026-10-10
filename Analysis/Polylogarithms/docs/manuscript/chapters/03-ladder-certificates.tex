@@ -1,0 +1,305 @@
+% Self-contained contribution for the Polylogarithms continuation article.
+% Required packages: amsmath, amssymb, amsthm, booktabs, hyperref.
+% Required theorem environments: theorem, lemma, corollary, remark.
+
+\section{Proof certificates for the cubic and quartic trilogarithm ladders}
+\label{gaussian:sec:proved-small-ladders}
+
+The two displayed formulas record two trilogarithm combinations
+at the positive roots of $r^3+r=1$ and $r^4+r=1$, with substantial experimental evidence. Their exact functional-equation
+certificates now explain the coefficients.
+We give such derivations. The quartic identity belongs to a uniform
+family; the cubic identity has a short certificate using two
+specializations of Kummer's nine-term relation and four Rogers pentagons.
+These are exact consequences of classical functional equations, not
+claims that the underlying equations are new.
+
+\subsection{A uniform ladder from a complementary pair of powers}
+
+For $0<x<1$ the real Landen relation for the trilogarithm is
+\begin{align}
+\operatorname{Li}_3(x)+\operatorname{Li}_3(1-x)
+ +\operatorname{Li}_3(1-x^{-1})
+ &=\zeta(3)+\frac{\pi^2}{6}\log x
+ -\frac12\log^2x\log(1-x)+\frac16\log^3x.
+\label{gaussian:eq:real-trilog-landen}
+\end{align}
+For a modern account and its arithmetic analogues see
+Nakamura and Shiraishi, \emph{Landen's trilogarithm functional equation
+and $\ell$-adic Galois multiple polylogarithms} \cite{gaussian:NakamuraShiraishi}.
+For completeness, a real-variable proof is especially short.
+Differentiation of the left side, followed by
+\[
+\operatorname{Li}_2(x)+\operatorname{Li}_2(1-x)
+ =\frac{\pi^2}{6}-\log x\log(1-x),\qquad
+\operatorname{Li}_2(1-x^{-1})
+ =-\operatorname{Li}_2(1-x)-\frac12\log^2x,
+\]
+gives
+\[
+\frac{\pi^2/6-\log x\log(1-x)}{x}
+  +\frac{\log^2x}{2x(1-x)}.
+\]
+This is the derivative of the right side. The difference tends to zero
+as $x\to1^-$, proving \eqref{gaussian:eq:real-trilog-landen}. The two dilogarithm
+relations used here follow themselves by one differentiation and an
+endpoint value. All logarithms in the calculation are real, so there
+is no branch ambiguity.
+
+\begin{theorem}[Complementary-power trilogarithm ladder]
+\label{gaussian:thm:complementary-powers}
+Let $a,b$ be positive integers with $a\le b$, and let $0<\rho<1$ be
+the unique positive solution of $\rho^a+\rho^b=1$. Set
+$\lambda=\log\rho$ and $d=b-a$. Then
+\begin{align}
+&\operatorname{Li}_3(\rho^a)+\operatorname{Li}_3(\rho^b)
+ -\operatorname{Li}_3(\rho^d)
+ +\frac14\operatorname{Li}_3(\rho^{2d})\notag\\
+&\hspace{20mm}=\zeta(3)+\frac{a\pi^2}{6}\lambda
+ +\frac{a^2(a-3b)}{6}\lambda^3.
+\label{gaussian:eq:complementary-powers}
+\end{align}
+When $a=b$, the powers $\rho^0$ are interpreted as $1$.
+\end{theorem}
+
+\begin{proof}
+The polynomial $t^a+t^b$ is strictly increasing from $0$ to $2$ on
+$[0,1]$, which proves existence and uniqueness. Substitute $x=\rho^a$
+in \eqref{gaussian:eq:real-trilog-landen}; its other arguments are
+$1-x=\rho^b$ and $1-x^{-1}=-\rho^{b-a}$. The absolutely convergent
+series identity
+\[
+\operatorname{Li}_3(z)+\operatorname{Li}_3(-z)
+ =\frac14\operatorname{Li}_3(z^2),\qquad 0\le z\le1,
+\]
+eliminates the negative argument. The logarithmic terms become exactly
+the right side of \eqref{gaussian:eq:complementary-powers}.
+\end{proof}
+
+In particular, if $r_m^m+r_m=1$ and $\lambda_m=\log r_m$, then
+\begin{align}
+\operatorname{Li}_3(r_m)+\operatorname{Li}_3(r_m^m)
+ -\operatorname{Li}_3(r_m^{m-1})
+ +\frac14\operatorname{Li}_3(r_m^{2m-2})
+ =\zeta(3)+\frac{\pi^2}{6}\lambda_m
+ -\frac{3m-1}{6}\lambda_m^3.
+\label{gaussian:eq:all-m-trilog}
+\end{align}
+This supplies an infinite family of finite exact reductions, although
+different pairs $(a,b)$ can describe the same base after a power
+substitution. It does not assert that these exhaust all ladders for
+any one number field.
+
+\begin{corollary}[The quartic identity]
+If $r^4+r=1$ and $\lambda=\log r$, then
+\begin{align}
+-12\operatorname{Li}_3(r)+12\operatorname{Li}_3(r^3)
+ -12\operatorname{Li}_3(r^4)-3\operatorname{Li}_3(r^6)
+ =22\lambda^3-2\pi^2\lambda-12\zeta(3).
+\label{gaussian:eq:quartic-proved}
+\end{align}
+\end{corollary}
+\begin{proof}
+Take $(a,b)=(1,4)$ in Theorem~\ref{gaussian:thm:complementary-powers}
+and multiply by $-12$.
+\end{proof}
+
+For $m=2$, \eqref{gaussian:eq:all-m-trilog} reduces to the familiar golden value
+\[
+\operatorname{Li}_3(r_2^2)
+ =\frac45\zeta(3)+\frac{2\pi^2}{15}\log r_2
+ -\frac23\log^3r_2.
+\]
+For $m=3$ it gives a useful additional relation on the arguments
+$r,r^2,r^3,r^4$; the manuscript's cubic identity instead uses
+$r,r^2,r^3,r^6$. The change of the last argument requires more than
+the one-variable Landen relation.
+
+\subsection{An elementary dilogarithm certificate in the cubic field}
+
+Throughout this subsection let $r^3+r=1$, $0<r<1$, and put
+$\lambda=\log r$, $A=\log(1+r)$. Direct algebra in
+$\mathbb Q[r]/(r^3+r-1)$ gives
+\begin{align}
+1-r&=r^3,&1-r^2&=r^3(1+r),&1-r^3&=r,\\
+1-r^4&=r^2(1+r),&1+r^3&=r^2(1+r)^2,
+ &1-r^6&=r^3(1+r)^2.
+\label{gaussian:eq:cubic-factorizations}
+\end{align}
+Define the Rogers dilogarithm on $(0,1)$ by
+\[
+R(x)=\operatorname{Li}_2(x)+\frac12\log x\log(1-x).
+\]
+It satisfies $R(x)+R(1-x)=\zeta(2)$ and the pentagon
+\begin{align}
+R(x)+R(y)
+ =R(xy)+R\!\left(\frac{x(1-y)}{1-xy}\right)
+  +R\!\left(\frac{y(1-x)}{1-xy}\right),\qquad 0<x,y<1.
+\label{gaussian:eq:rogers-pentagon}
+\end{align}
+The latter is a real-domain form of the classical five-term relation.
+It may also be verified by differentiating in $x$ with fixed $y$ and
+using the limit at $x=0$.
+
+\begin{lemma}[Cubic dilogarithm identity]
+\label{gaussian:lem:cubic-dilog}
+\begin{equation}
+\operatorname{Li}_2(r^6)
+ =6\operatorname{Li}_2(r^2)-2\operatorname{Li}_2(r)
+  -4\operatorname{Li}_2(r^3).
+\label{gaussian:eq:cubic-dilog}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Set $s=r/(1+r)$ and $t=r^4/(1+r)$, so every argument below lies
+in $(0,1)$. Write $R_k=R(r^k)$ and $R_s=R(s)$, $R_t=R(t)$.
+Applying \eqref{gaussian:eq:rogers-pentagon} at $(x,y)=(r,r)$ gives
+\[
+2R_1=R_2+2R_s.
+\]
+At $(x,y)=(r,r^3)$ its two remaining arguments are $1-s$ and $t$.
+Since $R_1+R_3=\zeta(2)$, reflection gives
+\[
+R_t=R_s-R_4.
+\]
+At $(x,y)=(r^2,r^4)$ its two remaining arguments are $s$ and $t$,
+and therefore
+\[
+R_6=R_2+2R_4-2R_s.
+\]
+Finally, at $(x,y)=(r,r^2)$ these arguments are $1-r^2$ and $r^4$.
+Using reflection twice gives
+\[
+R_4=2R_2-2R_3.
+\]
+Eliminating $R_s,R_t,R_4$ now yields
+$R_6=6R_2-2R_1-4R_3$. The difference between $R(r^k)$ and
+$\operatorname{Li}_2(r^k)$ is
+$(k\lambda/2)\log(1-r^k)$. In the indicated combination these
+terms cancel: by \eqref{gaussian:eq:cubic-factorizations}, the required check is
+\[
+3\lambda(3\lambda+2A)
+ -6\lambda(3\lambda+A)+3\lambda^2+6\lambda^2=0.
+\]
+This proves the claimed ordinary dilogarithm identity.
+\end{proof}
+
+\subsection{Two Kummer substitutions prove the cubic trilogarithm}
+
+The single-valued trilogarithm used in the manuscript is
+\[
+P_3(z)=\operatorname{Re}\operatorname{Li}_3(z)
+ -\log|z|\operatorname{Re}\operatorname{Li}_2(z)
+ -\frac13\log^2|z|\log|1-z|.
+\]
+The value at $z=1$ is defined by continuity. It obeys
+\[
+P_3(z^{-1})=P_3(z),\qquad
+P_3(z)+P_3(-z)=\frac14P_3(z^2),
+\]
+and the single-valued Landen relation
+$P_3(x)+P_3(1-x)+P_3(1-x^{-1})=\zeta(3)$ for real $0<x<1$.
+The latter follows from \eqref{gaussian:eq:real-trilog-landen} and the two
+dilogarithm identities in its proof.
+
+We use Kummer's classical equation in the form stated and justified
+by Zagier, \emph{Special values and functional equations of
+polylogarithms}, \S7, Example~3, equation~(7) \cite{gaussian:Zagier}:
+\begin{align}
+&2P_3(x)+2P_3(y)
+ +2P_3\!\left(\frac{x(1-y)}{x-1}\right)
+ +2P_3\!\left(\frac{y(1-x)}{y-1}\right)\notag\\
+&\quad+2P_3\!\left(\frac{1-x}{1-y}\right)
+ +2P_3\!\left(\frac{x(1-y)}{y(1-x)}\right)
+ -P_3(xy)-P_3(x/y)\notag\\
+&\quad-P_3\!\left(\frac{x(1-y)^2}{y(1-x)^2}\right)=2\zeta(3).
+\label{gaussian:eq:kummer-P3}
+\end{align}
+We only use specializations with nonzero denominators and finite
+arguments. Since $P_3$ is single-valued, some real arguments exceeding
+$1$ cause no branch correction in this equation; after inversion and
+duplication, all remaining arguments are $r^k\in(0,1)$.
+
+\begin{theorem}[The cubic identity]
+\label{gaussian:thm:cubic-proved}
+Let $r^3+r=1$ with $0<r<1$, and let $\lambda=\log r$. Then
+\begin{align}
+&-60\operatorname{Li}_3(r)+54\operatorname{Li}_3(r^2)
+ -32\operatorname{Li}_3(r^3)-3\operatorname{Li}_3(r^6)\notag\\
+&\hspace{20mm}=24\lambda^3-4\pi^2\lambda-36\zeta(3).
+\label{gaussian:eq:cubic-proved}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Write $P_k=P_3(r^k)$. Landen at $r$ and duplication give
+\[
+\mathsf A:=P_1-P_2+P_3+\tfrac14P_4=\zeta(3).
+\]
+The nine arguments of \eqref{gaussian:eq:kummer-P3} at
+$(x,y)=(r,r^3)$ and $(-r,r^2)$, in their displayed order, are
+\[
+\begin{array}{c|rrrrrrrrr}
+ &1&2&3&4&5&6&7&8&9\\ \hline
+(r,r^3)&r&r^3&-r^{-1}&-r^5&r^2&r^{-4}&r^4&r^{-2}&r^{-6}\\
+(-r,r^2)&-r&r^2&r^4&-r^{-1}&r^{-3}&-r^2&-r^3&-r^{-1}&-r^5
+\end{array}
+\]
+respectively. Using inversion and
+$P_3(-r^k)=\tfrac14P_{2|k|}-P_{|k|}$, these two equations reduce to
+\begin{align*}
+\mathsf B&:=\tfrac32P_2+2P_3+P_4-2P_5-P_6+\tfrac12P_{10}
+ =2\zeta(3),\\
+\mathsf C&:=-3P_1+\tfrac34P_2+3P_3+\tfrac52P_4+P_5
+ -\tfrac14P_6-\tfrac14P_{10}=2\zeta(3).
+\end{align*}
+The exact rational row operation $4\mathsf C+2\mathsf B-48\mathsf A$
+therefore proves
+\begin{equation}
+-60P_1+54P_2-32P_3-3P_6=-36\zeta(3).
+\label{gaussian:eq:cubic-P3-certificate}
+\end{equation}
+
+To recover ordinary trilogarithms, put
+$c_1=-60,c_2=54,c_3=-32,c_6=-3$ and
+\[
+D=\sum_{k\in\{1,2,3,6\}}c_k\operatorname{Li}_3(r^k),\quad
+S=\sum_{k\in\{1,2,3,6\}}c_k k\operatorname{Li}_2(r^k),\quad
+T=\sum_{k\in\{1,2,3,6\}}c_k k^2\log(1-r^k).
+\]
+Expansion of the definition gives
+$\sum c_kP_k=D-\lambda S-\lambda^2 T/3$.
+Lemma~\ref{gaussian:lem:cubic-dilog}, together with
+$\operatorname{Li}_2(r)+\operatorname{Li}_2(r^3)
+=\pi^2/6-3\lambda^2$, gives
+\[
+S=72\lambda^2-4\pi^2.
+\]
+The factorizations \eqref{gaussian:eq:cubic-factorizations} give
+\[
+T=-60(3\lambda)+216(3\lambda+A)
+ -288\lambda-108(3\lambda+2A)=-144\lambda.
+\]
+Consequently \eqref{gaussian:eq:cubic-P3-certificate} becomes
+$D-24\lambda^3+4\pi^2\lambda=-36\zeta(3)$, which is
+\eqref{gaussian:eq:cubic-proved}.
+\end{proof}
+
+\subsection{What the certificate establishes and what remains open}
+
+The proofs settle the two displayed cubic and quartic trilogarithm
+identities without period-independence assumptions, numerical recognition,
+or unproved higher Bloch-group assertions. The universal family
+\eqref{gaussian:eq:complementary-powers} also gives a principled generator of
+additional exact identities. It does not justify pseudointegration to
+weight four or above: differentiating with respect to an algebraic base
+does not preserve its isolated defining relation.
+
+Natural next problems are to derive comparable local certificates for the
+weight-five through weight-nine golden formulas, find the smallest useful
+functional-equation closure for a chosen base, and extend the exact
+argument/substitution checker to arbitrary algebraic number fields.
+Any claim of minimality of the surviving period basket remains distinct
+from the existence of the displayed reductions.
+

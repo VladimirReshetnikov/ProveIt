@@ -1,0 +1,694 @@
+\section{Exact shuffle quotients and a two-product proof at weight five}
+\label{gaussian:sec:shuffle}
+
+\subsection{The quotient being computed}
+
+Let \(\mathcal H^1\) be the rational vector space on the empty word
+and all binary words ending in \(1\), with shuffle multiplication.
+It is bigraded by word length \(w\) and number of ones \(d\).
+Let \(\mathcal J\) be its augmentation ideal, spanned by nonempty
+words. The indecomposable quotient
+\[
+Q_{w,d}=(\mathcal J/\mathcal J^2)_{w,d}
+\]
+sets products of two positive-weight elements equal to zero.
+This is a formal combinatorial construction. Shuffle equalities evaluate
+to analytic identities at \(z\); the corresponding map on indecomposable
+quotients requires also quotienting the evaluated algebra by products.
+Evaluation can introduce further relations. In particular, the formal
+dimension is not the dimension of a space of numerical periods.
+
+\begin{theorem}[The exact formal shuffle count]\label{gaussian:thm:witt}
+For \(w\ge1\) and \(1\le d\le w\),
+\[
+\dim_{\Q}Q_{w,d}
+=\ell_{w,d}
+:=\frac1w\sum_{k\mid\gcd(w,d)}
+\mu(k)\binom{w/k}{d/k}.
+\]
+A basis is represented by the binary Lyndon words of length \(w\)
+with \(d\) ones. Every such word belongs to \(\mathcal H^1\).
+Every other word has a finite, exact polynomial expression in the full
+family of Lyndon generators, each monomial having the original total
+bidegree. The number of independent product relations in
+this component is
+\[
+\binom{w-1}{d-1}-\ell_{w,d}.
+\]
+\end{theorem}
+
+\begin{proof}
+Order the alphabet by \(0<1\) and words lexicographically.
+A Lyndon word is strictly smaller than every nontrivial rotation.
+Every word has a unique Chen--Fox--Lyndon factorization into a
+nonincreasing concatenation of Lyndon words.
+In characteristic zero, shuffle monomials in Lyndon words form a
+polynomial basis \cite{gaussian:Radford}. One can see the constructive point
+directly: if the factorization is \(u_1^{m_1}\cdots u_r^{m_r}\) with
+distinct \(u_1>\cdots>u_r\), then the shuffle product
+\(u_1^{\shuffle m_1}\shuffle\cdots\shuffle u_r^{\shuffle m_r}\)
+has this concatenation as its lexicographically largest word, with
+coefficient \(m_1!\cdots m_r!\). All other words are smaller.
+Induction therefore gives a triangular polynomial expression, and the
+same triangularity proves linear independence of the monomials.
+
+Every Lyndon word of length greater than one that contains both letters
+starts with \(0\) and ends with \(1\). The single-letter words are
+\(0\) and \(1\). The factorization of a word ending in \(1\) cannot
+contain the factor \(0\), because that smallest factor would be last,
+forcing the concatenation to end in \(0\).
+Thus \(\mathcal H^1\) is exactly the polynomial algebra on all Lyndon
+words other than \(0\). Passing to its augmentation quotient leaves
+one class for each generator.
+
+It remains to count. A primitive binary word of length \(w\) with
+\(d\) ones has \(w\) distinct rotations and exactly one Lyndon rotation.
+Every binary word is a power of a unique primitive word.
+M\"obius inversion on this power decomposition gives
+\(\sum_{k\mid\gcd(w,d)}\mu(k)\binom{w/k}{d/k}\)
+primitive words, proving the formula. Finally, there are
+\(\binom{w-1}{d-1}\) words ending in \(1\) in the component, which
+gives the claimed product rank.
+\end{proof}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{c|rrrrr}
+\toprule
+Weight \(w\)&\(d=1\)&\(d=2\)&\(d=3\)&\(d=4\)&\(d=5\)\\
+\midrule
+3&1&1&0&--&--\\
+4&1&1&1&0&--\\
+5&1&2&2&1&0\\
+6&1&2&3&2&1\\
+7&1&3&5&5&3\\
+8&1&3&7&8&7\\
+9&1&4&9&14&14\\
+\bottomrule
+\end{tabular}
+\caption{The exact formal indecomposable counts \(\ell_{w,d}\).
+They count Lyndon generators, not independent numerical constants.}
+\label{gaussian:tab:witt}
+\end{table}
+
+For \(w=6,d=3\), the ten words reduce modulo products to three Lyndon
+words:
+\[
+000111,\qquad001011,\qquad001101,
+\]
+corresponding respectively to \(F_{4,1,1}\), \(F_{3,2,1}\),
+and \(F_{3,1,2}\). This explains the manuscript's finite rank-seven
+observation and gives its uniform extension.
+The companion code records the full polynomial normal forms of all ten
+triples. For a compact view of the quotient, put
+\(X=[F_{4,1,1}],Y=[F_{3,2,1}],Z=[F_{3,1,2}]\), where brackets mean
+classes modulo products. Exact triangular elimination gives
+\[
+\begin{array}{c|rrr@{\qquad}c|rrr}
+ &X&Y&Z&&X&Y&Z\\ \hline
+{}[F_{4,1,1}]&1&0&0 &[F_{1,4,1}]&6&3&1\\
+{}[F_{3,2,1}]&0&1&0 &[F_{1,3,2}]&-12&-6&-2\\
+{}[F_{3,1,2}]&0&0&1 &[F_{1,2,3}]&12&6&2\\
+{}[F_{2,3,1}]&-9&-4&-1 &[F_{1,1,4}]&-6&-3&-1\\
+{}[F_{2,2,2}]&12&4&0 &[F_{2,1,3}]&-3&-1&0
+\end{array}
+\]
+For example, one full identity before taking the quotient is
+\begin{equation}
+F_{2,2,2}(z)=12F_{4,1,1}(z)+4F_{3,2,1}(z)
+-2\Li_2(z)F_{3,1}(z)+\frac{\Li_2(z)^3}{6}.
+\label{gaussian:eq:full-222}
+\end{equation}
+Re-expanding its right side into words gives the single word \(010101\)
+with coefficient one. This supplies a finite rational certificate,
+including the product terms that a quotient table suppresses.
+
+\subsection{An elementary all-weight double elimination}
+
+At depth two the count simplifies to
+\[
+\ell_{w,2}=\left\lfloor\frac{w-1}{2}\right\rfloor.
+\]
+There is also a direct triangular proof that avoids general shuffle
+algebra. For \(p+q=w\), shuffling the two single-polylogarithm words gives
+\begin{align}
+\Li_p(z)\Li_q(z)
+={}&\sum_{j=1}^{p}\binom{w-j-1}{q-1}F_{w-j,j}(z)
++\sum_{j=1}^{q}\binom{w-j-1}{p-1}F_{w-j,j}(z).
+\label{gaussian:eq:general-double-shuffle}
+\end{align}
+The binomial coefficient counts the interleavings of the zero blocks
+before the second nonzero letter.
+
+\begin{proposition}[Independent double product rows]\label{gaussian:prop:double-rank}
+For fixed \(w\), the rows of
+\eqref{gaussian:eq:general-double-shuffle} with
+\(1\le p\le\lfloor w/2\rfloor\) have rank
+\(\lfloor w/2\rfloor\) on the \(w-1\) double coordinates.
+They express the entire family through products of singles and the
+\(\lfloor(w-1)/2\rfloor\) coordinates
+\[
+\{F_{w-j,j}:1\le j\le\lfloor(w-1)/2\rfloor\}.
+\]
+This set is empty when \(w=2\).
+\end{proposition}
+
+\begin{proof}
+In the row indexed by \(p\), the largest inner index appearing is
+\(q=w-p\). Its coefficient is \(1\) when \(p<q\), and \(2\)
+when \(p=q\). No larger inner index occurs.
+Order the rows with \(p\) decreasing and use the columns with
+\(j=w-p\); the corresponding square block is triangular with nonzero
+diagonal. All products of two depth-one words have already been included,
+since swapping \(p,q\) repeats a row. This proves the rank and the
+elimination statement.
+\end{proof}
+
+At \(z=i\), taking imaginary parts of these equations gives an
+unconditional spanning bound for the \(g_{a,b}\), with explicit
+single-value terms. It can be sharpened in the parity sector, as the
+next section shows.
+
+\subsection{The weight-five relation is two shuffles}
+
+The words for \(\Li_1\Li_4\) and \(\Li_2\Li_3\) give
+\begin{align}
+\Li_1(z)\Li_4(z)
+&=2F_{4,1}(z)+F_{3,2}(z)+F_{2,3}(z)+F_{1,4}(z),
+\label{gaussian:eq:shuffle14}\\
+\Li_2(z)\Li_3(z)
+&=6F_{4,1}(z)+3F_{3,2}(z)+F_{2,3}(z).
+\label{gaussian:eq:shuffle23}
+\end{align}
+The exact single values are
+\[
+\Li_1(i)=-\frac L2+\frac{\pi i}{4},\quad
+\Li_2(i)=-\frac{\pi^2}{48}+iG,\quad
+\Li_3(i)=-\frac{3\zeta(3)}{32}+\frac{\pi^3i}{32},
+\]
+\[
+\Li_4(i)=-\frac{7\pi^4}{11520}+i\beta(4).
+\]
+Consequently
+\begin{align}
+2g_{41}+g_{32}+g_{23}+g_{14}
+&=-\frac12\beta(4)L-\frac{7\pi^5}{46080},
+\label{gaussian:eq:wt5-first}\\
+6g_{41}+3g_{32}+g_{23}
+&=-\frac{\pi^5}{1536}-\frac{3G\zeta(3)}{32}.
+\label{gaussian:eq:wt5-second}
+\end{align}
+Here \(g_{41}\) means \(g_{4,1}\), and similarly for other subscripts.
+
+\begin{corollary}[Proof and strengthening of the recorded relation]
+\label{gaussian:cor:wt5}
+The experimentally discovered identity
+\begin{equation}\label{gauss:eq:wt5-sporadic}
+576g_{41}+288g_{32}+736g_{23}+960g_{14}
+=21G\zeta(3)-480\beta(4)L
+\end{equation}
+holds. Moreover the four \(g\)-values are spanned by \(g_{41},g_{32}\)
+and the single-value products \(\pi^5,G\zeta(3),\beta(4)L\).
+Explicitly,
+\begin{align}
+g_{23}
+&=-6g_{41}-3g_{32}-\frac{\pi^5}{1536}
+  -\frac{3G\zeta(3)}{32},\label{gaussian:eq:g23-elim}\\
+g_{14}
+&=4g_{41}+2g_{32}+\frac{23\pi^5}{46080}
+  +\frac{3G\zeta(3)}{32}-\frac12\beta(4)L.
+\label{gaussian:eq:g14-elim}
+\end{align}
+\end{corollary}
+
+\begin{proof}
+Multiply \eqref{gaussian:eq:wt5-first} by \(960\), multiply
+\eqref{gaussian:eq:wt5-second} by \(-224\), and add.
+The \(\pi^5\) coefficients cancel exactly. Solving the two
+independent equations instead gives \eqref{gaussian:eq:g23-elim} and
+\eqref{gaussian:eq:g14-elim}.
+\end{proof}
+
+This proof explains why a search can return an apparently complicated
+relation while missing the simpler structure: eliminating a chosen
+single-value coordinate can enlarge coefficients.
+The mathematical content is visible before the elimination.
+
+\subsection{An infinite odd-weight shuffle family}
+\begin{theorem}[An infinite odd-weight family with the pure $\pi$ term removed]
+\label{cert:thm:oddfamily}
+For $m\ge2$, set $W=2m+1$ and
+\begin{align}
+ A_W&=2g_{W-1,1}+\sum_{a=1}^{W-2}g_{a,W-a},\notag\\
+ B_W&=2(W-2)g_{W-1,1}+(W-2)g_{W-2,2}
+       +\sum_{a=2}^{W-3}(a-1)g_{a,W-a},\label{cert:eq:AB}\\
+ \kappa_m&=\frac{12(2^{2m-1}-1)B_{2m}}
+                   {(2m)(2m-1)E_{2m-2}}.\label{cert:eq:lambda}
+\end{align}
+Then $\kappa_m$ is a positive rational number and
+\begin{equation}
+ A_W-\kappa_m B_W
+ =-\frac12\beta(2m)L+
+ \kappa_m 2^{-(2m-1)}(1-2^{2-2m})G\zeta(2m-1).
+\label{cert:eq:odd-family}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Equation \eqref{gaussian:eq:general-double-shuffle} identifies $A_W$ and $B_W$ with
+$\Imag(\Li_1(\iu)\Li_{2m}(\iu))$ and
+$\Imag(\Li_2(\iu)\Li_{2m-1}(\iu))$ respectively.
+Writing $c_k=2^{-k}(1-2^{1-k})$, these products are
+\begin{align*}
+ A_W&=-\tfrac12 L\beta(2m)-\tfrac\pi4 c_{2m}\zeta(2m),\\
+ B_W&=-c_{2m-1}G\zeta(2m-1)-\tfrac{\pi^2}{48}\beta(2m-1).
+\end{align*}
+Their pure-$\pi^W$ terms have ratio
+\[
+ \frac{12c_{2m}\zeta(2m)}{\pi\beta(2m-1)}.
+\]
+Euler's even-zeta formula and the classical odd-beta evaluation turn this ratio into
+\eqref{cert:eq:lambda}. The signs of $B_{2m}$ and $E_{2m-2}$ agree, so the
+ratio is positive. Subtraction proves \eqref{cert:eq:odd-family}.
+\end{proof}
+
+The first three coefficients are
+\[
+ \kappa_2=\frac7{30},\qquad
+ \kappa_3=\frac{31}{525},\qquad
+ \kappa_4=\frac{127}{8540}.
+\]
+For example, at weight seven the identity can be written without
+fractions as
+\begin{equation}
+ 268800A_7-15872B_7=465G\zeta(5)-134400\beta(6)L.
+\label{cert:eq:odd7}
+\end{equation}
+This theorem does not reduce every odd-weight $g_{a,b}$ individually.
+It supplies one explicit family of linear combinations in the parity
+component not individually reduced by Theorem~\ref{gaussian:thm:binomial-parity}.
+
+
+\subsection{The surviving mixed relation}
+
+For the harmonic sums used by the manuscript,
+\[
+S_p=\sum_{n\ge0}\frac{(-1)^nH_n}{(2n+1)^p},
+\]
+the exact bridge to colored doubles is
+\begin{equation}
+S_p=\Im\bigl(F_{p,1}(i)+\Li_{p,1}(i,-1)\bigr).
+\label{gaussian:eq:S-mixed}
+\end{equation}
+Indeed, for an odd outer index \(m=2n+1\), the inner coefficient
+\(\sum_{k<m}(1+(-1)^k)/k\) is \(H_n\); even outer indices contribute
+zero to the imaginary part. Absolute convergence justifies the argument
+for \(p>1\), and Abel limits cover \(p=1\).
+
+The recorded \(S_4\) candidate becomes, after the proved
+\eqref{gaussian:eq:g23-elim}, the more economical statement
+\begin{conjecture}[A remaining mixed Gaussian reduction]\label{gaussian:conj:S4}
+\begin{equation}
+S_4=\frac{58g_{41}+24g_{32}}7
+       +\frac{19\pi^5}{3584}-2\beta(4)\log2.
+\label{gaussian:eq:S4-short}
+\end{equation}
+\end{conjecture}
+Equivalently, in the original coordinates,
+\begin{equation}\label{gauss:eq:S4-closed}
+ S_4=\frac{4g_{41}-3g_{32}-9g_{23}}7+\frac{\pi^5}{224}
+ -\frac{27G\zeta(3)}{224}-2\beta(4)\log2.
+\end{equation}
+This is the same candidate after exact shuffle elimination. Independent integral evaluations support it,
+but the present article does not supply its functional-equation proof.
+In particular, it must not be silently added to the exact shuffle
+certificate. It identifies a concrete additional colored relation to
+seek. Neither its numerical support nor the dimensions of a selected
+finite relation system establish arithmetic independence of any
+surviving coordinate.
+
+% Self-contained theorem/proof sections for integration into the parent report.
+% Requires amsmath, amssymb, amsthm and a \Li macro.
+
+\section{An explicit binomial parity reduction for every double weight}
+\label{gaussian:sec:double-parity}
+
+Throughout this section the convention is
+\[
+ F_{a,b}(z)=\Li_{a,b}(z,1)
+   =\sum_{n>m>0}\frac{z^n}{n^a m^b},\qquad
+ U_n(z)=\operatorname{Re}\Li_n(z),\quad
+ V_n(z)=\operatorname{Im}\Li_n(z).
+\]
+We take $|z|=1$, $z\ne1$, and use radial boundary values. These are also
+the ordinary convergent series values: summation by parts applies to
+$H_{n-1}^{(b)}/n^a$, whose total variation is finite and which tends to zero.
+The result below is an elementary explicit specialization of the established
+multiple-polylogarithm parity theorem. It should not be presented as a new
+general parity theorem: Panzer proved the general theorem in 2017, including
+explicit formulas at depths two and three; Umezawa supplied a general-depth
+explicit formula in 2025 \cite{Panzer2017,gaussian:Umezawa}. Its contribution here
+is a short independently checkable formula in the manuscript's convention,
+including the boundary cases with an index equal to one.
+
+For $w\ge2$ define the parity component
+\[
+ E_{a,b}(z)=
+ \begin{cases}
+ \operatorname{Im}F_{a,b}(z),&w=a+b\text{ even},\\
+ \operatorname{Re}F_{a,b}(z),&w=a+b\text{ odd},
+ \end{cases}
+\quad
+ W_n(z)=
+ \begin{cases}V_n(z),&w\text{ even},\\U_n(z),&w\text{ odd}.
+ \end{cases}
+\]
+The choice of $W_n$ depends on the fixed total weight $w$, not on $n$.
+
+\begin{theorem}[Explicit double parity formula]\label{gaussian:thm:binomial-parity}
+Let $w\ge2$, $1\le p\le w-1$, and $q=w-p$. Put
+\begin{align*}
+ A_p(z)&=\sum_{j=1}^{p}\binom{w-j-1}{q-1}E_{w-j,j}(z),\\
+ P_p(z)&=
+ \begin{cases}
+ U_q(z)V_p(z),&w\text{ even},\ p\text{ odd},\\
+ U_p(z)V_q(z),&w\text{ even},\ p\text{ even},\\
+ -V_p(z)V_q(z),&w\text{ odd},\ p\text{ odd},\\
+ U_p(z)U_q(z),&w\text{ odd},\ p\text{ even}.
+ \end{cases}
+\end{align*}
+Then
+\begin{align}
+ A_p(z)={}&P_p(z)
+ +\sum_{\substack{3\le j\le p\\j\text{ odd}}}
+       \binom{w-j-1}{q-1}\zeta(j)W_{w-j}(z)
+ -\sum_{\substack{3\le j\le q\\j\text{ odd}}}
+       \binom{w-j-1}{p-1}\zeta(j)W_{w-j}(z)\notag\\
+ &-\frac12\left[\binom{w-1}{q}-\binom{w-1}{p}\right]W_w(z)
+ -\boldsymbol{1}_{w\text{ odd}}\frac{(-1)^p}{2}\zeta(w).
+ \label{gaussian:eq:parity-A}
+\end{align}
+Each individual double is recovered by the explicit inverse transform
+\begin{equation}\label{gaussian:eq:parity-inverse}
+ E_{w-b,b}(z)=\sum_{p=1}^{b}(-1)^{b-p}
+                  \binom{w-p-1}{b-p}A_p(z),\qquad 1\le b<w.
+\end{equation}
+Consequently every imaginary part of even total weight and every real part
+of odd total weight in the same-argument double family is an explicit
+polynomial in single polylogarithms and ordinary zeta values.
+\end{theorem}
+
+\begin{proof}
+We supply the analytic identity responsible for the reduction, so that no
+rank computation or numerical recognition enters the proof. Define
+\[
+ T_{p,q}(k)=\sum_{m=1}^{\infty}\frac1{(m+k)^p m^q},\qquad k\ge1.
+\]
+Partial fractions at $m=0$ and $m=-k$ give
+\begin{align}
+ \frac1{(m+k)^p m^q}
+ ={}&\sum_{j=1}^{q}(-1)^{q-j}
+       \binom{w-j-1}{p-1}\frac1{k^{w-j}m^j}\notag\\
+ &+(-1)^q\sum_{j=1}^{p}
+       \binom{w-j-1}{q-1}\frac1{k^{w-j}(m+k)^j}.
+ \label{gaussian:eq:parity-pf}
+\end{align}
+The two $j=1$ divergences cancel. Summing first to a finite cutoff and
+then letting it tend to infinity yields
+\begin{align}
+ T_{p,q}(k)={}&
+ \sum_{j=2}^{q}(-1)^{q-j}\binom{w-j-1}{p-1}
+                \frac{\zeta(j)}{k^{w-j}}
+ +(-1)^q\sum_{j=2}^{p}\binom{w-j-1}{q-1}
+                \frac{\zeta(j)}{k^{w-j}}\notag\\
+ &+(-1)^{q+1}\sum_{j=1}^{p}\binom{w-j-1}{q-1}
+                \frac{H_k^{(j)}}{k^{w-j}}.
+ \label{gaussian:eq:parity-T}
+\end{align}
+Write
+\[
+ \mathcal A_p(z)=\sum_{j=1}^{p}\binom{w-j-1}{q-1}F_{w-j,j}(z),
+ \qquad C_p=\binom{w-1}{q},
+\]
+and
+\[
+ \mathcal U_{p,q}(z)=
+ \sum_{j=2}^{q}(-1)^{q-j}\binom{w-j-1}{p-1}
+                 \zeta(j)\Li_{w-j}(z)
+ +(-1)^q\sum_{j=2}^{p}\binom{w-j-1}{q-1}
+                 \zeta(j)\Li_{w-j}(z).
+\]
+Using $H_k^{(j)}=H_{k-1}^{(j)}+k^{-j}$ and the hockey-stick identity,
+equation~\eqref{gaussian:eq:parity-T} becomes
+\begin{equation}\label{gaussian:eq:parity-R}
+ R_{p,q}(z):=\sum_{k\ge1}z^kT_{p,q}(k)
+ =\mathcal U_{p,q}(z)+(-1)^{q+1}
+        \bigl(\mathcal A_p(z)+C_p\Li_w(z)\bigr).
+\end{equation}
+
+There are two product identities. The familiar same-argument shuffle is
+\begin{equation}\label{gaussian:eq:parity-shuffle}
+ \Li_p(z)\Li_q(z)=\mathcal A_p(z)+\mathcal A_q(z).
+\end{equation}
+The Fourier-convolution identity is
+\begin{equation}\label{gaussian:eq:parity-convolution}
+ \Li_p(z)\Li_q(z^{-1})
+       =\zeta(w)+R_{p,q}(z)+R_{q,p}(z^{-1}).
+\end{equation}
+For completeness, this remains valid when $p=1$ or $q=1$. Each
+$\Li_p(e^{i\theta})$ belongs to $L^2$ because $\sum n^{-2p}<\infty$.
+The Fourier coefficients of their product are therefore the absolutely
+convergent convolutions, equal to $\zeta(w)$ at index zero and to
+$T_{p,q}(k)$ and $T_{q,p}(k)$ at positive and negative indices. Both
+sequences $T_{p,q}(k)$ decrease to zero. Dirichlet's test gives convergence
+of the two Fourier series, uniform on closed subarcs away from $z=1$.
+Abel--Poisson summation of the $L^1$ product converges to the continuous
+product at every such point, proving~\eqref{gaussian:eq:parity-convolution} there.
+Thus the derivation has never multiplied divergent zeta series.
+
+If $w$ is even, take imaginary parts in
+\eqref{gaussian:eq:parity-shuffle}--\eqref{gaussian:eq:parity-convolution}. Since $p$ and $q$
+have the same parity, these give the sum and difference of $A_p,A_q$.
+Moreover,
+\begin{align*}
+ &\operatorname{Im}\bigl(\mathcal U_{p,q}(z)+
+                         \mathcal U_{q,p}(z^{-1})\bigr)\\
+ &\quad=2(-1)^p\left[
+  \sum_{\substack{3\le j\le p\\j\text{ odd}}}
+       \binom{w-j-1}{q-1}\zeta(j)V_{w-j}(z)
+ -\sum_{\substack{3\le j\le q\\j\text{ odd}}}
+       \binom{w-j-1}{p-1}\zeta(j)V_{w-j}(z)\right].
+\end{align*}
+Solving the two elementary equations gives~\eqref{gaussian:eq:parity-A} for even
+$w$. If $w$ is odd, take real parts. Now $p,q$ have opposite parity and
+the same two equations again give the sum and difference. The analogous
+last display has $-2(-1)^p$ in place of $2(-1)^p$, with $U$ in place of
+$V$. The constant term $\zeta(w)$ contributes
+$-(-1)^p\zeta(w)/2$. This proves~\eqref{gaussian:eq:parity-A} in the odd case too.
+
+Finally the coefficient matrix in the definition of $A_p$ is lower
+triangular with diagonal one. Its inverse follows from
+\[
+ \binom{w-j-1}{p-j}\binom{w-p-1}{b-p}
+ =\binom{w-j-1}{b-j}\binom{b-j}{p-j}
+\]
+and $\sum_{p=j}^{b}(-1)^{b-p}\binom{b-j}{p-j}=\delta_{b,j}$.
+This proves~\eqref{gaussian:eq:parity-inverse}.
+\end{proof}
+
+\subsection{Consequences for Gaussian and Eisenstein values}
+\label{gaussian:subsec:gaussian-doubles}
+
+At $z=i$ we have $V_n(i)=\beta(n)$,
+$U_1(i)=-\log2/2$, and
+\[
+ U_n(i)=-2^{-n}(1-2^{1-n})\zeta(n),\qquad n\ge2.
+\]
+The odd beta values are rational multiples of powers of $\pi$.
+Thus Theorem~\ref{gaussian:thm:binomial-parity} supplies an explicit all-weight
+reduction to the Gaussian single-value algebra in the appropriate parity.
+It proves all five previously numerical weight-six equations:
+\begin{align}
+\label{gauss:eq:g51}
+2048\operatorname{Im}\Li_{5,1}(i,1)
+ &=-64\pi^3\zeta(3)-527\pi\zeta(5)+4096\beta(6),\\
+\label{gauss:eq:g42}
+1536\operatorname{Im}\Li_{4,2}(i,1)
+ &=96\pi^3\zeta(3)-32\pi^2\beta(4)+1581\pi\zeta(5)-8448\beta(6),\\
+\label{gauss:eq:g33}
+1024\operatorname{Im}\Li_{3,3}(i,1)
+ &=-3\pi^3\zeta(3)+64\pi^2\beta(4)-1581\pi\zeta(5)+4608\beta(6),\\
+\label{gauss:eq:g24}
+23040\operatorname{Im}\Li_{2,4}(i,1)
+ &=-14\pi^4\beta(2)+135\pi^3\zeta(3)-1440\pi^2\beta(4)\\
+ &\hspace{17mm}+23715\pi\zeta(5)-69120\beta(6),\\
+\label{gauss:eq:g15}
+92160\operatorname{Im}\Li_{1,5}(i,1)
+ &=-150\pi^5\log2+56\pi^4\beta(2)-270\pi^3\zeta(3)\\
+ &\hspace{17mm}+1920\pi^2\beta(4)-675\pi\zeta(5).
+\end{align}
+An especially simple all-order subfamily is
+\begin{equation}\label{gaussian:eq:leading-index-family}
+ \operatorname{Im}\Li_{2m-1,1}(z,1)
+  =(m-1)V_{2m}(z)+U_{2m-1}(z)V_1(z)
+   -\sum_{k=1}^{m-1}\zeta(2k+1)V_{2m-2k-1}(z),
+ \qquad m\ge1.
+\end{equation}
+For example, this gives the further proved weight-eight identity
+\[
+ \operatorname{Im}\Li_{7,1}(i,1)
+ =3\beta(8)-\frac{5\pi^5}{1536}\zeta(3)
+             -\frac{\pi^3}{32}\zeta(5)
+             -\frac{8255\pi}{32768}\zeta(7).
+\]
+At $z=\rho=e^{2\pi i/3}$ write $C_n=\operatorname{Im}\Li_n(\rho)$.
+The same theorem applies unchanged; in particular
+\[
+ \operatorname{Im}\Li_{5,1}(\rho,1)
+ =2C_6-\frac{2\pi^3}{81}\zeta(3)-\frac{121\pi}{486}\zeta(5),
+\qquad
+ \operatorname{Im}\Li_{3,1}(\rho,1)
+ =C_4-\frac{13\pi}{54}\zeta(3).
+\]
+These statements assert reduction identities, not numerical or motivic
+independence of the remaining single values.
+
+\section{Classical reductions for every index with one two}
+\label{gaussian:sec:one-two}
+
+This section uses the one-variable abbreviation
+$\Li_{k_1,\ldots,k_d}(z)=\Li_{k_1,\ldots,k_d}(z,1,\ldots,1)$.
+Let $\{1\}^{r}$ denote $r$ consecutive ones. Work first on $0<z<1$, and
+then continue analytically along paths avoiding the cuts of the displayed
+functions. In particular, the formulas hold at $z=i$ by continuation
+through the upper half-plane, with the principal values used below.
+
+\begin{theorem}[One two at arbitrary depth]\label{gaussian:thm:one-two}
+For $d\ge1$, putting $a=\log(1-z)$ gives
+\begin{equation}\label{gaussian:eq:height-one-general}
+ \Li_{2,\{1\}^{d-1}}(z)
+ =\zeta(d+1)+\frac{(-1)^d a^d\log z}{d!}
+   +\sum_{k=0}^{d-1}\frac{(-1)^{k+1}a^k}{k!}
+                       \Li_{d+1-k}(1-z).
+\end{equation}
+For all $r,s\ge0$, put $\alpha=-\log(1-z)$. Then
+\begin{equation}\label{gaussian:eq:one-two-any-position}
+ \Li_{\{1\}^{r},2,\{1\}^{s}}(z)
+ =\sum_{j=0}^{r}(-1)^j\binom{s+j+1}{j}
+      \frac{\alpha^{r-j}}{(r-j)!}
+                     \Li_{2,\{1\}^{s+j}}(z).
+\end{equation}
+Consequently every value with exactly one index equal to two and all other
+indices equal to one reduces to classical polylogarithms and logarithms.
+\end{theorem}
+
+The height-one functional equation is classical; a modern treatment and
+arithmetic analogue appear in \cite{gaussian:NakamuraShiraishi}. The proof below
+also records the shuffle reduction when the two occupies any position.
+
+\begin{proof}
+The iterated integral for $d$ ones is
+$\Li_{\{1\}^{d}}(z)=\alpha^d/d!$. Hence
+\[
+ \Li_{2,\{1\}^{d-1}}(z)
+ =\frac{(-1)^d}{d!}\int_0^z\frac{\log^d(1-t)}{t}\,dt.
+\]
+Set $s=1-t$ and integrate by parts $d$ times. The antiderivative
+\[
+ -\log^d s\log(1-s)
+  +\sum_{j=1}^{d}(-1)^j\frac{d!}{(d-j)!}
+                       \log^{d-j}s\Li_{j+1}(s)
+\]
+has derivative $\log^d(s)/(1-s)$. At $s=1$ its limiting value is
+$(-1)^d d!\zeta(d+1)$. This gives~\eqref{gaussian:eq:height-one-general} including
+the constant term and its sign.
+
+For the second identity, locate the unique zero letter in the iterated
+integral word $1^r0\,1^{s+1}$. Its variable is $t$. Integrating the
+$r$ outer and $s+1$ inner identical letters gives
+\[
+ \Li_{\{1\}^{r},2,\{1\}^{s}}(z)
+ =\frac1{r!(s+1)!}\int_0^z
+    \bigl(\alpha(z)-\alpha(t)\bigr)^r\alpha(t)^{s+1}\frac{dt}{t}.
+\]
+Expanding the first factor and using the preceding integral formula
+proves~\eqref{gaussian:eq:one-two-any-position}. Analytic continuation then gives
+the asserted complex values.
+\end{proof}
+
+\subsection{Proof of all three weight-four Gaussian triple formulas}
+\label{gaussian:subsec:gaussian-triples}
+
+Put $L=\log2$, $G=\beta(2)$, $r=(1+i)/2$, and
+$\lambda_n=\operatorname{Im}\Li_n(r)$,
+$\mu_n=\operatorname{Re}\Li_n(r)$. The elementary dilogarithm reflection,
+Landen transformation, and trilogarithm reflection give
+\begin{align}
+ \mu_2&=\frac{5\pi^2}{96}-\frac{L^2}{8},&
+ \lambda_2&=G-\frac{\pi L}{8},\notag\\
+ \mu_3&=\frac{35}{64}\zeta(3)-\frac{5\pi^2L}{192}
+                       +\frac{L^3}{48}.
+ \label{gaussian:eq:halfpoint-auxiliary}
+\end{align}
+For clarity, the trilogarithm identity used for the last formula is
+\begin{align*}
+ &\Li_3(z)+\Li_3(1-z)+\Li_3\!\left(-\frac{z}{1-z}\right)\\
+ &\quad=\zeta(3)+\zeta(2)\log(1-z)
+  -\frac12\log z\log^2(1-z)+\frac16\log^3(1-z).
+\end{align*}
+It follows by differentiation using the dilogarithm identities and fixing
+the constant as $z\to0$; it is then continued to $z=r$, where
+$1-r=\bar r$ and $-r/(1-r)=-i$. Taking real parts proves the displayed
+$\mu_3$ evaluation. The first two formulas follow respectively from
+$\Li_2(r)+\Li_2(\bar r)=\zeta(2)-\log r\log\bar r$ and
+$\Li_2(i)+\Li_2(\bar r)=-\tfrac12\log^2(1-i)$.
+
+To evaluate the height-one formulas at $i$, write
+\[
+ a=\log(1-i)=\frac L2-\frac{\pi i}{4},\qquad
+ c=\log(-(1-i))=\frac L2+\frac{3\pi i}{4}.
+\]
+Since $(1-i)^{-1}=r$, the needed principal-branch inversion formulas are
+\begin{align*}
+ \Li_2(1-i)&=-\Li_2(r)-\frac{\pi^2}{6}-\frac{c^2}{2},\\
+ \Li_3(1-i)&=\Li_3(r)-\frac{\pi^2c}{6}-\frac{c^3}{6},\\
+ \Li_4(1-i)&=-\Li_4(r)-\frac{7\pi^4}{360}
+                         -\frac{\pi^2c^2}{12}-\frac{c^4}{24}.
+\end{align*}
+Substitution into~\eqref{gaussian:eq:height-one-general} with $d=2,3$, using
+$\log i=\pi i/2$, yields
+\begin{align*}
+ \operatorname{Re}\Li_{2,1}(i)&=\frac{29}{64}\zeta(3)-\frac{\pi G}{4},\\
+ \operatorname{Im}\Li_{2,1}(i)&=-\frac{GL}{2}
+                   +\frac{\pi L^2}{32}-\lambda_3+\frac{3\pi^3}{128},\\
+ \operatorname{Im}\Li_{2,1,1}(i)&=
+ \lambda_4+\frac{L\lambda_3}{2}
+ -\frac{G(\pi^2-4L^2)}{32}
+ -\frac{\pi(8L^3+105\zeta(3))}{768}.
+\end{align*}
+The real-part evaluation of $\Li_{2,1}(i)$ is also printed in
+Panzer \cite{Panzer2017}, after reversing his index convention.
+The remaining two identities follow from exact shuffle relations:
+\begin{align*}
+ \Li_1(z)\Li_{2,1}(z)
+    &=\Li_{1,2,1}(z)+3\Li_{2,1,1}(z),\\
+ \Li_2(z)\Li_{1,1}(z)
+    &=3\Li_{2,1,1}(z)+2\Li_{1,2,1}(z)+\Li_{1,1,2}(z).
+\end{align*}
+Using $\Li_1(i)=-a$, $\Li_{1,1}(i)=a^2/2$, and
+$\Li_2(i)=-\pi^2/48+iG$, one obtains
+\begin{align*}
+ \operatorname{Im}\Li_{1,2,1}(i)
+ &=-3\lambda_4-L\lambda_3
+   +\frac{G(\pi^2-4L^2)}{32}
+   -\frac{3\pi^3L}{256}
+   +\frac{\pi(2L^3+67\zeta(3))}{128},\\
+ \operatorname{Im}\Li_{1,1,2}(i)
+ &=3\lambda_4+\frac{L\lambda_3}{2}
+   +\frac{5\pi^3L}{192}-\frac{163\pi\zeta(3)}{256}.
+\end{align*}
+These are exactly the three numerical formulas in the original experimental draft,
+now proved. The arbitrary-depth theorem proves additional such identities
+without a new integer-relation search. It does not address the independent
+status of the weight-six triples $(3,1,2),(3,2,1),(4,1,1)$, which contain
+more than one zero letter and lie outside this reduction mechanism.
+

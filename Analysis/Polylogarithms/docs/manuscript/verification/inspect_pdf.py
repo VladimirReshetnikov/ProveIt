@@ -14,6 +14,8 @@ out=args.render_directory.resolve()
 out.mkdir(parents=True,exist_ok=True)
 doc=fitz.open(pdf)
 issues=[]; pages=[]
+if doc.metadata.get('author')!='ProveIt Contributors':
+    issues.append(dict(kind='incorrect-pdf-author',author=doc.metadata.get('author')))
 for n,page in enumerate(doc):
     txt=page.get_text()
     if '??' in txt:issues.append(dict(page=n+1,kind='unresolved-reference-text'))
@@ -45,7 +47,7 @@ for n,page in enumerate(doc):
 for n in sorted(selected):
     pix=doc[n-1].get_pixmap(matrix=fitz.Matrix(1.35,1.35),alpha=False)
     pix.save(out/f'page-{n:03}.png')
-record=dict(pdf_sha256=hashlib.sha256(pdf.read_bytes()).hexdigest(),page_count=len(doc),issues=issues,
+record=dict(pdf_author=doc.metadata.get('author'),pdf_sha256=hashlib.sha256(pdf.read_bytes()).hexdigest(),page_count=len(doc),issues=issues,
             raster_directory=str(out),rendered_contact_sheets=(len(doc)+15)//16,
             full_pages=sorted(selected),pages=pages,static_passed=not issues)
 (B/'verification/pdf-inspection.json').write_text(json.dumps(record,indent=2)+'\n',encoding='utf-8')

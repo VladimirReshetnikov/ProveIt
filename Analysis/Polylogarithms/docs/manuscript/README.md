@@ -1,12 +1,12 @@
 # Polylogarithms and their Arithmetic Bridges
 
-The completed unified manuscript is [polylogarithms.pdf](polylogarithms.pdf):
-**177 pages, eleven chapters**, a literature appendix preserving 94 distinct
-historical question leads, and a central bibliography of 55 works. Its editable
+The collective manuscript, authored by **ProveIt Contributors**, is [polylogarithms.pdf](polylogarithms.pdf):
+**204 pages, eleven chapters**, a literature appendix preserving 94 distinct
+historical question leads, and a central bibliography of 61 works. Its editable
 source is [polylogarithms.tex](polylogarithms.tex) and the files in `chapters/`.
 
-The book consolidates the original 39 drafts and all five nested continuation
-packages in the requested directory. The recursive inventory covers **79
+The book consolidates the original 39 drafts and all six nested continuation
+packages in the requested directory. The recursive inventory covers **102
 textual source files**; assembled articles and their fragments are provenance
 files, not independent results. The [editorial ledger](EDITORIAL-LEDGER.md)
 maps the sources and explains which later proofs replace earlier claims.

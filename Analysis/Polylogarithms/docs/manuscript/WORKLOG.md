@@ -1,30 +1,27 @@
-# Consolidation completion record
+# Completed consolidation
 
-The original 39 flat drafts and all five nested continuation packages have
-been reconciled into the canonical 177-page manuscript. The recursive source
-inventory now covers 79 textual provenance files. No original source package
-was overwritten by a replay. The final science, build and rendered review are
-recorded in [VALIDATION.md](VALIDATION.md).
+The final collective manuscript is 204 pages, eleven chapters and 61 references,
+authored by ProveIt Contributors on the title and in PDF metadata. All 102
+textual source files in the current docs tree are inventoried and reconciled.
+The original 39 drafts and six continuation packages (ten deliveries) are
+organized by mathematical dependency; the ledger records supersession.
 
-The continuation packages added during synchronization supplied stronger
-inverse-color reductions, uniform ranks and normalized jets, harmonic
-reflection/envelopes/transition, Stieltjes zero geometry and exact base-sign
-certificates, all-conductor cyclotomic obstructions, constructive rational
-cores, positive Herglotz measure/optimal truncation, and cubic class-number
-certificates. These are integrated where they enter the mathematical argument.
-Correction registers are represented by corrected statements and proofs,
-with provenance in [EDITORIAL-LEDGER.md](EDITORIAL-LEDGER.md).
+Publication checkpoints include e8309d2060 (outline), 74e5bd4f59 (source),
+22048a492a (initial 100-page validation), 64bc8939c7 (177-page batch-138
+validation), and 10811331f3 (synchronization and main publication). The last
+merge added the four overlapping Gaussian deliveries. Their shared results
+are fused, and their stronger triples, ladders, moments and certified
+evaluators are integrated in Chapters 3, 4 and 7.
 
-Publication history includes the outline checkpoint fee3d90d9e (published
-through e8309d2060), the source checkpoint c307fe77ca (published through
-74e5bd4f59), the initial validated 100-page checkpoint 22048a492a, and merge
-2af3118a2b, which brought the continuation packages into scope. The final
-expanded release supersedes the 100-page checkpoint. Commit messages record
-subsequent synchronization and publication. Git publication is verified
-separately from mathematical and PDF validation.
+The final validation record, fresh check receipts and exact source/dependency
+hashes accompany the manuscript. The 204-page PDF hash is
+8b5f6f3c0b406ae65202d8c4f8215bc4c370e6fc57e8dee82d027239e617e06b.
+All pages were visually reviewed; selected proofs, tables and all five figures
+were checked at full size. Build, scientific checks, rendering and Git
+publication are separate evidence claims.
 
-For later work, edit the canonical chapter files, rerun relevant mathematical
-checks, build serially and review the changed PDF. Do not rerun historical
-extraction helpers against the edited manuscript. The verification scripts
-and manifests explicitly distinguish recorded evidence integrity from a new
-scientific replay.
+Later editing should use the canonical chapter sources, rerun relevant
+mathematical checks, build serially, and review the changed PDF before
+refreshing evidence manifests. Historical extraction helpers must not be
+rerun against the edited manuscript. Original source packages and receipts
+remain preserved.

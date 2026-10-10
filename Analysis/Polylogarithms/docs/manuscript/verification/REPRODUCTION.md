@@ -30,3 +30,22 @@ The SHA manifests pin a particular reviewed release. Replaying may change
 execution-time or environment metadata. Do not refresh hashes to disguise a
 changed source, failed check or unreviewed PDF; perform the relevant checks
 and rendered review before recording a new release.
+
+## Gaussian parity, ladders, moments and certified evaluation
+
+```powershell
+python verification/replay_gaussian.py --part 14
+python verification/replay_gaussian.py --part 16
+python verification/replay_gaussian.py --part 17
+```
+
+These runs restore the delivered filenames inside the ignored, isolated
+`verification/.scratch-gaussian/` directory. Historical placed files are read
+only. Fresh reports are copied to `verification/gaussian-replay/`. Part 14
+replays the word algebra, exact depth and ladder substitutions, cubic moment
+certificate and independent numerical depth/ladder checks. It bypasses the
+delivery's plotting dependency, which its original driver required even in
+fast mode. Part 16 tests interval arithmetic, symbolic specialization and 89
+interval residuals with eight independent quadratures. Part 17 replays its
+symbolic solver and six positive-measure midpoint certificates. The source
+hashes and restored-file maps are recorded for each part.
