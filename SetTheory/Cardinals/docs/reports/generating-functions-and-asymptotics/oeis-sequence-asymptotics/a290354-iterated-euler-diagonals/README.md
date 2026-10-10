@@ -649,6 +649,44 @@ and Kaneiwa, Bechtloff Weising, Dudko–Sauzin, Prellberg–Mishna and
 Nagaev–Vakhtel as the manuscripts cite them. Nothing was submitted to the
 OEIS.
 
+## Independent check of the Part IV write (9 October 2026)
+
+An independent adversarial check of the Part IV write (`03c28e4c8`)
+re-derived its statements with its own code (records in the intake work
+area, `verify138ied4`); dated note at the end of Section 48. Outcome:
+
+- **The identity and the trust boundary, confirmed.** The proof of
+  Theorem 39.1 re-derived (the factor `1/n`, `2/r_m = m − (1/3)log m +
+  (1/3)log 2 + o(1)`, the surviving `2^{−t/3}`, masses `P(0)`). The four
+  inputs read in a139383 at the pin: `ibd:pd:eq:absolute` (for `η ∈ [b,B]`,
+  remainder `O(m^{−1}(1+log m)^D)`) rests on the certified common entry on the
+  outer arcs and the endpoint estimate of `ibd:pd:eq:seed`; that report's
+  Part II is stated as conditional on its Part I; the holomorphy paragraph of
+  `ibd:pd:prop:positive` does not use the seed `1.64 < I(1)`. Section 38.2
+  states this exactly.
+- **Numbers.** `2^{1/3} h(1) = 2.286264781775815…` (delivered density) or
+  `…776587…` (the earlier check's `h(1)`): "2.2862647817…" is a correct
+  truncation of both; the a139383 runs exceed it by `1.642·10⁻⁸`,
+  `2.92·10⁻⁹`, `4.52·10⁻⁹`; `C = √(2π) I(1)/2 = 2.86540797264…`. From
+  Lengyel's constant (A086053) alone, `h(log 2) = 2.03764226105491367…`
+  (delivered `…491440…`).
+- **The write's observation** recomputed by other routes (at `L = log 2`
+  through `S_n = 2z_n` and Lengyel's constant; at `L = 1` through the marked
+  recurrence at `q = 1/(e−1)`): `0.11555847` and `0.16669412` at `n = 320`,
+  both within `6·10⁻⁷` of `L/6 + c_2(L)/n` with the chain report's `c_2`
+  (uncertified at `L = 1`).
+- **Also confirmed:** Newton form, A005121 (19 terms), majorant, mixture
+  identity; SymPy endpoint expansion, main term, Lengyel form; archive
+  (1,394,668 B, 45 files, 1,636,954 B unpacked), 9 byte-identical files,
+  pin and blobs, the stale-blob correction (`ab5014ecd6` until `3f9fc9d4f`),
+  numbering (56 delivered labels at +38, 23 added, earlier labels
+  unchanged), 51 references, the 42 files listed.
+- **Since the write:** commit `7354dd9e13` added the proposed notes to
+  a005121 and a139383 (blobs now `9f84153329`, `8b759cc0cb`); the
+  statements here that those blobs are unchanged at HEAD and the notes not
+  applied describe the state at the write.
+- Nothing was found wrong. Rebuilt: see Build.
+
 ## Build
 
 ```
@@ -659,7 +697,8 @@ pdfLaTeX (MiKTeX), in a scratch copy; commit only `article.pdf`. At Part IV's
 write (9 October 2026, three passes): 89 pages (Part IV 69–87, references
 88–89); no errors or warnings, no undefined or multiply defined references or
 citations, no duplicate destinations, no overfull or underfull boxes; changed
-pages rendered and inspected. The delivered Part IV manuscript builds to 16
+pages rendered and inspected; rebuilt the same way at the independent check
+of that write (same day): 90 pages (the check's note adds one), the same log. The delivered Part IV manuscript builds to 16
 pages without warnings. Before Part IV, the build
 (69 pages after the independent check, 67 at the write: title, abstract and
 contents 1–3, front matter 4–11, Part I 12–28, Part II 29–46, Part III 47–64,

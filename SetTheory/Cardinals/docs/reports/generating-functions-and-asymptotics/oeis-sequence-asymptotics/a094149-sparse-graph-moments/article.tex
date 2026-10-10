@@ -6458,6 +6458,46 @@ information from moments). Item~\ref{sgm:q:growing}, a growing collision
 order, is none of these questions and stays open; the growing-degree
 transition of Section~\ref{sgm:md:gd:section} is a different limit.
 \end{writenote}
+\begin{writenote}[Independent check of the Part~VI write, 9 October 2026]
+An independent adversarial check of the Part~VI write (\file{cebf43994}) re-derived its
+statements with its own code. \emph{The two consequences the write proved}, checked hardest.
+(a)~Part~V's weighted bound: by $\binom ks=\binom{k-1}s+\binom{k-1}{s-1}$,
+$H_k(c)=\sum_s\binom{k-1}sc^sT_{k-s}(c)+cH_{k-1}(c)$, so the right side
+of~\eqref{sgm:sb:eq:weighted} at $\alpha=c$ is $2(H_k(c)-cH_{k-1}(c))-P_k(c)$
+(exact for $k\le128$ at $c=\frac12,1,2$). Both Parts define the same moment
+(the limiting normalized trace of the unscaled adjacency matrix of $G(N,c/N)$,
+$\mu_{2k}(c)=m_k(c)$), and $cH_{k-1}/H_k\to0$ (log-convexity of the moments of $X+c$,
+which is unbounded), $P_k$ grows at most geometrically by~\eqref{sgm:sb:eq:Pgf}
+while $H_k$ grows faster than every geometric sequence, so with
+Theorem~\ref{sgm:md:cm:main} at $K=\{c\}$ the bound is $\sim\mu_{2k}(c)$; as at $c=1$ the
+approach is slow: the bound over $\mu_{2k}(c)$ is $0.749$, $0.627$, $0.438$ at $k=128$
+for $c=\frac12,1,2$, and $cH_{k-1}/H_k$ there is $0.0161$, $0.0279$, $0.0472$, close to
+$cw/k$. (b)~At $c=1$, Corollary~\ref{sgm:md:cm:explicit} gives
+$M_{2k}/(2B_{k+1})=1+W^3/(2k)+2W^2/k+O(W^6/k^2)$ (here $W=W(k)$ is its $w$, and $H_k(1)=B_{k+1}$), and
+Theorem~\ref{sgm:lw:thm:asympt} with~\eqref{sgm:lw:eq:Bellratio} gives
+$G_k/(2B_{k+1})=1+(1+o(1))W^2/k$; as $W^6/k^2=o(W^2/k)$, subtraction gives the
+write's $(M_{2k}-G_k)/(2B_{k+1})=W^3/(2k)+(1+o(1))W^2/k$. As finite illustrations only,
+$[(M_{2k}-G_k)/(2B_{k+1})-W^3/(2k)]/(W^2/k)$ is $10.1$, $8.42$, $3.80$, $2.59$ at
+$k=16,32,64,128$ (the omitted terms are of relative order $W^4/k$), and
+$(G_k-2B_{k+1})/(2B_{k+1})$ over $W^2/k$ is $1.79$, $1.38$, $1.21$, $1.12$.
+\emph{Recomputed by other routes}: $m_k(c)$ at $c=\frac12,1,2$ for $k\le128$ by an
+excursion recurrence at the root (set partitions of the root excursions by child, an
+exponential formula; not the first-child recurrence) in integers, equal to every scaled
+moment of \file{data/06-meandeg-exact_rows.json}, to a brute-force enumeration for
+$k\le7$ and to the 13 terms of A094149 (revision \#10 of 13~July 2025, read again);
+$m_1,\dots,m_5$ as polynomials in $c$; all eighteen entries of
+Table~\ref{sgm:md:tab:finite-moments}; $A_1(k,1)=T_k/B_{k+1}$ for $3\le k\le60$ (an
+identity term by term) and $(A_1-P_1)/(w^4/k^2)$ at $k=20,40,60$ for the three $c$;
+$F(t)$ against quadrature at five points, $F(0)=\varphi(1)$, $\E C_2(Y;u)^2=2u^2$,
+$\operatorname{Var}(Y)_2=4u^3+2u^2$, $\E|Y-\lambda|=2\lambda\pi_\lambda(\lfloor\lambda\rfloor)$
+at $\lambda=3.7$, $25.2$, $400.5$; $\log Q(k,s)$ to third order. Also confirmed: the
+archive (2{,}095{,}612 bytes, 33 files, 3{,}896{,}295 bytes unpacked), the 23
+byte-identical staged files, the pin \file{9570aaede2} and the blob \file{f6a72e04cf}
+at the pin and before the write, the numbering (324 earlier labels unchanged, 158
+delivered labels at section $+57$ with Table~1 as Table~\ref{sgm:md:tab:finite-moments},
+19 added, 501 in all), the 192 references (144 + 48), and the README's 106 files.
+No claim of Part~VI or of the write was found wrong.
+\end{writenote}
 
 \begin{thebibliography}{99}\raggedright
 \bibitem{bg} Michel Bauer and Olivier Golinelli.

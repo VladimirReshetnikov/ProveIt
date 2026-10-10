@@ -317,7 +317,10 @@ paper (Question 6). Nothing was sent to the authors.
 - **`E_*`** (Question 23.3; uncertified, the write's): `E_* ≈ 0.1024413800`
   at slope `α ≈ 1.0000000`, shift `b ≈ −0.2784645`, with three-point
   equioscillation at `x ≈ −1.265, 0, 2.164`; about `κ/3.02`. Whether `α = 1`
-  exactly is open.
+  exactly is open. *Superseded by the independent check (9 October 2026,
+  dated note at the end of Section 23):* `E_* = W(1/e)/e =
+  0.1024413803770050319…`, attained only at `α = 1`, `b = −W(1/e)`, with a
+  proof; the write's grid value is `3.8·10⁻¹⁰` low.
 - **Stale or wrong statements:** none found. The proposal of a separate
   report `a308338-sharp-largest-components/` was declined at placement.
 
@@ -387,7 +390,8 @@ treats a statistic Part I does not. Its own eleven questions (Section 23,
 labels `ncy:gb:q:*`, the manuscript's, as delivered) stay open: the next
 term of the calibrated error (`nextconst`); an optimal calibration beyond
 first order (`calibration`); the value of `E_*` (`affine`; the write's
-uncertified `0.10244`); a better discrete remainder (`remainder`); joint laws
+uncertified `0.10244`; **answered by the independent check**:
+`E_* = W(1/e)/e = 0.10244138037…`, optimal `α = 1`, `b = −W(1/e)`); a better discrete remainder (`remainder`); joint laws
 of several largest components (`several`); weights `p_k ~ c k^{α−1}`,
 `α ≠ 1` (`expansive`); arithmetic supports (`arithmetic`); effective finite
 constants (`effective`, the analogue of Question 1); root-of-unity component
@@ -471,6 +475,44 @@ per-cutoff tilted recurrence (every printed digit at `10⁴`, within
   residual) differ;
 - A308338 read again (#21). Not read: Panagiotou–Ramzews, Bousquet-Mélou–
   Weller, Mossel–Sly–Sohn, `openai/math`.
+
+## Independent check of the Part II write (9 October 2026)
+
+An independent adversarial check of the write (`aeecf5e9e`) re-derived its
+`[write]` statements with its own code (records in the intake work area,
+`verify138ncy2`). Outcome:
+
+- **`E_*` in closed form (Question 23.3 answered).** `E_* = W(1/e)/e =
+  0.1024413803770050319…`, attained only at `α = 1`, `b = −W(1/e) =
+  −0.2784645427610737951…`. Proof (dated note at the end of Section 23): for
+  `ψ(x) = G'(x)(1 − e^{−x} − x + W(1/e))`, `ψ' = G'(e^{−x} − 1)(2 + W(1/e) −
+  x − e^{−x})`; the critical points are `0` and the two roots of `x + e^{−x}
+  = 2 + W(1/e)`, where `ψ = −W(1/e)/e`, while `ψ(0) = +W(1/e)/e`; a
+  three-point alternation against the two-dimensional family `αx + b`
+  forces optimality and uniqueness. A 40-digit solution of the alternation
+  equations and a linear-programming minimax agree. The write's grid value
+  `0.1024413800` is `3.8·10⁻¹⁰` low; its slope, shift and points were right.
+- **One precision** (dated note after the Section 22 note): the largest
+  quantile correction term at `n = 10⁵` is `25.48`, so "reaches 26" should
+  read "reaches 25.5".
+- **Confirmed** by routes of the check's own: the law of `M_n` at
+  `n = 1000` in exact integer arithmetic (the write's four error values are
+  the exact ones to every printed digit; the delivered ones are within
+  `3·10⁻¹⁰`), and at `n = 10⁴, 10⁵` by a signed complement route
+  `[w^n]E(w)exp(−Σ_{k>m} a_k w^k)` built downward from `m = n` (agreement
+  with the delivery to `10⁻¹³`); the atoms, the nine ratios, the quantile
+  intervals, the explicit saddle; the six `n = 50` fractions, 22 counts and
+  `a(50)` against A308338 (#21, read again with its b-file); `κ` (printed
+  digit rounded), the other stationary value, the corollary constants
+  (truncations), the lower bound `0.0402300054…`, `R_1..R_3`, the geometric
+  tail, (19.4) and its region minima, `G'(h_τ − x)` = smooth part of `U_n`;
+  the archive, the 18 byte-identical files, the pins (`07022425b718` is the
+  blob at `2bac1ea07b98` and before the write), the 94 + 72 labels with 19
+  added (185), the 102 references (69 + 33), the README's 38 files; that no
+  file cited Panagiotou–Ramzews or Bousquet-Mélou–Weller before the
+  placement.
+- Nothing else was found wrong. Rebuilt: 57 pages (56), label numbers
+  unchanged.
 
 ## Relation to the repository
 
@@ -556,7 +598,7 @@ Tables 1–2 and Figures 1–2 unchanged. 185 labels in all.
 ```text
 README.md                             this guide (replaces the delivery README)
 article.tex                           the report: Part I (delivered Report167.tex) and Part II (delivered article.tex with its section files); labels prefixed, [write] additions
-article.pdf                           compiled report, 56 pages
+article.pdf                           compiled report, 57 pages
 companion-README.md                   the companion's README (delivered companion/README.md)
 companion-PROVENANCE.md               fixture and source provenance (delivered companion/PROVENANCE.md)
 code/companion-exact_nested.py        exact integer/rational computations (delivered companion/exact_nested.py)
@@ -714,7 +756,9 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 The committed PDF was built this way with MiKTeX (pdfLaTeX, three passes)
-on 9 October 2026, at Part II's write: 56 pages (Part I alone: 22); no
+on 9 October 2026, at Part II's write: 56 pages (Part I alone: 22), and
+rebuilt at the independent check of that write (same day): 57 pages, the
+same clean log, all 185 labels unchanged; no
 errors or warnings, no undefined references or citations, no multiply
 defined labels, no duplicate PDF destinations, no overfull or underfull
 boxes; changed pages rendered and inspected. The delivered Part II

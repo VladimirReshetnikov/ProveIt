@@ -1,0 +1,26 @@
+PYTHON ?= python3
+LATEXMK ?= latexmk
+
+.PHONY: all pdf exact numerical height-one clean
+
+all: pdf
+
+pdf:
+	$(LATEXMK) -pdf -interaction=nonstopmode -halt-on-error article.tex
+
+exact:
+	$(PYTHON) code/verify_exact.py
+	$(PYTHON) code/verify_weight5.py
+	$(PYTHON) code/gaussian_parity.py --max-weight 12
+	$(PYTHON) code/distribution_grids.py
+
+numerical:
+	$(PYTHON) code/verify_gaussian.py --dps 65
+	$(PYTHON) code/verify_mixed.py --dps 80
+	$(PYTHON) code/verify_weight5.py --numerical --dps 60
+
+height-one:
+	$(PYTHON) code/verify_mixed.py --dps 90 --rerun-height-one
+
+clean:
+	$(LATEXMK) -c article.tex
