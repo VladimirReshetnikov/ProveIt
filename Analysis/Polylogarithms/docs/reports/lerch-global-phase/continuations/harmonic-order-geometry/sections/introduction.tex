@@ -1,0 +1,192 @@
+\section{Introduction and the state of the problem}
+\label{sec:introduction}
+
+The ProveIt polylogarithm manuscript brings together exact cyclotomic
+identities, positive-kernel representations, and zero geometry of
+Stieltjes--Lerch derivatives. The most useful next step is to distinguish
+questions about a fixed integer weight from questions about an entire
+family. A special-value reduction asks which periods suffice to express
+one number. An order interpolation asks how those numbers fit into a
+holomorphic function. A zero-motion problem asks what remains uniform
+when two discrete indices change together. These questions interact, but
+a solution to one does not automatically solve the others.
+
+This article develops three results beyond the inspected source baseline.
+The proofs are given in full, with classical analytic inputs either
+derived here or explicitly identified. The accompanying programs check
+finite identities and numerical conventions; the infinite conclusions
+do not rest on an integer-relation search or a scan of zeros.
+
+\subsection{The harmonic Euler sum as a function of its order}
+
+Let $H_0=0$ and $H_n=\sum_{j=1}^n j^{-1}$. The manuscript's mixed
+Gaussian sums are the positive-integer values of
+\[
+ S(s)=\sum_{n=0}^{\infty}\frac{(-1)^nH_n}{(2n+1)^s},
+ \qquad \Re s>0.
+\]
+Our first main result is that this function extends to an entire function
+whose complete real zero set is
+\[
+ \{\sigma_m:m\ge1\},\qquad -2m-1<\sigma_m<-2m,
+\]
+with every zero simple. In particular $S(s)<0$ for real $s\ge-2$.
+We also prove that $S$ has no complex zero in $\Re s\ge3$.
+
+The continuation itself is a standard Mellin-regularization argument.
+The new work is the global zero classification. A differentiated
+Fourier--beta integral gives
+\[
+ S(-q)=\frac{cD(q)}2\{R(q)\cos(cq)-\sin(cq)\},\qquad c=\frac\pi2,
+\]
+where $D(q)>0$ and $R$ is a ratio of explicit Mellin moments.
+We prove $R(q)>0$ and $0<R'(q)<\pi/2$ for $q\ge2$. This converts
+existence and uniqueness in every interval into a strict comparison
+with the tangent function. The derivative estimate follows from a
+one-dimensional variance inequality and elementary moment bounds.
+It covers the first interval as well as the asymptotic regime.
+
+If $N=2m+1$, $\Lambda=\log(N/\pi)+\gamma$, and
+$\sigma_m=-N+\varepsilon_m$, then
+\[
+ \varepsilon_m=
+ \frac2\pi\arctan\frac{\pi}{2\Lambda}
+ -\frac{\frac12-\frac2\pi\arctan(\pi/(2\Lambda))}
+        {N(\Lambda^2+\pi^2/4)}
+ +O\!\left(\frac1{N^2\Lambda^2}\right).
+\]
+We give both a complete expansion in inverse logarithms and a recursive
+construction of every correction in $1/N$. Exact negative-integer
+identities in generalized secant numbers supply an independent arithmetic
+description.
+
+\subsection{Diagonal Lerch zeros do not have an eventual common direction}
+
+For $n\ge0$, $k\ge1$, $h>0$, and $0\le\rho\le1$, define
+\[
+ \mathscr F_{n,k}^{\rho,h}(a)=
+ \sum_{m=0}^{\infty}\rho^m(-1)^{n+k}
+ \frac{d^k}{da^k}\left(\frac{\log^n(a+mh)}{a+mh}\right),
+ \qquad a>0.
+\]
+The endpoint $\rho=1$ is defined by this convergent derivative series.
+On the diagonal $k=n-1$, the smallest elementary zero is $a=1$.
+It continues to an analytic local zero branch $a_n^{(h)}(\rho)$.
+For $A=1+h$, put $v_n(A)=(a_n^{(h)})'(0)$.
+We prove the exact convergent generating identity
+\[
+ \sum_{n\ge1}v_n(A)t^n=\log A-u_A(t),\qquad
+ e^{u_A(t)}=A+t\,u_A(t),\qquad u_A(0)=\log A.
+\]
+Here the $n=1$ coefficient is an auxiliary term completing the generating
+function; the zero-branch assertion concerns $n\ge2$.
+
+For every real $A>1$, infinitely many $v_n(A)$ are positive and infinitely
+many are negative. The proof uses Lagrange inversion and a
+positive-coefficient argument: the inverse $u_A$ is analytic along the
+whole positive real axis and has unbounded logarithmic growth, which
+excludes eventually one-sign Taylor coefficients. This is compatible
+with a theorem that fixes $n$ before letting $k$ grow; it shows why that
+order of quantifiers matters.
+
+\subsection{An explicit solution to the exterior-operator problem}
+
+For $n\ge2$, set
+\[
+ g_n(x)=x^{-2}(\log x)^{n-1}(n-\log x),\qquad
+ U_n(a,\rho)=\sum_{m\ge0}\rho^m g_n(a+m).
+\]
+The incoming \emph{Lerch Global Phase} report asks for the best exterior
+cutoff obtainable by optimizing the positive constant in
+$\partial_a+\lambda$ \cite{IncomingPhase}. Let $r_n$ be the unique
+positive root of
+\[
+ r^3+nr^2-nr-n=0.
+\]
+The optimal coefficient is
+\[
+ \lambda_n=(2-r_n)e^{-n-r_n},\qquad 1<r_n<\frac{1+\sqrt5}{2}.
+\]
+We give a scalar equation uniquely defining the least cutoff $B_n$,
+prove
+\[
+ (\partial_a+\lambda_n)U_n(a,\rho)<0
+ \quad(a\ge B_n,\ 0<\rho\le1),
+\]
+and prove that no smaller cutoff works uniformly over these parameters.
+At that cutoff the coefficient is unique. For the corresponding strict
+pointwise problem, the same cutoff is an infimum and is not attained:
+there is an unavoidable tangency in the negative tail. This boundary
+qualification is part of the solution.
+
+The algebraic parameter $r_n$ tends to the golden ratio. Its series in $1/n$ has exact
+radius of convergence $5/27$, and the cutoff has explicit exponentially
+small corrections in logarithmic coordinates. These are quantitative
+identities, rather than numerical fits.
+
+\subsection{Source baseline, attribution, and proof status}
+\label{sec:baseline}
+
+The source baseline is the repository commit
+\[
+ \texttt{a0a90ef31877f98be437191c48b46f02d5456867},
+\]
+dated 10 October 2026. The focused audit used all forty manuscript chapter
+files and the mathematical source material in the sixteen incoming
+archives listed in the accompanying provenance record. This is a focused
+research audit, not a claim to have independently re-proved every theorem
+in those archives.
+
+At this baseline, the mixed Gaussian $S_4$ reduction is already proved
+by a convergent octahedral transformation and an exact finite certificate
+\cite{ProjectS4}. The $S_2$ companion, the product-matrix rank theorem,
+and several low-index Lerch phase results are also already established.
+The two displayed $S_6$ baskets are provably equivalent formulations of
+one remaining conjecture \cite{ProjectQuotients}. A frozen $S_8$ vector
+has already been disproved by an exact interval exclusion
+\cite{ProjectDiscovery}. None of those earlier achievements is claimed
+as a result of this article.
+
+Analytic continuation of harmonic Euler Dirichlet series has substantial
+precedent \cite{BGP}; integer-weight Euler sums and their colored
+multiple-zeta representations are also established subjects
+\cite{XuWang}. Lagrange inversion, the Pringsheim principle, and the
+Brascamp--Lieb inequality are classical \cite{Gessel2016,Flajolet,BL}.
+The claims of progress here are relative to the inspected manuscript and
+incoming reports. The literature check was targeted and does not establish
+global priority for every formula.
+
+The results designated as theorems below have ordinary analytic or
+algebraic proofs. Exact rational computations provide additional finite
+certificates. Numerical quadrature and high-precision asymptotic
+comparisons are labelled diagnostics. The complex-singularity conjecture
+is kept separate from the proved infinite sign theorem, and $S_6$ remains
+open.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\textwidth}{@{}p{.28\textwidth}X p{.19\textwidth}@{}}
+\toprule
+Question & Result in this article & Status\\
+\midrule
+Real zeros of $S(s)$ &
+Entire continuation; exactly one simple zero in each
+$(-2m-1,-2m)$; no other real zeros & Proved\\
+Diagonal initial motion &
+Exact inverse generating function; infinitely many velocities of each sign
+for every $h>0$ & Proved\\
+Best constant exterior operator &
+Unique optimal coefficient and least uniform summed cutoff;
+strict pointwise infimum identified & Proved\\
+Quantitative diagonal oscillation &
+Candidate accessible conjugate singularities and coefficient asymptotics
+& Explicit conjecture\\
+Mixed reduction for $S_6$ &
+Existing candidate and its two-basket equivalence retained
+& Still open\\
+\bottomrule
+\end{tabularx}
+\caption{The principal proof-status distinctions.}
+\label{tab:status}
+\end{table}

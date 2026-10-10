@@ -1,0 +1,106 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=26mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{microtype,booktabs,tabularx,longtable,graphicx,enumitem}
+\usepackage{xcolor,fancyhdr,lastpage}
+\usepackage[unicode]{hyperref}
+\definecolor{navy}{HTML}{19364D}
+\definecolor{teal}{HTML}{147D86}
+\hypersetup{colorlinks=true,linkcolor=navy,citecolor=navy,urlcolor=teal,
+ pdftitle={Harmonic Euler Sums and Lerch Zero Geometry},
+ pdfauthor={Research continuation prepared with ChatGPT for ProveIt},
+ pdfsubject={Entire continuation, real zeros, diagonal velocities, optimal exterior barriers}}
+\urlstyle{same}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\sech}{\operatorname{sech}}
+\newcommand{\csch}{\operatorname{csch}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\stirling}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
+\numberwithin{equation}{section}
+\setlist{leftmargin=*,itemsep=3pt,topsep=5pt}
+\setcounter{tocdepth}{2}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[1]
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{Harmonic Euler sums and Lerch zero geometry}}
+\fancyhead[R]{\small ProveIt research}
+\fancyfoot[L]{\small 10 October 2026}
+\fancyfoot[R]{\small\thepage\ / \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.3pt}
+
+\title{\vspace{-1.5em}\color{navy}\textbf{Harmonic Euler Sums\\and Lerch Zero Geometry}\\[.65em]
+\large Entire Continuation, Infinite Direction Changes,\\
+and an Optimal Exterior Barrier}
+\author{Research continuation prepared for the ProveIt project}
+\date{10 October 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+We continue the ProveIt polylogarithm research in three directions.
+First, the odd-denominator harmonic Euler sum
+$S(s)=\sum_{n\ge0}(-1)^nH_n(2n+1)^{-s}$ extends to an entire
+function with exactly one simple real zero in each interval
+$(-2m-1,-2m)$, $m\ge1$, and no other real zeros. A Fourier--beta
+identity and a quantitative variance bound prove the classification.
+We obtain exact negative-integer evaluations, a complex zero-free
+half-plane, monotone real-zero displacements, and all-orders zero
+asymptotics.
+Second, for the smallest Lerch zero on the diagonal $k=n-1$,
+an exact inverse-function generating identity proves infinitely many
+positive and infinitely many negative initial velocities, for every
+positive lattice spacing. An explicitly labelled complex-singularity
+conjecture gives a proposed quantitative refinement.
+Third, we solve the incoming exterior-operator optimization problem:
+a cubic algebraic number determines the unique optimal constant
+coefficient and the least cutoff for the geometric sum. The strict
+pointwise problem has the same infimum, but does not attain it.
+Convergent coefficient formulas, two-scale cutoff expansions, exact
+rational certificates, independent numerical diagnostics, proposed
+manuscript corrections, and fourteen further research directions
+accompany the proofs.
+The already proved $S_4$ reduction is credited to the inspected
+baseline; the weight-seven $S_6$ reduction remains open.
+\end{abstract}
+
+\vfill
+\noindent\textbf{Source baseline.}\quad
+\texttt{VladimirReshetnikov/ProveIt}\\
+Commit:
+\texttt{a0a90ef31877f98be437191c48b46f02d5456867}.
+
+\medskip
+\noindent\textbf{Proof standard.}\quad
+Ordinary analytic and algebraic proofs, with reproducible finite
+certificates. Numerical illustrations are identified as diagnostics;
+no proof-assistant verification or exhaustive priority claim is implied.
+\clearpage
+\begingroup
+\small
+\tableofcontents
+\endgroup
+\clearpage
+\input{sections/introduction.tex}
+\input{sections/harmonic_order.tex}
+\input{sections/diagonal_velocities.tex}
+\input{sections/diagonal_conjecture.tex}
+\input{sections/optimal_barrier.tex}
+\input{sections/computations.tex}
+\input{sections/audit_and_questions.tex}
+\input{sections/bibliography.tex}
+\end{document}

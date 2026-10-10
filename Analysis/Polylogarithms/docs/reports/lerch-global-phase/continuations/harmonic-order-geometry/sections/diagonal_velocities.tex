@@ -1,0 +1,378 @@
+\section{A diagonal zero branch and infinitely many initial directions}
+\label{diag:sec:main}
+
+The fixed-index monotonicity theorem permits its derivative-order threshold
+to depend on the Laurent index.  That dependence is essential.  We prove
+that on the diagonal $k=n-1$, the smallest zero issuing from the elementary
+endpoint moves initially to the right for infinitely many $n$ and initially
+to the left for infinitely many $n$.  An exact inverse-function identity
+organizes all these velocities.  The result concerns the central elementary
+zero at $a=1$, which is separate from the branches near positive Bessel zeros
+in the earlier adjacent-index expansion.
+
+\subsection{The shifted lattice and its elementary endpoint}
+\label{diag:subsec:lattice}
+
+It is useful to allow an arbitrary lattice spacing $h>0$.  For integers
+$n\geq0$, $k\geq1$, define
+\begin{equation}\label{diag:eq:f}
+ f_{n,k}(a)=(-1)^{n+k}\frac{d^k}{da^k}
+                 \left(\frac{\log^n a}{a}\right),\qquad a>0,
+\end{equation}
+and
+\begin{equation}\label{diag:eq:lattice}
+ \mathscr F_{n,k}^{\rho,h}(a)
+       =\sum_{m=0}^{\infty}\rho^m f_{n,k}(a+mh),
+       \qquad 0\leq\rho\leq1.
+\end{equation}
+At $h=1$ this is the normalized Stieltjes--Lerch derivative family used in
+the manuscript.  For $\rho<1$ it is $(-1)^{n+k}$ times the $k$th derivative
+of the corresponding logarithmic Lerch series.  At $\rho=1$ we use
+\eqref{diag:eq:lattice} itself; the undifferentiated logarithmic series need
+not converge.  The derivative series converges absolutely because
+\[
+ f_{n,k}(x)=O_{n,k}\bigl(x^{-k-1}(1+\log^n x)\bigr)
+ \quad(x\longrightarrow\infty).
+\]
+The convergence is locally uniform in $a>0$, together with any fixed
+number of $a$-derivatives.  Near $\rho=0$ the series is jointly holomorphic
+in $a$ and $\rho$, using the logarithm analytic near the positive axis.
+
+The elementary polynomial is
+\begin{equation}\label{diag:eq:P}
+ P_{n,k}(x)=n![z^n]e^{xz}\prod_{j=1}^{k}\left(1+\frac zj\right).
+\end{equation}
+Differentiating $a^{-1-z}$ and comparing coefficients gives
+\begin{equation}\label{diag:eq:elementary}
+ f_{n,k}(a)=k!a^{-k-1}P_{n,k}(-\log a).
+\end{equation}
+
+\begin{lemma}[The central diagonal zero]\label{diag:lem:central}
+For every $n\geq2$, $f_{n,n-1}$ has exactly $n$ simple positive zeros.
+Its smallest zero is $1$, and
+\begin{equation}\label{diag:eq:central-derivative}
+ f_{n,n-1}'(1)=-n!.
+\end{equation}
+For every $h>0$ there is an $\epsilon_{n,h}>0$ such that
+$\mathscr F_{n,n-1}^{\rho,h}$ has exactly $n$ simple positive zeros for
+$0\leq\rho<\epsilon_{n,h}$.  Its smallest zero is a real analytic branch
+$a_n^{(h)}(\rho)$ with $a_n^{(h)}(0)=1$.
+\end{lemma}
+
+\begin{proof}
+The polynomial in \eqref{diag:eq:P} is obtained from $x^n$ by applying
+$k$ operators $1+\partial_x/j$.  If a real-rooted polynomial $p$ has
+distinct roots $r_i$ of multiplicities $m_i$, then away from these roots
+the zeros of $p+cp'$, $c>0$, solve
+\[
+ \frac{p'(x)}{p(x)}=\sum_i\frac{m_i}{x-r_i}=-\frac1c.
+\]
+The left side is strictly decreasing on each complementary interval.
+There is one new simple root between consecutive distinct roots and one
+to the left of the smallest root.  An inherited root of multiplicity
+$m_i\geq2$ has multiplicity $m_i-1$.  Starting from $x^n$, after $n-1$
+operators all $n$ roots are simple; zero is the largest and the others
+are negative.  Equation~\eqref{diag:eq:elementary} proves the first claim.
+
+Since $n+(n-1)$ is odd,
+\[
+ f_{n,n-1}(a)=-\frac{d^{n-1}}{da^{n-1}}
+                       \left(\frac{\log^n a}{a}\right).
+\]
+The expansion $\log^n a/a=(a-1)^n+O((a-1)^{n+1})$ proves
+\eqref{diag:eq:central-derivative}.  The analytic implicit function theorem
+therefore continues this zero, as well as each of the other simple zeros.
+
+For completeness, no additional positive zeros enter from an endpoint.
+For sufficiently large $a$, every term $f_{n,n-1}(a+mh)$ has the same
+strict sign, because its argument exceeds the largest elementary zero.
+As $a\downarrow0$, the $m=0$ term tends to $+\infty$, while the sum over
+$m\geq1$ is bounded uniformly for $a$ in a small positive interval and
+$0\leq\rho\leq1$.  Thus there are no zeros sufficiently close to zero.
+On the remaining compact set outside small neighborhoods of the elementary
+zeros, uniform convergence to $f_{n,n-1}$ as $\rho\downarrow0$ excludes
+zeros.  Inside each neighborhood, uniform convergence of the first
+$a$-derivative preserves its strict sign and hence gives exactly one
+simple zero.  The branch issuing from $1$ is consequently the smallest.
+\end{proof}
+
+\subsection{An inverse function generates every diagonal velocity}
+\label{diag:subsec:inverse}
+
+Let $\stirling{n}{j}$ denote the unsigned Stirling numbers of the
+first kind, fixed by
+\[
+ \prod_{r=0}^{n-1}(z+r)=\sum_{j=0}^n\stirling{n}{j}z^j.
+\]
+
+\begin{theorem}[Exact velocity identity]\label{diag:thm:generator}
+For $A>1$ and $n\geq1$, put
+\begin{align}
+ v_n(A)
+  &=-\frac1{n!}\left.\frac{d^{n-1}}{dx^{n-1}}
+                  \left(\frac{\log^n x}{x}\right)\right|_{x=A}
+                  \label{diag:eq:velocity-derivative}\\
+  &=A^{-n}\sum_{j=1}^n
+       \stirling{n}{n-j+1}\frac{(-\log A)^j}{j!}.
+                  \label{diag:eq:velocity-stirling}
+\end{align}
+For the lattice spacing $h=A-1$, the smallest diagonal branch satisfies
+\begin{equation}\label{diag:eq:root-velocity}
+ \bigl(a_n^{(h)}\bigr)'(0)=v_n(A),\qquad n\geq2.
+\end{equation}
+There is a unique analytic germ $u_A(t)$ at zero satisfying
+\begin{equation}\label{diag:eq:inverse-equation}
+ e^{u_A(t)}=A+t u_A(t),\qquad u_A(0)=\log A.
+\end{equation}
+Its coefficients give the convergent ordinary generating identity
+\begin{equation}\label{diag:eq:velocity-generator}
+ V_A(t):=\sum_{n=1}^{\infty}v_n(A)t^n=\log A-u_A(t)
+\end{equation}
+for all sufficiently small complex $t$.
+\end{theorem}
+
+\begin{proof}
+Differentiate the zero equation at $\rho=0$.  The shifted series and
+\eqref{diag:eq:central-derivative} give
+\[
+ \bigl(a_n^{(h)}\bigr)'(0)
+   =-\frac{f_{n,n-1}(1+h)}{f_{n,n-1}'(1)}
+   =\frac{f_{n,n-1}(A)}{n!},
+\]
+which is \eqref{diag:eq:velocity-derivative}.  The Stirling identity implies
+\[
+ P_{n,n-1}(x)
+       =n\sum_{j=1}^n\stirling{n}{n-j+1}\frac{x^j}{j!}.
+\]
+Together with \eqref{diag:eq:elementary}, this proves
+\eqref{diag:eq:velocity-stirling}.  The same finite identity holds at $n=1$
+by direct calculation; that term is included for the generating function.
+
+Let $y(t)$ solve $y=A+t\log y$, with $y(0)=A$.  The analytic implicit
+function theorem supplies a unique germ.  The Lagrange--B\"urmann formula
+with outer function $\log y$ gives
+\[
+ [t^n]\log y(t)
+   =\frac1{n!}\left.\frac{d^{n-1}}{dx^{n-1}}
+                        \left(\frac{\log^n x}{x}\right)\right|_{x=A}.
+\]
+This is the standard analytic form of Lagrange inversion
+\cite{Gessel2016}.  Set $u_A=\log y$.  Its equation is
+\eqref{diag:eq:inverse-equation}, and coefficient comparison proves
+\eqref{diag:eq:velocity-generator}.
+\end{proof}
+
+\begin{corollary}[An exact quadratic recurrence]\label{diag:cor:recurrence}
+Write $L=\log A$ and $p_n(L)=A^n v_n(A)$.  Then $p_1(L)=-L$, and for
+$n\geq1$,
+\begin{equation}\label{diag:eq:recurrence}
+ (n+1)p_{n+1}(L)
+   =(n+1-nL)p_n(L)
+       +\frac n2\sum_{j=1}^{n-1}p_j(L)p_{n-j}(L).
+\end{equation}
+Each $p_n$ is a rational polynomial of degree $n$, with constant term zero,
+linear coefficient $-1$, and leading coefficient $(-1)^n/n$.
+\end{corollary}
+
+\begin{proof}
+The generating identity is equivalent to
+\[
+ A e^{-V_A(t)}=A+t(L-V_A(t)).
+\]
+Differentiation and elimination of the exponential yield
+\begin{equation}\label{diag:eq:ode}
+ \bigl(A+t(L-1-V_A(t))\bigr)V_A'(t)=V_A(t)-L.
+\end{equation}
+The constant coefficient gives $v_1=-L/A$.  At degree $n\geq1$, the
+convolution is
+\[
+ \sum_{j=1}^{n-1}(n-j)v_jv_{n-j}
+       =\frac n2\sum_{j=1}^{n-1}v_jv_{n-j}.
+\]
+Multiplication by $A^n$ gives \eqref{diag:eq:recurrence}.  The coefficient
+statements follow directly from \eqref{diag:eq:velocity-stirling}, using
+$\stirling{n}{n}=1$ and
+$\stirling{n}{1}=(n-1)!$.
+\end{proof}
+
+\begin{corollary}[Nonvanishing at algebraic lattice endpoints]
+\label{diag:cor:algebraic-nonvanishing}
+If $A>1$ is algebraic, then $v_n(A)\ne0$ for every $n\ge1$.
+\end{corollary}
+\begin{proof}
+The Hermite--Lindemann theorem implies that $\log A$ is transcendental:
+it is nonzero, and its exponential is algebraic. Each $p_n$ in
+Corollary~\ref{diag:cor:recurrence} is a nonzero rational polynomial.
+Thus $p_n(\log A)\ne0$, and $v_n(A)=A^{-n}p_n(\log A)\ne0$.
+\end{proof}
+
+\subsection{A sign theorem without an unproved singularity analysis}
+\label{diag:subsec:signs}
+
+\begin{lemma}[Positive-axis continuation and coefficient signs]
+\label{diag:lem:pringsheim}
+Let $g$ be a nonpolynomial analytic germ at zero with real Taylor
+coefficients.  Suppose it admits coherent holomorphic continuation to a
+neighborhood of every point of $[0,\infty)$ and has at most polynomial
+growth on the positive real axis.  Then its Taylor coefficients include
+infinitely many positive and infinitely many negative terms.
+\end{lemma}
+
+\begin{proof}
+Suppose the coefficients have one sign from some index $N$ onward.
+Subtract the Taylor polynomial of degree $N-1$ and, if needed, multiply
+by $-1$.  We obtain a nonpolynomial germ
+\[
+ H(t)=\sum_{n\geq N}b_n t^n,\qquad b_n\geq0,
+\]
+with the same continuation and growth properties.
+
+Here is the needed positive-coefficient argument in full.  If the radius
+of convergence were a finite $R>0$, analyticity near the positive point
+$R$ would imply, for every $j\geq0$,
+\[
+ H^{(j)}(R)=\sum_{n\geq j}(n)_j b_n R^{n-j}\geq0.
+\]
+Indeed the equality holds first at $0<t<R$; monotone convergence of its
+nonnegative terms and continuity of $H^{(j)}$ at $R$ give the displayed
+formula.  Choose $\delta>0$ within the Taylor radius at $R$.  That Taylor
+series converges absolutely, so Tonelli's theorem and the binomial theorem
+give
+\[
+ \sum_{j\geq0}\frac{H^{(j)}(R)}{j!}\delta^j
+     =\sum_{n\geq0}b_n(R+\delta)^n<\infty.
+\]
+The original power series would converge beyond $R$, a contradiction.
+This is the usual Pringsheim argument, and it proves that $H$ is entire.
+
+Now $0\leq b_n t^n\leq H(t)$ for every positive real $t$.  A polynomial
+upper bound $H(t)=O(t^M)$ forces $b_n=0$ for every $n>M$.  Thus $H$, and
+hence $g$, is a polynomial, the final contradiction.  Eventual
+nonnegativity and eventual nonpositivity have both been excluded.
+\end{proof}
+
+\begin{theorem}[Infinite diagonal oscillation]\label{diag:thm:oscillation}
+For every $A>1$, each of the sets
+\[
+ \{n\geq1:v_n(A)>0\},\qquad \{n\geq1:v_n(A)<0\}
+\]
+is infinite.  Consequently, for every lattice spacing $h>0$, the smallest
+zero branch of $\mathscr F_{n,n-1}^{\rho,h}$ initially moves in each
+direction for infinitely many Laurent indices $n\geq2$.
+\end{theorem}
+
+\begin{proof}
+Set $L=\log A>0$ and consider
+\[
+ h_A(u)=\frac{e^u-A}{u},\qquad u\geq L.
+\]
+It has $h_A(L)=0$ and tends to infinity.  Its derivative is
+\[
+ h_A'(u)=\frac{e^u(u-1)+A}{u^2}>0.
+\]
+For the strict inequality, the numerator equals $AL>0$ at $u=L$, and its
+derivative is $ue^u>0$ for $u>0$.  Thus $h_A$ has a unique increasing real
+inverse on $[0,\infty)$.  The derivative never vanishes, so the complex
+implicit function theorem continues this inverse holomorphically near
+every positive real point.  It is the continuation of $u_A$ from
+\eqref{diag:eq:inverse-equation}.
+
+The inverse is unbounded but has logarithmic growth.  To see the latter
+directly, take $U=2\log(t+A+2)$.  For all sufficiently large $t$,
+\[
+ e^U=(t+A+2)^2>tU+A,
+\]
+so $h_A(U)>t$ and monotonicity implies
+$u_A(t)<2\log(t+A+2)$.  An unbounded function of this growth cannot be a
+polynomial.  Lemma~\ref{diag:lem:pringsheim} applies to $u_A$ and proves
+infinitely many Taylor coefficients of each sign.  Equation
+\eqref{diag:eq:velocity-generator} negates all its nonconstant
+coefficients.  This proves the result for $v_n(A)$; omission of the single
+index $n=1$ does not change infinitude.
+\end{proof}
+
+\begin{corollary}[A restriction on uniform monotonicity thresholds]
+\label{diag:cor:threshold}
+For the unit lattice, no integer $N$ has the property that every smallest
+diagonal branch $a_n^{(1)}(\rho)$, $n\geq N$, is nonincreasing near
+$\rho=0$.  If $K_n$ is any threshold guaranteeing decreasing motion of
+every zero branch throughout the Lerch interval for every $k\geq K_n$,
+then $K_n>n-1$ for infinitely many $n$.
+\end{corollary}
+
+\begin{proof}
+For infinitely many $n$, Theorem~\ref{diag:thm:oscillation} gives
+$\bigl(a_n^{(1)}\bigr)'(0)>0$.  Analyticity makes the branch strictly
+increasing on a sufficiently small positive interval, contradicting each
+of the proposed conclusions when $k=n-1$ is included.
+\end{proof}
+
+This conclusion respects the quantifiers of the earlier fixed-index
+theorem.  It does not assert that its threshold fails to exist, or that
+the diagonal branch must continue simply throughout $0\leq\rho\leq1$.
+The local interval in Lemma~\ref{diag:lem:central} can depend on $n$.
+
+\subsection{A short exact example and the verification artifacts}
+\label{diag:subsec:verification}
+
+For the unit lattice put $L=\log2$.  The first relevant velocities are
+\begin{align*}
+ v_2(2)&=\frac{L^2-2L}{8},\\
+ v_3(2)&=\frac{-2L^3+9L^2-6L}{48},\\
+ v_4(2)&=\frac{3L^4-22L^3+36L^2-12L}{192}.
+\end{align*}
+The fourth-index example is positive:
+\begin{equation}\label{diag:eq:positive-certificate}
+ 0.01221096503<v_4(2)<0.01221096504.
+\end{equation}
+For a reproducible exact certificate, use
+\[
+ L_M=2\sum_{j=0}^{M-1}\frac1{(2j+1)3^{2j+1}},\qquad
+ 0<\log2-L_M<
+     \frac{2}{(2M+1)3^{2M+1}(1-1/9)}.
+\]
+This is the positive series for $2\operatorname{arctanh}(1/3)$ with a
+geometric tail majorant.  At $M=20$, rational interval Horner evaluation
+of the displayed polynomial gives \eqref{diag:eq:positive-certificate}.
+Equivalently,
+\[
+ P_{4,3}(x)=x^4+\frac{22}{3}x^3+12x^2+4x,
+ \qquad v_4(2)=\frac{P_{4,3}(-\log2)}{64}.
+\]
+
+The exact verifier compares the Stirling expression with the quadratic
+recurrence over $\mathbb Q[L]$ through $n=40$.  It also checks the inverse
+generating equation through degree forty at a formal rational value of
+$L$, and encloses the actual velocities at $L=\log2$ by rational
+arithmetic.  The signs for $2\leq n\leq12$ are
+\[
+\begin{array}{c|rrrrrrrrrrr}
+ n&2&3&4&5&6&7&8&9&10&11&12\\ \hline
+ \operatorname{sgn}v_n(2)&-&-&+&+&+&-&-&+&+&+&-
+\end{array}
+\]
+These finite certificates check the implementation and the short example.
+The infinite sign conclusion rests on the analytic proof above.
+
+\subsection{Questions left by the inverse representation}
+\label{diag:subsec:questions}
+
+The exact generating function permits a quantitative refinement, but its
+complex branches must be handled carefully.  A finite critical point of
+the inverse equation satisfies
+\begin{equation}\label{diag:eq:critical-values}
+ (1-u)e^u=A,\qquad t=e^u.
+\end{equation}
+Different Lambert-$W$ sheets give different critical values, some tending
+to zero on other sheets.  Therefore one cannot read off the radius of
+the germ $u_A(t)$ by minimizing over all formal critical values.  The
+oscillation theorem does not require such a dominance assertion.
+
+Concrete further questions are to identify the accessible dominant
+singularities and obtain asymptotic formulas for $v_n(A)$; to bound gaps
+between indices with opposite velocity signs; to determine a uniform
+neighborhood in which the first velocity controls the true branch; and
+to extend the inverse-series method to $n=k+r$, $r>1$, where the central
+elementary root has multiplicity $r$ and its unfolding is generally
+described by fractional powers.  These questions connect the central
+branch treated here with the existing positive-Bessel-zero regime.

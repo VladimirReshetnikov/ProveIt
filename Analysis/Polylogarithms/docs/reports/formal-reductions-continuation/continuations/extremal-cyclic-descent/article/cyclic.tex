@@ -1,0 +1,463 @@
+% Standalone section. Requires amsmath, amssymb, amsthm and standard theorem environments.
+% Source reviewed: ProveIt commit a0a90ef31877f98be437191c48b46f02d5456867.
+\section{Cyclic prime symmetries and integral torsion}
+\label{cpc:sec:main}
+
+The incoming integral-distribution reports \cite{integraljets} determine reflection torsion
+and explicitly propose a subgroup of prime order as a next target.
+We solve that problem for an action which is trivial on one primary
+factor and has no nonzero fixed point on the complementary factor,
+assuming the fixed factor has semisimple unit-group action modulo the
+symmetry prime. The result includes arbitrary integral weights and all
+one-variable integral jets. Its obstruction is a finite multiplicative
+compatibility condition, rather than a condition on each weight in
+isolation.
+
+The finite resolution and double-complex method have classical
+antecedents in Kubert, Anderson, and Ouyang
+\cite{cpc:Kubert1979,cpc:Ouyang2001,cpc:Ouyang2002}.
+In particular, Ouyang's universal norm distributions already provide a
+much broader setting for weighted distribution relations and their
+cohomology. The calculation below is an explicit continuation for the
+specified finite grid and a diagonal cyclic subgroup. We claim no global
+priority for its ordinary-weight specialization or for the resolution
+method.
+
+\subsection{The formal module and the hypotheses}
+
+For a commutative ring $B$, let $X_q=(1/q)\mathbb Z/\mathbb Z$ and
+choose weights $a_p\in B$, one for each prime $p\mid q$. Define
+\begin{equation}\label{cpc:eq:distribution}
+ D_q(B,\mathbf a)=
+ \frac{B[X_q]}{
+ \left\langle\displaystyle\sum_{py=x}e_y-a_pe_x:
+                    p\mid q,\ x\in X_{q/p}\right\rangle}.
+\end{equation}
+Every root sum is taken in $X_q$. The symbol $e_0$ is retained.
+The integral normal-form theorem from the incoming reports, recalled
+below with its proof mechanism, gives a $B$-free module of rank
+$\varphi(q)$ for every specialization.
+
+Let $\ell$ be a prime and let $u\in(\mathbb Z/q\mathbb Z)^\times$
+have order $\ell$. Multiplication by $u$ induces
+$T(e_x)=e_{ux}$. We impose the following explicit hypotheses:
+\begin{equation}\label{cpc:eq:hypotheses}
+ q=md,\qquad (m,d)=1,\qquad d>1,\qquad
+ u\equiv1\pmod m,\qquad (u-1,d)=1,\qquad
+ \ell\nmid\varphi(m).
+\end{equation}
+Here $\varphi(1)=1$. Necessarily $m=(u-1,q)$, so the factorization,
+when it exists, is determined by $u$. The $T$-fixed grid is precisely
+$X_m$. Write
+\begin{equation}\label{cpc:eq:parameters}
+ r=\omega(d),\qquad
+ H=\langle p\bmod m:p\mid d\rangle
+       \ \le (\mathbb Z/m\mathbb Z)^\times.
+\end{equation}
+The group modulo one is the trivial group.
+
+For integer weights, call the constants \emph{compatible} when
+\begin{equation}\label{cpc:eq:compatibility}
+ p\bmod m\longmapsto \overline a_p\in\mathbb F_\ell^\times
+ \quad(p\mid d)
+\end{equation}
+extends to a homomorphism $H\to\mathbb F_\ell^\times$.
+In particular, all these residues must be nonzero. Equivalently,
+every relation $\prod_{p\mid d}p^{n_p}\equiv1\pmod m$, with
+$n_p\in\mathbb Z$, must satisfy
+$\prod_{p\mid d}\overline a_p^{\,n_p}=1$.
+Set
+\begin{equation}\label{cpc:eq:multiplicity}
+ c(\mathbf a)=
+ \begin{cases}
+ \varphi(m)/|H|,&\text{if \eqref{cpc:eq:compatibility} holds},\\
+ 0,&\text{otherwise}.
+ \end{cases}
+\end{equation}
+
+\begin{theorem}[Integral cyclic-prime coinvariants]
+\label{cpc:thm:scalar}
+Assume \eqref{cpc:eq:hypotheses} and let all weights be integers.
+Then
+\begin{equation}\label{cpc:eq:scalar}
+ \boxed{\displaystyle
+ D_q(\mathbb Z,\mathbf a)/(T-1)D_q(\mathbb Z,\mathbf a)
+ \simeq \mathbb Z^{\varphi(q)/\ell}
+       \oplus (\mathbb Z/\ell\mathbb Z)^{\,c(\mathbf a)2^{r-1}}.}
+\end{equation}
+Consequently every nonunit nonzero Smith invariant of the complete
+distribution-plus-symmetry presentation equals $\ell$, with the
+multiplicity in \eqref{cpc:eq:scalar}. The answer is independent of
+all weights $a_p$ with $p\mid m$.
+\end{theorem}
+
+\begin{corollary}[No nonzero fixed grid point]
+\label{cpc:cor:fixedfree}
+If $u$ has prime order $\ell$ and $(u-1,q)=1$, then
+\[
+ D_q/(T-1)D_q\simeq
+ \mathbb Z^{\varphi(q)/\ell}\oplus
+ \begin{cases}
+ (\mathbb Z/\ell\mathbb Z)^{2^{\omega(q)-1}},
+       &a_p\equiv1\pmod\ell\ \text{for every }p\mid q,\\
+ 0,&\text{otherwise}.
+ \end{cases}
+\]
+For $\ell=2$ and odd $q$, this recovers the unanchored reflection
+coinvariant formula. For $\ell>2$ it gives odd torsion.
+\end{corollary}
+
+The theorem describes a formal quotient. The equation $T=1$ is an
+additional symmetry relation. Ordinary Hurwitz-zeta or polylogarithm
+evaluation is not asserted to satisfy it without an appropriate
+invariant projection. In particular, the finite torsion here is not
+torsion of a complex-valued period and proves no numerical independence
+statement.
+
+\subsection{The finite resolution and its fixed part}
+
+We record the algebra needed for a proof, including the role of the
+prime-order assumption. Order the primes dividing $q$, and for a
+subset $S$ put $p_S=\prod_{p\in S}p$. The weighted distribution
+resolution has terms
+\begin{equation}\label{cpc:eq:resolution}
+ C_j=\bigoplus_{|S|=j}B[X_{q/p_S}],
+ \qquad
+ \partial[S,x]=\sum_{p\in S}(-1)^{\#\{v\in S:v<p\}}
+ \left(\sum_{py=x}[S\setminus\{p\},y]
+            -a_p[S\setminus\{p\},x]\right).
+\end{equation}
+Its augmentation is the quotient in \eqref{cpc:eq:distribution}.
+The transfers and inclusions in different prime directions commute,
+which gives $\partial^2=0$.
+
+\begin{lemma}[Exactness over every coefficient ring]
+\label{cpc:lem:resolution}
+The augmentation of \eqref{cpc:eq:resolution} is exact. Its degree-zero
+homology is $B$-free of rank $\varphi(q)$, and the augmented complex
+is split exact as a complex of $B$-modules.
+\end{lemma}
+\begin{proof}
+Here is the finite filtration argument, to make clear that no division
+by $\ell$ or a prime weight is used. Filter $[S,x]$ by the positive
+integer $p_S\operatorname{den}(x)$, which divides $q$. The leading
+part of a prime differential retains only the preimages whose
+denominator is multiplied by that prime; its weight term lies lower
+in the filtration. At a fixed augmented denominator, additive primary
+coordinates identify the leading complex with a tensor product of
+maps
+\[
+ B[U_{p^{a-1}}]\longrightarrow B[U_{p^a}],
+ \qquad e_b\longmapsto\sum_{v\mapsto b}e_v.
+\]
+At $a=1$, $U_1$ is a singleton and the sum has $p-1$ terms.
+At $a>1$, each fiber has $p$ terms. In making this identification,
+replace the $v$-primary coordinate in the $S$-summand by
+$(\prod_{p\in S,\,p\ne v}p)^{-1}$ times that coordinate; this
+removes the unit twists in the other primary components of a root.
+
+Each displayed map is a split injection: its fibers have disjoint
+support, and one coefficient-one pivot can be selected in each fiber.
+Its cokernel is free of rank
+$\varphi(p^a)-\varphi(p^{a-1})$. The tensor product is therefore
+acyclic in positive degrees and has free degree-zero homology.
+Lifting a leading boundary and subtracting it lowers the finite
+filtration. This proves positive-degree exactness. The same lifting
+in degree one proves that the image into degree zero is strict for
+the filtration, so the chosen free complements lift to a basis of
+the quotient. Their total number is
+\[
+ \prod_{p^e\parallel q}
+ \left(1+\sum_{a=1}^{e}
+      (\varphi(p^a)-\varphi(p^{a-1}))\right)=\varphi(q).
+\]
+Finally a surjection onto the free quotient splits; its kernel is
+projective. Inducting upward splits the entire augmented complex.
+\end{proof}
+
+Let $C_j^{\rm mov}$ be generated by points which are not fixed by
+$T$. It is a subcomplex: if $y$ is fixed, then $py$ is fixed, so a
+root of a nonfixed point cannot be fixed. Since $T$ has prime order,
+every nonfixed orbit has exactly $\ell$ elements, and each term of
+$C_\bullet^{\rm mov}$ is a sum of regular cyclic permutation modules.
+Put $K_\bullet=C_\bullet/C_\bullet^{\rm mov}$.
+
+The fixed symbols in the summand indexed by $S$ form the grid
+\[
+ X_{m/p_{S\cap P(m)}}.
+\]
+For $p\mid m$, its fixed differential is the usual weighted
+distribution differential. For $p\mid d$, exactly one root remains
+fixed, namely $p^{-1}x$ in that grid. Thus this differential is
+\begin{equation}\label{cpc:eq:fixedoperator}
+ V_p-a_p,\qquad V_p(e_x)=e_{p^{-1}x}.
+\end{equation}
+All these operators commute. Applying Lemma~\ref{cpc:lem:resolution}
+in the prime directions dividing $m$ shows that $K_\bullet$ is
+quasi-isomorphic to the operator Koszul complex
+\begin{equation}\label{cpc:eq:operatorKoszul}
+ K\bigl(V_p-a_p:p\mid d;,D_m(B,\mathbf a|_m)\bigr).
+\end{equation}
+The notation means the tensor construction with one exterior
+generator for each $p\mid d$, differential given by the indicated
+commuting endomorphisms. The comparison follows by taking homology
+first in the bounded $m$-directions; only degree zero survives.
+
+\subsection{A cohomology formula which controls all torsion}
+
+For a free abelian group $M$ with $T^\ell=1$, write
+$\mathcal N=1+T+\cdots+T^{\ell-1}$ and define
+\[
+ \widehat H^0(M)=\ker(T-1)/\mathcal N M,
+ \qquad
+ \widehat H^1(M)=\ker\mathcal N/(T-1)M,
+\]
+extended periodically with period two. These are the cohomology
+groups of the complex with differential $T-1$ leaving even degree
+and $\mathcal N$ leaving odd degree.
+
+\begin{lemma}[Torsion and the fixed complex]
+\label{cpc:lem:tate}
+For $B$ finite free over $\mathbb Z$ and $D=D_q(B,\mathbf a)$,
+\begin{equation}\label{cpc:eq:torsiontate}
+ \operatorname{Tor}_{\mathbb Z}(D/(T-1)D)
+       =\widehat H^1(D).
+\end{equation}
+This group is killed by $\ell$. Under
+\eqref{cpc:eq:hypotheses}, for $\epsilon\in\{0,1\}$ one has
+\begin{equation}\label{cpc:eq:tateKoszul}
+ \widehat H^\epsilon(D)\simeq
+ \bigoplus_{j\equiv\epsilon\ ({\rm mod}\ 2)}
+ H_j\!\left(
+ K(V_p-\overline a_p:p\mid d;,
+        D_m(B/\ell B,\overline{\mathbf a}|_m))\right).
+\end{equation}
+The isomorphism is one of $B$-modules; the right side is annihilated
+by $\ell$.
+\end{lemma}
+\begin{proof}
+If $kv=(T-1)w$ for a nonzero integer $k$, apply $\mathcal N$.
+Freeness over $\mathbb Z$ gives $\mathcal N v=0$. Conversely,
+if $\mathcal N v=0$, then $\ell v$ belongs to $(T-1)M$ because
+$\ell-\mathcal N$ is divisible by $T-1$ in
+$\mathbb Z[T]/(T^\ell-1)$. This proves both
+\eqref{cpc:eq:torsiontate} and the annihilation assertion.
+
+Apply the periodic cohomology complex to the finite resolution
+\eqref{cpc:eq:resolution}. Taking horizontal homology replaces it
+by $D$ in degree zero. A regular orbit has an exact periodic complex:
+the image of $T-1$ is the coefficient-sum-zero subgroup, and the image
+of $\mathcal N$ is the constant-vector subgroup. Hence removing
+$C_\bullet^{\rm mov}$ does not change total cohomology. Both
+comparisons are justified by finite horizontal width; each total
+degree contains only finitely many summands.
+
+On $K_\bullet$ the action is trivial, so the vertical complex
+alternates between zero and multiplication by $\ell$. Since each
+term of $K_\bullet$ is $\mathbb Z$-free, each adjacent
+multiplication-by-$\ell$ block can be replaced by reduction modulo
+$\ell$. The horizontal degree $j$ shifts total degree by $-j$,
+which gives the parity in \eqref{cpc:eq:tateKoszul}. Finally use
+the quasi-isomorphism \eqref{cpc:eq:operatorKoszul}, also after
+reduction modulo $\ell$.
+\end{proof}
+
+\subsection{Proof of the scalar formula}
+
+Let $k$ be an algebraic closure of $\mathbb F_\ell$. Since
+$\ell\nmid\varphi(m)$, the character projectors for $U(m)$ are
+defined over $k$. The conductor normal-form argument applies
+verbatim in this characteristic: it only divides by unit-group
+orders, and its edges do not divide by a weight or an Euler factor.
+For clarity, the character $\chi$ has vectors
+\[
+ Y_{b,\chi}=\sum_{a\in U(b)}\chi(a)e_{a/b},
+ \qquad \operatorname{cond}(\chi)\mid b\mid m.
+\]
+The prime edges are
+$Y_{pb,\chi}-a_pY_{b,\chi}$ when $p\mid b$, and
+$Y_{pb,\chi}-(a_p-\chi(p))Y_{b,\chi}$ when $p\nmid b$.
+Successive elimination leaves exactly one conductor generator per
+character. Therefore $D_m(k,\overline{\mathbf a})$ has one
+one-dimensional summand for every character of $U(m)$, independently
+of its weights. On that summand, $V_p$ acts by $\chi(p)$.
+
+The complex in \eqref{cpc:eq:tateKoszul} consequently splits into
+scalar Koszul complexes on
+\begin{equation}\label{cpc:eq:characterparameters}
+ (\chi(p)-\overline a_p:p\mid d).
+\end{equation}
+A nonzero scalar makes a Koszul complex contractible. If all these
+scalars vanish, its differential is zero and its degree-$j$
+homology has dimension $\binom rj$. Thus each surviving character
+contributes $2^{r-1}$ to either cohomology parity.
+
+The prescribed values in \eqref{cpc:eq:characterparameters} occur
+if and only if \eqref{cpc:eq:compatibility} holds. A character of
+the subgroup $H$ extends to $U(m)$ over $k$: one may successively
+adjoin group elements and take the required roots in the algebraically
+closed field. All relevant orders are prime to $\ell$. The set of
+extensions is a torsor under the character group of $U(m)/H$, so
+its cardinality is $\varphi(m)/|H|$. This proves the torsion
+multiplicity in \eqref{cpc:eq:scalar}; extension to $k$ preserves
+the dimension over $\mathbb F_\ell$.
+
+For the free rank, rational coinvariants are an exact functor because
+averaging over a finite group is possible over $\mathbb Q$. A
+permutation set with $b$ points and $f$ fixed points has
+$(b+(\ell-1)f)/\ell$ orbits. Its alternating count in the resolution
+gives
+\[
+ \operatorname{rank}_{\mathbb Z}D/(T-1)D
+ =\frac1\ell\sum_{S\subseteq P(q)}(-1)^{|S|}
+ \left(\frac q{p_S}+(\ell-1)
+           \frac m{p_{S\cap P(m)}}\right)
+ =\frac{\varphi(q)}\ell.
+\]
+The second alternating sum vanishes because $r=\omega(d)>0$.
+The classification of finitely generated abelian groups and
+Lemma~\ref{cpc:lem:tate} complete the proof of
+Theorem~\ref{cpc:thm:scalar}.
+
+\subsection{All finite integral jets}
+
+Let $B_L=\mathbb Z[t]/(t^L)$ with $L\ge1$, and take arbitrary
+$a_p(t)\in B_L$. Test compatibility using the constant terms
+$\overline a_p(0)$. If compatibility fails, put $c=0$ and
+$\nu=0$. If it holds, let $c=\varphi(m)/|H|$ and define
+\begin{equation}\label{cpc:eq:contact}
+ \nu=\min_{p\mid d}
+ \operatorname{ord}_t\bigl(\overline a_p(t)-\overline a_p(0)\bigr)
+ \quad\text{in }\mathbb F_\ell[t]/(t^L),
+ \qquad\operatorname{ord}_t(0)=L.
+\end{equation}
+In the compatible case $1\le\nu\le L$.
+
+\begin{theorem}[Cyclic-prime integral jet formula]
+\label{cpc:thm:jets}
+Under \eqref{cpc:eq:hypotheses}, the underlying abelian group is
+\begin{equation}\label{cpc:eq:jets}
+ \boxed{\displaystyle
+ D_q(B_L,\mathbf a)/(T-1)D_q(B_L,\mathbf a)
+ \simeq\mathbb Z^{L\varphi(q)/\ell}
+       \oplus(\mathbb Z/\ell\mathbb Z)^{\,c2^{r-1}\nu}.}
+\end{equation}
+More precisely, its integer torsion, as a $B_L$-module, is
+\begin{equation}\label{cpc:eq:jetmodule}
+ \left(B_L/(\ell,t^\nu)\right)^{c2^{r-1}}.
+\end{equation}
+The free summand in \eqref{cpc:eq:jets} is only asserted to be
+free over $\mathbb Z$, not over $B_L$.
+\end{theorem}
+\begin{proof}
+Over $k[t]/(t^L)$, the same conductor projectors split the fixed
+module into free rank-one character blocks. A block whose constants
+do not match has a unit parameter and is contractible. For each of
+the $c$ matching characters, all parameters are the same list
+\[
+ -(\overline a_p(t)-\overline a_p(0)),\qquad p\mid d.
+\]
+In the principal ideal ring $k[t]/(t^L)$, invertible operations on
+this list transform it into $(t^\nu,0,\ldots,0)$, interpreting
+$t^L$ as zero. Both the kernel and the cokernel of multiplication
+by $t^\nu$ are isomorphic to $k[t]/(t^\nu)$. Tensoring with the
+$r-1$ remaining zero-differential exterior factors gives
+\[
+ H_j\simeq
+ \left(k[t]/(t^\nu)\right)^{\binom rj}
+\]
+in each matching block. Lemma~\ref{cpc:lem:tate} gives the claimed
+multiplicity.
+
+For the $B_L$-module assertion no splitting-field ambiguity is
+needed. The compatible character of $H$ takes values in
+$\mathbb F_\ell$, so its averaging idempotent is defined over
+$\mathbb F_\ell[t]/(t^L)$. Its image in the fixed distribution
+module is a projective module of rank $c$ over this local ring,
+hence is free of rank $c$. On that image every $V_p$ is the
+prescribed scalar. The other character blocks are contractible
+after the faithfully flat splitting extension and therefore have
+zero homology already before that extension. The preceding scalar
+Koszul calculation can consequently be performed over
+$\mathbb F_\ell[t]/(t^L)$ itself, proving
+\eqref{cpc:eq:jetmodule}. Finally the rational orbit count in the
+scalar proof is multiplied by $L$, giving the free rank.
+\end{proof}
+
+\subsection{Explicit examples and boundaries of the result}
+
+\paragraph{Level $91$, a genuinely odd torsion group.}
+Take $q=7\cdot13$, $\ell=3$, and $u=16$. Then $u$ has order three
+and $(u-1,91)=1$. For $a_7=a_{13}=1$,
+\[
+ D_{91}/(T-1)D_{91}\simeq\mathbb Z^{24}\oplus(\mathbb Z/3)^2.
+\]
+If either of these weights is not one modulo three, the torsion
+vanishes. At jet length $L=4$, choose
+$a_7(t)=1+t^2$ and $a_{13}(t)=1+3t+t^3$. Their contact order is
+$\nu=2$, so the quotient is
+$\mathbb Z^{96}\oplus(\mathbb Z/3)^4$.
+
+\paragraph{Level $455$, a compatibility condition involving two primes.}
+Take $q=5\cdot7\cdot13$, again with $\ell=3$ and $u=16$.
+Here $m=5$, $d=91$, and
+$H=\langle2,3\rangle=U(5)$ has order four.
+Because $3=2^{-1}$ in $U(5)$ and every nonzero element of
+$\mathbb F_3$ is its own inverse, compatibility is precisely
+\[
+ a_7\equiv a_{13}\not\equiv0\pmod3.
+\]
+Thus the quotient is
+$\mathbb Z^{96}\oplus(\mathbb Z/3)^2$ when the two residues
+are both one or both two, and is $\mathbb Z^{96}$ otherwise.
+The value of $a_5$ is irrelevant. The case where both residues are
+two shows why the criterion cannot be replaced by an independent
+requirement $a_p\equiv1$ when a nontrivial fixed denominator remains.
+
+\paragraph{The hypotheses exclude ramified local actions.}
+At $q=9$, $\ell=3$, $u=4$, the fixed denominator is three, but it
+is not relatively prime to its complementary factor. The five grid
+orbits give generators $e_0,e_{1/3},e_{2/3},A,B$, where $A$ and
+$B$ correspond to the two orbits of size three. The three raw
+relations are
+\[
+ (1-a)e_0+e_{1/3}+e_{2/3}=0,\qquad
+ 3A-ae_{1/3}=0,\qquad 3B-ae_{2/3}=0.
+\]
+At $a=0,1,2$ these give, respectively,
+\[
+ \mathbb Z^2\oplus(\mathbb Z/3)^2,\qquad
+ \mathbb Z^2\oplus\mathbb Z/3,\qquad
+ \mathbb Z^2.
+\]
+These exact presentations explain why the fixed-grid hypotheses
+must remain part of the statement. They are not counterexamples
+to a claim in the inspected manuscript, which did not assert the
+cyclic-prime formula.
+
+\subsection{Verification, integration, and remaining questions}
+
+The accompanying program constructs the complete defining rows
+directly on $X_q$, identifies points in the orbits of $u$, and
+computes the Smith normal form over $\mathbb Z$. It imports no
+normal-form code from either incoming integral-distribution package.
+Its frozen suite checks scalar weights for symmetry primes
+$2,3,5$, prime-power and composite levels through $455$, incompatible
+weight assignments, and nonconstant integral jets through length
+four. The checks verify every nonzero invariant, not merely ranks
+modulo $\ell$. They provide independent arithmetic regression
+evidence; the all-level proofs are the arguments above.
+
+The preceding exact results resolve the proposed prime-order subgroup
+problem under \eqref{cpc:eq:hypotheses}. They do not settle it for an
+arbitrary unit of prime order. Three concrete next problems remain.
+First, compute the fixed complex for a local action of order $\ell$
+on an $\ell$-power denominator, beginning with the displayed level-nine
+presentation. Second, remove $\ell\nmid\varphi(m)$: the operator
+Koszul model still applies, but its modular unit-group action need
+not split into character lines. Third, compute the full module over
+a multivariate deformation ring, where the scalar Koszul parameters
+generate a nonprincipal ideal and a single contact order no longer
+determines its homology. The first two problems concern new
+stabilizer or modular representation structure; the third concerns
+the syzygies of an explicit ideal.
