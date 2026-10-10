@@ -35,26 +35,45 @@ coordinate `Φ(w) = −2/w + (1/3) log w + O(w)`, and `h` is the density with
   `h(0) = 2`, an exact Hankel representation of `h` near zero, a smooth germ
   `t^{t/3} h(t)`; transfer to `(log m)^{−D} ≤ β ≤ B_0`; Kaneiwa's normalization;
   smooth height prescriptions.
+- **Part IV** (added 9 October 2026; *A Common Density for Parabolic
+  Iteration*, 8 October 2026): from four analytic inputs proved in Part I and
+  in `a139383-iterated-bell-diagonals`, the identity **`I(t) = t 2^{t/3} h(t)`
+  for every `t > 0`** between the iterated Bell amplitude and the density `h`
+  (the question `ied:q:ibd` shared with that report, answered), hence `h`
+  holomorphic on `Re t > 0` (the positive-axis part of `ied:q:analytic`);
+  the geometric depth aggregate `Σ_m e^{−Lm} H(n,m) ~ (n!)²(2L)^{−n}
+  n^{−1−L/3} L^{L/3−1} I(L)`; the strict-chain amplitude `C(q)` holomorphic on
+  `Re q > 0`, and **Lengyel's constant** `C = ½ (2 log 2)^{(log 2)/3} h(log 2)`
+  (which turns the heuristic of `a005121`'s `spc:q:depth` into a theorem); the
+  endpoint expansion of `I` as `t → 0`; density formulas for the chain
+  cumulant constants `K_1`, `K_2`. All conditional on the four unrefereed
+  inputs (the trust boundary is printed in its Section 38.2).
 
 | Source | Bundle report | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
 | *Diagonal and proportional height asymptotics for iterated Euler transforms* (author line "Report 225", 5 October 2026); the base | 225 | `Report225.zip` (676,600 bytes, 15 files; `src/report225.tex`, 639 lines, 16 pp.) | cites a139383 at `65969409c` | `47fc7a069` | Part I, Sections 1–11 |
 | *First logarithmic correction for iterated Euler diagonals* (author line "Report 226", 5 October 2026) | 226 | `Report226.zip` (1,152,358 bytes, 23 files, 2 of them Report 225's source and PDF under `supporting/`, 8 byte copies of Report 225's code and data; `src/report226.tex`, 715 lines, 17 pp.) | none | `47fc7a069` | Part II, Sections 12–23 |
 | *Logarithmic height crossover for iterated Euler transforms* (author line "Report 228", 5 October 2026) | 228 | `Report228.zip` (1,459,342 bytes, 19 files, 4 of them Reports 225 and 226 under `supporting/`; `src/report228.tex`, 729 lines, 17 pp.) | cites a139383 at `5fdc0d68a` | `47fc7a069` | Part III, Sections 24–36, plus the write's Section 37 |
+| *A Common Density for Parabolic Iteration* ("Research companion prepared for Vladimir Reshetnikov / Developed with OpenAI ChatGPT", 8 October 2026; batch 138, group OEIS, manuscript 01) | — | manuscript 02 of `ProveIt_Research_2026-10-08 (1).zip` (1,394,668 bytes, 45 files, three manuscripts), arrival `b28d0850b`; `02_parabolic_amplitudes/article.tex`, 1,079 lines, 16 pp. | ProveIt `58175ca455` (7 October 2026; blobs of this report, a139383 and a005121 unchanged at HEAD before this write) | `803f4d937` (9 files, prefix `04-parabolic-`; the archive not retired) | Part IV, Sections 38–48 and Appendix A (Section 38 added by the write) |
 
 All three archives arrived unchanged in `60f54ea06` ("Arrival: 177 research
 archives from the session bundle of Reports 1-243") and survive there
 (`git show 60f54ea06:docs/incoming/<archive> > <archive>`); the placement
 commit `47fc7a069` (batch 106, cluster 106-EULERI) removed them from
-`docs/incoming/`. Both pinned commits exist; the a139383 `article.tex` blob is
-the same (`ab5014ec`) at both pins and at HEAD. The write is "Write batch 106
+`docs/incoming/`. Both pinned commits exist; the a139383 `article.tex` blob was
+the same (`ab5014ec`) at both pins and at this report's first write; it is
+`2b1d8fbe81` since `3f9fc9d4f` (6 October 2026), which added the reciprocal
+note proposed by that write (corrected 9 October 2026; the article's front
+matter keeps the first wording with a dated note). The write is "Write batch 106
 (a290354-iterated-euler-diagonals): new report, diagonals of iterated Euler
 transforms".
 
 **Status.** Unrefereed; not formalized; no statement has been checked by a
-proof assistant. The manuscripts name no person, tool or addressee and do not
-say whether AI assistance was used; their PDF author field is "Research
-report". No "prepared for private review" wording. Every result, proof,
+proof assistant. The manuscripts of Parts I–III name no person, tool or
+addressee and do not say whether AI assistance was used; their PDF author
+field is "Research report". Part IV's title page and PDF author read
+"Research companion prepared for Vladimir Reshetnikov / Developed with OpenAI
+ChatGPT". No "prepared for private review" wording. Every result, proof,
 remark, question and limitation of the three manuscripts is printed.
 
 ## Why the Parts are in this order
@@ -94,7 +113,8 @@ intake dossier had suggested pointers instead, as a139383 did for its Part II.
 
 ## Files
 
-The directory holds 33 files: 7 at the root, 13 in `code/`, 13 in `data/`.
+The directory holds 42 files: 7 at the root, 16 in `code/`, 19 in `data/`
+(33 before Part IV).
 
 **Report files**, written in the write: this guide, the merged article and its PDF.
 
@@ -173,6 +193,33 @@ replaced by this guide); the checksum manifests (`MANIFEST.sha256` of each,
 and 5/5; repository policy drops checksum manifests); the `supporting/`
 copies; and Report 226's eight byte copies of Report 225's files (above).
 
+**Part IV, prefix `04-parabolic-`** (9 files, placed by `803f4d937`, all
+byte-identical to the delivery): the exact checks (majorant, Newton basis,
+mixture, Fatou coefficients), the exploratory inverse-Laplace density, the
+count comparisons; their recorded outputs, the provenance record and the
+requirements.
+
+```
+code/04-parabolic-compare_counts.py
+code/04-parabolic-explore_density.py
+code/04-parabolic-verify_exact.py
+data/04-parabolic-count_comparison.json
+data/04-parabolic-density_160.json
+data/04-parabolic-density_320.json
+data/04-parabolic-exact_checks.json
+data/04-parabolic-provenance.json
+data/04-parabolic-requirements.txt
+```
+
+Part IV, not shipped (retrievable from `b28d0850b`; the archive stays in
+`docs/incoming/` until its manuscripts 01 and 03 are placed):
+`02_parabolic_amplitudes/article.tex` (43,217 bytes, printed as Part IV),
+its `article.pdf` (214,827 bytes, 16 pp.) and `README.md` (5,536 bytes), and
+the package-level files (`README.md`, `REVIEW_NOTES.md`, `THEOREM_LEDGER.json`,
+`RESEARCH_QUESTIONS.json`, `VALIDATION.json`, `INTEGRATION_MAP.json`,
+`reproduce.py`, `requirements.txt`, licence notices), which belong to the
+placement of the archive's manuscript 01.
+
 ## Labels and numbering
 
 Label prefix **`ied:`** (none at HEAD before this report): Part I uses
@@ -198,6 +245,7 @@ front matter's `ied:sec:guide`, `ied:sec:status`, `ied:sec:oeis`,
 | I | Report 225 | `k` (1–11, unchanged) | `k.j` | `(k)` |
 | II | Report 226 | `k + 11` (12–23) | `(k+11).j` | `(II.k)` |
 | III | Report 228 | `k + 23` (24–36); 37 added | `(k+23).j` | `(III.k)` |
+| IV | *A Common Density for Parabolic Iteration* | `k + 38` (39–48), A; 38 added | `(k+38).j` | `(k+38).j` |
 
 For example Report 226's Theorems 1.1, 1.2 and Corollary 10.1 are 12.1, 12.2
 and 21.1; Report 228's Theorem 1.1, Lemma 3.1, Proposition 4.1, Theorems 5.1,
@@ -206,6 +254,19 @@ its Table 1 keeps its number. A comparison of the build's `.aux` with separate
 builds of the three delivered `.tex` files confirmed all 192 delivered labels
 under these offsets and prefixes. The delivered READMEs, ledgers, code and
 data use the manuscripts' own numbers.
+
+**Part IV** (9 October 2026): prefix `ied:par:` for its 56 delivered labels
+and 6 the write gave to its unlabelled Sections 1, 4, 7, 9, 10 and Appendix A;
+51 references (41 `\eqref`, 10 `\ref`) updated; `BellReport` re-keyed to `IBD`
+(4 citations). The write also added `ied:par:part`, `ied:par:sec:front` and
+its six subsections (`provenance`, `trust`, `answers`, `checks`, `nonclaims`,
+`notation`) and the nine questions `ied:par:q:{uniform, summation, zeros,
+positive, certified, large, germ, other, formal}` (23 labels added). From
+Part IV on equations are numbered within sections, as delivered: its Section
+`k` is `k + 38` (39–48), statements and equations `k.j` are `(k+38).j`,
+Appendix A keeps its letter. Against builds of the committed text, of the
+delivered manuscript (16 pp.) and of this one: all earlier labels unchanged,
+all 56 delivered labels at the stated shift.
 
 ## Notation
 
@@ -226,6 +287,12 @@ Part II's `G_n(s) = F_n(r e^{s/n})`; `g(w) = log(1+w)` versus Part III's germ
 **`W`** (Lambert in Parts I–II; `P(−x)` in Part III), **`H`**, **`R`**,
 **`Q`**, **`M`**, **`N`**, **`q`**, **`E`**, **`τ`**, **`X`**, **`y`**,
 **`ℓ`**. Part II writes the array `b_{n,m}`.
+
+Part IV keeps its letters (table in its Section 38.6): `H(n,m)` is the
+labelled iterated Bell array (not the matching function `H(z)`), `t = n/m`
+(Parts I–III's `β`), `L` the tilt of `S_n(L)` or `L(q) = log(1 + 1/q)` (not
+Part III's `log n`), `C` Lengyel's constant, `K_1`, `K_2` cumulant constants,
+`A(x) = log h(x) + (x/3) log(2x)`; its `\Oh` is a calligraphic `𝒪`.
 
 ## What the report claims
 
@@ -278,6 +345,40 @@ proof, a *conditional* consequence for the labelled array: if
 `1/L` coefficient `(1 − γ)/3` and the same `c_j`; exact values for
 `n = 20, 40, 80` behave as predicted (uncertified).
 
+**Part IV (*A Common Density for Parabolic Iteration*, added 9 October
+2026).** `H(n,m) = n![z^n] f^{∘m}(z)`, `f(z) = e^z − 1`; `I` the iterated Bell
+amplitude of a139383's Part II; `h`, `P`, `Φ` as above.
+- Section 40: the four inputs, F (Lemma 4.1, (20)), M (Proposition 6.1),
+  L (`ibd:pd:eq:absolute`, absolute, uniform for compact `n/m`), A (the
+  holomorphy part of `ibd:pd:prop:positive`); the exact recurrence.
+- Lemmas 41.1–41.3: `2/r_m = m − (log m)/3 + (log 2)/3 + O(log m/m)` for
+  `r_m = P(−m)`; the measures `μ_m = Σ_n [z^n]f^{∘m}(z) r_m^n δ_{n/m}` have mass
+  exactly `P(0)`, Laplace limit `P`, and converge on compactly supported tests
+  to `h(t) dt`.
+- **Theorem 39.1:** `I(t) = t 2^{t/3} h(t)` for every `t > 0`, and
+  `h(z) = 2^{−z/3} I(z)/z` is holomorphic on `Re z > 0`; Corollary 42.1:
+  `I > 0`; **Corollary 42.2:** `log(I(t)/(2t)) = −(t/3) log t + (1 − γ)t/3 +
+  Σ_{j≤N} c_j t^j + O(t^{N+1})`; Proposition 42.3: a general
+  positive-measure matching principle.
+- Lemma 43.1: `f^{∘m}(z) ⪯ z/(1 − mz/2)`, so `H(n,m) ≤ n!(m/2)^{n−1}`;
+  Lemma 43.2: discrete gamma sums and tails.
+- **Theorem 39.2:** `S_n(L) = Σ_m e^{−Lm} H(n,m) ~ (n!)² (2L)^{−n} n^{−1−L/3}
+  L^{L/3−1} I(L)`, uniformly on compact `L`; Lemma 44.1: `Z_n(q) =
+  S_n(L(q))/(q+1)`, `L(q) = log(1 + 1/q)`.
+- **Corollary 39.3:** `Z_n(q) ~ C(q)(n!)²[2L(q)]^{−n} n^{−1−L(q)/3}`,
+  `C(q) = [2L(q)]^{L(q)/3} h(L(q))/(q+1)`, holomorphic on `Re q > 0`; at `q = 1`
+  Lengyel's constant `C = ½ (2 log 2)^{(log 2)/3} h(log 2)`;
+  **Corollary 45.1:** `K_1`, `K_2` in terms of `h`, `h′`, `h″` at `log 2`.
+- Credits: Prellberg's 2002 seminar (Mishna's summary), Lengyel 1984,
+  Skau–Kristensen.
+
+Added by Part IV's write (9 October 2026), marked `[write]`: Section 38
+(provenance, the trust boundary, what Part IV answers, checks, non-claims,
+notation), the Part IV note in the Guide and the table row, dated notes at the
+ends of the front-matter sections "What is proved", "Provenance" and
+"Relation to neighbouring reports" (the stale blob) and of Section 37, three
+notes inside Part IV, labels on its unlabelled sections and nine questions.
+
 **The inverses.** Parts I and II start from `X log(X/T) = Y`, the factorial
 core `p0:prop:factorial-core` (`κ = 1`, `d = −log T`) of the transseries volume
 `Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex`,
@@ -303,8 +404,21 @@ between consecutive terms; no convergence of any infinite formal series; no
 analyticity of the germ at zero; the Gaussian height profile is not a CLT; no
 worldwide priority for parabolic-coordinate methods or the universal endpoint
 calculus (Prellberg, Dudko–Sauzin, Nagaev–Vakhtel credited). The amplitude
-relation with a139383 is a conjecture. **All companions**: finite exact checks
-prove no asymptotic remainder; floating diagnostics carry no error control.
+relation with a139383 is a conjecture in Parts I–III (Part IV proves it,
+below). **All companions**: finite exact checks prove no asymptotic
+remainder; floating diagnostics carry no error control.
+
+Part IV (Section 38.5): its theorems are implications from four inputs whose
+sources "are unrefereed and not proof-assistant verified", and it "does not
+promote their earlier proofs or interval software to formal verification";
+other computational dependencies of the Bell foundation remain (its
+Remark 40.1); the leading equivalent and the existence of Lengyel's constant
+are classical, Prellberg's seminar a direct antecedent; the chain-length
+mean, variance and CLT are not new; the continuation of `C(q)` gives no
+zero-freeness or uniform complex asymptotics; the endpoint series gives no
+uniform transfer, and the germ is not shown convergent; the inverse-Laplace
+values (its table: `h(1/2), h(log 2), h(1), h(2)`) are uncertified; no
+claim that no equivalent theorem exists elsewhere.
 
 ## Further questions, and the standing rule
 
@@ -334,6 +448,26 @@ manuscripts' own; Section 37 collects them (Vladimir's standing rule of
 for the expansion of `h` at zero and the side `n/m → 0` on logarithmic bands
 (Part III). **Nothing in the three manuscripts was found to be wrong**, and
 no claim was refuted.
+
+**After Part IV** (dated note at the end of Section 37; the earlier notes are
+kept): item 9 (`ied:q:ibd`) **answered**, conditionally on the four inputs, by
+limits of positive coefficient measures rather than a comparison of
+contours; item 6 (`ied:q:analytic`) **answered on the positive axis** (`h`
+holomorphic on `Re t > 0`), the germ at zero open; Remark 37.2's hypothesis
+(a) is now proved, (b) is not, so the remark stays conditional; Remark 37.1:
+the identity forces `I(1) = 2^{1/3} h(1) = 2.2862647817…` (Part IV's
+exploratory `h(1)`), and a139383's three uncertified runs sit `2.9·10⁻⁹`,
+`4.5·10⁻⁹` and `1.6·10⁻⁸` above it — a record, not a refutation (their spread
+is `1.4·10⁻⁸`). Part IV's own nine questions (labels `ied:par:q:*`: uniform
+Bell transfer toward the endpoint, summation of every correction, complex
+zeros of `C(q)`, a common positive-parameter theory, certified density and
+cumulant constants, large-argument asymptotics of `h`, the germ at zero,
+other parabolic maps, formal verification of the bridge) stay open; no claim
+of Part IV was found wrong. **An observation of the write** (uncertified):
+from exact chain counts and Part IV's exploratory `h`, `S_n(L)` over the main
+term of Theorem 39.2 is `1 + 0.11556/n` at `L = log 2` and `1 + 0.16669/n` at
+`L = 1` (`n = 320`), against `L/6 = 0.11552, 0.16667`: the first correction
+looks like `L/(6n)` with no logarithm (Part IV's question 2).
 
 **Independent check of the write (6 October 2026).** An adversarial check
 made by the intake after the write (`84fc1aaed`) re-pulled A290354 (live
@@ -382,7 +516,21 @@ record is a dated note at the end of Section 37.
   `c = 4.4923298971`; the shipped diagnostic is low by `1.6·10⁻¹⁰` (its
   vertical tail is cut at `|u| = 3000`), and the comparison is unchanged
   (differences `2.9·10⁻⁹ … 1.65·10⁻⁸`, eight significant digits). A reciprocal note
-  for a139383 is proposed in the write's record (not applied here).
+  for a139383 is proposed in the write's record (not applied here). **Since
+  Part IV** the relation is a theorem, conditional on four inputs, two of
+  them from a139383 (`ibd:pd:eq:absolute` and the holomorphy part of
+  `ibd:pd:prop:positive`); it gives a139383 the amplitude half of its endpoint
+  `λ → ∞` (Corollary 42.2). A note for a139383 recording this and the offset
+  of its exploratory `I(1)` runs is proposed in the write's record, not
+  applied.
+- **`a005121-strict-partition-chains`** (labels `spc:`): Part IV's
+  Corollary 39.3 proves the leading amplitude that its `spc:q:depth` derives
+  only heuristically (`C = L^{L/3−1} I(L)/2`, `L = log 2`, Lengyel's
+  constant), and continues its marked amplitude `C(q)` holomorphically to
+  `Re q > 0` (its `spc:q:disk`, in part: the zero set and uniform complex
+  asymptotics stay open); its Corollary 45.1 expresses that report's `K_1`,
+  `K_2` through `h`. A note for that report is proposed in the write's
+  record, not applied.
 - No other report treats A290353 or A290354 (searched 6 October 2026; A290354
   occurs elsewhere only in a cross-reference line of a139383's OEIS data). The
   batch-106 reports `a252782-diagonal-euler-transforms` (one Euler transform
@@ -472,6 +620,23 @@ and `coordinate_series.py --order 9` ran (`a_4 = −71/435456`),
 16, 17 and 17 pages; their only warnings are duplicate font-map entries from
 their `\pdfmapfile` lines.
 
+**Part IV**, on a copy with the delivered names (the replay of its Section 46;
+standard library for the counts, SymPy for the coordinate check, mpmath for
+the decimals):
+
+```
+mkdir -p p4/code p4/data && cd p4
+for f in verify_exact explore_density compare_counts; do cp <dir>/code/04-parabolic-$f.py code/$f.py; done
+python -B code/verify_exact.py --output data/exact_checks.json
+python -B code/explore_density.py --steps 320 --degree 64 --output data/density_320.json
+python -B code/compare_counts.py --density data/density_320.json --output data/count_comparison.json
+```
+
+The write (9 October 2026) did not rerun them; its own exact checks (the Newton
+form of `H(n,m)`, the chain counts against A005121, the majorant for
+`n ≤ 30`, `m ≤ 60`, the mixture for `n ≤ 25` at five rational `q`) and its
+numerical check of Theorem 39.2 for `n ≤ 320` are described in Section 38.4.
+
 ## Rights
 
 Repository contents are MIT-0.
@@ -484,20 +649,65 @@ and Kaneiwa, Bechtloff Weising, Dudko–Sauzin, Prellberg–Mishna and
 Nagaev–Vakhtel as the manuscripts cite them. Nothing was submitted to the
 OEIS.
 
+## Independent check of the Part IV write (9 October 2026)
+
+An independent adversarial check of the Part IV write (`03c28e4c8`)
+re-derived its statements with its own code (records in the intake work
+area, `verify138ied4`); dated note at the end of Section 48. Outcome:
+
+- **The identity and the trust boundary, confirmed.** The proof of
+  Theorem 39.1 re-derived (the factor `1/n`, `2/r_m = m − (1/3)log m +
+  (1/3)log 2 + o(1)`, the surviving `2^{−t/3}`, masses `P(0)`). The four
+  inputs read in a139383 at the pin: `ibd:pd:eq:absolute` (for `η ∈ [b,B]`,
+  remainder `O(m^{−1}(1+log m)^D)`) rests on the certified common entry on the
+  outer arcs and the endpoint estimate of `ibd:pd:eq:seed`; that report's
+  Part II is stated as conditional on its Part I; the holomorphy paragraph of
+  `ibd:pd:prop:positive` does not use the seed `1.64 < I(1)`. Section 38.2
+  states this exactly.
+- **Numbers.** `2^{1/3} h(1) = 2.286264781775815…` (delivered density) or
+  `…776587…` (the earlier check's `h(1)`): "2.2862647817…" is a correct
+  truncation of both; the a139383 runs exceed it by `1.642·10⁻⁸`,
+  `2.92·10⁻⁹`, `4.52·10⁻⁹`; `C = √(2π) I(1)/2 = 2.86540797264…`. From
+  Lengyel's constant (A086053) alone, `h(log 2) = 2.03764226105491367…`
+  (delivered `…491440…`).
+- **The write's observation** recomputed by other routes (at `L = log 2`
+  through `S_n = 2z_n` and Lengyel's constant; at `L = 1` through the marked
+  recurrence at `q = 1/(e−1)`): `0.11555847` and `0.16669412` at `n = 320`,
+  both within `6·10⁻⁷` of `L/6 + c_2(L)/n` with the chain report's `c_2`
+  (uncertified at `L = 1`).
+- **Also confirmed:** Newton form, A005121 (19 terms), majorant, mixture
+  identity; SymPy endpoint expansion, main term, Lengyel form; archive
+  (1,394,668 B, 45 files, 1,636,954 B unpacked), 9 byte-identical files,
+  pin and blobs, the stale-blob correction (`ab5014ecd6` until `3f9fc9d4f`),
+  numbering (56 delivered labels at +38, 23 added, earlier labels
+  unchanged), 51 references, the 42 files listed.
+- **Since the write:** commit `7354dd9e13` added the proposed notes to
+  a005121 and a139383 (blobs now `9f84153329`, `8b759cc0cb`); the
+  statements here that those blobs are unchanged at HEAD and the notes not
+  applied describe the state at the write.
+- Nothing was found wrong. Rebuilt: see Build.
+
 ## Build
 
 ```
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-pdfLaTeX (MiKTeX), in a scratch copy; commit only `article.pdf`. The build
+pdfLaTeX (MiKTeX), in a scratch copy; commit only `article.pdf`. At Part IV's
+write (9 October 2026, three passes): 89 pages (Part IV 69–87, references
+88–89); no errors or warnings, no undefined or multiply defined references or
+citations, no duplicate destinations, no overfull or underfull boxes; changed
+pages rendered and inspected; rebuilt the same way at the independent check
+of that write (same day): 90 pages (the check's note adds one), the same log. The delivered Part IV manuscript builds to 16
+pages without warnings. Before Part IV, the build
 (69 pages after the independent check, 67 at the write: title, abstract and
 contents 1–3, front matter 4–11, Part I 12–28, Part II 29–46, Part III 47–64,
 Section 37 and references 65–69): no errors, no
 undefined or multiply defined references or citations, no duplicate
 destinations, no overfull or underfull boxes. The log carries two "Infinite
 glue shrinkage found in box being split" messages from the two front-matter
-longtables breaking across pages.
+longtables breaking across pages (three since Part IV, whose notation
+longtable also breaks across a page).
 
 ## Delivered path → shipped path
 
@@ -540,6 +750,17 @@ Report 228 (`228-logheight-`; delivered under `Report228/`):
 | `supporting/` (4 files) | byte copies of Reports 225 and 226; not shipped |
 | `README.md`, `Report228.pdf`, `MANIFEST.sha256`, `code/SHA256SUMS` | not shipped |
 
+Part IV (`04-parabolic-`; delivered under
+`ProveIt_Research_2026-10-08/02_parabolic_amplitudes/`):
+
+| Delivered | Shipped |
+|---|---|
+| `article.tex` | not shipped; printed as Part IV of `article.tex` |
+| `code/<name>.py` | `code/04-parabolic-<name>.py` |
+| `data/<name>.json` | `data/04-parabolic-<name>.json` |
+| `provenance.json`, `requirements.txt` | `data/04-parabolic-provenance.json`, `data/04-parabolic-requirements.txt` |
+| `README.md`, `article.pdf` | not shipped |
+
 ## Provenance
 
 Three manuscripts (bundle Reports 225, 226, 228) → one report; base 225,
@@ -550,3 +771,12 @@ base first, restatement sections printed in full with pointer notes, embedded
 copies printed once, the merged bibliography with renamed keys and Reports 225
 and 226 pointing to Parts I and II, the inlined table) are listed in the
 article's front matter, "Provenance and merge decisions".
+
+Part IV: manuscript 02 of `ProveIt_Research_2026-10-08 (1).zip` (batch 138,
+group OEIS, manuscript 01 of the group), arrival `b28d0850b`, placed by
+`803f4d937` with the prefix `04-parabolic-`, written 9 October 2026 and printed
+after Section 37 as Sections 38–48 and Appendix A. Its pin is `58175ca455`.
+Sources it cites: this report (Parts I–III), `a139383-iterated-bell-diagonals`,
+`a005121-strict-partition-chains`, Prellberg (Mishna's summary), Lengyel
+(1984), Skau–Kristensen (arXiv:1903.07979), OEIS A005121. Notes for
+a139383 and a005121 are drafted in the write's record and not applied.

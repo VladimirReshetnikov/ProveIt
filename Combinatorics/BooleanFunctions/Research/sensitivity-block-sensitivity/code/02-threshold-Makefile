@@ -1,0 +1,16 @@
+PYTHON ?= python3
+.PHONY: all pdf verify test regenerate clean
+all: pdf
+pdf:
+	PYTHON="$(PYTHON)" ./build.sh
+verify:
+	$(PYTHON) code/verify_certificate.py
+	$(PYTHON) code/compact_certificate.py
+test: verify
+	$(PYTHON) code/test_local_geometry.py
+regenerate:
+	$(PYTHON) code/verify_certificate.py --write
+	$(PYTHON) code/make_tables.py
+clean:
+	rm -f article.aux article.log article.out article.toc
+	rm -rf .build code/__pycache__

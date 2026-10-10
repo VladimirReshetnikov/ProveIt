@@ -1,0 +1,130 @@
+% Additive Chapter 4 supplement. Requires amsmath, amssymb, amsthm,
+% and the existing theorem/proof environments. All labels use gapcont:.
+% See INTEGRATION.md before revising historical quotient claims.
+\begingroup
+\newcommand{\pgLi}{\operatorname{Li}}
+\section{Reciprocal mixed-point elimination at every weight}
+\label{gapcont:section}
+Use the decreasing-index convention
+\[
+\pgLi_{a,b}(x,y)=\sum_{n>m\ge1}\frac{x^ny^m}{n^am^b},\qquad
+F_{a,b}(z)=\pgLi_{a,b}(z,1),\quad D_{a,b}(z)=\pgLi_{a,b}(z,z^{-1}),
+\]
+and write $L_s(z)=\pgLi_s(z)$ and $w=a+b$. Define
+\begin{align*}
+C_{a,b}(z)={}&(-1)^{b+1}\binom{w-1}{b}L_w(z)\\
+&+\sum_{j=2}^{b}(-1)^{b-j}\binom{w-j-1}{a-1}\zeta(j)L_{w-j}(z)\\
+&+\sum_{j=2}^{a}(-1)^b\binom{w-j-1}{b-1}\zeta(j)L_{w-j}(z).
+\end{align*}
+Empty sums are zero.
+\begin{theorem}[Gap elimination]\label{gapcont:elimination}
+For $0<|z|<1$, and for $|z|=1$ with $z\ne1$,
+\begin{equation}\label{gapcont:formula}
+D_{a,b}(z)=(-1)^{b+1}\sum_{j=1}^{a}
+\binom{w-j-1}{b-1}F_{w-j,j}(z)+C_{a,b}(z).
+\end{equation}
+The reciprocal mixed family and the $(z,1)$ family span the same rational
+vector space modulo $L_w(z)$ and $\zeta(j)L_{w-j}(z)$, $2\le j<w$.
+\end{theorem}
+\begin{proof}
+Put $k=n-m$ and $K_{a,b}(k)=\sum_{m\ge1}m^{-b}(m+k)^{-a}$. The partial fractions are
+\begin{align*}
+\frac1{m^b(m+k)^a}
+={}&\sum_{j=1}^{b}\frac{(-1)^{b-j}\binom{w-j-1}{a-1}}{k^{w-j}m^j}\\
+&+\sum_{j=1}^{a}\frac{(-1)^b\binom{w-j-1}{b-1}}{k^{w-j}(m+k)^j}.
+\end{align*}
+Their principal parts at $m=0,-k$ agree with the left side; the difference
+has no pole and vanishes at infinity. Sum the $j=1$ pair together using
+$\sum_m(1/m-1/(m+k))=H_k$, never by assigning a value to $\zeta(1)$.
+For $j\ge2$ use $\sum_m(m+k)^{-j}=\zeta(j)-H_k^{(j)}$. Then sum against $z^k$ and apply
+\[
+\sum_{k\ge1}\frac{z^k H_k^{(j)}}{k^r}=F_{r,j}(z)+L_{r+j}(z),\qquad
+\sum_{j=1}^{a}\binom{w-j-1}{b-1}=\binom{w-1}{b}.
+\]
+This proves the formula inside the disk. At a punctured unit-circle point,
+summation by parts gives the uniform bound
+\[
+\left|\sum_{k=1}^{J}\frac{z^k}{(m+k)^a}\right|
+\le\frac{2}{|1-z|(m+1)^a}.
+\]
+After multiplication by $m^{-b}$ this is summable. Dominated convergence
+therefore equates the triangular nested sum and the gap sum even when $a=1$.
+The coefficients $H_{n-1}^{(b)}/n^a$ of $F$ tend to zero with finite total
+variation, so their series also converge and have their radial Abel limits.
+
+For the span assertion, order $H_j=F_{w-j,j}$ and $M_a=D_{a,w-a}$.
+Equation~\eqref{gapcont:formula} is $M=TH+C$, with
+\[
+T_{aj}=(-1)^{w-a+1}\binom{w-j-1}{a-j}\quad(j\le a),\qquad T_{aj}=0\quad(j>a).
+\]
+The binomial identity
+\[
+\binom{w-k-1}{a-k}\binom{w-j-1}{k-j}
+=\binom{w-j-1}{a-j}\binom{a-j}{k-j}
+\]
+proves $T^2=I$ by the binomial theorem. Thus $H=T(M-C)$ gives the reverse inclusion.
+\end{proof}
+
+In particular, adjoining reciprocal mixed values to the already admitted
+$(z,1)$ doubles cannot add generators, at any weight. This corrects the
+interpretation of the historical mixed-point residuals. It does not establish
+independence or certify the separate non-mixed quotient ranks.
+
+\subsection{All-angle single-value formulas}
+For $z=e^{i\theta}$, $0<\theta<2\pi$, write
+$S_s=\Im L_s(z)$, $Q_s=\Re L_s(z)$ and
+$A=\log|1-z|=\log(2\sin(\theta/2))$. Thus $Q_1=-A$.
+The two product equations needed are
+\[
+L_1L_p=F_{p,1}+\sum_{j=1}^{p}F_{p+1-j,j},\qquad
+D_{p,1}+\overline{D_{1,p}}=L_p\overline{L_1}-\zeta(p+1).
+\]
+They are, respectively, shuffle and stuffle. Substituting the gap identities
+for $D_{p,1}$ and $D_{1,p}$ gives a sum-and-difference system for the selected
+projections of $F_{p,1}$ and $\sum_jF_{p+1-j,j}$. Solving it gives
+\begin{align}
+\Im D_{2m+1,1}(z)
+&=(m+1)S_{2m+2}-\sum_{r=1}^{m}\zeta(2r)S_{2m+2-2r}-A S_{2m+1},
+\quad m\ge0,\label{gapcont:odd}\\
+\Re D_{2m,1}(z)
+&=\frac{2m+1}{2}Q_{2m+1}-\frac12\zeta(2m+1)
+-\sum_{r=1}^{m}\zeta(2r)Q_{2m+1-2r}-A Q_{2m},
+\quad m\ge1.\label{gapcont:even}
+\end{align}
+For example, the real-projection intermediate equation is
+\[
+\Re F_{p,1}=-S_pS_1+\frac12\zeta(p+1)
++\frac12\Re(C_{1,p}+C_{p,1})\qquad(p\text{ even}).
+\]
+Here $C_{1,p}+C_{p,1}=(p-1)L_{p+1}-2\sum_{r=1}^{p/2-1}\zeta(2r+1)L_{p-2r}$.
+Inserting this into the stuffle cancels all odd-zeta terms and $S_pS_1$, proving
+\eqref{gapcont:even}. For odd $p$, use the imaginary projection and
+$\Im F_{p,1}=Q_pS_1+\tfrac12\Im(C_{p,1}-C_{1,p})$; the same cancellation proves
+\eqref{gapcont:odd}. Thus these are identities, not numerical fits.
+
+\subsection{All four proposed mixed survivors reduce to single values}
+Let $G=\beta(2)$, $\rho=e^{2\pi i/3}$, and $C_{2r}=\Im\pgLi_{2r}(\rho)$.
+Specializing \eqref{gapcont:odd}--\eqref{gapcont:even} gives
+\begin{align}
+\Re\pgLi_{4,1}(i,-i)
+&=\frac{3\pi^4\log2}{512}+\frac{\pi^2\zeta(3)}{64}-\frac{587\zeta(5)}{1024},
+\label{gapcont:gauss-real}\\
+\Im\pgLi_{5,1}(i,-i)
+&=3\beta(6)-\frac{\pi^2\beta(4)}6-\frac{\pi^4G}{90}
+-\frac{5\pi^5\log2}{3072},\label{gapcont:gauss-imag}\\
+\Re\pgLi_{4,1}(\rho^2,\rho)
+&=\frac{2\pi^4\log3}{243}+\frac{2\pi^2\zeta(3)}{27}
+-\frac{281\zeta(5)}{162},\label{gapcont:eis-real}\\
+\Im\pgLi_{5,1}(\rho^2,\rho)
+&=-3C_6+\frac{\pi^2C_4}{6}+\frac{\pi^4C_2}{90}
++\frac{\pi^5\log3}{729}.\label{gapcont:eis-imag}
+\end{align}
+The sign in the last line includes conjugation from $\rho$ to $\rho^2$.
+Neither proposed mixed coordinate adds a generator in either tower.
+The full accompanying article, \emph{Mixed-Point Elimination and Certified
+Parity Reductions}, contains the all-index parity solver, the proofs of the
+five Gaussian weight-six candidates, the two-shuffle proof of the weight-five
+relation, and exact-rational numerical certificates. General parity is known
+in the literature; no period independence or literature-wide priority for all
+these specializations is asserted.
+\endgroup

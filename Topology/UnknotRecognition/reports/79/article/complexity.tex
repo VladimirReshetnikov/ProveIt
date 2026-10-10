@@ -1,0 +1,232 @@
+\section{Complete fixed-parameter simplification}\label{sec:complexity}
+
+\subsection{Constructively enumerating connected regions}
+
+For completeness, we give the combinatorial ingredients of the incoming
+region bound explicitly. This separates the new localization theorem from
+the search machinery on which its stronger algorithmic consequence rests.
+
+\begin{lemma}[Connected-region count]\label{lem:regions}
+In a graph with $t$ vertices and maximum degree four, the number of connected
+$i$-vertex sets is at most $t16^{i-1}$ for $i\ge1$. All connected sets of
+size at most $R$ can be enumerated without repetition using polynomial work
+per generated set.
+\end{lemma}
+\begin{proof}
+Choose the least vertex as root and a deterministic spanning tree of each
+connected set. A depth-first traversal of the tree has $2(i-1)$ edge steps.
+Record the root and, at each step, one of at most four local neighbour ports.
+The walk reconstructs its visited vertex set, so this is an injective
+encoding among the deterministic choices. There are at most
+$t4^{2(i-1)}$ such encodings.
+
+To enumerate sets, define the parent of a non-singleton connected set $A$
+by deleting its largest non-root vertex whose deletion leaves a connected
+set. A spanning tree has a leaf other than the root, so at least one deletion
+exists. Iterating the parent reaches the singleton root. From each current
+set, consider its at most $4|A|$ frontier neighbours and accept an extension
+exactly when its canonical parent is the current set. This visits each set
+once. Testing all candidate deletions and their connectivity uses only
+polynomial work in $|A|$. An explicit stack gives the implementation without
+recursion-depth dependence on the ambient number of vertices.
+\end{proof}
+
+The geometric factor $t$ chooses the location of the region. It is not
+raised to a power proportional to $U$. This is the step that direct
+enumeration of all $R$-subsets would lose.
+
+\subsection{An elementary independent FPT bound}
+
+Before using commutation compression, localization alone already implies
+fixed-parameter tractability. In a region containing $i$ original cells,
+at most $i+U$ eligible cells are live at any time. A legal eligible event
+is specified by a local face or edge of such a cell; there are at most
+$10(i+U)$ choices before eliminating repetitions and illegal configurations.
+Every first-descent witness has at most $2U+1$ events. Thus direct local
+branching, followed over every connected region of size at most $3U+3$,
+gives
+\begin{equation}\label{eq:elementary-fpt}
+ 2^{O(U\log(U+2))}\poly(t+B).
+\end{equation}
+This proof supplies a separate, weaker FPT guarantee that does not require
+the constant-alphabet trace theorem. The sharper result below removes the
+extra $\log U$ in the exponent.
+
+\subsection{Constant-alphabet encoding of commuting traces}
+
+Assign each eligible incarnation a commitment from
+\begin{equation}\label{eq:alphabet}
+ \mathcal A=\{\mathrm{idle}\}\ \cup\
+ \{\mathrm{down\ at\ edge}\ e:0\le e<6\}\ \cup\
+ \{\mathrm{up\ at\ face}\ f:0\le f<4\}.
+\end{equation}
+An event is ready if all its participants choose their local port for that
+event. Two different ready events cannot share an incarnation: a local face
+determines its unique paired-face event, and a local edge determines its
+unique full edge-star event. Ready events therefore commute by
+\cref{lem:forward}.
+
+Fix a deterministic scheduler. If an event is ready, execute the first ready
+event; otherwise assign the next unassigned eligible incarnation one of its
+eleven symbols. Surviving cells retain their commitments; born cells are
+unassigned. Protected original cells are permanently idle.
+
+\begin{lemma}[Commitment encoding]\label{lem:encoding}
+For a supplied region with $i$ original cells, every finite trace using
+$u$ upward and $d$ downward events has an encoding of length
+$i+3u+2d$ over \eqref{eq:alphabet}, up to interchanges of independent events.
+Consequently the number of commuting classes with $u\le U$ and
+$d\le u+1$ is at most
+\begin{equation}\label{eq:descent-count}
+ 11^{i+5U+2}.
+\end{equation}
+The generic bounded-region family, without the latter loss restriction,
+has at most $11^{3i+5U}$ classes.
+\end{lemma}
+\begin{proof}
+For a target trace, give each incarnation the port of the event that
+eventually consumes it, and give every target survivor the symbol idle.
+Follow these choices when the deterministic scheduler asks for them.
+
+If an event is ready, consider the first remaining target event touching
+one of its source incarnations. All earlier events leave those sources
+intact. Its commitment identifies exactly that ready event, so the first
+touch must be the ready event itself. All preceding target events have
+disjoint consumed supports; the persistence and relative-boundary lemmas
+move the ready event to the front. Iterating realizes the target trace
+up to commuting independent events. Assigning the recorded symbols cannot
+stop before the next target event is ready, and target survivors are idle.
+
+The freely assigned incarnations comprise the $i$ eligible originals and
+the $3u+2d$ born cells. Each receives one symbol. Record assignments in the
+order requested by the deterministic scheduler. Padding by idle symbols
+to a common maximum length preserves an injective encoding of trace
+classes: decoding a word determines one execution. Substituting
+$d\le u+1$ yields \eqref{eq:descent-count}. In a general region-supported
+trace, protected originals survive, so $d\le i+u$, giving the final bound.
+\end{proof}
+
+The counting decoder in this lemma is allowed to pass an earlier descent
+introduced by reordering. It need not follow the implementation's early-stop
+policy. The target trace's event counts and total encoding length are what
+establish the injection. Confusing these two roles would unnecessarily weaken
+or invalidate the counting argument.
+
+The practical search uses sleep sets instead of literal assignments. It
+explores enabled events in deterministic order and remembers an earlier
+sibling event across a later branch only while its consumed incarnation
+set is disjoint from each intervening event. Once a source incarnation is
+destroyed it never reappears. This nonresurrection, local event uniqueness,
+and persistence imply that at most one representative of a commuting class
+is visited. Conversely, the first representative of each class in the fixed
+search order cannot be blocked: a blocking event could be commuted left to
+obtain an earlier representative. This is the exact finite sleep-set argument
+specialized to these geometric events, as implemented in the incoming engine
+\cite{incoming-trace}.
+
+\begin{theorem}[Complete bounded-upward descent]\label{thm:fpt}
+For a valid generalized source $T$ of size $t\ge1$, an optional integral
+marking of input bit bound $B$, and $U\ge0$, question \eqref{eq:decision}
+is decidable in
+\begin{equation}\label{eq:fpt}
+ t\,2^{O(U)}\poly(t+U+B)=2^{O(U)}\poly(t+B)
+\end{equation}
+bit operations. A positive answer supplies a geometrically replayable
+first-descent trace. No spatial-coverage hypothesis is required.
+\end{theorem}
+\begin{proof}
+Set $R=\min(t,3U+3)$. Enumerate all connected original regions of size at
+most $R$ and search their bounded-upward traces with the endpoint predicate
+$|T'|<t$. A positive test returns immediately. If no positive is found,
+every permitted family is exhausted. The localization theorem proves that
+this decides \eqref{eq:decision} completely.
+
+Every visited prefix before success has $d\le u$, and the first successful
+one has $d=u+1$. Combining \cref{lem:regions,lem:encoding}, a sufficient
+counting factor, including the source endpoint, is
+\begin{equation}\label{eq:explicit-count}
+ 1+t\sum_{i=1}^{R}16^{i-1}11^{i+5U+2}.
+\end{equation}
+Since $R\le3U+3$, this is $t2^{O(U)}$ times a fixed constant. In particular,
+the largest commitment exponent is $8U+5$, improving the $14U+9$ obtained
+by substituting $R$ into the generic region bound. The bit analysis below
+supplies polynomial work per visited encoding or representative. It includes
+the endpoint count test. This proves \eqref{eq:fpt}.
+\end{proof}
+
+\begin{corollary}[Small-budget regimes]\label{cor:qp}
+Bounded-upward descent is polynomial-time when $U=O(\log(t+2))$, and takes
+$t^{O(\log(t+2))}\poly(B)$ time when $U=O(\log^2(t+2))$.
+\end{corollary}
+\begin{proof}
+Substitute the budget into \eqref{eq:fpt}. Polynomial factors in $U$ are
+absorbed by the indicated bounds. The bit bound $B$ remains polynomially
+charged.
+\end{proof}
+
+The constants in \eqref{eq:explicit-count} are intentionally conservative.
+It is an asymptotic guarantee, not a prediction that large $U$ is practical.
+For $U=0$, the problem is simply the existence of a legal initial downward
+move, since any descending trace has a first downward move. Directly checking
+edge stars solves that special case without a general region enumeration.
+
+\subsection{Binary arithmetic and certificate size}
+
+\begin{lemma}[Upward moves control marking growth]\label{lem:bits}
+Let $D_0$ be the maximum absolute source edge value. After a trace with $u$
+upward events, all signed edge values have magnitude at most $2^uD_0$.
+Normalized height rows and local coherent normal coordinates have bit
+length at most $B+u+O(1)$.
+\end{lemma}
+\begin{proof}
+A downward move removes one edge and creates no new edge; all surviving
+edge values remain unchanged. The new diagonal of an upward move joins
+the two formal apices $a,b$. Through any belt vertex $v$, its value is
+$(h_b-h_v)+(h_v-h_a)$, a sum of two old signed edge values. Its magnitude
+is at most twice the previous maximum, and all other edge values persist.
+Induct on $u$. A normalized row entry is an edge difference from its first
+corner. A local normal coordinate is a gap between ordered corner heights,
+bounded by their span, which is itself an edge difference.
+\end{proof}
+
+There are $O(t+U)$ local edge and face occurrences at every visited state.
+Global manifold validation, grouping edge stars, comparing local patterns,
+and copying a full triangulation therefore cost polynomial time in
+$t+U+B$. The code currently rebuilds global geometry where needed; it makes
+no constant-time local-update claim. Stable incarnation names are exact
+interned DAG expressions, not cryptographic identity assumptions.
+
+A first-descent proof with complete intermediate snapshots has bit length
+\begin{equation}\label{eq:certificate-size}
+ O\bigl((U+1)(t+U)(B+U+\log(t+U+1))\bigr).
+\end{equation}
+It contains at most $2U+1$ moves, each with at most $t+U$ rows, plus the
+final coordinate data. Independent replay is polynomial in this size.
+Exhaustive failure is an algorithmic conclusion about a bounded family;
+the implementation does not claim a comparably short negative certificate.
+
+\subsection{Repeated bounded simplification}
+
+\begin{definition}
+A triangulation is $U$-irreducible for this move model if it admits no
+strict descent using at most $U$ total upward moves.
+\end{definition}
+
+\begin{corollary}[Complete bounded preprocessing]\label{cor:preprocess}
+Repeatedly applying complete bounded-$U$ descent and adopting each verified
+positive result terminates at a $U$-irreducible triangulation in
+$2^{O(U)}\poly(t+B)$ bit time. Its concatenated positive proof uses at most
+$tU$ upward events and $t(2U+1)$ events in total.
+\end{corollary}
+\begin{proof}
+Each successful restart reduces the tetrahedron count by at least one,
+so there are fewer than $t$ successful restarts. Each local transient state
+has at most $t+U$ tetrahedra. Across all successful traces, \cref{lem:bits}
+increases the marking bit bound by at most $tU+O(1)$. Summing the polynomial
+overheads in \cref{thm:fpt} gives the stated bound. The final complete
+negative bounded search is precisely the definition of $U$-irreducibility.
+\end{proof}
+
+An arbitrary choice of successful one-unit descents is not guaranteed to
+preserve a prescribed total upward budget for a later $k$-unit objective.
+The next section treats that joint-budget problem separately.

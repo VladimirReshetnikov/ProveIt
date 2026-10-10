@@ -1,0 +1,859 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{microtype,booktabs,array,longtable}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,breaklinks=true]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{listings}
+\hypersetup{pdftitle={An Exact Small-Step Criterion for Random Reshuffling},pdfauthor={AI-assisted mathematical research},pdfsubject={Stochastic optimization, matrix inequalities, exact arithmetic verification}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Exact small-step comparison of sampling laws}
+\fancyhead[R]{\small Research draft}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\newcommand{\WR}{\mathrm{WR}}
+\newcommand{\RR}{\mathrm{RR}}
+\newcommand{\Id}{I}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\ran}{\operatorname{range}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\inner}[2]{\left\langle #1,#2\right\rangle}
+\newcommand{\calF}{\mathcal F}
+\newcommand{\calL}{\mathcal L}
+\newcommand{\bin}[2]{\binom{#1}{#2}}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,frame=single,rulecolor=\color{black!20},xleftmargin=0.3em,xrightmargin=0.3em}
+
+\title{\vspace{-1.0cm}\textbf{An Exact Small-Step Criterion\\for Random Reshuffling}\\[0.45em]
+\large Variance kernels, fourth-order reversals,\\and constructive certificates for stochastic gradient descent}
+\author{AI-assisted mathematical research\\\small Prepared as a self-contained research and verification package}
+\date{October 8, 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+For quadratic component losses with a common minimizer, when does sampling without replacement improve the expected squared error of \emph{every} starting state? We give an exact answer in the small-step regime. Write $H$ for the mean Hessian and $V=n^{-1}\sum_i(H_i-H)^2$ for its matrix variance. For every fixed block length $2\le m\le n$ and every fixed positive position-dependent step schedule, the without-replacement Gram matrix is eventually smaller in the positive-semidefinite order if and only if $H\ker V\subseteq\ker V$. When invariance fails, an adverse eigenvalue has order $\eta^4$, and its leading coefficient is computed explicitly. For constant steps it is
+\[
+ -\frac{m(m-1)(4m+1)^2}{72(n-1)}\,
+ \lambda_{\max}\!\left(P_{\ker V}HVHP_{\ker V}\right).
+\]
+The result gives a positive theorem for rank-one least-squares components and an exact rank-two obstruction. A two-dimensional strongly convex example reverses the Euclidean comparison throughout a stable step interval; a fixed starting point also reverses expected objective loss at every sufficiently small step. We provide polynomial-time exact diagnostics, rational step thresholds, a local extension to smooth losses, and executable verification artifacts. The proofs are self-contained. Priority in the literature and independent peer review remain separate from the mathematical and computational verification supplied here.
+\end{abstract}
+\vfill
+\noindent\textbf{Scope.} One block; fixed dimension, sample size, block length, and positive schedule as $\eta\downarrow0$. Actual expected errors are compared, not convergence-rate upper bounds. No proof-assistant formalization or new optimizer convergence rate is claimed.
+\newpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{The question and its significance}
+
+Changing the sampling law in stochastic gradient descent changes a product of update matrices. Repeated sampling introduces additional fluctuations, but suppressing those fluctuations does not automatically improve every direction of the resulting product. This article determines exactly when such a direction-by-direction comparison holds near zero step size for quadratic losses with a common minimizer.
+
+There are three distinct comparison questions. One may compare established upper bounds on convergence rates; compare the largest eigenvalues or operator norms of suitable expected products; or compare actual expected errors for every initial vector. The last is a positive-semidefinite, or Loewner-order, statement. It is the strongest of these particular statewise comparisons and is our subject. An inequality between two upper bounds does not order the underlying quantities, and an ordering of largest eigenvalues does not order all quadratic forms.
+
+\subsection{Research connection to the supplied repository}
+
+The starting inspiration was the ordering-and-cancellation viewpoint in the \texttt{openai/math} collection, specifically the introduction to its Euclidean Steinitz--Bergstr\"om manuscript, family 097 \cite{OpenAISteinitz}. That introduction studies how an order controls all partial sums and distinguishes existential order selection from an efficient online rule. Here the increments are Hessian fluctuations. They sum to zero over a complete reshuffled epoch, but successive noncommuting updates transport them differently. The pertinent question becomes whether a direction with no immediate fluctuation stays fluctuation-free after this transport.
+
+No theorem from that manuscript is used as a premise. The repository explicitly warns that its manuscripts have differing verification status \cite{OpenAIRepository}. We inspected the pinned revision recorded in Appendix~\ref{app:provenance}; our proofs below use elementary matrix algebra, finite sampling identities, and finite-dimensional perturbation arguments.
+
+\subsection{Relation to existing comparison results}
+
+Recht and R\'e connected without-replacement sampling, least-squares updates, and noncommutative arithmetic--geometric mean inequalities \cite{RechtRe2012}. Their formulation motivates studying averaged matrix products, but a norm inequality must not be silently strengthened to a Loewner inequality. De Sa gave counterexamples to general reshuffling superiority and also small-step results for appropriate norm comparisons \cite{DeSa2020}. Thus the statement ``reshuffling can be worse'' is not new. Our proposed strengthening is an exact necessary-and-sufficient condition for \emph{eventual all-state Euclidean comparison}, together with its leading adverse eigenvalue and constructive certificates.
+
+Liu's 2026 work explicitly uses ``dominates'' to compare orders of convergence rates and establishes improved bounds in smooth convex optimization \cite{Liu2026}. That is different from ordering the actual expected loss of a fixed instance at a specified time. Our reversals do not contradict that use of domination. Related work by Lok, Sonthalia, and Rebrova studies exact discrete error dynamics for reshuffled least squares and emphasizes step-size effects invisible to a leading gradient-flow description \cite{Lok2025}. Here the distinction is particularly sharp: the favorable second-order term can coexist with an unfavorable fourth-order eigenvalue.
+
+The literature search conducted for this draft did not establish historical priority for the classification proved here. The results should be treated as a self-contained research contribution submitted for independent mathematical and bibliographic review, rather than as an externally certified first discovery.
+
+\subsection{A guide to the results}
+
+The main theorem gives a complete qualitative classification for constant steps and an exact negative coefficient when the classification fails. The proof is developed for arbitrary positive position weights, so that schedule changes do not conceal the obstruction. The criterion is computable by exact linear algebra rather than by enumerating sampling paths. It has both positive and negative consequences: rank-one components always pass it, while rank-two positive-definite components may fail it. The distinction between Euclidean distance and objective loss leads to a separate second-order obstruction for a general metric.
+
+All uses of $O(\eta^k)$ in this article are for fixed input matrices and fixed schedule, unless an explicit uniform bound is displayed. They are operator-norm estimates for matrices and ordinary estimates for scalars.
+
+\section{Model, notation, and the classification}
+\label{sec:model}
+
+Let $H_1,\ldots,H_n$ be real symmetric $d\times d$ matrices, with $n\ge2$. For the optimization interpretation assume $H_i\succeq0$ and consider
+\begin{equation}\label{eq:losses}
+ f_i(x)=\frac12(x-x_\star)^\top H_i(x-x_\star),\qquad
+ f(x)=\frac1n\sum_{i=1}^n f_i(x).
+\end{equation}
+All components share the minimizer $x_\star$. Translate coordinates so that $x_\star=0$. The algebraic results in fact require symmetry, not positivity.
+
+Choose $2\le m\le n$ and fixed numbers $a_1,\ldots,a_m>0$. At position $s$ the step is $\eta a_s$. For an index path $\bm i=(i_1,\ldots,i_m)$ put
+\begin{equation}\label{eq:path}
+ P_{\bm i}(\eta)=(I-\eta a_mH_{i_m})\cdots(I-\eta a_1H_{i_1}).
+\end{equation}
+The with-replacement law, denoted $\WR$, chooses the indices independently and uniformly. The without-replacement law, denoted $\RR$, chooses a uniformly random ordered tuple of $m$ distinct indices. When $m<n$, this is a prefix of a uniform random permutation; when $m=n$, it is a full reshuffled epoch.
+
+Define
+\begin{equation}\label{eq:delta}
+ Q_{\WR}(\eta)=\E_{\WR}P_{\bm i}(\eta)^\top P_{\bm i}(\eta),\qquad
+ Q_{\RR}(\eta)=\E_{\RR}P_{\bm i}(\eta)^\top P_{\bm i}(\eta),\qquad
+ \Delta=Q_{\WR}-Q_{\RR}.
+\end{equation}
+Thus $x^\top\Delta x=\E_{\WR}\norm{x_m}^2-\E_{\RR}\norm{x_m}^2$. The assertion that reshuffling improves every starting state is exactly $\Delta\succeq0$.
+
+Write
+\begin{equation}\label{eq:variance}
+ H=\frac1n\sum_iH_i,\qquad D_i=H_i-H,\qquad
+ V=\frac1n\sum_iD_i^2,\qquad K=\ker V,
+\end{equation}
+and let $P_K$ denote the orthogonal projector onto $K$. We call
+\begin{equation}\label{eq:leakage}
+ G_K=\left.P_KHVHP_K\right|_K
+\end{equation}
+the \emph{leakage matrix}. This is simply a name for a positive-semidefinite matrix; no additional structure is being assumed.
+
+\begin{lemma}\label{lem:kernel}
+$V\succeq0$, $K=\bigcap_i\ker D_i$, and $H_i v=Hv$ for every $v\in K$. Moreover,
+\[
+ G_K=0\quad\Longleftrightarrow\quad VHP_K=0
+ \quad\Longleftrightarrow\quad HK\subseteq K.
+\]
+\end{lemma}
+\begin{proof}
+For any $v$, $v^\top Vv=n^{-1}\sum_i\norm{D_iv}^2$. This proves the kernel identity and the common action on $K$. For $v\in K$,
+\[
+ v^\top G_Kv=(Hv)^\top V(Hv)=\norm{V^{1/2}Hv}^2.
+\]
+It vanishes for every such $v$ exactly when $Hv\in\ker V$ for every $v\in K$.
+\end{proof}
+
+\begin{theorem}[Exact criterion, constant steps]\label{thm:main}
+Suppose $a_1=\cdots=a_m=1$. The following are equivalent:
+\begin{enumerate}[label=(\roman*),nosep]
+\item There is $\eta_0>0$ such that $\Delta(\eta)\succeq0$ for every $0<\eta\le\eta_0$.
+\item $HK\subseteq K$.
+\item Every $H_i$ preserves $K$.
+\end{enumerate}
+If these conditions hold, $\Delta$ vanishes identically on $K$ for every step size and is positive definite on $K^\perp$ for every sufficiently small positive step size, unless $K^\perp=\{0\}$.
+
+If they fail, $G_K\ne0$ and
+\begin{equation}\label{eq:sharpconstant}
+ \lambda_{\min}(\Delta(\eta))
+ =-\frac{m(m-1)(4m+1)^2}{72(n-1)}
+    \lambda_{\max}(G_K)\eta^4+O(\eta^5).
+\end{equation}
+In particular, the comparison fails at every sufficiently small positive step size.
+\end{theorem}
+
+For a complete epoch the coefficient in \eqref{eq:sharpconstant} simplifies to $n(4n+1)^2/72$. This formula is not a uniform joint asymptotic in $n$ and $\eta$; its error constant may depend on $n$ and on the matrices.
+
+\begin{remark}[The quantifiers matter]\label{rem:quantifiers}
+Failure of the all-state Euclidean comparison means that for each sufficiently small $\eta$ there is an adverse starting state. That state may depend on $\eta$. The exact example in Section~\ref{sec:example} displays this dependence. A different, objective-loss comparison in the same example has a single adverse state valid for all sufficiently small steps.
+\end{remark}
+
+\section{The weighted expansion}
+\label{sec:expansion}
+
+We prove the coefficient identities needed for the theorem in the greater generality of positive position weights. For these weights let $e_j=e_j(a_1,\ldots,a_m)$ be the elementary symmetric polynomial of degree $j$, with $e_j=0$ if $j>m$. Set
+\begin{align}
+ S&=e_1, & w_s&=a_s\sum_{r<s}a_r, & T&=\sum_s a_sw_s,\label{eq:weights1}\\
+ B&=2e_3+2Se_2-T, &
+ A&=2e_4+2Se_3+e_2^2-\sum_s w_s^2.\label{eq:weights2}
+\end{align}
+Define
+\begin{equation}\label{eq:abc}
+ c=\frac{4e_2}{n-1},\qquad b=\frac{B}{n-1},\qquad
+ \alpha=\frac{A}{n-1},\qquad
+ t=\frac bc,\qquad \Gamma=\frac{b^2}{c}-\alpha.
+\end{equation}
+Here $c>0$ and $b>0$: indeed $T\le Se_2$, so $B\ge Se_2>0$. The decisive fact will be $\Gamma>0$.
+
+\subsection{Two-position finite-population identities}
+
+For a path-dependent expression $X$ let $\calF(X)=\E_{\WR}X-\E_{\RR}X$. Both laws have the same marginal distribution at every position. For two distinct positions $r\ne s$,
+\begin{equation}\label{eq:cov}
+ \E_{\WR}D_{i_r}D_{i_s}=0,\qquad
+ \E_{\RR}D_{i_r}D_{i_s}=-\frac{V}{n-1}.
+\end{equation}
+To see the second equality, sum over distinct indices and use
+$\sum_{i\ne j}D_iD_j=(\sum_iD_i)^2-\sum_iD_i^2=-nV$.
+Consequently,
+\begin{equation}\label{eq:pair}
+ \calF(H_{i_r}H_{i_s})=\frac{V}{n-1}\quad(r\ne s).
+\end{equation}
+More generally, for a deterministic matrix $G$, put $W_G=n^{-1}\sum_iD_iGD_i$. The same computation gives
+\begin{equation}\label{eq:metriccov}
+ \calF(D_{i_r}GD_{i_s})=\frac{W_G}{n-1}\quad(r\ne s).
+\end{equation}
+At a repeated position the difference of expectations is zero. These statements concern distinct \emph{positions}, not a requirement that with-replacement sampled indices be unequal.
+
+\subsection{Product coefficients}
+
+For a fixed path define
+\[
+ S_j=\sum_{s_j>\cdots>s_1}
+ a_{s_j}\cdots a_{s_1}H_{i_{s_j}}\cdots H_{i_{s_1}},\qquad S_0=I.
+\]
+Then $P_{\bm i}=\sum_{j=0}^m(-\eta)^jS_j$. The degree-two, degree-three, and degree-four coefficients of $P_{\bm i}^\top P_{\bm i}$ are, respectively,
+\begin{align}
+ &S_1^2+S_2+S_2^\top,\label{eq:gram2}\\
+ &-S_3-S_3^\top-S_1S_2-S_2^\top S_1,\label{eq:gram3}\\
+ &S_4+S_4^\top+S_1S_3+S_3^\top S_1+S_2^\top S_2.\label{eq:gram4}
+\end{align}
+Terms beyond the block length are understood to be zero.
+
+\begin{proposition}[The three required coefficient identities]\label{prop:coeff}
+Write
+\[
+ \Delta(\eta)=\eta^2 C_2+\eta^3 C_3+\eta^4 C_4+O(\eta^5).
+\]
+There are no constant or linear terms, and
+\begin{equation}\label{eq:keycoeff}
+ C_2=cV,\qquad C_3P_K=-bVHP_K,\qquad
+ P_KC_4P_K=\alpha P_KHVHP_K.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The constant and linear coefficients depend only on single-position marginals and therefore cancel. In \eqref{eq:gram2}, the distinct-position part of $S_1^2$ has total scalar weight $2e_2$ and $S_2+S_2^\top$ has total weight $2e_2$. Equation~\eqref{eq:pair} gives $C_2=4e_2V/(n-1)$.
+
+Fix $v\in K$. Since $H_iv=Hv$ for all $i$, pathwise
+\begin{equation}\label{eq:s1s2v}
+ S_1v=SHv,\qquad
+ S_2v=e_2H^2v+\sum_s w_sD_{i_s}Hv.
+\end{equation}
+In every word from $S_3v$ or $S_3^\top v$, the rightmost factor acts deterministically on $v$, leaving a two-position product. Thus
+\[
+ \calF((S_3+S_3^\top)v)=\frac{2e_3}{n-1}VHv.
+\]
+Using \eqref{eq:s1s2v} and the centered covariance identity, the distinct-position terms in $S_1S_2v$ have total weight
+\[
+ \sum_{\ell\ne s}a_\ell w_s=Se_2-T.
+\]
+Hence their difference is $(Se_2-T)VHv/(n-1)$. Also
+$\calF(S_2^\top S_1v)=Se_2VHv/(n-1)$, because $S_1v=SHv$ is deterministic. Inserting the minus sign in \eqref{eq:gram3} proves the cubic identity.
+
+For degree four put $q=v^\top HVHv$. In a scalar word $v^\top H_{i_4}H_{i_3}H_{i_2}H_{i_1}v$ with distinct positions, the outer factors both act deterministically; the middle pair contributes $q/(n-1)$ to $\calF$. Therefore
+\[
+ \calF\bigl(v^\top(S_4+S_4^\top)v\bigr)=\frac{2e_4}{n-1}q.
+\]
+Likewise, $S_1v=SHv$ yields
+\[
+ \calF\bigl(v^\top(S_1S_3+S_3^\top S_1)v\bigr)
+ =\frac{2Se_3}{n-1}q.
+\]
+Finally, use the second identity in \eqref{eq:s1s2v}. Linear centered terms have zero expectation under both laws. The distinct-position part of the squared centered sum has weight
+\[
+ \sum_{r\ne s}w_rw_s=\left(\sum_s w_s\right)^2-\sum_s w_s^2
+ =e_2^2-\sum_s w_s^2.
+\]
+It follows that
+$\calF(v^\top S_2^\top S_2v)=(e_2^2-\sum_s w_s^2)q/(n-1)$.
+Adding the three contributions proves the identity for quadratic forms on $K$. Polarization proves the asserted matrix identity.
+\end{proof}
+
+The key economy is that neither the full cubic coefficient nor the full quartic coefficient is needed. Only a kernel column and a kernel compression matter. Pairwise finite-population covariances determine both.
+
+\section{Why the fourth-order coefficient is negative}
+\label{sec:proof}
+
+\subsection{Positivity of the schedule discriminant}
+
+\begin{lemma}\label{lem:discriminant}
+For every $m\ge2$ and every positive schedule, $B^2-4e_2A>0$. Consequently $\Gamma>0$.
+\end{lemma}
+\begin{proof}
+Appendix~\ref{app:schedule} gives the exact degree-six identity
+\[
+ B^2-4e_2A=\sum_p c_p\sum_{i_1<\cdots<i_{\ell(p)}}
+       a_{i_1}^{p_1}\cdots a_{i_{\ell(p)}}^{p_{\ell(p)}},
+\]
+where all listed coefficients $c_p$ are positive integers and every unlisted coefficient is zero. Each summand is nonnegative for positive weights. The two-index terms alone sum to
+\[
+ \sum_{i<j}a_i^2a_j^2(2a_i+a_j)^2>0.
+\]
+The appendix includes the complete coefficient table and explains why its finite polynomial identity proves the assertion for arbitrary $m$, not just for the schedules used in testing.
+\end{proof}
+
+For constant weights this identity has a simpler closed form. Put $q_{n,m}=m(m-1)/(n-1)$. Substituting $e_j=\binom mj$ and $w_s=s-1$ into \eqref{eq:abc} gives
+\begin{equation}\label{eq:constantcoeff}
+ \begin{aligned}
+ c&=2q_{n,m},&
+ b&=q_{n,m}\frac{8m-7}{6},\\
+ \alpha&=q_{n,m}\frac{(m-2)(2m-1)}3,&
+ t&=\frac{8m-7}{12},\\
+ \Gamma&=q_{n,m}\frac{(4m+1)^2}{72}.&&
+ \end{aligned}
+\end{equation}
+Thus the constant-step theorem does not need the finite polynomial table: its strictly positive coefficient follows by direct substitution and simplification.
+
+\subsection{A singular perturbation lemma}
+
+\begin{lemma}[Effective small eigenvalues]\label{lem:perturb}
+Let a real symmetric matrix family on $R\oplus K$ have the expansion
+\[
+ M(\varepsilon)=
+ \begin{pmatrix}
+ A_0+O(\varepsilon)&\varepsilon B_1+O(\varepsilon^2)\\
+ \varepsilon B_1^\top+O(\varepsilon^2)&\varepsilon^2 C_0+O(\varepsilon^3)
+ \end{pmatrix},\qquad A_0\succ0,
+\]
+with sufficiently many Taylor coefficients (polynomial families suffice). Its $\dim K$ eigenvalues that tend to zero equal the ordered eigenvalues of
+\[
+ \varepsilon^2(C_0-B_1^\top A_0^{-1}B_1)+O(\varepsilon^3).
+\]
+In particular, if the effective matrix has a negative eigenvalue, the smallest eigenvalue of $M$ is its smallest eigenvalue times $\varepsilon^2$, up to $O(\varepsilon^3)$.
+\end{lemma}
+\begin{proof}
+Use the orthogonal change of basis $U_1=\exp(\varepsilon J)$ with
+\[
+ J=\begin{pmatrix}0&-A_0^{-1}B_1\\B_1^\top A_0^{-1}&0\end{pmatrix}.
+\]
+Expansion of $U_1^\top M U_1$ cancels the first-order off-diagonal block. Its lower diagonal block is
+$\varepsilon^2(C_0-B_1^\top A_0^{-1}B_1)+O(\varepsilon^3)$.
+Its remaining off-diagonal block starts at order $\varepsilon^2$. A second orthogonal change $U_2=\exp(\varepsilon^2J_2)$ cancels that coefficient, using the same invertible matrix $A_0$. This second change does not alter the displayed second-order lower block. The resulting matrix is block diagonal up to an operator-norm error $O(\varepsilon^3)$. The upper block stays positive definite and bounded away from zero. The min--max characterization of eigenvalues implies that an operator-norm perturbation changes each ordered eigenvalue by at most its norm, proving the assertion.
+\end{proof}
+
+An exact Schur complement is useful for intuition, but congruence alone does not preserve eigenvalues. The orthogonal argument above accounts for the eigenvalue asymptotic, not just the inertia.
+
+\subsection{Completion of the classification}
+
+\begin{theorem}[Arbitrary positive position weights]\label{thm:weighted}
+The three equivalent conditions in Theorem~\ref{thm:main} remain equivalent for every fixed positive schedule. The condition is independent of $m$ and of the weights. When it fails,
+\begin{equation}\label{eq:weightedmin}
+ \lambda_{\min}(\Delta(\eta))=-\Gamma\lambda_{\max}(G_K)\eta^4+O(\eta^5),
+\end{equation}
+where $\Gamma$ is given by \eqref{eq:abc}. For every $v\in K$ with $q=v^\top HVHv>0$, the explicit state
+\begin{equation}\label{eq:witness}
+ x_\eta=v+\eta tHv
+\end{equation}
+satisfies
+\begin{equation}\label{eq:witnessgap}
+ x_\eta^\top\Delta(\eta)x_\eta=-\Gamma q\eta^4+O(\eta^5).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The equivalence of preservation by $H$ and by every $H_i$ follows from their common action on $K$. Suppose first that this preservation holds. Symmetry makes $K$ a reducing subspace for every $H_i$. On $K$ they are identical, so the entire weighted update product is deterministic and the same under both laws. Hence $\Delta|_K=0$ exactly and the off-diagonal blocks vanish exactly. On $R=K^\perp$, $V_R\succ0$ and Proposition~\ref{prop:coeff} gives
+\[
+ \Delta|_R=c\eta^2V_R+O(\eta^3)\succ0
+\]
+for sufficiently small positive $\eta$. If $V=0$, all $H_i$ are identical and the two laws agree for every $\eta$.
+
+Now suppose preservation fails. Decompose with $R$ first and $K$ second, and write $H_{RK}=P_RH|_K$. The coefficient identities yield
+\[
+ \frac{\Delta(\eta)}{\eta^2}=
+ \begin{pmatrix}
+ cV_R+O(\eta)&-b\eta V_RH_{RK}+O(\eta^2)\\
+ -b\eta H_{RK}^\top V_R+O(\eta^2)&
+ \alpha\eta^2H_{RK}^\top V_RH_{RK}+O(\eta^3)
+ \end{pmatrix}.
+\]
+Lemma~\ref{lem:perturb} gives the effective matrix
+\[
+ \left(\alpha-\frac{b^2}{c}\right)H_{RK}^\top V_RH_{RK}
+ =-\Gamma G_K.
+\]
+By Lemmas~\ref{lem:kernel} and \ref{lem:discriminant}, this matrix is nonzero negative semidefinite. Its smallest eigenvalue is $-\Gamma\lambda_{\max}(G_K)$, proving \eqref{eq:weightedmin} and necessity of the invariance condition.
+
+For the explicit witness, insert \eqref{eq:witness} into Proposition~\ref{prop:coeff}. Since $Vv=0$, the fourth-order coefficient is
+\[
+ (ct^2-2bt+\alpha)q
+ =\left(\alpha-\frac{b^2}{c}\right)q=-\Gamma q.
+\]
+Every remaining term has order at least five. This proves \eqref{eq:witnessgap}. Substitution of \eqref{eq:constantcoeff} proves Theorem~\ref{thm:main}.
+\end{proof}
+
+There are at least $\rank G_K$ negative eigenvalues for all sufficiently small positive $\eta$. More precisely, the branches associated with positive eigenvalues $\mu$ of $G_K$ have leading terms $-\Gamma\mu\eta^4$. No assertion is made here about the signs of branches whose fourth-order coefficient is zero.
+
+\subsection{Geometric meaning of the obstruction}
+
+For a state outside $K$, $x^\top Vx>0$, and the leading comparison is favorable. A state in $K$ sees exactly the same first update from every component. Its common image $Hv$, however, need not remain in $K$. The cubic off-diagonal term measures this transfer into fluctuating directions. A perturbation of the initial state by $\eta tHv$ exploits the transfer. Completing the square produces a negative quartic correction even though the leading full matrix $c\eta^2V$ is positive semidefinite.
+
+This is why positivity of the leading coefficient is insufficient when it has a kernel. It is also why shrinking the step size does not repair an all-state comparison in the noninvariant case: the adverse state moves into an $O(\eta)$ neighborhood of the variance kernel.
+
+\section{Positive consequences for least squares and low-rank components}
+\label{sec:positive}
+
+\begin{corollary}[Trivial common range]\label{cor:range}
+If $\bigcap_i\ran H_i=\{0\}$, then $HK=\{0\}$, so eventual all-state Euclidean domination holds for every positive schedule.
+\end{corollary}
+\begin{proof}
+For $v\in K$, the vector $Hv=H_iv$ belongs to every $\ran H_i$. It must therefore be zero.
+\end{proof}
+
+\begin{corollary}[Rank-one least-squares theorem]\label{cor:rankone}
+Suppose every $H_i$ has rank at most one. Then eventual all-state Euclidean domination holds for every positive schedule. In particular this applies to interpolating least-squares components
+\[
+ f_i(x)=\frac12\bigl(u_i^\top(x-x_\star)\bigr)^2,
+ \qquad H_i=u_iu_i^\top.
+\]
+The conclusion also holds after adding the same scalar matrix $\lambda I$ to all component Hessians, provided the resulting optimization model retains a common minimizer.
+\end{corollary}
+\begin{proof}
+If all $H_i$ coincide, the result is equality. Otherwise fix $v\in K$ and set $w=H_iv$, which is independent of $i$. If $w\ne0$, each rank-at-most-one $H_i$ has range $\operatorname{span}\{w\}$. Symmetry gives $H_i=\beta_i uu^\top$ for a common unit vector $u$. Since $H_iv=w\ne0$, we have $u^\top v\ne0$, and equality of all $H_iv$ forces all $\beta_i$ to coincide. This contradicts the assumption that the family is not identical. Thus $Hv=0$ for every $v\in K$, and the theorem applies.
+
+A common scalar shift leaves all $D_i$, $V$, and $K$ unchanged and changes $H$ to $H+\lambda I$, which preserves $K$ whenever $H$ does.
+\end{proof}
+
+This is an eventual one-block statement about actual squared Euclidean error. It is not a claim about every step size, objective-loss metrics, noisy regression with different component minimizers, or a multi-epoch convergence rate. The common-minimizer hypothesis in the scalar-shift statement is substantive; ordinary ridge objectives do not automatically satisfy it componentwise.
+
+\begin{corollary}[Minimal rank for a Euclidean obstruction]\label{cor:minimal}
+Among positive-semidefinite component Hessians, rank at most one cannot produce the small-step Euclidean obstruction. Rank two can produce it, already with $n=m=d=2$. Dimension one cannot produce it.
+\end{corollary}
+\begin{proof}
+The rank-one assertion is Corollary~\ref{cor:rankone}. The rank-two example is proved in Section~\ref{sec:example}. In dimension one, $K$ is either zero or the entire space and is automatically invariant.
+\end{proof}
+
+\subsection{A nonperturbative commuting benchmark}
+
+If the $H_i$ commute, they are simultaneously orthogonally diagonalizable and $K$ is invariant. For constant steps there is also a direct comparison for \emph{every real} $\eta$. In each common eigendirection set $z_i=(1-\eta h_i)^2\ge0$. The two expected squared multipliers are
+\[
+ \E_{\RR}\prod_{s=1}^m z_{i_s}=\frac{e_m(z_1,\ldots,z_n)}{\binom nm},
+ \qquad
+ \E_{\WR}\prod_{s=1}^m z_{i_s}=
+ \left(\frac1n\sum_i z_i\right)^m.
+\]
+The elementary symmetric mean is at most the arithmetic mean to the $m$th power. One direct proof fixes the sum of the $z_i$ and repeatedly averages pairs: in $e_m$, the dependence on a pair is a nonnegative multiple of their product plus a function of their sum. Pair averaging cannot decrease $e_m$ and converges to the constant vector. Thus $\Delta\succeq0$. This standard scalar argument is a benchmark, not a novelty claim. Our classification handles noncommuting families and singular matrix variance without reducing to it.
+
+\section{An exact strongly convex reversal}
+\label{sec:example}
+
+Take
+\begin{equation}\label{eq:exampleH}
+ H_1=\begin{pmatrix}3&1\\1&2\end{pmatrix},\qquad
+ H_2=\begin{pmatrix}1&1\\1&2\end{pmatrix},\qquad m=n=2,
+\end{equation}
+with constant steps. Then
+\[
+ H=\begin{pmatrix}2&1\\1&2\end{pmatrix},\qquad
+ D_1=-D_2=\begin{pmatrix}1&0\\0&0\end{pmatrix},\qquad
+ V=\begin{pmatrix}1&0\\0&0\end{pmatrix},\quad K=\operatorname{span}\{e_2\}.
+\]
+The vector $He_2=(1,2)^\top$ is not in $K$. Both Hessians are positive definite. The smallest component eigenvalue is $(3-\sqrt5)/2>0$, and the largest is $(5+\sqrt5)/2<4$. Consequently every update $I-\eta H_i$ is itself positive definite and a strict Euclidean contraction whenever $0<\eta\le1/4$.
+
+\begin{proposition}[Exact Euclidean gap]\label{prop:example}
+For the fixed Hessians \eqref{eq:exampleH},
+\begin{equation}\label{eq:deltaexample}
+ \Delta(\eta)=
+ \begin{pmatrix}
+ 2\eta^2(9\eta^2-8\eta+2)&3\eta^3(2\eta-1)\\
+ 3\eta^3(2\eta-1)&0
+ \end{pmatrix}.
+\end{equation}
+For $x_\eta=(3\eta/4,1)^\top$,
+\begin{equation}\label{eq:exactgap}
+ \E_{\RR}\norm{x_2}^2-\E_{\WR}\norm{x_2}^2
+ =\frac98\eta^4(2-9\eta^2)>0
+ \qquad(0<\eta\le1/4).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Put $P=I-\eta H$ and $Q=\eta D_1$. The two component updates are $P-Q$ and $P+Q$. Expand the four with-replacement paths and the two without-replacement paths. Cancellation gives
+\[
+ \Delta=Q^2P^2+QPQP+PQPQ+P^2Q^2.
+\]
+Substitution yields \eqref{eq:deltaexample}; taking the quadratic form at $x_\eta$ gives \eqref{eq:exactgap}. Finally $2-9\eta^2\ge2-9/16>0$ on the stated interval.
+\end{proof}
+
+At $\eta=1/4$, the exact difference in \eqref{eq:exactgap} is $207/32768$. Its leading coefficient is $9/4$, agreeing with $\Gamma=9/4$ and $G_K=[1]$. There is no rounding or Monte Carlo estimate in these assertions.
+
+The theorem's general witness is $e_2+(3\eta/4)He_2$, whose second coordinate is $1+3\eta/2$. The simpler vector used in Proposition~\ref{prop:example} changes that coordinate at order $\eta$ but gives the same leading quartic gap and a particularly short exact formula. The two witness families should not be conflated.
+
+\subsection{A fixed starting point for objective loss}
+
+The average loss is $f(x)=\tfrac12x^\top Hx$. Define
+$\Delta_H=\E_{\WR}P_{\bm i}^\top HP_{\bm i}-\E_{\RR}P_{\bm i}^\top HP_{\bm i}$.
+An exact expansion gives
+\begin{equation}\label{eq:metricexample}
+ \Delta_H(\eta)=
+ \begin{pmatrix}
+ 2\eta^2(24\eta^2-19\eta+4)&\eta^2(18\eta^2-10\eta+1)\\
+ \eta^2(18\eta^2-10\eta+1)&0
+ \end{pmatrix}.
+\end{equation}
+At the single, step-independent state $x=(-1/8,1)^\top$,
+\begin{equation}\label{eq:lossgap}
+ \E_{\RR}f(x_2)-\E_{\WR}f(x_2)
+ =\frac{\eta^2}{64}(120\eta^2-61\eta+4)>0
+ \quad(0<\eta\le1/16).
+\end{equation}
+The positivity follows from $4-61\eta\ge3/16$ on this interval. Both algorithms still decrease distance under each individual update. The comparison is between their expected final errors, not a claim that either update diverges or increases its own component loss.
+
+\section{Other metrics and local nonlinear consequences}
+\label{sec:metrics}
+
+\subsection{The metric changes the leading comparison}
+
+For a fixed symmetric matrix $G$ define
+\[
+ \Delta_G=\E_{\WR}P_{\bm i}^\top GP_{\bm i}
+          -\E_{\RR}P_{\bm i}^\top GP_{\bm i},
+ \qquad W_G=\frac1n\sum_iD_iGD_i.
+\]
+When $G\succeq0$, this compares expected squared seminorms; for $G=H$ it compares twice the objective losses.
+
+\begin{proposition}\label{prop:metric}
+For every symmetric $G$,
+\begin{equation}\label{eq:metricexpansion}
+ \Delta_G(\eta)=\frac{2e_2}{n-1}\eta^2
+ \left(W_G+\frac{VG+GV}{2}\right)+O(\eta^3).
+\end{equation}
+\end{proposition}
+\begin{proof}
+The degree-two coefficient of $P^\top GP$ is $S_1GS_1+GS_2+S_2^\top G$. Its first term has distinct-position weight $2e_2$ and contributes $2e_2W_G/(n-1)$ by \eqref{eq:metriccov}. The last two terms contribute $e_2(GV+VG)/(n-1)$ by \eqref{eq:pair}. The lower coefficients cancel by equality of marginals.
+\end{proof}
+
+For $G=I$, $W_I=V$ and this is precisely $c\eta^2V$. For general positive $G$, however, the symmetrized product $(VG+GV)/2$ need not be positive semidefinite.
+
+\begin{corollary}[A fixed-state objective reversal]\label{cor:objective}
+Assume $H_i\succeq0$. If $HK\not\subseteq K$, there is a fixed vector $x$, independent of $\eta$, for which
+\[
+ \E_{\RR}f(x_m)>\E_{\WR}f(x_m)
+\]
+for every sufficiently small positive $\eta$.
+\end{corollary}
+\begin{proof}
+Set $J=W_H+(VH+HV)/2$. Since $D_iP_K=0$, we have $W_HP_K=0$. Therefore
+\[
+ P_KJP_K=0,\qquad P_RJP_K=\frac12VHP_K\ne0.
+\]
+A symmetric block matrix with a zero lower diagonal block and a nonzero off-diagonal block is indefinite. Indeed, choose $v\in K$ with $b=P_RJv\ne0$ and put $u=-b$. Then
+$(v+\varepsilon u)^\top J(v+\varepsilon u)
+=-2\varepsilon\norm b^2+O(\varepsilon^2)<0$
+for some fixed sufficiently small $\varepsilon>0$. Take $x=v+\varepsilon u$ and apply \eqref{eq:metricexpansion}. Multiplying by $1/2$ converts the metric quadratic form to objective loss.
+\end{proof}
+
+This is a sufficient condition for objective reversal, not a complete classification of objective metrics. Even when $K$ is invariant, $J$ can require an independent analysis on $K^\perp$. The Euclidean theorem must not be transferred to another metric without this check.
+
+\subsection{Smooth losses near a common stationary point}
+
+\begin{proposition}[Local persistence]\label{prop:nonlinear}
+Let $f_i$ be $C^2$ near a common stationary point $x_\star$, with Hessians $H_i=\nabla^2f_i(x_\star)$. If $H\ker V\not\subseteq\ker V$, then for every sufficiently small fixed $\eta>0$ there are starting points arbitrarily close to $x_\star$ at which one without-replacement block has strictly larger expected squared distance to $x_\star$ than one with-replacement block. If the $f_i$ have a common local minimizer, the analogous fixed-direction objective-loss reversal follows from Corollary~\ref{cor:objective} at the Hessian level.
+\end{proposition}
+\begin{proof}
+For fixed $\eta$ let $\Phi_i^{(s)}(x)=x-\eta a_s\nabla f_i(x)$. This map fixes $x_\star$ and has derivative $I-\eta a_sH_i$ there. The derivative of a path composition is exactly \eqref{eq:path}. For an initial point $x_\star+\rho u$, differentiability and the finiteness of the path set give
+\[
+ \E_{\WR}\norm{x_m-x_\star}^2-
+ \E_{\RR}\norm{x_m-x_\star}^2
+ =\rho^2u^\top\Delta(\eta)u+o(\rho^2).
+\]
+Choose an adverse direction from Theorem~\ref{thm:weighted} and then choose $\rho$ sufficiently small. For objective loss use
+$f(x_\star+z)-f(x_\star)=\tfrac12z^\top Hz+o(\norm z^2)$
+and the same finite-path argument with $\Delta_H$.
+\end{proof}
+
+The order of the quantifiers is important: choose the step size, then a sufficiently small neighborhood. No step-uniform neighborhood radius or nonlinear sufficiency theorem is asserted. Quantitative radii would require estimates on the variation of the Hessians and on intermediate iterates.
+
+\section{Explicit step thresholds and a polynomial-time diagnostic}
+\label{sec:algorithm}
+
+The asymptotic criterion is exact, but a useful certificate should also give a nonzero interval of step sizes. This section supplies conservative rational intervals. The constants are not optimized.
+
+Let $L\ge\max_i\norm{H_i}_2$, let $a_{\max}=\max_s a_s$, and put $\ell=a_{\max}L$. If $V\ne0$, then $\ell>0$. In rational computations we use the maximum absolute row sum of the input matrices as $L$; for symmetric matrices this bounds the spectral norm.
+
+\begin{lemma}[Coefficient and tail bounds]\label{lem:tail}
+Writing $\Delta(\eta)=\sum_{j=0}^{2m}\eta^jC_j$, one has
+\begin{equation}\label{eq:coefficientbound}
+ \norm{C_j}_2\le2\binom{2m}{j}\ell^j.
+\end{equation}
+If $0<\eta\ell\le1/(2m)$, then for $0\le r\le2m$,
+\begin{equation}\label{eq:tail}
+ \left\lVert\Delta(\eta)-\sum_{j=0}^r\eta^jC_j\right\rVert_2
+ \le6\binom{2m}{r+1}(\eta\ell)^{r+1},
+\end{equation}
+where a binomial coefficient is zero if its lower index exceeds $2m$.
+\end{lemma}
+\begin{proof}
+A Gram product has $2m$ factors, each with a nonconstant coefficient of norm at most $\ell$. Its degree-$j$ coefficient has at most $\binom{2m}{j}$ such terms. Averaging does not increase the bound, and subtracting two averages gives the factor two.
+
+Put $z=\eta\ell$. For $j=r+1+k$, the inequality
+$\binom{2m}{j}\le\binom{2m}{r+1}\binom{2m}{k}$ follows by choosing an $(r+1)$-subset and then a $k$-subset, which overcounts possible $j$-subsets. Therefore the tail is at most
+$2\binom{2m}{r+1}z^{r+1}(1+z)^{2m}$.
+Since $(1+z)^{2m}\le e<3$, \eqref{eq:tail} follows.
+\end{proof}
+
+\begin{theorem}[Positive rational certificate]\label{thm:positivecert}
+Assume $V\ne0$ and $HK\subseteq K$. Let $V^+$ be the Moore--Penrose inverse and define
+\begin{equation}\label{eq:positiveeta}
+ \lambda_0=\frac1{\tr(V^+)},\qquad
+ \eta_+=\min\left\{\frac1{2m\ell},
+   \frac{c\lambda_0}{12\binom{2m}{3}\ell^3}\right\}.
+\end{equation}
+For every $0<\eta\le\eta_+$,
+\[
+ \Delta(\eta)\succeq\frac c2\eta^2V.
+\]
+\end{theorem}
+\begin{proof}
+If the positive eigenvalues of $V$ are $\lambda_1,\ldots,\lambda_r$, then
+$\lambda_0=(\sum_j\lambda_j^{-1})^{-1}\le\min_j\lambda_j$.
+On $R=K^\perp$ the tail bound with $r=2$ gives an error at most
+$6\binom{2m}{3}\eta^3\ell^3\le(c/2)\lambda_0\eta^2$.
+Subtract this scalar norm bound from $c\eta^2V_R$. The resulting matrix is at least $(c/2)\eta^2V_R$. All blocks involving $K$ vanish exactly.
+\end{proof}
+
+\begin{theorem}[Negative rational certificate]\label{thm:negativecert}
+Assume $HK\not\subseteq K$. Choose $v\in K$ with $q=v^\top HVHv>0$, let $t=b/c$, and put $r_0=t/a_{\max}$. Define
+\begin{align}
+ C_*={}&2\binom{2m}{3}r_0^2+4\binom{2m}{4}r_0
+        +2\binom{2m}{4}r_0^2
+        +6\binom{2m}{5}(1+r_0)^2,\label{eq:remainderconstant}\\
+ \eta_-={}&\min\left\{\frac1{2m\ell},
+ \frac{\Gamma q}{2C_*\ell^5\norm v^2}\right\}.\label{eq:negativeeta}
+\end{align}
+For $x_\eta=v+\eta tHv$ and every $0<\eta\le\eta_-$,
+\[
+ x_\eta^\top\Delta(\eta)x_\eta\le-\frac{\Gamma}{2}q\eta^4<0.
+\]
+\end{theorem}
+\begin{proof}
+The degree-four coefficient is exactly $-\Gamma q$ by \eqref{eq:witnessgap}. The remaining contribution from $C_3$ is bounded by
+$2\binom{2m}{3}r_0^2\ell^5\norm v^2\eta^5$.
+The cross term from $C_4$ is bounded by
+$4\binom{2m}{4}r_0\ell^5\norm v^2\eta^5$.
+Its quadratic correction has an extra factor $\eta\ell\le1$, giving the third term of $C_*$. Finally, the tail starting at degree five is bounded by Lemma~\ref{lem:tail} and
+$\norm{x_\eta}\le(1+r_0)\norm v$.
+Thus the total remainder has absolute value at most
+$C_*\ell^5\norm v^2\eta^5$.
+The second restriction in \eqref{eq:negativeeta} makes this at most half the magnitude of the leading negative term.
+\end{proof}
+
+For the two-dimensional example, the row-sum bound $L=4$ and the general witness give $\eta_-=3/23552$. This is much smaller than the explicit interval $0<\eta\le1/4$ for the simpler witness. The general threshold is a proof certificate, not a recommended practical step size.
+
+\subsection{Exact linear-algebra implementation}
+
+For rational input matrices and rational positive weights, all qualitative decisions and displayed thresholds can be produced by rational arithmetic. Form $H$, $V$, and a rational basis matrix $Z$ for $\ker V$. Then
+\[
+ P_K=Z(Z^\top Z)^{-1}Z^\top
+\]
+when the kernel is nonzero, and $P_K=0$ otherwise. Test the exact matrix equation
+\begin{equation}\label{eq:diagnostic}
+ VHZ=0.
+\end{equation}
+If it holds and $V\ne0$, use
+\[
+ V^+=(V+P_K)^{-1}-P_K
+\]
+to compute the positive certificate. If it fails, a column of $Z$ on which $VHZ$ is nonzero is a valid $v$ for the negative certificate. If $V=0$, report equality for every step size.
+
+With ordinary dense matrix multiplication the arithmetic operation count is $O(nd^3+d^3+m)$, or $O(nd^3)$ since $m\le n$ and $d\ge1$. The elementary symmetric polynomials through degree four are accumulated in $O(m)$ operations. Exact Gaussian elimination and the fixed-degree rational matrix operations have polynomial bit complexity in the full rational input size. No assertion of a specific bit-complexity exponent is needed here.
+
+This diagnostic decides \emph{eventual one-block ordering}; it does not compute an optimal step size or accelerate the optimization trajectory itself. The validation code also includes a subset dynamic program for the full expectations. That separate procedure is exponential and is deliberately used only for small exact checks.
+
+\begin{lstlisting}
+python code/classify.py certificates/two_component_input.json \
+    --output certificates/two_component_certificate.json
+python tests/verify.py
+python tests/explicit_example.py
+\end{lstlisting}
+
+Floating-point rank thresholds are not equivalent to the exact test \eqref{eq:diagnostic}. Near-singular variance matrices require certified error bounds or a robust reformulation before the classification can safely be used with approximate data.
+
+\section{Verification, limitations, and research directions}
+\label{sec:discussion}
+
+\subsection{What was checked}
+
+The supplied verification suite uses rational arithmetic for sampling expectations and symbolic integer arithmetic for the schedule identity. The completed run recorded in \texttt{results/verification.json} passed 1,291 assertions. It includes 90 coefficient fixtures, 360 designated coefficient-block checks, six independent direct path-enumeration comparisons, eight rank-one or common-scalar-shift fixtures, and exact positive and negative certificate evaluations. The finite schedule identity has 29 ordered exponent patterns, producing 426 monomials in six variables.
+
+The coefficient fixtures cover $2\le n\le6$, every $2\le m\le n$, dimensions two and three, different variance-kernel dimensions, and both constant and unequal positive schedules. A diagonal shift of 100 makes those constructed Hessians positive definite by a row-sum bound. The core algebra does not rely on positive definiteness. The explicit Euclidean gap is checked at 40 dyadic steps, and the fixed-state objective gap at 21 dyadic steps; their validity on whole intervals is supplied by the polynomial proofs, not by this finite sampling.
+
+The test suite has two paths for the expected Gram matrices: backward sandwich recursion with subset states, and direct expansion over all paths for smaller fixtures. Agreement between independent formulations helps detect ordering and normalization mistakes. These are executable checks of the derivation, not a proof-assistant formalization or a substitute for the all-input proofs.
+
+\subsection{Boundaries of the claims}
+
+The paper settles the stated classification within its model. It does not resolve every comparison between reshuffling and independent sampling. In particular, a one-block inequality at metric $I$ does not automatically iterate over multiple epochs: subsequent epochs act on nontrivial matrices or random covariances, and an order that is valid only at $I$ need not be valid at those other arguments. The same warning applies to replacing Euclidean distance by objective loss.
+
+The result is local in step size with fixed finite input. A regime where $n$, $m$, condition numbers, or the schedule ratios vary with $\eta$ needs a separate uniform analysis. The failure branch relies on an exactly singular variance matrix with noninvariant kernel. A positive-definite variance matrix always gives eventual domination, although its certified interval can become very small as its least eigenvalue tends to zero. Thus the results do not say that reshuffling is usually worse, nor do they by themselves compare typical data distributions.
+
+Historical novelty is not mechanically certified by the tests. The claims proposed for further review are the full kernel-invariance equivalence, its exact quartic coefficient for all positive schedules, the constructive rational certificate framework, and the linked rank-one/rank-two distinction. Counterexamples to blanket reshuffling superiority, matrix-product approaches, and the usefulness of small-step expansions all precede this work.
+
+\subsection{Further research questions}
+
+\paragraph{1. Multiple epochs and positive maps.}
+For which families does the one-block criterion imply an ordering after every number of independent epochs? A useful formulation is to compare the completely positive maps $G\mapsto\E P^\top GP$, rather than only their values at $I$. Can a finite family of invariant test metrics replace a full map-order condition?
+
+\paragraph{2. Nearly singular variance.}
+Develop a two-parameter theory in which the smallest eigenvalue of $V$ tends to zero together with $\eta$. The leading model suggests competition between a favorable $\eta^2\lambda_{\min}(V)$ contribution and a transported adverse correction of order $\eta^4$. Determining the correct crossover constants and stable numerical certificates would make the exact singular theory useful for approximate data.
+
+\paragraph{3. Objective-loss classification.}
+Characterize eventual Loewner ordering for a fixed positive-definite metric $G$. The leading matrix $W_G+(VG+GV)/2$ is explicit, but its own singular kernel may generate a second layer of higher-order obstructions. Is there a finite algebraic criterion of comparable simplicity?
+
+\paragraph{4. Quantitative rank-one guarantees.}
+For rank-one least-squares components, sharpen the conservative threshold in Theorem~\ref{thm:positivecert}. Can it be bounded in terms of natural frame or covariance parameters without forming dense Hessian matrices? Does a useful nonperturbative range hold under coherence or leverage-score assumptions?
+
+\paragraph{5. Adaptive and vanishing schedule ratios.}
+The present theorem allows arbitrary fixed positive weights, but not weights chosen from past sampled indices or ratios tending to zero with $\eta$. Determine whether these additional freedoms can remove the leakage obstruction without destroying the second-order gain.
+
+\paragraph{6. Average starting states.}
+For an initial distribution with second moment $\Sigma$, the comparison is $\tr(\Sigma\Delta)$. Quantify the size and geometry of the adverse cone near $K$, and determine when a distribution-level advantage persists despite failure of the all-state inequality.
+
+\paragraph{7. Nonlinear neighborhood radii.}
+Under Hessian-Lipschitz assumptions, obtain explicit radii for Proposition~\ref{prop:nonlinear}, with careful dependence on $\eta$. Is there a useful nonlinear sufficient condition corresponding to invariance of the Hessian-variance kernel along an entire trajectory?
+
+\paragraph{8. Formal and bibliographic verification.}
+Formalize the finite-population coefficient identities, the kernel criterion, and the degree-six identity in a proof assistant. Independently audit the literature for equivalent formulations, especially in randomized linear solvers, interpolation theory, and matrix comparison inequalities. Both forms of review are necessary before a priority claim is made.
+
+\section{Conclusion}
+
+For the precise all-state Euclidean comparison studied here, the boundary is not simply whether a step size is small. It is whether the mean update preserves directions with zero Hessian variance. Preservation gives a positive comparison on the fluctuating subspace and exact equality on the remainder. Failure creates a negative effective matrix at fourth order, with an explicit universal schedule coefficient. The resulting criterion is exact, algorithmically checkable, and compatible with both the positive rank-one least-squares theorem and a minimal strongly convex rank-two counterexample.
+
+The mathematical contribution is a classification and a set of constructive certificates, rather than a claim of universal superiority for either sampling law. Its proofs and artifacts expose the distinction between rate bounds, norm comparisons, statewise distance, and objective loss that any further optimization claim must respect.
+
+\appendix
+\section{A finite certificate for every positive schedule}
+\label{app:schedule}
+
+For an ordered tuple of positive integers $p=(p_1,\ldots,p_k)$ define
+\[
+ M_p(a_1,\ldots,a_m)=\sum_{1\le i_1<\cdots<i_k\le m}
+                         a_{i_1}^{p_1}\cdots a_{i_k}^{p_k}.
+\]
+An empty index set contributes zero. Let $F=B^2-4e_2A$ with the definitions in Section~\ref{sec:expansion}. The complete identity is
+\begin{equation}\label{eq:polycert}
+ F=\sum_{p\text{ in Table~\ref{tab:patterns}}}c_pM_p.
+\end{equation}
+All coefficients are positive. Every pattern not listed has coefficient zero.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}lr@{\hspace{1.1cm}}lr@{}}
+\toprule
+Pattern $p$ & $c_p$ & Pattern $p$ & $c_p$\\
+\midrule
+$(4,2)$&4&$(1,2,3)$&12\\
+$(3,3)$&4&$(1,1,4)$&2\\
+$(2,4)$&1&$(3,1,1,1)$&48\\
+$(4,1,1)$&8&$(2,2,1,1)$&64\\
+$(3,2,1)$&20&$(2,1,2,1)$&68\\
+$(3,1,2)$&20&$(2,1,1,2)$&72\\
+$(2,3,1)$&8&$(1,3,1,1)$&32\\
+$(2,2,2)$&38&$(1,2,2,1)$&64\\
+$(2,1,3)$&12&$(1,2,1,2)$&70\\
+$(1,4,1)$&4&$(1,1,3,1)$&24\\
+$(1,3,2)$&18&$(1,1,2,2)$&68\\
+$(1,1,1,3)$&24&$(2,1,1,1,1)$&160\\
+$(1,2,1,1,1)$&144&$(1,1,2,1,1)$&136\\
+$(1,1,1,2,1)$&136&$(1,1,1,1,2)$&144\\
+$(1,1,1,1,1,1)$&320&&\\
+\bottomrule
+\end{tabular}
+\caption{Exact ordered-monomial coefficients of the schedule discriminant.}\label{tab:patterns}
+\end{table}
+
+Here is a finite verification and a proof that it suffices for arbitrary block length. Set $m=6$, expand
+\[
+ \left(2e_3+2e_1e_2-\sum_{r<s}a_ra_s^2\right)^2
+ -4e_2\left(2e_4+2e_1e_3+e_2^2
+       -\sum_s a_s^2\left(\sum_{r<s}a_r\right)^2\right),
+\]
+and collect powers. Direct multiplication gives precisely the table, with 426 nonzero ordinary monomials. The supplied script independently constructs this polynomial and the right side of \eqref{eq:polycert} and verifies their equality over the integers. The table itself specifies the whole identity and permits verification without trusting a numerical computation.
+
+Every monomial in $F$ has total degree six, so its support has at most six indices. The coefficient on any particular ordered support depends only on its exponent pattern: setting every other variable to zero and deleting those zero positions leaves all the defining sums unchanged. Thus a coefficient in arbitrarily many variables equals the corresponding coefficient in at most six variables. The six-variable identity therefore proves \eqref{eq:polycert} for every $m$. This lifting argument is essential; merely testing finitely many numerical schedules would not prove the theorem.
+
+For $m=2$, the whole identity reduces to
+\[
+ F=a_1^2a_2^2(2a_1+a_2)^2.
+\]
+For constant weights, the simpler formulas \eqref{eq:constantcoeff} give the discriminant without using the table.
+
+\section{Artifact organization and reproducibility}
+\label{app:artifacts}
+
+The package contains the article source and PDF, bibliography metadata, source provenance, an exact diagnostic, independently formulated expectation evaluators, verification scripts, and machine-readable certificates. The main files are:
+\begin{center}\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.43\linewidth}>{\raggedright\arraybackslash}p{0.52\linewidth}@{}}
+\toprule
+File & Purpose\\
+\midrule
+\texttt{article.tex}, \texttt{article.pdf} & Complete mathematical argument.\\
+\texttt{code/classify.py} & Rational criterion and explicit positive or negative certificate.\\
+\texttt{code/exact\_matrices.py} & Exact matrix-polynomial arithmetic and two sampling evaluators.\\
+\texttt{tests/verify.py} & Coefficient, identity, branch, low-rank, and gap checks.\\
+\texttt{tests/explicit\_example.py} & Standard-library-only enumeration of the two-dimensional example.\\
+\texttt{certificates/} & Input examples, thresholds, and schedule identity.\\
+\texttt{results/} & Recorded verification results and exact gap data.\\
+\texttt{CLAIMS.md}, \texttt{SOURCES.md} & Claim boundaries and source audit.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The tested environment uses Python 3.13.5 and SymPy 1.14.0. The minimal explicit example uses only the Python standard library. The article builds with \texttt{pdflatex}; its bibliography is embedded so that BibTeX is not required. A separate \texttt{references.bib} is included for integration with other projects.
+
+The recorded assertion count describes the completed run, not a coverage guarantee. Small test sizes were chosen so that all expectation calculations could use exact rationals, including with-replacement paths. No measured runtime in this package is presented as an asymptotic algorithmic improvement.
+
+\section{Repository provenance and status}
+\label{app:provenance}
+
+The supplied repository was read at commit
+\begin{center}\small\ttfamily
+fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb
+\end{center}
+with commit timestamp October 8, 2026, 05:20:00 UTC. The directly inspected inspiration source was the introduction in
+\begin{quote}\small\ttfamily
+preprints/The-Euclidean-Steinitz-Bergstrom-theorem-September-24-2026/\\
+build/introduction.tex
+\end{quote}
+whose blob identifier was
+\begin{center}\small\ttfamily
+a2744e9bdb2d3928a96c6b3b76716755ee58c81b.
+\end{center}
+No unproved result from that source is an input to the present theorems. No repository was modified by this work. All generated artifacts are delivered as a standalone package.
+
+\begin{thebibliography}{9}\raggedright
+\bibitem{RechtRe2012}
+B.~Recht and C.~R\'e.
+\newblock Toward a noncommutative arithmetic-geometric mean inequality: conjectures, case-studies, and consequences.
+\newblock In \emph{Proceedings of the 25th Annual Conference on Learning Theory}, PMLR 23, pp.~11.1--11.24, 2012.
+\newblock \url{https://proceedings.mlr.press/v23/recht12.html}.
+
+\bibitem{DeSa2020}
+C.~M.~De Sa.
+\newblock Random reshuffling is not always better.
+\newblock \emph{Advances in Neural Information Processing Systems} 33, 2020.
+\newblock \url{https://proceedings.neurips.cc/paper/2020/hash/42299f06ee419aa5d9d07798b56779e2-Abstract.html}.
+
+\bibitem{Liu2026}
+Z.~Liu.
+\newblock Random reshuffling dominates stochastic gradient descent.
+\newblock COLT 2026; arXiv:2606.32005v1, 2026.
+\newblock \url{https://arxiv.org/abs/2606.32005}.
+
+\bibitem{Lok2025}
+J.~Lok, R.~Sonthalia, and E.~Rebrova.
+\newblock Error dynamics of mini-batch gradient descent with random reshuffling for least squares regression.
+\newblock ALT 2025; arXiv:2406.03696v2, 2025.
+\newblock \url{https://arxiv.org/abs/2406.03696}.
+
+\bibitem{OpenAISteinitz}
+OpenAI.
+\newblock The Euclidean Steinitz--Bergstr\"om theorem.
+\newblock OpenAI Math Release manuscript, September 24, 2026. Introduction source inspected at the commit recorded in Appendix~\ref{app:provenance}.
+\newblock \href{https://github.com/openai/math/tree/fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb/preprints/The-Euclidean-Steinitz-Bergstrom-theorem-September-24-2026}{Pinned manuscript directory}.
+
+\bibitem{OpenAIRepository}
+OpenAI.
+\newblock Mathematical manuscripts and supporting proof artifacts.
+\newblock Repository README and catalogue, inspected October 8, 2026.
+\newblock \url{https://github.com/openai/math}.
+\end{thebibliography}
+\end{document}

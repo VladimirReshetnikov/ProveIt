@@ -9,7 +9,7 @@
 \usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black]{hyperref}
 \usepackage{xurl}
 \usepackage{fancyhdr}
-\hypersetup{pdftitle={Sparse graph moments: closed tree walks and OEIS A094149},pdfauthor={Research report},pdfsubject={Merged report a094149-sparse-graph-moments (batch 112): fixed collision orders (Report 214), the full equivalent (Report 213), dominant vertices (Report 212), larger lower bounds (Report 210), a shifted Bell lower bound (Report 209)}}
+\hypersetup{pdftitle={Sparse graph moments: closed tree walks and OEIS A094149},pdfauthor={Research report; Part VI: research manuscript prepared with OpenAI assistance for the ProveIt project},pdfsubject={Merged report a094149-sparse-graph-moments (batch 112): fixed collision orders (Report 214), the full equivalent (Report 213), dominant vertices (Report 212), larger lower bounds (Report 210), a shifted Bell lower bound (Report 209); Part VI (added 9 October 2026): general mean degree, optimal Poisson laws, a growing-degree transition}}
 \pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Sparse graph moments (A094149)}\fancyhead[R]{\small Reports 214, 213, 212, 210, 209}\fancyfoot[C]{\thepage}
 \setlength{\headheight}{14pt}\setlength{\parskip}{4pt}\setlength{\parindent}{0pt}
 \newtheorem{theorem}{Theorem}[section]
@@ -38,14 +38,24 @@
 \newenvironment{partabstract}{\begin{quote}\small\noindent\textbf{Abstract of this Part (as delivered).}\ }{\end{quote}}
 \newcommand{\partsource}[1]{\par\noindent\begin{minipage}{\textwidth}\small #1\end{minipage}\par\medskip}
 \newcounter{sgmsavesec}
+% Added by the ProveIt write of Part VI (9 October 2026): packages, styles and
+% macros of Part VI. Its \Poi, \Stir, \Part, \fall and \P differ from the
+% definitions above and are switched at the start of Part VI (see there).
+\usepackage{graphicx}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newtheorem{question}{Research question}[section]\theoremstyle{plain}
+\newcommand{\TV}{d_{\mathrm{TV}}}
+\newcommand{\normone}[1]{\left\lVert #1\right\rVert_1}
+\DeclareMathOperator{\Var}{Var}
 \title{\textbf{Sparse graph moments: closed tree walks}\\[4pt]\large (OEIS A094149, the moments $M_{2k}$ of $G(N,1/N)$)\\[8pt]
 \normalsize Part I: fixed collision orders and smooth inverse centers\\[2pt]
 Part II: the full sparse graph moment equivalent\\[2pt]
 Part III: dominant vertices in sparse graph moments\\[2pt]
 Part IV: larger tree walk lower bounds\\[2pt]
-Part V: a shifted Bell lower bound}
-\author{Five research reports of one external research session\\(bundle Reports 214, 213, 212, 210 and 209), bound into one ProveIt report}
-\date{All Parts: 4 October 2026\quad merged: 7 October 2026}
+Part V: a shifted Bell lower bound\\[2pt]
+Part VI: general mean degree, optimal Poisson laws, and a growing-degree transition}
+\author{Five research reports of one external research session\\(bundle Reports 214, 213, 212, 210 and 209), bound into one ProveIt report\\[2pt]Part VI: research manuscript prepared with OpenAI assistance for the ProveIt project}
+\date{Parts I--V: 4 October 2026\quad Part VI: 8 October 2026\quad merged: 7 and 9 October 2026}
 \begin{document}
 \hypersetup{pageanchor=false}
 \maketitle\thispagestyle{fancy}
@@ -77,6 +87,7 @@ II & 213 & The full sparse graph moment equivalent & \file{sgm:eq:} & 14--27, A\
 III & 212 & Dominant vertices in sparse graph moments & \file{sgm:dv:} & 28--38, A\\
 IV & 210 & Larger tree walk lower bounds for sparse graph moments & \file{sgm:lw:} & 39--48\\
 V & 209 & A shifted Bell lower bound for sparse graph moments & \file{sgm:sb:} & 49--55\\
+VI & --- & Sparse graph moments: sharp corrections, optimal Poisson laws, and a growing-degree transition (added 9 October 2026) & \file{sgm:md:} & 57--64\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -165,6 +176,41 @@ carry \file{sgm:co:}, \file{sgm:eq:}, \file{sgm:dv:}, \file{sgm:lw:} and
 this Guide, Section~\ref{sgm:sec:questions} and its items (\file{sgm:q:}).
 The bibliography is merged at the end: the five Parts use the same keys for
 the same works, and every detail of every variant is kept in the entry.
+
+\begin{writenote}[Part~VI, added 9 October 2026 (second write)]
+Since its second write the report has six Parts. Parts~I--V, the Guide and
+Section~\ref{sgm:sec:questions} are the report as merged on 7~October 2026
+and independently checked; the abstract above and the Guide's text describe
+them alone, and nothing of them changed except this note, the Part~VI row of
+the table above, dated notes after Remark~\ref{sgm:lw:rem:union} and at the
+end of Section~\ref{sgm:sec:questions}, and the title, the running head and
+the PDF fields. Part~VI
+(Sections~\ref{sgm:md:sec:front}--\ref{sgm:md:sec:research}, labels
+\file{sgm:md:}) is the manuscript \emph{Sparse graph moments: sharp
+corrections, optimal Poisson laws, and a growing-degree transition}
+(8~October 2026, ``Research manuscript prepared with OpenAI assistance for
+the ProveIt project''). It studies the moments $m_k(c)$ of $G(N,c/N)$ for a
+general mean degree~$c$; $m_k(1)=M_{2k}$, and $m_k(c)$ is Part~V's
+$\mu_{2k}(c)$. It re-derives Part~I's main theorem, with weights, uniformly
+for $c$ in a compact subset of $(0,\infty)$
+(Theorem~\ref{sgm:md:cm:main}, normalized by $2H_k(c)=2\E(X+c)^k$,
+$X\sim\Poi(c)$, which is $2B_{k+1}$ at $c=1$), and so answers
+item~\ref{sgm:q:meandegree} of Section~\ref{sgm:sec:questions}; it evaluates
+$\log(m_k(c)/2H_k(c))=cw^2(w+2+2c)/(2k)+cw^5/(6k^2)+O(w^4/k^2)$,
+$w=W(k/c)$ (Corollary~\ref{sgm:md:cm:explicit}), which answers
+item~\ref{sgm:q:suborders} in part; it proves a signed Poisson--Charlier law
+for the deficit $k-\max_vd_w(v)$ with sharp and optimal total-variation
+constants (Theorems~\ref{sgm:md:dl:main} and~\ref{sgm:md:dl:optimal}); and
+it proves a growing-degree transition
+$m_k(c)/2H_k(c)\sim e^{c^2w^2/k}$ when $cw/\sqrt k$ stays in a compact
+subset of $(0,\infty)$ (Theorem~\ref{sgm:md:gd:main}). That transition is a
+new direction: item~\ref{sgm:q:growing} concerns a growing \emph{collision
+order}, not a growing mean degree, and is not answered.
+Section~\ref{sgm:md:sec:front} records its provenance, what it answers here,
+the checks, its non-claims and its letters ($T_k(c)=\E X^k$ is a Touchard
+polynomial there, not Part~I's $T_k$; $D_k$ is the deficit, not the two-hub
+count; $Q(k,s)$ a Catalan quotient, not $B_{k+1}$).
+\end{writenote}
 
 \begin{writenote}[Provenance, added 7 October 2026, batch~112]\raggedright
 This report was built from five manuscripts, all dated 4~October 2026,
@@ -2656,6 +2702,24 @@ Part~I's~\eqref{sgm:co:eq:firstscale} is the same expansion for $M_{2k}$. Subtra
 \]
 So the walks outside $\Gc_k\cup\Jc_k$ are negligible at the first relative correction, which is carried by $\Jc_k$ alone ($J_k/(2B_{k+1})\sim W(k)^3/(2k)$), while $G_k-2B_{k+1}\sim2W(k)B_k$ by~\eqref{sgm:lw:eq:Gadditive} is of smaller order. This is a consequence of two asymptotic theorems and says nothing about finite $k$: at $k=8$ the omitted walks are $14{,}348$ of $69{,}331$ (Table~\ref{sgm:lw:tab:exact}). The coefficient $\frac12$ is also that of Part~III's scalar Theorem~\ref{sgm:dv:thm:proxy}. Which walks carry Part~I's next correction, $(\frac18+o(1))W(k)^6/k^2$ after the exact first transform, as in~\eqref{sgm:co:eq:secondscale}, is not examined.
 \end{remark}
+\begin{writenote}[Part~VI and the scale $W(k)^2/k$, 9 October 2026]
+Part~VI evaluates the whole of the scale $1/k$: at $c=1$ its
+Corollary~\ref{sgm:md:cm:explicit} gives
+$M_{2k}/(2B_{k+1})=1+W(k)^3/(2k)+2W(k)^2/k+O(W(k)^6/k^2)$ (there $w=W(k/c)$
+is $W(k)$, and $H_k(1)=B_{k+1}$). With
+$G_k/(2B_{k+1})=1+(1+o(1))W(k)^2/k$ from
+Theorem~\ref{sgm:lw:thm:asympt}, this gives, by subtraction,
+\[
+ \frac{M_{2k}-G_k}{2B_{k+1}}=\frac{W(k)^3}{2k}+(1+o(1))\frac{W(k)^2}{k}.
+\]
+So the walks outside $\Gc_k$ carry, besides the first correction
+$W(k)^3/(2k)$, also one of the two units of the coefficient of $W(k)^2/k$.
+How that unit splits between $\Jc_k$ (whose count is known here only to
+leading order, $J_k/(2B_{k+1})\sim W(k)^3/(2k)$) and the walks outside
+$\Gc_k\cup\Jc_k$ is not determined; the remark's
+$(M_{2k}-G_k-J_k)/(2B_{k+1})=o(W(k)^3/k)$ is neither sharpened nor
+contradicted. Nothing else is claimed.
+\end{writenote}
 
 \section{Prior work and the limits of the source check}\label{sgm:lw:sec:sources}
 Bauer and Golinelli~\cite[\S5.5, Eq.\ (9)]{bg} prove the Stirling--Catalan bounds for fixed tree size, and their moment recurrence and bi-star decomposition provide established exact tree-walk machinery. Their fixed-size two-star asymptotic is in \S5.6, Eq.\ (13). Those results, including the older Bell lower bound and star contributions, are prior infrastructure rather than claims of this report.
@@ -3159,6 +3223,3281 @@ An independent adversarial check of the write read OEIS A094149 again (revision 
 \end{itemize}
 It also confirmed the provenance figures (archive sizes, file and line counts, delivered page counts), the three manifests, the byte identity of all 80 staged files, the 57 number mappings of the notes under the omitted blocks, and the label numbering (300 printed delivered labels unchanged up to the stated shifts, 324 labels in all). One correction was needed: Remark~\ref{sgm:co:rem:oeis} quoted one sentence of the OEIS formula line as the whole line. It is corrected there by a dated note. No other claim of the write was found wrong. The reciprocal note that the Guide's provenance note calls ``proposed separately'' has since been added to \file{a064856-stirling-catalan-transforms} (its item \file{stc:q:moments}). The check confirmed its limits $M_{2k}/B_k\to\infty$ and $M_{2k}/a_k\to0$, and its finite figures: $B_k\le M_{2k}\le a_k$ for $k\le32$, and $M_{2k}/a_k$ equal to $1$ for $k\le3$, then strictly decreasing to $5.065\times10^{-5}$ at $k=32$.
 \end{writenote}
+\begin{writenote}[Part~VI and these questions, 9 October 2026]
+Part~VI (Section~\ref{sgm:md:sec:front}) answers part of these questions;
+the table of Section~\ref{sgm:md:sec:answers} gives the details, and the
+notes above, written before Part~VI arrived, are kept.
+\emph{Item~\ref{sgm:q:meandegree}} (fixed general mean degree):
+\textbf{answered} for every compact $K\subset(0,\infty)$. With
+$H_k(c)=\E(X+c)^k$, $X\sim\Poi(c)$, in place of $B_{k+1}$, Part~VI's
+Theorem~\ref{sgm:md:cm:main} proves
+$m_k(c)/(2H_k(c))=1+\sum_{j\le p}A_j(k,c)+O_{K,p}(\log^{10p+6}k/k^{p+1})$,
+uniformly in $c\in K$, with finitely computable transforms
+$A_j(k,c)\sim_Kc^jw^{3j}/(2^jj!k^j)$, $w=W(k/c)$; it proves its own
+weighted complement theorem (Theorem~\ref{sgm:md:cm:complement}), and its
+case $c=1$ is Part~I's Theorem~\ref{sgm:co:thm:main} (its transforms are
+then Part~I's: the write checked $A_1(k,1)=T_k/B_{k+1}$ exactly for
+$3\le k\le60$ and $d_2$, $d_3$, $P_2$, $P_3$ at $c=1$). Part~V's weighted
+Corollary~\ref{sgm:sb:cor:weighted} is the same model with $\alpha=c$: its
+right side is $2(H_k(c)-cH_{k-1}(c))-P_k(c)$, by
+$\binom ks=\binom{k-1}s+\binom{k-1}{s-1}$ (checked exactly for $k\le30$ at
+$c=\frac12,1,2$), so by Theorem~\ref{sgm:md:cm:main} the lower bound is
+asymptotic to $\mu_{2k}(c)$ for each fixed $c>0$, as at $c=1$; this is the
+write's consequence. Effective constants and growing or vanishing $c$ stay
+open (Part~VI's questions). \emph{Item~\ref{sgm:q:suborders}} (evaluated
+suborders): \textbf{answered in part.}
+Corollary~\ref{sgm:md:cm:explicit} evaluates the whole scale $1/k$ of the
+first transform, $A_1(k,c)=cw^2(w+2+2c)/(2k)+O_K(w^4/k^2)$ (at $c=1$:
+$W(k)^3/(2k)+2W(k)^2/k$), and the two leading terms $w^6$ and $w^5$ of the
+logarithm at scale $k^{-2}$, $\log(m_k/2H_k)=P_1(k,c)+cw^5/(6k^2)+O_K(w^4/k^2)$;
+so the coefficient $\frac18$ of Part~I's~\eqref{sgm:co:eq:secondscale}
+(Part~VI's $c^2/8$ at $c=1$) is the term $P_1^2/2$ of the exponential of the
+first correction, and the next term of the logarithm is $cw^5/(6k^2)$. The lower logarithmic suborders at scale $k^{-2}$ (powers
+$w^4$ and below) and all suborders of $A_j$, $j\ge3$, stay open.
+\emph{Item~\ref{sgm:q:growing}} (growing collision order): \textbf{not
+answered.} Part~VI's ``growing degree'' is a growing mean degree $c=c_k$
+with $cw/\sqrt k$ in a compact set, where
+$m_k(c)/(2H_k(c))=e^{c^2w^2/k}\{1+O(k^{-1/4}\log^{13/4}k)\}$
+(Theorem~\ref{sgm:md:gd:main}); the factor comes from the exact Catalan
+quotient $Q(k,s)=\prod_{j<s}(k+j)/(k-j)$, not from summing the $A_j$. It is
+a new direction, recorded with Part~VI's own twelve questions
+(Section~\ref{sgm:md:sec:research}). \emph{Items~\ref{sgm:q:window}
+and~\ref{sgm:q:hubs}}: Part~VI's Corollary~\ref{sgm:md:gd:simpledominance}
+concerns the critical growing-$c$ window only; nothing answered.
+\emph{Item~\ref{sgm:q:effective}}: Part~VI's Table~\ref{sgm:md:tab:finite-moments}
+shows the same late onset at $c=\frac12,1,2$. \emph{Item~\ref{sgm:q:literature}}:
+Part~VI read Khorunzhy--Shcherbina--Vengerovsky (2004) in full (its account,
+not confirmed by the write). The other items are untouched.
+\end{writenote}
+
+\clearpage
+\part{Sharp corrections at every fixed mean degree, optimal Poisson laws, and a growing-degree transition}\label{sgm:md:part}
+\fancyhead[R]{\small Part VI: general mean degree}
+% Part VI numbers equations within sections, as delivered; Parts I-V keep
+% their consecutive equation numbers.
+\counterwithin{equation}{section}
+% Part VI's own definitions of five macros that Parts I-V define otherwise
+% (from here to the end of the report only).
+\renewcommand{\Poi}{\operatorname{Pois}}
+\renewcommand{\Stir}[2]{\genfrac{\{}{\}}{0pt}{}{#1}{#2}}
+\renewcommand{\Part}{\mathcal P}
+\renewcommand{\fall}[2]{{#1}^{\underline{#2}}}
+\renewcommand{\rise}[2]{{#1}^{\overline{#2}}}
+\renewcommand{\P}{\mathbb P}
+\partsource{A research manuscript of 8~October 2026, archive
+\file{sparse_graph_moments_research.zip}, delivered as
+\file{sparse_graph_asymptotics/article.tex} with five section files and a
+bibliography file (40~pages). Delivered title block ``Sparse graph moments /
+Sharp corrections, optimal Poisson laws, and a growing-degree transition /
+Research manuscript prepared with OpenAI assistance for the ProveIt project /
+8 October 2026''. Printed as delivered after
+Section~\ref{sgm:md:sec:front}, which the write added, with
+\textbf{[write]} notes; the manuscript's Section~$k$ is Section~$k+57$ here,
+its statements, research questions and equations ($k.m$) are ($k{+}57.m$),
+its Table~1 is Table~\ref{sgm:md:tab:finite-moments}, and its Figures~1
+and~2 keep their numbers. Its labels carry the prefix \file{sgm:md:}. It
+credits Parts~I--V as its ``direct repository precursor'' and re-derives
+what it uses of them, with weights.}
+\begin{partabstract}
+Let $m_k(c)$ be the limiting expected spectral moment of order $2k$ of
+$G(N,c/N)$, with the graph-size limit taken first, and put
+$H_k(c)=\E(X+c)^k$ for $X\sim\Poi(c)$. We develop three refinements
+of its high-moment asymptotics. First, uniformly for $c$ in any compact
+subinterval $K$ of $(0,\infty)$, we prove a finite-collision expansion to
+every fixed order and evaluate
+\[
+ \log\frac{m_k(c)}{2H_k(c)}
+ =\frac{cw^2(w+2+2c)}{2k}
+   +\frac{cw^5}{6k^2}+O_K\!\left(\frac{w^4}{k^2}\right),
+ \qquad w=W(k/c).
+\]
+Second, for the maximum-departure deficit $D_k$ of a moment-weighted
+closed tree walk, we determine a signed Poisson--Charlier expansion.
+It gives sharp total variation constants both before and after
+recentering the Poisson mean, and proves optimality among all Poisson
+means. Third, uniformly when $cw/\sqrt{k}$ stays in a compact
+subinterval of $(0,\infty)$, we prove
+\[
+ \frac{m_k(c)}{2H_k(c)}
+ =\exp(c^2w^2/k)
+   \left\{1+O\!\left(k^{-1/4}\log^{13/4}k\right)\right\}.
+\]
+An exact Catalan forest identity explains this transition; new weighted
+allocation and complement estimates justify it for the full moment.
+Proofs, exact recurrence checks, symbolic collision polynomials, and
+clearly delimited numerical diagnostics are included. The earlier
+ProveIt work at $c=1$ is explicitly credited, and no worldwide-priority
+or formal-verification claim is made.
+
+\smallskip\noindent
+\textbf{Keywords.} Sparse random graphs; high spectral moments;
+closed tree walks; Touchard polynomials; Lambert $W$ function;
+Poisson approximation; total variation; Catalan forests.
+\end{partabstract}
+
+\section{Provenance, scope and notation of Part~VI}\label{sgm:md:sec:front}
+
+[Added 9~October 2026.] Part~VI was added in a second write of this report,
+after Parts~I--V had been merged (\file{e4199e04f}) and independently checked
+(\file{5f0331dc8}). It is the manuscript \emph{Sparse graph moments: sharp
+corrections, optimal Poisson laws, and a growing-degree transition}, which
+starts from item~\ref{sgm:q:meandegree} of Section~\ref{sgm:sec:questions}
+(``Fixed general mean degree'') and answers it. Everything of the manuscript
+is printed in this Part except its title page (recorded in the source block
+above), its table of contents and its reference list (merged into this
+report's bibliography): its abstract and keywords above, and its seven
+sections as Sections~\ref{sgm:md:sec:introduction}--\ref{sgm:md:sec:research},
+in the manuscript's order. Its letters are kept
+(Section~\ref{sgm:md:sec:notation}). This section and the notes marked
+[write] are the write's; all other text of
+Sections~\ref{sgm:md:sec:introduction}--\ref{sgm:md:sec:research} is the
+manuscript's.
+
+\subsection{The manuscript}\label{sgm:md:sec:provenance}
+
+The archive \file{sparse_graph_moments_research.zip} ($2{,}095{,}612$ bytes;
+33 files in one wrapper directory \file{sparse_graph_asymptotics/},
+$3{,}896{,}295$ bytes unpacked) arrived in commit \file{b28d0850b}
+(8~October 2026, 08:39~PDT). Its 23 supporting files were placed in this
+directory by commit \file{803f4d937} (9~October 2026), which also retired the
+archive, with the prefix \file{06-meandeg-}, the Part number; all 23 are
+byte-identical to the delivery (confirmed at the write). The programs, the
+\file{Makefile} and \file{build.sh} are \file{code/06-meandeg-*}; the data
+files, the two generated \TeX\ fragments, \file{requirements.txt} and the
+records \file{claim_ledger.json}, \file{provenance.json} and
+\file{verification_report.json} are \file{data/06-meandeg-*}; the two
+figures (PDF, included here, and PNG previews) are \file{figures/06-meandeg-*};
+the delivered \file{source_audit.txt} is \file{06-meandeg-source_audit.txt} at
+the top of the directory. \file{data/06-meandeg-exact_rows.json}
+($2{,}888{,}373$ bytes) holds the exact rows to half-length~128 and is
+regenerated in seconds by \file{verify_exact.py} with \texttt{-{}-order 128}. Not shipped,
+and retrievable from the arrival commit: the manuscript sources
+(\file{article.tex}, \file{sections/03_compact_moments.tex} to
+\file{sections/07_research.tex}, \file{references.tex}), its PDF, the
+delivery \file{README.md} and the checksum list \file{SHA256SUMS}.
+
+The manuscript is \file{article.tex} (485 lines, its Sections~1--2), five
+section files (2{,}422 lines, its Sections~3--7) and \file{references.tex}
+(99 lines), 3{,}006 lines in all, dated 8~October 2026; a build of the
+delivered text reproduces its 40-page PDF, with no warnings. Its title page
+and PDF author field read ``Research manuscript prepared with OpenAI
+assistance'' (title page: ``for the ProveIt project''). Its pins (its
+bibliography entry~\cite{ProveIt2026}, \file{data/06-meandeg-provenance.json}
+and \file{06-meandeg-source_audit.txt}) are ProveIt commit
+\file{9570aaede2458830be9b3bbb072481c88f4f5a4c} (7~October 2026, 21:31~PDT),
+at which this report's \file{article.tex} is the blob \file{f6a72e04cf},
+Parts~I--V as merged and checked and unchanged until this write, and commit
+\file{adc7f1241b42} of the \texttt{openai/math} repository, which is outside
+this repository and was not checked.
+
+\emph{How the manuscript was merged.} Its 158 labels carry the prefix
+\file{sgm:md:}, and its 192 references to them (144 \verb|\eqref|, 48
+\verb|\ref|) were updated. Its five section files are printed at the places
+where its driver inputs them; the moment table is input from the shipped
+\file{data/06-meandeg-moment_table.tex} (unchanged; it has no label), and the
+two figures under their prefixed names. Its citation keys are entries of the
+merged bibliography, marked [Part~VI], except four that Parts~I--V cite
+already, which are printed once with Part~VI's details added and to which
+its citations were re-keyed: \file{BauerGolinelli2001} is \file{bg} (4
+citations), \file{Hainzl2024} is \file{hdp} (2), \file{Khorunzhiy2016} is
+\file{khor1} (2) and \file{OEISA094149} is \file{oeis} (1). Its key
+\file{ProveIt2026} is this report at the pin, that is, Parts~I--V; its entry
+\file{ArratiaGoldsteinGordon1990} is listed but not cited, as delivered. Its
+macros \verb|\TV|, \verb|\normone|, \verb|\Var|, its \texttt{definition} style,
+its \texttt{question} environment (``Research question'', numbered within
+sections) and \texttt{graphicx} were added to the preamble; its \verb|\E|,
+\verb|\Cat|, \verb|\Wc| are those of Parts~I--V. Five of its macros differ
+from those of Parts~I--V and are redefined, as delivered, at the start of
+this Part and for it only: \verb|\Poi| (``Pois'', not ``Poisson''),
+\verb|\Stir|, \verb|\Part| ($\mathcal P$, not ``Part''), \verb|\fall| (an
+underlined power $x^{\underline h}$, which is Parts~I--V's $(x)_h$) and
+\verb|\rise| (the same rising power); its \verb|\P| is $\mathbb P$, Parts~I--V's
+\verb|\Prob|. From this Part on, equations are numbered within sections, as
+delivered, while Parts~I--V keep their consecutive numbers. The delivered
+paragraph indentation, page geometry, running heads, keyword line placement
+and table of contents are not reproduced; the delivered \verb|\clearpage|
+commands are kept. No other text was changed. The write labelled the twelve
+research questions of Section~\ref{sgm:md:sec:research}. The numbering,
+against a build of the delivered text: its Sections~1--7 are
+Sections~\ref{sgm:md:sec:introduction}--\ref{sgm:md:sec:research} here, its
+Theorem~3.6 is Theorem~\ref{sgm:md:cm:main}, Corollary~3.7 is
+Corollary~\ref{sgm:md:cm:explicit}, Theorems~4.1 and~4.2 are
+Theorems~\ref{sgm:md:dl:main} and~\ref{sgm:md:dl:optimal}, Corollary~4.6 is
+Corollary~\ref{sgm:md:dl:compound}, Theorem~5.1 is
+Theorem~\ref{sgm:md:gd:main}; every statement, research question,
+subsection and equation $k.m$ is $(k{+}57).m$; its Table~1 is
+Table~\ref{sgm:md:tab:finite-moments} (Parts~I--V have Tables~1--8), and its
+Figures~1 and~2 are unchanged (all 158 labels compared).
+
+\emph{What the manuscript says about the repository.} Its account of
+Parts~I--V (``At the inspected snapshot it proves the $c=1$ dominant-vertex
+reduction and all fixed collision orders, and explicitly lists general mean
+degree as a further question'') is correct; item~\ref{sgm:q:meandegree} is
+that question. Its credit boundary is kept as delivered: Parts~I--V are the
+``direct repository precursor'', and ``Merely improving a displayed
+logarithmic exponent in that way is a corollary of the earlier method, not a
+separate new theorem at $c=1$''. Its proposal to file the package as a
+separate report \file{a094149-weighted-moments-and-critical-transition/} was
+declined at placement: the collection keeps one report per A-number, and
+the manuscript re-derives this report's main theorem, so it is this report's
+Part~VI. Its remark on the \texttt{openai/math} universality manuscript is
+context, not a premise, and was not checked.
+
+\subsection{What Part~VI answers in Parts~I--V}\label{sgm:md:sec:answers}
+
+\begingroup\small
+\renewcommand{\arraystretch}{1.12}
+\renewcommand{\theHtable}{sgmmd.answers}% no PDF destination clash
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}p{0.67\textwidth}@{}}
+\toprule
+Parts~I--V & After Part~VI\\
+\midrule
+\endhead
+Item~\ref{sgm:q:meandegree} (fixed general mean degree) & \textbf{Answered for every compact} $K\subset(0,\infty)$: Theorem~\ref{sgm:md:cm:main}, all fixed collision orders uniformly in $c\in K$, with $2H_k(c)$, $H_k(c)=\E(X+c)^k$, in place of $2B_{k+1}$; its own weighted complement theorem (Theorem~\ref{sgm:md:cm:complement}). Growing and vanishing $c$ are Part~VI's questions.\\
+Item~\ref{sgm:q:suborders} (evaluated suborders) & \textbf{Answered in part}: Corollary~\ref{sgm:md:cm:explicit} evaluates the whole scale $1/k$, $A_1=cw^2(w+2+2c)/(2k)+O_K(w^4/k^2)$ (at $c=1$: $W^3/(2k)+2W^2/k$), and the terms $w^6$ (the $P_1^2/2$ behind Part~I's $\frac18$) and $w^5$ (namely $cw^5/(6k^2)$ in the logarithm) at scale $k^{-2}$. \textbf{Open}: the lower suborders at $k^{-2}$ and beyond.\\
+Item~\ref{sgm:q:growing} (growing collision order) & \textbf{Not answered.} Part~VI's growing-degree theorem (Theorem~\ref{sgm:md:gd:main}) lets the mean degree grow, $cw/\sqrt k$ in a compact set, not the collision order; it is a new direction.\\
+Items~\ref{sgm:q:window}, \ref{sgm:q:hubs} & Not answered; Corollary~\ref{sgm:md:gd:simpledominance} concerns the critical growing-$c$ window only.\\
+Part~I's Theorem~\ref{sgm:co:thm:main} & \textbf{Proved again}, as the case $c=1$ of Theorem~\ref{sgm:md:cm:main}, by the same method with weights (credited there as the precursor).\\
+Part~II's equivalent and complement & Proved again at $c=1$ by Theorem~\ref{sgm:md:cm:complement} and Theorem~\ref{sgm:md:cm:main}.\\
+Part~V's Corollary~\ref{sgm:sb:cor:weighted} & Same model ($\alpha=c$); its lower bound is $2(H_k(c)-cH_{k-1}(c))-P_k(c)$, hence asymptotic to $\mu_{2k}(c)$ for each fixed $c$ (the write's consequence, note at the end of Section~\ref{sgm:sec:questions}).\\
+Remark~\ref{sgm:lw:rem:union} & At $c=1$, $(M_{2k}-G_k)/(2B_{k+1})=W^3/(2k)+(1+o(1))W^2/k$ (the write's consequence, note after the remark); the remark itself is not sharpened.\\
+Items~\ref{sgm:q:effective}, \ref{sgm:q:logpowers}, \ref{sgm:q:spectral}--\ref{sgm:q:literature} & Untouched; Part~VI's Table~\ref{sgm:md:tab:finite-moments} shows the same late onset for $c=\frac12,1,2$.\\
+\bottomrule
+\end{longtable}
+\addtocounter{table}{-1}% the uncaptioned longtable takes no number
+\endgroup
+
+Dated notes at the end of Section~\ref{sgm:sec:questions} and after
+Remark~\ref{sgm:lw:rem:union} say the same; the earlier notes there are kept
+as written.
+
+\emph{What Part~VI proves again}: Part~I's main theorem and Part~II's
+complement estimate at $c=1$ (with weights, for every compact $K$), the
+first-child recurrence (Bauer--Golinelli's), and the coefficients $d_2$,
+$d_3$, $P_2$, $P_3$ at $c=1$. \emph{What is new to the report}: the
+uniformity in $c$, the evaluated logarithmic expansion, the deficit laws and
+the growing-degree transition.
+
+\subsection{What the write read and checked}\label{sgm:md:sec:checks}
+
+\emph{At placement} (the intake dossier, 9~October 2026; own code): a
+brute-force enumeration of all normalized closed tree walks for $k\le7$
+($12{,}850$ walks), with the polynomials $m_1,\dots,m_4$; its own
+implementation of the first-child recurrence at $c=\frac12,1,2$ for
+$k\le48$, equal to \file{data/06-meandeg-exact_rows.json}, to the brute force,
+to the 13 terms of A094149 and to Part~II's moments; the Catalan quotient
+identity for $2\le k<80$; and the residual of
+Corollary~\ref{sgm:md:cm:explicit} at $k=32,64,128$ (decreasing, with a
+constant growing with $c$, consistent with $O_K$ and not decisive). No claim
+was found wrong, and the triage's reading that Part~VI answers
+item~\ref{sgm:q:growing} was corrected.
+
+\emph{At the write} (9~October 2026; Python~3.14.4, SymPy~1.14.0,
+mpmath~1.3.0; own code, kept with the intake records and not shipped). Every
+proof of Sections~\ref{sgm:md:sec:definitions}--\ref{sgm:md:gd:section} was
+read line by line, with no error found; rechecked by hand in particular: the
+exact cancellation $\frac k{k-s}\binom{k-1}s=\binom ks$; the leading pattern
+$h_1=\dots=h_j=2$ of~\eqref{sgm:md:cm:Aj-leading}; the bookkeeping of the
+logarithmic form~\eqref{sgm:md:cm:exponential} from
+\eqref{sgm:md:cm:A1-explicit}, \eqref{sgm:md:cm:pair-cancel},
+\eqref{sgm:md:cm:single-three}; the two total-variation constants
+($\frac12\epsilon\E|Y-\lambda|$ with $\E|Y-\lambda|\sim\sqrt{2\lambda/\pi}$,
+and $\frac14\E|Z^2-1|=\varphi(1)$); the closed form of $F(t)$, its convexity
+and minimum; the mean $\lambda+2r$ and variance $\lambda+4r$ of $Y+2J$;
+$\log Q(k,s)$ to third order; and the limit $e^{\beta^2/4}$. With its own
+code: the first-child recurrence, integer-scaled, at $c=\frac12,1,2$ for
+$k\le128$, equal to every scaled moment of
+\file{data/06-meandeg-exact_rows.json} and to the 13 terms of A094149; the
+rows with an indeterminate~$c$ for $k\le5$, giving $m_1,\dots,m_4$ and the
+Newton coefficients $d_2,d_3,d_4$ and $P_2,P_3,P_4$, equal to the printed
+ones and to the generated \file{data/06-meandeg-collision_polynomials.tex},
+with $[q^3]d_3=1/(6c^2)$, and at $c=1$ equal to Part~I's $d_2$, $d_3$, $P_2$,
+$P_3$; $A_1(k,c)$ exactly from~\eqref{sgm:md:cm:G1}, equal at $c=1$ to Part~I's
+$T_k/B_{k+1}$ for $3\le k\le60$, with $(A_1-P_1)/(w^4/k^2)$ at $k=20,40,60$
+equal to $0.344,0.292,0.271$ ($c=\frac12$), $1.29,1.08,1.00$ ($c=1$) and
+$5.65,4.79,4.45$ ($c=2$), bounded as~\eqref{sgm:md:cm:A1-explicit} states;
+all eighteen entries of Table~\ref{sgm:md:tab:finite-moments}; the identities
+$\E C_2(Y;u)^2=2u^2$ and $\operatorname{Var}(Y)_2=4u^3+2u^2$; $F(t)$ against
+quadrature at four points; $\E|Y-\lambda|=2\lambda\pi_\lambda(\lfloor\lambda\rfloor)$
+at three means; the Catalan quotient, the ratio~\eqref{sgm:md:gd:aratio} and
+the saddle~\eqref{sgm:md:gd:catsaddle} exactly; and the identity behind the
+Part~V comparison. It did not rerun the shipped programs (the intake's and
+the write's own recurrences reproduce the shipped exact rows). \emph{Not read
+by the write}: Bauer--Golinelli beyond Parts~I--V's quotations,
+Khorunzhy--Shcherbina--Vengerovsky, Hainzl--de Panafieu, Khorunzhiy, Pittel,
+Arratia--Goldstein--Gordon, Semerjian--Cugliandolo, Rodgers--Bray and the
+\texttt{openai/math} repository; the manuscript's accounts of them are
+reported, not confirmed.
+
+\subsection{What is not claimed}\label{sgm:md:sec:nonclaims}
+
+From the manuscript: all growing-order results concern the limiting moments
+$m_k(c)$, the graph-size limit being taken first, and ``none of the uniform
+conclusions below is asserted for a simultaneous limit of finite matrices
+with $k=k_N$''; the error bound of the growing-degree theorem is ``not
+claimed sharp'' and is ``deliberately conservative''; the sharp remainder
+after order $p$ does not assert uniformity for an order growing with $k$;
+$D_k$ is a statistic of the moment-weighted walks, ``not the degree of a
+typical vertex of a finite graph'', and the variables of the compound
+approximation are auxiliary; the Bauer--Golinelli comparison is the one
+external enumerative input and is cited, the first-child recurrence is
+theirs, and Catalan enumeration, growing-parameter saddles and joint
+large-order analysis are not claimed new; the $c=1$ all-orders construction
+is ``not claimed anew'', and ``Merely improving a displayed logarithmic
+exponent in that way is a corollary of the earlier method''; the bounded
+source audit ``cannot certify worldwide priority''; no peer review and no
+proof-assistant formalization; the exact checks test finite identities and the
+floating-point diagnostics illustrate slow onset, and ``neither supplies a
+proof of a limit, a uniform remainder, or historical novelty'' (the deficit
+and critical figures use explicitly labelled models, not the full walk law);
+the twelve research questions are ``proposed projects''. The write adds: its
+checks are exact finite computations and floating evaluations; its two
+consequences (Part~V's bound, the scale $W^2/k$ against
+Remark~\ref{sgm:lw:rem:union}) follow from proved statements and say nothing
+about finite~$k$; nothing was submitted anywhere.
+
+\subsection{Reading conventions}\label{sgm:md:sec:notation}
+
+Part~VI keeps its letters. Where they clash with Parts~I--V, read them as
+follows (the write's own text in Part~VI uses Part~VI's letters).
+
+\begingroup\small
+\renewcommand{\arraystretch}{1.1}
+\renewcommand{\theHtable}{sgmmd.notation}% no PDF destination clash
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.95in}>{\raggedright\arraybackslash}p{3.0in}>{\raggedright\arraybackslash}p{2.2in}@{}}
+\toprule
+Symbol & Part VI & Parts I--V\\
+\midrule
+\endhead
+$m_k(c)$, $c$ & the weighted moment $\sum c^{e(\omega)}$; $m_k(1)=M_{2k}=a_k$; $c$ the mean degree & $a_k$, $M_{2k}$; Part~V's $\mu_{2k}(\alpha)$ with $\alpha=c$; $c$ also a constant\\
+$T_n(c)$, $H_k(c)$ & Touchard $\E X^n$, $X\sim\Poi(c)$ ($T_n(1)=B_n$); $H_k(c)=\E(X+c)^k$ ($H_k(1)=B_{k+1}$) & Part~I's $T_k$ (a transform sum), $T_b$; Part~II's and~V's Touchard $T_t(c)$, $T_n(\alpha)$; Part~IV's $T_k$; $H$, $H(m,s)$\\
+$w$, $\lambda$, $\epsilon$ & $w=W(k/c)$ ($=W(k)$ at $c=1$); $\lambda=cw$; $\epsilon=w^2/k$ & $r=W(k)$ (Parts~III--IV); $\lambda$ eigenvalues (III), $\lambda_m$ (IV), $\lambda=(3+\sqrt5)/2$ (V)\\
+$F_{k,n}(c)$, $E^c_{t,q}$, $R_c$, $\gamma_h$, $d_h$, $P_h$, $G_j$, $A_j(k,c)$ & weighted versions; at $c=1$ Part~I's $F_{k,n}$, $E_{t,q}$, $R(q,t)$, $c_h(q)$, $d_h(q)$, $P_h(z)$, $G_j(n,s)$, $A_j(k)$ & Part~V's $F_{2k}$ Fibonacci; Part~I's $F(x)$\\
+$P_1(k,c)$ & $cw^2(w+2+2c)/(2k)$ & $P_h(z)$ (Part~I), $P_k(\alpha)$ (Part~V), $P_n$ (IV)\\
+$D_k$, $\nu_{k,c}$, $\theta_0$ & the maximum-departure deficit and its law; the recentred mean $cw+cw^3/k$ & $D_k$ the two-hub count (I--III); $D_0$, $D$ constants\\
+$p_{k,c}(s)$, $S$ & the fresh law; $S$ a variable with this law & Part~I's $p_k(s)$ and $Z$ (Lemma~\ref{sgm:co:lem:deficit}); $S$, $S_k$ windows\\
+$S_0$, $L$, $h$, $M$, $J(s)$, $\mathcal H$, $\operatorname{Ent}$ & cutoffs and entropies of the complement proofs & the same roles in Part~I's Appendix~B ($S$, $L$, $h$, $J$, $H(m,s)$)\\
+$v_t$ & $M^{t-1}t!$ (Section~\ref{sgm:md:sec:compact-moments}); $\rise ct/c^t$ (Section~\ref{sgm:md:gd:section}) & \\
+$Q(k,s)$, $C(z)$, $f_q(t)$, $C_2$ & the Catalan quotient; the Catalan series; $[z^t]C(z)^q$; the second Charlier polynomial & $Q_k=B_{k+1}$ (II--IV), $Q_{u,H}$ (I); $C$, $C_\ell$ Catalan numbers and constants\\
+$K$, $a$, $b$, $u$, $\beta$, $\alpha$ & a compact $[a,b]$; $u=cw/\sqrt k$; $c_k=\beta\sqrt k/\log k$; $\alpha_*$, $\alpha$ coefficients, $\alpha=S_1/\sqrt V$-type ratios & $a_k$; Part~V's $\alpha$ the mean degree\\
+$Z$, $Y$, $J$ & $Z\sim N(0,1)$ (Section~\ref{sgm:md:dl:section}), $Z$ the binomial mixture (Section~\ref{sgm:md:gd:section}); $Y$ Poisson; $J\sim\Poi(\lambda\epsilon/2)$, $J(\omega)$ a count & $Z$ the deficit law, $Z_j$ (I); $J_k$, $\Jc_k$ (IV)\\
+$\mathcal U_{k,S}$, $\mathcal V_{k,S}$, $I(k,j)$ & the dominant class (Part~II's $\Uc_{k,S}$); its simple-off-hub subclass; walks with $j$ edges & $\Uc_{k,S}$, $U_{k,S}$; Bauer--Golinelli's count\\
+$\fall xh$, $\Stir nj$, $\Part[n]$ & $x(x-1)\cdots(x-h+1)$; Stirling numbers; set partitions & $(x)_h$; Stirling numbers, also $S(n,j)$; $\operatorname{Part}$ an operator name\\
+\bottomrule
+\end{longtable}
+\addtocounter{table}{-1}% the uncaptioned longtable takes no number
+\endgroup
+
+\section{Introduction and principal results}
+\label{sgm:md:sec:introduction}
+
+High spectral moments of sparse random graphs are controlled by
+walks with a heavily visited vertex. Their enumeration is substantially
+more delicate than counting stars alone. Repeated visits can support
+nontrivial interiors below the vertex, and a local enumeration is useful
+only after all other contributing walks have been bounded. This article
+develops that distinction quantitatively. It identifies the first
+corrections to the moment, the optimal Poisson approximation to the
+dominant vertex's departure deficit, and a parameter scale on which
+deeper but unrepeated interiors create a finite multiplicative change.
+
+The basic quantity is
+\begin{equation}\label{sgm:md:intro:moment}
+ m_k(c)=\lim_{N\to\infty}\frac1N\E\operatorname{Tr}A_{N,c}^{2k},
+ \qquad c>0,
+\end{equation}
+where $A_{N,c}$ is the adjacency matrix of the undirected simple graph
+$G(N,c/N)$. The limit in \eqref{sgm:md:intro:moment} is taken with $k,c$ fixed.
+After taking it, $m_k(c)$ is an explicitly defined polynomial in $c$,
+and it makes sense to study $m_k(c_k)$ as $k$ grows. We never interchange
+these limits. In particular, none of the uniform conclusions below is
+asserted for a simultaneous limit of finite matrices with $k=k_N$.
+
+Put
+\begin{equation}\label{sgm:md:intro:normalizers}
+ T_k(c)=\E X^k,\qquad H_k(c)=\E(X+c)^k,\qquad
+ X\sim\Poi(c),\qquad w=W(k/c),
+\end{equation}
+where $W(x)>0$ solves $W(x)e^{W(x)}=x$. The exact shifted moment $H_k(c)$
+is the useful normalization. Replacing it by a first saddle equivalent
+would discard more precision than some of the corrections we determine.
+For $c=1$, $T_k(1)=B_k$ is a Bell number and $H_k(1)=B_{k+1}$.
+The sequence $m_k(1)$, starting at $k=1$, is OEIS A094149
+\cite{oeis}.
+
+\subsection{Three contributions}
+
+\paragraph{A growing-degree transition.}
+Theorem~\ref{sgm:md:gd:main} proves that, for fixed $0<a<b<\infty$, uniformly
+when $a\le cw/\sqrt{k}\le b$,
+\begin{equation}\label{sgm:md:intro:critical}
+ \frac{m_k(c)}{2H_k(c)}
+ =\exp\!\left(\frac{c^2w^2}{k}\right)
+ \left\{1+O_{a,b}\!\left(k^{-1/4}\log^{13/4}k\right)\right\}.
+\end{equation}
+Thus, for each fixed $\beta>0$,
+\begin{equation}\label{sgm:md:intro:beta}
+ c_k=\frac{\beta\sqrt{k}}{\log k}
+ \quad\Longrightarrow\quad
+ \frac{m_k(c_k)}{2H_k(c_k)}\longrightarrow e^{\beta^2/4}.
+\end{equation}
+This is a change in the leading equivalent itself, rather than just
+an additional term for bounded $c$. The error bound is uniform and
+vanishing, but is not claimed sharp.
+
+The finite multiplier has an exact combinatorial source. If the
+distinguished vertex has $n=k-s$ departures, then the weighted number
+of walks for which every edge away from that vertex is traversed once
+in each direction is
+\begin{equation}\label{sgm:md:intro:forest}
+ T_n(c)c^s[z^s]C(z)^n,
+ \qquad C(z)=1+zC(z)^2.
+\end{equation}
+After applying the exact change-of-root weight, the relevant quotient
+is
+\begin{equation}\label{sgm:md:intro:Q}
+ Q(k,s)=\frac{[z^s]C(z)^{k-s}}{\binom{k-1}{s}}
+       =\prod_{j=1}^{s-1}\frac{k+j}{k-j},\qquad 1\le s<k,
+ \quad Q(k,0)=1.
+\end{equation}
+Since $s$ concentrates near $cw$ and
+$\log Q(k,s)=s(s-1)/k+O(s^4/k^3)$, this quotient becomes $e^{c^2w^2/k}$
+at the critical scale. The substantive estimates in
+Section~\ref{sgm:md:gd:section} show that repeated off-hub edges and the full
+complement of the near-hub class have sufficiently small total weight.
+
+\paragraph{Uniform fixed-parameter corrections.}
+For every compact $K\subset(0,\infty)$, Theorem~\ref{sgm:md:cm:main}
+constructs exact finite transforms $A_j(k,c)$ such that, for each fixed
+$p\ge1$,
+\begin{align}
+ \frac{m_k(c)}{2H_k(c)}
+ &=1+\sum_{j=1}^p A_j(k,c)
+   +O_{K,p}\!\left(\frac{\log^{10p+6}k}{k^{p+1}}\right),
+ \label{sgm:md:intro:orders}\\
+ A_j(k,c)&\sim_K\frac{c^jw^{3j}}{2^jj!k^j}.
+ \label{sgm:md:intro:Aj}
+\end{align}
+Here $\sim_K$ means uniform relative convergence on $K$.
+Corollary~\ref{sgm:md:cm:explicit} evaluates the initial transforms more
+precisely. Writing
+\begin{equation}\label{sgm:md:intro:P1}
+ P_1(k,c)=\frac{cw^2(w+2+2c)}{2k},
+\end{equation}
+it gives
+\begin{align}
+ \frac{m_k(c)}{2H_k(c)}
+ &=1+P_1(k,c)+\left(\frac{c^2}{8}+o_K(1)\right)
+                        \frac{w^6}{k^2},\label{sgm:md:intro:additive}\\
+ \log\frac{m_k(c)}{2H_k(c)}
+ &=P_1(k,c)+\frac{cw^5}{6k^2}
+                     +O_K\!\left(\frac{w^4}{k^2}\right).
+ \label{sgm:md:intro:log}
+\end{align}
+The apparently different second terms are compatible: exponentiating
+the leading logarithmic correction contributes
+$P_1^2/2\sim c^2w^6/(8k^2)$. At $c=1$,
+\eqref{sgm:md:intro:log} specializes to
+\[
+ \log\frac{m_k(1)}{2B_{k+1}}
+ =\frac{w^2(w+4)}{2k}+\frac{w^5}{6k^2}
+                         +O\!\left(\frac{w^4}{k^2}\right).
+\]
+The earlier all-orders construction at $c=1$ is not claimed anew here.
+
+\paragraph{Sharp and optimal Poisson laws.}
+Give each normalized closed tree walk $\omega$ of length $2k$
+probability $c^{e(\omega)}/m_k(c)$, where $e(\omega)$ is its number
+of distinct edges. Let $d_\omega(v)$ count departures from vertex $v$
+and define
+\begin{equation}\label{sgm:md:intro:deficit}
+ D_k=k-\max_v d_\omega(v),\qquad \nu_{k,c}=\mathcal L(D_k).
+\end{equation}
+This is a statistic of the moment-weighted walks, not the degree of a
+typical vertex of a finite graph. For fixed compact $K$, uniformly in
+$c\in K$, Theorems~\ref{sgm:md:dl:main} and~\ref{sgm:md:dl:optimal} prove
+\begin{align}
+ \TV(\nu_{k,c},\Poi(cw))
+ &\sim_K\sqrt{\frac{c}{2\pi}}\frac{w^{5/2}}{k},
+ \label{sgm:md:intro:tv0}\\
+ \TV\!\left(\nu_{k,c},\Poi\!\left(cw+\frac{cw^3}{k}\right)\right)
+ &\sim_K\varphi(1)\frac{w^2}{k},\label{sgm:md:intro:tv1}\\
+ \inf_{\theta\ge0}\TV(\nu_{k,c},\Poi(\theta))
+ &\sim_K\varphi(1)\frac{w^2}{k},
+ \qquad \varphi(1)=\frac{e^{-1/2}}{\sqrt{2\pi}}.
+ \label{sgm:md:intro:tvopt}
+\end{align}
+We use $\TV=\tfrac12\lVert\cdot\rVert_1$. A signed expansion and an
+explicit Gaussian absolute-error profile explain both constants and
+the scale of every asymptotically optimal mean. The optimization in
+\eqref{sgm:md:intro:tvopt} ranges over all nonnegative means; it is not merely
+a comparison between two chosen candidates. A positive approximation
+using an independent sum $Y+2J$, with
+$Y\sim\Poi(cw)$ and $J\sim\Poi(cw^3/(2k))$, removes the leading
+quadratic error and has total variation error $o_K(w^2/k)$
+(Corollary~\ref{sgm:md:dl:compound}). These are auxiliary variables defining
+an approximation, not independent components asserted to exist
+inside the actual walk.
+
+\subsection{Prior work and the boundary of the novelty claim}
+
+Bauer and Golinelli developed the moment enumeration and proved the
+coefficientwise Stirling--Catalan comparison used below
+\cite[Section 5.5, equation (9)]{bg}.
+Their fixed-edge-count equivalent does not by itself determine the sum
+through the moving saddle of the number of edges. Khorunzhy,
+Shcherbina, and Vengerovsky established limiting moment recurrences and
+a resolvent equation for weighted random graphs
+\cite{Khorunzhy2004}. These are foundational results, not consequences
+of the present work.
+
+Hainzl and de Panafieu enumerate tree walks of fixed excess by rational
+functions of the Catalan generating function and obtain finite-order
+large-mean expansions of fixed moments \cite{hdp}. Khorunzhiy
+studies joint high moments and growing dilution in other regimes
+\cite{khor1}, and gives varying-parameter Touchard asymptotics
+\cite{Khorunzhiy2020}. We therefore do not claim that either Catalan
+enumeration, a growing-parameter saddle, or joint large-order analysis
+is new in itself. The particular comparison \eqref{sgm:md:intro:critical},
+its critical scale, and the full weighted complement proof are the
+contribution asserted here. The Touchard estimates needed for it are
+proved in the article rather than assumed under an unspecified
+uniformity condition.
+
+Poisson approximation for component counts in random set partitions
+is also classical \cite{Pittel1997}. The additional distributional
+content here concerns the walk's maximum-departure deficit after its
+collision bias is included: the signed quadratic term, the two sharp
+constants, and optimality over the whole Poisson family.
+
+The direct repository precursor is the merged ProveIt manuscript
+\emph{A094149 sparse graph moments} \cite{ProveIt2026}. At the inspected
+snapshot it proves the $c=1$ dominant-vertex reduction and all fixed
+collision orders, and explicitly lists general mean degree as a
+further question. Its ideas are credited and rederived with weights
+and uniform estimates in Section~\ref{sgm:md:sec:compact-moments}.
+One overlap is particularly important: once an expansion to every
+fixed order is available, the sharp equivalent of the remainder after
+order $p$ follows by applying it at order $p+1$. Merely improving a
+displayed logarithmic exponent in that way is a corollary of the
+earlier method, not a separate new theorem at $c=1$.
+
+The requested \texttt{openai/math} repository was inspected as additional
+research context \cite{OpenAIMath2026}. Its random-regular-graph
+universality manuscript concerns a different ensemble and statistic.
+No unverified universality claim from that repository is an input to
+the proofs here. The archive records immutable repository revisions
+and the scopes of the primary sources that were actually inspected.
+This bounded audit supports a precise extension claim relative to
+those sources; it cannot certify worldwide priority. The manuscript
+contains mathematical proofs and independent finite checks, but has
+not been peer reviewed or formalized in a proof assistant.
+\begin{writenote}[The precursor and the sources at the pins, 9 October 2026]
+``The merged ProveIt manuscript'' of the preceding paragraph is Parts~I--V
+of this report, read at the pin \file{9570aaede2}, where its text is the same
+as before this write (Section~\ref{sgm:md:sec:provenance}); the account of it
+is correct. The general-mean-degree question it ``explicitly lists'' is
+item~\ref{sgm:q:meandegree} of Section~\ref{sgm:sec:questions}. The
+manuscript's reading of Khorunzhy--Shcherbina--Vengerovsky in full (its
+\file{06-meandeg-source_audit.txt}) closes, by its own account, the access
+gap that item~\ref{sgm:q:literature} records for Part~I; the write did not
+read that paper. The \texttt{openai/math} snapshot was not checked.
+\end{writenote}
+
+\subsection{Proof organization}
+
+Section~\ref{sgm:md:sec:definitions} fixes the combinatorial model and gives
+an exact recurrence used by the verification code.
+Section~\ref{sgm:md:sec:compact-moments} proves the compact-parameter
+expansions, including the global complement estimate.
+Section~\ref{sgm:md:dl:section} uses that control to identify the probability
+law at an accuracy smaller than its optimal Poisson error.
+Section~\ref{sgm:md:gd:section} proves a separate complement theorem in the
+growing-degree regime; it does not substitute an unbounded parameter
+into a compact-parameter estimate.
+Section~\ref{sgm:md:sec:verification} explains what the computational
+artifacts check. Section~\ref{sgm:md:sec:research} proposes concrete next
+problems and specifies the obstacles left by the present proofs.
+
+\section{Definitions, limiting moments, and exact enumeration}
+\label{sgm:md:sec:definitions}
+
+\subsection{Normalized walks and weights}
+
+A normalized walk of length $2k$ is a word
+$\omega=(v_0,v_1,\ldots,v_{2k})$ with $v_0=v_{2k}=0$, no two
+consecutive vertices equal, and each previously unseen vertex assigned
+the next unused nonnegative integer. Its traversed graph has an edge
+$\{v_{i-1},v_i\}$ whenever that pair occurs. Let $\Wc_k$ consist of
+these walks whose traversed graph is a tree. The time-zero position
+is distinguished. Walks are not identified simply because one is a
+cyclic rotation of another; normalization is applied after any change
+of time origin. The empty walk is the sole member of $\Wc_0$.
+
+If an edge $e$ is traversed $r_e$ times in each direction, the equality
+of the two counts follows by cutting the tree at that edge. Hence
+\begin{equation}\label{sgm:md:def:departures}
+ \sum_e r_e=k,\qquad
+ d_\omega(v)=\sum_{e\ni v}r_e,\qquad
+ \sum_v d_\omega(v)=2k,\qquad d_\omega(v)\le k.
+\end{equation}
+Write $e(\omega)$ for the number of distinct edges, and define
+\begin{equation}\label{sgm:md:def:mk}
+ m_k(c)=\sum_{\omega\in\Wc_k}c^{e(\omega)},\qquad
+ F_{k,n}(c)=\sum_{\substack{\omega\in\Wc_k\\d_\omega(0)=n}}
+                                      c^{e(\omega)}.
+\end{equation}
+In particular, $m_k(c)=\sum_{n=1}^kF_{k,n}(c)$ for $k\ge1$,
+$F_{0,0}(c)=m_0(c)=1$, and all other inadmissible entries are zero.
+Each $m_k$ is a polynomial of degree $k$ with nonnegative integer
+coefficients. The initial values are
+\[
+ m_1=c,\qquad m_2=c+2c^2,\qquad
+ m_3=c+6c^2+5c^3,\qquad
+ m_4=c+14c^2+28c^3+14c^4.
+\]
+
+\begin{proposition}[Identification of the limiting moment]
+\label{sgm:md:def:graphmoment}
+For every fixed $k\ge0$ and $c>0$, the limit in
+\eqref{sgm:md:intro:moment} exists and equals \eqref{sgm:md:def:mk}.
+\end{proposition}
+\begin{proof}
+Expand the trace into closed vertex sequences. A normalized sequence
+using $v$ vertices and $e$ distinct edges has
+$\fall{N}{v}$ assignments of distinct graph labels and expected edge
+product $(c/N)^e$. After division by $N$, its contribution is
+$\fall{N}{v}c^e/N^{e+1}$. Its traversed graph is connected, so
+$v\le e+1$. Equality holds precisely for a tree. At fixed $k$ there
+are finitely many normalized words: those with $v<e+1$ vanish in the
+limit, while each tree word contributes $c^e$. On a tree, every used
+edge is traversed in both directions, so $e\le k$. This proves the
+claim; the case $k=0$ is immediate.
+\end{proof}
+
+\subsection{Partitions, factorials, and a computable recurrence}
+
+Write $\Part[n]$ for the partitions of $\{1,\ldots,n\}$ and
+$\Stir{n}{j}$ for a Stirling number of the second kind. The Touchard
+identity is
+\begin{equation}\label{sgm:md:def:Touchard}
+ T_n(c)=\sum_{j=0}^n\Stir{n}{j}c^j
+       =\sum_{\pi\in\Part[n]}c^{|\pi|}
+       =e^{-c}\sum_{r\ge0}\frac{c^rr^n}{r!}.
+\end{equation}
+For $n=0$, the last expression uses $0^0=1$. The identity follows,
+for example, by expanding $r^n$ in falling factorials and using
+$\E\fall{X}{j}=c^j$ for a Poisson variable. We use
+$\fall{x}{h}=x(x-1)\cdots(x-h+1)$ and
+$\rise{x}{h}=x(x+1)\cdots(x+h-1)$, both equal to $1$ at $h=0$.
+
+For $t\ge0$ and $q\ge1$ define the segmented child count
+\begin{equation}\label{sgm:md:def:child}
+ E_{t,q}(c)=E^c_{t,q}
+   =\sum_{\ell=0}^t\binom{\ell+q-1}{\ell}F_{t,\ell}(c).
+\end{equation}
+The two notations for this count are used interchangeably in the
+proofs. A child-rooted walk with $\ell$ excursions has
+$\binom{\ell+q-1}{\ell}$ ways to be divided into $q$ ordered,
+possibly empty segments, since cuts may be inserted at its returns
+to the child root. In particular $E_{0,q}(c)=1$.
+
+\begin{proposition}[First-child recurrence]\label{sgm:md:def:recurrence}
+For $1\le n\le k$,
+\begin{equation}\label{sgm:md:def:rec}
+ F_{k,n}(c)
+ =c\sum_{q=1}^n\binom{n-1}{q-1}
+      \sum_{a+b=k-q}E_{a,q}(c)F_{b,n-q}(c).
+\end{equation}
+Together with the stated initial conditions, this is a triangular
+exact recurrence in $k$.
+\end{proposition}
+\begin{proof}
+The first root excursion chooses a particular first child. Suppose
+this root-child edge is used in $q$ excursions. Choose its other
+$q-1$ positions among the remaining $n-1$ root excursions. Its
+interior consists of $q$ segments of combined half-length $a$, with
+weight $E_{a,q}(c)$. The other root excursions form a normalized walk
+of half-length $b$ with $n-q$ root departures, weighted by
+$F_{b,n-q}(c)$. The selected edge has weight $c$, regardless of its
+multiplicity $q$, and the half-lengths satisfy $a+b+q=k$.
+The order of first discovery determines the labels uniquely when
+these objects are reassembled. This gives a bijection and proves
+\eqref{sgm:md:def:rec}. Since $a,b\le k-1$, all inputs come from earlier
+half-lengths.
+\end{proof}
+
+For a rational parameter $c=p/q_0$, the code stores
+$q_0^kF_{k,n}(p/q_0)$. These are integers. The extra factor supplied
+by a root edge used $q$ times is then $p q_0^{q-1}$, which avoids
+floating-point or repeated rational arithmetic in the recurrence.
+This scaling does not change the combinatorial weight of a repeated
+edge.
+
+\subsection{The external counting bound and change of root}
+
+Let $I(k,j)$ be the number of normalized walks in $\Wc_k$ with $j$
+edges. Bauer--Golinelli's comparison is
+\begin{equation}\label{sgm:md:def:BG}
+ \Stir{k}{j}\le I(k,j)\le\Cat_j\Stir{k}{j},\qquad
+ \Cat_j=\frac1{j+1}\binom{2j}{j}.
+\end{equation}
+We cite its proof in \cite[Section 5.5]{bg}; this is
+the one substantive external enumerative inequality used in the
+global estimates. In particular,
+\begin{equation}\label{sgm:md:def:rough}
+ T_k(c)\le m_k(c)\le T_k(4c).
+\end{equation}
+This rough upper bound alone is far from the precision required by
+the main results.
+
+An exact averaging identity keeps track of the time-zero convention.
+For any relabeling- and rotation-invariant class of walks and any
+vertex property preserved by relabeling and rotation, let $J(\omega)$
+be the number of vertices having the property. For $k\ge1$,
+\begin{equation}\label{sgm:md:def:rotation}
+ \sum_\omega c^{e(\omega)}J(\omega)
+ =\sum_\omega c^{e(\omega)}
+       \frac{2k}{d_\omega(0)}
+       \mathbf1_{\{0\text{ has the property}\}}.
+\end{equation}
+Indeed, average over the $2k$ possible time shifts. A vertex $v$
+occurs as the departure vertex at exactly $d_\omega(v)$ of them.
+Its total averaged contribution is therefore $1$ if it has the
+property. Each fixed time shift is a bijection of normalized
+time-rooted words, even for periodic words, and preserves the number
+of distinct edges. No division by a putative full orbit size is
+needed. The estimates below show that the cases of zero or multiple
+near-maximal vertices contribute negligibly, allowing
+\eqref{sgm:md:def:rotation} to identify the full moment from high-return
+rooted rows.
+
+% ---- delivered sections/03_compact_moments.tex ----
+\section{Uniform high-moment expansions at fixed mean degree}
+\label{sgm:md:sec:compact-moments}
+
+Throughout this section \(K=[a,b]\) is a fixed compact subinterval of
+\((0,\infty)\). Constants may depend on \(K\), and on an explicitly fixed
+expansion order, but never on \(c\in K\) or on the large index.
+We use the weighted walks and departure counts defined in
+Section~\ref{sgm:md:sec:definitions}. In particular \(m_k(c)\) denotes the
+\(2k\)-th spectral moment, and \(F_{k,n}(c)\) its refinement by the
+number \(n\) of departures from the time-zero vertex. The two comparison
+sequences are
+\[
+ T_n(c)=\E X^n,\qquad H_k(c)=\E(X+c)^k,\qquad X\sim\Poi(c).
+\]
+Their exponential generating functions are
+\(\exp(c(e^z-1))\) and \(\exp(c(e^z-1)+cz)\), respectively.
+It is \(H_k(c)\), rather than \(T_{k+1}(c)\), that provides the
+normalization for general \(c\). At \(c=1\) the Poisson shift identity
+gives \(H_k(1)=B_{k+1}\).
+
+\subsection{A quantitative saddle estimate}
+
+We begin with estimates whose error terms are sufficiently precise to
+evaluate the first correction. This also supplies the uniformity required
+later in the counting argument.
+
+\begin{lemma}[Touchard and shifted Touchard saddles]\label{sgm:md:cm:saddle}
+Let \(w_n=W(n/c)\). Uniformly for \(c\in K\),
+\begin{equation}\label{sgm:md:cm:touchard-saddle}
+ T_n(c)=
+ \frac{n!\exp(c(e^{w_n}-1))}
+      {w_n^n\sqrt{2\pi n(1+w_n)}}
+ \left(1+O_K\left(\frac{w_n}{n}\right)\right).
+\end{equation}
+If \(r_n>0\) is determined by \(cr_n(e^{r_n}+1)=n\), and
+\(\beta_n=n(1+r_n)-cr_n^2\), then
+\begin{equation}\label{sgm:md:cm:shifted-saddle}
+ H_n(c)=
+ \frac{n!\exp(c(e^{r_n}-1+r_n))}
+      {r_n^n\sqrt{2\pi\beta_n}}
+ \left(1+O_K\left(\frac{w_n}{n}\right)\right).
+\end{equation}
+Moreover
+\begin{equation}\label{sgm:md:cm:shift-compare}
+ r_n-w_n=O_K(w_n/n),\qquad
+ \frac{H_n(c)}{T_n(c)}
+ =e^{cw_n}\left(1+O_K(w_n/n)\right).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For the first assertion, Cauchy's formula on the circle of radius
+\(w=w_n\) reduces the problem to the integral of
+\[
+ \exp Q(\theta),\qquad
+ Q(\theta)=c(e^{we^{i\theta}}-e^w)-in\theta,\quad -\pi\le\theta\le\pi.
+\]
+The linear term vanishes. The quadratic term is
+\(-\beta\theta^2/2\), where \(\beta=n(1+w)\).
+For every fixed \(j\ge2\), repeated application of \(z\,d/dz\) to
+\(e^z\) bounds the \(j\)-th phase derivative on
+\(|\theta|\le1/w\) by \(C_jn(1+w)^{j-1}\).
+Put \(\epsilon=w/n\), \(t=\sqrt{\beta}\theta\), and
+\(U=\epsilon^{-1/12}\). On \(|t|\le U\), Taylor's theorem through
+degree four gives
+\[
+ Q(\theta)=-t^2/2+i\alpha_3t^3+\alpha_4t^4
+                 +O_K(\epsilon^{3/2}|t|^5),
+ \qquad
+ |\alpha_3|\le C\epsilon^{1/2},\quad
+ |\alpha_4|\le C\epsilon.
+\]
+The cubic term is imaginary and odd. Its first-order contribution
+integrates to zero on the symmetric arc. After its cancellation, the
+integrated error is \(O_K(\epsilon)\): expansion of the exponential
+is bounded by a constant times
+\(\epsilon(t^4+t^6)e^{-t^2/4}\), together with a smaller integrable
+remainder. Indeed the cubic term is at most \(O(\epsilon^{1/4})\)
+on this arc. The central integral is therefore
+\(\sqrt{2\pi/\beta}(1+O_K(\epsilon))\).
+
+For completeness, there is no unestimated portion of the contour.
+When \(U/\sqrt{\beta}\le|\theta|\le1/w\), the inequalities for
+\(1-\cos\theta\) and \(1-\cos(w\sin\theta)\) imply
+\(\Re Q(\theta)\le-\kappa\beta\theta^2\), for a fixed
+\(\kappa>0\). On \(1/w\le|\theta|\le\pi\), discarding the second
+cosine in
+\[
+ \Re e^{we^{i\theta}}=e^{w\cos\theta}\cos(w\sin\theta)
+\]
+gives
+\[
+ \Re Q(\theta)
+ \le-ce^w\{1-e^{w(\cos\theta-1)}\}
+ \le-\kappa_K n/w^2.
+\]
+Here \(1-\cos\theta\ge2\theta^2/\pi^2\) on the whole interval.
+Both outer integrals are smaller than the central integral times
+every fixed negative power of \(n\). This proves
+\eqref{sgm:md:cm:touchard-saddle}.
+
+For \(H_n\), the additional term \(cz\) changes the saddle equation
+to \(cr(e^r+1)=n\). The mean value theorem at \(w_n\) gives
+\[
+ |r_n-w_n|
+ \le C_K\frac{w_n^2}{n(1+w_n)}
+ \le C_Kw_n/n.
+\]
+The second logarithmic derivative at its saddle is
+\(\beta_n=cr_n((1+r_n)e^{r_n}+1)\), the value in the statement.
+The same derivative estimates apply, and
+\(cr_n(\cos\theta-1)\le0\) improves the real-part estimates.
+Thus the preceding central and outer arc argument proves
+\eqref{sgm:md:cm:shifted-saddle}.
+
+To compare \(H_n\) with \(T_n\), write
+\(g(z)=c(e^z-1)-n\log z\). Then \(g'(w_n)=0\), and
+\(g''(z)=O_K(n/w_n)\) throughout the interval joining \(r_n\)
+to \(w_n\). Hence
+\[
+ g(r_n)+cr_n-g(w_n)=cw_n+O_K(w_n/n).
+\]
+Also \(\beta_n/[n(1+w_n)]=1+O_K(w_n/n)\).
+Comparing the two proved saddle formulas establishes
+\eqref{sgm:md:cm:shift-compare}.
+\end{proof}
+
+\begin{lemma}[Ratios, factorial moments, and fresh tails]\label{sgm:md:cm:ratio}
+For each fixed nonnegative integer \(h\), uniformly on \(K\),
+\begin{equation}\label{sgm:md:cm:ratios}
+ \frac{T_{n-h}(c)}{T_n(c)}
+ =\left(\frac{w_n}{n}\right)^h
+       \left(1+O_{K,h}(w_n/n)\right),\qquad
+ \frac{H_{n-h}(c)}{H_n(c)}
+ =\left(\frac{w_n}{n}\right)^h
+       \left(1+O_{K,h}(w_n/n)\right).
+\end{equation}
+In particular,
+\begin{equation}\label{sgm:md:cm:birth-ratio}
+ n\,\frac{T_{n-1}(c)}{T_n(c)}
+ =w_n+O_K(w_n^2/n).
+\end{equation}
+The numbers
+\begin{equation}\label{sgm:md:cm:fresh-law}
+ p_{k,c}(s)=\frac{\binom ks c^sT_{k-s}(c)}{H_k(c)},
+ \qquad 0\le s\le k,
+\end{equation}
+form a probability distribution. If \(S\) has this distribution and
+\(w=W(k/c)\), then
+\begin{equation}\label{sgm:md:cm:fresh-factorials}
+ \E\fall{S}{h}=\fall{k}{h}c^h\frac{H_{k-h}(c)}{H_k(c)}
+ =(cw)^h\left(1+O_{K,h}(w/k)\right).
+\end{equation}
+For every fixed \(D>0\) and \(j\ge0\), writing
+\(S_0=\lceil\log^2k\rceil\), one also has
+\begin{equation}\label{sgm:md:cm:fresh-tail}
+ \sum_{s>S_0}s^j p_{k,c}(s)=o_K(k^{-D}).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For ratios it is important to difference the explicit leading term
+rather than to differentiate an unspecified error. Let
+\[
+ L(n)=\log\Gamma(n+1)+c(e^{w_n}-1)-n\log w_n
+                    -\tfrac12\log(2\pi n(1+w_n)).
+\]
+Using \(w_n'=w_n/[n(1+w_n)]\) and the cancellation imposed by the
+saddle equation, direct differentiation gives
+\(L'(n)=\log(n/w_n)+O_K(1/n)\).
+Integrating over the fixed interval \([n-h,n]\), and then adding
+the two \(O_{K,h}(w_n/n)\) endpoint errors in
+\eqref{sgm:md:cm:touchard-saddle}, proves the first ratio.
+The explicit logarithm in \eqref{sgm:md:cm:shifted-saddle} has derivative
+\(\log(n/r_n)+O_K(1/n)\); use
+\(r_n/w_n=1+O_K(1/n)\) to obtain the other ratio.
+
+The binomial theorem normalizes \eqref{sgm:md:cm:fresh-law}, and extracting
+\(\fall{s}{h}\) from its finite sum proves the exact identity in
+\eqref{sgm:md:cm:fresh-factorials}. For the tail assertion, tilt the
+\(\Poi(c)\) distribution of \(X\) by \((X+c)^k/H_k(c)\).
+Conditionally on \(X\), take
+\(S\sim\operatorname{Bin}(k,c/(X+c))\). Expansion shows that this
+mixture has exactly the masses \eqref{sgm:md:cm:fresh-law}.
+The tilted masses, up to normalization, are
+\(c^x(x+c)^k/x!\). Their successive logarithmic ratios are
+\[
+ k\log\left(1+\frac1{x+c}\right)+\log c-\log(x+1).
+\]
+They decrease in \(x\). At \(x=t\,k/w+O(1)\), with \(t\) in a
+fixed compact subset of \((0,\infty)\), they equal
+\(w(1/t-1)-\log t+o_K(1)\).
+Multiplying the ratios across intervals of length comparable with
+\(k/w\) proves that each fixed relative tail outside \(X\asymp k/w\)
+has mass at most \(e^{-\kappa_K k}\). The upper remainder is bounded
+by a geometric series using the decreasing ratios. On the central
+range the conditional binomial mean is \(O_K(w)\); its tail beyond
+\(S_0\) is at most
+\((C_Kw/S_0)^{S_0}\). Both estimates are superpolynomially small.
+Since \(S\le k\), fixed power weights are absorbed by strengthening
+\(D\).
+\end{proof}
+
+\subsection{Exact weighted branches}
+
+For \(q\ge1\) and \(t\ge0\), define
+\begin{equation}\label{sgm:md:cm:child}
+ E^c_{t,q}=\sum_{\ell=0}^t F_{t,\ell}(c)
+                         \binom{\ell+q-1}{\ell},
+ \qquad
+ R_c(q,t)=\frac{E^c_{t,q}}{c^t\binom{q+t-1}{t}}.
+\end{equation}
+A child-rooted walk with \(\ell\) excursions can be divided into
+\(q\) ordered, possibly empty closed segments in
+\(\binom{\ell+q-1}{\ell}\) ways.
+
+\begin{proposition}\label{sgm:md:cm:branches}
+For \(n\ge1\) and \(s\ge0\),
+\begin{equation}\label{sgm:md:cm:partition}
+ F_{n+s,n}(c)=
+ \sum_{\pi\in\Part[n]}c^{|\pi|}
+ \sum_{\substack{t_b\ge0\\\sum_{b\in\pi}t_b=s}}
+          \prod_{b\in\pi}E^c_{t_b,|b|}.
+\end{equation}
+Under the probability distribution
+\(\mathbb P_c(\pi)=c^{|\pi|}/T_n(c)\), let a P\'olya urn have
+initial populations \(q_b=|b|\), and let \(T_b\) be its occupancies
+after \(s\) draws. Then
+\begin{equation}\label{sgm:md:cm:urn}
+ \frac{F_{n+s,n}(c)}
+ {c^s\binom{n+s-1}{s}T_n(c)}
+ =\E_{\pi,c}\E_{\rm urn}\prod_{b\in\pi}R_c(q_b,T_b).
+\end{equation}
+With \(M=4\max(1,a^{-1})\), set \(v_0=v_1=1\) and
+\(v_t=M^{t-1}t!\) for \(t\ge1\). Uniformly on \(K\),
+\begin{equation}\label{sgm:md:cm:rough-R}
+ 1\le R_c(q,t)\le v_t,\qquad R_c(q,0)=R_c(q,1)=1.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Partition the root's \(n\) excursion positions according to their
+first child. A block of size \(q\) introduces one root-child edge,
+with weight \(c\), and \(q\) visits to its interior walk.
+Different child interiors use disjoint vertex sets. Splitting each
+interior at its root returns and then restoring the prescribed
+excursion positions reconstructs the walk uniquely. This proves
+\eqref{sgm:md:cm:partition}, including all repeated edges and all depths.
+The P\'olya occupancy probabilities are
+\[
+ \frac{\prod_b\binom{q_b+t_b-1}{t_b}}
+      {\binom{n+s-1}{s}},\qquad \sum_b t_b=s.
+\]
+Dividing the partition identity by its fresh normalization proves
+\eqref{sgm:md:cm:urn}.
+
+The lower bound in \eqref{sgm:md:cm:rough-R} uses an interior star walk
+with \(t\) distinct fresh edges, of weight \(c^t\).
+The upper cut bound is
+\(E^c_{t,q}\le m_t(c)\binom{q+t-1}{t}\).
+An unweighted length-\(2t\) walk has a root-distance Dyck path and,
+at its \(i\)-th outward step, at most \(i\) child choices, including
+a newly discovered child. Thus its total count is at most
+\(\Cat_t t!\le4^{t-1}t!\) for \(t\ge1\).
+Each such walk has between one and \(t\) edges, so
+\[
+ c^{-t}m_t(c)
+ \le4^{t-1}t!\max(1,c^{-1})^{t-1}\le v_t.
+\]
+The exact one-step value is \(m_1(c)=c\), which also proves
+\(R_c(q,1)=1\).
+\end{proof}
+
+\subsection{Uniform suppression of walks without a dominant vertex}
+
+The following reduction is the step that permits expansions of a local
+branch calculation to become assertions about the complete moment.
+It is proved for the whole compact interval, rather than inferred
+from the unweighted case.
+
+\begin{theorem}[Compact-parameter complement and rotation]
+\label{sgm:md:cm:complement}
+Let \(S_0=\lceil\log^2k\rceil\). For every fixed \(D>0\),
+\begin{equation}\label{sgm:md:cm:complement-bound}
+ \sum_{\substack{w\in\Wc_k\\
+          \max_v d_w(v)<k-S_0}}c^{e(w)}
+ =o_K(k^{-D}T_k(c)).
+\end{equation}
+The weighted mass of walks with two vertices having at least
+\(k-S_0\) departures has the same bound. Consequently
+\begin{equation}\label{sgm:md:cm:rotation-reduction}
+ \frac{m_k(c)}{2H_k(c)}
+ =\frac1{H_k(c)}\sum_{s=0}^{S_0}
+       \frac{k}{k-s}F_{k,k-s}(c)+o_K(k^{-D}).
+\end{equation}
+The error statements remain valid after multiplication by any fixed
+power of \(k\).
+\end{theorem}
+
+\begin{proof}
+We give the three ranges of the estimate explicitly.
+The external combinatorial input is the coefficientwise
+Bauer--Golinelli comparison
+\[
+ \left\{\begin{matrix}t\\\ell\end{matrix}\right\}
+ \le I(t,\ell)\le
+ \Cat_\ell\left\{\begin{matrix}t\\\ell\end{matrix}\right\},
+\]
+where \(I(t,\ell)\) counts the tree walks with \(\ell\) edges
+\cite{bg}.
+Its positive weighted sum, followed by
+Lemma~\ref{sgm:md:cm:saddle}, gives
+\begin{equation}\label{sgm:md:cm:envelope}
+ T_t(c)\le m_t(c)\le T_t(4c)
+ \le T_t(c)\exp\left(\frac{C_Kt}{\log(t+1)}\right).
+\end{equation}
+For the final inequality, evaluate the exponential generating function
+of \(T_t(4c)\) at \(W(t/c)\). Relative to \(T_t(c)\), the extra
+exponent is \(3t/W(t/c)+O_K(\log t)\), and a larger constant covers
+finitely many initial indices.
+
+We shall also use the exact moment inequality
+\begin{equation}\label{sgm:md:cm:holder}
+ m_t(c)\le m_s(c)^{t/s},\qquad 0\le t\le s.
+\end{equation}
+To justify it without a growing-index interchange, first keep \(s,t\)
+fixed. In the expected normalized trace of the adjacency matrix of
+\(G(N,c/N)\), each connected walk pattern contributes its weight times
+\(N^{v-e-1}(1+O(N^{-1}))\). Only tree patterns survive as \(N\to\infty\).
+H\"older applied to the expected empirical spectral measure pushed
+forward by \(x\mapsto x^2\), followed by this fixed-index limit, proves
+\eqref{sgm:md:cm:holder} for every integer pair. It can subsequently be
+applied at the particular pair needed in an estimate.
+
+Write
+\(\mathcal H(m,s)=k\log k-m\log m-s\log s\), \(k=m+s\).
+The adjacent ratio in Lemma~\ref{sgm:md:cm:ratio} implies, uniformly when
+\(\min(m,s)\ge k^{0.49}\),
+\begin{equation}\label{sgm:md:cm:entropy}
+ \log\frac{T_m(c)T_s(c)}{T_k(c)}
+ =-(1+o_K(1))\mathcal H(m,s).
+\end{equation}
+Here is the cancellation needed near the endpoints. Put
+\(p=\min(m,s)\), \(q=k-p\). Sum the adjacent logarithmic ratios
+only over \(q\le j<k\), where their errors are uniformly \(o_K(1)\).
+Together with
+\(\log T_p(c)=p\log p-p\log\log p-p+o_K(p)\), this gives
+\[
+ \log\frac{T_p(c)T_q(c)}{T_k(c)}
+ =-\mathcal H(m,s)+
+   p\log\frac{\log k}{\log p}+o_K(p).
+\]
+The extra logarithm is at most \(\log(k/p)/\log p\), while
+\(\mathcal H(m,s)\ge p\log(k/p)\ge p\log2\).
+This proves \eqref{sgm:md:cm:entropy}. Subtracting three coarse
+\(o(k)\) estimates would not suffice here.
+
+Set \(B=\max(1,b)\), \(C_0=2M\), and choose a fixed
+\(\delta>0\) with \(\delta^2\le0.005/C_0\). Our cutoffs are
+\[
+ h=\left\lfloor\frac{k}{64B\log k}\right\rfloor,\qquad
+ L=\delta\sqrt{k\log k}.
+\]
+Eventually \(h>L>k^{0.49}\).
+
+\emph{Intermediate root departures.}
+For \(m\ge h\) and \(s=k-m\ge L\), the branch identity and positivity
+give, for every \(x,z>0\),
+\begin{equation}\label{sgm:md:cm:finite-majorant}
+ F_{m+s,m}(c)\le m!x^{-m}z^{-s}
+ \exp\left(c(e^x-1)+c\sum_{t=1}^{s}m_t(c)z^t
+                         \mathcal A_t(x)\right),
+\end{equation}
+where
+\[
+ \mathcal A_t(x)=
+ e^x\sum_{j=1}^{t}\binom{t-1}{j-1}\frac{x^j}{j!}
+ \le e^xx(1+x)^{t-1},\qquad
+ \mathcal A_t(x)\le e^xe^{2\sqrt{tx}}.
+\]
+The expression follows by summing
+\(x^q\binom{q+t-1}{t}/q!\) over block sizes \(q\ge1\).
+For the second bound use
+\(\binom{t-1}{j-1}\le t^j/j!\) and
+\(\sum_j u^j/(j!)^2\le e^{2\sqrt u}\).
+The exponent is truncated at \(t=s\) before evaluation; no convergent
+ordinary generating function of all moments is assumed.
+
+In \eqref{sgm:md:cm:finite-majorant} take
+\[
+ x=W(m/c),\quad
+ \varepsilon=\frac{m}{8k},\quad \eta=1-\varepsilon,\quad
+ z=\eta m_s(c)^{-1/s},\quad
+ J=\left\lceil\frac{64\log k}{\varepsilon^2}\right\rceil .
+\]
+Equations \eqref{sgm:md:cm:envelope} and \eqref{sgm:md:cm:touchard-saddle}
+give \(z\le C_K\log(s+1)/s\), and
+\(\varepsilon\gg_K1/\log k\).
+The two cases \(m\ge k/2\) and \(m<k/2\) show
+\[
+ \frac{\varepsilon^2s}{\log^3k}\longrightarrow\infty,\qquad
+ J<s,\qquad J(1+x)z=o_K(1)
+\]
+uniformly in the specified range. If \(t>J\), H\"older yields
+\(m_t(c)z^t\le e^{-\varepsilon t}\).
+Since \(2\sqrt{tx}\le\varepsilon t/2\), the large-\(t\) part of the
+exponent is \(O_K(k^{-10})\).
+For \(t\le J\), the bound
+\(m_t(c)\le B^t4^{t-1}t!\) shows that successive upper-bound terms
+after the first have ratios \(o_K(1)\).
+The first term is exactly \(cmz\), because
+\(m_1(c)=c\) and \(cxe^x=m\).
+The small-\(t\) sum is therefore \(cmz(1+o_K(1))\).
+
+Comparing the saddle prefactor with \(T_m(c)\) gives
+\[
+ \log\frac{F_{k,m}(c)}{T_k(c)}
+ \le\log\frac{T_m(c)m_s(c)}{T_k(c)}
+       -s\log\eta+O_K(\log k)+O_K(mz).
+\]
+By \eqref{sgm:md:cm:entropy} and \eqref{sgm:md:cm:envelope}, its first term is
+at most \(-(1-o_K(1))\mathcal H+C_Ks/\log(s+1)\).
+The extra term is \(o_K(\mathcal H)\): for \(s\le k/2\) use
+\(\mathcal H\ge s\log2\); for \(s>k/2\), use
+\(\mathcal H\ge m\log(k/m)\gg_K k\log\log k/\log k\).
+Also
+\[
+ -s\log\eta\le\frac{ms}{7k}\le\frac{\mathcal H}{14}.
+\]
+Finally \(mz=o_K(\mathcal H)\). For \(s>k/2\) this follows from
+\(mz\le C_Km\log(s+1)/s\). Otherwise divide by
+\(\mathcal H\ge s\log(k/s)\); on \(L\le s\le k^{3/4}\)
+the resulting bound is \(O_K(k/s^2)=O_K(1/\log k)\), and on
+\(s\ge k^{3/4}\) it is \(O_K(\log k/\sqrt k)\).
+Thus, eventually throughout the intermediate range,
+\begin{equation}\label{sgm:md:cm:intermediate}
+ F_{k,m}(c)/T_k(c)\le e^{-\mathcal H(m,s)/2}.
+\end{equation}
+
+\emph{The high-departure shoulder.}
+For an urn history let \(A=\max_bq_b\) and
+\(Z_s=\prod_bv_{T_b}\).
+An old color with current count \(t\ge1\) has weight multiplier
+\(M(t+1)\); a new color has multiplier one.
+Since \(M(t+1)-1\le C_0t\), successive conditional expectations give
+\begin{equation}\label{sgm:md:cm:unmarked-urn}
+ \E_{\rm urn}Z_s\le e^{\tau A+\gamma},\qquad
+ \tau\le\frac{C_0s^2}{2n},\quad
+ \gamma\le\frac{C_0s^3}{3n}.
+\end{equation}
+Indeed the extra probability-weighted multiplier at step \(j\)
+is at most \(C_0(Aj+j^2)/(n+j)\); summing it and using
+\(1+u\le e^u\) proves the displayed bounds.
+
+The weighted partition distribution satisfies
+\[
+ \E_{\pi,c}\#\{q\hbox{-blocks}\}
+ =c\binom nq\frac{T_{n-q}(c)}{T_n(c)}.
+\]
+Consequently, uniformly for \(0\le\tau\le0.02\log n\),
+\begin{equation}\label{sgm:md:cm:maxblock}
+ \log\E_{\pi,c}e^{\tau A}\le C_Ke^\tau\log n.
+\end{equation}
+For \(q\le n/2\), the adjacent ratio bound makes the expected
+block count at most \(C_K(C_K\log n)^q/q!\); summing the
+\(e^{\tau q}\)-weighted terms proves the claim in this range.
+For \(q>n/2\), retain the first \(\lfloor n/2\rfloor\) adjacent
+ratios. To bound the remainder, use \(T_j(c)\ge a\) for \(j\ge1\)
+and the fact that \(T_j(c)\) is nondecreasing for \(j\ge1\).
+The possible final value \(T_0(c)=1\) changes the estimate by at
+most \(\max(1,a^{-1})\). This portion is bounded by a constant times
+\[
+ (1+e^\tau)^n
+       \left(\frac{C_K\log n}{n}\right)^{\lfloor n/2\rfloor}
+ =e^{-\Omega_K(n\log n)}.
+\]
+A maximal block realizes \(A\), so the sum over blocks bounds
+\(e^{\tau A}\). This proves \eqref{sgm:md:cm:maxblock}, including its
+required exponential tilt.
+
+Take \(S_0\le s\le L\) and \(n=k-s\).
+Then \(\tau\le0.005\log k<0.02\log n\) eventually.
+Equations \eqref{sgm:md:cm:urn}--\eqref{sgm:md:cm:maxblock} imply
+\[
+ \frac{F_{k,k-s}(c)}{T_k(c)}
+ \le c^s\binom{k-1}{s}
+       \frac{T_{k-s}(c)}{T_k(c)}
+       e^\gamma\E_{\pi,c}e^{\tau A}.
+\]
+The fresh factor is at most \((C_K\log k/s)^s\).
+Write \(J(s)=s\log(s/\log k)\).
+The choice of \(\delta\) guarantees
+\(\gamma\le J(s)/50\) uniformly for large \(k\):
+the limiting upper bound for the endpoint ratio is
+\((4C_0/3)\delta^2<0.007\).
+Also \(C_Ke^\tau\log n=o_K(J(s))\).
+For \(s\le k^{0.1}\) use \(\tau=o_K(1)\);
+for \(s>k^{0.1}\), use \(e^\tau\le k^{0.005}\) and
+\(J(s)\gg k^{0.1}\log k\).
+The harmless \(O_K(s)\) in the fresh logarithm is \(o_K(J(s))\).
+It follows that
+\begin{equation}\label{sgm:md:cm:shoulder}
+ F_{k,k-s}(c)/T_k(c)\le e^{-J(s)/2}.
+\end{equation}
+
+\emph{Low maximum, and passage from rooted counts.}
+If every departure count is at most \(h\), a root-distance Dyck
+encoding has at most \(h\) choices at each outward step.
+When \(h\) existing children are present, a new child is forbidden;
+there is no additional \(h+1\) factor.
+Multiplying by the weight bound \(B^k\), the total mass is at most
+\((4Bh)^k\). Since
+\[
+ \log T_k(c)=k\log k-k\log\log k-k+o_K(k),
+\]
+its ratio to \(T_k(c)\) is at most
+\(\exp[-(\log16-1+o_K(1))k]\).
+
+For any set \(I\) of departure counts, weighted indexed rotation
+gives the exact identity
+\begin{equation}\label{sgm:md:cm:rotation}
+ \sum_{n\in I}\frac{2k}{n}F_{k,n}(c)
+ =\sum_{w\in\Wc_k}c^{e(w)}
+                |\{v:d_w(v)\in I\}|.
+\end{equation}
+A vertex of departure count \(n\) appears at exactly \(n\) of the
+\(2k\) indexed roots. If a normalized rotation orbit has fewer than
+\(2k\) distinct words, division by their common repetition
+multiplicity gives the same identity; no freeness is assumed.
+Every walk outside the required dominant class has either low
+maximum or a vertex in the intermediate or shoulder ranges.
+The sums of \eqref{sgm:md:cm:intermediate} and \eqref{sgm:md:cm:shoulder},
+with at most \(k\) indices and rotation factors at most
+\(2k/h=O_K(\log k)\), are superpolynomially small.
+This proves \eqref{sgm:md:cm:complement-bound}.
+
+Two vertices whose departures exceed \(k/2\) must be adjacent,
+because otherwise their incident-edge multiplicities are disjoint
+and sum to at most \(k\). A tree has no three pairwise adjacent
+vertices, so there are at most two such vertices.
+If both departures are at least \(k-S_0\), their joining edge
+has multiplicity at least \(k-2S_0\).
+Rotate to a crossing of this edge. On deleting its crossings,
+the two segmented interior walks have total half-length at most
+\(2S_0\). The elementary cut bound used in
+Proposition~\ref{sgm:md:cm:branches} bounds their number, including origins,
+by \(\exp(O(\log^3k))\).
+Their weights contribute at most \(B^k\).
+This remains superpolynomially small relative to \(T_k(c)\).
+Use \eqref{sgm:md:cm:rotation} with \(I=[k-S_0,k]\),
+subtract this double counting, and observe \(H_k(c)\ge T_k(c)\)
+to obtain \eqref{sgm:md:cm:rotation-reduction}.
+\end{proof}
+
+\subsection{The finite collision expansion}
+
+We now construct every correction by a finite exact operation.
+For \(h\ge0\), set
+\begin{align}
+ \gamma_h(q;c)
+ &=\sum_{t=0}^h(-1)^{h-t}\binom ht R_c(q,t),\label{sgm:md:cm:newton}\\
+ d_h(q;c)
+ &=\frac{\rise{q}{h}}{h!}\gamma_h(q;c)\nonumber\\
+ &=\sum_{t=0}^h(-1)^{h-t}c^{-t}E^c_{t,q}
+                     \frac{\rise{q+t}{h-t}}{(h-t)!}.\label{sgm:md:cm:d}
+\end{align}
+Thus \(d_0=1\), \(d_1=0\), and \(d_h(q;c)\) is a polynomial of
+degree at most \(h\) in \(q\); for \(h\ge1\) its constant term is zero.
+Its coefficients belong to \(\mathbb Q[c,c^{-1}]\).
+
+For \(j\ge1\), \(n\ge1\), \(s\ge0\), define
+\begin{equation}\label{sgm:md:cm:G}
+ G_j(n,s;c)=
+ \sum_{r=1}^j\frac1{r!}
+ \sum_{\substack{h_i\ge2\\\sum_{i=1}^r(h_i-1)=j}}
+ \frac{\fall{s}{H}}{\rise{n}{H}}\,
+ \E_{\pi,c}
+ \sum_{\substack{b_1,\ldots,b_r\in\pi\\\text{ordered, distinct}}}
+                  \prod_{i=1}^r d_{h_i}(q_{b_i};c),
+ \qquad H=\sum_{i=1}^rh_i=j+r .
+\end{equation}
+The convention is that a term with \(\fall{s}{H}=0\) vanishes
+before any otherwise invalid index is evaluated.
+Finally set
+\begin{equation}\label{sgm:md:cm:Aj}
+ A_j(k,c)=\sum_{s=0}^{k-1}p_{k,c}(s)G_j(k-s,s;c).
+\end{equation}
+Here \(H\le2j\) and each \(h_i\le j+1\), so only the finitely
+many child rows with half-length at most \(j+1\) enter a fixed
+correction.
+
+\begin{lemma}[Uniform local expansion]\label{sgm:md:cm:local}
+For each fixed \(p\ge1\), uniformly for \(c\in K\) and
+\(0\le s\le S_0=\lceil\log^2k\rceil\),
+\begin{equation}\label{sgm:md:cm:root-expansion}
+ \frac{F_{k,k-s}(c)}
+      {c^s\binom{k-1}{s}T_{k-s}(c)}
+ =1+\sum_{j=1}^pG_j(k-s,s;c)
+    +O_{K,p}\left(\frac{\log^{10p+6}k}{k^{p+1}}\right).
+\end{equation}
+For all \(n\ge1\) and \(s\ge0\),
+\(\lvert G_j(n,s;c)\rvert\le C_{K,j}(1+s)^{2j}\).
+\end{lemma}
+
+\begin{proof}
+Let \(C_s=s-|\{b:T_b>0\}|\) count collision excess, and let
+\(Z_s=\prod_bv_{T_b}\). At step \(j\), conditional on the history,
+the probability-weighted multiplier of all transitions to old
+colors is bounded by
+\[
+ \sum_{T_b>0}\frac{q_b+T_b}{n+j}M(T_b+1)
+ \le\frac{2M(Aj+j^2)}{n}=b_j.
+\]
+For new colors the total multiplier is at most one.
+Marking each old-color transition by \(u\), induction gives a
+coefficientwise polynomial inequality
+\[
+ \E_{\rm urn}[Z_su^{C_s}]
+ \preceq\prod_{j=0}^{s-1}(1+b_ju),\qquad
+ \Lambda=\sum_{j<s}b_j\le C_Ks^2(A+s)/n.
+\]
+It follows that
+\begin{equation}\label{sgm:md:cm:collision-tail}
+ \E_{\rm urn}[Z_s;C_s\ge d]\le\Lambda^de^\Lambda/d!.
+\end{equation}
+
+Binomial inversion gives
+\(R_c(q,t)=\sum_{h=0}^t\gamma_h(q;c)\binom th\).
+Expand the product over blocks and retain only terms for which
+\(\sum(h_i-1)\le p\). Call the resulting polynomial \(L_p(T)\).
+Because \(\gamma_1=0\), every nonconstant mark has \(h_i\ge2\).
+A nonzero marked term satisfies \(h_i\le T_{b_i}\), so the
+truncation is exact whenever \(C_s\le p\).
+For fixed \(p\), \eqref{sgm:md:cm:rough-R} bounds all involved
+\(\gamma_h\) uniformly on \(K\). Moreover
+\[
+ \sum_{\text{ordered, distinct }b_i}
+        \prod_i\binom{T_{b_i}}{h_i}
+ \le\frac{\fall{s}{H}}{\prod_i h_i!}.
+\]
+Consequently \(|L_p(T)|\le C_{K,p}(1+s)^{2p}\).
+Since \(\prod R_c\le Z_s\) and \(Z_s\ge1\),
+\eqref{sgm:md:cm:collision-tail} yields
+\[
+ \left|\E_{\rm urn}\prod_bR_c(q_b,T_b)-\E_{\rm urn}L_p(T)\right|
+ \le C_{K,p}(1+s)^{2p}\Lambda^{p+1}e^\Lambda .
+\]
+The distinct-color urn factorial identity
+\[
+ \E_{\rm urn}\prod_i\binom{T_{b_i}}{h_i}
+ =\frac{\fall{s}{H}}{\rise{n}{H}}
+                  \prod_i\frac{\rise{q_{b_i}}{h_i}}{h_i!}
+\]
+shows, exactly, that
+\(\E_{\pi,c}\E_{\rm urn}L_p=1+\sum_{j=1}^pG_j(n,s;c)\).
+It follows either from exchangeability of the selected draw
+indices or directly from the P\'olya occupancy formula.
+
+On \(A,s\le S_0\), one has
+\(\Lambda=O_K(\log^6k/k)\). Thus the preceding error is
+\[
+ O_{K,p}\!\left(\frac{\log^{10p+6}k}{k^{p+1}}\right).
+\]
+For \(A>S_0\), use \eqref{sgm:md:cm:unmarked-urn} rather than an
+unweighted rare-event estimate. Its tilt is
+\(\tau=O_K(\log^4k/k)\), and the proof of
+\eqref{sgm:md:cm:maxblock}, with the block sum restricted to \(q>S_0\),
+gives
+\[
+ \E_{\pi,c}[e^{\tau A};A>S_0]=o_K(k^{-D})
+\]
+for every fixed \(D\): the \(q\le n/2\) part is bounded by
+\(\exp[-\kappa_K\log^2k\log\log k]\), and the other part is
+\(e^{-\Omega_K(n\log n)}\).
+Together with the polynomial bound on \(L_p\), this proves
+\eqref{sgm:md:cm:root-expansion}. Applying that polynomial bound
+to an individual homogeneous part also gives the stated global
+bound on \(G_j\).
+\end{proof}
+
+\begin{theorem}[All fixed collision orders]\label{sgm:md:cm:main}
+The transforms \eqref{sgm:md:cm:Aj} are independent of truncation order.
+For every fixed \(p\ge1\), uniformly on \(K\),
+\begin{equation}\label{sgm:md:cm:all-order}
+ \frac{m_k(c)}{2H_k(c)}
+ =1+\sum_{j=1}^{p}A_j(k,c)
+   +O_{K,p}\left(\frac{\log^{10p+6}k}{k^{p+1}}\right).
+\end{equation}
+Every \(A_j(k,c)\) has a finite rational expression involving
+Touchard polynomials and \(c\), and
+\begin{equation}\label{sgm:md:cm:Aj-leading}
+ A_j(k,c)=\frac{c^jw^{3j}}{2^jj!k^j}(1+o_K(1)),
+ \qquad w=W(k/c).
+\end{equation}
+In particular the remainder after any fixed \(p\ge0\) exact
+transforms has the sharp equivalent
+\begin{equation}\label{sgm:md:cm:sharp-remainder}
+ \frac{m_k(c)}{2H_k(c)}-1-\sum_{j=1}^{p}A_j(k,c)
+ =\frac{c^{p+1}w^{3p+3}}
+        {2^{p+1}(p+1)!k^{p+1}}(1+o_K(1)).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Insert Lemma~\ref{sgm:md:cm:local} into
+\eqref{sgm:md:cm:rotation-reduction}. The identity
+\[
+ \frac{k}{k-s}\binom{k-1}{s}=\binom ks
+\]
+must be kept exact: it creates the probability weights
+\(p_{k,c}(s)\). The fresh sum is
+\(1-c^k/H_k(c)\), whose missing endpoint is superpolynomially
+small. The bound on \(G_j\) and \eqref{sgm:md:cm:fresh-tail} extend
+each fixed correction to \(s\le k-1\). This proves
+\eqref{sgm:md:cm:all-order}.
+
+For a finite evaluation, write
+\[
+ d_h(q;c)=\sum_{u=1}^h\alpha_{h,u}(c)\fall{q}{u},\qquad
+ P_h(z;c)=\sum_{u=1}^h\alpha_{h,u}(c)z^u.
+\]
+The exponential formula for a partition with \(r\) ordered
+marked blocks gives
+\begin{equation}\label{sgm:md:cm:marked-partitions}
+ \E_{\pi,c}\sum_{\text{ordered, distinct }b_i}\prod_i d_{h_i}(q_{b_i};c)
+ =\frac{n!}{T_n(c)}[z^n]\,
+ c^r e^{c(e^z-1)+rz}\prod_iP_{h_i}(z;c).
+\end{equation}
+If \(X\sim\Poi(c)\), the exact Poisson shift is
+\[
+ c^r\E(X+r)^N=\E\fall{X}{r}X^N
+       =\sum_{v=0}^r\mathfrak s(r,v)T_{N+v}(c),
+\]
+where \(\mathfrak s(r,v)\) are signed Stirling numbers of the
+first kind. Thus a monomial \(z^u\) in the finite product in
+\eqref{sgm:md:cm:marked-partitions} contributes
+\[
+ \frac{\fall{n}{u}}{T_n(c)}
+        \sum_{v=0}^r\mathfrak s(r,v)T_{n-u+v}(c).
+\]
+This proves the finite computability claim, including all
+normalizing powers of \(c\).
+
+Fix a collision pattern with \(r\) marked blocks and
+\(H=\sum h_i=j+r\). The quantitative fixed-shift ratios
+show its partition average is \(O_{K,j}(n^rw^j)\) on
+\(n=k-s\), \(s\le S_0\). Multiplying by the urn factor
+and using \(\E\fall{S}{H}=O_K(w^H)\) bounds its contribution
+to \(A_j\) by \(O_{K,j}(w^{2j+r}/k^j)\).
+Only \(r=j\) can attain the largest logarithmic power.
+That case has \(h_1=\cdots=h_j=2\).
+Direct calculation from the first two child rows gives
+\begin{equation}\label{sgm:md:cm:P2}
+ d_2(q;c)=\frac{q(q+1)}{2c}+q,\qquad
+ P_2(z;c)=\frac{z^2+2(1+c)z}{2c}.
+\end{equation}
+Its leading monomial is \(z^{2j}/(2c)^j\).
+Equation~\eqref{sgm:md:cm:marked-partitions} and the ratio lemma
+therefore give partition average
+\(n^jw^j/(2c)^j(1+o_K(1))\).
+The fresh factorial moment contributes \((cw)^{2j}\);
+the urn denominator contributes \(k^{-2j}\), and ordering
+contributes \(1/j!\). This proves \eqref{sgm:md:cm:Aj-leading}.
+The global polynomial bounds and fresh tails justify all
+discarded endpoints.
+
+Finally apply \eqref{sgm:md:cm:all-order} at order \(p+1\).
+Its error is \(o_K(w^{3p+3}/k^{p+1})\), so
+\eqref{sgm:md:cm:Aj-leading} proves \eqref{sgm:md:cm:sharp-remainder}.
+The sharp remainder is a consequence of the entire fixed-order
+hierarchy; it does not assert uniformity for an order growing with \(k\).
+\end{proof}
+
+\subsection{An evaluated correction and an exponential refinement}
+
+The finite transforms preserve information at every smaller scale.
+The next result evaluates enough of their structure to exhibit a
+cancellation that an isolated leading equivalent does not reveal.
+
+\begin{corollary}\label{sgm:md:cm:explicit}
+Uniformly on \(K\), with \(w=W(k/c)\), put
+\[
+ P_1(k,c)=\frac{cw^2(w+2+2c)}{2k}.
+\]
+Then
+\begin{equation}\label{sgm:md:cm:A1-explicit}
+ A_1(k,c)=P_1(k,c)+O_K(w^4/k^2),
+\end{equation}
+and
+\begin{equation}\label{sgm:md:cm:explicit-remainder}
+ \frac{m_k(c)}{2H_k(c)}
+ =1+P_1(k,c)
+       +\left(\frac{c^2}{8}+o_K(1)\right)\frac{w^6}{k^2}.
+\end{equation}
+More precisely, the logarithm has the expansion
+\begin{equation}\label{sgm:md:cm:exponential}
+ \frac{m_k(c)}{2H_k(c)}
+ =\exp\left\{
+       \frac{cw^2(w+2+2c)}{2k}
+       +\frac{cw^5}{6k^2}
+       +O_K(w^4/k^2)\right\}.
+\end{equation}
+In particular
+\[
+ m_k(c)\sim 2H_k(c)
+       \sim 2\left(\frac{k}{cw}\right)^cT_k(c)
+\]
+uniformly on the compact interval.
+\end{corollary}
+
+\begin{proof}
+For a weighted random partition,
+\(\E\sum_b\fall{q_b}{2}
+=n(n-1)T_{n-1}(c)/T_n(c)\), and \(\sum_bq_b=n\).
+Consequently \eqref{sgm:md:cm:P2} gives the exact first local correction
+\begin{equation}\label{sgm:md:cm:G1}
+ G_1(n,s;c)=\binom s2\,\phi_n(c),\qquad
+ \phi_n(c)=
+ \frac{(n-1)T_{n-1}(c)/T_n(c)+2(1+c)}{c(n+1)}.
+\end{equation}
+For \(n=k-s\), \(s\le S_0\), the quantitative ratio lemma implies
+\[
+ \phi_n(c)=\frac{w+2+2c}{ck}
+       +O_K\left(\frac{(s+1)w+w^2}{k^2}\right).
+\]
+Here \((n-1)T_{n-1}/T_n=w_n+O_K(w_n^2/n)\),
+\(w_n-w=O_K(s/k)\), and the remaining denominator change is
+\(O(s/k^2)\).
+Averaging against \eqref{sgm:md:cm:fresh-law}, using
+\eqref{sgm:md:cm:fresh-factorials}, yields
+\begin{align*}
+ A_1(k,c)
+ &=\frac{w+2+2c}{2ck}\E\fall{S}{2}
+   +O_K\left(\frac{w\E S^3+w^2\E S^2}{k^2}\right)\\
+ &=P_1(k,c)+O_K(w^4/k^2).
+\end{align*}
+This proves \eqref{sgm:md:cm:A1-explicit}.
+Equation~\eqref{sgm:md:cm:explicit-remainder} follows immediately from
+\eqref{sgm:md:cm:sharp-remainder} at \(p=1\).
+
+For the more informative logarithmic form, split \(A_2\) into its
+two permitted patterns: two \(h=2\) blocks, and one \(h=3\) block.
+For the first pattern, retain the whole polynomial \(P_2(w;c)^2\),
+rather than only its highest monomial.
+The fixed-shift ratio estimate in
+\eqref{sgm:md:cm:marked-partitions} gives its partition average as
+\[
+ \frac{n^2}{w_n^2}\,P_2(w_n;c)^2
+       \left(1+O_K(w_n/n)\right).
+\]
+The term with Stirling index \(v=1\), all falling-factorial
+corrections, and the errors of the Touchard ratios are included
+in this bound. Averaging its urn factor
+\(\fall{S}{4}/(2\rise{n}{4})\), using the exact fourth fresh
+factorial moment, gives
+\begin{equation}\label{sgm:md:cm:pair-cancel}
+ A_{2,\mathrm{pair}}(k,c)
+ =\frac{P_1(k,c)^2}{2}+O_K(w^7/k^3).
+\end{equation}
+To see that replacing \(n=k-S\) by \(k\) causes no larger error,
+differentiate only the displayed leading expression, in which
+\(w_n=W(n/c)\) is an ordinary smooth function. Its relative
+derivative on \([k-S_0,k]\) is bounded by \(C_K/k\).
+The already uniform error is kept as a bound, without being
+differentiated. Now use
+\(\E\fall{S}{4}S=O_K(w^5)\). The relative error is \(O_K(w/k)\).
+
+For the single \(h=3\) pattern, only the leading coefficient of
+\(d_3\) is needed. At fixed \(t\), the leading power of \(q\) in
+\(E^c_{t,q}\) is supplied by \(F_{t,t}(c)=T_t(c)\).
+Hence
+\[
+ \lim_{q\to\infty}R_c(q,t)=c^{-t}T_t(c),\qquad
+ [q^3]d_3(q;c)
+ =\frac16\E(X/c-1)^3=\frac1{6c^2}.
+\]
+The final equality is the third centered Poisson moment.
+Thus the \(h=3\) marked partition average is
+\[
+ \frac{nw_n^2}{6c^2}+O_K(nw_n)+O_K(w_n^3),
+\]
+and its urn factor and third fresh factorial moment imply
+\begin{equation}\label{sgm:md:cm:single-three}
+ A_{2,\mathrm{single}}(k,c)
+ =\frac{cw^5}{6k^2}+O_K(w^4/k^2).
+\end{equation}
+For example, the error \(O_K(w^6/k^3)\) from changing nearby
+indices is absorbed in the displayed remainder.
+
+By \eqref{sgm:md:cm:sharp-remainder} after two exact transforms, the
+remaining full-moment contribution is \(O_K(w^9/k^3)\), which is
+\(o_K(w^4/k^2)\). Equations
+\eqref{sgm:md:cm:A1-explicit}, \eqref{sgm:md:cm:pair-cancel}, and
+\eqref{sgm:md:cm:single-three}, together with
+\(\log(1+x)=x-x^2/2+O(x^3)\), prove
+\[
+ \log\frac{m_k(c)}{2H_k(c)}
+ =P_1(k,c)+\frac{cw^5}{6k^2}+O_K(w^4/k^2).
+\]
+This is \eqref{sgm:md:cm:exponential}. The final normalization comparison
+uses \eqref{sgm:md:cm:shift-compare} and \(e^{cw}=(k/(cw))^c\).
+\end{proof}
+\begin{writenote}[At $c=1$, 9 October 2026]
+At $c=1$, $w=W(k)$, $H_k(1)=B_{k+1}$, $P_1(k,1)=W(k)^3/(2k)+2W(k)^2/k$, and the
+logarithmic form reads as displayed after~\eqref{sgm:md:intro:log}. Part~I's
+\eqref{sgm:co:eq:firstscale} records only the leading $W(k)^3/(2k)$ of this
+scale, and its \eqref{sgm:co:eq:secondscale} the coefficient $\frac18$, which
+here is $c^2/8$ and comes from $P_1^2/2$ in the exponential; the write checked
+that $A_1(k,1)$ computed from~\eqref{sgm:md:cm:G1} equals Part~I's
+$T_k/B_{k+1}$ of~\eqref{sgm:co:eq:T1} exactly for $3\le k\le60$. The new
+content at $c=1$ is therefore the evaluated coefficient $2$ of $W(k)^2/k$ and
+the term $W(k)^5/(6k^2)$ of the logarithm, with the remainder
+$O(W(k)^4/k^2)$ (dated notes at the end of Section~\ref{sgm:sec:questions} and
+after Remark~\ref{sgm:lw:rem:union}).
+\end{writenote}
+% ---- end of 03_compact_moments.tex ----
+\clearpage
+% ---- delivered sections/04_deficit_law.tex ----
+\section{Sharp Poisson laws for the dominant-vertex deficit}
+\label{sgm:md:dl:section}
+
+The moment expansion also identifies the geometry of a typical contributing
+walk.  Here ``typical'' refers to the probability on normalized, time-rooted
+closed tree walks of length $2k$ that assigns a walk $\omega$ probability
+proportional to $c^{e(\omega)}$.  It does not refer to a uniformly sampled
+vertex or walk in a finite random graph.  Write
+\[
+ D_k(\omega)=k-\max_v d_\omega(v),\qquad
+ \nu_{k,c}(s)=\P(D_k=s),
+\]
+where $d_\omega(v)$ counts departures from $v$, with repetitions.
+In particular, the statistic is a departure deficit, rather than the
+deficit of the number of distinct neighbors.  The complement theorem
+shows that $D_k\le\lceil\log^2 k\rceil$ with a superpolynomially small
+exceptional probability.
+
+Throughout this section $c$ belongs to a fixed compact interval
+$K=[a,b]\subset(0,\infty)$, and all uniformity assertions concern this
+interval.  Set
+\begin{equation}\label{sgm:md:dl:parameters}
+ w=W(k/c),\qquad \lambda=cw,\qquad
+ \epsilon=\frac{w^2}{k},\qquad
+ \theta_0=\lambda+\lambda\epsilon
+          =cw+\frac{cw^3}{k}.
+\end{equation}
+Let $\pi_\theta(s)=e^{-\theta}\theta^s/s!$ denote the Poisson mass
+function, and define the second Charlier polynomial by
+\begin{equation}\label{sgm:md:dl:charlier}
+ C_2(s;\lambda)=\fall{s}{2}-2\lambda s+\lambda^2
+               =(s-\lambda)^2-s.
+\end{equation}
+Our convention is
+$\TV(\rho,\sigma)=\tfrac12\sum_{s\ge0}|\rho(s)-\sigma(s)|$.
+The factor $1/2$ in this definition matters for both constants below.
+
+\begin{theorem}[Signed expansion and two sharp distances]
+\label{sgm:md:dl:main}
+Uniformly for $c\in K$, as $k\to\infty$,
+\begin{align}
+ \nu_{k,c}(s)
+ &=\pi_\lambda(s)\left\{
+      1+\epsilon(s-\lambda)
+        +\frac{\epsilon}{2\lambda}C_2(s;\lambda)\right\}
+       +r_{k,c}(s),\label{sgm:md:dl:signed}\\
+ \sum_{s\ge0}|r_{k,c}(s)|
+ &=O_K\!\left(\frac{w^{3/2}}k+
+                    \frac{w^{16}}{k^2}\right)
+   =o_K(\epsilon).\label{sgm:md:dl:signed-error}
+\end{align}
+Consequently,
+\begin{align}
+ \TV\bigl(\nu_{k,c},\Poi(cw)\bigr)
+ &\sim_K\sqrt{\frac{c}{2\pi}}\,
+                   \frac{w^{5/2}}k,\label{sgm:md:dl:uncentered-tv}\\
+ \TV\bigl(\nu_{k,c},\Poi(\theta_0)\bigr)
+ &\sim_K\varphi(1)\frac{w^2}k,
+ \qquad \varphi(1)=\frac{e^{-1/2}}{\sqrt{2\pi}}.
+ \label{sgm:md:dl:recentered-tv}
+\end{align}
+Here $\sim_K$ means that the ratio tends to $1$ uniformly on $K$.
+More precisely, the recentered signed expansion is
+\begin{align}
+ \nu_{k,c}(s)-\pi_{\theta_0}(s)
+ &=\frac{\epsilon}{2\lambda}C_2(s;\lambda)\pi_\lambda(s)
+       +\widetilde r_{k,c}(s),\label{sgm:md:dl:recentered-signed}\\
+ \sum_s|\widetilde r_{k,c}(s)|
+ &=O_K\!\left(\frac{w^{3/2}}k+\frac{w^{16}}{k^2}\right).
+\end{align}
+\end{theorem}
+
+The shift $cw^3/k$ removes the leading change in the mean parameter.
+The remaining error has a quadratic shape, represented by $C_2$.
+This observation yields a stronger assertion: changing the Poisson mean
+further cannot remove the leading quadratic error.
+
+\begin{theorem}[Optimal Poisson mean and its error profile]
+\label{sgm:md:dl:optimal}
+For each fixed $T<\infty$, uniformly for $c\in K$ and $|t|\le T$,
+\begin{equation}\label{sgm:md:dl:profile}
+ \frac{1}{\epsilon}
+ \TV\!\left(\nu_{k,c},
+       \Poi\bigl(\theta_0+t\sqrt\lambda\,\epsilon\bigr)\right)
+ \longrightarrow
+ F(t):=\frac12\E\left|
+                \frac{Z^2-1}{2}-tZ\right|,
+ \qquad Z\sim N(0,1).
+\end{equation}
+The continuous, even, convex function $F$ is strictly minimized at $t=0$,
+where $F(0)=\varphi(1)$.  An explicit expression is
+\begin{equation}\label{sgm:md:dl:profile-explicit}
+ F(t)=\frac12\left\{
+       u_+(t)\varphi(u_-(t))-u_-(t)\varphi(u_+(t))\right\},
+ \qquad u_\pm(t)=t\pm\sqrt{1+t^2},
+\end{equation}
+with $\varphi(x)=(2\pi)^{-1/2}e^{-x^2/2}$.
+In particular,
+\begin{equation}\label{sgm:md:dl:optimal-distance}
+ \inf_{\theta\ge0}\TV\bigl(\nu_{k,c},\Poi(\theta)\bigr)
+ \sim_K\varphi(1)\frac{w^2}{k}.
+\end{equation}
+For any sequence $c=c_k\in K$, a sequence of means $\theta_k\ge0$ is
+asymptotically optimal, in the sense that its distance divided by the
+infimum in \eqref{sgm:md:dl:optimal-distance} tends to $1$, if and only if
+\begin{equation}\label{sgm:md:dl:optimal-characterization}
+ \theta_k=\theta_0+o\!\left(\sqrt\lambda\,\frac{w^2}{k}\right).
+\end{equation}
+\end{theorem}
+
+\subsection{The fresh deficit law and a quantitative Poisson estimate}
+
+The exact probability that appears before collision corrections is
+\begin{equation}\label{sgm:md:dl:fresh}
+ p_{k,c}(s)=\frac{\binom{k}{s}c^sT_{k-s}(c)}{H_k(c)},
+ \qquad 0\le s\le k.
+\end{equation}
+Its Poisson approximation must be more accurate than $w^2/k$ to identify
+the constant in \eqref{sgm:md:dl:recentered-tv}.  A qualitative Poisson limit
+would not suffice.
+
+\begin{lemma}[A Poisson estimate from birth ratios]
+\label{sgm:md:dl:stein}
+Let $p$ be a probability on the nonnegative integers with
+$(s+1)p(s+1)=a_s p(s)$, and let $S$ have law $p$.
+For $\lambda>0$,
+\begin{equation}\label{sgm:md:dl:birth-bound}
+ \TV\bigl(p,\Poi(\lambda)\bigr)
+ \le \frac{C}{\sqrt\lambda}\,
+                    \E|a_S-\lambda|,
+\end{equation}
+provided the right-hand side and $\E S$ are finite.  The constant $C$ is
+absolute.
+\end{lemma}
+
+\begin{proof}
+For an indicator $h$, the Poisson Stein equation is
+\[
+ \lambda f(s+1)-sf(s)=h(s)-\E h(Y),
+ \qquad Y\sim\Poi(\lambda).
+\]
+There is a solution with $\sup_s|f(s)|\le C/\sqrt\lambda$.
+For completeness, this bound follows directly from the immigration and
+death semigroup
+\[
+ P_t h(j)=\E h\bigl(B_{j,t}+Y_t\bigr),\qquad
+ B_{j,t}\sim\operatorname{Bin}(j,e^{-t}),\quad
+ Y_t\sim\Poi\bigl(\lambda(1-e^{-t})\bigr),
+\]
+where the variables on the right are independent.
+The function
+$g(j)=-\int_0^\infty(P_t h(j)-\E h(Y))\,dt$ solves the generator equation,
+and $f(j)=g(j)-g(j-1)$, $j\ge1$, with $f(0)=0$, solves the displayed
+Stein equation.
+Couple $B_{j,t}$ and $B_{j-1,t}$ by one additional Bernoulli variable.
+Convolution cannot increase total variation, so
+\[
+ |f(j)|\le
+ \int_0^\infty e^{-t}
+   \TV(Y_t,Y_t+1)\,dt
+ \le \frac{C}{\sqrt\lambda}
+       \int_0^\infty\frac{e^{-t}}{\sqrt{1-e^{-t}}}\,dt
+ =\frac{2C}{\sqrt\lambda}.
+\]
+Here $\TV(\Poi(u),\Poi(u)+1)$ equals the largest Poisson mass, by
+unimodality, and this mass is at most $C/\sqrt u$ by Stirling's formula
+(with the bound $1$ used when $u<1$).  The semigroup integral converges by
+the same coupling with a stationary initial population.
+
+The birth-ratio identity gives
+$\E[Sf(S)]=\E[a_Sf(S+1)]$.
+Taking expectations in the Stein equation, applying the supremum bound,
+and then taking the supremum over indicators proves
+\eqref{sgm:md:dl:birth-bound}.
+\end{proof}
+
+\begin{lemma}[Fresh Poisson approximation]
+\label{sgm:md:dl:fresh-poisson}
+Uniformly for $c\in K$,
+\begin{equation}\label{sgm:md:dl:fresh-tv}
+ \TV\bigl(p_{k,c},\Poi(\lambda)\bigr)
+                 =O_K(w^{3/2}/k).
+\end{equation}
+For every fixed nonnegative integer $r$, the tails of both distributions
+past $L_k=\lceil\log^2k\rceil$ are superpolynomially small even after
+multiplication by $(1+s)^r$.  Moreover,
+\begin{equation}\label{sgm:md:dl:centered-factorial}
+ \E_p\left|\fall{S}{2}-\E_p\fall{S}{2}\right|
+                         =O_K(w^{3/2}).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For \eqref{sgm:md:dl:fresh}, the exact birth rates are
+\[
+ a_s=c\,b_{k-s}(c),\qquad
+ b_n(c)=n\frac{T_{n-1}(c)}{T_n(c)},\quad s<k,
+ \qquad a_k=0.
+\]
+The ratio estimate in Lemma~\ref{sgm:md:cm:ratio} gives
+$b_n(c)=W(n/c)+O_K(W(n/c)^2/n)$.
+Since $\frac{d}{dn}W(n/c)=W(n/c)/(n(1+W(n/c)))\le1/n$,
+for $s\le L_k$ we obtain
+\[
+ |a_s-\lambda|\le C_K\frac{s+w^2}{k}
+                         =O_K(w^2/k).
+\]
+For $n\ge2$, $T_{n-1}(c)\le T_n(c)$ because these are moments of an
+integer-valued nonnegative variable; also $cT_0(c)/T_1(c)=1$.
+Thus $a_s\le C_Kk$ everywhere.  The fresh tail bound in
+Lemma~\ref{sgm:md:cm:ratio} now shows
+$\E_p|a_S-\lambda|=O_K(w^2/k)$.
+Lemma~\ref{sgm:md:dl:stein} proves \eqref{sgm:md:dl:fresh-tv}, since
+$\lambda\asymp_K w$.
+
+The fresh tail assertion is part of Lemma~\ref{sgm:md:cm:ratio}.
+The Poisson assertion follows from the Chernoff bound, because its mean
+is $O_K(w)$ and $L_k\asymp_K w^2$.
+Consequently, for any fixed $r,D$,
+\begin{equation}\label{sgm:md:dl:weighted-transfer}
+ \sum_{s\ge0}(1+s)^r|p_{k,c}(s)-\pi_\lambda(s)|
+ \le C_{K,r}w^{2r}\sum_s|p_{k,c}(s)-\pi_\lambda(s)|+o_K(k^{-D}).
+\end{equation}
+For $Y\sim\Poi(\lambda)$,
+\[
+ \E\fall{Y}{2}=\lambda^2,
+ \qquad
+ \operatorname{Var}\!\left(\fall{Y}{2}\right)
+                         =4\lambda^3+2\lambda^2.
+\]
+Use \eqref{sgm:md:dl:weighted-transfer} with $r=2$, then Cauchy--Schwarz and
+\eqref{sgm:md:dl:fresh-tv}, to transfer the resulting $O_K(w^{3/2})$
+centered absolute moment from $Y$ to $S$.
+The transfer error is $O_K(w^{11/2}/k)=o_K(w^{3/2})$.
+Changing the centering from $\lambda^2$ to
+$\E_p\fall{S}{2}$ costs at most the same absolute-moment bound.
+This proves \eqref{sgm:md:dl:centered-factorial}.
+\end{proof}
+
+\subsection{From collisions to a signed law}
+
+\begin{proof}[Proof of \eqref{sgm:md:dl:signed}--\eqref{sgm:md:dl:signed-error}]
+The complement and weighted rotation identities in
+Theorem~\ref{sgm:md:cm:complement} allow the maximum-departure statistic to be
+read from the dominant-root row.  The exceptional contribution of two
+dominant vertices is superpolynomially small.  The exact cancellation
+\[
+ \frac{k}{k-s}\binom{k-1}{s}=\binom{k}{s}
+\]
+then produces precisely the fresh law \eqref{sgm:md:dl:fresh}.
+The order-one local expansion in Lemma~\ref{sgm:md:cm:local}, followed by
+normalization of its total mass, therefore gives
+\begin{align}
+ \nu_{k,c}(s)
+ &=p_{k,c}(s)\{1+G_1(k-s,s;c)-A_1(k,c)\}+u_{k,c}(s),
+ \label{sgm:md:dl:root-law}\\
+ \sum_s|u_{k,c}(s)|&=O_K(w^{16}/k^2).
+\end{align}
+Initially this identity is used on $s\le L_k$; when it is extended to
+all $s\ge0$, its $G_1$ correction is set to zero outside that cutoff.
+All omitted tails can be absorbed into its stated $\ell^1$ error.
+To justify normalization at this
+accuracy, note that $A_1=O_K(w^3/k)$ and the local correction is
+$O_K(w^5/k)$ on the cutoff.  The quadratic errors in expanding the
+normalizing factor are smaller than $w^{16}/k^2$.
+
+The exact first coefficient is
+\[
+ G_1(n,s;c)=\fall{s}{2}\left\{
+   \frac{n-1}{2c(n+1)}\frac{T_{n-1}(c)}{T_n(c)}
+                      +\frac{1+c}{c(n+1)}\right\}.
+\]
+For $n=k-s$, the ratio estimate yields
+\begin{equation}\label{sgm:md:dl:local-g1}
+ G_1(k-s,s;c)=\alpha_*\fall{s}{2}
+ +O_K\!\left(
+  \frac{\fall{s}{2}((s+1)w+w^2)}{k^2}\right),
+ \qquad \alpha_*:=\frac{w+2+2c}{2ck}.
+\end{equation}
+The fresh factorial moments supplied by Lemma~\ref{sgm:md:cm:ratio} imply
+$\E_p S^r=O_{K,r}(w^r)$ for every fixed $r$.
+Averaging the error in \eqref{sgm:md:dl:local-g1} thus costs
+$O_K(w^4/k^2)$.  Subtracting its average in \eqref{sgm:md:dl:root-law} gives
+\[
+ \nu_{k,c}(s)=p_{k,c}(s)
+       \left\{1+\alpha_*\bigl(\fall{s}{2}-m_2\bigr)\right\}
+           +O_{\ell^1,K}(w^{16}/k^2),
+ \qquad m_2=\E_p\fall{S}{2}.
+\]
+Set $\alpha=w/(2ck)=\epsilon/(2\lambda)$.
+By \eqref{sgm:md:dl:centered-factorial}, replacing $\alpha_*$ by $\alpha$
+costs only $O_K(w^{3/2}/k)$ in $\ell^1$.
+This centering is essential: an uncentered bound would lose the precision
+needed for the recentered constant.
+
+Replace $p_{k,c}$ by $\pi_\lambda$ in the resulting expression.
+The constant term costs $O_K(w^{3/2}/k)$ by
+\eqref{sgm:md:dl:fresh-tv}.  For the polynomial term,
+\eqref{sgm:md:dl:weighted-transfer} and
+$|m_2-\lambda^2|\le\sum_s\fall{s}{2}|p_{k,c}(s)-\pi_\lambda(s)|$
+bound the replacement error by $O_K(w^{13/2}/k^2)$, which is absorbed
+by $w^{16}/k^2$.  We have proved
+\begin{equation}\label{sgm:md:dl:falling-signed}
+ \nu_{k,c}(s)=\pi_\lambda(s)
+     \{1+\alpha(\fall{s}{2}-\lambda^2)\}
+       +O_{\ell^1,K}\!\left(w^{3/2}/k+w^{16}/k^2\right).
+\end{equation}
+Finally,
+$\fall{s}{2}-\lambda^2=2\lambda(s-\lambda)+C_2(s;\lambda)$,
+and $2\alpha\lambda=\epsilon$.
+This proves the asserted signed expansion.
+\end{proof}
+
+\subsection{Poisson Taylor expansion and the sharp constants}
+
+For $u>0$, direct differentiation gives
+\begin{equation}\label{sgm:md:dl:poisson-derivatives}
+ \partial_u\pi_u(s)=\frac{s-u}{u}\pi_u(s),\qquad
+ \partial_u^2\pi_u(s)=\frac{C_2(s;u)}{u^2}\pi_u(s).
+\end{equation}
+The exact identity
+$\E[C_2(Y;u)^2]=2u^2$, $Y\sim\Poi(u)$, implies
+\begin{equation}\label{sgm:md:dl:poisson-second}
+ \sum_s|\partial_u^2\pi_u(s)|\le\frac{\sqrt2}{u}.
+\end{equation}
+Consequently, whenever $|v-u|\le u/2$,
+\begin{equation}\label{sgm:md:dl:poisson-taylor}
+ \sum_s\left|\pi_v(s)-\pi_u(s)
+       -\frac{v-u}{u}(s-u)\pi_u(s)\right|
+                      \le C\frac{(v-u)^2}{u}.
+\end{equation}
+
+\begin{proof}[Proof of the remaining assertions of Theorem~\ref{sgm:md:dl:main}]
+Take $u=\lambda$, $v=\theta_0$ in
+\eqref{sgm:md:dl:poisson-taylor}.  Since $\theta_0-\lambda=\lambda\epsilon$,
+its error is
+$O_K(\lambda\epsilon^2)=O_K(w^5/k^2)=o_K(\epsilon)$.
+The linear term cancels exactly with the linear term of
+\eqref{sgm:md:dl:signed}, proving \eqref{sgm:md:dl:recentered-signed}.
+
+Let $Y\sim\Poi(\lambda)$ and $Z_\lambda=(Y-\lambda)/\sqrt\lambda$.
+The Poisson central limit theorem gives $Z_\lambda\Rightarrow Z\sim N(0,1)$,
+and its moment formulas give the uniform integrability needed below.
+In particular,
+\[
+ \frac{1}{\lambda}\E|C_2(Y;\lambda)|
+ =\E\left|Z_\lambda^2-1-\frac{Z_\lambda}{\sqrt\lambda}\right|
+ \longrightarrow\E|Z^2-1|=4\varphi(1).
+\]
+One may check uniform integrability directly from
+$\E(C_2/\lambda)^2=2$.
+For the last equality, use $\E(Z^2-1)=0$ and
+$\int_1^\infty(z^2-1)\varphi(z)\,dz=\varphi(1)$.
+Taking half the $\ell^1$ norm in \eqref{sgm:md:dl:recentered-signed}
+proves \eqref{sgm:md:dl:recentered-tv}.
+
+For the uncentered approximation, the quadratic term in
+\eqref{sgm:md:dl:signed} has $\ell^1$ norm $O_K(\epsilon)$, whereas the linear
+term has norm $\epsilon\E|Y-\lambda|$.
+The identity
+$\E|Y-\lambda|=2\lambda\pi_\lambda(\lfloor\lambda\rfloor)$ and
+Stirling's formula yield
+$\E|Y-\lambda|\sim\sqrt{2\lambda/\pi}$.
+Taking half the norm therefore proves
+\eqref{sgm:md:dl:uncentered-tv}.  All limiting statements are uniform on $K$,
+because $\inf_{c\in K}\lambda\to\infty$.
+\end{proof}
+
+\subsection{Why no other Poisson mean improves the leading error}
+
+\begin{lemma}[Separation of Poisson means]
+\label{sgm:md:dl:separation}
+There are absolute constants $c_0>0$ and $u_0<\infty$ such that, for
+$u\ge u_0$ and every $v\ge0$,
+\begin{equation}\label{sgm:md:dl:separation-bound}
+ \TV\bigl(\Poi(u),\Poi(v)\bigr)
+ \ge c_0\min\left\{1,\frac{|v-u|}{\sqrt u}\right\}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Put $m=\lfloor u\rfloor$ and
+$Q_m(v)=\P(\Poi(v)\le m)$.
+Differentiating the finite sum shows that
+$Q_m'(v)=-\pi_v(m)$ for $v>0$.
+Stirling's formula, uniformly for $|v-u|\le\sqrt u$, gives
+$\pi_v(m)\ge c_0/\sqrt u$ after increasing $u_0$ if necessary.
+Integration proves \eqref{sgm:md:dl:separation-bound} in this interval.
+Outside the interval, the monotonicity of $Q_m$ retains at least the
+difference accumulated between $u$ and the nearer endpoint.
+The event $\{0,\ldots,m\}$ therefore proves the bound for every $v\ge0$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{sgm:md:dl:optimal}]
+For $\theta=\theta_0+t\sqrt\lambda\,\epsilon$ with $|t|\le T$,
+\eqref{sgm:md:dl:poisson-taylor} and \eqref{sgm:md:dl:signed} give
+\begin{equation}\label{sgm:md:dl:profile-signed}
+ \nu_{k,c}(s)-\pi_\theta(s)
+ =\epsilon\pi_\lambda(s)
+   \left\{\frac{C_2(s;\lambda)}{2\lambda}
+                       -t\frac{s-\lambda}{\sqrt\lambda}\right\}
+       +o_{\ell^1,K,T}(\epsilon).
+\end{equation}
+Indeed, the Taylor error is
+$O_{K,T}(\lambda\epsilon^2)=o_K(\epsilon)$.
+The Poisson central limit theorem and the second-moment bounds used
+above identify half the limiting norm as $F(t)$.
+Uniformity for $t$ in compact intervals follows either by the same
+uniform integrability argument or by the Lipschitz estimate
+\[
+ \left|\E|Q_\lambda-tZ_\lambda|
+       -\E|Q_\lambda-t'Z_\lambda|\right|
+ \le |t-t'|\E|Z_\lambda|\le |t-t'|,
+ \quad Q_\lambda=C_2(Y;\lambda)/(2\lambda).
+\]
+This proves \eqref{sgm:md:dl:profile}.
+
+Evenness and convexity of $F$ follow from symmetry and convexity of the
+absolute value.  More explicitly, symmetry of $Z$ gives
+\[
+ F(t)=\frac12\E\max\left\{
+                      \frac{|Z^2-1|}{2},\ |tZ|\right\}.
+\]
+Thus $F(t)\ge F(0)$, and the inequality is strict whenever $t\ne0$:
+a neighborhood of $Z=1$ has positive probability and satisfies
+$|tZ|>|Z^2-1|/2$.
+To obtain \eqref{sgm:md:dl:profile-explicit}, integrate
+$z^2-1-2tz$ between its two roots $u_-(t)$ and $u_+(t)$,
+using its zero Gaussian expectation.  The antiderivatives
+\[
+ \int(z^2-1)\varphi(z)\,dz=-z\varphi(z),\qquad
+ \int z\varphi(z)\,dz=-\varphi(z)
+\]
+give the displayed formula.
+
+It remains to justify the infimum over all means, including means
+outside the scale in \eqref{sgm:md:dl:profile}.
+Theorem~\ref{sgm:md:dl:main} gives a candidate with distance $O_K(\epsilon)$.
+If any other mean $\theta$ has distance at most $C\epsilon$, the triangle
+inequality implies
+\[
+ \TV\bigl(\Poi(\theta),\Poi(\theta_0)\bigr)=O_K(\epsilon).
+\]
+Apply Lemma~\ref{sgm:md:dl:separation} with $u=\theta_0\sim_K\lambda$.
+Since $\epsilon\to0$, it follows that
+\begin{equation}\label{sgm:md:dl:competitive-scale}
+ |\theta-\theta_0|=O_K(\sqrt\lambda\,\epsilon).
+\end{equation}
+Thus every competitive mean lies on the bounded-$t$ scale already
+covered by \eqref{sgm:md:dl:profile}; unbounded scaled shifts and more distant
+means cannot improve the error.
+
+Choose means within $o(\epsilon)$ of the infimum.  By
+\eqref{sgm:md:dl:competitive-scale}, their scaled shifts have convergent
+subsequences.  Every subsequential limit $t$ has limiting normalized
+distance $F(t)\ge F(0)=\varphi(1)$.
+The choice $\theta=\theta_0$ attains this lower bound, proving
+\eqref{sgm:md:dl:optimal-distance}.  The same compactness argument and the
+unique minimizer of $F$ show that asymptotic optimality forces $t\to0$;
+conversely, $t\to0$ implies asymptotic optimality by the uniform profile
+limit.  This proves \eqref{sgm:md:dl:optimal-characterization} and completes
+the proof.
+\end{proof}
+
+The distributional results use only the first collision correction and
+an error bound for the remaining collisions.  The optimality statement
+also explains the limit of changing a single Poisson parameter: it can
+cancel the linear correction, while the quadratic correction has a
+nonzero, explicitly evaluated total variation norm.
+
+\begin{corollary}[A positive approximation with jumps of size two]
+\label{sgm:md:dl:compound}
+Let $Y\sim\Poi(\lambda)$ and $J\sim\Poi(\lambda\epsilon/2)$ be
+independent auxiliary variables, and let $Q_{k,c}$ be the law of $Y+2J$.
+Uniformly for $c\in K$,
+\begin{align}
+ Q_{k,c}(s)
+ &=\pi_\lambda(s)\left\{1+\frac{\epsilon}{2\lambda}
+                \bigl(\fall{s}{2}-\lambda^2\bigr)\right\}
+       +O_{\ell^1,K}\bigl((\lambda\epsilon)^2\bigr),
+       \label{sgm:md:dl:compound-signed}\\
+ \TV(\nu_{k,c},Q_{k,c})
+ &=O_K\left(\frac{w^{3/2}}k+\frac{w^{16}}{k^2}\right)
+   =o_K(\epsilon).\label{sgm:md:dl:compound-tv}
+\end{align}
+The approximating variable has mean $\theta_0$ and variance
+$\lambda+2\lambda\epsilon$.
+\end{corollary}
+
+\begin{proof}
+Put $r=\lambda\epsilon/2$ and interpret $\pi_\lambda(s-2)$ as zero
+for $s<2$.  Conditioning on $J=0,1$, and using
+$\P(J\ge2)\le r^2/2$, gives
+\[
+ \bigl\|Q_{k,c}-(1-r)\pi_\lambda-r\pi_\lambda(\,\cdot-2)\bigr\|_1
+ \le |e^{-r}-1+r|+r|e^{-r}-1|+\P(J\ge2)\le2r^2.
+\]
+Since $\pi_\lambda(s-2)=\fall{s}{2}\pi_\lambda(s)/\lambda^2$,
+this proves \eqref{sgm:md:dl:compound-signed}.  Comparing with
+\eqref{sgm:md:dl:falling-signed} proves \eqref{sgm:md:dl:compound-tv}, because
+$(\lambda\epsilon)^2=O_K(w^6/k^2)$.  Independence of the auxiliary
+variables gives the stated mean $\lambda+2r$ and variance $\lambda+4r$.
+\end{proof}
+% ---- end of 04_deficit_law.tex ----
+\clearpage
+% ---- delivered sections/05_growing_degree.tex ----
+\section{Growing mean degree: a Catalan transition}\label{sgm:md:gd:section}
+
+The fixed-parameter equivalent has a nontrivial transition when the mean
+degree grows.  This section proves that transition directly, including
+the contribution of walks of arbitrary depth.  Throughout, $m_k(c)$ is
+the moment of order $2k$, so that $k$ is the half-length of a walk.
+
+\begin{theorem}[Critical growing-degree asymptotics]\label{sgm:md:gd:main}
+Fix $0<a<b<\infty$.  For each $k$, let $c>0$ and set
+\[
+ w=W(k/c),\qquad \lambda=cw,\qquad u=\frac{\lambda}{\sqrt{k}}.
+\]
+Uniformly over all $c$ for which $a\le u\le b$,
+\begin{equation}\label{sgm:md:gd:equivalent}
+ \frac{m_k(c)}{2H_k(c)}
+ =\exp\!\left(\frac{c^2w^2}{k}\right)
+ \left\{1+O_{a,b}\!\left(
+      \frac{\log^{13/4}k}{k^{1/4}}\right)\right\}.
+\end{equation}
+Consequently, if $c_kW(k/c_k)/\sqrt{k}\to u_0\in(0,\infty)$, then
+\[
+ \frac{m_k(c_k)}{2H_k(c_k)}\longrightarrow e^{u_0^2}.
+\]
+In particular, for every fixed $\beta>0$,
+\begin{equation}\label{sgm:md:gd:beta}
+ c_k=\frac{\beta\sqrt{k}}{\log k}
+ \quad\Longrightarrow\quad
+ \frac{m_k(c_k)}{2H_k(c_k)}\longrightarrow e^{\beta^2/4}.
+\end{equation}
+\end{theorem}
+
+Here and below an implicit constant can depend on $a,b$.  The identity
+$we^w=k/c$ gives the useful exact relations
+\begin{equation}\label{sgm:md:gd:scales}
+ w=\log(k/\lambda)=\tfrac12\log k-\log u,
+ \qquad c=\frac{u\sqrt{k}}{w}.
+\end{equation}
+Thus $w\asymp\log k$ and $c\asymp\sqrt{k}/\log k$ throughout the
+uniform range.  The proof uses
+\begin{equation}\label{sgm:md:gd:S}
+ S=\left\lceil\sqrt{k}\,\log^{1/10}k\right\rceil.
+\end{equation}
+The error in \eqref{sgm:md:gd:equivalent} is deliberately conservative.  Its
+purpose is to provide a proved vanishing bound in the critical regime;
+it is not asserted to be the first neglected asymptotic term.
+
+\subsection{Uniform Poisson estimates}
+
+We record the uniform estimates needed below, including their elementary
+justification.  Write $w_j=W(j/c)$.  For $k^{2/3}\le j\le k+1$,
+$w_j\asymp\log k$.  Uniformly in this range,
+\begin{align}
+ \log T_j(c)
+ &=j\log(j/w_j)-j+j/w_j-c+O(\log k),\label{sgm:md:gd:Touchardlog}\\
+ \frac{T_{j+1}(c)}{T_j(c)}
+ &=\frac{j}{w_j}\{1+O(j^{-1/2})\},\qquad
+ \frac{T_{j-1}(c)}{T_j(c)}
+ =\frac{w_j}{j}\{1+O(j^{-1/2})\}.\label{sgm:md:gd:Touchardratio}
+\end{align}
+To see this, use the positive Dobinski summands
+\[
+ a_r=e^{-c}\frac{c^r r^j}{r!},\qquad
+ \log\frac{a_{r+1}}{a_r}
+ =\log c-\log(r+1)+j\log(1+1/r).
+\]
+Put $y=j/w_j$.  The logarithmic ratio at $r=y$ is $O(w_j^2/j)$.
+Its derivative, for real $r>0$, is
+\[
+ -\frac1{r+1}-\frac{j}{r(r+1)}.
+\]
+On $[y/2,2y]$ its magnitude is bounded above and below by positive
+constant multiples of $w_j^2/j$.  The mode is therefore within $O(1)$
+of $y$, and summing the ratios gives Gaussian bounds on that interval,
+with scale $\sqrt{j}/w_j$.  Outside the interval the monotonicity of the
+ratio gives geometric tails after an $\exp\{-\Omega(j)\}$ loss.
+In particular, under the $r^j$-tilted Poisson law,
+\[
+ \E|r-y|=O(\sqrt{j}/w_j),\qquad
+ \E r=y\{1+O(j^{-1/2})\},\qquad
+ \E(1/r)=y^{-1}\{1+O(j^{-1/2})\}.
+\]
+The inverse is used only on $r\ge1$, since the tilted mass at zero
+vanishes.  These estimates prove \eqref{sgm:md:gd:Touchardratio}.
+For \eqref{sgm:md:gd:Touchardlog}, a single summand with $r$ an integer nearest
+to $y$ gives the lower bound by Stirling's formula.  The positive-radius
+coefficient bound for $\exp(c(e^z-1))$ at $z=w_j$ gives the upper bound.
+Their logarithms differ by $O(\log k)$.
+
+The same ratio argument applies to the shifted tilt defining $H_k(c)$.
+It will be convenient to state its consequences as a lemma.
+
+\begin{lemma}[Critical fresh deficit law]\label{sgm:md:gd:deficit}
+The masses
+\begin{equation}\label{sgm:md:gd:pk}
+ p_k(s)=\frac{\binom{k}{s}c^sT_{k-s}(c)}{H_k(c)},
+ \qquad 0\le s\le k,
+\end{equation}
+sum to one.  If $Z$ has this distribution, then
+\begin{equation}\label{sgm:md:gd:deficitL1}
+ \E|Z-\lambda|=O(k^{1/4}).
+\end{equation}
+There are constants $K,\eta>0$, depending only on $a,b$, such that
+\begin{equation}\label{sgm:md:gd:deficittail}
+ \P(Z>K\sqrt{k})\le e^{-\eta\sqrt{k}}
+\end{equation}
+for all sufficiently large $k$.
+\end{lemma}
+\begin{proof}
+Tilt $X\sim\Poi(c)$ by $(X+c)^k/H_k(c)$ and, conditionally on $X$,
+take $Z\sim\operatorname{Bin}(k,c/(X+c))$.  Expanding the binomial gives
+\eqref{sgm:md:gd:pk} exactly.  Put $x_0=k/w$.  The tilted summands have ratio
+\[
+ \frac{c}{r+1}\left(1+\frac1{r+c}\right)^k.
+\]
+The derivative of its logarithm is
+\[
+ -\frac1{r+1}-\frac{k}{(r+c)(r+c+1)}.
+\]
+At $r=x_0$ the logarithm is $O(cw^2/k)$; on
+$[x_0/2,2x_0]$ the derivative has magnitude comparable to $w^2/k$.
+The mode is within $O(c+1)$ of $x_0$.  The same summation of ratios as
+above, with \eqref{sgm:md:gd:scales}, gives
+\begin{equation}\label{sgm:md:gd:shiftedconcentration}
+ \E|X-x_0|=O(\sqrt{k}/w),\qquad
+ \P(X<x_0/2)\le e^{-\eta_0 k}
+\end{equation}
+for some $\eta_0>0$.  This argument also controls the corresponding
+first moments on the exceptional tail.
+
+Let $\Lambda_X=kc/(X+c)$, the conditional binomial mean.  On
+$X\ge x_0/2$,
+\[
+ |\Lambda_X-\lambda|
+ \le \frac{Ccw^2}{k}\bigl(|X-x_0|+c\bigr).
+\]
+Equations \eqref{sgm:md:gd:scales} and \eqref{sgm:md:gd:shiftedconcentration}, together
+with $0\le\Lambda_X\le k$ on the exceptional event, show that
+$\E|\Lambda_X-\lambda|=O(1)$ and $\E\Lambda_X=O(\sqrt{k})$.
+Conditional variance and Cauchy--Schwarz now give
+\[
+ \E|Z-\lambda|
+ \le \sqrt{\E\Lambda_X}+\E|\Lambda_X-\lambda|
+ =O(k^{1/4}).
+\]
+On $X\ge x_0/2$, the conditional mean is at most $2b\sqrt{k}$.
+Choose, for example, $K>8b+1$ and apply the binomial Chernoff bound.
+Combining it with the exceptional probability in
+\eqref{sgm:md:gd:shiftedconcentration} proves \eqref{sgm:md:gd:deficittail}.
+\end{proof}
+
+\subsection{Plane forests and an improved allocation bound}
+
+Let
+\[
+ C(z)=\frac{1-\sqrt{1-4z}}{2z},\qquad
+ f_q(t)=[z^t]C(z)^q
+       =\frac{q}{q+2t}\binom{q+2t}{t}
+ \quad(q\ge1,t\ge0).
+\]
+The expression at $t=0$ is one.  A segmented child walk with $q$
+segments and $t$ interior edge pairs has one of these $f_q(t)$
+root-distance paths.  Requiring every interior edge to be new gives
+exactly $c^tf_q(t)$ weighted walks.  More generally, at the $i$th
+outward step there are at most $i-1$ previously discovered child choices,
+and a new child has weight $c$.  Consequently
+\begin{equation}\label{sgm:md:gd:branchsandwich}
+ c^tf_q(t)\le E_{t,q}(c)
+ \le f_q(t)\rise{c}{t}
+ =c^tf_q(t)v_t,
+ \qquad v_t=\frac{\rise{c}{t}}{c^t}.
+\end{equation}
+The weighted choice bound is applied to each prescribed root-distance
+path.  It counts a new edge once, at its first outward traversal; inward
+steps are forced.  The $q$ ordered closed segments are already part of
+the path, so no additional labeling or cutting factor occurs.
+
+For a partition $\pi$ of $[n]$, let $q_b$ denote its block sizes and
+$A=\max_bq_b$.  The exact partition decomposition and
+\eqref{sgm:md:gd:branchsandwich} imply that the root count contributed by this
+partition lies between
+\[
+ c^{|\pi|+s}f_n(s)
+ \quad\hbox{and}\quad
+ c^{|\pi|+s}
+ \sum_{\sum t_b=s}\prod_b f_{q_b}(t_b)v_{t_b}.
+\]
+The first expression follows from $\prod_b C(z)^{q_b}=C(z)^n$.
+In particular the exact weighted count with all off-root edges simple is
+\begin{equation}\label{sgm:md:gd:freshroot}
+ F^{\mathrm{pl}}_{n+s,n}(c)=T_n(c)c^sf_n(s).
+\end{equation}
+
+The following bound retains the factor $1/c$ in the cost of reusing an
+interior edge.  That factor is essential when $c$ grows.
+
+\begin{lemma}[Forest allocation bound]\label{sgm:md:gd:allocation}
+For every partition of $[n]$, every $s\ge0$, and every $c>0$,
+\begin{equation}\label{sgm:md:gd:allocationbound}
+ \frac{\displaystyle\sum_{\sum t_b=s}\prod_b f_{q_b}(t_b)v_{t_b}}
+      {f_n(s)}
+ \le
+ \exp\!\left\{
+ \frac{s(s-1)}{2n}
+ +\frac{A s(s-1)}{2cn}
+ +\frac{4s^3}{3cn}\right\}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+An exact coefficient ratio is
+\begin{equation}\label{sgm:md:gd:aratio}
+ a(q,t):=\frac{(t+1)f_q(t+1)}{f_q(t)}
+ =q+3t+\frac{t(t-1)}{q+t+1}.
+\end{equation}
+In particular $q+3t\le a(q,t)\le q+4t$.
+Expand $s!\sum_{\sum t_b=s}\prod_bf_{q_b}(t_b)v_{t_b}$ as a sum over
+all ordered sequences of $s$ selections of blocks.  When a block already
+selected $t$ times is selected again, its multiplicative factor is
+$a(q,t)(1+t/c)$.  This expansion is exact: summing over the
+$s!/\prod_b t_b!$ orders produces the desired factorial factors.
+After $j$ selections the sum of all possible next factors is at most
+\[
+ \sum_b(q_b+4t_b)(1+t_b/c)
+ \le n+4j+\frac{Aj+4j^2}{c}.
+\]
+On the other hand,
+$s!f_n(s)=\prod_{j=0}^{s-1}a(n,j)\ge\prod_{j=0}^{s-1}(n+3j)$.
+Taking the quotient of these product bounds and using
+$\log(1+x)\le x$ proves
+\[
+ \log\frac{\sum\prod_b f_{q_b}(t_b)v_{t_b}}{f_n(s)}
+ \le\sum_{j<s}\frac{j+Aj/c+4j^2/c}{n+3j},
+\]
+which implies \eqref{sgm:md:gd:allocationbound}.
+\end{proof}
+
+Give partitions of $[n]$ probability $c^{|\pi|}/T_n(c)$, and denote
+expectations by $\E_{n,c}$.  For $n\ge k/2$, the adjacent ratio bound
+\eqref{sgm:md:gd:Touchardratio} gives
+\begin{equation}\label{sgm:md:gd:blockcount}
+ \E_{n,c}\#\{b:|b|=q\}
+ =c\binom nq\frac{T_{n-q}(c)}{T_n(c)}
+ \le c\frac{(C_0\log k)^q}{q!},\qquad q\le n/2.
+\end{equation}
+For $q>n/2$, retain the first $\lfloor n/2\rfloor$ adjacent ratios.
+The remaining ratios have product at most one: $T_j(c)$ is increasing
+in $j$ when $c\ge1$.  It follows that, uniformly for
+$0\le\theta\le0.01\log k$,
+\begin{equation}\label{sgm:md:gd:blockmgf}
+ \log\E_{n,c}e^{\theta A}
+ \le C_1e^\theta\log k+C_1\log k.
+\end{equation}
+Indeed, $e^{\theta A}\le1+\sum_b e^{\theta|b|}$, and the part with
+$q>n/2$ is at most
+$c(1+e^\theta)^n(C_0\log k/k)^{\lfloor n/2\rfloor}
+ =\exp\{-\Omega(k\log k)\}$.
+The same estimates show that, for $B=\lceil\log^2k\rceil$ and
+$\theta=o(1)$,
+\begin{equation}\label{sgm:md:gd:blocktail}
+ \E_{n,c}[e^{\theta A};A>B]
+ \le\exp\{-\Omega(\log^2k\log\log k)\}.
+\end{equation}
+For the latter estimate use
+$e^{\theta A}\mathbf1_{A>B}\le\sum_{|b|>B}e^{\theta|b|}$ in
+\eqref{sgm:md:gd:blockcount}.  Thus these are weighted tail estimates, not
+only estimates of the probability of a large block.
+
+\subsection{The entire near-hub window is asymptotically planar}
+
+\begin{lemma}[Uniform near-hub estimate]\label{sgm:md:gd:rootwindow}
+For $0\le s\le S$ and $n=k-s$,
+\begin{equation}\label{sgm:md:gd:rootapprox}
+ F_{k,n}(c)=T_n(c)c^sf_n(s)
+ \left\{1+O\!\left(k^{-1/4}\log^{13/4}k\right)\right\},
+\end{equation}
+uniformly in the critical parameter range.
+\end{lemma}
+\begin{proof}
+The lower bound is \eqref{sgm:md:gd:freshroot}.  First fix a partition with
+$A\le B=\lceil\log^2k\rceil$.  Put $\alpha=1+s/c$.  For $t\le s$,
+telescoping the product defining $v_t$ gives
+\begin{equation}\label{sgm:md:gd:vtminus}
+ 0\le v_t-1\le\frac{t(t-1)}{2c}\alpha^{t-2}.
+\end{equation}
+For example, one expands the difference of the product and one by
+changing the factors one at a time, and bounds every unchanged
+nonunit factor by $\alpha$.  Their linear increments sum to
+$t(t-1)/(2c)$.
+
+Let
+\[
+ g_q(z)=C(z)^q+\sum_{t=2}^{s}f_q(t)(v_t-1)z^t.
+\]
+Up to the coefficient of $z^s$, this majorizes the normalized branch
+series in \eqref{sgm:md:gd:branchsandwich}.  It also majorizes $C(z)^q$
+coefficientwise.  For positive $z$,
+\[
+ 0\le g_q(z)-C(z)^q
+ \le\frac{z^2}{2c}
+       \left.\frac{d^2}{dy^2}C(y)^q\right|_{y=\alpha z}.
+\]
+For $s\ge1$ use the exact Catalan saddle
+\begin{equation}\label{sgm:md:gd:catsaddle}
+ z_* =\frac{s(n+s)}{(n+2s)^2},\qquad
+ C(z_*)=\frac{n+2s}{n+s}.
+\end{equation}
+Here $z_*\asymp s/n$, $\alpha z_*=o(1)$, and
+$B\alpha z_*=o(1)$ uniformly for $s\le S$.
+The first two derivatives of $\log C(y)$ are bounded for
+$0\le y\le1/8$, so
+\[
+ \frac{g_q(z_*)}{C(z_*)^q}
+ \le1+\frac{C_2q(q+1)z_*^2}{c},\qquad q\le B.
+\]
+Since $\sum_b q_b(q_b+1)\le(B+1)n$, coefficient positivity yields
+\begin{equation}\label{sgm:md:gd:positiveerror}
+ [z^s]\left(\prod_b g_{q_b}(z)-C(z)^n\right)
+ \le z_*^{-s}C(z_*)^n\bigl(e^\Delta-1\bigr),\qquad
+ \Delta=O\!\left(\frac{B s^2}{nc}\right).
+\end{equation}
+There is a uniform constant $C_3>0$ such that
+\begin{equation}\label{sgm:md:gd:catlocalmass}
+ f_n(s)z_*^sC(z_*)^{-n}\ge\frac{C_3}{\sqrt{s+1}}.
+\end{equation}
+For completeness, the left side is exactly
+\[
+ \frac{n}{n+2s}\binom{n+2s}{s}
+ \left(\frac{s}{n+2s}\right)^s
+ \left(\frac{n+s}{n+2s}\right)^{n+s}.
+\]
+This is $n/(n+2s)$ times a binomial probability at its mean, and
+Stirling's upper and lower factorial bounds prove
+\eqref{sgm:md:gd:catlocalmass}.  It holds uniformly since $s=o(n)$.
+The cases $s=0,1$ are exact and can be handled separately.
+
+Dividing \eqref{sgm:md:gd:positiveerror} by $f_n(s)$ gives, for every good
+partition, a relative error at most
+\[
+ O\!\left(\sqrt{s+1}\,\frac{B s^2}{nc}\right)
+ =O\!\left(k^{-1/4}\log^{13/4}k\right).
+\]
+The exponent $13/4=2+1+\tfrac52\cdot\tfrac1{10}$ comes from $B$,
+the factor $1/c$, and the powers of $s$.
+
+For $A>B$, apply Lemma~\ref{sgm:md:gd:allocation} before averaging over
+partitions.  In this window,
+\[
+ \theta=\frac{s(s-1)}{2cn}=O(k^{-1/2}\log^{6/5}k)=o(1),\qquad
+ \frac{s(s-1)}{2n}+\frac{4s^3}{3cn}=O(\log^{13/10}k).
+\]
+Equation~\eqref{sgm:md:gd:blocktail} therefore makes the entire bad-partition
+contribution smaller than every fixed negative power of $k$, relative
+to $T_n(c)c^sf_n(s)$.  Combining the two parts proves
+\eqref{sgm:md:gd:rootapprox}.
+\end{proof}
+
+\subsection{Control of the full complement}
+
+The near-hub estimate is not by itself a full-moment theorem.  We next
+prove the uniform estimate that permits its use for $m_k(c)$.
+
+\begin{lemma}[Critical complement]\label{sgm:md:gd:complement}
+Let $\mathcal U_{k,S}$ be the walks with a vertex having at least $k-S$
+departures, and let the weight of a set of walks be the sum of
+$c^{\#\text{edges}}$ over it.  For every fixed $D>0$,
+\begin{equation}\label{sgm:md:gd:complementbound}
+ \operatorname{wt}_c(\Wc_k\setminus\mathcal U_{k,S})
+ =o(k^{-D}H_k(c)),
+\end{equation}
+uniformly in the critical range.
+\end{lemma}
+\begin{proof}
+Set
+\begin{equation}\label{sgm:md:gd:cuts}
+ h=\left\lfloor\frac{k}{64\log k}\right\rfloor,
+ \qquad L=\frac1{100}\sqrt{ck\log k}.
+\end{equation}
+Then $S\ll L\asymp k^{3/4}\ll h$, and $c=o(h)$.
+
+\paragraph{The high-root shoulder.}
+Let $S\le s\le L$ and $n=k-s$.  The exact quotient
+\begin{equation}\label{sgm:md:gd:Q}
+ Q(k,s):=\frac{f_n(s)}{\binom{k-1}{s}}
+ =\prod_{j=1}^{s-1}\left(1+\frac{s}{n+j}\right)
+ =\prod_{j=1}^{s-1}\frac{k+j}{k-j}
+\end{equation}
+has the empty-product value one for $s=0,1$, and
+$\log Q(k,s)\le s(s-1)/(n+1)$.
+The partition decomposition, Lemma~\ref{sgm:md:gd:allocation}, and
+\eqref{sgm:md:gd:Touchardratio} consequently give
+\begin{align}
+ \log\frac{F_{k,k-s}(c)}{T_k(c)}
+ &\le -s\log\frac{s}{cw}+O(s)
+       +\frac{3s^2}{2n}+\frac{4s^3}{3cn}
+       +\log\E_{n,c}e^{\theta A},\label{sgm:md:gd:shoulderstart}\\
+ \theta&=\frac{s(s-1)}{2cn}.
+\end{align}
+Here the fresh term was bounded using
+$\binom{k-1}{s}c^sT_{k-s}(c)/T_k(c)\le(Ccw/s)^s$.
+Put $J(s)=s\log(s/(cw))$.  Uniformly over this shoulder,
+$O(s)=o(J)$ because $S/(cw)\to\infty$, and $s^2/n=o(J)$.
+The function $s^2/\log(s/(cw))$ is increasing once
+$\log(s/(cw))>1/2$.  At the upper endpoint,
+\[
+ \frac{\frac43 L^3/(c(k-L))}{J(L)}
+ \longrightarrow\frac{16}{3\cdot100^2}<\frac1{100}.
+\]
+Thus the cubic term in \eqref{sgm:md:gd:shoulderstart} is at most $J/100$
+eventually.  Also $\theta\le0.001\log k$ eventually, so
+\eqref{sgm:md:gd:blockmgf} gives
+$\log\E e^{\theta A}=O(k^{0.001}\log k)=o(J)$.
+We obtain
+\begin{equation}\label{sgm:md:gd:shoulder}
+ \frac{F_{k,k-s}(c)}{H_k(c)}\le e^{-J(s)/2},
+ \qquad S\le s\le L,
+\end{equation}
+using $H_k(c)\ge T_k(c)$.  The sum of these bounds, even after a
+polynomial factor, is smaller than $k^{-D}$ for every fixed $D$.
+
+\paragraph{The intermediate return range.}
+Now let $m+s=k$, $m\ge h$, and $s\ge L$.  Define
+\[
+ \operatorname{Ent}(m,s)=k\log k-m\log m-s\log s.
+\]
+We shall prove
+\begin{equation}\label{sgm:md:gd:intermediate}
+ \frac{F_{k,m}(c)}{H_k(c)}
+ \le\exp\{-\operatorname{Ent}(m,s)/2\}.
+\end{equation}
+The coefficientwise Bauer--Golinelli bound~\cite{bg}, applied to the positive
+edge weights, gives
+\[
+ T_t(c)\le m_t(c)\le T_t(4c).
+\]
+The same positive-radius estimate used in
+\eqref{sgm:md:gd:Touchardlog} gives, for $t\ge L$,
+\begin{equation}\label{sgm:md:gd:envelope}
+ m_t(c)\le T_t(c)
+ \exp\{3t/W(t/c)+O(\log k)\}.
+\end{equation}
+For smaller indices we use the direct path bound
+\begin{equation}\label{sgm:md:gd:roughmoment}
+ m_t(c)\le\Cat_t\rise{c}{t}\le4^{t-1}\rise{c}{t}
+ \quad(t\ge1),\qquad m_1(c)=c.
+\end{equation}
+Finally, the moment identification and H\"older's inequality give
+$m_t(c)\le m_s(c)^{t/s}$ for $0\le t\le s$.
+Each assertion concerns finitely many moments at each selected value
+of $c$; no graph-size limit is interchanged with $k\to\infty$.
+
+For a fixed target $s$, truncate each branch to $t\le s$.
+The labeled-partition formula and positivity give, for $x,z>0$,
+\begin{equation}\label{sgm:md:gd:finitecauchy}
+ F_{m+s,m}(c)
+ \le m!x^{-m}z^{-s}
+ \exp\!\left\{c(e^x-1)
+       +c\sum_{t=1}^s m_t(c)z^t\mathcal A_t(x)\right\},
+\end{equation}
+where
+\[
+ \mathcal A_t(x)
+ =e^x\sum_{j=1}^t\binom{t-1}{j-1}\frac{x^j}{j!}
+ \le e^xx(1+x)^{t-1},\qquad
+ \mathcal A_t(x)\le e^x e^{2\sqrt{tx}}.
+\]
+These are finite coefficient majorants.  In particular, evaluating
+\eqref{sgm:md:gd:finitecauchy} does not assume convergence of the ordinary
+moment series.
+
+Choose
+\[
+ x=W(m/c),\quad \epsilon=\frac{m}{8k},\quad \eta=1-\epsilon,
+ \quad z=\eta m_s(c)^{-1/s},\quad
+ T=\left\lceil\frac{64\log k}{\epsilon^2}\right\rceil.
+\]
+Then $T=O(\log^3k)=o(c)$, $T<s$, and
+$z\le C W(s/c)/s\le C\log k/s$.
+For $t>T$, H\"older's inequality and the second bound for
+$\mathcal A_t$ imply
+\[
+ c\sum_{t>T}^s m_t(c)z^t\mathcal A_t(x)
+ \le ce^x\sum_{t>T}e^{-\epsilon t/2}=O(k^{-10}).
+\]
+For $t\le T$, \eqref{sgm:md:gd:roughmoment} gives
+$m_t(c)\le4^{t-1}c(c+T)^{t-1}$.  Since $cxe^x=m$,
+\[
+ c\sum_{t=1}^T m_t(c)z^t\mathcal A_t(x)
+ \le mc z\sum_{t=1}^T
+       \{4(c+T)(1+x)z\}^{t-1}
+ =mc z\{1+o(1)\}.
+\]
+The last equality is uniform: its geometric ratio is at most
+$C c\log^2 k/L=O(k^{-1/4}\log k)$.
+Comparing the $x$-part of the Cauchy bound with $T_m(c)$ by
+\eqref{sgm:md:gd:Touchardlog} yields
+\begin{equation}\label{sgm:md:gd:masterentropy}
+ \log\frac{F_{k,m}(c)}{T_k(c)}
+ \le\log\frac{T_m(c)m_s(c)}{T_k(c)}
+    -s\log\eta+O(\log k)+mc z\{1+o(1)\}.
+\end{equation}
+
+For clarity, the required cancellation in the Touchard terms is
+uniform:
+\begin{equation}\label{sgm:md:gd:entropy}
+ \log\frac{T_m(c)T_s(c)}{T_k(c)}
+ =-\{1+o(1)\}\operatorname{Ent}(m,s).
+\end{equation}
+Here is a direct verification.  Put $p=\min(m,s)$ and $q=k-p$.
+Use \eqref{sgm:md:gd:Touchardlog} for $T_p(c)$ and sum the adjacent logarithmic
+ratios \eqref{sgm:md:gd:Touchardratio} only from $q$ to $k-1$.  This gives
+\[
+ \log\frac{T_p(c)T_q(c)}{T_k(c)}
+ =-\operatorname{Ent}(m,s)
+   +p\log\frac{w_k}{w_p}+O(p/w_p+c+\log k)+o(p).
+\]
+The derivative of $\log W(t/c)$ with respect to $\log t$ is
+$1/(1+W(t/c))$, so
+\[
+ 0\le p\log(w_k/w_p)
+ \le \frac{p\log(k/p)}{1+w_p}
+ \le\frac{\operatorname{Ent}(m,s)}{1+w_p}.
+\]
+In this range $p\ge L\asymp k^{3/4}$, $w_p\asymp\log k$, and
+$c=o(p)$.  The remaining errors are $o(\operatorname{Ent})$,
+proving \eqref{sgm:md:gd:entropy}.
+
+The envelope loss $3s/W(s/c)+O(\log k)$ in
+\eqref{sgm:md:gd:envelope} is also $o(\operatorname{Ent})$.
+For $s\le k/2$ use $\operatorname{Ent}\ge s\log2$.
+For $s>k/2$, use $m\ge h$ and
+$\operatorname{Ent}\ge m\log(k/m)
+ \ge C k\log\log k/\log k$.
+Moreover
+\[
+ -s\log\eta\le\frac{ms}{7k}
+ \le\frac{\operatorname{Ent}(m,s)}{14}.
+\]
+Finally, $mc z=o(\operatorname{Ent})$ uniformly.
+For $L\le s\le k^{7/8}$ use
+\[
+ \frac{mc z}{\operatorname{Ent}}
+ \le\frac{Cck\log k}{s^2\log(k/s)}
+ \le\frac{Cck}{L^2}=O(1/\log k).
+\]
+For $k^{7/8}\le s\le k/2$, the bound
+$Cck\log k/s^2=O(k^{-1/4})$ suffices.  For $s>k/2$, use
+$mc z/\operatorname{Ent}\le Cc\log k/k=o(1)$.
+Thus \eqref{sgm:md:gd:masterentropy} is at most
+$-(13/14-o(1))\operatorname{Ent}$, proving
+\eqref{sgm:md:gd:intermediate}.  Since there are at most $k$ such entries,
+their sum with rotation weights $2k/m\le2k/h$ is superpolynomially
+small relative to $H_k(c)$.
+
+\paragraph{The maximum-departure split.}
+If every vertex of the walk has at most $h$ departures, then at each
+outward step the total weight of old-child choices and the possible
+new child is at most $h+c$.  There are $\Cat_k$ root-distance paths,
+so the weight of this class is at most $[4(h+c)]^k$.
+Equations \eqref{sgm:md:gd:Touchardlog} and \eqref{sgm:md:gd:scales} show
+\[
+ \frac{[4(h+c)]^k}{T_k(c)}
+ \le \exp\{-(\log32-1+o(1))k\}.
+\]
+Every remaining walk outside $\mathcal U_{k,S}$ has a vertex with
+departure count between $h$ and $k-S$.  The weighted rotation identity
+covers its weight by
+\[
+ \sum_{h<m<k-S}\frac{2k}{m}F_{k,m}(c).
+\]
+The shoulder \eqref{sgm:md:gd:shoulder} and the intermediate bound
+\eqref{sgm:md:gd:intermediate} cover this entire interval.  Together with
+the low-maximum bound they prove \eqref{sgm:md:gd:complementbound}.
+\end{proof}
+
+\subsection{Completion of the transition theorem}
+
+\begin{proof}[Proof of Theorem~\ref{sgm:md:gd:main}]
+For large $k$, $k-S>k/2$.  A walk has at most two vertices with at
+least $k-S$ departures; if two exist, they are adjacent, and their
+joining edge has multiplicity at least $k-2S$.  Deleting its traversals
+leaves two segmented child walks of total half-length at most $2S$.
+The usual root-distance bound and an overcount of the possible origins
+therefore bound the weight of this double-hub class by
+\[
+ 2k(2S+1)^2(4k)^{2S}c^{2S+1}
+ =\exp\{O(S\log k)\}.
+\]
+Here the factor $c^{2S+1}$ is valid because $c\ge1$ and the entire
+walk uses at most $2S+1$ distinct edges.  This bound is
+$o(k^{-D}H_k(c))$ for every fixed $D$.
+The weighted rotation identity and Lemma~\ref{sgm:md:gd:complement} imply
+\begin{equation}\label{sgm:md:gd:rotationreduction}
+ \frac{m_k(c)}{2H_k(c)}
+ =\frac1{H_k(c)}\sum_{s=0}^S\frac{k}{k-s}F_{k,k-s}(c)
+   +o(k^{-D}).
+\end{equation}
+Rotation does not change the edge weight, so this identity has precisely
+the same indexed-orbit justification as in the fixed-parameter case.
+
+Insert Lemma~\ref{sgm:md:gd:rootwindow} and use the exact cancellation
+\[
+ \frac{k}{k-s}\binom{k-1}{s}=\binom{k}{s}.
+\]
+With $p_k$ from \eqref{sgm:md:gd:pk} and $Q$ from \eqref{sgm:md:gd:Q}, this gives
+\begin{equation}\label{sgm:md:gd:sumQ}
+ \frac{m_k(c)}{2H_k(c)}
+ =\left\{1+O(k^{-1/4}\log^{13/4}k)\right\}
+   \sum_{s=0}^S p_k(s)Q(k,s)+o(k^{-D}).
+\end{equation}
+For $s\le S$, the symmetric final product in \eqref{sgm:md:gd:Q} gives
+\begin{equation}\label{sgm:md:gd:Qasymptotic}
+ \log Q(k,s)
+ =\frac{s(s-1)}k+
+   \frac{s^2(s-1)^2}{6k^3}+O(s^6/k^5).
+\end{equation}
+Indeed, expand $\log((1+x)/(1-x))=2\sum_{r\ge0}x^{2r+1}/(2r+1)$
+and use the sums of the first and third powers of $1,\ldots,s-1$;
+the remaining series is absolutely bounded by $O(s^6/k^5)$.
+For $s\le K\sqrt{k}$, replacing this expression by $s^2/k$ costs
+$O(k^{-1/2})$, and
+$x\mapsto\exp(x^2/k)$ has derivative $O(k^{-1/2})$ on this interval.
+Lemma~\ref{sgm:md:gd:deficit} therefore implies
+\[
+ \sum_{s\le K\sqrt{k}}p_k(s)Q(k,s)
+ =\exp(\lambda^2/k)+O(k^{-1/4}).
+\]
+For $K\sqrt{k}<s\le S$, use
+$Q(k,s)\le\exp\{O(\log^{1/5}k)\}$ and
+\eqref{sgm:md:gd:deficittail}; this part is smaller than every negative
+power of $k$.  Thus the sum in \eqref{sgm:md:gd:sumQ} is
+$\exp(\lambda^2/k)+O(k^{-1/4})$ and is bounded above and below by
+positive constants.  Equation~\eqref{sgm:md:gd:equivalent} follows.
+The limit \eqref{sgm:md:gd:beta} follows from
+$W(k/c_k)/\log k\to1/2$.
+\end{proof}
+
+The proof gives an additional structural consequence.  Let
+$\mathcal V_{k,S}$ consist of walks with a vertex having at least
+$k-S$ departures and with every edge not incident to that vertex
+traversed exactly once in each direction.  The fresh count
+\eqref{sgm:md:gd:freshroot}, the double-hub estimate, and
+Lemma~\ref{sgm:md:gd:rootwindow} imply
+\begin{corollary}[Simple off-hub edges dominate]\label{sgm:md:gd:simpledominance}
+Uniformly in the regime of Theorem~\ref{sgm:md:gd:main},
+\[
+ \frac{\operatorname{wt}_c(\Wc_k\setminus\mathcal V_{k,S})}{m_k(c)}
+ =O(k^{-1/4}\log^{13/4}k).
+\]
+In particular the entire critical exponential multiplier is obtained
+from a class with no repeated off-hub edge.
+\end{corollary}
+
+The source of the multiplier is the finite Catalan quotient
+\eqref{sgm:md:gd:Q}.  Its logarithm is $s^2/k+o(1)$, while the fresh deficit
+is $s=cw+O_{L^1}(k^{1/4})$.  Hence this quotient tends to
+$\exp(c^2w^2/k)$.  At the same scale, the fixed-parameter repeated-edge
+quantity $cw^3/k$ is $O(\log^2k/\sqrt{k})$ and tends to zero.
+The growing-degree transition therefore has a precise combinatorial
+description: fresh planar interiors alter the full moment by a finite
+factor even while repeated off-hub edges carry a vanishing fraction of
+its weight.
+% ---- end of 05_growing_degree.tex ----
+% ---- delivered sections/06_verification.tex ----
+\section{Exact checks, numerical diagnostics, and reproducibility}
+\label{sgm:md:sec:verification}
+
+The accompanying computations have three distinct purposes. Exact
+enumeration tests the combinatorial identities at finite sizes.
+Symbolic algebra checks the low collision polynomials and their
+normalizations. Floating-point diagnostics illustrate the scales in
+the theorems and expose slow onset. None of these calculations replaces
+the analytic estimates proved above.
+
+\subsection{Independent exact enumeration}
+
+The program \texttt{code/verify\_exact.py} implements
+Proposition~\ref{sgm:md:def:recurrence} using integers for the rational
+parameters $c=1/2,1,2$. Separately, it enumerates normalized words
+directly by depth-first search. At every step it either follows an
+existing tree edge or creates the next fresh vertex. A word is retained
+only when it closes at the required length. The direct enumerator does
+not use the recurrence, a partition decomposition, or the Catalan
+formula.
+
+The recorded run computes all rooted rows through $k=128$ and directly
+enumerates all $12{,}850$ words at half-lengths $1\le k\le7$. It checks:
+\begin{itemize}
+ \item $84$ weighted root-departure row identities against the recurrence;
+ \item $84$ weighted simple-off-root forest identities at the three
+       rational parameters, and $168$ coefficientwise identities for
+       that class, using its directly counted edge numbers;
+ \item $21$ weighted change-of-root identities, including all periodic
+       words present in the enumerated range;
+ \item $1{,}515$ exact factorial-moment identities for the fresh law;
+ \item the first $13$ terms of A094149 against the published prefix.
+\end{itemize}
+All checks pass. The coefficientwise forest check compares the
+coefficient of $c^j$ in the direct count with that of
+$T_n(c)c^{k-n}[z^{k-n}]C(z)^n$, so it tests the dependence on $c$
+as well as the numerical totals. The change-of-root test uses the
+property satisfied by every vertex, for which the left-hand side
+counts each walk with its number of vertices. The general identity
+for arbitrary intrinsic vertex properties is proved in
+Section~\ref{sgm:md:sec:definitions}.
+
+\subsection{Symbolic collision polynomials}
+
+The program \texttt{code/verify\_symbolic.py} computes the low rooted
+rows with an indeterminate $c$. It forms the finite Newton differences
+and checks the seven identities for block orders $h=0,\ldots,6$.
+The initial nonzero polynomials are
+\begin{align*}
+ d_2(q;c)&=\frac{q(q+1)}{2c}+q,\\
+ d_3(q;c)&=\frac{q(q+1)(q+2)}{6c^2}
+                       +\frac{q(q+2)}c+q,\\
+ P_2(z;c)&=\frac{z(z+2+2c)}{2c},\\
+ P_3(z;c)&=\frac{z^3}{6c^2}
+       +\left(\frac1{c^2}+\frac1c\right)z^2
+       +\left(\frac1{c^2}+\frac3c+1\right)z.
+\end{align*}
+The script also verifies $132$ exact instances of the Catalan quotient
+product identity. The larger polynomials are included in
+\texttt{data/symbolic\_checks.json} and a generated TeX fragment.
+These finite calculations verify signs and coefficients that enter
+the proof; they do not establish the all-order tail estimate.
+
+\subsection{Exact moments and slow asymptotic onset}
+
+Table~\ref{sgm:md:tab:finite-moments} compares the exact rationally computed
+ratio with the first two logarithmic approximations. Only the final
+decimal display and evaluations of $W$ and the exponential are
+floating-point. The moment and shifted-Poisson normalizer in the ratio
+are computed exactly before conversion.
+
+\begin{table}[htbp]
+\centering
+\input{data/06-meandeg-moment_table.tex}% delivered data/moment_table.tex, shipped unchanged
+\caption{Finite moment diagnostics. Here
+$P_1=cw^2(w+2+2c)/(2k)$ and $w=W(k/c)$. The entries show that
+asymptotic accuracy can still be modest at $k=128$, especially at
+larger fixed $c$. No finite-$k$ error bound is inferred from this table.}
+\label{sgm:md:tab:finite-moments}
+\end{table}
+
+The slow approach is mathematically compatible with the theorems.
+Terms separated only by a factor $1/w$ are separated only
+logarithmically in $k$. The hidden constants and the onset threshold in
+the compact-parameter $O$ estimates are not numerically optimized.
+In particular, a small asymptotic remainder does not imply a useful
+relative error at the modest indices for which exact full moments
+are inexpensive to compute.
+
+\subsection{Distributional and critical-window illustrations}
+
+For large $k$, enumerating the complete departure-deficit law is not
+feasible with the direct code. Figure~\ref{sgm:md:fig:deficit} therefore uses
+the explicitly labeled first-collision model
+\begin{equation}\label{sgm:md:num:first-model}
+ \widehat\nu_{k,c}(s)=
+ \frac{p_{k,c}(s)\{1+G_1(k-s,s;c)\}}
+      {\sum_t p_{k,c}(t)\{1+G_1(k-t,t;c)\}},
+\end{equation}
+evaluated in a concentrated finite window. It is not an exact
+computation of $\nu_{k,c}$. The exact local coefficient, including its
+lower logarithmic terms, is retained. The limiting horizontal lines
+are the constants proved in Section~\ref{sgm:md:dl:section}; the visible
+finite values remain noticeably separated from them. This plot
+illustrates the relevance of logarithmic suborders and the difficulty
+of using moderate indices to estimate the limiting constant.
+
+\begin{figure}[htbp]
+ \centering
+ \includegraphics[width=\textwidth]{figures/06-meandeg-deficit_profiles.pdf}
+ \caption{Scaled total variation diagnostics for the normalized
+ first-collision model, at $c=1/2,1,2$. Left: comparison with
+ $\Poi(cw)$, scaled by $k/w^{5/2}$. Right: comparison with
+ $\Poi(cw+cw^3/k)$, scaled by $k/w^2$. The full walk law is controlled
+ analytically in the proofs, not simulated by this plot.}
+ \label{sgm:md:fig:deficit}
+\end{figure}
+
+For Figure~\ref{sgm:md:fig:critical}, set
+\[
+ w=\tfrac12\log(k/\tau),\qquad c=\frac{\sqrt{\tau k}}{w},
+ \qquad \tau\in\{1/4,1/2,1,2\}.
+\]
+Then $c^2w^2/k=\tau$ holds exactly. The plotted quantity is the
+fresh-law average of the exact Catalan quotient $Q(k,s)$ in its
+concentrated window. It is the explicit term identified in the proof
+of Theorem~\ref{sgm:md:gd:main}, and the horizontal lines are $e^\tau$.
+The proof, not this numerical average, controls the omitted classes
+of walks.
+
+\begin{figure}[htbp]
+ \centering
+ \includegraphics[width=0.95\textwidth]{figures/06-meandeg-critical_transition.pdf}
+ \caption{Critical-window diagnostics for the simple-forest
+ contribution. The numerical average of $Q(k,s)$ approaches the
+ predicted factor $e^\tau$. The reported global error bound includes
+ additional contributions that are not evaluated by this figure.}
+ \label{sgm:md:fig:critical}
+\end{figure}
+
+The numerical program uses positive Dobi\'nski sums centered at the
+Touchard saddle, with log-sum-exp arithmetic. Repeating the sums with
+widths $12$ and $15$ saddle standard deviations, each with a
+$20$-integer cushion, changes the computed fresh distribution by at
+most $9.3\times10^{-15}$ in $\ell^1$ over the recorded cases.
+This is a stability check, not an interval-arithmetic certificate of
+all discarded tails or floating-point errors. The JSON files record
+all $12$ finite-moment rows, $21$ deficit-model cases, and $28$
+critical-window cases, with their scope written into the metadata.
+
+\subsection{Reproduction and integration}
+
+The ZIP contains the TeX source, the compiled PDF, all input sections,
+the bibliography, the scripts, raw exact rows, verification summaries,
+and vector and raster figures. A \texttt{README.md} gives the build
+commands and a suggested report directory in the ProveIt repository.
+The exact integer checks need only Python's standard library; symbolic
+and numerical diagnostics additionally use SymPy, NumPy, SciPy, and
+Matplotlib. The supplied dependency versions record the environment
+used for the archived run. No external dataset or network call is
+needed to rebuild the article or rerun the computations.
+
+The claim ledger distinguishes proved results, inherited ingredients,
+finite checks, illustrations, and open questions. The provenance file
+pins the inspected repository revisions, and \texttt{source\_audit.txt}
+records the source-access and priority boundaries. Integration can
+therefore preserve both the mathematical statements and the evidence
+supporting the scope of the novelty claim. No theorem-prover source
+is included: the present deliverable is a research article with proofs
+and reproducibility code.
+\begin{writenote}[The package here, and the write's recomputation, 9 October 2026]
+In this report the programs named above are
+\file{code/06-meandeg-verify_exact.py},
+\file{code/06-meandeg-verify_symbolic.py} and
+\file{code/06-meandeg-numerical_diagnostics.py}; the data files are
+\file{data/06-meandeg-*}, the figures \file{figures/06-meandeg-*}, the
+claim ledger, provenance file and verification record
+\file{data/06-meandeg-claim_ledger.json}, \file{data/06-meandeg-provenance.json}
+and \file{data/06-meandeg-verification_report.json}, and
+\file{source_audit.txt} is \file{06-meandeg-source_audit.txt}. The ZIP, the
+compiled PDF, the section sources, the bibliography and the delivered
+\file{README.md} are not shipped (Section~\ref{sgm:md:sec:provenance}). The
+programs read and write the delivered names (\file{data/exact_rows.json} and so
+on), so they run only on a copy with the delivered layout (the README gives
+the recipe). With its own integer-scaled implementation of the first-child
+recurrence, the write recomputed every scaled moment of
+\file{data/06-meandeg-exact_rows.json} at $c=\frac12,1,2$ for $k\le128$ (all
+equal) and all eighteen entries of Table~\ref{sgm:md:tab:finite-moments} (all
+equal to the printed six decimals); with SymPy it recomputed the four
+displayed polynomials, $d_4$ and $P_4$ (equal to the generated fragment
+\file{data/06-meandeg-collision_polynomials.tex}). The two figures plot
+explicitly labelled models (the first-collision law~\eqref{sgm:md:num:first-model}
+and the fresh-law average of $Q(k,s)$), not the full walk law; they
+illustrate, and were not recomputed.
+\end{writenote}
+% ---- end of 06_verification.tex ----
+% ---- delivered sections/07_research.tex ----
+\section{Further research questions and topics}
+\label{sgm:md:sec:research}
+
+The results leave several concrete problems. We separate improvements
+to the present estimates from changes of regime or model; a result in
+one category need not automatically supply a result in another. The
+questions below are proposed projects, not conclusions established
+by the current article.
+
+\subsection{Sharper critical asymptotics and a wider parameter range}
+
+\begin{question}[The first correction in the critical regime]\label{sgm:md:q:critcorr}
+What is the first nonzero asymptotic correction to
+$\log\{m_k(c)/(2H_k(c))\}-c^2w^2/k$ when $cw/\sqrt{k}$ stays bounded
+away from zero and infinity?
+\end{question}
+The present $k^{-1/4}\log^{13/4}k$ bound is produced by a
+coefficient-extraction penalty and a deliberately broad cutoff. It
+does not identify the first neglected term. The exact expansion
+\[
+ \log Q(k,s)=\frac{s(s-1)}k
+ +\frac{s^2(s-1)^2}{6k^3}+O(s^6/k^5)
+\]
+already separates the pure forest correction from repeated off-hub
+edges. A sharper weighted allocation estimate, averaged over the
+actual partition and deficit distributions instead of bounded by
+their largest admissible values, is a natural route. The useful
+output would be a uniform equivalent with an explicit correction
+function of $u=cw/\sqrt{k}$.
+
+\begin{question}[A uniform passage from bounded to growing mean degree]\label{sgm:md:q:uniform}
+Can one obtain a single controlled expansion that joins compact
+$c$ to the critical regime $cw\asymp\sqrt{k}$?
+\end{question}
+The quantities $cw^3/k$ and $c^2w^2/k$ measure different effects:
+fixed-parameter collision corrections and the growth of fresh
+planar interiors. Their relative size changes with $c$. The present
+paper proves the two regimes separately; it does not establish a
+uniform theorem throughout the intervening range. A successful
+result should state the admissible range of $c$ explicitly and
+bound the residual dependence on both quantities. Substituting
+$c=c_k$ into an $O_K$ term is not a valid substitute for that task.
+
+\begin{question}[Beyond the first critical window]\label{sgm:md:q:beyond}
+For $cw/\sqrt{k}\to\infty$, how long does the Catalan quotient
+continue to determine the leading logarithm of the full moment?
+\end{question}
+Higher terms in $\log Q$ become relevant as the deficit increases,
+and the factor used to penalize repeated off-hub edges changes as
+well. A larger-window saddle might still isolate a dominant vertex,
+or a different geometry might become competitive. The main technical
+target is a new complement estimate with matching logarithmic
+precision, not simply an extrapolation of $e^{c^2w^2/k}$. The relation
+to the large-mean, fixed-excess enumerations of
+\cite{hdp} and the high-moment diluted-matrix regimes of
+\cite{khor1} deserves a systematic comparison.
+
+\begin{question}[Vanishing mean degree]\label{sgm:md:q:vanishing}
+What replaces the compact-parameter expansion when $c=c_k\to0$?
+\end{question}
+The lower endpoint of the compact interval enters branch bounds
+through inverse powers of $c$. Meanwhile $cw$ may remain bounded or
+vanish, so the Gaussian limit used to evaluate the sharp Poisson
+constants no longer applies. A useful classification would distinguish
+$cw\to0$, $cw\to\lambda_0\in(0,\infty)$, and $cw\to\infty$,
+and identify when walks using very few distinct edges become dominant.
+
+\subsection{Probability laws and the geometry of contributing walks}
+
+\begin{question}[Sharper positive approximations]\label{sgm:md:q:positive}
+Can the positive two-jump compound Poisson approximation in
+Corollary~\ref{sgm:md:dl:compound} be extended to the next asymptotic order,
+with an optimal error constant in an explicitly specified family?
+\end{question}
+The signed quadratic correction explains why changing only the
+Poisson mean has an irreducible error. Allowing a rare jump of size
+two removes that term. At the next order, additional Charlier
+coefficients must be identified together with sufficiently accurate
+fresh-law estimates. A positive approximation imposes constraints
+that a formal signed expansion does not. Determining the minimal
+positive family capable of matching those coefficients is a
+concrete approximation-theoretic problem.
+
+\begin{question}[Local limits and moderate deviations at critical degree]\label{sgm:md:q:local}
+What are the local limit law and the moderate-deviation range for
+the dominant-vertex deficit when $cw\asymp\sqrt{k}$?
+\end{question}
+The present proof gives concentration and an $\ell^1$ comparison
+after multiplying by $Q(k,s)$, but not a sharp pointwise law or
+moderate-deviation expansion. A local theorem must track the
+binomial mixture, the shifted Poisson saddle, and the Catalan tilt
+on the same scale. Relative error in a shrinking tail probability
+requires substantially more than the total-mass error used here.
+
+\begin{question}[Joint hub statistics]\label{sgm:md:q:joint}
+Can one determine the joint law of the departure deficit, the number
+of distinct neighbors of the dominant vertex, its largest excursion
+block, and the number and depths of off-hub edges?
+\end{question}
+Departure count and graph degree are different statistics. A joint
+generating function with separate marks would quantify which
+features create the correction terms. In the critical regime,
+Corollary~\ref{sgm:md:gd:simpledominance} says that repeated off-hub edges
+are rare in total weight, but it does not give a limiting law for
+their number or locate the deepest fresh branch. Marked Catalan
+forests and weighted block counts provide an exact starting point.
+
+\begin{question}[Several competitive dominant vertices]\label{sgm:md:q:several}
+Is there a parameter range in which configurations with two or more
+heavily visited vertices contribute at leading order?
+\end{question}
+They are negligible in the two regimes proved here. Establishing
+their onset, or proving a much larger exclusion range, would require
+an optimization over weighted tree skeletons and excursion
+allocations. A rigorous answer should compare the full combinatorial
+weight, not just the adjacency spectral radius of a candidate tree.
+
+\subsection{Finite graphs, other models, and verification}
+
+\begin{question}[A simultaneous finite-graph transfer theorem]\label{sgm:md:q:finite}
+For what explicit ranges of $k=k_N$ and $c=c_N$ do these tree-moment
+equivalents approximate $N^{-1}\E\operatorname{Tr}A_{N,c}^{2k}$?
+\end{question}
+The fixed-$k$ limit in Proposition~\ref{sgm:md:def:graphmoment} is elementary,
+but its error is not uniform in $k$. A transfer theorem must bound
+non-tree normalized words, repeated graph-label assignments, and
+their dependence on $c$. To reach statements about typical graphs,
+one would then need concentration or higher trace moments. This is
+an essential step before using the present formula as a finite-matrix
+spectral estimate.
+
+\begin{question}[Spectral tails from sharp moments]\label{sgm:md:q:tails}
+What rigorous upper and lower bounds on the limiting spectral
+measure can be recovered from the corrected moment growth?
+\end{question}
+Optimizing Markov's inequality gives a route to tail upper bounds,
+but matching lower bounds and refined prefactors require additional
+information. The sparse limiting measure can have atoms, so a
+pointwise density equivalent is not automatically meaningful.
+The single-defect spectral calculations of
+\cite{SemerjianCugliandolo2002} and the earlier sparse-tail work
+\cite{RodgersBray1988} motivate the question while leaving the
+required rigorous inversion separate from the moment results.
+
+\begin{question}[Weighted edges and other offspring laws]\label{sgm:md:q:weighted}
+Which parts of the collision and forest analysis survive for
+random edge weights, configuration models, or local weak limits
+with a non-Poisson offspring distribution?
+\end{question}
+Random edge weights attach a moment depending on edge multiplicity,
+so the single factor $c$ for each distinct edge is no longer
+sufficient. A non-Poisson offspring law changes the weighted partition
+structure and may change both the typical hub and its correction
+scale. A useful theorem would state conditions on the weight moments
+and offspring tails under which a dominant vertex still controls
+the high moments, together with a replacement for the exact
+Touchard normalizer. The weighted-graph moment framework of
+\cite{Khorunzhy2004} is a natural point of comparison.
+
+\begin{question}[Effective bounds and formal certification]\label{sgm:md:q:effective}
+Can the arguments be converted into explicit finite-$k$ inequalities
+and a machine-checked proof of the principal theorems?
+\end{question}
+There are two separate milestones. Effective analysis would replace
+the unspecified constants and onset thresholds in the saddle,
+collision, and complement estimates by usable values, ideally with
+interval-certified diagnostics. Formalization could begin with the
+finite combinatorial core: the weighted rotation identity including
+periodic words, the first-child recurrence, the partition
+decomposition, and the P\'olya factorial identities. A complete
+proof-assistant development would also certify the
+Bauer--Golinelli comparison, the uniform analytic estimates, and
+the $\ell^1$ limit arguments. The exact code in this archive is a
+regression resource for that effort, not a formal proof.
+
+\subsection{Suggested order of attack}
+
+The nearest extensions are the first critical correction, the
+intermediate-parameter uniform theorem, and the next positive
+probability approximation: all three can reuse the exact
+decompositions in this article. Finite-graph transfer has a larger
+combinatorial scope but would make the results more directly useful
+for random matrices. Spectral inversion and general offspring laws
+require additional ideas and should be treated as separate research
+projects. Formal certification can proceed in parallel, beginning
+with the identities that are already finite and exact.
+% ---- end of 07_research.tex ----
+\begin{writenote}[Further questions of Part~VI, 9 October 2026]
+Following Vladimir Reshetnikov's standing rule of 4~October 2026, every claim
+of the manuscript that is not proved in full is stated as an open question;
+these twelve research questions are the manuscript's own, as delivered, and
+the write labelled them. No claim of the manuscript was found wrong, and
+nothing is moved or refuted. Relations to Section~\ref{sgm:sec:questions}:
+Question~\ref{sgm:md:q:effective} is item~\ref{sgm:q:effective} for general
+$c$; Questions~\ref{sgm:md:q:uniform} and~\ref{sgm:md:q:vanishing} are the
+parts of item~\ref{sgm:q:meandegree} that Theorem~\ref{sgm:md:cm:main} leaves
+open (a uniform passage from compact to growing $c$, and $c\to0$);
+Question~\ref{sgm:md:q:tails} is close to item~\ref{sgm:q:spectral} (spectral
+information from moments). Item~\ref{sgm:q:growing}, a growing collision
+order, is none of these questions and stays open; the growing-degree
+transition of Section~\ref{sgm:md:gd:section} is a different limit.
+\end{writenote}
+\begin{writenote}[Independent check of the Part~VI write, 9 October 2026]
+An independent adversarial check of the Part~VI write (\file{cebf43994}) re-derived its
+statements with its own code. \emph{The two consequences the write proved}, checked hardest.
+(a)~Part~V's weighted bound: by $\binom ks=\binom{k-1}s+\binom{k-1}{s-1}$,
+$H_k(c)=\sum_s\binom{k-1}sc^sT_{k-s}(c)+cH_{k-1}(c)$, so the right side
+of~\eqref{sgm:sb:eq:weighted} at $\alpha=c$ is $2(H_k(c)-cH_{k-1}(c))-P_k(c)$
+(exact for $k\le128$ at $c=\frac12,1,2$). Both Parts define the same moment
+(the limiting normalized trace of the unscaled adjacency matrix of $G(N,c/N)$,
+$\mu_{2k}(c)=m_k(c)$), and $cH_{k-1}/H_k\to0$ (log-convexity of the moments of $X+c$,
+which is unbounded), $P_k$ grows at most geometrically by~\eqref{sgm:sb:eq:Pgf}
+while $H_k$ grows faster than every geometric sequence, so with
+Theorem~\ref{sgm:md:cm:main} at $K=\{c\}$ the bound is $\sim\mu_{2k}(c)$; as at $c=1$ the
+approach is slow: the bound over $\mu_{2k}(c)$ is $0.749$, $0.627$, $0.438$ at $k=128$
+for $c=\frac12,1,2$, and $cH_{k-1}/H_k$ there is $0.0161$, $0.0279$, $0.0472$, close to
+$cw/k$. (b)~At $c=1$, Corollary~\ref{sgm:md:cm:explicit} gives
+$M_{2k}/(2B_{k+1})=1+W^3/(2k)+2W^2/k+O(W^6/k^2)$ (here $W=W(k)$ is its $w$, and $H_k(1)=B_{k+1}$), and
+Theorem~\ref{sgm:lw:thm:asympt} with~\eqref{sgm:lw:eq:Bellratio} gives
+$G_k/(2B_{k+1})=1+(1+o(1))W^2/k$; as $W^6/k^2=o(W^2/k)$, subtraction gives the
+write's $(M_{2k}-G_k)/(2B_{k+1})=W^3/(2k)+(1+o(1))W^2/k$. As finite illustrations only,
+$[(M_{2k}-G_k)/(2B_{k+1})-W^3/(2k)]/(W^2/k)$ is $10.1$, $8.42$, $3.80$, $2.59$ at
+$k=16,32,64,128$ (the omitted terms are of relative order $W^4/k$), and
+$(G_k-2B_{k+1})/(2B_{k+1})$ over $W^2/k$ is $1.79$, $1.38$, $1.21$, $1.12$.
+\emph{Recomputed by other routes}: $m_k(c)$ at $c=\frac12,1,2$ for $k\le128$ by an
+excursion recurrence at the root (set partitions of the root excursions by child, an
+exponential formula; not the first-child recurrence) in integers, equal to every scaled
+moment of \file{data/06-meandeg-exact_rows.json}, to a brute-force enumeration for
+$k\le7$ and to the 13 terms of A094149 (revision \#10 of 13~July 2025, read again);
+$m_1,\dots,m_5$ as polynomials in $c$; all eighteen entries of
+Table~\ref{sgm:md:tab:finite-moments}; $A_1(k,1)=T_k/B_{k+1}$ for $3\le k\le60$ (an
+identity term by term) and $(A_1-P_1)/(w^4/k^2)$ at $k=20,40,60$ for the three $c$;
+$F(t)$ against quadrature at five points, $F(0)=\varphi(1)$, $\E C_2(Y;u)^2=2u^2$,
+$\operatorname{Var}(Y)_2=4u^3+2u^2$, $\E|Y-\lambda|=2\lambda\pi_\lambda(\lfloor\lambda\rfloor)$
+at $\lambda=3.7$, $25.2$, $400.5$; $\log Q(k,s)$ to third order. Also confirmed: the
+archive (2{,}095{,}612 bytes, 33 files, 3{,}896{,}295 bytes unpacked), the 23
+byte-identical staged files, the pin \file{9570aaede2} and the blob \file{f6a72e04cf}
+at the pin and before the write, the numbering (324 earlier labels unchanged, 158
+delivered labels at section $+57$ with Table~1 as Table~\ref{sgm:md:tab:finite-moments},
+19 added, 501 in all), the 192 references (144 + 48), and the README's 106 files.
+No claim of Part~VI or of the write was found wrong.
+\end{writenote}
 
 \begin{thebibliography}{99}\raggedright
 \bibitem{bg} Michel Bauer and Olivier Golinelli.
@@ -3166,7 +6505,7 @@ It also confirmed the provenance figures (archive sizes, file and line counts, d
 Journal of Statistical Physics \textbf{103} (2001), 301--337.
 \href{https://doi.org/10.1023/A:1004879905284}{doi:10.1023/A:1004879905284}.
 Primary preprint: \href{https://arxiv.org/abs/cond-mat/0007127v2}{arXiv:cond-mat/0007127v2}.
-[All five Parts. Report~210 calls the preprint the ``primary full text''; Report~209 checked the full preprint \href{https://arxiv.org/pdf/cond-mat/0007127v2}{arXiv:cond-mat/0007127v2}, ``especially \S\S5.3--5.6''.]
+[All five Parts. Report~210 calls the preprint the ``primary full text''; Report~209 checked the full preprint \href{https://arxiv.org/pdf/cond-mat/0007127v2}{arXiv:cond-mat/0007127v2}, ``especially \S\S5.3--5.6''. Part~VI (key \texttt{BauerGolinelli2001}) cites \url{https://arxiv.org/abs/cond-mat/0007127}: ``The coefficientwise bound used here is Section~5.5, equation~(9), of the primary preprint.'']
 \bibitem{kv} A. Khorunzhy and V. Vengerovsky.
 \emph{On asymptotic solvability of random graph's laplacians}.
 \href{https://arxiv.org/abs/math-ph/0009028}{arXiv:math-ph/0009028} (2000). [Part~I.]
@@ -3179,7 +6518,7 @@ Primary preprint: \href{https://arxiv.org/abs/cond-mat/0007127v2}{arXiv:cond-mat
 \href{https://arxiv.org/abs/2405.08347v1}{arXiv:2405.08347v1} (14 May 2024).
 Conference version: LIPIcs AofA 2024, Article 11, \href{https://doi.org/10.4230/LIPIcs.AofA.2024.11}{doi:10.4230/LIPIcs.AofA.2024.11}.
 Journal record: European Journal of Combinatorics \textbf{136} (2026), 104386, \href{https://doi.org/10.1016/j.ejc.2026.104386}{doi:10.1016/j.ejc.2026.104386}.
-[All five Parts; Reports~212 and~210 omit the journal record; Report~209 cites the full preprint as \href{https://arxiv.org/abs/2405.08347}{arXiv:2405.08347} (2024) and adds ``Journal full text not independently accessed''; the date 14 May 2024 is Report~210's, and the journal's name, volume and article number are Report~209's.]
+[All five Parts; Reports~212 and~210 omit the journal record; Report~209 cites the full preprint as \href{https://arxiv.org/abs/2405.08347}{arXiv:2405.08347} (2024) and adds ``Journal full text not independently accessed''; the date 14 May 2024 is Report~210's, and the journal's name, volume and article number are Report~209's. Part~VI (key \texttt{Hainzl2024}) cites the journal record first, with the preprint (2024) and the conference version.]
 \bibitem{hainzl} Eva-Maria Hainzl.
 \emph{Formulas and asymptotics of hypergraph Catalan numbers}.
 \href{https://arxiv.org/abs/2508.08865v2}{arXiv:2508.08865v2}, 23 March 2026.
@@ -3215,12 +6554,49 @@ Random Structures \& Algorithms \textbf{66} (2025), e70011,
 \emph{Sparse graphs and their Benjamini--Schramm limits: a spectral tour}.
 \href{https://arxiv.org/abs/2510.10299}{arXiv:2510.10299}. [Part~III.]
 \bibitem{valigi} P. Valigi, J. W. Baron, I. Neri, G. Biroli, and C. Cammarota, \emph{Eigenvalue spectral tails and localization properties of asymmetric networks}, Journal of Physics A \textbf{58} (2025), 455002. \href{https://doi.org/10.1088/1751-8121/ae16ec}{doi:10.1088/1751-8121/ae16ec}; \href{https://arxiv.org/abs/2507.20225}{arXiv:2507.20225}. Selected full-text sections checked. [Part~V.]
-\bibitem{khor1} O. Khorunzhiy, \emph{On high moments of strongly diluted large Wigner random matrices}, \href{https://arxiv.org/abs/1311.7021}{arXiv:1311.7021}. Abstract-level regime check only. [Part~V.]
+\bibitem{khor1} O. Khorunzhiy, \emph{On high moments of strongly diluted large Wigner random matrices}, \href{https://arxiv.org/abs/1311.7021}{arXiv:1311.7021}. Abstract-level regime check only. [Part~V. Part~VI (key \texttt{Khorunzhiy2016}) cites it as S\'eminaire de Probabilit\'es XLVIII, Lecture Notes in Mathematics \textbf{2168}, Springer, 2016, pp.~347--399.]
 \bibitem{khor2} O. Khorunzhiy, \emph{On asymptotic properties of high moments of compound Poisson distribution}, \href{https://arxiv.org/abs/2007.00379}{arXiv:2007.00379}. Abstract-level scope check only. [Part~V.]
 \bibitem{oeis} OEIS Foundation Inc.
 \emph{The On-Line Encyclopedia of Integer Sequences},
 \href{https://oeis.org/A094149}{A094149}, contributed by Alexey Spiridonov.
-[All five Parts, each checked on 4 October 2026: ``Positive-order normalization checked'' (Report~214); ``Sequence identity and positive-order terms checked'' (Reports~213, 212, 210); ``Identification and 13-term prefix checked'' (Report~209, which cites the entry as The OEIS Foundation, \emph{A094149}, \url{https://oeis.org/A094149}). Read by the write on 7 October 2026 at revision \#10 of 13 July 2025 (Remark~\ref{sgm:co:rem:oeis}).]
+[All five Parts, each checked on 4 October 2026: ``Positive-order normalization checked'' (Report~214); ``Sequence identity and positive-order terms checked'' (Reports~213, 212, 210); ``Identification and 13-term prefix checked'' (Report~209, which cites the entry as The OEIS Foundation, \emph{A094149}, \url{https://oeis.org/A094149}). Read by the write on 7 October 2026 at revision \#10 of 13 July 2025 (Remark~\ref{sgm:co:rem:oeis}). Part~VI (key \texttt{OEISA094149}): ``original submission by A.~Spiridonov, 4~May 2004'', accessed 8~October 2026; read again at its write, 9~October 2026: revision \#10, unchanged.]
 \bibitem{TSvol} ProveIt, \emph{Transseries and inversion}, \file{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}; Part~0 (\file{p0:def:model}, \file{p0:def:three-inverses}, \file{p0:thm:staircase}, \file{p0:thm:lambert-core}, \file{p0:thm:lambert-centered}), \file{plt:thm:lw-template}, and the Bell chapter \file{q2:sec:bell}. [Added in the write.]
+\bibitem{Khorunzhy2004} O. Khorunzhy, M. Shcherbina, and V. Vengerovsky.
+\emph{Eigenvalue distribution of large weighted random graphs}.
+Journal of Mathematical Physics \textbf{45} (2004), 1648--1672.
+\href{https://doi.org/10.1063/1.1667610}{doi:10.1063/1.1667610}.
+Author copy: \url{https://ilt.kharkiv.ua/bvi/structure/depart_e/d24/rm_10.pdf}. [Part~VI.]
+\bibitem{Khorunzhiy2020} O. Khorunzhiy.
+\emph{On asymptotic properties of Bell polynomials and concentration of vertex degree of large random graphs}.
+Journal of Theoretical Probability \textbf{35} (2022), 20--51; published online 4~October 2020.
+\href{https://doi.org/10.1007/s10959-020-01025-w}{doi:10.1007/s10959-020-01025-w}.
+Primary preprint: \href{https://arxiv.org/abs/1904.01339}{arXiv:1904.01339}. [Part~VI.]
+\bibitem{Pittel1997} B. Pittel.
+\emph{Random set partitions: asymptotics of subset counts}.
+Journal of Combinatorial Theory, Series A \textbf{79} (1997), 326--359.
+\href{https://doi.org/10.1006/jcta.1997.2791}{doi:10.1006/jcta.1997.2791}. [Part~VI.]
+\bibitem{ArratiaGoldsteinGordon1990} R. Arratia, L. Goldstein, and L. Gordon.
+\emph{Poisson approximation and the Chen--Stein method}.
+Statistical Science \textbf{5} (1990), 403--434.
+Author copy: \url{https://dornsife.usc.edu/larry-goldstein/wp-content/uploads/sites/221/2023/06/pacs-1.pdf}. [Part~VI; listed, not cited in its text.]
+\bibitem{SemerjianCugliandolo2002} G. Semerjian and L. F. Cugliandolo.
+\emph{Sparse random matrices: the eigenvalue spectrum revisited}.
+Journal of Physics A: Mathematical and General \textbf{35} (2002), 4837--4851.
+\href{https://doi.org/10.1088/0305-4470/35/23/303}{doi:10.1088/0305-4470/35/23/303};
+\href{https://arxiv.org/abs/cond-mat/0202406}{arXiv:cond-mat/0202406}. [Part~VI.]
+\bibitem{RodgersBray1988} G. J. Rodgers and A. J. Bray.
+\emph{Density of states of a sparse random matrix}.
+Physical Review B \textbf{37} (1988), 3557--3562.
+\href{https://doi.org/10.1103/PhysRevB.37.3557}{doi:10.1103/PhysRevB.37.3557}. [Part~VI; Part~I names it in its sources without an entry.]
+\bibitem{ProveIt2026} ProveIt repository.
+\emph{Sparse graph moments: closed tree walks (OEIS A094149)}, merged research report comprising
+Reports~214, 213, 212, 210, and~209; reports dated 4~October 2026, merged 7~October 2026.
+Unrefereed research manuscript; snapshot \texttt{9570aaede2458830be9b3bbb072481c88f4f5a4c}.
+[Part~VI. This report's Parts~I--V, unchanged at the snapshot.]
+\bibitem{OpenAIMath2026} OpenAI.
+\emph{openai/math: research manuscript repository}, snapshot
+\texttt{adc7f1241b42e322a6451854ab7e4b4c146bf78a}, accessed 8~October 2026.
+\url{https://github.com/openai/math/tree/adc7f1241b42e322a6451854ab7e4b4c146bf78a}.
+Repository context only. [Part~VI; not checked by the write.]
 \end{thebibliography}
 \end{document}

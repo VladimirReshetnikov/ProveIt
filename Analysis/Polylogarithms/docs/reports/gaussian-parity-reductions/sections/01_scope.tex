@@ -1,0 +1,154 @@
+\section{Scope, conventions, and the status of the results}
+\label{sec:scope}
+
+The starting point is the unified reading manuscript
+\emph{Polylogarithms and their Arithmetic Bridges} \cite{manuscript}.
+Its purpose is broader than the evaluation of isolated constants:
+classical polylogarithms, colored nested sums, gamma functions,
+Hurwitz-zeta jets, and algebraic ladders are different coordinates on
+related analytic constructions. The present continuation selects three
+places where those coordinates can be turned into short, checkable
+proofs: the same-argument Gaussian depth problem, algebraic unit ladders,
+and log-gamma moments.
+
+The mathematical task is to explain why an identity holds. A small
+decimal residual is useful for detecting a sign or transcription error,
+but it cannot replace a derivation. Accordingly, every proved identity
+below either follows from a displayed analytic argument or is accompanied
+by exact rational operations on explicitly stated functional equations.
+The remaining conjectures are kept separate from these results.
+
+\subsection{What changes in the manuscript}
+
+Table~\ref{tab:status} lists the precise changes of mathematical status.
+The reference to a chapter is to the pinned source manuscript, not to
+the section numbering of this article.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.22\linewidth}>{\raggedright\arraybackslash}p{0.28\linewidth}>{\raggedright\arraybackslash}p{0.39\linewidth}}
+\toprule
+Source location & Previously recorded status & Result established here\\
+\midrule
+Chapter 4, weight-five Gaussian relation
+& Numerical relation among four same-argument doubles
+& Proof from two shuffle products; a spanning set of at most two quantities\\
+\addlinespace
+Chapter 4, five weight-six doubles
+& Numerical evaluations
+& All five proved by one explicit all-weight parity formula\\
+\addlinespace
+Chapter 4, three weight-four triples
+& Numerical evaluations at \(i\)
+& All three proved; an arbitrary-depth classical-reduction family\\
+\addlinespace
+Chapter 4, weight-six triple quotient
+& Finite rank seven on ten coordinates
+& Exact all-weight, all-depth formal theorem; the three stated coordinates are Lyndon generators\\
+\addlinespace
+Chapter 3, cubic and quartic bases
+& Two trilogarithm formulas with numerical evidence
+& Explicit functional-equation certificates for both\\
+\addlinespace
+Chapter 7, cubic log-gamma moment
+& A named depth-two coordinate still sought
+& Published Tornheim-derivative evaluation identified; certified independent numerical enclosure\\
+\addlinespace
+Log-gamma moment continuation
+& Fixed-order factorial asymptotic expansion known in the literature
+& Coefficient growth, divergence, and a remainder bound for a growing truncation order\\
+\bottomrule
+\end{tabular}
+\caption{Exact scope of this continuation. None of the spanning statements
+asserts numerical linear independence.}
+\label{tab:status}
+\end{table}
+
+The eleven promoted identities are counted as one weight-five relation,
+five weight-six relations, three triple relations, and two algebraic-base
+relations. The extra weight-five shuffle equation is a further proved
+identity and is what sharpens the spanning statement.
+We do not count a repeated specialization of a general formula as a
+separate solution of an open problem.
+
+\subsection{Normalization and convergence}
+
+We use decreasing summation indices:
+\[
+\Li_{s_1,\ldots,s_d}(z_1,\ldots,z_d)
+=\sum_{n_1>\cdots>n_d>0}
+\frac{z_1^{n_1}\cdots z_d^{n_d}}
+{n_1^{s_1}\cdots n_d^{s_d}}.
+\]
+For a single varying argument, write
+\[
+F_{s_1,\ldots,s_d}(z)
+=\Li_{s_1,\ldots,s_d}(z,1,\ldots,1).
+\]
+Where no confusion is possible we suppress the \(F\) and the trailing
+ones. The weight is \(w=s_1+\cdots+s_d\), and the series depth is \(d\).
+For \(|z|<1\), the series defining this one-variable family converges
+absolutely. At a unit-circle point other than \(1\), the boundary values
+used below agree with the ordinary convergent series; the needed
+conditional double cases are justified in the parity proof. At higher
+depth the inner multiple harmonic sum is \(O(\log^{d-1}n)\); its positive
+successive increments, together with the factor \(n^{-s_1}\), give a
+sequence tending to zero with finite total variation. Summation by parts
+then proves convergence away from \(z=1\).
+
+The forms
+\[
+\omega_0=\frac{\dd t}{t},\qquad
+\omega_1=\frac{\dd t}{1-t}
+\]
+give the outer-letter-first word
+\[
+F_{s_1,\ldots,s_d}(z)
+=I_{0^{s_1-1}1\cdots0^{s_d-1}1}(z).
+\]
+Here \(I_{a_1\cdots a_w}(z)=\int_0^z\omega_{a_1}(t)
+I_{a_2\cdots a_w}(t)\), and \(I_{\varnothing}=1\).
+Every displayed word ends in \(1\), so the origin is integrable.
+For example, \(I_{01}=\Li_2\),
+\(I_{011}=F_{2,1}\), and \(I_{101}=F_{1,2}\).
+These examples fix the convention before any shuffle is used.
+
+At the Gaussian point define
+\[
+g_{a,b}=\Im F_{a,b}(i),\quad
+h_{a,b}=\Re F_{a,b}(i),\quad
+G=\beta(2),\quad L=\log2,\quad
+\lambda_n=\Im\Li_n((1+i)/2).
+\]
+The Dirichlet beta function is
+\(\beta(s)=\sum_{n\ge0}(-1)^n/(2n+1)^s\).
+All complex logarithms in the explicit half-point calculation are
+principal values, with their continuation paths stated.
+Logarithms of positive algebraic numbers in the ladder section are real.
+
+\subsection{Prior results and the novelty boundary}
+
+The general parity theorem is due to Panzer \cite{Panzer}, whose paper
+already gives explicit formulas at depths two and three.
+Umezawa \cite{Umezawa} subsequently supplied an explicit general-depth
+formula, including regularized boundary formulations.
+Our binomial expression is an independently proved specialization suited
+to the manuscript's convention and to small exact certificates.
+It is not a new general parity theorem.
+
+The polynomial structure of a shuffle algebra on Lyndon generators is
+classical \cite{Radford}; the rank formula below is its precise
+application to the relevant one-variable subalgebra.
+The Landen, Rogers, and Kummer equations used for the ladders are likewise
+classical \cite{Zagier,NakamuraShiraishi}. What is supplied here is a
+complete local route from those equations to the exact coefficients
+recorded in the manuscript.
+
+For log-gamma moments, the fixed-order factorial expansion was proved by
+Amdeberhan et al.\ \cite{ACEMKM}, and the cubic Tornheim representation
+was obtained by Bailey, Borwein, and Borwein \cite{BBB}.
+The further coefficient asymptotic and the explicit growing-order
+remainder estimate are developed here from those starting points.
+These statements are presented with proofs and a limited novelty claim:
+they extend the audited manuscript, while no assertion of exhaustive
+priority over the entire inverse-gamma literature is made.

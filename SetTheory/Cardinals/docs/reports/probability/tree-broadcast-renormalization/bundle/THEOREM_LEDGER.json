@@ -1,0 +1,164 @@
+{
+  "format_version": 1,
+  "date": "2026-10-08",
+  "status": "Research manuscripts with internal review; no external peer-review or formal-verification claim",
+  "theorems": [
+    {
+      "id": "UA-1",
+      "paper": "01_universal_avoidance",
+      "tex_label": "thm:main",
+      "statement": "One closed symmetric periodic set of arbitrarily near-full measure omits infinitely many terms from every nonzero affine copy of every non-eventually-zero exponentially decaying real sequence with an eventual balanced polynomial recurrence.",
+      "dependencies": [
+        "Uniform rational-family hitting theorem proved in paper",
+        "Countable compact recurrence exhaustion proved in paper"
+      ],
+      "scope_exclusions": [
+        "All P-recursive null sequences",
+        "The general Erdos similarity conjecture"
+      ]
+    },
+    {
+      "id": "UA-2",
+      "paper": "01_universal_avoidance",
+      "tex_label": "cor:cfinite",
+      "statement": "The same common set works for all stable real constant-coefficient recurrence sequences, with nonreal or repeated roots and exact zeros permitted.",
+      "dependencies": [
+        "UA-1",
+        "Stable invariant-state reduction"
+      ]
+    },
+    {
+      "id": "UA-3",
+      "paper": "01_universal_avoidance",
+      "tex_label": "thm:certificates",
+      "statement": "Finite rational hitting certificates are found by a terminating exhaustive search over compact outer approximants; the assembled closed set has computable measure.",
+      "dependencies": [
+        "UA-1 proof",
+        "Real quantifier elimination"
+      ],
+      "scope_exclusions": [
+        "Implemented certificate exporter",
+        "Practical computational complexity",
+        "Computable distance function"
+      ]
+    },
+    {
+      "id": "UA-4",
+      "paper": "01_universal_avoidance",
+      "tex_label": "prop:subexponential",
+      "statement": "The abstract rational-family theorem permits log Delta_N=o(N) in place of polynomial degree growth.",
+      "dependencies": [
+        "Finite polynomial sign bound",
+        "Local routing spans"
+      ]
+    },
+    {
+      "id": "PA-1",
+      "paper": "02_parabolic_amplitudes",
+      "tex_label": "thm:identity",
+      "statement": "I(t)=t 2^(t/3) h(t) for every t>0; h(z)=2^(-z/3)I(z)/z is holomorphic for Re z>0.",
+      "dependency_status": "Conditional on four precisely stated analytic source interfaces",
+      "dependencies": [
+        "Input F: normalized entire Fatou orbit and local inverse",
+        "Input M: positive Laplace density",
+        "Input L: absolute compact-ratio Bell transfer",
+        "Input A: holomorphy of the Bell amplitude"
+      ]
+    },
+    {
+      "id": "PA-2",
+      "paper": "02_parabolic_amplitudes",
+      "tex_label": "thm:aggregate",
+      "statement": "The geometric depth aggregate has the proved normalized equivalent uniformly on compact positive L-intervals.",
+      "dependencies": [
+        "PA-1",
+        "Input L",
+        "Rational majorant and discrete gamma tail lemma proved in paper"
+      ]
+    },
+    {
+      "id": "PA-3",
+      "paper": "02_parabolic_amplitudes",
+      "tex_label": "cor:marked",
+      "statement": "The marked strict-chain amplitude equals (2L(q))^(L(q)/3)h(L(q))/(q+1) and continues holomorphically to Re q>0.",
+      "dependencies": [
+        "PA-2",
+        "Exact chain mixture proved in paper"
+      ],
+      "scope_exclusions": [
+        "Global complex zero-freeness",
+        "Global uniform complex asymptotic expansion"
+      ]
+    },
+    {
+      "id": "PA-4",
+      "paper": "02_parabolic_amplitudes",
+      "tex_label": "cor:K",
+      "statement": "The constant terms in the chain-length mean and variance have explicit formulas in h, h' and h'' at log 2.",
+      "dependencies": [
+        "PA-3",
+        "Prior local marked-chain expansion and derivative conventions"
+      ]
+    },
+    {
+      "id": "TB-1",
+      "paper": "03_tree_broadcast",
+      "tex_label": "thm:sharp",
+      "statement": "Gaussian-renormalized transforms of X_n=(b theta)^(-n) S_n converge locally holomorphically near zero if and only if theta>b^(-3/4), for b>=2 and 0<theta<=1.",
+      "dependencies": [
+        "Exact independent-edge broadcast recursion",
+        "Parity contraction and cumulant obstruction proved in paper"
+      ],
+      "source_theorems_assumed": []
+    },
+    {
+      "id": "TB-2",
+      "paper": "03_tree_broadcast",
+      "tex_label": "thm:window",
+      "statement": "For theta_n=b^(-1/2)exp(gamma/(2n)), the residue has expansions to every order in n^(-1), uniformly for bounded real gamma.",
+      "dependencies": [
+        "TB-1 parameter analyticity",
+        "Exact variance recurrence"
+      ]
+    },
+    {
+      "id": "TB-3",
+      "paper": "03_tree_broadcast",
+      "tex_label": "thm:local",
+      "statement": "An arbitrary-order lattice local expansion holds with a uniform absolute error over the full offset lattice.",
+      "dependencies": [
+        "TB-2",
+        "Full Fourier-interval bounds proved by conditioning"
+      ],
+      "scope_exclusions": [
+        "Relative approximation deep in the tails"
+      ]
+    },
+    {
+      "id": "TB-4",
+      "paper": "03_tree_broadcast",
+      "tex_label": "thm:majority",
+      "statement": "Majority success has an all-orders expansion; at criticality for b=2, p_n=1/2+1/sqrt(pi n)-5/(4 sqrt(pi) n^(5/2))+O(n^(-7/2)).",
+      "dependencies": [
+        "TB-2",
+        "Cotangent/cosecant sign identity and Fourier estimates"
+      ],
+      "scope_exclusions": [
+        "Optimality among all boundary decoders"
+      ]
+    },
+    {
+      "id": "TB-5",
+      "paper": "03_tree_broadcast",
+      "tex_label": "thm:higher",
+      "statement": "Every theta>1/b admits convergence after removal of finitely many even cumulants; sufficient after order 2K is (b theta)^(2K+2)>b.",
+      "dependencies": [
+        "Odd contraction",
+        "Even-tail contraction"
+      ],
+      "scope_exclusions": [
+        "Necessity at every higher-order boundary"
+      ]
+    }
+  ]
+}

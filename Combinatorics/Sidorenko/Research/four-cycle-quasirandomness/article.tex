@@ -1,0 +1,800 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,enumitem}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,breaklinks=true]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Beyond the fourth-root bound}
+\fancyhead[R]{\small Research manuscript}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\newcommand{\1}{\mathbf 1}
+\newcommand{\Cut}[1]{\left\|#1\right\|_{\square}}
+\newcommand{\Sfour}[1]{\left\|#1\right\|_{S_4}}
+\newcommand{\HS}[1]{\left\|#1\right\|_{\mathrm{HS}}}
+\newcommand{\op}[1]{\left\|#1\right\|_{\mathrm{op}}}
+\newcommand{\calE}{\mathcal E}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\sgn}{\sigma}
+\newcommand{\dd}{\,\mathrm d}
+\DeclareMathOperator*{\esssup}{ess\,sup}
+\title{\textbf{Beyond the Fourth-Root Bound}\\[6pt]
+\Large Exact Local Extremizers for Four-Cycle Quasirandomness}
+\author{Research manuscript prepared with ChatGPT\\
+\small Proofs, symbolic checks, and reproducible computational artifacts}
+\date{October 8, 2026}
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+Four-cycle counts are a classical certificate that a dense graph has approximately uniform edge distribution. We determine the exact local extremal tradeoff between four-cycle excess and rectangle discrepancy, for bounded bipartite kernels and, with the same value, for symmetric graphons. For fixed mean $p\in(0,1)$, let $\calE_p(D)$ be the largest indicator-set cut norm among kernels with four-cycle excess at most $D$. We prove that, for sufficiently small $D>0$, $\calE_p(D)=p\Psi(D^{1/4}/p)$, where a universal analytic branch satisfies
+\[
+\Psi(t)=\frac t4+\frac{t^3}4+\frac{t^4}4-\frac{t^5}8-\frac{3t^6}4+O(t^7).
+\]
+The local extremizer is unique up to relabeling, is exactly two-block, and has a nonzero degree imbalance of order $t^3$ and an optimal block-size imbalance of order $t^2$. The proof reduces arbitrary kernels to a five-variable optimization, localizes every global maximizer, and applies a nonsingular analytic implicit-function argument. We also prove an all-scale degree-coupling inequality with sharp coefficient $3/2$, an explicit global cut bound, a quantitative two-block compression theorem for near-extremizers, and an $O(D^{1/4}/n^2)$ weighted finite-realization bound. The classical fourth-root exponent is not claimed as new. The exact local tradeoff and its higher-order structure are the proposed research contributions; priority and independent proof review remain outstanding.
+\end{abstract}
+\vfill
+\noindent\textbf{Scope.} This is a strengthening of a known quasirandomness implication, not a claimed resolution of a major named conjecture. The proof gives an existential local radius, not a numerically certified radius. The accompanying checks are not a Lean formalization.
+\newpage
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+
+\section{The problem and the contribution}
+\subsection{From counting four-cycles to controlling every cut}
+Suppose that a large graph has edge density approximately $p$. A random-looking graph should have approximately $p|A||B|$ ordered edges from any vertex set $A$ to any vertex set $B$. Checking every pair of sets directly involves an exponential search. A much more compact statistic is the number of four-cycles. The classical quasirandomness theory of Chung, Graham, and Wilson identifies edge and four-cycle statistics as part of an equivalence between counting, spectral, and edge-distribution properties \cite{CGW1989}.
+
+The familiar fourth-root scale is unavoidable: a balanced two-class perturbation of amplitude $d$ has rectangle discrepancy $d/4$ but four-cycle excess $d^4$. Conlon, Fox, and Sudakov discuss the corresponding girth obstruction and quantitative forcing for even cycles \cite[Section~4]{CFS2018}. The present problem is finer. Once the exponent $1/4$ is fixed, what is the \emph{sharp local error function}, and which kernels attain it? In particular, does the balanced regular construction remain exactly extremal when degree variation is allowed?
+
+We prove that it does not. Degree variation increases the extremal discrepancy by a positive term of order $D^{3/4}/p^2$. The optimizing partition also becomes unbalanced. The resulting extremizer can still be described by two blocks, but that conclusion is proved for the unrestricted kernel problem; it is not an ansatz imposed at the beginning.
+
+The analytic formulation is closely related to the bipartite quasirandomness discussion in Gowers's exposition \cite{Gowers2018}. Our constants use the \emph{indicator-set} cut norm. They must not be transferred unchanged to conventions that test all functions in $[-1,1]$.
+
+\subsection{Connection to the supplied repository}
+The \texttt{openai/math} repository describes a collection of mathematical manuscripts and supporting proof artifacts at different verification stages, with an explicit caution concerning unformalized results \cite{OpenAIMath}. Its manuscript on a claimed counterexample to Sidorenko's conjecture begins with finite-kernel subgraph densities and a passage from bounded symmetric kernels to finite graphs \cite{RepoKernel}. That kernel-first viewpoint and the separation of proof from reproducible artifacts motivated this work.
+
+No result from that manuscript is used as a hypothesis or a lemma here, and its claimed counterexample is not audited here. All extremal assertions below are proved independently using operator identities, finite-dimensional optimization, and elementary analytic arguments.
+
+\subsection{What is and is not established}
+The central result is an exact local formula, together with an equality classification, for a standard graph-theoretic measure of nonuniformity. It strengthens the precision of a known theorem; it does not improve its optimal exponent. The algebraic endpoint description also gives an efficient way to \emph{evaluate the bound}, but it is not a new asymptotic algorithm for computing an arbitrary graph's cut norm or counting its four-cycles.
+
+A targeted literature check located the classical equivalence, the known even-cycle exponent and balanced obstruction, and analytic discussions of the implication. It did not locate the exact analytic envelope and coefficients proved below. That observation is not a proof of originality. In particular, finite-dimensional compression and Schatten-norm arguments are established tools, not inventions claimed here. The contribution proposed for independent assessment is their use to solve this local extremal problem with explicit higher-order terms, equality, and compression stability.
+
+\section{Definitions and main theorem}\label{sec:main}
+All integrals are over probability spaces, taken to be copies of $[0,1]$ with Lebesgue measure. A \emph{kernel} is a measurable $W:[0,1]^2\to[0,1]$. A graphon is a symmetric kernel. Define
+\begin{align}
+ p(W)&=\iint W(x,y)\dd x\dd y,\\
+ t_4(W)&=\int W(x,y)W(x,y')W(x',y)W(x',y')
+                  \dd x\dd x'\dd y\dd y',\label{eq:t4}\\
+ \Cut{U}&=\sup_{A,B}\left|\int_{A\times B}U\right|.\label{eq:cut}
+\end{align}
+Here $A$ and $B$ are measurable and need not be disjoint, even for symmetric kernels. The associated integral operator is
+\[
+ (T_Wg)(x)=\int W(x,y)g(y)\dd y.
+\]
+It is Hilbert--Schmidt, and $t_4(W)=\Sfour{T_W}^4$. We also write $\Sfour{W}$ for $\Sfour{T_W}$. Two applications of Cauchy--Schwarz give $t_4(W)\ge p(W)^4$; an exact refinement will be proved in Section~\ref{sec:degrees}.
+
+\begin{definition}
+For $0<p<1$ and $D\ge0$, set
+\[
+\calE_p(D)=\sup\{\Cut{W-p}:0\le W\le1,\ p(W)=p,\ t_4(W)-p^4\le D\}.
+\]
+Let $\calE_p^{\mathrm{sym}}(D)$ be the same supremum restricted to symmetric kernels. Put $d=D^{1/4}$ and $t=d/p$.
+\end{definition}
+
+\begin{theorem}[Exact local envelope]\label{thm:main}
+There is a universal real-analytic function $\Psi$ near $0$, and for each $p\in(0,1)$ there is $D_0(p)>0$, such that
+\begin{equation}\label{eq:envelope}
+ \calE_p^{\mathrm{sym}}(D)=\calE_p(D)=p\Psi(D^{1/4}/p)
+ \qquad(0<D<D_0(p)).
+\end{equation}
+Its expansion is
+\begin{equation}\label{eq:series}
+ \Psi(t)=\frac t4+\frac{t^3}4+\frac{t^4}4-\frac{t^5}8-\frac{3t^6}4+O(t^7).
+\end{equation}
+There are universal analytic functions $u,v,q$ with
+\begin{align}
+ u(t)&=t^3+t^4-2t^5-7t^6+O(t^7),\label{eq:uexp}\\
+ v(t)&=t-t^3-t^4+\tfrac52t^5+9t^6+O(t^7),\label{eq:vexp}\\
+ q(t)&=\tfrac12+\tfrac12t^2+\tfrac12t^3-t^4-\tfrac72t^5+O(t^6),\label{eq:qexp}
+\end{align}
+such that the extremizing kernel is, up to separate measure-preserving relabelings,
+\begin{equation}\label{eq:extremizer}
+ W_*(x,y)=p\{1-u[f_A(x)+f_B(y)]-v f_A(x)f_B(y)\},
+\end{equation}
+where $|A|=|B|=q$ and
+\[
+ f_A=\frac{\1_A-q}{\sqrt{q(1-q)}},\qquad
+ f_B=\frac{\1_B-q}{\sqrt{q(1-q)}}.
+\]
+Every maximizing kernel has this form almost everywhere. In the symmetric class one may take $A=B$, and symmetry forces this identification in the displayed representation. The maximizing rectangle is $A\times B$, with negative discrepancy.
+\end{theorem}
+
+In the original variables, the sharp asymptotic formula is
+\begin{align}
+\calE_p(D)={}&\frac{D^{1/4}}4+\frac{D^{3/4}}{4p^2}
+ +\frac{D}{4p^3}-\frac{D^{5/4}}{8p^4}
+ -\frac{3D^{3/2}}{4p^5}
+ +O\!\left(\frac{D^{7/4}}{p^6}\right).\label{eq:originalseries}
+\end{align}
+There is no $D^{1/2}$ term. The error estimate is uniform when $p$ ranges over a compact subinterval of $(0,1)$ and $D$ is sufficiently small uniformly on that interval.
+
+The proof is organized to separate three issues that a formal perturbation calculation alone would not settle: arbitrary kernels really reduce to two blocks; all global maximizers really enter the perturbative neighborhood; and the branch obtained there obeys the pointwise probability constraints.
+
+\section{A sharp degree-coupling inequality}\label{sec:degrees}
+\subsection{An exact orthogonal decomposition}
+Write
+\begin{equation}\label{eq:anova}
+ W(x,y)=p+a(x)+b(y)+C(x,y),
+\end{equation}
+where
+\[
+ a(x)=\int W(x,y)\dd y-p,\qquad
+ b(y)=\int W(x,y)\dd x-p.
+\]
+Then $a,b$ have mean zero and $C$ has zero row and column integrals. Put
+\[
+ A_2=\|a\|_2^2,\quad B_2=\|b\|_2^2,\quad S=A_2+B_2,
+ \quad D=t_4(W)-p^4.
+\]
+In the decomposition of each $L^2$ space into constants and mean-zero functions,
+\[
+ T_W=\begin{pmatrix}p&b^*\\a&T_C\end{pmatrix}.
+\]
+Multiplication of these blocks proves the identity
+\begin{align}
+D={}&\Sfour{C}^4+A_2^2+B_2^2+2p^2S\notag\\
+ &+2\|T_C^*a\|_2^2+2\|T_Cb\|_2^2
+       +4p\langle a,T_Cb\rangle.\label{eq:degreeidentity}
+\end{align}
+This identity is valid for real Hilbert--Schmidt kernels, not just nonnegative ones.
+
+\begin{theorem}[Degree penalty with optimal coefficient]\label{thm:degree}
+For the preceding decomposition,
+\begin{equation}\label{eq:degreebound}
+ D\ge \Sfour{C}^4+A_2^2+B_2^2+\frac32p^2(A_2+B_2).
+\end{equation}
+The coefficient $3/2$ cannot be replaced by a larger universal coefficient, even for symmetric $[0,1]$-valued kernels with fixed mean $p=2/5$.
+\end{theorem}
+\begin{proof}
+If $A_2B_2=0$, the mixed term vanishes and the assertion follows directly. Otherwise let $z=\langle a,T_Cb\rangle$. Cauchy--Schwarz gives
+\[
+ \|T_C^*a\|_2^2\ge z^2/B_2,\qquad
+ \|T_Cb\|_2^2\ge z^2/A_2.
+\]
+Consequently, the terms on the second line of \eqref{eq:degreeidentity} are at least
+\[
+ 2\left(\frac1{A_2}+\frac1{B_2}\right)z^2+4pz
+ \ge -\frac{2p^2A_2B_2}{A_2+B_2}.
+\]
+Since $A_2B_2\le S^2/4$, combining this with $2p^2S$ proves \eqref{eq:degreebound}.
+
+For sharpness take a balanced function $f$ with values $\pm1$, put $a=b=\varepsilon f$, and put $C(x,y)=-(p/2)f(x)f(y)$. Then $z=-p\varepsilon^2/2$ and equality holds throughout the argument. With $p=2/5$ and sufficiently small positive $\varepsilon$, all four values of $W$ lie in $[0,1]$. Since $S>0$, any increase of the coefficient would fail.
+\end{proof}
+
+The sharpness example for this all-scale inequality is not the small-excess extremizer of Theorem~\ref{thm:main}: its centered-core amplitude is a fixed fraction of $p$. Sharpness of an auxiliary inequality should not be confused with simultaneous sharpness in the full extremal problem.
+
+\subsection{An explicit global bound}
+\begin{corollary}[No small-excess assumption]\label{cor:global}
+Every kernel of mean $p>0$ and four-cycle excess $D$ satisfies
+\begin{equation}\label{eq:global}
+ \Cut{W-p}\le \frac{D^{1/4}}4+\frac{2D^{3/4}}{3p^2}.
+\end{equation}
+The second coefficient $2/3$ is not asserted to be globally optimal.
+\end{corollary}
+\begin{proof}
+For a rectangle of masses $\alpha,\beta$, put
+$s=\sqrt{\alpha(1-\alpha)}$ and $z=\sqrt{\beta(1-\beta)}$.
+The zero-marginal property and Cauchy--Schwarz bound its centered-core contribution by
+\[
+ \left|\int_{A\times B}C\right|\le \op{T_C}sz\le\frac14\Sfour{C}.
+\]
+The degree contribution is at most
+\[
+ \beta s\sqrt{A_2}+\alpha z\sqrt{B_2}
+ \le\sqrt{S}\sqrt{\beta^2s^2+\alpha^2z^2}\le\frac12\sqrt S.
+\]
+Indeed, $\beta^2s^2+\alpha^2z^2\le\alpha\beta(1-\alpha\beta)\le1/4$.
+For $D=d^4>0$, Theorem~\ref{thm:degree} and concavity of the fourth root give
+\[
+ \frac14\Sfour{C}
+ \le\frac14(d^4-\tfrac32p^2S)^{1/4}
+ \le\frac d4-\frac{3p^2S}{32d^3}.
+\]
+Maximizing the resulting quadratic in $\sqrt S$ adds at most $2d^3/(3p^2)$. If $D=0$, \eqref{eq:degreebound} forces $a=b=C=0$.
+\end{proof}
+
+\begin{corollary}[The regular benchmark]\label{cor:regular}
+If both marginals of $W$ are the constant $p$, then
+\[
+ \Cut{W-p}\le\frac14D^{1/4}.
+\]
+For $d\le\min(p,1-p)$, equality is achieved by $W=p\pm d f(x)f(y)$ with balanced $f\in\{-1,1\}$.
+\end{corollary}
+\begin{proof}
+Now $a=b=0$, $D=\Sfour{C}^4$, and the centered-indicator estimate in the previous proof applies. In the displayed example, $C$ is a rank-one operator of singular value $d$, and a balanced block rectangle has discrepancy $d/4$.
+\end{proof}
+
+\section{Exact reduction to a two-by-two problem}\label{sec:compression}
+\subsection{Compression and its equality condition}
+\begin{lemma}[Schatten compression]\label{lem:compression}
+Let $T$ be Hilbert--Schmidt and let $P,Q$ be orthogonal projections on its range and domain spaces. Then
+\[
+ \Sfour{PTQ}^4\le\Sfour{T}^4.
+\]
+If equality holds, then $T=PTQ$. More quantitatively,
+\begin{equation}\label{eq:residual}
+ \Sfour{T-PTQ}\le 2^{3/4}
+   \bigl(\Sfour{T}^4-\Sfour{PTQ}^4\bigr)^{1/4}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let $K=TT^*$. Splitting its Hilbert--Schmidt norm into blocks gives
+\begin{align}
+ \Sfour{T}^4-\Sfour{PT}^4
+ &=2\HS{PK(I-P)}^2+\HS{(I-P)K(I-P)}^2\notag\\
+ &\ge\Sfour{(I-P)T}^4.\label{eq:projectionloss}
+\end{align}
+Apply the same argument to right compression of $PT$. If the two losses are $\Gamma_1,\Gamma_2$, then
+\[
+ T-PTQ=(I-P)T+PT(I-Q),\qquad
+ \Sfour{T-PTQ}\le\Gamma_1^{1/4}+\Gamma_2^{1/4}.
+\]
+Concavity gives \eqref{eq:residual}. Equality of the original norms makes both discarded operators zero.
+\end{proof}
+
+For sets $A,B$, take $P,Q$ to be conditional expectations onto the two corresponding partitions. The kernel of $PT_WQ$ is the average of $W$ on each of the four rectangles. It has the same mean, remains $[0,1]$-valued, and preserves $\int_{A\times B}(W-p)$. Thus every particular cut of an arbitrary kernel has a two-block representative with no larger four-cycle excess.
+
+\begin{lemma}[A maximizing rectangle exists]\label{lem:cutattain}
+The supremum in \eqref{eq:cut} is attained for every bounded real kernel.
+\end{lemma}
+\begin{proof}
+Replace indicators temporarily by functions $f,g$ with $0\le f,g\le1$. This is a weakly sequentially compact subset of $L^2$. Given a maximizing sequence, pass to weakly convergent subsequences $f_n\rightharpoonup f$, $g_n\rightharpoonup g$. Compactness of the Hilbert--Schmidt operator gives $T_Ug_n\to T_Ug$ in norm, hence $\langle f_n,T_Ug_n\rangle\to\langle f,T_Ug\rangle$. Choose the sign of the objective in advance. Holding $g$ fixed, a best response $f$ is the indicator of the positive part of the signed function $T_Ug$; holding this indicator fixed, a best response $g$ is also an indicator. Neither replacement decreases the maximizing value. The absolute-value problem is the maximum of the two signed problems.
+\end{proof}
+
+\subsection{The scalar optimization}
+Assume first $0<\alpha=|A|<1$ and $0<\beta=|B|<1$. Let
+\[
+ f_A=(\1_A-\alpha)/s,\qquad f_B=(\1_B-\beta)/z,
+ \quad s=\sqrt{\alpha(1-\alpha)},\quad z=\sqrt{\beta(1-\beta)}.
+\]
+A compressed mean-$p$ kernel has operator matrix
+\[
+ p\begin{pmatrix}1&b\\a&c\end{pmatrix}
+\]
+in the orthonormal bases $(1,f_A)$ and $(1,f_B)$. Its normalized rectangle discrepancy is
+\begin{equation}\label{eq:L}
+ L(\alpha,\beta,a,b,c)=\beta s a+\alpha z b+szc.
+\end{equation}
+Direct multiplication gives normalized excess
+\begin{equation}\label{eq:F}
+ F(a,b,c)=c^4+2(1+c^2)(a^2+b^2)+a^4+b^4+4abc.
+\end{equation}
+For a prescribed sign $\sigma\in\{-1,1\}$ of the original discrepancy, replace the original three coefficients by $(\sigma a,\sigma b,\sigma c)$. The signed objective becomes $L$ and the constraint becomes
+\begin{equation}\label{eq:Fsigma}
+ F_\sigma=c^4+2(1+c^2)(a^2+b^2)+a^4+b^4+4\sigma abc\le t^4.
+\end{equation}
+Define $\Psi_\sigma(t)$ to be the maximum of $L$ over this constraint, all real $a,b,c$, and $\alpha,\beta\in[0,1]$, using the continuous formula \eqref{eq:L} at the boundary. This is a relaxation: the four pointwise probability constraints are not imposed yet. Degenerate rectangles of original kernels also satisfy this upper bound, either directly through their one-sided degree term or by approximation with nondegenerate rectangles. Therefore
+\begin{equation}\label{eq:relaxedupper}
+ \calE_p(p^4t^4)\le p\max\{\Psi_+(t),\Psi_-(t)\}.
+\end{equation}
+We will show that for small $t$ the winning relaxed optimizer obeys the omitted probability constraints.
+
+\section{Why every global maximizer is perturbative}\label{sec:localize}
+A stationary two-block calculation is not sufficient: a distant asymmetric maximizer could, in principle, win. The following argument excludes that possibility.
+
+\begin{lemma}[Localization of the full optimization]\label{lem:localize}
+For either sign $\sigma$, a maximum defining $\Psi_\sigma(t)$ exists. As $t\downarrow0$, every choice of a global maximizer satisfies
+\begin{align}
+ c/t&\longrightarrow1,& a/t^3&\longrightarrow1,& b/t^3&\longrightarrow1,\label{eq:loc1}\\
+ (\alpha-\tfrac12)/t^2&\longrightarrow\tfrac12,&
+ (\beta-\tfrac12)/t^2&\longrightarrow\tfrac12.\label{eq:loc2}
+\end{align}
+The constraint is active. Its Lagrange multiplier $\lambda$, in the convention $\nabla L=\lambda\nabla F_\sigma$, satisfies $\lambda t^3\to1/16$.
+\end{lemma}
+\begin{proof}
+First,
+\begin{align}
+F_\sigma
+&\ge c^4+\{2(1+c^2)-2|c|\}(a^2+b^2)+a^4+b^4\notag\\
+&\ge c^4+\tfrac32(a^2+b^2)+a^4+b^4.\label{eq:coercive}
+\end{align}
+Thus the constraint set is compact, uniformly after the initial bounds $|c|\le t$ and $a,b=O(t^2)$; the mass variables also lie in a compact set. Continuity proves existence. The feasible point $a=b=0$, $c=t$, $\alpha=\beta=1/2$ has value $t/4$.
+
+At any global maximizer,
+\[
+ t/4\le L=szc+O(t^2),\qquad sz\le1/4,\quad c/t\le1.
+\]
+Dividing by $t$ shows that $c/t\to1$ and $sz\to1/4$. The latter forces $\alpha,\beta\to1/2$. These conclusions hold for every sequence of maximizers, so they are uniform over the maximizing set in the usual sequential sense. In particular, both masses are interior for sufficiently small $t$.
+
+Slack in the constraint would allow a small increase of $c$, since $L_c=sz>0$. Hence the constraint is active. Moreover,
+\[
+ (F_\sigma)_c=4c^3+4c(a^2+b^2)+4\sigma ab=4t^3(1+o(1)).
+\]
+The constraint gradient is therefore nonzero and the multiplier rule applies. Its $c$ equation gives
+\[
+ \lambda=\frac{sz}{(F_\sigma)_c},\qquad \lambda t^3\longrightarrow\frac1{16}.
+\]
+The $a$ equation can be rearranged as
+\[
+ a=\frac{\beta s/(4\lambda)-\sigma bc}{1+c^2+a^2}.
+\]
+The numerator is $O(t^3)$ under the initial bounds; hence $a=O(t^3)$. The same argument gives $b=O(t^3)$. Substituting the improved bounds back into the equations, the mixed term is now $O(t^4)$, and
+\[
+ a/t^3\longrightarrow1,\qquad b/t^3\longrightarrow1.
+\]
+
+Finally, stationarity in $\alpha$ gives
+\[
+ s'(\alpha)(\beta a+zc)=-zb,
+ \qquad s'(\alpha)=\frac{1-2\alpha}{2s}.
+\]
+Since $\beta a+zc=\tfrac12t(1+o(1))$ and $zb=\tfrac12t^3(1+o(1))$, it follows that $s'(\alpha)=-t^2(1+o(1))$ and
+\[
+ \alpha-\tfrac12=-s s'(\alpha)=\tfrac12t^2(1+o(1)).
+\]
+The $\beta$ equation is identical after transposition.
+\end{proof}
+
+The successive scale improvements matter. The crude degree estimate permits $a,b=O(t^2)$, which would suggest an apparent $t^2$ correction. The maximizing equations force the smaller scale $a,b\asymp t^3$. This is the mechanism behind the absence of a $D^{1/2}$ term.
+
+\section{Analytic uniqueness, symmetry, and the expansion}\label{sec:analytic}
+\subsection{A nonsingular rescaled system}
+Introduce
+\[
+ c=tV,\quad a=t^3X,\quad b=t^3Y,\quad
+ \alpha=\tfrac12+t^2H,\quad\beta=\tfrac12+t^2K,
+ \quad\lambda=t^{-3}\ell.
+\]
+In the following equations $s=\sqrt{\alpha(1-\alpha)}$ and $z=\sqrt{\beta(1-\beta)}$. The active constraint and the five stationary equations become
+\begin{align}
+0={}&V^4+2t^2(1+t^2V^2)(X^2+Y^2)
+       +t^8(X^4+Y^4)+4\sigma t^3XYV-1,\label{eq:ift0}\\
+0={}&sz-4\ell\{V^3+t^4V(X^2+Y^2)+\sigma t^3XY\},\label{eq:iftc}\\
+0={}&\beta s-4\ell\{(1+t^2V^2)X+t^6X^3+\sigma tVY\},\label{eq:ifta}\\
+0={}&\alpha z-4\ell\{(1+t^2V^2)Y+t^6Y^3+\sigma tVX\},\label{eq:iftb}\\
+0={}&-\beta t^2HX/s+zY-HzV/s,\label{eq:iftalpha}\\
+0={}&sX-\alpha t^2KY/z-KsV/z.\label{eq:iftbeta}
+\end{align}
+These equations are real analytic near
+\begin{equation}\label{eq:basepoint}
+ t=0,\qquad (V,\ell,X,Y,H,K)=(1,1/16,1,1,1/2,1/2).
+\end{equation}
+At $t=0$ their left sides reduce to
+\[
+ V^4-1,\quad\tfrac14-4\ell V^3,\quad
+ \tfrac14-4\ell X,\quad\tfrac14-4\ell Y,\quad
+ Y/2-HV,\quad X/2-KV.
+\]
+The Jacobian with the equation order above and variable order $(V,\ell,X,Y,H,K)$ is
+\begin{equation}\label{eq:jacobian}
+\begin{pmatrix}
+4&0&0&0&0&0\\
+-3/4&-4&0&0&0&0\\
+0&-4&-1/4&0&0&0\\
+0&-4&0&-1/4&0&0\\
+-1/2&0&0&1/2&-1&0\\
+-1/2&0&1/2&0&0&-1
+\end{pmatrix},
+\qquad\det=-1.
+\end{equation}
+
+\begin{proposition}[Unique analytic global branch]\label{prop:branch}
+For each sign $\sigma$, all sufficiently small positive $t$ have a unique global maximizer in the scalar optimization. Its rescaled variables are real analytic in $t$ and satisfy $a=b$ and $\alpha=\beta$.
+\end{proposition}
+\begin{proof}
+The analytic implicit-function theorem applied to \eqref{eq:ift0}--\eqref{eq:iftbeta} and \eqref{eq:jacobian} gives a unique analytic solution in a neighborhood of \eqref{eq:basepoint}. Lemma~\ref{lem:localize} implies that \emph{every} global maximizer eventually lies in this neighborhood and satisfies this system. A global maximizer exists, so it must be the analytic solution. This proves global uniqueness for each sufficiently small $t$, not just uniqueness of a local critical point.
+
+Transposition exchanges $(a,\alpha)$ and $(b,\beta)$ while preserving the objective and constraint. Applying uniqueness gives $a=b$ and $\alpha=\beta$.
+\end{proof}
+
+\subsection{Three symmetric equations}
+Write $a=b=u$, $c=v$, $\alpha=\beta=q$, and $s=\sqrt{q(1-q)}$. Eliminating the multiplier from the $a,c$ equations and retaining the mass equation gives
+\begin{align}
+ v^4+4(1+\sigma v+v^2)u^2+2u^4&=t^4,\label{eq:symnorm}\\
+ q\{v^3+(\sigma+2v)u^2\}&=su(1+\sigma v+v^2+u^2),\label{eq:symratio}\\
+ uq(3-4q)+vs(1-2q)&=0.\label{eq:symmass}
+\end{align}
+The optimal value is
+\begin{equation}\label{eq:phiform}
+ \Psi_\sigma(t)=2qsu+q(1-q)v.
+\end{equation}
+These equations select the branch with $u/t^3\to1$, $v/t\to1$, and $(q-1/2)/t^2\to1/2$.
+
+For completeness, the symmetric system itself remains nonsingular after the substitutions $v=tV$, $u=t^3X$, $q=1/2+t^2H$ and division of its equations by $t^4,t^3,t^3$, respectively. At $t=0$ its equations are $V^4-1=0$, $(V^3-X)/2=0$, and $X/2-VH=0$; the Jacobian determinant in $(V,X,H)$ is $2$.
+
+\subsection{Coefficient calculation}
+Expanding \eqref{eq:symnorm}--\eqref{eq:symmass} recursively yields
+\begin{align}
+ u_\sigma(t)&=t^3-\sigma t^4-2t^5+7\sigma t^6+t^7+O(t^8),\label{eq:usigned}\\
+ v_\sigma(t)&=t-t^3+\sigma t^4+\tfrac52t^5-9\sigma t^6+O(t^7),\label{eq:vsigned}\\
+ q_\sigma(t)&=\tfrac12+\tfrac12t^2-\tfrac\sigma2t^3-t^4
+           +\tfrac{7\sigma}2t^5-\tfrac12t^6+O(t^7).\label{eq:qsigned}
+\end{align}
+Here is an explicit way to check the calculation without numerical fitting. Substitute the displayed polynomial parts and expand $s=\sqrt{q(1-q)}$. The residuals of \eqref{eq:symnorm}, \eqref{eq:symratio}, and \eqref{eq:symmass} are respectively $O(t^{10})$, $O(t^8)$, and $O(t^8)$. The nonsingular recursive system determines the stated coefficients uniquely: the normalized norm equation determines $V$ to one additional order because its derivatives in $X,H$ vanish to order at least $t^2$. The supporting symbolic script verifies the residual identities with exact rational coefficients.
+
+The first corrections also have a simple direct derivation. The leading stationary equations give $u=t^3+O(t^4)$ and $q=1/2+t^2/2+O(t^3)$. In the norm constraint the term $4u^2=4t^6+O(t^7)$ forces $v=t-t^3+O(t^4)$. Thus the $t^3$ coefficient of \eqref{eq:phiform} is
+\[
+ -\frac14+\frac12=\frac14.
+\]
+The next coefficients of $u,v$ are $-\sigma t^4,\sigma t^4$, so the $t^4$ coefficient is $\sigma/4-\sigma/2=-\sigma/4$. Continuing the same substitutions gives
+\begin{equation}\label{eq:signedvalue}
+ \Psi_\sigma(t)=\frac t4+\frac{t^3}4-\frac{\sigma t^4}4
+                -\frac{t^5}8+\frac{3\sigma t^6}4+O(t^7).
+\end{equation}
+In particular,
+\[
+ \Psi_-(t)-\Psi_+(t)=\frac{t^4}2-\frac{3t^6}2+O(t^7)>0
+\]
+for sufficiently small positive $t$. The negative-discrepancy branch wins. Setting $\Psi=\Psi_-$ proves the expansion asserted in Theorem~\ref{thm:main} for the relaxed optimization.
+
+\subsection{An exact one-parameter endpoint description}\label{sec:param}
+The answer is not limited to an asymptotic series. A useful independent description uses
+\[
+ r=\sqrt{\frac q{1-q}}>1,\qquad
+ k=\frac{r^2-1}{r(3-r^2)},\qquad q=\frac{r^2}{1+r^2}.
+\]
+Equation~\eqref{eq:symmass} is exactly $u=kv$. Define
+\[
+ A=r(1+2k^2)-k(1+k^2),\qquad
+ B_\sigma=\sigma(rk^2-k).
+\]
+Equation~\eqref{eq:symratio}, after division by $s$ and then by $v$, becomes
+\[
+ Av^2+B_\sigma v-k=0.
+\]
+Its positive local root can be evaluated without subtractive cancellation as
+\begin{equation}\label{eq:paramroot}
+ v=\frac{2k}{\sqrt{B_\sigma^2+4Ak}+B_\sigma},\qquad u=kv.
+\end{equation}
+Finally set
+\begin{align}
+ t(r)&=\{v^4+4(1+\sigma v+v^2)u^2+2u^4\}^{1/4},\label{eq:paramt}\\
+ \Psi_\sigma(t(r))&=2q\sqrt{q(1-q)}u+q(1-q)v.\label{eq:paramvalue}
+\end{align}
+For $r>1$ sufficiently close to $1$, $A,k>0$, and these formulas describe the same branch. Indeed, $r=1+t^2+O(t^3)$, so $\mathrm dr/\mathrm dt=2t+O(t^2)>0$. The endpoint can therefore be found by a one-dimensional root search locally. The restriction $1<r<\sqrt3$ merely keeps the displayed $k$ positive; it is not a proved global optimality interval.
+
+\section{Probability constraints and equality}\label{sec:realization}
+We now justify the step from the relaxed operator optimization back to bounded kernels.
+
+\begin{lemma}[A common feasible local range]\label{lem:box}
+There is a universal $t_*>0$ such that for $0<t<t_*$ both analytic branches satisfy
+\[
+ 0<u\le2t^3,\quad 0<v\le2t,\quad
+ 5/12\le q\le7/12,\quad \Psi_-'(t)\ge1/8.
+\]
+Shrinking $t_*$ if necessary, assume $t_*\le1/4$. For either branch, the kernel
+\[
+ p\{1+\sigma[u(f_A+f_B)+vf_Af_B]\}
+\]
+is $[0,1]$-valued whenever $|A|=|B|=q$ and $6pt\le\min(p,1-p)$.
+\end{lemma}
+\begin{proof}
+The analytic expansions and $\Psi_-'(0)=1/4$ give the first assertions. Since $q\in[1/3,2/3]$, both standardized indicator functions have absolute value at most $\sqrt2$. Therefore the absolute perturbation from $p$ is bounded by
+\[
+ p(2\sqrt2u+2v)\le p(4\sqrt2t^3+4t)\le6pt.
+\]
+The stated condition keeps every point value in $[0,1]$.
+\end{proof}
+
+\begin{proof}[Completion of Theorem~\ref{thm:main}]
+Choose $t_*>0$ small enough for the preceding results and the strict comparison $\Psi_->\Psi_+$ to hold. Take, for example, an existential threshold determined by
+\[
+ 0<t<\min\left\{t_*,\frac{\min(p,1-p)}{6p}\right\}.
+\]
+The relaxed upper bound \eqref{eq:relaxedupper} becomes $p\Psi_-(t)$. The negative branch is a feasible kernel by Lemma~\ref{lem:box}. Its rectangle $A\times B$ has absolute discrepancy $p\Psi_-(t)$ and its excess is exactly $p^4t^4$. The universal upper bound shows that no other rectangle in this kernel can have a larger discrepancy. Taking $A=B$ gives a symmetric extremizer. This proves \eqref{eq:envelope} and the displayed expansions.
+
+For equality, let $W$ attain $\calE_p(D)$, and choose a maximizing rectangle using Lemma~\ref{lem:cutattain}. Compress to its two partitions, obtaining $V$. Its discrepancy on that rectangle is still $\calE_p(D)$ and its excess is $D'\le D$. The already proved envelope is strictly increasing on the local interval, so
+\[
+ \calE_p(D)\le\Cut{V-p}\le\calE_p(D')\le\calE_p(D)
+\]
+forces $D'=D$. It also forces $W$ to use the full budget. Equality in Schatten compression now gives $W=V$ almost everywhere. The signed scalar optimizer is unique, the winning sign is negative, and hence $V$ has exactly the form \eqref{eq:extremizer}.
+
+If $W$ is symmetric, its row and column degree functions are equal. In this representation they are $p-pu f_A$ and $p-pu f_B$. Since $u>0$, $f_A=f_B$ almost everywhere, whence $A=B$ almost everywhere. The bound for $t$ can be chosen uniformly for $p$ in a compact subinterval of $(0,1)$, proving the asserted uniformity.
+\end{proof}
+
+\begin{remark}[The local radius is existential]
+The argument supplies a positive $t_*$ through compactness, localization, and the implicit-function theorem. It does not provide a certified decimal value of $t_*$. The numerical evaluator accepts $t\le0.25$ to explore the stationary branch, but that implementation range is \emph{not} the range certified by the theorem. Outside the proved existential neighborhood, the formulas remain candidates until global optimality and the probability constraints are separately checked.
+\end{remark}
+
+\begin{corollary}[Uniform low-density kernel range]\label{cor:sparse}
+After fixing the universal $t_*$ in the proof, the normalized identity
+$\calE_p(p^4t^4)=p\Psi(t)$ holds simultaneously for every $0<p\le1/2$ and
+$0<t<\min(t_*,1/6)$. In particular, the normalized local radius need not
+shrink as $p\downarrow0$.
+\end{corollary}
+\begin{proof}
+For $p\le1/2$, the feasibility condition $6pt\le\min(p,1-p)$ reduces
+to $6t\le1$. Every other step in the relaxed optimization is independent of $p$.
+\end{proof}
+
+\subsection{The inverse error budget}
+A useful equivalent form prescribes discrepancy instead of cycle excess. Let $\mathcal D_p(\delta)$ be the infimum of $t_4(W)-p^4$ over mean-$p$ kernels with $\Cut{W-p}\ge\delta$. For sufficiently small positive $\delta$, strict monotonicity and attainment give
+\[
+ \mathcal D_p(\delta)=p^4[\Psi^{-1}(\delta/p)]^4.
+\]
+Putting $z=4\delta/p$ and reverting the series gives
+\[
+ t=z-z^3-z^4+\tfrac72z^5+O(z^6),
+\]
+and hence
+\begin{equation}\label{eq:inverse}
+ \mathcal D_p(\delta)=(4\delta)^4
+ -\frac{4(4\delta)^6}{p^2}-\frac{4(4\delta)^7}{p^3}
+ +\frac{20(4\delta)^8}{p^4}
+ +O(\delta^9/p^5).
+\end{equation}
+This restates the same sharp tradeoff; it is not a second independent extremal theorem.
+
+\section{Quantitative compression of near-extremizers}\label{sec:stability}
+Exact two-block structure has a robust version. The statement controls distance to a two-block compression, not the full distance to the unique optimal parameters.
+
+\begin{theorem}[Near-extremal two-block compression]\label{thm:stability}
+Fix $p\in(0,1)$ and suppose $D=t_4(W)-p^4>0$ is in the sufficiently small range of Theorem~\ref{thm:main}, shrunk so that Lemma~\ref{lem:box} holds. Let
+\[
+ d=D^{1/4},\qquad \varepsilon=\calE_p(D)-\Cut{W-p}\ge0.
+\]
+There are measurable sets $A,B$ such that the conditional expectation $V$ of $W$ on the four rectangles determined by $A,B$ satisfies
+\begin{equation}\label{eq:stability}
+ \Cut{W-V}\le4(d^3\varepsilon)^{1/4}.
+\end{equation}
+In particular, if $\varepsilon=o(d)$, then $\Cut{W-V}=o(d)$.
+\end{theorem}
+\begin{proof}
+Choose a rectangle attaining the cut norm and let $V$ be its compression. Write
+\[
+ D_V=t_4(V)-p^4,\qquad \Gamma=D-D_V\ge0.
+\]
+The preserved rectangle implies
+\[
+ \calE_p(D)-\varepsilon=\Cut{W-p}\le\Cut{V-p}\le\calE_p(D-\Gamma).
+\]
+For $0<x\le D$, differentiating the sharp envelope gives
+\[
+ \calE_p'(x)=\frac{\Psi'(x^{1/4}/p)}{4x^{3/4}}
+       \ge\frac1{32d^3}.
+\]
+Integration, also when the lower endpoint is zero, shows
+\[
+ \varepsilon\ge\calE_p(D)-\calE_p(D-\Gamma)
+                \ge\frac{\Gamma}{32d^3}.
+\]
+By Lemma~\ref{lem:compression},
+\[
+ \Cut{W-V}\le\op{T_W-T_V}\le\Sfour{T_W-T_V}
+ \le2^{3/4}\Gamma^{1/4}\le4(d^3\varepsilon)^{1/4}.
+\]
+The first inequality follows by testing the operator against two indicators of $L^2$ norm at most one.
+\end{proof}
+
+For symmetric $W$, a cut-maximizing pair $A,B$ need not coincide away from equality. Accordingly, the compression $V$ in this theorem need not be symmetric. A claim of symmetric two-class stability would require an additional argument. Likewise, no $L^1$ stability or quantitative bounds on the errors in $u,v,q$ are implicit in \eqref{eq:stability}.
+
+\section{Finite weighted graphs and simple-graph limits}\label{sec:finite}
+\subsection{Exact normalization for a finite matrix}
+For an $m\times n$ matrix $M\in[0,1]^{m\times n}$ with uniform row and column measures, define
+\begin{align*}
+ p&=\frac1{mn}\sum_{i,j}M_{ij},\\
+ t_4(M)&=\frac1{m^2n^2}\sum_{i,k,j,\ell}
+                  M_{ij}M_{i\ell}M_{kj}M_{k\ell},\\
+ \Cut{M-p}&=\frac1{mn}\max_{I\subseteq[m],\,J\subseteq[n]}
+                 \left|\sum_{i\in I,j\in J}(M_{ij}-p)\right|.
+\end{align*}
+All upper bounds proved for kernels apply immediately. If $m=n$ and $M$ is symmetric, $t_4(M)=\tr(M^4)/n^4$. For a simple graph, the normalization is $p=2|E|/n^2$, not $2|E|/[n(n-1)]$. The quantity $t_4$ counts homomorphisms, including repeated vertices; it is not the injective four-cycle count without its collision correction.
+
+\subsection{Second-order rounding of the optimal mass}
+Let $\calE_{p,n}^{\mathrm{wt}}(D)$ denote the same optimization over symmetric $n\times n$ matrices with entries in $[0,1]$, allowing arbitrary diagonal weights.
+
+\begin{theorem}[Weighted finite realization]\label{thm:finite}
+For every $n\ge6$, fixed $p\in(0,1)$, and sufficiently small positive $D$ as above,
+\begin{equation}\label{eq:rounding}
+ \calE_p(D)-\frac{3D^{1/4}}{4n^2}
+ \le\calE_{p,n}^{\mathrm{wt}}(D)\le\calE_p(D).
+\end{equation}
+The lower-bound construction has mean exactly $p$ and four-cycle excess exactly $D$.
+\end{theorem}
+\begin{proof}
+Let $u,v,q$ be the negative optimal branch and let $q_n$ be a closest multiple of $1/n$ to $q$. On $n$ points take a set of size $nq_n$ and its standardized indicator $f_{q_n}$. Define
+\[
+ M_{ij}=p\{1-u(f_{q_n}(i)+f_{q_n}(j))-vf_{q_n}(i)f_{q_n}(j)\}.
+\]
+Because $1,f_{q_n}$ are orthonormal, the mean and the two-by-two operator matrix are unchanged. Thus the four-cycle excess remains exactly $D$.
+
+The optimal mass lies in $[5/12,7/12]$. For $n\ge6$, rounding places $q_n$ in $[1/3,2/3]$, and Lemma~\ref{lem:box}'s pointwise estimate still proves $0\le M_{ij}\le1$. Consider the normalized magnitude on the chosen block square,
+\[
+ h(x)=2x\sqrt{x(1-x)}u+x(1-x)v.
+\]
+Stationarity gives $h'(q)=0$. On $[1/3,2/3]$, elementary differentiation gives
+\[
+ \left|\frac{\mathrm d^2}{\mathrm dx^2}\bigl(2x\sqrt{x(1-x)}\bigr)\right|\le5,
+ \qquad |h''(x)|\le5u+2v\le6t.
+\]
+For example, writing $g(x)=2x\sqrt{x(1-x)}$, one has
+\[
+ g''(x)=\frac{8x^2-12x+3}{2\sqrt{x}(1-x)^{3/2}},\qquad
+ g'''(x)=-\frac{3}{4x^{3/2}(1-x)^{5/2}}<0.
+\]
+On the stated interval, $g''$ decreases from $-\sqrt2/8$ to $-13\sqrt2/4$, so $|g''|<5$.
+Taylor's theorem and $|q_n-q|\le1/(2n)$ now imply
+\[
+ h(q_n)\ge h(q)-\tfrac12(6t)(2n)^{-2}
+              =\Psi(t)-\frac{3t}{4n^2}.
+\]
+Multiplication by $p$ proves the lower bound; this block square is one admissible cut. The upper bound is the kernel theorem.
+\end{proof}
+
+The $n^{-2}$ loss is a genuine consequence of optimizing the mass: the first-order rounding error vanishes. The theorem does not assert that the constant $3/4$ or the order of the worst rounding loss is optimal. It also does not assert this finite bound for loopless unweighted graphs.
+
+\subsection{Asymptotic realization by simple graphs}
+\begin{proposition}[Simple-graph sharpness in the limit]\label{prop:simple}
+Fix $p\in(0,1)$ and a sufficiently small positive $D$. There is a sequence of finite simple graphs $G_n$ such that
+\[
+ p(G_n)\to p,\qquad t_4(G_n)-p(G_n)^4\to D,
+ \qquad \Cut{G_n-p(G_n)}\to\calE_p(D).
+\]
+\end{proposition}
+\begin{proof}
+Use the two vertex classes from Theorem~\ref{thm:finite}. For each unordered pair of distinct vertices, independently insert its edge with the corresponding block probability; put no loops. The matrix of edge probabilities, embedded as an equal-step kernel, converges in $L^1$ to $W_*$. Indeed, class masses differ by $O(1/n)$, the four probabilities vary continuously in the mass away from $0,1$, and diagonal squares have total measure $1/n$.
+
+For completeness, the random adjacency matrix is close to its probability matrix in cut norm with probability tending to one. For each pair of vertex subsets, its centered cut sum is a sum of independent edge variables with coefficients in $\{0,1,2\}$. A bounded-sum exponential estimate gives a tail $2\exp(-c\eta^2n^2)$ for normalized error $\eta$. A union bound over at most $4^n$ pairs proves cut error $O(n^{-1/2})$ with probability tending to one after increasing the implicit constant. This bounded-sum estimate follows, for example, by multiplying the bounds $\E e^{s(X-\E X)}\le e^{s^2(b-a)^2/8}$ for variables in $[a,b]$ and optimizing $s$.
+
+The mean therefore converges to $p$, and the discrepancy converges to $\Cut{W_*-p}$. To verify four-cycle convergence without invoking a counting lemma, note that maps with repeated vertices contribute $O(1/n)$ to the expectation. For injective maps the four edge variables are independent, so their expectation is the product of the block probabilities. In the variance, two products are independent unless they share an edge. There are $O(n^6)$ pairs of four-vertex maps sharing an edge, each covariance is bounded, and the normalization is $n^8$. Thus the variance is $O(n^{-2})$. It follows that $t_4(G_n)\to t_4(W_*)$ in probability. For each sufficiently large $n$, choose a graph for which these simultaneous errors are small.
+\end{proof}
+
+The order of limits is important: this proposition fixes $D$ before taking $n\to\infty$. A regime in which $D$ tends to zero with $n$ requires further estimates, particularly when the correction $D^{3/4}/p^2$ is smaller than finite-size fluctuations.
+
+\section{Examples and reproducible verification}\label{sec:verification}
+\subsection{An exact irregular witness}
+The regular formula $\Cut{W-p}\le D^{1/4}/4$ cannot be extended unchanged to irregular kernels. This fact is visible in a rational two-block example, not merely an asymptotic expansion. Take
+\[
+ p=\frac12,\qquad u=\frac1{1000},\qquad v=\frac1{10},
+ \qquad W=p\{1-u(f(x)+f(y))-vf(x)f(y)\},
+\]
+with balanced $f\in\{-1,1\}$. The block matrix and block masses are
+\[
+ \begin{pmatrix}449/1000&11/20\\11/20&451/1000\end{pmatrix},
+ \qquad(1/2,1/2).
+\]
+A direct computation gives
+\[
+ \Cut{W-p}=\frac{51}{4000},\qquad
+ D=\frac{51820001}{8000000000000},
+\]
+and
+\begin{equation}\label{eq:rationalwitness}
+ (4\Cut{W-p})^4-D=\frac{2301607}{8000000000000}>0.
+\end{equation}
+This is a counterexample to the \emph{unjustified extension of the regular bound}, not to the classical quasirandomness theorem. The example is deliberately rational so that the comparison can be checked without numerical fourth roots.
+
+\subsection{Numerical endpoint values}
+The following values were computed at 80-decimal-digit working precision from the three symmetric stationary equations and independently checked against the one-parameter formula. They diagnose the local branch; the displayed values of $t$ are not asserted to lie in a certified global-optimality interval.
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$t$ & $\Psi_-(t)$ & $(\Psi_--t/4)/t^3$ & $R_5(t)/t^6$\\
+\midrule
+$0.100$ & $0.025272976634890$ & $0.272976635$ & $-0.773365110$\\
+$0.050$ & $0.012532761425065$ & $0.262091401$ & $-0.768795836$\\
+$0.020$ & $0.005002039551420$ & $0.254943928$ & $-0.759061159$\\
+$0.010$ & $0.002500252486745$ & $0.252486745$ & $-0.754770085$\\
+$0.005$ & $0.001250031405848$ & $0.251246781$ & $-0.752443132$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Here $R_5=\Psi_--t/4-t^3/4-t^4/4+t^5/8$. The two ratios converge to $1/4$ and $-3/4$, respectively, as predicted by the proved expansion. These coefficients were derived symbolically before this diagnostic calculation; they were not inferred by fitting the table.
+
+\subsection{What the supplied programs check}
+The package distinguishes exact arithmetic from floating-point diagnostics.
+\begin{description}[leftmargin=1.2em,style=nextline,labelindent=0pt]
+\item[\texttt{code/verify\_exact.py}]
+Checks the scalar Schatten identity, the rescaled Jacobian determinant, the signed series and their stationary residuals, and the algebraic parameter elimination using symbolic rational arithmetic. It then checks the degree identity, the degree inequality, the explicit global cut bound, and a two-way compression for all $512$ binary $3\times3$ matrices and $120$ seeded rational matrices of dimensions $2$ through $5$. In verifying the fourth-root bound, a rational lower bound on the fourth root is used, making the checked inequality stronger than the desired one for each tested matrix. It also verifies the sharp $3/2$ degree example and \eqref{eq:rationalwitness} exactly.
+\item[\texttt{code/endpoint.py}]
+Evaluates either analytic stationary branch with arbitrary-precision arithmetic and supplies its two-block probability matrix. It also implements \eqref{eq:paramroot}--\eqref{eq:paramvalue}. Its numerical input range is explicitly separated from the existential theorem radius.
+\item[\texttt{code/diagnostics.py}]
+Checks $12$ signed endpoints at six scales, agreement of the two endpoint representations, exact enumeration of the cuts of each weighted two-block kernel, and $36$ rounded weighted realizations. These $48$ diagnostic groups pass. The largest disagreement between the endpoint representations was less than $2\cdot10^{-73}$ at the working precision used; this is a numerical residual, not an interval error bound.
+\end{description}
+
+The result files record the actual runs. Finite tests cannot prove a universal kernel inequality. In this package the proofs are the operator and optimization arguments, while tests are meant to catch transcription, normalization, coefficient, and implementation errors. Neither the existence/uniqueness argument nor the infinite-dimensional statements have been formally checked in a proof assistant.
+
+\section{Further research questions}\label{sec:future}
+\subsection{A certified local radius and the first change of regime}
+Can one replace the existential $t_*$ by an explicit rational constant, with an interval-arithmetic or symbolic certificate? A complete certificate needs both the local branch and exclusion of all other maximizers. The coercivity and localization proof gives a starting point for explicit estimates, but a residual from a Newton solve is not sufficient.
+
+For a fixed density $p$, what happens first as the budget grows: a block probability reaches $0$ or $1$, a competing signed branch wins, or a nonsymmetric stationary point becomes globally optimal? The two-block compression remains available at every scale, so the global problem is still finite-dimensional, but its active constraints and stationary configurations may change.
+
+\subsection{Stronger stability}
+Can Theorem~\ref{thm:stability} be upgraded to a sharp estimate on the distance from $W$ to a relabeling of $W_*$, with explicit bounds for the errors in $u,v,q$? The different natural scales $v\asymp t$, $u\asymp t^3$, and $q-1/2\asymp t^2$ suggest an anisotropic stability statement. It would also be useful to determine the best exponent and constant in the compression estimate and to obtain a symmetric two-class approximation for symmetric near-extremizers.
+
+\subsection{Longer even cycles}
+For a bipartite kernel, the alternating $2k$-cycle density is a Schatten $2k$ moment. Does the exact local discrepancy envelope again come from a unique slightly irregular two-block kernel? What replaces the $t^3$ degree scale, and at what order does the sign asymmetry appear? Compression still contracts the relevant norm, but the scalar moment polynomial and the degeneracies of the local optimization become more complicated. Even-cycle forcing at the exponent level is classical; the question here is its sharp higher-order structure.
+
+\subsection{Joint sparse and finite limits}
+The normalized problem uses $t=D^{1/4}/p$. Corollary~\ref{cor:sparse} already makes the kernel theorem uniform as $p\to0$ at fixed sufficiently small $t$. What is the corresponding uniform finite-graph statement once collisions and sampling fluctuations are included? Near $p=1$, upper probability constraints become restrictive and a different transition is expected.
+
+For simple graphs, determine the joint regimes of $n,p,D$ in which the $D^{3/4}$ and $D$ corrections are observable. Can deterministic simple constructions match the weighted envelope with a quantified error smaller than those corrections? For weighted graphs, what is the exact leading rounding loss as a function of the fractional part of $nq(t)$?
+
+\subsection{Other counting certificates and statistical calibration}
+For a graph $H$ whose density controls a four-cycle moment, the present envelope immediately yields a bound once the correct moment inequality is supplied. When is that transferred bound sharp, and when do the equality requirements of the two inequalities conflict? This asks for an analysis of the actual extremizers rather than an automatic transfer of constants.
+
+A related applied question is how to use the refined deterministic envelope when both $p$ and $t_4$ are estimated from samples. The sharp correction can improve a deterministic calibration, but it need not improve sample complexity if estimation error dominates it. A statistical theorem would need explicit sampling assumptions, bias correction for noninjective maps, and a joint fluctuation analysis.
+
+\subsection{Formal verification and priority assessment}
+A formalization could begin with the finite-matrix Schatten identity and the projection-loss formula, followed by a library-level treatment of the implicit-function and compactness arguments. A separate exhaustive literature assessment should compare the precise indicator-set normalization and the unrestricted degree setting, rather than only matching the phrase ``four-cycle quasirandomness.'' These are concrete prerequisites for making stronger claims of certified correctness and originality.
+
+\section{Conclusion}
+The sharp fourth-root scale is only the first layer of four-cycle quasirandomness. In the unrestricted bounded-kernel problem, a degree perturbation of order $t^3$ and a mass perturbation of order $t^2$ yield a strictly larger discrepancy than the balanced regular example. Exact compression, global localization, and analytic uniqueness identify that perturbation as the genuine local extremizer and determine its error curve beyond leading order.
+
+The results are local but not merely formal: the theorem ranges over all bounded kernels and classifies every equality case. The accompanying all-scale bound, compression stability, finite weighted rounding, and reproducible exact checks give additional usable consequences. The remaining uncertainty concerns independent review, priority, and the numerical extent of the local phase, not an unstated conjectural lemma inside the proof.
+
+\appendix
+\section{Proof dependencies and scope audit}
+The main theorem uses the following chain, each link proved in the text:
+\[
+\begin{gathered}
+\text{Schatten compression and preservation of a cut}\\
+\Downarrow\\
+\text{compact five-variable signed optimization}\\
+\Downarrow\\
+\text{localization of every global maximizer}\\
+\Downarrow\\
+\text{nonsingular analytic stationary system}\\
+\Downarrow\\
+\text{uniqueness, symmetry, sign comparison, and series}\\
+\Downarrow\\
+\text{pointwise feasibility and equality classification}.
+\end{gathered}
+\]
+The degree-coupling theorem is independent of the analytic localization argument. Its scalar counterpart supplies the convenient coercivity estimate, but the exact degree inequality is also a stand-alone result. The near-extremal theorem depends on strict monotonicity of the local envelope and the quantitative projection-loss formula. The weighted finite theorem depends on stationary mass optimization, not on a random approximation. The simple-graph proposition is an asymptotic approximation and does not strengthen the exact finite theorem to unweighted graphs.
+
+\begin{center}
+\begin{tabular}{@{}p{0.42\linewidth}p{0.50\linewidth}@{}}
+\toprule
+Assertion & Status and boundary\\
+\midrule
+Fourth-root exponent & Classical; not a novelty claim.\\[3pt]
+Exact local envelope and equality & Proved here; independent review and priority assessment pending.\\[3pt]
+Series through $t^6$ & Derived from analytic equations; symbolically checked.\\[3pt]
+Positive explicit theorem radius & Not supplied; existence proved.\\[3pt]
+Global endpoint beyond the local phase & Not determined.\\[3pt]
+Degree coefficient $3/2$ & Universal inequality and exact sharpness example proved.\\[3pt]
+Weighted $n^{-2}$ rounding loss & Proved, with diagonal weights allowed.\\[3pt]
+Finite simple-graph equality at exact $p,D$ & Not claimed.\\[3pt]
+Improved graph-algorithm exponent & Not claimed.\\[3pt]
+Proof-assistant certification & Not performed.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\clearpage
+\section{Reproduction commands}
+The package is self-contained except for Python dependencies and a standard LaTeX installation. From its root directory:
+\begin{verbatim}
+python -m pip install -r requirements.txt
+python code/verify_exact.py
+python code/diagnostics.py
+python code/endpoint.py --t 0.01 --sign -1 --dps 80
+python code/build_pdf.py
+\end{verbatim}
+The exact verifier writes \path{results/exact_verification.json}. The diagnostics write \path{results/numeric_diagnostics.json} and \path{results/endpoint_values.csv}. The random rational checks use the fixed seed \texttt{20261008}; all binary $3\times3$ matrices are enumerated. The \texttt{README.md}, source audit, and proof-status file summarize provenance and limitations without replacing the mathematical statements.
+
+\begingroup
+\raggedright
+\bibliographystyle{plain}
+\bibliography{references}
+\endgroup
+\end{document}

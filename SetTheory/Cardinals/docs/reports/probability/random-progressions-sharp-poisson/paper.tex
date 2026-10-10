@@ -1,0 +1,1224 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs,array,longtable,enumitem}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Sharp Poisson asymptotics for the longest arithmetic progression in a random set},
+pdfauthor={ChatGPT (OpenAI)},pdfsubject={Research manuscript for the ProveIt project},
+pdfkeywords={arithmetic progressions, Poisson approximation, asymptotics, entropy, lattice effects}}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Sharp Poisson asymptotics for random progressions}
+\fancyhead[R]{\small Research manuscript}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\EE}{\mathbb E}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\AP}{\mathcal A}
+\newcommand{\cH}{\mathcal H}
+\newcommand{\la}{\lambda}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\dd}{\,\mathrm d}
+\DeclareMathOperator{\Pois}{Poisson}
+\title{Sharp Poisson asymptotics for the longest\protect\\arithmetic progression in a random set\\[5pt]
+\large An entropy coefficient, a second-order correction,\protect\\and the lattice oscillation of the optimal error}
+\author{ChatGPT (OpenAI)\\\small Prepared for Vladimir Reshetnikov's ProveIt research program}
+\date{October 7, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $U_n$ be the longest arithmetic progression in the Bernoulli-$p$ random
+subset of $[n]$, with $p\in(0,1)$ fixed. We study the accuracy of the
+Poisson approximation to $\PP(U_n<r)$, rather than only its limiting law.
+Writing $M_r(n)$ for the number of $r$-term progressions, the exact
+mean of progression heads is
+$\la_{n,r}=M_r(n)p^r-M_{r+1}(n)p^{r+1}$.
+We give a self-contained argument for the uniform expansion
+\[
+ \PP(U_n<r)=e^{-\la_{n,r}}
+ \left(1+c_p\la_{n,r}^2\frac{r^2}{n}\right)
+ +O_p\!\left(\frac{(\log n)^{3/2}}{n}\right),
+ \qquad 2\le r\le n,
+\]
+where $c_p=\frac{1-p}{p}(\frac53-\frac{\pi^2}{9})$.
+In the critical window the remainder is $O_{p,a,b}(r^{3/2}/n)$ and
+there is a corresponding logarithmic expansion. Consequently the
+uncorrected uniform error is exactly of order $(\log n)^2/n$.
+We further determine its lattice-periodic leading coefficient and its
+explicit normalized liminf and limsup. The coefficient arises from the
+squared binary-entropy profile of the incidence degrees of long
+progressions. A local avoidance expansion for nonmonotone cylinder events,
+with a connected-triple remainder, supplies the probabilistic step.
+The same results hold for the smooth Poisson parameter used by Zhao and
+Zhang. All asserted asymptotic results below have written proofs; finite
+exact-arithmetic regressions are supplied separately.
+\end{abstract}
+\noindent\textbf{Status and scope.}
+This is an unrefereed research manuscript, not a Lean-verified result.
+The sharp rate, explicit correction, and lattice-error formulas are the
+contributions proposed for independent review. The literature search does
+not certify priority. The argument does not assume the correctness of any
+new manuscript in either linked repository, and it does not improve a
+deterministic Szemer\'edi or van der Waerden bound.
+\clearpage
+\tableofcontents
+\newpage
+
+\section{Problem, results, and relation to existing work}
+\subsection{The random sequence}
+Fix $p\in(0,1)$ and put $q=1-p$ and $\alpha=-\log p>0$.
+Let $\xi_1,\ldots,\xi_n$ be independent Bernoulli-$p$ variables.
+The random set is $A_n=\{x\in[n]:\xi_x=1\}$. An arithmetic progression
+always has positive integer common difference. Let $U_n$ be its largest
+possible length in $A_n$, with $U_n=0$ for the empty set and $U_n=1$
+when there is no two-term progression but the set is nonempty.
+For $2\le r\le n$, write
+\begin{align}
+ D_r&=\left\lfloor\frac{n-1}{r-1}\right\rfloor,\qquad
+ M_r(n)=\sum_{d=1}^{D_r}\bigl(n-(r-1)d\bigr)
+       =nD_r-\frac{(r-1)D_r(D_r+1)}2,\label{eq:M}\\
+ \la_{n,r}&=p^rM_r(n)-p^{r+1}M_{r+1}(n),\label{eq:lambda}\\
+ \bar\la_{n,r}&=\frac{n^2p^r(p+qr)}{2r(r-1)}.\label{eq:barlambda}
+\end{align}
+The definition of $M_r$ also applies when $r>n$, giving zero.
+All logarithms are natural. The notation $O_p$ here denotes a deterministic
+implicit constant depending on $p$, not stochastic boundedness. Such constants may
+blow up as $p\downarrow0$ or $p\uparrow1$.
+
+The key positive constants are
+\begin{equation}
+ H=\int_0^1\bigl(-u\log u-(1-u)\log(1-u)\bigr)^2\dd u
+   =\frac56-\frac{\pi^2}{18},\qquad
+ c_p=\frac{2qH}{p}=\frac qp\left(\frac53-\frac{\pi^2}{9}\right).
+ \label{eq:constants}
+\end{equation}
+In particular, $H\approx0.285021977717258$ and
+$c_{1/2}\approx0.570043955434516$.
+
+\subsection{Main statements}
+\begin{theorem}[Uniform second-order approximation]\label{thm:uniform}
+For every fixed $p\in(0,1)$ and either choice
+$\eta_{n,r}=\la_{n,r}$ or $\eta_{n,r}=\bar\la_{n,r}$,
+\begin{equation}
+ \sup_{2\le r\le n}\left|
+ \PP(U_n<r)-e^{-\eta_{n,r}}
+ \left(1+c_p\eta_{n,r}^2\frac{r^2}{n}\right)\right|
+ =O_p\!\left(\frac{(\log n)^{3/2}}{n}\right).
+ \label{eq:uniformcorrected}
+\end{equation}
+\end{theorem}
+The polynomial correction in this statement is intentional. Extending the
+exponential $\exp(-\eta+c_p\eta^2r^2/n)$ to very small $r$ would be
+incorrect: far outside the critical window its positive quadratic
+exponent can become enormous.
+
+\begin{theorem}[Critical-window logarithmic expansion]\label{thm:critical}
+Fix $0<a<b<\infty$. Uniformly over integers $r$ satisfying
+$a\le\la_{n,r}\le b$,
+\begin{align}
+ r&=\frac{2\log n-\log\log n+O_{p,a,b}(1)}{\alpha},\label{eq:criticalr}\\
+ \log\PP(U_n<r)
+ &=-\la_{n,r}+c_p\la_{n,r}^2\frac{r^2}{n}
+       +O_{p,a,b}\!\left(\frac{r^{3/2}}n\right),\label{eq:criticallog}\\
+ \PP(U_n<r)-e^{-\la_{n,r}}
+ &=c_p e^{-\la_{n,r}}\la_{n,r}^2\frac{r^2}{n}
+       +O_{p,a,b}\!\left(\frac{r^{3/2}}n\right).\label{eq:criticalprob}
+\end{align}
+The same conclusions hold with $\bar\la$ in place of $\la$, including
+when the critical-window condition is imposed on $\bar\la$.
+\end{theorem}
+Thus the Poisson estimate has a strictly positive leading bias in the
+critical window: the true avoidance probability is larger.
+
+\begin{theorem}[Optimal error and its lattice oscillation]\label{thm:lattice}
+For either parameter $\eta$ in Theorem~\ref{thm:uniform}, let
+\[
+ \mathcal E_n(\eta)=\sup_{2\le r\le n}
+       |\PP(U_n<r)-e^{-\eta_{n,r}}|,
+ \quad
+ t_n=\frac{2\log n-\log\log n+\log(q\alpha/4)}{\alpha},
+\]
+and define the continuous one-periodic function
+\begin{equation}
+ \Phi_p(\theta)=\max_{j\in\mathbb Z}
+ \left\{e^{2\alpha(\theta-j)}
+              \exp\bigl(-e^{\alpha(\theta-j)}\bigr)\right\}.
+ \label{eq:Phi}
+\end{equation}
+Then
+\begin{equation}
+ \mathcal E_n(\eta)=\frac{4c_p}{\alpha^2}\frac{(\log n)^2}{n}
+              \Phi_p(\{t_n\})
+       +O_p\!\left(\frac{(\log n)^{3/2}}n\right).
+ \label{eq:latticeerror}
+\end{equation}
+In particular $\mathcal E_n(\eta)=\Theta_p((\log n)^2/n)$, and
+\begin{align}
+ \limsup_{n\to\infty}\frac{n\mathcal E_n(\eta)}{(\log n)^2}
+   &=\frac{16c_p}{\alpha^2e^2},\label{eq:limsup}\\
+ \liminf_{n\to\infty}\frac{n\mathcal E_n(\eta)}{(\log n)^2}
+   &=\frac{16c_p}{q^2}\exp\left(-\frac{2\alpha}{q}\right).
+   \label{eq:liminf}
+\end{align}
+These two constants are distinct for every fixed $p\in(0,1)$.
+\end{theorem}
+
+\subsection{What is inherited, and what is being added}
+Benjamini, Yadin, and Zeitouni studied longest progressions in random
+subsets using Poisson approximation~\cite{BYZ}.
+Zhao and Zhang's Theorem~1.1(1), in the preprint inspected here, gives
+\begin{equation}
+ \sup_{2\le r\le n}|\PP(U_n<r)-e^{-\bar\la_{n,r}}|
+ =O_p\!\left(\frac{\log^4 n\,\log\log n}{n}\right).
+ \label{eq:ZZ}
+\end{equation}
+Their progression-head construction and overlap estimates are directly
+relevant~\cite{ZZ}. We explicitly reuse and reprove those ingredients;
+neither the construction nor the three-term pair estimate below is
+claimed as new. Theorems~\ref{thm:uniform}--\ref{thm:lattice} refine the
+displayed estimate~\eqref{eq:ZZ}, rather than merely substitute constants
+in its proof.
+
+Higher-order avoidance estimates through joint cumulants are an established
+subject. In particular, Mousset, Noever, Panagiotou, and Samotij give
+systematic expansions for binomial-subset nonexistence probabilities,
+including fixed-length arithmetic progressions~\cite{MNPS}.
+Our event family is nonmonotone because a progression head requires a
+zero immediately before a string of ones. Section~\ref{sec:avoidance}
+therefore proves the particular local expansion needed here directly.
+We make no priority claim for the general principle that the second
+factorial cumulant supplies the first Poisson correction.
+
+The ProveIt Ramsey directory contains research branches devoted to Gowers'
+proof, quasipolynomial progressions, square differences, and van der Waerden
+problems~\cite{ProveIt}. The OpenAI collection includes an arithmetic-
+progression manuscript family and explicitly distinguishes verification
+statuses~\cite{OpenAIMath,OpenAIAP}. These motivate the choice of topic,
+but are not premises of any theorem proved here. This paper belongs in
+probabilistic Ramsey/additive combinatorics, not in the dependency chain
+of a deterministic density-increment proof.
+
+\section{Progression heads and the exact mean}\label{sec:heads}
+Let
+\[
+ \AP_{n,r}=\{(a,d):a,d\in\mathbb Z_{>0},\ a+(r-1)d\le n\}.
+\]
+For $i=(a,d)$, define the positive core and support
+\[
+ C_i=\{a,a+d,\ldots,a+(r-1)d\},\qquad
+ S_i=C_i\cup\bigl(\{a-d\}\cap[n]\bigr).
+\]
+The head event is
+\begin{equation}
+ E_i=\begin{cases}
+       \{\xi_x=1\text{ for all }x\in C_i\},&a\le d,\\
+       \{\xi_{a-d}=0\}\cap\{\xi_x=1\text{ for all }x\in C_i\},&a>d,
+     \end{cases}
+ \qquad Y=\sum_{i\in\AP_{n,r}}\ind_{E_i}.
+ \label{eq:head}
+\end{equation}
+A boundary head has $a\le d$ and probability $p^r$; an interior head has
+probability $qp^r$.
+
+\begin{lemma}[Exact reduction]\label{lem:mean}
+For every $n\ge2$ and $2\le r\le n$,
+\[
+ \{U_n<r\}=\{Y=0\},\qquad \EE Y=\la_{n,r}.
+\]
+Moreover $Y_{n,r+1}\le Y_{n,r}$ pointwise, and therefore $\la_{n,r}$
+is nonincreasing in $r$. Uniformly in $2\le r\le n$,
+\begin{equation}
+ |\la_{n,r}-\bar\la_{n,r}|\le 2np^r.\label{eq:meanshift}
+\end{equation}
+If $r=O(\log n)$ and $r\to\infty$, then
+\begin{equation}
+ \la_{n,r}=\frac{qn^2p^r}{2r}
+          \left(1+O_p\left(\frac1r+\frac rn\right)\right).
+ \label{eq:meanasy}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Any selected $r$-term progression can be extended backwards along its
+common difference until the first selected element of that run is reached.
+The resulting run begins at a head and still has length at least $r$.
+Conversely every head supplies an $r$-term progression.
+The same starting point and difference of an $(r+1)$-head also define an
+$r$-head, proving pointwise monotonicity.
+
+There are $M_r(n)$ possible cores. The interior ones correspond bijectively
+to $(r+1)$-term progressions by adjoining the predecessor. Replacing their
+probability $p^r$ by $qp^r$ proves~\eqref{eq:lambda}.
+For $m=r-1$, put $u=n/m$ and $t=D_r$ in~\eqref{eq:M}. We have
+$0<u-t\le1$, and a direct expansion gives
+\[
+ M_r(n)=\frac{n^2}{2m}-\frac n2
+       +\frac m2\bigl((u-t)-(u-t)^2\bigr).
+\]
+Thus $|M_r(n)-n^2/(2(r-1))|\le n$; the same bound holds for
+$M_{r+1}$. This proves~\eqref{eq:meanshift}. Combining it with the exact
+formula~\eqref{eq:barlambda} proves~\eqref{eq:meanasy}.
+\end{proof}
+
+\section{A local expansion for avoidance of cylinder events}\label{sec:avoidance}
+This section is independent of arithmetic progressions. Its purpose is to
+justify the passage from a covariance calculation to a zero-probability
+asymptotic, with a quantified remainder. It does not assume positivity
+of correlations or monotonicity of the events.
+
+\subsection{Parameters and elementary conditional bounds}
+Let $(E_i)_{i\in I}$ be a finite family of events, each determined by a
+specified finite set of independent coordinates $S_i$. Join $i\ne j$
+when $S_i\cap S_j\ne\varnothing$, write $i\sim j$, and let
+$B_i=\{i\}\cup\{j:j\sim i\}$. Set
+\begin{align}
+ \pi_i&=\PP(E_i),\quad \pi_{ij}=\PP(E_i\cap E_j),\quad
+ \pi_{ijk}=\PP(E_i\cap E_j\cap E_k),\nonumber\\
+ \la&=\sum_i\pi_i,\quad
+ \delta_i=\sum_{j\in B_i}\pi_j,\quad \delta=\max_i\delta_i,\nonumber\\
+ b_1&=\sum_i\pi_i\delta_i,\qquad
+ b_2=\sum_i\sum_{j\sim i}\pi_{ij},\label{eq:localpars}\\
+ T&=\sum_{\substack{\{i,j,k\}\subset I\\
+                 \text{induced graph connected}}}\pi_{ijk}.
+ \label{eq:Tdef}
+\end{align}
+The pairs in $b_2$ are ordered; the triples in $T$ are unordered and
+distinct. Write $F_A=\bigcap_{j\in A}E_j^c$.
+
+\begin{lemma}[Conditional control]\label{lem:conditional}
+Suppose $\delta\le1/8$. Every $F_A$ has positive probability, and for
+$i\notin A$,
+\begin{equation}
+ \PP(E_i\mid F_A)\le2\pi_i.\label{eq:LLL}
+\end{equation}
+More generally, let $G$ be an event determined by the union of at most $m$
+of the supports $S_i$. Let $N_G$ be the union of the closed neighborhoods of those at most $m$
+supports and put $w=\sum_{j\in A\cap N_G}\pi_j$. Then
+\begin{align}
+ \PP(G\mid F_A)&\le\PP(G)e^{4w},\label{eq:auxupper}\\
+ \bigl(\PP(G\mid F_A)-\PP(G)\bigr)_+
+       &\le4e^{4m\delta}\PP(G)w,\label{eq:auxexcess}\\
+ \bigl(\PP(G)-\PP(G\mid F_A)\bigr)_+
+       &\le e^{4(m+1)\delta}
+           \sum_{j\in A\cap N_G}\PP(G\cap E_j).
+           \label{eq:auxdeficit}
+\end{align}
+\end{lemma}
+\begin{proof}
+We give the usual local-lemma induction to fix the conditional statement.
+For $A=\varnothing$,~\eqref{eq:LLL} holds. Assume the conditional bound
+for conditioning sets of size less than $|A|$. First obtain positivity of
+$F_A$ by removing one index, using that bound, and observing that
+$1-2\pi_i>0$. Then split $A$ into the neighbors
+$V=A\cap B_i$ and the nonneighbors $W=A\setminus B_i$.
+When $V=\varnothing$, independence gives the claim. Otherwise
+\[
+ \PP(E_i\mid F_A)
+ \le \frac{\PP(E_i\mid F_W)}{\PP(F_V\mid F_W)}
+ \le\frac{\pi_i}{\prod_{j\in V}(1-2\pi_j)}
+ \le\frac{\pi_i}{1-2\sum_{j\in V}\pi_j}
+ \le2\pi_i.
+\]
+The product bound uses the induction hypothesis, adding the elements of
+$V$ one at a time; every intermediate conditioning set has smaller size.
+Positivity at the next size follows by adding one event complement and
+using $2\pi_i\le1/4<1$.
+
+For $G$, split $A$ into $V=A\cap N_G$ and $W=A\setminus N_G$.
+The event $G$ is independent of all coordinates used by $F_W$. The same
+product argument and $-\log(1-2x)\le4x$ for $0\le x\le1/8$ give
+\[
+ \PP(G\mid F_A)
+ \le\frac{\PP(G)}{\prod_{j\in V}(1-2\pi_j)}
+ \le\PP(G)e^{4w}.
+\]
+Since $w\le m\delta$, $e^{4w}-1\le4we^{4m\delta}$ proves the upper
+excess estimate. For the lower estimate, the denominator
+$\PP(F_V\mid F_W)$ is at most one, so the union bound yields
+\[
+ \PP(G\mid F_A)\ge
+ \PP(G)-\sum_{j\in V}\PP(G\cap E_j\mid F_W).
+\]
+Each intersection uses at most $m+1$ original supports. Applying the
+just-proved upper estimate proves~\eqref{eq:auxdeficit}.
+\end{proof}
+
+\subsection{An exponentially damped first-order estimate}
+\begin{lemma}[Coarse logarithmic sandwich]\label{lem:sandwich}
+Under $\delta\le1/8$,
+\begin{equation}
+ -\la-4b_1\le\log\PP(F_I)\le-\la+2b_2.
+ \label{eq:sandwich}
+\end{equation}
+If also $b_2\le\la/4$, then
+\begin{equation}
+ |\PP(F_I)-e^{-\la}|\le(4b_1+2b_2)e^{-\la/2}.
+ \label{eq:damped}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Order $I$, and put $z_i=\PP(E_i\mid F_{\{j:j<i\}})$ and
+$u_i=\sum_{j<i,\,j\sim i}\pi_j$.
+Lemma~\ref{lem:conditional} gives
+\[
+ z_i\le\pi_i e^{4u_i},\qquad
+ z_i\ge\pi_i-e^{8\delta}\sum_{j<i,\,j\sim i}\pi_{ij}.
+\]
+The second inequality summed over $i$, followed by
+$\log(1-z)\le-z$, gives the upper bound because
+$e^{8\delta}/2\le e/2<2$.
+For the lower bound,
+\[
+ \sum_i(z_i-\pi_i)
+ \le4e^{4\delta}\sum_i\pi_i u_i
+ \le4\left(b_1-\sum_i\pi_i^2\right).
+\]
+Here $\sum_i\pi_i u_i=(b_1-\sum_i\pi_i^2)/2$ and
+$2e^{1/2}<4$. As $z_i\le2\pi_i\le1/4$, we may use
+$\log(1-z_i)\ge-z_i-z_i^2$ and
+$\sum_i z_i^2\le4\sum_i\pi_i^2$. This proves~\eqref{eq:sandwich}.
+Finally write $\PP(F_I)=e^{-\la+v}$ with
+$-4b_1\le v\le2b_2$. The elementary inequality
+$|e^v-1|\le|v|e^{\max(v,0)}$ proves~\eqref{eq:damped}.
+\end{proof}
+
+\subsection{The second factorial cumulant, with a triple remainder}
+\begin{proposition}[Second-order local avoidance]\label{prop:local}
+There is an absolute constant $C$ such that, whenever $\delta\le1/8$,
+\begin{equation}
+ \left|\log\PP(F_I)+\la-
+       \frac{\Var(\sum_i\ind_{E_i})-\la}{2}\right|
+ \le C\bigl(\delta(b_1+b_2)+T\bigr).
+ \label{eq:localsecond}
+\end{equation}
+\end{proposition}
+\begin{proof}
+We include the bookkeeping because an unexplained cumulant truncation
+would not justify the main result. Use the same order as above, and set
+\[
+ V_i=\{j<i:j\sim i\},\qquad W_i=\{j<i:j\not\sim i\}.
+\]
+In this proof all conditional quantities carrying subscript $i$ are
+conditioned on $F_{W_i}$. Define
+\[
+ a_i=\sum_{j\in V_i}\PP(E_j\mid F_{W_i}),\qquad
+ s_i=\sum_{j\in V_i}\PP(E_iE_j\mid F_{W_i}).
+\]
+Bonferroni's inequalities and independence of $E_i$ from $F_{W_i}$ give
+\begin{align*}
+ \PP(E_i\cap F_{V_i}\mid F_{W_i})&=\pi_i-s_i+\rho_i,\\
+ \PP(F_{V_i}\mid F_{W_i})&=1-a_i+\eta_i,
+\end{align*}
+where
+\begin{align*}
+ 0\le\rho_i&\le e^{12\delta}
+       \sum_{\{j,k\}\subset V_i}\pi_{ijk},\\
+ 0\le\eta_i&\le e^{8\delta}
+       \sum_{\{j,k\}\subset V_i}\pi_{jk},\qquad \eta_i\le a_i.
+\end{align*}
+These bounds follow from~\eqref{eq:auxupper}. Also
+$a_i\le2\delta_i\le1/4$, so the denominator is at least $3/4$.
+Expanding this quotient, with no infinite series, gives
+\begin{equation}
+ z_i=\pi_i-s_i+\pi_i a_i+R_i,\qquad
+ |R_i|\le C\bigl(\rho_i+a_i s_i+\pi_i a_i^2+\pi_i\eta_i\bigr).
+ \label{eq:quotient}
+\end{equation}
+For completeness, subtract $\pi_i-s_i+\pi_i a_i$ from the quotient;
+the numerator is
+$\rho_i-s_i a_i-(\pi_i-s_i)\eta_i+\pi_i a_i^2-\pi_i a_i\eta_i$.
+Use $\eta_i\le a_i\le1/4$ and divide by at least $3/4$.
+
+We now sum each error. The triples in $\rho_i$ are connected stars, each
+counted at most three times, hence $\sum_i\rho_i\le C T$.
+Further,
+\[
+ \sum_i a_i s_i\le C\delta b_2,\qquad
+ \sum_i\pi_i a_i^2\le4\delta b_1.
+\]
+For $\sum_i\pi_i\eta_i$, split the pair $j,k\in V_i$ according to
+whether $j\sim k$. Nonadjacent pairs are independent, giving at most
+$C\sum_i\pi_i\delta_i^2\le C\delta b_1$. For adjacent pairs, first
+sum over $i\in B_j\cap B_k$: the sum of their $\pi_i$ is at most
+$\delta$. This gives at most $C\delta b_2$. Consequently
+\begin{equation}
+ \sum_i|R_i|\le C\bigl(T+\delta(b_1+b_2)\bigr).
+ \label{eq:sumR}
+\end{equation}
+
+Next replace the conditional pair sum $s_i$ by
+$v_i=\sum_{j\in V_i}\pi_{ij}$.
+The excess estimate~\eqref{eq:auxexcess}, applied to $E_iE_j$, costs at
+most $C\delta\pi_{ij}$. The deficit estimate~\eqref{eq:auxdeficit}
+costs at most $C\sum_{k\in W_i\cap B_j}\pi_{ijk}$:
+$k$ cannot meet $S_i$ because it belongs to $W_i$. These are connected
+three-vertex paths, and any unordered triple is counted at most six times.
+It follows that
+\begin{equation}
+ \sum_i|s_i-v_i|\le C(\delta b_2+T).\label{eq:sreplace}
+\end{equation}
+Similarly replace $a_i$ by $u_i=\sum_{j\in V_i}\pi_j$, remembering the
+factor $\pi_i$. The excess is bounded by
+$C\delta\sum_i\pi_i\sum_{j\in V_i}\pi_j\le C\delta b_1$.
+The deficit is bounded by
+\[
+ C\sum_i\pi_i\sum_{j\in V_i}\sum_{k\in W_i\cap B_j}\pi_{jk}.
+\]
+After summing over $i\in B_j$, this is at most $C\delta b_2$.
+Together with~\eqref{eq:quotient}--\eqref{eq:sreplace}, this proves
+\begin{equation}
+ \sum_i\left|z_i-\pi_i-
+       \sum_{j\in V_i}(\pi_i\pi_j-\pi_{ij})\right|
+ \le C\bigl(\delta(b_1+b_2)+T\bigr).
+ \label{eq:zexpansion}
+\end{equation}
+
+It remains to pass from conditional probabilities to their logarithms.
+The first-order bounds in Lemma~\ref{lem:conditional} imply
+\[
+ \sum_i|z_i-\pi_i|\le C(b_1+b_2).
+\]
+Since $z_i+\pi_i\le3\pi_i\le3\delta$,
+$\sum_i|z_i^2-\pi_i^2|\le C\delta(b_1+b_2)$.
+Also $\sum_i z_i^3\le8\delta\sum_i\pi_i^2\le8\delta b_1$.
+Taylor's formula on $[0,1/4]$ now gives
+\begin{align*}
+ \log\PP(F_I)
+ &=\sum_i\log(1-z_i)\\
+ &=-\la+\sum_{i}\sum_{j\in V_i}(\pi_{ij}-\pi_i\pi_j)
+       -\frac12\sum_i\pi_i^2
+       +O\bigl(\delta(b_1+b_2)+T\bigr).
+\end{align*}
+The middle two terms are $(\Var(\sum_i\ind_{E_i})-\la)/2$:
+all covariances of nonadjacent events vanish. This proves the proposition.
+\end{proof}
+
+\section{Geometry of pairs and connected triples}\label{sec:geometry}
+Return to progression heads, with dependency graph defined by their
+supports. Throughout this section $r\ge3$; absolute implied constants
+are sufficient. Put $\pi_i=\PP(E_i)\le p^r$.
+
+\subsection{Pair counts and compatible overlaps}
+\begin{lemma}[Pair geometry; compare Zhao--Zhang, Lemma 3.2]\label{lem:pairs}
+The number of ordered support-intersecting pairs is $O(n^3)$.
+The number with at least two shared support sites is $O(n^2r^3)$.
+Among intersecting pairs with common differences in ratio two the number
+is $O(n^2)$. Every head has at most $O(nr)$ neighbors, and
+\begin{align}
+ \delta&\ll nrp^r,\label{eq:deltaAP}\\
+ b_1+b_2&\ll n^3p^{2r-1}
+        +n^2r^3p^{5r/3-1}+n^2p^{3r/2-1}.
+        \label{eq:pairbound}
+\end{align}
+For a compatible pair of distinct heads with different common differences
+$d,e$, put $m=\max(d/g,e/g)$, where $g=\gcd(d,e)$. Then
+\begin{equation}
+ |S_i\cap S_j|\le r/m+1.\label{eq:overlap}
+\end{equation}
+Distinct, intersecting heads with the same common difference are
+incompatible.
+\end{lemma}
+\begin{proof}
+A fixed site belongs to at most
+$(r+1)\lfloor(n-1)/(r-1)\rfloor=O(n)$ supports: choose its index in
+$\{-1,0,\ldots,r-1\}$ and the common difference. As a support has at
+most $r+1$ sites, this gives $O(nr)$ neighbors. Since
+$|\AP_{n,r}|=O(n^2/r)$, there are $O(n^3)$ ordered intersecting pairs.
+
+If two supports share two sites, their common differences have ratio
+$u/v$ for integers $1\le u,v\le r$. Once the first head is fixed,
+there are at most $r^2$ choices of this ratio and at most $(r+1)^2$
+choices of indices specifying a common point. Hence there are
+$O(r^4)$ such second heads and $O(n^2r^3)$ such pairs.
+For $e=2d$, a common point forces $b=a+kd$ with $k$ in an interval
+of length $O(r)$; there are only $O(r)$ second starts for each first
+head. Interchanging $d,e$ proves the $O(n^2)$ estimate.
+
+Two common support points differ by a multiple of $\operatorname{lcm}(d,e)$.
+Their indices in the two supports therefore differ by multiples of
+$e/g$ and $d/g$, respectively. The available index spans are at most $r$,
+which proves~\eqref{eq:overlap}.
+When $d=e$ and $b>a$, an intersection gives $b=a+kd$ for
+$1\le k\le r$. The later head requires $\xi_{b-d}=0$, while that site
+belongs to the earlier positive core. The intersection event is empty.
+
+A one-site-overlap pair has at least $2r-1$ distinct required positive
+sites, and its joint probability is at most $p^{2r-1}$. For different
+differences in ratio two it is at most $p^{3r/2-1}$. For all other
+compatible multiply-overlapping pairs, $m\ge3$ and the joint probability
+is at most $p^{5r/3-1}$. Multiplying these bounds by the counts proves the
+$b_2$ estimate. The $b_1$ estimate $O(n^3p^{2r})$ is absorbed by the
+first term, and~\eqref{eq:deltaAP} follows from the degree bound.
+\end{proof}
+
+\subsection{A triple estimate adequate for a second-order law}
+\begin{lemma}[Connected triples]\label{lem:triples}
+For the $T$ in~\eqref{eq:Tdef},
+\begin{equation}
+ T\ll n^4r^4p^{3r-3}
+       +n^3r^5p^{5r/2-3}
+       +n^2r^8p^{5r/3-3}.\label{eq:triplebound}
+\end{equation}
+\end{lemma}
+\begin{proof}
+A triple contributes only if the three head requirements are compatible.
+Classify its pair edges as multiple when at least two support sites are
+shared. There are three cases.
+
+\emph{No multiple edges.} Choose a root head and then attach two heads
+along a spanning tree. There are $O(n^2)$ choices for the root and
+$O(nr)$ choices for each attachment, giving at most $O(n^4r^4)$ triples
+(the powers used here are deliberately loose). Each pair of positive
+cores intersects in at most one site, so the union of the three cores
+has at least $3r-3$ sites.
+
+\emph{Exactly one multiple edge.} Choose that pair in $O(n^2r^3)$ ways.
+The third head meets at least one member, giving $O(nr)$ choices, hence
+at most $O(n^3r^5)$ triples. The multiple pair, if compatible, has
+intersection at most $r/2+1$; each other intersection has size at most
+one. The positive union has size at least $5r/2-3$.
+
+\emph{At least two multiple edges.} Two multiple edges contain a spanning
+tree. Starting from a root, each attachment has $O(r^4)$ choices by the
+two-site argument. There are at most $O(n^2r^8)$ triples.
+If all three common differences are distinct, every pair overlap is at
+most $r/2+1$, and at least one is at most $r/3+1$. Indeed three distinct
+positive integers cannot have every pair in ratio two. Inclusion--exclusion
+therefore bounds the positive union below by $5r/3-3$.
+If two common differences coincide, compatibility forces their supports
+to be disjoint. The other two overlaps are at most $r/2+1$, giving the
+stronger lower bound $2r-2$. If all coincide, connectedness and
+compatibility cannot both hold.
+
+In each case ignore required zeros, multiply the count by $p$ to the
+appropriate lower bound on the positive union, and sum. This gives the
+stated estimate even when a displayed fractional exponent is negative
+for small $r$, since such an upper bound remains valid.
+\end{proof}
+
+\section{The entropy profile of progression incidence}\label{sec:entropy}
+For $x\in[n]$, let $d_r(x)$ be the number of $r$-term positive cores
+containing $x$. The main coefficient comes from these degrees, not from
+the rare high-multiplicity intersections.
+
+\begin{lemma}[Uniform degree profile]\label{lem:degree}
+Let $h(u)=-u\log u-(1-u)\log(1-u)$, with $h(0)=h(1)=0$.
+Uniformly in $x\in[n]$, for $3\le r\le n$,
+\begin{equation}
+ d_r(x)=n h\left(\frac{x-1}{n-1}\right)
+              +O\left(\frac nr+r\right).\label{eq:degreeprofile}
+\end{equation}
+Consequently, uniformly for $3\le r\le n$,
+\begin{equation}
+ \sum_{x=1}^n d_r(x)^2
+       =n^3H+O\left(\frac{n^3}{r}+n^2r\right).
+ \label{eq:degreesquare}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Put $m=r-1$ and $u=(x-1)/(n-1)$. If $x$ is at position $j$ in its
+progression, $0\le j\le m$, the permissible differences are the positive
+integers at most
+\[
+ \min\left(\frac{x-1}{j},\frac{n-x}{m-j}\right),
+\]
+where an endpoint's missing constraint is omitted. Thus
+\[
+ d_r(x)=\frac{n-1}{m}\sum_{j=0}^{m}f_u(j/m)+O(r),
+ \quad
+ f_u(t)=\min\left(\frac ut,\frac{1-u}{1-t}\right),
+\]
+with $f_u(0)=1-u$ and $f_u(1)=u$. The function increases up to its peak
+at $t=u$ and then decreases, has height at most one, and has total
+variation at most two, including $u=0,1$. Therefore its Riemann sum
+satisfies
+\[
+ \frac1m\sum_{j=0}^m f_u(j/m)=\int_0^1 f_u(t)\dd t+O(1/m)
+\]
+uniformly in $u$. Splitting the integral at $u$ gives
+\[
+ \int_0^u\frac{1-u}{1-t}\dd t
+ +\int_u^1\frac u t\dd t=h(u).
+\]
+This proves~\eqref{eq:degreeprofile}.
+
+The function $h^2$ is bounded and has bounded variation, so its Riemann
+sum on the $n$ grid points is $nH+O(1)$. Squaring the degree formula
+and summing contributes an error at most
+\[
+ O\left(n^2\left(\frac nr+r\right)
+          +n\left(\frac nr+r\right)^2+n^2\right).
+\]
+For $3\le r\le n$ this is
+$O(n^3/r+n^2r)$, proving~\eqref{eq:degreesquare}. In particular,
+$n^{-3}\sum_xd_r(x)^2\to H$ whenever $r\to\infty$ and $r=o(n)$.
+\end{proof}
+
+\begin{lemma}[Evaluation of the entropy integral]\label{lem:H}
+The value of $H$ is $5/6-\pi^2/18$.
+\end{lemma}
+\begin{proof}
+Expansion of the square and symmetry give
+\[
+ H=2\int_0^1u^2\log^2u\dd u
+       +2\int_0^1u(1-u)\log u\log(1-u)\dd u.
+\]
+The first integral is $2/27$. Expanding $-\log(1-u)$ in its nonnegative
+power series and integrating by monotone convergence evaluates the second
+integral as
+\[
+ J=\sum_{k\ge1}\frac1k
+       \left(\frac1{(k+2)^2}-\frac1{(k+3)^2}\right).
+\]
+For an integer $a\ge1$, partial fractions give
+\[
+ \sum_{k\ge1}\frac1{k(k+a)^2}
+   =\frac{H_a}{a^2}-\frac{\zeta(2)-H_a^{(2)}}a,
+\]
+where $H_a=\sum_{j=1}^a1/j$ and $H_a^{(2)}=\sum_{j=1}^a1/j^2$.
+Taking the case $a=2$ minus the case $a=3$ yields
+$J=37/108-\pi^2/36$. Hence
+$H=4/27+2J=5/6-\pi^2/18$.
+\end{proof}
+
+\section{Computing the leading covariance term}\label{sec:variance}
+For a head $i$ and a coordinate $x$, define its signed influence by
+\[
+ D_{i,x}=\EE(\ind_{E_i}\mid\xi_x=1)
+           -\EE(\ind_{E_i}\mid\xi_x=0).
+\]
+It is zero outside $S_i$. If $x$ belongs to the positive core it equals
+$p^{r-1}$ for a boundary head and $qp^{r-1}$ for an interior head.
+At the predecessor of an interior head it equals $-p^r$.
+
+\begin{lemma}[One-site covariance identity]\label{lem:influence}
+If $S_i\cap S_j=\{x\}$, then
+\begin{equation}
+ \Cov(\ind_{E_i},\ind_{E_j})=pqD_{i,x}D_{j,x}.\label{eq:onecov}
+\end{equation}
+Let $B_r(x)$ count boundary heads whose positive core contains $x$,
+and put $P_r(x)=\lfloor(n-x)/r\rfloor$. Then, exactly,
+\begin{equation}
+ S(x):=\sum_iD_{i,x}
+   =qp^{r-1}d_r(x)+p^rB_r(x)-p^rP_r(x),\qquad
+ B_r(x),P_r(x)\le \frac{n}{r-1}.\label{eq:Stotal}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Given $\xi_x$, the remaining coordinates of the two events are disjoint
+and hence independent. The covariance of two affine functions of a
+Bernoulli-$p$ variable is $pq$ times the product of their slopes, proving
+\eqref{eq:onecov}.
+The formula for $S(x)$ follows from the three influence values above.
+A head with predecessor $x$ has start $x+d$ and endpoint $x+rd\le n$,
+so there are exactly $P_r(x)$ such heads. For each fixed common difference
+$d$, at most one boundary start $a\in\{1,\ldots,d\}$ can have $x$ in its
+core: it is the unique representative of $x$ modulo $d$ in that interval.
+This bounds $B_r(x)$ by $D_r$.
+\end{proof}
+
+\begin{proposition}[Second factorial cumulant]\label{prop:variance}
+Fix $p\in(0,1)$, and suppose $r\to\infty$ with $r=O(\log n)$.
+Then
+\begin{align}
+ \frac{\Var Y-\la}{2}
+  &=\frac{q^3H}{2p}\,n^3p^{2r}+O_p(V_{n,r}),\label{eq:variancelead}\\
+ V_{n,r}
+  &=\frac{n^3p^{2r}}r+n^2rp^{2r}
+    +n^2r^4p^{2r-2}
+    +n^2p^{3r/2-1}+n^2r^3p^{5r/3-1}.
+ \label{eq:V}
+\end{align}
+\end{proposition}
+\begin{proof}
+By~\eqref{eq:Stotal}, $S(x)=qp^{r-1}d_r(x)+O(p^rn/r)$.
+Using Lemma~\ref{lem:degree} and $d_r(x)=O(n)$ yields
+\begin{equation}
+ \frac{pq}{2}\sum_x S(x)^2
+ =\frac{q^3H}{2p}n^3p^{2r}
+       +O_p\left(\frac{n^3p^{2r}}r+n^2rp^{2r}\right).
+ \label{eq:projectionnorm}
+\end{equation}
+Expanding the square on the left gives a diagonal sum over individual
+heads plus sums over unordered pairs. By~\eqref{eq:onecov}, the
+one-site-overlap pairs have exactly their true covariance contribution.
+The diagonal projection has size $O_p(n^2p^{2r-2})$: there are
+$O(n^2/r)$ heads and $O(r)$ nonzero influences per head.
+The projection contributions of multiply-overlapping pairs are at most
+\[
+ O_p\bigl((n^2r^3)\,r\,p^{2r-2}\bigr)
+       =O_p(n^2r^4p^{2r-2}).
+\]
+Their actual covariance sum in absolute value is bounded by their joint
+probability sum plus the product-probability sum. Lemma~\ref{lem:pairs}
+therefore bounds it by
+\[
+ O\left(n^2p^{3r/2-1}+n^2r^3p^{5r/3-1}
+                     +n^2r^3p^{2r}\right).
+\]
+Finally, the second factorial cumulant subtracts
+$\frac12\sum_i\pi_i^2=O(n^2p^{2r}/r)$ from the unordered covariance sum.
+All diagonal and product terms are absorbed by the third term of
+\eqref{eq:V}. Combining these observations proves the proposition.
+\end{proof}
+
+\begin{remark}[Why the sign is positive]
+The dominant term is a sum of squares of aggregate signed influences.
+Although predecessors introduce negative influences and same-difference
+heads can exclude one another, their aggregate contribution is smaller
+by a factor of at least $1/r$ in~\eqref{eq:Stotal}. The leading term is
+therefore the positive entropy integral. Positivity is a conclusion of
+this calculation, not an application of positive association to the
+nonmonotone head events.
+\end{remark}
+
+\section{Assembly of the critical and uniform expansions}\label{sec:assembly}
+\subsection{A logarithmic band with a weighted remainder}
+\begin{lemma}[Uniform expansion on a logarithmic band]\label{lem:band}
+Fix positive constants $c_1,c_2,C_0$. Suppose
+\[
+ c_1\log n\le r\le c_2\log n,\qquad
+ 0<\la=\la_{n,r}\le C_0\log n.
+\]
+Then, for all sufficiently large $n$,
+\begin{equation}
+ \log\PP(U_n<r)
+ =-\la+c_p\la^2\frac{r^2}{n}+R_{n,r},\qquad
+ |R_{n,r}|\ll_{p,c_1,c_2,C_0}
+       (\la^{3/2}+\la^3)\frac{r^{3/2}}n.
+ \label{eq:bandlog}
+\end{equation}
+\end{lemma}
+\begin{proof}
+On this band~\eqref{eq:meanasy} gives
+$p^r\asymp_p\la r/n^2$. In particular
+$\delta\ll_p\la r^2/n=O((\log n)^3/n)$, so the local avoidance
+lemmas apply. The pair and triple estimates become
+\begin{align}
+ b_1+b_2&\ll_p
+       \la^2\frac{r^2}{n}
+       +\la^{5/3}\frac{r^{14/3}}{n^{4/3}}
+       +\la^{3/2}\frac{r^{3/2}}n,\label{eq:scaledpairs}\\
+ T&\ll_p
+       \la^3\frac{r^7}{n^2}
+       +\la^{5/2}\frac{r^{15/2}}{n^2}
+       +\la^{5/3}\frac{r^{29/3}}{n^{4/3}}.\label{eq:scaledtriples}
+\end{align}
+Also~\eqref{eq:meanasy} converts the main covariance term into
+\begin{equation}
+ \frac{q^3H}{2p}n^3p^{2r}
+ =c_p\la^2\frac{r^2}n
+       \left(1+O_p\left(\frac1r+\frac rn\right)\right).
+ \label{eq:convertconstant}
+\end{equation}
+Substituting into $V_{n,r}$ in~\eqref{eq:V} produces terms bounded by
+\[
+ O_p\left(
+  \la^2\frac rn+\la^2\frac{r^6}{n^2}
+  +\la^{3/2}\frac{r^{3/2}}n
+  +\la^{5/3}\frac{r^{14/3}}{n^{4/3}}\right).
+\]
+The error in~\eqref{eq:convertconstant} is absorbed in these terms.
+Combining Proposition~\ref{prop:local} with
+Proposition~\ref{prop:variance}, including the product
+$\delta(b_1+b_2)$ from~\eqref{eq:scaledpairs}, bounds the total
+remainder by
+\begin{equation}
+ C_p(\la^{3/2}+\la^3)
+ \left(\frac{r^{3/2}}n+\frac{r^{10}}{n^{4/3}}
+                               +\frac{r^8}{n^2}\right).
+ \label{eq:unabsorbed}
+\end{equation}
+To see that the powers of $\la$ suffice, every exponent arising here is
+between $3/2$ and $3$; $\la^s\le\la^{3/2}+\la^3$ in that range.
+Since $r\asymp\log n$, the last two terms in parentheses are
+$o(r^{3/2}/n)$, uniformly on the band. This proves~\eqref{eq:bandlog}.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:critical}]
+First, $\la\asymp1$ forces $r\asymp\log n$.
+Indeed the elementary upper bound $\la\le n^2p^r$ gives $r=O(\log n)$,
+whereas $\la\ge qp^rM_r(n)$ and~\eqref{eq:M} give a matching lower
+bound once $r=O(\log n)$. Fixed $r$ cannot keep $\la$ bounded as
+$n\to\infty$. Taking logarithms in~\eqref{eq:meanasy} then yields
+\eqref{eq:criticalr}.
+Lemma~\ref{lem:band} proves~\eqref{eq:criticallog}.
+Exponentiation proves~\eqref{eq:criticalprob}, because
+$r^4/n^2=o(r^{3/2}/n)$. Finally~\eqref{eq:meanshift} is $O_{p,a,b}(r/n)$
+in this window, smaller than the stated remainder. The same relative
+mean estimate shows that a critical condition on $\bar\la$ is equivalent
+to a slightly enlarged critical condition on $\la$.
+\end{proof}
+
+\subsection{Why the tails do not lose logarithms}
+\begin{proof}[Proof of Theorem~\ref{thm:uniform} for the exact mean]
+Put $L=\log n$. Let $r_-$ be the smallest $r\ge3$ with
+$\la_{n,r}\le(16/p)L$, and let
+$r_+=\lceil3L/\alpha\rceil$. For large $n$, both are of order $L$,
+$r_-<r_+$, and
+\begin{equation}
+ 8L\le\la_{n,r_-}\le(16/p)L.\label{eq:cutoff}
+\end{equation}
+To justify the lower inequality, uniformly for $r\asymp L$ the explicit
+mean formula gives
+$\la_{n,r}/\la_{n,r-1}=p(1+O_p(1/r+r/n))\ge p/2$.
+The defining previous mean is larger than $(16/p)L$.
+
+For $r_-\le r\le r_+$, the hypotheses of Lemma~\ref{lem:band} hold.
+Its correction $K=c_p\la^2r^2/n$ and remainder $R$ are both uniformly
+$o(1)$, since $\la=O_p(L)$. Hence
+\begin{align*}
+ \left|\PP(U_n<r)-e^{-\la}(1+K)\right|
+ &\ll_p e^{-\la}\left((\la^{3/2}+\la^3)\frac{r^{3/2}}n
+                               +\la^4\frac{r^4}{n^2}\right)\\
+ &\ll_p \frac{L^{3/2}}n.
+\end{align*}
+The last inequality uses boundedness of $x^s e^{-x}$ on $[0,\infty)$.
+This exponential damping is precisely what is lost in a uniform proof
+that takes the worst overlap bound before controlling the avoidance tail.
+
+For $r<r_-$,~\eqref{eq:scaledpairs} implies
+$b_2=o(\la)$ at $r_-$.
+Lemma~\ref{lem:sandwich} and~\eqref{eq:cutoff} give
+$\PP(U_n<r_-)\le e^{-\la_{n,r_-}/2}\le n^{-4}$.
+Both $\PP(U_n<r)$ and the uncorrected exponential are then negligible
+by monotonicity. The correction is negligible as well: here
+$r\le r_-=O_p(L)$ and $\la\ge8L$, so
+$e^{-\la}\la^2r^2/n=O_p(L^4n^{-9})$.
+
+For $r>r_+$, Markov's inequality and Lemma~\ref{lem:mean} give
+$\PP(U_n\ge r)\le\la_{n,r}\le\la_{n,r_+}=O_p(1/(nL))$.
+Also $1-e^{-\la}\le\la$. Finally the global bound
+$\la\ll n^2p^r/r$ gives
+\[
+ e^{-\la}\la^2r^2/n\ll n^3p^{2r}\le n^{-3}.
+\]
+These estimates settle the upper tail and complete the exact-mean proof.
+\end{proof}
+
+\begin{proof}[Transfer to the smooth mean]
+On the middle band,~\eqref{eq:meanshift} gives
+$|\bar\la-\la|\ll_p\la r/n$ and
+$\bar\la/\la=1+O_p(r/n)$. Apply the mean value theorem to
+$g_r(x)=e^{-x}(1+c_px^2r^2/n)$. Its derivative is
+\[
+ g_r'(x)=e^{-x}\left[-1+c_p\frac{r^2}n(2x-x^2)\right].
+\]
+On the segment between the two means, the exponential is at most
+$e^{-\la/2}$ for sufficiently large $n$. The resulting difference is
+$O_p(L/n)$ uniformly, by exponential damping.
+In the lower tail the relative mean estimate is still valid for
+$2\le r<r_-$, using~\eqref{eq:M} and $r=O_p(L)$; thus
+$\bar\la\ge\la/2\ge4L$. Both smooth terms are negligible.
+In the upper tail $\bar\la\ll_p n^2p^r/r$, so the same estimates as above
+apply. This proves~\eqref{eq:uniformcorrected} for $\bar\la$.
+\end{proof}
+
+\section{The optimal error has an explicit periodic amplitude}\label{sec:lattice}
+\begin{proof}[Proof of Theorem~\ref{thm:lattice}]
+Theorem~\ref{thm:uniform}, and the elementary inequality
+$||x|-|y||\le|x-y|$, imply
+\begin{equation}
+ \mathcal E_n(\la)=\frac{c_p}{n}
+       \max_{2\le r\le n}\left(e^{-\la_{n,r}}\la_{n,r}^2r^2\right)
+             +O_p(L^{3/2}/n).\label{eq:errorasmax}
+\end{equation}
+Let $f(x)=x^2e^{-x}$. For $r=\lfloor t_n\rfloor+j$ with $j$ in any
+fixed finite set,~\eqref{eq:meanasy} gives, uniformly,
+\begin{equation}
+ \la_{n,r}=e^{\alpha(\{t_n\}-j)}
+       \left(1+O_p\left(\frac{\log L}{L}\right)\right),\qquad
+ r^2=\frac{4L^2}{\alpha^2}+O_p(L\log L).\label{eq:latticemean}
+\end{equation}
+The constant in $t_n$ is determined by
+$qn^2e^{-\alpha t_n}/(2(2L/\alpha))=1$.
+
+We justify restricting the maximum to a fixed finite set of such $j$.
+A lattice point with its limiting mean in $[p,1]$ provides
+$f(\la)\ge m_p>0$ for all sufficiently large $n$. The two tails
+$r<r_-$ and $r>r_+$ in the preceding proof contribute $o(L^2)$ to the
+maximum in~\eqref{eq:errorasmax}. On the middle band $r^2/L^2$ is bounded
+above and below by positive constants. Since $f(x)\to0$ at zero and
+infinity, one can choose $0<a_p<b_p<\infty$ so that a maximizer must
+have $a_p\le\la_{n,r}\le b_p$. Formula~\eqref{eq:criticalr}, with its
+more precise constant supplied by~\eqref{eq:meanasy}, then gives
+$r-t_n=O_p(1)$. The analogous maximum defining $\Phi_p$ also lies in a
+fixed finite set of $j$, uniformly for $\theta\in[0,1]$.
+
+The derivative of $f$ is bounded on the relevant compact interval.
+Thus~\eqref{eq:latticemean} converts~\eqref{eq:errorasmax} to
+\[
+ \mathcal E_n(\la)=\frac{4c_pL^2}{\alpha^2n}\Phi_p(\{t_n\})
+       +O_p\left(\frac{L\log L}{n}+\frac{L^{3/2}}n\right).
+\]
+Since $L\log L=O(L^{3/2})$, this is~\eqref{eq:latticeerror}.
+The smooth parameter obeys the same lattice-mean expansion, so the same
+argument applies directly to $\mathcal E_n(\bar\la)$.
+
+It remains to evaluate the extrema of $\Phi_p$.
+The unrestricted maximum of $f$ is $f(2)=4/e^2$, so
+$\max_\theta\Phi_p(\theta)=4/e^2$.
+For a multiplicative lattice of ratio $p$, only the two adjacent points
+$x$ and $px$ straddling $2$ can maximize $f$. Thus $2\le x\le2/p$,
+and its maximum is $\max(f(x),f(px))$.
+The first term decreases and the second increases on that interval.
+Their equality occurs at
+\[
+ x_*=-\frac{2\log p}{1-p}=\frac{2\alpha}{q}\in(2,2/p).
+\]
+Therefore
+\begin{equation}
+ \min_\theta\Phi_p(\theta)
+       =\frac{4\alpha^2}{q^2}e^{-2\alpha/q}>0,
+ \qquad \max_\theta\Phi_p(\theta)=\frac4{e^2}.
+ \label{eq:Phiextrema}
+\end{equation}
+The maximum over a uniformly finite set also proves continuity of
+$\Phi_p$, and relabeling $j$ proves periodicity.
+
+Finally $t_n\to\infty$, is eventually increasing, and
+$t_{n+1}-t_n\to0$. For every $\theta\in[0,1]$, take the first integer
+$n$ crossing each successive level $k+\theta$. The overshoot tends to
+zero, so the fractional parts $\{t_n\}$ have $\theta$ as an accumulation
+point (with the endpoints understood periodically).
+Equations~\eqref{eq:latticeerror} and~\eqref{eq:Phiextrema} now prove
+\eqref{eq:limsup} and~\eqref{eq:liminf}. They are distinct because
+$x_*>2$ and $f$ is strictly decreasing on $(2,\infty)$.
+\end{proof}
+
+\begin{remark}[Fair-coin specialization]
+At $p=q=1/2$, the normalized error has
+\[
+ \liminf\frac{n\mathcal E_n}{(\log n)^2}=4c_{1/2}
+       \approx2.280175821738063,
+ \qquad
+ \limsup\frac{n\mathcal E_n}{(\log n)^2}
+       =\frac{16c_{1/2}}{(\log2)^2e^2}.
+\]
+The oscillation is not a numerical fitting phenomenon. It comes from the
+integer spacing of progression lengths and the geometric spacing of their
+Poisson means.
+\end{remark}
+
+\section{A separate sparse-density consequence}\label{sec:sparse}
+The preceding main theorems fix $p$ and let $r$ grow. The head viewpoint
+also gives an elementary consequence in the opposite regime, useful for
+cross-checking what declumping does and does not remove.
+
+\begin{proposition}[Fixed length, sparse density]\label{prop:sparse}
+Fix $k\ge3$ and $C_0<\infty$. Uniformly for
+$0\le c\le C_0$ and $p=c n^{-2/k}$ (for all sufficiently large $n$),
+\begin{equation}
+ \PP(U_n<k)
+ =\exp\bigl(-M_k(n)p^k+M_{k+1}(n)p^{k+1}\bigr)
+       +O_{k,C_0}\bigl(n^{-1+2/k}\bigr).
+ \label{eq:sparse}
+\end{equation}
+For each fixed $c>0$ and $k\ge5$, this implies
+\begin{equation}
+ \log\PP(U_n<k)
+ =-\frac{c^k}{2(k-1)}
+       +\frac{c^{k+1}}{2k}n^{-2/k}
+       +O_{k,c}\bigl(n^{-1+2/k}\bigr).
+ \label{eq:sparselog}
+\end{equation}
+\end{proposition}
+\begin{proof}
+With $k$ fixed, there are $O_k(n^3)$ intersecting support pairs and
+$O_k(n^2)$ multiply-overlapping pairs. A pair of cores with different
+common differences shares at most $\lceil k/2\rceil$ positive sites:
+the common index increments have maximum at least two. Same-difference
+intersecting heads are incompatible. Thus
+\[
+ b_1\ll_k n^3p^{2k},\qquad
+ b_2\ll_k n^3p^{2k-1}+n^2p^{2k-\lceil k/2\rceil}.
+\]
+At $p=c n^{-2/k}$ these are
+$O_{k,C_0}(n^{-1+2/k})$; for the second term the exponents are $-1$
+for even $k$ and $-1+1/k$ for odd $k$, both smaller.
+Also $\delta\ll_k np^k=O_{k,C_0}(n^{-1})$.
+Lemma~\ref{lem:sandwich} gives the claimed approximation, without
+requiring a lower bound on $c$; the case $c=0$ is exact.
+For fixed $c>0$ the avoidance probability stays bounded away from zero.
+Taking logarithms and using $M_j(n)=n^2/(2(j-1))+O_j(n)$ proves
+\eqref{eq:sparselog}. For $k\ge5$ its displayed correction exceeds
+the remainder, since $2/k<1-2/k$.
+\end{proof}
+
+\begin{remark}[Interpretation, not a priority claim]
+The exact mean incorporates the first sliding-run correction
+$M_{k+1}p^{k+1}$. This is an illustration of declumping, not a claim that
+fixed-pattern avoidance expansions originate here; the more general
+fixed-length cumulant literature includes~\cite{MNPS}. The genuinely
+separate issue in the main theorems is uniformity as $r\asymp\log n$,
+together with evaluation and sharpness of the resulting leading error.
+\end{remark}
+
+\section{Verification, limitations, and integration}\label{sec:verification}
+\subsection{What the executable artifact actually checks}
+The supplied \texttt{code/verify.py} uses only Python's standard library.
+It enumerates Bernoulli configurations and uses integers and rational
+numbers for the finite event identities. The recorded full run passed:
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Check family & Number checked\\
+\midrule
+Configuration/threshold instances & 114,176\\
+Exhaustive $(n,r)$ cases & 62\\
+Pair parameter cases, including three rational densities & 36\\
+One-site covariance identities & 21,183\\
+Multiply-overlapping pair classifications & 9,546\\
+Three-head geometric configurations & 810,589\\
+Compatible connected triples among these & 194,077\\
+Numerical local-avoidance sandwiches & 8\\
+\bottomrule
+\end{tabular}
+\end{center}
+The configuration checks verify the exact zero-event reduction, the mean
+formula, and selected exact second moments. Pair checks also verify the
+signed-influence sum and the projection decomposition. Triple checks
+verify the three positive-union lower bounds used in
+Lemma~\ref{lem:triples}. The eight logarithmic sandwich checks use
+floating-point logarithms of exact rational probabilities and are labeled
+numerical, rather than exact inequalities.
+
+The degree-profile calculation checks the exact identity
+$\sum_xd_r(x)=rM_r(n)$ and records
+$n^{-3}\sum_xd_r(x)^2$ for $n$ up to $100{,}000$.
+Its agreement with the entropy limit is a diagnostic, not evidence
+sufficient to establish an asymptotic theorem.
+The exact configuration enumeration is intentionally small. It neither
+estimates a tiny large-$n$ correction by Monte Carlo nor silently treats
+finite checks as a proof for all $n$.
+
+\subsection{Claims that are not being made}
+No theorem in this paper is currently certified by a proof assistant.
+The manuscript's written proofs, especially
+Proposition~\ref{prop:local} and its weighted use in
+Lemma~\ref{lem:band}, require independent mathematical review.
+The novelty comparison is specific to the inspected sources and is not
+an exhaustive priority determination.
+The remainder $O((\log n)^{3/2}/n)$ after correction is an upper bound;
+we do not prove it is optimal.
+No uniformity as $p$ approaches zero or one follows from the fixed-$p$
+theorems. No claim is made for cyclic progressions modulo $n$, for a
+fixed-cardinality random set, or for an improvement of deterministic
+Ramsey numbers.
+
+\subsection{Repository placement and proof dependencies}
+A suggested destination, not an assertion that the folder already exists,
+is
+\begin{center}
+\texttt{Combinatorics/Ramsey/Research/RandomProgressions/SharpPoisson/}.
+\end{center}
+The package contains this manuscript, its source, an external bibliography,
+reproducible code, recorded data, a claims ledger, a literature/novelty
+note, and a formalization roadmap. It does not modify either repository.
+The proof dependencies are
+\[
+ \begin{gathered}
+ \text{conditional control}\Longrightarrow\text{local avoidance expansion},\\[4pt]
+ \left.\begin{matrix}
+  \text{local avoidance expansion}\\
+  \text{pair and triple geometry}\\
+  \text{entropy covariance calculation}
+ \end{matrix}\right\}
+ \Longrightarrow\text{weighted band expansion},\\[4pt]
+ \text{weighted band expansion}
+ \Longrightarrow\text{uniform correction}
+ \Longrightarrow\text{lattice error law}.
+ \end{gathered}
+\]
+
+\section{Further research questions}\label{sec:questions}
+The following questions are not used in the proofs above.
+
+\paragraph{1. Evaluate the ratio-two correction.}
+Pairs with common differences in ratio two account for the visible
+$O(r^{3/2}/n)$ term in the critical window. Determine their exact
+contribution, including dependence on the parity of $r$ and on the
+lattice phase of $n$. Does subtracting it reduce the uniform remainder
+to $O((\log n)/n)$? A solution would need actual covariance counts,
+not just the upper bound in Lemma~\ref{lem:pairs}.
+
+\paragraph{2. A third-order avoidance expansion with an effective constant.}
+Extend Proposition~\ref{prop:local} by one order for nonmonotone cylinder
+events. Separate the connected four-event terms from products of pair
+terms, and supply explicit numerical constants valid under a stated
+local-mass hypothesis. Such a result would support a systematic
+expansion rather than an isolated correction.
+
+\paragraph{3. Uniform regimes for varying $p=p_n$.}
+Determine the largest ranges in which the entropy correction remains
+dominant when $p_n\to0$ or $p_n\to1$. The present error terms contain
+powers of $p^{-1}$ and $q^{-1}$ after mean normalization, so simply
+replacing $p$ by $p_n$ in the main theorems is not justified. Locate the
+transition between growing-pattern behavior and fixed-pattern sparse
+avoidance.
+
+\paragraph{4. Conditioning on the cardinality of the random set.}
+For a uniformly random $\lfloor pn\rfloor$-element subset, the total
+number of selected coordinates no longer fluctuates. The first projection
+suggests centering the profile $h$ by its integral $1/2$, replacing $H$
+by $H-1/4$ in one part of the calculation. This is only a heuristic:
+a proof must also account for the global negative dependence introduced
+by sampling without replacement.
+
+\paragraph{5. Cyclic progressions and arithmetic obstructions.}
+Determine the corrected avoidance law for progressions modulo $n$.
+The interval degree profile is then replaced by a different incidence
+geometry, and short cycles or small divisors of $n$ can affect overlap
+counts. A result uniform in composite $n$ will require explicit handling
+of these arithmetic obstructions.
+
+\paragraph{6. Multicolor versions.}
+For independent random colorings with prescribed color probabilities,
+study the longest monochromatic progression and the joint head-count
+vector by color. Same-site influences become vectors, and the relevant
+coefficient should be a quadratic form rather than a single scalar.
+Identify when cross-color exclusions contribute at leading order.
+
+\paragraph{7. Waiting times and moments.}
+Let $\tau_r=\min\{n:U_n\ge r\}$. Transfer the corrected distribution
+to precise asymptotics for its quantiles, expectation, and variance.
+Moment asymptotics require tail integration estimates beyond a local
+inversion of Theorem~\ref{thm:critical}; the lattice effects must not be
+averaged away without justification.
+
+\paragraph{8. Kernel-checked formalization.}
+Formalize the finite head bijection, same-difference incompatibility,
+two-site rational-ratio lemma, and the one-coordinate covariance identity
+first. Then formalize conditional local-lemma bounds and the finite
+Bonferroni quotient expansion. The analytic degree-profile limit and the
+lattice-maximization step can be separate modules. The code supplied here
+is a regression suite, not a substitute for these proofs.
+
+\section*{Conclusion}
+The precise error of the longest-progression Poisson law is governed by
+a geometric quantity that is invisible in an unweighted dependency-graph
+bound: the squared entropy profile of progression incidence.
+After separating the one-site projection from rare multiple overlaps,
+the second factorial cumulant has an explicit positive coefficient.
+A local avoidance expansion with a controlled connected-triple remainder
+then turns this coefficient into a uniform probability correction.
+The resulting order $(\log n)^2/n$ is sharp, and its leading constant
+oscillates with a fully specified lattice phase. The next unresolved
+scale in this analysis is the ratio-two contribution of order at most
+$(\log n)^{3/2}/n$.
+
+\clearpage
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}

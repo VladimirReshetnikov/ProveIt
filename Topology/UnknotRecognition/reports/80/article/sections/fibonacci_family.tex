@@ -1,0 +1,455 @@
+\section{A realized three-dimensional family with exact work counts}
+\label{fib:section}
+\label{fib:family}
+
+The following family separates the geometric advantage of minimum cells
+from questions about which sectors an unknot recognizer must visit.  Every
+member is an actual triangulated solid torus.  Its supplied sector has
+three-dimensional quadrilateral matching space, seven nonlink standard
+rays, and exponentially large primitive coordinates.  All statements
+quantified over the family are proved below; the finite computational
+checks are reported separately at the end.
+
+\subsection{Face pairings and the underlying manifold}
+\label{fib:source}
+
+Number tetrahedron vertices \(0,1,2,3\), and number a face by its opposite
+vertex.  A permutation written \((p_0,p_1,p_2,p_3)\) sends vertex \(j\) to
+\(p_j\).  A normal row is ordered
+\[
+ (t_0,t_1,t_2,t_3;q_0,q_1,q_2),
+\]
+where quadrilateral types \(0,1,2\) avoid, respectively, the opposite
+edge pairs \((01,23)\), \((02,13)\), and \((03,12)\).
+These are the conventions of the native fixture.
+
+For \(n\geq1\), let \(T_n\) contain tetrahedra \(0,\ldots,n-1\), with
+face pairings
+\begin{align}
+ (i,0)&\xrightarrow{(2,1,3,0)}(i+1,2),&
+ (i,1)&\xrightarrow{(0,3,1,2)}(i+1,3)
+       &&(0\leq i<n-1),\label{fib:layer-pairings}\\
+ (n-1,0)&\xrightarrow{(1,2,3,0)}(n-1,1).
+ \label{fib:core-pairing}
+\end{align}
+The inverse pairings are understood.  Its unpaired faces are \((0,2)\)
+and \((0,3)\).  Form \(M_n\) by adding tetrahedra \(n,n+1\) and pairing
+\begin{equation}
+ (0,2)\xrightarrow{\mathrm{id}}(n,2),\qquad
+ (0,3)\xrightarrow{\mathrm{id}}(n+1,3).
+ \label{fib:cap-pairings}
+\end{equation}
+Thus \(t=n+2\).  Allow type \(2\) in each original tetrahedron and type
+\(1\) in each cap, so \(k=t\).
+
+The face closures in this description need not embed: all vertices of
+\(T_n\) are identified.  The following observation handles that issue
+without treating a quotient face as an embedded closed disc.
+
+\begin{lemma}[Boundary caps with identified outer boundaries]
+\label{fib:collar}
+Let \(S=\partial M\) be the boundary of a compact PL manifold.  Suppose
+an abstract PL disc \(D\) is attached by a characteristic map
+\(f:D\to S\) that embeds its interior, with
+\(f(\partial D)\cap f(\operatorname{int}D)=\varnothing\).
+Identifications between points of \(\partial D\) are permitted.
+Attach a PL ball along a disc in its boundary identified with \(D\).
+The resulting space is PL homeomorphic to \(M\).  Its boundary replaces
+\(D\) by the complementary abstract boundary disc, with the same outer
+boundary identifications.
+\end{lemma}
+\begin{proof}
+Choose a PL function \(\rho:D\to[0,1]\), positive in the interior and
+zero on the boundary, after subdividing \(D\) if necessary.  The region
+\[
+ B_\rho=\{(p,s):p\in D,\ 0\leq s\leq\rho(p)\}
+\]
+is a PL ball whose lower and upper discs meet along \(\partial D\).
+A boundary homeomorphism from the given ball to this model, fixed on
+the attaching disc, extends across the balls by coning a common boundary
+subdivision.  Since every identification under \(f\) occurs where
+\(\rho=0\), the height function descends to a continuous PL function
+\(\bar\rho\) on \(S\), extended by zero off \(f(D)\).
+The pushout is therefore the original manifold with the region
+\(0\leq s\leq\bar\rho(q)\) added to an exterior boundary collar.
+
+Take an interior collar \(S\times[-1,0]\).  The enlarged collar has
+vertical intervals \([-1,\bar\rho(q)]\).  Triangulate \(S\) so that
+\(\bar\rho\) is affine on each simplex.  Corresponding triangulations
+of the prisms between the lower and upper graphs give a PL homeomorphism
+to \(S\times[-1,0]\), fixing the lower boundary.  Extend it by the
+identity outside the collar.  This also proves the assertion at identified
+vertices and edges: it is an ambient collar construction, not merely a
+comparison of the two open faces.
+\end{proof}
+
+\begin{proposition}[Realization as solid tori]
+\label{fib:solid-torus}
+The space \(T_n\) is an orientable solid torus with one vertex.  In its
+front boundary tetrahedron its three distinct boundary-edge classes are
+\[
+ a_n=[01],\qquad b_n=[02]=[13],\qquad c_n=[03]=[12].
+\]
+The space \(M_n\) is an orientable solid torus with three boundary
+vertices.
+\end{proposition}
+\begin{proof}
+For \(T_1\), the edge classes are
+\(\{01\}\), \(\{02,13\}\), and \(\{03,12,23\}\), all boundary
+edges.  Its four vertex-link triangles are joined in the chain
+\(1,2,3,0\), giving one disc link; its edge links are intervals, without
+reversed self-identifications.  The face pairing is orientation compatible.
+Thus this is a compact orientable manifold.  Removing collars of its
+boundary vertices, edges and faces leaves a ball around the tetrahedron
+centre and one handle through the paired faces.  There are no interior
+edge or vertex dual blocks.  Consequently the manifold is a regular
+neighbourhood of a one-loop graph, hence an orientable solid torus.
+
+To pass from \(T_m\) to \(T_{m+1}\), put a new front tetrahedron before
+the old ones, using~\eqref{fib:layer-pairings}.  Its attaching disc is
+the union of faces \(0,1\), with internal diagonal \(23\).  Both
+occurrences of this diagonal map to \(c_m\); the four outer edges map
+to \(a_m,b_m,a_m,b_m\).  These three edge classes are distinct.
+The interior of the abstract attaching disc therefore embeds in the old
+boundary: its only boundary identifications concern the outer edges and
+vertices.  Lemma~\ref{fib:collar} applies.  The new boundary classes are
+\(a_{m+1}=[01]\), \(b_{m+1}=a_m\), and \(c_{m+1}=b_m\);
+the old \(c_m\) becomes interior.  The new vertices join the unique
+old vertex.  This proves the induction and the stated distinctness.
+
+Each attachment in~\eqref{fib:cap-pairings} satisfies the one-face case
+of the same lemma.  The remaining original face is unaffected by the
+first attachment.  Each cap contributes its opposite vertex as a new
+boundary vertex.  In link language, the three old corner intervals are
+distinct intervals on the old vertex-link boundary; the cap adds triangular
+flaps there, while its new vertex has a disc link.  These observations
+also explain directly why the quotient face closures cause no singularity.
+\end{proof}
+
+\subsection{The complete matching cone and its canonical section}
+\label{fib:matching}
+
+Set \(F_0=0\), \(F_1=1\), and \(F_{j+2}=F_{j+1}+F_j\), and abbreviate
+\(A=F_{n+1}\), \(B=F_{n+2}\).
+
+\begin{theorem}[Full coordinates, including vertex links]
+\label{fib:coordinates}
+Every real standard matching solution in the prescribed support has the
+following unique form, with parameters \(x,y,z,b,u,v\):
+\begin{align}
+ \text{row }i:\quad&
+ (F_{n-i+1}x+b,F_{n-i+1}x+b,b,b;0,0,F_{n-i}x),
+ &&0\leq i<n,\label{fib:base-row}\\
+ \text{row }n:\quad&
+ (Ax+b-y,Bx+b,u,b;0,y,0),\label{fib:first-cap}\\
+ \text{row }n+1:\quad&
+ (Bx+b,Ax+b-z,b,v;0,z,0).\label{fib:second-cap}
+\end{align}
+It is nonnegative precisely when
+\begin{equation}
+ x,b,u,v\geq0,\qquad 0\leq y,z\leq Ax+b.
+ \label{fib:full-box}
+\end{equation}
+Its quadrilateral matching space has dimension three; its quadrilateral
+cone is parametrized by \((x,y,z)\in\R_{\geq0}^3\).
+For such a triple put
+\begin{equation}
+ h=\max(0,y-Ax,z-Ax).
+ \label{fib:hinge}
+\end{equation}
+The canonical normal vector has \(b=h\) and \(u=v=0\).
+Every nonnegative solution uniquely adds \((b-h)\) copies of the old
+vertex link and \(u,v\) copies of the two new vertex links to that
+canonical vector.
+\end{theorem}
+\begin{proof}
+Substitute type \(2\) into the base face equations, working backwards
+from~\eqref{fib:core-pairing}.  The triangle entries are
+\((X_i,X_i,Y_i,Y_i)\), with quadrilateral entry \(W_i\), and the
+equations reduce to
+\begin{align*}
+ X_i&=X_{i+1}+W_{i+1},&Y_i&=Y_{i+1},&
+ Y_i+W_i&=X_{i+1}\quad(0\leq i<n-1),\\
+ X_{n-1}&=Y_{n-1}+W_{n-1}.
+\end{align*}
+Taking \(x=W_{n-1}\) and \(b=Y_{n-1}\) gives
+\(W_i=F_{n-i}x\), \(X_i=F_{n-i+1}x+b\), and \(Y_i=b\).
+Conversely these formulas satisfy every base equation.
+Writing the first cap triangles as \(r_j\), its attaching equations are
+\(r_0+y=Ax+b\), \(r_1=Bx+b\), and \(r_3=b\); \(r_2=u\)
+is free.  For the second cap they are
+\(r_0=Bx+b\), \(r_1+z=Ax+b\), and \(r_2=b\); \(r_3=v\)
+is free.  This proves the complete linear parametrization and
+\eqref{fib:full-box}.
+
+Every nonnegative \((x,y,z)\) has a lift by choosing \(b\geq h\).
+The last base quadrilateral and the two cap quadrilaterals recover these
+three parameters, so the parametrization is injective and its matching
+dimension is three.  At the old global vertex the minimum triangle entry
+is
+\[
+ \min(b,Ax+b-y,Ax+b-z)=b-h;
+\]
+all other old-vertex entries are at least \(b\).  The two new minima
+are \(u,v\).  Subtracting these three minima proves the canonical and
+link assertions, in the standard sense of canonical
+quadrilateral-to-standard lifting~\cite{Burton2009}.
+\end{proof}
+
+\begin{proposition}[Seven nonlink rays and three active cells]
+\label{fib:seven}
+The complete standard sector has ten primitive rays: its three vertex
+links and the canonical lifts of
+\begin{equation}
+ \begin{split}
+ &(1,0,0),\ (1,A,0),\ (1,0,A),\ (1,A,A),\\
+ &(0,1,0),\ (0,0,1),\ (0,1,1).
+ \end{split}
+ \label{fib:seven-parameters}
+\end{equation}
+The normalized quadrilateral section has three minimum cells, three
+internal edges and seven vertices.  The one-group output bound is attained:
+\(3+2(3-1)=7\).
+\end{proposition}
+\begin{proof}
+First discard the independent coordinates \(u,v\).  Normalize the
+remaining cone by \(Ax+b=1\).  Equation~\eqref{fib:full-box} becomes
+the cube
+\[
+ (Ax,y,z)\in[0,1]^3,\qquad b=1-Ax.
+\]
+Its eight vertices give four rays with \(x=1,b=0\) and
+\(y,z\in\{0,A\}\), and four with \(x=0,b=1\) and
+\(y,z\in\{0,1\}\).  The latter corner \(y=z=0\) is the old
+vertex link; the other three are the last three rays in
+\eqref{fib:seven-parameters}.  Restoring \(u,v\) adds the two other
+link rays.  The displayed nonlink vectors are primitive because either
+the last base quadrilateral or a cap quadrilateral is one.
+
+In the base-offset gauge the only active minimum functions are
+\(0,Ax-y,Ax-z\).  Their three regions are
+\[
+ y,z\leq Ax;\qquad y\geq Ax,\ y\geq z;\qquad
+ z\geq Ax,\ z\geq y.
+\]
+The actual normalization is \((B-1)x+y+z=1\), since
+\(\sum_{j=1}^nF_j=B-1\).  On this triangle the three internal edges
+meet at the direction \((1,A,A)\) and end at
+\((1,A,0)\), \((1,0,A)\), and \((0,1,1)\).
+Together with the original triangle vertices these are exactly seven
+vertices, proving the geometric assertions.
+\end{proof}
+
+\subsection{A complete disc census for every integral parameter}
+\label{fib:topology}
+
+\begin{lemma}[The base meridian]
+\label{fib:meridian}
+The base vector \eqref{fib:base-row} with \(x=1,b=0\) is one essential
+meridian disc \(D_n\).
+\end{lemma}
+\begin{proof}
+Any normal component has nonnegative integral base parameters.  A
+decomposition of this vector has total \(x=1\), \(b=0\), so exactly
+one component can be nonzero.  This proves connectedness without expanding
+the Fibonacci coordinates.
+
+Here is an explicit Euler-characteristic check.  Write
+\(C=F_{n+3}=A+B\).  The three boundary-edge intersection numbers, in
+the order \(a_n,b_n,c_n\), are \(C,B,A\).
+The interior edges inherited from \(T_m\), \(1\leq m<n\), have
+weights \(F_{m+1}\).  Thus the normal cell decomposition has
+\[
+ V=2C+B-2,\qquad E=4C+2B-8,\qquad F=2C+B-5.
+\]
+Indeed there are \(2(C-2)\) triangles and \(B-1\) quadrilaterals;
+their sides, with boundary sides counted once, give the displayed edge
+count.  The vertex count follows by summing the edge weights and using
+\(\sum_{m=1}^{n-1}F_{m+1}=B-2\).  Hence \(V-E+F=1\).
+The connected surface has nonempty boundary and Euler characteristic one,
+so it is a disc.
+
+An inessential circle on the boundary torus has even mod-two intersection
+with every closed edge loop.  Consecutive Fibonacci numbers \(A,B\)
+are coprime, so they cannot both be even.  The listed boundary intersections
+therefore show that \(\partial D_n\) is essential.  In a solid torus
+an essential properly embedded disc is a meridian disc.
+\end{proof}
+
+\begin{theorem}[Integral component classification]
+\label{fib:disc-census}
+For nonnegative integral \((x,y,z)\), the canonical vector consists of
+\(x\) essential meridian discs and \(h\) inessential discs, where
+\(h\) is given by~\eqref{fib:hinge}.  Its component count and Euler
+characteristic are both \(x+h\).  More generally, the full integral
+solution~\eqref{fib:base-row}--\eqref{fib:second-cap} consists of
+\(x\) meridian discs and \(b+u+v\) inessential discs.
+\end{theorem}
+\begin{proof}
+First take \(u=v=0\).  The base restriction is the disjoint union of
+\(x\) parallel copies of \(D_n\) and \(b\) small vertex-link discs.
+These can be chosen disjoint: the meridian avoids the vertex, and its
+two-sided regular neighbourhood supplies the parallel copies.  Their
+normal coordinates are exactly the base rows.  The usual uniqueness of
+an embedded normal surface with specified coordinates identifies this
+union with the base restriction: stack the prescribed pieces in each
+tetrahedron and match the ordered normal arcs across its faces.
+
+Every cap piece present when \(u=v=0\) meets its attaching face in
+exactly one arc.  This holds for each quadrilateral and for each triangle
+whose vertex belongs to that face.  The sole triangle type missing the
+face is its opposite-vertex triangle, and that coordinate is zero.
+Because the three face edges represent distinct global edges, these arcs
+are embedded boundary intervals, mutually disjoint within the attaching
+face, even though its vertices coincide in the quotient.
+
+Each cap disc therefore attaches to one base disc along one boundary
+interval.  Such an attachment leaves a disc and cannot join two
+components.  All cap pieces attach, so none creates an additional
+component.  Apply the argument successively to the two caps; the second
+original face remains available after the first attachment.  This gives
+exactly \(x+b\) discs.
+
+Essentiality also survives these attachments.  In the abstract attaching
+disc, each old normal arc is replaced on the complementary boundary disc
+by the remainder of the same cap disc's boundary.  The replacement arcs
+are disjoint and have exactly the same endpoints and pairing.
+Two disjoint arc systems in discs with the same boundary pairing are
+related by a PL homeomorphism fixed on the boundary: cut successively
+along outermost arcs and extend over the resulting discs.  This
+homeomorphism respects every quotient identification on the outer
+boundary and hence descends to a homeomorphism of the boundary tori,
+identity off the replaced face.  It carries old boundary curves to new
+ones.  Thus meridian boundaries remain essential and link boundaries
+remain inessential.  This argument uses abstract discs and their
+identified boundaries, rather than assuming embedded face closures.
+
+The triangles counted by \(u,v\) are disjoint links of the two new
+boundary vertices.  Adding them contributes \(u+v\) inessential discs.
+Finally put \(b=h\), \(u=v=0\) for the canonical statement.
+\end{proof}
+
+\begin{corollary}[Essential standard rays beyond Q-rays]
+\label{fib:non-q-discs}
+All seven nonlink rays are discs.  The four with \(x=1\) are essential;
+the three with \(x=0\), including \((0,1,1)\), are inessential.
+Only \((1,0,0)\), \((0,1,0)\), and \((0,0,1)\) are quadrilateral
+extreme directions.  Consequently three of the four essential standard
+rays are absent from the Q-extreme-ray list.
+\end{corollary}
+
+\subsection{Exact work performed by the full equality arrangement}
+\label{fib:arrangement}
+
+The counts below concern the standard phase of \texttt{sector\_rays},
+using the \texttt{arrangement} method without a work cap.  It considers
+every pair of distinct projected hyperplanes, deduplicates nonnegative
+primitive directions, lifts each retained direction, and tests standard
+extremality.  These counts describe work after kernel construction.
+
+\begin{proposition}[Attempted, positive and rejected directions]
+\label{fib:legacy-counts}
+For this family the full equality arrangement has
+\begin{equation}
+ H=2n+6,\qquad
+ \text{pair attempts}=\binom{2n+6}{2},\qquad
+ \text{distinct nonnegative directions}=(n+1)^2+3.
+ \label{fib:legacy-numbers}
+\end{equation}
+Exactly \((n-1)(n+3)\) of these directions are rejected by the
+standard-extremality test; seven are emitted.
+\end{proposition}
+\begin{proof}
+The distinct old-vertex potentials in the base-offset gauge are
+\[
+ \{cx:c\in C_n\}\ \cup\ \{Ax-y,Ax-z\},\qquad
+ C_n=\{0,F_2,F_3,\ldots,F_{n+2}\}.
+\]
+The set \(C_n\) has \(n+2\) elements, because the Fibonacci sequence
+is strictly increasing from \(F_2\) onwards.  Pairwise equalities and
+quadrilateral coordinate hyperplanes give precisely
+\begin{equation}
+ x=0,\qquad y=(A-c)x\ (c\in C_n),\qquad
+ z=(A-c)x\ (c\in C_n),\qquad y=z.
+ \label{fib:all-planes}
+\end{equation}
+The planes \(y=0,z=0\) already occur at \(c=A\).  All displayed
+planes are distinct, proving \(H=2n+6\).  Every pair is independent
+in three dimensions, and the explicit loop visits every pair.
+
+For \(x>0\), normalize \(x=1\).  Put
+\[
+ S_n=\{A-c:c\in C_n,\ c\leq A\}.
+\]
+Only \(B\) is excluded by \(c\leq A\), so \(|S_n|=n+1\).
+The intersections in the nonnegative quadrant are exactly the grid
+\((y,z)\in S_n\times S_n\): intersections with \(y=z\) merely
+repeat its diagonal entries.  The remaining \(x=0\) directions are
+\((0,1,0)\), \((0,0,1)\), and \((0,1,1)\).
+All grid directions are integral and primitive, since the last base
+quadrilateral is one.  This proves the positive-direction count after
+deduplication.
+
+Every grid point satisfies \(0\leq y,z\leq A\), hence \(h=0\).
+Among them only the four corners of this square are standard extreme;
+every other point is a nontrivial convex combination of corners on the
+linear canonical-lift cell.  The three \(x=0\) directions are all
+extreme.  The rejected count is therefore
+\((n+1)^2-4=(n-1)(n+3)\).  In fact every rejected grid direction is
+itself a connected meridian disc, by Theorem~\ref{fib:disc-census};
+its rejection concerns extremality rather than topology.
+\end{proof}
+
+The minimum construction retains three cells and seven directions for
+all \(n\), whereas the equality arrangement performs a growing
+quadratic number of distinct positive lifts and extremality checks.
+The additional \(n+1\) inactive potentials are nonnegative multiples
+of \(x\), dominated by the zero potential.  Source construction,
+projection costs, coordinate arithmetic and serialization are separate
+from the exact loop counts in~\eqref{fib:legacy-numbers}.
+
+\subsection{Encoding size and finite independent evidence}
+\label{fib:encoding}
+
+\begin{proposition}[Input and output bit lengths]
+\label{fib:bits}
+With an explicit numbered face-pairing table, the family input has
+\(\Theta(n\log(n+1))\) bits.  The seven complete primitive normal
+vectors have \(\Theta(n^2)\) bits in total.  Their largest coordinate
+is \(B=F_{n+2}\).  A specialized implementation of the displayed
+formulas can construct and serialize the seven vectors in
+\(\Theta(n^2)\) bit operations using ordinary binary addition.
+\end{proposition}
+\begin{proof}
+There are linearly many tetrahedron references, a linear fraction of
+which require \(\Theta(\log(n+1))\) bits; all permutations have
+constant size.  Each output contains linearly many coordinates, each
+with \(O(n)\) bits.  Conversely the base coordinates of a meridian
+contain \(F_1,\ldots,F_n\), whose binary lengths sum to
+\(\Theta(n^2)\); for example a linear fraction of these entries have
+linear bit length.  The cap coordinate \(B\) realizes the maximum.
+Generate the Fibonacci list by successive additions and substitute into
+the seven formulas.  The additions and the full output require
+\(O(n^2)\) bit work, matching the output-size lower bound.
+\end{proof}
+
+A succinct family recipe needs only the integer \(n\), but the native
+solver receives the expanded triangulation.  The specialized formula
+bound is not a bound on all stages of the generic sector implementation.
+Likewise exponentially many normal pieces need not be expanded to
+classify their components; compressed orbit methods provide the relevant
+general setting~\cite{AHT2006}.
+
+The retained \texttt{family\_audit.py} checks \(n=1,2,4,8\).
+It verifies 300 prescribed parameter-grid instances against the native
+canonical lift, regenerates the seven rays, and independently replays
+four complete coverage certificates.  Native compressed component
+censuses and their independent checker classify all 28 ray instances
+and twelve additional mixed directions.  Regina 7.4 independently
+classifies all 28 rays and verifies that each source is a solid torus.
+Its complete standard vertex lists contain respectively
+\(35,39,85,375\) surfaces; restricting each list to the supplied sector
+and removing pure links gives exactly the seven proved rays.
+These finite results test the implementation against the formulas and
+an external oracle; the all-size conclusions follow from the preceding
+proofs.

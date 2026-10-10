@@ -1,0 +1,69 @@
+FINAL VALIDATION RECORD
+Sharp Gaussian Quadratic Concentration from Signed Spectral Moments
+8 October 2026
+
+MATHEMATICAL REVIEW
+
+The manuscript contains proofs of the signed spectral envelope, its optimized
+rate, the complete cubic-balance coefficient frontier, and finite-matrix
+sharpness for every exact real cubic ratio. Separate internal review passes
+checked these arguments, the Radau moment extremality and optimizer, the
+nonnegative remainder, the exact rational example and its first asymptotic
+correction, and the stated applications.
+
+Review led to explicit scope clarifications: the four-moment extremum is over
+a probability-measure moment relaxation; realizability by finite matrices
+requires additional multiplicity conditions. The diagonal-free subgaussian
+extension transfers Chernoff bounds derived from Gaussian MGF envelopes,
+not Gaussian-specific exact probability identities or finite CDF sandwiches.
+
+This is an internally reviewed research draft. There has been no external
+mathematical peer review or proof-assistant formalization. The source audit
+does not guarantee priority. PROVENANCE.txt explains these distinctions.
+
+REPRODUCIBLE COMPUTATIONAL CHECKS
+
+The delivered data/verification_summary.json records:
+
+  5 symbolic identities;
+  187 deterministic or fixed-seed spectra;
+  1,309 comparisons in the log-MGF envelope hierarchy;
+  1,122 comparisons in the tail-exponent hierarchy;
+  45 independent scalar optimizations;
+  20 high-precision spectral-kernel integrals;
+  34 boundary and input-validation regressions;
+  9 exact rational tail probabilities.
+
+The smallest computed differences in nonnegative inequalities were
+-2.220446049250313e-16 for the log-MGF comparisons and
+-8.881784197001252e-16 for exact-versus-Radau rates. These are floating-point
+roundoff at the numerical tolerance used by the audit. The largest error in
+the two-level equality example was 3.552713678800501e-15.
+
+The separate standard-library certificate script checks exact rational
+probabilities and both sides of a finite probability sandwich, including
+P_1=256/6561. Its delivered records use replication parameters
+1, 2, 5, 10, 20, 50, 100, 200, and 500 (dimensions through 9,000).
+Neither script estimates these probabilities by Monte Carlo.
+
+These checks support formula and implementation review. The proofs establish
+the all-parameter statements; floating-point checks do not replace them or
+provide outward-rounded numerical confidence certificates.
+
+DOCUMENT AND PACKAGE CHECKS
+
+The final manuscript compiles successfully with latexmk/pdflatex to 22 pages.
+The final LaTeX log has no undefined-reference, overfull-box, or underfull-box
+warnings. All pages were rendered for visual inspection; theorem pages,
+figures, tables, the title page, and bibliography were also inspected at
+larger scale. A PDF text-block check found no text outside page boundaries.
+
+The README module example and Makefile command sequence were checked. The
+archive contains the complete TeX source, figure dependencies, code, generated
+data, and build instructions. SHA256SUMS.txt records hashes for all packaged
+files other than the hash list itself. No downloaded third-party papers,
+LaTeX auxiliary files, or Python caches are part of the archive.
+
+The exact dependency versions are in requirements.txt and the verification
+JSON. Reproduction is offline once dependencies are installed; PDF metadata
+and insignificant floating-point digits may vary across environments.

@@ -1,0 +1,65 @@
+{
+  "manifest_files_checked": 216,
+  "runs": [
+    {
+      "name": "regression_tests",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "status": "PASS",
+      "seconds": 0.799207005999051,
+      "log": "regression_tests.log"
+    },
+    {
+      "name": "planar_coverage_certificates_replay",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-m",
+        "planar_sector_research.replay",
+        "--certificates",
+        "/workspace/scratch/6c3c8c42a9e4/output/unknot_planar_sectors_20261009/evidence/planar_coverage_certificates.json",
+        "--output",
+        "/workspace/scratch/6c3c8c42a9e4/package_build/planar_coverage_certificates_replay.json"
+      ],
+      "status": "PASS",
+      "seconds": 0.14703560000089055,
+      "log": "planar_coverage_certificates_replay.log"
+    },
+    {
+      "name": "double_cap_coverage_certificates_replay",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-m",
+        "planar_sector_research.replay",
+        "--certificates",
+        "/workspace/scratch/6c3c8c42a9e4/output/unknot_planar_sectors_20261009/evidence/double_cap_coverage_certificates.json",
+        "--output",
+        "/workspace/scratch/6c3c8c42a9e4/package_build/double_cap_coverage_certificates_replay.json"
+      ],
+      "status": "PASS",
+      "seconds": 0.13832904500122822,
+      "log": "double_cap_coverage_certificates_replay.log"
+    },
+    {
+      "name": "article_pdf",
+      "command": [
+        "latexmk",
+        "-pdf",
+        "-interaction=nonstopmode",
+        "-halt-on-error",
+        "planar_sectors.tex"
+      ],
+      "status": "PASS",
+      "seconds": 2.0677053589988645,
+      "log": "article_pdf.log"
+    }
+  ]
+}

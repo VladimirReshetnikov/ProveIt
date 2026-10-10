@@ -1,0 +1,147 @@
+{
+  "source_commit": "0599fe867a0c7d0819b4e9f3cd92ce90a3b62b8d",
+  "interpretation": "Analytic proofs are in the article; finite checks support implementation correctness but are not substituted for the universal proofs.",
+  "claims": [
+    {
+      "id": "G1",
+      "statement": "Endpoint-specialized all-weight depth-two parity identity",
+      "status": "proved",
+      "article": "Theorem 3.1",
+      "dependencies": [
+        "Panzer (2017), equation (3.2)",
+        "branch-safe inner-argument limit"
+      ],
+      "novelty": "Specialization of established theory; no new general parity theorem claimed."
+    },
+    {
+      "id": "G2",
+      "statement": "Five source weight-six Gaussian reductions",
+      "status": "proved",
+      "article": "Section 4, equations (4.1)-(4.5)",
+      "source_labels": [
+        "gauss:eq:g51",
+        "gauss:eq:g42",
+        "gauss:eq:g33",
+        "gauss:eq:g24",
+        "gauss:eq:g15"
+      ],
+      "dependencies": [
+        "G1",
+        "exact Bernoulli arithmetic"
+      ],
+      "novelty": "Proof upgrades of existing manuscript candidates; coefficients unchanged."
+    },
+    {
+      "id": "G3",
+      "statement": "Source weight-five Gaussian relation",
+      "status": "proved",
+      "article": "Theorem 5.2",
+      "source_labels": [
+        "gauss:eq:wt5-sporadic"
+      ],
+      "dependencies": [
+        "same-argument shuffle",
+        "classical root-of-unity values"
+      ],
+      "certificate": "960*Im(Li1(i)*Li4(i))-224*Im(Li2(i)*Li3(i))"
+    },
+    {
+      "id": "G4",
+      "statement": "Infinite odd-weight shuffle family",
+      "status": "proved",
+      "article": "Theorem 5.3",
+      "dependencies": [
+        "same-argument shuffle",
+        "Euler even-zeta and odd-beta formulas"
+      ],
+      "novelty": "Generalizes the source relation; literature priority not asserted."
+    },
+    {
+      "id": "G5",
+      "statement": "Exact weight-eight and weight-ten Gaussian tables",
+      "status": "proved consequences",
+      "article": "Appendix A",
+      "dependencies": [
+        "G1"
+      ],
+      "number_of_displayed_new_rows": 16,
+      "numerical_fitting_used": false
+    },
+    {
+      "id": "A1",
+      "statement": "Chebyshev-moment expansion with geometric remainder uniform through xy=1",
+      "status": "proved",
+      "article": "Theorem 6.4",
+      "dependencies": [
+        "Mellin integral",
+        "classical Chebyshev generating function",
+        "dominated convergence"
+      ]
+    },
+    {
+      "id": "A2",
+      "statement": "Explicit finite classical moments, including exact cancellation at v=1",
+      "status": "proved",
+      "article": "Theorem 7.2",
+      "dependencies": [
+        "two-pole partial fractions",
+        "finite harmonic cancellation"
+      ]
+    },
+    {
+      "id": "A3",
+      "statement": "Matching exponential rate for uniform polynomial kernel approximation",
+      "status": "proved",
+      "article": "Theorem 8.1",
+      "dependencies": [
+        "Chebyshev coefficient functional"
+      ],
+      "scope": "Uniform polynomial approximation of 1/(1-xt); not an algorithmic lower bound."
+    },
+    {
+      "id": "A4",
+      "statement": "O(sqrt(q)*(P+log(q))) sufficient kernel degree at adjacent qth roots",
+      "status": "proved",
+      "article": "Corollary 8.2",
+      "dependencies": [
+        "A1",
+        "asymptotic expansion of the kernel ratio"
+      ],
+      "scope": "Approximation term count, not full bit complexity or a general-conductor implementation."
+    },
+    {
+      "id": "C1",
+      "statement": "89 residual enclosures with all coordinate widths less than 1e-35",
+      "status": "executed interval computation",
+      "article": "Section 10",
+      "data": "data/certificates.json",
+      "dependencies": [
+        "A1",
+        "A2",
+        "Euler-series tail theorem",
+        "outward-rounded integer arithmetic"
+      ],
+      "proof_assistant_verified": false
+    },
+    {
+      "id": "U1",
+      "statement": "Source S4 reduction",
+      "status": "conjectural",
+      "article": "Equation (10.3)",
+      "source_labels": [
+        "gauss:eq:S4-closed"
+      ],
+      "evidence": "Independently computed rigorous residual enclosure; not a proof of equality."
+    }
+  ],
+  "not_claimed": [
+    "Numerical period independence",
+    "Minimal numerical depth",
+    "General multiple-polylogarithm bit-complexity breakthrough",
+    "Novelty priority",
+    "Independent peer review",
+    "Lean or Rocq verification",
+    "Proof of the source triple candidates",
+    "A repository commit"
+  ]
+}

@@ -1,0 +1,83 @@
+% Generated from evidence/benchmark_summary.json; all times are milliseconds.
+\begin{table}[htbp]
+\centering
+\small
+\setlength{\tabcolsep}{3.8pt}
+\begin{tabular}{r rrr rrr}
+\toprule
+& \multicolumn{3}{c}{Full construction and enumeration}
+& \multicolumn{3}{c}{Enumeration on the same kernel} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}
+$n$ & Incumbent & Planar & Paired ratio & Incumbent & Planar & Paired ratio \\
+\midrule
+1 & 4.238 & 2.720 & 1.47 & 3.002 & 2.363 & 1.27 \\
+2 & 8.550 & 3.057 & 2.83 & 8.224 & 2.898 & 2.84 \\
+4 & 46.490 & 5.209 & 8.90 & 47.096 & 4.367 & 10.79 \\
+8 & 537.411 & 8.730 & 61.64 & 530.946 & 6.916 & 73.80 \\
+16 & 8\,572.669 & 19.861 & 482.82 & 8\,749.966 & 11.624 & 758.84 \\
+32 & $40\,000$ cap & 48.458 & -- & $40\,000$ cap & 25.997 & -- \\
+\bottomrule
+\end{tabular}
+\caption{Complete seven-ray enumeration for the double-capped Fibonacci family.
+Times are medians of three alternating-order paired rounds, in milliseconds;
+one warmup per arm is retained in the raw data and excluded from these medians.
+Paired ratios are medians of within-round incumbent/planar time ratios,
+not ratios of the displayed medians. For example, at $n=16$ the full paired
+ratio is $482.82$, whereas the ratio of medians is $431.64$.
+The two post-kernel arms receive exactly the same immutable incumbent-built kernel.
+At $n=32$, all eight incumbent warmup/round runs reach the cooperative
+$40\,000$\,ms cap after emitting seven rays but before proving enumeration
+complete; the cap entries are allowances, not completed-run medians,
+and no speed ratio is reported.}
+\label{tab:planar-enumeration-benchmarks}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{r rrrr}
+\toprule
+$n$ & Prior envelope (ms) & Planar (ms) & Paired prior/planar & Ratio of medians \\
+\midrule
+8 & 2.193 & 2.415 & 0.92 & 0.91 \\
+32 & 8.534 & 8.741 & 0.97 & 0.98 \\
+\bottomrule
+\end{tabular}
+\caption{Control against the earlier optimized nullity-two envelope enumerator,
+loaded unmodified from the preceding research package. Both arms use the same
+incumbent-built kernel and return the same three formula rays. Times are
+medians of three paired rounds; values below one in either ratio column
+indicate a slower planar implementation. These controls show no measured
+advantage over the already optimized nullity-two method.}
+\label{tab:planar-prior-envelope-control}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{r rrr rr}
+\toprule
+& \multicolumn{3}{c}{Complete construction (ms)}
+& \multicolumn{2}{c}{Paired incumbent/sparse ratios} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-6}
+$k$ & Incumbent & Sparse once & Sparse reused & Reused source & Both cached \\
+\midrule
+1 & 72.133 & 81.463 & 8.004 & 8.84 & 1.88 \\
+8 & 44.435 & 51.755 & 5.638 & 7.88 & 2.06 \\
+32 & 61.126 & 64.297 & 12.041 & 4.74 & 2.02 \\
+\bottomrule
+\end{tabular}
+\caption{Separate sparse-constructor measurements on supplied sparse sectors
+of $t=1024$ layered solid tori. Times are medians of five paired rounds and
+include unchanged exact rational elimination. The reused-source column
+excludes its one-time preparation, while both ordinary single-call
+constructors include preparation. The last column uses an additional control
+where both constructors receive already validated geometry; it isolates
+sparse kernel construction from validation reuse. Ratios are medians of
+within-round ratios. The single-call sparse constructor is slower on these
+cases. These are construction measurements, separate from complete ray
+enumeration and from whole-knot recognition. All nine constructor cases
+and every raw sample are retained in the data files.}
+\label{tab:planar-sparse-source-control}
+\end{table}

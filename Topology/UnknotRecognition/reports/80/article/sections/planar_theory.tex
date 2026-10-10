@@ -1,0 +1,819 @@
+\providecommand{\R}{\mathbb{R}}
+\providecommand{\Q}{\mathbb{Q}}
+\providecommand{\N}{\mathbb{N}}
+\providecommand{\Ccal}{\mathcal{C}}
+\providecommand{\Fcal}{\mathcal{F}}
+\providecommand{\Qcal}{\mathcal{Q}}
+
+\section{Minimum diagrams and complete planar sector enumeration}
+\label{pl:theory}
+
+\subsection{The retained cone and its canonical lift}
+\label{pl:canonical}
+
+Fix one admissible quadrilateral sector.  Let \(t\) be the number of
+tetrahedra and \(k\) the number of allowed quadrilateral coordinates.
+The support reduction supplies a rational matching subspace
+\(K\subseteq\R^k\), together with retained triangle classes partitioned
+into vertex groups \(I_v\).  Write \(p_v=|I_v|\) and \(p=\sum_vp_v\).
+The bound \(p\leq8k\) is a property of that reduction; the geometric
+arguments below first keep \(p\) as a separate parameter.  Discarded
+independent vertex-link factors can be reattached afterwards.  They add
+their own link rays and do not change the nonlink rays considered here.
+
+For each \(c\in I_v\), a rational linear potential
+\(\pi_{v,c}:K\longrightarrow\R\) records the triangle-coordinate
+differences imposed by matching.  In the actual construction the
+potentials have integer coefficients, obtained by summing signed
+quadrilateral labels along paths.  Most of the geometry only needs
+rational coefficients.  Put
+\[
+ \Qcal=K\cap\R_{\geq0}^k,\qquad
+ \Ccal=\left\{(q,x):
+ \begin{array}{l}
+ q\in\Qcal,\quad
+ x_{v,c}=\pi_{v,c}(q)+a_v\quad(c\in I_v),\\
+ a_v\in\R,\quad x_{v,c}\geq0
+ \end{array}\right\}.
+\]
+The scalar \(a_v\) is shared within its group.  Let \(\ell_v\) be the
+vector with zero quadrilateral part, entries one in group \(v\), and
+zero in the other groups.  Define
+\begin{equation}
+ \mu_v(q)=\min_{c\in I_v}\pi_{v,c}(q),\qquad
+ \Fcal(q)=
+ \left(q,\bigl(\pi_{v,c}(q)-\mu_v(q)\bigr)_{v,c}\right).
+ \label{pl:canonical-map}
+\end{equation}
+This is the canonical triangle normalization used in
+quadrilateral-to-standard conversion: each vertex group has at least
+one zero triangle coordinate.  Its role in normal-coordinate
+conversion is established in Burton's work~\cite{Burton2009}.
+
+\begin{lemma}[Canonical decomposition]
+\label{pl:decomposition}
+Every \(z=(q,x)\in\Ccal\) has a unique expression
+\[
+ z=\Fcal(q)+\sum_v b_v\ell_v,\qquad b_v\geq0.
+\]
+The map \(\Fcal\) is positively homogeneous and injective.
+\end{lemma}
+\begin{proof}
+If \(x_{v,c}=\pi_{v,c}(q)+a_v\), nonnegativity is equivalent to
+\(a_v+\mu_v(q)\geq0\).  Set \(b_v=a_v+\mu_v(q)\).
+Subtraction gives the asserted expression.  The coefficients are
+unique because they are the common differences within disjoint
+groups; equivalently \(b_v=\min_{c\in I_v}x_{v,c}\).
+The minimum of finitely many linear forms is positively homogeneous
+for nonnegative scalars, proving homogeneity of \(\Fcal\).
+Its first component is \(q\), proving injectivity.
+\end{proof}
+
+Set \(s(q)=\sum_{i=1}^kq_i\) and
+\begin{equation}
+ P=\{q\in\Qcal:s(q)=1\}.
+ \label{pl:section}
+\end{equation}
+If \(\Qcal\neq\{0\}\), this is a nonempty compact rational polytope:
+it is a closed subset of the standard simplex, and every nonzero
+nonnegative \(q\) has \(s(q)>0\).  If
+\(d=\dim K\leq3\), then the effective dimension
+\(r=\dim P\) is at most two.  It may be smaller than \(d-1\).
+An empty section, a point, and a segment must consequently be handled
+as genuine possibilities even when the matching nullity is three.
+
+Restrict each potential to \(\operatorname{aff}(P)\).  Identical
+restrictions are identified for geometric purposes, without deleting
+any output triangle coordinate.  For a group define its closed
+minimum cells by
+\begin{equation}
+ C_{v,c}=
+ P\cap\bigcap_{a\in I_v}
+ \{\pi_{v,c}\leq\pi_{v,a}\}.
+ \label{pl:min-cells}
+\end{equation}
+Take the full-dimensional cells, relative to
+\(\operatorname{aff}(P)\), and all their faces.  Denote this minimum
+subdivision by \(\mathcal D_v\), and denote their common refinement
+by \(\mathcal D\).  In particular, the faces of \(P\) are present in
+these complexes.  Let \(m_v\) be the number of full-dimensional
+cells of \(\mathcal D_v\).
+
+\begin{lemma}[Degenerate minimum labels]
+\label{pl:degenerate-labels}
+The full-dimensional minimum cells cover \(P\), meet face-to-face,
+and satisfy \(1\leq m_v\leq p_v\).  A potential whose minimum cell
+has smaller dimension introduces no additional geometric subdivision
+of these cells and their faces.
+\end{lemma}
+\begin{proof}
+Outside the finite collection of equality hyperplanes of distinct
+restricted forms, the minimizing restricted form is unique.
+Such points are dense in the relative interior of \(P\).
+Approximating any point of \(P\) by them and taking a subsequence
+with a fixed minimizing label proves coverage by closures of
+full-dimensional cells.  Distinct such cells have disjoint relative
+interiors.  Moreover
+\[
+ C_{v,c}\cap C_{v,a}
+ =C_{v,c}\cap\{\pi_{v,a}-\pi_{v,c}=0\}.
+\]
+The difference on the right is nonnegative on \(C_{v,c}\);
+thus the intersection is an exposed face of that cell, and
+symmetrically of the other cell.
+
+Suppose now that \(c\) is a label with a smaller-dimensional minimum
+cell.  On any full-dimensional cell with minimizer \(a\), the affine
+gap \(\pi_{v,c}-\pi_{v,a}\) is nonnegative.  Its zero set there is a
+face.  More generally, on the relative interior of any face, an affine
+nonnegative function can vanish only everywhere on that face or
+nowhere in its relative interior.  Indeed, if it vanishes at a
+relative interior point, its linear part must vanish in all directions
+parallel to the face, since short displacements in both directions
+remain in the face.  Hence the extra label cannot split an existing
+face into smaller pieces.  The one-dimensional and zero-dimensional
+versions of this argument are included.
+\end{proof}
+
+The common-cell extreme-ray characterization below is the general
+minimum-envelope theorem of the preceding repository
+report~\cite{MinimumEnvelopes}.  A proof is included to make explicit
+the treatment of active quadrilateral coordinates and degenerate
+minimum labels on which the present complete planar algorithm relies.
+
+\begin{theorem}[Common-cell characterization]
+\label{pl:ray-correspondence}
+The extreme rays of \(\Ccal\) are its link rays
+\(\R_{\geq0}\ell_v\) and the rays
+\(\R_{\geq0}\Fcal(q)\) indexed by vertices \(q\) of \(\mathcal D\).
+Different vertices give different nonlink rays.
+\end{theorem}
+\begin{proof}
+The face with \(q=0\) is the nonnegative span of the link vectors.
+Since their supports are disjoint, its extreme rays are precisely
+the link rays.  It is a face of the whole cone: if nonnegative
+quadrilateral parts sum to zero, both are zero.
+For \(q\neq0\), any positive link coefficient in
+Lemma~\ref{pl:decomposition} gives a decomposition into a nonzero
+canonical vector and a nonzero vector with zero quadrilateral part.
+These cannot be proportional.  A nonlink extreme ray must therefore
+have its canonical representative.
+
+Normalize \(s(q)=1\).  On each cell of \(\mathcal D\), a fixed
+minimizing form may be chosen in every group, so \(\Fcal\) is affine
+on that cell.  If \(q\) is not a vertex, it lies in the relative
+interior of a positive-dimensional face.  There are distinct nearby
+points \(q^+,q^-\) of that face with
+\(q=(q^++q^-)/2\).  Therefore
+\[
+ \Fcal(q)=\tfrac12\Fcal(q^+)+\tfrac12\Fcal(q^-).
+\]
+The two vectors cannot be proportional, because their quadrilateral
+parts are distinct and both have sum one.  Thus the ray is not
+extreme.
+
+Conversely, let \(q\) be a vertex of \(\mathcal D\).  Choose a
+maximal common cell containing it and one defining minimizer \(c_v\)
+for each group.  Suppose
+\(\Fcal(q)=z_1+z_2\) with \(z_i\in\Ccal\).
+The coordinate \(x_{v,c_v}\) is zero in \(\Fcal(q)\).
+Nonnegativity forces the same coordinate to be zero in each
+summand.  Thus \(c_v\) minimizes in both summands, both summands
+are canonical, and their quadrilateral parts \(q_1,q_2\) belong
+to the same chosen minimum cones.
+A summand with \(q_i=0\) is zero: its zero coordinate in each group
+forces every link coefficient to vanish.
+
+If both summands are nonzero, set \(\lambda_i=s(q_i)>0\).
+Then \(\lambda_1+\lambda_2=1\), and
+\[
+ q=\lambda_1(q_1/\lambda_1)+
+   \lambda_2(q_2/\lambda_2).
+\]
+Both normalized points belong to the selected common cell.
+A vertex of a polyhedral complex is a vertex of every cell containing
+it, so both normalized points equal \(q\).
+Positive homogeneity makes \(z_i=\lambda_i\Fcal(q)\), as required.
+Working inside \(P\) has included all active inequalities \(q_i=0\);
+they cannot be omitted from this extremality argument.
+Finally, the normalization \(s(q)=1\) and the quadrilateral
+projection distinguish the represented rays.
+\end{proof}
+
+\subsection{A planar count with the common boundary counted once}
+\label{pl:counting}
+
+Assume for this subsection that \(P\) is two-dimensional, and let
+\(b\) be its number of genuine polygon corners.  Then \(b\leq k\).
+We use polygon representations with no repeated vertex and no
+collinear consecutive vertices.  In a subdivision graph, removable
+collinear degree-two points are suppressed.  The following count is
+useful because its bound for \emph{internal} edges is independent
+of \(b\).
+
+\begin{lemma}[One-group planar count]
+\label{pl:euler}
+For a minimum subdivision with \(m\) full-dimensional cells,
+let \(V_i,V_b\) be its numbers of interior and boundary vertices,
+and \(E_i\) its number of internal edges.  Then
+\begin{equation}
+ V_i+V_b-b\leq2(m-1),\qquad
+ E_i\leq3(m-1).
+ \label{pl:euler-bounds}
+\end{equation}
+The total number of polygon-vertex incidences over all its cells
+is at most \(b+8(m-1)\).
+\end{lemma}
+\begin{proof}
+Include the boundary cycle of \(P\) in the finite embedded graph,
+and let \(c\geq1\) be its number of components.
+There are \(m+1\) faces, including the exterior face, and
+the number of boundary edges is \(V_b\).
+Euler's formula gives
+\[
+ V_i+V_b-(E_i+V_b)+(m+1)=1+c,
+ \qquad E_i=V_i+m-c.
+\]
+Every interior vertex has degree at least three.
+There cannot be a degree-one interior endpoint in a face-to-face
+cover by full-dimensional polygons.  If an interior vertex had
+degree two, the two incident full-dimensional cells would share
+their affine equality line through it; their two incident edges
+would be collinear and the vertex removable.
+Likewise a boundary vertex other than a genuine corner has degree
+at least three, or it would be removable.
+The \(b\) corners have degree at least two.  Summing degrees yields
+\[
+ 2(E_i+V_b)\geq3V_i+3(V_b-b)+2b,
+ \qquad
+ 2E_i\geq3V_i+V_b-b.
+\]
+Substituting the Euler identity proves
+\[
+ V_i+V_b\leq2m-2c+b.
+\]
+Since \(c\geq1\), this proves the first asserted bound.
+Since \(V_b\geq b\), it also gives \(V_i\leq2m-2c\);
+the Euler identity now gives \(E_i\leq3m-3c\).
+
+An internal edge is counted twice in the boundaries of the cells,
+and a boundary edge once.  Thus the total incidence count is
+\(2E_i+V_b\), which is at most
+\(6(m-1)+b+2(m-1)\).
+This proof does not require a separate connectivity argument
+for the subdivision graph.
+\end{proof}
+
+Put \(a_v=m_v-1\) and \(A=\sum_va_v\).
+Let \(R\) denote the number of nonlink rays, equivalently the number
+of vertices in the common subdivision.
+
+\begin{theorem}[Planar output bound]
+\label{pl:quadratic-bound}
+If \(\dim P=2\), then
+\begin{equation}
+ R\leq b+2A+9\sum_{v<w}a_va_w.
+ \label{pl:sharp-parameter-bound}
+\end{equation}
+The numbers of vertices, edges, and faces of the common subdivision
+are all \(O(k+p^2)\).  For one nontrivial vertex group the sharper
+bound \(R\leq b+2(m_v-1)\) holds.
+\end{theorem}
+\begin{proof}
+The union of the polygon corners and the individual group vertices
+contains at most \(b+2A\) points by Lemma~\ref{pl:euler}.
+Every other overlay vertex is an intersection of internal edges
+from different groups.  Two noncollinear segments meet in at most
+one point.  Collinear overlapping segments produce no new vertex
+except an endpoint of one of the original segments, already in
+the preceding union.  Group \(v\) has at most \(3a_v\) internal
+edges, so the additional vertex count is at most
+\(\sum_{v<w}(3a_v)(3a_w)\).
+Theorem~\ref{pl:ray-correspondence} transfers this count to rays.
+
+There are at most \(3A\) internal segments before overlay.
+Each can be split at only \(O(A)\) intersections and endpoints
+of other segments, including collinear overlaps.
+Consequently the overlay has \(O(A^2)\) internal edges.
+Its boundary has \(b+O(A)\) edges, because each original internal
+segment contributes at most two boundary endpoints.
+Euler's formula bounds the number of faces by the same asymptotic
+quantity.  If there is only one nontrivial group, the intersection
+term in \eqref{pl:sharp-parameter-bound} vanishes.
+\end{proof}
+
+The distinction between internal edges and the common boundary is
+essential in this proof.  Summing an \(O(k+p_v)\) bound for whole
+group diagrams repeats the same boundary for each group and does
+not by itself provide an \(O(k+p)\) collection of overlay segments.
+Lemma~\ref{pl:euler} supplies the needed \(O(p_v)\) internal bound.
+
+\begin{corollary}[Effective dimensions zero and one]
+\label{pl:lowdim}
+If \(P\) is a segment, then
+\[
+ R\leq2+\sum_v(m_v-1).
+\]
+If \(P\) is a point, \(R=1\); if \(P\) is empty, \(R=0\).
+Thus every supplied sector of matching nullity at most three has
+\(O(k+p^2)\) nonlink rays, and the retained normal-sector bound
+\(p\leq8k\) makes this \(O(k^2)\).
+\end{corollary}
+\begin{proof}
+On a segment, every minimum cell is an interval.
+Distinct full-dimensional intervals have disjoint interiors,
+and a group with \(m_v\) such intervals contributes at most
+\(m_v-1\) interior breakpoints.
+The common subdivision uses their union and the two section
+endpoints.  The other cases follow directly from
+Theorem~\ref{pl:ray-correspondence}.
+\end{proof}
+
+These minimum diagrams belong to established computational geometry.
+For \(f_i(y)=u_i\cdot y+\beta_i\), put
+\(z_i=-u_i/2\) and \(w_i=\|u_i\|^2/4-\beta_i\).  Then
+\[
+ \|y-z_i\|^2-w_i=\|y\|^2+f_i(y).
+\]
+The common quadratic term does not affect minimizers, so each group
+diagram is a clipped power diagram~\cite{Aurenhammer1987}.
+The present count is a direct planar argument adapted to the
+normal-sector lift, rather than a new general theorem about
+power diagrams.
+
+\subsection{Exact construction and the cost of writing the rays}
+\label{pl:construction}
+
+One complete construction first obtains \(P\) in rational affine
+coordinates.  If the section is two-dimensional, for each distinct
+restricted group form \(f_c\) it computes
+\[
+ P\cap\bigcap_a\{f_a-f_c\geq0\}
+\]
+by successive exact half-plane clipping.
+Empty or lower-dimensional results can be discarded immediately:
+further intersections cannot restore their dimension.
+Positive-area cells are recorded with their genuine corners.
+Their edges on \(\partial P\) are omitted from the internal
+segment set; the remaining edges are deduplicated.
+The candidate vertices are the union of section corners, cell
+corners, and intersections of internal edges from different groups.
+All predicates are exact and all clipping inequalities are closed.
+Multiple ties, parallel edges, coincident intersections, and
+overlaps therefore require no generic perturbation.
+
+For a segment, restrict the forms to a parameter \(u\in[0,1]\).
+The lower envelope of lines can be constructed by sorting slopes
+and maintaining increasing breakpoint positions.  Equal slopes
+retain the lowest intercept, and equal affine forms retain one
+representative.  Zero-length pieces are omitted, while the endpoints
+of positive-length pieces are retained.  A point requires only one
+canonical lift.  These branches use the feasible dimension, not
+merely the dimension of the matching kernel.
+
+\begin{proposition}[Constructive operation bound]
+\label{pl:operations}
+After the sector kernel has been constructed, complete geometry
+and all native nonlink ray vectors can be obtained using
+\[
+ O(k^3+kp^2+p^3+(k+p)(k+p^2)+t(k+p^2))
+\]
+exact scalar arithmetic and comparison operations, with lower-order
+terms absorbed.  Under \(p\leq8k\), this is
+\begin{equation}
+ O(k^3+t k^2).
+ \label{pl:runtime}
+\end{equation}
+Integer gcd and lcm computations for primitive normalization are
+additional operations on integers of polynomial bit length.
+\end{proposition}
+\begin{proof}
+In an affine coordinate space of dimension at most two, one may
+construct a bounded section by testing pairwise intersections of
+the \(k\) boundary lines against all \(k\) inequalities and taking
+their exact convex hull.  This elementary fallback costs \(O(k^3)\)
+operations and handles empty, segment, and point sections as well.
+The implementation can instead clip a justified coordinate box
+when its chart uses actual \(q\)-entries.
+
+A polygon initially having \(b\leq k\) sides has at most \(b+j\)
+sides after \(j\) half-plane clips: a clip replaces a consecutive
+boundary chain by at most one new side.
+Thus computing every cell of group \(v\) takes
+\(O(p_v^2(k+p_v))\) operations.
+Summing gives \(O(kp^2+p^3)\).
+There are only \(O(p)\) distinct internal segments, so their pairwise
+intersection tests cost \(O(p^2)\).
+Exact comparison sorting for deduplication stays within the displayed
+bound.
+
+Project all retained potentials into the affine chart once.
+At each of \(O(k+p^2)\) resulting points, evaluating the quadrilateral
+forms and triangle potentials and taking the group minima then
+costs \(O(k+p)\), rather than a fresh length-\(k\) dot product for
+every potential.  Expanding repeated triangle classes to the native
+\(7t\)-coordinate vector, and checking its native matching equations,
+costs \(O(t+k)\) per ray.  These charges prove the assertion.
+\end{proof}
+
+The quadratic ray count is not a quadratic bound for explicit
+native output.  The geometry uses \(O(k+p^2)\) candidate points,
+but writing \(R\) native vectors requires \(\Theta(tR)\) coordinate
+positions in this representation.  In the normal-sector regime,
+the output alone can therefore have \(O(tk^2)\) entries.
+This distinction is retained in \eqref{pl:runtime}.
+
+In the integer-potential model, one may first clear the denominators
+of the quadrilateral direction and divide its entries by their gcd.
+Every triangle potential, and then every canonical triangle
+coordinate, is integral on this primitive integer \(q\).
+The whole standard vector is primitive because its quadrilateral
+coordinates already have gcd one.
+This procedure uses \(O(k)\) gcd/lcm steps per ray, besides scalar
+evaluation and output.  For arbitrary rational potentials the
+corresponding safe procedure clears denominators in the entire
+lift instead; the ray theorem does not assume that primitive
+quadrilaterals imply integral triangles.
+
+Let \(B\) bound the bit length of the rational affine coefficients
+after exact coordinate reduction.  Every geometric vertex is the
+intersection of two source boundary or active minimum-equality
+lines.  The constant-size determinant formulas therefore have
+polynomial, indeed \(O(B)\), rational encoding length up to fixed
+constant factors.  Section endpoints obey the analogous
+one-dimensional bound.  The corresponding bound for exact linear
+algebra does not assume that numerical coefficients remain small
+as \(t\) grows.  After clearing row denominators, suppose the integer
+matrix entries have at most \(\beta\) bits in absolute value.
+Hadamard's inequality bounds every rank-\(\rho\) minor by
+\[
+ |\det M|\leq(\sqrt{\rho}\,2^\beta)^\rho,\qquad
+ \log_2|\det M|\leq\rho\beta+
+                  \tfrac{\rho}{2}\log_2\rho
+\]
+when the determinant is nonzero.
+Exact kernel bases are obtained from ratios of such minors.
+The normalized chart then uses constant-size inversions because
+\(d\leq3\); projecting a source potential adds exact products and
+sums over its \(k\) coefficients.
+These estimates charge both matrix dimensions and coefficient bit
+lengths, including row denominators.  In the generic rational model,
+these are part of the supplied data.
+For native matching input, path potentials sum \(O(t)\) incidence
+labels, so their coefficient bit lengths are polynomially bounded
+before applying the determinant estimate.
+These determinant bounds consequently give polynomial bit length
+uniformly for growing \(t\) and \(k\), including families with
+exponentially large primitive coordinates.
+Retaining support-line descriptions also makes the geometric
+bounds transparent during clipping.  Clearing denominators of \(k\)
+coordinates can produce a common denominator with \(O(kB)\) bits
+in the generic rational model.  This remains polynomial, but its
+arithmetic is not a unit-cost bit operation.
+Thus the construction has polynomial bit complexity for this fixed
+dimension, with rational arithmetic and integer normalization costs
+charged at their actual operand lengths.
+
+\begin{remark}[Inactive equalities are not minimum edges]
+\label{pl:inactive}
+It is not correct to treat every equality of two potentials as
+an edge of the canonical lift.
+On \(P=\{(x,y):x,y\geq0,\ x+y\leq1\}\), consider
+\(0,1+x,1+y\).  The latter two forms agree on \(x=y\), but
+neither is minimal anywhere.  The canonical lift is affine on
+the whole triangle.  The intersection \((1/2,1/2)\) of that
+irrelevant equality with the boundary is not an extreme lifted
+ray; it is a convex combination of the adjacent corner lifts.
+An arrangement of all pairwise equalities may be used only with
+a separate extremality filter, and it loses the active-skeleton
+output bound proved above.
+\end{remark}
+
+\section{Independent certificates of complete minimum coverage}
+\label{cv:coverage}
+
+The producer's polygon-clipping sequence need not belong to the
+verification trust boundary.  A compact alternative submits the
+resulting minimum cells and proves their coverage by exact area
+or interval length.  The checker reconstructs the matching
+subspace and all native corner potentials independently, so the
+following statements concern source functions, not functions
+accepted from the producer.
+
+\subsection{Certifying the affine chart and the section}
+\label{cv:chart}
+
+\begin{proposition}[Chart completeness]
+\label{cv:chart-completeness}
+Suppose the source checker establishes \(\dim K=d\), where
+\(1\leq d\leq3\).  A submitted affine chart
+\[
+ q(y)=c_0+\sum_{j=1}^{d-1}y_jc_j
+\]
+parametrizes all of \(K\cap\{s=1\}\) if the checker verifies
+\(c_j\in K\), \(s(c_0)=1\), \(s(c_j)=0\) for \(j>0\),
+and distinct coordinate indices \(i_1,\ldots,i_{d-1}\) satisfying
+\[
+ q_{i_j}(y)=y_j.
+\]
+Every feasible chart point then lies in \([0,1]^{d-1}\).
+\end{proposition}
+\begin{proof}
+The linear map
+\[
+ q\longmapsto(s(q),q_{i_1},\ldots,q_{i_{d-1}})
+\]
+sends \(c_0,c_1,\ldots,c_{d-1}\) to the standard basis of
+\(\R^d\).  These vectors are linearly independent.
+Since they belong to the \(d\)-dimensional source kernel, they
+form its basis.  A vector in that kernel with \(s(q)=1\)
+therefore has the asserted affine expression, with coefficients
+\(q_{i_j}\).  For a nonnegative vector of coordinate sum one,
+each of those actual coordinates belongs to \([0,1]\).
+\end{proof}
+
+If \(d=0\), or if \(s\) vanishes identically on \(K\), the
+nonnegative cone contains only zero and no chart is needed.
+Otherwise an affine chart is required even when its feasible
+section later turns out to be empty.  Nullity alone cannot
+justify accepting a missing section.
+
+\begin{proposition}[Source-facet section certificate]
+\label{cv:section-facets}
+Let a two-dimensional chart describe the source section by
+affine inequalities \(h_i(y)\geq0\).
+A submitted nondegenerate convex polygon \(S\), given by its
+genuine corners in cyclic order, equals the source section \(P\)
+if the following checks pass:
+every vertex satisfies all source inequalities, and every edge
+of \(S\) lies on the zero line of a nonconstant source form \(h_i\).
+\end{proposition}
+\begin{proof}
+Vertex feasibility and affinity give \(S\subseteq P\).
+For an edge of \(S\), its checked source form vanishes on the
+edge line and is nonnegative on \(S\).
+The form is nonconstant and \(S\) has interior, so it is positive
+at some point of \(S\).  Consequently its nonnegative half-plane
+is exactly the inward edge half-plane of \(S\).
+Every point of \(P\) lies in that half-plane.
+Intersecting the inward half-planes for all edges gives
+\(P\subseteq S\), proving equality.
+\end{proof}
+
+This two-sided argument does not reconstruct a clipping history.
+If the submitted section has fewer than three vertices in a
+two-dimensional chart, the checker instead enumerates all feasible
+pairwise source-line intersections within the established coordinate
+box and takes their hull.  A nonempty bounded polyhedron in the plane,
+including a segment or a point, has extreme points determined by
+independent active constraints, so the fallback is complete.
+In a one-dimensional chart, direct exact lower and upper endpoint
+bounds suffice.
+
+\subsection{The area and length certificate}
+\label{cv:measure}
+
+\begin{theorem}[Exact minimum-cell coverage certificate]
+\label{cv:area-theorem}
+Let \(P\) be a nondegenerate convex polygon and let
+\(f_1,\ldots,f_n\) be its source affine functions after identifying
+identical restrictions.  Suppose a certificate submits finitely
+many positive-area convex polygons \(S_i\), each carrying one
+source label, subject to the following conditions:
+\begin{enumerate}
+ \item no restricted affine function labels two submitted polygons;
+ \item every submitted vertex belongs to \(P\) and satisfies
+       \(f_i\leq f_j\) for every source function \(f_j\);
+ \item the sum of submitted polygon areas equals
+       \(\operatorname{area}(P)\).
+\end{enumerate}
+Then the polygons are exactly the full-dimensional source
+minimum cells.  In particular they cover all of \(P\), including
+its boundary, and no full-dimensional minimum cell is omitted.
+\end{theorem}
+\begin{proof}
+The vertex checks extend to each polygon by affinity and convexity,
+so \(S_i\subseteq C_i\), where \(C_i\) is the true minimum cell.
+If the relative interiors of polygons carrying different labels
+intersected, they would intersect in a nonempty open set.
+On that set both \(f_i\leq f_j\) and \(f_j\leq f_i\) would hold.
+The affine difference would vanish on an open set and hence
+identically, contrary to the distinct-label condition.
+Thus pairwise intersections have area zero, and
+\[
+ \operatorname{area}\left(\bigcup_iS_i\right)
+ =\sum_i\operatorname{area}(S_i)
+ =\operatorname{area}(P).
+\]
+
+The union is finite and closed.  If a point \(z\in P\) were
+missing, some neighborhood of \(z\) would be disjoint from the
+union.  Its intersection with \(P\) has positive area, even
+when \(z\) is on the boundary.  To see this last statement, choose
+an interior point \(w\in P\).  Points
+\((1-\varepsilon)z+\varepsilon w\), for sufficiently small
+\(\varepsilon>0\), lie in that neighborhood and in the interior
+of \(P\); a sufficiently small disk around one such point lies
+in both.  A missing point therefore contradicts area equality.
+The polygons cover all of \(P\), not merely an almost-everywhere
+subset.
+
+Now let \(C_i\) be a true full-dimensional minimum cell.
+Its uniquely minimized points are dense in it: within its
+interior, remove the finite union of equality lines with the other
+distinct source forms, and then take the closure.
+At such a unique-minimizer point, coverage is possible only by a
+polygon carrying label \(i\).
+This proves that label \(i\) is submitted, and closedness gives
+\(C_i\subseteq S_i\).
+Together with the already established reverse inclusion it yields
+\(C_i=S_i\).
+Conversely every submitted polygon has positive area and is
+contained in its source minimum cell, so that source cell is
+full-dimensional.  These two conclusions prove exact equality of
+the cell inventories.
+\end{proof}
+
+\begin{corollary}[Interval coverage certificate]
+\label{cv:length-theorem}
+Parametrize a nondegenerate source segment by \(u\in[0,1]\).
+The corresponding statement holds for positive-length submitted
+intervals, with pairwise distinct restricted affine labels,
+endpoint dominance, and total parameter length one.
+\end{corollary}
+\begin{proof}
+Endpoint dominance holds throughout an interval.
+Distinct affine functions on a line cannot agree on a nonempty
+open interval, so submitted interiors are disjoint.
+Exact total length proves that their finite closed union is
+\([0,1]\); any missing point would leave a positive-length relative
+neighborhood.  Density of unique minimizers then proves equality
+with the true full-dimensional minimum intervals, as above.
+\end{proof}
+
+For use as a vertex certificate, a submitted polygon is additionally
+required to equal the canonical convex hull of its listed vertices,
+with positive signed area.  This verifies its cyclic order and
+removes repeated or collinear entries.  A test of consecutive
+turns alone is insufficient, since a self-intersecting polygon
+can have consistently signed local turns.
+The one-polygon-per-function requirement is also essential:
+without it, a genuine minimum cell could be divided into artificial
+pieces while preserving both dominance and total area.
+Theorem~\ref{cv:area-theorem}, together with the canonical hull
+check, ensures that the submitted vertices are precisely genuine
+cell corners.
+
+Groups with only one distinct restricted function have the whole
+section as their minimum cell and need no separate geometry record.
+For the remaining source groups, the checker verifies the inventory
+of group identities.  It permits omission of lower-dimensional
+minimum labels, as justified by Lemma~\ref{pl:degenerate-labels}.
+On a feasible segment inside a two-dimensional chart, equality of
+restricted functions is tested by their values at the two endpoints;
+equality of their ambient coefficient tuples would be too strong.
+
+\begin{theorem}[Complete ray-list replay]
+\label{cv:complete-replay}
+After independently validating the source model, chart, and section,
+suppose the checker validates every nontrivial group's coverage
+certificate as above.  It forms the union of section and cell
+corners, adds intersections of internal edges from different
+groups, and canonically lifts every resulting point using the
+independently reconstructed source potentials.
+Exact equality with the submitted ray list certifies that list as
+all nonlink standard rays of the supplied sector.
+\end{theorem}
+\begin{proof}
+The coverage theorems identify the submitted polygons or intervals
+with the exact source minimum cells, including all cells with
+nonempty relative interior.  Their genuine corners and internal
+edges consequently form the exact individual group skeletons.
+The overlay argument in Theorem~\ref{pl:quadratic-bound} identifies
+the constructed point set with all vertices of their common
+refinement; collinear overlaps need only endpoints already present.
+The lower-dimensional cases are covered by
+Corollary~\ref{pl:lowdim}.
+Finally Theorem~\ref{pl:ray-correspondence} identifies the
+independently lifted vectors with exactly the required rays.
+\end{proof}
+
+\subsection{Certificate size and verification complexity}
+\label{cv:cost}
+
+If \(g\) groups require geometry records, Lemma~\ref{pl:euler}
+bounds the number of polygon-vertex incidences by
+\[
+ \sum_v\bigl(b+8(m_v-1)\bigr)=gb+8A.
+\]
+Thus the geometry certificate has \(O(k^2)\) vertices when
+\(p\leq8k\); this charge includes repeated copies of the section
+boundary.  The complete certificate also includes the native
+ray list, with \(O(tk^2)\) scalar entries.
+Both statements count entries, not their integer bit lengths.
+
+After independent source reconstruction and rank computation,
+verification of a correct certificate takes \(O(k^3+tk^2)\)
+rational arithmetic and comparison operations.
+Indeed, feasibility and source-boundary scans cost
+\(k\sum_vO(b+m_v)=O(k^3)\).
+If \(t_v\) is the number of native triangle corners in group \(v\),
+dominance tests cost
+\[
+ \sum_v O((b+m_v)t_v)=O(tk),
+\]
+because \(\sum_vt_v=4t\) and \(b,m_v=O(k)\).
+Canonical convex-hull checks and segment intersections fit within
+the cubic bound, and reconstructing \(O(k^2)\) native rays costs
+\(O(tk^2)\), with integer normalization separately charged as
+above.  The cost of reconstructing the native model and proving
+its rank is additional, not hidden in this geometric replay bound.
+
+For arbitrary malformed certificates, their supplied lengths and
+integer bit lengths must also be charged.  In particular an
+unrestricted submitted vertex list can require work to parse and
+reject before its geometric size is known.  The displayed
+parameter bound describes correct certificates, or certificates
+subject to suitable early size bounds; it does not make parsing
+an arbitrarily long invalid input free.
+
+\section{A sharp abstract quadratic family}
+\label{cf:grid}
+
+The quadratic dependence on the number of potentials is already
+necessary in a three-dimensional quadrilateral cone.
+The following family belongs to the algebraic cone-and-potential
+model.  No realization by the matching equations of a triangulated
+three-manifold is asserted.
+
+\begin{proposition}[Exact grid count]
+\label{cf:grid-count}
+For every integer \(m\geq2\), there is a rational model with
+\(\dim K=3\), two groups of \(m\) potentials each, and exactly
+\[
+ p=2m,\qquad R=m^2+2m
+\]
+nonlink extreme rays.  Its potential coefficients are integers
+of \(O(\log m)\) bits.
+\end{proposition}
+\begin{proof}
+Take \(K=\R^3\), \(\Qcal=\R_{\geq0}^3\), and write
+\(q=(x,y,1-x-y)\) on its normalized triangle
+\[
+ P=\{(x,y):x\geq0,\ y\geq0,\ x+y\leq1\}.
+\]
+For \(j=0,\ldots,m-1\), define
+\[
+ \pi^A_j(q)=j^2s(q)-8mj\,q_1,\qquad
+ \pi^B_j(q)=j^2s(q)-8mj\,q_2.
+\]
+On \(s(q)=1\), the first group consists of the functions
+\(j^2-8mjx\).  Completing the square gives
+\[
+ j^2-8mjx=(j-4mx)^2-16m^2x^2.
+\]
+The minimizing index is therefore the nearest allowed integer to
+\(4mx\), with ties between adjacent indices at
+\[
+ \alpha_j=\frac{2j+1}{8m},
+ \qquad j=0,\ldots,m-2.
+\]
+All \(m\) minimum cells have nonempty interior.
+The internal edges are precisely the \(m-1\) vertical segments
+\(x=\alpha_j\) clipped to \(P\).
+The second group gives the \(m-1\) corresponding horizontal
+segments \(y=\alpha_j\).
+
+Every pair of one vertical and one horizontal segment meets in
+the interior of \(P\), since
+\(\alpha_i,\alpha_j<1/4\), so
+\(\alpha_i+\alpha_j<1/2\).
+These give \((m-1)^2\) distinct interior vertices.
+Each vertical segment has two boundary endpoints, and so does
+each horizontal segment, giving \(4(m-1)\) boundary vertices.
+They are distinct from the three triangle corners.
+Nor can a vertical and horizontal endpoint coincide on the
+hypotenuse: that would require
+\(\alpha_i+\alpha_j=1\).
+There are no other group vertices or overlay crossings.
+Hence the complete vertex count is
+\[
+ 3+4(m-1)+(m-1)^2=m^2+2m.
+\]
+Theorem~\ref{pl:ray-correspondence} gives exactly that many
+nonlink extreme rays.  The largest potential coefficient has
+absolute value \(O(m^2)\), proving the bit-length assertion.
+\end{proof}
+
+This proves sharp quadratic order for the abstract \(O(k+p^2)\)
+bound, not optimality of the constants in
+\eqref{pl:sharp-parameter-bound}.
+If desired, the model can be padded with identically zero
+quadrilateral coordinates to width \(k=\max(3,m)\); its effective
+cone and ray count remain unchanged and \(p\leq8k\) then holds.
+Such padding still establishes no topological realization.
+Determining which quadratic examples occur in genuine normal
+matching systems is a separate question.  Likewise, a complete
+polynomial solver for each supplied low-nullity sector gives no
+bound here on how many sectors a global recognition procedure
+must inspect.

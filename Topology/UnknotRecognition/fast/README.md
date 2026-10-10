@@ -3493,3 +3493,48 @@ The [weighted coorientation proof](../synthesis/weighted_coorientation.tex)
 establishes the general additive-weight cover theorem and explains its two-weight
 application, strict protocol, complete fallback and binary work. Raw records,
 source pins and reproduction scripts are `../synthesis/data/weighted-coorientation-*`.
+
+Automatic standard-sector enumeration now uses exact minimum envelopes when
+quadrilateral matching nullity is one or two. It projects corner potentials once,
+then lifts only genuine minimum changes and feasible section endpoints. These
+are exactly all nonlink standard rays; no pairwise crossing or spurious-rank filter
+is needed. Higher-nullity auto selection and quadrilateral enumeration retain
+their old paths. Explicit `arrangement`, `supports` and `envelope` methods are
+available; `envelope` requires the standard phase and nullity at most two.
+`discover_in_sector` also accepts `method='auto'` or an explicit method.
+
+```python
+from fastunknot.sector_envelope_certificate import certify_sector_enumeration
+from fastunknot.sector_envelope_verify import verify_sector_envelope_certificate
+answer = certify_sector_enumeration(triangulation, allowed_types, max_rays=None)
+if answer['status'] == 'COMPLETE':
+    assert verify_sector_envelope_certificate(triangulation, answer['certificate'])
+```
+
+The independent `normal-sector-envelope-v1` checker reconstructs an uncontracted
+matching graph, checks the whole feasible section and minimum envelopes, and
+rejects omitted rays. It imports no envelope planner or sector enumerator.
+`max_bases` counts begun actual output lifts on this path; partial iteration raises
+`SearchLimit`. `max_rays` returns inconclusive without a partial coverage proof.
+The cooperative callback bounds additional work. Coverage is for this supplied
+sector, and essentiality/diagram correspondence remain separate checks.
+
+All 1,351 tests pass. The native audit checks 9,344 eligible selected sectors
+against complete frozen standard-ray lists, 9,360 auto/direct comparisons and
+15 fresh Regina enumerations. Isolated full kernel construction, enumeration and
+serialization improves 197.22x on the capped size-32 family. Complete supplied-sector
+disc discovery with independent replay improves 17.28x; the two timing scopes
+are reported separately. Empty and no-break controls and A/A arms are retained.
+
+```sh
+python -B -m normal_orbit_research.envelopes audit --fresh-regina --output /tmp/envelope-audit.json
+python -B -m normal_orbit_research.envelopes benchmark --rounds 5 --output /tmp/envelope-benchmark.json
+```
+
+The [minimum-envelope article](../synthesis/minimum_envelopes.tex) proves the
+face correspondence, linear output bound, exact coverage protocol and all-size
+capped component formula. The [incoming mathematical review](../synthesis/incoming_contexts.tex)
+preserves reports 70–75, including results without native timing gains, and proves
+two further interface limitations: positive unrestricted anchor relaxations from
+interior vertices, and exponential weighted rooted compatibility even at zero
+cycle overlap. No general QP recognition theorem follows.

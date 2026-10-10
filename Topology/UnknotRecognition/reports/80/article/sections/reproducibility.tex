@@ -1,0 +1,86 @@
+\section{Reproduction, package contents, and integration}
+\label{sec:reproduce}
+
+The package is self-contained for its default exact tests and
+coverage replay.  It contains the full article source, rendered PDF,
+vector figures, the new runtime modules, a pinned snapshot of their
+maintained dependencies, focused tests, research drivers, a frozen
+complete oracle, raw experimental evidence, and an additive patch
+against the pinned repository commit.
+
+\begin{center}
+\small
+\begin{tabularx}{\linewidth}{lX}
+\toprule
+Path & Contents and purpose\\
+\midrule
+\code{article/} & Main TeX, included sections, bibliography,
+figures, tables, PDF, and figure-generation script.\\
+\code{code/} & Standalone native package snapshot, research
+drivers, selected fixtures, and the 39-test reproduction set.\\
+\code{fixtures/} & Unchanged frozen complete discovery corpus
+from the preceding minimum-envelope report.\\
+\code{reference/} & Unmodified optimized rank-two envelope
+module used as the stronger performance control.\\
+\code{evidence/} & Full corpus results, compact summaries,
+coverage certificates, replay outputs, family component
+certificates, raw timings, and regression logs.\\
+\code{scripts/} & Independent genuine/abstract differential
+audit and sparse-constructor benchmark.\\
+\code{integration.patch} & Additive repository changes;
+unchanged dependency snapshots are not part of the patch.\\
+\code{MANIFEST.json} & File sizes, SHA-256 digests, and
+origin classification for every packaged file except itself.\\
+\code{reproduce.py} & Manifest verification and isolated
+reproduction commands.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+From the package root, run
+\begin{lstlisting}
+python reproduce.py
+\end{lstlisting}
+This checks the manifest, runs the 31 new focused tests and eight
+maintained sector-integration tests, and independently replays the
+thirteen corpus and four family coverage certificates.  It writes
+fresh output into a new reproduction directory.  It does not
+overwrite the supplied evidence.
+
+The longer computations are explicit options:
+\begin{lstlisting}
+python reproduce.py --audit --family --differential
+python reproduce.py --fresh-regina
+python reproduce.py --benchmark --sparse-benchmark
+python reproduce.py --pdf
+\end{lstlisting}
+The first command repeats the full frozen-oracle audit, native
+family census, and additional differential checks.  The second
+also regenerates the designated complete Regina lists; it needs
+Regina 7.4 or a compatible installation.  The third repeats the
+paired timing protocol, including resource-limited incumbent runs.
+The fourth compiles an isolated copy of the article using
+\code{latexmk} and \code{pdflatex}.  Optional figure regeneration
+uses Matplotlib.  The standard-library runtime checks do not
+require either Regina or Matplotlib.
+
+All raw experiment reports are preserved as produced, including
+their original source paths and timestamps.  The executable
+drivers accept explicit paths or locate their own package root;
+they do not depend on those historical absolute paths.
+The complete-output digest is a deterministic correctness target.
+Wall-clock times, hardware behaviour, and PDF metadata are not
+expected to reproduce bit-for-bit.  The manifest distinguishes
+the new proposal from unchanged source copied for standalone use.
+
+The patch adds the sparse constructor, planar producer, independent
+checker, focused tests, and research drivers beneath
+\path{Topology/UnknotRecognition/fast/}.  Before applying it to a
+later revision, review any changes to the native source validator,
+kernel representation, integer codec, and disc-certificate API.
+The package's patch was checked against its exact base.  It does
+not replace the maintained dispatcher or assign a new numbered
+report in the repository's editorial structure.  The TeX article
+and evidence can be filed according to the repository's intake
+process.
+

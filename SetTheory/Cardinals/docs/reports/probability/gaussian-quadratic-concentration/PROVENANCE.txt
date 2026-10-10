@@ -1,0 +1,164 @@
+SOURCE, PRIOR-ART, AND VERIFICATION RECORD
+
+Companion to: Sharp Gaussian Quadratic Concentration from Signed Spectral Moments
+Prepared and sources accessed: 2026-10-08
+
+This record describes the sources used, the scope of the proposed contribution,
+and the distinction between a mathematical proof and its computational checks.
+The manuscript contains the full arguments and bibliography. Source descriptions
+below are paraphrases. The package does not redistribute the cited papers.
+
+1. REPOSITORY INSPIRATION
+
+The project began with the user-supplied OpenAI mathematics repository:
+https://github.com/openai/math
+
+The inspected family 271 manuscript is "The first lattice correction to Bloch's
+law", dated 2026-10-05. Its repository directory is:
+preprints/The-first-lattice-correction-to-Blochs-law-October-5-2026/
+
+The methodological inspiration is its treatment of a lattice-dispersion term
+inside a heat-kernel integral before extracting a correction. The present work
+similarly retains the exact Gaussian spectral log-MGF kernel before using the
+available moments. It does not assume any interacting-spin or thermodynamic-limit
+theorem from that repository. Its finite-dimensional probability statements are
+proved independently. The repository was inspected as a source; no external
+repository was modified or submitted to during this work.
+
+2. ESTABLISHED CONCENTRATION RESULTS AND THE CORRECT BASELINE
+
+For Q = g^T A g - tr(A), L = ||A||_op, and v = tr(A^2), the norm-only Gamma
+rate v/(2 L^2) [tL/v - log(1+tL/v)] is established. Its coefficient in the
+prefactor-one quadratic/linear form is (1-log(2))/2 = 0.153426409720....
+Neither that rate nor that coefficient is claimed as a new result here.
+
+Daniel Dadush, Cristobal Guzman, and Neil Olver, "Fast, deterministic and sparse
+dimensionality reduction", SODA 2018, pages 1330-1344, give this functional form
+and coefficient for diagonal-free subgaussian quadratic forms; see Theorem 3.2
+and Section 6. Their Gaussian comparison also supplies the coordinatewise MGF
+replacement used for the manuscript's diagonal-free subgaussian extension.
+Publisher DOI: https://doi.org/10.1137/1.9781611975031.87
+Institutional full text: https://ir.cwi.nl/pub/27624/27624.pdf
+
+Robert E. Gallagher, Louis J. M. Aslett, David Steinsaltz, and Ryan R. Christ,
+"Improved concentration bounds for Gaussian quadratic forms", arXiv:1911.05720,
+give a trace-based Chernoff framework whose central-Gaussian specialization
+contains the same optimizable norm-only Gamma envelope for general symmetric
+matrices. Their discussion of positive/negative spectral asymmetry is relevant
+to the motivation for retaining a signed third moment.
+Official record: https://arxiv.org/abs/1911.05720
+Full text: https://arxiv.org/pdf/1911.05720
+
+Beatrice Laurent and Pascal Massart, "Adaptive estimation of a quadratic
+functional by model selection", Annals of Statistics 28 (2000), 1302-1338,
+provide the classical baseline initially stated for nonnegative weights. The
+manuscript acknowledges that setting. Its displayed bound for general symmetric
+Gaussian forms is also implied by the norm-only envelope used here.
+Publisher DOI: https://doi.org/10.1214/aos/1015957395
+
+An initial research candidate was the unrestricted coefficient above. Inspection
+of the older sources ruled out a novelty claim for it. The final comparisons
+therefore use that established coefficient, rather than a weaker coefficient
+advertised for a particular recent inequality family.
+
+3. CLOSE OVERLAP AND CLASSICAL INGREDIENTS
+
+Zhekai Pang, "A Gamma envelope and sharp moment inequalities for Gaussian
+quadratic forms", arXiv:2609.05914v1, dated 2026-09-05, constructs a centered
+Gamma difference matching the first three centered moments under Frobenius
+normalization. Theorem 2.1 compares a class of functions with convex second
+derivative and yields absolute-moment bounds. Its endpoint-chord method and
+third-moment-matched Gamma difference overlap with ingredients of this work.
+The manuscript credits this overlap. Pang's stated optimization problem and
+normalization differ from the operator-norm-conditioned tail coefficient here.
+Official version: https://arxiv.org/abs/2609.05914v1
+Full text: https://arxiv.org/pdf/2609.05914v1
+
+Kamyar Moshksar, "Refining concentration bounds for Gaussian quadratic chaos
+with applications", arXiv:2412.03774v5, dated 2026-09-13, supplies neighboring
+norm and Schatten-moment refinements. The reviewed version did not provide the
+complete signed cubic-moment coefficient frontier stated in this manuscript.
+Some of its reported coefficients are smaller than the older Dadush-Guzman-
+Olver coefficient; those comparisons do not establish a global best baseline.
+Official version: https://arxiv.org/html/2412.03774v5
+
+Zhaojun Bai and Gene H. Golub, "Computation of large-scale quadratic forms and
+transfer functions using the theory of moments, quadrature and Pade
+approximation", in Modern Methods in Scientific Computing and Applications
+(2002), provide classical background on moment-based spectral quadrature.
+Gauss-Radau extremality and Hermite interpolation are established methods.
+The four-moment section applies them to the signed, variance-weighted Gaussian
+log-MGF kernel; it does not claim to invent quadrature or general moment
+extremality.
+Author-hosted text: https://web.cs.ucdavis.edu/~bai/publications/baigolub02.pdf
+
+Beta/binomial identities and Stirling expansions used in the exact harmonic
+example are classical. The NIST Digital Library of Mathematical Functions is
+the cited reference for Gamma asymptotics and controlled remainders.
+Official references: https://dlmf.nist.gov/5.11
+                     https://dlmf.nist.gov/8.11
+
+Application context also includes Alice Cortinovis and Daniel Kressner,
+"On randomized trace estimates for indefinite matrices with an application to
+determinants", and Raphael A. Meyer, Cameron Musco, Christopher Musco, and
+David P. Woodruff, "Hutch++: Optimal stochastic trace estimation". These sources
+locate the trace-estimation application; no new matrix-query complexity exponent
+or dominance over more sophisticated estimators is asserted.
+Publisher DOI: https://doi.org/10.1007/s10208-021-09525-9
+Public full text: https://pmc.ncbi.nlm.nih.gov/articles/PMC8553228/
+
+4. PRECISE SCOPE OF THE PROPOSED CONTRIBUTION
+
+The principal proposed-original result is the complete optimal coefficient at
+fixed cubic spectral balance s = tr(A^3)/(L v):
+
+    c(s) = min(1/4, J_s(1)) for -1 < s <= 1, and c(-1) = 1/4,
+
+where J_s is the explicitly optimized signed-Gamma rate defined in the paper.
+The proof identifies the transition at s = -0.705589538603..., the value
+c(0) = 0.188714038110..., and sharpness over actual finite-dimensional matrices
+at every exact real s. It also gives optimality for the class with ratio at
+most s. The theorem strengthens the exponent within a specified functional
+form; it does not change the quadratic/linear asymptotic orders.
+
+The four-moment contribution is an explicit signed Radau envelope, optimizer,
+equality description, and nonnegative remainder. Its extremality is over a
+specified probability-measure moment relaxation. This is not a blanket claim
+of finite-matrix optimality for every fixed pair of third/fourth moment ratios.
+An actual matrix family attains the envelope and yields exact rational tail
+probabilities and a proved first correction to their asymptotic equivalent.
+
+Targeted searches included the numerical fingerprints of the proposed constants
+and combinations of "signed cubic moment", "skewness-dependent concentration",
+"Gaussian quadratic form", and "Gauss-Radau moment envelope". No matching
+statement of the complete c(s) frontier and transition was located in the
+reviewed sources. This is a bounded literature assessment, not a guarantee of
+priority or a claim to have resolved a previously named major conjecture.
+Broader specialist literature review remains appropriate before publication.
+
+5. WHAT HAS AND HAS NOT BEEN VERIFIED
+
+Mathematical proof: the TeX/PDF contains the exact identities, inequalities,
+moment extremality arguments, equality cases, coefficient minimization, and
+finite-matrix sharpness construction. Proofs, rather than numerical experiments,
+are the justification for their all-dimensions and all-parameter statements.
+The diagonal-free subgaussian extension transfers Chernoff bounds derived from
+the Gaussian MGF envelopes; it does not transfer Gaussian exact CDF identities
+or their finite probability sandwiches.
+
+Computational checks: accompanying scripts reproduce floating-point comparisons
+of envelopes and optimized rates, symbolic identities, boundary regressions,
+figures, and exact integer/rational probability certificates. The verification
+JSON records check counts and discrepancies; the code records comparison
+tolerances. Exact arithmetic certifies
+the finite cases it computes. Symbolic and floating-point checks are useful
+independent checks on formulas, not proofs covering untested parameter ranges.
+The floating-point implementation is not an outward-rounded interval-arithmetic
+certificate; its documented input tolerances and numerical safeguards matter.
+
+Review status: separate reasoning and code-audit passes during the AI-assisted
+preparation cross-checked the principal arguments. This is internal checking,
+not external mathematical peer review. The results have not been formally
+verified in Lean or another proof assistant. The manuscript does not rely on
+unproved physics conjectures, and its harmonic applications concern normalizable
+finite-dimensional Gibbs systems.

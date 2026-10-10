@@ -1,0 +1,226 @@
+\section{What is still required for quasi-polynomial recognition}
+\label{sec:research}
+
+The new theorem removes a local obstacle: a supplied sector of raw
+matching dimension three has polynomially many relevant standard
+rays, with a polynomial exact enumeration and coverage proof.
+It does not bound how many sectors are required.  Even listing all
+maximal quadrilateral choices gives \(3^t\) possible sectors, each
+containing its own coordinate faces.  Polynomial work per selected
+sector therefore remains compatible with exponential total work.
+The fixed corpus demonstrates the utility of the new eligibility
+class, not its completeness for all unknots.
+
+The following conditional statement records exactly what the
+local result can contribute.  It is the dimension-three extension
+of the preceding report's complete-family accounting statement
+~\cite{MinimumEnvelopes}; its point is to expose hypotheses, not to
+claim they have been established.
+
+\begin{corollary}[Conditional composition with a complete search]
+\label{res:conditional}
+Suppose a deterministic procedure on an \(n\)-crossing knot diagram
+visits at most \(S(n)\) source-bound states and supplied sectors,
+with the following properties:
+\begin{enumerate}
+\item all encoded state sizes, matching systems, and normal-vector
+bit lengths are polynomial in \(n\);
+\item each sector has matching nullity at most three, or is reduced
+to one by a checked certificate preserving all relevant candidates;
+\item every state construction, failed branch, restart, transition,
+terminal decision, and certificate replay together costs
+\(S(n)\poly(n)\);
+\item the necessary essential-disc-component predicates can be
+produced and independently replayed in polynomial bit time for
+each emitted vector;
+\item the certified source correspondence and selection theorem
+guarantee that every unknot yields a relevant disc in at least one
+enumerated ray, while the terminal rules justify the other outcome.
+\end{enumerate}
+Then the local enumeration, coverage replay, and disc tests can be
+incorporated into a complete recognizer in \(S(n)\poly(n)\) bit time.
+In particular, a quasi-polynomial bound on \(S(n)\) gives a
+quasi-polynomial bound on this composed algorithm.
+\end{corollary}
+\begin{proof}
+The planar output theorem gives polynomially many rays per eligible
+sector.  Proposition~\ref{pl:operations}, the determinant bit bounds,
+and the coverage-verification analysis give polynomial bit cost for
+their exact generation and replay.  The fourth hypothesis supplies
+the remaining polynomial work per ray.  The other hypotheses bound
+all visited states and justify the two recognition conclusions.
+Summing these costs over the entire search yields the stated bound.
+\end{proof}
+
+The fourth hypothesis is not shorthand for expanding every normal
+disc.  Classical interval-orbit methods are polynomial in compressed
+input parameters and can handle exponential normal
+weight~\cite{AHT2006}.  The actual component predicate, its boundary
+information, and its proof representation must satisfy the same
+encoded-size accounting.  Likewise, efficient verification of an
+essential hierarchy does not automatically give an efficient method
+for discovering it.
+
+If a strategy has polynomially many choices per level, a proved
+\(O(\log n)\) depth leads to \(n^{O(\log n)}\) states.  Depth
+\(O((\log n)^2)\) instead leads to \(n^{O((\log n)^2)}\).
+A bound stated in the size of the latest triangulation is
+insufficient if intermediate triangulations can grow without a
+bound in the original \(n\).  A progress measure must also pay for
+discarded suffixes and revisits, not only for successful cuts.
+
+\subsection{Research questions with concrete success criteria}
+
+The most useful next work should attack an unproved hypothesis or
+remove an observed bottleneck.  The following questions are arranged
+approximately in that order.
+
+\paragraph{1. Constructive coverage by a small family of sectors.}
+Can the search, under the actual knot-exterior hypotheses, generate
+a quasi-polynomial family guaranteed to contain an essential-disc
+standard ray whenever one exists?  A useful theorem must give the
+selection procedure, its encoded cost, and a reason that some
+witness survives.  An existential small support for a convenient
+example is insufficient: layered meridians already show why support
+cardinality alone is not a reliable universal parameter.  A first
+manageable target is a natural restricted class of exteriors with
+a certified reduction to sectors of effective cone dimension three.
+
+\paragraph{2. Certified effective dimension above raw nullity three.}
+Many raw kernel directions never meet the nonnegative orthant.
+Can the active-face certificates of the recent incoming work
+identify all coordinates that vanish on the feasible cone, then
+produce a basis of its exact linear span without enumerating
+high-dimensional candidate rays?  Once that span has dimension at
+most three, the present geometry applies in it.  The missing
+implementation should certify every removed direction and preserve
+all feasible points.  Compare its cost with simply handling the
+original sector; do not use a heuristic feasible support as proof
+of a forced zero coordinate.
+
+\paragraph{3. Incremental exact matching kernels.}
+The sparse constructor eliminates the dense zero-label allocation,
+but retains dense rational elimination.  Nearby sectors differ
+by a few selected types.  Can one maintain a fraction-free
+factorization, cycle basis, and source-bound rank certificate under
+those changes?  A successful result should bound coefficient growth
+and update cost, and should remain useful when a changed label
+splits a previously contracted component.  The benchmark's
+source-reuse improvement supplies a baseline; updates must be
+compared against that stronger baseline.
+
+\paragraph{4. Output-sensitive exact planar geometry.}
+The present half-plane construction is deliberately elementary
+and has a cubic worst-case arithmetic bound.  Can power-diagram
+construction and an exact segment-overlay method reduce the
+geometric stage toward \(O(k^2\log k)\), plus the unavoidable
+cost of writing \(tR\) native coordinates?  A proof must count
+clipping by the common source polygon without charging its
+boundary once per irrelevant equality.  It must retain exact
+behaviour for duplicate forms, lower-dimensional minima,
+coincident edges, and a degenerate feasible section.
+
+\paragraph{5. Genuine quadratic output or a stronger geometric bound.}
+The abstract grid of Section~\ref{cf:grid} has
+\(\Theta(p^2)\) rays, but its potential coefficients are not a
+triangulation-realization theorem.  Does there exist a growing
+family of valid compact knot exteriors or solid tori with
+matching nullity three and \(\Omega(k^2)\) nonlink standard
+rays in one sector?  Alternatively, does the sparse face-incidence
+structure force a smaller bound?  Either outcome would sharpen
+the parameter that the search should optimize.  The two-cap
+family settles the single-group linear constant, not this
+multi-group realization question.
+
+\paragraph{6. Structural control of the active groups.}
+The explicit bound separates \(A=\sum_v(m_v-1)\) from the
+cross-group term.  Is it possible to simplify a triangulation,
+choose a sector, or normalize a cut so that few vertex groups
+have nontrivial minimum diagrams?  One nontrivial group removes
+the quadratic crossing term entirely.  The quantity to preserve
+is complete witness coverage, not merely the observed number of
+cells in easy examples.  A candidate invariant should include
+the cost and topological legality of the simplification.
+
+\paragraph{7. A controlled extension to matching dimension four.}
+For \(d=4\), the projective section is three-dimensional and
+minimum cells are convex polyhedra.  Which diagram parameters
+give a useful output bound for their common refinement?  A
+general all-equalities arrangement is again too coarse.
+Any extension should distinguish fixed dimension from
+dimension growing with \(n\), handle non-simple intersections,
+and provide a checkable coverage representation with a
+bit-complexity proof.  Polynomiality for each fixed dimension
+would still leave the global sector-selection problem open.
+
+\paragraph{8. Smaller certificates and a formally checked geometric core.}
+The current verifier reconstructs an uncontracted source model
+for independence and can therefore be slower than the producer.
+Can sparse elimination be certified by local row identities,
+rank witnesses, and forest-potential equations, while retaining
+independence from the producing algorithm?  Another useful
+project is to formalize the canonical-lift correspondence,
+planar Euler bound, and area-coverage theorem in Lean or another
+proof assistant.  The acceptance criterion must rule out
+artificial cell subdivisions as well as missing cells; area
+alone without the distinct-label and dominance conditions
+does not suffice.
+
+\paragraph{9. Source-preserving compressed topology transitions.}
+After a useful surface is chosen, can cutting and continuation
+retain all ordered boundary attachments, coorientations, and
+pattern data with polynomial encoded size?  The hierarchy
+manuscript gives relevant compressed-cutting and certification
+theorems~\cite{Lackenby2026}.  The implementation milestone
+should be one complete transition with independently replayed
+source and target objects.  Matching an aggregate boundary
+profile is insufficient when different attachments produce
+different topology.
+
+\paragraph{10. A global amortized measure compatible with restarts.}
+Can local batched descent, bounded trace search, and selected
+normal cuts be charged to a single well-founded quantity with
+only quasi-polynomially many values?  The value must account
+for regluings, unsuccessful local searches, and invalidated
+later hierarchy stages.  A lexicographic genus decrease proves
+termination only after every coordinate bound and every
+possible length have been quantified.  This is a principal
+place where a genuine global asymptotic theorem could emerge.
+
+\paragraph{11. Integration under a measured dispatcher.}
+Which exact predicate should select the old specialized
+rank-two envelope, the new planar method, and the general
+fallback?  The new dimension-three path has a clear coverage
+advantage; the lower-dimensional controls show why a universal
+replacement is unwarranted.  A useful dispatcher experiment
+should retain cold-start cost, preparation reuse, coverage
+replay, and the full recognizer's time to a justified verdict.
+It should include both unknots and nontrivial controls and
+report every capped case.
+
+\paragraph{12. Search-independent benchmark design.}
+Can a benchmark suite be assembled before tuning the selection
+policy, with independently regenerated complete ray oracles
+where feasible and structural families beyond them?  Hold out
+source families, not just individual supports of the same
+triangulation.  Report distinct surfaces as well as repeated
+sector occurrences.  Measure bit lengths, number of active
+cells, overlay intersections, component-query work, memory,
+and complete-exhaustion time.  The present package supplies
+such measurements for a local stage, but does not estimate the
+frequency of these sectors in an unbiased distribution of
+hard knot diagrams.
+
+\subsection{A concrete next milestone}
+
+The next integration step can be made precise: combine a
+source-bound exterior, certified effective-face reduction,
+the appropriate complete envelope enumerator, and one
+compressed topology transition, with all intermediate
+certificates replayed by separate checkers.  Measure the
+whole step and preserve the stronger incumbent branches.
+In parallel, seek a theorem bounding how often that step
+must be revisited.  The first task makes the local theorem
+operational; the second determines whether it advances
+the global quasi-polynomial programme beyond a faster
+exponential search.

@@ -38,11 +38,14 @@
 \newcommand{\parteqs}[1]{\setcounter{equation}{0}%
  \renewcommand{\theequation}{#1\arabic{equation}}%
  \renewcommand{\theHequation}{#1\arabic{equation}}}
-\hypersetup{pdftitle={Iterated Euler diagonals (OEIS A290353 and A290354)},pdfauthor={},pdfsubject={Merged report a290354-iterated-euler-diagonals (batch 106): the diagonal and proportional-height equivalents (Report 225), the first logarithmic correction (Report 226), the logarithmic height crossover (Report 228)}}
+% Added by the ProveIt write of Part IV (9 October 2026): the macros of Part IV.
+\newcommand{\coef}[1]{[z^{#1}]}
+\newcommand{\Repin}{\texttt{58175ca45563d9ee29875374dd77942f069268a9}}
+\hypersetup{pdftitle={Iterated Euler diagonals (OEIS A290353 and A290354)},pdfauthor={Part IV: research companion prepared for Vladimir Reshetnikov, developed with OpenAI ChatGPT},pdfsubject={Merged report a290354-iterated-euler-diagonals (batch 106): the diagonal and proportional-height equivalents (Report 225), the first logarithmic correction (Report 226), the logarithmic height crossover (Report 228); Part IV (added 9 October 2026): a common density for parabolic iteration}}
 \title{\textbf{Iterated Euler diagonals\\ (OEIS A290353 and A290354)}\\[7pt]
-\large Kot\v{e}\v{s}ovec's asymptotic form, the first logarithmic correction,\\ and the logarithmic height crossover}
-\author{Three research reports of one external research session\\(bundle Reports 225, 226 and 228), merged into one ProveIt report}
-\date{All three Parts: 5 October 2026\quad merged: 6 October 2026}
+\large Kot\v{e}\v{s}ovec's asymptotic form, the first logarithmic correction,\\ and the logarithmic height crossover\\[6pt]\normalsize Part IV: a common density for parabolic iteration}
+\author{Three research reports of one external research session\\(bundle Reports 225, 226 and 228), merged into one ProveIt report\\[2pt]Part IV: research companion prepared for Vladimir Reshetnikov,\\developed with OpenAI ChatGPT}
+\date{Parts I--III: 5 October 2026\quad Part IV: 8 October 2026\quad merged: 6 and 9 October 2026}
 \begin{document}
 \hypersetup{pageanchor=false}
 \maketitle
@@ -67,6 +70,7 @@ Part & Bundle report & Delivered title & Labels\\
 I & 225 (base) & Diagonal and proportional height asymptotics for iterated Euler transforms & \texttt{ied:lead:}\\
 II & 226 & First logarithmic correction for iterated Euler diagonals & \texttt{ied:corr:}\\
 III & 228 & Logarithmic height crossover for iterated Euler transforms & \texttt{ied:log:}\\
+IV & --- & A Common Density for Parabolic Iteration (added 9 October 2026) & \texttt{ied:par:}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -79,6 +83,37 @@ III & 228 & Logarithmic height crossover for iterated Euler transforms & \texttt
 \emph{Numbering.} Sections are numbered continuously and statements within sections, so a statement number moves with its section only. Part~I keeps Report~225's Sections~1--11. Report~226's Section~$k$ is Section~$k+11$ here (Sections~12--23): its Theorems~1.1 and~1.2 are Theorems~\ref{ied:corr:thm:diagonal} and~\ref{ied:corr:thm:height}, its Corollary~10.1 is Corollary~\ref{ied:corr:cor:inverse}. Report~228's Section~$k$ is Section~$k+23$ here (Sections~24--36): its Theorem~1.1 is Theorem~\ref{ied:log:thm:crossover}, its Lemma~3.1, Proposition~4.1, Theorems~5.1, 6.1, 8.1 are \ref{ied:log:lem:finitefatou}, \ref{ied:log:prop:hzero}, \ref{ied:log:thm:hankel}, \ref{ied:log:thm:germ}, \ref{ied:log:thm:transfer}, and its Proposition~11.1 and Theorems~11.2--11.3 are \ref{ied:log:prop:inverseroot}, \ref{ied:log:thm:finiteinverse} and~\ref{ied:log:thm:integerprescription}. The manuscripts number equations consecutively through each document; each Part keeps its manuscript's equation numbers, prefixed in Parts~II and~III: Report~226's equation $(k)$ is $(\mathrm{II}.k)$ here and Report~228's is $(\mathrm{III}.k)$. Section~\ref{ied:sec:further} was added in the write; no delivered number moved.
 
 Notes added when the manuscripts were merged are set in small type and tagged \textbf{[write]}, with their date (6~October 2026). They give cross-references between the Parts, mark statements that a later Part extends or answers, mark results proved twice, and record what the write checked. Superseded statements and answered questions are printed as delivered, with a dated note. No delivered statement was changed, and no delivered symbol was renamed. Each Part has a section of open questions near its end: Part~I its Section~\ref{ied:lead:sec:further}, Part~II its Section~\ref{ied:corr:sec:further}, Part~III its Section~\ref{ied:log:sec:questions}; Section~\ref{ied:sec:further} gathers them for the whole report under Vladimir's standing rule of 4~October 2026, with their sources, sketches and what is missing, and adds the question shared with the iterated Bell report.
+
+\begin{writenote}[Part~IV, added 9 October 2026 (second write)]
+Since its second write the report has four Parts. Parts~I--III, the front
+matter and Section~\ref{ied:sec:further} are the report as merged on
+6~October 2026 and independently checked; the abstract and the front matter
+describe them alone, and nothing of them changed except this note, the
+Part~IV row of the table above, dated notes at the ends of the front-matter
+sections ``What is proved, and where'', ``Provenance and merge decisions''
+and ``Relation to neighbouring reports and formal projects'', a dated note at
+the end of Section~\ref{ied:sec:further}, and the title, author line, date and
+PDF fields. Part~IV (Sections~\ref{ied:par:sec:front}--\ref{ied:par:sec:further}
+and Appendix~\ref{ied:par:app:checklist}, labels \file{ied:par:}) is the
+manuscript \emph{A Common Density for Parabolic Iteration} (8~October 2026,
+``Research companion prepared for Vladimir Reshetnikov / Developed with
+OpenAI ChatGPT''). From four analytic inputs proved in Part~I here and in the
+iterated Bell report it proves the identity
+$I(t)=t\,2^{t/3}h(t)$ for every $t>0$ (Theorem~\ref{ied:par:thm:identity}),
+which answers item~\ref{ied:q:ibd} of Section~\ref{ied:sec:further}, and the
+holomorphy of $h$ on $\Re t>0$, which answers the positive-axis part of
+item~\ref{ied:q:analytic}; the germ at zero stays open. It also proves the
+geometric depth aggregate (Theorem~\ref{ied:par:thm:aggregate}), the
+strict-chain amplitude $C(q)$ holomorphic on $\Re q>0$, Lengyel's constant
+$C=\frac12(2\log2)^{(\log2)/3}h(\log2)$ (Corollary~\ref{ied:par:cor:marked},
+\eqref{ied:par:eq:Lengyel}), and the endpoint expansion of $I$
+(Corollary~\ref{ied:par:cor:endpoint}). These are implications from the four
+inputs, which are unrefereed results of this report and of
+\file{a139383-iterated-bell-diagonals}; Section~\ref{ied:par:sec:front} prints
+that trust boundary, the provenance, the checks, the non-claims and the
+letters ($L$ is $\log(1+1/q)$ in Part~IV, $\log n$ in Part~III; $H(n,m)$ is the
+labelled iterated Bell array, not a matching function).
+\end{writenote}
 
 \section*{What is proved, and where}\phantomsection\label{ied:sec:status}
 \addcontentsline{toc}{section}{What is proved, and where}
@@ -110,6 +145,21 @@ Smooth suppression-ratio inverses, rounded height prescriptions, observed-ratio 
 \addtocounter{table}{-1}% the uncaptioned longtable must not consume a table number
 \endgroup
 The finite computations of the three companions (exact integer recurrences, exact rational formal coordinates, symbolic clock identities) check identities, normalizations and coefficient algebra; no asymptotic statement rests on them, and every decimal value of $c$, $h(1)$, $h'(1)$, $h''(1)$ in the report is an uncertified floating diagnostic.
+\begin{writenote}[Part~IV and this table, 9 October 2026]
+Two entries of the last row are now proved in Part~IV, conditionally on its
+four inputs (Section~\ref{ied:par:sec:inputs}): the identity
+$I(\beta)=\beta2^{\beta/3}h(\beta)$ with the iterated Bell amplitude, for
+every $\beta>0$ (Theorem~\ref{ied:par:thm:identity}), and real analyticity of
+$h$ on $(0,\infty)$, indeed holomorphy on $\Re t>0$
+(\eqref{ied:par:eq:hhol}). Analyticity of the germ at zero, and every other
+entry of the row, stay open. Part~IV adds: the geometric depth aggregate
+$\sum_me^{-Lm}H(n,m)$ of the labelled array (Theorem~\ref{ied:par:thm:aggregate}),
+the strict-chain amplitude $C(q)$ on $\Re q>0$ and Lengyel's constant in terms
+of $h(\log2)$ (Corollary~\ref{ied:par:cor:marked}), the endpoint expansion of
+$I$ (Corollary~\ref{ied:par:cor:endpoint}) and density formulas for the
+constants $K_1$, $K_2$ of the chain-length cumulants
+(Corollary~\ref{ied:par:cor:K}).
+\end{writenote}
 
 \section*{The OEIS statements, and the inverses}\phantomsection\label{ied:sec:oeis}
 \addcontentsline{toc}{section}{The OEIS statements, and the inverses}
@@ -178,6 +228,18 @@ Where the merge had to choose:
 \item \emph{Write additions.} This front matter, the reading-conventions tables of the Parts, Section~\ref{ied:sec:further} with Remarks~\ref{ied:rem:ibdnumbers} and~\ref{ied:rem:labelled}, the dated notes, labels for unlabelled sections, and the label prefixes. Everything else is delivered text.
 \end{enumerate}
 
+\begin{writenote}[A stale blob, 9 October 2026]
+The statement above that the iterated Bell report's \file{article.tex} is
+``unchanged at HEAD (blob \texttt{ab5014ec})'' was true at this report's first
+write (\file{84fc1aaed}) and is stale since the same day: the reciprocal note
+proposed there was added to that report by commit \file{3f9fc9d4f}, whose blob
+\file{2b1d8fbe81} is that report's \file{article.tex} at HEAD and at Part~IV's
+pin. The change is an added note; the section numbers the manuscripts cite are
+unchanged. Part~IV (Section~\ref{ied:par:sec:front}) is the fourth manuscript;
+its pin is ProveIt \file{58175ca455}, at which this report's text is Parts~I--III
+as merged and checked.
+\end{writenote}
+
 \section*{What was checked, and what was not}\phantomsection\label{ied:sec:trust}
 \addcontentsline{toc}{section}{What was checked, and what was not}
 The report is unrefereed and not formalized. At intake (dossier of batch~106, 5~October 2026) the three manuscripts were read in full and no step was found false. Checked independently there: the first twelve terms of A290354 and the normalized ratios $a_n(T/n)^nn^{4/3}=4.6013$, $4.5529$, $4.5178$ at $n=40,80,200$ that Part~I quotes, from an own implementation of the recurrence; the closed form of $\kappa$ against a direct quadrature of the defining equation \eqref{ied:corr:eq:M}, $-0.2543481698511$ against $-0.2543481698560$ (difference from the truncated tail); that with Part~II's diagnostic constants the corrected prediction tracks the exact $a_n$ far better than the leading term (residual $1.4\times10^{-4}$ against $2.5\times10^{-2}$ at $n=200$); and $2^{1/3}h(1)$ against the iterated Bell amplitude at $\beta=1$ (Remark~\ref{ied:rem:ibdnumbers}). The delivered suites pass on copies (README). The write checked the rows $A(2,m)$, $A(3,m)$, $A(4,m)$ against Part~II's Lemma~\ref{ied:corr:lem:forcing}, the reversion coefficients \eqref{ied:log:eq:betainverse}--\eqref{ied:log:eq:yinverse}, $c_2$ and $c_3$ from $S(t)$ and the Gamma expansion, the linear coefficient $C_0/3$ and $K$ in \eqref{ied:log:eq:logmaster}, the reduction of Theorem~\ref{ied:corr:thm:height} to Theorem~\ref{ied:corr:thm:diagonal} at $\beta=1$, the floor amplitude $C_\lambda$ of \eqref{ied:lead:eq:floor}, the two orders of the inverse \eqref{ied:corr:eq:inversecoeffs}, and recomputed $c=4.4923298968$ from the shipped diagnostic value of $h(1)$ \textup{(added after the independent check of 6~October 2026: an independent evaluation of $h(1)$ gives $c=4.4923298971$; Remark~\ref{ied:rem:ibdnumbers})}.
@@ -189,6 +251,18 @@ What was \emph{not} done: the analytic estimates (the clocks and their defects, 
 \textbf{The labelled analogue.} \file{SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a139383-iterated-bell-diagonals} (labels \texttt{ibd:}) treats $H(n,m)=n![z^n](e^z-1)^{\circ m}$, OEIS A139383 and A261280: a fixed-shift diagonal theorem to every order (its Part~I) and proportional depth $m=\lambda n+\delta$ for $\lambda$ in compact subsets of $(0,\infty)$ (its Part~II), by the same parabolic map $w\mapsto e^w-1$ without subsidiary forcing. No theorem is shared: the arrays differ, and Part~I here says the labelled theorem ``cannot be directly transferred'' (Section~\ref{ied:lead:sub:prior}), because the forcing changes the leading scale ($(n/T)^n n^{-4/3}$ here, $n^{2n-5/6}/(2^{n-1}e^n)$ there) and the clock constant. The two reports share the normalized orbit: Part~III records $\Psi_{\mathrm{IBD}}(w)=-\Phi(w)+\frac13\log2$ and the unproved relation $I(\beta)=\beta2^{\beta/3}h(\beta)$ between that report's amplitude $I$ and the density $h$ here (Section~\ref{ied:log:sec:interfaces}). The values agree to eight significant digits at $\beta=1$ (Remark~\ref{ied:rem:ibdnumbers}), and the relation, if proved, would bear on that report's open endpoint $\lambda\to\infty$ (Section~\ref{ied:sec:further}, item~\ref{ied:q:ibd}, and Remark~\ref{ied:rem:labelled}). That report answers no question asked here, and this one answers none asked there; a reciprocal note is proposed for it.
 
 \textbf{Other neighbours.} No other report of the collection treats A290353 or A290354 (repository search, 6~October 2026; A290354 occurs elsewhere only in a cross-reference line of the iterated Bell report's OEIS data). The batch-106 reports \file{a252782-diagonal-euler-transforms} (one Euler transform with weights $j^n$) and \file{a005121-strict-partition-chains} (the depth sum $\sum_m2^{-m-1}H(n,m)$ of the labelled array) share only words with this one. The transseries volume supplies the factorial core of which the leading inverses are instances (``The OEIS statements, and the inverses''). Placement in the collection confers no formal status: no Lean or Rocq file in the repository treats these sequences, and no statement of this report is formalized.
+\begin{writenote}[Part~IV and the neighbours, 9 October 2026]
+The two sentences above that no theorem is shared with the iterated Bell
+report and that the relation $I(\beta)=\beta2^{\beta/3}h(\beta)$ is unproved
+describe Parts~I--III. Part~IV proves that relation for every $\beta>0$ from
+inputs of both reports (Theorem~\ref{ied:par:thm:identity}), and gives the
+leading amplitude of \file{a005121-strict-partition-chains} (Lengyel's constant)
+and its marked amplitude on $\Re q>0$ (Corollary~\ref{ied:par:cor:marked}).
+Notes for those two reports, recording what Part~IV answers there (the endpoint
+amplitude of $I$ and the exploratory values of $I(1)$ in the iterated Bell
+report; the heuristic of \file{spc:q:depth} and, in part, \file{spc:q:disk} in
+the chain report), are proposed separately; they are not applied by this write.
+\end{writenote}
 \clearpage
 
 \part{Diagonal and proportional height asymptotics for iterated Euler transforms}\label{ied:lead:part}
@@ -2457,6 +2531,1389 @@ At $\lambda=1$ the distance to the limit is $0.042$, $0.032$, $0.025$ at $n=20,4
 \begin{writenote}[Independent check of the write, 6~October 2026]
 An adversarial check made by the intake after the write (commit \file{84fc1aaed}) re-pulled A290354 (live revision \#26 of 21~June 2018) and A290353 (\#28) and found every quoted line character for character, including the formula line in the front matter, in the note at the start of Part~I and in the bibliography. The entry's history places the conjecture in Kot\v{e}\v{s}ovec's revision \#23 of 14~August 2017, so the date ``Aug 14 2017'' that the write gives is the date of the conjecture, not of the revision read, and it is correct. The check recomputed $a_n$ as the $n$-th Euler transform of $1+x$ in integer arithmetic (equal to the b-file for $n\le40$; $a_{40}(T/40)^{40}40^{4/3}=4.6013347$), confirmed that Theorem~\ref{ied:lead:thm:main} is exactly the conjectured form, and the rows $A(2,m)$, $A(3,m)$, $A(4,m)$ for $m\le12$. It re-derived Remark~\ref{ied:rem:labelled} from (a), (b) and \eqref{ied:log:eq:logdensity}, found it labelled conditional wherever it appears (title, hypotheses, the paragraph after the proof, the README) and not listed as proved in the status table, and reproduced its table to every printed digit from an own exact computation of $H(n,m)$; extended to $n=160$ it gives $m=812$, $R_{\mathrm{lab}}=0.73782182$ at $\lambda=1$ (distance $0.0213$ to the limit, $0.0014$ after the $K_{\mathrm{lab}}$ term) and $m=406$, $R_{\mathrm{lab}}=0.54374893$ at $\lambda=0.5$ ($0.0303$ and $0.0018$). It evaluated the closed form \eqref{ied:corr:eq:kappa} to 35 digits, $\kappa=-0.25434816985107480385506489650373339$, and matched it against an independent quadrature of the defining equation \eqref{ied:corr:eq:M} to $5\times10^{-28}$. It recomputed $h(1)$ independently (Remark~\ref{ied:rem:ibdnumbers}, dated note) and confirmed the classification of the inverses in the front matter: the factorial core and the Lambert core with $a=b=1$ are instances; the corrections, the rounding at exact values and Part~III's reversion and prescriptions are not. Two wordings are corrected, each with a dated note keeping the first wording: the front matter's justification of the printed restatements (twice) overstated Part~II's novelty, since its bound on inverse orbits is in Part~I's proof of Lemma~\ref{ied:lead:lem:fatou}; and the note after Part~II's Section~\ref{ied:corr:sec:interface} now flags the neighbourhood form of the outer bound, as it already flagged the disk form of the tail bound, as proved only inside Part~I's proofs. Added: the name $L=\log(Y/T)$ in the front matter, and the independent values of $h(1)$ and $c=4.4923298971$. No mathematical error was found.
 \end{writenote}
+\begin{writenote}[Part~IV and these questions, 9 October 2026]
+Part~IV (Section~\ref{ied:par:sec:front}) answers part of these questions;
+the earlier notes, written before it arrived, are kept.
+\emph{Item~\ref{ied:q:ibd}} (the amplitude identity): \textbf{answered},
+conditionally on Part~IV's four inputs (Section~\ref{ied:par:sec:inputs}):
+$I(t)=t\,2^{t/3}h(t)$ for every $t>0$ (Theorem~\ref{ied:par:thm:identity}).
+The proof identifies the limits of the positive measures
+$\mu_m=\sum_n[z^n]f^{\circ m}(z)P(-m)^n\delta_{n/m}$, whose masses are exactly
+$P(0)$; it needs no global comparison of contours, the route item~\ref{ied:q:ibd}
+calls missing. Both consequences listed there follow: (a)~$h$ is real
+analytic on $(0,\infty)$ (below); (b)~the endpoint behaviour of $I$ as
+$\beta\to0$ is Corollary~\ref{ied:par:cor:endpoint}, the amplitude half of the
+iterated Bell report's endpoint $\lambda\to\infty$; a uniform coefficient
+transfer toward that endpoint stays open (Part~IV's
+Question~\ref{ied:par:q:uniform}). \emph{Item~\ref{ied:q:analytic}}:
+\textbf{answered on the positive axis}: $h$ extends holomorphically to
+$\Re t>0$ \eqref{ied:par:eq:hhol}. Analyticity of the germ $g$ at zero and its
+Taylor series stay open (Part~IV's Question~\ref{ied:par:q:germ}).
+\emph{Remark~\ref{ied:rem:labelled}}: its hypothesis~(a) is now
+Theorem~\ref{ied:par:thm:identity} (for all $\beta>0$, under the same inputs);
+hypothesis~(b) is still unproved, so the remark remains conditional.
+\emph{Remark~\ref{ied:rem:ibdnumbers}}: the identity now forces
+$I(1)=2^{1/3}h(1)$. With Part~IV's exploratory density
+($h(1)=1.81460955983\ldots$, within $10^{-12}$ of the verification's
+independent $1.814609559835$) the forced value is
+$2.2862647817\ldots$; the iterated Bell report's three exploratory runs exceed
+it by $2.9\times10^{-9}$, $4.5\times10^{-9}$ and $1.6\times10^{-8}$. Every value
+involved is an uncertified floating evaluation, and the spread of the three
+runs is $1.4\times10^{-8}$, so this records an offset of the runs, not a
+refutation of anything; the remark's ``eight significant digits'' stays true.
+\emph{Items~\ref{ied:q:validated} and~\ref{ied:q:endpoint}} reappear as Part~IV's
+Questions~\ref{ied:par:q:certified} (enclosures of $h(\log2)$, $h'(\log2)$,
+$h''(\log2)$) and~\ref{ied:par:q:large} (large-argument asymptotics of $h$).
+\emph{An observation} [write], uncertified: from exact chain counts (the Newton
+form $\sum_me^{-Lm}H(n,m)=\sum_k(N^k)_{n1}e^{-Lk}(1-e^{-L})^{-k-1}$, with $N$ the
+strictly triangular part of the Stirling matrix) and Part~IV's exploratory
+$h$, the ratio of $S_n(L)$ to the main term of
+Theorem~\ref{ied:par:thm:aggregate} satisfies $n(\text{ratio}-1)=0.11556$ at
+$L=\log2$ and $0.16669$ at $L=1$ for $n=320$ (monotone in $n$ from $n=25$), against
+$L/6=0.11552$ and $0.16667$: the first correction looks like $L/(6n)$ with no
+logarithmic term, as the chain report proves at $q=1$
+($z_n/f_n=C(1+L/(6n)+O(n^{-2}))$). At $L=1$ ($q=1/(e-1)$, outside that
+report's disk) this is evidence on Part~IV's Question~\ref{ied:par:q:summation},
+not a proof.
+\end{writenote}
+
+\clearpage
+\part{A common density for parabolic iteration}\label{ied:par:part}
+% Part IV numbers equations within sections, as delivered.
+\counterwithin*{equation}{section}
+\renewcommand{\theequation}{\thesection.\arabic{equation}}
+\renewcommand{\theHequation}{\theHsection.\arabic{equation}}
+% Part IV's \Oh is a calligraphic O (Parts I-III use an upright O).
+\renewcommand{\Oh}{\mathcal O}
+\partsource{Manuscript~02 of the archive \texttt{ProveIt\_Research\_2026-10-08\ (1).zip},
+delivered as \file{02_parabolic_amplitudes/article.tex} (16~pages). Delivered
+title block ``A Common Density for Parabolic Iteration / Exact Bell--Euler
+amplitude identification and weighted partition-chain constants / Research
+companion prepared for Vladimir Reshetnikov / Developed with OpenAI ChatGPT /
+8 October 2026''. Printed as delivered after Section~\ref{ied:par:sec:front},
+which the write added, with \textbf{[write]} notes; the manuscript's
+Section~$k$ is Section~$k+38$ here, its statements and equations ($k.m$) are
+($k{+}38.m$), and its Appendix~A keeps its letter. Its labels carry the prefix
+\file{ied:par:}. ``\cite{Euler}'' in this Part is Parts~I--III of this report,
+``\cite{IBD}'' the iterated Bell report, ``\cite{Chains}'' the strict
+partition-chain report.}
+\begin{partabstract}
+Two recent ProveIt reports study different arrays governed by the same
+parabolic map $f(z)=e^z-1$. One constructs a positive density $h$ whose
+Laplace transform is the normalized entire Fatou orbit $P$; the other
+obtains an iterated-Bell amplitude $I$ from a fixed contour.
+Their precise relation was left as an explicit open question. We prove
+\[
+ I(t)=t\,2^{t/3}h(t)\qquad(t>0)
+\]
+by identifying two limits of positive coefficient measures. This avoids
+a global comparison of the two contours and proves that $h$ extends
+holomorphically to $\Re t>0$. A coefficientwise rational majorant then
+controls every iteration depth in a geometric aggregate. It gives the
+exact Lengyel-constant identity and, more generally, a holomorphic
+formula on $\Re q>0$ for the leading amplitude of strict partition chains
+marked by $q$. Complete proofs, source pins, exact finite checks and
+independent numerical diagnostics are supplied. The analytic inputs
+from the earlier reports are identified explicitly; no worldwide
+priority claim or new leading-equivalent claim is made.
+\end{partabstract}
+
+\section{Provenance, inputs and notation of Part~IV}\label{ied:par:sec:front}
+
+[Added 9~October 2026.] Part~IV was added in a second write of this report,
+after Parts~I--III had been merged (\file{84fc1aaed}) and independently
+checked (\file{a3a2d5582}). It is the manuscript \emph{A Common Density for
+Parabolic Iteration}, which starts from item~\ref{ied:q:ibd} of
+Section~\ref{ied:sec:further} (it cites it as ``Section~37, item~9'') and answers
+it. Everything of the manuscript is printed in this Part except its title page
+(recorded in the source block above) and its reference list (merged into this
+report's bibliography): its abstract above, its ten sections as
+Sections~\ref{ied:par:sec:intro}--\ref{ied:par:sec:further} and its
+Appendix~\ref{ied:par:app:checklist}. Its letters are kept
+(Section~\ref{ied:par:sec:notation}). This section and the notes marked
+[write] are the write's; all other text of Sections~\ref{ied:par:sec:intro}--\ref{ied:par:sec:further}
+and of the appendix is the manuscript's.
+
+\subsection{The manuscript}\label{ied:par:sec:provenance}
+
+The archive \texttt{ProveIt\_Research\_2026-10-08\ (1).zip} ($1{,}394{,}668$ bytes;
+45 files in one wrapper directory \file{ProveIt_Research_2026-10-08/},
+$1{,}636{,}954$ bytes unpacked) arrived in commit \file{b28d0850b}
+(8~October 2026, 08:39~PDT). It holds three manuscripts; this is its
+manuscript~02, \file{02_parabolic_amplitudes/} (12 files). Its 9 supporting
+files were placed in this directory by commit \file{803f4d937}
+(9~October 2026) with the prefix \file{04-parabolic-}, the Part number: the
+three programs as \file{code/04-parabolic-*.py}, the four data files,
+\file{provenance.json} and \file{requirements.txt} as \file{data/04-parabolic-*};
+all 9 are byte-identical to the delivery (confirmed at the write). Not shipped,
+and retrievable from the arrival commit: the manuscript \file{article.tex}, its
+PDF and its \file{README.md}. The archive is not retired: its manuscripts~01
+and~03 and its package-level files (among them \file{REVIEW_NOTES.md},
+\file{THEOREM_LEDGER.json}, \file{RESEARCH_QUESTIONS.json}, \file{reproduce.py})
+belong to their own placements.
+
+The manuscript is \file{article.tex} (1{,}079 lines, dated 8~October 2026); a
+build of the delivered text gives 16~pages, as delivered, with no warnings.
+Its title page reads ``Research companion prepared for Vladimir Reshetnikov /
+Developed with OpenAI ChatGPT'' (PDF author field the same). Its pin
+(Section~\ref{ied:par:sec:literature}.2, \file{data/04-parabolic-provenance.json}
+and its three bibliography entries) is ProveIt commit
+\file{58175ca45563d9ee29875374dd77942f069268a9} (7~October 2026, 20:30~PDT), with
+the blobs \file{b5af1ca30b} of this report's \file{article.tex} (Parts~I--III
+as merged and checked, unchanged until this write), \file{2b1d8fbe81} of the
+iterated Bell report and \file{da8cac4780} of the strict partition-chain
+report, both unchanged at HEAD.
+
+\emph{How the manuscript was merged.} Its 56 labels, and 6 labels the write gave
+to its unlabelled Sections~1, 4, 7, 9, 10 and Appendix~A, carry the prefix
+\file{ied:par:}; its 51 references (41 \verb|\eqref|, 10 \verb|\ref|) were
+updated. Its citation keys are entries of the merged bibliography, marked
+[Part~IV], except two: \file{BellReport} is \file{IBD} (4 citations re-keyed;
+Part~IV's pin and description added) and \file{Prellberg} is the entry of
+Parts~I--III (Part~IV's description added); its key \file{Euler} is this
+report at the pin, that is, Parts~I--III, and its \file{OEIS} (A005121, listed
+but not cited) is \file{A005121}. Its macros \verb|\coef| and \verb|\Repin| were
+added to the preamble; its \verb|\C|, \verb|\R|, \verb|\N|, \verb|\dd|,
+\verb|\ii|, \verb|\file|, \verb|\Log| are those of Parts~I--III; its
+\verb|\Oh| (a calligraphic $\mathcal O$, an upright $\mathrm O$ in
+Parts~I--III) is switched at the start of this Part. From this Part on,
+equations are numbered within sections, as delivered. The delivered font
+(Palatino), running heads and paragraph skip are not reproduced. No other text
+was changed. The write labelled the nine items of its
+Section~\ref{ied:par:sec:further}. The numbering, against a build of the
+delivered text: its Sections~1--10 are
+Sections~\ref{ied:par:sec:intro}--\ref{ied:par:sec:further} here, its
+Theorems~1.1 and~1.2 are Theorems~\ref{ied:par:thm:identity}
+and~\ref{ied:par:thm:aggregate}, Corollary~1.3 is
+Corollary~\ref{ied:par:cor:marked}, Corollary~4.2 is
+Corollary~\ref{ied:par:cor:endpoint}, Proposition~4.3 is
+Proposition~\ref{ied:par:prop:general}, Corollary~7.1 is
+Corollary~\ref{ied:par:cor:K}; every statement and equation $k.m$ is
+$(k{+}38).m$; Appendix~A is unchanged (all 56 labels compared).
+
+\emph{What the manuscript says about the repository.} Its account of the
+three reports is correct: item~\ref{ied:q:ibd} (``Section~37, item~9'') asks
+for the identity; the iterated Bell report records the same question (its
+dated note at the end of \file{ibd:sec:literature}); the labels it names as
+resolved are \file{ied:q:ibd}, the positive-axis part of \file{ied:q:analytic},
+the leading-amplitude part of \file{spc:q:depth}, and in part
+\file{spc:q:disk}, as the table of Section~\ref{ied:par:sec:answers} states. The
+chain report's \file{spc:q:depth} carries the \emph{heuristic}
+$C\overset{?}{=}L^{L/3-1}I(L)/2$ of that report's write, with $L=\log2$;
+\eqref{ied:par:eq:Lengyel} proves it.
+
+\subsection{The trust boundary: four inputs}\label{ied:par:sec:trust}
+
+Every theorem of this Part is an implication. Its main theorem uses exactly
+the four statements of Section~\ref{ied:par:sec:inputs}, each proved in an
+unrefereed, unformalized report of this collection:
+\begin{itemize}
+\item \emph{Input~F}: the normalized Fatou coordinate and the entire orbit,
+Part~I's Lemma~\ref{ied:lead:lem:fatou} and~\eqref{ied:lead:eq:fatou};
+\item \emph{Input~M}: the positive Laplace measure with continuous, strictly
+positive density, Part~I's Proposition~\ref{ied:lead:prop:measure};
+\item \emph{Input~L}: the absolute local coefficient transfer
+\file{ibd:pd:eq:absolute} of the iterated Bell report, uniform for $n/m$ in
+compact subsets of $(0,\infty)$; that report's Part~II is itself conditional on
+its Part~I, whose outer arcs rest on an interval certificate of common entry
+(Remark~\ref{ied:par:rem:seed} says so);
+\item \emph{Input~A}: the holomorphy part of \file{ibd:pd:prop:positive}
+there (not its numerical positivity seed $I(1)>1.64$).
+\end{itemize}
+The corollaries use more: Corollary~\ref{ied:par:cor:endpoint} uses Part~III's
+\eqref{ied:log:eq:logdensity}; Corollary~\ref{ied:par:cor:marked}'s
+agreement near $q=1$ and Corollary~\ref{ied:par:cor:K} use the strict
+partition-chain report's marked expansion and its cumulant expansions
+\eqref{ied:par:eq:mean}--\eqref{ied:par:eq:variance}. The manuscript states
+this boundary itself (``The present proof checks the implication from their
+stated analytic interfaces''), and its package record (\file{REVIEW_NOTES.md},
+not shipped here) lists among its remaining trust boundaries that ``The
+parabolic source reports are unrefereed'' and that its inverse-Laplace
+calculations ``are not interval-certified''. Nothing here makes the inputs
+more certain than their sources: the theorems of this Part have exactly the
+status of Parts~I--III and of the iterated Bell report together. Prellberg's
+2002 seminar, in Mishna's summary~\cite{Prellberg}, is credited for the
+bivariate parabolic mechanism and an aggregate contour constant; no
+new-equivalent or priority claim is made.
+
+\subsection{What Part~IV answers}\label{ied:par:sec:answers}
+
+\begingroup\small
+\renewcommand{\arraystretch}{1.12}
+\renewcommand{\theHtable}{iedpar.answers}% no PDF destination clash
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}p{0.67\textwidth}@{}}
+\toprule
+Question & After Part~IV\\
+\midrule
+\endhead
+Item~\ref{ied:q:ibd} (the amplitude identity) & \textbf{Answered} (Theorem~\ref{ied:par:thm:identity}), by limits of positive coefficient measures, without a comparison of contours.\\
+Item~\ref{ied:q:analytic} (analytic structure of $h$) & \textbf{Answered on the positive axis}: $h$ holomorphic on $\Re t>0$ \eqref{ied:par:eq:hhol}. \textbf{Open}: the germ $g$ at zero and its Taylor series.\\
+Remark~\ref{ied:rem:labelled} & Hypothesis~(a) proved; (b) open; the remark stays conditional.\\
+Remark~\ref{ied:rem:ibdnumbers} & $I(1)=2^{1/3}h(1)$ is now forced; the iterated Bell report's uncertified runs sit $2.9\times10^{-9}$ to $1.6\times10^{-8}$ above the forced value (a record, not a refutation).\\
+Iterated Bell report, endpoint $\lambda\to\infty$ & The amplitude half: Corollary~\ref{ied:par:cor:endpoint}; the uniform transfer stays open (Question~\ref{ied:par:q:uniform}).\\
+Chain report, \file{spc:q:depth} & The leading-amplitude part: its heuristic $C=L^{L/3-1}I(L)/2$ is \eqref{ied:par:eq:Lengyel}, a theorem; all-order summation and the logarithmic cancellation stay open (Question~\ref{ied:par:q:summation}).\\
+Chain report, \file{spc:q:disk} & In part: $C(q)$ holomorphic on $\Re q>0$, positive on $q>0$; the zero set and global uniform asymptotics stay open (Questions~\ref{ied:par:q:zeros}, \ref{ied:par:q:positive}).\\
+Items~\ref{ied:q:validated}--\ref{ied:q:other} otherwise & Untouched; items~\ref{ied:q:validated} and~\ref{ied:q:endpoint} reappear as Questions~\ref{ied:par:q:certified} and~\ref{ied:par:q:large}.\\
+\bottomrule
+\end{longtable}
+\addtocounter{table}{-1}% the uncaptioned longtable takes no number
+\endgroup
+
+Dated notes at the end of Section~\ref{ied:sec:further} and of the front
+matter say the same; the notes for the two neighbouring reports are proposed
+separately and not applied.
+
+\emph{What Part~IV proves again}: nothing of Parts~I--III; its Lemma~\ref{ied:par:lem:radius}
+re-derives the radius from Input~F, and its Lemma~\ref{ied:par:lem:mixture}
+the chain report's exact mixture $z_n=\sum_m2^{-m-1}H(n,m)$ at $q=1$.
+\emph{What is new to the report}: everything else.
+
+\subsection{What the write read and checked}\label{ied:par:sec:checks}
+
+\emph{At placement} (the intake dossier, 9~October 2026; own code): from the
+delivered exploratory $h(\log2)$, $C(1)=(2L)^{L/3}h(L)/2=1.09868580552518740\ldots$
+against Lengyel's constant, OEIS A086053, $1.09868580552518701\ldots$ (agreement
+to 15 digits); $I(\log2)=1.65770061282$, consistent with the chain report's
+finite-$n$ extrapolations; the exact counts against A005121 and A139383; and
+$2^{1/3}h(1)=2.28626478178$ against the iterated Bell report's runs.
+
+\emph{At the write} (9~October 2026; Python~3.14.4, SymPy~1.14.0, mpmath~1.3.0;
+own code, kept with the intake records and not shipped). Every proof of
+Sections~\ref{ied:par:sec:measures}--\ref{ied:par:sec:constants} was read line
+by line, with no error found; and the four inputs were read at their sources
+(Part~I's Lemma~\ref{ied:lead:lem:fatou} and
+Proposition~\ref{ied:lead:prop:measure}; \file{ibd:pd:eq:absolute}, stated there
+for $\eta=n/m\in[b,B]$ with remainder $\Oh(m^{-1}(1+\log m)^D)$, and the
+holomorphy part of \file{ibd:pd:prop:positive}), where they say what
+Section~\ref{ied:par:sec:inputs} quotes. Rechecked by hand or with SymPy in
+particular: the three sensitive normalizations after the proof of
+Theorem~\ref{ied:par:thm:identity}; the main term of
+Theorem~\ref{ied:par:thm:aggregate} from $(n-1)!\,2^{-n}(n/L)^{-L/3}I(L)$ times
+$n!L^{-n-1}$; \eqref{ied:par:eq:Lengyel} and~\eqref{ied:par:eq:Cqh}; the endpoint
+expansion~\eqref{ied:par:eq:Iendpoint} and its exponentiation
+\eqref{ied:par:eq:Iendfirst}; the chain rule behind
+Corollary~\ref{ied:par:cor:K} and both expanded forms; the radius model of
+Lemma~\ref{ied:par:lem:radius} (numerically, residual $O(\log m/m)$ at
+$m=10^3,10^6$). With exact integer and rational arithmetic: the Newton form
+$H(n,m)=\sum_k\binom mk(N^k)_{n1}$ against the recurrence
+\eqref{ied:par:eq:Hrec}; the chain counts against A005121; the majorant
+\eqref{ied:par:eq:Hmajorant} for $n\le30$, $m\le60$; the mixture
+\eqref{ied:par:eq:mixture} for $n\le25$ at five rational $q$, through the closed
+form $\sum_ma^mH(n,m)=\sum_k(N^k)_{n1}a^k(1-a)^{-k-1}$. Numerically
+(uncertified): Theorem~\ref{ied:par:thm:aggregate} at $L=\log2$ and $L=1$ for
+$n\le320$, with ratios to the main term $1.00036$ and $1.00052$ at $n=320$
+(note at the end of Section~\ref{ied:sec:further}); the iterated Bell
+report's three runs against the forced $I(1)$. It did not rerun the shipped
+programs. \emph{Not read by the write}: Prellberg's summary, Lengyel (1984) and
+Skau--Kristensen; the manuscript's accounts of them are reported, not
+confirmed.
+
+\subsection{What is not claimed}\label{ied:par:sec:nonclaims}
+
+From the manuscript: the theorems are implications from the four inputs, whose
+sources ``are unrefereed and not proof-assistant verified'', and the proof
+``does not promote their earlier proofs or interval software to formal
+verification''; no numerical seed is needed for $I(1)$, but other
+computational dependencies of the Bell foundation remain
+(Remark~\ref{ied:par:rem:seed}); the leading equivalent and the existence of
+Lengyel's constant are classical, and Prellberg's seminar is a direct
+antecedent; the mean, variance and central limit theorem of chain lengths are
+not new claims; the continuation of $C(q)$ does not give uniform complex
+asymptotics or zero-freeness; the endpoint series does not give the uniform
+transfer, and the germ is not shown convergent;
+Proposition~\ref{ied:par:prop:general} is a transfer principle under stated
+hypotheses; the inverse-Laplace values are diagnostics, not certified;
+``A literature search and source inspection do not establish that no
+equivalent theorem has appeared elsewhere''. The write adds: its checks are
+exact finite computations, hand or SymPy algebra and floating evaluations; its
+observation on the first correction of the aggregate is numerical; nothing was
+submitted anywhere, and the notes for the two neighbouring reports are not
+applied.
+
+\subsection{Reading conventions}\label{ied:par:sec:notation}
+
+Part~IV keeps its letters. Where they clash with Parts~I--III, read them as
+follows.
+
+\begingroup\small
+\renewcommand{\arraystretch}{1.1}
+\renewcommand{\theHtable}{iedpar.notation}% no PDF destination clash
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.95in}>{\raggedright\arraybackslash}p{3.0in}>{\raggedright\arraybackslash}p{2.2in}@{}}
+\toprule
+Symbol & Part IV & Parts I--III\\
+\midrule
+\endhead
+$H(n,m)$, $f$ & $n![z^n]f^{\circ m}$, the labelled iterated Bell array; $f(z)=e^z-1$ & $H(z)$ the matching function, $H_j$, $H_{\theta,a}$; $f(w)=e^w-1$\\
+$I(t)$, $h$, $P$, $\Phi$ & the iterated Bell amplitude; the density; the orbit; the coordinate (Parts~I--III's) & $I$ (Section~\ref{ied:log:sec:interfaces}); $I$ a compact interval (II)\\
+$t$, $\beta$ & $t=n/m$ & $\beta=n/m$\\
+$L$, $L(q)$ & $L>0$ the tilt of $S_n(L)$; $L(q)=\log(1+1/q)$; $L=\log2$ at $q=1$ & $L(y)$ a clock, $L=\log n$ (III)\\
+$C$, $C(q)$, $K_1$, $K_2$, $K$ & Lengyel's constant, the marked amplitude; cumulant constants; $K=\max(D,2)$ & $c$ the amplitude; $C$, $K$ constants of Parts~II--III\\
+$S_n(L)$, $Z_n(q)$, $T_n$, $\mathcal H_n$ & the geometric aggregate; marked chain counts; $T_n=\sum_ma^mH(n,m)$; the number of strict transitions & $T=\pi/2$\\
+$r_m$, $u_m$, $\mu_m$, $s_m$ & $P(-m)$; $2/r_m$; the coefficient measures; $m+\Phi(r_me^{s/m})$ & $r$, $r_m$ radii; $s$ a contour parameter\\
+$A(x)$, $a$, $\rho$ & $\log h(x)+(x/3)\log(2x)$; $a=q/(q+1)$ or the $a$ of Proposition~\ref{ied:par:prop:general}; $\rho$ the log coefficient there & $A(n,m)$ the Euler array; $a_n$; $\rho_j$\\
+$\mathcal W_n(L)$, $w_n$ & the central depth window; $\sqrt n(\log n)^2$ & \\
+$c_j$, $D$ & Part~III's log-density coefficients; the logarithmic degree of Input~L & $c_j$; $D$ a band exponent (III)\\
+\bottomrule
+\end{longtable}
+\addtocounter{table}{-1}% the uncaptioned longtable takes no number
+\endgroup
+
+\section{Question, result and scope}\label{ied:par:sec:intro}
+
+Let $f(z)=e^z-1$, and let $f^{\circ m}$ denote $m$ iterations of $f$,
+with $f^{\circ0}(z)=z$. Define
+\begin{equation}\label{ied:par:eq:H}
+ H(n,m)=n!\coef n f^{\circ m}(z),\qquad n\ge1,\quad m\ge0.
+\end{equation}
+The array $H$ is the iterated exponential Bell array.
+The principal objects here are functions that describe its asymptotic
+coefficients, rather than a new interpretation of these integers.
+
+The report on iterated Euler transforms \cite{Euler} constructs an
+entire function $P$ satisfying
+\begin{equation}\label{ied:par:eq:P}
+ P(s+1)=e^{P(s)}-1,\qquad
+ P(s)=\int_0^\infty e^{st}h(t)\dd t.
+\end{equation}
+Its additive normalization is fixed by the inverse coordinate
+\begin{equation}\label{ied:par:eq:Phi}
+ \Phi(w)=-\frac2w+\frac13\log w+\Oh(w),\qquad \Phi(P(s))=s
+\end{equation}
+near the positive real $w$-axis, equivalently for sufficiently negative
+real $s$. The density $h$ is continuous and strictly positive on
+$(0,\infty)$, and the measure in \eqref{ied:par:eq:P} has every exponential moment.
+
+The iterated-Bell report \cite{IBD} defines a second function $I$
+by a fixed-radius contour and proves the local coefficient formula
+\begin{equation}\label{ied:par:eq:Bellshape}
+ H(n,m)\sim(n-1)!\,2^{-n}m^n m^{-n/(3m)}I(n/m)
+\end{equation}
+uniformly when $n/m$ ranges over compact subsets of $(0,\infty)$.
+Section~37, item~9, of \cite{Euler} explicitly asks whether
+\begin{equation}\label{ied:par:eq:mainidentity}
+ I(t)=t\,2^{t/3}h(t).
+\end{equation}
+The same question is recorded in the iterated-Bell report. Both sources
+observe agreement of numerical values, but leave the orientation,
+normalization and endpoint terms of a proposed contour comparison
+unresolved.
+
+\begin{theorem}[Amplitude identification]\label{ied:par:thm:identity}
+Under the four analytic input statements recorded in
+Section~\ref{ied:par:sec:inputs}, identity \eqref{ied:par:eq:mainidentity} holds for every
+real $t>0$. The density therefore has the unique holomorphic extension
+\begin{equation}\label{ied:par:eq:hhol}
+ h(z)=\frac{2^{-z/3}}{z}I(z),\qquad\Re z>0.
+\end{equation}
+In particular, $h$ is real analytic on all of $(0,\infty)$.
+\end{theorem}
+
+The formulation records ordinary mathematical dependencies: the four
+statements are proved in the cited repository reports. Those sources
+are unrefereed and not proof-assistant verified. The present proof
+checks the implication from their stated analytic interfaces; it does
+not promote their earlier proofs or interval software to formal
+verification.
+
+Our second main result concerns the geometric aggregate
+\[
+ S_n(L)=\sum_{m\ge0}e^{-Lm}H(n,m),\qquad L>0.
+\]
+The sum converges for every $n$. The following theorem justifies the
+missing depth summation and identifies its normalization.
+
+\begin{theorem}[Geometric aggregation]\label{ied:par:thm:aggregate}
+For every $L>0$,
+\begin{equation}\label{ied:par:eq:Sasym}
+ S_n(L)\sim
+ (n!)^2(2L)^{-n}n^{-1-L/3}L^{L/3-1}I(L).
+\end{equation}
+The equivalent is uniform for $L$ in any fixed compact subinterval of
+$(0,\infty)$.
+\end{theorem}
+
+For strict partition chains, put
+\[
+ Z_1(q)=1,\qquad
+ Z_n(q)=q\sum_{j=1}^{n-1}
+ \left\{\begin{matrix}n\\j\end{matrix}\right\}Z_j(q)
+ \quad(n\ge2),
+\]
+where the braces denote Stirling numbers of the second kind. Thus $q$
+marks the number of strict transitions, not the number of partitions
+in the chain. Write
+\begin{equation}\label{ied:par:eq:Lq}
+ L(q)=\log(1+1/q)\qquad(q>0).
+\end{equation}
+\begin{corollary}[Marked chain amplitude]\label{ied:par:cor:marked}
+For every $q>0$,
+\begin{equation}\label{ied:par:eq:Zasym}
+ Z_n(q)\sim C(q)(n!)^2[2L(q)]^{-n}n^{-1-L(q)/3},
+\end{equation}
+uniformly on compact positive $q$-intervals, with
+\begin{align}
+ C(q)&=\frac{L(q)^{L(q)/3-1}I(L(q))}{q+1}\label{ied:par:eq:CqI}\\
+ &=\frac{[2L(q)]^{L(q)/3}h(L(q))}{q+1}.\label{ied:par:eq:Cqh}
+\end{align}
+This $C(q)$ is positive for real $q>0$ and extends holomorphically to
+the half-plane $\Re q>0$.
+\end{corollary}
+At $q=1$, $Z_n(1)$ is OEIS A005121, whose normalized leading constant is
+Lengyel's constant $C$. Thus
+\begin{equation}\label{ied:par:eq:Lengyel}
+ C=\frac12(\log2)^{(\log2)/3-1}I(\log2)
+   =\frac12(2\log2)^{(\log2)/3}h(\log2).
+\end{equation}
+The leading equivalent and the existence of this constant are classical
+\cite{Lengyel,Prellberg}; our contribution is the rigorous identification
+with the precise functions and normalization used by the current
+repository reports.
+
+\subsection{What changes in the research record}
+\begin{center}\small
+\begin{tabular}{@{}p{.40\textwidth}p{.51\textwidth}@{}}
+\toprule
+Question or statement & Status in this companion\\
+\midrule
+Euler--Bell amplitude identity, \cite{Euler}, item 9
+ & Proved by positive coefficient measures.\\
+Real analyticity of $h$ on $(0,\infty)$
+ & Proved; holomorphic extension to $\Re z>0$.\\
+Strict-chain amplitude from the depth theorem
+ & Proved with a uniform bound for every depth.\\
+Marked amplitude beyond a neighborhood of $q=1$
+ & Holomorphic on $\Re q>0$; positive on the positive axis.\\
+Bell proportional-depth leading form
+ & An input from \cite{IBD}, with older antecedents credited.\\
+All fixed-order marked-chain expansions near $q=1$
+ & Prior repository result \cite{Chains}; not reproved here.\\
+Complex zero-freeness and global uniform complex expansions
+ & Remain open; amplitude continuation alone does not imply them.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Four analytic inputs and exact conventions}\label{ied:par:sec:inputs}
+
+We separate the new argument from the analytic foundations it uses.
+This permits an audit without reconstructing the long Euler-transform
+clock estimates or the iterated-Bell contour certificate.
+
+\subsection*{Input F: normalized Fatou coordinate and orbit}
+Lemma \file{ied:lead:lem:fatou} and equation
+\file{ied:lead:eq:fatou} of \cite{Euler} give an analytic $\Phi$ on a
+sufficiently small sector about the positive real axis with
+\eqref{ied:par:eq:Phi}. Its local inverse $P_{\rm loc}$ extends to an entire
+function $P$, agrees with that inverse in its sector, and satisfies
+the functional equation in \eqref{ied:par:eq:P}. In particular, for all
+sufficiently large integers $m$,
+\[
+ r_m=P(-m)>0,\qquad\Phi(r_m)=-m.
+\]
+Only this inverse statement near the negative real $s$-axis and the
+entire functional equation will be needed.
+
+\subsection*{Input M: positive Laplace measure}
+Proposition \file{ied:lead:prop:measure} of \cite{Euler} proves that $P$
+is the Laplace transform of a finite positive measure on $[0,\infty)$.
+It has no atom at zero, every exponential moment, and a continuous
+strictly positive density $h$ on $(0,\infty)$.
+The identification needs only finiteness, positivity, the Laplace
+formula and continuity. Strict positivity is used for later relative
+aggregation. Smoothness, proved in the source's
+Corollary \file{ied:lead:cor:smooth}, is not needed as an input.
+
+\subsection*{Input L: absolute local coefficient transfer}
+Equation \file{ibd:pd:eq:absolute} of \cite{IBD} states that, for
+each fixed $0<a<b<\infty$, there is a finite $D$ such that
+\begin{equation}\label{ied:par:eq:LLT}
+ \frac{H(n,m)}
+ {(n-1)!\,2^{-n}m^n m^{-n/(3m)}}
+ =I(n/m)+\Oh\!\left(\frac{(1+\log m)^D}{m}\right)
+\end{equation}
+uniformly for integers $n,m\ge1$ with $a\le n/m\le b$.
+Here $m\to\infty$, and the implicit constant may depend on $a,b$.
+This is an \emph{absolute} estimate; it appears before the source's
+positivity proof and involves no division by $I$.
+
+\subsection*{Input A: holomorphy of the contour amplitude}
+The first part of the proof of Proposition
+\file{ibd:pd:prop:positive} of \cite{IBD} shows that $I$ is
+holomorphic on $\Re t>0$. It uses a complex-linear contour functional
+and locally uniform domination. The later numerical seed for
+strict positivity is not needed for holomorphy, and is not used here.
+
+\begin{remark}[Dependency and numerical boundaries]\label{ied:par:rem:seed}
+The amplitude identification gives a route from positivity of $h$ to
+positivity of $I$ without a numerical enclosure for $I(1)$. This does
+not erase other computational dependencies of the earlier Bell
+foundation. That report uses an interval certificate for common entry
+on a fixed semicircle. We import its resulting absolute transfer
+statement rather than independently formalizing that certificate.
+\end{remark}
+
+\subsection{Nonnegative coefficients}
+Every coefficient of $f$ is nonnegative and $f(0)=0$, so every
+coefficient of $f^{\circ m}$ is nonnegative. The exact recurrence is
+\begin{equation}\label{ied:par:eq:Hrec}
+ H(n,m+1)=\sum_{j=1}^{n}
+ \left\{\begin{matrix}n\\j\end{matrix}\right\}H(j,m),
+ \qquad H(n,0)=\mathbf1_{\{n=1\}}.
+\end{equation}
+Indeed, iterates commute, and
+\[
+ \frac{f(z)^j}{j!}=
+ \sum_{n\ge j}\left\{\begin{matrix}n\\j\end{matrix}\right\}
+ \frac{z^n}{n!}.
+\]
+These facts ensure positivity of the measures below. The use of
+$(n-1)!$ rather than $n!$ in \eqref{ied:par:eq:LLT} is essential: after coefficient
+extraction it supplies $1/n$, ultimately producing the factor $t$
+in \eqref{ied:par:eq:mainidentity}.
+
+\section{Positive coefficient measures and their limit}\label{ied:par:sec:measures}
+
+\begin{lemma}[The exact radius and its expansion]\label{ied:par:lem:radius}
+Let $r_m=P(-m)$ for sufficiently large integers $m$. Then
+\begin{align}
+ \frac2{r_m}
+ &=m-\frac13\log m+\frac13\log2
+ +\Oh\!\left(\frac{\log m}{m}\right),\label{ied:par:eq:radius}\\
+ \log\frac{mr_m}{2}
+ &=\frac{\log m-\log2}{3m}
+ +\Oh\!\left(\frac{(\log m)^2}{m^2}\right).\label{ied:par:eq:radiuslog}
+\end{align}
+\end{lemma}
+\begin{proof}
+Put $u_m=2/r_m$. Since $\Phi(r_m)=-m$ and
+$\log r_m=\log2-\log u_m$, Input F gives
+\[
+ u_m+\frac13\log u_m=m+\frac13\log2+\Oh(1/u_m).
+\]
+It first follows that $u_m/m\to1$: the logarithmic term is $o(u_m)$,
+and the identity forces $u_m\to\infty$. Consequently
+$u_m=m+\Oh(\log m)$ and $\log u_m=\log m+\Oh(\log m/m)$.
+Substitution proves \eqref{ied:par:eq:radius}. Taylor expansion of
+$-\log(1+(u_m-m)/m)$ proves \eqref{ied:par:eq:radiuslog}.
+\end{proof}
+
+For every sufficiently large integer $m$, define
+\begin{equation}\label{ied:par:eq:mu}
+ \mu_m=\sum_{n\ge1}
+ \bigl(\coef n f^{\circ m}(z)\bigr)r_m^n\,\delta_{n/m}.
+\end{equation}
+This is a finite positive measure because $f^{\circ m}$ is entire.
+The functional equation gives its exact normalization:
+\begin{equation}\label{ied:par:eq:mass}
+ \mu_m([0,\infty))=f^{\circ m}(r_m)
+ =f^{\circ m}(P(-m))=P(0).
+\end{equation}
+Thus no asymptotic renormalization of these measures is needed.
+
+\begin{lemma}[Laplace convergence]\label{ied:par:lem:laplace}
+For each fixed real $s$,
+\begin{equation}\label{ied:par:eq:Lapconv}
+ \int_0^\infty e^{st}\dd\mu_m(t)
+ =f^{\circ m}(r_m e^{s/m})\longrightarrow P(s).
+\end{equation}
+The convergence of the right-hand side is locally uniform for complex $s$.
+\end{lemma}
+\begin{proof}
+For $s$ in a fixed compact subset of $\C$ and $m$ large,
+$z_m=r_m e^{s/m}$ lies in the local inverse sector. Set
+$s_m=m+\Phi(z_m)$. The local identity $P(\Phi(z_m))=z_m$ and
+iteration of \eqref{ied:par:eq:P} give exactly
+\[
+ f^{\circ m}(z_m)=P(s_m).
+\]
+Subtracting the two coordinate expansions and writing $u_m=2/r_m$,
+\begin{align*}
+ s_m
+ &=\Phi(r_m e^{s/m})-\Phi(r_m)\\
+ &=u_m(1-e^{-s/m})+\frac{s}{3m}+\Oh(1/m)\\
+ &=s+\Oh\!\left(\frac{1+\log m}{m}\right).
+\end{align*}
+The estimates are uniform on the chosen compact set. The last line
+uses $u_m=m+\Oh(\log m)$. Entire analyticity of $P$ proves convergence.
+The Laplace equality follows from the positive power series in
+\eqref{ied:par:eq:mu}.
+\end{proof}
+
+\begin{lemma}[Compact test convergence]\label{ied:par:lem:weak}
+For every continuous function $\varphi$ with compact support in
+$(0,\infty)$,
+\begin{equation}\label{ied:par:eq:weak}
+ \int\varphi(t)\dd\mu_m(t)\longrightarrow
+ \int_0^\infty\varphi(t)h(t)\dd t.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Push $\mu_m$ and $h(t)\dd t$ forward under $x=e^{-t}$ to finite
+measures on $[0,1]$, giving them zero mass at $x=0$.
+Their total masses are $P(0)$. For every integer $k\ge0$,
+Lemma~\ref{ied:par:lem:laplace} at $s=-k$ gives convergence of their $k$th
+moments. Hence their integrals converge for each polynomial.
+
+Uniform polynomial approximation on $[0,1]$ gives convergence for
+every continuous function there: an approximation error at most
+$\epsilon$ contributes at most $2P(0)\epsilon$, uniformly in $m$.
+The function
+\[
+ g(x)=\varphi(-\log x)\quad(0<x\le1),\qquad g(0)=0
+\]
+is continuous on $[0,1]$ because $\varphi$ has compact support inside
+$(0,\infty)$. Applying the conclusion to $g$ proves \eqref{ied:par:eq:weak}.
+\end{proof}
+
+\begin{remark}
+A compact asymptotic formula for individual coefficients alone need not
+identify a global transform limit. Here the masses are finite and
+fixed, and their Laplace transforms determine polynomial moments after
+compactification. The same measures can then be tested in the local
+coefficient regime. No positive-measure interpretation of the signed
+Bell contour functional is required.
+\end{remark}
+
+\section{Identification, analyticity and endpoint consequences}\label{ied:par:sec:identification}
+
+\begin{proof}[Proof of Theorem~\ref{ied:par:thm:identity}]
+Fix $0<a<b<\infty$ and put $t=n/m$. Dividing \eqref{ied:par:eq:LLT} by $n!$
+and multiplying by $r_m^n$ gives, uniformly for $a\le t\le b$,
+\begin{equation}\label{ied:par:eq:atomfirst}
+ \bigl(\coef n f^{\circ m}(z)\bigr)r_m^n
+ =\frac1n\left(\frac{mr_m}{2}\right)^n m^{-t/3}
+ \left[I(t)+\Oh\!\left(\frac{(1+\log m)^D}{m}\right)\right].
+\end{equation}
+By Lemma~\ref{ied:par:lem:radius},
+\[
+ n\log\frac{mr_m}{2}-\frac t3\log m
+ =-\frac t3\log2+
+ \Oh\!\left(\frac{(1+\log m)^2}{m}\right).
+\]
+Therefore
+\begin{equation}\label{ied:par:eq:atom}
+ \bigl(\coef n f^{\circ m}(z)\bigr)r_m^n
+ =\frac1m\left[
+ \frac{2^{-t/3}I(t)}t+
+ \Oh\!\left(\frac{(1+\log m)^K}{m}\right)\right],
+\end{equation}
+where $K=\max\{D,2\}$ suffices. Only boundedness of $I$ on $[a,b]$
+and $t\ge a$ have been used, not positivity of $I$.
+
+Let $\varphi$ have compact support in $(a,b)$. Summing
+\eqref{ied:par:eq:atom} against $\varphi(n/m)$ is a Riemann sum.
+There are $\Oh(m)$ relevant atoms, so their accumulated error is
+$\Oh((1+\log m)^K/m)=o(1)$. Thus
+\[
+ \int\varphi\dd\mu_m\longrightarrow
+ \int_a^b\varphi(t)\frac{2^{-t/3}I(t)}t\dd t.
+\]
+Lemma~\ref{ied:par:lem:weak} gives another expression for the same limit.
+The continuous function $h(t)-2^{-t/3}I(t)/t$ has zero integral against
+every such test function and therefore vanishes pointwise.
+Arbitrariness of $a,b$ proves \eqref{ied:par:eq:mainidentity} on $(0,\infty)$.
+
+Input A makes the right-hand side of \eqref{ied:par:eq:hhol} holomorphic
+on $\Re z>0$. It agrees with $h$ on the positive axis.
+Uniqueness follows from the identity theorem.
+\end{proof}
+
+There are three sensitive normalizations. The denominator in
+\eqref{ied:par:eq:radius} is $m-\frac13\log m+\frac13\log2$.
+The factor $1/n$ in \eqref{ied:par:eq:atomfirst} comes from $(n-1)!/n!$.
+The exponential tilt cancels $m^{-t/3}$ but leaves $2^{-t/3}$.
+Their combination gives exactly the stated identity.
+
+Equality was established on each positive interval by test functions.
+It was not inferred from matching finitely many endpoint coefficients
+or decimal values. The proof also never takes $n/m\to0$ in a theorem
+whose hypotheses require a fixed positive compact ratio range.
+
+\begin{corollary}[Analytic positivity]\label{ied:par:cor:positive}
+$I(t)>0$ for every $t>0$.
+\end{corollary}
+\begin{proof}
+Input M gives $h(t)>0$, and \eqref{ied:par:eq:mainidentity} has a positive multiplier.
+\end{proof}
+
+\subsection{The small-parameter amplitude}
+The Euler report supplies a separate endpoint input: for every fixed
+$N\ge2$,
+\begin{equation}\label{ied:par:eq:hendpoint}
+ \log\frac{h(t)}2
+ =-\frac t3\log t+\frac{1-\gamma-\log2}{3}t
+ +\sum_{j=2}^N c_jt^j+\Oh(t^{N+1}),\qquad t\downarrow0,
+\end{equation}
+with fixed differentiated remainders and $c_2=(9-\pi^2)/108$.
+This is equation \file{ied:log:eq:logdensity} and its coefficient
+discussion in \cite{Euler}; it is not required for the main theorem.
+
+\begin{corollary}[Endpoint transseries for $I$]\label{ied:par:cor:endpoint}
+For every fixed $N\ge2$,
+\begin{equation}\label{ied:par:eq:Iendpoint}
+ \log\frac{I(t)}{2t}
+ =-\frac t3\log t+\frac{1-\gamma}{3}t
+ +\sum_{j=2}^N c_jt^j+\Oh(t^{N+1}).
+\end{equation}
+The fixed differentiated remainder statements transfer unchanged.
+In particular,
+\begin{align}
+ I(t)=2t\bigg\{1
+ &+\frac t3(1-\gamma-\log t)\notag\\
+ &+t^2\left[
+ \frac{(1-\gamma-\log t)^2}{18}
+ +\frac{9-\pi^2}{108}\right]
+ +\Oh\bigl(t^3(1+|\log t|)^3\bigr)\bigg\}.
+ \label{ied:par:eq:Iendfirst}
+\end{align}
+\end{corollary}
+\begin{proof}
+Take logarithms of \eqref{ied:par:eq:mainidentity} and substitute
+\eqref{ied:par:eq:hendpoint}. The $\log2$ term cancels exactly.
+Exponentiation through degree two gives \eqref{ied:par:eq:Iendfirst}.
+The logarithms differ by an exactly linear function, so the
+differentiated remainders introduce no new error.
+\end{proof}
+
+This solves the amplitude part of the Bell large-depth endpoint
+question. Coefficient asymptotics when depths grow like $n\log n$
+still need a uniform transfer as $n/m$ decreases. Neither the endpoint
+series nor holomorphic continuation supplies that uniformity.
+The smooth renormalized germ at zero is not shown here to have a
+convergent Taylor series.
+
+\subsection{A reusable identification principle}
+\begin{proposition}[General positive-measure matching]\label{ied:par:prop:general}
+Suppose a positive-coefficient iterated family has an entire orbit $P$
+and local inverse coordinate
+\[
+ \Phi(w)=-\frac1{aw}+\rho\log w+\Oh(w),
+ \qquad a>0,\quad\rho\in\R,
+\]
+with the analogues of Inputs F and M. Suppose its absolute local transfer
+for $t=n/m$ in positive compact sets is
+\[
+ \coef n f^{\circ m}(z)
+ =\frac1n(am)^n m^{-\rho t}\bigl(J(t)+o(1)\bigr),
+\]
+where $J$ is continuous and the error uniform. Then
+\[
+ J(t)=t\,a^{-\rho t}h(t)\qquad(t>0).
+\]
+\end{proposition}
+\begin{proof}
+Set $r_m=P(-m)$ and $u_m=1/(ar_m)$.
+The inverse identity yields
+$u_m=m-\rho\log m-\rho\log a+o(1)$, and therefore
+\[
+ m^{-\rho t}(amr_m)^n\longrightarrow a^{\rho t}
+\]
+uniformly on positive compact ratio ranges.
+The Laplace convergence of the coefficient measures follows as before,
+since $u_m(1-e^{-s/m})\to s$.
+Their local density is $a^{\rho t}J(t)/t$, which compact test
+convergence identifies with $h$.
+\end{proof}
+This is a transfer principle with stated hypotheses, not a claim that
+every parabolic map has a positive Laplace orbit or a local coefficient
+theorem. The exponential map has $a=1/2$ and $\rho=1/3$.
+
+\section{A bound valid for every iteration depth}\label{ied:par:sec:majorant}
+
+For power series with real coefficients, write $A\preceq B$ when every
+coefficient of $B-A$ is nonnegative. If the series have nonnegative
+coefficients and zero constant term, this order is preserved by
+composition.
+
+\begin{lemma}[Rational composition majorant]\label{ied:par:lem:majorant}
+For every integer $m\ge0$,
+\begin{equation}\label{ied:par:eq:majorantseries}
+ f^{\circ m}(z)\preceq\frac{z}{1-mz/2}.
+\end{equation}
+In particular, for $m,n\ge1$,
+\begin{equation}\label{ied:par:eq:Hmajorant}
+ 0\le H(n,m)\le n!\left(\frac m2\right)^{n-1}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For every $j\ge1$, $j!\ge2^{j-1}$: each factor $2,\ldots,j$ is at least
+$2$. Hence
+\[
+ f(z)=\sum_{j\ge1}\frac{z^j}{j!}\preceq
+ g(z):=\frac{z}{1-z/2}.
+\]
+Composition and induction give $f^{\circ m}\preceq g^{\circ m}$.
+Direct substitution shows $g^{\circ m}(z)=z/(1-mz/2)$.
+Extract coefficients and multiply by $n!$.
+\end{proof}
+
+This elementary inequality supplies what compact-ratio asymptotics
+omit: a bound at depths much smaller or larger than $n$.
+Near the main saddle it loses a factor of order $n^{L/3}$, but
+exponential tail decay dominates that polynomial loss.
+We give the needed summation estimates explicitly.
+
+\begin{lemma}[Discrete gamma sums]\label{ied:par:lem:gamma}
+Let $L$ range over a fixed compact interval
+$[L_0,L_1]\subset(0,\infty)$. Uniformly as $n\to\infty$,
+\begin{equation}\label{ied:par:eq:gammasum}
+ \sum_{m\ge1}e^{-Lm}m^n
+ =\frac{\Gamma(n+1)}{L^{n+1}}
+ \bigl(1+\Oh(n^{-1/2})\bigr).
+\end{equation}
+Put $w_n=\sqrt n(\log n)^2$. For $p=n$ or $p=n-1$, there are constants
+$c,C>0$ such that
+\begin{equation}\label{ied:par:eq:gammatail}
+ \sum_{\substack{m\ge1\\|m-n/L|>w_n}}e^{-Lm}m^p
+ \le C\frac{\Gamma(p+1)}{L^{p+1}}e^{-c(\log n)^4}
+\end{equation}
+for all sufficiently large $n$, uniformly in $L$.
+\end{lemma}
+\begin{proof}
+For a nonnegative unimodal integrable function $v$ on $[0,\infty)$,
+comparison with unit intervals on each side of its maximum gives
+\[
+ \left|\sum_{m\ge1}v(m)-\int_0^\infty v(x)\dd x\right|
+ \le2\sup_{x\ge0}v(x).
+\]
+Take $v(x)=e^{-Lx}x^p$. Its integral is
+$\Gamma(p+1)L^{-p-1}$ and its maximum is $(p/(eL))^p$.
+Stirling's formula shows that their ratio is $\Oh(p^{-1/2})$
+uniformly on the stated $L$-interval. This proves
+\eqref{ied:par:eq:gammasum} and bounds the complete sum by a uniform constant
+times its integral.
+
+For the upper tail, set $M=n/L+w_n$ and
+$\theta=L^2w_n/(4n)$. For large $n$, $L\pm\theta$ lie in a fixed
+positive compact interval. Exponential tilting gives
+\begin{align*}
+ \sum_{m\ge M}e^{-Lm}m^p
+ &\le e^{-\theta M}\sum_{m\ge1}e^{-(L-\theta)m}m^p\\
+ &\le C\Gamma(p+1)L^{-p-1}
+ e^{-\theta M}\left(\frac{L}{L-\theta}\right)^{p+1}.
+\end{align*}
+Let $x=\theta/L$. Because $p+1=n+\Oh(1)$ and
+$-\log(1-x)\le x+x^2$ for $0\le x\le1/2$, the logarithm of the last
+factor is at most
+\[
+ -\theta w_n+\Oh(\theta)+(n+\Oh(1))\theta^2/L^2.
+\]
+Its principal terms are
+$-L^2w_n^2/(4n)+L^2w_n^2/(16n)$.
+Thus it is bounded above by $-c w_n^2/n$ uniformly for large $n$.
+
+For the lower tail, when $m\le n/L-w_n$,
+\[
+ e^{-Lm}\le e^{\theta(n/L-w_n)}e^{-(L+\theta)m}.
+\]
+The same complete-sum bound leads to the logarithm
+\[
+ \theta(n/L-w_n)-(p+1)\log(1+\theta/L).
+\]
+Using $\log(1+x)\ge x-x^2/2$ gives the same negative bound.
+Finally $w_n^2/n=(\log n)^4$.
+Rounding the real cutoffs to integers only introduces factors
+$e^{\Oh(\theta)}$, which do not affect the estimates.
+\end{proof}
+
+\section{Summing the Bell local limit}\label{ied:par:sec:aggregation}
+
+\begin{proof}[Proof of Theorem~\ref{ied:par:thm:aggregate}]
+Fix a compact positive $L$-interval and use
+\[
+ \mathcal W_n(L)=
+ \{m\in\N:|m-n/L|\le w_n\},
+ \qquad w_n=\sqrt n(\log n)^2.
+\]
+Throughout this window, uniformly,
+\[
+ \frac nm=L+\Oh\!\left(\frac{(\log n)^2}{\sqrt n}\right),
+ \qquad
+ \log m=\log(n/L)+
+ \Oh\!\left(\frac{(\log n)^2}{\sqrt n}\right).
+\]
+By the amplitude identification, $I$ is continuous and strictly
+positive. It has a positive lower bound on the compact range of these
+ratios. Therefore
+\begin{equation}\label{ied:par:eq:slow}
+ m^{-n/(3m)}I(n/m)
+ =(n/L)^{-L/3}I(L)(1+o(1))
+\end{equation}
+uniformly on the window and in $L$. In particular, the difference
+between the logarithm of the power on the left and its central value is
+$\Oh((\log n)^3/\sqrt n)=o(1)$. Its dependence on $n$ does not
+obstruct this replacement.
+
+Input L now applies within one fixed compact ratio range and gives
+\begin{align}
+ \sum_{m\in\mathcal W_n(L)}e^{-Lm}H(n,m)
+ &=(n-1)!\,2^{-n}(n/L)^{-L/3}I(L)(1+o(1))\notag\\
+ &\quad\times\sum_{m\in\mathcal W_n(L)}e^{-Lm}m^n.
+ \label{ied:par:eq:central}
+\end{align}
+The absolute transfer error is a relative $o(1)$ here because
+$m\asymp n$ and $I$ has a positive lower bound.
+Lemma~\ref{ied:par:lem:gamma} shows that the last sum equals
+$n!L^{-n-1}(1+o(1))$.
+Substitution gives the main term in \eqref{ied:par:eq:Sasym}.
+
+For the omitted depths, both preceding lemmas give
+\begin{align*}
+ \sum_{m\notin\mathcal W_n(L)}e^{-Lm}H(n,m)
+ &\le n!\,2^{1-n}
+ \sum_{m\notin\mathcal W_n(L)}e^{-Lm}m^{n-1}\\
+ &\le Cn!\,2^{1-n}(n-1)!L^{-n}e^{-c(\log n)^4}.
+\end{align*}
+Dividing by the main scale gives at most a uniform constant times
+$n^{L_1/3}e^{-c(\log n)^4}\to0$.
+The positive amplitude $L^{L/3-1}I(L)$ is bounded away from zero on
+the fixed interval. The $m=0$ term is zero for $n>1$.
+All estimates were uniform, proving the theorem.
+\end{proof}
+
+\subsection{An exact mixture for strict chains}
+\begin{lemma}\label{ied:par:lem:mixture}
+For $q>0$ and $a=q/(q+1)$, for every $n\ge1$,
+\begin{equation}\label{ied:par:eq:mixture}
+ Z_n(q)=(1-a)\sum_{m\ge0}a^mH(n,m)
+       =\frac1{q+1}S_n(L(q)).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The majorant proves absolute convergence.
+Put $T_n=\sum_{m\ge0}a^mH(n,m)$ and sum \eqref{ied:par:eq:Hrec}:
+\[
+ T_n=\mathbf1_{\{n=1\}}+
+ a\sum_{j=1}^{n}
+ \left\{\begin{matrix}n\\j\end{matrix}\right\}T_j.
+\]
+The diagonal Stirling number equals $1$, so $T_1=(1-a)^{-1}$ and
+\[
+ T_n=\frac{a}{1-a}\sum_{j<n}
+ \left\{\begin{matrix}n\\j\end{matrix}\right\}T_j
+ \quad(n\ge2).
+\]
+Multiplying by $1-a$ and using $a/(1-a)=q$ gives the defining recurrence
+and initial value of $Z_n(q)$. Uniqueness by induction proves the result.
+\end{proof}
+
+\begin{proof}[Proof of Corollary~\ref{ied:par:cor:marked}]
+Apply the aggregation theorem to \eqref{ied:par:eq:mixture} and then the
+amplitude identification. This proves \eqref{ied:par:eq:Zasym},
+\eqref{ied:par:eq:CqI} and \eqref{ied:par:eq:Cqh}, their positivity and compact real
+uniformity.
+
+For the complex continuation define
+$L(q)=\Log(1+1/q)$ on $\Re q>0$, using the principal logarithm.
+There $\Re(1+1/q)>1$, so $L$ is holomorphic and
+$\Re L(q)=\log|1+1/q|>0$.
+In particular $L$ is nonzero and $\Log L$ is holomorphic as well.
+The function
+\[
+ \frac1{q+1}
+ \exp\!\left[\left(\frac{L(q)}3-1\right)\Log L(q)\right]I(L(q))
+\]
+is holomorphic throughout $\Re q>0$ and agrees with the identified
+positive-real amplitude. On a common neighborhood of $q=1$ it agrees,
+by the identity theorem, with the prior local marked amplitude
+constructed in \cite{Chains}.
+\end{proof}
+
+The continuation concerns the amplitude. A uniform expansion for
+$Z_n(q)$ on a complex region additionally needs control of cancellation
+and of its remainders; it does not follow from amplitude continuation.
+
+\section{Consequences for chain-length constants}\label{ied:par:sec:constants}
+
+The prior local marked-chain expansion \cite{Chains} gives, with
+$L=\log2$ and $\mathcal H_n$ the number of strict transitions in a
+uniformly chosen chain,
+\begin{align}
+ \mathbb E\,\mathcal H_n
+ &=\frac n{2L}+\frac{\log n}{6}+K_1-\frac1{12n}
+ +\Oh(n^{-2}),\label{ied:par:eq:mean}\\
+ \operatorname{Var}(\mathcal H_n)
+ &=\frac{1-L}{4L^2}n-\frac{\log n}{12}+K_2+\frac1{24n}
+ +\Oh(n^{-2}).\label{ied:par:eq:variance}
+\end{align}
+That source defines the constant terms by
+\[
+ K_1=\left.\frac{\dd}{\dd t}\log C(e^t)\right|_{t=0},
+ \qquad
+ K_2=\left.\frac{\dd^2}{\dd t^2}\log C(e^t)\right|_{t=0}.
+\]
+The new identity expresses these in the common density and its
+derivatives.
+
+\begin{corollary}[Density formulas for constant cumulant terms]
+\label{ied:par:cor:K}
+Put $A(x)=\log h(x)+(x/3)\log(2x)$ for $x>0$. Then
+\begin{equation}\label{ied:par:eq:Kcompact}
+ K_1=-\frac12-\frac12A'(L),\qquad
+ K_2=-\frac14+\frac14\bigl(A''(L)+A'(L)\bigr).
+\end{equation}
+Equivalently,
+\begin{align}
+ K_1={}&-\frac12-\frac12\left[
+ \frac{h'(L)}{h(L)}+\frac{\log(2L)+1}{3}\right],
+ \label{ied:par:eq:K1}\\
+ K_2={}&-\frac14+\frac14\left[
+ \frac{h''(L)}{h(L)}-\left(\frac{h'(L)}{h(L)}\right)^2
+ +\frac{h'(L)}{h(L)}
+ +\frac1{3L}+\frac{\log(2L)+1}{3}\right].
+ \label{ied:par:eq:K2}
+\end{align}
+\end{corollary}
+\begin{proof}
+Near $t=0$, \eqref{ied:par:eq:Cqh} gives
+\[
+ \log C(e^t)=-\log(1+e^t)+
+ A\bigl(\log(1+e^{-t})\bigr).
+\]
+The inner function has first derivative $-1/2$ and second derivative
+$1/4$ at zero; the first two derivatives of $-\log(1+e^t)$ there are
+$-1/2$ and $-1/4$. The chain rule yields \eqref{ied:par:eq:Kcompact}.
+Differentiating $A$ gives the expanded expressions.
+\end{proof}
+
+The mean, variance and central limit theorem are not new claims of
+this note. These formulas identify their amplitude derivatives in the
+normalization used by the three reports.
+Counting partitions instead of strict transitions would add one to
+the mean and to $K_1$; we retain the source's convention.
+
+\section{Computation and reproducibility}\label{ied:par:sec:computation}
+
+No analytic proof above uses a measured constant or a finite experiment.
+The accompanying programs check exact normalizations and compare
+independent numerical constructions.
+
+\subsection{Exact finite checks}
+The script \file{code/verify_exact.py} uses exact integer and rational
+arithmetic for:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item $960$ instances of \eqref{ied:par:eq:Hmajorant},
+for $1\le n\le24$, $1\le m\le40$;
+\item $144$ evaluations of the depth polynomial in the Newton basis;
+\item $96$ rational instances of the geometric mixture,
+at $q=1/2,1,2,3/2$;
+\item a symbolic check that the four-term Fatou coordinate has zero
+Abel defect through degree five.
+\end{itemize}
+All checks passed. The Newton-basis check uses that the Stirling matrix
+on degrees at most $n$ is $I+N$ with $N$ strictly triangular:
+\[
+ H(n,m)=\sum_{k=0}^{n-1}\binom mk(N^k)_{n1}.
+\]
+The coefficient $(N^k)_{n1}$ counts strict chains of length $k$,
+independently checking the convention in \eqref{ied:par:eq:mixture}.
+These verifications concern finite algebra, not bounds for asymptotic
+remainders.
+
+\subsection{Independent Laplace inversion}
+The script \file{code/explore_density.py} approximates $P(-p)$ directly.
+It solves a truncated inverse-coordinate equation far along the
+negative direction and iterates $w\mapsto e^w-1$ forward.
+The four coefficients are
+\[
+ \Phi(w)=-\frac2w+\frac13\log w-\frac w{36}
+ +\frac{w^2}{540}+\frac{w^3}{7776}
+ -\frac{71w^4}{435456}+\Oh(w^5).
+\]
+The exact script checks those coefficients symbolically.
+Numerical inverse Laplace transformation then estimates $h(t)$.
+This route neither uses the Bell fixed-contour amplitude nor estimates
+the density from Bell counts.
+
+Two runs used $160$ and $320$ forward steps and inversion degrees
+$48$ and $64$. Their values agree to at least twelve decimal places
+at the four displayed arguments. Because no interval bound for
+truncation or quadrature is supplied, that agreement is a diagnostic,
+not a certified precision claim.
+\begin{center}
+\begin{tabular}{@{}rrr@{}}
+\toprule
+$t$ & Exploratory $h(t)$ & $t2^{t/3}h(t)$\\
+\midrule
+$1/2$ & $2.14193747174$ & $1.20212176094$\\
+$\log2$ & $2.03764226105$ & $1.65770061282$\\
+$1$ & $1.81460955983$ & $2.28626478178$\\
+$2$ & $1.02595377154$ & $3.25720019242$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The script \file{code/compare_counts.py} computes Bell counts by exact
+Stirling recurrence through degree $160$ and depth $320$.
+It compares normalized counts at $n/m=1/2,1,2$ with the independently
+inverted density. It also computes strict-chain counts through $n=320$
+and compares their normalized constant, after the prior report's four
+known corrections, with \eqref{ied:par:eq:Lengyel}.
+The complete outputs are in \file{data/count_comparison.json}.
+Finite agreement is never used as a proof premise.
+
+\subsection{Replay}
+From the companion directory run:
+\begin{verbatim}
+python code/verify_exact.py --output data/exact_checks.json
+python code/explore_density.py --steps 160 --degree 48 \
+  --output data/density_160.json
+python code/explore_density.py --steps 320 --degree 64 \
+  --output data/density_320.json
+python code/compare_counts.py --density data/density_320.json \
+  --output data/count_comparison.json
+pdflatex -halt-on-error article.tex
+pdflatex -halt-on-error article.tex
+\end{verbatim}
+Counting uses the Python standard library; the symbolic coordinate
+check uses SymPy, and the optional decimal calculations use mpmath.
+No script accesses the network. Outputs distinguish exact checks
+from floating diagnostics.
+\begin{writenote}[The package here, 9 October 2026]
+In this report the three programs are \file{code/04-parabolic-verify_exact.py},
+\file{code/04-parabolic-explore_density.py} and
+\file{code/04-parabolic-compare_counts.py}, and the data files named above are
+\file{data/04-parabolic-*}; they read and write the delivered names, so the
+replay runs only on a copy with the delivered layout (the README gives the
+recipe). The write did not rerun them. Its own exact checks of the majorant,
+the mixture and the Newton basis, and its numerical check of the aggregate, are
+recorded in Section~\ref{ied:par:sec:checks}; the table's
+$t2^{t/3}h(t)$ column is the inverse-Laplace $h$ times an exact factor, so its
+digits are as uncertified as those of $h$.
+\end{writenote}
+
+\section{Literature, provenance and research boundaries}\label{ied:par:sec:literature}
+
+\subsection{Prior analytic work}
+Prellberg's 2002 seminar, summarized by Mishna in 2005
+\cite{Prellberg}, applies parabolic iteration and complex analysis to
+linear composition recurrences. Its general setting is
+\[
+ X(z)=a(z)X(f(z))+b(z),\qquad
+ f(z)=z+cz^2+dz^3+\cdots.
+\]
+The summary contains a two-index coefficient expression before
+summing over depth and a final partition-chain equivalent with an
+inverse-coordinate contour amplitude. For $f=e^z-1$, the quantity
+$1-d/c^2$ is $1/3$. These are direct antecedents. The leading scale
+and the use of Fatou coordinates are not discoveries of this note.
+
+The four-page primary seminar summary was opened and read for this
+work. The separate FPSAC slide URL cited by the Bell report could not
+be retrieved in this session and is not represented as independently
+read. The repository distinguishes its detailed compact-uniform
+transfer theorem from the older outline.
+
+Lengyel's 1984 recurrence paper is the historical source identified
+by the summary \cite{Lengyel}. The fixed-degree, large-iteration
+leading coefficient of the Bell array is also discussed by Skau and
+Kristensen \cite{Skau}; its abstract was inspected here. That
+information alone does not justify a stronger claim about the full
+scope of the paper. Our arguments do not use it as a theorem.
+
+\subsection{Repository pin and exact questions}
+The inspected ProveIt revision is
+\[
+ \Repin.
+\]
+The source reports are under
+\begin{center}\small
+\file{SetTheory/Cardinals/docs/reports/}\\
+\file{generating-functions-and-asymptotics/oeis-sequence-asymptotics/}.
+\end{center}
+Their exact source identifiers are:
+\begin{center}\small
+\begin{tabular}{@{}p{.47\textwidth}p{.45\textwidth}@{}}
+\toprule
+Report & Git blob of \file{article.tex}\\
+\midrule
+\file{a290354-iterated-euler-diagonals}
+ & \nolinkurl{b5af1ca30b21cd89d90488258d8722aa8a155b0e}\\
+\file{a139383-iterated-bell-diagonals}
+ & \nolinkurl{2b1d8fbe811b11925a0879552b7319500f16cfd2}\\
+\file{a005121-strict-partition-chains}
+ & \nolinkurl{da8cac4780378f0a0a1af35df4ffebdee4b014d2}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The precise open-question labels resolved here are
+\file{ied:q:ibd}, the all-positive-axis portion of
+\file{ied:q:analytic}, and the leading-amplitude portion of
+\file{spc:q:depth}. The marked continuation also bears on
+\file{spc:q:disk}, but does not settle the complex zero set or global
+uniform asymptotic estimates. The mean-constant identities identify
+amplitude derivatives requested beside the depth question.
+\begin{writenote}[The pin and the labels, 9 October 2026]
+At the pin the three blobs are as stated, and the reports' texts at HEAD are
+the same, except that this report now has Part~IV. The labels named in the
+preceding paragraph exist with the meanings given:
+\file{ied:q:ibd} and \file{ied:q:analytic} are items~\ref{ied:q:ibd}
+and~\ref{ied:q:analytic} of Section~\ref{ied:sec:further}, and \file{spc:q:depth},
+\file{spc:q:disk} are items of the strict partition-chain report's
+``Further questions and research''. What this Part answers in each is stated in
+Section~\ref{ied:par:sec:answers}; ``the leading-amplitude portion of
+\file{spc:q:depth}'' is that report's heuristic
+$C\overset{?}{=}L^{L/3-1}I(L)/2$, which \eqref{ied:par:eq:Lengyel} proves.
+\end{writenote}
+
+The new work proves connections between existing normalizations and
+supplies an explicit tail argument. Its repository-relative novelty
+is verifiable at the pin. A literature search and source inspection do
+not establish that no equivalent theorem has appeared elsewhere, and
+this note makes no such claim. The connection is useful because
+previously separate amplitude functions become one positive analytic
+density, allowing parameter transfer without guessing contour constants.
+
+\section{Further research questions}\label{ied:par:sec:further}
+The following problems are concrete continuations of this work.
+\begin{enumerate}[leftmargin=*,itemsep=5pt]
+\item\label{ied:par:q:uniform} \textbf{Uniform Bell transfer toward the endpoint.}
+Prove a version of \eqref{ied:par:eq:LLT} for $n/m$ decreasing on logarithmic
+and then polynomial scales. The endpoint amplitude is now known.
+The remaining task is a uniform coefficient remainder, especially
+for the long-delayed parts of the fixed cut.
+
+\item\label{ied:par:q:summation} \textbf{Summation of every correction.}
+The Bell expansion has polynomials in $\log n$ at each inverse power
+of $n$, whereas the chain recurrence expansion has no such logarithms.
+The factor $m^{-n/(3m)}$ slightly displaces the central depth saddle.
+Carry its expansion to every fixed order and prove cancellation of
+its logarithms against the Bell corrections.
+Theorem~\ref{ied:par:thm:aggregate} proves only the leading summation.
+
+\item\label{ied:par:q:zeros} \textbf{Complex zeros of the marked amplitude.}
+Determine whether \eqref{ied:par:eq:CqI} has zeros on $\Re q>0$; equivalently,
+study zeros of $I$ or $h$ on the image of $L(q)$.
+Real positivity gives no complex zero-free theorem.
+
+\item\label{ied:par:q:positive} \textbf{A common positive-parameter asymptotic theory.}
+Extend the recurrence proof of every fixed order from a small disk
+about $q=1$ to neighborhoods of every positive compact interval.
+Compare its limiting constant directly with \eqref{ied:par:eq:Cqh}.
+Continuation of the amplitude alone is insufficient.
+
+\item\label{ied:par:q:certified} \textbf{Certified density and cumulant constants.}
+Give interval enclosures for $h(\log2)$, $h'(\log2)$ and
+$h''(\log2)$ from the normalized orbit and explicit inversion tails.
+Equations \eqref{ied:par:eq:Lengyel}, \eqref{ied:par:eq:K1} and \eqref{ied:par:eq:K2} then
+yield certified $C,K_1,K_2$. The present decimal calculations stop
+before that certification.
+
+\item\label{ied:par:q:large} \textbf{Large-argument density asymptotics.}
+Determine $h(t)$ as $t\to\infty$. This also determines the Bell
+amplitude at small proportional depth and, through $L(q)\to\infty$
+as $q\downarrow0$, the marked-chain amplitude at small transition
+weight. Compact-parameter results do not control this endpoint.
+
+\item\label{ied:par:q:germ} \textbf{Convergence or summability of the endpoint germ.}
+The renormalization $t^{t/3}h(t)$ has finite-order Taylor asymptotics.
+Decide convergence, or determine coefficient growth and summability.
+Holomorphy on $\Re t>0$ does not decide behavior at its boundary
+point zero.
+
+\item\label{ied:par:q:other} \textbf{Other positive parabolic maps.}
+Apply Proposition~\ref{ied:par:prop:general} to a family for which both the
+positive Laplace orbit and local coefficient theorem can be proved.
+The main difficulty is establishing those hypotheses, rather than
+identifying the measures once they hold.
+
+\item\label{ied:par:q:formal} \textbf{Formal verification of the bridge.}
+Formalize the implication from the four explicit analytic inputs:
+radius asymptotics, finite positive measures, polynomial approximation
+and Riemann sums. This gives a small auditable theorem boundary before
+the much larger earlier contour foundations are formalized.
+\end{enumerate}
+\begin{writenote}[Further questions of Part~IV, 9 October 2026]
+Following Vladimir Reshetnikov's standing rule of 4~October 2026, every claim
+of the manuscript that is not proved in full is stated as an open question;
+these nine items are the manuscript's own, as delivered, and the write labelled
+them. No claim of the manuscript was found wrong; nothing is moved or refuted.
+Relations to Section~\ref{ied:sec:further} and to the neighbouring reports:
+Question~\ref{ied:par:q:uniform} is the coefficient half of the iterated Bell
+report's endpoint $\lambda\to\infty$ (the amplitude half is
+Corollary~\ref{ied:par:cor:endpoint}) and hypothesis~(b) of
+Remark~\ref{ied:rem:labelled}; Question~\ref{ied:par:q:summation} is the
+open part of the chain report's \file{spc:q:depth} (the write's numerical
+observation at the end of Section~\ref{ied:sec:further} suggests a first
+correction $L/(6n)$ without logarithm); Questions~\ref{ied:par:q:zeros}
+and~\ref{ied:par:q:positive} are the open part of \file{spc:q:disk};
+Question~\ref{ied:par:q:certified} contains item~\ref{ied:q:validated} at
+$\log2$; Question~\ref{ied:par:q:large} is the $\beta\to\infty$ half of
+item~\ref{ied:q:endpoint}; Question~\ref{ied:par:q:germ} is the open part of
+item~\ref{ied:q:analytic}.
+\end{writenote}
+\begin{writenote}[Independent check of the Part~IV write, 9 October 2026]
+An independent adversarial check of the Part~IV write (\file{03c28e4c8}) re-derived its
+statements with its own code. \emph{The identity and the trust boundary.} The proof of
+Theorem~\ref{ied:par:thm:identity} was re-derived: \eqref{ied:par:eq:LLT} divided by $n!$
+gives the factor $1/n$; $\Phi(r_m)=-m$ gives $2/r_m=m-\frac13\log m+\frac13\log2+o(1)$, so
+the tilt leaves exactly $2^{-t/3}$; the masses of $\mu_m$ are $f^{\circ m}(P(-m))=P(0)$; and
+the compact-test identification gives $h(t)=2^{-t/3}I(t)/t$. The four inputs were read in
+\file{a139383-iterated-bell-diagonals} at the pin (blob \file{2b1d8fbe81}):
+\file{ibd:pd:eq:absolute} is stated for $\eta=n/m\in[b,B]$ with remainder
+$\Oh(m^{-1}(1+\log m)^D)$ and is proved from the ``certified common finite entry'' on the
+outer arcs and the endpoint estimate $\Rea\Psi(-s+i0)\le3-1/s$ of \file{ibd:pd:eq:seed}
+(the interval-certificate dependency of Remark~\ref{ied:par:rem:seed}); that report's Part~II
+is stated as conditional on its Part~I; and the holomorphy paragraph of
+\file{ibd:pd:prop:positive} uses a local integrable majorant, not the numerical seed
+$1.64<I(1)$, which enters only its positivity paragraph. The trust boundary of
+Section~\ref{ied:par:sec:trust} is therefore exact. \emph{Numbers.} $2^{1/3}h(1)$ is
+$2.286264781775815\ldots$ with the delivered density ($h(1)=1.8146095598343874\ldots$) and
+$2.286264781776587\ldots$ with the earlier check's independent $1.814609559835$, so
+``$2.2862647817\ldots$'' is a correct truncation for both; the three runs of the iterated Bell
+report exceed it by $1.642\times10^{-8}$, $2.92\times10^{-9}$, $4.52\times10^{-9}$, and its
+$C=\sqrt{2\pi}I(1)/2=2.86540797264\ldots$. Through Lengyel's constant from OEIS A086053
+(independent of Part~IV's density), $h(\log2)=2C/(2\log2)^{(\log2)/3}=2.03764226105491367\ldots$,
+against the delivered $2.03764226105491440\ldots$. \emph{The write's observation} was
+recomputed by other routes: at $L=\log2$, $S_n(L)=2z_n$ exactly and the main term is $2Cf_n$
+with Lengyel's $C$; at $L=1$, $S_n(1)=(q+1)Z_n(q)$ with $q=1/(e-1)$ from the marked recurrence
+(equal to the Newton form at $n=25$ to 25 digits). The values $n(\text{ratio}-1)=0.11555847$
+and $0.16669412$ at $n=320$ are reproduced, and both agree with $L/6+c_2(L)/n$, the chain
+report's first two coefficients ($0.11555871$, $0.16669464$), to $6\times10^{-7}$; at $L=1$
+this is again only numerical evidence (uncertified, outside that report's disk). Also
+confirmed: the Newton form, the chain counts against A005121 (19 terms), the majorant for
+$n\le30$, $m\le60$, the mixture identity for $n\le25$ at five rational $q$; with SymPy, the
+endpoint expansion and its exponentiation through $t^2$, the main term of
+Theorem~\ref{ied:par:thm:aggregate} and the Lengyel form; the archive (1{,}394{,}668 bytes, 45
+files, 1{,}636{,}954 bytes unpacked; manuscript~02 of 12 files), the 9 byte-identical staged
+files, the pin \file{58175ca455} and its three blobs, the stale-blob correction
+(\file{ab5014ecd6} until \file{3f9fc9d4f}, \file{2b1d8fbe81} since), the numbering (all
+earlier labels unchanged, the 56 delivered labels at section $+38$, 23 added), the 51
+references, the README's 42 files. \emph{Since the write}: commit \file{7354dd9e13} added the
+proposed notes to \file{a005121-strict-partition-chains} and
+\file{a139383-iterated-bell-diagonals} (an added note each; their \file{article.tex} blobs are
+now \file{9f84153329} and \file{8b759cc0cb}), so the statements in
+Sections~\ref{ied:par:sec:provenance} and~\ref{ied:par:sec:answers} and in the front matter
+that those blobs are unchanged at HEAD and the notes not applied describe the state at the
+write. No claim of Part~IV or of the write was found wrong.
+\end{writenote}
+
+\appendix
+\section{A short proof checklist for independent review}\label{ied:par:app:checklist}
+A reviewer can assess the new reasoning by checking this chain:
+\begin{enumerate}[leftmargin=*,itemsep=3pt]
+\item $r_m=P(-m)$ is positive and gives the exact mass
+$f^{\circ m}(r_m)=P(0)$.
+\item The additive constant of $\Phi$ in \eqref{ied:par:eq:Phi} is zero.
+It gives the $\log2/3$ term in \eqref{ied:par:eq:radius}.
+\item The inverse identity is applied only near $r_m$, where
+$r_m e^{s/m}$ stays in the stated sector.
+\item Negative integer Laplace values and equal finite masses give
+compact test convergence after $x=e^{-t}$.
+\item Input L is absolute and uniform on each fixed positive compact
+interval; such an interval contains $\Oh(m)$ atoms.
+\item Continuity converts equality of the tested densities into a
+pointwise identity.
+\item The central aggregation window lies in one compact ratio
+region; all outside depths obey the rational majorant.
+\item The majorant's loss $n^{L/3}$ is retained before its tail is
+declared negligible.
+\item For complex continuation, $L(q)$ stays in $\Re L>0$ on
+$\Re q>0$, with every logarithm branch specified.
+\end{enumerate}
+None of these steps uses the decimal values.
+The earlier analytic interfaces remain the inherited dependency.
 
 \begin{thebibliography}{99}
 \bibitem{A290353} The OEIS Foundation Inc., \emph{A290353}, square array of iterated Euler transforms, entry by Alois P. Heinz, 28 July 2017. Retrieved 5 October 2026. \url{https://oeis.org/A290353}.\small
@@ -2468,11 +3925,18 @@ An adversarial check made by the intake after the write (commit \file{84fc1aaed}
 \bibitem{BW} M. Bechtloff Weising, \emph{Higher Order Bell Symmetric Functions}, arXiv:2505.18504v2. \url{https://arxiv.org/abs/2505.18504v2}. Definitions and statements checked in the versioned HTML on 5 October 2026.
 \bibitem{IBD} \emph{Asymptotics of Iterated Bell Diagonals (OEIS A139383, A261280)}, unrefereed research report in VladimirReshetnikov/ProveIt, combined fixed-shift and proportional-depth manuscripts, 2 October 2026. Catalogue checked 5 October 2026; indexed commit \texttt{65969409cfc007047182e9303e1d2d0106324dea}. \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a139383-iterated-bell-diagonals}{Repository report}.
 \\{}[As cited in Report~228: unrefereed report in VladimirReshetnikov/ProveIt, 2 October 2026. Snapshot at main commit \texttt{5fdc0d68a062c815100ac27bd173a8c4b901c08d}, checked 5 October 2026. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/5fdc0d68a062c815100ac27bd173a8c4b901c08d/SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a139383-iterated-bell-diagonals/article.tex}{Pinned public source}. Sections 4, 12, 13, and 17.] [\wtag\ In this repository: \file{SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a139383-iterated-bell-diagonals}; its \file{article.tex} is the same blob at both pins and at HEAD, and its Sections 4, 12, 13 and 17 are the sections Report~228 names.]
+\\{}[Part~IV (key \texttt{BellReport}): ProveIt research report \emph{Iterated Bell diagonals}, with the proportional-depth addendum; pinned revision \Repin, blob \texttt{2b1d8fbe81}.]
 \bibitem{R225} \emph{Diagonal and proportional height asymptotics for iterated Euler transforms}, Report 225, 5 October 2026. [\wtag\ Printed in this report as Part~\ref{ied:lead:part}.] As cited in Report~226: preceding unrefereed research report; unchanged PDF and editable TeX included in the archive's \texttt{supporting} directory; exact provenance in \texttt{sources/SOURCE\_LEDGER.md}. As cited in Report~228: unrefereed research report, 5 October 2026; unchanged complete TeX and PDF in the accompanying archive; provenance in \texttt{sources/SOURCE\_LEDGER.md}. [\wtag\ The included copies are byte-identical to Part~I and are not shipped; the ledgers are shipped as \file{226-firstcorr-sources-SOURCE_LEDGER.md} and \file{228-logheight-sources-SOURCE_LEDGER.md}.]
 \bibitem{R226} \emph{First logarithmic correction for iterated Euler diagonals}, Report 226, unrefereed research report, 5 October 2026. Unchanged complete TeX and PDF in the accompanying archive; provenance in \texttt{sources/SOURCE\_LEDGER.md}. [\wtag\ Printed in this report as Part~\ref{ied:corr:part}; the included copy is byte-identical to it and is not shipped.]
 \bibitem{DS} A. Dudko and D. Sauzin, \emph{The resurgent character of the Fatou coordinates of a simple parabolic germ}, C. R. Acad. Sci. Paris I \textbf{352} (2014), 255--261. \url{https://doi.org/10.1016/j.crma.2013.12.005}.
 \bibitem{Prellberg} T. Prellberg, \emph{On the Asymptotic Analysis of a Class of Linear Recurrences}, September 2002 seminar, summary by M. Mishna, Algorithms Seminar 2002--2004 (2005), 47--50. Sections 2.2 and 3.1. \url{https://algo.inria.fr/seminars/summary/Prellberg2002a.pdf}.
+\\{}[Part~IV: seminar of 23 September 2002, summary by M.~Mishna, in F.~Chyzak (ed.), \emph{Algorithms Seminar 2002--2004}, INRIA, 2005, pp.~47--50; ``The four-page primary seminar summary was opened and read''.]
 \bibitem{NV} S. V. Nagaev and V. I. Vakhtel, \emph{Limit theorems for probabilities of large deviations of a Galton--Watson process}, Discrete Math. Appl. \textbf{13}(1) (2003), 1--26. Theorems 1--2 and their Poisson specialization; the source-comparison limitations are recorded in the ledger. \url{https://doi.org/10.1515/156939203321669537}; \url{https://www.mathnet.ru/eng/dm183}.
 \bibitem{TSvol} [\wtag] \emph{Transseries and Inversion}, the transseries volume of this repository, \file{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}: Proposition \texttt{p0:prop:factorial-core}, Theorems \texttt{p0:thm:lambert-core}, \texttt{p0:thm:perturbed-inversion} and \texttt{p0:thm:staircase}.
+\bibitem{Euler} [Part~IV] ProveIt research report, \emph{Diagonal and proportional height asymptotics for iterated Euler transforms}, with Parts II--III and editorial notes, \file{a290354-iterated-euler-diagonals/article.tex}. Pinned revision \Repin\ (blob \texttt{b5af1ca30b}). [This report's Parts~I--III, unchanged at the pin.]
+\bibitem{Chains} [Part~IV] ProveIt research report, \emph{Strict partition chains and Lengyel numbers}, \file{a005121-strict-partition-chains/article.tex}. Pinned revision \Repin\ (blob \texttt{da8cac4780}).
+\bibitem{Lengyel} [Part~IV] T. Lengyel, \emph{On a recurrence involving Stirling numbers}, European Journal of Combinatorics \textbf{5} (1984), 313--321. Bibliographic attribution checked in \cite{Prellberg}; the original paper was not independently reread for the companion.
+\bibitem{Skau} [Part~IV] I. H. Skau and K. F. Kristensen, \emph{An asymptotic formula for the iterated exponential Bell numbers}, arXiv:1903.07979, 2019. \url{https://arxiv.org/abs/1903.07979}.
+\bibitem{A005121} [Part~IV; listed, not cited in its text] The OEIS Foundation Inc., \emph{A005121}, \url{https://oeis.org/A005121}. Accessed 8 October 2026. Sequence metadata are context; the checks independently recompute every count.
 \end{thebibliography}
 \end{document}

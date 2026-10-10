@@ -1,0 +1,172 @@
+\section{Reproducible computation and the meaning of a certificate}
+\label{sec:computation}
+
+The archive is organized so that the analytic argument can be read
+without executing code, while each finite algebraic step can be replayed
+without trusting a decimal fit. There are three distinct kinds of
+computation. Exact rational word algebra verifies a shuffle certificate.
+Outward interval arithmetic, together with a proved analytic tail bound,
+certifies a numerical enclosure. Ordinary high-precision quadrature checks
+an implementation and its conventions. These roles should remain
+distinguishable when the files are integrated into ProveIt.
+
+\subsection{Exact word algebra and algebraic substitutions}
+
+The program \code{code/shuffle_certificates.py} represents a binary word
+as a tuple and a shuffle as a dictionary of integer multiplicities.
+It recursively shuffles two words, computes the nonincreasing Lyndon
+factorization, and solves the resulting triangular equation using
+rational numbers. The decisive replay is to expand the resulting
+polynomial back into words. A successful replay returns exactly the
+original word with coefficient one and no other terms.
+
+At weights one through nine, this procedure re-expands all \(511\)
+nonempty words ending in one. It also enumerates all \(45\) nonempty
+bigraded sectors and checks their Lyndon counts against
+Theorem~\ref{thm:witt}. The recorded data contain every polynomial normal
+form of the ten weight-six triples, all four weight-five doubles, and
+the two-product certificate of Corollary~\ref{cor:wt5}.
+This exhaustive finite check supports the implementation; the
+all-weight statement rests on the proof of the theorem.
+
+The depth verifier implements the binomial formula independently of the
+target expressions. Exact symbolic subtraction confirms every coefficient
+in the five weight-six and three weight-four source formulas.
+It also emits the parity-reducible Gaussian component of every double
+through weight twelve: imaginary parts at even weight and real parts at
+odd weight. Thus the archive includes further explicit identities as
+reusable data, with no integer-relation recognition step.
+
+The ladder verifier works in
+\(\Q[r]/(r^3+r-1)\). Rational functions are reduced using the inverse
+of their denominator modulo the defining polynomial. Its \(35\) exact
+checks cover the six factorizations, the eighteen Kummer arguments,
+the eight Rogers arguments, the rational row operation, and both
+logarithmic-tail cancellations. In particular, the finite certificate
+does not attempt to evaluate a transcendental function in the number
+field: it verifies the arguments and coefficients of functional equations
+whose analytic validity is stated in the article.
+
+\subsection{Independent numerical diagnostics}
+
+For the same-argument double family, a useful independent evaluator is
+\begin{equation}
+F_{a,b}(z)=\frac{z}{(a-1)!}
+\int_0^1\frac{(-\log t)^{a-1}\Li_b(zt)}{1-zt}\,dt,
+\qquad |z|=1,\ z\ne1.
+\label{eq:double-quadrature}
+\end{equation}
+It follows first by absolutely convergent series expansion for \(|z|<1\),
+then by the boundary limit. This evaluator uses neither the binomial
+reduction nor a fitted constant basket.
+For the inverse-argument mixed family the corresponding integral replaces
+\(\Li_b(zt)\) by \(\Li_b(t)\).
+For the arbitrary-depth one-two family the verifier uses the integral
+with the zero letter held fixed, before expanding its outer factor.
+
+The resulting diagnostics comprise \(64\) checks at \(65\) decimal
+working digits for the same-argument double and one-two formulas,
+including both Gaussian and Eisenstein points and the non-cyclotomic
+point \(e^{i\sqrt2}\). Their largest absolute residual was
+\(1.081\cdot10^{-64}\) when rounded upward.
+A separate inherited-mixed audit contains eighteen general-formula
+quadratures and four explicit specialization checks, with maximum
+residual less than \(1.365\cdot10^{-65}\).
+The cubic and complementary-power ladders were evaluated at \(100\)
+and \(200\) working digits, including comparison with directly summed
+convergent classical-polylogarithm series. The cubic residual at
+\(200\) digits was below \(2.62\cdot10^{-200}\); the independent
+series comparison differed by less than \(9.91\cdot10^{-191}\).
+
+For the remaining \(S_4\) conjecture, an independent real integral is
+\[
+S_4=-\frac16\int_0^1
+\frac{(-\log t)^3\log(1+t^2)}{1+t^2}\,dt.
+\]
+It gives
+\[
+S_4=-0.0104934562973350434533567510062017519635106188773\ldots.
+\]
+At \(50\) working digits the discrepancy from
+\eqref{eq:S4-short} was below \(5.0\cdot10^{-51}\).
+This is evidence for the conjecture, and is deliberately excluded from
+the proved-identity count. The archive includes a small independent
+script for this comparison.
+
+None of these residuals is an interval-certified error bound. In
+particular, a residual at approximately the working precision is
+consistent with cancellation and finite-precision rounding.
+The independent formulas and the analytic proofs, rather than the
+number of matching digits, determine the mathematical status.
+
+\subsection{The interval certificate and the asymptotic diagnostics}
+
+The cubic moment calculation has a stronger status. All endpoints in
+\code{code/moments/cubic_certificate.json} are exact rational numbers
+with denominator \(10^{130}\), displayed in decimal form. The
+certificate uses no floating-point special-function values. The interval
+width is less than \(2.387\cdot10^{-113}\), and its endpoints share
+\(112\) digits after the decimal point. This certifies the common
+truncated decimal prefix; a claim about rounded digits would instead
+require checking the relevant rounding boundary.
+
+The certificate was replayed independently and reproduced every recorded
+field exactly. Separate quadratures at \(150\) and \(180\) working
+digits lie inside the interval. The quadratures provide a useful
+cross-check but are not used to construct the rational enclosure.
+
+The coefficient asymptotic and moment bounds were also compared with
+direct evaluations. Figure~\ref{fig:moment-asymptotics} shows two
+features that matter for using the expansion. The coefficient
+approximation improves in the predicted inverse powers of \(k\).
+Nevertheless, at each fixed \(n\), the terms \(c_k/k^n\) eventually
+increase. It is therefore essential to specify a truncation rule,
+such as the one in Theorem~\ref{thm:effective-moment}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{figures/moment_asymptotics.pdf}
+\caption{Numerical diagnostics for the proved coefficient and moment
+asymptotics. Left: absolute relative errors of
+\(C\rho^{-k}k^{-3/2}\) and
+\(C\rho^{-k}k^{-3/2}(1+\beta_1/k)\), using coefficients computed from
+their positive defining recurrence. Right:
+\(\log_{10}(c_k/k^n)\) for \(n=20,40,80\). Dotted vertical lines
+mark \(k=n/\alpha\); circles mark the sampled minima.
+All plotted quantities are dimensionless. The figure illustrates
+the theorems and supplies no independent error certificate.}
+\label{fig:moment-asymptotics}
+\end{figure}
+
+\subsection{Archive structure and reproduction}
+
+The top-level \code{README.md} gives installation, build, verification,
+and integration instructions. The article's master source is
+\code{article/polylogarithms_exact_reductions.tex}; all included
+sections and the vector figure are supplied. The verification programs
+are grouped under \code{code/}, with their recorded outputs alongside
+the relevant program or under \code{data/}. Source provenance includes
+the pinned commit, content hashes, and a status register mapping each
+proposed manuscript update to its source equation or section.
+
+From the archive root, the essential commands are
+\begin{quote}\small\ttfamily
+python -m pip install -r requirements.txt\\
+python code/run\_checks.py --fast\\
+python code/run\_checks.py --full\\
+make pdf
+\end{quote}
+The fast command replays exact algebra and the rational interval
+certificate. The full command additionally runs the independent
+quadratures and regenerates the diagnostic figure. It may take several
+minutes; no network access is required after installing the dependencies.
+The complete recorded diagnostics remain available without rerunning
+them. The PDF is built with ordinary \LaTeX{} packages and contains
+no external data dependency.
+
+The source manifest is a checkpoint, not an assertion that later
+repository revisions have the same status. Integration should preserve
+the proved/conjectured distinction, the descending-index convention,
+the branch choices, and the qualification that shuffle quotient
+dimensions are formal. The supplied register is intended to make
+that editorial task precise.

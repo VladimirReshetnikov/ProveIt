@@ -1,0 +1,1382 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{booktabs,array,longtable,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Binary broadcasts: analytic renormalization}
+\fancyhead[R]{\small ProveIt research note}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\atanh}{\operatorname{atanh}}
+\newcommand{\He}{\operatorname{He}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
+\newcommand{\crit}{\theta_{\mathrm c}}
+\newcommand{\res}{\theta_{\mathrm r}}
+\newcommand{\Disk}{\mathbb D}
+\title{A sharp analytic renormalization threshold\texorpdfstring{\\}{ }for binary broadcasts on trees\texorpdfstring{\\[4pt]}{ }\large Critical-window residues, local asymptotics, and majority decoding}
+\author{Research prepared for Vladimir Reshetnikov\\Developed with OpenAI ChatGPT}
+\date{October 8, 2026}
+\hypersetup{pdftitle={A sharp analytic renormalization threshold for binary broadcasts on trees},pdfauthor={Research prepared for Vladimir Reshetnikov; developed with OpenAI ChatGPT}}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $S_n$ be the sum of the spins at level $n$ of a rooted $b$-ary
+binary broadcast, with the root fixed to $+1$ and edge correlation
+$0<\theta\leq1$. Put $X_n=(b\theta)^{-n}S_n$. We prove that the
+Gaussian-renormalized Laplace transforms
+$\exp(-\Var(X_n)t^2/2)\E e^{tX_n}$ converge locally holomorphically
+near zero if and only if $\theta>b^{-3/4}$. The limiting residue is
+nonvanishing and depends analytically on $\theta$; convergence is
+exponential, uniformly on compact parameter intervals above the threshold.
+The converse follows from explicit third- and fourth-cumulant divergences,
+including the boundary case. This fourth-cumulant threshold is distinct
+from the classical reconstruction threshold $b^{-1/2}$.
+
+For the finite-depth window
+$\theta_n=b^{-1/2}\exp(\gamma/(2n))$, we identify a single analytic
+residue controlling all bounded real $\gamma$, obtain expansions to
+every order in $n^{-1}$, and prove a uniform lattice local limit expansion
+to arbitrary order. A separate Fourier argument gives the full expansion
+of majority-decoding success. On the binary tree at criticality its
+$n^{-3/2}$ correction vanishes, and the next term is
+$-5/(4\sqrt\pi\,n^{5/2})$. The proofs use exact broadcast recursions,
+analytic contractions, and conditional independence; no factor-of-IID
+claim is assumed. Exact rational computations verify the coefficient
+identities and independent finite probability distributions. The classical
+central limit theorem and earlier moment recursions are credited; the
+precise novelty of the stronger theorem package remains subject to
+specialist literature review.
+\end{abstract}
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{Scope, context, and the questions addressed}
+
+Binary broadcasting separates two sources of randomness: a spin at the
+root and independent errors along the edges. The exponentially many
+leaves are strongly dependent because their ancestral paths overlap.
+Nevertheless, the sum of the leaf spins admits an exact recursion.
+This note asks how much information is retained by that recursion after
+its growing Gaussian part has been removed.
+
+There are three related questions. First, for which correlations does
+Gaussian renormalization leave a genuine analytic limiting function?
+Second, what happens when the correlation approaches the reconstruction
+threshold at the same time as the tree grows? Third, can the analytic
+information be converted into individual lattice probabilities and a
+quantitative decoding calculation? The answers require control of the
+whole transform, rather than only a fixed finite list of moments.
+
+The principal result is a sharp threshold for locally holomorphic
+convergence. Its value, $b^{-3/4}$, is forced by the fourth cumulant.
+The familiar second-moment threshold is $b^{-1/2}$. Between these two
+values the variance of the mean-normalized statistic diverges while its
+Gaussian-renormalized transform converges analytically. At the second
+threshold the variance grows linearly in the depth, and the residue gives
+particularly explicit finite-size information.
+
+\subsection{Relation to established work}
+
+Limit theorems for multitype branching processes go back to Kesten and
+Stigum~\cite{KestenStigum1966}. Moore and Snell~\cite{MooreSnell1979}
+applied branching-process limit theorems to a phase transition for the
+Ising model on a tree. The broadcast/reconstruction interpretation and
+the role of the square of the edge correlation are developed in
+Evans, Kenyon, Peres, and Schulman~\cite{EKPS2000}. General additive
+functionals of bifurcating Markov chains also have subcritical, critical,
+and supercritical fluctuation regimes; see Bitseki Penda and
+Delmas~\cite{BitsekiDelmas2021}.
+
+Exact recursions and moment asymptotics are themselves established tools.
+M\'elin~\cite{Melin1996} derived recursions and the leading scaling of
+all raw moments for the magnetization of the whole finite Cayley tree.
+Our observable is the last level, and our main assertions concern a
+locally holomorphic residue, its exact threshold of existence, a
+finite-depth critical window, and uniform local expansions. We do not
+claim to introduce the broadcast recursion or the critical central limit
+theorem.
+
+The general language of mod-Gaussian convergence was developed by
+Jacod, Kowalski, and Nikeghbali~\cite{JKN2011}. M\'eliot and
+Nikeghbali~\cite{MeliotNikeghbali2014} applied it to statistical-mechanical
+models, including the one-dimensional Ising model. We use a locally
+holomorphic version, stated explicitly below. Where the Gaussian
+variance tends to a finite number, the same analytic renormalization
+still makes sense, but it is not mod-Gaussian convergence with a
+diverging variance parameter.
+
+Gu, Roozbehani, and Polyanskiy~\cite{GuRoozbehaniPolyanskiy2020}
+study full-boundary reconstruction near criticality. That question
+involves all leaf spins, not only their sum, and a different order of
+limits. Our majority calculation concerns a specified decoder. It is not
+an assertion that majority is optimal among all boundary estimators.
+
+\subsection{Repository connection and status of the contributions}
+
+The motivating repository source is family 236 of the
+\texttt{openai/math} collection: the manuscript on the sharp
+factor-of-IID threshold for free Ising states on regular
+trees~\cite{OpenAIFactor}. Its introduction explicitly separates
+reconstruction, factor constructions, and finitary coding. We use its
+topic as a research starting point. Its factor theorem, including its
+critical case, is not an input to any proof in this note.
+
+The repository was inspected at commit
+\texttt{adc7f1241b42e322a6451854ab7e4b4c146bf78a}. Its README describes
+a collection with results at different stages of verification. Accordingly,
+all results used here are either proved below or attributed to established
+primary literature for context only. The proposed contribution is the
+combined analytic threshold, parameter-uniform residue, critical-window
+expansion, and lattice/decoder consequences. The derivations are
+self-contained; a claim of priority for every component would require a
+more exhaustive specialist bibliography than the source audit accompanying
+this research session.
+
+\section{Model, normalizations, and main statements}
+
+Fix an integer $b\geq2$. On the rooted $b$-ary tree, fix the root spin
+to $+1$. For every edge $e$ choose independently
+\[
+ \Prob(\varepsilon_e=1)=a:=\frac{1+\theta}{2},\qquad
+ \Prob(\varepsilon_e=-1)=1-a,\qquad 0<\theta\leq1.
+\]
+The spin at a vertex is the product of the edge signs along its path
+from the root. Define
+\begin{equation}\label{eq:normalizations}
+ S_{n,\theta}=\sum_{|v|=n}\sigma_v,
+ \qquad B=b\theta,\qquad \mu=\sqrt b\,\theta,
+ \qquad X_{n,\theta}=B^{-n}S_{n,\theta},
+ \qquad W_{n,\theta}=b^{-n/2}S_{n,\theta}=\mu^nX_{n,\theta}.
+\end{equation}
+The mean normalization is $X$, and the square-root-of-level-size
+normalization is $W$. All probabilities and expectations below condition
+on the root spin being $+1$, unless explicitly stated otherwise.
+
+\begin{definition}
+Write $V_{n,\theta}=\Var(X_{n,\theta})$. We say that Gaussian
+renormalization converges locally holomorphically if, for some $\rho>0$,
+\begin{equation}\label{eq:renormalized-transform}
+ \Psi_{n,\theta}(t)
+   :=\exp\!\left(-\frac{V_{n,\theta}t^2}{2}\right)
+      \E e^{tX_{n,\theta}}
+\end{equation}
+converges uniformly on compact subsets of $\Disk_\rho=\{t:|t|<\rho\}$.
+The limit has value $1$ at zero. In particular it is nonzero on a
+possibly smaller disk.
+\end{definition}
+
+\begin{theorem}[Sharp analytic threshold]\label{thm:sharp}
+For every $b\geq2$ and $0<\theta\leq1$, convergence in the preceding
+definition holds if and only if
+\begin{equation}\label{eq:threshold}
+                         \theta>\res:=b^{-3/4}.
+\end{equation}
+Above this threshold there is a unique analytic germ $h_\theta$ with
+\[
+ h_\theta(0)=0,\qquad h_\theta'(0)=1,
+ \qquad h_\theta''(0)=0
+\]
+satisfying
+\begin{equation}\label{eq:fixed-h}
+ h_\theta(t)=b\log\!\left(
+        a e^{h_\theta(t/B)}+(1-a)e^{h_\theta(-t/B)}\right)
+                -\frac{1-\theta^2}{2b\theta^2}t^2.
+\end{equation}
+The limit in \eqref{eq:renormalized-transform} is
+$\Psi_\theta=e^{h_\theta}$.
+
+For each compact real interval $I\subset(b^{-3/4},1]$, there are
+$\rho,C>0$ and $q\in(0,1)$ such that analytic logarithms
+$h_{n,\theta}=\log\Psi_{n,\theta}$ can be chosen on $\Disk_\rho$ and
+\begin{equation}\label{eq:uniform-exponential}
+ |h_{n,\theta}(t)-h_\theta(t)|\leq Cq^n|t|^3
+ \qquad(\theta\in I,\ |t|\leq\rho/2).
+\end{equation}
+The germ $h_\theta(t)$ is jointly holomorphic in $t$ and in a complex
+neighborhood of every real parameter in this interval.
+\end{theorem}
+
+Uniqueness here is uniqueness of the normalized analytic germ, not a
+claim about arbitrary global solutions of the functional equation.
+The endpoint $\theta=1$ gives $X_{n,1}=1$ and $h_1(t)=t$.
+
+\begin{theorem}[Finite-depth critical window]\label{thm:window}
+Let $\crit=b^{-1/2}$ and, for bounded real $\gamma$, put
+\begin{equation}\label{eq:window}
+ \theta_n=\crit e^{\gamma/(2n)},\qquad
+ m_\gamma=e^{\gamma/2},\qquad W_n=W_{n,\theta_n}.
+\end{equation}
+For sufficiently large $n$, $0<\theta_n<1$. Then
+$\E W_n=m_\gamma$ and
+\begin{equation}\label{eq:window-variance}
+ v_n:=\Var(W_n)
+ =\left(1-\frac{e^{\gamma/n}}b\right)
+          \frac{e^\gamma-1}{e^{\gamma/n}-1},
+ \qquad v_n\big|_{\gamma=0}=\frac{b-1}{b}n.
+\end{equation}
+Uniformly for $\gamma$ in any fixed compact real interval, on a common
+complex disk around zero,
+\begin{equation}\label{eq:window-residue}
+ e^{-v_nt^2/2}\E e^{tW_n}
+      =\Psi_{\theta_n}(m_\gamma t)+O(q^n)
+      \longrightarrow\Psi_{\crit}(m_\gamma t).
+\end{equation}
+For every $J\geq0$, the left side has an expansion through order
+$n^{-J}$, with uniform remainder $O(n^{-J-1})$; its coefficients are
+given explicitly by parameter derivatives of $\Psi_\theta$ in
+\eqref{eq:window-taylor} below.
+\end{theorem}
+
+The remaining main assertions are the arbitrary-order uniform lattice
+local expansion in Theorem~\ref{thm:local} and the majority expansion in
+Theorem~\ref{thm:majority}. Their proofs include the high-frequency bounds
+needed to pass from a small complex disk to lattice probabilities.
+
+\section{Exact recursions and the parity decomposition}
+
+\begin{lemma}[Distributional recursion and variance]\label{lem:recursion}
+With independent copies $X_{n,\theta}^{(1)},\ldots,X_{n,\theta}^{(b)}$
+and independent edge signs $\varepsilon_1,\ldots,\varepsilon_b$,
+\begin{equation}\label{eq:distributional}
+ X_{n+1,\theta}\ \overset{d}{=}
+       \frac1B\sum_{j=1}^b\varepsilon_jX_{n,\theta}^{(j)}.
+\end{equation}
+Consequently
+\begin{align}
+ \E X_{n,\theta}&=1,\label{eq:mean}\\
+ V_{n+1,\theta}&=\frac{V_{n,\theta}+1-\theta^2}{b\theta^2},\label{eq:variance-rec}\\
+ V_{n,\theta}&=(1-\theta^2)\sum_{k=1}^n\mu^{-2k},\label{eq:variance-X}\\
+ \Var(W_{n,\theta})&=(1-\theta^2)\sum_{j=0}^{n-1}\mu^{2j}.\label{eq:variance-W}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+Conditional on the spins at the children of the root, the descendant
+subtrees are independent. The spin sum in the $j$th subtree is its
+root-fixed positive version multiplied by $\varepsilon_j$. Dividing by
+$B^{n+1}$ proves \eqref{eq:distributional}. If a variable $X$ has mean
+$1$ and variance $V$, then
+$\Var(\varepsilon X)=V+1-\theta^2$. Independence gives
+\eqref{eq:variance-rec}, and iteration gives the remaining formulas.
+\end{proof}
+
+For an analytic logarithm near zero, define
+\[
+ h_{n,\theta}(t)=\log\E e^{tX_{n,\theta}}-\frac12V_{n,\theta}t^2.
+\]
+The normalizations force $h_n=t+O(t^3)$. From the distributional
+recursion and the variance identity we obtain the exact autonomous map
+\begin{equation}\label{eq:autonomous}
+ h_{n+1}(t)=b\log\!\left(ae^{h_n(t/B)}+(1-a)e^{h_n(-t/B)}\right)
+                      -\frac{1-\theta^2}{2b\theta^2}t^2,
+ \qquad h_0(t)=t.
+\end{equation}
+The growing variance has disappeared from this equation. The fact that
+$t^2$ is even is essential: the Gaussian factor is identical in the two
+terms of the mixture.
+
+Write
+\[
+ Q_n(t)=\frac{h_n(t)-h_n(-t)}2,\qquad
+ R_n(t)=\frac{h_n(t)+h_n(-t)}2.
+\]
+Thus $Q_n$ is odd with $Q_n=t+O(t^3)$, and $R_n$ is even with
+$R_n=O(t^4)$. Put
+\begin{equation}\label{eq:FG}
+ F_\theta(u)=b\atanh(\theta\tanh u),\qquad
+ G_\theta(u)=\frac b2\log\!\left(1+(1-\theta^2)\sinh^2u\right),
+ \qquad d_\theta=\frac{1-\theta^2}{2b\theta^2}.
+\end{equation}
+All branches are the ones analytic at zero. Taking the odd and even
+parts of \eqref{eq:autonomous} gives
+\begin{align}
+ Q_{n+1}(t)&=F_\theta\bigl(Q_n(t/B)\bigr),\label{eq:Qrec}\\
+ R_{n+1}(t)&=bR_n(t/B)+G_\theta\bigl(Q_n(t/B)\bigr)-d_\theta t^2.
+ \label{eq:Rrec}
+\end{align}
+To verify these formulas directly, factor out $e^{R_n}$ and use
+\[
+ ae^u+(1-a)e^{-u}=\cosh u+\theta\sinh u.
+\]
+The logarithmic ratio of its values at $u$ and $-u$ is
+$2\atanh(\theta\tanh u)$, and their product is
+$1+(1-\theta^2)\sinh^2u$.
+
+The quadratic coefficient of $G_\theta(Q_n(t/B))$ is exactly
+$d_\theta t^2$. The even forcing in \eqref{eq:Rrec} therefore starts
+at degree four for every $n$. This cancellation produces the threshold
+in Theorem~\ref{thm:sharp}.
+
+\section{Analytic convergence above the sharp threshold}
+
+We give the uniform analytic estimates in detail. They also justify all
+later coefficient differentiations.
+
+\subsection{A contraction for the odd part}
+
+For $\rho>0$ and an analytic function vanishing to order at least $j$,
+write
+\[
+ \norm{f}_{j,\rho}=\sup_{0<|t|\leq\rho}\frac{|f(t)|}{|t|^j}.
+\]
+We use the Banach space of analytic functions on $\Disk_\rho$ continuous
+on its closure, with this weighted supremum norm. Odd and even
+subspaces are closed. If necessary, one first works on a slightly
+larger disk and subsequently decreases $\rho$.
+
+\begin{lemma}[Uniform odd contraction]\label{lem:odd-contraction}
+Let $I$ be a compact interval of real parameters with $b\theta>1$ on
+$I$. There is a common disk on which the iterates in
+\eqref{eq:Qrec}, starting at $Q_0=t$, converge exponentially to a
+unique normalized odd analytic germ $Q_\theta$. The convergence and
+the disk are uniform for $\theta\in I$, and $Q_\theta$ is jointly
+holomorphic in the parameter and the argument.
+\end{lemma}
+
+\begin{proof}
+Enlarge $I$ to a sufficiently small complex neighborhood $U$ so that
+$|B|>1$ and
+\[
+ A_0:=\sup_{\theta\in U}|B|^{-2}<1.
+\]
+The functions $F_\theta(u)$ are jointly holomorphic for $\theta\in U$
+and $u$ in a common neighborhood of zero. Uniformly there,
+\[
+ F_\theta(0)=0,\qquad F_\theta'(0)=B,
+ \qquad F_\theta(u)=Bu+O(u^3).
+\]
+Choose a number $a_0$ with $A_0<a_0<1$. On odd functions $q=t+f$,
+consider
+\[
+             (\mathcal A_\theta q)(t)=F_\theta(q(t/B)).
+\]
+For $\norm{f}_{3,\rho}\leq M$, the argument $q(t/B)$ lies in a
+common small disk if $\rho$ is sufficiently small. The segment between
+any two such arguments lies in the same disk. By the integral form of
+the mean-value identity for holomorphic functions,
+\begin{align*}
+ \norm{\mathcal A_\theta q-\mathcal A_\theta\widetilde q}_{3,\rho}
+ &\leq \left(\sup_{|u|\leq C\rho}|F_\theta'(u)|\right)
+            |B|^{-3}\norm{q-\widetilde q}_{3,\rho}\\
+ &\leq a_0\norm{q-\widetilde q}_{3,\rho}.
+\end{align*}
+The last inequality follows from $F_\theta'(u)=B+O(u^2)$ uniformly,
+by decreasing $\rho$. Also
+\[
+       \norm{\mathcal A_\theta(t)-t}_{3,\rho}\leq C_0
+\]
+uniformly on $U$. Choose $M>C_0/(1-a_0)$ before decreasing $\rho$.
+Then the closed ball $\norm{q-t}_{3,\rho}\leq M$ is invariant and
+$\mathcal A_\theta$ is a contraction there. Its iterates converge with
+an error bounded by $Ca_0^n$ in the weighted norm.
+
+The iterates are jointly holomorphic on $U\times\Disk_\rho$ and
+converge uniformly on smaller closed products. Their limit is jointly
+holomorphic. To see uniqueness as a germ without a prescribed ball,
+compare Taylor coefficients: the coefficient of $t^j$, for odd $j\geq3$,
+has multiplier $B^{1-j}$, different from $1$, and its remaining forcing
+depends only on lower coefficients. Every normalized analytic germ
+therefore has the same Taylor series as the constructed one.
+\end{proof}
+
+\subsection{The even response and the fourth-degree multiplier}
+
+Define the limiting forcing
+\begin{equation}\label{eq:J}
+ J_\theta(t)=G_\theta\bigl(Q_\theta(t/B)\bigr)-d_\theta t^2.
+\end{equation}
+It is even and vanishes to order four. Its finite-stage analogue is
+$J_{n,\theta}$ with $Q_\theta$ replaced by $Q_n$.
+
+\begin{lemma}[Even convergence]\label{lem:even-contraction}
+Suppose, in addition, that $b/|B|^4<1$ uniformly on the parameter
+neighborhood. Then
+\begin{equation}\label{eq:Rseries}
+ R_\theta(t)=\sum_{j=0}^{\infty}b^jJ_\theta(t/B^j)
+\end{equation}
+converges normally on a common disk, and $R_n\to R_\theta$
+exponentially there, uniformly in the parameter. It is the unique even
+analytic germ of order at least four satisfying
+$R_\theta(t)=bR_\theta(t/B)+J_\theta(t)$.
+\end{lemma}
+
+\begin{proof}
+On functions of order at least four the linear map
+$\mathcal L_\theta R(t)=bR(t/B)$ has norm at most
+\[
+                     A_1:=\sup_{\theta\in U}\frac b{|B|^4}<1.
+\]
+This proves normal convergence of \eqref{eq:Rseries}. It also shows
+uniqueness in the weighted space. Uniqueness as a germ follows again
+from the multipliers $bB^{-j}\neq1$ for even $j\geq4$.
+
+Because $G_\theta'(u)=O(u)$ near zero, the odd convergence implies
+\[
+ \norm{J_{n,\theta}-J_\theta}_{4,\rho}\leq C a_0^n.
+\]
+Indeed, the argument difference is $O(a_0^n t^3)$ and multiplication
+by the derivative of $G$ supplies one more factor $t$.
+Writing $e_n=\norm{R_n-R_\theta}_{4,\rho}$ gives
+\[
+ e_{n+1}\leq A_1e_n+Ca_0^n.
+\]
+For any $q$ with $\max(A_1,a_0)<q<1$, the finite geometric convolution
+is bounded by $C'q^n$. This also absorbs a possible factor $n$ when the
+two underlying rates coincide. Joint holomorphy follows from normal
+convergence of the series and of the iterates.
+\end{proof}
+
+\begin{proof}[Proof of sufficiency in Theorem~\ref{thm:sharp}]
+If $\theta>b^{-3/4}$, then $B>b^{1/4}>1$ and $b/B^4<1$.
+The two lemmas apply on a complex neighborhood of every compact real
+interval above the threshold. Put $h_\theta=Q_\theta+R_\theta$.
+Equations \eqref{eq:Qrec}--\eqref{eq:Rrec} give
+\eqref{eq:fixed-h}, and the estimates give
+\eqref{eq:uniform-exponential}.
+
+It remains to ensure that the logarithms used in the argument really
+represent the probability transforms on the common disk. Start with
+$h_0=t$. The contraction construction keeps every odd argument in a
+disk where $\cosh u+\theta\sinh u$ has no zero; its logarithm is the
+branch equal to zero at $u=0$. Thus the recursively constructed
+$h_n=Q_n+R_n$ is analytic on that disk. Exponentiating
+\eqref{eq:autonomous} and restoring the known Gaussian factors yields
+the exact moment-generating recursion. By induction it is precisely
+$\Psi_{n,\theta}$. No uniform zero-free property of the unnormalized
+moment-generating functions has been assumed. It is a conclusion of the
+construction on this disk.
+
+Uniqueness of $Q$ and $R$ proves uniqueness of $h$. When $\theta=1$,
+$F_1(u)=bu$ locally, $G_1=0$, and the same formulas give $h_1=t$.
+\end{proof}
+
+\section{Cumulant obstruction and sharpness}
+
+For $j\geq3$, let $\kappa_{j,n}$ be the $j$th cumulant of
+$X_{n,\theta}$. Removing its variance changes none of these cumulants.
+Set
+\begin{equation}\label{eq:abbrev-cumulants}
+ z=\theta^2,\qquad c=1-z,\qquad
+ \alpha=B^{-2}=\frac1{b^2z},\qquad
+ \beta=\frac b{B^4}=\frac1{b^3z^2}.
+\end{equation}
+
+\begin{lemma}[Third and fourth cumulants]\label{lem:cumulants}
+Starting with $\kappa_{3,0}=\kappa_{4,0}=0$, one has
+\begin{align}
+ \kappa_{3,n+1}&=\alpha(\kappa_{3,n}-2c),\label{eq:k3rec}\\
+ \kappa_{4,n+1}&=\beta\bigl(\kappa_{4,n}
+                     +4c\kappa_{3,n}-2c(1-3z)\bigr).
+                     \label{eq:k4rec}
+\end{align}
+If $\alpha<1$, then
+\begin{equation}\label{eq:k3exact}
+ \kappa_{3,n}=C_3(1-\alpha^n),\qquad
+ C_3=-\frac{2c}{b^2z-1}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For a variable $X$ of mean $1$, independent of a sign
+$\varepsilon$ of mean $\theta$, expansion of the first four raw
+moments gives
+\begin{align*}
+ \kappa_3(\varepsilon X)&=\theta\kappa_3(X)-2\theta(1-\theta^2),\\
+ \kappa_4(\varepsilon X)&=\kappa_4(X)
+           +4(1-\theta^2)\kappa_3(X)-2+8\theta^2-6\theta^4.
+\end{align*}
+All terms containing $\Var(X)$ cancel. Cumulants add for independent
+summands and scale homogeneously under multiplication by $B^{-1}$.
+Equation \eqref{eq:distributional} now gives the recurrences, and the
+first one is an elementary geometric sum.
+\end{proof}
+
+\begin{proposition}[Failure at and below $b^{-3/4}$]\label{prop:failure}
+If $0<\theta\leq b^{-3/4}$, then either
+$\kappa_{3,n}\to-\infty$ or $\kappa_{4,n}\to-\infty$.
+Consequently the normalized transforms cannot converge locally
+holomorphically near zero.
+\end{proposition}
+
+\begin{proof}
+If $B\leq1$, then $\alpha\geq1$ and $c>0$. The formula
+\[
+             \kappa_{3,n}=-2c\sum_{j=1}^n\alpha^j
+\]
+already proves divergence.
+
+Suppose next that $B>1$. Set
+\[
+ C_0=-2c(1-3z),\qquad
+ N=C_0+4cC_3,\qquad D=-4cC_3>0.
+\]
+Then \eqref{eq:k4rec} becomes
+\begin{equation}\label{eq:k4-forced}
+ \kappa_{4,n+1}=\beta\bigl(\kappa_{4,n}+N+D\alpha^n\bigr).
+\end{equation}
+At the boundary $\theta=b^{-3/4}$ one has $\beta=1$,
+$\alpha=b^{-1/2}<1$, and
+$\kappa_{4,n}=nN+D(1-\alpha^n)/(1-\alpha)$. Moreover
+\begin{equation}\label{eq:Nsign}
+ N=-\frac{2(1-z)}{b^2z-1}
+        \bigl(3+(b^2-1)z-3b^2z^2\bigr)<0.
+\end{equation}
+Here $z=b^{-3/2}$, so the expression in parentheses is at least
+$3-3/b>0$. This proves linear negative divergence at the boundary.
+
+Below that boundary but above $1/b$, we have $\beta>1>\alpha$.
+Solving \eqref{eq:k4-forced} gives
+\begin{equation}\label{eq:k4-growth}
+ \lim_{n\to\infty}\beta^{-n}\kappa_{4,n}
+       =\beta\left(\frac{N}{\beta-1}
+                          +\frac{D}{\beta-\alpha}\right).
+\end{equation}
+The sign must be checked: $C_0$ can be positive for a small part of
+the binary-tree parameter range. A direct simplification gives
+\begin{align}
+ N(\beta-\alpha)+D(\beta-1)
+ &=C_0(\beta-\alpha)+4cC_3(1-\alpha)\notag\\
+ &=-\frac{2c\alpha}{bz}
+           \bigl(1+3(b-1)z-bz^2\bigr)<0.\label{eq:negative-amplitude}
+\end{align}
+The quadratic in parentheses is concave on $[0,1]$ and positive at
+both endpoints: its values are $1$ and $2b-2$. All denominators in
+\eqref{eq:k4-growth} are positive, so its limit is strictly negative.
+This proves exponential negative divergence.
+
+Finally, locally uniform convergence of $\Psi_{n,\theta}$ to an
+analytic function with value $1$ at zero would imply local uniform
+convergence of their normalized logarithms on a smaller disk. Cauchy's
+formula would then force convergence of every fixed derivative at zero.
+The cumulant divergences contradict this. Together with the preceding
+section, this completes Theorem~\ref{thm:sharp}.
+\end{proof}
+
+\begin{remark}[What the converse does not say]
+The obstruction concerns a complex neighborhood and hence all local
+derivatives. It does not exclude every conceivable pointwise limit on
+the imaginary axis, nor a different scaling or a higher-order
+renormalization. Those are different questions.
+\end{remark}
+
+\section{The critical residue and computable coefficients}
+
+At $\theta=\crit=b^{-1/2}$, $B=\sqrt b$ and $X_n=W_n$.
+Write $c_b=(b-1)/b$. Then
+\begin{equation}\label{eq:critical-mgf}
+ \E e^{tW_n}=
+      \exp\!\left(\frac12c_bnt^2+h_{n,\crit}(t)\right),
+ \qquad h_{n,\crit}\longrightarrow h_b:=h_{\crit}.
+\end{equation}
+The odd and even limits satisfy
+\begin{align}
+ Q_b(\sqrt b\,t)&=b\atanh\bigl(b^{-1/2}\tanh Q_b(t)\bigr),
+     &Q_b'(0)&=1,\label{eq:critical-Q}\\
+ R_b(t)&=bR_b(t/\sqrt b)
+   +\frac b2\log\!\left(1+c_b\sinh^2 Q_b(t/\sqrt b)\right)
+   -\frac{c_b}2t^2.
+ \label{eq:critical-R}
+\end{align}
+These equations, or the convergent series \eqref{eq:Rseries}, specify
+the residue completely without a closed elementary expression.
+
+Let
+\begin{equation}\label{eq:coeff-def}
+ k_j(b)=h_b^{(j)}(0),\qquad
+ A_j(b)=\left.\frac{\mathrm d^j}{\mathrm dt^j}e^{h_b(t)}\right|_{t=0}.
+\end{equation}
+The $k_j$ for $j\geq3$ are limiting cumulants. The $A_j$ are derivatives
+of a residue, not necessarily moments of a probability measure. In fact
+$h_b''(0)=0$ while $h_b'''(0)\neq0$, so $e^{h_b}$ cannot be a genuine
+moment-generating function of a random variable with mean $1$ and
+variance zero.
+
+\begin{proposition}[First coefficients and finite-depth corrections]
+\label{prop:critical-coefficients}
+The first coefficients are
+\begin{align}
+ k_1&=1,&k_2&=0,&k_3&=-\frac2b,&k_4&=-\frac{2(b+1)}{b^2},\label{eq:k34}\\
+ k_5&=\frac{16}{b^2},&
+ k_6&=\frac{8(b-2)(2b-1)}{b^3(b+1)}.\label{eq:k56}
+\end{align}
+In particular,
+\begin{equation}\label{eq:Avalues}
+ A_0=1,\quad A_1=1,\quad A_2=1,\quad
+ A_3=1-\frac2b,\quad
+ A_5=1-\frac{30}b+\frac6{b^2}.
+\end{equation}
+At finite depth,
+\begin{align}
+ \kappa_3(W_n)&=-\frac2b(1-b^{-n}),\label{eq:critical-k3n}\\
+ \kappa_4(W_n)&=-\frac{2(b+1)}{b^2}(1-b^{-n})
+                   +\frac{8(b-1)}{b^2}n b^{-n}.\label{eq:critical-k4n}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+Substituting $z=1/b$ in Lemma~\ref{lem:cumulants} gives
+\eqref{eq:k34} and the finite formulas. The $n b^{-n}$ term is the
+resonance between the third-cumulant convergence rate and the
+fourth-degree multiplier.
+
+For completeness, coefficient extraction from \eqref{eq:critical-Q}
+first gives
+\[
+       Q_b(t)=t-\frac{t^3}{3b}+\frac{2t^5}{15b^2}+O(t^7).
+\]
+Writing $u=t/\sqrt b$, expanding
+$\log(1+c_b\sinh^2 Q_b(u))$ through degree six in
+\eqref{eq:critical-R}, and dividing the coefficient of $t^{2j}$
+by $1-b^{1-j}$ gives
+\[
+ R_b(t)=-\frac{b+1}{12b^2}t^4
+       +\frac{(b-2)(2b-1)}{90b^3(b+1)}t^6+O(t^8).
+\]
+Multiplication by the appropriate factorials proves
+\eqref{eq:k56}. Finally $A_3=1+k_3$ and
+$A_5=1+10k_3+5k_4+k_5$ follow by exponentiating $h_b$.
+\end{proof}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{@{}rrrrrr@{}}
+\toprule
+$b$&$k_3$&$k_4$&$k_5$&$k_6$&$A_5$\\
+\midrule
+2&$-1$&$-3/2$&$4$&$0$&$-25/2$\\
+3&$-2/3$&$-8/9$&$16/9$&$10/27$&$-25/3$\\
+4&$-1/2$&$-5/8$&$1$&$7/20$&$-49/8$\\
+5&$-2/5$&$-12/25$&$16/25$&$36/125$&$-119/25$\\
+\bottomrule
+\end{tabular}
+\caption{Exact coefficients of the critical residue. The supplied script
+computes through degree ten and verifies the truncated fixed equation.}
+\label{tab:coefficients}
+\end{table}
+
+\subsection{A coefficient algorithm with rational arithmetic}
+
+At criticality every coefficient of $Q_b$ and $R_b$ is rational when
+$b$ is an integer, despite the occurrence of $\sqrt b$ in the recursion.
+For a formal odd series $Q$, form
+\[
+ \Phi(Q)=\sum_{j\geq0}\frac{b^{-j}}{2j+1}\tanh(Q)^{2j+1},
+ \qquad L(Q)=\log\!\left(1+c_b\sinh^2Q\right).
+\]
+For odd $r$, the new coefficient of $Q$ is
+$b^{(1-r)/2}[t^r]\Phi(Q)$. For even $r\geq4$, the new coefficient
+of $R$ is
+$b^{1-r/2}([t^r]R+[t^r]L(Q)/2)$. The exponents of $b$ are integers.
+
+To compute the fixed series through any finite degree, first solve the
+odd coefficients in increasing degree. At odd degree $r\geq3$, set
+the unknown coefficient temporarily to zero, compute its forcing, and
+divide by $1-b^{(1-r)/2}$. Next compute each even coefficient by
+dividing its forcing by $1-b^{1-r/2}$. These denominators are nonzero.
+Formal exponentiation then gives the $A_j$. This is a finite exact
+algorithm; analytic convergence follows separately from the preceding
+proof, not from the existence of the formal recursion alone.
+
+\section{Uniform asymptotics in the critical window}
+
+\begin{proof}[Proof of Theorem~\ref{thm:window}]
+In the window \eqref{eq:window}, $\mu_n=e^{\gamma/(2n)}$, so
+$\mu_n^n=m_\gamma$. The mean and variance follow from
+Lemma~\ref{lem:recursion}. For every bound $|\gamma|\leq G$, the
+parameters $\theta_n$ eventually lie in a common compact interval
+$I\subset(b^{-3/4},1)$. The arguments $m_\gamma t$ lie in the common
+analytic disk when $t$ lies in a sufficiently small disk depending on
+$G$. Equation \eqref{eq:uniform-exponential} gives
+\[
+ \log\E e^{tW_n}-\frac12v_nt^2
+       =h_{\theta_n}(m_\gamma t)+O(q^n|t|^3).
+\]
+Exponentiating proves \eqref{eq:window-residue}.
+
+For the expansion, let $D_\theta=\theta\partial_\theta$. Joint
+holomorphy and Taylor's theorem applied to
+$s\mapsto\Psi_{\crit e^s}(m_\gamma t)$ give
+\begin{equation}\label{eq:window-taylor}
+ e^{-v_nt^2/2}\E e^{tW_n}
+ =\sum_{j=0}^{J}\frac1{j!}
+       \left(\frac{\gamma}{2n}\right)^j
+       \left[D_\theta^j\Psi_\theta(m_\gamma t)\right]_{\theta=\crit}
+       +O(n^{-J-1}).
+\end{equation}
+Cauchy bounds on a common parameter disk make the remainder uniform
+for bounded $\gamma$ and for $t$ in a smaller closed disk. The
+exponentially small finite-iteration error is absorbed into that
+remainder. The same statement holds for the logarithm with $\Psi$
+replaced by $h$.
+\end{proof}
+
+The leading variance is
+\begin{equation}\label{eq:variance-leading}
+ \frac{v_n}{n}\longrightarrow
+        c_b\frac{e^\gamma-1}{\gamma},
+ \qquad \frac{e^\gamma-1}{\gamma}\Big|_{\gamma=0}=1.
+\end{equation}
+This is positive and bounded away from zero on each compact real
+$\gamma$-interval. The next terms, also uniform on such intervals, are
+\begin{equation}\label{eq:variance-series}
+ \begin{split}
+ v_n={}&nc_b\frac{e^\gamma-1}{\gamma}
+ -\frac{b+1}{2b}(e^\gamma-1)
+ +\frac{c_b\gamma(e^\gamma-1)}{12n}\\
+ &-\frac{c_b\gamma^3(e^\gamma-1)}{720n^3}+O(n^{-5}).
+ \end{split}
+\end{equation}
+They follow from the Taylor series of $(e^s-1)^{-1}$ after its simple
+pole has been separated. The expressions are interpreted continuously
+at $\gamma=0$.
+
+\begin{corollary}[Cumulants throughout the window]\label{cor:window-cumulants}
+For every fixed $r\geq3$,
+\[
+ \kappa_r(W_n)=m_\gamma^r h_{\theta_n}^{(r)}(0)+O(q^n)
+       \longrightarrow e^{r\gamma/2}k_r(b),
+\]
+uniformly for bounded real $\gamma$. Every fixed cumulant has an
+expansion to all orders in $n^{-1}$. Moreover
+\[
+                   \frac{W_n-m_\gamma}{\sqrt{v_n}}
+                       \ \Longrightarrow\ N(0,1).
+\]
+\end{corollary}
+
+\begin{proof}
+Cauchy's formula applied on a fixed smaller disk gives the cumulant
+assertions. For the central limit theorem, substitute
+$t=\ii u/\sqrt{v_n}$ in the logarithmic transform and subtract the
+mean term. The quadratic term is $-u^2/2$ and the remaining terms tend
+to zero for every fixed real $u$.
+\end{proof}
+
+The window theorem is stronger than this central limit corollary.
+It retains the non-Gaussian residue before the final $\sqrt n$
+normalization, including every higher cumulant and its parameter
+correction. Its uniformity also permits subsequent local Fourier
+analysis without choosing a different neighborhood for each $\gamma$.
+
+\section{High frequencies and an all-orders lattice local limit}
+
+A locally analytic transform expansion alone does not prove a lattice
+local limit theorem. We now establish the required bounds across an
+entire fundamental Fourier interval.
+
+Fix $G<\infty$, assume $|\gamma|\leq G$, and use the window
+\eqref{eq:window}. Write
+\[
+ M_{k;\theta}(t)=\E e^{tW_{k,\theta}},\qquad
+ \Delta_n=2b^{-n/2},\qquad T_n=\frac{\pi}{\Delta_n}.
+\]
+For $n\geq1$, the lattice containing $W_n$ is
+\begin{equation}\label{eq:lattice}
+ \mathcal L_n=\Delta_n(\mathbb Z+\delta_b),\qquad
+ \delta_b=\begin{cases}0,&b\text{ even},\\[1pt]1/2,&b\text{ odd}.
+ \end{cases}
+\end{equation}
+Only finitely many of its points have positive probability. Probabilities
+at the remaining points are defined to be zero.
+
+\begin{lemma}[Uniform Fourier control]\label{lem:fourier}
+There are constants $c,r>0$ and $n_0$, depending on $b,G$, such that,
+for $n\geq n_0$,
+\begin{align}
+ |M_{n;\theta_n}(\ii t)|&\leq e^{-cn t^2}
+       &&\left(|t|\leq r b^{\lceil n/2\rceil/2}\right),
+       \label{eq:fourier-mid}\\
+ |M_{n;\theta_n}(\ii t)|&\leq e^{-ct^2}
+       &&\left(|t|\leq T_n\right).
+       \label{eq:fourier-full}
+\end{align}
+In particular, the contribution from any fixed neighborhood of zero
+removed from $[-T_n,T_n]$ is exponentially small in $n$.
+\end{lemma}
+
+\begin{proof}
+Condition first on all spins at level $n-1$. The $b^n$ leaf spins are
+conditionally independent, and each has mean $\theta_n$ or
+$-\theta_n$. The modulus of a single conditional characteristic
+factor, at argument $s$, is
+\[
+       |\cos s\pm\ii\theta_n\sin s|
+           =\sqrt{1-(1-\theta_n^2)\sin^2s}.
+\]
+Since $1-\theta_n^2$ is uniformly positive for large $n$,
+\[
+ |M_{n;\theta_n}(\ii t)|
+ \leq\exp\!\left[-c_0b^n\sin^2(t/b^{n/2})\right].
+\]
+On $|t|\leq T_n=\pi b^{n/2}/2$, the inequality
+$|\sin s|\geq2|s|/\pi$ for $|s|\leq\pi/2$ proves
+\eqref{eq:fourier-full}.
+
+For the stronger bound, let $m=\lceil n/2\rceil$ and $k=n-m$.
+Conditional on the spins at level $m$, the $b^m$ descendant blocks
+are independent. Each block contributes $b^{-m/2}$ times a copy of
+$W_{k,\theta_n}$ or its negative. The corresponding characteristic
+functions are complex conjugates, hence have equal moduli. Therefore
+\begin{equation}\label{eq:block-fourier}
+ |M_{n;\theta_n}(\ii t)|
+      \leq\left|M_{k;\theta_n}(\ii t/b^{m/2})\right|^{b^m}.
+\end{equation}
+For every $k\leq n$, the factor
+$\mu_n^k=e^{\gamma k/(2n)}$ is bounded above and away from zero,
+and \eqref{eq:variance-W} gives
+$\Var(W_{k,\theta_n})\geq c_1k$.
+The analytic construction above supplies uniform bounds on the even
+parts $R_{k,\theta_n}=O(t^4)$ for all $k$. The odd parts are purely
+imaginary on the imaginary axis because their Taylor coefficients are
+real. Thus, for $|u|$ in a sufficiently small common interval,
+\[
+ \log|M_{k;\theta_n}(\ii u)|
+    =-\frac12\Var(W_{k,\theta_n})u^2
+        +\operatorname{Re}h_{k,\theta_n}(\ii\mu_n^ku)
+    \leq-\frac{c_1}2ku^2+C u^4
+    \leq-c_2ku^2.
+\]
+Choose the interval small enough for the final inequality for all
+$k\geq1$. Substitution into \eqref{eq:block-fourier} proves
+\eqref{eq:fourier-mid}, since $k\geq n/3$ for large $n$.
+
+The interval from a fixed positive radius to $r b^{m/2}$ has an
+$e^{-cn t^2}$ bound. Beyond $r b^{m/2}$, the $e^{-ct^2}$ bound has
+a lower endpoint exponential in $n$, so its integral is
+superexponentially small. This proves the last assertion as well.
+\end{proof}
+
+Define the parameter-dependent residue derivatives
+\begin{equation}\label{eq:parameter-A}
+ A_j(\theta)=\Psi_\theta^{(j)}(0).
+\end{equation}
+Then $A_j(\crit)=A_j(b)$ from \eqref{eq:coeff-def}. Let
+$\varphi(y)=(2\pi)^{-1/2}e^{-y^2/2}$, and use the probabilists'
+Hermite polynomials
+\[
+ \He_j(y)=(-1)^je^{y^2/2}\frac{\mathrm d^j}{\mathrm dy^j}e^{-y^2/2}.
+\]
+
+\begin{theorem}[Uniform local expansion to arbitrary order]\label{thm:local}
+For every integer $J\geq0$, uniformly for $|\gamma|\leq G$ and
+$x\in\mathcal L_n$, with $y=x/\sqrt{v_n}$,
+\begin{equation}\label{eq:local}
+ \frac{\Prob(W_n=x)}{\Delta_n}
+   =\frac{\varphi(y)}{\sqrt{v_n}}
+      \sum_{j=0}^{J}
+       \frac{m_\gamma^jA_j(\theta_n)}{j!v_n^{j/2}}\He_j(y)
+      +O\!\left(v_n^{-(J+2)/2}\right).
+\end{equation}
+The error is an absolute uniform error for the probability divided by
+the lattice mesh. It is not a relative tail estimate.
+\end{theorem}
+
+\begin{proof}
+The offset lattice inversion formula is
+\begin{equation}\label{eq:inversion}
+ \frac{\Prob(W_n=x)}{\Delta_n}
+    =\frac1{2\pi}\int_{-T_n}^{T_n}
+          M_{n;\theta_n}(\ii t)e^{-\ii tx}\dd t.
+\end{equation}
+It holds also for the half-integer offset: after multiplication by
+$e^{-\ii tx}$, all differences of support points are integer multiples
+of $\Delta_n$.
+
+Fix a small radius $r_1$ in the common analytic disk. Lemma~\ref{lem:fourier}
+makes the integral over $r_1\leq|t|\leq T_n$ exponentially small.
+On $|t|\leq r_1$, the uniform analytic expansion gives
+\[
+ M_{n;\theta_n}(\ii t)
+   =e^{-v_nt^2/2}
+       \left[\Psi_{\theta_n}(\ii m_\gamma t)+O(q^n|t|^3)\right].
+\]
+The residue has, uniformly in the parameters, the Taylor expansion
+\[
+ \Psi_{\theta_n}(\ii m_\gamma t)
+   =\sum_{j=0}^{J}\frac{A_j(\theta_n)}{j!}(\ii m_\gamma t)^j
+                       +O(|t|^{J+1}).
+\]
+The integral of the Taylor remainder is bounded by
+$C\int_{\mathbb R}e^{-v_nt^2/2}|t|^{J+1}\dd t
+=O(v_n^{-(J+2)/2})$. The finite-iteration error is exponential.
+Extending the Gaussian-polynomial integrals to the real line changes
+them by an exponentially small amount. Finally,
+\[
+ \frac1{2\pi}\int_{\mathbb R}e^{-vt^2/2}(\ii t)^j e^{-\ii tx}\dd t
+       =v^{-(j+1)/2}\He_j(x/\sqrt v)\varphi(x/\sqrt v).
+\]
+All estimates used $|e^{-\ii tx}|=1$, so they are uniform in $x$.
+\end{proof}
+
+The coefficients in \eqref{eq:local} can themselves be expanded in
+$n^{-1}$ by \eqref{eq:window-taylor}, and $v_n$ by
+\eqref{eq:variance-series}. Keeping the exact variance and the exact
+analytic parameter $\theta_n$ is usually a cleaner numerical formula.
+The first two nonconstant terms are
+\[
+ \frac{m_\gamma}{\sqrt{v_n}}\He_1(y)
+ +\frac{m_\gamma^2}{2v_n}\He_2(y),
+\]
+because $A_1(\theta)=A_2(\theta)=1$ throughout the parameter range.
+
+\section{Majority decoding and a binary-tree cancellation}
+
+Give the root a fair random sign for the decoding experiment, and
+predict it by the sign of the sum of the leaves, breaking ties by an
+independent fair coin. Spin-flip symmetry shows that its success
+probability is
+\begin{equation}\label{eq:majority-def}
+ p_n=\Prob(W_n>0\mid\sigma_{\varnothing}=+1)
+          +\frac12\Prob(W_n=0\mid\sigma_{\varnothing}=+1)
+      =\frac12+\frac12\E[\sgn W_n\mid\sigma_{\varnothing}=+1].
+\end{equation}
+The conditioning agrees with all preceding definitions.
+
+Integrating the absolute error in the local expansion over an unbounded
+half-line would not be sufficient. We instead use an exact lattice
+Fourier formula for the sign function.
+
+\begin{lemma}[Lattice sign formula]\label{lem:sign}
+Let $Y$ be finitely supported on $\Delta(\mathbb Z+\delta)$, with
+$\delta=0$ or $1/2$, and let $M(t)=\E e^{tY}$. Then
+\begin{equation}\label{eq:sign-integral}
+ \E\sgn Y=\frac{\Delta}{\pi}
+       \int_0^{\pi/\Delta}\operatorname{Im}M(\ii t)
+           K_\delta(\Delta t/2)\dd t,
+ \qquad K_0(u)=\cot u,\quad K_{1/2}(u)=\csc u.
+\end{equation}
+The apparent singularity at zero is removable after multiplication by
+$\operatorname{Im}M(\ii t)$.
+\end{lemma}
+
+\begin{proof}
+For an integer $k$,
+\[
+ \frac1\pi\int_0^\pi\sin(ks)\cot(s/2)\dd s=\sgn k.
+\]
+For a half-integer $k+1/2$,
+\[
+ \frac1\pi\int_0^\pi\sin((k+1/2)s)\csc(s/2)\dd s
+                         =\sgn(k+1/2).
+\]
+For positive arguments these identities follow by expanding the sine
+ratios as finite cosine sums; the constant term is $1$, and all
+nonconstant integer cosine terms integrate to zero. Negative arguments
+follow by oddness. Multiplying by the finitely many probabilities,
+summing, and changing variables $s=\Delta t$ gives the formula.
+\end{proof}
+
+\begin{theorem}[All-orders majority expansion]\label{thm:majority}
+For every integer $K\geq0$, uniformly for bounded real $\gamma$,
+\begin{equation}\label{eq:majority-series}
+ p_n=\frac12+\frac1{\sqrt{2\pi}}
+      \sum_{j=0}^{K}
+       \frac{(-1)^j m_\gamma^{2j+1}A_{2j+1}(\theta_n)}
+            {(2j+1)2^j j!\,v_n^{j+1/2}}
+       +O(v_n^{-K-3/2}).
+\end{equation}
+At exact criticality, $v_n=c_bn$ and
+\begin{equation}\label{eq:majority-critical}
+ p_n=\frac12+\frac1{\sqrt{2\pi}}
+ \left\{v_n^{-1/2}
+   -\frac{1-2/b}{6v_n^{3/2}}
+   +\frac{1-30/b+6/b^2}{40v_n^{5/2}}
+   +O(v_n^{-7/2})\right\}.
+\end{equation}
+In particular, for $b=2$,
+\begin{equation}\label{eq:binary-cancellation}
+ p_n=\frac12+\frac1{\sqrt{\pi n}}
+                   -\frac5{4\sqrt\pi\,n^{5/2}}+O(n^{-7/2}).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Apply Lemma~\ref{lem:sign} with $\Delta=\Delta_n$ and the correct
+offset from \eqref{eq:lattice}. On $0<t\leq T_n$,
+\[
+ |\Delta_n K_{\delta_b}(\Delta_nt/2)|\leq C/t.
+\]
+Thus Lemma~\ref{lem:fourier} makes the contribution from $t\geq r_1$
+exponentially small, for a fixed small $r_1>0$. On the remaining
+interval,
+\[
+ \Delta_n K_{\delta_b}(\Delta_nt/2)=\frac2t+O(\Delta_n^2t),
+\]
+uniformly for both parity cases. The kernel replacement error is
+exponentially small because $\Delta_n^2=4b^{-n}$ and the transform
+has Gaussian decay there. Consequently
+\[
+ p_n-\frac12=\frac1\pi\int_0^{r_1}
+       e^{-v_nt^2/2}\frac{\operatorname{Im}
+                 \Psi_{\theta_n}(\ii m_\gamma t)}t\dd t
+                      +O(q_1^n)
+\]
+for some $q_1<1$. Near zero the finite-iteration error is
+$O(q^n t^3)$, so division by $t$ causes no problem.
+
+All residue Taylor coefficients are real. Its imaginary part is
+therefore an odd power series. Expanding it through degree $2K+1$
+leaves $O(t^{2K+3})$. After division by $t$ and Gaussian integration,
+the remainder is $O(v_n^{-K-3/2})$. For $j\geq0$,
+\[
+ \int_0^\infty t^{2j}e^{-v_nt^2/2}\dd t
+       =\sqrt{\frac\pi2}(2j-1)!!\,v_n^{-j-1/2},
+ \qquad (-1)!!=1.
+\]
+Using
+$(2j-1)!!/(2j+1)!=1/((2j+1)2^j j!)$
+gives \eqref{eq:majority-series}. The critical coefficients in
+\eqref{eq:Avalues} give \eqref{eq:majority-critical}. For $b=2$,
+$A_3=0$, $A_5=-25/2$, and $v_n=n/2$, which yields
+\eqref{eq:binary-cancellation}.
+\end{proof}
+
+The vanishing term for the binary tree is a cancellation between the
+mean shift and the limiting third cumulant. Keeping only a shifted
+Gaussian would predict a nonzero correction of order $n^{-3/2}$.
+The all-orders calculation detects why that prediction fails.
+
+The leading window advantage is
+\[
+ p_n-\frac12\sim
+ \frac{e^{\gamma/2}}{\sqrt{2\pi n c_b}}
+          \sqrt{\frac{\gamma}{e^\gamma-1}},
+\]
+with continuous interpretation at $\gamma=0$. This concerns the
+specified majority statistic and finite-depth window only.
+
+\section{Finite even-cumulant renormalization beyond the threshold}
+
+The parity decomposition gives a further consequence. A failed
+Gaussian renormalization need not preclude renormalization by a finite
+number of even cumulants.
+
+\begin{theorem}[Higher even renormalization]\label{thm:higher}
+Let $\theta>1/b$ and choose an integer $K\geq1$ such that
+\begin{equation}\label{eq:higher-condition}
+                         (b\theta)^{2K+2}>b.
+\end{equation}
+If $\kappa_{2j,n}$ denotes the actual even cumulant of
+$X_{n,\theta}$, then
+\begin{equation}\label{eq:higher-renorm}
+ \exp\!\left(-\sum_{j=1}^{K}
+             \frac{\kappa_{2j,n}}{(2j)!}t^{2j}\right)
+                  \E e^{tX_{n,\theta}}
+\end{equation}
+converges locally holomorphically to a nonzero analytic function.
+Convergence is exponential and locally uniform in $\theta$ whenever
+\eqref{eq:higher-condition} holds uniformly. Thus every $\theta>1/b$
+admits a finite even-cumulant renormalization of this form.
+\end{theorem}
+
+\begin{proof}
+The odd logarithm $Q_n$ is unaffected by subtraction of any even
+polynomial and converges by Lemma~\ref{lem:odd-contraction}, which
+requires only $b\theta>1$. Let $H_n$ be the even part of the full
+logarithm $\log\E e^{tX_n}$, and let $\Pi_{\leq2K}$ extract its
+Taylor polynomial of degree at most $2K$. Set
+$E_n=H_n-\Pi_{\leq2K}H_n$. Taking even parts before renormalization
+gives
+\[
+ E_{n+1}(t)=bE_n(t/B)
+    +(1-\Pi_{\leq2K})G_\theta(Q_n(t/B)).
+\]
+The linear map has norm $b/|B|^{2K+2}<1$ on even functions of order
+at least $2K+2$. The forcing converges exponentially in that weighted
+norm on a smaller disk. To justify the last statement, use the
+uniform odd convergence on a larger disk and Cauchy's coefficient
+bounds: after removing finitely many Taylor terms, the remaining tail
+is bounded by $Cq^n|t|^{2K+2}$ on the smaller disk. The same geometric
+convolution argument as in Lemma~\ref{lem:even-contraction} proves
+convergence of $E_n$. The logarithm of \eqref{eq:higher-renorm} is
+$Q_n+E_n$, proving the theorem.
+\end{proof}
+
+This theorem is a sufficient criterion for a specified finite
+renormalization. It does not assert that every higher-order boundary
+is sharp or that all possible cancellations have been classified.
+For $K=1$, Theorem~\ref{thm:sharp} supplies the matching converse.
+For $\theta\leq1/b$, the divergent third cumulant prevents convergence
+after subtracting only even cumulants.
+
+\section{Exact verification, reproducibility, and practical use}
+
+The analytic arguments are mathematical proofs. The supplementary
+computations serve two more limited purposes: they verify the finite
+coefficient algebra and compare the transform recursion with independently
+constructed finite distributions.
+
+\subsection{What the supplied script checks}
+
+The file \texttt{verify.py} uses only Python's standard library, with
+\texttt{fractions.Fraction} for every assertion. It computes truncated
+power series through degree ten and checks the following.
+\begin{enumerate}[leftmargin=*,itemsep=3pt]
+\item For $b=2,3,4,5,9$, the rational fixed series satisfies the
+      truncated odd and even fixed equations exactly.
+\item The limiting third and fourth cumulants agree with
+      \eqref{eq:k34}, and $A_3=1-2/b$.
+\item For these five branching values and every $0\leq n\leq20$,
+      the finite third and fourth cumulants agree with
+      \eqref{eq:critical-k3n}--\eqref{eq:critical-k4n}.
+\item For $b=4$ through depth three and $b=9$ through depth two,
+      an independent probability-generating recursion constructs the
+      full law of the number of positive leaves. All raw moments
+      through degree ten, after logarithmic conversion, agree with
+      the parity recursion.
+\end{enumerate}
+The last checks use rational critical correlations $1/2$ and $1/3$,
+respectively. They compare distributions with up to $81$ leaves, rather
+than merely comparing two copies of the same cumulant formula.
+Additional exact checks cover rational correlations above and below
+$b\theta=1$, and verify the negative fourth-cumulant growth amplitude,
+including the binary-tree case with positive initial fourth forcing.
+The recorded execution reports \textbf{392 exact scalar checks} and
+passes all fixed-series assertions. The JSON output retains exact
+fractions, finite cumulants, and finite majority probabilities.
+
+To reproduce the algebraic checks and the PDF, run from this directory:
+\begin{verbatim}
+python verify.py --output verification.json
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The PDF requires standard LaTeX packages; the algebraic verification
+requires no third-party Python packages. These calculations do not
+verify the analytic contraction theorem by numerical sampling, and no
+Lean formalization is included.
+
+\subsection{How to use the expansions responsibly}
+
+For a fixed desired expansion order, compute the critical residue
+coefficients once by the triangular rational algorithm. At exact
+criticality, the variance is known exactly. In the window, keeping
+\eqref{eq:window-variance} unexpanded avoids unnecessary cancellation,
+and the parameter-dependent residue can be iterated to exponential
+accuracy inside its analytic disk. Parameter derivatives in
+\eqref{eq:window-taylor} can also be computed from the differentiated
+fixed equations.
+
+The local theorem controls absolute lattice probabilities, uniformly
+over the lattice. It does not yield a relative approximation deep in
+the tails, where the Gaussian main term can be much smaller than the
+absolute error. The majority theorem avoids accumulating this error
+by using a separate exact Fourier identity. None of these formulas
+supplies a computationally efficient sampler for the entire boundary
+spin configuration, or a factor-of-IID coding radius.
+
+\section{Further research questions}
+
+The following are proposed research directions, not claims that each
+formulation has been established as an open problem in the literature.
+
+\begin{enumerate}[leftmargin=*,itemsep=6pt]
+\item \textbf{Global domain of the residue.}
+Determine the maximal complex continuation domain of $h_\theta$ and
+the location and type of its first singularities. The local contraction
+does not describe the zeros of finite-depth transforms far from zero.
+The one-dimensional iteration in \eqref{eq:critical-Q} provides a
+concrete entry point through analytic iteration theory.
+
+\item \textbf{Sharp exponential convergence rates.}
+Classify resonances among the odd multipliers $B^{1-j}$ and the even
+multipliers $bB^{-j}$. The explicit $n b^{-n}$ correction in the
+fourth cumulant suggests a full expansion in exponential scales times
+polynomials in $n$. Such a result could strengthen the deliberately
+coarse uniform $O(q^n)$ bound.
+
+\item \textbf{Higher renormalization boundaries.}
+For fixed $K$, decide whether \eqref{eq:higher-condition} is generically
+or universally sharp after removal of cumulants through degree $2K$.
+Identify exceptional parameters where the first obstructing forcing
+vanishes. The fourth-cumulant sign calculation provides a model for
+the required noncancellation arguments.
+
+\item \textbf{Other tree observables.}
+Develop the corresponding residue theory for the sum over all levels,
+for a fixed-width band of levels, and for weighted level sums. This
+would permit direct comparison with the total-magnetization
+asymptotics of M\'elin. The added root contribution changes the
+renormalization equation and must be retained explicitly.
+
+\item \textbf{Irregular and multitype trees.}
+Extend the analytic contraction to periodic branching, multitype
+deterministic trees, and suitable random trees. In these settings the
+scalar fourth-degree multiplier should be replaced by an operator,
+and the correct normalization may be vector-valued.
+
+\item \textbf{General channels.}
+For finite-state broadcasts, identify when the leading Gaussian
+covariance is invariant under the channel symmetries. The exact
+parity cancellation used here need not survive. A useful first target
+is a finite group channel with a real one-dimensional character.
+
+\item \textbf{Information retained by the sum.}
+Compute asymptotic mutual information between the root and the level
+sum, with error estimates compatible with small probabilities. Compare
+the optimal estimator based only on the sum with majority. The
+present theorem evaluates majority and does not prove their equality.
+
+\item \textbf{Full-boundary reconstruction in the depth window.}
+Compare the residue-based majority constants with the critical-window
+behavior of the complete posterior root magnetization. This requires
+the nonlinear posterior recursion and cannot be inferred from a local
+limit theorem for the sum.
+
+\item \textbf{Certified computation and formalization.}
+Formalize the finite generating-function and cumulant recurrences,
+then isolate reusable analytic lemmas for parameter-uniform
+contractions and lattice Fourier inversion. Interval bounds for the
+contraction disk would turn the asymptotic residue into a certified
+numerical object with explicit truncation error.
+\end{enumerate}
+
+\section{Conclusion and precise contribution boundary}
+
+The exact broadcast recursion admits a useful separation: its odd
+logarithm evolves autonomously, while its even logarithm is driven
+linearly by the odd part. After the variance is removed, the first
+remaining even degree is four. This gives the analytic threshold
+$b^{-3/4}$, and an explicit cumulant calculation proves the threshold
+is sharp, including the resonant endpoint.
+
+Parameter-uniform analyticity then organizes the entire finite-depth
+window around $b^{-1/2}$. Conditional independence at two different
+cuts of the tree supplies the missing Fourier control, so the
+analytic residue produces uniform lattice local expansions and an
+independent all-orders majority calculation. These deductions require
+neither a factor construction nor a newly assumed reconstruction
+theorem. They provide a complete derivation of the stated results and
+a reproducible foundation for further work, while leaving historical
+priority and broader extensions to additional specialist review.
+
+\appendix
+\section{Source and claim audit}
+
+The public repository source used to select the problem is
+\begin{quote}\small
+\path{preprints/The-sharp-factor-of-IID-threshold-for-the-free-Ising-model-on-regular-trees-September-26-2026/build/sections/01-introduction.tex}
+\end{quote}
+at the commit recorded in Section 1. Its role is motivational. The
+current paper's theorem hypotheses are stated directly in terms of a
+finite independent-edge broadcast and are checked within the paper.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.29\textwidth}>{\raggedright\arraybackslash}p{0.64\textwidth}@{}}
+\toprule
+Claim or method&Status in this note\\
+\midrule
+\endhead
+Broadcast/Ising correspondence and classical fluctuation regimes&
+Established background; credited to the primary literature.\\[4pt]
+Exact broadcast recursion&
+Elementary and established; derived explicitly for the chosen level-sum
+normalization.\\[4pt]
+Moment recursions and leading moment scaling&
+Earlier work exists, including total-tree results; not claimed as a new
+general method.\\[4pt]
+Sharp local holomorphic residue threshold&
+Proved in Theorem~\ref{thm:sharp}, with a sign-controlled converse.\\[4pt]
+Parameter-uniform critical window&
+Proved from a jointly analytic residue; exact variance and all orders
+are supplied.\\[4pt]
+Uniform lattice local expansion&
+Proved with explicit conditioning bounds over the full Fourier interval.\\[4pt]
+Majority-decoding expansion&
+Proved by a separate lattice sign identity, including even/odd lattice
+offsets and fair tie handling.\\[4pt]
+Factor-of-IID theorem or finitary coding&
+Neither proved nor assumed.\\[4pt]
+Optimal full-boundary reconstruction&
+Not claimed; the statistic and decoder are specified.\\[4pt]
+Priority of every new formulation&
+Not certified by the limited literature audit; independent derivation
+and mathematical proof are the claims made here.\\
+\bottomrule
+\end{longtable}
+
+\begin{thebibliography}{99}
+
+\bibitem{KestenStigum1966}
+H. Kesten and B. P. Stigum,
+Additional limit theorems for indecomposable multidimensional
+Galton--Watson processes,
+\emph{Annals of Mathematical Statistics} \textbf{37} (1966), 1463--1481.
+\url{https://doi.org/10.1214/aoms/1177699139}.
+
+\bibitem{MooreSnell1979}
+T. Moore and J. L. Snell,
+A branching process showing a phase transition,
+\emph{Journal of Applied Probability} \textbf{16} (1979), 252--260.
+\url{https://doi.org/10.2307/3212894}.
+
+\bibitem{EKPS2000}
+W. Evans, C. Kenyon, Y. Peres, and L. J. Schulman,
+Broadcasting on trees and the Ising model,
+\emph{Annals of Applied Probability} \textbf{10} (2000), 410--433.
+\url{https://doi.org/10.1214/aoap/1019487349}.
+
+\bibitem{Melin1996}
+R. M\'elin,
+Magnetization and overlap distributions of the ferromagnetic Ising model
+on the Cayley tree,
+\emph{Journal de Physique I} \textbf{6} (1996), 1435--1450.
+\url{https://doi.org/10.1051/jp1:1996156};
+\url{https://arxiv.org/abs/cond-mat/9607215}.
+
+\bibitem{BitsekiDelmas2021}
+S. Val\`ere Bitseki Penda and J.-F. Delmas,
+Central limit theorem for bifurcating Markov chains under point-wise
+ergodic conditions, preprint, version 2 (2021).
+\url{https://arxiv.org/abs/2012.04741v2}.
+
+\bibitem{JKN2011}
+J. Jacod, E. Kowalski, and A. Nikeghbali,
+Mod-Gaussian convergence: new limit theorems in probability and number
+theory, \emph{Forum Mathematicum} \textbf{23} (2011), 835--873.
+\url{https://doi.org/10.1515/form.2011.030}.
+
+\bibitem{MeliotNikeghbali2014}
+P.-L. M\'eliot and A. Nikeghbali,
+Mod-Gaussian convergence and its applications for models of statistical
+mechanics, preprint (2014).
+\url{https://arxiv.org/abs/1409.2849}.
+
+\bibitem{GuRoozbehaniPolyanskiy2020}
+Y. Gu, H. Roozbehani, and Y. Polyanskiy,
+Broadcasting on trees near criticality,
+\emph{2020 IEEE International Symposium on Information Theory}, 2020;
+preprint \url{https://arxiv.org/abs/2005.07801}.
+
+\bibitem{OpenAIFactor}
+OpenAI,
+The sharp factor-of-IID threshold for the free Ising model on regular
+trees, repository manuscript, September 26, 2026.
+\url{https://github.com/openai/math/tree/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/The-sharp-factor-of-IID-threshold-for-the-free-Ising-model-on-regular-trees-September-26-2026}.
+Consulted as motivation; its main theorem is not assumed here.
+
+\end{thebibliography}
+\end{document}
