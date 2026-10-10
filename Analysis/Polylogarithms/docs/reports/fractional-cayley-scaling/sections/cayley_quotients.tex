@@ -1,0 +1,500 @@
+\section{The exact reach of convergent Cayley symmetry}
+\label{cayley:sec:reach}
+
+The existing $S_4$ proof uses the involution
+$\phi(t)=(1-t)/(1+t)$ together with double shuffle.  Before attempting a
+larger combined relation matrix, one can answer an exact structural
+question: how much does this convergent involution prove by itself, and
+how much stronger does it become after all shuffle products of its
+relations are admitted?  These are two different presentations.  Both
+can be computed in every weight.
+
+The resulting dimensions below are dimensions of explicitly defined
+formal word quotients.  They are not dimensions of evaluated periods.
+The theorem includes neither stuffle nor distribution relations, so it
+does not settle the manuscript's conjectured depth-two formula for $S_6$.
+
+\subsection{Positive forms and two commuting involutions}
+
+Use the five formal letters
+\[
+ z=\frac{dt}{t},\qquad c=\frac{dt}{1-t},\qquad
+ a=\frac{i\,dt}{1-it},\qquad
+ b=-\frac{dt}{1+t},\qquad
+ \bar a=-\frac{i\,dt}{1+it}.
+\]
+Letters stand both for these forms and for a basis of a rational vector
+space $V$.  Let $H(w)$ denote their outer-letter-first iterated integral
+from zero to one.  An admissible nonempty word has first letter different
+from $c$ and last letter different from $z$.  Each such integral is
+absolutely convergent: the last-letter condition controls zero, and the
+first-letter condition controls one.  The other endpoint singularities
+are logarithmic and integrable.
+
+Define the letter map $\tau=-\phi^*$ by
+\begin{equation}\label{cayley:eq:tau}
+\begin{array}{c|ccccc}
+v&z&c&a&b&\bar a\\ \hline
+\tau(v)&c-b&z+b&b-\bar a&b&b-a .
+\end{array}
+\end{equation}
+Put
+\[
+ C(v_1\cdots v_n)=\tau(v_n)\cdots\tau(v_1),
+ \qquad
+ K(z)=z,\quad K(c)=c,\quad K(b)=b,\quad K(a)=\bar a,\quad K(\bar a)=a.
+\]
+Here products inside a word are concatenations; linear combinations are
+expanded multilinearly.  Directly from the table,
+\[
+ C^2=K^2=1,\qquad CK=KC.
+\]
+Moreover $C$ preserves admissibility.  Indeed $\tau$ maps the span of
+$\{z,a,b,\bar a\}$ to the span of $\{c,a,b,\bar a\}$ and maps the latter
+span back to the former.
+
+Changing variables and reversing the integration simplex gives
+\begin{equation}\label{cayley:eq:period-law}
+ H(w)=H(Cw)
+\end{equation}
+for every admissible word.  The sign from reversing the integration path
+is included in the definition $\tau=-\phi^*$.  Thus there is no omitted
+weight-dependent sign in \eqref{cayley:eq:period-law}.  Conjugation gives
+$H(Kw)=\overline{H(w)}$.
+
+Let $\mathcal A_n$ be the rational span of admissible words of length $n$,
+and put $\mathcal A_0=\mathbb Q$.  Superscripts $+$ and $-$ on these spaces
+will mean the $+1$ and $-1$ eigenspaces of $K$.  The minus space encodes
+imaginary parts; choosing one word from each nontrivial conjugate pair is
+an equivalent coordinate convention.
+
+\subsection{All-weight rank of the unmultiplied Cayley rows}
+
+\begin{theorem}[Raw convergent Cayley rank]\label{cayley:thm:raw}
+For $n\ge2$,
+\[
+ d_n:=\dim_{\mathbb Q}\mathcal A_n^-
+ =8\cdot5^{n-2}-2\cdot3^{n-2}.
+\]
+The span of the imaginary projections of all weight-$n$ rows $w-Cw$
+has rank
+\begin{equation}\label{cayley:eq:raw-rank}
+ r_n=
+ \begin{cases}
+ 4\cdot5^{n-2}-3^{n-2},&n\text{ even},\\[2mm]
+ 4\cdot5^{n-2}-3^{n-2}-2\cdot5^{(n-3)/2},&n\text{ odd}.
+ \end{cases}
+\end{equation}
+At $n=1$, the imaginary space has dimension one and the rank is zero.
+\end{theorem}
+
+\begin{proof}
+For $n\ge2$, write
+\[
+ U=\operatorname{span}\{z,a,b,\bar a\},\qquad
+ E=\operatorname{span}\{c,a,b,\bar a\}.
+\]
+Then $\mathcal A_n=U\otimes V^{\otimes(n-2)}\otimes E$.
+The dimensions of $U,E,V$ are $4,4,5$ and their conjugation traces
+are $2,2,3$.  Therefore
+\[
+ \dim\mathcal A_n=16\cdot5^{n-2},\qquad
+ \operatorname{tr}(K\mid\mathcal A_n)=4\cdot3^{n-2},
+\]
+which proves the formula for $d_n$.
+
+It remains to compute traces of reversal.  For maps $T:U\to E$ and
+$S:E\to U$, the map $u\otimes e\mapsto Se\otimes Tu$ has trace
+$\operatorname{tr}(ST)$.  Applied to an endpoint pair of $C$, this
+trace is four, because $\tau^2=1$.  Each paired pair of internal letters
+contributes five.  The same facts hold for $CK$, because $(\tau K)^2=1$.
+Finally the table gives
+\[
+ \operatorname{tr}(\tau\mid V)=1,\qquad
+ \operatorname{tr}(\tau K\mid V)=-1.
+\]
+Thus, for $m\ge1$,
+\[
+\begin{array}{c|cc}
+n&\operatorname{tr}C&\operatorname{tr}CK\\ \hline
+2m&4\cdot5^{m-1}&4\cdot5^{m-1}\\
+2m+1&4\cdot5^{m-1}&-4\cdot5^{m-1}.
+\end{array}
+\]
+Because $C$ and $K$ commute,
+\[
+ \operatorname{tr}(C\mid\mathcal A_n^-)
+ =\tfrac12\bigl(\operatorname{tr}C-\operatorname{tr}CK\bigr).
+\]
+The image of $1-C$ is precisely the negative eigenspace of $C$.
+Its rank on $\mathcal A_n^-$ is consequently
+$\tfrac12(d_n-\operatorname{tr}(C\mid\mathcal A_n^-))$.
+Substitution proves \eqref{cayley:eq:raw-rank}.  Weight one is checked
+directly: $K$ negates $a-\bar a$ and $C$ fixes it.
+\end{proof}
+
+In particular, the raw weight-seven Cayley matrix has $24\,514$
+imaginary coordinates and rank $12\,207$.  There remain $12\,307$
+coordinates in that particular quotient.  This count is exact even
+though writing and row-reducing the full matrix is unnecessary.
+
+\subsection{Closing the relations under shuffle multiplication}
+
+The raw row span is not the same as the shuffle ideal generated by the
+rows.  For example, a product of two $C$-negative elements is
+$C$-positive; it vanishes in the ideal quotient but need not belong to
+the raw negative eigenspace.
+
+Let
+\[
+ \mathcal A=\bigoplus_{n\ge0}\mathcal A_n
+\]
+with the shuffle product.  Both $C$ and $K$ are graded algebra
+automorphisms: reversal preserves a shuffle, as does applying a linear
+letter map.  Define the homogeneous ideal and quotient
+\[
+ \mathcal J=\langle f-Cf:f\in\mathcal A\rangle_{\mathrm{shuffle}},
+ \qquad \mathcal B=\mathcal A/\mathcal J.
+\]
+Thus every shuffle multiple of every convergent Cayley row is included.
+The ideal is stable under $K$.
+
+Let
+\[
+ h_n=\dim\mathcal B_n,\qquad
+ g_n=\operatorname{tr}(K\mid\mathcal B_n),\qquad
+ H(t)=\sum_{n\ge0}h_nt^n,\qquad G(t)=\sum_{n\ge0}g_nt^n.
+\]
+The letter $g_n$ in this subsection is a character trace, not a
+Gaussian double $g_{a,b}$.
+
+\begin{theorem}[The full Cayley shuffle-ideal quotient]
+\label{cayley:thm:ideal}
+The algebra $\mathcal B$ is a polynomial algebra on homogeneous
+generators.  Its Hilbert and conjugation-character series are the unique
+formal power series with constant term one satisfying
+\begin{equation}\label{cayley:eq:hilbert}
+ \frac{H(t)^2}{H(t^2)}=\frac{1-t}{1-5t},
+ \qquad
+ \frac{G(t)^2}{H(t^2)}
+   =\frac{(1-t)^2}{(1+t)(1-3t)}.
+\end{equation}
+In particular,
+\[
+ \dim\mathcal B_n^-=\frac{h_n-g_n}{2},
+ \qquad
+ \dim\mathcal B_n^+=\frac{h_n+g_n}{2}.
+\]
+An explicit product form is
+\begin{equation}\label{cayley:eq:dyadic-product}
+ H(t)=\prod_{j\ge0}
+ \left(\frac{1-t^{2^j}}{1-5t^{2^j}}\right)^{1/2^{j+1}},
+\end{equation}
+where each root is expanded with constant term one.
+\end{theorem}
+
+\begin{proof}
+We supply the algebraic details, including the endpoint adjustment.
+Let $\widetilde{\mathcal A}$ be the full shuffle algebra on $V$,
+including words that are not admissible.  This is used only as a formal
+algebra in the argument.
+
+The shuffle polynomial theorem says that the Lyndon words freely
+generate $\widetilde{\mathcal A}$ over $\mathbb Q$
+\cite{cayley:radford,cayley:melancon-reutenauer}.
+Use the alphabet order $z<a<b<\bar a<c$.  Every Lyndon word of length
+at least two is admissible: it cannot begin with the greatest letter
+$c$, or end with the least letter $z$.  Conversely, the nonincreasing
+Lyndon factorization of an admissible word contains neither a
+one-letter factor $c$ at the beginning nor a one-letter factor $z$
+at the end.  The usual triangular shuffle factorization therefore
+gives
+\begin{equation}\label{cayley:eq:polynomial-endpoints}
+ \widetilde{\mathcal A}\simeq\mathcal A[z,c]
+\end{equation}
+as graded polynomial algebras.  In particular $\mathcal A$ itself is
+polynomial, and its indecomposables agree with those of
+$\widetilde{\mathcal A}$ in every degree at least two.
+
+For a connected graded algebra write
+$Q(\mathcal A)=\mathcal A_{>0}/(\mathcal A_{>0})^2$.
+Since $C$ and $K$ are commuting involutions over $\mathbb Q$, choose
+a homogeneous simultaneous eigenbasis of $Q(\mathcal A)$.
+Averaging arbitrary homogeneous lifts with the four character
+projectors of the group generated by $C,K$ produces simultaneous
+eigenvector lifts in $\mathcal A$.  These lifts freely generate
+$\mathcal A$: replacing a graded polynomial generating set by lifts
+of another basis of its indecomposables is a degree-triangular
+invertible change of generators.
+
+For this generating set, $\mathcal J$ is exactly the ideal generated
+by the $C$-negative generators.  One inclusion follows from
+$x-Cx=2x$ for each such generator.  For the other, after all
+$C$-negative generators are set to zero, $C$ acts as the identity
+on every remaining polynomial.  Thus every $f-Cf$ lies in that
+ideal.  Consequently $\mathcal B$ is the polynomial algebra on
+the $C$-positive generators, retaining their $K$-parities.
+
+We compute the required generator characters without constructing
+the generators.  The antipode of the full shuffle Hopf algebra is
+$S(w)=(-1)^{|w|}\operatorname{rev}(w)$, and every connected graded
+Hopf antipode acts as minus the identity on indecomposables.
+Hence reversal acts on degree-$n$ indecomposables as
+$(-1)^{n-1}$.  Put $\theta=-\tau$, applied letterwise.  On
+indecomposables of every positive degree we therefore have
+\[
+ C=-\theta.
+\]
+In particular, the $C$-positive generator space is the
+$\theta$-negative generator space, with the same $K$-characters.
+
+Temporarily work in the full shuffle algebra.  Let $P(t)$ be the
+Hilbert series of the polynomial algebra on its $C$-positive
+generators, and $Q(t)$ the corresponding $K$-trace series.
+The letter traces are
+\[
+\begin{array}{c|rrrr}
+\sigma&1&\theta&K&K\theta\\ \hline
+\operatorname{tr}(\sigma\mid V)&5&-1&3&1 .
+\end{array}
+\]
+Since the degree-$n$ word space is $V^{\otimes n}$, the four
+full-shuffle character series are respectively
+\[
+ \frac1{1-5t},\qquad\frac1{1+t},\qquad
+ \frac1{1-3t},\qquad\frac1{1-t}.
+\]
+
+A $\theta$-negative polynomial generator of degree $n$ contributes
+$(1+t^n)/(1-t^n)$ to the ratio of the identity-character series
+to the $\theta$-character series.  Taking the product over all
+such generators gives
+\[
+ \frac{P(t)^2}{P(t^2)}=\frac{1+t}{1-5t}.
+\]
+If the same generator has $K$-sign $\varepsilon\in\{1,-1\}$,
+its contribution to the ratio of the $K$-character to the
+$K\theta$-character is
+$(1+\varepsilon t^n)/(1-\varepsilon t^n)$.
+Since $\varepsilon^2=1$, this gives
+\[
+ \frac{Q(t)^2}{P(t^2)}=\frac{1-t}{1-3t}.
+\]
+These character products are valid for an infinite generating
+set, since only finitely many generators contribute to any fixed
+weight.
+
+Finally, \eqref{cayley:eq:polynomial-endpoints} removes two
+degree-one indecomposables and none in higher degree.
+On their quotient space, $C$ interchanges $z$ and $c$ modulo
+$\mathcal A_1$, while $K$ is the identity.  Exactly one removed
+generator is $C$-positive, and it is $K$-positive.  Therefore
+\[
+ H(t)=(1-t)P(t),\qquad G(t)=(1-t)Q(t).
+\]
+Substituting these two relations proves
+\eqref{cayley:eq:hilbert}.  Coefficients are determined recursively
+because the coefficient of the new $h_n$ or $g_n$ in its square
+is two.  Iterating the first equation proves
+\eqref{cayley:eq:dyadic-product} in the $t$-adic topology.
+\end{proof}
+
+The first coefficients and their interpretation are
+\[
+\begin{array}{c|rrrrrrr}
+n&1&2&3&4&5&6&7\\ \hline
+\dim\mathcal A_n^-&1&6&34&182&946&4838&24514\\
+r_n&0&3&15&91&463&2419&12207\\
+h_n&2&9&36&162&720&3312&15336\\
+g_n&0&3&4&18&36&124&300\\
+\dim\mathcal B_n^-&1&3&16&72&342&1594&7518\\
+\dim\mathcal J_n^-&0&3&18&110&604&3244&16996
+\end{array}
+\]
+At weight seven, shuffle multiplication supplies $4789$ additional
+imaginary relation directions beyond the raw Cayley row span.
+The remaining $7518$ coordinates are independent only in this
+specified formal quotient.  Adding double shuffle can reduce it
+further; the dimension of an intersection of relation spaces is not
+obtained by adding their separate ranks.
+
+\subsection{Asymptotic size and the conjugation imbalance}
+
+\begin{corollary}[Two distinct exponential scales]
+\label{cayley:cor:asymptotic}
+As $n\to\infty$,
+\begin{align}
+ h_n&=
+ \sqrt{\frac{4H(1/25)}{5\pi}}\,
+ \frac{5^n}{\sqrt n}\left(1+O(n^{-1})\right),\\
+ g_n&=
+ \sqrt{\frac{H(1/9)}{3\pi}}\,
+ \frac{3^n}{\sqrt n}\left(1+O(n^{-1})\right),\\
+ \dim\mathcal B_n^-&=
+ \sqrt{\frac{H(1/25)}{5\pi}}\,
+ \frac{5^n}{\sqrt n}\left(1+O(n^{-1})\right).
+\end{align}
+Both of the first two expansions admit all orders in $1/n$.
+More precisely, the relative difference between the real and
+imaginary dimensions satisfies
+\[
+ \frac{\dim\mathcal B_n^+-\dim\mathcal B_n^-}
+      {\dim\mathcal B_n^++\dim\mathcal B_n^-}
+ =
+ \sqrt{\frac{5H(1/9)}{12H(1/25)}}\,
+ \left(\frac35\right)^n\left(1+O(n^{-1})\right).
+\]
+\end{corollary}
+
+\begin{proof}
+The product \eqref{cayley:eq:dyadic-product} is convergent and
+nonvanishing in $|t|<1/5$.  The functional equations give
+\[
+ H(t)=F(t)(1-5t)^{-1/2},\qquad
+ F(t)=\sqrt{(1-t)H(t^2)},
+\]
+and
+\[
+ G(t)=E(t)(1-3t)^{-1/2},\qquad
+ E(t)=(1-t)\sqrt{\frac{H(t^2)}{1+t}}.
+\]
+The factors $F,E$ are analytic on the disk $|t|<1/\sqrt5$;
+the roots are the analytic roots taking value one at zero.
+Consequently the only dominant singularity for $H$ is $1/5$,
+and that for $G$ is $1/3$.  The standard binomial coefficient
+asymptotic
+$[t^n](1-\lambda t)^{-1/2}
+=\lambda^n(\pi n)^{-1/2}(1+O(n^{-1}))$,
+together with Taylor expansion of the analytic factor at the
+singularity, yields the first two assertions.  The factor values are
+\[
+ F(1/5)=\sqrt{\tfrac45 H(1/25)},\qquad
+ E(1/3)=\sqrt{\tfrac13 H(1/9)}.
+\]
+The same Taylor expansion gives every further inverse-power
+coefficient.  Finally
+$\dim\mathcal B_n^\pm=(h_n\pm g_n)/2$ and division proves the ratio.
+In particular, the $3^n$ character contribution is not absorbed into
+an assertion that a finite $5^n/n$ expansion resolves exponentially
+smaller terms: it has its own independently defined series $G$.
+\end{proof}
+
+\subsection{A completely explicit Cayley family containing \texorpdfstring{$S_6$}{S6}}
+
+Retain
+$S_p=\sum_{n\ge0}(-1)^nH_n/(2n+1)^p$.
+The harmonic parity split and the positive-form convention give
+\[
+ S_p=\operatorname{Im}H\bigl(z^{p-1}a(a+\bar a)\bigr).
+\]
+This follows absolutely for $p>1$, and by a radial Abel limit for
+$p=1$.
+
+\begin{proposition}[An all-index pure-depth representation]
+\label{cayley:prop:harmonic}
+For every integer $p\ge1$,
+\begin{equation}\label{cayley:eq:harmonic}
+ S_p=\operatorname{Im}H\left((2ba-aa+a\bar a)(c-b)^{p-1}\right).
+\end{equation}
+All products and powers inside $H$ are concatenations.
+The expanded right side contains exactly $3\cdot2^{p-1}$
+admissible words, each of weight and series depth $p+1$.
+In particular
+\[
+ \boxed{\quad
+ S_6=\operatorname{Im}H\left((2ba-aa+a\bar a)(c-b)^5\right).
+ \quad}
+\]
+\end{proposition}
+
+\begin{proof}
+Cayley transport gives
+\[
+ C\bigl(z^{p-1}a(a+\bar a)\bigr)
+ =(2b-a-\bar a)(b-\bar a)(c-b)^{p-1}.
+\]
+Both $2b-a-\bar a$ and $c-b$ are fixed by conjugation.
+Taking half the difference with the conjugate and then grouping
+the three conjugate pairs gives exactly the imaginary part in
+\eqref{cayley:eq:harmonic}.  The first letters in the resulting
+three word families are $a$ or $b$, and all letters are nonzero
+kernel letters.  Thus every expanded word is admissible and
+represents an all-one colored multiple polylogarithm.
+\end{proof}
+
+This proposition provides a new explicit high-depth expression
+and a compact formal certificate for the weight-seven mixed sum.
+It does not turn the manuscript's proposed depth-two $S_6$
+reduction into a theorem.  The latter still requires an exact
+combination of additional relations.
+
+For a real-integral check of conventions, the same identity yields
+\[
+ S_p=\frac1{(p-1)!}\int_0^1
+ \log^{p-1}\!\left(\frac{1+u}{1-u}\right)
+ \frac{\log\!\left((1+u)^2/(2(1+u^2))\right)}{1+u^2}\,du.
+\]
+Indeed the iterated integral of $(c-b)^{p-1}$ up to $u$ is the
+displayed logarithmic power divided by $(p-1)!$.
+Integrating the two outer letters in
+$2ba-aa+a\bar a$, and taking imaginary parts, produces the
+remaining kernel.  The substitution $u=(1-x)/(1+x)$ returns
+the original Mellin representation of $S_p$.
+
+There is also a direct verification of this real integral, independent
+of the word expansion.  Start from the already convergent identity
+\[
+ S_p=-\frac1{(p-1)!}\int_0^1
+ (-\log x)^{p-1}\frac{\log(1+x^2)}{1+x^2}\,dx.
+\]
+With $x=(1-u)/(1+u)$ the endpoint pair $(0,1)$ becomes $(1,0)$, and
+\[
+ -\log x=\log\frac{1+u}{1-u},\qquad
+ \frac{dx}{1+x^2}=-\frac{du}{1+u^2},\qquad
+ \log(1+x^2)=-\log\frac{(1+u)^2}{2(1+u^2)}.
+\]
+Substitution, including the reversed integration limits, gives the
+displayed formula.  Near $u=1$ the new logarithmic kernel vanishes
+quadratically in $1-u$, so every fixed logarithmic power remains
+integrable.  At $u=0$ the integrand is bounded (and has a zero of
+order $p-1$ when $p>1$).
+
+\subsection{Finite verification and the remaining mixed reduction}
+
+The supplied program \texttt{check\_cayley\_ranks.py} is independent
+of the older report's word implementation.  It builds all admissible
+words, expands the displayed letter transformation, checks $C^2=1$
+and $CK=KC$, and computes rational ranks by integer elimination
+with gcd normalization.  It also constructs every shuffle lift
+$H(v)H(w-Cw)$ with total weight at most four.
+
+The exact matrix results are
+\[
+\begin{array}{c|rrrr}
+n&1&2&3&4\\ \hline
+\dim\mathcal A_n&3&16&80&400\\
+\text{raw full rank}&1&6&38&190\\
+\text{all lifted full rank}&1&7&44&238\\
+\text{raw imaginary rank}&0&3&15&91\\
+\text{all lifted imaginary rank}&0&3&18&110
+\end{array}
+\]
+The weight-four lifted calculation contains all $1136$ prescribed
+row instances.  These are exact rational checks, not modular rank
+estimates.  They audit the all-weight proofs; the proofs do not
+depend on extrapolating the table.
+
+The separate program \texttt{verify\_harmonic\_cayley.py} rebuilds
+\eqref{cayley:eq:harmonic} for $1\le p\le8$ and obtains zero exact
+residual in every case.  The file
+\texttt{S6\_cayley\_depth\_seven.json} lists all $96$ terms for
+$p=6$.  The verifier imports no numerical polylogarithm evaluator.
+
+An exploratory weight-seven double-shuffle computation generated
+$51\,244$ normalized rows, in addition to a selected Cayley row.
+The sparse search was stopped after substantial fill-in; it
+produced neither an exact certificate for the conjectured $S_6$
+formula nor a separating functional.  No membership or
+nonmembership claim follows from that unfinished computation.
+The exact quotient and rank theorems above concern the fully
+specified Cayley-only presentations and remain unaffected.

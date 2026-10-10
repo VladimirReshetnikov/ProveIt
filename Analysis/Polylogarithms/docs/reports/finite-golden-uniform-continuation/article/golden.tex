@@ -1,0 +1,532 @@
+\section{Complete multiplicative seeds at the golden base}
+\label{golden:sec:complete-seeds}
+
+The complementary-power classification in the current manuscript
+\cite{ProveIt} concerns relations of the form $r^a+r^b=1$.
+Golden ladders also use products of many factors $1-r^n$.
+We now give a completeness theorem for all such finite multiplicative
+relations at the golden base, without imposing an exponent bound in
+advance.  The result determines an integral relation lattice, explains
+the eight arguments in the manuscript's higher golden formulas, and
+classifies which integer powers of the base retain any such seeds.
+
+The four exceptional indices $1,6,10,12$, when the base is the square
+of the golden reciprocal, were already recorded by Bailey and
+Broadhurst \cite[\S2, preceding (22)]{BaileyBroadhurst1999}.
+We do not claim discovery of that list.  The contribution here is its
+unbounded completeness proof, an explicit integral lattice for all
+positive powers, and its consequences for power restrictions and
+exterior symbols.  The arithmetic input is Flatters' later theorem
+on primitive divisors \cite{Flatters2009}.
+
+\subsection{An effective bound for every real quadratic unit}
+\label{golden:subsec:quadratic-cutoff}
+
+Let $K$ be a real quadratic field, let $\sigma$ denote its nontrivial
+automorphism, and let $r\in\mathcal O_K^\times$ satisfy $0<r<1$.
+Put $V_n(r)=1-r^n$ for $n\ge1$.
+A prime ideal $\mathfrak p$ is \emph{primitive for $V_n(r)$} if it
+divides $V_n(r)$ and none of $V_1(r),\ldots,V_{n-1}(r)$.
+Because $r$ is a unit, this says exactly that its residue in the finite
+field $\mathcal O_K/\mathfrak p$ has multiplicative order $n$.
+
+We use the following part of Flatters' theorem: if $u$ is a positive
+real quadratic unit of norm $+1$, then
+$N_{K/\mathbb Q}(u^m-1)$ has a primitive rational prime divisor for
+every $m>12$ \cite[Theorem~1.4]{Flatters2009}.
+Here a rational prime is primitive if it divides this norm and no
+earlier nonzero norm.  The following passage to prime ideals is needed
+when the original unit has norm $-1$.
+
+\begin{theorem}[Uniform quadratic cutoff]
+\label{golden:thm:quadratic-cutoff}
+If $N_{K/\mathbb Q}(r)=+1$, then $1-r^n$ has a primitive prime-ideal
+divisor for every $n>12$.  If $N_{K/\mathbb Q}(r)=-1$, it has one
+for every $n>24$.
+
+Consequently, in any finite relation
+\begin{equation}
+ \prod_{n\ge1}(1-r^n)^{c_n}=r^b,
+ \qquad c_n,b\in\mathbb Z,
+ \label{golden:eq:general-seed}
+\end{equation}
+all coefficients above $12$ vanish in the norm $+1$ case, and all
+coefficients above $24$ vanish in the norm $-1$ case.
+The same support conclusion holds for rational exponents.
+\end{theorem}
+
+\begin{proof}
+For norm $+1$, apply Flatters' theorem to $u=r^{-1}>1$.
+At index $n>12$, choose a primitive rational divisor $p$ of
+$N_{K/\mathbb Q}(u^n-1)$ and a prime ideal $\mathfrak p$ above $p$
+dividing $u^n-1$.  The residue order of $u$ is exactly $n$: an order
+$j<n$ would make $p$ divide the earlier norm
+$N_{K/\mathbb Q}(u^j-1)$.  Inversion preserves order, so $r$ also
+has order $n$ at this ideal.
+
+For norm $-1$, put $q=r^2$ and apply the norm $+1$ theorem to
+$u=r^{-2}$.  For each $m>12$, we obtain a primitive rational divisor
+of $N_{K/\mathbb Q}(q^m-1)$, because
+$u^j-1=-q^{-j}(q^j-1)$ differs by a unit.  At a suitable ideal
+$\mathfrak p$ above this prime, the residue of $q$ has exact order
+$m$.
+
+The residue characteristic is odd.  Indeed, the residue field of an
+ideal above $2$ in a quadratic field has size $2$ or $4$; the residue
+of any unit therefore has order $1$ or $3$.  Thus $2$ divides some
+norm $N_{K/\mathbb Q}(q^j-1)$ with $j\le3$, and cannot be
+primitive at $m>12$.
+
+Let $a$ be the residue of $r$ at $\mathfrak p$.  Since $a^2$ has
+order $m$, the order of $a$ is either $m$ or $2m$, and it must be
+$2m$ when $m$ is even.  The conjugation formula
+\begin{equation}
+ \sigma(r)=-r^{-1}
+ \label{golden:eq:normminus-conjugation}
+\end{equation}
+identifies the residue of $r$ at the conjugate ideal, under the
+induced field isomorphism, with $-a^{-1}$.  When $m$ is odd, these
+two residues have orders $m$ and $2m$ in some order.  To check this
+directly, if $a$ has odd order $m$, then $-a^{-1}$ has order $2m$.
+If $a$ has order $2m$, then $a^m=-1$ in odd characteristic, so
+$(-a^{-1})^m=1$; its square still has order $m$, forcing its order
+to be $m$.
+In this odd-$m$ case the ideals must be distinct: if they coincided,
+the induced residue-field automorphism would preserve order.  Thus
+no splitting assumption is needed.
+
+For an even target $n>24$, take $m=n/2>12$.  If $m$ is even, the
+chosen ideal gives residue order $n$.  If $m$ is odd, the chosen
+ideal or its conjugate gives order $2m=n$.  For an odd target
+$n>24$, take $m=n$ and choose the ideal giving order $m=n$.
+This proves the prime-ideal statement in every case.
+
+Finally, suppose \eqref{golden:eq:general-seed} has a nonzero
+coefficient above the relevant cutoff, and choose its largest
+supported index $N$.  At a primitive ideal for $V_N(r)$, all lower
+factors and the unit $r$ have valuation zero.  Taking valuations gives
+$c_N v_{\mathfrak p}(V_N(r))=0$, which contradicts both $c_N\ne0$
+and $v_{\mathfrak p}(V_N(r))>0$.  Clearing denominators proves the
+rational-exponent version.
+\end{proof}
+
+This theorem bounds multiplicative seeds.  It does not place an
+unconditional bound on the weight of all polylogarithmic identities.
+For a fixed quadratic base, it reduces seed determination to finitely
+many exact ideal valuations and a unit calculation.
+
+\subsection{The full integral lattice at the golden reciprocal}
+\label{golden:subsec:integral-lattice}
+
+Set
+\[
+ \rho=\frac{\sqrt5-1}{2},\qquad V_n=1-\rho^n,
+ \qquad K=\mathbb Q(\sqrt5),\qquad\mathcal O_K=\mathbb Z[\rho].
+\]
+All $V_n$ are positive, so the following equations have no real
+logarithm or sign ambiguity.
+
+\begin{theorem}[Complete golden seed lattice]
+\label{golden:thm:integral-lattice}
+The group of finite integer relations
+\begin{equation}
+ \prod_{n\ge1}V_n^{c_n}=\rho^b,
+ \qquad (c_n)\in\mathbb Z^{(\mathbb Z_{>0})},\quad b\in\mathbb Z,
+ \label{golden:eq:rho-seed}
+\end{equation}
+is free of rank six.  An integral basis is
+\begin{equation}
+\begin{aligned}
+ V_1&=\rho^2,&
+ V_2&=\rho,\\
+ V_6&=\rho^{-1}V_3^2,&
+ V_{12}&=\rho^{-2}V_4V_3^3,\\
+ V_{20}&=\rho^{-1}V_4^3V_{10},&
+ V_{24}V_4&=\rho^{-2}V_3^4V_8^2.
+\end{aligned}
+\label{golden:eq:six-generators}
+\end{equation}
+Equivalently, $c$ occurs in \eqref{golden:eq:rho-seed} precisely when
+its support is contained in
+\begin{equation}
+ S=\{1,2,3,4,6,8,10,12,20,24\}
+ \label{golden:eq:full-support}
+\end{equation}
+and
+\begin{equation}
+\begin{aligned}
+ c_3+2c_6+3c_{12}+4c_{24}&=0,\\
+ c_4+c_{12}+3c_{20}-c_{24}&=0,\\
+ c_8+2c_{24}&=0,\\
+ c_{10}+c_{20}&=0.
+\end{aligned}
+\label{golden:eq:four-constraints}
+\end{equation}
+The uniquely determined unit exponent is
+\begin{equation}
+ b=2c_1+c_2-c_6-2c_{12}-c_{20}-2c_{24}.
+ \label{golden:eq:unit-exponent}
+\end{equation}
+\end{theorem}
+
+We first record the exact finite information needed in the proof.
+Reducing powers using $\rho^2=1-\rho$ gives
+\begin{center}
+\small
+\begin{tabular}{c|c@{\qquad}c|c}
+$n$ & $V_n$ & $n$ & $V_n$\\ \hline
+$1$ & $\rho^2$ & $2$ & $\rho$\\
+$3$ & $2\rho^2$ & $4$ & $\sqrt5\rho^2$\\
+$6$ & $4\rho^3$ & $8$ & $3\sqrt5\rho^4$\\
+$10$ & $11\rho^5$ & $12$ & $8\sqrt5\rho^6$\\
+$20$ & $55\sqrt5\rho^{10}$ & $24$ & $144\sqrt5\rho^{12}$
+\end{tabular}
+\end{center}
+Substitution proves every equation in
+\eqref{golden:eq:six-generators}.  In particular, the indices
+\[
+ E=\{1,2,6,12,20,24\}
+\]
+introduce no prime ideal absent from lower indices.
+
+Every other index through $24$ has the following primitive witness.
+A scalar $a$ denotes the ideal $(p,\rho-a)$ with residue field
+$\mathbb F_p$.  The entry $\theta$ denotes the ideal $(p)$ with
+residue field
+$\mathbb F_p[\theta]/(\theta^2+\theta-1)$; the defining polynomial
+is irreducible for the three primes $p=2,3,7$ used below.
+All powers in the last column are computed in the indicated residue
+field.
+
+\begin{center}
+\small
+\begin{tabular}{r|r|r|l}
+$n$ & $p$ & residue of $\rho$ & proper-power checks\\ \hline
+$3$ & $2$ & $\theta$ & $\theta^1=\theta$\\
+$4$ & $5$ & $2$ & $2^2=4$\\
+$5$ & $11$ & $3$ & $3^1=3$\\
+$7$ & $29$ & $23$ & $23^1=23$\\
+$8$ & $3$ & $\theta$ & $\theta^4=2$\\
+$9$ & $19$ & $4$ & $4^3=7$\\
+$10$ & $11$ & $7$ & $7^5=10,\quad 7^2=5$\\
+$11$ & $199$ & $61$ & $61^1=61$\\
+$13$ & $521$ & $421$ & $421^1=421$\\
+$14$ & $29$ & $5$ & $5^7=28,\quad5^2=25$\\
+$15$ & $31$ & $18$ & $18^5=25,\quad18^3=4$\\
+$16$ & $7$ & $\theta$ & $\theta^8=6$\\
+$17$ & $3571$ & $1103$ & $1103^1=1103$\\
+$18$ & $19$ & $14$ & $14^9=18,\quad14^6=7$\\
+$19$ & $9349$ & $7563$ & $7563^1=7563$\\
+$21$ & $211$ & $178$ & $178^7=196,\quad178^3=144$\\
+$22$ & $199$ & $137$ & $137^{11}=198,\quad137^2=63$\\
+$23$ & $139$ & $63$ & $63^1=63$
+\end{tabular}
+\end{center}
+
+For each scalar row, direct arithmetic verifies
+$a^2+a-1=0$ and $a^n=1$ modulo $p$; for each quadratic row it
+verifies $\theta^n=1$.  The last column lists the values at $n/\ell$
+for every prime $\ell\mid n$, and none equals $1$.
+Thus the order is exactly $n$.  The listed rational primes are
+verified by trial division, and irreducibility of the three quadratic
+polynomials is checked by testing their residues.  The accompanying
+script replays all of these finite checks in exact arithmetic.
+
+\begin{proof}[Proof of Theorem~\ref{golden:thm:integral-lattice}]
+Theorem~\ref{golden:thm:quadratic-cutoff} shows that every relation
+\eqref{golden:eq:rho-seed} is supported on indices at most $24$.
+Subtract integer multiples of the six rows in
+\eqref{golden:eq:six-generators} to set the coefficients at
+$1,2,6,12,20,24$ to zero.  Each row has coefficient $+1$ in its
+own distinct pivot column and zero in every other pivot column, so
+this elimination is integral and leaves all eliminated coefficients
+zero.
+
+If the residual relation is nonzero, let $N$ be its largest supported
+index.  Then $N\notin E$ and the table supplies an ideal primitive
+for $V_N$.  Every lower factor and $\rho$ has valuation zero there,
+whereas $V_N$ has positive valuation.  Applying this valuation again
+contradicts the nonzero coefficient at $N$.  Hence the six rows span
+the entire relation group over $\mathbb Z$.
+
+Their distinct pivot columns also prove independence.  Reading their
+other columns gives \eqref{golden:eq:four-constraints}, and reading
+their unit exponents gives \eqref{golden:eq:unit-exponent}.  The unit
+exponent is unique because $\rho$ is not a root of unity.
+\end{proof}
+
+\begin{remark}[Why the ideal witnesses matter]
+The norms of $V_5$ and $V_{10}$ are $11$ and $-121$.
+One ideal above $11$ has residue $\rho=3$ of order $5$; its conjugate
+has residue $\rho=7$ of order $10$.  Thus $V_{10}$ has a primitive
+prime-ideal divisor even though its norm has no primitive rational
+prime divisor.  A proof using only new rational prime factors of the
+norms would miss this constraint.
+\end{remark}
+
+\subsection{Four even-power seeds and an integral parity condition}
+\label{golden:subsec:even-seeds}
+
+Put $q=\rho^2$ and $U_j=1-q^j=V_{2j}$.
+
+\begin{corollary}[The complete even-power lattice]
+\label{golden:cor:even-seeds}
+All finite integral relations
+$\prod_{j\ge1}U_j^{c_j}=\rho^b$ are generated freely by
+\begin{equation}
+\begin{aligned}
+ U_1&=\rho,\\
+ U_6^2&=\rho^{-1}U_2^2U_3^3,\\
+ U_{10}&=\rho^{-1}U_2^3U_5,\\
+ U_{12}U_2&=U_3^2U_4^2.
+\end{aligned}
+\label{golden:eq:four-even-generators}
+\end{equation}
+Their support is contained in
+\begin{equation}
+ \{1,2,3,4,5,6,10,12\}
+ \quad\text{in the $q$ index}.
+ \label{golden:eq:even-support}
+\end{equation}
+If the four rows are used with multiplicities $(A,B,C,D)$,
+the resulting exponent of $\rho$ is $A-B-C$.
+The result is an integer power of $q$ precisely when $A-B-C$ is even.
+\end{corollary}
+
+\begin{proof}
+Write the multiplicities of the rows in
+\eqref{golden:eq:six-generators} as
+$a_1,a_2,a_6,a_{12},a_{20},a_{24}$.
+Their odd-index coefficients vanish exactly when
+\[
+ a_1=0,\qquad 2a_6+3a_{12}+4a_{24}=0.
+\]
+Thus $a_{12}$ is even and
+$a_6=-3(a_{12}/2)-2a_{24}$.
+The four free integer parameters
+$a_2,a_{12}/2,a_{20},a_{24}$ give exactly
+\eqref{golden:eq:four-even-generators}.  The unit exponent follows
+from the four displayed identities, proving the parity assertion.
+\end{proof}
+
+The support \eqref{golden:eq:even-support} is precisely the
+eight-argument set
+\begin{equation}
+ \mathcal A=\{\rho^2,\rho^4,\rho^6,\rho^8,
+                 \rho^{10},\rho^{12},\rho^{20},\rho^{24}\}
+ \label{golden:eq:manuscript-alphabet}
+\end{equation}
+used by the manuscript's conjectured higher-weight golden ladders.
+The theorem now establishes that no arbitrarily large even exponent
+can introduce another multiplicative seed.  At the level of rational
+logarithmic relations, the integral parity condition disappears because
+$\mathbb Q\log q=\mathbb Q\log\rho$.
+
+\subsection{Which powers of the base retain any seeds?}
+\label{golden:subsec:power-restriction}
+
+For a positive integer $h$, define the rational relation space
+\begin{equation}
+ \mathcal R_h=
+ \left\{(c_n)\in\mathbb Q^{(\mathbb Z_{>0})}:
+  \sum_{n\ge1}c_n\log(1-\rho^{hn})
+      \in\mathbb Q\log\rho\right\}.
+ \label{golden:eq:restricted-space}
+\end{equation}
+One may replace the line $\mathbb Q\log\rho$ by
+$\mathbb Q\log(\rho^h)$ without changing this space.
+
+\begin{theorem}[Sharp power-restriction ranks]
+\label{golden:thm:power-ranks}
+For every positive integer $h$,
+\begin{equation}
+ \dim_{\mathbb Q}\mathcal R_h=
+ \begin{cases}
+ 6,&h=1,\\
+ 4,&h=2,\\
+ 1,&h=3,4,\\
+ 0,&h\ge5.
+ \end{cases}
+ \label{golden:eq:power-ranks}
+\end{equation}
+For $h=3$, the unique rational direction is
+$V_6/V_3^2=\rho^{-1}$.
+For $h=4$, it is
+\begin{equation}
+ \frac{V_{12}^4V_8^6}{V_4^7V_{24}^3}=\rho^{-2}.
+ \label{golden:eq:power-four-direction}
+\end{equation}
+The primitive integral relations whose right sides are integer powers
+of their own base $r=\rho^h$ are
+\begin{align}
+ h=3:\quad &(1-r^2)^3=r^{-1}(1-r)^6,
+ \label{golden:eq:power-three-integral}\\
+ h=4:\quad &(1-r^3)^8(1-r^2)^{12}
+       =r^{-1}(1-r)^{14}(1-r^6)^6.
+ \label{golden:eq:power-four-integral}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Clear denominators in \eqref{golden:eq:restricted-space} and
+exponentiate.  The resulting relation has the form
+\eqref{golden:eq:rho-seed} and is supported only on multiples of $h$.
+Theorem~\ref{golden:thm:integral-lattice} supplies the complete
+support and constraints.
+
+The cases $h=1,2$ follow immediately from that theorem and
+Corollary~\ref{golden:cor:even-seeds}.
+For $h=3$, the permitted support is $\{3,6,12,24\}$.
+The equation at index $8$ in \eqref{golden:eq:four-constraints}
+forces $c_{24}=0$; the equation at index $4$ then forces
+$c_{12}=0$.  The remaining freedom is $c_3=-2c_6$.
+
+For $h=4$, the permitted support is $\{4,8,12,20,24\}$.
+The equation at index $10$ forces $c_{20}=0$; that at index $3$
+gives $3c_{12}+4c_{24}=0$.
+Thus the integer solutions are
+\[
+ c_{12}=4t,\qquad c_{24}=-3t,\qquad
+ c_4=-7t,\qquad c_8=6t,
+\]
+which give \eqref{golden:eq:power-four-direction}.
+Their unit exponent is $-2t$, so it is an integer power of
+$\rho^4$ precisely when $t$ is even.  For $h=3$, the unit
+exponent is $-c_6$, so an integer power of $\rho^3$ requires
+$3\mid c_6$.  These conditions give the two primitive integral
+relations displayed in the theorem.
+
+For $h\ge5$, support is empty unless $h$ divides a member of
+$S$ in \eqref{golden:eq:full-support}.  The possibilities are
+$h\in\{5,6,8,10,12,20,24\}$.  It suffices to exclude $5,6,8$,
+as their multiples impose further restrictions.
+For $h=5$, only indices $10,20$ are permitted; the index-$4$
+equation forces $c_{20}=0$, and the index-$10$ equation then
+forces $c_{10}=0$.
+For $h=6$, only $6,12,24$ are permitted; the equations at indices
+$8,4,3$ eliminate them in that order.
+For $h=8$, only $8,24$ are permitted; the equation at index $4$
+eliminates $24$, then that at index $8$ eliminates $8$.
+This proves all cases of \eqref{golden:eq:power-ranks}.
+\end{proof}
+
+The number field remains $\mathbb Q(\sqrt5)$ under these power
+substitutions, but the permitted positive-power seed space can shrink
+from dimension six to zero.  Thus the field alone does not determine
+the seed count for a specified base and argument family.
+
+\subsection{All-weight kernels of the exterior-symbol map}
+\label{golden:subsec:exterior-symbol}
+
+Put
+\[
+ W=K^\times\otimes_{\mathbb Z}\mathbb Q,
+ \qquad\langle x\rangle=x\otimes1\in W,
+ \qquad v=\langle\rho\rangle,
+\]
+and use additive notation for $W$.
+For $w\ge2$, define the rationalized classical exterior-symbol map
+\begin{equation}
+ \beta_w([x])=
+ \langle x\rangle^{\otimes(w-2)}\otimes
+ \bigl(\langle x\rangle\wedge\langle1-x\rangle\bigr)
+ \quad (x\ne0,1),
+ \label{golden:eq:beta-definition}
+\end{equation}
+with target $W^{\otimes(w-2)}\otimes\bigwedge^2W$.
+Here $[x]$ denotes a generator in a free rational vector space.
+We make no identification of its quotient with numerical periods.
+
+\begin{theorem}[Complete positive-power exterior-symbol kernels]
+\label{golden:thm:symbol-kernel}
+On the free span of $[\rho^n]$, $n\ge1$, the kernel of $\beta_w$
+has dimension six at every weight $w\ge2$.
+An explicit basis consists of
+\begin{equation}
+ \sum_n\frac{c_n}{n^{w-1}}[\rho^n],
+ \label{golden:eq:weighted-seed}
+\end{equation}
+where $c$ runs through the six coefficient vectors in
+\eqref{golden:eq:six-generators}.
+Every kernel element is supported on
+\eqref{golden:eq:full-support}.
+On even powers the kernel has dimension four and is supported on
+\eqref{golden:eq:manuscript-alphabet}.
+On the span of $[\rho^{hn}]$, its dimensions are
+\eqref{golden:eq:power-ranks}.
+\end{theorem}
+
+\begin{proof}
+The vector $v$ is nonzero because $\rho$ is not torsion.
+Multilinearity gives, for every finitely supported rational vector $a$,
+\begin{equation}
+ \beta_w\!\left(\sum_n a_n[\rho^n]\right)
+ =v^{\otimes(w-2)}\otimes
+ \left(v\wedge\sum_n a_n n^{w-1}\langle V_n\rangle\right).
+ \label{golden:eq:beta-factorization}
+\end{equation}
+Tensoring over a field with a fixed nonzero pure tensor is injective,
+and $v\wedge z=0$ if and only if $z\in\mathbb Qv$.
+Consequently \eqref{golden:eq:beta-factorization} vanishes exactly
+when
+\begin{equation}
+ \sum_n a_n n^{w-1}\langle V_n\rangle\in\mathbb Qv.
+ \label{golden:eq:weighted-line-test}
+\end{equation}
+
+After clearing denominators, this says that a positive real algebraic
+number $\prod_nV_n^{c_n}\rho^{-b}$ is torsion.  A positive real
+root of unity is $1$, so the condition is equivalent to the actual
+multiplicative relation \eqref{golden:eq:rho-seed}, with the
+coefficients proportional to $a_n n^{w-1}$.
+The diagonal operation $a_n\mapsto n^{w-1}a_n$ is invertible and
+preserves support.  Theorems~\ref{golden:thm:integral-lattice}
+and \ref{golden:thm:power-ranks} therefore give the basis, support,
+and every stated dimension.
+\end{proof}
+
+\paragraph{Scope of the obstruction.}
+This theorem computes the kernel of the explicitly specified algebraic
+map.  A nonzero exterior symbol rules out a certificate requiring
+vanishing in this map.  Vanishing in the number-field symbol alone does
+not supply a rational-function deformation, lower-weight compatibility,
+or the regulator information needed to prove a higher polylogarithm
+identity.  In particular, dimension four does not assert that four
+numerical ladders exist at every weight, and it does not prove that
+none exists above weight nine.  Numerical period independence remains
+a separate arithmetic question.
+
+The constructive consequence is that searches beginning with this
+symbol can use \eqref{golden:eq:manuscript-alphabet} as a complete
+even-power alphabet and work in four weighted seed coordinates.
+Increasing the positive even exponents beyond $24$ cannot enlarge that
+particular kernel.
+
+\subsection{Exact replay and next proof problems}
+\label{golden:subsec:replay}
+
+The file \texttt{code/golden\_seed\_certificate.py} uses only
+Python's standard library.  It verifies the six generator identities
+in $\mathbb Q[X]/(X^2+X-1)$, the two primitive own-base relations
+at $h=3,4$, all eighteen primitive prime-ideal witnesses, and the
+rational restriction ranks for $1\le h\le25$.
+The output is preserved in
+\texttt{data/golden\_seed\_certificate.json}.
+Every calculation in this replay uses exact integer or rational
+arithmetic.  The infinite bounds rest on Flatters' theorem and the
+prime-ideal argument above; the proof for all $h\ge5$ rests on the
+explicit support constraints.
+
+Several further questions are now more sharply delimited.
+First, the unresolved golden formulas at weights five through nine
+can be approached in the complete eight-argument symbol alphabet;
+the missing step is an exact functional-equation or regulator
+certificate.  Second, the same uniform $12/24$ cutoff permits complete
+seed computations for other real quadratic units, retaining the unit
+index congruence when the base is not fundamental.
+Third, an effective prime-ideal cutoff for the cubic plastic and
+supergolden fields would give an analogous completeness theorem there.
+Finally, formalization can begin with the finite arithmetic interface:
+quadratic algebra, exact residue orders, integral elimination, and
+the tensor/exterior linear-algebra argument.  The cited
+primitive-divisor theorem is an explicit separate dependency.

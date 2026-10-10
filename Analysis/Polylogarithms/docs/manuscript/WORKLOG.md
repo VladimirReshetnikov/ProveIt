@@ -1,3 +1,35 @@
+# Active CM research and fourth incoming batch
+
+The research goal remains active. Third intake: five archives, 197 members,
+commit 6ae95edc29; all five isolated replay suites passed. Fourth intake:
+five archives from a0a90ef318, 227 members; all five isolated suites pass,
+including independent Smith checks and real-order rational certificates.
+Original inputs remain byte-identical. Inventory now has 381 textual files.
+
+Working CM material proves normalized class products and genus ratios,
+all-weight nonvanishing at CM points of order discriminant below -4,
+and the exact degree-two genus ratios for discriminants -15, -20 and -39.
+New extensions prove norms and the dense cluster set [1/2,infinity) for
+weight-12m ratios at discriminant -15. Nine explicit additional ratios
+have exact quadratic certificates; all 25 native 90-digit checks passed.
+The discriminant -39 cube-root obstruction now has an independent
+finite-field irreducibility certificate. The new S8 candidate is distinct
+from the rejected old vector and remains conjectural, with an exact
+normalized proximity enclosure below 1e-355. S6 also remains conjectural.
+
+The working PDF is being rebuilt with three serial LuaLaTeX passes.
+Current build/render/hash gates must be refreshed after final source QA.
+Do not apply the historical 298-page acceptance receipt to this artifact.
+The title and PDF metadata remain ProveIt Contributors.
+
+Next: final CM source and rendered review, coherent receipt gate and
+publication; integrate the new integral-distribution and real-order proof
+packages, reconcile uniform/Lerch/Herglotz results, and continue research.
+The hourly incoming-report watch is active, quiet when unchanged.
+Do not mark the broad research goal complete at a publication milestone.
+
+The following checkpoints are historical.
+
 # Active research checkpoint
 
 The broad research goal remains active. Six packages arrived in cc34f73596;
