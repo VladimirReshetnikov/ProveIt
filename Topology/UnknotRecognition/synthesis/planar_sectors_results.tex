@@ -1,0 +1,81 @@
+All 1,391 maintained tests pass in 250.052 seconds. The focused 72-test
+run passes in 2.205 seconds. Integration tests disable pairwise hyperplane
+generation and standard-rank filtering in the planar branch; positive
+discovery, independent producer-disabled coverage, missing-ray mutations,
+shared-source identity and actual-ray caps have explicit controls.
+
+The audit selects 9,995 sectors across 48 frozen triangulations and checks
+every selected one of matching nullity at most three: 9,807 queries,
+including 463 of nullity three. This selection is exhaustive only on the
+declared smaller sources; it is not all supports on every large source.
+All 7,674 ray occurrences match the frozen complete standard lists, including
+2,279 non-Q rays. The nullity-three subset contributes 2,821 rays and
+1,475 non-Q rays, with 129 essential-disc occurrences, 84 non-Q.
+Automatic dispatch agrees with direct planar output on every audited
+query. On all 9,344 lower-nullity queries, the complete output order and
+statistics exactly equal the frozen incumbent. Eight fresh Regina complete
+standard enumerations match the frozen lists. The 188 selected sectors of
+higher raw nullity remain explicitly outside the gate.
+
+Four additional fresh geometric families at base sizes 1, 2, 4 and 8
+verify 300 full-coordinate parameter cases, forty independently replayed
+component censuses, 28 fresh Regina ray classifications and four fresh
+full standard enumerations. Every family has seven rays, four essential
+and three inessential. These finite controls support the separate
+all-size written proof; they do not substitute for it.
+
+The benchmark compares the frozen native sector implementation at
+\code{6a34c5c0d}. Both arms pay full native dense kernel construction.
+Five interleaved four-arm rounds complete 220 measured calls and 44 warmups
+on an otherwise idle observed host, with A/A arms retained. Complete
+enumeration includes every output coordinate, serialization and ray digest.
+That iterator has no portable coverage proof; such replay is not claimed
+inside enumeration time. Complete discovery includes its positive or
+exhaustion proof, independent verification and full proof serialization.
+Both arms return the same discovery status and their actual witnesses are
+verified. A smaller witness's differing byte length is recorded.
+
+\begin{samepage}
+\noindent\textbf{Complete standard enumeration and output.}
+\input{tables/planar_sectors_enumeration.tex}
+\end{samepage}
+
+At base size 16, complete enumeration drops from about 11.932 seconds to
+0.024 seconds, a paired 493.14-fold gain, producing the same seven rays.
+Nullity-two one-cap controls retain the old envelope path and stay near
+parity. The size-four old A/A ratio is 0.890 in the first run. A separate
+fifteen-round repeat completes sixty measured calls and four warmups;
+old and new A/A ratios are 1.011 and 1.001, with paired gain 9.823.
+Both records are retained, rather than discarding the noisier run.
+
+\begin{samepage}
+\noindent\textbf{Complete supplied-sector disc discovery and replay.}
+\input{tables/planar_sectors_discovery.tex}
+\end{samepage}
+
+At size 16, complete discovery drops from about 0.192 to 0.041 seconds,
+a paired 4.68-fold gain. It improves 1.85-fold at size eight, but is
+about 2.23 times slower at size one and 10 percent slower at size four.
+The old iterator can find its first disc before paying full arrangement
+work, whereas the planar iterator prepares its minimum diagram before
+yielding. These regressions limit the discovery policy; enumeration gains
+must not be substituted for them. Callers can still select the old
+support/arrangement methods explicitly. Full recognition is not timed by
+these supplied-sector rows. The empty-sector control is near parity.
+
+Four new-only complete coverage calls at base sizes 1, 8, 16 and 32
+include production, independent coverage replay and serialization. Times
+are approximately 0.008, 0.024, 0.054 and 0.182 seconds; proof sizes are
+995, 2,048, 3,442 and 6,869 bytes. These are capacity observations without
+a baseline ratio. Publication review separately replays the thirteen
+native audit proofs, four family proofs, four capacity proofs and seventeen
+delivered proofs with the producer disabled.
+
+All 587 captured native source pins stay fixed during audit and timing.
+They refer to runtime release \code{cc44aae87}; a subsequent docstring-only
+edit documents the new dispatch and is checked to preserve its executable
+syntax tree. Historical edge-first evidence retains its own release pins.
+Reproduction uses \code{normal\_orbit\_research.planar\_sectors} with
+\code{audit --fresh-regina} or \code{benchmark --rounds 5}, from \code{fast/}.
+Raw evidence, the noisy-row repeat and publication checks are retained
+under \code{data/planar-sectors-*}.

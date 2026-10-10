@@ -299,10 +299,11 @@ def sector_rays(kernel, *, phase='standard', method='auto', check=lambda: None,
 
     'quadrilateral' yields only canonical lifts of Q-cone extreme rays.
     'standard' uses actual minimum envelopes at matching nullity at most two
-    in automatic mode, and otherwise chooses potential arrangements or
-    positive supports. Explicit methods remain available. k=0 and nullity=0
-    yield no non-link ray. max_bases counts begun candidates; the envelope
-    method attempts exactly the actual output rays.
+    in automatic mode, planar minimum subdivisions at nullity three, and
+    otherwise chooses potential arrangements or positive supports. Explicit
+    methods remain available. k=0 and nullity=0 yield no non-link ray.
+    max_bases counts begun candidates; envelope and planar methods attempt
+    exactly the actual output rays.
     """
     if phase not in ('quadrilateral', 'standard'):
         raise ValueError('phase must be quadrilateral or standard')
@@ -390,8 +391,9 @@ def discover_in_sector(triangulation, allowed_types, *, phase='quadrilateral',
                        method='auto', max_bases=None, max_orbit_cycles=None, check=lambda: None):
     """Find a independently certified essential-disc component, if encountered.
 
-    A complete Q phase also decides existence of a positive-Euler canonical
-    surface in the sector.  Positive Euler alone is never a disc verdict.
+    On a compact three-manifold source, a complete Q phase also decides
+    existence of a positive-Euler canonical surface in the sector.
+    Positive Euler alone is never a disc verdict.
     A complete standard phase excludes only vertex discs in this sector.
     A cap returns INCONCLUSIVE without an absence claim or partial proof.
     """

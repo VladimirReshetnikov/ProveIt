@@ -1,0 +1,187 @@
+\section{Sharp planar interactions and a Q-corner Euler criterion}
+\label{sec:planar-overlay-refinements}
+
+Arrival \code{3e07f86cf} supplies report 81 while the preceding native
+integration is being completed. Its full delivered manuscript, PDF,
+alternative implementation and evidence are preserved by placement
+\code{6a92806b1}; the committed archive is subsequently retired.
+The report strengthens the output bound, extends the mathematical admission
+criterion, and isolates a cheaper Euler-only objective. These results are
+preserved independently of implementation performance. Its alternative
+planar modules use different certificate schemas from report 80; their
+patch is retained for comparison rather than overwriting the maintained
+producer/checker pair.
+
+\subsection{The interaction constant improves from nine to one}
+
+For the previous section's polygon $P$, set $A_v=m_v-1$ and $A=\sum_vA_v$.
+The earlier segment-pair bound is valid but overcounts crossings within
+convex cell diagrams. Two diagrams with $f_1,f_2$ full-dimensional cells
+have at most $(f_1-1)(f_2-1)$ proper transverse crossings of open edges.
+In general position, Euler's formula gives an overlay cell count
+$F=f_1+f_2-1+X$. Each overlay cell is one convex intersection of a pair
+of cells, so $F\le f_1f_2$. This proves the crossing bound.
+For degeneracies, choose a strict interior witness for every retained
+minimum function. Sufficiently small generic rational perturbations
+preserve these witnesses and each original proper transverse crossing
+in a disjoint neighborhood. They do not introduce more retained functions;
+applying the general-position bound proves the same inequality. Collinear
+overlaps add only existing endpoints, and crossings at existing vertices
+are already counted.
+
+\begin{proposition}[Sharp abstract interaction bound]
+The complete ray count satisfies
+\[
+ R\le b+2A+\sum_{u<v}A_uA_v
+       \le b+\frac{A(A+3)}2.
+\]
+For every finite prescribed list of nonnegative $A_v$, the first bound
+is attained by a rational affine-potential system. With normal-sector
+matching nullity three, the inherited graph count gives $A\le3k+3$,
+so $R\le(9k^2+29k+18)/2$. With one varying group, $R\le7k+6$.
+\end{proposition}
+\begin{proof}
+Count original polygon corners, individual diagram vertices and proper
+cross-group crossings, using the preceding bounds. Since
+$\sum_vA_v^2\ge A$, the second inequality follows.
+For sharpness choose $A_v$ parallel lines per group in pairwise nonparallel
+rational directions, with small generic offsets so every cross-group
+intersection lies inside a polygon containing zero. They give distinct
+boundary endpoints and no triple crossings. If $z=n_v\cdot x$, the forms
+$h_j=-jz+\sum_{s=1}^j\tau_s$ realize the successive strips with breaks
+at $\tau_j$. The vertex count is exactly the first displayed bound.
+These systems homogenize to rational potential cones. Realization of the
+quadratic lower bound by actual manifold triangulations is not proved.
+\end{proof}
+
+\subsection{Certified forced-zero removal admits more feasible cones}
+
+For $C=\{q\ge0:A_\Sigma q=0\}$, let $J$ be the coordinates positive in
+some feasible vector. Removing the other allowed types preserves every
+feasible standard vector. Summing one positive witness per surviving
+coordinate gives a vector strictly positive on $J$. Small perturbations in
+any direction of the rebuilt kernel remain nonnegative there, so that
+kernel equals the linear span of its feasible cone. Thus feasible-cone
+dimension at most three, rather than raw nullity at most three, suffices
+after this exact recompilation.
+
+The following single homogeneous LP identifies $J$:
+\[
+ \max\mathbf1^Tz:\quad A_\Sigma q=0,\ q\ge0,\quad
+                     0\le z\le\mathbf1,\quad z\le q.
+\]
+Scaling and summing the individual feasibility witnesses makes every
+$q_j\ge1$ on $J$, giving optimum $|J|$ and unique optimal auxiliary
+$z=\mathbf1_J$. The original $q$ need not be unique. Its dual is
+\[
+ \min\mathbf1^Tu:\quad u,v\ge0,\quad u+v\ge\mathbf1,\quad
+                      A_\Sigma^Ty\ge v.
+\]
+Strong duality supplies independently checkable support witnesses
+\[
+ A_\Sigma q=0,\quad q\ge0,\quad q_j\ge1\ (j\in J),\qquad
+ w=A_\Sigma^Ty,\quad w_j=0\ (j\in J),\quad w_j\ge1\ (j\notin J).
+\]
+Indeed for any feasible $x$, $w^Tx=y^TA_\Sigma x=0$ is a sum of
+nonnegative terms, forcing every off-$J$ coordinate to vanish; $q$ proves
+the opposite inclusion. This is a standard maximal-support LP construction
+specialized to the sector, without a literature-priority claim.
+Adding $\sum q_j=1$ or coordinate caps would invalidate its scaling proof.
+Neither delivered implementation installs this preprocessing. The 188
+higher-raw-nullity corpus sectors remain outside the native planar gate.
+
+\subsection{Euler maxima need only the quadrilateral corners}
+
+\begin{proposition}[All-dimensional canonical convexity]
+Let $\lambda$ be a linear functional on standard matching vectors with
+$\lambda(L_v)\ge0$ for every vertex link. On any nonempty normalized
+quadrilateral section $P$,
+\[
+ \max_{q\in P}\lambda(\operatorname{lift}(q))
+ =\max_{a\in\operatorname{Vert}(P)}\lambda(\operatorname{lift}(a)).
+\]
+Every corner lift spans a non-link standard extreme ray. For compact finite
+three-manifold triangulations this applies to Euler characteristic; a
+nonpositive maximum excludes every essential normal disc in that sector.
+\end{proposition}
+\begin{proof}
+Let $U(q)$ be the signed linear triangle-potential matching vector with
+zero offsets, including singleton vertex groups. Canonical lifting gives
+\[
+ \lambda(\operatorname{lift}(q))=\lambda(U(q))-
+       \sum_v\lambda(L_v)\min_{c\in G_v}\ell_c(q).
+\]
+Each minimum is concave, so the expression is convex and positively
+homogeneous. A convex combination of corners has value at most their
+maximum; the reverse inequality is immediate. A Q-corner is extreme in
+any minimum cell containing it; the coordinate-face correspondence makes
+its lift standard-extreme. Euler values of compact manifold vertex links
+are one or two, meeting the sign hypothesis. An essential normal disc has
+no vertex-link component and is canonical, by the classical canonical
+surface properties reviewed by Burton~\cite{burton-convert}. It has
+nonzero quadrilateral vector and positive Euler value, contradicting a
+nonpositive maximum. An empty section contains only link surfaces.
+\end{proof}
+
+The maximum is of the normalized value $\chi/\sum q_i$, not the raw Euler
+characteristic of primitive integer representatives. Positive rescaling
+preserves sign, but not numerical maxima. A positive Q-corner can be a
+sphere, projective plane or inessential disc, so the essentiality observer
+is still required. An essential standard disc need not itself be a
+Q-corner. This criterion neither replaces complete standard enumeration
+nor supplies a complete sector family.
+
+A primitive integral vector on an admissible standard extreme ray is
+connected. Each component is a nonnegative matching vector in the same
+compatible sector, so extremality makes it a positive scalar multiple of
+the whole vector. Bezout's identity for the primitive coordinates makes
+that scalar an integer; it cannot lie strictly between zero and one.
+This justifies skipping nonpositive-Euler primitive extreme rays during
+disc discovery. Primitivity without extremality does not give this result.
+
+For nullity at most three, a proposed Euler precheck can decide this sign
+in $O(1+t+k^2)$ rational operations after kernel construction. Build the
+bounded-coefficient linear Euler functional using one representative per
+physical face and edge in $O(t)$; project the relevant potentials to the
+fixed-dimensional chart and construct $P$ in $O(k^2)$. Aggregate the
+linear Euler term and link coefficients in one source pass, then evaluate
+the group minima at its at most $k$ corners in $O(k^2)$. A positive witness
+lift costs $O(t+k)$. Dense source replay and compressed disc testing are
+separate costs. This faster aggregated implementation is not installed;
+the maintained complete Q phase already provides the logically valid
+nonpositive-Euler exclusion, with its existing proof and costs.
+In dimension $d$, active-constraint enumeration tests at most
+$\binom{k}{d-1}$ corner systems, including collapsed sections, giving
+$k^{O(d)}$ supplied-sector Euler queries. Logarithmic nullity therefore
+allows local quasi-polynomial Euler queries, without a global coverage
+or essentiality theorem.
+
+\subsection{Arithmetic models, independent evidence and integration limits}
+
+The deterministic sort-and-merge realization has arithmetic bound
+$O(1+k^3+(t+k)R)$ and polynomial bit complexity. Both supplied Python
+implementations use exact sets/dictionaries; adversarial hash collisions
+are not covered by that sharper cubic bound and can add polynomial work.
+The geometric bound is not a claim of cubic worst-case Python bit time.
+The inherited cofactor estimate bounds primitive triangle coordinates
+by $4^s$ and quadrilaterals by $4^{s-1}$ for actual support $s$: the
+triangle incidence block is totally unimodular and each quadrilateral
+column has absolute column sum at most four. Thus output coordinates
+have $O(k)$ bits, even if elementary pieces are exponentially numerous.
+
+Fresh scratch reproduction passes all thirty relevant tests, checks 304
+abstract models with 609 compared rays and 1,409 feasible arrangement
+candidates, and passes 96 focused certificate/budget/cancellation controls.
+Its Euler audit compares 607 declared sectors using exact normalized
+maxima and source standard-ray membership. These fresh results are retained
+under \code{data/incoming-eaad-81-*}. The delivered all-48-source Regina
+audit and 1,344-test historical run are preserved as delivered evidence;
+they are not called fresh native runs here.
+
+The conditional recognition statement requires a certified polynomial-size
+diagram exterior, a quasi-polynomially constructed complete family of
+low-nullity compatible sectors, and exact polynomial-time essential-disc
+testing per emitted ray. Local enumeration then preserves quasi-polynomial
+time. The complete-family hypothesis remains the substantive missing
+theorem. None of the sharpness, forced-zero, convexity or finite audit
+results proves it.

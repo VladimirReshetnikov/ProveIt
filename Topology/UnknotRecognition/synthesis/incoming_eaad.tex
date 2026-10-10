@@ -1,0 +1,292 @@
+\section{Binary patch grammars, boundary observers and causal localization}
+\label{sec:incoming-eaad}
+
+Reports 76--80 are preserved in full, including their original manuscripts,
+PDFs, proofs, executable experiments and proposed patches. Placement
+\code{eadb83e0e} precedes the separate review recorded here. Executions use
+scratch copies; the delivered source trees are unchanged. Mathematical
+results are retained whether or not they improve the native recognizer.
+The two native integrations are explained in the following sections.
+None of these reports proves general quasi-polynomial unknot recognition.
+
+\subsection{A rectangular algebra for whole-disc patch transfer}
+
+Report 76 uses actual unions of discs with individually labelled, collared
+input and output intervals. Every component must meet the external boundary
+interface. Gluing is zero-rejecting: a sealed component or an incidence
+cycle permanently prevents the whole assembly from being one disc.
+This predicate differs from the distinguished-component predicate of
+Section~\ref{sec:incoming-contexts}.
+
+Linearize transfers over $\F$ and quotient by the radical of all admitted
+cap tests. Substituting a fixed transfer into a cap gives another admitted
+cap, so this radical is preserved by left and right composition and tensor
+product. This substitution argument is needed before quotient multiplication
+can be used; equality under a single chosen closure would not suffice.
+
+\begin{proposition}[Rectangular disk-transfer algebra]
+For positive interface sizes $a,b$, the cap quotient satisfies
+\[
+ \operatorname{Hom}(a,b)\cong
+ \operatorname{Mat}_{2^{b-1}\times2^{a-1}}
+                (\F[\varepsilon]/(\varepsilon^2)).
+\]
+Composition is ordinary rectangular matrix multiplication under this
+identification, with the closure pairing given by the corresponding trace.
+\end{proposition}
+\begin{proof}
+With one input and one output, the strip is the unit and two separate discs
+represent $\varepsilon$. Composing the latter with itself seals the middle
+disc, hence $\varepsilon^2=0$. For two ports, actual transfers with partitions
+$000,001$ give maps $u_0,u_1:1\to2$; partitions $010,000$ give
+$v_0,v_1:2\to1$. Direct cap testing gives
+$v_i u_j=\delta_{ij}I_1$ and $u_0v_0+u_1v_1=I_2$ in the quotient.
+The latter sum is an algebraic identity, not a physical glued surface.
+Iterating the splitting yields $b\cong1^{\oplus2^{b-1}}$.
+The composites of the resulting inclusion and projection maps are matrix
+units with coefficients in $\operatorname{End}(1)$, proving the formula
+and its compatibility with composition. The full report supplies the cap
+tables and explicit maps, including the trace normalization.
+\end{proof}
+
+For a homogeneous acyclic binary grammar of width $b$, with $q$ XOR-charge
+values, the feature bound is $R=q2^{2b-1}$. Cost-ordered elimination retains
+original candidates, rather than interpreting an XOR basis row as a surface.
+The elementary all-cap min-cost algorithm has bit cost
+$\operatorname{poly}(N,b,B)R^4$, including grammar size and signed-cost bits.
+A binary power of physical length $W$ takes $O(\log W)$ composition stages;
+each copy may choose independently from its language. Raising one selected
+witness to the $W$th power would solve a different problem. A witness DAG
+of size $O(M+SR)$ preserves the selected original word and its costs.
+For a nonnegative free-star objective, an optimum needs at most $R-1$
+layers. This shortest-word theorem does not permit shortening a prescribed
+physical span. No general geometric patch exporter or ambient/source binding
+is supplied by this algebraic compiler.
+
+\subsection{A small boundary quotient, under a checked simplicity promise}
+
+Report 77 concerns a marked closed orientable surface $\Sigma_g$, $g\ge2$.
+For a multiple $q$ of $g$, use
+\[
+ H_g(q)=(\mathbb Z/q)^{2g}\times\mathbb Z/g,\quad
+ (x,z)(y,t)=(x+y,z+t+c(x,y)),\quad
+ c(x,y)=\sum_i x_{a_i}y_{b_i}.
+\]
+The inverse is $(-x,-z+c(x,x))$ and a signed power is
+$(kx,kz+\binom{k}{2}c(x,x))$. The product of the $g$ standard commutators
+has central coordinate $g=0$, so the surface relation is respected.
+
+For an independently source-verified simple curve, nonseparating curves
+have a nonzero first coordinate: their integral homology class is primitive.
+A separating curve bounding a genus-$h$ side has signature $(0,h)$, up to
+orientation. Thus zero detects contractibility under this promise, and a
+nonzero central value recovers the unordered genera $\{h,g-h\}$.
+The general finite-quotient principle is classical, due to
+Livingston and Pikaart~\cite{livingston-boundary,pikaart-boundary}; this review makes no exhaustive novelty claim.
+
+This small observer is not a general word-problem solver. In particular,
+\[
+ w=[[a_1,b_1],a_1[a_1,b_1]a_1^{-1}]
+\]
+vanishes in every class-two observer here but is nontrivial in the surface
+group. Map $a_1,b_1,a_2,b_2$ to $x,y,y,x$ in a free group and all remaining
+generators to one. The surface relator maps to
+$[x,y][y,x]=1$, whereas $w$ has nonempty free reduction.
+Agreement among these observers cannot certify simplicity. Ordered boundary
+words and geometric marking provenance are indispensable; a letter census
+loses the central coordinate. Ordinary contractibility also does not certify
+admissibility relative to a punctured or marked boundary pattern.
+
+A power SLP with encoded size $S$, including exponent bits and reference
+nodes, can be evaluated in $O(Sg\log^2(g+1))$ bit operations using lazy
+basis-generator handling. Only $2g+1$ modular coordinates are stored, not
+an exponentially large group table. Safe transport under every oriented
+marking change requires common coordinate modulus $g$ for odd $g$ and
+$2g$ for even $g$. Indeed a generator image must retain order dividing $q$,
+which requires $g\mid\binom q2$; a twist sends $a_1^g$ to $(a_1b_1)^g$
+with central value $g/2$ when $g$ is even. Thus the narrower even-genus
+quotient is not invariant under all marking changes. Checking a supplied
+symplectic image tuple makes subsequent cached transport algebraically safe,
+at $O(g^2\log^2 g)$ per value. It does not authenticate that tuple as a
+geometric change of marking.
+
+\subsection{Exactly which fixed double-cover banks detect every separator}
+
+Identify the character space with the symplectic space
+$V=\F^{2g}$. An essential separating curve determines a proper splitting
+$V=U\perp W$. In the double cover with nonzero character $\alpha$, either
+individual lift has nonzero homology exactly when $\alpha$ restricts
+nontrivially to both sides. When both side covers are connected they have
+two boundary circles; an individual lifted circle is nonseparating, while
+the sum of the two classes is zero. Testing only their sum loses detection.
+Every proper symplectic splitting is realizable by a separating simple
+curve, by changing a symplectic marking through transvections/Dehn twists.
+
+For a bank $A$, put $X=\langle A\rangle$ and choose a basis $B\subseteq A$.
+Join each nonbasis character to all basis vectors in its support; also join
+basis pairs with nonzero symplectic pairing. Its components span the unique
+finest orthogonal decomposition $X=X_1\perp\cdots\perp X_s$ in which every bank
+member lies in one summand. This decomposition is independent of the chosen
+basis, although its graph presentation can change.
+
+\begin{samepage}
+\begin{proposition}[Universal fixed banks]
+A nonempty bank detects every essential separator through individual-lift
+homology if and only if this graph is connected and $X$ is coisotropic,
+$X^\perp\subseteq X$. The criterion costs $O(mg^2+g^3)$ binary operations
+for $m$ characters. The minimum bank size is $g+1$.
+\end{proposition}
+\end{samepage}
+\begin{proof}
+Write $d_i=\dim X_i$, $r_i=\dim\operatorname{rad}X_i$. Split each $X_i$
+into a nondegenerate part and its radical. The sum of all radicals is
+isotropic in the complement of the nondegenerate parts. Extend its basis
+to a symplectic basis there and assign one dual partner per radical vector.
+This constructs simultaneous orthogonal nondegenerate envelopes $E_i$
+of dimensions $d_i+r_i$.
+
+If the interaction graph is disconnected, one envelope and its orthogonal
+complement form a proper splitting in which every character is pure.
+If the graph is connected but $X$ is not coisotropic, a single envelope
+of dimension $d+\dim\operatorname{rad}X<2g$ gives such a splitting.
+Conversely any undetected splitting makes every character pure. Graph
+connectedness forces all of $X$ onto one side. Coisotropy forces a
+nondegenerate side containing $X$ to have dimension at least $2g$, a
+contradiction. Coisotropy is tested by
+$2d-\operatorname{rank}(\omega|_X)=2g$.
+
+At most $g$ characters either span a noncoisotropic space, or are an
+independent basis of a $g$-dimensional Lagrangian. In the latter case their
+interaction graph has $g$ isolated vertices and fails when $g\ge2$.
+A Lagrangian basis $\lambda_1,\ldots,\lambda_g$ together with its sum
+is coisotropic and connected, proving the upper bound.
+\end{proof}
+
+In particular, the full $2g$ standard symplectic basis is not universal:
+its graph has $g$ components. The lower bound applies to fixed degree-two
+covers and individual-lift homology, not adaptive cover selection,
+higher-degree covers, or arbitrary curve algorithms.
+
+\subsection{A quadratic bridge between genus and lifted homology}
+
+The same report preserves a separate cellular/Magnus identity. Degree-two
+signatures over $\F$ have multiplication
+\[
+ (x,M)(y,N)=(x+y,M+N+xy^{\mathsf T}).
+\]
+A positive generator is $(e_i,0)$, its inverse is
+$(e_i,e_ie_i^{\mathsf T})$, and every signature has fourth power one.
+Let $J$ have standard symplectic $2\times2$ blocks. The surface relator
+is $(0,J)$; changing a word representative with first coordinate zero
+can toggle $M$ by $J$.
+
+For a separating simple curve bounding genus $h$,
+\[
+ \{\operatorname{rank}M,\operatorname{rank}(M+J)\}
+       =\{2h,2(g-h)\}.
+\]
+Indeed each commutator contributes $uv^{\mathsf T}+vu^{\mathsf T}$,
+giving the bivector of one symplectic summand; congruence preserves its
+rank and conjugation fixes a zero-first-coordinate signature.
+
+More generally, for any word with zero mod-two first coordinate and a
+nonzero character $\alpha$, its individual lifted homology satisfies
+\[
+ [\widetilde w]\ne0\quad\Longleftrightarrow\quad
+                M^{\mathsf T}\alpha\notin\{0,J\alpha\}.
+\]
+To see this, traverse its letters in the two-vertex cellular cover. The
+prefix exponent vector determines the sheet of each positive edge; a
+negative letter adds its own character bit when locating the reversed edge.
+These contributions are precisely the contraction of the quadratic
+signature. Since total exponent parity is zero, both sheet chains are the
+same vector $M^{\mathsf T}\alpha$. The two lifted two-cells have the same
+boundary, the duplication of $J\alpha$, so the boundary image is its
+one-dimensional span. This proves the formula without expanding the SLP.
+It also supplies independent cellular and quadratic replay routes.
+
+\subsection{Causal localization of bounded tetrahedron descent}
+
+Report 79 strengthens report 75's local-region theory for a particular
+objective. Moves are relative $2$--$3$ and $3$--$2$ replacements on marked
+tetrahedron incarnations, with their source legality and transport checked.
+Construct the birth DAG of a trace: a directed arc joins a move creating an
+incarnation to a later move consuming it, retaining parallel arcs.
+Two simultaneously legal moves with disjoint consumed incarnations commute.
+There is also a backward-persistence lemma: if the second move consumes no
+incarnation born at the first, all its sources survive the first move.
+Its internal facet, or complete three-tetrahedron edge star, is unchanged,
+so it was legal before the first move. This justifies swapping those moves.
+
+\begin{proposition}[Connected first descent]
+If a descending trace uses at most $U$ upward moves, a descending trace exists
+with $u\le U$ upward moves, $d=u+1$ downward moves, length $2u+1$, and a
+connected original footprint of size at most $3u+3$.
+\end{proposition}
+\begin{proof}
+Birth-DAG components project to legal traces by repeated swaps using
+backward persistence, and their tetrahedron losses add. Choose a shortest
+descending trace within the upward allowance and truncate at its first
+descent. Then $d=u+1$. If its birth DAG had several components, one would
+have positive loss; its legal projection would be a shorter descending
+trace, a contradiction.
+
+For a connected birth component with $u$ upward and $d$ downward moves,
+there are $2u+3d$ consumed source incarnations. At least $u+d-1$ are born
+within the component, so at most $u+2d+1$ are original. Their original
+footprint is connected: maintain ancestor blocks of original cells and
+the bijection between current cut facets and original boundary ports.
+Each connected source replacement merges adjacent connected ancestor blocks.
+At the end these blocks are exactly the birth-component footprints.
+Substitution of $d=u+1$ gives $3u+3$.
+\end{proof}
+
+Constructive extraction alternates projection to a positive-loss component
+and truncation at first descent until stable. Each step reduces the number
+of events; truncation alone need not produce a connected footprint.
+A six-tetrahedron ball shows the footprint bound is sharp at $U=1$.
+
+Enumerate connected original regions of radius $3U+3$ in the bounded-degree
+dual graph, then the constant-alphabet local traces. With source-bit size
+$B$, this gives a complete bounded-descent algorithm
+$2^{O(U)}\operatorname{poly}(t+B)$, without a separate locality hypothesis.
+A negative result exhausts descent under that upward allowance; it is not
+a knottedness certificate. The report also proves a multiunit loss-$k$
+bound $2^{O(U+k)}\operatorname{poly}(t+B)$ by decomposing independent birth
+components and using color coding/perfect hash families. Its deterministic
+splitter generator is not implemented; the executable packing routine
+solves one supplied coloring.
+
+A shared cover index avoids restarting a trace in overlapping regions:
+it filters covers by the actually consumed original footprint. Full
+predicate completeness requires invariance under legal projection and
+commutation. Marked-endpoint descent predicates qualify; arbitrary
+history-dependent or selected-cover callbacks need not. The preserved
+implementation remains a research module pending reconciliation with the
+maintained trace/source interfaces. No universal small-upward descent or
+terminal structure theorem for all unknots follows from this result.
+
+\subsection{Fresh finite evidence and preserved proof scope}
+
+Fresh scratch runs pass all 52, 47, 66 and 36 tests of reports 76--79,
+respectively. Report 76 checks 44,168 cap entries, 4,964 rectangular
+products, 41,438 trace pairings, 14,400 weighted queries, 39,926 powered
+versus explicit cap queries, 855 literal pair meshes and 1,408 complete-word
+meshes. Its $W=2^{1024}$ example returns $-3W+4$ with 1,025 compiled rules
+and 2,049 reachable witness nodes; this is one compressed-language example.
+Report 77 compares every one of 32,768 genus-two banks with literal coverage
+of the ten splittings, exhausts all banks of size at most $g$ for genera
+two and three, and checks 1,100 random splitting cases. The all-genus claims
+depend on the proofs, not these finite counts.
+
+Report 78's fresh audit checks 600 flow models against 418,908 boxed
+potentials, 80 complete bands against 51,824 potentials, and 3,725 strata.
+Its 100 constructed meshes, 800 legal moves, 1,200 surfaces and 1,360
+positive-core budgets pass. All 100 old and new outputs have Euler
+characteristic one, so this corpus demonstrates no added positive coverage.
+Report 79 replays 124 saved covered endpoints and eighteen strict descents,
+in addition to its 36 focused tests. Its much larger delivered regression
+corpus is preserved, not represented here as freshly rerun.
+Report 80's scratch reproduction passes 39 tests and seventeen saved
+coverage proofs. Native audits, integration tests and timings follow below.
+Fresh logs and structured evidence are retained under \code{data/incoming-eaad-*}.

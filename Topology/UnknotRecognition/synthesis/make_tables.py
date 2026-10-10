@@ -1707,3 +1707,7 @@ if os.path.exists('data/weighted-coorientation-benchmark.json'):
 if os.path.exists('data/envelopes-benchmark.json'):
     import runpy
     runpy.run_path('data/envelopes_tables.py')
+
+if os.path.exists('data/planar-sectors-benchmark.json'):
+    import runpy
+    runpy.run_path('data/planar_sectors_tables.py')
