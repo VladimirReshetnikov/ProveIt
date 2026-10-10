@@ -1,0 +1,553 @@
+% Self-contained contribution. Standard AMS theorem environments and macros
+% \Li, \dd, \E, \Re are supplied by the parent document.
+% Bibliography keys used: herg:RadchenkoZagier, herg:DLMFhyperbolic,
+% herg:DLMFbessel, herg:DLMFgamma, herg:DLMFzeta.
+
+\section{A uniform transition for high Herglotz derivatives}
+\label{herg:sec:transition}
+
+The frozen manuscript proves a sharp asymptotic expansion for the
+Herglotz derivatives when their order tends to infinity at a fixed
+positive argument \cite{repoHerglotz}. Its final research paragraph explicitly leaves open
+a joint limit in which the argument also varies. We resolve the
+transition scale $x\asymp r$. The result has a complete expansion with
+computable coefficients, an explicit finite-order remainder, and a
+profile that admits arithmetic, Bessel, Gamma, and dilogarithmic
+representations. The special-function identities used in the proof are
+classical; the contribution here is the joint-limit theorem and its
+systematic connection to this profile. No historical priority is claimed
+for an isolated transformed divisor sum.
+
+Let
+\begin{equation}\label{herg:eq:F}
+ F(x)=\sum_{n\geq1}\frac{\psi(nx)-\log(nx)}{n},\qquad
+ D_r(x)=\frac{(-1)^{r+1}x^{r+1}}{r!}F^{(r)}(x),
+ \quad x>0,\quad r\geq1.
+\end{equation}
+Here $F^{(r)}$ differentiates the argument $x$. Define
+\begin{equation}\label{herg:eq:Bprofile}
+ B(t)=\frac{1}{1-e^{-t}}-\frac1t,\qquad B(0)=\frac12,
+ \qquad
+ S(\lambda)=\sum_{n\geq1}\frac1{n^2}
+                       B\left(\frac1{n\lambda}\right),\quad\lambda>0.
+\end{equation}
+The letter $B$ without an index denotes this elementary function;
+$B_j$ with an integer index denotes a Bernoulli number.
+
+\subsection{An exact probability representation and a finite remainder}
+
+\begin{lemma}[Positive kernel and derivative bounds]
+\label{herg:lem:B}
+For $t>0$, $1/2<B(t)<1$ and $B'(t)>0$. For every integer $q\geq1$,
+\begin{equation}\label{herg:eq:Bbound}
+ \sup_{t\geq0}|B^{(q)}(t)|
+ \leq \frac{2q!\zeta(q+1)}{(2\pi)^{q+1}}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The hyperbolic partial-fraction expansion
+\cite[Eq.~4.36.3]{herg:DLMFhyperbolic} gives
+\begin{equation}\label{herg:eq:Bpartial}
+ B(t)=\frac12+2t\sum_{m\geq1}\frac1{t^2+4\pi^2m^2}
+ =\frac12+\sum_{m\geq1}
+       \left(\frac1{t-2\pi im}+\frac1{t+2\pi im}\right).
+\end{equation}
+The second sum is paired as displayed. For $q\geq1$, differentiating
+gives an absolutely and uniformly convergent series on the real axis;
+$|t\pm2\pi im|\geq2\pi m$ proves \eqref{herg:eq:Bbound}.
+Furthermore,
+\[
+ B'(t)=\frac1{t^2}-\frac1{4\sinh^2(t/2)}>0,
+\]
+since $\sinh(t/2)>t/2$. The limits at zero and infinity are $1/2$
+and $1$, respectively. The derivative bound is asserted only for
+$q\geq1$; its displayed right-hand side would be divergent at $q=0$.
+\end{proof}
+
+Let $Y_r$ have the gamma density
+\begin{equation}\label{herg:eq:Ydensity}
+ \frac{r^{r+1}}{r!}y^r e^{-ry},\qquad y>0,
+\end{equation}
+and put
+\begin{equation}\label{herg:eq:moments}
+ \mu_m(r)=\E(Y_r-1)^m
+ =\sum_{\ell=0}^m(-1)^{m-\ell}\binom m\ell
+                         \frac{(r+1)_\ell}{r^\ell}.
+\end{equation}
+Each $\mu_m(r)$ is an exact polynomial in $r^{-1}$; it need not be
+evaluated by subtracting floating-point numbers.
+
+\begin{theorem}[Exact mixture and computable Taylor certificate]
+\label{herg:thm:mixture}
+For all $r\geq1$ and $\lambda>0$,
+\begin{equation}\label{herg:eq:mixture}
+ D_r(r\lambda)=\E S(\lambda/Y_r).
+\end{equation}
+Write $h_\lambda(y)=S(\lambda/y)$ for $y>0$, extended by
+$h_\lambda(0)=\zeta(2)/2$. For $J\geq0$ and $q=2J+2$,
+\begin{align}
+ &\left|D_r(r\lambda)-
+   \sum_{m=0}^{2J+1}\frac{h_\lambda^{(m)}(1)}{m!}\mu_m(r)\right|
+ \label{herg:eq:certificate}\\[-2pt]
+ &\hspace{18mm}\leq
+ \frac{2\zeta(q+1)\zeta(q+2)}{(2\pi)^{q+1}\lambda^q}\mu_q(r).
+ \notag
+\end{align}
+This is a finite-$r$ inequality, valid on the entire positive
+$\lambda$ axis, rather than an unspecified asymptotic error.
+\end{theorem}
+\begin{proof}
+The classical digamma integral, also used in the Herglotz theory of
+Radchenko--Zagier \cite{herg:RadchenkoZagier}, is
+\[
+ \psi(z)-\log z=-\int_0^\infty e^{-zt}B(t)\,\dd t,
+ \qquad z>0.
+\]
+Since $0<B<1$, the defining sum and any fixed number of its
+argument derivatives converge locally uniformly. Differentiating and
+substituting $u=nxt$ gives
+\begin{equation}\label{herg:eq:pre-mixture}
+ D_r(x)=\sum_{n\geq1}\frac1{n^2r!}
+           \int_0^\infty u^r e^{-u}B\left(\frac{u}{nx}\right)\dd u.
+\end{equation}
+All integrands are positive and bounded after normalization by the
+summable sequence $n^{-2}$. Thus every interchange is justified, and
+$x=r\lambda$ proves \eqref{herg:eq:mixture}.
+
+From \eqref{herg:eq:Bbound}, for every $q\geq1$,
+\[
+ \sup_{y\geq0}|h_\lambda^{(q)}(y)|
+ \leq \frac{2q!\zeta(q+1)\zeta(q+2)}
+                    {(2\pi)^{q+1}\lambda^q}.
+\]
+Taylor's formula at $y=1$, through degree $q-1$, therefore has a
+global remainder bounded by the last constant times $|y-1|^q/q!$.
+Taking expectations proves \eqref{herg:eq:certificate}, because $q$
+is even. Formula \eqref{herg:eq:moments} follows from the elementary
+gamma moments.
+\end{proof}
+
+\subsection{The complete expansion and its scope}
+
+Define the finite polynomials $C_j(z)=\sum_m c_{j,m}z^m$ by
+\begin{equation}\label{herg:eq:C}
+ \sum_{j\geq0}C_j(z)w^j
+ =\exp\left\{\sum_{\ell\geq1}w^\ell
+          \left(\frac{z^\ell}{\ell}
+                       +\frac{z^{\ell+1}}{\ell+1}\right)\right\}.
+\end{equation}
+Thus $\deg C_j\leq2j$. Let $\mathcal E=\lambda\,\mathrm d/\mathrm d\lambda$
+and use the rising operator factorial
+$\mathcal E^{\overline m}=\mathcal E(\mathcal E+1)\cdots
+(\mathcal E+m-1)$, with value $1$ at $m=0$. Put
+\begin{equation}\label{herg:eq:T}
+ \mathcal T_j=
+   \sum_m c_{j,m}(-1)^m\mathcal E^{\overline m}.
+\end{equation}
+This definition specifies every coefficient without an implicit
+recurrence for special-function values.
+
+\begin{theorem}[Uniform complete transition expansion]
+\label{herg:thm:expansion}
+For any nonnegative integers $J,u$ and any compact interval
+$I\subset(0,\infty)$,
+\begin{equation}\label{herg:eq:expansion}
+ D_r(r\lambda)=\sum_{j=0}^J\frac{(\mathcal T_jS)(\lambda)}{r^j}
+                +O_{I,J,u}(r^{-J-1}),\qquad r\longrightarrow\infty,
+\end{equation}
+uniformly for $\lambda\in I$, also after up to $u$ derivatives in
+$\lambda$. In particular,
+\begin{align}
+ D_r(r\lambda)={}&S(\lambda)
+  +\frac{\lambda^2S''(\lambda)}{2r}\label{herg:eq:firstcoeffs}\\
+ &+\frac1{r^2}
+ \left(\frac{\lambda^2S''(\lambda)}2
+       +\frac{2\lambda^3S'''(\lambda)}3
+       +\frac{\lambda^4S^{(4)}(\lambda)}8\right)+O_I(r^{-3}).\notag
+\end{align}
+\end{theorem}
+\begin{proof}
+The exact moment generating function is
+\[
+ \E e^{z(Y_r-1)}=e^{-z}(1-z/r)^{-r-1}.
+\]
+Its logarithm expands as the exponent in \eqref{herg:eq:C} with
+$w=r^{-1}$. Therefore the coefficient of $r^{-j}$ in
+$\mu_m(r)/m!$ is $[z^m]C_j(z)$. In particular
+$\mu_{2J+2}(r)=O_J(r^{-J-1})$. The finite Taylor certificate proves
+the complete expansion, since all central moments in it are exact
+polynomials. Finally,
+\[
+ h_\lambda^{(m)}(1)=(-1)^m\mathcal E^{\overline m}S(\lambda),
+\]
+which follows by induction on $m$, proves \eqref{herg:eq:T}.
+
+For derivative uniformity, apply the same argument to each fixed
+$\partial_\lambda^v h_\lambda$. For $b\geq1$ the function
+$t^bB^{(b)}(t)$ is bounded on $[0,\infty)$, by regularity at zero
+and the elementary large-$t$ form $B(t)=1-t^{-1}+O(e^{-t})$.
+Thus the required parameter derivatives may also be passed through
+the expectation and the $n$ sum. A mixed derivative is a finite sum
+of terms involving $t^bB^{(q+b)}(t)$, with $q=2J+2\geq2$.
+Differentiating the paired fractions in \eqref{herg:eq:Bpartial} gives
+\[
+ \sup_{t\geq0}|t^b B^{(q+b)}(t)|
+ \leq\frac{2(q+b)!\zeta(q+1)}{(2\pi)^{q+1}}.
+\]
+Indeed $t^b\leq|t\pm2\pi im|^b$. The remaining powers of
+$n^{-1}$ are summable and $\lambda^{-1}$ is bounded on $I$.
+This supplies the required uniform Taylor remainders after each
+parameter differentiation. No uncontrolled big-$O$ term is differentiated.
+
+For the displayed coefficients,
+$C_1(z)=z+z^2/2$ and
+$C_2(z)=z^2+5z^3/6+z^4/8$; substituting into
+\eqref{herg:eq:T} gives \eqref{herg:eq:firstcoeffs}.
+\end{proof}
+
+\begin{corollary}[All limiting ratios and noncommuting limits]
+\label{herg:cor:ratios}
+The function $S$ is strictly decreasing, with
+\[
+ \lim_{\lambda\downarrow0}S(\lambda)=\zeta(2),\qquad
+ \lim_{\lambda\to\infty}S(\lambda)=\frac{\zeta(2)}2.
+\]
+If $r\to\infty$ through integers and $x_r/r\to\lambda$ in the
+extended interval $[0,\infty]$, then $D_r(x_r)$ tends to the
+corresponding value of this continuously extended profile.
+Consequently,
+\[
+ \lim_{x\to\infty}\lim_{r\to\infty}D_r(x)=\zeta(2),\qquad
+ \lim_{r\to\infty}\lim_{x\to\infty}D_r(x)=\frac{\zeta(2)}2.
+\]
+The complete correction expansion is claimed on compact positive
+ratio intervals; the two endpoint statements concern the leading
+limit only.
+\end{corollary}
+\begin{proof}
+Strict monotonicity follows termwise from $B'>0$. Dominated
+convergence, using $1/2\leq B\leq1$, proves the limits of $S$.
+Moreover $Y_r\to1$ in probability, since
+$\E(Y_r-1)^2=r^{-1}+2r^{-2}$. In \eqref{herg:eq:pre-mixture}
+each fixed-$n$ argument consequently tends in probability to
+$1/(n\lambda)$, to infinity, or to zero, according to the ratio.
+Bounded convergence in probability and the summable $n^{-2}$ bound
+give the asserted three cases. At fixed $r$, letting $x\to\infty$
+in \eqref{herg:eq:pre-mixture} gives $\zeta(2)/2$ directly.
+\end{proof}
+
+\section{Arithmetic continuation and zeros of the centered profile}
+\label{herg:sec:profile}
+
+Write $\sigma_{-1}(N)=\sum_{d\mid N}d^{-1}$. This section gives
+exact formulas for the function that enters the joint-limit theorem,
+including the complex zeros of its centered reciprocal form
+$H(y)-\zeta(2)/2$. These are zeros of that centered function, not
+zeros of $S$, $H$, or the original generalized Stieltjes constants.
+
+\begin{theorem}[Arithmetic representation and meromorphic zeros]
+\label{herg:thm:profilezeros}
+For $\lambda>0$,
+\begin{equation}\label{herg:eq:divisorprofile}
+ S(\lambda)=\frac{\zeta(2)}2+
+       2\lambda\sum_{N\geq1}
+              \frac{\sigma_{-1}(N)}{1+4\pi^2N^2\lambda^2}.
+\end{equation}
+The reciprocal profile $H(y)=S(1/y)$ extends meromorphically to
+the complex plane by
+\begin{equation}\label{herg:eq:Hpartial}
+ H(y)=\frac{\zeta(2)}2+
+           2y\sum_{N\geq1}
+                       \frac{\sigma_{-1}(N)}{y^2+4\pi^2N^2}.
+\end{equation}
+It has simple poles at $y=\pm2\pi iN$, of residue
+$\sigma_{-1}(N)$. The zeros of $H(y)-\zeta(2)/2$ are precisely
+the simple zero $y=0$ and the simple pairs $y=\pm i b_N$, where
+there is exactly one $b_N$ in every interval
+\begin{equation}\label{herg:eq:zerointervals}
+ 2\pi N<b_N<2\pi(N+1),\qquad N\geq1.
+\end{equation}
+There are no other zeros. In particular, every nonzero zero is
+purely imaginary and strictly interlaces with the poles.
+\end{theorem}
+\begin{proof}
+Insert \eqref{herg:eq:Bpartial} into \eqref{herg:eq:Bprofile}.
+All terms are positive for positive arguments, so rearrangement is
+permitted. Grouping the pair $(m,n)$ by $N=mn$ gives
+\eqref{herg:eq:divisorprofile}. Since
+$\sigma_{-1}(N)\leq1+\log N$, the series in
+\eqref{herg:eq:Hpartial} converges locally uniformly away from its
+displayed poles, and direct residue calculation gives their residues.
+
+Put
+\[
+ T(z)=\sum_{N\geq1}\frac{\sigma_{-1}(N)}{z+4\pi^2N^2},
+ \qquad H(y)-\zeta(2)/2=2yT(y^2).
+\]
+For nonreal $z$,
+\[
+ \Im T(z)=-(\Im z)\sum_{N\geq1}
+             \frac{\sigma_{-1}(N)}{|z+4\pi^2N^2|^2}\ne0.
+\]
+For real $z>-4\pi^2$, $T(z)>0$. On each interval
+$(-4\pi^2(N+1)^2,-4\pi^2N^2)$ the derivative
+$T'(z)=-\sum\sigma_{-1}(j)/(z+4\pi^2j^2)^2$ is strictly
+negative, while its endpoint limits are $+\infty$ and $-\infty$.
+There is therefore exactly one simple zero in each interval and
+none elsewhere. Taking square roots proves \eqref{herg:eq:zerointervals}.
+Finally $H'(0)=2T(0)=\zeta(3)/12>0$, so the zero at the origin
+is simple as well.
+\end{proof}
+
+The same representation gives positive moment and quadrature
+structures. For example, for $v>0$,
+\[
+ \frac{S(\sqrt v)-\zeta(2)/2}{2\sqrt v}
+ =\sum_{N\geq1}\frac{\sigma_{-1}(N)}{1+4\pi^2N^2v}
+\]
+is completely monotone in $v$: each derivative has the required
+alternating sign, and the differentiated series converges locally
+uniformly. This is a direct property of the displayed positive
+discrete measure.
+
+\subsection{Two complementary exact representations}
+
+\begin{theorem}[Convergent zeta series and dual Bessel series]
+\label{herg:thm:dual}
+For $\lambda>1/(2\pi)$,
+\begin{equation}\label{herg:eq:zetaprofile}
+ S(\lambda)=\frac{\zeta(2)}2+
+       \sum_{m\geq1}\frac{B_{2m}\zeta(2m+1)}{(2m)!\lambda^{2m-1}},
+\end{equation}
+an absolutely convergent series. For every $\lambda>0$, put
+$R(\lambda)=S(\lambda)-\zeta(2)-\lambda(\log\lambda-\gamma)$.
+Then
+\begin{equation}\label{herg:eq:Besselprofile}
+ R(\lambda)=4\lambda\sum_{N\geq1}\sigma_{-1}(N)
+ \Re\left[
+  \sqrt{\frac{2\pi iN}{\lambda}}\,
+  K_1\left(2\sqrt{\frac{2\pi iN}{\lambda}}\right)\right],
+\end{equation}
+with principal square roots. The series is absolutely convergent and
+locally uniformly convergent on the positive $\lambda$ axis.
+\end{theorem}
+\begin{proof}
+The Taylor expansion of $B(t)$ at zero has radius $2\pi$.
+Substitute it in \eqref{herg:eq:Bprofile}; absolute convergence
+when $1/\lambda<2\pi$ gives \eqref{herg:eq:zetaprofile}.
+
+For the second identity, Mellin inversion of $(1+u^2)^{-1}$ in
+\eqref{herg:eq:divisorprofile} gives, for $1<c<2$,
+\begin{equation}\label{herg:eq:Mellin}
+ S(\lambda)-\frac{\zeta(2)}2
+ =\frac1{2\pi i}\int_{c-i\infty}^{c+i\infty}
+   \frac{\pi\zeta(s)\zeta(s+1)}{\sin(\pi s/2)}
+       (2\pi)^{-s}\lambda^{1-s}\,\dd s.
+\end{equation}
+On this line the Dirichlet series is absolutely convergent; the
+sine denominator supplies exponential vertical decay. Move the
+line to $\Re s=-A$, with any fixed $A>1$. The only poles crossed
+are $s=1$ and $s=0$. The negative even sine poles are cancelled
+by the trivial zeros of $\zeta(s)$. Standard vertical-strip bounds
+for zeta and the exponential factor justify the horizontal limits.
+The residue at $1$ is $\zeta(2)/2$. At zero use
+$\zeta(0)=-1/2$, $\zeta'(0)=-\frac12\log(2\pi)$, and
+$\zeta(1+s)=s^{-1}+\gamma+O(s)$; the residue is
+$\lambda(\log\lambda-\gamma)$.
+
+The zeta functional equation \cite{herg:DLMFzeta}, applied twice,
+transforms the remaining integral into
+\begin{equation}\label{herg:eq:dualMellin}
+ R(\lambda)=\frac{2\lambda}{2\pi i}\int_{(A)}
+  \Gamma(w)\Gamma(w+1)\zeta(w)\zeta(w+1)
+  \cos(\pi w/2)\left(\frac\lambda{2\pi}\right)^w\,\dd w.
+\end{equation}
+Here $\zeta(w)\zeta(w+1)=\sum\sigma_{-1}(N)N^{-w}$ is
+absolutely convergent, and the product of the two gamma factors
+and the cosine decays exponentially on the line. Termwise
+integration is consequently justified. The standard Bessel
+Mellin--Barnes formula \cite[Eq.~10.32.13]{herg:DLMFbessel} gives
+\[
+ \frac1{2\pi i}\int_{(A)}\Gamma(w)\Gamma(w+1)z^{-w}\,\dd w
+       =2\sqrt z\,K_1(2\sqrt z),\qquad |\arg z|<\pi.
+\]
+Taking the average of its values at $z=2\pi iN/\lambda$ and
+its conjugate produces the cosine factor and proves
+\eqref{herg:eq:Besselprofile}.
+
+For an explicit domination, set $v_N=2\sqrt{\pi N/\lambda}$.
+The real-line Bessel integral implies
+$|K_1(w)|\leq K_1(\Re w)\leq K_{3/2}(\Re w)$ for
+$\Re w>0$. The last inequality follows from
+$\cosh t\leq\cosh(3t/2)$ in that integral. Hence the absolute
+value of the $N$th summand in \eqref{herg:eq:Besselprofile} is at most
+\begin{equation}\label{herg:eq:sectorbound}
+ 2^{3/2}\pi^{3/4}\lambda^{3/4}\sigma_{-1}(N)N^{1/4}
+                       e^{-v_N}(1+v_N^{-1}).
+\end{equation}
+This proves absolute and local uniform convergence independently
+of the contour interchange.
+\end{proof}
+
+\begin{remark}[A simple numerical tail certificate]
+\label{herg:rem:Besseltail}
+Put $a=2\sqrt{\pi/\lambda}$ and
+$C=2^{3/2}\pi^{3/4}\lambda^{3/4}$. For an integer cutoff $N\geq1$
+with $a\sqrt N\geq3/2$, the absolute tail in
+\eqref{herg:eq:Besselprofile} is bounded by
+\begin{equation}\label{herg:eq:Besseltail}
+ 4C\left(1+\frac1{a\sqrt N}\right)a^{-7/2}
+                  \Gamma\left(\frac72,a\sqrt N\right),
+\end{equation}
+where the final Gamma is the upper incomplete gamma function.
+Indeed $\sigma_{-1}(n)\leq1+\log n\leq2\sqrt n$ for $n\geq1$,
+and $t^{3/4}e^{-a\sqrt t}$ is decreasing for $a\sqrt t\geq3/2$.
+Use the integral test and substitute $u=a\sqrt t$.
+\end{remark}
+
+\begin{corollary}[An exponentially small profile correction]
+\label{herg:cor:smallratio}
+As $\lambda\downarrow0$, let
+\[
+ A(\lambda)=2^{5/4}\pi^{3/4}\lambda^{3/4}
+                       e^{-2\sqrt{\pi/\lambda}},\qquad
+ \phi(\lambda)=2\sqrt{\pi/\lambda}-\frac\pi8.
+\]
+Then
+\begin{equation}\label{herg:eq:smallratio}
+ R(\lambda)=A(\lambda)
+ \left[\cos\phi(\lambda)
+ +\frac3{16}\sqrt{\frac\lambda{2\pi}}
+       \cos\left(\phi(\lambda)+\frac\pi4\right)+O(\lambda)\right].
+\end{equation}
+This is additive; no division by a cosine near a zero is intended.
+There are complete further powers of $\sqrt\lambda$, supplied by
+the classical $K_1$ expansion. In particular $R$ takes both signs
+arbitrarily close to zero.
+\end{corollary}
+\begin{proof}
+In the $N=1$ sector, use the standard large-argument expansion
+\cite[Eq.~10.40.2]{herg:DLMFbessel}
+\[
+ K_1(2\sqrt z)=\frac{\sqrt\pi}{2z^{1/4}}e^{-2\sqrt z}
+        \left[1+\frac3{16\sqrt z}+O(z^{-1})\right]
+\]
+on the ray $\arg z=\pi/2$. Taking its real part gives exactly
+\eqref{herg:eq:smallratio}. From \eqref{herg:eq:sectorbound},
+the aggregate of the sectors $N\geq2$ is
+$O(\lambda^{3/4}e^{-2\sqrt{2\pi/\lambda}})$: factor out its
+$N=2$ exponential and dominate the remaining series at any fixed
+positive lower value of $2\sqrt{\pi/\lambda}$. This is smaller
+than every algebraic correction in the first sector. The phase
+passes through arbitrarily large multiples of $\pi$ as
+$\lambda\downarrow0$, proving the sign assertion.
+\end{proof}
+
+\section{Gamma and dilogarithm antiderivatives of the profile}
+\label{herg:sec:primitives}
+
+The profile admits convergent primitive identities in which the
+subtractions are essential. They also provide useful test cases for
+symbolic integration across the Gamma and polylogarithmic descriptions.
+
+\begin{theorem}[Two normalized primitives]
+\label{herg:thm:primitives}
+For $y\geq0$ define
+\begin{align}
+ G(y)&=-\sum_{n\geq1}\frac1n
+   \log\left[\Gamma\left(1+\frac{iy}{2\pi n}\right)
+             \Gamma\left(1-\frac{iy}{2\pi n}\right)\right],
+ \label{herg:eq:Gprimitive}\\
+ P(y)&=\sum_{n\geq1}\left\{
+     \Li_2(e^{-y/n})-\zeta(2)-\frac yn\log\frac yn
+                 +\frac yn+\frac{y^2}{4n^2}\right\},
+ \label{herg:eq:Pprimitive}
+\end{align}
+where terms at $y=0$ are taken by continuity. Each Gamma product is
+strictly positive, so its logarithm is the real logarithm. Both
+series converge locally uniformly, with the derivatives needed below,
+and
+\begin{equation}\label{herg:eq:primitivechain}
+ P'(y)=G(y),\qquad G'(y)=P''(y)=H(y)-\frac{\zeta(2)}2,
+ \qquad P(0)=P'(0)=G(0)=0.
+\end{equation}
+Equivalently,
+\begin{equation}\label{herg:eq:Gammameasureprimitive}
+ \int_\lambda^\infty
+     \frac{S(u)-\zeta(2)/2}{u^2}\,\dd u=G(1/\lambda),
+ \qquad\lambda>0.
+\end{equation}
+For $|y|<2\pi$ the corresponding convergent zeta-product series are
+\begin{align}
+ G(y)&=\sum_{m\geq1}
+  \frac{B_{2m}\zeta(2m+1)}{(2m)!(2m)}y^{2m},
+ \label{herg:eq:Gseries}\\
+ P(y)&=\sum_{m\geq1}
+  \frac{B_{2m}\zeta(2m+1)}{(2m)!(2m)(2m+1)}y^{2m+1}.
+ \label{herg:eq:Pseries}
+\end{align}
+For example,
+\[
+ G(y)=\frac{\zeta(3)}{24}y^2-\frac{\zeta(5)}{2880}y^4+\cdots,
+ \qquad
+ P(y)=\frac{\zeta(3)}{72}y^3-\frac{\zeta(5)}{14400}y^5+\cdots.
+\]
+\end{theorem}
+\begin{proof}
+The reflection formula and the gamma recurrence
+\cite[\S5.5]{herg:DLMFgamma} give, for $t\geq0$,
+\[
+ \Gamma\left(1+\frac{it}{2\pi}\right)
+ \Gamma\left(1-\frac{it}{2\pi}\right)
+     =\frac{t/2}{\sinh(t/2)}.
+\]
+Consequently the function
+\[
+ L(t)=\log\frac{\sinh(t/2)}{t/2}
+      =\frac t2+\log(1-e^{-t})-\log t
+\]
+satisfies $L(0)=0$ and $L'(t)=B(t)-1/2$. Its primitive vanishing
+at zero is
+\[
+ J(t)=\Li_2(e^{-t})-\zeta(2)-t\log t+t+\frac{t^2}4,
+ \qquad J'(t)=L(t).
+\]
+Indeed $\mathrm d\Li_2(e^{-t})/\mathrm dt=\log(1-e^{-t})$.
+Now $G(y)=\sum n^{-1}L(y/n)$ and $P(y)=\sum J(y/n)$.
+Since $L(t)=O(t^2)$, $J(t)=O(t^3)$, and their requisite
+derivatives have the corresponding bounds at zero, the series and
+their stated derivatives converge uniformly on bounded positive
+$y$ intervals. This proves all of \eqref{herg:eq:primitivechain}.
+The substitution $y=1/u$ proves
+\eqref{herg:eq:Gammameasureprimitive}. Termwise integration of the
+Taylor series for $H(y)-\zeta(2)/2$ proves
+\eqref{herg:eq:Gseries}--\eqref{herg:eq:Pseries}.
+\end{proof}
+
+\paragraph{Further questions arising from this theorem.}
+The complete expansion above suggests a uniform matching analysis when
+$\lambda=\lambda_r\downarrow0$: one must compare its derivative-dependent
+remainder with the exponentially small Bessel sectors before importing
+fixed-$x$ oscillatory formulas. A second problem is the asymptotic
+location of the imaginary zeros $b_N$ within their certified pole
+intervals; their residues are the irregular but explicit divisor weights
+$\sigma_{-1}(N)$. A third is to exploit the positive Stieltjes
+representation for rational upper and lower approximants to $S$, then
+combine them with the exact gamma-moment remainder. Finally, logarithmic
+weights in the defining Herglotz sum should yield spectral derivatives
+of the divisor Dirichlet series, with zeta derivatives and Laurent
+coefficients entering the transformed residue terms. These are separate
+extensions; none is presumed by the compact-ratio theorem proved here.
+
+% Suggested bibliography entries (parent should place in its bibliography):
+% \bibitem{herg:RadchenkoZagier} D. Radchenko and D. Zagier,
+% ``Arithmetic properties of the Herglotz function'',
+% arXiv:2012.15805, https://arxiv.org/abs/2012.15805.
+% \bibitem{herg:DLMFhyperbolic} NIST DLMF, Sec. 4.36,
+% https://dlmf.nist.gov/4.36 (especially Eq. 4.36.3).
+% \bibitem{herg:DLMFbessel} NIST DLMF, Secs. 10.32 and 10.40,
+% https://dlmf.nist.gov/10.32 and https://dlmf.nist.gov/10.40.
+% \bibitem{herg:DLMFgamma} NIST DLMF, Sec. 5.5,
+% https://dlmf.nist.gov/5.5 (reflection and recurrence).
+% \bibitem{herg:DLMFzeta} NIST DLMF, Sec. 25.4,
+% https://dlmf.nist.gov/25.4 (Riemann zeta functional equation).

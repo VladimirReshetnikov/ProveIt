@@ -1,0 +1,184 @@
+\section{Source audit, scope corrections, and integration notes}
+\label{sec:audit}
+
+An audit is useful only when it distinguishes an actual error from a theorem
+that simply does not answer a new question. The inspected bridge chapters
+already contain many of the corrections described in earlier incoming
+reports. We found no additional substantive mathematical error in the
+specific baseline theorems used as inputs here. The following observations
+identify the boundaries that must be preserved when integrating this work.
+
+\subsection{A verified normalization typo in an external source}
+There is one concrete bibliographical correction. In the published PDF of
+Gay--Sebbar \cite{gamma:GaySebbar2024}, printed page~4, the unnumbered
+display immediately after Eq.~(1) and before Eq.~(2) omits the factor $z$
+between the Lerch transcendent and the polylogarithm. With that paper's
+preceding zero-based definition, the corrected display is
+\begin{equation}\label{audit:lerch-typo}
+ \Li_s(z)=z\Phi(z,s,1)
+      =\sum_{n=1}^{\infty}\frac{z^n}{n^s}.
+\end{equation}
+Indeed multiplication by $z$ and the reindexing $m=n+1$ prove the identity
+immediately in $|z|<1$. The omission was checked in the published PDF, so
+it is not merely an HTML transcription issue. The inspected ProveIt source
+already has the correct convention: \path{chapters/09-zero-geometry.tex},
+label \texttt{zeros:eq:lambda} and its subsequent $a=1$ specialization,
+includes the corresponding factor $1/\rho$. This is an external-source
+typographical correction, not a required change to that manuscript formula.
+
+\subsection{What the present results settle}
+The final research paragraph of
+\path{chapters/09-herglotz-jets.tex} asks for a transition theory in which
+the argument varies with derivative order \cite{repoHerglotz}.
+Theorem~\ref{herg:thm:expansion} answers that question on every compact
+positive interval of $x/r$, with all fixed ratio derivatives and a complete
+inverse-order expansion. Theorem~\ref{herg:thm:mixture} also supplies a
+finite-order inequality on the full positive axis.
+Corollary~\ref{herg:cor:ratios} identifies the leading limit along every
+extended limiting ratio. A uniformly accurate expansion that also resolves
+the exponentially small correction as the ratio approaches zero remains
+a further problem; the compact-ratio theorem does not assert it.
+
+The multivariate discussion in
+\path{chapters/08-integral-jets.tex} correctly retains the full Koszul
+complex outside the one-variable case \cite{repoJets}. Theorem~
+\ref{ns:thm:two-generator} gives a new sufficient condition for a closed
+dimension law: local Frobenius duality and an active ideal needing at most
+two generators. In particular, it settles the dimension and abelian Smith
+factors for every active sequence with two entries over a rectangular jet
+algebra. It does not classify all multivariate torsion modules.
+
+The three-generator example in Proposition~\ref{ns:prop:counterexample}
+is a counterexample to an \emph{unrestricted extrapolation}, not to the
+manuscript's properly restricted theorem. Similarly,
+\eqref{ns:eq:module-obstruction} disproves a stronger module substitution
+that is not needed for the valid dimension formula. These distinctions
+should remain explicit in the canonical manuscript.
+
+\subsection{Normalization and domain statements to preserve}
+\begin{enumerate}
+\item \textbf{Lerch normalization.}
+With $\Phi(z,s,a)=\sum_{n\geq0}z^n(n+a)^{-s}$, one has
+$\Li_s(z)=z\Phi(z,s,1)$. Accordingly the exponentially shifted function
+in \eqref{res:F} equals $\Li_s(e^{-t})$ at $a=1$.
+Dropping the factor $e^{-at}$ would change the exact finite-part expansion.
+The Laurent sign convention \eqref{scope:laurent} must accompany every
+formula for generalized Stieltjes constants.
+
+\item \textbf{Uniformity and limits.}
+The coefficients $b_{k,j}$ in Theorem~\ref{res:main} retain their dependence
+on $k$. Their limiting values from Proposition~\ref{res:highorder} cannot
+replace them in an arbitrary all-order joint expansion without a rate
+condition linking $k$ and $T$. Similarly, a fixed-argument Herglotz
+asymptotic cannot be substituted at $x=r\lambda$ without a new remainder
+estimate. The exact mixture provides that estimate here.
+
+\item \textbf{Antiderivative constants.}
+The balanced functions in \eqref{gamma:eq:balanced} have zero mean and,
+from the second level onward, matching periodic endpoints. A primitive
+normalized to vanish at a chosen base point usually differs by a polynomial
+after repeated integration. Correlation identities for the balanced family
+cannot be transferred unchanged to that other normalization.
+
+\item \textbf{Ordinary integrals versus regularized distributions.}
+At a nonzero shift, the two Hurwitz endpoint singularities are separate and
+the domain is $\Re s,\Re t<1$. At zero shift the additional condition
+$\Re(s+t)<1$ is essential. Argument differentiation to the digamma level
+produces a $1/x$ singularity, so an unqualified ordinary-integral extension
+would be invalid. A finite-part or distributional convention must be stated
+and its possible endpoint terms proved.
+
+\item \textbf{Which function has the imaginary zeros.}
+Theorem~\ref{herg:thm:profilezeros} classifies the zeros of
+$H(y)-\zeta(2)/2$. It does not classify the zeros of $H$ itself. The
+centering is what produces the odd meromorphic function and the positive
+Stieltjes-transform argument.
+
+\item \textbf{Formal rank versus values.}
+The rank and torsion results concern the distribution presentation
+\eqref{ns:eq:distribution} over its stated coefficient ring. They do not
+prove linear or algebraic independence of evaluated polylogarithms,
+Hurwitz jets, generalized Stieltjes constants, or Gamma values. If an
+arithmetic specialization inverts two, the reflected two-torsion disappears;
+the choice of lattice therefore matters.
+\end{enumerate}
+
+\subsection{Numerical pitfalls and the accompanying checks}
+Two implementation issues appeared during independent verification and were
+corrected in the accompanying code. These concern evaluation methods, not
+counterexamples to the analytic identities.
+
+First, direct differentiation in the order of a generic polylogarithm
+implementation near an integer can evaluate two large pole terms before
+their cancellation. An infinitesimal finite-difference step may then lose
+many digits even at apparently generous working precision. The correlation
+checker uses a resolved fourth-order symmetric stencil with additional
+precision, and cross-checks it against independent Hurwitz-jet formulas and
+split endpoint quadrature. The reusable correlation module uses the
+convergent odd-zeta expansion instead. The resonance checker pairs the
+poles analytically and uses native Hurwitz order derivatives for its
+finite-part comparison.
+
+Second, the high-derivative Herglotz formula multiplies small Hurwitz
+differences by large powers. Its checker adds guard precision depending
+on both order and argument before this multiplication. Working precision
+alone is not an error certificate. Every analytic tail estimate in this
+article bounds omitted terms in exact arithmetic; a complete implementation
+with rigorous rounding bounds would additionally require interval or ball
+arithmetic.
+
+\begin{center}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.31\textwidth}>{\raggedright\arraybackslash}p{0.59\textwidth}@{}}
+\toprule
+Check & Independent evidence recorded in the package\\
+\midrule
+Resonant cancellation & Six direct Lerch comparisons at 100 decimal
+working digits; largest absolute residual below $3.4\times10^{-85}$\\[4pt]
+Stieltjes finite parts & Orders $0,1,2$ checked against separately summed
+Hurwitz derivative tails; largest residual below $1.6\times10^{-67}$\\[4pt]
+Shifted Hurwitz products & Split quadrature against the polylogarithmic
+kernel for real and complex orders; residuals below $6.1\times10^{-33}$\\[4pt]
+Log-Gamma correlation & Independent quadrature, Hurwitz jets, polylogarithm
+jets, and the convergent odd-zeta expansion at three interior shifts\\[4pt]
+Herglotz transition & Independent Hurwitz evaluations, exact central-moment
+coefficients, finite Taylor inequalities, and Bessel/primitive comparisons\\[4pt]
+Formal reflection jets & Exact binary elimination in the original point
+presentation and in separate Koszul matrices; dimensions $44,210,232$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The numerical rows are diagnostics. The exact rank rows are finite proofs
+of their particular matrix statements. The general theorems rely on the
+proofs in the body of the article. The data files label asymptotic
+differences separately from identity residuals; a truncated asymptotic
+formula is not expected to agree to working precision.
+
+\subsection{Suggested canonical placement}
+The source files are modular so that the continuation can be integrated
+without importing a second preamble. The following placement respects the
+manuscript's existing organization.
+\begin{center}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.44\textwidth}>{\raggedright\arraybackslash}p{0.47\textwidth}@{}}
+\toprule
+Contribution & Suggested destination\\
+\midrule
+Uniform integer-order resonance and finite parts & Lerch boundary
+continuation; cross-reference the zeta-jet and Stieltjes sections\\[4pt]
+Shifted products, convexity, and balanced primitives & Chapter 07,
+adjacent to the existing integration and log-Gamma calculus\\[4pt]
+Herglotz transition, profile, and antiderivatives & Chapter 09,
+after the fixed-argument derivative asymptotic\\[4pt]
+Two-generator theorem and obstruction & Chapter 08,
+after the finite-free Koszul and multivariate jet discussion\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The accompanying \path{INTEGRATION.md} gives file-level instructions and
+the theorem labels used here. The source manifest records the frozen
+repository revision and the locally reviewed source files. The archive
+contains the complete article, reproducible code, recorded outputs, and
+figure source. The research contribution is mathematical prose with
+independent exact and numerical checks; it is not a Lean formalization.
+

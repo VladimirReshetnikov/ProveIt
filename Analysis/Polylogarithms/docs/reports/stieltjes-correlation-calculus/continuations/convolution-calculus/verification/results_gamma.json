@@ -1,0 +1,290 @@
+{
+  "description": "Reproducible ordinary Hurwitz and log-Gamma correlation diagnostics",
+  "certification": "High-precision numerical evidence; no interval-certification claim.",
+  "parameters": {
+    "mode": "default",
+    "working_decimal_digits": 48,
+    "reported_significant_digits": 45,
+    "cusp_series_terms": 82,
+    "Cauchy_nodes": 64,
+    "Cauchy_radius": "0.125",
+    "randomness": "None: all parameters and sampling grids are fixed.",
+    "python_version": "3.12.14",
+    "mpmath_version": "1.3.0"
+  },
+  "summary": {
+    "R_zero": "1.86631708379356208099296793797828973980040419",
+    "R_half": "0.52595583980330838858220586821973933014930756",
+    "R_second_derivative_half": "5.99678749530633590836220467164817918562047238",
+    "leading_R_zero_minus_R_a_coefficient_of_a_log_squared_a": "0.5",
+    "minimum_tested_cusp_coefficient_B_m": "1.60495911185375457476892542076388918927193665",
+    "number_of_checks": 16,
+    "all_checks_passed": true
+  },
+  "checks": [
+    {
+      "name": "ordinary_shifted_Hurwitz",
+      "parameters": {
+        "s": "0.7",
+        "t": "0.8",
+        "a": "0.23"
+      },
+      "left_value": "-5.48912393165202246085256510979165383788036495",
+      "right_value": {
+        "real": "-5.48912393165202246085256510979165383788036495",
+        "imag": "-4.68610810443536831592340202275234161635258813e-49"
+      },
+      "absolute_error": "4.686108104e-49",
+      "scaled_error": "8.537078344e-50",
+      "scaled_error_tolerance": "1.0e-34",
+      "passed": true
+    },
+    {
+      "name": "ordinary_shifted_Hurwitz",
+      "parameters": {
+        "s": {
+          "real": "0.4",
+          "imag": "0.2"
+        },
+        "t": {
+          "real": "0.7",
+          "imag": "-0.1"
+        },
+        "a": "0.31"
+      },
+      "left_value": {
+        "real": "-1.19391598928626606673423991012326251959144402",
+        "imag": "0.0536581620287571546527501657300493300493328709"
+      },
+      "right_value": {
+        "real": "-1.19391598928626606673423991012326251959144402",
+        "imag": "0.0536581620287571546527501657300493300493328709"
+      },
+      "absolute_error": "3.635353038e-49",
+      "scaled_error": "3.041828025e-49",
+      "scaled_error_tolerance": "1.0e-34",
+      "passed": true
+    },
+    {
+      "name": "ordinary_shifted_Hurwitz",
+      "parameters": {
+        "s": "-1.2",
+        "t": "0.2",
+        "a": "0.6"
+      },
+      "left_value": "0.00880995120738425794872938843513379632761046554",
+      "right_value": {
+        "real": "0.00880995120738425794872938843513379632761046554",
+        "imag": "-2.21148264310050040594200070388386123281761901e-52"
+      },
+      "absolute_error": "4.015241804e-51",
+      "scaled_error": "4.015241804e-51",
+      "scaled_error_tolerance": "1.0e-34",
+      "passed": true
+    },
+    {
+      "name": "critical_hyperplane_half_shift",
+      "parameters": {
+        "s": {
+          "real": "0.37",
+          "imag": "0.2"
+        },
+        "t": {
+          "real": "0.63",
+          "imag": "-0.2"
+        },
+        "a": "0.5"
+      },
+      "left_value": {
+        "real": "-0.693147180559945309417232121458176568075500134",
+        "imag": "6.41463530422126955073728752116355650915647251e-50"
+      },
+      "right_value": "-0.693147180559945309417232121458176568075500134",
+      "absolute_error": "1.069105884e-49",
+      "scaled_error": "1.069105884e-49",
+      "scaled_error_tolerance": "1.0e-34",
+      "passed": true
+    },
+    {
+      "name": "logGamma_cusp_series",
+      "parameters": {
+        "a": "0.01",
+        "series_terms": 82
+      },
+      "left_value": "1.68794985672193810776955698240188790969519379",
+      "right_value": "1.68794985672193810776955698240188790969519379",
+      "absolute_error": "1.710569414e-49",
+      "scaled_error": "1.01340061e-49",
+      "scaled_error_tolerance": "1.0e-34",
+      "passed": true
+    },
+    {
+      "name": "logGamma_Stieltjes_curvature",
+      "parameters": {
+        "a": "0.01",
+        "series_terms": 82
+      },
+      "left_value": "463.95283945793409078682753011157915913982592",
+      "right_value": "463.95283945793409078682753011157915913982592",
+      "absolute_error": "0.0",
+      "scaled_error": "0.0",
+      "scaled_error_tolerance": "1.0e-34",
+      "passed": true
+    },
+    {
+      "name": "logGamma_cusp_series",
+      "parameters": {
+        "a": "0.18",
+        "series_terms": 82
+      },
+      "left_value": "0.872858039879144883691961738259348841355855123",
+      "right_value": "0.872858039879144883691961738259348841355855123",
+      "absolute_error": "3.421138829e-49",
+      "scaled_error": "3.421138829e-49",
+      "scaled_error_tolerance": "1.0e-34",
+      "passed": true
+    },
+    {
+      "name": "logGamma_Stieltjes_curvature",
+      "parameters": {
+        "a": "0.18",
+        "series_terms": 82
+      },
+      "left_value": "13.0708084964065480421346242507718734230076834",
+      "right_value": "13.0708084964065480421346242507718734230076834",
+      "absolute_error": "1.368455532e-48",
+      "scaled_error": "1.046955536e-49",
+      "scaled_error_tolerance": "1.0e-34",
+      "passed": true
+    },
+    {
+      "name": "logGamma_cusp_series",
+      "parameters": {
+        "a": "0.37",
+        "series_terms": 82
+      },
+      "left_value": "0.577510674059171143179688093656273984559744571",
+      "right_value": "0.577510674059171143179688093656273984559744571",
+      "absolute_error": "0.0",
+      "scaled_error": "0.0",
+      "scaled_error_tolerance": "1.0e-34",
+      "passed": true
+    },
+    {
+      "name": "logGamma_Stieltjes_curvature",
+      "parameters": {
+        "a": "0.37",
+        "series_terms": 82
+      },
+      "left_value": "6.65689630250425399193863263657326674442403771",
+      "right_value": "6.65689630250425399193863263657326674442403771",
+      "absolute_error": "0.0",
+      "scaled_error": "0.0",
+      "scaled_error_tolerance": "1.0e-34",
+      "passed": true
+    },
+    {
+      "name": "logGamma_cusp_series",
+      "parameters": {
+        "a": "0.5",
+        "series_terms": 82
+      },
+      "left_value": "0.52595583980330838858220586821973933014930756",
+      "right_value": "0.52595583980330838858220586821973933014930756",
+      "absolute_error": "2.565854122e-49",
+      "scaled_error": "2.565854122e-49",
+      "scaled_error_tolerance": "1.0e-34",
+      "passed": true
+    },
+    {
+      "name": "logGamma_Stieltjes_curvature",
+      "parameters": {
+        "a": "0.5",
+        "series_terms": 82
+      },
+      "left_value": "5.99678749530633590836220467164817918562047238",
+      "right_value": "5.99678749530633590836220467164817918562047238",
+      "absolute_error": "0.0",
+      "scaled_error": "0.0",
+      "scaled_error_tolerance": "1.0e-34",
+      "passed": true
+    },
+    {
+      "name": "reflected_logGamma_Hurwitz_jets",
+      "parameters": {
+        "a": "0.23"
+      },
+      "left_value": "1.25790426651546680993813983002799494962042173",
+      "right_value": "1.25790426651546680993813983002799494962042173",
+      "absolute_error": "0.0",
+      "scaled_error": "0.0",
+      "scaled_error_tolerance": "1.0e-34",
+      "passed": true
+    },
+    {
+      "name": "reflected_logGamma_Hurwitz_jets",
+      "parameters": {
+        "a": "0.5"
+      },
+      "left_value": "0.957323457457374161249340163320682456284553369",
+      "right_value": "0.957323457457374161249340163320682456284553369",
+      "absolute_error": "8.552847072e-50",
+      "scaled_error": "8.552847072e-50",
+      "scaled_error_tolerance": "1.0e-34",
+      "passed": true
+    },
+    {
+      "name": "reflected_logGamma_Hurwitz_jets",
+      "parameters": {
+        "a": "0.414213562373095048801688724209698078569671875"
+      },
+      "left_value": "1.08171929458370477463264425265811613059869016",
+      "right_value": "1.08171929458370477463264425265811613059869016",
+      "absolute_error": "1.710569414e-49",
+      "scaled_error": "1.581343166e-49",
+      "scaled_error_tolerance": "1.0e-34",
+      "passed": true
+    },
+    {
+      "name": "logGamma_polylog_Cauchy_order_derivatives",
+      "parameters": {
+        "a": "0.18",
+        "center_order": 2,
+        "radius": "0.125",
+        "nodes": 64
+      },
+      "left_value": "0.872858039879144883691961738259348841355855123",
+      "right_value": {
+        "real": "0.872858039879144883691961738259348841355855123",
+        "imag": "5.06474275338440381654790081960611603312812292e-50"
+      },
+      "absolute_error": "9.939960372e-50",
+      "scaled_error": "9.939960372e-50",
+      "scaled_error_tolerance": "1.0e-34",
+      "passed": true
+    }
+  ],
+  "implementation_diagnostic": {
+    "name": "default_mpmath_polylog_order_difference_diagnostic",
+    "a": "0.18",
+    "default_derivative_value": "0.872858039878695446150628273852313393359747294",
+    "independent_quadrature_value": "0.872858039879144883691961738259348841355855123",
+    "absolute_discrepancy": "4.49437541333e-13",
+    "derivative_one_default": "0.180495719423582354324112971330438936852762165",
+    "derivative_one_Cauchy": {
+      "real": "0.180495719421745672774657100050941133471135449",
+      "imag": "2.23844044470221385364269929123936607350772739e-50"
+    },
+    "derivative_two_default": "-0.129292760361020961893048322595441303237095999",
+    "derivative_two_Cauchy": {
+      "real": "-0.129292760361020932940776593421529722880766409",
+      "imag": "1.10786097233321509532525236563428923876889911e-48"
+    },
+    "interpretation": "Diagnostic only, excluded from pass/fail. The installed mpmath boundary polylogarithm series can terminate prematurely near an integer order. The Cauchy circle avoids the infinitesimal near-integer evaluations. A future mpmath version may repair this issue."
+  },
+  "figure_files": [
+    "loggamma_correlation.pdf",
+    "loggamma_correlation.png"
+  ],
+  "runtime_seconds": 42.7
+}
