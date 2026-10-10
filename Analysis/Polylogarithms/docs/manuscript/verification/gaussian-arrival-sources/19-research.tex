@@ -1,0 +1,192 @@
+\section{Further research questions and a concrete program}
+\label{sec:research}
+
+The proved reductions substantially narrow the relevant unknowns. The
+next work should begin with the complementary parity components and
+the next series-depth layer, while making every computational claim
+replayable. The questions below distinguish mathematical obstructions,
+finite relation computations, and implementation tasks. No proposed
+numerical independence statement is needed to make progress on them.
+
+\subsection{Complementary parity at levels three and four}
+
+For the Gaussian single-endpoint doubles define
+\[
+ h_{a,b}=
+ \begin{cases}
+   \Re D_{a,b}(i),&a+b\text{ even},\\
+   \Im D_{a,b}(i),&a+b\text{ odd}.
+ \end{cases}
+\]
+The inversion formula used in this article does not determine these
+components. Which of the entries through weights five to eight reduce
+to the manuscript's single and half-point values after \emph{all
+specified} regularized shuffle, stuffle, distribution, conjugation,
+and parity relations are imposed? Which require additional transformed
+arguments in an explicit functional reduction?
+
+A concrete first deliverable is a sequence of exact rational matrices
+with declared columns and rows. Include the product coordinates that
+occur in the reductions, or quotient by a precisely defined span of
+such products. If $V$ is the formal space and $R$ its proved relation
+subspace, evaluation induces a map from $V/R$ onto the numerical span
+under consideration. Therefore $\dim(V/R)$ provides an upper bound;
+it does not automatically equal the numerical dimension. Each
+eliminated coordinate should come with a row combination expressing
+its reduction. This task can settle additional source identities even
+when numerical independence remains out of reach.
+
+\subsection{Relations beyond a selected double-shuffle presentation}
+
+The mixed-root corrections show that a residual of one convergent
+relation system can disappear under an already known functional
+equation. The next comparison should measure this effect explicitly.
+At each chosen weight and depth, start with a declared standard
+relation module and adjoin the functional equations induced by
+symmetries of the punctured projective line, together with their
+endpoint corrections. Determine the exact increase in rank and
+exhibit representatives of the added row-space directions.
+
+At level four the relevant marked points are
+$\{0,\infty,1,-1,i,-i\}$. One can calculate the fractional linear
+transformations preserving this set and transport the iterated
+integrals, keeping the basepoint and branch constants explicit. The
+analogous level-three calculation should use its own marked points
+and distribution relations, rather than assuming that the two
+levels have identical relation counts. A comparison with the
+constructive parity formulas of \cite{Panzer2017,Umezawa2025} should
+be part of the relation specification. The objective is a verified
+comparison of finite presentations; completeness for all numerical
+relations is a separate question.
+
+\subsection{The next depth layer: one index three or two indices two}
+
+Theorem~\ref{one2:thm:closed} handles precisely one zero letter in the
+positive-form binary word. At weight $N$ and depth $N-2$, the positive
+indices necessarily consist of either one $3$ and otherwise $1$'s,
+or two $2$'s and otherwise $1$'s. The corresponding words have two
+zero letters. This is the natural next family, with a sharply
+defined combinatorial scope.
+
+Seek an explicit formula indexed by the numbers of $1$'s before,
+between, and after the two zeros. A useful target is a finite
+combination of classical and double polylogarithms at transformed
+arguments, with factorial or binomial coefficients and all boundary
+constants fixed. The one-zero proof suggests using a two-variable
+logarithmic moment and then integrating one variable at a time.
+At low weights, direct symbolic differentiation can verify candidate
+functional formulas. At higher weights, an obstruction at the
+function or coaction level would be more informative than a failed
+fit to a chosen classical-value basket. Such an obstruction must
+still be distinguished from numerical nonreducibility at a
+particular algebraic argument.
+
+\subsection{What survives modulo products at the half-Gaussian point?}
+
+Corollary~\ref{one2:cor:primitive} proves that every imaginary one-$2$
+value of weight $N$ is a signed binomial multiple of $\lambda_N$
+modulo the explicitly stated lower-weight products. It is natural to
+ask whether this quotient class survives, how it compares with the
+other argument families, and whether the same binomial structure
+has a useful interpretation in an algebra of motivic iterated
+integrals.
+
+The immediate task is to specify a motivic algebra and lift the
+functional identity, rather than assigning a motivic meaning to a
+formal numerical symbol. One can then calculate the coaction of
+the remaining half-point class, retaining primitive period terms
+that an ordinary symbol would discard. Proving that the image in
+a particular motivic quotient is one-dimensional would strengthen
+the current upper bound in that setting. Inferring numerical
+independence would require an additional statement about the
+period map and must be labeled accordingly. Even without such
+an inference, the calculation could identify the correct candidate
+generators for the next exact relation computation.
+
+\subsection{Optimal coefficients and integer relation lattices}
+
+The all-weight Bernoulli formula gives rational coefficient vectors
+without numerical discovery. What are their sharp denominator and
+divisibility patterns? Which primes occur in the least common
+denominator at a given weight, and which apparent Bernoulli
+denominators cancel because of the binomial factors? The
+$\beta(w)$ coefficient and the absence of that term in $g_{1,w-1}$
+are simple examples of structural information available before
+any evaluation.
+
+These questions can be pursued by exact symbolic arithmetic and
+number-theoretic analysis. Publish the primitive integer rows,
+their heights, and the integer lattice they generate. Hermite or
+Smith normal forms can distinguish an integer lattice from its
+saturation over $\mathbb Q$. A useful outcome would be a proved
+height bound for the parity reductions and a principled choice of
+coordinates for discovery searches. In particular, the low heights
+of the two mixed real reductions in this article give concrete
+tests that any replacement search implementation should recover.
+
+\subsection{Exact certificates beyond the two-disk alphabet}
+
+Corollary~\ref{cor:quadratic-certificate} already extends the proof
+to a fixed imaginary quadratic field. Implementing it over
+$\mathbb Q(\sqrt{-3})$ is a direct engineering task and would give
+rational-radius certificates for the level-three and level-six
+tables. This should precede a more ambitious general cyclotomic
+implementation.
+
+At larger conductors, some roots of unity are too close to $1$ for
+the present reflected unit-disk majorant. For example, the distance
+of $e^{2\pi i/q}$ from $1$ is $2\sin(\pi/q)$, which falls below $1$
+when $q>6$. Develop rational splitting, path subdivision, or
+transformations with a proved error bound that controls this
+geometry. The desired theorem should display its dependence on
+weight, precision, conductor, and coefficient-field degree. Shared
+subwords should be reused so that subdividing paths does not
+silently create an exponential expansion. A certificate should
+remain replayable through an independent finite formula.
+
+\subsection{Certified outcomes for bounded relation searches}
+
+A search can be made mathematically informative without claiming
+unbounded independence. Fix a finite constant basket and a height
+bound $H$. For rational centers $r_j$ and certified errors
+$\varepsilon_j$, every integer vector $c$ satisfying
+$\max_j|c_j|\le H$ obeys
+\[
+ \left|\sum_jc_j\alpha_j-\sum_jc_jr_j\right|
+ \le\sum_j|c_j|\varepsilon_j.
+\]
+Thus a finite exact lattice or enumeration certificate establishing
+$|\sum_jc_jr_j|>\sum_j|c_j|\varepsilon_j$ for every permitted
+nonzero $c$ excludes all relations within that declared range.
+Already proved dependencies must first be handled with the
+height constraints translated correctly to the remaining
+coordinates.
+
+A robust program should have three outcomes: a candidate upgraded
+to a proved identity by an exact functional-equation or relation-row
+certificate; certified exclusion within the finite bound; or an
+unresolved outcome. An enclosure containing zero belongs to the
+last category until an identity proof is supplied. Such a program
+would make the source's failed searches reproducible and clearly
+state what their failure actually establishes.
+
+\subsection{Recommended sequence of deliverables}
+
+The most economical next stage is to integrate the eight proof
+upgrades and the four mixed corrections, then publish the exact
+relation matrices through weight six with their elimination
+certificates. Extend those matrices to weights seven and eight
+only after the earlier rows are reproducible. In parallel, derive
+the two-zero moment formula and implement the quadratic-field
+certificate specialization. The deeper questions about motivic
+classes and numerical independence can then be asked of a
+well-defined collection of remaining values, with the known
+parity reductions already removed.
+
+The proved results here supply an infinite family of exact
+identities, rather than a finite list of guesses: the even-weight
+Gaussian double rule, every position of the one-$2$ family, the
+inverse-color parity specialization, and the uniform certificate
+theorem all admit systematic extension. Their explicit hypotheses
+and executable coefficient formulas provide concrete starting
+points for that next research stage.

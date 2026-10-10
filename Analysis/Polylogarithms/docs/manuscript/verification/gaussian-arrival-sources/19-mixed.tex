@@ -1,0 +1,163 @@
+% Companion correction section. General parity is known; these explicit
+% rows corroborate corrections to the pinned source snapshot.
+
+\section{The proposed mixed-root survivors reduce exactly}
+\label{sec:mixed-parity-correction}
+
+The snapshot identifies two purportedly new mixed directions in each of
+the Gaussian and Eisenstein towers: a real depth-two value of weight five
+and an imaginary depth-two value of weight six. Both are in the component
+covered by the established parity theorem. Their resistance to a numerical
+integer-relation search is therefore not evidence of a new direction in
+the algebra of single cyclotomic values. Explicit formulas settle all four
+cases. These formulas are presented as corroborated corrections to the
+snapshot. The general parity theorem predates this work, and recent
+companion work has already reported four mixed-root reductions; no claim
+of first discovery is made here.
+
+For $x=e^{i\theta}$, $0<\theta<2\pi$, put
+\[
+ M_{a,b}(x)=\operatorname{Li}_{a,b}(x,x^{-1}),\qquad
+ \mathcal B_n(x)=\frac{(2\pi i)^n}{n!}B_n\!\left(\frac{\theta}{2\pi}\right),
+ \qquad
+ \kappa_0=1,\quad\kappa_j=-2\zeta(2j)\ (j\ge1).
+\]
+Use $C_{\mu,r}=\binom{\mu-1}{r-1}$ when $\mu\ge r$ and zero otherwise.
+
+\begin{theorem}[Inverse-color parity formula]
+\label{thm:inverse-color}
+For all $a,b\ge1$ and $w=a+b$,
+\begin{align}
+ M_{a,b}(x)-(-1)^w\overline{M_{a,b}(x)}
+ ={}&(-1)^a\sum_{j=0}^{\lfloor(w-1)/2\rfloor}
+ \kappa_j\bigl(C_{w-2j,a}+C_{w-2j,b}\bigr)
+ \operatorname{Li}_{w-2j}(\bar x)\label{eq:inverse-color}\\
+ &-\zeta(w)-\operatorname{Li}_b(\bar x)\mathcal B_a(x).\notag
+\end{align}
+Thus the real part at odd weight and the imaginary part at even weight
+reduce to single polylogarithms times zeta values and Bernoulli factors.
+\end{theorem}
+
+\begin{proof}
+In Panzer's depth-two inversion formula, use the ascending-index pair
+$(b,a)$ and arguments $(y,x)$, and let $y\to x^{-1}$. Only the
+Bernoulli factor at $xy=1$ has a possible side-dependent value. Its
+index-one coefficient is
+\[
+ \left[(-1)^{b+w-1}\binom{w-2}{b-1}
+       +(-1)^a\binom{w-2}{a-1}\right]
+       \operatorname{Li}_{w-1}(x^{-1})=0.
+\]
+The binomial coefficients agree and the two signs are opposite.
+All odd Bernoulli numbers of index greater than one vanish; the index-zero
+value is $1$ and the even positive values are $-2\zeta(2j)$.
+In the surviving terms $\mu=w-2j$, the first sum's sign
+$(-1)^{b+\mu}$ equals $(-1)^a$. The two sums combine to
+\eqref{eq:inverse-color}. The single polylogarithm at the product tends to
+$\zeta(w)$, since $w\ge2$. The remaining terms are analytic at $y=x^{-1}$,
+because $x\ne1$. The defining boundary double sums also have the stated
+limit: when $a>1$ they converge absolutely, while for $a=1$ the bounded
+inner partial sums are a constant plus $O(n^{-b})$, leaving a convergent
+Dirichlet series and an absolutely convergent remainder. Complex
+conjugation now identifies the inverse pair with
+$\overline{M_{a,b}(x)}$.
+\end{proof}
+
+At $b=1$ the formula simplifies substantially:
+\begin{align}
+ M_{a,1}(x)-(-1)^{a+1}\overline{M_{a,1}(x)}
+ ={}&(-1)^a\left[(a+1)\operatorname{Li}_{a+1}(\bar x)
+       -2\sum_{j=1}^{\lfloor a/2\rfloor}
+          \zeta(2j)\operatorname{Li}_{a+1-2j}(\bar x)\right]
+ \label{eq:inverse-color-one}\\
+ &-\zeta(a+1)-\operatorname{Li}_1(\bar x)\mathcal B_a(x).\notag
+\end{align}
+This single equation proves all four corrections below.
+
+\subsection{Gaussian corrections}
+
+Using $\mathcal B_4(i)=7\pi^4/5760$,
+$\mathcal B_5(i)=-5i\pi^5/768$, and
+$\operatorname{Li}_1(-i)=-\log2/2-i\pi/4$ gives
+\begin{align}
+ \Re\operatorname{Li}_{4,1}(i,-i)
+  &=\frac{3\pi^4\log2}{512}+\frac{\pi^2\zeta(3)}{64}
+                          -\frac{587\zeta(5)}{1024},
+ \label{eq:gaussian-mixed-real}\\
+ \Im\operatorname{Li}_{5,1}(i,-i)
+  &=3\beta(6)-\frac{\pi^2\beta(4)}6-\frac{\pi^4G}{90}
+                          -\frac{5\pi^5\log2}{3072}.
+ \label{eq:gaussian-mixed-imag}
+\end{align}
+Every value on the right belongs to the single-value basket already named
+in the source's Gaussian search. Consequently these two rows cannot add
+new directions modulo that basket.
+
+\subsection{Eisenstein corrections}
+
+Let $\rho=e^{2\pi i/3}$ and write
+$C_j=\Im\operatorname{Li}_j(\rho)$ for even $j$.
+Here $x=\rho^2$, so the Bernoulli argument is $2/3$:
+\[
+ \mathcal B_4(\rho^2)=\frac{13\pi^4}{1215},\qquad
+ \mathcal B_5(\rho^2)=\frac{4i\pi^5}{729},\qquad
+ \operatorname{Li}_1(\rho)=-\frac12\log3+\frac{i\pi}{6}.
+\]
+Equation~\eqref{eq:inverse-color-one} gives
+\begin{align}
+ \Re\operatorname{Li}_{4,1}(\rho^2,\rho)
+  &=\frac{2\pi^4\log3}{243}+\frac{2\pi^2\zeta(3)}{27}
+                           -\frac{281\zeta(5)}{162},
+ \label{eq:eisenstein-mixed-real}\\
+ \Im\operatorname{Li}_{5,1}(\rho^2,\rho)
+  &=-3C_6+\frac{\pi^2C_4}{6}+\frac{\pi^4C_2}{90}
+                         +\frac{\pi^5\log3}{729}.
+ \label{eq:eisenstein-mixed-imag}
+\end{align}
+The corresponding imaginary formula at $(\rho,\rho^2)$ has the opposite
+sign by conjugation. Again all right-hand atoms already occur in the
+source's stated search basket.
+
+\paragraph{Precise editorial consequence.}
+The claimed parallel location of candidate new mixed directions does not
+survive these exact reductions. The text should say that the tested
+convergent double-shuffle system left formal residual coordinates which
+are eliminated by known parity relations. Numerical or formal residual
+counts for larger systems must be recomputed after adjoining these rows;
+one should not infer a corrected total numerical dimension merely by
+subtracting two from a previously asserted count. The established
+inversion theorem supplies reductions, not independence statements for
+the opposite parity components.
+
+The real weight-five rows give a particularly concrete audit target:
+\[
+ 1024\Re\operatorname{Li}_{4,1}(i,-i)
+   =6\pi^4\log2+16\pi^2\zeta(3)-587\zeta(5),
+\]
+\[
+ 486\Re\operatorname{Li}_{4,1}(\rho^2,\rho)
+   =4\pi^4\log3+36\pi^2\zeta(3)-843\zeta(5).
+\]
+Their integer-relation heights, including the target coefficient, are
+$1024$ and $843$. Both are below the source's stated approximate
+$10^4$ search scale. Missing these relations therefore cannot be
+attributed solely to very large coefficients. The actual input values,
+basis construction, dependence handling, and stopping rules should be
+reproduced; without the original scripts, it would be premature to
+identify one particular cause.
+
+\paragraph{Independent numerical check.}
+The exact formulas in \texttt{mixed\_candidates.py} were also compared
+with the independent radial integral
+\[
+ \operatorname{Li}_{a,b}(x,x^{-1})
+ =\frac{x}{(a-1)!}\int_0^1
+       \frac{(-\log t)^{a-1}\operatorname{Li}_b(t)}{1-xt}\,dt.
+\]
+At 60 decimal digits all four absolute residuals were below $10^{-60}$.
+For orientation, the four left sides in the order above are approximately
+$-0.0134202673573$, $0.0326942444522$,
+$-0.0390392184565$, and $-0.0253393813681$.
+The analytic formula proves the identities; these numerical checks serve
+only to detect arithmetic or convention errors.
+

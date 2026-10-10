@@ -1,0 +1,171 @@
+\subsection{A sixth-root specialization in every position}
+\label{one2:sec:sixthroot}
+
+The special role of sixth roots in relations for Nielsen polylogarithms
+is studied by Borwein and Straub~\cite{BorweinStraub2015}.  The preceding
+position formula gives a direct specialization in that established
+setting, including an explicit rational coefficient for one component
+at every weight.  Throughout this subsection,
+\[
+ \omega=e^{i\pi/3},\qquad N=a+b+2,\qquad a,b\ge0,
+\]
+and all logarithms and polylogarithms use their principal branches.
+
+\begin{corollary}[Sixth-root closure and a pure parity component]
+\label{one2:cor:sixthroot}
+At $z=\omega$, formula~\eqref{one2:eq:closed} reduces
+$U_{a,b}(\omega)$ to classical values $\Li_k(\omega)$, zeta values,
+and powers of $i\pi$, since
+\begin{equation}
+ \frac1{1-\omega}=\omega,\qquad
+ -\Log(1-\omega)=\Log\omega=\frac{i\pi}{3}.
+ \label{one2:eq:sixthfixed}
+\end{equation}
+Moreover,
+\begin{equation}
+ U_{a,b}(\omega)+(-1)^N\overline{U_{a,b}(\omega)}
+       =R_{N,a}(i\pi)^N,\qquad R_{N,a}\in\mathbb Q.
+ \label{one2:eq:sixthparity}
+\end{equation}
+Thus $\Re U_{a,b}(\omega)$ is a rational multiple of $\pi^N$
+when $N$ is even, and $\Im U_{a,b}(\omega)$ is a rational multiple
+of $\pi^N$ when $N$ is odd.  Explicitly, with Bernoulli polynomials
+defined by
+\[
+ \frac{t e^{xt}}{e^t-1}
+    =\sum_{k\ge0}B_k(x)\frac{t^k}{k!},\qquad B_k=B_k(0),
+\]
+one may take
+\begin{align}
+ R_{N,a}
+ &=-\frac{2}{3^N N!}
+ -\sum_{k=a+1}^{N}
+   \frac{(-1)^{a+k}\binom{k-1}{a}\,2^k B_k(1/6)}
+        {3^{N-k}(N-k)!k!}\notag\\
+ &\quad+(-1)^{N-a}
+   \sum_{\substack{N-a\le m\le N\\m\ \mathrm{even}}}
+   \frac{\binom{m-1}{N-a-1}\,2^m B_m}
+        {3^{N-m}(N-m)!m!}.
+ \label{one2:eq:sixthcoefficient}
+\end{align}
+The same formulas at $\overline\omega$ follow by complex conjugation.
+\end{corollary}
+\begin{proof}
+The identities in \eqref{one2:eq:sixthfixed} follow from
+$1-\omega=\overline\omega$.  Along the radial segment
+$z=r\omega$, $0\le r\le1$, the real part of $1-z$ is at least
+$1/2$, so the indicated logarithm has no branch crossing.
+The transformed path lies in the upper half-plane for $r>0$,
+starts at $1$, and ends at $\omega$; the endpoint limits already
+used to prove \eqref{one2:eq:closed} apply.  Consequently that
+formula has exactly the stated principal values.  The ordinary
+boundary multiple series agree with their radial limits by the
+same summation-by-parts argument used at $z=i$.
+
+Put $T=i\pi$ and $L=T/3$.  The classical Bernoulli Fourier identity is
+\begin{equation}
+ \Li_k(e^{2\pi i x})+(-1)^k\Li_k(e^{-2\pi i x})
+       =-\frac{(2\pi i)^k}{k!}B_k(x),
+ \qquad 0<x<1,\quad k\ge1.
+ \label{one2:eq:bernoullifourier}
+\end{equation}
+For $k=1$, this follows directly from $\Li_1(z)=-\Log(1-z)$
+on the stated arc.  Successive integration, with the zero average
+of both sides fixing the constants, proves every higher case.
+Since $\overline L=-L$, the parity projection of a classical term
+in \eqref{one2:eq:closed} is
+\begin{align*}
+ &L^{N-k}\Li_k(\omega)
+       +(-1)^N\overline{L^{N-k}\Li_k(\omega)}\\
+ &\hspace{1cm}=L^{N-k}
+    \bigl(\Li_k(\omega)+(-1)^k\Li_k(\overline\omega)\bigr)
+   =-\frac{2^k B_k(1/6)}{3^{N-k}k!}\,T^N.
+\end{align*}
+The polynomial term $-L^N/N!$ contributes
+$-2T^N/(3^N N!)$.  A zeta term with zeta weight $m$ contributes
+zero when $m$ is odd.  For even $m\ge2$, use
+\[
+ \frac{2\zeta(m)}{(i\pi)^m}=-\frac{2^m B_m}{m!}.
+\]
+In the last sum of \eqref{one2:eq:closed}, write
+$m=b+j+2=N-a+j$.  Its binomial coefficient becomes
+$\binom{m-1}{N-a-1}$, while its sign after the even-zeta evaluation
+is $(-1)^b=(-1)^{N-a}$.  Combining these three contributions proves
+\eqref{one2:eq:sixthcoefficient} and hence
+\eqref{one2:eq:sixthparity}.
+\end{proof}
+
+There is a precise geometric reason that this specialization closes
+on a unit-circle argument.  If $|z|=1$ and $z\ne1$, then
+\[
+ \left|\frac1{1-z}\right|=1
+ \quad\Longleftrightarrow\quad
+ |1-z|^2=2-2\Re z=1
+ \quad\Longleftrightarrow\quad z\in\{\omega,\overline\omega\}.
+\]
+Both of these points are fixed by $z\mapsto(1-z)^{-1}$.
+This classifies the unit-circle endpoint geometry of this particular
+transformation.
+
+\begin{corollary}[The two weight-three values]
+\label{one2:ex:sixththree}
+Define the ordinary Clausen value by its absolutely convergent series
+\[
+ C=\operatorname{Cl}_2(\pi/3)
+   =\sum_{n\ge1}\frac{\sin(n\pi/3)}{n^2}.
+\]
+Then
+\begin{align}
+ U_{0,1}(\omega)=\Li_{2,1}(\omega)
+  &=\frac23\zeta(3)-\frac\pi3 C+\frac{i\pi^3}{324},
+    \label{one2:eq:sixth21}\\
+ U_{1,0}(\omega)=\Li_{1,2}(\omega)
+  &=-\frac43\zeta(3)+\frac\pi3 C+\frac{i\pi^3}{324}.
+    \label{one2:eq:sixth12}
+\end{align}
+\end{corollary}
+\begin{proof}
+The classical values needed are
+\[
+ \Li_1(\omega)=\frac{i\pi}{3},\qquad
+ \Li_2(\omega)=\frac{\pi^2}{36}+iC,\qquad
+ \Li_3(\omega)=\frac{\zeta(3)}3+\frac{5i\pi^3}{162}.
+\]
+The real dilogarithm component and imaginary trilogarithm component
+follow from \eqref{one2:eq:bernoullifourier}.  The real
+trilogarithm component follows by grouping the defining series
+into residue classes, or from the distribution identity
+\[
+ \Li_s(\omega)+\Li_s(\overline\omega)
+   =(1-2^{1-s})(1-3^{1-s})\zeta(s),\qquad s>1.
+\]
+For example, summing over the three cube roots gives
+$(3^{1-s}-1)\zeta(s)$ for the two nontrivial cube roots;
+applying the two-term distribution formula to the pair of sixth
+roots multiplies that sum by $2^{1-s}-1$.
+Now \eqref{one2:eq:height} at $p=2$ gives, with $L=i\pi/3$,
+\[
+ U_{0,1}(\omega)
+   =\zeta(3)-\Li_3(\omega)+L\Li_2(\omega)-\frac23L^3.
+\]
+Substitution yields \eqref{one2:eq:sixth21}.  The shuffle identity
+\[
+ \Li_1(\omega)\Li_2(\omega)
+     =U_{1,0}(\omega)+2U_{0,1}(\omega)
+\]
+then proves \eqref{one2:eq:sixth12}.  In both positions,
+\eqref{one2:eq:sixthcoefficient} gives $R_{3,a}=-1/162$.
+\end{proof}
+
+The independent script \texttt{code/independent/one\_two/sixth\_root.py}
+computes \eqref{one2:eq:sixthcoefficient} with exact rational
+arithmetic and compares the specialized closed formula, its pure
+parity component, and the displayed weight-three examples with the
+logarithmic moment.  It covers every position of the $2$ at weights
+$2$ through $8$, at both $\omega$ and $\overline\omega$, using
+$100$ working decimal digits.  Across these $56$ cases, the largest
+closed-form versus moment residual is below $6.59\cdot10^{-100}$;
+the largest parity-projection residual is below $7.15\cdot10^{-102}$.
+The four checks of the two explicit examples and their conjugates
+have residual below $2.16\cdot10^{-101}$.  These are numerical checks
+of the proved identities, rather than rigorous quadrature error bounds.

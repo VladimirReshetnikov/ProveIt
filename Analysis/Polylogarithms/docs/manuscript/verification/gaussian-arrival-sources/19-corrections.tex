@@ -1,0 +1,126 @@
+\section{Corrections to the pinned manuscript}\label{sec:corrections}
+% Remaining localized corrections found in current consolidated manuscript.
+\subsection{The mixed Gaussian antisymmetry must also swap the colors}
+
+The paragraph following the remark about the weight-six diagonal in
+\texttt{chapters/04-depth.tex} says that all depth-two content lives in
+$\Li_{a,b}(P)-\Li_{b,a}(P)$, ``which vanish on the diagonal.''
+This is correct for a point $P=(x,x)$, but not for the mixed points.
+Stuffle exchanges both the indices and the colors. The correct pair is
+\[
+ A_{a,b}(x,y)=\Li_{a,b}(x,y)-\Li_{b,a}(y,x).
+\]
+Its symmetric partner is a product of singles minus $\Li_{a+b}(xy)$.
+For $a=b$, $A_{a,a}(x,y)$ need not vanish when $x\ne y$.
+
+Here is an exact counterexample entirely inside the manuscript's
+alphabet:
+\begin{equation}\label{audit:eq:mixed-counterexample}
+ \Im\bigl(\Li_{1,1}(-1,i)-\Li_{1,1}(i,-1)\bigr)
+ =\frac\pi2\log2-G
+ =\int_0^1\frac{\log(1+t^2)}{1+t^2}\,dt>0.
+\end{equation}
+To prove the first equality, differentiating the convergent defining
+series in the disk gives
+\[
+ \frac{\partial}{\partial x}\Li_{1,1}(x,y)
+   =\frac{\Li_1(xy)}{1-x}.
+\]
+Continuation along the segment to $x=-1$ is nonsingular, and hence
+\[
+ \Im\Li_{1,1}(-1,i)=\int_0^1\frac{\arctan t}{1+t}\,dt.
+\]
+Put $K=\int_0^1\log(1+t)/(1+t^2)\,dt$. With $t=\tan\theta$,
+\[
+ K=\int_0^{\pi/4}\left(
+   \tfrac12\log2+\log\sin(\theta+\pi/4)-\log\cos\theta
+   \right)d\theta=\frac\pi8\log2.
+\]
+The last two integrals cancel after reflection about $\pi/2$.
+Integration by parts now gives
+$\Im\Li_{1,1}(-1,i)=\pi\log2/4-K=\pi\log2/8$.
+Stuffle and
+\[
+ \Li_1(-1)=-\log2,\qquad
+ \Li_1(i)=-\tfrac12\log2+\tfrac{\pi i}{4},\qquad
+ \Im\Li_2(-i)=-G
+\]
+give
+\[
+ \Im\bigl(\Li_{1,1}(-1,i)+\Li_{1,1}(i,-1)\bigr)
+   =G-\frac\pi4\log2.
+\]
+Subtracting proves the first equality in
+\eqref{audit:eq:mixed-counterexample}; the second also follows directly by setting $t=\tan\theta$. Indeed,
+\[
+ \int_0^{\pi/4}\log\cos\theta\,d\theta
+ =-\frac\pi4\log2+\frac G2,
+\]
+which follows from the sum and difference of the corresponding
+log-sine and log-cosine integrals: their difference is $G$, and their
+sum is $-\pi\log2/2$ by the double-angle formula. Thus the displayed
+integral is $-2\int_0^{\pi/4}\log\cos\theta\,d\theta$.
+Its integrand is positive away from zero. The difference is approximately
+$0.17282745097458205019574093418642286289514247590297$.
+
+\paragraph{Suggested replacement.}
+``After the symmetric stuffle combinations have been removed, the
+remaining information is carried by
+$\Li_{a,b}(x,y)-\Li_{b,a}(y,x)$. These vanish when both the indices and
+the colors coincide. At the mixed Gaussian points, equality of the
+indices alone does not eliminate the antisymmetric combination.''
+
+\subsection{An exact check on the weight-six diagonal example}
+
+The preceding remark in \texttt{04-depth.tex} says that a kernel returns
+the diagonal $\Li_{3,3}(i,i)$ in $\beta(4)$, $\pi^4$, and $\zeta(3)$.
+This description obscures the simple homogeneous exact formula supplied
+by the stated stuffle identity:
+\[
+ \boxed{\displaystyle
+ \Li_{3,3}(i,i)=\frac{9}{2048}\zeta(3)^2
+       +\frac{47}{1935360}\pi^6
+       -\frac{3i}{1024}\pi^3\zeta(3).}
+\]
+Indeed, $\Li_3(i)=(-3\zeta(3)+i\pi^3)/32$ and
+$\Li_6(-1)=-31\pi^6/30240$, so this is exactly
+$\tfrac12(\Li_3(i)^2-\Li_6(-1))$.
+No assertion about a former symbolic kernel's output is needed.
+
+The nearby sentence saying that every real single value is a rational
+multiple of $\zeta(n)$ also needs the $n=1$ exception:
+$\Re\Li_1(i)=-\log2/2$ and $\Li_1(-1)=-\log2$.
+For $n\geq2$ the displayed zeta description is correct.
+The analogous Eisenstein sentence also requires $n\ge2$; its separate
+order-one value is $\Li_1(e^{2\pi i/3})=-\log3/2+i\pi/6$.
+
+\subsection{The known component of a digamma difference}
+
+In \texttt{chapters/06-cm.tex}, lines 91--93 call the real component at
+odd weight and imaginary component at even weight ``opaque.'' The
+preceding two displayed formulas evaluate exactly those components.
+This is a parity reversal in the commentary, rather than an error in
+those displayed identities.
+
+For $0<c<1$, put $z=(1-c)/2+it$ and
+\[
+ R_c(t)=\frac{\pi\sin(\pi c)}{\cosh(2\pi t)+\cos(\pi c)}.
+\]
+Reflection and conjugation give
+$\Re(\psi(z+c)-\psi(z))=R_c(t)$. Differentiating $m$ times in the real
+variable $t$ proves the exact all-order statement
+\[
+ \Re\left(i^m\bigl(\psi^{(m)}(z+c)-\psi^{(m)}(z)\bigr)\right)
+       =R_c^{(m)}(t).
+\]
+Thus the real component is determined when $m$ is even, and the imaginary
+component when $m$ is odd. Under the manuscript's weight convention
+$w=m+1$, these are the real component at odd weight and imaginary component
+at even weight. The complementary components are not determined by this
+identity. No assertion of nonreducibility follows.
+
+The corrected sentence should read: ``The complementary component---the
+imaginary part at odd weight and the real part at even weight---is not
+determined by this reflection identity.'' This statement concerns shifted
+differences and should not be conflated with the parity of individual
+polygamma values on the line $\Re z=1/2$.

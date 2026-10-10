@@ -1,0 +1,104 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=22mm,headheight=15pt,headsep=8mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{microtype,booktabs,array,longtable,graphicx}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem,fancyhdr,xurl}
+\usepackage[unicode,colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\hypersetup{pdftitle={Gaussian polylogarithms: proofs, reductions, and exact certificates},
+ pdfauthor={Research companion prepared for the ProveIt project},
+ pdfsubject={Proofs of Gaussian multiple polylogarithm conjectures and a reproducible source audit}}
+\DeclareMathOperator{\Li}{Li}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Log}{\operatorname{Log}}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\numberwithin{equation}{section}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{3pt plus 1pt}
+\setlist{itemsep=3pt,topsep=5pt}
+\allowdisplaybreaks[2]
+\raggedbottom
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\sffamily Gaussian polylogarithms: proofs and certificates}
+\fancyhead[R]{\small\sffamily ProveIt research companion}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\title{\vspace{-12mm}\textbf{Gaussian polylogarithms:\\[3pt] proofs, reductions, and exact certificates}\\[7pt]
+\large A research continuation and audit of the ProveIt manuscript}
+\author{Research companion prepared for the ProveIt project}
+\date{9 October 2026\quad\textbullet\quad Version 1.0}
+
+\begin{document}
+\maketitle
+\thispagestyle{plain}
+\begin{abstract}
+We prove all five displayed Gaussian weight-six double-polylogarithm
+conjectures and all three displayed Gaussian weight-four triple-polylogarithm
+conjectures in a fixed revision of the ProveIt manuscript. The double
+identities follow from an explicit specialization of the established
+polylogarithm parity theorem, with the singular limiting cancellation
+justified, and are independently recovered from differential recurrences
+and exact double-zeta systems. The same calculation gives a complete
+seven-row weight-eight table and rational coefficient formulas at every
+even weight. A logarithmic-moment argument gives a closed classical
+reduction for every position of a single index $2$ among indices $1$.
+It reduces the top two possible series-depth layers at every weight and
+explains the signed binomial coefficients of the highest-weight
+half-Gaussian value. At the primitive sixth roots, one parity component
+is always a rational multiple of the corresponding power of $\pi$.
+Four proposed mixed-root directions reduce exactly
+to the manuscript's existing single-value constants. We also correct a
+color-exchange error in a diagonal antisymmetry claim, a diagonal example,
+and a reversed parity comment for shifted polygamma differences.
+Finally, we give a rational H\"older certificate with an explicit uniform
+tail bound and a polynomial-time exact implementation. The accompanying
+package contains source, exact coefficient tables, independent numerical
+checks, replayable rational certificates, and a proposed integration patch.
+All novelty and independence claims are kept separate from what the
+proofs actually establish.
+\end{abstract}
+
+\noindent\textbf{Keywords.} Multiple polylogarithms; roots of unity;
+Gaussian periods; parity theorem; Nielsen polylogarithms; iterated
+integrals; exact rational enclosures.
+
+\medskip
+\noindent\textbf{Source baseline.} This article audits the manuscript at
+revision
+\begin{center}
+\small\texttt{09812e81e578c3f13f54b2d0c46a95a0e0665b19}
+\end{center}
+of \texttt{VladimirReshetnikov/ProveIt}, under
+\texttt{Analysis/Polylogarithms/docs/manuscript}. Statements about the
+source refer to that revision, not to a moving branch.
+
+\clearpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+\input{sections/introduction}
+\input{sections/parity}
+\input{sections/one_two}
+\input{sections/mixed}
+\input{sections/certificates}
+\input{sections/corrections}
+\input{sections/verification}
+\input{sections/research}
+\input{references}
+\end{document}

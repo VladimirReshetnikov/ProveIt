@@ -1,3 +1,8 @@
+> **Validated checkpoint:** the record below applies to the exact 204-page
+> artifact. Batch-140 deliveries 18 and 19 were subsequently merged into the
+> requested source tree; their integration requires refreshed inventory,
+> mathematical checks, build and visual receipts.
+
 # Validation of the unified manuscript
 
 Completed October 9, 2026. Authorship is **ProveIt Contributors** on the title

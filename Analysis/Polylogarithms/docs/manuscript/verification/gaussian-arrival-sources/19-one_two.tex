@@ -1,0 +1,467 @@
+\section{Classical reductions with one index equal to two}
+\label{one2:sec:general}
+
+This section settles the three Gaussian weight-four triple identities
+printed in Chapter~4 of the source manuscript.  The proof gives a uniform
+formula for every multiple polylogarithm whose indices consist of one
+$2$ and any number of $1$'s.  The general phenomenon is classical:
+Borwein and Straub give the complementary-argument formula for
+$\Li_{2,\{1\}^{p-1}}$ in \cite[Eq.~(33)]{BorweinStraub2015}, including
+the weight-four instance in their Eq.~(34).  The results below reorganize
+that reduction at the reciprocal complementary argument, make the
+dependence on the position of the $2$ explicit, and prove the specific
+Gaussian formulas in the manuscript.  We do not claim that classical
+reducibility of this family is a new phenomenon.
+
+Throughout this section, a single displayed argument abbreviates the
+remaining arguments $1$:
+\[
+ \Li_{s_1,\ldots,s_d}(z)
+ :=\Li_{s_1,\ldots,s_d}(z,1,\ldots,1).
+\]
+The defining series has strictly decreasing summation indices.  Set
+\[
+ U_{a,b}(z)=\Li_{\{1\}^{a},2,\{1\}^{b}}(z),\qquad
+ H_p(z)=\Li_{2,\{1\}^{p-1}}(z),
+\]
+where $a,b\ge0$ and $p\ge1$.  The weight of $U_{a,b}$ is
+$N=a+b+2$, and its series depth is $N-1$.
+
+\subsection{A logarithmic moment and its branch conventions}
+
+We use principal branches and first work on
+\[
+ \mathcal D=\mathbb C\setminus[0,\infty),\qquad
+ w=\frac1{1-z},\qquad L=\Log w=-\Log(1-z).
+\]
+On this domain, $w$ avoids the standard polylogarithm cut $[1,\infty)$
+and the logarithm cut $(-\infty,0]$.  All terms in the formulas below
+are therefore single-valued analytic functions.  The formulas also
+extend to the usual slit plane by consistent continuation; no such
+extension is needed at $z=i$ or at a nonreal root of unity.
+
+\begin{lemma}[Logarithmic moment]
+\label{one2:lem:moment}
+Let $q(t)=-\Log(1-t)$.  For an integration path from $0$ to $z$ avoiding
+$\{0,1\}$ apart from its initial point $0$, with the branches
+continued along that path,
+\begin{equation}
+ U_{a,b}(z)=\frac1{a!(b+1)!}
+ \int_0^z\frac{(q(z)-q(t))^a q(t)^{b+1}}{t}\,dt.
+ \label{one2:eq:moment}
+\end{equation}
+Consequently,
+\begin{equation}
+ U_{a,b}(z)=\sum_{j=0}^a(-1)^j
+ \binom{b+j+1}{j}\frac{q(z)^{a-j}}{(a-j)!}\,H_{b+j+1}(z).
+ \label{one2:eq:triangular}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The iterated-integral word of $U_{a,b}$ is
+$1^a0\,1^{b+1}$, with forms $dt/(1-t)$ and $dt/t$ attached to $1$ and
+$0$, respectively.  The innermost $b+1$ identical forms contribute
+$q(t)^{b+1}/(b+1)!$.  The $a$ identical forms between $t$ and $z$
+contribute $(q(z)-q(t))^a/a!$.  Integrating the single remaining $0$
+form proves \eqref{one2:eq:moment}.  Equivalently, one may verify the
+same formula by differentiating successively with respect to $z$ and
+using the zero initial values at $z=0$.  Expanding the binomial and
+using
+\[
+ H_p(z)=\frac1{p!}\int_0^z\frac{q(t)^p}{t}\,dt
+\]
+proves \eqref{one2:eq:triangular}.
+\end{proof}
+
+\begin{theorem}[Explicit reduction for every position of the $2$]
+\label{one2:thm:closed}
+For $a,b\ge0$, $N=a+b+2$, and $z\in\mathcal D$,
+\begin{align}
+ U_{a,b}(z)
+ &=\sum_{k=a+1}^{N}(-1)^{a+k}\binom{k-1}{a}
+       \frac{L^{N-k}}{(N-k)!}\Li_k(w)
+       -\frac{L^N}{N!}\notag\\
+ &\quad+(-1)^{b+1}\sum_{j=0}^{a}\binom{b+j+1}{j}
+       \frac{L^{a-j}}{(a-j)!}\zeta(b+j+2).
+ \label{one2:eq:closed}
+\end{align}
+In particular,
+\begin{equation}
+ H_p(z)=(-1)^p\zeta(p+1)-\frac{L^{p+1}}{(p+1)!}
+ +\sum_{k=1}^{p+1}(-1)^k
+       \frac{L^{p+1-k}}{(p+1-k)!}\Li_k(w).
+ \label{one2:eq:height}
+\end{equation}
+\end{theorem}
+\begin{proof}
+We first prove \eqref{one2:eq:height} for real $z<0$, so that
+$0<w<1$ and every intermediate integral is real.  Substitute
+$v=1/(1-t)$ in the logarithmic moment.  Then
+\[
+ \frac{dt}{t}=\frac{dv}{v(v-1)},\qquad q(t)=\log v,
+\]
+and
+\[
+ H_p(z)=\frac1{p!}\int_1^w\frac{\log^p v}{v(v-1)}\,dv.
+\]
+The differential identity
+\begin{equation}
+ \frac{d}{dv}\left[
+ \sum_{k=1}^{p+1}\frac{(-1)^{k-1}p!}{(p+1-k)!}
+       \log^{p+1-k}v\,\Li_k(v)\right]
+       =\frac{\log^p v}{1-v}
+ \label{one2:eq:primitive}
+\end{equation}
+follows by cancellation of adjacent terms, using
+$\Li_1(v)=-\log(1-v)$ and $\Li'_k(v)=\Li_{k-1}(v)/v$ for $k\ge2$.
+Since
+$1/[v(v-1)]=-1/v-1/(1-v)$, integration gives
+\eqref{one2:eq:height}.  At $v=1$, every term in
+\eqref{one2:eq:primitive} with a positive power of $\log v$ tends to
+zero.  This includes the apparently singular term
+$\log^p v\,\Li_1(v)$, which is
+$O((v-1)^p\log(1-v))$ and tends to zero because $p\ge1$.
+The sole nonzero endpoint term is $(-1)^pp!\zeta(p+1)$.
+Thus the constant in \eqref{one2:eq:height} is fixed, not inferred
+from a differential identity alone.  Analytic continuation on the
+connected domain $\mathcal D$ proves that identity throughout the
+stated domain.
+
+Insert \eqref{one2:eq:height} in
+\eqref{one2:eq:triangular}, using $q(z)=L$.  The zeta terms immediately
+give the second line of \eqref{one2:eq:closed}.  The coefficient of
+$(-1)^k L^{N-k}\Li_k(w)$ is
+\[
+ \sum_{j=0}^a\frac{(-1)^j\binom{b+j+1}{j}}
+                    {(a-j)!(b+j+2-k)!}
+ =\frac{(-1)^a\binom{k-1}{a}}{(N-k)!}.
+\]
+Terms containing a factorial of a negative integer are omitted.  To
+verify this finite identity, write its left side as
+\[
+ \frac{(k-1)!}{(b+1)!a!}
+ \sum_{j=0}^a(-1)^j\binom aj\binom{b+j+1}{k-1}
+\]
+and extract the coefficient of $x^{k-1}$ in
+\[
+ (1+x)^{b+1}\sum_{j=0}^a(-1)^j\binom aj(1+x)^j
+   =(-x)^a(1+x)^{b+1}.
+\]
+The coefficients vanish when $k\le a$, explaining the lower endpoint
+$a+1$ in the sum.  Finally, the coefficient of $-L^N$ equals
+\begin{align*}
+ \sum_{j=0}^a\frac{(-1)^j\binom{b+j+1}{j}}
+                    {(a-j)!(b+j+2)!}
+ &=\frac1{a!(b+1)!}\int_0^1t^{b+1}(1-t)^a\,dt\\
+ &=\frac1{N!}.
+\end{align*}
+This proves the complete formula.
+\end{proof}
+
+For the Gaussian endpoint the path itself can be inspected explicitly:
+\[
+ z=ix\quad(0\le x\le1),\qquad
+ w(x)=\frac{1+ix}{1+x^2}.
+\]
+For $x>0$ this path lies in the upper half-plane and does not meet the
+polylogarithm cut.  Its initial point is $w(0)=1$, where the endpoint
+limits in the proof apply, and its final point is $(1+i)/2$.  This
+verifies the branch choices directly, without using an inversion
+formula with an unspecified logarithmic correction.
+
+The boundary series at $z=i$ agree with these analytic values.
+Indeed the finite nested harmonic sums in a coefficient satisfy a
+bound $O((1+\log n)^{d-1})$.  After division by $n^{s_1}$ their
+coefficients tend to zero and have summable successive differences.
+Summation by parts against the bounded partial sums of $i^n$ proves
+convergence, even when $s_1=1$; Abel's theorem then identifies the
+series with the radial analytic limit.
+
+\begin{corollary}[A short formula when the $2$ is last]
+\label{one2:cor:last}
+For every $N\ge2$,
+\begin{align}
+ U_{N-2,0}(z)
+ &=(N-1)\Li_N(w)-L\Li_{N-1}(w)-\frac{L^N}{N!}\notag\\
+ &\quad-\sum_{m=0}^{N-2}(N-1-m)\zeta(N-m)\frac{L^m}{m!}.
+ \label{one2:eq:last}
+\end{align}
+Thus only two nonconstant classical polylogarithms are needed in this
+subfamily, regardless of series depth.
+\end{corollary}
+\begin{proof}
+Set $a=N-2$, $b=0$ in \eqref{one2:eq:closed} and reindex the zeta sum.
+\end{proof}
+
+\begin{corollary}[The top two series-depth layers]
+\label{one2:cor:toplayers}
+Every single-endpoint multiple polylogarithm of weight $N\ge2$ and
+series depth at least $N-1$ has an explicit expression in classical
+polylogarithms at $(1-z)^{-1}$, zeta values, and logarithms, on the
+domain $\mathcal D$.
+\end{corollary}
+\begin{proof}
+Positive indices with sum $N$ and length $N$ are all $1$, and
+$\Li_{\{1\}^N}(z)=L^N/N!$. Those with length $N-1$ have exactly one
+index $2$ and all other indices $1$, so Theorem~\ref{one2:thm:closed}
+applies. These exhaust the possibilities.
+\end{proof}
+
+This statement concerns the literal depth of the defining series.
+It does not identify that depth with a motivic filtration or prove a
+minimal depth for the resulting numerical constants.
+
+\subsection{One possible new direction at each weight}
+
+Put
+\[
+ \ell=\log2,\qquad w=\frac{1+i}{2},\qquad
+ \mu_k=\Re\Li_k(w),\qquad\lambda_k=\Im\Li_k(w).
+\]
+For $N\ge2$, let $\mathscr P_N$ be the rational span of products of
+at least two positive-weight atoms selected from
+\[
+ \pi,\ell,\quad \zeta(k),\mu_k,\lambda_k\quad(2\le k<N),
+\]
+whose assigned weights sum to $N$; the assigned weights are $1$ for
+$\pi,\ell$ and $k$ for the atoms with subscript or argument $k$.
+This definition is a concrete span of numerical products.  It does
+not assume that numerical periods form a direct sum by weight.
+
+\begin{corollary}[Signed binomial coefficients modulo products]
+\label{one2:cor:primitive}
+For $a+b+2=N$, set
+$c_{N,a}=(-1)^{N+a}\binom{N-1}{a}$.  Then
+\begin{align}
+ U_{a,b}(i)&\equiv c_{N,a}\bigl(\Li_N(w)-\zeta(N)\bigr)
+        \pmod{\mathscr P_N+i\mathscr P_N},\label{one2:eq:complexprimitive}\\
+ \Re U_{a,b}(i)&\equiv c_{N,a}\bigl(\mu_N-\zeta(N)\bigr)
+        \pmod{\mathscr P_N},\label{one2:eq:realprimitive}\\
+ \Im U_{a,b}(i)&\equiv c_{N,a}\lambda_N
+        \pmod{\mathscr P_N}.\label{one2:eq:imagprimitive}
+\end{align}
+In particular, the imaginary parts of this entire family contribute
+at most one direction after products of the stated lower-weight
+atoms have been factored out.
+\end{corollary}
+\begin{proof}
+At $z=i$, $L=-\ell/2+i\pi/4$, and
+$\Li_1(w)=-\overline L$.  In \eqref{one2:eq:closed}, every term is a
+product of lower-weight atoms except the term $k=N$ and the term
+$j=a$ in the zeta sum.  Their respective coefficients are
+$c_{N,a}$ and $-c_{N,a}$.  Taking real and imaginary parts proves the
+statements.
+\end{proof}
+
+The coefficients of the highest-weight half-point imaginary value are
+\[
+ \begin{array}{c|l}
+ N&c_{N,0},\ldots,c_{N,N-2}\\\hline
+ 4&1,-3,3\\
+ 5&-1,4,-6,4\\
+ 6&1,-5,10,-10,5.
+ \end{array}
+\]
+The corollary is an upper bound, and proves neither that $\lambda_N$
+is nonzero in the quotient nor that it is independent of constants
+from other argument families.  It also does not identify series
+depth with an additive motivic depth filtration.
+
+\input{sections/sixth_root}
+
+\section{Proof of the three Gaussian weight-four identities}
+\label{one2:sec:triples}
+
+\begin{lemma}[The lower half-point values]
+\label{one2:lem:halfpoint}
+With $G=\beta(2)$ and the notation above,
+\begin{align}
+ \Li_2(w)&=\frac{5\pi^2}{96}-\frac{\ell^2}{8}
+              +i\left(G-\frac{\pi\ell}{8}\right),
+       \label{one2:eq:Li2half}\\
+ \mu_3&=\frac{35\zeta(3)}{64}-\frac{5\pi^2\ell}{192}
+              +\frac{\ell^3}{48}.
+       \label{one2:eq:mu3}
+\end{align}
+\end{lemma}
+\begin{proof}
+Differentiation, followed by evaluation at $z=0$, proves Landen's
+dilogarithm identity
+\[
+ \Li_2\left(\frac z{z-1}\right)
+       =-\Li_2(z)-\frac12\Log^2(1-z)
+\]
+along the segment from $0$ to $i$.  At $z=i$ its transformed argument
+is $\overline w$.  The defining series gives
+$\Li_2(i)=-\pi^2/48+iG$, while
+$\Log(1-i)=\ell/2-i\pi/4$.  Taking complex conjugates proves
+\eqref{one2:eq:Li2half}.
+
+For completeness, the trilogarithm relation needed here is
+\begin{align}
+ \Li_3(x)+\Li_3\left(\frac x{x-1}\right)+\Li_3(1-x)
+ &=\zeta(3)+\zeta(2)\Log(1-x)\notag\\
+ &\quad-\frac12\Log x\,\Log^2(1-x)
+       +\frac16\Log^3(1-x).
+ \label{one2:eq:trilog}
+\end{align}
+It holds on the vertical strip $0<\Re x<1$.  Its derivative follows
+from the preceding Landen identity and
+$\Li_2(x)+\Li_2(1-x)=\zeta(2)-\Log x\Log(1-x)$;
+the constant is obtained by letting $x\downarrow0$ through positive
+real values.  These dilogarithm identities can themselves be checked
+by differentiation and the same endpoint limits, so no
+unproved polylogarithm identity is being used.
+
+Now set $x=w$.  Then $1-w=\overline w$, $w/(w-1)=-i$,
+$\Log w=L=-\ell/2+i\pi/4$, and
+$\Log(1-w)=\overline L$.  Also
+$\Re\Li_3(-i)=-3\zeta(3)/32$, directly from its even terms.
+Taking real parts of \eqref{one2:eq:trilog} yields
+\[
+ 2\mu_3-\frac{3\zeta(3)}{32}
+ =\zeta(3)-\frac{5\pi^2\ell}{96}+\frac{\ell^3}{24},
+\]
+which is \eqref{one2:eq:mu3}.
+\end{proof}
+
+\begin{theorem}[The manuscript's Gaussian triples]
+\label{one2:thm:triples}
+All three identities below hold exactly:
+\begin{align}
+ \Im\Li_{2,1,1}(i)
+ &=\lambda_4+\frac12\ell\lambda_3
+       -\frac{G(\pi^2-4\ell^2)}{32}
+       -\frac{\pi(8\ell^3+105\zeta(3))}{768},
+       \label{one2:eq:211}\\
+ \Im\Li_{1,2,1}(i)
+ &=-3\lambda_4-\ell\lambda_3
+       +\frac{G(\pi^2-4\ell^2)}{32}
+       -\frac{3\pi^3\ell}{256}
+       +\frac{\pi(2\ell^3+67\zeta(3))}{128},
+       \label{one2:eq:121}\\
+ \Im\Li_{1,1,2}(i)
+ &=3\lambda_4+\frac12\ell\lambda_3
+       +\frac{5\pi^3\ell}{192}
+       -\frac{163\pi\zeta(3)}{256}.
+       \label{one2:eq:112}
+\end{align}
+\end{theorem}
+\begin{proof}
+The case $p=3$ of \eqref{one2:eq:height} is
+\begin{equation}
+ H_3(i)=\Li_4(w)-L\Li_3(w)+\frac{L^2}{2}\Li_2(w)
+        +\frac{L^3\overline L}{6}-\frac{L^4}{24}-\zeta(4).
+ \label{one2:eq:H3complex}
+\end{equation}
+Taking imaginary parts and inserting Lemma~\ref{one2:lem:halfpoint}
+gives \eqref{one2:eq:211}; all coefficients are rational arithmetic
+in $L=-\ell/2+i\pi/4$.
+
+The case $p=2$ gives the useful explicit intermediary
+\begin{equation}
+ H_2(i)=\frac{29\zeta(3)-16\pi G}{64}
+       +i\left(-\lambda_3-\frac{G\ell}{2}
+                    +\frac{\pi\ell^2}{32}+\frac{3\pi^3}{128}\right).
+ \label{one2:eq:H2complex}
+\end{equation}
+The word shuffles, or directly \eqref{one2:eq:triangular}, give
+\begin{align*}
+ \Li_{1,2,1}(i)&=LH_2(i)-3H_3(i),\\
+ \Li_{1,1,2}(i)&=\frac{L^2}{2}\Li_2(i)-2LH_2(i)+3H_3(i).
+\end{align*}
+Inserting \eqref{one2:eq:H2complex}, \eqref{one2:eq:211}, and
+$\Li_2(i)=-\pi^2/48+iG$ proves the last two identities.  This also
+explains the coefficients $1,-3,3$ of $\lambda_4$: they are the
+weight-four instances of Corollary~\ref{one2:cor:primitive}.
+\end{proof}
+
+These formulas can now be moved out of the source manuscript's
+numerically supported list and labeled theorems.  Their coefficients
+require no correction; the change is a rigorous justification of the
+previous proof status.
+
+\subsection{Further exact identities at weights five and six}
+
+The same calculation gives formulas beyond the three displayed
+manuscript rows.  They involve the unavoidable output of this
+particular reduction, namely higher classical values at $w$; no
+independence claim about those values is implied.
+
+\begin{corollary}[Two higher-weight Gaussian reductions]
+\label{one2:cor:56}
+With $H_4=\Li_{2,1,1,1}$ and $H_5=\Li_{2,1,1,1,1}$,
+\begin{align}
+ \Im H_4(i)
+ &=-\lambda_5-\frac{\ell\lambda_4}{2}+\frac{\pi\mu_4}{4}
+       +\frac{\pi^2-4\ell^2}{32}\lambda_3\notag\\
+ &\quad+\frac{G\ell(3\pi^2-4\ell^2)}{192}
+       +\frac{35\pi\ell\zeta(3)}{512}
+       +\frac{\pi\ell^2(\ell^2-\pi^2)}{384}
+       -\frac{17\pi^5}{92160},
+       \label{one2:eq:H4}\\
+ \Im H_5(i)
+ &=\lambda_6+\frac{\ell\lambda_5}{2}-\frac{\pi\mu_5}{4}
+       +\frac{4\ell^2-\pi^2}{32}\lambda_4
+       -\frac{\pi\ell\mu_4}{8}\notag\\
+ &\quad+\frac{\ell(4\ell^2-3\pi^2)}{192}\lambda_3
+       +\frac{G(16\ell^4-24\ell^2\pi^2+\pi^4)}{6144}\notag\\
+ &\quad+\frac{35\pi(\pi^2-12\ell^2)\zeta(3)}{24576}
+       +\frac{\pi\ell^3(5\pi^2-3\ell^2)}{5760}.
+       \label{one2:eq:H5}
+\end{align}
+\end{corollary}
+\begin{proof}
+Use $p=4$ and $p=5$ in \eqref{one2:eq:height}, substitute
+$L=-\ell/2+i\pi/4$ and Lemma~\ref{one2:lem:halfpoint}, and take
+imaginary parts.  The accompanying coefficient generator performs
+these polynomial operations over $\mathbb Q$ and also emits every
+position of the $2$ at weights four, five, and six.
+\end{proof}
+
+The real parts can be treated by the same formula.  For example,
+\begin{equation}
+ \Re\Li_{2,1,1}(i)=\mu_4+\frac{\pi\lambda_3}{4}
+ +\frac{\pi G\ell}{8}+\frac{35\ell\zeta(3)}{128}
+ +\frac{\ell^4}{384}-\frac{11\pi^2\ell^2}{768}
+ -\frac{1249\pi^4}{92160}.
+ \label{one2:eq:real211}
+\end{equation}
+The machine-readable tables include both real and imaginary parts,
+so this companion family can be reproduced without manual
+transcription.
+
+\subsection{Exponential series evaluation and independent checks}
+
+At $w=(1+i)/2$ one has $r=|w|=2^{-1/2}<1$.  Truncating only the
+classical series in \eqref{one2:eq:closed} after $M$ terms, while
+treating $L$ and the zeta values as exact, produces an error bounded by
+\begin{equation}
+ \frac{r^{M+1}}{1-r}
+ \sum_{k=a+1}^N\binom{k-1}{a}
+       \frac{|L|^{N-k}}{(N-k)!(M+1)^k}.
+ \label{one2:eq:truncbound}
+\end{equation}
+Indeed the tail of each $\Li_k(w)$ is bounded by
+$r^{M+1}/((M+1)^k(1-r))$, and the triangle inequality gives
+\eqref{one2:eq:truncbound}.  Thus the classical series converge
+geometrically even when the original depth-$N-1$ boundary series is
+only conditionally convergent.  A complete interval implementation
+must additionally enclose $L$ and the zeta values; this displayed
+bound isolates the polylogarithm truncation error.
+
+The accompanying independent numerical script compares the closed
+formula with the logarithmic moment \eqref{one2:eq:moment} for all
+positions of the $2$ at weights $2$ through $8$, at the four endpoints
+\[
+ i,\qquad\frac{-1+i\sqrt3}{2},\qquad 0.3+0.2i,\qquad-0.6.
+\]
+At $100$ working decimal digits, all $112$ comparisons have residual
+below $5.14\cdot10^{-100}$.  Direct nested-series summation at the two
+interior points through weight six gives residuals below
+$1.46\cdot10^{-100}$.  Separate implementations of the three
+manuscript rows and \eqref{one2:eq:H4}--\eqref{one2:eq:H5} agree with
+quadrature to below $3.53\cdot10^{-101}$.  These residuals are
+numerical cross-checks of formulas already proved above, not
+rigorous interval-error certificates or independence evidence.
+
