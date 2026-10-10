@@ -1,0 +1,218 @@
+% Additional proved subsection, to follow moderate_reflection.tex.
+% It uses that section's notation and does not enlarge the half-term theorem.
+\subsection{A small proportional range and a second coefficient transition}
+\label{moderate:sec:proportional}
+
+The preceding circle argument also gives a nonzero proportional range
+for the late coefficients themselves. This strengthens the Gaussian
+formula without changing the stated range of the half-term remainder
+law.
+
+\begin{theorem}[Uniform small proportional saddle]
+\label{moderate:thm:proportional}
+There exists $c_0\in(0,1)$ with the following properties. For
+$0\le c\le c_0$ there is a unique real-analytic continuation
+$\tau_c$ of $\tau_0=\tau$ solving
+\begin{equation}\label{moderate:eq:moving-saddle}
+ D\log\phi(\tau_c)+cD\log a(\tau_c)=1.
+\end{equation}
+Its curvature
+\[
+ V(c)=D^2\log\phi(\tau_c)+cD^2\log a(\tau_c)
+\]
+is positive. Define
+\begin{equation}\label{moderate:eq:rate-prefactor}
+ S(c)=\log\phi(\tau_c)+c\log a(\tau_c)-\log\tau_c,
+ \qquad C(c)=\frac{\tau_c}{\sqrt{2\pi V(c)}}.
+\end{equation}
+Uniformly for integers $0\le m\le c_0 k$, with $c=m/k$,
+\begin{equation}\label{moderate:eq:proportional}
+ A_{k,m}=(-1)^{k+m-1}C(c)k^{-3/2}e^{kS(c)}
+                         \bigl(1+O(k^{-1})\bigr).
+\end{equation}
+There is a uniform expansion to every fixed order in integer powers of
+$k^{-1}$, with real-analytic coefficient functions of $c$.
+The constant $c_0$ is asserted to exist; no numerical lower bound for it
+or maximality assertion is included.
+\end{theorem}
+
+\begin{proof}
+Use the logarithmic radius $x=\log u$ and put
+$f(x)=\log\phi(e^x)-x$, $g(x)=\log a(e^x)$ locally near
+$x_0=\log\tau$. Then $f'(x_0)=0$ and $f''(x_0)=v>0$.
+The analytic implicit-function theorem applied to
+$f'(x)+cg'(x)=0$ supplies $x(c)=\log\tau_c$ near zero.
+After shrinking the interval, $\tau_c$ lies in a fixed compact
+$I\subset(0,1)$ where $a$ is positive, and $V(c)>v/2$.
+Uniqueness here means uniqueness of this local continuation; it does
+not classify other real or complex saddles.
+
+Choose a small fixed angular neighborhood $|t|<\epsilon$ on which
+$a(ue^{it})$ is nonzero for every $u\in I$. Positivity of the
+Taylor coefficients of $\phi$ gives a strict uniform bound
+\[
+ q:=\sup_{u\in I,\ \epsilon\le|t|\le\pi}
+         \frac{|\phi(ue^{it})|}{\phi(u)}<1.
+\]
+Also let
+\[
+ H=\max\left\{1,\sup_{u\in I,\ |t|\le\pi}
+                   \frac{|a(ue^{it})|}{a(u)}\right\}<\infty.
+\]
+Further decrease $c_0$ so that $qH^{c_0}<1$. In the Cauchy integral
+on $|u|=\tau_c$, the outer arc divided by the positive saddle
+amplitude is at most $q^kH^m\le(qH^{c_0})^k$.
+This is the global estimate needed for proportional $m$: no logarithm
+or fractional power of $a$ on the full circle is assumed.
+
+On the small arc the normalized local logarithmic phase is
+\[
+ f(x(c)+it)-f(x(c))
+     +c\bigl(g(x(c)+it)-g(x(c))\bigr).
+\]
+Its linear term vanishes by \eqref{moderate:eq:moving-saddle}; its
+quadratic term is $-V(c)t^2/2$. Analyticity, reality on the real
+radius, and compactness give a uniform Gaussian modulus bound for
+a sufficiently small fixed $\epsilon$. Choose this $\epsilon$ first
+and then make the preceding final reduction of $c_0$, so the outer-arc
+estimate uses the same angular neighborhood. Taylor expansion with $t=z/\sqrt k$ and
+amplitude $e^{it}$ now gives
+\[
+ \int e^{k\{f(x(c)+it)-f(x(c))
+                +c[g(x(c)+it)-g(x(c))]\}}e^{it}\,dt
+ =\sqrt{\frac{2\pi}{kV(c)}}\bigl(1+O(k^{-1})\bigr).
+\]
+The discarded arcs are exponentially small. Odd terms integrate to
+zero, so only integer powers of $k^{-1}$ occur. Analyticity and
+uniform derivative bounds also prove the asserted all-orders
+expansion. Restoring the Cauchy prefactor
+$(-1)^{k+m-1}\tau_c e^{kS(c)}/(2\pi k)$ proves the theorem.
+\end{proof}
+
+\begin{corollary}[Explicit rate expansion and cubic transition]
+\label{moderate:cor:cubic-transition}
+Put
+\begin{align*}
+ d_1&=-\frac{r_1+r_2/2}{v}+\frac{\kappa_3r_1}{2v^2},\\
+ d_3&=\frac{r_2r_1^2}{2v^2}-\frac{\kappa_3r_1^3}{6v^3}.
+\end{align*}
+Then
+\begin{align}\label{moderate:eq:analytic-rate}
+ S(c)&=\Lambda+c\log b-\delta_\Gamma c^2+d_3c^3+O(c^4),\notag\\
+ C(c)&=C\bigl(1+d_1c+O(c^2)\bigr).
+\end{align}
+Consequently the Gaussian-resummed leading expression
+\begin{equation}\label{moderate:eq:extended-Gaussian}
+ A_{k,m}\sim(-1)^{k+m-1}Cb^m\rho^{-k}k^{-3/2}
+                     e^{-\delta_\Gamma m^2/k}
+\end{equation}
+is uniform for $m=o(k^{2/3})$: precisely, it holds uniformly for
+$0\le m\le\varepsilon_k k^{2/3}$ whenever $\varepsilon_k\to0$.
+For each fixed $L<\infty$, uniformly for $0\le m\le Lk^{2/3}$,
+\begin{equation}\label{moderate:eq:cubic-uniform}
+ A_{k,m}=(-1)^{k+m-1}Cb^m\rho^{-k}k^{-3/2}
+  \exp\left(-\frac{\delta_\Gamma m^2}{k}
+               +\frac{d_3m^3}{k^2}\right)
+           \bigl(1+O_L(k^{-1/3})\bigr).
+\end{equation}
+In particular, if $m/k^{2/3}\to\chi\ge0$, the ratio to the right-hand
+leading expression in \eqref{moderate:eq:extended-Gaussian} tends to
+$e^{d_3\chi^3}$. The numerical value is
+$d_3=-0.00545592970200504\ldots$; the exact defining formula is used
+in the theorem.
+\end{corollary}
+
+\begin{proof}
+Differentiating the saddle equation at zero gives
+$x'(0)=-r_1/v$. Since $S(c)=f(x(c))+cg(x(c))$ and
+$f'(x(c))+cg'(x(c))=0$, expansion through degree three gives
+\[
+ S(c)=\Lambda+c\log b-\frac{r_1^2}{2v}c^2+
+       \left(\frac{r_2r_1^2}{2v^2}
+             -\frac{\kappa_3r_1^3}{6v^3}\right)c^3+O(c^4).
+\]
+For the prefactor,
+\[
+ (\log C)'(0)=x'(0)-\frac{\kappa_3x'(0)+r_2}{2v}=d_1.
+\]
+This proves \eqref{moderate:eq:analytic-rate}. Upon setting $c=m/k$,
+Theorem~\ref{moderate:thm:proportional} becomes
+\begin{align*}
+ A_{k,m}={}&(-1)^{k+m-1}Cb^m\rho^{-k}k^{-3/2}
+ e^{-\delta_\Gamma m^2/k}\,
+ \exp\left(\frac{d_3m^3}{k^2}+O\left(\frac{m^4}{k^3}\right)\right)\\
+ &\hspace{4em}\times\left(1+\frac{d_1m}{k}
+                  +O\left(\frac{m^2}{k^2}+\frac1k\right)\right).
+\end{align*}
+For $m=o(k^{2/3})$ all corrections on the last two factors tend to
+one uniformly. For $m\le Lk^{2/3}$, the quartic rate error and the
+first prefactor correction are $O_L(k^{-1/3})$, which gives
+\eqref{moderate:eq:cubic-uniform} and its limiting assertion.
+Finally, when $m=\xi\sqrt k$, the prefactor and cubic rate contribute
+$(d_1\xi+d_3\xi^3)/\sqrt k$. This is exactly $P_1(\xi)$ in
+\eqref{moderate:eq:P1}, independently matching the square-root
+calculation.
+\end{proof}
+
+\begin{proposition}[Strict cubic damping]
+\label{moderate:prop:cubic-negative}
+The exact cubic rate coefficient satisfies $d_3<0$.
+Thus the transition factor $e^{d_3\chi^3}$ is strictly below one
+for every $\chi>0$.
+\end{proposition}
+\begin{proof}
+We already know $\tau>1/2$ and $r_1<0$. The positive log-gamma
+series also gives
+\[
+ D\log\phi(3/5)>
+ \frac12\frac35+\frac{(3/5)^2}{1-3/5}
+ =\frac65>1,
+\]
+so $\tau<3/5$. Put $P=\psi(1+\tau)$ and
+$Q=\psi'(1+\tau)$. The trigamma series and its
+derivatives~\cite{moderate:DLMF} show that $\psi$ is increasing
+and concave and that
+\[
+ Q=\sum_{n\ge0}\frac1{(1+\tau+n)^2}>
+       \frac1{1+\tau}.
+\]
+Using $\gamma>1/2$, $\log2>2/3$, and $\pi^2<10$ in the
+classical values at $3/2$ gives
+\[
+ 0<P<\psi(3/2)+\frac1{10}\psi'(3/2)
+       <\frac16+\frac1{10}=\frac4{15},
+ \qquad
+ \tau Q>\frac{\tau}{1+\tau}>\frac13.
+\]
+In particular $P<\tau Q$.
+
+Write $T=\psi'(1-\tau)>0$. Termwise comparison in the
+polygamma series yields
+$-\psi''(1-\tau)\le2T/(1-\tau)$. At the saddle,
+\[
+ v=1+\tau^2T,\qquad
+ \kappa_3=1+3\tau^2T-\tau^3\psi''(1-\tau).
+\]
+Since $\tau<3/5$, these imply
+$\kappa_3<1+6\tau^2T<6v$, or $\kappa_3/(3v)<2$.
+Finally,
+\[
+ r_1=-\frac{\tau P}{b},\qquad
+ r_2=r_1-r_1^2-\frac{\tau^2Q}{b}.
+\]
+Because $r_1<0$,
+\[
+ r_2-\frac{\kappa_3r_1}{3v}
+ <-r_1-r_1^2-\frac{\tau^2Q}{b}
+ =\frac{\tau}{b}(P-\tau Q)-r_1^2<0.
+\]
+Multiplication by $r_1^2/(2v^2)>0$ proves the assertion.
+\end{proof}
+
+The proportional theorem settles existence of a small positive sector.
+The remaining question is its maximal extent: determine when another
+arc or saddle becomes competitive and how that affects coefficient
+signs. The cut-density estimates in the half-term theorem normalize by
+an exponentially damped coefficient and were proved only for bounded
+$m/\sqrt N$; the new coefficient theorem alone does not enlarge that
+remainder theorem.

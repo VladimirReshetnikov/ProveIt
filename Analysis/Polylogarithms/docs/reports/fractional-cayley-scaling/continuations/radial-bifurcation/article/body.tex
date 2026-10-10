@@ -1,0 +1,1148 @@
+\section{Research target and contribution}
+\label{rbif:sec:overview}
+This article continues the real-order and angular-zero part of
+\emph{Polylogarithms and their Arithmetic Bridges}. The source audit is
+pinned to the ProveIt repository state
+\path{0707425e155707e53d2892e30c72e54d06c00e5f}.
+The two directly relevant sections are
+\path{05-real-local-radius.tex} and \path{05-real-turning.tex}
+\cite{rbif:local,rbif:turning}. The former proves the sign of the first
+radial coefficient and the existence of a unique fractional threshold.
+The latter proves a maximum at inner order $1/2$, a minimum at inner order
+$999/1000$, and the existence of an intervening quartic zero. Its closing
+paragraph explicitly leaves the number of quartic zeros and the
+higher-order radial behavior at those zeros open.
+
+We resolve these finite-coefficient questions globally on $0<b<1$ and
+then use the answer to obtain new analytic consequences for the actual
+polylogarithm, rather than only for a Taylor polynomial. The main advances
+are: a unique quartic transition; its nondegenerate sixth-order behavior;
+a two-turning-point parameter region and a rational witness; an onset
+exponent $1/4$ at the transition; and a constant-curve rigidity theorem.
+The all-order identities in Section~\ref{rbif:sec:identities} are additional
+exact functional and coefficient relations, not conjectured numerical
+period reductions.
+
+The proofs use standard analytic implicit-function arguments, elementary
+one-variable bifurcation analysis, and explicit finite sums of real powers.
+The global quartic sign theorem is computer-assisted. Its numerical inputs
+are rational boxes whose validity is checked independently by integer
+arithmetic. The box generator's floating-point root finder is not part of
+the proof. The available literature on harmonic sums and polylogarithms
+provides a broader algebraic setting \cite{rbif:abl}, while formal Lagrange
+inversion supplies a standard coefficient-extraction tool
+\cite{rbif:gessel}. We do not assert that a targeted literature search
+establishes worldwide novelty.
+
+\section{The analytic zero equation}
+\label{rbif:sec:equation}
+\subsection{Conventions and the local branch}
+For $a\ge0$, $b\ge0$, define
+\begin{equation}
+ H_{n-1}^{(b)}=\sum_{m=1}^{n-1}m^{-b},\qquad
+ p_n(a,b)=\frac{H_{n-1}^{(b)}}{n^a},\qquad
+ F_{a,b}(z)=\sum_{n=2}^{\infty}p_n(a,b)z^n.
+ \label{rbif:eq:def}
+\end{equation}
+For positive orders this is $\rbLi_{a,b}(z,1)$ in the convention
+$n>m$. We work initially in $|z|<1$; no branch-cut convention is needed.
+The value $b=0$ will only be used to close an interval in the
+finite-coefficient argument. Since $0<p_n\le n-1$, the series and all
+its $z$ derivatives converge normally on compact subdisks. Dependence on
+$a,b$ is real analytic: on any compact complex neighborhood of a real
+parameter pair, the coefficients have a uniform polynomial growth bound.
+
+Let $z=\rho e^{i\theta}$, with $0<\rho<1$ and $0<\theta<\pi$, and set
+\begin{equation}
+ t=\rho^2,\qquad y=\frac{\cos\theta}{\rho}.
+ \label{rbif:eq:ty}
+\end{equation}
+The manuscript proves a unique upper-arc angular zero throughout its
+stated real-order domain \cite{rbif:cartesian}. Our main local arguments
+need only the branch constructed below; the explicit witness will also
+have its own certified existence strip.
+
+\begin{theorem}[Exact angular generating equation]
+\label{rbif:thm:generating}
+Put
+\begin{equation}
+ P_k(y)=\sum_{j=0}^{k+1}(-1)^j\binom{k+1}{j}
+             (2y)^{k+1-j}p_{k+2+j}\qquad(k\ge0).
+ \label{rbif:eq:Pk}
+\end{equation}
+Then, near $t=0$,
+\begin{equation}
+ \Psi(t,y):=\sum_{k\ge0}P_k(y)t^k
+ =\frac{\rbIm F_{a,b}(\rho e^{i\theta})}{\rho^3\sin\theta}
+ \quad\text{when }t=\rho^2,\quad\cos\theta=\rho y.
+ \label{rbif:eq:Psi}
+\end{equation}
+There is a unique real-analytic solution $y=\Phi(a,b,t)$ near $t=0$,
+with
+\begin{equation}
+ \Phi(a,b,0)=\mu(a,b):=\frac{p_3}{2p_2}.
+ \label{rbif:eq:mu}
+\end{equation}
+Consequently $\eta_{a,b}(\rho)=\Phi(a,b,\rho^2)$ is even and real
+analytic near zero.
+\end{theorem}
+\begin{proof}
+The identity
+$\sin(n\theta)/\sin\theta=U_{n-1}(\cos\theta)$ and the elementary
+expansion
+\[
+ U_{n-1}(x)=\sum_{j=0}^{\lfloor(n-1)/2\rfloor}
+          (-1)^j\binom{n-1-j}{j}(2x)^{n-1-2j}
+\]
+give the right side of \eqref{rbif:eq:Psi}. A term with indices $n,j$
+has radial power $\rho^{2n-4-2j}=t^{n-2-j}$. Regrouping at
+$k=n-2-j$ gives \eqref{rbif:eq:Pk}. The only apparent negative power,
+from $n=2$, cancels because $U_1(\rho y)=2\rho y$.
+For $|y|\le M$,
+\begin{equation}
+ |P_k(y)|\le (2k+3)(1+2M)^{k+1}.
+ \label{rbif:eq:majorant}
+\end{equation}
+Thus regrouping is justified when $|t|(1+2M)<1$. At $t=0$ the
+equation is $2p_2y-p_3=0$, and its $y$ derivative is $2p_2>0$.
+The analytic implicit-function theorem proves all remaining claims.
+\end{proof}
+
+The same equation can be derived without trigonometry. If $z,w$ are
+the roots of $X^2-2tyX+t=0$, then
+\[
+ \Psi(t,y)=\frac{F(z)-F(w)}{t(z-w)}.
+\]
+This is an identity of symmetric power series, with the removable factors
+understood at the origin. For the actual angular arc, $w=\overline z$.
+This formulation makes the algebraic symmetry in later sections natural.
+
+\subsection{A usable tail bound}
+Let $L=1+2M$, $q=L|t|<1$, and truncate after $P_Nt^N$. Summing
+\eqref{rbif:eq:majorant} gives
+\begin{equation}
+ \left|\Psi(t,y)-\sum_{k=0}^NP_k(y)t^k\right|
+ \le Lq^{N+1}\left(\frac{2N+5}{1-q}
+                         +\frac{2q}{(1-q)^2}\right).
+ \label{rbif:eq:tail}
+\end{equation}
+This bound does not exploit cancellation and therefore remains valid for
+all nonnegative orders. With $n=N+1$, a bound for the $t$ derivative of
+the tail is
+\begin{equation}
+ L^2q^{n-1}\left\{
+ \frac{2n^2+3n}{1-q}+\frac{(4n+3)q}{(1-q)^2}
+                  +\frac{2q(1+q)}{(1-q)^3}\right\}.
+ \label{rbif:eq:tailt}
+\end{equation}
+Both inequalities follow by summing a geometric series and its first
+two derivatives. For real $1/4\le y\le3/4$, the complex $y$ disk of
+radius $1/4$ lies in $|y|\le1$. Cauchy's estimate therefore bounds the
+$y$ derivative of the tail by four times \eqref{rbif:eq:tail} with $M=1$.
+These explicit estimates are used in the rational witness, so its
+conclusions concern the infinite function.
+
+\section{All-order identities and M\"obius transport}
+\label{rbif:sec:identities}
+\subsection{A coefficient-extraction identity}
+Write
+\begin{equation}
+ \Phi(a,b,t)=\mu+\sum_{N\ge1}c_Nt^N.
+ \label{rbif:eq:cN}
+\end{equation}
+The first terms $c_1,c_2,c_3$ will be denoted $K,Q,R$.
+
+\begin{proposition}[All-order reversion formula]
+\label{rbif:prop:reversion}
+For every $N\ge1$,
+\begin{equation}
+ c_N=\sum_{m=1}^N\frac{(-1)^m}{m(2p_2)^m}
+ [u^{m-1}]\!
+ \sum_{\substack{k_1+\cdots+k_m=N\\k_1,\ldots,k_m\ge1}}
+       \prod_{r=1}^m P_{k_r}(\mu+u).
+ \label{rbif:eq:reversion}
+\end{equation}
+In particular, $c_N$ depends only on $p_2,\ldots,p_{2N+3}$.
+\end{proposition}
+\begin{proof}
+Set $v=\Phi-\mu$. The equation is
+$v=-(2p_2)^{-1}\sum_{k\ge1}P_k(\mu+v)t^k$.
+Introduce an auxiliary multiplier $s$ on the right side and apply the
+formal identity
+$[s^m]v=m^{-1}[u^{m-1}]H(t,u)^m$ to $v=sH(t,v)$.
+For completeness, this identity follows by substituting
+$s=u/H(t,u)$ in formal coefficient extraction, or by differentiating
+powers and comparing their residues; it is the standard Lagrange
+inversion formula \cite{rbif:gessel}. Each factor of $H$ is divisible
+by $t$, so after extracting $t^N$ only $m\le N$ survive. Setting $s=1$
+is thus legitimate in the $t$-adic topology, and gives
+\eqref{rbif:eq:reversion}. Formula \eqref{rbif:eq:Pk} gives the stated
+finite dependence. Analytic convergence follows independently from
+Theorem~\ref{rbif:thm:generating}.
+\end{proof}
+
+\subsection{The sixth-order radial coefficient}
+Let $A(y)=P_1(y)$, $B(y)=P_2(y)$, $C(y)=P_3(y)$. Explicitly,
+\begin{align}
+ A(y)&=4p_3y^2-4p_4y+p_5,\label{rbif:eq:ABC1}\\
+ B(y)&=8p_4y^3-12p_5y^2+6p_6y-p_7,\\
+ C(y)&=16p_5y^4-32p_6y^3+24p_7y^2-8p_8y+p_9.
+ \label{rbif:eq:ABC3}
+\end{align}
+Substitution into $\Psi(t,\Phi(t))=0$ gives the exact identities
+\begin{align}
+ K&=-\frac{A(\mu)}{2p_2},\label{rbif:eq:K}\\
+ Q&=-\frac{A'(\mu)K+B(\mu)}{2p_2},\label{rbif:eq:Q}\\
+ R&=-\frac{A'(\mu)Q+4p_3K^2+B'(\mu)K+C(\mu)}{2p_2}.
+ \label{rbif:eq:R}
+\end{align}
+The formulas for $K,Q$ agree with the audited manuscript. The coefficient
+$R$ is the next obstruction needed at its unresolved transition.
+At a simultaneous zero of $K,Q$ it simplifies to
+\begin{equation}
+ R=-\frac{C(\mu)}{2p_2}.
+ \label{rbif:eq:Rdeg}
+\end{equation}
+These expressions are exact in arbitrary real orders; integer relations
+or numerical fitting are not involved.
+
+For efficient verification let $r_n=p_n/p_2=(2/n)^aH_{n-1}^{(b)}$ and
+$s=r_3$. Then $\mu=s/2$ and
+\begin{align}
+ K&=\frac{2sr_4-s^3-r_5}{2},\label{rbif:eq:ratioK}\\
+ Q&=-2(s^2-r_4)K
+       -\frac{r_4s^3-3r_5s^2+3r_6s-r_7}{2}.\label{rbif:eq:ratioQ}
+\end{align}
+The corresponding ratio formula for $R$ is
+\begin{align}
+ R={}&-2(s^2-r_4)Q-2sK^2
+       -3(r_4s^2-2r_5s+r_6)K\notag\\
+ &-\frac{r_5s^4-4r_6s^3+6r_7s^2-4r_8s+r_9}{2}.
+ \label{rbif:eq:ratioR}
+\end{align}
+Avoiding repeated interval differentiation of $p_2^{-1}$ substantially
+reduces enclosure widths.
+
+\subsection{An exact M\"obius identity}
+For a real constant $c$, define the involution and the local coordinate
+\begin{equation}
+ T_c(z)=-\frac{z}{1-2cz},\qquad
+ w=\frac{z}{1-cz},\qquad z=\frac{w}{1+cw}.
+ \label{rbif:eq:mobius}
+\end{equation}
+The involution sends $w$ to $-w$. Write
+$G_c(w)=F(w/(1+cw))=\sum_{n\ge2}d_n(c)w^n$.
+
+\begin{theorem}[Transport of the angular coefficients]
+\label{rbif:thm:transport}
+Let $F(z)=\sum_{n\ge2}p_nz^n$ be holomorphic near zero, with $P_k$ defined by
+\eqref{rbif:eq:Pk}, the following are identities of convergent local
+power series:
+\begin{align}
+ d_{2j+3}(c)
+   &=\sum_{k=0}^j(-1)^{k+1}\binom{j+1}{k+1}
+                      c^{2(j-k)}P_k(c),\label{rbif:eq:transport}\\
+ G_c(w)-G_c(-w)
+   &=-\frac{2w^3}{(1-c^2w^2)^2}
+      \Psi\!\left(-\frac{w^2}{1-c^2w^2},c\right).
+ \label{rbif:eq:mobiusPsi}
+\end{align}
+\end{theorem}
+\begin{proof}
+Take $w=iv$ for small real $v$. Then
+$z=(cv^2+iv)/(1+c^2v^2)$, so
+$t=|z|^2=v^2/(1+c^2v^2)$ and $\rbRe z=c|z|^2$.
+Equation \eqref{rbif:eq:Psi} yields
+\[
+ \rbIm G_c(iv)=\frac{v^3}{(1+c^2v^2)^2}
+        \Psi\!\left(\frac{v^2}{1+c^2v^2},c\right).
+\]
+For real coefficients, twice this imaginary part equals
+$(G_c(iv)-G_c(-iv))/i$. Replacing $iv$ by $w$ gives
+\eqref{rbif:eq:mobiusPsi}, first on an accumulating set and then as a
+holomorphic identity. Both sides are polynomial-linear in each $p_n$
+at any fixed degree, so the same identity holds for complex coefficients.
+Expanding $(1+c^2v^2)^{-k-2}$ and comparing coefficients gives
+\eqref{rbif:eq:transport}. Alternatively the latter follows directly
+from
+$d_n(c)=\sum_{m=2}^n\binom{n-1}{m-1}(-c)^{n-m}p_m$.
+\end{proof}
+
+\begin{corollary}[Structure of constant normalized-radius curves]
+\label{rbif:cor:flatstructure}
+Suppose $F$ has real coefficients, $p_2>0$, and its local angular branch
+has $\eta(\rho)\equiv c$. This happens if and only if
+\begin{equation}
+ F(T_c(z))=F(z),
+ \quad\text{equivalently}\quad
+ F(z)=\mathcal H\!\left(\frac{z^2}{(1-cz)^2}\right)
+ \label{rbif:eq:flatstructure}
+\end{equation}
+for a holomorphic germ $\mathcal H$ with real coefficients and
+$\mathcal H(0)=0$. Necessarily $c=p_3/(2p_2)$.
+If $\mathcal H(u)=\sum_{j\ge1}h_ju^j$, its coefficient identities are
+\begin{equation}
+ p_n=\sum_{j=1}^{\lfloor n/2\rfloor}
+           h_j\binom{n-1}{2j-1}c^{n-2j}\qquad(n\ge2).
+ \label{rbif:eq:flatcoeff}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Constancy means $\Psi(t,c)=0$ identically. The invertible substitution in
+\eqref{rbif:eq:mobiusPsi} makes this equivalent to $G_c$ being even.
+An even holomorphic germ has the form $\mathcal H(w^2)$, and the converse
+is immediate. The coefficient of $z^3$ determines $c$, and expansion of
+$(1-cz)^{-2j}$ proves \eqref{rbif:eq:flatcoeff}.
+\end{proof}
+
+\section{The quadratic threshold and its scope}
+\label{rbif:sec:quadratic}
+We recall the manuscript's quadratic-threshold result, including the
+inequalities needed later for rigidity. A compact proof is included to
+make the dependency explicit; this result is credited to the audited
+manuscript, not presented as a new contribution \cite{rbif:local}.
+
+\begin{theorem}[Established quadratic classification]
+\label{rbif:thm:quadratic}
+For $a\ge1$, $b>0$:
+\begin{enumerate}[label=(\roman*)]
+\item $K(a,b)<0$ for every $a\ge2$;
+\item $K(1,b)$ has the sign of $1-b$;
+\item if $b\ge1$ and $a>1$, then $K(a,b)<0$;
+\item for each $0<b<1$ there is exactly one $A(b)\in(1,2)$ with
+$K(A(b),b)=0$. Below this threshold $K>0$, and above it $K<0$.
+\end{enumerate}
+The threshold extends analytically to a neighborhood of each endpoint
+of $[0,1]$, with $A(1)=1$, and $K_a(A(b),b)<0$.
+\end{theorem}
+\begin{proof}
+Put $x=2^{-b}$, $y=3^{-b}$, $U=1+x$, $V=1+x+y$,
+$W=1+x+y+x^2$. Direct substitution in \eqref{rbif:eq:K} gives
+\begin{equation}
+ K=-\tfrac12(2/5)^a G_a,\qquad
+ G_a=W+U^3(20/27)^a-2UV(5/6)^a.
+ \label{rbif:eq:Ga}
+\end{equation}
+Here the subscript in $G_a$ is an order parameter, not a derivative.
+Since $x^2\le y$ and $0\le x\le1$,
+$U^2/V\le4/3$. The rational logarithm bounds
+\[
+ \log(27/20)<\frac{7273}{24000},\qquad
+ \log(6/5)>\frac9{50}
+\]
+therefore imply
+\[
+ \frac{U^2}{2V}\frac{\log(27/20)}{\log(6/5)}
+ <\frac{7273}{6480}<\frac98\le(9/8)^a.
+\]
+This is exactly the inequality $\partial_aG_a>0$ for $a\ge1$.
+The displayed logarithm estimates follow from the alternating expansion
+of $\log(1+u)$ with its next-term bound.
+
+For $a=2$, use $y\le x^{3/2}$ and set $x=t^2$. The coefficient of $y$
+in $G_2$ is negative, and substitution gives the lower bound
+\[
+ G_2\ge\frac{800t^6-2025t^5+1833t^4-567t^3-192t^2+233}{1458}.
+\]
+Its degree-six Bernstein coefficients on $[0,1]$ are
+\[
+ \left(\frac{233}{1458},\frac{233}{1458},\frac{367}{2430},
+ \frac{665}{5832},\frac{55}{486},\frac{95}{1458},\frac{41}{729}\right).
+\]
+They are all positive. Thus $G_2>0$, and monotonicity gives assertion (i).
+
+At $a=1$,
+\begin{equation}
+ 27G_1=20x^3+42x^2-3x+2-(45x+18)y.
+ \label{rbif:eq:G1}
+\end{equation}
+For $b>1$, set $t=\sqrt{2x}<1$. The bound $y\le t^3/3$ gives
+$G_1\ge(1-t)P_5(t)$, where
+\[
+ P_5(t)=\frac{-5t^5+10t^4-11t^3+t^2+4t+4}{54}.
+\]
+Its Bernstein coefficients are
+$2/27,4/45,19/180,14/135,1/10,1/18$, so $G_1>0$.
+For $0<b<1$, write $p=\log_2 3$. Since $11/7<p<2$, Taylor's
+integral formula at $x=1/2$ gives
+\[
+ x^p\ge\frac13+\frac{22}{21}(x-1/2)+\frac{22}{49}(x-1/2)^2.
+\]
+Indeed $p(p-1)x^{p-2}>44/49$ on $1/2<x<1$.
+Using the negative coefficient of $y$ in \eqref{rbif:eq:G1} yields
+\[
+ G_1\le-\frac{(2x-1)(10x^2-337x+334)}{2646}<0.
+\]
+The quadratic in parentheses decreases on $[1/2,1]$ and equals $7$ at
+one. Direct substitution gives $G_1=0$ at $b=1$.
+These facts prove (ii)--(iv), using $\partial_aG_a>0$.
+At a threshold, \eqref{rbif:eq:Ga} gives $K_a<0$.
+At $b=0$, $G_1=-2/27<0$ and $G_2>0$, so the same root persists;
+at $b=1$ the root is $a=1$. The implicit-function theorem proves the
+claimed endpoint extensions.
+\end{proof}
+
+\section{Exactly one quartic transition}
+\label{rbif:sec:quartic}
+Define on the closed interval $[0,1]$
+\begin{equation}
+ q(b)=Q(A(b),b).
+ \label{rbif:eq:qdef}
+\end{equation}
+The endpoint extensions in Theorem~\ref{rbif:thm:quadratic} make this a
+real-analytic function near every point of the interval.
+
+\begin{theorem}[Global quartic sign classification]
+\label{rbif:thm:quartic}
+There is exactly one $\rbpb\in(0,1)$ with $q(\rbpb)=0$.
+Moreover,
+\begin{equation}
+ q(b)<0\quad(0<b<\rbpb),\qquad
+ q(b)>0\quad(\rbpb<b<1),\qquad q'(\rbpb)>0.
+ \label{rbif:eq:qsigns}
+\end{equation}
+The zero and its corresponding outer order $\rbpa=A(\rbpb)$ satisfy
+\begin{equation}
+ \begin{gathered}
+ 0.9974937898734204210746055930669544902305<\rbpb,\\
+ \rbpb<0.9974937898734204210746055930669544902306,
+ \end{gathered}\label{rbif:eq:bbox}
+\end{equation}
+\begin{equation}
+ \begin{gathered}
+ 1.0014301809614951381293517293887015374543<\rbpa,\\
+ \rbpa<1.0014301809614951381293517293887015374544.
+ \end{gathered}\label{rbif:eq:abox}
+\end{equation}
+The inequalities are certified enclosures, not rounded root estimates.
+\end{theorem}
+
+The finite certificate underlying the global part of the proof is the
+following stronger pair of derivative inequalities.
+\begin{lemma}[Certified derivative separation]
+\label{rbif:lem:separation}
+The exact replay proves
+\begin{equation}
+ q'(b)>10^{-6}\quad(0\le b\le9/10),\qquad
+ q''(b)<-\frac{29}{10^6}\quad(9/10\le b\le1).
+ \label{rbif:eq:separation}
+\end{equation}
+It also proves $q(9/10)<0<q(999/1000)$, while $q(1)=0$ exactly.
+\end{lemma}
+\begin{proof}[Proof and finite verification specification]
+The computational claim is reduced to finitely many explicit rational
+inequalities as follows. Partition $[0,9/10]$ into $2048$ equal cells
+and $[9/10,1]$ into $256$ equal cells. At every endpoint and midpoint,
+provide a rational interval $[a_-,a_+]$ for $A(b)$ and verify
+$K(a_-,b)>0>K(a_+,b)$. There are $4609$ distinct such intervals.
+For a cell $[u,v]$ form the rectangle
+\[
+ \mathcal B=[a_-(v),a_+(u)]\times[u,v].
+\]
+The replay verifies $K_a<0$ and $K_b<0$ throughout this rectangle.
+The signs at the two opposite corners, together with $K_b<0$, are
+therefore barriers for the entire graph of $A$ on the cell. No unverified
+interpolation of the graph is used.
+
+All partial derivatives through degree three are computed by automatic
+differentiation of finite exponential sums, using exact outward dyadic
+intervals. It is convenient to replace $Q$ by
+\begin{equation}
+ Q_0=-\tfrac12(r_4s^3-3r_5s^2+3r_6s-r_7),\qquad s=r_3.
+ \label{rbif:eq:Q0}
+\end{equation}
+Since $Q=Q_0-2(s^2-r_4)K$, the restrictions of $Q$ and $Q_0$ to the
+threshold, and all their total $b$ derivatives there, agree exactly.
+Implicit differentiation gives
+\begin{align}
+ A'&=-K_b/K_a,\notag\\
+ A''&=-(K_{bb}+2K_{ab}A'+K_{aa}(A')^2)/K_a,\label{rbif:eq:implicitdiff}\\
+ q'&=(Q_0)_b+(Q_0)_aA',\notag\\
+ q''&=(Q_0)_{bb}+2(Q_0)_{ab}A'+(Q_0)_{aa}(A')^2+(Q_0)_aA''.
+ \notag
+\end{align}
+A further differentiation gives $q'''$, with its explicit formula in
+Appendix~\ref{rbif:app:verification}.
+
+Let $m=(u+v)/2$ and $h=(v-u)/2$. On a first-part cell use the rigorous
+centered bound
+\[
+ q'(b)\ge \inf q'(m)-h\sup_{[u,v]}|q''|.
+\]
+On a second-part cell use
+\[
+ q''(b)\le \sup q''(m)+h\sup_{[u,v]}|q'''|.
+\]
+The first lower bounds all exceed $10^{-6}$; the negatives of the second
+upper bounds all exceed $29/10^6$. The exact minimum margins are recorded
+as integer numerators over $2^{256}$ in \path{global_verified.json}.
+Their decimal diagnostics are $1.1282650208766\cdot10^{-6}$ and
+$2.9857032148394\cdot10^{-5}$, respectively. Only the integer comparisons
+are used in the proof.
+
+For the endpoint signs the same arithmetic gives
+$q(9/10)\approx-1.86117461963559\cdot10^{-7}$ and
+$2.92779196\cdot10^{-11}<q(999/1000)<2.92779197\cdot10^{-11}$.
+At $(a,b)=(1,1)$, direct rational substitution in the finite coefficient
+formulas gives $K=Q=0$, hence $q(1)=0$.
+The programs \path{verify_global.py} and \path{verify_local.py} check
+all the stated inequalities. Elementary-function tails, arithmetic rules,
+input boxes, full-cover checks, and executable replay instructions are
+included in the package and described in
+Appendix~\ref{rbif:app:verification}. This is a finite exact proof
+certificate, not a sampling argument.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{rbif:thm:quartic}]
+By Lemma~\ref{rbif:lem:separation}, $q$ is increasing on $[0,9/10]$
+and is negative at its right endpoint. Thus it has no zero there.
+On $[9/10,1]$ it is strictly concave. The opposite signs at $9/10$
+and $999/1000$ give an interior zero, and $q(1)=0$ gives a second zero
+at the endpoint. A strictly concave function cannot have three distinct
+zeros: at the middle one it would lie strictly above the chord between
+the outer two. Thus there is exactly one interior zero. Strict concavity
+also makes $q$ positive between that zero and one, and its derivative at
+the interior zero is positive. The preceding signs determine the negative
+side. The exact localization is proved independently in the next section;
+its unique local zero must be this globally unique zero.
+\end{proof}
+
+\begin{corollary}[Complete quartic signs at the quadratic threshold]
+\label{rbif:cor:localfamily}
+For every fixed $0<b<\rbpb$, decreasing $a$ slightly below $A(b)$
+creates a unique small-radius strict maximum. For every fixed
+$\rbpb<b<1$, increasing $a$ slightly above $A(b)$ creates a unique
+small-radius strict minimum. The assertions concern a sufficiently small
+radius interval, allowed to depend on $b$.
+\end{corollary}
+\begin{proof}
+With $U=\partial_t\Phi$, at $(A(b),b,0)$ one has
+$U=0$, $U_t=2q(b)\ne0$, and $U_a=K_a<0$.
+The analytic implicit-function theorem produces one zero of $U$ in $t$.
+Its side, derivative sign, and extremum type follow from the displayed
+signs. Since $\partial_\rho\eta=2\rho U$, the same sign changes hold
+in the physical radius. This generalizes the two separately certified
+inner orders in the earlier manuscript.
+\end{proof}
+
+\section{The degenerate point is nondegenerate at the next order}
+\label{rbif:sec:point}
+Set
+\[
+ \rbrr=R(\rbpa,\rbpb),\qquad \rbmu=\mu(\rbpa,\rbpb),\qquad
+ J_\dagger=\det\frac{\partial(K,Q)}{\partial(a,b)}(\rbpa,\rbpb).
+\]
+\begin{theorem}[Exact nondegeneracy certificate]
+\label{rbif:thm:nondeg}
+At the point in \eqref{rbif:eq:bbox}--\eqref{rbif:eq:abox},
+\begin{align}
+ -3.368744536\cdot10^{-11}&<\rbrr<-3.368744535\cdot10^{-11},
+ \label{rbif:eq:Rbox}\\
+ -8.315139844\cdot10^{-10}&<J_\dagger<-8.315139843\cdot10^{-10},
+ \label{rbif:eq:Jbox}\\
+ 4.870284716\cdot10^{-8}&<q'(\rbpb)<4.870284717\cdot10^{-8},
+ \label{rbif:eq:qpbox}\\
+ -0.017073210967&<K_a(\rbpa,\rbpb)<-0.017073210965.
+ \label{rbif:eq:Kabox}
+\end{align}
+In particular, $(a,b)\mapsto(K,Q)$ is a real-analytic local coordinate
+system at this point. The radial branch satisfies
+\begin{equation}
+ \eta_{\rbpa,\rbpb}(\rho)=\rbmu+\rbrr\rho^6+O(\rho^8),
+ \label{rbif:eq:degexp}
+\end{equation}
+and is strictly decreasing for sufficiently small positive $\rho$.
+\end{theorem}
+\begin{proof}
+Here is the existence certificate, not just a residual estimate.
+Let $X$ be the rational rectangle in
+\eqref{rbif:eq:bbox}--\eqref{rbif:eq:abox}, in $(a,b)$ order, and
+let $c$ be its exact rational midpoint. Put $f=(K,Q)$.
+Evaluate $Df(c)$ by intervals and take the exact rational inverse $C$
+of its entrywise midpoint. Interval evaluation on the whole rectangle
+then gives
+\[
+ H=I-C\,Df(X),\qquad
+ f\text{-iteration image }\mathcal N
+ =c-Cf(c)+H(X-c).
+\]
+The verifier proves $\mathcal N\subset\operatorname{int}X$ and
+\begin{equation}
+ \|H\|_\infty<3\cdot10^{-32}<1.
+ \label{rbif:eq:contraction}
+\end{equation}
+Indeed its diagnostic upper bound is
+$2.6668469993303\cdot10^{-32}$; the actual comparison is rational.
+For $T(x)=x-Cf(x)$, the integral mean-value formula shows that
+$T(X)\subseteq\mathcal N$. The same derivative enclosure makes $T$
+a contraction on $X$. Iteration is a Cauchy sequence in the complete
+closed rectangle and converges to a unique fixed point. Since $C$ is
+invertible, this fixed point has $K=Q=0$.
+
+The exact inverse matrix, image intervals, and derivative norm are in
+\path{local_verified.json}. Direct interval substitution into
+\eqref{rbif:eq:ratioR} and the derivatives of
+\eqref{rbif:eq:ratioK}--\eqref{rbif:eq:ratioQ} proves
+\eqref{rbif:eq:Rbox}--\eqref{rbif:eq:Kabox}. The identity
+\[
+ q'(b)=\frac{K_aQ_b-K_bQ_a}{K_a}\bigg|_{(A(b),b)}
+\]
+provides an additional consistent route to the sign in
+\eqref{rbif:eq:qpbox}. Analytic inversion follows from
+$J_\dagger\ne0$. Finally, \eqref{rbif:eq:degexp} follows from
+$K=Q=0$ and \eqref{rbif:eq:R}; its derivative is
+$6\rbrr\rho^5+O(\rho^7)<0$ for small positive radius.
+\end{proof}
+
+\begin{remark}[Why a high-precision residual was not enough]
+The determinant has magnitude about $8.3\cdot10^{-10}$, so the two
+coefficient equations are nearly tangent in the original parameters.
+The sixth-order coefficient is smaller still. A small residual alone
+would not establish either existence or the required signs. The
+contraction and full-rectangle derivative bounds address both issues.
+\end{remark}
+
+\section{The full local two-parameter bifurcation}
+\label{rbif:sec:bifurcation}
+By Theorem~\ref{rbif:thm:nondeg}, use the exact coefficient coordinates
+\begin{equation}
+ \kappa=K(a,b),\qquad \lambda=Q(a,b)
+ \label{rbif:eq:coords}
+\end{equation}
+near $(\rbpa,\rbpb)$. Write $\Phi(\kappa,\lambda,t)$ for the analytic
+radial branch in these coordinates and put $U=\partial_t\Phi$.
+The coefficient definitions give
+\begin{equation}
+ U(\kappa,\lambda,t)=\kappa+2\lambda t
+        +3R(\kappa,\lambda)t^2+O(t^3),\qquad
+ R(0,0)=\rbrr<0.
+ \label{rbif:eq:U}
+\end{equation}
+In particular $U(\kappa,\lambda,0)=\kappa$ and
+$U_t(\kappa,\lambda,0)=2\lambda$ exactly.
+
+\begin{theorem}[Complete local turning-point classification]
+\label{rbif:thm:unfolding}
+There exist $t_0>0$, a parameter neighborhood $\mathcal V$ of $(0,0)$,
+and a real-analytic function $\varphi$ near zero such that
+\begin{equation}
+ \varphi(0)=\varphi'(0)=0,\qquad
+ \varphi(\lambda)=\frac{\lambda^2}{3\rbrr}+O(\lambda^3).
+ \label{rbif:eq:fold}
+\end{equation}
+Within $\mathcal V$, the following list gives every critical point of
+$\eta(\rho)$ in $0<\rho<\sqrt{t_0}$.
+\begin{center}
+\begin{tabular}{@{}p{0.45\textwidth}p{0.46\textwidth}@{}}
+\toprule
+Parameter condition & Critical-point behavior\\
+\midrule
+$\lambda\le0$, $\kappa\le0$ & No critical point.\\[1mm]
+$\kappa>0$ (either sign of $\lambda$) & Exactly one, a strict maximum.\\[1mm]
+$\lambda>0$, $\kappa<\varphi(\lambda)$ & No critical point.\\[1mm]
+$\lambda>0$, $\kappa=\varphi(\lambda)$ & One stationary point, not an extremum.\\[1mm]
+$\lambda>0$, $\varphi(\lambda)<\kappa<0$
+ & Exactly two: a strict minimum, then a strict maximum.\\[1mm]
+$\lambda>0$, $\kappa=0$ & Exactly one positive-radius critical point, a strict maximum.\\
+\bottomrule
+\end{tabular}
+\end{center}
+On the fold $\kappa=\varphi(\lambda)$, the stationary point has
+$\eta'=\eta''=0$ and $\eta'''<0$. The two-critical-point region is open
+and nonempty in the original $(a,b)$ plane.
+\end{theorem}
+\begin{proof}
+Since $U_{tt}(0,0,0)=6\rbrr<0$, choose a sufficiently small closed
+parameter and $t$ neighborhood on which $U_{tt}<0$ and $U_\kappa>0$.
+Choose $t_0>0$ inside it. At the base parameters,
+$U(t_0)<0$ and $U_t(t_0)<0$; by shrinking the parameter neighborhood
+these inequalities hold uniformly. Thus $U$ is strictly concave as a
+function of $t$, with a negative value at the upper boundary.
+
+If $\lambda\le0$, then $U_t(0)=2\lambda\le0$, so $U$ is strictly
+decreasing for positive $t$. Its initial value $\kappa$ immediately
+gives the first two cases.
+If $\lambda>0$, then $U_t(0)>0>U_t(t_0)$, so strict concavity gives
+one interior maximum of $U$, at a point $T(\kappa,\lambda)$.
+The implicit-function theorem applied to $U_t=0$ constructs $T$
+analytically near the origin, even if its analytic extension is negative
+when $\lambda<0$. Differentiation at the origin gives
+\[
+ T_\kappa(0,0)=0,\qquad T_\lambda(0,0)=-\frac1{3\rbrr}.
+\]
+Set $H(\kappa,\lambda)=U(\kappa,\lambda,T(\kappa,\lambda))$.
+Then $H_\kappa(0,0)=1$, so $H=0$ is an analytic curve
+$\kappa=\varphi(\lambda)$. Along this curve,
+\[
+ T=-\frac{\lambda}{3\rbrr}+O(\lambda^2),\qquad
+ 0=H=\varphi(\lambda)-\frac{\lambda^2}{3\rbrr}+O(\lambda^3).
+\]
+This proves \eqref{rbif:eq:fold}; in particular $\varphi(\lambda)<0$
+for small nonzero $\lambda$.
+Since $H_\kappa>0$ in a smaller neighborhood, the sign of the maximum
+of $U$ is the sign of $\kappa-\varphi(\lambda)$. Together with
+$U(0)=\kappa$ and $U(t_0)<0$, this gives every remaining row of the table.
+Strict concavity precludes any additional root in this interval.
+
+At a simple root, $\eta_{\rho\rho}=4tU_t$. Thus the upward crossing
+is a strict minimum and the downward crossing is a strict maximum.
+At a double root of $U$, one has $U=U_t=0$ and
+\[
+ \eta_{\rho\rho\rho}=8\rho^3U_{tt}<0.
+\]
+There is no change of sign in $\eta'$ there, hence no local extremum.
+Finally, analytic inversion of \eqref{rbif:eq:coords} maps the open
+nonempty wedge $\varphi(\lambda)<\kappa<0$, $\lambda>0$, to an open
+nonempty region in the original parameter plane.
+\end{proof}
+
+\begin{remark}[Terminology and scope]
+The discriminant curve here is a fold tangent to the boundary
+$\kappa=0$ at $\lambda=0$. The theorem does not identify it with a
+Whitney cusp. It classifies every critical point in a fixed small radius
+interval for nearby parameters, not every critical point on the whole
+unit disk. In particular it does not refute the manuscript's separate
+integer-outer-order conjecture for $a\ge2$.
+\end{remark}
+
+\subsection{An explicit asymptotic two-turning-point family}
+\begin{corollary}[Separated small-radius extrema]
+\label{rbif:cor:twofamily}
+There is an analytic order pair $(a(\varepsilon),b(\varepsilon))$ for
+small $\varepsilon$ with
+\begin{equation}
+ K=6\rbrr\varepsilon^2,\qquad
+ Q=-\frac92\rbrr\varepsilon.
+ \label{rbif:eq:epsfamily}
+\end{equation}
+For every sufficiently small $\varepsilon>0$, its normalized-radius
+curve has exactly two critical points in the local interval of
+Theorem~\ref{rbif:thm:unfolding}, with
+\begin{equation}
+ \rho_{\min}=\sqrt\varepsilon\,(1+O(\varepsilon)),\qquad
+ \rho_{\max}=\sqrt{2\varepsilon}\,(1+O(\varepsilon)).
+ \label{rbif:eq:epsroots}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Analytic inversion of $(a,b)\mapsto(K,Q)$ defines the family.
+Substitute $t=\varepsilon s$ into \eqref{rbif:eq:U}. Uniformly for
+bounded $s$,
+\[
+ \varepsilon^{-2}U
+ =3\rbrr(s-1)(s-2)+O(\varepsilon).
+\]
+At each of $s=1,2$ the limiting root is simple. The implicit-function
+theorem gives roots $s=1+O(\varepsilon)$ and
+$s=2+O(\varepsilon)$, with the stated types. The complete local
+classification excludes additional local critical points.
+\end{proof}
+
+\subsection{The fourth-root onset law}
+\begin{corollary}[Fixed-inner-order onset at the transition]
+\label{rbif:cor:fourthroot}
+Fix $b=\rbpb$ and let $a\uparrow\rbpa$ from below. There is exactly
+one small-radius critical point, a strict maximum, and
+\begin{equation}
+ \rho_{\max}(a,\rbpb)
+ =\left(\frac{K_a(\rbpa,\rbpb)}{3\rbrr}\right)^{1/4}
+       (\rbpa-a)^{1/4}
+       +O\bigl((\rbpa-a)^{3/4}\bigr).
+ \label{rbif:eq:fourthroot}
+\end{equation}
+For $a>\rbpa$ sufficiently close there is no small-radius critical
+point. The ratio inside the fourth root is positive.
+\end{corollary}
+\begin{proof}
+Let $h=\rbpa-a>0$. Then
+$\kappa=-K_a(\rbpa,\rbpb)h+O(h^2)>0$ and $\lambda=O(h)$.
+Set $t=\sqrt h\,s$ in \eqref{rbif:eq:U}; after division by $h$ the
+limiting equation is
+$-K_a(\rbpa,\rbpb)+3\rbrr s^2=0$.
+Its positive root is simple. Applying the implicit-function theorem in
+$\sqrt h$ and then taking a positive square root of $t$ proves
+\eqref{rbif:eq:fourthroot}. Uniqueness and maximality follow from
+Theorem~\ref{rbif:thm:unfolding}.
+For $a>\rbpa$, $\kappa<0$ and $\lambda=O(|a-\rbpa|)$.
+If $\lambda\le0$ there is no root by the first row of the table.
+If $\lambda>0$, then
+$\varphi(\lambda)=O((a-\rbpa)^2)$, whereas $\kappa$ is negative
+of first order. Thus $\kappa<\varphi(\lambda)$ for sufficiently small
+positive $a-\rbpa$, and there is again no root.
+\end{proof}
+
+The previously proved maxima and minima at nonzero $q(b)$ have a
+square-root radius law. The exponent $1/4$ is a genuine change of local
+scaling, forced by the vanishing quartic coefficient and the nonzero
+sixth-order coefficient; it is not a fit to a numerical curve.
+
+\section{A certified rational witness}
+\label{rbif:sec:witness}
+The preceding existence theorem has unspecified neighborhood sizes.
+The following result gives a concrete order pair and a fully explicit
+radius interval. Each terminating decimal in the statement denotes the
+exact rational number, not an approximation to an implicitly defined pair.
+
+\begin{theorem}[A rational curve with at least two turning points]
+\label{rbif:thm:witness}
+Take
+\begin{align*}
+ a_0&=1.0014300032325009280102804945924913210012973562600080008779598088,\\
+ b_0&=0.99749410117972379489824653149307623117370381382325680750587755176.
+\end{align*}
+The branch $\eta_{a_0,b_0}(\rho)$ has a strict local minimum in
+\[
+ \frac1{\sqrt{20000}}<\rho<\sqrt{\frac3{20000}}
+\]
+and a strict local maximum at a larger radius in
+\[
+ \sqrt{\frac3{20000}}<\rho<\frac1{\sqrt{4000}}.
+\]
+In particular, at least two positive-radius turning points occur below
+$\rho=1/\sqrt{4000}$.
+\end{theorem}
+\begin{proof}
+Use \eqref{rbif:eq:Psi} with $N=16$, so only
+$p_2,\ldots,p_{35}$ are required. The exact interval replay constructs
+an $\eta$ strip of half-width $10^{-8}$ centered at a rational enclosure
+midpoint of $\mu(a_0,b_0)$. Throughout
+$0\le t\le1/4000$, the left boundary has $\Psi<0$, the right boundary
+has $\Psi>0$, and
+\begin{equation}
+ 0.99900<\Psi_y<0.99906
+ \label{rbif:eq:witnessstrip}
+\end{equation}
+throughout the strip. These inequalities use the infinite-series tails
+\eqref{rbif:eq:tail}--\eqref{rbif:eq:tailt}, together with the Cauchy
+bound for the $y$ derivative. There is therefore a unique analytic root
+$y=\Phi(t)$ on this entire explicit interval. It is the branch from
+Theorem~\ref{rbif:thm:generating}.
+
+At each of three rational values of $t$, the replay encloses the root in
+an interval of half-width $10^{-42}$ and uses
+$\Phi'(t)=-\Psi_t/\Psi_y$. It certifies the following inequalities:
+\begin{center}
+\begin{tabular}{@{}cc@{}}
+\toprule
+$t$ & Exact enclosure for $\Phi'(t)$\\
+\midrule
+$1/20000$ & $-7.59\cdot10^{-19}<\Phi'(t)<-7.56\cdot10^{-19}$\\[1mm]
+$3/20000$ & $ 2.52\cdot10^{-19}<\Phi'(t)< 2.54\cdot10^{-19}$\\[1mm]
+$1/4000$ & $-7.59\cdot10^{-19}<\Phi'(t)<-7.56\cdot10^{-19}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The verifier is \path{verify_witness.py}; exact endpoints, all tail
+bounds, the root strip, and the rational order pair are retained in
+\path{witness_verified.json}. Since $\partial_\rho\eta=2\rho\Phi'(t)$,
+the signs in the physical radius are negative, positive, negative.
+Analyticity and the nonzero endpoint derivatives imply a strict local
+minimum between the first two samples and a strict local maximum between
+the last two. This proves the assertion for the exact infinite
+polylogarithm.
+\end{proof}
+
+\begin{remark}[What this certificate does not count]
+The witness proves at least two extrema in the displayed interval. It
+does not claim that this particular rational pair has exactly two
+critical points on $0<\rho\le1$. The local classification proves an exact
+count in its own uniform small neighborhood; the explicit witness is
+independently certified and does not assume that its parameters lie in
+an unspecified neighborhood from an asymptotic theorem.
+\end{remark}
+
+The witness was found by taking $\varepsilon=10^{-4}$ in
+\eqref{rbif:eq:epsfamily}, solving numerically for an order pair, and
+rounding it to the displayed rational values. This history is not used
+in the proof: the replay begins with those rational values and proves
+the three signs afresh. The tiny derivative sizes also explain why an
+ordinary double-precision plot would not be reliable evidence.
+
+\section{Rigidity of the constant curve and an order-nine defect}
+\label{rbif:sec:rigidity}
+\begin{theorem}[Constant-curve classification]
+\label{rbif:thm:rigidity}
+For $a\ge1$ and $b>0$, the normalized-radius branch is constant on a
+neighborhood of $\rho=0$ if and only if $(a,b)=(1,1)$.
+In that case
+\begin{equation}
+ F_{1,1}(z)=\frac12\log^2(1-z),\qquad
+ \eta_{1,1}(\rho)=\frac12\quad(0<\rho\le1).
+ \label{rbif:eq:classical}
+\end{equation}
+Equivalently, within this order range, a M\"obius symmetry
+$F_{a,b}(T_c(z))=F_{a,b}(z)$ can occur only for $(a,b,c)=(1,1,1/2)$.
+\end{theorem}
+\begin{proof}
+A constant curve has $K=Q=R=0$. The quadratic classification leaves
+only $(a,b)=(1,1)$ or a pair $(A(b),b)$ with $0<b<1$.
+In the latter case the quartic classification forces $b=\rbpb$.
+But Theorem~\ref{rbif:thm:nondeg} gives $R(\rbpa,\rbpb)<0$, a
+contradiction.
+
+For $(1,1)$, termwise differentiation of \eqref{rbif:eq:def} gives
+\[
+ F_{1,1}'(z)=-\frac{\log(1-z)}{1-z}.
+\]
+The zero initial value proves the first identity in
+\eqref{rbif:eq:classical}. On the upper disk, the imaginary part of the
+logarithm is nonzero. Thus $\rbIm\log^2(1-z)=0$ exactly when
+$|1-z|=1$, which is $\cos\theta=\rho/2$. This proves the second
+identity, including the boundary by continuation at this zero.
+The symmetry characterization follows from
+Corollary~\ref{rbif:cor:flatstructure}.
+\end{proof}
+
+\begin{corollary}[A quantified obstruction to the next flat curve]
+\label{rbif:cor:order9}
+At $(\rbpa,\rbpb)$, set $c=\rbmu$ and $w=z/(1-cz)$. Then
+\begin{equation}
+ F_{\rbpa,\rbpb}(z)-F_{\rbpa,\rbpb}(T_c(z))
+ =-4\,2^{-\rbpa}\rbrr\,w^9+O(w^{11}).
+ \label{rbif:eq:order9}
+\end{equation}
+The leading coefficient is strictly positive. The transformed function
+is even through degree eight but fails to be even at degree nine.
+\end{corollary}
+\begin{proof}
+At $c=\mu$, $P_0(c)=0$. Since $K=Q=0$,
+\eqref{rbif:eq:K}--\eqref{rbif:eq:Q} also give $P_1(c)=P_2(c)=0$.
+The transport identity then gives $d_3=d_5=d_7=0$ and
+$d_9=P_3(c)=-2p_2\rbrr$.
+Taking the odd part of $G_c$ proves \eqref{rbif:eq:order9}, and
+$p_2=2^{-\rbpa}>0$, $\rbrr<0$ determine the sign.
+\end{proof}
+
+This supplies a structural explanation for the nearly flat transition:
+it satisfies the first three odd symmetry conditions but not the fourth.
+The functional relation \eqref{rbif:eq:mobiusPsi} makes the explanation
+exact, rather than merely an analogy between a Taylor expansion and a
+geometric picture.
+
+\section{Audit, proposed manuscript updates, and limitations}
+\label{rbif:sec:audit}
+The formulas for $K$ and $Q$ in the audited local-radius and turning
+sections agree with the independent derivations here. We found no
+incorrect formula in those inspected portions. The appropriate
+integration is therefore a theorem-status update, not a claim that the
+previously cautious statements were errors.
+
+The closing paragraph of \path{05-real-turning.tex} can now be updated
+in three precise ways. The number of zeros of $q$ in $(0,1)$ is one;
+the displayed decimal location can be replaced by the certified intervals
+\eqref{rbif:eq:bbox}--\eqref{rbif:eq:abox}; and the higher-order behavior
+can cite the negative sixth-order coefficient, the two-turning-point
+region, and the fourth-root onset law. The earlier separate maximum and
+minimum theorems should remain credited as predecessors and useful
+special cases of Corollary~\ref{rbif:cor:localfamily}.
+
+The source's warning that a nonzero local coefficient does not determine
+whole-disk monotonicity remains important. Our two-turning-point theorem
+strengthens that warning. It does not prove the full-radius conjecture
+for integer outer orders $a\ge2$, classify all fractional curves on the
+unit disk, or extend the constant-curve theorem to $0<a<1$.
+Nothing here proves the manuscript's separate $S_6$ or $S_8$ arithmetic
+candidates, numerical period independence, or a minimal-depth claim.
+
+All finite sign decisions in the main certificates use only Python
+integers and rational input values. The optional symbolic and numerical
+regressions are distinguished from the proof. There is no Lean
+formalization, and successful replay does not replace independent review
+of the analytic reductions and interval implementation. The trust base
+is explicit: the written analytic arguments, Python integer arithmetic,
+the interval code, and the supplied rational boxes.
+
+The package is designed for placement under
+\path{Analysis/Polylogarithms/docs/reports/radial-boundary-bifurcation/}.
+It contains a namespaced manuscript excerpt, bibliography additions,
+a narrow proposed status patch, provenance, and replay instructions.
+No repository files were modified as part of preparing this article.
+
+\section{Further research questions}
+\label{rbif:sec:future}
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=*]
+\item \textbf{Whole-disk turning-point counts.}
+Determine whether the explicit rational witness has exactly two critical
+points on $0<\rho\le1$. More generally, classify the continuation of the
+local two-turning-point region up to the unit circle. A local fold does
+not by itself exclude further critical points at larger radii.
+\item \textbf{The integer-outer-order conjecture.}
+Prove or disprove strict decrease of $\eta_{a,b}$ on the whole interval
+for $a\ge2$, $b>0$, and the proposed $a=1$ alternatives. The present
+counterexamples all have fractional outer order strictly between one
+and two, so the integer conjecture survives unchanged.
+\item \textbf{Constant curves below outer order one.}
+Extend Theorem~\ref{rbif:thm:rigidity} to $0<a<1$. The M\"obius normal
+form reduces the question to an infinite, triangular family of exact
+coefficient identities. The first three obstructions already suffice
+for $a\ge1$, but a corresponding classification of $K=0$ below one is
+not supplied here.
+\item \textbf{An analytic proof of quartic uniqueness.}
+Replace the $2304$-cell certificate by a direct inequality for
+$q'(b)$ on $[0,9/10]$ and for $q''(b)$ on $[9/10,1]$, or find a simpler
+single transformed quantity with a fixed derivative sign. The present
+certificate suggests strict margins but is not such a symbolic proof.
+\item \textbf{Higher contact and multiple polylogarithms.}
+For deeper real-order polylogarithms, derive the analogue of
+\eqref{rbif:eq:mobiusPsi} and investigate how many independent odd
+symmetry conditions can vanish. Determine whether higher-dimensional
+order families produce radial onset exponents beyond $1/4$.
+\item \textbf{Sharp quantitative neighborhoods.}
+Give explicit $t_0$ and parameter radii for every row of
+Theorem~\ref{rbif:thm:unfolding}. An interval Taylor model adapted to
+$(K,Q)$ coordinates should be more efficient than a raw rectangle in
+$(a,b)$ because the coefficient map is poorly conditioned.
+\item \textbf{Formal and cross-system verification.}
+Formalize the interval arithmetic and the centered implicit-derivative
+bounds in a proof assistant, or independently replay the analytic
+inequalities with a separately implemented interval system. This would
+reduce implementation risk without conflating finite checking with
+formalization of the entire analytic argument.
+\end{enumerate}
+
+\appendix
+\section{The finite verification argument in reproducible form}
+\label{rbif:app:verification}
+\subsection{Outward arithmetic and elementary functions}
+Every interval is represented by integer endpoints $[L,U]$ denoting
+$[L2^{-256},U2^{-256}]$. Addition and negation are exact on this grid.
+For multiplication, the four integer endpoint products are computed;
+the least is divided by $2^{256}$ with floor rounding and the greatest
+with ceiling rounding. A positive reciprocal interval is obtained from
+$2^{512}/U$ and $2^{512}/L$ with outward rounding. Negative reciprocals
+are reduced by sign reversal. Division by an interval containing zero
+is rejected. The resulting rules are inclusion-preserving by elementary
+monotonicity, so an induction over an expression proves that its
+computed interval contains its exact range.
+
+For $2\le n\le9$, use
+\begin{equation}
+ \log n=2\sum_{j=0}^{N-1}\frac{z^{2j+1}}{2j+1}+E_N,\qquad
+ 0<E_N<\frac{2z^{2N+1}}{(2N+1)(1-z^2)},\quad
+ z=\frac{n-1}{n+1},\quad N=512.
+ \label{rbif:eq:logtail}
+\end{equation}
+The witness also needs $n\le35$. For $n>9$, write $n=2^km$ with
+$1\le m<2$, use the same formula for $\log m$ with $N=128$, and add
+$k\log2$. Here $z=(n-2^k)/(n+2^k)<1/3$.
+For $0\le x\le8$, set $y=x/16$ and use
+\begin{equation}
+ e^y=\sum_{j=0}^{64}\frac{y^j}{j!}+E,\qquad
+ 0\le E\le\frac{y^{65}}{65!}\frac1{1-y/66}.
+ \label{rbif:eq:exptail}
+\end{equation}
+Four interval squarings enclose $e^x$, and reciprocation encloses
+$e^{-x}$. All exponential arguments in the certificates lie in the
+allowed interval. The logarithm and exponential tail bounds are positive
+geometric majorants; no floating-point library supplies a proof bound.
+
+\subsection{Third-order derivatives along the threshold}
+The implementation stores the ten Taylor coefficients with multi-indices
+$(i,j)$ satisfying $i+j\le3$. Entries are divided derivatives
+$\partial_a^i\partial_b^j/(i!j!)$, so multiplication is ordinary truncated
+convolution. Inversion is obtained recursively from the identity
+$XX^{-1}=1$. The derivatives of each normalized coefficient can also
+be checked directly from
+\[
+ r_n=(2/n)^a\sum_{m<n}m^{-b},\qquad
+ \partial_a^i\partial_b^j r_n
+ =(-\log(n/2))^i(2/n)^a\sum_{m<n}(-\log m)^j m^{-b}.
+\]
+This gives a short independent specification of every jet input.
+
+Let $v=A'$, $w=A''$, as in \eqref{rbif:eq:implicitdiff}, and define
+\begin{equation}
+ \mathcal C(X)=X_{bbb}+3X_{abb}v+3X_{aab}v^2+X_{aaa}v^3
+                   +3(X_{ab}+X_{aa}v)w.
+ \label{rbif:eq:Cderiv}
+\end{equation}
+Then
+\[
+ A'''=-\frac{\mathcal C(K)}{K_a},\qquad
+ q'''=\mathcal C(Q_0)+(Q_0)_aA'''.
+\]
+These are obtained by differentiating $K(A(b),b)=0$ and
+$q(b)=Q_0(A(b),b)$ three times. They are used only after a strict
+negative enclosure for $K_a$ has been established.
+
+\subsection{Why the mesh is exhaustive}
+The input file \path{global_mesh.json} is a list of rational proposals.
+The verifier first checks that the first endpoint is zero, the last is
+one, adjacent endpoints agree exactly, all cell lengths are positive,
+and each listed midpoint is the exact arithmetic midpoint. It checks
+that every cell lies in the correct side of $9/10$. It then verifies both
+signs for every root bracket, checks the barrier derivatives on every
+cell rectangle, and checks that the midpoint bracket lies within its
+rectangle. Thus missing intervals, unverified root guesses, and
+unjustified graph interpolation are not accepted.
+
+The centered derivative step is essential. A natural interval evaluation
+of $q'$ on a moderately wide rectangle loses too much correlation between
+$a$ and $b$. Instead the exact midpoint value is combined with a bound on
+one higher total derivative along the implicitly defined graph. The
+mean-value theorem supplies the rigorous error. The same method one order
+higher proves concavity near $b=1$.
+
+\subsection{Replay and artifacts}
+From the package root, the decisive checks are
+\begin{verbatim}
+python code/verify_global.py
+python code/verify_local.py
+python code/verify_witness.py
+\end{verbatim}
+They require only the Python standard library. They must not be run with
+\texttt{-O}; optimized execution is explicitly rejected because the
+verifiers use assertions for proof obligations. The optional check
+\begin{verbatim}
+python code/verify_symbolic.py
+\end{verbatim}
+requires SymPy and verifies the coefficient identities at finite orders,
+the sixth-order formula, and the Bernstein expansion. It is a regression
+check, not an extrapolation argument. The universal identities are proved
+in the text. The optional generator \path{make_mesh.py} requires mpmath;
+regenerating boxes is unnecessary to verify the delivered certificate.
+
+\begin{center}
+\begin{tabular}{@{}p{0.48\textwidth}p{0.43\textwidth}@{}}
+\toprule
+Artifact & Role\\
+\midrule
+\path{global_mesh.json} & Rational graph-cover proposals.\\[1mm]
+\path{global_verified.json} & All 2304 strict cell margins and coverage receipt.\\[1mm]
+\path{local_verified.json} & Contraction, location, Jacobian and sixth-order signs.\\[1mm]
+\path{witness_verified.json} & Rational orders, analytic tails, root strip and three signs.\\[1mm]
+\path{symbolic_verified.json} & Optional exact symbolic regression receipt.\\[1mm]
+\path{integration/} & Namespaced excerpt, bibliography and proposed status replacement.\\[1mm]
+\path{provenance/} & Audited repository paths, blob identifiers and build environment.\\
+\bottomrule
+\end{tabular}
+\end{center}
+The final archive also includes editable LaTeX, a compiled PDF, the source
+code, and a checksum manifest. Receipts record successful replay for this
+package; they do not automatically validate subsequently edited files.
+
+\section{Proof dependencies and what has actually been established}
+\label{rbif:app:dependencies}
+The logic is deliberately separated into four layers.
+First, the generating equation, reversion formula, M\"obius transport,
+and local bifurcation arguments are ordinary analytic or formal proofs.
+Second, the known quadratic classification supplies the globally defined
+threshold $A(b)$; its proof is reproduced and credited.
+Third, finitely many exact inequalities prove derivative separation,
+local contraction, and an explicit witness. Fourth, the analytic
+arguments transfer those inequalities to uniqueness, local extrema,
+scaling laws, and rigidity for the infinite function.
+
+The new global statement is global in the inner-order parameter
+$0<b<1$ \emph{along the quadratic threshold}. The new exact turning-point
+count is local in disk radius and in the two order parameters.
+The concrete rational witness supplies an explicit small radius interval,
+but only an at-least-two count. These three scopes are different and
+should not be merged during manuscript integration.
+
+The central resolved question can be summarized without any numerical
+notation: along the unique quadratic threshold in the strip
+$1<a<2$, $0<b<1$, the quartic coefficient changes sign exactly once;
+at that change the sixth-order coefficient is negative. This finite
+coefficient fact forces an open two-extremum region and rules out a second
+constant normalized-radius curve for every $a\ge1$, $b>0$.

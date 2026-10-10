@@ -1,0 +1,375 @@
+% Integration-ready research section. Parent supplies theorem environments,
+% amsmath, amssymb, amsthm, and hyperref. Bibliography keys suggested below.
+\section{A square-root transition in the late reflected residues}
+\label{moderate:sec}
+
+This section concerns a different simultaneous limit from the transition
+$n/(m+1)-\log m=O(1)$ for the moments themselves. Here the late residue
+index $k$ grows, and the reflected exponent is allowed to satisfy
+$m=O(\sqrt{k})$. The fixed-$m$ asymptotic in the manuscript does not
+cover this limit. The novelty assertion here is relative to the pinned
+repository: no claim of priority over all literature is made. We prove a Gaussian damping factor, give its first
+correction, and then obtain a sharp truncation theorem for a growing
+reflected exponent.
+
+Put
+\[
+ f(x)=\log\Gamma(x),\quad B(x)=\log\Gamma(1-x),\quad
+ M_{n,m}=\int_0^1 f(x)^n f(1-x)^m\,dx,
+\]
+and retain the manuscript's residues
+\begin{equation}\label{moderate:eq:A}
+ A_{k,m}=\frac1k[x^{k-1}]\Gamma(1+x)^k B(x)^m.
+\end{equation}
+The parameters $k,m$ are integers with $k\ge1$, $m\ge0$.
+The coefficients vanish when $k\le m$. In the meromorphic transform
+$F_m(z)=\int_0^1\Gamma(x)^zB(x)^m\,dx$, the actual residue is
+$\operatorname*{Res}_{z=k}F_m(z)=-kA_{k,m}$, so its sign is the
+opposite of the coefficient sign. The standard Taylor series
+for log gamma used below follows from DLMF, Section~5.7\cite{moderate:DLMF}.
+Lagrange inversion and the underlying saddle and singularity methods are
+classical\cite{moderate:Gessel,moderate:FS}; the moving-parameter estimates
+are proved explicitly here.
+Define
+\[
+ \phi(u)=\Gamma(1-u),\quad a(u)=-\log\Gamma(1+u),\quad D=u\frac d{du}.
+\]
+Let $\tau\in(0,1)$ be the unique solution of
+$D\log\phi(\tau)=1$, and put
+\begin{equation}\label{moderate:eq:constants}
+ \rho=\frac{\tau}{\phi(\tau)},\quad
+ \Lambda=-\log\rho,\quad b=a(\tau),\quad
+ v=D^2\log\phi(\tau),\quad
+ C=\frac{\tau}{\sqrt{2\pi v}}.
+\end{equation}
+All these constants are positive. Use a local real branch of $\log a$
+at $\tau$ and set
+\begin{equation}\label{moderate:eq:derivatives}
+ r_j=D^j\log a(\tau),\qquad
+ \kappa_j=D^j\log\phi(\tau),\qquad
+ \delta_\Gamma=\frac{r_1^2}{2v}.
+\end{equation}
+Thus $\kappa_2=v$. The subscript on $\delta_\Gamma$ distinguishes this
+constant from a small contour neighborhood.
+The damping constant is strictly positive. Indeed
+$D\log\phi(1/2)=\gamma/2+\log2<1$ and
+$\psi(3/2)=2-\gamma-2\log2>0$, using
+$\gamma<3/5$ and $\log2<7/10$. Hence $\tau>1/2$,
+$\psi(1+\tau)>0$, and
+$r_1=-\tau\psi(1+\tau)/b<0$.
+Numerically,
+\[
+ b=0.1206254661326052\ldots,\quad
+ r_1=-0.1684096130814827\ldots,\quad
+ \delta_\Gamma=0.00624269203454726\ldots.
+\]
+These decimals only illustrate the constants; their defining equations
+are used in the proof.
+
+\begin{theorem}[Uniform late-residue transition]\label{moderate:thm:late}
+Fix $L<\infty$. Uniformly for integers $0\le m\le L\sqrt{k}$ as
+$k\to\infty$, with $\xi=m/\sqrt{k}$,
+\begin{equation}\label{moderate:eq:late}
+ A_{k,m}=(-1)^{k+m-1}C b^m\rho^{-k}k^{-3/2}
+ e^{-\delta_\Gamma\xi^2}
+ \left(1+\frac{P_1(\xi)}{\sqrt{k}}+O_L(k^{-1})\right),
+\end{equation}
+where
+\begin{align}\label{moderate:eq:P1}
+ P_1(\xi)={}&\left[-\frac{r_1+r_2/2}{v}
+             +\frac{\kappa_3r_1}{2v^2}\right]\xi\notag\\
+ &+\left[\frac{r_2r_1^2}{2v^2}
+             -\frac{\kappa_3r_1^3}{6v^3}\right]\xi^3.
+\end{align}
+For every fixed $J\ge0$ there are explicitly computable real
+polynomials $P_0,\ldots,P_J$, with $P_0=1$, such that the parenthesis
+in \eqref{moderate:eq:late} equals
+\[
+ \sum_{j=0}^J k^{-j/2}P_j(\xi)
+       +O_{L,J}(k^{-(J+1)/2}).
+\]
+In particular the coefficient signs are uniformly $(-1)^{k+m-1}$ for all
+sufficiently large $k$ in this moving range. If $m/\sqrt{k}\to\xi_0$,
+then the ratio of $A_{k,m}$ to its fixed-$m$ leading expression converges
+to $e^{-\delta_\Gamma\xi_0^2}$.
+\end{theorem}
+
+\begin{proof}
+Replacing $x$ by $-u$ in \eqref{moderate:eq:A} gives
+\[
+ A_{k,m}=\frac{(-1)^{k+m-1}}{k}
+        [u^{k-1}]\phi(u)^k a(u)^m.
+\]
+The series of $\phi$ has strictly positive coefficients, because
+\[
+ \log\phi(u)=\gamma u+\sum_{j\ge2}\frac{\zeta(j)}j u^j.
+\]
+Consequently
+\[
+ Q(t)=\frac{\phi(\tau e^{it})}{\phi(\tau)}e^{-it}
+\]
+satisfies $|Q(t)|<1$ for $0<|t|\le\pi$, and
+\[
+ \log Q(t)=-vt^2/2-i\kappa_3t^3/6+\kappa_4t^4/24+O(t^5).
+\]
+Cauchy's coefficient formula is
+\begin{equation}\label{moderate:eq:cauchy}
+ A_{k,m}=\frac{(-1)^{k+m-1}\tau\rho^{-k}b^m}{2\pi k}
+ \int_{-\pi}^{\pi}Q(t)^k e^{it}
+       \left(\frac{a(\tau e^{it})}{b}\right)^m\,dt.
+\end{equation}
+No logarithm of $a$ on the full circle is required: $a^m$ is an analytic
+integer power. Choose a small fixed $\epsilon>0$ such that $a$ is nonzero
+near the arc $|t|\le\epsilon$. Outside that arc, compactness gives a
+bound $O(q^k H^m)$ with $q<1$ and a fixed $H$. Since $m\le L\sqrt{k}$,
+this is exponentially small in $k$.
+
+On the small arc use the logarithm with value $\log b$ at zero.
+Real Taylor coefficients imply
+\[
+ \log\frac{a(\tau e^{it})}{b}
+ =ir_1t-r_2t^2/2-ir_3t^3/6+O(t^4).
+\]
+Its real part is $O(t^2)$. After reducing $\epsilon$ if necessary,
+$|Q(t)|^k|a(\tau e^{it})/b|^m\le e^{-c kt^2}$ with $c>0$, uniformly
+in the stated range once $k$ is large. Thus the portion
+$k^{-2/5}\le|t|\le\epsilon$ is $O(e^{-c k^{1/5}})$.
+Set $t=z/\sqrt{k}$ on the remaining arc. Its integrand is
+\begin{align*}
+ e^{-vz^2/2+ir_1\xi z}\bigg[1+\frac1{\sqrt{k}}
+ \left(iz-\frac{i\kappa_3z^3}{6}-\frac{\xi r_2z^2}{2}\right)
+ +O_L\left(k^{-1}(1+|z|^6)\right)\bigg].
+\end{align*}
+The error is bounded by an integrable polynomial times a fixed Gaussian;
+this follows from the analytic Taylor remainder and the preceding
+Gaussian bound. Extending the $z$ interval to $\mathbb R$ has an
+exponentially small cost. The leading integral is
+\[
+ \int_{\mathbb R}e^{-vz^2/2+ir_1\xi z}\,dz
+  =\sqrt{\frac{2\pi}{v}}e^{-r_1^2\xi^2/(2v)}.
+\]
+It is bounded away from zero relative to $\sqrt{2\pi/v}$ for
+$0\le\xi\le L$, so all subsequent error estimates remain relative
+and uniform.
+
+Gaussian differentiation gives the normalized moments
+\[
+ \langle z\rangle=\frac{ir_1\xi}{v},\qquad
+ \langle z^2\rangle=\frac1v-\frac{r_1^2\xi^2}{v^2},\qquad
+ \langle z^3\rangle=i\left(\frac{3r_1\xi}{v^2}
+                          -\frac{r_1^3\xi^3}{v^3}\right).
+\]
+Substituting these into the term of order $k^{-1/2}$ gives
+\eqref{moderate:eq:P1}. For any higher fixed order, expand the two
+analytic logarithms and $e^{it}$ to the corresponding finite order,
+then integrate the resulting polynomial against this same complex
+Gaussian. Gaussian domination bounds the remainder. Differentiation
+of the Gaussian Fourier transform shows that every normalized
+coefficient is a polynomial in $\xi$. This proves the full expansion
+and all assertions of the theorem.
+\end{proof}
+
+A completely explicit coefficient prescription is available. With
+$\varepsilon=k^{-1/2}$, expand
+\begin{equation}\label{moderate:eq:algorithm}
+ \exp\left\{i\varepsilon z+
+ \sum_{j\ge3}\frac{\kappa_j(iz)^j}{j!}\varepsilon^{j-2}
+ +\xi\sum_{j\ge2}\frac{r_j(iz)^j}{j!}\varepsilon^{j-1}\right\}
+ =\sum_{j\ge0}T_j(z,\xi)\varepsilon^j.
+\end{equation}
+Then $P_j(\xi)$ is the integral of $T_j$ against
+$e^{-vz^2/2+ir_1\xi z}$, divided by the leading Gaussian integral.
+Only finitely many terms are needed for each $j$.
+As a consistency check, the fixed-$m$ coefficient in the manuscript is
+\[
+ \beta_m=\beta_0+
+ m\left[-\frac{r_1+r_2/2}{v}+\frac{\kappa_3r_1}{2v^2}\right]
+ -\delta_\Gamma m^2.
+\]
+The quadratic term is exactly the first Taylor coefficient of the
+Gaussian damping factor. The uniform theorem resums that part when
+$m^2/k$ is no longer negligible.
+
+\subsection{Uniform optimal truncation with a growing reflected exponent}
+
+\begin{theorem}[A moving-exponent half-term law]\label{moderate:thm:half}
+Fix $L,E<\infty$. Let $n,N\to\infty$ through positive integers,
+$0\le m\le L\sqrt{N}$, and $|\eta|\le E$, where
+$\eta=N\Lambda-n$. Then
+\begin{align}\label{moderate:eq:half}
+ \frac{M_{n,m}/n!-\sum_{k=1}^{N-1}A_{k,m}/k^n}{A_{N,m}/N^n}
+ =\frac12+
+ \frac{3/2-\delta_\Gamma m^2/N-\eta}{4N}
+ +O_{L,E}(N^{-3/2}).
+\end{align}
+The denominator is nonzero for all sufficiently large $N$, uniformly
+in the stated range. In particular the error is asymptotic to half the
+first omitted term, and its eventual sign is $(-1)^{N+m-1}$.
+The theorem supplies a proved growing range; it does not assert this
+range is maximal.
+\end{theorem}
+
+\begin{proof}
+We give the contour and tail details because neither a formal growing
+substitution in the fixed-$m$ formula nor an infinite divergent Taylor
+tail would justify this statement.
+Let $h$ be the inverse germ $h=q\phi(h)$, let $g(t)=-h(-t)$, and set
+\[
+ W_m(x)=\int_0^x B(u)^m\,du,\qquad G_m(t)=W_m(g(t)).
+\]
+Lagrange inversion gives $G_m(t)=\sum_{k\ge1}A_{k,m}t^k$ near zero.
+The manuscript's inverse-gamma argument shows that $g$ continues to a
+slit disk of radius greater than $\rho$, whose only singularity on its
+circle of convergence is at $-\rho$. For completeness, positivity of
+the coefficients of $h$ gives $|h(q)|<\tau$ at every $|q|=\rho$,
+$q\ne\rho$; then
+$|q\phi'(h(q))|<\rho\phi'(\tau)=1$ allows analytic continuation.
+At $q=\rho$ the first derivative of $u/\phi(u)$ vanishes and the second
+does not, so ordinary local inversion gives a convergent square-root
+expansion. Compactness produces a common slit disk. Shrink it so
+$|g|<r_0<1$ there; this makes composition with every $W_m$ valid.
+
+Choose a fixed outer radius $R>\rho$ in that disk and a small
+$0<\epsilon<\Lambda$ with $\rho e^\epsilon<R$. Along its negative cut define
+the real, possibly signed density
+\[
+ \nu_m(s)=\frac{(-1)^m}{2\pi i}
+        \bigl(G_m(-s+i0)-G_m(-s-i0)\bigr),\qquad \rho<s<R.
+\]
+Put $\mathcal B_{N,m}=(-1)^{N+m-1}A_{N,m}$.
+Cauchy contour deformation yields
+\begin{equation}\label{moderate:eq:cut-coeff}
+ \mathcal B_{N,m}=I_{N,m}+O(M^mR^{-N}),\qquad
+ I_{N,m}=\int_\rho^R s^{-N-1}\nu_m(s)\,ds,
+\end{equation}
+for a fixed $M$, with an inessential enlargement of the constant.
+The corresponding remainder contour has the additional kernel
+$s/(s+t)$. The common factor and sign cancel after division by
+$A_{N,m}t^N$. Outer-contour errors, including this division, are
+exponentially small for $m\le L\sqrt{N}$ and
+$\rho e^{-\epsilon}\le t\le\rho e^\epsilon$.
+
+The jump need not be positive in this moving range. The needed absolute
+bound is as follows. Write $u=(s-\rho)/\rho$. The square-root inverse
+has $g(-s\pm i0)=-\tau+O(\sqrt{u})$ and a connecting path of length
+$O(\sqrt{u})$. On that path
+$|B(z)|\le b\exp(C_0\sqrt{u})$ for sufficiently small fixed $u$.
+Since $W_m'=B^m$,
+\[
+ |\nu_m(\rho(1+u))|
+ \le C_1 b^m\sqrt{u}\exp(C_0m\sqrt{u}).
+\]
+On the rest of the finite cut it is at most $C_2M^m$. Substituting
+$w=Nu$, using $m\le L\sqrt{N}$ and
+$(1+u)^{-N-1}\le e^{-cNu}$ on the small interval, proves for every
+fixed $j\ge0$
+\begin{equation}\label{moderate:eq:absolute-jump}
+ \int_\rho^R \left|\frac{s-\rho}{\rho}\right|^j
+    s^{-N-1}|\nu_m(s)|\,ds
+ \le C_{L,j} b^m\rho^{-N}N^{-j-3/2}.
+\end{equation}
+The integrable majorant is a constant times
+$w^{j+1/2}e^{-cw+C_0L\sqrt{w}}$.
+By Theorem~\ref{moderate:thm:late}, division by $\mathcal B_{N,m}$
+turns \eqref{moderate:eq:absolute-jump} into $O_{L,j}(N^{-j})$.
+This absolute estimate prevents cancellation in the signed jump from
+invalidating the Taylor-remainder bounds.
+
+The first normalized cut moment is computed without expanding the
+moving jump explicitly. The exact finite-cut identity gives
+\[
+ \int_\rho^R\frac{s-\rho}{\rho}s^{-N-1}\nu_m(s)\,ds
+   =\rho^{-1}I_{N-1,m}-I_{N,m}.
+\]
+Use Theorem~\ref{moderate:thm:late} through order $N^{-1}$, with
+relative remainder $O_L(N^{-3/2})$, both at $N-1$ and at $N$ with
+the same $m$. The polynomials in that expansion are smooth for bounded
+$m/\sqrt N$. Their ratio changes by $O_L(N^{-3/2})$, while the leading
+factors give
+\begin{align*}
+ \frac{\mathcal B_{N-1,m}}{\rho\mathcal B_{N,m}}
+ &=\left(\frac{N}{N-1}\right)^{3/2}
+    \exp\left(-\frac{\delta_\Gamma m^2}{N(N-1)}\right)
+    \bigl(1+O_L(N^{-3/2})\bigr)\\
+ &=1+\frac{3/2-\delta_\Gamma m^2/N}{N}
+       +O_L(N^{-3/2}).
+\end{align*}
+For $r=t/\rho$,
+\[
+ \frac{s}{s+t}=\frac1{1+r}+
+            \frac{r}{(1+r)^2}u+O(u^2)
+\]
+uniformly on the fixed middle interval. Equations
+\eqref{moderate:eq:cut-coeff}--\eqref{moderate:eq:absolute-jump} therefore give
+\begin{align}\label{moderate:eq:inverse-remainder}
+ \frac{G_m(t)-\sum_{k<N}A_{k,m}t^k}{A_{N,m}t^N}
+ =\frac1{1+r}+
+ \frac{r}{(1+r)^2}\frac{3/2-\delta_\Gamma m^2/N}{N}
+ +O_L(N^{-3/2}).
+\end{align}
+
+It remains to justify averaging this local statement. The exact
+layer-cake identity is
+\[
+ \frac{M_{n,m}}{n!}=\frac1{\Gamma(n)}
+       \int_0^\infty y^{n-1}G_m(e^{-y})\,dy.
+\]
+After subtracting the finite sum, the ratio in
+\eqref{moderate:eq:half} is the expectation of the left side of
+\eqref{moderate:eq:inverse-remainder} at $t=e^{-Y}$, where $Y$ has
+gamma shape $n$ and rate $N$.
+Its probability outside $|Y-\Lambda|\le\epsilon$ is $O(e^{-cN})$
+for bounded $\eta$, by the elementary gamma moment-generating function.
+Uniform subexponential bounds on the normalized remainder suffice on
+that complement. To obtain them, Cauchy's coefficient formula on
+$|u|=\tau$ gives
+\[
+ |A_{k,m}|\le\frac{\tau}{k}\rho^{-k}H^m
+\]
+with a fixed $H$. Below $t=\rho e^{-\epsilon}$ sum the absolutely
+convergent Taylor tail. Above $t=\rho e^\epsilon$ bound the finite
+polynomial by its absolute terms. Division by the uniform lower bound
+for $|A_{N,m}|$ in Theorem~\ref{moderate:thm:late} gives at most a
+polynomial in $N$ times $e^{C_L\sqrt N}$ in both cases.
+The remaining function term on the upper interval satisfies
+$0\le G_m(t)\le m!$ for $0\le t\le1$: indeed $0\le g(t)\le1$
+and $B(x)\le-\log(1-x)$, since
+$\log\Gamma(2-x)\le0$ by log convexity between one and two. Thus
+$W_m(g(t))\le\int_0^1[-\log(1-x)]^m\,dx=m!$.
+After division its size is
+at most a polynomial times
+$e^{-\epsilon N}m!b^{-m}$, hence exponentially small in $N$ because
+$m\log(m+1)=O_L(\sqrt N\log N)$.
+The weighted outer contribution is therefore exponentially small.
+
+Finally put $V=Y-\Lambda$. Then
+\[
+ \mathbb EV=-\eta/N,\quad \mathbb EV^2=O_E(N^{-1}),\quad
+ \mathbb EV^3=O_E(N^{-2}),\quad \mathbb EV^4=O_E(N^{-2}).
+\]
+The leading kernel has expansion
+$1/(1+e^{-V})=1/2+V/4-V^3/48+O(V^4)$, so its expectation is
+$1/2-\eta/(4N)+O_E(N^{-2})$. The next kernel is
+$e^{-V}/(1+e^{-V})^2=1/4+O(V^2)$, since its derivative vanishes
+at zero. Its expectation is $1/4+O_E(N^{-1})$.
+Averaging \eqref{moderate:eq:inverse-remainder} gives
+\eqref{moderate:eq:half}. The signs and nonvanishing follow from
+Theorem~\ref{moderate:thm:late}.
+\end{proof}
+
+\paragraph{What the theorem resolves and what it leaves open.}
+The fixed-reflected-exponent warning in the manuscript is correct; it
+should now be supplemented by a separate theorem for $m=O(\sqrt N)$.
+The square-root scale is the first scale on which the leading late
+residue changes by a nontrivial factor. It does not destroy the
+half-term law, but it changes that law's first correction. The
+fixed-$m$ correction $\beta_m/(4N^2)$ contains the same term
+$-\delta_\Gamma m^2/(4N^2)$; the result above proves the relevant
+resummation uniformly instead of substituting a growing parameter in
+an uncontrolled remainder.
+
+The next subsection proves a small proportional range for the
+coefficients themselves. The maximal extent of that range and
+extensions of the half-term remainder law are separate questions:
+a coefficient asymptotic alone does not control a normalized
+signed-cut remainder.

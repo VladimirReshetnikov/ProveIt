@@ -1,0 +1,62 @@
+Moderate reflection: verification report
+=======================================
+
+Command (from the shared scratch directory):
+  python agent_asymptotics/verify_moderate_reflection.py --late-k 60 120 240 480 --half-N 24 48 96
+
+Status: passed. Wall time: 122.423 seconds in this environment.
+
+Finite symbolic checks:
+  * P1 obtained by Gaussian differentiation equals the displayed polynomial.
+  * The fixed-m beta_m polynomial has exactly the linear coefficient from P1
+    and the quadratic coefficient -delta_Gamma*m^2.
+
+Late coefficients:
+  16 points computed by formal-series recurrences at 180 decimal digits.
+  At (k,m)=(60,8) and (480,66), independent Cauchy quadrature agrees with
+  the recurrence in their normalized ratios within 4.82e-180.
+
+Moment remainders:
+  6 points computed using direct x=exp(-y) quadrature, with no inverse-gamma
+  or residue formula inside the moment integrand. The integrand is scaled
+  to order one at its approximate saddle before quadrature; this is needed
+  for accurate exponentially small residuals. Each point was independently
+  recomputed at 215 decimal digits. Largest repeated-precision discrepancy
+  in the normalized error: 1.468e-108.
+
+Representative normalized remainders:
+   N    n    m      exact-quadrature ratio      first uniform approximation
+  24   30    5      0.512718089055627379         0.511697856928505957
+  48   61    7      0.509446315791974703         0.509128236409165887
+  96  121   10      0.502754301762183987         0.502634076753005853
+  96  121   29      0.502840994456833729         0.502508592953157776
+
+These computations are high-precision numerical diagnostics, not interval
+certificates. The theorem's proof is analytical.
+
+Preasymptotic behavior is material:
+  The theorem is uniform for each fixed L once N is sufficiently large
+  depending on L. It does NOT promise a practical universal starting N.
+  The fixtures deliberately include m about 3*sqrt(N) at N=24,48, where
+  normalized half-term ratios 2.172646325... and 0.678747154... show that
+  the asymptotic regime has not yet settled. At N=96,m=29 it has approached
+  0.5 closely. Likewise m about 6*sqrt(k) can show large negative normalized
+  coefficients at k=60,120 before approaching the stated positive regime.
+  The proof explains this through outer-arc bounds q^k H^m: sufficiently
+  large k depends on L. No finite-index global alternation is claimed.
+
+Independent mathematical review:
+  Root read the full proof and requested epsilon<Lambda and the explicit
+  G_m(t)<=m! argument; both were added.
+  The angular-geometry agent independently checked the signed-cut absolute
+  moments, coefficient ratios, layer-cake normalization, gamma averaging,
+  and outer-tail estimates and reported no gap.
+
+Integration files:
+  moderate_reflection.tex: complete proved section, two main theorems.
+  moderate_references.tex: append inside thebibliography.
+  optional_half_refinement.tex: separately proved next correction, if desired.
+  verify_moderate_reflection.py: reproducible numerical/symbolic script.
+  moderate_reflection_checks.json: complete verified diagnostics.
+  verification.log: concise raw runtime output.
+  PROVENANCE.txt: scope, baseline paths, and primary-source provenance.

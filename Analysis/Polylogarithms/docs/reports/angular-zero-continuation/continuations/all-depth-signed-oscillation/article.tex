@@ -1,0 +1,116 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[hyphens]{url}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black]{hyperref}
+\usepackage{fancyhdr}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Signed-kernel oscillation at every depth}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlist{topsep=3pt,itemsep=3pt,parsep=0pt}
+\emergencystretch=2em
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Imn}{Im}
+\DeclareMathOperator{\Ren}{Re}
+\DeclareMathOperator{\Arg}{Arg}
+\DeclareMathOperator{\supp}{supp}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\bbR}{\mathbb R}
+\newcommand{\bbC}{\mathbb C}
+\newcommand{\bbN}{\mathbb N}
+\newcommand{\svec}{\boldsymbol{s}}
+\newcommand{\one}{\boldsymbol{1}}
+\newcommand{\Om}{\Omega}
+\newcommand{\Aop}{\mathsf A}
+\newcommand{\Bop}{\mathsf B}
+\newcommand{\norm}[1]{\lVert#1\rVert}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\bracks}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
+\newcommand{\repoSHA}{3447bc59b78d138a7f0d536b66ac6e5cc5d5e49f}
+\hypersetup{pdftitle={Signed-Kernel Oscillation at Every Depth},pdfauthor={OpenAI-assisted research continuation for ProveIt},pdfsubject={Strict multiple polylogarithms, positive compensation, angular zeros, exact certificates}}
+\title{\textbf{Signed-Kernel Oscillation at Every Depth}\\[6pt]
+\large Minimal Pick Compensation, Zero Geometry,\\and Certified Polylogarithmic Identities}
+\author{Research continuation prepared for the ProveIt project\\
+\small OpenAI-assisted mathematical research note}
+\date{October 10, 2026}
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+We extend the manuscript's depth-two signed-kernel method to strict
+single-variable multiple polylogarithms of arbitrary depth. The first
+$d-1$ indices are positive integers and the final index may be any positive
+real number. Two bounded operators on $L^1(0,1)$ construct a density with
+exactly $d-1$ simple sign changes, $d-1$ vanishing initial moments, and
+norm at most $2^{d-1}$. The sign-change polynomial converts this signed
+measure into a positive measure and yields a canonical factorization
+$L_{\svec}(z)=z^dH_{\svec}(z)/\prod_j(1-r_jz)$. We prove that this
+polynomial compensation is of minimal degree, that the principal
+continuation has no nonzero zero on $\bbC\setminus[1,\infty)$, and that
+its imaginary part has exactly $d-1$ simple zeros on every upper
+semicircle of radius at most one. A direct confluent Cauchy-kernel argument
+proves the upper zero bound; a positive-transform argument supplies the
+matching lower bound, including the singular unit-radius endpoint.
+
+Further results include strict inward angular motion, interlacing of density
+zeros, small-radius and
+large-outer-index expansions, positive terminal mixtures, a shifted-terminal
+Lerch extension, explicit logistic-root identities for the all-ones family,
+and rational error certificates at Gaussian points. The package contains
+24 certified angular-root brackets and 5,713 finite exact check groups.
+The proofs are ordinary analytic proofs, not proof-assistant formalizations.
+The $S_6$ and $S_8$ arithmetic conjectures, unrestricted fractional leading
+indices, and the existing normalized-radius conjecture are not claimed
+solved. No universal claim of literature priority is made.
+\end{abstract}
+\vfill
+\noindent\small\textbf{Repository reference.}
+\url{https://github.com/VladimirReshetnikov/ProveIt}\\
+Reviewed snapshot: \texttt{\repoSHA}. This is an additive research package;
+it does not alter the repository or replace its canonical manuscript.
+\clearpage
+\setcounter{tocdepth}{1}
+\hypersetup{bookmarksdepth=2}
+\tableofcontents
+\vspace{1.5em}
+\noindent\textbf{Reading map.} Sections 2--5 contain the complete structural proof.
+Section 6 derives asymptotic consequences, Section 7 gives explicit identities,
+and Section 8 explains the exact certificates. Sections 9--10 separate
+corrections, scope limits, and future research. The appendices record
+independent arithmetic controls and integration dependencies.
+\clearpage
+\input{sections/01_scope}
+\input{sections/02_operators}
+\input{sections/03_oscillation}
+\input{sections/04_compensation}
+\input{sections/05_angular}
+\input{sections/06_asymptotics}
+\input{sections/07_identities}
+\input{sections/08_computation}
+\input{sections/09_audit}
+\input{sections/10_research}
+\appendix
+\input{sections/A_controls}
+\input{sections/B_integration}
+\input{references}
+\end{document}

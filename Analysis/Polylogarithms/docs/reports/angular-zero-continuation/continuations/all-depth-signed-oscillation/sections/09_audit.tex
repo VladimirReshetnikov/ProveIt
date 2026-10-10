@@ -1,0 +1,96 @@
+\section{Audit findings, corrections, and failed shortcuts}
+\label{ado:sec:audit}
+The source review was targeted, not a line-by-line audit of the entire
+canonical manuscript. It covered the signed-kernel,
+real-order, positive-double-kernel, subcritical, local-radius, and
+research-status sections. No substantive counterexample to the reviewed
+depth-two kernel and zero theorems was found. The following two
+editorial corrections are concrete; the later items are scope safeguards
+for this continuation rather than allegations that the manuscript makes
+those mistakes.
+
+\subsection{Two notation corrections in the transport proof}
+In \path{chapters/05-real-positive-kernel.tex}, at the pinned snapshot,
+the proof of the Hurwitz--polylogarithm transport formula says to
+specialize the regularized Hurwitz identity ``with $q=n$'', and then
+invokes boundedness of ``$h$''~\cite{repoPositive}. The displayed
+Hurwitz formula uses $x$ as its real argument, and the regularized
+kernel is named $q(t)$. The intended text is therefore
+\[
+ \text{``with $x=n$''},\qquad
+ \text{``boundedness of $q$''}.
+\]
+The theorem and the coefficient calculation are unchanged. The file
+\path{integration/notation_corrections.patch} contains precisely
+these two replacements, at source lines 102 and 104. It is an optional
+proposed patch; it has not been applied to the remote repository.
+
+\subsection{Positive higher-order resolvents need not be zero-free}
+The following exact example shows why the oscillation step in this
+article cannot be replaced by a generic positivity slogan:
+\begin{equation}\label{ado:eq:badpositive}
+ R(z)=z^4\left(1+\frac1{(1-z)^4}\right)
+     =z^4\int_{[0,1]}\frac{\dd(\delta_0+\delta_1)(u)}{(1-uz)^4}.
+\end{equation}
+The measure is positive, yet
+\[
+ z_0=1-e^{-\ii\pi/4}
+     =1-\frac1{\sqrt2}+\frac{\ii}{\sqrt2}
+\]
+is a nonzero zero of $R$ and
+$|z_0|^2=2-\sqrt2<1$. Indeed $(1-z_0)^4=-1$. Thus a positive
+generalized Stieltjes kernel of order four does not imply even disk
+nonvanishing. Our ordinary positive transform appears only
+\emph{after} the sign-change polynomial has been identified and the
+initial moments have been canceled.
+
+\subsection{The unit-radius endpoint cannot be assigned an arbitrary phase}
+At $\rho=1$, the point $z=1$ lies on the removed cut. A proof of
+angular existence that simply sets $\Arg L(1)=0$ may silently assume
+a finite endpoint value or a particular asymptotic. The proof in
+Section~\ref{ado:sec:angular} instead uses the sector bound
+$\Arg H<\beta_1$ to show that the unwrapped phase is below $\pi$
+near the initial endpoint. This suffices even when $L$ diverges there.
+No theorem about a limiting singular value is smuggled into the argument.
+
+\subsection{The angular count does not extend automatically beyond radius one}
+For the elementary depth-two example
+$L_{1,1}(z)=\tfrac12\log^2(1-z)$, a zero of its imaginary part in
+the upper half-plane requires
+\[
+ |1-z|=1.
+\]
+On $|z|=\rho$, this is $\cos\theta=\rho/2$. For $\rho>2$ there
+is no such open-upper-arc zero at all. In our proof, the map
+$t(u)=(1+\rho^2u^2)/(2\rho u)$ ceases to be monotone on $(0,1)$
+when $\rho>1$, and the derivative used in the radial argument lemma
+can also change sign. These are genuine losses of hypotheses.
+Local continuation of a simple zero through $\rho=1$ must not be
+confused with a theorem for all radii.
+
+\subsection{Integer leading orders, normalized radii, and arithmetic depth}
+The operator $\Aop^{s_j-1}$ was iterated an integer number of times.
+Its elementary Rolle argument does not automatically apply to an
+arbitrary fractional power. The manuscript itself proves that finite
+signed moment representations can fail in part of the positive
+real-order depth-two range~\cite{repoReal,repoSubcritical}. Therefore
+one cannot state the present $L^1$ construction for all positive real
+indices without a separate theorem or a different representation.
+
+Likewise, strict decrease of $\theta_k(\rho)$ does not imply a chosen
+sign for $\cos\theta_k(\rho)/\rho$. The original normalized-radius
+conjecture and the fractional turning-point issues remain separate.
+Finally, the degree $d-1$ in the compensation theorem is not a claim
+about minimal multiple-polylogarithm depth at a numerical argument.
+Formal relation modules, arithmetic period independence, and positive
+transform compensation are different mathematical objects.
+
+\subsection{The remaining arithmetic candidates retain their status}
+The reviewed README and discovery chapter distinguish the proved $S_4$
+identity, the unresolved $S_6$ and new $S_8$ candidates, and an older
+$S_8$ vector that was rigorously rejected~\cite{repoStatus}. The
+present analytic theorem does not furnish a relation certificate for
+$S_6$ or $S_8$. Its Gaussian enclosures also do not establish arithmetic
+independence or any conjectural equality merely by small residuals.
+These status labels should remain unchanged when the package is
+integrated.
