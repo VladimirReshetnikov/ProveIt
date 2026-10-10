@@ -33,24 +33,6 @@ noncomputable section
 namespace LeanProofs.GowersSzemeredi
 open Classical
 
-/-- A local piece provider for one function on a domain. -/
-def LocalPieceFor {N d : Nat} [NeZero N] (c : Real → Real) (w : Real → Nat → Nat)
-    (Dom : Finset (Point N d)) (g : Point N d → ZMod N) : Prop :=
-  ∀ theta : Real, 0 < theta → theta ≤ 1 →
-    ∀ (P : Box N d) (H : Finset (Point N d)), P.IsProper → H ⊆ P.carrier → H ⊆ Dom →
-      theta * P.carrier.card ≤ H.card →
-      ∃ (R : Box N d) (mu : Point N d → ZMod N),
-        R.IsProper ∧ R.carrier ⊆ P.carrier ∧ w theta P.width ≤ R.width ∧ IsMultilinear mu ∧
-        c theta * R.carrier.card ≤ (H.filter fun x => x ∈ R.carrier ∧ g x = mu x).card
-
-/-- **The input gives providers.** -/
-theorem LocalMultilinearPieceAt.localPieceFor {d : Nat} {gamma : Real} {c : Real → Real}
-    {w : Real → Nat → Nat} (hprov : LocalMultilinearPieceAt d gamma c w)
-    {N : Nat} [NeZero N] [Fact N.Prime] {Dom : Finset (Point N d)} {g : Point N d → ZMod N}
-    (hprod : ∀ B ⊆ Dom, HasProductProperty B g gamma) : LocalPieceFor c w Dom g :=
-  fun theta hθ hθ1 P H hP hHP hHD hHc =>
-    hprov N theta hθ hθ1 P H g hP hHP hHc (hprod H hHD)
-
 /-- The single-point fallback: a piece of width at most one always exists. -/
 theorem local_piece_trivial {N d : Nat} [NeZero N] {c : Real} (hc1 : c ≤ 1)
     {theta : Real} (hθ : 0 < theta) (P : Box N d) (hP : P.IsProper) (H : Finset (Point N d))

@@ -52,6 +52,24 @@ def LocalMultilinearPieceAt (k : Nat) (gamma : Real) (c : Real → Real)
         R.IsProper ∧ R.carrier ⊆ P.carrier ∧ w theta P.width ≤ R.width ∧ IsMultilinear mu ∧
         c theta * R.carrier.card ≤ (B.filter fun x => x ∈ R.carrier ∧ phi x = mu x).card
 
+/-- A local piece provider for one function on a domain. -/
+def LocalPieceFor {N d : Nat} [NeZero N] (c : Real → Real) (w : Real → Nat → Nat)
+    (Dom : Finset (Point N d)) (g : Point N d → ZMod N) : Prop :=
+  ∀ theta : Real, 0 < theta → theta ≤ 1 →
+    ∀ (P : Box N d) (H : Finset (Point N d)), P.IsProper → H ⊆ P.carrier → H ⊆ Dom →
+      theta * P.carrier.card ≤ H.card →
+      ∃ (R : Box N d) (mu : Point N d → ZMod N),
+        R.IsProper ∧ R.carrier ⊆ P.carrier ∧ w theta P.width ≤ R.width ∧ IsMultilinear mu ∧
+        c theta * R.carrier.card ≤ (H.filter fun x => x ∈ R.carrier ∧ g x = mu x).card
+
+/-- **The input gives providers.** -/
+theorem LocalMultilinearPieceAt.localPieceFor {d : Nat} {gamma : Real} {c : Real → Real}
+    {w : Real → Nat → Nat} (hprov : LocalMultilinearPieceAt d gamma c w)
+    {N : Nat} [NeZero N] [Fact N.Prime] {Dom : Finset (Point N d)} {g : Point N d → ZMod N}
+    (hprod : ∀ B ⊆ Dom, HasProductProperty B g gamma) : LocalPieceFor c w Dom g :=
+  fun theta hθ hθ1 P H hP hHP hHD hHc =>
+    hprov N theta hθ hθ1 P H g hP hHP hHc (hprod H hHD)
+
 /-- The density of the popular fibres: `θ³/(4q²)`. -/
 def singlePieceTheta (theta : Real) (q : Nat) : Real :=
   theta ^ 3 / (4 * (q : Real) ^ 2)
@@ -158,9 +176,10 @@ theorem fibre_sum_ge (W : Finset (A × ZMod N)) (H : Finset A) {s : Real}
         · rintro ⟨hp, he⟩; exact ⟨⟨hp, he ▸ hh⟩, he⟩
       rw [he]; exact hH h hh
 
-/-- **One multilinear piece on a line-covered cell.** -/
-theorem single_piece_on_line_cell {k q : Nat} (hk : 0 < k) {gamma : Real}
-    {c : Real → Real} {w : Real → Nat → Nat} (hprov : LocalMultilinearPieceAt k gamma c w)
+/-- **One multilinear piece on a line-covered cell**, from providers for the
+cross-sections `φ(·, x)`. -/
+theorem single_piece_on_line_cell_of_slices {k q : Nat} (hk : 0 < k)
+    {c : Real → Real} {w : Real → Nat → Nat}
     (hc : ∀ t, 0 < t → t ≤ 1 → 0 < c t ∧ c t ≤ 1) (hw : ∀ t, Monotone (w t))
     {N : Nat} [NeZero N] [Fact N.Prime]
     (T : Box N k) (J : ModAP N) (hT : T.IsProper) (hJ : J.IsProper) (hTne : T.carrier.Nonempty)
@@ -173,8 +192,9 @@ theorem single_piece_on_line_cell {k q : Nat} (hk : 0 < k) {gamma : Real}
     (cls : Point N k × ZMod N → Fin q) (phi : Point N k × ZMod N → ZMod N)
     (ell : Point N k → Fin q → ZMod N → ZMod N) (hell : ∀ h i, LinearOn Finset.univ (ell h i))
     (hphi : ∀ p ∈ D, phi p = ell p.1 (cls p) p.2)
-    (hprod : ∀ x ∈ J.carrier, ∀ B : Finset (Point N k), (∀ h ∈ B, (h, x) ∈ D) →
-      HasProductProperty B (fun h => phi (h, x)) gamma)
+    (Dom : ZMod N → Finset (Point N k))
+    (hsl : ∀ x ∈ J.carrier, LocalPieceFor c w (Dom x) (fun h => phi (h, x)))
+    (hDom : ∀ p ∈ D, p.1 ∈ Dom p.2)
     (hwidth : 2 ≤ w (c (singlePieceTheta theta q)) (w (singlePieceTheta theta q) T.width)) :
     ∃ (S : Box N (k + 1)) (R : Box N k) (I : ModAP N) (mu : Point N (k + 1) → ZMod N),
       S.IsProper ∧ IsLastCoordinateBoxProduct S R I ∧ R.carrier ⊆ T.carrier ∧
@@ -228,14 +248,13 @@ theorem single_piece_on_line_cell {k q : Nat} (hk : 0 < k) {gamma : Real}
     obtain ⟨-, -, hpa, hpb⟩ := Finset.mem_filter.mp hpW
     exact ⟨(Finset.mem_filter.mp hpa).1, (Finset.mem_filter.mp hpb).1⟩
   -- 3. the cross-section at `a`, then at `b`
-  obtain ⟨R1, mua, hR1, hR1T, hR1w, hmua, hR1c⟩ := hprov N θ1 hθ1pos hθ1le T H1
-    (fun h => phi (h, a)) hT (Finset.filter_subset _ _) hH1
-    (hprod a ha H1 fun h hh => (hslice h hh).1)
+  obtain ⟨R1, mua, hR1, hR1T, hR1w, hmua, hR1c⟩ := hsl a ha θ1 hθ1pos hθ1le T H1 hT
+    (Finset.filter_subset _ _) (fun h hh => hDom _ (hslice h hh).1) hH1
   set H2 := H1.filter fun x => x ∈ R1.carrier ∧ phi (x, a) = mua x with hH2def
   obtain ⟨hcpos, hcle⟩ := hc θ1 hθ1pos hθ1le
-  obtain ⟨R2, mub, hR2, hR2R1, hR2w, hmub, hR2c⟩ := hprov N (c θ1) hcpos hcle R1 H2
-    (fun h => phi (h, b)) hR1 (fun x hx => (Finset.mem_filter.mp hx).2.1) hR1c
-    (hprod b hb H2 fun h hh => (hslice h (Finset.filter_subset _ _ hh)).2)
+  obtain ⟨R2, mub, hR2, hR2R1, hR2w, hmub, hR2c⟩ := hsl b hb (c θ1) hcpos hcle R1 H2 hR1
+    (fun x hx => (Finset.mem_filter.mp hx).2.1)
+    (fun h hh => hDom _ (hslice h (Finset.filter_subset _ _ hh)).2) hR1c
   set H3 := H2.filter fun x => x ∈ R2.carrier ∧ phi (x, b) = mub x with hH3def
   have hR2width : w (c θ1) (w θ1 T.width) ≤ R2.width := (hw _ hR1w).trans hR2w
   have hR2two : 2 ≤ R2.width := hwidth.trans hR2width
@@ -328,5 +347,40 @@ theorem single_piece_on_line_cell {k q : Nat} (hk : 0 < k) {gamma : Real}
     exact_mod_cast Finset.card_le_card fun p hp => by
       obtain ⟨hpG, hpS⟩ := Finset.mem_filter.mp hp
       exact Finset.mem_filter.mpr ⟨hWD (Finset.mem_filter.mp hpG).1, hpS, hGagree p hpG⟩
+
+
+/-- **One multilinear piece on a line-covered cell**, from the dimension-`k`
+input and the product property of the cross-sections. -/
+theorem single_piece_on_line_cell {k q : Nat} (hk : 0 < k) {gamma : Real}
+    {c : Real → Real} {w : Real → Nat → Nat} (hprov : LocalMultilinearPieceAt k gamma c w)
+    (hc : ∀ t, 0 < t → t ≤ 1 → 0 < c t ∧ c t ≤ 1) (hw : ∀ t, Monotone (w t))
+    {N : Nat} [NeZero N] [Fact N.Prime]
+    (T : Box N k) (J : ModAP N) (hT : T.IsProper) (hJ : J.IsProper) (hTne : T.carrier.Nonempty)
+    (hTd : T.commonDiff ≠ 0) (hJstep : J.step = T.commonDiff)
+    (hshort : 2 * (T.axis ⟨0, hk⟩).length ≤ N) (hTJ : (T.axis ⟨0, hk⟩).length ≤ J.length)
+    (D : Finset (Point N k × ZMod N)) (hD : D ⊆ T.carrier ×ˢ J.carrier)
+    {theta : Real} (hθ : 0 < theta) (hθ1 : theta ≤ 1) (hq : 0 < q)
+    (hDc : theta * T.carrier.card * J.carrier.card ≤ D.card)
+    (hJq : 2 * (q : Real) ^ 2 ≤ theta ^ 3 * J.length)
+    (cls : Point N k × ZMod N → Fin q) (phi : Point N k × ZMod N → ZMod N)
+    (ell : Point N k → Fin q → ZMod N → ZMod N) (hell : ∀ h i, LinearOn Finset.univ (ell h i))
+    (hphi : ∀ p ∈ D, phi p = ell p.1 (cls p) p.2)
+    (hprod : ∀ x ∈ J.carrier, ∀ B : Finset (Point N k), (∀ h ∈ B, (h, x) ∈ D) →
+      HasProductProperty B (fun h => phi (h, x)) gamma)
+    (hwidth : 2 ≤ w (c (singlePieceTheta theta q)) (w (singlePieceTheta theta q) T.width)) :
+    ∃ (S : Box N (k + 1)) (R : Box N k) (I : ModAP N) (mu : Point N (k + 1) → ZMod N),
+      S.IsProper ∧ IsLastCoordinateBoxProduct S R I ∧ R.carrier ⊆ T.carrier ∧
+      S.carrier ⊆ lastProductSet T.carrier J.carrier ∧
+      Nat.sqrt (w (c (singlePieceTheta theta q)) (w (singlePieceTheta theta q) T.width) - 1) - 1
+        ≤ S.width ∧
+      IsMultilinear mu ∧
+      singlePieceDensity c theta q * S.carrier.card ≤
+        (D.filter fun p => appendCoordinate p.1 p.2 ∈ S.carrier ∧
+          phi p = mu (appendCoordinate p.1 p.2)).card :=
+  single_piece_on_line_cell_of_slices hk hc hw T J hT hJ hTne hTd hJstep hshort hTJ D hD
+    hθ hθ1 hq hDc hJq cls phi ell hell hphi (fun x => Finset.univ.filter fun h => (h, x) ∈ D)
+    (fun x hx => hprov.localPieceFor fun B hB =>
+      hprod x hx B fun h hh => (Finset.mem_filter.mp (hB hh)).2)
+    (fun p hp => Finset.mem_filter.mpr ⟨Finset.mem_univ _, by simpa using hp⟩) hwidth
 
 end LeanProofs.GowersSzemeredi
