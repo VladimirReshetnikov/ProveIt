@@ -2341,26 +2341,77 @@ replacement for `section16_joint_frequency_box`.
   case (`fejerFiveTermThreshold_le_explicit_tower`, exponents up to
   `2^73`).
 
-**Where the reduction now stands.** Once the bookkeeping of step (b) below
-is kernel-checked, Theorem 18.2 at length six (`Theorem182At 6`) will
-follow from these inputs, all in dimension `≤ 2`:
-- `LocalRelationCoverAt 2 δ` with polynomial `c_R`, `Q_c` (the open core);
-- `LocalMultilinearPieceAt l` for `l = 1, 2`, with polynomial densities and
-  power-law widths.
+**Correction (2026-10-10, same day): the box-local input hypotheses are
+false; steps 2–7 are vacuous as stated.**
 
-The dimension-one inputs are expected to follow from the corpus's
-dimension-one local structure (the regime behind the double-exponential
-four-term bound). The dimension-two inputs are genuinely open. A *global*
-version of them would be polynomial-Freiman–Ruzsa strength over `ℤ`.
+`LocalMultilinearPieceAt k γ c w` and `LocalRelationCoverAt k δ Qc c w` ask
+for pieces or covers in *every* proper box, for *every* set with the
+product property. But `HasProductProperty` is normalized by the whole
+modulus: its inequality is `γ^(8p)·N⁻¹·(Σθ)⁴ ≤ energy`. The energy contains
+the diagonal quadruples `(x, y, x, y)`, so
+`energy ≥ (Σθ²)² ≥ (Σθ)⁴/|E|²`. Hence the inequality holds automatically
+whenever every coordinate line of `B` has at most `√N` points.
 
-**Next.**
-- (a) Discharge `LocalMultilinearPieceAt 1` and `LocalRelationCoverAt 1`
-  from proved dimension-one results, if their bounds are polynomial.
-- (b) Kernel-check the length-6 budget under power-law inputs: frequency
-  box width `≥ N^e`, then `FunctionDiscrepancyBound 4` with
-  `β ≥ α^(D_total)`, then
-  `intervalDiscrepancyClosedThreshold 6 ≤ szemerediThreshold δ 6`.
-- (c) Study the dimension-two core in its local form.
+*Counterexample.* Take a proper box `P` with all axes of length `≤ √N`,
+`B = P` (so `θ = 1`), and `φ(x) = (x₀)²`.
+- `φ` has the product property on `B` for every `γ ≤ 1`, by the diagonal
+  bound above.
+- A multilinear `μ` is affine along every coordinate-0 line, and a
+  quadratic agrees with an affine map at no more than 2 points of a proper
+  progression. So `μ` agrees with `φ` on at most `2|R|/width(R)` points of
+  any sub-box `R`.
+- So `c(1)·|R| ≤ 2|R|/width(R)` forces `width(R) ≤ 2/c(1)`. Since `N` is an
+  arbitrary prime, `w(1, L) ≤ 2/c(1)` for every `L`.
+
+Any growing `w` makes both hypotheses false. The theorems that assume them
+remain true but are **vacuous**:
+- `single_piece_on_line_cell` (the product-property corollary);
+- `single_piece_of_spectrum_cover`;
+- `LocalRelationCoverAt.localMultilinearPieceAt`;
+- `vertex_localPieceFor` and `vertex_providers_of_low`;
+- `slice_localPieceFor`;
+- `single_piece_lift` and `single_piece_frequency_box`;
+- `SinglePieceInputs` (step 7, not yet published).
+
+The order-of-magnitude "fits K.4" count above is therefore withdrawn, until
+the inputs are restated.
+
+*What survives.* Everything stated in terms of *providers* stays valid and
+reusable:
+- `exists_anchor_pair_capture` and `anchor_reconstruction`;
+- `single_piece_on_line_cell_of_slices`;
+- the provider calculus `LocalPieceFor`: `transport`, `translate`,
+  `reindex`, `lift_last`, `lift_embedding`, `simultaneous`,
+  `simultaneous_finset`, `mono`;
+- `remainder_piece`, `exists_dense_cell`, `exists_short_parent_dense_cell`,
+  `section16SpectrumRelation_fibre_le`;
+- the `*_of_arrangements` forms of Lemma 16.5.
+
+A provider is a statement about one function on one domain, and it *is*
+satisfiable on good domains.
+
+*The repair.* The inputs must be **global-to-local**, as Gowers's own
+Theorem 16.2 is. A relation with the (global) product property and
+`|Γ| ≤ γ⁻²N^l`, after deleting `θN^l` base points, is covered on every
+proper box by few multilinear graphs (`MultiplyLinearWith Qb Eb`).
+- Dimension one is **proved** with polynomial controls:
+  `section16_product_relation_cubic_cover` has `Qb ≤ 3(2/(γθ))^10002` and
+  `Eb = 2^(−27)σ³/q⁴`.
+- From such a cover, a provider follows on the good domain: a dense cell,
+  then pigeonhole over the graphs.
+- So the restated open core is a polynomial-control
+  `MultiplyLinearWith`-cover at dimension 2. It is **non-stackable**:
+  no union over members is needed, because the single-piece route never
+  forms unions. That is weaker than Part J's `StackableStructureAt 2`.
+
+**Next (after the correction).**
+1. Kernel-check the counterexample, so the retraction is itself proved.
+2. Restate the inputs as `PolyCoverAt l Qb Eb`, the global-to-local
+   polynomial cover, and derive providers on good domains. Rebuild
+   `single_piece_lift` and the frequency box with good-set intersections
+   (each costs `θ′N^(k+1)` globally). Discharge `l = 1` by
+   `section16_product_relation_cubic_cover`.
+3. Then the length-6 budget.
 
 ## F. Routes
 
