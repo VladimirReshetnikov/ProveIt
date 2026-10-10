@@ -5846,10 +5846,36 @@ the decomposition with these named constants, but not `Theorem162At 3`.
            `claimNineFiveDensity ε R d = κ(c/2)²` and
            `c = (ε/(4K¹⁶))²`, again polynomial.
 
-         Still to do: feed Claim 9.5 into the round lemma. The 12-tuple
-         escape uses Theorem 27 on the unions `⋃_j K_j`, `⋃_j L_j`, since
-         `⋂_j B(K_j; ρ) ⊆ ∑_j B(K_j; ρ)`, at rank `8d`, and an iterated
-         union split. Then the final selection of pairs `(x_a, y_a)`
+         **The full iteration terminates (kernel-checked):**
+         `milicevic_prop_9_3_iteration` (`Proofs16PropNineThreeTwelve`),
+         with both claims.
+         - *Shared update.* `propNineThree_append`
+           (`Proofs16PropNineThreeIteration`) appends any Freiman `Θ` whose
+           values on the pairs of `P` lie in the span balls and escape the
+           current `{-1,0,1}`-spans. Both rounds use it. The rank cap of
+           the escape is now any `r ≥ 2d`, with one radius
+           `R = propNineThreeRadius r M ρ`.
+         - *Bad 12-tuples* (`propNineThreeBad12`). Some `d` is small
+           against all current `θ_i(a_j)` but
+           `d ∉ B(K_u; ρ) + B(L_u; ρ)`, where `K_u = ⋃_j(Γ_{x_j+a_j} ∪ Γ_{x_j})`
+           (`twelveK`). Since `B(K_u; ρ) ⊆ ∑_j(B_{x_j+a_j} ∩ B_{x_j})`, a
+           good 12-tuple satisfies Milićević's (26), so the stopping
+           condition here is stronger than the paper's.
+         - *Claim 9.5 round* (`milicevic_prop_9_3_round_twelve`).
+           1. Theorem 27 at rank `8d ≤ r`.
+           2. Cut `ξ` into sixteen pieces (`spanBall_biUnion_split` with
+              `spanBall_union_split`).
+           3. Some coordinate escapes, because the four forbidden spans add
+              into the radius-4 span of all current values
+              (`add_mem_spanBall_of_subset`, `sum_mem_spanBall_of_subset`),
+              and the escape excludes that span. The escape's
+              triangle-inequality condition is `32s₀η ≤ 1/4`.
+         - *Termination.* With
+           `δ = min(claimNineFourDensity, claimNineFiveDensity)`, the
+           result is a state with fewer than `εN³` bad triples and fewer
+           than `εN¹¹` bad 12-tuples, and `⌈δN²⌉·m ≤ N²s₀`.
+
+         Still to do: the final selection of pairs `(x_a, y_a)`
          with gluing by Lemma 9.1 (`compatible_bohr_sum_quadruple`) and
          the random index set `J`. Quantitatively, `s₀ = O(d log(dR))`, and
          `δ` is polynomial in `ε` and `(2R+1)^(−d)`. With
