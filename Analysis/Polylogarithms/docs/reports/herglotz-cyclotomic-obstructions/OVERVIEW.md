@@ -52,3 +52,20 @@ status is recorded in the project README.
 - The scripts were staged in the delivered layout; rerun on a copy of the
   report directory so that regenerated records do not overwrite the staged
   ones.
+
+## Later sources (batch 141, 9 October 2026)
+
+Dated note, 2026-10-09. Source 23 (`polylogarithms_research_2026-10-10`), placed in
+[`../gaussian-parity-reductions/`](../gaussian-parity-reductions/) (placement
+`3b0bae5f5a`), has a Herglotz section (`sec:herglotz`) beside this
+report's spine. It treats a different limit: derivative order `r → ∞` at fixed `x`, not the
+large-`x` truncation of `thm:remainder` and `thm:sharp` here. It gives a finite
+Bernoulli–Hurwitz evaluator of `F^{(r)}(p/q)` (a constructive form of Radchenko–Zagier's
+rational closure, which it credits), an effective remainder for
+`E_r(x) = D_r(x) − ζ(2) − (x/r)(log x − H_{r−1})`, its exact divisor-weighted expansion, a
+two-term oscillatory asymptotic of size `x^{3/4} r^{−3/4} e^{−2√(πr/x)}`, and infinitely
+many sign changes (`thm:rational-jets`, `thm:herglotz-bound`, `thm:herglotz-sectors`,
+`thm:herglotz-oscillation`, `cor:herglotz-signs`). It does not cite this report. Not
+re-derived at intake. Files in that report: `code/23-sharp-remainders-verify_herglotz.py`,
+`data/23-sharp-remainders-herglotz_checks.json`,
+`figures/23-sharp-remainders-herglotz_oscillation.{pdf,png}`.

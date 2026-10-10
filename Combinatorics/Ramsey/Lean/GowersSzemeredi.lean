@@ -996,6 +996,7 @@ import GowersSzemeredi.Proofs16GlobalCompatibleDifferenceMaps
 import GowersSzemeredi.Proofs16PropNineThreeTwelve
 import GowersSzemeredi.Proofs16GluedPairMaps
 import GowersSzemeredi.Proofs16FinalPairChoice
+import GowersSzemeredi.Proofs16FinalWindow
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

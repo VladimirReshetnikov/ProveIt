@@ -5915,14 +5915,59 @@ the decomposition with these named constants, but not `Theorem162At 3`.
              `(ε + 2ε′)N³/γ⁴` quadruples fail.
            - Repeated-index quadruples (at most `6N²`) are counted
              separately, as in J.147.
-         - *F4, linear domains.* A `J ⊆ [m]` of size `2s₀` (Milićević takes
-           `8s₀`), chosen by averaging, keeps the `a` with `I_{x_a,a} ∪ I_{y_a,a} ⊆ J`.
-           That is a `C(m, 2s₀)^(−1)` fraction, and
-           `U_a = B(θ_i(a) : i ∈ J; η/4)` is linear in `a`.
-         - *F5, relating back.* `ψ_a = φ_{z+a} − φ_z` on a dense part of
-           `B_{z+a} ∩ B_z` for most `z`, from `x_a ∈ X_a`.
+         - *F4, linear domains (done).* `exists_index_window`
+           (`Proofs16FinalWindow`). Index sets `S_a ⊆ [m]` with
+           `|S_a| ≤ k ≤ m` have a common `J ⊆ [m]` of size `k` containing
+           `S_a` for at least `|A|/C(m, k)` of the `a`'s. The proof
+           pigeonholes a `k`-superset of each `S_a`, which gives the same
+           loss as Milićević's random `J`. Then
+           `U_a = B(θ_i(a) : i ∈ J; η)` is linear in `a`, and it lies inside
+           the domain built from `S_a` (`bohr_anti`), so every containment
+           survives. Take `k = 2s₀`.
+         - *F5, relating back (done).* `gluedPairMap_relate`: if the chosen
+           pair `p` for `a` is compatible with `(z + a, z)`, the glued map
+           equals `φ_{z+a} − φ_z` on the common quarter-radius Bohr set.
+           This is the exact form of
+           `|Z(φ_a − φ_{z+a} + φ_z)| ≥ (ρ/4)^{4d}|G₂|`; the Bohr lower bound
+           gives the size.
 
-         Still to do after F5: the Prop 9.3 output statement itself.
+         **Assembly design (and a trap avoided).**
+         - *Order.*
+           1. Run the iteration to a state with fewer than `εN³` bad
+              triples and fewer than `εN¹¹` bad 12-tuples.
+           2. Call a pair `(x, y)` good for `a` when
+              `(x+a, x, y+a, y)` is compatible and the triple is not bad.
+              Let `A′ = {a : |G_a| ≥ N²/2}`. By Markov,
+              `|A′| ≥ (1 − 2(ε + ε₁))N`, where `ε₁N³` bounds the
+              incompatible quadruples of the input.
+           3. Choose the pairs by F3 with
+              `Bad = Bad12 ∪ {12-tuples with an unrespected 8-tuple}`.
+              Then `|Bad| ≤ (ε + 2ε₂)N¹¹`, where `ε₂N⁷` bounds the
+              unrespected 8-tuples, and `D = (N²/2)⁴`. So at most
+              `16(ε + 2ε₂)N³` distinct quadruples in `A′` fail. Every
+              other quadruple is respected by the glued maps on
+              `⋂_j U_{a_j}`, by F2.
+           4. Choose `J` *for quadruples*, not for single `a`'s: apply
+              `exists_index_window` to the respected quadruples `q`, with
+              `S_q = ⋃_j (I_{x_{a_j},a_j} ∪ I_{y_{a_j},a_j})`, `|S_q| ≤ 8s₀`.
+              The output set is `X = {a ∈ A′ : S_a ⊆ J}`. It contains all
+              four entries of at least `C(m, 8s₀)^(−1)·#respected`
+              quadruples, which also bounds `|X|` from below.
+         - *The trap.* Choosing `J` to maximize `|X|` first, and only then
+           counting respected quadruples inside `X`, is circular. The
+           failure bound would need `ε ≪ C(m, k)^(−4)`, but `m ≤ s₀/δ(ε)`
+           grows as `ε` shrinks. Choosing `J` for quadruples is why
+           Milićević takes `|J| = 8s₀`. With it, `ε, ε₁, ε₂` only need to
+           be small absolute constants.
+         - *Counting quadruples in `A′`.* No energy bound is needed. Since
+           `A′` has density `1 − O(ε + ε₁)`, at least
+           `|A′|³ − |ℤ/N ∖ A′|·N²` triples `(a₀, a₁, a₂)` in `A′` have
+           `a₀ + a₁ − a₂ ∈ A′`. Repeated-index quadruples number at most
+           `6N²` (`repeated_additive_quadruples_card_le`).
+         - *Identification.* `twelveK Γ u` is `columnTupleFrequencies T v`
+           for the x-side 8-tuple `v` of `u`. So "not bad" is exactly F2's
+           split hypothesis `hd` at radius `r/4`: run the iteration at
+           `ρ = r/4`.
          Quantitatively, `s₀ = O(d log(dR))`, and
          `δ` is polynomial in `ε` and `(2R+1)^(−d)`. With
          `R = (ρ^(−1))^O(d)`, this makes `m ≤ s₀/δ = exp(O(d² log 1/ρ))`
