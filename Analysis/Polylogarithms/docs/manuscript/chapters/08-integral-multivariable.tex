@@ -1,0 +1,97 @@
+\subsection{Separable multivariable jets: an exact product law}
+\label{irmulti:sec:product}
+The one-variable minimum-valuation formula has a useful multivariable
+extension when the active parameters separate into coordinate powers.
+The general Koszul answer remains necessary for parameters that do not
+have this form. In particular, replacing several coordinate valuations
+by their minimum would give the wrong answer here.
+
+Let $q>2$, put $r=r(q)$, $n=\varphi(q)/2$, $h=2^{r-1}$, and set
+\[
+ S=k[t_1,\ldots,t_r]/(t_1^{L_1},\ldots,t_r^{L_r}),\qquad
+ L_i\ge1,\qquad \operatorname{char}k=2.
+\]
+Suppose the active sequence, after permutation and multiplication of
+individual entries by units, is $(t_1^{d_1},\ldots,t_r^{d_r})$,
+where $d_i\ge1$; a zero entry is allowed by taking $d_i=\infty$.
+Write $v_i=\min(d_i,L_i)$ and $T=\prod_iL_i$.
+
+\begin{theorem}[Multivariable reflection product law]
+\label{irmulti:thm:dimension}
+Under these hypotheses,
+\begin{align}
+ \dim_k H_j(K_S(\boldsymbol\delta))
+   &=\binom rj\prod_{i=1}^r v_i,\qquad 0\le j\le r,
+       \label{irmulti:eq:homology}\\
+ \dim_k\mathcal D_q(S,a)/(c-1)\mathcal D_q(S,a)
+   &=nT+h\prod_{i=1}^r v_i.\label{irmulti:eq:dimension}
+\end{align}
+The unreflected dimension is $\varphi(q)T$.
+For integral weights in
+$B=\Z[t_1,\ldots,t_r]/(t_1^{L_1},\ldots,t_r^{L_r})$
+whose reduced active sequence has the above form, both reflected
+coinvariants have the abelian-group decomposition
+\[
+ C_\pm(\mathcal D_B)\simeq
+ \Z^{nT}\oplus(\Z/2\Z)^{h\prod_i v_i}.
+\]
+Their integer-torsion submodules are, more precisely, isomorphic as
+$B$-modules to
+\[
+ \left(B/(2,t_1^{v_1},\ldots,t_r^{v_r})\right)^h.
+\]
+The integral assertion uses $k=\mathbb F_2$.
+\end{theorem}
+\begin{proof}
+Multiplying an active entry by a unit and permuting entries induces an
+invertible change of the exterior generators of its Koszul complex.
+After that change, the complex is the tensor product over $k$ of the
+two-term complexes
+\[
+ k[t_i]/(t_i^{L_i})\xrightarrow{t_i^{d_i}}k[t_i]/(t_i^{L_i}).
+\]
+Each has kernel and cokernel of dimension $v_i$, in degrees one and
+zero respectively. As a module over its truncated polynomial ring,
+each homology group is isomorphic to $k[t_i]/(t_i^{v_i})$; multiplication
+by $t_i^{L_i-v_i}$ gives the kernel isomorphism. This includes the
+zero-map case $v_i=L_i$.
+
+The K\"unneth formula over the field $k$ has no Tor corrections. In
+total degree $j$ there is one tensor summand for each $j$-element subset
+of the $r$ factors. Each summand has dimension $\prod_i v_i$ and is
+isomorphic, as an $S$-module, to
+$S/(t_1^{v_1},\ldots,t_r^{v_r})$.
+This proves \eqref{irmulti:eq:homology} and its module refinement.
+The characteristic-two fixed-point theorem gives total reflection
+homology of dimension $2^r\prod_i v_i$. Since $\mathcal D_q(S,a)$
+has dimension $2nT$, the square-zero rank identity
+\eqref{ir:eq:nilpotent-dimension} gives \eqref{irmulti:eq:dimension}.
+For the integral statement apply the finite-free-algebra Tate formula
+of Proposition~\ref{irjet:thm:finite-free-koszul}. The even and odd
+binomial sums are both $2^{r-1}$; the balanced-rank calculation gives
+free rank $nT$. Finally a finitely generated abelian group splits into
+its free part and its torsion subgroup. No splitting as $B$-modules
+or freeness of its torsion-free part is claimed.
+\end{proof}
+
+\begin{example}[Two independent deformation directions at level fifteen]
+Take $B=\Z[t,u]/(t^3,u^4)$,
+$a_3=1+t^2$ and $a_5=1+u^3$. Then $n=4$, $r=2$, $h=2$,
+$T=12$ and $(v_1,v_2)=(2,3)$. Both integral signs give
+\[
+ C_\pm(\mathcal D_B)\simeq\Z^{48}\oplus(\Z/2\Z)^{12},
+\]
+and the characteristic-two reflected dimension is $60$.
+The defect depends on the product $2\cdot3$, not on a single minimum.
+At an active two-prime coordinate one may take $a_2=t_i^{d_i}$
+or $a_2=1+t_i^{d_i}$: in either case
+$a_2(a_2-1)=t_i^{d_i}(1+t_i^{d_i})$, and the second factor is a unit.
+\end{example}
+
+The independent raw-matrix verifier expands the original prime rows and
+reflection rows in point/monomial coordinates over $\mathbb F_2$.
+It imports neither the normal-form generator nor the Koszul calculation.
+It checks 210 finite cases, including both two-prime branches, vanished
+coordinate powers, unequal jet lengths, and a three-prime level. A
+corruption control rejects omission of reflection rows. These computations
+corroborate the formula; the proof above establishes its full scope.

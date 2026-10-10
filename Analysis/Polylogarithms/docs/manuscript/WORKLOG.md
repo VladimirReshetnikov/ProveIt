@@ -1,3 +1,61 @@
+# Reviewed 340-page integral and multivariable milestone
+
+The integral reports are reconciled in Chapter 9 and the separable
+multivariable product law has a full proof. All 210 independent raw-row
+cases and the corruption control pass. The current collective PDF is
+340 pages / 12 chapters / 10 figures / 93 references. Three serial
+LuaLaTeX passes converge with no final warnings; static checks pass.
+All pages were reviewed in 22 contact sheets, with dense new proofs
+and tables at full size. PDF SHA-256:
+0c27415b8024aa8448b46cc5b95197454b170c2a249e0c86d82e41e871bf845e
+
+The provenance census stays 381 textual files, 21 incoming archives and
+865 byte-identical members. No new polylogarithm incoming commit was
+present at the latest fetch; unrelated upstream work must be merged
+before this milestone is pushed. The broader research goal remains
+ACTIVE. Next: sharp real-order signed kernels and endpoint atoms,
+uniform transitions, complete Lerch phase/boundary behavior, golden
+seed and Herglotz classification integration, further S6/S8 proof
+attempts and new identities. Hourly incoming watch remains active.
+
+Historical and implementation context follows.
+
+# Active integral-distribution and multivariable-jet milestone
+
+The previous goal turn made verified progress: preserved/replayed five new
+reports and published the reviewed 320-page CM milestone in 194be0067a.
+This continuation integrates the two integral reports into one full proof
+chain in Chapter 9, including the all-ring basis/unit minor, weighted
+resolution, scalar reflection torsion, characteristic-two Koszul model,
+all-field rank locus, contact-order Smith law, integral finite-jet torsion,
+nonfree torsion-free jet example and all-order analytic identities.
+
+Further research proves a separable multivariable product law: characteristic-
+two reflected dimension n*product(L_i)+2^(r-1)*product(min(d_i,L_i));
+both integral signs have free abelian rank n*product(L_i) and this same
+second term as their two-torsion multiplicity. The torsion modules also
+have an explicit coordinate-power quotient description. The proof uses
+the fixed-point complex and field Kunneth theorem, with integral parity
+sums. Independent original point/monomial binary matrices pass 210 cases
+and a reflection-omission corruption control. An initial control expected
+20 instead of 18 at level 15; that arithmetic typo was repaired before
+acceptance. General mixed multivariable parameters remain open.
+
+The current source audit passes. The integrated PDF is undergoing a fresh
+three-pass build and requires its own rendered review and refreshed
+receipts. The previous 320-page artifact hash is historical. Incoming
+archive members are untouched; source census remains 381 / 21 archives /
+865 members. No new incoming commit was present at this turn's initial
+fetch. Collective authorship is preserved.
+
+Next: final source/proof audit, final PDF layout review and integrity gate,
+then detailed commit and ff-only publication after fresh main merge.
+Broader research remains ACTIVE, with real-order, uniform, Lerch, golden
+seed and Herglotz integration still pending. Continue attempts on S6/S8
+and watch incoming reports. Do not mark the goal complete at this milestone.
+
+Historical checkpoints follow.
+
 # Reviewed 320-page CM milestone
 
 The collective manuscript is now 320 pages / 12 chapters / 10 figures /

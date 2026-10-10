@@ -153,3 +153,15 @@ The saved S8 coordinate receipt is an exact Fraction check of the displayed
 normalized coefficients and primitive vector; it does not prove equality.
 The signed replay reconstructs both frozen S6/S8 proximity enclosures.
 Neither zero-containing residual interval proves a period identity.
+
+## Separable multivariable distribution jets
+
+```powershell
+python verification/check_multivariable_distribution.py
+```
+
+The standard-library verifier expands original point symbols times all
+truncated monomials, constructs the raw prime and reflection rows, and
+computes their binary ranks with integer bit vectors. It imports no
+normal-form or Koszul implementation. The 210-case sweep tests the new
+all-level formula's finite consequences; its proof is in the manuscript.
