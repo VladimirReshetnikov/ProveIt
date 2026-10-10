@@ -409,11 +409,24 @@ def discover_in_sector(triangulation, allowed_types, *, phase='quadrilateral',
             type(max_orbit_cycles) is not int or max_orbit_cycles < 0):
         raise ValueError('invalid orbit allowance')
     kernel = build_sector_kernel(triangulation, allowed_types, check=check)
+    return _discover_in_kernel(kernel, phase=phase, method=method, max_bases=max_bases,
+        max_orbit_cycles=max_orbit_cycles, check=check)
+
+
+def _discover_in_kernel(kernel, *, phase, method='auto', max_bases=None,
+                        max_orbit_cycles=None, check=lambda: None, corner_first=True):
+    """Reuse one prepared kernel; the caller owns validation and source."""
+    triangulation = kernel.triangulation
     stats = dict(kernel.stats, positive_euler_rays=0, orbit_queries=0)
     transcript = []
+    if corner_first and phase == 'standard' and method == 'auto' and len(kernel.basis) == 3:
+        from .sector_planar import sector_planar_discovery_rays
+        candidates = sector_planar_discovery_rays(kernel, check=check, max_rays=max_bases, stats=stats)
+    else:
+        candidates = sector_rays(kernel, phase=phase, method=method, max_bases=max_bases,
+                                 check=check, stats=stats)
     try:
-        for rows in sector_rays(kernel, phase=phase, method=method, max_bases=max_bases,
-                                check=check, stats=stats):
+        for rows in candidates:
             analysed = _coordinates(kernel.prepared, rows, check)
             chi = analysed['euler_characteristic']
             q = [rows[t][4+j] for t, j in kernel.support]
@@ -482,11 +495,14 @@ def sparse_disc_search(triangulation, *, max_active, max_sectors=None,
                                 sectors_visited=visited)
                 visited += 1
                 support = list(zip(tets, types))
-                result = discover_in_sector(triangulation, support,
+                kernel = build_sector_kernel(triangulation, support, check=check)
+                result = _discover_in_kernel(kernel,
                     phase='quadrilateral', max_bases=max_bases_per_sector, check=check)
                 if result['status'] == 'POSITIVE_EULER_ONLY':
-                    result = discover_in_sector(triangulation, support,
-                        phase='standard', max_bases=max_bases_per_sector, check=check)
+                    # The Q phase already tested every corner: avoid another
+                    # prelude and reuse the prepared matching kernel.
+                    result = _discover_in_kernel(kernel, phase='standard',
+                        max_bases=max_bases_per_sector, check=check, corner_first=False)
                 if result['status'] in ('DISC_FOUND', 'INCONCLUSIVE'):
                     return dict(result, sectors_visited=visited)
     return dict(status='NO_VERTEX_DISC_UP_TO_SUPPORT', max_active=max_active,
