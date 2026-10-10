@@ -6075,7 +6075,64 @@ the decomposition with these named constants, but not `Theorem162At 3`.
               Possibly every `C_i` contains the small `C₀` in which the
               `a`'s live. That would need the Theorem 2.26 progressions to
               contain `C₀`, which is not stated.
-         2. *Explicit exponents* for the regime check above.
+            - *The ε-proportionality principle (2026-10-10).* Every
+              candidate repair has failed in the same way.
+              - The candidates: per-round localization; a pigeonholed
+                common index set `S*`; a common translate `s + ⋂K_i` with
+                local quadruple counting; recentring through the affine
+                linear parts `L_i = λ_i + u_i` on `⋂K_i`.
+              - Each pays a factor built from the iteration's output: the
+                round count `m`, or the ranks of the `K_i`, which are
+                `polylog(1/δ)` with `log(1/δ) ≥ 9316·log(1/ε)`. The
+                failing-quadruple bound `O(ε)N³` must then beat that
+                factor. So `log(1/ε)` must exceed a power `> 1` of
+                `log(1/ε)`, which is circular.
+              - Milićević's window is the one step that escapes: it loses
+                the same factor `C(m, 8s₀)⁻¹` on good and failing
+                quadruples alike.
+              - So a repair of coherence must likewise be *proportional*.
+                It must select domains by an operation that scales good
+                and failing configurations equally, or produce domains
+                (such as a fixed `C₀ ⊆ C_i`) whose size does not depend on
+                the iteration.
+              - With affine `L_i = λ_i + u_i` on centred `K_i`, everything
+                reduces to one question: can the `a`'s be confined in
+                advance to a centred set contained in every `K_i`?
+              - *Quantified obstruction.*
+                - Localizing to a common Bohr-type piece costs at least
+                  `exp(−C·rank(⋂_{i∈J} K_i)) ≥ exp(−C′·s₀·(log 1/δ)⁴)`,
+                  with `log(1/δ) = O(d log R) + 9316·log(1/ε)`.
+                - The failure count `O(ε)N³` must beat it. So
+                  `log(1/ε) ≳ s₀·(log 1/δ)⁴ ≥ s₀·(9316·log 1/ε)⁴`, which
+                  is impossible.
+                - Extending each `θ_i` from its dense `B_i` to the whole
+                  `C₀` is also impossible in general. A Freiman map on a
+                  dense set extends only to the thickening `B_i + K_i`.
+                  The same holds for maps on low-rank Bohr sets: they are
+                  linear forms in the GAP coordinates, not global
+                  multiplications `x ↦ t·x`.
+              - *Status against the paper.* The overview (p. 12) states
+                Step 5's output as `Θ₁, …, Θ_r` Freiman-linear on the whole
+                index progression `C`, with the index set becoming a dense
+                `X ⊆ C`. Proposition 9.3 states `Θ_i` on a coset
+                progression `C′` with `X ⊆ C′`. But the printed proof
+                produces each `θ_i` on its own Theorem 2.26 progression
+                `C_i`, and never shows that `X` meets `⋂_{i∈J} C_i` in a
+                set carrying many respected quadruples. By the bound above,
+                this cannot follow from any localization whose cost depends
+                on the iteration. **This appears to be a gap in the printed
+                proof of Proposition 9.3**, not only in our formalization.
+                Resolving it needs a new idea, or a different Step 5.
+         2. *Explicit exponents (done, `Proofs16PropNineThreeBudget`).*
+            With `L = d·log(2R+1)` and `ℓ = log(1/ε)`:
+            - `log(1/claimNineFourDensity) ≤ 6540·log 2 + 37264·L + 9316·ℓ`;
+            - `log(1/claimNineFiveDensity) ≤ 25172·log 2 + 149056·L + 9316·ℓ`;
+            - the window loss satisfies `C(m + k, k) ≤ (m + k)^k`.
+
+            So `log(1/final density) = O(s₀·log(s₀/δ))`, which is
+            polynomial in `d`, `log R` and `log(1/ε)`. Here
+            `R = propNineThreeRadius` is `(r/4)^(−O(d))`. This confirms the
+            regime check.
          3. **The rank obstruction, and why Theorem 2.26 is needed here
             (2026-10-10).** Domain coherence hides a rank problem.
             - *The obstruction.* In Claims 9.4/9.5 the Freiman step runs at
