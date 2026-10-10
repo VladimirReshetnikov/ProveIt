@@ -327,7 +327,7 @@ this census entry substitutes for integrating the full analytic proof.
 
 | Source group | Canonical reconciliation and remaining scope |
 |---|---|
-| all-depth-signed-oscillation | The signed moment operators, exact density zero count, minimal polynomial compensation, all-depth upper-arc count and inward angular motion have been read and audited; full canonical insertion remains pending. Leading indices are positive integers and the terminal index is positive real. This is not a normalized-radius sign theorem at every depth. |
+| all-depth-signed-oscillation | The signed moment operators, exact density zero count and interlacing, minimal polynomial compensation, all-depth upper-arc count, inward angular motion, uniform asymptotics, logistic kernels and certified evaluation are audited and integrated in Chapter 5. Leading indices are positive integers and the terminal index is positive real. This is not a normalized-radius sign theorem at every depth. |
 | radial-bifurcation | Global quartic-transition and local fold certificates replay in full, including actual-function witnesses. The global-in-inner-order theorem, local classification and the distinct full-function turning count await canonical analytic reconciliation. |
 | sharp-universal-euler | The independent universal constant overlaps the collective contraction proof. The full 9/8 later-step proof is now integrated with all finite polynomial premises and the analytic all-index reduction. Generating identities and negative-outer-order Gaussian signs remain pending. Scaled-error monotonicity is false; the exact (4,1) reversal is retained. |
 | golden-cayley-double-turning | Independent Euler proof corroborates the integrated 9/8 budget. The remaining golden weight-five ladders, all-weight Cayley projector, formal S6 separator and turning-point proofs pass exact replay and await canonical insertion. Formal quotient exclusion is not period independence. |
@@ -356,3 +356,55 @@ with the three ignored manifests recoverable in the sixth arrival archives.
 The manuscript author remains ProveIt Contributors. Canonical publication
 requires rebuilding and reviewing the expanded book, separately from these
 source-preservation and arithmetic milestones.
+
+## All-depth structural integration and a stronger collective radial theorem
+
+The all-depth-signed-oscillation proof is now integrated as one dependency
+chain: bounded strict-prefix and index-raising moment operators, exact simple
+density zeros, interlacing, minimal positive compensation, slit-plane
+nonvanishing, multiplicity-sensitive angular count, inward angular motion,
+positive seeds and shifted terminal orders, uniform expansions, explicit
+logistic kernels, positive integral identities, and rational evaluation.
+The freshly repeated isolated suite passes all 5,713 finite assertion groups.
+The interlacing statements now explicitly separate the empty comparison at
+depth two from the higher-depth display; positivity near one also avoids
+referring to a nonexistent largest density zero at depth one. The rational
+control cross-reference is a section of the book rather than an appendix. The original source remains unchanged.
+
+A new collective argument strengthens the positive-transform radial lemma.
+Exact symmetrization of the logarithmic derivative yields a polynomial with
+three nonnegative terms on the disk. It proves strict radial phase increase
+for every positive measure not concentrated at zero, with an explicit
+moment lower bound. The universal radius-one range is sharp: for every
+larger prescribed radius a positive two-atom transform has negative radial
+phase derivative. The measure theorem has a full analytic proof, alongside
+three independently expanded SymPy identities, 200 rational atomic pair
+comparisons and quantitative bounds, 175 strict cases, 25 constant cases,
+200 prescribed-radius counterexamples, and a corruption control. Wolfram
+15.0.1 independently confirms the polynomial identities and rejects the
+corruption.
+
+Combining this theorem with the already integrated real-order compensation
+proves theta'(rho)<0 for every a>=0,b>0, including the singular-boundary-series
+regions. The Cartesian abscissa ratio grows faster than the radius ratio.
+This does not assign a uniform sign to cos(theta)/rho: the proved subcritical
+increase, leading-one trichotomy and fractional turning points keep their
+existing scope. Higher-depth fractional leading indices, the remaining
+normalized-radius conjectures and numerical period identities remain active.
+
+## Several-color logistic identities and Gaussian logarithmic moments
+
+The collective continuation adds a divided-difference identity for the
+logistic generating density against any finite product of resolvents.
+Coalescing colors gives a finite polynomial formula at every resolvent
+order. Parameter differentiation proves that every Gaussian logarithmic
+moment I_(m,k), m>=2,k>=0, belongs to Q[i,pi,log(2)], with an explicit
+coefficient recurrence and printed low moments. Two real Gaussian
+parameter integrals give further all-order logarithmic moment families.
+The proof is beta moments, binomial summation, partial fractions,
+confluent limits and dominated parameter differentiation. The classical
+mechanism carries no literature-priority or period-independence claim.
+Finite exact polynomial/coefficient checks and independent logistic-axis
+quadratures accompany these identities as separate evidence. The next
+research emphasis is functional certificates and unresolved finite-weight
+identities; additional bounds are secondary to that identity programme.

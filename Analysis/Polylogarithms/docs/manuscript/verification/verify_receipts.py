@@ -248,15 +248,28 @@ outcomes['printed-tetralogarithm-independent-audit']=x['status']=='PASS' and x['
 x=read('seventh-replay/extremizers/verification/replay_report.json')
 outcomes['seventh-extremizer-finite-suite']=x['status']=='passed' and not x['diagnostics_requested'] and len(x['scripts'])==4 and all(c['status']=='passed' and c['return_code']==0 for c in x['scripts'])
 x=read('seventh-final-raster-comparison.json')
-outcomes['seventh-final-raster-review']=x['pdf_sha256']==pdfhash and x['previous_pdf_sha256']=='839a763e832960fec3728797bb5de9b86a671836358ae844659e523686f9d54f' and x['page_count']==392 and x['thumbnail_pages_compared']==392 and x['contact_sheets_compared']==25 and x['changed_thumbnail_pages']==[2,37,156] and x['changed_contact_sheets']==[1,33,145] and x['changed_full_pages']==[2,37,156]
+outcomes['historical-seventh-final-raster-review']=x['pdf_sha256']=='15725fcab0ef5baeff68dc0fcb14eaf1da93a4906ad0a8ef68423cb46dd250db' and x['previous_pdf_sha256']=='839a763e832960fec3728797bb5de9b86a671836358ae844659e523686f9d54f' and x['page_count']==392 and x['thumbnail_pages_compared']==392 and x['contact_sheets_compared']==25 and x['changed_thumbnail_pages']==[2,37,156] and x['changed_contact_sheets']==[1,33,145] and x['changed_full_pages']==[2,37,156]
+x=read('stieltjes-radial-certificates.json')
+outcomes['strict-Stieltjes-radial-exact-controls']=x['status']=='PASS' and x['symbolic_identities']==3 and x['corrupted_polynomial_controls']==1 and x['counts']=={'atomic_pair_equalities':200,'quantitative_bounds':200,'strict_positive_cases':175,'constant_zero_cases':25,'prescribed_outside_radius_counterexamples':200}
+x=read('stieltjes-radial-native.json')
+outcomes['strict-Stieltjes-radial-native']=x['all_pass'] and len(x['checks'])==4 and all(x['checks'].values())
+x=read('logistic-resolvent-results.json')
+outcomes['logistic-resolvent-exact-controls']=x['status']=='PASS' and x['exact_confluent_coefficient_identities']==117 and x['exact_partial_fraction_identities']==6 and x['printed_base_polynomials']==3 and x['printed_quartic_moment'] and x['printed_real_second_moments']==2 and x['corruption_controls']==1
+outcomes['logistic-resolvent-numerical-diagnostics']=x['numerical_diagnostics']['working_decimal_digits']==65 and not x['numerical_diagnostics']['interval_certified'] and len(x['numerical_diagnostics']['cases'])==30 and all(Decimal(c['absolute_residual'])<Decimal('1e-55') for c in x['numerical_diagnostics']['cases'])
+x=read('logistic-resolvent-native.json')
+outcomes['logistic-resolvent-native']=x['all_pass'] and x['all_exact_pass'] and x['exact_coefficient_identities']==45 and not x['numerical_diagnostics']['interval_certified'] and len(x['numerical_diagnostics']['rows'])==6 and all(c['passed'] for c in x['numerical_diagnostics']['rows'])
+x=read('sixth-replay/all-depth/data/verification_report.json')
+outcomes['all-depth-finite-exact-suite']=x['status']=='PASS' and x['total_checked_assertion_groups']==5713
+x=read('all-depth-final-raster-comparison.json')
+outcomes['all-depth-final-raster-review']=x['pdf_sha256']==pdfhash and x['previous_pdf_sha256']=='97a74937fa354d400503053fc7269436b6740e6cf097b71c5a2b227518e5a2eb' and x['page_count']==417 and x['thumbnail_pages_compared']==417 and x['contact_sheets_compared']==27 and x['changed_thumbnail_pages']==[181,197] and x['changed_contact_sheets']==[177,193] and x['changed_full_pages']==[181,197]
 visual=read('visual-review.json')
-outcomes['recorded-visual-review']=visual['passed'] and visual['pdf_sha256']==pdfhash and visual['page_count']==392 and visual['all_contact_sheets_reviewed']==25 and visual['scientific_figures_reviewed']==13 and not visual['findings']
+outcomes['recorded-visual-review']=visual['passed'] and visual['pdf_sha256']==pdfhash and visual['page_count']==417 and visual['all_contact_sheets_reviewed']==27 and visual['scientific_figures_reviewed']==13 and not visual['findings']
 result=dict(changed_sources=changed,changed_dependencies=changed_dependencies,pdf_sha256=pdfhash,
  pdf_matches_build=pdfhash==build['pdf_sha256'],pdf_matches_render=pdfhash==render['pdf_sha256'],
  page_count=render['page_count'],source_documents=doc['source_documents'],converged_build=build['passed'],
  pdf_static_checks=render['static_passed'],document_integrity=doc['passed'],recorded_outcomes=outcomes,
  asymptotic_diagnostic_records=diagnostic_records,incoming_archive_errors=archive_errors,
  scope='Recorded evidence integrity only; visual review and scientific replay are separate activities.')
-result['passed']=not changed and not changed_dependencies and all(outcomes.values()) and all(result[k] for k in ['pdf_matches_build','pdf_matches_render','converged_build','pdf_static_checks','document_integrity']) and result['page_count']==392 and result['source_documents']==599 and render.get('pdf_author')=='ProveIt Contributors'
+result['passed']=not changed and not changed_dependencies and all(outcomes.values()) and all(result[k] for k in ['pdf_matches_build','pdf_matches_render','converged_build','pdf_static_checks','document_integrity']) and result['page_count']==417 and result['source_documents']==599 and render.get('pdf_author')=='ProveIt Contributors'
 (V/'receipt-integrity.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
 print(json.dumps(result,indent=2));raise SystemExit(0 if result['passed'] else 1)
