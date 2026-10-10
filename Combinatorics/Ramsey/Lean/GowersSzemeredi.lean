@@ -1016,6 +1016,8 @@ import GowersSzemeredi.Proofs16SinglePieceRemainder
 import GowersSzemeredi.Proofs16SinglePieceLift
 import GowersSzemeredi.Proofs16SmallDomainLocalObstruction
 import GowersSzemeredi.Proofs16SinglePieceFrequency
+import GowersSzemeredi.Proofs16GlobalCoverProviders
+import GowersSzemeredi.Proofs16SinglePieceGlobal
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

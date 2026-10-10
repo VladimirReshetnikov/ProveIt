@@ -2404,14 +2404,64 @@ proper box by few multilinear graphs (`MultiplyLinearWith Qb Eb`).
   no union over members is needed, because the single-piece route never
   forms unions. That is weaker than Part J's `StackableStructureAt 2`.
 
-**Next (after the correction).**
-1. Kernel-check the counterexample, so the retraction is itself proved.
-2. Restate the inputs as `PolyCoverAt l Qb Eb`, the global-to-local
-   polynomial cover, and derive providers on good domains. Rebuild
-   `single_piece_lift` and the frequency box with good-set intersections
-   (each costs `θ′N^(k+1)` globally). Discharge `l = 1` by
-   `section16_product_relation_cubic_cover`.
-3. Then the length-6 budget.
+**The repair (same day): global-to-local inputs and providers on good
+domains.**
+
+`Proofs16GlobalCoverProviders`:
+- `PolyCoverAt l Qb Eb` is the global-to-local polynomial cover. A relation
+  with the global product property and `|Γ| ≤ γ⁻²N^l`, after deleting
+  `θN^l` base points, is `MultiplyLinearWith (Qb γ θ) (Eb γ θ)`-covered on
+  every proper box.
+  - `polyCoverAt_one` proves it in dimension one from
+    `section16_product_relation_cubic_cover`. There
+    `Qb = 3·section16BaseFamilyBound γ θ ≤ 3(2/(γθ))^10002`, independent of
+    the loss, and `Eb = cubicBaseExponent = 2^(−27)σ³/q⁴`.
+- `MultiplyLinearWith.localRelationCoverFor` turns a cover on a good set
+  `J` into a per-relation local cover provider on `J`.
+  `MultiplyLinearWith.localPieceFor` does the same for a function: a
+  dense cell, then pigeonhole over the graphs, giving density
+  `(θ/2)/Qb(θ/2)` and width `⌈L^(Eb(θ/2))⌉`.
+- `card_filter_selected_not_mem_le` counts preimages: deleting `θN^l`
+  points in an `l`-dimensional face costs `θN^n` points of `(ℤ/N)^n`.
+
+Generalizations:
+- `single_piece_of_spectrum_cover_for` takes a provider for the spectrum
+  relation on a domain containing the base points. It needs no product
+  property and no fibre bound.
+- `remainder_piece_on` takes vertex providers on arbitrary domains.
+- `vertex_localPieceFor_of_face` lifts any face provider to the translated
+  cube vertex.
+
+`Proofs16SinglePieceGlobal`:
+- `single_piece_lift_core` is the lift from providers on explicit domains,
+  for any dense part `B₁′` of Gowers's good domain `B₁` inside them.
+- `single_piece_lift_global` builds every provider from `PolyCoverAt` and
+  calls the core. It covers three kinds of retained objects:
+  - the spectrum relation `Δ` (dimension `k`, parameter `δ`);
+  - each non-top vertex face pullback (dimension `|S_e| ≤ k`);
+  - each translated last-coordinate slice (dimension `k`).
+
+  It then removes the three bad sets. Each costs at most
+  `θ′N^(k+1)`, with `θ′ = θ₂/(2(2^k+1))`, so `|B₁′| ≥ (θ₂/2)N^(k+1)`.
+
+**Where the gap now stands.** The single trilinear piece (`k = 2`) needs
+only `PolyCoverAt 1`, which is proved, and `PolyCoverAt 2`.
+`PolyCoverAt 2` is a polynomial-control, **non-stackable** cover theorem
+for two-dimensional product relations. It is the remaining open core.
+Two comparisons:
+- It is weaker than Part J's `StackableStructureAt 2`, which also asks
+  that unions of members stay covered.
+- It is stronger than the proved `theorem_16_2_at_two`, whose controls
+  are tower-type.
+
+The kernel-checked length-6 budget comparison is still to be done.
+
+**Next.**
+1. The length-6 budget: instantiate `single_piece_lift_global` at `k = 2`
+   inside the frequency-box → localization → `FunctionDiscrepancyBound 4`
+   route. Then compare with `szemerediThreshold δ 6`, under `PolyCoverAt 2`
+   with power-law controls.
+2. Study `PolyCoverAt 2` itself, the non-stackable dimension-two cover.
 
 ## F. Routes
 
