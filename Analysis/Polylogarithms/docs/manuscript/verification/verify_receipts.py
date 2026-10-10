@@ -78,6 +78,10 @@ for archive in archives:
         if not p.is_file() or digest(p,False)!=member['sha256']:
             archive_errors.append(member['path'])
 outcomes['incoming-archive-preservation']=len(archives)==21 and sum(len(a['files']) for a in archives)==865 and not archive_errors
+x=read('incoming-retirement.json')
+archive_by_path={a['archive']:a for a in archives}
+outcomes['imported-archive-retirement']=x['archive_count']==16 and x['preserved_members']==691 and len(x['archives'])==16 and sum(a['members'] for a in x['archives'])==691 and (B.parents[3]/'docs/incoming/README.md').is_file() and all(
+    not (B.parents[3]/a['archive']).exists() and a['all_members_match_placement_blobs'] and a['archive'] in archive_by_path and a['arrival_commit']==archive_by_path[a['archive']]['archive_git_revision'] and a['members']==len(archive_by_path[a['archive']]['files']) and (B.parents[3]/a['destination']).is_dir() for a in x['archives'])
 for part,count in [('rigidity',1),('distribution',7),('conductor',4),('complement',5),('reflection',8)]:
     x=read(f'incoming-replay/{part}/replay-summary.json')
     outcomes['incoming-replay/'+part]=x['passed'] and len(x['commands'])==count and all(c['exit_code']==0 for c in x['commands']) and all((V/'incoming-replay'/part/p).is_file() for p in x['fresh_result_files'])
@@ -158,15 +162,36 @@ outcomes['new-S6-S8-proximity-replay']=len(x['checks'])==4 and all(c['status']==
 x=read('multivariable-distribution-results.json')
 outcomes['multivariable-distribution-raw-ranks']=x['status']=='PASS' and x['cases']==210 and len(x['checks'])==210 and x['corruption_controls']==1 and all(c['passed'] and c['reflected_dimension']==c['expected'] for c in x['checks'])
 x=read('final-raster-equivalence.json')
-outcomes['final-whitespace-rebuild-raster-equivalence']=x['pdf_sha256']==pdfhash and x['page_count']==340 and x['thumbnail_pages_compared']==340 and x['raster_files_compared']>=374 and x['all_rasters_identical']
+outcomes['historical-340-page-raster-equivalence']=x['pdf_sha256']=='0c27415b8024aa8448b46cc5b95197454b170c2a249e0c86d82e41e871bf845e' and x['page_count']==340 and x['thumbnail_pages_compared']==340 and x['raster_files_compared']==432 and x['all_rasters_identical']
+# This historical receipt never establishes review of the expanded current PDF.
+x=read('subcritical-difference-certificates.json')
+outcomes['subcritical-exact-signs']=x['status']=='PASS' and x['integer_root_inequalities']==3064 and x['difference_sign_certificates']==616 and x['Euler_increment_signs']==112 and len(x['signs'])==616 and all(0<Fraction(c['lower'])<=Fraction(c['upper']) for c in x['signs'])
+outcomes['subcritical-Gaussian-enclosures']=len(x['Gaussian_cases'])==7 and all(c['passed'] and c['Euler_terms']==192 and Fraction(c['analytic_Gaussian_interval']['lower'])<Fraction(c['analytic_Gaussian_interval']['upper'])<0 and Fraction(c['width'])==Fraction(c['analytic_Gaussian_interval']['upper'])-Fraction(c['analytic_Gaussian_interval']['lower']) and c['rational_error_constant']==('5/4' if c['a']=='0' and c['b']=='3/2' else '57/50') for c in x['Gaussian_cases'])
+axis=next(c for c in x['Gaussian_cases'] if c['a']=='0' and c['b']=='3/2')
+outcomes['Gaussian-axis-exact-comparison']=-2*Fraction(axis['analytic_Gaussian_interval']['upper'])>Fraction(227,200)
+x=read('subcritical-native-results.json')
+outcomes['subcritical-native']=x['all_pass'] and x['working_precision']==100 and len(x['checks'])==7 and all(c['within_exact_interval'] for c in x['checks'])
+for part,count in [('threshold',3),('geometry',1),('boundary',1)]:
+    x=read(f'real-order-replay/{part}/replay-summary.json')
+    outcomes['real-order-replay/'+part]=x['passed'] and len(x['commands'])==count and all(c['exit_code']==0 for c in x['commands']) and bool(x['fresh_result_files']) and all((V/'real-order-replay'/part/p).is_file() for p in x['fresh_result_files'])
+x=read('real-order-replay/threshold/data/exact_certificates.json')
+outcomes['real-order-fractional-certificates']=x['all_checks_passed'] and len(x['euler'])==8 and len(x['angle_brackets'])==12 and x['integer_root_inequalities_checked']==7430
+x=read('real-order-replay/threshold/data/diagnostics.json')
+outcomes['real-order-symbolic-identities']=len(x['symbolic_checks'])==9 and all(x['symbolic_checks'].values())
+x=read('real-order-replay/geometry/data/geometry_diagnostics.json')
+outcomes['real-order-geometry-diagnostics']=x['status']=='all diagnostic assertions passed' and len(x['direct_kernel_comparisons'])==9 and len(x['zero_arcs'])==16
+x=read('real-order-replay/boundary/data/geometry_boundary_diagnostics.json')
+outcomes['real-order-boundary-diagnostics']=x['status']=='all diagnostic assertions passed' and x['precision_decimal_digits']==90 and len(x['rows'])==21
+x=read('Gaussian-axis-plot.json')
+outcomes['Gaussian-axis-plot-diagnostic']=x['working_precision']==40 and len(x['points'])==180
 visual=read('visual-review.json')
-outcomes['recorded-visual-review']=visual['passed'] and visual['pdf_sha256']==pdfhash and visual['page_count']==340 and visual['all_contact_sheets_reviewed']==22 and visual['scientific_figures_reviewed']==10 and not visual['findings']
+outcomes['recorded-visual-review']=visual['passed'] and visual['pdf_sha256']==pdfhash and visual['page_count']==375 and visual['all_contact_sheets_reviewed']==24 and visual['scientific_figures_reviewed']==13 and not visual['findings']
 result=dict(changed_sources=changed,changed_dependencies=changed_dependencies,pdf_sha256=pdfhash,
  pdf_matches_build=pdfhash==build['pdf_sha256'],pdf_matches_render=pdfhash==render['pdf_sha256'],
  page_count=render['page_count'],source_documents=doc['source_documents'],converged_build=build['passed'],
  pdf_static_checks=render['static_passed'],document_integrity=doc['passed'],recorded_outcomes=outcomes,
  asymptotic_diagnostic_records=diagnostic_records,incoming_archive_errors=archive_errors,
  scope='Recorded evidence integrity only; visual review and scientific replay are separate activities.')
-result['passed']=not changed and not changed_dependencies and all(outcomes.values()) and all(result[k] for k in ['pdf_matches_build','pdf_matches_render','converged_build','pdf_static_checks','document_integrity']) and result['page_count']==340 and result['source_documents']==381 and render.get('pdf_author')=='ProveIt Contributors'
+result['passed']=not changed and not changed_dependencies and all(outcomes.values()) and all(result[k] for k in ['pdf_matches_build','pdf_matches_render','converged_build','pdf_static_checks','document_integrity']) and result['page_count']==375 and result['source_documents']==381 and render.get('pdf_author')=='ProveIt Contributors'
 (V/'receipt-integrity.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
 print(json.dumps(result,indent=2));raise SystemExit(0 if result['passed'] else 1)
