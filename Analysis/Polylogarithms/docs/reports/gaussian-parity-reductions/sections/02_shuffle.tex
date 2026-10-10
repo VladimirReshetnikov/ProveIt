@@ -1,0 +1,269 @@
+\section{Exact shuffle quotients and a two-product proof at weight five}
+\label{sec:shuffle}
+
+\subsection{The quotient being computed}
+
+Let \(\mathcal H^1\) be the rational vector space on the empty word
+and all binary words ending in \(1\), with shuffle multiplication.
+It is bigraded by word length \(w\) and number of ones \(d\).
+Let \(\mathcal J\) be its augmentation ideal, spanned by nonempty
+words. The indecomposable quotient
+\[
+Q_{w,d}=(\mathcal J/\mathcal J^2)_{w,d}
+\]
+sets products of two positive-weight elements equal to zero.
+This is a formal combinatorial construction. Shuffle equalities evaluate
+to analytic identities at \(z\); the corresponding map on indecomposable
+quotients requires also quotienting the evaluated algebra by products.
+Evaluation can introduce further relations. In particular, the formal
+dimension is not the dimension of a space of numerical periods.
+
+\begin{theorem}[The exact formal shuffle count]\label{thm:witt}
+For \(w\ge1\) and \(1\le d\le w\),
+\[
+\dim_{\Q}Q_{w,d}
+=\ell_{w,d}
+:=\frac1w\sum_{k\mid\gcd(w,d)}
+\mu(k)\binom{w/k}{d/k}.
+\]
+A basis is represented by the binary Lyndon words of length \(w\)
+with \(d\) ones. Every such word belongs to \(\mathcal H^1\).
+Every other word has a finite, exact polynomial expression in the full
+family of Lyndon generators, each monomial having the original total
+bidegree. The number of independent product relations in
+this component is
+\[
+\binom{w-1}{d-1}-\ell_{w,d}.
+\]
+\end{theorem}
+
+\begin{proof}
+Order the alphabet by \(0<1\) and words lexicographically.
+A Lyndon word is strictly smaller than every nontrivial rotation.
+Every word has a unique Chen--Fox--Lyndon factorization into a
+nonincreasing concatenation of Lyndon words.
+In characteristic zero, shuffle monomials in Lyndon words form a
+polynomial basis \cite{Radford}. One can see the constructive point
+directly: if the factorization is \(u_1^{m_1}\cdots u_r^{m_r}\) with
+distinct \(u_1>\cdots>u_r\), then the shuffle product
+\(u_1^{\shuffle m_1}\shuffle\cdots\shuffle u_r^{\shuffle m_r}\)
+has this concatenation as its lexicographically largest word, with
+coefficient \(m_1!\cdots m_r!\). All other words are smaller.
+Induction therefore gives a triangular polynomial expression, and the
+same triangularity proves linear independence of the monomials.
+
+Every Lyndon word of length greater than one that contains both letters
+starts with \(0\) and ends with \(1\). The single-letter words are
+\(0\) and \(1\). The factorization of a word ending in \(1\) cannot
+contain the factor \(0\), because that smallest factor would be last,
+forcing the concatenation to end in \(0\).
+Thus \(\mathcal H^1\) is exactly the polynomial algebra on all Lyndon
+words other than \(0\). Passing to its augmentation quotient leaves
+one class for each generator.
+
+It remains to count. A primitive binary word of length \(w\) with
+\(d\) ones has \(w\) distinct rotations and exactly one Lyndon rotation.
+Every binary word is a power of a unique primitive word.
+M\"obius inversion on this power decomposition gives
+\(\sum_{k\mid\gcd(w,d)}\mu(k)\binom{w/k}{d/k}\)
+primitive words, proving the formula. Finally, there are
+\(\binom{w-1}{d-1}\) words ending in \(1\) in the component, which
+gives the claimed product rank.
+\end{proof}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{c|rrrrr}
+\toprule
+Weight \(w\)&\(d=1\)&\(d=2\)&\(d=3\)&\(d=4\)&\(d=5\)\\
+\midrule
+3&1&1&0&--&--\\
+4&1&1&1&0&--\\
+5&1&2&2&1&0\\
+6&1&2&3&2&1\\
+7&1&3&5&5&3\\
+8&1&3&7&8&7\\
+9&1&4&9&14&14\\
+\bottomrule
+\end{tabular}
+\caption{The exact formal indecomposable counts \(\ell_{w,d}\).
+They count Lyndon generators, not independent numerical constants.}
+\label{tab:witt}
+\end{table}
+
+For \(w=6,d=3\), the ten words reduce modulo products to three Lyndon
+words:
+\[
+000111,\qquad001011,\qquad001101,
+\]
+corresponding respectively to \(F_{4,1,1}\), \(F_{3,2,1}\),
+and \(F_{3,1,2}\). This explains the manuscript's finite rank-seven
+observation and gives its uniform extension.
+The companion code records the full polynomial normal forms of all ten
+triples. For a compact view of the quotient, put
+\(X=[F_{4,1,1}],Y=[F_{3,2,1}],Z=[F_{3,1,2}]\), where brackets mean
+classes modulo products. Exact triangular elimination gives
+\[
+\begin{array}{c|rrr@{\qquad}c|rrr}
+ &X&Y&Z&&X&Y&Z\\ \hline
+{}[F_{4,1,1}]&1&0&0 &[F_{1,4,1}]&6&3&1\\
+{}[F_{3,2,1}]&0&1&0 &[F_{1,3,2}]&-12&-6&-2\\
+{}[F_{3,1,2}]&0&0&1 &[F_{1,2,3}]&12&6&2\\
+{}[F_{2,3,1}]&-9&-4&-1 &[F_{1,1,4}]&-6&-3&-1\\
+{}[F_{2,2,2}]&12&4&0 &[F_{2,1,3}]&-3&-1&0
+\end{array}
+\]
+For example, one full identity before taking the quotient is
+\begin{equation}
+F_{2,2,2}(z)=12F_{4,1,1}(z)+4F_{3,2,1}(z)
+-2\Li_2(z)F_{3,1}(z)+\frac{\Li_2(z)^3}{6}.
+\label{eq:full-222}
+\end{equation}
+Re-expanding its right side into words gives the single word \(010101\)
+with coefficient one. This supplies a finite rational certificate,
+including the product terms that a quotient table suppresses.
+
+\subsection{An elementary all-weight double elimination}
+
+At depth two the count simplifies to
+\[
+\ell_{w,2}=\left\lfloor\frac{w-1}{2}\right\rfloor.
+\]
+There is also a direct triangular proof that avoids general shuffle
+algebra. For \(p+q=w\), shuffling the two single-polylogarithm words gives
+\begin{align}
+\Li_p(z)\Li_q(z)
+={}&\sum_{j=1}^{p}\binom{w-j-1}{q-1}F_{w-j,j}(z)
++\sum_{j=1}^{q}\binom{w-j-1}{p-1}F_{w-j,j}(z).
+\label{eq:general-double-shuffle}
+\end{align}
+The binomial coefficient counts the interleavings of the zero blocks
+before the second nonzero letter.
+
+\begin{proposition}[Independent double product rows]\label{prop:double-rank}
+For fixed \(w\), the rows of
+\eqref{eq:general-double-shuffle} with
+\(1\le p\le\lfloor w/2\rfloor\) have rank
+\(\lfloor w/2\rfloor\) on the \(w-1\) double coordinates.
+They express the entire family through products of singles and the
+\(\lfloor(w-1)/2\rfloor\) coordinates
+\[
+\{F_{w-j,j}:1\le j\le\lfloor(w-1)/2\rfloor\}.
+\]
+This set is empty when \(w=2\).
+\end{proposition}
+
+\begin{proof}
+In the row indexed by \(p\), the largest inner index appearing is
+\(q=w-p\). Its coefficient is \(1\) when \(p<q\), and \(2\)
+when \(p=q\). No larger inner index occurs.
+Order the rows with \(p\) decreasing and use the columns with
+\(j=w-p\); the corresponding square block is triangular with nonzero
+diagonal. All products of two depth-one words have already been included,
+since swapping \(p,q\) repeats a row. This proves the rank and the
+elimination statement.
+\end{proof}
+
+At \(z=i\), taking imaginary parts of these equations gives an
+unconditional spanning bound for the \(g_{a,b}\), with explicit
+single-value terms. It can be sharpened in the parity sector, as the
+next section shows.
+
+\subsection{The weight-five relation is two shuffles}
+
+The words for \(\Li_1\Li_4\) and \(\Li_2\Li_3\) give
+\begin{align}
+\Li_1(z)\Li_4(z)
+&=2F_{4,1}(z)+F_{3,2}(z)+F_{2,3}(z)+F_{1,4}(z),
+\label{eq:shuffle14}\\
+\Li_2(z)\Li_3(z)
+&=6F_{4,1}(z)+3F_{3,2}(z)+F_{2,3}(z).
+\label{eq:shuffle23}
+\end{align}
+The exact single values are
+\[
+\Li_1(i)=-\frac L2+\frac{\pi i}{4},\quad
+\Li_2(i)=-\frac{\pi^2}{48}+iG,\quad
+\Li_3(i)=-\frac{3\zeta(3)}{32}+\frac{\pi^3i}{32},
+\]
+\[
+\Li_4(i)=-\frac{7\pi^4}{11520}+i\beta(4).
+\]
+Consequently
+\begin{align}
+2g_{41}+g_{32}+g_{23}+g_{14}
+&=-\frac12\beta(4)L-\frac{7\pi^5}{46080},
+\label{eq:wt5-first}\\
+6g_{41}+3g_{32}+g_{23}
+&=-\frac{\pi^5}{1536}-\frac{3G\zeta(3)}{32}.
+\label{eq:wt5-second}
+\end{align}
+Here \(g_{41}\) means \(g_{4,1}\), and similarly for other subscripts.
+
+\begin{corollary}[Proof and strengthening of the recorded relation]
+\label{cor:wt5}
+The manuscript's identity
+\[
+576g_{41}+288g_{32}+736g_{23}+960g_{14}
+=21G\zeta(3)-480\beta(4)L
+\]
+holds. Moreover the four \(g\)-values are spanned by \(g_{41},g_{32}\)
+and the single-value products \(\pi^5,G\zeta(3),\beta(4)L\).
+Explicitly,
+\begin{align}
+g_{23}
+&=-6g_{41}-3g_{32}-\frac{\pi^5}{1536}
+  -\frac{3G\zeta(3)}{32},\label{eq:g23-elim}\\
+g_{14}
+&=4g_{41}+2g_{32}+\frac{23\pi^5}{46080}
+  +\frac{3G\zeta(3)}{32}-\frac12\beta(4)L.
+\label{eq:g14-elim}
+\end{align}
+\end{corollary}
+
+\begin{proof}
+Multiply \eqref{eq:wt5-first} by \(960\), multiply
+\eqref{eq:wt5-second} by \(-224\), and add.
+The \(\pi^5\) coefficients cancel exactly. Solving the two
+independent equations instead gives \eqref{eq:g23-elim} and
+\eqref{eq:g14-elim}.
+\end{proof}
+
+This proof explains why a search can return an apparently complicated
+relation while missing the simpler structure: eliminating a chosen
+single-value coordinate can enlarge coefficients.
+The mathematical content is visible before the elimination.
+
+\subsection{The surviving mixed relation}
+
+For the harmonic sums used by the manuscript,
+\[
+S_p=\sum_{n\ge0}\frac{(-1)^nH_n}{(2n+1)^p},
+\]
+the exact bridge to colored doubles is
+\begin{equation}
+S_p=\Im\bigl(F_{p,1}(i)+\Li_{p,1}(i,-1)\bigr).
+\label{eq:S-mixed}
+\end{equation}
+Indeed, for an odd outer index \(m=2n+1\), the inner coefficient
+\(\sum_{k<m}(1+(-1)^k)/k\) is \(H_n\); even outer indices contribute
+zero to the imaginary part. Absolute convergence justifies the argument
+for \(p>1\), and Abel limits cover \(p=1\).
+
+The recorded \(S_4\) candidate becomes, after the proved
+\eqref{eq:g23-elim}, the more economical statement
+\begin{conjecture}[A remaining mixed Gaussian reduction]\label{conj:S4}
+\begin{equation}
+S_4=\frac{58g_{41}+24g_{32}}7
+       +\frac{19\pi^5}{3584}-2\beta(4)\log2.
+\label{eq:S4-short}
+\end{equation}
+\end{conjecture}
+This is equivalent to the existing candidate, not a newly discovered
+independent relation. Independent integral evaluations support it,
+but the present article does not supply its functional-equation proof.
+In particular, it must not be silently added to the exact shuffle
+certificate. It identifies a concrete additional colored relation to
+seek. Neither its numerical support nor the dimensions of a selected
+finite relation system establish arithmetic independence of any
+surviving coordinate.

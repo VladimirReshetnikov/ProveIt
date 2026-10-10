@@ -1,0 +1,561 @@
+{
+  "schema_version": 1,
+  "purpose": "Source-status integration guidance only; no upstream files are patched.",
+  "source_repository": "https://github.com/VladimirReshetnikov/ProveIt",
+  "source_commit": "afed07429d3d37eceb6c8e9e54cf4da2d3f39d53",
+  "source_root": "Analysis/Polylogarithms/docs/manuscript",
+  "article": "From Polylogarithm Conjectures to Exact Reductions (9 October 2026)",
+  "article_paths": "Relative to the deliverable archive; labels are the stable proof references.",
+  "status_definitions": {
+    "proved": "A locally supported candidate receives an explicit proof in this continuation.",
+    "known": "A published result is identified or attributed; not counted as a newly solved conjecture.",
+    "inherited": "Already proved in the previous project continuation and rederived here; excluded from the new count.",
+    "open": "This continuation does not supply the requested proof/certificate; no global independence or literature-open claim is implied."
+  },
+  "counts": {
+    "entries": 19,
+    "newly_promoted_candidates": 11,
+    "new_count_breakdown": {
+      "weight5_gaussian_relation": 1,
+      "weight6_gaussian_double_evaluations": 5,
+      "weight4_gaussian_triple_evaluations": 3,
+      "cubic_quartic_trilogarithm_ladders": 2
+    },
+    "known_literature_corrections": 2,
+    "inherited_mixed_reductions": 4,
+    "open_groups": 2
+  },
+  "counting_cautions": [
+    "The extra weight-five shuffle identity strengthens the spanning bound but is not another pre-existing candidate among the eleven.",
+    "The all-weight parity theorem, formal Lyndon quotient theorem and complementary-power family are general results/extensions, not extra candidate-count entries.",
+    "Formal quotient dimensions and numerical residuals are not proofs of numerical period independence.",
+    "The fixed-order moment expansion and cubic named Tornheim representation are known starting results; the late-coefficient and growing-truncation bounds are the new proved refinements."
+  ],
+  "evidence_files": [
+    "Analysis/Polylogarithms/docs/manuscript/chapters/03-algebraic.tex",
+    "Analysis/Polylogarithms/docs/manuscript/chapters/04-depth.tex",
+    "Analysis/Polylogarithms/docs/manuscript/chapters/07-integration.tex",
+    "article/sections/01_scope.tex",
+    "article/sections/02_shuffle.tex",
+    "article/sections/03_depth.tex",
+    "article/sections/04_ladders.tex",
+    "article/sections/05_gamma.tex"
+  ],
+  "entries": [
+    {
+      "id": "gaussian_weight5_relation",
+      "source_commit": "afed07429d3d37eceb6c8e9e54cf4da2d3f39d53",
+      "source_path": "Analysis/Polylogarithms/docs/manuscript/chapters/04-depth.tex",
+      "source_section": "Candidate Gaussian reductions at weights five and six",
+      "source_labels": [
+        "gauss:eq:wt5-sporadic"
+      ],
+      "source_display": "",
+      "source_url": "https://github.com/VladimirReshetnikov/ProveIt/blob/afed07429d3d37eceb6c8e9e54cf4da2d3f39d53/Analysis/Polylogarithms/docs/manuscript/chapters/04-depth.tex",
+      "item": "576g41+288g32+736g23+960g14 = 21G*zeta(3)-480*beta(4)*log(2)",
+      "prior_status": "Accepted numerical identity; the section explicitly withholds analytic status unless a derivation is supplied.",
+      "present_status": "proved",
+      "status_scope": "exact evaluation identity",
+      "counted_among_eleven_promoted_candidates": true,
+      "proof_article_path": "article/sections/02_shuffle.tex",
+      "proof_section": "The weight-five relation is two shuffles",
+      "proof_labels": [
+        "cor:wt5",
+        "eq:shuffle14",
+        "eq:shuffle23",
+        "eq:wt5-first",
+        "eq:wt5-second"
+      ],
+      "proof_reference_is_discussion_only": false,
+      "evidence_summary": "The exact row combination 960*(Li1 Li4 shuffle)-224*(Li2 Li3 shuffle) cancels pi^5 and reproduces every recorded coefficient. Retaining both rows gives a spanning set of at most two same-argument doubles modulo singles.",
+      "inherited_from": "",
+      "integration_action": "Promote the displayed relation to a proved identity and replace the at-most-three spanning claim by at-most-two; do not assert numerical independence."
+    },
+    {
+      "id": "gaussian_weight6_g51",
+      "source_commit": "afed07429d3d37eceb6c8e9e54cf4da2d3f39d53",
+      "source_path": "Analysis/Polylogarithms/docs/manuscript/chapters/04-depth.tex",
+      "source_section": "Candidate Gaussian reductions at weights five and six",
+      "source_labels": [
+        "gauss:eq:g51"
+      ],
+      "source_display": "",
+      "source_url": "https://github.com/VladimirReshetnikov/ProveIt/blob/afed07429d3d37eceb6c8e9e54cf4da2d3f39d53/Analysis/Polylogarithms/docs/manuscript/chapters/04-depth.tex",
+      "item": "Recorded weight-six evaluation of 2048*Im Li_{5,1}(i,1)",
+      "prior_status": "Accepted numerical identity; the section explicitly withholds analytic status unless a derivation is supplied.",
+      "present_status": "proved",
+      "status_scope": "exact evaluation identity",
+      "counted_among_eleven_promoted_candidates": true,
+      "proof_article_path": "article/sections/03_depth.tex",
+      "proof_section": "Consequences for Gaussian and Eisenstein values",
+      "proof_labels": [
+        "thm:binomial-parity",
+        "eq:parity-A",
+        "eq:parity-inverse"
+      ],
+      "proof_reference_is_discussion_only": false,
+      "evidence_summary": "Specialize the explicit double parity formula to z=i, total weight 6, and (a,b)=(5,1); substitution reproduces the source equation exactly. The finite symbolic differences are zero.",
+      "inherited_from": "",
+      "integration_action": "Promote this equation to a proved specialization of the parity formula; retain the standard attribution of the general parity theorem."
+    },
+    {
+      "id": "gaussian_weight6_g42",
+      "source_commit": "afed07429d3d37eceb6c8e9e54cf4da2d3f39d53",
+      "source_path": "Analysis/Polylogarithms/docs/manuscript/chapters/04-depth.tex",
+      "source_section": "Candidate Gaussian reductions at weights five and six",
+      "source_labels": [
+        "gauss:eq:g42"
+      ],
+      "source_display": "",
+      "source_url": "https://github.com/VladimirReshetnikov/ProveIt/blob/afed07429d3d37eceb6c8e9e54cf4da2d3f39d53/Analysis/Polylogarithms/docs/manuscript/chapters/04-depth.tex",
+      "item": "Recorded weight-six evaluation of 1536*Im Li_{4,2}(i,1)",
+      "prior_status": "Accepted numerical identity; the section explicitly withholds analytic status unless a derivation is supplied.",
+      "present_status": "proved",
+      "status_scope": "exact evaluation identity",
+      "counted_among_eleven_promoted_candidates": true,
+      "proof_article_path": "article/sections/03_depth.tex",
+      "proof_section": "Consequences for Gaussian and Eisenstein values",
+      "proof_labels": [
+        "thm:binomial-parity",
+        "eq:parity-A",
+        "eq:parity-inverse"
+      ],
+      "proof_reference_is_discussion_only": false,
+      "evidence_summary": "Specialize the explicit double parity formula to z=i, total weight 6, and (a,b)=(4,2); substitution reproduces the source equation exactly. The finite symbolic differences are zero.",
+      "inherited_from": "",
+      "integration_action": "Promote this equation to a proved specialization of the parity formula; retain the standard attribution of the general parity theorem."
+    },
+    {
+      "id": "gaussian_weight6_g33",
+      "source_commit": "afed07429d3d37eceb6c8e9e54cf4da2d3f39d53",
+      "source_path": "Analysis/Polylogarithms/docs/manuscript/chapters/04-depth.tex",
+      "source_section": "Candidate Gaussian reductions at weights five and six",
+      "source_labels": [
+        "gauss:eq:g33"
+      ],
+      "source_display": "",
+      "source_url": "https://github.com/VladimirReshetnikov/ProveIt/blob/afed07429d3d37eceb6c8e9e54cf4da2d3f39d53/Analysis/Polylogarithms/docs/manuscript/chapters/04-depth.tex",
+      "item": "Recorded weight-six evaluation of 1024*Im Li_{3,3}(i,1)",
+      "prior_status": "Accepted numerical identity; the section explicitly withholds analytic status unless a derivation is supplied.",
+      "present_status": "proved",
+      "status_scope": "exact evaluation identity",
+      "counted_among_eleven_promoted_candidates": true,
+      "proof_article_path": "article/sections/03_depth.tex",
+      "proof_section": "Consequences for Gaussian and Eisenstein values",
+      "proof_labels": [
+        "thm:binomial-parity",
+        "eq:parity-A",
+        "eq:parity-inverse"
+      ],
+      "proof_reference_is_discussion_only": false,
+      "evidence_summary": "Specialize the explicit double parity formula to z=i, total weight 6, and (a,b)=(3,3); substitution reproduces the source equation exactly. The finite symbolic differences are zero.",
+      "inherited_from": "",
+      "integration_action": "Promote this equation to a proved specialization of the parity formula; retain the standard attribution of the general parity theorem."
+    },
+    {
+      "id": "gaussian_weight6_g24",
+      "source_commit": "afed07429d3d37eceb6c8e9e54cf4da2d3f39d53",
+      "source_path": "Analysis/Polylogarithms/docs/manuscript/chapters/04-depth.tex",
+      "source_section": "Candidate Gaussian reductions at weights five and six",
+      "source_labels": [
+        "gauss:eq:g24"
+      ],
+      "source_display": "",
+      "source_url": "https://github.com/VladimirReshetnikov/ProveIt/blob/afed07429d3d37eceb6c8e9e54cf4da2d3f39d53/Analysis/Polylogarithms/docs/manuscript/chapters/04-depth.tex",
+      "item": "Recorded weight-six evaluation of 23040*Im Li_{2,4}(i,1)",
+      "prior_status": "Accepted numerical identity; the section explicitly withholds analytic status unless a derivation is supplied.",
+      "present_status": "proved",
+      "status_scope": "exact evaluation identity",
+      "counted_among_eleven_promoted_candidates": true,
+      "proof_article_path": "article/sections/03_depth.tex",
+      "proof_section": "Consequences for Gaussian and Eisenstein values",
+      "proof_labels": [
+        "thm:binomial-parity",
+        "eq:parity-A",
+        "eq:parity-inverse"
+      ],
+      "proof_reference_is_discussion_only": false,
+      "evidence_summary": "Specialize the explicit double parity formula to z=i, total weight 6, and (a,b)=(2,4); substitution reproduces the source equation exactly. The finite symbolic differences are zero.",
+      "inherited_from": "",
+      "integration_action": "Promote this equation to a proved specialization of the parity formula; retain the standard attribution of the general parity theorem."
+    },
+    {
+      "id": "gaussian_weight6_g15",
+      "source_commit": "afed07429d3d37eceb6c8e9e54cf4da2d3f39d53",
+      "source_path": "Analysis/Polylogarithms/docs/manuscript/chapters/04-depth.tex",
+      "source_section": "Candidate Gaussian reductions at weights five and six",
+      "source_labels": [
+        "gauss:eq:g15"
+      ],
+      "source_display": "",
+      "source_url": "https://github.com/VladimirReshetnikov/ProveIt/blob/afed07429d3d37eceb6c8e9e54cf4da2d3f39d53/Analysis/Polylogarithms/docs/manuscript/chapters/04-depth.tex",
+      "item": "Recorded weight-six evaluation of 92160*Im Li_{1,5}(i,1)",
+      "prior_status": "Accepted numerical identity; the section explicitly withholds analytic status unless a derivation is supplied.",
+      "present_status": "proved",
+      "status_scope": "exact evaluation identity",
+      "counted_among_eleven_promoted_candidates": true,
+      "proof_article_path": "article/sections/03_depth.tex",
+      "proof_section": "Consequences for Gaussian and Eisenstein values",
+      "proof_labels": [
+        "thm:binomial-parity",
+        "eq:parity-A",
+        "eq:parity-inverse"
+      ],
+      "proof_reference_is_discussion_only": false,
+      "evidence_summary": "Specialize the explicit double parity formula to z=i, total weight 6, and (a,b)=(1,5); substitution reproduces the source equation exactly. The finite symbolic differences are zero.",
+      "inherited_from": "",
+      "integration_action": "Promote this equation to a proved specialization of the parity formula; retain the standard attribution of the general parity theorem."
+    },
+    {
+      "id": "gaussian_weight4_triple_211",
+      "source_commit": "afed07429d3d37eceb6c8e9e54cf4da2d3f39d53",
+      "source_path": "Analysis/Polylogarithms/docs/manuscript/chapters/04-depth.tex",
+      "source_section": "Candidate Gaussian reductions at weights five and six",
+      "source_labels": [],
+      "source_display": "Unlabelled final align display, row 1, indices (2,1,1)",
+      "source_url": "https://github.com/VladimirReshetnikov/ProveIt/blob/afed07429d3d37eceb6c8e9e54cf4da2d3f39d53/Analysis/Polylogarithms/docs/manuscript/chapters/04-depth.tex",
+      "item": "Recorded evaluation of Im Li_{2,1,1}(i,1,1)",
+      "prior_status": "Accepted numerical identity; the section explicitly withholds analytic status unless a derivation is supplied.",
+      "present_status": "proved",
+      "status_scope": "exact evaluation identity",
+      "counted_among_eleven_promoted_candidates": true,
+      "proof_article_path": "article/sections/03_depth.tex",
+      "proof_section": "Proof of all three weight-four Gaussian triple formulas",
+      "proof_labels": [
+        "thm:one-two",
+        "eq:height-one-general",
+        "eq:one-two-any-position",
+        "eq:halfpoint-auxiliary"
+      ],
+      "proof_reference_is_discussion_only": false,
+      "evidence_summary": "The one-two iterated-integral formula, the principal-branch inversion relations at 1-i, and the displayed half-point values give the recorded coefficients exactly.",
+      "inherited_from": "",
+      "integration_action": "Promote this unlabelled row to a proved identity and attach a stable equation label during integration. This says nothing about independence of the half-point single values."
+    },
+    {
+      "id": "gaussian_weight4_triple_121",
+      "source_commit": "afed07429d3d37eceb6c8e9e54cf4da2d3f39d53",
+      "source_path": "Analysis/Polylogarithms/docs/manuscript/chapters/04-depth.tex",
+      "source_section": "Candidate Gaussian reductions at weights five and six",
+      "source_labels": [],
+      "source_display": "Unlabelled final align display, row 2, indices (1,2,1)",
+      "source_url": "https://github.com/VladimirReshetnikov/ProveIt/blob/afed07429d3d37eceb6c8e9e54cf4da2d3f39d53/Analysis/Polylogarithms/docs/manuscript/chapters/04-depth.tex",
+      "item": "Recorded evaluation of Im Li_{1,2,1}(i,1,1)",
+      "prior_status": "Accepted numerical identity; the section explicitly withholds analytic status unless a derivation is supplied.",
+      "present_status": "proved",
+      "status_scope": "exact evaluation identity",
+      "counted_among_eleven_promoted_candidates": true,
+      "proof_article_path": "article/sections/03_depth.tex",
+      "proof_section": "Proof of all three weight-four Gaussian triple formulas",
+      "proof_labels": [
+        "thm:one-two",
+        "eq:height-one-general",
+        "eq:one-two-any-position",
+        "eq:halfpoint-auxiliary"
+      ],
+      "proof_reference_is_discussion_only": false,
+      "evidence_summary": "The one-two iterated-integral formula, the principal-branch inversion relations at 1-i, and the displayed half-point values give the recorded coefficients exactly.",
+      "inherited_from": "",
+      "integration_action": "Promote this unlabelled row to a proved identity and attach a stable equation label during integration. This says nothing about independence of the half-point single values."
+    },
+    {
+      "id": "gaussian_weight4_triple_112",
+      "source_commit": "afed07429d3d37eceb6c8e9e54cf4da2d3f39d53",
+      "source_path": "Analysis/Polylogarithms/docs/manuscript/chapters/04-depth.tex",
+      "source_section": "Candidate Gaussian reductions at weights five and six",
+      "source_labels": [],
+      "source_display": "Unlabelled final align display, row 3, indices (1,1,2)",
+      "source_url": "https://github.com/VladimirReshetnikov/ProveIt/blob/afed07429d3d37eceb6c8e9e54cf4da2d3f39d53/Analysis/Polylogarithms/docs/manuscript/chapters/04-depth.tex",
+      "item": "Recorded evaluation of Im Li_{1,1,2}(i,1,1)",
+      "prior_status": "Accepted numerical identity; the section explicitly withholds analytic status unless a derivation is supplied.",
+      "present_status": "proved",
+      "status_scope": "exact evaluation identity",
+      "counted_among_eleven_promoted_candidates": true,
+      "proof_article_path": "article/sections/03_depth.tex",
+      "proof_section": "Proof of all three weight-four Gaussian triple formulas",
+      "proof_labels": [
+        "thm:one-two",
+        "eq:height-one-general",
+        "eq:one-two-any-position",
+        "eq:halfpoint-auxiliary"
+      ],
+      "proof_reference_is_discussion_only": false,
+      "evidence_summary": "The one-two iterated-integral formula, the principal-branch inversion relations at 1-i, and the displayed half-point values give the recorded coefficients exactly.",
+      "inherited_from": "",
+      "integration_action": "Promote this unlabelled row to a proved identity and attach a stable equation label during integration. This says nothing about independence of the half-point single values."
+    },
+    {
+      "id": "cubic_trilogarithm_ladder",
+      "source_commit": "afed07429d3d37eceb6c8e9e54cf4da2d3f39d53",
+      "source_path": "Analysis/Polylogarithms/docs/manuscript/chapters/03-algebraic.tex",
+      "source_section": "Hunting more ladder bases, and a methodological caveat; Ladders are Bloch-group elements",
+      "source_labels": [
+        "bloch:eq:sgP3"
+      ],
+      "source_display": "First unlabelled trilogarithm row in the cubic/quartic pair",
+      "source_url": "https://github.com/VladimirReshetnikov/ProveIt/blob/afed07429d3d37eceb6c8e9e54cf4da2d3f39d53/Analysis/Polylogarithms/docs/manuscript/chapters/03-algebraic.tex",
+      "item": "For r^3+r=1: -60Li3(r)+54Li3(r^2)-32Li3(r^3)-3Li3(r^6) = 24log(r)^3-4pi^2log(r)-36zeta(3)",
+      "prior_status": "The raw formula is supported by two-engine and 400-digit checks. The corresponding P3 formula is called exact, but a local functional-equation certificate is not displayed.",
+      "present_status": "proved",
+      "status_scope": "exact evaluation identity",
+      "counted_among_eleven_promoted_candidates": true,
+      "proof_article_path": "article/sections/04_ladders.tex",
+      "proof_section": "Two Kummer substitutions prove the cubic trilogarithm",
+      "proof_labels": [
+        "thm:cubic-proved",
+        "eq:cubic-proved",
+        "eq:cubic-P3-certificate",
+        "lem:cubic-dilog"
+      ],
+      "proof_reference_is_discussion_only": false,
+      "evidence_summary": "Two Kummer substitutions and one Landen equation give the exact P3 row certificate 4C+2B-48A. Four Rogers pentagons prove the dilogarithm tail identity; elementary factorizations remove the logarithmic corrections.",
+      "inherited_from": "",
+      "integration_action": "Supply the complete local proof and identify its classical functional-equation inputs. Do not claim a new general Kummer or Bloch-group theorem."
+    },
+    {
+      "id": "quartic_trilogarithm_ladder",
+      "source_commit": "afed07429d3d37eceb6c8e9e54cf4da2d3f39d53",
+      "source_path": "Analysis/Polylogarithms/docs/manuscript/chapters/03-algebraic.tex",
+      "source_section": "Hunting more ladder bases, and a methodological caveat",
+      "source_labels": [],
+      "source_display": "Second unlabelled trilogarithm row in the cubic/quartic pair",
+      "source_url": "https://github.com/VladimirReshetnikov/ProveIt/blob/afed07429d3d37eceb6c8e9e54cf4da2d3f39d53/Analysis/Polylogarithms/docs/manuscript/chapters/03-algebraic.tex",
+      "item": "For r^4+r=1: -12Li3(r)+12Li3(r^3)-12Li3(r^4)-3Li3(r^6) = 22log(r)^3-2pi^2log(r)-12zeta(3)",
+      "prior_status": "Displayed with two-engine and 400-digit numerical verification; no local functional-equation proof is supplied in this section.",
+      "present_status": "proved",
+      "status_scope": "exact evaluation identity",
+      "counted_among_eleven_promoted_candidates": true,
+      "proof_article_path": "article/sections/04_ladders.tex",
+      "proof_section": "A uniform ladder from a complementary pair of powers",
+      "proof_labels": [
+        "thm:complementary-powers",
+        "eq:complementary-powers",
+        "eq:quartic-proved"
+      ],
+      "proof_reference_is_discussion_only": false,
+      "evidence_summary": "Take (a,b)=(1,4) in the complementary-power Landen identity and multiply by -12. The Landen law has a complete real differentiation-and-endpoint proof.",
+      "inherited_from": "",
+      "integration_action": "Promote the row to a proved identity and present it as a specialization of the complementary-power family."
+    },
+    {
+      "id": "cubic_loggamma_named_atom",
+      "source_commit": "afed07429d3d37eceb6c8e9e54cf4da2d3f39d53",
+      "source_path": "Analysis/Polylogarithms/docs/manuscript/chapters/07-integration.tex",
+      "source_section": "The log-gamma moment ladder",
+      "source_labels": [
+        "integral:neg:cubic"
+      ],
+      "source_display": "",
+      "source_url": "https://github.com/VladimirReshetnikov/ProveIt/blob/afed07429d3d37eceb6c8e9e54cf4da2d3f39d53/Analysis/Polylogarithms/docs/manuscript/chapters/07-integration.tex",
+      "item": "Named Tornheim-derivative representation of M3 = integral_0^1 log(Gamma(x))^3 dx",
+      "prior_status": "The checkpoint calls finding the correct named depth-two atom open, while reporting a numerical value and unsuccessful single-value searches.",
+      "present_status": "known",
+      "status_scope": "literature-status correction; no new-conjecture credit",
+      "counted_among_eleven_promoted_candidates": false,
+      "proof_article_path": "article/sections/05_gamma.tex",
+      "proof_section": "Log-gamma moments: correcting the open-problem boundary; A compact form of the cubic identity",
+      "proof_labels": [
+        "thm:cubic-compact",
+        "eq:cubic-compact"
+      ],
+      "proof_reference_is_discussion_only": false,
+      "evidence_summary": "Bailey, D. Borwein and J. M. Borwein, Theorem 6, already evaluated M3 using Tornheim derivatives. The present formula is an equivalent compact differential-operator form with an independent Fourier derivation.",
+      "inherited_from": "",
+      "integration_action": "Replace the broad named-atom open claim by a literature attribution. Reduction in a specified smaller algebra and numerical independence remain separate questions. The new 112-digit enclosure is a numerical certificate, not a new discovery of M3's named representation."
+    },
+    {
+      "id": "loggamma_fixed_order_moment_expansion",
+      "source_commit": "afed07429d3d37eceb6c8e9e54cf4da2d3f39d53",
+      "source_path": "Analysis/Polylogarithms/docs/manuscript/chapters/07-integration.tex",
+      "source_section": "The log-gamma moment ladder (contextual anchor)",
+      "source_labels": [
+        "integral:sec:moments"
+      ],
+      "source_display": "No fixed-order asymptotic formula is printed here; the anchor identifies the related moment programme",
+      "source_url": "https://github.com/VladimirReshetnikov/ProveIt/blob/afed07429d3d37eceb6c8e9e54cf4da2d3f39d53/Analysis/Polylogarithms/docs/manuscript/chapters/07-integration.tex",
+      "item": "Known fixed-order factorial-moment expansion in exponential scales k^(-n)",
+      "prior_status": "The complete fixed-order large-n expansion is not displayed in this checkpoint section; it is already known from Amdeberhan et al., Theorem 8.1.",
+      "present_status": "known",
+      "status_scope": "known starting theorem with new proved refinements; no new-conjecture credit",
+      "counted_among_eleven_promoted_candidates": false,
+      "proof_article_path": "article/sections/05_gamma.tex",
+      "proof_section": "Log-gamma moments: correcting the open-problem boundary; Late coefficients and the inverse reciprocal gamma function; An effective remainder with a growing number of terms",
+      "proof_labels": [
+        "eq:ck-lagrange",
+        "thm:late-coefficients",
+        "thm:effective-moment",
+        "eq:remainder-exact",
+        "eq:remainder-optimized"
+      ],
+      "proof_reference_is_discussion_only": false,
+      "evidence_summary": "Attribute the fixed-order expansion to Amdeberhan et al. The present extension proves c_k~C*rho^(-k)*k^(-3/2), divergence for every fixed n, and an explicit bound when K grows linearly with n.",
+      "inherited_from": "",
+      "integration_action": "Add the known expansion with its literature attribution and distinguish the proved late-coefficient and growing-truncation refinements. Never present the divergent infinite Dirichlet series as a convergent identity."
+    },
+    {
+      "id": "gaussian_mixed_real_41",
+      "source_commit": "afed07429d3d37eceb6c8e9e54cf4da2d3f39d53",
+      "source_path": "Analysis/Polylogarithms/docs/manuscript/chapters/04-depth.tex",
+      "source_section": "The Gaussian (i,-i) point and an exact parallel",
+      "source_labels": [
+        "mixed:sec:gauss",
+        "mixed:thm:parallel"
+      ],
+      "source_display": "",
+      "source_url": "https://github.com/VladimirReshetnikov/ProveIt/blob/afed07429d3d37eceb6c8e9e54cf4da2d3f39d53/Analysis/Polylogarithms/docs/manuscript/chapters/04-depth.tex",
+      "item": "Re Li_{4,1}(i,-i)",
+      "prior_status": "Still described as a candidate mixed direction in the consolidated checkpoint; its reduction was already proved in the 8 October continuation.",
+      "present_status": "inherited",
+      "status_scope": "proved earlier; independently rederived here",
+      "counted_among_eleven_promoted_candidates": false,
+      "proof_article_path": "article/sections/03_depth.tex",
+      "proof_section": "Reconciliation of the inverse-argument mixed values",
+      "proof_labels": [
+        "eq:mixed-R-identification",
+        "eq:mixed-parity-explicit"
+      ],
+      "proof_reference_is_discussion_only": false,
+      "evidence_summary": "The current derivation gives the exact reduction again; this is row 1 of the displayed four inherited special values. General-formula and direct mixed-integral checks agree.",
+      "inherited_from": "Project continuation dated 2026-10-08; explicitly acknowledged in the current article section Reconciliation of the inverse-argument mixed values.",
+      "integration_action": "Update the stale candidate description to the inherited proved formula, credit the previous continuation, and exclude it from the count of eleven newly promoted identities. Do not infer numerical independence or a full new quotient dimension from this correction alone."
+    },
+    {
+      "id": "gaussian_mixed_imag_51",
+      "source_commit": "afed07429d3d37eceb6c8e9e54cf4da2d3f39d53",
+      "source_path": "Analysis/Polylogarithms/docs/manuscript/chapters/04-depth.tex",
+      "source_section": "The Gaussian (i,-i) point and an exact parallel",
+      "source_labels": [
+        "mixed:sec:gauss",
+        "mixed:thm:parallel"
+      ],
+      "source_display": "",
+      "source_url": "https://github.com/VladimirReshetnikov/ProveIt/blob/afed07429d3d37eceb6c8e9e54cf4da2d3f39d53/Analysis/Polylogarithms/docs/manuscript/chapters/04-depth.tex",
+      "item": "Im Li_{5,1}(i,-i)",
+      "prior_status": "Still described as a candidate mixed direction in the consolidated checkpoint; its reduction was already proved in the 8 October continuation.",
+      "present_status": "inherited",
+      "status_scope": "proved earlier; independently rederived here",
+      "counted_among_eleven_promoted_candidates": false,
+      "proof_article_path": "article/sections/03_depth.tex",
+      "proof_section": "Reconciliation of the inverse-argument mixed values",
+      "proof_labels": [
+        "eq:mixed-R-identification",
+        "eq:mixed-parity-explicit"
+      ],
+      "proof_reference_is_discussion_only": false,
+      "evidence_summary": "The current derivation gives the exact reduction again; this is row 2 of the displayed four inherited special values. General-formula and direct mixed-integral checks agree.",
+      "inherited_from": "Project continuation dated 2026-10-08; explicitly acknowledged in the current article section Reconciliation of the inverse-argument mixed values.",
+      "integration_action": "Update the stale candidate description to the inherited proved formula, credit the previous continuation, and exclude it from the count of eleven newly promoted identities. Do not infer numerical independence or a full new quotient dimension from this correction alone."
+    },
+    {
+      "id": "eisenstein_mixed_real_41",
+      "source_commit": "afed07429d3d37eceb6c8e9e54cf4da2d3f39d53",
+      "source_path": "Analysis/Polylogarithms/docs/manuscript/chapters/04-depth.tex",
+      "source_section": "The completed level-3 double-shuffle dimension",
+      "source_labels": [
+        "mixed:sec:eisdim",
+        "mixed:thm:parallel"
+      ],
+      "source_display": "",
+      "source_url": "https://github.com/VladimirReshetnikov/ProveIt/blob/afed07429d3d37eceb6c8e9e54cf4da2d3f39d53/Analysis/Polylogarithms/docs/manuscript/chapters/04-depth.tex",
+      "item": "Re Li_{4,1}(rho^2,rho), rho=exp(2pi*i/3)",
+      "prior_status": "Still described as a candidate mixed direction in the consolidated checkpoint; its reduction was already proved in the 8 October continuation.",
+      "present_status": "inherited",
+      "status_scope": "proved earlier; independently rederived here",
+      "counted_among_eleven_promoted_candidates": false,
+      "proof_article_path": "article/sections/03_depth.tex",
+      "proof_section": "Reconciliation of the inverse-argument mixed values",
+      "proof_labels": [
+        "eq:mixed-R-identification",
+        "eq:mixed-parity-explicit"
+      ],
+      "proof_reference_is_discussion_only": false,
+      "evidence_summary": "The current derivation gives the exact reduction again; this is row 3 of the displayed four inherited special values. General-formula and direct mixed-integral checks agree.",
+      "inherited_from": "Project continuation dated 2026-10-08; explicitly acknowledged in the current article section Reconciliation of the inverse-argument mixed values.",
+      "integration_action": "Update the stale candidate description to the inherited proved formula, credit the previous continuation, and exclude it from the count of eleven newly promoted identities. Do not infer numerical independence or a full new quotient dimension from this correction alone."
+    },
+    {
+      "id": "eisenstein_mixed_imag_51",
+      "source_commit": "afed07429d3d37eceb6c8e9e54cf4da2d3f39d53",
+      "source_path": "Analysis/Polylogarithms/docs/manuscript/chapters/04-depth.tex",
+      "source_section": "The completed level-3 double-shuffle dimension",
+      "source_labels": [
+        "mixed:sec:eisdim",
+        "mixed:thm:parallel"
+      ],
+      "source_display": "",
+      "source_url": "https://github.com/VladimirReshetnikov/ProveIt/blob/afed07429d3d37eceb6c8e9e54cf4da2d3f39d53/Analysis/Polylogarithms/docs/manuscript/chapters/04-depth.tex",
+      "item": "Im Li_{5,1}(rho^2,rho), rho=exp(2pi*i/3)",
+      "prior_status": "Still described as a candidate mixed direction in the consolidated checkpoint; its reduction was already proved in the 8 October continuation.",
+      "present_status": "inherited",
+      "status_scope": "proved earlier; independently rederived here",
+      "counted_among_eleven_promoted_candidates": false,
+      "proof_article_path": "article/sections/03_depth.tex",
+      "proof_section": "Reconciliation of the inverse-argument mixed values",
+      "proof_labels": [
+        "eq:mixed-R-identification",
+        "eq:mixed-parity-explicit"
+      ],
+      "proof_reference_is_discussion_only": false,
+      "evidence_summary": "The current derivation gives the exact reduction again; this is row 4 of the displayed four inherited special values. General-formula and direct mixed-integral checks agree.",
+      "inherited_from": "Project continuation dated 2026-10-08; explicitly acknowledged in the current article section Reconciliation of the inverse-argument mixed values.",
+      "integration_action": "Update the stale candidate description to the inherited proved formula, credit the previous continuation, and exclude it from the count of eleven newly promoted identities. Do not infer numerical independence or a full new quotient dimension from this correction alone."
+    },
+    {
+      "id": "S4_mixed_gaussian_candidate",
+      "source_commit": "afed07429d3d37eceb6c8e9e54cf4da2d3f39d53",
+      "source_path": "Analysis/Polylogarithms/docs/manuscript/chapters/04-depth.tex",
+      "source_section": "Candidate Gaussian reductions at weights five and six",
+      "source_labels": [
+        "gauss:eq:S4-closed"
+      ],
+      "source_display": "",
+      "source_url": "https://github.com/VladimirReshetnikov/ProveIt/blob/afed07429d3d37eceb6c8e9e54cf4da2d3f39d53/Analysis/Polylogarithms/docs/manuscript/chapters/04-depth.tex",
+      "item": "The odd-weight S4 harmonic-sum reduction, equivalently S4=(58g41+24g32)/7+19pi^5/3584-2beta(4)log(2)",
+      "prior_status": "Numerically supported candidate in the checkpoint.",
+      "present_status": "open",
+      "status_scope": "open proof obligation in this continuation",
+      "counted_among_eleven_promoted_candidates": false,
+      "proof_article_path": "article/sections/02_shuffle.tex",
+      "proof_section": "The surviving mixed relation",
+      "proof_labels": [
+        "conj:S4",
+        "eq:S4-short",
+        "eq:S-mixed",
+        "eq:g23-elim"
+      ],
+      "proof_reference_is_discussion_only": true,
+      "evidence_summary": "The shorter formula follows by substituting a proved shuffle elimination into the old candidate; this establishes equivalence, not the candidate itself. No functional-equation certificate for the mixed reduction is supplied.",
+      "inherited_from": "",
+      "integration_action": "Retain conjecture status. The shorter form may replace the old display, provided it is explicitly called equivalent and is not inserted into the exact proved-relation matrix."
+    },
+    {
+      "id": "higher_golden_ladder_certificates",
+      "source_commit": "afed07429d3d37eceb6c8e9e54cf4da2d3f39d53",
+      "source_path": "Analysis/Polylogarithms/docs/manuscript/chapters/03-algebraic.tex",
+      "source_section": "Reshetnikov's conjectures, verified; Completing Tito's family: the unwritten weight-6 and weight-7 ladders; Two weights beyond: explicit ladders at weight 8 and 9; Canonical index-20/24 ladders and a zeta-elimination chain",
+      "source_labels": [
+        "golden:eq:Li6",
+        "golden:eq:Li7",
+        "golden:eq:Li8",
+        "golden:eq:Li9"
+      ],
+      "source_display": "Also includes the three unlabelled weight-five golden formulas",
+      "source_url": "https://github.com/VladimirReshetnikov/ProveIt/blob/afed07429d3d37eceb6c8e9e54cf4da2d3f39d53/Analysis/Polylogarithms/docs/manuscript/chapters/03-algebraic.tex",
+      "item": "Complete local functional-equation certificates for the recorded golden ladders at weights 5 through 9",
+      "prior_status": "The checkpoint records high-precision verification and connections to Abouzahra--Lewin ladders; it does not display all local derivations for the recorded coefficient formulas.",
+      "present_status": "open",
+      "status_scope": "open local certificate task; not a global literature-novelty claim",
+      "counted_among_eleven_promoted_candidates": false,
+      "proof_article_path": "article/sections/04_ladders.tex",
+      "proof_section": "What the certificate establishes and what remains open",
+      "proof_labels": [
+        "sec:proved-small-ladders"
+      ],
+      "proof_reference_is_discussion_only": true,
+      "evidence_summary": "The present contribution proves the cubic and quartic weight-three identities and their complementary-power family. It does not establish the higher golden ladder formulas by pseudointegration or by an unproved higher Bloch-group assertion.",
+      "inherited_from": "",
+      "integration_action": "Do not upgrade these formulas on the strength of the new cubic/quartic proofs. Preserve any valid classical provenance and keep the missing local certificates as future work; this register does not claim that every higher golden identity is open in the published literature."
+    }
+  ],
+  "evidence_path_note": "Paths beginning Analysis/ refer to the pinned upstream repository; article/ paths refer to this archive."
+}

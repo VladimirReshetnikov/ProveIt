@@ -1,0 +1,195 @@
+\section{Further research: specific questions and workable next steps}
+\label{sec:research}
+
+The results change the most useful next questions. Repeating searches
+for the eleven settled identities would add little. The next stage
+should seek additional functional relations, effective bounds, and
+well-specified arithmetic statements. The following problems distinguish
+a plausible method from the mathematical conclusion it would need
+to establish.
+
+\subsection{First priority: the remaining Gaussian bridge}
+
+\paragraph{1. Prove the \(S_4\) relation with an exact colored certificate.}
+After the two shuffle eliminations, Conjecture~\ref{conj:S4} is the
+single concrete target
+\[
+7\Im\Li_{4,1}(i,-1)
+=51g_{41}+24g_{32}+\frac{19\pi^5}{512}
+-14\beta(4)\log2.
+\]
+This displayed equation is still conjectural. Its second argument
+is \(-1\), so it is not one of the already reduced inverse-argument
+values \(\Li_{a,b}(i,-i)\).
+A promising approach is to work with iterated integrals on the alphabet
+\(\{0,1,-1,i,-i\}\), include explicitly regularized shuffle and stuffle
+relations, and track the additional transformations of the punctured
+line. The desired output is a rational linear combination of justified
+relations with all boundary constants recorded.
+An exact certificate would be a substantial improvement over another
+decimal match.
+
+\paragraph{2. Audit the colored relation system before enlarging the
+constant basket.}
+The inherited mixed formulas have modest integer coefficients, yet the
+current manuscript reports them as apparent non-reductions.
+Reproduce that computation from its value-generation stage, keeping
+argument ordering and the parity component explicit.
+At each weight record the exact alphabet, admitted product rows,
+regularization prescriptions, distribution identities, and the
+coefficient-height limit used by any numerical search.
+Then compare the resulting exact row space with the explicit formulas
+in Section~\ref{sec:mixed-reconciliation}.
+This should determine whether the discrepancy comes from the numerical
+values, a missing basis element, or an incomplete relation system.
+An unsuccessful finite search should never be promoted to a statement
+of period independence.
+
+\paragraph{3. Determine what survives at weight six and depth three.}
+The classes of \(F_{4,1,1},F_{3,2,1},F_{3,1,2}\) are an exact basis
+of the formal one-variable shuffle quotient.
+At \(i\), additional colored functional equations can reduce their
+span further. The next question is the rank after specifying those
+additional relations and the allowed lower-depth algebra.
+The all-depth one-two theorem does not answer this: these indices
+contain three zero letters in their words.
+A useful outcome would be either explicit reductions or a certified
+presentation of a larger, precisely defined formal quotient.
+Neither outcome by itself proves that the numerical values are
+linearly independent.
+
+\subsection{Algebraic ladders beyond the two local proofs}
+
+\paragraph{4. Produce local proofs of the higher golden ladders.}
+The manuscript's higher golden formulas should receive the same kind
+of argument/substitution and constant-term certificate as the cubic
+identity. Start with the lowest unresolved weight and its full
+functional-equation closure.
+A vanishing symbol or differential can narrow the problem, but the
+remaining products, zeta terms, and endpoint constants still require
+determination. In particular, an identity valid only at an isolated
+algebraic number cannot simply be integrated in that number to obtain
+a higher-weight identity. A valid deformation must preserve the
+functional relations being used.
+Success here means a branch-consistent analytic proof of one exact
+recorded formula, not only a lower-height numerical relation.
+
+\paragraph{5. Classify useful complementary-power specializations.}
+Theorem~\ref{thm:complementary-powers} starts from any
+\(\rho^a+\rho^b=1\), but different exponent pairs may describe the
+same field or the same base after a power substitution.
+For bounded degree and exponent height, classify these redundancies
+and determine which Kummer substitutions close on a small set of
+powers of \(\rho\).
+The cubic proof suggests looking for a closure that introduces a few
+auxiliary powers and then cancels them through short rational rows.
+The output can be an exact finite database of argument identities
+over number fields, together with the corresponding polylogarithm
+certificates. This is a constructive classification problem even when
+period independence is out of reach.
+
+\paragraph{6. Develop a reusable algebraic functional-equation verifier.}
+Generalize the current quotient-ring calculation to arbitrary
+irreducible polynomials, with an isolating interval or another exact
+embedding specification. The verifier should check denominator
+nonvanishing, identify the real or complex embedding, and retain
+sign information needed for ordinary logarithms.
+For single-valued functions, argument reduction is often sufficient;
+for ordinary polylogarithms, continuation paths and inversion
+corrections must remain part of the certificate.
+The natural first benchmark is to reproduce the cubic certificate
+without any special-case algebra in the program.
+
+\subsection{Quantitative analysis of log-gamma moments}
+
+\paragraph{7. Find the signed remainder near the least term.}
+Theorem~\ref{thm:effective-moment} gives an unsigned bound of scale
+\((e\alpha/n)^n\), within a polynomial factor of the smallest term.
+It does not determine the leading signed error or prove an optimal
+constant. Study \(R_{n,K}\) for
+\(K=(n+3/2)/\alpha+O(1)\), allowing the integer rounding and the
+alternation in \(k\) to enter explicitly.
+The exact inverse-function integral is a starting point; the current
+positive majorant discards cancellations that may control a sharper
+answer. Any proposed asymptotic should first be checked over both
+parities of \(K\), then proved uniformly in the rounding parameter.
+
+\paragraph{8. Extend the theorem to weighted and reflected moments.}
+For \(\beta>-1\), consider
+\[
+M_n(\beta)=\int_0^1x^\beta\log^n\Gamma(x)\,dx.
+\]
+The same layer-cake argument gives the exact starting identity
+\[
+\frac{M_n(\beta)}{n!}
+=\frac{1}{(\beta+1)\Gamma(n)}
+\int_0^\infty y^{n-1}x(y)^{\beta+1}\,dy,\qquad n\ge1.
+\]
+This identity follows by integrating \(x^\beta\) over the sublevel
+interval \(0<x<x(y)\); it is not a conjecture.
+For integer \(\beta+1\), Lagrange--B\"urmann coefficients of powers
+of \(h\) suggest a direct extension of the coefficient analysis.
+For noninteger powers, fractional leading exponents and branch
+normalizations must be handled explicitly.
+Mixed reflected moments involving
+\(\log\Gamma(x)\) and \(\log\Gamma(1-x)\) add a second endpoint
+mechanism and should be treated separately.
+
+\paragraph{9. Determine the next inverse-gamma singularities.}
+The local-limit proof finds the dominant growth without assuming a
+global inverse-branch picture. A further analytic study should determine
+the critical values of the reciprocal-gamma map accessible from this
+branch, their local types, and the continuation paths that reach them.
+That information could organize subsequent exponentially small
+corrections and explain the behavior of higher-order truncation.
+Computing roots of the digamma function numerically is a useful
+exploration, but is not a proof of completeness or of which critical
+value controls a given branch.
+
+\paragraph{10. Reduce the known Tornheim coordinates in a specified
+comparison algebra.}
+The existence of a named Tornheim representation for \(M_3\) is settled
+by \cite{BBB}. A meaningful remaining problem is, for example, whether
+the particular combination \(2T_{13}-T_{12}\) at \((1,1,1)\) admits
+a reduction using an explicitly stated set of zeta derivatives,
+logarithms, and other standard constants.
+The set must be fixed before a numerical search, and failure to
+find a relation must retain its precision and height qualifications.
+Independently, improve the triangular tail estimate
+\eqref{eq:tornheim-tail} by summing in \(q=m+n\) and applying
+an Euler--Maclaurin expansion to the resulting harmonic-logarithmic
+coefficients. This could certify individual Tornheim combinations
+without using the already evaluated cubic integral.
+
+\subsection{A longer-term exactness programme}
+
+\paragraph{11. Separate functional reduction from arithmetic
+independence.}
+The present results supply upper bounds and explicit reductions.
+Lower bounds for numerical period spaces require different input.
+One direction is to formulate the same questions in a motivic or
+other formal period algebra, where a structural dimension can
+sometimes be established, and then state exactly what comparison
+or period conjecture would transfer that dimension to numbers.
+The formal shuffle quotient of Theorem~\ref{thm:witt} is a useful
+combinatorial baseline, but it contains too few relations to serve
+as that arithmetic model on its own.
+
+\paragraph{12. Move the smallest certificates into a proof assistant.}
+The first targets should be the finite word-shuffle normal forms,
+the binomial matrix inverse, and the rational algebraic substitutions.
+They need only combinatorics and exact arithmetic.
+The next layer consists of analytic lemmas: convergence of the
+boundary Fourier convolution, the stated branches of polylogarithm
+inversion, and a rigorous positive-tail implementation for the cubic
+moment. A machine-checked rational row is valuable only when the
+functional equations it combines have been justified in the same
+convention. This staged approach keeps the trusted analytic base
+visible and makes each new certificate reusable.
+
+The common objective is a research record in which a numerical
+discovery can be followed by a short exact witness, and in which the
+questions that remain are stated at the level actually supported
+by the evidence. The two-product shuffle, the algebraic ladder rows,
+and the inverse-gamma remainder estimate provide three concrete
+models for that next stage.
