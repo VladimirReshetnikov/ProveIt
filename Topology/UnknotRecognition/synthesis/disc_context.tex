@@ -1,0 +1,97 @@
+\section{Independent disc replay with verifier-owned source geometry}
+\label{sec:disc-context}
+
+Sparse window geometry reduces producer arithmetic, but positive-Euler
+candidates still repeatedly reconstruct the same manifold during independent
+disc-proof replay. This continuation reuses only data independently built
+by a verifier for one fixed source. Candidate coordinates, reductions,
+support proofs and component claims continue to be checked for every proof.
+No producer-prepared geometry is passed to the verifier context.
+
+\subsection{Bind an owned snapshot of the actual source}
+
+The private context copies the supplied triangulation and validates the copy
+with the ordinary finite-manifold reconstruction. Its prepared geometry is
+therefore verifier-owned. A proof query also supplies its actual source;
+the context compares that source with its snapshot recursively, checking
+container and scalar types as well as values. An integer face index cannot
+be replaced by a Boolean merely because Python compares them equally.
+A changed source is rejected rather than silently rebinding the context.
+
+Every query validates its supplied normal coordinates afresh against the
+owned source geometry. It recomputes the original source/vector fingerprint,
+then reconstructs link minima, the peeled vector and quadrilateral divisor
+arithmetically. It compares these values with the certificate and checks
+the reduced-core proof independently. This is the same reduction logic as
+fresh public disc replay; it never invokes the producer's canonical-core
+routine or cached source potentials.
+
+The boundary homology basis depends only on the validated source. The
+context computes it independently on the first relevant unit-ray proof,
+then reuses it on later proofs. Boundary weights, parities and the claimed
+Euler and disc counts still come from the current independently validated
+core. A basis is published to the context only after complete construction;
+a callback interruption cannot leave a partial cached result.
+
+\subsection{Acceptance equivalence on a fixed source}
+
+\begin{proposition}[Verifier-owned reuse preserves disc-proof acceptance]
+Let $T$ be a supported finite source and let a context be constructed from
+its owned snapshot. For every query source equal to that snapshot in both
+structure and types, coordinates $x$ and disc certificate $C$, context
+replay has the same acceptance result as fresh public replay on $T$.
+A different query source cannot be accepted by that fixed-source context.
+\end{proposition}
+\begin{proof}
+Owned source validation reconstructs the same deterministic geometry as
+fresh validation of the identical source. Fresh coordinate validation
+therefore reconstructs the same rows, matching checks, edge weights and
+Euler data. The original fingerprint and independently calculated reduction
+are identical. The component and support-proof checks receive the same
+actual source and core. An independently computed cached boundary basis
+is the same deterministic source basis that fresh replay would compute,
+so the boundary parity comparisons also agree. Every acceptance comparison
+is consequently unchanged. Type-preserving source comparison rejects a
+different query source before these checks.
+\end{proof}
+
+The scope is one fixed supported source, not arbitrary new triangulations.
+Public \path{verify_normal_disk_count_certificate} still reconstructs
+its supplied source afresh on each call. Its independently validated input
+analysis can also serve as the core analysis only when the reconstructed
+core rows equal those input rows exactly. Otherwise the core is analysed
+afresh. This equality reuse is verifier-owned and makes no assumption that
+all supplied vectors are primitive or have no vertex links.
+
+The window creates a context lazily, only when a complete disc-count proof
+needs replay. It supplies the actual source and coordinates on every call.
+The ordinary final diagram witness retains its existing format and receives
+fresh canonical diagram/source verification outside this context. No
+cached acceptance result, producer analysis or producer geometry becomes
+part of the trusted certificate input.
+
+\subsection{Cost, ownership and limits}
+
+A batch of $M$ relevant proofs previously repeated source preparation and
+source boundary-basis construction. The context pays these costs once,
+plus one source snapshot. Each proof still pays for type-preserving source
+comparison, fresh coordinate validation, original fingerprinting, independent
+reduction arithmetic, core-proof replay and its current boundary parity.
+The gain is source-only amortization; certificate-dependent arithmetic is
+not removed. Generic component proofs retain their established independent
+reconstruction paths.
+
+Equality checks and snapshot storage are linear in the source encoding.
+Manifold validation, boundary algebra, coordinate bits, output and actual
+replay work remain charged. Callback allowances count begun guarded work
+rather than bit operations, so the measured guard tradeoff is reported
+separately from paired timings. The context belongs to its verifier and
+one fixed source; it is not shared across arbitrary diagram exteriors or
+mutable producer preparations.
+
+These changes preserve the preceding local sector/window complexity scope.
+They neither authenticate a new diagram-source relationship nor supply a
+global sector family, hierarchy or quasi-polynomial recognition theorem.
+
+\subsection{Source comparisons and paired measurements}
+\input{disc_context_results.tex}
