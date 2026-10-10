@@ -11703,3 +11703,70 @@ the 115-companion / five-open catalogue, retaining its fidelity caveats.
 Incoming Sanders linear-part/thickening results, Proposition 9.3
 prerequisites, single-piece anchor/section/spectrum lemmas and the
 linearity-bound correction are included in the same full audit.
+
+### L.2. The raw local inputs cannot have growing width
+
+Continuation checkpoint 298, 2026-10-10. The production module
+`Proofs16SmallDomainLocalObstruction` proves nine results auditing the
+local inputs of the single-piece lift. These are original proofs using
+the existing weighted-energy API; no additional upstream port is used.
+
+The issue is normalization. `HasProductProperty` has denominator the
+ambient modulus `N`, whereas `LocalMultilinearPieceAt` measures density
+relative to a possibly much shorter box. If every coordinate section has
+at most `sqrt(N)` points, **every map** has the unit product property.
+Indeed, for a nonempty parallel family, its common test domain `E` has
+`|E|^2 <= N`. The support of all simultaneous graph-pair sums has at most
+`|E|^2` elements. The existing weighted collision bound gives
+
+```
+(sum_E weight)^4 <= N * weightedSimultaneousAdditiveEnergy.
+```
+
+This includes arbitrary real weights in the support estimate. The
+zero-size parallel family is handled separately by ordinary additive
+energy, so no empty-family case is omitted. Consequently arbitrary maps
+on an interval box of width `L` have genuine unit product property when
+`L^2 <= N`, in every dimension. Unit property also supplies every
+parameter `0 <= gamma <= 1`.
+
+Now take dimension one and the quadratic `phi(z) = (z 0)^2`. Over the
+prime field, it agrees with any multilinear (hence affine) map at at most
+two points, on any partial domain. The proof subtracts the equations at
+two roots to obtain `(x-r)*(x+r-a)=0`; all roots lie in `{r,a-r}`.
+
+For any `L >= 1`, place the proper interval box in a prime modulus
+`N >= L^2`, and take `B` to be its whole carrier, so its local density is
+one. A proper one-dimensional sub-box has cardinality equal to width.
+The raw input would therefore imply the necessary budget
+
+```
+c(1) * w(1,L) <= 2.
+```
+
+`not_localMultilinearPieceAt_of_quadratic` formally refutes the input
+whenever this budget fails, for every `0 <= gamma <= 1`. Its positive
+density and growing-width specialization cannot be proved, even in
+dimension one. `LocalMultilinearPieceAt.unit_density_width_budget` records
+the necessary inequality directly. Averaging a relation cover into a
+function piece gives the same obstruction for `LocalRelationCoverAt`:
+with `Qc(t,1) >= 1`, its controls must satisfy
+
+```
+(c(1)/Qc(1,1)) * w(1,L) <= 2.
+```
+
+**Scope and next route.** This refutes auxiliary interfaces, not Theorem
+16.2 or Gowers's final conclusions. The original global theorem can
+discard a small part of ambient space; the short-box example does not
+refute that conclusion. The single-piece averaging, capture, remainder
+and retiling lemmas remain valid conditional deductions. Their raw local
+inputs cannot be discharged with growing-width controls. A usable lift
+must construct providers for the actual retained structured slices and
+spectrum relation, or derive a suitably normalized local energy input
+from the original data. Merely renaming a stronger premise does not
+complete that derivation. The numbered targets and their requested
+bounds remain unchanged; the ledger remains 115 companions / five open.
+
+**Production check.** All nine results compile in a 131-module closure.
+The combined axiom audit is pending for this checkpoint.
