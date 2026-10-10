@@ -2094,6 +2094,33 @@ section collects what every examined route needs.
   task. The Milićević Step 5 work (J.5c) bears on `Theorem162At 3` through
   the dimension-two deep structure, but by K.4 it does not reach
   Corollary 18.7 at `k = 6`.
+- **The direct trilinear attack (analysed the same day).**
+  - *Target.* `theorem_18_2_of_function_discrepancy_budget` reduces
+    length 6 to a degree-4 `FunctionDiscrepancyBound`. Its `β` must be
+    `≥ α^D` with `D ≲ 2^32768/728` for 18.2, or quasi-polynomial with
+    exponent `A ≲ 3400` for 18.7.
+  - *Locality is the lever.* Gowers's method needs structure only on boxes
+    of width `N^(poly α)`. That is why dimension 1 → 2 kept polynomial loss
+    (18.2 at `k = 5` via the polynomial cubic discrepancy).
+  - *Where dimension 2 → 3 still loses.* The width loss of Lemma 16.1 is
+    already removed (J.3: the Schmidt recurrence). The loss that remains is
+    the dimension-two graph count `exp(poly)` entering the joint box's
+    budget `G` (K.4). A single trilinear piece only needs one lift. But the
+    slices' frequency relation `Δ`, with fibres `≤ δ⁻²`, must be handled
+    simultaneously, which is the stackability problem (H.3, H.4).
+  - *Reduction.* The trilinear piece follows from a **local**
+    dimension-two structure theorem whose graph count, or Bohr rank, is
+    `poly` (for 18.2) or `quasi-poly` with explicit exponent (for 18.7), via
+    a single-piece lift with polynomial loss.
+  - *Why the deep contract does not suffice.* It is global, and its
+    density `exp(−poly)` is too weak for `k = 6`.
+  - *Sources.* The only known dimension-two source with quasi-polynomial
+    loss is Milićević 2026, whose Proposition 9.3 has the coherence gap of
+    J.5c. Repairing that gap is therefore on the critical path for 18.7 at
+    `k = 6` as well. For 18.2 at `k = 6`, no polynomial dimension-two
+    source is known: a *global* one would be PFR-strength over `ℤ`. Whether
+    locality makes a polynomial local dimension-two theorem accessible is
+    the open question this route turns on.
 
 ## F. Routes
 
