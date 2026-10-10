@@ -1,0 +1,795 @@
+\section{Nonintegral twists: Lerch jets, contact terms, and the half-twist}
+\label{tw:sec:main}
+
+The convolution-algebra continuation explicitly asks for a
+finite-part Stieltjes normal form for nonintegral frequency shifts, with
+an all-index half-twist multiplication table that includes its
+point-supported counterterms
+\cite[``Twists, characters, and alternate endpoint normalizations'']{stconv:algebra-report}.
+The twisted continuation~\cite{tw:report} supplies the full proof below. The underlying Lerch
+function is classical \cite[\S25.14]{tw:DLMFLerch}; at the half-twist its
+order jets are the modified Stieltjes constants of Hu and
+Kim~\cite{tw:HuKim}. An ordinary, nonsingular alternating Hurwitz
+convolution is already given by Zhu, Hu, and
+Kim~\cite[Theorem~1.13]{tw:ZhuHuKim}. The additional content below is
+the continuation through the singular orders, including the exact
+contact terms, covariant primitives, and degeneration to the untwisted
+normalization. In particular, twisting changes the special-function
+jets and the convolution identity; the positive-integer zeta values in
+the Gamma correction remain the same.
+
+\subsection{The meromorphic family and its endpoint normalization}
+
+Fix $0<\theta<1$, put $\omega=2\pi\theta$ and $z=e^{-i\omega}$, and
+retain the Fourier and convolution conventions of
+Section~\ref{stconv:sec:semigroup}. Any other real nonintegral twist
+$\theta=m+\vartheta$, $m\in\mathbb Z$, $0<\vartheta<1$, is obtained
+by the periodic modulation $U(x)\mapsto e^{-2\pi imx}U(x)$.
+Thus the chosen interval loses no real nonintegral shifts. Define
+\begin{equation}\label{tw:eq:lambda}
+ \lambda_{n,\theta}=2\pi i(n+\theta),\qquad
+ L_{n,\theta}=\log(2\pi|n+\theta|)
+                      +\frac{i\pi}{2}\operatorname{sgn}(n+\theta),
+ \qquad n\in\mathbb Z.
+\end{equation}
+Every power of $\lambda_{n,\theta}$ uses this logarithm. There is no
+zero frequency to remove. We write
+\[
+ D_\theta=D+2\pi i\theta,
+ \qquad \widehat{D_\theta U}(n)=\lambda_{n,\theta}\widehat U(n).
+\]
+Here $D_\theta$ acts on ordinary periodic distributions, rather than on
+functions satisfying a different boundary condition.
+The nonperiodic factor $e^{-i\omega x}$ below is used only for
+ordinary representatives on $0<x<1$ and for local endpoint Taylor
+coefficients. It is not used as a global multiplier on periodic
+distributions; the Fourier or cutoff definitions fix those extensions.
+Explicitly, for $m\in\mathbb Z$ the extension to shifted intervals is
+$W_s^{\theta+m}(x)=e^{-2\pi imx}W_s^\theta(x)$, with the same identity
+for $Z_s$, $U_n$, and $P_k$ after their definitions below.
+
+\begin{theorem}[Twisted Lerch family]\label{tw:thm:family}
+The Fourier coefficients
+\begin{equation}\label{tw:eq:W}
+ \widehat{W_s^\theta}(n)=\lambda_{n,\theta}^{\,s-1},
+ \qquad n\in\mathbb Z,
+\end{equation}
+define an entire distribution-valued function of $s$. The family
+\begin{equation}\label{tw:eq:Z}
+ Z_s^\theta=\Gamma(1-s)W_s^\theta
+\end{equation}
+is meromorphic, with simple poles precisely at $s=k+1$, $k\ge0$, and
+\begin{equation}\label{tw:eq:residues}
+ \operatorname{Res}_{s=k+1}Z_s^\theta
+       =\frac{(-1)^{k+1}}{k!}D_\theta^k\delta_0.
+\end{equation}
+For $\operatorname{Re}s<1$, it is the locally integrable periodic
+extension of
+\begin{equation}\label{tw:eq:Lerch}
+ f_s^\theta(x)=e^{-i\omega x}\Phi(z,s,x),\qquad 0<x<1.
+\end{equation}
+For every $s$, the restriction of the meromorphic distribution to
+$(0,1)$ is the entire function of $s$ on the right of
+\eqref{tw:eq:Lerch}. The convolution and differential identities are
+\begin{align}
+ W_s^\theta*W_t^\theta&=W_{s+t-1}^\theta,
+ &W_1^\theta&=\delta_0,\label{tw:eq:group}\\
+ D_\theta W_s^\theta&=W_{s+1}^\theta,
+ &D_\theta Z_s^\theta&=-s Z_{s+1}^\theta.\label{tw:eq:derivative}
+\end{align}
+Consequently,
+\begin{equation}\label{tw:eq:Zconv}
+ Z_s^\theta*Z_t^\theta
+ =\frac{\Gamma(1-s)\Gamma(1-t)}{\Gamma(2-s-t)}
+                           Z_{s+t-1}^\theta
+\end{equation}
+as a meromorphic identity, interpreted through \eqref{tw:eq:group} at
+intersections of polar divisors.
+\end{theorem}
+
+\begin{proof}
+On compact sets of $s$, the coefficients in \eqref{tw:eq:W}, and each
+fixed number of their order derivatives, have a common polynomial
+growth bound in $|n|$. Pairing their Fourier series with the rapidly
+decreasing Fourier coefficients of a smooth test function therefore
+gives normal convergence. This proves entire dependence. The Fourier
+multiplier of $D_\theta^k\delta_0$ is $\lambda_{n,\theta}^k$;
+the residues of $\Gamma(1-s)$ prove \eqref{tw:eq:residues}. These
+distributions are nonzero, so every displayed pole is present.
+
+For completeness, the Lerch identification can be proved without
+assuming a boundary-value Fourier formula. Initially let
+$0<\operatorname{Re}s<1$ and $\epsilon>0$. Abel damping gives
+\[
+ f_{s,\epsilon}^\theta(x)
+ =\sum_{m\ge0}e^{-(\epsilon+i\omega)(m+x)}(m+x)^{-s}.
+\]
+Absolute convergence permits unfolding its $n$th Fourier coefficient:
+\begin{align*}
+ \int_0^1 f_{s,\epsilon}^\theta(x)e^{-2\pi i n x}\,dx
+ &=\int_0^\infty t^{-s}e^{-(\epsilon+\lambda_{n,\theta})t}\,dt\\
+ &=\Gamma(1-s)(\epsilon+\lambda_{n,\theta})^{s-1}.
+\end{align*}
+Since $z\ne1$, the partial sums of $z^m$ are bounded. Summation by
+parts shows that the tail starting at $m=1$ converges uniformly in
+$x\in[0,1]$, and locally uniformly for $s$ in this strip, as
+$\epsilon\downarrow0$. The remaining term is bounded by an integrable
+multiple of $x^{-\operatorname{Re}s}$. Thus the limit can be taken in
+$L^1(0,1)$ and in its Fourier coefficients, giving
+\eqref{tw:eq:Lerch}. Repeated summation by parts, or finite differences
+of $(m+x)^{-s}$, continues the Lerch tail holomorphically to every
+$s$, locally uniformly when $x$ stays away from zero. Near zero its
+only nonsmooth term is
+\begin{equation}\label{tw:eq:localLerch}
+ f_s^\theta(x)=e^{-i\omega x}x^{-s}
+                +e^{-i\omega x}z\Phi(z,s,1+x).
+\end{equation}
+This proves $L^1$ holomorphy throughout $\operatorname{Re}s<1$ and
+the asserted continuation away from the endpoint. The remaining
+identities follow by multiplying the Fourier coefficients; the
+Gamma recurrence gives the last identity of
+\eqref{tw:eq:derivative}.
+\end{proof}
+
+The pointwise function in \eqref{tw:eq:Lerch} has no pole in $s$.
+Every pole in \eqref{tw:eq:Z} is an endpoint distribution. This is
+different from the untwisted Hurwitz family, whose pole at $s=1$
+also has an ordinary constant contribution away from the endpoint.
+
+For $n\ge0$ define ordinary Lerch jets and their periodic finite parts
+by
+\begin{align}
+ c_n^\theta(x)&=(-1)^n
+          \left.\partial_s^n f_s^\theta(x)\right|_{s=1},
+               &&0<x<1,\label{tw:eq:ordinaryjets}\\
+ Z_{1+u}^\theta&=-\frac{\delta_0}{u}
+       +\sum_{n\ge0}\frac{(-1)^n}{n!}U_n^\theta u^n.
+ \label{tw:eq:jets}
+\end{align}
+Set, also,
+\begin{equation}\label{tw:eq:Pk}
+ P_k^\theta=(-1)^{k+1}k!
+               \operatorname{FP}_{s=k+1}Z_s^\theta,
+ \qquad k\ge0.
+\end{equation}
+In particular $P_0^\theta=-U_0^\theta$. Off the endpoint it equals
+$p_k^\theta(x)=(-1)^{k+1}k! f_{k+1}^\theta(x)$.
+
+\begin{proposition}[Explicit singular normalization]
+\label{tw:prop:cutoff}
+For a smooth periodic test function $\phi$, put
+$h(x)=e^{-i\omega x}\phi(x)$ near zero. Then
+\begin{equation}\label{tw:eq:Ucutoff}
+ \langle U_n^\theta,\phi\rangle
+ =\lim_{\epsilon\downarrow0}\left\{
+      \int_\epsilon^1 c_n^\theta(x)\phi(x)\,dx
+        +\frac{\phi(0)}{n+1}\log^{n+1}\epsilon\right\}.
+\end{equation}
+If $F_k^\theta=\operatorname{FP}_{s=k+1}Z_s^\theta$ and $k\ge1$,
+then
+\begin{align}
+ \langle F_k^\theta,\phi\rangle
+ =\lim_{\epsilon\downarrow0}\biggl\{&
+       \int_\epsilon^1 f_{k+1}^\theta(x)\phi(x)\,dx
+       -\sum_{j=0}^{k-1}\frac{h^{(j)}(0)}{j!}
+                         \frac{\epsilon^{j-k}}{k-j}
+       +\frac{h^{(k)}(0)}{k!}\log\epsilon\biggr\}.
+ \label{tw:eq:Pcutoff}
+\end{align}
+These normalizations retain the zero Fourier coefficient; no
+mean-zero condition is imposed.
+\end{proposition}
+
+\begin{proof}
+Write the second term in \eqref{tw:eq:localLerch} as
+$r_s^\theta(x)$. After subtracting the degree-$N$ Taylor polynomial
+of $h$, the continuation of the test-function pairing is
+\begin{align}
+ \langle Z_s^\theta,\phi\rangle={}&
+ \int_0^1x^{-s}\left(h(x)-\sum_{j=0}^N
+                     \frac{h^{(j)}(0)}{j!}x^j\right)dx
+ +\sum_{j=0}^N\frac{h^{(j)}(0)}{j!(j+1-s)}\notag\\
+ &+\int_0^1r_s^\theta(x)\phi(x)\,dx.
+ \label{tw:eq:testsubtraction}
+\end{align}
+The first integral is holomorphic for $\operatorname{Re}s<N+2$,
+and the last integral is entire. At $s=1+u$, expand
+$x^{-1-u}=x^{-1}\sum_n(-1)^n u^n\log^n x/n!$ after the constant
+subtraction. This gives \eqref{tw:eq:Ucutoff}. At $s=k+1$, take
+the constant Laurent coefficient and integrate each subtracted
+monomial explicitly; this gives \eqref{tw:eq:Pcutoff}.
+The residue computed this way agrees with \eqref{tw:eq:residues},
+because
+\[
+ \langle D_\theta^k\delta_0,\phi\rangle
+       =(-1)^k h^{(k)}(0).
+\]
+This also fixes the signs of all the lower derivatives of $\delta_0$
+inside $D_\theta^k\delta_0$.
+\end{proof}
+
+\subsection{All-index multiplication and covariant contact terms}
+
+Let
+\begin{equation}\label{tw:eq:B}
+ B_\theta(u)=-uZ_{1+u}^\theta
+      =\Gamma(1-u)W_{1+u}^\theta,
+ \qquad
+ G_\theta(u)=\sum_{n\ge0}\frac{(-1)^n}{n!}U_n^\theta u^n.
+\end{equation}
+Thus $B_\theta(u)=\delta_0-uG_\theta(u)$. All the following
+equalities are analytic germs at zero in the algebra of periodic
+distributions with its usual convolution identity $\delta_0$.
+
+\begin{theorem}[Twisted Stieltjes normal form]
+\label{tw:thm:normalform}
+Put $C(u,v)=\Gamma(1-u)\Gamma(1-v)/\Gamma(1-u-v)$. Then
+\begin{align}
+ B_\theta(u)*B_\theta(v)&=C(u,v)B_\theta(u+v),
+ \label{tw:eq:Bproduct}\\
+ B_\theta(u)&=\exp_*\left(uP_0^\theta+
+                \sum_{r\ge2}\frac{\zeta(r)}r u^r\delta_0\right).
+ \label{tw:eq:Bellgenerator}
+\end{align}
+In particular,
+\begin{equation}\label{tw:eq:Bell}
+ U_n^\theta=\frac{(-1)^{n+1}}{n+1}
+ \mathcal B_{n+1}^*
+ \bigl(P_0^\theta,\zeta(2)\delta_0,2!\zeta(3)\delta_0,
+                            \ldots,n!\zeta(n+1)\delta_0\bigr).
+\end{equation}
+An explicit all-index multiplication table is furnished by the
+removable coefficient formula
+\begin{align}
+ G_\theta(u)*G_\theta(v)
+ =\frac{1}{uv}\bigl\{&uG_\theta(u)+vG_\theta(v)
+       -(u+v)C(u,v)G_\theta(u+v)\notag\\
+       &+(C(u,v)-1)\delta_0\bigr\}.
+ \label{tw:eq:table}
+\end{align}
+More precisely, $U_m^\theta*U_n^\theta$ is $(-1)^{m+n}m!n!$
+times the coefficient of $u^mv^n$ on the right. This is a finite
+combination of $\delta_0,U_0^\theta,\ldots,U_{m+n+1}^\theta$,
+with coefficients polynomial in ordinary zeta values.
+\end{theorem}
+
+\begin{proof}
+The first identity follows from \eqref{tw:eq:group}. At every
+Fourier mode, including $n=0$,
+\[
+ \widehat{P_0^\theta}(n)=\gamma+L_{n,\theta},\qquad
+ \widehat{B_\theta(u)}(n)
+       =\exp\left((\gamma+L_{n,\theta})u+
+                         \sum_{r\ge2}\frac{\zeta(r)}r u^r\right).
+\]
+This proves \eqref{tw:eq:Bellgenerator} and the Bell formula, with
+normal convergence after test-function pairing. Substitute
+$B_\theta(u)=\delta_0-uG_\theta(u)$ into
+\eqref{tw:eq:Bproduct} and solve for
+$G_\theta(u)*G_\theta(v)$ to obtain \eqref{tw:eq:table}. Its
+numerator vanishes when either variable is zero, so the quotient
+is removable. Extracting a fixed coefficient uses only finitely
+many coefficients of the Gamma quotient and of $G_\theta$.
+\end{proof}
+
+For example, the full identities, including their contact masses, are
+\begin{align}
+ U_0^\theta*U_0^\theta
+   &=2U_1^\theta-\zeta(2)\delta_0,\label{tw:eq:00}\\
+ U_0^\theta*U_1^\theta
+   &=\tfrac32U_2^\theta-\zeta(2)U_0^\theta
+                                      +\zeta(3)\delta_0,\label{tw:eq:01}\\
+ U_0^\theta*U_2^\theta
+   &=\tfrac43U_3^\theta-2\zeta(2)U_1^\theta
+           +2\zeta(3)U_0^\theta-2\zeta(4)\delta_0,\label{tw:eq:02}\\
+ U_1^\theta*U_1^\theta
+   &=U_3^\theta-2\zeta(2)U_1^\theta
+           +2\zeta(3)U_0^\theta-\tfrac14\zeta(4)\delta_0.
+ \label{tw:eq:11}
+\end{align}
+The presence of $\delta_0$, rather than $\delta_0-1$, matters even
+when these formulas are eventually evaluated away from zero.
+
+\begin{theorem}[All covariant contact corrections]
+\label{tw:thm:contacts}
+For $k\ge0$, with $H_0=0$,
+\begin{align}
+ \widehat{P_k^\theta}(n)
+   &=\lambda_{n,\theta}^k
+                 (\gamma+L_{n,\theta}-H_k),\label{tw:eq:PFourier}\\
+ D_\theta P_k^\theta
+   &=P_{k+1}^\theta+\frac{1}{k+1}D_\theta^{k+1}\delta_0,
+ \label{tw:eq:DP}\\
+ Q_k^\theta:=D_\theta^kP_0^\theta
+   &=P_k^\theta+H_kD_\theta^k\delta_0.
+ \label{tw:eq:Q}
+\end{align}
+Hence the all-index twisted polygamma product is
+\begin{align}
+ P_k^\theta*P_\ell^\theta
+  =D_\theta^{k+\ell}\bigl\{
+      2U_1^\theta+(H_k+H_\ell)U_0^\theta
+                 +(H_kH_\ell-\zeta(2))\delta_0\bigr\}.
+ \label{tw:eq:polygammaproduct}
+\end{align}
+More generally, let $R_{n,k}^\theta$ be the raw Hadamard finite part
+of the ordinary function $D_\theta^kc_n^\theta$ on $(0,1)$, using
+Taylor subtraction of its powers of $x$ and $\log x$ at zero and no
+additional endpoint mass. Then
+\begin{equation}\label{tw:eq:allcontacts}
+ D_\theta^kU_n^\theta
+ =R_{n,k}^\theta-h_{k,n}D_\theta^k\delta_0,
+ \qquad
+ h_{k,n}=(-1)^n n![u^{n+1}]
+                         \prod_{j=1}^k\left(1+\frac{u}{j}\right).
+\end{equation}
+In particular $h_{k,0}=H_k$, and $h_{k,n}=0$ for $n\ge k$.
+\end{theorem}
+
+\begin{proof}
+At $s=k+1+u$,
+\[
+ \Gamma(-k-u)
+ =\frac{(-1)^{k+1}}{k!u}
+       +\frac{(-1)^k}{k!}(H_k-\gamma)+O(u).
+\]
+Multiply this by
+$\lambda_{n,\theta}^ke^{uL_{n,\theta}}$ and take the finite part.
+This proves \eqref{tw:eq:PFourier}. The two derivative formulas
+follow by multiplication by $\lambda_{n,\theta}$ and
+$H_{k+1}-H_k=1/(k+1)$. Multiplying the two affine polynomials
+$\gamma+L-H_k$ and $\gamma+L-H_\ell$ and using
+\eqref{tw:eq:00} gives \eqref{tw:eq:polygammaproduct}.
+
+For clarity, the raw finite part in \eqref{tw:eq:allcontacts} can
+equivalently be defined by the coefficientwise constant cutoff term
+of $D_\theta^kf_{1+u}^\theta$. The Mellin subtraction
+\eqref{tw:eq:testsubtraction} identifies the regular Laurent
+coefficients of $Z_{k+1+u}^\theta$ with those cutoff finite parts
+of its order derivatives. Repeated application of
+\eqref{tw:eq:derivative} gives
+\[
+ D_\theta^kZ_{1+u}^\theta
+          =(-1)^k(1+u)_kZ_{k+1+u}^\theta.
+\]
+The contribution from the pole on the right is exactly
+\[
+ -\frac{1}{u}\prod_{j=1}^k\left(1+\frac{u}{j}\right)
+                  D_\theta^k\delta_0.
+\]
+Its constant and higher coefficients supply all the difference
+between derivative-compatible and raw finite parts. Equating
+the coefficients of $(-1)^nu^n/n!$ proves
+\eqref{tw:eq:allcontacts}.
+\end{proof}
+
+For example, $D_\theta^2\delta_0=\delta_0''+
+4\pi i\theta\delta_0'-(2\pi\theta)^2\delta_0$. Thus
+\eqref{tw:eq:Q} specifies the lower point-supported terms as well
+as the highest derivative. Writing only $H_k\delta_0^{(k)}$ would
+give the wrong normalization for a nonzero twist.
+
+\subsection{Rational twists and ordinary special functions}
+
+\begin{proposition}[Finite Hurwitz reduction]\label{tw:prop:rational}
+Let $\theta=p/q$, where $1\le p<q$ are relatively prime, and put
+$z=e^{-2\pi ip/q}$. Then
+\begin{equation}\label{tw:eq:rationalLerch}
+ f_s^{p/q}(x)=\frac{e^{-2\pi ipx/q}}{q^s}
+          \sum_{r=0}^{q-1}z^r\zeta\left(s,\frac{x+r}{q}\right),
+ \qquad 0<x<1.
+\end{equation}
+The sum is entire in $s$: its Hurwitz residues cancel. Consequently,
+\begin{align}
+ c_n^{p/q}(x)
+ &=\frac{e^{-2\pi ipx/q}}q
+       \sum_{r=0}^{q-1}z^r\sum_{j=0}^n\binom nj
+        (\log q)^{n-j}\gamma_j\left(\frac{x+r}{q}\right),
+ \label{tw:eq:rationalStieltjes}\\
+ p_k^{p/q}(x)
+ &=\frac{e^{-2\pi ipx/q}}{q^{k+1}}
+       \sum_{r=0}^{q-1}z^r\psi^{(k)}\left(\frac{x+r}{q}\right),
+       \qquad k\ge0.\label{tw:eq:rationalPolygamma}
+\end{align}
+These ordinary functions, extended by
+\eqref{tw:eq:Ucutoff} and \eqref{tw:eq:Pcutoff}, give the
+finite-part distributions in Theorems~\ref{tw:thm:normalform}
+and~\ref{tw:thm:contacts}.
+\end{proposition}
+
+\begin{proof}
+For $\operatorname{Re}s>1$, split the defining Lerch series into
+its residue classes modulo $q$. This gives
+\eqref{tw:eq:rationalLerch}; analytic continuation proves it
+everywhere. Since $\sum_r z^r=0$, the common Hurwitz pole vanishes
+before the factor $q^{-s}$ is expanded. Differentiating the resulting
+Taylor expansion at $s=1$ gives
+\eqref{tw:eq:rationalStieltjes}. At positive integers use the
+Hurwitz--polygamma identity; its limiting case at $s=1$ uses
+$\gamma_0=-\psi$ and the same pole cancellation. This proves
+\eqref{tw:eq:rationalPolygamma} also for $k=0$.
+\end{proof}
+
+Thus additive rational twists require finite colored combinations of
+Hurwitz jets, while the coefficients governing their convolution
+remain the ordinary $\zeta(r)$ from $\log\Gamma(1-u)$.
+No replacement by Dirichlet eta values is needed in
+\eqref{tw:eq:Bell} or \eqref{tw:eq:table}.
+
+\subsection{The half-twist and convergent alternating identities}
+
+At $\theta=\tfrac12$, set
+\begin{align}
+ \zeta_E(s,x)&=\Phi(-1,s,x)
+       =2^{-s}\left\{\zeta\left(s,\frac{x}{2}\right)
+                  -\zeta\left(s,\frac{x+1}{2}\right)\right\},
+ \label{tw:eq:Eulerzeta}\\
+ \widetilde\gamma_n(x)&=(-1)^n
+                   \left.\partial_s^n\zeta_E(s,x)\right|_{s=1}.
+ \label{tw:eq:modified}
+\end{align}
+These modified Stieltjes constants are the established functions of
+Hu and Kim~\cite{tw:HuKim}. The explicit conversion is
+\begin{equation}\label{tw:eq:halfStieltjes}
+ \widetilde\gamma_n(x)
+ =\frac12\sum_{j=0}^n\binom nj(\log2)^{n-j}
+       \left\{\gamma_j\left(\frac{x}{2}\right)
+              -\gamma_j\left(\frac{x+1}{2}\right)\right\},
+ \qquad c_n^{1/2}(x)=e^{-\pi ix}\widetilde\gamma_n(x).
+\end{equation}
+In particular, the Nielsen beta function is
+\begin{equation}\label{tw:eq:beta}
+ \beta(x)=\widetilde\gamma_0(x)
+      =\frac12\left\{\psi\left(\frac{x+1}{2}\right)
+                     -\psi\left(\frac{x}{2}\right)\right\}.
+\end{equation}
+The elementary shift relation
+\begin{equation}\label{tw:eq:modifiedshift}
+ \widetilde\gamma_n(x)+\widetilde\gamma_n(x+1)
+                                      =\frac{\log^n x}{x}
+\end{equation}
+fixes its endpoint singularity, including every logarithmic order.
+
+\begin{theorem}[All-index alternating finite-part convolution]
+\label{tw:thm:alternating}
+For $0<a<1$ and $m,n\ge0$, the following expression consists of
+absolutely convergent integrals:
+\begin{align}
+ \mathcal A_{mn}(a)={}&
+ \int_0^a\biggl\{
+      \widetilde\gamma_m(x)\widetilde\gamma_n(a-x)
+       -\widetilde\gamma_n(a)\frac{\log^m x}{x}
+       -\widetilde\gamma_m(a)\frac{\log^n(a-x)}{a-x}
+                 \biggr\}\,dx\notag\\
+ &-\int_a^1\widetilde\gamma_m(x)
+                        \widetilde\gamma_n(1+a-x)\,dx\notag\\
+ &+\frac{\widetilde\gamma_n(a)}{m+1}\log^{m+1}a
+       +\frac{\widetilde\gamma_m(a)}{n+1}\log^{n+1}a.
+ \label{tw:eq:Amn}
+\end{align}
+It equals $e^{\pi ia}(U_m^{1/2}*U_n^{1/2})(a)$, where the
+convolution is smooth on $(0,1)$. Every $\mathcal A_{mn}$ is
+therefore the finite linear combination of
+$\widetilde\gamma_0,\ldots,\widetilde\gamma_{m+n+1}$ obtained
+from \eqref{tw:eq:table} by discarding its $\delta_0$ term.
+In particular,
+\begin{align}
+ \mathcal A_{00}(a)&=2\widetilde\gamma_1(a),
+       \label{tw:eq:A00}\\
+ \mathcal A_{01}(a)&=\tfrac32\widetilde\gamma_2(a)
+                          -\zeta(2)\widetilde\gamma_0(a),
+       \label{tw:eq:A01}\\
+ \mathcal A_{11}(a)&=\widetilde\gamma_3(a)
+             -2\zeta(2)\widetilde\gamma_1(a)
+             +2\zeta(3)\widetilde\gamma_0(a).
+       \label{tw:eq:A11}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+For integrable orders, convolution on the circle splits into
+$0<x<a$ and $a<x<1$. The phases of the two factors have product
+$e^{-\pi ia}$ in the first interval and
+$e^{-\pi i(1+a)}=-e^{-\pi ia}$ in the second. This is the source
+of the alternating sign in \eqref{tw:eq:Amn}, and agrees with
+the nonsingular alternating convolution of
+\cite[Theorem~1.13]{tw:ZhuHuKim}.
+
+To continue to the jets, use the normalized cutoff distributions in
+\eqref{tw:eq:Ucutoff}. On a compact subinterval of $0<a<1$, the
+two endpoint singularities in the first integral occur at distinct
+points, $x=0$ and $x=a$. Their only divergent terms are the two
+explicit subtractions in \eqref{tw:eq:Amn}. For instance, at zero,
+\eqref{tw:eq:modifiedshift} writes the first factor as
+$\log^m x/x$ plus a smooth function, while
+$\widetilde\gamma_n(a-x)-\widetilde\gamma_n(a)=O(x)$.
+The subtracted integrand is therefore
+$O(1+|\log x|^m)$ there, and has the analogous integrable behavior
+at $a$. The wrapped integral is smooth. Integration of the two
+subtracted singular monomials gives exactly the two finite
+$\log a$ terms shown. This verifies the cutoff expression and
+permits all parameter coefficients to be taken under the
+subtracted integrals. Equivalently it is the restriction of the
+meromorphic convolution identity \eqref{tw:eq:Zconv}. The identities
+\eqref{tw:eq:A00}--\eqref{tw:eq:A11} now follow from
+\eqref{tw:eq:00}, \eqref{tw:eq:01}, and \eqref{tw:eq:11}.
+\end{proof}
+
+For ordinary digamma functions this gives the concrete identity
+\begin{align}
+ &\int_0^a\left\{\beta(x)\beta(a-x)
+               -\beta(a)\left(\frac1x+\frac1{a-x}\right)\right\}dx
+       -\int_a^1\beta(x)\beta(1+a-x)\,dx
+       +2\beta(a)\log a\notag\\
+ &\hspace{1cm}=\gamma_1\left(\frac a2\right)
+          -\gamma_1\left(\frac{a+1}{2}\right)
+                         +2\log2\,\beta(a).
+ \label{tw:eq:betaIntegral}
+\end{align}
+The full distributional identity behind it still contains
+$-\zeta(2)\delta_0$. Omitting that mass would preserve
+\eqref{tw:eq:betaIntegral} on $0<a<1$ but would destroy the
+Fourier coefficients and every identity involving endpoint tests.
+
+\begin{corollary}[A quarter-Gamma evaluation]
+\label{tw:cor:quarterGamma}
+At $a=\tfrac12$, the absolutely convergent integral in
+\eqref{tw:eq:betaIntegral} has the exact value
+\begin{equation}\label{tw:eq:quarterGamma}
+ \mathcal A_{00}\left(\tfrac12\right)
+ =\gamma_1\left(\tfrac14\right)-\gamma_1\left(\tfrac34\right)
+                                      +\pi\log2
+ =\pi\left\{4\log\Gamma\left(\tfrac14\right)
+                          -\gamma-3\log(2\pi)\right\}.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Distinguish the Dirichlet beta function
+$\beta_{\mathrm D}(s)=\sum_{r\ge0}(-1)^r(2r+1)^{-s}$
+from the Nielsen function $\beta(x)$ in \eqref{tw:eq:beta}.
+The identity $\zeta_E(s,\tfrac12)=2^s\beta_{\mathrm D}(s)$ gives
+\[
+ 2\widetilde\gamma_1\left(\tfrac12\right)
+                    =-\pi\log2-4\beta_{\mathrm D}'(1),
+\]
+since $\beta_{\mathrm D}(1)=\pi/4$.
+The completed Dirichlet functional equation
+\cite[\S25.15(i)]{tw:DLMFDirichlet} is, for this character,
+\[
+ \Lambda(s)=\left(\frac4\pi\right)^{(s+1)/2}
+             \Gamma\left(\frac{s+1}{2}\right)\beta_{\mathrm D}(s),
+ \qquad \Lambda(s)=\Lambda(1-s).
+\]
+Also
+\[
+ \beta_{\mathrm D}(s)
+  =4^{-s}\left\{\zeta\left(s,\tfrac14\right)
+                         -\zeta\left(s,\tfrac34\right)\right\},
+ \quad
+ \beta_{\mathrm D}(0)=\tfrac12,\quad
+ \beta_{\mathrm D}'(0)
+  =\log\Gamma\left(\tfrac14\right)
+                  -\log\Gamma\left(\tfrac34\right)-\log2.
+\]
+Logarithmic differentiation of the completed functional equation
+at $0$ and $1$, followed by the Gamma reflection formula, yields
+\[
+ \beta_{\mathrm D}'(1)
+   =\frac\pi4\left\{\gamma+2\log2+3\log\pi
+                             -4\log\Gamma\left(\tfrac14\right)\right\}.
+\]
+Substitution proves \eqref{tw:eq:quarterGamma}; the first equality
+also uses $\beta(\tfrac12)=\pi/2$ in
+\eqref{tw:eq:betaIntegral}.
+\end{proof}
+
+\subsection{Reflection at the half-twist}
+
+For the half-twist, the map $n\mapsto-n-1$ reverses the shifted
+frequency $n+\tfrac12$. Its periodic realization is
+\begin{equation}\label{tw:eq:J}
+ \mathcal J U(x)=e^{-2\pi ix}U(-x),\qquad
+ \widehat{\mathcal J U}(n)=\widehat U(-n-1).
+\end{equation}
+This is an involutive convolution automorphism with
+$\mathcal J\delta_0=\delta_0$ and
+$D_{1/2}\mathcal J=-\mathcal JD_{1/2}$. Ordinary reflection alone
+does not reverse the half-shifted frequencies. Also define
+\[
+ \widehat{\mathcal H_{1/2}U}(n)
+       =-i\operatorname{sgn}\left(n+\tfrac12\right)\widehat U(n),
+ \qquad n\in\mathbb Z.
+\]
+Here $\mathcal H_{1/2}^2=-\mathrm{Id}$ on all periodic
+distributions, because every shifted frequency is nonzero.
+
+\begin{corollary}[Reflected half-twist table]
+\label{tw:cor:reflection}
+Writing $U_n=U_n^{1/2}$ and $B=B_{1/2}$ in this corollary,
+\begin{equation}\label{tw:eq:reflectedB}
+ B(u)*\mathcal J B(v)
+  =C(u,v)\bigl(\cos(\pi v)\,\mathrm{Id}
+                   +\sin(\pi v)\,\mathcal H_{1/2}\bigr)B(u+v).
+\end{equation}
+Thus the coefficient prescription gives an all-index reflected
+table as well. Two explicit instances are
+\begin{align}
+ U_0*\mathcal J U_1
+  &=\tfrac12 U_2+\mathcal J U_2
+        +\zeta(2)(U_0+\mathcal J U_0)+\zeta(3)\delta_0,
+ \label{tw:eq:reflected01}\\
+ U_1*\mathcal J U_1
+  &=\tfrac12(U_3+\mathcal J U_3)
+        +2\zeta(2)(U_1+\mathcal J U_1)
+        +\zeta(3)(U_0+\mathcal J U_0)
+        +\tfrac72\zeta(4)\delta_0.
+ \label{tw:eq:reflected11}
+\end{align}
+For the polygamma finite parts,
+\begin{align}
+ P_k^{1/2}*\mathcal J P_\ell^{1/2}
+ =(-1)^\ell D_{1/2}^{k+\ell}\bigl\{
+     U_1+\mathcal J U_1+H_\ell U_0+H_k\mathcal J U_0
+               +(H_kH_\ell+2\zeta(2))\delta_0\bigr\}.
+ \label{tw:eq:reflectedP}
+\end{align}
+\end{corollary}
+
+\begin{proof}
+At mode $n$ put $\sigma=\operatorname{sgn}(n+\tfrac12)$. The
+logarithms of $\lambda_{n,1/2}$ and $-\lambda_{n,1/2}$ differ by
+$i\pi\sigma$. Dividing the Fourier coefficient of the left side
+of \eqref{tw:eq:reflectedB} by that of $B(u+v)$ gives
+$C(u,v)e^{-i\pi v\sigma}$, which is exactly the multiplier on
+the right. Coefficient extraction, with
+$\zeta(2)^2=\tfrac52\zeta(4)$, proves the two displayed
+instances. Multiplication of
+$\gamma+L_{n,1/2}-H_k$ and
+$\gamma+L_{-n-1,1/2}-H_\ell$ proves
+\eqref{tw:eq:reflectedP}; the factor $(-1)^\ell$ comes from
+$\lambda_{-n-1,1/2}^{\ell}=(-\lambda_{n,1/2})^\ell$.
+\end{proof}
+
+The modulation in \eqref{tw:eq:J} is periodic specifically because
+$2\theta=1$. For a general twist, frequency reversal connects
+$\theta$ with $1-\theta$; the same fixed-twist involution should
+not be asserted without changing the space or the twist.
+
+\subsection{Unique covariant primitives}
+
+Because $\lambda_{n,\theta}\ne0$ for every $n$, the operator
+$D_\theta$ has a unique inverse on periodic distributions:
+\[
+ \widehat{D_\theta^{-q}U}(n)
+       =\lambda_{n,\theta}^{-q}\widehat U(n),\qquad q\ge1.
+\]
+This removes the choice of an integration constant that occurs
+for ordinary periodic primitives.
+
+\begin{theorem}[All-order covariant antiderivatives]
+\label{tw:thm:primitives}
+Define the complete homogeneous reciprocal-harmonic coefficients by
+\begin{equation}\label{tw:eq:hcomplete}
+ \sum_{j\ge0}h_j^{(q-1)}w^j
+       =\prod_{r=1}^{q-1}\left(1-\frac wr\right)^{-1};
+ \qquad h_0^{(0)}=1,\quad h_j^{(0)}=0\ (j>0).
+\end{equation}
+Then for $q\ge1$ and $n\ge0$,
+\begin{equation}\label{tw:eq:primitive}
+ D_\theta^{-q}U_n^\theta
+ =\frac{(-1)^{n+1}n!}{(q-1)!}
+       \sum_{j=0}^{n+1}\frac{h_{n+1-j}^{(q-1)}}{j!}
+            \left.\partial_s^j Z_s^\theta\right|_{s=1-q}.
+\end{equation}
+Its ordinary value on $(0,1)$ is obtained by replacing
+$Z_s^\theta$ by $f_s^\theta$. For $q\ge2$ this is a periodic
+$C^{q-2}$ function. For $q>k\ge0$, setting $p=q-k$ gives
+\begin{align}
+ D_\theta^{-q}P_k^\theta
+  &=\frac{
+       \left.\partial_s Z_s^\theta\right|_{s=1-p}
+           +(H_{p-1}-H_k)Z_{1-p}^\theta}{(p-1)!},
+       \label{tw:eq:Pprimitive}\\
+ D_\theta^{-q}Q_k^\theta
+  &=\frac{
+       \left.\partial_s Z_s^\theta\right|_{s=1-p}
+           +H_{p-1}Z_{1-p}^\theta}{(p-1)!}.
+       \label{tw:eq:Qprimitive}
+\end{align}
+At the half-twist, the first primitive has the explicit Gamma form
+\begin{equation}\label{tw:eq:halfGamma}
+ D_{1/2}^{-1}U_0^{1/2}(x)
+  =e^{-\pi ix}\left\{
+      \log\Gamma\left(\frac{x+1}{2}\right)
+      -\log\Gamma\left(\frac{x}{2}\right)+\frac12\log2\right\},
+ \qquad 0<x<1.
+\end{equation}
+The displayed additive term is fixed by the periodic distributional
+normalization.
+\end{theorem}
+
+\begin{proof}
+The spectral definition and the Gamma recurrence give
+\[
+ D_\theta^{-q}Z_{1+u}^\theta
+       =\frac{Z_{1-q+u}^\theta}{(-u)_q},\qquad
+ \frac1{(-u)_q}
+       =-\frac1{(q-1)!u}\sum_{j\ge0}h_j^{(q-1)}u^j.
+\]
+The family in the numerator is holomorphic at $u=0$. Comparing
+the coefficients of $(-1)^nu^n/n!$ proves
+\eqref{tw:eq:primitive}. Its Fourier coefficients are
+$O(|n|^{-q}(1+\log|n|)^{n_0+1})$ when the fixed Stieltjes
+index is denoted by $n_0$. Therefore the Fourier series and its
+first $q-2$ ordinary derivatives converge absolutely for $q\ge2$.
+The derivative formulas for $P_k^\theta$ and $Q_k^\theta$ follow
+directly from \eqref{tw:eq:PFourier} and
+$\psi(p)=H_{p-1}-\gamma$.
+
+For \eqref{tw:eq:halfGamma}, the case $q=1,n=0$ is
+$-\partial_s Z_s^{1/2}|_{s=0}$. Use
+\eqref{tw:eq:Eulerzeta}, $\zeta(0,a)=\tfrac12-a$, and
+$\zeta'(0,a)=\log\Gamma(a)-\tfrac12\log(2\pi)$.
+The difference of the two zeta values at zero is $\tfrac12$,
+which supplies the term $\tfrac12\log2$ after differentiation.
+\end{proof}
+
+\subsection{Degeneration to the untwisted finite parts}
+
+The zero Fourier coefficient becomes singular as $\theta\downarrow0$.
+Deleting it exactly gives a continuous transition to the untwisted
+normalization, including all the Stieltjes jets.
+
+\begin{theorem}[Exact zero-mode renormalization]
+\label{tw:thm:zerolimit}
+For every $\rho<1$,
+\begin{equation}\label{tw:eq:Blimit}
+ B_\theta(u)-\Gamma(1-u)(2\pi i\theta)^u\,1
+                    \longrightarrow B(u)
+ \qquad (\theta\downarrow0)
+\end{equation}
+locally uniformly for $|u|<\rho$ after pairing with any smooth
+periodic test function, and with every fixed number of derivatives
+in $u$. Here $B(u)=\Gamma(1-u)R_{-u}=\stconvId-u\sum_{n\ge0}(-1)^nG_nu^n/n!$ is the already proved untwisted family. The symbol $1$ is the constant distribution, which has only the
+zero Fourier coefficient. Put
+\begin{equation}\label{tw:eq:meanjet}
+ \mu_n(\theta)=\frac{(-1)^{n+1}}{n+1}
+ \mathcal B_{n+1}\bigl(
+    \gamma+\log(2\pi i\theta),\zeta(2),2!\zeta(3),
+                              \ldots,n!\zeta(n+1)\bigr).
+\end{equation}
+Then $\mu_n(\theta)=\widehat{U_n^\theta}(0)$ and
+\begin{equation}\label{tw:eq:Ulimit}
+ U_n^\theta-\mu_n(\theta)\,1\longrightarrow G_n
+                \qquad\hbox{in }\mathcal D'(\mathbb R/\mathbb Z).
+\end{equation}
+In particular,
+\[
+ \mu_0(\theta)=-\gamma-\log(2\pi i\theta),\qquad
+ \mu_1(\theta)=\frac{(\gamma+\log(2\pi i\theta))^2+\zeta(2)}2.
+\]
+\end{theorem}
+
+\begin{proof}
+The subtracted quantity in \eqref{tw:eq:Blimit} is exactly the
+$n=0$ Fourier coefficient. For each $n\ne0$, the remaining
+coefficient tends to
+$\Gamma(1-u)(2\pi in)^u=\widehat{B(u)}(n)$ with the previously
+fixed branch. Uniformly for $0<\theta\le\tfrac12$ and $u$ on a
+compact subdisk, these coefficients and their fixed order
+derivatives are bounded by a common polynomial in $|n|$, because
+$|n+\theta|$ is comparable with $|n|$. Rapid decrease of the
+test-function Fourier coefficients proves normal convergence and
+allows termwise order differentiation. Taking the coefficient of
+$(-1)^{n+1}u^{n+1}/n!$ gives \eqref{tw:eq:Ulimit}; the scalar
+Gamma expansion gives \eqref{tw:eq:meanjet}.
+\end{proof}
+
+At $u=0$, the left side of \eqref{tw:eq:Blimit} is already
+$\delta_0-1=\stconvId$. Thus the change of convolution identity is
+caused exactly by the disappearing zero mode. The same observation
+explains why the interior alternating identity
+\eqref{tw:eq:A00} has no added constant, whereas the untwisted
+digamma convolution has the constant contributed by
+$-\zeta(2)\stconvId$.

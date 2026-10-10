@@ -3,7 +3,7 @@ from pathlib import Path
 from collections import Counter
 import hashlib, json, re
 B=Path(__file__).resolve().parents[1]
-files=[B/'polylogarithms.tex',B/'references.tex',*sorted((B/'chapters').glob('*.tex'))]
+files=[*sorted(B.glob('*.tex')),*sorted((B/'volumes').glob('*.tex')),*sorted((B/'chapters').glob('*.tex'))]
 text='\n'.join(p.read_text(encoding='utf-8') for p in files)
 labels=re.findall(r'\\label\{([^}]+)\}',text)
 refs=re.findall(r'\\(?:eqref|ref|autoref)\{([^}]+)\}',text)

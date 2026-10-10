@@ -1,0 +1,13 @@
+ClearAll[xx,hh,r,t,j,k,beta,q,f];
+exact=Flatten[Table[TrueQ[Together[Sum[(-1)^(r-j) Binomial[r+t-j-1,r-j]/hh^(r+t-j)/xx^j,{j,1,r}]+Sum[(-1)^r Binomial[r+t-k-1,t-k]/hh^(r+t-k)/(xx+hh)^k,{k,1,t}]-1/(xx^r (xx+hh)^t)]===0],{r,1,5},{t,1,5}]];
+rows=Table[th=ArcSin[l];value=NIntegrate[ArcTanh[l Sin[x]],{x,0,Pi/2},WorkingPrecision->70,AccuracyGoal->45,PrecisionGoal->45];target=If[l==0,0,th Log[Abs[Tan[th/2]]]+2 Im[PolyLog[2,Exp[I th]]]-Im[PolyLog[2,Exp[2 I th]]]/2];err=Abs[value-N[target,70]];<|"kind"->"real-arctanh-branch","lambda"->ToString[l,InputForm],"passed"->TrueQ[err<10^-40],"absolute_residual"->ToString[err,InputForm]|>,{l,{-1,-3/4,-1/2,0,1/2,3/4,1}}];
+beta[x_]:=(PolyGamma[0,(x+1)/2]-PolyGamma[0,x/2])/2;
+a=1/2;q[x_]:=beta[1+x];qa=q[a];qpa=(PolyGamma[1,(a+2)/2]-PolyGamma[1,(a+1)/2])/4;
+f[x_?NumericQ]:=If[x==0||x==a,qpa+(qa-q[0])/a+qa q[0],(qa-q[a-x])/x+(qa-q[x])/(a-x)+q[x]q[a-x]];
+value=NIntegrate[f[x],{x,0,a},WorkingPrecision->70,AccuracyGoal->45,PrecisionGoal->45,MaxRecursion->25]-NIntegrate[beta[x] beta[1+a-x],{x,a,1},WorkingPrecision->70,AccuracyGoal->45,PrecisionGoal->45]+2 beta[a] Log[a];
+target=Pi (4 Log[Gamma[1/4]]-EulerGamma-3 Log[2 Pi]);err=Abs[value-N[target,70]];
+AppendTo[rows,<|"kind"->"quarter-Gamma-subtracted-integral","passed"->TrueQ[err<10^-40],"absolute_residual"->ToString[err,InputForm]|>];
+err=Abs[N[StieltjesGamma[1,1/4],70]-N[StieltjesGamma[1,3/4],70]+N[Pi Log[2],70]-N[target,70]];
+AppendTo[rows,<|"kind"->"quarter-Gamma-Stieltjes-conversion","passed"->TrueQ[err<10^-40],"absolute_residual"->ToString[err,InputForm]|>];
+record=<|"engine"->$Version,"exact_partial_fraction_checks"->Length[exact],"all_exact_pass"->And@@exact,"numerical_diagnostics"-><|"working_precision"->70,"interval_certified"->False,"rows"->rows|>,"all_pass"->(And@@exact&&And@@Lookup[rows,"passed"]),"scope"->"Native exact partial fractions, independent real-branch quadrature including both endpoints, and quarter-Gamma integral/constant diagnostics. General identities have analytic proofs."|>;
+Export[FileNameJoin[{DirectoryName[$InputFileName],"twisted-mixed-native.json"}],record,"RawJSON"];Print[ExportString[record,"RawJSON"]];Exit[If[TrueQ[record["all_pass"]],0,1]];

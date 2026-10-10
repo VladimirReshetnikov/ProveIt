@@ -6,6 +6,7 @@ from pathlib import Path
 from fractions import Fraction
 from decimal import Decimal
 import hashlib, json, sys, subprocess, io, zipfile
+import re
 # The committed exact endpoints contain up to several thousand integer digits.
 sys.set_int_max_str_digits(100000)
 B=Path(__file__).resolve().parents[1]
@@ -69,7 +70,7 @@ archives=sum((read(name) for name in ['incoming-archives.json',
     'research-incoming-archives.json','third-incoming-archives.json',
     'fourth-incoming-archives.json','fifth-incoming-archives.json',
     'sixth-incoming-archives.json','seventh-incoming-archives.json',
-    'eighth-incoming-archives.json','ninth-incoming-archives.json']), [])
+    'eighth-incoming-archives.json','ninth-incoming-archives.json','tenth-incoming-archives.json']), [])
 for archive in archives:
     p=B.parents[3]/archive['archive']
     blob=p.read_bytes() if p.is_file() else subprocess.check_output(['git','show',archive['archive_git_revision']+':'+archive['archive']],cwd=B.parents[3])
@@ -82,7 +83,7 @@ for archive in archives:
         p=B.parent/member['path']
         if not p.is_file() or digest(p,False)!=member['sha256']:
             archive_errors.append(member['path'])
-outcomes['incoming-archive-preservation']=len(archives)==47 and sum(len(a['files']) for a in archives)==1827 and not archive_errors
+outcomes['incoming-archive-preservation']=len(archives)==49 and sum(len(a['files']) for a in archives)==1889 and not archive_errors
 x=read('incoming-retirement.json')
 archive_by_path={a['archive']:a for a in archives}
 outcomes['imported-archive-retirement']=x['archive_count']==16 and x['preserved_members']==691 and len(x['archives'])==16 and sum(a['members'] for a in x['archives'])==691 and (B.parents[3]/'docs/incoming/README.md').is_file() and all(
@@ -224,7 +225,8 @@ outcomes['fifth-harmonic-default-suite']=len(x['checks'])==4 and all(c['exit_cod
 for batch, parts in [('sixth', {'all-depth':1,'radial':5,'sharp':4,'golden':1,'uniform-bounds':1,'uniform-continuation':1}),
                      ('seventh', {'lambert':1,'large-orders':1,'leading-one':2,'tetra':1,'extremizers':1}),
                      ('eighth', {'resonance':1,'shifted':2,'algebra':3,'closure':4,'calculus':1}),
-                     ('ninth', {'gauss':2,'mellin':9,'nested':1,'critical':1,'harmonic':1})]:
+                     ('ninth', {'gauss':2,'mellin':9,'nested':1,'critical':1,'harmonic':1}),
+                     ('tenth', {'endpoint':3,'twisted':1})]:
     for part,count in parts.items():
         x=read(f'{batch}-replay/{part}/replay-summary.json')
         folder=B.parent/'reports'/x['source_folder']
@@ -327,14 +329,53 @@ x=read('ninth-replay/critical/verification/transition_diagnostics.json')
 outcomes['near-critical-full-nine-sample-diagnostics']=len(x['rows'])==9 and x['tighter_replay_L_difference']<1e-9 and 'not certified intervals' in x['status']
 x=read('harmonic-gamma-native.json')
 outcomes['harmonic-Gamma-native-exact']=x['all_pass'] and x['pure_generator_pass'] and x['mixed_exact_checks']==7 and x['all_mixed_exact_pass'] and x['independent_elementary_integral_pass'] and x['printed_factor_two_rejected']
+x=read('tenth-replay/endpoint/results/exact_checks.json')
+outcomes['decorated-endpoint-exact']=x['status']=='PASS' and x['exact_assertions']==2600
+x=read('tenth-replay/endpoint/results/numerical_checks.json')
+outcomes['decorated-endpoint-diagnostics']=x['status']=='PASS' and x['comparisons']==158 and len(x['records'])==158 and x['decimal_precision']==60 and Decimal(x['largest_absolute_error'])<Decimal('1e-50')
+x=read('tenth-replay/endpoint/results/endpoint_diagnostics.json')
+outcomes['decorated-endpoint-full-arrays']=len(x['rows'])==32 and 'Floating-point endpoint diagnostics' in x['meaning']
+x=read('tenth-replay/twisted/verification/replay_run.json')
+outcomes['twisted-full-five-script-replay']=x['all_passed'] and x['complete'] and len(x['runs'])==5 and all(r['returncode']==0 for r in x['runs'])
+for name,count,precision in [('periodic_calculus_checks',15,50),('twisted_calculus_checks',32,60)]:
+    x=read(f'tenth-replay/twisted/data/{name}.json')
+    outcomes[name]=x['passed'] and x['working_decimal_precision']==precision and len(x['numerical'])==count
+x=read('tenth-replay/twisted/verification/harmonic_coefficients.json')
+outcomes['harmonic-Laurent-finite-exact']=x['all_checks_passed'] and len(x['finite_part_derivative_checks'])==30 and len(x['finite_part_reflection_checks'])==30 and len(x['finite_part_primitive_checks'])==30 and len(x['finite_part_multiplication_checks'])==60
+x=read('tenth-replay/twisted/verification/harmonic_mellin_numeric.json')
+outcomes['harmonic-Laurent-independent-Mellin']=x['all_diagnostics_passed'] and x['decimal_precision']==110 and x['local_series_degrees']==[80,100] and len(x['baseline_checks'])==3 and len(x['laurent_checks'])==4
+x=read('tenth-replay/twisted/verification/additional_numeric.json')
+outcomes['twisted-additional-integral-diagnostics']=x['status']=='passed' and x['count']==9 and x['decimal_precision']==60 and not x['numerical_proof'] and not x['certified_intervals']
+x=read('mixed-twist-results.json')
+outcomes['mixed-twist-exact-controls']=x['status']=='PASS' and x['exact_partial_fraction_checks']==64 and x['corruption_controls']==1
+outcomes['mixed-twist-independent-diagnostics']=x['numerical_diagnostics']['working_decimal_digits']==60 and not x['numerical_diagnostics']['interval_certified'] and len(x['numerical_diagnostics']['cases'])==25 and all(Decimal(c['absolute_residual'])<Decimal('1e-50') for c in x['numerical_diagnostics']['cases'])
+x=read('twisted-mixed-native.json')
+outcomes['twisted-mixed-native']=x['all_pass'] and x['all_exact_pass'] and x['exact_partial_fraction_checks']==25 and x['numerical_diagnostics']['working_precision']==70 and not x['numerical_diagnostics']['interval_certified'] and len(x['numerical_diagnostics']['rows'])==9 and all(c['passed'] for c in x['numerical_diagnostics']['rows'])
 visual=read('visual-review.json')
-outcomes['recorded-visual-review']=visual['passed'] and visual['pdf_sha256']==pdfhash and visual['page_count']==448 and visual['all_contact_sheets_reviewed']==28 and visual['scientific_figures_reviewed']==13 and not visual['findings']
+outcomes['recorded-visual-review']=visual['passed'] and visual['pdf_sha256']==pdfhash and visual['page_count']==459 and visual['all_contact_sheets_reviewed']==29 and visual['scientific_figures_reviewed']==13 and not visual['findings']
+volume_build=read('volume-build-results.json')
+volume_inspection=read('volume-inspection.json')
+volume_visual=read('volume-visual-review.json')
+volume_standalone=read('volume-standalone-results.json')
+volume_plan=read('volume-plan.json')
+outcomes['four-volume-build']=volume_build['passed'] and volume_build['converged'] and len(volume_build['volumes'])==4 and len(volume_build['rounds'])>=3 and volume_build['rounds'][-1]['reference_state_sha256']==volume_build['rounds'][-2]['reference_state_sha256']
+outcomes['four-volume-partition-and-links']=volume_inspection['passed'] and volume_inspection['chapter_partition_complete'] and volume_inspection['total_pages']==494 and volume_inspection['external_destinations_verified']==38 and not volume_inspection['issues']
+outcomes['four-volume-independent-compilation']=volume_standalone['passed'] and len(volume_standalone['volumes'])==4 and all(x['passed'] and x['text_matches_primary'] and x['PDF_link_targets_match'] and len(x['passes'])==3 for x in volume_standalone['volumes'])
+outcomes['four-volume-recorded-visual-review']=volume_visual['passed'] and not volume_visual['findings'] and volume_visual['total_pages']==494 and volume_visual['total_contact_sheets_reviewed']==33 and len(volume_visual['volumes'])==4
+for number,pages in [(1,124),(2,119),(3,168),(4,83)]:
+    item=next(x for x in volume_build['volumes'] if x['number']==number)
+    inspection=next(x for x in volume_inspection['volumes'] if x['number']==number)
+    review=next(x for x in volume_visual['volumes'] if x['number']==number)
+    plan=next(x for x in volume_plan if x['number']==number)
+    driver=(B/item['source']).read_text(encoding='utf-8')
+    assignments=[(int(n)+1,name) for n,name in re.findall(r'\\setcounter\{chapter\}\{(\d+)\}\s*\\input\{chapters/([^}]+)\}',driver)]
+    outcomes[f'volume-{number}-artifact-agreement']=(digest(B/item['pdf'],False)==item['pdf_sha256']==inspection['pdf_sha256']==review['pdf_sha256'] and inspection['page_count']==review['page_count']==pages and inspection['pdf_author']=='ProveIt Contributors' and assignments==[tuple(x) for x in plan['chapters']])
 result=dict(changed_sources=changed,changed_dependencies=changed_dependencies,pdf_sha256=pdfhash,
  pdf_matches_build=pdfhash==build['pdf_sha256'],pdf_matches_render=pdfhash==render['pdf_sha256'],
  page_count=render['page_count'],source_documents=doc['source_documents'],converged_build=build['passed'],
  pdf_static_checks=render['static_passed'],document_integrity=doc['passed'],recorded_outcomes=outcomes,
  asymptotic_diagnostic_records=diagnostic_records,incoming_archive_errors=archive_errors,
  scope='Recorded evidence integrity only; visual review and scientific replay are separate activities.')
-result['passed']=not changed and not changed_dependencies and all(outcomes.values()) and all(result[k] for k in ['pdf_matches_build','pdf_matches_render','converged_build','pdf_static_checks','document_integrity']) and result['page_count']==448 and result['source_documents']==721 and render.get('pdf_author')=='ProveIt Contributors'
+result['passed']=not changed and not changed_dependencies and all(outcomes.values()) and all(result[k] for k in ['pdf_matches_build','pdf_matches_render','converged_build','pdf_static_checks','document_integrity']) and result['page_count']==459 and result['source_documents']==746 and render.get('pdf_author')=='ProveIt Contributors'
 (V/'receipt-integrity.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
 print(json.dumps(result,indent=2));raise SystemExit(0 if result['passed'] else 1)
