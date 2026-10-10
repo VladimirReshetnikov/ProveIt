@@ -1,0 +1,152 @@
+\section{Polynomial matching consequences before Q enumeration}
+\label{sec:matching-support}
+
+The complete-Q support route of Section~\ref{sec:feasible-span} still pays
+for ray enumeration in the original matching dimension. This continuation
+adds a polynomial sufficient preprocessor before that enumeration. It
+certifies coordinate zeros from exact matching equations, then recompiles
+the source using only the retained types. Its checker verifies source-row
+combinations directly, without trusting a producer's forest, reduced matrix
+or inferred support. The complete Q and standard fallbacks remain available
+when the inexpensive implications do not find every forced zero.
+
+\subsection{One-sided equations imply zeros}
+
+Suppose earlier verified steps have forced coordinates in $F$ to vanish.
+For an actual matching consequence $w\cdot q=0$, assume
+$w_j\ge0$ for every allowed coordinate outside $F$. Then every still-active
+coordinate with $w_j>0$ is zero in every feasible vector: the equality is
+a sum of nonnegative terms, and the already forced terms vanish.
+A row whose active coefficients are all negative is multiplied by $-1$.
+Rows with both signs are left for the complete search.
+
+\begin{proposition}[Sound polynomial sign propagation]
+Starting with $F=\varnothing$, repeatedly applying the preceding implication
+to a fixed rational row family preserves every feasible standard vector.
+At most $k$ successful steps occur when $k$ types are allowed. Removing the
+proved-zero coordinates and restoring them as zeros gives a linear
+isomorphism between the original and restricted standard cones.
+\end{proposition}
+\begin{proof}
+Induct on the steps. Every preceding zero is valid by the induction
+hypothesis, and the remaining summands in the new matching consequence
+are nonnegative. A positive coefficient therefore forces its coordinate
+to zero. Each successful step removes at least one new coordinate, giving
+the step bound. Every original feasible standard vector already has the
+removed coordinates zero, while reinstating them in a restricted feasible
+vector preserves all original matching and nonnegativity equations. The
+resulting isomorphism preserves the non-link standard rays and actual
+source coordinates.
+\end{proof}
+
+This is a sufficient implication procedure, not a complete maximal-support
+LP solver. For example the two RREF rows
+\[
+ (1,0,-1,2),\qquad(0,1,2,-1)
+\]
+have mixed signs and yield no step. Their sum is $(1,1,1,1)$, so their
+nonnegative matching cone is actually zero. This counterexample separates
+soundness from completeness for general row systems. In particular a
+mixed-sign fixed point does not certify positive feasibility, maximal
+support or absence of an essential disc.
+
+\subsection{Recover useful rows cheaply, then compile source provenance}
+
+The existing canonical nullspace basis $K$ has one unit free coordinate
+per row. For each pivot coordinate $p$, its matching RREF equation is
+\[
+             q_p-\sum_a K_{a,p}q_{f_a}=0.
+\]
+Recovering these rows from the already computed basis costs $O(k^2)$ scalar
+work. Repeated sign propagation on at most $k$ such rows costs $O(k^3)$
+scalar inspections; rational sign comparisons and coefficient bits are
+charged. If no coordinate is forced, no source provenance forest is built.
+
+When useful zeros are found, the compiler reconstructs triangle incidence
+from the actual source matching equations. A directed edge with equation
+$t_a-t_b+L(q)=0$ has label $L$ and a unit source-equation coefficient.
+A rooted forest stores both its Q potential $P_c$ and the source-row
+combination $E_c$ satisfying
+\[
+                   E_c=t_{\mathrm{root}}-t_c+P_c(q).
+\]
+For an edge $a\to b$, the combination $E_a+E_{a\to b}-E_b$ cancels every
+triangle coefficient and gives $P_a+L-P_b$. Source equations with no
+triangle terms supply direct Q constraints. Exact elimination pivots only
+on the allowed Q columns; appended source-row coefficient columns record
+all the same row operations. The resulting Q RREF rows must equal the rows
+recovered from the native kernel, and their sign closure must agree.
+These exact equalities detect a provenance/gauge disagreement before any
+restricted geometry is used.
+
+The forest, path combinations and augmented elimination have polynomial
+source-size and bit cost. They are not charged as constant-time preparation:
+a direct implementation can retain quadratic source path data. Coefficient
+bit growth is bounded by the usual minor bounds for exact rational
+elimination. This additional work is compiled only when the cheap recovered
+rows already show a valid reduction.
+
+\subsection{Independent linear replay licenses source recompilation}
+
+The optional \code{matching\_support\_certificate} records the original
+source digest and allowed type list. Its schema is
+\code{normal-sector-matching-support-v1}. Each step contains sorted source-row indices, exact
+numerator/denominator coefficients and the newly forced coordinates.
+The independent checker prepares the source anew and forms each stated
+combination of its actual matching equations. It checks cancellation of
+\emph{all} triangle coefficients, nonnegative coefficients on every
+currently unforced allowed Q coordinate, and exact agreement between the
+claimed new coordinates and those with strictly positive coefficients.
+Previously forced coefficients need no sign condition because their
+coordinates have already been authenticated as zero. Nonselected Q types
+are zero by the original allowed-sector definition.
+
+Malformed source indices, Boolean indices, zero or invalid denominators,
+wrong source/support identities, repeated indices, unsupported nesting,
+nonzero triangle remnants and incomplete coordinate claims are rejected.
+The checker imports neither the producer's forest nor its RREF/closure
+helpers. Valid coefficients can be represented by the existing large-integer
+codec; replay uses exact rational arithmetic and no numerical tolerance.
+
+Automatic standard discovery above nullity three runs this preprocessor
+before a generic Q phase. A proper reduction rebuilds the source kernel and
+resumes automatic discovery in its smaller matching space, with the same
+candidate allowance. Low-dimensional progressive corner/envelope/planar
+branches can therefore run without the original-dimensional Q scan. An
+ordinary positive witness retains the original allowed list and full source
+coordinates; its disc proof suffices independently of this preprocessing.
+
+Negative parent certificates also retain the original support and coordinate
+width. Their checker authenticates the matching implications first and
+reconstructs the retained model independently. If later complete Q support
+removes more types, the existing Q support proof concerns that intermediate
+retained sector; replay checks that precise scope, derives the next support
+and restores all coordinates to the original parent width. The matching
+and Q support proofs can therefore compose without narrowing the final
+statement. Removing all support annotations still leaves an original full-sector
+proof that the legacy checker can reconstruct directly.
+
+\subsection{The raw-dimensional Q cost can now disappear}
+
+Let $r$ be the matching nullity after the sufficient polynomial preprocessing,
+and $k'$ its retained support size. The complete ray-geometry search has
+\[
+ \operatorname{poly}(T+k+B)+
+                    \operatorname{poly}(T+B)(1+k')^{O(r)}
+\]
+bit cost, including the Q prelude, standard fallback, source recompilation
+and source-equation certificate reading. The old raw nullity need not
+appear in the enumerative term. Thus logarithmic $r$ gives a conditional
+quasi-polynomial geometry bound even if the original matching dimension
+was larger. At $r\le3$ the native low-dimensional geometry applies directly.
+Component queries, essentiality and their proof costs remain separate.
+
+The retained matching dimension can exceed the feasible cone's actual span
+when the sign procedure misses zeros; no maximality is asserted from its
+fixed point alone. Neither logarithmic $r$ on arbitrary knot exteriors nor
+a bounded complete family of sectors or centres has been proved. This
+implements a polynomial sufficient operation toward that goal, without a
+new general recognition bound or an implementation of the full LP theorem.
+
+\subsection{Source controls and complete-query measurements}
+\input{matching_support_results.tex}
