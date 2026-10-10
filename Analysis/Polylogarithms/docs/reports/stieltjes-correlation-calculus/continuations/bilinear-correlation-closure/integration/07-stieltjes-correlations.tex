@@ -1,0 +1,126 @@
+% Proposed section for the ProveIt Polylogarithms manuscript.
+% Parent: AMS mathematics; theorem, lemma, corollary, remark; hyperref.
+% Full proofs and provenance: accompanying article.tex, sections 2--6.
+% Not an automatic replacement of any existing chapter.
+\providecommand{\corrclosureG}{\mathcal G}
+\providecommand{\corrclosureK}{\mathcal K}
+\providecommand{\corrclosureA}{\mathcal A_{\mathrm{cc}}}
+\providecommand{\corrclosureB}{\mathcal B_{\mathrm{cc}}}
+\providecommand{\corrclosureFP}{\operatorname{FP}}
+\providecommand{\corrclosureLi}{\operatorname{Li}}
+\section{Bilinear finite-part Stieltjes correlations}
+\label{corrclosure:sec}
+
+Let $\zeta(1+u,x)=u^{-1}+\sum_{j\ge0}(-1)^j\gamma_j(x)u^j/j!$,
+so $\gamma_0=-\psi$. For $0<a<1$ put $b=1-a$ and define
+\begin{align}
+ I_{mn}(a)=\lim_{\epsilon\downarrow0}\biggl\{
+ &\int_\epsilon^b\gamma_m(x)\gamma_n(a+x)\,dx
+ +\int_\epsilon^a\gamma_m(b+y)\gamma_n(y)\,dy\notag\\
+ &+\frac{\gamma_n(a)}{m+1}\log^{m+1}\epsilon
+ +\frac{\gamma_m(b)}{n+1}\log^{n+1}\epsilon\biggr\}.
+ \label{corrclosure:definition}
+\end{align}
+This is the finite part of a circular translation, not an ordinary
+integral. The identity
+$\gamma_m(x)=x^{-1}\log^m x+\gamma_m(1+x)$ proves that the limit exists:
+subtract the two displayed local singular terms inside the integrals,
+then add their integrated upper-endpoint terms. The resulting integrals
+are absolutely convergent.
+
+\begin{theorem}[All-order bilinear closure]
+\label{corrclosure:theorem}
+For $m,n\ge0$ and $N=m+n+1$,
+\begin{align}
+ I_{mn}(a)={}&\frac{\gamma_N(a)}{m+1}
+     +\frac{\gamma_N(b)}{n+1}+e_{mn}\notag\\
+ &+\sum_{j=0}^{N-2}\bigl(c_{mn,j}\gamma_j(a)
+                             +d_{mn,j}\gamma_j(b)\bigr),
+ \label{corrclosure:closure}
+\end{align}
+where the sum is empty for $N=1$. All coefficients are explicit
+polynomials over $\mathbb Q$ in $\zeta(2),\ldots,\zeta(N+1)$.
+There is no $\gamma_{N-1}$ term. Also $I_{mn}(a)=I_{nm}(1-a)$.
+\end{theorem}
+\begin{proof}
+Put $w=u+v$ and
+\[
+ \corrclosureA(u,v)=\frac{\Gamma(1+w)\Gamma(1-v)}{\Gamma(1+u)},
+ \qquad \corrclosureB(u,v)=\corrclosureA(v,u),\qquad
+ \corrclosureG(u,x)=\zeta(1+u,x)-\frac1u.
+\]
+Classical Hurwitz Fourier orthogonality, initially in an absolutely
+convergent spectral region, and Gamma reflection give the kernel
+\begin{equation}
+ \corrclosureK=-u\corrclosureA(u,v)\zeta(1+w,b)
+                    -v\corrclosureB(u,v)\zeta(1+w,a).
+ \label{corrclosure:kernel}
+\end{equation}
+It is $uv$ times the meromorphic continuation of the circular product
+integral of $\zeta(1+u,x)$ and $\zeta(1+v,x\mathbin\oplus a)$.
+For an explicit endpoint justification, that product's regular part is
+\begin{align*}
+ R={}&\int_0^b\{x^{-1-u}[\corrclosureG(v,a+x)-\corrclosureG(v,a)]
+                   +\corrclosureG(u,1+x)\corrclosureG(v,a+x)\}\,dx\\
+ &+\int_0^a\{y^{-1-v}[\corrclosureG(u,b+y)-\corrclosureG(u,b)]
+                   +\corrclosureG(v,1+y)\corrclosureG(u,b+y)\}\,dy\\
+ &+\corrclosureG(v,a)\frac{1-b^{-u}}u
+      +\corrclosureG(u,b)\frac{1-a^{-v}}v.
+\end{align*}
+The quotients take their removable values $\log b$ and $\log a$.
+The differences vanish linearly at the respective endpoints, so $R$
+is holomorphic near zero, including after spectral differentiation.
+Its coefficients are exactly $(-1)^{m+n}I_{mn}/(m!n!)$.
+Using zero mean of the Hurwitz function in the initial convergence
+region identifies $R$ as the mixed divided difference of
+$\corrclosureK$. Hence
+\[
+ I_{mn}=(-1)^{m+n}m!n![u^{m+1}v^{n+1}]\corrclosureK.
+\]
+Since $\corrclosureA(u,-u)=\corrclosureB(u,-u)=1$, the quotient
+$Q=(u\corrclosureA+v\corrclosureB)/(u+v)$ is holomorphic, and
+\[
+ \corrclosureK=-Q-u\corrclosureA\corrclosureG(w,b)
+                    -v\corrclosureB\corrclosureG(w,a).
+\]
+Finally,
+\[
+ \log\corrclosureA=\sum_{k\ge2}\frac{\zeta(k)}k
+       \{(-1)^k((u+v)^k-u^k)+v^k\}.
+\]
+This proves finite linear closure and the coefficient algebra. The
+constant Gamma-ratio term gives the two coefficients of $\gamma_N$;
+the missing degree-one Gamma-ratio term gives the absence of
+$\gamma_{N-1}$. Interchanging the variables proves symmetry.
+The accompanying report supplies the full Fourier derivation and the
+exact finite coefficient algorithm.
+\end{proof}
+
+\begin{corollary}[First identities and an antiderivative]
+\label{corrclosure:examples}
+For $0<a<1$,
+\begin{align*}
+ I_{00}(a)&=\gamma_1(a)+\gamma_1(1-a)-\frac{\pi^2}{3},\\
+ I_{10}(a)&=\tfrac12\gamma_2(a)+\gamma_2(1-a)
+        +\zeta(2)(\gamma_0(a)+\gamma_0(1-a))-\zeta(3),\\
+ \int I_{00}(a)\,da
+ &=\tfrac12\bigl(\zeta''(0,a)-\zeta''(0,1-a)\bigr)
+                         -\frac{\pi^2}3a+\text{constant}.
+\end{align*}
+\end{corollary}
+\begin{proof}
+Expand the kernel through total degrees two and three. For the
+primitive, use
+$\partial_a\zeta^{(j+1)}(0,a)=(-1)^{j+1}(j+1)\gamma_j(a)$.
+\end{proof}
+
+\begin{remark}[Evidence and normalization]
+The accompanying delivery proves the coincident-endpoint analogue and
+its collision counterterm, an ordinary log-Gamma autocorrelation,
+arithmetic traces, and higher derivative and primitive formulas.
+Its exact table covers $m+n\le8$, but the theorem above holds at all
+orders by proof. Numerical checks are diagnostics, not interval
+certificates, and no period independence or literature priority is
+asserted. The classical starting identities are documented in
+\href{https://dlmf.nist.gov/25.11}{DLMF Section 25.11}.
+\end{remark}

@@ -1,0 +1,150 @@
+\section{A strict radial theorem for every positive Stieltjes transform}
+\label{radpick:sec:main}
+The preceding interlacing proof gives a nonnegative radial argument
+derivative. A direct symmetrization strengthens it to strict positivity,
+gives a quantitative bound, and identifies the sharp universal radius
+range. This also removes the integer-leading restriction from angular
+motion at depth two when combined with the earlier real-order factorization.
+
+\begin{theorem}[Strict radial phase and its quantitative bound]
+\label{radpick:thm:strict}
+Let $\nu$ be a nonzero finite positive measure on $[0,1]$, and put
+\[
+ Q(z)=\int_{[0,1]}\frac{d\nu(u)}{1-uz},\qquad
+ M_j=\int_{[0,1]}u^j\,d\nu(u).
+\]
+For $0<\theta<\pi$ and $0<\rho\le1$, the continuous phase satisfies
+\begin{equation}\label{radpick:eq:quantitative}
+ \partial_\rho\adoArg Q(\rho e^{\iu\theta})
+ \ge \frac{4\rho^2\sin^3\theta(1-\cos\theta)^2}
+              {(1+\rho)^8}\frac{M_1M_2}{M_0^2}.
+\end{equation}
+In particular, this derivative is strictly positive unless $\nu$ is
+supported at zero, in which case $Q$ is constant. The range $\rho\le1$
+is sharp as a universal assertion over positive measures on $[0,1]$:
+at every prescribed radius greater than one a two-atom measure gives
+a strictly negative radial phase derivative on the entire open upper arc.
+\end{theorem}
+\begin{proof}
+Write $c=\cos\theta$, $h=\sin\theta$, $x=\rho u$, $y=\rho v$ and
+$D_x=1-2cx+x^2$. These denominators are positive on the arc, and $Q$
+is nonzero: its imaginary part is positive unless $\nu$ is supported at
+zero, where it is a positive constant. Local domination justifies
+differentiation and the double integral for
+$\Imag(e^{\iu\theta}Q'(z)\overline{Q(z)})$.
+Rationalizing and symmetrizing in $u,v$ gives
+\begin{equation}\label{radpick:eq:pair}
+ \partial_\rho\adoArg Q(\rho e^{\iu\theta})
+ =\frac{h}{\rho|Q(\rho e^{\iu\theta})|^2}
+   \int\!\!\int\frac{\mathcal P(x,y,c)}{D_x^2D_y^2}
+                           \,d\nu(u)\,d\nu(v),
+\end{equation}
+where
+\[
+ \mathcal P=\frac12\{xD_y^2+yD_x^2
+                    -(x-y)^2(xD_y+yD_x)\}.
+\]
+The exact polynomial identity that determines the sign is
+\begin{align}\label{radpick:eq:positive-decomposition}
+ \mathcal P={}&\frac{(1-x)(1-y)}2
+   \{(x-y)^2+x(1-y)^2+y(1-x)^2\}\notag\\
+ &+4xy(1-x)(1-y)(1-c)
+       +2xy(x+y)(1-c)^2.
+\end{align}
+Every term is nonnegative for $0\le x,y\le1$ and $-1<c<1$.
+The last term is strictly positive when $x,y>0$, including $x=y=1$.
+Thus a positive mass on $(0,1]$ gives a strictly positive integral in
+\eqref{radpick:eq:pair}; no approximation argument is needed for strictness.
+
+For the explicit lower bound, retain only the last term and use
+$D_x,D_y\le(1+\rho)^2$. Then
+\[
+ \partial_\rho\adoArg Q
+ \ge\frac{4\rho^2h(1-c)^2M_1M_2}
+              {(1+\rho)^8|Q|^2},
+\]
+since $\int\!\!\int uv(u+v)\,d\nu(u)\,d\nu(v)=2M_1M_2$.
+Also $|1-te^{\iu\theta}|^2=(t-c)^2+h^2\ge h^2$, so
+$|Q|\le M_0/h$. Substitution proves
+\eqref{radpick:eq:quantitative}. All operations also apply at $\rho=1$,
+because the chosen arc point is away from the cut.
+
+For sharpness, let $R>1$, choose $R^{-2}<v<1$, and take
+$\nu=v\delta_0+(1-v)\delta_1$. Its transform is
+\[
+ Q_v(z)=\frac{1-vz}{1-z}.
+\]
+Direct differentiation gives
+\begin{equation}\label{radpick:eq:outside-counterexample}
+ \partial_\rho\adoArg Q_v(\rho e^{\iu\theta})
+ =\frac{(1-v)(1-\rho^2v)\sin\theta}
+ {(1-2\rho\cos\theta+\rho^2)
+  (1-2\rho v\cos\theta+\rho^2v^2)}.
+\end{equation}
+It is strictly negative at $\rho=R$ for every $0<\theta<\pi$.
+This proves sharpness of the uniform disk range, without asserting
+that every individual transform loses monotonicity just outside it.
+\end{proof}
+
+\begin{corollary}[All-real-order inward angular motion at depth two]
+\label{radpick:cor:real-orders}
+For every $a\ge0,b>0$, let $\theta_{a,b}(\rho)$ be the unique
+upper-semicircle imaginary zero of the principal continuation of $F_{a,b}$.
+Then
+\[
+ \theta_{a,b}'(\rho)<0,\qquad 0<\rho\le1.
+\]
+The derivative at one is the derivative of the local analytic branch,
+equivalently its left derivative. For $0<\rho<\sigma\le1$ one also has
+\[
+ \frac{\sigma\cos\theta_{a,b}(\sigma)}
+      {\rho\cos\theta_{a,b}(\rho)}>\frac\sigma\rho,
+\]
+so the Cartesian abscissa grows faster than the radius in this precise
+ratio sense. This is distinct from the sign of
+$\partial_\rho(\cos\theta/\rho)$.
+\end{corollary}
+\begin{proof}
+Theorems~\ref{subunit:thm:zerofree} and \ref{subpick:thm:global} supply,
+throughout the parameter domain, a factorization
+\[
+ F_{a,b}(z)=\frac{z^2Q_{a,b}(z)}{1-rz},\qquad 0<r\le1,
+\]
+with $Q_{a,b}$ a finite positive Stieltjes transform. In the
+supercritical region with $a>0$, $r$ is the interior density crossing;
+on the critical/subcritical region and the entire $a=0$ axis one may
+take $r=1$. The positive measures have mass $2^{-a}$ and positive
+density except possibly at the crossing. For an upper-arc point their
+continuous unwrapped phase is
+\[
+ \Phi=2\theta-\adoArg(1-r\rho e^{\iu\theta})
+                         +\adoArg Q_{a,b}(\rho e^{\iu\theta}).
+\]
+The resolvent sector bounds give $0<\Phi<2\pi$. Hence at the unique
+imaginary zero, $\Phi=\pi$ and $F_{a,b}$ is strictly negative real.
+The preceding real-order zero theorems prove
+$\partial_\theta\Imag F_{a,b}<0$ there. Since
+$\Imag F=|F|\sin\Phi$, this is equivalent to $\Phi_\theta>0$.
+At fixed angle,
+\[
+ \Phi_\rho=\frac{r\sin\theta}
+        {1-2r\rho\cos\theta+r^2\rho^2}
+                 +\partial_\rho\adoArg Q_{a,b}>0.
+\]
+Implicit differentiation of $\Phi(\theta_{a,b}(\rho),\rho)=\pi$
+therefore gives $\theta'=-\Phi_\rho/\Phi_\theta<0$.
+The analytic continuation and angular simplicity justify this argument
+at the endpoint and on parameter regions whose boundary series fail
+the ordinary term test. Finally the unique angle lies in $(0,\pi/2)$,
+so its strict decrease makes $\cos\theta$ strictly increase. The
+displayed Cartesian ratio follows immediately.
+\end{proof}
+
+The direct pair identity and positive decomposition are independently
+re-expanded symbolically and tested by exact rational arithmetic in
+\src{verification/certify_stieltjes_radial.py}. Separate controls check
+one-atom normalization and two-atom examples outside the disk, including
+a prescribed-radius counterexample approaching radius one. These finite
+checks catch algebraic mistakes; the measure theorem follows from the
+sign decomposition and dominated integral argument, and the all-real-order
+consequence uses the previously established positive factorization.

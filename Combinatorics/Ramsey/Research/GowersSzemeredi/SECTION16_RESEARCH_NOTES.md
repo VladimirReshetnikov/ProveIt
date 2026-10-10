@@ -11909,3 +11909,195 @@ remains 4,152 modules, and the 4,134-upstream / 17-compatibility port scope
 check passes. The source ledger remains byte-identical at 115 companions
 and five open statements. The incoming frequency-box theorem is included
 in the audit and retains the local inputs refuted here for growing controls.
+
+### J.153. Exact original-data transfer on one proper progression
+
+Continuation checkpoint 299, 2026-10-10. Five original modules add
+19 named proofs. Prime-cyclic small-image rigidity turns the completed
+original-data map transfer into exact compatibility and genuine exact
+source agreement on explicit smaller natural domains. All original
+column witnesses, representations, ranks and normalizations are retained.
+
+**Quadruples and original source tuples.** A normalized Freiman defect
+with at most `K<N` values vanishes on the same frequency set at radius
+`rho/K`. Applied to a bounded quadruple image, this is precisely
+`ColumnPairCompatible` for its two difference maps. Applied separately
+to every original source eight-tuple defect, it gives
+`originalEightExactAgreementSet`: the chosen map equals the alternating
+sum of the eight original column maps on the intersection of all their
+domains. The same family is retained, with no tuple-count or agreement
+density loss. The common positive cap `K0` is the maximum of one and
+checkpoint 297's full original-domain cap. The exact modulus bound is
+the maximum of the earlier selection bound and `K0+1`.
+
+**Every additive eight-tuple.** On a full progression `P`, exact
+quadruples have defect image at most one. The shared-anchor chain gives
+bounded eight-tuple defects on `P/256`. Its intermediate domain retains
+the anchor constraints. The existing linear-cap theorem removes them
+with endpoint budget `8*dpsi` and anchor budget `4*dpsi`, where
+`dpsi=16*d` is the chosen-map rank cap. Prime-cyclic rigidity then gives
+exact eight-tuple relations on the natural endpoint domains. There is
+no iterative local-model packing in this conversion.
+
+Write `rho0=1/(4*pi)` and
+
+```
+sigma = rho0/K0,
+K8 = refinementKernelCap (8*dpsi) (4*dpsi) sigma sigma,
+rExact = sigma/(2*K8),
+R = P/256.
+```
+
+`K0`, `K8` and `rExact` are positive. Under the explicit maximum of the
+earlier exact-transfer modulus bound and `K8+1`,
+`global_original_fully_exact_progression_transfer` constructs the same
+original-data system and one proper `R` with all of these properties:
+
+- rank at most `globalProgressionPurificationRank alpha`;
+- density at least the old difference-progression density divided by
+  `512^globalProgressionPurificationRank alpha`;
+- exact compatibility for every additive quadruple in `R`;
+- exact alternating-map sum for every additive eight-tuple in `R`;
+- at every index in `R`, at least
+  `globalOriginalEightAgreementDensity alpha * N^7` distinct original
+  source tuples agree exactly with the chosen map.
+
+All three exact statements use the common positive `rExact` and their
+natural endpoint domains. The local chosen maps remain Freiman-linear
+on their full original-radius domains, with both zero normalizations.
+Shrinking the index progression changes its density, not the pointwise
+source-agreement density or the selected representation system.
+
+**Native interface.** `balancedColumnPairs` swaps the endpoints in the
+last two pairs. The index and map-defect identities are proved, and its
+frequency union is unchanged. Thus the paired-sum relation becomes
+`ColumnDifferenceQuadruple`, and
+`column_tuple_respected_of_paired_exact` supplies the existing
+`ColumnTupleRespected` predicate with its documented quarter-radius
+convention. This bridge keeps the actual endpoint spectra.
+
+**Scope.** This closes exact compatibility and source-agreement inputs
+for the progression maps, not the full structural assembly. In
+particular, an eight-tuple relation here has eight endpoints; no
+sixteen-endpoint or arbitrary-order Freiman relation is asserted. The
+new explicit modulus and radius bounds have not been compared with the
+printed Gowers thresholds or the deep bound in the original density
+parameter. All five numbered targets and their requested bounds remain
+open and unchanged. The false raw growing-width local inputs of L.2
+are not used. No upstream modules or licensing scope are added.
+
+**Production checks.** The generic exact-agreement source compiles in
+a 435-module closure; the first global exact transfer in 450; the
+progression eight-tuple extension in 436; the fully exact global
+transfer in 452; and the native interface in 551. These closures include
+up-to-date dependencies. The completed combined audit includes all 19 new
+named proofs and checks 9,818 public Gowers theorems across 5,604 modules;
+the facade closure contains 5,602 modules. Only `propext`,
+`Classical.choice` and `Quot.sound` occur. The selected OAI audit closure
+remains 4,152 modules, and its 4,134-upstream / 17-compatibility scope check
+passes. The source ledger remains byte-identical at 115 companions and
+five open statements. The incoming local-input retraction is synchronized.
+
+### J.154. Exact sixteen-endpoint coherence and the dense active graph
+
+Continuation checkpoint 300, 2026-10-10. Five original modules add
+23 named proofs. The original-data transfer now has native order-eight
+Freiman coherence in the index variable, on the actual active fibres,
+and a dense exact Freiman bihomomorphism on the active pair graph.
+The same original witness system and source-agreement families are kept.
+
+**Closed chain.** A sixteen-endpoint tuple consists of eight pairs. Its
+eight consecutive differences define nine prefix vertices. A padded
+sixteen-entry signed word bounds every vertex in the full parent
+progression when endpoints lie in its `1/256` shrinking. The last vertex
+equals the first when the index sum is zero. Thus at most eight
+anchor positions are charged, including the starting vertex. Every
+quadruple step has the required index equality; the eight map defects
+telescope to the original sixteen-endpoint defect. Repeated endpoints
+are allowed throughout.
+
+**Natural endpoint domain.** On the intersection with the anchor Bohr
+constraints, exact quadruple compatibility makes the defect zero. Its
+endpoint rank is at most `16*dpsi`, and its anchor rank at most
+`8*dpsi`. `freiman_zero_remove_frequencies` removes all anchor constraints
+at the explicit radius
+
+```
+sigma/(2*K16),
+K16 = refinementKernelCap (16*dpsi) (8*dpsi) sigma sigma.
+```
+
+The theorem requires `K16<N`. No temporary anchor frequency is retained
+in the final endpoint domain. The cap for eight endpoints is at most
+`K16`; the radius and modulus comparisons are proved.
+
+**Native order-eight coherence.** For every fixed argument `y`, the map
+`x ↦ psi(x,y)` is a genuine `FreimanHom 8` on
+
+```
+R.filter (fun x => y in bohr(Tpsi(x),rExact)).
+```
+
+The proof uses finite enumeration of multisets of cardinality eight,
+including repetitions. Equal sums become sixteen-endpoint relations.
+Only the local domains which actually contain `y` are used; there is
+no implicit extension to inactive indices or to a common frequency set.
+
+**Actual dense graph.** Define
+
+```
+B = {(x,y) : x in R and y in bohr(Tpsi(x),rExact)}.
+```
+
+Its exact cardinality is the sum of its Bohr-row cardinalities. If
+`deltaR*N <= |R|` and every local rank is at most `dpsi`, the existing
+Dirichlet-cell lower bound gives
+
+```
+|B| >= deltaR / ceil(1/rExact)^dpsi * N^2.
+```
+
+The density is explicitly positive. The native order-eight property
+reduces to order two on each horizontal fibre, and the existing local
+Freiman maps handle the vertical fibres. Hence the actual map
+`(x,y) ↦ psi(x,y)` on `B` satisfies `IsEBihomomorphism B psi {0}`. This is
+a constructed domain and map, not an assumed extraction contract.
+
+**Global integration.** `global_original_sixteen_endpoint_transfer`
+constructs one original-data system and a proper `R=P/256` with all of
+the preceding fields. It uses
+
+```
+sigma = (1/(4*pi))/K0,
+rExact = sigma/(2*K16),
+N >= max(originalExactTransferModulusBound(alpha),K16+1).
+```
+
+Both the progression density and the original pointwise
+`globalOriginalEightAgreementDensity alpha * N^7` source family are
+unchanged from checkpoint 299. Quadruple, eight- and sixteen-endpoint
+compatibility, native order-eight fibres, dense graph and exact source
+agreement use one common positive radius. Full original-radius local
+Freiman data, original column witnesses, representations, anchors and
+both zero normalizations remain in the conclusion.
+
+**Scope.** The compatibility input now includes sixteen endpoints, so
+the missing order-eight index identity of J.153 is supplied. Structural
+assembly, coherence on retained chart windows and final quantitative
+comparisons remain separate. In particular, the new active graph must
+not be confused with a proved global-to-local cover or with agreement of
+the original bihomomorphism on a final Bohr variety. The five numbered
+targets remain open, with their requested bounds unchanged. The false
+raw local hypotheses of L.2 are not used. No new upstream port or
+license scope is introduced.
+
+**Production checks.** The chain source compiles in a 437-module closure;
+the sixteen-endpoint relation in 438; the native fibre interface in 439;
+the active graph in 440; and the complete global integration in 457.
+The completed combined audit includes all 23 new named proofs and checks
+9,860 public Gowers theorems across 5,609 modules; the facade closure has
+5,607 modules. Only `propext`, `Classical.choice` and `Quot.sound` occur.
+The selected OAI audit closure remains 4,152 modules, and its
+4,134-upstream / 17-compatibility scope check passes. The source ledger
+remains byte-identical at 115 companions and five open statements.
+Independent incoming reports and polylogarithm updates are synchronized.

@@ -1,0 +1,102 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{booktabs,longtable,array}
+\usepackage{graphicx,xcolor}
+\usepackage{xurl}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[pdfencoding=auto,psdextra]{hyperref}
+\definecolor{inkblue}{RGB}{25,54,79}
+\definecolor{linkblue}{RGB}{25,83,120}
+\hypersetup{colorlinks=true,linkcolor=linkblue,citecolor=linkblue,urlcolor=linkblue,
+ pdftitle={Resonant Lerch Limits and Shifted Gamma Correlations},
+ pdfauthor={ProveIt research continuation; prepared with OpenAI ChatGPT}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\numberwithin{equation}{section}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\RePart}{Re}
+\DeclareMathOperator{\ImPart}{Im}
+\renewcommand{\Re}{\RePart}
+\renewcommand{\Im}{\ImPart}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\E}{\mathbb E}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\coeff}[2]{[#1^{#2}]}
+\setlist{topsep=4pt,itemsep=3pt,parsep=0pt}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\itshape Polylogarithms and their arithmetic bridges}
+\fancyhead[R]{\small Research continuation}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\title{\color{inkblue}\LARGE\bfseries Resonant Lerch Limits and\\[3pt]
+ Shifted Gamma Correlations\\[9pt]
+ \large\normalfont Uniform Herglotz asymptotics and nonseparable distribution jets}
+\author{ProveIt research continuation\\[2pt]
+ \small Prepared with OpenAI ChatGPT}
+\date{10 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+This continuation develops four connections among polylogarithms, Gamma and
+polygamma functions, Hurwitz and Riemann zeta functions, and generalized
+Stieltjes constants. First, a centered normalization of the Lerch expansion
+gives an all-orders resonance theorem uniform in every positive integer order,
+including orders tending to infinity. Its transition scale is
+$\log(1/t)+H_k-\gamma$, its leading profile is $(1-e^{-u})/u$, and its
+coefficients separate the Stieltjes shift data from polygamma order data.
+Second, shifted Hurwitz correlations yield exact formulas for the periodic
+log-Gamma autocorrelation. A convergent odd-zeta expansion proves strict
+convexity of that autocorrelation and gives its unique minimum, together with
+an all-order description of the logarithmic cusp at a vanishing shift.
+Third, a gamma-mixture formula resolves the Herglotz regime in which argument
+and derivative order grow proportionally. The resulting profile has an
+explicit finite-order remainder certificate, a divisor partial-fraction
+expansion, interlacing imaginary zeros after centering, an exponentially
+small Bessel representation, and normalized Gamma and dilogarithm primitives.
+Finally, a Frobenius-duality argument extends the formal reflection dimension
+law to arbitrary active ideals with at most two generators. A concrete
+three-generator example proves that the unrestricted colength extrapolation
+fails. Detailed proofs, exact finite-field replay code, numerical diagnostics,
+source provenance, and integration recommendations accompany the article.
+Classical input identities are credited, and no numerical relation is
+promoted to a theorem.
+\end{abstract}
+\vspace{5pt}
+\noindent\textbf{Keywords.} Lerch transcendent; polylogarithm order derivatives;
+log-Gamma correlation; Stieltjes constants; Herglotz function; uniform
+asymptotics; distribution relations; Koszul homology.
+\clearpage
+\begingroup
+\small
+\tableofcontents
+\endgroup
+\clearpage
+\input{sections/01_scope}
+\input{sections/02_resonance}
+\input{sections/03_gamma}
+\input{sections/04_herglotz}
+\input{sections/05_nonseparable}
+\input{sections/06_audit}
+\input{sections/07_questions}
+\input{references}
+\end{document}
