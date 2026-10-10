@@ -142,11 +142,13 @@ if '--publication' in sys.argv:
     visual=read('planar-sectors-visual-review.json')
     assert visual['pdf_sha256']==result['pdf_sha256'] and visual['inspected_pages'][0]==min(starts.values())
     result['visual_review']=visual
-    (DATA/'planar-sectors-latex.txt').write_text(log)
+    (DATA/'planar-sectors-latex.txt').write_text('\n'.join(line.rstrip()for line in log.splitlines()).rstrip()+'\n')
     result['publication_sha256']={str(p.relative_to(ROOT)):sha256(p.read_bytes()).hexdigest()
         for p in [ROOT/'synthesis/report.tex',ROOT/'synthesis/report.pdf',ROOT/'synthesis/incoming_eaad.tex',
                   ROOT/'synthesis/cocycle_lex.tex',ROOT/'synthesis/planar_sectors.tex',
                   ROOT/'synthesis/planar_sectors_results.tex',ROOT/'synthesis/planar_overlay_refinements.tex',
-                  ROOT/'fast/README.md',ROOT/'reports/README.md',ROOT/'synthesis/README.md']}
+                  ROOT/'fast/README.md',ROOT/'reports/README.md',ROOT/'synthesis/README.md',
+                  DATA/'planar_sectors_review.py',DATA/'planar_sectors_tables.py',
+                  DATA/'planar_sectors_repeat.py']}
 (DATA/('planar-sectors-review.json'if '--publication'in sys.argv else 'planar-sectors-runtime-review.json')).write_text(json.dumps(result,indent=2)+'\n')
 print(json.dumps(result))
