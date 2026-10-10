@@ -1,0 +1,35 @@
+{
+  "part": "herglotz",
+  "source_folder": "herglotz-rational-classification",
+  "source_code_sha256": {
+    "code/classify.py": "771b103128766722c48ea3d53fafbd59ec7d6873acdc0067a8fb59177593ab43",
+    "code/flatten_tex.py": "a728ac407a92bdce67bdef7898ba6c2972755cbdccf318b2a0ec804d3cc29369",
+    "code/verify_exact.py": "c961303339f33a0a3770a1dcff7c01c5f6faa9771f8b76ac47ecf25ce5abab6b",
+    "code/verify_numeric.py": "69fd341a75ca5686d37a7458598be8dc6f285b869a5a0157897b5940335de043"
+  },
+  "commands": [
+    {
+      "program": "code/verify_exact.py",
+      "arguments": [
+        "--bound",
+        "500"
+      ],
+      "exit_code": 0
+    },
+    {
+      "program": "code/verify_numeric.py",
+      "arguments": [
+        "--dps",
+        "90",
+        "140"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "fresh_result_files": [
+    "data/exact_results.json",
+    "data/numeric_results.json"
+  ],
+  "passed": true,
+  "scope": "Exact replay and numerical diagnostics keep their separate evidence scopes. General analytic claims require manuscript audit."
+}

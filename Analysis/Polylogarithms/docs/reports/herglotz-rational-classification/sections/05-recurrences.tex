@@ -1,0 +1,179 @@
+\section{Even quadratic recurrences and height asymptotics}
+\label{sec:recurrences}
+
+The modular criterion admits a complete elementary parametrization.
+It also gives a way to enumerate the exceptional rational set without
+factoring either entry.
+
+\begin{theorem}[Recurrence parametrization]\label{thm:recurrences}
+Apart from $J(1)$, all unordered reduced logarithmic pairs $1\le a<b$
+are exactly the adjacent pairs in the following families, for every even
+integer $c\ge2$:
+\begin{align}
+ u_0=1,\quad u_1=c,\quad u_{j+1}&=c u_j-u_{j-1},\label{eq:minus-rec}\\
+ v_0=1,\quad v_1=c,\quad v_{j+1}&=c v_j+v_{j-1}.\label{eq:plus-rec}
+\end{align}
+Both $a/b$ and $b/a$ are logarithmic cases. The seed $(1,c)$ is common
+to the two families. Beyond the seeds there is no overlap between the
+families or between different values of $c$.
+\end{theorem}
+\begin{proof}
+Let $e$ be even and $o$ odd in a pair satisfying
+\eqref{eq:mixed-class}. First suppose $e^2\equiv1\pmod o$.
+Then
+\[
+ c=\frac{e^2+o^2-1}{eo}
+\]
+is an integer. It is even: after division of the numerator by $e$, both
+$e$ and $(o^2-1)/e$ are even, and the remaining divisor $o$ is odd.
+Also $c\ge2$, since $(e-o)^2\ge1$. Writing the sorted pair as $a<b$
+gives
+\begin{equation}\label{eq:minus-invariant}
+ a^2+b^2-cab=1.
+\end{equation}
+If $a>1$, the new entry
+$d=(a^2-1)/b=ca-b$ is a positive integer strictly smaller than $a$.
+The pair $(d,a)$ has the same invariant, is coprime, and has opposite
+parity because $c$ is even and $d$ has the parity of $b$. The invariant
+itself gives both congruences in \eqref{eq:mixed-class}. Repetition
+reaches a pair $(1,c)$. Reversing the descent is
+\eqref{eq:minus-rec}.
+
+Next suppose $e^2\equiv-1\pmod o$. The signed integer
+\[
+ H=\frac{o^2-e^2-1}{eo}
+\]
+is even by the same divisibility argument, and is nonzero: otherwise
+$(o-e)(o+e)=1$, impossible for $e>0$. Put $c=|H|\ge2$. In sorted
+coordinates,
+\begin{equation}\label{eq:plus-invariant}
+ b^2-cab-a^2=\varepsilon,
+ \qquad \varepsilon=\begin{cases}1,&b\text{ odd},\\-1,&b\text{ even}.
+ \end{cases}
+\end{equation}
+For $a>1$ set
+$d=b-ca=(a^2+\varepsilon)/b$. This is a positive integer less than
+$a$; for $\varepsilon=1$, use $a^2+1<a(a+1)\le ab$. The pair
+$(d,a)$ is coprime and has opposite parity. Its invariant has sign
+$-\varepsilon$, exactly as required when the parity of the larger entry
+changes. Thus the descent continues to $(1,c)$, and its reverse is
+\eqref{eq:plus-rec}.
+
+Conversely the recurrences preserve \eqref{eq:minus-invariant} or
+\eqref{eq:plus-invariant}, respectively, and preserve coprimality and
+alternating parity. In the minus family the invariant gives
+$e^2\equiv1\pmod o$ and
+$o^2-1=e(co-e)$, which is divisible by $2e$. In the plus family it
+gives $e^2\equiv-1\pmod o$ and
+$o^2-1=e(e\pm co)$, again divisible by $2e$. Thus every generated
+pair satisfies the criterion.
+
+If the odd entry exceeds $1$, the signs $+1$ and $-1$ modulo that
+entry cannot both hold. The displayed invariants determine $c$
+uniquely within each case, and the strictly decreasing descent
+identifies a unique depth. The only possible shared pairs are the seeds,
+whose odd entry is $1$.
+\end{proof}
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Family & Coefficient & Initial terms\\
+\midrule
+Minus & $2$ & $1,2,3,4,5,6,\ldots$\\
+Minus & $4$ & $1,4,15,56,209,\ldots$\\
+Minus & $6$ & $1,6,35,204,1189,\ldots$\\
+Plus & $2$ & $1,2,5,12,29,70,\ldots$\\
+Plus & $4$ & $1,4,17,72,305,\ldots$\\
+Plus & $6$ & $1,6,37,228,1405,\ldots$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The coefficient-$2$ minus family explains why every neighboring ratio
+is logarithmic. All other families grow geometrically. In particular,
+a descent algorithm can shortcut consecutive integers and otherwise
+uses $O(\log\max(a,b))$ steps. This statement counts arithmetic descent
+steps; it is not a bound on the bit complexity of an arbitrary expanded
+analytic certificate.
+
+\subsection{A complete hierarchy of height terms}
+
+Let $N(B)$ count unordered coprime pairs $1\le a<b\le B$ satisfying the
+logarithmic criterion; $J(1)$ is not counted. Here $B$ is a positive
+integer.
+
+\begin{theorem}[Height expansion to every fixed order]\label{thm:counting}
+For every fixed integer $R\ge2$, as $B\to\infty$,
+\begin{equation}\label{eq:count-expansion}
+ N(B)=\frac32 B+\sum_{r=2}^{R}B^{1/r}
+       +O_R\bigl(B^{1/(R+1)}\log B\bigr).
+\end{equation}
+In particular,
+\begin{equation}\label{eq:count-two}
+ N(B)=\frac32 B+\sqrt B+O(B^{1/3}\log B).
+\end{equation}
+The number of ordered positive rational logarithmic arguments of height
+at most $B$ is $2N(B)+1$. For $B\ge5$, the number admitting a formal
+rational-dilogarithmic reduction is $2N(B)+7$.
+\end{theorem}
+\begin{proof}
+Count each seed $(1,c)$ once: there are $\lfloor B/2\rfloor$.
+The minus family at coefficient $2$ contributes all consecutive pairs;
+after removing its seed it contributes $B-2$ for $B\ge2$. Their sum
+is $\tfrac32B+O(1)$.
+
+For the other pairs write $w_r^{\pm}(c)$ for the term at index $r$ in
+the two recurrences. The pair with this height has indices $(r-1,r)$.
+At fixed $r\ge2$, induction on the recurrence gives
+\[
+ w_r^{\pm}(c)=c^r\pm(r-1)c^{r-2}+O_r(c^{r-4}),
+\]
+where the remainder can simply be read as the lower-degree polynomial
+terms; when $r$ is small it is zero as appropriate. Equivalently,
+$w_r^{\pm}(c)=c^r+O_r(c^{r-2})$. The number of even coefficients
+satisfying $w_r^{\pm}(c)\le B$ is therefore
+$\tfrac12 B^{1/r}+O_r(1)$: the transition can differ from
+$c=B^{1/r}$ by only $O_r(B^{-1/r})$, with finitely many small
+coefficients absorbed in the constant. Removing coefficient $2$ from
+the minus family changes this by $O(1)$. Both signs together contribute
+$B^{1/r}+O_r(1)$. Summing over $2\le r\le R$ gives the displayed
+fractional powers.
+
+For completeness, the remaining depths are uniformly bounded. In the
+minus family with $c\ge4$, induction on the successive ratios gives
+$w_j/w_{j-1}>c-1$, so $w_j\ge(c-1)^j$. In the plus family with
+$c\ge2$, $w_j\ge c^j$. A term with index at least $R+1$ and height
+at most $B$ therefore requires
+$c\le 1+B^{1/(R+1)}$. There are
+$O(B^{1/(R+1)})$ possible coefficients, and each contributes only
+$O(\log B)$ depths, because its growth factor is at least $2$.
+This proves the remainder estimate. Disjointness from
+Theorem~\ref{thm:recurrences} prevents overcounting.
+
+Finally each unordered pair yields two reciprocal arguments, while
+$x=1$ adds one. The six distinct extra arguments in
+\eqref{eq:six-extras} all have height at most $5$.
+\end{proof}
+
+The theorem implies a sparse set among all reduced rational arguments
+of bounded height, but no transcendence statement is attached to that
+sparsity. It counts exactly the formal reduction cases.
+
+\begin{center}
+\begin{tabular}{r r r}
+\toprule
+$B$ & $N(B)$ & Ordered logarithmic arguments\\
+\midrule
+$100$ & $161$ & $323$\\
+$1\,000$ & $1\,543$ & $3\,087$\\
+$10\,000$ & $15\,135$ & $30\,271$\\
+$1\,000\,000$ & $1\,501\,162$ & $3\,002\,325$\\
+$100\,000\,000$ & $150\,010\,658$ & $300\,021\,317$\\
+$10\,000\,000\,000$ & $15\,000\,102\,700$ & $30\,000\,205\,401$\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are exact counts from the recurrence enumerator, not floating-point
+fits to \eqref{eq:count-expansion}. The script uses integer arithmetic
+and does not enumerate all $O(B^2)$ pairs at the larger heights.

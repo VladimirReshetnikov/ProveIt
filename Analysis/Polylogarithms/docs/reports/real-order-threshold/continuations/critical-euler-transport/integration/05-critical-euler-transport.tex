@@ -1,0 +1,60 @@
+% Editorial insertion; full proofs are in critical_euler_transport.tex.
+% Intended after the critical signed measure and Euler definitions.
+\subsection{The sharp critical Euler constant and its finite-depth limit}
+\label{criticaleuler:section}
+For $0<a<1$, write
+\[
+ F_{a,1-a}(z)=\sum_{n\ge1}\frac{H_{n-1}^{(1-a)}}{n^a}z^n,
+ \qquad g_a=\operatorname{Im}F_{a,1-a}(i).
+\]
+At unit radius the value is analytic/Abel, not an ordinary convergent sum.
+Let $E_N$ be the usual $N$-term Euler transform and
+$R_N(a)=2^N(E_N-g_a)$.
+
+\begin{theorem}[Sharp uniform critical constant]
+\label{criticaleuler:constant}
+The map $a\mapsto-2g_a$ is strictly decreasing on $(0,1)$, and
+\[
+ 0<E_N-g_a<\left(\frac\pi4+\frac{\log2}{2}\right)2^{-N}
+ \qquad(N\ge1).
+\]
+The constant is optimal uniformly over the critical line and all $N$.
+\end{theorem}
+This resolves Conjecture 12.3 of the incoming real-order-threshold report.
+The proof is Theorem 3.2 of \emph{Critical Euler Errors for Harmonic
+Polylogarithms}. Its beta--gamma comparison applies more generally at
+fixed total order and imaginary radii at most $\sqrt3$.
+
+The critical negative density satisfies $p_a(T)>1$. Consequently
+\[
+ \frac1a-\frac{H_{n-1}^{(1-a)}}{n^a}-\frac1n
+ =\int_0^1u^{n-1}\bigl(p_a(-\log u)-1\bigr)\,du
+\]
+is a strict positive Hausdorff moment sequence; all its decreasing
+finite differences and its finite Hankel determinants are positive.
+See Theorems 4.2--4.3 of the same article for the balanced positive
+integral establishing the density inequality.
+
+\begin{theorem}[Uniform finite-depth asymptotics]
+\label{criticaleuler:drift}
+Put $L=\tfrac12\log N$, $\ell=\log L$, and
+$d=\gamma_1+(\gamma^2+\zeta(2))/2$. For every choice of maximizing
+parameter $a_N$ on the continuously extended critical line,
+\[
+ 1-a_N=\ell^{-1}-2d\ell^{-3}+O(\ell^{-4}),
+\]
+and
+\[
+ \max_{0\le a\le1}R_N(a)
+ =\frac{\sqrt\pi}{2\sqrt N}
+ \left[1+\frac1{eL\ell}
+ \left(1-\frac d{\ell^2}+O(\ell^{-3})\right)\right].
+\]
+These assertions hold as $N\to\infty$ and do not assume uniqueness
+of the finite-depth maximizer.
+\end{theorem}
+The full article's Theorems 7.2, 7.4, and 7.5 supply endpoint-uniform
+remainders and the optimization proof. The monotonicity of $-2g_a$
+\emph{does not} extend to each $R_N$: exact rational intervals prove
+$R_{128}(1/2)>R_{128}(1/4)$. The numeric optimizer proposals and the
+conjecture of eventual unimodality must retain their separate status.

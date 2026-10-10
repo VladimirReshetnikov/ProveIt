@@ -1,0 +1,87 @@
+Independent audit of the reflected log-gamma saddle certificate
+=============================================================
+
+Reviewed source:
+  certify_gamma_saddle.py (packaged beside this audit)
+Replayed output:
+  gamma_saddle_independent_replay.json
+
+Let f(x)=log Gamma(x), F(x)=-psi(x), P(x)=psi'(x), and use a subscript r
+for evaluation at 1-x. The derivative formula was checked independently:
+
+  H(x) = J'(x)/J(x) = F/f + F_r/f_r - P/F - P_r/F_r,
+  J(x) = F(x) f(1-x)/(F(1-x) f(x)).
+
+All f,F,P involved are positive for 0<x<1. Reflection gives H(1-x)=H(x).
+
+Endpoint audit, 0<x<=1/16:
+
+1. H = F/f - P_r/F_r + (F_r/f_r - 1/x) + (1/x - P/F).
+2. f_r=gamma*x+sum_{n>=2} zeta(n)*x^n/n has positive coefficients,
+   so x F_r-f_r>=0 and the first parenthesized term is nonnegative.
+3. F-xP=gamma+sum_{k>=1}(-1)^k*(k+1)*zeta(k+1)*x^k.
+   With gamma>1/2 and zeta(k+1)<2,
+     F-xP > 1/2 - 2*((1-x)^(-2)-1) >= 101/450 >0.
+   Therefore the second parenthesized term is positive.
+4. F>1/x follows from
+     F-1/x >= gamma-zeta(2)*x/(1-x)>1/2-2/15>0.
+   Convexity of log Gamma on [1,2] gives f(x)<-log x.
+   The function x log(1/x) increases up to 1/e, and on the present
+   interval it is <=log(16)/16<3/16. The last strict inequality follows
+   entirely rationally from exp(3)>sum_{n=0}^4 3^n/n!=131/8>16.
+   Hence F/f>16/3.
+5. P_r/F_r < 4/(1-x)^2 <=1024/225, because F_r>=gamma>1/2
+   and P_r<=zeta(2)/(1-x)^2<2/(1-x)^2.
+6. Thus H>16/3-1024/225=176/225.
+
+Finite middle-interval audit:
+
+- The interval type represents exact closed intervals [lo/2^100,hi/2^100].
+  Addition and negation are exact. Multiplication takes the min/max of all
+  four endpoint products and rounds lower down/upper up. Positive reciprocal
+  uses [floor(2^200/hi),ceil(2^200/lo)]/2^100. Division and integer powers
+  therefore preserve inclusion. Every reciprocal requires a positive lower
+  bound and the source asserts these hypotheses.
+- log(q), q in [1,2], is enclosed by 48 terms of
+  2 atanh((q-1)/(q+1)); the nonnegative remaining tail is bounded by
+  2*y^97/(97*(1-y^2)). Powers-of-two rescaling encloses log at all rational
+  endpoints, and monotonicity gives the whole interval enclosure.
+- Euler's constant is enclosed by H_K-log(K+1), K=64, plus the tail
+  [1/(2(K+1))-1/(6K^2),1/(2K)]. This follows from the alternating log series
+  and decreasing-function integral bounds. The resulting exact interval
+  proves 1/2<gamma<3/5.
+- For zeta(n), n=2,...,40, the first 64 summands are enclosed individually,
+  and the remainder is between 1/((n-1)*65^(n-1)) and
+  1/((n-1)*64^(n-1)). In particular zeta(2)<2; monotonicity in n gives
+  zeta(n)<2 for all n>=2.
+- The log-Gamma expansions about 1, including their first two derivatives,
+  have the correct signs and indices. With N=40, the omitted magnitudes are
+  bounded by
+    2*x^(N+1)/((N+1)*(1-x)),
+    2*x^N/(1-x),
+    2*N*x^(N-1)/(1-x)^2.
+  The reflected expansions have nonnegative remainders; the unreflected
+  expansions use symmetric enclosures. These tail bounds hold uniformly
+  for the entire input interval x<=1/2.
+- The 256 adjacent intervals [1/16+7k/4096,1/16+7(k+1)/4096] cover exactly
+  [1/16,1/2]. The independently replayed certificate gave the same worst
+  lower bound as the original:
+    2237344070433247164830307425599 / 2^100 > 1.
+
+Conclusion:
+The global strict positivity H(x)>0 on (0,1) is proved by the analytic
+endpoint estimates, the finite exact integer interval certificate, and
+reflection. No floating-point estimate is used in this proof.
+
+Moreover J(x)~1/log(1/x) as x->0+, so J goes to zero. Since
+J(1-x)=1/J(x), it tends to infinity as x->1-. Thus J is a strictly increasing
+bijection (0,1)->(0,infinity). For any positive u,v, the phase
+u log f(x)+v log f(1-x) has derivative
+  (F_r/f_r)*(v-u*J(x)).
+It has exactly one critical point and global maximum. At that point its
+second derivative is -u*(F_r/f_r)*J'(x)<0, so the maximum is nondegenerate.
+
+Status: all reviewed arguments and exact arithmetic steps passed. This is
+a rigorous computer-assisted monotonicity theorem, not merely a numerical
+observation. An entirely analytic replacement for the finite middle-interval
+certificate would be an additional simplification, not a missing proof step.

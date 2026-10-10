@@ -1,0 +1,127 @@
+\section{Research baseline and contribution map}
+\label{sec:introduction}
+
+The manuscript is a developing research corpus, with newer incoming
+reports that sometimes settle questions still listed as open elsewhere.
+A continuation must reconcile that history before selecting targets.
+We therefore use a single pinned version of Vladimir Reshetnikov's
+ProveIt repository \cite{repo}: commit \snapshot, dated 10 October 2026
+UTC. The inspection covered the manuscript's 40 chapter source files,
+its editorial and validation material, and all 16 archives present in
+\path{docs/incoming}. The 65 retrieved source objects, including those
+archives, have paths, byte counts, and SHA-256 hashes in the accompanying
+provenance manifest. This is a source and dependency audit of the present
+continuation, not an assertion that every proof in the entire corpus
+has been reverified.
+
+The most useful unresolved targets lie at the intersection of positive
+integral representations, exact formal relations, and zero geometry.
+The work below develops all three. Its principal resolved conjecture is
+the sharp critical constant in the real-order report \cite{realorder}.
+The prime-order distribution calculation answers a proposed extension
+of reflection torsion \cite{integraljets}. The Lerch results extend the
+branch analysis beyond the cases already proved in the incoming
+boundary and global-phase reports \cite{lershape:Boundary,lershape:Globalphase}.
+The $S_6$ computation gives a rigorous limitation of a larger finite
+proof search, while leaving the numerical identity open.
+
+\subsection{Conventions and distinctions}
+
+We use decreasing-index multiple polylogarithms:
+\[
+ \Li_{s_1,\ldots,s_d}(z_1,\ldots,z_d)
+ =\sum_{n_1>\cdots>n_d>0}
+   \frac{z_1^{n_1}\cdots z_d^{n_d}}
+        {n_1^{s_1}\cdots n_d^{s_d}},
+\]
+initially in a domain of convergence. In particular
+$F_{a,b}(z)=\Li_{a,b}(z,1)$ and $g_{a,b}=\Im F_{a,b}(i)$.
+The positive real orders $a,b$ need not be integers. At boundary points
+we specify analytic or Abel values when the ordinary series diverges.
+We write $\beta(s)=\sum_{j\ge0}(-1)^j(2j+1)^{-s}$ and
+$\eta(s)=\sum_{j\ge1}(-1)^{j-1}j^{-s}$ where their series converge,
+and use their analytic continuations elsewhere. Standard conventions
+are also recorded in the DLMF \cite{dlmf-polylog,dlmf-hurwitz}.
+
+There are two different weights in this article: $a+b$ is the total
+order of a Gaussian double polylogarithm, whereas the integer coefficients
+$a_p$ in a distribution relation are arbitrary formal parameters.
+The parameters $n,k,\rho$ in the Lerch family denote Stieltjes index,
+derivative order, and deformation parameter. They are introduced afresh
+in Section~\ref{lershape:sec:main}.
+
+An equality of complex periods, membership in a specified rational
+relation span, and a Smith invariant of an integral formal module are
+different assertions. Our notation and proofs retain those distinctions.
+In particular, the torsion theorem does not claim torsion among complex
+numbers, and the $S_6$ separator does not claim numerical independence.
+
+\subsection{What is added to the inspected baseline}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}L{0.21\textwidth}L{0.39\textwidth}L{0.33\textwidth}@{}}
+\toprule
+Topic & Result in this continuation & Scope and proof status\\
+\midrule
+Critical Gaussian values & Strict allocation monotonicity for every
+positive total order; sharp Euler constant on $a+b=1$
+& Analytic proofs; resolves the incoming critical conjecture.\\[5pt]
+Global envelope & A unique maximum of $\beta(w)+2^{-w}\eta(w)$,
+sharp bound for all positive Gaussian orders, and inverse coefficients
+& Analytic shape theorem plus rational maximum enclosure.\\[5pt]
+Euler remainders & A positive secant integral and an exact example of
+increasing normalized errors off the critical line
+& Analytic identities; prevents an unsupported extension in $N$.\\[5pt]
+Cyclic distributions & Integral coinvariants and all one-variable
+finite jets for a split prime-order action
+& Complete formula under explicit arithmetic hypotheses.\\[5pt]
+Lerch zeros & Finite extremal-zero comparison; lower-branch dichotomy;
+order-two minimum and order-three decrease
+& Analytic theorems with exact endpoint sign certificates.\\[5pt]
+Weight-seven reduction & Separation of the $S_6$ target from 5,131
+specified relations through depth four
+& Integer certificate; the period identity remains conjectural.\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The beta allocation identity is the main analytic device. It isolates
+the split between the two orders in a beta probability law, leaving a
+strictly decreasing scalar kernel. A covariance then proves
+monotonicity. Optimizing the endpoint kernel reduces a two-parameter
+extremum to a one-variable Dirichlet-function problem. Its strict
+log-concavity is an application of a classical normalized Mellin
+principle \cite{flm}, for which we supply the strict proof actually needed.
+
+The distribution calculation follows a different route: a finite
+integral resolution removes moving orbits from a periodic cohomology
+complex, and the remaining fixed part becomes a Koszul calculation.
+The resulting character condition explains how weights on different
+primes can constrain one another. This is more informative than testing
+each weight separately. Classical universal-distribution work is an
+essential antecedent, explicitly credited in the theorem section.
+
+For Lerch zeros, positivity acts after a resolvent comparison rather
+than directly on the original sign-changing kernel. Beyond the largest
+zero, every shifted summand has a known sign, so a finite comparison
+works even at parameters where some zeros collide. At index two,
+the three-block sign pattern of the coefficient sequence additionally
+restricts all possible stationary points of the lower zero branch.
+
+\subsection{Results deliberately retained as prior work}
+
+The positive double integral, the sharp finite signed-measure threshold
+$a+b\ge1$, and the endpoint atom on $a+b=1$ are already present in
+\cite{realorder}. The current manuscript already proves the $S_4$
+identity; it is not a conjecture to rediscover. Integral freeness,
+scalar reflection torsion, and reflection jets are already proved in
+\cite{integraljets}. The index-two Lerch zero count and the unique
+minimum at derivative order one are also prior results
+\cite{lershape:Boundary}. We recall short arguments where they support
+new theorems, with explicit attribution.
+
+The references are chosen to support the actual proof mechanisms and
+to identify nearby literature. They do not establish that every result
+here is new in the full mathematical literature. The specific
+continuation claims concern the inspected repository baseline.

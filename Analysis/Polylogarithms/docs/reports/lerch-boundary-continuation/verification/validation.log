@@ -1,0 +1,240 @@
+$ python verification/certify.py
+n=1, a=1: V in [0.707385812532, 0.707385812533], sign +1
+n=1, a=1.5: V in [-0.201837694661, -0.201837694660], sign -1
+n=2, a=1: V in [0.114183725667, 0.114183725668], sign +1
+n=2, a=1.3: V in [-0.120089105294, -0.120089105293], sign -1
+n=2, a=2: V in [0.456734902668, 0.456734902669], sign +1
+n=3, a=0.8: V in [0.163859078670, 0.163859078671], sign +1
+n=3, a=1.1: V in [-0.040952639618, -0.040952639617], sign -1
+n=3, a=1.5: V in [0.056037563030, 0.056037563031], sign +1
+n=3, a=2.1: V in [-0.245425357075, -0.245425357074], sign -1
+n=4, a=0.8: V in [0.038975301303, 0.038975301304], sign +1
+n=4, a=0.94: V in [-0.003388776581, -0.003388776580], sign -1
+n=4, a=1.2: V in [0.021763700412, 0.021763700413], sign +1
+n=4, a=1.7: V in [-0.036568216872, -0.036568216871], sign -1
+n=4, a=2.2: V in [0.150917382014, 0.150917382015], sign +1
+PASS: 14 endpoint signs; 120 weak-deformation coefficients.
+
+
+$ python verification/certify_minimum.py
+0.91560506 root bracket certified; sign(F_rho)= -1
+0.91560508 root bracket certified; sign(F_rho)= 1
+PASS: unique minimum rho is in (0.91560506, 0.91560508).
+
+
+$ python verification/test_algebra.py
+test_bernoulli_values (__main__.ExactTests.test_bernoulli_values) ... ok
+test_elementary_and_weak_coefficients (__main__.ExactTests.test_elementary_and_weak_coefficients) ... ok
+test_finite_deformation_jets (__main__.ExactTests.test_finite_deformation_jets) ... ok
+test_interval_operations (__main__.ExactTests.test_interval_operations) ... ok
+test_kernel_derivative_recurrence (__main__.ExactTests.test_kernel_derivative_recurrence) ... ok
+test_logarithms (__main__.ExactTests.test_logarithms) ... ok
+test_saved_endpoint_certificates (__main__.ExactTests.test_saved_endpoint_certificates) ... ok
+test_saved_minimum_certificate (__main__.ExactTests.test_saved_minimum_certificate) ... ok
+test_saved_weak_certificates (__main__.ExactTests.test_saved_weak_certificates) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.070s
+
+OK
+
+
+$ python verification/test_integration.py
+test_chapter_consistency (__main__.IntegrationTests.test_chapter_consistency) ... ok
+test_path_confinement (__main__.IntegrationTests.test_path_confinement) ... ok
+test_snapshot_guard_and_no_writes (__main__.IntegrationTests.test_snapshot_guard_and_no_writes) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.002s
+
+OK
+
+
+$ python verification/numerical_checks.py identity --dps 45
+{'n': 0, 'k': 1, 'a': '1', 'eta': '0.3', 'spectral_terms': 484, 'Abel_cutoff': 32, 'residual': '-1.40129846432482e-45', 'status': 'non-interval high-precision diagnostic'}
+{'n': 1, 'k': 1, 'a': '1', 'eta': '0.2', 'spectral_terms': 726, 'Abel_cutoff': 32, 'residual': '5.25486924121806e-46', 'status': 'non-interval high-precision diagnostic'}
+{'n': 2, 'k': 1, 'a': '1', 'eta': '0.1', 'spectral_terms': 1451, 'Abel_cutoff': 32, 'residual': '-1.31371731030452e-46', 'status': 'non-interval high-precision diagnostic'}
+{'n': 3, 'k': 1, 'a': '1', 'eta': '0.1', 'spectral_terms': 1451, 'Abel_cutoff': 32, 'residual': '1.66404192638572e-45', 'status': 'non-interval high-precision diagnostic'}
+{'n': 2, 'k': 2, 'a': '1', 'eta': '0.1', 'spectral_terms': 1451, 'Abel_cutoff': 32, 'residual': '-1.75162308040602e-46', 'status': 'non-interval high-precision diagnostic'}
+{'n': 2, 'k': 3, 'a': '1', 'eta': '0.1', 'spectral_terms': 1451, 'Abel_cutoff': 32, 'residual': '-1.12103877145985e-44', 'status': 'non-interval high-precision diagnostic'}
+{
+  "precision_dps": 45,
+  "results": [
+    {
+      "n": 0,
+      "k": 1,
+      "a": "1",
+      "eta": "0.3",
+      "spectral_terms": 484,
+      "Abel_cutoff": 32,
+      "residual": "-1.40129846432482e-45",
+      "status": "non-interval high-precision diagnostic"
+    },
+    {
+      "n": 1,
+      "k": 1,
+      "a": "1",
+      "eta": "0.2",
+      "spectral_terms": 726,
+      "Abel_cutoff": 32,
+      "residual": "5.25486924121806e-46",
+      "status": "non-interval high-precision diagnostic"
+    },
+    {
+      "n": 2,
+      "k": 1,
+      "a": "1",
+      "eta": "0.1",
+      "spectral_terms": 1451,
+      "Abel_cutoff": 32,
+      "residual": "-1.31371731030452e-46",
+      "status": "non-interval high-precision diagnostic"
+    },
+    {
+      "n": 3,
+      "k": 1,
+      "a": "1",
+      "eta": "0.1",
+      "spectral_terms": 1451,
+      "Abel_cutoff": 32,
+      "residual": "1.66404192638572e-45",
+      "status": "non-interval high-precision diagnostic"
+    },
+    {
+      "n": 2,
+      "k": 2,
+      "a": "1",
+      "eta": "0.1",
+      "spectral_terms": 1451,
+      "Abel_cutoff": 32,
+      "residual": "-1.75162308040602e-46",
+      "status": "non-interval high-precision diagnostic"
+    },
+    {
+      "n": 2,
+      "k": 3,
+      "a": "1",
+      "eta": "0.1",
+      "spectral_terms": 1451,
+      "Abel_cutoff": 32,
+      "residual": "-1.12103877145985e-44",
+      "status": "non-interval high-precision diagnostic"
+    }
+  ]
+}
+
+
+$ python verification/numerical_checks.py roots --dps 45
+{'n': 1, 'j': 1, 'a_endpoint': '1.39111895738872384200895244037', 'F_a': '-0.95116147167071549480998218087', 'leading_rho_derivative_coefficient': '-0.525673100616396715055519661919'}
+{'n': 2, 'j': 1, 'a_endpoint': '1.0926185942922162563366202029219', 'F_a': '-0.846532349757161013875424456446', 'leading_rho_derivative_coefficient': '0.393763254799364020644838672793'}
+{'n': 2, 'j': 2, 'a_endpoint': '1.6409598465375973620590112156042', 'F_a': '0.3112285973513758563314573663', 'leading_rho_derivative_coefficient': '-1.07102411593945307488394433196'}
+{'n': 3, 'j': 1, 'a_endpoint': '0.93144539127216501431271249066146', 'F_a': '-0.78447537735484530569923101918', 'leading_rho_derivative_coefficient': '-0.318684317209507986938691932399'}
+{'n': 3, 'j': 2, 'a_endpoint': '1.2807134453489776382032890657493', 'F_a': '0.185580078690083313496371682001', 'leading_rho_derivative_coefficient': '1.34712735205537467869818339368'}
+{'n': 3, 'j': 3, 'a_endpoint': '1.8336681982190102737365521237813', 'F_a': '-0.163589178676563691228988868713', 'leading_rho_derivative_coefficient': '-1.52821844343556081017179049036'}
+{'n': 4, 'j': 1, 'a_endpoint': '0.88822589175347758011592295123448', 'F_a': '-0.208197251831270196039309775228', 'leading_rho_derivative_coefficient': '0.96062747342163039341981735467'}
+{'n': 4, 'j': 2, 'a_endpoint': '0.99163545645352571482609797640872', 'F_a': '0.105596106703046624580343902328', 'leading_rho_derivative_coefficient': '-1.89400922291986040566829250095'}
+{'n': 4, 'j': 3, 'a_endpoint': '1.4662177140213177626548388006682', 'F_a': '-0.078558101792844588698823534664', 'leading_rho_derivative_coefficient': '2.54588636226718074860711089384'}
+{'n': 4, 'j': 4, 'a_endpoint': '1.9916581450579525751381003659061', 'F_a': '0.106481426591164726144064618744', 'leading_rho_derivative_coefficient': '-1.87826183779354960022726151744'}
+{
+  "precision_dps": 45,
+  "results": [
+    {
+      "n": 1,
+      "j": 1,
+      "a_endpoint": "1.39111895738872384200895244037",
+      "F_a": "-0.95116147167071549480998218087",
+      "leading_rho_derivative_coefficient": "-0.525673100616396715055519661919"
+    },
+    {
+      "n": 2,
+      "j": 1,
+      "a_endpoint": "1.0926185942922162563366202029219",
+      "F_a": "-0.846532349757161013875424456446",
+      "leading_rho_derivative_coefficient": "0.393763254799364020644838672793"
+    },
+    {
+      "n": 2,
+      "j": 2,
+      "a_endpoint": "1.6409598465375973620590112156042",
+      "F_a": "0.3112285973513758563314573663",
+      "leading_rho_derivative_coefficient": "-1.07102411593945307488394433196"
+    },
+    {
+      "n": 3,
+      "j": 1,
+      "a_endpoint": "0.93144539127216501431271249066146",
+      "F_a": "-0.78447537735484530569923101918",
+      "leading_rho_derivative_coefficient": "-0.318684317209507986938691932399"
+    },
+    {
+      "n": 3,
+      "j": 2,
+      "a_endpoint": "1.2807134453489776382032890657493",
+      "F_a": "0.185580078690083313496371682001",
+      "leading_rho_derivative_coefficient": "1.34712735205537467869818339368"
+    },
+    {
+      "n": 3,
+      "j": 3,
+      "a_endpoint": "1.8336681982190102737365521237813",
+      "F_a": "-0.163589178676563691228988868713",
+      "leading_rho_derivative_coefficient": "-1.52821844343556081017179049036"
+    },
+    {
+      "n": 4,
+      "j": 1,
+      "a_endpoint": "0.88822589175347758011592295123448",
+      "F_a": "-0.208197251831270196039309775228",
+      "leading_rho_derivative_coefficient": "0.96062747342163039341981735467"
+    },
+    {
+      "n": 4,
+      "j": 2,
+      "a_endpoint": "0.99163545645352571482609797640872",
+      "F_a": "0.105596106703046624580343902328",
+      "leading_rho_derivative_coefficient": "-1.89400922291986040566829250095"
+    },
+    {
+      "n": 4,
+      "j": 3,
+      "a_endpoint": "1.4662177140213177626548388006682",
+      "F_a": "-0.078558101792844588698823534664",
+      "leading_rho_derivative_coefficient": "2.54588636226718074860711089384"
+    },
+    {
+      "n": 4,
+      "j": 4,
+      "a_endpoint": "1.9916581450579525751381003659061",
+      "F_a": "0.106481426591164726144064618744",
+      "leading_rho_derivative_coefficient": "-1.87826183779354960022726151744"
+    }
+  ]
+}
+
+
+$ python verification/numerical_checks.py minimum --dps 45
+{
+  "precision_dps": 45,
+  "results": {
+    "a_min": "0.87863268385576741272916483744790533",
+    "rho_min": "0.91560507324770009839314930185629235",
+    "F_a": "-3.86961536006785897230104985593",
+    "F_rho_rho": "15.3699051458260025871752777406",
+    "status": "diagnostic decimals; separate exact certificate brackets rho_min"
+  }
+}
+
+
+$ python verification/numerical_checks.py fold --dps 45
+{
+  "precision_dps": 45,
+  "results": {
+    "a_c": "1.0497530508802554583397607",
+    "rho_c": "0.99999046683773863424707149",
+    "F_aa": "3.3249145433964245637",
+    "F_rho": "-2536.5328994255356757",
+    "square_root_coefficient": "39.061148077072730467",
+    "status": "non-interval numerical location; existence/uniqueness in the inner gap proved analytically"
+  }
+}
+

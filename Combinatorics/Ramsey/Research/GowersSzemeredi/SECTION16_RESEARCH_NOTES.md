@@ -2054,6 +2054,160 @@ development.** The existing gap theorems rule out the encoded earlier
 parameter choices; they do not prove that every alternative route needs
 a particular external inverse theorem.
 
+## L. Where the gap in Gowers's proof stands (synthesis, 2026-10-10)
+
+The user's priority is Gowers's proof, not any particular source. This
+section collects what every examined route needs.
+
+- **The printed defect.** Lemma 16.10's anchor lift: `r = ⌈qσ⁻²⌉` anchors
+  with `σ = ρ/4`, and unions over `r²` anchor pairs, give the parameter
+  `p = 4r²γ⁻²s`. The comparison `q(σ/p, γ, k+1)^p ≤ q(ρ, γ, k+1)` fails
+  because `p` grows with `1/ρ` (A). Behind it lies the union rule of
+  multiply-linear sets, which costs exponentially in the number of pieces
+  (B).
+- **Slope relations do not avoid it (checked today).** The slope relation
+  `h ↦ λ_t(h)` does inherit the product property, at parameter `γ²`, from
+  pairs of `φ₁`-restrictions on linear classes. But covering all but `ρ` of
+  a fibre needs `poly(1/ρ)` classes (already at `k = 1`). So the
+  relation's fibre size, and with it `γ′` and `s(θ, γ′, k)`, depend on `ρ`.
+  Lemma 16.8 then turns this into `exp(poly(1/ρ))`. Any exact repair needs
+  a *stackable* invariant (H.4).
+- **The common core.** Every route needs an inverse theorem for Freiman
+  multi-homomorphisms over `ℤ/N` with good bounds.
+  - Dimension 2 (degree 3, five-term APs): already sufficient here, since
+    18.2 and 18.7 are proved for `k ≤ 5`. Milićević 2026 would give the
+    deep form, but its Proposition 9.3 has the coherence gap (J.5c).
+  - Dimension 3 (six-term APs, the first open case of 18.2 and 18.7): needs
+    a dense trilinear piece of density polynomial in `α` (or
+    quasi-polynomial for 18.7 only); see K.4. No such bound is known;
+    Gowers–Milićević 2020 is iterated-exponential.
+- **Explicit-constant alternatives.** None exist.
+  - The openai/math port reduces 18.2 and 18.7 to a dense Szemerédi
+    theorem at Gowers's tower scale (`PORT_CONSTANTS_SURVEY.md`).
+  - Leng–Sah–Sawhney's exponent `c_k` is only shown to exist.
+  - Gowers's 2001 bound is the only explicit one in the literature.
+- **Consequence.** Closing the open entries for `k ≥ 6` by any known means
+  needs a new multilinear inverse theorem: a structure theorem for
+  three-variable frequency functions with at most quasi-polynomial loss
+  in `ℤ/N`. For Theorem 16.2 in every dimension the same is needed in
+  every dimension. That is an open research problem, not a formalization
+  task. The Milićević Step 5 work (J.5c) bears on `Theorem162At 3` through
+  the dimension-two deep structure, but by K.4 it does not reach
+  Corollary 18.7 at `k = 6`.
+- **The direct trilinear attack (analysed the same day).**
+  - *Target.* `theorem_18_2_of_function_discrepancy_budget` reduces
+    length 6 to a degree-4 `FunctionDiscrepancyBound`. Its `β` must be
+    `≥ α^D` with `D ≲ 2^32768/728` for 18.2, or quasi-polynomial with
+    exponent `A ≲ 3400` for 18.7.
+  - *Locality is the lever.* Gowers's method needs structure only on boxes
+    of width `N^(poly α)`. That is why dimension 1 → 2 kept polynomial loss
+    (18.2 at `k = 5` via the polynomial cubic discrepancy).
+  - *Where dimension 2 → 3 still loses.* The width loss of Lemma 16.1 is
+    already removed (J.3: the Schmidt recurrence). The loss that remains is
+    the dimension-two graph count `exp(poly)` entering the joint box's
+    budget `G` (K.4). A single trilinear piece only needs one lift. But the
+    slices' frequency relation `Δ`, with fibres `≤ δ⁻²`, must be handled
+    simultaneously, which is the stackability problem (H.3, H.4).
+  - *Reduction.* The trilinear piece follows from a **local**
+    dimension-two structure theorem whose graph count, or Bohr rank, is
+    `poly` (for 18.2) or `quasi-poly` with explicit exponent (for 18.7), via
+    a single-piece lift with polynomial loss.
+  - *Why the deep contract does not suffice.* It is global, and its
+    density `exp(−poly)` is too weak for `k = 6`.
+  - *Sources.* The only known dimension-two source with quasi-polynomial
+    loss is Milićević 2026, whose Proposition 9.3 has the coherence gap of
+    J.5c. Repairing that gap is therefore on the critical path for 18.7 at
+    `k = 6` as well. For 18.2 at `k = 6`, no polynomial dimension-two
+    source is known: a *global* one would be PFR-strength over `ℤ`. Whether
+    locality makes a polynomial local dimension-two theorem accessible is
+    the open question this route turns on.
+
+### L.1 The single-piece lift: plan and first piece (2026-10-10)
+
+The user chose to build the single-piece dimension `k → k+1` lift (Notes L).
+
+**Plan.** Gowers's Lemma 16.10 covers all of `φ₁` and loses in three
+unions:
+- over `r²` anchor pairs;
+- over the `2^k − 1` cross-section remainders in Lemma 16.9;
+- over the graphs of each cross-section cover.
+
+For one dense piece, make one choice in each:
+- the largest class on a cell, of density `≥ 1/q`;
+- one anchor pair;
+- one graph per cross-section, on a common cell (synchronized retiling,
+  already in the corpus).
+
+The density is then `poly(1/q, 1/Q, θ)`, where `q` is Lemma 16.9's class
+count and `Q` is the dimension-`k` count per cell. So the lift is
+polynomial exactly when the dimension-`k` input has polynomial counts.
+That input is Notes L's open core.
+
+**First piece, done:** `Proofs16SinglePieceAnchor`.
+- `exists_anchor_pair_capture`: on a cell `T × J` whose fibres are split
+  into at most `q` classes, one anchor pair `a ≠ b` captures `W` (the
+  points whose class contains `(h, a)` and `(h, b)`) with
+  `|D|³ ≤ (q|T|)²(|J|²|W| + |J||D|)`. The proof uses two Cauchy–Schwarz
+  steps over class sizes and averages over anchor pairs.
+- `anchor_reconstruction`: if `φ(h, ·)` is affine on each class (the form
+  of Lemma 16.9's `Section16LineCover`), then on `W`
+  `φ(h, x) = φ(h, a) + (φ(h, a) − φ(h, b))(a − b)⁻¹(x − a)`.
+
+So on the captured set `φ` is fixed by its cross-sections at `a` and `b`.
+Two multilinear graphs, one for each cross-section, give one
+`(k+1)`-multilinear piece. The `r²`-pair union, and its exponent
+`p = 4r²γ⁻²s`, does not arise.
+
+**Second piece, done:** `Proofs16SinglePieceSections`.
+- The dimension-`k` input is now a named hypothesis,
+  `LocalMultilinearPieceAt k γ c w`. Let `B` have density `θ` in a proper
+  box `P` and carry a function with the product property. Then some proper
+  sub-box `R`, with `width R ≥ w θ (width P)`, and one multilinear `μ`
+  agree on `c θ·|R|` points of `B ∩ R`.
+  - It is a *piece* statement, not a cover. That is the form the consumer
+    needs: `section16_joint_frequency_box` outputs one box and one
+    multilinear map with dense large-frequency agreement.
+  - It holds trivially with `w θ L = min 1 L` (single-point boxes). Its
+    content is a growing `w` at polynomial `c`.
+- `single_piece_on_line_cell` proves the lift on one line-covered cell
+  `T × J`. Setting: `D` has density `θ`, fibres split into `q` classes, and
+  `φ(h, ·)` is affine on each class. Output: one proper `(k+1)`-box
+  `S ⊆ T × J` and one multilinear `μ` with
+  `θ₁·c(c(θ₁))·|S|` agreements in `D ∩ S`, where `θ₁ = θ³/(4q²)`, and
+  `width S ≥ ⌊√(w(c θ₁)(w θ₁ (width T)) − 1)⌋ − 1`.
+- The proof chains five steps:
+  1. one anchor pair (step 1);
+  2. popular fibres (`popular_fibres`: `θ₁|T|` base points, each with
+     `≥ θ₁|J|` captured points);
+  3. the input applied to `φ(·, a)`, then **nested** to `φ(·, b)` on the
+     agreement set inside the first box. Nesting replaces "common cells"
+     and costs `c∘c` instead of a union over graph pairs;
+  4. `anchor_reconstruction`, giving `φ = section16TwoAnchorLift a b μ_a μ_b`;
+  5. the corpus's synchronized retiling
+     (`box_product_tiling_of_contained_axis`), whose cells cost only the
+     square root in width, and a mediant pick of the densest cell.
+- With `c t = t^D` and `w t L = L^(t^E)`:
+  - the density is `θ₁^(D²+1)`;
+  - the width exponent is `½·θ₁^E·c(θ₁)^E`.
+  Both are polynomial in `θ` and `1/q`. **The lift itself loses only
+  polynomially.** The exponential losses of Lemma 16.10 analysed in Part A
+  come from covering all of `φ₁`, not from the lift step. Whether the
+  line-covered cell itself (item 1 below) can be had at polynomial cost is
+  still open.
+- Hypotheses kept explicit: `T`'s first axis is no longer than `J` and at
+  most `N/2` (as `Box.short_parent_partition` arranges), and
+  `|J| ≥ 2q²/θ³`.
+
+**Next.**
+1. A single-piece Lemma 16.9: from a dense `(k+1)`-dimensional
+   product-property set, produce one line-covered cell of density
+   `poly(θ)` with `q = poly(1/θ)` classes. This is where the slope relation
+   and the remainders `φ_ε` enter, so it needs the structure of
+   `Proofs16Lemma9`.
+2. Assemble `LocalMultilinearPieceAt (k+1)` from `LocalMultilinearPieceAt k`
+   plus item 1. Then compare it with the length-6 discrepancy budget of
+   K.4, through `section16_joint_frequency_box`'s output form.
+
 ## F. Routes
 
 1. **Quantitative repair (research).**
@@ -6075,7 +6229,135 @@ the decomposition with these named constants, but not `Theorem162At 3`.
               Possibly every `C_i` contains the small `C₀` in which the
               `a`'s live. That would need the Theorem 2.26 progressions to
               contain `C₀`, which is not stated.
-         2. *Explicit exponents* for the regime check above.
+            - *The ε-proportionality principle (2026-10-10).* Every
+              candidate repair has failed in the same way.
+              - The candidates: per-round localization; a pigeonholed
+                common index set `S*`; a common translate `s + ⋂K_i` with
+                local quadruple counting; recentring through the affine
+                linear parts `L_i = λ_i + u_i` on `⋂K_i`.
+              - Each pays a factor built from the iteration's output: the
+                round count `m`, or the ranks of the `K_i`, which are
+                `polylog(1/δ)` with `log(1/δ) ≥ 9316·log(1/ε)`. The
+                failing-quadruple bound `O(ε)N³` must then beat that
+                factor. So `log(1/ε)` must exceed a power `> 1` of
+                `log(1/ε)`, which is circular.
+              - Milićević's window is the one step that escapes: it loses
+                the same factor `C(m, 8s₀)⁻¹` on good and failing
+                quadruples alike.
+              - So a repair of coherence must likewise be *proportional*.
+                It must select domains by an operation that scales good
+                and failing configurations equally, or produce domains
+                (such as a fixed `C₀ ⊆ C_i`) whose size does not depend on
+                the iteration.
+              - With affine `L_i = λ_i + u_i` on centred `K_i`, everything
+                reduces to one question: can the `a`'s be confined in
+                advance to a centred set contained in every `K_i`?
+              - *Quantified obstruction.*
+                - Localizing to a common Bohr-type piece costs at least
+                  `exp(−C·rank(⋂_{i∈J} K_i)) ≥ exp(−C′·s₀·(log 1/δ)⁴)`,
+                  with `log(1/δ) = O(d log R) + 9316·log(1/ε)`.
+                - The failure count `O(ε)N³` must beat it. So
+                  `log(1/ε) ≳ s₀·(log 1/δ)⁴ ≥ s₀·(9316·log 1/ε)⁴`, which
+                  is impossible.
+                - Extending each `θ_i` from its dense `B_i` to the whole
+                  `C₀` is also impossible in general. A Freiman map on a
+                  dense set extends only to the thickening `B_i + K_i`.
+                  The same holds for maps on low-rank Bohr sets: they are
+                  linear forms in the GAP coordinates, not global
+                  multiplications `x ↦ t·x`.
+              - *Status against the paper.* The overview (p. 12) states
+                Step 5's output as `Θ₁, …, Θ_r` Freiman-linear on the whole
+                index progression `C`, with the index set becoming a dense
+                `X ⊆ C`. Proposition 9.3 states `Θ_i` on a coset
+                progression `C′` with `X ⊆ C′`. But the printed proof
+                produces each `θ_i` on its own Theorem 2.26 progression
+                `C_i`, and never shows that `X` meets `⋂_{i∈J} C_i` in a
+                set carrying many respected quadruples. By the bound above,
+                this cannot follow from any localization whose cost depends
+                on the iteration. **This appears to be a gap in the printed
+                proof of Proposition 9.3**, not only in our formalization.
+                Resolving it needs a new idea, or a different Step 5.
+              - *Where the gap comes from (2026-10-10).* In the vector-space
+                predecessor (`F_p^n`), the `θ_i` are linear maps on
+                subspaces of bounded codimension. A linear map on a
+                subspace always extends to all of `F_p^n`, so coherence is
+                free there: every `θ_i` is defined everywhere and `X` lies
+                in every domain. The general-group version replaces
+                subspaces by coset progressions or Bohr sets, and this
+                extension step fails.
+              - *Checked in ℤ/N.*
+                - Take a Freiman-linear map on a sub-Bohr set
+                  `K = C₀(ν) ∩ B(Γ′)` of a proper progression `C₀`. It need
+                  not extend to `C₀` even when `C₀` has rank 1. `K`'s index
+                  set in `ℤ` is a Bohr set of `ℤ`, roughly a proper rank-2
+                  progression `{m₁q + m₂r′}`. A Freiman-linear map there is
+                  `m₁v₁ + m₂v₂`, which need not be a function of `n`
+                  linearly.
+                - The lattice route fails too. The relevant sublattice
+                  `{n : ⟨n, w_γ⟩ ≡ 0}` has index a power of `N`, so the
+                  "invertible index" extension is unavailable. Quantitative
+                  lattice regularization (Milićević §2.6, Lemma 2.32 and
+                  Theorem 2.33) could at best control *small* relations; it
+                  does not make the extension exist.
+              - *What a repair must supply.* Either:
+                (a) new frequency maps that are born Freiman on one fixed
+                    centred set `C₀ ⊇` all `a`'s. Claims 9.4/9.5 only define
+                    them on the escaping `a`'s plus Bohr thickenings; or
+                (b) a Step 6 (Proposition 10.1) that works with per-column
+                    index sets `S_a ⊆ J`, with `θ_i` Freiman only on its own
+                    `D_i ∋ a` for `i ∈ S_a`, rather than with one uniform
+                    Freiman `Θ` on `C`.
+
+                Both remain research questions. The F_p^n argument does not
+                transfer verbatim to general abelian groups at this step.
+              - *How [49] gets coherence (Discrete Analysis 2024:20, p. 31,
+                after Corollary 20).* It uses Hosseini–Lovett averaging.
+                1. Only `ℓ₀ = log^O(1)` of the `m` maps cover each `U_y`.
+                2. Average over `ℓ₀`-subsets to pin the patterns
+                   `I_{y+z} = J₁`, `I_z = J₂`, `I_{y+w} = J₃`,
+                   `I_{w} = J₄`, then *fix* `z, w`.
+                3. For the varying `y`, every `J₁`-map is defined at
+                   `y + z`, because its index was used there. So
+                   `Y² ⊆ ⋂_{J₁}(C_i − z) ∩ ⋂_{J₃}(C_i − w)`.
+                4. Proposition 18 then finds one proper coset progression in
+                   that intersection that meets `Y²` densely.
+
+                This works there because the target is a dense set with a
+                *pointwise* property. Pinning loses a proportional factor,
+                and no failure count has to be beaten.
+              - *The analogue for Proposition 9.3: fix the final pair.*
+                - Choose one pair `(x*, y*)` for *all* `a`, rather than
+                  `(x_a, y_a)` per `a`. Then `S_a = I_{x*,a} ∪ I_{y*,a}`, so
+                  pinning `S_a = J*` gives coherence exactly as in [49].
+                - The containment (24) for the triples `(x*, y*, a)` costs
+                  only an average over `(x*, y*)`, which is proportional.
+                - The x-side 8-tuples become original quadruples
+                  `(x* + a_j)_j`, also proportional.
+                - The obstruction is (26). It is now needed on *diagonal*
+                  12-tuples (`x_j = x*`, `y_j = y*`). There are `N⁵` of
+                  these against `N¹¹` general ones, and the iteration
+                  controls only the general ones.
+                - A diagonal Claim 9.5 loses the two-sided separation that
+                  makes the new map Freiman. With a shared `x`, the value
+                  `F_j(x, a_j)` is determined only together with `x`, through
+                  the other coordinates `F_k(x, a_k)`.
+                - Grouping coordinates restores separation only for sums
+                  such as `ψ₀ + ψ₃(· + a₁ − a₂)`. The iteration's
+                  pair-level escape needs a single coordinate.
+                - Open sub-questions: a diagonal Claim 9.5 with a
+                  grouped-coordinate invariant, or a derivation of diagonal
+                  (26) from (24) using Lemma 2.40-type genericity of the
+                  frequencies.
+         2. *Explicit exponents (done, `Proofs16PropNineThreeBudget`).*
+            With `L = d·log(2R+1)` and `ℓ = log(1/ε)`:
+            - `log(1/claimNineFourDensity) ≤ 6540·log 2 + 37264·L + 9316·ℓ`;
+            - `log(1/claimNineFiveDensity) ≤ 25172·log 2 + 149056·L + 9316·ℓ`;
+            - the window loss satisfies `C(m + k, k) ≤ (m + k)^k`.
+
+            So `log(1/final density) = O(s₀·log(s₀/δ))`, which is
+            polynomial in `d`, `log R` and `log(1/ε)`. Here
+            `R = propNineThreeRadius` is `(r/4)^(−O(d))`. This confirms the
+            regime check.
          3. **The rank obstruction, and why Theorem 2.26 is needed here
             (2026-10-10).** Domain coherence hides a rank problem.
             - *The obstruction.* In Claims 9.4/9.5 the Freiman step runs at
@@ -6119,6 +6401,37 @@ the decomposition with these named constants, but not `Theorem162At 3`.
 
               This replaces Lemma 7.8 wherever a structured domain must
               have low rank, and is the next large task on this route.
+            - *Done (2026-10-10): the low-rank half needs no graph model.*
+              - `sanders_linear_part` (`Proofs16SandersLinearPart`) is
+                Lemma 7.8 at Sanders strength.
+              - A Freiman 8-homomorphism `f` on `A` of density `e^(−p)`
+                extends to `ψ` on `2A − 2A` by
+                `ψ(a₁+a₂−a₃−a₄) = f a₁ + f a₂ − f a₃ − f a₄`
+                (`quadSumExt`).
+              - `ψ` is well defined for a Freiman 4-homomorphism, and is
+                Freiman-linear on `2A − 2A` for a Freiman 8-homomorphism.
+              - `f a − f a′ = ψ(a − a′)` holds for *all* `a, a′ ∈ A`.
+              - `exists_quartic_bogolyubov` puts a Bohr set of rank
+                `≤ 1 + C(p+1)⁴` inside `2A − 2A`.
+                `bohr_subset_oai_carrier` converts its chord radius `ρ` to
+                the corpus's phase radius `ρ/(2π)`.
+              - `freiman_common_value_sanders`
+                (`Proofs16CommonValueSanders`) attaches this to the new map
+                of Claim 9.4. `Θ`'s linear part lives on a Bohr set of rank
+                `1 + C(log(1/δ) + 1)⁴`, polylogarithmic in the density `δ`
+                of its value set, which satisfies `|B| ≥ δN`.
+              - *Bohr thickenings (done).* `freiman_bohr_thickening`
+                (`Proofs16FreimanThickening`). Suppose
+                `bohr Γ ρ ⊆ 2A − 2A`. Then a Freiman 8-homomorphism `f`
+                on `A` extends, by `f̂(b + k) = ψ(k) + f(b)`, to a map that
+                is Freiman-linear on `A + B(Γ; ρ/4)`. So each `θ_i`
+                is Freiman on a structured, Bohr-thickened domain.
+              - Domain coherence (item 1) remains open: it is not known
+                whether `X` can be placed in all `J` thickenings at once.
+                Localizing every round would make the rank or density
+                doubly exponential. Theorem 2.26's progressions are
+                arbitrary coset progressions, so the printed argument has
+                the same gap.
          Quantitatively, `s₀ = O(d log(dR))`, and
          `δ` is polynomial in `ε` and `(2R+1)^(−d)`. With
          `R = (ρ^(−1))^O(d)`, this makes `m ≤ s₀/δ = exp(O(d² log 1/ρ))`

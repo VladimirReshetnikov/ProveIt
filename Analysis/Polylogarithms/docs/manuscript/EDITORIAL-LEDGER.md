@@ -1,10 +1,9 @@
 # Source reconciliation and mathematical corrections
 
 The reading manuscript is `polylogarithms.tex` / `polylogarithms.pdf`.
-The inventory now covers 248 textual source files: the original 39 flat drafts
+The inventory now covers 439 textual source files: the original 39 flat drafts
 and the scientific sources, correction registers and supporting prose of eleven
-fully integrated continuation packages (seventeen deliveries), with six
-further packages under active audit and selected results already integrated. Repeated assembled source and
+fully integrated continuation packages (seventeen deliveries), with subsequent research packages under active audit and selected results already integrated. Repeated assembled source and
 section fragments are counted as provenance files, not as independent results.
 The 39 textual drafts remain historical source evidence in the sibling
 `articles` and `reports` directories. Their PDFs and unsupported claims are
@@ -188,7 +187,7 @@ verification/upstream-placement-reconciliation.json. The retired arrival
 ZIPs remain recoverable from the pinned Git revision recorded in
 verification/incoming-archives.json; all 174 full-package members are retained
 byte for byte. That placement checkpoint covered 179 textual source files; the active
-research census now covers 248.
+research census now covers 381.
 
 The inverse-gamma singularity proof and reflected residue composition combine
 to give Chapter 8's sharp remainder for every fixed reflected exponent. Its
@@ -209,9 +208,9 @@ proof audit or mean that every result has already entered the book.
 | New package | Current reconciliation |
 |---|---|
 | level4-rank-proof | Chapter 5 now proves the original specified-matrix rank conjecture by the two polynomial reflection blocks, gives its full rational nullspace, Gaussian-supported saturation, membership test, even-weight compiler and leading-index identities. The fresh replay covers weights 2-41 and all default symbolic/numerical checks. |
-| relation-cm-zero-transitions | Chapter 10 integrates the complete fifth-index transition and critical-point descent through the existing index-uniform rational remainder proof. The proposed n6/n7 first-order counts are now proved, with all derivative orders, by the new higher-zero theorem and two exact sign implementations. Integral Smith forms, CM class products/genus ratios and the remaining Lerch results are pending analytic integration. |
+| relation-cm-zero-transitions | Chapter 10 integrates the complete fifth-index transition and critical-point descent through the existing index-uniform rational remainder proof. The proposed n6/n7 first-order counts are now proved, with all derivative orders, by the new higher-zero theorem and two exact sign implementations. CM class products/genus ratios and their normalization proofs are now integrated in Chapter 7; integral Smith forms are now proved in Chapter 9; the remaining Lerch results are pending analytic integration. |
 | formal-reductions-continuation | Its independent rank proof and exact checks corroborate the retained polynomial proof. Proper-subfield Herglotz criteria, rational J identities, endpoint renormalization and the divergent angular expansion remain under audit for integration. Its distinction between complete finite-cutoff asymptotics and a divergent infinite sum must be preserved. |
-| angular-zero-continuation | Chapter 4 adds its weight-three S2 theorem and the complete 25-row proof, verified by both supplied implementations. Additional S4 certificates corroborate the retained S4 proof. General-level ranks, global real-order nonvanishing, angular monotonicity, all-order coefficients and the optimal Euler constant remain under audit. |
+| angular-zero-continuation | Chapter 4 adds its weight-three S2 theorem and the complete 25-row proof, verified by both supplied implementations. Additional S4 certificates corroborate the retained S4 proof. General-level ranks and all-order coefficients remain under audit. Chapter 5 now proves unrestricted real-order nonvanishing and angular uniqueness, subcritical normalized-radius increase and the sharp critical/subcritical Euler constant. The global integer-order normalized-radius conjecture remains open. |
 | cayley-s4-continuation | Both exact S4 verifiers and the N=1000 rational interval replay pass. Retain the existing canonical S4 proof; the smaller alternative certificate requires further integration. Chapter 5 adds its affine signed-moment bound, extended to real outer order a >= 1, and Chapter 12 records its rigorously refuted S8 search vector. Its alternative S6 candidate is proved equivalent to the earlier one by two ordinary shuffles; the common identity remains conjectural. |
 | lerch-zero-bifurcations | Exact sign and regression replays pass; its second Euler--Maclaurin implementation independently certifies all 126 new n6/n7 signs at increased precision. Two definite half-unit proof notation/text errors are repaired in the canonical chapter. Endpoint singularities and nonmonotone/fold branches remain under analytic audit. |
 
@@ -226,3 +225,94 @@ source to correct P_n to Q_n. Its caption now defines the previously
 unexplained profile expectation. The raw historical figure is unchanged.
 The affine Gamma-density proof was also extended to real outer order
 a >= 1; only the integer-index evaluator is claimed to have rational centers.
+
+## Five later packages (active reconciliation)
+
+All 197 members from the third batch are preserved byte for byte at the
+28357e8ca6 arrival. All five isolated replay suites pass.
+
+| Package | Current scientific status |
+|---|---|
+| herglotz-rational-classification | Full rational J classification, dyadic rigidity, recurrence counting and explicit dilogarithm identities are pending proof reconciliation with the formal-reductions continuation. |
+| lerch-global-phase | Complete index-three phase diagram and exterior barrier certificates pass; analytic insertion is pending, superseding the earlier open outer-pair question when its proof is integrated. |
+| uniform-transition-continuation | Uniform harmonic and joint-moment transitions, integral distributions and slope certificates pass; analytic integration remains pending. Its S6 two-shuffle equivalence corroborates the retained exact reconciliation. |
+| lerch-boundary-continuation | Endpoint renormalization, index-two minimum and differentiated large-order results pass their exact replays; merge through the strongest shared proofs rather than duplicating earlier sources. |
+| zero-cm-signed-continuation | The new frozen S8 candidate and its 1200-term normalized proximity certificate are integrated in Chapter 4 with conjectural status. Its S6 proximity bound is stronger; the saddle and Lerch material remains under analytic review. |
+
+## CM proof integration and additional arithmetic research
+
+The relation-cm-zero-transitions norm, modular compiler and genus proofs
+are now integrated in Chapter 7 through the existing row normalization.
+They prove all five recorded weight-four class products and all three
+genus ratios, with the required -15 real-part factor. Weight-six extensions,
+exact genus factors and the fixed-field theorem are retained. Primary
+Chowla-Selberg and genus-character normalizations were verified against
+Cohen 2026, Barquero-Sanchez et al. 2017, and Masri 2013.
+
+The added rational principal-lattice bound gives a quantitative proof of
+classical CM nonvanishing (Kohnen), removing the denominator restrictions
+from every non-elliptic CM product and genus ratio. New consequences give
+a norm/conjugation law for every weight divisible by twelve, exact
+quadratic degree at every even weight for -15,-20,-39, nine explicit
+quadratic formulas at weights 12,16,18, and the full cluster set of the
+-15 weight-12m sequence. The plot is numerical illustration; the norm and
+cluster-set conclusions have separate proofs.
+
+Additional class-number-one certificates prove the four 2i/i sqrt(2)
+evaluations. A cubic resultant defines the -23 Weber phase unambiguously;
+the -39 cube-coordinate obstruction has degree twelve, certified modulo
+five and replayed independently by Frobenius/gcd arithmetic. Raw class
+values, their real projections, absolute norms and normalized algebraic
+ratios retain distinct definitions.
+
+## Fourth incoming research batch (9 October 2026)
+
+Five archives at `a0a90ef318` are preserved as 227 byte-identical members. The two integral-distribution deliveries use separate folders despite their identical proposed destination. Exact replays are recorded separately from analytic integration.
+
+- **integral-distribution-reflection-jets**: Integral all-ring basis, reflection torsion, modular Koszul homology and contact-order Smith laws. Integrated in Chapter 9 as a single full proof chain: all-ring point basis, resolution, reflection torsion, characteristic-two Koszul model, field locus, contact-order Smith law and all-order identities. The Clausen parity correction is retained.
+- **integral-distribution-reflection**: Raw-row unimodular certificates, integral jets, resolution and all-order short identities. Core proofs reconciled with the jets report in Chapter 9; retain the coefficient-height bound, finite integral-jet torsion theorem and nonfree torsion-free quotient example. The unsupported numerical nonreduction claim is corrected.
+- **fractional-cayley-scaling**: Sharp signed-measure domain including the a=0 edge, angular zeros, fractional turning points, Bessel regimes, all-weight Cayley quotient and high-depth S6 identity. The signed-measure classification, local-radius signs, turning-point proofs and atomic edges are integrated in Chapter 5. Bessel regimes, the full Cayley quotient and high-depth S6 continuation remain pending; the short S6 reduction remains conjectural.
+- **real-order-threshold**: Sharp a+b>=1 signed-moment theorem, critical endpoint atom, critical radial monotonicity and exact subunit certificates. Integrated with complete signed-kernel, critical-defect and Euler proofs in Chapter 5. New positive-difference and Gaussian arguments settle the stronger critical monotonicity and sharp constant conjectures and extend the latter below threshold. The old Euler constant retains its a>=1 domain.
+- **finite-golden-uniform-continuation**: Complete multiplicative golden seeds, real-order kernels, endpoint concentration, reflected transition and depth-six obstruction. Historical publication and ladder-notation corrections are applied; exact L12 transformations and notation diagnostics pass. The real-order Cartesian motion, left-endpoint limit family, power/logarithmic atomic edges and two-scale total-variation boundary law are integrated in Chapter 5. Golden seeds, reflected transitions and the depth-six obstruction remain pending analytic integration.
+
+## Separable multivariable jet extension
+
+The Chapter 9 Koszul proof yields a new closed product law for coordinate-power active parameters. It determines characteristic-two reflected dimensions and both integral torsion submodules for every level and tuple of jet lengths. A separate raw-row bit-matrix implementation checks 210 finite cases and a corruption control. This settles the separable family, leaving general multivariable extensions open.
+
+## October 10: new proofs driven by real-order experiments
+The remaining sixteen already imported ZIPs were retired from `docs/incoming`
+under section 7 of its README. All 691 retained members match their original
+placement Git blobs at `0c9bf73f27`, `6ae95edc29` and `5537940fde`.
+Their arrival commits, exact archive paths and placement destinations are
+recorded in `verification/incoming-retirement.json`; the five earlier ZIPs
+were already retired. Retirement clears the drop zone after placement and
+does not assert completion of every package's analytic integration.
+
+The collective continuation supplies a positive Hausdorff measure for coefficient differences precisely when a=0 or a+b<=1, with a Bernstein interpolation on the same domain. It closes the principal slit-plane zero problem for all a>=0,b>0, proves angular uniqueness throughout this range and Cartesian motion, and establishes strict normalized-radius increase on and below the critical line and on the full outer-order axis. Ordinary boundary convergence is distinguished from analytic/Abel values.
+
+Gaussian Gamma/Beta representations prove strict decrease with outer order and at every fixed total order. A Mellin sign-change argument gives a unique nondegenerate axis maximum, with the broad exact bracket 1<b*<2; its initially diagnostic location is now sharply enclosed by the audited fifth-intake certificate. The sharp critical/subcritical uniform Euler constant is pi/4+log(2)/2. The independent b=3/2 enclosure, six triangle budgets and full-axis budget have separate proof roles. The universal real-order Euler constant is now settled by the separate contraction proof recorded below. Integer-order global normalized motion and uniqueness of quartic transition locations remain open. Original reports and their conjectural wording are preserved as historical evidence.
+
+## Fifth incoming continuation batch, October 10
+
+Five packages at the recorded arrival commit are placed on their existing
+thematic spines, with 178 original members and historical OVERVIEW notes.
+Their ZIPs were retired in placement commit 4fa256d3dc, retaining the
+drop-zone README. The archive and retirement records give recovery paths.
+The provenance census now includes these sources even where analytic
+integration remains pending; census coverage is not proof acceptance.
+
+| Source group | Reconciliation and current audit scope |
+|---|---|
+| beta-transfer-critical-euler | On the real-order-threshold spine. Fixed-total Gaussian decrease and the sharp critical constant overlap with existing collective proofs. Radius extension, refined density, drifting error maxima and rational cyclotomic profiles await analytic integration. Exact and symbolic replay pass; quadrature remains diagnostic. |
+| compensated-polylogarithms | On the real-order-threshold spine. Its compensation, subcritical nonvanishing and angular/radial mechanism corroborate the integrated proofs. The required convergent differences, boundary interpretation and unit-radius Fatou argument are already explicit in the book. Affine transport and strict-depth Stieltjes order/normalization await audit and integration. |
+| critical-euler-transport | On the same threshold spine beside beta transfer. Common critical results are not counted as separate discoveries. Positive surplus, endpoint-uniform expansion and the Stieltjes correction to maximizer drift remain under analytic audit; finite reversal certificates are preserved. |
+| extremal-bounds-cyclic-descent | On the formal-reductions spine. Its strict envelope log-concavity, Turan inequalities and rigorous axis-maximum enclosure are audited and integrated in Chapter 5, refining the earlier independent three-power proof. Cyclic-prime torsion/jets, inverse expansion, Lerch branch descent and the prescribed finite S6 separator remain pending canonical proof integration. The separator is not a proof or refutation of the numerical S6 identity. |
+| harmonic-order-lerch-geometry | On the Lerch global-phase spine, whose exterior-cutoff question it addresses. Entire harmonic interpolation, full real-zero classification, diagonal velocity signs and barrier optimality remain under analytic audit. Finite checks and separately labeled quantitative diagnostics replay successfully. Accessible-singularity dominance stays conjectural. |
+
+The collective continuation separately proves the all-parameter Euler kernel
+contraction. Thus the Gaussian axis maximum is now the sharp uniform Euler
+constant for a>=0,b>0, with equality only at a=0,N=1 and the unique maximizing
+inner order. Its audited incoming enclosure proves the rational global budget
+57/50. This is a promotion beyond the incoming reports' stated first-error
+and critical-line scope, not an assertion that they had claimed more.
+The critical constant and constant one on a>=1 remain valid sharper bounds.

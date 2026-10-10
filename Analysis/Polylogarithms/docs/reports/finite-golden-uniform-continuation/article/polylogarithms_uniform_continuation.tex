@@ -1,0 +1,219 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{graphicx,xcolor}
+\usepackage{placeins}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{fancyhdr}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,
+ citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\GL}{GL}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\numberwithin{equation}{section}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{1.4em}
+\setcounter{tocdepth}{2}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small ProveIt research continuation}
+\fancyhead[R]{\small Golden seeds and analytic transitions}
+\fancyfoot[C]{\thepage}
+\hypersetup{
+ pdftitle={Finite Golden Seeds and Uniform Analytic Transitions},
+ pdfauthor={ProveIt research continuation prepared with OpenAI assistance},
+ pdfsubject={Polylogarithms, signed Hausdorff measures, log-gamma moments, shuffle depth},
+ pdfkeywords={polylogarithms, golden ratio, primitive divisors, signed moments,
+ asymptotic analysis, shuffle algebra}}
+\title{\textbf{Finite Golden Seeds and\\Uniform Analytic Transitions}\\[8pt]
+ \large Multiplicative ladders, real-order signed kernels,\\
+ reflected log-gamma moments, and a sharp depth obstruction}
+\author{A research continuation for the ProveIt project\\
+ \small Prepared with OpenAI assistance}
+\date{10 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We continue four lines of research in the current ProveIt polylogarithm
+manuscript, distinguishing analytic identities, exact formal relations,
+and numerical evidence. First, primitive-divisor theory reduces every
+finite multiplicative seed for a positive real quadratic unit to indices
+at most twelve or twenty-four, according to its norm. At the golden
+reciprocal we determine the complete integral lattice: six generators
+for all positive powers, four for even powers, and no rational seeds
+after restricting the base to its fifth or any higher integer power.
+This proves completeness of a historically known even-power alphabet,
+without asserting sufficiency for higher-weight period identities.
+
+Second, the coefficients \(H_{n-1}^{(b)}/n^a\), with real \(a,b>0\),
+are moments of a finite signed measure exactly when \(a+b\ge1\).
+Above the boundary the density has one simple sign change; on the
+boundary it is strictly negative and a positive atom appears at one.
+The measure gives a unique simple angular zero throughout the upper
+half unit disk and a strictly increasing Cartesian abscissa.
+We also determine the near-critical density crossing and the
+concentration law of its positive mass.
+
+Third, reflected log-gamma moments have a uniform transition at
+\(n/(m+1)=\log m+O(1)\), with normalized limit
+\(\exp(c e^{-s})\), where \(c=\zeta(2)/(2\gamma)-\gamma\).
+We prove the first correction, an expansion to every fixed order,
+and exact identities for near-diagonal residue polynomials.
+Finally, a determinant-one certificate proves that the weight-six
+binary shuffle quotient has exactly one direction beyond all
+depth-two words and their six standard argument transforms.
+Two explicit quotient identities follow.
+The existing \(S_6\) special-value conjecture remains open.
+The accompanying package supplies exact arithmetic replays,
+independent analytic audits, numerical diagnostics, and proposed
+editorial corrections.
+\end{abstract}
+\medskip
+\noindent\textbf{Source snapshot.}
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/28357e8ca63dd78327db91d9be239d75e4462879/Analysis/Polylogarithms/docs/manuscript}
+{ProveIt manuscript, commit \texttt{28357e8ca63dd78327db91d9be239d75e4462879}}.
+The source commit is dated 10 October 2026, 03:57:30 UTC.
+\clearpage
+\begingroup
+\small
+\tableofcontents
+\endgroup
+\clearpage
+
+\section{Scope, results, and mathematical status}
+\label{intro:sec}
+The pinned source is already a substantial research manuscript
+\cite{ProveIt}. It proves the \(S_4\) reduction, several all-weight
+Gaussian and complementary-depth statements, algebraic low-weight
+ladders, and a detailed fixed-reflected-exponent asymptotic theory.
+We address four gaps: unbounded support
+of multiplicative seeds, real orders and the boundary of signed-measure
+representability, simultaneous growth of reflected exponents, and the
+exact limitation of a natural depth-reduction vocabulary.
+
+The source has several different notions of a relation. A relation
+among algebraic units can be checked in a number field. A relation in
+a formal shuffle or exterior-symbol quotient can be certified by
+exact algebra. A numerical identity among special values requires an
+analytic derivation or another valid equality proof. These notions
+interact, but the implication from a formal relation to a numerical
+period identity is not automatic. Every result below states the
+space in which it is proved.
+
+\subsection{A guide to the contributions}
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.16}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.23\textwidth}>{\raggedright\arraybackslash}p{0.45\textwidth}>{\raggedright\arraybackslash}p{0.25\textwidth}@{}}
+\toprule
+Question & Result in this article & Nature of the conclusion\\
+\midrule
+Can larger golden exponents supply new multiplicative seeds?
+& All finite relations have six explicit integral generators;
+the even-power lattice has four.
+& Unbounded arithmetic completeness,
+Theorem~\ref{golden:thm:integral-lattice}.\\
+Which real orders admit a finite signed moment measure?
+& Exactly \(a+b\ge1\); the critical line has an endpoint atom.
+& Analytic classification,
+Theorem~\ref{real:thm:measure}.\\
+Does the semicircle zero extend inside the disk?
+& Exactly one simple angular zero at every radius;
+its abscissa is strictly increasing.
+& Analytic geometry,
+Theorem~\ref{real:thm:arc}.\\
+How does the critical atom form?
+& Explicit crossing asymptotics and an exponential law on a
+logarithmically rescaled coordinate.
+& Uniform boundary analysis,
+Section~\ref{real:sec:boundary}.\\
+When does the fixed-\(m\) moment equivalent cease to be uniform?
+& A nontrivial exponential profile occurs at
+\(n/(m+1)-\log m=O(1)\).
+& Uniform asymptotic theorem,
+Theorem~\ref{moment:thm:transition}.\\
+Can six standard argument changes remove all weight-six triples?
+& Their depth-two span has codimension exactly one; two triple
+combinations have explicit reductions.
+& Formal quotient theorem,
+Theorem~\ref{depthnew:thm:codimension}.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The golden alphabet itself has historical precedent in
+Bailey--Broadhurst \cite{BaileyBroadhurst1999}. The complete arithmetic
+argument here uses Flatters' later primitive-divisor theorem
+\cite{Flatters2009}. The log-gamma family is classical and is discussed
+by Amdeberhan et al.\ \cite{Amdeberhan2011}; the new conclusion concerns
+a growing second exponent in the regime explicitly left open by the
+source. Li's recent positive-measure treatment of star polylogarithms
+\cite{Li2026} provides nearby geometric context, while our measure is
+signed and our indices are real.
+Claims of extension in this article are relative to the pinned
+manuscript and these identified sources. A complete literature search
+for every consequence, or a claim of universal priority, is not intended.
+
+\subsection{Conventions and proof architecture}
+For \(|z|<1\) we use the strict convention
+\[
+ \Li_{s_1,\ldots,s_d}(z,1,\ldots,1)
+ =\sum_{n_1>\cdots>n_d\ge1}
+       \frac{z^{n_1}}{n_1^{s_1}\cdots n_d^{s_d}}.
+\]
+When exponents are real, the positive integer powers in the denominators
+use the real logarithm. The notation \(\zeta(s,x)\) denotes the Hurwitz
+zeta function and \(\gamma\) Euler's constant; standard gamma and zeta
+identities use the conventions of the NIST DLMF \cite{DLMF}.
+For boundary values of the real-order depth-two function, analytic
+continuation on \(\mathbb C\setminus[1,\infty)\), equivalently radial
+Abel limits away from \(1\), is used when the original series fails
+to converge. Logarithms in the one-variable hyperlogarithm identities
+are continued consistently from \(0<z<1\).
+
+The arithmetic proof first rules out all sufficiently large indices,
+then solves a finite integral lattice with explicit prime-ideal
+witnesses. This order is essential: a finite search alone would not
+prove completeness. The signed-kernel proof preserves the cancellation
+at the origin of its defining integral. At the critical line the
+usual Fubini argument is replaced by a differentiated Laplace identity,
+which determines the missing atom. The moment proof similarly avoids
+a tempting unjustified interchange: its uniform limit comes from a
+weighted gamma-distribution integral, not a summation of the divergent
+fixed-\(m\) pole expansion. The depth theorem specifies its formal
+quotient before using exact ranks.
+
+The analytic proofs have been independently reviewed within this
+research workflow. Their review notes and finite arithmetic receipts
+are included in the package. This is not formal verification in a
+proof assistant or a substitute for external mathematical review.
+Floating-point checks are diagnostics throughout; none is used to
+promote a conjectural special-value identity to a theorem.
+
+\input{golden}
+\input{geometry}
+\FloatBarrier
+\input{real_boundary}
+\FloatBarrier
+\input{moments}
+\FloatBarrier
+\input{depth}
+\input{discussion}
+\input{references}
+\end{document}

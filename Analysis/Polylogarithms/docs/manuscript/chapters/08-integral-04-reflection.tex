@@ -1,0 +1,248 @@
+\subsection{Reflection and the exact integral torsion formula}
+\label{ir:sec:reflection}
+
+\subsubsection{Reflection is a separate quotient operation}
+The map $c(e_x)=e_{-x}$ preserves the relations and satisfies $c^2=1$.
+It acts on the entire resolution by $c[S,x]=[S,-x]$.
+For integer weights $a_p$, let $D=\mathcal D_q(\Z,a)$ and define
+\[
+ D^+=D/(c-1)D,\qquad D^-=D/(c+1)D.
+\]
+These are \emph{coinvariants with a prescribed sign}, not the submodules
+of invariant and anti-invariant elements. Over a field of characteristic
+not two, the corresponding eigenspaces and coinvariants agree. Over
+$\Z$ this distinction is essential.
+
+For any $q$, put
+\begin{equation}\label{ir:eq:r-h}
+ r(q)=\#\{p>2:p\mid q\}+\mathbf 1_{4\mid q}.
+\end{equation}
+For $q>2$, we have $r(q)\ge1$ and set
+$n(q)=\varphi(q)/2$, $h(q)=2^{r(q)-1}$.
+
+\begin{theorem}[Weighted integral reflection theorem]
+\label{ir:thm:integer-reflection}
+Let $q>2$ and specialize every $A_p$ to an integer $a_p$. For each
+$\eps\in\{1,-1\}$,
+\begin{equation}\label{ir:eq:integer-reflection}
+ D/(c-\eps)D\simeq\Z^{n(q)}\oplus(\Z/2\Z)^{t(q,a)},
+\end{equation}
+where
+\begin{equation}\label{ir:eq:torsion-count}
+ t(q,a)=
+ \begin{cases}
+  h(q),&a_p\text{ is odd for every odd prime }p\mid q,\\
+  0,&\text{some odd prime }p\mid q\text{ has }a_p\text{ even}.
+ \end{cases}
+\end{equation}
+In particular the answer is independent of the integer $a_2$.
+At $q=1$ or $q=2$, the separate answers are $D^+=\Z$ and
+$D^-=\Z/2\Z$.
+\end{theorem}
+
+The absence of odd torsion is an elementary property of an involution
+on a free lattice. The exact multiplicity is the substantive calculation.
+We prove it through the fixed points of the resolution.
+
+\subsubsection{Two elementary facts about involutions}
+For a module $M$ with an involution $c$, define its two periodic
+cohomology groups by
+\begin{equation}\label{ir:eq:tate-definition}
+ \widehat H^0(M)=\ker(c-1)/(1+c)M,\qquad
+ \widehat H^1(M)=\ker(1+c)/(c-1)M,
+\end{equation}
+and repeat with period two. These are the cohomology groups of the
+complex whose differentials alternate between $c-1$ and $1+c$,
+with $c-1$ leaving even degree. This definition, rather than any
+unmentioned cohomology convention, fixes all signs and parity labels.
+
+\begin{lemma}[Torsion in sign coinvariants]\label{ir:lem:torsion-tate}
+If $M$ is a finite-rank free abelian group, every torsion class in
+$M/(c-\eps)M$ is killed by $2$. Its torsion subgroup is
+$\widehat H^1(M)$ for $\eps=1$, and $\widehat H^0(M)$ for $\eps=-1$.
+\end{lemma}
+\begin{proof}
+Suppose $k v=(c-\eps)w$ with $k\ne0$. Applying $c+\eps$ gives
+$k(c+\eps)v=0$, hence $(c+\eps)v=0$ because $M$ is torsion-free.
+Then $(c-\eps)v=-2\eps v$, so the class of $v$ is killed by $2$.
+Conversely a vector in $\ker(c+\eps)$ represents a class killed by
+$2$. Taking its quotient by $(c-\eps)M$ gives exactly the two groups
+in \eqref{ir:eq:tate-definition}.
+\end{proof}
+
+\begin{lemma}[Balanced free ranks]\label{ir:lem:balanced}
+For every field of characteristic different from two, and arbitrary
+weights in that field, the two reflection coinvariants of $\mathcal D_q$
+have dimension $\varphi(q)/2$ when $q>2$.
+\end{lemma}
+\begin{proof}
+On a permutation module with $u$ basis points and $f$ fixed points,
+the two eigenspace dimensions are the integers $(u+f)/2$ and
+$(u-f)/2$. The sign-eigenspace functors are exact when $2$ is
+invertible, so apply this count to the resolution. The alternating
+sum of the $u$'s is $\varphi(q)$ by \eqref{ir:eq:euler-rank}.
+The fixed-point count for $X_m$ is one if $m$ is odd and two if
+$m$ is even. Thus its alternating sum is
+\[
+ \sum_{S\subseteq P(q)}(-1)^{|S|}\gcd(2,q/p_S)=0
+ \qquad(q>2).
+\]
+For odd $q$, this is $(1-1)^{|P(q)|}$. If $v_2(q)=1$, summing
+first over whether $2\in S$ leaves $(2-1)(1-1)^k$, where
+$k$ is the number of odd prime divisors and is positive. If
+$v_2(q)\ge2$, that first sum is $2-2$. Hence both dimensions
+are $\varphi(q)/2$.
+
+This uses integer dimension counts in the chain modules, not merely
+a trace equality in the coefficient field. The latter alone would
+not determine dimensions in positive characteristic.
+\end{proof}
+
+\subsubsection{Removing every nonfixed orbit from periodic cohomology}
+This step explains why the calculation is small despite the $q$
+original grid points. Let $C^{\mathrm{mov}}_j$ be the span of the
+nonfixed points in each summand of $C_j$. It is a subcomplex:
+if $x\ne-x$ and $py=x$, then $y$ cannot be fixed; the term
+$-a_p[S\setminus\{p\},x]$ is also nonfixed. Each term of this
+subcomplex is a direct sum of copies of the regular permutation
+module $S[\Z/2\Z]$ over the chosen coefficient ring $S$.
+
+The periodic complex of a regular two-point orbit is exact over
+\emph{every} commutative ring. Indeed the kernel of the difference
+map is the diagonal, which is the image of the sum map; the kernel
+of the sum map consists of $(u,-u)$, which is the image of the
+difference map. This assertion requires neither division by $2$
+nor absence of $2$-torsion.
+
+Let $K_\bullet=C_\bullet/C^{\mathrm{mov}}_\bullet$. Its generators
+are only the fixed symbols $[S,0]$ and, when available, $[S,1/2]$.
+The action on $K_\bullet$ is trivial. Forming the double complex of
+the periodic cohomology complexes gives
+\begin{equation}\label{ir:eq:tate-comparison}
+ \widehat H^\bullet(\mathcal D_q(S,a))\simeq
+ H^\bullet\operatorname{Tot}\bigl(T(K_\bullet)\bigr).
+\end{equation}
+Here $T$ denotes the alternating difference/sum complex just defined,
+and the chain degree of $K_j$ contributes $-j$ to total degree.
+
+For completeness, this comparison can be justified without assuming a
+spectral sequence degenerates. The augmented resolution is exact after
+base change, so taking horizontal homology in the double complex
+replaces $C_\bullet$ by $D$ in degree zero. Removing the moving
+subcomplex does not change total cohomology because each of its
+vertical columns is exact. In both statements the horizontal width
+is bounded by $|P(q)|$, so in each total degree only finitely many
+columns occur; successive elimination along these columns justifies
+the two comparisons. In particular, no convergence of an infinite
+horizontal filtration is being used.
+
+\subsubsection{The fixed-point complex is a Koszul complex}
+For a sequence $b_1,\ldots,b_r$ in a ring $S$, let
+$K_S(b_1,\ldots,b_r)$ denote the tensor product of the two-term
+complexes $S\xrightarrow{b_i}S$, with source in chain degree one.
+This is the Koszul complex; its definition is all that is needed below.
+
+For an odd prime $p$, the fixed-point part of its distribution map
+is multiplication by $1-a_p$ on each available fixed symbol. Of the
+$p$ roots of a fixed point, exactly one is fixed, and is the original
+point. The other roots disappear in the quotient by moving orbits.
+The factor at $2$ has two different forms.
+
+When $v_2(q)=1$, its source has only $0$ and its target has $0,1/2$.
+Its column is
+\begin{equation}\label{ir:eq:two-column}
+ \begin{pmatrix}1-a_2\\1\end{pmatrix}.
+\end{equation}
+The unit entry splits off an identity complex, leaving one free
+copy of $S$ in degree zero. Therefore this prime contributes no
+Koszul generator to the fixed-point complex.
+
+When $v_2(q)\ge2$, both grids have two fixed points. In the order
+$(0,1/2)$, the matrix is
+\begin{equation}\label{ir:eq:two-matrix}
+ B(a_2)=\begin{pmatrix}1-a_2&0\\1&-a_2\end{pmatrix}.
+\end{equation}
+The two roots of $1/2$ are $1/4,3/4$, which are moving points; this
+explains the second column. Unimodular row and column operations
+transform this matrix to $\operatorname{diag}(1,a_2(a_2-1))$, up to
+a unit sign. These operations are valid over $\Z[a_2]$ and over
+every specialization, because they pivot on the displayed $1$.
+Odd-prime maps are scalar, so the operations commute with all other
+directions of the complex.
+
+We have proved the following ring-uniform reduction.
+\begin{proposition}[Fixed-point reduction]\label{ir:prop:fixed-koszul}
+Over any commutative ring, $K_\bullet$ is chain-homotopy equivalent to
+\begin{equation}\label{ir:eq:active-koszul}
+ K_S(\boldsymbol\delta),\qquad
+ \boldsymbol\delta=
+ \bigl(a_p-1:\ p>2,\ p\mid q\bigr)
+ \ \text{together with }a_2(a_2-1)\text{ if }4\mid q.
+\end{equation}
+It has $r(q)$ active scalar entries. At $q=1,2$, this is the empty
+Koszul complex $S$ in degree zero.
+\end{proposition}
+
+\subsubsection{Completing the integer calculation}
+For $S=\Z$, the periodic complex on a trivial module alternates
+between $0$ and multiplication by $2$. It separates into adjacent
+two-term blocks. Tensoring one such block with the free complex
+$K_\Z(\boldsymbol\delta)$ computes
+$K_\Z(\boldsymbol\delta)\otimes\mathbb F_2$: multiplication by $2$ is a
+free resolution of reduction modulo two. Consequently
+\begin{equation}\label{ir:eq:integer-tate-koszul}
+ \widehat H^\eps(D)\simeq
+ \bigoplus_{\substack{0\le j\le r(q)\\j\equiv\eps\ (2)}}
+ H_j\bigl(K_{\mathbb F_2}(\overline{\boldsymbol\delta})\bigr),
+ \qquad\eps=0,1.
+\end{equation}
+Only an isomorphism of abelian groups is asserted here; no extra
+multiplicative structure is required.
+
+If some odd $a_p$ is even, its active scalar reduces to $1$, so its
+two-term complex is contractible and all the homology vanishes.
+Otherwise every odd-prime scalar is zero modulo two. The remaining
+scalar $a_2(a_2-1)$, when present, is also zero modulo two for every
+integer $a_2$. All differentials in the reduced active complex
+therefore vanish, and
+\[
+ \dim_{\mathbb F_2}H_j=\binom{r(q)}j.
+\]
+For $r(q)\ge1$, the sums over even and odd $j$ are both
+$2^{r(q)-1}$. Lemmas~\ref{ir:lem:torsion-tate} and
+\ref{ir:lem:balanced} now prove
+Theorem~\ref{ir:thm:integer-reflection}. When $r(q)=0$, the only
+homology is in degree zero, giving the stated distinct answers for
+$q=1,2$.
+
+\subsubsection{Examples and the classical specialization}
+At level four, put $a=a_2$. The basis is $(e_0,e_{3/4})$, and
+\[
+ e_{1/2}=(a-1)e_0,\qquad e_{1/4}=a(a-1)e_0-e_{3/4},
+ \qquad
+ c=\begin{pmatrix}1&a(a-1)\\0&-1\end{pmatrix}.
+\]
+For integer $a$, the nonzero Smith factor of either $c-1$ or $c+1$
+is $2$, because $a(a-1)$ is even. This two-dimensional example
+exhibits both the unavoidable parity and the irrelevance of the
+integer value of $a_2$.
+
+For all odd-prime weights odd, the following values result:
+\[
+\begin{array}{c|rrrrrr}
+ q&4&12&15&30&60&105\\\hline
+ n(q)&1&2&4&4&8&24\\
+ r(q)&1&2&2&2&3&3\\
+ h(q)&1&2&2&2&4&4
+\end{array}
+\]
+For example, either sign at level $60$ gives
+$\Z^8\oplus(\Z/2)^4$ in the exceptional parity case, but only
+$\Z^8$ as soon as $a_3$ or $a_5$ is even.
+
+When all $a_p=1$, the count agrees with the classical ordinary
+sign-cohomology theorem of Kubert \cite{intdist:KubertSign}; twice an odd
+level has the same effective prime count as that odd level. The
+weighted parity criterion, the fixed-point matrices, and the later
+jet calculation are the present explicit continuation of the
+manuscript's integral question.

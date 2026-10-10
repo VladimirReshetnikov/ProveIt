@@ -1,0 +1,542 @@
+\section{Allocation of a fixed total order}
+\label{sec:allocation}
+
+For positive real orders, define
+\begin{equation}\label{eq:Fdef}
+ F_{a,b}(z)=\sum_{n\ge1}\frac{H_{n-1}^{(b)}}{n^a}z^n,
+ \qquad H_m^{(b)}=\sum_{j=1}^m j^{-b},\qquad
+ g_{a,b}=\Im F_{a,b}(i).
+\end{equation}
+The series initially defines $F$ in the open unit disk. At $i$ we use its
+principal analytic continuation. This convention matters: if $a+b=1$,
+its boundary-series coefficients tend to $1/a$, and the ordinary series
+does not converge. For integer orders our convention is
+$F_{a,b}(z)=\Li_{a,b}(z,1)$, with decreasing summation indices.
+Write $w=a+b$, and let $\beta$ and $\eta$ denote the Dirichlet beta and
+eta functions. Their continuations are used whenever an ordinary series
+does not apply.
+
+The positive double integral in the incoming real-order report
+\cite{realorder} is the starting point. We recall its short proof to
+make the subsequent monotonicity argument independent of numerical evidence.
+
+\begin{lemma}[Positive double integral, prior result]\label{lem:double}
+For $a,b>0$ and $z\in\mathbb C\setminus[1,\infty)$,
+\begin{equation}\label{eq:double}
+ F_{a,b}(z)=\frac{z^2}{\Gamma(a)\Gamma(b)}
+ \int_{0<y<x<1}
+ \frac{(-\log x)^{a-1}\{\log(x/y)\}^{b-1}}
+ {(1-xz)(1-yz)}\,dy\,dx.
+\end{equation}
+In particular $g_{a,b}<0$.
+\end{lemma}
+\begin{proof}
+For nonnegative integers $j,k$, put $y=xv$ and integrate first in $v$
+and then in $x$. The normalized moment of $x^jy^k$ is
+$(j+k+2)^{-a}(k+1)^{-b}$. Expanding the denominators for $|z|<1$
+therefore reproduces \eqref{eq:Fdef}. The weight has finite mass $2^{-a}$,
+and both denominators stay uniformly away from zero on a compact subset
+of the slit plane. This also proves holomorphic continuation there.
+At $z=i$, minus the imaginary part of the rational factor is
+$(x+y)/\{(1+x^2)(1+y^2)\}>0$.
+\end{proof}
+
+The following change of variables reveals a comparison which is not
+stated in the inspected reports.
+
+\begin{theorem}[Strict monotonicity at fixed total order]\label{thm:allocation}
+For every $w>0$, the function
+\[
+ a\longmapsto -g_{a,w-a},\qquad 0<a<w,
+\]
+has strictly negative derivative. More precisely, let
+$V_a\sim\operatorname{Beta}(a,w-a)$ and define
+\begin{equation}\label{eq:Jw}
+ J_w(v)=\frac1{\Gamma(w)}\int_0^\infty
+ r^{w-1}\frac{e^{-vr}+e^{-r}}{4\cosh(vr)\cosh r}\,dr,
+ \qquad 0\le v\le1.
+\end{equation}
+Then
+\begin{align}
+ -g_{a,w-a}&=\mathbb E J_w(V_a),\label{eq:betaallocation}\\
+ \frac{d}{da}(-g_{a,w-a})
+ &=\operatorname{Cov}\!\left(J_w(V_a),
+          \log\frac{V_a}{1-V_a}\right)<0.\label{eq:covariance}
+\end{align}
+Its sharp endpoint bounds are
+\begin{equation}\label{eq:sharpgaussian}
+ \boxed{\quad
+ \beta(w)-\beta(w-1)<-g_{a,w-a}
+ <\frac{\beta(w)}2+\frac{\eta(w)}{2^{w+1}}.
+ \quad}
+\end{equation}
+The lower endpoint is approached as $a\uparrow w$, and the upper endpoint
+as $a\downarrow0$.
+\end{theorem}
+\begin{proof}
+In \eqref{eq:double} put $x=e^{-s}$, $y=e^{-(s+t)}$. The positive
+integrand for $-g$, including the Jacobian, becomes
+\[
+ \frac{s^{a-1}t^{b-1}}{\Gamma(a)\Gamma(b)}
+ \frac{e^{-s}+e^{-(s+t)}}{4\cosh s\cosh(s+t)}\,ds\,dt.
+\]
+Set $r=s+t$ and $v=s/r$. The Jacobian $r$ combines with the powers
+to give $r^{w-1}v^{a-1}(1-v)^{b-1}$. Dividing by the beta density
+normalization proves \eqref{eq:betaallocation}. Every step is justified
+by Tonelli's theorem for a positive integrand.
+
+For fixed $r>0$, the function
+\[
+ v\longmapsto\frac{e^{-vr}+e^{-r}}{\cosh(vr)}
+\]
+is strictly decreasing. Its numerator decreases strictly and its
+positive denominator increases. Consequently $J_w$ is strictly
+decreasing on $[0,1]$. It is continuous there by domination by the
+$v=0$ integrand, which is integrable at both endpoints of the $r$-axis.
+
+Differentiate the beta density with $w$ fixed. Its score is
+$\log(v/(1-v))-\psi(a)+\psi(w-a)$. Beta logarithmic moments are finite
+for every interior parameter pair, so differentiation under the
+bounded $J_w$ expectation is legitimate. Centering the score gives
+\eqref{eq:covariance}. If $V'$ is an independent copy of $V$, then
+\[
+ 2\operatorname{Cov}(f(V),h(V))
+ =\mathbb E[(f(V)-f(V'))(h(V)-h(V'))].
+\]
+Here $f=J_w$ decreases strictly and $h(v)=\log(v/(1-v))$ increases
+strictly. The product is strictly negative off the diagonal, which has
+probability zero. This proves the derivative claim.
+
+Since $\mathbb E V_a=a/w$, $V_a\to0$ in probability as $a\downarrow0$;
+similarly $V_a\to1$ as $a\uparrow w$. Boundedness and continuity of
+$J_w$ prove the asserted endpoint limits. At the first endpoint,
+\begin{align}
+ J_w(0)
+ &=\frac1{\Gamma(w)}\int_0^\infty
+ r^{w-1}\frac{1+e^{-r}}{4\cosh r}\,dr\notag\\
+ &=\frac12\beta(w)+2^{-w-1}\eta(w).\label{eq:J0}
+\end{align}
+The beta and eta Mellin integrals converge for $w>0$; their series
+identifications follow first where absolute convergence holds and then
+through those integrals. For the other endpoint, put
+$q(r)=(2\cosh r)^{-1}$. One has
+\[
+ \frac{e^{-r}}{2\cosh^2r}=q(r)+q'(r).
+\]
+Integration by parts for $w>1$ gives
+$J_w(1)=\beta(w)-\beta(w-1)$. Both sides are holomorphic for
+$\Re w>0$, so the same equality holds for all positive $w$.
+For $0<w\le1$ it is an analytic-continuation identity, not a manipulation
+of a convergent series for $\beta(w-1)$.
+\end{proof}
+
+This theorem concerns a redistribution of total order: increasing $a$
+simultaneously decreases $b$. It is different from a comparison in one
+index while the other remains fixed. The proof works below, on, and
+above the finite signed-measure threshold $a+b=1$.
+
+\section{The critical Euler conjecture is a theorem}
+\label{sec:critical}
+
+The incoming report \emph{The Sharp Real-Order Threshold for Harmonic
+Polylogarithms} labels strict decrease of $-2g_{a,1-a}$ and its proposed
+uniform Euler constant as Conjecture~\texttt{conj:constant}
+\cite{realorder}. Theorem~\ref{thm:allocation} settles its monotonicity
+part. We spell out the error implication because ordinary convergence
+and the normalization of the remainder must be kept distinct.
+
+For $a+b=1$ set
+\begin{equation}\label{eq:eulerdef}
+ f_m=\frac{H_{2m}^{(b)}}{(2m+1)^a},\qquad
+ d_k=\sum_{j=0}^k(-1)^j\binom kj f_j,
+ \qquad E_N=\sum_{k=0}^{N-1}\frac{d_k}{2^{k+1}}.
+\end{equation}
+The forward difference used here is $\Delta f_m=f_m-f_{m+1}$.
+
+\begin{lemma}[Critical endpoint measure, prior result]\label{lem:criticalmeasure}
+For $0<a<1$, $b=1-a$, there is a finite positive measure $\nu_{a,b}$
+on $(0,1)$, with strictly positive density and total mass $1/a$, such that
+\begin{equation}\label{eq:criticalmom}
+ \frac{H_{n-1}^{(b)}}{n^a}
+   =\frac1a-\int_0^1u^{n-1}\,d\nu_{a,b}(u).
+\end{equation}
+Equivalently, the signed representing measure is
+$a^{-1}\delta_1-\nu_{a,b}$.
+\end{lemma}
+\begin{proof}
+We recall the construction from \cite{realorder}. Write
+$k_s(T)=T^{s-1}/\Gamma(s)$ and
+\[
+ h(t)=\frac1{1-e^{-t}}-\frac1t,\qquad
+ C_{a,b}(T)=\int_0^T k_a(T-t)k_b(t)h(t)\,dt.
+\]
+The regularized Hurwitz integral \cite{dlmf-hurwitz} gives
+\[
+ \int_0^\infty e^{-nT}C_{a,b}(T)\,dT
+ =n^{-a}\left(\zeta(b,n)-\frac{n^{1-b}}{b-1}\right).
+\]
+Since $b=1-a$, the last term contributes $1/a$. Define
+\[
+ d\nu_{a,b}(u)
+ =\{-\zeta(b)k_a(-\log u)+C_{a,b}(-\log u)\}\,du.
+\]
+Both summands are positive: $\zeta(b)<0$ for $0<b<1$ and $h>0$.
+The beta integral gives $0<C_{a,b}(T)<k_{a+b}(T)=1$.
+Thus the density is integrable, and its $(n-1)$st moment is
+$1/a-n^{-a}(\zeta(b)-\zeta(b,n))$. The finite Hurwitz difference is
+$H_{n-1}^{(b)}$. Taking $n=1$ proves its mass and the formula.
+\end{proof}
+
+\begin{theorem}[Sharp critical-line Euler constant]\label{thm:criticalconstant}
+For every $0<a<1$, $b=1-a$, and integer $N\ge1$,
+\begin{equation}\label{eq:criticalerror}
+ 0<E_N-g_{a,b}<
+ \left(\frac\pi4+\frac{\log2}{2}\right)2^{-N}.
+\end{equation}
+The displayed constant is optimal simultaneously over this entire
+critical line and all $N\ge1$. For fixed $a$, the exact optimal
+non-strict constant is $-2g_{a,1-a}$, attained at $N=1$, and
+\begin{equation}\label{eq:criticalrange}
+ \frac\pi2-1<-2g_{a,1-a}<\frac\pi4+\frac{\log2}{2}.
+\end{equation}
+The normalized errors $2^N(E_N-g_{a,b})$ decrease strictly to zero as
+$N\to\infty$.
+\end{theorem}
+\begin{proof}
+Equation~\eqref{eq:criticalmom} implies $d_0=0$ and, for $k\ge1$,
+\[
+ d_k=-\int_0^1(1-u^2)^k\,d\nu_{a,b}(u)<0.
+\]
+The finite measure justifies summing the absolutely convergent Euler
+series under the integral. The analytic value at $i$ is its sum, and
+the geometric tail is
+\begin{equation}\label{eq:atomicerror}
+ 2^N(E_N-g_{a,b})=
+ \int_0^1\frac{(1-u^2)^N}{1+u^2}\,d\nu_{a,b}(u).
+\end{equation}
+The integrand decreases strictly with $N$ for $0<u<1$ and converges
+to zero. Its value at $N=1$ integrates to $-2g_{a,b}$ because $E_1=0$.
+This proves the fixed-parameter statement and strict convergence.
+Theorem~\ref{thm:allocation} at $w=1$ gives \eqref{eq:criticalrange},
+using $\beta(1)=\pi/4$, $\beta(0)=1/2$, and $\eta(1)=\log2$.
+It also gives the strict uniform upper bound in \eqref{eq:criticalerror}.
+Finally, take $N=1$ and $a\downarrow0$ to show that no smaller uniform
+constant can work.
+\end{proof}
+
+The atom at $u=1$ is essential in this argument. The ordinary terms
+$(-1)^m f_m$ do not approach zero on the critical line; Euler acceleration
+computes the analytic or Abel value. No divergent series has been
+silently declared ordinarily convergent.
+
+\section{A sharp global envelope and its unique maximum}
+\label{sec:envelope}
+
+Define
+\begin{equation}\label{eq:Cdef}
+ C(w)=\beta(w)+2^{-w}\eta(w),\qquad D(w)=C(w)-1\qquad(w>0).
+\end{equation}
+Theorem~\ref{thm:allocation} says that $C(w)$ is the sharp upper
+envelope of $-2g_{a,b}$ at fixed $a+b=w$. The next theorem determines
+its global shape. The normalized Mellin log-concavity principle used
+in the proof is classical; see, for example, Proposition~3.2 of
+Fradelizi--Li--Madiman \cite{flm}. We provide a strict version with
+a direct proof rather than making a new priority claim for that principle.
+
+\begin{lemma}[Strict normalized Mellin log-concavity]\label{lem:mellin}
+Suppose $f:(0,\infty)\to(0,\infty)$ is strictly log-concave, all the
+Mellin integrals and their first two parameter derivatives below are
+finite, and these derivatives can be passed under the integral. Then
+\[
+ M(p)=\frac1{\Gamma(p)}\int_0^\infty r^{p-1}f(r)\,dr
+\]
+has $(\log M)''(p)<0$ for every $p>0$ in that domain.
+\end{lemma}
+\begin{proof}
+Normalize $r^{p-1}f(r)$ to a probability density $P$. Choose a gamma
+density $Q$ of shape $p$ and rate $\lambda$ with
+\[
+ \mathbb E_Q\log r=\psi(p)-\log\lambda=\mathbb E_P\log r.
+\]
+Both $\int(P-Q)$ and $\int\log r(P-Q)$ vanish. The logarithm of the
+likelihood ratio is $\log f(r)+\lambda r+$ a constant, hence is
+strictly concave. Its positive set is an interval. Normalization
+forces both signs. A single crossing is impossible: multiplying the
+difference by $\log(r/r_0)$ at that crossing would give a nonzero
+quantity of one sign, contrary to the two matching moments. Thus
+there are two crossings $r_1<r_2$ and the sign pattern of $P-Q$ is
+negative, positive, negative.
+
+Consequently
+\[
+ \int_0^\infty
+ (\log r-\log r_1)(\log r-\log r_2)(P-Q)(r)\,dr<0.
+\]
+The constant and linear terms disappear by the matching moments.
+Therefore $\operatorname{Var}_P(\log r)<
+\operatorname{Var}_Q(\log r)=\psi_1(p)$. Differentiation of $\log M$
+identifies its second derivative with precisely the difference of
+these two variances. This proves the lemma.
+\end{proof}
+
+\begin{theorem}[Unique maximum of the sharp Gaussian envelope]
+\label{thm:globalenvelope}
+For every $w>0$, $D(w)>0$ and $(\log D)''(w)<0$. There is a unique
+$w_*>0$ where $C$ attains its global maximum $C_*=C(w_*)$.
+It satisfies $1<w_*<2$ and the following certified enclosures:
+\begin{equation}
+ 1.30221658710124120959237170
+ <w_*<1.30221658710124120959237171.\label{eq:wstar}
+\end{equation}
+Writing $L_C<C_*<U_C$, the certified value endpoints are
+\begin{align}
+ L_C&=1.136561103339509560952586375779942387681723540,\notag\\
+ U_C&=1.136561103339509560952586375779942387681723541.
+ \label{eq:Cstar}
+\end{align}
+In particular
+\begin{equation}\label{eq:globalg}
+ 0<-2\Im F_{a,b}(i)<C_*\qquad(a,b>0),
+\end{equation}
+and this global constant is optimal, approached with $a\downarrow0$
+and $b=w_*-a$.
+\end{theorem}
+\begin{proof}
+Subtract the gamma integral for $1$ from \eqref{eq:J0}. One obtains
+\begin{equation}\label{eq:Dmellin}
+ D(w)=\frac1{\Gamma(w)}\int_0^\infty r^{w-1}f(r)\,dr,
+ \qquad f(r)=\frac{e^{-r}(1-e^{-r})}{2\cosh r}>0.
+\end{equation}
+The logarithm of this density has
+\begin{equation}\label{eq:logfcurvature}
+ (\log f)''(r)=-\frac{e^r}{(e^r-1)^2}-\operatorname{sech}^2r<0.
+\end{equation}
+Near zero $f(r)=r/2+O(r^2)$, and at infinity it decays exponentially.
+Thus all the conditions of Lemma~\ref{lem:mellin} hold on $w>0$.
+This proves strict log-concavity and positivity.
+
+The integral of $f(r)/r$ is finite, so $D(w)\to0$ as $w\downarrow0$.
+Also $f(r)<e^{-2r}$, whence $D(w)<2^{-w}\to0$ at infinity. Positivity,
+continuity, and these endpoint limits ensure an interior maximum.
+Strict concavity of $\log D$ makes that maximum unique and nondegenerate.
+The exact certificate in Section~\ref{sec:gausscertificate} proves
+$C'(1)>0$, $C'(2)<0$, and the sharper derivative signs at the two
+rational endpoints in \eqref{eq:wstar}. Strict log-concavity then
+locates the unique critical point. The same certificate uses a tangent
+upper bound for $\log D$ to enclose its value as in \eqref{eq:Cstar}.
+Finally \eqref{eq:globalg} and optimality follow from the sharp allocation
+endpoints in Theorem~\ref{thm:allocation}.
+\end{proof}
+
+\paragraph{Scope of the constant.}
+The number $C_*$ is a bound for $-2g$, equivalently for the normalized
+\emph{first} Euler remainder. This theorem does not assert that the same
+constant bounds $2^N(E_N-g)$ for every $N$ throughout $a+b\ge1$.
+The all-$N$ optimal constant proved here is the critical-line constant
+in Theorem~\ref{thm:criticalconstant}. Off that line, normalized errors
+need not decrease with $N$.
+
+\begin{corollary}[Turan inequalities and a second normalization]
+\label{cor:turan}
+For $w>0$ and $0<h<w$,
+\begin{equation}\label{eq:turan}
+ D(w)^2>D(w-h)D(w+h).
+\end{equation}
+Moreover $2^wD(w)$ increases strictly from zero to one on $(0,\infty)$.
+For example,
+\begin{align}\label{eq:catalanineq}
+ \left(G+\frac{\pi^2}{48}-1\right)^2
+ >&\left(\frac\pi4+\frac{\log2}{2}-1\right)\notag\\
+ &\hspace{4mm}\cdot\left(\frac{\pi^3}{32}
+                         +\frac{3\zeta(3)}{32}-1\right),
+\end{align}
+where $G=\beta(2)$ is Catalan's constant.
+\end{corollary}
+\begin{proof}
+The first assertion is strict midpoint log-concavity. For the second,
+rewrite \eqref{eq:Dmellin} using a gamma random variable $R_w$ of shape
+$w$ and rate $2$:
+\[
+ 2^wD(w)=\mathbb E\frac{1-e^{-R_w}}{1+e^{-2R_w}}.
+\]
+The function of $R_w$ is strictly increasing from zero to one. If
+$w_2>w_1$, couple $R_{w_2}=R_{w_1}+Y$ with an independent positive gamma
+variable $Y$ of shape $w_2-w_1$ and rate $2$. This gives strict increase.
+The limit at zero follows by the gamma mean, and the limit at infinity
+by concentration or the gamma Laplace transform. The displayed
+constant inequality is \eqref{eq:turan} at $w=2,h=1$.
+\end{proof}
+
+\section{All-order inversion of the envelope}
+\label{sec:inversion}
+
+There is a unique solution $W(x)>w_*$ of $C(W(x))=1+x$ for
+$0<x<C_*-1$. Its large-order expansion is a concrete inverse
+transseries for a combination of Dirichlet $L$-values. We include
+an all-coefficient formula, since simply replacing $D(w)$ by $2^{-w}$
+misses several noninteger scales.
+
+For $n\ge3$, put
+\begin{equation}\label{eq:lambdas}
+ \epsilon_n=
+ \begin{cases}1,&n\equiv1,2\pmod4,\\-1,&n\equiv0,3\pmod4,
+ \end{cases}
+ \qquad \lambda_n=\log_2(n/2)>0.
+\end{equation}
+For a finite-support multi-index $\mathbf k=(k_3,k_4,\ldots)$ of
+nonnegative integers, write $K=\sum k_n$ and
+$\Lambda(\mathbf k)=\sum k_n\lambda_n$. Set $(u)_0=1$ and
+$(u)_j=u(u+1)\cdots(u+j-1)$.
+
+\begin{theorem}[Explicit inverse generalized-power expansion]
+\label{thm:inverse}
+For every fixed $A>0$, as $x\downarrow0$,
+\begin{equation}\label{eq:inverseall}
+ W(x)=\frac{\log(1/x)}{\log2}
+ +\frac1{\log2}
+ \sum_{\substack{\mathbf k\ne0\\\Lambda(\mathbf k)<A}}
+ \frac{(-1)^{K+1}(\Lambda(\mathbf k)+1)_{K-1}}
+      {\prod_n k_n!}
+ \left(\prod_n\epsilon_n^{k_n}\right)x^{\Lambda(\mathbf k)}
+ +O(x^A).
+\end{equation}
+The sum is finite, and coefficients at coincident exponents are added.
+Writing $\lambda=\log_2(3/2)$ and $\mu=\log_2(5/2)$, its first terms are
+\begin{align}\label{eq:inversefirst}
+ W(x)={}&\frac{\log(1/x)}{\log2}
+ -\frac{x^\lambda+x}{\log2}
+ -\frac{\lambda+1/2}{\log2}x^{2\lambda}
+ +\frac{x^\mu}{\log2}\notag\\
+ &-\frac{\lambda+1}{\log2}x^{\lambda+1}
+ -\frac{(3\lambda+1)(3\lambda+2)}{6\log2}x^{3\lambda}
+ +O\!\left(x^{\log_2(7/2)}\right).
+\end{align}
+\end{theorem}
+\begin{proof}
+For $w>1$ the absolutely convergent Dirichlet series gives
+\[
+ D(w)=2^{-w}+\sum_{n\ge3}\epsilon_n n^{-w}.
+\]
+Put $y=2^{-w}$ and $y=xt$. Then $D(w)=x$ is equivalent to
+\begin{equation}\label{eq:timplicit}
+ t+\sum_{n\ge3}\epsilon_n x^{\lambda_n}t^{1+\lambda_n}=1.
+\end{equation}
+For any fixed target order $A$, keep finitely many $n$ with
+$\lambda_n\le A$ and regard the $x^{\lambda_n}$ as independent small
+variables. The implicit derivative in $t$ at the origin is $1$.
+The ordinary analytic implicit-function theorem therefore applies.
+
+To justify discarding the rest, for a fixed sufficiently large $N$ and
+$w\to\infty$ the integral test gives
+\[
+ \sum_{n\ge N}(2/n)^w
+ \le(2/N)^w\left(1+\frac{N}{w-1}\right).
+\]
+Also $D(w)\sim2^{-w}$, so $y/x\to1$. Taking $\lambda_N>A$ makes
+the discarded part $o(x^A)$, uniformly for $t$ in a fixed neighborhood
+of $1$. Stability of the implicit solution preserves that error.
+Since every $\lambda_n\ge\lambda_3>0$ and only finitely many are
+below a fixed bound, the additive exponent semigroup is locally finite.
+Taylor truncation hence gives an asymptotic expansion to every fixed order.
+
+For the coefficients, introduce a scalar bookkeeping parameter $z$ and
+write $t=1-z\sum_n\epsilon_n X_nt^{1+\lambda_n}$. Lagrange inversion
+applied to $\log t$ gives, for $K\ge1$,
+\[
+ [X^{\mathbf k}]\log t
+ =\frac{(-1)^K(K-1)!}{\prod k_n!}
+   \left(\prod\epsilon_n^{k_n}\right)
+   \binom{K+\Lambda-1}{K-1}.
+\]
+Now $W(x)=\log(1/x)/\log2-\log t/\log2$, and
+$(K-1)!\binom{K+\Lambda-1}{K-1}=(\Lambda+1)_{K-1}$.
+This proves \eqref{eq:inverseall}. In \eqref{eq:inversefirst}, the
+exponent $\lambda+1=\lambda_6$ receives both the direct $n=6$ term
+and the product of the $n=3$ and $n=4$ terms. Their combined coefficient
+is $-(\lambda+1)/\log2$. This collision is why terms must be grouped
+before an expansion is reported.
+\end{proof}
+
+\section{Exact enclosure of the Gaussian maximum}
+\label{sec:gausscertificate}
+
+The script \texttt{code/certify\_gaussian\_envelope.py} uses only
+integer and rational arithmetic. A decimal grid with 90 digits is an
+implementation choice for outward rounding, not an assumption about
+the accuracy of a transcendental library. We give the error bounds
+which connect its finite checks to Theorem~\ref{thm:globalenvelope}.
+
+For $d=1,2$ let
+\[
+ A_d(w)=\sum_{j\ge0}\frac{(-1)^j}{(dj+1)^w},\qquad
+ a_j(w)=(dj+1)^{-w}.
+\]
+Thus $A_1=\eta$, $A_2=\beta$. Their Euler partial sums are
+\begin{equation}\label{eq:eulerAn}
+ T_{d,N}(w)=2^{-N}\sum_{j=0}^{N-1}(-1)^j(dj+1)^{-w}
+                \sum_{h=j+1}^N\binom Nh.
+\end{equation}
+With $T\sim\operatorname{Gamma}(w,1)$, the exact tail is
+\begin{equation}\label{eq:Atail}
+ A_d(w)-T_{d,N}(w)
+ =2^{-N}\mathbb E\frac{(1-e^{-dT})^N}{1+e^{-dT}}.
+\end{equation}
+The gamma integral proves this identity first by a geometric expansion;
+the bounded expectation then justifies it for every $w>0$.
+It is positive and at most $2^{-N}$.
+
+\begin{lemma}[Differentiated Euler enclosure]\label{lem:eulerderivative}
+For $w\ge1$,
+\[
+ |A_d'(w)-T_{d,N}'(w)|<2^{1-N}.
+\]
+Consequently, if $C_N=T_{2,N}+2^{-w}T_{1,N}$, then
+\begin{equation}\label{eq:Ccertbounds}
+ 0<C(w)-C_N(w)\le(1+2^{-w})2^{-N},\qquad
+ |C'(w)-C_N'(w)|<4\,2^{-N}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Differentiating the gamma density in \eqref{eq:Atail} introduces
+$\log T-\psi(w)$. Cauchy--Schwarz bounds its absolute mean by
+$\sqrt{\psi_1(w)}\le\sqrt{\psi_1(1)}=\pi/\sqrt6<2$.
+This proves the first bound. The product rule for $2^{-w}A_1$ gives
+the derivative bound
+$2^{-N}\{2(1+2^{-w})+2^{-w}\log2\}<4\,2^{-N}$.
+All differentiated integrals are dominated on compact $w$-intervals.
+\end{proof}
+
+The finite centers in \eqref{eq:eulerAn} require logarithms and powers
+at rational $w$. The verifier bounds $\log n$ by reducing to $1\le r\le2$
+and using
+\[
+ \log r=2\sum_{j=0}^{M-1}\frac{v^{2j+1}}{2j+1}+R_M,
+ \quad v=\frac{r-1}{r+1},\quad
+ 0\le R_M\le\frac{2v^{2M+1}}{(2M+1)(1-v^2)}.
+\]
+It bounds exponentials after scaling their argument to $[0,1]$, using
+the positive Taylor series and a geometric tail, followed by outward
+reciprocals and four squarings. Thus $(dj+1)^{-w}$ and
+$-\log(dj+1)(dj+1)^{-w}$ both have rational enclosing intervals.
+Every addition, multiplication and division rounds outward.
+
+With $N=160$, the program proves positive and negative derivative
+signs at the rational endpoints of \eqref{eq:wstar}. It separately proves
+\[
+ C'(1)>0.03260,\qquad C'(2)<-0.03561.
+\]
+To enclose the maximum value, let $\ell<u$ be the certified endpoints.
+Strict log-concavity gives, for $\ell\le w\le u$,
+\[
+ D(w)\le D(\ell)
+ \exp\!\left(\frac{C'(\ell)}{D(\ell)}(u-\ell)\right).
+\]
+Outward bounds for the right-hand side and the lower bound $C(\ell)$
+give \eqref{eq:Cstar}. This is a rational certificate for the maximum,
+not a floating-point optimizer followed by rounded digits.
+
+Independent high-precision quadrature evaluates the beta-mixture and
+Mellin integrals. In particular it checks the derivative at $w=1$
+without differentiating the removable eta singularity numerically.
+These diagnostics are useful checks on conventions, but the rational
+certificate and the preceding analytic proofs supply the stated bounds.

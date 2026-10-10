@@ -1,0 +1,313 @@
+\section{Verification, editorial reconciliation, and integration}
+\label{sec:audit}
+
+\subsection{What the computations establish}
+
+The analytic theorems are proved in the text. Exact computation enters
+at three clearly identified places: enclosure of the Gaussian maximum,
+endpoint signs for the two Lerch branch-shape decisions, and separation
+of a finite formal relation span. The distribution examples and inverse
+coefficient checks are independent consistency tests of general proofs.
+
+\begin{longtable}{@{}L{0.24\textwidth}L{0.37\textwidth}L{0.32\textwidth}@{}}
+\toprule
+Check & Construction & Logical role\\
+\midrule
+\endhead
+Gaussian maximum & Outward rational intervals, finite Euler transforms,
+analytic derivative tails & Certifies the printed root and maximum
+intervals once strict log-concavity is proved.\\[4pt]
+Inverse expansion & Exact symbolic generalized series, with exponents
+encoded by rational bases & Substitution cancels every coefficient below
+exponent two; the all-order theorem has an analytic proof.\\[4pt]
+Cyclic quotients & Exact Smith forms of the original orbit relation
+matrices, without a normal-form implementation & 52 scalar and finite-jet
+cases check the theorem; three ramified examples test its boundary.\\[4pt]
+Lerch branch shapes & Exact Euler--Maclaurin intervals on entire rational
+root brackets & Certifies the signs deciding the order-two and
+order-three global branch shapes.\\[4pt]
+$S_6$ separation & Integer functional, independent row reconstruction
+and complete-family enumeration & Proves nonmembership in the stated
+5,131-row rational span.\\[4pt]
+Plots and quadrature & Floating-point evaluation of independent
+integrals and asymptotic formulas & Diagnostic evidence only; no claimed
+certificate follows from a plot or an unenclosed decimal.\\
+\bottomrule
+\end{longtable}
+
+The nine Gaussian comparison points evaluate the original Euler
+transform and an independent beta-mixture quadrature. Their largest
+observed discrepancy is below $6\cdot10^{-12}$ with the supplied
+quadrature settings. This is a diagnostic discrepancy, not a proved
+bound on the quadrature error. Four inverse examples compare the exact
+coefficient formula with numerical solutions. The Lerch plot retains
+its sampled values and analytic omitted-function estimates; floating
+rounding is explicitly unenclosed. In particular, the diagnostic
+coordinates of the order-two minimum are not a certified isolating box.
+Its existence, uniqueness, and nondegeneracy are theorems independently
+of those coordinates.
+
+The programs and receipts are included in the archive. Running
+\path{code/replay_all.py} from the package root regenerates all exact
+receipts. Optional plotting dependencies are separated from the exact
+arithmetic dependencies. No network access or numerical
+integer-relation search is needed for the replay. The distribution
+checks use SymPy's exact integer Smith algorithm; the Gaussian, Lerch,
+and $S_6$ certificate arithmetic uses the Python standard library.
+
+This is stronger than reporting successful high-precision fitting,
+but it remains ordinary mathematical proof with auditable programs.
+Formal verification in a proof assistant is a separate project. For
+that project, the integer separator is an especially small logical
+target: the checker need only reconstruct finite vectors and evaluate
+integer dot products.
+
+\subsection{Concrete proposed status corrections}
+
+The reviewed material did not reveal a new counterexample to an
+already established upstream theorem in the portions used here.
+The useful corrections concern cross-report status and the scope of
+claims made while integrating results.
+
+\paragraph{Promote the critical constant conjecture.}
+In \cite{realorder}, replace the status of Conjecture
+\texttt{conj:constant} by a theorem, with the proof through
+Theorems~\ref{thm:allocation} and \ref{thm:criticalconstant}.
+Retain the analytic/Abel convention on $a+b=1$ and the endpoint atom.
+The constant is a supremum over the open parameter interval, approached
+as $a\downarrow0$; there is no admissible maximizing pair on the line.
+
+\paragraph{Reconcile the first-order Lerch minimum.}
+The formal-reductions report \cite{formalreductions} still lists
+uniqueness of the smaller $n=2,k=1$ branch minimum as Conjecture
+\texttt{research:conj:minimum}. The incoming boundary report
+\cite{lershape:Boundary} proves that uniqueness. A combined manuscript
+should cite the latter result and remove the obsolete open status.
+The present contribution is the all-$k$ dichotomy, the endpoint
+criterion, the order-two minimum, and the order-three decreasing
+case. These should not be described as the first proof of the
+already settled $k=1$ case.
+
+\paragraph{Keep the $S_4$ and $S_6$ statuses distinct.}
+The current manuscript has a proof chapter for $S_4$ and an explicitly
+conjectural $S_6$ reduction in
+\path{chapters/04-cyclotomic-quotients.tex}. The exact separator in
+Section~\ref{s6bounded:sec} is a theorem about one finite presentation.
+It supplies neither a proof nor a disproof of the $S_6$ evaluation.
+Its enlarged row family should replace a repeated search in the same
+smaller ansatz, rather than change the conjecture's numerical status.
+
+\paragraph{Separate two different Euler constants.}
+The global constant $C_*$ controls $-2g_{a,b}$ over all positive orders.
+The critical constant $\pi/4+(\log2)/2$ controls every normalized Euler
+tail on $a+b=1$. The exact $(a,b)=(1,1)$ calculation in
+Section~\ref{sec:secant} proves that normalized errors need not decrease
+off the critical line. This is a warning against an additional claim,
+not a counterexample to either theorem stated here or to an identified
+upstream theorem.
+
+\paragraph{State the cyclic hypotheses where the formula is used.}
+The restrictions $(m,d)=1$, $(u-1,d)=1$, and
+$\ell\nmid\varphi(m)$ are part of the theorem. They should accompany
+any extracted formula or summary. The level-nine computation shows
+why a partially fixed primary factor is a distinct local problem.
+Likewise, the term ``rank'' should specify whether it is a free
+abelian rank, a formal rational dimension, or a rank after reduction
+modulo a prime. No one of these determines the others without a proof.
+
+\subsection{Suggested repository placement}
+
+The complete report can first be placed under
+\path{Analysis/Polylogarithms/docs/reports/extremal-bounds-cyclic-descent/}.
+The integration guide supplies a compact addendum and a dependency
+map. The natural manuscript neighborhoods are:
+\begin{itemize}
+\item Gaussian allocation, the critical Euler theorem, and the secant
+identity next to the signed-kernel material and the real-order report;
+\item the cyclic theorem and finite jets next to
+\path{08-distribution.tex} and \path{08-conductor-jets.tex};
+\item the Lerch branch theorems next to
+\path{09-zero-geometry.tex} and the incoming boundary analysis;
+\item the finite $S_6$ obstruction next to
+\path{04-cyclotomic-quotients.tex} and the established $S_4$ proof.
+\end{itemize}
+The manuscript need not absorb the entire report at once. Its theorem
+statements and their proof dependencies can be integrated by topic,
+while the exact checkers and complete provenance remain with the report.
+No repository mutation is part of this deliverable.
+
+\section{Further research questions and proposed directions}
+\label{sec:research}
+
+The questions below are intentionally differentiated. Some preserve
+existing conjectures, some ask for stronger theorems suggested by the
+present proofs, and some concern a concrete missing computation.
+No conjecture in this section is used earlier.
+
+\subsection{Sharp bounds for the entire Euler scheme}
+
+\paragraph{1. Optimize every normalized remainder.}
+For $N\ge1$, determine
+\[
+ M_N=\sup_{a,b>0,\ a+b\ge1}2^N(E_N-g_{a,b}),
+ \qquad M=\sup_{N\ge1}M_N.
+\]
+We have determined $M_1=C_*$. On the critical line the corresponding
+all-$N$ supremum is $\pi/4+(\log2)/2$. The positive secant identity
+reduces the general problem to a beta average of divided differences
+of $H_N$. The main obstacle is concrete: $H_1$ is concave on
+$[1,\infty)$, whereas $H_2$ is convex near one. A useful next step is
+to locate the inflection structure of $H_N$ exactly and determine
+whether its Mellin integral restores monotonicity in the allocation
+parameter. We make no untested assertion that $M=C_*$.
+
+\paragraph{2. Quantify allocation monotonicity.}
+The covariance formula proves a strict sign but does not give a sharp
+modulus. Find useful two-sided estimates for
+\[
+ -\frac{d}{da}\{-g_{a,w-a}\}
+ =-\operatorname{Cov}\!\left(J_w(V_a),
+                          \log\frac{V_a}{1-V_a}\right),
+\]
+uniformly near $a=0$ or $a=w$, or as $w\to0$ and $w\to\infty$.
+The endpoint beta laws concentrate at different rates and have
+logarithmic score singularities. Deriving a full endpoint expansion
+would turn the sharp inequalities into effective error estimates for
+nearly extremal orders. It would also test whether higher derivative
+signs hold on a restricted range; they do not follow from stochastic
+ordering alone.
+
+\paragraph{3. Extend the allocation principle to other arguments.}
+For $z=e^{i\theta}$ the positive double integral still supplies an
+explicit rational imaginary kernel, but its dependence on the
+allocation variable can change sign and shape with $\theta$.
+Characterize the angles for which an appropriate signed component is
+monotone at fixed total order. This would connect the Gaussian theorem
+to the incoming angular-zero program. In particular, the
+below-threshold angular uniqueness conjecture from \cite{realorder}
+remains open here: failure of a finite signed Hausdorff measure for
+$a+b<1$ does not imply failure of the positive double-integral method.
+
+\paragraph{4. Determine the analytic reach of the inverse expansion.}
+Theorem~\ref{thm:inverse} gives an asymptotic expansion to every finite
+order. Does a naturally grouped generalized-power series converge on a
+nontrivial interval? The infinitely many exponents and their
+multiplicative collisions make this a distinct question from a
+finite-variable implicit-function theorem. A second target is a
+uniform approximation joining the large-order branch to the
+square-root behavior at the nondegenerate maximum. The latter behavior
+follows locally from $C''(w_*)<0$; a global error-controlled transition
+would require estimates beyond the local theorem.
+
+\subsection{Integral distribution and cohomology}
+
+\paragraph{5. Include ramified fixed grids.}
+Remove the requirement that each primary factor be either entirely
+fixed or fixed only at zero. The action $q=9,u=4$ gives the first
+model. A resolution indexed by both denominator and fixed-point depth
+should replace the present one-step fixed/moving split. The target is
+an explicit integral Smith formula, not merely its reduction modulo
+$\ell$. This distinction matters when higher powers of $\ell$ could
+appear in more general symmetry groups.
+
+\paragraph{6. Remove semisimplicity on the fixed factor.}
+When $\ell\mid\varphi(m)$, character projectors cannot be obtained by
+division by the unit-group order. The fixed Koszul complex still gives
+a useful starting point, but generalized eigenspaces and nilpotent
+operators replace scalar components. Determine whether the answer can
+be stated using Fitting ideals of the operators $V_p-a_p$. Small exact
+Smith computations should guide the statement before a general formula
+is proposed.
+
+\paragraph{7. Replace one jet parameter by several.}
+For
+\[
+ B=\mathbb Z[t_1,\ldots,t_s]/(t_1^{L_1},\ldots,t_s^{L_s}),
+\]
+the contact ideal generated by the reduced nonconstant weights need
+not be principal. The proof here already identifies the appropriate
+Koszul homology. Its length, annihilator, and module structure are the
+next invariants to compute. A single minimum valuation cannot capture
+them. Complete-intersection cases and monomial contact ideals are
+natural initial families with reproducible algebraic tests.
+
+\paragraph{8. Compute composite cyclic and noncyclic symmetries.}
+For a cyclic group of composite order, moving orbits can have several
+stabilizers. For a noncyclic group, the periodic two-column argument
+must be replaced by a fuller group resolution. Determine how the
+prime-order formulas fit together under restriction and transfer.
+An initial target is a product of two cyclic prime-order groups acting
+on distinct primary factors. Classical universal norm distributions
+\cite{cpc:Ouyang2002} provide an important comparison framework; the
+novelty target should be an explicit finite integral formula for the
+chosen weighted presentation.
+
+\subsection{Global Lerch zero geometry}
+
+\paragraph{9. Decide the persistent index-two monotonicity threshold.}
+Theorem~\ref{lershape:thm:k2k3} proves that order three is the smallest
+individual derivative order for which both positive zero branches
+decrease throughout $0\le\rho\le1$. It does not prove that every
+$k\ge3$ has this property. With the notation of
+Theorem~\ref{lershape:thm:criterion}, the persistent statement is
+equivalent to the endpoint inequalities
+\[
+ C_k(r_k)\le0\qquad\text{for all integers }k\ge3.
+\]
+This is a precise reduction of the remaining question to one sign per
+order. A uniform large-$k$ expansion with a rigorous remainder,
+combined with finitely many exact certificates, is a plausible route.
+Such a proof should keep the zero-saturation threshold and the
+branch-monotonicity threshold distinct.
+
+\paragraph{10. Certify the order-two turning point itself.}
+Existence and uniqueness of its nondegenerate minimum are already
+proved here. Its approximate coordinates are close to the singular
+endpoint $\rho=1$, which makes naive finite differences unreliable.
+Produce a rational isolating rectangle for the simultaneous equations
+$F_{2,2}^{(\rho)}(a)=0$ and
+$\partial_\rho F_{2,2}^{(\rho)}(a)=0$, with a two-variable interval
+Newton certificate. This would upgrade the present diagnostic
+coordinates without changing the proved branch-shape theorem.
+
+\paragraph{11. Extend the stationary-point bound to higher index.}
+For general $n$, the Appell kernel bounds the number of positive
+$a$-zeros by $n$. The resolvent theorem already controls the largest
+one without assuming the bound is saturated. What is the optimal
+number and type of stationary points on the other simple branches?
+The index-two proof uses three coefficient-sign blocks. Higher index
+suggests a finite combinatorial constraint, but a sign-change count
+alone does not determine the type or global order of the stationary
+points. A useful theorem would combine multiplicity at a stationary
+parameter with the known sign of $F_a$ on that branch.
+
+\subsection{Weight-seven identities and formal verification}
+
+\paragraph{12. Enlarge the exact $S_6$ relation system strategically.}
+The integer separator provides a direct test for any proposed new row
+in the same ambient word space:
+if its pairing is nonzero, it crosses the presently certified
+obstruction. One route is to add convergent linear combinations of
+Cayley words beyond the balanced seeds. Another is to allow
+higher-depth coordinates and then eliminate them. A third is to seek
+a functional identity before evaluation at $i$. Standard relations
+and their possible incompleteness are discussed in \cite{zhao,racinet}.
+The target remains the concrete $S_6$ identity, not a blanket assertion
+that one selected relation family is complete.
+
+\paragraph{13. Formalize the finite and analytic interfaces.}
+The separator checker, Smith examples, and outward interval primitives
+have small trusted mathematical interfaces. Formalizing these first
+would provide useful infrastructure without immediately formalizing
+the full special-function library. On the analytic side, the beta
+covariance lemma and the strict normalized Mellin comparison are
+reusable standalone lemmas. A good dependency order is positivity and
+dominated differentiation, then the stochastic comparison, then the
+special-function endpoint identities. This makes the formalization
+serve several results rather than duplicate each proof separately.
+
+These questions preserve the scope of the theorems already established.
+The strongest immediate targets are the persistent index-two endpoint
+sign, the ramified primary distribution calculation, and an $S_6$ row
+with nonzero pairing against the supplied separator. Each has a precise
+success criterion and a computational tool in the present package.

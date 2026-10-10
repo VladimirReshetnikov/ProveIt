@@ -1,0 +1,277 @@
+\section{A single harmonic saddle throughout the moving range}
+\label{us:sec:uniform}
+
+For an integer $h\ge1$ define
+\[
+ e_h(n)=[u^h]\prod_{j=1}^n(1+u/j),\qquad
+ T_{p,h}(a)=\sum_{n\ge0}\frac{(-1)^ne_h(n)}{(n+a)^p},
+ \qquad p,a>0.
+\]
+The empty product is one, so $e_h(n)=0$ for $n<h$ and
+$e_h(h)=1/h!$. In particular $e_1(n)=H_n$. The first nonzero
+term of the alternating series motivates the normalization
+\begin{equation}\label{us:eq:R}
+ R_{p,h}(a)=(-1)^hh!(h+a)^pT_{p,h}(a).
+\end{equation}
+For $a=1/2$, the Gaussian harmonic family in the manuscript is
+$S_{p,h}=2^{-p}T_{p,h}(1/2)$; its usual $S_p$ means $S_{p,1}$.
+
+\subsection{The exact positive integral}
+
+We briefly justify the starting point to keep the asymptotic argument
+self-contained. The generating function is
+\begin{equation}\label{us:eq:generating}
+ \sum_{n\ge0}e_h(n)z^n
+ =\frac{(-\log(1-z))^h}{h!(1-z)},\qquad |z|<1.
+\end{equation}
+It follows by taking the coefficient of $u^h$ in
+$\sum_{n\ge0}\prod_{j=1}^n(1+u/j)z^n=(1-z)^{-1-u}$.
+Ordinary convergence of $T_{p,h}$ for $p>0$ can also be checked
+directly. The recurrence
+$e_h(n)-e_h(n-1)=e_{h-1}(n-1)/n$ and
+$e_h(n)=O_h((1+\log n)^h)$ show that
+$e_h(n)/(n+a)^p\to0$ and its successive differences have an
+absolutely summable majorant of order
+$n^{-p-1}(1+\log n)^h$. Summation by parts against $(-1)^n$
+therefore proves convergence. Absolute convergence holds for $p>1$.
+
+Insert an Abel factor $0<\rho<1$ in the sum and use
+$(n+a)^{-p}=\Gamma(p)^{-1}\int_0^\infty y^{p-1}e^{-(n+a)y}\,dy$.
+Equation~\eqref{us:eq:generating} and dominated convergence as
+$\rho\uparrow1$ give
+\begin{equation}\label{us:eq:integral}
+ R_{p,h}(a)=\frac{(h+a)^p}{\Gamma(p)}
+ \int_0^\infty
+  \frac{y^{p-1}e^{-ay}L(y)^h}{1+e^{-y}}\,dy,
+ \qquad L(y)=\log(1+e^{-y}).
+\end{equation}
+The bound $L(y)\le\min(\log2,e^{-y})$ controls both endpoints.
+This integral, including its positivity, is already established in
+the manuscript \cite[\src{chapters/04-depth.tex},
+\src{chapters/04-proportional-depth.tex}]{cont:ProveIt}.
+
+Define
+\[
+ k_h(t)=\frac1{1+t}\left(\frac{\log(1+t)}t\right)^h,
+ \quad k_h(0)=1.
+\]
+If $Y_p$ has the gamma law with shape $p$ and rate $h+a$, then
+\begin{equation}\label{us:eq:gamma}
+ R_{p,h}(a)=\mathbb E k_h(e^{-Y_p}).
+\end{equation}
+The kernel $k_h$ is strictly decreasing on $[0,1]$, with
+$k_h(1)=(\log2)^h/2$ and $k_h(0)=1$. Consequently
+\begin{equation}\label{us:eq:bounds}
+ \frac{(\log2)^h}{2}<R_{p,h}(a)<1.
+\end{equation}
+
+\subsection{The moving saddle and the uniform expansion}
+
+Put
+\[
+ w(y)=-\frac{d}{dy}\log L(y)
+     =\frac1{(1+e^y)L(y)},\qquad
+ \alpha=p/h,\qquad \epsilon=a/h.
+\]
+Writing $v=e^{-y}$ gives
+\[
+ \frac{d}{dv}\log\frac{v}{(1+v)\log(1+v)}
+ =\frac{\log(1+v)-v}{v(1+v)\log(1+v)}<0.
+\]
+Thus $w$ increases strictly from $w_0=1/(2\log2)$ to $1$.
+There is exactly one $x>0$ satisfying
+\begin{equation}\label{us:eq:saddle}
+ x(w(x)+\epsilon)=\alpha,
+ \qquad
+ \frac{p}{h+a}<x<\frac{p}{hw_0+a}.
+\end{equation}
+This is the saddle for the full exponent after absorbing the
+factor $e^{-ay}$ into it. Keeping $a$ in the exponent is useful when
+$a$ itself varies.
+
+At this $x$ set
+\begin{align}
+ B&=1+\frac{x^2w'(x)}{\alpha},
+ &A(z)&=\frac1{z(1+e^{-xz})},\label{us:eq:BA}\\
+ \Psi(z)&=\log z+
+  \frac{\log L(xz)-\log L(x)-\epsilon x(z-1)}\alpha.
+ \label{us:eq:phase}
+\end{align}
+Then $\Psi(1)=\Psi'(1)=0$ and $\Psi''(1)=-B$.
+
+\begin{theorem}[Uniform expansion with no ratio restriction]
+\label{us:thm:uniform}
+For each fixed integer $J\ge0$, as $p\to\infty$, uniformly over
+all integers $h\ge1$ and all real $a>0$,
+\begin{equation}\label{us:eq:uniform}
+ R_{p,h}(a)=\mathcal S_{p,h}(a)
+ \left\{\sum_{j=0}^J\frac{E_j(x,\epsilon)}{p^j}
+       +O_J(p^{-J-1})\right\},
+\end{equation}
+where $E_0=1$ and
+\begin{equation}\label{us:eq:prefactor}
+ \mathcal S_{p,h}(a)=
+ \frac{((h+a)x)^p e^{-ax}L(x)^h}
+      {\Gamma(p)(1+e^{-x})}
+ \sqrt{\frac{2\pi}{pB}}.
+\end{equation}
+Every coefficient $E_j$ is bounded on the entire parameter range.
+In particular, with all derivatives evaluated at $z=1$,
+\begin{equation}\label{us:eq:E1}
+ E_1=\frac{A''}{2BA}
+      +\frac{\Psi'''A'}{2B^2A}
+      +\frac{\Psi''''}{8B^2}
+      +\frac{5(\Psi''')^2}{24B^3}.
+\end{equation}
+The constants in the relative remainder depend on $J$ alone.
+\end{theorem}
+
+\begin{proof}
+Substitute $y=xz$ in \eqref{us:eq:integral}. After removing its
+value at the saddle, the remaining integral is
+\begin{equation}\label{us:eq:reduced-integral}
+ \int_0^\infty e^{p\Psi(z)}A(z)\,dz.
+\end{equation}
+We verify the uniform conditions for Laplace expansion directly.
+The local expansion itself is the usual one
+\cite[\S2.3(iii)]{cont:DLMFLaplace}; the global parameter control is
+the point requiring proof here.
+
+First, the concavity of $\log L$, equivalent to $w'>0$, gives its
+tangent bound at $x$. Combining this bound with the saddle equation
+yields the parameter-free majorant
+\begin{equation}\label{us:eq:majorant}
+ \boxed{\displaystyle \Psi(z)\le\log z-z+1\quad(z>0).}
+\end{equation}
+Also $A(z)\le z^{-1}$. For each fixed $0<d<1$, the contribution
+of $|z-1|\ge d$ to \eqref{us:eq:reduced-integral} is bounded by
+the corresponding tail of
+$e^p\int_0^\infty z^{p-1}e^{-pz}\,dz$.
+The gamma Chernoff bound, followed by Stirling's formula, bounds
+that tail by $C_dp^{-1/2}e^{-c_dp}$ for positive constants
+independent of $h$ and $a$.
+
+Second, the saddle curvature is bounded above and below uniformly.
+For $r_x=(1+e^x)^{-1}$, logarithmic differentiation gives
+$w'=w(w-1+r_x)$, hence $0<w'\le r_x\le e^{-x}$.
+Therefore
+\begin{equation}\label{us:eq:curvature-bound}
+ 1\le B=1+\frac{xw'(x)}{w(x)+\epsilon}
+ \le1+\frac{2\log2}{e},
+ \qquad \frac12\le A(1)\le1.
+\end{equation}
+For $z$ in any fixed closed neighborhood of $1$ contained in
+$(0,\infty)$, every fixed derivative of $A$ is uniformly bounded.
+For $k\ge2$, the nonlogarithmic part of $\Psi^{(k)}(z)$ has
+absolute value
+\begin{equation}\label{us:eq:derivative-control}
+ \frac{x^k|w^{(k-1)}(xz)|}{\alpha}
+ =\frac{x^{k-1}|w^{(k-1)}(xz)|}{w(x)+\epsilon}.
+\end{equation}
+Near $x=0$, the analyticity of $w$ and $w\ge w_0$ bound this
+expression. As $x\to\infty$, use
+$w^{(j)}(u)=O_j(e^{-u})$ for $j\ge1$ and the boundedness of
+$x^je^{-cx}$ for fixed $j$ and $c>0$. These observations also
+prove the required bounds for the logistic amplitude. The linear
+$\epsilon$ term has disappeared from all derivatives of order
+at least two; increasing $\epsilon$ only increases the denominator
+in \eqref{us:eq:derivative-control}. This explains why no upper
+bound on $a$ is needed.
+
+Finally,
+$\Psi''(z)=-z^{-2}-x^2w'(xz)/\alpha\le-z^{-2}$.
+On the fixed saddle neighborhood this supplies a common Gaussian
+bound after $z=1+u/\sqrt p$. To any fixed order one may Taylor
+expand the phase and amplitude there, retaining enough derivatives
+to bound the remainder by $p^{-J-1}$ times a fixed integrable
+polynomial times a Gaussian. One explicit justification is to first
+restrict to $|u|\le p^\nu$, with a sufficiently small positive
+$\nu$ depending on the desired order, expand to a higher finite
+Taylor order, and use the common Gaussian bound on its complement.
+All derivative bounds and all choices are independent of the
+parameters. Extending each retained Gaussian monomial to the real
+line incurs an exponentially small error. Odd monomials integrate
+to zero. The even moments give
+\[
+ \int_0^\infty e^{p\Psi(z)}A(z)\,dz
+ =A(1)\sqrt{\frac{2\pi}{pB}}
+   \left\{\sum_{j=0}^J E_jp^{-j}+O_J(p^{-J-1})\right\}.
+\]
+Restoring the exact prefactor proves \eqref{us:eq:uniform}.
+Taking the four possible even Gaussian contributions at order
+$p^{-1}$ gives \eqref{us:eq:E1}.
+\end{proof}
+
+There is a finite prescription for every coefficient. Let
+$\mathbb E_B$ denote expectation under a centered normal law of
+variance $1/B$, and let $\tau$ be formal. Then
+\begin{equation}\label{us:eq:coefficient-recipe}
+ E_j=\frac1{A(1)}[\tau^{2j}]
+ \mathbb E_B\!\left[
+ A(1+\tau u)
+ \exp\!\left(\sum_{k\ge3}
+      \frac{\Psi^{(k)}(1)}{k!}u^k\tau^{k-2}\right)\right].
+\end{equation}
+Coefficient extraction precedes Gaussian integration. Only finitely
+many derivatives and moments enter, so this is an exact algorithm
+for any prescribed order, not an assertion that the complete
+asymptotic series converges.
+
+\subsection{Evaluation, overlaps, and limitations}
+
+For the first correction, useful formulas are
+\begin{align}
+ \frac{A'(1)}{A(1)}&=-1+xr_x,&
+ \frac{A''(1)}{A(1)}&=2-2xr_x+x^2(2r_x^2-r_x),\label{us:eq:amplitude-derivatives}\\
+ \Psi'''(1)&=2-\frac{x^3w''(x)}\alpha,&
+ \Psi''''(1)&=-6-\frac{x^4w'''(x)}\alpha.
+ \label{us:eq:phase-derivatives}
+\end{align}
+As $x\to0$ or $x\to\infty$, $E_1\to1/12$ uniformly in
+$\epsilon\ge0$. In the genuine first-pole limit, for example fixed
+$h,a$ and $p\to\infty$, this correction cancels the first reciprocal
+Stirling correction in the prefactor, consistently with $R\to1$.
+The condition $x\to\infty$ alone is insufficient for that conclusion
+when $h$ grows. For instance $p/h=\tfrac12\log h$, with fixed $a$,
+still lies below the first-pole threshold and gives $R\to0$.
+
+The theorem includes several formerly separate ranges:
+$h=p^3$ gives $p/h\to0$; $h\asymp p$ gives a proportional
+ratio; $p\asymp h\log h$ gives the first-pole transition; and fixed
+$h$ gives an unbounded ratio. It also permits shifts such as
+$a=p^2$. It does not cover a bounded outer exponent $p$. That
+regime retains the separate endpoint expansion in the manuscript.
+Nor does an $O_J$ theorem itself supply a certified numerical
+constant at a specified small $p$.
+
+For numerical work, compute $\log\mathcal S$ and standardize around
+the saddle, rather than directly forming quantities which may be
+exponentially small. The accompanying program uses
+$u=\sqrt{pB}(z-1)$ in the exact integral. Table~\ref{us:tab:saddle}
+reports selected checks; its last column is the absolute discrepancy
+in the normalized bracket, $|R/\mathcal S-1-E_1/p|$.
+
+\begin{table}[htbp]
+\centering
+\caption{Diagnostics for the uniformly scaled saddle formula.
+Values come from 50-digit quadrature and are not interval bounds.}
+\label{us:tab:saddle}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$p$ & $h$ & $a$ & $|R/\mathcal S-1|$ & $|R/\mathcal S-1-E_1/p|$\\
+\midrule
+40 & $64000$ & $1/2$ & $2.08546\cdot10^{-3}$ & $2.12816\cdot10^{-6}$\\
+160 & $4096000$ & $1/2$ & $5.20968\cdot10^{-4}$ & $1.34979\cdot10^{-7}$\\
+40 & 40 & $1/2$ & $4.91662\cdot10^{-4}$ & $1.05027\cdot10^{-5}$\\
+160 & 160 & $1/2$ & $1.15818\cdot10^{-4}$ & $6.80536\cdot10^{-7}$\\
+160 & 1 & $1/2$ & $5.20968\cdot10^{-4}$ & $1.34979\cdot10^{-7}$\\
+40 & 40 & 1600 & $2.08539\cdot10^{-3}$ & $2.12726\cdot10^{-6}$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+At $(p,h,a)=(160,4096000,1/2)$ the logarithm of the leading
+prefactor is about $-1.501185\cdot10^6$. Relative asymptotics remain
+informative even there. The finite test set is a check on signs,
+normalizations, and the predicted order of error; the parameter-wide
+statement follows from the proof, not from these samples.

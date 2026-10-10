@@ -120,3 +120,92 @@ hash are recorded in zero-profile-redraw.json. It changes the notation,
 not the historical mathematical curves, and writes a separate canonical
 figure. Full incoming package layouts remain immutable; replays run in
 .scratch-research. The active broader audit and research goal remain open.
+
+## CM proofs and the two latest incoming batches
+
+```powershell
+python verification/replay_third.py --part herglotz
+python verification/replay_third.py --part phase
+python verification/replay_third.py --part uniform
+python verification/replay_third.py --part boundary
+python verification/replay_third.py --part signed
+python verification/replay_fourth.py --part jets
+python verification/replay_fourth.py --part integral
+python verification/replay_fourth.py --part fractional
+python verification/replay_fourth.py --part threshold
+python verification/replay_fourth.py --part golden
+python verification/certify_cm_nonvanishing.py
+python verification/derive_cm_genus_extensions.py
+python verification/certify_cm_single_and_weber.py
+python verification/verify_cm_weber_field.py
+wolfram -script verification/check-cm-research.wls
+python verification/plot_cm_genus_embeddings.py
+```
+
+The wrappers copy immutable packages into ignored `.scratch-third` and
+`.scratch-fourth` layouts. Exact reconstruction and optional Smith checks
+are separate from the notation diagnostics. New CM scripts use rational
+lattice caps and quadratic arithmetic, directed coefficient intervals with
+CM integrality, and an independent finite-field irreducibility witness.
+Native Wolfram checks and the finite-lattice plot are numerical diagnostics.
+The all-parameter CM conclusions require the manuscript's written proofs.
+The saved S8 coordinate receipt is an exact Fraction check of the displayed
+normalized coefficients and primitive vector; it does not prove equality.
+The signed replay reconstructs both frozen S6/S8 proximity enclosures.
+Neither zero-containing residual interval proves a period identity.
+
+## Separable multivariable distribution jets
+
+```powershell
+python verification/check_multivariable_distribution.py
+```
+
+The standard-library verifier expands original point symbols times all
+truncated monomials, constructs the raw prime and reflection rows, and
+computes their binary ranks with integer bit vectors. It imports no
+normal-form or Koszul implementation. The 210-case sweep tests the new
+all-level formula's finite consequences; its proof is in the manuscript.
+
+## Real-order positive differences and Gaussian continuation
+
+```powershell
+python verification/certify_subcritical_differences.py
+wolfram -script verification/check-subcritical.wls
+python verification/explore_gaussian_axis.py
+python verification/plot_gaussian_axis.py
+python verification/replay_real_orders.py --part threshold
+python verification/replay_real_orders.py --part geometry
+python verification/replay_real_orders.py --part boundary
+python verification/build.py --output-directory verification/.scratch-build-final
+```
+
+The first command uses standard-library integer roots and Fractions for 616 difference signs, 112 Euler increments and seven analytic-value enclosures. Native Wolfram checks use independent depth-one polylogarithms and Gamma quadrature at 100 working digits; their numerical agreement does not certify quadrature error. The axis solver and plot are diagnostics. The replay wrapper preserves original layouts in isolated copies and retains fresh exact certificates, symbolic identities and separately labeled boundary/geometry diagnostics. The optional build output directory avoids a Windows PDF-viewer lock; after three converged serial passes it copies the final PDF to the canonical path.
+
+## Universal Euler contraction and fifth incoming continuations
+
+```powershell
+python verification/certify_universal_euler.py
+wolfram -script verification/check-universal-euler.wls
+python verification/replay_fifth.py --part beta --fresh-run
+python verification/replay_fifth.py --part compensated --fresh-run
+python verification/replay_fifth.py --part critical --fresh-run
+python verification/replay_fifth.py --part extremal --fresh-run
+python verification/replay_fifth.py --part harmonic --fresh-run
+```
+
+The universal certifier uses integer roots and Fractions for finite power and
+kernel grids, 560 independent finite-tail normalizations, a corruption control,
+352 negative Euler signs and 66 scaled error enclosures. Its eleven Gaussian
+enclosures use the proved global rational budget 5/4. Native Wolfram performs
+independent numerical comparisons at 90 working digits; quadrature rounding
+is not interval-certified. The separately audited Gaussian maximum certificate
+also proves the stronger global budget 57/50.
+
+The five wrappers preserve delivered code and data and execute only isolated
+copies. The fresh-run option creates a new scratch layout; inspect previous
+process handles before retrying a still-running suite. The harmonic runner's
+first attempt lacked matplotlib package metadata. Its terminal failure log
+is preserved, and the successful retry uses the existing local plotting
+dependency directory through PYTHONPATH, without changing the delivered code.
+Default harmonic replay includes exact checks and separately labeled diagonal
+diagnostics; it does not rerun the full optional harmonic quadrature grid.

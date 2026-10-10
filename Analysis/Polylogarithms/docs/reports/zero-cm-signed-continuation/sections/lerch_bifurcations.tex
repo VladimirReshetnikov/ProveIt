@@ -1,0 +1,526 @@
+\section{Lerch deformation: loss of real zeros and forced bifurcations}
+\label{cont26:sec:lerch-bifurcations}
+
+The manuscript proves eventual saturation of the positive-zero bound as
+the parameter-derivative order grows, uniformly in the Lerch deformation
+\cite{ProveIt}. At a fixed small derivative order the geometry is different.
+We prove an exact count for sufficiently small positive deformation
+parameters. Multiple elementary roots generally leave the real axis.
+At indices three and four this forces an interior change in the number
+of positive zeros before the Stieltjes endpoint is reached.
+
+For integers $n\geq0$, $k\geq1$, let
+\begin{equation}\label{cont26:eq:bif-family}
+ f_{n,k}(a)=\frac{d^k}{da^k}\frac{\log^n a}{a},\qquad
+ D_{n,k}^{\rho}(a)=\sum_{m=0}^{\infty}\rho^m f_{n,k}(a+m)
+ \quad (a>0,\ 0\leq\rho\leq1).
+\end{equation}
+Here $0^0=1$ in the $m=0$ summand. The differentiated series is absolutely
+convergent even at $\rho=1$, and
+$D_{n,k}^{1}(a)=\gamma_n^{(k)}(a)$ for the Laurent convention
+\[
+ \zeta(s,a)=\frac1{s-1}
+       +\sum_{n\geq0}\frac{(-1)^n}{n!}\gamma_n(a)(s-1)^n.
+\]
+For $\rho<1$, it equals $\partial_a^k\ell_n(\rho,a)$ with
+$\ell_n(\rho,a)=\sum_{m\geq0}\rho^m\log^n(a+m)/(a+m)$.
+In particular, these are order derivatives of the Lerch transcendent;
+at $a=1$ their undeformed-in-$a$ antecedents specialize to order
+derivatives of $\operatorname{Li}_s(\rho)$.
+
+Define the rational polynomial
+\begin{equation}\label{cont26:eq:bif-polynomial}
+ P_{n,k}(x)=n![t^n]\left(e^{xt}\prod_{j=1}^k(1+t/j)\right).
+\end{equation}
+Coefficient extraction after differentiating $a^{-1-t}$ gives
+\begin{equation}\label{cont26:eq:bif-elementary}
+ (-1)^{n+k} f_{n,k}(a)=k!a^{-k-1}P_{n,k}(-\log a).
+\end{equation}
+The sign normalization
+$F_{n,k}^{\rho}=(-1)^{n+k}D_{n,k}^{\rho}$ does not affect zeros.
+
+\subsection{The elementary roots and uniform exclusion of escaping zeros}
+
+\begin{lemma}\label{cont26:lem:bif-elementary-roots}
+If $n>k\geq1$ and $d=n-k$, then $P_{n,k}$ has a root of multiplicity
+$d$ at zero and precisely $k$ other roots, all simple and negative.
+Its first nonzero coefficient is
+\[
+ [x^d]P_{n,k}(x)=\frac{n!}{d!\,k!}.
+\]
+\end{lemma}
+\begin{proof}
+The polynomial is $\prod_{j=1}^k(1+\partial_x/j)x^n$. If a polynomial
+$p$ has real roots $r_i$ of multiplicities $m_i$, the new noninherited
+roots of $p+c p'$ solve
+\[
+ \frac{p'(x)}{p(x)}=\sum_i\frac{m_i}{x-r_i}=-1/c.
+\]
+For $c>0$ the left side decreases strictly between its poles. There is
+one new simple root in every intervening interval and one to the left
+of all the old roots, and there is none to their right. Every inherited
+multiple root loses one unit of multiplicity. Induction from $x^n$
+therefore gives the asserted configuration. The coefficient follows
+from the top coefficient $1/k!$ in $\prod_{j=1}^k(1+t/j)$.
+\end{proof}
+
+Let $A_{n,k}>1$ be the largest zero of $f_{n,k}$, equivalently the
+exponential of the negative of the smallest root of $P_{n,k}$.
+
+\begin{lemma}[No escape through either endpoint]\label{cont26:lem:bif-no-escape}
+For fixed $n>k\geq1$ there is $\varepsilon_{n,k}>0$ such that every
+positive zero of $D_{n,k}^{\rho}$, for every $\rho\in[0,1]$, lies in
+$[\varepsilon_{n,k},A_{n,k}]$. For $\rho>0$ the upper inequality is strict.
+Moreover $D_{n,k}^{\rho}\to f_{n,k}$ uniformly on every compact
+subinterval of $(0,\infty)$ as $\rho\downarrow0$, including every fixed
+number of $a$-derivatives.
+\end{lemma}
+\begin{proof}
+The $m=0$ term in the normalized series satisfies
+\[
+ F_{n,k}^{0}(a)\sim k!a^{-k-1}\log^n(1/a)\longrightarrow+\infty
+ \qquad(a\downarrow0).
+\]
+For $0<a\leq1$, the sum of the absolute values of all $m\geq1$ terms is
+bounded independently of $\rho\in[0,1]$: each is bounded by a constant
+times $(1+\log^n(m+1))/m^{k+1}$, whose series converges.
+Thus the $m=0$ term dominates uniformly near zero.
+
+For $a>A_{n,k}$, the argument $-\log(a+m)$ lies strictly to the left
+of every root of $P_{n,k}$ for all $m\geq0$. Consequently all summands
+have the same nonzero sign. At $a=A_{n,k}$ the $m=0$ summand vanishes
+and the others have that common strict sign when $\rho>0$. This excludes
+the upper endpoint and infinity. On a compact positive $a$-interval,
+the same summable majorants, with $k$ increased for the derivatives,
+give the final assertion by dominated convergence.
+\end{proof}
+
+\subsection{Complete small-parameter count and Puiseux branches}
+
+\begin{theorem}[Unfolding the multiple elementary root]
+\label{cont26:thm:bif-small-rho}
+Fix $n>k\geq1$, put $d=n-k$, and define
+\begin{equation}\label{cont26:eq:bif-constants}
+ A=\frac{n!}{d!},\qquad
+ B=\frac{k!}{2^{k+1}}P_{n,k}(-\log2).
+\end{equation}
+Assume $B\ne0$. For all sufficiently small $\rho>0$, every positive
+zero of $D_{n,k}^{\rho}$ is simple and their exact number is
+\begin{equation}\label{cont26:eq:bif-count}
+ k+\begin{cases}
+ 1,&d\text{ odd},\\
+ 2,&d\text{ even and }B<0,\\
+ 0,&d\text{ even and }B>0.
+ \end{cases}
+\end{equation}
+The $k$ zeros continuing the elementary zeros different from one are
+real analytic functions of $\rho$. All $d$ complex zeros near $a=1$
+are convergent Puiseux branches. Writing $t=\rho^{1/d}$ and letting
+$y_1,\ldots,y_d$ be the distinct roots of
+\begin{equation}\label{cont26:eq:bif-leading-equation}
+ A y^d+B=0,
+\end{equation}
+these branches have the form
+\begin{equation}\label{cont26:eq:bif-puiseux}
+ a_j(\rho)=1-y_j\rho^{1/d}+O(\rho^{2/d}).
+\end{equation}
+Their series converge for sufficiently small $t$. In particular,
+if $d\geq3$, the number in \eqref{cont26:eq:bif-count} is strictly less than $n$.
+\end{theorem}
+\begin{proof}
+For $|\rho|<1$ the series is normally convergent on compact subsets
+of $\Re a>0$ and hence jointly holomorphic in $(a,\rho)$. The principal
+logarithm is unambiguous on this half-plane. The implicit-function
+theorem continues each of the $k$ nonunit elementary zeros uniquely
+and real analytically.
+
+Near the remaining zero use the analytic coordinate $a=e^{-x}$.
+Equations~\eqref{cont26:eq:bif-elementary} and \eqref{cont26:eq:bif-constants} give
+\begin{equation}\label{cont26:eq:bif-local}
+ F_{n,k}^{\rho}(e^{-x})
+       =A x^d+B\rho+O(x^{d+1}+\rho x+\rho^2).
+\end{equation}
+Substitute $\rho=t^d$ and $x=ty$, divide by $t^d$, and extend
+analytically to $t=0$. The resulting function equals $Ay^d+B$ at zero.
+Its $d$ roots are simple because $AB\ne0$, so the implicit-function
+theorem supplies $d$ analytic branches $y_j(t)=y_j+O(t)$. Rouch\'e's
+theorem on a fixed small circle around $x=0$ shows that these exhaust
+the zeros converging to zero. A branch is real for small positive $t$
+exactly when its leading root $y_j$ is real: real leading roots continue
+by conjugation and uniqueness; nonreal leading roots stay nonreal.
+The polynomial $Ay^d+B$ has precisely the real-root count displayed
+in \eqref{cont26:eq:bif-count}, since $A>0$.
+
+Finally, Lemma~\ref{cont26:lem:bif-no-escape} confines every positive zero to
+a fixed compact interval. Delete disjoint small neighborhoods of the
+elementary zeros from that interval. The limit $f_{n,k}$ is bounded
+away from zero on the remaining compact set; uniform convergence
+excludes every additional zero there. Thus the local branch count is
+the global positive-zero count. Simplicity follows from the nonzero
+implicit derivatives, at both the ordinary and rescaled branches.
+\end{proof}
+
+The nonvanishing condition is displayed explicitly in the general
+statement. For the following first-derivative specialization, its sign
+and nonvanishing have an elementary proof for every index.
+
+\begin{corollary}[All indices at first derivative order]
+\label{cont26:cor:bif-kone}
+For every fixed integer $n\geq2$, and all sufficiently small $\rho>0$,
+$D_{n,1}^{\rho}$ has exactly one positive zero if $n$ is odd and
+exactly two if $n$ is even. All are simple. One zero tends to $e^n$
+and depends real analytically on $\rho$. When $n$ is even, the second
+zero satisfies
+\begin{equation}\label{cont26:eq:bif-even-root}
+ a_{\mathrm{small}}(\rho)=1-\kappa_n\rho^{1/(n-1)}
+             +O(\rho^{2/(n-1)}),\qquad
+ \kappa_n=\log2\left(\frac{n-\log2}{4n}\right)^{1/(n-1)}>0.
+\end{equation}
+The root tending to $e^n$ moves initially to the left:
+\begin{align}\label{cont26:eq:bif-large-root}
+ a_{\mathrm{large}}(\rho)&=e^n-C_n\rho+O(\rho^2),\\
+ C_n&=\frac{e^{3n}\log^{n-1}(e^n+1)
+                    (\log(e^n+1)-n)}{n^{n-1}(e^n+1)^2}>0.\notag
+\end{align}
+\end{corollary}
+\begin{proof}
+Here
+\[
+ P_{n,1}(x)=x^{n-1}(x+n),\qquad
+ f_{n,1}(a)=\frac{\log^{n-1}a\,(n-\log a)}{a^2}.
+\]
+Since $0<\log2<1<n$, the constant $B$ has sign $(-1)^{n-1}$.
+For odd $n$ the multiplicity $n-1$ is even and $B>0$, giving no
+real branch near one. For even $n$ it is odd and $B<0$, giving one
+positive leading root $y=\kappa_n$ in \eqref{cont26:eq:bif-leading-equation}.
+This proves the count and \eqref{cont26:eq:bif-even-root}.
+At $a=e^n$,
+$f'_{n,1}(e^n)=-n^{n-1}e^{-3n}$. Implicit differentiation of
+$f_{n,1}(a)+\rho f_{n,1}(a+1)+O(\rho^2)=0$ gives
+$a'(0)=-f_{n,1}(e^n+1)/f'_{n,1}(e^n)=-C_n$.
+\end{proof}
+
+For example, the double elementary zero for $n=3$ gives a conjugate
+nonreal pair with
+$a=1\mp i\kappa_3\sqrt\rho+O(\rho)$, whereas for $n=4$ the triple zero
+gives one real branch below one and a nonreal conjugate pair. The
+manuscript's eventual simplicity theorem is fully consistent with
+this result: its derivative order tends to infinity, while the present
+theorem fixes the derivative order and lets the deformation tend to zero.
+
+\subsection{The logarithmic singularity at the Stieltjes endpoint}
+
+An elementary tail calculation supplies a complementary expansion as
+$\rho\uparrow1$. It gives the precise regularity that is not visible
+in continuity of the positive-kernel representation. In this subsection
+the indices are fixed and the limit concerns the deformation parameter.
+
+For $0\leq j<k$ define the absolutely convergent moments
+\begin{equation}\label{cont26:eq:bif-weighted-moments}
+ M_{n,k,j}(a)=\sum_{m=0}^{\infty}m^j f_{n,k}(a+m),
+ \qquad M_{n,k,0}(a)=\gamma_n^{(k)}(a).
+\end{equation}
+The $m=0$ factor is one when $j=0$ and zero otherwise.
+
+\begin{theorem}[Endpoint expansion with its first nonanalytic term]
+\label{cont26:thm:bif-rho-one}
+Fix integers $n\geq0$, $k\geq1$ and a compact interval
+$I\subset(0,\infty)$. Put $\epsilon=-\log\rho$ and
+$L=\log(1/\epsilon)$. As $\epsilon\downarrow0$, uniformly for $a\in I$,
+\begin{align}\label{cont26:eq:bif-rho-one}
+ D_{n,k}^{e^{-\epsilon}}(a)
+  ={}&\sum_{j=0}^{k-1}\frac{(-\epsilon)^j}{j!}M_{n,k,j}(a)
+       +\frac{\epsilon^k L^{n+1}}{n+1}\\
+     &\quad+O_{n,k,I}\bigl(\epsilon^k(1+L^n)\bigr).\notag
+\end{align}
+Thus the family is $C^{k-1}$ at the endpoint in the deformation
+parameter, but its $k$th one-sided derivative is not finite there.
+In particular it is not $C^k$. The coefficient of the leading
+nonanalytic term is independent of $a$ and $k$.
+\end{theorem}
+\begin{proof}
+For large $m$, uniformly on $I$, differentiation of
+$\log^n(a+m)/(a+m)$ gives
+\begin{equation}\label{cont26:eq:bif-large-m}
+ f_{n,k}(a+m)=(-1)^k k!\frac{\log^n m}{m^{k+1}}+E_{n,k}(a,m).
+\end{equation}
+For $n\geq1$ the error is bounded by a constant times
+\[
+ \frac{1+\log^{n-1}m}{m^{k+1}}
+       +\frac{1+\log^n m}{m^{k+2}};
+\]
+for $n=0$ it is $O(m^{-k-2})$. Indeed, the leading term arises when
+all $k$ derivatives fall on $1/(a+m)$; every differentiation of a
+logarithm lowers its degree, and replacement of $a+m$ by $m$ adds
+one inverse power. This also proves convergence and local uniform
+convergence of all the moments in \eqref{cont26:eq:bif-weighted-moments}.
+
+Write
+\[
+ r_k(v)=e^{-v}-\sum_{j=0}^{k-1}\frac{(-v)^j}{j!}.
+\]
+Taylor's theorem and the finite polynomial bound give
+\begin{align}\label{cont26:eq:bif-exponential-remainders}
+ r_k(v)&=\frac{(-1)^k v^k}{k!}+O_k(v^{k+1})
+                         &&(0\leq v\leq1),\\
+ |r_k(v)|&\leq C_k v^{k-1}&&(v\geq1).\notag
+\end{align}
+Subtract the finite moment sum in \eqref{cont26:eq:bif-rho-one} from the
+defining series. The remainder is exactly
+$\sum_{m\geq1}f_{n,k}(a+m)r_k(\epsilon m)$.
+Put $N=\lfloor1/\epsilon\rfloor$. In the range $m\leq N$ the error
+from the first line of \eqref{cont26:eq:bif-exponential-remainders} is bounded by
+\[
+ C\epsilon^{k+1}\sum_{m\leq N}
+                 m^{k+1}|f_{n,k}(a+m)|
+   \leq C'\epsilon^k(1+L^n).
+\]
+Its retained part is
+\[
+ \frac{(-1)^k\epsilon^k}{k!}
+       \sum_{m\leq N}m^k f_{n,k}(a+m).
+\]
+By \eqref{cont26:eq:bif-large-m}, ordinary integral comparison for logarithmic
+harmonic sums gives
+\[
+ \sum_{m\leq N}m^k f_{n,k}(a+m)
+   =(-1)^k k!\left\{\frac{L^{n+1}}{n+1}
+                                +O(1+L^n)\right\}.
+\]
+For $n=0$ the error contributed by \eqref{cont26:eq:bif-large-m} is bounded;
+for $n\geq1$ its lower logarithmic terms sum to $O(1+L^n)$.
+The replacement of $\log N$ by $L$ is absorbed in the same error.
+The two factors $(-1)^k$ cancel, producing the positive coefficient
+in the theorem.
+
+Finally the range $m>N$, using the second bound in
+\eqref{cont26:eq:bif-exponential-remainders}, is at most
+\[
+ C\epsilon^{k-1}\sum_{m>N}\frac{1+\log^n m}{m^2}
+       =O\bigl(\epsilon^k(1+L^n)\bigr).
+\]
+This proves the expansion with the claimed uniformity.
+
+Differentiation with respect to $\epsilon$ through order $k-1$ is
+justified at zero by the absolutely convergent weighted moment series,
+uniformly on $I$. For clarity, the failure of the next derivative can
+also be checked directly, without differentiating a big-$O$ term.
+Put $G(\epsilon)=D_{n,k}^{e^{-\epsilon}}(a)$. Then
+\[
+ G^{(k-1)}(\epsilon)
+   =(-1)^{k-1}\sum_{m\geq0}m^{k-1}e^{-\epsilon m}f_{n,k}(a+m).
+\]
+Apply the same split at $m=\lfloor1/\epsilon\rfloor$ to the difference
+between this expression and its value at zero. Its summand has leading
+coefficient $-k!\log^n m/m^2$, by \eqref{cont26:eq:bif-large-m}, and therefore
+\[
+ \frac{G^{(k-1)}(\epsilon)-G^{(k-1)}(0)}{\epsilon}
+   =\frac{k!}{n+1}L^{n+1}+O(1+L^n)\longrightarrow+\infty.
+\]
+This proves the failure of a finite $k$th one-sided derivative. The
+change of coordinates $\rho=e^{-\epsilon}$ is smooth with nonzero
+derivative at zero; its lower-order chain-rule terms have finite limits.
+Thus the same endpoint regularity holds in $\rho$.
+\end{proof}
+
+\begin{corollary}[Displacement of a simple Stieltjes zero]
+\label{cont26:cor:bif-stieltjes-displacement}
+Fix an integer $n\geq1$. Let $a_*>0$ be a simple zero of $\gamma_n'(a)$, so
+$\gamma_n''(a_*)\ne0$. For $\rho<1$ sufficiently close to one there is a
+unique nearby simple zero $a_*(\rho)$ of $D_{n,1}^{\rho}$. With
+$\epsilon=-\log\rho$ and $L=\log(1/\epsilon)$,
+\begin{equation}\label{cont26:eq:bif-root-displacement}
+ a_*(\rho)=a_*
+   -\frac{\epsilon L^{n+1}}{(n+1)\gamma_n''(a_*)}
+   +O\bigl(\epsilon(1+L^n)\bigr).
+\end{equation}
+\end{corollary}
+\begin{proof}
+Local uniform convergence of the series and its $a$-derivative gives
+a unique simple zero near $a_*$. The $k=1$ specialization of
+Theorem~\ref{cont26:thm:bif-rho-one} is
+\[
+ D_{n,1}^{e^{-\epsilon}}(a)-\gamma_n'(a)
+     =\frac{\epsilon L^{n+1}}{n+1}
+           +O\bigl(\epsilon(1+L^n)\bigr),
+\]
+uniformly on a small interval around $a_*$. A derivative bounded away
+from zero first gives $a_*(\rho)-a_*=O(\epsilon L^{n+1})$.
+Taylor expansion of $\gamma_n'$ at $a_*$ then gives the displayed
+formula. Its quadratic error is absorbed because
+$\epsilon^2L^{2n+2}=o(\epsilon(1+L^n))$.
+\end{proof}
+
+The logarithmic enhancement means that a very small value of $1-\rho$
+can still noticeably displace a fixed-index zero. This is a proved
+endpoint scale. It does not determine where an interior multiple root
+occurs, because the simple-root expansion ceases to apply when the
+derivative in its denominator approaches zero.
+
+\subsection{Fresh exact endpoint signs}
+
+We recall, with proof, the global zero bound used to upgrade sign changes
+to exact endpoint counts. It is the result entitled ``Global bound on
+positive zeros'' in Chapter~10 of the source manuscript; the accompanying
+results are entitled ``Strictly real-rooted reciprocal-gamma polynomials''
+and ``Appell--Laplace representation'' \cite{ProveIt}.
+Define reciprocal-gamma Appell polynomials $Q_n$ by
+\[
+ \frac{e^{xt}}{\Gamma(1+t)}=\sum_{n\geq0}Q_n(x)\frac{t^n}{n!}.
+\]
+\begin{lemma}[Global positive-zero bound]\label{cont26:lem:bif-global-count}
+For every $n\geq0$, $k\geq1$, and $0\leq\rho\leq1$, the function
+$D_{n,k}^{\rho}$ has at most $n$ positive zeros, counted with multiplicity.
+\end{lemma}
+\begin{proof}
+The Weierstrass product is
+\[
+ \frac1{\Gamma(1+t)}=e^{\gamma t}
+             \prod_{j\geq1}(1+t/j)e^{-t/j}.
+\]
+Taking $n![t^n]$ after multiplication by $e^{xt}$ turns finite products
+into the operators $1+\partial_x/j$ and real translations applied to
+$x^n$. These preserve real-rootedness by the operator proof in
+Lemma~\ref{cont26:lem:bif-elementary-roots}. Local uniform convergence of the
+product gives coefficient convergence of the resulting monic polynomials,
+so the limiting $Q_n$ is real-rooted. For $n\geq1$, remove the first
+$n-1$ factors before taking the limit. The remaining tail still gives
+a real-rooted monic polynomial. Restoring the removed factors, including
+their commuting real translations, applies $n-1$ root-preserving
+operators, which reduce every inherited multiplicity until all roots
+are simple. Thus $Q_n$ has exactly $n$ distinct real roots. For $n=0$
+one has $Q_0=1$.
+
+The Mellin integral gives the identity
+\[
+ \sum_{n\geq0}\frac{(-1)^{n+k}}{n!}D_{n,k}^{\rho}(a)t^n
+   =\frac1{\Gamma(1+t)}\int_0^\infty
+                   \frac{x^{k+t}e^{-ax}}{1-\rho e^{-x}}\,dx
+\]
+for $|t|<k$ in a neighborhood of zero. It follows either by
+differentiating $(a+m)^{-1-t}$ $k$ times, or by canceling
+$\Gamma(k+1+t)$ against its rising factorial. Coefficient comparison
+proves
+\begin{equation}\label{cont26:eq:bif-laplace}
+ F_{n,k}^{\rho}(a)=\int_0^\infty
+       \frac{x^ke^{-ax}}{1-\rho e^{-x}}Q_n(\log x)\,dx.
+\end{equation}
+At zero, $1/(1-\rho e^{-x})\leq1/(1-e^{-x})=O(x^{-1})$,
+so $x^{k-1}|\log x|^n$ supplies an integrable majorant. At infinity
+$e^{-ax}$ dominates all the logarithmic and polynomial factors.
+These estimates justify coefficient extraction, differentiation in $a$,
+and multiplication of the kernel by any fixed polynomial.
+
+The signed kernel in \eqref{cont26:eq:bif-laplace} has exactly $n$ sign changes.
+For completeness, let $G$ be a Laplace transform of such a kernel.
+If there are no sign changes, $G$ has a fixed strict sign. Otherwise
+choose one sign-change point $x_0$. Multiplication of the kernel by
+$x_0-x$ removes that sign change and introduces none. Its transform is
+$(\partial_a+x_0)G=e^{-x_0a}(e^{x_0a}G)'$ and, by induction, has at
+most $n-1$ zeros counted with multiplicity and is not identically zero.
+Therefore $G$ also cannot be identically zero. Any finite collection of
+$M$ zeros of $G$, counted with multiplicity, forces at least $M-1$ zeros
+of $(e^{x_0a}G)'$ by Rolle's theorem, including inherited multiplicities.
+Hence $M\leq n$. The assertion holds for every finite collection and
+therefore for all positive zeros, completing the induction and proof.
+\end{proof}
+
+The following are newly replayed rational enclosures for
+\[
+ V_n(a)=(-1)^{n+1}a^2\gamma_n'(a).
+\]
+Each displayed decimal endpoint is an exact terminating rational number.
+\begin{center}
+\begin{tabular}{cclc}
+\hline
+$n$&$a$&Interval containing $V_n(a)$&Sign\\
+\hline
+3&$4/5$&$[0.163799,\ 0.163919]$&$+$\\
+3&$11/10$&$[-0.041066,\ -0.040839]$&$-$\\
+3&$3/2$&$[0.055828,\ 0.056247]$&$+$\\
+3&$21/10$&$[-0.245836,\ -0.245015]$&$-$\\
+4&$4/5$&$[0.038668,\ 0.039282]$&$+$\\
+4&$47/50$&$[-0.003812,\ -0.002965]$&$-$\\
+4&$6/5$&$[0.021074,\ 0.022453]$&$+$\\
+4&$17/10$&$[-0.037951,\ -0.035186]$&$-$\\
+4&$11/5$&$[0.148603,\ 0.153231]$&$+$\\
+\hline
+\end{tabular}
+\end{center}
+
+For reproducibility, the included script uses only Python's standard
+library and outward integer arithmetic on the grid $2^{-160}\mathbb Z$.
+It sums the first $M=1000$ terms of \eqref{cont26:eq:bif-family} at $k=1,\rho=1$.
+For a positive rational argument, power-of-two range reduction brings
+the logarithm to $1\leq x\leq2$. With $u=(x-1)/(x+1)\in[0,1/3]$, it uses
+\begin{equation}\label{cont26:eq:bif-log-certificate}
+ 0\leq\log x-2\sum_{j=0}^{J-1}\frac{u^{2j+1}}{2j+1}
+ \leq\frac{2u^{2J+1}}{(2J+1)(1-u^2)},\qquad J=64.
+\end{equation}
+All powers, divisions and the geometric remainder are enclosed by
+integer floor and ceiling. Inverting the argument handles logarithms
+below one. Ordinary interval multiplication then evaluates $f_{n,1}$.
+
+The tail needs only a monotone integral comparison. Put $b=a+M$ and
+$h_n(x)=-f_{n,1}(x)$. For $n=3,4$ and $\log x\geq6$, this function is
+positive and decreasing, since
+\[
+ h_n'(x)=-\frac{\log^{n-2}x}{x^3}
+          \{2\log^2x-3n\log x+n(n-1)\}<0.
+\]
+Every argument $b$ above satisfies $\log b>6$. As
+$\int_b^\infty h_n(x)\,dx=\log^n b/b$, one has the exact enclosure
+\begin{equation}\label{cont26:eq:bif-tail-certificate}
+ f_{n,1}(b)-\frac{\log^n b}{b}
+ \leq\sum_{m=M}^{\infty}f_{n,1}(a+m)
+ \leq-\frac{\log^n b}{b}.
+\end{equation}
+Combining these bounds proves every displayed sign; the JSON artifact
+also contains the finer integer endpoints before decimal display rounding.
+Thus these signs do not depend on quadrature or a special-function library.
+
+\begin{corollary}[Forced interior multiple roots]
+\label{cont26:cor:bif-interior}
+For each $n\in\{3,4\}$ there are $\rho_*\in(0,1)$ and $a_*>0$ such that
+\begin{equation}\label{cont26:eq:bif-discriminant}
+ D_{n,1}^{\rho_*}(a_*)=0,
+ \qquad \partial_aD_{n,1}^{\rho_*}(a_*)=0.
+\end{equation}
+At $\rho=1$ there are exactly $n$ positive zeros, all simple, and this
+count persists for $\rho<1$ sufficiently close to one. For small positive
+$\rho$ the counts are instead one and two, respectively.
+\end{corollary}
+\begin{proof}
+The certified signs give $n$ disjoint intervals with sign changes.
+The global bound with multiplicity shows that these are all the roots
+and each is simple. Local uniform convergence as $\rho\uparrow1$ of the
+series and its $a$-derivative preserves a unique simple root in each
+small interval. The global bound excludes extras. The small-parameter
+counts are Corollary~\ref{cont26:cor:bif-kone}.
+
+If every root were simple throughout $0<\rho<1$, the implicit-function
+theorem and compact exclusion of both endpoints would make the number
+of positive roots locally constant on this connected interval, hence
+constant. More explicitly, finitely many small root neighborhoods and
+the zero-free compact complement yield a common parameter neighborhood
+on which no root can be added or lost. The different endpoint counts
+contradict constancy. Therefore \eqref{cont26:eq:bif-discriminant} holds at
+an interior parameter.
+\end{proof}
+
+Ordinary numerical quadrature of \eqref{cont26:eq:bif-laplace}, followed by a
+two-variable solve, suggests transitions near
+\[
+\begin{array}{c|cc}
+n&a_*&\rho_*\\ \hline
+3&1.0497530509&0.99999046684\\
+4&1.2013268276&0.99999992971
+\end{array}
+\]
+These coordinates are numerical observations. The theorem establishes
+an interior multiple root; it does not establish uniqueness of the
+transition, multiplicity exactly two, or a nonzero derivative in the
+deformation parameter. Certifying those stronger statements is a
+specific further problem, approachable by a two-variable interval
+Newton calculation followed by an analytic exclusion argument.
+

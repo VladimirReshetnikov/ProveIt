@@ -1,0 +1,473 @@
+% Research contribution: all-index Lerch unfolding and a Bessel scaling regime.
+% Prepared against manuscript commit 28357e8ca63dd78327db91d9be239d75e4462879.
+% This is a section fragment; root manuscript supplies theorem environments.
+
+\section{A Bessel scaling law when the Laurent index follows the derivative order}
+\label{bessel:sec:main}
+
+The fixed-index concentration theorem does not cover $n$ comparable with
+$k$. In the adjacent-index regime $n=k+r$, with fixed integer $r$, the
+zeros close to $a=1$ have a different scale and a different universal
+profile. Their distance from one is of order $k^{-2}$, the profile is a
+Bessel function, and the Lerch deformation changes these zeros only by an
+exponentially small amount. The result holds uniformly up to the classical
+endpoint $\rho=1$.
+
+Throughout, let
+\[
+ F_{n,k}^{\rho}(a)=(-1)^{n+k}\mathcal D_{n,k}^{\rho}(a),\qquad
+ f_{n,k}(a)=F_{n,k}^{0}(a).
+\]
+The exact coefficient and shift identities are
+\begin{equation}\label{bessel:eq:shift}
+ f_{n,k}(a)=\frac{n!}{a^{k+1}}[t^n](1+t)_k e^{-t\log a},
+ \qquad F_{n,k}^{\rho}(a)=\sum_{m\geq0}\rho^m f_{n,k}(a+m).
+\end{equation}
+The shift series converges absolutely, also at $\rho=1$, for $k\geq1$.
+Here $(1+t)_k=\prod_{j=1}^k(t+j)$, so the coefficient polynomial in
+$\log a$ has integer coefficients. It is not a reciprocal-gamma Appell
+polynomial.
+
+\subsection{An exponentially small spectral tail}
+
+The following estimate retains the angle in Cauchy's coefficient bound.
+Replacing $|j+t|$ by $j+|t|$ before optimizing loses the useful decay.
+
+\begin{lemma}[A contour estimate in the adjacent-index range]
+\label{bessel:lem:tail}
+For integers $n\geq0$, $k\geq1$, $a\geq3/4$ and $0\leq\rho\leq1$,
+\begin{equation}\label{bessel:eq:tail}
+ \frac{|F_{n,k}^{\rho}(a)-f_{n,k}(a)|}{n!}
+ \leq e^7\left(\frac{k}{2}\right)^{k-n}e^{-k/20}
+       \left(\frac47+\frac2k\right).
+\end{equation}
+More generally, for fixed nonnegative integers $p,q$, derivatives
+$\partial_\rho^p\partial_a^q$ of the spectral tail satisfy
+\[
+ \frac{\bigl|\partial_\rho^p\partial_a^q
+   (F_{n,k}^{\rho}-f_{n,k})(a)\bigr|}{n!}
+ \leq C_p\left(\frac{k+q}{2}\right)^{k+q-n}e^{-(k+q)/20}
+\]
+for all sufficiently large $k$ (depending on $p$), uniformly for
+$a\geq3/4$ and $\rho\in[0,1]$. At $\rho=1$ these are one-sided
+derivatives when needed.
+\end{lemma}
+
+\begin{proof}
+Put $R=k/2$, $t=Re^{i\theta}$ and $v=\cos\theta$. By the arithmetic--
+geometric mean inequality,
+\begin{align*}
+ \frac{|(1+t)_k|}{R^k}
+ &\leq\left(\frac{1}{kR^2}
+       \sum_{j=1}^k(j^2+R^2+2jRv)\right)^{k/2}\\
+ &=(A_k+B_kv)^{k/2},\\
+ A_k&=\frac73+\frac2k+\frac{2}{3k^2},\qquad
+ B_k=2+\frac2k.
+\end{align*}
+For $b\geq b_0=7/4$ and $L=\log b$, Cauchy's bound in
+\eqref{bessel:eq:shift} therefore gives
+\begin{equation}\label{bessel:eq:pointtail}
+ \frac{|f_{n,k}(b)|}{n!}
+ \leq R^{k-n}b^{-1}
+ \exp\left\{k\max_{-1\leq v\leq1}
+ \left(\frac12\log(A_k+B_kv)-L(1+v/2)\right)\right\}.
+\end{equation}
+Write $L_0=\log(7/4)$. Since $1+v/2\geq1/2$, replacing $L$ by
+$L_0$ costs at most $-(L-L_0)/2$ in the displayed exponent. Moreover,
+\[
+ \frac12\log(A_k+B_kv)
+ \leq\frac12\log(7/3+2v)+\frac7k.
+\]
+Indeed $7/3+2v\geq1/3$, while the nonnegative increment is at most
+$4/k+2/(3k^2)$; apply $\log(1+x)\leq x$.
+If $y=7/3+2v$, maximizing over all $y>0$ gives the upper bound
+\[
+ \frac12\log\frac2{L_0}-\frac12-\frac5{12}L_0< -\frac1{20}.
+\]
+For an entirely elementary verification, use $L_0>11/20$ and
+$\log(40/11)<13/10$. The expression is then smaller than
+$13/20-1/2-11/48=-19/240<-1/20$. These logarithm bounds follow,
+for example, by the positive atanh series for the logarithm with a
+geometric remainder.
+Consequently
+\[
+ \frac{|f_{n,k}(b)|}{n!}
+ \leq e^7R^{k-n}e^{-k/20}b^{-1}
+       (b_0/b)^{k/2}.
+\]
+The function $b^{-1}(b_0/b)^{k/2}$ decreases. Summing it over
+$b=a+m$, $m\geq1$, and comparing the tail with its integral gives
+at most $b_0^{-1}+2/k=4/7+2/k$, which proves
+\eqref{bessel:eq:tail}.
+
+For derivatives, $\partial_a^qf_{n,k}=(-1)^qf_{n,k+q}$, and
+$\partial_\rho^p\rho^m=m^{\underline p}\rho^{m-p}$. The latter
+factor is bounded by $m^p\leq(a+m)^p$ on the relevant range. For
+$K=k+q>2p$, the resulting scalar sum is bounded by
+\[
+ b_0^{p-1}+\frac{b_0^p}{K/2-p}.
+\]
+The same estimate proves uniform convergence of the differentiated
+series and hence justifies the derivatives, including at $\rho=1$.
+\end{proof}
+
+\subsection{The limiting entire profile and its complete expansion}
+
+Fix an integer $r$, and take $k$ large enough that $n=k+r\geq0$. Set
+\begin{equation}\label{bessel:eq:profile}
+ a=e^{z/k^2},\qquad
+ \mathcal H_{r,k}^{\rho}(z)
+   =\frac{k^{2r}a^{k+1}}{(k+r)!}F_{k+r,k}^{\rho}(a).
+\end{equation}
+The entire function defining the limit is
+\begin{equation}\label{bessel:eq:Psi}
+ \Psi_r(z)=\sum_{j\geq\max(0,-r)}
+       \frac{(-z)^{r+j}}{2^j j!(r+j)!}.
+\end{equation}
+For $z>0$, the standard series for the Bessel function gives
+\begin{equation}\label{bessel:eq:Psibessel}
+ \Psi_r(z)=(-1)^r(2z)^{r/2}J_r(\sqrt{2z}).
+\end{equation}
+The series \eqref{bessel:eq:Psi}, rather than the separate powers in
+\eqref{bessel:eq:Psibessel}, defines the value at zero and the entire
+continuation. Since $J_{-s}=(-1)^sJ_s$ for integer $s$, its positive
+zeros are $j_{|r|,m}^2/2$, $m\geq1$. They are simple. The standard
+Bessel series and its zero properties are recorded in DLMF
+\S\S10.2 and 10.21 \cite{DLMFbessel}; these classical facts are not new claims here.
+
+\begin{theorem}[Uniform Bessel profile]
+\label{bessel:thm:profile}
+For fixed $r\in\mathbb Z$, on every compact real $z$ interval,
+\begin{equation}\label{bessel:eq:profileexp}
+ \mathcal H_{r,k}^{\rho}(z)
+ =\Psi_r(z)+\frac{1}{3k}\left((2r+5)z\Psi_r'(z)
+       +(z-r(2r+5))\Psi_r(z)\right)+O(k^{-2}),
+\end{equation}
+uniformly for $\rho\in[0,1]$, including every fixed number of $z$
+derivatives. There is a complete expansion in integral powers of
+$k^{-1}$. Every coefficient in that expansion is independent of $\rho$.
+The difference between the profile at any $\rho$ and at zero is
+$O(k^r e^{-k/20})$, with the same bound after any fixed number of
+$\rho$ derivatives and a fixed number of $z$ derivatives.
+\end{theorem}
+
+\begin{proof}
+Let $E_{j,k}=e_j(1,\ldots,k)$ be the elementary symmetric functions
+of the integers $1,\ldots,k$. Reversing the coefficients of the
+rising factorial gives
+\[
+ (1+t)_k=\sum_{j=0}^kE_{j,k}t^{k-j}.
+\]
+Consequently the elementary profile is exactly
+\begin{equation}\label{bessel:eq:elementaryprofile}
+ \mathcal H_{r,k}^{0}(z)
+  =\sum_{j=\max(0,-r)}^k\frac{E_{j,k}}{k^{2j}}
+       \frac{(-z)^{r+j}}{(r+j)!}.
+\end{equation}
+Consider the auxiliary polynomial
+\[
+ E_k(t)=\sum_{j=0}^k\frac{E_{j,k}}{k^{2j}}t^j
+       =\prod_{\ell=1}^k\left(1+\frac{\ell t}{k^2}\right).
+\]
+Its logarithm has the convergent local expansion
+\begin{align}\label{bessel:eq:Eexp}
+ \log E_k(t)
+ &=\sum_{m\geq1}\frac{(-1)^{m-1}t^m}{m k^{2m}}
+                \sum_{\ell=1}^k\ell^m\notag\\
+ &=\frac t2+\frac{t/2-t^2/6}{k}
+       +\frac{-t^2/4+t^3/12}{k^2}+O(k^{-3}).
+\end{align}
+The remainder is uniform on each fixed complex $t$ disk. For any
+desired order, the terms with large $m$ have a uniform geometric
+bound because $|\ell t/k^2|\leq |t|/k$. Each retained power sum is
+an exact polynomial in $k$, giving a complete expansion. Exponentiating,
+\begin{equation}\label{bessel:eq:Efirst}
+ E_k(t)=e^{t/2}\left(1+\frac{t/2-t^2/6}{k}
+               +\frac{-t^2/8+t^4/72}{k^2}+O(k^{-3})\right).
+\end{equation}
+Cauchy's coefficient estimate on a fixed circle bounds each
+coefficient remainder by $C k^{-N-1}T^{-j}$. Multiplying by
+$(-z)^{r+j}/(r+j)!$ and summing proves a locally uniform expansion
+of \eqref{bessel:eq:elementaryprofile}, with all derivatives. This
+step controls the infinite coefficient sum; coefficientwise convergence
+alone would not suffice.
+
+Put $D=z\partial_z-r$. The coefficient of $k^{-1}$ is
+\[
+ \frac{5D-2D^2}{3}\Psi_r.
+\]
+The series \eqref{bessel:eq:Psi} satisfies
+\begin{equation}\label{bessel:eq:Psiode}
+ z\Psi_r''+(1-r)\Psi_r'+\frac12\Psi_r=0.
+\end{equation}
+Using this equation reduces the last differential expression to the
+coefficient displayed in \eqref{bessel:eq:profileexp}. The second
+coefficient, useful below, is
+\begin{equation}\label{bessel:eq:Hsecond}
+ \left(\frac29D(D-1)(D-2)(D-3)-\frac12D(D-1)\right)\Psi_r.
+\end{equation}
+The remaining coefficients follow by the same finite process from
+\eqref{bessel:eq:Eexp}.
+
+Finally, on a compact $z$ interval, $a=e^{z/k^2}\geq3/4$ for
+large $k$, and $a^{k+1}$ is uniformly bounded. The spectral-tail
+lemma, multiplied by $k^{2r}$, gives the error
+$O(k^r e^{-k/20})$. Its differentiated bounds give the same result
+for fixed mixed derivatives: each $z$ derivative introduces factors
+of $k^{-2}$ when differentiating $a$, while an additional $a$
+derivative of the tail costs only a factor $O(k)$. Derivatives of
+$a^{k+1}$ cost $O(k^{-1})$ in the $z$ coordinate. Thus all these
+errors remain exponentially small and affect none of the algebraic
+coefficients.
+\end{proof}
+
+\subsection{Simple zeros and deformation independence to every algebraic order}
+
+\begin{theorem}[Bessel locations of adjacent-index zeros]
+\label{bessel:thm:zeros}
+Fix $r\in\mathbb Z$ and $m\geq1$, and put
+$\lambda=j_{|r|,m}^2/2$. For all sufficiently large $k$, every
+$\rho\in[0,1]$ has exactly one zero $a_{r,m,k}^{\rho}$ in a
+fixed sufficiently small neighborhood of $k^2\log a=\lambda$.
+The zero is positive and simple. Uniformly in $\rho$,
+\begin{align}\label{bessel:eq:zerosz}
+ k^2\log a_{r,m,k}^{\rho}
+ &=\lambda-\frac{(2r+5)\lambda}{3k}
+       +\frac{\lambda(4r^2+15r+\lambda+20)}{9k^2}
+       +O(k^{-3}),\\
+ a_{r,m,k}^{\rho}
+ &=1+\frac\lambda{k^2}-\frac{(2r+5)\lambda}{3k^3}
+       +\frac{\lambda(8r^2+30r+11\lambda+40)}{18k^4}
+       +O(k^{-5}).\label{bessel:eq:zerosa}
+\end{align}
+Both formulas extend to all orders by a recursively computable
+expansion with coefficients independent of $\rho$. In addition,
+\begin{equation}\label{bessel:eq:deformation}
+ \sup_{0\leq\rho\leq1}
+ |a_{r,m,k}^{\rho}-a_{r,m,k}^{0}|
+       =O(k^{r-2}e^{-k/20}).
+\end{equation}
+For every fixed positive integer $p$, the same bound holds for
+$|\partial_\rho^p a_{r,m,k}^{\rho}|$, once $k$ is sufficiently large.
+No assertion about the total positive-zero count follows from this
+local scaling theorem.
+\end{theorem}
+
+\begin{proof}
+The positive Bessel zero $\lambda$ is simple. Choose a fixed small
+closed interval about it on which $\Psi_r'$ never vanishes and
+whose endpoints have opposite signs. Uniform $C^1$ convergence in
+Theorem~\ref{bessel:thm:profile} gives exactly one simple real zero
+there for all sufficiently large $k$, uniformly in $\rho$.
+
+Substitute $z=\lambda+d/k+e/k^2$ into the profile expansion. The
+$k^{-1}$ coefficient gives
+$d=-(2r+5)\lambda/3$. At a zero of $\Psi_r$, equation
+\eqref{bessel:eq:Psiode} gives
+\[
+ \frac{\Psi_r''(\lambda)}{\Psi_r'(\lambda)}
+       =\frac{r-1}{\lambda}.
+\]
+Writing $H_1$ for the $k^{-1}$ coefficient in the profile, direct
+differentiation and the same differential equation give
+$H_1'(\lambda)/\Psi_r'(\lambda)=\lambda/3$.
+Formula~\eqref{bessel:eq:Hsecond} gives
+\[
+ \frac{H_2(\lambda)}{\Psi_r'(\lambda)}
+ =-\frac{2r^3\lambda}{9}-\frac{4r^2\lambda}{3}
+   +\frac{2r\lambda^2}{9}-\frac{35r\lambda}{18}
+   +\frac{4\lambda^2}{9}-\frac{5\lambda}{6}.
+\]
+Therefore
+\[
+ e=-\frac{\Psi_r''(\lambda)d^2/2
+           +H_1'(\lambda)d+H_2(\lambda)}{\Psi_r'(\lambda)}
+   =\frac{\lambda(4r^2+15r+\lambda+20)}9.
+\]
+This proves \eqref{bessel:eq:zerosz}; exponentiation gives
+\eqref{bessel:eq:zerosa}. At every further order the next unknown
+coefficient has the same nonzero multiplier $\Psi_r'(\lambda)$.
+The complete profile expansion and a uniform lower bound for the
+derivative turn this formal recursion into an asymptotic expansion
+with the stated remainders, by the mean value theorem.
+
+The profile difference between $\rho$ and zero is
+$O(k^r e^{-k/20})$. Dividing by the uniform derivative lower bound
+gives the same error in $z$. The map $a=e^{z/k^2}$ supplies the
+additional factor $k^{-2}$ in \eqref{bessel:eq:deformation}.
+For derivatives in $\rho$, use the mixed-derivative bounds of the
+tail lemma and differentiate the implicit equation. Every positive
+$\rho$ derivative of the profile is exponentially small; its
+$z$ derivative stays bounded away from zero. Induction proves the
+same bound for every fixed root derivative. The required derivatives
+at $\rho=1$ are justified by the uniformly convergent differentiated
+shift series, for sufficiently large $k$.
+\end{proof}
+
+For $r=0$, the limiting function is $J_0(\sqrt{2z})$. The first
+zero thus satisfies, for every Lerch parameter including one,
+\[
+ a=1+\frac{j_{0,1}^2}{2k^2}
+       -\frac{5j_{0,1}^2}{6k^3}+O(k^{-4}).
+\]
+In particular this locates a simple zero of $\gamma_k^{(k)}$ near
+one. More generally, the classical specialization of the profile theorem
+can be written without the sign-normalized family:
+\[
+ \frac{k^{2r}e^{(k+1)z/k^2}}{(k+r)!}
+ \gamma_{k+r}^{(k)}(e^{z/k^2})
+ \longrightarrow (2z)^{r/2}J_r(\sqrt{2z}),\qquad z>0.
+\]
+For $r>0$ the limiting profile also has a zero of multiplicity $r$
+at $z=0$. The theorem deliberately treats the positive Bessel zeros,
+not this multiple central zero. Its finer unfolding is sensitive to
+the exponentially small spectral tail and is not determined by the
+algebraic expansion.
+
+\section{The full small-Lerch-parameter unfolding at arbitrary derivative order}
+\label{unfold:sec:main}
+
+The earlier report \cite{LerchBaseline} proves the small-$\rho$ count for every
+$n$ at $k=1$. The following generalization handles every pair $(n,k)$.
+It also explains why a parity-only count does not extend to arbitrary
+derivative order: an explicit rational polynomial evaluated at $\log2$
+controls the answer.
+
+\begin{theorem}[All-pair small-$\rho$ count]
+\label{unfold:thm:count}
+Fix integers $n\geq1$ and $k\geq1$.
+If $n\leq k+1$, then $F_{n,k}^{\rho}$ has exactly $n$ simple
+positive zeros for all sufficiently small $\rho\geq0$.
+
+If $n>k$, put $r=n-k$ and $B_{n,k}=f_{n,k}(2)$. Then
+$B_{n,k}\ne0$, and, for all sufficiently small $\rho>0$, the
+number of positive zeros is exactly
+\begin{equation}\label{unfold:eq:counts}
+ \begin{cases}
+ k+1,&r\text{ odd},\\
+ k+2,&r\text{ even and }B_{n,k}<0,\\
+ k,&r\text{ even and }B_{n,k}>0.
+ \end{cases}
+\end{equation}
+All these zeros are simple. The $k$ noncentral zeros continue
+analytically from the elementary endpoint. Every real central branch
+has
+\begin{equation}\label{unfold:eq:puiseux}
+ a(\rho)=1+u\rho^{1/r}+O(\rho^{2/r}),\qquad
+ u^r=-\frac{(-1)^r r!}{n!}B_{n,k}.
+\end{equation}
+The real solutions of the displayed equation give exactly the real
+central branches. When $r=1$, the first and second assertions agree.
+\end{theorem}
+
+\begin{proof}
+At $\rho=0$, the polynomial in $x=-\log a$ is a positive scalar
+multiple of
+$\prod_{j=1}^k(1+\partial_x/j)x^n$. Each application of
+$1+c\partial_x$, $c>0$, preserves real roots, decreases every
+inherited multiple-root multiplicity by one, and creates simple
+roots strictly between consecutive distinct roots and to the left
+of the least root. Hence, for $n>k$, there are $k$ distinct
+negative simple roots and a root at zero of multiplicity exactly
+$r=n-k$. For $n\leq k+1$ every root is simple. The corresponding
+noncentral positive $a$ roots persist analytically for small $\rho$.
+
+The polynomial
+\[
+ n![t^n](1+t)_k e^{-Lt}\in\mathbb Z[L]
+\]
+is nonzero (its leading term is $k!(-L)^n$). By Lindemann's
+classical theorem \cite{Lindemann}, $\log2$ is transcendental: if it were nonzero
+algebraic, its exponential could not equal the algebraic number two.
+It cannot be a zero of this nonzero integer polynomial. Thus
+$B_{n,k}\ne0$. This arithmetic argument applies to the elementary
+coefficient polynomial; it would not apply to a polynomial with
+uncontrolled gamma or zeta constants as coefficients.
+
+Writing $a=1+\delta$ and using
+$\log^n(1+\delta)/(1+\delta)=\delta^n+O(\delta^{n+1})$ gives
+\[
+ F_{n,k}^{\rho}(1+\delta)
+ =\frac{(-1)^r n!}{r!}\delta^r+\rho B_{n,k}
+    +O(\delta^{r+1}+\rho|\delta|+\rho^2).
+\]
+Set $\rho=\varepsilon^r$ and $\delta=\varepsilon u$.
+After division by $\varepsilon^r$, the limiting equation is
+\eqref{unfold:eq:puiseux}. Its $r$ complex roots are distinct and
+nonzero. The analytic implicit function theorem gives $r$ branches
+analytic in $\varepsilon$; Rouch\'e's theorem on a small fixed
+$\delta$ disk shows that these exhaust the roots tending to one.
+For real $\varepsilon$, branches with real initial values remain
+real and the others remain nonreal. For odd $r$ there is one real
+root. For even $r$, there are two real roots precisely when the
+right-hand side is positive, that is, when $B_{n,k}<0$; otherwise
+there are none. Each real branch is simple for small positive
+$\varepsilon$.
+
+To exclude further positive roots, take $A$ larger than the largest
+elementary root. All $f_{n,k}(a+m)$ have the common sign $(-1)^n$
+for $a>A$, so there are no roots there. For sufficiently small $a$,
+the positive divergent elementary term dominates the remaining
+series, uniformly for $0\leq\rho\leq1/2$. On the compact set
+left after removing the elementary root neighborhoods, uniform
+convergence to the nonzero elementary function excludes zeros.
+This proves both global completeness and the count.
+\end{proof}
+
+\begin{corollary}[A necessary condition for uniform positive-parameter saturation]
+For $1\leq k\leq n-3$, saturation by $n$ positive zeros cannot hold
+for every $\rho\in(0,1]$. At the borderline $k=n-2$, saturation
+holds for all sufficiently small positive $\rho$ if and only if
+$f_{n,n-2}(2)<0$.
+\end{corollary}
+\begin{proof}
+For $r\geq3$, the count in \eqref{unfold:eq:counts} is strictly
+smaller than $k+r=n$. For $r=2$, it is $n$ precisely for the
+negative sign, and otherwise equals $n-2$.
+\end{proof}
+
+The following are finite exact-arithmetic consequences, separate from
+the all-pair analytic theorem. Each sign is certified by a rational
+interval for $f_{n,k}(2)/n!$ in the supplied
+\texttt{evidence/exact-signs.json}; the code uses the integer rising
+factorial and a rational logarithm enclosure.
+\begin{center}
+\begin{tabular}{rrrr}
+\hline
+$n$&$k$&Sign of $f_{n,k}(2)$&Count for sufficiently small $\rho>0$\\
+\hline
+4&2&$+$&2\\
+5&3&$+$&3\\
+6&2&$+$&2\\
+6&4&$-$&6\\
+7&5&$-$&7\\
+8&6&$+$&6\\
+\hline
+\end{tabular}
+\end{center}
+The interval of sufficiently small positive parameters depends on
+$(n,k)$ and is not numerically specified by this table. These counts
+make no assertion about an intermediate Lerch parameter or the
+classical endpoint. The separate full-Lerch Bessel diagnostics in the
+package are floating-point observations and are not used in any sign
+certificate or global count.
+
+\paragraph{Further problems made precise.}
+The central multiple zero in the Bessel scaling theorem lies on a
+smaller, exponentially sensitive scale. Its joint $k,\rho$ unfolding,
+including possible cancellations between spectral terms, is a natural
+next problem. A second problem is a uniform expansion when $|n-k|$
+grows, which should connect the fixed-order Bessel regime to a
+large-order Bessel or Airy regime. Neither follows from the present
+fixed-$r$ theorem. A third problem is the oscillatory sign pattern of
+$f_{n,k}(2)$ when $n$ and $k$ grow together; the all-pair small-$\rho$
+classification reduces that question to an explicit finite polynomial,
+but does not establish an asymptotic sign law.
+
+% Suggested bibliography entries:
+% NIST DLMF, Sections 10.2 and 10.21, https://dlmf.nist.gov/10.2,
+% https://dlmf.nist.gov/10.21 (series and simple positive Bessel zeros).
+% F. Lindemann, Ueber die Zahl pi, Math. Ann. 20 (1882), 213--225,
+% DOI 10.1007/BF01446522 (nonzero algebraic logarithms of algebraic numbers).
+% Prior incoming report: docs/reports/lerch-zero-bifurcations/article/
+% lerch_zero_bifurcations.tex, Section 6 (all-n small-rho theorem at k=1).

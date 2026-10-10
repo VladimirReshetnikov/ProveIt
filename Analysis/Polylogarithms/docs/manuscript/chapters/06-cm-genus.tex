@@ -1,0 +1,506 @@
+% Companion section to cm_norms.tex; no document preamble.
+% Requires the definitions and labels introduced in that section.
+
+\section{Genus characters prove the recorded CM ratios}
+\label{cmgenus:sec:main}
+
+A class product and a class ratio contain different information.
+The preceding norm formula controls the former. A nontrivial genus
+character supplies the missing signed product and proves all three
+recorded weight-four ratios at discriminants $-15,-20,-39$.
+The same calculation gives a theorem for every even weight and three
+explicit weight-six ratios.
+
+The analytic mechanism is classical: twist the Kronecker limit formula
+by a genus character and use Kronecker's factorization of its Hecke
+$L$-function. The character factorization and unit normalization are stated explicitly
+in Masri\cite[eqs.~(1.3)--(1.5)]{cmgenus:Masri}. We give the normalization argument
+because confusing the ordinary and narrow real-quadratic class numbers,
+or overlooking the units at discriminants $-3$ and $-4$, changes the
+answer.
+
+\subsection{A genus ratio theorem in arbitrary even weight}
+
+Suppose that the fundamental discriminant $D<-4$ has a factorization
+\[
+ D=eD_-,\qquad e>1,\qquad D_-<0,
+\]
+where $e,D_-$ are coprime fundamental discriminants. Let
+$\varepsilon:\mathrm{Cl}(D)\longrightarrow\{1,-1\}$ be the
+corresponding nontrivial genus character. Concretely, if a form $Q$
+represents an integer $n$ coprime to $D$, then
+$\varepsilon(Q)=\chi_e(n)$. This value is independent of the represented
+integer chosen. Retain the reduced representatives $\tau_Q$ and the
+normalizations of Section~\ref{cmnorm:sec:main}, and put
+\begin{align}
+ A_\varepsilon&=\prod_{Q\in\mathcal Q_D}a_Q^{\varepsilon(Q)},&
+ H_D^\pm(X)&=\prod_{\varepsilon(Q)=\pm1}(X-j(\tau_Q)),\label{cmgenus:eq:data}\\
+ \lambda_-&=L(0,\chi_{D_-})
+      =\frac{2h(D_-)}{\omega(D_-)},&
+ \omega(D_-)&=|\mathcal O_{D_-}^{\times}|.\notag
+\end{align}
+Here $h(D_-)$ is the imaginary-quadratic class number. Let $h(e)$ be
+the \emph{ordinary} real-quadratic class number, and let $u_e>1$ be the
+least unit greater than one in the real embedding of
+$\mathbb Q(\sqrt e)$. Its norm is allowed to be $-1$.
+In particular,
+\[
+ \lambda_{-3}=\frac13,\qquad \lambda_{-4}=\frac12;
+\]
+replacing either of these values by its imaginary class number would
+give an incorrect result.
+
+Both genus factors are monic of degree $h(D)/2$, with
+$H_D=H_D^+H_D^-$. The two sign sets are unions of genera; in the
+three examples below they are the two genera themselves.
+Their coefficients lie in the ring of integers of
+$\mathbb Q(\sqrt e)$. Indeed, the kernel of $\varepsilon$ fixes the
+quadratic genus extension $\mathbb Q(\sqrt D,\sqrt e)$ of
+$\mathbb Q(\sqrt D)$; the two products are invariant under this kernel.
+Complex conjugation inverts ideal classes, and inversion preserves
+$\varepsilon$, so both products are real. Their coefficients therefore
+belong to the real quadratic subfield. The coefficients are algebraic
+integers because the singular moduli are algebraic integers.
+
+\begin{theorem}[Genus ratios at every even weight]
+\label{cmgenus:thm:allweights}
+For every even $w\geq4$, all factors are nonzero by
+Theorem~\ref{cmnonzero:thm:allCM}, and
+\begin{equation}
+ \prod_{Q\in\mathcal Q_D}|G_w(\tau_Q)|^{\varepsilon(Q)}
+ =A_\varepsilon^{w/2}\,
+   u_e^{-w h(e)\lambda_-}
+   \left|
+    \frac{\operatorname{Res}(H_D^+,F_w)}
+         {\operatorname{Res}(H_D^-,F_w)}
+   \right|^{1/12}.
+ \label{cmgenus:eq:allweights}
+\end{equation}
+The polynomials $F_w$ and the resultant convention are those of
+Lemma~\ref{cmnorm:lem:polynomial}. All real roots on the right are
+positive roots. Every numerator and denominator is nonzero.
+\end{theorem}
+
+\begin{proof}
+Write $d=|D|$ and
+\[
+ Z(\tau,s)=\sum_{(m,n)\neq(0,0)}
+          \frac{(\operatorname{Im}\tau)^s}{|m+n\tau|^{2s}}.
+\]
+The quadratic-form and ideal-class zeta correspondence, with two units
+because $D<-4$, gives
+\begin{equation}
+ \sum_Q\varepsilon(Q)Z(\tau_Q,s)
+ =2\left(\frac{\sqrt d}{2}\right)^s
+       L(s,\chi_e)L(s,\chi_{D_-}).
+ \label{cmgenus:eq:twistedepstein}
+\end{equation}
+Here we used Kronecker's factorization
+$L_{\mathbb Q(\sqrt D)}(s,\varepsilon)
+=L(s,\chi_e)L(s,\chi_{D_-})$.
+For completeness, at an unramified split prime the two quadratic
+characters have the same sign and give the two equal prime-ideal
+factors; at an inert prime their signs are opposite and their product
+is $(1-p^{-2s})^{-1}$, the factor for the principal ideal $(p)$.
+At a ramified prime, coprimality of $e,D_-$ leaves precisely the factor
+of the unramified Dirichlet character. Thus the Euler products agree
+in $\operatorname{Re}s>1$, and continuation gives the identity.
+
+Since $\chi_e$ is nontrivial and even, $L(0,\chi_e)=0$.
+Differentiate \eqref{cmgenus:eq:twistedepstein} at zero and use
+\[
+ Z'(\tau,0)=-2\log\bigl(2\pi\sqrt y\,|\eta(\tau)|^2\bigr),
+ \qquad y=\operatorname{Im}\tau.
+\]
+The constant disappears because $\sum_Q\varepsilon(Q)=0$. We obtain
+\begin{equation}
+ \sum_Q\varepsilon(Q)\log\bigl(\sqrt{y_Q}
+                                  |\eta(\tau_Q)|^2\bigr)
+ =-\lambda_-L'(0,\chi_e).
+ \label{cmgenus:eq:etaweighted}
+\end{equation}
+Since $y_Q=\sqrt d/(2a_Q)$, its signed logarithmic sum is
+$\sum_Q\varepsilon(Q)\log y_Q=-\log A_\varepsilon$.
+Consequently
+\begin{equation}
+ \prod_Q|\Delta(\tau_Q)|^{\varepsilon(Q)}
+ =A_\varepsilon^6
+       \exp\bigl(-12\lambda_-L'(0,\chi_e)\bigr).
+ \label{cmgenus:eq:delta}
+\end{equation}
+
+To fix the real-quadratic normalization, the completed function
+\[
+ \Lambda_e(s)=(e/\pi)^{s/2}\Gamma(s/2)L(s,\chi_e)
+\]
+satisfies $\Lambda_e(s)=\Lambda_e(1-s)$.
+Its values at zero and one give
+$2L'(0,\chi_e)=\sqrt e\,L(1,\chi_e)$.
+The real-quadratic class number formula, in the ordinary-class-number
+and least-unit convention specified above, is
+\[
+ L(1,\chi_e)=\frac{2h(e)\log u_e}{\sqrt e}.
+\]
+Thus $L'(0,\chi_e)=h(e)\log u_e$, and
+\eqref{cmgenus:eq:delta} becomes
+\begin{equation}
+ \boxed{\displaystyle
+ \prod_Q|\Delta(\tau_Q)|^{\varepsilon(Q)}
+ =A_\varepsilon^6 u_e^{-12h(e)\lambda_-}.}
+ \label{cmgenus:eq:deltaunit}
+\end{equation}
+Finally, apply
+$|E_w(\tau_Q)|^{12}
+=|\Delta(\tau_Q)|^w|F_w(j(\tau_Q))|$ to the signed product.
+The factors $2\zeta(w)$ cancel because the plus and minus character
+fibers have the same cardinality. The remaining products of $F_w(j)$ are exactly the stated
+resultants. Taking the positive twelfth root proves the formula.
+\end{proof}
+
+In particular, write
+$R_w(D)=\prod_Q|G_w(\tau_Q)|^{\varepsilon(Q)}$. The two smallest
+weights give the especially convenient identities
+\begin{align}
+ R_4(D)^3
+ &=A_\varepsilon^6u_e^{-12h(e)\lambda_-}
+       \left|\frac{H_D^+(0)}{H_D^-(0)}\right|,
+       \label{cmgenus:eq:four}\\
+ R_6(D)^2
+ &=A_\varepsilon^6u_e^{-12h(e)\lambda_-}
+       \left|\frac{H_D^+(1728)}{H_D^-(1728)}\right|.
+       \label{cmgenus:eq:six}
+\end{align}
+Genus theory identifies the field of the factors $H_D^\pm$; these
+equations additionally account for the periods of the raw modular
+forms. Claiming a quadratic raw ratio requires verifying the root
+extraction. We now perform that step exactly.
+
+\subsection{The three recorded ratios, now theorems}
+
+The required character and unit data are as follows. A plus or minus
+sign attached to a form denotes its genus-character value.
+\begin{center}
+\begin{tabular}{@{}cclccc@{}}
+\toprule
+$D$&$(e,D_-)$&plus forms&$A_\varepsilon$&$u_e$&$\lambda_-$\\
+\midrule
+$-15$&$(5,-3)$&$(1,1,4)$&$1/2$&$(1+\sqrt5)/2$&$1/3$\\
+$-20$&$(5,-4)$&$(1,0,5)$&$1/2$&$(1+\sqrt5)/2$&$1/2$\\
+$-39$&$(13,-3)$&$(1,1,10),(3,3,4)$&$3/4$&$(3+\sqrt{13})/2$&$1/3$\\
+\bottomrule
+\end{tabular}
+\end{center}
+All the other reduced forms have minus sign. These signs can be
+checked by represented integers: at $D=-15$, the nonprincipal form
+represents $2$ and $\chi_5(2)=-1$; at $D=-20$, the nonprincipal form
+represents $7$ and $\chi_5(7)=-1$; at $D=-39$, the forms with $a=2$
+have $\chi_{13}(2)=-1$, whereas $(3,3,4)$ represents $10$ and
+$\chi_{13}(10)=1$.
+The class numbers $h(5)=h(13)=1$ follow from the real-quadratic
+Minkowski bound $\sqrt e/2<2$.
+The displayed units are fundamental: checking
+$x^2-ey^2=\pm4$ below their sizes leaves no smaller positive unit.
+
+The genus factors are explicitly
+\begin{align}
+ H_{-15}^{\pm}(X)
+ &=X+\frac{191025\pm85995\sqrt5}{2},
+       \label{cmgenus:eq:h15}\\
+ H_{-20}^{\pm}(X)
+ &=X-632000\mp282880\sqrt5,
+       \label{cmgenus:eq:h20}\\
+ H_{-39}^{\pm}(X)
+ &=X^2+(165765798\pm45975573\sqrt{13})X\notag\\
+ &\hspace{2em}+\frac{63399280527\pm17399806263\sqrt{13}}2.
+       \label{cmgenus:eq:h39}
+\end{align}
+Multiplication gives the certified $H_D$ polynomials of
+Section~\ref{cmnorm:sec:main}. The correspondence between these
+quadratic-field factors and the displayed genera is also certified:
+for each CM root, evaluate the other factor in a directed interval
+enclosure and exclude zero. The attached receipt records the exact
+rational interval endpoints, so the assignment is not a numerical
+guess about which radical sign to choose.
+
+\begin{theorem}[Exact weight-four genus ratios]
+\label{cmgenus:thm:four}
+With the character data in the table,
+\begin{align}
+ R_4(-15)&=\frac{(4+\sqrt5)^2}{44},
+       \label{cmgenus:eq:r415}\\
+ R_4(-20)&=\frac{29+12\sqrt5}{44},
+       \label{cmgenus:eq:r420}\\
+ R_4(-39)&=\frac{103299+4440\sqrt{13}}{181424}.
+       \label{cmgenus:eq:r439}
+\end{align}
+The first equation is an absolute-value ratio; the precise real-part
+version in the manuscript is
+\begin{equation}
+ \frac{G_4((1+i\sqrt{15})/2)}
+      {\operatorname{Re}G_4((1+i\sqrt{15})/4)}
+ =\frac{2(4+\sqrt5)^2}{77}.
+ \label{cmgenus:eq:recorded15}
+\end{equation}
+For $D=-20$ and $D=-39$, the positive products represented by
+$R_4(D)$ are exactly the products and ratios in the manuscript, without
+an additional phase factor.
+\end{theorem}
+
+\begin{proof}
+Substitute \eqref{cmgenus:eq:h15}--\eqref{cmgenus:eq:h39} and the table
+into \eqref{cmgenus:eq:four}. In each of the two quadratic fields,
+direct multiplication verifies that the cube of the claimed positive
+number is the right-hand side. For example, for $D=-20$ this is the
+explicit identity
+\[
+ \left(\frac{29+12\sqrt5}{44}\right)^3
+ =\frac1{64}\left(\frac{1+\sqrt5}{2}\right)^{-6}
+   \left|\frac{-632000-282880\sqrt5}
+                  {-632000+282880\sqrt5}\right|.
+\]
+The identical finite verification with exponents $-4$ and $-4$, and
+leading-coefficient ratios $1/2$ and $3/4$, proves the other two cases.
+The attached exact-arithmetic script verifies all three equalities in
+$\mathbb Q(\sqrt5)$ or $\mathbb Q(\sqrt{13})$ before any decimal
+evaluation. Positivity makes the cube root unique.
+
+For $D=-15$, the phase calculation of
+Section~\ref{cmnorm:sec:phase} gives
+$\operatorname{Re}G_4((1+i\sqrt{15})/4)
+=\tfrac78|G_4((1+i\sqrt{15})/4)|$.
+Multiplying \eqref{cmgenus:eq:r415} by $8/7$ proves
+\eqref{cmgenus:eq:recorded15}; translation by one and reflection in the
+imaginary axis account for the manuscript's positive-real-part
+representatives. The phase discussion in the preceding section also
+shows that the numerator and denominator genus products at $-20$ and
+$-39$ are positive: boundary representatives contribute positive real
+$G_4$, and the two interior representatives at $-39$ form a conjugate
+pair.
+\end{proof}
+
+This supplies the missing proofs for the ratios originally displayed
+in the manuscript's Results \texttt{cm:res:d15},
+\texttt{cm:res:d20}, and \texttt{cm:res:genus}.
+Combined with the proved total products, it also determines the
+individual absolute values at class number two, and the absolute
+products over each genus at class number four: if $T_w$ is the full
+positive product, the two genus products are
+$\sqrt{T_wR_w}$ and $\sqrt{T_w/R_w}$.
+
+\subsection{Three explicit weight-six identities}
+
+The same genus polynomials have further consequences beyond the
+recorded weight-four data.
+
+\begin{theorem}[Weight-six genus ratios]
+\label{cmgenus:thm:six}
+With the same genera and representatives,
+\begin{align}
+ R_6(-15)&=\frac{29+12\sqrt5}{88},
+       \label{cmgenus:eq:r615}\\
+ R_6(-20)&=\frac{601+252\sqrt5}{1672},
+       \label{cmgenus:eq:r620}\\
+ R_6(-39)&=\frac{1323+324\sqrt{13}}{1472}.
+       \label{cmgenus:eq:r639}
+\end{align}
+The last two again hold for the corresponding raw genus products.
+At discriminant $-15$ an explicit real-part identity is
+\begin{equation}
+ \frac{G_6((1+i\sqrt{15})/2)}
+      {\operatorname{Re}G_6((1+i\sqrt{15})/4)}
+ =\frac{2(29+12\sqrt5)}{121}.
+ \label{cmgenus:eq:real6}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Use \eqref{cmgenus:eq:six}. Exact arithmetic in the relevant quadratic
+field shows that its right-hand sides are, respectively,
+\begin{align*}
+ &\frac{1561+696\sqrt5}{7744}
+      =\left(\frac{29+12\sqrt5}{88}\right)^2,\\
+ &\frac{678721+302904\sqrt5}{2795584}
+      =\left(\frac{601+252\sqrt5}{1672}\right)^2,\\
+ &\frac{3115017+857304\sqrt{13}}{2166784}
+      =\left(\frac{1323+324\sqrt{13}}{1472}\right)^2.
+\end{align*}
+The roots on the right are positive. The valence formula gives the
+only zero of $E_6$ in the standard fundamental domain at $i$; none of
+the CM representatives under consideration is this point. Along the
+boundary rays $\operatorname{Re}\tau=0$ and
+$\operatorname{Re}\tau=-1/2$ above the relevant representatives,
+$E_6$ is real, has no zero, and tends to one at infinity, so its values
+are positive. Conjugate interior points again contribute a positive
+product. This proves the raw-product assertion at $-20,-39$.
+
+On the unit arc $|\tau|=1$ with
+$\pi/2<\arg\tau\leq2\pi/3$, modularity and conjugation imply that
+$\tau^3G_6(\tau)$ is real. It is positive at the hexagonal endpoint,
+where $\tau^3=1$ and $G_6>0$, and cannot change sign before $i$.
+Thus $G_6(\tau)=\tau^{-3}|G_6(\tau)|$ on this open arc. At
+$\tau=(-1+i\sqrt{15})/4$,
+\[
+ \tau^{-3}=\frac{11+3i\sqrt{15}}{16},\qquad
+ \operatorname{Re}G_6(\tau)=\frac{11}{16}|G_6(\tau)|.
+\]
+Reflection preserves the real part. Multiplying
+\eqref{cmgenus:eq:r615} by $16/11$ proves
+\eqref{cmgenus:eq:real6}.
+\end{proof}
+
+The quadratic norms provide useful exact checks:
+\[
+ N(R_4(-15))=N(R_4(-20))=\frac1{16},\qquad
+ N(R_4(-39))=\frac{81}{256},
+\]
+and
+\[
+ N(R_6(-15))=N(R_6(-20))=\frac1{64},\qquad
+ N(R_6(-39))=\frac{729}{4096}.
+\]
+These follow by conjugating $\sqrt e\mapsto-\sqrt e$ in the displayed
+exact formulas. The identities are explicit consequences of the
+classical genus-period mechanism; no assertion of historical priority
+for individual numerical evaluations is intended.
+
+% Insert after the weight-six genus-ratio subsection of cm_genus.tex.
+% Uses the reduced modular polynomial of newmodular:eq:reduced.
+
+\subsection{A fixed field contains all even-weight genus ratios}
+
+The low-weight identities imply a uniform field-degree theorem.
+For a fixed genus character, increasing the weight introduces no
+additional algebraic field extension beyond the two seed ratios.
+
+\begin{theorem}[Uniform algebraic degree of genus ratios]
+\label{cmgenus:thm:degree}
+Under the assumptions of Theorem~\ref{cmgenus:thm:allweights}, put
+$K=\mathbb Q(\sqrt e)$ and
+\[
+ \mathcal K_{D,\varepsilon}=K(R_4(D),R_6(D)).
+\]
+Then
+\[
+ [\mathcal K_{D,\varepsilon}:K]\leq6,
+ \qquad [\mathcal K_{D,\varepsilon}:\mathbb Q]\leq12,
+\]
+and every ratio $R_w(D)$ with even $w\geq4$ belongs to this
+same field. The degree bound is independent of $w$ and of the imaginary
+class number $h(D)$.
+\end{theorem}
+
+\begin{proof}
+The genus period ratio
+\[
+ B_{D,\varepsilon}=A_\varepsilon^6
+              u_e^{-12h(e)\lambda_-}
+\]
+belongs to $K$. Indeed,
+\[
+ 12h(e)\lambda_-=
+ \frac{24h(e)h(D_-)}{\omega(D_-)}\in\mathbb Z,
+\]
+because $\omega(D_-)$ is $2$, $4$, or $6$.
+Equations~\eqref{cmgenus:eq:four} and \eqref{cmgenus:eq:six} therefore
+give $R_4(D)^3\in K$ and $R_6(D)^2\in K$.
+The seed ratios are nonzero: $E_4$ vanishes only at the elliptic orbit
+of discriminant $-3$, and $E_6$ only at that of discriminant $-4$,
+whereas $D<-4$ is fundamental. Adjoining the two positive seed ratios
+has degree at most $3\cdot2=6$ over $K$.
+
+To prove that this one field suffices, use the reduced modular
+polynomial of \eqref{newmodular:eq:reduced}:
+\begin{equation}
+ E_w=E_4^aE_6^b\Delta^m P_w(j),\qquad
+ a\in\{0,1,2\},\quad b\in\{0,1\},\quad
+ w=4a+6b+12m,
+ \label{cmgenus:eq:smallpolynomial}
+\end{equation}
+where $m\geq0$ and $P_w\in\mathbb Q[X]$ is monic of degree $m$.
+The algebraic reason is short: the weight condition forces every
+monomial of $E_w\in\mathbb Q[E_4,E_6]$ to have exponents
+$a+3r,b+2s$ with $r+s=m$. Substituting
+$E_4^3=\Delta j$ and $E_6^2=\Delta(j-1728)$ gives the displayed
+form; the constant term $E_w=1+O(q)$ makes $P_w$ monic.
+
+The signed absolute product gives the formula without fractional
+root extraction
+\begin{equation}
+ R_w(D)=R_4(D)^aR_6(D)^b B_{D,\varepsilon}^{m}
+       \left|\frac{\operatorname{Res}(H_D^+,P_w)}
+                    {\operatorname{Res}(H_D^-,P_w)}\right|.
+ \label{cmgenus:eq:noroot}
+\end{equation}
+The resultant ratio is in $K$, because both genus factors have
+coefficients there. Its absolute value is also in $K$, which is a
+real field. The CM nonvanishing theorem makes every resultant at these points
+nonzero, so the quotient is defined at every even weight. This proves the field assertion.
+\end{proof}
+
+\begin{corollary}[Quadratic closure for the recorded discriminants]
+\label{cmgenus:cor:closure}
+For $D=-15,-20,-39$, every genus ratio $R_w(D)$ with even
+$w\geq4$ lies in $\mathbb Q(\sqrt5)$, $\mathbb Q(\sqrt5)$, or
+$\mathbb Q(\sqrt{13})$, respectively. Each is computable in that
+quadratic field using the reduced polynomial $P_w$, whose degree
+is at most $\lfloor w/12\rfloor$.
+\end{corollary}
+\begin{proof}
+Theorems~\ref{cmgenus:thm:four} and \ref{cmgenus:thm:six} place both
+seed ratios in the indicated quadratic field. Formula
+\eqref{cmgenus:eq:noroot} completes the proof.
+\end{proof}
+
+For example, $E_{14}=E_4^2E_6$ gives
+$R_{14}(D)=R_4(D)^2R_6(D)$.
+At weight $16$, $a=m=1,b=0$ and
+$P_{16}(X)=X-3456000/3617$, so
+\[
+ R_{16}(D)=R_4(D)B_{D,\varepsilon}
+    \left|\frac{H_D^+(3456000/3617)}
+                 {H_D^-(3456000/3617)}\right|.
+\]
+The equal degrees of the two genus factors cancel the signs in the
+linear-polynomial resultants. This formula, together with the three
+explicit pairs $H_D^\pm$, generates further exact quadratic identities
+using rational arithmetic alone.
+
+
+\subsection{Certificates and further directions}
+
+The companion \path{cm_genus.py} imports the directed-interval
+Lambert-series evaluator from \mbox{\texttt{cm\_norms.py}}. It first certifies
+the integral Hilbert polynomials, then verifies the displayed genus
+factorizations by exact symbolic multiplication. For every reduced
+form it records a represented integer witnessing the genus character,
+and proves that the opposite genus factor excludes zero at its CM
+$j$-value. It next checks the cubic and square identities exactly.
+The receipt \path{cm_genus_receipt.json} separates these proof steps
+from six ordinary 120-digit Fourier-series regressions. A second checker, \path{verify_genus_arithmetic.py}, independently verifies
+all six radical equalities and their positive-root choices using only exact
+standard-library rational arithmetic in the quadratic fields. The numerical regressions
+have relative discrepancies below $3.1\times10^{-120}$ and are
+independent consistency checks, not the justification for replacing
+the manuscript's numerical evidence by theorems.
+
+The genus theorem answers the three recorded ratio questions while
+leaving several precise extensions open for this project.
+\begin{enumerate}
+\item Extend the genus-ratio certificate to nonmaximal quadratic
+orders, including the local conductor factors in the twisted
+Kronecker factorization. The untwisted conductor correction proved
+earlier cannot simply be copied into a signed genus product.
+\item Beyond the three discriminants of Corollary~\ref{cmgenus:cor:closure},
+classify the discriminants and weights for which the raw ratio
+$R_w(D)$ itself belongs to $\mathbb Q(\sqrt e)$, rather than merely
+having a controlled algebraic power in that field. Exact root
+extraction and representative phases must be part of the statement.
+\item For class groups with several independent genus characters,
+combine their signed formulas by finite Fourier inversion to recover
+the product over every genus. This determines genus products but does
+not distinguish classes inside one genus.
+\item Investigate twists by nonreal class characters. Their Hecke
+$L$-functions no longer reduce to a pair of quadratic Dirichlet
+$L$-functions; the resulting period data measure exactly the
+information absent from genus theory.
+\end{enumerate}

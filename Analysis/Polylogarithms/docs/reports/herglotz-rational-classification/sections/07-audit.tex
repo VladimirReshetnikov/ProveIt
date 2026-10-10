@@ -1,0 +1,97 @@
+\section{An exact correction to a finite-field assertion}
+\label{sec:audit}
+
+The reviewed arXiv preprint of Radchenko--Zagier, version
+\texttt{2012.15805v1}, Section~7.2, printed page~16, includes the
+finite-field assertion
+\begin{equation}\label{eq:incorrect-cocycle}
+ \beta_p(n)=\beta_p(n+1)+\beta_p\bigl(n/(n+1)\bigr),
+\end{equation}
+where arguments are reduced modulo the prime $p$. The same statement
+appears in the author-hosted preprint checked for this report
+\cite{RZ}. For the exterior symbol defined in \eqref{eq:beta}, this
+assertion is false. The issue is not a decimal discrepancy or an
+unresolved branch convention: the obstruction is a nonzero rationalized
+exterior symbol.
+
+\begin{proposition}[Prime-seven counterexample]\label{prop:counterexample}
+At $p=7$ and $n=2$, the defect in \eqref{eq:incorrect-cocycle} is
+$3\beta_7(2)\ne0$.
+\end{proposition}
+\begin{proof}
+Modulo $7$ one has $2/3=3$, and $3\equiv-2^{-1}$. The valid
+symmetries \eqref{eq:symmetries} therefore give
+$\beta_7(3)=-\beta_7(2)$. Equation
+\eqref{eq:incorrect-cocycle} would say
+$\beta_7(2)=-2\beta_7(2)$.
+
+Here is an independent witness that $\beta_7(2)\ne0$, not relying on
+the full kernel theorem. Write
+\[
+ a=\cl{1-\zeta_7},\quad b=\cl{1-\zeta_7^2},\quad
+ c=\cl{1-\zeta_7^3}.
+\]
+Pairing $k$ and $-k$ in the definition gives
+\begin{equation}\label{eq:beta7-wedge}
+ \beta_7(2)=2(b\wedge a+c\wedge b+a\wedge c)
+          =-2(b-a)\wedge(c-a).
+\end{equation}
+Let
+\[
+ A=\log(2\sin(\pi/7)),\quad B=\log(2\sin(2\pi/7)),\quad
+ C=\log(2\sin(3\pi/7)).
+\]
+Since $0<\pi/7<2\pi/7<3\pi/7<\pi/2$, one has $A<B<C$.
+Take logarithmic absolute values at the two embeddings indexed by
+$1$ and $2$. The vectors corresponding to $b-a$ and $c-a$ are
+respectively
+\[
+ (B-A,C-B),\qquad(C-A,A-B).
+\]
+Their determinant is
+\begin{equation}\label{eq:det-witness}
+ -(B-A)^2-(C-B)(C-A)<0.
+\end{equation}
+Thus their exterior product has a nonzero image, proving
+\eqref{eq:beta7-wedge} nonzero. The defect is consequently
+$3\beta_7(2)$, as claimed.
+\end{proof}
+
+\subsection{Precise correction and unaffected statements}
+
+For the definition in \eqref{eq:beta}, the universal finite-field
+three-term identity \eqref{eq:incorrect-cocycle} should be removed.
+Any intended replacement involving an altered module, action or quotient
+would need a new statement and proof. It is not justified by applying
+rational Herglotz three-term relations directly to finite-field residues.
+
+The sign and inverse symmetries remain true. The rational boundary
+formula \eqref{eq:boundary-F} also remains true: it follows directly
+from finite products, as proved in Proposition~\ref{prop:boundary}.
+The current ProveIt manuscript already includes such a direct derivation
+and explicitly separates it from a finite-field cocycle claim. The
+new classification therefore does not inherit the erroneous premise.
+
+This correction is deliberately version-specific. It identifies the
+statement in the preprint pages actually inspected; it does not claim
+that all editions of the journal article, all subsequent corrections,
+or every cocycle construction in the paper have been checked. The
+analytic Hecke relation and the finite dilogarithm evaluations used in
+Section~\ref{sec:identities} do not use
+\eqref{eq:incorrect-cocycle} in their displayed proofs.
+
+\subsection{Editorial changes recommended for the manuscript}
+
+The next integration can replace the open general-$J(p/q)$ formal
+classification question with Theorem~\ref{thm:classification}, while
+retaining the separate numerical period question. The phrase
+``modulo $2e$'' should be preserved in every summary of the mixed-parity
+criterion; the pair $(8,3)$ is a useful regression test.
+
+The analytic identity \eqref{eq:neighbor} and the evaluation
+\eqref{eq:J35} can be placed immediately after the existing $J(2/q)$
+section. The finite-field caveat belongs beside the direct boundary
+calculation. The theorem ledger should mark the existing kernel theorem,
+the $K$-theory facts and the Hecke relation as prior inputs, not new
+results. No earlier Gaussian or $S_p$ conjecture should have its status
+changed as a side effect of this integration.
