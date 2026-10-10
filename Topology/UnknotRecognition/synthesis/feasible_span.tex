@@ -1,0 +1,134 @@
+\section{Complete Q support and effective matching dimension}
+\label{sec:feasible-span}
+
+The preceding generic Q phase makes a complete quadrilateral-corner list
+available when positive Euler characteristic fails to produce an essential
+disc. Report 81 already isolates forced-zero removal as an admission rule
+for lower-dimensional geometry (Section~\ref{sec:planar-overlay-refinements}).
+This continuation obtains the maximal feasible support from that completed
+list, recompiles the source matching kernel, and uses the effective dimension
+for standard enumeration. It also lets the independent checker verify this
+support information before rebuilding a smaller standard cone.
+
+\subsection{A completed ray list determines every forced-zero type}
+
+For the original allowed support write
+\[
+ C=\{q\in\mathbb R^k:q\ge0,\ A_\Sigma q=0\}.
+\]
+Let $r_1,\ldots,r_m$ be its complete primitive Q extreme directions and set
+\[
+ J=\{j:\text{some }(r_i)_j>0\}.
+\]
+The set $J$ is computed by scanning all coordinates in the completed list.
+Neither a successful early Q witness nor a capped or interrupted list
+provides the required completeness premise.
+
+\begin{proposition}[Maximal support from complete Q rays]
+Every feasible quadrilateral vector vanishes off $J$. Restricting the
+matching system to the coordinates in $J$ preserves the whole standard
+normal cone after reinstating those zero coordinates, including all
+non-link standard rays and their actual source coordinates. The restricted
+matching kernel equals the linear span of its feasible Q cone.
+\end{proposition}
+\begin{proof}
+The nonnegative matching cone is pointed. Its section $\sum_jq_j=1$ is
+compact, so every nonzero feasible vector is a conic combination of its
+extreme directions. Off-$J$ coordinates therefore vanish in every feasible
+vector. Conversely $q_* = \sum_i r_i$ is feasible and strictly positive
+on every coordinate in $J$. For any vector $u$ in the restricted matching
+kernel, sufficiently small positive $\epsilon$ makes both
+$q_*+\epsilon u$ and $q_*-\epsilon u$ nonnegative on $J$; their difference
+shows that $u$ lies in the feasible cone's linear span.
+Every feasible standard vector projects to a feasible Q vector, so its
+removed coordinates were already zero. Conversely reinstating these zeros
+in a feasible restricted standard vector preserves all original matching
+and nonnegativity equations. The two standard cones are thus linearly
+isomorphic. This isomorphism preserves extreme rays, including the vertex
+links; canonical normalization and the full source coordinates of each
+non-link ray also agree. No topology or component query is inferred from
+positive Euler characteristic alone.
+\end{proof}
+
+This implements the maximal-support conclusion of the report's LP theorem
+through a different available witness. It does not install a polynomial LP
+solver. Obtaining the complete Q list still costs the preceding generic
+Q search in the \emph{original} matching dimension. Recompilation costs are
+charged rather than hidden in a dimension parameter.
+
+\subsection{Adaptive recompilation after a completed positive Q phase}
+
+Automatic supplied-sector discovery above nullity three retains the existing
+Q-first policy. A verified disc returns immediately. A nonpositive complete
+Q phase returns its ordinary Q exclusion proof. Only
+\code{POSITIVE\_EULER\_ONLY} reaches the support step: all Q corners have
+been tested, and none supplied an essential disc.
+
+If $J$ is the full allowed support, the already prepared original kernel
+is reused. Otherwise the implementation rebuilds the supplied source kernel
+with exactly those allowed types in $J$. The ordinary automatic dispatcher
+then selects the envelope, planar, or generic standard method using this
+new kernel's actual nullity. No original coordinate is merely overwritten
+with a guessed zero; matching geometry is reconstructed from the source.
+The Q and standard phases retain their shared candidate allowance.
+Exhaustion in either phase is inconclusive, and interruptions in support
+scanning, recompilation or proof translation propagate.
+
+Statistics describe the kernel that performed the standard search. A
+\code{support\_reduction} record retains the requested kernel statistics,
+original-coordinate indices and number of removed types. A positive witness
+still contains the actual full triangulation coordinates and the original
+allowed type list; its existing disc proof suffices independently of the
+support optimization.
+
+\subsection{A source proof that still states the original sector}
+
+A negative standard result retains the existing
+\code{normal-sector-exhaustion-v1} schema, original source digest, original
+allowed types and standard phase. Its Q records are expanded to the original
+coordinate width by inserting the removed zeros. The optional
+\code{q\_support\_certificate} is the complete original Q-phase exhaustion
+proof with status \code{POSITIVE\_EULER\_ONLY}. The parent never substitutes
+a smaller requested sector for the original statement.
+
+The independent checker first validates that the nested proof has the same
+original source and allowed types, the Q phase and the required status.
+Nested support annotations inside it are rejected, so there is only one
+level of support proof. The checker then reconstructs and verifies the
+complete original Q list by its own dense elimination and reference
+enumeration. It derives $J$ from that authenticated list; it accepts no
+producer-supplied retained-index list. Only then does it independently
+rebuild and enumerate the restricted standard model, restore the original
+coordinate width, and compare every parent ray, Euler value and negative
+disc certificate against that model.
+
+A malformed or incomplete nested Q proof cannot license removing any
+coordinate. An old certificate without the annotation still follows the
+original full-source checker. Removing a valid annotation also produces a
+valid original full-sector certificate: its complete parent ray list and
+source statement are unchanged. The optimization therefore accelerates
+reconstruction rather than changing the negative statement's meaning.
+
+\subsection{Raw and effective dimensions have different costs}
+
+Let $d$ be the original matching nullity, $s$ the rebuilt nullity and $k_J$
+the retained support size. Once the complete Q list is available, finding
+$J$ costs $O(km)$ scalar inspections, with callbacks and bit access charged.
+The rebuilt kernel has nullity exactly the feasible Q span dimension $s$.
+Standard geometry consequently has the preceding
+$\operatorname{poly}(T+B)(1+k_J)^{O(s)}$ enumeration bound. For $s\le3$ the
+native low-dimensional routines apply; in particular the complete planar
+source ray count is quadratic in retained support size.
+
+The overall \emph{ray geometry} cost still includes the original Q phase,
+whose upper bound is
+$\operatorname{poly}(T+k+B)(1+k)^{d-1}$, plus support scanning, source
+recompilation and the reduced standard search. Independent Q reconstruction
+and proof reading likewise remain charged. Component queries, essentiality
+and their proof costs are separate obligations. A small effective dimension
+does not alone give a polynomial or quasi-polynomial total search when the
+original Q phase has uncontrolled dimension. The general centre, distance
+and hierarchy bounds required for unknot recognition remain unresolved.
+
+\subsection{Source oracles, proof mutations and complete timings}
+\input{feasible_span_results.tex}

@@ -3807,3 +3807,26 @@ optional window stage still defaults off; a general subexponential recognition
 bound remains unproved. Reproduce with
 `python -B -m normal_orbit_research.generic_euler sector-audit --fresh-regina --output /tmp/sector-audit.json`
 and the driver's `sector-benchmark`, `audit` and `benchmark` modes.
+
+After a completed positive Q phase finds no essential disc, automatic generic
+discovery now removes types absent from every Q ray and rebuilds the source
+kernel. It dispatches by the feasible matching dimension: 22 retained source
+sectors fall from nullity four to three and enter the planar producer, while
+two fall from five to four. All 188 source verdicts and full standard surfaces
+agree with the prior source oracles; fresh Regina enumerations confirm all
+65 sectors with forced-zero coordinates. Four return a Q witness early and
+61 receive recompilation. All 1,427 tests pass.
+
+Reduced negative certificates retain the original allowed support and
+full-width ray records. Their optional `q_support_certificate` is independently
+replayed on the original source before the checker derives the retained
+coordinates and reconstructs the reduced standard model. Incomplete or forged
+Q support cannot authorize dropping coordinates. Legacy certificates still
+use the full-source checker, and ordinary positive proof formats are unchanged.
+Complete source queries, including respective independent replay and serialized
+output, improve 3.86x and 23.86x on the measured dimension reductions; controls
+and a reduction without dimension change remain near parity. This is a local
+geometry improvement, with the original complete Q phase still charged. It
+does not establish general quasi-polynomial knot recognition. Reproduce with
+`python -B -m normal_orbit_research.feasible_span audit --fresh-regina --output /tmp/feasible-audit.json`
+and the driver's `benchmark` mode.

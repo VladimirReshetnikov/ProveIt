@@ -88,7 +88,8 @@ if '--publication'in sys.argv:
     (DATA/'feasible-span-latex.txt').write_text('\n'.join(line.rstrip()for line in log.splitlines()).rstrip()+'\n')
     paths=['synthesis/report.tex','synthesis/report.pdf','synthesis/feasible_span.tex','synthesis/feasible_span_results.tex',
         'synthesis/data/feasible_span_review.py','synthesis/data/feasible_span_tables.py',
-        'fast/README.md','synthesis/README.md']
+        'fast/README.md','synthesis/README.md','synthesis/planar_overlay_refinements.tex',
+        'synthesis/make_tables.py','synthesis/tables/feasible_span_queries.tex']
     result['publication_sha256']={p:sha256((ROOT/p).read_bytes()).hexdigest()for p in paths}
 (DATA/('feasible-span-review.json'if '--publication'in sys.argv else 'feasible-span-runtime-review.json')).write_text(json.dumps(result,indent=2)+'\n')
 print(json.dumps({k:v for k,v in result.items()if k not in ('publication_sha256','visual_review')}))
