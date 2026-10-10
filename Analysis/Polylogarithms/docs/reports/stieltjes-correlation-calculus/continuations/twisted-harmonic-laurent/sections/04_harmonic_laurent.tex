@@ -1,0 +1,677 @@
+\section{Shifted harmonic sums, beta derivatives, and exact Laurent data}
+\label{harm:sec:main}
+
+The all-order Stieltjes differentiation formulas in the manuscript have
+elementary symmetric harmonic coefficients.  Those coefficients can also
+be put inside a Dirichlet series.  This gives a second exact calculus:
+positive integer values are beta derivatives, whereas all principal parts
+and finite parts at nonpositive integers are finite polynomials.  The
+dependence on an arbitrary shift is retained throughout.
+
+There are important antecedents.  Young's parametric hyperharmonic Euler
+sums include the beta-derivative evaluation below
+\cite{Young2026}; his work on height-one multiple zeta functions supplies
+the unshifted generating-function framework \cite{Young2024}, and his
+earlier paper treats their unshifted Laurent expansions \cite{Young2023}.  Harmonic
+Stieltjes constants at depth one have a substantial separate literature
+\cite{HarmonicStieltjes2023}.  Accordingly, neither the beta method nor the
+unshifted height-one theory is asserted to be new.  The main continuation
+developed here is the all-depth coefficient rule for outer-shifted
+Laurent data at nonpositive integers, together with its polynomial shift
+calculus and the residue term required when finite parts are
+differentiated.  These formulas were not located in the inspected
+repository sources; no claim of priority over all literature is made.
+
+\subsection{Definitions and a single two-variable family}
+
+Put $A=a+1$ and initially assume $\Re a>-1$.  Write
+\begin{equation}\label{harm:eq:elementary}
+ e_r(N)=[u^r]\prod_{j=1}^{N}\left(1+\frac uj\right),
+ \qquad e_0(N)=1,
+ \qquad e_r(N)=0\quad(r>N).
+\end{equation}
+Thus $e_r(N)=H_N(\{1\}^r)$ is the strict multiple harmonic sum, and
+\begin{align*}
+ e_1(N)&=H_N,\\
+ e_2(N)&=\frac{H_N^2-H_N^{(2)}}2,\\
+ e_3(N)&=\frac{H_N^3-3H_NH_N^{(2)}+2H_N^{(3)}}6.
+\end{align*}
+The main family is
+\begin{equation}\label{harm:eq:E}
+ E_r(s;a)=\sum_{n=1}^{\infty}\frac{e_r(n-1)}{(n+a)^s},
+ \qquad r\geq0,\quad \Re s>1.
+\end{equation}
+The power uses the principal logarithm; $n+a$ lies in the right half-plane.
+For $a=0$, this is $\zeta(s,\{1\}^r)$, and for $r=0$ it is
+$\zeta(s,A)$.  The shift affects only the outer denominator.  In
+particular, for general $a$ this is not the harmonic Hurwitz function
+in which every inner denominator is shifted as well.
+
+The bound $e_r(n-1)\leq H_{n-1}^r/r!$ proves normal convergence of
+\eqref{harm:eq:E} on compact subsets of the displayed domain.  To keep
+all depths together, define
+\begin{equation}\label{harm:eq:F}
+ F(s,u;a)=\sum_{n=1}^{\infty}
+ \frac{\Gamma(n+u)}{\Gamma(n)\Gamma(1+u)}\frac1{(n+a)^s}.
+\end{equation}
+For $u$ near zero and $\Re s>1+|u|$, the defining series is normally
+convergent.  The quotient in the numerator is the polynomial
+$\prod_{j=1}^{n-1}(1+u/j)$, so
+\begin{equation}\label{harm:eq:coeff}
+ F(s,u;a)=\sum_{r\geq0}E_r(s;a)u^r.
+\end{equation}
+Equivalently, $F$ is the Barnes--Hurwitz zeta function with complex
+order $1+u$, in the convention used in \cite{Young2024}.
+
+\begin{proposition}[Mellin representations]\label{harm:prop:mellin}
+In a common domain of absolute convergence,
+\begin{align}
+ \Gamma(s)F(s,u;a)
+ &=\int_0^{\infty}t^{s-1}e^{-At}
+                  (1-e^{-t})^{-1-u}\,dt,\label{harm:eq:mellinF}\\
+ E_r(s;a)
+ &=\frac1{r!\Gamma(s)}\int_0^1
+       \frac{x^a(-\log x)^{s-1}[-\log(1-x)]^r}{1-x}\,dx.
+       \label{harm:eq:mellinE}
+\end{align}
+For fixed $r$, the second integral converges for $\Re s>1$ and
+$\Re a>-1$.
+\end{proposition}
+\begin{proof}
+The binomial series gives
+\[
+ \sum_{n\geq1}\frac{\Gamma(n+u)}{\Gamma(n)\Gamma(1+u)}x^n
+       =\frac{x}{(1-x)^{1+u}}.
+\]
+Multiply by $x^{a-1}(-\log x)^{s-1}$ and integrate.  Absolute
+convergence permits termwise integration, and the integral of the
+$n$th term is $\Gamma(s)(n+a)^{-s}$.  The substitution $x=e^{-t}$
+gives \eqref{harm:eq:mellinF}; coefficient extraction in $u$ gives
+\eqref{harm:eq:mellinE}.  At $x=1$, its absolute integrand is bounded
+by a constant times
+$(1-x)^{\Re s-2}(1+|\log(1-x)|^r)$, which is integrable for
+$\Re s>1$.  At zero, $\Re a>-1$ suffices.
+\end{proof}
+
+This also gives a direct polylogarithmic interpretation, since
+\[
+ \operatorname{Li}_{\{1\}^{r+1}}(x)
+ =\frac{[-\log(1-x)]^{r+1}}{(r+1)!},\qquad
+ \frac{d}{dx}\operatorname{Li}_{\{1\}^{r+1}}(x)
+ =\frac{[-\log(1-x)]^r}{r!(1-x)}.
+\]
+Thus \eqref{harm:eq:mellinE} is the Mellin transform of a derivative
+of a multiple polylogarithm of arbitrary depth.
+
+\subsection{Positive integer values and their antiderivatives}
+
+Define generalized harmonic functions by
+\begin{equation}\label{harm:eq:Hcomplex}
+ H_a^{(1)}=\psi(A)+\gamma,\qquad
+ H_a^{(k)}=\zeta(k)-\zeta(k,A)\quad(k\geq2).
+\end{equation}
+They agree with the usual finite harmonic numbers at nonnegative
+integer $a$.  Introduce
+\begin{equation}\label{harm:eq:R}
+ R_a(u)=\frac{\Gamma(1-u)\Gamma(A)}{\Gamma(A-u)}
+       =\exp\left(\sum_{k\geq1}\frac{H_a^{(k)}}k u^k\right)
+       =\sum_{d\geq0}h_d(a)u^d.
+\end{equation}
+Here $h_d(a)$ is a complete symmetric harmonic polynomial:
+\begin{equation}\label{harm:eq:hrec}
+ h_0(a)=1,\qquad
+ d\,h_d(a)=\sum_{k=1}^d H_a^{(k)}h_{d-k}(a).
+\end{equation}
+For example,
+\[
+ h_1=H_a^{(1)},\quad
+ h_2=\frac{(H_a^{(1)})^2+H_a^{(2)}}2,\quad
+ h_3=\frac{(H_a^{(1)})^3+3H_a^{(1)}H_a^{(2)}+2H_a^{(3)}}6.
+\]
+The plus signs distinguish these polynomials from the elementary
+coefficients $e_r(N)$ in the summand.
+
+\begin{theorem}[Subtracted beta identity and all positive integer values]
+\label{harm:thm:beta}
+For $r\geq0$ and $\Re a>-1$,
+\begin{equation}\label{harm:eq:primitive}
+ \boxed{\quad
+ h_{r+1}(a)=\sum_{n\geq1}e_r(n-1)
+           \left(\frac1n-\frac1{n+a}\right).
+ \quad}
+\end{equation}
+For every integer $p\geq2$,
+\begin{equation}\label{harm:eq:positive}
+ \boxed{\quad
+ E_r(p;a)=\frac{(-1)^p}{(p-1)!}
+               \frac{d^{p-1}}{da^{p-1}}h_{r+1}(a).
+ \quad}
+\end{equation}
+Equivalently, as an analytic germ at $(x,u)=(0,0)$,
+\begin{equation}\label{harm:eq:betaG}
+ \sum_{p\geq2}\sum_{r\geq0}E_r(p;a)x^{p-1}u^r
+       =B(A-x,-u)-B(A,-u).
+\end{equation}
+The poles of the individual beta factors at $u=0$ cancel in this
+difference.
+\end{theorem}
+\begin{proof}
+Initially take $\Re u<0$.  The beta integral and
+\eqref{harm:eq:mellinF} at $s=1$ give
+\[
+ F(1,u;a)=B(A,-u)=-\frac{R_a(u)}u,
+ \qquad F(1,u;0)=-\frac1u.
+\]
+The difference of their series is normally convergent also for $u$
+near zero: its $n$th term is $O(n^{|u|-2})$ on compact $a$-sets.
+Consequently
+\[
+ \sum_{n\geq1}\prod_{j<n}(1+u/j)
+       \left(\frac1n-\frac1{n+a}\right)
+          =\frac{R_a(u)-1}{u}
+\]
+extends holomorphically through $u=0$.  Compare coefficients to
+obtain \eqref{harm:eq:primitive}.  Normal convergence permits
+$p-1$ derivatives in $a$, giving \eqref{harm:eq:positive}.
+
+For an independent verification of the bivariate formula, sum
+\eqref{harm:eq:mellinE} first over $p\geq2$ and then over $r$.
+The result is the convergent integral
+\[
+ \int_0^1x_0^{A-1}(x_0^{-x}-1)(1-x_0)^{-1-u}\,dx_0.
+\]
+For $|x|$ sufficiently small and $|u|<1/2$, it is integrable at
+both endpoints.  In the subdomain $\Re u<0$ it is a difference of
+two beta integrals.  Analytic continuation across $u=0$ proves
+\eqref{harm:eq:betaG} without separating divergent integrals there.
+Finally, Taylor expansion of $\log\Gamma$ proves \eqref{harm:eq:R},
+and logarithmic differentiation gives \eqref{harm:eq:hrec}.
+\end{proof}
+
+Formula \eqref{harm:eq:positive} is a specialization and explicit
+coefficient implementation of the established parametric beta theory
+\cite{Young2026}.  Its useful feature for this manuscript is that it
+simultaneously evaluates infinitely many nonlinear harmonic combinations
+and gives their antiderivatives.  In particular,
+$\int E_r(2;a)\,da=h_{r+1}(a)+C$.
+
+Put $Z_k=\zeta(k,A)$ and $H=H_a^{(1)}$.  Since
+$\partial_a H_a^{(k)}=kZ_{k+1}$, the first outer exponent has the
+especially short all-depth expression
+\begin{equation}\label{harm:eq:second}
+ E_r(2;a)=\sum_{k=1}^{r+1} Z_{k+1}h_{r+1-k}(a).
+\end{equation}
+For example,
+\begin{align}
+ E_1(2;a)&=HZ_2+Z_3,\label{harm:eq:examples1}\\
+ E_2(2;a)&=h_2(a)Z_2+HZ_3+Z_4,\\
+ E_1(3;a)&=HZ_3+\frac32Z_4-\frac12Z_2^2,\\
+ E_2(3;a)&=h_2(a)Z_3+\frac32HZ_4+2Z_5
+                   -\frac12HZ_2^2-Z_2Z_3.\label{harm:eq:examples4}
+\end{align}
+At $a=0$, \eqref{harm:eq:second} recovers
+$\zeta(2,\{1\}^r)=\zeta(r+2)$; the next two examples give
+$\zeta(3,1)=\zeta(4)/4$ and
+$\zeta(3,1,1)=2\zeta(5)-\zeta(2)\zeta(3)$.
+
+\subsection{An all-depth cyclotomic projection}
+
+Use the convention
+\[
+ \operatorname{Li}_{p,\{1\}^r}(z_0,z_1,\ldots,z_r)
+ =\sum_{m_0>m_1>\cdots>m_r\geq1}
+   \frac{z_0^{m_0}z_1^{m_1}\cdots z_r^{m_r}}
+        {m_0^p m_1\cdots m_r}.
+\]
+For $p\geq2$ this series is absolutely convergent when all the
+$z_j$ are roots of unity.
+
+\begin{corollary}[Explicit reduction of a cyclotomic average]
+\label{harm:cor:cyclotomic}
+Let $q\geq1$, $1\leq h\leq q$, $\omega=e^{2\pi i/q}$, and
+$a=h/q-1$.  For every $p\geq2$ and $r\geq0$,
+\begin{equation}\label{harm:eq:projection}
+ \sum_{j_0,\ldots,j_r=0}^{q-1}\omega^{-hj_0}
+ \operatorname{Li}_{p,\{1\}^r}
+       (\omega^{j_0},\ldots,\omega^{j_r})
+ =q^{1-p}\frac{(-1)^p}{(p-1)!}
+            h_{r+1}^{(p-1)}(h/q-1).
+\end{equation}
+Every value on the right reduces to depth-one polylogarithms at
+$q$th roots of unity and logarithms.  This is a reduction of the
+specified average; it makes no assertion that its individual colored
+summands all reduce to depth one.
+\end{corollary}
+\begin{proof}
+In \eqref{harm:eq:E}, set $m_0=q(n-1)+h$ and $m_i=qk_i$ for the
+indices $n-1\geq k_1>\cdots>k_r\geq1$ in $e_r(n-1)$.  This gives
+\[
+ E_r(p;h/q-1)=q^{p+r}
+ \sum_{\substack{m_0>\cdots>m_r\geq1\\
+                  m_0\equiv h\ (q),\ m_i\equiv0\ (q),\ i\geq1}}
+ \frac1{m_0^p m_1\cdots m_r}.
+\]
+Insert the finite Fourier filters for the $r+1$ congruences and
+apply \eqref{harm:eq:positive}.  To make the depth-one reduction
+explicit, one has, for $k\geq2$,
+\begin{align}
+ \zeta(k,h/q)
+ &=q^{k-1}\sum_{j=0}^{q-1}\omega^{-hj}
+                       \operatorname{Li}_k(\omega^j),
+                       \label{harm:eq:fourierZ}\\
+ H_{h/q-1}^{(1)}
+ &=-\log q+\sum_{j=1}^{q-1}\omega^{-hj}\log(1-\omega^j).
+                       \label{harm:eq:fourierH}
+\end{align}
+The first identity follows by grouping a Dirichlet series into residue
+classes.  Expand the same identity at spectral argument $1$ to obtain
+the second, using $\operatorname{Li}_1(z)=-\log(1-z)$ with principal
+logarithms.  Complex conjugate terms have conjugate logarithms, so
+\eqref{harm:eq:fourierH} is real.  Formula \eqref{harm:eq:Hcomplex}
+and the recurrence \eqref{harm:eq:hrec} finish the reduction.
+\end{proof}
+
+For a concrete nonlinear family, let $L=\log2$.  Specializing to
+$a=-1/2$ gives
+\begin{align}
+ \sum_{n\geq0}\frac{H_n}{(2n+1)^2}
+ &=\frac{7\zeta(3)-\pi^2L}{4},\label{harm:eq:odd1}\\
+ \sum_{n\geq0}\frac{H_n^2-H_n^{(2)}}{(2n+1)^2}
+ &=\frac{\pi^2L^2}{2}-7L\zeta(3)+\frac{\pi^4}{24},
+                       \label{harm:eq:odd2}\\
+ \sum_{n\geq0}\frac{H_n^3-3H_nH_n^{(2)}+2H_n^{(3)}}{(2n+1)^2}
+ &=\frac32\bigl[31\zeta(5)-13\zeta(2)\zeta(3)-15L\zeta(4)
+             \notag\\
+ &\hspace{1.2cm}+14L^2\zeta(3)-4L^3\zeta(2)\bigr].
+                       \label{harm:eq:odd3}
+\end{align}
+All three are instances of one identity, valid as a germ at $u=0$:
+\begin{equation}\label{harm:eq:oddall}
+ \sum_{r\geq0}u^r\sum_{n\geq0}\frac{e_r(n)}{(2n+1)^2}
+ =\frac{\sqrt\pi\,\Gamma(1-u)}{4u\,\Gamma(1/2-u)}
+       \bigl[\psi(1/2)-\psi(1/2-u)\bigr].
+\end{equation}
+This yields arbitrary degree in the harmonic numbers, with no
+integer-relation search.  Assigning weight $k$ to $H_a^{(k)}$ and
+$\zeta(k,A)$ makes \eqref{harm:eq:positive} homogeneous of weight
+$p+r$; the rational Fourier reduction preserves this weight.
+
+\subsection{Meromorphic continuation with a uniform remainder}
+
+The same family gives exact spectral data beyond the half-plane where
+its Dirichlet series converges.  Define polynomials $b_k(u,a)$ by
+\begin{equation}\label{harm:eq:bdef}
+ \phi(t,u,a):=e^{-At}
+       \left(\frac{t}{1-e^{-t}}\right)^{1+u}
+       =\sum_{k\geq0}b_k(u,a)t^k.
+\end{equation}
+The branch at $t=0$ is the analytic one taking value $1$.  Equivalently,
+in the standard generalized Bernoulli-polynomial notation,
+\[
+ b_k(u,a)=\frac{B_k^{(1+u)}(u-a)}{k!}.
+\]
+It is enough to use the defining series; no properties of generalized
+Bernoulli polynomials are assumed.  In particular,
+\begin{align}
+ b_0&=1,\\
+ b_1&=\frac{u-2a-1}{2},\label{harm:eq:b1}\\
+ b_2&=\frac{12a^2-12au+12a+3u^2-7u+2}{24},\label{harm:eq:b2}\\
+ b_3&=\frac{(u-2a-1)(4a^2-4au+4a+u^2-3u)}{48}.
+                       \label{harm:eq:b3}
+\end{align}
+Each $b_k$ is a rational polynomial in $a,u$, of degree at most $k$
+in each variable.
+
+\begin{lemma}[Uniform Mellin subtraction]\label{harm:lem:subtract}
+Fix a compact subset of $\Re a>-1$ and a sufficiently small disc of
+$u$-values around zero.  For every integer $K\geq1$,
+\begin{equation}\label{harm:eq:subtraction}
+ \Gamma(s)F(s,u;a)
+   =\sum_{k=0}^{K-1}\frac{b_k(u,a)}{s-1-u+k}
+       +J_K(s,u;a),
+\end{equation}
+where $J_K$ is jointly holomorphic on
+$\Re s>1+\Re u-K$.  Therefore $F$ extends meromorphically to all
+$s$, locally in $u$, and $E_r(s;a)=[u^r]F(s,u;a)$ has possible
+poles only at $s=1,0,-1,-2,\ldots$.
+\end{lemma}
+\begin{proof}
+Split \eqref{harm:eq:mellinF} at $t=1$, and define
+\begin{align*}
+ J_K(s,u;a)={}&\int_0^1 t^{s-2-u}
+       \left(\phi(t,u,a)-\sum_{k=0}^{K-1}b_k(u,a)t^k\right)dt\\
+ &+\int_1^{\infty}t^{s-1}e^{-At}
+                  (1-e^{-t})^{-1-u}\,dt.
+\end{align*}
+The parenthesized remainder is $O(t^K)$ uniformly on the fixed
+parameter sets.  Every derivative in $s$ or $u$ introduces only a
+fixed power of $\log t$ near zero, so it remains integrable on compact
+subsets of $\Re s>1+\Re u-K$.  The second integral and all its
+parameter derivatives decay exponentially at infinity because
+$\Re A$ stays positive.  Differentiation under both integrals proves
+joint holomorphy.  Integrating each subtracted monomial gives
+\eqref{harm:eq:subtraction}.  Increasing $K$ continues the same
+function, since all formulas agree on the original convergence
+domain.  Finally, $1/\Gamma(s)$ is entire; coefficient extraction
+in $u$ can turn the simple moving denominators into higher poles
+at the stated integers, and introduces no others.
+\end{proof}
+
+\subsection{The complete principal part and finite part at \texorpdfstring{$s=1$}{s=1}}
+
+Write
+\begin{equation}\label{harm:eq:c}
+ C(u)=\frac1{\Gamma(1+u)}=\sum_{j\geq0}c_ju^j
+ =\exp\left(\gamma u+
+       \sum_{k\geq2}\frac{(-1)^{k+1}\zeta(k)}k u^k\right).
+\end{equation}
+Thus $c_0=1$, $c_1=\gamma$,
+$c_2=(\gamma^2-\zeta(2))/2$, and
+$c_3=(\gamma^3-3\gamma\zeta(2)+2\zeta(3))/6$.
+The finite part $\operatorname{FP}_{s=s_0}$ always means the
+coefficient of $(s-s_0)^0$ in the Laurent expansion of the specified
+meromorphic function.
+
+\begin{theorem}[All depths at the principal pole]\label{harm:thm:one}
+For $r\geq0$ and $\Re a>-1$, as $\varepsilon\to0$,
+\begin{equation}\label{harm:eq:one}
+ \boxed{\quad
+ E_r(1+\varepsilon;a)
+ =\sum_{j=0}^{r}\frac{c_j}{\varepsilon^{r+1-j}}
+       +c_{r+1}-h_{r+1}(a)+O(\varepsilon).
+ \quad}
+\end{equation}
+In particular, all principal coefficients are independent of the
+shift, while the complete shift dependence of the finite part is
+the single complete harmonic polynomial $-h_{r+1}(a)$.
+\end{theorem}
+\begin{proof}
+First take $a=0$.  With $K=1$, the singular term in
+\eqref{harm:eq:subtraction} near $(s,u)=(1,0)$ is $1/(s-1-u)$.
+Consequently
+\[
+ F(s,u;0)=\frac{1}{\Gamma(1+u)(s-1-u)}+Q(s,u),
+\]
+with $Q$ jointly holomorphic there: replacing $1/\Gamma(s)$ by
+$1/\Gamma(1+u)$ in the singular numerator changes the expression
+by a holomorphic divided difference.  For $s=1$ and small
+$\Re u<0$, the beta integral gives $F(1,u;0)=-1/u$, and hence
+\[
+ Q(1,u)=\frac{C(u)-1}{u}.
+\]
+The right side extends holomorphically to $u=0$.  Extracting
+$[u^r]$ from $C(u)/(\varepsilon-u)$ gives exactly
+$\sum_{j=0}^{r}c_j\varepsilon^{-r-1+j}$, and extracting it from
+$Q(1,u)$ gives $c_{r+1}$.
+
+For arbitrary $a$, the difference
+\[
+ E_r(s;a)-E_r(s;0)
+   =\sum_{n\geq1}e_r(n-1)
+               \bigl((n+a)^{-s}-n^{-s}\bigr)
+\]
+is normally convergent for $\Re s>0$, locally uniformly in $a$.
+At $s=1$ it equals $-h_{r+1}(a)$ by
+\eqref{harm:eq:primitive}.  This leaves the principal part unchanged
+and gives the stated finite part.
+\end{proof}
+
+For example,
+\begin{align}
+ \operatorname{FP}_{s=1}E_0(s;a)&=-\psi(A),\\
+ \operatorname{FP}_{s=1}E_1(s;a)
+ &=\frac{\gamma^2-\zeta(2)-(H_a^{(1)})^2-H_a^{(2)}}2,\\
+ \operatorname{FP}_{s=1}E_2(s;a)
+ &=\frac{\gamma^3-3\gamma\zeta(2)+2\zeta(3)}6-h_3(a).
+\end{align}
+The first line is the usual zeroth generalized Stieltjes constant.
+For higher depths, the corresponding zeroth constants are just as
+explicit.  This does not imply such a reduction for all higher
+Laurent coefficients.
+
+\subsection{Every nonpositive integer: a finite exact coefficient rule}
+
+\begin{theorem}[Principal and finite Laurent data at nonpositive integers]
+\label{harm:thm:negative}
+Let $m,r\geq0$, and define
+\begin{equation}\label{harm:eq:A}
+ \mathcal A_m(u,a)=\frac{b_{m+1}(u,a)}{\Gamma(u-m)}
+                =\sum_{d\geq1}A_{m,d}(a)u^d.
+\end{equation}
+Then
+\begin{equation}\label{harm:eq:negative}
+ \boxed{\quad
+ E_r(-m+\varepsilon;a)
+  =\sum_{h=0}^{r}A_{m,r+1-h}(a)\varepsilon^{-h}
+        +O(\varepsilon).
+ \quad}
+\end{equation}
+In particular,
+\begin{equation}\label{harm:eq:FPnegative}
+ \operatorname{FP}_{s=-m}E_r(s;a)
+       =[u^{r+1}]\frac{b_{m+1}(u,a)}{\Gamma(u-m)}.
+\end{equation}
+All coefficients displayed in \eqref{harm:eq:negative} belong to
+$\mathbb Q[a,\gamma,\zeta(2),\ldots,\zeta(r)]$, with the obvious
+interpretation for $r=0,1$.  The highest possible pole coefficient is
+\begin{equation}\label{harm:eq:leadingpole}
+ A_{m,1}(a)=\zeta(-m,A).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Choose $K>m+1$ in Lemma~\ref{harm:lem:subtract}.  Near
+$(s,u)=(-m,0)$, precisely one of its denominators can vanish:
+the one with $k=m+1$.  Thus, putting $s=-m+\varepsilon$,
+\[
+ F(-m+\varepsilon,u;a)
+  =\frac{b_{m+1}(u,a)}{\Gamma(-m+\varepsilon)(\varepsilon-u)}
+       +\frac{Q_m(\varepsilon,u;a)}{\Gamma(-m+\varepsilon)},
+\]
+where $Q_m$ is jointly holomorphic.  Since $1/\Gamma(-m+\varepsilon)$
+has a simple zero at $\varepsilon=0$, the second term contributes
+$O(\varepsilon)$ after extracting any fixed coefficient in $u$.
+Write
+\[
+ b_{m+1}(u,a)=\sum_{j\geq0}b_{m+1,j}(a)u^j,
+ \qquad \frac1{\Gamma(-m+\varepsilon)}
+              =\sum_{\ell\geq1}g_{m,\ell}\varepsilon^\ell.
+\]
+Coefficient extraction from the singular term gives
+\[
+ \left(\sum_{\ell\geq1}g_{m,\ell}\varepsilon^\ell\right)
+       \sum_{j=0}^r b_{m+1,j}(a)\varepsilon^{-r+j-1}.
+\]
+Its coefficient at $\varepsilon^{-h}$ is
+$\sum_{j=0}^{r-h}b_{m+1,j}(a)g_{m,r+1-h-j}$, which is exactly
+$[u^{r+1-h}]\mathcal A_m(u,a)$.  This proves
+\eqref{harm:eq:negative}.
+
+The reciprocal-gamma factor has the explicit harmonic expansion
+\begin{equation}\label{harm:eq:recipgamma}
+ \frac1{\Gamma(u-m)}=(-1)^m m!\,u
+ \exp\left((\gamma-H_m)u+
+   \sum_{k\geq2}\frac{(-1)^{k+1}\zeta(k)-H_m^{(k)}}k u^k\right).
+\end{equation}
+Indeed, multiply $1/\Gamma(1+u)$ by
+$u\prod_{j=1}^m(u-j)$ and expand its logarithm after removing
+$(-1)^m m!u$.  The finite coefficient rule now proves the claimed
+polynomial ring.  Finally,
+$b_{m+1}(0,a)=B_{m+1}(-a)/(m+1)!$ and
+$g_{m,1}=(-1)^m m!$.  Bernoulli reflection and
+$\zeta(-m,A)=-B_{m+1}(A)/(m+1)$ give
+\eqref{harm:eq:leadingpole}.
+\end{proof}
+
+For a generic shift, the pole at $s=-m$ has order $r$ when $r\geq1$.
+At a zero of $\zeta(-m,A)$ its order drops.  Thus the familiar
+absence of negative even poles for the depth-one unshifted harmonic
+zeta function is part of an all-depth cancellation rule: at $a=0$
+and positive even $m$, the pole order is at most $r-1$.  The formula
+determines whether further cancellations occur.
+
+No divergent series is assigned an ordinary sum here.  The values in
+\eqref{harm:eq:FPnegative} are finite Laurent coefficients of a
+specified meromorphic continuation.  Nor can they be computed by
+first setting $s=-m$ in $F$ at a nonzero $u$ and then differentiating:
+the moving divisor $\varepsilon-u=0$ makes those operations
+incompatible at their intersection.
+
+\subsection{Small exact tables and differentiation of finite parts}
+
+At $s=0$, \eqref{harm:eq:b1} makes the whole finite-part family
+particularly simple.  With $c_{-1}=0$,
+\begin{equation}\label{harm:eq:zeroall}
+ \operatorname{FP}_{s=0}E_r(s;a)
+       =\frac12c_{r-1}-\left(a+\frac12\right)c_r.
+\end{equation}
+More generally every finite part at $s=-m$ is a polynomial in $a$
+of degree at most $m+1$.  The first unshifted examples are shown in
+Table~\ref{harm:tab:FP}; only finite parts, not complete Laurent
+series, are tabulated.
+
+\begin{table}[htbp]
+\centering
+\small
+\renewcommand{\arraystretch}{1.6}
+\begin{tabular}{c|ccc}
+ & $s=0$ & $s=-1$ & $s=-2$\\\hline
+ $r=0$ & $-\tfrac12$ & $-\tfrac1{12}$ & $0$\\
+ $r=1$ & $\tfrac{1-\gamma}{2}$ & $\tfrac{9-2\gamma}{24}$ & $\tfrac18$\\
+ $r=2$ & $\tfrac{-\gamma^2+2\gamma+\zeta(2)}4$
+       & $\tfrac{-\gamma^2+9\gamma+\zeta(2)-10}{24}$
+       & $\tfrac{6\gamma-17}{48}$
+\end{tabular}
+\caption{Exact finite parts of $E_r(s;0)$ from the single
+coefficient rule \eqref{harm:eq:FPnegative}.}
+\label{harm:tab:FP}
+\end{table}
+
+For example, the complete displayed portion at a point where the
+highest possible pole cancels is
+\begin{align}
+ E_3(-2+\varepsilon;0)
+  ={}&\frac1{8\varepsilon^2}
+       +\frac{6\gamma-17}{48\varepsilon}
+       +\frac{3\gamma^2-17\gamma-3\zeta(2)+17}{48}
+       +O(\varepsilon).\label{harm:eq:cancelledexample}
+\end{align}
+
+There is a necessary residue correction when finite parts are
+differentiated.  Denote
+\[
+ C_{m,r}(a)=\operatorname{FP}_{s=-m}E_r(s;a)\quad(m\geq0),
+ \qquad C_{-1,r}(a)=\operatorname{FP}_{s=1}E_r(s;a),
+\]
+and let $R_{m,r}(a)$ denote the residue at $s=-m$, also for $m=-1$.
+
+\begin{corollary}[Differentiation with its residue term]
+\label{harm:cor:residue}
+For $m\geq0$,
+\begin{equation}\label{harm:eq:residuecorrection}
+ C_{m,r}'(a)=mC_{m-1,r}(a)-R_{m-1,r}(a).
+\end{equation}
+In particular $C_{0,r}'(a)=-c_r$.
+\end{corollary}
+\begin{proof}
+Normal convergence first gives
+$\partial_a E_r(s;a)=-sE_r(s+1;a)$ for $\Re s>1$;
+Lemma~\ref{harm:lem:subtract} continues the identity meromorphically.
+Put $s=-m+\varepsilon$.  The constant term of
+$(m-\varepsilon)E_r(1-m+\varepsilon;a)$ is
+$mC_{m-1,r}-R_{m-1,r}$, even if the latter function has higher
+order poles.  Taking the constant coefficient commutes with
+$a$-differentiation by joint meromorphy on compact shift domains.
+At $m=0$, Theorem~\ref{harm:thm:one} gives $R_{-1,r}=c_r$,
+in agreement with \eqref{harm:eq:zeroall}.
+\end{proof}
+
+There is also a direct coefficient-level verification.  Since
+$\partial_a b_{m+1}(u,a)=-b_m(u,a)$ and
+$\Gamma(u-m+1)=(u-m)\Gamma(u-m)$,
+\[
+ \partial_a\mathcal A_m(u,a)=(m-u)\mathcal A_{m-1}(u,a),
+ \qquad m\geq1.
+\]
+Taking the coefficient of $u^{r+1}$ gives exactly
+\eqref{harm:eq:residuecorrection}; the case $m=0$ is
+\eqref{harm:eq:zeroall}.
+
+Dropping the residue in \eqref{harm:eq:residuecorrection} would,
+already at $m=0$, incorrectly predict a constant function of $a$.
+This is a correction to a tempting manipulation, rather than an
+assertion that the inspected manuscript makes that error.
+
+\subsection{Higher Stieltjes coefficients and the precise scope of reduction}
+
+Define the higher shifted height-one constants by
+\begin{equation}\label{harm:eq:Stieltjes}
+ E_r(1+\varepsilon;a)
+ =\sum_{j=0}^{r}c_j\varepsilon^{-r-1+j}
+     +\sum_{\ell\geq0}\frac{(-1)^\ell}{\ell!}
+                   \gamma_{r,\ell}(a)\varepsilon^\ell.
+\end{equation}
+For $r=0$, these are the usual generalized Stieltjes constants
+$\gamma_{0,\ell}(a)=\gamma_\ell(A)$.
+Theorem~\ref{harm:thm:one} evaluates
+$\gamma_{r,0}(a)=c_{r+1}-h_{r+1}(a)$.
+For real $a,b>-1$ and every $\ell\geq0$, normal convergence of the
+shifted difference gives the exact, absolutely convergent identity
+\begin{equation}\label{harm:eq:shiftStieltjes}
+ \gamma_{r,\ell}(a)-\gamma_{r,\ell}(b)
+  =\sum_{n\geq1}e_r(n-1)
+       \left(\frac{\log^\ell(n+a)}{n+a}
+                  -\frac{\log^\ell(n+b)}{n+b}\right).
+\end{equation}
+The summand is $O(n^{-2}(1+\log^{r+\ell}n))$.  At $\ell=0$
+this reduces to $h_{r+1}(b)-h_{r+1}(a)$.  At higher $\ell$ it
+specifies the shift dependence without assuming a finite reduction
+of the individual constants.
+
+One also obtains the all-depth extension of the manuscript's
+Stieltjes differentiation ladder.  Let
+$e_i(k)=[v^i]\prod_{j=1}^k(1+v/j)$ and use $\partial_s$ for
+spectral differentiation.  For $k\geq1$,
+\begin{equation}\label{harm:eq:Stieltjesderivative}
+ \frac{d^k}{da^k}\gamma_{r,\ell}(a)
+ =(-1)^{\ell+k}k!\ell!
+      \sum_{i+j=\ell}e_i(k)
+             \frac{\partial_s^j E_r(k+1;a)}{j!}.
+\end{equation}
+Indeed, $\partial_a^kE_r(s;a)=(-1)^k(s)_kE_r(s+k;a)$;
+the principal part at $s=1$ is independent of $a$, and coefficient
+comparison at $s=1$ proves the formula.  When $\ell=0$ the right
+side is fully evaluated by Theorem~\ref{harm:thm:beta}.  For
+$\ell>0$ it involves genuine spectral derivatives.
+
+For completeness these derivatives have exact logarithmic Mellin
+representations.  Differentiating \eqref{harm:eq:mellinE} yields
+\begin{align}
+ &\frac1{r!}\int_0^1
+   \frac{x^a(-\log x)^{s-1}[-\log(1-x)]^r}{1-x}
+                     \log^\ell(-\log x)\,dx\notag\\
+ &\hspace{1cm}
+ =\sum_{j=0}^{\ell}\binom{\ell}{j}
+      \Gamma^{(\ell-j)}(s)\,\partial_s^jE_r(s;a),
+      \qquad \Re s>1.\label{harm:eq:logspectral}
+\end{align}
+The endpoint estimates in Proposition~\ref{harm:prop:mellin} remain
+integrable after any fixed number of logarithmic factors, justifying
+all differentiations.  Gamma derivatives here can equivalently be
+written using complete Bell polynomials in polygamma functions.
+
+The exact polynomial conclusion of
+Theorem~\ref{harm:thm:negative} stops at the constant Laurent
+coefficient.  The term $Q_m/\Gamma(s)$ in its proof starts at
+order $s+m$ and can contribute new constants from that point
+onward.  At depth zero these already include $\zeta'(-m,A)$,
+and at $m=0$ Lerch's identity gives the log-gamma function.
+There is therefore no basis for discarding the analytic remainder
+when computing positive spectral derivatives.
+
+The next concrete questions are to identify which linear combinations
+of these higher coefficients eliminate the analytic remainder, to
+extend the cyclotomic projection to harmonic patterns other than
+$\{1\}^r$, and to compare the outer-shift constants
+\eqref{harm:eq:Stieltjes} systematically with the literature's
+simultaneously shifted harmonic Hurwitz constants.  Those extensions
+are left open here.

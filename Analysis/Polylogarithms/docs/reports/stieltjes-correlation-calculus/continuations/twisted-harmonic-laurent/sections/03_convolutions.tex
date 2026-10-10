@@ -1,0 +1,468 @@
+\section{Stieltjes convolution identities and repeated primitives}
+\label{per:sec:convolutions}
+
+\subsection{All Stieltjes functions as convolution polynomials}
+
+The regularized germ
+\begin{equation}\label{per:eq:B}
+ B(u)=-uZ_{1+u}=\Gamma(1-u)W_{1+u},\qquad |u|<1,
+\end{equation}
+satisfies
+\begin{equation}\label{per:eq:Bseries}
+ B(u)=\Delta+
+       \sum_{r\ge1}\frac{(-1)^r}{(r-1)!}T_{r-1}u^r.
+\end{equation}
+The following formula is a statement in the commutative convolution
+algebra with identity $\Delta$; exponential and Bell-polynomial
+expressions can equivalently be read as formal power series.
+
+\begin{theorem}[Stieltjes convolution generator]
+\label{per:thm:Bell}
+For $|u|<1$,
+\begin{equation}\label{per:eq:exp}
+ B(u)=\exp_*\left(uP_0+
+                    \sum_{r\ge2}\frac{\zeta(r)}{r}u^r\Delta\right).
+\end{equation}
+Here the series defines the analytic germ after pairing with any smooth
+test function. In particular, if $\mathcal B_j^*$ denotes the complete
+exponential Bell polynomial with every multiplication interpreted as
+convolution and every scalar constant as that scalar times $\Delta$,
+then
+\begin{equation}\label{per:eq:Bell}
+ T_n=\frac{(-1)^{n+1}}{n+1}
+ \mathcal B_{n+1}^*
+ \bigl(P_0,\zeta(2)\Delta,2!\zeta(3)\Delta,
+                         \ldots,n!\zeta(n+1)\Delta\bigr).
+\end{equation}
+The two-parameter form is
+\begin{equation}\label{per:eq:Bconv}
+ B(u)*B(v)=C(u,v)B(u+v),
+ \qquad C(u,v)=\frac{\Gamma(1-u)\Gamma(1-v)}{\Gamma(1-u-v)},
+\end{equation}
+as an analytic germ at $(u,v)=(0,0)$. Its scalar correction has
+\begin{equation}\label{per:eq:C}
+ \log C(u,v)=\sum_{r\ge2}\frac{\zeta(r)}{r}
+                   \bigl(u^r+v^r-(u+v)^r\bigr).
+\end{equation}
+Thus every $T_m*T_n$ is a finite explicit linear combination of
+$\Delta,T_0,\ldots,T_{m+n+1}$, with coefficients polynomial in positive
+integer zeta values.
+\end{theorem}
+
+\begin{proof}
+At a nonzero Fourier mode, $\widehat P_0(n)=\gamma+L_n$. The Taylor
+expansion
+\[
+ \log\Gamma(1-u)=\gamma u+
+                     \sum_{r\ge2}\frac{\zeta(r)}r u^r
+\]
+therefore proves \eqref{per:eq:exp} mode by mode. The same polynomial
+growth argument as in Theorem~\ref{per:thm:family} proves normal
+convergence in every smaller disk after test-function pairing. Comparing
+the complete Bell-polynomial generating function with
+\eqref{per:eq:Bseries} gives \eqref{per:eq:Bell}; the factorial is
+$n!/(n+1)!=1/(n+1)$. Equation \eqref{per:eq:Bconv} follows from
+\eqref{per:eq:group}. The logarithm of its Gamma quotient is
+\eqref{per:eq:C}; its linear Euler-constant terms cancel. Coefficient
+extraction at $u^{m+1}v^{n+1}$ gives the last assertion.
+\end{proof}
+
+The first identities are
+\begin{align}
+ T_0&=-P_0,\notag\\
+ T_1&=\frac12\bigl(P_0^{*2}+\zeta(2)\Delta\bigr),
+ \label{per:eq:T1}\\
+ T_2&=-\frac13\bigl(P_0^{*3}+3\zeta(2)P_0+2\zeta(3)\Delta\bigr),
+ \label{per:eq:T2}\\
+ T_3&=\frac14\bigl(P_0^{*4}+6\zeta(2)P_0^{*2}
+          +8\zeta(3)P_0+(3\zeta(2)^2+6\zeta(4))\Delta\bigr).
+ \label{per:eq:T3}
+\end{align}
+Here $P_0^{*r}$ is an $r$-fold convolution, not a pointwise power.
+Eliminating these powers gives, for example,
+\begin{align}
+ T_0*T_0&=2T_1-\zeta(2)\Delta,\label{per:eq:00}\\
+ T_0*T_1&=\frac32T_2-\zeta(2)T_0+\zeta(3)\Delta,
+ \label{per:eq:01}\\
+ T_0*T_2&=\frac43T_3-2\zeta(2)T_1+2\zeta(3)T_0
+                                      -2\zeta(4)\Delta,
+ \label{per:eq:02}\\
+ T_1*T_1&=T_3-2\zeta(2)T_1+2\zeta(3)T_0
+                                      -\frac14\zeta(4)\Delta.
+ \label{per:eq:11}
+\end{align}
+The last coefficient uses $\zeta(2)^2=\tfrac52\zeta(4)$.
+
+\subsection{The reflected Stieltjes generator}
+
+Define the periodic Hilbert transform on zero-mean distributions by
+\begin{equation}\label{per:eq:Hilbert}
+ \widehat{\mathcal H U}(n)=-i\operatorname{sgn}(n)\widehat U(n)
+ \quad(n\ne0),\qquad \widehat{\mathcal H U}(0)=0.
+\end{equation}
+Its multiplier is bounded, so it is a continuous operator on periodic
+distributions and commutes with the order coefficient operations above.
+Reflection in the following theorem acts on the periodic variable only;
+it does not conjugate the complex parameters.
+
+\begin{theorem}[All-order reflected convolution]
+\label{per:thm:reflectedgenerator}
+As an analytic germ at $(u,v)=(0,0)$,
+\begin{equation}\label{per:eq:Brefconv}
+ B(u)*\check{B(v)}
+ =C(u,v)\bigl(\cos(\pi v)\,\mathrm{Id}
+                    +\sin(\pi v)\,\mathcal H\bigr)B(u+v),
+\end{equation}
+with the same Gamma quotient $C(u,v)$ as in \eqref{per:eq:Bconv}.
+In particular,
+\begin{align}
+ T_0*\check T_1={}&\tfrac12T_2+\check T_2
+                +\zeta(2)(T_0+\check T_0)+\zeta(3)\Delta,
+ \label{per:eq:T0refT1}\\
+ T_1*\check T_1={}&\tfrac12(T_3+\check T_3)
+                +2\zeta(2)(T_1+\check T_1)
+                +\zeta(3)(T_0+\check T_0)
+                +\tfrac72\zeta(4)\Delta.
+ \label{per:eq:T1refT1}
+\end{align}
+More generally, every $T_m*\check T_n$ reduces to a finite linear
+combination of $\Delta$, $T_j$ and $\check T_j$ with
+$0\le j\le m+n+1$ and coefficients polynomial in positive integer
+zeta values over $\mathbb Q$.
+\end{theorem}
+
+\begin{proof}
+Since $L_{-n}=L_n-i\pi\operatorname{sgn}n$, the nonzero Fourier
+coefficient of the left side of \eqref{per:eq:Brefconv} is
+\[
+ \Gamma(1-u)\Gamma(1-v)
+       e^{(u+v)L_n}e^{-i\pi v\operatorname{sgn}n}.
+\]
+The last factor equals
+$\cos(\pi v)-i\operatorname{sgn}(n)\sin(\pi v)$, precisely the
+multiplier of the operator on the right. The normal-convergence argument
+for the normalized family proves the identity as a distribution-valued
+analytic germ and justifies every fixed mixed coefficient extraction.
+This also checks the sign of the Hilbert-transform term directly.
+
+For explicit coefficients put $b=\gamma+\log(2\pi|n|)$ and
+$a=\tfrac{\pi i}{2}\operatorname{sgn}n$, so $a^2=-\pi^2/4$.
+Equations \eqref{per:eq:T1}--\eqref{per:eq:T3} give polynomials
+$t_j(y)=\widehat T_j(n)$ in $y=b+a$, while reflection replaces $a$
+by $-a$. Direct polynomial multiplication gives
+\begin{align*}
+ t_0(b+a)t_1(b-a)
+ ={}&\tfrac12t_2(b+a)+t_2(b-a)
+    +\zeta(2)\bigl(t_0(b+a)+t_0(b-a)\bigr)+\zeta(3),\\
+ t_1(b+a)t_1(b-a)
+ ={}&\tfrac12\bigl(t_3(b+a)+t_3(b-a)\bigr)
+    +2\zeta(2)\bigl(t_1(b+a)+t_1(b-a)\bigr)\\
+ &+\zeta(3)\bigl(t_0(b+a)+t_0(b-a)\bigr)+\tfrac72\zeta(4).
+\end{align*}
+Here $\pi^2=6\zeta(2)$ and $\pi^4=90\zeta(4)$ have been used.
+These prove the two displayed identities at every nonzero Fourier mode;
+all zero modes vanish.
+
+Finally $t_j$ has degree $j+1$ and nonzero rational leading coefficient
+$(-1)^{j+1}/(j+1)$. Put $M=m+n+2$. After reducing $a^2=-\pi^2/4$,
+the product $t_m(b+a)t_n(b-a)$ has the form
+$A(b)+aE(b)$ with $\deg A\le M$ and $\deg E\le M-1$.
+The symmetric polynomials $t_j(b+a)+t_j(b-a)$, $0\le j<M$,
+have successive degrees $1,\ldots,M$ in $b$, while their antisymmetric
+differences divided by $a$ have successive degrees $0,\ldots,M-1$.
+Together with the constant they form a triangular basis of this space.
+Elimination divides only by nonzero rational leading coefficients.
+Its coefficients belong to
+$\mathbb Q[\pi^2,\zeta(2),\ldots,\zeta(M)]$, which is the asserted
+zeta algebra because $\pi^2=6\zeta(2)$.
+\end{proof}
+
+The frequency-sign contribution can equivalently be encoded by
+\[
+ P_0-\check P_0=-\pi\mathcal H\Delta,\qquad
+ (P_0-\check P_0)^{*2}=-\pi^2\Delta.
+\]
+Thus reflection adds a two-dimensional sign algebra to the unreflected
+Bell calculus, with its constant term fixed by the same endpoint mass.
+
+\subsection{Polygamma correlations with all contact terms}
+
+\begin{theorem}[Convolution and reflected convolution]
+\label{per:thm:polycorr}
+Let $k,l\ge0$ and $r=k+l$. With the finite-part normalization
+\eqref{per:eq:Pdef},
+\begin{align}
+ P_k*P_l=D^r\bigl\{&2T_1+(H_k+H_l)T_0
+                         +(H_kH_l-\zeta(2))\Delta\bigr\},
+ \label{per:eq:PP}\\
+ P_k*\check P_l=(-1)^lD^r\bigl\{&T_1+\check T_1
+                   +H_lT_0+H_k\check T_0
+                   +(H_kH_l+2\zeta(2))\Delta\bigr\}.
+ \label{per:eq:PrefP}
+\end{align}
+For the derivative-compatible family the harmonic coefficients cancel:
+\begin{align}
+ Q_k*Q_l&=D^r\{2T_1-\zeta(2)\Delta\},
+ \label{per:eq:QQ}\\
+ Q_k*\check Q_l&=(-1)^lD^r
+              \{T_1+\check T_1+2\zeta(2)\Delta\}.
+ \label{per:eq:QrefQ}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Put $y_n=\gamma+L_n$. The first formula follows from
+\[
+ \widehat T_0(n)=-y_n,\qquad
+ 2\widehat T_1(n)=y_n^2+\zeta(2)
+\]
+and $(y_n-H_k)(y_n-H_l)=y_n^2-(H_k+H_l)y_n+H_kH_l$.
+For reflection set $b_n=\gamma+\log(2\pi|n|)$ and
+$a_n=\frac\pi2\operatorname{sgn}n$, so $y_n=b_n+ia_n$ and
+$y_{-n}=b_n-ia_n$. Then
+\[
+ (y_n-H_k)(y_{-n}-H_l)
+ =b_n^2+a_n^2-(H_k+H_l)b_n+H_kH_l
+                                      +ia_n(H_k-H_l).
+\]
+Also
+\[
+ \widehat T_1(n)+\widehat T_1(-n)=b_n^2-a_n^2+\zeta(2),
+\]
+and
+$H_l\widehat T_0(n)+H_k\widehat T_0(-n)
+=-(H_k+H_l)b_n+ia_n(H_k-H_l)$.
+The missing constant is $2a_n^2-\zeta(2)=2\zeta(2)$.
+Finally $(2\pi i(-n))^l=(-1)^l(2\pi in)^l$ accounts for the
+prefactor in \eqref{per:eq:PrefP}. The last two identities follow
+from $Q_k=D^kP_0$ and $\check{D^lP_0}=(-1)^lD^l\check P_0$.
+\end{proof}
+
+At the first level,
+\begin{equation}\label{per:eq:reflected0}
+ P_0*\check P_0=T_1+\check T_1+
+                         \frac{\pi^2}{3}(\delta_0-1).
+\end{equation}
+For $0<a<1$ its ordinary representative is
+$\gamma_1(a)+\gamma_1(1-a)-\pi^2/3$. Equation
+\eqref{per:eq:reflected0} supplies the missing endpoint mass in the
+formal twice-differentiated log-Gamma correlation. In particular, if
+$C_g=g*\check g$, then
+\begin{equation}\label{per:eq:Cg}
+ -D^2C_g=T_1+\check T_1+\frac{\pi^2}{3}(\delta_0-1).
+\end{equation}
+The negative sign follows from differentiating the reflected factor.
+
+For $r\ge1$, the representative of \eqref{per:eq:PP} on $(0,1)$ can
+also be written with one positive-order Hurwitz jet:
+\begin{equation}\label{per:eq:PPordinary}
+ (P_k*P_l)(a)=(-1)^{r+1}r!
+ \left\{2\zeta'(r+1,a)+(2H_r-H_k-H_l)\zeta(r+1,a)\right\}.
+\end{equation}
+Indeed, differentiating the Hurwitz shift identity at $s=1$ gives
+$\gamma_1^{(r)}(a)=(-1)^{r+1}r![\zeta'(r+1,a)+H_r\zeta(r+1,a)]$.
+For $r=0$, the separate constant $\zeta(2)$ from $-\zeta(2)\Delta$
+must be retained.
+
+Translations cause no further ambiguity. If
+$\tau_aU(x)=U(x-a)$ for real $a$ modulo $1$, then
+$(\tau_aU)*(\tau_bV)=\tau_{a+b}(U*V)$ and
+$\tau_aU*\check{\tau_bV}=\tau_{a-b}(U*\check V)$.
+All contact terms above are therefore translated to the sum or difference
+of the two shifts. General complex translations are not operators on all
+periodic distributions, because their Fourier multipliers grow
+exponentially in one direction; they require a separately specified
+analytic or one-sided boundary-value setting.
+
+\subsection{Convergent integral identities without distribution notation}
+
+The distribution formulas have ordinary, absolutely convergent integral
+versions at every nonintegral shift. The following construction makes
+the subtraction completely explicit. For $m,n\ge0$ and $0<a<1$, put
+\begin{align}
+ \mathcal I_{m,n}(a)={}&
+ \int_0^a\left\{\gamma_m(x)\gamma_n(a-x)
+       -\gamma_n(a)\frac{\log^m x}{x}
+       -\gamma_m(a)\frac{\log^n(a-x)}{a-x}\right\}dx\notag\\
+ &+\int_a^1\gamma_m(x)\gamma_n(1+a-x)\,dx\notag\\
+ &+\frac{\gamma_n(a)}{m+1}\log^{m+1}a
+       +\frac{\gamma_m(a)}{n+1}\log^{n+1}a.
+ \label{per:eq:Imn}
+\end{align}
+
+\begin{proposition}[Ordinary integral realization]
+\label{per:prop:Imn}
+Both integrals in \eqref{per:eq:Imn} converge absolutely, and
+\[
+ \mathcal I_{m,n}(a)=(T_m*T_n)(a),\qquad 0<a<1.
+\]
+Consequently,
+\begin{align}
+ \mathcal I_{0,0}(a)&=2\gamma_1(a)+\zeta(2),
+ \label{per:eq:I00}\\
+ \mathcal I_{0,1}(a)&=\frac32\gamma_2(a)-\zeta(2)\gamma_0(a)-\zeta(3),
+ \label{per:eq:I01}\\
+ \mathcal I_{0,2}(a)&=\frac43\gamma_3(a)-2\zeta(2)\gamma_1(a)
+                         +2\zeta(3)\gamma_0(a)+2\zeta(4),
+ \label{per:eq:I02}\\
+ \mathcal I_{1,1}(a)&=\gamma_3(a)-2\zeta(2)\gamma_1(a)
+                         +2\zeta(3)\gamma_0(a)+\frac14\zeta(4).
+ \label{per:eq:I11}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+Near $x=0$, the shift formula for $\gamma_m$ and smoothness of
+$\gamma_n$ near $a$ show that the first subtracted integrand is
+$O(1+|\log x|^m)$. The same argument applies near $x=a$. The second
+integral has no singular endpoints for fixed $a\in(0,1)$.
+
+For a direct identification, first restrict $a$ to a compact subinterval
+of $(0,1)$. The singular supports of $T_m(x)$ and $T_n(a-x)$ are
+separated in the integration variable. A smooth partition of unity
+around $x=0$, $x=a$ and their complement therefore defines their
+product: in each singular neighborhood only one factor is a
+distribution and the other is smooth. Applying the two cutoff formulas
+\eqref{per:eq:Tcutoff}, and then combining the complementary integrals,
+gives
+\begin{align*}
+ \lim_{\epsilon\downarrow0}\biggl\{&
+ \int_\epsilon^{a-\epsilon}\gamma_m(x)\gamma_n(a-x)\,dx
+ +\int_a^1\gamma_m(x)\gamma_n(1+a-x)\,dx\\
+ &+\frac{\gamma_n(a)}{m+1}\log^{m+1}\epsilon
+  +\frac{\gamma_m(a)}{n+1}\log^{n+1}\epsilon\biggr\}.
+\end{align*}
+The use of cutoff singular coefficients at $a$ introduces errors at most
+$O(\epsilon|\log\epsilon|^M)$ for a fixed $M$, hence no additional
+constant. Integrating the explicitly subtracted logarithmic terms
+evaluates this limit as \eqref{per:eq:Imn}. This agrees with convolution
+defined by addition on the torus. Equations \eqref{per:eq:I00}--
+\eqref{per:eq:I11} follow by restricting \eqref{per:eq:00}--
+\eqref{per:eq:11} to $(0,1)$, where $\Delta$ is the constant $-1$.
+\end{proof}
+
+In terms of the ordinary digamma function, the first identity reads
+\begin{align}
+ 2\gamma_1(a)+\zeta(2)={}&
+ \int_0^a\left\{\psi(x)\psi(a-x)
+       +\psi(a)\left(\frac1x+\frac1{a-x}\right)\right\}dx\notag\\
+ &+\int_a^1\psi(x)\psi(1+a-x)\,dx-2\psi(a)\log a.
+ \label{per:eq:digammaintegral}
+\end{align}
+No divergent integral occurs on the right: the braces are to be combined
+before integration. For instance,
+\[
+ \mathcal I_{0,0}(1/2)
+ =2\gamma_1-4\gamma\log2-2\log^22+\zeta(2),
+\]
+because $\gamma_1(1/2)=\gamma_1-2\gamma\log2-\log^22$.
+The factor of the unshifted $\gamma_1$ in the latter identity is $1$,
+as follows directly from $\zeta(s,1/2)=(2^s-1)\zeta(s)$.
+
+\subsection{Every repeated Stieltjes primitive in one finite formula}
+
+For a zero-mean periodic distribution define $D^{-q}$ by its Fourier
+multiplier $(2\pi i n)^{-q}$ at $n\ne0$ and zero at $n=0$. This is
+the unique repeated primitive having zero mean at each stage; it equals
+convolution with $W_{1-q}$. Define the rational coefficients
+\begin{equation}\label{per:eq:h}
+ \prod_{r=1}^{q-1}\left(1-\frac wr\right)^{-1}
+       =\sum_{j\ge0}h_j^{(q-1)}w^j,
+ \qquad h_0^{(0)}=1,\quad h_j^{(0)}=0\ (j>0).
+\end{equation}
+They are complete homogeneous symmetric functions in
+$1,1/2,\ldots,1/(q-1)$; equivalently their generating function is
+\[
+ \exp\left(\sum_{r\ge1}\frac{H_{q-1}^{(r)}}r w^r\right),
+ \qquad H_N^{(r)}=\sum_{j=1}^N\frac1{j^r}.
+\]
+For example $h_1^{(N)}=H_N$ and
+$h_2^{(N)}=(H_N^2+H_N^{(2)})/2$.
+
+\begin{theorem}[All repeated primitives and their constants]
+\label{per:thm:primitive}
+For $q\ge1,n\ge0$, the zero-mean $q$-fold primitive of $T_n$ is
+\begin{equation}\label{per:eq:primitive}
+ D^{-q}T_n(x)=\frac{(-1)^{n+1}n!}{(q-1)!}
+ \sum_{j=0}^{n+1}\frac{h_{n+1-j}^{(q-1)}}{j!}
+                              \zeta^{[j]}(1-q,x),\quad 0<x<1.
+\end{equation}
+Here $\zeta^{[j]}$ means the $j$th derivative in the first argument.
+The right side is periodized as a locally integrable function. For
+$q\ge2$ it is continuous, with the regularity implied by its endpoint
+terms $x^{q-1}\log^j x$.
+
+If $q>k\ge0$ and $p=q-k$, then
+\begin{align}
+ D^{-q}P_k(x)&=
+ \frac{\zeta'(1-p,x)+(H_{p-1}-H_k)\zeta(1-p,x)}{(p-1)!},
+ \label{per:eq:Pprimitive}\\
+ D^{-q}Q_k(x)&=
+ \frac{\zeta'(1-p,x)+H_{p-1}\zeta(1-p,x)}{(p-1)!}.
+ \label{per:eq:Qprimitive}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+The normalized family gives, identically in $w$ near zero,
+\begin{equation}\label{per:eq:primitivegenerator}
+ D^{-q}Z_{1+w}
+ =\Gamma(-w)W_{1-q+w}
+ =\frac{Z_{1-q+w}}{(-w)_q}.
+\end{equation}
+Since
+\[
+ \frac1{(-w)_q}
+ =-\frac1{(q-1)!w}\prod_{r=1}^{q-1}(1-w/r)^{-1},
+\]
+the coefficient $(-1)^nn![w^n]$ is exactly
+\eqref{per:eq:primitive}. For $q\ge1$ the relevant Hurwitz jets have
+order $1-q\le0$ and are locally integrable. Their means vanish, by the
+integrable Hurwitz identity continued and differentiated below $1$,
+so no hidden constants occur. For $q\ge2$, the shift formula isolates
+the only nonanalytic endpoint term as a finite combination of
+$x^{q-1}\log^j x$; it tends to zero and matches the finite endpoint
+value at $1$.
+
+For \eqref{per:eq:Pprimitive}, the Fourier coefficient after taking
+$q$ primitives is $(2\pi i n)^{-p}(\gamma+L_n-H_k)$.
+Differentiation of $Z_s=\Gamma(1-s)W_s$ at $s=1-p$ gives
+\[
+ \frac{Z'_{1-p}}{(p-1)!}
+ =\partial_sW_s\big|_{s=1-p}-\psi(p)W_{1-p}.
+\]
+Use $\psi(p)=H_{p-1}-\gamma$. Adding the primitive of
+$H_k\delta_0^{(k)}$ gives \eqref{per:eq:Qprimitive}.
+\end{proof}
+
+At $q=1$, \eqref{per:eq:primitive} becomes the familiar Stieltjes
+primitive $(-1)^{n+1}\zeta^{[n+1]}(0,x)/(n+1)$. At every larger $q$
+it gives all lower jets and all constants of integration explicitly.
+For example,
+\begin{align*}
+ D^{-2}T_1(x)&=\tfrac12\zeta''(-1,x)+\zeta'(-1,x)+\zeta(-1,x),\\
+ D^{-3}T_1(x)&=\tfrac14\zeta''(-2,x)+\tfrac34\zeta'(-2,x)
+                                      +\tfrac78\zeta(-2,x).
+\end{align*}
+The family in \eqref{per:eq:Qprimitive} is the classical balanced
+negative polygamma family. Equation \eqref{per:eq:Pprimitive} records
+the correction required when one starts from spectral finite parts
+instead of derivatives of periodic $\log\Gamma$.
+
+
+\subsection{A convergent Gamma convolution as a normalization check}
+
+One can remove the singularities by integrating. In particular, for
+$g=\log\Gamma-\tfrac12\log(2\pi)$,
+\begin{align}
+ &\int_0^a g(x)g(a-x)\,dx
+       +\int_a^1g(x)g(1+a-x)\,dx\notag\\
+ &\hspace{10mm}=\zeta''(-1,a)+2\zeta'(-1,a)
+                           +(2-\zeta(2))\zeta(-1,a),\quad 0<a\le1.
+ \label{per:eq:gammaordinary}
+\end{align}
+Indeed $Dg=P_0$, so $g*g=D^{-2}(P_0*P_0)$; apply
+\eqref{per:eq:00} and \eqref{per:eq:primitive}. The right side extends
+continuously to the endpoints. This is a differentiated instance of
+Sun's classical ordinary convolution, included to exhibit the agreement
+of the singular calculus with convergent Gamma integrals.

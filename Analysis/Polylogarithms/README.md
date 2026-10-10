@@ -103,6 +103,17 @@ commit prefix. Article ↔ report links are listed below.
 
 ## Status of claims, and known defects
 
+The tenth polylogarithm intake preserves Endpoint Regularization on the
+harmonic-resonance spine and Twisted Stieltjes Harmonic Laurent Identities
+on the correlation spine. The former distinguishes sharp cutoff, Abel and
+spectral-ray constants and keeps its decorated Gamma kernel formal. The
+latter retains the zero Fourier coefficient, the Dirac convolution unit and
+covariant point masses. Its arctanh real-branch and unsupported
+non-elementarity corrections apply to the current manuscript. Full isolated
+replay and canonical analytic reconciliation are subsequent work; S6/S8
+status is unchanged. Original report files and evidence are preserved.
+
+
 The 10 October harmonic-resonance intake preserves five further reports under
 `docs/reports/stieltjes-harmonic-resonance/` and continuations of the
 Stieltjes-correlation and uniform-transition spines. Their proposed new

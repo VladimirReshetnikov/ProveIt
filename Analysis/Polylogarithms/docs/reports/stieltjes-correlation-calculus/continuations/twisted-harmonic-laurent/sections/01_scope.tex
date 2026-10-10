@@ -1,0 +1,174 @@
+\section{Scope, conventions, and the status of the results}
+\label{scope:sec}
+
+This continuation develops two exact extensions of the ProveIt programme.
+First, it answers the archived question about an all-index half-twist
+Stieltjes multiplication law with its endpoint terms. The twist changes
+the convolution identity from \(\delta_0-1\) to \(\delta_0\).
+Second, it determines the principal Laurent coefficients and finite
+parts of a shifted harmonic Dirichlet family at every nonpositive
+integer, with reflection, rational multiplication, and antiderivative
+formulas for those coefficients.
+
+Both developments require a precise normalization at a moving pole.
+The periodic correction is supported at the endpoint of a circle.
+The harmonic correction is a Laurent residue, which survives when
+finite parts are differentiated. Their common role explains why a
+formula at regular parameters cannot simply be specialized or
+differentiated at a singular parameter.
+
+\subsection{The inspected baseline}
+
+We froze the repository at \pinned, whose commit is dated
+10 October 2026, 21:44:12 UTC. The audit used the complete set of
+72 chapter sources and the eight non-PDF manuscript support files.
+The pending archive
+\path{ProveIt_Polylogarithm_Stieltjes_Continuation_2026-10-10.zip}
+was matched to its Git blob and its mathematical source was inspected.
+Five relevant archived report sources were also checked.
+The machine-readable source manifest records exact paths and hashes.
+These statements describe the inspected set; they do not assert that
+every report or historical archive in the repository was reviewed.
+Manuscript and archival status are kept separate
+\cite{RepoManuscript,RepoIncoming}.
+
+The archived \emph{Convolution Algebra} report explicitly asks for a
+nonintegral-twist normal form and, as a first target, the all-index
+half-twist multiplication table with point-supported counterterms
+\cite[final research section]{RepoConvolutionAlgebra}.
+Section~\ref{tw:sec:main} supplies this normalization, multiplication
+law, and covariant derivative/primitive calculus. It gives a
+rational-twist conversion to Hurwitz and Stieltjes coordinates, a
+convergent half-twist integral, and the exact zero-frequency correction
+needed in the limit as the twist tends to zero.
+
+The same archive and two further continuations already contain the
+untwisted periodic Bell algebra, polygamma contact terms, normalized
+primitive tower, and reflected polylogarithm kernels
+\cite{RepoConvolutionAlgebra,RepoConvolutionCalculus,RepoShiftedJets}.
+Those results are consolidated with independent complete proofs here;
+they are not new theorems relative to the pinned repository.
+The incoming Stieltjes continuation supplies additional ordinary
+translation and integration formulas \cite{RepoIncoming}.
+Earlier alternating-harmonic reports likewise already use beta
+representations, cyclotomic projections, and scalar Mellin subtraction
+\cite{RepoAlternating,RepoHarmonicGeometry}.
+
+The source's \(S_2\) and \(S_4\) identities already have exact proofs.
+The frozen \(S_6\) target and the newer \(S_8\) candidate remain
+conjectural. Our proofs do not evaluate either of them.
+The half-twist target answered here is an explicit research question;
+it is distinct from those two special-value conjectures.
+
+\subsection{Classical inputs and the contribution of this article}
+
+The Fourier coefficients of Hurwitz zeta, Gamma--beta identities, and
+\[
+ \zeta'(0,x)=\log\Gamma(x)-\frac12\log(2\pi)
+\]
+are classical \cite{DLMFHurwitz,DLMFBeta}.
+Normalized Hurwitz convolution is established; Sun states an
+ordinary-integral form in his study of invariant functions
+\cite[Remark 3.2 in the arXiv version]{per:Sun}.
+Periodic complex-power distributions provide the natural background
+\cite{per:GaySebbar}. Kim's Hurwitz-transform continuation is a recent
+antecedent for scalar test-function subtraction \cite{Kim2026}.
+
+Young's parametric Euler sums supply the beta-derivative evaluation
+framework \cite{Young2026}. His height-one work and unshifted Laurent
+study are directly relevant \cite{Young2024,Young2023}; the harmonic
+Stieltjes literature concerns related, but not identically shifted,
+families \cite{HarmonicStieltjes2023}. The full text of Young's 2023
+paper was unavailable. Its inspected publisher abstract already rules
+out a broad priority claim for unshifted Laurent expansions.
+
+The additions for this continuation are the fully normalized twisted
+extension and the joint coefficient theorem for the outer-shifted
+harmonic family, with its finite polynomial calculus.
+Beta differentiation, Mellin continuation, and the unshifted height-one
+theory are treated as antecedents. Some consequences may have
+equivalent formulations elsewhere. A result described as \emph{proved
+here} has a complete analytic proof in this article; a result described
+as an \emph{addition to the inspected source} was not located in that
+source set. Neither phrase asserts universal literature priority.
+Proof and provenance statuses are recorded separately.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}p{0.25\textwidth}X@{}}
+\toprule
+Result or ingredient & Status and use\\
+\midrule
+Untwisted periodic calculus &
+Existing repository foundation, independently checked; all endpoint
+terms and integration constants retained.\\[3pt]
+Twisted Stieltjes calculus &
+Answers the archived half-twist target, for every real nonintegral
+twist, with the singular normalization included.\\[3pt]
+Ordinary half-twist integral &
+A convergent consequence with a midpoint evaluation in
+\(\log\Gamma(1/4)\), Euler's constant, and logarithms.\\[3pt]
+Harmonic beta evaluations &
+Established antecedent connecting harmonic polynomials, Gamma
+derivatives, and positive integer values.\\[3pt]
+Shifted harmonic Laurent data &
+Complete principal and finite parts; residue-aware differentiation,
+reflection, rational multiplication, and repeated primitives.\\[3pt]
+Numerical checks &
+Independent diagnostics; none replaces an analytic proof.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Notation and normalizations}
+
+Order derivatives always concern the first argument:
+\[
+ \zeta^{[j]}(s,a)=\partial_s^j\zeta(s,a),\qquad
+ \rLi_s^{[j]}(z)=\partial_s^j\rLi_s(z).
+\]
+By contrast, \(\psi^{(k)}(a)\) differentiates the argument \(a\), and
+\begin{equation}\label{scope:stieltjes}
+ \zeta(1+w,a)=\frac1w+
+       \sum_{n\geq0}\frac{(-1)^n}{n!}\gamma_n(a)w^n.
+\end{equation}
+Thus \(\gamma_0(a)=-\psi(a)\), and \(\gamma=\gamma_0(1)\).
+Finite parts are Laurent constant terms, unless a displayed cutoff
+definition specifies the equivalent integral normalization.
+
+On \(\bbT=\bbR/\bbZ\), write
+\[
+ \widehat T(n)=\langle T,\rme^{-2\pi\numi n x}\rangle,\qquad
+ \Delta=\delta_0-1.
+\]
+The distribution \(\Delta\) is the identity for convolution on the
+subspace of distributions with zero mean. The full algebra has identity
+\(\delta_0\). Reflection means
+\(\check T(x)=T(-x)\), and \(D\) denotes the distributional argument
+derivative. A convolution is always the compact-circle convolution.
+It is defined for any pair of distributions on the circle; it must
+not be confused with a pointwise product of singular distributions.
+All logarithms of \(2\pi\numi n\), for \(n\ne0\), mean
+\[
+ \log(2\pi\numi n)=\log(2\pi|n|)
+                 +\frac{\pi\numi}{2}\operatorname{sgn}(n).
+\]
+This branch convention is part of the identities.
+
+For finite harmonic sums we use
+\[
+ H_N^{(j)}=\sum_{k=1}^N k^{-j},\qquad
+ H_N(\{1\}^r)=
+ \sum_{N\geq n_1>\cdots>n_r\geq1}\frac1{n_1\cdots n_r},
+ \qquad H_N(\{1\}^0)=1.
+\]
+Their generating polynomial is
+\[
+ \sum_{r\geq0}H_N(\{1\}^r)u^r
+      =\prod_{k=1}^N(1+u/k).
+\]
+Thus all depths concern explicit polynomials in generalized harmonic
+numbers:
+\[
+ H_N(\{1\}^2)=\frac{H_N^2-H_N^{(2)}}2,\qquad
+ H_N(\{1\}^3)=\frac{H_N^3-3H_NH_N^{(2)}+2H_N^{(3)}}6.
+\]
