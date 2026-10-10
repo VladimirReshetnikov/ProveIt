@@ -1,0 +1,146 @@
+\section{Scope, status, and principal results}
+\label{sec:introduction}
+
+The ProveIt Polylogarithms manuscript~\cite{ProveIt} organizes a large collection of
+functional equations, special values, experimental reductions, and
+arithmetic bridges. This continuation concentrates on a connected part
+of that programme: logarithmic gamma moments, Herglotz derivatives, and
+depth-two cyclotomic polylogarithms. The common methodological question is
+how to turn a useful formal representation into a statement with
+controlled errors or a precisely specified algebraic meaning.
+
+The source baseline is commit
+\begin{center}\small
+\texttt{78f9e5df05eb0abb16c89fb00b9e89403598bd17}
+\end{center}
+of \nolinkurl{VladimirReshetnikov/ProveIt}. We concentrate on Chapters~4, 7, 9,
+and~10 in \nolinkurl{Analysis/Polylogarithms/docs/manuscript}.
+We also inspected the existing October continuations on alternating
+harmonic sums, corpus corrections, rational-grid distribution ranks,
+Stieltjes derivatives, and Herglotz obstructions. The accompanying source
+manifest records the examined files. This article proposes additions and
+corrections; it does not modify the upstream repository.
+
+\subsection{What is proved here}
+
+There are three principal developments.
+
+First, the classical moment expansion
+\[
+ \frac1{n!}\int_0^1\log^n\Gamma(x)\dd x
+ \sim\sum_{k\geq1}\frac{(-1)^{k-1}b_k}{k^n}
+\]
+has coefficients that grow exponentially. We identify their precise
+growth and prove a sharp error law when the number of retained terms
+grows linearly with \(n\). At the least-term scale the actual error is
+asymptotic to \emph{one half of the first omitted term}; the article
+computes two correction terms. This is stronger than a fixed-length
+asymptotic expansion or a heuristic minimum-term estimate. The proof
+requires a local analytic continuation of an inverse gamma branch and a
+uniform estimate for a Taylor remainder across its circle of convergence.
+
+Second, for
+\[
+ F(x)=\sum_{n\geq1}\frac{\psi(nx)-\log(nx)}n,\qquad
+ D_r(x)=\frac{(-1)^{r+1}x^{r+1}}{r!}F^{(r)}(x),
+\]
+we show that
+\[
+ D_r(x)=\zeta(2)+\frac xr(\log x-H_{r-1})+E_r(x).
+\]
+The displayed elementary expression contains every algebraic order of
+the large-\(r\) expansion. The remaining term admits a divisor-weighted
+Tricomi-\(U\) representation, an effective gamma-factor bound, and an
+explicit oscillatory asymptotic of size
+\(r^{-3/4}e^{-2\sqrt{\pi r/x}}\). This yields the sharp exponential rate
+and infinitely many positive and negative remainders. Here the derivative
+order tends to infinity with \(x\) fixed; this is a different limit from
+the familiar large-\(x\) Bernoulli expansion.
+
+Third, we determine all-weight dimensions of a \emph{specified formal
+presentation} of imaginary depth-two values at levels 3 and 4, after
+quotienting by single products and the manuscript's \(g\)-family.
+The Hilbert series are
+\[
+ \frac{t^5}{(1-t^2)(1-t^6)}
+ \quad\hbox{and}\quad
+ \frac{t^3}{(1-t^2)^2},
+\]
+respectively. A sparse functional separates the proposed Gaussian
+\(S_4\) reduction from every row in that presentation. This identifies
+what the chosen relation family cannot establish. It is not a proof of
+linear independence of actual periods, and it is not a disproof of the
+conjecture.
+
+These results are supported by exact rational row calculations,
+independent integral evaluations, precision increases, and explicit
+analytic tail bounds. Their proofs do not depend on the numerical
+checks.
+
+\subsection{Classical input and attribution}
+
+The moment expansion itself is due to Amdeberhan, Coffey, Espinosa,
+Koutschan, Manna, and Moll~\cite{ACEMKM}. The square-root mechanism used
+for its late coefficients is classical analytic combinatorics
+\cite{FS}; its hypotheses and the constants are established here for
+the inverse relevant to the moments. The growing-index remainder
+analysis is the additional step.
+
+Radchenko and Zagier~\cite{RZ} already state closure of all rational
+Herglotz derivatives in depth-one cyclotomic polylogarithms. We supply
+an explicit finite Bernoulli--Hurwitz coefficient formula and a
+regularization calculation, not a new claim of closure. Their arithmetic
+integral representations also underlie the divisor expansion used here.
+Large-parameter asymptotics of Tricomi's function are classical
+\cite{DLMF,Temme}; the effective sum over arithmetic sectors and its
+high-derivative consequences are developed in this article.
+
+The cubic log-gamma moment already has a Tornheim--Witten derivative
+evaluation in Bailey--Borwein--Borwein~\cite{BBB}. We correct the
+manuscript's open-problem wording and independently derive an equivalent
+formula, including convergence details and an evaluator. A reduction to
+a more restrictive prescribed basket of ordinary zeta derivatives
+remains a different question.
+
+The all-depth odd-harmonic-sum reflection and several low-weight
+Gaussian reductions have already been proved in the repository's
+continuations. We use them as established context. Likewise, a count of
+survivors in a relation matrix is always tied to the exact relations
+imposed. Zhao's broader work on cyclotomic relations~\cite{Zhao}
+provides a useful warning against identifying a restricted row space
+with the full algebra of periods.
+
+\subsection{Conventions and verification levels}
+
+Throughout, \(\log\) is the real logarithm on positive real arguments;
+complex powers and the function \(U\) use principal branches unless
+otherwise specified. We write \(H_n=\sum_{j=1}^n j^{-1}\), \(H_0=0\),
+\(\psi=\Gamma'/\Gamma\), and
+\[
+ \Li_{a,b}(u,v)=\sum_{m>n\geq1}\frac{u^m v^n}{m^a n^b}.
+\]
+At convergent boundary points this is the ordinary value. When a
+leading \(\Li_1(1)\) is required in a relation, the regularization is
+specified explicitly. The Dirichlet beta and eta functions are
+\[
+ \beta(s)=\sum_{n\geq0}\frac{(-1)^n}{(2n+1)^s},\qquad
+ \eta(s)=\sum_{n\geq1}\frac{(-1)^{n-1}}{n^s},
+\]
+with \(\eta(1)=\log2\) and \(G=\beta(2)\).
+
+A theorem in this article has an analytic or exact algebraic proof.
+A formal dimension is the dimension of the defined presentation.
+An integer-relation candidate is a conjecture even when its residual
+is extraordinarily small. Most numerical diagnostics use ordinary
+high-precision arithmetic, so analytic truncation estimates are
+distinguished from machine-certified rounding enclosures. The
+\(S_6\) residual certificate instead uses exact rational arithmetic
+with proved tails. No claim
+of a formal proof-assistant verification is made.
+
+The novelty assessment is relative to the pinned manuscript, the
+inspected continuations, and the cited primary literature. The article
+does not claim an exhaustive priority search. All statements presented
+as theorems stand on their supplied proofs, independently of that
+bibliographic qualification.
+

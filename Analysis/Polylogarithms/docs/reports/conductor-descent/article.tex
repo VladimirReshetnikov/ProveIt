@@ -1,0 +1,1272 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=27mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{booktabs,longtable,array,enumitem,xcolor,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!40!black,citecolor=blue!40!black,urlcolor=blue!40!black]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Conductor descent and distribution ranks}
+\fancyhead[R]{\small ProveIt research note}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\emergencystretch=3em
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\rad}{rad}
+\DeclareMathOperator{\Rea}{Re}
+\DeclareMathOperator{\Ima}{Im}
+\newcommand{\Q}{\mathbb Q}\newcommand{\C}{\mathbb C}
+\newcommand{\Z}{\mathbb Z}\newcommand{\U}{\mathcal U}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ch}{\chi^*}
+\newcommand{\bch}{\overline{\chi^*}}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\Liord}[2]{\mathcal L^{[#1]}(#2)}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\title{\textbf{Conductor Descent and Flat Distribution Ranks}\\[5pt]
+\large Stieltjes jets, cyclotomic polylogarithms,\\and prime-support vanishing}
+\author{Research contribution prepared for Vladimir Reshetnikov's ProveIt programme\\
+\small Mathematical development and computational assistance: OpenAI ChatGPT}
+\date{9 October 2026}
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+The Polylogarithms manuscript reports a finite distribution-rank pattern for
+parameter derivatives of generalized Stieltjes constants, but does not give a
+uniform proof. We define the complete finite-level distribution presentation
+and prove a stronger statement: over a characteristic-zero splitting field,
+its multiparameter deformation is a free module of rank $\varphi(q)$, with one
+explicit generator for every primitive character whose conductor divides $q$.
+Consequently the endpoint-fixed rank is $q-\varphi(q)$ for every denominator,
+every specialization of the prime weights, and every spectral order. The
+result persists for arbitrary jets, with no resonance-induced rank jump.
+
+The same conductor coordinates give finite M\"obius formulas for every
+Stieltjes parameter-derivative layer and for character-weighted cyclotomic
+polylogarithm traces. In particular, a principal primitive-root trace has an
+exact zero of order $\omega(q)-1$ at polylogarithm order one. This produces
+explicit logarithmic identities for order derivatives, including a second
+order identity at level $30$ and a twisted identity at level $260$.
+We also give a small exact certificate showing that the manuscript's
+$S_4$ candidate is not a consequence of a specified weight-five
+single-product double-shuffle presentation. The candidate itself is not
+proved or disproved here. All dimension statements concern presented formal
+quotients, not numerical independence of periods.
+\end{abstract}
+\vspace{4pt}
+\textbf{Status.} The theorems below have ordinary mathematical proofs.
+Finite matrix and polynomial statements have replayable exact-arithmetic
+checks. Floating-point tests are supplementary, not interval certificates.
+This note has not been independently refereed or formalized in a proof assistant.
+The rank phenomenon is connected to classical universal-distribution theory;
+no claim of global priority is made for it or for identities that follow from
+standard character and Euler-factor formulas.
+\newpage
+\setcounter{tocdepth}{1}
+\tableofcontents
+\newpage
+
+\section{The manuscript target and the scope of the contribution}
+
+The source is the consolidated manuscript \emph{Polylogarithms and their
+Arithmetic Bridges} in the ProveIt repository \cite{repo}. Its Chapter~8,
+Observation \code{tower:thm:rank}, records an exact finite experiment for
+$3\le q\le30$ and parameter-derivative orders $k=1,2,3$:
+\begin{equation}\label{eq:target}
+(q-1)-\rank=\varphi(q)-1.
+\end{equation}
+The source explicitly states that a uniform proof is absent and that the
+historical scripts were not imported. Chapter~10 lists the divisor-row
+structure as a remaining proof problem.
+
+The present work addresses that gap with a fully specified matrix. We do not
+identify an unseen historical matrix with our matrix by assumption. Rather,
+we prove the rank statement for the natural complete distribution system,
+provide its generator and tests, and supply replacement manuscript text that
+states the presentation explicitly. Reconciliation with the historical
+scripts, should they be recovered, is a separate editorial task.
+
+The decisive observation is that primitive residues at denominator $q$ are
+not the most robust coordinates. The right coordinates are character sums
+at their \emph{minimal conductors}. In those coordinates, every additional
+prime produces a polynomial Euler factor. No division by that factor is
+necessary. Thus zeros of Euler factors can destroy a particular coordinate
+chart without changing the rank of the distribution module.
+
+Our main outputs are as follows. Theorem~\ref{thm:free} proves a multiparameter
+free-module normal form. Corollary~\ref{cor:rank} and
+Theorem~\ref{thm:jets} give the uniform rank and jet counts.
+Theorem~\ref{thm:stieltjes} gives explicit all-order Stieltjes descent.
+Theorems~\ref{thm:polylogdescent} and \ref{thm:principalzero} give the
+cyclotomic trace identities and their exact vanishing orders.
+Proposition~\ref{prop:s4obstruction} records a distinct finite-presentation
+obstruction relevant to the unproved $S_4$ candidate.
+
+\subsection{Relation to existing mathematics}
+
+Kubert proved freeness and primitive-cardinality rank for the universal
+ordinary distribution, including its rational representation structure
+\cite{kubert}. Ouyang developed a broader universal norm-distribution
+framework \cite{ouyang}. Our polynomial deformation belongs to this
+mathematical setting. The purpose here is an elementary, explicit
+conductor-coordinate derivation tailored to the manuscript's rows, together
+with jet formulas and machine-replayable certificates. The general idea of
+using characters to diagonalize distributions is not new.
+
+The underlying Hurwitz multiplication law, Laurent expansion and
+root-of-unity Fourier formulas are standard \cite{dlmfhurwitz,dlmfpolylog}.
+The parameter-derivative ladder is already present in the manuscript and
+in Coffey's all-orders work \cite{coffey}; it is not claimed as a new result
+of this note. The polylogarithm identities below are derived explicitly,
+with special attention to imprimitive characters and the removable
+singularity at order one.
+
+\subsection{Two kinds of derivatives}
+
+We use $\zeta^{(n)}(s,a)=\partial_s^n\zeta(s,a)$ for spectral derivatives.
+The notation $\gamma_n^{(k)}(a)=\partial_a^k\gamma_n(a)$ denotes a parameter
+derivative. To avoid confusion, put
+\begin{equation}\label{eq:orderjet}
+\Liord{j}{z}:=\left.\frac{\partial^j}{\partial s^j}\Li_s(z)\right|_{s=1}.
+\end{equation}
+Thus $\Liord{1}{z}$ is an order derivative, not $z\,d\Li_1(z)/dz$ and not
+$\Li_0(z)$. This distinction is essential in the new explicit examples.
+
+\section{A precise finite-level distribution presentation}
+
+Fix $q\ge2$. Let $\U_d=(\Z/d\Z)^\times$ for $d>1$, represented by
+$1\le a\le d$ with $(a,d)=1$, and put $\U_1=\{1\}$. The fraction $1/1$
+represents the endpoint, or residue zero modulo one.
+
+Let $K$ be a characteristic-zero field containing the values of all
+Dirichlet characters modulo $q$. Introduce an independent indeterminate
+$t_p$ for each prime $p\mid q$ and set
+\[
+R_q=K[t_p:p\mid q].
+\]
+Start with the free $R_q$-module on symbols $E(a/d)$, where $d\mid q$ and
+$a\in\U_d$. There are exactly $q$ symbols because
+$\sum_{d\mid q}\varphi(d)=q$. Fractions are always reduced before symbols
+are compared.
+
+For $pd\mid q$, $p$ prime and $a\in\U_d$, impose
+\begin{equation}\label{eq:prime-row}
+\sum_{j=0}^{p-1}E\!\left(\frac{a+jd}{pd}\right)-t_p E(a/d)=0.
+\end{equation}
+Call the quotient $\mathscr D_q$. These are formal relations. Substituting
+$t_p=p^s$ realizes them by Hurwitz zeta values through
+\[
+\sum_{j=0}^{p-1}\zeta\!\left(s,\frac{x+j}{p}\right)=p^s\zeta(s,x),
+\]
+initially for $\Rea s>1$ and then meromorphically.
+
+\begin{definition}[The matrix used in the rank theorem]\label{def:matrix}
+Index the $q$ columns by $E(a/q)$, $1\le a\le q$, with fractions reduced
+when necessary. For every prime $p\mid q$ and $1\le b\le q/p$, the row is
+\begin{equation}\label{eq:matrixrow}
+\sum_{j=0}^{p-1}e_{b+jq/p}-t_p e_{pb}.
+\end{equation}
+The resulting matrix is $M_q(\mathbf t)$. The endpoint-fixed matrix
+$\widehat M_q(\mathbf t)$ is obtained by deleting column $q$, not by
+deleting rows that involve the endpoint.
+\end{definition}
+
+\begin{lemma}[Prime rows suffice]\label{lem:prime}
+If $t_d=\prod_{p\mid d}t_p^{v_p(d)}$, every composite distribution row
+\[
+\sum_{j=0}^{d-1}E((x+j)/d)-t_dE(x)
+\]
+whose arguments have denominator dividing $q$ is generated by the prime
+rows. Conversely, the complete all-divisor presentation includes all prime
+rows.
+\end{lemma}
+\begin{proof}
+For $d=uv$, first distribute each of the $u$ preimages through a $v$-fold
+cover, then sum. The $uv$ preimages occur once each, while the scalar
+coefficient becomes $t_ut_v=t_{uv}$. Subtracting the successive relations
+expresses the composite row as a row combination. Induct on the number of
+prime factors counted with multiplicity. All intermediate denominators
+divide the final denominator, so they remain within the finite level.
+\end{proof}
+
+The row with parent argument $1$ is indispensable. For a prime level
+$q=\ell$, it is the only row and reads
+\begin{equation}\label{eq:primelevel}
+\sum_{a=1}^{\ell-1}E(a/\ell)+(1-t_\ell)E(1)=0.
+\end{equation}
+After fixing $E(1)$, the rank is one. Omitting this row would change the
+residual dimension by one and would not model the stated experiment.
+
+\section{A conductor-adapted free basis}
+
+Every character modulo $q$ is induced by a unique primitive character
+$\ch$ of conductor $f\mid q$. For $f\mid d\mid q$, write
+\begin{equation}\label{eq:Z}
+Z_{d,\ch}=\sum_{a\in\U_d}\ch(a)E(a/d).
+\end{equation}
+At $f=1$ the primitive character is the identically-one character, and
+$Z_{1,1}=E(1)$. At other $f$, the primitive character is extended by zero
+on integers not coprime to $f$.
+
+Define the polynomial
+\begin{equation}\label{eq:Apoly}
+A_{d,f,\ch}(\mathbf t)=
+\prod_{p\mid f}t_p^{v_p(d)-v_p(f)}
+\prod_{\substack{p\mid d\\p\nmid f}}
+ t_p^{v_p(d)-1}\bigl(t_p-\ch(p)\bigr).
+\end{equation}
+An empty product is one.
+
+\begin{theorem}[Polynomial conductor normal form]\label{thm:free}
+The module $\mathscr D_q$ is free over $R_q$ of rank $\varphi(q)$.
+A basis is
+\begin{equation}\label{eq:basis}
+\left\{Z_{f,\ch}: f\mid q,\ \ch\text{ primitive of conductor }f\right\}.
+\end{equation}
+For every $f\mid d\mid q$,
+\begin{equation}\label{eq:normal}
+Z_{d,\ch}=A_{d,f,\ch}(\mathbf t)Z_{f,\ch}.
+\end{equation}
+In particular, this normal form remains valid after arbitrary specialization
+of the prime weights, including zero weights and roots of unity.
+\end{theorem}
+
+\begin{proof}
+The group $G=\U_q$ acts by multiplying numerators. Since $K$ contains all
+character values and $|G|$ is invertible, the usual character idempotents
+split the free module into character components. A denominator-$d$
+component contains the character induced by $\ch$ exactly when $f\mid d$,
+and then its corresponding eigenspace has rank one, generated by
+$Z_{d,\ch}$. Equivalently, finite character orthogonality gives
+\begin{equation}\label{eq:inversefourier}
+E(a/d)=\frac1{\varphi(d)}
+\sum_{\chi\bmod d}\overline{\chi(a)}Z_{d,\chi^*}.
+\end{equation}
+Here each $\chi$ is replaced on units by its inducing primitive character.
+
+We compute the prime relation in one character component. Sum
+\eqref{eq:prime-row} over $a\in\U_d$ with weight $\ch(a)$.
+If $p\mid d$, every numerator $a+jd$ is coprime to $pd$, and every unit
+modulo $pd$ appears once. Therefore
+\begin{equation}\label{eq:edge1}
+Z_{pd,\ch}=t_pZ_{d,\ch}\qquad(p\mid d).
+\end{equation}
+If $p\nmid d$, exactly one of the $p$ numerators is divisible by $p$.
+After reducing that fraction, its contribution is
+\[
+\sum_{b\in\U_d}\ch(pb)E(b/d)=\ch(p)Z_{d,\ch}.
+\]
+The other numerators are precisely the units modulo $pd$. Hence
+\begin{equation}\label{eq:edge2}
+Z_{pd,\ch}=(t_p-\ch(p))Z_{d,\ch}\qquad(p\nmid d).
+\end{equation}
+Every original row is a linear combination of these character-summed rows,
+by Fourier inversion on $\U_d$. No character with $f\nmid d$ occurs in
+that row module, so no additional relation is missed.
+
+Now fix $\ch$. Its available denominators form the divisor interval
+$f\mid d\mid q$. Relations \eqref{eq:edge1}--\eqref{eq:edge2} express every
+$Z_{d,\ch}$ as a multiple of $Z_{f,\ch}$ by moving upward from $f$.
+The multiplier for a new prime is $t_p-\ch(p)$; every further copy of the
+same prime contributes $t_p$. Multipliers from distinct primes commute,
+so the result is independent of the chosen path and is exactly
+\eqref{eq:Apoly}.
+
+To prove freeness rather than merely spanning, map this character component
+to $R_q$ by $Z_{d,\ch}\mapsto A_{d,f,\ch}$. Every edge relation maps to
+zero, and the proposed generator maps to one. Thus the component is
+isomorphic to $R_q$, with no additional relation on its generator.
+Taking the direct sum over characters of $G$ proves freeness of rank
+$|G|=\varphi(q)$ and the claimed basis. The construction is polynomial,
+so specialization requires no nonvanishing assumption.
+\end{proof}
+
+\begin{remark}[What the conductor adds to a character transform]
+A character transform only at level $q$ yields $Z_{q,\ch}$, which can
+vanish formally when $A_{q,f,\ch}=0$. The generator of the free component
+is instead $Z_{f,\ch}$. Forgetting this distinction creates an apparent
+rank jump at a singular Euler factor. The normal form proves that the
+jump belongs to the chosen coordinates, not to the distribution quotient.
+\end{remark}
+
+\begin{corollary}[Uniform distribution rank]\label{cor:rank}
+For every specialization $t_p\in\C$,
+\begin{equation}\label{eq:allrank}
+\rank M_q(\mathbf t)=q-\varphi(q),\qquad
+\rank\widehat M_q(\mathbf t)=q-\varphi(q).
+\end{equation}
+Thus the endpoint-fixed quotient has dimension $\varphi(q)-1$.
+For $t_p=p^{k+1}$, the ranks are ranks over $\Q$ and hold for every
+integer $k\ge1$ and every $q\ge2$.
+\end{corollary}
+\begin{proof}
+The specialized free quotient has dimension $\varphi(q)$, proving the first
+rank formula. Its endpoint $E(1)=Z_{1,1}$ is one of the conductor basis
+vectors. Thus quotienting further by $E(1)$ removes exactly one dimension.
+Equivalently, projection deleting the endpoint column is injective on the
+row space: a row-space element supported only on the endpoint would give
+a nonzero relation on this basis vector. This proves the second formula.
+For integer $k$, all entries are rational, and extending the coefficient
+field to $\C$ does not change matrix rank.
+\end{proof}
+
+\subsection{A fully explicit polynomial example at level twelve}
+
+Let $\chi_3$ be the nontrivial character modulo $3$, $\chi_4$ the
+nontrivial character modulo $4$, and $\chi_{12}=\chi_3\chi_4$.
+The four conductor generators are
+\begin{align}
+Z_1&=E(1),&
+Z_3&=E(1/3)-E(2/3),\\
+Z_4&=E(1/4)-E(3/4),&
+Z_{12}&=E(1/12)-E(5/12)-E(7/12)+E(11/12).
+\end{align}
+For example,
+\begin{align}\label{eq:q12example}
+E(1/12)=\frac14\bigl[&t_2(t_2-1)(t_3-1)Z_1
++t_2(t_2+1)Z_3\notag\\
+&+(t_3+1)Z_4+Z_{12}\bigr],\\
+E(1/6)&=\frac12\bigl[(t_2-1)(t_3-1)Z_1+(t_2+1)Z_3\bigr],\\
+E(1/4)&=\frac12\bigl[t_2(t_2-1)Z_1+Z_4\bigr].
+\end{align}
+The remaining rows follow by character signs and denominator reduction.
+The artifact \code{q12\_polynomial\_normal\_form.json} contains the entire
+$12\times4$ matrix $F$ and the $4\times12$ extraction matrix $B$.
+The exact checks are
+\begin{equation}\label{eq:certificateq12}
+M_{12}F=0,\qquad BF=I_4.
+\end{equation}
+They hold as polynomial identities in independent $t_2,t_3$, not merely
+at numerical weights.
+
+\section{Jets and the uniform Stieltjes rank theorem}
+
+Let $s_0\in\C$ and $N\ge0$. For a family of symbols $X_a(s)$ satisfying
+Hurwitz-type distribution, introduce divided Taylor coefficients
+$X_{a,n}=[\eps^n]X_a(s_0+\eps)$. The prime relations are
+\begin{equation}\label{eq:jetrows}
+\sum_{j=0}^{p-1}X_{b+jq/p,n}
+-p^{s_0}\sum_{r=0}^{n}\frac{(\log p)^r}{r!}X_{pb,n-r}=0,
+\qquad 0\le n\le N.
+\end{equation}
+All powers use the real logarithm of the positive integer $p$.
+
+\begin{theorem}[No rank loss under arbitrary jets]\label{thm:jets}
+The complete system \eqref{eq:jetrows} on $(N+1)q$ coordinates has rank
+\begin{equation}\label{eq:jetrank}
+(N+1)\bigl(q-\varphi(q)\bigr).
+\end{equation}
+Its solution space has dimension $(N+1)\varphi(q)$. Fixing all endpoint
+jets leaves $(N+1)(\varphi(q)-1)$ free coordinates and does not change
+the row rank. These statements hold for every complex $s_0$.
+\end{theorem}
+\begin{proof}
+Work with truncated germs modulo $\eps^{N+1}$ and substitute
+$t_p=p^{s_0}\exp(\eps\log p)$ into Theorem~\ref{thm:free}.
+Equivalently, choose arbitrary truncated germs for the conductor-character
+coordinates and define all other character germs by
+\eqref{eq:normal}; then use Fourier inversion. This produces every solution
+of \eqref{eq:jetrows}, because the character-summed equations still have
+unit coefficient on the higher-denominator coordinate. Extracting the
+minimal-conductor sums recovers the chosen germs, proving both completeness
+and uniqueness. There are $\varphi(q)$ freely chosen germs, each of length
+$N+1$. The endpoint is precisely the principal-conductor germ and can be
+fixed independently. Subtracting the solution-space dimension from the
+number of columns gives the rank.
+\end{proof}
+
+The proof also applies when the quantities replacing $\log p$ are arbitrary
+complex numbers, or independent formal variables. In particular, no
+algebraic independence of logarithms is being used.
+
+The generalized Stieltjes constants are defined by
+\begin{equation}\label{eq:Laurent}
+\zeta(1+\eps,a)=\frac1\eps+
+\sum_{n\ge0}\frac{(-1)^n}{n!}\gamma_n(a)\eps^n.
+\end{equation}
+For $k\ge1$, differentiating in $a$ removes the pole and gives the
+known generating ladder
+\begin{equation}\label{eq:master}
+\sum_{n\ge0}\frac{(-1)^n}{n!}\gamma_n^{(k)}(a)\eps^n
+=(-1)^k(1+\eps)_k\zeta(k+1+\eps,a).
+\end{equation}
+For completeness, $\partial_a^k\zeta(s,a)=(-1)^k(s)_k\zeta(s+k,a)$
+follows by termwise differentiation for $\Rea s>1$ and then continuation.
+Substitution into \eqref{eq:Laurent} proves \eqref{eq:master}.
+
+\begin{corollary}[The manuscript's rank pattern, uniformly]\label{cor:stielrank}
+Fix $q\ge2$, $k\ge1$ and $n\ge0$. Treat endpoint values and lower
+Stieltjes indices as known. The complete distribution system on
+\[
+\gamma_n^{(k)}(a/q),\qquad 1\le a<q,
+\]
+has coefficient rank $q-\varphi(q)$ and formal residual dimension
+$\varphi(q)-1$. If indices $0\le n\le N$ are retained together, the
+residual dimension is $(N+1)(\varphi(q)-1)$.
+\end{corollary}
+\begin{proof}
+Multiplication by $(1+\eps)_k$ is invertible on truncated germs since its
+constant coefficient is $k!\ne0$. It is common to every argument and
+therefore preserves distribution. The top-index coefficient matrix is
+$\widehat M_q$ with $t_p=p^{k+1}$. Lower-index logarithmic terms belong to
+the inhomogeneous right-hand side. Apply Corollary~\ref{cor:rank} and
+Theorem~\ref{thm:jets}.
+\end{proof}
+
+This proves a uniform statement about the explicit law presentation. It
+does not prove that the evaluated constants occupy that many independent
+numerical directions. Analytic functional equations or unrecorded period
+relations may reduce the evaluated span further.
+
+\section{Finite conductor descent for all Stieltjes layers}
+
+For a primitive character $\ch$ of conductor $f\mid d$, define
+\begin{equation}
+G_{d,\ch}^{(n,k)}=
+\sum_{a\in\U_d}\ch(a)\gamma_n^{(k)}(a/d).
+\end{equation}
+Set
+\begin{equation}\label{eq:Rdf}
+R(d,f)=\prod_{\substack{p\mid d\\p\nmid f}}p,
+\qquad m_r=\frac{d}{fr}\quad(r\mid R(d,f)).
+\end{equation}
+Each $m_r$ is a positive integer. Upon substituting $t_p=p^s$,
+\eqref{eq:Apoly} becomes the entire exponential polynomial
+\begin{align}\label{eq:Aanalytic}
+A_{d,f,\ch}(s)
+&=\left(\frac df\right)^s
+\prod_{\substack{p\mid d\\p\nmid f}}(1-\ch(p)p^{-s})\notag\\
+&=\sum_{r\mid R(d,f)}\mu(r)\ch(r)m_r^s.
+\end{align}
+In particular,
+\begin{equation}\label{eq:Aderivative}
+A_{d,f,\ch}^{(j)}(s)
+=\sum_{r\mid R(d,f)}\mu(r)\ch(r)m_r^s\log^j m_r.
+\end{equation}
+
+\begin{theorem}[All-index, all-parameter-order descent]\label{thm:stieltjes}
+For $n\ge0$, $k\ge1$ and $f\mid d$,
+\begin{align}\label{eq:stieldescent}
+G_{d,\ch}^{(n,k)}
+={}&\sum_{r\mid R(d,f)}\mu(r)\ch(r)m_r^{k+1}\notag\\
+&\quad\cdot\sum_{j=0}^{n}(-1)^j\binom nj\log^j m_r\,
+G_{f,\ch}^{(n-j,k)}.
+\end{align}
+No Euler-factor denominator occurs. Equivalently,
+\begin{equation}\label{eq:stielA}
+G_{d,\ch}^{(n,k)}=
+\sum_{j=0}^{n}(-1)^j\binom nj A_{d,f,\ch}^{(j)}(k+1)
+G_{f,\ch}^{(n-j,k)}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+For $\Rea s>1$, sorting a Dirichlet series by residue classes gives
+\[
+\sum_{a\in\U_d}\ch(a)\zeta(s,a/d)=d^sL(s,\chi_d),
+\]
+where $\chi_d$ is the induced character modulo $d$. Removing the extra
+Euler factors from its primitive $L$-series yields
+\[
+L(s,\chi_d)=L(s,\ch)
+\prod_{\substack{p\mid d\\p\nmid f}}(1-\ch(p)p^{-s}).
+\]
+Thus the character sum at $d$ is $A_{d,f,\ch}(s)$ times the character
+sum at $f$. This is also the analytic realization of
+Theorem~\ref{thm:free}.
+
+Insert $s=k+1+\eps$, multiply by the common factor
+$(-1)^k(1+\eps)_k$, and use \eqref{eq:master}. Comparison of
+$(-1)^n\eps^n/n!$ gives \eqref{eq:stielA}; the sign $(-1)^j$ comes
+from the Stieltjes Laurent convention. Finally apply
+\eqref{eq:Aderivative}.
+\end{proof}
+
+\subsection{Concrete second-index identities at level twelve}
+
+The multipliers are
+\[
+A_{12,3,\chi_3}(s)=4^s+2^s,\qquad
+A_{12,4,\chi_4}(s)=3^s+1.
+\]
+Therefore, at $n=2$, $k=1$,
+\begin{align}\label{eq:examplegamma}
+G_{12,\chi_3}^{(2,1)}
+&=20G_{3,\chi_3}^{(2,1)}
+-72\log2\,G_{3,\chi_3}^{(1,1)}
++68\log^22\,G_{3,\chi_3}^{(0,1)},\\
+G_{12,\chi_4}^{(2,1)}
+&=10G_{4,\chi_4}^{(2,1)}
+-18\log3\,G_{4,\chi_4}^{(1,1)}
++9\log^23\,G_{4,\chi_4}^{(0,1)}.
+\end{align}
+For instance,
+\[
+G_{12,\chi_3}^{(2,1)}=
+\gamma_2'(1/12)-\gamma_2'(5/12)+\gamma_2'(7/12)-\gamma_2'(11/12),
+\]
+and $G_{3,\chi_3}^{(2,1)}=\gamma_2'(1/3)-\gamma_2'(2/3)$.
+These are exact identities between explicitly specified signed sums; they
+require no integer-relation search. The two identities were also checked
+numerically using independent finite Hurwitz character sums.
+
+\subsection{The undifferentiated layer and its pole correction}
+
+For $k=0$, a principal character sum still contains the Hurwitz pole.
+The same formula without a correction would be wrong.
+
+\begin{proposition}[The $k=0$ correction]\label{prop:kzero}
+For nonprincipal primitive $\ch$ the formula
+\eqref{eq:stielA} remains valid with $k=0$. For $f=1$, put
+$A_d(s)=A_{d,1,1}(s)$. Then
+\begin{equation}\label{eq:kzero}
+G_{d,1}^{(n,0)}=
+\sum_{j=0}^{n}(-1)^j\binom nj A_d^{(j)}(1)\gamma_{n-j}(1)
++\frac{(-1)^n}{n+1}A_d^{(n+1)}(1).
+\end{equation}
+\end{proposition}
+\begin{proof}
+For a nonprincipal character, the sum of its values over units is zero,
+so the $1/\eps$ residues cancel. Coefficient comparison is unchanged.
+For the principal conductor, multiply
+\[
+A_d(1+\eps)\left(\frac1\eps+
+\sum_{n\ge0}\frac{(-1)^n\gamma_n(1)}{n!}\eps^n\right).
+\]
+The pole term contributes $A_d^{(n+1)}(1)/(n+1)!$ to the coefficient of
+$\eps^n$. Multiplying by $(-1)^n n!$ gives the correction in
+\eqref{eq:kzero}. The residue itself is
+$A_d(1)=d\prod_{p\mid d}(1-p^{-1})=\varphi(d)$, as required.
+\end{proof}
+
+For the non-character multiplication formula this specializes to
+\begin{equation}\label{eq:classicalstieldist}
+\sum_{j=0}^{d-1}\gamma_n\!\left(\frac{a+j}{d}\right)
+=d\sum_{r=0}^{n}\binom nr(-\log d)^r\gamma_{n-r}(a)
++\frac{(-1)^n d\log^{n+1}d}{n+1}.
+\end{equation}
+The inhomogeneous term is the residue contribution, not an optional
+normalization.
+
+\section{Cyclotomic polylogarithm conductor descent}
+
+Put $\xi_d=e^{2\pi\ii/d}$. For $f\mid d$ and a primitive character
+$\ch$ of conductor $f$, define the primitive-root trace
+\begin{equation}\label{eq:Pdef}
+P_{d,\ch}(s)=\sum_{a\in\U_d}\bch(a)\Li_s(\xi_d^a).
+\end{equation}
+At $d=1$, the trace is $\zeta(s)$. At every $d>1$, all roots in the sum
+are different from one, and the trace is entire in the order $s$.
+One proof of this last assertion is the finite Fourier formula
+\begin{equation}\label{eq:fourierzeta}
+\Li_s(\xi_d^a)=d^{-s}\sum_{b=1}^{d}\xi_d^{ab}\zeta(s,b/d),
+\qquad a\not\equiv0\pmod d.
+\end{equation}
+The potential pole at $s=1$ cancels because $\sum_b\xi_d^{ab}=0$.
+
+Let
+\begin{equation}\label{eq:B}
+B_{d,f,\ch}(s)=
+\sum_{r\mid R(d,f)}\mu(r)\bch(r)
+\left(\frac{d}{fr}\right)^{1-s}
+=A_{d,f,\overline{\ch}}(1-s).
+\end{equation}
+The conjugation and the reflection $s\mapsto1-s$ are both important.
+
+\begin{theorem}[Primitive-root trace descent]\label{thm:polylogdescent}
+As a meromorphic identity in $s$,
+\begin{equation}\label{eq:Pdescent}
+P_{d,\ch}(s)=B_{d,f,\ch}(s)P_{f,\ch}(s).
+\end{equation}
+For $f>1$ both sides are entire. For $f=1<d$, the right-hand side has a
+removable singularity at one and equals the entire left-hand side.
+For a primitive character,
+\begin{equation}\label{eq:gauss}
+P_{f,\ch}(s)=\tau(\bch)L(s,\ch),\qquad
+\tau(\bch)=\sum_{a\in\U_f}\bch(a)\xi_f^a.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+It suffices first to work in $\Rea s>1$, where all Dirichlet series are
+absolutely convergent. Write $d=fm$. In the trace defining $P_d$, the
+restriction $(a,d)=1$ can be imposed, after requiring $(a,f)=1$, by
+inclusion--exclusion over $r\mid R(d,f)$. Put $a=rb$ in the term indexed
+by $r$. The inner exponential sum in the coefficient of $n^{-s}$ is
+\[
+\bch(r)\sum_{b=1}^{d/r}\bch(b)e^{2\pi\ii bn/(d/r)}.
+\]
+Split $b$ into classes modulo $f$. The sum vanishes unless $(m/r)\mid n$.
+When $n=(m/r)\ell$, it equals
+\[
+\bch(r)\frac mr
+\sum_{b\in\U_f}\bch(b)e^{2\pi\ii b\ell/f}.
+\]
+For a primitive character, the last sum is
+$\tau(\bch)\ch(\ell)$, including zero when $(\ell,f)>1$.
+Summing over $n$ gives
+\[
+P_{d,\ch}(s)=\tau(\bch)L(s,\ch)
+\sum_{r\mid R(d,f)}\mu(r)\bch(r)(m/r)^{1-s}.
+\]
+The special case $d=f$ gives \eqref{eq:gauss}, and division is not needed
+to obtain \eqref{eq:Pdescent}. Analytic continuation and
+\eqref{eq:fourierzeta} finish the proof. The primitive Gauss identity used
+here is the standard finite Fourier identity for a primitive character;
+it follows by permuting units when $(\ell,f)=1$, with primitivity forcing
+vanishing at nonunits.
+\end{proof}
+
+\begin{corollary}[All order derivatives away from the principal pole]
+If $f>1$, then for every $j\ge0$ and every $s_0\in\C$,
+\begin{align}\label{eq:Pjets}
+P_{d,\ch}^{(j)}(s_0)
+={}&\sum_{r\mid R(d,f)}\mu(r)\bch(r)m_r^{1-s_0}\notag\\
+&\quad\cdot\sum_{h=0}^{j}\binom jh(-\log m_r)^h
+P_{f,\ch}^{(j-h)}(s_0).
+\end{align}
+For $f=1$ the same formula holds away from $s_0=1$; at one, its finite
+part must be taken before evaluation.
+\end{corollary}
+\begin{proof}
+Differentiate the finite exponential sum in \eqref{eq:Pdescent}. For
+$f>1$ the factors are entire, so ordinary Leibniz differentiation applies
+at every order.
+\end{proof}
+
+\begin{example}[Two nontrivial level-twelve identities]
+For all complex $s$,
+\begin{align}\label{eq:P12}
+P_{12,\chi_4}(s)&=(1+3^{1-s})P_{4,\chi_4}(s),\\
+P_{12,\chi_3}(s)&=(4^{1-s}+2^{1-s})P_{3,\chi_3}(s).
+\end{align}
+The first identity is
+\begin{align*}
+&\Li_s(\xi_{12})+\Li_s(\xi_{12}^{5})
+-\Li_s(\xi_{12}^{7})-\Li_s(\xi_{12}^{11})\\
+&\hspace{25mm}=(1+3^{1-s})\bigl(\Li_s(\ii)-\Li_s(-\ii)\bigr).
+\end{align*}
+These were checked directly at the nonintegral complex order
+$s=1.7+0.3\ii$, separately from the proof.
+\end{example}
+
+\section{Exact prime-support vanishing at order one}
+
+The principal trace is particularly transparent. Put
+\begin{equation}\label{eq:Tdef}
+T_q(s)=\sum_{a\in\U_q}\Li_s(\xi_q^a),\qquad q>1.
+\end{equation}
+Theorem~\ref{thm:polylogdescent} gives
+\begin{equation}\label{eq:Tprod}
+T_q(s)=q^{1-s}\prod_{p\mid q}(1-p^{s-1})\zeta(s).
+\end{equation}
+This is also the Dirichlet series of the classical Ramanujan sum
+$c_q(n)=\sum_{a\in\U_q}\xi_q^{an}$, obtained directly by
+inclusion--exclusion. We use the product to examine the removable
+singularity, rather than substituting $s=1$ into the factors separately.
+
+\begin{theorem}[Exact vanishing order]\label{thm:principalzero}
+Let $r=\omega(q)$ be the number of distinct prime divisors of $q>1$.
+Then the entire function $T_q$ has an exact zero of order $r-1$ at $s=1$.
+Here order zero means a nonzero value. Explicitly,
+\begin{align}\label{eq:zeros}
+\sum_{a\in\U_q}\Liord{j}{\xi_q^a}&=0&& (0\le j<r-1),\\
+\sum_{a\in\U_q}\Liord{r-1}{\xi_q^a}
+&=(-1)^r(r-1)!\prod_{p\mid q}\log p.\label{eq:leading}
+\end{align}
+\end{theorem}
+\begin{proof}
+Set $s=1+\eps$. Every factor
+$1-p^\eps=-\eps\log p+O(\eps^2)$ has a simple zero, while
+$\zeta(1+\eps)=\eps^{-1}+O(1)$ has a simple pole.
+The nonzero factor $q^{-\eps}$ equals one at zero. Therefore
+\begin{equation}\label{eq:Tleading}
+T_q(1+\eps)=(-1)^r\left(\prod_{p\mid q}\log p\right)
+\eps^{r-1}+O(\eps^r).
+\end{equation}
+The leading coefficient is nonzero because every prime exceeds one.
+Taylor coefficient extraction proves both statements.
+\end{proof}
+
+\subsection{Explicit identities}
+
+At level $q=30$, $\U_{30}=\{1,7,11,13,17,19,23,29\}$, and
+\begin{align}\label{eq:q30}
+\sum_{a\in\U_{30}}\Li_1(\xi_{30}^a)&=0,\\
+\sum_{a\in\U_{30}}\Liord{1}{\xi_{30}^a}&=0,\\
+\sum_{a\in\U_{30}}\Liord{2}{\xi_{30}^a}
+&=-2\log2\log3\log5.
+\end{align}
+At level $210$, the first three traces, of derivative orders $0,1,2$,
+vanish, and
+\begin{equation}\label{eq:q210}
+\sum_{a\in\U_{210}}\Liord{3}{\xi_{210}^a}
+=6\log2\log3\log5\log7.
+\end{equation}
+Prime powers do not change the first nonzero derivative: at $q=p^e$,
+$T_q(1)=-\log p$. Their exponents do affect later derivatives.
+
+\subsection{The next two coefficients, including repeated prime powers}
+
+Write
+\[
+L=\log q,\quad S_1=\sum_{p\mid q}\log p,\quad
+S_2=\sum_{p\mid q}(\log p)^2,
+\quad C=(-1)^r\prod_{p\mid q}\log p,
+\]
+and let $\gamma=\gamma_0(1)$, $\gamma_1=\gamma_1(1)$.
+Expanding \eqref{eq:Tprod} two further orders gives
+\begin{align}\label{eq:Tnext}
+T_q^{(r)}(1)
+&=r!C\left(\gamma-L+\frac{S_1}{2}\right),\\
+T_q^{(r+1)}(1)
+&=(r+1)!C\left[-\gamma_1+
+\gamma\left(\frac{S_1}{2}-L\right)
++\frac12\left(\frac{S_1}{2}-L\right)^2+\frac{S_2}{24}\right].
+\end{align}
+To verify the expansion, use
+\[
+\frac{e^x-1}{x}=1+\frac x2+\frac{x^2}{6}+O(x^3),\qquad
+\log\frac{e^x-1}{x}=\frac x2+\frac{x^2}{24}+O(x^3),
+\]
+and $\eps\zeta(1+\eps)=1+\gamma\eps-\gamma_1\eps^2+O(\eps^3)$.
+This gives an explicit all-prime-support family beyond the leading
+logarithmic identity. Higher coefficients are obtained by finite series
+multiplication with the same sign convention.
+
+\section{Twisted vanishing and a level-260 identity}
+
+Let $\ch$ be primitive of conductor $f>1$, and $f\mid q$.
+Among the added primes, define
+\[
+\mathcal S=\{p\mid q:p\nmid f,\ \ch(p)=1\},\qquad r_\chi=|\mathcal S|.
+\]
+The remaining added primes form $\mathcal N$.
+
+\begin{theorem}[Twisted leading jet]\label{thm:twisted}
+The trace $P_{q,\ch}$ vanishes to order at least $r_\chi$ at one, and
+\begin{equation}\label{eq:twistedlead}
+P_{q,\ch}^{(r_\chi)}(1)=
+(-1)^{r_\chi}r_\chi!\,
+P_{f,\ch}(1)
+\prod_{p\in\mathcal S}\log p
+\prod_{p\in\mathcal N}(1-\bch(p)).
+\end{equation}
+Its order is exactly $r_\chi$ whenever $P_{f,\ch}(1)\ne0$.
+More generally its exact order is $r_\chi+\ord_{s=1}P_{f,\ch}(s)$.
+\end{theorem}
+\begin{proof}
+The multiplier is
+\[
+B_{q,f,\ch}(1+\eps)=
+(q/f)^{-\eps}
+\prod_{\substack{p\mid q\\p\nmid f}}(1-\bch(p)p^\eps).
+\]
+The factors indexed by $\mathcal S$ have simple zeros with leading
+coefficient $-\log p$. All other factors are nonzero at zero and have
+value $1-\bch(p)$. Multiply their leading terms by the Taylor series
+of $P_{f,\ch}(1+\eps)$.
+\end{proof}
+
+For primitive nonprincipal characters, the classical nonvanishing
+$L(1,\ch)\ne0$, together with the nonzero primitive Gauss sum in
+\eqref{eq:gauss}, supplies the stated nonvanishing hypothesis
+\cite{dlmfdirichlet}. The explicit example below does not need that theorem;
+its primitive trace is computed directly from logarithms.
+
+For $\chi_4(a)=(-1)^{(a-1)/2}$ on odd integers,
+\[
+P_{4,\chi_4}(1)=\Li_1(\ii)-\Li_1(-\ii)=\frac{\ii\pi}{2}.
+\]
+Take $q=260=4\cdot5\cdot13$. Both added primes have $\chi_4(p)=1$.
+Consequently
+\begin{align}\label{eq:260}
+\sum_{a\in\U_{260}}\chi_4(a)\Li_1(\xi_{260}^a)&=0,\\
+\sum_{a\in\U_{260}}\chi_4(a)\Liord{1}{\xi_{260}^a}&=0,\\
+\sum_{a\in\U_{260}}\chi_4(a)\Liord{2}{\xi_{260}^a}
+&=\ii\pi\log5\log13.
+\end{align}
+This is a proved identity, not an integer-relation conjecture. More generally,
+for distinct primes $p_1,\ldots,p_r\equiv1\pmod4$ and
+$q=4p_1\cdots p_r$,
+\begin{equation}\label{eq:chi4family}
+\sum_{a\in\U_q}\chi_4(a)\Liord{r}{\xi_q^a}
+=(-1)^r r!\frac{\ii\pi}{2}\prod_{j=1}^r\log p_j,
+\end{equation}
+with all lower order traces vanishing. The same leading identity persists
+if the added prime factors occur with higher exponents.
+
+\section{Evaluation without differentiating through a removable pole}
+
+The trace identities concern an analytic function at $s=1$, but a numerical
+implementation of $\Li_s$ may internally use expressions whose gamma and
+zeta factors cancel only after substantial subtraction. Tiny-step
+black-box differentiation can then amplify roundoff.
+
+There is an exact alternative. Expand \eqref{eq:fourierzeta} using
+\eqref{eq:Laurent} and remove the pole \emph{symbolically} before extracting
+coefficients.
+
+\begin{proposition}[Pole-subtracted Fourier jet formula]\label{prop:eval}
+For $q\ge2$, $a\not\equiv0\pmod q$ and $n\ge0$,
+\begin{equation}\label{eq:Fourierjet}
+\Liord{n}{\xi_q^a}
+=\frac{(-1)^n}{q}\sum_{b=1}^{q}\xi_q^{ab}
+\sum_{j=0}^{n}\binom nj(\log q)^{n-j}\gamma_j(b/q).
+\end{equation}
+\end{proposition}
+\begin{proof}
+The pole coefficient is proportional to $\sum_b\xi_q^{ab}=0$.
+The remaining product is
+\[
+q^{-1}e^{-\eps\log q}
+\sum_{b=1}^q\xi_q^{ab}
+\sum_{j\ge0}\frac{(-1)^j}{j!}\gamma_j(b/q)\eps^j.
+\]
+Its $n$th Taylor coefficient, multiplied by $n!$, is
+\eqref{eq:Fourierjet}.
+\end{proof}
+
+This formula is especially efficient for a whole primitive-root trace:
+precompute the Stieltjes table once and sum with its finite Fourier weights.
+For the principal trace those weights are the integer Ramanujan sums
+$c_q(b)$. It also avoids pretending that a floating-point sum of roots is
+\emph{exactly} zero before multiplying by a numerical pole.
+
+In the local audit, a direct tiny-step order differentiation of
+\code{mpmath.polylog} near order one produced a spurious approximately
+$1.4\cdot10^{-9}$ first trace at $q=30$. The final evaluator did not loosen
+the acceptance tolerance. It instead used \eqref{eq:Fourierjet}; all ten
+final smoke tests at 45 decimal working digits passed the $10^{-38}$
+absolute-error threshold. The largest observed error was approximately
+$3.59\cdot10^{-43}$. This is an implementation observation for the tested
+version and settings, not a theorem about every differentiation routine.
+
+An interval implementation remains desirable. The current numerical
+artifacts explicitly label themselves as floating-point smoke tests. The
+analytic identities are established by the proofs above, independently of
+those residuals.
+
+\section{An exact limitation of the tested laws for the \texorpdfstring{$S_4$}{S4} candidate}
+
+The manuscript defines
+\[
+S_4=\sum_{n\ge0}\frac{(-1)^nH_n}{(2n+1)^4},\qquad
+g_{a,b}=\Ima\Li_{a,b}(\ii,1),
+\]
+and displays the candidate
+\begin{equation}\label{eq:S4candidate}
+S_4=\frac{4g_{4,1}-3g_{3,2}-9g_{2,3}}7
++\frac{\pi^5}{224}-\frac{27G\zeta(3)}{224}
+-2\beta(4)\log2,
+\end{equation}
+where $G=\beta(2)$. We do not promote this identity to theorem status.
+We do, however, explain one precise obstacle to proving it from a restricted
+set of laws.
+
+\begin{lemma}[The colored double represented by $S_p$]\label{lem:Sdouble}
+For $p>1$,
+\begin{equation}\label{eq:Sdouble}
+S_p=\Ima\left(\Li_{p,1}(\ii,1)+\Li_{p,1}(\ii,-1)\right).
+\end{equation}
+\end{lemma}
+\begin{proof}
+In the sum of the two doubles the inner color factor is $1+(-1)^m$,
+which retains twice the even indices. At outer index $2n+1$, the inner
+sum is $2\sum_{j=1}^n(2j)^{-1}=H_n$, while
+$\Ima(\ii^{2n+1})=(-1)^n$. Even outer indices contribute no imaginary
+part. Absolute convergence for $p>1$ justifies the regrouping.
+\end{proof}
+
+At weight five put
+\[
+x_{a,b;c,d}=\Ima\Li_{a,b}(\ii^c,\ii^d),\qquad a+b=5,
+\]
+formally imposing conjugation
+$x_{a,b;-c,-d}=-x_{a,b;c,d}$. When both colors are real, the coordinate is
+zero. The six representative color pairs are
+\[
+(0,1),(1,0),(1,1),(1,2),(1,3),(2,1).
+\]
+There are thus $24$ coordinates. In this paragraph all products of single
+polylogarithms and single weight-five values are quotiented out.
+
+The tested presentation consists of the imaginary parts of the following
+two formal product rows, for $p+q=5$ and $c,d\in\Z/4\Z$:
+\begin{align}\label{eq:Srows}
+&x_{p,q;c,d}+x_{q,p;d,c}=0,\\
+&\sum_{j=0}^{p-1}\binom{q-1+j}{j}x_{q+j,p-j;d,c-d}
++\sum_{j=0}^{q-1}\binom{p-1+j}{j}x_{p+j,q-j;c,d-c}=0.
+\end{align}
+They are the depth-one-product stuffle and shuffle coefficient rows.
+The formal presentation includes the endpoint-color rows as well; restricting
+to convergent products alone can only reduce its row space. Nonzero rows,
+including duplicates, form a $96\times24$ integer matrix $M$.
+The ordinary level-two distribution sums of these color families have
+zero imaginary row after conjugation, so adding those rows does not alter
+this matrix rank.
+
+By Lemma~\ref{lem:Sdouble}, the depth-two left side of seven times
+\eqref{eq:S4candidate} is
+\begin{equation}\label{eq:S4target}
+\ell=7x_{4,1;1,2}+3x_{4,1;1,0}
++3x_{3,2;1,0}+9x_{2,3;1,0}.
+\end{equation}
+Its conjectured single-value right side is
+$\pi^5/32-27G\zeta(3)/32-14\beta(4)\log2$.
+
+\begin{proposition}[A finite-presentation obstruction]\label{prop:s4obstruction}
+The row $\ell$ is not in the row space of the presentation
+\eqref{eq:Srows}. In fact,
+\[
+\rank M=20,\qquad \rank\begin{pmatrix}M\\\ell\end{pmatrix}=21.
+\]
+Thus \eqref{eq:S4candidate} cannot follow merely by linear combination
+of the tested same-weight single-product rows, after the specified
+single-value quotient. This is not a disproof of the candidate.
+\end{proposition}
+\begin{proof}
+It suffices for the nonmembership assertion to give a column vector $v$
+annihilated by all rows of $M$ but not by $\ell$. Its only nonzero entries
+are the following:
+\begin{center}
+\begin{tabular}{ccccr}
+\toprule
+$a$&$b$&$c$&$d$&$v_{a,b;c,d}$\\\midrule
+1&4&1&0&$-2$\\
+2&3&0&1&$1$\\
+2&3&1&0&$3$\\
+2&3&1&3&$-1$\\
+3&2&0&1&$-3$\\
+3&2&1&0&$-1$\\
+3&2&1&3&$-1$\\
+4&1&0&1&$2$\\\bottomrule
+\end{tabular}
+\end{center}
+Substitution in the finite binomial sums \eqref{eq:Srows}, with the stated
+conjugation rule, gives $Mv=0$. On the other hand,
+$\ell v=3(-1)+9(3)=24$. Hence $\ell$ is not a row combination.
+The two displayed ranks are separately verified by exact integer/rational
+row reduction in \code{verify\_s4\_obstruction.py}. The full matrix, row
+labels and witness are retained in the JSON certificate; no numerical
+values of polylogarithms are used in this check.
+\end{proof}
+
+\subsection{What remains plausible and what was numerically checked}
+
+The conjecture was independently tested using the one-dimensional integrals
+\begin{align}\label{eq:S4int}
+S_4&=-\frac16\int_0^1\frac{(-\log t)^3\log(1+t^2)}{1+t^2}\,dt,\\
+g_{a,b}&=\frac1{(a-1)!}\Ima\int_0^1
+(-\log t)^{a-1}\frac{\ii\Li_b(\ii t)}{1-\ii t}\,dt.
+\end{align}
+The first follows from the harmonic-number generating function; the second
+from the derivative of $\Li_{1,b}(z,1)$ and repeated logarithmic
+integration. An initial 50-digit check gave residual magnitude about
+$2.32\cdot10^{-51}$; the packaged 45-digit rerun also passed.
+This is evidence, not a proof.
+
+The exact obstruction says where the next proof attempt must look: an
+additional functional equation, a higher-depth relation whose elimination
+creates a new double relation, or an argument transformation outside the
+single-product presentation. Enlarging the coefficient height in the same
+law span cannot solve the problem. It would be incorrect either to reject
+\eqref{eq:S4candidate} because of this obstruction or to claim it is proved
+because its floating-point residual is small.
+
+\section{Corrections and integration recommendations}
+
+\subsection{Replace the finite rank observation by a precisely scoped theorem}
+
+The most substantial editorial change is to replace
+\code{tower:thm:rank} with Corollary~\ref{cor:stielrank}, including
+Definition~\ref{def:matrix}. State that the theorem concerns the complete
+prime/distribution presentation with the endpoint fixed. Do not replace it
+by a bare numerical-independence assertion. The standalone replacement
+fragment is supplied in the integration directory.
+
+\subsection{Make the weight-one endpoint explicit}
+
+Some prose surrounding the Gaussian and Eisenstein single values says that
+their real parts are rational multiples of $\zeta(n)$. The $n=1$ case must
+be separated or interpreted by a removable limit. In the principal branch,
+\begin{align}\label{eq:Li1}
+\Li_1(\ii)&=-\tfrac12\log2+\tfrac{\ii\pi}{4},\\
+\Li_1(e^{2\pi\ii/3})&=-\tfrac12\log3+\tfrac{\ii\pi}{6}.
+\end{align}
+For example, $\tfrac12(3^{1-s}-1)\zeta(s)$ tends to
+$-\tfrac12\log3$ at $s=1$; literal substitution gives an undefined
+zero times pole. This is a domain clarification, not evidence that the
+higher-weight formulas are wrong.
+
+\subsection{Do not invert a vanishing conductor multiplier}
+
+A formula that solves for $Z_{f,\ch}$ by dividing $Z_{q,\ch}$ by
+$A_{q,f,\ch}(s)$ needs a nonzero-denominator hypothesis. The polynomial
+normal form avoids it. The same warning applies to the polylogarithm
+multiplier $B_{q,f,\ch}$, where the zeros at one produce the identities in
+Sections~8 and~9. A disappearing primitive-root trace is not a disappearing
+formal character direction.
+
+\subsection{Keep the undifferentiated pole term}
+
+Any extension of the manuscript's $k\ge1$ identities to $k=0$ must include
+Proposition~\ref{prop:kzero} for the principal character. The extra term is
+forced by the Laurent pole. Its omission would already fail at $n=0$.
+
+\subsection{Preserve the status of the remaining \texorpdfstring{$S_4$}{S4} candidate}
+
+The earlier weight-five sporadic relation and weight-six Gaussian parity
+reductions are not re-presented here as new work. The displayed $S_4$
+formula remains a candidate in this contribution. Add its exact
+single-product obstruction as a methodological note, not as a negative
+numerical claim. A later proof using a larger law vocabulary would be
+fully compatible with the certificate given here.
+
+\section{Reproducibility, verification and implementation boundaries}
+
+The package contains three kinds of evidence. First, this article proves
+the general statements without relying on finite experiments. Second,
+exact scripts verify finite matrices and a polynomial normal form. Third,
+independent high-precision numerical representations test signs,
+conjugations and coefficient conventions.
+
+The completed exact run contains 295 specialized rank cases: $2\le q\le60$
+at weights $t_p=1,p^2,p^3$, at all-zero prime weights, and at one mixed
+integer assignment extended multiplicatively. Each checks both the full
+matrix and its endpoint-fixed projection. There are 29 all-divisor checks
+for $2\le q\le30$, and 18 symbolic jet cases at
+$q\in\{4,6,8,9,10,12\}$ and orders $1,2,3$.
+The jet logarithms are independent symbols in these finite checks; the
+mathematical theorem establishes validity after arbitrary specialization.
+
+The level-twelve polynomial check verifies both identities in
+\eqref{eq:certificateq12}. The $S_4$ check constructs all 96 rows from the
+two binomial rules, proves the witness equation, and computes the two ranks.
+The exact run also records the first nonzero principal trace jets for six
+levels. A separate finite Taylor verifier checks the next two principal
+coefficients at those levels and the twisted level-260 leading coefficient.
+JSON outputs record dimensions, coefficients and software versions.
+
+The ten numerical checks use 45 decimal working digits. They include the
+three level-30 traces, two twisted level-20 traces, two complex-order
+conductor identities, two Stieltjes descent identities, and the retained
+$S_4$ candidate. They are neither interval enclosures nor proofs of equality.
+The explicit level-260 identity is proved analytically; this package does
+not claim to have performed a separate 96-term high-precision evaluation
+of that example.
+
+\begin{center}
+\begin{tabular}{p{0.40\textwidth}p{0.48\textwidth}}
+\toprule
+Artifact & Purpose\\\midrule
+\code{src/distribution.py} & Explicit matrices, symbolic jet rows, level-twelve normal form.\\
+\code{src/verify\_exact.py} & Exact rank and polynomial checks, with JSON output.\\
+\code{src/verify\_numeric.py} & Pole-subtracted floating-point smoke tests.\\
+\code{src/verify\_trace\_coefficients.py} & Finite Taylor checks for principal and twisted traces.\\
+\code{src/verify\_s4\_obstruction.py} & Independent finite law-span obstruction.\\
+\code{integration/} & Replacement theorem and editorial notes, not an automatic repository write.\\
+\code{MANIFEST.sha256} & Integrity hashes for the distributed package.\\\bottomrule
+\end{tabular}
+\end{center}
+
+No remote repository file was modified. The integration fragments require
+normal editorial review, particularly comparison with any historical
+matrices recovered later. The Python generator uses exact rational or
+symbolic domain arithmetic for rank; there is no numerical rank tolerance.
+It is a reference implementation, not a bit-complexity claim or a
+production-scale character-table engine.
+
+\section{Further research questions}
+
+\subsection{An integral version of the polynomial normal form}
+
+The proof uses character idempotents and division by group orders. Over a
+splitting field this is harmless; over $\Z[t_p]$ it hides torsion and
+integral-lattice questions. Determine an integral presentation adapted to
+prime powers, and characterize the Smith data after integer-weight
+specialization. Classical ordinary-distribution results suggest useful
+structures, but the present field-level proof does not establish integral
+freeness for this deformation.
+
+\subsection{The conductor transition determinant}
+
+The matrix from minimal-conductor generators to level-$q$ character sums is
+diagonal with entries $A_{q,f,\ch}$. Its determinant and its zero divisor
+are therefore explicit. A systematic treatment should relate the vanishing
+multiplicities to arithmetic splitting of added primes, and should distinguish
+coordinate singularities from intrinsic period relations. This is a good
+place to develop exact conditioning estimates for character-based numerical
+algorithms.
+
+\subsection{Certified order jets at roots of unity}
+
+Implement Proposition~\ref{prop:eval} with ball arithmetic for Stieltjes
+constants and exact cyclotomic weights. Derive a precision budget that
+accounts for cancellation in a trace with a prescribed high-order zero.
+The finite Fourier formula supplies an exact target; the missing part is
+a sharp certified numerical analysis and a tested interval implementation.
+
+\subsection{A proof of the \texorpdfstring{$S_4$}{S4} identity outside the tested row span}
+
+The witness in Proposition~\ref{prop:s4obstruction} excludes one route, not
+the identity. A focused next step is to add weight-five higher-depth
+relations and eliminate the triple coordinates, or to seek a functional
+transformation of the integrals \eqref{eq:S4int}. A successful proof should
+provide an exact law certificate whose new row does not annihilate the
+witness. The candidate must remain explicitly conjectural until then.
+
+\subsection{Higher-depth conductor descent}
+
+At depth one, removing an added prime is controlled by an Euler factor.
+For colored double and triple sums, prime divisibility interacts with the
+strict inequalities between indices. Determine a finite operator calculus
+that records these interactions and produces a conductor-adapted filtration.
+A straightforward product of the depth-one factors should not be assumed
+to work; the collision terms are the mathematical content of the problem.
+
+\subsection{Formalization of the rank theorem}
+
+A proof-assistant development can be divided into finite character
+orthogonality, the two prime-edge identities, a commuting divisor-lattice
+normal form, and base change to truncated germs. The rank theorem itself
+requires no transcendental arithmetic. The analytic realization can be
+formalized later, using the established Hurwitz multiplication and
+parameter-derivative laws.
+
+\subsection{Numerical independence remains separate}
+
+The conductor quotient supplies exact formal coordinates, not a lower
+bound for the dimension of their evaluated periods. A meaningful
+independence conjecture must state the coefficient field, which lower
+periods are quotiented out, and which order derivatives are included.
+Special logarithmic identities and functional equations must first be
+removed. Failed integer-relation searches do not fill this gap.
+
+\section{Conclusion}
+
+The unresolved distribution-rank pattern can be proved uniformly once the
+presentation is stated and the denominator lattice is organized by minimal
+character conductors. The resulting module is polynomially free, so neither
+specialization nor passage to arbitrary jets creates a rank jump. This gives
+an explicit theorem for the manuscript's complete distribution system and
+an all-order descent formula for its Stieltjes tower.
+
+The same structure, reflected by $s\mapsto1-s$ and character conjugation,
+produces exact cyclotomic polylogarithm trace identities. At order one,
+prime support controls the first nonzero derivative; the residue of the
+Riemann zeta function lowers the principal vanishing order by exactly one.
+These identities also expose why order-one numerical evaluation must remove
+poles symbolically.
+
+Finally, the $S_4$ certificate separates a plausible identity from an
+insufficient collection of proof laws. Together, the positive normal-form
+theorems and this finite obstruction give concrete next steps without
+confusing formal rank, numerical evidence and arithmetic independence.
+
+\appendix
+\section{Exact normal-form algorithm in conductor coordinates}
+
+A symbolic implementation need not perform Gaussian elimination on all
+$q$ residue coordinates. The following procedure describes the mathematics
+of Theorem~\ref{thm:free}.
+
+For each divisor $d\mid q$, compute the character transform on $\U_d$.
+Attach to each transformed coordinate its primitive conductor $f$.
+Replace that coordinate by $A_{d,f,\ch}(\mathbf t)Z_{f,\ch}$ using
+\eqref{eq:Apoly}. Collect identical primitive-character generators.
+For order jets, replace $t_p$ by its truncated exponential and multiply
+polynomials modulo $\eps^{N+1}$. Finally invert the finite character
+transforms only for the original residue coordinates actually requested.
+
+Every operation is finite and every transition multiplier is polynomial.
+The coefficient field may be chosen as a cyclotomic field containing the
+character values. Complex characters must be paired or represented exactly;
+rounding them to floating-point roots of unity defeats the exactness of the
+method. The reference package implements the full residue matrices and the
+entire level-twelve normal form, while leaving a general optimized
+character-table implementation as a subsequent engineering task.
+
+\section{Source snapshot and claim ledger}
+
+The repository branch was resolved during this audit to commit
+\begin{center}\code{85c89e5d0bf785c058bd40fba286588e32a11382}.\end{center}
+The inspected Chapter~8 blob is
+\begin{center}\code{0a5b5ec8b7cb2213302c5a0b857a43e0f99b6236}.\end{center}
+The audit targets are the rank observation in Chapter~8, the surviving
+research programme in Chapter~10, and the $S_4$ display in Chapter~4.
+The source's earlier provenance and its independently prepared research
+packages are not overwritten by this note.
+
+\begin{longtable}{p{0.49\textwidth}p{0.39\textwidth}}
+\toprule
+Claim & Status in this package\\\midrule
+\endfirsthead
+\toprule Claim & Status in this package\\\midrule\endhead
+Multiparameter conductor freeness & Proved, Theorem~\ref{thm:free}.\\
+Uniform endpoint-fixed rank for the complete presentation & Proved, Corollaries~\ref{cor:rank} and~\ref{cor:stielrank}.\\
+Equality with an unavailable historical script's exact row list & Not asserted.\\
+All-order jet dimensions & Proved, Theorem~\ref{thm:jets}.\\
+All-order Stieltjes conductor identities & Proved, Theorem~\ref{thm:stieltjes}; $k=0$ correction explicit.\\
+Principal and twisted trace identities & Proved, Sections~7--9.\\
+Global novelty of universal-distribution rank phenomena & Not asserted; classical literature credited.\\
+$S_4$ displayed closed form & Numerically supported, not proved here.\\
+Obstruction in the specified $96\times24$ presentation & Exactly certified; not a disproof of $S_4$.\\
+Independence of evaluated periods & Not asserted.\\
+Formal verification in Lean or another proof assistant & Not performed.\\
+Rigorous numerical interval certification & Not performed.\\
+Remote repository integration & Not performed; fragments supplied.\\\bottomrule
+\end{longtable}
+
+\begin{thebibliography}{99}
+\bibitem{repo}
+V.~Reshetnikov, \emph{Polylogarithms and their Arithmetic Bridges},
+ProveIt repository, consolidated manuscript, October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/85c89e5d0bf785c058bd40fba286588e32a11382/Analysis/Polylogarithms/docs/manuscript}.
+
+\bibitem{kubert}
+D.~S.~Kubert, \emph{The universal ordinary distribution},
+Bulletin de la Soci\'et\'e Math\'ematique de France \textbf{107} (1979),
+179--202. DOI: \href{https://doi.org/10.24033/bsmf.1891}{10.24033/bsmf.1891}.
+
+\bibitem{ouyang}
+Y.~Ouyang, \emph{On the universal norm distribution},
+arXiv:math/0210297 (2002).
+\url{https://arxiv.org/abs/math/0210297}.
+
+\bibitem{coffey}
+M.~W.~Coffey, \emph{Series representations for the Stieltjes constants},
+Rocky Mountain Journal of Mathematics \textbf{44} (2014), 443--477;
+arXiv:0905.1111. DOI: 10.1216/RMJ-2014-44-2-443.
+
+\bibitem{dlmfhurwitz}
+NIST Digital Library of Mathematical Functions,
+Section~25.11, \emph{Hurwitz Zeta Function}.
+\url{https://dlmf.nist.gov/25.11}. Accessed 9 October 2026.
+
+\bibitem{dlmfpolylog}
+NIST Digital Library of Mathematical Functions,
+Section~25.12, \emph{Polylogarithms}.
+\url{https://dlmf.nist.gov/25.12}. Accessed 9 October 2026.
+
+\bibitem{dlmfdirichlet}
+NIST Digital Library of Mathematical Functions,
+Section~25.15, \emph{Dirichlet L-functions}.
+\url{https://dlmf.nist.gov/25.15}. Accessed 9 October 2026.
+\end{thebibliography}
+\end{document}

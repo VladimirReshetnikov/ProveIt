@@ -1,0 +1,127 @@
+\section{Scope, prior work, and the proved contributions}
+\label{sec:scope}
+
+The source manuscript is \emph{Polylogarithms and their Arithmetic
+Bridges}, in the directory
+\src{Analysis/Polylogarithms/docs/manuscript} of ProveIt
+\cite{repoManuscript}. We fixed the inspected revision at
+\begin{center}
+\small\src{d00eba30c1ce73ee5cfbeb50bde9095246b9c25c}.
+\end{center}
+That revision contains the consolidated manuscript, its earlier reports,
+and four relevant incoming archives. The present article is an additional
+research contribution prepared for integration; it is not a replacement
+for the whole manuscript or a certification of every historical claim.
+
+The immediately preceding reports have already proved Gaussian double
+parity formulas, the weight-five shuffle relation, several one-index-two
+multiple-polylogarithm reductions, and the cubic and quartic
+complementary-power trilogarithm examples. They also reduce the four
+same-point weight-five Gaussian coordinates to at most two modulo
+specified single-value products. We use those facts where appropriate
+and do not count their rederivation as a new contribution. In particular,
+the first follow-up problem in the exact-reductions package is the
+specific $S_4$ relation proved below; its fifth asks for a classification
+of complementary-power redundancies \cite{repoExact}.
+
+\subsection{A precise contribution ledger}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.28\textwidth}>{\raggedright\arraybackslash}p{0.66\textwidth}@{}}
+\toprule
+Result & Mathematical content and proof status\\
+\midrule\endhead
+Complementary-power rigidity & A complete theorem for two positive
+integer exponent pairs at the same real base, obtained from Ljunggren's
+trinomial theorem and a root-rotation argument. It includes equal
+exponents and arbitrary common divisors.\\[3pt]
+Signed cyclic seeds & Exact cardinalities $0,3,6,12$, with the case
+twelve characterized; a bound $b\leq\lfloor5D/3\rfloor$ for bases of
+degree at most $D$. These are statements about pure powers.\\[3pt]
+Plastic ladders & Analytic proofs of two specific manuscript identities,
+plus explicit dilogarithm and trilogarithm identities with no
+logarithmic terms. Classical functional equations are the inputs.\\[3pt]
+Gaussian $S_4$ & A proved identity with a finite exact certificate.
+The new ingredient relative to the preceding attempts is an explicit
+M\"obius duality relation.\\[3pt]
+Proportional harmonic depth & An explicit positive, decreasing, convex
+exponential rate and a computable first correction, with an all-orders
+expansion uniform on compact parameter sets.\\[3pt]
+Reflected gamma moments & Exact poles and residue polynomials, shifted
+factorial growth, late-coefficient asymptotics, and an explicit
+truncation bound.\\[3pt]
+Residue and log-sine identities & An exact finite reflection identity
+and an unconditional formal polynomial version of a coefficient
+conjecture recorded in a 2010 author preprint.\\
+\bottomrule
+\end{longtable}
+
+The classification gives a particularly useful change in how one can
+search. A box of polynomial coefficients is not exhaustive, even at
+fixed degree. In contrast, the exponent bound proved here supplies an
+exhaustive finite search for the restricted equation $r^a+r^b=1$.
+Equally importantly, it identifies exactly what this search cannot
+settle: multiplicative relations involving products of many factors
+$1-r^j$, additional units, or more general polylogarithm arguments are
+outside its scope.
+
+The $S_4$ proof has a different character. It is a finite calculation
+with convergent iterated-integral values, using explicitly justified
+single-divergence relations as well as convergent identities. Its exact certificate can be checked by
+rational arithmetic. The mathematical conclusion is an equality of
+the corresponding periods. It is not a proof that a computed quotient
+of all supplied relations is the full space of period relations, nor
+does it prove that any remaining coordinate is irreducible.
+
+\subsection{Classical inputs and attribution}
+
+Ljunggren's irreducibility theorem is used in the precise form recorded
+by Boyd, Martin, and Thom \cite[Lemma 4.1]{BoydMartinThom2015}; Tverberg's
+proof is another primary reference \cite{Tverberg1960}. Rogers' pentagon
+and Kummer's trilogarithm equation are classical; the modified
+trilogarithm normalization and its functional equations are taken from
+Zagier \cite{ZagierPolylogs1991}. The shuffle and stuffle laws and their
+regularization belong to the established theory of multiple
+polylogarithms \cite{jqzhao2010,PanzerParity}. The general existence
+of parity reductions is therefore not being claimed here as new.
+
+The analytic calculations use standard Mellin continuation, Lagrange
+inversion, and Laplace asymptotics. What is derived is their explicit
+application to the stated families, including normalization constants,
+finite coefficient identities, and error terms. Mixed reflected
+log-gamma moments were already introduced by Amdeberhan and coauthors
+\cite{ACEMKM}; neither their definition nor their reflection symmetry
+is a new observation. Their large-exponent and late-coefficient
+behavior is the subject of the later sections.
+
+This article establishes the statements it proves without asserting
+first discovery in the entire literature. Exact priority for equivalent
+normalizations of special-value identities is a separate bibliographic
+question. The useful distinction is between proved results, numerical
+checks of those results, and questions that remain open.
+
+\subsection{Conventions}
+
+For positive integers $s_1,\ldots,s_d$, our multiple polylogarithm uses
+decreasing indices:
+\begin{equation}\label{eq:mpl-convention}
+ \Li_{s_1,\ldots,s_d}(z_1,\ldots,z_d)
+ =\sum_{n_1>\cdots>n_d\geq1}
+ \frac{z_1^{n_1}\cdots z_d^{n_d}}
+ {n_1^{s_1}\cdots n_d^{s_d}}.
+\end{equation}
+Boundary values are assigned by the ordinary convergent series or by
+the explicitly stated regularization. The corresponding hyperlogarithm
+uses $dt/(t-a)$ and an outer-first word, so its integration simplex is
+$0<t_N<\cdots<t_1<1$. The word letters associated to
+\eqref{eq:mpl-convention} are reciprocal \emph{prefix} products.
+These choices are essential to the signs in the Gaussian certificate.
+
+All logarithms in the real algebraic and gamma sections are real
+logarithms of positive numbers. Complex arguments in the Gaussian
+section are connected to their convergent series, fixing the branches.
+We write $G=\beta(2)$ for Catalan's constant and
+$\beta(s)=\sum_{j\geq0}(-1)^j/(2j+1)^s$. The letter $h$ denotes
+harmonic depth in Section~\ref{sec:saddle}; the fixed reflected exponent
+in the gamma section is $m$. Repeated use of an auxiliary symbol in a
+later, explicitly defined family does not identify the corresponding
+constants across sections.

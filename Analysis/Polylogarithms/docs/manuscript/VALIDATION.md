@@ -1,3 +1,7 @@
+> Historical validated 228-page checkpoint. Five subsequent incoming packages
+> are being integrated. The source inventory, mathematical replays and final
+> PDF/build/render hashes must be refreshed for the expanded release.
+
 # Validation of the unified manuscript
 
 Completed October 9, 2026. Authorship is **ProveIt Contributors** on the title
