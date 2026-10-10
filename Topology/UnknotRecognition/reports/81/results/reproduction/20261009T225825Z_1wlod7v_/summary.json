@@ -1,0 +1,126 @@
+{
+  "schema": "planar-sector-reproduction-v1",
+  "started_utc": "2026-10-09T22:58:25.556568+00:00",
+  "python": "3.12.14",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+  "baseline_commit": "8188525b70033dcfe7c51ea5ae2c8723ad0c0198",
+  "scope": "Supplied-sector tests and audits; no whole-recognizer complexity claim.",
+  "source_snapshot": {
+    "mode": "bundled",
+    "verified_files": 201,
+    "status": "PASS"
+  },
+  "package_provenance_sha256": "0ad9465f575422724ab9cc479cdf3f17025fcdac66285e3af26cdcdb2eb837f8",
+  "corpus_sha256": "0433e6c7d99bb402b79909467a7eada862ca004dc4082ee25794add0e712914e",
+  "reproduction_driver_sha256": "945604af988432841d025c77cd521424decdd109cb53c7bc4857266f72652129",
+  "script_sha256": {
+    "experiments/audit.py": "5f46525227d879b17a08ab293cf14142063559e0004d78fa70c39c871b55a74c",
+    "experiments/audit_abstract.py": "f1cc465deefaf3416a530c475a2bcabc4c2d4e8e56ef899fd62879d833515094",
+    "experiments/audit_certificates.py": "30867972c624a8a13a2fa08aa46fd3e67267ed37f43cb0d9271e5dc1c8036b04",
+    "experiments/audit_euler_corners.py": "5b56c22867f6109adfe6ba6e9d7b75b0d4b5501bf7b591b5248971b0e4923b6b",
+    "experiments/benchmark.py": "884bdf7a2755838c65b3fa8e30093afb9c8af8d504435e4644a6649a7f3fa693",
+    "experiments/fixtures.py": "cec6166f67874c5160ef4641e383ade6a4f795a3b13481ec0332920c5acef03d",
+    "experiments/make_article_assets.py": "47d6b2607176894d9e80737da2cc6185b62e34dc4f8a92f3a4d8c4501c8917d6",
+    "experiments/package_release.py": "e6ae4cc1b201d8c37c6a6104a6bce92f81fe1b63f0a5e3bd1ef4925c2efcb94a"
+  },
+  "requested": {
+    "full_audit": false,
+    "fresh_regina": false,
+    "benchmark": false
+  },
+  "steps": [
+    {
+      "step": "new_tests",
+      "returncode": 0,
+      "seconds": 1.5772054949993617,
+      "log": "new_tests.log",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "-S",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_sector_planar*.py",
+        "-v"
+      ],
+      "cwd": "/workspace/scratch/58d095d12044/unknot_planar_sector_overlays_20261009/code"
+    },
+    {
+      "step": "baseline_integration",
+      "returncode": 0,
+      "seconds": 0.0862380979997397,
+      "log": "baseline_integration.log",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "-S",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_normal_sector_integration.py",
+        "-v"
+      ],
+      "cwd": "/workspace/scratch/58d095d12044/unknot_planar_sector_overlays_20261009/code"
+    },
+    {
+      "step": "abstract_audit",
+      "returncode": 0,
+      "seconds": 0.7900621360004152,
+      "log": "abstract_audit.log",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "-S",
+        "/workspace/scratch/58d095d12044/unknot_planar_sector_overlays_20261009/experiments/audit_abstract.py",
+        "--fast",
+        "/workspace/scratch/58d095d12044/unknot_planar_sector_overlays_20261009/code",
+        "--output",
+        "/workspace/scratch/58d095d12044/unknot_planar_sector_overlays_20261009/results/reproduction/20261009T225825Z_1wlod7v_/abstract_audit.json"
+      ],
+      "cwd": "/workspace/scratch/58d095d12044/unknot_planar_sector_overlays_20261009"
+    },
+    {
+      "step": "certificate_audit",
+      "returncode": 0,
+      "seconds": 0.0915400009998848,
+      "log": "certificate_audit.log",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "-S",
+        "/workspace/scratch/58d095d12044/unknot_planar_sector_overlays_20261009/experiments/audit_certificates.py",
+        "--fast",
+        "/workspace/scratch/58d095d12044/unknot_planar_sector_overlays_20261009/code",
+        "--output",
+        "/workspace/scratch/58d095d12044/unknot_planar_sector_overlays_20261009/results/reproduction/20261009T225825Z_1wlod7v_/certificate_audit.json"
+      ],
+      "cwd": "/workspace/scratch/58d095d12044/unknot_planar_sector_overlays_20261009"
+    },
+    {
+      "step": "euler_corner_audit",
+      "returncode": 0,
+      "seconds": 1.93072956099968,
+      "log": "euler_corner_audit.log",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "-S",
+        "/workspace/scratch/58d095d12044/unknot_planar_sector_overlays_20261009/experiments/audit_euler_corners.py",
+        "--fast",
+        "/workspace/scratch/58d095d12044/unknot_planar_sector_overlays_20261009/code",
+        "--output",
+        "/workspace/scratch/58d095d12044/unknot_planar_sector_overlays_20261009/results/reproduction/20261009T225825Z_1wlod7v_/euler_corner_audit.json"
+      ],
+      "cwd": "/workspace/scratch/58d095d12044/unknot_planar_sector_overlays_20261009"
+    }
+  ],
+  "status": "PASS",
+  "finished_utc": "2026-10-09T22:58:30.046493+00:00"
+}

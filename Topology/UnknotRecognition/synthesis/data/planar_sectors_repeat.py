@@ -1,4 +1,12 @@
+import argparse
 import json
+from pathlib import Path
+import sys
+ROOT=Path(__file__).resolve().parents[2]
+sys.path.insert(0,str(ROOT/"fast"))
+parser=argparse.ArgumentParser(description="Repeat complete size-four planar enumeration with A/A controls")
+parser.add_argument("--output",type=Path,required=True)
+args=parser.parse_args()
 from normal_orbit_research import seeds
 from normal_orbit_research.planar_sectors import baseline,pins
 from fastunknot.normal_sector import enumerate_sector
@@ -14,4 +22,4 @@ assert before==pins()
 values=[v for s in result["cases"][0]["samples"]+result["cases"][0]["warmups"]for v in s["measurements"].values()]
 assert all(v["output_sha256"]==values[0]["output_sha256"]for v in values)
 result.update(native_source_sha256=before,native_baseline_source_sha256=h,scope="Repeat noisy size-four A/A row; complete enumeration and output")
-open("/tmp/unknot-planar-benchmark-repeat.json","w").write(json.dumps(result,indent=2)+"\n")
+args.output.write_text(json.dumps(result,indent=2)+"\n")

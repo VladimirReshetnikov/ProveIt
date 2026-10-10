@@ -994,6 +994,10 @@ import GowersSzemeredi.Proofs16ClaimNineFive
 import GowersSzemeredi.Proofs16GlobalAllQuadImageCore
 import GowersSzemeredi.Proofs16GlobalCompatibleDifferenceMaps
 import GowersSzemeredi.Proofs16PropNineThreeTwelve
+import GowersSzemeredi.Proofs16GluedPairMaps
+import GowersSzemeredi.Proofs16FinalPairChoice
+import GowersSzemeredi.Proofs16FinalWindow
+import GowersSzemeredi.Proofs16FinalAssemblyTools
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

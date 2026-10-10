@@ -3538,3 +3538,32 @@ preserves reports 70–75, including results without native timing gains, and pr
 two further interface limitations: positive unrestricted anchor relaxations from
 interior vertices, and exponential weighted rooted compatibility even at zero
 cycle overlap. No general QP recognition theorem follows.
+
+
+The STANDARD sector iterator now selects report 80's exact planar minimum
+subdivision at matching nullity three. Nullity one/two retain the existing
+minimum envelopes; higher nullity retains support/arrangement selection.
+`method='planar'` is explicit, and `sector_planar_verify` independently checks
+complete area/length coverage without the producer's clipper. Reusable
+`PreparedSectorSource` remains explicit: one-shot queries keep native dense
+preparation. All 1,391 tests and 9,807 eligible selected oracle comparisons
+pass. At Fibonacci base size 16, complete enumeration improves about 493x,
+while disc discovery with full proof replay improves 4.68x. Smallest discovery
+cases regress; these scopes and A/A controls are retained separately.
+
+```sh
+python -B -m normal_orbit_research.planar_sectors audit --fresh-regina --output /tmp/planar-audit.json
+python -B -m normal_orbit_research.planar_sectors benchmark --rounds 5 --output /tmp/planar-benchmark.json
+```
+
+The optional `normal_seed_edge_span=True` / `--normal-seed-edge-span` stage
+minimizes coherent edge penalty first and span second, with independent
+arithmetic and diagram-source proofs. An existing minimum-span dual avoids
+the second flow when valid. It completes 84/85 audit cases, retains 24/85
+positive answers, and adds measured time on misses, so the default stays off.
+See [edge-first theory](../synthesis/cocycle_lex.tex),
+[planar theory](../synthesis/planar_sectors.tex), and
+[report 81 refinements](../synthesis/planar_overlay_refinements.tex).
+The latter preserves sharper crossing, effective-support and Q-corner Euler
+theorems; its alternative patch and proposed aggregated Euler precheck are
+not installed. No general QP recognition bound follows.

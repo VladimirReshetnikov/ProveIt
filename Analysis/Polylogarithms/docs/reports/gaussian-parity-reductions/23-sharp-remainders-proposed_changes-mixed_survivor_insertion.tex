@@ -1,0 +1,60 @@
+% Proposed insertion for Chapter 4 of the manuscript.
+% Uses the existing manuscript macros \Li, \iu, \rr, and \Imag.
+% Reconcile the historical tables at mixed:sec:eisdim and
+% mixed:thm:parallel as described in the accompanying README.
+
+\section{Regularized inverse-argument reductions}
+\label{mixed:sec:regularized-correction}
+
+The earlier candidate count at the inverse-argument mixed points omitted
+regularized single-product rows. In particular the proposed imaginary
+weight-six survivors contribute no new direction over the stated
+single products and $(z,1)$ double values. The general reduction
+mechanism is already encoded in the report-10 routine
+\texttt{mixed\_coefficients}; the following endpoint case gives a short
+direct derivation and explicit corrections.
+
+\begin{theorem}[Inverse-argument endpoint]
+For $p\ge1$ and $z=\iu$ or $\rr=e^{2\pi\iu/3}$,
+\[
+ \Li_{p,1}(z,z^{-1})
+ =\sum_{a=1}^{p}\Li_{a,p+1-a}(z,1)+p\Li_{p+1}(z)
+       -\sum_{j=2}^{p}\zeta(j)\Li_{p+1-j}(z).
+\]
+\end{theorem}
+\begin{proof}
+Regularize $\Li_1(1)$ by the same real parameter $T$ in the shuffle
+and stuffle product with $\Li_p(z)$. Subtraction cancels the
+divergent leading term and gives
+\[
+ \Li_{p,1}(z,z^{-1})
+ =\Li_{p,1}(z,1)+\Li_{p+1}(z)
+       -\sum_{a=2}^{p}\Li_{a,p+1-a}(1,z).
+\]
+Apply the convergent stuffle
+\[
+ \Li_{a,p+1-a}(1,z)
+ =\zeta(a)\Li_{p+1-a}(z)-\Li_{p+1-a,a}(z,1)-\Li_{p+1}(z)
+\]
+to every term of the finite sum.
+\end{proof}
+
+With the proved Gaussian weight-six $g$ reductions, this gives
+\[
+ \Imag\Li_{5,1}(\iu,-\iu)
+ =3\beta(6)-\frac{\pi^2}{6}\beta(4)
+       -\frac{\pi^4}{90}G-\frac{5\pi^5}{3072}\log2.
+\]
+For $\rr=e^{2\pi\iu/3}$ define $C_s=\Imag\Li_s(\rr)$ for every $s$.
+Then
+\begin{align*}
+ \Imag\Li_{5,1}(\rr,\rr^2)
+ &=\sum_{a=1}^{5}\Imag\Li_{a,6-a}(\rr,1)
+       +5C_6-\frac{\pi^2}{6}C_4-\frac{\pi^4}{90}C_2\\
+ &\quad-\frac{2\pi^3}{81}\zeta(3)-\frac{\pi}{6}\zeta(5).
+\end{align*}
+Thus the imaginary weight-six candidate in each tower must be removed
+from the corresponding survivor summary. The real weight-five
+candidate requires a separate analysis; no independence assertion
+for it is made here.
+

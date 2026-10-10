@@ -1,0 +1,1386 @@
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/sector_planar.py b/Topology/UnknotRecognition/fast/fastunknot/sector_planar.py
+new file mode 100644
+index 000000000..c6a63ffde
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/sector_planar.py
+@@ -0,0 +1,468 @@
++"""Exact minimum-subdivision enumeration for matching nullity at most three.
++
++This is a supplied-sector query, not an unknot recognizer.  The projective
++quadrilateral cone is a polygon, segment, point, or empty.  Convex clipping
++constructs each vertex group's genuine minimum cells.  Their internal edges
++are overlaid, and exactly the subdivision vertices are canonically lifted.
++No supported-rank test or arrangement of inactive potential equalities is
++used.  Pure vertex links are omitted.
++
++``max_work`` bounds disclosed implementation checkpoints, not bit operations
++or elapsed time.  All preparation and lifts share the allowance; a limit
++raises SearchLimit and supplies no completeness certificate.  An independent
++``check`` callback supports cooperative cancellation.
++"""
++
++from fractions import Fraction
++from itertools import combinations
++
++from .normal_sector import SearchLimit, _primitive, build_sector_kernel
++from .normal_surface_geometry import _coordinates
++
++
++class _Work:
++    def __init__(self, check, maximum, stats):
++        if maximum is not None and (type(maximum) is not int or maximum < 0):
++            raise ValueError('max_work must be a nonnegative integer or None')
++        if not callable(check):
++            raise TypeError('check must be callable')
++        self.check = check
++        self.maximum = maximum
++        self.stats = stats
++        stats['work_units'] = 0
++
++    def step(self, name='checkpoints', amount=1):
++        self.check()
++        used = self.stats['work_units']
++        if self.maximum is not None and used + amount > self.maximum:
++            raise SearchLimit('planar-sector work allowance exhausted')
++        self.stats['work_units'] = used + amount
++        self.stats[name] = self.stats.get(name, 0) + amount
++
++
++def _dot(left, right, work):
++    total = Fraction(0)
++    for a, b in zip(left, right):
++        work.step('projection_terms')
++        total += a*b
++    return total
++
++
++def _value(form, point, work):
++    total = form[0]
++    work.step('affine_evaluations')
++    for coefficient, coordinate in zip(form[1:], point):
++        total += coefficient*coordinate
++    return total
++
++
++def _cross(a, b, c, work):
++    work.step('orientation_tests')
++    return (b[0]-a[0])*(c[1]-a[1]) - (b[1]-a[1])*(c[0]-a[0])
++
++
++def _clean_polygon(points, work):
++    """Normalize a cyclically ordered convex polygon, including degeneracy.
++
++    Clipping preserves cyclic convex order.  Only consecutive duplicates
++    and collinear intermediate points are removed, in linear work; a fully
++    collinear polygon becomes its two extreme endpoints.
++    """
++    unique = []
++    for point in points:
++        work.step('polygon_cleanup_points')
++        if not unique or point != unique[-1]:
++            unique.append(point)
++    if len(unique) > 1 and unique[0] == unique[-1]:
++        unique.pop()
++    if len(unique) < 2:
++        return tuple(unique)
++    if all(_cross(unique[0], unique[1], point, work) == 0
++           for point in unique[2:]):
++        ends = (min(unique), max(unique))
++        return ends[:1] if ends[0] == ends[1] else ends
++    stack = []
++    for point in unique:
++        while len(stack) > 1 and _cross(stack[-2], stack[-1], point, work) == 0:
++            stack.pop()
++        stack.append(point)
++    while len(stack) > 2 and _cross(stack[-2], stack[-1], stack[0], work) == 0:
++        stack.pop()
++    start = 0
++    while len(stack)-start > 2 and _cross(stack[-1], stack[start],
++                                        stack[start+1], work) == 0:
++        start += 1
++    stack = stack[start:]
++    first = min(range(len(stack)), key=stack.__getitem__)
++    return tuple(stack[first:] + stack[:first])
++
++
++def _clip_polygon(polygon, form, work):
++    """Intersect a closed convex polygon with form >= 0, exactly."""
++    work.step('clip_calls')
++    if not polygon:
++        return ()
++    values = [_value(form, point, work) for point in polygon]
++    if all(value >= 0 for value in values):
++        return polygon
++    if all(value < 0 for value in values):
++        return ()
++    result = []
++    for index, left in enumerate(polygon):
++        right = polygon[(index+1) % len(polygon)]
++        a, b = values[index], values[(index+1) % len(polygon)]
++        work.step('clip_edges')
++        if a >= 0:
++            result.append(left)
++        if (a < 0 < b) or (b < 0 < a):
++            scale = a/(a-b)
++            result.append(tuple(x+scale*(y-x) for x, y in zip(left, right)))
++    return _clean_polygon(result, work)
++
++
++def _dimension(polygon):
++    return -1 if not polygon else min(2, len(polygon)-1)
++
++
++def _chart(kernel, work):
++    """Affine coordinates on sum(q)=1 and its exact nonnegative domain."""
++    basis = tuple(tuple(Fraction(x) for x in row) for row in kernel.basis)
++    dimension = len(basis)
++    if dimension > 3:
++        raise ValueError('planar sectors require matching nullity at most three')
++    if not dimension:
++        return None, (), ()
++    totals = [sum(row) for row in basis]
++    pivot = next((i for i, total in enumerate(totals) if total), None)
++    if pivot is None:
++        return None, (), ()
++    origin = tuple(x/totals[pivot] for x in basis[pivot])
++    directions = tuple(tuple(x-total*y for x, y in zip(row, origin))
++                       for i, (row, total) in enumerate(zip(basis, totals))
++                       if i != pivot)
++    for _ in origin:
++        work.step('chart_coordinates')
++    if not directions:
++        domain = ((),) if all(x >= 0 for x in origin) else ()
++        return origin, directions, domain
++    if len(directions) == 1:
++        lower, upper = None, None
++        for a, b in zip(origin, directions[0]):
++            work.step('section_inequalities')
++            if b > 0:
++                lower = max(lower, -a/b) if lower is not None else -a/b
++            elif b < 0:
++                upper = min(upper, -a/b) if upper is not None else -a/b
++            elif a < 0:
++                return origin, directions, ()
++        if lower is None or upper is None:
++            raise ArithmeticError('matching basis is not independent')
++        domain = () if lower > upper else ((lower,), (upper,))
++        if lower == upper:
++            domain = domain[:1]
++        return origin, directions, domain
++    first, second = directions
++    selected = None
++    for i, j in combinations(range(len(origin)), 2):
++        work.step('chart_minor_tests')
++        determinant = first[i]*second[j] - first[j]*second[i]
++        if determinant:
++            selected = i, j, determinant
++            break
++    if selected is None:
++        raise ArithmeticError('matching basis is not independent')
++    i, j, determinant = selected
++    # Every feasible q lies in [0,1]^k.  Invert two independent coordinate
++    # rows to obtain a finite rational rectangle containing the entire P.
++    box_points = []
++    for qi in (0, 1):
++        for qj in (0, 1):
++            x, y = qi-origin[i], qj-origin[j]
++            box_points.append(((x*second[j]-y*second[i])/determinant,
++                               (first[i]*y-first[j]*x)/determinant))
++    xmin, xmax = min(x for x, _ in box_points), max(x for x, _ in box_points)
++    ymin, ymax = min(y for _, y in box_points), max(y for _, y in box_points)
++    polygon = ((xmin, ymin), (xmax, ymin), (xmax, ymax), (xmin, ymax))
++    for a, b, c in zip(origin, first, second):
++        work.step('section_inequalities')
++        polygon = _clip_polygon(polygon, (a, b, c), work)
++        if not polygon:
++            break
++    return origin, directions, polygon
++
++
++def _line_envelope(forms, work):
++    """(anchor, intercept, slope) -> active pieces with increasing starts."""
++    by_slope = {}
++    for anchor, intercept, slope in forms:
++        work.step('line_forms')
++        prior = by_slope.get(slope)
++        if prior is None or (intercept, anchor) < prior:
++            by_slope[slope] = intercept, anchor
++    hull = []
++    for slope in sorted(by_slope, reverse=True):
++        intercept, anchor = by_slope[slope]
++        start = None
++        while hull:
++            work.step('line_hull_tests')
++            _, old_intercept, old_slope, old_start = hull[-1]
++            start = (intercept-old_intercept)/(old_slope-slope)
++            if old_start is None or start > old_start:
++                break
++            hull.pop()
++        if not hull:
++            start = None
++        hull.append((anchor, intercept, slope, start))
++    return tuple(hull)
++
++
++def _interpolate(left, right, value):
++    return tuple(a+value*(b-a) for a, b in zip(left, right))
++
++
++def _segment_groups(kernel, domain, projected, work):
++    left, right = domain
++    points = {left, right}
++    groups = []
++    bound = 2
++    for group in kernel.groups:
++        lines = []
++        for corner in group:
++            form = projected[corner]
++            intercept = _value(form, left, work)
++            slope = _value(form, right, work)-intercept
++            lines.append((corner, intercept, slope))
++        hull = _line_envelope(lines, work)
++        cells = []
++        bound += max(0, len(group)-1)
++        for index, (corner, _, _, start) in enumerate(hull):
++            work.step('line_envelope_pieces')
++            stop = hull[index+1][3] if index+1 < len(hull) else None
++            lo = max(Fraction(0), start) if start is not None else Fraction(0)
++            hi = min(Fraction(1), stop) if stop is not None else Fraction(1)
++            if lo < hi:
++                ends = (_interpolate(left, right, lo),
++                        _interpolate(left, right, hi))
++                points.update(ends)
++                cells.append(dict(corner=corner, vertices=ends))
++        groups.append(dict(corners=tuple(group), cells=tuple(cells)))
++    return tuple(groups), tuple(sorted(points)), bound
++
++
++def _boundary_edge(a, b, domain, work):
++    for index, c in enumerate(domain):
++        d = domain[(index+1) % len(domain)]
++        if _cross(c, d, a, work) == 0 and _cross(c, d, b, work) == 0:
++            return True
++    return False
++
++
++def _intersection(first, second, work):
++    """The unique nonparallel intersection, or None.
++
++    Collinear overlaps create no new vertices beyond segment endpoints,
++    which are inserted before this call.
++    """
++    work.step('segment_intersection_tests')
++    a, b = first
++    c, d = second
++    u = b[0]-a[0], b[1]-a[1]
++    v = d[0]-c[0], d[1]-c[1]
++    determinant = u[0]*v[1]-u[1]*v[0]
++    if not determinant:
++        return None
++    w = c[0]-a[0], c[1]-a[1]
++    s = (w[0]*v[1]-w[1]*v[0])/determinant
++    t = (w[0]*u[1]-w[1]*u[0])/determinant
++    if 0 <= s <= 1 and 0 <= t <= 1:
++        return a[0]+s*u[0], a[1]+s*u[1]
++    return None
++
++
++def _polygon_groups(kernel, domain, projected, work, stats):
++    groups = []
++    owners = {}
++    for group_index, group in enumerate(kernel.groups):
++        representatives = {}
++        for corner in group:
++            form = projected[corner]
++            representatives[form] = min(corner, representatives.get(form, corner))
++        forms = sorted((corner, form) for form, corner in representatives.items())
++        cells = []
++        for corner, form in forms:
++            cell = domain
++            work.step('candidate_minimum_cells')
++            for other, compared in forms:
++                if other == corner:
++                    continue
++                difference = tuple(x-y for x, y in zip(compared, form))
++                cell = _clip_polygon(cell, difference, work)
++                if not cell:
++                    break
++            if _dimension(cell) != 2:
++                if cell:
++                    stats['discarded_lower_dimensional_cells'] += 1
++                continue
++            stats['minimum_cells'] += 1
++            stats['max_cell_vertices'] = max(stats['max_cell_vertices'], len(cell))
++            cells.append(dict(corner=corner, vertices=cell))
++            for index, a in enumerate(cell):
++                b = cell[(index+1) % len(cell)]
++                work.step('minimum_cell_edges')
++                if not _boundary_edge(a, b, domain, work):
++                    segment = tuple(sorted((a, b)))
++                    owners.setdefault(segment, set()).add(group_index)
++        if not cells:
++            raise ArithmeticError('nonempty polygon has no full minimum cell')
++        groups.append(dict(corners=tuple(group), cells=tuple(cells)))
++    segments = tuple(sorted(owners))
++    points = set(domain)
++    for a, b in segments:
++        points.add(a)
++        points.add(b)
++    pair_bound = 0
++    # Edges belonging to a common convex subdivision cannot cross in their
++    # relative interiors.  Skipping those pairs also preserves the linear
++    # one-group output bound.
++    if len(groups) > 1:
++        for first, second in combinations(segments, 2):
++            work.step('segment_pair_screenings')
++            if owners[first] & owners[second]:
++                continue
++            pair_bound += 1
++            point = _intersection(first, second, work)
++            if point is not None:
++                points.add(point)
++    stats['skeleton_segments'] = len(segments)
++    bound = len(domain)+2*len(segments)+pair_bound
++    return tuple(groups), segments, tuple(sorted(points)), bound
++
++
++def _plan(kernel, work, stats):
++    stats.update(method='planar', matching_dimension=len(kernel.basis),
++                 section_dimension=-1, potential_projections=0,
++                 minimum_cells=0, discarded_lower_dimensional_cells=0,
++                 max_cell_vertices=0, skeleton_segments=0,
++                 overlay_points=0, output_bound=0)
++    work.step('plan_checkpoints')
++    origin, directions, domain = _chart(kernel, work)
++    dimension = _dimension(domain)
++    stats['section_dimension'] = dimension
++    result = dict(matching_dimension=len(kernel.basis), section_dimension=dimension,
++                  q_origin=origin, q_directions=directions, domain=domain,
++                  projected_potentials={}, groups=(), skeleton=(), points=())
++    if not domain:
++        return result
++    projected = {}
++    for corner in kernel.classes:
++        potential = kernel.potentials[corner]
++        projected[corner] = tuple(_dot(potential, direction, work)
++                                  for direction in (origin,)+directions)
++        stats['potential_projections'] += 1+len(directions)
++    result['projected_potentials'] = projected
++    if dimension == 0:
++        points, bound = domain, 1
++    elif dimension == 1:
++        groups, points, bound = _segment_groups(kernel, domain, projected, work)
++        result['groups'] = groups
++        stats['minimum_cells'] = sum(len(group['cells']) for group in groups)
++    else:
++        groups, skeleton, points, bound = _polygon_groups(
++            kernel, domain, projected, work, stats)
++        result.update(groups=groups, skeleton=skeleton)
++    result['points'] = points
++    stats['overlay_points'] = len(points)
++    stats['output_bound'] = bound
++    return result
++
++
++def sector_planar_plan(kernel, *, check=lambda: None, max_work=None, stats=None):
++    """Return the exact rational projective minimum subdivision's vertices.
++
++    ``q_origin + sum(point[j] * q_directions[j])`` recovers a normalized
++    quadrilateral vector.  ``domain`` and all cell vertices use this chart.
++    ``points`` is the full set of subdivision vertices, in sorted order.
++    Cell records contain original corner anchors; retained polygon cells
++    have nonempty interior.  A raw three-dimensional kernel can still have
++    an empty, zero-dimensional, or one-dimensional nonnegative section.
++
++    This is a producer, not an independent completeness verifier.
++    """
++    if stats is None:
++        stats = {}
++    return _plan(kernel, _Work(check, max_work, stats), stats)
++
++
++def _projected_lift(kernel, plan, point, q, work):
++    scale = sum(q)
++    values = {corner: _value(form, point, work)
++              for corner, form in plan['projected_potentials'].items()}
++    for group in kernel.groups:
++        minimum = min(values[corner] for corner in group)
++        for corner in group:
++            work.step('lift_triangle_classes')
++            value = scale*(values[corner]-minimum)
++            if value < 0 or value.denominator != 1:
++                raise ArithmeticError('projected lift is not nonnegative integral')
++            values[corner] = int(value)
++    rows = [[0]*7 for _ in kernel.prepared['tetrahedra']]
++    for corner, contracted in enumerate(kernel.corner_class):
++        work.step('lift_triangle_corners')
++        rows[corner//4][corner % 4] = values.get(contracted, 0)
++    for (tetrahedron, typ), count in zip(kernel.support, q):
++        work.step('lift_quadrilaterals')
++        rows[tetrahedron][4+typ] = count
++    _coordinates(kernel.prepared, rows, lambda: work.step('coordinate_checkpoints'))
++    return rows
++
++
++def _rays(kernel, work, stats):
++    stats.update(candidate_lifts=0, emitted_rays=0, projected_lifts=0)
++    plan = _plan(kernel, work, stats)
++    for point in plan['points']:
++        work.step('candidate_lifts')
++        values = list(plan['q_origin'])
++        for coordinate, direction in zip(point, plan['q_directions']):
++            for i, value in enumerate(direction):
++                work.step('output_quadrilateral_terms')
++                values[i] += coordinate*value
++        q = _primitive(values)
++        if not any(q) or any(value < 0 for value in q):
++            raise ArithmeticError('invalid projective subdivision vertex')
++        rows = _projected_lift(kernel, plan, point, q, work)
++        if max(value for row in rows for value in row) > 4**len(kernel.support):
++            raise ArithmeticError('primitive extreme-ray height bound failed')
++        stats['projected_lifts'] += 1
++        stats['emitted_rays'] += 1
++        yield rows
++
++
++def sector_planar_rays(kernel, *, check=lambda: None, max_work=None, stats=None):
++    """Yield every primitive nonlink standard ray of a supplied kernel.
++
++    The matching nullity must be at most three.  All actual feasible section
++    dimensions are supported.  The work limit applies throughout plan
++    construction and full coordinate output.  Exhaustion or cancellation
++    interrupts the iterator; a partial list proves no completeness claim.
++    """
++    if stats is None:
++        stats = {}
++    yield from _rays(kernel, _Work(check, max_work, stats), stats)
++
++
++def enumerate_planar_sector(triangulation, allowed_types, *,
++                            check=lambda: None, max_work=None):
++    """Return (complete ray list, stats), including kernel construction.
++
++    The same work allowance and callback span source geometry, kernel
++    construction, clipping, overlay, lifting, and coordinate validation.
++    No default recognition policy is changed.  Raises SearchLimit on an
++    allowance exhaustion, rather than returning a partial complete list.
++    """
++    stats = {}
++    work = _Work(check, max_work, stats)
++    kernel = build_sector_kernel(triangulation, allowed_types,
++                                check=lambda: work.step('kernel_checkpoints'))
++    stats.update(kernel.stats)
++    rays = list(_rays(kernel, work, stats))
++    return rays, stats
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/sector_planar_verify.py b/Topology/UnknotRecognition/fast/fastunknot/sector_planar_verify.py
+new file mode 100644
+index 000000000..e4301b7c1
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/sector_planar_verify.py
+@@ -0,0 +1,352 @@
++"""Independent complete ray-set checking for sectors of nullity at most three.
++
++The producer clips winning polygons.  This checker instead starts with dense
++standard matching equations, intersects every potential tie with *all* minimum
++inequalities, and solves the resulting one-dimensional interval.  It imports
++neither sector_planar nor normal_sector.  The shared trust boundary consists
++of native triangulation validation and the older dense matching model.
++"""
++
++from fractions import Fraction
++from itertools import combinations
++from math import gcd
++
++from .normal_sector_verify import (
++    _digest, _integer_direction, _lift, dense_sector_model,
++)
++from .normal_surface_geometry import NormalOrbitError, _coordinates
++from .normal_disk_kernel import verify_normal_disk_count_certificate
++from .integer_codec import encoded_integer
++
++
++SCHEMA = 'normal-sector-planar-rays-v1'
++
++
++class PlanarVerificationLimit(RuntimeError):
++    """The explicitly configured verification allowance was exhausted."""
++
++
++def _value(form, point):
++    return form[0] + sum(a * b for a, b in zip(form[1:], point))
++
++
++def _minus(left, right):
++    return tuple(a - b for a, b in zip(left, right))
++
++
++def _line_intersection(left, right):
++    c, a, b = left
++    f, d, e = right
++    determinant = a * e - b * d
++    if not determinant:
++        return None
++    return ((b * f - c * e) / determinant,
++            (c * d - a * f) / determinant)
++
++
++def _interval(constraints, tick):
++    lower = upper = None
++    for constant, slope in constraints:
++        tick('interval_inequalities')
++        if not slope:
++            if constant < 0:
++                return None
++            continue
++        bound = -constant / slope
++        if slope > 0:
++            lower = bound if lower is None else max(lower, bound)
++        else:
++            upper = bound if upper is None else min(upper, bound)
++        if lower is not None and upper is not None and lower > upper:
++            return None
++    if lower is None or upper is None:
++        raise ArithmeticError('a nonempty projective section must be bounded')
++    return lower, upper
++
++
++def _at(base, direction, parameter):
++    return tuple(a + parameter * b for a, b in zip(base, direction))
++
++
++def _segment_intersection(left, right):
++    a, b = left
++    c, d = right
++    u = _minus(b, a)
++    v = _minus(d, c)
++    w = _minus(c, a)
++    determinant = u[0] * v[1] - u[1] * v[0]
++    if not determinant:
++        # A collinear overlap has only already-listed endpoints as vertices.
++        return None
++    s = (w[0] * v[1] - w[1] * v[0]) / determinant
++    t = (w[0] * u[1] - w[1] * u[0]) / determinant
++    if 0 <= s <= 1 and 0 <= t <= 1:
++        return _at(a, u, s)
++    return None
++
++
++def _affine_dimension(points):
++    if not points:
++        return -1
++    if len(points) == 1:
++        return 0
++    origin, second = points[:2]
++    direction = _minus(second, origin)
++    for point in points[2:]:
++        displacement = _minus(point, origin)
++        if direction[0] * displacement[1] != direction[1] * displacement[0]:
++            return 2
++    return 1
++
++
++def _interval_points(endpoints, groups, tick):
++    """All true minimum ties along a segment, using no envelope hull code."""
++    left, right = endpoints
++    direction = _minus(right, left)
++    points = {left, right}
++    for group in groups:
++        restricted = sorted(set((_value(form, left),
++                                 sum(a * b for a, b in zip(form[1:], direction)))
++                                for form in group))
++        for first, second in combinations(restricted, 2):
++            tick('minimum_pairs')
++            if first[1] == second[1]:
++                continue
++            parameter = (second[0] - first[0]) / (first[1] - second[1])
++            if not 0 < parameter < 1:
++                continue
++            minimum = first[0] + parameter * first[1]
++            if all(c + parameter * s >= minimum for c, s in restricted):
++                points.add(_at(left, direction, parameter))
++    return points
++
++
++def independent_planar_directions(model, *, check=lambda: None,
++                                  max_work=None, stats=None):
++    """Return the complete primitive quadrilateral projections independently.
++
++    The bound is polynomial in the dense model size.  After O(tk) projection
++    and deduplication of dense triangle rows, geometry takes O(k^3 + p^2(k+p))
++    exact operations before output, where p counts distinct projected forms
++    across vertex groups. Dense elimination is charged separately.
++    max_work counts disclosed predicate/interval events,
++    not bit operations and not construction of the dense model.
++    """
++    if max_work is not None and (type(max_work) is not int or max_work < 0):
++        raise ValueError('max_work must be a nonnegative integer or None')
++    if stats is None:
++        stats = {}
++    stats.update(verification_work=0, domain_pairs=0, minimum_pairs=0,
++                 interval_inequalities=0, crossing_pairs=0)
++
++    def tick(kind):
++        check()
++        if max_work is not None and stats['verification_work'] >= max_work:
++            raise PlanarVerificationLimit('planar verification allowance exhausted')
++        stats['verification_work'] += 1
++        stats[kind] = stats.get(kind, 0) + 1
++
++    check()
++    basis = model['basis']
++    d = len(basis)
++    stats['matching_nullity'] = d
++    if d > 3:
++        raise ValueError('planar verification requires matching nullity at most three')
++    if not d:
++        stats['section_dimension'] = -1
++        return ()
++    sums = [sum(vector) for vector in basis]
++    # Choosing the LAST pivot is deliberate: this chart is independently built.
++    pivot = next((i for i in reversed(range(d)) if sums[i]), None)
++    if pivot is None:
++        stats['section_dimension'] = -1
++        return ()
++    origin = tuple(x / sums[pivot] for x in basis[pivot])
++    directions = [tuple(a - sums[i] * b for a, b in zip(basis[i], origin))
++                  for i in range(d) if i != pivot]
++    frame = [origin] + directions
++    domain = [tuple(vector[i] for vector in frame) for i in range(len(origin))]
++    groups = []
++    for corners in model['groups'].values():
++        forms = sorted(set(tuple(sum(a * b for a, b in zip(model['potentials'][c], v))
++                                 for v in frame) for c in corners))
++        if len(forms) > 1:
++            groups.append(forms)
++    stats['projected_forms'] = sum(map(len, groups))
++
++    def output(points):
++        result = set()
++        for point in points:
++            tick('output_directions')
++            q = _integer_direction(_value(form, point) for form in domain)
++            if not any(q) or any(x < 0 for x in q):
++                raise ArithmeticError('independent direction left the nonnegative cone')
++            result.add(q)
++        stats['emitted_rays'] = len(result)
++        return tuple(sorted(result))
++
++    if d == 1:
++        feasible = all(x >= 0 for x in origin)
++        stats['section_dimension'] = 0 if feasible else -1
++        return output([()]) if feasible else ()
++    if d == 2:
++        bounds = _interval(domain, tick)
++        if bounds is None:
++            stats['section_dimension'] = -1
++            return ()
++        left, right = ((bounds[0],), (bounds[1],))
++        stats['section_dimension'] = 0 if left == right else 1
++        return output([left] if left == right else
++                      _interval_points((left, right), groups, tick))
++
++    # Enumerating vertices of k halfplanes is cubic, including feasibility.
++    vertices = set()
++    for first, second in combinations(domain, 2):
++        tick('domain_pairs')
++        point = _line_intersection(first, second)
++        if point is not None and all(_value(form, point) >= 0 for form in domain):
++            vertices.add(point)
++    vertices = sorted(vertices)
++    dimension = _affine_dimension(vertices)
++    stats['section_dimension'] = dimension
++    if dimension < 0:
++        return ()
++    if dimension == 0:
++        return output(vertices)
++    if dimension == 1:
++        return output(_interval_points((vertices[0], vertices[-1]), groups, tick))
++
++    points = set(vertices)
++    segments_by_group = []
++    for forms in groups:
++        segments = set()
++        for first, second in combinations(forms, 2):
++            tick('minimum_pairs')
++            constant, a, b = _minus(first, second)
++            if not a and not b:
++                continue
++            base = (-constant / a, Fraction(0)) if a else (Fraction(0), -constant / b)
++            direction = (-b, a)
++            constraints = list(domain) + [_minus(form, first) for form in forms]
++            bounds = _interval([(_value(form, base),
++                                 form[1] * direction[0] + form[2] * direction[1])
++                                for form in constraints], tick)
++            if bounds is None:
++                continue
++            ends = tuple(sorted((_at(base, direction, bounds[0]),
++                                 _at(base, direction, bounds[1]))))
++            points.update(ends)
++            if ends[0] == ends[1]:
++                continue
++            on_boundary = any((form[1] or form[2])
++                              and _value(form, ends[0]) == _value(form, ends[1]) == 0
++                              for form in domain)
++            if not on_boundary:
++                segments.add(ends)
++        segments_by_group.append(sorted(segments))
++    stats['minimum_segments'] = sum(map(len, segments_by_group))
++    for left, right in combinations(segments_by_group, 2):
++        for first in left:
++            for second in right:
++                tick('crossing_pairs')
++                point = _segment_intersection(first, second)
++                if point is not None:
++                    points.add(point)
++    return output(points)
++
++
++def verify_planar_sector_certificate(triangulation, certificate, *,
++                                     check=lambda: None, max_work=None, stats=None):
++    """Verify exact source binding and the complete non-link standard ray set.
++
++    Success certifies a sector enumeration, never an unknot verdict.  Timeout
++    and cancellation propagate; no incomplete verification returns True.
++    """
++    check()
++    if type(certificate) is not dict or certificate.get('schema') != SCHEMA:
++        return False
++    if certificate.get('source_sha256') != _digest(triangulation):
++        return False
++    support = certificate.get('allowed_types')
++    entries = certificate.get('quadrilateral_rays')
++    if type(support) is not list or type(entries) is not list:
++        return False
++    if any(type(pair) is not list or len(pair) != 2
++           or any(type(x) is not int for x in pair) for pair in support):
++        return False
++    if (support != sorted(support) or len({pair[0] for pair in support}) != len(support)
++            or any(pair[0] < 0 or not 0 <= pair[1] < 3 for pair in support)):
++        return False
++    parsed = []
++    for row in entries:
++        check()
++        if (type(row) is not list or len(row) != len(support)
++                or any(type(x) is not int or x < 0 for x in row)
++                or not any(row)):
++            return False
++        divisor = 0
++        for x in row:
++            divisor = gcd(divisor, x)
++        if divisor != 1:
++            return False
++        parsed.append(tuple(row))
++    if parsed != sorted(set(parsed)):
++        return False
++    try:
++        tetrahedra = triangulation['tetrahedra']
++        if any(pair[0] >= len(tetrahedra) for pair in support):
++            return False
++    except (KeyError, TypeError):
++        return False
++    try:
++        model = dense_sector_model(triangulation, support, check=check)
++    except NormalOrbitError:
++        return False
++    if len(model['basis']) > 3:
++        return False
++    expected = independent_planar_directions(model, check=check,
++                                             max_work=max_work, stats=stats)
++    return tuple(parsed) == expected
++
++
++def verify_planar_exhaustion(triangulation, certificate, *, check=lambda: None,
++                              max_work=None, stats=None):
++    """Check complete enumeration and every positive-Euler negative disc test."""
++    check()
++    if (type(certificate) is not dict or
++            certificate.get('schema') != 'normal-sector-planar-exhaustion-v1'):
++        return False
++    enumeration = certificate.get('enumeration')
++    if not verify_planar_sector_certificate(triangulation, enumeration, check=check,
++                                             max_work=max_work, stats=stats):
++        return False
++    entries = certificate.get('rays')
++    if type(entries) is not list or len(entries) != len(enumeration['quadrilateral_rays']):
++        return False
++    model = dense_sector_model(triangulation, enumeration['allowed_types'], check=check)
++    positive = False
++    for entry, q in zip(entries, enumeration['quadrilateral_rays']):
++        check()
++        if type(entry) is not dict or entry.get('quadrilaterals') != q:
++            return False
++        rows = _lift(model, q, check)
++        chi = _coordinates(model['prepared'], rows, check)['euler_characteristic']
++        if type(entry.get('euler_characteristic')) is not int:
++            return False
++        if entry['euler_characteristic'] != chi:
++            return False
++        if chi <= 0:
++            if 'disk_certificate' in entry:
++                return False
++            continue
++        positive = True
++        proof = entry.get('disk_certificate')
++        if not verify_normal_disk_count_certificate(triangulation, rows, proof, check=check):
++            return False
++        try:
++            if encoded_integer(proof['compressing_disk_components']) != 0:
++                return False
++        except (KeyError, TypeError, ValueError):
++            return False
++    expected = 'NO_VERTEX_DISC_IN_SECTOR' if positive else 'NO_POSITIVE_EULER'
++    return certificate.get('status') == expected
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/sector_planar_certificate.py b/Topology/UnknotRecognition/fast/fastunknot/sector_planar_certificate.py
+new file mode 100644
+index 000000000..8f2a71d60
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/sector_planar_certificate.py
+@@ -0,0 +1,95 @@
++"""Certificates and supplied-sector disc search using exact planar enumeration."""
++
++from .normal_sector import build_sector_kernel, SearchLimit, _source_hash
++from .normal_surface_geometry import _coordinates
++from .normal_disk_kernel import (
++    normal_compressing_disk_count, verify_normal_disk_count_certificate,
++)
++from .sector_planar import _Work, _rays
++
++
++def _enumeration_proof(triangulation, support, quadrilaterals):
++    return dict(schema='normal-sector-planar-rays-v1',
++                source_sha256=_source_hash(triangulation),
++                allowed_types=[list(pair) for pair in support],
++                quadrilateral_rays=[list(q) for q in sorted(quadrilaterals)])
++
++
++def certify_planar_sector(triangulation, allowed_types, *, check=lambda: None,
++                          max_work=None):
++    """Produce all non-link standard rays and an independently replayable list.
++
++    A certificate's production is separate from its independent verification.
++    A configured limit yields INCONCLUSIVE, without a partial coverage proof.
++    """
++    stats = {}
++    work = _Work(check, max_work, stats)
++    try:
++        kernel = build_sector_kernel(triangulation, allowed_types,
++                                    check=lambda: work.step('kernel_checkpoints'))
++        stats.update(kernel.stats)
++        rows = list(_rays(kernel, work, stats))
++    except SearchLimit as exc:
++        return dict(status='INCONCLUSIVE', reason=str(exc), stats=stats)
++    rays = [tuple(surface[t][4 + q] for t, q in kernel.support) for surface in rows]
++    return dict(status='COMPLETE', coordinates=rows, stats=stats,
++                certificate=_enumeration_proof(triangulation, kernel.support, rays),
++                trust='complete enumeration in the supplied sector')
++
++
++def discover_planar_in_sector(triangulation, allowed_types, *, check=lambda: None,
++                              max_work=None, max_orbit_cycles=None):
++    """Search the complete standard ray list for an essential-disc component.
++
++    Positive results use the existing witness schema and native independent
++    disc replay.  Negative certificates bind complete planar enumeration plus
++    all necessary negative component tests.  Neither result identifies the
++    supplied triangulation with the exterior of a particular knot diagram.
++    """
++    if (max_orbit_cycles is not None and
++            (type(max_orbit_cycles) is not int or max_orbit_cycles < 0)):
++        raise ValueError('max_orbit_cycles must be a nonnegative integer or None')
++    stats = dict(positive_euler_rays=0, orbit_queries=0)
++    work = _Work(check, max_work, stats)
++    records = []
++    try:
++        kernel = build_sector_kernel(triangulation, allowed_types,
++                                    check=lambda: work.step('kernel_checkpoints'))
++        stats.update(kernel.stats)
++        for rows in _rays(kernel, work, stats):
++            chi = _coordinates(kernel.prepared, rows, check)['euler_characteristic']
++            q = [rows[t][4 + typ] for t, typ in kernel.support]
++            record = dict(quadrilaterals=q, euler_characteristic=chi)
++            records.append(record)
++            if chi <= 0:
++                continue
++            stats['positive_euler_rays'] += 1
++            stats['orbit_queries'] += 1
++            result = normal_compressing_disk_count(triangulation, rows,
++                max_cycles=max_orbit_cycles, record_certificate=True, check=check)
++            if result['status'] != 'COMPLETE':
++                raise SearchLimit('normal component query did not complete')
++            proof = result['certificate']
++            if not verify_normal_disk_count_certificate(triangulation, rows,
++                                                         proof, check=check):
++                raise ArithmeticError('native independent disc replay rejected')
++            record['disk_certificate'] = proof
++            if result['contains_compressing_disk']:
++                certificate = dict(schema='normal-sector-witness-v1',
++                    source_sha256=_source_hash(triangulation),
++                    allowed_types=[list(pair) for pair in kernel.support],
++                    coordinates=rows, disk_certificate=proof)
++                return dict(status='DISC_FOUND', coordinates=rows,
++                            certificate=certificate, stats=stats,
++                            trust='essential disc in this supplied triangulation')
++    except SearchLimit as exc:
++        return dict(status='INCONCLUSIVE', reason=str(exc), stats=stats)
++    status = ('NO_POSITIVE_EULER' if not stats['positive_euler_rays']
++              else 'NO_VERTEX_DISC_IN_SECTOR')
++    records.sort(key=lambda entry: entry['quadrilaterals'])
++    enumeration = _enumeration_proof(triangulation, kernel.support,
++                                    [tuple(r['quadrilaterals']) for r in records])
++    certificate = dict(schema='normal-sector-planar-exhaustion-v1',
++                       enumeration=enumeration, status=status, rays=records)
++    return dict(status=status, certificate=certificate, stats=stats,
++                trust='restricted sector exhaustion, not a knot verdict')
+diff --git a/Topology/UnknotRecognition/fast/tests/test_sector_planar.py b/Topology/UnknotRecognition/fast/tests/test_sector_planar.py
+new file mode 100644
+index 000000000..b5f7173c7
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_sector_planar.py
+@@ -0,0 +1,320 @@
++"""Exact planar fan coverage, degeneracies, limits, and native ray checks."""
++
++from copy import deepcopy
++from fractions import Fraction
++from itertools import combinations, product
++import random
++from types import SimpleNamespace
++import unittest
++from unittest.mock import patch
++
++from fastunknot.normal_sector import (
++    SearchLimit, _primitive, build_sector_kernel, sector_rays,
++)
++from fastunknot.normal_sector_verify import dense_sector_model, dense_reference_rays
++from fastunknot.sector_planar import (
++    _Work, _clip_polygon, enumerate_planar_sector,
++    sector_planar_plan, sector_planar_rays,
++)
++
++
++def solid_torus():
++    return {'tetrahedra': [[
++        {'tetrahedron': 0, 'permutation': [1, 2, 3, 0]},
++        {'tetrahedron': 0, 'permutation': [3, 0, 1, 2]},
++        None, None,
++    ]]}
++
++
++def attach_ball(raw):
++    result = deepcopy(raw)
++    faces = result['tetrahedra']
++    source, face = next((i, f) for i, rows in enumerate(faces)
++                        for f, target in enumerate(rows) if target is None)
++    target = len(faces)
++    faces.append([None]*4)
++    faces[source][face] = dict(tetrahedron=target, permutation=[0, 1, 2, 3])
++    faces[target][face] = dict(tetrahedron=source, permutation=[0, 1, 2, 3])
++    return result
++
++
++def vector_set(rays):
++    return {tuple(x for row in ray for x in row) for ray in rays}
++
++
++def fake_kernel(basis, group_vectors):
++    potentials = {}
++    groups = []
++    for vectors in group_vectors:
++        group = []
++        for vector in vectors:
++            corner = len(potentials)
++            group.append(corner)
++            potentials[corner] = tuple(map(Fraction, vector))
++        groups.append(tuple(group))
++    return SimpleNamespace(basis=tuple(tuple(map(Fraction, row)) for row in basis),
++        classes=tuple(potentials), groups=tuple(groups), potentials=potentials)
++
++
++def plan_directions(plan):
++    output = set()
++    for point in plan['points']:
++        q = list(plan['q_origin'])
++        for value, direction in zip(point, plan['q_directions']):
++            q = [a+value*b for a, b in zip(q, direction)]
++        output.add(_primitive(q))
++    return output
++
++
++def literal_three_dimensional_rays(kernel):
++    """Small independent arrangement oracle with exact active-normal rank.
++
++    It intentionally forms every pairwise equality, then filters by the
++    rank of inequalities active at the true minima.  This is a slow oracle,
++    not the clipping or overlay algorithm being tested.
++    """
++    basis = kernel.basis
++    width = len(basis[0])
++
++    def project(row):
++        return tuple(sum(x*y for x, y in zip(row, column)) for column in basis)
++
++    normals = [project(tuple(int(i == j) for i in range(width)))
++               for j in range(width)]
++    for group in kernel.groups:
++        for a, b in combinations(group, 2):
++            normals.append(project(tuple(x-y for x, y in
++                zip(kernel.potentials[a], kernel.potentials[b]))))
++    normals = tuple(set(_primitive(row) for row in normals if any(row)))
++    output = set()
++    for a, b in combinations(normals, 2):
++        z = (a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2],
++             a[0]*b[1]-a[1]*b[0])
++        if not any(z):
++            continue
++        q = _primitive(sum(z[j]*basis[j][i] for j in range(3))
++                       for i in range(width))
++        if any(x < 0 for x in q):
++            continue
++        active = [project(tuple(int(i == j) for i in range(width)))
++                  for j, value in enumerate(q) if not value]
++        for group in kernel.groups:
++            values = {c: sum(x*y for x, y in zip(kernel.potentials[c], q))
++                      for c in group}
++            minimum = min(values.values())
++            corners = [c for c in group if values[c] == minimum]
++            for corner in corners[1:]:
++                active.append(project(tuple(x-y for x, y in
++                    zip(kernel.potentials[corner], kernel.potentials[corners[0]]))))
++        if any((u[1]*v[2]-u[2]*v[1], u[2]*v[0]-u[0]*v[2],
++                u[0]*v[1]-u[1]*v[0]) != (0, 0, 0)
++               for u, v in combinations(active, 2)):
++            output.add(q)
++    return output
++
++
++class PlanarGeometryTests(unittest.TestCase):
++    def test_closed_clipping_preserves_polygon_segment_point_and_empty(self):
++        work = _Work(lambda: None, None, {})
++        square = tuple(tuple(map(Fraction, point))
++                       for point in [(0, 0), (1, 0), (1, 1), (0, 1)])
++        triangle = _clip_polygon(square, (Fraction(1), -1, -1), work)
++        self.assertEqual(triangle, ((0, 0), (1, 0), (0, 1)))
++        segment = _clip_polygon(triangle, (Fraction(0), -1, 0), work)
++        self.assertEqual(segment, ((0, 0), (0, 1)))
++        point = _clip_polygon(segment, (Fraction(0), 0, -1), work)
++        self.assertEqual(point, ((0, 0),))
++        self.assertEqual(_clip_polygon(point, (Fraction(-1), 0, 0), work), ())
++        self.assertEqual(_clip_polygon(square, (Fraction(0), 0, 0), work), square)
++
++    def test_raw_nullity_three_all_feasible_dimensions(self):
++        cases = [
++            ([(1, -1, 0, 0), (0, 1, -1, 0), (0, 0, 1, -1)], -1),
++            ([(1, -1, 0, 0), (0, 1, -1, 0), (0, 0, -2, 1)], -1),
++            ([(1, -1, 0, 0, 0), (0, 0, 1, -1, 0), (0, 0, 0, 0, 1)], 0),
++            ([(1, -1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1)], 1),
++            ([(1, 0, 0), (0, 1, 0), (0, 0, 1)], 2),
++        ]
++        for basis, expected in cases:
++            kernel = fake_kernel(basis, [])
++            plan = sector_planar_plan(kernel)
++            with self.subTest(basis=basis):
++                self.assertEqual(plan['matching_dimension'], 3)
++                self.assertEqual(plan['section_dimension'], expected)
++                self.assertEqual(len(plan['points']), max(0, expected+1))
++
++    def test_lower_dimensional_minimizers_and_boundary_ties_add_no_spurious_rays(self):
++        identity = [(1, 0, 0), (0, 1, 0), (0, 0, 1)]
++        kernel = fake_kernel(identity, [[(0, 0, 0), (1, 0, 0), (0, 1, 0),
++                                          (0, 0, 1), (1, 1, 1), (0, 0, 0)]])
++        stats = {}
++        plan = sector_planar_plan(kernel, stats=stats)
++        self.assertEqual(plan_directions(plan), {(1, 0, 0), (0, 1, 0), (0, 0, 1)})
++        self.assertEqual(stats['minimum_cells'], 1)
++        self.assertEqual(stats['skeleton_segments'], 0)
++        self.assertGreater(stats['discarded_lower_dimensional_cells'], 0)
++
++    def test_raw_three_dimensional_segment_has_exact_minimum_switch(self):
++        basis = [(1, -1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1)]
++        kernel = fake_kernel(basis, [[(0, 0, 1, 0), (0, 0, 0, 1),
++                                      (0, 0, 1, 1), (0, 0, 1, 0)]])
++        plan = sector_planar_plan(kernel)
++        self.assertEqual(plan['section_dimension'], 1)
++        self.assertEqual(plan_directions(plan),
++                         {(0, 0, 1, 0), (0, 0, 0, 1), (0, 0, 1, 1)})
++
++    def test_orthogonal_strip_family_is_quadratic_and_bound_is_exact(self):
++        # q0+q1=q2+q3=1/2 is a projective square.  Two independent
++        # affine lower envelopes draw a rectangular grid on that square.
++        basis = [(1, -1, 0, 0), (1, 0, 1, 0), (1, 0, 0, 1)]
++        for count in range(2, 8):
++            groups = []
++            for coordinate in (0, 2):
++                forms = []
++                for index in range(count):
++                    form = [Fraction(index*index, 2*count)]*4
++                    form[coordinate] -= 2*index
++                    forms.append(form)
++                groups.append(forms)
++            kernel = fake_kernel(basis, groups)
++            stats = {}
++            plan = sector_planar_plan(kernel, stats=stats)
++            with self.subTest(count=count):
++                self.assertEqual(len(plan['domain']), 4)
++                self.assertEqual(len(plan['points']), (count+1)**2)
++                self.assertEqual(stats['output_bound'], (count+1)**2)
++                self.assertEqual(stats['skeleton_segments'], 2*(count-1))
++                self.assertEqual(stats['segment_intersection_tests'], (count-1)**2)
++
++    def test_coincident_and_collinear_overlay_segments(self):
++        basis = [(1, 0, 0), (0, 1, 0), (0, 0, 1)]
++        kernel = fake_kernel(basis, [[(1, 0, 0), (0, 1, 0)],
++                                      [(2, 0, 0), (0, 2, 0)],
++                                      [(1, 1, 0), (0, 0, 1)]])
++        plan = sector_planar_plan(kernel)
++        self.assertEqual(plan_directions(plan), literal_three_dimensional_rays(kernel))
++        self.assertEqual(len(plan['skeleton']), 2)
++
++    def test_random_minimum_subdivisions_against_inactive_arrangement_oracle(self):
++        rng = random.Random(610093)
++        basis = [(1, 0, 0), (0, 1, 0), (0, 0, 1)]
++        for number in range(100):
++            vectors = [[tuple(rng.randrange(-3, 5) for _ in range(3))
++                        for _ in range(rng.randrange(2, 6))]
++                       for _ in range(rng.randrange(1, 4))]
++            kernel = fake_kernel(basis, vectors)
++            with self.subTest(number=number):
++                self.assertEqual(plan_directions(sector_planar_plan(kernel)),
++                                 literal_three_dimensional_rays(kernel))
++
++
++class PlanarNativeTests(unittest.TestCase):
++    def test_all_small_capped_sectors_against_current_arrangement(self):
++        raw = solid_torus()
++        checked = 0
++        for count in range(1, 5):
++            for choices in product((-1, 0, 1, 2), repeat=count):
++                allowed = [(i, typ) for i, typ in enumerate(choices) if typ >= 0]
++                kernel = build_sector_kernel(raw, allowed)
++                if len(kernel.basis) > 3:
++                    continue
++                expected = vector_set(sector_rays(kernel, phase='standard',
++                                                  method='arrangement'))
++                stats = {}
++                actual = vector_set(sector_planar_rays(kernel, stats=stats))
++                with self.subTest(count=count, choices=choices):
++                    self.assertEqual(actual, expected)
++                    self.assertEqual(stats['candidate_lifts'], len(actual))
++                    self.assertEqual(stats['projected_lifts'], len(actual))
++                    self.assertLessEqual(len(actual), stats['output_bound'])
++                checked += 1
++            raw = attach_ball(raw)
++        self.assertEqual(checked, 259)
++
++    def test_small_native_sectors_against_independent_dense_model(self):
++        raw = solid_torus()
++        for count in (1, 2):
++            for choices in product((-1, 0, 1, 2), repeat=count):
++                allowed = [(i, typ) for i, typ in enumerate(choices) if typ >= 0]
++                expected = dense_reference_rays(dense_sector_model(raw, allowed),
++                                                'standard')
++                rays, stats = enumerate_planar_sector(raw, allowed)
++                self.assertEqual(vector_set(rays),
++                                 vector_set(value[0] for value in expected.values()))
++                self.assertGreater(stats['kernel_checkpoints'], 0)
++            raw = attach_ball(raw)
++
++    def test_single_group_needs_no_pair_overlay_and_no_rank_or_old_lift(self):
++        raw = attach_ball(attach_ball(solid_torus()))
++        kernel = build_sector_kernel(raw, [(0, 2), (1, 1), (2, 1)])
++        expected = vector_set(sector_rays(kernel, phase='standard', method='arrangement'))
++        self.assertEqual(len(kernel.basis), 3)
++        self.assertEqual(len(kernel.groups), 1)
++        with patch('fastunknot.normal_sector._hyperplanes',
++                   side_effect=AssertionError('inactive hyperplanes')):
++            with patch.object(kernel, 'is_standard_ray',
++                              side_effect=AssertionError('rank filter')):
++                with patch.object(kernel, 'lift',
++                                  side_effect=AssertionError('uncached lift')):
++                    stats = {}
++                    rays = list(sector_planar_rays(kernel, stats=stats))
++        self.assertEqual(vector_set(rays), expected)
++        self.assertEqual(stats.get('segment_intersection_tests', 0), 0)
++        self.assertEqual(stats['potential_projections'], 3*len(kernel.classes))
++        self.assertLessEqual(len(rays),
++                            len(sector_planar_plan(kernel)['domain'])
++                            + 2*stats['skeleton_segments'])
++
++    def test_large_rational_basis_change_preserves_complete_rays(self):
++        raw = attach_ball(attach_ball(solid_torus()))
++        kernel = build_sector_kernel(raw, [(0, 2), (1, 1), (2, 0)])
++        expected = vector_set(sector_planar_rays(kernel))
++        a, b, c = kernel.basis
++        denominator = 2**521 + 7
++        kernel.basis = (
++            tuple(x+Fraction(y, denominator) for x, y in zip(a, b)),
++            tuple(y+Fraction(z, denominator) for y, z in zip(b, c)),
++            tuple(z+Fraction(x, denominator) for z, x in zip(c, a)))
++        self.assertEqual(vector_set(sector_planar_rays(kernel)), expected)
++
++    def test_exact_work_allowance_and_resource_exhaustion(self):
++        raw = attach_ball(attach_ball(solid_torus()))
++        allowed = [(0, 2), (1, 1), (2, 0)]
++        expected, stats = enumerate_planar_sector(raw, allowed)
++        allowance = stats['work_units']
++        actual, repeated = enumerate_planar_sector(raw, allowed, max_work=allowance)
++        self.assertEqual(actual, expected)
++        self.assertEqual(repeated, stats)
++        with self.assertRaises(SearchLimit):
++            enumerate_planar_sector(raw, allowed, max_work=allowance-1)
++        with self.assertRaises(SearchLimit):
++            enumerate_planar_sector(raw, allowed, max_work=0)
++        for invalid in (-1, True, 2.5):
++            with self.assertRaises(ValueError):
++                enumerate_planar_sector(raw, allowed, max_work=invalid)
++
++    def test_false_valued_callback_cancellation_propagates(self):
++        class Cancel:
++            def __init__(self):
++                self.calls = 0
++
++            def __bool__(self):
++                return False
++
++            def __call__(self):
++                self.calls += 1
++                if self.calls == 17:
++                    raise RuntimeError('cancel planar query')
++
++        with self.assertRaisesRegex(RuntimeError, 'cancel planar query'):
++            enumerate_planar_sector(solid_torus(), [(0, 2)], check=Cancel())
++
++    def test_matching_nullity_above_three_is_rejected(self):
++        kernel = fake_kernel([(1, 0, 0, 0), (0, 1, 0, 0),
++                              (0, 0, 1, 0), (0, 0, 0, 1)], [])
++        with self.assertRaises(ValueError):
++            sector_planar_plan(kernel)
++
++
++if __name__ == '__main__':
++    unittest.main()
+diff --git a/Topology/UnknotRecognition/fast/tests/test_sector_planar_certificates.py b/Topology/UnknotRecognition/fast/tests/test_sector_planar_certificates.py
+new file mode 100644
+index 000000000..325e8183f
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_sector_planar_certificates.py
+@@ -0,0 +1,121 @@
++"""Source-bound planar coverage, negative disc replay, and limit contracts."""
++
++from copy import deepcopy
++from itertools import product
++from pathlib import Path
++import sys
++import unittest
++from unittest.mock import patch
++
++sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
++
++from fastunknot.sector_planar_certificate import (
++    certify_planar_sector, discover_planar_in_sector,
++)
++from fastunknot.sector_planar_verify import (
++    PlanarVerificationLimit, verify_planar_sector_certificate, verify_planar_exhaustion,
++)
++from fastunknot.normal_sector_verify import verify_sector_witness
++from test_normal_sector_integration import solid_torus, capped_solid_torus
++
++
++def double_cap():
++    raw = capped_solid_torus()
++    raw['tetrahedra'][0][3] = {'tetrahedron': 2, 'permutation': [0, 1, 2, 3]}
++    raw['tetrahedra'].append([None, None, None,
++        {'tetrahedron': 0, 'permutation': [0, 1, 2, 3]}])
++    return raw
++
++
++class PlanarCertificateTests(unittest.TestCase):
++    def test_all_small_full_sectors_have_independent_replay(self):
++        raw = double_cap()
++        for types in product(range(3), repeat=3):
++            support = list(enumerate(types))
++            with self.subTest(types=types):
++                answer = certify_planar_sector(raw, support)
++                self.assertEqual(answer['status'], 'COMPLETE')
++                self.assertTrue(verify_planar_sector_certificate(raw, answer['certificate']))
++
++    def test_verification_does_not_call_the_producer(self):
++        raw = double_cap()
++        proof = certify_planar_sector(raw, [(0, 2), (1, 1), (2, 1)])['certificate']
++        with patch('fastunknot.sector_planar._plan', side_effect=AssertionError('producer')):
++            with patch('fastunknot.normal_sector.build_sector_kernel',
++                       side_effect=AssertionError('producer')):
++                self.assertTrue(verify_planar_sector_certificate(raw, proof))
++
++    def test_missing_extra_scaled_or_malformed_ray_is_rejected(self):
++        raw = double_cap()
++        proof = certify_planar_sector(raw, [(0, 2), (1, 1), (2, 1)])['certificate']
++        changes = []
++        bad = deepcopy(proof); bad['quadrilateral_rays'].pop(); changes.append(bad)
++        bad = deepcopy(proof); bad['quadrilateral_rays'].append([1, 17, 23]); changes.append(bad)
++        bad = deepcopy(proof); bad['quadrilateral_rays'][0] = [2*x for x in bad['quadrilateral_rays'][0]]; changes.append(bad)
++        bad = deepcopy(proof); bad['quadrilateral_rays'][0][0] = True; changes.append(bad)
++        bad = deepcopy(proof); bad['allowed_types'][0][0] = False; changes.append(bad)
++        bad = deepcopy(proof); bad['source_sha256'] = '0'*64; changes.append(bad)
++        for changed in changes:
++            self.assertFalse(verify_planar_sector_certificate(raw, changed))
++
++    def test_whole_query_limits_include_kernel_construction(self):
++        raw = double_cap()
++        for api in (certify_planar_sector, discover_planar_in_sector):
++            calls = []
++            answer = api(raw, [(0, 2)], max_work=0, check=lambda: calls.append(1))
++            self.assertEqual(answer['status'], 'INCONCLUSIVE')
++            self.assertNotIn('certificate', answer)
++            self.assertEqual(len(calls), 1)
++
++    def test_exact_complete_producer_allowance(self):
++        raw, support = double_cap(), [(0, 2), (1, 1), (2, 1)]
++        total = certify_planar_sector(raw, support)['stats']['work_units']
++        answer = certify_planar_sector(raw, support, max_work=total - 1)
++        self.assertEqual(answer['status'], 'INCONCLUSIVE')
++        self.assertNotIn('certificate', answer)
++        answer = certify_planar_sector(raw, support, max_work=total)
++        self.assertEqual(answer['status'], 'COMPLETE')
++        self.assertTrue(verify_planar_sector_certificate(raw, answer['certificate']))
++
++    def test_false_valued_callback_and_verifier_limit_propagate(self):
++        class Cancel:
++            def __bool__(self):
++                return False
++            def __call__(self):
++                raise RuntimeError('caller cancelled')
++        raw = double_cap()
++        proof = certify_planar_sector(raw, [(0, 2), (1, 1), (2, 1)])['certificate']
++        with self.assertRaisesRegex(RuntimeError, 'caller cancelled'):
++            certify_planar_sector(raw, [], check=Cancel())
++        with self.assertRaisesRegex(RuntimeError, 'caller cancelled'):
++            verify_planar_sector_certificate(raw, proof, check=Cancel())
++        with self.assertRaises(PlanarVerificationLimit):
++            verify_planar_sector_certificate(raw, proof, max_work=0)
++
++    def test_positive_and_negative_disc_certificates(self):
++        raw = solid_torus()
++        answer = discover_planar_in_sector(raw, [(0, 2)])
++        self.assertEqual(answer['status'], 'DISC_FOUND')
++        self.assertTrue(verify_sector_witness(raw, answer['certificate']))
++        answer = discover_planar_in_sector(raw, [(0, 0)])
++        self.assertEqual(answer['status'], 'NO_POSITIVE_EULER')
++        self.assertTrue(verify_planar_exhaustion(raw, answer['certificate']))
++        raw = capped_solid_torus()
++        answer = discover_planar_in_sector(raw, [(1, 0)])
++        self.assertEqual(answer['status'], 'NO_VERTEX_DISC_IN_SECTOR')
++        self.assertTrue(verify_planar_exhaustion(raw, answer['certificate']))
++        proof = deepcopy(answer['certificate'])
++        proof['rays'][0]['euler_characteristic'] += 1
++        self.assertFalse(verify_planar_exhaustion(raw, proof))
++
++    def test_empty_sector_is_exact_and_source_bound(self):
++        raw = solid_torus()
++        proof = certify_planar_sector(raw, [])['certificate']
++        self.assertEqual(proof['quadrilateral_rays'], [])
++        self.assertTrue(verify_planar_sector_certificate(raw, proof))
++        changed = deepcopy(raw); changed['metadata'] = 'different encoding'
++        self.assertFalse(verify_planar_sector_certificate(changed, proof))
++
++
++if __name__ == '__main__':
++    unittest.main()

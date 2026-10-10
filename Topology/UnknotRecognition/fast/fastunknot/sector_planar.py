@@ -229,8 +229,8 @@ def _segment_crossing(first, second):
     return None
 
 
-def sector_planar_plan(kernel, *, check=lambda: None, stats=None):
-    """Build the complete projective min-diagram; no normal disks expanded."""
+def _section_plan(kernel, check, stats):
+    """Prepare the Q-section and projected forms without minimum cells."""
     check()
     if len(kernel.basis) > 3:
         raise ValueError('planar enumeration requires matching nullity at most three')
@@ -257,6 +257,15 @@ def sector_planar_plan(kernel, *, check=lambda: None, stats=None):
         projected[corner] = tuple(sum(x*form[j] for x, form in zip(potential, qforms))
                                   for j in range(width))
     plan['class_forms'] = projected
+    return plan
+
+
+def _minimum_overlay(kernel, plan, check, stats):
+    polygon = plan['polygon']
+    if not polygon:
+        return plan
+    section = plan['section_dimension']
+    projected = plan['class_forms']
     points = set(polygon)
     segments_by_group = []
     if section == 0:
@@ -332,6 +341,13 @@ def sector_planar_plan(kernel, *, check=lambda: None, stats=None):
     return plan
 
 
+def sector_planar_plan(kernel, *, check=lambda: None, stats=None):
+    """Build the complete projective min-diagram; no normal disks expanded."""
+    if stats is None:
+        stats = {}
+    return _minimum_overlay(kernel, _section_plan(kernel, check, stats), check, stats)
+
+
 def _primitive_nonnegative(values):
     denominator = lcm(*(x.denominator for x in values))
     integers = [int(x*denominator) for x in values]
@@ -384,6 +400,49 @@ def sector_planar_rays(kernel, *, check=lambda: None, max_rays=None, stats=None)
         rows = _projected_lift(kernel, plan, point, check)
         stats['emitted_rays'] += 1
         yield rows
+
+
+def sector_planar_discovery_rays(kernel, *, check=lambda: None, max_rays=None, stats=None):
+    """Q-corners first; build the complete minimum overlay only on demand.
+
+    Every Q-corner lift is standard-extreme.  The tail omits those exact
+    already-yielded points, so one ray allowance covers both stages and
+    exhaustion still includes every non-link standard ray exactly once.
+    Enumeration/certificate APIs keep their existing canonical ordering.
+    """
+    if max_rays is not None and (type(max_rays) is not int or max_rays < 0):
+        raise ValueError('max_rays must be a nonnegative integer or None')
+    if stats is None:
+        stats = {}
+    stats.update(method='planar-adaptive', hyperplanes=0, emitted_rays=0,
+                 bases_attempted=0, positive_directions=0, nonextreme_directions=0,
+                 corner_rays=0, overlay_refinements=0)
+    plan = _section_plan(kernel, check, stats)
+    corners = tuple(sorted(plan['polygon'], key=lambda point:
+        (-_value(plan['chart']['forms'][0], point), point)))
+    def emit(point):
+        check()
+        if max_rays is not None and stats['emitted_rays'] >= max_rays:
+            raise SearchLimit('adaptive planar ray allowance exhausted')
+        rows = _projected_lift(kernel, plan, point, check)
+        stats['emitted_rays'] += 1
+        stats['bases_attempted'] = stats['positive_directions'] = stats['emitted_rays']
+        return rows
+    for point in corners:
+        rows = emit(point)
+        stats['corner_rays'] += 1
+        yield rows
+    if plan['section_dimension'] <= 0:
+        stats['points'] = len(corners)
+        return
+    # Resuming the generator is evidence that the corner prelude found no
+    # disc.  Reuse its source chart and projected potentials for the tail.
+    stats['overlay_refinements'] = 1
+    _minimum_overlay(kernel, plan, check, stats)
+    seen = set(corners)
+    for point in plan['points']:
+        if point not in seen:
+            yield emit(point)
 
 
 def _encoded(value):

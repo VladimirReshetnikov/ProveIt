@@ -1134,3 +1134,37 @@ supplied-sector disc discovery and independent replay improves 17.28x. These
 scopes are distinct and imply no whole-recognizer gain. The native `envelopes`
 driver and `data/envelopes-*` retain all rounds, 567 source pins, test logs,
 coverage capacity, table generation and publication review.
+
+
+[incoming_eaad.tex](incoming_eaad.tex) preserves reports 76–79's mathematical
+results and fresh evidence: the rectangular dual-number patch algebra,
+source-simple compressed boundary observers, the coisotropic interaction
+criterion and sharp g+1 fixed-cover bank, cellular/Magnus lift identity, and
+connected bounded-descent footprints with complete FPT search.
+[cocycle_lex.tex](cocycle_lex.tex) explains report 78's span bands, residual
+core budgets, connected edge-first optimizer, independent source proofs and
+our minimum-span-dual reuse. The optional stage adds no audited positive
+coverage and slows misses, so it stays off by default.
+[planar_sectors.tex](planar_sectors.tex) explains the adaptive native
+nullity-three path, quadratic ray bound, independent area/length coverage
+and all-size seven-ray Fibonacci component theorem. All 1,391 tests pass;
+9,807 selected sectors match the oracle, with old low-nullity outputs and
+statistics exact. Complete size-16 enumeration improves about 493x and
+complete disc discovery/replay 4.68x; the smallest discovery cases regress.
+[planar_overlay_refinements.tex](planar_overlay_refinements.tex) preserves
+new report 81's sharp abstract crossing bound, certified forced-zero support
+LP and all-dimensional canonical Euler convexity, with thirty fresh tests
+and 607 exact normalized Euler comparisons. Its alternative modules and
+proposed aggregated precheck remain research code. General QP recognition
+and a complete low-nullity sector producer remain unproved. Frozen runtime
+records and fresh source/theorem/publication replays are in `data/lex-*`,
+`data/planar-sectors-*` and `data/incoming-eaad-*`.
+
+The rebuilt [PDF](report.pdf) has 544 pages; new sections 133–136 begin on
+pages 527, 531, 534 and 537. Publication replay checks historical runtime
+pins against their committed releases, independently replays 38 coverage,
+84 arithmetic, 19 source and 40 component proofs with producers disabled,
+and checks all eighteen rendered pages from 527 through the updated
+references. The only later native change is a docstring update, verified
+to preserve the executable syntax tree. Run `python -B data/planar_sectors_review.py --publication`
+from this directory to reproduce the saved review.

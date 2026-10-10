@@ -95,3 +95,29 @@ the new merged report [`../gaussian-parity-reductions/`](../gaussian-parity-redu
   identity to one relation (`problem:S4`); 14 gives the equivalent short form
   `S₄ = (58g₄₁ + 24g₃₂)/7 + 19π⁵/3584 − 2β(4)log2`, using the second weight-five
   shuffle row; 16 encloses the residual numerically. None proves it.
+
+## Later sources (batch 141, 9 October 2026)
+
+Dated note, 2026-10-09. Two of the five continuations of batch 141, placed as sources 23
+and 24 of [`../gaussian-parity-reductions/`](../gaussian-parity-reductions/) (placement
+`3b0bae5f5a`), touch this report:
+
+- **`S₄`** (question 1, "the complementary reflection sector", at `p = 4`):
+  `gauss:eq:S4-closed` (24 `polylogarithms_rigidity_20261010`, `thm:s4`) is proved by
+  24's exact rational certificate (911 double-shuffle and distribution rows plus one
+  convergent duality), replayed at intake with the delivered standard-library verifier
+  (empty residual), row schemas checked by hand and the identity confirmed to 40 digits;
+  no independent re-derivation of all 911 rows has been made; the duality is
+  `t ↦ (1−t)/(1+t)`. The sector is open at higher weight: 23
+  (`polylogarithms_research_2026-10-10`, `conj:S6`) conjectures the weight-seven analogue
+  `S₆` (numerical, with an exact residual enclosure below `10⁻²⁶⁰`).
+- **Proportional depth.** 24 (`thm:saddle`) gives the exponential rate of
+  `R_{αh,h}(a) = (−1)^h h! (h+a)^{αh} T_{αh,h}(a)` for `α` and `a` in compact subsets of
+  `(0,∞)`: a positive, decreasing, convex rate `I(α)`, its prefactor, a first correction
+  and all fixed orders, below the transition `p ~ h log h` that 11 proves. It cites this
+  report for the reflection identity and the transition and claims only the
+  proportional regime. Not re-derived at intake. Files: `code/24-rigidity-verify_saddle.py`,
+  `data/24-rigidity-saddle_verification.json`, `figures/24-rigidity-saddle_rate.{pdf,png}`
+  in that report.
+- 23's inverse-argument formula (`prop:inverse-mixed`, `eq:mixed-weight-six`) repeats
+  10's mixed doubles credited here.
