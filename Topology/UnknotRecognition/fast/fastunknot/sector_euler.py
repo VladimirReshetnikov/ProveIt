@@ -5,8 +5,49 @@ the normalized Q cone. Nonpositive values at every Q corner therefore
 exclude positive Euler throughout the sector. Positive values are only a
 reason to continue the ordinary independent disc queries.
 """
+from itertools import combinations
+
 from .normal_surface_geometry import _EDGES, _edge, _quad
-from .normal_sector import _dot
+from .normal_sector import _dot, _nullspace, _primitive, _rref, SearchLimit
+
+
+def _q_corner_parameters(basis, check, stats, *, max_bases=None, prefix='euler_'):
+    """Enumerate every feasible Q extreme direction, without lifting it.
+
+    The coordinate hyperplanes suffice even when the feasible cone has a
+    smaller span than the matching kernel. At an extreme ray their active
+    normals have rank d-1 in that full kernel. Positive rescaling is irrelevant
+    to the Euler sign, so no integral normal coordinates are constructed.
+    """
+    d=len(basis);k=len(basis[0])
+    planes=[]
+    for i in range(k):
+        check();normal=_primitive(row[i] for row in basis)
+        if any(normal):planes.append(normal)
+    ordered=sorted(planes)
+    planes=tuple(row for i,row in enumerate(ordered)if i==0 or row!=ordered[i-1])
+    stats[prefix+'hyperplanes']=stats.get(prefix+'hyperplanes',0)+len(planes)
+    for indices in combinations(range(len(planes)),d-1):
+        check()
+        if max_bases is not None and stats.get(prefix+'bases_attempted',0)>=max_bases:
+            raise SearchLimit('candidate-basis allowance exhausted')
+        stats[prefix+'bases_attempted']=stats.get(prefix+'bases_attempted',0)+1
+        null=_nullspace([planes[i] for i in indices],d,check)
+        if len(null)!=1:continue
+        parameters=tuple(null[0])
+        q=tuple(sum(parameters[j]*basis[j][i] for j in range(d))for i in range(k))
+        if not any(q):continue
+        if next(x for x in q if x)<0:
+            q=tuple(-x for x in q);parameters=tuple(-x for x in parameters)
+        if any(x<0 for x in q):continue
+        # Emit only the lexicographically first independent active subset.
+        # This is deterministic deduplication with polynomial work per
+        # candidate, without a hash table whose collisions could square the
+        # number of candidates. Column pivots select that unique subset.
+        active=[i for i,normal in enumerate(planes)if not _dot(normal,parameters)]
+        _,pivots=_rref([[planes[i][j]for i in active]for j in range(d)],len(active),check)
+        if indices!=tuple(active[i]for i in pivots):continue
+        yield parameters
 
 
 class SourceEuler:
@@ -82,14 +123,13 @@ class SourceEuler:
         return value
 
     def excludes_positive(self, support, basis, forms, check, stats):
-        """Check every Q corner at nullity <=3; return False above that.
+        """Check Q corners, using planar clipping or a generic Q arrangement.
 
         Empty and lower-dimensional sections are handled by the same exact
         chart clipping as native planar enumeration. A callback interruption
         propagates; partial corner checks cannot exclude a sector.
         """
         check()
-        if len(basis)>3:return False
         if len(basis)==1:
             stats['euler_screens']+=1
             # Canonical free-coordinate gauge has a positive unit slot, so
@@ -103,14 +143,17 @@ class SourceEuler:
                 if value>0:return False
             stats['euler_pruned_sectors']+=1
             return True
-        from .sector_planar import _section_chart,_section_polygon,_value
         stats['euler_screens']+=1
-        chart=_section_chart(basis,check);corners=_section_polygon(chart,check)
-        free=[next(i for i in range(len(support)-1,-1,-1)if row[i])for row in basis]
+        if len(basis)>3:
+            parameters_stream=_q_corner_parameters(basis,check,stats)
+        else:
+            from .sector_planar import _section_chart,_section_polygon,_value
+            chart=_section_chart(basis,check);corners=_section_polygon(chart,check)
+            free=[next(i for i in range(len(support)-1,-1,-1)if row[i])for row in basis]
+            parameters_stream=(tuple(_value(chart['forms'][i],point)for i in free)for point in corners)
         envelope=None
-        for index,point in enumerate(corners):
+        for index,parameters in enumerate(parameters_stream):
             check();stats['euler_corners']+=1
-            parameters=tuple(_value(chart['forms'][i],point)for i in free)
             if index==0:value=self.canonical_value(support,basis,forms,parameters,check)
             else:
                 if envelope is None:

@@ -1,11 +1,15 @@
 """Euler functional and corner screening against actual source surfaces."""
-from itertools import product
+from itertools import combinations, product
+import json
+from pathlib import Path
+import random
 import unittest
 from unittest.mock import patch
 
-from fastunknot.normal_sector import sector_rays
+from fastunknot.normal_sector import sector_rays, discover_in_sector
+from fastunknot.normal_sector_verify import verify_sector_exhaustion
 from fastunknot.normal_surface_geometry import _coordinates
-from fastunknot.sector_residual import _plan_window
+from fastunknot.sector_residual import _plan_window, _full_quad_columns
 from fastunknot.sector_sparse import PreparedSectorSource
 from fastunknot.sector_euler import SourceEuler
 from fastunknot.sector_window_basis import projected_corner_forms
@@ -90,7 +94,7 @@ class SectorEulerTests(unittest.TestCase):
         with patch.object(euler,'aggregate',side_effect=AssertionError('unused aggregation')):
             self.assertFalse(euler.excludes_positive(kernel.support,kernel.basis,forms,lambda:None,stats))
 
-    def test_above_planar_nullity_continues_without_an_exclusion(self):
+    def test_above_planar_nullity_positive_corner_retains_the_fallback(self):
         fixture=double_capped_fibonacci(1);raw=fixture['triangulation']
         raw['tetrahedra'][1][0]={'tetrahedron':3,'permutation':[0,1,2,3]}
         raw['tetrahedra'].append([{'tetrahedron':1,'permutation':[0,1,2,3]},None,None,None])
@@ -105,7 +109,111 @@ class SectorEulerTests(unittest.TestCase):
         euler=SourceEuler(source.prepared,plan['_matching_updates'].potentials,lambda:None)
         stats=dict(euler_screens=0,euler_corners=0,euler_pruned_sectors=0)
         self.assertFalse(euler.excludes_positive(support,basis,forms,lambda:None,stats))
-        self.assertEqual(stats,dict(euler_screens=0,euler_corners=0,euler_pruned_sectors=0))
+        self.assertEqual(stats['euler_screens'],1)
+        self.assertEqual(stats['euler_pruned_sectors'],0)
+        self.assertGreater(stats['euler_corners'],0)
+
+    def test_all_retained_higher_nullity_sectors_against_complete_source_oracles(self):
+        bank=Path(__file__).resolve().parents[2]/'reports/57/results/discovery_corpus.json'
+        cases=pruned=0;dimensions=set()
+        for record in json.loads(bank.read_text())['records']:
+            raw=record['triangulation'];source=PreparedSectorSource(raw);t=len(raw['tetrahedra'])
+            supports={()}
+            for field in ('standard_vertices','quad_vertices'):
+                supports.update(tuple((i,q)for i,row in enumerate(s['coordinates'])
+                                      for q in range(3)if row[4+q])for s in record[field])
+            if t<=3:
+                supports.update(tuple((i,q)for i,q in enumerate(types)if q>=0)
+                                for types in product((-1,0,1,2),repeat=t))
+            else:
+                for size in (1,2):
+                    for indices in combinations(range(t),size):
+                        supports.update(tuple(zip(indices,types))for types in product(range(3),repeat=size))
+                rng=random.Random('sector-envelope-v1:'+record['id'])
+                supports.update(tuple((i,rng.randrange(3))for i in range(t))for _ in range(64))
+            euler=potentials=None
+            for support in sorted(supports):
+                kernel=source.build(support)
+                if len(kernel.basis)<=3:continue
+                if euler is None:
+                    _,_,potentials=_full_quad_columns(source.prepared,lambda:None,True)
+                    euler=SourceEuler(source.prepared,potentials,lambda:None)
+                forms=projected_corner_forms(support,kernel.basis,potentials,lambda:None)
+                stats=dict(euler_screens=0,euler_corners=0,euler_pruned_sectors=0)
+                excluded=euler.excludes_positive(support,kernel.basis,forms,lambda:None,stats)
+                rays=list(sector_rays(kernel,phase='quadrilateral'))
+                expected=not any(_coordinates(source.prepared,r,lambda:None)['euler_characteristic']>0 for r in rays)
+                self.assertEqual(excluded,expected,(record['id'],support))
+                # The archived complete standard-coordinate oracle has a
+                # different enumeration algorithm and source-coordinate data.
+                standard=[s['coordinates']for s in record['standard_vertices']
+                          if any(row[4+q]for row in s['coordinates']for q in range(3))
+                          and all(not row[4+q]or (i,q)in support
+                                  for i,row in enumerate(s['coordinates'])for q in range(3))]
+                self.assertEqual(excluded,not any(_coordinates(source.prepared,r,lambda:None)['euler_characteristic']>0
+                                                for r in standard))
+                if excluded:self.assertEqual(stats['euler_corners'],len(rays))
+                cases+=1;pruned+=excluded;dimensions.add(len(kernel.basis))
+        self.assertEqual(cases,188);self.assertEqual(pruned,12);self.assertEqual(dimensions,{4,5})
+
+    def test_interruption_during_generic_corner_scan_cannot_exclude(self):
+        bank=Path(__file__).resolve().parents[2]/'reports/57/results/discovery_corpus.json'
+        raw=next(r['triangulation']for r in json.loads(bank.read_text())['records']if r['id']=='fibonacci_lst_09')
+        support=[(i,(0,2,1)[i%3])for i in range(9)];source=PreparedSectorSource(raw)
+        kernel=source.build(support)
+        _,_,potentials=_full_quad_columns(source.prepared,lambda:None,True)
+        euler=SourceEuler(source.prepared,potentials,lambda:None)
+        forms=projected_corner_forms(support,kernel.basis,potentials,lambda:None)
+        stats=dict(euler_screens=0,euler_corners=0,euler_pruned_sectors=0)
+        def stop():
+            if stats['euler_corners']>=1:raise InterruptedError('screen interrupted')
+        with self.assertRaises(InterruptedError):euler.excludes_positive(support,kernel.basis,forms,stop,stats)
+        self.assertEqual(stats['euler_pruned_sectors'],0)
+
+    def test_generic_discovery_skips_the_standard_arrangement_with_replayable_exclusion(self):
+        bank=Path(__file__).resolve().parents[2]/'reports/57/results/discovery_corpus.json'
+        raw=next(r['triangulation']for r in json.loads(bank.read_text())['records']if r['id']=='fibonacci_lst_09')
+        support=[(i,(0,2,1)[i%3])for i in range(9)]
+        from fastunknot import normal_sector
+        original=normal_sector._hyperplanes
+        def no_standard(kernel,phase,check):
+            if phase=='standard':raise AssertionError('standard arrangement was unnecessary')
+            return original(kernel,phase,check)
+        with patch.object(normal_sector,'_hyperplanes',side_effect=no_standard):
+            answer=discover_in_sector(raw,support,phase='standard',max_bases=20)
+        self.assertEqual(answer['status'],'NO_POSITIVE_EULER')
+        self.assertEqual(answer['stats']['bases_attempted'],20)
+        self.assertTrue(answer['stats']['q_screen_only'])
+        self.assertEqual(len(answer['certificate']['rays']),4)
+        self.assertTrue(verify_sector_exhaustion(raw,answer['certificate']))
+        limited=discover_in_sector(raw,support,phase='standard',max_bases=19)
+        self.assertEqual(limited['status'],'INCONCLUSIVE')
+        self.assertNotIn('certificate',limited)
+        self.assertEqual(limited['stats']['bases_attempted'],19)
+
+    def test_positive_nonessential_Q_phase_resumes_with_the_shared_cap(self):
+        bank=Path(__file__).resolve().parents[2]/'reports/57/results/discovery_corpus.json'
+        raw=next(r['triangulation']for r in json.loads(bank.read_text())['records']if r['id']=='cap_1_2_3')
+        support=[(i,0)for i in range(4)]
+        screened=discover_in_sector(raw,support,phase='quadrilateral')
+        self.assertEqual(screened['status'],'POSITIVE_EULER_ONLY')
+        cap=screened['stats']['bases_attempted']
+        limited=discover_in_sector(raw,support,phase='standard',max_bases=cap)
+        self.assertEqual(limited['status'],'INCONCLUSIVE')
+        self.assertNotIn('certificate',limited)
+        self.assertEqual(limited['stats']['bases_attempted'],cap)
+        self.assertEqual(limited['stats']['q_screen_stats']['bases_attempted'],cap)
+        complete=discover_in_sector(raw,support,phase='standard')
+        self.assertEqual(complete['status'],'NO_VERTEX_DISC_IN_SECTOR')
+        self.assertTrue(verify_sector_exhaustion(raw,complete['certificate']))
+
+    def test_generic_Q_enumeration_resets_reused_stats_and_preserves_ray_order(self):
+        bank=Path(__file__).resolve().parents[2]/'reports/57/results/discovery_corpus.json'
+        raw=next(r['triangulation']for r in json.loads(bank.read_text())['records']if r['id']=='fibonacci_lst_09')
+        kernel=PreparedSectorSource(raw).build([(i,(0,2,1)[i%3])for i in range(9)])
+        stats={};first=list(sector_rays(kernel,phase='quadrilateral',stats=stats));before=stats.copy()
+        second=list(sector_rays(kernel,phase='quadrilateral',stats=stats))
+        self.assertEqual(second,first);self.assertEqual(stats,before)
 
     def test_prepared_observer_preserves_real_disc_proofs_and_independent_replay(self):
         raw=double_capped_fibonacci(2)['triangulation'];source=PreparedSectorSource(raw)
