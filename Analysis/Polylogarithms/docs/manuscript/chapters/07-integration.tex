@@ -40,8 +40,10 @@ repository's Eisenstein-ladder work --- now arriving from a completely different
 \begin{negative}[recorded on purpose]\label{integral:neg:psim2}
 (i) The half-point probe $\int_0^{1/2}\log\Gamma$ initially found no relation --- because
 $\log\Gamma(1/2)=\tfrac12\log\pi$ made the PSLQ basis $\mathbb{Q}$-dependent, and PSLQ
-returned that degeneracy instead of the target. Basis atoms must be
-$\mathbb{Q}$-independent. (ii) A $\psi^{(-3)}(1/4)$ probe via Cauchy's repeated-integration
+returned that degeneracy instead of the target. Remove known dependencies
+or search modulo their known relation space, and require a nonzero target
+coefficient. Unknown arithmetic independence is not a prerequisite for
+searching or proving a target identity. (ii) A $\psi^{(-3)}(1/4)$ probe via Cauchy's repeated-integration
 kernel produced only a large-coefficient candidate (heights $\sim10^6$) with a weak canary
 ($10^{-46}$ at $100$ dps) --- \emph{rejected} as a PSLQ false positive. The weight-$3$
 level needs a properly prepared basis (presumably $\zeta'(-2)$-equivalents plus
@@ -173,11 +175,18 @@ formula, with the $\Gamma$-lattice reducer supplying the closed form mechanicall
 \section{The log-gamma moment ladder}\label{integral:sec:moments}
 
 \begin{result}[Hurwitz ladder; classical (Whittaker--Watson \cite{bridge:WhittakerWatson})]\label{integral:res:hurwitzladder}
+For $\Real z>0$, use the holomorphic branch of $\log\Gamma(z)$
+that is real on the positive axis, and the principal logarithm of $z$. Then
 \[
 \log\Gamma(z)=\Bigl(z-\tfrac12\Bigr)\log z-z+\tfrac12\log(2\pi)
 +\frac12\sum_{n\ge2}\frac{n-1}{n(n+1)}\,\zeta(n,z+1)
 .
 \]
+The series is absolutely and locally uniformly convergent in this
+half-plane. On $\Real z\ge\sigma>0$, its Hurwitz terms are bounded
+by $\zeta(n,1+\sigma)$, a geometrically decaying majorant. The domain
+matters: at $z=-1/2$, $\zeta(n,z+1)=(2^n-1)\zeta(n)$ and the
+series terms do not tend to zero.
 Since $\zeta(n,z+1)$ is $\psi^{(n-1)}(z+1)$ up to factorials, this is a
 $\mathbb{Q}$-linear ladder between $\log\Gamma$ and the \emph{entire polygamma tower at
 the same point} --- a candidate certificate law binding the $\Gamma$ and trigamma stores
@@ -588,9 +597,12 @@ $\int_{1/2}^1$ and $\int_1^2$.
 
 \begin{proof}
 Since $\zeta(s,x)=-\partial_x\zeta(s-1,x)/(s-1)$, integration by parts gives
-$I_m(s)=-\zeta(s-1)/(s-1)+\tfrac{m}{s-1}I_{m-1}(s-1)$ with $I_0\equiv0$
-(the boundary term at $x=0$ vanishes for $\operatorname{Re}s<m+1$ since
-$\zeta(\sigma,x)=x^{-\sigma}+O(1)$); unrolling yields \eqref{stieltjes:eq:transform},
+$I_m(s)=-\zeta(s-1)/(s-1)+\tfrac{m}{s-1}I_{m-1}(s-1)$ for $m\ge1$.
+In the stated half-plane the factor $x^m$ kills the lower boundary.
+For the base case $m=0$, the shift relation gives equal limits of
+$\zeta(s-1,x)$ at $x=0+$ and $x=1$ when $\Real s<1$; these
+generally nonzero values cancel, giving $I_0(s)=0$. Unrolling yields
+\eqref{stieltjes:eq:transform},
 which then extends meromorphically in $s$.
 \end{proof}
 
@@ -1339,6 +1351,11 @@ Through the conjugated harmonic-number bridge
 is interchangeable with $\{\operatorname{Re},\operatorname{Im}\}$ of
 $L'(3,\chi)$.
 \end{remark}
+
+\input{chapters/07-stieltjes-convolution-foundation}
+\input{chapters/07-shifted-stieltjes-correlations}
+\input{chapters/07-loggamma-convolution-powers}
+\input{chapters/07-harmonic-gamma-coefficients}
 
 \section*{Appendix: fully expanded values at the third and quarter points}
 

@@ -1,0 +1,237 @@
+\section{Gamma, polygamma, and Stieltjes identities}\label{mld:sec:jets}
+
+The same transform has two useful spectral centers. At $s=0$, the first derivative of Hurwitz zeta gives $\log\Gamma$. At $s=1$, the pole-free Hurwitz difference gives the generalized Stieltjes constants. Integer Mellin parameters then supply finite expressions in ordinary zeta jets. The resulting identities are convergent integral formulas, not finite parts.
+
+\subsection{A log-gamma kernel and every polygamma derivative}
+
+For $j\ge0$ and $0<\Re q<2$, set
+\begin{equation}\label{mld:eq:gamma-kernel}
+ \mathcal G_j(q)=\int_0^\infty
+       \frac{x^{-q}\log^j x}{1+x}\Li_0^{[1]}(-x)\dd x.
+\end{equation}
+
+\begin{theorem}[Log-gamma and polygamma integral identities]\label{mld:thm:gamma-kernel}
+On $0<\Re q<2$,
+\begin{equation}\label{mld:eq:loggamma-integral}
+ \boxed{\displaystyle
+ \log\Gamma(q)=-\frac{\sin\pi q}{\pi}\mathcal G_0(q).}
+\end{equation}
+For every integer $r\ge1$,
+\begin{equation}\label{mld:eq:polygamma-integral}
+ \psi^{(r-1)}(q)=
+ -\sum_{j=0}^{r}\binom rj(-1)^j\pi^{r-j-1}
+       \sin\!\left(\pi q+\frac{(r-j)\pi}{2}\right)\mathcal G_j(q).
+\end{equation}
+All integrals are ordinary convergent integrals. In particular, $q=1$ is included without assigning a singular value to either side of \eqref{mld:eq:loggamma-integral}.
+\end{theorem}
+
+\begin{proof}
+Set $a=1-q$ and $z=1$ in \eqref{mld:eq:J1}, and differentiate spectrally at $s=0$. The classical identity
+\[
+ \zeta^{[1]}(0,q)=\log\Gamma(q)-\tfrac12\log(2\pi)
+\]
+gives
+\[
+ \mathcal G_0(q)=-\pi\csc(\pi q)\log\Gamma(q)
+\]
+away from $q=1$. Multiplying by the sine and continuing gives \eqref{mld:eq:loggamma-integral} everywhere in the strip. Differentiation in $q$ gives
+$\partial_q^j\mathcal G_0(q)=(-1)^j\mathcal G_j(q)$.
+Apply the product rule and the formula for successive derivatives of $\sin\pi q$ to obtain \eqref{mld:eq:polygamma-integral}. Theorem~\ref{mld:thm:Mellin-master} supplies the uniform majorants for every derivative.
+\end{proof}
+
+For example,
+\[
+ \psi(q)=-\cos(\pi q)\mathcal G_0(q)
+                  +\frac{\sin\pi q}{\pi}\mathcal G_1(q).
+\]
+At the half point, \eqref{mld:eq:loggamma-integral} becomes
+\begin{equation}\label{mld:eq:gamma-half-integral}
+ \int_0^\infty\frac{\Li_0^{[1]}(-t^2)}{1+t^2}\dd t
+       =-\frac\pi4\log\pi.
+\end{equation}
+Here $x=t^2$ converts $\mathcal G_0(1/2)$ to twice the displayed integral.
+For any two parameters $a,b$ in the strip, subtraction also gives the gamma-ratio formula
+\begin{align}\label{mld:eq:gamma-ratio-integral}
+ \log\frac{\Gamma(b)}{\Gamma(a)}
+   =-\frac1\pi\int_0^\infty
+       \frac{\sin(\pi b)x^{-b}-\sin(\pi a)x^{-a}}{1+x}
+                         \Li_0^{[1]}(-x)\dd x.
+\end{align}
+The left side means the difference of the analytic gamma logarithms fixed in Section~\ref{mld:sec:scope}.
+
+\subsection{Generalized Stieltjes constants without a divergent integral}
+
+\begin{theorem}[Stieltjes difference transform]\label{mld:thm:stieltjes-kernel}
+For $m\ge0$ and $0<\Re q<2$,
+\begin{equation}\label{mld:eq:stieltjes-kernel}
+ \boxed{\displaystyle
+ \gamma_m(q)-\gamma_m
+ =\frac{(-1)^{m+1}\sin\pi q}{\pi}
+       \int_0^\infty\frac{x^{-q}}{1+x}\Li_1^{[m]}(-x)\dd x.}
+\end{equation}
+For every integer $m\ge1$,
+\begin{equation}\label{mld:eq:stieltjes-zero-order}
+ \int_0^\infty\frac{\Li_0^{[m]}(-x)}{x(1+x)}\dd x
+       =(-1)^m m\gamma_{m-1},
+\end{equation}
+and equivalently
+\begin{equation}\label{mld:eq:stieltjes-squared}
+ \int_0^\infty\frac{\Li_1^{[m]}(-x)}{(1+x)^2}\dd x
+       =(-1)^m m\gamma_{m-1}.
+\end{equation}
+The zeroth-derivative values of both integrals in
+\eqref{mld:eq:stieltjes-zero-order}--\eqref{mld:eq:stieltjes-squared} are $-1$.
+\end{theorem}
+
+\begin{proof}
+At $s=1$, the difference $\zeta(s,q)-\zeta(s)$ is entire and its $m$th derivative is $(-1)^m(\gamma_m(q)-\gamma_m)$. Apply this observation to \eqref{mld:eq:J1} at $a=1-q$. This proves \eqref{mld:eq:stieltjes-kernel}.
+
+The integer resonance $J_1(0,s;1)=-s\zeta(s+1)$ and the convergent expansion
+\begin{equation}\label{mld:eq:F-stieltjes}
+ s\zeta(s+1)=1+
+       \sum_{n\ge0}\frac{(-1)^n\gamma_n}{n!}s^{n+1}
+\end{equation}
+give \eqref{mld:eq:stieltjes-zero-order}. The case $N=2,m=1$ of
+\eqref{mld:eq:integer-resonance} is $J_2(1,s;1)=-(s-1)\zeta(s)$.
+Differentiate at $s=1$ to obtain \eqref{mld:eq:stieltjes-squared}. Alternatively, integration by parts directly shifts the polylogarithm order in the two integrals. All order derivatives commute with these ordinary integrals by Theorem~\ref{mld:thm:Mellin-master}.
+\end{proof}
+
+At $q=1/2$, differentiating the elementary identity
+$\zeta(s,1/2)=(2^s-1)\zeta(s)$ gives
+\[
+ \gamma_1(1/2)-\gamma_1=-2\gamma\log2-\log^22.
+\]
+Thus a concrete first-order specialization of
+\eqref{mld:eq:stieltjes-kernel} is
+\begin{equation}\label{mld:eq:stieltjes-half-integral}
+ \int_0^\infty\frac{\Li_1^{[1]}(-t^2)}{1+t^2}\dd t
+       =-\frac\pi2\big(2\gamma\log2+\log^22\big).
+\end{equation}
+Equation \eqref{mld:eq:stieltjes-squared} supplies, for instance,
+\[
+ \int_0^\infty\frac{\Li_1^{[1]}(-x)}{(1+x)^2}\dd x=-\gamma,
+ \qquad
+ \int_0^\infty\frac{\Li_1^{[2]}(-x)}{(1+x)^2}\dd x=2\gamma_1.
+\]
+
+\subsection{The exact harmonic coefficients at spectral resonances}
+
+The products in \eqref{mld:eq:unit-moments} are entire although their displayed zeta factor can have a pole. This is the point where finite generalized harmonic coefficients enter the Mellin calculus.
+
+\begin{proposition}[All derivatives of a cancelled zeta pole]\label{mld:prop:spectral-cancellation}
+For an integer $r\ge1$, put $s=1-r+u$. Then, as an analytic identity near $u=0$,
+\begin{equation}\label{mld:eq:cancelled-zeta-germ}
+ (s)_r\zeta(s+r)=(-1)^{r-1}(r-1)!
+       \prod_{j=1}^{r-1}\left(1-\frac uj\right)
+       \left(1+\sum_{n\ge0}\frac{(-1)^n\gamma_n}{n!}u^{n+1}\right).
+\end{equation}
+Consequently its $m$th spectral derivative at $s=1-r$ is
+\begin{align}\label{mld:eq:cancelled-zeta-derivative}
+ &(-1)^{r-1}(r-1)!m!\,[u^m]
+       \left\{\prod_{j=1}^{r-1}\left(1-\frac uj\right)
+       \left(1+\sum_{n\ge0}\frac{(-1)^n\gamma_n}{n!}u^{n+1}\right)\right\}.
+\end{align}
+Only finitely many Stieltjes constants and harmonic coefficients enter a specified derivative.
+\end{proposition}
+\begin{proof}
+Factor the one vanishing factor from the rising factorial:
+\[
+ (1-r+u)_r=(-1)^{r-1}(r-1)!u
+                         \prod_{j=1}^{r-1}(1-u/j).
+\]
+Multiply by the Laurent series for $\zeta(1+u)$. This proves the germ and its derivative formula.
+\end{proof}
+
+The polynomial coefficients are elementary symmetric functions in
+$1,1/2,\ldots,1/(r-1)$. In terms of generalized harmonic numbers,
+\[
+ \prod_{j=1}^{r-1}(1-u/j)
+ =\exp\!\left(-\sum_{k\ge1}\frac{H_{r-1}^{(k)}}{k}u^k\right).
+\]
+The right side is used as a formal expansion to any required finite order. Its first coefficients are
+\[
+ 1-H_{r-1}u+
+ \frac{H_{r-1}^2-H_{r-1}^{(2)}}2u^2
+ -\frac{H_{r-1}^3-3H_{r-1}H_{r-1}^{(2)}+2H_{r-1}^{(3)}}6u^3+\cdots.
+\]
+This is a finite coefficient mechanism, distinct from interpreting an undefined expression $0\cdot\infty$ by numerical cancellation.
+
+For example, since
+$\mathcal M_1(s;1)=-\tfrac12(s)_2\zeta(s+2)$,
+expansion at $s=-1$ gives
+\begin{align}
+ \int_0^\infty\frac{\log x\,\Li_{-1}(-x)}{x(1+x)}\dd x
+      &=\frac12,\label{mld:eq:resonant-example0}\\
+ \int_0^\infty\frac{\log x\,\Li_{-1}^{[1]}(-x)}{x(1+x)}\dd x
+      &=\frac{\gamma-1}{2},\label{mld:eq:resonant-example1}\\
+ \int_0^\infty\frac{\log x\,\Li_{-1}^{[2]}(-x)}{x(1+x)}\dd x
+      &=-\gamma-\gamma_1.\label{mld:eq:resonant-example2}
+\end{align}
+The first identity can also be checked using the rational function
+$\Li_{-1}(-x)=-x/(1+x)^2$ and a beta derivative. The spectral derivatives in the next two are different functions and should not be replaced by derivatives of that rational expression in $x$.
+
+Higher denominator orders combine the same ingredients with the finite polynomial table. For example,
+\begin{equation}\label{mld:eq:third-pole-example}
+ \int_0^\infty\frac{\Li_1^{[1]}(-x)}{(1+x)^3}\dd x
+       =\frac14\log(2\pi)-\frac14-\frac\gamma2.
+\end{equation}
+This follows by differentiating
+$J_3(1,s;1)=\tfrac12(F_{s-2}(1)-F_{s-1}(1))$
+at $s=1$, using $\zeta(0)=-1/2$ and
+$\zeta^{[1]}(0)=-\tfrac12\log(2\pi)$.
+
+\subsection{Antiderivatives and the existing Hurwitz-jet ladder}
+
+The Mellin transform also produces a natural anchored antiderivative in its exponent parameter. This connects the new integral formulas to the antiderivative framework already present in the manuscript; the Hurwitz primitive itself is classical.
+
+\begin{proposition}[Anchored primitive]\label{mld:prop:primitive}
+For $-1<\Re a<1$ define
+\begin{equation}\label{mld:eq:primitive-one}
+ \mathcal P_s(a)=
+ \frac{\zeta(s-1,1-a)-\zeta(s-1)}{s-1}-a\zeta(s),
+\end{equation}
+where the complete expression is continued at exceptional $s$. It is entire in $s$, vanishes at $a=0$, and satisfies
+\begin{equation}\label{mld:eq:primitive-derivative}
+ \partial_a\mathcal P_s(a)
+   =\zeta(s,1-a)-\zeta(s)
+   =-\frac{\sin\pi a}{\pi}J_1(a,s;1).
+\end{equation}
+At the Stieltjes center,
+\begin{equation}\label{mld:eq:primitive-stieltjes}
+ \left.\partial_s^m\mathcal P_s(a)\right|_{s=1}
+   =\frac{\zeta^{[m+1]}(0,1-a)-\zeta^{[m+1]}(0)}{m+1}
+         -a(-1)^m\gamma_m.
+\end{equation}
+In particular,
+\begin{equation}\label{mld:eq:primitive-gamma}
+ \mathcal P_1(a)=\log\Gamma(1-a)-\gamma a.
+\end{equation}
+\end{proposition}
+\begin{proof}
+The Hurwitz parameter derivative
+$\partial_q\zeta(v,q)=-v\zeta(v+1,q)$ proves
+\eqref{mld:eq:primitive-derivative} away from the displayed singularities. The right side is entire in $s$, and its integral from $0$ to $a$ gives an entire continuation of \eqref{mld:eq:primitive-one}. At $s=1+u$, the numerator has constant term
+$\zeta(0,1-a)-\zeta(0)=a$. Its quotient contributes $a/u$, cancelling the pole of $a\zeta(1+u)$. Comparing the remaining coefficients gives \eqref{mld:eq:primitive-stieltjes}, and the log-gamma identity gives \eqref{mld:eq:primitive-gamma}.
+\end{proof}
+
+For completeness, every positive integer primitive order $r$ has a finite anchored expression:
+\begin{align}\label{mld:eq:primitive-r}
+ \mathcal P_{s,r}(a)
+  ={}&\frac{\displaystyle\zeta(s-r,1-a)
+       -\sum_{j=0}^{r-1}\frac{(s-r)_j\zeta(s-r+j)}{j!}a^j}
+                   {(s-r)_r}
+        -\frac{a^r}{r!}\zeta(s).
+\end{align}
+Away from the exceptional spectral parameters, $r$ differentiations in $a$ give \eqref{mld:eq:primitive-derivative}; all lower initial derivatives vanish. Equivalently,
+\[
+ \mathcal P_{s,r}(a)=\frac1{(r-1)!}\int_0^a
+       (a-v)^{r-1}\big[\zeta(s,1-v)-\zeta(s)\big]\dd v.
+\]
+This integral proves that all apparent spectral singularities in the combined expression \eqref{mld:eq:primitive-r} are removable. Taylor extraction at those singularities produces the complete homogeneous harmonic coefficients familiar from the manuscript's negative-polygamma ladder. The anchor fixes the integration polynomial, so no unrecorded integration constants enter.
+
+Finally, argument differentiation and logarithmic integration commute with the Mellin operation:
+\begin{equation}\label{mld:eq:argument-ladder}
+ z\partial_z J_N(a,s;z)=J_N(a,s-1;z),\qquad
+ \int \frac{J_N(a,s;z)}{z}\dd z=J_N(a,s+1;z)+C.
+\end{equation}
+The primitive is local on a simply connected part of $\mathcal S$. This follows directly from the polylogarithm order ladder and the compact bounds proved earlier.

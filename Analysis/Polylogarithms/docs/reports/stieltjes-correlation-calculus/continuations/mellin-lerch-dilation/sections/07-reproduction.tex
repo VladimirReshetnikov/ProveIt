@@ -1,0 +1,164 @@
+\section{Reproduction, verification, and source provenance}
+\label{mld:app:reproduction}
+
+\subsection{What is proved, and what the computations check}
+
+The arbitrary-order identities are established by the analytic proofs in
+the main text. The exact program checks finite algebra in specified
+ranges. The numerical programs compare independent expressions and
+detect normalization, coefficient and branch mistakes. No numerical
+residual is treated as a proof of equality, and no proof-assistant
+formalization is claimed.
+
+The principal exact suite reports $742$ successful assertions:
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}Yr@{}}
+\toprule
+Exact assertion family & Count\\
+\midrule
+Polynomial recurrence, $N=1,\ldots,8$ & 8\\
+Initial-term annihilation, $N=1,\ldots,8$ & 28\\
+Integer coefficient determinant, $N=1,\ldots,8$ & 8\\
+Independent rational-polylogarithm logarithmic moments & 525\\
+Two scale-composition identities, $0\le r\le5$, $0\le n\le6$ & 84\\
+Contact-polynomial comparison in the same range & 42\\
+Undilated closure symmetry, top orders, and explicit base rows & 47\\
+\midrule
+Total & 742\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The $525$ moment checks cover $1\le N\le6$, every $0\le m<N$,
+$s=0,-1,\ldots,-4$, and logarithmic powers $0\le h\le4$.
+One side uses \eqref{mld:eq:all-integer-moments}, with every cancelled zeta
+pole evaluated by \eqref{mld:eq:cancelled-zeta-germ}. The other side starts
+from the rational negative-order polylogarithm, integrates its terms by
+the beta function, and differentiates that beta integral. Complete Bell
+polynomials in polygamma differences evaluate these independent
+derivatives. Thus this comparison does not merely call the same
+coefficient formula twice.
+
+The $15$ undilated coefficient rows through $m+n\le4$ retain formal
+symbols $Z_j=\zeta(j)$. Their symmetry and missing-order assertions are
+finite algebra checks of a previously established input theorem. They
+do not assume algebraic independence of the zeta values. The symbolic
+jet script separately confirms the three displayed $s=-1$ resonance
+values and the third-denominator derivative example.
+
+\subsection{Recorded numerical comparisons}
+
+There are $77$ recorded numerical comparisons in the package. Working
+precision and observed residuals are reported separately: neither is
+an interval certificate.
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}Yrr>{\raggedright\arraybackslash}p{0.23\textwidth}@{}}
+\toprule
+Comparison & Cases & Digits & Largest recorded discrepancy\\
+\midrule
+Integer Mellin rows, including complex spectral order and $z>1$
+ &17&28&scaled, $<10^{-26}$\\
+Noninteger complex Mellin master
+ &4&30&scaled, $<2.6\,10^{-25}$\\
+Unshifted harmonic parity against quadrature
+ &25&60&absolute, $<3\,10^{-58}$\\
+Bivariate reflection, mixed derivatives, and quarter shift
+ &7&180&absolute, $<4\,10^{-136}$\\
+Unequal-dilation polygamma products
+ &9&42&scaled, $<3.5\,10^{-39}$\\
+Positive-index Stieltjes products
+ &3&28&scaled, $<9\,10^{-29}$\\
+Anchored primitives and jet examples
+ &11&42&absolute, $<3\,10^{-43}$\\
+The separate $\pi^2$ finite-part example
+ &1&42&absolute, $<3.9\,10^{-40}$\\
+\bottomrule
+\end{tabularx}
+\end{center}
+Each program specifies its normalization. The scaled error divides the
+absolute discrepancy by one of the two recorded scales
+\[
+ \max(1,|\mathrm{lhs}|,|\mathrm{rhs}|),\qquad
+ \max(1,|\mathrm{rhs}|).
+\]
+
+The Mellin quadrature uses $x=t/(1-t)$ and evaluates the polylogarithm
+on the negative ray. The closed side uses the finite integer formula
+or the Lerch master expression. Three general-master cases have
+$1<\Re a<N$, explicitly testing the safe parameter $N-a$ beyond the
+initial one-pole strip.
+
+The harmonic tests use two representations: ordinary real quadrature
+for the scalar family, and a $450$-term Euler transformation of the
+defining alternating sums for the shifted family. The latter includes
+a complex pair and a pair outside the initial small-parameter proof
+neighborhood.
+
+The polygamma code integrates the explicitly subtracted ordinary
+integrands in \eqref{mld:dil:ordinary-realization}; the other side uses the
+Hurwitz-zeta formula. The positive-index Stieltjes code similarly
+subtracts the exact local logarithmic singularity. To avoid subtraction
+loss extremely close to an endpoint, that diagnostic uses four Taylor
+terms for the smooth difference when $t<10^{-8}$. This is a numerical
+stabilization, not a certified remainder argument. The analytic proof
+uses the exact smooth difference. Exceptional primitive values are
+checked using a finite Cauchy mean of the complete closed expression
+against a direct anchored integral, with no individual pole evaluated.
+
+\subsection{Commands and package contents}
+
+The tested numerical environment is Python $3.12.14$, mpmath $1.3.0$,
+and SymPy $1.14.0$. The exact versions are recorded in the results.
+The source uses standard pdfLaTeX packages; no custom font or network
+download is needed once its dependencies are installed.
+
+From the extracted package directory, the principal commands are
+\begin{verbatim}
+python -m pip install -r requirements.txt
+make pdf
+make check-exact
+make check-numeric
+\end{verbatim}
+The numerical target intentionally runs all recorded families and can
+take substantially longer than compilation or the exact suite. Each
+program can also be run individually. Outputs go to \texttt{results/}.
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.26\textwidth}Y@{}}
+\toprule
+Path & Content\\
+\midrule
+Main \texttt{.tex} and \texttt{.pdf} & Complete standalone article.\\
+\texttt{sections/}, \texttt{references.tex} & Modular mathematical source
+and bibliography.\\
+\texttt{code/} & Exact coefficient engine and independent numerical
+programs; no integer-relation search is used.\\
+\texttt{results/} & Exact coefficient tables, recorded comparisons,
+verification summary, and build audit.\\
+\texttt{data/} & Pinned source manifest with file sizes and SHA-256
+hashes.\\
+\texttt{integration/} & Status and source audits, integration guidance,
+and a generated mathematical fragment.\\
+\texttt{SHA256SUMS} & Hashes of the final packaged artifacts.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Snapshot and integration scope}
+
+The source baseline is commit
+\src{fc4d3bf80534ad7c901d3b8c9e71baf2df0064ed} of
+Vladimir Reshetnikov's ProveIt repository. The manifest covers $86$
+retrieved files from the requested manuscript and incoming directories,
+including all five incoming ZIP archives. It identifies the source
+snapshot; it does not imply that every retrieved statement was audited
+in full. The selected proof and conjecture audits are documented
+separately.
+
+The standalone article was compiled and its rendered pages inspected.
+The integration fragment is supplied to make a later manuscript merge
+concrete, with namespaced labels and an explicit preamble dependency
+list. It was not compiled inside the full canonical manuscript. No
+repository branch, source file, issue, or pull request was changed by
+this delivery. Integration should preserve the existing proven and
+conjectural statuses and remove duplicate presentations of the
+undilated input theory.

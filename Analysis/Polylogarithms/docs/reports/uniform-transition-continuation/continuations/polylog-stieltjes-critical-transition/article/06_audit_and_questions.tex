@@ -1,0 +1,352 @@
+\section{Source audit, proposed corrections, and integration decisions}
+\label{sec:audit}
+
+The source comparison did not uncover a false theorem in the particular
+latest Euler, Lerch, and full-Cayley sections used as premises here.
+It did reveal several places where reading an older fragment in isolation
+would give an incorrect impression of the project's current status.
+The following proposed actions distinguish a newly proved conjecture,
+an extension of a correct theorem, and an editorial status update.
+
+\subsection{Concrete source actions}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.23\textwidth}>{\raggedright\arraybackslash}p{0.32\textwidth}>{\raggedright\arraybackslash}p{0.39\textwidth}@{}}
+\toprule
+Source item & Status at the pinned baseline & Proposed action\\
+\midrule
+\endfirsthead
+\toprule
+Source item & Status at the pinned baseline & Proposed action\\
+\midrule
+\endhead
+Near-critical Euler crossing & Explicit conjecture
+\texttt{research:conj:crossing} in \cite{RepoEuler}. & Replace the conjecture
+by Theorem~\ref{eutrans:thm:crossing}; retain the compact positive
+$b$-range and fixed derivative order in its statement.\\[5pt]
+Lerch sign-block question & The latest report gives a sufficient bound
+and asks for the least length \cite{RepoLerch}. & Insert
+Theorem~\ref{newdiag:thm:sharp-block}. The bound is optimal; the reciprocal
+angle case has length $\pi/\theta+1$.\\[5pt]
+Higher critical sums & The first weighted sum is proved; higher sums
+are proposed in \cite{RepoLerch}. & Insert
+Theorem~\ref{newdiag:thm:finiteparts} and the explicit $p=2$ formula.
+Retain the conjugate-singularity subtractions.\\[5pt]
+Full Cayley ideal & A full projector, all-depth dimensions, and the
+frozen target's nonmembership are already proved
+\cite{depth:PriorProjection}. & Add the depth-preserving retraction
+and filtered counts. Keep $\Pi C=\Pi$ distinct from $C\Pi=\Pi$.\\[5pt]
+Classical Stieltjes indices $6,7$ & Complete all-derivative transition
+counts are already in the manuscript \cite{RepoZeros}. & Mark any
+older first-derivative conjectures as superseded. Do not present those
+counts as a new result of this report.\\[5pt]
+$S_4$, $S_6$, and current $S_8$ & $S_4$ is proved in later material;
+the current $S_6,S_8$ candidates remain conjectural
+\cite{RepoManuscript}. & Preserve these statuses. The 30-term normal form
+is a formal reduction of the $S_6$ target, not a period certificate.\\
+\bottomrule
+\end{longtable}
+
+For clarity, the already established Stieltjes result is
+\[
+ \#\{a>0:\gamma_6^{(k)}(a)=0\}=
+ \begin{cases}4,&1\leq k\leq3,\\6,&k\geq4,\end{cases}
+ \qquad
+ \#\{a>0:\gamma_7^{(k)}(a)=0\}=
+ \begin{cases}5,&1\leq k\leq4,\\7,&k\geq5.
+ \end{cases}
+\]
+All these zeros are simple, with the global count justified by the
+source's analytic bound and rational sign certificates. This report does
+not replay those inherited certificates and does not claim their
+discovery. Likewise, the dominant inverse pair for the Lerch velocities
+is an inherited selected-sheet theorem, not an open assumption.
+
+\subsection{Proof obligations that should remain explicit}
+
+\paragraph{Joint asymptotics require a joint remainder.}
+The fixed-parameter Euler density expansion is correct within its stated
+scope. Substituting $a=1-\varepsilon$ into a remainder whose constant can
+depend on $a$ would not prove the conjectured crossing law. The algebraic
+coefficient tends to zero and the seed survives. The new
+Lemma~\ref{eutrans:lem:density} supplies the missing $\varepsilon$ factor;
+Lemma~\ref{eutrans:lem:joint} controls both competing scales separately.
+The proposed correction is to any attempted use beyond the old theorem's
+scope, rather than to that theorem itself.
+
+\paragraph{Sharp finite parts see both dominant singularities.}
+The first weighted Lerch sum has no divergent conjugate contribution.
+At the next order the conjugate term has magnitude $\sqrt N$.
+Consequently a proposed higher-order finite part subtracting only the
+nonoscillatory powers cannot converge in general. Equation
+\eqref{newdiag:eq:E} is the required addition. This is a concrete
+correction to the naive extension suggested by the first-order pattern;
+it is not a claim that the source stated that extension as a theorem.
+
+\paragraph{Depth is attached to a specified relation system.}
+The quotient in Section~\ref{depthcay:sec} imposes the full Cayley ideal,
+and its depth minima are proved within that quotient. Extra shuffle,
+stuffle, distribution, functional, or period relations can identify
+additional elements. Neither a formal dimension nor an unsuccessful
+bounded search gives a lower bound for the dimension of numerical
+periods. The source ledger already emphasizes this distinction
+\cite{RepoManuscript}; the proposed integration preserves it.
+
+\paragraph{Translation and endpoint conventions matter.}
+In the Gamma energy the shift is periodic, with a break at $1-h$.
+Replacing it by $\log\Gamma(x+h)-\log\Gamma(x)$ over the whole interval
+changes the problem. For complex spectral parameters the symmetric
+polylogarithm pair in \eqref{eq:polylog-master} must not be replaced
+by a real part. The removable pole in
+$u(u-1)\zeta(1+u)$ must be canceled before order differentiation.
+Finally, repeated definite primitives require the polynomial subtraction
+in \eqref{eq:shift-definite}; an indefinite primitive alone does not fix
+the endpoint data.
+
+\subsection{Suggested placement}
+
+The translation and Gamma sections fit the manuscript's integrated
+zeta-jet and Stieltjes-antiderivative chapter, with the sharp regularity
+result cross-referenced from the spectral discussion. The uniform Euler
+section extends the real-order kernel and fractional continuation.
+The sign-block and critical-sum results belong immediately after the
+dominant Lambert-pair theorem. The Cayley section belongs after the full
+ideal projector, followed by the weight-seven search discussion.
+Complete source paths and theorem labels, without dependence on changing
+chapter numbers, are in \texttt{integration/claim\_ledger.json} and
+\texttt{integration/INTEGRATION.md}.
+
+\section{Further research questions and proposed work}
+\label{sec:questions}
+
+The following questions are deliberately stated with a target and a
+specific obstacle. None is used in the proofs above. The first group
+extends the new analytic identities; the later groups connect them back
+to the remaining arithmetic and geometric questions in the source.
+
+\subsection{Translation identities and the Stieltjes hierarchy}
+
+\begin{question}[Rational shifts and explicit character coordinates]
+For $h=p/q$, produce a systematic normal form for the translated
+pairings in terms of Dirichlet $L$-function order derivatives and
+conductor logarithms. Which low-conductor specializations simplify
+to small explicit Gamma, polygamma, and zeta identities?
+\end{question}
+The exact finite Fourier identity
+\[
+ \Li_s(e^{2\pi ip/q})=q^{-s}\sum_{a=1}^q
+ e^{2\pi ipa/q}\zeta(s,a/q),\qquad \Re s>1,
+\]
+and its order derivatives already provide a finite conversion.
+The next step is to combine it with the repository's conductor and
+distribution reductions, retaining the logarithmic terms generated
+by $q^{-s}$. This is a coordinate problem; it should not be confused
+with proving that the resulting constants are independent.
+
+\begin{question}[Higher translation energies]
+For $r\geq2$, determine the extrema and concavity intervals of
+$V_r(h)=\int_0^1[\Delta_h\zeta^{(r)}(0,x)]^2\,dx$.
+Does the half-period remain the unique global maximizer in every order?
+\end{question}
+Symmetry ensures a stationary point at $1/2$, but a positive cosine-series
+coefficient does not by itself force that point to be the global maximum.
+The master identity gives the complete derivative formula. A proof
+would need a suitable sign theorem for combinations of higher
+Stieltjes constants, extending the elementary $r=1$ argument.
+
+\begin{question}[Exact endpoint Gram determinants]
+Find closed formulas, recurrence relations, or asymptotic bounds for
+the determinants of the endpoint-polynomial Gram matrices, and for
+the orthogonal polynomials associated with their two-component
+integral representation.
+\end{question}
+Their dependence on the logarithmic shift is triangular and their
+positivity is exact. The unexplained part is the all-order determinant
+and orthogonalization structure, whose entries contain zeta values.
+An explicit recurrence could also improve high-order evaluation of
+the Stieltjes translation covariances.
+
+\begin{question}[Endpoint regularity beyond the Sobolev threshold]
+Determine the complete Besov and logarithmic endpoint regularity of
+the normalized Stieltjes primitives, including critical indices and
+finite linear combinations.
+\end{question}
+The exact law $\|\Delta_hJ_n\|_2^2\sim
+h\log^{2n+2}(1/h)/(n+1)^2$ already determines the first critical
+obstruction. Higher finite differences and the explicit Fourier
+polynomials should determine the remaining scales. A useful outcome
+would specify convergence rates for Fourier and spline approximations
+without assuming bounded endpoint derivatives.
+
+\subsection{Uniform Euler limits}
+
+\begin{question}[Effective reversal bounds]
+Replace the asymptotic remainders in
+Lemma~\ref{eutrans:lem:joint} by explicit constants on prescribed
+$b$ intervals. Can the corrected Lambert expression be turned into
+a certified bracket for $\nu_r$ at practical $\varepsilon$ values?
+\end{question}
+The proof already separates the error budgets. The task is to retain
+numerical constants in the seed-moment, central-window, and tail bounds.
+An exact positive-integral evaluation can then confirm signs at the
+two proposed bracket endpoints. A small quadrature residual alone
+would not certify the bracket.
+
+\begin{question}[All-order and growing-parameter transitions]
+Obtain an arbitrary-order expansion of the near-critical reversal
+and identify the valid joint ranges when $r$, $b$, or $1/b$ grows
+with $\lambda=\log(1/\varepsilon)$.
+\end{question}
+For fixed $r,b$, every further density moment and Gaussian logarithmic
+moment is explicit in zeta and polygamma values. Growing $r$ moves the
+Gaussian moment's mass, and $b\downarrow0$ changes the small-variable
+seed bounds. These effects need a fresh localization. In particular,
+the fixed-$r$ ratio $\nu_r/\nu_0\sim
+[4^r/\binom{2r}{r}]^2$ cannot be used uniformly in growing $r$
+without that analysis.
+
+\begin{question}[Finite-index Euler extremizers]
+Resolve the latest continuation's all-index axis and kernel-uniqueness
+conjectures, beyond their already proved initial and eventual cases.
+\end{question}
+The question is the location of a global maximizer over both orders.
+It is stronger than the eventual localization theorem, but different
+from a pointwise comparison at fixed inner order. A practical route is
+an effective eventual threshold plus exact algebraic or interval
+analysis for the remaining finite indices. The new near-critical
+reversal describes one potentially delicate boundary regime.
+
+\subsection{Lerch phase arithmetic and critical sums}
+
+\begin{question}[Phase arithmetic and quantitative sign statistics]
+Is $\theta(2)/(2\pi)$ irrational? More generally, for algebraic $A>1$,
+which arithmetic properties of $\theta(A)$ control the frequency and
+length distribution of same-sign velocity runs?
+\end{question}
+The optimal block theorem needs no answer to this arithmetic question.
+Sharper statistics do: equidistribution would give sign frequencies,
+while quantitative bounds near the cosine zeros require both a
+Diophantine estimate and the additive, rather than relative, coefficient
+asymptotic. The reciprocal-angle cases also invite a classification of
+the corresponding $A$ values.
+
+\begin{question}[Uniform and smoothed critical finite parts]
+Develop the critical-sum theorem uniformly as $A\downarrow1$ or
+$A\to\infty$, and compare its sharp-cutoff constant with constants
+obtained from exponential or smooth cutoffs.
+\end{question}
+The two singularities move with $A$, and the factor
+$(1-e^{-2i\theta})^{-1}$ becomes large as the phase approaches an
+endpoint. The fixed-$A$ theorem does not cover this coalescence.
+Different cutoffs may retain the same local analytic jet but alter
+subtracted terms; any equality of the resulting constants must be
+proved from the corresponding generating operator.
+
+\begin{question}[Global indexing between root regimes]
+Prove the indexed bulk phase formula proposed in the latest Lerch
+continuation, with its exact half-integer shift, and match the bulk
+zeros to the small-root Bessel and large-root Gamma regimes.
+\end{question}
+The additive cosine expansion locates a local root near a phase value.
+It does not on its own identify that phase with the globally ordered
+$j$th zero. A uniform overlap argument with endpoint asymptotics is
+needed to fix the index. This is also a route to discrepancy estimates
+for the existing weak zero distribution.
+
+\subsection{Exact polylogarithmic reductions and formalization}
+
+\begin{question}[An exact certificate for the frozen mixed $S_6$ target]
+After imposing the complete Cayley ideal with
+$\Pi_{\uparrow}$, does the 30-term target lie in the span generated
+by a precisely stated double-shuffle, distribution, and boundary
+relation system? If so, produce an exact rational certificate.
+\end{question}
+At weight seven and depth at most four the ambient projected problem
+has dimension $1964$. This makes a finite calculation more focused,
+but no dimension count ensures that the target vanishes there.
+If that specified system fails, the output should be an explicit
+linear functional separating the target from that system, not a
+claim of numerical nonreducibility. The current $S_8$ candidate needs
+the same distinction between exact relation and tiny residual.
+
+\begin{question}[Relations compatible with the oriented depth basis]
+Construct effective multiplication and change-of-basis algorithms in
+the filtered Cayley quotient, and determine which additional exact
+polylogarithm relations admit similarly compatible depth projections.
+\end{question}
+The generator theorem gives existence and minimum formal depth. The
+remaining algorithmic question is complexity at large weights, where
+the raw Eulerian permutation sum is expensive. Lyndon recursion or
+consecutive-cut dynamic programming may provide practical substitutes.
+Any extension should specify its ideal before claiming completeness.
+
+\begin{question}[Certified evaluation and proof-assistant targets]
+Formalize the exact finite identities first, and then connect them to
+the analytic theorems through a small collection of reusable lemmas.
+\end{question}
+Natural finite targets are the endpoint retraction, shuffle projector,
+character counts, and polynomial coefficient extraction. Analytic
+targets include the $L^2$ holomorphic Fourier formula, the removable
+Laurent products, the epsilon-sensitive density estimate, and transfer
+from a finite collection of slit singularities. The supplied scripts
+are reproducible checks and prospective formalization inputs, rather
+than completed proof-assistant developments.
+
+\section{Reproducibility and verification record}
+\label{sec:verification}
+
+The package includes the modular article sources, an assembled single
+TeX file, the rendered PDF, exact-algebra programs, high-precision
+diagnostics, source provenance, and integration notes. Its README
+gives complete commands and separates the quick exact checks from
+the slower integral diagnostics. A SHA-256 manifest identifies the
+delivered files; rebuilding a PDF may change its metadata and therefore
+its binary hash.
+
+\paragraph{Analytic identities.}
+The translation program compares ordinary split Gamma quadrature
+against the Hurwitz representation at several shifts, including a
+small shift. It checks the two-order germ at real and complex orders,
+the odd-zeta series with its analytic tail bound, the accelerated
+$\gamma_1$ formula, and the second derivative. Rational-shift
+polylogarithm order derivatives are evaluated independently through a
+finite Hurwitz Fourier transform. Exact symbolic truncation constructs
+the endpoint polynomials, rather than fitting their coefficients.
+The supplement checks the Gram integral and the explicit primitive.
+
+\paragraph{Euler transition.}
+Nine samples evaluate the exact compensated kernel for $b=1,2$ and
+derivative orders $r=0,1,2$. They compare root positions with the
+leading, corrected, and Lambert approximations. A tighter-tolerance
+repeat changed one logarithmic root by approximately
+$4.1\times10^{-12}$. This is useful numerical evidence of stability;
+the quadrature is not outward-rounded interval arithmetic. The
+asymptotic theorem rests on the uniform proof, not these samples.
+
+\paragraph{Lerch sums.}
+The critical-sum program derives Puiseux coefficients symbolically,
+compares two independent velocity recurrences at high precision, and
+checks the $p=2,3,4$ subtractions on long finite sums. It also displays
+the growing oscillation left by omitting the conjugate term.
+The $O(N^{-1/2})$ theorem comes from the proved singular expansion
+and continuation, not an extrapolation of the diagnostic errors.
+
+\paragraph{Cayley algebra.}
+All acceptance calculations in the projector suite use integers and
+rational fractions. It tests $780$ words and $2150$ products, compares
+two Eulerian formulas, and independently builds the entire ideal in
+weights at most four. The independently obtained ranks at every depth
+agree with the character formulas. The full frozen $S_6$ vector is
+included with its rational normal form and exact nonzero coefficient.
+These finite tests check the implementation; the all-weight
+conclusions follow from the polynomial-algebra proofs.
+
+\paragraph{Review status.}
+The delicate Euler remainder, root inversion, and global maximum
+identification received a separate analytic audit. The Cayley kernel
+and exact minimum-depth argument received an independent algebraic
+review. The final translation Gram and primitive identities were also
+checked independently. These reviews are documented in the package.
+The report was prepared with AI assistance and has not undergone
+external peer review. Its claims are ordinary mathematical proofs
+with stated dependencies and reproducible evidence, ready for the
+project's integration and further mathematical review.

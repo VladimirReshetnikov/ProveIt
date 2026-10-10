@@ -1,0 +1,111 @@
+# Mellin–Lerch Transforms and Dilation Identities for Stieltjes Correlations
+
+Research continuation for Vladimir Reshetnikov's ProveIt project, 10 October 2026.
+Prepared with OpenAI assistance. This is a proposed research addition with analytic
+proofs and reproducible diagnostics; it is not a claim of external peer review or
+proof-assistant formalization.
+
+## Read the article
+
+`Mellin_Lerch_and_Stieltjes_Dilation.pdf` is the complete article.
+`Mellin_Lerch_and_Stieltjes_Dilation.tex`, `sections/`, and `references.tex` are its
+editable source. Every theorem and equation label has the prefix `mld:`.
+
+The article proves three principal families of exact identities:
+
+1. A finite Mellin–Lerch formula for a polylogarithm divided by `(1+x)^N`, valid
+   for every positive integer `N`, every complex spectral order, and the full
+   common Mellin strip. Its integer resonances and all logarithmic moments
+   reduce to finite ordinary-polylogarithm expressions. Spectral jets give
+   Gamma, polygamma, and generalized Stieltjes integral identities.
+2. A two-parameter reflection identity for shifted generalized harmonic sums,
+   with all mixed derivatives, a rational-shift example, and an exact scalar
+   coefficient procedure. The published unshifted parity antecedent is credited
+   to Xu–Wang, rather than claimed as new.
+3. An all-index dilation law for periodic Stieltjes finite parts, including the
+   local contact terms, multiplication laws, and arbitrary unequal-dilation
+   products with disjoint singular grids. The short polygamma formula has an
+   explicit `log(lcm(p,q))` term. One exact consequence is
+   `FP_x integral_0^1 psi({2x}) psi'({3x+1/4}) dx = pi^2`.
+
+All finite-part conventions and every subtraction in the independent ordinary
+integral realization are stated in the article. These conventions are part of
+the identity, particularly under a change of scale.
+
+## Research status
+
+- The incoming questions about positive integer dilation, traces, local scales,
+  and unequal disjoint singular grids are answered by the new theorems.
+- The canonical `S4` evaluation was already proved in the inspected manuscript.
+- The current `S6` and `S8` evaluations remain conjectural. The reflection proved
+  here annihilates precisely their missing parity component and does not prove
+  their residuals are zero.
+- The audit found no new false statement in the selected pinned claims. It
+  proposes specific reconciliations of overlapping incoming open-question
+  lists and explains the finite-part normalization required by the extension.
+- The article ends with twelve precise further research questions.
+
+No global literature-priority claim is made for every specialization. The
+standard special-function and Euler-sum antecedents are cited in the article.
+
+## Build
+
+Required: a normal TeX Live installation with pdfLaTeX and latexmk. Packages are
+listed in the main TeX preamble; they include amsmath, amsthm, lmodern, geometry,
+microtype, booktabs, tabularx, enumitem, xurl, fancyhdr, and hyperref.
+
+```bash
+make pdf
+```
+
+For the Python programs, the tested environment is Python 3.12.14 with the
+versions in `requirements.txt`:
+
+```bash
+python -m pip install -r requirements.txt
+make check-exact
+make check-numeric
+make summary
+```
+
+The numerical target runs every comparison and can take much longer than the
+exact suite. For a short individual check, run
+`python code/check_pi_squared.py`. All programs locate their outputs relative
+to their own source and write to `results/`.
+
+## Verification supplied
+
+The main exact suite reports **742 successful assertions**, including **525
+independent negative-order logarithmic-moment comparisons**. Exact coefficient
+tables are provided for the Mellin integer matrices, scale polynomials, and
+undilated Stieltjes closure.
+
+There are **77 recorded numerical comparisons**: 21 Mellin checks, 32 harmonic
+checks, 12 general dilation-product checks, 11 primitive/jet checks, and the
+separate pi-squared example. Precision, methods, thresholds, and residuals are
+preserved in JSON. The article explains numerical stabilization and the limits
+of these diagnostics. Floating-point comparisons are not certified enclosures
+and do not substitute for the analytic proofs.
+
+The packaged numerical scripts preserve the tested mathematics; their output
+paths were normalized to this package's `results/` directory. The programs can
+be rerun separately without fetching repository source or external data.
+
+## Source baseline and integration
+
+The inspected ProveIt commit is
+`fc4d3bf80534ad7c901d3b8c9e71baf2df0064ed`.
+`data/source_manifest.json` records 86 retrieved files and their SHA-256 hashes,
+including all five incoming archives. It records retrieval scope, not a claim
+that every theorem in those files was independently audited.
+
+Start integration with `integration/INTEGRATION.md`. The generated
+`integration/manuscript-addition.tex` combines the article's substantive
+sections into one source fragment; it is regenerated by
+`python code/build_integration_fragment.py`. Its preamble and bibliography
+dependencies are explicit. The standalone PDF was verified; compilation inside
+the full canonical manuscript remains an integration step.
+
+`SHA256SUMS` covers the delivered files. `results/build_verification.json`
+records the final standalone build and visual review. The archive contains no
+copies of the downloaded source archives or temporary LaTeX build products.

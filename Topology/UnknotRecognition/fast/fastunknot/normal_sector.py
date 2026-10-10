@@ -334,6 +334,21 @@ def sector_rays(kernel, *, phase='standard', method='auto', check=lambda: None,
         stats['hyperplanes'] = 0
         stats['method'] = 'empty'
         return
+    if phase=='quadrilateral' and d>3:
+        from .sector_euler import _q_corner_parameters
+        stats.update(method='arrangement',hyperplanes=0)
+        for z in _q_corner_parameters(kernel.basis,check,stats,max_bases=max_bases,prefix=''):
+            q=_primitive(sum(kernel.basis[j][i]*z[j]for j in range(d))
+                         for i in range(len(kernel.support)))
+            stats['positive_directions']+=1
+            rows=kernel.lift(q,check)
+            if not kernel.is_standard_ray(rows,check):
+                raise ArithmeticError('canonical Q-ray lift was not standard extreme')
+            if max(x for row in rows for x in row)>4**len(kernel.support):
+                raise ArithmeticError('primitive extreme-ray height bound failed')
+            stats['emitted_rays']+=1
+            yield rows
+        return
     planes = _hyperplanes(kernel, phase, check)
     stats['hyperplanes'] = len(planes)
     stats['method'] = 'arrangement'
@@ -416,6 +431,50 @@ def discover_in_sector(triangulation, allowed_types, *, phase='quadrilateral',
 def _discover_in_kernel(kernel, *, phase, method='auto', max_bases=None,
                         max_orbit_cycles=None, check=lambda: None, corner_first=True):
     """Reuse one prepared kernel; the caller owns validation and source."""
+    if corner_first and phase=='standard' and method=='auto' and len(kernel.basis)>3:
+        # In higher dimensions the Q arrangement has <=k hyperplanes; the
+        # standard arrangement can have O(k^2). A completed nonpositive Q
+        # phase proves the stronger exclusion, with its existing independently
+        # replayable Q certificate. Positive Euler alone resumes the complete
+        # standard phase. Both phases share the candidate allowance.
+        screened=_discover_in_kernel(kernel,phase='quadrilateral',max_bases=max_bases,
+            max_orbit_cycles=max_orbit_cycles,check=check,corner_first=False)
+        if screened['status']!='POSITIVE_EULER_ONLY':
+            screened['stats']['q_screen_only']=True
+            return screened
+        used=screened['stats']['bases_attempted']
+        remaining=None if max_bases is None else max_bases-used
+        present=[False]*len(kernel.support)
+        for entry in screened['certificate']['rays']:
+            check()
+            for i,value in enumerate(entry['quadrilaterals']):
+                check()
+                if value:present[i]=True
+        keep=[i for i,value in enumerate(present)if value]
+        reduced=kernel
+        if len(keep)<len(kernel.support):
+            # Only a completed Q enumeration proves these types vanish on
+            # the whole feasible cone. Rebuild matching geometry so automatic
+            # standard enumeration uses the actual feasible span dimension.
+            reduced=build_sector_kernel(kernel.triangulation,[kernel.support[i]for i in keep],check=check)
+        result=_discover_in_kernel(reduced,phase='standard',max_bases=remaining,
+            max_orbit_cycles=max_orbit_cycles,check=check,corner_first=False)
+        if reduced is not kernel:
+            result['stats']['support_reduction']=dict(requested_kernel=dict(kernel.stats),
+                retained_indices=keep,forced_zero_types=len(kernel.support)-len(keep))
+            if 'certificate'in result:
+                certificate=result['certificate']
+                certificate['allowed_types']=[list(x)for x in kernel.support]
+                if certificate['schema']=='normal-sector-exhaustion-v1':
+                    for entry in certificate['rays']:
+                        check()
+                        expanded=[0]*len(kernel.support)
+                        for i,value in zip(keep,entry['quadrilaterals']):expanded[i]=value
+                        entry['quadrilaterals']=expanded
+                    certificate['q_support_certificate']=screened['certificate']
+        result['stats']['q_screen_stats']=screened['stats']
+        result['stats']['bases_attempted']+=used
+        return result
     triangulation = kernel.triangulation
     stats = dict(kernel.stats, positive_euler_rays=0, orbit_queries=0)
     transcript = []

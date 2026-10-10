@@ -1,0 +1,426 @@
+% Research fragment.  Requires amsmath, amssymb, amsthm and hyperref.
+% Theorem/proposition/corollary/remark environments are supplied by the parent.
+% All claims proved here; global novelty is not claimed.
+\section{A Gamma coefficient calculus for shifted harmonic sums}
+\label{harm:sec:coefficient-calculus}
+
+The exact families in this section complement the manuscript's Hurwitz-jet
+calculus.  They involve a nonlinear but structured class of generalized
+harmonic-number numerators and admit a finite reduction for every rational
+denominator that decays quadratically.  The unshifted specialization is
+classical: it recovers the Aomoto--Drinfeld--Zagier generating function for
+height-one multiple zeta values.  Young's fractional-order Barnes--Hurwitz
+generating function \cite{harm:Young2024}, and the height-one regularization
+formulas recalled by Kaneko and Sakata \cite{harm:KanekoSakata}, are directly
+relevant prior work.  Our purpose is a proved shifted-parameter calculus,
+with a precise two-variable explanation of its finite parts.  We do not
+claim that the kernel, its unshifted specialization, or its classical
+low-depth Euler sums are new.
+
+Throughout this section, $\Re a>0$ and $\log(n+a)$ is the principal
+logarithm.  Define the elementary harmonic coefficients by
+\begin{equation}\label{harm:eq:elementary}
+ \prod_{k=1}^{n}\left(1+\frac{y}{k}\right)
+ =\sum_{r=0}^{n} E_{n,r}y^r,
+ \qquad E_{0,0}=1,
+ \qquad E_{n,r}=0\quad(r>n).
+\end{equation}
+Thus, with $H_n^{(j)}=\sum_{k=1}^n k^{-j}$ and $H_n=H_n^{(1)}$,
+\begin{align}
+ E_{n,0}&=1, &E_{n,1}&=H_n,\\
+ E_{n,2}&=\frac{H_n^2-H_n^{(2)}}2,
+ &E_{n,3}&=\frac{H_n^3-3H_nH_n^{(2)}+2H_n^{(3)}}6.
+ \label{harm:eq:first-elementaries}
+\end{align}
+Equivalently, $E_{n,r}$ is the sum of $1/(k_1\cdots k_r)$ over
+$1\le k_1<\cdots<k_r\le n$.  In particular,
+$E_{n,r}=O_r((1+\log(n+1))^r)$.
+
+The Gamma coefficients to which these sums reduce are
+\begin{equation}\label{harm:eq:gamma-coefficients}
+ F(a,y):=\frac{\Gamma(a)\Gamma(1-y)}{\Gamma(a-y)}
+       =\sum_{k=0}^{\infty}C_k(a)y^k.
+\end{equation}
+This is analytic for sufficiently small $y$, and $C_0(a)=1$.  Put
+\begin{equation}\label{harm:eq:generalized-harmonics}
+ A_1(a)=\gamma+\psi(a),\qquad
+ A_j(a)=\zeta(j)-\zeta(j,a)\quad(j\ge2).
+\end{equation}
+The Gamma Taylor series gives
+\begin{equation}\label{harm:eq:bell-generator}
+ F(a,y)=\exp\left(\sum_{j=1}^{\infty}\frac{A_j(a)}j y^j\right),
+ \qquad
+ kC_k(a)=\sum_{j=1}^{k} A_j(a)C_{k-j}(a).
+\end{equation}
+Consequently every $C_k$ is a polynomial with rational coefficients in
+generalized harmonic functions.  For a positive integer $a=N$,
+$A_j(N)=H_{N-1}^{(j)}$, and $C_k(N)$ is the complete homogeneous
+harmonic sum of depth $k$ on $1,\ldots,N-1$.
+
+For compact formulas, write
+\begin{equation}\label{harm:eq:ABCD}
+ A=\gamma+\psi(a),\quad B=\zeta(2)-\psi'(a),\quad
+ C=\zeta(3)+\frac{\psi''(a)}2,\quad
+ D=\zeta(4)-\frac{\psi^{(3)}(a)}6.
+\end{equation}
+Then
+\begin{align}
+ C_1(a)&=A,\\
+ C_2(a)&=\frac{A^2+B}{2},\\
+ C_3(a)&=\frac{A^3+3AB+2C}{6},\\
+ C_4(a)&=\frac{A^4+6A^2B+3B^2+8AC+6D}{24}.
+ \label{harm:eq:first-C}
+\end{align}
+
+\subsection{An exact generating theorem}
+
+Define
+\begin{equation}\label{harm:eq:shifted-series}
+ Z_r(s,a):=\sum_{n=0}^{\infty}\frac{E_{n,r}}{(n+a)^s},
+ \qquad \Re s>1.
+\end{equation}
+For $a=1$, the convention with the largest index first gives
+$Z_r(s,1)=\zeta(s,\{1\}^r)$.
+
+\begin{theorem}[Shifted harmonic Gamma generating function]
+\label{harm:thm:gamma-generating}
+For $|x|<\Re a$ and $|y|<1$,
+\begin{equation}\label{harm:eq:double-generator}
+ \sum_{m=1}^{\infty}\sum_{r=0}^{\infty}
+ Z_r(m+1,a)x^m y^{r+1}
+ =F(a,y)-F(a-x,y).
+\end{equation}
+In particular, for all integers $r\ge0$ and $m\ge1$,
+\begin{equation}\label{harm:eq:coefficient-reduction}
+ \boxed{\displaystyle
+ Z_r(m+1,a)=\frac{(-1)^{m+1}}{m!}
+                 \frac{d^m}{da^m}C_{r+1}(a).}
+\end{equation}
+For $\Re a,\Re b>0$, the endpoint difference is the convergent identity
+\begin{equation}\label{harm:eq:resolvent-difference}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}E_{n,r}
+ \left(\frac1{n+a}-\frac1{n+b}\right)
+ =C_{r+1}(b)-C_{r+1}(a).}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The ordinary generating function of the elementary harmonic coefficients
+follows from the binomial theorem:
+\begin{equation}\label{harm:eq:ordinary-generator}
+ \sum_{n=0}^{\infty} E_{n,r}u^n
+ =\frac{(-\log(1-u))^r}{r!(1-u)},\qquad |u|<1.
+\end{equation}
+Indeed,
+$\sum_n(1+y)_n u^n/n!=(1-u)^{-1-y}$, and extraction of $y^r$
+gives the assertion.  The integrable difference in
+\eqref{harm:eq:resolvent-difference} therefore has generating function
+\begin{align}
+ &\sum_{r\ge0}y^r\sum_{n\ge0}E_{n,r}
+       \left(\frac1{n+a}-\frac1{n+b}\right)\notag\\
+ &\qquad=\int_0^1
+       \bigl(u^{a-1}-u^{b-1}\bigr)(1-u)^{-1-y}\,du
+       =B(a,-y)-B(b,-y)
+       =\frac{F(b,y)-F(a,y)}y.
+ \label{harm:eq:beta-difference}
+\end{align}
+The difference integral converges for $\Re y<1$: its numerator vanishes
+to first order at $u=1$.  Equality with the difference of beta functions
+first holds for $\Re y<0$ and extends by holomorphy, with the singularity
+at $y=0$ removable.  Near $u=0$, $\Re a,\Re b>0$ provides an integrable
+majorant.  For the sums, absolute and locally uniform convergence follow
+from $\sum_r E_{n,r}|y|^r=(1+|y|)_n/n!=O(n^{|y|})$ and the quadratic
+decay of the resolvent difference.  Coefficient extraction proves
+\eqref{harm:eq:resolvent-difference}.
+
+Apply the same identity with $b=a$ and the first parameter $a-x$.
+Since
+\[
+ \frac1{n+a-x}-\frac1{n+a}
+ =\sum_{m=1}^{\infty}\frac{x^m}{(n+a)^{m+1}},
+\]
+the claimed double generating function follows.  The imposed bound on
+$x$ justifies this expansion uniformly in $n$, and coefficient extraction
+from $F(a-x,y)$ gives \eqref{harm:eq:coefficient-reduction}.
+\end{proof}
+
+At $a=1$, $F(1,y)=1$, so \eqref{harm:eq:double-generator} becomes
+\[
+ \sum_{m\ge1,r\ge0}\zeta(m+1,\{1\}^r)x^m y^{r+1}
+ =1-\frac{\Gamma(1-x)\Gamma(1-y)}{\Gamma(1-x-y)},
+\]
+the classical height-one generating function.  In this specialization
+the right side is symmetric in $x,y$, giving the standard height-one
+duality.  There is generally no such symmetry for an arbitrary shift $a$.
+
+\subsection{Explicit polygamma reductions and antiderivatives}
+
+Set $P_j=\psi^{(j)}(a)$, and retain $C_0=1$ and the explicit $C_k$ in
+\eqref{harm:eq:first-C}.  The first two denominator powers, at depths
+zero through three, are as follows:
+\begin{align}
+ Z_0(2,a)&=P_1,\\
+ Z_1(2,a)&=C_1P_1-\frac{P_2}{2},\\
+ Z_2(2,a)&=C_2P_1-\frac{C_1P_2}{2}+\frac{P_3}{6},\\
+ Z_3(2,a)&=C_3P_1-\frac{C_2P_2}{2}
+                    +\frac{C_1P_3}{6}-\frac{P_4}{24};
+ \label{harm:eq:square-table}
+\end{align}
+and
+\begin{align}
+ Z_0(3,a)&=-\frac{P_2}{2},\\
+ Z_1(3,a)&=-\frac12\left(C_1P_2+P_1^2-\frac{P_3}{2}\right),\\
+ Z_2(3,a)&=-\frac12\left[
+ C_2P_2+C_1\left(P_1^2-\frac{P_3}{2}\right)
+       +\frac{P_4}{6}-P_1P_2\right],\\
+ Z_3(3,a)&=-\frac12\left[
+ C_3P_2+C_2\left(P_1^2-\frac{P_3}{2}\right)
+ +C_1\left(\frac{P_4}{6}-P_1P_2\right)
+ -\frac{P_5}{24}+\frac{P_1P_3}{3}+\frac{P_2^2}{4}\right].
+ \label{harm:eq:cube-table}
+\end{align}
+These are finite closed forms, not recursively defined Euler sums.
+For example,
+\begin{equation}\label{harm:eq:linear-example}
+ \sum_{n=0}^{\infty}\frac{H_n}{(n+a)^2}
+ =\bigl(\psi(a)+\gamma\bigr)\psi'(a)-\frac{\psi''(a)}2.
+\end{equation}
+Each entry is an explicit antiderivative formula as well:
+\begin{equation}\label{harm:eq:antiderivative}
+ \int Z_r(2,a)\,da=C_{r+1}(a)+\mathrm{constant},\qquad
+ \int Z_r(m+1,a)\,da=-\frac1mZ_r(m,a)+\mathrm{constant}
+ \quad(m\ge2).
+\end{equation}
+The first formula identifies a finite polynomial in polygammas as the
+primitive; it avoids leaving an unevaluated harmonic Dirichlet series.
+
+For a useful nonintegral specialization, put $L=\log2$.  The half-point
+values $\zeta(j,1/2)=(2^j-1)\zeta(j)$ give
+\begin{align}
+ Z_1(2,1/2)&=7\zeta(3)-6L\zeta(2),\\
+ Z_2(2,1/2)&=\frac{15}{2}\zeta(4)-14L\zeta(3)+6L^2\zeta(2),\\
+ Z_3(2,1/2)&=31\zeta(5)-13\zeta(2)\zeta(3)-15L\zeta(4)
+                       +14L^2\zeta(3)-4L^3\zeta(2).
+ \label{harm:eq:half-examples}
+\end{align}
+Thus the last identity, written without $E_{n,3}$, is
+\begin{align}
+ &\sum_{n=0}^{\infty}
+ \frac{H_n^3-3H_nH_n^{(2)}+2H_n^{(3)}}{(2n+1)^2}\notag\\
+ &\quad=\frac32\left[
+ 31\zeta(5)-13\zeta(2)\zeta(3)-15L\zeta(4)
+ +14L^2\zeta(3)-4L^3\zeta(2)\right].
+ \label{harm:eq:half-cubic-unpacked}
+\end{align}
+The factor $3/2$ is $3!/4$, from the harmonic normalization and the
+conversion $(n+1/2)^{-2}=4(2n+1)^{-2}$.
+
+\subsection{Closure under arbitrary rational kernels}
+
+\begin{corollary}[Rational-kernel reduction]\label{harm:cor:rational}
+Let $R(z)$ be rational, have all its finite poles among $-a_1,\ldots,-a_J$
+with $\Re a_j>0$, and satisfy $R(z)=O(z^{-2})$ at infinity.  Write
+\[
+ R(z)=\sum_{j=1}^{J}\sum_{\ell=1}^{L_j}
+              \frac{c_{j,\ell}}{(z+a_j)^\ell}.
+\]
+Then $\sum_jc_{j,1}=0$, and
+\begin{align}\label{harm:eq:rational-compiler}
+ \sum_{n=0}^{\infty}E_{n,r}R(n)
+ ={}&-\sum_{j=1}^{J}c_{j,1}C_{r+1}(a_j)\notag\\
+ &+\sum_{j=1}^{J}\sum_{\ell=2}^{L_j}
+ \frac{(-1)^\ell c_{j,\ell}}{(\ell-1)!}
+           C_{r+1}^{(\ell-1)}(a_j).
+\end{align}
+\end{corollary}
+\begin{proof}
+The vanishing sum of residues is the coefficient of $z^{-1}$ at infinity.
+It permits replacing each simple-pole summand by its difference from a
+fixed reference resolvent.  Apply \eqref{harm:eq:resolvent-difference} to
+these differences and \eqref{harm:eq:coefficient-reduction} to all repeated
+poles.  All combined series are absolutely convergent.
+\end{proof}
+
+For real $a>0$ and real $b\ne0$, a compact example is
+\begin{equation}\label{harm:eq:quadratic-kernel}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}\frac{E_{n,r}}{(n+a)^2+b^2}
+ =\frac{C_{r+1}(a+ib)-C_{r+1}(a-ib)}{2ib}
+ =\frac{\Im C_{r+1}(a+ib)}b.}
+\end{equation}
+The limit $b\to0$ recovers $Z_r(2,a)=C_{r+1}'(a)$.
+
+\subsection{The moving pole and all-depth finite parts}
+
+The noninteger order of the Barnes--Hurwitz generating kernel is the
+right variable for explaining why the endpoint finite parts are also
+Gamma coefficients.  This is more delicate than substituting $s=1$ into
+the divergent defining series.
+
+\begin{theorem}[Two-variable pole removal]\label{harm:thm:moving-pole}
+For $\Re a>0$, initially define
+\begin{equation}\label{harm:eq:Barnes-kernel}
+ \mathcal B(s,y;a)=\sum_{n=0}^{\infty}
+            \frac{(1+y)_n}{n!(n+a)^s},
+ \qquad \Re s>1+\Re y.
+\end{equation}
+Near $(s,y)=(1,0)$ there is a jointly holomorphic function
+$\mathcal R(s,y;a)$ such that
+\begin{equation}\label{harm:eq:moving-pole}
+ \Gamma(s)\mathcal B(s,y;a)
+ =\frac1{s-1-y}+\mathcal R(s,y;a),
+ \qquad
+ \mathcal R(1,y;a)=\frac{1-F(a,y)}y.
+\end{equation}
+If
+\begin{equation}\label{harm:eq:reciprocal-gamma}
+ \frac1{\Gamma(1+z)}=\sum_{j=0}^{\infty}g_jz^j,
+\end{equation}
+then
+\begin{equation}\label{harm:eq:all-depth-finite-part}
+ \boxed{\displaystyle
+ Z_r(1+z,a)=\sum_{j=0}^{r}\frac{g_j}{z^{r+1-j}}
+          +g_{r+1}-C_{r+1}(a)+O(z).}
+\end{equation}
+The $O(z)$ term is locally uniform in $a$ on the right half-plane.
+\end{theorem}
+
+\begin{proof}
+The Mellin representation, initially in a common half-plane where
+absolute convergence justifies summation under the integral, is
+\[
+ \Gamma(s)\mathcal B(s,y;a)
+ =\int_0^\infty t^{s-1}e^{-at}(1-e^{-t})^{-1-y}\,dt.
+\]
+Split it at $t=1$ and remove its leading small-$t$ term.  The remainder is
+\begin{align}\label{harm:eq:holomorphic-remainder}
+ \mathcal R(s,y;a)
+ ={}&\int_0^1 t^{s-2-y}
+       \left[e^{-at}\left(\frac{t}{1-e^{-t}}\right)^{1+y}-1\right]dt\notag\\
+ &+\int_1^\infty t^{s-1}e^{-at}(1-e^{-t})^{-1-y}\,dt.
+\end{align}
+The bracket is $O(t)$ uniformly on compact subsets of $(y,a)$ with
+$\Re a>0$.  Hence the first integral is holomorphic whenever
+$\Re(s-y)>0$, and the second is holomorphic in $s,y$ because of
+exponential decay.  Derivatives introduce only bounded powers of
+$\log t$ near zero and polynomial factors at infinity; the same
+majorants justify all mixed derivatives on compact subsets.  The
+subtracted integral is $(s-1-y)^{-1}$.
+
+For $\Re y<0$, substitute $u=e^{-t}$ at $s=1$ to obtain
+\[
+ \mathcal B(1,y;a)=B(a,-y)=-\frac{F(a,y)}y.
+\]
+Consequently $\mathcal R(1,y;a)=(1-F(a,y))/y$, and this equality extends
+holomorphically across $y=0$.
+
+Extracting $y^r$ first in a region $|y|<|s-1|$ gives
+\[
+ \Gamma(s)Z_r(s,a)=\frac1{(s-1)^{r+1}}+R_r(s,a),
+ \quad R_r(s,a):=[y^r]\mathcal R(s,y;a),
+ \quad R_r(1,a)=-C_{r+1}(a).
+\]
+Both sides extend meromorphically to a neighborhood of $s=1$.  Multiply
+by the reciprocal Gamma Taylor series.  Its coefficient $g_{r+1}$
+from the pole contributes to the constant term, in addition to
+$R_r(1,a)$.  This proves \eqref{harm:eq:all-depth-finite-part}.
+\end{proof}
+
+The first reciprocal Gamma coefficients are
+\begin{align}
+ g_0&=1,\\
+ g_1&=\gamma,\\
+ g_2&=\frac{\gamma^2-\zeta(2)}2,\\
+ g_3&=\frac{\gamma^3-3\gamma\zeta(2)+2\zeta(3)}6,\\
+ g_4&=\frac{\gamma^4-6\gamma^2\zeta(2)+3\zeta(2)^2
+                    +8\gamma\zeta(3)-6\zeta(4)}{24}.
+ \label{harm:eq:first-g}
+\end{align}
+Thus the complete principal parts and constants for $r=0,1,2,3$ are
+\begin{align}
+ Z_0(1+z,a)&=z^{-1}+\gamma-A+O(z),\\
+ Z_1(1+z,a)&=z^{-2}+\gamma z^{-1}
+                   +g_2-\frac{A^2+B}{2}+O(z),\\
+ Z_2(1+z,a)&=z^{-3}+\gamma z^{-2}+g_2z^{-1}
+                   +g_3-\frac{A^3+3AB+2C}{6}+O(z),\\
+ Z_3(1+z,a)&=z^{-4}+\gamma z^{-3}+g_2z^{-2}+g_3z^{-1}\notag\\
+ &\hspace{25mm}+g_4-
+       \frac{A^4+6A^2B+3B^2+8AC+6D}{24}+O(z).
+ \label{harm:eq:finite-part-table}
+\end{align}
+For $a=1$, $C_k(1)=0$ for every $k\ge1$, and the constant is simply
+$g_{r+1}$, consistently with height-one multiple-zeta regularization.
+
+\subsection{Stieltjes constants, the literature comparison, and limits of the reduction}
+
+Use the conventional normalization
+\begin{equation}\label{harm:eq:Stieltjes-convention}
+ \zeta(1+z,a)=\frac1z+
+        \sum_{m=0}^{\infty}\frac{(-1)^m\gamma_m(a)}{m!}z^m.
+\end{equation}
+The $r=0$ finite-part formula says
+$\gamma_0(a)=\gamma-C_1(a)=-\psi(a)$, as required.  More generally let
+\[
+ \Gamma(1+z)=\sum_{j\ge0}q_jz^j,
+ \qquad R_{r,k}(a)=[y^rz^k]\mathcal R(1+z,y;a).
+\]
+The ordinary Stieltjes layer is exactly
+\begin{equation}\label{harm:eq:Stieltjes-boundary}
+ R_{0,k}(a)=q_{k+1}+
+       \sum_{j=0}^{k}q_{k-j}\frac{(-1)^j\gamma_j(a)}{j!}.
+\end{equation}
+For every $r\ge0$ the coefficient of $z^m$, $m\ge0$, in the full
+Laurent expansion of $Z_r(1+z,a)$ is
+\begin{equation}\label{harm:eq:higher-coefficient}
+ d_{r,m}(a)=g_{r+m+1}+
+                  \sum_{k=0}^{m}g_{m-k}R_{r,k}(a).
+\end{equation}
+Our finite-part theorem determines $R_{r,0}(a)=-C_{r+1}(a)$.  It does
+\emph{not} determine $R_{r,k}$ for $r,k\ge1$ from Gamma coefficients.
+Those mixed Taylor coefficients are higher harmonic Stieltjes data.
+Any claim that all of them reduce to polygamma values would require
+additional identities.
+
+The distinction between two shifted conventions matters.  Karg\i n,
+Dil, Cenkci, and Can \cite{harm:Kargin2023} study
+\[
+ \zeta_H(s,a)=\sum_{n=0}^{\infty}
+       \frac{\sum_{k=0}^{n}(k+a)^{-1}}{(n+a)^s}.
+\]
+For general $a$, its harmonic numerator is shifted along with its
+denominator, whereas ours is the unshifted $H_n$.  The two should not be
+identified.  At $a=1$ they satisfy
+\begin{equation}\label{harm:eq:harmonic-literature-comparison}
+ Z_1(s,1)=\zeta_H(s,1)-\zeta(s+1).
+\end{equation}
+The known constant term
+$\gamma_H(0,1)=(\gamma^2+\zeta(2))/2$, quoted in
+\cite{harm:Kargin2023}, therefore gives
+$\operatorname{FP}_{s=1}Z_1(s,1)=(\gamma^2-\zeta(2))/2=g_2$,
+exactly as above.  Their higher harmonic Stieltjes constants, and
+Young's higher-depth analogues \cite{harm:Young2023,harm:Young2024},
+are the appropriate comparison for the still nontrivial mixed
+coefficients.  Coffey's nonlinear harmonic reductions
+\cite{harm:Coffey2011} already include familiar specializations such as
+$Z_1(2,1)=\zeta(3)$ and $Z_2(2,1)=\zeta(4)$.
+
+An entirely convergent integral representation of the mixed data is
+available directly from \eqref{harm:eq:holomorphic-remainder}.  Put
+\[
+ K_r(t,a)=\frac{e^{-at}[-\log(1-e^{-t})]^r}
+                  {r!(1-e^{-t})}.
+\]
+Then
+\begin{align}\label{harm:eq:mixed-integrals}
+ R_{r,k}(a)=\frac1{k!}\bigg\{
+ &\int_0^1(\log t)^k
+   \left[K_r(t,a)-\frac{(-\log t)^r}{r!t}\right]dt\notag\\
+ &+\int_1^\infty(\log t)^kK_r(t,a)\,dt\bigg\}.
+\end{align}
+For example, $R_{0,1}(a)$ combines with $R_{0,0}(a)$ by
+\eqref{harm:eq:higher-coefficient} to give $-\gamma_1(a)$.  Formula
+\eqref{harm:eq:mixed-integrals} is a useful exact definition and a
+numerical verification route, but is not asserted to be a closed
+evaluation of all mixed data.
+

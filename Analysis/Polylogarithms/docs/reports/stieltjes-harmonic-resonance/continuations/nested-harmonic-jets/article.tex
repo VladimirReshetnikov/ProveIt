@@ -1,0 +1,1483 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array,xcolor,xurl}
+\usepackage{enumitem,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!40!black,citecolor=blue!40!black,urlcolor=blue!40!black]{hyperref}
+\usepackage{bookmark}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Nested harmonic jets and Gamma renormalization}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{1.2em}
+\setcounter{tocdepth}{2}
+\emergencystretch=2em
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\FP}{FP}
+\DeclareMathOperator{\Log}{Log}
+\DeclareMathOperator{\Rea}{Re}
+\newcommand{\C}{\mathbb C}\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}\newcommand{\Z}{\mathbb Z}
+\newcommand{\G}{\mathcal G}\newcommand{\F}{\mathfrak F}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\pin}{\texttt{fc4d3bf80534ad7c901d3b8c9e71baf2df0064ed}}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\title{\textbf{Nested Harmonic Jets and Gamma Renormalization}\\[5pt]
+\large Exact Stieltjes Identities, Regulator Conversion,\\
+Cyclotomic Products, and All-Depth Polylogarithmic Resonance}
+\author{Research continuation prepared for Vladimir Reshetnikov\\
+\small ProveIt programme \quad\textbullet\quad Prepared with OpenAI ChatGPT}
+\date{10 October 2026}
+\hypersetup{pdftitle={Nested Harmonic Jets and Gamma Renormalization},pdfauthor={Prepared for Vladimir Reshetnikov with OpenAI ChatGPT},pdfsubject={Exact identities for harmonic sums, polylogarithms and Hurwitz-zeta jets}}
+\begin{document}
+\maketitle
+\begin{abstract}
+A single finite harmonic product connects three different operations: taking a
+nested-sum generating function, removing a spectral pole, and forming an Abel
+transform. We develop their exact relation, keeping their normalizations
+separate. A holomorphic two-variable renormalization has the Gamma quotient
+$\Gamma(a)/\Gamma(a+z)$ as its spectral value at one. Every spectral jet is
+then expressed by a Bell polynomial in generalized Stieltjes constants and
+Hurwitz-zeta derivatives. This gives a finite all-depth conversion from
+harmonic regularization to diagonal Laurent finite parts, including explicit
+correction terms through depth four. Parameter multiplication has a necessary
+exponential correction, and a higher-genus cyclotomic identity reduces
+fractional-order products to the same Gamma quotient.
+
+For equal-order multiple polylogarithms we classify all depth weights at which
+the complete depth-generating function becomes a polynomial in its argument.
+At a negative integral depth weight, its first fixed-weight spectral
+derivative is elementary. Higher derivatives have explicit logarithmic
+harmonic Bell coefficients and reduce to shifted logarithmic Euler sums of
+nesting depth at most the derivative order. These results include ordinary
+and Euler antiderivative formulas and convergent endpoint identities.
+The proofs are analytic and algebraic; 826 exact finite assertions and
+1,075 high-precision numerical comparisons accompany them. The latter are
+diagnostics, not interval certificates. Classical symmetric-function,
+Gamma-product, and regularization results are credited separately; global
+priority for the derived families is not asserted.
+\end{abstract}
+\vspace{4pt}
+\noindent\textbf{Scope.} This is an identity-focused continuation, not a claim to
+settle the remaining $S_6$ or $S_8$ special-value problems or numerical period
+independence. The repository was read at the pinned revision above. No
+repository files were modified and no proof-assistant formalization is claimed.
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{Research question, sources, and contribution}
+\label{sec:scope}
+The integration and differentiation chapters of the ProveIt polylogarithm
+manuscript organize single Hurwitz-zeta jets, generalized Stieltjes functions,
+and harmonic-number coefficient laws. Its depth chapter and research
+programme ask for exact reductions rather than extrapolations from an
+integer-relation search. The present continuation asks a compatible but
+different question:
+\begin{quote}
+Can the spectral derivatives of \emph{all nested depths at once} be controlled
+by one analytic object, and can special depth weights force exact reductions?
+\end{quote}
+The answer is affirmative for the equal-order family studied here. There are
+two complementary reductions. At the singular endpoint in the spectral
+variable, a Gamma-normalized product gives a finite Stieltjes--zeta
+coefficient calculus. In the open argument disk, a zero of one finite-product
+factor collapses an infinite depth-generating function to a polynomial.
+Differentiating near that zero gives the elementary first-order identities
+and the higher-order bounded-nesting theorem.
+
+\subsection{What is classical and what is established here}
+The finite elementary-symmetric-product identity, Newton's identities,
+the Weierstrass product for Gamma, and the relation between symmetric functions
+and multiple zeta values are classical. Hoffman develops the latter connection,
+including the role of the Gamma genus \cite{Hoffman2008,Hoffman2016}.
+Regularization and double-shuffle structures have a substantial independent
+theory \cite{IKZ2006,GuoZhang2010}. We do not identify every regularization with
+every other one, nor call the reciprocal-Gamma generating function a new
+special-function evaluation.
+
+The results proved in this article are the following coordinated statements.
+Theorem~\ref{thm:renorm} proves a locally uniform cutoff realization of the
+spectral family. Theorems~\ref{thm:jets} and~\ref{thm:regulator} give all-order
+jet and regulator-conversion formulas with precise finite coefficient
+requirements. Theorems~\ref{thm:multiplication} and~\ref{thm:cyclotomic}
+identify the parameter-multiplication correction and the cyclotomic
+fractional-order Gamma reduction. Theorems~\ref{thm:truncate},
+\ref{thm:firstres}, and~\ref{thm:higherres} classify polynomial truncations,
+evaluate every first resonant derivative elementarily, and give every higher
+resonant coefficient. Corollary~\ref{cor:depth} specifies the comparison class
+in the resulting bounded-nesting reduction. Their derivations are included
+in full. An exhaustive literature priority investigation is not part of
+this delivery.
+
+\subsection{Pinned repository and targeted reading}
+The source revision is
+\begin{center}\small\pin.\end{center}
+The main source areas are
+\src{Analysis/Polylogarithms/docs/manuscript} and \src{docs/incoming}
+\cite{ProveIt}. The main manuscript, relevant portions of the depth,
+integration, differentiation, and discovery chapters, and the incoming
+inventory/intake instructions were inspected. The filenames and README
+summaries of all five incoming archives at this snapshot were also examined.
+Their complete manuscripts and verification outputs were \emph{not}
+exhaustively audited.
+
+Those incoming reports already develop shifted Stieltjes products,
+convolution closure, contact terms, ordinary log-Gamma correlations, and
+related Lerch limits. The present work does not repackage those bilinear
+identities as new results. Its word ``resonance'' refers to the zero
+$1-mk^{-s}=0$ in a \emph{depth-generating product}, not to an integer-order
+Lerch expansion. The source audit in Section~\ref{sec:audit} states the
+remaining limitations and a specific editorial correction.
+
+\section{Finite harmonic products and conventions}
+\label{sec:finite}
+Fix a real parameter $a>0$, and put $x_n=n+a$. All powers $x_n^s$ use the real
+logarithm of the positive base. Spectral differentiation always means
+$d/ds$, not differentiation in $a$. Define
+\begin{align}
+ H_N^{(s)}(a)&=\sum_{n=0}^{N-1}x_n^{-s},\\
+ E_{d,N}(s;a)&=\sum_{0\le n_1<\cdots<n_d<N}
+                (x_{n_1}\cdots x_{n_d})^{-s},\qquad E_{0,N}=1.
+ \label{eq:finiteE}
+\end{align}
+The function $E_{d,N}$ vanishes for $d>N$. Equal orders make increasing or
+decreasing index notation equivalent; the multiple-polylogarithm notation
+introduced later will use decreasing indices.
+
+\begin{proposition}[Finite product and Newton recurrence]
+For every $N$,
+\begin{equation}
+ P_N(s,z;a):=\prod_{n=0}^{N-1}(1+z x_n^{-s})
+       =\sum_{d=0}^N z^d E_{d,N}(s;a),
+ \label{eq:product}
+\end{equation}
+and
+\begin{equation}
+ d E_{d,N}(s;a)=\sum_{k=1}^d(-1)^{k-1}
+       H_N^{(ks)}(a) E_{d-k,N}(s;a).
+ \label{eq:newton}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Choose the term $zx_n^{-s}$ from exactly $d$ factors of the product to obtain
+\eqref{eq:product}. As a formal power series in $z$,
+\[
+ z\partial_z\log P_N
+ =\sum_{k\ge1}(-1)^{k-1}H_N^{(ks)}(a)z^k.
+\]
+Multiplication by $P_N$ and comparison of coefficients give
+\eqref{eq:newton}. Only finite polynomials are needed for each coefficient.
+\end{proof}
+Thus generalized harmonic numbers are the power-sum coordinates of the
+nested family. For example,
+\[
+ E_{2,N}=\frac{(H_N^{(s)})^2-H_N^{(2s)}}2,\quad
+ E_{3,N}=\frac{(H_N^{(s)})^3-3H_N^{(s)}H_N^{(2s)}+2H_N^{(3s)}}6.
+\]
+Their spectral derivatives insert logarithms:
+\begin{equation}
+ \partial_s^r H_N^{(ks)}(a)
+   =(-k)^r\sum_{n<N}\frac{\log^r x_n}{x_n^{ks}}.
+ \label{eq:harmoniclog}
+\end{equation}
+The factor $k^r$ in this equation is essential throughout the paper.
+
+We use the Laurent convention
+\begin{equation}
+ \zeta(1+\eps,a)=\frac1\eps+
+     \sum_{r\ge0}\frac{(-1)^r\gamma_r(a)}{r!}\eps^r,
+ \qquad \gamma_0(a)=-\psi(a).
+ \label{eq:stieltjes}
+\end{equation}
+The standard Hurwitz identities and their domains are recorded in DLMF
+\S25.11 \cite{DLMFzeta}. In particular
+$\partial_a\zeta(s,a)=-s\zeta(s+1,a)$ and
+$\zeta(k,a)=(-1)^k\psi^{(k-1)}(a)/(k-1)!$ for $k\ge2$.
+
+The complete exponential Bell polynomials $Y_r$ are defined by
+\begin{equation}
+ \exp\left(\sum_{j\ge1}X_j\frac{t^j}{j!}\right)
+       =\sum_{r\ge0}Y_r(X_1,\ldots,X_r)\frac{t^r}{r!}.
+ \label{eq:Bell}
+\end{equation}
+Thus $Y_0=1$, $Y_1=X_1$, $Y_2=X_1^2+X_2$, and
+$Y_3=X_1^3+3X_1X_2+X_3$.
+
+\section{A holomorphic cutoff renormalization}
+\label{sec:renorm}
+Set $X=N+a$ and define the entire-in-$s$ function
+\begin{equation}
+ C_N(s;a)=\frac{1-X^{1-s}}{s-1},\qquad
+ C_N(1;a)=\log X.
+ \label{eq:counterterm}
+\end{equation}
+The endpoint $N+a$, and not a silently substituted endpoint, is part of the
+normalization. Its derivatives at one are
+\begin{equation}
+ \partial_s^r C_N(1;a)=\frac{(-1)^r}{r+1}\log^{r+1}X.
+ \label{eq:counterderivative}
+\end{equation}
+Define
+\begin{equation}
+ \G_N(s,z;a)=e^{-zC_N(s;a)}P_N(s,z;a).
+ \label{eq:GN}
+\end{equation}
+
+\begin{theorem}[Cutoff limit and the Gamma slice]
+\label{thm:renorm}
+For fixed $a>0$, the functions $\G_N$ converge locally uniformly on
+$\{\Rea s>1/2\}\times\C$ to a holomorphic function $\G$, entire in $z$,
+given by
+\begin{equation}
+ \G(s,z;a)=
+ e^{z(\zeta(s,a)-1/(s-1))}
+ \prod_{n\ge0}(1+zx_n^{-s})e^{-zx_n^{-s}}.
+ \label{eq:G}
+\end{equation}
+The apparent singularity at $s=1$ is removable. All fixed mixed $s,z$
+derivatives converge locally uniformly. Moreover
+\begin{equation}
+ \boxed{\G(1,z;a)=\frac{\Gamma(a)}{\Gamma(a+z)}}.
+ \label{eq:gammaslice}
+\end{equation}
+The zeros of $\G(s,\cdot\,;a)$ are exactly $z=-x_n^s$, each simple.
+\end{theorem}
+\begin{proof}
+Euler summation gives, locally uniformly for $\Rea s>0$,
+\[
+ \zeta(s,X)-\frac{X^{1-s}}{s-1}=O(X^{-\Rea s}),
+\]
+where the difference is interpreted at one by removability. One direct
+justification is to subtract the integral of $(X+t)^{-s}$ from its sum over
+nonnegative integers, interval by interval. The resulting series of
+differences is bounded on a compact $s$-set by a constant times
+$\int_0^\infty(X+t)^{-\Rea s-1}\dd t$, plus its endpoint term. Since
+$H_N^{(s)}(a)=\zeta(s,a)-\zeta(s,X)$, this proves
+\[
+ H_N^{(s)}(a)-C_N(s;a)
+ \longrightarrow\zeta(s,a)-\frac1{s-1}.
+\]
+For a compact set in the stated domain, choose $\sigma>1/2$ below every
+real part and a uniform bound for $|z|$. The tail factors satisfy
+\[
+ \log(1+zx_n^{-s})-zx_n^{-s}=O(x_n^{-2\sigma})
+\]
+for all sufficiently large $n$, with the logarithm chosen near one.
+The summable majorant proves normal convergence of the centered product.
+Combining its convergence with that of the linear exponential proves
+\eqref{eq:G}. The holomorphic convergence theorem and Cauchy's integral
+formula give every fixed derivative assertion.
+
+At one the first exponential is $e^{-z\psi(a)}$. The Weierstrass Gamma
+product \cite{DLMFgamma} gives
+\[
+ \frac{\Gamma(a)}{\Gamma(a+z)}
+ =e^{-z\psi(a)}\prod_{n\ge0}
+       \left(1+\frac z{x_n}\right)e^{-z/x_n},
+\]
+proving \eqref{eq:gammaslice}. The exponential never vanishes. Away from
+the displayed linear-factor zeros, the normally convergent tail has a
+nonzero logarithm and hence is nonzero. Distinct $x_n$ give distinct moduli
+$x_n^{\Rea s}$, so the factors have no coincident zeros.
+\end{proof}
+
+\begin{corollary}[Harmonic regularized depth coefficients]
+\label{cor:harmonicreg}
+Write $g_d(a)=[z^d]\Gamma(a)/\Gamma(a+z)$. Then
+\begin{equation}
+ g_d(a)=\lim_{N\to\infty}
+       \sum_{j=0}^d\frac{(-\log(N+a))^j}{j!}E_{d-j,N}(1;a).
+ \label{eq:harmonicreg}
+\end{equation}
+More generally, for every fixed $d,r$, coefficient extraction and
+$r$ spectral derivatives commute with the limit in \eqref{eq:GN}.
+\end{corollary}
+\begin{proof}
+Expand the finite exponential in $z$, then apply the local uniform
+convergence on a circle about $z=0$. Apply Cauchy's formula also in $s$
+for the derivative statement.
+\end{proof}
+This is a coefficientwise regularization, not an ordinary value assigned to
+a divergent nested sum without a subtraction prescription.
+
+\section{The Stieltjes--zeta spectral jet calculus}
+\label{sec:jets}
+For $z$ initially near zero define the logarithm by $\log\G(s,0;a)=0$, and
+put
+\begin{equation}
+ \Lambda_r(z;a)=\left.\partial_s^r\log\G(s,z;a)\right|_{s=1},
+ \qquad F_r(z;a)=\left.\partial_s^r\G(s,z;a)\right|_{s=1}.
+ \label{eq:Lambda}
+\end{equation}
+
+\begin{theorem}[All spectral jets]
+\label{thm:jets}
+For $r\ge0$ and $|z|<a$,
+\begin{equation}
+ \boxed{\Lambda_r(z;a)=(-1)^r z\gamma_r(a)+
+       \sum_{k\ge2}(-1)^{k-1}k^{r-1}z^k\zeta^{(r)}(k,a)}.
+ \label{eq:logjet}
+\end{equation}
+Here $\zeta^{(r)}$ differentiates its first variable and $k^{r-1}=1/k$
+when $r=0$. For $r\ge1$,
+\begin{equation}
+ F_r(z;a)=\frac{\Gamma(a)}{\Gamma(a+z)}
+          Y_r(\Lambda_1(z;a),\ldots,\Lambda_r(z;a)).
+ \label{eq:Belljet}
+\end{equation}
+Each $F_r$ is entire. The apparent poles on the right of \eqref{eq:Belljet}
+cancel. The functions $\Lambda_r$, $r\ge1$, continue meromorphically to the
+$z$-plane, with possible poles only at $-a,-a-1,\ldots$.
+\end{theorem}
+\begin{proof}
+For small $z$ the logarithm of \eqref{eq:G} is
+\begin{equation}
+ \log\G(s,z;a)=z\left(\zeta(s,a)-\frac1{s-1}\right)
+    +\sum_{k\ge2}\frac{(-1)^{k-1}z^k}{k}\zeta(ks,a).
+ \label{eq:logG}
+\end{equation}
+Normal convergence in a neighborhood of $s=1$ allows spectral
+differentiation. Equation~\eqref{eq:stieltjes} gives the first term, while
+$d^r\zeta(ks,a)/ds^r=k^r\zeta^{(r)}(ks,a)$ gives the factor in
+\eqref{eq:logjet}. Expanding the exponential in the increment $s-1$
+proves \eqref{eq:Belljet}. Entireness of $F_r$ follows from
+Theorem~\ref{thm:renorm}, independently of any cancellation manipulation.
+
+For continuation of $\Lambda_r$, separate any finite number of factors from
+the product. A spectral derivative of their logarithms is rational in $z$
+for $r\ge1$. The remaining differentiated centered logarithmic series
+converges normally away from its factor zeros: a fixed compact set has a
+summable tail of size $O(x_n^{-2}\log^r x_n)$. This proves the meromorphic
+statement and also the cancellation claim in \eqref{eq:Belljet}.
+\end{proof}
+
+At order zero, $\Lambda_0=\log\Gamma(a)-\log\Gamma(a+z)$ denotes the
+analytic logarithm continued from zero, not the principal logarithm of a
+possibly winding Gamma value. The first depth coefficients are
+\begin{align}
+ g_1&=c,\qquad g_2=\frac{c^2-Z_2}{2},\\
+ g_3&=\frac{c^3-3cZ_2+2Z_3}{6},\\
+ g_4&=\frac{c^4-6c^2Z_2+3Z_2^2+8cZ_3-6Z_4}{24},
+ \label{eq:gtable}
+\end{align}
+where $c=\gamma_0(a)$ and $Z_k=\zeta(k,a)$. At zero spectral order, the
+$Z_k$ may equally be replaced by ordinary polygamma values.
+
+\subsection{An explicit logarithmic-harmonic limit}
+Differentiating \eqref{eq:GN} logarithmically before taking the limit gives
+\begin{equation}
+ \Lambda_1(z;a)=\lim_{N\to\infty}
+ \left\{\frac z2\log^2(N+a)
+          -\sum_{n<N}\frac{z\log x_n}{x_n+z}\right\}.
+ \label{eq:L1limit}
+\end{equation}
+This identity holds away from the poles and locally uniformly there.
+It expresses a Stieltjes--zeta jet as a renormalized generalized harmonic
+sum with a shifted denominator. Higher limits follow from
+\eqref{eq:counterderivative}; they must differentiate the counterterm too.
+
+\subsection{Exact cancellation at a moving Gamma zero}
+\begin{proposition}[Zero-flow identities]
+\label{prop:zeroflow}
+Let $x=a+m$ with $m\ge0$. Then
+\begin{equation}
+ F_1(-x;a)=x\log x\,\Gamma(a)(-1)^m m!.
+ \label{eq:Froot}
+\end{equation}
+More generally, with $V_x=\partial_s+(\log x)z\partial_z$,
+\begin{equation}
+ (V_x^r\G)(s,-x^s;a)=0\qquad(r\ge0,\ \Rea s>1/2).
+ \label{eq:zeroflow}
+\end{equation}
+\end{proposition}
+\begin{proof}
+The path $z(s)=-x^s$ is a zero of the corresponding linear factor of
+\eqref{eq:G}. Its total derivative is precisely $V_x$, proving
+\eqref{eq:zeroflow}. At one the $r=1$ case says
+$F_1(-x)=x\log x\,\partial_z\G(1,-x)$.
+The reciprocal Gamma function has derivative $(-1)^m m!$ at $-m$;
+\eqref{eq:gammaslice} gives \eqref{eq:Froot}.
+\end{proof}
+Thus a zero of the Gamma slice need not be a zero of its spectral derivative.
+For instance $x=1$ gives zero because $\log x=0$, whereas a generic $x$
+gives the nonzero value in \eqref{eq:Froot}.
+
+\section{Diagonal Laurent finite parts are a different regulator}
+\label{sec:regulator}
+For $\Rea s>1$ define the diagonal multiple Hurwitz zeta value
+\begin{equation}
+ Z_d(s;a)=\sum_{0\le n_1<\cdots<n_d}
+        (x_{n_1}\cdots x_{n_d})^{-s},\qquad Z_0=1.
+ \label{eq:diagZ}
+\end{equation}
+Newton's identities express every fixed $Z_d$ as a polynomial in
+$\zeta(s,a),\ldots,\zeta(ds,a)$, so it is meromorphic in $s$.
+Its Laurent finite part at one means the coefficient of $(s-1)^0$ of
+\emph{this specific one-variable restriction}.
+
+\begin{theorem}[Exact conversion of the two regulators]
+\label{thm:regulator}
+As a formal depth series with meromorphic coefficients near $\eps=0$,
+\begin{equation}
+ \sum_{d\ge0}z^d Z_d(1+\eps;a)
+       =e^{z/\eps}\G(1+\eps,z;a).
+ \label{eq:regmaster}
+\end{equation}
+Consequently, for $d\ge0$ and any integer $v$,
+\begin{equation}
+ [\eps^v]Z_d(1+\eps;a)
+   =\sum_{j=0}^d\frac{[z^{d-j}\eps^{v+j}]\G(1+\eps,z;a)}{j!},
+ \label{eq:reggeneral}
+\end{equation}
+where a negative Taylor index on $\G$ means zero. In particular,
+\begin{equation}
+ \boxed{\FP_{s=1}Z_d(s;a)=
+       \sum_{j=0}^d\frac{[z^{d-j}]F_j(z;a)}{(j!)^2}}.
+ \label{eq:regFP}
+\end{equation}
+The finite part belongs to the finite polynomial algebra over $\Q$
+generated by
+\begin{equation}
+ \gamma_0(a),\ldots,\gamma_{d-1}(a),\qquad
+ \zeta^{(j)}(k,a)\quad(2\le k\le d,\ 0\le j\le d-k)
+ \label{eq:FPatoms}
+\end{equation}
+for $d\ge1$.
+\end{theorem}
+\begin{proof}
+In the absolutely convergent region the depth-generating function of
+\eqref{eq:diagZ} is the uncentered infinite product. Equation~\eqref{eq:G}
+shows that it equals $e^{z/(s-1)}\G(s,z;a)$. Alternatively, logarithmic
+expansion gives the same identity immediately from Newton's recurrence.
+For each fixed depth it is an equality of meromorphic functions, so it
+continues to a punctured neighborhood of one.
+
+In a fixed coefficient $z^d$, the exponential contributes only its terms
+$j=0,\ldots,d$. Extracting the Laurent coefficient proves
+\eqref{eq:reggeneral}. Since $[\eps^j]\G=F_j/j!$, this gives
+\eqref{eq:regFP}, including the second factorial. The atom restriction
+follows by substituting \eqref{eq:logjet}: a $z^k$ zeta term needs $k$
+units of depth, leaving at most $d-k$ spectral derivatives from the pole
+factor. A linear Stieltjes term leaves at most $d-1$ derivatives. Products
+of such terms add no new generators.
+\end{proof}
+
+The first nontrivial formulas, with $c=\gamma_0(a)$, are
+\begin{align}
+ \FP Z_2&=g_2-\gamma_1(a),\label{eq:FP2}\\
+ \FP Z_3&=g_3-c\gamma_1(a)-\zeta'(2,a)+\frac{\gamma_2(a)}4,
+ \label{eq:FP3}\\
+ \FP Z_4&=g_4+\frac{\zeta(2,a)\gamma_1(a)}2
+       -c\zeta'(2,a)-\frac{\zeta''(2,a)}2+\zeta'(3,a)\notag\\
+ &\hspace{8mm}-\frac{c^2\gamma_1(a)}2
+       +\frac{c\gamma_2(a)}4+\frac{\gamma_1(a)^2}4
+       -\frac{\gamma_3(a)}{36}.
+ \label{eq:FP4}
+\end{align}
+For example, the elementary diagonal identity
+$Z_2(s;a)=(\zeta(s,a)^2-\zeta(2s,a))/2$ already proves
+\eqref{eq:FP2}. Its extra $-\gamma_1(a)$ comes from multiplying the
+spectral pole by the next Laurent coefficient. Setting $s=1$ after removing
+only the depth-one pole does not reproduce this finite part.
+
+\begin{remark}[Scope of ``regularized'']
+Harmonic cutoff regularization \eqref{eq:harmonicreg}, the diagonal Laurent
+finite part \eqref{eq:regFP}, and shuffle regularization are not interchangeable
+names. The identities above specify the first two directly. They do not
+assert that raw diagonal finite-part extraction is a shuffle character.
+The general double-shuffle regularization theory \cite{IKZ2006} addresses
+additional algebraic compatibility questions. A different finite subtraction
+constant changes the harmonic normalization by an exponential in $z$.
+\end{remark}
+
+\section{Parameter multiplication and its spectral correction}
+\label{sec:multiplication}
+\begin{theorem}[Shift and multiplication identities]
+\label{thm:multiplication}
+For $a>0$, $\Rea s>1/2$, and all $z$,
+\begin{equation}
+ \G(s,z;a)=(1+z/a^s)\G(s,z;a+1).
+ \label{eq:shiftG}
+\end{equation}
+For every integer $q\ge2$,
+\begin{equation}
+ \boxed{\prod_{j=0}^{q-1}\G\left(s,z;\frac{a+j}{q}\right)
+ =\exp\left(z\frac{q^s-q}{s-1}\right)\G(s,q^sz;a)}.
+ \label{eq:multG}
+\end{equation}
+The quotient in the exponential is removable at one, where its value is
+$q\log q$.
+\end{theorem}
+\begin{proof}
+The shift removes the $n=0$ term from the uncentered product; the centered
+exponential correction removes exactly the same term, giving
+\eqref{eq:shiftG}. For multiplication, use
+\[
+ \sum_{j=0}^{q-1}\zeta\left(t,\frac{a+j}{q}\right)=q^t\zeta(t,a),
+\]
+Insert this identity into \eqref{eq:logG}. Terms of degree $k\ge2$ agree
+with those of $\log\G(s,q^sz;a)$. The difference in degree one is
+$z(q^s-q)/(s-1)$. Exponentiate first near $z=0$ and extend by entireness.
+The same proof may be carried out in the absolutely convergent region
+before analytic continuation.
+\end{proof}
+At $s=1$, \eqref{eq:multG} is the Gamma multiplication ratio
+\begin{equation}
+ \prod_{j<q}\frac{\Gamma((a+j)/q)}{\Gamma((a+j)/q+z)}
+       =q^{qz}\frac{\Gamma(a)}{\Gamma(a+qz)}.
+ \label{eq:gammamult}
+\end{equation}
+The classical Gamma multiplication formula is recorded in DLMF \S5.5
+\cite{DLMFmult}. Omitting the exponential in \eqref{eq:multG} would already
+contradict this specialization.
+
+\begin{corollary}[All-order distribution of logarithmic jets]
+\label{cor:jetdist}
+Let $\ell=\log q$ and $D=w\partial_w$. Then, as germs at $z=0$,
+\begin{align}
+ \sum_{j=0}^{q-1}\Lambda_r\left(z;\frac{a+j}{q}\right)
+ ={}&\frac{qz\ell^{r+1}}{r+1}\notag\\
+ &+\left.\sum_{h=0}^r\binom rh\ell^{r-h}
+              D^{r-h}\Lambda_h(w;a)\right|_{w=qz}.
+ \label{eq:jetdist}
+\end{align}
+For $r=1$ this becomes
+\begin{equation}
+ \sum_{j<q}\Lambda_1\left(z;\frac{a+j}{q}\right)
+ =\Lambda_1(qz;a)-qz\ell\,\psi(a+qz)+\frac{qz\ell^2}{2}.
+ \label{eq:jetdist1}
+\end{equation}
+\end{corollary}
+\begin{proof}
+The $r$-th derivative at one of $(q^s-q)/(s-1)$ is
+$q\ell^{r+1}/(r+1)$. Along $w=q^sz$, differentiation of a function of
+$(s,w)$ acts as $\partial_s+\ell D$; the two operators commute.
+Expanding its $r$-th power gives \eqref{eq:jetdist}. Finally
+$D\Lambda_0(w;a)=-w\psi(a+w)$ gives \eqref{eq:jetdist1}.
+\end{proof}
+This identity links Stieltjes jets, spectral zeta derivatives, and a
+polygamma argument shift without any numerical relation search. Further
+$z$ derivatives of \eqref{eq:jetdist1} produce explicit higher polygamma
+terms and remain valid meromorphically away from the displayed poles.
+
+\section{Higher-genus products and a cyclotomic Gamma identity}
+\label{sec:cyclotomic}
+The half-plane in Theorem~\ref{thm:renorm} is tied to a quadratic tail. To
+cross it, higher power sums must also be subtracted. This can be done
+without introducing an unspecified regularization.
+
+\begin{definition}
+For an integer $M\ge1$ define
+\begin{equation}
+ \G_N^{[M]}(s,z;a)=P_N(s,z;a)
+  \exp\left(-\sum_{k=1}^M\frac{(-1)^{k-1}z^k}{k}C_N(ks;a)\right).
+ \label{eq:genuscutoff}
+\end{equation}
+Thus $\G_N^{[1]}=\G_N$.
+\end{definition}
+
+\begin{theorem}[Higher-genus limit and cyclotomic reduction]
+\label{thm:cyclotomic}
+The functions in \eqref{eq:genuscutoff} converge locally uniformly for
+$\Rea s>1/(M+1)$ and all $z$, to
+\begin{align}
+ \G^{[M]}(s,z;a)
+ ={}&\exp\left(\sum_{k=1}^M\frac{(-1)^{k-1}z^k}{k}
+            \left(\zeta(ks,a)-\frac1{ks-1}\right)\right)\notag\\
+ &\times\prod_{n\ge0}(1+zx_n^{-s})
+       \exp\left(\sum_{k=1}^M\frac{(-1)^kz^k}{kx_n^{ks}}\right).
+ \label{eq:higherG}
+\end{align}
+Every apparent pole at $s=1/k$, $1\le k\le M$, is removed in the
+specified combination. Put $\omega=e^{2\pi i/m}$ and
+$u=(-1)^{m+1}z^m$. For $m\ge1$ and $\Rea s>1/(m+1)$,
+\begin{equation}
+ \prod_{j=0}^{m-1}\G^{[m]}(s,\omega^jz;a)=\G(ms,u;a).
+ \label{eq:cyclogen}
+\end{equation}
+In particular,
+\begin{equation}
+ \boxed{\prod_{j=0}^{m-1}\G^{[m]}(1/m,\omega^jz;a)
+       =\frac{\Gamma(a)}{\Gamma(a+(-1)^{m+1}z^m)}}.
+ \label{eq:cyclogamma}
+\end{equation}
+For logarithms continued from $z=0$, every $r\ge0$ also satisfies
+\begin{equation}
+ \left.\sum_{j=0}^{m-1}\partial_s^r
+       \log\G^{[m]}(s,\omega^jz;a)\right|_{s=1/m}
+       =m^r\Lambda_r((-1)^{m+1}z^m;a).
+ \label{eq:cyclojets}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Separate the first $M$ terms of the logarithmic expansion of each factor.
+The remaining tail is $O(x_n^{-(M+1)\sigma})$ on a compact set with
+$\Rea s\ge\sigma>1/(M+1)$. For each $k\le M$, the Euler-summation
+argument in Theorem~\ref{thm:renorm} applies to $ks$, and proves convergence
+of $H_N^{(ks)}-C_N(ks)$ to its pole-subtracted zeta value. This proves
+\eqref{eq:higherG}, holomorphy, and convergence of all fixed derivatives.
+
+The cyclotomic assertion is already an exact finite-cutoff identity.
+Indeed
+\[
+ \prod_{j=0}^{m-1}(1+\omega^jt)=1-(-t)^m
+             =1+(-1)^{m+1}t^m,
+\]
+and $\sum_{j<m}\omega^{jk}=0$ unless $m$ divides $k$. In the counterterm
+sum with $1\le k\le m$, only $k=m$ remains; it is precisely
+$-uC_N(ms;a)$. Hence
+\[
+ \prod_{j<m}\G_N^{[m]}(s,\omega^jz;a)=\G_N(ms,u;a).
+\]
+Both sides have locally uniform limits in the stated half-plane, since
+$m\Rea s>m/(m+1)\ge1/2$. Taking the limit proves \eqref{eq:cyclogen}.
+The Gamma slice gives \eqref{eq:cyclogamma}. Logarithmic differentiation of
+\eqref{eq:cyclogen}, on a neighborhood free of zeros, gives
+\eqref{eq:cyclojets}; each spectral derivative contributes a factor $m$.
+\end{proof}
+
+For example the half-order pair has the exact identity
+\begin{equation}
+ \G^{[2]}(1/2,z;a)\G^{[2]}(1/2,-z;a)
+      =\frac{\Gamma(a)}{\Gamma(a-z^2)}.
+ \label{eq:halforder}
+\end{equation}
+At third order the corresponding three rotated factors give
+$\Gamma(a)/\Gamma(a+z^3)$. Their individual jets involve pole-subtracted
+Hurwitz values at fractional spectral arguments; the cyclotomic sum removes
+all components except the ordinary Stieltjes--zeta jet on the right of
+\eqref{eq:cyclojets}. No choice of a branch of $z^{1/m}$ is needed.
+
+\section{Polylogarithmic Euler primitives and ordinary antiderivatives}
+\label{sec:primitives}
+The spectral coefficients admit a second summation direction. This turns
+Euler integration in the depth variable into a shift in an ordinary
+polylogarithm's order.
+
+\begin{theorem}[A complete normalized primitive ladder]
+\label{thm:primitives}
+For integers $r,q\ge0$, initially for $|z|<a$, put
+\begin{equation}
+ A_{r,q}(z;a)=(-1)^rz\gamma_r(a)+
+   \sum_{k\ge2}(-1)^{k-1}k^{r-q-1}z^k\zeta^{(r)}(k,a).
+ \label{eq:Aseries}
+\end{equation}
+Then $A_{r,0}=\Lambda_r$, $A_{r,q}(0;a)=0$, and
+\begin{equation}
+ z\partial_z A_{r,q+1}(z;a)=A_{r,q}(z;a).
+ \label{eq:Eulerladder}
+\end{equation}
+An exact normally convergent continuation to
+$\Omega_a=\C\setminus(-\infty,-a]$ is
+\begin{equation}
+ \boxed{A_{r,q}(z;a)=(-1)^r\left[
+ z\gamma_r(a)-\sum_{n\ge0}\log^r x_n
+       \left(\Li_{q+1-r}(-z/x_n)+\frac z{x_n}\right)\right]}.
+ \label{eq:Apolylog}
+\end{equation}
+For $r=0$ the factor $\log^0 x_n$ is defined as one, including $x_n=1$.
+The polylogarithms use their principal continuation on their usual slit
+plane.
+\end{theorem}
+\begin{proof}
+Apply $z\partial_z$ termwise in \eqref{eq:Aseries}, multiplying a degree
+$k$ term by $k$. This proves \eqref{eq:Eulerladder}. For $k\ge2$ the
+absolutely convergent Dirichlet representation gives
+\[
+ \zeta^{(r)}(k,a)=(-1)^r\sum_{n\ge0}\frac{\log^r x_n}{x_n^k}.
+\]
+Substitute it into \eqref{eq:Aseries} and sum first over $k$ using the
+polylogarithm series \cite{DLMFpolylog}. The removed linear term is exactly
+$z/x_n$, and the result is \eqref{eq:Apolylog}.
+
+For any compact subset of $\Omega_a$, sufficiently large $x_n$ make the
+bracket $O(|z|^2/x_n^2)$, uniformly on that compact set. Its product with
+$\log^r x_n$ is summable. The finitely many remaining polylogarithms are
+holomorphic there; their individual cuts start at $-x_n$ and are contained
+in the excluded ray. This proves normal convergence and analytic
+continuation. Equation~\eqref{eq:Eulerladder} consequently continues too.
+\end{proof}
+This is a normalized ladder, rather than an ambiguous notation for negative
+polygamma. Every Euler primitive vanishes at zero. Negative integer orders
+of the polylogarithm in \eqref{eq:Apolylog} are rational functions.
+In particular,
+\begin{align}
+ \Lambda_1(z;a)&=-z\gamma_1(a)
+   +z^2\sum_{n\ge0}\frac{\log x_n}{x_n(x_n+z)},
+ \label{eq:L1rational}\\
+ \Lambda_2(z;a)&=z\gamma_2(a)
+   -z^2\sum_{n\ge0}\frac{(\log x_n)^2(2x_n+z)}{x_n(x_n+z)^2}.
+ \label{eq:L2rational}
+\end{align}
+These formulas also give the meromorphic continuation asserted in
+Theorem~\ref{thm:jets} for the first two orders.
+
+\begin{corollary}[Two ordinary antiderivatives]
+\label{cor:ordinary}
+For $z\in\Omega_a$, with path integration from zero within that domain,
+\begin{align}
+ \int_0^z\Lambda_1(u;a)\dd u
+ ={}&-\frac{\gamma_1(a)z^2}{2}\notag\\
+ &+\sum_{n\ge0}\log x_n\left[
+ \frac{z^2}{2x_n}-z+x_n\Log\left(1+\frac z{x_n}\right)\right],
+ \label{eq:ordinaryL1}\\
+ \int_0^z\Lambda_0(u;a)\dd u
+ ={}&z\log\Gamma(a)-\zeta'(-1,a+z)+\zeta'(-1,a)\notag\\
+ &+az+\frac{z^2-z}{2}-\frac z2\log(2\pi).
+ \label{eq:ordinaryL0}
+\end{align}
+The series in \eqref{eq:ordinaryL1} is normally convergent.
+\end{corollary}
+\begin{proof}
+The bracket in \eqref{eq:ordinaryL1} is the integral of
+$u^2/(x_n(x_n+u))$, and its tail starts with $z^3/(3x_n^2)$.
+This justifies integration term by term in \eqref{eq:L1rational}.
+For \eqref{eq:ordinaryL0}, differentiate
+$\partial_a\zeta(s,a)=-s\zeta(s+1,a)$ in $s$ at $s=-1$ and use
+$\zeta'(0,a)=\log\Gamma(a)-\tfrac12\log(2\pi)$ and
+$\zeta(0,a)=\tfrac12-a$ \cite{DLMFzeta}. The derivative of the asserted
+right side is $\Lambda_0(z;a)$ and its value at zero is zero.
+\end{proof}
+Formula~\eqref{eq:ordinaryL0} is the classical log-Gamma primitive in the
+present normalization, included as a compatibility check rather than a
+new evaluation. Formula~\eqref{eq:ordinaryL1} is its spectral-jet companion.
+
+\section{The complete depth-generating polylogarithm}
+\label{sec:polygen}
+For $|w|<1$ use decreasing indices and define
+\begin{equation}
+ \Li_{\{s\}^d}(w,1,\ldots,1)
+ =\sum_{n_1>\cdots>n_d\ge1}
+       \frac{w^{n_1}}{(n_1\cdots n_d)^s}.
+ \label{eq:multipleLi}
+\end{equation}
+In this notation $\partial_s$ differentiates \emph{all $d$ orders
+simultaneously along the diagonal}. It is not a derivative of the first
+order with the other orders fixed.
+
+\begin{theorem}[Depth product, recurrence, and Abel transform]
+\label{thm:polygen}
+For $\Rea s>0$, $z\in\C$, and $|w|<1$,
+\begin{align}
+ \F(s,z,w)&=1+\sum_{d\ge1}z^d\Li_{\{s\}^d}(w,1,\ldots,1)
+            =1+\sum_{n\ge1}b_n(s,z)w^n,\label{eq:Fdef}\\
+ b_n(s,z)&=\frac z{n^s}\prod_{k=1}^{n-1}\left(1+\frac z{k^s}\right).
+ \label{eq:bn}
+\end{align}
+The depth and coefficient series converge absolutely and locally uniformly
+in this domain, as do all fixed parameter derivatives. With $b_0=1$,
+\begin{equation}
+ n^s b_n=((n-1)^s+z)b_{n-1},\qquad n\ge1,
+ \label{eq:brec}
+\end{equation}
+where $0^s=0$. There is also the exact Abel-transform identity
+\begin{equation}
+ \F(s,z,w)=(1-w)\sum_{N\ge0}P_N(s,z;1)w^N.
+ \label{eq:Abel}
+\end{equation}
+On the slice $s=1$,
+\begin{equation}
+ \F(1,z,w)=(1-w)^{-z}.
+ \label{eq:Fones}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Fix the largest index $n_1=n$. The remaining factors enumerate elementary
+symmetric functions of $1^{-s},\ldots,(n-1)^{-s}$. Summing their depths
+proves \eqref{eq:bn}. On a compact set let $\sigma>0$ bound the real parts
+from below, $|z|\le R$, and $|w|\le\rho<1$. The absolute contribution
+at largest index $n$ is at most
+\[
+ \rho^n Rn^{-\sigma}\exp\left(R\sum_{k<n}k^{-\sigma}\right).
+\]
+The exponent is $o(n)$ for every $\sigma>0$, so this is summable.
+It bounds the depth series as well as the coefficient series and proves
+joint local uniform convergence. Holomorphy and Cauchy's formula then
+justify all fixed derivatives and regroupings.
+
+Cancel the common product factors to obtain \eqref{eq:brec}, or verify it
+without division by multiplying the products. Since
+$b_n=P_n(s,z;1)-P_{n-1}(s,z;1)$, summation by parts proves
+\eqref{eq:Abel}. At $s=1$, the recurrence is that of the binomial expansion:
+$b_n=(z)_n/n!$, proving \eqref{eq:Fones}.
+\end{proof}
+
+For $\Rea s>1$ the endpoint series converges absolutely and gives
+\begin{equation}
+ \G(s,z;1)=e^{-z/(s-1)}\F(s,z,1).
+ \label{eq:FtoG}
+\end{equation}
+Thus the two principal objects of this article arise from the same finite
+products; they are not unrelated special-function constructions.
+Nevertheless their normalizations at $s=1$ differ:
+\begin{equation}
+ \lim_{N\to\infty}(N+1)^{-z}P_N(1,z;1)=\frac1{\Gamma(1+z)},
+ \qquad (1-w)^z\F(1,z,w)=1.
+ \label{eq:AbelGamma}
+\end{equation}
+The Gamma factor is the exact distinction between this harmonic cutoff and
+this Abel normalization. One may not replace one by the other without it.
+
+\begin{remark}[Why the open spectral half-plane matters]
+At $s=0$, direct geometric summation, in its initial convergence region,
+gives
+\begin{equation}
+ \F(0,z,w)=\frac{1-w}{1-(1+z)w}.
+ \label{eq:s0boundary}
+\end{equation}
+For fixed nonzero $w$ this has a pole in $z$. Thus the entireness-in-depth
+claim of Theorem~\ref{thm:polygen} cannot simply be extended to $s=0$.
+\end{remark}
+
+For later use define $\theta=w\partial_w$, and define $\theta^s$ on a power
+series by multiplying its positive-index coefficient by $n^s$ and killing
+its constant coefficient. Equation~\eqref{eq:brec} is equivalently
+\begin{equation}
+ (1-w)\theta^s\F(s,z,w)=zw\F(s,z,w).
+ \label{eq:theta}
+\end{equation}
+This is a coefficient-defined operator identity. No fractional-power
+branch for $w$ is being assumed. Its spectral derivative uses the similarly
+diagonal multiplier $\log n$ on positive indices.
+
+\section{Polynomial truncations and elementary first spectral derivatives}
+\label{sec:resonance}
+\begin{theorem}[Complete classification of polynomial truncations]
+\label{thm:truncate}
+Fix $\Rea s>0$. The function $\F(s,z,w)$ is a polynomial in $w$ if and only
+if $z=0$ or $z=-m^s$ for some positive integer $m$. In the latter case its
+degree is exactly $m$, and
+\begin{equation}
+ P_m^*(s,w):=\F(s,-m^s,w)
+ =1-\sum_{n=1}^m\left(\frac mn\right)^s
+    \prod_{k=1}^{n-1}\left(1-\left(\frac mk\right)^s\right)w^n.
+ \label{eq:respoly}
+\end{equation}
+For every integer $r\ge1$ and $|w|<1$,
+\begin{equation}
+ \boxed{\sum_{d\ge1}(-m)^d
+   \left.(\partial_s+d\log m)^r
+       \Li_{\{s\}^d}(w,1,\ldots,1)\right|_{s=1}
+       =\left.\partial_s^rP_m^*(s,w)\right|_{s=1}}.
+ \label{eq:movingres}
+\end{equation}
+The right side is a finite polynomial in $w$, with coefficients in the
+algebra over $\Q$ generated by $\log 2,\ldots,\log m$.
+\end{theorem}
+\begin{proof}
+At $z=-m^s$, the factor indexed by $k=m$ in \eqref{eq:bn} kills every
+$b_n$ with $n>m$. The coefficient $b_m$ is nonzero, since
+$k^s\ne m^s$ for $k<m$; their moduli are distinct. This proves
+\eqref{eq:respoly} and its degree. Conversely, if a nonconstant sequence
+terminates, some $b_n$ with $n\ge2$ vanishes. Its product expression and
+$z\ne0$ force $z=-k^s$ for one of the factors. The same modulus argument
+makes this $k$ unique.
+
+Along $z(s)=-m^s$, the derivative of the depth coefficient $z(s)^d$ acts
+as multiplication by $d\log m$. Local uniform convergence from
+Theorem~\ref{thm:polygen} allows differentiation along this curve. This
+proves \eqref{eq:movingres}. At $s=1$, derivatives of the finitely many
+positive-base powers in \eqref{eq:respoly} have the asserted logarithmic
+coefficients.
+\end{proof}
+
+The moving-depth derivative in \eqref{eq:movingres} is not the fixed-depth
+spectral derivative. The distinction can be resolved exactly at first order.
+Put
+\begin{equation}
+ T_m(w)=\left.\partial_s\F(s,-m,w)\right|_{s=1},\qquad
+ Q_m(w)=\left.\partial_sP_m^*(s,w)\right|_{s=1}.
+ \label{eq:TQ}
+\end{equation}
+
+\begin{theorem}[Elementary first resonant derivative]
+\label{thm:firstres}
+For every $m\ge1$ and $|w|<1$,
+\begin{equation}
+ \boxed{T_m(w)=Q_m(w)-m\log m\,(1-w)^m\Log(1-w)}.
+ \label{eq:Tclosed}
+\end{equation}
+Here $Q_m$ is an explicitly computable polynomial of degree at most $m$.
+Equivalently,
+\begin{equation}
+ T_m(w)=-(1-w)^m\sum_{n=1}^m(-1)^n\binom mn n\log n
+            \int_0^w\frac{t^{n-1}}{(1-t)^m}\dd t.
+ \label{eq:Tintegral}
+\end{equation}
+All integrals in \eqref{eq:Tintegral} are elementary. In particular,
+\begin{equation}
+ \boxed{\sum_{d\ge1}(-2)^d
+   \left.\partial_s\Li_{\{s\}^d}(w,1,\ldots,1)\right|_{s=1}
+ =-2\log2\left[w(1-w)+(1-w)^2\Log(1-w)\right]}.
+ \label{eq:T2}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Differentiate $P_m^*(s,w)=\F(s,-m^s,w)$ at one. Since
+$\partial_z\F(1,z,w)=-\Log(1-w)(1-w)^{-z}$, the chain rule gives
+$Q_m=T_m+m\log m(1-w)^m\Log(1-w)$, proving \eqref{eq:Tclosed}.
+This already proves elementary reducibility: $Q_m$ is obtained by
+differentiating the finite expression \eqref{eq:respoly}.
+
+For an independent constructive expression, differentiate
+\eqref{eq:theta} at $s=1,z=-m$, where $\F=(1-w)^m$.
+The result, after division by $w(1-w)$ and analytic extension at zero, is
+\begin{equation}
+ T_m'(w)+\frac m{1-w}T_m(w)
+   =-\sum_{n=1}^m(-1)^n\binom mn n\log n\,w^{n-1},
+ \qquad T_m(0)=0.
+ \label{eq:Tode}
+\end{equation}
+The integrating factor $(1-w)^{-m}$ gives \eqref{eq:Tintegral}.
+Finally
+$P_2^*(s,w)=1-2^s w+(2^s-1)w^2$, so
+$Q_2=-2\log2\,w(1-w)$; insert this into \eqref{eq:Tclosed}.
+\end{proof}
+
+An explicit formula for the elementary integral is
+\begin{align}
+ \int_0^w\frac{t^{n-1}}{(1-t)^m}\dd t
+ ={}&\sum_{\substack{0\le j\le n-1\\j\ne m-1}}
+ (-1)^j\binom{n-1}{j}
+ \frac{1-(1-w)^{j-m+1}}{j-m+1}\notag\\
+ &+\mathbf1_{n=m}(-1)^m\Log(1-w).
+ \label{eq:Iexplicit}
+\end{align}
+Substituting this finite sum into \eqref{eq:Tintegral} gives a direct
+rational-coefficient algorithm for $Q_m$. Two further examples are
+\begin{align}
+ Q_3(w)={}&-3w\log3+
+   \left(\frac{15}{2}\log3-3\log2\right)w^2
+   +\left(3\log2-\frac92\log3\right)w^3,\label{eq:Q3}\\
+ Q_4(w)={}&-8w\log2+22w^2\log2
+  +\left(4\log3-\frac{80}{3}\log2\right)w^3\notag\\
+ &+\left(\frac{38}{3}\log2-4\log3\right)w^4.
+ \label{eq:Q4}
+\end{align}
+For $m=1$, $\F(s,-1,w)=1-w$ for every $\Rea s>0$, so every positive
+spectral derivative is identically zero.
+
+\begin{corollary}[Elementary coefficient certificate]
+\label{cor:Tcoeff}
+The coefficients of $T_m$ are
+\begin{equation}
+ [w^n]T_m=
+ \begin{cases}
+ (-1)^n\binom mn\left[-\log n+
+       m\displaystyle\sum_{k=1}^{n-1}\frac{\log k}{k-m}\right],&1\le n\le m,\\[5pt]
+ \displaystyle\frac{(-1)^m m\log m}{(n-m)\binom nm},&n>m.
+ \end{cases}
+ \label{eq:Tcoeff}
+\end{equation}
+\end{corollary}
+\begin{proof}
+For $n\le m$ differentiate the nonvanishing product in \eqref{eq:bn}
+logarithmically. For $n>m$, only the derivative of its zero factor
+$1-m^{1-s}$ contributes. The remaining rational product at one is
+$(-1)^m m/((n-m)\binom nm)$, yielding the second line.
+\end{proof}
+These formulas give a coefficientwise proof check without evaluating a
+multiple polylogarithm numerically. They also show why an infinite sum over
+depths can simplify even when its separate depth components look complicated.
+
+\section{All higher resonant jets and bounded nesting depth}
+\label{sec:higher}
+The first derivative is not an isolated coincidence. Its zero-factor
+calculation yields a finite Bell formula at every spectral order.
+For $m,n\ge1$ and $j\ge1$ define
+\begin{equation}
+ L_{j,n}^{(m)}=-\mathbf1_{j=1}\log n+
+ (-1)^{j+1}\sum_{\substack{1\le k<n\\k\ne m}}
+        (\log k)^j\Li_{1-j}(m/k).
+ \label{eq:Lmn}
+\end{equation}
+The polylogarithms here have nonpositive integer orders, so they are
+\emph{rational functions} of $m/k$; no continuation across a logarithmic cut
+is involved. The excluded value $k=m$ is exactly the isolated zero factor.
+For example,
+\begin{align}
+ L_{1,n}^{(m)}&=-\log n+m\sum_{\substack{k<n\\k\ne m}}
+                                   \frac{\log k}{k-m},\\
+ L_{2,n}^{(m)}&=-m\sum_{\substack{k<n\\k\ne m}}
+                                   \frac{k(\log k)^2}{(k-m)^2}.
+ \label{eq:Lfirsttwo}
+\end{align}
+Write $Y_r(L)$ for the Bell polynomial in
+$L_{1,n}^{(m)},\ldots,L_{r,n}^{(m)}$ with these $m,n$ fixed.
+
+\begin{theorem}[Every fixed-weight spectral coefficient]
+\label{thm:higherres}
+Let
+\[
+ U_r^{(m)}(w)=\left.\partial_s^r\F(s,-m,w)\right|_{s=1}
+            =\mathbf1_{r=0}+\sum_{n\ge1}c_{r,n}^{(m)}w^n.
+\]
+For every $r\ge0$,
+\begin{equation}
+ c_{r,n}^{(m)}=
+ \begin{cases}
+ (-1)^n\binom mn Y_r(L),&1\le n\le m,\\[4pt]
+ \displaystyle\frac{(-1)^m m}{(n-m)\binom nm}
+   \sum_{j=1}^r(-1)^{j+1}\binom rj(\log m)^jY_{r-j}(L),&n>m.
+ \end{cases}
+ \label{eq:allcoeff}
+\end{equation}
+The empty sum on the second line is zero. The coefficient series converges
+locally uniformly in $|w|<1$ and represents the indicated analytic
+spectral derivative.
+\end{theorem}
+\begin{proof}
+For $n\le m$, none of the factors in $b_n(s,-m)$ vanishes at one. Choose
+the analytic logarithm of $b_n(s,-m)/b_n(1,-m)$ near one. The derivatives
+of a nonzero factor are
+\begin{equation}
+ \left.\partial_s^j\log(1-mk^{-s})\right|_{s=1}
+       =(-1)^{j+1}(\log k)^j\Li_{1-j}(m/k),\quad k\ne m.
+ \label{eq:factorjet}
+\end{equation}
+For $|mk^{-s}|<1$ this follows from the logarithmic series. For the other
+finitely many $k$, it follows by differentiating the rational first
+logarithmic derivative; equivalently both sides are the same rational
+function of $mk^{-s}$. The term $n^{-s}$ contributes only $-\log n$ to
+the first logarithmic derivative. Thus all logarithmic derivatives are
+exactly \eqref{eq:Lmn}. Exponentiating their Taylor series with
+\eqref{eq:Bell} proves the first line of \eqref{eq:allcoeff}.
+
+For $n>m$, factor the coefficient as
+\begin{equation}
+ b_n(s,-m)=(1-m^{1-s})R_n(s),\qquad
+ R_n(s)=-mn^{-s}\prod_{\substack{k<n\\k\ne m}}(1-mk^{-s}).
+ \label{eq:isolatedzero}
+\end{equation}
+Now $R_n(1)=(-1)^m m/((n-m)\binom nm)$ and its logarithmic derivatives
+are again $L_{j,n}^{(m)}$. Also
+\[
+ \left.\partial_s^j(1-m^{1-s})\right|_{s=1}
+        =(-1)^{j+1}(\log m)^j\quad(j\ge1),
+\]
+while its value is zero. Leibniz's rule and the Bell expansion for $R_n$
+give the second line. Local uniform convergence and identification with
+$U_r^{(m)}$ follow from Theorem~\ref{thm:polygen}.
+\end{proof}
+
+The first three tail polynomials multiplying $R_n(1)$ are
+\begin{align}
+ B_1&=\ell,\\
+ B_2&=2\ell L_1-\ell^2,\\
+ B_3&=3\ell(L_1^2+L_2)-3\ell^2L_1+\ell^3,
+ \label{eq:tailBell}
+\end{align}
+where $\ell=\log m$. The vanishing factor lowers the number of harmonic
+sums that can occur by one. This is the mechanism behind the depth bound.
+
+\begin{definition}[Comparison class for the depth reduction]
+A shifted logarithmic Euler sum of nesting depth $d+1$ is a convergent sum
+of the form
+\begin{equation}
+ \sum_{n>k_1>\cdots>k_d\ge1}
+ w^n R_0(n)(\log n)^{p_0}
+       \prod_{i=1}^d R_i(k_i)(\log k_i)^{p_i},
+ \label{eq:comparisonclass}
+\end{equation}
+with finitely many stated index exclusions, nonnegative integers $p_i$,
+and rational functions $R_i$ with rational coefficients. In the present
+application the exclusions are $n>m$ and $k_i\ne m$, and the poles are
+integer shifts arising from $0,1,\ldots,m$. Finite polynomials are included
+as depth-zero terms.
+\end{definition}
+
+\begin{corollary}[All-depth to bounded-nesting reduction]
+\label{cor:depth}
+For fixed $m\ge1$ and $r\ge1$, the function
+\begin{equation}
+ \sum_{d\ge1}(-m)^d
+       \left.\partial_s^r\Li_{\{s\}^d}(w,1,\ldots,1)\right|_{s=1}
+ \label{eq:depthcollapse}
+\end{equation}
+is a finite linear combination of a polynomial and shifted logarithmic
+Euler sums of nesting depth at most $r$, with coefficients in
+$\Q[\log m]$. The coefficients and summands are explicitly generated by
+\eqref{eq:allcoeff}. This is a representation theorem in the comparison
+class \eqref{eq:comparisonclass}, not a minimal-depth or arithmetic
+independence theorem for ordinary multiple polylogarithms.
+\end{corollary}
+\begin{proof}
+Every $Y_{r-j}$ on the second line of \eqref{eq:allcoeff} is a polynomial
+with at most $r-j\le r-1$ factors of the single harmonic sums in
+\eqref{eq:Lmn}; factors $\log n$ do not introduce another summation index.
+Expand their products by partitioning the index tuples into strict order
+patterns and equality blocks. An equality block multiplies rational
+kernels and adds logarithmic exponents, staying in the stated class.
+This is the finite stuffle decomposition and produces at most $r-1$
+inner nested indices. The outer index $n$ raises the total nesting depth
+to at most $r$. Rationality of every kernel follows from the nonpositive
+polylogarithm orders in \eqref{eq:Lmn}. Absolute convergence for $|w|<1$
+justifies each finite rearrangement.
+\end{proof}
+
+\begin{example}[The second derivative at depth weight $-2$]
+Let $\ell=\log2$ and
+\[
+ M_n=2\sum_{k=3}^{n-1}\frac{\log k}{k-2}-\log n.
+\]
+The theorem gives the explicit depth-two representation
+\begin{equation}
+ U_2^{(2)}(w)=\ell^2w^2+
+   4\sum_{n=3}^{\infty}
+       \frac{w^n(2\ell M_n-\ell^2)}{n(n-1)(n-2)}.
+ \label{eq:U22}
+\end{equation}
+This is an exact identity, not a claim that the second derivative is
+elementary. The first derivative's elementary form does not imply the
+same conclusion at higher orders.
+\end{example}
+
+\begin{corollary}[Convergent endpoint cancellation]
+\label{cor:endpoint}
+For every $m\ge1$ and $r\ge0$, the coefficient series for $U_r^{(m)}$
+converges absolutely at $w=1$, and
+\begin{equation}
+ U_r^{(m)}(1)=0.
+ \label{eq:endpoint}
+\end{equation}
+Here the endpoint is defined by the \emph{coefficient series in $n$}, or
+equivalently its Abel limit. It is not a termwise substitution of $w=1$
+into the generally divergent individual-depth multiple polylogarithms.
+\end{corollary}
+\begin{proof}
+For large $k$, $\Li_{1-j}(m/k)=O(1/k)$, so
+$L_{j,n}^{(m)}=O(1+\log^{j+1}n)$ at fixed $m,j$. Bell monomials of
+weight $r-j$ grow at most as a fixed multiple of
+$1+\log^{2(r-j)}n$. Since $R_n(1)=O(n^{-m-1})$, the tail in
+\eqref{eq:allcoeff} is absolutely summable; the case $r=0$ is a polynomial.
+
+For every finite $N$, the coefficient sum through $n=N$ is the $r$-th
+spectral derivative at one of $P_N(s,-m;1)$ (including its constant for
+$r=0$). Write this product as
+\[
+ P_N(s,-m;1)=e^{-mC_N(s;1)}\G_N(s,-m;1).
+\]
+The derivatives of $\G_N$ of each fixed order at one are bounded uniformly
+in $N$ by Theorem~\ref{thm:renorm}. The exponential contributes
+$(N+1)^{-m}$ times a polynomial in $\log(N+1)$ of bounded degree when
+differentiated a fixed number of times, by \eqref{eq:counterderivative}.
+Their product therefore tends to zero. Absolute convergence identifies
+this limit with \eqref{eq:endpoint}.
+\end{proof}
+For instance \eqref{eq:U22} yields the convergent identity
+\begin{equation}
+ \sum_{n=3}^{\infty}
+ \frac{2\sum_{k=3}^{n-1}\log k/(k-2)-\log n}{n(n-1)(n-2)}=0.
+ \label{eq:exampleendpoint}
+\end{equation}
+This low-order example also follows by interchanging its two absolutely
+convergent sums and telescoping the rational tail. The all-order theorem
+explains the entire Bell family of such cancellations.
+
+\section{Verification, source audit, and integration scope}
+\label{sec:audit}
+\subsection{Reproducible evidence and its limits}
+The analytic theorems are justified by the proofs above. The delivered
+scripts are implementation checks and transparent finite certificates.
+They do not turn an approximate transcendental equality into a proof.
+The actual executed suites are summarized in Table~\ref{tab:verification}.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}p{.30\textwidth}p{.12\textwidth}p{.49\textwidth}@{}}
+\toprule
+Suite & Checks & Executed scope\\
+\midrule
+Exact algebra & 826 & Newton products; diagonal Laurent conversion through depth four and Laurent index two; first resonances $1\le m\le12$, $1\le n\le48$; rational negative-order polylogs through order eight.\\[3pt]
+Whole-function numerics & 99 & Gamma product, shifts, multiplication, Stieltjes--zeta jets, polylog primitives, zero values, first resonances, moving truncations, and Cauchy finite-part extraction.\\[3pt]
+Higher-jet coefficients & 960 & Two independent coefficient constructions for $1\le m\le6$, $1\le n\le32$, and spectral orders zero through four.\\[3pt]
+Cyclotomic products & 16 & Genera two through five, two positive Hurwitz parameters, and resonant and nearby complex spectral points.\\
+\bottomrule
+\end{tabular}
+\caption{Executed verification. The last three suites use 60 decimal-digit
+floating-point arithmetic; they are not interval certificates.}
+\label{tab:verification}
+\end{table}
+
+The exact checker uses SymPy 1.14.0 and exact rational arithmetic. In the
+first-resonance coefficient comparison, the symbols for $\log2,\log3,\ldots$
+are kept formally independent; the check does not rely on numerical
+approximations or unproved independence of the actual logarithms.
+The finite Laurent arrays are generated by Newton's recurrence, separately
+with and without the spectral pole, before their coefficient conversion is
+compared. This tests in particular both factorials in \eqref{eq:regFP}.
+
+The numerical suites use Python 3.13.5 and mpmath 1.3.0. The largest scaled
+residual among the 99 whole-function comparisons was approximately
+$3.35\times10^{-50}$; the largest absolute residual was approximately
+$1.13\times10^{-48}$. The higher-jet and cyclotomic suites had largest scaled
+residuals approximately $7.16\times10^{-60}$ and $1.02\times10^{-60}$,
+respectively. The JSON outputs retain the individual parameters, acceptance
+thresholds, and observed residuals. These figures describe the executed
+arithmetic, not a certified error interval.
+
+Independent representations are used where practical. Gamma ratios are
+compared with finite centered products and Hurwitz-zeta tails. Spectral
+zeta series are compared with finite polylogarithmic heads and separately
+accelerated tails. First resonant derivatives are obtained by propagating
+the differentiated coefficient recurrence and compared with a derivative
+of the finite moving-root polynomial. Higher coefficients compare that
+recurrence with the zero-factor Bell formula. Diagonal finite parts are
+also extracted by a finite-radius Cauchy average of the raw Newton
+polynomial, rather than obtained only by subtracting two truncated formal
+expressions.
+
+For a reproducible numerical product evaluation one may split at an integer
+$N$ and use, for example,
+\begin{align}
+ \G(s,z;a)={}&e^{z(\zeta(s,a)-1/(s-1))}
+ \prod_{n<N}(1+zx_n^{-s})e^{-zx_n^{-s}}\notag\\
+ &\times\exp\left(\sum_{k\ge2}
+         \frac{(-1)^{k-1}z^k}{k}\zeta(ks,N+a)\right).
+ \label{eq:evaluation}
+\end{align}
+The tail is convergent when $|z|<(N+a)^{\Rea s}$. The supplied code truncates
+this convergent tail and checks consistency with independent formulas;
+it does not claim to enclose every floating-point rounding error.
+At $s=1$, the removable linear term is evaluated directly as $-\psi(a)$.
+
+\subsection{A confirmed editorial issue, already noticed in incoming work}
+In the inspected integration chapter, the historical discussion following
+the low-order log-Gamma integrals says: ``Basis atoms must be
+$\mathbb Q$-independent.'' Taken literally, this is too strong. One often
+cannot prove independence of the retained numerical periods. A valid search
+protocol can still remove \emph{known} dependencies and require a proposed
+relation to involve its target, then verify or prove it independently.
+A suitable replacement is:
+\begin{quote}
+Remove proved dependencies from the comparison basket, or work in an
+explicitly specified quotient. Independence of the retained evaluated
+constants need not be known. A returned relation must be checked for its
+target coefficient and then subjected to an independent proof or a clearly
+labeled numerical validation.
+\end{quote}
+The incoming shifted-Hurwitz and Stieltjes-calculus reports already propose
+a correction of this kind. We confirm the source wording at the pinned
+revision and retain the correction as an integration note, not as a newly
+discovered flaw. The current pointwise harmonic-number Stieltjes derivative
+ladder is not contradicted by anything in this article.
+
+\subsection{Extension guards established by this paper}
+Several tempting extensions would be false or underspecified. They are
+listed here as guards for integrating \emph{our} formulas, not allegations
+that the upstream manuscript made these assertions.
+
+First, $g_d(a)$ is not the diagonal Laurent finite part: already
+\eqref{eq:FP2} exhibits the extra $-\gamma_1(a)$. Second, parameter
+multiplication needs the exponential in \eqref{eq:multG}; the Gamma slice
+is an immediate check. Third, differentiating a moving depth weight is not
+fixed-weight spectral differentiation; \eqref{eq:Tclosed} records the
+missing logarithmic term. Fourth, a zero of $\G(1,z)$ cannot be substituted
+naively into a meromorphic logarithmic derivative: the finite value
+\eqref{eq:Froot} results from cancellation.
+
+Fifth, the all-depth convergence domain cannot simply include $s=0$,
+as \eqref{eq:s0boundary} shows. Sixth, the nesting bound in
+Corollary~\ref{cor:depth} refers to shifted logarithmic Euler sums, not to a
+proof of minimal depth or numerical independence in a smaller ordinary
+polylogarithm algebra. Finally, the endpoint identity \eqref{eq:endpoint}
+uses the convergent largest-index representation, not a sum of undefined
+individual all-ones multiple-zeta values.
+
+\subsection{Repository placement and unresolved claims}
+The package contains a standalone source, compiled PDF, verification code,
+recorded output, a provenance manifest, and integration notes. The incoming
+README treats archives as intake material until they are placed and
+written into a thematic report; preparation of this delivery does not
+perform that intake. No upstream file has been changed.
+
+A natural placement is a new report under the polylogarithm programme,
+with cross-references from the integration and differentiation chapters to
+Sections~\ref{sec:renorm}--\ref{sec:primitives}, and from the depth chapter
+to Sections~\ref{sec:polygen}--\ref{sec:higher}. The target chapter's
+numbering, theorem labels, and notation should be reconciled on intake;
+the proposed prefix for imported labels is \texttt{nhj:}.
+
+The source already contains an exact $S_4$ proof. This report neither
+reproves it as a new result nor resolves the surviving short $S_6$ or newer
+$S_8$ candidates. It does not establish new transcendence or numerical
+period-independence statements, or claim that all displayed reductions
+are first in the literature. Its mathematical contribution is the proved
+families above, with their specified regularizations and comparison classes.
+
+\section{Further research questions}
+\label{sec:questions}
+The identities suggest the following concrete continuations. These are
+questions for further work, not additional assertions of this article.
+
+\paragraph{1. Smaller function classes for higher fixed-weight jets.}
+Determine whether $U_2^{(m)}$ admits a finite expression using ordinary
+polylogarithms, their spectral derivatives, and elementary functions, or
+whether a genuinely shifted two-index function is needed in a specified
+functional algebra. Equation~\eqref{eq:U22} is an explicit first test.
+An obstruction would need a precise differential or symbolic framework;
+failure of a numerical search would not establish it.
+
+\paragraph{2. Constructive conversion of the comparison class.}
+Give an algorithm converting the rationally shifted logarithmic Euler
+sums in \eqref{eq:comparisonclass} into a canonical iterated-integral or
+Lerch-derivative vocabulary. Track separately the nesting depth, spectral
+derivative order, and the finite shift set. Such a result would sharpen
+Corollary~\ref{cor:depth} without making an arithmetic minimality claim.
+
+\paragraph{3. Non-diagonal spectral directions.}
+Replace the common exponent by several independent perturbation directions.
+Which symmetrized mixed jets still admit a finite-product model, and what
+is the correct analogue of the Bell zero-factor theorem? A useful first
+case is a two-colour periodic assignment of exponents.
+
+\paragraph{4. Path dependence of multiple Laurent finite parts.}
+For a genuinely multivariable nested Hurwitz zeta function, compare limits
+along $s_j=1+c_j\eps$ with the equal-direction formula
+\eqref{eq:regFP}. Identify the dependence on the direction vector and the
+additional algebraic conditions needed for a shuffle- or stuffle-compatible
+renormalization. This question must be compared carefully with the existing
+renormalization literature, rather than treated as unexplored in general.
+
+\paragraph{5. Individual higher-genus reflection formulas.}
+The cyclotomic norm \eqref{eq:cyclogamma} is explicit, but it does not
+recover each individual $\G^{[m]}(1/m,z;a)$. Find connection or reflection
+laws that complement this norm, particularly at rational $a$ and for
+$m=2,3$. Specify growth and logarithm normalizations before proposing
+uniqueness of a factorization.
+
+\paragraph{6. Mixed conductor and cyclotomic reductions.}
+Study which combinations of rational parameter multiplication and rotation
+in the depth variable reduce the individual fractional-order spectral jets
+to a finite Dirichlet-$L$-derivative vocabulary. Equation~\eqref{eq:cyclojets}
+settles one trace, not all character components.
+
+\paragraph{7. Higher spectral values at moving Gamma zeros.}
+Construct an explicit finite algorithm for $F_r(-a-m;a)$ for every $r$,
+using the isolated zero factor and pole-free logarithmic jets of the
+remaining product. Determine the smallest natural Stieltjes--zeta
+coordinate set needed for those evaluations. Proposition~\ref{prop:zeroflow}
+gives exact compatibility constraints for any proposed formulas.
+
+\paragraph{8. Argument continuation and monodromy.}
+Continue $U_r^{(m)}(w)$ from the disk across arcs away from $w=1$ and give
+an exact monodromy calculus. The first-order formula is elementary, but
+the higher shifted sums may require a larger alphabet. The coefficient
+recurrence supplies a normalized local solution from which to start.
+
+\paragraph{9. Differentiated endpoint identities.}
+Determine the exact finite parts after applying powers of $w\partial_w$
+to the convergent endpoint sums in Corollary~\ref{cor:endpoint}. At the
+first nonsummable power, identify the subtraction polynomial explicitly.
+This is an identity problem about normalization, not merely a tail bound.
+
+\paragraph{10. Primitive evaluations at arithmetic depth weights.}
+Use \eqref{eq:Apolylog} and \eqref{eq:jetdist1} to isolate combinations of
+ordinary and Euler primitives at rational or algebraic $z/a$. Which such
+combinations reduce to Gamma, polygamma, Dirichlet-$L$ jets, and a finite
+set of algebraic-argument polylogarithms? Any claimed reduction should
+retain the underlying branch domain.
+
+\paragraph{11. Connection with the remaining Gaussian mixed candidates.}
+Investigate deformations with colour and unequal first order that specialize
+to the repository's $S_6$ or $S_8$ comparison baskets. The equal-order
+resonance theorem does not currently provide those reductions. A concrete
+next step is to derive the coloured finite-product or recurrence identity
+before making a new relation search.
+
+\paragraph{12. Formal and certified interfaces.}
+Formalize Newton extraction, the regulator-conversion recurrence, the
+cyclotomic finite-cutoff identity, and the Bell zero-factor theorem before
+attempting the analytic limits. Separately, add interval certification to
+the numerical tail evaluators, including cancellation near reciprocal-Gamma
+zeros. Neither project should be conflated with the currently executed
+floating-point checks.
+
+\section*{Conclusion}
+\addcontentsline{toc}{section}{Conclusion}
+The equal-order nested family has more exact structure than its individual
+depth components suggest. A finite product carries the harmonic coordinates,
+its pole subtraction produces a Gamma-valued holomorphic family, and its
+Abel transform produces the all-depth multiple polylogarithm. Spectral
+jets therefore have two effective normal forms: Stieltjes--zeta Bell
+coefficients at the singular spectral slice, and logarithmic harmonic Bell
+coefficients at a resonant depth weight. The cyclotomic identity supplies a
+further exact bridge from fractional spectral orders to ordinary Gamma.
+
+The main cautions are mathematical rather than merely editorial. A diagonal
+Laurent finite part is not a harmonic cutoff constant, a moving depth weight
+is not a fixed parameter, and bounded nesting in a stated shifted-sum class
+is not numerical period independence. Keeping those distinctions explicit
+allows the new formulas to be integrated without reviving the normalization
+and evidence problems that the source manuscript itself works to avoid.
+
+\begin{thebibliography}{99}
+\bibitem{ProveIt}
+V.~Reshetnikov and ProveIt contributors,
+\emph{Polylogarithms programme}, repository manuscript and
+incoming reports, snapshot \pin, inspected 10 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/fc4d3bf80534ad7c901d3b8c9e71baf2df0064ed/Analysis/Polylogarithms/docs/manuscript}.
+Incoming inventory:
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/fc4d3bf80534ad7c901d3b8c9e71baf2df0064ed/docs/incoming}.
+
+\bibitem{DLMFgamma}
+NIST Digital Library of Mathematical Functions,
+\S5.8, \emph{Infinite Products}, accessed 10 October 2026.
+\url{https://dlmf.nist.gov/5.8}.
+
+\bibitem{DLMFmult}
+NIST Digital Library of Mathematical Functions,
+\S5.5, \emph{Functional Relations}, accessed 10 October 2026.
+\url{https://dlmf.nist.gov/5.5}.
+
+\bibitem{DLMFzeta}
+NIST Digital Library of Mathematical Functions,
+\S25.11, \emph{Hurwitz Zeta Function}, especially its definition,
+Euler-summation representations, parameter recurrence, and derivatives,
+accessed 10 October 2026.
+\url{https://dlmf.nist.gov/25.11}.
+
+\bibitem{DLMFpolylog}
+NIST Digital Library of Mathematical Functions,
+\S25.12, \emph{Polylogarithms}, accessed 10 October 2026.
+\url{https://dlmf.nist.gov/25.12}.
+
+\bibitem{Hoffman2008}
+M.~E.~Hoffman,
+\emph{A Character on the Quasi-Symmetric Functions coming from Multiple Zeta Values},
+Electronic Journal of Combinatorics \textbf{15}(1) (2008), R97.
+\url{https://doi.org/10.37236/821}.
+
+\bibitem{Hoffman2016}
+M.~E.~Hoffman,
+\emph{Harmonic-Number Summation Identities, Symmetric Functions, and Multiple Zeta Values},
+arXiv:1602.03198 (2016).
+\url{https://arxiv.org/abs/1602.03198}.
+
+\bibitem{IKZ2006}
+K.~Ihara, M.~Kaneko, and D.~Zagier,
+\emph{Derivation and double shuffle relations for multiple zeta values},
+Compositio Mathematica \textbf{142}(2) (2006), 307--338.
+\url{https://doi.org/10.1112/S0010437X0500182X}.
+
+\bibitem{GuoZhang2010}
+L.~Guo and B.~Zhang,
+\emph{Polylogarithms and multiple zeta values from free Rota--Baxter algebras},
+Science China Mathematics \textbf{53} (2010), 2239--2258.
+\url{https://doi.org/10.1007/s11425-010-4044-1}.
+\end{thebibliography}
+\end{document}

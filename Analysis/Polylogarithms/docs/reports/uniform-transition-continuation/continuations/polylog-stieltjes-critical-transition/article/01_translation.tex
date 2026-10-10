@@ -1,0 +1,454 @@
+\section{A translation calculus for Hurwitz jets}
+\label{sec:translation}
+
+The parameter identity $\partial_x\zeta(s,x)=-s\zeta(s+1,x)$
+connects the three central objects of this section: Hurwitz order derivatives,
+Stieltjes antiderivatives, and the logarithm of the Gamma function.
+We add translation in $x$ as a second operation. The resulting bilinear
+identity has both a polylogarithmic form and a Hurwitz form. The latter
+makes all endpoint logarithms and all derivative orders explicit.
+
+\subsection{Normalization and analytic justification}
+
+Write
+\begin{equation}\label{eq:stieltjes-def}
+ \zeta(1+u,x)=\frac1u+\sum_{n=0}^{\infty}
+              \frac{(-1)^n}{n!}\gamma_n(x)u^n,
+ \qquad x>0.
+\end{equation}
+Order derivatives of $\zeta$ always refer to its first argument. Define
+\begin{equation}\label{eq:FJ}
+ F_r(x)=\zeta^{(r)}(0,x),\qquad
+ J_n(x)=\frac{(-1)^{n+1}}{n+1}F_{n+1}(x)
+ \quad(r,n\geq0).
+\end{equation}
+Then
+\[
+ F_0(x)=\frac12-x,\qquad
+ F_1(x)=\log\Gamma(x)-\frac12\log(2\pi),\qquad J_n'(x)=\gamma_n(x).
+\]
+The last equality follows by comparing coefficients in
+$\partial_x\zeta(s,x)=-s\zeta(s+1,x)$ at $s=0$. This classical ladder is
+already present in the manuscript; its earlier literature is discussed
+there. Our normalization is the mean-zero one:
+\begin{equation}\label{eq:mean-zero}
+ \int_0^1F_r(x)\,dx=\int_0^1J_n(x)\,dx=0.
+\end{equation}
+Thus $J_n$ differs by a specified constant from the manuscript's primitive
+normalized to vanish at $1$.
+
+All functions in \eqref{eq:FJ} are regarded as periodic functions almost
+everywhere on $\mathbb T=\mathbb R/\mathbb Z$. Endpoint values themselves
+are immaterial. Put
+\[
+ \Delta_hf(x)=f(\{x+h\})-f(x),\qquad 0<h<1.
+\]
+This is a periodic translation, not a translation of the original
+nonperiodic Gamma function on the whole positive half-line.
+
+For completeness, the analytic justification for all forthcoming
+coefficient operations can be made at the level of Banach-space-valued
+holomorphic functions. On every disk $|s|\leq\rho<1/2$,
+\[
+ \zeta(s,x)=x^{-s}+\zeta(s,1+x),\qquad 0<x<1,
+\]
+and the second term and its order derivatives are uniformly bounded on
+smaller disks. Consequently the map $s\mapsto\zeta(s,\cdot)$ is
+holomorphic with values in $L^2(0,1)$; its $r$th derivative is dominated
+by a constant times $1+x^{-\rho}|\log x|^r$. Translation is a bounded
+operator on $L^2$. The bilinear products below are therefore jointly
+holomorphic, and order differentiation under the integrals is valid.
+The identity $\int_0^1\zeta(s,x)\,dx=0$ for $\Re s<1$ proves
+\eqref{eq:mean-zero} by the same argument.
+
+\subsection{The exact master identity}
+
+For $u=s+t$ set
+\begin{align}
+ \mathcal R(s,t)&=
+ \frac{\Gamma(1-s)\Gamma(1-t)}{\Gamma(2-s-t)}
+ \frac{\cos\bigl(\pi(s-t)/2\bigr)}{\cos\bigl(\pi(s+t)/2\bigr)},
+ \label{eq:R-kernel}\\
+ \mathcal Z(u,h)&=\zeta(u-1,h)+\zeta(u-1,1-h)-2\zeta(u-1).
+ \label{eq:Z-kernel}
+\end{align}
+Both expressions are holomorphic near $(s,t)=(0,0)$.
+
+\begin{theorem}[Exact translation identity]\label{thm:translation}
+For $0<h<1$ and $|s|,|t|<1/4$,
+\begin{equation}\label{eq:translation-master}
+ \boxed{\quad
+ \int_0^1\Delta_h\zeta(s,x)\,\Delta_h\zeta(t,x)\,dx
+      =\mathcal R(s,t)\mathcal Z(s+t,h).
+ \quad}
+\end{equation}
+In particular, for every $r,q\geq0$,
+\begin{equation}\label{eq:translation-jets}
+ \int_0^1\Delta_hF_r(x)\Delta_hF_q(x)\,dx
+ =\left.\partial_s^r\partial_t^q
+        \bigl(\mathcal R(s,t)\mathcal Z(s+t,h)\bigr)\right|_{s=t=0}.
+\end{equation}
+Multiplication by $(-1)^{m+n+2}/((m+1)(n+1))$ gives the corresponding
+identity for $J_m,J_n$ when $r=m+1$, $q=n+1$.
+\end{theorem}
+
+\begin{proof}
+Use the Fourier convention $\widehat f(k)=\int_0^1 f(x)e^{-2\pi ikx}\,dx$.
+Hurwitz's Fourier formula gives
+\begin{equation}\label{eq:fourier-hurwitz}
+ \widehat{\zeta(s,\cdot)}(0)=0,
+ \qquad
+ \widehat{\zeta(s,\cdot)}(k)=\Gamma(1-s)(2\pi ik)^{s-1}
+ \quad(k\ne0),
+\end{equation}
+where $\log(2\pi ik)=\log(2\pi|k|)+\tfrac{\pi i}2\sgn k$.
+Initially one may take $\Re s<0$ and then extend in $L^2$.
+These are classical Fourier coefficients \cite{DLMFHurwitz,EM1}.
+Parseval's identity for the bilinear pairing, together with
+$\Delta_h$ acting by $e^{2\pi ikh}-1$, yields
+\begin{align}
+ \mathcal D(s,t;h)
+ &=4\Gamma(1-s)\Gamma(1-t)(2\pi)^{u-2}
+       \cos\frac{\pi(s-t)}2\notag\\
+ &\quad\cdot\left\{\zeta(2-u)
+       -\frac{\Li_{2-u}(e^{2\pi ih})+
+                    \Li_{2-u}(e^{-2\pi ih})}{2}\right\}.
+ \label{eq:polylog-master}
+\end{align}
+The series on this line are absolutely and locally uniformly convergent
+in the stated bidisk. Notice that the symmetric pair of polylogarithms
+must be retained when $s,t$ are complex; writing a real part would then
+destroy holomorphic dependence on the orders.
+
+The even part of the same Hurwitz Fourier formula, now at order $u-1$,
+is
+\begin{align*}
+ \zeta(u-1,h)+\zeta(u-1,1-h)
+ &=-4\Gamma(2-u)(2\pi)^{u-2}\cos\frac{\pi u}{2}\,
+      \frac{\Li_{2-u}(e^{2\pi ih})+\Li_{2-u}(e^{-2\pi ih})}{2},\\
+ 2\zeta(u-1)&=-4\Gamma(2-u)(2\pi)^{u-2}
+                   \cos\frac{\pi u}{2}\,\zeta(2-u).
+\end{align*}
+Their difference converts \eqref{eq:polylog-master} into
+\eqref{eq:translation-master}. The $L^2$ argument above proves the
+differentiated identity.
+\end{proof}
+
+\begin{remark}[Relation to the classical product integral]
+At zero shift the underlying correlation is the classical identity
+\[
+ \int_0^1\zeta(s,x)\zeta(t,x)\,dx
+ =-\mathcal R(s,t)\zeta(s+t-1),
+\]
+given, for example, by Espinosa--Moll \cite[Theorem 3.1]{EM1}.
+We do not claim this antecedent as new. The contribution used here is
+the translated difference, its uniformly justified jet calculus, and the
+explicit consequences below. No claim of global priority is made for
+every special-case identity obtained by differentiating the master formula.
+\end{remark}
+
+\subsection{Convergent endpoint expansion at every order}
+
+Put $\ell=\log(1/h)$. The recurrence for Hurwitz zeta gives
+\begin{equation}\label{eq:Z-split}
+ \mathcal Z(u,h)=h^{1-u}+\zeta(u-1,1+h)+\zeta(u-1,1-h)-2\zeta(u-1).
+\end{equation}
+The last three terms are analytic and even in $h$ for $|h|<1$.
+Expanding them around $h=0$ gives the particularly useful formula
+\begin{align}
+ \mathcal D(s,t;h)=\mathcal R(s,t)\biggl\{
+ &h^{1-u}+u(u-1)\zeta(1+u)h^2\notag\\
+ &+2\sum_{j=2}^{\infty}
+   \frac{(u-1)_{2j}}{(2j)!}\zeta(2j-1+u)h^{2j}\biggr\}.
+ \label{eq:convergent-expansion}
+\end{align}
+The product $u(u-1)\zeta(1+u)$ has its removable value $-1$ at zero.
+This cancellation is performed before differentiation.
+
+\begin{theorem}[All-order logarithmic endpoint polynomial]
+\label{thm:cusp}
+For fixed $r,q\geq0$ there is a monic polynomial of degree $r+q$,
+\begin{equation}\label{eq:P-def}
+ P_{r,q}(\ell)=
+ \left.\partial_s^r\partial_t^q
+     \bigl(\mathcal R(s,t)e^{(s+t)\ell}\bigr)\right|_{s=t=0},
+\end{equation}
+such that
+\begin{equation}\label{eq:cusp}
+ \int_0^1\Delta_hF_r\,\Delta_hF_q\,dx
+   =hP_{r,q}(\log(1/h))+
+           \sum_{j=1}^{\infty}a_{r,q,j}h^{2j},\qquad 0<h<1.
+\end{equation}
+The even series is convergent, locally uniformly for $|h|<1$.
+If $r+q\geq1$, the coefficient of $\ell^{r+q-1}$ is $r+q$.
+Every coefficient of $P_{r,q}$ lies in the algebra over $\mathbb Q$
+generated by $\zeta(2),\ldots,\zeta(r+q)$; Euler's constant cancels.
+The coefficient $a_{r,q,1}$ uses only Stieltjes constants through
+$\gamma_{r+q-1}$ and these zeta values. For $j\geq2$, it uses
+derivatives of $\zeta$ at $2j-1$ of order at most $r+q-1$.
+For $r=q=0$ the statements about negative derivative indices mean that
+only the constant $a_{0,0,1}=-1$ is present.
+\end{theorem}
+
+\begin{proof}
+Equation \eqref{eq:convergent-expansion}, differentiated in the bidisk,
+gives \eqref{eq:cusp}. Uniform convergence with order derivatives follows
+also directly from the analytic Taylor expansion in \eqref{eq:Z-split}
+on any smaller circle $|h|\leq h_0<1$.
+The required coefficients of $\mathcal R$ are especially transparent in
+its logarithm:
+\begin{align}
+ \log\mathcal R(s,t)
+ &=\sum_{k\geq1}\frac{(s+t)^k}{k}
+   +\sum_{k\geq2}\frac{\zeta(k)}k
+      \bigl(s^k+t^k-(s+t)^k\bigr)\notag\\
+ &\quad+\sum_{m\geq1}\frac{(1-2^{-2m})\zeta(2m)}m
+      \bigl((s+t)^{2m}-(s-t)^{2m}\bigr).
+ \label{eq:logR}
+\end{align}
+This follows from $\Gamma(2-u)=(1-u)\Gamma(1-u)$ and the convergent
+logarithmic Gamma and cosine products. In particular,
+$\mathcal R(0,0)=1$ and $\partial_s\mathcal R(0,0)
+=\partial_t\mathcal R(0,0)=1$. These facts give the two leading
+coefficients of $P$. The same formula proves the claimed coefficient
+algebra. Finally $(u-1)_{2j}$ has a simple zero at $u=0$ for every
+$j\geq1$. At $j=1$ it removes the pole of $\zeta(1+u)$; at $j\geq2$
+it lowers the highest needed zeta derivative by one.
+\end{proof}
+
+Here are the first nontrivial endpoint polynomials:
+\begin{align}
+ P_{1,1}(\ell)&=\ell^2+2\ell+2+\frac{\pi^2}{3},\label{eq:P11}\\
+ P_{1,2}(\ell)&=\ell^3+3\ell^2+
+       \left(6+\frac{2\pi^2}{3}\right)\ell
+       +6+\frac{2\pi^2}{3}-2\zeta(3),\label{eq:P12}\\
+ P_{2,2}(\ell)&=\ell^4+4\ell^3+
+       \left(12+\frac{4\pi^2}{3}\right)\ell^2
+       +\left(24+\frac{8\pi^2}{3}-8\zeta(3)\right)\ell\notag\\
+ &\quad+24+\frac{8\pi^2}{3}-8\zeta(3)+\frac{7\pi^4}{45}.
+ \label{eq:P22}
+\end{align}
+The supplied exact-arithmetic program constructs these polynomials and
+additional ones from \eqref{eq:logR}. Formula \eqref{eq:cusp} is stronger
+than a finite asymptotic expansion: after the single logarithmic term,
+the remaining function is an ordinary convergent even power series.
+
+\subsection{A positive integral for the endpoint kernel}
+
+The Gamma--trigonometric factor has an elementary positive-kernel
+interpretation, which gives information about all the endpoint
+polynomials simultaneously.
+
+\begin{theorem}[Endpoint Gram identity]\label{thm:endpoint-gram}
+For $|s|,|t|<1/4$, with $u=s+t$,
+\begin{equation}\label{eq:R-integral}
+ \mathcal R(s,t)=\frac1{1-u}+
+ \int_0^\infty
+ [(x+1)^{-s}-x^{-s}][(x+1)^{-t}-x^{-t}]\,dx.
+\end{equation}
+For every real $\ell$ this implies
+\begin{align}
+ P_{r,q}(\ell)={}&\int_0^1(\ell-\log x)^{r+q}\,dx\notag\\
+ &+\int_0^\infty
+ \bigl[(\ell-\log(x+1))^r-(\ell-\log x)^r\bigr]\notag\\
+ &\hspace{18mm}\cdot
+ \bigl[(\ell-\log(x+1))^q-(\ell-\log x)^q\bigr]\,dx.
+ \label{eq:P-gram}
+\end{align}
+Every finite principal matrix of $(P_{r,q}(\ell))_{r,q\geq0}$ is
+positive definite. For the initial blocks
+$P_N(\ell)=(P_{r,q}(\ell))_{0\leq r,q\leq N}$,
+\begin{equation}\label{eq:P-determinant}
+ \det P_N(\ell)=\det P_N(0)\geq\prod_{r=0}^N(r!)^2,
+\end{equation}
+with strict inequality for $N\geq1$.
+\end{theorem}
+
+\begin{proof}
+The integral in \eqref{eq:R-integral} is locally holomorphic: at
+infinity its integrand is $O(x^{-\Re u-2})$, with fixed logarithmic
+factors after differentiation, and at zero the factors are bounded
+by a constant times $1+x^{-\rho}$ for any fixed $\rho<1/2$ on a
+smaller bidisk. Make the substitution $y=x/(1+x)$. The integral
+becomes
+\[
+ \int_0^1(1-y)^{u-2}
+       [1-y^{-s}-y^{-t}+y^{-u}]\,dy.
+\]
+The bracket has a double zero at $y=1$. To evaluate it without
+separating divergent integrals, use the twice-subtracted beta formula
+\begin{align*}
+ B(a,b)={}&\int_0^1(1-y)^{b-1}
+       [y^{a-1}-1+(a-1)(1-y)]\,dy\\
+ &+\frac1b-\frac{a-1}{b+1}.
+\end{align*}
+It follows from the ordinary beta integral when $\Re b>0$ and
+continues to $\Re a>0$, $\Re b>-2$, away from its displayed poles.
+Apply it to $a=1,1-s,1-t,1-u$ with signs $+,-,-,+$ and
+$b=u-1$. Both subtraction terms cancel. Thus the original integral
+equals
+\[
+ -\frac1{1-u}-\Gamma(u-1)
+ \left[\frac{\Gamma(1-s)}{\Gamma(t)}
+             +\frac{\Gamma(1-t)}{\Gamma(s)}\right].
+\]
+The term $B(1-u,u-1)$ is zero under this meromorphic continuation.
+Reflection of the Gamma factors, followed by
+\[
+ \frac{\sin\pi s+\sin\pi t}{\sin\pi(s+t)}
+ =\frac{\cos(\pi(s-t)/2)}{\cos(\pi(s+t)/2)},
+\]
+identifies the last expression with $\mathcal R(s,t)-(1-u)^{-1}$.
+All apparent singularities at $u=0$ are removable in the combined
+identity, proving \eqref{eq:R-integral} throughout the bidisk.
+
+Multiply by $e^{u\ell}$ and differentiate at zero to obtain
+\eqref{eq:P-gram}. The two terms are Gram matrices of real functions.
+The first is strictly positive definite for any distinct finite
+set of indices: a nonzero polynomial in $\ell-\log x$ cannot
+vanish almost everywhere on $(0,1)$.
+
+Let $T(\ell)_{r,j}=\binom rj\ell^{r-j}$ for $j\leq r$ and zero
+otherwise. The binomial theorem gives the congruence
+$P_N(\ell)=T(\ell)P_N(0)T(\ell)^{\mathsf T}$ and
+$\det T(\ell)=1$. For the first Gram term alone the matrix at
+$\ell=0$ is $((r+q)!)$. Its determinant is
+$\prod_{r=0}^N(r!)^2$, because
+\[
+ \binom{r+q}{r}=\sum_k\binom rk\binom qk
+\]
+is a factorization by a unit lower triangular Pascal matrix and its
+transpose. Adding a positive semidefinite matrix cannot decrease
+the determinant of a positive definite matrix. The second term of
+\eqref{eq:P-gram} is nonzero for $N\geq1$, as its $(1,1)$ entry is
+the integral of $\log^2(1+1/x)>0$. Hence the determinant increases
+strictly. This proves \eqref{eq:P-determinant}. The shift-invariance
+assertion concerns the initial blocks; arbitrary principal submatrices
+need not have shift-invariant determinants.
+\end{proof}
+
+For example, $\det P_1(\ell)=1+\pi^2/3$. The $2\times2$ case of
+the Gram positivity gives $P_{r,q}(\ell)^2<P_{r,r}(\ell)P_{q,q}(\ell)$
+for distinct $r,q$. These inequalities hold for every real $\ell$,
+not merely for the large positive logarithms arising in a small shift.
+
+\subsection{Higher antiderivatives and sharp regularity}
+
+For $m\geq0$ define
+\begin{equation}\label{eq:higher-primitive}
+ F_{r,m}(x)=\left.\partial_s^r
+       \frac{\zeta(s-m,x)}{(1-s)_m}\right|_{s=0},
+ \qquad (1-s)_0=1.
+\end{equation}
+The identity $\partial_x\zeta(s-m,x)=(m-s)\zeta(s-m+1,x)$
+shows $\partial_xF_{r,m}=F_{r,m-1}$ for $m\geq1$.
+These are the uniquely normalized successive periodic primitives: every
+one has mean zero. In particular
+\[
+ \frac{(-1)^{n+1}}{n+1}F_{n+1,m-1}
+ \quad(m\geq1)
+\]
+is an $m$-fold antiderivative of $\gamma_n$ on $(0,1)$.
+The mean-zero convention removes all polynomial ambiguities.
+
+\begin{theorem}[Exact Sobolev thresholds]\label{thm:sobolev}
+For each $r,m\geq0$ and real $\sigma$,
+\[
+ F_{r,m}\in H^\sigma(\mathbb T)
+ \quad\Longleftrightarrow\quad \sigma<m+\frac12.
+\]
+Thus the $m$-fold antiderivative of $\gamma_n$, with $m\geq1$, has
+threshold $m-1/2$. Moreover
+\begin{equation}\label{eq:J-sharp}
+ \|\Delta_hJ_n\|_2^2
+ \sim\frac{h\log^{2n+2}(1/h)}{(n+1)^2}\qquad(h\downarrow0).
+\end{equation}
+For any nonzero finite combination $G=\sum_{n=0}^Nc_nJ_n$ with
+$c_N\ne0$, the right side becomes
+$c_N^2h\log^{2N+2}(1/h)/(N+1)^2$ when the coefficients are real.
+\end{theorem}
+
+\begin{proof}
+Let
+\[
+ Q_r(\lambda)=\left.\partial_s^r
+                      \bigl(\Gamma(1-s)e^{\lambda s}\bigr)\right|_{s=0}.
+\]
+This is a monic polynomial in $\lambda$ of degree $r$; for example
+$Q_1(\lambda)=\lambda+\gamma$ and
+$Q_2(\lambda)=(\lambda+\gamma)^2+\zeta(2)$.
+Using $\Gamma(m+1-s)/(1-s)_m=\Gamma(1-s)$ in
+\eqref{eq:fourier-hurwitz},
+\begin{equation}\label{eq:primitive-fourier}
+ \widehat{F_{r,m}}(k)
+       =\frac{Q_r(\log(2\pi ik))}{(2\pi ik)^{m+1}}
+          \quad(k\ne0).
+\end{equation}
+The squared $H^\sigma$ norm is therefore governed, up to positive
+constant factors for large $k$, by
+$\sum_{k\geq2}k^{2\sigma-2m-2}\log^{2r}k$.
+The integral test proves precisely the stated threshold, including
+divergence at equality. Equation \eqref{eq:J-sharp} follows from the
+monic polynomial in Theorem~\ref{thm:cusp}; in a finite combination its
+highest logarithmic degree cannot cancel.
+\end{proof}
+
+Every finite Gram matrix
+\[ (\int_0^1F_r(x)F_q(x)\,dx)_{0\leq r,q\leq N} \]
+is also strictly positive definite. If a linear
+combination vanished in $L^2$, its Fourier coefficients would make a
+polynomial in $\log(2\pi k)+i\pi/2$ vanish for all positive integers
+$k$. That polynomial is identically zero; triangularity of the monic
+$Q_r$ then forces every coefficient of the combination to vanish.
+This is functional linear independence in $L^2$, not an assertion of
+arithmetic independence of special values.
+
+\subsection{Antiderivatives with respect to the translation}
+
+There is a second antiderivative operation: integrate the translated
+pairing in its shift, rather than integrate each factor in its argument.
+It also remains inside the Hurwitz hierarchy. For $m\geq1$ put
+\begin{align}
+ \mathcal A_m(s,t;h)=\mathcal R(s,t)\biggl\{
+ &\frac{\zeta(u-1-m,h)+(-1)^m\zeta(u-1-m,1-h)}{(2-u)_m}
+ \notag\\[-2pt]
+ &-\frac{2\zeta(u-1)h^m}{m!}\biggr\},\qquad u=s+t.
+ \label{eq:shift-primitive}
+\end{align}
+
+\begin{corollary}[The complete shift-antiderivative ladder]
+\label{cor:shift-primitive}
+For $|s|,|t|<1/4$ and $0<h<1$,
+$\partial_h^m\mathcal A_m(s,t;h)=\mathcal D(s,t;h)$.
+The repeated definite integral is
+\begin{align}
+ &\frac1{(m-1)!}\int_0^h(h-v)^{m-1}\mathcal D(s,t;v)\,dv
+ =\mathcal A_m(s,t;h)\notag\\
+ &\hspace{5mm}-2\mathcal R(s,t)
+ \sum_{k=1}^{\lfloor m/2\rfloor}
+ \frac{\zeta(u-1-2k)}{(2-u)_{2k}}
+ \frac{h^{m-2k}}{(m-2k)!}.
+ \label{eq:shift-definite}
+\end{align}
+Every finite derivative in $s,t$ may be taken in this identity.
+\end{corollary}
+
+\begin{proof}
+The parameter recurrence gives
+$\partial_h^m\zeta(u-1-m,h)=(2-u)_m\zeta(u-1,h)$.
+The reflected term acquires the additional factor $(-1)^m$, which
+cancels its displayed sign. Differentiating the polynomial term gives
+$-2\zeta(u-1)$, proving the indefinite identity.
+To normalize, use the Hurwitz shift formula as $h\downarrow0$.
+The term $h^{m+1-u}$ and its first $m-1$ derivatives vanish, and
+the remaining values at zero are
+\[
+ \partial_h^j\mathcal A_m(s,t;0)
+ =\mathcal R(s,t)
+ \frac{[1+(-1)^{m-j}]\zeta(u-1-m+j)}{(2-u)_{m-j}},
+ \qquad 0\leq j<m.
+\]
+Subtracting their Taylor polynomial gives \eqref{eq:shift-definite}.
+The same endpoint bound with fixed powers of $\log h$ justifies all
+order derivatives. In particular the sum is empty for $m=1$.
+\end{proof}

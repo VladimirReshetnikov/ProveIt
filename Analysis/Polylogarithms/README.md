@@ -103,6 +103,20 @@ commit prefix. Article ↔ report links are listed below.
 
 ## Status of claims, and known defects
 
+The 10 October harmonic-resonance intake preserves five further reports under
+`docs/reports/stieltjes-harmonic-resonance/` and continuations of the
+Stieltjes-correlation and uniform-transition spines. Their proposed new
+identities include all-integer Gauss-Hurwitz pole cancellation, nested-harmonic
+regulator conversion, unequal-dilation products, separated triple correlations,
+and a near-critical crossing proof. All five full isolated replays now pass. The corrected Choi pure and mixed
+harmonic families have been independently proved at every order and integrated
+in the 448-page ProveIt Contributors manuscript, alongside the accepted
+correlation, contact and collective trace identities. The remaining new
+analytic claims retain their pending integration scope and do not change S6/S8
+status. The Choi audit distinguishes the confirmed factor-two correction from
+the delivered visual observation of typography misprints.
+
+
 These items were found at intake (2026-10-07, placement `13f0d8f20`) and in the
 continuations of 8 October 2026 (batch 138, placement `06039f4794`), and were
 checked at intake. They are recorded here because the delivered files are not

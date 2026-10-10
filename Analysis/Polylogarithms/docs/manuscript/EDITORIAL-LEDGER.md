@@ -408,3 +408,95 @@ Finite exact polynomial/coefficient checks and independent logistic-axis
 quadratures accompany these identities as separate evidence. The next
 research emphasis is functional certificates and unresolved finite-weight
 identities; additional bounds are secondary to that identity programme.
+
+## Eighth intake: Stieltjes correlations and uniform resonance
+
+Five packages at fc4d3bf805 are preserved in placement 9017ab1b13, with
+131 original tracked members and two ignored manifests recoverable in the
+arrival archives. Their imported ZIPs are retired, retaining the incoming
+README. The new stieltjes-correlation-calculus spine unifies four reports
+through their common Fourier, finite-part and primitive definitions.
+
+| Source group | Canonical reconciliation and active proof scope |
+|---|---|
+| stieltjes-correlation-calculus | Shared report spine with an explicit dependency map. Delivered originals remain historical; analytic acceptance is distinct from intake and finite replay. |
+| stieltjes-convolution-algebra | Fourier Hurwitz family, exact scale-one Stieltjes finite parts, Bell algebra, coefficient multiplication, convergent subtractions, contact law, polygamma collapse and circular log-Gamma powers are proved and integrated with their full analytic arguments. The formal polynomial freeness is a distribution theorem, not numerical period independence. |
+| shifted-hurwitz-jets | Shifted kernel, all-index linear Stieltjes closure, normalized primitive lifts, ordinary Gamma correlations and reflected contact products are proved and integrated through shared definitions. The pointwise derivative tower remains correct. |
+| bilinear-stieltjes-correlation-closure | Coincident cutoff conversion and the exact convergent collision expansion are proved and integrated with the shifted closure coefficients. Small numerical canaries remain method/version diagnostics. |
+| stieltjes-convolution-calculus | Its identity conventions corroborate the shared calculus. Search-basket wording, missing Hurwitz-ladder domain and the base-case endpoint clarification are corrected after independent source review. Higher negative-integer collision regularity and the Hankel material remain pending canonical audit. |
+| resonance-correlations-nonseparable-jets | On the uniform-transition spine. Uniform resonance, Gamma cusp expansions, joint Herglotz limits and the two-generator Frobenius theorem remain under analytic audit. Preserve the three-generator counterexample and the distinction between colength and module isomorphism. |
+
+The canonical Hurwitz ladder now states Re(z)>0, the holomorphic log-Gamma
+branch and absolute local uniform convergence; z=-1/2 is an explicit failure
+of the omitted-domain extrapolation. The Stieltjes moment-transform base
+case now uses cancellation of equal generally nonzero endpoint values.
+Searches remove or quotient known basket relations and require a nonzero
+target coefficient; unproved arithmetic independence is not assumed.
+
+The complete isolated eighth-batch replay is now preserved. The algebra suite
+passes 229 exact assertions and 31 diagnostics at each of 40 and 50 digits;
+shifted jets provide 28 ordered identities and 64 full diagnostics; bilinear
+closure passes 272 exact checks on 45 ordered pairs and 19 plus three numerical
+checks. The calculus replay runs all seven scripts, and resonance runs all four
+suites. Those finite results corroborate the accepted identity chain without
+resolving the separately listed pending analytic claims.
+
+The collective extension proves the exact dilation action on the one-generator
+convolution algebra and the distinct covering and trace finite-part contacts,
+including every differentiated trace and the polygamma specialization. Its
+independent symbolic controls comprise 224 exact checks and one rejected
+corruption; fifteen 60-digit numerical checks remain non-interval diagnostics.
+Wolfram 15.0.1 independently passes 36 exact identities and four 70-digit direct
+subtracted-integral diagnostics. No period-independence or literature-priority
+claim is inferred. The eighth milestone has 446 pages and 111 references;
+its three-pass build, full-page raster review and exact receipt checks are
+separate evidence records.
+
+## Ninth intake: harmonic resonance and unequal dilation
+
+Five further packages are preserved in placement 912c50e302, with 200 tracked
+original members and two ignored SHA256SUMS members recoverable in the
+committed arrivals. Their imported ZIPs are retired; the incoming README is
+unchanged. The new stieltjes-harmonic-resonance spine groups the discrete
+Gamma-coefficient and nested-regulator developments. Shared distributional
+dilation conventions continue the existing correlation spine.
+
+| Source group | Reconciliation and pending analytic scope |
+|---|---|
+| stieltjes-harmonic-resonance | Dependency map for Gauss subtraction, harmonic coefficients and nested spectral resonance. |
+| gauss-hurwitz-pole-cancellation | Normally convergent all-integer subtraction, exact resonance values, degenerate reciprocal-Gamma jets, complete harmonic-tail identities and endpoint polylogarithmic subtraction. Independent analytic integration is pending. |
+| mellin-lerch-dilation | Mellin-Lerch finite formulas, harmonic mixed reflection, every ambient-coordinate covering contact and unequal disjoint-grid products. The collective undifferentiated covering and trace laws are already integrated; differentiated covering and unequal products extend them and remain pending audit. |
+| nested-harmonic-jets | Holomorphic cutoff limits, Gamma slices, exact regulator conversion, higher-genus cyclotomic products and fixed versus moving equal-order resonance. Full analytic integration is pending; the depth claim concerns its explicitly defined logarithmic-sum class. |
+| polylog-stieltjes-critical-transition | Gamma translation identities and cusp polynomials overlap earlier work. The claimed near-critical crossing proof, exact velocity finite parts and Cayley depth retraction remain pending audit; the thirty-term formal S6 normal form does not settle the period conjecture. |
+| stieltjes-harmonic-identities | Unequal dilation and Gauss jets overlap the other new continuations. The corrected Choi coefficient families now have an independent all-order proof and are integrated. Separated triple Tornheim correlations, rational harmonic kernels and the remaining Gauss/dilation claims need canonical analytic integration. |
+
+Full isolated replay results are recorded separately from analytic acceptance.
+Original supplied receipts remain historical evidence. These reports
+leave S6 and S8 conjectural. No delivered statement is silently promoted or
+used as an additional theorem assumption.
+
+The ninth analytic audit proves the corrected Choi pure and mixed harmonic
+families at every order by a normally convergent two-parameter Gauss sum.
+The fifth- and sixth-order conjecture cases follow exactly; the n=0 term
+at zero total order is retained. A separate elementary summation-by-parts
+argument proves the first mixed value 1+zeta(2), rejecting the printed factor
+of two. Native Wolfram independently checks seven mixed coefficients, the
+pure generator and an integrated harmonic generating function. Primary
+publisher text was checked; fresh visual inspection of the two typography
+misprints remains unavailable because direct downloads returned HTTP 403.
+This distinction is recorded in ninth-analytic-audit.md and does not weaken
+the unambiguous all-order finite-product statement proved in the book.
+
+All five ninth-batch full isolated suites now pass. Gauss-Hurwitz supplies
+512 exact checks and 64 diagnostics at 65 digits. Nested harmonic jets supply
+826 exact assertions, 960 higher-jet comparisons, 99 general comparisons
+and 16 cyclotomic comparisons at 60 digits. Harmonic identities supply
+128 exact checks, 37 rational-kernel diagnostics, six independent trilinear
+checks and 48 mixed Gauss jets. Mellin-dilation runs all nine entry points,
+with 742 exact assertions and 77 diagnostics. Critical-transition runs its
+full exact, numeric and Euler suites: 780 Eulerian word checks, 2150 shuffle
+products, exact ideal ranks, the nonzero thirty-term formal S6 projection,
+translation diagnostics and all nine transition samples. Numerical outcomes
+remain non-interval evidence; general theorems retain the acceptance status
+of their individual ledger rows. The final release has 448 pages and 114
+references, with 721 source documents and 47 archived arrivals accounted for.

@@ -1,0 +1,92 @@
+\section{Corrections, proof status, and reproducible evidence}\label{sec:audit}
+
+\subsection{A narrowly scoped manuscript wording correction}
+The pinned source \src{chapters/07-integration.tex}, lines 41--44 in the
+inspected file, describes a PSLQ run detecting a relation among supplied
+constants rather than a relation involving the target.  It then states:
+``Basis atoms must be $\mathbb Q$-independent'' \cite{repo-integration}.
+That is too strong as a requirement on PSLQ.  An integer-relation algorithm
+accepts a vector whose entries may be dependent; finding a dependence is
+precisely its purpose \cite{pslq}.  The practical difficulty is that a
+pre-existing relation can have zero coefficient on the target, making that
+output uninformative for the intended evaluation.
+
+The proposed replacement is:
+\begin{quote}
+Known rational dependencies among the supplied constants should be removed
+or modeled explicitly.  Otherwise PSLQ may return a pre-existing relation
+with zero target coefficient instead of an evaluation of the target.
+\end{quote}
+This is an editorial correction to the inference being drawn, not a change
+to the recorded special-function value.  Related cautions already occur
+in earlier continuation material; no priority is claimed for noticing it.
+The package includes a minimal patch tied to the inspected context, but it
+has not been applied to the repository.
+
+\subsection{Three guard conditions for the new calculus}
+The first guard is the reciprocal-gamma issue of
+\eqref{eq:piwarning}: evaluating at a zero before differentiating loses
+nonzero Taylor coefficients.  The second is normalization: our jets are
+coefficients, while \eqref{eq:Bellzero} is a derivative formula.  For
+example the half-parameter values are $L_3=26\zeta(3)$ and
+$\lambda_3=24\zeta(3)$, so the cubic coefficient in the normalized gamma
+quotient is not obtained by dividing an incorrectly shared Bell parameter.
+The third guard is the combined nature of every subtraction.  Neither
+the harmonic tails in \eqref{eq:Un} nor the Stieltjes counterterms in
+\eqref{eq:jetseries} can be split into independently summed divergent
+pieces.
+
+These are explicitly proved implementation safeguards.  Apart from the
+wording correction just identified, they are not asserted to be newly
+found flaws in the canonical manuscript or in the uninspected incoming
+archives.
+
+\subsection{Analytic proofs versus finite checks}
+All theorems in this article have analytic proofs.  The proof of normal
+convergence and coefficient extraction does not use a numerical tolerance.
+The exact test suite verifies polynomial formulas and selected
+specializations; the numerical suite is an independent diagnostic of
+normalization, signs, degeneracies, and transcriptions.
+
+The delivered exact run completed \textbf{512 checks}.  They include generic
+polynomial identities through $A_4$, the finite reference-change identity,
+residues and the Bernoulli cancellation at rational parameter pairs through
+$N=8$, a second path-jet generator, and the reciprocal-gamma polynomial
+factor.  The central-binomial counterterm table is generated through
+$N=10$.  The checks use rational arithmetic and symbolic polynomial
+identities; they are not a proof-assistant formalization.
+
+The delivered numerical run completed \textbf{64 diagnostics at 65 decimal
+working digits}.  The primary series evaluation uses 108 actual terms
+and asymptotic coefficients through $j=25$.  It is repeated with 72 terms
+and coefficients through $j=21$.  The closed side is evaluated from the
+finite gamma/Stieltjes expression.  The tests include spectral jets through
+order three at resonances $N=0,1,2,3$, non-half rational parameters,
+positive integer degeneracies, the harmonic-tail identities through
+$k=3$, interior polylogarithmic identities, and the primitive telescope.
+The largest recorded scaled discrepancy was
+\begin{equation}\label{eq:diagnosticerror}
+ 1.80742922933\times10^{-43},\qquad
+ \text{scaled error}=\frac{|\text{left}-\text{right}|}
+ {\max(1,|\text{right}|)}.
+\end{equation}
+These are \emph{not rigorous interval enclosures}.  In particular,
+\eqref{eq:diagnosticerror} is not a certificate of 43 correct decimal places.
+The analytic identities are proved in the text; the diagnostics verify
+that independently constructed evaluations agree to the reported precision.
+Full parameter choices and residuals are in
+\src{results/numerical_checks.json}.
+
+\subsection{Integration status}
+The manuscript-ready mathematical components are the subtraction theorem,
+the coefficient differential law, the all-resonance evaluation, the
+all-order Stieltjes formula, the harmonic-tail theorem, and the two
+primitive/endpoint calculi.  The detailed sections can be integrated after
+the canonical Hurwitz-jet material, with a cross-reference from the
+harmonic-number and polylogarithm sections.  Formula labels and the local
+coefficient convention should be preserved during integration.
+
+Nothing here changes the status of $S_6$, $S_8$, or any numerical
+independence question.  The package contains sources and suggested
+integration instructions only.  No commit, pull request, or automatic
+modification of ProveIt has been made.

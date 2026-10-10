@@ -1,0 +1,148 @@
+
+Running code/check_dilation.py
+{"p": 1, "q": 2, "a": "0", "b": "0.3", "c": "0.3", "ct00_numeric": "-11.530030792830324231666636009363819609874074800153", "ct00_formula": "-11.530030792830324231666636009363819609874074800153", "ct00_error": "0.0", "loggamma_numeric": "0.70705085723607990585180913599606242885840262932956", "loggamma_formula": "0.70705085723607990585180913599604779396906546661955", "loggamma_error": "1.4634889e-32", "passed": true}
+{"p": 2, "q": 3, "a": "0.1", "b": "0.27", "c": "0.24", "ct00_numeric": "-21.826067824696386760900759763734395724588397666449", "ct00_formula": "-21.826067824696386760900759763734395724588397666449", "ct00_error": "3.7338092e-59", "loggamma_numeric": "0.81412558770198182931113046692150387050016797507722", "loggamma_formula": "0.81412558770198182931113046692149181232036434353774", "loggamma_error": "1.205818e-32", "passed": true}
+{"p": 4, "q": 6, "a": "0.1", "b": "0.27", "c": "0.24", "ct00_numeric": "-26.857362431426679432963018973808445172185809804078", "ct00_formula": "-26.857362431426679432963018973808445172185809804078", "ct00_error": "1.1450348e-58", "loggamma_numeric": "0.81412558770198182931113046692150387050016797507722", "loggamma_formula": "0.81412558770198182931113046692149181232036434353774", "loggamma_error": "1.205818e-32", "passed": true}
+{"p": 3, "q": 2, "a": "0.2", "b": "0.11", "c": "0.93", "ct00_numeric": "-71.575886421691083859640566186781235396335724974166", "ct00_formula": "-71.575886421691083859640566186781235396335724974166", "ct00_error": "7.3680501e-58", "loggamma_numeric": "0.95162213198079252307364105248469452291914817886244", "loggamma_formula": "0.95162213198079252307364105248487808910762461956871", "loggamma_error": "1.8356619e-31", "passed": true}
+
+Running code/check_harmonic.py
+polygamma_table a=0.5 r=0 s=2: error=0.0 PASS
+polygamma_table a=0.5 r=0 s=3: error=0.0 PASS
+finite_part_remainder a=0.5 r=0: error=9.577e-63 PASS
+polygamma_table a=0.5 r=1 s=2: error=3.622e-71 PASS
+polygamma_table a=0.5 r=1 s=3: error=9.056e-72 PASS
+finite_part_remainder a=0.5 r=1: error=3.297e-60 PASS
+polygamma_table a=0.5 r=2 s=2: error=1.268e-70 PASS
+polygamma_table a=0.5 r=2 s=3: error=2.943e-71 PASS
+finite_part_remainder a=0.5 r=2: error=1.157e-58 PASS
+polygamma_table a=0.5 r=3 s=2: error=1.992e-70 PASS
+polygamma_table a=0.5 r=3 s=3: error=7.443e-70 PASS
+finite_part_remainder a=0.5 r=3: error=2.701e-57 PASS
+polygamma_table a=1.3 r=0 s=2: error=0.0 PASS
+polygamma_table a=1.3 r=0 s=3: error=0.0 PASS
+finite_part_remainder a=1.3 r=0: error=3.135e-61 PASS
+polygamma_table a=1.3 r=1 s=2: error=1.811e-71 PASS
+polygamma_table a=1.3 r=1 s=3: error=6.792e-72 PASS
+finite_part_remainder a=1.3 r=1: error=2.121e-59 PASS
+polygamma_table a=1.3 r=2 s=2: error=0.0 PASS
+polygamma_table a=1.3 r=2 s=3: error=9.056e-72 PASS
+finite_part_remainder a=1.3 r=2: error=7.176e-58 PASS
+polygamma_table a=1.3 r=3 s=2: error=1.811e-71 PASS
+polygamma_table a=1.3 r=3 s=3: error=6.792e-72 PASS
+finite_part_remainder a=1.3 r=3: error=1.618e-56 PASS
+complex_table a=1.2+0.4i r=0 s=2: error=0.0 PASS
+complex_finite_part r=0: error=3.446e-61 PASS
+complex_table a=1.2+0.4i r=1 s=2: error=0.0 PASS
+complex_finite_part r=1: error=2.348e-59 PASS
+complex_table a=1.2+0.4i r=3 s=2: error=1.811e-71 PASS
+complex_finite_part r=3: error=1.818e-56 PASS
+quadratic_kernel r=0: error=0.0 PASS
+quadratic_kernel r=1: error=0.0 PASS
+quadratic_kernel r=2: error=0.0 PASS
+quadratic_kernel r=3: error=1.811e-71 PASS
+stieltjes_linear a=0.5: error=6.672e-61 PASS
+stieltjes_linear a=1.3: error=2.153e-59 PASS
+half_point_cubic_expansion: error=1.811e-71 PASS
+{
+  "precision_dps": 70,
+  "tests": 37,
+  "passed": 37,
+  "maximum_absolute_residual": "1.818031833e-56",
+  "certification": "Numerical cross-checks only; proofs are in sections/harmonic.tex."
+}
+
+Running code/check_trilinear.py --digits 32 --output data/trilinear_checks.json
+{
+  "precision_digits": 42,
+  "requested_agreement_digits": 32,
+  "interpretation": "Independent floating-point diagnostics; not rigorous enclosures.",
+  "checks": [
+    {
+      "check": "order_zero_polylog",
+      "t": "0.2",
+      "error": "1.8488645e-43"
+    },
+    {
+      "check": "order_zero_polylog",
+      "t": "1.7",
+      "error": "6.0629442e-44"
+    },
+    {
+      "check": "order_zero_polylog",
+      "t": "2.3",
+      "error": "2.2156474e-45"
+    },
+    {
+      "check": "six_cone_bernoulli",
+      "lambda": [
+        1,
+        1,
+        1
+      ],
+      "exact": "-1/1000",
+      "error": "0.0"
+    },
+    {
+      "check": "six_cone_bernoulli",
+      "lambda": [
+        2,
+        1,
+        3
+      ],
+      "exact": "-124409/7560000000",
+      "error": "1.0947644e-47"
+    },
+    {
+      "check": "triple_gamma0_finite_part",
+      "shifts": [
+        "0",
+        "1/3",
+        "2/3"
+      ],
+      "local": "-27.805592568749290182019060698117",
+      "mellin": "-27.805592568749290182019060698117",
+      "digamma_product": "27.805592568749290182019060698117",
+      "error": "8.6095778e-42"
+    }
+  ],
+  "passed": true
+}
+
+Running code/check_gauss_stieltjes.py --output data/gauss_stieltjes_checks.json
+ordinary completed
+central_binomial completed
+shifted completed
+complex_parameters completed
+Largest residual: 5.1381831e-58
+Largest refinement change: 5.9987641e-42
+Wrote data/gauss_stieltjes_checks.json
+
+Running code/exact_coefficients.py --output-dir data
+PASS: 128 exact diagnostic checks; wrote JSON, TeX, and plaintext tables to data
+
+dilation_checks.json
+  recorded_checks: 4
+  dps: 60
+  Complete component records are available in this JSON file.
+
+harmonic_checks.json
+  precision_dps: 70
+  tests: 37
+  passed: 37
+  maximum_absolute_residual: 1.818031833e-56
+  certification: Numerical cross-checks only; proofs are in sections/harmonic.tex.
+
+trilinear_checks.json
+  recorded_checks: 6
+  passed: True
+
+gauss_stieltjes_checks.json
+  status: All numerical and symbolic diagnostics passed.
+  working_decimal_digits: 75
+  number_of_mixed_jet_checks: 48
+  largest_absolute_residual: 5.138183059953248279872150682686920215291897474319021459e-58
+  largest_refinement_change: 5.998764137535144572736775353313011908180094746434671197e-42
+  proof_status: Proof is in sections/gauss_stieltjes.tex; numerical tail is not interval certified.
+
+exact_coefficients_checks.json
+  exact_checks: 128; all_passed: True

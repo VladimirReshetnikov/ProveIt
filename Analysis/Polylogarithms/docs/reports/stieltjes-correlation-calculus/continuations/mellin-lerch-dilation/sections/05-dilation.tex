@@ -1,0 +1,569 @@
+% Self-contained contribution; standard amsmath/amssymb/amsthm environments.
+% Suggested bibliography keys: incoming-shifted, incoming-convolution,
+% incoming-closure, dlmf-hurwitz.  All statements use ambient x cutoffs.
+\section{Dilation and unequal-frequency correlations}
+\label{mld:dil:section}\label{mld:sec:dilation}
+
+Two explicit questions in the incoming reports concern the effect of
+integer dilation on canonical periodic finite parts, and products with
+unequal integer dilations.  They occur in the further-research sections
+of the shifted-Hurwitz and convolution-calculus deliveries.  This section
+answers those questions for every nonnegative Stieltjes index and every
+nonnegative parameter derivative order, provided the two sets of
+singular points are disjoint.  The location of the surviving ordinary
+special-function values is determined by the reduced dilation ratio;
+their coefficients also remember the physical coordinate used for
+the finite part.
+
+\subsection{Conventions and the elementary contact identity}
+Write $\mathbb T=\mathbb R/\mathbb Z$, and use normalized Lebesgue
+measure.  The spectral convention is
+\[
+ \zeta(1-z,x)=-\frac1z+
+       \sum_{n\ge0}\gamma_n(x)\frac{z^n}{n!},
+ \qquad \gamma_0(x)=-\psi(x),
+ \qquad 0<x<1.
+\]
+For a smooth periodic test function $\phi$, let $T_{n,r}$ be the
+constant-term extension of $\gamma_n^{(r)}(x)$ from $(0,1)$:
+\[
+ \langle T_{n,r},\phi\rangle
+ =\operatorname{CT}_{\epsilon\downarrow0}
+      \int_\epsilon^1\gamma_n^{(r)}(x)\phi(x)\,dx.
+\]
+Here $\operatorname{CT}$ retains the constant term after all negative
+powers of $\epsilon$ multiplied by powers of $\log\epsilon$, and all
+positive powers of $\log\epsilon$, have been removed.  No finite
+point-supported term is added.  Thus, with $G_n=T_{n,0}$,
+\[
+ \langle G_n,\phi\rangle
+ =\int_0^1\left\{\gamma_n(x)\phi(x)
+                  -\frac{\log^n x}{x}\phi(0)\right\}\,dx.
+\]
+The shift identity $\gamma_n(x)=x^{-1}\log^n x+\gamma_n(1+x)$
+proves convergence and the equality of these definitions.
+
+Put
+\begin{equation}
+ p_r(z)=\prod_{j=1}^r\left(1-\frac zj\right),\qquad
+ h_{r,n}=(-1)^n n!e_{n+1}(1,1/2,\ldots,1/r),
+ \label{mld:dil:p-h}
+\end{equation}
+where the empty product is one and elementary symmetric functions of
+degree greater than $r$ are zero.  The undilated contact identity, proved
+in the incoming convolution and shifted-Hurwitz reports
+\cite{IncomingConvolution,IncomingShifted}, is
+\begin{equation}
+ D^rG_n=T_{n,r}-h_{r,n}\delta_0^{(r)}.
+ \label{mld:dil:unit-contact}
+\end{equation}
+For completeness, its origin can be read directly from the meromorphic
+periodic Hurwitz family.  If
+\[
+ \widehat R_z(0)=0,\qquad
+ \widehat R_z(k)=(2\pi i k)^{-z}\quad(k\ne0),
+ \qquad Z(1-z)=\Gamma(z)R_z,
+\]
+then
+\[
+ Z(1-z)=\frac{\delta_0-1}{z}
+            +\sum_{n\ge0}G_n\frac{z^n}{n!}.
+\]
+For $r\ge1$, the local singular part of the pointwise $r$th derivative
+is $(-1)^r r!p_r(z)x^{z-r-1}$.  The meromorphic extension of
+$x^{z-r-1}$ has residue $(-1)^r\delta_0^{(r)}/r!$ at $z=0$.
+Consequently its polar contribution is
+$p_r(z)\delta_0^{(r)}/z$.  Comparing coefficients with
+$D^rZ(1-z)$ gives \eqref{mld:dil:unit-contact}, since
+$n![z^{n+1}]p_r(z)=-h_{r,n}$.
+The case $r=0$ is immediate.  This derivation also specifies all signs.
+The coefficients can equally be written through generalized harmonic
+numbers: for $|z|<1$,
+\[
+ p_r(z)=\exp\!\left(-\sum_{j\ge1}\frac{H_r^{(j)}}jz^j\right),
+ \qquad H_r^{(j)}=\sum_{\ell=1}^r\ell^{-j}.
+\]
+For example $e_1=H_r$ and $e_2=(H_r^2-H_r^{(2)})/2$.
+
+\subsection{The exact dilation anomaly}
+For a positive integer $q$, let $U_q$ be pullback by the covering map
+$x\mapsto qx$:
+\[
+ \langle U_qT,\phi\rangle
+ =\left\langle T,\frac1q\sum_{j=0}^{q-1}
+                         \phi\!\left(\frac{x+j}{q}\right)\right\rangle.
+\]
+For an ordinary function this is $U_qf(x)=f(qx)$.  Write
+\[
+ \Delta_q=\sum_{j=0}^{q-1}\delta_{j/q},\qquad
+ U_q\delta_0^{(r)}=q^{-r-1}\Delta_q^{(r)}.
+\]
+Let $X_{q,n,r}$ be the constant-term extension of
+$\gamma_n^{(r)}(\{qx\})$ using the \emph{ambient coordinate $x$}:
+at each grid point $j/q$, delete the right interval
+$(j/q,j/q+\epsilon)$ and take the constant term as $\epsilon$ tends to
+zero. The transported finite part $U_qT_{n,r}$ takes the constant term
+in a source cutoff $\eta$, corresponding to ambient cutoff $\eta/q$.
+The ambient finite part instead takes the constant term in $\epsilon$
+after the source lower limit becomes $q\epsilon$. The variable in which
+the constant term is extracted is part of the normalization.
+
+\begin{theorem}[All-order finite-part dilation law]
+\label{mld:dil:scale-thm}
+For $q\ge1$ and $n,r\ge0$, define the explicit polynomial
+\begin{equation}
+ c_{n,r}(L)=n![z^{n+1}]p_r(z)(e^{Lz}-1)
+ =n!\sum_{j=0}^{\min(r,n)}
+       \frac{(-1)^j e_j(1,1/2,\ldots,1/r)}{(n+1-j)!}
+       L^{n+1-j}.
+ \label{mld:dil:c}
+\end{equation}
+Then
+\begin{equation}
+ \boxed{X_{q,n,r}=U_qT_{n,r}
+       -q^{-r-1}c_{n,r}(\log q)\Delta_q^{(r)}.}
+ \label{mld:dil:scale-law}
+\end{equation}
+In particular $c_{n,0}(L)=L^{n+1}/(n+1)$ and $c_{0,r}(L)=L$.
+\end{theorem}
+
+\begin{proof}
+Near a grid point use $t=x-j/q>0$.  The singular part of the generating
+function for the argument derivatives is
+\[
+ (-1)^r r!p_r(z)(qt)^{z-r-1}
+ =(-1)^r r!q^{-r-1}p_r(z)e^{z\log q}t^{z-r-1}.
+\]
+After pairing with a test function, only its Taylor term of degree $r$
+produces a pole at $z=0$.  Its contribution is
+\[
+ q^{-r-1}\frac{p_r(z)e^{z\log q}}z\delta_{j/q}^{(r)}.
+\]
+The pullback of the source-coordinate family instead has polar
+contribution $q^{-r-1}p_r(z)\delta_{j/q}^{(r)}/z$.
+The regular Taylor coefficients left after subtracting these complete
+polar contributions are respectively the ambient-coordinate constant
+terms and the pulled-back constant terms.  Their difference is therefore
+the negative of
+\[
+ q^{-r-1}p_r(z)\frac{e^{z\log q}-1}{z}\delta_{j/q}^{(r)}.
+\]
+Extract $z^n/n!$ and sum over the grid.  When $r=0$, the scalar spectral
+pole $-1/z$ occurs in both calculations and cancels.  Subtracting the
+test-function Taylor polynomial through degree $r$ makes every
+remaining local integral holomorphic near $z=0$, which justifies the
+coefficient comparison.  Expanding the finite product gives
+\eqref{mld:dil:c}.
+\end{proof}
+
+\begin{corollary}[Differentiation and dilation with fixed ambient scale]
+Define
+\begin{equation}
+ b_{r,n}(L)=\sum_{j=0}^n\binom nj L^{n-j}h_{r,j}.
+ \label{mld:dil:b}
+\end{equation}
+Then
+\begin{equation}
+ \boxed{D^rX_{q,n,0}=q^rX_{q,n,r}
+          -\frac{b_{r,n}(\log q)}q\Delta_q^{(r)}.}
+ \label{mld:dil:commutator}
+\end{equation}
+For every $n\ge0$ this specializes to
+\begin{equation}
+ DX_{q,n,0}=qX_{q,n,1}
+             -\frac{(\log q)^n}{q}\Delta_q',
+ \label{mld:dil:first-commutator}
+\end{equation}
+where $(\log1)^0=1$.
+\end{corollary}
+\begin{proof}
+Differentiate \eqref{mld:dil:scale-law} for $r=0$, use
+$D^rU_q=q^rU_qD^r$ and \eqref{mld:dil:unit-contact}, and compare with
+\eqref{mld:dil:scale-law} at general $r$.  The remaining scalar identity is
+\[
+ b_{r,n}(L)=h_{r,n}+\frac{L^{n+1}}{n+1}-c_{n,r}(L)
+          =n![z^{n+1}](1-p_r(z))e^{Lz}.
+\]
+For $r=1$, only $h_{1,0}=1$ is nonzero.
+\end{proof}
+
+The undilated anomaly vanishes when $n\ge r$.  Equation
+\eqref{mld:dil:first-commutator} shows that this vanishing generally fails
+after ambient-coordinate dilation: already $n=r=1$ gives
+$DX_{q,1,0}=qX_{q,1,1}-(\log q)\Delta_q'/q$.
+This is an extension of the incoming contact theorem, not a correction
+to its correctly normalized undilated statement.
+
+The scale corrections are compatible with successive dilations.  The
+following polynomial identities hold for all $L,M\in\mathbb C$:
+\begin{align}
+ c_{n,r}(L+M)&=c_{n,r}(M)
+       +\sum_{j=0}^n\binom nj M^{n-j}c_{j,r}(L),\notag\\
+ b_{r,n}(L+M)&=\sum_{j=0}^n\binom nj M^{n-j}b_{r,j}(L).
+ \label{mld:dil:scale-composition}
+\end{align}
+Indeed, use $e^{(L+M)z}-1=(e^{Mz}-1)+e^{Mz}(e^{Lz}-1)$ in
+\eqref{mld:dil:c}, and use the last generating expression in the preceding
+proof for $b$.  Thus a two-step change of local scale gives the same
+finite correction as the combined scale; no independent finite
+constant is introduced by composing the operations.
+
+\subsection{A multiplication theorem including the point masses}
+Let $\tau_aT(x)=T(x+a)$ and $L=\log q$.
+\begin{theorem}[Distributional multiplication law]
+For $n\ge0$,
+\begin{equation}
+ \sum_{j=0}^{q-1}\tau_{j/q}G_n
+ =q\sum_{i=0}^n\binom ni(-L)^{n-i}U_qG_i
+     +\frac{(-L)^{n+1}}{n+1}(\Delta_q-q).
+ \label{mld:dil:multiplication}
+\end{equation}
+More generally, for $r\ge1$,
+\begin{equation}
+ \sum_{j=0}^{q-1}\tau_{j/q}T_{n,r}
+ =q^{r+1}\sum_{i=0}^n\binom ni(-L)^{n-i}U_qT_{i,r}
+                  +c_{n,r}(-L)\Delta_q^{(r)}.
+ \label{mld:dil:derivative-multiplication}
+\end{equation}
+\end{theorem}
+\begin{proof}
+The classical Hurwitz multiplication formula gives, as meromorphic
+periodic distributions,
+\[
+ \sum_{j=0}^{q-1}\tau_{j/q}Z(1-z)
+                  =q^{1-z}U_qZ(1-z).
+\]
+It can also be proved directly from the Fourier coefficients: the
+sum annihilates frequencies not divisible by $q$.  Expanding the
+distributional Laurent series proves \eqref{mld:dil:multiplication}; the
+residue transforms as $\sum\tau_{j/q}(\delta_0-1)=\Delta_q-q$.
+
+Differentiate the pointwise multiplication formula $r$ times and then
+take ambient-coordinate constant terms.  Substitution of
+\eqref{mld:dil:scale-law} reduces the additional coefficient to
+\[
+ -\sum_{i=0}^n\binom ni(-L)^{n-i}c_{i,r}(L)
+ =n![z^{n+1}]p_r(z)(e^{-Lz}-1)=c_{n,r}(-L).
+\]
+This gives \eqref{mld:dil:derivative-multiplication}.
+\end{proof}
+
+\input{sections/05a-undilated}
+
+\subsection{Unequal integer dilations: the full Stieltjes theorem}
+Fix positive integers $p,q$, put
+\begin{equation}
+ d=\gcd(p,q),\qquad P=p/d,\qquad Q=q/d,\qquad
+ \theta=\{Pa\},\qquad 0<\theta<1.
+ \label{mld:dil:parameters}
+\end{equation}
+The last condition is exactly the condition that the singular grids of
+$\gamma_m(\{px\})$ and $\gamma_n(\{qx+a\})$ do not intersect.
+Indeed an intersection would give $qx+a\in\mathbb Z$ and
+$px\in\mathbb Z$, equivalently $Pa\in\mathbb Z$ since $(P,Q)=1$.
+Let
+\[
+ F_{mn}^{p,q}(\theta)
+ =\operatorname{FP}_x\int_0^1
+       \gamma_m(\{px\})\gamma_n(\{qx+a\})\,dx.
+\]
+The notation $\operatorname{FP}_x$ means the common ambient-coordinate
+constant term specified above. One may equivalently take a separate
+constant term in an independent ambient cutoff variable at each grid
+point. Replacing those variables by $c_j\epsilon$ and taking a single
+constant term would generally change the answer through local
+$\log c_j$ terms.
+
+We use the already established undilated correlation
+\[
+ I_{mn}(t)=\operatorname{FP}\int_0^1
+                  \gamma_m(x)\gamma_n(\{x+t\})\,dx,
+ \qquad 0<t<1.
+\]
+Its all-order single-Stieltjes closure and finite coefficient rule were
+recalled in Section~\ref{mld:dil:undilated-algorithm}.  The formulas needed below are
+\begin{align}
+ I_{00}(t)&=\gamma_1(t)+\gamma_1(1-t)-2\zeta(2),
+ \label{mld:dil:I00}\\
+ I_{10}(t)&=\tfrac12\gamma_2(t)+\gamma_2(1-t)
+        +\zeta(2)\{\gamma_0(t)+\gamma_0(1-t)\}-\zeta(3).
+ \label{mld:dil:I10}
+\end{align}
+For $M\ge1$ define a normalized trace polynomial
+\begin{equation}
+ A_n(M,t)=\sum_{j=0}^n\binom nj(-\log M)^{n-j}\gamma_j(t)
+                 -\frac{(-\log M)^{n+1}}{n+1}.
+ \label{mld:dil:trace-polynomial}
+\end{equation}
+In particular $A_0(M,t)=\gamma_0(t)+\log M$.
+The pointwise Hurwitz multiplication identity \cite[\S25.11]{DLMFhurwitz} proves
+\[
+ \frac1M\sum_{j=0}^{M-1}\gamma_n\!\left(\left\{u+\frac jM\right\}\right)
+                     =A_n(M,\{Mu\}),\qquad Mu\notin\mathbb Z.
+\]
+
+\begin{theorem}[Unequal-dilation Stieltjes closure]
+\label{mld:dil:full-stieltjes}
+Set $A=\log P$, $B=\log Q$, $L_p=\log p$, and $L_q=\log q$.
+For all $m,n\ge0$ and the parameters \eqref{mld:dil:parameters},
+\begin{align}
+ F_{mn}^{p,q}(\theta)={}&
+ \sum_{i=0}^m\sum_{j=0}^n\binom mi\binom nj
+             (-B)^{m-i}(-A)^{n-j}I_{ij}(\theta)\notag\\
+ &+\frac{(-B)^{m+1}-L_p^{m+1}}{m+1}A_n(P,\theta)
+  +\frac{(-A)^{n+1}-L_q^{n+1}}{n+1}A_m(Q,1-\theta)\notag\\
+ &+\frac{(-B)^{m+1}(-A)^{n+1}}{(m+1)(n+1)}.
+ \label{mld:dil:full-formula}
+\end{align}
+Thus every such product is a finite linear combination of single
+Stieltjes values at $\theta$ and $1-\theta$, with coefficients in the
+algebra generated over $\mathbb Q$ by the logarithms of $p,q,P,Q$ and
+positive integer zeta values.
+\end{theorem}
+
+\begin{proof}
+Let $C(s,t;\theta)$ be the ordinary translated Hurwitz correlation,
+initially for $\Re s,\Re t<1$.  Fourier orthogonality first in
+$\Re s,\Re t<0$ gives
+\begin{equation}
+ \int_0^1\zeta(s,\{px\})\zeta(t,\{qx+a\})\,dx
+                   =Q^{s-1}P^{t-1}C(s,t;\theta).
+ \label{mld:dil:frequency}
+\end{equation}
+Indeed the surviving frequency indices satisfy $pu+qv=0$, hence
+$u=Q\ell$, $v=-P\ell$; their translation factor is
+$e^{-2\pi i\ell Pa}$.  The two sides have the same meromorphic
+continuation after local endpoint subtraction.  The common divisor $d$
+does not occur in \eqref{mld:dil:frequency}, because ordinary integration is
+unchanged by a common covering.
+
+Put $\mathcal G(z,x)=\sum_{n\ge0}\gamma_n(x)z^n/n!$ and
+$\mathcal I(z,w;\theta)=\sum_{m,n\ge0}I_{mn}(\theta)z^mw^n/(m!n!)$.
+For distinct singular points the distributional Laurent series gives
+\begin{equation}
+ C(1-z,1-w;\theta)
+ =-\frac1{zw}+\frac{\mathcal G(w,\theta)}z
+                +\frac{\mathcal G(z,1-\theta)}w
+                +\mathcal I(z,w;\theta).
+ \label{mld:dil:C-Laurent}
+\end{equation}
+For example, the coefficient $-1/(zw)$ is the correlation of
+$\delta_0-1$ with its nontrivial translate.  Omitting it would change
+the final constant in \eqref{mld:dil:full-formula}.
+
+Multiply \eqref{mld:dil:C-Laurent} by $e^{-Bz-Aw}$ and extract
+$z^mw^n/(m!n!)$.  This computes the correlation of the \emph{true
+pullbacks} $U_pG_m$ and $G_n(qx+a)$.  Its value is the double sum in
+\eqref{mld:dil:full-formula}, plus
+\[
+ \frac{(-B)^{m+1}}{m+1}A_n(P,\theta)
+ +\frac{(-A)^{n+1}}{n+1}A_m(Q,1-\theta)
+ +\frac{(-B)^{m+1}(-A)^{n+1}}{(m+1)(n+1)}.
+\]
+The $r=0$ dilation law changes the first factor by
+$-L_p^{m+1}\Delta_p/(p(m+1))$.  Pairing this with the other factor
+gives $-L_p^{m+1}A_n(P,\theta)/(m+1)$: the grid values form $d$
+copies of a complete reduced $P$-grid.  The second factor contributes
+$-L_q^{n+1}A_m(Q,1-\theta)/(n+1)$ similarly.  The product of the two
+grid distributions vanishes, because their supports are disjoint.
+Their sum is \eqref{mld:dil:full-formula}.  The product and all coefficient
+extractions can be justified using a partition of unity separating the
+two singular grids: on each singular neighborhood the other factor is
+smooth, and elsewhere both factors are smooth.
+\end{proof}
+
+For example, if $p=2$, $q=1$, $\theta=\{2a\}\in(0,1)$ and
+$L=\log2$, \eqref{mld:dil:full-formula} gives the explicit new family member
+\begin{align}
+ \operatorname{FP}_x\int_0^1\gamma_1(\{2x\})\gamma_0(\{x+a\})\,dx
+ ={}&\tfrac12\gamma_2(\theta)+\gamma_2(1-\theta)
+        -L\gamma_1(1-\theta)\notag\\
+ &+\left(\zeta(2)-\tfrac12L^2\right)\gamma_0(\theta)
+        +\zeta(2)\gamma_0(1-\theta)-\zeta(3)-\tfrac12L^3.
+ \label{mld:dil:mixed-example}
+\end{align}
+
+\subsection{Every mixed parameter derivative}
+\begin{theorem}[Dilated differentiation and product integration]
+\label{mld:dil:all-derivatives}
+Let $N=r+k$ with $r,k,m,n\ge0$, and differentiate
+$F_{mn}^{p,q}$ in its displayed argument $\theta$.  Then
+\begin{align}
+ &\operatorname{FP}_x\int_0^1
+       \gamma_m^{(r)}(\{px\})\gamma_n^{(k)}(\{qx+a\})\,dx\notag\\
+ &=P^kQ^r\biggl\{
+       (-1)^r\frac{d^N}{d\theta^N}F_{mn}^{p,q}(\theta)
+       +(-1)^r b_{r,m}(L_p)\partial_\theta^N A_n(P,\theta)\notag\\
+ &\hspace{40mm}
+       +(-1)^k b_{k,n}(L_q)
+          \left.\partial_t^N A_m(Q,t)\right|_{t=1-\theta}
+               \biggr\}.
+ \label{mld:dil:all-derivative-formula}
+\end{align}
+The derivatives on the left are derivatives in the \emph{special-function
+argument}, not derivatives of the fractional-part map.
+\end{theorem}
+\begin{proof}
+Rewrite \eqref{mld:dil:commutator} as
+\[
+ X_{p,m,r}=p^{-r}D^rX_{p,m,0}
+          +p^{-r-1}b_{r,m}(L_p)\Delta_p^{(r)},
+\]
+and use the translated counterpart for the second factor.  Periodic
+integration by parts in the first product yields
+\[
+ p^{-r}q^{-k}\int(D^rX_{p,m,0})(D^kX_{q,n,0}(\,\cdot+a/q))
+ =(-1)^r(q/p)^r\partial_a^NF_{mn}^{p,q}(\{Pa\}).
+\]
+Since $\partial_a=P\partial_\theta$ on each noncollision interval,
+this is $(-1)^rP^kQ^r\partial_\theta^NF$.
+The first grid contact pairs with the smooth second factor and gives
+\[
+ (-1)^r(q/p)^r b_{r,m}(L_p)\frac1p
+       \sum_{j=0}^{p-1}\gamma_n^{(N)}(\{qj/p+a\})
+ =(-1)^rP^kQ^r b_{r,m}(L_p)\partial_\theta^NA_n(P,\theta).
+\]
+The second contact is the third term in
+\eqref{mld:dil:all-derivative-formula}.  The grid-grid term vanishes by
+disjointness.  The same separated partition of unity used in the
+preceding proof makes these integrations by parts valid.
+\end{proof}
+
+\subsection{A particularly short polygamma identity}
+Put $H_0=0$, $H_j=\sum_{\ell=1}^j1/\ell$ for $j\ge1$, and
+\[
+ K=\log\operatorname{lcm}(p,q).
+\]
+\begin{corollary}[All unequal-dilation polygamma correlations]
+\label{mld:dil:polygamma}
+For $N=r+k\ge1$,
+\begin{align}
+ &\operatorname{FP}_x\int_0^1
+         \psi^{(r)}(\{px\})\psi^{(k)}(\{qx+a\})\,dx\notag\\
+ &=N!P^kQ^r\biggl\{
+ (-1)^{k+1}\bigl[\zeta'(N+1,\theta)
+                 +(H_N-H_r+K)\zeta(N+1,\theta)\bigr]\notag\\
+ &\hspace{24mm}+(-1)^{r+1}\bigl[\zeta'(N+1,1-\theta)
+                 +(H_N-H_k+K)\zeta(N+1,1-\theta)\bigr]\biggr\}.
+ \label{mld:dil:polygamma-formula}
+\end{align}
+The two primes on the right denote first derivatives in the spectral
+variable of Hurwitz zeta.  The $r=k=0$ case is
+\begin{align}
+ &\operatorname{FP}_x\int_0^1\psi(\{px\})\psi(\{qx+a\})\,dx\notag\\
+ &=\gamma_1(\theta)+\gamma_1(1-\theta)
+       +K\{\psi(\theta)+\psi(1-\theta)\}
+       -\frac{\pi^2}{3}-K^2+\log p\log q.
+ \label{mld:dil:digamma-formula}
+\end{align}
+\end{corollary}
+\begin{proof}
+Apply \eqref{mld:dil:full-formula} with $m=n=0$.  Its logarithmic
+coefficient is $K=L_p+B=L_q+A$, and its constant simplifies using
+$AB-K(A+B)=-K^2+L_pL_q$.  This proves
+\eqref{mld:dil:digamma-formula}.  In
+\eqref{mld:dil:all-derivative-formula}, use $b_{r,0}=H_r$,
+$\gamma_0=-\psi$, and the pointwise identities
+\[
+ \psi^{(N)}(t)=(-1)^{N+1}N!\zeta(N+1,t),\qquad
+ \gamma_1^{(N)}(t)=(-1)^{N+1}N!
+       \{\zeta'(N+1,t)+H_N\zeta(N+1,t)\}.
+\]
+The two reflection signs are $(-1)^r$ and $(-1)^k$ before this
+conversion.  Simplification gives \eqref{mld:dil:polygamma-formula}.
+\end{proof}
+
+The least common multiple in the logarithm is forced by the local
+normalization.  For example, a common dilation $p=q=d$ leaves the
+ordinary spectral correlation unchanged, but its digamma finite part
+changes by $\log d\{\psi(\theta)+\psi(1-\theta)\}$.
+Discarding this term would confuse transported finite parts with
+ambient-coordinate finite parts.
+
+\begin{corollary}[Odd total derivative order at a half shift]
+If $\{Pa\}=1/2$ and $N=r+k$ is odd, then
+\begin{align}
+ &\operatorname{FP}_x\int_0^1
+       \psi^{(r)}(\{px\})\psi^{(k)}(\{qx+a\})\,dx\notag\\
+ &=N!P^kQ^r(-1)^{k+1}(H_k-H_r)
+                       (2^{N+1}-1)\zeta(N+1).
+ \label{mld:dil:half-odd}
+\end{align}
+In particular every such value is a rational multiple of
+$\pi^{N+1}$.  One unequal-dilation example is
+\begin{equation}
+ \operatorname{FP}_x\int_0^1
+       \psi(\{2x\})\psi'(\{3x+1/4\})\,dx=\pi^2.
+ \label{mld:dil:pi2-example}
+\end{equation}
+\end{corollary}
+\begin{proof}
+When $N$ is odd the two signs in \eqref{mld:dil:polygamma-formula} are
+opposite.  At $\theta=1/2$ the spectral derivatives, the $H_N$ terms,
+and the $K$ terms cancel pairwise.  The surviving harmonic difference
+multiplies $\zeta(N+1,1/2)=(2^{N+1}-1)\zeta(N+1)$.
+Since $N+1$ is even, Euler's even-zeta formula gives the last assertion.
+\end{proof}
+
+The same unequal pair at zero derivative order gives a different exact
+identity, now involving the ordinary first Stieltjes constant:
+\begin{align}
+ &\operatorname{FP}_x\int_0^1
+       \psi(\{2x\})\psi(\{3x+1/4\})\,dx\notag\\
+ &=2\gamma_1-2\gamma\log24-\frac{\pi^2}{3}
+       -7\log^22-5\log2\log3-\log^23.
+ \label{mld:dil:half-digamma-example}
+\end{align}
+This follows from \eqref{mld:dil:digamma-formula},
+$\psi(1/2)=-\gamma-2\log2$ and
+$\gamma_1(1/2)=\gamma_1-2\gamma\log2-\log^22$.
+
+\subsection{Ordinary convergent-integral realization}
+Every identity in Corollary~\ref{mld:dil:polygamma} can be written without
+a finite-part symbol.  Sort the two disjoint singular grids as
+$0=x_0<x_1<\cdots<x_{M-1}<1$, put $x_M=1$, and set
+$\ell_i=x_{i+1}-x_i$.  On each interval use the ordinary branches
+\[
+ f_i(t)=\psi^{(r)}(\alpha_i+pt)
+        \psi^{(k)}(\beta_i+qt),\qquad0<t<\ell_i,
+\]
+where $\alpha_i=\{px_i\}$ and $\beta_i=\{qx_i+a\}$, with the
+right-hand branch chosen at zero.  Exactly one of $\alpha_i,\beta_i$
+is zero.  If $\alpha_i=0$, set $v_i=r$ and
+\[
+ a_{ij}=\frac{(-1)^{r+1}r!q^j}{p^{r+1}j!}
+                       \psi^{(k+j)}(\beta_i),\quad0\le j\le r.
+\]
+If $\beta_i=0$, set $v_i=k$ and
+\[
+ a_{ij}=\frac{(-1)^{k+1}k!p^j}{q^{k+1}j!}
+                       \psi^{(r+j)}(\alpha_i),\quad0\le j\le k.
+\]
+Then the left side of \eqref{mld:dil:polygamma-formula}, including its
+$N=0$ counterpart, equals the ordinary absolutely convergent expression
+\begin{equation}
+ \sum_{i=0}^{M-1}\left[
+  \int_0^{\ell_i}\left\{f_i(t)
+               -\sum_{j=0}^{v_i}a_{ij}t^{j-v_i-1}\right\}\,dt
+  +a_{i,v_i}\log\ell_i
+  +\sum_{j=0}^{v_i-1}\frac{a_{ij}\ell_i^{j-v_i}}{j-v_i}
+                           \right].
+ \label{mld:dil:ordinary-realization}
+\end{equation}
+This follows by integrating the displayed singular monomials explicitly.
+The subtracted integrands are bounded at their left endpoints.  At the
+right endpoint the branch approaching one is used, so no singularity
+is introduced there.
+
+The independent numerical implementation uses precisely
+\eqref{mld:dil:ordinary-realization} on the left and
+\eqref{mld:dil:polygamma-formula}--\eqref{mld:dil:digamma-formula} on the right.
+Nine cases include unequal dilations, a nontrivial common divisor, and
+derivative orders up to $r+k=3$.  At $42$ decimal working digits the
+largest relative discrepancy is below $3.5\times10^{-39}$.  These are
+floating-point consistency checks of formulas proved above, not certified
+error enclosures or a substitute for the analytic argument.
+Three further independent subtracted-integral checks use positive
+Stieltjes indices $(m,n)=(1,0),(0,1),(1,1)$, the last with
+$(p,q)=(2,3)$.  At $28$ working digits their largest relative discrepancy
+is below $9\times10^{-29}$.

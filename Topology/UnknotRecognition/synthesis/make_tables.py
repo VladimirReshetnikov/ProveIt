@@ -1739,3 +1739,11 @@ if os.path.exists('data/window-geometry-benchmark.json'):
 if os.path.exists('data/disc-context-benchmark.json'):
     import runpy
     runpy.run_path('data/disc_context_tables.py')
+
+if os.path.exists('data/euler-aggregate-benchmark.json'):
+    import runpy
+    runpy.run_path('data/euler_aggregate_tables.py')
+
+if os.path.exists('data/generic-euler-benchmark.json'):
+    import runpy
+    runpy.run_path('data/generic_euler_tables.py')

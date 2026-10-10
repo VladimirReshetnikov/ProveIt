@@ -1,0 +1,109 @@
+\section{Scope, results, and relation to the source material}
+\label{sec:scope}
+
+This article continues two explicitly identified sources: the ProveIt
+polylogarithm manuscript and its incoming research directory
+\cite{proveit-manuscript,proveit-incoming}.  The repository was examined at
+commit \nolinkurl{fc4d3bf80534ad7c901d3b8c9e71baf2df0064ed}.  The five incoming
+ZIP reports dated 10 October 2026 are distinguished individually in the
+source manifest and in Section~\ref{sec:audit}.  Representative manuscript
+chapters and the relevant incoming sections were read for definitions,
+proof dependencies, and open questions.  This is a targeted mathematical
+audit, not a certification of every statement in the 417-page source
+manuscript.
+
+The source material already contains extensive one-factor differentiation
+and antiderivative formulas, unit-frequency bilinear Stieltjes closure,
+and log-Gamma correlations.  Repeating those as new discoveries would
+misstate the problem.  The most useful next steps are the exact behavior
+under unequal integer dilations, the first genuinely double-index
+correlation problem with three translated factors, and independent
+coefficient constructions joining harmonic series to Stieltjes constants.
+
+\subsection{Main outcomes}
+
+The following list describes what is proved, with the hypotheses that
+matter for integration into the repository.
+\begin{enumerate}
+\item \textbf{Two affine frequencies.}
+For $p=dP$, $q=dQ$, $\gcd(P,Q)=1$, and
+$c=\{Pb-Qa\}\ne0$, the entire ordinary two-factor Hurwitz family reduces
+to $Q^{s-1}P^{t-1}C(s,t;c)$.  All Stieltjes coefficients then reduce
+to finitely many $\gamma_j(c)$ and $\gamma_j(1-c)$.  The universal
+polynomial $n![z^{n+1}]e^{Lz}\prod_{j=1}^k(1-z/j)$ supplies every local
+scale and differentiation correction.  See Theorems~\ref{dil:master},
+\ref{dil:contact}, and~\ref{dil:allindices}.
+\item \textbf{Three translated singular factors.}
+When the three shifts are pairwise distinct, the spectral integral
+is the sum of six explicitly colored Tornheim kernels.  A holomorphic
+coefficient formula gives every finite-part triple Stieltjes product,
+and specialization gives three digammas and correlations of arbitrary
+normalized Stieltjes primitives.  See Theorems~\ref{thm:sixcone}
+and~\ref{thm:triple-jets}, and Corollary~\ref{cor:triple-primitives}.
+The coordinate class is proved; a reduction of every Tornheim jet to
+single-variable Stieltjes constants is not claimed.
+\item \textbf{Harmonic sums and their endpoint constants.}
+If $E_{n,r}$ is the elementary harmonic coefficient of depth $r$, then
+every convergent sum $\sum_nE_{n,r}R(n)$ with rational $R$ and permitted
+poles has an explicit finite Gamma-coefficient reduction.  A jointly
+holomorphic remainder at the moving pole determines the principal part
+and constant at every depth.  See Theorem~\ref{harm:thm:gamma-generating},
+Corollary~\ref{harm:cor:rational}, and
+Theorem~\ref{harm:thm:moving-pole}.
+\item \textbf{Gauss summation and all Stieltjes orders.}
+Subtracting the matching Hurwitz term from a gamma ratio gives a normally
+convergent series through zero balance.  Its arbitrary mixed parameter
+jets are finite Bell-polynomial expressions with the correct generalized
+Stieltjes term.  Further asymptotic subtractions give exact continuation
+and residue identities at each negative integer.  See
+Theorems~\ref{gs:master}, \ref{gs:spectral-jets}, and~\ref{gs:mixed-jets}.
+\item \textbf{Corrected harmonic conjectures.}
+A single two-parameter Gamma quotient proves all orders of the harmonic
+identities underlying Conjectures~4 and~6 in Choi's inspected 2014
+paper \cite{gs:Choi}.  It also corrects Corollary~5: the displayed
+right sides (41)--(46) have an extra factor two, and two harmonic-order
+misprints require repair.  See Theorem~\ref{gs:choi-master}.
+These are statements about the printed formulas, without any assertion
+that the corrected identities remained open in 2026.
+\end{enumerate}
+
+\subsection{What is classical, what is extended, and what remains open}
+
+The organizing tools are classical: the Hurwitz Fourier formula,
+Gamma reflection and Gauss summation, elementary harmonic generating
+functions, and Mellin continuation by Taylor subtraction
+\cite{dlmf-hurwitz,gs:DLMF}.  Mikol\'as's dilation formula, as recorded
+by Espinosa and Moll, is an antecedent to the frequency calculation
+\cite{espinosa-hurwitz}.  Their Tornheim work and the colored reductions
+of Zhao and Zhao--Zhou are relevant antecedents to the triple-product
+coordinate class \cite{espinosa-tornheim,zhao-colored,zhao-zhou}.
+The unshifted height-one Gamma generating function and harmonic
+Stieltjes constants likewise have a substantial existing literature
+\cite{harm:KanekoSakata,harm:Young2024,harm:Kargin2023}.
+
+The additions established here combine those tools with explicit shifts,
+all parameter orders, and stated finite-part coordinates, and prove the
+resulting formulas directly.  Such an exact extension can answer a
+repository research question even when its underlying method is
+classical.  No global novelty claim follows merely from not finding
+an identical formula in the reviewed sources.
+
+The surviving manuscript problems called S6 and S8 are not declared
+proved by this article.  Their narrower coefficient-algebra and
+function-class requirements are separate from an exact representation
+in a larger special-function class.  The same distinction applies to
+coincident singularities, unrestricted higher harmonic Stieltjes data,
+and arithmetic independence.  Section~\ref{sec:further} records these
+limits and concrete next questions.
+
+\subsection{Reading and integration order}
+
+Section~\ref{sec:conventions} fixes signs, Fourier phases, and the meaning
+of a finite part.  Sections~\ref{dil:section} and~\ref{sec:triple} form
+the periodic-correlation continuation.  The harmonic and Gauss sections
+can be read independently after the Stieltjes convention is fixed.
+The proofs use generating identities before coefficient extraction;
+this makes arbitrary orders reproducible without listing hundreds of
+special cases.  The accompanying Python programs implement exact
+coefficient arithmetic and independent numerical comparisons.  None of
+the analytic conclusions rests on floating-point agreement.

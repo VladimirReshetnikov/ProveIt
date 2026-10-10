@@ -1,0 +1,275 @@
+\section{Research status, corrections, and further questions}
+\label{mld:sec:research}
+
+\subsection{What the continuation settles}
+
+The main resolved question in the supplied incoming set concerns integer
+dilation and the choice of local subtraction coordinate. Theorem~
+\ref{mld:dil:scale-thm} gives the complete local correction, including every
+Stieltjes index and argument derivative. Equations~\eqref{mld:dil:full-formula}
+and \eqref{mld:dil:all-derivative-formula} then evaluate unequal-dilation
+products when the singular grids are disjoint. Their dependence on
+$\log\lcm(p,q)$ is explicit. These statements answer the integer-covering
+case of the rescaling question; a general nonlinear coordinate change
+is outside their scope.
+
+The exact locations are the further-research items on unequal dilations
+in \emph{Bilinear Closure of Generalized Stieltjes Correlations}
+\cite{IncomingClosure}, on dilation, traces and subtraction scale in
+\emph{Shifted Hurwitz-Zeta Correlations} \cite{IncomingShifted}, and on
+rescaling in \emph{A Convolution Calculus for Stieltjes Functions}
+\cite{IncomingCalculus}. The integration notes give the archive members
+and line locations in the pinned snapshot.
+
+The Mellin results are independent of that regularization problem.
+They give ordinary integrals with a uniform finite formula at arbitrary
+denominator order. The integer resonances, all their logarithmic moments,
+and the spectral derivatives in Section~\ref{mld:sec:jets} are proved
+identities. The harmonic reflection is likewise an identity of
+holomorphic functions and ordinary convergent series. Its even-weight
+unshifted coefficient evaluations have published antecedents
+\cite{XuWang}; the two-shift formulation is presented with a proof and
+without an unverified claim of historical priority.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.35\textwidth}Y@{}}
+\toprule
+Claim & Status after this work\\
+\midrule
+All-$N$ Mellin transform and integer resonances & Proved in
+Theorems~\ref{mld:thm:Mellin-master} and \ref{mld:thm:integer-resonance}.\\
+Shifted generalized-harmonic reflection & Proved in
+Theorem~\ref{mld:gh:thm:reflection}; scalar parity precedent credited.\\
+Integer-dilation finite parts and disjoint-grid products & Proved in
+Theorems~\ref{mld:dil:scale-thm}, \ref{mld:dil:full-stieltjes}, and
+\ref{mld:dil:all-derivatives}.\\
+Undilated Stieltjes closure and convolution & Already proved in the
+supplied incoming material; recalled as inputs.\\
+Gaussian $S_4$ evaluation & Already proved in the pinned manuscript;
+its status is unchanged.\\
+Current Gaussian $S_6$ and $S_8$ evaluations & Still conjectural.
+No equality follows from a small residual.\\
+Colliding unequal singular grids; nonlinear coordinate changes &
+Not treated by the new dilation theorem.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{The Gaussian conjectures and the missing parity component}
+
+The manuscript defines
+\[
+ S_p=\sum_{n\ge0}\frac{(-1)^nH_n}{(2n+1)^p},\qquad
+ g_{a,b}=\operatorname{Im}\Li_{a,b}(\ii,1),
+\]
+where
+$\Li_{a,b}(x,y)=\sum_{n>m\ge1}x^ny^m/(n^am^b)$ in its convergence
+region. Its proved translation is
+\[
+ S_p=\operatorname{Im}\bigl(\Li_{p,1}(\ii,1)
+                                  +\Li_{p,1}(\ii,-1)\bigr).
+\]
+The file \texttt{04-S4-proof.tex} supplies the exact $S_4$ certificate
+and a convergent octahedral relation. The current $S_6$ conjecture is in
+\texttt{04-cyclotomic-quotients.tex}; the current $S_8$ conjecture is in
+\texttt{04-S8-candidate.tex}. Their complete coefficient vectors and
+source labels are preserved in \texttt{integration/GAUSSIAN\_STATUS.md}.
+
+For specificity, the $S_6$ equality still to be proved is
+\begin{align}
+ S_6\stackrel{?}{={}}&\frac{722}{527}g_{6,1}
+  +\frac{40}{527}g_{4,3}-\frac{128}{155}g_{2,5}
+  +\frac{15191}{28569600}\pi^7\notag\\
+ &-\frac3{124}\beta(2)\zeta(5)
+  -\frac{2373}{10540}\beta(4)\zeta(3)-2\beta(6)\log2.
+ \label{mld:eq:S6-open}
+\end{align}
+The manuscript also proves a change of coordinates between two
+presentations of this candidate. That identity equates two residual
+expressions; it does not show that either residual is zero.
+
+The obstruction to proving \eqref{mld:eq:S6-open} by the reflection obtained
+here is exact. Its Taylor coefficient is
+\[
+ [z^{p-1}u^{r-1}]\{A(z,u)+A(-z,-u)\}
+           =(1+(-1)^{p+r})Q_{p,r}.
+\]
+Since $S_6=Q_{6,1}$ and $S_8=Q_{8,1}$ have total weights $7$ and $9$,
+their coefficients vanish in this projection. The same is true of the
+weight-$5$ $S_4$ value: its known proof uses additional functional
+information. Further differentiation of the same even projection
+does not recover its absent Taylor coefficients. A successful extension
+must control the complementary function
+$A(z,u)-A(-z,-u)$ or produce an independent relation among the required
+mixed-color periods.
+
+The separating functional already exhibited in the manuscript rules out
+a particular restricted row-span certificate for the $S_6$ candidate.
+It does not rule out the identity itself. Similarly, a formal quotient
+dimension does not prove arithmetic independence of the numerical
+periods. These distinctions are retained throughout this continuation.
+
+\subsection{Audit findings and concrete integration corrections}
+
+No new false mathematical statement was found in the sampled pinned
+Gaussian claims or the incoming correlation identities used here.
+Several concrete reconciliations are nevertheless needed when the
+packages are integrated.
+
+\begin{enumerate}[label=\arabic*.]
+\item \textbf{Reconcile the open-question lists.}
+The Closure report's questions about undilated parameter derivatives and
+associative convolution are answered in the current Shifted Hurwitz and
+Convolution packages. Their entries should point to those results.
+The integer-dilation questions should point to the present scale and
+product theorems, with disjointness and ambient normalization stated.
+
+\item \textbf{Keep the two dilation operations distinct.}
+The replacement $X_{q,n,r}=U_qT_{n,r}$ would omit
+\eqref{mld:dil:scale-law}. A simple exact diagnostic is
+\[
+ \langle U_qG_0,1\rangle=0,\qquad
+ \langle X_{q,0,0},1\rangle=-\log q.
+\]
+Thus they already differ at zero Stieltjes index and zero derivative
+order. This corrects a possible naive extension of the incoming formulas;
+it does not assert that the supplied undilated theorem made that error.
+
+\item \textbf{State the cutoff variable in derivative identities.}
+The valid undilated assertion $h_{r,n}=0$ for $n\ge r$ cannot be copied
+unchanged into a theorem about a fixed ambient scale. For example,
+\[
+ DX_{q,1,0}=qX_{q,1,1}-\frac{\log q}{q}\Delta_q'.
+\]
+A separate constant term in each local variable has the canonical
+normalization used here. Rescaling those variables before one common
+constant-term extraction changes it.
+
+\item \textbf{Retain resonance values before simplifying factors.}
+At integer spectral parameters, use the analytic germ
+\eqref{mld:eq:cancelled-zeta-germ}. The equality $F_0(1)=1$ is responsible
+for the $-1/4$ and $-3/4$ higher-pole examples. Dropping a factor that
+vanishes next to a zeta pole is not a valid simplification.
+
+\item \textbf{Preserve the existing conjecture and error history.}
+The present $S_8$ candidate is different from the earlier vector already
+rejected in \texttt{10-discovery.tex}. The mixed-color symmetry
+counterexample is already recorded in \texttt{04-depth.tex}.
+These are existing corrections, not new discoveries of this audit.
+The generalized-harmonic family $Q_{p,r}$ should also retain its own
+notation, since the manuscript's $S_{p,r}$ uses elementary symmetric
+harmonic sums.
+\end{enumerate}
+
+\subsection{Proposed research programme}
+
+The following questions seek exact identities or structural reductions.
+They are research questions, not conjectures inferred from a few
+numerical samples. The first three are the most immediate next steps.
+
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=2.7em]
+\item \textbf{The missing Gaussian projection.}
+Find a functional equation or convergent iterated-integral relation that
+determines the weight-$7$ and weight-$9$ coefficients of
+$A(z,u)-A(-z,-u)$. A concrete success criterion is an exact zero
+certificate for \eqref{mld:eq:S6-open}, followed by the current $S_8$ vector.
+The known $S_4$ octahedral seed suggests testing genuinely new functional
+relations before enlarging a numerically fitted coefficient basket.
+
+\item \textbf{Colliding unequal dilations.}
+Extend the ambient-coordinate product theorem to $Pa\in\Z$. There the
+partition separating the two singular grids fails, and the product
+contains higher singular powers at the common points. Derive the full
+local subtraction polynomial and compare its finite value with the
+collision expansion of \eqref{mld:dil:full-formula}. The already known
+undilated coincident closure is a boundary case and a normalization
+check, not a solution of every unequal-grid configuration.
+
+\item \textbf{Nonlinear changes of local coordinate.}
+Replace $qt$ near a singularity by an analytic map
+$f(t)=qt+c_2t^2+\cdots$, $q>0$. Determine the finite combination of
+delta derivatives that converts pullback into ambient finite part for
+every $\gamma_n^{(r)}$. The linear coefficient must recover
+$c_{n,r}(\log q)$; higher coefficients should be computable from finite
+Taylor and Bell-polynomial algebra. The goal is a proved composition
+law for the full local correction.
+
+\item \textbf{Three translated or dilated factors.}
+For three pairwise disjoint singular grids, determine the spectral
+generating kernel of the product of three Hurwitz or Stieltjes
+functions. Fourier orthogonality leaves a two-dimensional frequency
+constraint. Identify which double Hurwitz sums or multiple
+polylogarithms survive, and derive the first nontrivial exact Stieltjes
+coefficient formulas. Do not assume the bilinear single-Stieltjes
+closure persists at degree three.
+
+\item \textbf{Complete primitive calculus for dilated products.}
+Insert the finite closure into the anchored Hurwitz-jet primitive
+ladder to construct explicit primitives in the shift $a$ on every
+noncollision interval. Then determine the matching constants when
+crossing a collision point in a specified finite-part convention.
+This would connect local exact integration with a global periodic
+distribution statement.
+
+\item \textbf{Character-weighted dilation and multiplication.}
+Replace the unweighted trace by Dirichlet-character weights on the
+finite covering. Determine how the local correction interacts with
+the character's zero mode, and express the resulting correlations in
+Dirichlet $L$-jets. The residue-class trace polynomial
+\eqref{mld:dil:trace-polynomial} supplies the unweighted test case.
+
+\item \textbf{Rational-shift harmonic identities beyond a reflection.}
+Combine the two-shift theorem with recurrences in its inner and outer
+shifts. Determine which finite combinations of individual shifted
+harmonic sums admit depth-one cyclotomic expressions, rather than only
+their reflected pairs. A useful first classification fixes small
+denominators in $u$ and $z$ and records exact functional certificates.
+
+\item \textbf{Mellin kernels with noninteger denominator order.}
+Replace $N$ in $(1+x)^{-N}$ by a complex parameter. Find a spectral
+representation that specializes to the finite polynomial operator at
+positive integers, and determine exactly when a finite ordinary-
+polylogarithm closure survives. Hypergeometric or generalized Lerch
+functions are natural intermediate objects, but their branch and
+resonance conventions must be derived from the convergent integral.
+
+\item \textbf{Complex poles and contour rotation.}
+Extend Corollary~\ref{mld:cor:rational-kernel} to rational kernels with
+nonreal poles. Track the residue terms when a rotated integration ray
+crosses a polylogarithm cut. The target is an exact continuation formula
+that reduces to the positive-real scaling law when every pole lies on
+the negative real axis.
+
+\item \textbf{Products of polylogarithms under the Mellin kernel.}
+Study
+\[
+ \int_0^\infty \frac{x^{a-1}\Li_s(-zx)\Li_t(-wx)}{(1+x)^N}\dd x
+\]
+where ordinary convergence holds. Decide whether integer Mellin
+parameters lead to a finite multiple-polylogarithm algebra, and identify
+the minimal depth forced by two independent arguments. The one-factor
+integer table gives exact boundary cases and a recurrence in $N$.
+
+\item \textbf{Compatibility of the two harmonic coefficient calculi.}
+Both cancelled zeta poles and dilation corrections involve
+$\prod_j(1-u/j)$, whereas repeated anchored primitives involve its
+reciprocal. Formulate and prove a finite algebra connecting these
+operations, including derivative--primitive commutators and their
+integration polynomials. This could reduce duplicated coefficient
+calculations across the manuscript.
+
+\item \textbf{Exact certificates and formal verification.}
+Encode the polynomial recurrences, the scale composition law, and the
+integer moment table as exact certificates with stable normalization
+metadata. A proof-assistant development could then isolate the finite
+algebra from the analytic tasks of dominated parameter differentiation,
+meromorphic continuation, and distributional pullback. Numerical
+agreement alone should not change theorem status.
+\end{enumerate}
+
+These questions are constrained by the proved formulas: each has a
+specified base case, normalization, or missing component to resolve.
+They also preserve the main distinction of this article: ordinary
+polylogarithmic integrals, finite harmonic reductions, and normalized
+distribution products are connected by exact operations, but are not
+interchangeable without their hypotheses.

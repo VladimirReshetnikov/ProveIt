@@ -1,0 +1,778 @@
+\section{Conventions and endpoint normalization}\label{shj:conventions}
+Throughout,
+\[
+0<a<1,\qquad b=1-a,\qquad \ell=\log(2\pi),\qquad
+\kappa=\gamma+\ell,\qquad B_2(a)=a^2-a+\frac16.
+\]
+The fractional part $\{x+a\}$ is interpreted periodically; its value at the single jump point does not affect ordinary integrals. The notation
+\[
+\zeta^{[j]}(s,x)=\partial_s^j\zeta(s,x),\qquad
+\Li_s^{[j]}(z)=\partial_s^j\Li_s(z)
+\]
+always means \emph{spectral} differentiation. In contrast, $\gamma_m^{(r)}(x)$ and $\psi^{(r)}(x)$ mean derivatives in the real argument. Euler's constant is $\gamma=\gamma_0(1)$, not a new parameter.
+
+The generalized Stieltjes constants are normalized by
+\begin{equation}\label{shj:laurent}
+\zeta(1+u,x)=\frac1u+R(u,x),\qquad
+R(u,x)=\sum_{m\ge0}\frac{(-1)^m}{m!}\gamma_m(x)u^m.
+\end{equation}
+Thus $\gamma_0(x)=-\psi(x)$. The Hurwitz shift identity gives the exact local decomposition
+\begin{equation}\label{shj:localgamma}
+\gamma_m(x)=\frac{\log^m x}{x}+\gamma_m(1+x),\qquad x>0.
+\end{equation}
+Every logarithm of a positive real argument is the real logarithm. For $z=e^{2\pi\iu a}\ne1$, $\Li_s(z)$ and $\Li_s(z^{-1})$ denote their usual boundary values from the unit disk, continued in $s$; these are entire in $s$. For real $s$ they are conjugate, but we retain them separately when $s$ is complex.
+
+\begin{definition}[Canonical shifted Stieltjes finite part]\label{shj:defJ}
+For nonnegative integers $m,n$, define
+\begin{align}
+J_{mn}(a)=\lim_{\epsilon\downarrow0}\bigg\{&
+\int_\epsilon^b\gamma_m(x)\gamma_n(x+a)\dd x
++\int_\epsilon^a\gamma_m(b+t)\gamma_n(t)\dd t\notag\\
+&+\frac{\gamma_n(a)}{m+1}\log^{m+1}\epsilon
++\frac{\gamma_m(b)}{n+1}\log^{n+1}\epsilon\bigg\}.
+\label{shj:Jcutoff}
+\end{align}
+Equivalently, this is denoted
+$\FP\int_0^1\gamma_m(x)\gamma_n(\{x+a\})\dd x$.
+\end{definition}
+The two cutoffs can tend to zero independently: each counterterm belongs to its own local endpoint. The coordinates are exactly $x$ and $t=x-b$, with no rescaling or additional subtraction length. A different finite-part convention can change local constants and therefore change the identities.
+
+\begin{lemma}[Existence and an ordinary-integral version]\label{shj:Jexists}
+The limit \eqref{shj:Jcutoff} exists and is equivalent to
+\begin{align}
+J_{mn}(a)={}&\int_0^b\left[
+\gamma_m(x)\gamma_n(x+a)-\gamma_n(a)\frac{\log^m x}{x}\right]\dd x\notag\\
+&+\int_0^a\left[
+\gamma_m(b+t)\gamma_n(t)-\gamma_m(b)\frac{\log^n t}{t}\right]\dd t\notag\\
+&+\frac{\gamma_n(a)}{m+1}\log^{m+1}b
++\frac{\gamma_m(b)}{n+1}\log^{n+1}a.
+\label{shj:Jregular}
+\end{align}
+Both integrals on the right are ordinary improper integrals. Moreover,
+$J_{mn}(a)=J_{nm}(1-a)$.
+\end{lemma}
+\begin{proof}
+By \eqref{shj:localgamma}, subtracting the singular term in the first integral leaves $O(1+|\log x|^m)$ near zero: the other factor differs from $\gamma_n(a)$ by $O(x)$. The second integral has the same property. Integrating $\log^m x/x$ explicitly yields \eqref{shj:Jregular}. Interchanging the two pieces and replacing $a$ by $b$ proves the symmetry.
+\end{proof}
+We use analogous finite parts for polygamma and derivative products: expand each smooth factor at the distinct singular point, integrate the resulting powers and logarithms, and retain the constant term after deleting all divergent cutoff terms. Section~\ref{stconv:sec:contact} makes this prescription precise through periodic distributions.
+
+\section{The shifted Hurwitz correlation}\label{shj:master}
+\begin{proposition}[Classical Fourier method, shifted form]\label{shj:masterthm}
+For $\Re s<1$, $\Re t<1$, define the ordinary integral
+\begin{equation}\label{shj:Cdef}
+C(s,t;a)=\int_0^1\zeta(s,x)\zeta(t,\{x+a\})\dd x.
+\end{equation}
+It is jointly holomorphic in this domain. Put $w=2-s-t$ and $z=e^{2\pi\iu a}$. Then
+\begin{align}
+C(s,t;a)=\frac{\Gamma(1-s)\Gamma(1-t)}{(2\pi)^w}
+\bigg[&e^{-\pi\iu(s-t)/2}\Li_w(z)\notag\\
+&+e^{\pi\iu(s-t)/2}\Li_w(z^{-1})\bigg].
+\label{shj:Cpoly}
+\end{align}
+It also has the meromorphic representation
+\begin{align}
+C(s,t;a)={}&B(1-s,s+t-1)\zeta(s+t-1,a)\notag\\
+&+B(1-t,s+t-1)\zeta(s+t-1,b).
+\label{shj:Cbeta}
+\end{align}
+At exceptional arguments of the beta factors, the \emph{sum} in \eqref{shj:Cbeta} is continued before evaluation. Apparent poles of separate summands need not be poles of $C$.
+\end{proposition}
+\begin{proof}
+Split the integral at $b$. At $x=0$ only the first factor is singular and has the form $x^{-s}$ plus a smooth function. At $x=b+$ only the second factor is singular. Compact subsets of $\Re s<1$, $\Re t<1$ therefore admit integrable dominating functions, including arbitrary spectral derivatives, because powers of $|\log x|$ remain integrable against $x^{-\sigma}$ for $\sigma<1$. This proves convergence and holomorphy. There is no additional condition $\Re(s+t)<1$ for a nonzero shift.
+
+For $\Re s<0$, the Hurwitz Fourier expansion \cite[Eq.~25.11.9]{intdist:DLMFHurwitz} is absolutely convergent and its nonzero coefficients are
+\begin{equation}\label{shj:fouriercoef}
+\widehat\zeta_s(k)=\Gamma(1-s)(2\pi|k|)^{s-1}
+\exp\!\left(-\frac{\pi\iu}{2}(1-s)\sgn k\right),\qquad k\ne0.
+\end{equation}
+The zero coefficient vanishes. For $\Re s,\Re t<0$, multiply the two absolutely convergent series and integrate. Orthogonality gives
+\[
+C(s,t;a)=\sum_{k\ne0}\widehat\zeta_s(k)\widehat\zeta_t(-k)e^{-2\pi\iu ka}.
+\]
+The positive and negative frequencies give exactly \eqref{shj:Cpoly}. Both sides are holomorphic on the larger connected domain stated in the proposition; the identity theorem extends the equality there.
+
+To obtain \eqref{shj:Cbeta}, apply the same Fourier formula to $\zeta(1-w,a)$ and $\zeta(1-w,b)$, initially away from gamma poles. Euler reflection gives
+$\Gamma(w)\Gamma(1-w)=\pi/\sin\pi w$ and
+$1/\Gamma(t)=\Gamma(1-t)\sin\pi t/\pi$.
+The coefficient of $\Li_w(z)$ reduces using
+\[
+\frac{\sin(\pi t)e^{-\pi\iu w/2}+\sin(\pi s)e^{\pi\iu w/2}}
+{\sin(\pi w)}=e^{-\pi\iu(s-t)/2},\qquad w=2-s-t.
+\]
+The other coefficient is obtained by reversing the phase. This proves equality on an open set and hence meromorphically everywhere.
+\end{proof}
+
+\begin{corollary}[All ordinary spectral-jet correlations]\label{shj:ordinaryjets}
+For integers $p,q\ge0$ and $\Re s,\Re t<1$,
+\[
+\int_0^1\zeta^{[p]}(s,x)\zeta^{[q]}(t,\{x+a\})\dd x
+=\partial_s^p\partial_t^q C(s,t;a).
+\]
+Thus \eqref{shj:Cpoly} generates ordinary identities at nonpositive spectral integers, while continuation of \eqref{shj:Cbeta} generates finite-part identities at positive integers.
+\end{corollary}
+\begin{proof}
+Differentiate under the integral using the compact domination established above. The formulas on the right are finite applications of the product and chain rules.
+\end{proof}
+The distinction between nonzero and zero shifts is essential. At $a=0$, the singularities coincide and the original convergence region changes to include a constraint on $s+t$. One must not substitute $a=0$ directly into a separated-singularity finite-part formula. The continuous ordinary log-gamma correlation will have a legitimate limit at zero, but that is a different assertion.
+
+
+\begin{proposition}[Coefficient extraction at the double pole]\label{shj:Jcoefficient}
+For $a\in(0,1)$,
+\begin{equation}\label{shj:JfromC}
+J_{mn}(a)=(-1)^{m+n}m!n![u^m v^n]C(1+u,1+v;a).
+\end{equation}
+The brackets mean the regular Laurent coefficient at the specified bidegree. In particular, the double-pole coefficient is $-1/(uv)$, not $1/(uv)$.
+\end{proposition}
+\begin{proof}
+Write $Z_s=Z(s)$ for the periodic family of
+Lemma~\ref{stconv:lem:Laurentdist}. Its raising-parameter expansion is
+\begin{equation}\label{shj:Zlaurent}
+ Z_{1+u}=-\stconvId/u+\sum_{m\ge0}(-1)^mG_m u^m/m!.
+\end{equation}
+The singular supports of $Z_{1+u}(x)$ and $Z_{1+v}(x+a)$ are $0$ and $b$, which are distinct. Choose disjoint neighborhoods of these points and a smooth partition of unity. On each neighborhood only one factor is a distribution and the other is smooth, so their product and integral are defined without any product of distributions at a common singularity. This gives the meromorphic continuation of the original integral.
+
+The product of the regular coefficients in \eqref{shj:Zlaurent}, integrated with this partition, is exactly \eqref{shj:Jcutoff}. The pole terms give
+\begin{align}
+C(1+u,1+v;a)={}&-\frac1{uv}-\frac{R(v,a)}u-\frac{R(u,b)}v\notag\\
+&+\sum_{m,n\ge0}\frac{(-1)^{m+n}}{m!n!}J_{mn}(a)u^mv^n.
+\label{shj:fullLaurent}
+\end{align}
+The integrated product of $1-\delta_0$ and $1-\delta_b$ is $1-1-1=-1$ away from $a=0$, and each $G_m$ has mean zero. This proves the statement.
+\end{proof}
+
+\begin{corollary}[Polylogarithmic generator]\label{shj:polygen}
+Set $E(u)=\Gamma(1-u)(2\pi)^u$ and
+\begin{align}
+\mathcal H(u,v;a)=E(u)E(v)\big[&e^{-\pi\iu(u-v)/2}\Li_{-u-v}(z)\notag\\
+&+e^{\pi\iu(u-v)/2}\Li_{-u-v}(z^{-1})\big].
+\label{shj:H}
+\end{align}
+Then
+\begin{equation}\label{shj:Jpoly}
+J_{mn}(a)=(-1)^{m+n}m!n![u^{m+1}v^{n+1}]\mathcal H(u,v;a).
+\end{equation}
+\end{corollary}
+\begin{proof}
+In \eqref{shj:Cpoly}, set $s=1+u$, $t=1+v$ and use $\Gamma(-u)=-\Gamma(1-u)/u$. Thus $C=\mathcal H/(uv)$, and \eqref{shj:JfromC} applies.
+\end{proof}
+This representation explains how polylogarithm \emph{order derivatives}, rather than only argument derivatives, enter the exact Stieltjes product calculus.
+
+\section{An all-order linear Stieltjes closure theorem}\label{shj:closure}
+The beta representation is particularly effective near $(s,t)=(1,1)$. Define
+\begin{equation}\label{shj:AandT}
+A(u,v)=\frac{\Gamma(1-u)\Gamma(1+u+v)}{\Gamma(1+v)},
+\qquad T(u,v)=\frac{A(u,v)-1}{u(u+v)}.
+\end{equation}
+The apparent singularities in $T$ are removable: $A(0,v)=1$ and $A(u,-u)=1$. Its Taylor coefficients belong to the polynomial algebra generated by positive integer zeta values. More explicitly,
+\begin{equation}\label{shj:logA}
+\log A(u,v)=\sum_{k\ge2}\frac{\zeta(k)}k
+\left[u^k+(-1)^k\big((u+v)^k-v^k\big)\right].
+\end{equation}
+Euler's constant cancels identically. This series converges in a neighborhood of the origin; it can also be used as an exact formal power series.
+
+\begin{theorem}[All-index finite-part closure]\label{shj:closurethm}
+Let $m,n\ge0$ and $d=m+n$. Define the analytic germ
+\begin{align}
+\mathcal F(u,v;a)={}&T(u,v)+T(v,u)\notag\\
+&+(u+v)\big[T(u,v)R(u+v,a)+T(v,u)R(u+v,b)\big].
+\label{shj:Fclosure}
+\end{align}
+Then
+\begin{equation}\label{shj:closureformula}
+\boxed{\displaystyle
+J_{mn}(a)=\frac{\gamma_{d+1}(a)}{m+1}
++\frac{\gamma_{d+1}(b)}{n+1}
+-(-1)^d m!n![u^m v^n]\mathcal F(u,v;a).}
+\end{equation}
+Every coefficient is obtained by a finite calculation. Apart from the two leading terms displayed explicitly, the right side contains only $\gamma_j(a)$ and $\gamma_j(b)$ with $0\le j\le d-1$, and a constant term. Its coefficients lie in
+$\Q[\zeta(2),\ldots,\zeta(d+2)]$.
+There are no products of generalized Stieltjes functions and no term involving $\gamma_d$.
+\end{theorem}
+\begin{proof}
+Since $B(-u,1+u+v)=-A(u,v)/u$, equation \eqref{shj:Cbeta} becomes
+\begin{equation}\label{shj:Cnear}
+C(1+u,1+v;a)=-\frac{A(u,v)}u\zeta(1+u+v,a)
+-\frac{A(v,u)}v\zeta(1+u+v,b).
+\end{equation}
+Substitute $A(u,v)=1+u(u+v)T(u,v)$ and the Laurent expansion \eqref{shj:laurent}. The result is
+\begin{equation}\label{shj:Csplit}
+C(1+u,1+v;a)=-\frac1{uv}
+-\frac{R(u+v,a)}u-\frac{R(u+v,b)}v-\mathcal F(u,v;a).
+\end{equation}
+Here the apparent diagonal pole at $u+v=0$ has canceled exactly.
+
+The regular coefficient of $-R(u+v,a)/u$ at $u^mv^n$ is
+\[
+-\frac{(-1)^{d+1}\gamma_{d+1}(a)}{(d+1)!}
+\binom{d+1}{m+1}
+=\frac{(-1)^d\gamma_{d+1}(a)}{(m+1)!n!}.
+\]
+The other term similarly contributes
+$(-1)^d\gamma_{d+1}(b)/(m!(n+1)!)$.
+Now apply \eqref{shj:JfromC} to get \eqref{shj:closureformula}.
+
+To obtain a coefficient of total degree $d$ in $T$, only terms of total degree at most $d+2$ in $A$ are required. Formula \eqref{shj:logA} proves the asserted zeta coefficient algebra. In the product $(u+v)TR$, a Stieltjes index $j$ occupies degree $j+1$ before multiplication by $T$, so $j\le d-1$. All appearances of $R$ are linear. These observations prove the remaining claims.
+\end{proof}
+
+\begin{corollary}[Formal weight conservation]\label{shj:weight}
+Assign weight $j+1$ to $\gamma_j(a)$ and $\gamma_j(b)$ and weight $k$ to $\zeta(k)$. Every monomial in \eqref{shj:closureformula} has weight $m+n+2$.
+\end{corollary}
+\begin{proof}
+The degree-$k$ component of $\log A$ has coefficient weight $k$. Thus a coefficient of total degree $r$ in $T$ has weight $r+2$. A contribution from $(u+v)TR$ to total degree $d$ has $r+j+1=d$ and weight $(r+2)+(j+1)=d+2$. The leading Stieltjes terms have the same weight.
+\end{proof}
+This is a grading of the displayed symbolic algebra, not a theorem that the evaluated constants have no additional relations.
+
+\subsection{The first four nontrivial identities}
+The beginning of the universal kernel is
+\begin{equation}\label{shj:Tstart}
+T(u,v)=\zeta(2)-\zeta(3)v
++\frac{\zeta(4)+\zeta(2)^2}{2}(u^2+uv)
++\zeta(4)v^2+O((|u|+|v|)^3).
+\end{equation}
+Write $S_j(a)=\gamma_j(a)+\gamma_j(b)$. Coefficient extraction gives
+\begin{align}
+J_{00}(a)&=S_1(a)-2\zeta(2),\label{shj:J00}\\
+J_{10}(a)&=\tfrac12\gamma_2(a)+\gamma_2(b)
++\zeta(2)S_0(a)-\zeta(3),\label{shj:J10}\\
+J_{11}(a)&=\tfrac12 S_3(a)+2\zeta(2)S_1(a)+\zeta(3)S_0(a)
+-\zeta(4)-\zeta(2)^2,\label{shj:J11}\\
+J_{20}(a)&=\tfrac13\gamma_3(a)+\gamma_3(b)+2\zeta(2)S_1(a)
++2\zeta(3)\gamma_0(b)\notag\\
+&\hspace{2cm}-3\zeta(4)-\zeta(2)^2.\label{shj:J20}
+\end{align}
+These are exact analytic identities under Definition~\ref{shj:defJ}, not conjectured PSLQ relations. The asymmetric coefficients in $J_{10}$ and $J_{20}$ are necessary; exchanging $a$ and $b$ exchanges the two Laurent indices.
+
+Because $\gamma_0=-\psi$, the first identity takes the particularly simple form
+\begin{equation}\label{shj:psipsi}
+\FP\int_0^1\psi(x)\psi(\{x+a\})\dd x
+=\gamma_1(a)+\gamma_1(b)-\frac{\pi^2}{3}.
+\end{equation}
+An equivalent identity containing only ordinary integrals is
+\begin{align}
+&\int_0^b\left[\psi(x)\psi(x+a)+\frac{\psi(a)}x\right]\dd x
++\int_0^a\left[\psi(b+t)\psi(t)+\frac{\psi(b)}t\right]\dd t\notag\\
+&\qquad=\gamma_1(a)+\gamma_1(b)-\frac{\pi^2}{3}
++\psi(a)\log b+\psi(b)\log a.
+\label{shj:psipsireg}
+\end{align}
+The endpoint singularities cancel inside each bracket. This version is useful when a conventional improper integral is preferable to distribution notation.
+
+\subsection{A finite exact coefficient algorithm}
+For target total index $d$, truncate \eqref{shj:logA} at degree $d+2$. Exponentiate by
+\[
+A=\sum_{j=0}^{\lfloor(d+2)/2\rfloor}\frac{(\log A)^j}{j!}
+\pmod{\text{total degree}>d+2}.
+\]
+Exact polynomial division of $A-1$ by $u(u+v)$ has zero remainder. Let
+$T(u,v)=\sum t_{ij}u^iv^j$. The correction coefficient needed in \eqref{shj:closureformula} is
+\begin{align}
+[u^mv^n]\mathcal F={}&t_{mn}+t_{nm}\notag\\
+&+\sum_{\substack{i\le m,\ j\le n\\k=d-i-j-1\ge0}}
+ t_{ij}\frac{(-1)^k}{k!}\binom{k+1}{m-i}\gamma_k(a)\notag\\
+&+\sum_{\substack{j\le m,\ i\le n\\k=d-i-j-1\ge0}}
+ t_{ij}\frac{(-1)^k}{k!}\binom{k+1}{m-j}\gamma_k(b).
+\label{shj:coefficientalgorithm}
+\end{align}
+Only polynomial arithmetic over rational numbers and formal zeta symbols is used. The implementation does not perform floating-point relation recognition. Exact divisibility, reflection symmetry, linearity, and weight conservation provide independently checkable invariants of the generated formulas.
+
+
+\providecommand{\scollCoeff}[1]{[#1]}
+For the collision comparison, write the already proved linear closure as
+\[
+ J_{mn}(a)=e_{mn}+\sum_j(c_{mn,j}\gamma_j(a)+d_{mn,j}\gamma_j(b)).
+\]
+Use the local germs $\mathcal A(u,v)=A(v,u)$ and
+$\mathcal B(u,v)=A(u,v)$ from \eqref{shj:AandT}, and put $w=u+v$.
+The beta formula then reads
+\begin{equation}\label{scoll:eq:kernel}
+ K(u,v;a):=uv C(1+u,1+v;a)
+ =-u\mathcal A(u,v)\zeta(1+w,b)-v\mathcal B(u,v)\zeta(1+w,a).
+\end{equation}
+Put $Q(u,v)=(u\mathcal A+v\mathcal B)/w$. Its numerator is divisible by $w$:
+both germs equal one at $v=-u$. This removes the apparent diagonal
+pole and supplies the finite coefficient construction used below.
+\section{Coincident endpoints and canonical collision subtraction}
+\label{scoll:sec:coincident}
+
+A translated correlation has two separated logarithmic endpoint
+divergences. At zero translation they merge into an additional
+$x^{-2}$ singularity. We now show that the same coefficient table still
+applies, but only after the merged singularity is subtracted explicitly.
+
+For an integer $r\ge0$, put
+\begin{equation}
+ E_r(L)=\sum_{k=0}^r\frac{r!}{k!}L^k.
+ \label{scoll:eq:E-polynomial}
+\end{equation}
+The identity $E_r-E_r'=L^r$ implies
+\begin{equation}
+ \int_\epsilon^1\frac{\log^r x}{x^2}\dd x
+ =\frac{E_r(\log\epsilon)}{\epsilon}-r!.
+ \label{scoll:eq:double-endpoint}
+\end{equation}
+
+\begin{definition}[Coincident-endpoint finite part]
+\label{scoll:def:J}
+Write $\gamma_j=\gamma_j(1)$ and define
+\begin{align}
+ J_{mn}^{\mathrm{coll}}=\lim_{\epsilon\downarrow0}\biggl\{
+ &\int_\epsilon^1\gamma_m(x)\gamma_n(x)\dd x
+       -\frac{E_{m+n}(\log\epsilon)}\epsilon\notag\\
+ &+\frac{\gamma_n}{m+1}\log^{m+1}\epsilon
+       +\frac{\gamma_m}{n+1}\log^{n+1}\epsilon\biggr\}.
+ \label{scoll:eq:J-cutoff}
+\end{align}
+\end{definition}
+
+\begin{theorem}[Coincident closure]
+\label{scoll:thm:coincident}
+The finite part \eqref{scoll:eq:J-cutoff} exists. With exactly the coefficients
+of Theorem~\ref{shj:closurethm},
+\begin{equation}
+ J_{mn}^{\mathrm{coll}}=e_{mn}+\sum_{j=0}^{m+n+1}(c_{mn,j}+d_{mn,j})\gamma_j.
+ \label{scoll:eq:J-closure}
+\end{equation}
+Equivalently it is the same mixed coefficient of
+\begin{equation}
+ K_0(u,v)=-(u\mathcal A(u,v)+v\mathcal B(u,v))\zeta(1+u+v).
+ \label{scoll:eq:K0}
+\end{equation}
+In particular,
+\begin{equation}
+ J_{00}^{\mathrm{coll}}=2\gamma_1-\frac{\pi^2}{3}.
+ \label{scoll:eq:J00}
+\end{equation}
+\end{theorem}
+\begin{proof}
+By \eqref{shj:localgamma}, the cutoff in Definition~\ref{scoll:def:J}
+converges to the absolutely convergent expression
+\begin{align}
+ J_{mn}^{\mathrm{coll}}={}&-(m+n)!\notag\\
+ &+\int_0^1\biggl\{
+ \frac{\log^m x}{x}[\gamma_n(1+x)-\gamma_n]
+ +\frac{\log^n x}{x}[\gamma_m(1+x)-\gamma_m]\notag\\
+ &\hspace{35mm}+\gamma_m(1+x)\gamma_n(1+x)\biggr\}\dd x.
+ \label{scoll:eq:J-convergent}
+\end{align}
+The two bracketed differences vanish linearly at zero, and
+\eqref{scoll:eq:double-endpoint} supplies the constant $-(m+n)!$.
+
+To identify the coefficients, start where the ordinary coincident
+Hurwitz integral converges, for example $\Rea s,\Rea t<0$.
+Fourier orthogonality gives
+\[
+ C_0(s,t)=2\Gamma(1-s)\Gamma(1-t)(2\pi)^{s+t-2}
+       \cos\!\left(\frac{\pi(s-t)}2\right)\zeta(2-s-t).
+\]
+The Riemann functional equation, equivalently the specialization of the
+Fourier calculation in Theorem~\ref{shj:masterthm}, gives
+$uvC_0(1+u,1+v)=K_0(u,v)$. Meromorphic continuation is justified by
+subtracting the local terms as above.
+
+More explicitly, the holomorphic generating expression near zero is
+\begin{align*}
+ R_0(u,v)={}&-\frac1{1+u+v}\\
+ &+\int_0^1\bigl\{
+ x^{-1-u}[R(v,1+x)-R(v,1)]
+ +x^{-1-v}[R(u,1+x)-R(u,1)]\\
+ &\hspace{39mm}+R(u,1+x)R(v,1+x)\bigr\}\dd x.
+\end{align*}
+The first term is the analytic continuation of
+$\int_0^1x^{-2-u-v}\dd x$, not a discarded divergence. The remaining
+integrals converge locally uniformly near zero. On a starting convergence
+region, and hence by continuation,
+\[
+ R_0=\frac{K_0+1+uR(u,1)+vR(v,1)}{uv}.
+\]
+Its Taylor coefficients are \eqref{scoll:eq:J-convergent}. Decomposing
+\eqref{scoll:eq:K0} as $-Q-(u\mathcal A+v\mathcal B)R(u+v,1)$ now gives
+\eqref{scoll:eq:J-closure} by the identical finite algebra used earlier.
+\end{proof}
+
+For the first case, an ordinary integral version is worth recording:
+\begin{equation}
+ \int_0^1\left\{\psi(1+x)^2
+       -\frac{2[\psi(1+x)+\gamma]}x\right\}\dd x
+ =1+2\gamma_1-\frac{\pi^2}{3}.
+ \label{scoll:eq:digamma-square-convergent}
+\end{equation}
+The apparently singular numerator in the second term vanishes at zero.
+There is no positivity contradiction in the negative value of $J_{00}^{\mathrm{coll}}$:
+it is a finite part of a positive divergent square, not its ordinary
+nonnegative integral.
+
+\subsection{An exact convergent expansion at collision}
+The relationship between the separated and coincident finite parts can
+be expressed by an equality of convergent series, not merely an
+asymptotic prescription.
+
+\begin{theorem}[Collision polynomial and convergent regular part]
+\label{scoll:thm:collision}
+For $m,n\ge0$ define a polynomial
+\begin{equation}
+ \mathcal P_{mn}(L)=(-1)^{m+n+1}m!n!
+       \scollCoeff{u^{m+1}v^n}\mathcal B(u,v)e^{-(u+v)L}.
+ \label{scoll:eq:collision-polynomial}
+\end{equation}
+It has degree $m+n+1$, leading coefficient $1/(m+1)$, and coefficients
+in positive integer zeta values. There is an exact expansion
+\begin{equation}
+ J_{mn}(a)=\frac{\mathcal P_{mn}(\log a)}a
+                +J_{mn}^{\mathrm{coll}}+\sum_{k\ge1}h_{mn,k}a^k,
+ \qquad 0<a<1,
+ \label{scoll:eq:collision-series}
+\end{equation}
+whose regular power series converges locally uniformly for $|a|<1$.
+Its coefficients are
+\begin{align}
+ h_{mn,k}={}&\frac{(-1)^{m+n+1}m!n!}{k!}
+ \scollCoeff{u^{m+1}v^{n+1}}\notag\\
+ &\quad\bigl(u\mathcal A(u,v)+(-1)^kv\mathcal B(u,v)\bigr)
+               (1+u+v)_k\zeta(1+u+v+k).
+ \label{scoll:eq:collision-coefficients}
+\end{align}
+For $m=n$, all odd-indexed $h_{mm,k}$ vanish. In particular,
+\begin{equation}
+ \lim_{a\downarrow0}\left\{J_{mn}(a)
+             -\frac{\mathcal P_{mn}(\log a)}a\right\}=J_{mn}^{\mathrm{coll}}.
+ \label{scoll:eq:collision-limit}
+\end{equation}
+\end{theorem}
+\begin{proof}
+The classical parameter Taylor series at one gives, locally uniformly
+in the spectral variable,
+\[
+ \zeta(1+w,1-a)=\sum_{k\ge0}\frac{(1+w)_k}{k!}
+                      \zeta(1+w+k)a^k,
+\]
+while the shift law gives
+\[
+ \zeta(1+w,a)=a^{-1-w}
+        +\sum_{k\ge0}\frac{(1+w)_k}{k!}\zeta(1+w+k)(-a)^k.
+\]
+These are meromorphic in $w$ at zero, with the $k=0$ pole explicitly
+visible. Substitution in \eqref{scoll:eq:kernel} yields
+\begin{align}
+ K(u,v;a)={}&-v\mathcal B(u,v)a^{-1-w}\notag\\
+ &-\sum_{k\ge0}\frac{u\mathcal A(u,v)+(-1)^kv\mathcal B(u,v)}{k!}
+                      (1+w)_k\zeta(1+w+k)a^k.
+ \label{scoll:eq:K-collision}
+\end{align}
+The $k=0$ summand is exactly $K_0$; its apparent pole at $w=0$ is
+removable. The remaining series is holomorphic for small $u,v$ and
+$|a|<1$, uniformly on compact subsets. For example, on a fixed small
+spectral polydisc its terms and spectral derivatives grow at most
+polynomially in $k$ times powers of $\log k$, whereas $|a|^k$ decays
+geometrically on compact subdiscs. Coefficient extraction is therefore
+legitimate. The singular first term gives
+\eqref{scoll:eq:collision-polynomial}, the constant gives
+Theorem~\ref{scoll:thm:coincident}, and the other terms give
+\eqref{scoll:eq:collision-coefficients}.
+
+The highest power of $L$ comes from $B_0=1$ and has degree $m+n+1$;
+a binomial coefficient gives its stated leading coefficient.
+For $m=n$ and odd $k$, the factor
+$u\mathcal A-v\mathcal B$ is antisymmetric under $u\leftrightarrow v$, while every other
+factor in \eqref{scoll:eq:collision-coefficients} is symmetric. Its diagonal
+mixed coefficient is zero. Finally the regular series has zero limit
+at $a=0$, proving \eqref{scoll:eq:collision-limit}.
+\end{proof}
+
+The first collision polynomials are
+\begin{equation}
+ \mathcal P_{00}(L)=L,\qquad
+ \mathcal P_{10}(L)=\frac{L^2}{2}+\zeta(2),\qquad
+ \mathcal P_{01}(L)=L^2+\zeta(2).
+ \label{scoll:eq:collision-examples}
+\end{equation}
+The asymmetry of the last two is required: the factor that becomes
+singular at $a=0$ has changed its index. In particular,
+\[
+ J_{00}(a)-\frac{\log a}{a}\longrightarrow
+                   2\gamma_1-\frac{\pi^2}{3}.
+\]
+There is no arbitrary additional finite constant in this limit. It is
+fixed by the initial endpoint subtraction and agrees with the coincident
+prescription.
+
+
+\section{Ordinary integrals of all antiderivative orders}\label{shj:primitives}
+The finite-part identities have a convergent counterpart. We first choose mean-zero periodic primitives, rather than implicitly choosing constants of integration at a singular endpoint.
+
+\begin{definition}[Normalized primitive tower]\label{shj:Udef}
+For integers $m\ge0$ and $r\ge1$, put
+\begin{align}
+\mathfrak h_j^{(r-1)}&=[u^j]\prod_{\nu=1}^{r-1}(1-u/\nu)^{-1},\notag\\
+U_{m,r}(x)&=\frac{(-1)^{m+1}m!}{(r-1)!}
+\sum_{j=0}^{m+1}\mathfrak h_{m+1-j}^{(r-1)}
+\frac{\zeta^{[j]}(1-r,x)}{j!}.
+\label{shj:Uformula}
+\end{align}
+The empty product convention gives $\mathfrak h_0^{(0)}=1$ and $\mathfrak h_j^{(0)}=0$ for $j>0$. Write $P_m=U_{m,1}$ and $Q_m=U_{m,2}$. Explicitly,
+\begin{align}
+P_m(x)&=\frac{(-1)^{m+1}}{m+1}\zeta^{[m+1]}(0,x),\label{shj:P}\\
+Q_m(x)&=(-1)^{m+1}m!\sum_{j=0}^{m+1}\frac{\zeta^{[j]}(-1,x)}{j!}.
+\label{shj:Q}
+\end{align}
+\end{definition}
+These are normalized Hurwitz-jet primitives. The repository's primitive based at $1$ is $P_m(x)-P_m(1)$; it is not $P_m(x)$ itself. Likewise, zero-based negative polygamma conventions must be converted explicitly before using the following correlations.
+
+\begin{lemma}[Primitive identities and regularity]\label{shj:Ulemma}
+Each $U_{m,r}$ has mean zero on $(0,1)$. One has
+\[
+DP_m=G_m,\qquad DU_{m,r}=U_{m,r-1}\quad(r\ge2),\qquad D^rU_{m,r}=G_m
+\]
+as periodic distributions. The functions $P_m$ lie in $L^2(\stconvT)$, and for $r\ge2$, $U_{m,r}$ is a periodic $C^{r-2}$ function.
+\end{lemma}
+\begin{proof}
+Consider the spectral primitive
+\begin{equation}\label{shj:primitivegenerator}
+V_r(u,x)=\frac{(-1)^r\zeta(1+u-r,x)}{(1+u-r)_r}
+=-\frac{\zeta(1+u-r,x)}{(r-1)!u}
+\prod_{\nu=1}^{r-1}(1-u/\nu)^{-1}.
+\end{equation}
+Its regular coefficient $(-1)^m m![u^m]V_r$ is \eqref{shj:Uformula}. Pointwise differentiation gives $\partial_xV_r=V_{r-1}$ for $r\ge2$, and $\partial_xV_1=\zeta(1+u,x)$. Comparing regular coefficients proves the pointwise primitive relations.
+
+For $r=1$, the shift identity gives
+\[
+P_m(x)=\frac{\log^{m+1}x}{m+1}+P_m(1+x).
+\]
+This proves square integrability. Integration by parts against a periodic test function, with a lower cutoff, yields the boundary term $\phi(0)\log^{m+1}\epsilon/(m+1)$ and hence $DP_m=G_m$ by \eqref{stconv:def:G}.
+For $r\ge2$, the singular term in $\zeta^{[j]}(1-r,x)$ is $x^{r-1}(-\log x)^j$, which tends to zero at $x=0$. The endpoint values at $0+$ and $1$ consequently match. Iterating the pointwise derivative relations shows periodic $C^{r-2}$ regularity and no extra jump terms. This proves the distributional relations. Finally, $\int_0^1\zeta(s,x)\dd x=0$ for $\Re s<1$, and its spectral derivatives also integrate to zero. Apply this to each term in \eqref{shj:Uformula}.
+\end{proof}
+
+\begin{theorem}[All-order convergent lifting]\label{shj:alllift}
+Suppose the closure formula for fixed $m,n$ is written as
+\begin{equation}\label{shj:linearform}
+J_{mn}(a)=\sum_j c_j\gamma_j(a)+\sum_j d_j\gamma_j(b)+c,
+\end{equation}
+where all sums are finite and the coefficients are independent of $a$.
+For $r,k\ge1$, $N=r+k$, define the ordinary integral
+\[
+W_{m,n}^{r,k}(a)=\int_0^1U_{m,r}(x)U_{n,k}(\{x+a\})\dd x.
+\]
+Then
+\begin{align}
+W_{m,n}^{r,k}(a)={}&(-1)^r\sum_j c_jU_{j,N}(a)
++(-1)^k\sum_j d_jU_{j,N}(b)\notag\\
+&+\frac{(-1)^r c}{N!}B_N(a),
+\label{shj:allliftformula}
+\end{align}
+where $B_N$ is the ordinary Bernoulli polynomial. Thus every such integral reduces to finitely many Hurwitz-zeta jets at the single spectral integer $1-r-k$ and zeta-valued coefficients. The highest required spectral derivative is $m+n+2$.
+\end{theorem}
+\begin{proof}
+The integral exists by the $L^2$ property and Cauchy--Schwarz. Its mean in $a$ is zero by Fubini and the mean-zero normalization of both factors. In the distributional sense, periodic integration by parts gives
+\begin{equation}\label{shj:Wderivative}
+\frac{d^N}{da^N}W_{m,n}^{r,k}(a)=(-1)^rJ_{mn}(a),\qquad 0<a<1.
+\end{equation}
+The right side is smooth there.
+
+We need enough endpoint regularity to fix all integration constants. From \eqref{shj:fouriercoef} and \eqref{shj:Zlaurent}, for $q\ne0$,
+\begin{align}
+\widehat G_m(q)=(-1)^{m+1}m![u^{m+1}]
+\exp\bigg[&\left(\kappa+\log|q|+\frac{\pi\iu}{2}\sgn q\right)u\notag\\
+&+\sum_{j\ge2}\frac{\zeta(j)}j u^j\bigg].
+\label{shj:Gfourier}
+\end{align}
+In particular $\widehat G_m(q)=O_m((1+\log|q|)^{m+1})$.
+The primitive relations imply
+$\widehat U_{m,r}(q)=\widehat G_m(q)/(2\pi\iu q)^r$.
+The Fourier coefficients of $W$ are therefore
+$O((1+\log|q|)^{m+n+2}/|q|^N)$.
+After $N-2$ derivatives the series is still absolutely convergent. Hence $W$ is periodic $C^{N-2}$.
+
+Let $F(a)$ be the proposed right side of \eqref{shj:allliftformula}. It also has mean zero and is periodic $C^{N-2}$, using Lemma~\ref{shj:Ulemma} and the endpoint identities for Bernoulli polynomials. Its $N$th derivative on $(0,1)$ is $(-1)^rJ_{mn}$: the reflected primitive contributes $(-1)^N$, and $B_N^{(N)}=N!$. Thus $W-F$ is a polynomial of degree at most $N-1$ on $(0,1)$. Matching its endpoint derivatives of orders $0,\ldots,N-2$ forces every nonconstant coefficient to vanish, starting with the leading one. Its zero mean then forces the remaining constant to vanish.
+
+The closure uses indices at most $m+n+1$, and $U_{j,N}$ uses spectral derivatives at most $j+1$. This gives the final derivative-order assertion.
+\end{proof}
+
+\subsection{The first-primitive correlation}
+For $K_{mn}(a)=W_{m,n}^{1,1}(a)$, the theorem simplifies to
+\begin{equation}\label{shj:Klift}
+K_{mn}(a)=-\sum_j c_jQ_j(a)-\sum_j d_jQ_j(b)-\frac c2B_2(a),
+\qquad K_{mn}''(a)=-J_{mn}(a).
+\end{equation}
+Equivalently, ordinary differentiation of the master integral at $(s,t)=(0,0)$ gives
+\begin{equation}\label{shj:KfromC}
+K_{mn}(a)=(-1)^{m+n}m!n![s^{m+1}t^{n+1}]C(s,t;a).
+\end{equation}
+The signs and factorials follow from \eqref{shj:P}; no finite-part operation occurs in this integral.
+
+For example, \eqref{shj:J11} gives the fully explicit convergent identity
+\begin{align}
+K_{11}(a)={}&-\tfrac12\big(Q_3(a)+Q_3(b)\big)
+-2\zeta(2)\big(Q_1(a)+Q_1(b)\big)\notag\\
+&-\zeta(3)\big(Q_0(a)+Q_0(b)\big)
++\tfrac12\big(\zeta(4)+\zeta(2)^2\big)B_2(a).
+\label{shj:K11}
+\end{align}
+This evaluates a product of two second spectral derivatives at zero using derivatives at $-1$ of order at most four.
+
+An example with unequal integration orders is
+\begin{equation}\label{shj:W21}
+\int_0^1Q_0(x)P_0(\{x+a\})\dd x
+=U_{1,3}(a)-U_{1,3}(b)-\frac{\zeta(2)}3B_3(a),
+\end{equation}
+where
+\[
+U_{1,3}(x)=\frac78\zeta(-2,x)+\frac34\zeta^{[1]}(-2,x)
++\frac14\zeta^{[2]}(-2,x).
+\]
+Thus the same finite closure gives exact identities involving successive antiderivatives rather than merely a formal recurrence for integration constants.
+
+\section{Explicit log-gamma and mixed identities}\label{shj:loggamma}
+Let
+\[
+f(x)=\log\Gamma(x)-\frac\ell2,\qquad
+\mathcal K(a)=\int_0^1 f(x)f(\{x+a\})\dd x.
+\]
+Lerch's identity gives $P_0=-f$, so $\mathcal K=K_{00}$. No regularization is used in this definition: logarithmic singularities are square integrable.
+
+\begin{theorem}[Translated log-gamma correlation]\label{shj:gammathm}
+For $0<a<1$,
+\begin{align}
+\mathcal K(a)={}&(1+\zeta(2))B_2(a)
+-\zeta^{[1]}(-1,a)-\zeta^{[1]}(-1,b)\notag\\
+&-\frac12\big[\zeta^{[2]}(-1,a)+\zeta^{[2]}(-1,b)\big].
+\label{shj:gammahurwitz}
+\end{align}
+Equivalently, for $z=e^{2\pi\iu a}$,
+\begin{equation}\label{shj:gammapoly}
+\mathcal K(a)=\frac1{2\pi^2}\Re\left[
+\Li_2^{[2]}(z)-2\kappa\Li_2^{[1]}(z)
++\left(\kappa^2+\frac{\pi^2}{4}\right)\Li_2(z)\right].
+\end{equation}
+For the uncentered product,
+\begin{equation}\label{shj:gammauncentered}
+\int_0^1\log\Gamma(x)\log\Gamma(\{x+a\})\dd x
+=\frac{\ell^2}{4}+\mathcal K(a).
+\end{equation}
+Finally,
+\begin{equation}\label{shj:gammasecond}
+\mathcal K''(a)=\frac{\pi^2}{3}-\gamma_1(a)-\gamma_1(b).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Apply \eqref{shj:Klift} to $J_{00}=\gamma_1(a)+\gamma_1(b)-2\zeta(2)$. Since
+\[
+Q_1(x)=\zeta(-1,x)+\zeta^{[1]}(-1,x)+\tfrac12\zeta^{[2]}(-1,x)
+\]
+and $\zeta(-1,x)=-B_2(x)/2$, the result is \eqref{shj:gammahurwitz}.
+
+For an independent Fourier derivation of \eqref{shj:gammapoly}, differentiate \eqref{shj:fouriercoef} at $s=0$. The positive-frequency coefficient of $f$ is
+\[
+\widehat f(n)=\frac1{4n}-\frac{\iu(\kappa+\log n)}{2\pi n},\qquad n\ge1.
+\]
+The negative-frequency coefficient is its conjugate. These coefficients also give the classical Kummer Fourier expansion. The $L^2$ correlation therefore equals the absolutely convergent series
+\begin{equation}\label{shj:gammafourier}
+\mathcal K(a)=\frac1{2\pi^2}\sum_{n\ge1}
+\frac{\cos(2\pi na)}{n^2}
+\left[(\kappa+\log n)^2+\frac{\pi^2}{4}\right].
+\end{equation}
+Taking the first two spectral derivatives of the absolutely convergent polylogarithm series at order $2$ proves \eqref{shj:gammapoly}. The mean of $f$ is zero, so expanding the uncentered product proves \eqref{shj:gammauncentered}. Equation \eqref{shj:gammasecond} is the $m=n=0$ case of \eqref{shj:Klift}.
+\end{proof}
+
+\begin{corollary}[A mixed log-gamma--digamma identity]\label{shj:mixedgamma}
+The same finite-part convention gives
+\begin{align}
+\FP\int_0^1\log\Gamma(x)\psi(\{x+a\})\dd x
+={}&\frac12\big[\zeta^{[2]}(0,b)-\zeta^{[2]}(0,a)\big]\notag\\
+&+\zeta(2)(2a-1).
+\label{shj:mixedformula}
+\end{align}
+It is unchanged when $\log\Gamma(x)$ is replaced by $f(x)$.
+\end{corollary}
+\begin{proof}
+Since $DP_0=G_0$ with no contact term at this first primitive stage,
+$\mathcal K'(a)=\FP\int f(x)\psi(\{x+a\})\dd x$.
+Differentiate \eqref{shj:gammahurwitz} using
+\[
+\partial_x\zeta^{[j]}(-1,x)
+=\zeta^{[j]}(0,x)-j\zeta^{[j-1]}(0,x).
+\]
+The first spectral derivatives at zero cancel, and the terms from
+$\zeta(0,x)=1/2-x$ simplify to $\zeta(2)(2a-1)$. This gives \eqref{shj:mixedformula}. The canonical periodic finite part of $\psi$ has mean zero, so subtracting $\ell/2$ from the log-gamma factor does not change the answer.
+\end{proof}
+For example, its left side with the centered function equals the entirely convergent expression
+\begin{align*}
+&\int_0^b f(x)\psi(x+a)\dd x\\
+&\quad+\int_0^a\left[(f(b+t)-f(b))\psi(t)+f(b)\psi(1+t)\right]\dd t
+-f(b)\log a.
+\end{align*}
+The recurrence $\psi(1+t)=\psi(t)+1/t$ removes the endpoint pole explicitly. This form also provides a direct numerical check independent of differentiating a finite-part integral.
+
+\subsection{Half shift and the zero-shift limit}
+At $a=1/2$, use $\Li_s(-1)=(2^{1-s}-1)\zeta(s)$. With $L_2=\log2$,
+\begin{align}
+\mathcal K(1/2)={}&-\frac{\zeta^{[2]}(2)}{4\pi^2}
++\frac{\kappa-L_2}{2\pi^2}\zeta^{[1]}(2)\notag\\
+&+\frac{L_2^2+2\kappa L_2-\kappa^2-\pi^2/4}{24}.
+\label{shj:gammahalf}
+\end{align}
+This formula concerns a \emph{translated} correlation, not the reflected product $f(x)f(1-x)$.
+
+The absolutely convergent series \eqref{shj:gammafourier} is continuous at $a=0$. Its value there recovers the classical second log-gamma moment \cite{stieltjes:EspinosaMoll1}:
+\begin{align}
+\int_0^1\log^2\Gamma(x)\dd x={}&
+\frac{\ell^2}{4}+\frac{\zeta^{[2]}(2)}{2\pi^2}
+-\frac{\kappa\zeta^{[1]}(2)}{\pi^2}
++\frac{\kappa^2}{12}+\frac{\pi^2}{48}.
+\label{shj:classicalmoment}
+\end{align}
+Equivalently, taking the continuous limit in \eqref{shj:gammahurwitz} gives
+\[
+\mathcal K(0)=\frac{1+\zeta(2)}6-2\zeta^{[1]}(-1)-\zeta^{[2]}(-1).
+\]
+These are useful consistency checks, not priority claims. In contrast,
+$J_{00}(a)=\log a/a+O(1)$ as $a\downarrow0$, by \eqref{shj:localgamma}. The finite-part product has no continuous zero-shift specialization. The ordinary correlation remains continuous but its second derivative develops the expected singularity.
+
+\section{Rational shifts and exact arithmetic coordinates}\label{shj:rationals}
+For integers $q\ge2$ and $1\le p<q$, residue-class decomposition gives the classical finite Fourier identity
+\begin{equation}\label{shj:DFT}
+\Li_s(e^{2\pi\iu p/q})
+=q^{-s}\sum_{r=1}^q e^{2\pi\iu pr/q}\zeta(s,r/q).
+\end{equation}
+It is proved by absolutely convergent series for $\Re s>1$ and then by analytic continuation. Spectral differentiation yields
+\begin{align}
+\Li_s^{[j]}(e^{2\pi\iu p/q})
+=q^{-s}\sum_{r=1}^q e^{2\pi\iu pr/q}
+\sum_{h=0}^j\binom jh(-\log q)^{j-h}\zeta^{[h]}(s,r/q).
+\label{shj:DFTjets}
+\end{align}
+At $s=1$ the poles of the finite sum cancel because the roots sum to zero. One must combine the pole terms before evaluating; separately substituting $\zeta(1,r/q)$ is invalid.
+
+At a rational shift, Theorem~\ref{shj:closurethm} reduces all Stieltjes correlations to rational-argument Stieltjes constants and ordinary zeta values. Theorem~\ref{shj:alllift} places every primitive correlation at a negative integer spectral argument. Equation \eqref{shj:DFTjets} instead evaluates the polylogarithmic side using positive-order Hurwitz jets. The two routes give independent choices of arithmetic coordinates for numerical replay and exact symbolic comparison.
+
+For a Dirichlet character modulo $q$, including an imprimitive one with its actual modulus, the identity
+\[
+\sum_{r=1}^q\chi(r)\zeta(s,r/q)=q^sL(s,\chi)
+\]
+and its spectral derivatives transform the character components into Dirichlet-$L$ jets. This gives a reduction framework, not a claim of numerical independence or minimality of the resulting coordinates.
+
+\begin{corollary}[Small-denominator digamma correlations]\label{shj:rationalpsi}
+Write $\gamma_1=\gamma_1(1)$. Then
+\begin{align}
+\Pi_{0,0}(1/2)&=2\gamma_1-4\gamma\log2-2\log^22-\frac{\pi^2}{3},\label{shj:rathalf}\\
+\Pi_{0,0}(1/3)&=2\gamma_1-3\gamma\log3-\frac32\log^23-\frac{\pi^2}{3},\label{shj:ratthird}\\
+\Pi_{0,0}(1/4)&=2\gamma_1-6\gamma\log2-7\log^22-\frac{\pi^2}{3}.
+\label{shj:ratquarter}
+\end{align}
+\end{corollary}
+\begin{proof}
+Expand at $s=1$ the exact identities
+\begin{align*}
+\zeta(s,1/2)&=(2^s-1)\zeta(s),\\
+\zeta(s,1/3)+\zeta(s,2/3)&=(3^s-1)\zeta(s),\\
+\zeta(s,1/4)+\zeta(s,3/4)&=(4^s-2^s)\zeta(s).
+\end{align*}
+Compare the coefficient of $s-1$ with \eqref{shj:laurent} and insert the resulting sums into \eqref{shj:psipsi}. In the first line the correlation contains two copies of $\gamma_1(1/2)$, which accounts for its different coefficients.
+\end{proof}
+Higher indices require no new search: expand these finite exponential factors to the needed order and use \eqref{shj:closureformula}. At larger denominators, retaining a nontrivial character block is legitimate; failing to reduce that block does not establish transcendence or independence.
+
+
+The canonical finite-part and primitive identities above are audited
+against the independent coefficient engines and their separately labeled
+numerical replays under \src{verification/eighth-replay/}. The full contact
+law is proved in the next chapter before derivatives of these finite-part
+identities are used. The singular same-point finite part and the continuous
+ordinary log-Gamma autocorrelation have different zero-shift behavior.

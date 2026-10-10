@@ -1,0 +1,466 @@
+% Integration-ready research fragment. No custom macros are required.
+% The ambient article should provide theorem, proposition, corollary, proof.
+\section{Integer dilations and exact local scale corrections}
+\label{dil:section}
+
+Two unequal integer frequencies still leave a single free Fourier index.
+This elementary fact resolves the unequal-dilation question in the incoming
+correlation reports. The spectral reduction is classical in method:
+Espinosa--Moll, Part~1, equation~(1.13), already records an unshifted,
+equal-order dilation formula due to Mikol\'as. The additional issue here is
+the finite part in an explicitly fixed local coordinate, together with all
+spectral and argument derivatives. No historical priority claim is made for
+the underlying Fourier factorization.
+
+\subsection{The reduced frequency and shifted spectral kernel}
+Let $p,q\geq1$ be integers, let
+\[
+ d=\gcd(p,q),\qquad p=dP,\quad q=dQ,\quad \gcd(P,Q)=1,
+ \qquad c=\{Pb-Qa\}.
+\]
+The shifts $a,b$ are real and henceforth $0<c<1$. This condition is exactly
+that the singular sets of the two periodic factors are disjoint. Indeed,
+simultaneous singularities would give $px+a=j$, $qx+b=k$ and hence
+$Pb-Qa=Pk-Qj\in\mathbb Z$; conversely, Bezout's identity gives such a
+solution whenever this expression is integral.
+
+Write
+\[
+ C(s,t;c)=\int_0^1\zeta(s,x)\zeta(t,\{x+c\})\,dx,
+ \qquad \Re s,\Re t<1.
+\]
+
+\begin{theorem}[Complete bilinear integer-dilation reduction]
+\label{dil:master}
+For $\Re s,\Re t<1$,
+\begin{equation}\label{dil:factor}
+ \int_0^1\zeta(s,\{px+a\})\zeta(t,\{qx+b\})\,dx
+ =Q^{s-1}P^{t-1}C(s,t;c).
+\end{equation}
+Both sides are jointly holomorphic in this domain and their meromorphic
+continuations agree. Thus arbitrary spectral derivatives follow by
+differentiating the displayed formula.
+\end{theorem}
+
+\begin{proof}
+The disjoint endpoint singularities imply local domination by
+$t^{-\sigma}(1+|\log t|^M)$ for some $\sigma<1$ on every compact parameter
+set. This proves convergence and holomorphy, including all spectral jets.
+Initially take $\Re s,\Re t<0$, where the Fourier series converge
+absolutely. A surviving frequency satisfies $pn+qm=0$, whose complete
+integer solution is $n=Qr$, $m=-Pr$. For nonzero $r$, the Hurwitz Fourier
+coefficient satisfies
+\[
+ \widehat Z_s(Qr)=Q^{s-1}\widehat Z_s(r),\qquad
+ \widehat Z_t(-Pr)=P^{t-1}\widehat Z_t(-r).
+\]
+The phase is $\exp(2\pi i r(Qa-Pb))=\exp(-2\pi i rc)$. This is exactly
+the Fourier series for the right side of~\eqref{dil:factor}. Analytic
+continuation proves the claims.
+\end{proof}
+
+\subsection{A finite polynomial for every scale and derivative}
+For a periodic distribution $T$, let $\mathsf P_{p,a}T$ be its pullback
+under $x\mapsto px+a$. For functions it is $T(\{px+a\})$. Put
+\[
+ \Delta_{p,a}=\mathsf P_{p,a}\delta_0
+   =\frac1p\sum_{x_0:\,px_0+a=0\ (\bmod 1)}\delta_{x_0}.
+\]
+Let $G_n$ be the canonical periodic finite part of $\gamma_n$, characterized
+by
+\[
+ \langle G_n,\phi\rangle
+ =\operatorname{CT}_{\epsilon\downarrow0}
+      \int_\epsilon^1\gamma_n(x)\phi(x)\,dx.
+\]
+At each singular point $x_0$ of an affine factor use the right coordinate
+$t=x-x_0$. Define
+\[
+ H_{p,a;n,k}=\operatorname{FP}_x
+       \bigl[p^k\gamma_n^{(k)}(\{px+a\})\bigr],\qquad n,k\geq0,
+\]
+where $\operatorname{FP}_x$ retains the constant term of the cutoff
+integral after deleting all negative powers of the local cutoffs and all
+nonconstant powers of their logarithms. Cutoffs at different points tend
+to zero independently. This specifies the coordinate $t$, rather than
+the rescaled coordinate $pt$.
+
+Set
+\begin{align}
+ E_k(z)&=\prod_{j=1}^k(1-z/j),\qquad E_0(z)=1,\notag\\
+ b_{n,k}(L)&=n![z^{n+1}]e^{Lz}E_k(z)\label{dil:bdef}\\
+ &=n!\sum_{j=0}^{\min(k,n+1)}(-1)^j e_j(k)
+                  \frac{L^{n+1-j}}{(n+1-j)!},\notag
+\end{align}
+where $e_j(k)$ is the elementary symmetric polynomial of degree $j$ in
+$1,1/2,\ldots,1/k$ and $e_0(k)=1$.
+
+\begin{theorem}[Dilation and differentiation contact polynomial]
+\label{dil:contact}
+For all $p\geq1$, $n,k\geq0$, and real shifts $a$,
+\begin{equation}\label{dil:contactformula}
+ D^k\mathsf P_{p,a}G_n
+ =H_{p,a;n,k}+b_{n,k}(\log p)\Delta_{p,a}^{(k)}.
+\end{equation}
+Consequently,
+\begin{equation}\label{dil:commutator}
+ D^kH_{p,a;n,0}-H_{p,a;n,k}
+ =\left[b_{n,k}(\log p)-\frac{\log^{n+1}p}{n+1}\right]
+       \Delta_{p,a}^{(k)}.
+\end{equation}
+In particular,
+\begin{equation}\label{dil:scaleonly}
+ \mathsf P_{p,a}G_n
+ =H_{p,a;n,0}+\frac{\log^{n+1}p}{n+1}\Delta_{p,a}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Use the meromorphic periodic family
+$Z(1-z)=(\delta_0-1)/z+
+\sum_{n\geq0}G_nz^n/n!$. Distributional differentiation and pullback
+commute with analytic continuation; for instance, this is first checked
+where all endpoint derivatives vanish and then continued. Near a singular
+point the $k$th argument derivative of the singular part is
+\[
+ (-1)^k p^{z-1}(1-z)_k\,t^{z-k-1}.
+\]
+Subtract the Taylor polynomial of a test function through degree $k$.
+Only its degree-$k$ term produces a pole at $z=0$. In distribution
+notation its contribution is
+\[
+ \frac{e^{z\log p}E_k(z)}{z}\,\Delta_{p,a}^{(k)}.
+\]
+The regular coefficient of this expression exceeds the fixed-coordinate
+constant term of the coefficientwise cutoff integral by
+$[z^{n+1}]e^{z\log p}E_k(z)\Delta_{p,a}^{(k)}$. The remaining Taylor
+terms and the Taylor remainder are holomorphic and their coefficients
+are precisely the corresponding finite parts. Multiplication by $n!$
+proves~\eqref{dil:contactformula}. Its $k=0$ case gives
+\eqref{dil:scaleonly}; differentiating that case and subtracting the
+general identity proves~\eqref{dil:commutator}.
+\end{proof}
+
+The coefficients are explicit harmonic polynomials. For example,
+\[
+ b_{0,k}(L)=L-H_k,\qquad
+ b_{1,k}(L)=\frac{L^2}{2}-H_kL+
+                \frac{H_k^2-H_k^{(2)}}2.
+\]
+At $p=1$ this recovers the existing contact coefficient
+$(-1)^{n+1}n!e_{n+1}(k)$. At a nonunit scale the new logarithmic terms
+are essential. For example,
+\[
+ DH_{p,a;1,0}-H_{p,a;1,1}=-(\log p)\Delta_{p,a}',
+\]
+although the same commutator vanishes at $p=1$.
+
+For completeness, define the transfer operator by
+\[
+ (\mathsf L_r f)(x)=\frac1r\sum_{j=0}^{r-1}f((x+j)/r),
+ \qquad \widehat{\mathsf L_rT}(k)=\widehat T(rk).
+\]
+Its exact distribution relation is
+\begin{equation}\label{dil:transfer}
+ \mathsf L_rG_n=\sum_{j=0}^n\binom nj(-\log r)^{n-j}G_j
+       +\frac{(-\log r)^{n+1}}{n+1}(\delta_0-1).
+\end{equation}
+Indeed, $\mathsf L_rZ(1-z)=r^{-z}Z(1-z)$ follows from the Fourier
+coefficients, and the Laurent expansion gives~\eqref{dil:transfer}.
+The operators themselves satisfy
+\[
+ D^k\mathsf P_{r,0}=r^k\mathsf P_{r,0}D^k,\qquad
+ D^k\mathsf L_r=r^{-k}\mathsf L_rD^k,\qquad
+ \mathsf L_r\mathsf P_{r,0}=\mathrm{Id}.
+\]
+Thus all discrepancies arise from converting the analytic distributions
+to a fixed-coordinate finite part; the transfer and pullback operators
+have the usual exact chain rules.
+
+% Self-contained base closure, using lambda = 1 - s throughout.
+% Intended immediately before the all-index dilation subsection.
+\subsection{A self-contained Gamma quotient for the base correlation}
+\label{base:subsection}
+
+The reduction below is already present, in equivalent conventions, in the
+incoming bilinear reports.  We include its short proof so that the
+integer-dilation identities require no external all-order closure theorem.
+For $0<c<1$, set $b=1-c$ and write
+\[
+ \mathcal G(z;c)=\zeta(1-z,c)+\frac1z
+       =\sum_{m\ge0}\gamma_m(c)\frac{z^m}{m!}.
+\]
+The singularity at $z=0$ is removable.  Define the holomorphic Gamma
+quotient and its removable divided difference by
+\begin{align}
+ U(z,w)&=\frac{\Gamma(1+z)\Gamma(1-z-w)}{\Gamma(1-w)},
+ \label{base:U}\\
+ V(z,w)&=\frac{U(z,w)-1}{z(z+w)}.
+ \label{base:V}
+\end{align}
+These formulas are used near $(z,w)=(0,0)$.  Indeed, $U(0,w)=1$ and
+$U(z,-z)=1$, so the numerator is divisible by both distinct linear
+factors and $V$ is holomorphic.  Its exact coefficient generator is
+\begin{equation}\label{base:Ugenerator}
+ U(z,w)=\exp\left(
+  \sum_{k=2}^{\infty}\frac{\zeta(k)}k
+     \bigl[(-1)^kz^k+(z+w)^k-w^k\bigr]\right).
+\end{equation}
+In particular $V(0,0)=\zeta(2)$, and every Taylor coefficient is a finite
+polynomial with rational coefficients in positive integer zeta values.
+
+Let $J_{mn}(c)$ be the separated-endpoint, unscaled-coordinate finite
+part of $\gamma_m(x)\gamma_n(\{x+c\})$, and set
+\[
+ \mathcal J(z,w;c)=\sum_{m,n\ge0}
+                    J_{mn}(c)\frac{z^mw^n}{m!n!}.
+\]
+
+\begin{theorem}[Holomorphic base generating identity]
+\label{base:theorem}
+With $r=z+w$, one has
+\begin{align}
+ \mathcal J(z,w;c)={}&
+ \frac{\mathcal G(r;c)-\mathcal G(w;c)}z
+ +\frac{\mathcal G(r;b)-\mathcal G(z;b)}w\notag\\
+ &-V(z,w)-V(w,z)\notag\\
+ &+r\bigl[V(z,w)\mathcal G(r;c)
+                  +V(w,z)\mathcal G(r;b)\bigr].
+ \label{base:Jgenerator}
+\end{align}
+Every apparent singularity on the right is removable.  For $M=m+n$,
+\begin{equation}\label{base:topandmissing}
+ J_{mn}(c)=\frac{\gamma_{M+1}(c)}{m+1}
+          +\frac{\gamma_{M+1}(1-c)}{n+1}
+          +\sum_{j=0}^{M-1}
+               \bigl(a_j\gamma_j(c)+b_j\gamma_j(1-c)\bigr)+d,
+\end{equation}
+where the sum is empty for $M=0$ and the coefficients lie in
+$\mathbb Q[\zeta(2),\ldots,\zeta(M+2)]$.  Thus the index $M$ is absent.
+The complete coefficients are obtained by multiplying
+$[z^mw^n]$ of~\eqref{base:Jgenerator} by $m!n!$.
+\end{theorem}
+
+\begin{proof}
+For $\Re z,\Re w>0$, the shifted ordinary Hurwitz integral has the
+meromorphic beta representation
+\begin{equation}\label{base:Cbeta}
+ C(1-z,1-w;c)=B(z,1-r)\zeta(1-r,c)
+                  +B(w,1-r)\zeta(1-r,b).
+\end{equation}
+Here the sum is continued before any exceptional parameter is evaluated.
+For completeness, the Fourier calculation first holds for
+$\Re z,\Re w>1$.  The positive and negative Fourier frequencies give
+\[
+ \frac{\Gamma(z)\Gamma(w)}{(2\pi)^r}
+ \left[e^{i\pi(z-w)/2}\operatorname{Li}_r(e^{2\pi ic})
+       +e^{-i\pi(z-w)/2}\operatorname{Li}_r(e^{-2\pi ic})\right].
+\]
+Inserting the Hurwitz Fourier formula into the right side of
+\eqref{base:Cbeta}, and using the Gamma reflection identity, gives this
+same expression.  The relevant phase identity is
+\[
+ \frac{\sin(\pi w)e^{-i\pi r/2}
+             +\sin(\pi z)e^{i\pi r/2}}{\sin(\pi r)}
+       =e^{i\pi(z-w)/2}.
+\]
+Local endpoint domination and analytic continuation establish
+\eqref{base:Cbeta} meromorphically.
+
+The unscaled endpoint finite parts give the Laurent decomposition
+\begin{equation}\label{base:Laurent}
+ C(1-z,1-w;c)=-\frac1{zw}
+    +\frac{\mathcal G(w;c)}z
+    +\frac{\mathcal G(z;b)}w+\mathcal J(z,w;c).
+\end{equation}
+One way to see the residue and the regular part explicitly is to use
+the periodic expansion
+$Z(1-z)=(\delta_0-1)/z+\sum G_mz^m/m!$.
+The two shifted singular supports are disjoint; their polar product
+has integral $-1$, their mixed products evaluate the smooth opposing
+factor, and their regular product is precisely the prescribed local
+finite part.  Equivalently, split the ordinary integral at $1-c$ and
+subtract the two leading endpoint terms before expanding.  This proves
+\eqref{base:Laurent} without multiplying distributions with common
+singular support.
+
+Now $B(z,1-r)=U(z,w)/z$ and
+$U(z,w)=1+zrV(z,w)$.  Substitute
+$\zeta(1-r,c)=-1/r+\mathcal G(r;c)$ and its reflected analogue into
+\eqref{base:Cbeta}.  The two leading polar terms combine as
+$-(1/z+1/w)/r=-1/(zw)$.  Subtracting the remaining polar terms in
+\eqref{base:Laurent} gives exactly~\eqref{base:Jgenerator}.
+
+The two divided differences contribute respectively
+$\gamma_{M+1}(c)/(m+1)$ and $\gamma_{M+1}(b)/(n+1)$.
+In the last line of~\eqref{base:Jgenerator}, the factor $r$ forces every
+Stieltjes index to be at most $M-1$.  The middle line contributes only
+zeta-polynomial constants.  Formula~\eqref{base:Ugenerator} then proves
+the coefficient ring and the missing-index assertion.
+\end{proof}
+
+The first row is
+\[
+ J_{00}(c)=\gamma_1(c)+\gamma_1(1-c)-2\zeta(2).
+\]
+This checks both the Laurent signs and the finite-part constant.
+
+\subsection{All Stieltjes indices in an explicit finite formula}
+Define the base finite part
+\[
+ J_{mn}(c)=\operatorname{FP}\int_0^1
+               \gamma_m(x)\gamma_n(\{x+c\})\,dx
+\]
+using the unscaled right coordinate at its two endpoints. Theorem~\ref{base:theorem} gives its all-order linear closure. For a
+transparent finite formula put
+\begin{align*}
+ A_n(L;x)&=\sum_{j=0}^n\binom nj(-L)^{n-j}\gamma_j(x),\\
+ u_n(L)&=\frac{(-L)^{n+1}}{n+1},\qquad
+ v_n(L)=\frac{L^{n+1}}{n+1},\qquad
+ L_P=\log P,\quad L_Q=\log Q.
+\end{align*}
+
+\begin{theorem}[Unequal-dilation finite-part closure]
+\label{dil:allindices}
+Under the separated-endpoint condition $0<c<1$, let
+\[
+ K_{mn}=\int_{\mathbb T}(\mathsf P_{p,a}G_m)
+                        (\mathsf P_{q,b}G_n).
+\]
+This product is well-defined because its factors have disjoint singular
+supports. Then
+\begin{align}
+ K_{mn}={}&\sum_{i=0}^m\sum_{j=0}^n
+   \binom mi\binom nj(-L_Q)^{m-i}(-L_P)^{n-j}J_{ij}(c)\notag\\
+ &+u_m(L_Q)A_n(L_P;c)+u_n(L_P)A_m(L_Q;1-c)\notag\\
+ &-u_m(L_Q)u_n(L_P).\label{dil:pullformula}
+\end{align}
+The finite part using the coordinate $x-x_0$ at every singular point is
+\begin{align}
+ \operatorname{FP}_x\int_0^1
+     \gamma_m(\{px+a\})\gamma_n(\{qx+b\})\,dx
+ ={}&K_{mn}-v_m(\log p)\,[A_n(L_P;c)-u_n(L_P)]\notag\\
+ &-v_n(\log q)\,[A_m(L_Q;1-c)-u_m(L_Q)].
+ \label{dil:intrinsicformula}
+\end{align}
+Thus every index pair still reduces to a finite linear combination of
+$\gamma_j(c)$ and $\gamma_j(1-c)$ for $0\leq j\leq m+n+1$, with
+coefficients in the ring generated over $\mathbb Q$ by positive integer
+zeta values and $\log p,\log q,\log P,\log Q$.
+\end{theorem}
+
+\begin{proof}
+Write $\mathcal G(z;x)=\sum_{n\geq0}\gamma_n(x)z^n/n!$ and
+$\mathcal J(z,w;c)=\sum_{m,n\geq0}J_{mn}(c)z^mw^n/(m!n!)$.
+The separated-endpoint Laurent expansion is
+\[
+ C(1-z,1-w;c)=-\frac1{zw}
+       +\frac{\mathcal G(w;c)}z
+       +\frac{\mathcal G(z;1-c)}w+\mathcal J(z,w;c).
+\]
+Multiply this by $Q^{-z}P^{-w}$ as required by
+Theorem~\ref{dil:master}, and take the regular coefficient $m!n![z^mw^n]$.
+The four displayed terms give the four terms in
+\eqref{dil:pullformula}. This coefficient is the product of the regular
+coefficients of the two pulled-back distribution families.
+
+To change the endpoint coordinates, apply~\eqref{dil:scaleonly} to the
+two factors. Their delta combs have disjoint supports, so the product of
+the two combs is zero and the two remaining correction terms evaluate
+the smooth opposing factor. At the first comb,
+\[
+ \frac1p\sum_{px_0+a\in\mathbb Z}\gamma_n(\{qx_0+b\})
+ =\frac1P\sum_{r=0}^{P-1}\gamma_n((r+c)/P)
+ =A_n(L_P;c)-u_n(L_P).
+\]
+The first equality uses coprimality of $P,Q$; the second follows by
+expanding the Hurwitz multiplication formula at $s=1$. The second comb
+gives $A_m(L_Q;1-c)-u_m(L_Q)$. This proves
+\eqref{dil:intrinsicformula}. The last assertion follows from the base
+linear closure and the explicitly triangular index sums.
+\end{proof}
+
+At the first Stieltjes index, the existing identity
+$J_{00}(c)=\gamma_1(c)+\gamma_1(1-c)-2\zeta(2)$ gives the particularly
+short pulled-back answer
+\[
+ K_{00}=\gamma_1(c)+\gamma_1(1-c)-2\zeta(2)
+       -L_Q\gamma_0(c)-L_P\gamma_0(1-c)-L_PL_Q.
+\]
+For $p=1,q=2$, the fixed-$x$ version is
+\begin{align*}
+ \operatorname{FP}_x\int_0^1\psi(x)\psi(\{2x+c\})\,dx
+ ={}&\gamma_1(c)+\gamma_1(1-c)-2\zeta(2)\\
+ &+(\log2)[\psi(c)+\psi(1-c)]-\log^22.
+\end{align*}
+Replacing a pair $(p,q)$ by $(dp,dq)$ leaves the ordinary spectral
+integral unchanged, but in general changes its fixed-coordinate finite
+part. Formula~\eqref{dil:intrinsicformula} gives the complete discrepancy.
+
+\subsection{An ordinary log-Gamma identity with unequal frequencies}
+Let $\kappa=\gamma+\log(2\pi)$, $z_c=e^{2\pi ic}$, and let
+$\partial_\nu$ mean differentiation of the polylogarithm with respect
+to its order. The following identity needs no finite part.
+
+\begin{corollary}[Integer-affine log-Gamma correlation]
+\label{dil:loggamma}
+For the same $p,q,a,b$ and $0<c<1$,
+\begin{align}
+ &\int_0^1\log\Gamma(\{px+a\})\log\Gamma(\{qx+b\})\,dx
+   =\frac{\log^2(2\pi)}4\notag\\
+ &\quad+\frac1{2\pi^2PQ}\operatorname{Re}
+  \left[\left(\partial_\nu^2-(2\kappa+L_P+L_Q)\partial_\nu
+       +(\kappa+L_P)(\kappa+L_Q)+\frac{\pi^2}4\right)
+           \operatorname{Li}_\nu(z_c)\right]_{\nu=2}\notag\\
+ &\quad+\frac{L_P-L_Q}{4\pi PQ}
+           \operatorname{Im}\operatorname{Li}_2(z_c).
+ \label{dil:loggammaformula}
+\end{align}
+The formula extends continuously to $c=0$ for this ordinary integral.
+\end{corollary}
+
+\begin{proof}
+Lerch's identity gives the mean-zero function
+$L(x)=\zeta'(0,x)=\log\Gamma(x)-\tfrac12\log(2\pi)$. Its nonzero
+Fourier coefficients are
+\[
+ \widehat L(r)=\frac{\kappa+\log|r|+i\pi\operatorname{sgn}(r)/2}
+                       {2\pi i r}.
+\]
+Either differentiate~\eqref{dil:factor} at $(s,t)=(0,0)$ or apply
+Parseval to these square-summable coefficients. Positive and negative
+frequencies yield
+\begin{align*}
+ &\int_0^1L(\{px+a\})L(\{qx+b\})\,dx\\
+ &\quad=\frac1{2\pi^2PQ}\sum_{r=1}^\infty\frac1{r^2}
+ \bigg[\left((\kappa+L_Q+\log r)(\kappa+L_P+\log r)
+          +\frac{\pi^2}4\right)\cos(2\pi rc)\\
+ &\hspace{30mm}+\frac\pi2(L_P-L_Q)\sin(2\pi rc)\bigg].
+\end{align*}
+The series is absolutely convergent, including two order derivatives,
+and converts termwise to~\eqref{dil:loggammaformula}. Restoring the mean
+gives the constant term. Absolute convergence also proves continuity at
+$c=0$.
+\end{proof}
+
+\subsection{Audit finding and scope}
+The incoming archive \nolinkurl{ProveIt_Stieltjes_Convolution_2026-10-10.zip},
+\texttt{article.tex}, lines 1118--1121, suggests that changing one affine
+frequency produces multiple independent Fourier indices. That statement
+needs qualification: for two nonzero integer frequencies, the equation
+$pn+qm=0$ always has the one-index parametrization used above. A suitable
+replacement is: ``Two periodic factors with positive integer affine
+frequencies retain a one-dimensional frequency constraint. Their complete
+shifted reduction, with coordinate-dependent finite parts, is given by
+the integer-dilation theorem. Products of three or more independent
+factors generally leave a higher-dimensional frequency lattice.'' This
+corrects an explanatory sentence in a future-work section; it does not
+invalidate the convolution theorems of that report.
+
+The new formulas answer the separated-endpoint unequal-dilation problem
+posed in \nolinkurl{ProveIt_Stieltjes_Correlation_Closure},
+\texttt{article.tex}, lines 1247--1254, and the scale/derivative commutator
+problem posed in \nolinkurl{ProveIt_Shifted_Hurwitz_Jets},
+\texttt{sections.tex}, lines 782--783. They do not settle collision
+renormalization for two singularities at the same point or prove
+arithmetic independence of the resulting constant coordinates.
