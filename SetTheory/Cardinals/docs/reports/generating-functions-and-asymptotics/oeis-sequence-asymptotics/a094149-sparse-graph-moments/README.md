@@ -586,6 +586,37 @@ Section 56.
 
 Nothing else was found wrong. Rebuilt: 87 pages (86), label numbers unchanged.
 
+## Independent check of the Part VI write (9 October 2026)
+
+An independent adversarial check of the Part VI write (`cebf43994`)
+re-derived its statements with its own code (records in the intake work
+area, `verify138sgm6`); dated note at the end of Part VI's further-questions
+note (Section 64). Outcome:
+
+- **The write's two consequences, confirmed.** (a) Part V's weighted bound
+  at `α = c` is `2(H_k(c) − cH_{k−1}(c)) − P_k(c)` (Pascal's rule; exact for
+  `k ≤ 128` at `c = 1/2, 1, 2`); both Parts define the same moment, so with
+  Theorem 60.6 at `K = {c}` it is `~ μ_{2k}(c)`, since `cH_{k−1}/H_k → 0`
+  and `P_k` is at most geometric. The approach is slow: bound/moment `0.749`,
+  `0.627`, `0.438` at `k = 128` for `c = 1/2, 1, 2`. (b) At `c = 1`,
+  `(M_{2k} − G_k)/(2B_{k+1}) = W³/(2k) + (1 + o(1))W²/k` follows from
+  Corollary 60.7 and Theorem 39.2 with (217); finite illustrations
+  (`10.1, 8.42, 3.80, 2.59` for the normalized second term at
+  `k = 16, 32, 64, 128`) show only that the omitted `O(W⁴/k)` is large.
+- **Recomputed by other routes:** `m_k(c)` for `k ≤ 128` at
+  `c = 1/2, 1, 2` by an excursion (exponential-formula) recurrence at the
+  root, equal to `data/06-meandeg-exact_rows.json`, to brute force for
+  `k ≤ 7` and to A094149 (#10, read again); `m_1..m_5` as polynomials in
+  `c`; Table 9 (18 entries); `A_1(k,1) = T_k/B_{k+1}` and
+  `(A_1 − P_1)/(w⁴/k²)`; `F(t)`, `F(0) = φ(1)`, the Poisson–Charlier and
+  falling-factorial identities, `E|Y − λ|`; `log Q(k,s)`.
+- **Provenance and numbering confirmed:** archive (2,095,612 B, 33 files,
+  3,896,295 B unpacked), 23 byte-identical files, pin `9570aaede2` and blob
+  `f6a72e04cf`; 324 earlier labels unchanged, 158 at section +57 (Table 1 →
+  Table 9), 19 added, 501; 192 references; the 106 files listed.
+- Nothing was found wrong. Rebuilt: 135 pages (unchanged), label numbers
+  unchanged.
+
 ## Build
 
 pdfLaTeX (amsmath, amssymb, amsthm, mathtools, booktabs, array, longtable,
@@ -603,7 +634,8 @@ The committed PDF was built this way with MiKTeX pdfLaTeX (three passes) on
 9 October 2026, at Part VI's write: 135 pages; no errors or warnings, no
 undefined references or citations, no multiply defined labels, no duplicate
 PDF destinations, no overfull or underfull boxes; changed pages rendered and
-inspected. The delivered Part VI manuscript builds to 40 pages without
+inspected; rebuilt the same way at the independent check of that write
+(same day): 135 pages, the same clean log. The delivered Part VI manuscript builds to 40 pages without
 warnings. At the first write (7 October 2026; rebuilt after the independent
 check, three passes): 87 pages (86 at the write); no errors or warnings, no undefined references or citations, no
 multiply defined labels, no duplicate PDF destinations, no overfull or

@@ -1,0 +1,14 @@
+.PHONY: pdf verify verify-full clean
+
+pdf:
+	cd article && latexmk -pdf -interaction=nonstopmode -halt-on-error polylogarithms_exact_reductions.tex
+	cp article/polylogarithms_exact_reductions.pdf polylogarithms_exact_reductions.pdf
+
+verify:
+	python3 code/run_checks.py --fast
+
+verify-full:
+	python3 code/run_checks.py --full
+
+clean:
+	cd article && latexmk -c polylogarithms_exact_reductions.tex

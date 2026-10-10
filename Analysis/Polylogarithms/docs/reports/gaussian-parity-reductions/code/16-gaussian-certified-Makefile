@@ -1,0 +1,24 @@
+PYTHON ?= python3
+
+.PHONY: all verify tables standalone pdf clean
+
+all: verify
+	$(PYTHON) code/flatten_tex.py
+	$(MAKE) pdf
+
+verify:
+	$(PYTHON) code/test_arithmetic.py
+	$(PYTHON) code/verify.py
+	$(PYTHON) code/audit_certificates.py
+
+tables:
+	$(PYTHON) code/derive_identities.py
+
+standalone:
+	$(PYTHON) code/flatten_tex.py
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+
+clean:
+	latexmk -c article.tex
