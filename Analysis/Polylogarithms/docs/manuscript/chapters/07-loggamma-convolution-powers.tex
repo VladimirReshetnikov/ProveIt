@@ -1,0 +1,108 @@
+\section{All circular convolution powers of log Gamma}
+\label{stconv:sec:gamma}
+At the integrated end no finite part is needed. Put
+\begin{equation}\label{stconv:eq:gr}
+ L=\log(2\pi),\qquad Z_j(x)=\zeta^{[j]}(0,x),\qquad
+ g(x)=Z_1(x)=\log\Gamma(x)-\frac L2.
+\end{equation}
+Each $Z_j$ has mean zero. It is locally a polynomial in $\log x$ plus
+a smooth function near zero, and hence belongs to every finite $L^p(0,1)$.
+
+\begin{theorem}[All mixed integrated jets]\label{stconv:thm:integrated}
+Let $d\ge2$ and $r_1,\ldots,r_d\ge0$ be integers. Write
+$S=s_1+\cdots+s_d$. Then, as an identity of continuous functions after
+circular convolution,
+\begin{equation}\label{stconv:eq:mixedintegrated}
+ Z_{r_1}*\cdots*Z_{r_d}(x)
+ =\left.
+ \partial_{s_1}^{r_1}\cdots\partial_{s_d}^{r_d}
+ \left[\frac{\prod_{i=1}^d\Gamma(1-s_i)}{\Gamma(d-S)}
+              \zeta(1-d+S,x)\right]\right|_{s_1=\cdots=s_d=0}.
+\end{equation}
+It holds for $0<x<1$ and at the integer point by continuous extension.
+Thus any mixed convolution of the centered primitives $A_n$ reduces to
+finitely many jets at the single integer $1-d$.
+\end{theorem}
+\begin{proof}
+Before differentiation, write each Hurwitz factor as
+$\zeta(s_i,x)=\Gamma(1-s_i)R_{1-s_i}(x)$ and apply
+Theorem~\ref{stconv:thm:semigroup} repeatedly. For parameters sufficiently close
+to zero, each factor is holomorphic as an $L^2$-valued family: the
+endpoint singularities are bounded by
+$x^{-\eta}(1+|\log x|^M)$ with $2\eta<1$ on each fixed derivative
+order and compact parameter set. Convolution of two $L^2$ functions is
+continuous, by Cauchy--Schwarz and translation continuity; further
+convolution with $L^1$ factors preserves continuity. These same estimates
+justify differentiating all the convolutions. The right side is
+continuous at the integer point since $\Rea(1-d+S)<0$ in a small
+parameter neighborhood. This proves the formula and its endpoint
+extension.
+\end{proof}
+
+The case with every $r_i=1$ admits a compact all-$d$ formula. Define
+$H_m^{(j)}=\sum_{a=1}^ma^{-j}$, and, for fixed $d\ge2$, set
+\begin{equation}\label{stconv:eq:bd}
+ b_1=H_{d-1},\qquad
+ b_j=(j-1)!\big[H_{d-1}^{(j)}-\zeta(j)\big]\quad(j\ge2).
+\end{equation}
+
+\begin{theorem}[All convolution powers of centered log-gamma]\label{stconv:thm:gammapowers}
+For every integer $d\ge2$,
+\begin{equation}\label{stconv:eq:gammapowers}
+ g^{*d}(x)=\frac1{(d-1)!}\sum_{j=0}^d\binom dj
+       \stconvBell_{d-j}(b_1,\ldots,b_{d-j})\zeta^{[j]}(1-d,x),
+\end{equation}
+where $\stconvBell_0=1$ and the $b_j$ are scalar quantities in~\eqref{stconv:eq:bd}.
+\end{theorem}
+\begin{proof}
+In~\eqref{stconv:eq:mixedintegrated}, differentiate once in each $s_i$.
+Only the squarefree coefficient $s_1\cdots s_d$ matters. Modulo
+$s_i^2=0$, one has
+\[
+ \prod_{i=1}^d\Gamma(1-s_i)
+ =\prod_{i=1}^d(1+\gamma s_i)
+ =\exp(\gamma S).
+\]
+Consequently the required mixed derivative equals the ordinary $d$th
+derivative at $S=0$ of
+$e^{\gamma S}\zeta(1-d+S,x)/\Gamma(d-S)$. Now
+\begin{align*}
+ \log\frac{e^{\gamma S}\Gamma(d)}{\Gamma(d-S)}
+ &=H_{d-1}S+
+   \sum_{j\ge2}\frac{H_{d-1}^{(j)}-\zeta(j)}jS^j.
+\end{align*}
+This follows directly from
+$\Gamma(d-S)=\Gamma(1-S)\prod_{a=1}^{d-1}(a-S)$ and the Taylor series
+of $\log\Gamma(1-S)$. Apply~\eqref{stconv:eq:Belldef} and the Leibniz rule;
+$\Gamma(d)=(d-1)!$ supplies the prefactor.
+\end{proof}
+
+The first two nontrivial cases are
+\begin{align}
+ g*g={}&\zeta''(-1,x)+2\zeta'(-1,x)
+                   +[2-\zeta(2)]\zeta(-1,x),\label{stconv:eq:g2}\\
+ g^{*3}={}&\frac12\zeta'''(-2,x)+\frac94\zeta''(-2,x)
+       +\left[\frac{21}4-\frac32\zeta(2)\right]\zeta'(-2,x)
+       \label{stconv:eq:g3}\\
+ &+\left[\frac{45}8-\frac94\zeta(2)-\zeta(3)\right]\zeta(-2,x).
+ \notag
+\end{align}
+The first left side is explicitly
+\[
+ \int_0^xg(t)g(x-t)\dd t+\int_x^1g(t)g(1+x-t)\dd t.
+\]
+For uncentered $f=\log\Gamma$, mean-zero convolution annihilates all
+mixed constant/nonconstant terms, so
+\begin{equation}\label{stconv:eq:uncentered}
+ f^{*d}(x)=\left(\frac L2\right)^d+g^{*d}(x).
+\end{equation}
+
+\begin{remark}[Convolution powers are not pointwise moments]
+The value $g^{*3}(0)$ is a two-dimensional circular-convolution integral.
+It is not $\int_0^1g(t)^3\dd t$. Thus~\eqref{stconv:eq:g3} does not eliminate
+the Tornheim derivative coordinates of the ordinary cubic log-gamma
+moment discussed in the repository. Likewise, the mixed reflected
+pointwise moments in \texttt{07-reflected-moments.tex} are different
+objects. This distinction prevents a spurious claim of resolving that
+separate reduction problem.
+\end{remark}

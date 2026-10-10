@@ -1,0 +1,35 @@
+{
+  "part": "shifted",
+  "source_folder": "stieltjes-correlation-calculus/continuations/shifted-hurwitz-jets",
+  "source_code_sha256": {
+    "code/build.py": "9f5893d6c284004f3c1a75d7e70e4ad86482ecdd6c5c110d1063b770e9ae611d",
+    "code/checksums.py": "1ea151f189816496ea76ec33344c8611d10144b3b48ef1ddb67d391f3e16a160",
+    "code/identity_engine.py": "38f6a91cdcd0513d7a1996349bad1e0aa6231baa250cae90b50ce1f357040830",
+    "code/verify_numerically.py": "b84ea58bc5d5ac53403837c20757f1846a02080adb9526ed4348075cb219bc4a",
+    "integration/make_basis_patch.py": "a5c3b456309236b26e4f468463153f92474f37dae476fa9d77b43cd37464b9e7"
+  },
+  "commands": [
+    {
+      "arguments": [
+        "code/identity_engine.py",
+        "--max-total",
+        "6"
+      ],
+      "exit_code": 0
+    },
+    {
+      "arguments": [
+        "code/verify_numerically.py",
+        "--dps",
+        "50"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "fresh_result_files": [
+    "data/exact_identities.json",
+    "data/numerical_validation.json"
+  ],
+  "passed": true,
+  "scope": "Fresh exact/symbolic suites and separately labeled diagnostics. Successful finite replay does not complete analytic integration or establish numerical period identities."
+}

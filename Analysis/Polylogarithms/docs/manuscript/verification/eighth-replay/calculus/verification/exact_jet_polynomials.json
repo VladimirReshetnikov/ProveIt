@@ -1,0 +1,45 @@
+{
+  "method": "Exact finite symbolic manipulation; no numerical evaluations.",
+  "sympy_version": "1.14.0",
+  "symbol_conventions": {
+    "p": "An arbitrary nonnegative integer.",
+    "ell": "log(a), with 0<a<1.",
+    "T": "1-log(a).",
+    "Z2": "zeta(2).",
+    "Z3": "zeta(3).",
+    "Z4": "zeta(4).",
+    "harmonic(n, j)": "The generalized harmonic number H_n^(j)."
+  },
+  "first_jet": {
+    "log_germ_du_raw": "-polygamma(0, p + 1) + polygamma(0, 2*p + 2)",
+    "log_germ_du_reduced": "-harmonic(p) + harmonic(2*p + 1)",
+    "log_germ_du_residual": "0",
+    "log_germ_du_dv_raw": "-polygamma(1, 2*p + 2) + pi**2/2",
+    "log_germ_du_dv_reduced": "harmonic(2*p + 1, 2) + pi**2/3",
+    "log_germ_du_dv_residual": "0",
+    "Kp_at_origin": "(-1)**(p + 1)*factorial(p)**2/(2*factorial(2*p + 1))",
+    "Kp_at_origin_residual": "0",
+    "collision_polynomial_after_dividing_by_Kp_at_origin": "(ell + harmonic(p) - harmonic(2*p + 1))**2 + harmonic(2*p + 1, 2) + pi**2/3",
+    "collision_term": "Kp_at_origin * a**(2*p+1) * collision_polynomial"
+  },
+  "second_jet_p0_r2": {
+    "total_degree_used": 4,
+    "log_cosine_series_through_degree_four": "-3*Z2*t**2/4 - 15*Z4*t**4/32",
+    "raw_polynomial": "T**4 + 8*T**2*Z2 + 6*T**2 - 8*T*Z3 + 8*T + 8*Z2**2 + 8*Z2 - 6*Z4 + 9",
+    "raw_polynomial_residual": "0",
+    "reduction": "Z2**2 = 5*Z4/2",
+    "reduced_polynomial": "T**4 + 8*T**2*Z2 + 6*T**2 - 8*T*Z3 + 8*T + 8*Z2 + 14*Z4 + 9",
+    "reduced_polynomial_residual": "0",
+    "collision_term": "-a*(T**4 + T**2*(8*Z2 + 6) + T*(8 - 8*Z3) + 8*Z2 + 14*Z4 + 9)/2"
+  },
+  "bernoulli_p0_r0": {
+    "direct_correlation_integral": "a**2/2 - a/2 + 1/12",
+    "bernoulli_polynomial_expression": "a**2/2 - a/2 + 1/12",
+    "direct_integral_residual": "0",
+    "collision_term_from_beta_germ": "-a/2",
+    "collision_residual": "0",
+    "analytic_part": "a**2/2 + 1/12",
+    "analytic_part_residual": "0"
+  },
+  "all_exact_checks_passed": true
+}

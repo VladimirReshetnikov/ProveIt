@@ -1,0 +1,300 @@
+\section{Differentiation and the contact-term correction}
+\label{stconv:sec:contact}
+For $k\ge1$, the ordinary function $\gamma_n^{(k)}(x)$ has a power-log
+singularity of order $k+1$. Its canonical Hadamard finite part on $\stconvT$
+is defined by
+\begin{equation}\label{stconv:eq:Fdefinition}
+ \langle F_{n,k},\phi\rangle
+ =\stconvCT_{\epsilon\downarrow0}
+       \int_\epsilon^1\gamma_n^{(k)}(x)\phi(x)\dd x.
+\end{equation}
+Here $\stconvCT$ means the coefficient independent of $\epsilon$ after the
+finite expansion in negative powers of $\epsilon$ and nonconstant powers
+of $\log\epsilon$ is removed. The remaining error tends to zero.
+This convention uses the coordinate $x\in(0,1)$ and no finite counterterm.
+It agrees with Definition~\ref{stconv:def:G} when $k=0$.
+
+\begin{lemma}[Higher Hurwitz poles as distributions]\label{stconv:lem:higherpoles}
+For each $k\ge1$, as $z\to0$,
+\begin{equation}\label{stconv:eq:higherpole}
+ Z(1+k-z)=\frac{(-1)^k}{k!}\frac{\delta_0^{(k)}}z
+ +\sum_{j\ge0}\frac{(-1)^jz^j}{j!}
+           \stconvFp_{\stconvT}[\zeta^{[j]}(k+1,x)].
+\end{equation}
+The finite parts in this formula have the cutoff convention
+\eqref{stconv:eq:Fdefinition}.
+\end{lemma}
+\begin{proof}
+Split $\zeta(1+k-z,x)=x^{-k-1+z}+\zeta(1+k-z,1+x)$.
+Subtract the Taylor polynomial of $\phi$ at zero through degree $k$.
+Its remainder gives an analytic integral near $z=0$. The subtracted
+monomials give terms
+$\phi^{(r)}(0)/(r!(z+r-k))$, $0\le r\le k$; only $r=k$ has a pole
+at zero. Since $\langle\delta_0^{(k)},\phi\rangle=(-1)^k\phi^{(k)}(0)$,
+its residue is the one stated. Expanding each regular term and each
+analytic remainder is exactly the constant-term prescription for the
+cutoff integrals. This proves the entire Laurent expansion.
+\end{proof}
+
+\begin{theorem}[All-index differentiation anomaly]\label{stconv:thm:anomaly}
+For $n\ge0$ and $k\ge1$,
+\begin{equation}\label{stconv:eq:anomaly}
+ D^kG_n=F_{n,k}+(-1)^{n+1}n!e_{n+1}(k)\delta_0^{(k)}.
+\end{equation}
+In particular, there is no anomaly when $n\ge k$.
+\end{theorem}
+\begin{proof}
+The meromorphic distribution family satisfies
+\begin{equation}\label{stconv:eq:DZ}
+ D^kZ(s)=(-1)^k(s)_kZ(s+k).
+\end{equation}
+This follows directly from its Fourier coefficients and the Gamma
+recurrence; it also follows by repeated integration by parts in a
+left half-plane and meromorphic continuation. Put $s=1-z$ and expand
+\[
+ (1-z)_k=k!\prod_{r=1}^k(1-z/r)
+        =k!\sum_{i=0}^k(-1)^ie_i(k)z^i.
+\]
+On the left of~\eqref{stconv:eq:DZ}, the pole is $\delta_0^{(k)}/z$ and the
+regular coefficient of $z^n$ is $D^kG_n/n!$. On the right, multiplying
+the regular part of Lemma~\ref{stconv:lem:higherpoles} by the polynomial gives
+$F_{n,k}/n!$: this is the finite part of the ordinary pointwise
+parameter-derivative identity. Multiplying its polar part by that same
+polynomial gives, in addition, the regular coefficient
+$(-1)^{n+1}e_{n+1}(k)\delta_0^{(k)}$. Comparison proves the formula.
+\end{proof}
+
+The first examples are
+\begin{align}
+ DG_0&=F_{0,1}-\delta_0',\label{stconv:eq:anomalylow}\\
+ D^2G_0&=F_{0,2}-\tfrac32\delta_0'',\notag\\
+ D^2G_1&=F_{1,2}+\tfrac12\delta_0''.\notag
+\end{align}
+The point-supported terms disappear upon restriction to $(0,1)$, so
+ordinary differentiation there cannot detect them. But convolving
+$\delta_0^{(k)}$ with another distribution differentiates that other
+factor everywhere. Therefore these terms cannot be discarded before
+convolution, even when the desired final identity is off the singular
+point.
+
+The pointwise harmonic master identity \eqref{tower:eq:masterN} remains
+valid. The new contact term governs its canonical periodic extension:
+point-supported derivatives vanish on the open interval but contribute
+after convolution.
+
+\subsection{Convolutions of arbitrary differentiated Stieltjes functions}
+The same argument gives a closed law for all derivative indices, not
+only the zeroth Stieltjes function. Put $F_{n,0}=G_n$ and define
+\[
+ a_{n,k}=(-1)^{n+1}n!e_{n+1}(k)\quad(k\ge1),\qquad a_{n,0}=0.
+\]
+Thus $F_{n,k}=D^kG_n-a_{n,k}\delta_0^{(k)}$ when $k\ge1$.
+
+\begin{corollary}[The full differentiated convolution calculus]
+\label{stconv:cor:fulltower}
+Suppose $n,m,k,l\ge0$, $r=k+l\ge1$, and the exact rule from
+Theorem~\ref{stconv:thm:product} is
+\[
+ G_n*G_m=c_{-1}\stconvId+\sum_{j=0}^{n+m+1}c_jG_j.
+\]
+Then
+\begin{align}
+ F_{n,k}*F_{m,l}={}&\sum_{j=0}^{n+m+1}c_jD^rG_j
+             -a_{n,k}D^rG_m-a_{m,l}D^rG_n\label{stconv:eq:fulltower}\\
+ &+(c_{-1}+a_{n,k}a_{m,l})\delta_0^{(r)}.\notag
+\end{align}
+Away from the integer point this reduces to
+\[
+ \sum_{j=0}^{n+m+1}c_j\gamma_j^{(r)}(x)
+          -a_{n,k}\gamma_m^{(r)}(x)-a_{m,l}\gamma_n^{(r)}(x).
+\]
+In particular, every such convolution has a finite reduction to
+$\zeta^{[j]}(r+1,x)$ with $0\le j\le n+m+1$.
+\end{corollary}
+\begin{proof}
+Multiply the two identities $F=D G-a\delta$ at their indicated
+orders, interpreting the zero-order case through $a_{n,0}=0$.
+The product of the first terms is $D^r(G_n*G_m)$, and
+$D^r\stconvId=\delta_0^{(r)}$. Restricting off zero and applying
+\eqref{tower:eq:masterN} proves the last assertion.
+\end{proof}
+
+As an explicit higher-index example, the contact term vanishes for
+$F_{1,1}=DG_1$. Hence
+\begin{align}
+ (F_{1,1}*F_{1,1})(x)
+ ={}&-2\zeta'''(3,x)-9\zeta''(3,x)\label{stconv:eq:gamma1primepair}\\
+ &+[4\zeta(2)-6]\zeta'(3,x)
+   +[6\zeta(2)+4\zeta(3)]\zeta(3,x).\notag
+\end{align}
+This follows by twice differentiating~\eqref{stconv:eq:product11} and using
+\eqref{tower:eq:masterN}. It illustrates that the full tower still
+closes at one spectral integer even when higher Stieltjes indices occur.
+
+\section{A two-jet collapse for every polygamma convolution}
+\label{stconv:sec:poly}
+Let $H_0=0$ and $H_k=\sum_{j=1}^k1/j$ for $k\ge1$. Define
+\[
+ \Psi_k=\stconvFp_{\stconvT}\psi^{(k)}\qquad(k\ge0)
+\]
+using the same canonical cutoff convention. Since $\gamma_0=-\psi$,
+Theorem~\ref{stconv:thm:anomaly} gives
+\begin{equation}\label{stconv:eq:PsiD}
+ \Psi_0=-G_0,\qquad
+ \Psi_k=-D^kG_0-H_k\delta_0^{(k)}\quad(k\ge1).
+\end{equation}
+
+\begin{theorem}[Polygamma convolution reduction]\label{stconv:thm:polygamma}
+Let $k,l\ge0$ and $r=k+l\ge1$. Then
+\begin{align}
+ \Psi_k*\Psi_l={}&2D^rG_1+(H_k+H_l)D^rG_0\label{stconv:eq:polyfull}\\
+ &+[H_kH_l-\zeta(2)]\delta_0^{(r)}.\notag
+\end{align}
+Consequently, for $0<x<1$,
+\begin{equation}\label{stconv:eq:polyscalar}
+ (\Psi_k*\Psi_l)(x)=(-1)^{r+1}r!
+ \left[2\zeta'(r+1,x)+(2H_r-H_k-H_l)\zeta(r+1,x)\right].
+\end{equation}
+For $k=l=0$, the appropriate separate formula is
+$\Psi_0*\Psi_0=2G_1-\zeta(2)\stconvId$.
+\end{theorem}
+\begin{proof}
+Convolving~\eqref{stconv:eq:PsiD} and using that derivatives may be placed on
+either factor gives
+\[
+ \Psi_k*\Psi_l=D^r(G_0*G_0)
+ +(H_k+H_l)D^rG_0+H_kH_l\delta_0^{(r)}.
+\]
+The same expression is valid when one index is zero, since its harmonic
+number vanishes. Apply~\eqref{stconv:eq:product00} and
+$D^r\stconvId=\delta_0^{(r)}$. Restriction to $0<x<1$ gives
+$2\gamma_1^{(r)}+(H_k+H_l)\gamma_0^{(r)}$.
+Now use~\eqref{tower:eq:masterN} with $n=0,1$:
+\[
+ \gamma_1^{(r)}=(-1)^{r+1}r![\zeta'(r+1,x)+H_r\zeta(r+1,x)],
+ \quad \gamma_0^{(r)}=(-1)^rr!\zeta(r+1,x).
+\]
+This proves~\eqref{stconv:eq:polyscalar}.
+\end{proof}
+
+For example,
+\begin{align}
+ (\Psi_0*\Psi_1)(x)&=2\zeta'(2,x)+\zeta(2,x),\label{stconv:eq:polyexamples}\\
+ (\Psi_1*\Psi_1)(x)&=-4\zeta'(3,x)-2\zeta(3,x),\notag\\
+ (\Psi_0*\Psi_2)(x)&=-4\zeta'(3,x)-3\zeta(3,x).\notag
+\end{align}
+Although the last two convolutions have the same total derivative order,
+they have different coefficients. Confusing $\Psi_k$ with the $k$th
+derivative of $\Psi_0$ would incorrectly erase this distinction.
+
+\subsection{A convergent trigamma identity with every subtraction visible}
+For $0<x<1$, set $h=x/2$ and $f(t)=\psi'(t)$. Then
+\begin{align}
+ \mathcal T(x)={}&2\int_0^h\left[
+       \frac{f(x-t)-f(x)+tf'(x)}{t^2}
+        +\psi'(1+t)f(x-t)\right]\dd t\label{stconv:eq:trigamma-integral}\\
+ &+\int_x^1f(t)f(1+x-t)\dd t
+      -\frac{2f(x)}h-2f'(x)\log h\notag
+\end{align}
+satisfies
+\begin{equation}\label{stconv:eq:trigamma-value}
+ \mathcal T(x)=-4\zeta'(3,x)-2\zeta(3,x).
+\end{equation}
+Indeed, the shift relation $\psi'(t)=t^{-2}+\psi'(1+t)$ and symmetry
+about $t=x/2$ reduce the first singular convolution integral to twice
+its left half. Subtracting the constant and linear Taylor terms of
+$f(x-t)$ leaves a bounded quotient. The constant terms of
+$\int_\epsilon^ht^{-2}\dd t$ and
+$\int_\epsilon^ht^{-1}\dd t$ are $-1/h$ and $\log h$,
+respectively. This proves that~\eqref{stconv:eq:trigamma-integral} is exactly
+the canonical finite-part convolution, so Theorem~\ref{stconv:thm:polygamma}
+applies. Every integral in~\eqref{stconv:eq:trigamma-integral} is ordinary and
+absolutely convergent.
+
+
+
+\section{Contact terms in translated derivative products}
+\label{stconv:sec:translated-contact}
+For $r\ge1$ let $h_{r,m}=(-1)^m m!e_{m+1}(r)$, and put $h_{0,m}=0$.
+Thus \eqref{stconv:eq:anomaly} reads
+$F_{m,r}=D^rG_m+h_{r,m}\delta_0^{(r)}$.
+\begin{theorem}[Translated contact law]\label{shj:contactthm}
+For $r,k,m,n\ge0$, $N=r+k$, and $b=1-a$ with $0<a<1$,
+\begin{align}\label{shj:generalcontact}
+ &\FP\int_0^1\gamma_m^{(r)}(x)\gamma_n^{(k)}(\{x+a\})\,dx\notag\\
+ &\quad=(-1)^r J_{mn}^{(N)}(a)
+ +(-1)^k h_{k,n}\gamma_m^{(N)}(b)
+ +(-1)^r h_{r,m}\gamma_n^{(N)}(a).
+\end{align}
+\end{theorem}
+\begin{proof}
+The local finite parts use the constant-term convention
+\eqref{stconv:eq:Fdefinition}. At nonzero shift the singular supports
+of the two factors are disjoint, so a partition into disjoint endpoint
+neighborhoods defines the product unambiguously. Substitute the two contact
+identities. Periodic integration by parts gives the first term. The
+shifted delta derivative acts at $x=b$, giving
+$(-1)^k h_{k,n}\gamma_m^{(N)}(b)$, and the unshifted one acts at zero,
+giving $(-1)^r h_{r,m}\gamma_n^{(N)}(a)$. The product of the two
+point-supported terms vanishes because their supports are distinct.
+This proves the formula with the exact scale-one endpoint normalization.
+\end{proof}
+\subsection{Every polygamma product in first Hurwitz derivatives}
+For $r,k\ge0$ define
+\[
+\Pi_{r,k}(a)=\FP\int_0^1\psi^{(r)}(x)\psi^{(k)}(\{x+a\})\dd x.
+\]
+\begin{corollary}[Polygamma closure]\label{shj:polyclosure}
+For $N=r+k\ge1$,
+\begin{align}
+\Pi_{r,k}(a)={}&(-1)^r\big[\gamma_1^{(N)}(a)-H_r\psi^{(N)}(a)\big]\notag\\
+&+(-1)^k\big[\gamma_1^{(N)}(b)-H_k\psi^{(N)}(b)\big].
+\label{shj:polyclosuregamma}
+\end{align}
+Equivalently,
+\begin{align}
+\Pi_{r,k}(a)=N!\bigg\{&(-1)^{k+1}\big[\zeta^{[1]}(N+1,a)
++(H_N-H_r)\zeta(N+1,a)\big]\notag\\
+&+(-1)^{r+1}\big[\zeta^{[1]}(N+1,b)
++(H_N-H_k)\zeta(N+1,b)\big]\bigg\}.
+\label{shj:polyclosurezeta}
+\end{align}
+The case $N=0$ is \eqref{shj:psipsi}.
+\end{corollary}
+\begin{proof}
+Take $m=n=0$ in \eqref{shj:generalcontact}, use $\gamma_0^{(r)}=-\psi^{(r)}$, $h_{r,0}=H_r$, and differentiate \eqref{shj:J00}. This proves \eqref{shj:polyclosuregamma}. The pointwise identities
+\begin{align*}
+\psi^{(N)}(x)&=(-1)^{N+1}N!\zeta(N+1,x),\\
+\gamma_1^{(N)}(x)&=(-1)^{N+1}N!
+\big[\zeta^{[1]}(N+1,x)+H_N\zeta(N+1,x)\big]
+\end{align*}
+then give \eqref{shj:polyclosurezeta}. The second follows directly by expanding
+$\partial_x^N\zeta(1+u,x)=(-1)^N(1+u)_N\zeta(N+1+u,x)$ at $u=0$; these pointwise ladders are also part of the repository's existing development \cite{stconv:shifted-report}.
+\end{proof}
+
+Two instructive special cases are
+\begin{align}
+\Pi_{0,1}(a)&=\zeta^{[1]}(2,a)+\zeta(2,a)-\zeta^{[1]}(2,b)
+=J_{00}'(a)+\psi'(b),\label{shj:01}\\
+\Pi_{1,1}(a)&=2\zeta^{[1]}(3,a)+2\zeta^{[1]}(3,b)
++\zeta(3,a)+\zeta(3,b).\label{shj:11}
+\end{align}
+The term $+\psi'(b)$ in \eqref{shj:01} is an explicit counterexample to the unqualified rule ``differentiate the finite-part identity under the integral.'' It is not a counterexample to ordinary differentiation under a genuinely dominated integral.
+
+For reproducibility, let $I_{r,k}(\epsilon)$ be the sum of the two raw cutoff integrals, with arguments split as in \eqref{shj:Jcutoff}. Then
+\begin{align}
+\Pi_{0,1}(a)=\lim_{\epsilon\downarrow0}\left[
+I_{0,1}(\epsilon)-\frac{\psi(b)}\epsilon
+-\big(\psi'(a)-\psi'(b)\big)\log\epsilon\right],\label{shj:cut01}\\
+\Pi_{1,1}(a)=\lim_{\epsilon\downarrow0}\left[
+I_{1,1}(\epsilon)-\frac{\psi'(a)+\psi'(b)}\epsilon
++\big(\psi''(a)+\psi''(b)\big)\log\epsilon\right].\label{shj:cut11}
+\end{align}
+These counterterms can be derived directly from $\psi(x)=-1/x-\gamma+O(x)$ and $\psi'(x)=x^{-2}+O(1)$. They give numerical tests of the contact law that do not implement distributional differentiation.
+
+
+The full default replays are preserved under \src{verification/eighth-replay/}.
+The direct cutoff polygamma calculations check the contact correction
+without implementing distributional differentiation. The all-index law
+rests on the Laurent residues and the proof above. The ordinary pointwise
+master identity has not been retracted or altered.

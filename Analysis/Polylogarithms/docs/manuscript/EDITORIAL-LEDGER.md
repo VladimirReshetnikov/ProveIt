@@ -408,3 +408,46 @@ Finite exact polynomial/coefficient checks and independent logistic-axis
 quadratures accompany these identities as separate evidence. The next
 research emphasis is functional certificates and unresolved finite-weight
 identities; additional bounds are secondary to that identity programme.
+
+## Eighth intake: Stieltjes correlations and uniform resonance
+
+Five packages at fc4d3bf805 are preserved in placement 9017ab1b13, with
+131 original tracked members and two ignored manifests recoverable in the
+arrival archives. Their imported ZIPs are retired, retaining the incoming
+README. The new stieltjes-correlation-calculus spine unifies four reports
+through their common Fourier, finite-part and primitive definitions.
+
+| Source group | Canonical reconciliation and active proof scope |
+|---|---|
+| stieltjes-correlation-calculus | Shared report spine with an explicit dependency map. Delivered originals remain historical; analytic acceptance is distinct from intake and finite replay. |
+| stieltjes-convolution-algebra | Fourier Hurwitz family, exact scale-one Stieltjes finite parts, Bell algebra, coefficient multiplication, convergent subtractions, contact law, polygamma collapse and circular log-Gamma powers are proved and integrated with their full analytic arguments. The formal polynomial freeness is a distribution theorem, not numerical period independence. |
+| shifted-hurwitz-jets | Shifted kernel, all-index linear Stieltjes closure, normalized primitive lifts, ordinary Gamma correlations and reflected contact products are proved and integrated through shared definitions. The pointwise derivative tower remains correct. |
+| bilinear-stieltjes-correlation-closure | Coincident cutoff conversion and the exact convergent collision expansion are proved and integrated with the shifted closure coefficients. Small numerical canaries remain method/version diagnostics. |
+| stieltjes-convolution-calculus | Its identity conventions corroborate the shared calculus. Search-basket wording, missing Hurwitz-ladder domain and the base-case endpoint clarification are corrected after independent source review. Higher negative-integer collision regularity and the Hankel material remain pending canonical audit. |
+| resonance-correlations-nonseparable-jets | On the uniform-transition spine. Uniform resonance, Gamma cusp expansions, joint Herglotz limits and the two-generator Frobenius theorem remain under analytic audit. Preserve the three-generator counterexample and the distinction between colength and module isomorphism. |
+
+The canonical Hurwitz ladder now states Re(z)>0, the holomorphic log-Gamma
+branch and absolute local uniform convergence; z=-1/2 is an explicit failure
+of the omitted-domain extrapolation. The Stieltjes moment-transform base
+case now uses cancellation of equal generally nonzero endpoint values.
+Searches remove or quotient known basket relations and require a nonzero
+target coefficient; unproved arithmetic independence is not assumed.
+
+The complete isolated eighth-batch replay is now preserved. The algebra suite
+passes 229 exact assertions and 31 diagnostics at each of 40 and 50 digits;
+shifted jets provide 28 ordered identities and 64 full diagnostics; bilinear
+closure passes 272 exact checks on 45 ordered pairs and 19 plus three numerical
+checks. The calculus replay runs all seven scripts, and resonance runs all four
+suites. Those finite results corroborate the accepted identity chain without
+resolving the separately listed pending analytic claims.
+
+The collective extension proves the exact dilation action on the one-generator
+convolution algebra and the distinct covering and trace finite-part contacts,
+including every differentiated trace and the polygamma specialization. Its
+independent symbolic controls comprise 224 exact checks and one rejected
+corruption; fifteen 60-digit numerical checks remain non-interval diagnostics.
+Wolfram 15.0.1 independently passes 36 exact identities and four 70-digit direct
+subtracted-integral diagnostics. No period-independence or literature-priority
+claim is inferred. The canonical release has 446 pages and 111 references;
+its three-pass build, full-page raster review and exact receipt checks are
+separate evidence records.
