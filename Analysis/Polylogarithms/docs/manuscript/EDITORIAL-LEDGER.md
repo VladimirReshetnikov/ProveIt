@@ -280,6 +280,13 @@ Five archives at `a0a90ef318` are preserved as 227 byte-identical members. The t
 The Chapter 9 Koszul proof yields a new closed product law for coordinate-power active parameters. It determines characteristic-two reflected dimensions and both integral torsion submodules for every level and tuple of jet lengths. A separate raw-row bit-matrix implementation checks 210 finite cases and a corruption control. This settles the separable family, leaving general multivariable extensions open.
 
 ## October 10: new proofs driven by real-order experiments
+The remaining sixteen already imported ZIPs were retired from `docs/incoming`
+under section 7 of its README. All 691 retained members match their original
+placement Git blobs at `0c9bf73f27`, `6ae95edc29` and `5537940fde`.
+Their arrival commits, exact archive paths and placement destinations are
+recorded in `verification/incoming-retirement.json`; the five earlier ZIPs
+were already retired. Retirement clears the drop zone after placement and
+does not assert completion of every package's analytic integration.
 
 The collective continuation supplies a positive Hausdorff measure for coefficient differences precisely when a=0 or a+b<=1, with a Bernstein interpolation on the same domain. It closes the principal slit-plane zero problem for all a>=0,b>0, proves angular uniqueness throughout this range and Cartesian motion, and establishes strict normalized-radius increase on and below the critical line and on the full outer-order axis. Ordinary boundary convergence is distinguished from analytic/Abel values.
 

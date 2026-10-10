@@ -13,6 +13,12 @@ from incoming analytic claims still awaiting reconciliation. Twenty-one
 incoming archives are preserved as **865 byte-identical members**. All 21
 isolated package replay suites pass. The original drafts and initial
 continuation evidence remain preserved too.
+The imported arrival ZIPs have been retired from `docs/incoming` under
+section 7 of its README. The last sixteen packages' 691 members were checked
+against their original placement commits before their explicit Git removal.
+[incoming-retirement.json](verification/incoming-retirement.json) records
+each arrival, placement, destination and recovery path. Archive-preservation
+validation now reads all twenty-one ZIPs from their pinned arrival commits.
 
 The reviewed PDF SHA-256 is:
 

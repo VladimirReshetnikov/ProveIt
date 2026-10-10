@@ -12,7 +12,7 @@ and a dense cluster-set theorem. The S2/S4 proofs, all-weight distribution
 rank theorem and Stieltjes zero counts through index seven are retained.
 S6 and the distinct new S8 candidate remain conjectural despite certified
 proximity. The inventory covers **381 textual provenance files**; **21
-incoming archives / 865 members** are byte-preserved and their replay suites
+incoming archives / 865 members** are byte-preserved; imported ZIPs are retired from the drop zone and remain recoverable from their arrival commits. Their replay suites
 pass. Integral basis, reflection torsion and modular/jet proofs are now integrated,
 with a new separable multivariable product law and 210 independent raw-matrix
 checks. The real-order core is integrated with new all-parameter slit-plane and angular proofs, Gaussian monotonicity and a unique axis maximum, and the sharp critical/subcritical Euler constant pi/4+log(2)/2. Bessel, full Cayley, uniform, Lerch and Herglotz proof integration remains ongoing and explicitly tracked. The [validation record](docs/manuscript/VALIDATION.md)
