@@ -82,7 +82,8 @@ The subsequently merged sixth package contains four overlapping deliveries,
 14–17. Their shared parity/shuffle reductions are presented once with proofs;
 stronger triples, algebraic ladder certificates, log-gamma moment analysis and
 certified evaluators are integrated in Chapters 3, 4 and 7. Six additional
-literature references were verified against primary author sources.
+literature references are integrated; the key analytic attributions were
+checked against primary author sources.
 
 Fresh replays in `verification/gaussian-replay/` include:
 

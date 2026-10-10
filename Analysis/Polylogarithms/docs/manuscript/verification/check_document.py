@@ -27,7 +27,7 @@ missing_graphics=[m for m in re.findall(r'\\includegraphics(?:\[[^]]*\])?\{([^}]
 result=dict(source_documents=len(inventory),unlisted_sources=unlisted,changed_source_digests=changed,uncovered_sources=uncovered,
  duplicate_labels=[k for k,n in Counter(labels).items() if n>1],missing_references=sorted(set(refs)-set(labels)),
  duplicate_bibliography_keys=[k for k,n in Counter(bibkeys).items() if n>1],missing_citations=sorted(set(cites)-set(bibkeys)),
- missing_inputs=missing_inputs,missing_graphics=missing_graphics,source_files=len(files),source_bytes=sum(p.stat().st_size for p in files))
+ missing_inputs=missing_inputs,missing_graphics=missing_graphics,source_files=len(files),source_bytes=sum(len(p.read_bytes().replace(b"\r\n",b"\n")) for p in files))
 result['passed']=not any(v for k,v in result.items() if isinstance(v,list))
 (B/'verification/document-integrity.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
 print(json.dumps(result,indent=2))
