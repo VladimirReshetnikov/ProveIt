@@ -1,0 +1,184 @@
+\section{Progress-driven discovery before planar refinement}
+\label{sec:planar-adaptive}
+
+Complete planar enumeration and first-disc discovery have different cost
+profiles. The preceding release prepares every minimum cell and crossing
+before yielding a ray. Its small two-cap discovery cases are slower than
+the former arrangement iterator, even though complete enumeration is much
+faster. The new discovery policy responds to observed progress: test the
+original projective Q-corners first, and build the complete minimum overlay
+only when that prelude has not found a disc. Its complete fallback and
+proof formats are preserved.
+
+\subsection{A cheap prefix of the complete ray set}
+
+Let $P$ be the normalized nonnegative quadrilateral section. Every corner
+of $P$ is extreme in any minimum cell containing it. Canonical lifting is
+a linear isomorphism from that cell's cone to a standard coordinate face,
+so its corner lift is a standard extreme ray. This is the face theorem of
+Sections~\ref{sec:minimum-envelopes-native} and
+\ref{sec:planar-overlay-refinements}; it does not depend on the Euler
+convexity hypothesis about vertex links. A Q-corner is therefore a safe
+first candidate even when the source is not an authenticated knot exterior.
+It still needs the existing exact essential-disc certificate before any
+positive result is returned.
+
+For matching nullity three, construct the source Q-chart and its polygon,
+segment, point or empty section without constructing minimum cells.
+Project the retained triangle forms once. There are $O(k)$ forms, so the
+preparation costs $O(k^2)$ rational operations after kernel construction.
+Order domain corners by decreasing first allowed quadrilateral coordinate,
+with exact chart-coordinate ties. This is a deterministic candidate policy,
+not a theorem predicting essentiality. The first-corner preference is
+independent of the Fibonacci fixture parameters. Sorting uses constant-size
+keys in $O(k\log(k+2))$ comparisons. One full canonical lift costs
+$O(t+k)$ arithmetic operations; the first candidate is thus available in
+$O(1+t+k^2)$ post-kernel operations, with rational-bit, component-query,
+independent-replay and output costs separately charged.
+
+\begin{proposition}[Complete adaptive discovery stream]
+Yielding all domain-corner lifts, then all remaining vertices of the common
+minimum subdivision, gives each non-link standard extreme ray exactly once.
+If a consumer stops at a successful corner, no minimum-overlay construction
+is required. If it resumes after the prelude, the complete stream has the
+same ray set as full planar enumeration.
+\end{proposition}
+\begin{proof}
+Domain corners are vertices of every subdivision and their lifts are
+standard-extreme by the coordinate-face correspondence. Build the common
+minimum subdivision using the already prepared chart and projected forms.
+Its vertices are exactly the complete standard-ray set. Remove only the
+exact domain points already yielded; normalization meets each nonzero ray
+once, so neither duplicate rays nor omissions result. Empty and singleton
+sections complete at the prelude. A segment resumes through its exact
+minimum breaks; a polygon resumes through all cells and cross-group
+intersections. The generator's control flow builds this refinement only
+after the consumer asks for a candidate beyond the prefix.
+\end{proof}
+
+The full geometric arithmetic bound stays
+$O(1+k^3+(t+k)R)$ under the deterministic realization described earlier.
+Every Q-corner is among the $R$ output rays and is lifted once. The prefix
+shares its chart and projected forms with the tail. It does not pay a
+second full preparation. This is a worst-case preservation result and an
+early-exit opportunity, not a uniform speedup theorem. Python hash-set
+collision costs retain the qualifications of the preceding section.
+
+\subsection{Complete enumeration at logarithmic nullity}
+
+The general arrangement fallback also gives a useful local complexity
+statement beyond the planar gate. This is elementary accounting for the
+existing implementation, without a novelty claim.
+
+\begin{proposition}[Complete low-nullity sector enumeration]
+For a supplied compatible sector with $k$ allowed types, $t$ tetrahedra,
+matching nullity $d$, and encoded source size $B$, the general standard-ray
+arrangement algorithm has bit cost
+\[
+ \operatorname{poly}(t+k+B)(1+k)^{O(d)}.
+\]
+The higher-dimensional automatic support/arrangement selector preserves
+this bound. Hence polynomial source size and logarithmic matching nullity
+give quasi-polynomial complete enumeration within one supplied sector.
+\end{proposition}
+\begin{proof}
+The contracted matching model has at most $8k$ retained triangle classes.
+If $p_v$ classes belong to vertex group $v$, the candidate hyperplanes
+comprise $k$ coordinate forms and at most $\sum_v\binom{p_v}{2}=O(k^2)$
+potential differences, projected to the $d$-dimensional matching kernel.
+Identically zero and duplicate forms can be dropped. An extreme ray of a
+minimum-cell cone is determined by $d-1$ independent active hyperplanes
+from this list. This remains true when the feasible cone has smaller
+dimension: its forced equalities are among the active constraints.
+Thus testing all $\binom{O(k^2)}{d-1}$ systems, followed by the exact
+standard-extremality filter, is complete. Nullity zero and empty sectors
+have their explicit no-ray branches.
+
+Each candidate requires polynomial-size exact linear algebra, canonical
+lifting, source-coordinate validation and output. The bounded integral
+matching coefficients and determinant bounds control elimination bits;
+the inherited $4^s$ and $4^{s-1}$ coordinate bounds for actual support $s$
+give $O(k)$ bits per primitive output coordinate. No elementary pieces
+are expanded. The automatic support alternative has at most its computed
+mixed-support count in candidate bases and is selected only when that
+count is below the arrangement count. Its per-candidate elimination is
+also polynomial. Computing the two combinatorial bounds uses polynomially
+many integer operations on polynomial-bit integers. Multiplying the
+candidate count by these polynomial costs gives the result.
+Even quadratic worst-case duplicate-table work only squares the candidate
+count and stays within $(1+k)^{O(d)}$; no constant-time hashing assumption
+is needed for this broader complexity class.
+\end{proof}
+
+This strengthens the local enumeration accounting beyond the Euler-only
+logarithmic-nullity observation in report 81. It supplies neither a
+quasi-polynomial complete sector producer nor a bound for source hierarchy
+resets and essential-disc testing across all knot inputs. Those additional
+requirements are still needed for a general recognition theorem.
+
+For the two-cap Fibonacci family, the first-corner behavior is uniform,
+not only an observation on the timed sizes. Its Q-cone is
+$(x,y,z)\in\mathbb R_{\ge0}^3$. Only the $x$-corner has nonzero first
+allowed coordinate $q_0=F_nx$; the two cap corners have $q_0=0$.
+The decreasing-coordinate policy therefore selects $x=1,y=z=0$ first
+after primitive normalization, since the last base coordinate is $F_1=1$.
+By the all-size component theorem of Section~\ref{sec:planar-sectors-native},
+this is exactly one essential meridian disc. A complete exact disc
+consumer thus succeeds on its first candidate for every $n\ge1$ without
+requesting a minimum overlay. Cooperative interruption or an observer
+resource limit can still produce an inconclusive query. This family theorem
+does not predict first-corner success for arbitrary triangulations.
+
+\subsection{One allowance, ordinary positive and negative certificates}
+
+The native generator is \code{sector\_planar\_discovery\_rays}. It uses
+one actual-ray allowance across the prefix and tail: its counter is not
+reset when the implementation switches to refinement. The already tested
+corner points are excluded before any further coordinate lift. A cap
+produces \code{INCONCLUSIVE} without an exhaustion certificate. The
+cooperative callback covers section construction, lifting, resumed
+refinement and the existing component checks; callable objects with false
+Boolean value still receive cancellation calls.
+
+Automatic STANDARD discovery selects this policy at matching nullity
+three. The other automatic dimensions and explicit methods retain their
+previous behavior. Complete enumeration and planar coverage APIs retain
+their previous canonical order and statistics; they have no reason to
+prioritize a potential first disc.
+
+The first candidate is inspected by the maintained compressed disc
+observer and independently replayed. A success uses the unchanged
+\code{normal-sector-witness-v1} source-bound proof. Exhaustion uses the
+unchanged \code{normal-sector-exhaustion-v1} with phase STANDARD and every
+ray's Euler value and required negative disc proof. Its independent dense
+checker compares a set, so a different traversal order changes no coverage
+claim. In particular, failing the corner prelude does not become a negative
+disc result. We deliberately do not install the proposed aggregated
+Euler-only negative precheck here: this stream keeps full standard-ray
+coverage and its established portable certificate contract.
+
+\subsection{Reusing a kernel after a prior Q phase}
+
+The bounded-support outer search already tries a complete Q phase before
+requesting STANDARD discovery on a \code{POSITIVE\_EULER\_ONLY} result.
+Starting a new corner prelude there would repeat work. The search now builds
+one producer matching kernel per selected sector and passes it through
+both phases. Its internal STANDARD continuation skips the new prelude
+because the Q phase has already tested those candidates; it uses the
+ordinary complete standard iterator. Per-phase candidate allowances keep
+their previous meaning. The established STANDARD checks still include
+their own corner entries; this change removes the redundant producer build
+and avoids adding another discovery prelude. The source/kernel is read-only throughout this
+query. Independent proof checkers continue to reconstruct geometry from
+the actual supplied source; cached producer geometry is not substituted
+for source authentication or verification.
+
+This removes a redundant producer build for each sector requiring a
+second phase. It does not yet share preparation across different sectors
+and does not change which supports are enumerated. The outer negative
+status remains restricted to the declared support allowance, with no
+unqualified knot verdict. This supplied-triangulation research API is
+separate from the default diagram-recognition portfolio.
+
+\subsection{Validation and measurements}
+\input{planar_adaptive_results.tex}
