@@ -1,0 +1,152 @@
+\section{Critical defects and the emergence of the atom}
+\label{rw:sec:defects}
+
+\begin{theorem}[Completely monotone critical defects]\label{rw:thm:defect}
+Let $a=1-b\in(0,1)$ and
+\[
+ D_n=\frac1a-\frac{H_{n-1}^{(b)}}{n^a},\qquad n\ge1.
+\]
+Then $D_n=\int_0^1u^{n-1}\dd\sigma_{a,b}(u)$ where $d\sigma_{a,b}(u)=-K_{1-b,b}(-\log u)\,du$ is the strictly positive critical negative part. If $\Delta D_n=D_{n+1}-D_n$,
+then $(-1)^k\Delta^kD_n>0$ for every $k\ge0,n\ge1$. Moreover,
+\begin{equation}\label{rw:eq:defectbounds}
+ -\zeta(b)n^{-a}+\frac1{2n}<D_n
+ <-\zeta(b)n^{-a}+\frac1n.
+\end{equation}
+Every finite Hankel matrix $(D_{j+k+1})_{j,k=0}^r$ is positive
+definite, and $D_nD_{n+2}>D_{n+1}^2$.
+\end{theorem}
+\begin{proof}
+Subtract the critical signed-measure moments from its atomic mass. Then
+\[
+ (-1)^k\Delta^kD_n=\int_0^1u^{n-1}(1-u)^k\dd\sigma(u)>0.
+\]
+On $w=1$, $k_w(T)=1$, so \eqref{rw:aux:Cbounds} reads
+$1/2<C_{a,b}(T)<1$. Integrating these inequalities against
+$e^{-nT}\dd T$ gives \eqref{rw:eq:defectbounds}.
+For a nonzero real vector $(v_0,\ldots,v_r)$,
+\[
+ \sum_{j,k=0}^rv_jv_kD_{j+k+1}
+ =\int_0^1\left(\sum_{j=0}^rv_ju^j\right)^2\dd\sigma(u)>0,
+\]
+since a nonzero polynomial cannot vanish on an interval and the
+density is positive everywhere inside $(0,1)$. Strict log-convexity
+follows either from its $2\times2$ minors or from strict
+Cauchy--Schwarz with the weight $u^{n-1}\dd\sigma$.
+\end{proof}
+
+The theorem also gives a continuous version. For $q>0$,
+\begin{equation}\label{rw:eq:continuousdefect}
+ D(q)=\frac1a-q^{-a}\bigl(\zeta(b)-\zeta(b,q)\bigr)
+ =\int_0^\infty e^{-qT}
+   \bigl[-\zeta(b)k_a(T)+C_{a,b}(T)\bigr]\dd T.
+\end{equation}
+Thus $(-1)^jD^{(j)}(q)>0$ for all integers $j\ge0$.
+All derivatives are justified by exponential domination. These are
+inequalities for specific harmonic/Hurwitz expressions, not claims
+about independence of their special values.
+
+\section{Elementary critical-kernel identities and Hurwitz inequalities}
+\label{rw:sec:criticalidentities}
+
+In this section $0<b<1$, $a=1-b$, and
+$C_b(T)=C_{1-b,b}(T)=\E[q(TV)]$ with
+$V\sim\mathrm{Beta}(b,1-b)$. In particular $1/2<C_b(T)<1$ and
+$C_b$ is strictly increasing.
+
+\begin{theorem}[An elementary convergent series]\label{rw:thm:elementary}
+For every $T>0$,
+\begin{equation}\label{rw:eq:elementary}
+ C_b(T)=\frac12+\sum_{k=1}^\infty
+ \frac{\sin\!\bigl(b\arctan(T/(2\pi k))\bigr)}
+ {\pi k\bigl(1+(T/(2\pi k))^2\bigr)^{b/2}}.
+\end{equation}
+Every summand is positive. The tail after $K\ge1$ terms is bounded by
+\begin{equation}\label{rw:eq:elementarytail}
+ 0<C_b(T)-\frac12-\sum_{k=1}^K(\text{summand})
+ \le\frac{bT}{2\pi^2K}.
+\end{equation}
+For $|T|<2\pi$ it also has the convergent expansion
+\begin{equation}\label{rw:eq:Bernoulli}
+ C_b(T)=\frac12+\sum_{j=1}^\infty
+ \frac{B_{2j}(b)_{2j-1}}{(2j)!(2j-1)!}T^{2j-1},
+\end{equation}
+where $(b)_m$ is the rising factorial and $B_{2j}$ is a Bernoulli
+number, not a Bernoulli polynomial evaluated at $b$.
+\end{theorem}
+\begin{proof}
+The classical partial fraction for $\coth$ gives
+\begin{equation}\label{rw:eq:hpartial}
+ q(t)=\frac12+2t\sum_{k=1}^\infty\frac1{t^2+(2\pi k)^2}.
+\end{equation}
+This follows from DLMF 4.36.3 after rescaling
+\cite{rw:DLMFHyperbolic}. The summands are positive for $t>0$, so
+Tonelli permits averaging over $V$.
+For $|z|<1$, the beta moments yield
+\[
+ \E\frac1{1-zV}=\sum_{j\ge0}z^j\frac{(b)_j}{j!}=(1-z)^{-b}.
+\]
+Both sides are analytic for $z\in\realcut$, so the same identity holds
+there. At $z=\iu q$, its imaginary part is
+\[
+ \E\frac{qV}{1+q^2V^2}
+ =\frac{\sin(b\arctan q)}{(1+q^2)^{b/2}}.
+\]
+Taking $q=T/(2\pi k)$ proves \eqref{rw:eq:elementary}.
+Since $\sin(b\arctan q)\le bq$ and the denominator factor is at
+least one, its tail is at most
+$bT(2\pi^2)^{-1}\sum_{k>K}k^{-2}\le bT/(2\pi^2K)$.
+
+The usual Bernoulli expansion of \eqref{subunit:eq:q} has radius $2\pi$:
+$q(t)=1/2+\sum_{j\ge1}B_{2j}t^{2j-1}/(2j)!$.
+For $|T|<2\pi$ it is uniformly absolutely convergent for
+$0\le V\le1$. Average termwise and use
+$\E V^{2j-1}=(b)_{2j-1}/(2j-1)!$ to obtain
+\eqref{rw:eq:Bernoulli}.
+\end{proof}
+
+For instance,
+\begin{equation}\label{rw:eq:Cexample}
+ C_{1/2}(T)=\frac12+\frac{T}{24}-\frac{T^3}{2304}
+                       +\frac{T^5}{122880}+O(T^7).
+\end{equation}
+The companion program regenerates exact coefficients through degree
+$13$ at $b=1/10,1/2,9/10$ by two algebraically equivalent constructions.
+The numerical tests of \eqref{rw:eq:elementary} use independent beta
+quadrature, with the analytic tail bound displayed separately.
+
+\begin{theorem}[A completely monotone normalized Hurwitz expression]
+\label{rw:thm:hurwitzcm}
+For $0<b<1$ and $q>0$, define
+\begin{equation}\label{rw:eq:L}
+ L_b(q)=q^{b-1}\zeta(b,q)+\frac1{1-b}.
+\end{equation}
+Then
+\begin{equation}\label{rw:eq:criticalLaplace}
+ L_b(q)=\int_0^\infty e^{-qT}C_b(T)\dd T,
+ \qquad \frac1{2q}<L_b(q)<\frac1q.
+\end{equation}
+In particular, $(-1)^jL_b^{(j)}(q)>0$ for all $j\ge0$.
+The function
+\begin{equation}\label{rw:eq:normalizedHurwitz}
+ qL_b(q)=q^b\zeta(b,q)+\frac q{1-b}
+\end{equation}
+decreases strictly from $1$ to $1/2$ as $q$ increases from zero to
+infinity.
+\end{theorem}
+\begin{proof}
+Formula \eqref{rw:eq:criticalLaplace} is \eqref{rw:aux:CLaplace} with
+$a=1-b$. Bounds and strict complete monotonicity follow from
+$1/2<C_b<1$ and differentiating the positive Laplace integral.
+Substitution $T=s/q$ gives
+\[
+ qL_b(q)=\int_0^\infty e^{-s}C_b(s/q)\dd s.
+\]
+Strict increase of $C_b$ proves strict decrease with $q$.
+The endpoint limits follow by dominated convergence and the limits
+$C_b(0+)=1/2$, $C_b(\infty)=1$.
+\end{proof}
+
+The beta average is the common source of the elementary series and
+the Hurwitz inequalities. The inequalities, finite-difference signs,
+and Hankel determinants are analytic consequences of a positive
+integral, not numerical pattern extrapolations.

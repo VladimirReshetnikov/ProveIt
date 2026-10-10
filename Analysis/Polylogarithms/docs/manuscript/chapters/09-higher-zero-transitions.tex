@@ -1,0 +1,159 @@
+\section{Exact sixth- and seventh-index saturation thresholds}
+\label{higherzeros:sec:thresholds}
+The incoming fifth-index method suggests a reproducible extension of the
+classical zero classification. Its next two first-derivative counts were
+reported only as numerical conjectures. Exact critical-value descent now
+settles both indices at every derivative order, not only the sampled first
+order. The argument retains the existing global bound and adds finite
+rational signs; it does not infer completeness from an approximate scan.
+
+\begin{theorem}[The next two classical transitions]
+\label{higherzeros:thm:thresholds}
+Let $N_{n,k}$ count the positive zeros of $\gamma_n^{(k)}$, with
+multiplicity. For every integer $k\ge1$,
+\[
+ N_{6,k}=\begin{cases}4,&1\le k\le3,\\6,&k\ge4,\end{cases}
+ \qquad
+ N_{7,k}=\begin{cases}5,&1\le k\le4,\\7,&k\ge5.\end{cases}
+\]
+Every zero is simple. Thus the least classical saturation thresholds are
+$K_6^{\rm cl}=4$ and $K_7^{\rm cl}=5$. At and above each threshold,
+the next-order zeros strictly interlace to the right of the current ones.
+\end{theorem}
+
+Retain $U_{n,k}=(-1)^{n+k}\gamma_n^{(k)}$ and the sign-preserving
+normalization $V_{n,k}=a^{k+1}U_{n,k}/k!$ of the previous section.
+The endpoint expansions give $U_{n,k}>0$ near zero,
+$\operatorname{sgn}U_{n,k}=(-1)^n$ near infinity, and $U_{n,k}\to0$
+there. Also $U_{n,k}'=-U_{n,k+1}$.
+
+\begin{lemma}[Complete descent from critical-value signs]
+\label{higherzeros:lem:descent}
+Suppose all positive zeros $c_1<\cdots<c_r$ of $U_{n,k+1}$ are
+simple, and $U_{n,k}(c_j)$ has a nonzero certified sign $s_j$ at
+each one. Put $s_0=1$. Then every positive zero of $U_{n,k}$ is
+simple and
+\[
+ N_{n,k}=\#\{0\le j<r:s_j\ne s_{j+1}\}.
+\]
+There is no zero on the final interval $(c_r,\infty)$.
+\end{lemma}
+\begin{proof}
+On each open interval cut out by the complete critical-point list,
+$U_{n,k}'=-U_{n,k+1}$ is nonzero and has constant sign. Hence
+$U_{n,k}$ is strictly monotone there. Its limits or endpoint values
+show one crossing exactly when the stated signs differ. It cannot
+vanish at a critical point, since each critical value is nonzero.
+On the final interval it is strictly monotone with limit zero; a
+nonzero strictly monotone function tending to zero cannot cross zero
+there. Every crossing lies where the derivative is nonzero, so it
+is simple. These intervals cover the whole positive axis.
+\end{proof}
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{cccrcc}
+\toprule
+$n$&$k$&$j$&Lower endpoint $\ell$&$V_{n,k}(\ell)$&$V_{n,k}(\ell+10^{-14})$\\
+\midrule
+6&4&1&0.95661907907155&$+$&$-$\\
+6&4&2&1.07179934147775&$-$&$+$\\
+6&4&3&1.51367699674930&$+$&$-$\\
+6&4&4&3.14848332199473&$-$&$+$\\
+6&4&5&16.34597601190147&$+$&$-$\\
+6&4&6&1389.12290266995208&$-$&$+$\\
+7&5&1&0.97564797285268&$+$&$-$\\
+7&5&2&1.03011037496236&$-$&$+$\\
+7&5&3&1.39376738084727&$+$&$-$\\
+7&5&4&2.31266214479726&$-$&$+$\\
+7&5&5&5.93513467415295&$+$&$-$\\
+7&5&6&38.92782595180997&$-$&$+$\\
+7&5&7&5297.39431175614964&$+$&$-$\\
+\bottomrule
+\end{tabular}
+\caption{All saturated-order root brackets. Each displayed decimal is an
+exact rational number, and each bracket has width $10^{-14}$. The signs
+are determined by outward integer intervals, rather than floating-point
+root approximations.}
+\label{higherzeros:tab:terminal}
+\end{table}
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{ccclc}
+\toprule
+$n$&Known critical order&Predecessor order&Signs at all critical points&Count\\
+\midrule
+6&4&3&$+,+,-,+,-,+$&4\\
+6&3&2&$-,+,-,+$&4\\
+6&2&1&$-,+,-,+$&4\\
+\midrule
+7&5&4&$+,+,-,+,-,+,-$&5\\
+7&4&3&$-,+,-,+,-$&5\\
+7&3&2&$-,+,-,+,-$&5\\
+7&2&1&$-,+,-,+,-$&5\\
+\bottomrule
+\end{tabular}
+\caption{The complete critical-value descent. Each predecessor sign is
+certified uniformly over the entire rational root bracket of its derivative.}
+\label{higherzeros:tab:descent}
+\end{table}
+
+\begin{proof}[Proof of Theorem~\ref{higherzeros:thm:thresholds}]
+The terminal brackets in Table~\ref{higherzeros:tab:terminal} have opposite
+strict endpoint signs, so give six distinct zeros at $(n,k)=(6,4)$ and
+seven at $(7,5)$. The global bound with multiplicity, Theorem~\ref{zeros:thm:globalzeros},
+makes these complete lists and all their zeros simple. On every terminal
+bracket the preceding derivative has the sign recorded in the first
+applicable row of Table~\ref{higherzeros:tab:descent}. Thus
+Lemma~\ref{higherzeros:lem:descent} gives exactly four sixth-index roots at
+order three and five seventh-index roots at order four.
+
+The same exact certificate file supplies disjoint brackets with opposite
+endpoint signs for every one of these predecessor roots. Since the preceding
+descent already proves the total count, these brackets form the complete
+critical-point lists for the next step. Their whole-interval predecessor
+signs are the next rows of Table~\ref{higherzeros:tab:descent}. Iterating the
+lemma reaches order one, with the counts displayed in the theorem and
+simple zeros throughout. This use of lower-order brackets has no circular
+completeness assumption: their completeness is established before the next
+descent step.
+
+At a saturated order there are $n$ distinct simple zeros. Rolle's theorem
+supplies $n-1$ next-order zeros between adjacent ones and one after the
+last, because the function has a nonzero sign there and tends back to
+zero. The same global bound makes these exactly $n$ simple zeros, with
+strict right interlacing. Induction covers every larger order. The lower
+counts prove minimality of the two thresholds.
+\end{proof}
+
+\paragraph{The exact evidence and its analytic contract.}
+The finite proof data contain 45 rational root brackets: 18 for the sixth
+index and 27 for the seventh. They require \textbf{90} endpoint enclosures
+and \textbf{36} whole critical-interval enclosures. The first implementation
+uses the generic Euler--Maclaurin bound already proved in this chapter,
+with fixed denominator $10^{80}$, 120 logarithm-series terms, 24 initial
+Hurwitz terms and 16 Bernoulli corrections. Its elementary symmetric
+coefficient table is rebuilt through degree seven; this changes no
+analytic hypothesis in the index-uniform remainder formula.
+
+A second implementation independently extracts rising-factorial coefficients
+and encloses all 126 signs. It uses denominator $10^{100}$, 128
+logarithm-series terms, 32 initial Hurwitz terms and 16 Bernoulli corrections.
+Its precision was increased because the delivered 55-digit default could
+not resolve some new narrow brackets after very small powers were multiplied
+by large factorial coefficients. Unresolved intervals were never accepted
+as signs. Both replays use exact integer and fraction arithmetic throughout
+acceptance. The complete endpoints, analytic error budgets, source digests
+and descent signs are retained in
+\texttt{verification/higher-zero-certificates.json} and
+\texttt{verification/higher-zero-independent.json}.
+
+The resulting first thresholds are
+\[
+ (K_1^{\rm cl},\ldots,K_7^{\rm cl})=(1,1,1,1,3,4,5).
+\]
+This finite sequence suggests further threshold questions; it does not
+prove a formula in the index. In particular no claim that $K_n^{\rm cl}=n-2$
+for every $n\ge5$ is made. Extending the terminating critical-point method
+with effective saturation estimates is a concrete next research problem.

@@ -1,0 +1,215 @@
+\section{Verification, source audit, and integration notes}
+\label{cont26:sec:verification}
+
+\subsection{Which computations carry mathematical force?}
+
+The article uses three distinct kinds of evidence. The asymptotic and
+root-perturbation proofs are mathematical arguments with stated parameter
+ranges. A finite exact certificate completes two arguments by proving
+rational inequalities on an analytically justified covering or at
+specified points. Ordinary numerical evaluation is used to diagnose
+formulas, to illustrate asymptotic orders, and to propose identities.
+Increasing the precision of that last kind of evidence does not change
+its logical status.
+
+The compact certificate for Theorem~\ref{cont26:joint:thm:Q} is a
+computer-assisted proof. Its 112 intervals cover the full compact
+region; monotonicity of the enclosed functions transfers each endpoint
+calculation to the entire interval. The endpoints outside that region
+are covered by an analytic estimate and reflection. Thus the proof
+does not infer a continuous inequality from a finite sample.
+The certificate contains short rational lower bounds, and the verifier
+recomputes the stronger rational expressions that imply them.
+
+The nine Lerch sign enclosures play a different role. They prove
+sign changes at exact positive rational arguments. The pre-existing
+global zero bound, recalled with its proof mechanism in
+Section~\ref{cont26:sec:lerch-bifurcations}, then proves completeness and
+simplicity of the endpoint zero lists. The continuity and no-escape
+arguments, rather than numerical continuation, force an interior
+multiple root.
+
+Finally, the certificates for $S_6$ and $S_8$ prove only the inequalities
+in Proposition~\ref{cont26:prop:s6-s8-proximity}. They are useful mathematical
+statements about explicitly defined real numbers, but a rational
+interval of positive width containing zero is compatible with both
+equality and inequality. No lower bound for a nonzero period
+combination has been established that would turn these enclosures
+into a proof of either conjecture.
+
+\begin{center}
+\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.28\linewidth}>{\raggedright\arraybackslash}p{0.41\linewidth}>{\raggedright\arraybackslash}p{0.21\linewidth}}
+\toprule
+Verification item & Scope & Role\\
+\midrule
+Harmonic coefficient compiler &
+Exact symbolic Gaussian moments through $d_3$; pure-gamma
+normalization at each order &
+Algebraic cross-check\\[0.35em]
+Uniform harmonic quadrature &
+24 cases, 75 working decimal digits; small, proportional,
+transition, large-ratio, and large-shift cases &
+Numerical diagnostic\\[0.35em]
+Reflected inequality &
+112 rational intervals, degree-40 series with bounded tails;
+analytic endpoint coverage &
+Finite proof certificate\\[0.35em]
+Reflected moment quadrature &
+Eight proportional and twelve critical-window cases,
+65 working digits &
+Numerical diagnostic\\[0.35em]
+Lerch endpoint signs &
+Nine rational points, 1000 terms each, $2^{-160}$ integer grid
+and monotone tails &
+Finite proof certificate\\[0.35em]
+Lerch endpoint law and transitions &
+Nine difference-kernel diagnostics and two ordinary
+multiple-root candidate solves &
+Numerical diagnostic\\[0.35em]
+$S_6,S_8$ residuals &
+Exact $N=1100$ and $N=1200$ Euler enclosures,
+independent elementary-constant bounds &
+Proof of proximity\\[0.35em]
+$S_8$ discovery and audits &
+Frozen PSLQ vector; fresh 500-digit Euler and independent
+220-digit Mellin evaluations &
+Conjectural evidence\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Diagnostic error orders}
+
+The numerical values below use relative error
+$(\text{approximation})/(\text{quadrature})-1$. This convention is
+the reciprocal of the ratio in some theorem statements, and is
+recorded explicitly in the JSON data. For the harmonic example
+$p=h$, $a=1/2$, the first corrected formula gives
+\[
+\begin{array}{c|ccc}
+h&25&100&400\\ \hline
+\text{relative error}
+&-2.91878\cdot10^{-5}&-1.92450\cdot10^{-6}&-1.21909\cdot10^{-7}.
+\end{array}
+\]
+Multiplying the depth by four reduces the error by approximately
+sixteen, consistently with the proved $p^{-2}$ order.
+At $h=400$ and $p=h\log h$, the corrected relative error is
+approximately $3.35\cdot10^{-8}$.
+The 24-case set also includes varying $a$, very small $p/h$, and
+large $p/h$. These checks are deliberately wider than a single
+compact-ratio test.
+
+For equal reflected exponents the successive error reductions reported
+after Corollary~\ref{cont26:joint:cor:diagonal} agree with the $n^{-1}$ and
+$n^{-2}$ orders. In the critical window the meaningful comparison is
+against the reference scale $L_{n,m}$, not against the extremely small
+unnormalized moment. At $n/(m+1)-\log m\simeq0$, that normalized moment
+approaches $e^d$, rather than one.
+
+The numerical programs use scaled integrals and logarithms to prevent
+the cancellation or underflow inherent in the defining sums.
+Nevertheless, the quadrature diagnostics are not interval quadrature.
+Some extreme-case diagnostic errors approach the numerical precision
+floor, and their last displayed digits carry no proved error guarantee.
+These cases are omitted from the plotted error comparisons and from
+judging an empirical power of the remainder.
+
+\subsection{Audit of the pinned manuscript}
+
+The source is fixed at revision
+\src{cc34f73596336f2466d9754cb0f3635bd2bedade}.
+The provenance manifest records the inspected text files and their
+content hashes. The audit concentrated on the statements used here
+and on nearby claims about conductor jets, signed kernels, reflected
+remainders, and Stieltjes zero geometry. It is not a claim to have
+independently reproved every chapter of the book.
+
+\paragraph{The status of $S_4$.}
+The current source's \src{chapters/04-S4-proof.tex} gives an exact
+octahedral certificate for the mixed weight-five identity. Earlier
+reports describing that identity as conjectural have been superseded.
+Accordingly, this article uses $S_4$ as proved background and does
+not count it among its new results.
+
+\paragraph{A documentation update for $S_6$.}
+The numerical paragraph following the conjecture in
+\src{chapters/04-cyclotomic-quotients.tex} correctly describes its
+220-digit Mellin and 300-digit Euler values as diagnostics. However,
+the source's \src{VALIDATION.md} additionally records a separate
+900-term exact integer/fraction replay whose enclosure bounds the
+\emph{integer-vector} residual by $10^{-260}$.
+The chapter should mention that later certificate so that the
+narrative and validation ledger express the same evidence level.
+The proposed replacement paragraph in the accompanying patch keeps
+the numerical calculations distinct from that certificate and
+explicitly retains the conjecture status. Our
+Proposition~\ref{cont26:prop:s6-s8-proximity} adds a new, separately replayable
+bound for the \emph{normalized left-minus-right} difference.
+The normalization must be named whenever residual magnitudes are
+compared.
+
+\paragraph{The expanding harmonic range.}
+The closing discussion in
+\src{chapters/04-proportional-depth.tex} correctly warns that its
+compact-$\alpha$ theorem does not imply a uniform remainder when
+$\alpha=p/h$ grows. It asks for one effective formula across that
+range. Theorem~\ref{cont26:thm:uniform} now supplies such a formula, and
+\eqref{cont26:eq:expanding-range} gives an explicit answer to the stated
+question. On integration, the open-problem sentence should point to
+this theorem, while the warning about the scope of the earlier
+compact-parameter result should remain.
+
+\paragraph{Fixed reflected exponent versus joint growth.}
+The fixed-$m$ theorems and their sharp remainder statements explicitly
+hold $m$ fixed. We found no basis for deleting that restriction.
+The critical-window theorem gives a concrete reason to preserve it:
+there are sequences with $m/n\to0$ for which the normalized leading
+fixed-$m$ approximation tends to $e^d\ne1$.
+This is a limitation of an attempted extension, not a counterexample
+to the theorem actually stated in the source.
+
+\paragraph{Eventual Lerch saturation versus small derivative order.}
+The source's eventual zero-count theorem takes the parameter
+derivative order large. Corollary~\ref{cont26:cor:bif-kone} instead holds
+that order equal to one and lets the Lerch parameter approach zero.
+These are different limits. A sentence asserting the maximal count
+for every positive deformation at every derivative order would be
+false, but the inspected theorem does not make that assertion.
+The new unfolding theorem provides a useful explicit boundary to
+such a generalization.
+
+No additional substantive mathematical error was identified in the
+targeted material. The proposed source patch is therefore a correction
+to the account of available evidence, together with integration
+guidance for questions now partly or fully answered; it does not
+announce an unsupported retraction of an existing theorem.
+
+\subsection{Reproduction and mathematical dependencies}
+
+The package has no network requirement for certificate replay.
+From its root directory, run
+\begin{quote}\ttfamily
+python code/replay\_exact.py
+\end{quote}
+with ordinary Python 3, without optimization that disables assertions.
+This reconstructs the 112 reflected inequalities, the nine Lerch
+signs, and both $S_6/S_8$ rational-enclosure schemes, and compares the
+results with the stored certificates. The exact proof programs use
+only the Python standard library. The separate coefficient compiler
+uses SymPy; numerical diagnostics use mpmath, and the exploratory
+Lerch coordinate scan uses NumPy and SciPy. Matplotlib reproduces the
+figures. Tested versions and individual commands are in the README.
+
+The analytic harmonic theorem and the Lerch unfolding and endpoint
+expansion are independent of numerical diagnostics.
+The reflected unique-saddle result depends on the finite rational
+inequality proof; the critical-window theorem has an independent
+analytic proof. The forced Lerch transitions depend on the nine sign
+certificates and the proved zero bound. The Gaussian certificate
+depends on elementary Euler and elementary-constant error bounds,
+not on the numerical success of PSLQ. None of these programs
+constitutes a proof of an algebraic relation between evaluated
+periods unless an exact symbolic relation is separately supplied.
+

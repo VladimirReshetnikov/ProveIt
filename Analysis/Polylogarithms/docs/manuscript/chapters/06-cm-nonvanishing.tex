@@ -1,0 +1,87 @@
+\subsection{CM nonvanishing with a rational principal-lattice bound}
+\label{cmnonzero:sec:nonvanishing}
+The possible zero denominators in the product and genus formulas can be
+excluded uniformly. Non-elliptic CM nonvanishing is classical, through
+Kohnen's conjugation argument~\cite{cmnonzero:Kohnen}; see the introduction
+of Chiriac--Jorza~\cite{cmnonzero:ChiriacJorza} for its place in zero theory.
+The following proof supplies an explicit principal-point bound, certified
+using rational arithmetic. It applies to nonmaximal orders as well.
+
+\begin{theorem}[Nonvanishing at every non-elliptic CM point]
+\label{cmnonzero:thm:allCM}
+Let $D<-4$ be any quadratic-order discriminant. For every CM point $\tau$
+of discriminant $D$ and every even integer $w\ge4$,
+\[
+ G_w(\tau)\ne0.
+\]
+For the principal reduced point
+\[
+ \tau_D=\begin{cases}i\sqrt{|D|}/2,&D\equiv0\pmod4,\\
+ (-1+i\sqrt{|D|})/2,&D\equiv1\pmod4,\end{cases}
+\]
+one has the weight- and discriminant-uniform bound
+$|G_w(\tau_D)|>7/20$.
+\end{theorem}
+
+\begin{proof}
+The principal lattice has, for $n\ne0$, squared lengths bounded below by
+one of the two integer quadratic forms
+\[
+ q_7(m,n)=m^2-mn+2n^2,\qquad q_8(m,n)=m^2+2n^2.
+\]
+Indeed the odd principal discriminant has $|D|\ge7$, and the even one
+has $|D|\ge8$. Both forms are at least two when $n\ne0$. Hence for every
+even $w\ge4$ the off-axis absolute sum is bounded by
+\[
+ T_d=\sum_{n\ne0}\sum_{m\in\mathbb Z}q_d(m,n)^{-2},\qquad d=7,8.
+\]
+We prove $T_7<33/20$ and $T_8<11/8$ by finite rational sums and explicit
+infinite-tail bounds.
+
+For any $A>0$ and real shift $s$, layer-cake integration gives
+\[
+ \sum_{m\in\mathbb Z}\frac1{((m-s)^2+A^2)^2}
+ \le A^{-4}+\frac{\pi}{2A^3}.
+\]
+To see this, each superlevel set of the even decreasing function is an
+interval. Its number of translated lattice points is at most its length
+plus one. Integrating that inequality bounds the lattice sum by the
+integral of the function plus its maximum. The integral is $\pi/(2A^3)$.
+
+Use $N=10$, $M=20$ in the finite rectangle. The imaginary coordinate in
+both lattices is greater than one. Thus the part with $|n|>N$, summed
+over every $m$, is less than
+\[
+ \frac2{3N^3}+\frac2{N^2},
+\]
+by $\pi<4$, $\sum_{n>N}n^{-4}\le1/(3N^3)$ and
+$\sum_{n>N}n^{-3}\le1/(2N^2)$. For $1\le |n|\le N$ and $|m|>M$,
+the squared length is at least $(|m|-N/2)^2$. Integral comparison bounds
+this part by $4N/[3(M-N/2)^3]$. The finite certificate therefore verifies
+\[
+ 2\sum_{n=1}^{10}\sum_{m=-20}^{20}q_7(m,n)^{-2}
+       +\frac{31}{1500}+\frac8{2025}<\frac{33}{20},
+\]
+and the same expression with $q_8$ is less than $11/8$. Every term and
+comparison in these two finite inequalities is rational; the full fractions
+are recorded in \texttt{verification/CM-nonvanishing.json}.
+
+The $n=0$ axis contributes exactly $2\zeta(w)>2$. The triangle inequality
+now gives $|G_w(\tau_D)|>2-33/20=7/20$ in the odd case, and the stronger
+$5/8$ in the even case.
+
+Suppose a CM value at the same discriminant vanished. By
+\eqref{cmnorm:eq:Fw}, its singular modulus would be a zero of the rational
+polynomial $F_w$. The class polynomial $H_D$ is the minimal polynomial of
+that singular modulus, including for a nonmaximal order
+\cite{cmnorm:Sutherland,cm:Cox}. Thus $H_D$ divides $F_w$, and the
+principal singular modulus is also a zero. Since $\Delta$ never vanishes
+on the upper half-plane, this would make $G_w(\tau_D)=0$, contradicting
+the bound. Modular transformations multiply a positive-weight value by a
+nonzero factor, so the conclusion covers every representative.
+\end{proof}
+
+Consequently all class and genus resultants in the following formulas are
+nonzero at $D<-4$. Their positive roots and quotients are defined at every
+even weight. The excluded discriminants $-3,-4$ retain their familiar
+elliptic vanishing patterns.

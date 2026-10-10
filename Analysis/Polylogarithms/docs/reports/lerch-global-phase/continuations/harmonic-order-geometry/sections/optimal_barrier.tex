@@ -1,0 +1,394 @@
+% Self-contained section for integration into the parent research article.
+% Uses standard theorem/lemma/corollary/proposition environments and amsmath.
+\section{The optimal exterior differential barrier}
+\label{opt:sec:barrier}
+
+The incoming report \emph{Lerch Global Phase} proves an exterior
+one-crossing inequality with the fixed coefficient $e^{-n}$ and explicitly
+asks for the optimum over all positive coefficients in its further-research
+question~2. We solve that optimization problem. The sharp coefficient is
+controlled by a cubic algebraic number; its large-index limit involves the
+golden ratio. A distinction between a strict pointwise inequality and a
+strict inequality for positive geometric sums is essential at the optimum.
+
+For integers $n\geq2$ define
+\begin{equation}\label{opt:eq:family}
+ g_n(x)=\frac{(\log x)^{n-1}(n-\log x)}{x^2},\qquad
+ U_n(a,\rho)=\sum_{m=0}^{\infty}\rho^m g_n(a+m).
+\end{equation}
+Here $a>0$ and $0\leq\rho\leq1$. The series and each fixed number
+of its $a$ derivatives converge absolutely and locally uniformly,
+uniformly in $\rho$, since the $m$th summand after $j$ derivatives is
+$O(m^{-2-j}(1+\log^n m))$. For $\rho<1$, $U_n$ is the first
+$a$ derivative of the order-$n$ Lerch coefficient
+$\sum_{m\geq0}\rho^m\log^n(a+m)/(a+m)$; at $\rho=1$ it is
+$\gamma_n'(a)$ in the usual Stieltjes Laurent convention.
+
+Call a pair $(B,\lambda)$ \emph{uniformly admissible} if $B>0$,
+$\lambda>0$, and
+\begin{equation}\label{opt:eq:admissible}
+ \partial_aU_n(a,\rho)+\lambda U_n(a,\rho)<0
+ \qquad(a\geq B,\ 0<\rho\leq1).
+\end{equation}
+The uniformity down to arbitrarily small positive $\rho$ makes this a
+precise optimization problem. A smaller cutoff at one fixed deformation
+parameter is a different problem.
+
+Put $\varphi=(1+\sqrt5)/2$. Let $r_n$ be the unique positive root of
+\begin{equation}\label{opt:eq:cubic}
+ r^3+nr^2-nr-n=0,
+\end{equation}
+and set
+\begin{equation}\label{opt:eq:lambda}
+ \tau_n=(2-r_n)e^{-r_n},\qquad \lambda_n=e^{-n}\tau_n,
+ \qquad \Delta_n=\sqrt{n^2+8n},\qquad
+ \alpha_n=\frac{3n-\Delta_n}{4}.
+\end{equation}
+For $0<\tau\leq1$, write
+\begin{equation}\label{opt:eq:R}
+ R_{n,\tau}(y)=2y^2-3ny+n(n-1)+\tau e^{y-n}y(n-y).
+\end{equation}
+
+\begin{theorem}[Optimal coefficient and optimal cutoff]
+\label{opt:thm:optimal}
+For every integer $n\geq2$ the following statements hold.
+\begin{enumerate}
+\item The cubic root satisfies $1<r_n<\varphi$. There is a unique
+ $\eta_n\in(\alpha_n,(n-1)/2)$ such that
+ $R_{n,\tau_n}(\eta_n)=0$. Put $B_n=e^{\eta_n}$.
+\item The pointwise inequality is
+ \begin{equation}\label{opt:eq:pointwise}
+  g_n'(x)+\lambda_n g_n(x)\leq0\qquad(x\geq B_n).
+ \end{equation}
+ Equality occurs at exactly two points,
+ \begin{equation}\label{opt:eq:equality-points}
+  x=B_n\quad\hbox{and}\quad x=e^{n+r_n}.
+ \end{equation}
+\item The pair $(B_n,\lambda_n)$ is uniformly admissible. Every
+ uniformly admissible pair $(B,\lambda)$ has $B\geq B_n$, and if
+ $B=B_n$ then $\lambda=\lambda_n$.
+\item Consequently $e^{\lambda_n a}U_n(a,\rho)$ is strictly decreasing
+ on $[B_n,\infty)$ for every $0<\rho\leq1$. There is at most one
+ zero there; any such zero is simple and crosses from positive to
+ negative.
+\end{enumerate}
+\end{theorem}
+
+We give a complete proof, including the boundary qualification.
+
+\begin{lemma}[The negative-tail constraint]\label{opt:lem:tail}
+For $r>0$ put
+\[
+ T_n(r)=2-\frac{n-1}{n+r}-\frac1r.
+\]
+The function $e^{-r}T_n(r)$ has a unique maximum, at $r=r_n$, and
+\begin{equation}\label{opt:eq:Tmaximum}
+ \max_{r>0}e^{-r}T_n(r)=(2-r_n)e^{-r_n}=\tau_n.
+\end{equation}
+Thus $\lambda_n$ is the smallest coefficient that can make
+$g_n'+\lambda g_n\leq0$ on the whole interval $(e^n,\infty)$.
+\end{lemma}
+\begin{proof}
+For $x=e^{n+r}>e^n$ one has $g_n(x)<0$ and
+\[
+ -\frac{g_n'(x)}{g_n(x)}=e^{-n-r}T_n(r).
+\]
+Dividing the desired inequality by the negative quantity $g_n(x)$
+shows that it is equivalent to
+$\lambda\geq e^{-n-r}T_n(r)$ for every $r>0$.
+
+Now
+\[
+ T_n'(r)=\frac{n-1}{(n+r)^2}+\frac1{r^2}>0,
+ \qquad
+ T_n''(r)=-\frac{2(n-1)}{(n+r)^3}-\frac2{r^3}<0.
+\]
+Therefore $T_n'-T_n$ is strictly decreasing, tends to $+\infty$
+at zero, and tends to $-2$ at infinity. It has precisely one zero,
+which is the unique maximum of $e^{-r}T_n(r)$. The factorization
+\begin{equation}\label{opt:eq:factor}
+ (T_n-T_n')r^2(n+r)^2
+ =(n+2r)(r^3+nr^2-nr-n)
+\end{equation}
+identifies that point with the positive root of \eqref{opt:eq:cubic}.
+The cubic has exactly one positive root by its coefficient sign
+variation, or by the preceding uniqueness argument. Its values at $1$
+and $\varphi$ are $1-n<0$ and $\varphi^3>0$, respectively, giving
+$1<r_n<\varphi$.
+
+Rearranging the cubic gives
+$n=r_n^3/(1+r_n-r_n^2)$. Substitution in $T_n(r_n)$ simplifies it
+to $2-r_n$, proving \eqref{opt:eq:Tmaximum}. The maximum is positive;
+the tail inequality is strict except at its unique maximizing point.
+\end{proof}
+
+\begin{lemma}[The positive-side cutoff]\label{opt:lem:cutoff}
+For every $n\geq2$ and every $0<\tau\leq1$, the function
+$R_{n,\tau}$ has exactly one root $\eta_n(\tau)$ in $(0,n)$.
+It satisfies
+\[
+ \alpha_n<\eta_n(\tau)<\frac{n-1}{2},
+ \qquad
+ R_{n,\tau}(y)>0\ (0<y<\eta_n(\tau)),\qquad
+ R_{n,\tau}(y)<0\ (\eta_n(\tau)<y\leq n).
+\]
+The root is simple, and $\eta_n(\tau)$ is strictly increasing in $\tau$.
+\end{lemma}
+\begin{proof}
+For $y=n-t$, $0\leq t\leq(n+1)/2$, use
+$\tau e^{-t}\leq(1+t)^{-1}$ and $(n-t)t\geq0$. This gives
+\begin{align*}
+ (1+t)R_{n,\tau}(n-t)
+ &\leq2t^3+(1-n)t^2-nt-n\\
+ &\leq2t^2-nt-n<0.
+\end{align*}
+For the second inequality use $2t\leq n+1$. The final quadratic is
+convex, with negative values $-n$ and $(1-n)/2$ at the two endpoints,
+so it is negative throughout. This proves negativity for
+$(n-1)/2\leq y\leq n$.
+
+On $0\leq y\leq(n-1)/2$,
+\[
+ R_{n,\tau}''(y)
+ =4+\tau e^{y-n}\{-y^2+(n-4)y+2n-2\}>4.
+\]
+The bracket is a concave quadratic whose endpoint values are
+$2(n-1)$ and $(n^2-1)/4$, both positive. Since $R_{n,\tau}(0)>0$
+and $R_{n,\tau}((n-1)/2)<0$, strict convexity gives one and only one
+crossing on this interval; a second crossing would force the function
+to be nonnegative at its right endpoint. The derivative at the crossing
+is strictly negative. The polynomial part vanishes at $\alpha_n$, so
+$R_{n,\tau}(\alpha_n)>0$, proving the lower bound. Finally
+\[
+ \frac{\partial\eta_n(\tau)}{\partial\tau}
+ =-\frac{e^{\eta_n(\tau)-n}\eta_n(\tau)(n-\eta_n(\tau))}
+ {\partial_yR_{n,\tau}(\eta_n(\tau))}>0.
+\]
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{opt:thm:optimal}]
+For $x=e^y>1$, differentiation gives
+\begin{equation}\label{opt:eq:pointwise-factor}
+ g_n'(x)+\tau e^{-n}g_n(x)
+ =x^{-3}y^{n-2}R_{n,\tau}(y).
+\end{equation}
+The prefactor is positive. Because $1<r_n<\varphi<2$,
+$0<\tau_n<1$. Lemma~\ref{opt:lem:cutoff} treats the region below
+$e^n$, Lemma~\ref{opt:lem:tail} treats the region above it, and
+at $x=e^n$ one has $g_n'<0$. This proves the nonpositive inequality
+and the exact equality set.
+
+For $a\geq B_n$, every summand in
+\[
+ (\partial_a+\lambda_n)U_n(a,\rho)
+ =\sum_{m=0}^{\infty}\rho^m
+       [g_n'(a+m)+\lambda_n g_n(a+m)]
+\]
+is nonpositive. Only two possible arguments can give equality.
+When $\rho>0$, at least one of the three summands $m=0,1,2$ is
+strictly negative, so the sum is strictly negative. Absolute convergence
+justifies the differentiation and summation, also at $\rho=1$.
+
+To prove optimality, suppose first that $\lambda<\lambda_n$.
+At $x_*=e^{n+r_n}$, where $g_n(x_*)<0$, one has
+$g_n'(x_*)+\lambda g_n(x_*)>0$. Since
+$(\partial_a+\lambda)U_n(a,\rho)$ tends to this pointwise expression
+as $\rho\downarrow0$, every cutoff $B\leq x_*$ fails for small
+positive $\rho$. In particular, such a coefficient cannot beat $B_n$.
+If $\lambda\geq\lambda_n$ and $B<B_n$, choose
+$\max(B,1)<a<B_n$. Then $g_n(a)>0$ and
+\[
+ g_n'(a)+\lambda g_n(a)
+ \geq g_n'(a)+\lambda_n g_n(a)>0,
+\]
+again contradicting admissibility at sufficiently small positive $\rho$.
+This proves $B\geq B_n$. At $B=B_n$, any $\lambda>\lambda_n$
+makes the pointwise expression strictly positive at $a=B_n$,
+so only $\lambda_n$ is possible. The integrating factor and the sign
+of the derivative at any zero prove the last assertion.
+\end{proof}
+
+\paragraph{Why the pointwise strict optimum is not attained.}
+If the requirement is instead
+$g_n'(x)+\lambda g_n(x)<0$ for every $x>B$, the infimum of possible
+cutoffs is still $B_n$, but no coefficient attains it. At
+$\lambda_n$ the outer point $e^{n+r_n}>B_n$ has equality.
+Coefficients $\lambda>\lambda_n$, sufficiently close to $\lambda_n$,
+have strict tail inequality and cutoff $e^{\eta_n(e^n\lambda)}$
+decreasing to $B_n$ as $\lambda\downarrow\lambda_n$.
+The strict summed theorem therefore must not be copied verbatim into
+a statement about every positive measure or about the elementary
+endpoint $\rho=0$.
+
+\paragraph{Positive measures.}
+Let $\nu$ be a nonzero positive measure on $[0,\infty)$ satisfying
+\[
+ \int_{[0,\infty)}\frac{1+\log^n(2+t)}{(1+t)^2}\,d\nu(t)<\infty.
+\]
+This condition supplies locally uniform domination of the integral
+and its derivative. The function
+$H_n(a)=\int g_n(a+t)\,d\nu(t)$ satisfies
+$H_n'+\lambda_nH_n\leq0$ for $a\geq B_n$. It is strictly negative
+unless the measure is supported on the at most two points for which
+$a+t$ belongs to \eqref{opt:eq:equality-points}. In particular,
+non-atomic measures and measures with at least three support points
+give the strict inequality. This is the exact measure-theoretic
+qualification forced by the optimal tangency.
+
+\subsection{The golden-ratio limit and convergent coefficient formulas}
+\label{opt:sec:asymptotic}
+
+\begin{theorem}[Monotone optimizer and its large-index expansion]
+\label{opt:thm:asymptotic}
+The sequence $r_n$ strictly increases to $\varphi$, whereas
+$\tau_n=e^n\lambda_n$ strictly decreases to
+$\tau_\infty=(2-\varphi)e^{-\varphi}$. As $n\to\infty$,
+\begin{align}
+ r_n={}&\varphi-
+ \left(1+\frac{2\sqrt5}{5}\right)\frac1n
+ +\left(\frac52+\frac{57\sqrt5}{50}\right)\frac1{n^2}
+ +O(n^{-3}),\label{opt:eq:r-asymptotic}\\
+ \lambda_n={}&e^{-n}\tau_\infty
+ \left[1+\frac{7+3\sqrt5}{2n}
+ -\frac{35+16\sqrt5}{10n^2}+O(n^{-3})\right].
+ \label{opt:eq:lambda-asymptotic}
+\end{align}
+Writing $\epsilon=1/n$, the complete expansion of $r_n$ is a
+convergent power series for $|\epsilon|<5/27$. Its coefficients are
+\begin{equation}\label{opt:eq:r-Lagrange}
+ r(\epsilon)=\varphi+
+ \sum_{j\geq1}\frac{(-\epsilon)^j}{j}
+ [z^{j-1}]
+ \left(\frac{(\varphi+z)^3}{\sqrt5+z}\right)^j.
+\end{equation}
+In particular this is a convergent formula for every integer $n\geq6$.
+\end{theorem}
+\begin{proof}
+The identity
+$n=r^3/(1+r-r^2)$ has strictly positive derivative on $1<r<\varphi$:
+\[
+ \frac{d}{dr}\frac{r^3}{1+r-r^2}
+ =\frac{r^2(3+2r-r^2)}{(1+r-r^2)^2}>0.
+\]
+It tends to infinity at $\varphi$, proving the claims about $r_n$.
+Since $d[(2-r)e^{-r}]/dr=(r-3)e^{-r}<0$ in this interval,
+the claims about $\tau_n$ follow.
+
+The implicit equation
+$\epsilon r^3+r^2-r-1=0$ has derivative $\sqrt5$ in $r$ at
+$(\epsilon,r)=(0,\varphi)$, so the analytic implicit-function theorem
+applies. Substitution of a quadratic series gives
+\eqref{opt:eq:r-asymptotic}, and substitution into $(2-r)e^{-r}$ gives
+\eqref{opt:eq:lambda-asymptotic}. With $r=\varphi+z$ the equation becomes
+\[
+ z=-\epsilon\frac{(\varphi+z)^3}{\sqrt5+z}.
+\]
+Lagrange inversion gives \eqref{opt:eq:r-Lagrange}.
+
+For completeness the convergence radius can be identified exactly.
+The discriminant in $r$ is
+\[
+ \operatorname{disc}_r(\epsilon r^3+r^2-r-1)
+ =(1-\epsilon)(27\epsilon+5).
+\]
+The branch selected at zero is holomorphic throughout
+$|\epsilon|<5/27$: away from zero the discriminant is nonzero there,
+and the selected branch has a removable, already analytic continuation
+at zero. Along the real interval $-5/27<\epsilon\leq0$ this branch
+increases from $\varphi$ to $3$. At $(\epsilon,r)=(-5/27,3)$,
+the first $r$ derivative vanishes while
+$\partial_\epsilon=27$ and $\partial_r^2=-4/3$ are nonzero.
+It is therefore a genuine square-root branch point. Hence the Taylor
+radius is exactly $5/27$.
+\end{proof}
+
+\subsection{The exponentially small displacement of the cutoff}
+The optimizer has an ordinary convergent expansion in $1/n$. The
+cutoff also contains an exponentially small displacement in logarithmic
+coordinates, which should be kept separate from that algebraic expansion.
+Put
+\[
+ E_n=e^{\alpha_n-n},\qquad A_n=\alpha_n(n-\alpha_n),
+ \qquad C_n=n-2\alpha_n.
+\]
+
+\begin{theorem}[Cutoff expansion and an all-orders formula]
+\label{opt:thm:cutoff-expansion}
+As $n\to\infty$,
+\begin{align}
+ \eta_n={}&\alpha_n+
+ \frac{\tau_nA_n}{\Delta_n}E_n\notag\\
+ &+\tau_n^2\left[
+ \frac{A_n(A_n+C_n)}{\Delta_n^2}
+ +\frac{2A_n^2}{\Delta_n^3}\right]E_n^2
+ +O(n^3E_n^3).\label{opt:eq:eta-two-sectors}
+\end{align}
+Every further power of $E_n$ has an explicit coefficient. More precisely,
+for all sufficiently large $n$ the solution $\delta=\eta_n-\alpha_n$
+is obtained, at $E=E_n$, from the locally convergent series
+\begin{equation}\label{opt:eq:eta-Lagrange}
+ \delta(E)=\sum_{j\geq1}\frac{E^j}{j}[z^{j-1}]
+ \left[
+ \frac{\tau_ne^z(\alpha_n+z)(n-\alpha_n-z)}{\Delta_n-2z}
+ \right]^j.
+\end{equation}
+For each fixed truncation order $J$, its error at $E_n$ is
+$O_J(n^{J+1}E_n^{J+1})$.
+In the original $a$ coordinate this implies
+\begin{equation}\label{opt:eq:B-asymptotic}
+ B_n=e^{\alpha_n}+
+ \frac{\tau_\infty}{4e^2}
+ \left(n+\frac{7+3\sqrt5}{2}\right)+O(n^{-1}).
+\end{equation}
+The leading additive displacement above the first stationary point
+of $g_n$ has coefficient
+\[
+ \frac{\tau_\infty}{4e^2}=0.0025625510827\ldots.
+\]
+\end{theorem}
+\begin{proof}
+Substitute $\eta_n=\alpha_n+\delta$ in its defining equation and use
+the exact quadratic Taylor expansion of the polynomial part:
+\[
+ -\Delta_n\delta+2\delta^2+
+ \tau_n E_ne^\delta(\alpha_n+\delta)(n-\alpha_n-\delta)=0.
+\]
+Equivalently, $\delta=E_nf_n(\delta)$ with
+\[
+ f_n(z)=
+ \frac{\tau_ne^z(\alpha_n+z)(n-\alpha_n-z)}{\Delta_n-2z}.
+\]
+This proves \eqref{opt:eq:eta-Lagrange} by Lagrange inversion. Its
+first two coefficients are $f_n(0)$ and $f_n(0)f_n'(0)$, giving
+\eqref{opt:eq:eta-two-sectors}.
+
+The remainder statement can be justified uniformly in $n$. On a fixed
+small complex disk in $z$, $f_n$ and its derivative are $O(n)$, while
+$\Delta_n\asymp n$. For $|E|<c/n$ with a sufficiently small absolute
+$c>0$, the map $z\mapsto Ef_n(z)$ is a contraction of a smaller
+fixed disk. The analytic solution is uniformly bounded there. Cauchy
+estimates therefore bound its $j$th coefficient by $O(C^jn^j)$.
+Since $E_n\asymp e^{-n/2}$, every fixed-order tail has the asserted
+bound for sufficiently large $n$.
+
+Finally exponentiate the first sector. Its omitted terms become
+$O(n^2e^{-n/2})$ after multiplication by $e^{\alpha_n}$. Direct
+expansion gives
+\[
+ \frac{A_n}{\Delta_n}e^{2\alpha_n-n}
+ =e^{-2}\left(\frac n4-\frac1n+O(n^{-2})\right).
+\]
+Combining this with \eqref{opt:eq:lambda-asymptotic} yields
+\eqref{opt:eq:B-asymptotic}. No relative approximation to
+$\eta_n-\alpha_n$ is being inferred from an uncontrolled algebraic
+remainder in $\alpha_n$.
+\end{proof}
+
+\paragraph{Limits of the conclusion.}
+The optimum is over constant first-order operators, required uniformly
+for all positive geometric weights down to $\rho=0$. It does not
+optimize variable-coefficient operators, inequalities only at the zeros,
+or cutoffs at one fixed $\rho$. Those extensions remain separate
+research questions. In particular, improving an exterior barrier does
+not on its own classify all interior zeros or prove a global
+monotonicity theorem for individual zero branches.

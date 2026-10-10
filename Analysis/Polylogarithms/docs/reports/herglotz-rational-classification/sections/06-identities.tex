@@ -1,0 +1,277 @@
+\section{Explicit analytic identities with full constants}
+\label{sec:identities}
+
+The formal classification establishes existence of reductions but does
+not, by itself, print their logarithmic corrections. This section does
+so for an infinite family and for the remaining exceptional ratio
+$3/5$. All the identities in this section are ordinary analytic
+equalities. No integer-relation search is used in their proofs.
+
+\subsection{Classical normalized functional equations}
+
+For $0<t<1$ define the Rogers dilogarithm
+\begin{equation}\label{eq:Rogers}
+ \Rog(t)=\Li_2(t)+\frac12\log t\log(1-t),
+ \qquad \Rog(1/2)=\frac{\pi^2}{12}.
+\end{equation}
+We use its reflection and five-term identities in the real interval:
+\begin{align}
+ \Rog(t)+\Rog(1-t)&=\frac{\pi^2}{6},\label{eq:Rog-reflect}\\
+ \Rog(A)+\Rog(B)&=\Rog(AB)
+  +\Rog\left(\frac{A(1-B)}{1-AB}\right)
+  +\Rog\left(\frac{B(1-A)}{1-AB}\right),
+ \quad 0<A,B<1.\label{eq:Rog-five}
+\end{align}
+These are classical; their normalization and relation to the ordinary
+dilogarithm are reviewed in \cite{ZagierDilog,RZ}.
+
+Put
+\begin{equation}\label{eq:modified-F}
+ f(x)=F(x)-F(1)+\frac{\pi^2}{12}(x-2+x^{-1})-\frac14\log^2x.
+\end{equation}
+The functional equations needed below are the normalized inversion and
+three-term equations and the determinant-$2$ Hecke equation of
+\cite[(15), (22a)]{RZ}:
+\begin{align}
+ f(1/x)&=-f(x),\label{eq:f-inversion}\\
+ f(x)-f(x+1)-f\left(\frac{x}{x+1}\right)
+ &=\Rog(1/2)-\Rog\left(\frac{x}{x+1}\right),\label{eq:f-three}\\
+ \begin{split}
+ f(2x)+f(x/2)+f\left(\frac{x+1}{2}\right)
+ +f\left(\frac{2x}{x+1}\right)-3f(x)
+ ={}&\Rog\left(\frac{x}{x+1}\right)-\Rog(1/2)\\
+ &+\tfrac12\log2\log x.
+ \end{split}\label{eq:f-Hecke}
+\end{align}
+They hold for $x>0$ with real logarithms. Formula \eqref{eq:J-F}
+becomes
+\begin{equation}\label{eq:J-f}
+ J(x)=f(2x)-2f(x)+f(x/2)+\frac12\log^22
+       -\frac{\pi^2}{24}(x-x^{-1}).
+\end{equation}
+
+Define the finite log-sine sum
+\begin{equation}\label{eq:S}
+ S(m)=\sum_{k=1}^{m-1}\log^2\left(2\sin\frac{\pi k}{m}\right),
+ \qquad S(1)=0.
+\end{equation}
+Every sine argument in this sum is positive. The integer formula of
+\cite[(23)]{RZ} simplifies under \eqref{eq:modified-F} to
+\begin{equation}\label{eq:f-integer}
+ f(m)=\frac{(m-1)\pi^2}{24}+\frac12S(m)+\frac14\log^2m,
+ \qquad m\ge1.
+\end{equation}
+These classical inputs are kept separate from the deductions that follow.
+
+\subsection{Every neighboring rational argument}
+
+\begin{theorem}[Uniform neighboring-ratio identity]\label{thm:neighbor}
+For every integer $n\ge1$,
+\begin{equation}\label{eq:neighbor}
+ \boxed{\begin{aligned}
+ J\left(\frac n{n+1}\right)={}&\frac12\log^22
+ +\frac12\bigl(S(n)-S(n+1)+S(2n+2)-S(2n)\bigr)\\
+ &-\frac{\pi^2(n^2-n-1)}{24n(n+1)}.
+ \end{aligned}}
+\end{equation}
+The inverse ratios are evaluated by \eqref{eq:J-reciprocity}.
+\end{theorem}
+\begin{proof}
+Solve \eqref{eq:f-Hecke} for the second difference in
+\eqref{eq:J-f}. Set
+\[
+ x=\frac n{n+1},\quad A=\frac{2n+1}{2n+2},\quad
+ B=\frac{2n}{2n+1},\quad C=\frac n{2n+1}.
+\]
+The three $f$-terms on the resulting right side are $f(x)-f(A)-f(B)$.
+For any integer $m\ge1$, \eqref{eq:f-three} gives
+\[
+ f\left(\frac m{m+1}\right)=f(m)-f(m+1)-\Rog(1/2)
+                                      +\Rog\left(\frac m{m+1}\right).
+\]
+The integer terms telescope, leaving
+\begin{equation}\label{eq:neighbor-intermediate}
+ \begin{split}
+ f(2x)-2f(x)+f(x/2)={}&f(n)-f(n+1)+f(2n+2)-f(2n)\\
+ &+\Rog(x)-\Rog(A)-\Rog(B)+\Rog(C)
+   +\tfrac12\log2\log x.
+ \end{split}
+\end{equation}
+In \eqref{eq:Rog-five} with these $A,B$, the three right-hand arguments
+are respectively $x$, $1/2$ and $C$. Hence the Rogers combination in
+\eqref{eq:neighbor-intermediate} is exactly $-\Rog(1/2)$.
+
+Substitution of \eqref{eq:f-integer} contributes $\pi^2/24$ from the
+four integer terms. Their ordinary log-square contribution is
+\[
+ \tfrac14\bigl(\log^2n-\log^2(n+1)+\log^2(2n+2)-\log^2(2n)\bigr)
+ =-\tfrac12\log2\log x,
+\]
+which cancels the cross term. The remaining $\pi^2$ coefficient in
+\eqref{eq:J-f} is
+\[
+ \frac1{24}-\frac1{12}-\frac1{24}(x-x^{-1})
+ =-\frac{n^2-n-1}{24n(n+1)}.
+\]
+This proves \eqref{eq:neighbor}. All Rogers arguments used in the proof
+are strictly between zero and one, so no branch adjustment or unspecified
+constant is hidden in the cancellation.
+\end{proof}
+
+\begin{corollary}[Small explicit logarithmic evaluations]\label{cor:small-J}
+Let $\phi=(1+\sqrt5)/2$. Then
+\begin{align}
+ J(4/3)&=\frac78\log^22-\frac12\log^2(1+\sqrt2)
+                     +\frac{5\pi^2}{288},\label{eq:J43}\\
+ J(4/5)&=\frac78\log^22+2\log^2\phi
+              -\frac12\log^2(1+\sqrt2)-\frac{11\pi^2}{480}.
+ \label{eq:J45}
+\end{align}
+\end{corollary}
+\begin{proof}
+Write $a=\log2$, $b=\log3$, $c=\log5$, $d=\log\phi$ and
+$u=\log(1+\sqrt2)$. Elementary trigonometric products give
+\begin{align*}
+ S(3)&=\tfrac12b^2,&S(4)&=\tfrac32a^2,&
+ S(5)&=\tfrac14c^2+d^2,\\
+ S(6)&=a^2+\tfrac12b^2,&S(8)&=\tfrac74a^2+u^2,&
+ S(10)&=a^2+\tfrac14c^2+5d^2.
+\end{align*}
+For instance $2\sin(\pi/10)=\phi^{-1}$ and
+$2\sin(3\pi/10)=\phi$, while the two distinct primitive positive
+logarithms at conductor $8$ have sum $a/2$ and difference $u$.
+Substitute into \eqref{eq:neighbor} for $n=3,4$, using reciprocity for
+$n=3$.
+\end{proof}
+
+At $n=1,2$, the theorem also recovers
+$J(1/2)=\pi^2/48+\log^22/4$ and
+$J(2/3)=-\pi^2/144+3\log^22/4$. These are consistency checks against
+known special cases, not additional novelty claims.
+
+\subsection{The exceptional value at \texorpdfstring{$3/5$}{3/5}}
+
+\begin{theorem}[A compact exceptional dilogarithm identity]\label{thm:J35}
+With $\phi=(1+\sqrt5)/2$,
+\begin{equation}\label{eq:J35}
+ \boxed{\begin{aligned}
+ J(3/5)={}&\Li_2(1/3)-\frac12\Li_2(1/5)
+  +\frac12\log^22+\frac12\log^23-\frac14\log^25\\
+ &+\log^2\phi-\frac{7\pi^2}{180}.
+ \end{aligned}}
+\end{equation}
+In particular $[1/3]-\tfrac12[1/5]$ is a rational-dilogarithm core.
+\end{theorem}
+\begin{proof}
+We first track the normalized Herglotz terms, then remove the remaining
+Rogers terms by a single five-term substitution. Set
+$a=\log2$, $b=\log3$, $c=\log5$, $d=\log\phi$.
+The classical $F(2/5)$ identity \cite[(24)]{RZ} is
+\[
+ F(2/5)-F(1)=\tfrac12\Li_2(4/5)-\tfrac15\pi^2
+ +\log^2(2\sin(\pi/5))+\log^2(2\sin(2\pi/5))
+ +a\log(2/5).
+\]
+The two log-sine squares sum to $c^2/8+d^2/2$. Converting to $f$ and
+to the Rogers normalization gives
+\begin{equation}\label{eq:f25}
+ f(2/5)=\tfrac12\Rog(4/5)-\tfrac18\pi^2
+                      +\tfrac34a^2-\tfrac38c^2+\tfrac12d^2.
+\end{equation}
+The integer formula gives
+\begin{align*}
+ f(2)&=\pi^2/24+3a^2/4,&
+ f(3)&=\pi^2/12+b^2/2,\\
+ f(4)&=\pi^2/8+7a^2/4,&
+ f(5)&=\pi^2/6+3c^2/8+d^2/2.
+\end{align*}
+Therefore
+\begin{equation}\label{eq:f25-collapse}
+ -f(2)+f(5)+f(2/5)=d^2+\tfrac12\Rog(4/5).
+\end{equation}
+Inversion and the three-term relation at $3/2$ give
+\[
+ f(3/5)=-f(2)+f(3)+f(2/5)-\Rog(2/3)+\Rog(3/5).
+\]
+Also
+$f(4/5)=f(4)-f(5)-\Rog(1/2)+\Rog(4/5)$ and
+$f(3/4)=f(3)-f(4)-\Rog(1/2)+\Rog(3/4)$.
+The Hecke relation at $x=3/5$, together with
+\eqref{eq:J-f} and \eqref{eq:f25-collapse}, now becomes
+\begin{equation}\label{eq:J35-Rog}
+ J(3/5)=d^2+T+\tfrac12a(b-c)+\tfrac12a^2+\frac{2\pi^2}{45},
+\end{equation}
+where
+\[
+ T=\Rog(1/2)-\Rog(2/3)+\Rog(3/5)-\tfrac12\Rog(4/5)
+                         -\Rog(3/4)+\Rog(3/8).
+\]
+The substitution $A=1/2$, $B=3/4$ into \eqref{eq:Rog-five} gives
+\[
+ \Rog(1/2)+\Rog(3/4)=\Rog(3/8)+\Rog(1/5)+\Rog(3/5).
+\]
+Combining this with reflection at $1/3$ and $1/5$ yields
+\[
+ T=\Rog(1/3)-\tfrac12\Rog(1/5)-\frac{\pi^2}{12}.
+\]
+Finally,
+\[
+ \Rog(1/3)-\tfrac12\Rog(1/5)
+ =\Li_2(1/3)-\tfrac12\Li_2(1/5)
+  -\tfrac12ab+\tfrac12b^2+\tfrac12ac-\tfrac14c^2.
+\]
+The cross terms cancel in \eqref{eq:J35-Rog};
+$2/45-1/12=-7/180$ gives the stated constant.
+
+To check the core directly, take its boundary:
+\[
+ \partial\bigl([1/3]-\tfrac12[1/5]\bigr)
+ =\cl2\wedge\cl3-\cl2\wedge\cl5
+ =\cl2\wedge\cl{3/5},
+\]
+which agrees with \eqref{eq:odd-boundary}. The analytic argument above,
+not this last boundary check alone, supplies the complete constants.
+\end{proof}
+
+\subsection{All six non-logarithmic formal exceptions are explicit}
+
+The known identities for the other two reciprocal pairs are
+\begin{align}
+ J(1/3)&=\frac{\pi^2}{9}+\frac12\log^22-\frac12\log^23-\Li_2(1/3),
+ \label{eq:J13}\\
+ J(1/5)&=\frac{7\pi^2}{60}+\frac12\log^22-\frac14\log^25
+                  -\log^2\phi-\frac12\Li_2(1/5).
+ \label{eq:J15}
+\end{align}
+These are already present in the manuscript's $J(2/q)$ treatment
+\cite{Repo}. For a direct derivation, use \eqref{eq:J-F} at $1/3$ and
+$1/5$, the reciprocal-integer formula
+\[
+ F(1/m)-F(1)=-\frac{(m-1)(3m-2)}{24m}\pi^2-\frac12S(m),
+\]
+the three-term consequence
+\[
+ F(2/3)-F(1)=-\frac{5\pi^2}{36}+\Li_2(2/3)
+                  +\frac12\log^2(3/2)-\frac12S(3)+\frac12S(2),
+\]
+and the displayed $F(2/5)$ formula. The elementary values of $S$ and
+Euler reflection at $1/3$ and $1/5$ give
+\eqref{eq:J13}--\eqref{eq:J15} without a branch change.
+
+Equations \eqref{eq:J35}, \eqref{eq:J13}, \eqref{eq:J15} and
+reciprocity evaluate every argument in \eqref{eq:six-extras}. Their
+completeness as a list of formal exceptions is the new classification;
+the first two classical evaluations are not newly asserted discoveries.
+
+\begin{corollary}[Cancellation among the three exceptional ratios]
+\label{cor:exceptional-relation}
+\begin{equation}\label{eq:exceptional-relation}
+ \boxed{\quad J(1/3)-J(1/5)+J(3/5)
+      =\frac12\log^22+2\log^2\phi-\frac{2\pi^2}{45}.\quad}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Substitute the three evaluations. Both rational dilogarithms, the
+$\log^23$ term and the $\log^25$ term cancel. The rational
+$\pi^2$ coefficient is $1/9-7/60-7/180=-2/45$.
+\end{proof}

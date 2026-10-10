@@ -1,0 +1,191 @@
+\section{A proved local part of the normalized-radius conjecture}
+\label{rwloc:sec:local-radius}
+
+The earlier \emph{Angular Zero Continuation} report \cite{rw:AngularReport}
+asks whether
+\[
+ \eta_{a,b}(\rho)=\frac{\cos\theta_{a,b}(\rho)}{\rho}
+\]
+decreases on the whole interval $0<\rho\le1$ for every integer
+$a\ge2$, $b>0$. At $a=1$ it predicts decreasing behavior for $b>1$,
+increasing behavior for $0<b<1$, and the constant $1/2$ for $b=1$.
+That report identifies the sign of the first nonconstant Taylor
+coefficient as a smaller explicit open problem. We solve that problem
+for the full stated parameter range and describe the intervening
+fractional-order threshold.
+
+Throughout this section put
+\[
+ U=1+2^{-b},\qquad V=1+2^{-b}+3^{-b},\qquad
+ W=1+2^{-b}+3^{-b}+4^{-b}.
+\]
+The parameter $\rho$ in this section is a disk radius. It is unrelated
+to the Lerch deformation parameter used later.
+
+\begin{lemma}[The local radial coefficient]\label{rwloc:lem:radius-coefficient}
+For fixed $a\ge1$, $b>0$, $\eta_{a,b}$ extends as a real analytic
+even function near $\rho=0$, and
+\begin{equation}\label{rwloc:eq:eta-expansion}
+ \eta_{a,b}(\rho)=\frac U2\left(\frac23\right)^a
+                    +K(a,b)\rho^2+O_{a,b}(\rho^4),
+\end{equation}
+where
+\begin{equation}\label{rwloc:eq:eta-K}
+ K(a,b)=UV\,3^{-a}-\frac W2\left(\frac25\right)^a
+                  -\frac{U^3}{2}\left(\frac8{27}\right)^a.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Set $\delta=\pi/2-\theta$ and divide
+$\operatorname{Im}F_{a,b}(\rho e^{i\theta})$ by $2^{-a}\rho^2$.
+The resulting equation is analytic near $(\rho,\delta)=(0,0)$
+and starts with $\sin(2\delta)$; its $\delta$ derivative there is
+$2$. The implicit-function theorem gives a unique analytic solution,
+odd under $(\rho,\delta)\mapsto(-\rho,-\delta)$.
+Writing $\delta=\alpha\rho+\beta\rho^3+O(\rho^5)$, the modes
+with outer indices $2,3,4,5$ give
+\[
+ \alpha=\frac U2(2/3)^a,\qquad
+ \beta=UV\,3^{-a}-\frac W2(2/5)^a
+                   -\frac{23U^3}{48}(8/27)^a.
+\]
+All higher modes enter only at order $\rho^5$ or later in the
+normalized equation. Since $\eta=\sin\delta/\rho$, its quadratic
+coefficient is $\beta-\alpha^3/6$, which is \eqref{rwloc:eq:eta-K}.
+This also rederives the earlier report's local coefficient without
+assuming its sign.
+\end{proof}
+
+\begin{theorem}[Complete sign in the conjectured local range]
+\label{rwloc:thm:radius-local-sign}
+The coefficient \eqref{rwloc:eq:eta-K} satisfies
+\begin{enumerate}
+\item $K(a,b)<0$ for every real $a\ge2$ and every $b>0$;
+\item $K(1,b)<0$ if $b>1$, $K(1,b)>0$ if $0<b<1$, and
+      $K(1,1)=0$;
+\item for $b\ge1$, $K(a,b)<0$ whenever $a>1$;
+\item for each $0<b<1$, there is exactly one $a_*(b)\in(1,2)$
+      with $K(a_*(b),b)=0$. The coefficient is positive on
+      $1\le a<a_*(b)$ and negative for $a>a_*(b)$.
+\end{enumerate}
+The function $a_*(b)$ is real analytic on $(0,1)$. Every strict
+coefficient sign gives the corresponding strict monotonicity of
+$\eta_{a,b}$ on some interval $0<\rho<\rho_0(a,b)$. No all-radius
+monotonicity claim is made here.
+\end{theorem}
+
+\subsection{Monotonicity in the outer order}
+Define
+\[
+ G_a=W+U^3\left(\frac{20}{27}\right)^a
+            -2UV\left(\frac56\right)^a.
+\]
+Then $K(a,b)=-\tfrac12(2/5)^aG_a$, so it suffices to determine
+the sign of $G_a$. We first show
+\begin{equation}\label{rwloc:eq:G-increasing}
+ \frac{\partial G_a}{\partial a}>0\qquad(a\ge1, b>0).
+\end{equation}
+Put $x=2^{-b}$ and $y=3^{-b}$. Since $y\ge x^2$ and $0<x<1$,
+\[
+ \frac{U^2}{V}\le\frac{(1+x)^2}{1+x+x^2}\le\frac43.
+\]
+The last inequality is equivalent to $(1-x)^2\ge0$.
+Elementary alternating-series bounds for $\log(1+t)$ give
+\[
+ \log(27/20)<\frac{7273}{24000},\qquad
+ \log(6/5)>\frac9{50}.
+\]
+Consequently
+\[
+ \frac{U^2}{2V}
+       \frac{\log(27/20)}{\log(6/5)}
+ <\frac{7273}{6480}<\frac98
+ \le\left(\frac98\right)^a.
+\]
+This is precisely the inequality obtained by differentiating $G_a$
+and moving its negative term to the other side. It proves
+\eqref{rwloc:eq:G-increasing}.
+
+\subsection{A finite positive certificate at \texorpdfstring{$a=2$}{a = 2}}
+Because $\log_2 3>3/2$, $y\le x^{3/2}$. The coefficient of $y$
+in $G_2$ is $-(7+25x)/18<0$. With $x=t^2$, $0<t<1$, we obtain
+\begin{equation}\label{rwloc:eq:G2-polynomial}
+ G_2\ge P_6(t):=
+ \frac{800t^6-2025t^5+1833t^4-567t^3-192t^2+233}{1458}.
+\end{equation}
+This polynomial has the degree-six Bernstein representation
+\[
+ P_6(t)=\sum_{j=0}^6 b_j\binom6j t^j(1-t)^{6-j},
+\]
+with the exact coefficient vector
+\begin{equation}\label{rwloc:eq:bernstein-six}
+ (b_0,\ldots,b_6)=
+ \left(\frac{233}{1458},\frac{233}{1458},\frac{367}{2430},
+ \frac{665}{5832},\frac{55}{486},\frac{95}{1458},\frac{41}{729}\right).
+\end{equation}
+Every coefficient is positive, and the Bernstein basis is nonnegative
+and sums to one on $[0,1]$. Hence $G_2>0$. Together with
+\eqref{rwloc:eq:G-increasing}, this proves the first assertion of the theorem.
+The accompanying verifier expands \eqref{rwloc:eq:bernstein-six} over
+$\mathbb Q$ and checks equality with \eqref{rwloc:eq:G2-polynomial}; no
+floating-point polynomial sign test is used.
+
+\subsection{The sign change at \texorpdfstring{$a=1$, $b=1$}{a = 1, b = 1}}
+A direct simplification gives
+\begin{equation}\label{rwloc:eq:G1}
+ 27G_1=20x^3+42x^2-3x+2-(45x+18)y.
+\end{equation}
+If $b>1$, let $t=\sqrt{2x}\in(0,1)$. Since
+$y=(2x)^{\log_2 3}/3\le t^3/3$, substitution in
+\eqref{rwloc:eq:G1} yields
+\[
+ G_1\ge(1-t)P_5(t),\qquad
+ P_5(t)=\frac{-5t^5+10t^4-11t^3+t^2+4t+4}{54}.
+\]
+The degree-five Bernstein coefficients of $P_5$ are
+\begin{equation}\label{rwloc:eq:bernstein-five}
+ \left(\frac2{27},\frac4{45},\frac{19}{180},
+       \frac{14}{135},\frac1{10},\frac1{18}\right).
+\end{equation}
+They are all positive, so $G_1>0$ for $b>1$.
+
+Suppose instead $0<b<1$, so $1/2<x<1$. Put $p=\log_2 3$.
+The exact integer inequality $2^{11}<3^7$ gives $p>11/7$, while
+$p<2$. For $y(x)=x^p$ this implies
+\[
+ y(1/2)=\frac13,\quad y'(1/2)>\frac{22}{21},\quad
+ y''(x)=p(p-1)x^{p-2}>\frac{44}{49}\quad(1/2<x<1).
+\]
+Taylor's formula with an integral remainder therefore gives
+\[
+ y\ge\frac13+\frac{22}{21}(x-1/2)
+                   +\frac{22}{49}(x-1/2)^2.
+\]
+Using the negative coefficient of $y$ in \eqref{rwloc:eq:G1}, we find
+\[
+ G_1\le-\frac{(2x-1)(10x^2-337x+334)}{2646}<0.
+\]
+Indeed the quadratic is decreasing on $[1/2,1]$ and its value at
+one is $7>0$. At $b=1$, direct substitution $x=1/2$, $y=1/3$
+gives $G_1=0$. The exact identity
+$F_{1,1}(z)=\tfrac12\log^2(1-z)$ gives
+$\eta_{1,1}(\rho)=1/2$ for every $0<\rho\le1$.
+
+Finally, $G_a$ is strictly increasing in $a\ge1$. The signs of
+$G_1$ and $G_2$ give all the remaining assertions and the unique
+threshold. Its analyticity follows from the analytic implicit-function
+theorem and \eqref{rwloc:eq:G-increasing}. Differentiating
+\eqref{rwloc:eq:eta-expansion} shows that a nonzero $K$ controls the sign
+of $\eta'$ for sufficiently small positive $\rho$.
+
+\begin{remark}[What remains of the conjecture]
+This proves the local sign statement explicitly requested in the earlier
+report, including all real $a\ge2$. It does not show that a derivative
+cannot change sign farther from the origin. At the fractional threshold
+$a=a_*(b)$, the quadratic coefficient vanishes; its quartic successor is
+needed even for local monotonicity. The next section proves opposite
+quartic signs at two inner orders, producing both maxima and minima.
+The full-radius integer conjecture and the general quartic-sign
+classification remain distinct unresolved questions.
+\end{remark}

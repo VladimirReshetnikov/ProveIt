@@ -1,0 +1,1463 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1in,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,microtype,xcolor,xurl}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{bookmark}
+\setlength{\emergencystretch}{3em}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Log}{Log}
+\DeclareMathOperator{\Cl}{Cl}
+\DeclareMathOperator{\NF}{NF}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\cond}{cond}
+\DeclareMathOperator{\tr}{tr}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\C}{\mathbb C}
+\newcommand{\F}{\mathbb{F}_2}
+\newcommand{\U}{\mathcal U}
+\newcommand{\I}{\mathcal I}
+\newcommand{\B}{\mathcal B}
+\newcommand{\Lcal}{\mathcal L}
+\newcommand{\HH}{\widehat H}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\newcommand{\snap}{28357e8ca63dd78327db91d9be239d75e4462879}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Integral distributions and reflection torsion}
+\fancyhead[R]{\small ProveIt continuation}
+\fancyfoot[C]{\thepage}
+\hypersetup{pdftitle={Unimodular Distribution Certificates and Exact Reflection Torsion for Cyclotomic Polylogarithms},pdfauthor={Research report prepared for Vladimir Reshetnikov}}
+
+\title{\textbf{Unimodular Distribution Certificates\\and Exact Reflection Torsion\\for Cyclotomic Polylogarithms}\\[6pt]
+\large Integral normal forms, arbitrary characteristic, and finite-order jets}
+\author{Research report prepared for Vladimir Reshetnikov\\\small A continuation of the ProveIt Polylogarithms manuscript}
+\date{9 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The characteristic-zero distribution normal form in the ProveIt manuscript
+leaves integral lattices, modular specialization, and reflection torsion as
+separate questions. We give a fixed basis consisting of original grid
+symbols and a unit-determinant minor made from unscaled prime distribution
+rows. Consequently the complete weighted relation matrix is unimodularly
+equivalent to an identity block and zeros over
+$\Z[A_p:p\mid q]$, and remains so after arbitrary commutative-ring base
+change. A division-free recurrence supplies exact polynomial certificates
+and explicit coefficient bounds.
+
+Reflection behaves differently. A weighted Anderson resolution reduces
+its Tate cohomology to a finite Koszul complex over the coefficient ring
+modulo two. This gives the complete Smith torsion for all integer prime
+weights. For weights in $\Z[u]/(u^L)$, the answer is controlled by one
+minimum binary valuation: the torsion multiplicity is
+$v\,2^{r_*-1}$, where $r_*$ counts the odd prime factors and also counts
+$2$ precisely when $4\mid q$. We also exhibit a reflected jet module whose
+torsion-free part is not free over the jet ring.
+
+Specializing the normal forms to $A_p=p^{1-s}$ produces meromorphic
+polylogarithm identities for every complex order, including explicit
+level-$12$ and level-$30$ formulas and pole-cancelled identities for all
+order derivatives at $s=1$. The package includes independent exact
+certificate replay, direct Smith computations, and separately labelled
+numerical diagnostics. The ordinary-distribution and resolution
+antecedents of Kubert, Anderson, and Ouyang are retained; no worldwide
+priority or numerical period-independence claim is made.
+\end{abstract}
+\vspace{5pt}
+\noindent\textbf{Scope.} All theorem and proposition statements below have
+ordinary mathematical proofs. The executable checks test finite instances
+and implementations; they are not proof-assistant formalizations. The
+remaining mixed-depth $S_6$ identity is not proved in this report.
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{Research target and relation to the existing manuscript}
+\label{sec:scope}
+
+\subsection{What is being completed}
+The input manuscript \emph{Polylogarithms and their Arithmetic Bridges}
+and its distribution-jets report are read at the repository snapshot
+\begin{center}
+\small\texttt{\snap}.
+\end{center}
+The report's universal conductor normal form is stated over a
+characteristic-zero field containing character values. Its polynomial
+weights may be specialized in any algebra over that field. The manuscript
+explicitly leaves integral Smith forms, torsion, and integral certificate
+arithmetic for further work \cite{repo,repodistribution}.
+
+The distinction is substantive. A Fourier basis change divides by group
+orders. Thus a characteristic-zero proof of rank does not, by itself,
+prove saturation over $\Z$, preserve a basis in characteristic two, or
+identify the torsion introduced by the equations $e_{-x}=\pm e_x$.
+Conversely, the vanishing of a determinant attached to a particular
+primitive-grid coordinate map need not be a failure of the complete
+presentation. This report treats the complete prime-row presentation,
+not an unspecified numerical lattice of periods.
+
+The principal results are the original-symbol unit-minor theorem
+(Theorem~\ref{thm:unimodular}), the reflection Koszul reduction
+(Theorem~\ref{thm:koszul}), and the exact one-variable jet formula
+(Theorem~\ref{thm:jets}). Together they settle these integral and modular
+questions for the stated module, including its reflected scalar and
+one-variable-jet specializations. The polylogarithm consequences are
+proved in Section~\ref{sec:polylog}.
+
+\subsection{Classical antecedents and the novelty boundary}
+Integral freeness of the ordinary universal distribution is classical
+\cite{Kubert}. Ouyang develops a broader universal norm distribution,
+proves freeness, and gives an Anderson-type resolution
+\cite[Propositions 4.1--4.2 and Theorem 5.1]{OuyangNorm}.
+The ordinary sign-cohomology calculation is also classical;
+Ouyang's spectral-sequence treatment records the result and its
+antecedents \cite[Theorem 7.1]{OuyangSign}.
+
+Accordingly, neither ordinary-distribution freeness nor the general idea
+of an Anderson resolution is presented as a new discovery. The
+contribution here is an explicit, self-contained treatment of the
+manuscript's exact weighted presentation: a raw-row unit minor, an
+original-grid-symbol compiler, the binary Koszul data for reflection,
+and a closed minimum-valuation formula for arbitrary integral finite
+jets. These statements are proved rather than inferred from an analogy
+with the classical theory. Their precise extent of prior appearance in
+the broader norm-distribution literature is not settled by the literature
+check made for this report.
+
+\subsection{Three different assertions}
+A basis of a formal distribution quotient means independence modulo the
+\emph{declared distribution rows}. It does not mean that the evaluated
+complex numbers are linearly independent. An exact integer certificate
+proves a relation from those rows; a small floating-point residual is
+only a diagnostic. Finally, a torsion class in a reflected formal
+quotient is not torsion of a complex period: evaluation in a
+characteristic-zero vector space annihilates such a class.
+
+These distinctions will be used throughout. In particular, none of the
+rank or Smith calculations below proves irrationality of a Clausen value,
+independence of Dirichlet $L$-values, or a minimal multiple-polylogarithm
+depth.
+
+\section{The weighted module and a fixed original-symbol basis}
+\label{sec:presentation}
+Let $q\ge2$ and write
+\[
+ q=\prod_{p\in P}p^{e_p},\qquad
+ X_q=(q^{-1}\Z)/\Z,\qquad R=\Z[A_p:p\in P].
+\]
+All rings are commutative with identity. Put
+\[
+ M_q=\bigoplus_{x\in X_q}Re_x.
+\]
+For $p\in P$ and $x\in X_{q/p}$ define
+\begin{equation}
+ r_{p,x}=\sum_{\substack{y\in X_q\\py=x}}e_y-A_pe_x.
+ \label{eq:raw}
+\end{equation}
+Let $\I_q$ be the $R$-span of every such row, and set
+$\U_q=M_q/\I_q$. There are $q$ columns and
+$m_q=\sum_{p\mid q}q/p$ raw rows. The symbol $e_0$ is retained.
+For polylogarithmic evaluation it means $\Li_s(1)=\zeta(s)$;
+for Hurwitz-zeta evaluation it means $\zeta(s,1)$, not $\zeta(s,0)$.
+
+If $d\mid q$, put $A_d=\prod_p A_p^{v_p(d)}$.
+The divisor row is defined in the same way, with $dy=x$ and weight $A_d$.
+The identity
+\begin{equation}
+ r_{ab,x}=\sum_{ay=x}r_{b,y}+A_b r_{a,x}\qquad(ab\mid q)
+ \label{eq:composite}
+\end{equation}
+proves by induction that prime rows generate all divisor rows. The
+multiplicativity of composite weights is essential here.
+
+\subsection{Canonical local selectors}
+Write each point uniquely in its primary decomposition
+\begin{equation}
+ x=\sum_{p\in P}\frac{a_p(x)}{p^{e_p}},\qquad
+ 0\le a_p(x)<p^{e_p}.
+ \label{eq:CRT}
+\end{equation}
+If $x=a/q$, the local numerator is
+\[
+ a_p(x)\equiv a\,(q/p^{e_p})^{-1}\pmod {p^{e_p}}.
+\]
+Define the local forbidden and retained sets
+\begin{equation}
+ T_p=\{1,\ldots,p^{e_p-1}\},\qquad
+ B_p=\{0\}\cup\{p^{e_p-1}+1,\ldots,p^{e_p}-1\}.
+ \label{eq:selectors}
+\end{equation}
+The proposed basis set is
+\begin{equation}
+ \B_q=\{x\in X_q:a_p(x)\in B_p\text{ for every }p\mid q\}.
+ \label{eq:basis}
+\end{equation}
+It has $\varphi(q)$ elements and contains zero.
+The set $T_p$ selects one \emph{nonzero} lift from each multiplication-by-$p$
+fiber on the local grid. For a nonzero parent numerator
+$b<p^{e_p-1}$ it selects $b$; for parent zero it selects
+$p^{e_p-1}$.
+
+Let $h_p(x)$ be the exponent of the exact order of the $p$-component of
+$x$, with $h_p(x)=0$ for a zero component. Write
+\[
+ H(x)=\sum_p h_p(x),\qquad
+ b(x)=\#\{p:a_p(x)\in T_p\}.
+\]
+For $x\notin\B_q$, let $p(x)$ be its least forbidden prime and choose
+one original row
+\begin{equation}
+ g_x=r_{p(x),p(x)x}.
+ \label{eq:selected}
+\end{equation}
+Order all grid points lexicographically by
+$(H(x),b(x),a)$, where $x=a/q$ and $0\le a<q$.
+
+\begin{theorem}[Original-symbol unimodularity]
+\label{thm:unimodular}
+The classes $[e_b]$, $b\in\B_q$, form an $R$-basis of $\U_q$.
+The selected raw rows $g_x$, $x\notin\B_q$, form an $R$-basis of
+$\I_q$. In the indicated order, their submatrix on the nonbasis columns
+is unit lower triangular. In particular, its determinant is identically
+one.
+
+The complete $m_q\times q$ raw relation matrix is equivalent, by
+invertible row and column operations over $R$, to an identity block of
+size $q-\varphi(q)$ and zeros. All these statements survive arbitrary
+base change $R\to T$. In particular,
+\[
+ \U_q\otimes_R T\simeq T^{\varphi(q)},\qquad
+ (\U_q/Re_0)\otimes_R T\simeq T^{\varphi(q)-1}.
+\]
+\end{theorem}
+
+\begin{example}[Small bases]
+We identify $a/q$ with its numerator in the following display:
+\[
+\begin{array}{c|l}
+ q& q\B_q\pmod q\\\hline
+ 3&0,2\\
+ 4&0,3\\
+ 6&0,4\\
+ 12&0,5,8,9\\
+ 15&0,1,4,6,7,9,10,12\\
+ 30&0,2,8,12,14,18,20,24.
+\end{array}
+\]
+These are not primitive-root grids. Including lower-conductor symbols is
+exactly what permits one basis to work for every weight without
+exceptional denominators.
+\end{example}
+
+\section{Proof of the unit-minor theorem}
+\label{sec:unitproof}
+
+\subsection{Triangularity without division}
+Fix a nonbasis point $x$, and put $p=p(x)$. In the row $g_x$, the point
+$x$ has coefficient one. Its $p$-component is nonzero, and multiplication
+by $p$ lowers its exact local order. Thus $px\ne x$ and the weight term
+cannot change that pivot coefficient.
+
+Every other point in $g_x$ precedes $x$. Indeed, the other solutions of
+$py=px$ have the same components away from $p$. Among those of the same
+$p$-order as $x$, the unique forbidden lift was $x$ itself; all the other
+lifts are retained at $p$. Their height is unchanged and their forbidden
+count decreases by one. A possible zero local lift has lower height.
+Finally $px$ has height $H(x)-1$: multiplication by $p$ preserves the
+orders at every other prime, even though it may change their forbidden
+status. Height takes priority over forbidden count in the ordering.
+
+Two different selected points cannot select the same row. For a fixed
+prime and parent there is exactly one forbidden lift in its local fiber;
+the other local components are uniquely fixed by the parent. Therefore
+there are exactly $q-\varphi(q)$ distinct selected rows, and their
+nonbasis submatrix is unit lower triangular.
+
+Let $K_q$ be their span. Successive unit-pivot elimination gives a direct
+sum
+\begin{equation}
+ M_q=K_q\oplus \bigoplus_{b\in\B_q}Re_b.
+ \label{eq:split-selected}
+\end{equation}
+What remains is to prove that the unselected raw rows belong to $K_q$.
+This step is necessary: a unit minor alone gives a lower bound on the
+rank of the relation module, not its full description.
+
+\subsection{The complete generic rank}
+We give the characteristic-zero argument in full so that the integral
+descent does not rely on unseen relation matrices. Extend scalars to a
+field $F$ containing the fraction field of $R$ and all character values
+of $(\Z/q\Z)^\times$. Split the grid according to exact denominator:
+\[
+ F[X_q]=\bigoplus_{m\mid q}F[(\Z/m\Z)^\times].
+\]
+Use $(\Z/1\Z)^\times$ as a one-element group. For a primitive character
+$\chi$ of conductor $f\mid q$ and every $f\mid m\mid q$, put
+\[
+ v_{m,\chi}=\sum_{a\in(\Z/m\Z)^\times}\chi(a)e_{a/m}.
+\]
+The finite character transforms are invertible over $F$.
+
+Fourier-transform the \emph{sources} of all $p$-rows, separately on their
+exact-denominator strata. For $f\mid m$ and $pm\mid q$, the resulting
+row is
+\begin{equation}
+ v_{pm,\chi}-\lambda_{p,m,\chi}v_{m,\chi},\qquad
+ \lambda_{p,m,\chi}=\begin{cases}
+ A_p,&p\mid m,\\ A_p-\chi(p),&p\nmid m.
+ \end{cases}
+ \label{eq:edges}
+\end{equation}
+When $p\mid m$, every preimage has denominator $pm$. When $p\nmid m$,
+one preimage has denominator $m$; its character coefficient is
+$\chi(p)\chi(b)$, since its numerator satisfies $pb\equiv a\pmod m$.
+All remaining preimages have denominator $pm$. This proves
+\eqref{eq:edges}. Because both source and target transforms are invertible,
+these are all transformed rows, not a selected collection of identities.
+
+Define
+\begin{equation}
+ E_{m,\chi}=
+ \prod_{p\mid f}A_p^{v_p(m)-v_p(f)}
+ \prod_{\substack{p\mid m\\p\nmid f}}
+ A_p^{v_p(m)-1}(A_p-\chi(p)).
+ \label{eq:conductor}
+\end{equation}
+The products of edge factors are independent of the order in which
+primes are adjoined. Every $v_{m,\chi}$ reduces to
+$E_{m,\chi}v_{f,\chi}$. Conversely, the map
+$v_{m,\chi}\mapsto E_{m,\chi}$ annihilates every edge and sends
+$v_{f,\chi}$ to one. The character block therefore has dimension exactly
+one. There is one such block for each character modulo $q$, giving
+\begin{equation}
+ \dim_F(F[X_q]/F\I_q)=\varphi(q).
+ \label{eq:generic-rank}
+\end{equation}
+This is the conductor argument of the earlier report, now used only
+where the Fourier transform is legitimate \cite{repodistribution}.
+
+\subsection{Integral descent and all-ring specialization}
+The selected rows are independent and have the full generic rank
+$q-\varphi(q)$. Hence $F K_q=F\I_q$. For any raw row $r$, its class in
+$M_q/K_q$ becomes zero over $F$. But \eqref{eq:split-selected} identifies
+this quotient with a free module over the integral domain $R$.
+It injects into its scalar extension to $F$. Thus the class of $r$ was
+already zero: $\I_q=K_q$.
+
+This proves the basis statements. To reduce the entire matrix, put the
+selected rows first, subtract their polynomial combinations from every
+remaining row, and use the invertible triangular pivot block to clear
+the nonbasis columns. A final column operation clears the retained
+columns of the selected rows. Every operation is invertible over $R$;
+no integer, weight, or character value is divided out. The result is
+an identity block and zeros.
+
+An identity between these polynomial matrices remains an identity under
+any homomorphism $R\to T$. The decomposition, normal forms, and unit
+minor consequently survive arbitrary specialization, including rings
+with zero divisors and fields of characteristic dividing $q$ or
+$\varphi(q)$. Since $0\in\B_q$, the anchored statement follows by
+deleting one basis vector. This completes the proof of
+Theorem~\ref{thm:unimodular}.
+
+\section{Division-free certificates, size bounds, and unreflected jets}
+\label{sec:compiler}
+Write
+\[
+ [e_x]=\sum_{b\in\B_q}P_{x,b}(\boldsymbol A)[e_b],\qquad
+ P_{x,b}\in\Z[\boldsymbol A].
+\]
+The proof gives the explicit recurrence
+\begin{equation}
+ \NF(x)=\begin{cases}
+ e_x,&x\in\B_q,\\[2pt]
+ A_p\NF(px)-\displaystyle\sum_{j=1}^{p-1}\NF(x+j/p),
+   &x\notin\B_q,\ p=p(x).
+ \end{cases}
+ \label{eq:recurrence}
+\end{equation}
+Every argument on the second line precedes $x$. Thus this is a terminating
+compiler over the polynomial ring itself, not a specialization-dependent
+Gaussian elimination.
+
+\begin{proposition}[Degree and coefficient bounds]
+\label{prop:bounds}
+For every $x,b$ and $p\mid q$,
+\[
+ \deg_{A_p}P_{x,b}\le h_p(x).
+\]
+Let $r=|P|$, let $P_{\max}$ be the largest prime divisor of $q$, and put
+$W(x)=(r+1)H(x)+b(x)$. If the coefficient norm sums absolute values over
+all basis coordinates and all monomials, then
+\begin{equation}
+ \|\NF(x)\|_1\le P_{\max}^{W(x)}.
+ \label{eq:height}
+\end{equation}
+In particular each coordinate has at most
+$\prod_p(h_p(x)+1)\le\prod_p(e_p+1)$ possible monomials.
+\end{proposition}
+\begin{proof}
+A factor $A_p$ is introduced only on the branch $x\mapsto px$, which
+lowers $h_p$ by one. All other local order exponents are unchanged.
+Sibling lifts do not increase any local order. Induction in the
+well-founded point order proves the multidegree bound.
+
+Every recursion edge lowers $W$ by at least one. At equal height, the
+forbidden count drops; when height drops, a possible increase of at most
+$r$ in the forbidden count is outweighed by the factor $r+1$.
+There are at most $p\le P_{\max}$ summands in a recursion step, including
+the weighted parent. Multiplication by a variable does not increase the
+coefficient norm. Induction proves \eqref{eq:height}.
+\end{proof}
+
+These estimates are deliberately uniform rather than sharp. Given the
+factorization of $q$, straightforward sparse arithmetic uses at most
+$O(qP_{\max}\varphi(q)\tau(q)r)$ integer coefficient operations under
+this monomial bound, where $\tau(q)=\prod_p(e_p+1)$. This is a
+polynomial-in-grid-size bound, not an assertion of optimal complexity
+or of efficient factorization of a binary-encoded input integer.
+
+\subsection{Independent replay}
+A certificate records the basis, the selected original rows, and every
+polynomial $P_{x,b}$. An independent verifier can check it without
+re-running the discovery recurrence:
+\begin{enumerate}[nosep]
+\item Reconstruct each raw row directly from its prime and parent.
+\item Verify that the selected nonbasis block is unit lower triangular.
+\item Back-substitute $e_x-\sum_bP_{x,b}e_b$ through that block and require
+an exactly zero polynomial remainder, for every $x$.
+\item Independently require every raw row to vanish under the delivered
+normal-form map.
+\end{enumerate}
+The delivered verifier follows this route and does not import the
+normal-form generator. Altering a coefficient, the advertised basis, or
+a selected parent is rejected by the corruption controls.
+
+\begin{corollary}[Unreflected Smith factors and jets]
+\label{cor:unreflected}
+For every integer specialization of the prime weights, all nonzero Smith
+factors of the complete raw matrix are one. Its rank is
+$q-\varphi(q)$ over every field after the corresponding specialization.
+
+For $B_L=\Z[u]/(u^L)$, $L\ge1$, and arbitrary weights $A_p(u)\in B_L$,
+the quotient is free of rank $\varphi(q)$ over $B_L$. Expanded in the
+coefficient basis $1,u,\ldots,u^{L-1}$, the raw integer matrix has
+$L(q-\varphi(q))$ nonzero Smith factors, all equal to one.
+\end{corollary}
+\begin{proof}
+Specialize the polynomial matrix equivalence from
+Theorem~\ref{thm:unimodular}. For jets, multiplication by each entry is
+represented in the coefficient basis. An invertible matrix over $B_L$
+induces an invertible integer matrix on the underlying free abelian
+group. Expanding the identity block gives the stated result.
+\end{proof}
+
+The same argument works for any finite free coefficient algebra, including
+multivariate truncated polynomial algebras. It concerns ordinary
+coefficients of formal jets; dividing derivatives by factorials is
+unnecessary and may be illegitimate in positive characteristic.
+
+\section{A weighted Anderson resolution with an elementary filtration proof}
+\label{sec:resolution}
+The reflection calculation requires relations among the raw relations,
+not just their rank. We provide an explicit resolution. This is a
+weighted version of the classical Anderson construction
+\cite{OuyangNorm}; the exactness proof below is given for the present
+point-grid convention.
+
+For $S\subseteq P$, put $d_S=\prod_{p\in S}p$, and set
+\begin{equation}
+ \Lcal^{-k}=\bigoplus_{\substack{S\subseteq P\\|S|=k}}R[X_{q/d_S}].
+ \label{eq:resolution-terms}
+\end{equation}
+Denote a generator by $[x,S]$. With the primes ordered increasingly,
+define
+\begin{equation}
+ d[x,S]=\sum_{p\in S}(-1)^{\#\{\ell\in S:\ell<p\}}
+ \left(\sum_{py=x}[y,S\setminus\{p\}]
+       -A_p[x,S\setminus\{p\}]\right).
+ \label{eq:resolution-d}
+\end{equation}
+Here the preimages lie in $X_{q/d_{S\setminus\{p\}}}$.
+The augmentation $\Lcal^0\to\U_q$ is the defining quotient map.
+
+\begin{theorem}[Exact weighted resolution]
+\label{thm:resolution}
+The augmented complex
+\[
+ 0\longrightarrow\Lcal^{-|P|}\longrightarrow\cdots
+ \longrightarrow\Lcal^{-1}\longrightarrow\Lcal^0
+ \longrightarrow\U_q\longrightarrow0
+\]
+is exact and remains exact after arbitrary base change of $R$.
+It is equivariant under $J[x,S]=[-x,S]$.
+\end{theorem}
+\begin{proof}
+The unsigned operators in distinct prime directions commute: the two
+iterated preimage sums give the same solutions of $p\ell y=x$, and
+inclusion and the scalar weight terms commute with them. The alternating
+signs in \eqref{eq:resolution-d} therefore give $d^2=0$. The augmentation
+has cokernel zero and kernel $\I_q$ by definition. Equivariance is
+immediate.
+
+Filter the complex by
+\[
+ F(x,S)=\sum_p h_p(x)+|S|.
+\]
+Every differential term has filtration at most that of its source.
+For a prime $p\in S$, the preimages of highest local order have
+$p$-height $h_p(x)+1$. They preserve the filtration. A possible lower
+local lift, and the scalar term $-A_p[x,S\setminus\{p\}]$, lower it.
+In the associated graded complex, record
+\[
+ \alpha_p=h_p(x)+\boldsymbol1_{p\in S},\qquad0\le\alpha_p\le e_p.
+\]
+The leading differential preserves the whole tuple $\boldsymbol\alpha$.
+
+There is a harmless prime-to-$p$ twist on the other primary components
+of a preimage. Remove it in the summand indexed by $S$ by replacing
+$x_p$ with
+\begin{equation}
+ \left(\prod_{\ell\in S\setminus\{p\}}\ell\right)^{-1}x_p.
+ \label{eq:twist}
+\end{equation}
+The multiplier is a unit on the $p$-primary group. If the differential
+removes $\ell\ne p$, its preimage operation multiplies $x_p$ by
+$\ell^{-1}$, while the coordinate change in \eqref{eq:twist} gains the
+factor $\ell$. These cancel. In the $p$-direction the multiplier is
+unchanged. Thus the graded complex for a fixed
+$\boldsymbol\alpha$ is a tensor product of independent local complexes.
+
+For $\alpha_p=0$, the local complex is one copy of $R$ in degree zero.
+For $\alpha_p\ge1$, it is a two-term complex from the free module on
+points of exact order $p^{\alpha_p-1}$ to that on points of exact order
+$p^{\alpha_p}$, sending a point to its highest-order preimage sum.
+At $\alpha_p=1$, the source is the zero point and its image is the sum
+of the $p-1$ nonzero $p$-torsion points. At larger $\alpha_p$, each
+fiber has $p$ points. In either case the fibers are disjoint and
+nonempty, so choosing one point per fiber gives a unit-pivot splitting.
+The map is split injective with free cokernel.
+
+Each local complex is consequently a direct sum of a contractible
+identity-map complex and a free module in degree zero. Their tensor
+product has no negative-degree homology. The filtration is finite, so
+successively lifting a cycle's highest filtered part proves that the
+original complex has no negative-degree homology either. This argument
+uses only unit-pivot splittings and therefore works over every
+coefficient ring. Its degree-zero homology is precisely $\U_q$.
+\end{proof}
+
+\begin{lemma}[Nonfixed support is preserved]
+\label{lem:nonfixed}
+In \eqref{eq:resolution-d}, a generator with $2x\ne0$ has no nonzero
+coefficient on a generator $[y,T]$ with $2y=0$.
+\end{lemma}
+\begin{proof}
+The weight term has the same point $x$. A fixed preimage $y$ would give
+$2x=p(2y)=0$, a contradiction. Thus neither type of term can land on a
+fixed point.
+\end{proof}
+This elementary support fact is the reason the reflection calculation
+below collapses exactly; it cannot be replaced by an unsupported
+assertion that a spectral sequence has no higher differentials.
+
+\section{Reflection torsion as a binary Koszul calculation}
+\label{sec:reflection}
+Let $B$ be a commutative ring whose underlying abelian group is free,
+let $a_p\in B$ be the specialized weights, and write
+$U_B=\U_q\otimes_R B$. We allow $B$ to have infinite $\Z$-rank for
+now. Reflection is the involution $Je_x=e_{-x}$. Define the two
+\emph{coinvariant} quotients
+\begin{equation}
+ C_+(U_B)=U_B/(J-1)U_B,\qquad
+ C_-(U_B)=U_B/(J+1)U_B.
+ \label{eq:coinvariants}
+\end{equation}
+They are not the eigensublattices $\ker(J\mp1)$. Over a ring in which
+two is invertible this distinction disappears after applying the usual
+projectors; over $\Z$ it is essential.
+
+\subsection{The two-periodic complex}
+For a free abelian group $U$ with involution $J$, use the complex whose
+differential from even degree is $J-1$ and from odd degree is $J+1$.
+Its cohomology is denoted $\HH^n(J,U)$; in particular
+\[
+ \HH^0(J,U)=\frac{\ker(J-1)}{(J+1)U},\qquad
+ \HH^1(J,U)=\frac{\ker(J+1)}{(J-1)U}.
+\]
+This is Tate cohomology for the two-element group, but these explicit
+formulas suffice for its use here.
+
+\begin{lemma}[Only elementary two-torsion]
+\label{lem:torsion}
+For a free abelian $U$,
+\[
+ \Tor_{\Z} C_+(U)\simeq\HH^1(J,U),\qquad
+ \Tor_{\Z} C_-(U)\simeq\HH^0(J,U).
+\]
+Both torsion groups are killed by two.
+\end{lemma}
+\begin{proof}
+If $n[v]=0$ in $U/(J-1)U$, apply $J+1$ to a representative equation.
+Since $U$ has no integer torsion, $(J+1)v=0$. Then
+$(J-1)v=-2v$, so $2[v]=0$. Conversely, every element of
+$\ker(J+1)$ gives such a two-torsion class. This identifies the torsion
+with $\HH^1$. Replacing $J$ by $-J$ gives the other assertion.
+\end{proof}
+
+Put $\overline B=B/2B$ and define
+\begin{equation}
+ r_* = \#\{p\mid q:p\text{ odd}\}+\boldsymbol1_{4\mid q}.
+ \label{eq:effective-primes}
+\end{equation}
+The list of binary parameters is
+\begin{equation}
+ \boldsymbol f=
+ \bigl(1-\overline a_p:\ p\mid q,\ p\text{ odd}\bigr),
+ \quad\text{with }\overline a_2(1-\overline a_2)
+       \text{ appended if }4\mid q.
+ \label{eq:binary-parameters}
+\end{equation}
+Let $K_{\overline B}(\boldsymbol f)$ be the homological Koszul complex:
+$K_k=\bigwedge^k\overline B^{r_*}$ and the differential contracts a
+basis vector in direction $i$ by multiplication by $f_i$.
+
+\begin{theorem}[Fixed-point Koszul reduction]
+\label{thm:koszul}
+For every integer $n$, there is an isomorphism of $\overline B$-modules
+\begin{equation}
+ \HH^n(J,U_B)\simeq
+ \bigoplus_{\substack{0\le k\le r_*\\k\equiv n\ (2)}}
+ H_k\bigl(K_{\overline B}(\boldsymbol f)\bigr).
+ \label{eq:tate-koszul}
+\end{equation}
+The formula includes $q=2$, when the parameter list is empty.
+\end{theorem}
+\begin{proof}
+Apply the two-periodic complex to each term of the exact resolution
+in Theorem~\ref{thm:resolution}, after base change to $B$.
+Use the usual sign on one differential so that the total differential
+squares to zero. The horizontal range is finite. Computing horizontal
+homology first therefore identifies the total cohomology with
+$\HH^*(J,U_B)$; this is also obtained by a finite cycle-lifting argument
+from the augmentation. No unbounded-filtration convergence assertion is
+needed.
+
+In each vertical column, separate the point basis into fixed points and
+two-element orbits. Construct a subcomplex $D$ as follows. In even
+vertical degree include all nonfixed point coordinates and twice each
+fixed coordinate. In odd vertical degree include the entire column.
+A nonfixed orbit has an acyclic two-periodic complex. A fixed coordinate
+in $D$ has alternating modules $2B,B$ and differential $2:B\to2B$,
+which is an isomorphism onto its target. Thus every vertical column of
+$D$ is acyclic. The subcomplex is horizontally stable: by
+Lemma~\ref{lem:nonfixed}, nonfixed source coordinates never produce
+fixed coordinates, and twice a fixed coordinate still has even fixed
+coefficients after taking the differential. Since the horizontal range
+is finite, the total complex of $D$ is acyclic.
+
+The quotient double complex is now particularly simple. Odd vertical
+degrees are zero; even vertical degrees are the free $\overline B$-module
+on the fixed points of the corresponding grid. All vertical
+differentials vanish. Its total cohomology is the direct sum, with the
+appropriate degree parities, of the homology of the horizontal
+fixed-point complex.
+
+A grid $X_m$ has just the fixed point $0$ if $m$ is odd, and has fixed
+points $0,1/2$ if $m$ is even. In an odd-prime direction, each fixed
+point has exactly one fixed preimage, so the induced map is multiplication
+by $1-\overline a_p$. These give the odd-prime Koszul factors.
+
+It remains to examine the direction $2$ when $q$ is even. If $v_2(q)=1$,
+the fixed-point map is
+\[
+ \overline B\longrightarrow\overline B^2,\qquad
+ 1\longmapsto\binom{1-\overline a_2}{1}.
+\]
+It is split injective with one free cokernel coordinate; its contractible
+summand may be removed. Thus it contributes no Koszul parameter.
+If $v_2(q)\ge2$, the map on fixed points is
+\begin{equation}
+ \begin{pmatrix}
+ 1-\overline a_2&0\\
+ 1&\overline a_2
+ \end{pmatrix}.
+ \label{eq:two-matrix}
+\end{equation}
+The first column comes from the source zero, whose two fixed preimages
+are $0$ and $1/2$. The source $1/2$ has only nonfixed preimages, so its
+fixed contribution is the weight term. Swapping rows and using the
+unit entry $1$ transforms \eqref{eq:two-matrix} into
+$\operatorname{diag}(1,\overline a_2(1-\overline a_2))$ over
+$\overline B$. Removing the identity-map summand leaves exactly the
+additional Koszul parameter in \eqref{eq:binary-parameters}.
+
+The other directions commute with these operations. The fixed-point
+complex is therefore homotopy equivalent to
+$K_{\overline B}(\boldsymbol f)$. In total degree $n$, a homological
+degree $k$ term contributes precisely when $n+k$ is even. This proves
+\eqref{eq:tate-koszul}.
+\end{proof}
+
+\subsection{Complete scalar Smith torsion}
+\begin{theorem}[All integer prime weights]
+\label{thm:scalar-torsion}
+Let $q>2$ and specialize each $A_p$ to an arbitrary integer $a_p$.
+Then, for either sign,
+\begin{equation}
+ C_\pm(U_{\Z})\simeq
+ \Z^{\varphi(q)/2}\oplus(\Z/2\Z)^{h_q(\boldsymbol a)},
+ \label{eq:scalar-Smith}
+\end{equation}
+where
+\begin{equation}
+ h_q(\boldsymbol a)=
+ \begin{cases}
+ 0,&\text{some odd }p\mid q\text{ has }a_p\text{ even},\\
+ 2^{r_*-1},&\text{every odd-prime weight is odd}.
+ \end{cases}
+ \label{eq:scalar-h}
+\end{equation}
+For $q=2$, the two quotients are $C_+=\Z$ and $C_-=\Z/2\Z$.
+\end{theorem}
+\begin{proof}
+Over $\F$, the parameter $\overline a_2(1-\overline a_2)$ is always zero.
+If an odd-prime parameter is one, the Koszul complex has a contractible
+factor and all its homology vanishes. Otherwise every parameter is zero,
+so $H_k=\F^{\binom{r_*}{k}}$. For $q>2$ we have $r_*\ge1$, and the sum
+of binomial coefficients of either parity is $2^{r_*-1}$.
+Theorem~\ref{thm:koszul} and Lemma~\ref{lem:torsion} prove the torsion
+formula.
+
+To compute the free ranks without dividing an integral lattice, tensor
+with $\Q$. The trace of $J$ on the quotient equals its alternating trace
+on the finite resolution. A point-permutation module has trace equal
+to its number of fixed points. For odd $q$ this alternating sum is
+$(1-1)^{|P|}$. If $q=2m$ with $m$ odd, it is
+$(2-1)(1-1)^{\omega(m)}$. If $4\mid q$, it has the factor $2-2$.
+For every $q>2$ the trace is therefore zero. Since the total dimension is
+$\varphi(q)$ and an involution is diagonalizable over $\Q$, its two
+rational eigenspaces each have dimension $\varphi(q)/2$.
+This is also the free rank of either coinvariant quotient. The
+classification of finitely generated abelian groups proves
+\eqref{eq:scalar-Smith}. At $q=2$, the unreflected quotient is generated
+by $e_0$ and reflection is the identity.
+\end{proof}
+
+This result determines the complete nonzero Smith factors of the
+\emph{stacked} distribution-and-reflection matrix: there are
+$h_q$ factors equal to two and
+$q-\varphi(q)/2-h_q$ factors equal to one. Its remaining
+$\varphi(q)/2$ column directions are free. In characteristic two the
+reflected quotient has dimension $\varphi(q)/2+h_q$; in every odd
+characteristic it has dimension $\varphi(q)/2$.
+The unreflected rank never changes.
+
+\begin{example}[A torsion jump with constant unreflected rank]
+For $q=3$, the single raw relation is
+\[
+ e_{1/3}+e_{2/3}=(a_3-1)e_0.
+\]
+At $a_3=1$, reflection is diagonal with signs $+1,-1$ in the basis
+$e_0,e_{2/3}$, and both coinvariant quotients are
+$\Z\oplus\Z/2\Z$. At $a_3=0$, both coinvariant quotients are
+$\Z$. The unreflected lattice is $\Z^2$ in both cases.
+For $q=60$, $r_*=3$; the torsion multiplicity is four when both $a_3$
+and $a_5$ are odd, and zero otherwise, regardless of $a_2$.
+\end{example}
+
+The effective prime count is not optional. When $q=2m$ with $m$ odd,
+the canonical bases for $m$ and $2m$ are the same rational points.
+The natural inclusion identifies the two modules after adjoining $A_2$,
+and respects reflection: all odd-prime fibers of a point in $X_m$ remain
+inside $X_m$. Thus a lone factor of two must not double the ordinary
+sign-cohomology multiplicity. For ordinary weights the theorem recovers
+the classical result with this conductor convention
+\cite{OuyangSign}.
+
+\subsection{A universal cohomology module}
+\begin{corollary}[Before weight specialization]
+\label{cor:universal-tate}
+Over $R=\Z[A_p:p\mid q]$, Tate cohomology in odd degree vanishes, while
+in even degree it is
+\[
+ R\big/\bigl(2,\ 1-A_p\ (p\text{ odd}),\
+ A_2(1-A_2)\ \text{if }4\mid q\bigr).
+\]
+A prime variable $A_2$ with $v_2(q)=1$ is not constrained in this quotient.
+\end{corollary}
+\begin{proof}
+The binary parameters form a regular sequence in the polynomial ring
+$R/2R$: the odd-prime linear factors eliminate distinct variables, and,
+when present, $A_2(1-A_2)$ is a nonzero monic polynomial in the remaining
+variable. Its Koszul homology is concentrated in degree zero and equals
+the quotient by the parameter ideal. Theorem~\ref{thm:koszul} applies
+because $R$ is free as an abelian group.
+\end{proof}
+The extra cohomology after scalar specialization is thus a real
+base-change phenomenon. It cannot be read off by simply specializing
+the already-computed universal cohomology module.
+
+\section{An exact Smith formula for arbitrary finite integral jets}
+\label{sec:jets}
+Let
+\[
+ B_L=\Z[u]/(u^L),\quad L\ge1,\qquad
+ a_p(u)\in B_L,
+\]
+and reduce coefficients modulo two. In
+$\overline B_L=\F[u]/(u^L)$, form the parameters
+\eqref{eq:binary-parameters}. For an element $f$ of this ring, define
+\[
+ \nu(f)=\min\{j:[u^j]f\ne0\},\qquad \nu(0)=L,
+ \quad v=\min_{f\in\boldsymbol f}\nu(f).
+\]
+For $q>2$, the list is nonempty.
+
+\begin{theorem}[Minimum-valuation jet formula]
+\label{thm:jets}
+For $q>2$, the two reflected jet quotients have the following Smith
+decomposition as abelian groups:
+\begin{equation}
+ C_\pm(U_{B_L})\simeq
+ \Z^{L\varphi(q)/2}\oplus(\Z/2\Z)^{v\,2^{r_*-1}}.
+ \label{eq:jet-Smith}
+\end{equation}
+More precisely, their integer-torsion submodules are each isomorphic,
+as $B_L$-modules, to
+\begin{equation}
+ \bigl(B_L/(2,u^v)\bigr)^{2^{r_*-1}}.
+ \label{eq:jet-torsion-module}
+\end{equation}
+The direct-sum decomposition in \eqref{eq:jet-Smith} is a statement over
+$\Z$, not a claim that the torsion-free part is free over $B_L$.
+\end{theorem}
+\begin{proof}
+In the principal ideal ring $\overline B_L$, choose a parameter of least
+valuation. It is a unit times $u^v$ unless every parameter is zero,
+which is the same argument with $v=L$. A change of basis in the free
+module defining the Koszul complex transforms the parameter list into
+$(u^v,0,\ldots,0)$: first divide by its unit factor, then subtract its
+multiples from the other entries. All these are invertible operations
+over $\overline B_L$.
+
+The complex is now the tensor product of the two-term complex given by
+multiplication by $u^v$ and $r_*-1$ zero-differential exterior factors.
+Both the kernel and the cokernel of multiplication by $u^v$ are
+isomorphic to $\overline B_L/(u^v)$; the kernel is the ideal
+$u^{L-v}\overline B_L$. Consequently
+\[
+ H_k\bigl(K_{\overline B_L}(\boldsymbol f)\bigr)
+ \simeq\bigl(\overline B_L/(u^v)\bigr)^{\binom{r_*}{k}}.
+\]
+Summing either degree parity in Theorem~\ref{thm:koszul} proves
+\eqref{eq:jet-torsion-module}. Each copy has $\F$-dimension $v$,
+so Lemma~\ref{lem:torsion} gives the torsion multiplicity in
+\eqref{eq:jet-Smith}.
+
+The unreflected underlying lattice has rank $L\varphi(q)$.
+The alternating fixed-point trace used in
+Theorem~\ref{thm:scalar-torsion} is multiplied by $L$, and still
+vanishes. Thus each rational eigenspace has dimension
+$L\varphi(q)/2$. This proves the free rank and completes the Smith
+calculation.
+\end{proof}
+
+\begin{example}[Five jet coefficients at level fifteen]
+Take $L=5$, $a_3(u)=1+u^2$, and $a_5(u)=1+2u+u^3$.
+The binary parameters are $u^2,u^3$, so $v=2$ and $r_*=2$. Therefore
+\[
+ C_\pm(U_{B_5})\simeq\Z^{20}\oplus(\Z/2\Z)^4.
+\]
+The constant jets $a_3=a_5=1$ would instead give ten two-torsion factors.
+The constant terms of the weights agree; their higher binary
+coefficients change the integral reflection structure.
+\end{example}
+
+\begin{example}[The two-adic jet parameter matters]
+At $q=12$, $L=4$, let $a_2(u)=1+u$ and $a_3(u)=1+u^3$.
+The two parameters are $u^3$ and $u+u^2$, not simply
+$1-a_3$ and $1-a_2$. Thus $v=1$, $r_*=2$, and
+\[
+ C_\pm(U_{B_4})\simeq\Z^8\oplus(\Z/2\Z)^2.
+\]
+Although the parity of a \emph{scalar} two-prime weight does not affect
+Theorem~\ref{thm:scalar-torsion}, a nonconstant two-prime jet can affect
+Theorem~\ref{thm:jets}.
+\end{example}
+
+\subsection{Why the free abelian part need not be jet-free}
+Take $q=3$, $L=2$, and $a_3=1+u$. In the unreflected basis
+$e=e_0$, $f=e_{2/3}$, reflection satisfies
+\[
+ Je=e,\qquad Jf=ue-f.
+\]
+Hence
+\begin{equation}
+ C_+(U_{B_2})=B_2e\oplus B_2f\big/\langle ue-2f\rangle.
+ \label{eq:nonflat}
+\end{equation}
+As an abelian group this has free generators $e,f$ and a torsion generator
+$uf$ of order two. In its torsion-free quotient, multiplication by $u$
+sends $e$ to $2f$ and $f$ to zero. This is not a free rank-one
+$B_2$-module: the image of $u$ in a free rank-one module is a primitive
+rank-one sublattice, whereas here the image is $2\Z f$.
+Thus a claim of $B_L$-freeness for the reflected torsion-free part would
+be false. By contrast, $C_-=B_2f\oplus(B_2/(2,u))e$ in this example.
+Both signs have the same abelian Smith factors, but different module
+extensions over the jet ring.
+
+\subsection{Multivariate jets and arithmetic weights}
+For a finite free $\Z$-algebra $B$ of rank $L$, the Koszul theorem remains
+an exact answer. If $q>2$ and
+$h_k=\dim_{\F} H_k(K_{B/2B}(\boldsymbol f))$, then
+\[
+ \Tor_\Z C_+\simeq(\Z/2\Z)^{\sum_{k\text{ odd}}h_k},\qquad
+ \Tor_\Z C_-\simeq(\Z/2\Z)^{\sum_{k\text{ even}}h_k}.
+\]
+The two sums are equal: the Euler characteristic of the Koszul complex
+is $L(1-1)^{r_*}=0$. A closed minimum-valuation description is special
+to the one-variable principal ideal ring; it must not be transferred
+unchanged to a multivariate Artinian ring.
+
+For actual positive integral polylogarithm orders, $A_p=p^{1-n}$ usually
+belongs to $\Z[1/q]$, rather than $\Z$. The corresponding coefficient
+ring must be stated. If $q$ is even, inverting $q$ also inverts two and
+removes the reflected two-torsion. For odd $q$, every $p^{1-n}$ is one
+modulo two, and the ordinary maximal multiplicity persists over
+$\Z[1/q]$. These are statements about the chosen formal coefficient
+lattice, not about independence of the evaluated periods.
+
+\section{Polylogarithm identities and pole-cancelled order derivatives}
+\label{sec:polylog}
+Put $\zeta_q=e^{2\pi i/q}$ and initially define
+$\Li_s(z)=\sum_{n\ge1}z^n/n^s$ for the roots considered here and
+$\Re s>1$. The standard continuation conventions are those of
+\cite{DLMFpolylog,DLMFhurwitz}. Absolute convergence gives
+\begin{equation}
+ \sum_{py=x}\Li_s(e^{2\pi i y})
+       =p^{1-s}\Li_s(e^{2\pi i x}).
+ \label{eq:analytic-dist}
+\end{equation}
+Indeed the sum of $p$-th roots of unity filters the summation index to
+multiples of $p$.
+
+For a fixed rational angle, splitting the series into residue classes
+also gives
+\begin{equation}
+ \Li_s(\zeta_q^a)=q^{-s}\sum_{r=1}^{q}\zeta_q^{ar}
+                         \zeta(s,r/q).
+ \label{eq:Hurwitz-Fourier}
+\end{equation}
+The Hurwitz-zeta terms have only a common simple pole at $s=1$, of
+residue one. For $a\not\equiv0\pmod q$, their root-of-unity coefficients
+sum to zero. Thus the left side is entire as a function of the order
+$s$ at a nontrivial root; for $a=0$ it is $\zeta(s)$. This also provides
+a direct continuation argument for all identities below.
+
+\begin{theorem}[Fixed-basis identities for every complex order]
+\label{thm:all-order}
+For every grid index $a$, the compiler polynomials satisfy the
+meromorphic identity
+\begin{equation}
+ \Li_s(\zeta_q^a)=
+ \sum_{b\in q\B_q}P_{a,b}\bigl((p^{1-s})_{p\mid q}\bigr)
+                         \Li_s(\zeta_q^b).
+ \label{eq:polylog-normal}
+\end{equation}
+Here $q\B_q$ denotes the numerator representatives of the basis points.
+The coefficient functions are finite exponential polynomials in $s$.
+There are no exceptional weight denominators in this basis.
+\end{theorem}
+\begin{proof}
+Every polynomial certificate is a linear combination of raw rows.
+Evaluate it with $A_p=p^{1-s}$ and use \eqref{eq:analytic-dist} in the
+absolutely convergent half-plane. Both sides continue meromorphically
+by \eqref{eq:Hurwitz-Fourier}, so the identity theorem gives
+\eqref{eq:polylog-normal} for every complex $s$.
+\end{proof}
+The theorem is an identity theorem for a fixed finite presentation, not
+an assertion that these $\varphi(q)$ evaluated functions or any of their
+special values are a minimal numerical basis.
+
+\subsection{Two explicit all-order identities with short raw certificates}
+At level twelve write $F_a(s)=\Li_s(\zeta_{12}^a)$. The normal form of
+$F_1$ yields
+\begin{equation}
+ \boxed{\begin{aligned}
+ &\Li_s(e^{i\pi/6})+\Li_s(e^{5i\pi/6})
+       +(1+3^{1-s})\Li_s(-i)\\
+ &\hspace{25mm}=(12^{1-s}-6^{1-s})\zeta(s).
+ \end{aligned}}
+ \label{eq:level12}
+\end{equation}
+In formal notation, with $\alpha=A_2$ and $\beta=A_3$, its certificate
+is the sum of just three raw rows:
+\begin{equation}
+ r_{3,1/4}+\beta r_{2,1/2}+\alpha\beta r_{2,0}.
+ \label{eq:level12-cert}
+\end{equation}
+Expanding gives
+$e_{1/12}+e_{5/12}+(1+\beta)e_{3/4}
+-(\alpha^2\beta-\alpha\beta)e_0$, as required.
+Equivalently, ordinary triplication and duplication prove the same
+formula. This familiar origin is not disguised as an independent new
+functional equation; its role here is an all-order, pole-aware
+integration test with an exact certificate.
+
+At level thirty let $F_a(s)=\Li_s(\zeta_{30}^a)$, and put
+$\alpha=2^{1-s}$, $\beta=3^{1-s}$, $\gamma=5^{1-s}$.
+A less compact but useful generated identity is
+\begin{equation}
+\begin{aligned}
+ F_1={}&(\beta\gamma-1)\zeta(s)+(\alpha-1)F_2
+       -F_8-F_{12}-F_{14}\\
+       &-(\beta+1)F_{18}-(\gamma+1)F_{20}-F_{24}.
+\end{aligned}
+\label{eq:level30}
+\end{equation}
+It too has a short raw proof. Before specialization, the residual of
+\eqref{eq:level30} is exactly
+\begin{equation}
+ r_{2,1/15}-r_{3,3/5}+r_{5,1/3}+A_5r_{3,0}+r_{5,0}.
+ \label{eq:level30-cert}
+\end{equation}
+For example, the first two rows cancel $e_{16/30}$, the next two
+cancel $e_{26/30}$ and $e_{10/30}$, and the last cancels $e_{6/30}$.
+The resulting endpoint coefficient is $1-A_3A_5$. Expanding these five
+rows is a complete symbolic proof; no relation search is needed.
+
+Both formulas specialize to identities for all positive integer
+weights, to meromorphic values of the order, and, after cancellation,
+to every order derivative at one. Appendix~\ref{app:q12} gives the entire
+level-twelve polynomial normal-form table. The supplied JSON
+certificates contain all point identities at seven levels.
+
+\subsection{The endpoint coefficient vanishes at ordinary weights}
+For a nonzero index $a$,
+\begin{equation}
+ P_{a,0}(1,\ldots,1)=0.
+ \label{eq:zero-endpoint}
+\end{equation}
+There is a purely algebraic reason. At $A_p=1$, the zero-coordinate
+coefficient in every raw row vanishes: for parent zero the two copies
+of $e_0$ cancel, and for nonzero parent no zero preimage occurs.
+Therefore every certified relation has zero coefficient on $e_0$.
+Applying this to $e_a-\NF(a)$ proves \eqref{eq:zero-endpoint}.
+The removable pole in \eqref{eq:polylog-normal} is consequently
+certified before any numerical evaluation.
+
+\begin{theorem}[All-order finite-part rule]
+\label{thm:finitepart}
+Let $a\ne0$, and define
+\[
+ C_{a,b}(t)=P_{a,b}((p^{-t})_p),\qquad
+ L_b^{(j)}=\left.\frac{d^j}{ds^j}\Li_s(\zeta_q^b)\right|_{s=1}
+ \quad(b\ne0).
+\]
+Use $\zeta(1+t)=t^{-1}+\sum_{k\ge0}(-1)^k\gamma_k t^k/k!$.
+For every $j\ge0$,
+\begin{align}
+ L_a^{(j)}={}&
+ \sum_{\substack{b\in q\B_q\\b\ne0}}
+ \sum_{h=0}^{j}\binom jh C_{a,b}^{(h)}(0)L_b^{(j-h)}
+ +\frac{C_{a,0}^{(j+1)}(0)}{j+1}\notag\\
+ &+\sum_{h=1}^{j}\binom jh C_{a,0}^{(h)}(0)
+                         (-1)^{j-h}\gamma_{j-h}.
+ \label{eq:finitepart}
+\end{align}
+Coefficient derivatives are explicit. A monomial
+$c\prod_p A_p^{m_p}$ contributes
+$c(-\sum_pm_p\log p)^h$ to the $h$-th derivative, with the usual
+order-zero convention.
+\end{theorem}
+\begin{proof}
+Substitute $s=1+t$ in \eqref{eq:polylog-normal}.
+Equation~\eqref{eq:zero-endpoint} gives $C_{a,0}(0)=0$.
+Multiply its Taylor series by the displayed Laurent series of zeta.
+The pole term contributes $C_{a,0}^{(j+1)}(0)/(j+1)$ after taking
+$j$ derivatives; the regular zeta coefficients give the last sum.
+The nonendpoint terms follow by Leibniz's rule. All series converge
+in a sufficiently small punctured neighborhood, with a removable
+singularity in the product, so coefficient extraction is legitimate.
+\end{proof}
+The derivative of order $j+1$ in the pole contribution is indispensable.
+Replacing a removable product by a naive value-times-value expression
+would lose this term.
+
+For \eqref{eq:level12}, put
+\[
+ D_h=(-\log12)^h-(-\log6)^h,
+ \quad F_a^{[j]}=\left.\partial_s^j\Li_s(\zeta_{12}^a)\right|_{s=1}.
+\]
+The complete derivative family becomes
+\begin{align}
+ F_1^{[j]}+F_5^{[j]}+F_9^{[j]}
+ +\sum_{h=0}^{j}\binom jh(-\log3)^hF_9^{[j-h]}
+ ={}&\frac{D_{j+1}}{j+1}\notag\\[-3pt]
+ &\hspace{-45mm}+\sum_{h=1}^{j}\binom jhD_h(-1)^{j-h}\gamma_{j-h}.
+ \label{eq:level12-jets}
+\end{align}
+In particular,
+\begin{align}
+ F_1^{[0]}+F_5^{[0]}+2F_9^{[0]}&=-\log2,\label{eq:jet0}\\
+ F_1^{[1]}+F_5^{[1]}+2F_9^{[1]}-\log3\,F_9^{[0]}
+ &=\frac{\log^2 12-\log^2 6}{2}-\gamma_0\log2.
+ \label{eq:jet1}
+\end{align}
+For order two the right side is
+\[
+ \frac{-\log^3 12+\log^3 6}{3}
+ +\gamma_0(\log^2 12-\log^2 6)+2\gamma_1\log2,
+\]
+and the left side is
+$F_1^{[2]}+F_5^{[2]}+2F_9^{[2]}-2\log3\,F_9^{[1]}
++\log^2 3\,F_9^{[0]}$.
+
+\subsection{Two exact cyclotomic product identities}
+Using $\Li_1(z)=-\Log(1-z)$ with the branch obtained from the defining
+disk and then continued to the indicated roots, \eqref{eq:jet0} gives
+\begin{equation}
+ (1-\zeta_{12})(1-\zeta_{12}^{5})(1-\zeta_{12}^{9})^2=2.
+ \label{eq:product12}
+\end{equation}
+The pole-cancelled value of \eqref{eq:level30} gives
+\begin{equation}
+ \begin{aligned}
+ &(1-\zeta_{30})(1-\zeta_{30}^{8})(1-\zeta_{30}^{12})
+ (1-\zeta_{30}^{14})\\
+ &\qquad\cdot(1-\zeta_{30}^{18})^2(1-\zeta_{30}^{20})^2
+ (1-\zeta_{30}^{24})=15.
+ \end{aligned}
+ \label{eq:product30}
+\end{equation}
+Exponentiation of the exact logarithmic identities proves these products
+without a branch ambiguity. Conversely, the product alone would not
+fix the logarithmic identity's additive multiple of $2\pi i$.
+As an independent algebraic check, the package gives integer polynomial
+quotients verifying that each product polynomial minus its right side
+is divisible by the corresponding cyclotomic polynomial.
+
+\subsection{Stable numerical evaluation of the derivative identities}
+Write the generalized Stieltjes expansion
+\[
+ \zeta(1+t,x)=t^{-1}+\sum_{k\ge0}\frac{(-1)^k\gamma_k(x)}{k!}t^k.
+\]
+Cancel the common pole in \eqref{eq:Hurwitz-Fourier} \emph{symbolically}.
+For $a\ne0$ one obtains the finite identity
+\begin{equation}
+ \left.\partial_s^j\Li_s(\zeta_q^a)\right|_{s=1}
+ =\frac{(-1)^j}{q}\sum_{k=0}^{j}\binom jk(\log q)^{j-k}
+            \sum_{r=1}^{q}\zeta_q^{ar}\gamma_k(r/q).
+ \label{eq:Stieltjes-evaluator}
+\end{equation}
+This follows by the same Laurent multiplication and is used in the
+numerical script. It avoids evaluating a pole and subtracting it from
+nearby values numerically. The numerical residuals remain diagnostics,
+not proofs of the identities.
+
+\section{Executable evidence and verification boundaries}
+\label{sec:verification}
+The proofs above are uniform in the level and jet length. The following
+finite tests were actually run for the delivered package; the JSON
+records contain individual cases, not just these totals.
+\begin{center}
+\small
+\begin{tabular}{@{}p{.62\linewidth}r@{}}
+\toprule
+Exact check & Completed instances\\
+\midrule
+Polynomial normal forms, levels $2\le q\le120$ &119 levels\\
+Raw polynomial rows annihilated on that range &3,317\\
+Point normal forms on that range &7,259\\
+Independent certificate files (levels $12,15,30,60,72,105,120$)&7\\
+Point identities independently replayed in those files &414\\
+Raw rows independently replayed in those files &366\\
+Scalar parity patterns ($q\le500$, plus $840,1260,2310$)&2,348\\
+Binary raw-row checks in the scalar sweep &488,954\\
+Finite binary-jet cases &1,635\\
+Direct raw reflected Smith computations &136\\
+Direct raw unreflected Smith computations &68\\
+Resolution cases over fields of sizes $2,3,5$ &498\\
+Short displayed-identity raw-row certificates &2\\
+Exact cyclotomic product polynomial divisions &2\\
+Deliberately corrupted certificates rejected &3\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The scalar sweep includes \emph{every} binary prime-weight assignment at
+each stated level. The jet sweep includes every binary coefficient
+assignment of lengths one, two, and three at levels
+$3,4,6,9,12,15,20,24,30,60$, and five further specified examples.
+These finite ranges are not extrapolated as a substitute for the proofs.
+
+The core generator and independent certificate verifier use only Python
+integer arithmetic and the standard library. The direct Smith script
+uses SymPy 1.14.0 and constructs the raw matrices without importing the
+normal-form generator. The resolution checker likewise constructs the
+complex directly from its rational grid labels. It checks $d^2=0$,
+exactness in negative degrees over the tested fields, and the
+nonfixed-support property of Lemma~\ref{lem:nonfixed}.
+
+The numerical script uses mpmath and checks twenty cases at 70 and 110
+decimal working digits: the level-$12$ and level-$30$ identities at
+orders $2$, $5/2$, and $0.4+0.7i$, plus the level-$12$ derivative family
+through order three at each precision. The ordinary-order left sides
+use the finite Hurwitz Fourier sum, while the normal-form right sides
+use polylogarithms. Derivatives use
+\eqref{eq:Stieltjes-evaluator}. These computations use no interval
+arithmetic; the saved residuals are not certified error bounds.
+
+\subsection{Trust boundary of the artifacts}
+The small independent verifier establishes the delivered polynomial
+identities from reconstructed raw rows. Analytic validity of the raw
+rows is proved in \eqref{eq:analytic-dist}; it is not an assumption
+hidden in the verifier. The general homological results have written
+proofs and finite implementation tests, not Lean or other
+proof-assistant certificates. A checksum protects file integrity, not
+mathematical validity. No repository files were changed during this
+work.
+
+\section{Audit corrections and proposed integration}
+\label{sec:audit}
+The existing characteristic-zero distribution theorem is not contradicted
+by the results here. It is strengthened to an integral statement and
+supplemented with reflection data. The following targeted changes address
+wording still present in the pinned manuscript.
+
+\subsection{Clausen weight parity versus conjugation parity}
+In Chapter 2, the section on fundamental constants says that odd Clausen
+values use odd characters. Under the chapter's declared convention,
+$\Cl_{2m+1}(\theta)=\Re\Li_{2m+1}(e^{i\theta})$, an odd \emph{weight}
+Clausen value is a cosine component and uses even characters. The
+unambiguous replacement is:
+\begin{quote}
+Sine-series, or conjugation-odd, components use odd characters. With
+$\Cl_{2m}=\Im\Li_{2m}$ and $\Cl_{2m+1}=\Re\Li_{2m+1}$, the odd-weight
+Clausen components instead use even characters.
+\end{quote}
+This corrects a parity ambiguity without changing the subsequent
+weight-two Clausen formulas.
+
+\subsection{Failure of a reduction search is not nonreduction}
+The Family 2 discussion in Chapter 4 states that the higher-weight
+antisymmetric parts do not reduce against the $(i,1)$ basis alone.
+The surrounding account concerns bounded integer-relation searches and
+formal relation matrices. The numerical statement should instead say
+that the reported search did not find those reductions. A formal
+nonmembership statement must name the particular row presentation; it
+must not be promoted to nonmembership of the evaluated periods in a
+numerical algebra. This is consistent with the careful qualifications
+already present elsewhere in the manuscript.
+
+\subsection{Fourier transport is not unimodular lattice transport}
+The manuscript's Fourier transform is exact over a cyclotomic field.
+Its inverse contains group-order denominators, so equal dimensions and
+transported vector-space relations do not by themselves identify Smith
+forms of integer lattices. An integral use of that discussion should
+specify the coefficient ring and any localization. Theorem~\ref{thm:unimodular}
+provides a separate raw-row argument that avoids this obstruction for
+the complete distribution presentation. This is a clarification of the
+scope of Fourier transport, not a claimed error in the Fourier identity.
+
+\subsection{Updating the research-status paragraph}
+The scalar integral and modular questions, the reflected scalar Smith
+forms, and the one-variable integral-jet Smith forms can now be marked
+proved \emph{for this complete presentation}. Multivariate reflection
+is reduced to an explicit Koszul homology problem, not to the
+one-variable minimum-valuation formula. The full equivariant module
+classification and numerical period-independence questions remain
+separate. The integration fragment uses the label prefix
+\code{intdist:} and is intended to accompany this report rather than
+silently replace the earlier characteristic-zero proof.
+
+\section{Further research questions}
+\label{sec:future}
+\paragraph{Equivariant integral module structure.}
+Determine the full $R[J]$-module structure of the universal quotient and
+of its reflected quotients, beyond Tate cohomology and abelian Smith
+forms. The explicit jet example \eqref{eq:nonflat} shows that even the
+torsion-free part has integral extension data that the Smith factors
+miss. A useful first target is a classification of these extensions
+at prime-power levels.
+
+\paragraph{Multivariate jet torsion.}
+For a specified Artinian algebra
+$\F[u_1,\ldots,u_d]/\mathfrak a$, compute the Koszul homology of the
+binary parameters in closed form or from a minimal resolution of their
+ideal. Theorem~\ref{thm:koszul} gives the exact target. Any proposed
+replacement for the minimum valuation must account for nonprincipal
+ideals and their syzygies.
+
+\paragraph{Optimizing the original-symbol basis.}
+The forbidden lift in each local fiber, and the forbidden prime chosen
+at a point, can be varied. Which choices minimize normal-form coefficient
+height, support, or certificate length while retaining unit triangularity?
+The present height bound is uniform but intentionally coarse.
+
+\paragraph{Integral Fourier and character interfaces.}
+Construct explicit comparison matrices between the original-symbol
+basis, conductor-character coordinates, and primitive grids over the
+smallest useful localized cyclotomic integer rings. The resulting
+indices should separate coordinate singularities from actual torsion
+and make integral transport between polylogarithm and Hurwitz-zeta
+certificates auditable.
+
+\paragraph{Higher-depth distributions.}
+Extend the division-free certificate interface to depth-two distribution
+relations together with specified shuffle, stuffle, and regularization
+rows. Such a module is not the depth-one module treated here. The
+surviving $S_6$ question requires additional analysis in that setting;
+it is not resolved by reinterpreting a depth-one Smith computation.
+
+\paragraph{Analytic jets with certified errors.}
+Combine the exact finite-part formulas with interval-certified Hurwitz
+or generalized Stieltjes evaluation, including explicit cancellation
+budgets. This would turn the current diagnostics into certified
+numerical enclosures while leaving equality proofs in the exact
+polynomial layer.
+
+\paragraph{Proof-assistant formalization.}
+The shortest initial targets are the selector lemma, termination of
+\eqref{eq:recurrence}, exact back-substitution, and the matrix
+base-change theorem. A second stage can formalize the filtered
+resolution and the acyclic-subcomplex proof of
+Theorem~\ref{thm:koszul}. The analytic continuation layer can then be
+attached independently.
+
+\paragraph{Arithmetic evaluation kernels.}
+Determine which relations among evaluated cyclotomic periods are not
+visible in the declared distribution presentation. A formal basis or
+nonzero formal class is not an independence theorem for numbers. Any
+claim about the evaluation kernel should state its weight, coefficient
+field, and available functional equations explicitly.
+
+\clearpage
+\appendix
+\section{The complete level-twelve normal-form table}
+\label{app:q12}
+Let $E_a=[e_{a/12}]$, $\alpha=A_2$, $\beta=A_3$.
+The retained basis is $E_0,E_5,E_8,E_9$. Each row gives the four
+coefficients of $E_a$ in that basis.
+\begin{center}
+\renewcommand{\arraystretch}{1.28}
+\begin{tabular}{@{}c r r r r@{}}
+\toprule
+$a$&$E_0$&$E_5$&$E_8$&$E_9$\\
+\midrule
+0&$1$&$0$&$0$&$0$\\
+1&$\alpha\beta(\alpha-1)$&$-1$&$0$&$-\beta-1$\\
+2&$\alpha(\beta-1)$&$0$&$-\alpha-1$&$0$\\
+3&$\alpha(\alpha-1)$&$0$&$0$&$-1$\\
+4&$\beta-1$&$0$&$-1$&$0$\\
+5&$0$&$1$&$0$&$0$\\
+6&$\alpha-1$&$0$&$0$&$0$\\
+7&$\alpha(\beta-\alpha)$&$1$&$-\alpha(\alpha+1)$&$\beta+1$\\
+8&$0$&$0$&$1$&$0$\\
+9&$0$&$0$&$0$&$1$\\
+10&$1-\beta$&$0$&$\alpha+1$&$0$\\
+11&$\alpha(1-\beta)$&$-1$&$\alpha(\alpha+1)$&$0$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The companion file \code{data/normal\_forms\_q12.json} contains the
+unfactored integer monomial data. At arbitrary complex order, substitute
+$\alpha=2^{1-s}$, $\beta=3^{1-s}$ and
+$E_a=\Li_s(e^{2\pi ia/12})$. At formal integral jet weights, substitute
+polynomials modulo $u^L$ instead. The same table supports both uses.
+
+\section{Reproduction and artifact map}
+\label{app:artifacts}
+From the package root, the standard-library checks are
+\begin{verbatim}
+python code/run_checks.py
+python code/check_resolution.py
+python code/check_short_identities.py
+python code/verify_certificates.py data/normal_forms_q12.json
+\end{verbatim}
+The optional independent matrix and numerical checks are
+\begin{verbatim}
+python -m pip install -r requirements-optional.txt
+python code/check_smith.py
+python code/check_products_and_controls.py
+python code/numerical_checks.py
+\end{verbatim}
+The optional dependencies are SymPy and mpmath; the core verifier needs
+neither. Build the article with \code{python code/build\_article.py} or
+run pdfLaTeX twice in the \code{article} directory. Every data file names
+its scope. In particular, \code{numerical\_checks.json} explicitly
+states that it does not contain interval certificates.
+
+The repository integration notes and focused corrections are in
+\code{integration/}. The source snapshot and read file-blob hashes are
+recorded in \code{PROVENANCE.json}. The checksum manifest is generated
+only after compilation and final verification. No external font files
+or third-party source PDFs are included.
+
+\clearpage
+\begin{thebibliography}{9}
+\bibitem{repo}
+V. Reshetnikov, ProveIt project,
+\emph{Polylogarithms and their Arithmetic Bridges}, manuscript and
+research-status chapters, repository snapshot \texttt{\snap}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/28357e8ca63dd78327db91d9be239d75e4462879/Analysis/Polylogarithms/docs/manuscript}.
+
+\bibitem{repodistribution}
+ProveIt project, \emph{Distribution jets} research report,
+\src{Analysis/Polylogarithms/docs/reports/distribution-jets/article/distribution_jets.tex},
+repository snapshot as above; in particular the universal conductor
+normal form and its characteristic-zero hypothesis.
+
+\bibitem{Kubert}
+D. S. Kubert, The universal ordinary distribution,
+\emph{Bulletin de la Soci\'et\'e Math\'ematique de France}
+\textbf{107} (1979), 179--202.
+\href{https://doi.org/10.24033/bsmf.1891}{doi:10.24033/bsmf.1891}.
+
+\bibitem{OuyangNorm}
+Y. Ouyang, On the universal norm distribution,
+\emph{Journal of the Ramanujan Mathematical Society}
+\textbf{17}, no.~4 (2002), 287--311.
+\href{https://arxiv.org/abs/math/0210297}{arXiv:math/0210297v2}.
+The cited statements were checked in the arXiv version.
+
+\bibitem{OuyangSign}
+Y. Ouyang, Spectral sequences of universal distribution and Sinnott's
+index formula, preprint (1999),
+\href{https://arxiv.org/abs/math/9911031}{arXiv:math/9911031v1}.
+See the fixed-point double-complex argument and Theorem~7.1.
+
+\bibitem{DLMFhurwitz}
+NIST Digital Library of Mathematical Functions,
+Section 25.11, Hurwitz Zeta Function.
+\url{https://dlmf.nist.gov/25.11}.
+
+\bibitem{DLMFpolylog}
+NIST Digital Library of Mathematical Functions,
+Section 25.12, Polylogarithms.
+\url{https://dlmf.nist.gov/25.12}.
+\end{thebibliography}
+\end{document}

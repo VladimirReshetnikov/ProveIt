@@ -300,6 +300,8 @@ The expansion is $2\operatorname{arctanh}(1/3)$; the bound replaces the remainin
 
 Ordinary rational interval addition and multiplication then enclose every polynomial right side. An overlap check can detect an erroneous formula or implementation if the intervals separate. Overlap alone does not prove an identity; the proofs in Sections~\ref{gaussian:sec:double-parity} and~\ref{gaussian:sec:shuffle} do that.
 
+\input{chapters/05-affine-signed-moments}
+
 \section{An exact kernel and the sharp Euler error}
 \label{signed:sec:sharp-error}
 
@@ -510,32 +512,4 @@ relations through higher depths, outside this row vocabulary. The two
 statements are therefore compatible: the obstruction identifies the
 additional information an eventual successful proof had to supply.
 
-\subsection{An exact-rank conjecture in all odd weights}
-Let $A_w^{\neg g}$ be the submatrix obtained by deleting the columns
-$X_{a,w-a}^{1,0}=g_{a,w-a}$.
-
-\begin{conjecture}[Odd-weight rank pattern]\label{signed:conj:rank}
-For every odd $w\ge3$, the explicitly defined matrices satisfy
-\begin{equation}\label{signed:eq:rank-conjecture}
- \rank A_w=5w-6,\qquad
- \rank A_w^{\neg g}=\frac{9w-11}{2}.
-\end{equation}
-Equivalently, the row space of $A_w$ supported only on the Gaussian columns has dimension $(w-1)/2$, already supplied by the independent same-point shuffle rows.
-\end{conjecture}
-The equivalence follows from rank-nullity for projection of the row space onto the non-Gaussian columns. Exact rational elimination verifies \eqref{signed:eq:rank-conjecture} in all 15 odd weights from 3 through~31. Selected rows of the full receipt are
-\begin{center}
-\begin{tabular}{@{}rrrrr@{}}
-\toprule
-$w$ & Coordinates & $\rank A_w$ & $\rank A_w^{\neg g}$ & Difference\\
-\midrule
-3&11&9&8&1\\
-5&23&19&17&2\\
-7&35&29&26&3\\
-9&47&39&35&4\\
-15&83&69&62&7\\
-23&131&109&98&11\\
-31&179&149&134&15\\
-\bottomrule
-\end{tabular}
-\end{center}
-This is a conjecture about a fully specified rational matrix family, not a conjectured numerical dimension of Gaussian periods. A proof would explain why the simple same-point shuffle system already captures all Gaussian-only linear consequences of this larger depth-two product system at odd weight.
+\input{chapters/05-level4-rank}

@@ -1,0 +1,291 @@
+\section{A weight-nine candidate and exact proximity certificates}
+\label{cont26:sec:s8}
+
+The source now proves its mixed Gaussian weight-five identity for $S_4$
+by an octahedral change of variables and an exact rational certificate.
+Its corresponding reduction for $S_6$ remains a conjecture
+\cite{ProveIt}. We find the next even-index candidate, $S_8$, in the
+same deliberately small family of single-color double values and products.
+The new identity in this section is conjectural. The rational error
+enclosures below are proved statements about its proximity to equality.
+
+\subsection{The candidate and its frozen integer vector}
+We use the source conventions
+\[
+ S_p=\sum_{n\geq0}\frac{(-1)^nH_n}{(2n+1)^p},\qquad
+ g_{a,b}=\operatorname{Im}\Li_{a,b}(i,1)
+ =\sum_{n\geq0}\frac{(-1)^nH_{2n}^{(b)}}{(2n+1)^a},
+ \qquad G=\beta(2),
+\]
+where $H_n^{(b)}=\sum_{j=1}^n j^{-b}$ and
+$\beta(s)=\sum_{n\geq0}(-1)^n/(2n+1)^s$.
+
+\begin{conjecture}[A weight-nine mixed Gaussian reduction]
+\label{cont26:conj:s8}
+The following identity holds:
+\begin{align}
+ S_8={}&\frac{52334}{37973}g_{8,1}
+       +\frac{2824}{37973}g_{6,3}
+       -\frac{6832}{189865}g_{4,5}
+       -\frac{139760}{265811}g_{2,7}\notag\\
+      &+\frac{998183}{17283022848}\pi^9
+       -\frac{78615}{19442176}G\zeta(7)
+       -\frac{201021}{4252976}\beta(4)\zeta(5)\notag\\
+      &-\frac{290505}{1063244}\beta(6)\zeta(3)
+       -2\beta(8)\log2.
+ \label{cont26:eq:s8-candidate}
+\end{align}
+\end{conjecture}
+
+In the ordered basket
+\begin{equation}\label{cont26:eq:s8-basket}
+ (S_8,g_{8,1},g_{6,3},g_{4,5},g_{2,7},\pi^9,
+       G\zeta(7),\beta(4)\zeta(5),\beta(6)\zeta(3),\beta(8)\log2),
+\end{equation}
+the frozen primitive integer vector is
+\begin{equation}\label{cont26:eq:s8-vector}
+\begin{split}
+q=(&-10974719508480,\ 15125246115840,\ 816174858240,\\
+   &-394908401664,\ -5770366156800,\ 633846205,\\
+   &-44376595200,\ -518730670080,\ -2998569369600,\\
+   &-21949439016960).
+\end{split}
+\end{equation}
+Its entries have greatest common divisor one. All coefficients in
+\eqref{cont26:eq:s8-candidate} are $-q_j/q_0$; thus their signs and
+denominators can be checked independently of the displayed fractions.
+No independence or minimality claim is made for the basket.
+
+\subsection{Discovery and independent numerical audits}
+The discovery evaluation used $720$ Euler terms at $250$ working decimal
+digits. PSLQ was then run at $150$ working digits, with tolerance
+$10^{-140}$, coefficient bound $10^{20}$, and a maximum of $10000$
+steps. The largest entry of the vector actually returned is less than
+$2.2\times10^{13}$. After freezing the vector, a fresh $1400$-term
+Euler evaluation at $500$ working digits gave the integer-normalized
+residual
+\begin{equation}\label{cont26:eq:s8-euler-residual}
+ q\cdot\mathbf v\simeq
+ -1.65201554251472773306398896477\times10^{-409}.
+\end{equation}
+The truncation length, rather than the $500$-digit arithmetic, is material
+here. This diagnostic is not asserted to bound the true residual.
+
+For a separate computational route, the Mellin integrals
+\begin{align}
+ S_8&=-\frac1{7!}\int_0^1
+       \frac{(-\log x)^7\log(1+x^2)}{1+x^2}\,dx,
+       \label{cont26:eq:s8-mellin}\\
+ g_{a,b}&=\frac1{(a-1)!}\int_0^1(-\log x)^{a-1}
+       \operatorname{Im}\frac{i\Li_b(ix)}{1-ix}\,dx
+       \label{cont26:eq:gab-mellin}
+\end{align}
+were evaluated directly at $220$ working digits, using $x=e^{-t}$.
+They do not use the Euler weights or the finite harmonic sums of the
+discovery computation. The resulting integer-normalized residual was
+\[
+ 7.75350546594884491938636345482\times10^{-208},
+\]
+or $-7.06487802258\times10^{-221}$ after division by $q_0$.
+Both evaluations give
+\[
+ S_8=-0.00014885380029854835375941306724994026465756408905187697\ldots.
+\]
+The integral was truncated at $t=256$. A direct geometric bound gives,
+for the Gaussian integral of outer exponent $a$, the discarded-tail bound
+\[
+ \frac{2\,\Gamma(a,768)}{(a-1)!\,3^a(1-e^{-512})}.
+\]
+For the four exponents used here this is less than $3\times10^{-321}$;
+the same largest bound also controls the $S_8$ tail. The quadrature on
+the finite interval is ordinary high-precision numerical quadrature,
+so the displayed residual is an audit, not an interval certificate.
+
+\subsection{A short self-contained Euler bound}
+The following elementary bound avoids the signed-density analysis of
+the source. It is somewhat weaker, but particularly convenient for a
+standalone exact computation.
+For a sequence $f$ define
+\[
+ (Df)(n)=f(n)-f(n+1),\qquad
+ E_N(f)=\sum_{k=0}^{N-1}\frac{D^kf(0)}{2^{k+1}}.
+\]
+
+\begin{proposition}[Direct one-sided Euler enclosures]
+\label{cont26:prop:direct-euler}
+For integers $a,p\geq2$, $b\geq1$, and $N\geq1$, put
+$f_{a,b}(n)=H_{2n}^{(b)}/(2n+1)^a$ and
+$f_p^S(n)=H_n/(2n+1)^p$. Then
+\begin{align}
+ E_N(f_{a,b})-
+ \frac{(N+1)(1+2^{-b})}{3^a2^N}
+ &\leq g_{a,b}\leq E_N(f_{a,b}),
+ \label{cont26:eq:direct-g-bound}\\
+ E_N(f_p^S)-\frac{N+1}{3^p2^N}
+ &\leq S_p\leq E_N(f_p^S).
+ \label{cont26:eq:direct-s-bound}
+\end{align}
+All finite differences of positive order occurring here are strictly
+negative. The finite approximants decrease to their respective limits.
+\end{proposition}
+
+\begin{proof}
+The elementary moment formulas give
+\begin{align*}
+ D^kf_{a,b}(0)
+ =\frac1{\Gamma(a)\Gamma(b)}
+ \int_0^1\int_0^1
+ &(-\log u)^{a-1}(-\log v)^{b-1}\\[-0.5em]
+ &\quad\times
+ \frac{(1-u^2)^k-(1-u^2v^2)^k}{1-v}\,dv\,du.
+\end{align*}
+The numerator is negative for $k\geq1$ and $0<u,v<1$. By the
+mean-value theorem its absolute value is at most
+$ku^2(1-v^2)$. Consequently
+\[
+ |D^kf_{a,b}(0)|
+ \leq \frac{k}{3^a}\left(1+\frac1{2^b}\right).
+\]
+For $f_p^S$, the representation
+$H_n=\int_0^1(1-v^n)/(1-v)\,dv$ gives the same double integral
+with $v^2$ replaced by $v$ and no logarithmic $v$ factor. Thus
+$|D^kf_p^S(0)|\leq k/3^p$, again with a negative sign.
+
+These bounds justify absolute summation of the Euler kernels under
+the integrals. Summing the geometric kernels identifies the limits with
+the defining alternating sums; one may equivalently begin with a radial
+factor and pass to its limit. Finally
+\[
+ \sum_{k=N}^{\infty}\frac{k}{2^{k+1}}=(N+1)2^{-N},
+\]
+which proves the two one-sided error bounds and the strict decrease.
+\end{proof}
+
+The finite rearrangement
+\begin{equation}\label{cont26:eq:s8-euler-weights}
+ E_N(f)=2^{-N}\sum_{n=0}^{N-1}(-1)^n f(n)
+             \sum_{j=n+1}^N\binom Nj
+\end{equation}
+follows by expanding $D^kf(0)$ and using
+\[
+ \sum_{k=n}^{N-1}2^{N-k-1}\binom kn
+ =\sum_{j=n+1}^N\binom Nj.
+\]
+This identity can be proved directly by Pascal's recurrence. It avoids
+both numerical finite differences and a quadratic-size rational table.
+For example, if $L_N=\operatorname{lcm}(1,\ldots,2N)$, all summands for
+$g_{a,b}$ have the common denominator $2^NL_N^{a+b}$.
+The program forms integer harmonic numerators, integer binomial tails,
+and one final exact rational quotient for each Euler approximant.
+
+\subsection{Exact rational proximity for both candidates}
+Let $\Delta_8$ denote the left side of \eqref{cont26:eq:s8-candidate} minus
+its right side. For completeness, let $\Delta_6$ be the same difference
+for the source candidate
+\begin{align}
+ S_6\stackrel{?}={}&\frac{722}{527}g_{6,1}
+  +\frac{40}{527}g_{4,3}-\frac{128}{155}g_{2,5}
+  +\frac{15191}{28569600}\pi^7\notag\\
+ &-\frac3{124}G\zeta(5)
+  -\frac{2373}{10540}\beta(4)\zeta(3)
+  -2\beta(6)\log2.
+ \label{cont26:eq:s6-recalled}
+\end{align}
+
+\begin{proposition}[Certified proximity, not equality]
+\label{cont26:prop:s6-s8-proximity}
+The defining constants satisfy
+\begin{equation}\label{cont26:eq:s6-s8-proximity}
+ -10^{-355}\leq\Delta_6\leq10^{-355},\qquad
+ -10^{-355}\leq\Delta_8\leq10^{-355}.
+\end{equation}
+These bounds do not prove either candidate identity.
+\end{proposition}
+
+\begin{proof}
+Use $N=1200$ in Proposition~\ref{cont26:prop:direct-euler} and evaluate
+\eqref{cont26:eq:s8-euler-weights} in exact integer arithmetic.
+The remaining constants admit independent elementary rational
+enclosures. The sequences $(2n+1)^{-s}$ and $(n+1)^{-s}$ are moments
+of positive densities of mass one. Their $D$-differences belong to
+$[0,1]$, so their $N$-term Euler sums enclose $\beta(s)$ and
+$\eta(s)$ from below, with error at most $2^{-N}$. Dividing the
+second interval by $1-2^{1-s}$ encloses $\zeta(s)$ for $s>1$.
+
+For $\pi$, use Machin's identity
+$\pi=16\arctan(1/5)-4\arctan(1/239)$ and $300$ terms of each
+alternating arctangent series, whose first omitted term bounds its
+remainder. The identity itself follows by tangent addition and the
+location of the angle in $(0,\pi/2)$. For $\log2$, use
+\[
+ 0<\log2-2\sum_{n=0}^{399}\frac1{(2n+1)3^{2n+1}}
+ \leq\frac9{4\cdot801\cdot3^{801}}.
+\]
+The general bound follows by replacing each denominator in the tail
+of $2\operatorname{arctanh}(1/3)$ by the first omitted denominator
+and summing the geometric series.
+
+Rational interval addition and multiplication now enclose the two
+differences. The accompanying
+\nolinkurl{interval_certificate.py} recomputes every endpoint from
+these defining formulas using Python integers and \texttt{Fraction};
+it uses no floating-point input, PSLQ, cached polylogarithms, or
+quadrature values. Exact cross multiplication checks both inclusions
+in \eqref{cont26:eq:s6-s8-proximity}. The complete rational endpoints and
+outward decimal displays are recorded in
+\nolinkurl{s6_s8_direct_interval_certificate.json}.
+\end{proof}
+
+A second computation at $N=1100$ uses the sharper source estimate
+\[
+ E_N(f_{a,b})-C_b2^{-N}\leq g_{a,b}\leq E_N(f_{a,b}),
+ \qquad C_1=1,\quad C_b=b/(b-1)\ (b\geq2),
+\]
+whose proof uses the signed kernel of \cite{ProveIt}. It independently
+checks the same exact-arithmetic assembly and gives
+$\Delta_6,\Delta_8\in[-10^{-330},10^{-330}]$.
+The exact intervals in that computation are approximately
+\[
+ \Delta_6\in[-2.44503,1.99357]\times10^{-331},\qquad
+ \Delta_8\in[-1.49934,1.81452]\times10^{-331}.
+\]
+The word ``approximately'' applies only to these displayed endpoint
+roundings; the accompanying JSON stores the full exact fractions.
+Interval overlap is consistent with equality and detects many errors,
+but it cannot exclude a sufficiently small nonzero difference.
+
+\subsection{The next structural question}
+There is a common pattern in the proved $S_4$ identity, the source's
+$S_6$ conjecture, and the new $S_8$ conjecture. The source's proved
+weight-five shuffle relations rewrite its $S_4$ theorem as
+\begin{equation}\label{cont26:eq:s4-even-basket}
+ S_4=\frac{10}{7}g_{4,1}-\frac87g_{2,3}
+       +\frac7{1536}\pi^5-\frac3{28}G\zeta(3)
+       -2\beta(4)\log2.
+\end{equation}
+For $m\geq2$, define the finite family
+\begin{align*}
+ \mathcal B_m={}&\{g_{2m-2j,2j+1}:0\leq j<m\}
+                 \cup\{\pi^{2m+1}\}\\
+ &\cup\{\beta(2j)\zeta(2m+1-2j):1\leq j<m\}.
+\end{align*}
+This motivates the question whether, for every integer $m\geq2$,
+\begin{equation}
+ S_{2m}+2\beta(2m)\log2\ \in\
+ \operatorname{span}_{\mathbb Q}(\mathcal B_m).
+ \label{cont26:eq:even-index-question}
+\end{equation}
+This is a research question suggested by three weights, not an
+all-weight theorem. In particular, the fixed coefficient $-2$ of
+$\beta(2m)\log2$ has not been derived in general. The pattern would
+give a useful upper bound on this family's expression complexity;
+it would not prove independence of any displayed constants.
+
+The source's separating functional already shows that its $S_6$
+candidate lies outside the restricted single-product presentation.
+Its exact $S_4$ proof obtains the missing information from an
+octahedral involution, a level-four symmetry whose broader role was
+studied by Zhao \cite{Zhao2008}. A useful next step is to introduce
+corresponding convergent weight-seven and weight-nine symmetry
+relations, then seek short exact certificates for the frozen vectors.
+The present computation does not supply those certificates.

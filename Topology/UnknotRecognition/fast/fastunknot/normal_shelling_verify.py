@@ -52,6 +52,13 @@ def verify_shelling_certificate(diagram, certificate, *, check=lambda: None):
     surface, inspect = parts
     if type(surface) is not dict:return False
     kind = surface.get('schema')
+    if kind=='diagram-normal-disc-v1':
+        from .normal_seed_verify import _verify_normal_disc_source
+        def source_check(source,final,*,check):
+            before=certificate['source_triangulation']
+            return (verify_diagram_exterior(source,before,check=check)and
+                verify_boundary_shellings(before,final,certificate['shellings'],check=check))
+        return _verify_normal_disc_source(diagram,surface,source_check,check=check)
     if kind=='diagram-cocycle-lex-v1':
         result=inspect(diagram,surface,check=check)
         return result is not None and (result[0]['compressing_discs']==1 or result[0]['cappable_annulus'])

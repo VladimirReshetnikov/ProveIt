@@ -1,0 +1,165 @@
+\section{A division-free integral basis and a unit relation minor}
+\label{ir:sec:integral}
+
+\subsection{Choosing the surviving grid points}
+Write $U_m=(\Z/m\Z)^\times$ and use a one-element set $U_1$.
+For every prime $p$ and exponent $a\ge1$, choose a distinguished lift
+in each fiber of $U_{p^a}\to U_{p^{a-1}}$. At $a=1$, this means choosing
+one member of $U_p$. Let $E_{p,a}$ be the remaining members. Thus
+\begin{equation}\label{ir:eq:local-count}
+ |E_{p,a}|=\varphi(p^a)-\varphi(p^{a-1}),\qquad \varphi(1)=1.
+\end{equation}
+The following fixed choice makes the construction executable:
+\begin{align}
+ E_{p,1}&=\{2,3,\ldots,p-1\},\label{ir:eq:local-choice}\\
+ E_{p,a}&=\{b+jp^{a-1}:1\le b<p^{a-1},\ p\nmid b,
+                         \ 1\le j\le p-1\}\quad(a\ge2).\nonumber
+\end{align}
+For $p=2$, the first set is empty. This is intentional.
+
+Every point $x$ of exact denominator $m$ has a unique additive primary
+expansion
+\begin{equation}\label{ir:eq:primary-coordinates}
+ x=\sum_{p^a\parallel m}\frac{b_p}{p^a}\pmod\Z,
+ \qquad b_p\in U_{p^a}.
+\end{equation}
+For $x=n/m$ in lowest terms,
+$b_p\equiv n(m/p^a)^{-1}\pmod{p^a}$. Define $\B_q$ to contain $0$
+and all points of denominator $m\mid q$ for which
+$b_p\in E_{p,a}$ at every nonzero primary component. We call a primary
+component \emph{bad} when its residue is the distinguished, discarded
+lift. This adjective refers only to a basis choice.
+
+The cardinality telescopes prime by prime:
+\begin{equation}\label{ir:eq:basis-count}
+ |\B_q|=
+ \prod_{p^e\parallel q}\left(1+
+   \sum_{a=1}^{e}\bigl(\varphi(p^a)-\varphi(p^{a-1})\bigr)\right)
+ =\varphi(q).
+\end{equation}
+The point $0$ must be retained for this count and for the normal forms.
+
+\begin{theorem}[Integral normal form]\label{ir:thm:integral}
+The images of $e_b$, $b\in\B_q$, form an $R_q$-basis of $\D_q$.
+Consequently, for every commutative ring $S$ and every choice of weights
+$a_p\in S$, the same points form an $S$-basis of $\D_q(S,a)$.
+In particular this module is free of rank $\varphi(q)$ even in positive
+characteristic, at zero weights, and over nonreduced rings.
+\end{theorem}
+The spanning algorithm is immediate and is proved next. Its independence
+is established in Section~\ref{ir:sec:resolution}, without dividing by
+any group order or weight.
+
+\subsection{The terminating straightening rule}
+Let $y\notin\B_q$, let $m=\den(y)$, and choose any bad prime $p$ for
+its primary coordinates. The row with target $py$ gives
+\begin{equation}\label{ir:eq:straighten}
+ e_y=A_pe_{py}-\sum_{\substack{pz=py\\z\ne y}}e_z
+       \quad\text{in }\D_q.
+\end{equation}
+All terms on the right have denominator dividing $m$.
+At exact denominator $m$, the $p$-primary components of the other
+solutions are the allowed lifts in the same fiber; all other primary
+components are unchanged. When the $p$-component has order $p$, there
+is also one solution with zero $p$-component, hence lower denominator.
+The point $py$ itself has denominator $m/p$.
+
+Order points first by their positive denominator and then by the number
+of bad primary components. Every right-hand term of
+\eqref{ir:eq:straighten} is strictly earlier in this order. Recursion
+therefore terminates, and proves that $\B_q$ spans. The implementation
+always chooses the smallest bad prime, but the theorem permits any
+choice. Independence will imply that all choices yield the same
+normal form.
+
+\begin{proposition}[Support and polynomial degree]\label{ir:prop:support}
+Write the normal form of $e_y$, with $m=\den(y)$, as
+\[
+ \NF(e_y)=\sum_{b\in\B_q}c_{y,b}(\mathbf A)e_b.
+\]
+A nonzero coefficient has $\den(b)=d\mid m$, and
+\begin{equation}\label{ir:eq:degree-bound}
+ \deg_{A_p}c_{y,b}\le v_p(m/d)\qquad(p\mid q).
+\end{equation}
+All coefficients belong to $\Z[\mathbf A]$.
+\end{proposition}
+\begin{proof}
+The recursion never increases a primary denominator. Multiplication by
+$A_p$ occurs only in the term $e_{py}$, where that denominator has
+lost one power of $p$. Every path from denominator $m$ to denominator
+$d$ can therefore contain at most $v_p(m/d)$ such multiplications.
+The other coefficients in the recursion are $-1$. Summing the finitely
+many paths proves the assertions, including possible cancellations.
+\end{proof}
+
+There is no assertion here that the coefficient of $e_0$ factors as a
+product of $A_p-1$. At level $15$ the coefficient in one normal form is
+$1-A_3A_5$; this distinction will matter at the spectral pole.
+
+\subsection{An explicit maximal minor equal to one}
+For each nonbasis point $y$, select the single row $r_{p,py}$ used in
+its first straightening step. Select the nonbasis points as columns,
+and order rows by their selected pivot. The restricted matrix is
+triangular, with every diagonal entry equal to $1$: all other nonbasis
+columns are earlier in the terminating order.
+
+The selected rows are distinct. Indeed a selected row has its chosen
+point as its unique latest nonbasis point, with coefficient $1$. Two
+identical rows could not have different such latest points.
+We have proved the following stronger integrality statement.
+
+\begin{theorem}[Universal unit minor and relation basis]
+\label{ir:thm:minor}
+The prime-relation matrix contains an explicitly selected
+$(q-\varphi(q))\times(q-\varphi(q))$ minor equal to $1$ in $R_q$.
+The selected rows form an $R_q$-basis of the full relation module
+$\R_q$. After specializing the weights to integers, all nonzero Smith
+invariants of the complete prime-relation matrix are $1$; there are
+exactly $q-\varphi(q)$ of them.
+\end{theorem}
+\begin{proof}
+Triangularity proves the minor statement. Selected-row elimination
+reduces every vector to a combination of basis-point symbols. By
+Theorem~\ref{ir:thm:integral}, a vector in $\R_q$ has zero such
+remainder, so every raw row is a combination of the selected ones.
+The minor proves their independence. The same argument specializes
+without division. Equivalently, after an integer specialization the
+image lattice is saturated and has the indicated rank; the unit minor
+also proves directly that all Smith invariants are units.
+\end{proof}
+The proof order is not circular: the resolution below proves
+Theorem~\ref{ir:thm:integral} independently of the assertion that the
+selected rows span all relations.
+
+\subsection{Certificates rather than opaque elimination}
+The straightener can retain the exact row combination at every step.
+If $C_y$ denotes a certificate for $e_y-\NF(e_y)$, then
+\begin{equation}\label{ir:eq:certificate-recursion}
+ C_y=r_{p,py}+A_pC_{py}-\sum_{\substack{pz=py\\z\ne y}}C_z,
+ \qquad C_b=0\ (b\in\B_q).
+\end{equation}
+A verifier need not trust the recursion. It can expand the listed raw
+rows in the original $q$-generator free module, multiply their explicit
+integer polynomials, and compare coefficients. The accompanying
+verifier does exactly this for the three frozen identities.
+
+\begin{example}[Small levels]
+The specified basis choices give
+\[
+ \B_4=\{0,3/4\},\qquad
+ \B_{12}=\{0,5/12,2/3,3/4\},
+\]
+\[
+ \B_{15}=\{0,1/15,4/15,2/5,7/15,3/5,2/3,4/5\}.
+\]
+Also $\B_{30}=\B_{15}$ as sets of rational points. An exact primary
+component of order two has no allowed residue, which explains this
+last equality. It does not make the weight $A_2$ irrelevant to all
+normal-form coefficients.
+\end{example}
+
+The procedure terminates with polynomial coefficients, but we do not
+assert a polynomial-time bound in the bit length of $q$. There are
+$q$ raw grid points to begin with, and certificate coefficients can
+grow. The finite support and degree bounds are rigorous; sharper
+complexity and coefficient-height estimates remain separate questions.

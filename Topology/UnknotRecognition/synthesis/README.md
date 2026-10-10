@@ -1194,3 +1194,67 @@ visual review with no new LaTeX overflow/reference warnings. Reproduce
 publication checks with `python -B data/planar_adaptive_review.py --publication`
 from this directory; they check the 589 frozen/current runtime pins and
 producer-disabled saved proof replay.
+
+
+[sector_windows.tex](sector_windows.tex) connects nearby sector queries to
+actual diagram-source recognition. The signed matching residual filter
+preserves the complete radius-one/two compatible type window, including
+replacement and deletion faces. It proves the candidate bound and local
+`poly(t+B)*(1+t)^O(d0+r)` accounting for logarithmic nullity/radius, without
+asserting a complete global centre family or distance bound. The optional
+native stage increases 85-source coverage from 24 to 31 with seven fresh
+Regina disc checks; disabled source results remain exact. All 1,401 tests
+pass. Full small-case recognition regresses with extra window work, so the
+default stays off. The original exploratory failures, successful unfiltered
+and filtered probes, all 200 paired calls/40 warmups, the 180-call noisy-row
+repeat and producer-disabled positive source replay are in `data/sector-windows-*`.
+
+The current [PDF](report.pdf) has 554 pages. Section 138 starts on page 545;
+the assessment is section 139 on page 550. Rendered pages 545–551 pass
+visual review with no new overflow or reference warnings. Reproduce the
+frozen/current 592 source pins and 31 producer-disabled positive replays
+with `python -B data/sector_windows_review.py --publication` from this
+directory. Exploratory scripts are retained as originally run; their
+absolute workspace and scratch paths document that execution, while the
+maintained native driver is the portable reproduction path.
+
+
+[window_basis.tex](window_basis.tex) removes repeated wide matching elimination
+and triangle-graph reconstruction from residual windows. It proves the
+augmented kernel formulas, small replacement constraints, canonical free
+coordinates and complete projected standard cone. All 1,404 tests pass;
+the source audit preserves 31/85 native positives with seven fresh Regina
+checks and reduces shared-work caps from 34 to 30. Complete enabled
+recognition gains are 1.25–1.43x against the preceding radius-two rebuilding
+implementation; this does not justify turning costly windows on by default.
+The paired 200-call/40-warmup run, 124-call microsecond control, exact source
+pins and producer-disabled replay are in `data/window-basis-*`.
+
+The current [PDF](report.pdf) has 557 pages. Section 139 starts on page 550;
+the assessment is section 140 on page 553. Rendered pages 550–554 pass
+visual review; the build has no new overflow or reference warnings.
+Reproduce publication checks with
+`python -B data/window_basis_review.py --publication` from this directory.
+They verify 595 frozen/current runtime pins, 592 preceding-release evidence
+pins and all 31 positive source proofs with the producers disabled.
+
+[window_euler.tex](window_euler.tex) implements the Euler-corner criterion
+preserved from report 81 before constructing updated standard geometry.
+It derives the source V-E+F functional and canonical minimum formula, proves
+the complete nonpositive exclusion, and documents the unchanged higher-nullity
+fallback. Prepared producer disc queries share validated geometry while
+independent certificate replay reconstructs it afresh. All 1,407 tests pass;
+all 85 verdicts and 31 native positives remain, with seven fresh Regina disc
+checks. Work caps fall from 30 to 28. Complete enabled recognition gains are
+1.23–1.32x against the preceding updated-kernel implementation, with windows
+still off by default. The modest Euler-only pilot, 200-call final comparison,
+60-call noisy-row repeat and all source provenance are in `data/window-euler-*`.
+
+The current [PDF](report.pdf) has 561 pages. Section 140 starts on page 553;
+the assessment is section 141 on page 557. Rendered pages 553–558 pass
+visual review, with only the four pre-existing overflow warnings and no
+unresolved references. Reproduce publication checks with
+`python -B data/window_euler_review.py --publication` from this directory.
+They verify 598 frozen/current runtime pins, 595 preceding-release evidence
+pins, the recoverable pilot, both final timing records and all 31 positive
+proofs with the producers disabled.

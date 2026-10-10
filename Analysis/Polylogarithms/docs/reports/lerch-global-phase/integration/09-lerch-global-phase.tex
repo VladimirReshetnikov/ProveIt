@@ -1,0 +1,164 @@
+% Insertion fragment for the existing zero-geometry chapter.
+% Full proofs and exact arithmetic: reports/lerch-global-phase/article/lerch_global_phase.tex
+% New labels use globalphase:. No new global macros are defined here.
+\section{The complete index-three Lerch phase diagram}
+\label{globalphase:section}
+The preceding positive-kernel zero bound can be combined with an exterior
+inequality to complete the index-three phase diagram. This supplies the
+global exclusion left open in Conjecture 12.1 of the companion report
+\emph{Lerch Endpoint Singularities and Stieltjes Zero Bifurcations}.
+The full details and an executable exact-arithmetic certificate are in
+\emph{A Complete Index-Three Lerch Phase Diagram}, stored with this insertion.
+
+Set
+\[
+ g(x)=\frac{\log^2x(3-\log x)}{x^2},\qquad
+ G(a,\rho)=\sum_{m\geq0}\rho^m g(a+m)=F_{3,1}^{\rho}(a).
+\]
+For $\rho=1$, $G(a,1)=\gamma_3'(a)$. All displayed $G$-values below are
+\emph{unnormalized}; they are not the $a^2G$ values in some earlier tables.
+For $0<\rho\leq1$ the classical shift equation becomes
+\begin{equation}\label{globalphase:shift}
+ \rho G(a+1,\rho)=G(a,\rho)-g(a).
+\end{equation}
+The positive-kernel bound gives at most three positive zeros, counted with
+multiplicity. At each fixed $0<a<e^3$, the coefficients in the $\rho$ series
+change once from positive to negative, ignoring zero coefficients.
+Consequently every interior parameter zero has $G_\rho<0$; positivity at
+$\rho=1$ persists for smaller positive parameters.
+
+\begin{lemma}[Global-exclusion inputs]\label{globalphase:inputs}
+The following statements hold:
+\begin{align*}
+ G(a,\rho)&>0 &&\text{for }a\in(0,4/5]\cup[3/2,9/5],\quad0<\rho\leq1,\\
+ G_a(a,\rho)+e^{-3}G(a,\rho)&<0 &&\text{for }a\geq e,\quad0\leq\rho\leq1,\\
+ G(a,\rho)&>0 &&\text{for }9/5\leq a\leq11/4,\quad0\leq\rho\leq9/10,\\
+ G_a(a,\rho)&<-1/40 &&\text{for }9/5\leq a\leq11/4,\quad9/10\leq\rho\leq1.
+\end{align*}
+There are no left-hand zeros for $0<\rho\leq9/10$.
+\end{lemma}
+\begin{proof}
+The four outward rational enclosures
+\begin{align*}
+ G(4/5,1)&\in[0.2560298104220831,0.2560298104220832],\\
+ G(1,1)&\in[-0.0323050999463418,-0.0323050999463417],\\
+ G(3/2,1)&\in[0.0249055835689205,0.0249055835689206],\\
+ G(9/5,1)&\in[0.0052639818935007,0.0052639818935008]
+\end{align*}
+with the three-zero multiplicity bound give the common zero-free regions.
+For the exterior inequality, put $y=\log x$ in $g'(x)+e^{-3}g(x)$.
+After removal of the positive factor $x^{-3}y$, its sign is that of
+\[
+ R_3(y)=2y^2-9y+6+e^{y-3}y(3-y),
+\]
+which is strictly negative for $y\geq1$. One can prove this by writing
+$y=3+r$ and using $e^r\geq1+r$ when $r\geq0$, or by writing $y=3-t$
+and using $e^{-t}\leq(1+t)^{-1}$ when $0\leq t\leq2$. Summing gives the
+second assertion.
+
+For the low-parameter assertion, keep the first positive summand and bound
+the negative tail geometrically. The lower bound is
+\[
+ \frac6{121}-\frac{33}{160}(9/10)^{18}>0.
+\]
+On $4/5\leq a\leq3/2$, keep the $m=1$ summand instead; the same bound
+multiplied by $\rho$ excludes left-hand zeros.
+
+The last inequality is a finite exact certificate, not a sampled numerical
+claim. The accompanying verifier partitions the closed $a$-interval into
+128 rational cells, encloses 64 derivatives $g'(a+m)$ on each cell, and
+bounds the tail by a positive decreasing logarithmic majorant. A nonpositive
+upper endpoint is weighted by $(9/10)^m$; a positive endpoint is weighted
+by $1$. Thus every bound covers the complete parameter interval. The largest
+upper bound, including the infinite tail, is less than
+$-0.0256107476350180<-1/40$. Rational logarithm bounds, the anchor
+Euler--Maclaurin remainder, every cell, and the independent tests are
+specified and reproduced in the full report and its standard-library code.
+\end{proof}
+
+\begin{theorem}[Complete global phase diagram]\label{globalphase:theorem}
+For every $0<\rho\leq1$ there is exactly one simple outer zero
+$a_{\mathrm O}(\rho)\in(9/5,e^3)$, with $G_a<0$ there. There is a unique
+$\rho_{\mathrm c}\in(9/10,1)$ at which a double zero
+$a_{\mathrm c}\in(4/5,3/2)$ occurs. Below this parameter there is just one
+positive zero; at it there are a double zero and the simple outer zero;
+above it there are exactly three simple positive zeros. The separate
+endpoint $\rho=0$ has the double zero $1$ and the simple zero $e^3$.
+
+At the fold $G_\rho<0$ and $G_{aa}>0$. Above the fold, writing
+$a_{\mathrm L}<a_{\mathrm M}<a_{\mathrm O}$, the left and outer branches
+strictly decrease, while the middle branch strictly increases, on
+$(\rho_{\mathrm c},1)$.
+\end{theorem}
+\begin{proof}
+Existence of an outer zero follows from positivity at $9/5$ and negativity
+at $e^3$. For $\rho\leq9/10$, positivity persists to $11/4>e$ and the
+exterior integrating factor permits at most one subsequent crossing.
+For larger $\rho$, $G$ strictly decreases from $9/5$ to $e$, and
+$e^{a/e^3}G$ strictly decreases thereafter. Again only one crossing is
+possible. It has negative derivative in either region. Thus no extra
+outer pair can occur.
+
+All other zeros must lie in $(4/5,3/2)$. The parameters producing a negative
+value somewhere there form an upper interval: at every parameter zero,
+$G_\rho<0$. The low-parameter positivity and the negative anchor at $a=1$
+give an interior threshold. At the threshold an interior nonnegative
+minimum is zero. Its even multiplicity, together with the outer zero and
+the bound of three, forces exactly one double zero and $G_{aa}>0$.
+A hypothetical zero below the threshold would create negativity by
+$G_\rho<0$, a contradiction. Above the threshold a negative value between
+positive endpoints gives two simple left zeros; the multiplicity bound
+excludes all others. The signs of $-G_\rho/G_a$ give the branch directions.
+\end{proof}
+
+\begin{theorem}[Sharp span and integer resonance]\label{globalphase:span}
+In the three-zero regime,
+\[
+ a_{\mathrm O}(\rho)-a_{\mathrm L}(\rho)\leq1.
+\]
+Equality holds at exactly one parameter $\rho_*$ in
+$(\rho_{\mathrm c},1)$, with
+$a_{\mathrm L}(\rho_*)=1$ and $a_{\mathrm O}(\rho_*)=2$.
+The maximum is nondegenerate. If $D=a_{\mathrm O}-a_{\mathrm L}$ and
+$v=a_{\mathrm L}'(\rho_*)$, then
+\[
+ a_{\mathrm O}'(\rho_*)=v<0,\qquad
+ D''(\rho_*)=\frac{6v^2}{G_a(1,\rho_*)}<0.
+\]
+\end{theorem}
+\begin{proof}
+The shift equation gives
+$G(a_{\mathrm L}+1,\rho)=-g(a_{\mathrm L})/\rho\leq0$.
+Since $a_{\mathrm L}+1>9/5>a_{\mathrm M}$, the known sign pattern forces
+$a_{\mathrm L}+1\geq a_{\mathrm O}$. Equality is possible exactly when
+$a_{\mathrm L}=1$. The unique zero of $G(1,\rho)$ lies in $(0,1)$ because
+its first nonzero coefficient is positive and $G(1,1)<0$; the shift then
+also gives a zero at $2$. It cannot be the fold, since $g'(1)=0$ would make
+both $1$ and $2$ multiple zeros. The span bound shows that $1$ must be the
+left rather than middle root. This proves the unique equality case.
+Differentiating the shift equation at the simultaneous zeros gives their
+common velocity. Finally $g(1+u)=3u^2+O(u^3)$ and the shift equation give
+$D''(\rho_*)=6v^2/G_a(1,\rho_*)$ by Taylor expansion at the outer simple root.
+\end{proof}
+
+Angle brackets now denote differentiation in the order of the polylogarithm:
+$\operatorname{Li}_s^{\langle j\rangle}(\rho)=\partial_s^j
+\operatorname{Li}_s(\rho)$. The resonance is the unique interior solution of
+\[
+ \operatorname{Li}_2^{\langle3\rangle}(\rho_*)
+       =-3\operatorname{Li}_2^{\langle2\rangle}(\rho_*).
+\]
+Put $C=\operatorname{Li}_1^{\langle3\rangle}
++3\operatorname{Li}_1^{\langle2\rangle}$ and
+$T=2\operatorname{Li}_3^{\langle3\rangle}
++9\operatorname{Li}_3^{\langle2\rangle}
++6\operatorname{Li}_3^{\langle1\rangle}$. The exact formulas are
+\[
+ v=\frac{C(\rho_*)}{\rho_*T(\rho_*)},\qquad
+ D''(\rho_*)=-\frac{6C(\rho_*)^2}{\rho_*T(\rho_*)^3}.
+\]
+The full global-phase report gives broader all-index exterior barriers, integer-gap
+rigidity, and tail-moment inequalities. A stronger assertion that $D$ is
+strictly increasing before $\rho_*$ and strictly decreasing after it remains
+an explicitly separate conjecture; the unique global maximum does not
+settle that assertion.

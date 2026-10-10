@@ -3597,3 +3597,86 @@ proves complete fallback and uniform first-corner meridian selection on the
 Fibonacci family. It also records the general arrangement bound
 `poly(t+k+B) * (1+k)^O(d)`: logarithmic matching nullity permits complete
 local QP enumeration, while a complete global sector producer remains open.
+
+
+The optional `normal_seed_sector_radius=1` or `2` recognition switch searches
+nearby compatible type assignments after coherent misses; its CLI flag is
+`--normal-seed-sector-radius`, used with `--normal-seed`. The default is zero.
+Exact signed residuals in the full matching quotient group zero columns and
+opposite proportional pairs. Coordinate-face dominance preserves every
+standard ray in the full radius-one/two window, including replacements.
+Queries share the native work and remaining orbit limits. Positive results
+use the existing `diagram-normal-disc-v1` proof; the independent source
+checker also supports its transport through boundary shelling traces.
+
+The 85-source audit preserves all disabled outputs exactly and increases
+native witnesses from 24 to 31 (seven added cases, six distinct canonical
+PD codes). All seven discs receive fresh Regina confirmation. All 1,401
+tests pass. The motivating radius-two disc is found after 31 filtered
+queries in about 0.41 seconds, compared with 4,920 unfiltered queries in
+36.46 seconds. Complete small-portfolio recognition is slower with extra
+windows, and 34 audit cases hit the work cap; keep the stage optional.
+A missed or capped window never supplies a knot verdict.
+
+```sh
+python -B -m normal_orbit_research.sector_windows audit --fresh-regina --output /tmp/sector-window-audit.json
+python -B -m normal_orbit_research.sector_windows benchmark --rounds 5 --output /tmp/sector-window-benchmark.json
+```
+
+[Signed residual theory](../synthesis/sector_windows.tex) proves full small-window
+coverage, the candidate bound, and conditional local QP enumeration for
+logarithmic initial nullity/radius. A complete global centre/distance theorem
+remains unproved. The separated native and full-recognition timings, noisy
+control repeat and producer-disabled source replay are retained.
+
+
+Residual-window queries now reuse the old Q kernel, column decompositions and
+source triangle potentials. Each candidate imposes at most two replacement
+constraints in at most `d0+2` parameters, recovers the native free-coordinate
+basis, and constructs the exact projected standard cone. Empty Q kernels
+finish without another geometry build. The generic higher-nullity fallback
+and independent positive source checks remain available.
+
+All 1,404 tests pass, including exact updated/fresh basis and ray comparisons
+and both generic methods at nullity four. The 85-source audit preserves all
+31 native witnesses; shared-work caps fall from 34 to 30. Paired complete
+recognition with radius-two windows enabled improves about 1.25–1.43x against
+the preceding rebuilding implementation on tested window-search cases.
+Early positives stay near parity. Radius zero remains the default: enabling
+windows still costs more than the small-input fallback without them.
+
+```sh
+python -B -m normal_orbit_research.window_basis audit --fresh-regina --output /tmp/window-basis-audit.json
+python -B -m normal_orbit_research.window_basis benchmark --rounds 5 --output /tmp/window-basis-benchmark.json
+```
+
+[Matching-update theory](../synthesis/window_basis.tex) proves full augmented
+kernels, exact replacement restrictions, canonical gauge and projected
+geometry. Frozen baseline/current source checks, positive certificate
+replay and the longer microsecond control are retained in the article data.
+
+Updated windows now compile the source Euler functional once and screen every
+Q corner at matching nullity at most three before constructing standard
+geometry. Empty or nonpositive sectors need no ray lifts; a positive corner
+resumes the existing complete standard search. Above nullity three, the
+existing generic fallback remains. Positive disc queries share the source
+and freshly validated coordinate analysis with a private observer. Public
+disc APIs and independent source-proof reconstruction retain validation.
+
+All 1,407 maintained tests pass. The 85-source audit preserves all disabled
+outputs, enabled verdicts and 31 native positives, with seven fresh Regina
+disc checks. Work caps fall from 30 to 28. Complete enabled recognition is
+1.23–1.32x faster on the measured window cases than the preceding updated
+kernel implementation. A 60-call repeat resolves a noisy native timing row.
+The default radius remains zero; these local gains do not prove general
+quasi-polynomial recognition or justify enabling windows on small inputs.
+
+```sh
+python -B -m normal_orbit_research.window_euler audit --fresh-regina --output /tmp/window-euler-audit.json
+python -B -m normal_orbit_research.window_euler benchmark --rounds 5 --output /tmp/window-euler-benchmark.json
+```
+
+[Euler-screening theory](../synthesis/window_euler.tex) derives the exact
+source functional, canonical formula and complete corner exclusion. Raw
+pilot/final/repeat records, source snapshots and producer-disabled positive
+replay are retained under `../synthesis/data/window-euler-*`.

@@ -1,0 +1,161 @@
+\section{Scope, source snapshot, and result map}
+\label{sec:scope}
+
+The source manuscript is Vladimir Reshetnikov's \repo\ project,
+under \codefile{Analysis/Polylogarithms/docs/manuscript}. We pinned the
+working branch to commit \baseline\ and inspected its chapter sources,
+editorial ledger, and the relevant pending research reports
+\cite{ProveIt,AngularBaseline,LerchBaseline,CayleyBaseline}.
+This matters mathematically: several older reports call $S_4$ a conjecture,
+whereas the canonical manuscript now contains an exact proof. Its
+specified level-four product-matrix rank conjecture is also already
+proved. The $S_6$ depth-two identity is still conjectural, and an earlier
+frozen $S_8$ search vector has already been rigorously refuted. None of
+those completed results is counted here as a new theorem.
+
+The present work concentrates on places where the existing hypotheses
+leave a real mathematical boundary: outer orders below one, simultaneous
+growth of asymptotic indices, and the difference between a set of
+linear symmetry rows and its multiplicative closure. These boundaries
+lead to the principal results in Table~\ref{tab:results}.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}p{0.25\linewidth}p{0.67\linewidth}@{}}
+\toprule
+Result & Precise advance\\
+\midrule
+Sharp finite-measure domain & A necessary and sufficient condition for
+$H_{n-1}^{(b)}/n^a$ to have a finite signed moment measure; explicit
+interior densities and critical atoms
+(Theorem~\ref{subunit:thm:domain}).\\[5pt]
+Complex and angular zeros & Nonvanishing on the principal slit plane and
+one simple imaginary-part zero on each open upper arc throughout the
+full measure domain (Theorem~\ref{subunit:thm:zerofree}).\\[5pt]
+Endpoint scales & Two power laws, an exponential logarithmic corner,
+weak limits, and a sharp divergent signed-mass scale
+(Theorem~\ref{subunit:thm:boundarylayer} and
+Proposition~\ref{subunit:prop:otheredges}).\\[5pt]
+Existing radial conjecture & The exact sign of its quadratic radial
+coefficient for every real $a\ge2,b>0$, its $a=1$ boundary, and a
+unique fractional threshold (Theorem~\ref{thm:radius-local-sign});
+proved local maxima and minima at two certified inner orders
+(Theorems~\ref{turn:thm:maximum} and \ref{turn:thm:minimum}).\\[5pt]
+Adjacent-index zeros & A complete Bessel expansion for $n=k+r$, every
+fixed integer $r$, uniform in $0\le\rho\le1$, with explicit zero
+coefficients and exponential deformation bounds
+(Theorems~\ref{bessel:thm:profile}--\ref{bessel:thm:zeros}).\\[5pt]
+Small Lerch parameter & Complete positive-zero counts and central
+Puiseux branches for every fixed $(n,k)$
+(Theorem~\ref{unfold:thm:count}).\\[5pt]
+Growing reflected moments & A uniform transition at
+$n=(m+1)(\log m+c)$, its first correction and lattice location
+(Theorem~\ref{thm:gamma-transition}).\\[5pt]
+Cayley quotient and identities & Exact all-weight raw ranks and
+shuffle-ideal Hilbert characters; a proved explicit family containing
+$S_6$ (Theorems~\ref{cayley:thm:raw}--\ref{cayley:thm:ideal} and
+Proposition~\ref{cayley:prop:harmonic}).\\
+\bottomrule
+\end{tabular}
+\caption{Theorem-level advances relative to the inspected source.
+Finite computations audit these results; their all-parameter statements
+are established by the written proofs.}
+\label{tab:results}
+\end{table}
+
+\subsection{Relation to established mathematics}
+The regularized Hurwitz and digamma integrals used below are classical
+\cite{DLMFhurwitz,DLMFdigamma}. The Bessel limit is proved here directly
+from a finite elementary-symmetric product; the Bessel series and simple
+positive zeros are classical \cite{DLMFbessel}. Its form is reminiscent
+of Mehler--Heine limits, but no identification of these coefficient
+polynomials with a classical orthogonal family is assumed.
+The shuffle polynomial theorem is due to the classical work of Radford
+and Melan\c{c}on--Reutenauer
+\cite{cayley:radford,cayley:melancon-reutenauer}.
+The Cayley transformation itself is inherited from the manuscript's
+convergent octahedral argument; it is not introduced here as a new
+change of variables. The broader use of octahedral symmetry at level
+four has a precedent in Zhao \cite{ZhaoOctahedral}.
+
+Reflected products of powers of $\log\Gamma$ were studied by
+Amdeberhan, Coffey, Espinosa, Koutschan, Manna and Moll
+\cite{ACEKMM}. In particular, the moments, their reflection symmetry,
+and elementary identities obtained from Euler's reflection formula are
+not new. Our contribution is the joint growth regime and its controlled
+correction. Targeted primary-source research supports these attributions;
+it does not establish exhaustive historical priority for every new
+deduction in this article.
+
+\section{Conventions and inherited analytic framework}
+\label{sec:conventions}
+
+For real $b>0$, let
+\[
+ H_N^{(b)}=\sum_{j=1}^N j^{-b},\qquad H_0^{(b)}=0,
+ \qquad H_N=H_N^{(1)}.
+\]
+We use decreasing series indices and the outer-first convention
+\[
+ \Li_{s_1,\ldots,s_d}(z_1,\ldots,z_d)
+ =\sum_{n_1>\cdots>n_d\ge1}
+ \frac{z_1^{n_1}\cdots z_d^{n_d}}
+ {n_1^{s_1}\cdots n_d^{s_d}}
+\]
+where convergent, followed by the stated analytic continuation.
+In particular,
+\[
+ F_{a,b}(z)=\Li_{a,b}(z,1)
+ =\sum_{n\ge1}\frac{H_{n-1}^{(b)}}{n^a}z^n,
+ \qquad |z|<1.
+\]
+The slit plane is $\mathbb C\setminus[1,\infty)$, and logarithms
+there are continued from the disk. Later, $g_{a,b}=\Im F_{a,b}(i)$
+denotes a Gaussian double, $\beta(s)=\sum_{j\ge0}(-1)^j/(2j+1)^s$
+is the Dirichlet beta function, and
+\[
+ S_p=\sum_{j\ge0}\frac{(-1)^jH_j}{(2j+1)^p}.
+\]
+The last sum is absolute for integers $p>1$ and converges conditionally
+for $p=1$. Throughout, $\gamma$ without an index is Euler's constant.
+
+The Stieltjes constants use
+\[
+ \zeta(s,a)=\frac1{s-1}
+  +\sum_{n\ge0}\frac{(-1)^n\gamma_n(a)}{n!}(s-1)^n.
+\]
+A superscript $(k)$ on $\gamma_n$ means differentiation in $a$.
+For $0\le\rho<1$ set
+\[
+ \ell_n(\rho,a)=\sum_{j\ge0}\frac{\rho^j\log^n(a+j)}{a+j},
+ \qquad
+ \mathcal D_{n,k}^{\rho}(a)=\partial_a^k\ell_n(\rho,a),
+ \qquad k\ge1,
+\]
+and define $\mathcal D_{n,k}^{1}(a)=\gamma_n^{(k)}(a)$.
+Only the differentiated family is unified at $\rho=1$; the series
+defining $\ell_n$ generally diverges there. The sign-normalized family is
+\[
+ F_{n,k}^{\rho}(a)=(-1)^{n+k}\mathcal D_{n,k}^{\rho}(a).
+\]
+The same symbol $F$ with different indices is conventional in the
+source: $F_{a,b}(z)$ is a double polylogarithm, while
+$F_{n,k}^{\rho}(a)$ is the Stieltjes--Lerch derivative family.
+The radius $\rho$ in the angular sections and the Lerch parameter
+$\rho$ in the zero sections are separate variables.
+
+The master coefficient formula, reproduced in
+\eqref{bessel:eq:shift}, follows from differentiating
+$(a+j)^{-s}$ in $a$ and extracting the coefficient of $s-1$.
+For $k\ge1$ its shift series and every fixed number of $a$
+derivatives converge locally uniformly for $a>0$, uniformly in
+$0\le\rho\le1$. The bound is a fixed power of
+$\log(a+j)$ divided by $(a+j)^{k+1}$.
+This convergence justifies the classical endpoint without assigning
+a value to the divergent undifferentiated series.
+
+All finite signed measures in the article are real measures of finite
+total variation. Weak convergence means convergence against every
+continuous function on $[0,1]$. Big-$O$ constants may depend on fixed
+indices and fixed compact parameter sets; every claimed uniformity is
+stated explicitly.

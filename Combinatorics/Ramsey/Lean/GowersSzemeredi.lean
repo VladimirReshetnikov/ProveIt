@@ -999,7 +999,17 @@ import GowersSzemeredi.Proofs16FinalPairChoice
 import GowersSzemeredi.Proofs16FinalWindow
 import GowersSzemeredi.Proofs16FinalAssemblyTools
 import GowersSzemeredi.Proofs16PropNineThreeGlue
+import GowersSzemeredi.Proofs16PropNineThreeGoodPairs
+import GowersSzemeredi.Proofs16PropNineThree
 import GowersSzemeredi.Proofs16GlobalSourceAgreementCore
+import GowersSzemeredi.Proofs16SandersLinearPart
+import GowersSzemeredi.Proofs16CommonValueSanders
+import GowersSzemeredi.Proofs16FreimanThickening
+import GowersSzemeredi.Proofs16PropNineThreeBudget
+import GowersSzemeredi.Proofs16SinglePieceAnchor
+import GowersSzemeredi.Proofs16SinglePieceSections
+import GowersSzemeredi.Proofs16RetiledLinearityBound
+import GowersSzemeredi.Proofs16SinglePieceSpectrum
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

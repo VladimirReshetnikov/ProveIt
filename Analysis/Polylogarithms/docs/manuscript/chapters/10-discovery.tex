@@ -130,11 +130,42 @@ larger unstructured search. The scientific value of the experiments is
 that they tell us which representation to seek next.
 
 \section{Questions sharpened by the exact continuations}
+\subsection{Real-order geometry after the positive-difference theorem}
+The finite signed-moment threshold no longer limits the zero-free theorem.
+The positive consecutive-difference measure of
+Theorem~\ref{subpick:thm:differences} supplies the missing subcritical
+representation, and Theorem~\ref{subpick:thm:global} proves nonvanishing
+away from the double origin for every $a\ge0,b>0$ on the principal slit
+plane. Angular uniqueness holds throughout this domain. On and below
+$a+b=1$, and on the entire $a=0$ axis, the normalized angular radius
+strictly increases. The full-radius sign conjecture for integer $a\ge2$
+remains open; the fractional turning points show why local coefficient
+signs alone cannot settle a general global motion law.
+
+The Gaussian experiments have also led to proofs rather than just narrower
+searches. Fixed-total monotonicity is proved in
+Theorem~\ref{subpick:thm:fixed-total}; the unique global Gaussian maximum
+has the exact stationary-point bracket $1<b_*<2$ in
+Theorem~\ref{subpick:thm:axis-maximum}. Its location and height now have
+sharp rational enclosures in Theorem~\ref{envref:thm:certificate}.
+Corollary~\ref{subpick:cor:sharp-critical} settles the optimal
+uniform Euler constant $\pi/4+\log(2)/2$ for positive orders with
+$a+b\le1$. The contraction argument of
+Theorem~\ref{univeuler:thm:sharp} now settles the universal real-order
+Euler constant as the unique Gaussian axis maximum $C(b_*)$.
+The number of quartic transition points and the Bessel and uniform Lerch
+continuations remain further proof problems. The universal bound uses
+the separately proved tail-kernel contraction, rather than Gaussian
+magnitude alone.
+
 \subsection{Zero geometry beyond a fixed Laurent index}
-The global upper bound and eventual saturation do not settle every small
-derivative order when $n\ge5$. The exact low-index certificates suggest a
-practical route: isolate a full set of base zeros and use persistence to
-propagate the result. Effective thresholds uniform in the positive Lerch
+The complete classical counts are now known through Laurent index seven.
+The fifth-index transition has threshold three, and
+Theorem~\ref{higherzeros:thm:thresholds} proves sharp thresholds four and
+five at indices six and seven. Critical-point descent determines the
+deficits below saturation with exact signs, rather than extrapolating from
+a root scan. Small-order classification for higher indices remains open.
+Effective thresholds uniform in the positive Lerch
 parameter require quantitative separation of the Appell roots and explicit
 concentration remainders. The spectral coefficient expansion for
 $n=O(\log k)$ does not by itself supply moving-zero asymptotics throughout
@@ -145,8 +176,13 @@ suggested by the first correction but is proved globally only at $n=1$.
 \subsection{Certificates, integral structure and arithmetic evaluation}
 The complex distribution module is free even at resonant weights. What
 changes there is the usefulness of selected coordinates, not its rank.
-Integral Smith forms, torsion, cyclotomic coefficient arithmetic and short
-certificate generation remain separate questions. The same distinction
+The division-free point basis and unit minor now settle integral
+unreflected Smith factors and arbitrary-ring base change. Reflection
+torsion, all-field rank loci and one-parameter Smith exponents are proved
+in Section~\ref{ir:sec:scope}; Theorem~\ref{irmulti:thm:dimension}
+also gives a closed product law for separable multivariable jets. General
+multivariable module extensions, sharper certificate-height bounds and
+arithmetic evaluation kernels remain separate questions. The same distinction
 applies to the exterior-symbol calculus: a nonzero formal obstruction rules
 out a certificate in that calculus, while the kernel of numerical period
 evaluation is a deeper arithmetic problem. Constructive reduction can now
@@ -201,7 +237,10 @@ statements rest on the analytic and algebraic arguments in the chapters.
 \section{What the new reports change in the research programme}
 The exact $S_4$ proof adds a convergent octahedral word transformation and
 higher-depth lifted rows to a vocabulary that the finite obstructions had
-shown insufficient. The next task is to compress that certificate and
+shown insufficient. The weight-three companion in Theorem~\ref{s2proof:thm:S2} supplies a
+second exact mixed reduction. The product-matrix rank conjecture is now
+proved by Theorem~\ref{l4rank:thm:rank}. The next task is to compress the
+larger certificate and
 investigate the frozen $S_6$ relation with the same analytic control.
 Pure complementary seeds now have a complete collision classification and
 an algebraic-degree cutoff; arbitrary multiplicative unit relations and
@@ -216,3 +255,47 @@ separate fixed-exponent asymptotics, optimal truncation and simultaneous
 large-exponent limits. Likewise, the Herglotz oscillation is proved for fixed
 positive argument and large derivative order; joint scaling requires further
 uniform estimates.
+
+\section{A certified rejection beyond the discovery precision}
+\label{research:sec:S8-rejected}
+A new Cayley continuation supplies a useful counterexample to premature
+promotion of integer-relation output. At weight nine, define the ordered
+basket
+\[
+ \mathbf b_8=(S_8,g_{8,1},g_{7,2},g_{6,3},g_{5,4},\pi^9,
+ \beta(8)\log2,\beta(2)\zeta(7),\beta(4)\zeta(5),\beta(6)\zeta(3)).
+\]
+A search with 110 working digits, tolerance $10^{-90}$ and coefficient
+ceiling $10^{12}$ returned the integer vector
+\[
+\begin{split}
+ \mathbf c_8=(&-6451250972,-4072849461,-710107844,-10984374763,\\
+ &-6393592639,31875,-1955138863,3459066102,-1034180101,-1477786143).
+\end{split}
+\]
+\begin{proposition}[The frozen weight-nine vector is false]
+\label{research:prop:S8-rejected}
+With $R_8=\mathbf c_8\cdot\mathbf b_8$,
+\[
+ -1.3274179020580459\times10^{-86}<R_8
+ <-1.3274179020580457\times10^{-86}<0.
+\]
+\end{proposition}
+\begin{proof}
+The delivered rational evaluator encloses each harmonic double and each
+single atom with 1000 Euler terms, using the explicit signed tail budgets.
+It forms all products and the frozen linear combination in exact interval
+arithmetic. The resulting rational residual interval has width less than
+$2.080\times10^{-290}$ and lies strictly inside the displayed negative
+interval. The fresh isolated replay recomputes every rational atom endpoint
+and the residual, comparing exact fractions with the preserved record
+\texttt{reports/cayley-s4-continuation/data/S8\_exclusion\_N1000.json}.
+Both the negative sign and the containment are exact rational comparisons.
+This computation proves the displayed exclusion; it uses no floating-point
+sign or integer-relation search as an acceptance criterion.
+\end{proof}
+This rejects precisely the frozen vector, not every possible relation in
+the basket. A later unsuccessful higher-precision search likewise proves
+no arithmetic independence. In contrast the new alternative $S_6$ vector
+still has an enclosure containing zero; it remains conjectural, and Proposition~\ref{s6change:prop:coordinates} proves by two convergent
+shuffles that it is the earlier $S_6$ conjecture in a different basket.

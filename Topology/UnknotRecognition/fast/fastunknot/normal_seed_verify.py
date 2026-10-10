@@ -24,6 +24,10 @@ def verify_normal_seed_certificate(diagram, certificate, *, check=lambda: None):
         from .normal_cocycle_verify import inspect_cocycle_certificate
         summary = inspect_cocycle_certificate(diagram, certificate, check=check)
         return summary is not None and summary['compressing_discs'] == 1
+    return _verify_normal_disc_source(diagram,certificate,verify_diagram_exterior,check=check)
+
+
+def _verify_normal_disc_source_impl(diagram,certificate,source_check,check):
     if (type(certificate) is not dict
             or set(certificate) != {'schema', 'input_pd', 'triangulation', 'coordinates', 'disc_certificate'}
             or certificate['schema'] != 'diagram-normal-disc-v1'):
@@ -35,7 +39,7 @@ def verify_normal_seed_certificate(diagram, certificate, *, check=lambda: None):
     if not certificate_equal(certificate['input_pd'], [list(row) for row in source.pd]):
         return False
     raw, vector, proof = (certificate[key] for key in ('triangulation', 'coordinates', 'disc_certificate'))
-    if (not verify_diagram_exterior(source, raw, check=check)
+    if (not source_check(source, raw, check=check)
             or not verify_normal_disk_count_certificate(raw, vector, proof, check=check)):
         return False
     # A valid zero-count certificate is not an unknot certificate.
@@ -45,3 +49,14 @@ def verify_normal_seed_certificate(diagram, certificate, *, check=lambda: None):
         return False
     check()
     return count > 0
+
+
+def _verify_normal_disc_source(diagram,certificate,source_check,*,check=lambda:None):
+    """Independent ordinary-disc replay, preserving callback exceptions."""
+    error=[None]
+    def checked():
+        try:check()
+        except BaseException as exc:error[0]=exc;raise
+    try:return _verify_normal_disc_source_impl(diagram,certificate,source_check,checked)
+    finally:
+        if error[0]is not None:raise error[0]

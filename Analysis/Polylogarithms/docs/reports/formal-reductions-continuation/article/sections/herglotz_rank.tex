@@ -1,0 +1,102 @@
+\section{The exact rank of the denominator obstruction}
+\label{jnew:sec:rank}
+
+The single-value criterion also yields a complete finite-dimensional
+calculation for the denominator part of the companion. Let $q$ be odd,
+$G=G_q$, and $H=\langle2\rangle\subseteq G$. For a finite abelian
+group $U$, write
+\[
+ d(U)=\frac{|U|-|U[2]|}{2}.
+\]
+The integer $d(U)$ is the dimension of the subspace of
+$\mathbb Q[U]$ that changes sign under inversion.
+For the boundary case $q=1$, use $G_1=H_1=\{1\}$ and $\rho(1)=0$;
+the symbol families are zero, so the assertions below are vacuous there.
+
+\begin{theorem}[Rank and all coefficient relations]
+\label{jnew:thm:denominator-rank}
+The two subspaces
+\[
+ \operatorname{span}_{\mathbb Q}\{D_q(a):a\in G\},
+ \qquad
+ \operatorname{span}_{\mathbb Q}\{T_q(a):a\in G\}
+\]
+are equal. Their common dimension is
+\begin{equation}\label{jnew:eq:denominator-rank}
+ \boxed{\displaystyle\rho(q)=d(G)-d(G/H)
+ =\frac{|G|-|G[2]|-|G/H|+|(G/H)[2]|}{2}.}
+\end{equation}
+For rational coefficients $c_a$, the exact relation test for the
+second-difference family is
+\begin{equation}\label{jnew:eq:T-relations}
+ \sum_{a\in G}c_aT_q(a)=0
+ \quad\Longleftrightarrow\quad
+ c_a-c_{a^{-1}}\text{ is constant on each coset of }H.
+\end{equation}
+For the first-difference family the exact relation test is
+\begin{equation}\label{jnew:eq:D-relations}
+ \sum_{a\in G}c_aD_q(a)=0
+ \quad\Longleftrightarrow\quad
+ c_a-c_{2a}=c_{a^{-1}}-c_{2a^{-1}}\quad(a\in G).
+\end{equation}
+\end{theorem}
+\begin{proof}
+The existing all-conductor kernel theorem identifies the symbol span
+with the inversion-odd subspace $V^-$ of $\mathbb Q[G]$, by
+$\beta_q(a)\mapsto[a]-[a^{-1}]$. Work first over $\mathbb R$, with
+its usual inner product, and write $P_g[a]=[ga]$, where $g$ is the
+class of $2$. The cyclic Laplacian
+$L_g=P_g+P_{g^{-1}}-2I$ is self-adjoint, preserves $V^-$, and has
+kernel the functions constant on $H$-cosets. Thus the span of the
+$T_q(a)$ is the orthogonal complement in $V^-$ of
+$(V^-)^H$. The latter has dimension $d(G/H)$, proving
+\eqref{jnew:eq:denominator-rank} for $T$ and the coefficient test
+\eqref{jnew:eq:T-relations}.
+
+An inversion-odd vector $w$ is orthogonal to every
+$D_q(a)=([a]-[a^{-1}])-([a/g]-[ga^{-1}])$ precisely when
+\[
+ 2(w_a-w_{a/g})=0\qquad(a\in G).
+\]
+This is exactly the condition that $w$ be constant on $H$-cosets.
+Hence the two spans have the same orthogonal complement and are
+equal. All matrices have rational entries, so these dimensions and
+equalities descend to $\mathbb Q$. Finally, the coefficient of
+$[a]$ in the inversion-odd image of a $D$-combination is
+$c_a-c_{ga}-c_{a^{-1}}+c_{ga^{-1}}$, proving
+\eqref{jnew:eq:D-relations}.
+\end{proof}
+
+For example, at $q=31$, $G$ is cyclic of order $15$ and the class
+of $2$ has order $5$. Therefore
+\[
+ d(G)=7,\qquad d(G/H)=d(C_3)=1,\qquad\rho(31)=6.
+\]
+The loss of one dimension is an exact distribution relation, not a
+numerically small singular value. The relations include the evident
+telescoping identities
+\[
+ \sum_{h\in H}D_q(ah)=0,\qquad
+ \sum_{h\in H}T_q(ah)=0,
+\]
+and the theorem describes all additional consequences of inversion.
+
+\begin{corollary}[A certified lower bound for formal companion values]
+\label{jnew:cor:value-rank}
+For each odd $q$, there exist $\rho(q)$ positive even numerators
+$e_j$, coprime to $q$, such that the formal elements
+$\eta_{e_j/q}$ are linearly independent modulo rational
+dilogarithms.
+\end{corollary}
+\begin{proof}
+Choose residues giving a basis among $T_q(a)$, and choose even
+positive representatives $e_j$ of those residues. In a common
+cyclotomic field, apply the exterior square of the normalized norm
+to $\mathbb Q(\zeta_q)$. It kills every numerator-conductor block
+and keeps the corresponding $T_q(e_j)$. If a combination of the
+$\eta_{e_j/q}$ belonged to the rational pre-Bloch group, this
+projection would be a rational wedge. The normalized norm to
+$\mathbb Q$ kills the symbol combination and fixes that wedge, so
+the wedge is zero. The chosen $T$ symbols are independent, proving
+the assertion.
+\end{proof}

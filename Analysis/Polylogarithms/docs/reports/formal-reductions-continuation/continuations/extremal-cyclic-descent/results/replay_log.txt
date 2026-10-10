@@ -1,0 +1,163 @@
+CHECK gaussian_envelope
+{
+  "arithmetic": "integer fixed-point outward intervals; standard library only",
+  "decimal_grid_digits": 90,
+  "euler_terms": 160,
+  "root_proposal": [
+    "13022165871012412095923717/10000000000000000000000000",
+    "130221658710124120959237171/100000000000000000000000000"
+  ],
+  "root_decimal_enclosure": [
+    "1.30221658710124120959237170",
+    "1.30221658710124120959237171"
+  ],
+  "derivative_at_left": [
+    "0.000000000000000000000000000134787067474814962522568214242545",
+    "0.000000000000000000000000000134787067474814962528042036368815"
+  ],
+  "derivative_at_right": [
+    "-0.000000000000000000000000000731918549011880985714383065831651",
+    "-0.000000000000000000000000000731918549011880985708909243705381"
+  ],
+  "maximum_enclosure": [
+    "1.136561103339509560952586375779942387681723540",
+    "1.136561103339509560952586375779942387681723541"
+  ],
+  "C_at_1": [
+    "1.131971753677420964324276906548964005087042417",
+    "1.131971753677420964324276906548964005087042418"
+  ],
+  "C_prime_at_1": [
+    "0.032609261709027202908112436027158584627931403",
+    "0.032609261709027202908112436027158584627931404"
+  ],
+  "C_at_2": [
+    "1.121582352533247319613655410763137259426518111",
+    "1.121582352533247319613655410763137259426518112"
+  ],
+  "C_prime_at_2": [
+    "-0.035612795672887674109909592035041970779493661",
+    "-0.035612795672887674109909592035041970779493660"
+  ],
+  "certified_sign_tests": 4,
+  "scope": "C is the sharp envelope for -2 Im F_ab(i); the all-N Euler constant is proved on a+b=1 only"
+}
+
+
+CHECK inverse_coefficients
+{
+  "arithmetic": "exact rational exponent bases and symbolic coefficients",
+  "cutoff_exponent": 2,
+  "retained_multiindices": 9,
+  "distinct_nonzero_terms": 8,
+  "coefficients": [
+    {
+      "base": "3/2",
+      "exponent": "log2_3 - 1",
+      "coefficient_for_log2_times_correction": "-1"
+    },
+    {
+      "base": "2",
+      "exponent": "1",
+      "coefficient_for_log2_times_correction": "-1"
+    },
+    {
+      "base": "9/4",
+      "exponent": "2*log2_3 - 2",
+      "coefficient_for_log2_times_correction": "-(2*log2_3 - 1)/2"
+    },
+    {
+      "base": "5/2",
+      "exponent": "log2_5 - 1",
+      "coefficient_for_log2_times_correction": "1"
+    },
+    {
+      "base": "3",
+      "exponent": "log2_3",
+      "coefficient_for_log2_times_correction": "-log2_3"
+    },
+    {
+      "base": "27/8",
+      "exponent": "3*log2_3 - 3",
+      "coefficient_for_log2_times_correction": "-(3*log2_3 - 2)*(3*log2_3 - 1)/6"
+    },
+    {
+      "base": "7/2",
+      "exponent": "log2_7 - 1",
+      "coefficient_for_log2_times_correction": "-1"
+    },
+    {
+      "base": "15/4",
+      "exponent": "log2_3 + log2_5 - 2",
+      "coefficient_for_log2_times_correction": "log2_3 + log2_5 - 1"
+    }
+  ],
+  "defining_equation_residual": {},
+  "passed": true
+}
+
+
+CHECK cyclic_smith
+{
+  "verified_cases": 52,
+  "all_passed": true,
+  "outside_hypotheses_examples": [
+    {
+      "q": 9,
+      "u": 4,
+      "ell": 3,
+      "a_3": 0,
+      "free_rank": 2,
+      "nonunit_factors": [
+        3,
+        3
+      ]
+    },
+    {
+      "q": 9,
+      "u": 4,
+      "ell": 3,
+      "a_3": 1,
+      "free_rank": 2,
+      "nonunit_factors": [
+        3
+      ]
+    },
+    {
+      "q": 9,
+      "u": 4,
+      "ell": 3,
+      "a_3": 2,
+      "free_rank": 2,
+      "nonunit_factors": []
+    }
+  ],
+  "method": "Exact Smith normal form of raw orbit distribution rows over ZZ"
+}
+
+
+CHECK lerch_endpoint_signs
+k=2: endpoint velocity in [0.02581658837068013379, 0.02581658837071206978]
+k=3: endpoint velocity in [-0.24231787997240309845, -0.24231787997233853449]
+PASS: two complete endpoint derivative signs, with exact root isolation.
+
+
+CHECK s6_integer_separator
+{
+  "result": "PASS",
+  "rows_verified": 5131,
+  "row_type_counts": {
+    "DS": 3460,
+    "DIST": 1394,
+    "LIFT": 40,
+    "CAYLEY_BALANCED_LIFT": 237
+  },
+  "ambient_coordinates": 2546,
+  "functional_support": 2476,
+  "target_pairing": "-186660627289236812620583691130496682078843750753489297279472069700354208",
+  "largest_row_support": 252,
+  "complete_family_reenumeration": "PASS",
+  "arithmetic": "integers only; no rank computation, PSLQ, modular arithmetic, or floating-point values",
+  "scope": "nonmembership in the explicitly specified finite relation span; S6 remains conjectural"
+}
+

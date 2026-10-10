@@ -19,7 +19,9 @@ previous=read(V/'dependency-sha256.json')
 for name,entry in previous.items():
     if name.startswith('../'):
         assert digest(B/name,entry['mode'])==entry['sha256'],name+' changed immutable input'
-archives=read(V/'incoming-archives.json')
+archives=sum((read(V/name) for name in ['incoming-archives.json',
+    'research-incoming-archives.json','third-incoming-archives.json',
+    'fourth-incoming-archives.json','fifth-incoming-archives.json']), [])
 for a in archives:
     archive=B.parents[3]/a['archive']
     blob=archive.read_bytes() if archive.is_file() else subprocess.check_output(['git','show',a['archive_git_revision']+':'+a['archive']],cwd=B.parents[3])
@@ -45,6 +47,8 @@ for folder in ['gaussian-parity-reductions','rational-grid-distribution-ranks']:
 for a in archives:
     for f in a['files']:
         dependencies['../'+f['path']]={'sha256':f['sha256'],'mode':'raw'}
+for p in sorted((B/'figures').rglob('*')):
+    if p.is_file():dependencies[p.relative_to(B).as_posix()]={'sha256':digest(p,'raw'),'mode':'raw'}
 excluded={'source-sha256.json','dependency-sha256.json','receipt-integrity.json'}
 for p in sorted(V.rglob('*')):
     if not p.is_file() or any(s.startswith('.scratch') or s=='__pycache__' for s in p.parts):continue

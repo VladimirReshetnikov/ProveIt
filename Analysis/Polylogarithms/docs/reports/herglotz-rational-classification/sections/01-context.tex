@@ -1,0 +1,78 @@
+\section{The question being continued}
+\label{sec:context}
+
+The current ProveIt manuscript treats special polylogarithmic values,
+cyclotomic relations, exact certificates and Herglotz arithmetic in one
+framework. Its Herglotz chapter proves a complete formal classification
+of $F(p/q)-F(1)$ and of $J(2/q)$. Its discovery chapter explicitly leaves
+the general $J(p/q)$ symbol problem as a further direction
+\cite{Repo}. That is the problem addressed here. The Gaussian reductions,
+the $S_4$ certificate and the other completed continuations are not
+reclaimed as new work.
+
+For $x>0$, use the standard normalization
+\begin{equation}\label{eq:def-FJ}
+ F(x)=\sum_{n\ge1}\frac{\psi(nx)-\log(nx)}{n},
+ \qquad J(x)=\int_0^1\frac{\log(1+t^x)}{1+t}\dd t.
+\end{equation}
+Radchenko--Zagier establish the finite cyclotomic dilogarithm formula for
+rational $F$ and the identity
+\begin{equation}\label{eq:J-F}
+ J(x)=F(2x)-2F(x)+F(x/2)+\frac{\pi^2}{12x}.
+\end{equation}
+Their modified Herglotz function has a Hecke relation that will supply
+explicit evaluations in Section~\ref{sec:identities} \cite{RZ}.
+The broader two-parameter Herglotz--Zagier--Novikov function and its
+specializations are studied by Choie--Kumar \cite{CK}.
+
+There are two different questions. An analytic evaluation is an equality
+of numbers with specified branches. A formal reduction asks whether the
+finite dilogarithm expression admits reduction by the rationalized
+five-term calculus. Section~\ref{sec:symbols} defines the latter exactly.
+The classification below is complete for that calculus. It does not
+classify every conceivable numerical equality among these periods.
+
+\subsection{Results and their dependencies}
+
+The new algebraic step is not another numerical rank computation. At an
+odd conductor, doubling the root set gives an exact three-term
+\emph{conductor} identity for exterior symbols. At an even conductor,
+a symbol in the new dyadic layer cannot be absorbed by symbols from
+the preceding field unless it is zero. These facts reduce the boundary
+of $J(p/q)$ to two sparse finite-group calculations.
+
+The resulting classification has a particularly simple shape. For
+mixed parity, logarithmic and rational-dilogarithmic reducibility
+coincide. For odd numerator and denominator, the only nontrivial
+rational-dilogarithmic cases are the ratios between $1$, $3$ and $5$.
+The condition modulo $2e$, not merely modulo $e$, is essential.
+
+A Vieta descent then parametrizes all logarithmic ratios using the
+recurrences $w_{j+1}=c w_j\pm w_{j-1}$ with $c$ even. This gives both
+an exact enumerator and a sparse height law. Finally, a separate analytic
+argument yields a uniform formula for neighboring ratios and evaluates
+the exceptional value $J(3/5)$.
+These analytic identities carry their full logarithmic and $\pi^2$
+terms; they are not merely boundary certificates.
+
+\subsection{Scope of the audit and claims of novelty}
+
+The reference snapshot is \snapshot. The main source file is
+\nolinkurl{chapters/09-herglotz.tex}, whose Git blob is
+\texttt{b372a62797ae9161ddcfd9f4edd036ecfd87df36}. The dependency and
+open-question checks also included
+\nolinkurl{chapters/10-discovery.tex} and the existing
+\nolinkurl{herglotz-cyclotomic-obstructions} report.
+
+Statements described as new are continuations relative to this reviewed
+snapshot, not claims of exhaustive bibliographic priority. Classical
+functional equations, the existing all-conductor symbol theorem, and
+rationalized algebraic $K$-theory facts are attributed as inputs. Ordinary
+proofs are supplied for the new results. The accompanying finite tests
+are implementation checks, not substitutes for these proofs.
+
+Section~\ref{sec:audit} gives one precise correction to a statement in
+the cited preprint. It does not purport to audit every assertion of that
+paper or of the complete ProveIt manuscript. In particular, it is not a
+claim that the manuscript's independently derived boundary formula is
+incorrect.

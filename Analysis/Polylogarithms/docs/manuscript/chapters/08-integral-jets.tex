@@ -1,0 +1,160 @@
+\subsection{Integral jets and why abelian freeness is insufficient}
+For a finite free $\Z$-algebra $B$, put
+$C_\pm(\mathcal D_B)=\mathcal D_q(B,a)/(c\mp1)\mathcal D_q(B,a)$.
+The scalar Tate calculation extends to this coefficient ring.
+\begin{proposition}\label{irjet:thm:finite-free-koszul}
+With $\overline B=B/2B$ and the reduced active sequence
+$\overline{\boldsymbol\delta}$, the two integer-torsion submodules are
+\[
+ \operatorname{Tor}_{\Z}C_+(\mathcal D_B)
+ \simeq\bigoplus_{j\text{ odd}} H_j(K_{\overline B}(\overline{\boldsymbol\delta})),
+ \qquad
+ \operatorname{Tor}_{\Z}C_-(\mathcal D_B)
+ \simeq\bigoplus_{j\text{ even}} H_j(K_{\overline B}(\overline{\boldsymbol\delta})).
+\]
+These are isomorphisms of $B$-modules. Every torsion class is killed by two.
+For $q>2$ and $T=\operatorname{rank}_{\Z}B$, the free abelian rank of
+both quotients is $T\varphi(q)/2$.
+\end{proposition}
+\begin{proof}
+The underlying distribution lattice is free over $\Z$ by the all-ring
+basis theorem. Thus the torsion lemma still applies. In the fixed-point
+periodic complex, multiplication by two is injective on $B$ and its
+free chain modules. Its adjacent two-term blocks resolve reduction modulo
+two, exactly as in \eqref{ir:eq:integer-tate-koszul}; the bounded chain
+width gives the same parity sums as $B$-modules. Over $B\otimes\Q$,
+reflection eigenspaces are exact direct summands. The fixed-point Euler
+count in the balanced-rank proof is multiplied by $T$ and remains zero,
+giving the asserted free ranks. This argument does not assume that the
+reflected torsion-free part is a free $B$-module.
+\end{proof}
+
+\subsection{An exact Smith formula for arbitrary finite integral jets}
+\label{irjet:sec:jets}
+Let
+\[
+ B_L=\Z[u]/(u^L),\quad L\ge1,\qquad
+ a_p(u)\in B_L,
+\]
+and reduce coefficients modulo two. In
+$\overline B_L=\mathbb F_2[u]/(u^L)$, form the parameters
+\eqref{ir:eq:active-koszul}. For an element $f$ of this ring, define
+\[
+ \nu(f)=\min\{j:[u^j]f\ne0\},\qquad \nu(0)=L,
+ \quad v=\min_{f\in\boldsymbol f}\nu(f).
+\]
+Here $\boldsymbol f=\overline{\boldsymbol\delta}$ and $r(q)$ is the active-prime count in \eqref{ir:eq:r-h}. For $q>2$, the list is nonempty.
+
+\begin{theorem}[Minimum-valuation jet formula]
+\label{irjet:thm:jets}
+For $q>2$, the two reflected jet quotients have the following Smith
+decomposition as abelian groups:
+\begin{equation}
+ C_\pm(\mathcal D_{B_L})\simeq
+ \Z^{L\varphi(q)/2}\oplus(\Z/2\Z)^{v\,2^{r(q)-1}}.
+ \label{irjet:eq:jet-Smith}
+\end{equation}
+More precisely, their integer-torsion submodules are each isomorphic,
+as $B_L$-modules, to
+\begin{equation}
+ \bigl(B_L/(2,u^v)\bigr)^{2^{r(q)-1}}.
+ \label{irjet:eq:jet-torsion-module}
+\end{equation}
+The direct-sum decomposition in \eqref{irjet:eq:jet-Smith} is a statement over
+$\Z$, not a claim that the torsion-free part is free over $B_L$.
+\end{theorem}
+\begin{proof}
+In the principal ideal ring $\overline B_L$, choose a parameter of least
+valuation. It is a unit times $u^v$ unless every parameter is zero,
+which is the same argument with $v=L$. A change of basis in the free
+module defining the Koszul complex transforms the parameter list into
+$(u^v,0,\ldots,0)$: first divide by its unit factor, then subtract its
+multiples from the other entries. All these are invertible operations
+over $\overline B_L$.
+
+The complex is now the tensor product of the two-term complex given by
+multiplication by $u^v$ and $r(q)-1$ zero-differential exterior factors.
+Both the kernel and the cokernel of multiplication by $u^v$ are
+isomorphic to $\overline B_L/(u^v)$; the kernel is the ideal
+$u^{L-v}\overline B_L$. Consequently
+\[
+ H_k\bigl(K_{\overline B_L}(\boldsymbol f)\bigr)
+ \simeq\bigl(\overline B_L/(u^v)\bigr)^{\binom{r(q)}{k}}.
+\]
+Summing either degree parity in Theorem~\ref{irjet:thm:finite-free-koszul} proves
+\eqref{irjet:eq:jet-torsion-module}. Each copy has $\mathbb F_2$-dimension $v$,
+so Lemma~\ref{ir:lem:torsion-tate} gives the torsion multiplicity in
+\eqref{irjet:eq:jet-Smith}.
+
+The unreflected underlying lattice has rank $L\varphi(q)$.
+The alternating fixed-point trace used in
+Theorem~\ref{ir:thm:integer-reflection} is multiplied by $L$, and still
+vanishes. Thus each rational eigenspace has dimension
+$L\varphi(q)/2$. This proves the free rank and completes the Smith
+calculation.
+\end{proof}
+
+\begin{example}[Five jet coefficients at level fifteen]
+Take $L=5$, $a_3(u)=1+u^2$, and $a_5(u)=1+2u+u^3$.
+The binary parameters are $u^2,u^3$, so $v=2$ and $r(q)=2$. Therefore
+\[
+ C_\pm(\mathcal D_{B_5})\simeq\Z^{20}\oplus(\Z/2\Z)^4.
+\]
+The constant jets $a_3=a_5=1$ would instead give ten two-torsion factors.
+The constant terms of the weights agree; their higher binary
+coefficients change the integral reflection structure.
+\end{example}
+
+\begin{example}[The two-adic jet parameter matters]
+At $q=12$, $L=4$, let $a_2(u)=1+u$ and $a_3(u)=1+u^3$.
+The two parameters are $u^3$ and $u+u^2$, not simply
+$1-a_3$ and $1-a_2$. Thus $v=1$, $r(q)=2$, and
+\[
+ C_\pm(\mathcal D_{B_4})\simeq\Z^8\oplus(\Z/2\Z)^2.
+\]
+Although the parity of a \emph{scalar} two-prime weight does not affect
+Theorem~\ref{ir:thm:integer-reflection}, a nonconstant two-prime jet can affect
+Theorem~\ref{irjet:thm:jets}.
+\end{example}
+
+\subsubsection{Why the free abelian part need not be jet-free}
+Take $q=3$, $L=2$, and $a_3=1+u$. In the unreflected basis
+$e=e_0$, $f=e_{2/3}$, reflection satisfies
+\[
+ ce=e,\qquad cf=ue-f.
+\]
+Hence
+\begin{equation}
+ C_+(\mathcal D_{B_2})=B_2e\oplus B_2f\big/\langle ue-2f\rangle.
+ \label{irjet:eq:nonflat}
+\end{equation}
+As an abelian group this has free generators $e,f$ and a torsion generator
+$uf$ of order two. In its torsion-free quotient, multiplication by $u$
+sends $e$ to $2f$ and $f$ to zero. This is not a free rank-one
+$B_2$-module: the image of $u$ in a free rank-one module is a primitive
+rank-one sublattice, whereas here the image is $2\Z f$.
+Thus a claim of $B_L$-freeness for the reflected torsion-free part would
+be false. By contrast, $C_-=B_2f\oplus(B_2/(2,u))e$ in this example.
+Both signs have the same abelian Smith factors, but different module
+extensions over the jet ring.
+
+\subsubsection{Multivariate jets and arithmetic weights}
+For a finite free $\Z$-algebra $B$ of rank $L$, the Koszul theorem remains
+an exact answer. If $q>2$ and
+$h_k=\dim_{\mathbb F_2} H_k(K_{B/2B}(\boldsymbol f))$, then
+\[
+ \operatorname{Tor}_\Z C_+\simeq(\Z/2\Z)^{\sum_{k\text{ odd}}h_k},\qquad
+ \operatorname{Tor}_\Z C_-\simeq(\Z/2\Z)^{\sum_{k\text{ even}}h_k}.
+\]
+The two sums are equal: the Euler characteristic of the Koszul complex
+is $L(1-1)^{r(q)}=0$. A closed minimum-valuation description is special
+to the one-variable principal ideal ring; it must not be transferred
+unchanged to a multivariate Artinian ring.
+
+For actual positive integral polylogarithm orders, $A_p=p^{1-n}$ usually
+belongs to $\Z[1/q]$, rather than $\Z$. The corresponding coefficient
+ring must be stated. If $q$ is even, inverting $q$ also inverts two and
+removes the reflected two-torsion. For odd $q$, every $p^{1-n}$ is one
+modulo two, and the ordinary maximal multiplicity persists over
+$\Z[1/q]$. These are statements about the chosen formal coefficient
+lattice, not about independence of the evaluated periods.

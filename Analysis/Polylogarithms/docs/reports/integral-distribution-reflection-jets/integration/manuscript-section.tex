@@ -1,0 +1,127 @@
+% Proposed insertion, not applied to the repository.
+% Requires the existing theorem/corollary environments and amsmath/amssymb.
+% No global shorthand macros are introduced. Full proofs are in the report
+% integral-distribution-reflection/article/article.pdf, Sections 2--6.
+\section{Integral distribution, reflection torsion, and modular jets}
+\label{ir:insert:section}
+
+Let $X_q=(q^{-1}\mathbb Z)/\mathbb Z$ and
+$R_q=\mathbb Z[A_p:p\mid q]$. Define
+\[
+ \mathcal D_q=\left(\bigoplus_{x\in X_q}R_qe_x\right)
+ \bigg/\left\langle\sum_{py=x}e_y-A_pe_x:
+          p\mid q\text{ prime},\ x\in X_{q/p}\right\rangle.
+\]
+The point $0$ is formal; its Hurwitz evaluation is at $1$, not $0$.
+The characteristic-zero conductor basis can be supplemented by a
+basis requiring no character projectors or divisions. Ordinary
+specializations have classical antecedents
+\cite{ir:KubertSign1979,ir:Ouyang2002}; the companion report supplies
+self-contained proofs for this weighted presentation and its deformations.
+
+\begin{theorem}[Division-free distribution basis]
+\label{ir:insert:integral}
+For each $p^a$, discard one lift from each fiber of
+$(\mathbb Z/p^a\mathbb Z)^\times\to
+ (\mathbb Z/p^{a-1}\mathbb Z)^\times$, using a one-element set at
+exponent zero. Retain $0$ and all rational grid points whose nonzero
+primary coordinates avoid the discarded lifts. Their images form an
+$R_q$-basis of $\mathcal D_q$, of cardinality $\varphi(q)$.
+The same basis works after every commutative-ring specialization.
+The raw prime-relation matrix has a selected maximal minor equal to
+$1$, of size $q-\varphi(q)$.
+\end{theorem}
+The terminating rule is
+\[
+ e_y=A_pe_{py}-\sum_{pz=py,\ z\ne y}e_z
+\]
+at a discarded $p$-primary lift. Order points by denominator and then
+by number of discarded components. This rule strictly decreases that
+order. Independence follows from the finite resolution with chain
+groups $\bigoplus_{|S|=j}R_q[X_{q/\prod_{p\in S}p}]$: filtration by
+$\operatorname{den}(x)\prod_{p\in S}p$ has associated graded complex
+a tensor product of split local norm injections. Thus finite rank
+experiments are replaced by an all-ring proof.
+
+Let $c(e_x)=e_{-x}$. For $q>2$ put
+\[
+ n=\varphi(q)/2,\qquad
+ r=\#\{p>2:p\mid q\}+\mathbf1_{4\mid q},\qquad h=2^{r-1}.
+\]
+\begin{theorem}[Integer reflection coinvariants]
+\label{ir:insert:integer-reflection}
+For integer weights $a_p$, and either sign $\varepsilon=\pm1$,
+\[
+ \mathcal D_q(\mathbb Z,a)/(c-\varepsilon)\mathcal D_q(\mathbb Z,a)
+ \simeq\mathbb Z^n\oplus(\mathbb Z/2\mathbb Z)^t,
+\]
+where $t=h$ if every odd-prime weight is odd, and $t=0$ otherwise.
+The answer does not depend on the integer $a_2$.
+At $q=1,2$, the plus and minus answers are respectively
+$\mathbb Z$ and $\mathbb Z/2\mathbb Z$.
+\end{theorem}
+The unreflected relation module is torsion-free; this theorem concerns
+a subsequent symmetry quotient. Its proof removes the moving two-point
+orbits from the periodic cohomology of the finite resolution. The fixed
+complex reduces to the Koszul complex on
+\[
+ (a_p-1:p>2,\ p\mid q),
+ \quad\text{with }a_2(a_2-1)\text{ added when }4\mid q.
+\]
+For $v_2(q)=1$ the fixed-point column at $2$ is
+$(1-a_2,1)^{\mathsf T}$ and contributes no extra Koszul direction.
+For $v_2(q)\ge2$ its matrix is
+$\left(\begin{smallmatrix}1-a_2&0\\1&-a_2\end{smallmatrix}\right)$,
+which has a unit pivot and determinant $a_2(a_2-1)$.
+
+\begin{theorem}[Characteristic-two contact-order law]
+\label{ir:insert:jets}
+Let $k$ have characteristic two, take weights $a_p(t)\in k[[t]]$,
+and let $d$ be the least $t$-adic valuation of the active scalars just
+listed, with $v_t(0)=\infty$. For finite $d$, the Smith diagonal of
+$c-1$ on $\mathcal D_q(k[[t]],a)$ consists of $n-h$ units,
+$h$ entries $t^d$ up to units, and $n$ zeros. For $d=\infty$ it has
+$n-h$ units and $n+h$ zeros. Consequently for all $L\ge1$,
+\[
+ \dim_k\frac{\mathcal D_q(k[t]/(t^L),a)}
+ {(c-1)\mathcal D_q(k[t]/(t^L),a)}
+ =nL+h\min(d,L).
+\]
+\end{theorem}
+More generally, over every characteristic-two algebra $S$,
+$\ker(c-1)/\operatorname{im}(c-1)$ is the direct sum of the homology
+groups of the active Koszul complex. Over the universal polynomial
+ring it is the cyclic quotient by the active ideal. Over a field the
+reflection dimension is $n+h$ precisely when all odd-prime weights
+are $1$ and, if $4\mid q$, $a_2$ is $0$ or $1$; otherwise it is $n$.
+These modular jets are formal weight deformations, not reductions
+modulo two of complex logarithms.
+
+\subsection{A short all-order analytic certificate}
+Put $\mathcal L_s(x)=\operatorname{Li}_s(e^{2\pi i x})$ and
+$U=\{1/15,4/15,7/15,2/5,4/5\}$. The four raw rows
+\[
+ r_{3,3/5}-r_{5,1/3}-A_5r_{3,0}-r_{5,0}
+\]
+prove, after $A_p=p^{1-s}$,
+\begin{align*}
+ &\mathcal L_s(8/15)-\sum_{u\in U}\mathcal L_s(u)
+ -(3^{1-s}+1)\mathcal L_s(3/5)\\
+ &\qquad -(5^{1-s}+1)\mathcal L_s(2/3)
+ =(1-15^{1-s})\zeta(s).
+\end{align*}
+Both sides extend holomorphically through $s=1$ with right-hand value
+$\log15$. If $\ell=\log15$, its $N$th derivative there has scalar
+right-hand side
+\[
+ (-1)^N\left(\frac{\ell^{N+1}}{N+1}
+ -\sum_{j=1}^N\binom Nj\ell^j\gamma_{N-j}\right),\qquad N\ge0,
+\]
+with ordinary Leibniz derivatives of the weighted terms on the left.
+The term $\ell^{N+1}/(N+1)$ is the contribution of the zeta pole and
+must not be discarded before differentiation.
+
+These are formal-module and exact-identity theorems. They do not
+establish numerical independence of periods or prove the separate
+mixed Gaussian $S_6$ conjecture. The companion report includes the
+complete proofs, frozen JSON certificates, and exact replay code.

@@ -1,0 +1,360 @@
+{
+  "source_commit": "a2a4cf58c49c745058c40e4a6748d472a3420f18",
+  "novelty_scope": "Relative to the inspected manuscript and incoming reports; historical equivalents of every explicit specialization have not been exhaustively excluded.",
+  "claims": [
+    {
+      "id": "FG1",
+      "title": "Full Gaussian rank conjecture and canonical kernel",
+      "status": "proved",
+      "proof_labels": [
+        "fg:thm:rank",
+        "fg:thm:kernel",
+        "fg:cor:g-only"
+      ],
+      "article_files": [
+        "article/sections/gaussian_rank.tex"
+      ],
+      "scope": "Exact rational single-product coefficient system with the removed divergent coordinate; not numerical period dimension.",
+      "verification_files": [
+        "code/full_gaussian_rank.py"
+      ],
+      "dependencies": []
+    },
+    {
+      "id": "FG2",
+      "title": "Universal cyclotomic same-point splitting",
+      "status": "proved",
+      "proof_labels": [
+        "fg:thm:universal"
+      ],
+      "article_files": [
+        "article/sections/universal_lift.tex"
+      ],
+      "scope": "Every N>=3; odd-weight free sectors and the all-weight rank difference.",
+      "verification_files": [
+        "code/universal_gaussian_lift.py"
+      ],
+      "dependencies": [
+        "FG1 boundary construction"
+      ]
+    },
+    {
+      "id": "FG3",
+      "title": "Full level-three ranks",
+      "status": "proved_extension",
+      "proof_labels": [
+        "fg:cor:level3"
+      ],
+      "article_files": [
+        "article/sections/universal_lift.tex"
+      ],
+      "scope": "New full-rank extension of the previously proved residual invariant-ring result.",
+      "verification_files": [
+        "code/universal_gaussian_lift.py"
+      ],
+      "dependencies": [
+        "FG2",
+        "PriorResearch residual level-three invariant ring"
+      ]
+    },
+    {
+      "id": "J1",
+      "title": "No proper real subfield for a nonzero individual beta symbol",
+      "status": "proved",
+      "proof_labels": [
+        "jnew:thm:subfield"
+      ],
+      "article_files": [
+        "article/sections/herglotz_classification.tex"
+      ],
+      "scope": "Individual beta_M(a) in the rational multiplicative exterior square, not arbitrary linear combinations.",
+      "verification_files": [],
+      "dependencies": [
+        "hstruct:thm:kernel",
+        "hstruct:lem:positive-Gram",
+        "hstruct:eq:skew-image"
+      ]
+    },
+    {
+      "id": "J2",
+      "title": "Complete formal reduction classification of J(p/q)",
+      "status": "proved",
+      "proof_labels": [
+        "jnew:thm:classification"
+      ],
+      "article_files": [
+        "article/sections/herglotz_classification.tex"
+      ],
+      "scope": "All positive reduced rational arguments, in the rationalized five-term calculus; no numerical nonidentity claim.",
+      "verification_files": [
+        "code/verify_j.py"
+      ],
+      "dependencies": [
+        "J1",
+        "hstruct:eq:delta-xi",
+        "hstruct:lem:norm",
+        "hstruct:eq:bloch-facts"
+      ]
+    },
+    {
+      "id": "J3",
+      "title": "Exact denominator obstruction rank and all relations",
+      "status": "proved",
+      "proof_labels": [
+        "jnew:thm:denominator-rank",
+        "jnew:cor:value-rank"
+      ],
+      "article_files": [
+        "article/sections/herglotz_rank.tex"
+      ],
+      "scope": "Formal symbol ranks and a formal-value lower bound modulo rational dilogarithms.",
+      "verification_files": [
+        "code/verify_j.py"
+      ],
+      "dependencies": [
+        "hstruct:thm:kernel"
+      ]
+    },
+    {
+      "id": "J4",
+      "title": "Adjacent positive-argument functional identity",
+      "status": "known_reformulation_with_proof",
+      "proof_labels": [
+        "jnew:lem:analytic-difference"
+      ],
+      "article_files": [
+        "article/sections/herglotz_identities.tex"
+      ],
+      "scope": "Known Choie-Kumar equation in a useful equivalent form; no new general-functional-equation priority claim.",
+      "verification_files": [],
+      "dependencies": [
+        "Radchenko-Zagier equations (15), (22a)",
+        "Choie-Kumar Theorem 3.2(1)"
+      ]
+    },
+    {
+      "id": "J5",
+      "title": "Consecutive rational log-sine evaluations",
+      "status": "proved_explicit_specialization",
+      "proof_labels": [
+        "jnew:thm:consecutive-analytic",
+        "jnew:cor:small-evenodd"
+      ],
+      "article_files": [
+        "article/sections/herglotz_identities.tex"
+      ],
+      "scope": "Full real analytic values, including constants and branches; proposed manuscript additions.",
+      "verification_files": [
+        "code/verify_j.py"
+      ],
+      "dependencies": [
+        "J4",
+        "Radchenko-Zagier integer F evaluation"
+      ]
+    },
+    {
+      "id": "J6",
+      "title": "Explicit rational-dilogarithm value J(3/5)",
+      "status": "proved",
+      "proof_labels": [
+        "jnew:thm:J35"
+      ],
+      "article_files": [
+        "article/sections/herglotz_identities.tex"
+      ],
+      "scope": "Full analytic identity on the positive real branch; rational core [1/3]-[1/5]/2.",
+      "verification_files": [
+        "code/verify_j.py"
+      ],
+      "dependencies": [
+        "J4",
+        "Radchenko-Zagier F(2/5) evaluation"
+      ]
+    },
+    {
+      "id": "L1",
+      "title": "Complete small-rho zero classification and Puiseux branches",
+      "status": "proved",
+      "proof_labels": [
+        "lerchboundary:thm:smallrho",
+        "lerchboundary:cor:k1"
+      ],
+      "article_files": [
+        "article/sections/lerch_zeros.tex"
+      ],
+      "scope": "Fixed integers n,k, all sufficiently small positive rho; threshold existence is proved but no explicit numeric threshold is supplied.",
+      "verification_files": [
+        "code/verify_lerch_boundary.py"
+      ],
+      "dependencies": [
+        "Hermite-Lindemann nonvanishing",
+        "Global variation bound"
+      ]
+    },
+    {
+      "id": "L2",
+      "title": "Forced interior multiple zeros at n=3,4 and k=1",
+      "status": "proved",
+      "proof_labels": [
+        "lerchboundary:cor:degeneracy"
+      ],
+      "article_files": [
+        "article/sections/lerch_zeros.tex"
+      ],
+      "scope": "Existence of a multiple zero event; neither uniqueness nor nondegeneracy is claimed.",
+      "verification_files": [
+        "code/verify_lerch_boundary.py"
+      ],
+      "dependencies": [
+        "L1",
+        "Nine exact source endpoint signs"
+      ]
+    },
+    {
+      "id": "L3",
+      "title": "Positive initial velocity of the smallest n=4,k=3 zero",
+      "status": "proved",
+      "proof_labels": [
+        "lerchboundary:thm:counterexample"
+      ],
+      "article_files": [
+        "article/sections/lerch_zeros.tex"
+      ],
+      "scope": "A concrete counterexample to a general decreasing-parameter extrapolation.",
+      "verification_files": [
+        "code/verify_lerch_boundary.py"
+      ],
+      "dependencies": []
+    },
+    {
+      "id": "L4",
+      "title": "Exactly two simple zeros for n=2 at every k and rho",
+      "status": "proved",
+      "proof_labels": [
+        "lerchboundary:thm:n2global",
+        "lerchboundary:cor:n2allk"
+      ],
+      "article_files": [
+        "article/sections/lerch_zeros.tex"
+      ],
+      "scope": "All k>=1 and rho in [0,1]; sharp threshold K_2=1, right interlacing, and nonmonotonic first k=1 branch.",
+      "verification_files": [
+        "code/verify_lerch_boundary.py"
+      ],
+      "dependencies": [
+        "Global variation bound and persistence",
+        "Two exact source endpoint signs"
+      ]
+    },
+    {
+      "id": "L5",
+      "title": "Strict larger-branch monotonicity and unique level-one crossing",
+      "status": "proved",
+      "proof_labels": [
+        "lerchshape:cor:n2"
+      ],
+      "article_files": [
+        "article/sections/lerch_shape.tex"
+      ],
+      "scope": "n=2,k=1; a2 strictly decreases, a1 crosses 1 once and increases thereafter.",
+      "verification_files": [],
+      "dependencies": [
+        "L4",
+        "Elementary weighted coefficient inequality"
+      ]
+    },
+    {
+      "id": "L6",
+      "title": "Abel singularity and exact simple-zero endpoint regularity",
+      "status": "proved",
+      "proof_labels": [
+        "lerchboundary:thm:abel",
+        "lerchboundary:thm:abel-root"
+      ],
+      "article_files": [
+        "article/sections/lerch_abel.tex"
+      ],
+      "scope": "Fixed n,k, positive compact a-sets; simple endpoint zeros are C^(k-1), not C^k.",
+      "verification_files": [],
+      "dependencies": [
+        "Spectral coefficient asymptotics"
+      ]
+    },
+    {
+      "id": "A1",
+      "title": "Complete angular-zero expansion at every exponential scale",
+      "status": "proved",
+      "proof_labels": [
+        "angular:thm:allorders"
+      ],
+      "article_files": [
+        "article/sections/angular_expansion.tex"
+      ],
+      "scope": "a tends through positive integers; uniform over all real b>0 for each fixed cutoff.",
+      "verification_files": [
+        "code/derive_angular.py"
+      ],
+      "dependencies": [
+        "signed:thm:unique-zero",
+        "Finite-dimensional Lagrange inversion"
+      ]
+    },
+    {
+      "id": "A2",
+      "title": "Ten angular terms and a sharp signed remainder",
+      "status": "proved",
+      "proof_labels": [
+        "angular:cor:ten"
+      ],
+      "article_files": [
+        "article/sections/angular_expansion.tex"
+      ],
+      "scope": "Explicit harmonic-number coefficients; eventual strict sign uniform in b>0.",
+      "verification_files": [
+        "code/derive_angular.py",
+        "code/check_angular.py"
+      ],
+      "dependencies": [
+        "A1"
+      ]
+    },
+    {
+      "id": "A3",
+      "title": "Divergence even after equal exponential bases are combined",
+      "status": "proved",
+      "proof_labels": [
+        "angular:thm:divergence"
+      ],
+      "article_files": [
+        "article/sections/angular_divergence.tex"
+      ],
+      "scope": "For every fixed integer a>=1 and b>0; a prime-indexed sequence of terms is unbounded.",
+      "verification_files": [
+        "code/check_angular_divergence.py"
+      ],
+      "dependencies": [
+        "A1 coefficient formula",
+        "Unique factorization"
+      ]
+    },
+    {
+      "id": "C1",
+      "title": "Unique stationary point of the smaller two-zero branch",
+      "status": "conjectured",
+      "proof_labels": [
+        "research:conj:minimum"
+      ],
+      "article_files": [
+        "article/sections/research.tex"
+      ],
+      "scope": "n=2,k=1; motivated by the numerical figure and proved shape constraints. No global stationary-point exclusion is provided.",
+      "verification_files": [
+        "code/plot_lerch_n2_branches.py"
+      ],
+      "dependencies": [
+        "L4",
+        "L5"
+      ]
+    }
+  ]
+}

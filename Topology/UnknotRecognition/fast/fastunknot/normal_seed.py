@@ -18,7 +18,7 @@ from .normal_cocycle_verify import inspect_cocycle_certificate
 from .normal_surface_geometry import NormalOrbitError, _coordinates
 
 
-def normal_seed_decide(diagram, *, optimize=True, annulus=True, planar=False, shellings=False, edge_span=False, max_work=2000000,
+def normal_seed_decide(diagram, *, optimize=True, annulus=True, planar=False, shellings=False, edge_span=False, sector_radius=0, max_work=2000000,
                        max_cycles=None, tree_trials=4, face_roots=0, check=lambda: None):
     """Return UNKNOT with a source-bound disc or capping proof, or INCONCLUSIVE.
 
@@ -34,6 +34,9 @@ def normal_seed_decide(diagram, *, optimize=True, annulus=True, planar=False, sh
     It defaults to False and need not preserve the original candidate coverage.
     face_roots defaults to zero: optional face discovery adds coverage but
     was slower than the existing complete fallback on measured cases.
+    sector_radius optionally searches a complete radius-one/two compatible
+    type window around the best tested Euler/span candidate after misses.
+    It shares work and remaining orbit cycles; zero preserves the old path.
     """
     if type(optimize) is not bool:
         raise ValueError('optimize must be bool')
@@ -45,6 +48,8 @@ def normal_seed_decide(diagram, *, optimize=True, annulus=True, planar=False, sh
         raise ValueError('planar must be bool')
     if type(edge_span) is not bool:
         raise ValueError('edge_span must be bool')
+    if type(sector_radius) is not int or sector_radius not in (0,1,2):
+        raise ValueError('sector_radius must be zero, one or two')
     if max_cycles is not None and (type(max_cycles) is not int or max_cycles < 0):
         raise ValueError('max_cycles must be a nonnegative integer or None')
     if type(tree_trials) is not int or tree_trials < 0:
@@ -55,6 +60,7 @@ def normal_seed_decide(diagram, *, optimize=True, annulus=True, planar=False, sh
     stats, stages = {}, []
     boundary_cycles = 0
     planar_basis = None
+    best_sector = None
     try:
         budget.tick()
         source = Diagram.from_pd(diagram.pd)
@@ -73,7 +79,7 @@ def normal_seed_decide(diagram, *, optimize=True, annulus=True, planar=False, sh
         seed, prepared = _rank_one_cocycle_seed_details(raw, check=budget.tick)
         stats['cocycle'] = seed['stats']
         def evaluate(stage, heights, coordinates, span=None, candidate=None):
-            nonlocal boundary_cycles, planar_basis
+            nonlocal boundary_cycles, planar_basis, best_sector
             budget.tick()
             certificate = dict(schema='diagram-cocycle-disc-v1', input_pd=[list(row) for row in source.pd],
                                triangulation=raw, heights=heights, coordinates=coordinates,
@@ -85,6 +91,10 @@ def normal_seed_decide(diagram, *, optimize=True, annulus=True, planar=False, sh
                 euler, pieces = candidate_summary['euler_characteristic'], candidate_summary['normal_pieces']
             else:
                 euler, pieces = candidate['euler_characteristic'], candidate['normal_pieces']
+            if sector_radius:
+                score=(-euler,pieces)
+                if best_sector is None or score<best_sector[0]:
+                    best_sector=(score,coordinates,stage)
             # Candidate construction proves the family invariants. A miss is
             # not a negative knot certificate. Only potential positive proofs
             # pay for independent source/class/connectivity reconstruction.
@@ -175,6 +185,10 @@ def normal_seed_decide(diagram, *, optimize=True, annulus=True, planar=False, sh
                 optimized['certificate'] if optimize else None,budget.tick)
             stats['edge_span']=selected['stats']
             chi=selected['euler_characteristic']
+            if sector_radius:
+                score=(-chi,selected['normal_pieces'])
+                if best_sector is None or score<best_sector[0]:
+                    best_sector=(score,selected['coordinates'],'edge-span')
             entry=dict(stage='edge-span',status='COMPLETE',euler_characteristic=chi,
                 normal_pieces=selected['normal_pieces'],components=1,orientable_components=1,
                 compressing_discs=0,connectivity='edge-then-span')
@@ -207,7 +221,25 @@ def normal_seed_decide(diagram, *, optimize=True, annulus=True, planar=False, sh
                                   candidate['certificate'], candidate)
                 if result is not None:
                     return result
-        reason = 'the tested cocycle seeds contain no certified compressing disc'
+        if sector_radius:
+            from .sector_residual import search_sector_window
+            from .normal_seed_verify import verify_normal_seed_certificate
+            sector_stats={};stats['sector_search']=sector_stats
+            remaining=None if max_cycles is None else max_cycles-boundary_cycles
+            query=search_sector_window(raw,best_sector[1],radius=sector_radius,
+                max_cycles=remaining,check=budget.tick,stats=sector_stats)
+            entry=dict(stage='sector-window',center_stage=best_sector[2],status=query['status'],**sector_stats)
+            stages.append(entry)
+            if query['status']=='DISC_FOUND':
+                proof=dict(schema='diagram-normal-disc-v1',input_pd=[list(row)for row in source.pd],
+                    triangulation=raw,coordinates=query['coordinates'],disc_certificate=query['disc_certificate'])
+                proof=wrap(proof)
+                if not verify_normal_seed_certificate(source,proof,check=budget.tick):
+                    raise ArithmeticError('source-bound sector-window replay rejected')
+                return dict(status='UNKNOT',method='native-normal-sector-window',certificate=proof,
+                    stats=stats,stages=stages,work=budget.work)
+        reason = ('the tested normal-surface candidates contain no certified compressing disc'
+                  if sector_radius else 'the tested cocycle seeds contain no certified compressing disc')
     except (CocycleLimit, NormalOrbitError) as exc:
         reason = str(exc)
     return dict(status='INCONCLUSIVE', method='native-normal-cocycle', reason=reason,

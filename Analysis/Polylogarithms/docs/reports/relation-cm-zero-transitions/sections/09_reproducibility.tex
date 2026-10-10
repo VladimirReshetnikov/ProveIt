@@ -1,0 +1,124 @@
+\section{Reproducibility, evidence boundaries, and integration}
+\label{app:reproducibility}
+
+\subsection{What the package contains}
+
+The archive contains the article source, its component sections, the
+compiled PDF, vector figures with plotting sources, exact verification
+programs, numerical diagnostics, and machine-readable receipts. A
+provenance manifest records the pinned source commit and the SHA-256
+digests of the consulted manuscript files. A separate claim ledger maps
+results to their proofs, their scripts, and their status. The two narrow
+text corrections are provided as an ordinary unified patch, together with
+integration notes keyed to existing manuscript labels.
+
+The article is a self-contained continuation, not a silent replacement
+of the 228-page source manuscript. Each contribution is isolated in a
+section file so that a repository maintainer can move it to the relevant
+chapter. Numbered labels have distinct prefixes for the relation-lattice,
+mixed-family, CM, and classical-zero contributions. The common zero
+preliminaries can be omitted when integrating into the existing zero
+chapter, provided the references are redirected to its established
+theorems.
+
+\subsection{Exact computations and analytic certificates}
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.31\textwidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.21\textwidth}@{}}
+\toprule
+Program & Verified object & Logical status\\
+\midrule
+\texttt{verify\_rank.py} & Integer rows, rational ranks, primitive kernel
+witnesses, and Smith forms in the specified finite range. & Exact
+algebra; checks the general proof.\\[3pt]
+\texttt{verify\_mixed\_family.py} & A finite integer row certificate for
+twice the target at even weights; independent integral evaluation. &
+Exact rows; quadrature is diagnostic.\\[3pt]
+\texttt{cm\_norms.py} & Reduced forms, interval-enclosed singular moduli,
+unique integer class-polynomial coefficients, exact factorizations. &
+Certified computation using CM integrality.\\[3pt]
+\path{cm_genus.py} & Quadratic-field factors, certified genus labels,
+and exact cubic and square identities for the ratios. & Exact and interval certificate.\\[3pt]
+{\footnotesize\texttt{modular\_weight\_polynomials.py}} & Exact $F_w$ and coefficient
+identities through the weight-$12w$ valence bound, $4\le w\le24$. & Exact modular-form certificate.\\[3pt]
+\path{certify_n5_zeros.py} & Rational interval signs at all eleven
+root brackets and all eight needed critical values; three index-three
+endpoint signs. & Finite analytic certificate.\\[3pt]
+\path{certify_lerch_splitting.py} & 120 signs of integer polynomials
+at $\log2$, for $2\le n\le16$. & Exact rational enclosures.\\[3pt]
+\texttt{lerch\_fold\_diagnostic.py} & A high-precision approximate
+solution of $D=\partial_aD=0$. & Numerical diagnostic only.\\[3pt]
+\texttt{explore\_n6\_n7.py} & Finite scans and root refinements supporting
+Conjecture~\ref{conj:n6n7}. & Numerical evidence only.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The zero certificate uses only Python's integer and rational arithmetic;
+its logarithm bounds and Euler--Maclaurin remainder are proved in the
+text. It does not call a numerical Stieltjes-constant routine. The matrix
+certificate uses exact SymPy arithmetic and an independently constructed
+matrix. The mixed-family certificate works directly with product rows,
+and the all-weight proof supplies the uniform row combination.
+
+The six radical genus evaluations also have an independent checker,
+\path{verify_genus_arithmetic.py}, which performs arithmetic as rational
+pairs in the two quadratic fields and checks the positive-root choices.
+It imports neither SymPy nor the CM verifier.
+
+The CM coefficient certificate uses the directed interval implementation
+in \texttt{mpmath.iv}. Its proof contract is explicit: the elementary
+interval functions enclose their true values, the rational tail bound is
+added before division or multiplication, and each resulting coefficient
+interval has a unique possible integer. Classical CM integrality supplies
+the fact that the true coefficient is an integer. This is a conventional
+computer-assisted proof, with the interval implementation as part of its
+trusted computational base. No claim of proof-assistant formalization is
+made.
+
+\subsection{Replay and interpretation}
+
+From the extracted archive, the principal commands are
+\begin{verbatim}
+python3 -m pip install -r requirements.txt
+python3 code/verify_all.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The replay driver runs each principal verifier in a fresh output
+directory, preserving the delivered receipts for comparison. Numerical
+diagnostics can be run separately with the documented flag. They are
+excluded from the proof-only interpretation even when they agree to the
+full working precision.
+
+For the rank replay, the delivered run covers weights $3$ through $13$
+and both Smith forms through weight $12$. It checks the $92\times23$
+weight-five matrix and the exact pairing $7$ of the short witness with
+the target. For the mixed family, the finite row certificate is checked
+at all even weights $4$ through $20$, and the independent integral at
+weights $2,4,6,8,10$. The general claims are proved in the article;
+these finite ranges are validation ranges, not the asserted scope of
+the theorems.
+
+The article's PDF was compiled with all cross-references resolved and
+rendered for visual inspection. Figure labels, tables, long formulas,
+and page breaks were checked. The archive includes a checksum manifest
+so that later editorial changes can be distinguished from the delivered
+research version.
+
+\subsection{Suggested integration order}
+
+First apply the two local corrections. Next insert the relation-lattice
+theorem after the formal product system and replace the old odd-weight
+rank conjecture by a reference to the theorem. Place the mixed-family
+identity next to the existing Gaussian and signed-color evaluations.
+In the CM chapter, upgrade the product identities only after inserting
+the period normalization, certified class data, and phase conventions.
+In the zero chapter, put the fifth-index transition after the small-index
+certificates, and the small-parameter and bifurcation results after the
+definition of the Lerch family. Retain the diagnostic labels on the
+fold coordinates and the sixth- and seventh-index conjectures.
+
+This integration order preserves the distinction between a theorem,
+an exactly checkable finite lemma, an independently verified numerical
+identity, and an open conjecture throughout the combined manuscript.

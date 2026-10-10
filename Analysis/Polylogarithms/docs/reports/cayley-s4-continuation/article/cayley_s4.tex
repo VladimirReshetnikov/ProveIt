@@ -1,0 +1,1382 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{newtxtext,newtxmath}
+\usepackage{microtype}
+\usepackage{booktabs,array,longtable}
+\usepackage{mathtools}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage[hyphens]{url}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,
+ urlcolor=blue!45!black,pdftitle={A Cayley Certificate for the Mixed Gaussian S4 Reduction},
+ pdfauthor={ProveIt research continuation}}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Imag}{Im}
+\DeclareMathOperator{\Real}{Re}
+\DeclareMathOperator{\TV}{TV}
+\DeclareMathOperator{\Odd}{Odd}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\sh}{\mathbin{\sha}}
+% A font-independent shuffle symbol.
+\providecommand{\sha}{\mathbin{\sqcup\!\sqcup}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\cay}{\mathcal D}
+\newcommand{\word}{\operatorname{word}}
+\newcommand{\ind}{\operatorname{ind}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\setlist{topsep=4pt,itemsep=3pt,parsep=0pt}
+\lstset{basicstyle=\ttfamily\footnotesize,columns=fullflexible,keepspaces=true,
+ breaklines=true,frame=single,rulecolor=\color{black!20},showstringspaces=false,
+ aboveskip=10pt,belowskip=10pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Cayley certificates and Gaussian polylogarithms}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+
+\title{\textbf{A Cayley Certificate for the\\Mixed Gaussian $S_4$ Reduction}\\[7pt]
+\large Exact level-four identities, signed-moment certification,\\
+and a weight-seven conjecture}
+\author{Prepared for Vladimir Reshetnikov\\
+\small A research continuation for the ProveIt project}
+\date{9 October 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We prove the mixed Gaussian identity left conjectural in the inspected
+ProveIt polylogarithm manuscript,
+\[
+\sum_{n\ge0}\frac{(-1)^nH_n}{(2n+1)^4}
+ =\frac{58\Imag\Li_{4,1}(i,1)+24\Imag\Li_{3,2}(i,1)}7
+  +\frac{19\pi^5}{3584}-2\beta(4)\log2.
+\]
+The proof is computer-assisted but entirely exact: a supplied rational
+certificate writes a specified weight-five word polynomial as a combination
+of 852 double-shuffle relations and one relation induced by the Cayley
+involution $t\mapsto(1-t)/(1+t)$. We establish the analytic validity of every
+relation type, including the 123 rows with one initially divergent factor.
+Two separately implemented verifiers check the finite word identity without
+floating-point arithmetic or a linear solver. The result also gives an
+explicit reduction of a mixed-color antisymmetric double.
+
+For reproducible experimentation, we prove a signed-Hausdorff-moment bound
+for the more general coefficients $H_{rk}^{(b)}/(dk+1)^a$, with an explicit
+Gamma-density improvement depending on $a$. An exact rational Euler
+transform then certifies errors geometrically. It supports a new proposed
+weight-seven identity for $S_6$ with a residual enclosure of width below
+$3\cdot10^{-299}$, while rigorously excluding a misleading weight-nine
+near-relation. We identify the precise manuscript status changes warranted
+by the proof, distinguish finite relation spaces from arithmetic
+independence, and propose further research. The Cayley symmetry,
+double-shuffle framework, and Euler transform are established tools;
+no worldwide-priority claim is made for them or for the special-value
+formulas. The new contribution to the inspected project is the explicit
+proof certificate, its consequences, and the documented continuation.
+\end{abstract}
+
+\vfill
+\noindent\textbf{Proof status.} The $S_4$ identity and the analytic error bounds
+are proved. The $S_6$ identity remains a conjecture. The displayed $S_8$
+near-relation is proved false. There is no proof-assistant formalization.
+\newpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{Research target, provenance, and main results}
+\label{sec:intro}
+
+\subsection{The precise starting point}
+The project source is the collective manuscript \emph{Polylogarithms and
+their Arithmetic Bridges} in
+\path{Analysis/Polylogarithms/docs/manuscript} of the ProveIt repository
+\cite{ProveIt}. The working snapshot is commit
+\begin{center}
+\small\texttt{a2a4cf58c49c745058c40e4a6748d472a3420f18}.
+\end{center}
+The audit here is targeted, not a claim to have independently verified the
+entire book. The relevant starting material is the mixed relation in
+\path{chapters/04-shuffle-parity.tex}, with source labels
+\texttt{gaussian:conj:S4} and \texttt{gaussian:eq:S4-short}. That source already
+proves the ordinary weight-five Gaussian shuffle reductions and explicitly
+leaves the mixed $S_4$ identity conjectural. We retain its notation:
+\begin{equation}
+ H_n^{(b)}=\sum_{j=1}^n\frac1{j^b},\quad H_n=H_n^{(1)},\quad H_0^{(b)}=0,
+ \qquad S_p=\sum_{n=0}^{\infty}\frac{(-1)^nH_n}{(2n+1)^p},
+ \label{eq:Sp}
+\end{equation}
+\begin{equation}
+ g_{a,b}=\Imag\Li_{a,b}(i,1),\qquad
+ \beta(s)=\sum_{n=0}^{\infty}\frac{(-1)^n}{(2n+1)^s},\qquad L=\log2.
+ \label{eq:notation}
+\end{equation}
+All indices in the special-value identities below are positive integers.
+The sums with $p>1$ are absolutely convergent; the analytic arguments also
+cover several conditionally convergent index-one values needed by the word
+relations.
+
+\begin{theorem}[The mixed Gaussian $S_4$ identity]\label{thm:S4}
+In the strict nested-sum convention defined in Section~\ref{sec:words},
+\begin{equation}
+ \boxed{\displaystyle
+ S_4=\frac{58g_{4,1}+24g_{3,2}}7+\frac{19\pi^5}{3584}
+       -2\beta(4)L.}
+ \label{eq:S4}
+\end{equation}
+Equivalently,
+\begin{equation}
+ \Imag\Li_{4,1}(i,-1)
+ =\frac{51g_{4,1}+24g_{3,2}}7+\frac{19\pi^5}{3584}-2\beta(4)L.
+ \label{eq:mixed41}
+\end{equation}
+\end{theorem}
+The proof occupies Sections~\ref{sec:regularization}--\ref{sec:certificate}.
+Its finite arithmetic component is supplied in full in the accompanying
+\path{data/S4_certificate.json}; it is not an integer-relation guess.
+
+\subsection{What is added, and what is not claimed}
+The important extension is the use of a symmetry relation that changes
+intermediate depth. The single seed is the word for $\Li_{4,1}(i,1)$, but
+its Cayley transform contains words of depth five. Thus the calculation is
+not confined to an initially selected list of depth-two coordinates.
+Ordinary shuffle and stuffle subsequently eliminate those intermediate
+words. This explains the architecture of the proof without pretending
+that the delivered 852-row double-shuffle part is minimal.
+
+The paper also proves the exact mixed antisymmetric identity
+\eqref{eq:antisymmetric}, an all-word Cayley formula with explicit endpoint
+conditions, and a general signed-moment estimate. The latter produces
+rational enclosures for both genuine and spurious numerical relations.
+The $S_6$ formula in Conjecture~\ref{conj:S6} is a proposed new identity in
+this continuation; its very small certified residual is not a proof that
+it is exactly zero.
+
+No dimension of a numerical period space is inferred. In particular, we
+do not prove that $g_{4,1}$ and $g_{3,2}$ are independent, that depth two is
+minimal, that the same basket suffices in every weight, or that the
+Cayley row is outside the full ideal of all standard relations. The proof
+uses only one explicitly defined collection of double-shuffle rows; it
+is not an exhaustive comparison with every possible lifted, distribution,
+or weight-one relation.
+
+\subsection{Relationship to established methods}
+Zhao's level-four work already uses the octahedral symmetry of the punctures
+$\{0,\infty,1,-1,i,-i\}$ to obtain relations not detected by certain
+standard-relation calculations \cite{Zhao2008,Zhao2010}. The present Cayley
+map belongs to that established symmetry framework. Our task is the
+specific manuscript identity, with explicit signs, a finite certificate,
+and boundary-value justification. The much broader general theory of
+regularized relations is not being rediscovered here.
+
+Likewise, Euler acceleration is classical \cite{DLMF}. The analytic
+contribution below is an explicit signed-measure bound for affine harmonic
+coefficients, including an $a$-dependent refinement and a simple rational
+implementation. The source manuscript already has signed-kernel and
+Chebyshev-moment evaluation methods. We do not claim that the present
+$2^{-N}$ bound improves the geometric rate of its Chebyshev method; its
+advantage here is that every required special value can be enclosed using
+rational harmonic numbers alone.
+
+\section{Analytic conventions and the level-four word algebra}
+\label{sec:words}
+
+\subsection{Strict sums and cumulative colors}
+For indices $s_j\ge1$ and colors $z_j$, write
+\begin{equation}
+ \Li_{s_1,\ldots,s_d}(z_1,\ldots,z_d)
+ =\sum_{n_1>\cdots>n_d>0}
+   \frac{z_1^{n_1}\cdots z_d^{n_d}}
+        {n_1^{s_1}\cdots n_d^{s_d}}.
+ \label{eq:MPL}
+\end{equation}
+At roots of unity the values used here are the ordinary convergent sums,
+or equivalently their radial Abel limits. It is essential that the
+\emph{series colors} in \eqref{eq:MPL} are relative colors. The corresponding
+nonzero letters of an iterated integral are cumulative products.
+
+Use the forms
+\begin{equation}
+ Z=\frac{\dd t}{t},\qquad e_j=\frac{i^j\dd t}{1-i^jt},\qquad j\in\Z/4\Z.
+ \label{eq:forms}
+\end{equation}
+For a word $w=a_1\cdots a_n$, the convention is outer-letter first:
+\begin{equation}
+ I(aw;x)=\int_0^x\omega_a(t)I(w;t),\qquad I(\varnothing;x)=1,
+ \qquad I(w)=I(w;1).
+ \label{eq:iterated}
+\end{equation}
+A nonempty word is called \emph{admissible} if its last letter is not $Z$
+and its first letter is not $e_0$. These conditions control the endpoints
+at zero and one, respectively. Admissible iterated integrals converge
+absolutely as ordered integrals, even when a corresponding outer-index-one
+series converges only conditionally.
+
+If $z_j=i^{c_j}$, then
+\begin{equation}
+ \word\bigl((s_1,c_1),\ldots,(s_d,c_d)\bigr)
+ =Z^{s_1-1}e_{c_1}Z^{s_2-1}e_{c_1+c_2}\cdots
+   Z^{s_d-1}e_{c_1+\cdots+c_d}.
+ \label{eq:wordmap}
+\end{equation}
+Expanding the geometric kernels in the disk, or differentiating
+recursively, proves that the integral of this word is \eqref{eq:MPL}.
+For example,
+\begin{equation}
+ I(Z^3e_1e_1)=\Li_{4,1}(i,1),\qquad
+ I(Z^3e_1e_3)=\Li_{4,1}(i,-1).
+ \label{eq:examplewords}
+\end{equation}
+Using $e_2$ rather than $e_3$ as the final letter in the second expression
+would give a different value. This is one of the convention errors that
+an exact certificate must prevent.
+
+\subsection{Convergence estimates used later}
+For an admissible colored index word $B$ of depth $d$, let $B_N$ denote
+its sum with outer index at most $N$. Its tail obeys
+\begin{equation}
+ B_N=B_\infty+O\!\left(\frac{(1+\log N)^d}{N}\right).
+ \label{eq:tailB}
+\end{equation}
+For outer index at least two, comparison with
+$\sum_{n>N}(1+\log n)^{d-1}/n^2$ proves the bound. For outer index one,
+admissibility forces its first series color $c$ to be a nontrivial root
+of unity. If $A_{n-1}$ is the inner partial sum, the coefficient
+$b_n=A_{n-1}/n$ satisfies
+\[
+ b_n=O((1+\log n)^{d-1}/n),\qquad
+ b_{n+1}-b_n=O((1+\log n)^{d-1}/n^2).
+\]
+The second estimate follows by separating the change in $1/n$ from the
+new inner summand; the latter is bounded by a power of $\log n$ divided
+by at least $n$. The partial sums of $c^n$ are bounded. Summation by parts
+therefore gives \eqref{eq:tailB}. This also verifies ordinary convergence
+and agreement with radial Abel limits.
+
+\subsection{Shuffle, stuffle, and conjugation}
+Let $u\sh v$ denote the shuffle of words, with multiplicity for repeated
+letters. The recursion is
+\begin{equation}
+ (au)\sh(bv)=a\bigl(u\sh(bv)\bigr)+b\bigl((au)\sh v\bigr),
+ \qquad u\sh\varnothing=u.
+ \label{eq:shuffle}
+\end{equation}
+Partitioning the product of two ordered simplices gives
+$I(u\sh v)=I(u)I(v)$ whenever both words are admissible.
+
+The stuffle is formed in relative-color index coordinates. If
+$A=(a,c)$ and $B=(b,d)$, put $A\oplus B=(a+b,c+d\bmod4)$ and define
+\begin{equation}
+ (AU)*(BV)=A\bigl(U*(BV)\bigr)+B\bigl((AU)*V\bigr)
+             +(A\oplus B)(U*V).
+ \label{eq:stuffle}
+\end{equation}
+Sorting finite summation indices gives this identity exactly before
+passing to a limit. Define the raw word relation
+\begin{equation}
+ \mathcal R(u,v)=u\sh v-
+ \word\bigl(\ind(u)*\ind(v)\bigr),
+ \label{eq:rawDS}
+\end{equation}
+where the word map is extended linearly. Its integral is zero for
+admissible $u,v$. Section~\ref{sec:regularization} proves the only
+non-admissible-factor case used in the certificate.
+
+Complex conjugation fixes $Z,e_0,e_2$ and exchanges $e_1,e_3$. For a word
+polynomial $P$, define $\Delta P=P-\overline P$. The computational
+encoding uses integers $-1,0,1,2,3$, where $-1$ means $Z$ and $j\ge0$
+means $e_j$; in particular, the integer $0$ is \emph{not} the zero form.
+Order encoded words lexicographically. The compressed odd projection is
+\begin{equation}
+ \Odd\Bigl(\sum_w c_ww\Bigr)
+ =\sum_{w<\overline w}(c_w-c_{\overline w})[w].
+ \label{eq:odd}
+\end{equation}
+Self-conjugate words disappear. Thus
+\begin{equation}
+ \Imag I(P)=\sum_{w<\overline w}
+              (c_w-c_{\overline w})\Imag I(w).
+ \label{eq:oddmeaning}
+\end{equation}
+There is no hidden factor of two in \eqref{eq:odd}; the factor appears
+only when $P$ itself is already antisymmetric.
+
+\section{The one-divergence double-shuffle lemma}
+\label{sec:regularization}
+
+\begin{lemma}[One leading $\Li_1(1)$ is sufficient]\label{lem:oneDiv}
+Let $v$ be a nonempty admissible word. The formal polynomial
+$\mathcal R(e_0,v)$ has only admissible terms after like words are
+collected, and
+\begin{equation}
+ I\bigl(\mathcal R(e_0,v)\bigr)=0.
+ \label{eq:oneDiv}
+\end{equation}
+No assertion about products with two divergent factors is required.
+\end{lemma}
+\begin{proof}
+The only non-admissible word in either product expansion is $e_0v$.
+It occurs with coefficient one on each side and cancels. Indeed, a
+shuffle can begin with $e_0$ only by taking it from the first factor,
+since the first letter of $v$ is not $e_0$; the remaining word must be
+$v$. In the stuffle, precisely the term obtained by putting the
+index-color pair $(1,0)$ before the index word of $v$ is divergent.
+Merged first indices are at least two and hence admissible.
+
+It remains to justify that the finite parts of the two divergent terms
+agree. Put $B_N=\Li_{\ind(v)}^{(N)}$ and $B=B_\infty$. The finite cutoff
+of $e_0v$ is
+\begin{align}
+ D_N&=\sum_{n=1}^N\frac{B_{n-1}}n
+ =BH_N-\sum_{n=1}^N\frac{B-B_{n-1}}n,\notag\\
+ D_N-BH_N&\longrightarrow
+ C_B:=-\sum_{n=1}^{\infty}\frac{B-B_{n-1}}n.
+ \label{eq:cutoffconstant}
+\end{align}
+The last series converges absolutely by \eqref{eq:tailB}. For $0<r<1$,
+the radial version is
+\begin{equation}
+ I(e_0v;r)=-B\log(1-r)
+ -\sum_{n=1}^{\infty}\frac{r^n(B-B_{n-1})}{n},
+ \label{eq:Abelconstant}
+\end{equation}
+so its constant term after subtracting $-B\log(1-r)$ is the same $C_B$.
+
+The finite stuffle identity uses the product $H_NB_N$.
+Its difference from $H_NB$ tends to zero by \eqref{eq:tailB}.
+For the shuffle identity at endpoint $r$, the corresponding product is
+$-\log(1-r)I(v;r)$. The tail bound and summation by parts imply
+\[
+ I(v;r)-B=O\bigl((1-r)(1+|\log(1-r)|)^{d+1}\bigr),
+\]
+so replacing $I(v;r)$ by $B$ also changes the product by a quantity
+tending to zero. Every remaining term in the two product expansions is
+admissible and has its ordinary limit. Subtracting the common divergent
+term and then its common constant proves \eqref{eq:oneDiv}.
+\end{proof}
+
+\begin{remark}
+This elementary lemma is consistent with the regularization comparison
+in the general double-shuffle theory \cite{Zhao2010}, but avoids appealing
+to that machinery for an unexamined divergent case. Precisely 123 of the
+852 double-shuffle rows used below have first factor $e_0$. The other
+729 have two admissible factors. No row with two divergent factors is
+admitted by either verifier.
+\end{remark}
+
+\section{Cayley duality with explicit admissibility}
+\label{sec:cayley}
+
+\begin{theorem}[The level-four Cayley involution]\label{thm:cayley}
+Let $\phi(t)=(1-t)/(1+t)$ and let $\tau=-\phi^*$ act on the forms
+\eqref{eq:forms}. Then
+\begin{equation}
+\begin{array}{c|ccccc}
+ a&Z&e_0&e_1&e_2&e_3\\ \hline
+ \tau(a)&e_0-e_2&Z+e_2&e_2-e_3&e_2&e_2-e_1
+\end{array}
+\label{eq:tau}
+\end{equation}
+For a word $w=a_1\cdots a_n$ define
+\begin{equation}
+ \cay(w)=\tau(a_n)\cdots\tau(a_1),
+ \label{eq:D}
+\end{equation}
+with multilinear expansion and ordinary concatenation on the right.
+Every term of $\cay(w)$ is admissible when $w$ is admissible, and
+\begin{equation}
+ I(w)=I(\cay(w)),\qquad \cay^2(w)=w.
+ \label{eq:duality}
+\end{equation}
+The operator commutes with complex conjugation and preserves weight,
+but not necessarily depth.
+\end{theorem}
+\begin{proof}
+The identity $\phi'(t)=-2/(1+t)^2$ gives the five pullbacks directly.
+For example,
+\[
+ -\phi^*Z=\frac{2\dd t}{1-t^2}=e_0-e_2,
+ \qquad -\phi^*e_0=\frac{\dd t}{t(1+t)}=Z+e_2.
+\]
+For $e_1$, simplifying
+$2i\dd t/((1+t)((1-i)+(1+i)t))$ gives $e_2-e_3$;
+conjugation gives the $e_3$ row. The $e_2$ row is immediate.
+
+In the ordered-simplex integral for $I(w)$, substitute
+$t_j=\phi(u_{n+1-j})$. This reverses the order of the variables and
+reverses their orientations. The resulting form at each position is
+$-\phi^*\omega_{a_j}$, which is exactly \eqref{eq:D}. Convergence permits
+the substitution by first restricting away from the endpoints and
+then taking limits.
+
+To check that no divergent transformed word has been introduced,
+note that the old final letter lies in $\{e_0,e_1,e_2,e_3\}$.
+Every term of its transform avoids $e_0$ in the new first position.
+The old first letter lies in $\{Z,e_1,e_2,e_3\}$, and every term of its
+transform is a nonzero letter in the new last position. Hence all
+transformed words are admissible. Finally $\phi^2$ is the identity,
+so $\tau^2$ and $\cay^2$ are identities. The coefficients and the map
+$\phi$ are real, which proves compatibility with conjugation.
+\end{proof}
+
+\subsection{The particular relation needed at weight five}
+Put
+\begin{equation}
+ A=Z^3e_1e_1.
+ \label{eq:A}
+\end{equation}
+The entire additional symmetry input in the certificate is
+\begin{equation}
+ I(A)=I\bigl((e_2-e_3)^2(e_0-e_2)^3\bigr).
+ \label{eq:seed}
+\end{equation}
+The powers in \eqref{eq:seed} are concatenation powers, not shuffle
+powers. The right side expands into 32 words before possible collection,
+all of depth five and all admissible. This is a direct specialization
+of Theorem~\ref{thm:cayley}, not an experimentally inferred relation.
+
+The transformation supplies an explanation for why a calculation organized
+only around a small double-polylogarithm basket can miss a relation:
+the relation can become apparent only after passing through higher-depth
+words. This observation does not assert that any specific standard
+relation ideal is incomplete. It describes the mechanism of the
+certificate actually delivered here.
+
+\section{The exact finite certificate and the proof of \texorpdfstring{$S_4$}{S4}}
+\label{sec:certificate}
+
+\subsection{The bridge from \texorpdfstring{$S_p$}{Sp} to colored doubles}
+\begin{lemma}\label{lem:bridge}
+For $p>1$,
+\begin{equation}
+ S_p=\Imag\bigl(\Li_{p,1}(i,1)+\Li_{p,1}(i,-1)\bigr).
+ \label{eq:bridge}
+\end{equation}
+The same identity holds for $p=1$ by convergent Abel limits.
+\end{lemma}
+\begin{proof}
+The inner coefficient of the sum of the two doubles is
+$\sum_{k<m}(1+(-1)^k)/k$. If $m=2n+1$, this equals $H_n$,
+because only $k=2j$ survive. Even $m$ have zero imaginary coefficient
+from $i^m$, whereas $\Imag i^{2n+1}=(-1)^n$. Absolute convergence
+justifies the selection for $p>1$. The index-one case follows by first
+inserting a radial factor and then using convergence of the boundary
+values.
+\end{proof}
+
+\subsection{A target polynomial with no transcendental coefficients}
+Set
+\begin{equation}
+ B=Z^2e_1Ze_1,
+ \qquad C=Z^3e_1e_3,
+ \qquad V=Z^3e_1,
+ \qquad q=e_1-e_3.
+ \label{eq:targetletters}
+\end{equation}
+Here $I(B)=\Li_{3,2}(i,1)$ and $I(V)=\Li_4(i)$.
+In the shuffle algebra define
+\begin{equation}
+ T=56\Delta C-408\Delta A-192\Delta B
+       -19q^{\sh5}-112(\Delta V\sh e_2).
+ \label{eq:T}
+\end{equation}
+Unlike the powers in \eqref{eq:seed}, $q^{\sh5}$ is the fivefold shuffle
+power. All coefficients in $T$ are integers.
+
+\begin{lemma}[Translation of the scalar identity]\label{lem:T}
+Let
+\begin{equation}
+ R_4=7S_4-58g_{4,1}-24g_{3,2}
+      -\frac{19\pi^5}{512}+14\beta(4)L.
+ \label{eq:R4}
+\end{equation}
+Then $T$ is antisymmetric under conjugation and
+\begin{equation}
+ I(T)=16iR_4.
+ \label{eq:IT}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The single-value evaluations needed here are
+\[
+ I(q)=\Li_1(i)-\Li_1(-i)=\frac{\pi i}{2},\qquad
+ I(e_2)=-L,\qquad I(\Delta V)=2i\beta(4).
+\]
+They follow from $\Li_1(z)=-\log(1-z)$ on the indicated segments and
+the series for $\Li_4(i)$. Consequently the first three terms in
+\eqref{eq:T} contribute
+\[
+ 112i\Imag I(C)-816ig_{4,1}-384ig_{3,2},
+\]
+the fourth contributes $-19i\pi^5/32$, and the fifth contributes
+$224i\beta(4)L$. Substitute \eqref{eq:bridge} with $p=4$ and collect
+terms to obtain \eqref{eq:IT}. Each term of $T$ changes sign under
+conjugation; in the fourth term the shuffle power is odd.
+\end{proof}
+
+\subsection{The certificate identity}
+\begin{lemma}[Exact rational word certificate]\label{lem:certificate}
+There are 852 pairs $(u_j,v_j)$ and rational coefficients $c_j$, recorded
+in \path{data/S4_certificate.json}, such that
+\begin{equation}
+ \boxed{\displaystyle
+ \Odd(T)=224\Odd\bigl(A-\cay(A)\bigr)
+              +\sum_{j=1}^{852}c_j\Odd\bigl(\mathcal R(u_j,v_j)\bigr).}
+ \label{eq:certificate}
+\end{equation}
+For each pair, $v_j$ is admissible and $u_j$ is either admissible or
+$e_0$. All total weights are five. Exactly 541 pairs have word lengths
+$(1,4)$ and 311 have lengths $(2,3)$; exactly 123 have $u_j=e_0$.
+\end{lemma}
+
+\begin{proof}[Finite exact verification]
+The certificate is a list of rational numbers and finite words, not a
+list of approximate special values. Each double-shuffle row is regenerated
+by \eqref{eq:shuffle}--\eqref{eq:rawDS}; the Cayley row is regenerated
+from \eqref{eq:tau}. Apply \eqref{eq:odd} and subtract the right side of
+\eqref{eq:certificate} from its left side using rational arithmetic.
+Every resulting coefficient is zero. The delivered primary verifier
+\path{code/verify_s4.py} performs this calculation and rejects any
+unallowed factor or non-admissible resulting word. Its receipt reports
+zero nonzero residual coordinates.
+
+A second verifier, \path{code/verify_s4_independent.py}, does not import
+the primary algebra implementation. It enumerates shuffle placements
+and ordered index merges, retains full words rather than compressed
+odd coordinates, and checks
+\begin{equation}
+ 2T=224\Delta\bigl(A-\cay(A)\bigr)
+           +\sum_{j=1}^{852}c_j\Delta\mathcal R(u_j,v_j).
+ \label{eq:fullcertificate}
+\end{equation}
+All full-word coefficients again vanish. The two checks establish
+\eqref{eq:certificate} as a finite identity over $\Q$. The complete
+coefficient data, the reconstruction rules, and executable verification
+kernels are part of this proof package. Their use is essential; a claimed
+rank or a numerical residual is not substituted for the coefficient
+identity.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:S4}]
+Each term $\mathcal R(u_j,v_j)$ has zero integral by ordinary
+double-shuffle or Lemma~\ref{lem:oneDiv}. The Cayley row has zero integral
+by Theorem~\ref{thm:cayley}. Taking imaginary parts in
+\eqref{eq:certificate}, using \eqref{eq:oddmeaning}, therefore yields
+$\Imag I(T)=0$. Lemma~\ref{lem:T} gives $16R_4=0$. Dividing
+\eqref{eq:R4} by seven proves \eqref{eq:S4}, and subtracting $g_{4,1}$
+from \eqref{eq:bridge} proves \eqref{eq:mixed41}.
+\end{proof}
+
+\subsection{Size, provenance, and limitations of the finite computation}
+The sparse certificate has 853 nonzero coefficients including its one
+Cayley row. The largest numerator and denominator have 32 and 24 decimal
+digits, respectively. The target has 24 compressed odd coordinates.
+For orientation, there are 2000 admissible length-five words over this
+alphabet. Of them, 108 are fixed by conjugation, leaving 946 possible
+compressed odd coordinates. These counts concern words, not independent
+periods.
+
+The candidate search generated weight splits $(1,4)$ and $(2,3)$ at all
+admissible depths, allowing the one exceptional first factor $e_0$.
+After removal of duplicate primitive odd rows there were 1380
+nonzero double-shuffle rows. A modular calculation was useful for
+locating a candidate; exact rational elimination then produced the
+certificate. Neither modular rank evidence nor the elimination software
+is needed to replay the proof. The verifiers consume only the fixed
+certificate and the elementary algebraic rules. The optional script
+\path{code/regenerate_s4.py} reconstructs the prescribed candidate rows
+and performs the exact elimination anew; its output is then checked by
+both ordinary verifiers.
+
+No minimality statement is attached to the 852 rows, their coefficient
+heights, or the additional Cayley relation. In particular, this is not a
+proof that a suitably enlarged standard-relation system could never
+recover the same identity without an explicit symmetry row. A much
+shorter hand proof would be a valuable improvement.
+
+\section{Further proved special-value identities}
+\label{sec:consequences}
+
+\begin{corollary}[A mixed-color antisymmetric reduction]\label{cor:antisym}
+One has
+\begin{align}
+ &\Imag\bigl(\Li_{4,1}(i,-1)-\Li_{1,4}(-1,i)\bigr)\notag\\
+ &\hspace{8mm}=\frac{102g_{4,1}+48g_{3,2}}7
+       +\frac{79\pi^5}{10752}-3\beta(4)L.
+ \label{eq:antisymmetric}
+\end{align}
+\end{corollary}
+\begin{proof}
+The ordinary stuffle product gives
+\[
+ \Li_{4,1}(i,-1)+\Li_{1,4}(-1,i)
+  =\Li_4(i)\Li_1(-1)-\Li_5(-i).
+\]
+Its imaginary part is $-\beta(4)L+\beta(5)$. The classical odd-beta
+evaluation gives $\beta(5)=5\pi^5/1536$. Subtract this sum from twice
+\eqref{eq:mixed41}. The rational coefficient is
+$19/1792-5/1536=79/10752$, proving \eqref{eq:antisymmetric}.
+\end{proof}
+
+\begin{corollary}[An integral evaluation]\label{cor:integral}
+The real logarithmic integral
+\begin{equation}
+ J_4=\int_0^1\frac{(-\log x)^3\log(1+x^2)}{1+x^2}\dd x
+ \label{eq:J4}
+\end{equation}
+satisfies
+\begin{equation}
+ J_4=-\frac{348g_{4,1}+144g_{3,2}}7
+       -\frac{57\pi^5}{1792}+12\beta(4)L.
+ \label{eq:J4value}
+\end{equation}
+\end{corollary}
+\begin{proof}
+The generating series
+$\sum_{n\ge0}H_nz^n=-\log(1-z)/(1-z)$ implies
+$\log(1+x^2)/(1+x^2)=-\sum_{n\ge0}(-1)^nH_nx^{2n}$.
+After multiplying by $(-\log x)^3$ and integrating, absolute
+summability of the integrated terms gives $J_4=-6S_4$.
+Now apply \eqref{eq:S4}.
+\end{proof}
+
+The same argument gives the integral representation used in the numerical
+checks:
+\begin{equation}
+ S_p=-\frac1{(p-1)!}\int_0^1
+       \frac{(-\log x)^{p-1}\log(1+x^2)}{1+x^2}\dd x.
+ \label{eq:Spintegral}
+\end{equation}
+For $a,b\ge1$, another useful representation is
+\begin{equation}
+ g_{a,b}=\Imag\frac1{(a-1)!}\int_0^1
+       \frac{(-\log x)^{a-1}i\Li_b(ix)}{1-ix}\dd x.
+ \label{eq:gintegral}
+\end{equation}
+It follows by summing the inner geometric series before applying the
+Mellin integral for $n^{-a}$. For $a\ge2$ and $b=1$, the identity
+$\Li_{1,1}(z,1)=\tfrac12\log^2(1-z)$ gives the independent real form
+\begin{equation}
+ g_{a,1}=-\frac1{2(a-2)!}\int_0^1
+  \frac{(-\log x)^{a-2}}x\log(1+x^2)\arctan x\dd x.
+ \label{eq:g1integral}
+\end{equation}
+These integrals avoid a slowly convergent direct nested summation.
+Their floating-point quadrature is used for discovery only; the
+certification below uses exact rational sums instead.
+
+\section{Signed moments for affine harmonic coefficients}
+\label{sec:moments}
+
+\subsection{A general Gamma-density bound}
+The ordinary alternating-series remainder theorem cannot simply be
+applied after arbitrary transformations of harmonic coefficients.
+A signed-moment representation gives a different, uniform control.
+For a finite signed measure $\nu$, our convention is
+$\norm\nu_{\TV}=|\nu|([0,1])$, not half this quantity.
+
+\begin{theorem}[Affine harmonic signed moments]\label{thm:affine}
+Let $a,r,d$ be positive integers and let $b>0$ be real. Set
+\begin{equation}
+ a_k=\frac{H_{rk}^{(b)}}{(dk+1)^a},\qquad k\ge0,
+ \label{eq:affineseq}
+\end{equation}
+and define
+\begin{equation}
+ m_1=1,\qquad
+ m_a=\frac{(a-1)^{a-1}e^{-(a-1)}}{\Gamma(a)}\quad(a>1).
+ \label{eq:ma}
+\end{equation}
+There is a finite signed measure $\nu$ on $[0,1]$, with no atom at one,
+such that $a_k=\int_0^1x^k\dd\nu(x)$ and
+\begin{equation}
+ \norm\nu_{\TV}\le\frac{2r}{d}\,m_a\,b\zeta(b+1).
+ \label{eq:TVsharp}
+\end{equation}
+For $b>1$ one also has
+\begin{equation}
+ \norm\nu_{\TV}\le2\zeta(b).
+ \label{eq:TVb}
+\end{equation}
+In particular, for integer $b\ge1$, usable rational bounds are
+\begin{equation}
+ \norm\nu_{\TV}\le
+ \begin{cases}
+ 10r/(3d),&b=1,\\
+ 10/3,&b\ge2.
+ \end{cases}
+ \label{eq:TVcoarse}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Let $Y$ have the Gamma density $y^{a-1}e^{-y}/\Gamma(a)$ and let
+$\mu$ be the law of $X=e^{-dY}$. Its moments are
+\begin{equation}
+ \int x^k\dd\mu(x)=\mathbb E(e^{-dkY})=(dk+1)^{-a}.
+ \label{eq:mu}
+\end{equation}
+In the logarithmic coordinate $s=-\log x$, the density is
+\[
+ f(s)=\frac{s^{a-1}e^{-s/d}}{d^a\Gamma(a)}\,\mathbf 1_{s>0}.
+\]
+Its maximum is $m_a/d$. Extended by zero to the negative half-line,
+its distributional derivative has total variation $2m_a/d$.
+For $a>1$, this is the sum of the rise to the maximum and the fall
+back to zero. For $a=1$, the jump at zero contributes $1/d$ and
+the decreasing exponential contributes another $1/d$.
+
+The $L^1$ distance between an integrable function of bounded variation
+and its translate by $h\ge0$ is at most $h$ times the variation of its
+distributional derivative. This follows, for a smooth function, by
+integrating $f(s-h)-f(s)=-\int_{s-h}^s f'(v)\dd v$ and applying
+Fubini; approximation by smooth convolutions proves the bounded-variation
+case. Consequently, if $D_\rho\mu$ denotes pushforward under
+$x\mapsto\rho x$, then
+\begin{equation}
+ \norm{\mu-D_{e^{-rt}}\mu}_{\TV}
+ \le\min\left(2,\frac{2m_ar}{d}t\right),\qquad t>0.
+ \label{eq:translation}
+\end{equation}
+
+The elementary integral for the generalized harmonic number is
+\begin{equation}
+ H_{rk}^{(b)}=\frac1{\Gamma(b)}\int_0^\infty
+       \frac{t^{b-1}(1-e^{-rkt})}{e^t-1}\dd t.
+ \label{eq:Hlaplace}
+\end{equation}
+To prove it, expand the finite geometric expression
+$(1-e^{-rkt})/(e^t-1)=\sum_{j=1}^{rk}e^{-jt}$ and integrate termwise.
+Define the signed measure by a total-variation-convergent integral,
+\begin{equation}
+ \nu=\frac1{\Gamma(b)}\int_0^\infty
+       \frac{t^{b-1}}{e^t-1}
+       \bigl(\mu-D_{e^{-rt}}\mu\bigr)\dd t.
+ \label{eq:nu}
+\end{equation}
+Near zero, \eqref{eq:translation} supplies an additional factor $t$,
+so the norm of the integrand is $O(t^{b-1})$, integrable for every
+$b>0$. At infinity the exponential denominator controls it. This
+justifies the measure integral, Fubini for bounded moment functions,
+and the absence of an atom at one. Combining \eqref{eq:mu} and
+\eqref{eq:Hlaplace} gives exactly the moments \eqref{eq:affineseq}.
+
+Using the linear bound in \eqref{eq:translation} yields
+\[
+ \norm\nu_{\TV}\le
+ \frac{2m_ar}{d\Gamma(b)}\int_0^\infty\frac{t^b}{e^t-1}\dd t
+ =\frac{2r}{d}m_ab\zeta(b+1),
+\]
+which proves \eqref{eq:TVsharp}. For $b>1$, use instead the constant
+bound two in \eqref{eq:translation}, giving \eqref{eq:TVb}.
+For integer $a$, $m_a\le1$: with $n=a-1\ge1$, this is the elementary
+inequality $e^n\ge n^n/n!$. Finally $\zeta(2)<5/3$, for instance by
+summing $n^{-2}$ through $n=5$ and bounding the remaining tail by
+$\int_5^\infty x^{-2}\dd x$. Since $\zeta(b)\le\zeta(2)$ for
+integer $b\ge2$, \eqref{eq:TVcoarse} follows.
+\end{proof}
+
+\begin{remark}[Refinements and comparison with the source kernel]
+The full bound obtained in the proof is
+\begin{equation}
+ \norm\nu_{\TV}\le\frac2{\Gamma(b)}\int_0^\infty
+ \frac{t^{b-1}}{e^t-1}\min\left(1,\frac{m_ar}{d}t\right)\dd t.
+ \label{eq:TVmin}
+\end{equation}
+It can improve either elementary estimate. The factor $m_a$ in
+\eqref{eq:TVsharp} decreases on the scale $a^{-1/2}$, by Stirling's
+formula. The proof therefore provides an outer-index-sensitive bound,
+not just a constant independent of the indices.
+
+When $r=d$, the signed kernel already constructed in the inspected
+manuscript for $H_{n-1}^{(b)}/n^a$ gives another route, by pushforward
+under $u\mapsto u^d$. Its base positive and negative terms each have
+integral one and its recursion is an $L^1$ contraction, so it gives
+the additional coarse bound two. We do not treat this special-case
+kernel as new. Theorem~\ref{thm:affine} separates $r$ and $d$ and
+supplies the explicit Gamma-density refinement. The delivered interval
+receipts deliberately use the simpler bounds \eqref{eq:TVcoarse}, so
+neither a numerical value of $e$ nor a Gamma evaluation is trusted by
+the proof code.
+\end{remark}
+
+\subsection{Exact Euler acceleration for signed measures}
+\begin{theorem}[Certified Euler transform]\label{thm:Euler}
+Let $a_k=\int_0^1x^k\dd\nu(x)$, where $\nu$ is a finite signed measure
+with $\nu(\{1\})=0$ and $\norm\nu_{\TV}\le C$. Then the ordinary
+alternating series converges, and for every $N\ge1$,
+\begin{equation}
+ \sum_{k=0}^{\infty}(-1)^ka_k=E_N+\eps_N,
+ \qquad |\eps_N|\le C2^{-N},
+ \label{eq:Eulerbound}
+\end{equation}
+where, with the decrement difference $\delta a_k=a_k-a_{k+1}$,
+\begin{align}
+ E_N&=\sum_{j=0}^{N-1}\frac{\delta^ja_0}{2^{j+1}}\notag\\
+ &=2^{-N}\sum_{k=0}^{N-1}(-1)^k
+       \left(2^N-\sum_{j=0}^k\binom Nj\right)a_k.
+ \label{eq:Eulertailweights}
+\end{align}
+The sign convention for $\delta$ is opposite to the forward difference
+used in some statements of Euler's transformation.
+\end{theorem}
+\begin{proof}
+The finite alternating kernel $\sum_{k=0}^M(-x)^k$ is bounded in
+absolute value by two on $[0,1]$, and converges to $(1+x)^{-1}$ for
+$x<1$. Dominated convergence with respect to $|\nu|$, using the
+absence of an atom at one, proves ordinary convergence and the formula
+\[
+ \sum_{k\ge0}(-1)^ka_k=\int_0^1\frac{\dd\nu(x)}{1+x}.
+\]
+The finite geometric identity
+\begin{equation}
+ \frac1{1+x}=\sum_{j=0}^{N-1}\frac{(1-x)^j}{2^{j+1}}
+      +\frac{(1-x)^N}{2^N(1+x)}
+ \label{eq:kernelEuler}
+\end{equation}
+gives \eqref{eq:Eulerbound}, because the last kernel is bounded by
+$2^{-N}$. Expanding $(1-x)^j$ gives the first formula for $E_N$.
+Its coefficient of $a_k$ is
+$(-1)^k\sum_{j=k}^{N-1}2^{-j-1}\binom jk$.
+The binomial-tail identity
+\[
+ \sum_{j=k}^{N-1}2^{-j-1}\binom jk
+   =2^{-N}\sum_{j=k+1}^{N}\binom Nj
+\]
+follows by induction on $N$ using Pascal's identity, and proves the
+second formula in \eqref{eq:Eulertailweights}.
+\end{proof}
+
+No complete monotonicity of the harmonic sequence has been assumed.
+Its representing measure is signed and has total mass zero because
+$a_0=0$. The total-variation bound, rather than positivity of finite
+differences, is what certifies the transform.
+
+\subsection{A rational-only implementation for all constants used here}
+The imaginary-part selection in \eqref{eq:MPL} gives
+\begin{equation}
+ g_{a,b}=\sum_{k=0}^\infty
+       \frac{(-1)^kH_{2k}^{(b)}}{(2k+1)^a}.
+ \label{eq:gseries}
+\end{equation}
+Apply Theorem~\ref{thm:affine} with $(r,d)=(1,2)$ for $S_p$ and
+$(r,d)=(2,2)$ for $g_{a,b}$. The rational constants actually used are
+$C=5/3$ for $S_p$ and $C=10/3$ for each $g_{a,b}$.
+
+The sequences $(2k+1)^{-s}$ and $(k+1)^{-s}$ are positive moment
+sequences of mass one by the same Gamma integral. Thus the beta and
+eta values have Euler error at most $2^{-N}$. Finally,
+\begin{equation}
+ \pi=4\beta(1),\qquad L=\eta(1),\qquad
+ \zeta(s)=\frac{\eta(s)}{1-2^{1-s}}\quad(s>1).
+ \label{eq:singleEuler}
+\end{equation}
+Every center in \eqref{eq:Eulertailweights} and every chosen error
+radius is rational for the integer indices used in this paper.
+
+The implementation maintains the binomial tail
+$2^N-\sum_{j=0}^k\binom Nj$ incrementally. It needs $O(N)$ rational
+arithmetic operations for the transform once the coefficient list is
+available; producing the harmonic list needs $O(rN)$ rational additions.
+These are arithmetic-operation counts, not linear bit-complexity claims.
+The numerator and denominator sizes grow with $N$.
+
+Exact interval arithmetic encloses products and powers without treating
+reused constants as independent random errors. The code multiplies
+interval endpoints and takes their minimum and maximum, so overestimation
+from dependency is harmless. To keep stored endpoints compact, it rounds
+outward to rationals with denominator $10^{350}$, again using only integer
+arithmetic. Decimal strings in the receipts are display summaries;
+the rational lower and upper endpoints are the authoritative data.
+
+\section{A weight-seven conjecture and a rejected weight-nine relation}
+\label{sec:discovery}
+
+\subsection{The surviving \texorpdfstring{$S_6$}{S6} candidate}
+\begin{conjecture}[A mixed Gaussian identity of weight seven]\label{conj:S6}
+With the notation \eqref{eq:Sp}--\eqref{eq:notation},
+\begin{equation}
+ \boxed{\begin{aligned}
+ S_6={}&-\frac{12334}{527}g_{6,1}-\frac{384}{31}g_{5,2}
+        -\frac{2136}{527}g_{4,3}\\
+        &+\frac{3179\pi^7}{5713920}
+        -2\beta(6)L-\frac{801}{2108}\beta(4)\zeta(3).\end{aligned}}
+ \label{eq:S6}
+\end{equation}
+\end{conjecture}
+
+The discovery search used the ordered basket
+\begin{equation}
+ (S_6,g_{6,1},g_{5,2},g_{4,3},\pi^7,
+          \beta(6)L,\beta(2)\zeta(5),\beta(4)\zeta(3)).
+ \label{eq:S6basket}
+\end{equation}
+At 110 working decimal digits, PSLQ with tolerance $10^{-95}$,
+coefficient ceiling $10^{12}$, and at most 10000 iterations returned
+\begin{equation}
+\begin{split}
+ (&-97136640,-2273402880,-1203240960,-393707520,\\
+  &\hspace{9mm}54043,-194273280,0,-36910080).
+\end{split}
+\label{eq:S6vector}
+\end{equation}
+This primitive integer vector is equivalent to \eqref{eq:S6}; its
+zero coefficient on $\beta(2)\zeta(5)$ is part of the observation,
+not a pre-imposed omission. The decimal data are retained in the
+package. A separate quadrature at 180 digits supported the relation.
+The exact rational check below is more informative than agreement of
+two floating-point evaluations.
+
+Let $R_6$ be the left side minus the right side of \eqref{eq:S6}.
+Using $N=1000$ in the certified Euler transform yields, after outward
+rounding,
+\begin{equation}
+ -1.357\cdot10^{-299}<R_6<1.515\cdot10^{-299}.
+ \label{eq:S6enclosure}
+\end{equation}
+The full rational interval has width less than
+$2.871\cdot10^{-299}$. This is a proved enclosure for the residual,
+not a proof that the residual is zero. In particular, it does not license
+adding \eqref{eq:S6} as a relation to an exact word certificate.
+
+For orientation, the underlying values start as follows; the displayed
+decimals are rounded, not interval endpoints:
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Quantity&Approximate value\\
+\midrule
+$S_6$&$-0.0012883399816434530677630587571690$\\
+$g_{6,1}$&$-0.0019411939935331449052635479564949$\\
+$g_{5,2}$&$-0.0047581161681305610395611455068384$\\
+$g_{4,3}$&$-0.0123729114645383875464708307852280$\\
+\bottomrule
+\end{tabular}
+\end{center}
+All monomials in \eqref{eq:S6} have total weight seven. The form is
+therefore compatible with the weight grading. Compatibility and
+high-precision agreement are useful selection criteria, but neither
+substitutes for the missing exact reduction.
+
+\subsection{A false candidate that looked convincing at discovery precision}
+A broader search at weight nine used
+\begin{equation}
+\begin{split}
+ \mathbf b_8=(&S_8,g_{8,1},g_{7,2},g_{6,3},g_{5,4},\pi^9,\\
+            &\beta(8)L,\beta(2)\zeta(7),\beta(4)\zeta(5),
+                         \beta(6)\zeta(3)).
+\end{split}
+\label{eq:S8basket}
+\end{equation}
+At 110 digits, with tolerance $10^{-90}$ and coefficient ceiling
+$10^{12}$, a search returned
+\begin{equation}
+\begin{split}
+ \mathbf c_8=(&-6451250972,-4072849461,-710107844,\\
+             &-10984374763,-6393592639,31875,\\
+             &-1955138863,3459066102,-1034180101,-1477786143).
+\end{split}
+\label{eq:S8vector}
+\end{equation}
+This is \emph{not} proposed as a conjecture. Define
+$R_8=\mathbf c_8\cdot\mathbf b_8$.
+
+\begin{proposition}[Certified rejection of the weight-nine near-relation]
+\label{prop:S8false}
+The explicit vector \eqref{eq:S8vector} is not an exact relation:
+\begin{equation}
+ -1.3274179020580459\cdot10^{-86}
+ <R_8<
+ -1.3274179020580457\cdot10^{-86}.
+ \label{eq:S8exclusion}
+\end{equation}
+In particular, $R_8<0$.
+\end{proposition}
+\begin{proof}
+Apply Theorems~\ref{thm:affine} and \ref{thm:Euler} with $N=1000$ to
+each harmonic sum and \eqref{eq:singleEuler} to each single value.
+Form the indicated products and linear combination in exact interval
+arithmetic. The resulting rational interval, saved in
+\path{data/S8_exclusion_N1000.json}, has width below
+$2.080\cdot10^{-290}$ and is wholly contained in the interval
+\eqref{eq:S8exclusion}. Both comparisons are exact comparisons of
+rational endpoints. Hence zero is excluded.
+\end{proof}
+
+A separate search using 180-digit inputs, tolerance $10^{-160}$,
+coefficient ceilings up to $10^{12}$ and at most 15000 iterations
+returned no relation in this basket. That search failure does not
+prove the absence of another relation, even below a height ceiling,
+unless the algorithm supplies and one verifies the relevant exclusion
+certificate. We assert only the observed failure and the rigorous
+rejection of the particular vector \eqref{eq:S8vector}.
+
+The numerical warning is not that PSLQ \cite{PSLQ} is unreliable as an
+integer-relation algorithm. A tolerance applied to scaled coordinates
+can produce a vector whose \emph{unnormalized} residual is not as small
+as a casual reading of the tolerance suggests. The coefficient sizes,
+normalizations, input errors, and recomputed residual all matter. The
+rational interval test checks the actual proposed identity and makes
+that distinction explicit.
+
+\subsection{Summary of the three residual checks}
+\begin{center}
+\begin{tabular}{@{}p{.15\textwidth}p{.25\textwidth}p{.20\textwidth}p{.31\textwidth}@{}}
+\toprule
+Residual&Enclosure width, upper bound&Contains zero?&Conclusion\\
+\midrule
+$R_4$, \eqref{eq:R4}&$7.109\cdot10^{-299}$&Yes&Consistent with the separate exact word proof.\\[4pt]
+$R_6$, \eqref{eq:S6}&$2.871\cdot10^{-299}$&Yes&Strong certified numerical evidence; still conjectural.\\[4pt]
+$R_8$, \eqref{eq:S8vector}&$2.080\cdot10^{-290}$&No&The displayed candidate is rigorously false.\\
+\bottomrule
+\end{tabular}
+\end{center}
+The identity proof and the error certification are separate logical
+objects. A vanishing word polynomial proves equality for exact periods;
+a narrow interval containing zero does not. An interval excluding zero,
+however, is enough to refute a proposed equality.
+
+\section{Targeted manuscript corrections and integration}
+\label{sec:corrections}
+
+\subsection{Upgrade a conjecture, not an old proof}
+The first integration change is a status upgrade. At the pinned snapshot,
+\texttt{gaussian:conj:S4} is explicitly a conjecture, supported by numerical
+integrals and not included in the exact shuffle certificate. That caution
+was appropriate. Replace its conjecture environment by a theorem and
+attach the Cayley proof or a precise reference to this complete proof
+package. The old label may be retained for compatibility even though its
+name contains \texttt{conj}.
+
+The original-coordinate version in the source,
+\begin{equation}
+ S_4=\frac{4g_{4,1}-3g_{3,2}-9g_{2,3}}7
+       +\frac{\pi^5}{224}-\frac{27\beta(2)\zeta(3)}{224}
+       -2\beta(4)L,
+ \label{eq:S4old}
+\end{equation}
+is the same identity. The source already proves
+\[
+ g_{2,3}=-6g_{4,1}-3g_{3,2}-\frac{\pi^5}{1536}
+                         -\frac{3\beta(2)\zeta(3)}{32}.
+\]
+Substitution in \eqref{eq:S4old} gives \eqref{eq:S4} exactly. Thus both
+versions can be promoted, without re-proving or altering the existing
+two-shuffle elimination.
+
+The nearby sentence saying that no functional-equation proof is supplied
+must be replaced, and the open-problem summary in
+\path{chapters/10-discovery.tex} must no longer list this particular
+$S_4$ identity as unresolved. Historical drafts should remain untouched
+as provenance; only the canonical status should change.
+
+\subsection{Qualify a non-reducibility statement}
+In the subsection ``Family 2: antisymmetric reductions to the $(i,1)$
+algebra'' in \path{chapters/04-depth.tex}, the prose says that at higher
+weight the antisymmetric parts do not reduce against the $(i,1)$ basket
+alone. Read as a universal nonmembership statement, this is too strong
+for the search evidence described there. It is now also directly
+qualified by the explicit weight-five mixed antisymmetric reduction
+\eqref{eq:antisymmetric}.
+
+A suitable replacement is:
+\begin{quote}
+The stated searches did not recover all higher-weight antisymmetric
+reductions in the restricted basket. This is a limitation of those
+searches, not a proof of nonmembership. In particular, the Cayley
+certificate gives the weight-five mixed reduction displayed below.
+\end{quote}
+This correction does not change the valid formal-quotient counts in
+other parts of the source. Those counts must continue to be described
+as dimensions of the specified relation systems, not as proved
+arithmetic dimensions.
+
+\subsection{What should remain explicitly unresolved}
+Do not replace $S_4$ by an assertion that all even-index $S_{2m}$ have a
+known reduction. The status of $S_6$ here is conjectural, and the naive
+weight-nine search provided a false near-relation. The manuscript's
+caveats about minimal depth and numerical independence remain necessary.
+Similarly, no general completeness result for level-four relations is
+established by this certificate.
+
+The package supplies a replacement subsection, a bibliography entry,
+and label-anchored editing notes under \path{integration/}. No changes
+have been pushed to the repository. The article and certificates are
+intended to be reviewed and integrated without overwriting historical
+reports or their validation receipts.
+
+\section{Further research questions}
+\label{sec:future}
+
+\subsection{Compress the exact \texorpdfstring{$S_4$}{S4} certificate}
+The most immediate problem is to replace 852 double-shuffle rows by a
+small human-readable chain. The single Cayley seed already identifies
+a geometrically meaningful source of the relation. A useful intermediate
+goal is a certificate grouped into a few products of lower-weight
+identities, with all cancellations visible. Such a compression should
+be measured by row count, coefficient height, and maximum intermediate
+depth, not merely by a short final formula.
+
+A systematic route is to reduce the 32 depth-five words in
+\eqref{eq:seed} in a structured basis before eliminating depth-two
+coordinates. An exact sparse optimization or a carefully chosen
+Lyndon-basis normal form could produce a much smaller certificate.
+Any candidate compressed proof can be checked against the already
+verified target without recomputing period values.
+
+\subsection{Prove the \texorpdfstring{$S_6$}{S6} identity}
+Conjecture~\ref{conj:S6} is the highest-priority new special-value target.
+Its coefficients are fixed, its residual is rigorously tiny, and the
+$S_4$ proof supplies a plausible mechanism. One may test Cayley images
+of $Z^5e_1e_1$ and other weight-seven Gaussian double words, together
+with products and lower-weight symmetry relations. The objective is
+an exact rational certificate, not another increment of floating-point
+precision.
+
+The unexpectedly absent $\beta(2)\zeta(5)$ term suggests an elimination
+pattern worth understanding, but does not itself justify an all-weight
+formula. A structured proof should explain the denominator factors
+$17$ and $31$ that occur in the reduced coefficients, or show that they
+are merely basis artifacts.
+
+\subsection{Determine the correct weight-nine basket}
+The rejection of \eqref{eq:S8vector} leaves several logically distinct
+possibilities: there may be a genuine relation in the same basket with
+larger coefficients; additional lower-weight products may be required;
+or further depth-two or higher-depth coordinates may survive in the
+chosen relation quotient. Finite exact elimination, with an explicitly
+specified relation ideal, can distinguish some of these possibilities
+at the formal level. It cannot by itself prove transcendence or
+arithmetic independence of the evaluated periods.
+
+A useful deliverable would be a complete weight-nine relation search
+with a reproducible basis specification, exact rank certificates,
+and a separate ledger of which reductions are numerical, formal,
+or analytic. Missing a relation at one precision should never be
+converted into a dimension assertion.
+
+\subsection{Compare saturated relation systems}
+The 1380-row search used here is deliberately limited: products of
+weights $(1,4)$ and $(2,3)$, with only one-divergence regularization.
+A fair comparison with ``standard relations'' in the broader literature
+must include the chosen distribution relations, admissible lifts of
+lower-weight identities, and weight-one seeds. Determine whether the
+specific Cayley relation lies in the saturated ideal so obtained,
+and record both the exact quotient and the explicit membership or
+nonmembership certificate in that finite model.
+
+At higher weights, distinguish adding new geometric seed relations from
+multiplying already known seeds by lower-weight words. This may make
+symmetry-based certificates far smaller and avoid rediscovering the
+same structural relation in many disguises.
+
+\subsection{Improve certified arithmetic with the refined moment bounds}
+Theorem~\ref{thm:affine} gives the factor $m_a$ and the sharper integral
+\eqref{eq:TVmin}, but the current replay uses coarse rational constants.
+Implementing rational upper bounds for $m_a$ via finite lower bounds
+for $e^{a-1}$ would preserve exact arithmetic while reducing the
+required term count. The resulting evaluator should be compared with
+the manuscript's Chebyshev and H\"older methods in bit operations,
+memory, and certification overhead, not just in nominal geometric
+rate.
+
+Another natural extension is to products of harmonic numbers. Products
+of signed moment measures correspond to multiplicative convolution;
+this gives an immediate bound by the product of total variations,
+but may be far from sharp because of cancellation. Whether the
+Gamma-translation approach gives useful non-product bounds is a
+concrete analytic question.
+
+\subsection{Formalize the small trusted core}
+A proof-assistant implementation could first formalize the finite word
+identity, leaving the analytic interpretation as a separately proved
+layer. The data are finite lists of integers and rationals, so this
+stage is substantially smaller than formalizing a general multiple
+polylogarithm theory. A complete formalization would additionally need
+the iterated-integral shuffle, the convergent finite-stuffle limit,
+the one-divergence lemma, and the Cayley substitution with endpoint
+control.
+
+The two existing Python verifiers are useful independent checks, but
+they are not a substitute for such kernel-level formal verification.
+Their agreement reduces implementation risk without changing that
+logical distinction.
+
+\section{Conclusion}
+The inspected mixed Gaussian $S_4$ conjecture is resolved by an explicit
+exact certificate whose only additional geometric input is one Cayley
+identity. The proof changes the status of a concrete manuscript formula,
+produces a mixed antisymmetric reduction, and exhibits how passing
+through higher-depth words can expose a relation invisible to a
+restricted search.
+
+The continuation also supplies a carefully separated experimental
+frontier. The $S_6$ identity survives a rational error certificate at
+approximately 299 decimal places, whereas an apparently persuasive
+$S_8$ candidate is rigorously rejected. These are different mathematical
+outcomes and are recorded as such. The complete package preserves the
+finite proof data, independent verification, error bounds, and
+integration notes needed to extend the work without confusing numerical
+evidence with exact identities.
+
+\appendix
+\section{Certificate format and the verification kernel}
+\label{app:certificate}
+
+The JSON schema is \texttt{proveit.cayley-s4.word-certificate.v1}. A
+nonzero row has one of two forms:
+\begin{lstlisting}
+{"kind": "double_shuffle", "u": [ ... ], "v": [ ... ],
+ "coefficient": "numerator/denominator"}
+{"kind": "cayley", "word": [-1,-1,-1,1,1],
+ "coefficient": "224"}
+\end{lstlisting}
+The coefficient multiplies the \emph{raw} row \eqref{eq:rawDS}, not
+its primitive normalization. This convention is important because the
+search initially normalized duplicate rows by signed integer gcds;
+those normalizations have been absorbed into the published rational
+coefficients. The TSV file is an equivalent human-readable listing.
+
+The essential verification loop is small:
+\begin{lstlisting}[language=Python]
+residual = odd_projection(target())
+for row in certificate["rows"]:
+    c = Fraction(row["coefficient"])
+    if row["kind"] == "double_shuffle":
+        raw = double_shuffle(tuple(row["u"]), tuple(row["v"]))
+    elif row["kind"] == "cayley":
+        w = tuple(row["word"])
+        raw = plus({w: 1}, cayley(w), -1)
+    else:
+        raise ValueError("Unknown relation type")
+    residual = plus(residual, odd_projection(raw), -c)
+if residual:
+    raise ArithmeticError("Nonzero exact word residual")
+\end{lstlisting}
+The delivered implementation additionally validates total weight,
+admissibility, duplicate identifiers, and nonzero coefficients. The
+complete word-algebra recursions are in \path{code/word_algebra.py}.
+The alternative verifier uses placement subsets for shuffles and an
+explicit work list of merge paths for stuffles; it checks full
+antisymmetrization rather than reusing \texttt{odd\_projection}.
+
+The certificate SHA-256 digest is
+\begin{center}\small
+\texttt{4fd9d35fe6d1e343451034a6a35af890}\\
+\texttt{07633e412a8bdafa91cb66f1dce769ed}.
+\end{center}
+Concatenate the two displayed lines without whitespace. The digest
+identifies the exact JSON artifact verified here; it does not certify
+mathematical correctness by itself.
+
+\section{Reproduction and artifact map}
+\label{app:repro}
+
+The exact word and interval checks require only Python 3.10 or newer and
+its standard library. The executed environment is recorded in
+\path{logs/environment.json}. Optional quadrature and PSLQ replay uses
+\texttt{mpmath}; neither it nor a linear solver is trusted by the exact
+verifiers. From the package root, run:
+\begin{lstlisting}
+python code/verify_s4.py
+python code/verify_s4_independent.py
+python code/test_kernels.py
+python code/verify_receipts.py
+\end{lstlisting}
+The last command recomputes all three $N=1000$ rational enclosures and
+compares their endpoints exactly, without overwriting the recorded files.
+It also verifies the numerical inequalities printed in this paper.
+The optional \path{code/regenerate_s4.py} reconstructs the certificate
+by exact elimination. Complete command lines for individual enclosures,
+regeneration, and exploratory PSLQ searches are in \path{README.md}.
+
+To rebuild the article with three serial PDFLaTeX passes, run
+\begin{lstlisting}
+python code/build_article.py
+\end{lstlisting}
+The supplied PDF was compiled and rendered for review. Rebuilt PDFs can
+differ in metadata and need their own visual review. The manifest pins
+the distributed artifacts; it is not a promise of byte-identical PDF
+builds. In particular, a changed PDF is not covered by the original
+visual-review receipt.
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{.43\textwidth}p{.51\textwidth}@{}}
+\toprule
+Artifact&Purpose\\
+\midrule
+\path{article/cayley_s4.tex}, PDF&Article source and reading copy.\\[3pt]
+\path{data/S4_certificate.json}, TSV&Complete rational proof certificate.\\[3pt]
+\path{code/verify_s4*.py}&Two exact word-certificate replays.\\[3pt]
+\path{code/certified_euler.py}&Rational centers, analytic radii, interval arithmetic.\\[3pt]
+\path{data/*N1000.json}&Exact rational residual enclosures.\\[3pt]
+\path{data/*quadrature*}, discovery data&Non-certified experiment records.\\[3pt]
+\path{integration/}&Replacement subsection and corrections.\\[3pt]
+\path{logs/}, \path{MANIFEST.sha256}&Executed checks, environment, and hashes.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begingroup
+\small
+\begin{thebibliography}{9}
+\setlength{\itemsep}{4pt}
+\raggedright
+\bibitem{ProveIt}
+ProveIt contributors,
+\emph{Polylogarithms and their Arithmetic Bridges}, collective manuscript,
+\path{Analysis/Polylogarithms/docs/manuscript}, ProveIt repository.
+Snapshot \texttt{a2a4cf58c49c745058c40e4a6748d472a3420f18}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/a2a4cf58c49c745058c40e4a6748d472a3420f18/Analysis/Polylogarithms/docs/manuscript}{Pinned repository snapshot and canonical manuscript}.
+
+\bibitem{Zhao2008}
+J.~Zhao, Multiple polylogarithm values at roots of unity,
+\emph{C.~R. Math. Acad. Sci. Paris} \textbf{346} (2008), 1029--1032.
+\href{https://doi.org/10.1016/j.crma.2008.09.011}{doi:10.1016/j.crma.2008.09.011}.
+\href{https://arxiv.org/abs/0810.1064}{arXiv:0810.1064}.
+
+\bibitem{Zhao2010}
+J.~Zhao, Standard relations of multiple polylogarithm values at roots of
+unity, \emph{Documenta Mathematica} \textbf{15} (2010), 1--34.
+\href{https://ems.press/journals/dm/articles/8965225}{Publisher record}.
+\href{https://arxiv.org/abs/0707.1459}{arXiv:0707.1459}.
+
+\bibitem{DLMF}
+NIST Digital Library of Mathematical Functions, \S3.9(ii),
+Euler's transformation of series.
+\url{https://dlmf.nist.gov/3.9.ii}.
+Accessed 9 October 2026. The decrement-difference convention used here
+is the negative of DLMF's forward-difference convention.
+
+\bibitem{PSLQ}
+H.~R.~P. Ferguson, D.~H. Bailey, and S.~Arno,
+Analysis of PSLQ, an integer relation finding algorithm,
+\emph{Mathematics of Computation} \textbf{68} (1999), no.~225, 351--369.
+\href{https://doi.org/10.1090/S0025-5718-99-00995-3}{doi:10.1090/S0025-5718-99-00995-3}.
+\end{thebibliography}
+\endgroup
+\end{document}

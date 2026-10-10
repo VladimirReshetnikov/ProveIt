@@ -1,0 +1,136 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{graphicx,booktabs,longtable,array,enumitem}
+\usepackage{xcolor,xurl,hyperref,fancyhdr}
+\definecolor{inkblue}{HTML}{173D63}
+\definecolor{muted}{HTML}{555C65}
+\hypersetup{colorlinks=true,linkcolor=inkblue,citecolor=inkblue,urlcolor=inkblue,
+  pdftitle={Sharp Gaussian Bounds, Cyclic Distribution Torsion, and Extremal Lerch Zeros},
+  pdfauthor={Research continuation prepared for the ProveIt project}}
+\urlstyle{same}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted}ProveIt research continuation}
+\fancyhead[R]{\small\color{muted}10 October 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.25pt}
+\setlength{\parskip}{3.5pt}
+\setlength{\parindent}{1.1em}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\ord}{ord}
+\renewcommand{\Im}{\operatorname{Im}}
+\renewcommand{\Re}{\operatorname{Re}}
+\newcommand{\snapshot}{\texttt{a0a90ef31877f98be437191c48b46f02d5456867}}
+\setlist{itemsep=3pt,topsep=5pt}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+{\large\color{inkblue}ANALYSIS / POLYLOGARITHMS\par}
+\vspace{20mm}
+{\LARGE\bfseries Sharp Gaussian Bounds,\\[5pt]
+Cyclic Distribution Torsion,\\[5pt]
+and Extremal Lerch Zeros\par}
+\vspace{8mm}
+{\large Critical Euler constants, exact inverse expansions,\\
+finite jets, and a certified reduction obstruction\par}
+\vspace{12mm}
+{\large A research continuation prepared for the ProveIt project\par}
+\vspace{3mm}
+{10 October 2026\par}
+\vspace{12mm}
+\begin{minipage}{0.91\textwidth}
+\small
+\textbf{Abstract.}
+We continue the manuscript and incoming reports in a fixed ProveIt
+snapshot. A beta-mixture representation proves strict monotonicity of
+$-\Im\Li_{a,w-a}(i,1)$ in the outer order for every positive total
+order $w$. This settles the incoming sharp critical Euler conjecture:
+the best uniform constant is $\pi/4+(\log2)/2$. The sharp Gaussian
+envelope $C(w)=\beta(w)+2^{-w}\eta(w)$ has a unique nondegenerate
+maximum, certified at $w=1.30221658710124\ldots$, with value
+$1.13656110333950\ldots$. We prove strict normalized Mellin
+log-concavity, explicit endpoint identities, Turan inequalities, and
+an all-order inverse generalized-power expansion with a closed
+coefficient formula. A positive secant identity represents every
+Euler remainder for all positive real orders, and proves absolute
+Euler convergence even below the signed-measure threshold.
+
+For weighted distributions on a finite cyclotomic grid, we calculate
+coinvariants under a prime-order symmetry with a split fixed factor.
+The complete integral torsion and all one-variable finite jets are
+governed by a multiplicative character compatibility condition. For
+the Stieltjes--Lerch derivative family, a finite resolvent identity
+moves the largest positive zero strictly left even without saturation.
+At index two we prove a global lower-branch dichotomy and an exact
+endpoint criterion; certified signs give a unique minimum at derivative
+order two and strict decrease of both branches at order three.
+Finally, an integer functional separates the still-conjectural $S_6$
+target from an enlarged, precisely specified family of 5,131 relations.
+Analytic proofs, exact replay programs, diagnostic calculations,
+source provenance, editorial proposals, and further research questions
+are supplied together.
+\end{minipage}
+\vfill
+\begin{minipage}{0.91\textwidth}
+\small\color{muted}
+Baseline commit: \snapshot.\\
+Theorems are proved in ordinary mathematics, with exact computation
+where explicitly indicated. This document is a research contribution
+for review and integration, not a claim of completed proof-assistant
+formalization or an exhaustive priority search.
+\end{minipage}
+\end{titlepage}
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+\pagenumbering{arabic}
+\input{article/introduction.tex}
+\input{article/gaussian.tex}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{figures/gaussian_envelope.pdf}
+\caption{The sharp Gaussian envelope and its critical-line allocation.
+The curves are diagnostic plots; the shapes and the maximum enclosure
+are established by Theorems~\ref{thm:allocation}--\ref{thm:globalenvelope}.
+Open endpoint markers denote limiting values, not allowed parameter pairs.}
+\label{fig:gaussian}
+\end{figure}
+\input{article/euler_secant.tex}
+\input{article/cyclic.tex}
+\input{article/lerch.tex}
+\input{article/s6_obstruction.tex}
+\input{article/audit_agenda.tex}
+\clearpage
+\begin{thebibliography}{99}
+\raggedright
+\input{article/references.tex}
+\input{article/cyclic_bib.tex}
+\input{article/lerch_bib.tex}
+\end{thebibliography}
+\end{document}

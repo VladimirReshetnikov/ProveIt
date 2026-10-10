@@ -1,0 +1,155 @@
+\section{Complete formal classification at rational arguments}
+\label{sec:classification}
+
+For positive rational $x$, reduce every subscript to lowest terms and set
+\begin{equation}\label{eq:eta}
+ \eta_x=\xi_{2x}-2\xi_x+\xi_{x/2}.
+\end{equation}
+By \eqref{eq:J-F}, this is the dilogarithmic element relevant to $J(x)$.
+The extra rational multiple of $\pi^2$ has no boundary.
+
+\begin{lemma}[Analytic and formal reciprocity]\label{lem:reciprocity}
+For $x>0$,
+\begin{equation}\label{eq:J-reciprocity}
+ J(x)+J(1/x)=\log^22.
+\end{equation}
+For positive rational $x$, one also has $\eta_{1/x}=-\eta_x$ in a
+common pre-Bloch group. Hence each type of formal reduction is invariant
+under $x\mapsto1/x$.
+\end{lemma}
+\begin{proof}
+Integration by parts gives
+\[
+ J(x)=\log^22-\int_0^1
+       \log(1+t)\frac{x t^{x-1}}{1+t^x}\dd t.
+\]
+The substitution $u=t^x$ identifies the integral with $J(1/x)$. This
+known reciprocity also follows from the functional equations discussed
+in \cite{CK}.
+
+For the formal statement, \eqref{eq:boundary-F} gives
+$\partial\xi_{1/r}=-\partial\xi_r$. Their invariant sum is zero by
+\eqref{eq:zero-detection}. Applying this to the three terms of
+\eqref{eq:eta} proves the assertion. Thus the formal assertion is not
+inferred solely from an equality of numerical periods.
+\end{proof}
+
+\begin{theorem}[Complete all-rational classification]\label{thm:classification}
+Let $p,q$ be coprime positive integers.
+
+\smallskip\noindent
+\textbf{Mixed parity.} Let $e$ denote the even entry and $o$ the odd entry
+of $(p,q)$. Then $J(p/q)$ has a formal rational-dilogarithmic reduction
+if and only if it has a formal logarithmic reduction, and these are
+equivalent to
+\begin{equation}\label{eq:mixed-class}
+ \boxed{\quad e^2\equiv\pm1\pmod o,
+ \qquad o^2\equiv1\pmod{2e}.\quad}
+\end{equation}
+Congruences modulo $1$ are interpreted as automatic.
+
+\smallskip\noindent
+\textbf{Both entries odd.} There is a formal rational-dilogarithmic
+reduction exactly when
+\begin{equation}\label{eq:odd-class}
+ p,q\in\{1,3,5\}.
+\end{equation}
+There is a formal logarithmic reduction exactly when $p=q=1$.
+
+\smallskip\noindent
+Consequently, the rational-dilogarithmic but not logarithmic arguments
+are precisely
+\begin{equation}\label{eq:six-extras}
+ \boxed{\quad\frac13,\ 3,\ \frac15,\ 5,\ \frac35,\ \frac53.\quad}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For mixed parity, Lemma~\ref{lem:reciprocity} lets us take $x=e/o$.
+Expanding \eqref{eq:boundary-F} gives
+\begin{equation}\label{eq:mixed-boundary}
+ \partial\eta_{e/o}=D_o(e)-N_e(o),
+\end{equation}
+where
+\begin{align}
+ D_o(e)&=\beta_o(2e)-2\beta_o(e)+\beta_o(e/2),\label{eq:D}\\
+ N_e(o)&=\beta_{2e}(o)-2\beta_e(o)+\beta_{e/2}(o).\label{eq:N}
+\end{align}
+The rational wedges cancel because
+$-\cl{2e}+2\cl e-\cl{e/2}=0$. The conductors $o$ and $2e$ are
+coprime. By Lemma~\ref{lem:norm}, the boundary is rational if and only
+if both $D_o(e)$ and $N_e(o)$ vanish. It is then zero, proving that
+rational-dilogarithmic and logarithmic reducibility coincide.
+
+Lemma~\ref{lem:second} gives
+$D_o(e)=0\Longleftrightarrow e^2\equiv\pm1\pmod o$.
+If $N_e(o)=0$, its top-conductor term belongs to
+$\Lambda^2\A(\Q(\zeta_e))$. Theorem~\ref{thm:layer} forces
+$\beta_{2e}(o)=0$, or $o^2\equiv\pm1\pmod{2e}$.
+Since $4\mid2e$ and $o$ is odd, the negative sign is impossible.
+Conversely $o^2\equiv1\pmod{2e}$ kills all three symbols of
+$N_e(o)$, including the conductor-$1$ or conductor-$2$ degeneracies.
+This proves \eqref{eq:mixed-class}.
+
+Now suppose both $p$ and $q$ are odd. Applying
+Theorem~\ref{thm:doubling} at both conductors to the boundary expansion
+yields
+\begin{equation}\label{eq:odd-boundary}
+ \begin{split}
+ \partial\eta_{p/q}={}&
+  \bigl(\beta_q(p)-\beta_q(p/2)\bigr)
+ -\bigl(\beta_p(q)-\beta_p(q/2)\bigr)\\
+ &+\cl2\wedge\cl{p/q}.
+ \end{split}
+\end{equation}
+For example, the rational contribution before simplification is
+$-\cl{2p}\wedge\cl q+2\cl p\wedge\cl q
+ -\cl p\wedge\cl{2q}$, which is the last term displayed.
+Normalized norm separation and Lemma~\ref{lem:first} show that this
+boundary is rational exactly when $p,q\in\{1,3,5\}$.
+
+For logarithmic reduction, normalized norm to $\Q$ first requires
+$\cl2\wedge\cl{p/q}=0$. If the reduced odd ratio $p/q$ is not $1$,
+the prime-exponent vector of $p/q$ is nonzero and has zero coordinate
+at the prime $2$. It is therefore independent of $\cl2$ in
+$\A(\Q)$, making this wedge nonzero. If $p=q=1$, all terms vanish
+and $J(1)=\tfrac12\log^22$. This proves the odd case and the list
+\eqref{eq:six-extras}.
+\end{proof}
+
+\subsection{Examples and the missing factor of two}
+
+The mixed pairs $(e,o)=(4,15),(12,5),(12,29)$ satisfy
+\eqref{eq:mixed-class}. Thus $J(4/15)$, $J(5/12)$ and $J(12/29)$ have
+formal logarithmic reductions. Explicit short logarithmic expressions
+for arbitrary pairs of this kind are a separate constructive task;
+the neighboring-ratio family will be evaluated below.
+
+By contrast $(e,o)=(8,3)$ satisfies
+$8^2\equiv1\pmod3$ and $3^2\equiv1\pmod8$, but fails
+$3^2\equiv1\pmod{16}$. The new-layer obstruction can be seen exactly
+in $G_{16}$: with $h=9$, the four-term expression
+\eqref{eq:four-terms} at $a=3$ is
+\[
+ (\ee_3-\ee_5)(\ee_1-\ee_7)=2\ee_3-2\ee_5\ne0,
+\]
+where residues have been identified up to sign. Hence $J(8/3)$ has no
+formal rational-dilogarithmic reduction. Testing only modulo $e$ would
+produce a false positive.
+
+For $x=2/q$ the theorem recovers exactly the existing classification.
+Odd $q$ gives $q=3,5$; a denominator divisible by $4$ reduces to a ratio
+with even entry and odd entry $1$; and a denominator $q=2m$ with odd
+$m$ gives the odd ratio $1/m$, allowing precisely $m=1,3,5$ for rational
+dilogarithms. Thus the positive cases are $q=2,3,5,6,10$ or $4\mid q$;
+the cases $6,10$ are not logarithmic in the formal calculus.
+
+\begin{remark}[What has not been proved]\label{rem:periods}
+Theorem~\ref{thm:classification} is a necessary and sufficient condition
+for a five-term certificate in Definition~\ref{def:formal}. For a ratio
+that fails the test, it does not prove that the real number $J(p/q)$ is
+linearly independent of all logarithmic products or rational dilogarithm
+values. Such a claim would require information about numerical period
+evaluation beyond the symbol theorem. In particular, the numerical
+transcendence problems in the manuscript remain separate.
+\end{remark}

@@ -1,0 +1,138 @@
+\section{Verification, correction proposals, and integration}
+\label{sec:verification}
+
+\subsection{What the computations establish}
+The proof-bearing arithmetic uses exact integers, rational intervals,
+or rational polynomial identities. The analytic theorems additionally
+require the convergence, sign-change, localization, and asymptotic
+arguments written in the preceding sections. The code is not a substitute
+for those arguments and is not a proof-assistant formalization.
+
+The included exact replays cover:
+\begin{enumerate}
+\item the two Bernstein positivity certificates, their substitutions,
+the local angular coefficient, and the rational inequalities in the
+normalized-radius proof;
+\item outward-rounded rational certificates for two fractional
+thresholds, opposite quartic signs, and the local maximum and minimum
+scaling prefactors;
+\item exact shifted gamma moments and two independent symbolic
+derivations of the transition's first correction;
+\item 48 rational sign enclosures for $f_{n,k}(2)$ and the elementary
+logarithm bounds used in the spectral-tail estimate;
+\item exact Faulhaber generation of Bessel profile operators and simple
+zero coefficients through four inverse powers of $k$ in the scaled
+variable;
+\item all raw and shuffle-lifted Cayley matrices through weight four,
+including every one of the 1136 prescribed lifted row instances at
+weight four;
+\item exact zero residuals for the explicit $S_p$ Cayley expression for
+$1\le p\le8$, together with the full 96-term expansion at $p=6$.
+\end{enumerate}
+
+The separate diagnostic files contain 24 regularized moment comparisons,
+22 endpoint-scale examples, five angular roots, 30 elementary Bessel-zero
+comparisons, six full-Lerch comparisons, and 12 reflected-moment
+quadratures. Six of the latter are computed in both original and
+logarithmic coordinates. The kernel calculations use 80 decimal digits;
+the Bessel comparisons use 250; the gamma quadratures use 65.
+The precision and the interpretation of each table are stored with it.
+These numbers are diagnostic precision settings, not certified error
+estimates for every displayed decimal.
+
+\subsection{The existing conjectures and their current status}
+The local normalized-radius question is resolved by
+Theorem~\ref{thm:radius-local-sign}. The global-radius claim for the stated integer range remains
+open. Theorems~\ref{turn:thm:maximum} and \ref{turn:thm:minimum}
+prove that a blanket fractional extension fails. In particular, a sign in a Taylor expansion near zero does not
+prove monotonicity on the complete radius interval.
+
+For clarity, one frozen form of the manuscript's $S_6$ conjecture is
+\begin{align}\label{eq:S6-open}
+ S_6\stackrel{?}{={}}&
+ \frac{722}{527}g_{6,1}+\frac{40}{527}g_{4,3}
+ -\frac{128}{155}g_{2,5}
+ +\frac{15191}{28569600}\pi^7\notag\\
+ &-\frac3{124}\beta(2)\zeta(5)
+ -\frac{2373}{10540}\beta(4)\zeta(3)
+ -2\beta(6)\log2.
+\end{align}
+The source already contains a rigorous very small residual enclosure
+and proves equivalence with another proposed basket. Neither fact
+establishes equality. Proposition~\ref{cayley:prop:harmonic} gives an
+exact expression of larger depth, while Theorem~\ref{cayley:thm:ideal}
+identifies an entire symmetry quotient. Neither closes the remaining
+double-shuffle reduction in \eqref{eq:S6-open}.
+
+\subsection{Corrections that are justified, and claims that should not be changed}
+The audit did not find a newly verified false theorem in the canonical
+portions used here. It did identify stale statements in historical
+reports, and the extension work exposes several places where a proposed
+broader statement would be false or unjustified. The integration ledger
+records these separately.
+
+\paragraph{Stale $S_4$ status.}
+The pending Lerch report's attribution paragraph still says that it does
+not resolve the mixed $S_4$ conjecture. As a statement about that report's
+own contribution this is harmless, but as a current-status description
+it is obsolete. An editorial annotation should say: ``The canonical
+manuscript now proves $S_4$ by an exact convergent Cayley and
+double-shuffle certificate; the mixed $S_6$ reduction remains
+conjectural.'' Historical source packages can be retained unchanged,
+with the annotation in their integration record.
+
+\paragraph{Critical endpoint atoms.}
+When extending the signed kernel to $a+b=1$, the term containing
+$1/\Gamma(a+b-1)$ cannot simply be deleted. The family
+$e^{-T}T^{\varepsilon-1}/\Gamma(\varepsilon)$ tends weakly to an
+atom at $T=0$. Omitting it loses mass $(1-b)^{-1}$ and violates
+even the zeroth moment. Theorem~\ref{subunit:thm:domain} gives the
+correct measure statement and normalization. This is a correction to
+the naive extension, not to the earlier theorem for $a\ge1$.
+
+\paragraph{Boundary Fourier language.}
+In the atomic cases $A_n$ tends to a nonzero constant, so the complex
+Fourier terms $A_ne^{in\theta}$ do not tend to zero. The correct
+unit-circle interpretation is the Abel value of the analytic
+continuation. Every angular theorem also concerns $0<\theta<\pi$:
+the real endpoints have zero imaginary part automatically.
+
+\paragraph{Limits of moment and zero statements.}
+The fixed-reflected-exponent leading formula must retain ``$m$ fixed''.
+Its unrestricted growing-$m$ extension has limiting relative factor
+$e^{Ce^{-c}}$, which differs from one. Likewise, a fixed-index
+Stieltjes expansion cannot be used without proof when $n\sim k$.
+The Bessel theorem resolves one such new regime, and deliberately
+does not supply a global count of all its positive zeros.
+
+\paragraph{Relation spaces and numerical independence.}
+The raw Cayley image and its shuffle ideal differ already in low
+weights. In weight seven their imaginary ranks are respectively
+12207 and 16996. Neither rank is a dimension theorem for numerical
+periods, and neither can simply be added to a double-shuffle rank:
+the intersection must be computed. Similarly, failure of a sparse
+search to finish is neither nonmembership nor a separating functional.
+
+\subsection{Reproduction and repository placement}
+The proposed destination is
+\codefile{Analysis/Polylogarithms/docs/reports/fractional-cayley-scaling/}.
+The package is self-contained: \codefile{article.tex} inputs the
+section fragments and bibliography, and the vector figures are already
+included. The exact replay command is
+\begin{quote}\ttfamily
+python3 code/run\_verification.py
+\end{quote}
+Adding \codefile{--diagnostics} repeats the slower numerical checks.
+The coefficient and matrix programs can also be run separately.
+The \codefile{Makefile} builds the PDF using \codefile{latexmk};
+\codefile{code/build_pdf.py} supplies a simple multi-pass fallback.
+The machine-readable verification report records exit statuses,
+software versions, and the scope of each job.
+
+\codefile{integration/INTEGRATION.md} maps new results to the existing
+chapters and distinguishes completed, partially resolved, and open
+items. \codefile{integration/source_snapshot.json} records the pinned
+revision and hashes of the source files used in the audit.
+\codefile{MANIFEST.sha256} covers the delivered files. The large
+unfinished $S_6$ matrices and retrieved historical report copies are
+excluded; the new reproducible results do not depend on them.

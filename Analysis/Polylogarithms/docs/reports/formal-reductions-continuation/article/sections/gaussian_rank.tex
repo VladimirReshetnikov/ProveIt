@@ -1,0 +1,395 @@
+% Research contribution for integration into the parent article.
+% Requires amsmath, amssymb, amsthm, booktabs, and theorem/lemma/corollary environments.
+% All labels use the prefix fg:.
+\section{The full Gaussian single-product rank conjecture}
+\label{fg:sec:rank}
+
+The manuscript's Conjecture~\texttt{signed:conj:rank} concerns a precise
+coefficient matrix, rather than the dimension of a space of actual
+polylogarithmic numbers. We prove both proposed rank formulas in every
+odd weight. The proof also gives the full even-weight answer, an explicit
+basis of the nullspace, and a complete finite test for whether an arbitrary
+coefficient vector follows from the stated rows.
+
+The additional boundary issue is essential. A preceding incoming report,
+\path{polylogarithms_research_2026-10-10.zip}, proves the dimension after
+setting the Gaussian family to zero and after retaining regularized rows
+in a different presentation. Our result keeps that family free, removes
+exactly the manuscript's divergent coordinate, and retains only the
+stuffle-minus-shuffle difference when a single factor diverges. The new
+step is a canonical lift of every allowed Gaussian nullvector through
+that precise boundary presentation.
+
+\subsection{The matrix and its scope}
+
+Fix an integer $w\ge2$ and write $n=w-2$. For $a+b=w$, let
+\[
+ D_{a,b}(x,y)=\sum_{k>\ell>0}\frac{x^ky^\ell}{k^a\ell^b},
+ \qquad X_a^{r,s}=\operatorname{Im}D_{a,w-a}(i^r,i^s),
+ \quad r,s\in\mathbb Z/4\mathbb Z.
+\]
+For the coefficient computation, the $X_a^{r,s}$ are formal rational
+coordinates. Impose conjugation
+$X_a^{-r,-s}=-X_a^{r,s}$ and put $X_a^{r,s}=0$ if both colors are even.
+A set of representatives of the remaining color pairs is
+\begin{equation}\label{fg:eq:pairs}
+ (0,1),\ (1,0),\ (1,1),\ (1,2),\ (1,3),\ (2,1).
+\end{equation}
+Remove $X_1^{0,1}$, the single divergent imaginary coordinate in these
+representatives. Thus the ambient coefficient space has dimension
+$N_w=6(w-1)-1=6w-7$.
+
+For $p+q=w$ and $r,s\in\mathbb Z/4\mathbb Z$, define the stuffle and
+shuffle coefficient rows
+\begin{align}
+ S_{p,q}^{r,s}
+ &=X_p^{r,s}+X_q^{s,r},\\
+ H_{p,q}^{r,s}
+ &=\sum_{j=0}^{p-1}\binom{q+j-1}{j}X_{q+j}^{s,r-s}
+   +\sum_{j=0}^{q-1}\binom{p+j-1}{j}X_{p+j}^{r,s-r}.
+ \label{fg:eq:raw-rows}
+\end{align}
+If both single factors $\operatorname{Li}_p(i^r)$ and
+$\operatorname{Li}_q(i^s)$ are finite, retain the two rows separately.
+If exactly one factor is $\operatorname{Li}_1(1)$, retain only
+$S_{p,q}^{r,s}-H_{p,q}^{r,s}$, in which the removed coordinate cancels.
+The two-divergent-factor case occurs only at $w=2$ with two real colors;
+its imaginary coefficient row is zero. Discard zero rows; retaining
+repeated rows does not change the problem. Call the resulting rational
+matrix $A_w$. Let $A_w^{\neg g}$ be obtained by deleting the $w-1$
+columns $X_a^{1,0}$.
+
+The depth-one right sides are suppressed because the present question
+concerns the coefficient row space. Analytically, these rows come from
+convergent shuffle and stuffle identities, and from subtracting the
+one-divergence identities before taking a regularized limit. Nothing
+here assigns a value to $\zeta(1)$. This is a restricted linear system
+of products of two depth-one values. In particular, it omits distribution,
+higher-depth products and elimination, and additional argument
+transformations. It is narrower than the families of standard relations
+studied by Zhao; see J.~Zhao, \emph{Standard Relations of Multiple
+Polylogarithm Values at Roots of Unity}, Documenta Mathematica
+\textbf{15} (2010), 1--34, \texttt{arXiv:0707.1459}.
+
+\begin{theorem}[Exact ranks in every weight]\label{fg:thm:rank}
+The matrix family just defined satisfies
+\begin{align}
+ \operatorname{rank}_{\mathbb Q}A_w
+ &=\begin{cases}
+      6w-7,&w\text{ even},\\
+      5w-6,&w\text{ odd},
+    \end{cases}\label{fg:eq:full-rank}\\
+ \operatorname{rank}_{\mathbb Q}A_w^{\neg g}
+ &=\begin{cases}
+      5w-6,&w\text{ even},\\
+      (9w-11)/2,&w\text{ odd}.
+    \end{cases}\label{fg:eq:nong-rank}
+\end{align}
+In particular, both equalities in the manuscript's odd-weight rank
+conjecture hold for every odd $w\ge3$.
+\end{theorem}
+
+The proof is an explicit description of the entire kernel. It does not
+extrapolate from finite rank calculations.
+
+\subsection{Encoding the rows by homogeneous polynomials}
+
+For a scalar assignment to the formal coordinates, set
+\[
+ \mathscr F^{r,s}(X,Y)
+   =\sum_{a=1}^{w-1}X_a^{r,s}X^{a-1}Y^{w-a-1}.
+\]
+These homogeneous polynomials have degree $n$. Write
+\[
+ U=\mathscr F^{0,1},\quad G=\mathscr F^{1,0},\quad
+ A=\mathscr F^{1,1},\quad K=\mathscr F^{1,2},\quad
+ M=\mathscr F^{1,3},\quad V=\mathscr F^{2,1}.
+\]
+The letter $A$ in these formulas denotes a polynomial; the matrix is
+always written $A_w$. The removed coordinate is encoded by
+\begin{equation}\label{fg:eq:removed}
+ [Y^n]U(X,Y)=0.
+\end{equation}
+For a polynomial $P$, let $P^\sigma(X,Y)=P(Y,X)$.
+
+Coefficient comparison turns a complete set of finite stuffle rows into
+$\mathscr F^{r,s}(X,Y)+\mathscr F^{s,r}(Y,X)=0$. Similarly, the shuffle
+rows are the coefficients of
+\[
+ \mathscr F^{s,r-s}(X+Y,X)
+   +\mathscr F^{r,s-r}(X+Y,Y).
+\]
+For example, the coefficient of $X^{p-1}Y^{q-1}$ in the second summand
+is precisely the second binomial sum in
+\eqref{fg:eq:raw-rows}. This explains the substitutions without invoking
+any rank or transcendence theorem.
+
+\begin{lemma}[The boundary defect]\label{fg:lem:boundary}
+Put $c=[X^n]G(X,Y)$. The finite rows with product colors $(0,1)$,
+together with their one-divergence difference row, are exactly
+\begin{align}
+ U(X,Y)+G(Y,X)&=cY^n,\\
+ M(X+Y,X)+U(X+Y,Y)&=cY^n.
+ \label{fg:eq:boundary}
+\end{align}
+Consequently they determine
+\begin{equation}\label{fg:eq:UM}
+ U(X,Y)=-G(Y,X)+cY^n,
+ \qquad M(X,Y)=G(X-Y,X).
+\end{equation}
+\end{lemma}
+\begin{proof}
+For colors $(0,1)$, the factor $\operatorname{Li}_p(1)$ is finite
+exactly when $p\ge2$. Therefore the coefficients of
+$X^{p-1}Y^{q-1}$ in the stuffle polynomial
+$U(X,Y)+G(Y,X)$ vanish for all $p\ge2$. The only possible defect is
+a multiple of $Y^n$. By \eqref{fg:eq:removed}, its coefficient is $c$.
+The same finite-product argument shows that
+$M(X+Y,X)+U(X+Y,Y)$ has only a $Y^n$ defect, say $dY^n$.
+When $p=1$, the retained regularized row is the difference of these
+two coefficient rows. It says exactly $c-d=0$. This proves
+\eqref{fg:eq:boundary}. Substituting the first identity into the
+second cancels $cY^n$ and gives
+$M(X+Y,X)=G(Y,X+Y)$. The invertible substitution
+$(X+Y,X)\mapsto(X,Y)$ yields \eqref{fg:eq:UM}.
+The argument also covers $w=2$: there are no $p\ge2$ coefficients,
+and the difference row still equates the two constant defects.
+\end{proof}
+
+This lemma is the point at which the precise regularization convention
+matters. Setting the two boundary rows separately to zero would impose
+an extra condition on $c$. Deleting the boundary row altogether would
+lose a condition. The manuscript's difference convention produces the
+unique correction $cY^n$.
+
+\begin{lemma}[Exhaustive kernel conditions]\label{fg:lem:conditions}
+An assignment annihilates every row of $A_w$ if and only if its six
+polynomials satisfy \eqref{fg:eq:UM} and
+\begin{align}
+ A(Y,X)&=-A(X,Y), & V(X,Y)&=-K(Y,X),\\
+ M(Y,X)&=M(X,Y), & G(X,Y)&=-G(X,X-Y),\\
+ K(X,Y)&=-A(Y,Y-X),&K(X,Y)&=K(X,X-Y).
+ \label{fg:eq:conditions}
+\end{align}
+\end{lemma}
+\begin{proof}
+The product-color classes $(1,1),(1,2),(1,3)$ give the conditions in
+this table:
+\[
+\begin{array}{c|c|c}
+ \text{colors}&\text{stuffle}&\text{shuffle}\\ \hline
+ (1,1)& A+A^\sigma=0
+   &G(X+Y,X)+G(X+Y,Y)=0\\
+ (1,2)&K+V^\sigma=0
+   &A(X+Y,X)-V(X+Y,Y)=0\\
+ (1,3)&M-M^\sigma=0
+   &K(X+Y,Y)-K(X+Y,X)=0.
+\end{array}
+\]
+For the $(1,2)$ shuffle we have exchanged the two product factors;
+this merely transposes $X,Y$ and retains exactly the same collection
+of coefficient rows. Substituting $V=-K^\sigma$ into its shuffle gives
+$K(X,Y)=-A(Y,Y-X)$. The other two shuffle equations yield the two
+reflection equations in \eqref{fg:eq:conditions}.
+
+There are no omitted nonzero color classes. Up to swapping the product
+factors and conjugation, all unordered pairs are
+\[
+ (0,0),\ (0,1),\ (0,2),\ (1,1),\ (1,2),\ (1,3),\ (2,2).
+\]
+The classes $(0,0),(0,2),(2,2)$ are entirely real and their imaginary
+rows vanish. The $(0,1)$ class is exactly
+Lemma~\ref{fg:lem:boundary}. This proves necessity and sufficiency.
+\end{proof}
+
+\subsection{The two independent polynomial sectors}
+
+\begin{theorem}[Canonical description of the full nullspace]
+\label{fg:thm:kernel}
+For even $w$, $\ker A_w=0$. For odd $w=2m+1$, its elements are in
+one-to-one correspondence with independent choices of degree
+$n=2m-1$ homogeneous polynomials $G,A$ satisfying
+\begin{equation}\label{fg:eq:two-sectors}
+ G(X,Y)=-G(X,X-Y),\qquad A(X,Y)=-A(Y,X).
+\end{equation}
+All six polynomials are then given by
+\begin{align}
+ U(X,Y)&=-G(Y,X)+cY^n,&c&=[X^n]G,\\
+ M(X,Y)&=G(X-Y,X),\\
+ K(X,Y)&=-A(Y,Y-X),\\
+ V(X,Y)&=-K(Y,X).
+ \label{fg:eq:kernel-map}
+\end{align}
+Each sector has dimension $m$. In particular,
+$\dim\ker A_w=2m=w-1$ at odd weight.
+\end{theorem}
+\begin{proof}
+The preceding lemmas show that every kernel element is of the form
+\eqref{fg:eq:kernel-map}, with the two conditions
+\eqref{fg:eq:two-sectors}. It remains to impose the symmetry of $M$
+and the reflection symmetry of $K$. Homogeneity and the reflection
+condition on $G$ give
+\begin{align*}
+ M(Y,X)&=G(Y-X,Y)
+       =(-1)^nG(X-Y,-Y)\\
+       &=-(-1)^nG(X-Y,X)
+        =(-1)^{n+1}M(X,Y).
+\end{align*}
+Likewise, antisymmetry of $A$ gives
+\begin{align*}
+ K(X,X-Y)&=-A(X-Y,-Y)\\
+         &=-(-1)^nA(Y-X,Y)
+          =(-1)^nA(Y,Y-X)\\
+         &=(-1)^{n+1}K(X,Y).
+\end{align*}
+If $n$ is even, the required equalities $M=M^\sigma$ and
+$K(X,Y)=K(X,X-Y)$ force $M=K=0$, hence $G=A=0$, and then all six
+polynomials vanish. If $n$ is odd, these two remaining equalities
+hold automatically. The exhaustive list of classes in
+Lemma~\ref{fg:lem:conditions} proves that every pair in
+\eqref{fg:eq:two-sectors} is a kernel element, so this is a bijective
+parameterization.
+
+For the $G$ sector, change variables from $X,Y$ to $X,Z=2Y-X$.
+Reflection changes $Z$ to $-Z$, so $G$ is an odd polynomial in $Z$.
+At total degree $2m-1$, a basis is
+\begin{equation}\label{fg:eq:G-basis}
+ G_j(X,Y)=X^{2j}(2Y-X)^{2m-1-2j},\qquad 0\le j<m.
+\end{equation}
+For the $A$ sector, a basis is
+\begin{equation}\label{fg:eq:A-basis}
+ A_j(X,Y)=X^{2m-1-j}Y^j-X^jY^{2m-1-j},\qquad 0\le j<m.
+\end{equation}
+Their independence follows respectively from the distinct powers of
+$Z$, and from their disjoint exchanged monomial pairs. Thus each
+sector has dimension $m$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{fg:thm:rank}]
+The full matrix has $6w-7$ columns. Subtracting the kernel dimensions
+in Theorem~\ref{fg:thm:kernel} gives
+\eqref{fg:eq:full-rank}. To pass to $A_w^{\neg g}$, extend a vector
+on the remaining columns by zero on the deleted Gaussian columns.
+It is in $\ker A_w^{\neg g}$ if and only if the extended vector is
+in $\ker A_w$ and $G=0$. At odd weight this leaves exactly the
+$m$-dimensional $A$ sector; at even weight it leaves zero. There
+are $(6w-7)-(w-1)=5w-6$ remaining columns. Subtracting these
+kernel dimensions gives \eqref{fg:eq:nong-rank}.
+\end{proof}
+
+The Hilbert series of these formal nullspaces are especially simple:
+\[
+ \sum_{w\ge2}\dim\ker A_w\,t^w
+ =\frac{2t^3}{(1-t^2)^2},\qquad
+ \sum_{w\ge2}\dim\ker A_w^{\neg g}\,t^w
+ =\frac{t^3}{(1-t^2)^2}.
+\]
+The second is the previously obtained quotient count; the first records
+the additional freely liftable Gaussian sector.
+
+\subsection{Every Gaussian-only consequence is already a same-point shuffle}
+
+Let $\mathcal R_w$ be the row space of $A_w$ and let $E_g$ be the
+coordinate subspace supported only on the Gaussian columns.
+Projection of $\mathcal R_w$ onto the other columns has dimension
+$\operatorname{rank}A_w^{\neg g}$. Hence
+\begin{equation}\label{fg:eq:intersection}
+ \dim(\mathcal R_w\cap E_g)
+ =\operatorname{rank}A_w-\operatorname{rank}A_w^{\neg g}
+ =\begin{cases}
+    w-1,&w\text{ even},\\
+    (w-1)/2,&w\text{ odd}.
+  \end{cases}
+\end{equation}
+
+\begin{corollary}[Completeness for Gaussian-only coefficient rows]
+\label{fg:cor:g-only}
+For odd $w=2m+1$, every rational linear combination of the defining
+rows whose non-Gaussian coefficients cancel is a rational linear
+combination of the $m$ same-point product-shuffle rows obtained from
+\[
+ \operatorname{Li}_p(i)\operatorname{Li}_{w-p}(i),
+ \qquad 1\le p\le m.
+\]
+Thus enlarging a search to all the colors and one-divergence rows in
+$A_w$ yields no additional Gaussian-only coefficient relation in
+odd weight beyond these elementary shuffles.
+\end{corollary}
+\begin{proof}
+These $m$ rows are present in $A_w$ and are supported only on $G$.
+They are independent: in the usual inner-index ordering, the row
+with $p\le m$ has largest inner index $q=w-p$, with coefficient
+one, and no larger inner index occurs. Ordering the selected rows
+and columns accordingly gives a triangular square block with unit
+diagonal. Their span is therefore an $m$-dimensional subspace of
+$\mathcal R_w\cap E_g$, which also has dimension $m$ by
+\eqref{fg:eq:intersection}. The spaces are equal.
+\end{proof}
+
+This is a statement about the coefficient projection of the equations.
+When actual depth-one right sides are restored, any equality of row
+coefficients also gives the corresponding identity of those right
+sides, because all the underlying analytic rows are valid. The
+corollary does not forbid Gaussian-only identities from other
+functional equations or higher-depth elimination.
+
+\subsection{A complete membership test and exact certificates}
+
+Equations \eqref{fg:eq:G-basis}--\eqref{fg:eq:A-basis}, followed by
+\eqref{fg:eq:kernel-map}, give $w-1$ explicit integer vectors
+$v_1,\ldots,v_{w-1}$ in odd weight. For any rational coefficient row
+$t$, elementary finite-dimensional duality gives
+\begin{equation}\label{fg:eq:membership}
+ t\in\operatorname{rowspan}_{\mathbb Q}A_w
+ \quad\Longleftrightarrow\quad
+ t\cdot v_j=0\quad\text{for every }j.
+\end{equation}
+Thus membership in the stated coefficient module has a complete test
+using only integer polynomial substitution and rational dot products.
+A nonzero dot product supplies a short exact separating functional.
+At even weight the row space is the whole coordinate space. None of
+these tests asserts the absence of a relation outside this matrix.
+
+At weight five, $n=3$, one may choose
+\[
+ G_0=(2Y-X)^3,\quad G_1=X^2(2Y-X),\qquad
+ A_0=X^3-Y^3,\quad A_1=X^2Y-XY^2.
+\]
+These four parameters give the four-dimensional nullspace of the
+$92\times23$ matrix, with no numerical polylogarithm computation.
+The $G$-zero subspace has the two $A$ parameters, explaining the
+rank pair $(19,17)$. At weight seven the corresponding pair is
+$(29,26)$, and at weight thirty-one it is $(149,134)$.
+
+The supplied standard-library program
+\texttt{full\_gaussian\_rank.py} constructs the raw rows from
+\eqref{fg:eq:raw-rows}; its separate polynomial code constructs
+\eqref{fg:eq:kernel-map}. It verifies that every displayed basis
+vector annihilates every raw row. Independent rational elimination
+checks both ranks in weights $2$ through $11$. Basis identities are
+also replayed in weights $12$ through $17$ and in weights
+$23,31,47,63$. The JSON receipt includes the entire weight-five
+matrix, coordinate order, row labels, and kernel basis. These finite
+checks validate the implementation; the preceding proof establishes
+all weights.
+
+\subsection{Integration notes and further questions}
+
+The manuscript's Conjecture~\texttt{signed:conj:rank} can be replaced
+by Theorem~\ref{fg:thm:rank}. The even-weight formulas and the
+canonical kernel description are additional results. The word
+``equivalently'' preceding the manuscript's row-space-intersection
+formulation should be changed to ``consequently,'' unless one of
+the absolute rank formulas is taken as an additional premise: a
+specified difference of two ranks does not by itself determine both
+ranks. Our proof establishes the absolute ranks and their difference.
+
+Three directions now have precise formulations. First, replace the
+implicit numerical rank routine by the explicit polynomial test
+\eqref{fg:eq:membership} in future relation searches. Second, add
+specified distribution or octahedral rows and compute their action
+on these two small polynomial sectors, rather than repeating
+elimination in all $6w-7$ coordinates. Third, classify which
+higher-depth relations couple the two sectors. Such a classification
+would address a larger relation module; passing from any formal
+module to numerical period independence remains a separate problem.

@@ -1,0 +1,162 @@
+{
+  "started_utc": "2026-10-10T01:52:43.189370+00:00",
+  "python": "3.12.14",
+  "packages": {
+    "sympy": "1.14.0",
+    "mpmath": "1.3.0",
+    "matplotlib": "3.10.8"
+  },
+  "upstream_certificate_sha256": "b877ec00a6ac016f937ec7375eea1ca74a0d455dac2c8bf37ad0a994d629f519",
+  "all_checks_passed": true,
+  "checks": [
+    {
+      "name": "angular_divergence",
+      "kind": "exact rational coefficient polynomials; symbolic trigonometric checks",
+      "script": "code/check_angular_divergence.py",
+      "script_sha256": "1dd16a002e3ff54b5ffd13237bd335d94177343edbb2a844a9447f9cab716aa8",
+      "arguments": [
+        "--output",
+        "data/angular_divergence_checks.json"
+      ],
+      "return_code": 0,
+      "elapsed_seconds": 1.125,
+      "output": "data/angular_divergence_checks.json",
+      "output_sha256": "446d775b76339fd2c5791c0e9664c6eee025f03b7efd2cc1519860b23ead5515"
+    },
+    {
+      "name": "angular_eleven",
+      "kind": "exact symbolic coefficients and Fourier residual",
+      "script": "code/derive_angular.py",
+      "script_sha256": "b51859c2e7896b637444039893892f7eca4f2000bc7ddfe26f13405227d5b96d",
+      "arguments": [
+        "--cutoff",
+        "4/27",
+        "--output",
+        "data/angular_eleven.json"
+      ],
+      "return_code": 0,
+      "elapsed_seconds": 0.365,
+      "output": "data/angular_eleven.json",
+      "output_sha256": "db8da75027425965215d2aca65e641970630b2a269a8b06a06230bd55cf5456f"
+    },
+    {
+      "name": "angular_extended",
+      "kind": "exact symbolic coefficients and Fourier residual",
+      "script": "code/derive_angular.py",
+      "script_sha256": "b51859c2e7896b637444039893892f7eca4f2000bc7ddfe26f13405227d5b96d",
+      "arguments": [
+        "--cutoff",
+        "1/10",
+        "--output",
+        "data/angular_extended.json"
+      ],
+      "return_code": 0,
+      "elapsed_seconds": 0.504,
+      "output": "data/angular_extended.json",
+      "output_sha256": "24b23a2c447f0daa4277c45968aa0b41c0fc18dbee5a5031a5050127f13aef4b"
+    },
+    {
+      "name": "angular_numerical",
+      "kind": "floating-point diagnostic with an analytic Fourier-tail bound",
+      "script": "code/check_angular.py",
+      "script_sha256": "36f28e75b6754ef6ac24e7c207c5b29163faf209d0cc8a49253e797252a02b56",
+      "arguments": [
+        "--output",
+        "data/angular_numeric.json"
+      ],
+      "return_code": 0,
+      "elapsed_seconds": 1.443,
+      "output": "data/angular_numeric.json",
+      "output_sha256": "6261a8d9ffa52467a5ab4e7db7d955df987832edca921728d4b2e29ca4a34c27"
+    },
+    {
+      "name": "angular_ten",
+      "kind": "exact symbolic coefficients and Fourier residual",
+      "script": "code/derive_angular.py",
+      "script_sha256": "b51859c2e7896b637444039893892f7eca4f2000bc7ddfe26f13405227d5b96d",
+      "arguments": [
+        "--cutoff",
+        "2/13",
+        "--output",
+        "data/angular_coefficients.json"
+      ],
+      "return_code": 0,
+      "elapsed_seconds": 0.414,
+      "output": "data/angular_coefficients.json",
+      "output_sha256": "da6cee9f1646afacd4385c8a4571729da6fc168384141b12407d6dfcb8827a20"
+    },
+    {
+      "name": "angular_twelve",
+      "kind": "exact symbolic coefficients and Fourier residual",
+      "script": "code/derive_angular.py",
+      "script_sha256": "b51859c2e7896b637444039893892f7eca4f2000bc7ddfe26f13405227d5b96d",
+      "arguments": [
+        "--cutoff",
+        "1/7",
+        "--output",
+        "data/angular_audit_coefficients.json"
+      ],
+      "return_code": 0,
+      "elapsed_seconds": 0.479,
+      "output": "data/angular_audit_coefficients.json",
+      "output_sha256": "730dc9ed4a21da688443a55e1271eb52057320dc58447f399a6d676f1fa665d7"
+    },
+    {
+      "name": "gaussian_ranks",
+      "kind": "exact rational and integer arithmetic",
+      "script": "code/full_gaussian_rank.py",
+      "script_sha256": "2b70ba09589c14764349b4615bc3b776ec8c3f8c4fed9b827674d17b2aa61447",
+      "arguments": [
+        "--output",
+        "data/full_gaussian_rank_results.json"
+      ],
+      "return_code": 0,
+      "elapsed_seconds": 7.45,
+      "output": "data/full_gaussian_rank_results.json",
+      "output_sha256": "d26c28ac33943cb44c78eef58b0d96c76c77e343aeb85251e723e1bae430e8a2"
+    },
+    {
+      "name": "herglotz",
+      "kind": "exact group algebra; independent floating-point quadrature",
+      "script": "code/verify_j.py",
+      "script_sha256": "735b80891c342068c05233f88aa48432797dd3db4e319e4175a5c4e5f3a48313",
+      "arguments": [
+        "--output",
+        "data/verification_j.json"
+      ],
+      "return_code": 0,
+      "elapsed_seconds": 1.751,
+      "output": "data/verification_j.json",
+      "output_sha256": "c2b05617574344f9c6f13b5da22bbe16207ee44bb507ee643b16c3e8cbe0f166"
+    },
+    {
+      "name": "lerch_certificates",
+      "kind": "exact rational intervals and outward integer bounds",
+      "script": "code/verify_lerch_boundary.py",
+      "script_sha256": "ac318dea598b6e475b8e4ff7c4efd254d05cfed2463cf40940b761bc0978d936",
+      "arguments": [
+        "--output",
+        "data/lerch_boundary_certificates.json"
+      ],
+      "return_code": 0,
+      "elapsed_seconds": 0.491,
+      "output": "data/lerch_boundary_certificates.json",
+      "output_sha256": "b002f13fe9dc4d67939be1596c000e149ca4a42d04957e8ab70c85ae094a280c"
+    },
+    {
+      "name": "universal_lift",
+      "kind": "exact rational and integer arithmetic",
+      "script": "code/universal_gaussian_lift.py",
+      "script_sha256": "4ed6d7e33d698c6fa15ea620c0a051440404aa2017ff07b04d448e7479eed22c",
+      "arguments": [
+        "--output",
+        "data/universal_gaussian_lift_results.json"
+      ],
+      "return_code": 0,
+      "elapsed_seconds": 2.044,
+      "output": "data/universal_gaussian_lift_results.json",
+      "output_sha256": "5158c2d637e3ad666b4993a609d1ca32261b3a5bd3dbce4d78eb1a40d6ec8b58"
+    }
+  ],
+  "scope": "Finite exact verifications and explicitly labeled numerical corroboration; see the article for the general proofs."
+}

@@ -1,0 +1,120 @@
+\section{The research question and the distinction that matters}
+\label{ir:sec:scope}
+
+\subsection{A precise continuation of the manuscript}
+The source is the ProveIt manuscript \emph{Polylogarithms and their
+Arithmetic Bridges}, inspected at commit
+\begin{center}\code{aeafd6e9b843b589a3bf66850d15bf8ad0e196dd}.\end{center}
+Its distribution-jets continuation defines independent prime weights and
+proves a conductor-character normal form over a characteristic-zero
+splitting field. Its research programme explicitly separates integral
+Smith forms, torsion, and modular specializations from those results
+\cite{repo,distribution-report}. This article addresses that separation.
+The source's positive-characteristic and integral questions are not answered
+by tensoring a character calculation with a smaller coefficient ring:
+character projectors divide by group orders, and this division is precisely
+what is unavailable at some primes.
+
+The construction below uses only sums, subtraction, and multiplication by
+weights. Consequently it can be specialized to an arbitrary commutative
+ring, including a finite field or a ring with nilpotents. Reflection then
+becomes a second, genuinely different operation. Even when a module is
+free over $\Z$, quotienting it by $c-1$ or $c+1$ for an involution $c$ can
+produce torsion. Rational eigenspace dimensions do not see this torsion.
+
+The main concrete outcomes are summarized in Table~\ref{ir:tab:claims}.
+The proofs are ordinary algebraic and analytic proofs. Finite exact
+computations replay selected consequences and implementation details;
+they are not substitutes for the all-level arguments.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{p{0.25\textwidth}p{0.64\textwidth}}
+\toprule
+Result & Exact content and scope\\
+\midrule
+Integral distribution basis & A basis of actual grid symbols over
+$\Z[A_p]$, a selected maximal minor equal to $1$, and arbitrary base change.\\[4pt]
+Reflection torsion & Both signs have only $2$-torsion, with an explicit
+weight-parity criterion and multiplicity.\\[4pt]
+Modular geometry & A Koszul description for every characteristic-two
+coefficient algebra; an exact field-valued rank locus.\\[4pt]
+One-parameter jets & Complete Smith exponents over $k[[t]]$, not merely
+a first-order rank calculation.\\[4pt]
+Cyclotomic identities & Polynomial certificates with $3$, $4$, and $5$
+raw rows; a level-$15$ derivative identity for every order.\\[4pt]
+Audit & A precise Clausen-parity terminology correction; integral versus
+field-coefficient qualifications for relation calculations.\\
+\bottomrule
+\end{tabular}
+\caption{What this continuation proves. The classical ordinary
+specializations are acknowledged separately.}\label{ir:tab:claims}
+\end{table}
+
+\subsection{Classical antecedents and limits of novelty claims}
+The ordinary universal distribution is classical. Kubert's 1979 papers
+study its generators and its $\Z/2\Z$ cohomology
+\cite{kubert-distribution,kubert-sign}. In particular the ordinary
+specialization of the torsion count below recovers the known sign
+cohomology count; it is not a new resolution of a previously unknown
+ordinary case. Ouyang develops the broader universal norm distribution
+and an Anderson-type resolution \cite{ouyang}. These are important
+antecedents for the present finite weighted complex.
+
+The contribution here is a self-contained, explicit treatment of the
+manuscript's particular presentation, including its chosen raw-point
+basis, universal unit minor, arbitrary-ring specializations, full weighted
+reflection calculation, and contact-order Smith law. These statements
+supply material absent from the inspected manuscript. We do not assert
+that every special case or general structural principle is absent from
+the wider distribution literature. The analytic identities are exact
+consequences of classical distribution, supplied with short certificates
+and all-order pole-cancelled derivatives; they are not advertised as new
+functional equations independent of the classical distribution law.
+
+\subsection{Notation and the formal endpoint}
+For a positive integer $q$, let
+\[
+ X_q=(q^{-1}\Z)/\Z,\qquad P(q)=\{p:p\text{ is prime and }p\mid q\},
+ \qquad R_q=\Z[A_p:p\in P(q)].
+\]
+We write $\den(x)$ for the exact order of $x$ in $\Q/\Z$, and set
+$\den(0)=1$. A symbol $e_x$ is not itself a special value. It is a generator
+in a free module. Under polylogarithm evaluation, $e_0$ will become
+$\Li_s(1)=\zeta(s)$. Under Hurwitz evaluation, it becomes
+$\zeta(s,1)$, not the undefined expression $\zeta(s,0)$.
+
+For $d\mid q$, put $A_d=\prod_{p\mid d}A_p^{v_p(d)}$.
+Weights on composite divisors are thus multiplicative; an unrelated
+variable for every divisor would define a different module. The universal
+module and its relation submodule are
+\begin{align}
+ V_q&=\bigoplus_{x\in X_q}R_qe_x,\\
+ r_{p,x}&=\sum_{\substack{y\in X_q\\py=x}}e_y-A_pe_x
+       \qquad(p\mid q,\ x\in X_{q/p}),\label{ir:eq:prime-row}\\
+ \R_q&=\langle r_{p,x}\rangle_{R_q},\qquad
+ \D_q=V_q/\R_q.\label{ir:eq:module}
+\end{align}
+Every sum in \eqref{ir:eq:prime-row} has exactly $p$ terms. For a
+commutative ring $S$ and weights $a_p\in S$, write $\D_q(S,a)$ for the
+same presentation after $A_p\mapsto a_p$.
+
+\begin{lemma}[Prime rows suffice]\label{ir:lem:divisor}
+The relation $r_{d,x}=\sum_{dy=x}e_y-A_de_x$, for $d\mid q$ and
+$x\in X_{q/d}$, follows from the prime rows without division.
+\end{lemma}
+\begin{proof}
+For $ab\mid q$ and $x\in X_{q/(ab)}$, direct expansion gives
+\[
+ r_{ab,x}=\sum_{ay=x}r_{b,y}+A_b r_{a,x}.
+\]
+Here all $y$ belong to $X_{q/b}$, so every displayed prime or divisor
+row is legitimate. The intermediate symbols cancel. Induction on the
+number of prime factors of $d$, counted with multiplicity, proves the
+claim.
+\end{proof}
+
+This elementary observation already prevents a common ambiguity:
+``distribution rank'' is meaningful only after the row vocabulary,
+endpoint convention, coefficient ring, and divisor-weight convention
+have all been fixed.

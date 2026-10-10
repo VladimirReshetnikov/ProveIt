@@ -1,0 +1,93 @@
+\section{Cartesian motion of the complete real-order zero arc}
+\label{rwcart:sec:motion}
+The normalized radial motion can have different signs above the critical
+line, but its Cartesian abscissa has one direction throughout the entire
+nonnegative-outer-order domain.
+
+\begin{theorem}[Strict outward abscissa motion]
+\label{rwcart:thm:motion}
+For every $a\ge0,b>0$, put $s=\rho^2$ and
+$X_{a,b}(s)=\rho\cos\theta_{a,b}(\rho)$. The unique upper-arc zero
+has a real-analytic abscissa on $(0,1]$, extending real analytically
+through zero, with
+\[
+ 0<X_{a,b}(s)<s,\qquad X_{a,b}'(s)>0\quad(0<s\le1).
+\]
+This is an abscissa theorem; it does not assert one direction for
+$\cos\theta/\rho$ in every supercritical parameter pair.
+\end{theorem}
+\begin{proof}
+For $a>0,a+b>1$, let $\nu$ be the finite signed measure of
+Theorem~\ref{subunit:thm:domain}. Set
+\[
+ G(X,s)=\int_0^1\frac{d\nu(u)}{D(u)},\qquad
+ D(u)=1-2Xu+su^2.
+\]
+The angular root satisfies $G=0$ and $0<X<s\le1$.
+At that root the measure $d\tau=d\nu/D$ has zero total mass and
+the same ordered signs. The sign test gives
+\begin{align*}
+ G_X&=2\int\frac uD\,d\tau>0,
+ &\left(\frac uD\right)'&=\frac{1-su^2}{D^2}>0,\\
+ G_s&=-\int\frac{u^2}D\,d\tau<0,
+ &\left(\frac{u^2}D\right)'&=\frac{2u(1-Xu)}{D^2}>0.
+\end{align*}
+Thus $X'=-G_s/G_X>0$. At $(X,s)=(0,0)$, $G=0$ and
+$G_X=2c_2>0$, proving analytic extension by the implicit-function theorem.
+
+For $a+b\le1$ and on the full axis, the right-endpoint factorization
+gives $X=s\eta(\sqrt s)$, with $\eta>0$ and
+$\partial_s\eta>0$ by Theorem~\ref{subpick:thm:radial}.
+Its positive-measure equation has derivative $G_m=\omega([0,1])>0$
+at $s=0$, so $m$ and $\eta=(1+m)/2$ are analytic there.
+This proves the same derivative conclusion. In every case the root
+is away from the cut at $s=1$, and all denominators are locally
+uniformly nonzero; the analytic implicit argument also applies there.
+\end{proof}
+
+\subsection{The opposite endpoint mechanism in the large-inner-order limit}
+For fixed $a>0$, the disk coefficients tend as $b\to\infty$ to
+$c_1=0$, $c_n=n^{-a}$ for $n\ge2$. The limit function is
+$F_{a,\infty}(z)=\Li_a(z)-z$. Its signed measure is the positive
+Gamma moment law minus a unit atom at zero. Thus its normalized-radius
+motion has the opposite direction from the right-endpoint case.
+
+\begin{theorem}[Strict decrease for the left-endpoint limit]
+\label{rwcart:thm:left-atom}
+For every $a>0$, the unique upper-arc zero of
+$\Imag F_{a,\infty}$ satisfies
+\[
+ \arccos(\rho/2)<\theta_{a,\infty}(\rho)<\pi/2,
+ \qquad 0<\eta_{a,\infty}(\rho)<\tfrac12,
+ \qquad \eta_{a,\infty}'(\rho)<0
+\]
+for $0<\rho\le1$.
+\end{theorem}
+\begin{proof}
+Let $U=e^{-Y}$, $Y\sim\mathrm{Gamma}(a,1)$, and let
+$d\omega(u)=u\,d\Pr(U\le u)$. The measure has strictly positive
+density on $(0,1)$ and mass $2^{-a}$. Moment expansion gives
+\[
+ F_{a,\infty}(z)=z^2\int_0^1\frac{d\omega(u)}{1-zu}.
+\]
+Set $x=\rho^2$, $m=2\cos\theta/\rho$, and
+\[
+ D(u)=1+x(u^2-mu),\qquad
+ G(m,x)=\int_0^1\frac{m-u}{D(u)}\,d\omega(u).
+\]
+Direct rationalization shows that the imaginary part has the sign of
+$G$. We have $G(0,x)<0<G(1,x)$, and
+$G_m=\int D^{-2}\,d\omega>0$. Outside $0<m<1$ the numerator has
+a fixed sign. Thus the zero is unique and simple on the full upper arc.
+At the root, differentiation gives
+\[
+ G_x=\int\frac{u(u-m)^2}{D(u)^2}\,d\omega(u)>0,
+ \qquad
+ \frac{dm}{dx}=-\frac{\int u(u-m)^2D(u)^{-2}\,d\omega(u)}
+                       {\int D(u)^{-2}\,d\omega(u)}<0.
+\]
+All denominators are uniformly positive at $0<m<1$, $0\le x\le1$.
+Hence $\eta'(\rho)=\rho m'(\rho^2)<0$, proving the claims.
+The theorem concerns the exact limit family, not an unproved transfer
+of its radial sign to every finite inner order.
+\end{proof}

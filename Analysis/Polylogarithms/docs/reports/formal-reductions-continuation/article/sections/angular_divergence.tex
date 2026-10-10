@@ -1,0 +1,115 @@
+% Insert after the all-exponential-orders theorem and its proof.
+% Uses the notation and coefficient formula of angular_transseries.tex.
+\subsection{The complete exponential series diverges at every fixed index}
+\label{angular:sec:divergence}
+
+The finite-cutoff theorem cannot be strengthened to ordinary convergence
+of the complete coefficient series. This obstruction persists after
+all equal rational exponential bases have been combined.
+For a base $q$, put
+\[
+ \widehat C(q;b)=\sum_{\mathbf m:\,q(\mathbf m)=q}C_{\mathbf m}(b).
+\]
+Each such sum is finite by local finiteness of the scale.
+
+\begin{theorem}[Divergence after grouping equal bases]
+\label{angular:thm:divergence}
+For every fixed integer $a\ge1$ and real $b>0$, the ordinary series
+\[
+ \sum_q\widehat C(q;b)q^a
+\]
+does not converge. In fact its individual terms are unbounded along
+an infinite sequence of distinct rational bases tending to zero.
+The ungrouped multiset series also diverges. Thus the complete
+expansion in Theorem~\ref{angular:thm:allorders} is asymptotic and
+necessarily divergent at every fixed $a,b$.
+\end{theorem}
+\begin{proof}
+Choose an integer $s\ge1$ with $2s>a$, and put $K=2s+1$.
+For an odd prime $P\ne3$, consider the multiset with $2s$ copies
+of $3$ and one copy of $P$. Its base is
+\begin{equation}\label{angular:eq:prime-base}
+ q_P=\frac{2^K}{3^{2s}P}.
+\end{equation}
+We first prove that this base has no other multiset representation.
+If $k$ integers $n_1,\ldots,n_k\ge3$ give the same base, then
+\[
+ \prod_{j=1}^k n_j=2^{k-K}3^{2s}P.
+\]
+Since the left side is an integer and $3^{2s}P$ is odd, $k\ge K$.
+Let $\Omega(n)$ denote the number of prime factors of $n$, with
+multiplicity. Additivity gives
+\[
+ \sum_{j=1}^k\Omega(n_j)=(k-K)+2s+1=k.
+\]
+Each summand is at least one, so every $n_j$ is prime. The lower
+bound $n_j\ge3$ excludes the prime two; hence $k=K$, and unique
+factorization leaves precisely $2s$ copies of $3$ and one copy
+of $P$. Therefore $\widehat C(q_P;b)$ is exactly the coefficient
+of this one multiset, with no possible cancellation from other
+representations.
+
+Write $h_j=H_j^{(b)}$, let $\sigma_P=\sin(P\pi/2)\in\{-1,1\}$,
+and introduce the even analytic germ
+\[
+ B(u)=\frac{u}{\sin(2u)},\qquad B(0)=\frac12.
+\]
+For odd $P$, the coefficient germs in
+\eqref{angular:eq:phi} satisfy
+\[
+ \phi_3(u)=B(u)\cos(3u),\qquad
+ \phi_P(u)=-\sigma_P B(u)\cos(Pu).
+\]
+The multinomial prefactor in \eqref{angular:eq:coefficient} is
+$(K-1)!/((2s)!1!)=1$. Consequently
+\begin{align}
+ \widehat C(q_P;b)
+ &=-\sigma_Ph_2^{2s}h_{P-1}\,\mathcal P_s(P),
+ \label{angular:eq:prime-coefficient}\\
+ \mathcal P_s(P)
+ &:=[u^{2s}]B(u)^{2s+1}\cos^{2s}(3u)\cos(Pu)
+ \notag\\
+ &=\frac{(-1)^s}{2^{2s+1}(2s)!}P^{2s}
+     +O_s(P^{2s-2}).
+ \label{angular:eq:prime-polynomial}
+\end{align}
+The last equality is a polynomial identity in $P$ followed by its
+leading-term estimate. Its highest power comes only from the
+$u^{2s}$ coefficient of $\cos(Pu)$ and the constant coefficient
+$2^{-2s-1}$ of the remaining factor. All other powers are even
+and at most $2s-2$.
+
+Combining \eqref{angular:eq:prime-base} and
+\eqref{angular:eq:prime-polynomial} gives, along odd primes,
+\[
+ \bigl|\widehat C(q_P;b)q_P^a\bigr|
+ =\frac{2^{K(a-1)}h_2^{2s}}{3^{2sa}(2s)!}
+   h_{P-1}P^{2s-a}\bigl(1+O_s(P^{-2})\bigr).
+\]
+Here $h_{P-1}\ge1$. Since $2s-a>0$, these terms tend to infinity
+as $P\to\infty$ through odd primes different from three. Such
+primes are infinite; no estimate for their distribution is needed.
+The bases $q_P$ are distinct and tend to zero. The necessary
+condition that individual summands tend to zero therefore fails,
+both for the grouped series and for the ungrouped series, and
+indeed for every ordering of these ordinary series.
+\end{proof}
+
+For example, the first two polynomials in
+\eqref{angular:eq:prime-polynomial} are
+\[
+ \mathcal P_1(P)=-\frac{P^2+14}{16},\qquad
+ \mathcal P_2(P)=\frac{P^4}{768}+\frac{11P^2}{48}
+                   +\frac{81}{32}.
+\]
+The supplied script \texttt{check\_angular\_divergence.py} computes
+these coefficient polynomials exactly through $s=6$, checks their
+leading coefficients, and compares six small cases with direct
+symbolic trigonometric expansion. The general proof above, not
+these finite checks, establishes divergence.
+
+There is no conflict with the complete asymptotic theorem. Its
+cutoff is fixed first and then $a$ tends to infinity. The divergent
+subsequence above fixes $a$ first and lets the retained frequency
+grow without bound. Summation procedures beyond ordinary series
+convergence are a separate question.

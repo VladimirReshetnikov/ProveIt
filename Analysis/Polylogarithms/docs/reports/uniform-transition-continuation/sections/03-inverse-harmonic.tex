@@ -1,0 +1,205 @@
+\section{Reversing the first-pole transition}
+\label{us:sec:inverse}
+
+The forward transition answers how close an alternating harmonic sum
+is to its first term. The inverse question is equally natural: how
+large must the real outer exponent be to attain a specified normalized
+fraction? The monotonicity needed to pose this question is exact.
+
+\begin{lemma}[Strict order in the outer exponent]
+\label{us:lem:monotone}
+For fixed $h\ge1$ and $a>0$, the function $p\mapsto R_{p,h}(a)$
+is continuous and strictly increasing on $(0,\infty)$, with endpoint
+limits $(\log2)^h/2$ and $1$.
+\end{lemma}
+\begin{proof}
+For $d>0$, independent gamma variables with common rate $h+a$
+can be coupled by $Y_{p+d}=Y_p+Y_d$. Since
+$y\mapsto k_h(e^{-y})$ is strictly increasing and $Y_d>0$
+almost surely, \eqref{us:eq:gamma} proves strict increase.
+As $p\downarrow0$, $Y_p\to0$ in probability, for instance by its
+mean. As $p\to\infty$, $Y_p\to\infty$ in probability by its
+mean and variance. The bounded continuous kernel gives the two
+limits. The same gamma representation, or dominated convergence
+in \eqref{us:eq:integral} on compact $p$-intervals, gives continuity.
+\end{proof}
+
+For $0<\theta<1$ put
+\begin{equation}\label{us:eq:inverse-parameters}
+ \lambda=-\log\theta,
+ \qquad L_0=\log h-\log(2\lambda).
+\end{equation}
+For all sufficiently large $h$, Lemma~\ref{us:lem:monotone}
+therefore gives a unique $p_\theta(h,a)>0$ satisfying
+$R_{p_\theta,h}(a)=\theta$.
+
+\begin{theorem}[All-orders inverse transition]
+\label{us:thm:inverse}
+Fix compact intervals of $a$ in $(0,\infty)$ and of $\theta$
+in $(0,1)$. For every fixed integer $J\ge0$,
+\begin{equation}\label{us:eq:inverse-all}
+ p_\theta(h,a)=hL_0+
+   \sum_{j=0}^J\frac{Q_j(L_0;\lambda,a)}{h^j}
+   +O_J\!\left(\frac{L_0^{J+2}}{h^{J+1}}\right),
+ \qquad h\to\infty,
+\end{equation}
+uniformly on those intervals. Here $Q_j\in\mathbb Q[L_0,\lambda,a]$
+has degree at most $j+1$ in $L_0$. The first two polynomials are
+\begin{align}
+ Q_0(L;\lambda,a)
+  & =\left(a+\frac12-\frac\lambda2\right)L
+       +2-\frac{5\lambda}{6},\label{us:eq:Q0}\\
+ Q_1(L;\lambda,a)
+  & =\left(\frac{\lambda^2}{8}-\frac\lambda4\right)L^2
+    +\left(\frac{\lambda^2}{3}-\frac\lambda3-\frac1{12}\right)L
+       \notag\\
+  &\hspace{1.5em}-\frac{5a\lambda}{6}+2a
+       +\frac{3\lambda^2}{8}-\frac\lambda{12}-1.
+       \label{us:eq:Q1}
+\end{align}
+\end{theorem}
+
+\subsection{The forward coefficients used in the inversion}
+
+We state the input with its provenance, since it is already proved in
+the baseline. Write $L=p/h$ and $v=he^{-L}/2$. In the compact
+transition window $L=\log h+O(1)$, the all-orders compiler of
+\cite[\src{chapters/04-depth.tex}, Theorem
+\texttt{harmonic:thm:allorders}]{cont:ProveIt} gives
+\begin{equation}\label{us:eq:forward}
+ R_{p,h}(a)=e^{-v}
+    \sum_{j=0}^N\frac{\Theta_j(L,v;a)}{h^j}
+       +O_N\!\left(\frac{L^{N+1}}{h^{N+1}}\right).
+\end{equation}
+Each $\Theta_j$ has degree at most $j$ in $L$, and
+\begin{equation}\label{us:eq:Theta1}
+ \Theta_0=1,
+ \qquad
+ \Theta_1=\left(\frac{v^2}{2}-(a+\tfrac12)v\right)L
+              +\frac56v^2-2v.
+\end{equation}
+A finite way to regenerate these polynomials is as follows. Set
+\[
+ \mathcal D P(v)=vP(v)-vP'(v),\qquad
+ d_j(t;a)=\frac{(-1)^j}{j+1}
+                \{a^{j+1}-(a-t)^{j+1}\}.
+\]
+Define $\mathcal U_j$ by the formal kernel expansion
+\[
+ k_h(2v/h)=e^{-v}\sum_{j\ge0}\mathcal U_j(v)h^{-j}.
+\]
+Then, as a formal power series in $z$,
+\begin{equation}\label{us:eq:forward-recipe}
+ \sum_{j\ge0}\Theta_j(L,v;a)z^j
+ =\exp\!\left(L\sum_{k\ge1}z^k d_k(\mathcal D;a)\right)
+       \sum_{k\ge0}\mathcal U_k(v)z^k.
+\end{equation}
+All operations truncate after finitely many terms at a requested
+order. For example
+$\mathcal U_1=5v^2/6-2v$ and
+$\mathcal U_2=25v^4/72-8v^3/3+4v^2$.
+The exact gamma cumulant identity behind the compiler is
+\[
+ \log\mathbb E e^{t(Y_p-L)}
+ =-Lt+hL\{\log(1+a/h)-\log(1+(a-t)/h)\}.
+\]
+Thus the forward coefficient rule is algebraic, and its uniform
+error comes from bounded kernel derivatives and centered gamma moments.
+
+\subsection{Formal inversion and a rigorous error bracket}
+
+\begin{proof}[Proof of Theorem~\ref{us:thm:inverse}]
+Set $z=1/h$ and write $p/h=L_0+\delta$, so $v=\lambda e^{-\delta}$.
+The formal equation for the inverse is
+\begin{equation}\label{us:eq:implicit}
+ 0=\lambda-\lambda e^{-\delta}
+   +\log\!\left(
+        \sum_{j\ge0}z^j
+          \Theta_j(L_0+\delta,\lambda e^{-\delta};a)\right).
+\end{equation}
+It has a unique solution
+$\delta=\sum_{j\ge0}z^{j+1}Q_j(L_0;\lambda,a)$ because its
+coefficient of $\delta$ at $z=0,\delta=0$ is $\lambda\ne0$.
+The recursion is effective: substitute known coefficients and divide
+the next residual coefficient by $-\lambda$.
+
+There are no hidden denominators in $\lambda$. For $j>0$ every
+$\Theta_j(L,v;a)$ is divisible by $v$: this follows directly
+from \eqref{us:eq:forward-recipe}, since $\mathcal D$ preserves
+the ideal $(v)$, $d_k(0;a)=0$, and $\mathcal U_j(0)=0$ for $j>0$.
+The logarithm in
+\eqref{us:eq:implicit} is therefore coefficientwise divisible by
+$\lambda$. After division the derivative with respect to $\delta$
+is one. Induction gives $Q_j\in\mathbb Q[L_0,\lambda,a]$.
+The bound on the degree in $L_0$ follows by the same induction:
+a term of order $z^r$ has degree at most $r$ in $L_0$, including
+products and the substitutions in \eqref{us:eq:implicit}.
+
+At order $z$, the equation is
+$\lambda Q_0+\Theta_1(L_0,\lambda;a)=0$, proving
+\eqref{us:eq:Q0}. At order $z^2$ it gives
+\[
+ Q_1=\frac{Q_0^2}{2}
+  -\frac{
+     Q_0(\partial_L-\lambda\partial_\lambda)\Theta_1
+       +\Theta_2-\Theta_1^2/2}{\lambda},
+\]
+evaluated at $(L_0,\lambda;a)$. Expanding the forward compiler
+through order two gives \eqref{us:eq:Q1}. The accompanying exact
+program checks these cancellations both in the logarithmic equation
+and in the original normalized expression. A second program derives
+the same answer directly from gamma cumulants after shifting $p$.
+
+For the analytic error, let
+$p_* = hL_0+\sum_{j=0}^Jh^{-j}Q_j$ and use
+\eqref{us:eq:forward} through order $J+1$. The formal
+cancellations prove
+\[
+ R_{p_*,h}(a)-\theta
+ =O\!\left(h^{-J-2}L_0^{J+2}\right)
+\]
+uniformly on the stated compact sets. Apply the same finite expansion
+at $p_*\pm K h^{-J-1}L_0^{J+2}$, with $K>0$ fixed.
+The leading term changes by
+\[
+ \pm\theta\lambda K h^{-J-2}L_0^{J+2}(1+o(1)),
+\]
+and the change of the finitely many correction terms is of smaller
+relative order. Since $\theta\lambda$ is bounded away from zero
+on a compact subinterval of $(0,1)$, taking $K$ sufficiently large
+places the two expanded values on opposite sides of $\theta$.
+Both exponents remain in the same compact transition window.
+Lemma~\ref{us:lem:monotone} then brackets the unique inverse
+between them, proving \eqref{us:eq:inverse-all}. No derivative of
+the remainder in \eqref{us:eq:forward} has been assumed.
+\end{proof}
+
+\subsection{A quantitative example}
+
+For $\theta=1/2$ and $a=1/2$, numerical inversion of the exact
+positive integral gives the values in Table~\ref{us:tab:inverse}.
+The final three columns report absolute exponent errors, successively
+using $hL_0$, $hL_0+Q_0$, and $hL_0+Q_0+Q_1/h$.
+These are high-precision diagnostics of the defining integral,
+not interval-certified root enclosures.
+
+\begin{table}[htbp]
+\centering
+\caption{The inverse harmonic transition at $\theta=a=1/2$.}
+\label{us:tab:inverse}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$h$ & numerical $p_{1/2}$ & leading error & with $Q_0$ & with $Q_1/h$\\
+\midrule
+50 & $182.994297936847$ & $3.72486$ & $4.03044\cdot10^{-2}$ & $3.19479\cdot10^{-3}$\\
+200 & $998.989394784027$ & $4.65277$ & $1.82329\cdot10^{-2}$ & $4.26953\cdot10^{-4}$\\
+800 & $5091.951714446499$ & $5.56974$ & $7.10744\cdot10^{-3}$ & $4.78128\cdot10^{-5}$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The increasing error of the leading approximation is expected:
+$Q_0$ contains a multiple of $\log h$. The decreasing errors after
+correction illustrate why solving only the leading transition profile
+can be inadequate even when the forward normalized sum is well
+approximated.

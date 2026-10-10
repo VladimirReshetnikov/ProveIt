@@ -1,0 +1,89 @@
+% Editorial fragment for the canonical manuscript.
+% Full proofs: reports/compensated-polylogarithms/article.tex.
+% Uses the existing theorem environment; labels are intentionally namespaced.
+\section{Compensated positive kernels below the moment threshold}
+\label{compensated:sec:continuation}
+For $a,b>0$, write
+\[
+ c_n=\frac{H_{n-1}^{(b)}}{n^a},\qquad
+ F_{a,b}(z)=\sum_{n\ge1}c_nz^n,\qquad
+ \Omega=\mathbb C\setminus[1,\infty).
+\]
+The finite signed Hausdorff threshold $a+b\ge1$ remains valid.
+The report \emph{Compensated Positive Kernels for Polylogarithms}
+constructs a different positive representation when $a+b\le1$.
+
+\begin{theorem}[Compensated positivity and angular geometry]
+\label{compensated:thm:geometry}
+For $a+b\le1$, there is a positive measure $\nu_{a,b}$ on $(0,1)$ such that
+\[
+ c_n=\int_0^1(1-u^{n-1})\,d\nu_{a,b}(u),\qquad
+ \int_0^1(1-u)\,d\nu_{a,b}(u)=2^{-a}.
+\]
+Its mass is infinite for $a+b<1$ and finite on $a+b=1$.
+Consequently,
+\[
+ F_{a,b}(z)=\frac{z^2}{1-z}
+      \int_0^1\frac{(1-u)\,d\nu_{a,b}(u)}{1-zu}.
+\]
+It has no nonzero zeros on $\Omega$. For $0<\rho\le1$, its imaginary
+part has exactly one simple zero on the upper semicircle, at an angle
+\[
+ \arccos\rho<\theta_{a,b}(\rho)<\arccos(\rho/2).
+\]
+The normalized displacement $\cos\theta_{a,b}(\rho)/\rho$ increases
+strictly with $\rho$. Combined with the existing supercritical theorem,
+slit-plane nonvanishing and angular uniqueness hold for all $a,b>0$.
+\end{theorem}
+
+The infinite measure must remain compensated: splitting the two terms
+of its moment integral is invalid. This theorem resolves the prior
+subcritical angular-uniqueness conjecture, rather than extending the
+finite signed-measure domain.
+
+\begin{theorem}[Fixed-weight monotonicity and sharp critical error]
+\label{compensated:thm:critical}
+For fixed $w>0$ and $0<\rho\le1$,
+$a\mapsto-\operatorname{Im}F_{a,w-a}(i\rho)$ decreases strictly on $(0,w)$.
+Let $g_{a,b}=\operatorname{Im}F_{a,b}(i)$, and
+\[
+ d_k=\sum_{n=0}^k(-1)^n\binom kn c_{2n+1},\qquad
+ E_N=\sum_{k=0}^{N-1}\frac{d_k}{2^{k+1}}.
+\]
+The sharp constant uniform over $0<a<1$, $b=1-a$, $N\ge1$ is
+\[
+ C_{\mathrm{critical}}=\frac\pi4+\frac{\log2}{2},\qquad
+ E_N-C_{\mathrm{critical}}2^{-N}<g_{a,1-a}<E_N.
+\]
+At every positive pair, the valid all-order enclosure is
+$E_N-H_2^{(b)}2^{-N}<g_{a,b}<E_N$.
+On $a+b\le1$, the least fixed-pair constant in the non-strict
+scaled-error inequality is $-2g_{a,b}$.
+\end{theorem}
+
+Boundary values on $a+b\le1$ are analytic or Abel values, not ordinarily
+convergent boundary series. The critical constant theorem resolves the
+prior sharp-constant conjecture. The all-order bound is not claimed optimal.
+
+\begin{theorem}[Exact Stieltjes order at strict depth]
+\label{compensated:thm:depth}
+For $s_1,\ldots,s_d>0$, put
+\[
+ F_{\boldsymbol s}(z)=
+ \sum_{n_1>\cdots>n_d\ge1}\frac{z^{n_1}}{n_1^{s_1}\cdots n_d^{s_d}}
+ =\sum_{n\ge d}c_n(\boldsymbol s)z^n.
+\]
+There is a finite positive measure $\mu_{\boldsymbol s}$ on $(0,1)$ with
+\[
+ \frac{F_{\boldsymbol s}(z)}{z^d}
+ =\int_0^1(1-zu)^{-d}\,d\mu_{\boldsymbol s}(u).
+\]
+The function $F_{\boldsymbol s}(-x)/(-x)^d$ has exact generalized
+Stieltjes order $d$. For $\alpha>0$, the normalized coefficients
+$c_{n+d}(\boldsymbol s)n!/(\alpha)_n$ are positive Hausdorff moments
+if and only if $\alpha\ge d$.
+\end{theorem}
+The order statement is an analytic positivity invariant, not a period
+independence or arithmetic depth obstruction. The $S_6$ period identity,
+the supercritical normalized-radius problem, and the full-radius
+angular count at arbitrary depth remain separate questions.

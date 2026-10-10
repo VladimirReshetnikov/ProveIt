@@ -1,0 +1,289 @@
+% Exact local bifurcation result, obtained after the fractional radial scan.
+% The parent may adapt labels to its local-radius section.
+\section{A proved failure of fractional global monotonicity}
+\label{rwloc:turn:sec:main}
+
+The local sign threshold does not extend directly to a classification of
+radial monotonicity on the whole unit disk. There are fractional orders
+for which $\eta_{a,b}(\rho)=\cos\theta_{a,b}(\rho)/\rho$ first
+increases and then decreases. This is an analytic theorem, supported by
+a finite exact certificate for its hypotheses.
+
+\subsection{The next local coefficient}
+
+Put $p_n=H_{n-1}^{(b)}/n^a$ and
+\[
+ \mu=\frac{p_3}{2p_2},\qquad
+ K=-\frac{4p_3\mu^2-4p_4\mu+p_5}{2p_2}.
+\]
+Thus $\mu=\eta_{a,b}(0)$ and $K$ is the previously identified
+quadratic coefficient. The next coefficient is
+\begin{equation}\label{rwloc:turn:eq:quartic}
+ Q=-\frac{(8p_3\mu-4p_4)K
+              +8p_4\mu^3-12p_5\mu^2+6p_6\mu-p_7}{2p_2},
+\end{equation}
+and the convergent local expansion is
+\begin{equation}\label{rwloc:turn:eq:etaexp}
+ \eta_{a,b}(\rho)=\mu+K\rho^2+Q\rho^4+O(\rho^6).
+\end{equation}
+The coefficients and remainder are real analytic in $a,b$ locally
+within the parameter range under consideration.
+
+To check \eqref{rwloc:turn:eq:quartic}, write $c=\rho\eta$ and use
+$\sin(n\theta)=\sin\theta\,U_{n-1}(c)$. Division of the
+imaginary-part equation by $\rho^3\sin\theta$ gives
+\begin{align*}
+ 0={}&2p_2\eta-p_3
+   +\rho^2(4p_3\eta^2-4p_4\eta+p_5)\\
+   &+\rho^4(8p_4\eta^3-12p_5\eta^2+6p_6\eta-p_7)
+   +O(\rho^6).
+\end{align*}
+Every omitted mode has order at least $\rho^6$. This equation is
+analytic in $a,b,t=\rho^2,\eta$ near $t=0$; it follows either
+from the convergent disk series or from the parity of each Chebyshev
+term. Its derivative in $\eta$ at zero is $2p_2>0$. The analytic
+implicit-function theorem therefore gives \eqref{rwloc:turn:eq:etaexp},
+and substitution proves the formula for $Q$.
+
+\begin{theorem}[Emergence of a strict radial maximum]
+\label{rwloc:turn:thm:maximum}
+Fix $b=1/2$. There is a unique zero $a_\star$ of $K(a,1/2)$ in
+the rational interval
+\begin{equation}\label{rwloc:turn:eq:abracket}
+ 1.31298577512189<a_\star<1.31298577512190.
+\end{equation}
+There exist $\delta>0$ and $\rho_0>0$ such that, for every
+$a\in(a_\star-\delta,a_\star)$, the function
+$\eta_{a,1/2}(\rho)$ has exactly one critical point in
+$(0,\rho_0)$. It is a strict local maximum: the function increases
+before it and decreases after it within that interval.
+Writing this point as $\rho_{\max}(a)$, one has
+\begin{equation}\label{rwloc:turn:eq:maximumscale}
+ \rho_{\max}(a)
+ =\left(\frac{\partial_aK(a_\star,1/2)}
+                    {2Q(a_\star,1/2)}\right)^{1/2}
+       (a_\star-a)^{1/2}
+       +O((a_\star-a)^{3/2}).
+\end{equation}
+The positive prefactor is rigorously enclosed by
+\[
+ 44.0912731287<
+ \left(\frac{\partial_aK(a_\star,1/2)}
+                    {2Q(a_\star,1/2)}\right)^{1/2}
+ <44.0912738633.
+\]
+In particular these fractional normalized-radius curves are not
+monotone on $(0,1]$, despite having $K>0$.
+\end{theorem}
+
+\begin{proof}
+The accompanying standard-library verifier
+\src{certify_fractional_turning.py} uses only integer and rational
+arithmetic. Let $I$ be the closed rational interval in
+\eqref{rwloc:turn:eq:abracket}. Its output proves
+\[
+ K(\inf I,1/2)>8.16\cdot10^{-17},\qquad
+ K(\sup I,1/2)<-8.72\cdot10^{-17},
+\]
+and, throughout $I$,
+\begin{align*}
+ -0.016895831331&<\partial_aK(a,1/2)<-0.016895831329,\\
+ -4.345546\cdot10^{-6}&<Q(a,1/2)<-4.345545\cdot10^{-6}.
+\end{align*}
+These signs alone give existence and uniqueness of $a_\star$ in
+$I$, independently of the more general local-threshold theorem.
+That theorem also identifies it as the unique threshold in $(1,2)$.
+
+Here is the complete arithmetic basis of the certificate. For
+$2\leq n\leq7$, it encloses $\log n$ by the first $120$ terms of
+\[
+ \log n=2\sum_{j\geq0}\frac{z^{2j+1}}{2j+1},
+ \qquad z=\frac{n-1}{n+1},
+\]
+with positive tail bounded by
+$2z^{241}/(241(1-z^2))$. For a nonnegative rational $x$, the first
+$60$ terms after the constant term of $e^x$ have tail at most
+\[
+ \frac{x^{61}}{61!}\frac1{1-x/62};
+\]
+all arguments used here are less than three. Monotonicity encloses
+$e^{a\log n}$ at both ends of the interval arguments, and reciprocation
+encloses $n^{-a}$. The factors $j^{-1/2}$ in the harmonic numbers are
+bounded by exact integer-square-root operations. All arithmetic
+operations round outwards to multiples of $2^{-128}$. Substitution
+in the formulas for $K,Q$ and their elementary derivatives proves the
+displayed signs. Exact rational endpoints, including the tighter
+prefactor enclosure, are recorded in
+\src{fractional_turning_certificate.json}. The written tail bounds
+and integer inequalities make this a finite exact proof certificate;
+no floating-point sign decision is used.
+
+Write $\eta_{a,1/2}(\rho)=\Phi(a,t)$, $t=\rho^2$, using the
+analytic function constructed above. Set $U(a,t)=\partial_t\Phi(a,t)$.
+Then
+\[
+ U(a_\star,0)=0,\qquad
+ \partial_tU(a_\star,0)=2Q(a_\star,1/2)<0,\qquad
+ \partial_aU(a_\star,0)=\partial_aK(a_\star,1/2)<0.
+\]
+The analytic implicit-function theorem gives a unique local solution
+$t=t(a)$ of $U(a,t)=0$, with
+\[
+ t(a)=\frac{\partial_aK(a_\star,1/2)}{2Q(a_\star,1/2)}
+          (a_\star-a)+O((a_\star-a)^2).
+\]
+It is positive for $a<a_\star$ sufficiently close. On a sufficiently
+small fixed rectangle, $\partial_tU<0$; at its upper $t$ boundary,
+$U<0$, while $U(a,0)=K(a,1/2)>0$ for $a<a_\star$. Thus there
+is exactly one such positive critical point and the derivative
+$\partial_\rho\eta=2\rho U(a,\rho^2)$ changes from positive
+to negative there. At the critical point its second derivative is
+$4t\partial_tU<0$. Taking the positive square root of the expansion
+for $t(a)$ proves \eqref{rwloc:turn:eq:maximumscale}.
+\end{proof}
+
+\subsection{Exploration beyond the existence theorem}
+
+A separate 70-digit diagnostic evaluates the defining disk series and its
+derivative at $b=1/4,1/2,3/4$, at the local threshold and at offsets
+$-0.02,-10^{-4},+0.02$, for radii $0.3,0.7,0.9,0.98$. For each
+$b$, the offset $-10^{-4}$ gives a positive derivative at $0.3$ and
+a negative derivative at $0.98$. Thus the same phenomenon appears
+numerically at all three sampled inner orders; the theorem above proves
+it at $b=1/2$.
+
+For the exact rational pair $a=21/16$, $b=1/2$, the diagnostic finds
+\[
+ \eta'(0.9)=1.2937181281564777\cdot10^{-6},\qquad
+ \eta'(0.98)=-2.6349934635137804\cdot10^{-6}.
+\]
+These two particular signs are numerical observations, not an extra
+certified instance of the theorem's unspecified interval in $a$.
+The disk-series truncation errors for $F$ and $zF'$ are bounded
+analytically by $10^{-50}$, but rounding is not interval-enclosed.
+The existence theorem relies instead on the exact finite coefficient
+certificate above. Extending this argument to other $b$ requires
+determining the sign of $Q(a_\star(b),b)$. The complementary
+minimum theorem below proves that this sign is not always negative.
+
+% Continuation of fractional_turning.tex; uses its definitions of K and Q.
+\subsection{A complementary minimum and a change of quartic sign}
+\label{rwloc:turn:sec:minimum}
+
+The sign of the quartic coefficient along the local threshold also
+changes. In particular, the negative sign at $b=1/2$ cannot extend to
+every $0<b<1$. The following exact certificate exhibits the opposite
+local bifurcation at a rational inner order close to one.
+
+\begin{theorem}[Emergence of a strict radial minimum]
+\label{rwloc:turn:thm:minimum}
+Set $b_0=999/1000$. The unique local threshold $a_0=a_\star(b_0)$
+satisfies the rational enclosure
+\begin{equation}\label{rwloc:turn:eq:minbracket}
+ 1.00057049936559087278<a_0<1.00057049936559087279.
+\end{equation}
+Moreover,
+\[
+ Q(a_0,b_0)>0,\qquad \partial_a K(a_0,b_0)<0.
+\]
+There exist $\delta>0$ and $\rho_0>0$ such that, for every
+$a\in(a_0,a_0+\delta)$, the function $\eta_{a,b_0}(\rho)$
+has exactly one critical point in $(0,\rho_0)$. It is a strict local
+minimum: the function decreases before it and increases after it
+within this interval. Its location satisfies
+\begin{equation}\label{rwloc:turn:eq:minimumscale}
+ \rho_{\min}(a)
+ =\left(\frac{-\partial_a K(a_0,b_0)}{2Q(a_0,b_0)}\right)^{1/2}
+       (a-a_0)^{1/2}+O((a-a_0)^{3/2}),
+\end{equation}
+where the prefactor has the certified enclosure
+\[
+ 17076.2396129683<
+ \left(\frac{-\partial_a K(a_0,b_0)}{2Q(a_0,b_0)}\right)^{1/2}
+ <17076.2396548521.
+\]
+Thus fractional normalized-radius curves can also fail global
+monotonicity while their initial quadratic coefficient is negative.
+The theorem asserts a sufficiently small neighborhood; it gives no
+numerical lower bound on $\delta$.
+\end{theorem}
+
+\begin{proof}
+Let $I$ be the closed rational interval in
+\eqref{rwloc:turn:eq:minbracket}. The exact interval verifier
+\src{certify_fractional_minimum.py} proves
+\[
+ K(\inf I,b_0)>4.08027\cdot10^{-23},\qquad
+ K(\sup I,b_0)<-1.29944\cdot10^{-22}.
+\]
+Throughout $I$, it also proves
+\begin{align*}
+ 2.92779195\cdot10^{-11}
+     &<Q(a,b_0)<2.92779198\cdot10^{-11},\\
+ -0.017074763285092
+     &<\partial_a K(a,b_0)<-0.017074763285091.
+\end{align*}
+The arithmetic uses the same outward dyadic intervals and rational
+logarithm/exponential remainder bounds as the maximum certificate.
+For this rational inner order, each $j^{-b_0}$ is enclosed as the
+reciprocal of $e^{b_0\log j}$, for $1\leq j\leq6$; each
+$n^{-a}$ is enclosed in the same way, for $2\leq n\leq7$.
+All exponential arguments are less than three. Substitution into
+the finite formulas for $K,Q$ and $\partial_aK$ establishes the
+signs. Exact rational endpoints and the sharper prefactor interval
+are in \src{fractional_minimum_certificate.json}. Thus both the
+small positive quartic coefficient and the much smaller endpoint
+values of $K$ are certified without floating-point arithmetic.
+
+Write $\eta_{a,b_0}(\rho)=\Phi(a,t)$ with $t=\rho^2$, and
+let $U=\partial_t\Phi$. At $(a_0,0)$ one has
+\[
+ U=0,\qquad U_t=2Q(a_0,b_0)>0,\qquad
+ U_a=\partial_aK(a_0,b_0)<0.
+\]
+The analytic implicit-function theorem gives a unique local zero
+$t=t(a)$ with
+\[
+ t(a)=\frac{-\partial_aK(a_0,b_0)}{2Q(a_0,b_0)}
+                (a-a_0)+O((a-a_0)^2).
+\]
+It is positive for $a>a_0$ sufficiently close. On a sufficiently
+small fixed rectangle, $U_t>0$; hence $U$ has exactly one zero in
+the indicated positive $t$ interval and changes from negative to
+positive there. Since $\eta_\rho=2\rho U$, this is the asserted
+minimum, with $\eta_{\rho\rho}=4tU_t>0$ at the critical point.
+Taking its positive square root proves
+\eqref{rwloc:turn:eq:minimumscale}.
+\end{proof}
+
+\begin{corollary}[A zero of the quartic coefficient along the threshold]
+\label{rwloc:turn:cor:quarticzero}
+There exists $b_\dagger\in(1/2,999/1000)$ for which
+\[
+ Q(a_\star(b_\dagger),b_\dagger)=0.
+\]
+\end{corollary}
+
+\begin{proof}
+The threshold equation has nonzero $a$ derivative at every
+$a_\star(b)$, so $a_\star(b)$ is real analytic on $(0,1)$.
+The finite formula for $Q$ then makes
+$q(b)=Q(a_\star(b),b)$ real analytic there. The exact maximum and
+minimum certificates give $q(1/2)<0<q(999/1000)$, so the
+intermediate value theorem applies.
+\end{proof}
+
+The finite-coefficient diagnostic
+\src{locate_quartic_sign_transition.py}, run at 100 decimal
+digits, locates one apparent sign change at
+\[
+ b_\dagger\approx0.9974937898734204210746055931,\qquad
+ a_\star(b_\dagger)\approx1.0014301809614951381293517294.
+\]
+These displayed decimal locations are diagnostic, not certified
+enclosures. No uniqueness of $b_\dagger$ is claimed. The 11-point
+finite-coefficient sweep has negative $q(b)$ at every requested
+sample from $0.001$ through $0.99$, and positive $q(0.999)$;
+the latter sign is proved by the independent exact certificate.
+Determining the number of zeros of $q$ and the higher-order radial
+behavior at its zeros remains a concrete research problem.

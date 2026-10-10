@@ -1,0 +1,1618 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{booktabs,array,longtable,microtype,xurl,fancyhdr}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage{bookmark}
+\emergencystretch=3em
+\setlength{\parskip}{3pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\E}{\mathbb E}
+\newcommand{\ii}{\mathrm i}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Impart}{Im}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
+\newcommand{\cut}{\C\setminus[1,\infty)}
+\newcommand{\basecommit}{\nolinkurl{28357e8ca63dd78327db91d9be239d75e4462879}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small The real-order threshold for harmonic polylogarithms}
+\fancyhead[R]{\small ProveIt}
+\fancyfoot[C]{\thepage}
+\hypersetup{pdftitle={The Sharp Real-Order Threshold for Harmonic Polylogarithms},pdfauthor={ProveIt Contributors},pdfsubject={Signed Hausdorff moments, endpoint atoms, angular zeros, and exact rational certificates}}
+\title{\textbf{The Sharp Real-Order Threshold\\for Harmonic Polylogarithms}\\[7pt]
+\large Endpoint atoms, zero geometry, and certified fractional-order identities}
+\author{ProveIt Contributors}
+\date{9 October 2026 (America/Los\_Angeles)\\[3pt]
+\small Research continuation at a pinned repository revision}
+\begin{document}
+\maketitle\thispagestyle{empty}
+\begin{abstract}
+For $a,b>0$, let $F_{a,b}(z)=\sum_{n\ge1}H_{n-1}^{(b)}z^n/n^a$.
+The existing ProveIt signed-kernel theory treats real $a\ge1$.
+We prove that the exact boundary for a finite signed Hausdorff-moment
+representation is instead $a+b\ge1$. Above this boundary an explicit
+regularized Hurwitz kernel has precisely one negative--positive sign
+change. On the boundary the density is replaced by a positive atom at
+one and a strictly negative absolutely continuous part. This distinction
+is necessary, not a matter of convention.
+
+The construction extends slit-plane nonvanishing and the unique simple
+angular zero to the full closed region $a+b\ge1$. On the critical line
+we prove strict increase of the normalized displacement
+$\cos\theta_{a,b}(\rho)/\rho$, through a positive integral formula for its
+derivative; a dual left-endpoint theorem gives strict decrease for
+$\Li_a(z)-z$. A positive two-variable representation proves disk
+nonvanishing and Gaussian negativity even below the signed-measure
+threshold. We derive elementary critical-kernel series, complete
+monotonicity identities for a normalized Hurwitz expression, and strict
+Hankel positivity for critical harmonic defects.
+
+The Euler evaluator extends with explicit parameter-dependent bounds.
+A standard-library-only rational certificate proves
+$\Im F_{1/10,9/10}(\ii)<-0.52$, disproving extension of the old uniform
+constant one beyond its stated domain. Eight value enclosures and twelve
+angular brackets use integer-root inequalities and exact remainder
+bounds. The existing $S_6$ identity and the broader normalized-radius
+conjecture remain unproved here. The supplied symbolic checks and
+numerical diagnostics are distinguished from the written proofs and
+rational certificates throughout.
+\end{abstract}
+\clearpage
+\begingroup\small
+\tableofcontents
+\endgroup
+\clearpage
+
+\section{Scope, baseline, and conventions}
+\label{sec:scope}
+
+\subsection{What is already known in the repository}
+The baseline is the repository \emph{ProveIt}, revision \basecommit,
+and in particular the canonical manuscript
+\emph{Polylogarithms and their Arithmetic Bridges} and the continuation
+\emph{Gaussian Polylogarithms Beyond Parity} \cite{repo,angular}.
+The canonical reading artifact is described by its README as a 298-page,
+twelve-chapter manuscript. Its current worklog marks $S_4$ as proved and
+$S_6$ as conjectural. Those status distinctions are retained.
+
+The signed-kernel chapter gives integer-order moment and zero theorems.
+The angular continuation already extends the kernel and global
+nonvanishing to real $a\ge1,b>0$, proves several parameter comparisons
+at integer outer order, and proves the optimal universal Euler constant
+one on the domain $a\ge1$. Re-proving those statements alone would not
+constitute a continuation. Our main new domain is $0<a<1$, especially
+the transition $a+b=1$. The endpoint measure, its consequences, and
+the critical normalized-radius theorem are not present in the inspected
+baseline. The classical Hurwitz regularization and hyperbolic partial
+fractions used in the derivations are not claimed as new
+\cite{dlmf-hurwitz,dlmf-hyperbolic}.
+
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.24\textwidth}>{\raggedright\arraybackslash}p{.31\textwidth}>{\raggedright\arraybackslash}p{.36\textwidth}@{}}
+\toprule
+Question & Inspected baseline & This article\\
+\midrule
+Signed moments & Real $a\ge1$, $b>0$ & Exact existence threshold $a+b\ge1$\\[3pt]
+Critical endpoint & Not included in that domain & Required atom, exact mass, weak emergence\\[3pt]
+Slit-plane zeros & None except zero for $a\ge1$ & Same conclusion for $a+b\ge1$\\[3pt]
+Normalized radius & Broad conjecture remains & Critical-line and dual endpoint theorems\\[3pt]
+Euler error & Optimal constant one for $a\ge1$ & Explicit extended bounds; certified scope obstruction\\[3pt]
+Below threshold & Outside signed-kernel theorem & Positive double integral, disk nonvanishing\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The new results are proved below as ordinary mathematical theorems.
+They have not been proof-assistant formalized or independently refereed.
+A targeted source audit is not an exhaustive priority search: no claim
+is made that every identity below is absent from the entire literature.
+For general positive Hausdorff sequences and their analytic generating
+functions, see Liu and Pego \cite{liu-pego}. Here the principal measure
+is signed, and its one-crossing structure must be established separately.
+
+\subsection{Definitions and boundary values}
+For $a,b>0$, write
+\begin{equation}\label{eq:def}
+ c_n=c_n(a,b)=\frac{H_{n-1}^{(b)}}{n^a},\qquad
+ H_m^{(b)}=\sum_{j=1}^m j^{-b},\qquad
+ F_{a,b}(z)=\sum_{n=1}^{\infty}c_nz^n\quad(|z|<1).
+\end{equation}
+In particular, $c_1=0$ and $c_2=2^{-a}$. For integer indices,
+$F_{a,b}(z)=\Li_{a,b}(z,1)$ in the decreasing-index convention.
+Set $w=a+b$ and $g_{a,b}=\Impart F_{a,b}(\ii)$, where continuation
+is on $\cut$. Section~\ref{sec:double} constructs that continuation
+for every positive pair of parameters.
+
+A signed Hausdorff representation means a finite real signed Borel
+measure $\mu$ on $[0,1]$ such that
+\begin{equation}\label{eq:moments}
+ c_n=\int_{[0,1]}u^{n-1}\dd\mu(u),\qquad n\ge1.
+\end{equation}
+Thus $\mu([0,1])=0$. Equality of all these moments determines a finite
+signed measure uniquely: polynomials are uniformly dense in
+$C([0,1])$, and integration against a finite measure is continuous
+in the uniform norm. The total variation is denoted by
+$\|\mu\|_{\mathrm{TV}}$. Its two Jordan masses are equal, and we write
+$m(\mu)=\mu_+([0,1])=\mu_-([0,1])$.
+
+\emph{Boundary-series caution.} For $w>1$ the usual boundary series
+converges at every $|z|=1,z\ne1$. On $w=1$ its coefficients tend to a
+nonzero constant, and for $w<1$ they grow without bound. Accordingly,
+in those latter cases $g_{a,b}$ and boundary identities mean analytic
+or Abel values, not ordinary sums of a convergent series. This is proved
+in Section~\ref{sec:threshold} and is essential for the Euler discussion.
+
+\section{The regularized Hurwitz kernel}
+\label{sec:regularization}
+
+For $s>0$ and $T>0$ put $k_s(T)=T^{s-1}/\Gamma(s)$, and define
+\begin{equation}\label{eq:h}
+ h(t)=\frac1{1-e^{-t}}-\frac1t\qquad(t>0).
+\end{equation}
+This notation $h$ is local to this article; it is not the positive
+primitive denoted by $h_{a,b}$ in the earlier angular report.
+
+\begin{lemma}[Elementary regularizer]\label{lem:h}
+The function $h$ increases strictly from $1/2$ to $1$, and
+\begin{equation}\label{eq:hderivative}
+ h'(t)=\frac1{t^2}-\frac1{4\sinh^2(t/2)}>0.
+\end{equation}
+For $b>0$, $b\ne1$, and $q>0$,
+\begin{equation}\label{eq:hurwitz}
+ \zeta(b,q)=\frac{q^{1-b}}{b-1}
+ +\frac1{\Gamma(b)}\int_0^\infty e^{-qt}t^{b-1}h(t)\dd t.
+\end{equation}
+At $b=1$ the limiting formula is
+\begin{equation}\label{eq:digamma}
+ \int_0^\infty e^{-qt}h(t)\dd t=\log q-\psi(q).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Since $2\sinh(t/2)>t$ for $t>0$, differentiation proves
+\eqref{eq:hderivative}. Taylor expansion at zero and the definition
+at infinity give the stated limits. For $b>1$, split the standard
+Hurwitz integral kernel as
+$(1-e^{-t})^{-1}=t^{-1}+h(t)$. The first integral is
+$\Gamma(b-1)q^{1-b}$, proving \eqref{eq:hurwitz} there.
+The remaining integral converges locally uniformly for complex
+$\Re b>0$, because $h$ is bounded. Analytic continuation in $b$
+proves the formula throughout that half-plane away from $b=1$.
+This is the standard regularized Hurwitz formula, equivalently
+DLMF 25.11.27 \cite{dlmf-hurwitz}. Taking the constant terms in
+$\zeta(1+\varepsilon,q)=\varepsilon^{-1}-\psi(q)+O(\varepsilon)$
+and $q^{-\varepsilon}/\varepsilon=\varepsilon^{-1}-\log q+O(\varepsilon)$
+gives \eqref{eq:digamma}.
+\end{proof}
+
+Define the positive convolution
+\begin{align}
+ C_{a,b}(T)
+ &=\frac1{\Gamma(a)\Gamma(b)}
+   \int_0^T(T-t)^{a-1}t^{b-1}h(t)\dd t\label{eq:C}\\
+ &=k_w(T)\E[h(TV)],\qquad V\sim\mathrm{Beta}(b,a).
+ \label{eq:Cbeta}
+\end{align}
+The second parameter of this beta distribution is the outer order
+$a$. This order of parameters matters. Immediate bounds are
+\begin{equation}\label{eq:Cbounds}
+ \tfrac12 k_w(T)<C_{a,b}(T)<k_w(T).
+\end{equation}
+Tonelli's theorem and the gamma integral give
+\begin{equation}\label{eq:CLaplace}
+ \int_0^\infty e^{-qT}C_{a,b}(T)\dd T
+ =q^{-a}\left(\zeta(b,q)-\frac{q^{1-b}}{b-1}\right)
+ \quad(b\ne1).
+\end{equation}
+For $b=1$ the right side is $q^{-a}(\log q-\psi(q))$.
+All quantities in these formulas are finite for $q>0$.
+
+\section{The sharp signed-measure threshold}
+\label{sec:threshold}
+
+\begin{theorem}[Exact existence threshold]\label{thm:threshold}
+Let $a,b>0$. The sequence \eqref{eq:def} has a finite signed
+Hausdorff representation if and only if $a+b\ge1$.
+
+If $w>1$, the representing measure is absolutely continuous:
+\begin{equation}\label{eq:mu-density}
+ \dd\mu_{a,b}(u)=K_{a,b}(-\log u)\dd u\qquad(0<u<1),
+\end{equation}
+with no endpoint atoms. For $b\ne1$ its density in logarithmic
+coordinates is
+\begin{equation}\label{eq:K}
+ K_{a,b}(T)=\zeta(b)k_a(T)-\frac{k_{w-1}(T)}{b-1}-C_{a,b}(T).
+\end{equation}
+For $b=1$ it is
+\begin{equation}\label{eq:K1}
+ K_{a,1}(T)=k_a(T)\bigl(\gamma+\psi(a)-\log T\bigr)-C_{a,1}(T).
+\end{equation}
+There is a unique $r\in(0,1)$ such that the density is strictly
+negative on $(0,r)$ and strictly positive on $(r,1)$.
+
+If $w=1$, necessarily $0<a,b<1$ and $a=1-b$. The unique measure is
+\begin{equation}\label{eq:criticalmeasure}
+ \mu_{a,b}=\frac1a\delta_1-\nu_{a,b},\qquad
+ \dd\nu_{a,b}(u)=
+ \bigl[-\zeta(b)k_a(-\log u)+C_{a,b}(-\log u)\bigr]\dd u.
+\end{equation}
+Here $\nu_{a,b}$ has strictly positive density, total mass $1/a$,
+and no endpoint atoms. In particular $\|\mu_{a,b}\|_{\mathrm{TV}}=2/a$.
+\end{theorem}
+
+\subsection{Existence and the endpoint atom}
+\begin{proof}[Proof of the representation and its necessity]
+When $w>1$, every term of \eqref{eq:K} is integrable with weight
+$e^{-T}\dd T$; this follows from $a>0$, $w-1>0$ and
+\eqref{eq:Cbounds}. The logarithm in \eqref{eq:K1} is also integrable.
+By the change of variables $u=e^{-T}$,
+\[
+ \int_0^1u^{n-1}K(-\log u)\dd u
+ =\int_0^\infty e^{-nT}K(T)\dd T.
+\]
+Notice the factor $e^{-T}$ in the measure: $K(T)\dd T$ itself is
+\emph{not} its logarithmic-coordinate measure.
+
+Using \eqref{eq:CLaplace}, the Laplace transform of \eqref{eq:K} is
+\[
+ \zeta(b)n^{-a}-\frac{n^{-(w-1)}}{b-1}
+ -n^{-a}\left(\zeta(b,n)-\frac{n^{1-b}}{b-1}\right)
+ =\frac{\zeta(b)-\zeta(b,n)}{n^a}=c_n.
+\]
+The finite Hurwitz difference is exactly $H_{n-1}^{(b)}$.
+At $b=1$, differentiating the gamma integral gives
+\[
+ \int_0^\infty e^{-nT}k_a(T)\log T\dd T
+ =n^{-a}\bigl(\psi(a)-\log n\bigr).
+\]
+Together with \eqref{eq:digamma}, this makes the Laplace transform
+of \eqref{eq:K1} equal to $n^{-a}(\gamma+\psi(n))=c_n$.
+In particular the total mass, the $n=1$ case, is zero.
+
+On the critical line, $\zeta(b)<0$ for $0<b<1$.
+For example, the alternating Dirichlet series $\eta(b)>0$ and
+$\zeta(b)=\eta(b)/(1-2^{1-b})$ prove this sign. Thus the density
+in \eqref{eq:criticalmeasure} is strictly positive and integrable.
+Because $w=1$, formula \eqref{eq:CLaplace} becomes
+\[
+ \int_0^\infty e^{-nT}C_{a,b}(T)\dd T
+ =n^{-a}\zeta(b,n)+\frac1a.
+\]
+The moments of \eqref{eq:criticalmeasure} are consequently
+\[
+ \frac1a+\zeta(b)n^{-a}
+ -\left(n^{-a}\zeta(b,n)+\frac1a\right)=c_n.
+\]
+The $n=1$ identity gives $\nu([0,1])=1/a$.
+The positive atom and the negative density are mutually singular,
+so the asserted total variation is exact.
+
+It remains to exclude $w<1$. Then $0<b<1$ and the integral test gives
+$H_{n-1}^{(b)}\sim n^{1-b}/(1-b)$, whence
+$c_n\sim n^{1-w}/(1-b)\to\infty$. Moments of a finite signed measure
+on $[0,1]$ have absolute value at most its total variation. This is
+impossible. Uniqueness in the other cases follows from polynomial
+density, as explained in Section~\ref{sec:scope}.
+\end{proof}
+
+\subsection{The one-crossing argument}
+\begin{proof}[Proof of the strict sign pattern when $w>1$]
+Divide the proposed density by the strictly positive $k_a(T)$ and
+write $B(T)=K_{a,b}(T)/k_a(T)$. For $b\ne1$, differentiation of
+\eqref{eq:Cbeta} yields
+\begin{align}\label{eq:Bprime}
+ B'(T)={}&-\frac{\Gamma(a)}{\Gamma(w-1)}T^{b-2}\notag\\
+ &-\frac{\Gamma(a)}{\Gamma(w)}T^{b-1}
+ \E\bigl[b h(TV)+TVh'(TV)\bigr]<0.
+\end{align}
+Both terms have the displayed sign. In particular the apparent
+sign change of $1/(b-1)$ in the original density disappears after
+normalization and differentiation. Differentiation under the beta
+integral is valid on compact $T$-intervals since $h$ and $h'$ extend
+continuously to zero.
+
+For $b>1$, $B(T)\to\zeta(b)>0$ as $T\downarrow0$.
+For $0<b<1$ and $w>1$, the term
+$\Gamma(a)T^{b-1}/((1-b)\Gamma(w-1))$ makes that limit $+\infty$.
+At infinity the term $-\Gamma(a)T^b\E h(TV)/\Gamma(w)$ dominates,
+so $B(T)\to-\infty$. This proves a unique strict crossing.
+
+For $b=1$,
+\[
+ B(T)=\gamma+\psi(a)-\log T-\frac{T}{a}\E h(TV),
+ \qquad V\sim\mathrm{Beta}(1,a),
+\]
+and hence
+\begin{equation}\label{eq:Bprime1}
+ B'(T)=-\frac1T-\frac1a\E\bigl[h(TV)+TVh'(TV)\bigr]<0.
+\end{equation}
+Again the limits are $+\infty$ and $-\infty$.
+In the $u$ coordinate, increasing $T$ means decreasing $u$;
+therefore the crossing has precisely the negative--positive order
+stated in the theorem. At the crossing $K'=k_aB'<0$, so the crossing
+is transversal as well as unique.
+\end{proof}
+
+\begin{corollary}[Why the critical atom cannot be omitted]\label{cor:atom}
+On $w=1$, every finite signed representing measure must satisfy
+$\mu(\{1\})=1/a$. No integrable density alone can represent the sequence.
+\end{corollary}
+\begin{proof}
+The same integral-test estimate gives $c_n\to1/a$ on the critical
+line. Dominated convergence applied to $u^{n-1}$ against the total
+variation of a finite measure gives
+$\lim c_n=\mu(\{1\})$. An absolutely continuous measure has no such atom.
+Equivalently, the limiting term $k_0$ in a formal convolution should
+be a Dirac mass at $T=0$, not the zero function on $T>0$.
+\end{proof}
+
+\begin{corollary}[Ordinary versus Abel boundary values]\label{cor:boundary}
+For $w>1$, the series defining $F_{a,b}$ converges ordinarily at every
+$|z|=1,z\ne1$ and equals its integral continuation. If $w\le1$, that
+ordinary boundary series does not converge at any such $z$.
+\end{corollary}
+\begin{proof}
+For $w>1$, use the measure without endpoint atoms and the finite
+geometric sum:
+\[
+ \sum_{n=1}^Nc_nz^n
+ =\int\frac{z(1-(zu)^N)}{1-zu}\dd\mu(u).
+\]
+For a fixed boundary point other than one the denominator is bounded
+away from zero uniformly in $0\le u\le1$. Dominated convergence
+therefore applies. If $w=1$ the terms have modulus tending to $1/a$;
+if $w<1$ their modulus grows without bound. In either case the
+necessary term test fails.
+\end{proof}
+
+\section{Critical defects and the emergence of the atom}
+\label{sec:defects}
+
+\begin{theorem}[Completely monotone critical defects]\label{thm:defect}
+Let $a=1-b\in(0,1)$ and
+\[
+ D_n=\frac1a-\frac{H_{n-1}^{(b)}}{n^a},\qquad n\ge1.
+\]
+Then $D_n=\int_0^1u^{n-1}\dd\nu_{a,b}(u)$ with the strictly positive
+density in \eqref{eq:criticalmeasure}. If $\Delta D_n=D_n-D_{n+1}$,
+then $\Delta^kD_n>0$ for every $k\ge0,n\ge1$. Moreover,
+\begin{equation}\label{eq:defectbounds}
+ -\zeta(b)n^{-a}+\frac1{2n}<D_n
+ <-\zeta(b)n^{-a}+\frac1n.
+\end{equation}
+Every finite Hankel matrix $(D_{j+k+1})_{j,k=0}^r$ is positive
+definite, and $D_nD_{n+2}>D_{n+1}^2$.
+\end{theorem}
+\begin{proof}
+Subtract the moments of \eqref{eq:criticalmeasure} from its atomic
+mass. Then
+\[
+ \Delta^kD_n=\int_0^1u^{n-1}(1-u)^k\dd\nu(u)>0.
+\]
+On $w=1$, $k_w(T)=1$, so \eqref{eq:Cbounds} reads
+$1/2<C_{a,b}(T)<1$. Integrating these inequalities against
+$e^{-nT}\dd T$ gives \eqref{eq:defectbounds}.
+For a nonzero real vector $(v_0,\ldots,v_r)$,
+\[
+ \sum_{j,k=0}^rv_jv_kD_{j+k+1}
+ =\int_0^1\left(\sum_{j=0}^rv_ju^j\right)^2\dd\nu(u)>0,
+\]
+since a nonzero polynomial cannot vanish on an interval and the
+density is positive everywhere inside $(0,1)$. Strict log-convexity
+follows either from its $2\times2$ minors or from strict
+Cauchy--Schwarz with the weight $u^{n-1}\dd\nu$.
+\end{proof}
+
+The theorem also gives a continuous version. For $q>0$,
+\begin{equation}\label{eq:continuousdefect}
+ D(q)=\frac1a-q^{-a}\bigl(\zeta(b)-\zeta(b,q)\bigr)
+ =\int_0^\infty e^{-qT}
+   \bigl[-\zeta(b)k_a(T)+C_{a,b}(T)\bigr]\dd T.
+\end{equation}
+Thus $(-1)^jD^{(j)}(q)>0$ for all integers $j\ge0$.
+All derivatives are justified by exponential domination. These are
+inequalities for specific harmonic/Hurwitz expressions, not claims
+about independence of their special values.
+
+\begin{theorem}[Weak emergence of the critical atom]\label{thm:weak}
+Fix $0<b<1$ and let $a_\varepsilon=1-b+\varepsilon$ with
+$\varepsilon\downarrow0$. Then
+$\mu_{a_\varepsilon,b}\Rightarrow\mu_{1-b,b}$ weakly on $[0,1]$.
+The corresponding $F$ converge locally uniformly on $\cut$.
+\end{theorem}
+\begin{proof}
+Put $M=1/(1-b)$. Formula \eqref{eq:K} can be written
+\[
+ \dd\mu_{a_\varepsilon,b}(u)
+ =M k_\varepsilon(-\log u)\dd u-\dd\nu_\varepsilon(u),
+\]
+where the density of $\nu_\varepsilon$ is
+$-\zeta(b)k_{a_\varepsilon}(-\log u)+C_{a_\varepsilon,b}(-\log u)>0$.
+The first term has logarithmic-coordinate law $M$ times a
+$\mathrm{Gamma}(\varepsilon,1)$ density. Its mean $T$ is
+$\varepsilon$, so it converges weakly to $M\delta_1$ in the
+$u=e^{-T}$ coordinate.
+
+The negative densities converge pointwise on $(0,1)$ to the critical
+negative density. Their total masses are all $M$, because the positive
+term has mass $M$ and the signed measure has total mass zero. The
+limiting negative measure also has mass $M$. Scheff\'e's lemma
+therefore gives convergence of the negative densities in $L^1$.
+For completeness, this lemma follows from
+$\int|f_n-f|=\int f_n+\int f-2\int\min(f_n,f)$ and dominated
+convergence for $\min(f_n,f)\le f$.
+
+This proves weak convergence with uniformly bounded total variation.
+The kernels $z/(1-zu)$ are continuous in $u$ and uniformly bounded
+with their $z$-derivatives on compact subsets of the slit plane.
+A finite-net argument then upgrades pointwise convergence of their
+integrals to locally uniform convergence.
+\end{proof}
+
+\section{A positive two-variable representation at all positive orders}
+\label{sec:double}
+
+The threshold in Theorem~\ref{thm:threshold} concerns a
+\emph{one-variable finite signed measure}. It is not a threshold for
+analytic continuation or every positivity property.
+
+\begin{theorem}[Positive double kernel]\label{thm:double}
+For every $a,b>0$ and $z\in\cut$,
+\begin{equation}\label{eq:double}
+ F_{a,b}(z)=z^2\int_{0<y<x<1}
+ \frac{W_{a,b}(x,y)}{(1-xz)(1-yz)}\dd y\dd x,
+\end{equation}
+where
+\begin{equation}\label{eq:W}
+ W_{a,b}(x,y)=\frac{(-\log x)^{a-1}(\log(x/y))^{b-1}}
+ {\Gamma(a)\Gamma(b)}.
+\end{equation}
+The weight is strictly positive and has total mass $2^{-a}$.
+\end{theorem}
+\begin{proof}
+For $|z|<1$, expand the two denominators. Substitution $y=xv$
+gives, for nonnegative integers $j,k$,
+\[
+ \int_{0<y<x<1}W_{a,b}(x,y)x^jy^k\dd y\dd x
+ =\frac1{(j+k+2)^a(k+1)^b}.
+\]
+Summing over $j+k=n-2$ yields $c_n$. Absolute convergence justifies
+the rearrangement, and taking $j=k=0$ gives the total mass.
+On each compact subset of $\cut$, both denominators are bounded
+away from zero uniformly in $x,y\in[0,1]$. The integral is consequently
+holomorphic there and supplies the stated continuation.
+\end{proof}
+
+\begin{corollary}[Disk nonvanishing below and above the threshold]
+\label{cor:disk}
+For all $a,b>0$, $F_{a,b}$ has no nonzero zeros in
+$\{z:|z|\le1,\ z\ne1\}$. More precisely, when $\Impart z>0$ and
+$|z|\le1$,
+\begin{equation}\label{eq:diskpick}
+ \Impart\frac{F_{a,b}(z)}z>0.
+\end{equation}
+At any upper-half-disk zero of $\Impart F_{a,b}(z)$, the value
+$F_{a,b}(z)$ itself is strictly negative real.
+\end{corollary}
+\begin{proof}
+A direct calculation gives
+\[
+ \Impart\frac{z}{(1-xz)(1-yz)}
+ =\frac{(\Impart z)(1-xy|z|^2)}{|1-xz|^2|1-yz|^2}>0
+\]
+for $0<y<x<1$, proving \eqref{eq:diskpick}. The lower half follows
+by conjugation. On the real interval $z<1$, the integral
+$F(z)/z^2$ is strictly positive. Finally, if $F(z)=R\in\R$ with
+$\Impart z>0$, then $\Impart(R/z)=-R\Impart z/|z|^2>0$, so $R<0$.
+\end{proof}
+
+\begin{corollary}[Gaussian negativity and strict log-convexity]
+\label{cor:gaussian}
+For every $a,b>0$,
+\begin{equation}\label{eq:gaussianpositive}
+ -g_{a,b}=\int_{0<y<x<1}W_{a,b}(x,y)
+       \frac{x+y}{(1+x^2)(1+y^2)}\dd y\dd x>0,
+\end{equation}
+and
+\begin{equation}\label{eq:gaussianbounds}
+ \frac{H_2^{(b)}}{4\,3^a}<-g_{a,b}<\frac{H_2^{(b)}}{3^a}.
+\end{equation}
+The function $(a,b)\mapsto\Gamma(a)\Gamma(b)(-g_{a,b})$ is strictly
+log-convex on the positive quadrant.
+\end{corollary}
+\begin{proof}
+Set $z=\ii$ in \eqref{eq:double} and rationalize the denominator.
+Since $1<(1+x^2)(1+y^2)<4$ and
+$\int W(x+y)=c_3=H_2^{(b)}/3^a$, the bounds follow.
+For log-convexity apply H\"older's inequality to the positive integral
+with the gamma factors removed. Its parameter dependence is the
+exponential of
+$(a-1)\log(-\log x)+(b-1)\log\log(x/y)$.
+Equality in H\"older would require a nontrivial real linear combination
+of these two logarithms to be constant almost everywhere on the open
+triangle, which is impossible. This proves strictness for every
+nontrivial line segment of parameter pairs.
+\end{proof}
+
+\subsection{All-order integral identities}
+\begin{theorem}[Hurwitz--polylogarithm transport]\label{thm:transport}
+For $a,b>0$, $b\ne1$, and $z\in\cut$,
+\begin{align}\label{eq:transport}
+ F_{a,b}(z)={}&\zeta(b)\Li_a(z)-\frac{\Li_{a+b-1}(z)}{b-1}\notag\\
+ &-\frac1{\Gamma(b)}\int_0^\infty t^{b-1}h(t)\Li_a(ze^{-t})\dd t.
+\end{align}
+At $b=1$ the pole-free identity is
+\begin{equation}\label{eq:transport1}
+ F_{a,1}(z)=\gamma\Li_a(z)-\partial_a\Li_a(z)
+       -\int_0^\infty h(t)\Li_a(ze^{-t})\dd t.
+\end{equation}
+In particular, the index $a+b-1$ in \eqref{eq:transport} is allowed
+to be zero or negative.
+\end{theorem}
+\begin{proof}
+Inside the disk, multiply \eqref{eq:hurwitz}, with $q=n$, by
+$n^{-a}z^n$ and sum. Exponential decay at infinity, boundedness of
+$h$, and $b>0$ justify termwise integration. The Hurwitz difference
+is $H_{n-1}^{(b)}$, so coefficient comparison gives
+\eqref{eq:transport}. At $b=1$, use
+$H_{n-1}=\gamma+\log n-\int_0^\infty e^{-nt}h(t)\dd t$;
+the sum of $(\log n)n^{-a}z^n$ is $-\partial_a\Li_a(z)$.
+The integral expressions on the right are locally holomorphic on the
+slit plane. Near $t=0$, $\Li_a(ze^{-t})$ stays bounded on compact
+slit sets, and at infinity it is $O(e^{-t})$. Analytic continuation
+therefore proves the identities throughout the claimed domain.
+Standard conventions for $\Li_s$ are those of DLMF 25.12
+\cite{dlmf-polylog}.
+\end{proof}
+
+These identities are useful even when no signed Hausdorff measure
+exists. They are transformations to a depth-one polylogarithm integral,
+not assertions that a depth-two constant has been reduced to a finite
+basis of depth-one periods.
+
+\section{Slit-plane nonvanishing and the unique angular zero}
+\label{sec:zeros}
+
+\begin{lemma}[Ordered-sign test]\label{lem:sign}
+Suppose a nonzero finite signed measure $\mu$ has total mass zero,
+its negative part is supported to the left of $r$, and its positive
+part to the right, allowing an atom at $r$ in either part. If $q$ is
+strictly increasing on the relevant supports and integrable against
+$|\mu|$, then $\int q\dd\mu>0$. For strictly decreasing $q$ the
+inequality is reversed. These conclusions apply both to the
+one-crossing density of Theorem~\ref{thm:threshold} and to its critical
+endpoint measure.
+\end{lemma}
+\begin{proof}
+Subtract $q(r)\mu([0,1])=0$. On each nonzero signed part,
+$(q(u)-q(r))\dd\mu(u)$ has the asserted sign. The strict positive
+density on an interior interval ensures that the integral is strict,
+even when the other part is concentrated at the endpoint $r=1$.
+\end{proof}
+
+\begin{theorem}[Zero-free principal branch on the full closed domain]
+\label{thm:zerofree}
+For $a,b>0$ with $w\ge1$, $F_{a,b}$ has exactly one zero on
+$\cut$: its double zero at the origin. More explicitly, let $r$ be
+the crossing of Theorem~\ref{thm:threshold} for $w>1$, and let $r=1$
+for $w=1$. Then
+\begin{align}
+ F_{a,b}(z)&=\frac{z^2}{1-rz}P_{a,b}(z),\label{eq:factor}\\
+ P_{a,b}(z)&=\int_{[0,1]}\frac{u-r}{1-zu}\dd\mu_{a,b}(u).
+ \label{eq:P}
+\end{align}
+The measure $(u-r)\dd\mu_{a,b}(u)$ is positive and nonzero.
+The imaginary part of $P_{a,b}(z)$ has the strict sign of
+$\Impart z$, and $P_{a,b}(x)>0$ for real $x<1$.
+\end{theorem}
+\begin{proof}
+The moment representation gives
+$F(z)=\int z(1-zu)^{-1}\dd\mu(u)$, first in the disk and then on
+the slit plane. Subtract $(1-rz)^{-1}\int z\dd\mu=0$ to obtain
+\eqref{eq:factor}. Positivity of $(u-r)\dd\mu$ follows from the sign
+pattern; on the critical line the atom disappears after multiplication
+by $u-1$, leaving $(1-u)\dd\nu(u)>0$.
+For nonreal $z$,
+\[
+ \Impart P(z)=(\Impart z)
+   \int\frac{u(u-r)}{|1-zu|^2}\dd\mu(u),
+\]
+and the integral is strictly positive. For real $z<1$ all denominators
+in \eqref{eq:P} are positive. Thus $P$ never vanishes there, and
+$1-rz$ has no zero off the excluded cut. Finally
+$P(0)=\int u\dd\mu(u)=c_2=2^{-a}$, proving exact multiplicity two.
+\end{proof}
+
+The factorization mechanism is already used in the angular continuation
+for $a\ge1$ \cite{angular}. The substantive extension here is the
+construction of the required signed measure for $0<a<1,w\ge1$,
+including its atomic endpoint.
+
+\begin{theorem}[Unique simple angular zero]\label{thm:angular}
+Let $a,b>0$, $w\ge1$, and $0<\rho\le1$. There is exactly one
+$\theta_{a,b}(\rho)\in(0,\pi)$ satisfying
+$\Impart F_{a,b}(\rho e^{\ii\theta})=0$. It obeys
+\begin{equation}\label{eq:anglerange}
+ \arccos\rho<\theta_{a,b}(\rho)<\frac\pi2.
+\end{equation}
+The imaginary part is positive before this zero and negative after
+it, and its angular derivative at the zero is strictly negative.
+The zero depends smoothly on the radius, including a one-sided
+interpretation at $\rho=1$.
+\end{theorem}
+\begin{proof}
+Set $c=\cos\theta$ and
+\[
+ K_{\rho,c}(u)=\frac1{1-2\rho cu+\rho^2u^2},\qquad
+ J(\rho,c)=\int K_{\rho,c}(u)\dd\mu(u).
+\]
+Then $\Impart F(\rho e^{\ii\theta})=\rho\sin\theta J(\rho,c)$.
+The weight $K_{\rho,0}$ is strictly decreasing, so $J(\rho,0)<0$.
+For $\rho<1$, the weight $K_{\rho,\rho}$ is strictly increasing on
+$(0,1)$, since its derivative has the sign of $1-u$. Thus
+$J(\rho,\rho)>0$, providing a zero $0<c<\rho$.
+
+For $\rho=1$ and $w>1$, the negative measure is supported away from
+$u=1$. Separating the two signs before expanding the endpoint kernel
+gives
+\[
+ \lim_{c\uparrow1}J(1,c)=\int\frac{\dd\mu(u)}{(1-u)^2}
+ =\sum_{n\ge1}n c_n>0,
+\]
+with $+\infty$ allowed. The negative part is integrable at this
+endpoint and monotone convergence applies to the positive part.
+On $w=1$ that particular argument must not be used: the negative
+density also reaches one. Instead write $\mu=M\delta_1-\nu$.
+Then
+\[
+ (1-c)J(1,c)=\frac M2
+ -\int\frac{1-c}{1-2cu+u^2}\dd\nu(u)\longrightarrow\frac M2>0.
+\]
+Indeed the last integrand tends to zero at every $u<1$ and is
+bounded by one for $0<c<1$, because its denominator is at least
+$1-c^2\ge1-c$. The finite measure $\nu$ has no atom at one.
+This proves existence at unit radius as well.
+
+For $c'>c$,
+\begin{equation}\label{eq:kernelratio}
+ \frac{\dd}{\dd u}\frac{K_{\rho,c'}(u)}{K_{\rho,c}(u)}
+ =\frac{2\rho(c'-c)(1-\rho^2u^2)}
+ {(1-2\rho c'u+\rho^2u^2)^2}>0\quad(0<u<1).
+\end{equation}
+At a zero $J(\rho,c)=0$, the measure $K_{\rho,c}\dd\mu$ has zero
+mass and the same ordered signs. Lemma~\ref{lem:sign}, applied to
+this ratio, gives $J(\rho,c')>0$ for every $c'>c$, and the reversed
+inequality for every $c'<c$. This proves uniqueness and the global
+sign pattern. At the zero,
+\[
+ J_c=\int K_{\rho,c}(u)\frac{2\rho u}{1-2\rho cu+\rho^2u^2}
+       \dd\mu(u)>0,
+\]
+since the second factor is strictly increasing on $(0,1)$.
+Consequently the angular derivative is
+$-\rho\sin^2\theta J_c<0$. All differentiations are dominated away
+from the point $z=1$, and the implicit function theorem gives smooth
+radial dependence.
+\end{proof}
+
+By Theorem~\ref{thm:weak} and the strict sign brackets in this proof,
+for every fixed $0<\rho\le1$ and $0<b<1$,
+\[
+ \theta_{1-b+\varepsilon,b}(\rho)
+ \longrightarrow\theta_{1-b,b}(\rho).
+\]
+Thus the atom is compatible with continuous angular geometry; it
+changes the representing measure and summation interpretation, not the
+existence of a well-defined limiting root.
+
+\section{Normalized-radius monotonicity at opposite endpoints}
+\label{sec:radius}
+
+The normalized radial quantity is
+\begin{equation}\label{eq:eta}
+ \eta_{a,b}(\rho)=\frac{\cos\theta_{a,b}(\rho)}{\rho}.
+\end{equation}
+The earlier report conjectures its decrease for integer $a\ge2$ and
+all $b>0$, and for $a=1,b>1$, but its increase for $a=1,0<b<1$
+\cite[Conjecture ``Normalized-radius monotonicity'']{angular}.
+No such broad statement follows from uniqueness of the zero.
+We prove two endpoint-measure theorems that isolate an exact
+mechanism for the two directions.
+
+\subsection{A right-endpoint atom}
+\begin{theorem}[Critical normalized-radius theorem]\label{thm:criticalradius}
+Let $a=1-b\in(0,1)$. The function $\eta_{a,b}(\rho)$ is strictly
+increasing for $0<\rho\le1$, and
+\begin{equation}\label{eq:criticalrange}
+ \frac12<\eta_{a,b}(\rho)<1,
+ \qquad
+ \arccos\rho<\theta_{a,b}(\rho)<\arccos(\rho/2).
+\end{equation}
+The following positive integral gives its derivative. Put
+$x=\rho^2$, $m=2\eta-1$, $\dd\omega(u)=(1-u)\dd\nu_{a,b}(u)$,
+and
+$D(u)=1+x\{u^2-(1+m)u\}$. Then $0<m<1$ and
+\begin{equation}\label{eq:criticalderivative}
+ \frac{\dd m}{\dd x}
+ =\frac{\displaystyle\int_0^1
+           \frac{(u-m)^2(1-u)}{D(u)^2}\dd\omega(u)}
+ {(1-xm)\displaystyle\int_0^1
+           \frac{1-xu}{D(u)^2}\dd\omega(u)}>0.
+\end{equation}
+In particular $\eta'(\rho)=\rho m'(\rho^2)>0$.
+\end{theorem}
+\begin{proof}
+We prove the identity for any measure $M\delta_1-\nu$ with
+$\nu([0,1])=M$ and strictly positive density on $(0,1)$, which includes
+\eqref{eq:criticalmeasure}. With $c=\rho(1+m)/2$,
+$D(1)=1-xm$ and
+\[
+ J(\rho,c)=\frac{M}{D(1)}-\int\frac{\dd\nu(u)}{D(u)}
+ =\frac{x}{1-xm}G(m,x),
+\]
+where
+\begin{equation}\label{eq:criticalG}
+ G(m,x)=\int\frac{m-u}{D(u)}\dd\omega(u).
+\end{equation}
+Here we used
+$D(u)-D(1)=x(u-1)(u-m)$.
+For fixed $0<x\le1$, $G(0,x)<0$ and $G(1,x)>0$.
+At $x=1,m=1$, the latter integrand simplifies to $\dd\nu(u)$,
+so it is still integrable and positive. It is also the left limit
+as $m\uparrow1$: for $1/2\le m<1$, the corresponding scalar
+integrand against $\nu$ lies between $-1$ and $1$, so dominated
+convergence applies. For interior $0<m<1$,
+\begin{equation}\label{eq:Gm}
+ G_m=\int\frac{1-xu}{D(u)^2}\dd\omega(u)>0.
+\end{equation}
+Thus its root lies strictly in $(0,1)$ and coincides with the
+angular root already proved unique.
+
+Let $d(u)=u^2-(1+m)u$. At a root of $G$, the probability measure
+proportional to $\dd\omega(u)/D(u)$ has mean $m$. The elementary
+identities
+\[
+ d(m)=-m,\qquad d(u)-d(m)=(u-m)(u-1)
+\]
+therefore give
+\begin{align*}
+ G_x
+ &=\int (u-m)\frac{d(u)}{D(u)}\frac{\dd\omega(u)}{D(u)}\\
+ &=\int (u-m)\left(\frac{d(u)}{D(u)}
+                         -\frac{-m}{1-xm}\right)
+                         \frac{\dd\omega(u)}{D(u)}\\
+ &=-\frac1{1-xm}\int\frac{(u-m)^2(1-u)}{D(u)^2}\dd\omega(u)<0.
+\end{align*}
+The middle subtraction integrates to zero. Combining
+$m'=-G_x/G_m$ with \eqref{eq:Gm} proves
+\eqref{eq:criticalderivative}. All denominators are bounded away from
+zero locally at the root, including at $x=1$ because $m<1$.
+Strictness follows from the nondegenerate positive density.
+\end{proof}
+
+\begin{corollary}[A positive small-radius coefficient]\label{cor:smallradius}
+Let $a=1-b\in(0,1)$ and abbreviate
+$A=H_2^{(b)}$, $B=H_3^{(b)}$, $C=H_4^{(b)}$. Then
+\begin{align}\label{eq:smallradius}
+ \eta_{a,b}(\rho)={}&\frac A2\left(\frac23\right)^a\notag\\
+ &+\left\{AB\left(\frac13\right)^a
+   -\frac C2\left(\frac25\right)^a
+   -\frac{A^3}{2}\left(\frac8{27}\right)^a\right\}\rho^2
+ +O(\rho^4).
+\end{align}
+The expression in braces is strictly positive on this critical line.
+More intrinsically, put
+$m_0=(c_3-c_2)/c_2$ and let $U$ have probability measure
+$\dd\omega/c_2$. That coefficient equals
+\begin{equation}\label{eq:variance}
+ \frac12\E[(U-m_0)^2(1-U)]>0.
+\end{equation}
+\end{corollary}
+\begin{proof}
+At $x=0$, $G(m,0)=0$ gives $m_0=\int u\dd\omega/\int\dd\omega$.
+The moments of $\omega$ are
+\[
+ \int u^j\dd\omega=D_{j+1}-D_{j+2}=c_{j+2}-c_{j+1}.
+\]
+Thus its mass is $c_2$ and
+$(1+m_0)/2=c_3/(2c_2)=A(2/3)^a/2$.
+Formula \eqref{eq:criticalderivative} at $x=0$ gives the coefficient
+\eqref{eq:variance}. Expressing its moments through $c_2,c_3,c_4,c_5$
+and simplifying gives
+\[
+ \frac{c_3c_4}{c_2^2}-\frac{c_5}{2c_2}
+       -\frac{c_3^3}{2c_2^3},
+\]
+which is exactly the braces in \eqref{eq:smallradius}.
+Analytic implicit dependence near $x=0$ gives the remainder.
+The formal expansion itself is already present for $a\ge1$ in the
+angular report; the positive variance formula and the strict sign
+on $a+b=1$ are the additional conclusions here.
+\end{proof}
+
+\subsection{A dual left-endpoint atom}
+\begin{theorem}[Opposite monotonicity for a left atom]\label{thm:left}
+Suppose $\mu=\nu-M\delta_0$, where $\nu$ has strictly positive
+integrable density on $(0,1)$ and mass $M$. Define
+$F(z)=\int z(1-zu)^{-1}\dd\mu(u)$.
+On every upper semicircle of radius $0<\rho\le1$, its imaginary
+part has one simple zero, and its normalized displacement
+$\eta(\rho)=\cos\theta(\rho)/\rho$ satisfies
+$0<\eta<1/2$ and $\eta'(\rho)<0$.
+
+More explicitly, set $x=\rho^2$, $m=2\eta$, $\dd\omega=u\dd\nu$,
+and $D(u)=1+x(u^2-mu)$. At the root,
+\begin{equation}\label{eq:leftderivative}
+ \frac{\dd m}{\dd x}
+ =-\frac{\displaystyle\int\frac{u(u-m)^2}{D(u)^2}\dd\omega(u)}
+ {\displaystyle\int\frac1{D(u)^2}\dd\omega(u)}<0.
+\end{equation}
+\end{theorem}
+\begin{proof}
+In this case
+\[
+ J(\rho,c)=\int\frac{\dd\nu(u)}{D(u)}-M=xG(m,x),
+ \quad
+ G(m,x)=\int\frac{m-u}{D(u)}\dd\omega(u).
+\]
+The function $G$ is negative at $m=0$, positive at $m=1$, and
+\[
+ G_m=\int D(u)^{-2}\dd\omega(u)>0,
+ \qquad
+ G_x=\int u(u-m)^2D(u)^{-2}\dd\omega(u)>0.
+\]
+The denominators stay positive for $0\le m\le1$ and $0\le x\le1$.
+This proves the unique simple root, its range, and
+\eqref{eq:leftderivative}. The signs outside the root also follow
+from the same increasing-kernel-ratio argument as before.
+\end{proof}
+
+\begin{corollary}[A polylogarithm-minus-linear-term family]\label{cor:Li}
+For every real $a>0$, the normalized angular displacement of
+$\Li_a(z)-z$ decreases strictly with $\rho\in(0,1]$ and belongs to
+$(0,1/2)$. This family is the limit of $F_{a,b}$ as $b\to\infty$.
+\end{corollary}
+\begin{proof}
+The probability measure $\dd\nu(u)=k_a(-\log u)\dd u$ has moments
+$n^{-a}$. Thus $\nu-\delta_0$ has moments $0$ at $n=1$ and $n^{-a}$
+for $n\ge2$, which gives $\Li_a(z)-z$. Apply
+Theorem~\ref{thm:left}. Coefficient convergence gives the indicated
+limit in the disk. For sufficiently large $b>1$, the signed measures
+of Theorem~\ref{thm:threshold} have uniformly bounded variation,
+as proved below. Moment uniqueness and polynomial approximation then
+give weak convergence to $\nu-\delta_0$, hence locally uniform
+convergence on the slit plane.
+\end{proof}
+
+These two theorems do not settle the finite-$b$ normalized-radius
+conjecture from the baseline. They show why the orientation of an
+endpoint atom can force opposite directions, and supply rigorous
+boundary data for a continuous-parameter phase diagram.
+
+\section{Elementary critical-kernel identities and Hurwitz inequalities}
+\label{sec:criticalidentities}
+
+In this section $0<b<1$, $a=1-b$, and
+$C_b(T)=C_{1-b,b}(T)=\E[h(TV)]$ with
+$V\sim\mathrm{Beta}(b,1-b)$. In particular $1/2<C_b(T)<1$ and
+$C_b$ is strictly increasing.
+
+\begin{theorem}[An elementary convergent series]\label{thm:elementary}
+For every $T>0$,
+\begin{equation}\label{eq:elementary}
+ C_b(T)=\frac12+\sum_{k=1}^\infty
+ \frac{\sin\!\bigl(b\arctan(T/(2\pi k))\bigr)}
+ {\pi k\bigl(1+(T/(2\pi k))^2\bigr)^{b/2}}.
+\end{equation}
+Every summand is positive. The tail after $K\ge1$ terms is bounded by
+\begin{equation}\label{eq:elementarytail}
+ 0<C_b(T)-\frac12-\sum_{k=1}^K(\text{summand})
+ \le\frac{bT}{2\pi^2K}.
+\end{equation}
+For $|T|<2\pi$ it also has the convergent expansion
+\begin{equation}\label{eq:Bernoulli}
+ C_b(T)=\frac12+\sum_{j=1}^\infty
+ \frac{B_{2j}(b)_{2j-1}}{(2j)!(2j-1)!}T^{2j-1},
+\end{equation}
+where $(b)_m$ is the rising factorial and $B_{2j}$ is a Bernoulli
+number, not a Bernoulli polynomial evaluated at $b$.
+\end{theorem}
+\begin{proof}
+The classical partial fraction for $\coth$ gives
+\begin{equation}\label{eq:hpartial}
+ h(t)=\frac12+2t\sum_{k=1}^\infty\frac1{t^2+(2\pi k)^2}.
+\end{equation}
+This follows from DLMF 4.36.3 after rescaling
+\cite{dlmf-hyperbolic}. The summands are positive for $t>0$, so
+Tonelli permits averaging over $V$.
+For $|z|<1$, the beta moments yield
+\[
+ \E\frac1{1-zV}=\sum_{j\ge0}z^j\frac{(b)_j}{j!}=(1-z)^{-b}.
+\]
+Both sides are analytic for $z\in\cut$, so the same identity holds
+there. At $z=\ii q$, its imaginary part is
+\[
+ \E\frac{qV}{1+q^2V^2}
+ =\frac{\sin(b\arctan q)}{(1+q^2)^{b/2}}.
+\]
+Taking $q=T/(2\pi k)$ proves \eqref{eq:elementary}.
+Since $\sin(b\arctan q)\le bq$ and the denominator factor is at
+least one, its tail is at most
+$bT(2\pi^2)^{-1}\sum_{k>K}k^{-2}\le bT/(2\pi^2K)$.
+
+The usual Bernoulli expansion of \eqref{eq:h} has radius $2\pi$:
+$h(t)=1/2+\sum_{j\ge1}B_{2j}t^{2j-1}/(2j)!$.
+For $|T|<2\pi$ it is uniformly absolutely convergent for
+$0\le V\le1$. Average termwise and use
+$\E V^{2j-1}=(b)_{2j-1}/(2j-1)!$ to obtain
+\eqref{eq:Bernoulli}.
+\end{proof}
+
+For instance,
+\begin{equation}\label{eq:Cexample}
+ C_{1/2}(T)=\frac12+\frac{T}{24}-\frac{T^3}{2304}
+                       +\frac{T^5}{122880}+O(T^7).
+\end{equation}
+The companion program regenerates exact coefficients through degree
+$13$ at $b=1/10,1/2,9/10$ by two algebraically equivalent constructions.
+The numerical tests of \eqref{eq:elementary} use independent beta
+quadrature, with the analytic tail bound displayed separately.
+
+\begin{theorem}[A completely monotone normalized Hurwitz expression]
+\label{thm:hurwitzcm}
+For $0<b<1$ and $q>0$, define
+\begin{equation}\label{eq:L}
+ L_b(q)=q^{b-1}\zeta(b,q)+\frac1{1-b}.
+\end{equation}
+Then
+\begin{equation}\label{eq:criticalLaplace}
+ L_b(q)=\int_0^\infty e^{-qT}C_b(T)\dd T,
+ \qquad \frac1{2q}<L_b(q)<\frac1q.
+\end{equation}
+In particular, $(-1)^jL_b^{(j)}(q)>0$ for all $j\ge0$.
+The function
+\begin{equation}\label{eq:normalizedHurwitz}
+ qL_b(q)=q^b\zeta(b,q)+\frac q{1-b}
+\end{equation}
+decreases strictly from $1$ to $1/2$ as $q$ increases from zero to
+infinity.
+\end{theorem}
+\begin{proof}
+Formula \eqref{eq:criticalLaplace} is \eqref{eq:CLaplace} with
+$a=1-b$. Bounds and strict complete monotonicity follow from
+$1/2<C_b<1$ and differentiating the positive Laplace integral.
+Substitution $T=s/q$ gives
+\[
+ qL_b(q)=\int_0^\infty e^{-s}C_b(s/q)\dd s.
+\]
+Strict increase of $C_b$ proves strict decrease with $q$.
+The endpoint limits follow by dominated convergence and the limits
+$C_b(0+)=1/2$, $C_b(\infty)=1$.
+\end{proof}
+
+The beta average is the common source of the elementary series and
+the Hurwitz inequalities. The inequalities, finite-difference signs,
+and Hankel determinants are analytic consequences of a positive
+integral, not numerical pattern extrapolations.
+
+\section{Euler enclosures and the failure of an unrestricted constant one}
+\label{sec:euler}
+
+Let $a,b>0$ with $w\ge1$. Define
+\begin{equation}\label{eq:eulerdef}
+ f(n)=c_{2n+1}=\frac{H_{2n}^{(b)}}{(2n+1)^a},\qquad
+ d_k=\sum_{n=0}^k(-1)^n\binom kn f(n),\qquad
+ E_N=\sum_{k=0}^{N-1}\frac{d_k}{2^{k+1}}.
+\end{equation}
+The error is measured against $g_{a,b}=\Impart F_{a,b}(\ii)$.
+On the critical line this is an Abel value; the ordinary alternating
+series with terms $(-1)^nf(n)$ diverges by the term test.
+
+\begin{theorem}[Extended one-sided Euler bounds]\label{thm:euler}
+For every $k\ge1$ one has $d_k<0$, while $d_0=0$. The $E_N$ decrease
+strictly to $g_{a,b}$, and
+\begin{equation}\label{eq:exacteuler}
+ E_N-g_{a,b}=-2^{-N}\int_{[0,1]}
+       \frac{(1-u^2)^N}{1+u^2}\dd\mu_{a,b}(u)>0.
+\end{equation}
+Consequently
+\begin{equation}\label{eq:eulerenclosure}
+ E_N-M(a,b)2^{-N}<g_{a,b}<E_N\qquad(N\ge1),
+\end{equation}
+with the following elementary choices:
+\begin{equation}\label{eq:Mchoices}
+ M(a,b)=
+ \begin{cases}
+ 1,&a\ge1,\\
+ (1-b)^{-1},&0<a<1,\ 0<b<1,\ w\ge1,\\
+ b/(b-1),&0<a<1,\ b>1,\\
+ 1+1/a,&0<a<1,\ b=1.
+ \end{cases}
+\end{equation}
+The choice one in the first line is the prior optimal universal
+constant on that restricted domain; it is not asserted to work in
+the other lines.
+\end{theorem}
+\begin{proof}
+The binomial theorem and \eqref{eq:moments} give
+$d_k=\int(1-u^2)^k\dd\mu(u)$. Thus $d_0=0$, while the strictly
+decreasing weight gives $d_k<0$ for $k\ge1$. With
+$m=m(\mu)$, we have $|d_k|\le m$. Therefore the Euler series is
+absolutely convergent and may be summed under the measure integral:
+\[
+ \sum_{k\ge0}\frac{d_k}{2^{k+1}}
+ =\int\frac{\dd\mu(u)}{1+u^2}=\Impart F(\ii).
+\]
+Summing the geometric tail gives \eqref{eq:exacteuler}. Its weight
+is strictly decreasing, bounded by one, and strictly less than one
+for every $u>0$. Since the negative Jordan part has no atom at zero,
+$0<E_N-g<m2^{-N}$. It remains to bound $m$.
+
+For $b<1,w>1$, rewrite \eqref{eq:K} as
+\[
+ K_{a,b}=\frac{k_{w-1}}{1-b}
+          -\bigl[-\zeta(b)k_a+C_{a,b}\bigr].
+\]
+The two displayed densities are positive, and each has mass
+$1/(1-b)$ in the $u$ measure, by zero total mass. Hence
+$m<1/(1-b)$. On $w=1$ the exact Jordan mass is $1/a=1/(1-b)$.
+For $b>1$, \eqref{eq:K} is a difference of positive densities
+$\zeta(b)k_a$ and $k_{w-1}/(b-1)+C_{a,b}$, so
+$m<\zeta(b)<1+1/(b-1)=b/(b-1)$.
+
+For $b=1$ and $0<a<1$, use a translation estimate rather than the
+singular limit of either of these bounds. Let $\sigma_a$ be the
+probability law of $u=e^{-Y}$ with $Y\sim\mathrm{Gamma}(a,1)$.
+Its logarithmic density $p_a(s)=e^{-s}s^{a-1}/\Gamma(a)$ decreases
+strictly. If $D_{e^{-t}}$ denotes pushforward under $u\mapsto e^{-t}u$,
+then direct comparison of $p_a(s)$ and $p_a(s-t)$ gives
+\[
+ \|\sigma_a-D_{e^{-t}}\sigma_a\|_{\mathrm{TV}}
+ =2\int_0^tp_a(s)\dd s
+ \le\frac{2t^a}{\Gamma(a+1)}.
+\]
+The signed-measure integral
+\[
+ \widetilde\mu=\int_0^\infty
+       \frac{\sigma_a-D_{e^{-t}}\sigma_a}{e^t-1}\dd t
+\]
+converges in total variation. Its $(n-1)$st moment is
+$n^{-a}\int_0^\infty(1-e^{-(n-1)t})(e^t-1)^{-1}\dd t=c_n$.
+By uniqueness it is $\mu_{a,1}$, and
+\[
+ m\le\frac1{\Gamma(a+1)}\int_0^\infty\frac{t^a}{e^t-1}\dd t
+ =\zeta(a+1)<1+1/a.
+\]
+
+Finally, for $a\ge1$ the earlier sharper bound can be recovered
+without any fractional-order gap. At $a=1$ the equivalent base density is
+\[
+ K_{1,b}(T)=-\frac{T^b}{\Gamma(b+1)}
+ +\frac1{\Gamma(b)}\int_T^\infty\frac{t^{b-1}}{e^t-1}\dd t.
+\]
+Its $n$th Laplace value is
+$-n^{-b-1}+n^{-1}\sum_{j=1}^n j^{-b}=H_{n-1}^{(b)}/n$,
+by Tonelli and a finite geometric sum. Moment uniqueness therefore
+identifies this base density with \eqref{eq:K} or \eqref{eq:K1}.
+Both positive terms in this difference have $e^{-T}\dd T$ integral
+one. For the second term, interchange the integrals and use
+$(1-e^{-t})/(e^t-1)=e^{-t}$; the first is a gamma integral.
+Their positive overlap makes the Jordan mass strictly less than one.
+For $a>1$, convolution by $k_{a-1}$ in the $T$ coordinate preserves
+moments after multiplication by $n^{-(a-1)}$ and contracts the
+$L^1(e^{-T}\dd T)$ norm, because
+$\int_0^\infty e^{-T}k_{a-1}(T)\dd T=1$.
+Moment uniqueness identifies the result with the present kernel,
+so $m<1$ for every real $a\ge1$. This proves all four choices.
+\end{proof}
+
+The same translation proof gives, when $0<a\le1$ and $a+b>1$,
+the optional non-elementary bound
+\[
+ m\le\frac{\Gamma(a+b)\zeta(a+b)}{\Gamma(a+1)\Gamma(b)}.
+\]
+It may improve a particular estimate, but diverges as $a+b\downarrow1$.
+The critical atomic construction is therefore not replaced by this
+translation argument.
+
+\begin{proposition}[Exact finite Euler weights]\label{prop:weights}
+For $N\ge1$,
+\begin{equation}\label{eq:weights}
+ E_N=2^{-N}\sum_{n=0}^{N-1}(-1)^nf(n)
+                  \sum_{j=n+1}^N\binom Nj.
+\end{equation}
+Thus the finite sum can be formed without constructing a triangular
+difference table.
+\end{proposition}
+\begin{proof}
+Substitute the definition of $d_k$ and interchange the finite sums.
+The coefficient identity is
+\[
+ \sum_{k=n}^{N-1}2^{N-k-1}\binom kn=\sum_{j=n+1}^N\binom Nj,
+\]
+which follows by induction from Pascal's identity. Harmonic numbers
+and binomial tails can then each be updated successively. This
+rearrangement is already used in the integer-order manuscript; the
+new feature in the implementation here is certified rational
+interval arithmetic for fractional powers.
+\end{proof}
+
+\begin{theorem}[A certified scope obstruction]\label{thm:counterexample}
+For $a=1/10$ and $b=9/10$,
+\begin{align}\label{eq:counterinterval}
+ -0.5297619322857712630946293655
+ &<g_{1/10,9/10}\notag\\
+ &<-0.5297619322857712630946293653.
+\end{align}
+In particular, $g_{1/10,9/10}<-13/25<-1/2$.
+Since $E_1=0$, the inequality $E_N-2^{-N}<g_{a,b}$ fails at $N=1$
+for this pair. A uniform constant one cannot be extended to the
+entire region $a+b\ge1$. The failure also occurs strictly above
+the threshold, with ordinary boundary convergence:
+\begin{align}\label{eq:counterordinary}
+ -0.5308442529661593261720712602
+ &<g_{1/10,1}\notag\\
+ &<-0.5308442529661593261720712600<-0.53.
+\end{align}
+\end{theorem}
+\begin{proof}
+The accompanying standard-library program \texttt{code/certify.py}
+evaluates \eqref{eq:weights} with $N=96$ by outward rational interval
+arithmetic. Every fractional power is bounded by integer tenth-root
+inequalities, as detailed in Section~\ref{sec:certificates}. The
+critical mass bound is the exact rational $M=10$. Subtracting
+$10\,2^{-96}$ from the lower endpoint of the finite Euler enclosure
+and leaving its upper endpoint unchanged gives the interval recorded
+in \texttt{data/exact\_certificates.json}. Outward decimal rounding
+yields \eqref{eq:counterinterval}; exact rational comparisons verify
+its upper endpoint is less than $-13/25$. No numerical polylogarithm,
+floating-point root, or unproved identity enters this certificate.
+For $(a,b)=(1/10,1)$ the same computation uses $M=1+1/a=11$
+and proves \eqref{eq:counterordinary}. Its ordinary boundary
+convergence follows from $a+b=11/10>1$ and
+Corollary~\ref{cor:boundary}.
+\end{proof}
+
+This is \emph{not} a counterexample to the baseline theorem, which
+explicitly assumes $a\ge1$. It is a counterexample to dropping that
+hypothesis while retaining the same universal error constant.
+
+\begin{proposition}[The exact critical constant for fixed parameters]
+\label{prop:fixedconstant}
+On $a+b=1$, the scaled errors $2^N(E_N-g_{a,b})$ decrease strictly
+to zero for $N\ge1$. The smallest constant in the non-strict estimate
+$E_N-g_{a,b}\le C2^{-N}$, valid for all integers $N\ge1$ at that fixed
+pair, is $C=-2g_{a,b}$.
+\end{proposition}
+\begin{proof}
+The endpoint atom contributes zero to \eqref{eq:exacteuler} when
+$N\ge1$. Hence
+\[
+ 2^N(E_N-g)=\int_0^1\frac{(1-u^2)^N}{1+u^2}\dd\nu(u).
+\]
+Strict pointwise decrease and dominated convergence prove the first
+claim. Its largest value occurs at $N=1$ and is $2(E_1-g)=-2g$.
+For the corresponding strict inequality the infimum of admissible
+constants is the same, but equality at $N=1$ prevents attaining it.
+\end{proof}
+
+\section{Exact certificates and independent diagnostics}
+\label{sec:certificates}
+
+\subsection{Certified fractional powers}
+For a positive rational exponent $p/q$ and an integer $n\ge1$, set
+$B=10^{65}$ and compute the integer
+$r=\lfloor(n^pB^q)^{1/q}\rfloor$. The verifier explicitly checks
+\begin{equation}\label{eq:integerroot}
+ r^q\le n^pB^q<(r+1)^q.
+\end{equation}
+If equality holds on the left, $n^{-p/q}=B/r$ exactly. Otherwise
+\begin{equation}\label{eq:rootinterval}
+ \frac B{r+1}<n^{-p/q}<\frac B r.
+\end{equation}
+All operations in these statements are integer or rational. The
+integer Newton iteration is merely a method to propose $r$;
+\eqref{eq:integerroot}, not its convergence history, validates the
+result. Additions, sign-aware scalar products, and positive products
+are rounded outward onto the grid $10^{-60}\mathbb Z$ using integer
+division. This keeps numerator sizes manageable without introducing
+floating-point assumptions.
+
+Finite Euler centers at fractional indices are generally algebraic,
+not rational. The program encloses them by rational intervals, then
+adds the proved rational tail. It does not mislabel an irrational
+finite center as an exact rational value.
+
+\begin{center}
+\small
+\begin{tabular}{@{}c c r@{}}
+\toprule
+$a$ & $b$ & $g_{a,b}$, displayed approximately\\
+\midrule
+$1/10$ & $9/10$ & $-0.52976193228577126309$\\
+$1/10$ & $1$ & $-0.53084425296615932617$\\
+$1/2$ & $1/2$ & $-0.40393698771701357983$\\
+$3/4$ & $1/2$ & $-0.33913987183657185082$\\
+$1/2$ & $1$ & $-0.40169999261081928166$\\
+$1/4$ & $3/2$ & $-0.47502596533036419882$\\
+$1$ & $1$ & $-0.27219826128795026631$\\
+$2$ & $3$ & $-0.09324795037117472982$\\
+\bottomrule
+\end{tabular}
+\end{center}
+These displayed approximations are summaries, not the certified
+endpoints. The JSON stores outward lower and upper decimal bounds
+for each of the eight $N=96$ enclosures, with widths and mass bounds.
+For $(1,1)$ the value agrees with the known
+$-\pi\log2/8$; that identity is a convention check, not a premise of
+the fractional-order counterexample.
+
+\subsection{Angular certificates without trigonometric rounding}
+Let $0<\rho<1$ and $-1<c<1$ be rational. The Chebyshev identity gives
+\begin{equation}\label{eq:cheb}
+ \frac{\Impart F_{a,b}(\rho e^{\ii\theta})}{\sin\theta}
+ =\sum_{n\ge1}c_n\rho^n U_{n-1}(c),\qquad c=\cos\theta,
+\end{equation}
+where $U_{-1}=0$, $U_0=1$, and
+$U_{n+1}=2cU_n-U_{n-1}$. Thus every polynomial value is rational.
+For $|c|<1$, $|U_{n-1}(c)|\le n$; this follows from
+$|\sin(n\theta)|\le n|\sin\theta|$. Also $c_n\le n$ for every
+positive $a,b$. With $j=N+1$, a valid explicit tail is therefore
+\begin{equation}\label{eq:angletail}
+ \left|\sum_{n>N}c_n\rho^nU_{n-1}(c)\right|
+ \le\rho^j\left\{\frac{j^2}{1-\rho}
+       +\frac{2j\rho}{(1-\rho)^2}
+       +\frac{\rho(1+\rho)}{(1-\rho)^3}\right\}.
+\end{equation}
+The formula sums $\sum_{n\ge j}n^2\rho^n$ exactly.
+
+The numerical program proposes rational endpoints for $c$, but the
+separate rational verifier accepts a bracket only when the interval
+in \eqref{eq:cheb} is strictly negative at the lower endpoint and
+strictly positive at the upper endpoint, including \eqref{eq:angletail}.
+The theorem supplies uniqueness when $a+b\ge1$. For the deliberately
+included test $(a,b,\rho)=(1/4,1/4,1/2)$, it certifies only existence
+of a root in the bracket; no uniqueness conclusion is attached.
+
+\begin{center}
+\small
+\begin{tabular}{@{}c c r r r@{}}
+\toprule
+$a$ & $b$ & $\eta(1/4)$ & $\eta(1/2)$ & $\eta(3/4)$\\
+\midrule
+$1/10$ & $9/10$ & $0.7387056020$ & $0.7429273646$ & $0.7517703302$\\
+$1/2$ & $1/2$ & $0.6980111081$ & $0.7015741355$ & $0.7088461987$\\
+$9/10$ & $1/10$ & $0.6719709290$ & $0.6751086399$ & $0.6814072072$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The critical rows illustrate Theorem~\ref{thm:criticalradius}; the
+proof does not infer monotonicity from this table. The underlying
+rational $c$-brackets have width $5\times10^{-12}$. Nine critical
+brackets, two strictly supercritical brackets, and one subcritical
+existence bracket are replayed.
+
+\subsection{Independent tests and their limits}
+The recorded run has the following evidence layers.
+
+\paragraph{Exact arithmetic.}
+The standard-library verifier passes all eight Euler enclosures and
+twelve angular brackets, checking 7,430 integer-root inequalities.
+A symbolic program verifies nine rational identities underlying the
+angular kernels, the two derivative formulas, and the small-radius
+variance reduction. A separate symbolic routine checks 21 exact
+Bernoulli coefficients at three rational parameters. None of these
+finite checks certifies the analytic convergence arguments by itself.
+
+\paragraph{Numerical diagnostics.}
+Independent beta--gamma quadrature checks 50 Laplace moments; the
+largest observed absolute discrepancy in the supplied run is about
+$2.42\times10^{-13}$. Positive double quadrature separately evaluates
+three critical Gaussian values. Twelve elementary-series tests compare
+the partial sum and its analytic tail with beta quadrature. Twelve
+critical Laplace-identity tests have largest observed discrepancy
+about $2.54\times10^{-11}$. A 15-point critical-constant grid provides
+conjectural evidence only. These are floating-point diagnostics, not
+rigorous interval enclosures, and the stated discrepancies are
+observations, not proved error bounds for the quadratures.
+
+\paragraph{Reproduction.}
+From the package root, with Python and the optional diagnostic
+dependencies installed, run
+\begin{verbatim}
+python code/audit.py
+python code/critical_identities.py
+python code/certify.py
+python code/build_article.py
+\end{verbatim}
+The third command alone replays the exact certificates using only
+Python's standard library and the supplied rational root proposals.
+The first two commands are not prerequisites for trusting the rational
+endpoint tests, and floating-point root proposals are never accepted
+without a fresh sign certificate. The build command requires a local
+LaTeX installation. A separate manifest verifies package bytes; it
+is an integrity check, not a mathematical proof.
+
+\section{Audit conclusions and manuscript integration}
+\label{sec:audit}
+
+\subsection{Corrections that an extension actually requires}
+No error in the \emph{stated} $a\ge1$ zero-free or Euler-constant-one
+theorems was established during this targeted audit. The following
+points are concrete corrections to an unrestricted continuation of
+them, and should be made explicit when integrating the new results.
+
+\paragraph{The critical kernel is a measure, not just a function.}
+Substituting $a+b=1$ into a formula valid for $a+b>1$ and discarding
+the $k_{a+b-1}$ term would delete the positive atom. The remaining
+density has mass $-1/a$, not zero, and produces the wrong moments.
+The correction is exactly $a^{-1}\delta_1$. Corollary~\ref{cor:atom}
+also proves that no alternative integrable density can repair this.
+
+\paragraph{Boundary convergence changes at the same line.}
+At $a+b=1$, $c_n\to1/a$; the Gaussian alternating terms likewise
+fail to tend to zero. Statements about ordinary convergence must
+retain $a+b>1$. Euler acceleration on the critical line computes
+the analytic/Abel value, with the measure proof justifying that value.
+It must not be described as summing an ordinarily convergent series.
+
+\paragraph{The uniform constant one does not survive automatically.}
+Theorem~\ref{thm:counterexample} proves the obstruction with exact
+rational arithmetic. The old hypothesis $a\ge1$ is mathematically
+substantive. Use the bounds in \eqref{eq:Mchoices}, or a separately
+proved sharper constant, in the extended region.
+
+\paragraph{Fractional integration needs its own sign proof.}
+A generic fractional integral does not come with an automatic
+one-crossing theorem. The proof here uses the specific monotonicity
+of $K/k_a$ in \eqref{eq:Bprime} and \eqref{eq:Bprime1}; it does not
+invoke an unproved variation-diminishing assertion. Similarly,
+slit-plane zero-freeness below $a+b=1$ must not be inferred from a
+finite signed measure that does not exist.
+
+\paragraph{Source status is not reset by a new delivery.}
+The inspected repository has multiple historical $S_4$ certificates
+and later integrated proofs. They remain proved prior material.
+The $S_6$ identity remains conjectural here; we neither certify it
+by numerical agreement nor assert its independence from a proposed
+period basis. The broad normalized-radius conjecture remains open
+outside the new regimes proved in Section~\ref{sec:radius}.
+
+\subsection{Integration map}
+The suggested destination for this complete package is
+\nolinkurl{Analysis/Polylogarithms/docs/reports/real-order-threshold/}.
+The main threshold and kernel formulas belong next to
+\nolinkurl{chapters/05-signed-kernels.tex}; the critical endpoint and
+its root geometry should precede any claim extending the angular
+report beyond $a\ge1$. The elementary critical series and Hurwitz
+inequalities can be cross-referenced from the integration and
+differentiation chapters.
+
+The supplied integration fragment uses the label prefix
+\texttt{realorder:}. It is an editorial insertion with a summary of
+the proved results, not a substitute for the complete proofs. The
+package includes a claim-status ledger, a provenance file with pinned
+source blob identifiers, and instructions for replaying checks. No
+upstream source, historical certificate, or repository branch was
+modified in preparing this delivery.
+
+\section{Further research questions and precise conjectures}
+\label{sec:future}
+
+\subsection{The still-open normalized-radius problem}
+The most direct task is to settle the existing conjecture for integer
+$a\ge2$ and finite $b>0$, together with the $a=1$ sign transition at
+$b=1$. Theorems~\ref{thm:criticalradius} and \ref{thm:left} supply
+opposite endpoint mechanisms but do not interpolate between them.
+A promising approach is to express the radial derivative at the root
+as a covariance plus a controlled remainder. The right-atom proof
+works because $d(u)-d(m)$ factors as $(u-m)(u-1)$; the left-atom proof
+works because it factors as $u(u-m)$. For a general one-crossing
+density no comparable fixed endpoint factor has yet been established.
+
+For real outer orders a richer phase diagram is natural. The critical
+line has increasing normalized radius, while the $b\to\infty$ family
+has decreasing normalized radius for every $a>0$. A sharp description
+should locate the transition in $(a,b)$ and decide whether the sign
+can change with $\rho$ for one fixed pair. The small-radius coefficient
+in \eqref{eq:smallradius}, valid as a formal local coefficient more
+generally, gives a necessary local test, but does not prove a global
+radial sign.
+
+\subsection{Below-threshold zeros}
+Theorem~\ref{thm:threshold} rules out finite signed Hausdorff measures
+when $a+b<1$, not zero-freeness of the function. The positive double
+kernel proves nonvanishing in the closed unit disk for all positive
+orders. It also gives existence of an angular zero on each circle
+of radius $0<\rho<1$: the imaginary part, divided by
+$\rho^2\sin\theta$, has integrand
+\[
+ W_{a,b}(x,y)
+ \frac{2c-\rho(x+y)}
+ {(1-2\rho cx+\rho^2x^2)(1-2\rho cy+\rho^2y^2)}.
+\]
+At $c=0$ this is negative and at $c=\rho$ positive. It has fixed
+sign outside $0<c<\rho$, so every such zero belongs to that interval.
+Uniqueness is the additional issue.
+
+\begin{conjecture}[Angular uniqueness below the moment threshold]
+\label{conj:subcritical}
+For $a,b>0$ with $a+b<1$, the imaginary part of $F_{a,b}$ has exactly
+one simple zero on each upper semicircle of radius $0<\rho\le1$,
+with the same sign pattern as in Theorem~\ref{thm:angular}.
+\end{conjecture}
+The supplied subcritical rational bracket proves existence at one
+specific parameter triple only. It is not evidence for an exhaustive
+zero count. At unit radius, even the positive endpoint argument must
+be supplied separately; the interior-radius sign test above does not
+justify an interchange at the singular endpoint $z=1$.
+
+A second question is whether the slit-plane zero-free theorem holds
+for all positive $a,b$. The factor $F/z$ in
+Corollary~\ref{cor:disk} need not retain a positive imaginary part
+outside the unit disk: the numerator $1-xy|z|^2$ can change sign.
+A different positive representation or a counterexample is needed.
+We leave this as a question rather than label it a proved extension.
+
+\subsection{The optimal uniform critical Euler constant}
+\begin{proposition}[Endpoint values for the critical error constant]
+\label{prop:endlimits}
+On $b=1-a$,
+\begin{align}
+ \lim_{a\downarrow0}(-2g_{a,1-a})&=\frac\pi4+\frac{\log2}{2},
+ \label{eq:leftlimit}\\
+ \lim_{a\uparrow1}(-2g_{a,1-a})&=\frac\pi2-1.
+ \label{eq:rightlimit}
+\end{align}
+\end{proposition}
+\begin{proof}
+In \eqref{eq:gaussianpositive}, substitute
+$x=e^{-S/2}$ and $y=xe^{-Y}$. The weight becomes $2^{-a}$ times
+the product of independent $\mathrm{Gamma}(a,1)$ and
+$\mathrm{Gamma}(b,1)$ probability densities for $S,Y$.
+The remaining bounded continuous function is
+$(x+y)/((1+x^2)(1+y^2))$.
+As $a\downarrow0$, $S\to0$ in probability and $Y$ converges in law
+to an exponential variable. Thus $x\to1$ and $y$ is asymptotically
+uniform on $(0,1)$, giving
+\[
+ \lim(-g)=\int_0^1\frac{1+y}{2(1+y^2)}\dd y
+ =\frac\pi8+\frac{\log2}{4}.
+\]
+As $a\uparrow1$, $Y\to0$, while $x$ has limiting density $2x$ on
+$(0,1)$. Therefore
+\[
+ \lim(-g)=2\int_0^1\frac{x^2}{(1+x^2)^2}\dd x
+ =\frac\pi4-\frac12.
+\]
+Weak convergence and boundedness justify both limits, proving the
+formulas after multiplication by two.
+\end{proof}
+
+\begin{conjecture}[Sharp critical constant]\label{conj:constant}
+The function $a\mapsto-2g_{a,1-a}$ decreases strictly on $(0,1)$.
+Consequently the sharp constant uniform over the entire critical line
+and all $N\ge1$ would be
+\begin{equation}\label{eq:constantconjecture}
+ C_{\mathrm{critical}}=\frac\pi4+\frac{\log2}{2}.
+\end{equation}
+\end{conjecture}
+The 15-point diagnostic grid is consistent with this statement.
+The endpoint limits and Proposition~\ref{prop:fixedconstant} prove
+that any such uniform constant is at least the value in
+\eqref{eq:constantconjecture}; the matching global upper bound is
+not proved in this article. The stronger strict monotonicity is
+also explicitly conjectural.
+
+\subsection{More precise critical computation}
+The elementary series \eqref{eq:elementary} has a simple positive
+$O(K^{-1})$ tail. Its summands have expansions in inverse even powers
+of $k$, so subtracting a finite number of those terms and restoring
+zeta tails should produce arbitrarily accelerated, sign-controlled
+versions. An exact implementation should retain outward bounds for
+trigonometric and fractional-power factors rather than certify a
+floating-point result after the fact. The Bernoulli expansion is
+convergent only for $|T|<2\pi$ and should not be used as a global
+large-$T$ expansion.
+
+The sharp $N$-dependence of critical Euler errors is another concrete
+target. Formula \eqref{eq:exacteuler} localizes at $u=0$, where the
+negative density has both a gamma-logarithmic term and a beta-averaged
+term. Uniform asymptotics as $a\downarrow0$ would have to resolve
+competition between $N$ and $a$, not merely fix the parameters before
+letting $N$ tend to infinity.
+
+\subsection{Higher depth, affine steps, and formal proof}
+A natural extension replaces $H_{n-1}^{(b)}$ by higher-depth nested
+harmonic sums. The coefficient growth suggests candidate total-order
+thresholds, but growth alone proves only nonexistence on one side;
+it does not produce a one-crossing signed measure on the other.
+Endpoint atoms may be replaced by several ordered signed components,
+so angular uniqueness may need to be replaced by a finite zero-count
+statement.
+
+The manuscript's affine coefficients $H_{rn}^{(b)}/(dn+1)^a$ are
+another useful direction. Their existing theorem covers $a\ge1$.
+A sharp fractional-order threshold should depend on the growth
+exponent, but the relative scales $r,d$ can affect the kernel sign
+geometry and hence the best Euler constants. The cancellation between
+a gamma endpoint and a Hurwitz tail needs to be redone rather than
+assumed to survive unchanged.
+
+Finally, the proof has a reasonably small formal core: gamma and beta
+integrals, the regularized Hurwitz identity, polynomial density,
+ordered-sign measures, and the two rational derivative factorizations.
+A Lean formalization of the generic endpoint-atom root lemmas would
+be reusable independently of polylogarithms. The current rational
+verifier is a replayable finite computation, not such a formalization.
+
+\section*{Conclusion}
+\addcontentsline{toc}{section}{Conclusion}
+The condition $a\ge1$ is sufficient but not sharp for the signed
+harmonic-polylogarithm kernel. The exact finite-measure domain is
+$a+b\ge1$, and its boundary carries a mathematically necessary atom.
+That atom provides both a clean normalized-radius theorem and a warning:
+ordinary boundary convergence and the old universal Euler constant
+do not extend unchanged. The positive double kernel, critical
+Hurwitz identities, and rational fractional-order certificates give
+separate tools on and below the transition. The remaining conjectures
+are stated with their proved special cases and their unresolved parts
+kept distinct.
+
+\clearpage
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{9}
+\bibitem{repo}
+ProveIt Contributors,
+\emph{Polylogarithms and their Arithmetic Bridges}, canonical manuscript
+and accompanying source, repository \texttt{VladimirReshetnikov/ProveIt},
+revision \basecommit.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/28357e8ca63dd78327db91d9be239d75e4462879/Analysis/Polylogarithms/docs/manuscript}.
+
+\bibitem{angular}
+ProveIt Contributors,
+\emph{Gaussian Polylogarithms Beyond Parity: Exact relation modules,
+an octahedral proof of the mixed harmonic sum, and global angular-zero
+geometry}, report source at the same pinned revision.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/28357e8ca63dd78327db91d9be239d75e4462879/Analysis/Polylogarithms/docs/reports/angular-zero-continuation/article.tex}.
+Source blob: \nolinkurl{9c2ec9383debad3b1a1248c13f442a0d850487b5}.
+
+\bibitem{dlmf-hurwitz}
+NIST Digital Library of Mathematical Functions,
+\S25.11, \emph{Hurwitz Zeta Function}, especially 25.11.25 and 25.11.27.
+Version 1.2.8, released 15 September 2026; accessed 9 October 2026.
+\url{https://dlmf.nist.gov/25.11}.
+
+\bibitem{dlmf-polylog}
+NIST Digital Library of Mathematical Functions,
+\S25.12, \emph{Polylogarithms}, version 1.2.8.
+\url{https://dlmf.nist.gov/25.12}.
+
+\bibitem{dlmf-hyperbolic}
+NIST Digital Library of Mathematical Functions,
+\S4.36, \emph{Infinite Products and Partial Fractions}, especially 4.36.3,
+version 1.2.8.
+\url{https://dlmf.nist.gov/4.36}.
+
+\bibitem{liu-pego}
+J.-G. Liu and R. L. Pego,
+\emph{On generating functions of Hausdorff moment sequences},
+Transactions of the American Mathematical Society \textbf{368} (2016),
+8499--8518. The arXiv version 4 (12 November 2025) includes a corrigendum.
+\url{https://arxiv.org/abs/1401.8052v4}.
+\end{thebibliography}
+\end{document}
