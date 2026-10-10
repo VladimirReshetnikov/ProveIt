@@ -1,0 +1,1371 @@
+\section{Strict depth, signed oscillation and minimal positive compensation}
+\label{ado:sec:scope}
+The real-order depth-two factorization suggests a structural question at
+higher strict depth: can the initial zero moments account for every sign
+change of a representing density? The continuation~\cite{ado:report}
+answers this when the leading indices are positive integers and the last
+index is positive real. Its construction gives a minimal polynomial
+compensator, a complete upper-arc count and exact integral identities.
+The ordinary positive transform supplies the geometry only after the
+signed-density zeros and initial moment cancellation have been established.
+The proof chain follows those dependencies here.
+\newcommand{\adoNorm}[1]{\lVert#1\rVert}
+\newcommand{\adoArg}{\operatorname{Arg}}
+\subsection{Strict single-variable notation}
+For an index of depth $d$, define
+\begin{equation}\label{ado:eq:series}
+ L_{\boldsymbol{s}}(z)=\Li_{s_1,\ldots,s_d}(z,1,\ldots,1)
+ =\sum_{n_1>\cdots>n_d\ge1}
+       \frac{z^{n_1}}{n_1^{s_1}\cdots n_d^{s_d}}
+ =\sum_{n\ge1}c_{\boldsymbol{s}}(n)z^n,\qquad |z|<1.
+\end{equation}
+Our parameter domain is
+\begin{equation}\label{ado:eq:domain}
+ s_1,\ldots,s_{d-1}\in\N_{\ge1},\qquad s_d=b>0.
+\end{equation}
+At depth one, this means any $b>0$. Indices are strictly decreasing, not
+weakly decreasing. Only the outer summation variable receives $z^{n_1}$.
+This convention agrees with the single-variable convention in the
+manuscript and in the multiple-polylogarithm literature. The principal branch conventions are those fixed at the start of the book.
+
+Write
+\begin{equation}\label{ado:eq:leading}
+ C_{\boldsymbol{s}}=c_{\boldsymbol{s}}(d)
+ =\frac{1}{d^{s_1}(d-1)^{s_2}\cdots 2^{s_{d-1}}}>0.
+\end{equation}
+The empty product at depth one is one. The value of $C_{\boldsymbol{s}}$ is
+independent of $b$, because the innermost index of the first admissible
+chain is one. Also $c_{\boldsymbol{s}}(1)=\cdots=c_{\boldsymbol{s}}(d-1)=0$.
+Throughout, principal continuation means continuation to
+\[
+ \Omega=\C\setminus[1,\infty).
+\]
+The word ``zero'' refers to a zero of a holomorphic function, unless the
+imaginary part or a signed density is explicitly specified.
+
+\subsection{Main result}
+\begin{theorem}[All-depth compensation and zero geometry]
+\label{ado:thm:main}
+Let \eqref{ado:eq:domain} hold. There is a smooth real density
+$\kappa_{\boldsymbol{s}}\in L^1(0,1)$ such that
+\[
+ \int_0^1u^{n-1}\kappa_{\boldsymbol{s}}(u)\dd u=c_{\boldsymbol{s}}(n),\qquad
+ \adoNorm{\kappa_{\boldsymbol{s}}}_1\le2^{d-1}.
+\]
+It has exactly $d-1$ simple zeros $0<r_1<\cdots<r_{d-1}<1$, with
+alternating signs and positive sign near one. Set
+\[
+ P_{\boldsymbol{s}}(u)=\prod_{j=1}^{d-1}(u-r_j),\qquad
+ D_{\boldsymbol{s}}(z)=\prod_{j=1}^{d-1}(1-r_jz).
+\]
+Then $\dd\mu_{\boldsymbol{s}}=P_{\boldsymbol{s}}\kappa_{\boldsymbol{s}}\dd u$ is a positive
+measure of mass $C_{\boldsymbol{s}}$, and
+\begin{equation}\label{ado:eq:mainfactor}
+ L_{\boldsymbol{s}}(z)=\frac{z^d}{D_{\boldsymbol{s}}(z)}H_{\boldsymbol{s}}(z),\qquad
+ H_{\boldsymbol{s}}(z)=\int_0^1\frac{\dd\mu_{\boldsymbol{s}}(u)}{1-zu}.
+\end{equation}
+The polynomial $D_{\boldsymbol{s}}$ is the unique normalized polynomial of
+smallest degree making $D_{\boldsymbol{s}}L_{\boldsymbol{s}}/z^d$ a positive
+Hausdorff--Stieltjes transform. In particular, $L_{\boldsymbol{s}}$ has no zero
+in $\Omega$ other than its zero of multiplicity $d$ at zero.
+
+For every $0<\rho\le1$, there are exactly $d-1$ simple zeros
+\[
+ 0<\theta_1(\rho)<\cdots<\theta_{d-1}(\rho)<\pi
+\]
+of $\theta\mapsto\Imag L_{\boldsymbol{s}}(\rho e^{\iu\theta})$.
+With $\alpha_k=k\pi/d$ they satisfy
+\begin{equation}\label{ado:eq:mainangles}
+ \alpha_k-\arcsin(\rho\sin\alpha_k)
+ <\theta_k(\rho)<\alpha_k.
+\end{equation}
+Every branch satisfies $\theta_k'(\rho)<0$ for $0<\rho\le1$ (with the
+one-sided derivative at one). The imaginary part starts positive and
+alternates sign at these zeros;
+the value of $L_{\boldsymbol{s}}$ at the $k$th crossing is real with sign $(-1)^k$.
+\end{theorem}
+The proof is divided into operator, oscillation, compensation, and
+angular-count steps below. None of those steps is inferred from the
+finite verification suite.
+
+
+\section{Two bounded operators on signed moment densities}
+\label{ado:sec:operators}
+For $f\in L^1(0,1)$ define its moments by
+\[
+ m_n(f)=\int_0^1u^{n-1}f(u)\dd u,\qquad n\ge1.
+\]
+We use the two operators
+\begin{align}
+ (\mathsf{A} f)(u)&=\int_u^1\frac{f(v)}v\dd v,
+ \label{ado:eq:A}\\
+ (\mathsf{B} f)(u)&=\int_0^u\frac{f(v)}{1-v}\dd v
+              -\int_u^1\frac{f(v)}v\dd v.
+ \label{ado:eq:B}
+\end{align}
+For every fixed $0<u<1$, both integrals in \eqref{ado:eq:B} are
+absolutely convergent. In particular, this definition never subtracts
+two divergent endpoint integrals. The operator $\mathsf{A}$ is the
+outer-index-raising operator already present at depth two in the
+manuscript~\cite{ado:report}. The companion $\mathsf{B}$ encodes a strict
+prefix sum of moments.
+
+\begin{lemma}[Norm, derivative, and moment identities]
+\label{ado:lem:operators}
+Both operators map $L^1(0,1)$ to itself and satisfy
+\begin{equation}\label{ado:eq:opnorm}
+ \adoNorm{\mathsf{A} f}_1\le\adoNorm f_1,\qquad
+ \adoNorm{\mathsf{B} f}_1\le2\adoNorm f_1.
+\end{equation}
+Their moments are
+\begin{equation}\label{ado:eq:opmoments}
+ m_n(\mathsf{A} f)=\frac{m_n(f)}n,\qquad
+ m_n(\mathsf{B} f)=\frac1n\sum_{j=1}^{n-1}m_j(f).
+\end{equation}
+If $f$ is continuous in the open interval, then
+\begin{equation}\label{ado:eq:opderivatives}
+ (\mathsf{A} f)'(u)=-\frac{f(u)}u,\qquad
+ (\mathsf{B} f)'(u)=\frac{f(u)}{u(1-u)}.
+\end{equation}
+Moreover $\mathsf{A} f$ extends continuously to one with value zero, and
+$m_1(\mathsf{B} f)=0$.
+\end{lemma}
+\begin{proof}
+Tonelli's theorem applied to absolute values gives
+\[
+ \int_0^1\int_u^1\frac{|f(v)|}{v}\dd v\dd u
+ =\int_0^1|f(v)|\dd v.
+\]
+Similarly,
+\[
+ \int_0^1\int_0^u\frac{|f(v)|}{1-v}\dd v\dd u
+ =\int_0^1|f(v)|\dd v.
+\]
+These identities prove the two operator bounds and justify every
+following application of Fubini to a signed integrand. For the first
+operator,
+\[
+ m_n(\mathsf{A} f)=\int_0^1\frac{f(v)}v
+       \left(\int_0^v u^{n-1}\dd u\right)\dd v
+ =\frac{m_n(f)}n.
+\]
+The moment of the first term of $\mathsf{B} f$ is
+\[
+ \frac1n\int_0^1\frac{1-v^n}{1-v}f(v)\dd v
+ =\frac1n\sum_{j=1}^n m_j(f).
+\]
+Subtracting $m_n(f)/n$ yields the strict prefix in
+\eqref{ado:eq:opmoments}. The derivative formulas follow locally from
+the fundamental theorem of calculus. Finally,
+$\int_u^1f(v)/v\dd v\to0$ as $u\uparrow1$, because $1/v$ is bounded
+near one and $f$ is integrable there.
+\end{proof}
+
+\subsection{Construction at arbitrary depth}
+The positive starting density is
+\begin{equation}\label{ado:eq:seed}
+ f_b(u)=\frac{(-\log u)^{b-1}}{\Gamma(b)},\qquad b>0.
+\end{equation}
+Its mass is one and the Gamma integral gives $m_n(f_b)=n^{-b}$.
+Define, with composition read from right to left,
+\begin{equation}\label{ado:eq:kappaconstruction}
+ \kappa_{\boldsymbol{s}}
+ =\mathsf{A}^{s_1-1}\mathsf{B}\mathsf{A}^{s_2-1}\mathsf{B}\cdots
+       \mathsf{A}^{s_{d-1}-1}\mathsf{B} f_b.
+\end{equation}
+There are $d-1$ occurrences of $\mathsf{B}$; all powers of $\mathsf{A}$ are
+nonnegative integer powers. At depth one the right side is simply $f_b$.
+
+\begin{proposition}[Moment realization and continuation]
+\label{ado:prop:realization}
+The density \eqref{ado:eq:kappaconstruction} is smooth on $(0,1)$,
+belongs to $L^1(0,1)$, and satisfies
+\begin{equation}\label{ado:eq:moments}
+ m_n(\kappa_{\boldsymbol{s}})=c_{\boldsymbol{s}}(n),\qquad
+ \adoNorm{\kappa_{\boldsymbol{s}}}_1\le2^{d-1}.
+\end{equation}
+The principal continuation is
+\begin{equation}\label{ado:eq:signedtransform}
+ L_{\boldsymbol{s}}(z)=z\int_0^1\frac{\kappa_{\boldsymbol{s}}(u)}{1-zu}\dd u,
+ \qquad z\in\Omega.
+\end{equation}
+The density is the unique finite signed measure realizing these moments.
+\end{proposition}
+\begin{proof}
+The coefficient recurrence for a nonempty tail $\boldsymbol{t}$ is
+\[
+ c_{(a,\boldsymbol{t})}(n)
+ =\frac1{n^a}\sum_{j=1}^{n-1}c_{\boldsymbol{t}}(j).
+\]
+It is exactly the effect of $\mathsf{A}^{a-1}\mathsf{B}$ in
+\eqref{ado:eq:opmoments}. Induction proves the moments and the norm
+bound. The derivative identities prove local smoothness, starting from
+\eqref{ado:eq:seed}. Expanding the denominator in the open disk is
+justified by the integrable bound $|\kappa|/(1-|z|)$, and gives the
+series \eqref{ado:eq:series}.
+
+On a compact subset of $\Omega$, $|1-zu|$ is bounded away from zero
+uniformly in $u\in[0,1]$. The signed integral is consequently holomorphic
+there and continues the same germ. If two finite signed measures have
+these moments, their difference integrates every polynomial to zero.
+Uniform polynomial approximation on $[0,1]$, followed by uniqueness of
+a finite measure from its continuous-function integrals, proves equality.
+\end{proof}
+
+\begin{corollary}[Ordinary convergence on the nontrivial unit circle]
+\label{ado:cor:boundaryseries}
+For \eqref{ado:eq:domain}, $c_{\boldsymbol{s}}(n)\to0$ and
+\begin{equation}\label{ado:eq:coefficientvariation}
+ \sum_{n\ge1}|c_{\boldsymbol{s}}(n+1)-c_{\boldsymbol{s}}(n)|
+ \le\adoNorm{\kappa_{\boldsymbol{s}}}_1\le2^{d-1}.
+\end{equation}
+Thus the original series \eqref{ado:eq:series} converges at every
+$|z|=1$, $z\ne1$, and agrees there with \eqref{ado:eq:signedtransform}.
+\end{corollary}
+\begin{proof}
+Dominated convergence proves the coefficient limit. Also
+\[
+ |c(n+1)-c(n)|\le\int_0^1u^{n-1}(1-u)|\kappa(u)|\dd u.
+\]
+Summing the positive majorants gives \eqref{ado:eq:coefficientvariation}.
+Summation by parts against the bounded partial sums of $z^n$ then proves
+convergence when $|z|=1$, $z\ne1$. Abel's limiting theorem identifies its
+sum with the radial limit of the disk series, which in turn equals the
+continuous signed integral at that point.
+\end{proof}
+This conclusion concerns the parameter domain of this article. It is not
+a claim that all of the manuscript's more general fractional-order
+boundary series converge ordinarily.
+
+\section{Exact oscillation and two interlacing laws}
+\label{ado:sec:oscillation}
+The central mechanism is a balance between moment orthogonality and
+Rolle's theorem. Vanishing moments force sign changes; the two derivative
+identities prevent extra zeros. This proof does not assume a
+variation-diminishing theorem for fractional integration.
+
+\begin{lemma}[Vanishing moments force sign changes]
+\label{ado:lem:momentchanges}
+Suppose a nonzero continuous real $f\in L^1(0,1)$ has finitely many
+zeros and
+\[
+ \int_0^1u^j f(u)\dd u=0\qquad(0\le j\le m-1).
+\]
+Then $f$ has at least $m$ sign changes in $(0,1)$.
+\end{lemma}
+\begin{proof}
+If its sign changes were $t_1,\ldots,t_k$ with $k<m$, the polynomial
+$Q(u)=\prod_{j=1}^k(u-t_j)$ would have degree at most $m-1$ and
+$Qf$ would have one fixed nonzero sign except at finitely many points.
+Its integral would be nonzero, contradicting orthogonality. A zero at
+which no sign change occurs is not included in $Q$.
+\end{proof}
+
+\begin{theorem}[Exact density zeros]
+\label{ado:thm:oscillation}
+For \eqref{ado:eq:domain}, $\kappa_{\boldsymbol{s}}$ has exactly $d-1$
+distinct simple zeros in $(0,1)$. Its sign alternates at those zeros,
+and it is positive near one.
+\end{theorem}
+\begin{proof}
+At depth one, $f_b$ is strictly positive and has no zero. Suppose first
+that a density $f$ at depth $d-1$ has exactly $d-2$ simple zeros.
+By \eqref{ado:eq:opderivatives}, the derivative of $\mathsf{B} f$ has
+exactly those zeros. Rolle's theorem therefore bounds the number of
+distinct zeros of $\mathsf{B} f$ by $d-1$. This also rules out an infinite
+set of zeros: any $d$ distinct zeros would already force too many
+zeros of the derivative.
+
+The first $d-1$ moments of the new density vanish, by
+\eqref{ado:eq:opmoments}. Lemma~\ref{ado:lem:momentchanges} supplies
+at least $d-1$ sign changes, so the upper bound is attained. There is
+one derivative zero between each pair of consecutive new zeros, using
+all $d-2$ derivative zeros. None remains at a new zero. Hence every
+new zero is simple.
+
+Now suppose $f$ is a depth-$d$ density with exactly $d-1$ simple
+zeros, and put $g=\mathsf{A} f$. We have $g(1)=0$. If $g$ had $k$
+interior zeros, Rolle's theorem between successive interior zeros and
+between the largest one and the endpoint one would give at least $k$
+zeros of $g'=-f/u$. Thus $k\le d-1$. Its first $d-1$ moments still
+vanish, so the same lower bound gives exactly $d-1$ sign changes.
+The derivative zeros are now all allocated to those successive
+intervals, including the last interval ending at one. Consequently the
+interior zeros of $g$ are simple. Repeating this argument for each
+occurrence of $\mathsf{A}$ and $\mathsf{B}$ proves the zero count.
+
+Let $P(u)$ be the monic polynomial whose roots are the resulting
+$d-1$ zeros. The product $P\kappa_{\boldsymbol{s}}$ has a fixed strict sign
+off its roots. Orthogonality to degrees at most $d-2$ gives
+\[
+ \int_0^1P(u)\kappa_{\boldsymbol{s}}(u)\dd u
+ =\int_0^1u^{d-1}\kappa_{\boldsymbol{s}}(u)\dd u=C_{\boldsymbol{s}}>0.
+\]
+Thus $P\kappa_{\boldsymbol{s}}$ is positive, and since $P$ is positive to
+the right of its largest root, so is $\kappa_{\boldsymbol{s}}$.
+\end{proof}
+
+\begin{corollary}[Index raising and depth raising interlace]
+\label{ado:cor:interlacing}
+For $d\ge2$, if $f=\kappa_{\boldsymbol{s}}$ has roots $r_1<\cdots<r_{d-1}$ and
+$\mathsf{A} f$ has roots $q_1<\cdots<q_{d-1}$, then
+\begin{equation}\label{ado:eq:Ainterlace}
+ q_1<r_1<q_2<r_2<\cdots<q_{d-1}<r_{d-1}<1.
+\end{equation}
+Thus raising the first index by one moves every density zero strictly
+toward zero. For $d\ge3$, if a depth-$(d-1)$ density has roots
+$t_1<\cdots<t_{d-2}$ and $\mathsf{B} f$ has roots $r_1<\cdots<r_{d-1}$,
+then
+\begin{equation}\label{ado:eq:Binterlace}
+ r_1<t_1<r_2<\cdots<t_{d-2}<r_{d-1}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+At $d=2$, depth raising creates one interior zero and there is no
+previous zero to interlace. For the stated ranges, these are precisely the
+derivative-zero allocations in the preceding
+proof. In the $\mathsf{A}$ case the last interval is $(q_{d-1},1)$; in the
+$\mathsf{B}$ case all intervals are between consecutive interior zeros.
+The number of derivative zeros equals the number of allocated intervals,
+so the inequalities are strict and exhaustive.
+\end{proof}
+
+\subsection{Positive seeds, terminal mixtures, and a Lerch extension}
+The preceding proof used only positivity, smoothness, integrability, and
+the positive mass of the initial density. The explicit form
+\eqref{ado:eq:seed} was needed to identify its moments as $n^{-b}$.
+
+\begin{theorem}[Positive-seed extension]
+\label{ado:thm:seedextension}
+Let $f$ be a smooth strictly positive density in $L^1(0,1)$, of mass
+$M_0>0$. Replace $f_b$ by $f$ in \eqref{ado:eq:kappaconstruction}.
+All density-zero, interlacing, compensation, slit-plane nonvanishing,
+and angular-count conclusions of this article remain valid. The norm
+bound becomes $2^{d-1}M_0$, and the mass of the positive compensated
+measure is
+\[
+ \frac{M_0}{d^{s_1}(d-1)^{s_2}\cdots2^{s_{d-1}}}.
+\]
+\end{theorem}
+\begin{proof}
+The operator identities still hold. After $d-1$ strict prefix steps,
+the first $d-1$ moments vanish and the first nonzero moment is the
+stated positive number. The proof of Theorem~\ref{ado:thm:oscillation}
+therefore applies unchanged. The arguments in the next two sections
+use only these moment and oscillation properties, and so establish the
+remaining assertions as well.
+\end{proof}
+In particular, for fixed leading indices, every finite positive linear
+combination
+\begin{equation}\label{ado:eq:terminalmixture}
+ \sum_{j=1}^N a_j L_{s_1,\ldots,s_{d-1},b_j}(z),
+ \qquad a_j>0,\quad b_j>0,
+\end{equation}
+has the same nonvanishing and exact angular-count properties. Its seed
+is $\sum a_jf_{b_j}$. This is a special convex-closure statement; sums
+of arbitrary zero-free holomorphic functions need not be zero-free.
+
+For a second application, take $\lambda>-1$ and
+\[
+ f_{b,\lambda}(u)=u^\lambda
+                \frac{(-\log u)^{b-1}}{\Gamma(b)}.
+\]
+Its moments are $(n+\lambda)^{-b}$ and its mass is
+$(1+\lambda)^{-b}$. The resulting strict shifted-terminal family is
+\begin{equation}\label{ado:eq:lerchfamily}
+ L^{(\lambda)}_{s_1,\ldots,s_{d-1};b}(z)
+ =\sum_{n_1>\cdots>n_d\ge1}
+ \frac{z^{n_1}}{n_1^{s_1}\cdots n_{d-1}^{s_{d-1}}(n_d+\lambda)^b}.
+\end{equation}
+It has the same minimal compensator degree $d-1$ and exactly $d-1$
+angular zeros for $0<\rho\le1$. At depth one it is the usual
+$z$-multiple of a Lerch series. No assertion is made here about shifts
+in all denominators simultaneously.
+
+\section{Canonical positive compensation and slit-plane nonvanishing}
+\label{ado:sec:compensation}
+Fix $\boldsymbol{s}$ and abbreviate $\kappa=\kappa_{\boldsymbol{s}}$,
+$P=P_{\boldsymbol{s}}$, $D=D_{\boldsymbol{s}}$, and $C=C_{\boldsymbol{s}}$. Empty products
+at depth one are one. The preceding section proves that
+\begin{equation}\label{ado:eq:positiveweight}
+ P(u)\kappa(u)>0
+ \quad\text{for all }u\in(0,1)\setminus\{r_1,\ldots,r_{d-1}\}.
+\end{equation}
+Since $P$ is bounded on $[0,1]$, the positive measure
+$\dd\mu=P\kappa\dd u$ is finite.
+
+\begin{lemma}[Polynomial cancellation]
+\label{ado:lem:polycancel}
+Suppose $m_1(\kappa)=\cdots=m_{d-1}(\kappa)=0$. For any real
+polynomial $E$ of degree at most $d-1$, the removable quotient at zero
+satisfies
+\begin{equation}\label{ado:eq:generalcompensator}
+ E(z)\frac{L(z)}{z^d}
+ =\int_0^1\frac{u^{d-1}E(1/u)\kappa(u)}{1-zu}\dd u.
+\end{equation}
+Here $u^{d-1}E(1/u)$ is a polynomial, including at $u=0$.
+\end{lemma}
+\begin{proof}
+First subtract the initial $d-1$ zero moments in
+\eqref{ado:eq:signedtransform} to obtain
+\[
+ L(z)=z^d\int_0^1\frac{u^{d-1}\kappa(u)}{1-zu}\dd u.
+\]
+For $0\le j\le d-1$, multiplying this last transform by $z^j$
+and moving the factor $z^j$ to the density changes it to
+$u^{d-1-j}\kappa(u)$. The difference is a finite linear combination
+of the moments of degrees $d-1-j,\ldots,d-2$, all zero. Applying
+this monomial identity to every coefficient of $E$ proves
+\eqref{ado:eq:generalcompensator} in the disk and hence throughout $\Omega$.
+\end{proof}
+
+\begin{theorem}[Positive factorization and nonvanishing]
+\label{ado:thm:factorization}
+The measure $\mu$ has mass $C$, and
+\begin{equation}\label{ado:eq:factorization}
+ D(z)L(z)=z^d\int_0^1\frac{\dd\mu(u)}{1-zu}.
+\end{equation}
+Its transform $H$ has strictly positive imaginary part when
+$\Imag z>0$, strictly negative imaginary part when $\Imag z<0$, and
+$H(x)>0$ for every real $x<1$. The only zero of $L$ on $\Omega$ is its
+zero of multiplicity $d$ at zero.
+\end{theorem}
+\begin{proof}
+We have $u^{d-1}D(1/u)=P(u)$, so the preceding lemma gives
+\eqref{ado:eq:factorization}. Its value after division by $z^d$ at
+zero is $\int P\kappa=C$, as already shown in the oscillation proof.
+For nonreal $z$,
+\[
+ \Imag H(z)=(\Imag z)\int_0^1
+              \frac{u\dd\mu(u)}{|1-zu|^2}.
+\]
+The integral is strictly positive because the measure has positive
+density except at finitely many interior points. For real $x<1$,
+the integrand defining $H(x)$ is positive. Thus $H$ has no zero on
+$\Omega$. All zeros of $D$ are $1/r_j>1$, outside $\Omega$, while
+$D(0)=1$ and $H(0)=C>0$. The factorization proves the claimed
+multiplicity and the global nonvanishing assertion.
+\end{proof}
+
+\begin{theorem}[Minimality and uniqueness of the compensator]
+\label{ado:thm:minimality}
+Among real polynomials $E$ with $E(0)>0$ for which $E(z)L(z)/z^d$
+is the transform of a finite positive measure on $[0,1]$, the smallest
+possible degree is $d-1$. Every such polynomial of degree $d-1$ is
+$E(0)D(z)$. In particular the normalization $E(0)=1$ singles out $D$.
+\end{theorem}
+\begin{proof}
+Existence in degree $d-1$ follows from
+Theorem~\ref{ado:thm:factorization}. Suppose that $\deg E\le d-1$.
+Lemma~\ref{ado:lem:polycancel} already realizes the transform as the
+finite signed measure with density
+\[
+ Q_E(u)\kappa(u),\qquad Q_E(u)=u^{d-1}E(1/u).
+\]
+Uniqueness of finite Hausdorff moments implies that any purported
+positive representing measure must be this signed measure. Its density
+must therefore be nonnegative almost everywhere. Since $\kappa$
+changes sign at every $r_j$, continuity forces $Q_E(r_j)=0$.
+As $r_j\ne0$, these are $d-1$ distinct roots $1/r_j$ of $E$.
+Consequently $\deg E\ge d-1$. At equality those roots determine
+$E$ up to its constant factor, which is fixed by $E(0)$.
+\end{proof}
+This is minimality of \emph{polynomial compensation for an ordinary
+positive Stieltjes representation}. It is not minimal depth in an
+algebra of numerical periods and not a minimal generalized Stieltjes
+order. Those are different questions.
+
+\subsection{Quantitative consequences}
+For $x>0$, positivity and $0<u<1$ give
+\begin{equation}\label{ado:eq:negativebounds}
+ \frac{Cx^d}{(1+x)D(-x)}
+ <(-1)^dL(-x)<\frac{Cx^d}{D(-x)}.
+\end{equation}
+Indeed $C/(1+x)<H(-x)<C$ and $D(-x)>0$. Without computing the
+compensator roots one still has the coarser bounds
+\begin{equation}\label{ado:eq:coarsebounds}
+ C\left(\frac{x}{1+x}\right)^d
+ <(-1)^dL(-x)<Cx^d,
+\end{equation}
+because $1\le D(-x)\le(1+x)^{d-1}$, with the relevant strictness
+supplied by $H$ even at depth one.
+
+Write $P(u)=\sum_{j=0}^{d-1}p_ju^j$ and
+\begin{equation}\label{ado:eq:compensatedmoments}
+ h_n=\int_0^1u^n\dd\mu(u)
+     =\sum_{j=0}^{d-1}p_jc_{\boldsymbol{s}}(n+j+1),\qquad n\ge0.
+\end{equation}
+For all $n,k\ge0$,
+\begin{equation}\label{ado:eq:completepositivity}
+ (-1)^k\Delta^kh_n
+ =\int_0^1u^n(1-u)^k\dd\mu(u)>0,
+ \qquad \Delta h_n=h_{n+1}-h_n.
+\end{equation}
+Every finite Hankel matrix $(h_{i+j})_{0\le i,j\le m}$ is positive
+definite. The same is true of $(h_{i+j+1})$ and
+$(h_{i+j}-h_{i+j+1})$. To see this, pair each matrix with a nonzero
+real vector and integrate the square of its polynomial against,
+respectively, $\mu$, $u\mu$, or $(1-u)\mu$. Each integral is strictly
+positive. In particular,
+\[
+ h_nh_{n+2}-h_{n+1}^2>0.
+\]
+These are exact nonlinear positivity constraints on the original nested
+harmonic coefficients and the compensator roots. They should not be
+mistaken for rational-coefficient identities among special values.
+
+\section{Exactly \texorpdfstring{$d-1$}{d-1} angular zeros on every upper semicircle}
+\label{ado:sec:angular}
+The signed transform gives, for $0<\rho\le1$ and $0<\theta<\pi$,
+\begin{equation}\label{ado:eq:angulartransform}
+ \Imag L(\rho e^{\iu\theta})
+ =\rho\sin\theta\,J_\rho(\cos\theta),\qquad
+ J_\rho(c)=\int_0^1
+       \frac{\kappa(u)}{1-2\rho cu+\rho^2u^2}\dd u.
+\end{equation}
+A bound based only on simple sign-change arguments would leave open the
+possibility of tangencies. We therefore prove a multiplicity-sensitive
+upper bound before proving existence.
+
+\subsection{An elementary confluent Cauchy-kernel bound}
+\begin{lemma}[Angular variation bound with multiplicities]
+\label{ado:lem:variation}
+Suppose $\kappa\in L^1(0,1)$ is continuous, has exactly $m$ sign
+changes at $r_1<\cdots<r_m$, and has a nonzero fixed sign on each
+complementary interval. Then $J_\rho$ has at most $m$ zeros in
+$(-1,1)$, counted with analytic multiplicity, for every $0<\rho\le1$.
+\end{lemma}
+\begin{proof}
+The function
+\begin{equation}\label{ado:eq:cauchymap}
+ t(u)=\frac{1+\rho^2u^2}{2\rho u}
+\end{equation}
+is strictly decreasing on $(0,1)$, since
+$t'(u)=(\rho^2u^2-1)/(2\rho u^2)<0$. Its values are at least one,
+and it tends to infinity as $u\downarrow0$. Thus
+\[
+ J_\rho(c)=\int_0^1\frac{\kappa(u)}{2\rho u}
+                         \frac1{t(u)-c}\dd u.
+\]
+The factor $\kappa(u)/u$ need not be integrable by itself; this causes
+no difficulty because the displayed Cauchy factor is $O(u)$ at zero.
+All the integrals below are interpreted with their complete kernels.
+
+Suppose there are distinct zeros $c_1,\ldots,c_q\in(-1,1)$ with
+positive multiplicities $\ell_1,\ldots,\ell_q$ summing to $m+1$.
+If more zeros are available, retain any subcollection of total
+multiplicity $m+1$. Form the proper rational function
+\begin{equation}\label{ado:eq:variationrational}
+ R(t)=\frac{\prod_{j=1}^m(t-t(r_j))}
+             {\prod_{a=1}^q(t-c_a)^{\ell_a}}.
+\end{equation}
+Its partial fractions are linear combinations of
+$(t-c_a)^{-h}$ for $1\le h\le\ell_a$. Differentiation of $J_\rho$
+under the integral is valid locally for $c\in(-1,1)$; explicitly,
+\[
+ J_\rho^{(h-1)}(c)
+ =(h-1)!\int_0^1\frac{\kappa(u)}{2\rho u}
+                         \frac1{(t(u)-c)^h}\dd u.
+\]
+The selected zero multiplicities therefore imply
+\begin{equation}\label{ado:eq:contradictoryintegral}
+ \int_0^1\frac{\kappa(u)}{2\rho u}R(t(u))\dd u=0.
+\end{equation}
+This integral is absolutely convergent: near zero $R(t)=O(1/t)=O(u)$,
+and near one its denominators stay positive and bounded away from zero.
+
+But each factor $t(u)-t(r_j)$ changes sign exactly where $\kappa$
+changes sign. The denominator of $R(t(u))$ is strictly positive, because
+$t(u)\ge1>c_a$. Hence the integrand in
+\eqref{ado:eq:contradictoryintegral} has one fixed nonzero sign except
+at the $r_j$. Its integral cannot vanish. This contradiction proves the
+bound and also excludes an identically zero $J_\rho$.
+\end{proof}
+The proof is a finite partial-fraction argument, including repeated poles.
+No unproved strict-total-positivity assertion is being used.
+
+\subsection{Positive compensation supplies the missing zeros}
+For $0<\theta<\pi$ and $0\le u\le1$, put
+\[
+ \beta_u(\theta)=-\adoArg(1-\rho u e^{\iu\theta}).
+\]
+For $0<u<1$ one has
+\begin{equation}\label{ado:eq:betasector}
+ 0<\beta_u(\theta)<\beta_1(\theta)<\frac\pi2.
+\end{equation}
+The angle is strictly increasing in $u$, since differentiation with
+respect to $u$ gives $\rho\sin\theta/|1-\rho u e^{\iu\theta}|^2>0$.
+A positive mixture of the resolvents $(1-zu)^{-1}$ stays strictly inside
+this sector. Consequently, with $H$ as in
+\eqref{ado:eq:factorization},
+\begin{equation}\label{ado:eq:Hsector}
+ 0<\adoArg H(\rho e^{\iu\theta})<\beta_1(\theta).
+\end{equation}
+For example, the second inequality follows by rotating each resolvent
+through $-\beta_1$ and observing that its imaginary part is strictly
+negative for $0<u<1$. All rays lie in an angle of width less than
+$\pi/2$, so no argument ambiguity arises.
+
+\begin{theorem}[Complete angular count and signs]
+\label{ado:thm:angular}
+For \eqref{ado:eq:domain} and every $0<\rho\le1$,
+$\Imag L(\rho e^{\iu\theta})$ has exactly $d-1$ simple zeros in
+$0<\theta<\pi$. They have the signs and bounds stated in
+Theorem~\ref{ado:thm:main}.
+\end{theorem}
+\begin{proof}
+A continuous unwrapped argument of $L$ along the upper arc is
+\begin{equation}\label{ado:eq:unwrappedphase}
+ \Phi(\theta)=d\theta+
+       \sum_{j=1}^{d-1}\beta_{r_j}(\theta)
+       +\adoArg H(\rho e^{\iu\theta}).
+\end{equation}
+The factorization proves this formula exactly; $\Phi$ is not reduced
+modulo $2\pi$. The sector bounds imply
+\begin{equation}\label{ado:eq:phasebounds}
+ d\theta<\Phi(\theta)<d\bigl(\theta+\beta_1(\theta)\bigr)<d\pi.
+\end{equation}
+At the other end of the arc, $\Phi(\theta)\to d\pi$ as
+$\theta\uparrow\pi$, since all resolvents approach positive real
+values and $H(-\rho)>0$.
+
+If $\rho<1$, then $\Phi(\theta)\to0$ as $\theta\downarrow0$.
+The case $\rho=1$ requires more care: $L(1)$ may be singular, and
+there is no reason to assign it argument zero. Instead, each fixed
+$r_j<1$ gives $\beta_{r_j}(\theta)\to0$, while
+\eqref{ado:eq:Hsector} gives
+\[
+ \limsup_{\theta\downarrow0}\adoArg H(e^{\iu\theta})\le\pi/2.
+\]
+It follows that $0<\Phi(\theta)<\pi$ for sufficiently small positive
+$\theta$. This weaker endpoint statement is all that is needed.
+
+By continuity, the phase crosses each of $\pi,2\pi,\ldots,(d-1)\pi$.
+These yield at least $d-1$ distinct zeros of the imaginary part. On the
+other hand, Lemma~\ref{ado:lem:variation} with $m=d-1$, together
+with \eqref{ado:eq:angulartransform}, gives at most $d-1$ zeros
+counted with multiplicities. The change of variable $c=\cos\theta$
+has nonzero derivative in the open arc, and the prefactor
+$\rho\sin\theta$ is positive. Thus multiplicities are preserved.
+Every zero is simple, and there is exactly one crossing of each listed
+phase level. The levels must occur in their stated order, since a
+reversal would force a repeated crossing of an earlier level.
+
+The initial phase lies in $(0,\pi)$, so the imaginary part starts
+positive. Simplicity forces alternating signs thereafter. At the
+$k$th zero, the phase is $k\pi$ and the modulus is nonzero, so the real
+value has sign $(-1)^k$.
+
+For the location bounds, write $\alpha_k=k\pi/d$. At a zero,
+\eqref{ado:eq:phasebounds} gives
+\[
+ \theta_k<\alpha_k<\theta_k+\beta_1(\theta_k).
+\]
+The function $h(\theta)=\theta+\beta_1(\theta)$ is strictly
+increasing, because
+\[
+ h'(\theta)=\frac{1-\rho\cos\theta}
+                  {1-2\rho\cos\theta+\rho^2}>0.
+\]
+For $\rho<1$, solving $h(\theta)=\alpha$ gives
+$\theta=\alpha-\arcsin(\rho\sin\alpha)$. At $\rho=1$ the same
+expression is the solution when $\alpha>\pi/2$; when
+$\alpha\le\pi/2$ it is zero, and the strict lower bound follows
+from $\theta_k>0$. This proves \eqref{ado:eq:mainangles}.
+\end{proof}
+The argument proves the needed crossings without asserting that
+$\Phi$ is globally monotone. Such an assertion is unnecessary here.
+
+\begin{corollary}[Analytic motion and no interior collisions]
+\label{ado:cor:analyticbranches}
+For fixed integer leading indices, each angular branch is real analytic
+in $(\rho,b)\in(0,1)\times(0,\infty)$, and extends real analytically
+across $\rho=1$ locally at each of its nontrivial upper-arc zeros.
+The density roots $r_j$ are real analytic in $b>0$. No two of the
+angular branches collide for $0<\rho\le1$.
+\end{corollary}
+\begin{proof}
+On compact subsets of $\Real b>0$, the seed $f_b$ is holomorphic as
+an $L^1$-valued function; factors $|\log(-\log u)|^j$ arising from
+parameter differentiation have an integrable common majorant on smaller
+compact subsets. The bounded operators preserve this holomorphic
+parameter dependence. The signed transform is locally holomorphic in
+$z\in\Omega$ and in $b$. Simplicity of its angular zeros permits the
+real analytic implicit-function theorem. The unit-radius zeros remain
+away from the cut, so the same local argument crosses $\rho=1$.
+The density derivative formulas give joint real analyticity in $u,b$
+in the open interval, and their simple roots obey the same theorem.
+Distinctness follows from Theorem~\ref{ado:thm:angular}.
+\end{proof}
+The local extension across radius one does not imply that the global
+count persists at all larger radii. For $L_{1,1}=\log^2(1-z)/2$, an
+upper-half-plane imaginary zero requires $|1-z|=1$, so its angle obeys
+$\cos\theta=\rho/2$. There are no open-upper-arc zeros when $\rho>2$.
+
+\subsection{Strict radial motion of every angular branch}
+The compensation yields more than a zero count. It also turns a
+monotonicity property of ordinary positive Stieltjes transforms into
+strict motion of all the strict-depth angular zeros.
+
+\begin{lemma}[Radial argument monotonicity for positive transforms]
+\label{ado:lem:radialPick}
+Let $\nu$ be a nonzero finite positive measure on $[0,1]$ and
+$Q(z)=\int(1-uz)^{-1}\dd\nu(u)$. For $0<\theta<\pi$ and
+$0<\rho\le1$,
+\begin{equation}\label{ado:eq:radialPick}
+ \frac{\partial}{\partial\rho}\adoArg Q(\rho e^{\iu\theta})\ge0.
+\end{equation}
+The argument is chosen continuously from $Q(0)>0$.
+\end{lemma}
+\begin{proof}
+First take a finite measure with positive weights at distinct points
+$0<u_1<\cdots<u_n<1$. The rational function
+$\sum_j w_j/(t-u_j)$ is strictly decreasing between consecutive poles,
+with limits $+\infty$ and $-\infty$ at the two ends. Its numerator
+therefore has exactly one root $v_j\in(u_j,u_{j+1})$ in each such
+interval. Factoring the numerator gives
+\[
+ Q(z)=Q(0)\frac{\prod_{j=1}^{n-1}(1-v_jz)}
+                      {\prod_{j=1}^n(1-u_jz)}.
+\]
+Consequently the radial derivative of its argument is
+\[
+ \sin\theta\left\{f(u_1)+
+          \sum_{j=1}^{n-1}\bigl(f(u_{j+1})-f(v_j)\bigr)\right\},
+ \qquad f(t)=\frac{t}{1-2\rho t\cos\theta+\rho^2t^2}.
+\]
+Every summand is nonnegative, because
+\[
+ f'(t)=\frac{1-\rho^2t^2}
+            {(1-2\rho t\cos\theta+\rho^2t^2)^2}\ge0
+ \qquad(0\le t\le1).
+\]
+
+Approximate an arbitrary finite positive $\nu$ weakly by such finite
+measures, with their masses converging to $\nu([0,1])$. For each
+compact subset of $\Omega$, the integrands defining the transform and
+its first complex derivative are bounded and continuous uniformly in
+$u\in[0,1]$. The transforms and derivatives converge locally uniformly.
+Also $Q(\rho e^{\iu\theta})\ne0$: it has positive imaginary part
+unless the measure is supported at zero, in which case it is a positive
+constant. Passing to the limit in
+$\Imag(e^{\iu\theta}Q'(z)/Q(z))$ proves the nonnegative derivative.
+The same argument works at $\rho=1$ because $\theta$ is strictly
+between zero and $\pi$.
+\end{proof}
+
+\begin{theorem}[Strict inward angular motion]
+\label{ado:thm:radialmotion}
+For $d\ge2$ and \eqref{ado:eq:domain}, every angular branch satisfies
+\begin{equation}\label{ado:eq:strictmotion}
+ \frac{\dd\theta_k}{\dd\rho}<0,
+ \qquad 0<\rho\le1,\quad 1\le k\le d-1.
+\end{equation}
+The derivative at one is the one-sided derivative, or equivalently the
+derivative of the local continuation. The same result holds for the
+positive-seed and shifted-terminal families of
+Theorem~\ref{ado:thm:seedextension}.
+\end{theorem}
+\begin{proof}
+At fixed $\theta$, differentiate the unwrapped phase
+\eqref{ado:eq:unwrappedphase} with respect to the radius:
+\[
+ \Phi_\rho
+ =\sum_{j=1}^{d-1}
+      \frac{r_j\sin\theta}{1-2\rho r_j\cos\theta+\rho^2r_j^2}
+   +\partial_\rho\adoArg H(\rho e^{\iu\theta})>0.
+\]
+The first sum is strictly positive since $d\ge2$ and $r_j>0$; the
+last term is nonnegative by Lemma~\ref{ado:lem:radialPick}.
+At the unique simple crossing of the phase level $k\pi$, one has
+$\Phi_\theta>0$. Indeed the phase starts below that level, ends
+above it, and crosses it exactly once; simplicity excludes a zero
+phase derivative there. Implicit differentiation of
+$\Phi(\theta_k(\rho),\rho)=k\pi$ now gives
+\[
+ \theta_k'(\rho)=-\frac{\Phi_\rho}{\Phi_\theta}<0.
+\]
+All ingredients also hold for a general positive seed.
+\end{proof}
+For depth two, angular decrease alone does \emph{not} settle the
+higher-leading-order question about $\eta(\rho)=\cos\theta(\rho)/\rho$: the derivative of that
+quotient has a second term, and its sign is not implied by
+$\theta'(\rho)<0$. The two kinds of radial monotonicity must remain
+separate in the integration ledger.
+
+\section{Small-radius and large-outer-index expansions}
+\label{ado:sec:asymptotics}
+The global count removes an ambiguity from local expansions: the zeros
+found near the first Fourier-mode zeros are the entire list of angular
+zeros, not just selected branches.
+
+\begin{theorem}[Two-term radial expansion]
+\label{ado:thm:radialexpansion}
+Fix an index satisfying \eqref{ado:eq:domain} with $d\ge2$, and put
+\[
+ p=\frac{c_{\boldsymbol{s}}(d+1)}{C_{\boldsymbol{s}}},\qquad
+ q=\frac{c_{\boldsymbol{s}}(d+2)}{C_{\boldsymbol{s}}},\qquad
+ \alpha_k=\frac{k\pi}{d}.
+\]
+The $k$th angular branch extends real analytically to $\rho=0$, and
+\begin{align}
+ \theta_k(\rho)={}&\alpha_k
+ -\frac{p}{d}\sin\alpha_k\,\rho \notag\\
+ &+\left(\frac{d+1}{d^2}p^2-\frac{2q}{d}\right)
+       \sin\alpha_k\cos\alpha_k\,\rho^2
+ +O_{\boldsymbol{s}}(\rho^3).
+ \label{ado:eq:radialexpansion}
+\end{align}
+In particular, every branch initially moves strictly toward smaller
+angles as the radius increases from zero.
+\end{theorem}
+\begin{proof}
+Divide the imaginary part of the disk series by $C_{\boldsymbol{s}}\rho^d$.
+The resulting analytic equation is
+\[
+ 0=\sin(d\theta)+p\rho\sin((d+1)\theta)
+                   +q\rho^2\sin((d+2)\theta)+O(\rho^3).
+\]
+At $(\rho,\theta)=(0,\alpha_k)$ its $\theta$ derivative is
+$d(-1)^k\ne0$, so the analytic implicit-function theorem applies.
+There are $d-1$ such branches; for small positive radius they exhaust
+the global list from Theorem~\ref{ado:thm:angular}.
+
+Write $\theta=\alpha_k+A\rho+B\rho^2+O(\rho^3)$ and divide by
+$(-1)^k$. The coefficients of $\rho$ and $\rho^2$ are respectively
+\[
+ dA+p\sin\alpha_k,
+ \qquad dB+(d+1)pA\cos\alpha_k+q\sin(2\alpha_k).
+\]
+Solving gives \eqref{ado:eq:radialexpansion}. The first derivative is
+negative because $p>0$ and $0<\alpha_k<\pi$.
+\end{proof}
+Higher Taylor coefficients are obtained by the same finite coefficient
+recursion. At each order the new unknown occurs with coefficient
+$d(-1)^k$, while all remaining terms depend only on earlier
+coefficients and finitely many moments. This is an exact algebraic
+recurrence, not a proof of any global radial sign.
+
+\subsection{Uniformity as the first index increases}
+Fix $d\ge2$ and positive integer middle indices
+$s_2,\ldots,s_{d-1}$. Let the first index be $a\in\N$ and the
+last be $b>0$. Define
+\[
+ T_N(b)=\sum_{N\ge n_2>\cdots>n_d\ge1}
+       \frac1{n_2^{s_2}\cdots n_{d-1}^{s_{d-1}}n_d^b},
+ \qquad T_*=T_{d-1}(b)>0.
+\]
+The latter number is a single-chain value and is independent of $b$.
+At depth two, $T_N(b)=H_N^{(b)}$ and $T_*=1$.
+
+\begin{theorem}[First displacement, uniformly in the final order]
+\label{ado:thm:largeouter}
+Set $\lambda=d/(d+1)$ and $\mu=d/(d+2)$. As $a\to\infty$ through
+positive integers, uniformly for $b>0$, $0\le\rho\le1$, and
+$1\le k\le d-1$,
+\begin{equation}\label{ado:eq:largeouter}
+ \theta_k(\rho)
+ =\alpha_k-\frac{T_d(b)}{dT_*}\sin\alpha_k\,
+                      \rho\lambda^a
+       +O\bigl(\rho^2\mu^a\bigr).
+\end{equation}
+At $\rho=0$, the branch is interpreted by its analytic extension.
+The implied constant and the starting threshold for $a$ may depend on
+the fixed depth and middle indices, but not on $b$, $\rho$, or $k$.
+\end{theorem}
+\begin{proof}
+The normalized imaginary part is
+\begin{equation}\label{ado:eq:outereq}
+ \sin(d\theta)+\frac{T_d(b)}{T_*}\rho\lambda^a
+                   \sin((d+1)\theta)+R(\theta),
+\end{equation}
+where
+\[
+ R(\theta)=\sum_{n\ge d+2}\frac{T_{n-1}(b)}{T_*}
+        \rho^{n-d}\left(\frac dn\right)^a\sin(n\theta).
+\]
+All inner denominators are at least one, so
+$0\le T_{n-1}(b)\le n^{d-1}$ uniformly for $b>0$. Choose the fixed
+integer $a_0=d+3$. For $a\ge a_0$, termwise differentiation is
+absolutely justified and
+\begin{equation}\label{ado:eq:outertail}
+ |R(\theta)|+|R'(\theta)|\le K\rho^2\mu^a,
+ \quad
+ K=\frac2{T_*}\sum_{n\ge d+2}n^d
+                        \left(\frac{d+2}{n}\right)^{a_0}<\infty.
+\end{equation}
+Also $T_d(b)/T_*\le d^{d-1}/T_*$, independently of $b$.
+
+On disjoint fixed small neighborhoods of the $\alpha_k$, the derivative
+of the first term of \eqref{ado:eq:outereq} is bounded away from zero.
+Its perturbation tends to zero uniformly by \eqref{ado:eq:outertail}.
+Evaluating at $\alpha_k\pm K_1\rho\lambda^a$, for a sufficiently
+large fixed $K_1$, gives opposite signs for all sufficiently large $a$.
+This follows from the linear term $d(\theta-\alpha_k)$ and the
+uniform bounds on the perturbations; $\mu/\lambda<1$. Thus each
+neighborhood contains a unique root with displacement
+$\delta=O(\rho\lambda^a)$. The global count identifies these roots
+as all the branches in their established order.
+
+Expand \eqref{ado:eq:outereq} at $\alpha_k$ and divide by $(-1)^k$.
+The root equation becomes
+\[
+ 0=d\delta+\frac{T_d(b)}{T_*}\rho\lambda^a\sin\alpha_k
+     +O\bigl(\delta^2+\rho\lambda^a|\delta|
+                         +\rho^2\mu^a\bigr).
+\]
+Because $\lambda^2<\mu$, the previously obtained displacement bound
+makes the error $O(\rho^2\mu^a)$. Division by $d$ proves
+\eqref{ado:eq:largeouter}. All constants used above are independent
+of the final order.
+\end{proof}
+At depth two and unit radius this recovers the leading scale
+$(2/3)^a$ already present in the manuscript's more detailed depth-two
+expansion~\cite{ado:report}. The added content is the simultaneous
+all-depth statement, the exact branch indexing, and uniformity over the
+entire range $b>0$ and $0\le\rho\le1$.
+
+\section{Explicit logistic kernels and positive integral identities}
+\label{ado:sec:identities}
+The compensator is generally implicit: its roots are the zeros of a
+signed density. The all-ones family makes every part explicit and gives
+an infinite collection of exact positive integral identities.
+
+\subsection{The all-ones density and its roots}
+Let $\boldsymbol{1}_d=(1,\ldots,1)$ and define
+\[
+ \ell(u)=\log\frac{u}{1-u},\qquad 0<u<1.
+\]
+The familiar identity
+\begin{equation}\label{ado:eq:allonesLi}
+ L_{\boldsymbol{1}_d}(z)=\frac{(-\log(1-z))^d}{d!}
+\end{equation}
+follows recursively from
+$(1-z)L'_{\boldsymbol{1}_d}(z)=L_{\boldsymbol{1}_{d-1}}(z)$ and the vanishing initial
+value at zero. We use it as a classical identity with a short proof,
+not as a new reduction of multiple polylogarithms.
+
+\begin{theorem}[Explicit signed kernels and logistic roots]
+\label{ado:thm:logistickernels}
+For every $d\ge1$,
+\begin{align}
+ \kappa_{\boldsymbol{1}_d}(u)
+ &=\frac{\Imag(\ell(u)+\iu\pi)^d}{\pi d!}\notag\\
+ &=\sum_{j=0}^{\lfloor(d-1)/2\rfloor}
+ \frac{(-1)^j\pi^{2j}\ell(u)^{d-1-2j}}
+ {(2j+1)!(d-1-2j)!}.
+ \label{ado:eq:logistickernels}
+\end{align}
+Its increasing list of roots is
+\begin{equation}\label{ado:eq:logisticroots}
+ r_j=\frac1{1+\exp(\pi\cot(j\pi/d))},
+ \qquad 1\le j\le d-1.
+\end{equation}
+In particular, $r_j+r_{d-j}=1$.
+\end{theorem}
+\begin{proof}
+Consider the generating function
+\begin{equation}\label{ado:eq:kernelgenerator}
+ G(t,u)=e^{t\ell(u)}\frac{\sin\pi t}{\pi t}
+       =\sum_{d\ge1}K_d(u)t^{d-1}.
+\end{equation}
+For $|\Real t|<1$, its integral at moment one is the beta integral
+\[
+ \int_0^1G(t,u)\dd u
+ =\frac{\sin\pi t}{\pi t}\Gamma(1+t)\Gamma(1-t)=1.
+\]
+The reflection formula supplies the last equality, with removable values
+understood at zero. Thus $\int K_1=1$ and $\int K_d=0$ for $d\ge2$.
+Coefficient extraction is legitimate on a smaller complex neighborhood
+of zero, since $u^{\Real t}(1-u)^{-\Real t}$ and its logarithmic
+parameter derivatives have an integrable majorant.
+
+Now $K_1=1$ and
+\[
+ \frac{\dd}{\dd u}G(t,u)=\frac{t}{u(1-u)}G(t,u),
+\]
+so $K_d'=K_{d-1}/(u(1-u))$. This is exactly the derivative of
+$\mathsf{B} K_{d-1}$. Their difference is constant, and both have zero
+integral for $d\ge2$, so $K_d=\mathsf{B} K_{d-1}$. Hence these are the
+constructed all-ones kernels. Expanding the exponential and sine gives
+\eqref{ado:eq:logistickernels}.
+
+The imaginary part of $(\ell+\iu\pi)^d$ vanishes when
+$\adoArg(\ell+\iu\pi)$ is one of $j\pi/d$. This gives
+$\ell=\pi\cot(j\pi/d)$. Reversing the order of these real values
+and solving $u/(1-u)=e^\ell$ yields \eqref{ado:eq:logisticroots}.
+The symmetry follows from $\cot(\pi-x)=-\cot x$.
+\end{proof}
+
+\begin{proposition}[A continuous Mellin identity and Stirling moments]
+\label{ado:prop:mellin}
+For real $x>0$ and complex $t$ satisfying $-x<\Real t<1$,
+\begin{equation}\label{ado:eq:mellin}
+ \int_0^1u^{x-1}e^{t\ell(u)}\frac{\sin\pi t}{\pi t}\dd u
+ =\frac{\Gamma(x+t)}{\Gamma(x+1)\Gamma(1+t)}.
+\end{equation}
+The values at removable singularities are obtained by continuation.
+For every integer $n\ge1$,
+\begin{equation}\label{ado:eq:stirlingmoments}
+ \int_0^1u^{n-1}\kappa_{\boldsymbol{1}_d}(u)\dd u
+ =\frac{\stirling{n}{d}}{n!},
+\end{equation}
+where $\stirling{n}{d}$ is the unsigned Stirling number of the first kind,
+zero for $d>n$.
+\end{proposition}
+\begin{proof}
+The integral equals
+$\sin(\pi t)B(x+t,1-t)/(\pi t)$. The beta formula and Gamma
+reflection simplify it to \eqref{ado:eq:mellin}. At integer $x=n$,
+the right side is
+\[
+ \frac{(t+1)(t+2)\cdots(t+n-1)}{n!}.
+\]
+Its coefficient of $t^{d-1}$ is $\stirling{n}{d}/n!$, proving
+\eqref{ado:eq:stirlingmoments} by \eqref{ado:eq:kernelgenerator}.
+\end{proof}
+These beta and Stirling identities provide an independent normalization
+check on the general signed-moment construction.
+
+\subsection{An explicit infinite family of compensated identities}
+For the roots \eqref{ado:eq:logisticroots}, define
+\[
+ P_d(u)=\prod_{j=1}^{d-1}(u-r_j),\qquad
+ D_d(z)=\prod_{j=1}^{d-1}(1-r_jz).
+\]
+The integrable function $P_d\kappa_{\boldsymbol{1}_d}$ is strictly positive
+away from its finitely many zeros. Combining
+\eqref{ado:eq:factorization} and \eqref{ado:eq:allonesLi} gives the
+exact identity
+\begin{equation}\label{ado:eq:generalidentity}
+ \boxed{\quad
+ \int_0^1\frac{P_d(u)\kappa_{\boldsymbol{1}_d}(u)}{1-zu}\dd u
+ =\frac{D_d(z)}{d!}
+       \left(\frac{-\log(1-z)}z\right)^d,
+ \qquad z\in\Omega.
+ \quad}
+\end{equation}
+At $z=0$ the removable value is $1/d!$. At $z=-1$ this becomes
+\begin{equation}\label{ado:eq:negativeoneidentity}
+ \int_0^1\frac{P_d(u)\kappa_{\boldsymbol{1}_d}(u)}{1+u}\dd u
+ =\frac{D_d(-1)}{d!}\log^d2.
+\end{equation}
+The content is not a new formula for $L_{\boldsymbol{1}_d}$; it is the explicit
+positive density, its canonical compensation, and the resulting
+positive-integrand identities. They remain valid at every depth without
+a numerical relation search.
+
+\subsection{Depth three}
+Put
+\[
+ h_3=\frac\pi{\sqrt3},\qquad
+ q_3=\frac1{2+2\cosh h_3}.
+\]
+Then
+\[
+ P_3(u)=u^2-u+q_3,\qquad
+ D_3(z)=1-z+q_3z^2,\qquad
+ \kappa_{\boldsymbol{1}_3}(u)=\frac{\ell(u)^2-\pi^2/3}{2}.
+\]
+Both factors $P_3$ and $\ell^2-\pi^2/3$ are negative between the
+same two roots and positive outside them. Hence their product is
+nonnegative throughout the interval. Formula
+\eqref{ado:eq:negativeoneidentity} gives
+\begin{equation}\label{ado:eq:depththreeidentity}
+ \boxed{
+ \int_0^1\frac{(u^2-u+q_3)(\ell(u)^2-\pi^2/3)}{1+u}\dd u
+ =\frac{2+q_3}{3}\log^3 2.}
+\end{equation}
+The companion normalization is
+\begin{equation}\label{ado:eq:depththreenormalization}
+ \int_0^1 (u^2-u+q_3)(\ell(u)^2-\pi^2/3)\dd u=\frac13.
+\end{equation}
+These identities are proved statements, not high-precision conjectures.
+
+\subsection{Depth four}
+Set
+\[
+ q_4=\frac1{2+2\cosh\pi},\qquad
+ P_4(u)=\left(u-\frac12\right)(u^2-u+q_4).
+\]
+Now
+\[
+ D_4(z)=\left(1-\frac z2\right)(1-z+q_4z^2),\qquad
+ \kappa_{\boldsymbol{1}_4}(u)=\frac{\ell(u)^3-\pi^2\ell(u)}6.
+\]
+The roots are the logistic images of $-\pi,0,\pi$, so again the
+product $P_4\kappa_{\boldsymbol{1}_4}$ is nonnegative. The corresponding pair
+of identities is
+\begin{align}
+ \int_0^1\frac{P_4(u)(\ell(u)^3-\pi^2\ell(u))}{1+u}\dd u
+ &=\frac{3(2+q_4)}8\log^4 2,
+ \label{ado:eq:depthfouridentity}\\
+ \int_0^1P_4(u)(\ell(u)^3-\pi^2\ell(u))\dd u&=\frac14.
+ \label{ado:eq:depthfournormalization}
+\end{align}
+All endpoint singularities are logarithmic powers and are integrable.
+Thus no principal-value convention is implicit in these formulas.
+
+\subsection{An explicit density-edge asymptotic}
+The smallest all-ones density root gives a simple large-depth benchmark:
+\begin{equation}\label{ado:eq:edgeasymptotic}
+ \log r_1=-d+\frac{\pi^2}{3d}+\frac{\pi^4}{45d^3}
+             +O(d^{-5})+O(e^{-d}).
+\end{equation}
+Indeed $\log r_1=-\pi\cot(\pi/d)
+-\log(1+e^{-\pi\cot(\pi/d)})$, and the Taylor expansion of $\cot$
+at zero gives the displayed terms. This concerns a density root, not
+an angular zero. Symmetry supplies $1-r_{d-1}=r_1$.
+
+\input{chapters/05-logistic-resolvent-identities}
+
+\section{Exact rational evaluation and finite certificates}
+\label{ado:sec:computation}
+The density zeros need not be computed in order to obtain numerical
+certificates. The unsigned norm bound $\adoNorm\kappa_1\le2^{d-1}$
+already gives an explicit geometric remainder for a centered
+resolvent expansion. The proof works with real final order; the delivered
+exact implementation accepts positive integer indices so that all
+required moments are rational.
+
+\subsection{A centered-moment expansion}
+Define
+\begin{equation}\label{ado:eq:centeredmoments}
+ B_k=\int_0^1(2u-1)^k\kappa(u)\dd u
+ =\sum_{j=0}^k(-1)^{k-j}\binom{k}{j}2^j c_{\boldsymbol{s}}(j+1).
+\end{equation}
+Then $|B_k|\le M$, where $M=2^{d-1}$. For $\Real z<1$, put
+\[
+ w=\frac{z}{2-z},\qquad |w|<1.
+\]
+The inequality is equivalent to $|z|<|2-z|$. The identity
+$1-zu=(1-z/2)(1-w(2u-1))$ gives
+\begin{theorem}[Geometric exact-evaluation certificate]
+\label{ado:thm:evaluator}
+For every integer $N\ge1$,
+\begin{align}
+ V_N(z)&=\frac{z}{1-z/2}\sum_{k=0}^{N-1}B_kw^k,
+ \label{ado:eq:centeredvalue}\\
+ |L(z)-V_N(z)|
+ &\le\left|\frac{z}{1-z/2}\right|
+          \frac{M|w|^N}{1-|w|}.
+ \label{ado:eq:centerederror}
+\end{align}
+At $z=\iu$ and even $N=2m$, a purely rational bound is
+\begin{equation}\label{ado:eq:gaussianerror}
+ |L(\iu)-V_{2m}(\iu)|<\frac{2^d}{5^m}.
+\end{equation}
+For $|z|\le1/2$, the uniform bound is
+\begin{equation}\label{ado:eq:halferror}
+ |L(z)-V_N(z)|\le\frac{2^{d-1}}{3^N}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The centered geometric series converges uniformly for $u\in[0,1]$,
+and its tail is bounded by $|w|^N/(1-|w|)$. Integrating against
+$|\kappa|$ proves \eqref{ado:eq:centerederror}. At $z=\iu$,
+$|w|=1/\sqrt5$ and $|z/(1-z/2)|=2/\sqrt5$. The multiplicative
+constant is therefore $2M/(\sqrt5-1)<2M=2^d$ after extracting
+$5^{-m}$. On $|z|\le1/2$, one has $|w|\le1/3$ and
+$|z/(1-z/2)|\le2/3$, proving \eqref{ado:eq:halferror}.
+\end{proof}
+For integer indices, \eqref{ado:eq:centeredmoments} and
+\eqref{ado:eq:centeredvalue} use only rational arithmetic at rational
+complex $z$. An enclosing complex disk gives enclosing intervals for
+each coordinate by adding and subtracting its radius. The evaluator
+never treats a small residual as a proof of an identity.
+
+\subsection{Implementation choices and replay}
+The file \texttt{code/exact\_evaluator.py} first obtains the moments
+by dynamic strict prefix sums. It computes $B_k$ with a common integer
+denominator and a repeated-difference transform, rather than a
+floating-point alternating binomial sum. Horner evaluation then gives
+the exact rational center. The generic branch can upper-bound square
+roots by dyadic rationals; the Gaussian and half-disk cases use the
+closed rational bounds above. Near $\Real z=1$, the fixed norm-bound
+precision in the generic branch can be insufficient, in which case the
+implementation raises an error rather than returns an uncertified value.
+It is not advertised as a complete optimal evaluator on the entire slit
+plane.
+
+From the package root, the principal replay is
+\begin{verbatim}
+python code/verify.py
+\end{verbatim}
+It reads frozen rational certificates and independently recomputes them.
+The optional command
+\begin{verbatim}
+python code/verify.py --regenerate
+\end{verbatim}
+uses floating point to \emph{propose} angular brackets, then requires
+rational arithmetic to certify both endpoint signs before saving them.
+The proposal stage uses a strict-disk series and does not decide any
+accepted sign. This discovery/replay separation is deliberate.
+
+\subsection{Gaussian values}
+The delivered Gaussian certificate file contains eight mixed-depth
+examples, all evaluated with $N=240$ centered terms. Each complex-disk
+radius is smaller than $10^{-81}$. The decimal entries below are
+readable midpoint diagnostics; the certificates are the rational
+endpoints in \texttt{data/gaussian\_enclosures.json}.
+\begin{center}\small
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Index & $\Real L_{\boldsymbol{s}}(\iu)$, approximately
+      & $\Imag L_{\boldsymbol{s}}(\iu)$, approximately\\
+\midrule
+$(2,1)$ & $-0.174715661158$ & $-0.113648917600$\\
+$(1,1,1)$ & $0.099953993665$ & $-0.033577147847$\\
+$(2,1,2)$ & $0.032383901801$ & $-0.026348629072$\\
+$(1,2,1,1)$ & $0.001158016810$ & $0.008343470492$\\
+$(2,1,1,2)$ & $0.001825088603$ & $0.006510815484$\\
+$(1,1,1,1,1)$ & $-0.003396506582$ & $-0.001886779708$\\
+$(2,1,2,1,1)$ & $-0.000326599679$ & $-0.000010475684$\\
+$(1,1,1,1,1,1)$ & $0.000443168800$ & $-0.000335617002$\\
+\bottomrule
+\end{tabular}
+\end{center}
+In addition, the eight all-ones Gaussian values at depths one through
+eight are checked against \emph{independent exact} intervals for
+\[
+ L_{\boldsymbol{1}_d}(\iu)=\frac{(-\tfrac12\log2+\tfrac{\iu\pi}{4})^d}{d!}.
+\]
+The logarithm and $\pi$ intervals are derived from different rational
+series, as detailed in Section~\ref{ado:app:controls}. These eight
+normalization controls are distinct from the eight stored mixed-depth
+examples above.
+
+\subsection{Certified angular brackets}
+On the semicircle of radius $1/2$, set
+\begin{equation}\label{ado:eq:rationalcircle}
+ z(t)=\frac{1-t^2}{2(1+t^2)}+\iu\frac{t}{1+t^2},
+ \qquad \theta=2\arctan t,\quad t>0.
+\end{equation}
+Rational $t$ gives rational real and imaginary coordinates. Every saved
+root bracket has $t$-width at most $10^{-12}$; the corresponding
+angle-width is less than $2\cdot10^{-12}$. With $N=104$, the
+error bound \eqref{ado:eq:halferror} proves the two endpoint signs by
+strict rational comparisons. For illustration:
+\begin{center}\small
+\begin{tabular}{@{}lcrr@{}}
+\toprule
+Index & $k$ & $10^{12}t_{\rm left}$ & $10^{12}t_{\rm right}$\\
+\midrule
+$(2,1,2)$ & 1 & 472099547153 & 472099547154\\
+$(2,1,2)$ & 2 & 1487963538987 & 1487963538988\\
+$(1,2,1,1)$ & 1 & 314972569528 & 314972569529\\
+$(1,2,1,1)$ & 2 & 806524527583 & 806524527584\\
+$(1,2,1,1)$ & 3 & 2019771345242 & 2019771345243\\
+$(1,1,1,1,1,1)$ & 3 & 774596669241 & 774596669242\\
+\bottomrule
+\end{tabular}
+\end{center}
+The file \texttt{data/angular\_brackets.json} contains 24 brackets in
+eight complete index families of depths two through six, together with
+all exact coordinate intervals. The existence of a zero in each bracket
+follows from the opposite signs. The theorem, rather than a scan,
+proves uniqueness in every bracket and excludes all additional angular
+zeros. For the displayed middle branch at depth six, the all-ones
+formula independently gives
+$\theta_3(1/2)=\arccos(1/4)$ and $t=\sqrt{3/5}$.
+
+\subsection{What the exact suite checks}
+The fresh replay reports 5,713 finite check groups:
+\begin{center}\small
+\begin{tabular}{@{}p{0.86\linewidth}r@{}}
+\toprule
+Check family & Count\\
+\midrule
+Strict coefficients against direct finite nested enumeration & 1080\\
+Initial zero moments and leading coefficients & 120\\
+Centered moments: independent binomial formula and norm bound & 2880\\
+Polynomial compensation identities for arbitrary test roots & 1200\\
+All-ones moments against unsigned Stirling recurrence & 240\\
+Logistic-kernel derivatives through depth twelve & 11\\
+Depth-three/four symbolic kernel formulas & 2\\
+Exact generalized-kernel counterexample checks & 2\\
+Rejected negative controls & 2\\
+Rational atomic radial-argument derivative signs & 80\\
+Independent exact all-ones Gaussian controls & 8\\
+Replayed stored Gaussian enclosures & 8\\
+Replayed angular endpoint signs & 48\\
+Replayed root brackets and complete families & $24+8$\\
+\midrule
+Total & 5713\\
+\bottomrule
+\end{tabular}
+\end{center}
+The polynomial compensation tests deliberately use arbitrary rational
+roots: they test the cancellation identity, \emph{not} positivity for
+those roots. Positivity requires the actual density zeros and is proved
+analytically. Similarly, finite atomic derivative checks do not replace
+the interlacing-and-approximation proof of
+Lemma~\ref{ado:lem:radialPick}.
+
+\section{Independent rational logarithm and Gaussian controls}
+\label{ado:app:controls}
+The exact controls use only rational arithmetic and elementary remainder
+bounds. They do not share the centered-moment evaluator's recurrence.
+For $0<x<1$, let
+\[
+ A_N(x)=\sum_{j=0}^{N-1}\frac{(-1)^jx^{2j+1}}{2j+1}.
+\]
+The alternating-series estimate gives
+\[
+ \arctan x\in
+ \begin{cases}
+ [A_N(x),\ A_N(x)+x^{2N+1}/(2N+1)],&N\text{ even},\\
+ [A_N(x)-x^{2N+1}/(2N+1),\ A_N(x)],&N\text{ odd}.
+ \end{cases}
+\]
+The identity
+\begin{equation}\label{ado:eq:machin}
+ \pi=16\arctan(1/5)-4\arctan(1/239)
+\end{equation}
+is verified by tangent addition: if $a=\arctan(1/5)$, then
+$\tan(4a)=120/119$, and
+$\tan(4a-\arctan(1/239))=1$. Elementary bounds put the angle in
+$(0,\pi/2)$, so it equals $\pi/4$ and not another tangent branch.
+The implementation uses $N=120$ and $N=40$ for the two arctangent
+series.
+
+For the logarithm, set
+\[
+ B_N=2\sum_{j=0}^{N-1}\frac{(1/3)^{2j+1}}{2j+1}.
+\]
+Integrating the geometric series for $2/(1-x^2)$, or using the
+power series of $2\operatorname{arctanh}x$, gives
+\begin{equation}\label{ado:eq:log2interval}
+ B_N<\log2<
+ B_N+\frac{2(1/3)^{2N+1}}{(2N+1)(1-1/9)}.
+\end{equation}
+The code uses $N=160$. Both interval endpoints are exact rational
+numbers. Cartesian complex interval multiplication then encloses
+$(-\tfrac12\log2+\tfrac{\iu\pi}{4})^d/d!$.
+
+For each depth $1\le d\le8$, the independently generated real and
+imaginary intervals lie wholly inside the corresponding coordinate
+intervals returned by the centered evaluator with 240 terms. This is
+an exact containment check, not a decimal comparison. It is a strong
+normalization and branch control, while the identity
+\eqref{ado:eq:allonesLi} still rests on its differential-equation proof.
+
+The exact evaluator also supplies a dyadic upper bound on $\sqrt{x}$
+for a nonnegative rational $x=a/b$. With an integer precision $p$, set
+\[
+ q=\frac{\lfloor\sqrt{\lfloor 2^{2p}a/b\rfloor}\rfloor+1}{2^p}.
+\]
+Then $q^2>x$. This is computed by integer square root and exact
+comparison. If its use in the generic geometric-tail formula fails to
+produce an upper bound smaller than one for $|w|$, the code stops
+rather than accepting a possibly divergent bound.
+
+The complete original source and delivered rational certificates remain
+under \src{reports/angular-zero-continuation/continuations/all-depth-signed-oscillation/}.
+The isolated replay record in \src{verification/sixth-replay/all-depth/}
+checks the finite arithmetic independently of the analytic zero-count proof.
+The manuscript uses the stronger positive-transform radial theorem proved
+next, while retaining the incoming interlacing argument as an independent
+route. Fractional leading indices at higher depth still require a new
+construction: iterating an integer number of moment operators does not
+establish a fractional variation theorem.

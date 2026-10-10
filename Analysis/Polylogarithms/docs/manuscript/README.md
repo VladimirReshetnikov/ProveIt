@@ -1,8 +1,8 @@
 # Polylogarithms and their Arithmetic Bridges
 
 The collective manuscript, authored by **ProveIt Contributors**, is
-[polylogarithms.pdf](polylogarithms.pdf): **392 pages, twelve chapters,
-thirteen figures and 105 references**, with a literature appendix preserving
+[polylogarithms.pdf](polylogarithms.pdf): **417 pages, twelve chapters,
+thirteen figures and 106 references**, with a literature appendix preserving
 94 distinct historical question leads. Its editable source is
 [polylogarithms.tex](polylogarithms.tex) and the files in `chapters/`.
 
@@ -118,6 +118,24 @@ All eleven new isolated default suites pass. The radial replay checks the
 full 2,304-cell cover and 4,609 root boxes. The exact S14 proximity verifier
 also passes, while equality remains conjectural. Finite certificates support
 the separately audited analytic proofs; they do not promote the other
-preserved continuum claims automatically. The active goal continues with
-all-depth geometry, higher-order normalized-radius sectors, global Euler
-extremizers, Lerch thresholds and arithmetic continuations.
+preserved continuum claims automatically. The active research programme continues with functional certificates,
+unresolved finite-weight identities and their experimental discovery.
+Geometric and asymptotic continuations retain their audited scope.
+
+The all-depth signed-kernel development is now integrated in full, including
+minimal positive compensation, the complete angular count, uniform
+expansions, explicit logistic roots and positive integral identities. A
+collective several-color divided-difference identity yields confluent
+resolvent polynomials at every order. Its Gaussian logarithmic moments have
+an exact coefficient formula in Q[i,pi,log(2)], including two printed real
+weight-two integral evaluations. The proof uses beta moments and parameter
+differentiation; 117 finite coefficient and six partial-fraction checks pass,
+with thirty independent 65-digit quadrature diagnostics. Wolfram supplies
+45 exact checks and six further numerical comparisons.
+
+A separate positive pair decomposition strengthens the Stieltjes radial
+phase theorem and proves theta'(rho)<0 for every a>=0,b>0. Its universal
+disk range is sharp by an explicit two-atom counterexample at every
+prescribed larger radius. This does not assert a uniform normalized-radius
+sign or settle the unresolved arithmetic Gaussian sums. Experiments,
+finite exact arithmetic and full analytic identities keep distinct roles.
