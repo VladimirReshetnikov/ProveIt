@@ -306,10 +306,10 @@ def sector_rays(kernel, *, phase='standard', method='auto', check=lambda: None,
     """
     if phase not in ('quadrilateral', 'standard'):
         raise ValueError('phase must be quadrilateral or standard')
-    if method not in ('auto', 'arrangement', 'supports', 'envelope'):
-        raise ValueError('method must be auto, arrangement, supports, or envelope')
-    if phase == 'quadrilateral' and method in ('supports', 'envelope'):
-        raise ValueError('supports and envelope are standard-ray methods')
+    if method not in ('auto', 'arrangement', 'supports', 'envelope', 'planar'):
+        raise ValueError('method must be auto, arrangement, supports, envelope, or planar')
+    if phase == 'quadrilateral' and method in ('supports', 'envelope', 'planar'):
+        raise ValueError('supports, envelope and planar are standard-ray methods')
     if max_bases is not None and (type(max_bases) is not int or max_bases < 0):
         raise ValueError('max_bases must be a nonnegative integer or None')
     if stats is None:
@@ -317,6 +317,14 @@ def sector_rays(kernel, *, phase='standard', method='auto', check=lambda: None,
     stats.update(bases_attempted=0, positive_directions=0,
                  nonextreme_directions=0, emitted_rays=0)
     d = len(kernel.basis)
+    if phase == 'standard' and (method == 'planar' or (method == 'auto' and d == 3)):
+        from .sector_planar import sector_planar_rays
+        stats.update(method='planar',hyperplanes=0)
+        for rows in sector_planar_rays(kernel,check=check,max_rays=max_bases,stats=stats):
+            stats['bases_attempted']=stats['emitted_rays']
+            stats['positive_directions']=stats['emitted_rays']
+            yield rows
+        return
     if phase == 'standard' and (method == 'envelope' or (method == 'auto' and 1 <= d <= 2)):
         from .sector_envelope import sector_envelope_rays
         yield from sector_envelope_rays(kernel, check=check, max_bases=max_bases, stats=stats)
@@ -389,10 +397,10 @@ def discover_in_sector(triangulation, allowed_types, *, phase='quadrilateral',
     """
     if phase not in ('quadrilateral', 'standard'):
         raise ValueError('unknown search phase')
-    if method not in ('auto', 'arrangement', 'supports', 'envelope'):
+    if method not in ('auto', 'arrangement', 'supports', 'envelope', 'planar'):
         raise ValueError('unknown ray method')
-    if phase == 'quadrilateral' and method in ('supports', 'envelope'):
-        raise ValueError('supports and envelope are standard-ray methods')
+    if phase == 'quadrilateral' and method in ('supports', 'envelope', 'planar'):
+        raise ValueError('supports, envelope and planar are standard-ray methods')
     if max_bases is not None and (type(max_bases) is not int or max_bases < 0):
         raise ValueError('invalid basis allowance')
     if max_orbit_cycles is not None and (
