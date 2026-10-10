@@ -2456,12 +2456,218 @@ Two comparisons:
 
 The kernel-checked length-6 budget comparison is still to be done.
 
+**Step 7 (repaired route): a conditional degree-four inverse theorem.**
+`Proofs18SinglePieceInverse`:
+- `single_piece_localization_global`: the frequency box of width `≥ N^e`,
+  localized by `polynomial_localization_of_dense_frequency_box` at
+  parameter `singlePieceEta = 2^(−2(k+2)³)·(ρ/2^(k+1))·α²/4`.
+- `single_piece_inverse_step_global`: a degree-`(k+1)` discrepancy bound
+  gives a degree-`(k+2)` bound at parameter `η·β/4`, given the per-modulus
+  conditions `SinglePieceModulusConditions` above a threshold `Tloc`.
+- `single_piece_quartic_inverse_global`: `FunctionDiscrepancyBound 4` at
+  parameter `η·β₃/4`, where `β₃` is the proved Fejér cubic parameter at
+  input `η/(2·10⁵)`.
+  - *Inputs:* `PolyCoverAt 1` (proved), `PolyCoverAt 2`, the retiled
+    linearity bound (witnessed by
+    `exists_polynomial_retiled_linearity_profile`), and the per-modulus
+    scale conditions.
+  - *Consequence:* `theorem_18_2_of_function_discrepancy_budget`'s
+    mechanism then gives Theorem 18.2 at length six, once the closed
+    threshold fits.
+
+**Order-of-magnitude budget (informal; not kernel-checked).** Write
+`D` for the polynomial degree of `PolyCoverAt 2`'s controls
+`Qb ≈ (γθσ)^(−D)` and `Eb ≈ (γθσ)^D`, and set `k = 2`, `θ = α`, `γ = α/2`.
+- *Densities.*
+  - `θ₁ = (α²/8)^(2^128)`, `θ₂ ≈ θ₁⁸`, and the deletion budget is
+    `θ′ = θ₂/10`.
+  - Each provider density is `s ↦ s^(1+D)(γθ′)^D`; each unused coordinate
+    adds one degree.
+  - So `ρ₁ = C^[3](θ₂/2) ≈ θ₂^(O(D³))`, then `ρ′ ≈ ρ₁²` and
+    `θ₁′ = ρ′³/4`.
+  - The final density is `θ₁′·c(c(θ₁′)) ≈ θ₂^(O(D⁵)) ≈ α^(2^132·O(D⁵))`.
+- *Parameters.* `η ≈` the density, and the Fejér parameter costs a power
+  `2^59`, so `β₄ ≈ α^(2^191·O(D⁵))`. The length exponent `σ` is
+  `exp(−poly(1/α))`. That is admissible: `densityIterationClosedThreshold_le_double_exp_of_exp_budget`
+  takes `σ⁻¹ ≤ exp(X^r)`. The modulus thresholds (widths `N^(poly α)`,
+  the retiling threshold `exp(poly(q))`, `q ≤ Qb`) are single
+  exponential in `poly(1/α)`.
+- *Threshold.* The closed threshold is about `exp(exp(α_δ^(−P)))` with
+  `P ≈ 2^200·D⁵`, where `α_δ = intervalUniformityParameter δ 6 ≥ 2^(−544)·δ^192`.
+  `szemerediThreshold δ 6 = 2^(2^(δ^(−2^32768)))`. The comparison holds
+  when `P ≲ 2^32768/800`, i.e. `D ≲ 2^6500`.
+
+So, up to bookkeeping that is not yet kernel-checked: **a polynomial
+`PolyCoverAt 2` of degree up to about `2^6500` would give Theorem 18.2 at
+length six.** The kernel-checked part ends at
+`single_piece_quartic_inverse_global`. Closing the budget formally needs
+explicit upper bounds for:
+- `shortLocalizationThreshold` and `inverseStepThreshold`;
+- the provider width chains under power-law controls.
+
+The corpus does not have these yet (the five-term case has its own,
+`fejer_five_term_step_threshold_le_double_exp`).
+
+**On the open core `PolyCoverAt 2`.**
+- It is Theorem 16.2 in dimension two with polynomial controls. The
+  corpus has tower-type controls (`theorem_16_2_at_two`).
+- Cover form is essential. A single piece per box is not enough, because
+  every proper box needs all but `σ` of its points covered.
+- Peeling global pieces cannot replace it: pieces live on boxes of width
+  `N^(poly α)`, so about `N^(2−o(1))` pieces would be needed.
+- It is the dimension-two analogue of the proved dimension-one
+  `section16_product_relation_cubic_cover`, without the stackable-union
+  requirement.
+- *Relation to Part J's variety route.* J.4 splits dimension-two
+  structure into three steps:
+  - (1) `BihomExtraction`, open;
+  - (2) Milićević's deep variety structure, behind the Prop 9.3 coherence
+    gap of J.5c;
+  - (3) stackability.
+
+  Then the readout (R) turns variety pieces into multilinear maps on
+  boxes. **The single-piece route removes step (3).** A
+  `MultiplyLinearWith` cover per relation is all it needs, with no unions
+  of members. So `PolyCoverAt 2` would follow from (1), (2) and (R) alone:
+  - at quasi-polynomial strength, if (1), (2) and (R) are
+    quasi-polynomial. Nesting compounds the quasi-polynomial exponent,
+    though: `c∘c` turns `exp(−C·log^A(1/t))` into exponent about `A²`,
+    and the route nests about five times. So only input exponents `A`
+    around `3400^(1/5) ≈ 5` would meet K.4's half-density budget
+    (`A ≲ 3400`) for Corollary 18.7 at `k = 6`.
+  - at polynomial strength, if they are polynomial. Theorem 18.2 at length
+    six needs this.
+
 **Next.**
-1. The length-6 budget: instantiate `single_piece_lift_global` at `k = 2`
-   inside the frequency-box → localization → `FunctionDiscrepancyBound 4`
-   route. Then compare with `szemerediThreshold δ 6`, under `PolyCoverAt 2`
-   with power-law controls.
-2. Study `PolyCoverAt 2` itself, the non-stackable dimension-two cover.
+1. Kernel-check the budget: explicit upper bounds for
+   `shortLocalizationThreshold`, `inverseStepThreshold` and the width chains
+   under power-law controls, giving `Theorem182At 6` from a power-law
+   `PolyCoverAt 2`.
+2. The open core `PolyCoverAt 2`, via J.4's steps (1), (2) and (R), with
+   no stackability needed.
+
+### L.3 Family-uniform covers: a route to `PolyCoverAt 2` and beyond (proposal, 2026-10-10)
+
+**Idea.** H.4 asked for a *structure-level* stackable class and called its
+preservation open. Stackability can instead be made *procedural*.
+- Dimension one is stackable: the covers of any family of product relations
+  come from their Freiman families, and Corollary 7.11 linearizes all
+  members of all relations at once.
+- A dimension-`k+1` cover, built Gowers's way, is **generated by
+  dimension-`≤ k` data**:
+  - the spectrum relations `Δ`;
+  - the cross-section remainders `φ_e`;
+  - the anchor slices;
+  - plus the recurrence and retilings.
+
+  Covering the generators of *all* pieces of *all* relations in a family
+  at once, then running one simultaneous recurrence, puts the whole
+  family's dimension-`k+1` covers on common cells. There are no
+  sequential unions (H.2), so widths are not raised to the number of
+  pieces.
+
+**Inductive statement (to be formalized): `UniformCoverAt k`.** For fixed
+`γ, θ`:
+- *Good sets.* Every product relation `Γ` gets a good set `J(Γ)` with
+  `|J(Γ)| ≥ (1−θ)N^k`, depending only on `Γ`.
+- *Covers.* For every finite family `Γ₁, …, Γ_n`, every loss `σ` and every
+  proper box `P`, one partition of `P` and `≤ Qb(n,σ)` multilinear maps
+  per cell cover the values of every `Γ_i` over `J(Γ_i)`, outside a
+  `σ`-fraction of `P`. Cells have width `≥ width(P)^(Eb(n,σ))`.
+- *Controls.* `Qb` and `Eb` are polynomial in `n`, `1/σ`, `1/(γθ)`.
+- `UniformCoverAt k ⇒ PolyCoverAt k` (a family of one).
+
+**Base case.** Dimension one is essentially proved: per-relation Freiman
+families (`section16_extract_uniform_base_family`) give the good sets, and
+the stackable union of members (`CubicStackableClass 1 1`) gives the
+family covers.
+
+**Step `k → k+1` (sketch).** For each relation of the family, run
+Theorem 16.2's extraction loop. It yields `poly` structured pairs
+`(B_j, φ_j)` (Lemma 15.6 replaces Lemma 16.4's dichotomy, as in step 6).
+For each pair it fixes `H_j, Y_j, φ′_j, x₀_j`, the spectrum `Δ_j`, the
+vertex cross-sections, and the slices `h ↦ φ_j(x₀_j + h, a)` for every
+`a`. All are global objects, so `J(Γ)` is the set of points surviving all
+their good sets. On a box `P`:
+1. Cover all `Δ_j` at once by `UniformCoverAt k`. Then run one
+   simultaneous recurrence for all spectrum graphs, at the reciprocal
+   polynomial exponent of `exists_polynomial_section16_recurrence_profile`,
+   and retile the last axis. Every `φ′_j(h, ·)` is now linear on every cell.
+2. Cover all vertex cross-sections at once, lifted as cylinders, and
+   retile.
+3. On each cell, choose `r` anchors per pair by averaging. Cover all the
+   anchor slices of all pairs at once by `UniformCoverAt k`, retile, and
+   lift with `section16TwoAnchorLift`.
+
+The cost of a step:
+- the refinement depth is a constant number of dimension-`k` covers, so
+  `Eb_(k+1) ≈ Eb_k^3·poly`;
+- counts multiply by `poly`.
+
+Everything stays polynomial for fixed `k`.
+
+**Why the earlier obstructions do not apply.**
+- A (inner-loss uniformity) concerned Gowers's self-referential control
+  functions. `MultiplyLinearWith` allows controls polynomial in `σ`.
+- B and J.3 (the exponential in `q` through Lemma 16.1) are removed by the
+  polynomial simultaneous recurrence.
+- H.2 (sequential unions) never arises.
+- H.3's "all at once" union of slices into one relation (product property
+  degrading to `γ/√r`) is not used: slices stay separate members of a
+  family.
+- G (anchors and losses) is handled per cell with deterministic anchors.
+- The Bohr radius `ζ = 2^(−s)` costs only a polynomial factor in the
+  exponent: small boxes are covered exactly by interpolation on
+  width-2/3 cells, as `section16_coarse_relation_cover` does in dimension
+  one.
+
+**Risks to check before formalizing.**
+- Good sets must not depend on the family or the box. All deletions above
+  are global, and all per-box losses are `σ`-fractions.
+- The per-cell anchor families change from cell to cell. Uniformity
+  requires every slice's good set to be fixed in advance, for all `a`;
+  the total deletion is then `θN^(k+1)`.
+- The polynomiality of Lemma 15.6, 16.5 and 16.7 at the relevant
+  parameters, already used in step 6.
+
+If the induction holds, Theorem 16.2 has polynomial controls in every
+dimension. Gowers's Section 16 would then deliver its claimed
+double-exponential bound once the budget is checked, and the single-piece
+route gives Theorem 18.2 at length six from `UniformCoverAt 2`.
+
+**Where the proved dimension-two cover loses polynomiality (survey,
+same day).** The general-`k` lift
+`Section16AllBoxLineCoversWith.cubic_multiplyLinearWith` already has
+polynomial slice controls (`3rq`, `cubicBaseExponent(rq)`), and at
+`k = 1` its slice provider is proved polynomial
+(`Section16FinalFreimanFamilies.cubic_slice_provider`). The losses are:
+1. **The γ-side of the line covers.**
+   `Section16StructuredPair.good_domain_remainder_cover` uses the printed
+   `(γ, R)` face controls, with `R = section16Lemma9R ≈ (1/θγ)^(2^128)`.
+   - `section16Lemma9QBound = (γσ/2R)^(−2^1024·R)` enters the graph count
+     through `qGamma` and the anchor sample count.
+   - `multipleC(σ/2R, γ, 2)^R` enters the width exponent
+     (`lemma9WidthWithExponent`).
+   - The repair (H.3a): feed the proved polynomial dimension-one face
+     covers (`polyCoverAt_one`) into the remainder. The line-cover
+     interface hard-wires `qGamma ≤ section16Lemma9QBound`, so it needs a
+     parametrized form.
+2. `128^(−12·Spec)` from the old recurrence. The polynomial variant
+   (`exists_polynomial_common_base_cover`) already removes it.
+3. `ζ`. It costs only a factor `1/(10·S₁)` through the threshold cap.
+4. **The union of pieces** (`MultiplyLinearWith.finsetUnion`) is
+   sequential, so the whole-relation cover falls back to the printed
+   `MultiplyLinear γ (γ⁻²S₁¹⁰)`. The family-uniform construction above
+   targets exactly this.
+
+**Plan.**
+- (A) A polynomial piece cover in dimension two: a parametrized line-cover
+  interface, polynomial remainder covers from the dimension-one faces,
+  and the polynomial recurrence.
+- (B) The simultaneous union over the `γ⁻²/mass` pieces of one relation,
+  which gives `PolyCoverAt 2`.
+- (C) The same for families, which gives the stackability that dimension
+  three needs.
 
 ## F. Routes
 

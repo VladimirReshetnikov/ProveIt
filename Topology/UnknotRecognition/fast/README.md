@@ -3807,3 +3807,52 @@ optional window stage still defaults off; a general subexponential recognition
 bound remains unproved. Reproduce with
 `python -B -m normal_orbit_research.generic_euler sector-audit --fresh-regina --output /tmp/sector-audit.json`
 and the driver's `sector-benchmark`, `audit` and `benchmark` modes.
+
+After a completed positive Q phase finds no essential disc, automatic generic
+discovery now removes types absent from every Q ray and rebuilds the source
+kernel. It dispatches by the feasible matching dimension: 22 retained source
+sectors fall from nullity four to three and enter the planar producer, while
+two fall from five to four. All 188 source verdicts and full standard surfaces
+agree with the prior source oracles; fresh Regina enumerations confirm all
+65 sectors with forced-zero coordinates. Four return a Q witness early and
+61 receive recompilation. All 1,427 tests pass.
+
+Reduced negative certificates retain the original allowed support and
+full-width ray records. Their optional `q_support_certificate` is independently
+replayed on the original source before the checker derives the retained
+coordinates and reconstructs the reduced standard model. Incomplete or forged
+Q support cannot authorize dropping coordinates. Legacy certificates still
+use the full-source checker, and ordinary positive proof formats are unchanged.
+Complete source queries, including respective independent replay and serialized
+output, improve 3.86x and 23.86x on the measured dimension reductions; controls
+and a reduction without dimension change remain near parity. This is a local
+geometry improvement, with the original complete Q phase still charged. It
+does not establish general quasi-polynomial knot recognition. Reproduce with
+`python -B -m normal_orbit_research.feasible_span audit --fresh-regina --output /tmp/feasible-audit.json`
+and the driver's `benchmark` mode.
+
+Automatic standard discovery above nullity three now tries sufficient
+polynomial matching implications before its generic Q phase. Canonical
+reduced equations are recovered from the existing kernel; one-sided sign
+propagation proves coordinate zeros. Only useful reductions compile a source
+forest and exact matching-row provenance, then rebuild the source kernel.
+The complete Q/standard fallback remains available at a mixed-sign fixed
+point, which is not a proof of maximal support or a complete LP solver.
+
+Negative proofs optionally carry `matching_support_certificate`. Independent
+replay adds the stated actual source matching equations, requires cancellation
+of all triangles, and validates each forced coordinate by exact nonnegative
+Q coefficients. The final proof still states the original sector and restores
+its coordinate width; partial matching proofs can compose with Q support
+proofs on an authenticated intermediate sector. Ordinary positive proofs and
+legacy full-source replay remain available.
+
+All 1,433 tests and 34 focused tests pass. All 188 source verdicts and complete
+standard surfaces remain; the procedure finds 126 oracle zeros in 65 selected
+sectors and admits all 22 effective-dimension-three sectors without the
+original Q prelude. Fresh Regina enumerations confirm the involved sources.
+Complete affected source queries improve 1.16–1.61x over the preceding
+complete-Q implementation, including provenance preparation, independent
+replay and serialization. These are local source improvements, with no general
+quasi-polynomial recognition claim. Reproduce using the
+`normal_orbit_research.matching_support` audit and benchmark driver.
