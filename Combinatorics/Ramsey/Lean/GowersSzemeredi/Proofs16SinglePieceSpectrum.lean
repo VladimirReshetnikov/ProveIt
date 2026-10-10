@@ -146,8 +146,8 @@ theorem exists_dense_cell {X Y : Type*} [DecidableEq X] {M : Nat}
   exact ⟨j, hj⟩
 
 /-- **Step 2 with affine fibres** (one class, `q = 1`). -/
-theorem single_piece_on_affine_cell {k : Nat} (hk : 0 < k) {gamma : Real}
-    {c : Real → Real} {w : Real → Nat → Nat} (hprov : LocalMultilinearPieceAt k gamma c w)
+theorem single_piece_on_affine_cell {k : Nat} (hk : 0 < k)
+    {c : Real → Real} {w : Real → Nat → Nat}
     (hc : ∀ t, 0 < t → t ≤ 1 → 0 < c t ∧ c t ≤ 1) (hw : ∀ t, Monotone (w t))
     {N : Nat} [NeZero N] [Fact N.Prime]
     (T : Box N k) (J : ModAP N) (hT : T.IsProper) (hJ : J.IsProper) (hTne : T.carrier.Nonempty)
@@ -159,8 +159,9 @@ theorem single_piece_on_affine_cell {k : Nat} (hk : 0 < k) {gamma : Real}
     (hJq : 2 ≤ theta ^ 3 * J.length)
     (phi : Point N k × ZMod N → ZMod N)
     (haff : ∀ h, ∃ a b : ZMod N, ∀ x, (h, x) ∈ D → phi (h, x) = a * x + b)
-    (hprod : ∀ x ∈ J.carrier, ∀ B : Finset (Point N k), (∀ h ∈ B, (h, x) ∈ D) →
-      HasProductProperty B (fun h => phi (h, x)) gamma)
+    (Dom : ZMod N → Finset (Point N k))
+    (hsl : ∀ x ∈ J.carrier, LocalPieceFor c w (Dom x) (fun h => phi (h, x)))
+    (hDom : ∀ p ∈ D, p.1 ∈ Dom p.2)
     (hwidth : 2 ≤ w (c (singlePieceTheta theta 1)) (w (singlePieceTheta theta 1) T.width)) :
     ∃ (S : Box N (k + 1)) (R : Box N k) (I : ModAP N) (mu : Point N (k + 1) → ZMod N),
       S.IsProper ∧ IsLastCoordinateBoxProduct S R I ∧ R.carrier ⊆ T.carrier ∧
@@ -172,9 +173,9 @@ theorem single_piece_on_affine_cell {k : Nat} (hk : 0 < k) {gamma : Real}
         (D.filter fun p => appendCoordinate p.1 p.2 ∈ S.carrier ∧
           phi p = mu (appendCoordinate p.1 p.2)).card := by
   choose a b hab using haff
-  refine single_piece_on_line_cell hk hprov hc hw T J hT hJ hTne hTd hJstep hshort hTJ D hD
+  refine single_piece_on_line_cell_of_slices hk hc hw T J hT hJ hTne hTd hJstep hshort hTJ D hD
     hθ hθ1 one_pos hDc (by simpa using hJq) (fun _ => (0 : Fin 1)) phi
-    (fun h _ x => a h * x + b h) (fun h _ => ⟨a h, b h, fun _ _ => rfl⟩) ?_ hprod hwidth
+    (fun h _ x => a h * x + b h) (fun h _ => ⟨a h, b h, fun _ _ => rfl⟩) ?_ Dom hsl hDom hwidth
   rintro ⟨h, x⟩ hp
   exact hab h x hp
 
@@ -188,11 +189,10 @@ def spectrumCellWidth (zeta : Real) (m : Nat) (e : Real) : Real :=
 
 /-- **One multilinear piece from a local spectrum cover.** -/
 theorem single_piece_of_spectrum_cover {k : Nat} (hk : 0 < k)
-    {delta gamma zeta : Real} {Qc : Real → Nat → Real} {cR : Real → Real}
+    {delta zeta : Real} {Qc : Real → Nat → Real} {cR : Real → Real}
     {wR : Real → Nat → Nat} {c : Real → Real} {w : Real → Nat → Nat}
     (hcover : LocalRelationCoverAt k delta Qc cR wR)
     (hcR : ∀ t, 0 < t → t ≤ 1 → 0 < cR t ∧ cR t ≤ 1)
-    (hprov : LocalMultilinearPieceAt k gamma c w)
     (hc : ∀ t, 0 < t → t ≤ 1 → 0 < c t ∧ c t ≤ 1) (hw : ∀ t, Monotone (w t))
     (eps : Nat → Real) (thr : Nat → Nat)
     (hretile : ∀ q, Section16RetiledLinearityBound k q (eps q) (thr q))
@@ -215,8 +215,9 @@ theorem single_piece_of_spectrum_cover {k : Nat} (hk : 0 < k)
     (A : Point N k → Finset (ZMod N)) (hA : ∀ p ∈ E, p.2 ∈ A p.1)
     (hlinear : ∀ h x, (h, x) ∈ E → ∀ v : Nat, 0 < v → ∀ J : ModAP N, J.length ≤ v →
       J.step ∈ bohr (K h) (zeta / v) → LinearOn (J.carrier ∩ A h) (f h))
-    (hprod : ∀ x ∈ J0.carrier, ∀ B : Finset (Point N k), (∀ h ∈ B, (h, x) ∈ E) →
-      HasProductProperty B (fun h => phi (h, x)) gamma)
+    (Dom : ZMod N → Finset (Point N k))
+    (hsl : ∀ x ∈ J0.carrier, LocalPieceFor c w (Dom x) (fun h => phi (h, x)))
+    (hDom : ∀ p ∈ E, p.1 ∈ Dom p.2)
     (m : Nat) (hm1 : 1 ≤ m) (hm : m ≤ wR (theta / 2) T0.width)
     (hpar : ∀ q : Nat, (q : Real) ≤ Qc (theta / 2) Msp →
       thr q ≤ m ∧ 4 ≤ spectrumCellWidth zeta m (eps q) ∧
@@ -429,7 +430,7 @@ theorem single_piece_of_spectrum_cover {k : Nat} (hk : 0 < k)
   have hwidth : 2 ≤ w (c (singlePieceTheta ρ 1)) (w (singlePieceTheta ρ 1) (Q l).width) :=
     hcellw.trans (hw _ (hw _ hQw))
   obtain ⟨S', R', I', mu', hS'prop, -, -, hS'sub, hS'w, hmu', hcount⟩ :=
-    single_piece_on_affine_cell hk hprov hc hw (Q l) I (hQprop l).1 hI ⟨_, (hDmem _
+    single_piece_on_affine_cell hk hc hw (Q l) I (hQprop l).1 hI ⟨_, (hDmem _
       hDne.choose_spec).2.2.2.1⟩ hQd (by rw [hQstep l]; exact (S j).axis_step _)
       ((hQaxes l i).2.1) ((hQaxes l i).2.2) D hDsub hρpos hρle hDc
       (by
@@ -437,7 +438,7 @@ theorem single_piece_of_spectrum_cover {k : Nat} (hk : 0 < k)
         calc (2 : Real) ≤ ρ ^ 3 * spectrumCellWidth zeta m (eps q) := hcellJ
           _ ≤ ρ ^ 3 * I.length := mul_le_mul_of_nonneg_left this (by positivity))
       phi haff
-      (fun x hx B hB => hprod x (hIJ0 x hx) B fun h hh => (hDmem _ (hB h hh)).1) hwidth
+      Dom (fun x hx => hsl x (hIJ0 x hx)) (fun p hp => hDom p (hDmem p hp).1) hwidth
   refine ⟨q, hq, S', mu', hS'prop, ?_, ?_, hmu', ?_⟩
   · intro z hz
     have hz' := hS'sub hz

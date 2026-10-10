@@ -1,0 +1,41 @@
+\section{Audit findings and proposed manuscript corrections}
+\label{sec:audit}
+\subsection{A targeted continuation, not a claim of a complete audit}
+This work inspected the current real-order, subcritical, Euler and research-programme sections and their immediate mathematical dependencies. It did not recheck all $375$ pages of the source milestone. No false theorem in those inspected source sections is alleged here. In particular, the source correctly distinguished the Gaussian maximum from a universal Euler bound, and correctly restricted its proof of decreasing scaled errors to the appropriate positive-measure regime.
+
+The principal proposed correction is now a \emph{status change}: the universal real-order Euler question in the research programme can be replaced by Theorem~\ref{thm:main}. The parameter-dependent bounds in the old Euler section remain valid, but the new bound removes the need to use a diverging mass estimate as a universal budget. The critical constant should not be replaced by the larger global constant when working only in its smaller domain.
+
+\subsection{A concrete warning against an invalid shortcut}
+One might try to identify the universal Euler constant directly from the Gaussian maximum by claiming $R_N\le R_1$. That shortcut is false, even for ordinary integer orders.
+\begin{proposition}[Scaled errors need not decrease]\label{prop:nonmonotone}
+At $(a,b)=(4,1)$, $R_2>R_1$.
+\end{proposition}
+\begin{proof}
+Since $A_1=H_2/3^4=1/54$ and $E_2=-A_1/4$, direct algebra gives
+\[
+ R_2-R_1=-2g_{4,1}-\frac1{54}.
+\]
+The exact rational evaluation of \eqref{eq:finiteweights} with $N=48$ gives
+$-2E_{48}(4,1)>1/54$, as checked by \src{code/verify_exact.py}. Positivity of the remainder gives $g_{4,1}<E_{48}(4,1)$ and proves the strict inequality. No numerical special-function value is used in this comparison.
+\end{proof}
+For orientation only, $g_{4,1}\approx-0.01592246492806263368$. The proposition is a scope guard for future edits, not a correction of an assertion actually made by the manuscript. It explains why an independent later-truncation theorem was essential.
+
+\subsection{Precise editorial actions}
+Insert a section after the present real-order Euler bounds that states the positive divided-difference representation, the $9/8$ later-truncation bound, and the identification of $\Cs$. The companion integration file uses a separate label prefix and points to this report for the finite certificates and complete proofs. Retain the earlier critical/subcritical theory because it supplies sharper domain-specific bounds and other geometric results.
+
+In the research programme, replace the sentence leaving a universal real-order Euler bound open by the precise constant and the remaining optimization questions for fixed $N$. Add the certified intervals \eqref{eq:bstarcert}--\eqref{eq:Cstarcert} alongside, rather than in place of, the inherited diagnostic maximum. The old bracket $1<b_*<2$ was valid; the new bracket is a strengthening.
+
+Do not promote the global integer-outer-order normalized-radius conjecture, the mixed-period $S_6$ candidate, or numerical period-independence questions. None is implied by the kernel argument. Likewise, do not interpret the positive difference quotient as a finite signed-moment representation in a parameter region where the source has proved that such a representation cannot exist.
+
+Finally, distinguish $E_N-g$ from $2^N(E_N-g)$ in every monotonicity statement, and preserve the analytic/Abel convention at boundary points whose defining series diverges. These are mathematical hypotheses, not presentation details.
+
+\subsection{Independent evidence and its limits}
+The package includes three deliberately different verification layers. The dependency-free exact verifier proves polynomial identities, regenerates all rational Bernstein coefficients, checks integer power enclosures, and verifies finite inequalities. A SymPy replay independently derives the rational kernels and checks the generating polynomials and elementary identities. A separate numerical program compares finite Euler evaluations against elementary formulas and a depth-one integral representation.
+
+The numerical computations use $100$ decimal working digits. For $F_{1,1}$, $240$ Euler terms give a discrepancy of about $1.2\times10^{-73}$ from the elementary Gaussian value. Six error-moment comparisons have discrepancies ranging from about $1.2\times10^{-73}$ to $7.8\times10^{-64}$. For $F_{1,2}$, the independent identity
+\[
+ F_{1,2}(z)=\int_0^z\frac{\Li_2(t)}{1-t}\dd t
+\]
+provides a path-quadrature comparison with a $200$-term Euler evaluation; the observed discrepancy is about $2.8\times10^{-61}$. The differential identity follows directly from the disk series. These computations are useful independent diagnostics, but the quadrature itself is not interval-certified.
+
+The exact proof of the main inequality depends on the stated analytic arguments and finite rational certificates. None of the programs formalizes measure theory, analytic continuation or differentiation under an integral in a proof assistant. A successful replay is also not evidence of transcendental independence.

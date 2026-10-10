@@ -1,0 +1,273 @@
+\section{Manuscript updates and a further research program}
+\label{sec:agenda}
+
+The four parts of this article have different mathematical outputs.
+The Euler theorem proves a uniform inequality and identifies its exact
+optimal constant. The golden certificates prove special-value and
+functional identities. The radial theorem classifies a local change
+in the shape of a zero curve. The Cayley theorem constructs an
+algebraic quotient and separates a target from a specific relation
+ideal. Their common feature is that each conclusion has a finite,
+explicit point of verification, together with an analytic or algebraic
+argument explaining why that verification suffices.
+
+\subsection{Corrections of status and scope}
+
+No false displayed formula was established in the source material
+audited for this continuation. The proposed corrections are therefore
+specific updates of proof status and precise limitations on how the
+new results may be used. A blanket assertion that the entire
+375-page manuscript has been verified would exceed this audit.
+
+\paragraph{The universal Euler question is settled.}
+The question in \src{chapters/10-discovery.tex} asking for a universal
+real-order Euler bound above the critical triangle can be replaced by
+\cref{eul:thm:main}. Its earlier parameter-dependent bounds remain valid
+and can still be useful when they are smaller. The new result provides
+the universal budget $9/(8\,2^N)$ for $N\ge2$ and identifies the optimal
+constant for all $N\ge1$. The exact critical-triangle constant also
+remains a separate sharper statement on its restricted parameter set.
+
+The source's warning that the Gaussian maximum alone does not furnish
+the universal Euler bound is mathematically correct. It should be
+retained as an explanation of the missing implication, followed by the
+new positive-tail representation and uniform kernel gap. The proof
+cannot be shortened by deleting that step. In particular, a bound on
+the complete sum does not automatically bound every rescaled tail.
+
+\paragraph{The remaining displayed golden weight-five formulas are proved.}
+The numerical-evidence paragraph preceding the second and third
+weight-five formulas in \src{chapters/03-algebraic.tex} can now cite
+\cref{gold:thm:main}. The canonical index-$12$, $20$, and $24$
+normalizations and their lower-weight vanishing statements can be
+updated using the exact descent and recombination in
+\cref{gold:sec}. The earlier numerical checks are useful historical
+evidence but are no longer the justification for these identities.
+
+The weight-$6$ through weight-$9$ formulas retain their prior
+conjectural status. Contracting a weight-five tensor proves identities
+of lower weight; it cannot create a weight-six tensor identity.
+Likewise, a successful finite alphabet does not prove that its
+specializations exhaust all numerical relations at the golden ratio.
+
+\paragraph{The quartic-transition question has a local answer.}
+The decimal transition in \src{chapters/05-real-turning.tex} can be
+supplemented by the exact rational rectangle in
+\cref{turn:thm:transition}. The higher radial behavior is given by the
+negative sextic coefficient and \cref{turn:thm:fold}. There is exactly
+one transition in the stated rectangle, and an open local region with
+two small-radius turning points. Neither assertion proves that this is
+the only transition on the entire threshold curve or that these are
+the only turning points in the full disk.
+
+\paragraph{The Cayley obstruction is strengthened, while $S_6$ stays open.}
+The projector in \cref{cay:thm:projector} supplies a constructive
+normal form for the full ideal of convergent Cayley relations and
+their shuffle multiples. The exact separating coordinate applies to
+that whole ideal. It is stronger than a failure to solve one bounded
+matrix system, but still concerns a specified formal presentation.
+The conjectural numerical equality for $S_6$ could be proved by
+relations that are absent from this ideal. Its $S_8$ analogue is also
+untouched. A nonzero formal normal form must not be reported as a
+nonzero special value.
+
+\paragraph{Two bookkeeping rules should accompany integration.}
+First, rational constant factors in $1-f$ belong to the golden tensor
+calculation: the factor $2$ in $1-(1-t)/(1+t)$ is a simple example.
+Removing all constant factors would remove logarithmic information.
+Second, Cayley-compatible endpoint projection must use the shifted
+generators $z+b/2$ and $c-b/2$. Setting the unshifted endpoint
+generators to zero does not commute with the involution. These are
+requirements of the new proofs, not allegations that the baseline
+already made either mistake.
+
+The accompanying \src{integration/INTEGRATION.md} gives concrete
+source locations, replacement prose, and the label mapping. All
+integration should be compared with the pinned baseline: later
+repository changes may already incorporate some of these statements.
+
+\subsection{Research questions on uniform bounds and asymptotics}
+
+\paragraph{1. Optimize the later Euler steps.}
+For each integer $N\ge2$, define
+\[
+ C_N^{\mathrm{av}}=
+ \sup_{a,b>0}\E[\mathcal K_N(X_a,Y_b)],\qquad
+ C_N^{\mathrm{pt}}=
+ \max_{0\le x,y\le1}\mathcal K_N(x,y),
+\]
+where the boundary value at $y=1$ is continuous. The present theorem
+gives $C_N^{\mathrm{av}}\le C_N^{\mathrm{pt}}<9/8$. Determine either
+sequence sharply. The two optimization problems should be kept
+separate: the gamma laws form a restricted family of probability
+measures, so a pointwise maximizer need not be approachable by these
+averages. A useful first target is an exact algebraic description of
+the pointwise maximum for $N=2$, obtained from its rational stationary
+equations and certified boundary comparisons.
+
+\paragraph{2. Determine the fixed-parameter tail asymptotics.}
+For fixed $a,b>0$, the exact kernel representation suggests a sharper
+description than a universal constant times $2^{-N}$. The transition
+of $(1-x^2y^2)^N$ occurs near $xy\asymp N^{-1/2}$. The product
+$XY$ has $-\log(XY)$ gamma distributed with shape $a+b$, so Mellin
+analysis of that region is natural. The difficulty is to retain the
+cancellation in $(W_N(xy)-W_N(x))/(1-y)$ uniformly near $y=1$.
+A proof should state its leading term and remainder uniformly on
+compact positive parameter sets, then study what fails as an order
+approaches zero. This could give much smaller parameter-sensitive
+error budgets without weakening the unconditional universal bound.
+
+\paragraph{3. Extend the positive-tail method to other arguments.}
+At the Gaussian point, the alternating series and the rational
+denominators align particularly well. Which roots of unity, or which
+fixed angles in the slit plane, admit a transform whose remainder is
+a positive probability average? The first concrete experiment should
+be a residue-class decomposition at a primitive sixth root. A useful
+theorem would identify the angle-dependent kernel and its sign before
+attempting a global numerical constant. At a general angle, positivity
+may fail even though the analytic continuation remains well defined.
+
+\subsection{Research questions on radial geometry}
+
+\paragraph{4. Prove or refute global uniqueness of the quartic transition.}
+The precise unresolved assertion is that
+$Q(a_*(b),b)=0$ has only the certified solution for $0<b<1$.
+The determinant calculation already provides a positive derivative
+along the threshold in a small neighborhood. An effective program
+would combine analytic endpoint expansions at $b\downarrow0$ and
+$b\uparrow1$ with a finite interval covering of the remaining compact
+interval. A plot of the threshold is not sufficient, especially near
+the fully constant point $(1,1)$, where several coefficients vanish.
+
+\paragraph{5. Make the double-turning neighborhood effective.}
+The local theorem proves the existence of a fixed radius and a
+parameter neighborhood but does not print their sizes. One can seek
+explicit bounds for $U_{tt}$ and the fourth and higher Taylor
+remainders on a rational parameter box and $0\le t\le T$. The
+all-orders recurrence isolates each coefficient, while a Cauchy bound
+on the normalized implicit equation can control the infinite tail.
+The resulting certificate should exhibit actual rational parameter
+pairs with two certified turning-radius intervals. This is a natural
+next strengthening of the current existence theorem.
+
+\paragraph{6. Understand the all-orders degeneracy at $(1,1)$.}
+At that point $F_{1,1}(z)=\tfrac12\log^2(1-z)$ and the normalized
+radius is identically $1/2$. The nearby double-turning transition has
+a nonzero sextic coefficient. Determine the first-order parameter
+variation of the entire function $\Phi$, rather than one Taylor
+coefficient at a time, and ask whether it constrains the number of
+small-radius oscillations. This may clarify the relationship between
+the isolated certified transition and the infinitely degenerate
+constant curve. It must also be reconciled with the still-open
+full-radius motion conjectures for integer outer order.
+
+\subsection{Research questions on identities and relation spaces}
+
+\paragraph{7. Lift the golden weight-six and weight-seven candidates.}
+The two higher reconstructions in the manuscript are concrete next
+targets. Search for a rational-function tensor certificate of the
+correct weight whose specialization is exactly the proposed vector,
+including its logarithmic completion. Gangl's work
+\cite{Gangl} gives relevant higher-weight functional identities and
+uses richer multiplicative alphabets. A search restricted to
+$t,1-t,1+t$ should therefore be treated as one finite model. The
+essential deliverables are an exact tensor row, an endpoint constant,
+and ordinary-polylogarithm reconstruction, not only a nullspace rank.
+The weight-eight and weight-nine formulas require a further step and
+should not be assumed to follow once weights six and seven are solved.
+
+\paragraph{8. Simplify and classify the functional certificates.}
+Can the $58$- and $60$-term rows be expressed as short combinations of
+classical Kummer specializations? Such a decomposition could reveal
+why the golden specialization eliminates the unwanted powers. A
+separate finite problem is to determine the exact image of the full
+degree-bounded tensor kernel under golden specialization. Its rank
+and nullspace can be certified by rational linear algebra. Any
+minimality result must explicitly retain the alphabet and degree
+bound; it would not establish independence of the resulting periods.
+
+\paragraph{9. Specialize the new functional identities in other fields.}
+The identities \eqref{gold:eq:new-functional-identities} hold for all
+$0<t<1$, so their use is not confined to the golden ratio. For
+example, with $\sigma=\sqrt2-1$, one has
+$1-\sigma=\sqrt2\,\sigma$ and $1+\sigma=\sqrt2$. Every table argument
+then becomes
+\[
+ s\,\sigma^{a+b}2^{(b+c)/2}.
+\]
+Substitution gives two exact weight-five relations in
+$\mathbb Q(\sqrt2)$ with the same displayed endpoint constants.
+The research problem is to combine them with duplication, inversion,
+and other field relations until a small useful basis emerges. This
+provides a structured source of new candidate evaluations. It avoids
+guessing a large unrelated list of numerical constants at the outset.
+
+\paragraph{10. Add the missing relations to the Cayley quotient.}
+For a proposed collection of additional relation vectors
+$\mathcal T$, the exact next computation is to ask whether
+\[
+ \Pi(F)\in\operatorname{span}_{\mathbb Q}\{\Pi(T):T\in\mathcal T\}.
+\]
+The equivalence with membership in the original Cayley ideal plus
+these additional rows follows from the kernel theorem. Thus every
+candidate stuffle, distribution, or complementary-argument identity
+can be projected immediately. Start with convergent relations and
+lower-weight products, then introduce regularized relations only with
+their analytic conventions stated explicitly. The nonzero coordinate
+$-166348800$ identifies information that the added relations must
+actually supply. If the enlarged presentation still fails, report
+that precise obstruction; it would not settle numerical independence.
+
+\paragraph{11. Make the quotient computationally practical in higher weight.}
+The explicit word projector is finite, but its expanded support grows
+quickly. A representation by Cayley-positive Eulerian generators can
+retain products in factored form and postpone full shuffle expansion.
+Determine the cost of converting a specified target to these
+coordinates, and compare it with elimination in a relation matrix.
+A useful implementation should return a reconstruction certificate,
+so that compression never hides the formal identity it represents.
+The all-weight separating-coordinate lemma suggests that many target
+tests may need only a few coordinates of the projector.
+
+\paragraph{12. Formalize the smallest complete proof path.}
+The Euler result offers a manageable entry point: polynomial
+identities, rational Bernstein positivity, the probability-kernel
+formula, and the truncated-power mixture. The golden result offers a
+different path through finite tensor identities and one-variable
+calculus. A proof-assistant project should first choose one complete
+analytic theorem, rather than merely formalizing its arithmetic
+receipt. In either case, the present records separate the finite
+equalities from the mathematical implications they support.
+
+\subsection{Reproduction and the boundary of the deliverable}
+
+The archive is arranged so that the proofs and their finite premises
+can be inspected independently. The article contains all definitions,
+the golden coefficient tables, the three Euler polynomials, and the
+local radial coefficient formulas. The data files contain the full
+Bernstein partitions, the rational interval bounds, the exact golden
+rows and their specialization receipts, and the Cayley normal form.
+The independent review notes explain the delicate analytic and
+algebraic steps.
+
+From the extracted directory, the commands
+\begin{verbatim}
+python3 -m pip install -r requirements.txt
+python3 code/run_all.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+replay the certificates and rebuild the article. The requirements file
+lists the Python dependencies used for replay and figure generation;
+the two core Euler and radial producers use only Python's standard
+library. The golden verifier and independent Euler reviewer use SymPy
+for exact symbolic arithmetic. The Cayley verifier uses rational
+arithmetic throughout. Figure generation is optional and is invoked
+by adding \texttt{--figures} to the replay command.
+
+No integer-relation search is needed to verify the accepted golden
+identities, and no numerical root solver is needed to certify the
+radial rectangle. The figures visualize the proved structure and are
+explicitly labeled as diagnostic or as a limiting local model. The
+open questions above remain open in this deliverable; they are not
+silently promoted by successful numerical comparisons or by the
+strength of a neighboring theorem.

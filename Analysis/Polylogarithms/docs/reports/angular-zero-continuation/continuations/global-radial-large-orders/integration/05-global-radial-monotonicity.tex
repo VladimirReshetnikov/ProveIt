@@ -1,0 +1,97 @@
+% Additive excerpt for the real-order chapter.
+% Requires the manuscript's theorem/proof environments, amsmath and bibliography.
+% Full proofs and exact certificates: the accompanying research article.
+\section{Two proved global normalized-radius regimes}
+\label{grm:sec:global-radius}
+
+The local coefficient theorem does not exclude a later change of radial
+sign. The following two full-radius statements give explicit regions
+where no such change occurs; their complete analytic proofs and finite
+rational certificates are in \cite{grm:report}.
+
+\begin{theorem}[Uniform outer-order region]
+\label{grm:thm:outer}
+For every real $a\ge8$, every $b>0$, and $0<\rho\le1$,
+\[
+ \frac{d}{d\rho}\left(\frac{\cos\theta_{a,b}(\rho)}\rho\right)
+ <-\frac{\rho H_4^{(b)}}{120}\left(\frac25\right)^a<0.
+\]
+Moreover,
+\[
+ \frac{1+2^{-b}}2\left(\frac23\right)^a
+ -\frac{\cos\theta_{a,b}(\rho)}\rho
+ >\frac{\rho^2 H_4^{(b)}}{240}\left(\frac25\right)^a.
+\]
+\end{theorem}
+\begin{proof}[Proof summary; complete proof in the cited report]
+Set $s=\rho^2$, $m=2\cos\theta/\rho$, and
+$c_n=H_{n-1}^{(b)}/n^a$. The zero equation is
+$P(m,s)=\sum_{n\ge2}c_nT_n(m,s)=0$, with
+$T_2=m$, $T_3=sm^2-1$, and $T_{n+1}=s(mT_n-T_{n-1})$.
+Uniform coefficient and Chebyshev estimates place every root in
+$0<m<(11/10)c_3/c_2<1/10$ and give
+$(4/5)c_2<P_m<(6/5)c_2$.
+A degree-four Bernstein certificate gives
+$\sum_{n=2}^6c_n\partial_sT_n>(2/5)c_5$; an analytic infinite-tail
+bound gives $|\sum_{n\ge7}c_n\partial_sT_n|<(39/100)c_5$.
+Hence $m'=-P_s/P_m<-c_5/(120c_2)$.
+Since $(\cos\theta/\rho)'=\rho m'$, the first bound follows;
+integration gives the second. The inequalities extend from $a=8$ to
+all real $a\ge8$ by explicit exponential comparisons, not sampling.
+\end{proof}
+
+\begin{theorem}[Explicit finite-inner-order transfer]
+\label{grm:thm:inner}
+Let $a>0$ and set
+$\Delta(a)=(2/5)^a-(3/8)^a$.
+If $2^{-b}<\Delta(a)/256$, then $\cos\theta_{a,b}(\rho)/\rho$
+strictly decreases on $0<\rho\le1$.
+If $2^{-b}\le\Delta(a)/512$, its derivative is at most
+$-\rho\Delta(a)/16$.
+\end{theorem}
+\begin{proof}[Proof summary; complete proof in the cited report]
+Write the positive double kernel using independent variables
+$X=e^{-Y}$, $V=e^{-Z}$, with $Y$ gamma of shape $a$, rate 2, and $Z$
+gamma of shape $b$, rate 1. The zero equation, up to a positive factor,
+is $G_b=\mathbb E[(m-X-XV)/(D_XD_{XV})]=0$, where
+$D_u=1+s(u^2-mu)$.
+On $m,s\in[0,1]$, the equation and its two first derivatives differ
+from the $V=0$ equation by at most $12\,2^{-b}$, $64\,2^{-b}$, and
+$64\,2^{-b}$, respectively. The limiting derivatives obey
+$(G_\infty)_m\ge1/4$ and
+$(G_\infty)_s\ge[\mathbb EX^3-(\mathbb EX^2)^2/\mathbb EX]/4
+=\Delta(a)/4$.
+Endpoint signs and the inherited angular uniqueness theorem identify
+the root; the stated conditions make both derivatives positive there.
+Implicit differentiation proves the claims.
+\end{proof}
+
+For integer $a=1,\ldots,7$, sufficient integer lower bounds on $b$
+are respectively $14,14,15,16,17,18,19$.
+Thus the integer conjecture for $a\ge2$ remains open here only on six
+bounded inner-order strips with $a=2,\ldots,7$. This is not a claim
+that those remaining strips have been certified.
+
+\subsection{A positive binomial identity}
+\label{grm:sec:binomial}
+The positive double kernel can be averaged over the interval between
+its two nodes, giving a positive measure $\mu_{a,b}$ such that
+\[
+ F_{a,b}(z)=z^2\int_0^1\frac{d\mu_{a,b}(u)}{(1-uz)^2},
+ \qquad \int u^k\,d\mu_{a,b}(u)=\frac{c_{k+2}}{k+1}.
+\]
+Consequently
+\[
+ \mathcal B_k(a,b)=\sum_{j=0}^k(-1)^j\binom kj
+       \frac{H_{2j+2}^{(b)}}{(2j+2)(2j+3)^a}
+ =\int u(1-u^2)^k\,d\mu_{a,b}(u)>0.
+\]
+For all $a,b>0$,
+\[
+ -\operatorname{Im}F_{a,b}(i)
+ =\sum_{k\ge0}\frac{k+1}{2^{k+1}}\mathcal B_k(a,b).
+\]
+After $N$ terms the positive remainder is strictly less than
+$(N+2)H_2^{(b)}/(2^{N+1}3^a)$.
+This is a distinct positive transform, not a replacement claim for the
+sharp Euler evaluator or an arithmetic $S_6$/$S_8$ reduction.

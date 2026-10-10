@@ -2240,17 +2240,96 @@ a single-piece Lemma 16.9).
   - one square root and a factor `8` (retiling);
   - the reciprocal-polynomial exponent `ε(q)`.
 
+**Fourth piece, done:** `Proofs16PieceCalculus` and
+`Proofs16SinglePieceRemainder` (the remainder half of a single-piece
+Lemma 16.9).
+- *A provider calculus.* `LocalPieceFor c w Dom g` says one function has
+  local pieces everywhere: every `θ`-dense `H ⊆ Dom` in every proper box
+  has one proper sub-box and one multilinear map agreeing on a `c θ`
+  fraction. It is closed under:
+  - the input: `LocalMultilinearPieceAt.localPieceFor`, given the
+    hereditary product property;
+  - translation and coordinate permutation (`LocalPieceFor.transport`),
+    with the same parameters;
+  - an unused final coordinate (`lift_last`): density
+    `c ↦ (θ/2)·c(θ/2)`, width `L ↦ ⌊√(w(θ/2)⌈L/8⌉ − 1)⌋ − 1`. The proof:
+    short-parent cells, a dense cell, popular fibres, the base provider,
+    synchronized retiling, and a dense retiled cell;
+  - any embedded active coordinate set (`lift_prefix`, `lift_embedding`,
+    mirroring the corpus's `MultiplyLinearFunction.lift_embedding`);
+  - nesting (`simultaneous`, `simultaneous_finset`): several providers give
+    one sub-box on which all functions agree with multilinear maps at
+    once, at density `C^[r](θ)`;
+  - weakening of parameters (`mono`).
+- *The remainder.*
+  - Each non-top vertex `φ_e(h, x) = φ(x₀ + e·h, x)` is a translated
+    pullback of `φ` to the coordinate face of its active directions.
+    `HasProductProperty.coordinateFace` passes the product property down,
+    so the dimension-`|S_e|` input gives it a provider
+    (`vertex_localPieceFor`).
+  - `remainder_piece` nests the `2^k − 1` vertex providers into one
+    multilinear map for `φ″ = section16PhiRemainder φ x₀`, at density
+    `C^[2^k−1](θ)`.
+  - Gowers's cover version sums vertex covers with Lemma 16.8, where the
+    graph count becomes `q(…)^(rs)`. The piece version pays only the
+    nesting depth in the density, which is polynomial for fixed `k` when
+    `C` is.
+
+**Fifth piece, done: the single-piece lift is a theorem.**
+`Proofs16SinglePieceLift.single_piece_lift`.
+- *Input.* A pair `(B, φ)` in `(ℤ/N)^(k+1)` with Lemma 16.4's arrangement
+  conditions (ii) and (iii) and the product property.
+- *Output.* One proper box `S` and one multilinear `μ` with
+  `ρ·|S| ≤ |{z ∈ B ∩ S : φ z = μ z}|`, where
+  `ρ = singlePieceDensity c (spectrumPieceRho c_R ρ₁) 1` and
+  `ρ₁ = C^[2^k−1](θ₂)`.
+- *Named inputs, all local and all pieces or local covers:*
+  - `LocalRelationCoverAt k δ` for the spectrum relation;
+  - `LocalMultilinearPieceAt k` for the slices of `φ₁`;
+  - vertex providers `(C, W)`. `vertex_providers_of_low` supplies them
+    from `LocalMultilinearPieceAt l` for `l ≤ k`.
+
+  The rest is proved:
+  - Lemma 16.5 without condition (i), via the new
+    `section16_dense_induced_selection_of_arrangements`;
+  - Lemma 16.7;
+  - the identity `φ₁ = (−1)^k φ′ + φ″`;
+  - the spectrum relation's product property (Lemma 14.3) and fibre bound;
+  - the polynomial retiled linearity
+    (`Section16RetiledLinearityBound`, a hypothesis with its witness
+    `exists_polynomial_retiled_linearity_profile`);
+  - all geometry.
+- *Condition (i) is never used.* Lemma 16.4's cover-form cross-section
+  hypothesis is where Gowers's induction pays exponentially. The
+  single-piece route replaces it by the vertex providers.
+- *Degree count for the first open case* (`k = 2`, a trilinear piece, as
+  `section16_joint_frequency_box` at `k = 2` needs). Write
+  `θ₁ = (θγ/4)^(2^128)` and `θ₂ = 2^(−32)θ₁^8`. Suppose the inputs are
+  polynomial: `C(t) ≈ t^{D_C}`, `c_R(t) ≈ t^{D_R}`, `c(t) ≈ t^{D_c}`.
+  - Then `ρ₁ ≈ θ₂^(D_C³)`.
+  - The final density is about `(θγ)^E` with
+    `E ≈ 2^131·D_C³·(1+D_R)·3·(1+D_c²)`.
+  - With `θ, γ` polynomial in `α`, this is `α^(2^132·poly(D))`. That is far
+    inside K.4's polynomial budget `D_total ≲ 2^32768/728`. The input
+    exponent `D` enters six times (`D_C³·D_R·D_c²`), so `D` up to roughly
+    `2^5400` would fit.
+  - The widths stay polynomial in `N`: each step takes a power, a square
+    root, or a factor `8`, and `ζ = 2^(−s(θ,γ,k))` costs only a threshold
+    `N ≥ exp(poly(1/α))`.
+
+  This is an order-of-magnitude count, not yet a kernel-checked
+  comparison.
+
 **Next.**
-1. The remainder half: one multilinear `M″` for
-   `φ″ = Σ_{ε≠1} ±φ_ε` on a dense set. Each `φ_ε` is a cross-section
-   function of `|ε| + 1 ≤ k` variables (Lemma 16.9's proof). Nested pieces
-   of the `2^k − 1` terms, each lifted to a cylinder in the unused
-   variables, give a single `M″` at density `c^{∘(2^k−1)}`. That is
-   polynomial for fixed `k`.
-2. Instantiate with Gowers's objects (Lemmas 16.4–16.7: `φ′`, `B₁`, the
-   spectrum relation `Δ` via Lemma 14.3). Then compare the result with the
-   length-6 budget of K.4 through `section16_joint_frequency_box`'s output
-   form.
+1. Connect to the consumer. Follow
+   `f` not uniform → `section16_large_frequency_graph` (`B`, `φ`, product
+   property) → conditions (ii), (iii) (Lemma 15.6; check whether the
+   corpus derives them without the cover-form dichotomy of Lemma 16.4) →
+   `single_piece_lift` → `section16LargeMultilinearFrequencyCount` on `S`.
+   This is a conditional, polynomial-density replacement for
+   `section16_joint_frequency_box`.
+2. Then the kernel-checked K.4 comparison: under polynomial inputs, the
+   length-6 discrepancy threshold falls below `szemerediThreshold`.
 
 ## F. Routes
 

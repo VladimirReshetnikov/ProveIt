@@ -1,0 +1,147 @@
+\section{Two bounded operators on signed moment densities}
+\label{ado:sec:operators}
+For $f\in L^1(0,1)$ define its moments by
+\[
+ m_n(f)=\int_0^1u^{n-1}f(u)\dd u,\qquad n\ge1.
+\]
+We use the two operators
+\begin{align}
+ (\Aop f)(u)&=\int_u^1\frac{f(v)}v\dd v,
+ \label{ado:eq:A}\\
+ (\Bop f)(u)&=\int_0^u\frac{f(v)}{1-v}\dd v
+              -\int_u^1\frac{f(v)}v\dd v.
+ \label{ado:eq:B}
+\end{align}
+For every fixed $0<u<1$, both integrals in \eqref{ado:eq:B} are
+absolutely convergent. In particular, this definition never subtracts
+two divergent endpoint integrals. The operator $\Aop$ is the
+outer-index-raising operator already present at depth two in the
+manuscript~\cite{repoSigned}. The companion $\Bop$ encodes a strict
+prefix sum of moments.
+
+\begin{lemma}[Norm, derivative, and moment identities]
+\label{ado:lem:operators}
+Both operators map $L^1(0,1)$ to itself and satisfy
+\begin{equation}\label{ado:eq:opnorm}
+ \norm{\Aop f}_1\le\norm f_1,\qquad
+ \norm{\Bop f}_1\le2\norm f_1.
+\end{equation}
+Their moments are
+\begin{equation}\label{ado:eq:opmoments}
+ m_n(\Aop f)=\frac{m_n(f)}n,\qquad
+ m_n(\Bop f)=\frac1n\sum_{j=1}^{n-1}m_j(f).
+\end{equation}
+If $f$ is continuous in the open interval, then
+\begin{equation}\label{ado:eq:opderivatives}
+ (\Aop f)'(u)=-\frac{f(u)}u,\qquad
+ (\Bop f)'(u)=\frac{f(u)}{u(1-u)}.
+\end{equation}
+Moreover $\Aop f$ extends continuously to one with value zero, and
+$m_1(\Bop f)=0$.
+\end{lemma}
+\begin{proof}
+Tonelli's theorem applied to absolute values gives
+\[
+ \int_0^1\int_u^1\frac{|f(v)|}{v}\dd v\dd u
+ =\int_0^1|f(v)|\dd v.
+\]
+Similarly,
+\[
+ \int_0^1\int_0^u\frac{|f(v)|}{1-v}\dd v\dd u
+ =\int_0^1|f(v)|\dd v.
+\]
+These identities prove the two operator bounds and justify every
+following application of Fubini to a signed integrand. For the first
+operator,
+\[
+ m_n(\Aop f)=\int_0^1\frac{f(v)}v
+       \left(\int_0^v u^{n-1}\dd u\right)\dd v
+ =\frac{m_n(f)}n.
+\]
+The moment of the first term of $\Bop f$ is
+\[
+ \frac1n\int_0^1\frac{1-v^n}{1-v}f(v)\dd v
+ =\frac1n\sum_{j=1}^n m_j(f).
+\]
+Subtracting $m_n(f)/n$ yields the strict prefix in
+\eqref{ado:eq:opmoments}. The derivative formulas follow locally from
+the fundamental theorem of calculus. Finally,
+$\int_u^1f(v)/v\dd v\to0$ as $u\uparrow1$, because $1/v$ is bounded
+near one and $f$ is integrable there.
+\end{proof}
+
+\subsection{Construction at arbitrary depth}
+The positive starting density is
+\begin{equation}\label{ado:eq:seed}
+ f_b(u)=\frac{(-\log u)^{b-1}}{\Gamma(b)},\qquad b>0.
+\end{equation}
+Its mass is one and the Gamma integral gives $m_n(f_b)=n^{-b}$.
+Define, with composition read from right to left,
+\begin{equation}\label{ado:eq:kappaconstruction}
+ \kappa_{\svec}
+ =\Aop^{s_1-1}\Bop\Aop^{s_2-1}\Bop\cdots
+       \Aop^{s_{d-1}-1}\Bop f_b.
+\end{equation}
+There are $d-1$ occurrences of $\Bop$; all powers of $\Aop$ are
+nonnegative integer powers. At depth one the right side is simply $f_b$.
+
+\begin{proposition}[Moment realization and continuation]
+\label{ado:prop:realization}
+The density \eqref{ado:eq:kappaconstruction} is smooth on $(0,1)$,
+belongs to $L^1(0,1)$, and satisfies
+\begin{equation}\label{ado:eq:moments}
+ m_n(\kappa_{\svec})=c_{\svec}(n),\qquad
+ \norm{\kappa_{\svec}}_1\le2^{d-1}.
+\end{equation}
+The principal continuation is
+\begin{equation}\label{ado:eq:signedtransform}
+ L_{\svec}(z)=z\int_0^1\frac{\kappa_{\svec}(u)}{1-zu}\dd u,
+ \qquad z\in\Om.
+\end{equation}
+The density is the unique finite signed measure realizing these moments.
+\end{proposition}
+\begin{proof}
+The coefficient recurrence for a nonempty tail $\boldsymbol{t}$ is
+\[
+ c_{(a,\boldsymbol{t})}(n)
+ =\frac1{n^a}\sum_{j=1}^{n-1}c_{\boldsymbol{t}}(j).
+\]
+It is exactly the effect of $\Aop^{a-1}\Bop$ in
+\eqref{ado:eq:opmoments}. Induction proves the moments and the norm
+bound. The derivative identities prove local smoothness, starting from
+\eqref{ado:eq:seed}. Expanding the denominator in the open disk is
+justified by the integrable bound $|\kappa|/(1-|z|)$, and gives the
+series \eqref{ado:eq:series}.
+
+On a compact subset of $\Om$, $|1-zu|$ is bounded away from zero
+uniformly in $u\in[0,1]$. The signed integral is consequently holomorphic
+there and continues the same germ. If two finite signed measures have
+these moments, their difference integrates every polynomial to zero.
+Uniform polynomial approximation on $[0,1]$, followed by uniqueness of
+a finite measure from its continuous-function integrals, proves equality.
+\end{proof}
+
+\begin{corollary}[Ordinary convergence on the nontrivial unit circle]
+\label{ado:cor:boundaryseries}
+For \eqref{ado:eq:domain}, $c_{\svec}(n)\to0$ and
+\begin{equation}\label{ado:eq:coefficientvariation}
+ \sum_{n\ge1}|c_{\svec}(n+1)-c_{\svec}(n)|
+ \le\norm{\kappa_{\svec}}_1\le2^{d-1}.
+\end{equation}
+Thus the original series \eqref{ado:eq:series} converges at every
+$|z|=1$, $z\ne1$, and agrees there with \eqref{ado:eq:signedtransform}.
+\end{corollary}
+\begin{proof}
+Dominated convergence proves the coefficient limit. Also
+\[
+ |c(n+1)-c(n)|\le\int_0^1u^{n-1}(1-u)|\kappa(u)|\dd u.
+\]
+Summing the positive majorants gives \eqref{ado:eq:coefficientvariation}.
+Summation by parts against the bounded partial sums of $z^n$ then proves
+convergence when $|z|=1$, $z\ne1$. Abel's limiting theorem identifies its
+sum with the radial limit of the disk series, which in turn equals the
+continuous signed integral at that point.
+\end{proof}
+This conclusion concerns the parameter domain of this article. It is not
+a claim that all of the manuscript's more general fractional-order
+boundary series converge ordinarily.

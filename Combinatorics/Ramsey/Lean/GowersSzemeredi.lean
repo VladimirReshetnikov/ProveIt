@@ -1011,6 +1011,9 @@ import GowersSzemeredi.Proofs16SinglePieceSections
 import GowersSzemeredi.Proofs16RetiledLinearityBound
 import GowersSzemeredi.Proofs16SinglePieceSpectrum
 import GowersSzemeredi.Proofs16GlobalFullDomainTransfer
+import GowersSzemeredi.Proofs16PieceCalculus
+import GowersSzemeredi.Proofs16SinglePieceRemainder
+import GowersSzemeredi.Proofs16SinglePieceLift
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

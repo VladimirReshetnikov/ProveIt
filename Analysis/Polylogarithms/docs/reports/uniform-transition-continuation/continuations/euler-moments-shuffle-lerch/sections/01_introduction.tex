@@ -1,0 +1,138 @@
+\maketitle
+\begin{abstract}
+We continue the polylogarithm manuscript at the pinned repository revision
+identified in Appendix~\ref{app:provenance}. Four proof developments are obtained. First, an elementary
+multiplicative-increment inequality controls every Gaussian Euler remainder
+at arbitrary positive real orders. It identifies the least universal
+constant as $C_*=\max_{b>0}\{\beta(b)+2^{-b}\eta(b)\}$, and exact rational
+certificates enclose its unique maximizer and its value. Second, the
+coordinate $y=\log\Gamma(x)$ gives an all-orders expansion of reflected
+log-gamma moments uniformly for every ratio of their two nonnegative
+exponents, as the larger exponent tends to infinity. Third, an explicit
+Appell-root separation bound and a logarithmic variation estimate for
+the Lerch kernel yield an effective saturation threshold and simultaneous
+zero locations when the Laurent index grows with the derivative order.
+Fourth, a central-factorial identity integrally diagonalizes the odd-weight
+shuffle minor, giving its cokernel, Smith factors, field ranks, and optimal
+common inverse denominator. Weight-eleven and weight-thirteen Gaussian
+relations are recorded as conjectures with exact finite proximity
+certificates. Established source results, new proofs, finite certificates,
+numerical diagnostics, and unresolved claims are distinguished throughout.
+\end{abstract}
+
+\tableofcontents
+\clearpage
+
+\section{Scope, prior results, and the new claims}
+\label{sec:introduction}
+
+The starting point is the 375-page manuscript in
+\code{Analysis/Polylogarithms/docs/manuscript}, together with the relevant
+reports already present in the same repository at the pinned revision
+\cite{repo}. The version matters: the $S_4$ identity, several Gaussian
+reductions, and the rational relation ranks were already proved there.
+Repeating those results as new conjecture resolutions would misstate the
+state of the project. The existing $S_6$ special-value conjecture remains
+unresolved by the present work.
+
+The objective is to close specific gaps in the current programme and
+provide reusable structural results. The universal Euler question has a
+particularly direct answer: the existing Gaussian-axis maximum really is
+the sharp error constant, once a new comparison is proved for \emph{all}
+Euler indices. The reflected-moment question requires a different kind of
+step. Separate fixed-exponent and bounded-ratio asymptotics do not justify
+substitution of an unbounded exponent ratio. A change of coordinate and
+an appropriate placement of the Jacobian in the phase give uniform
+derivative and tail estimates on the full parameter range.
+
+The zero problem has a similar obstruction to naive extrapolation. A
+fixed-index expansion on a compact scale does not control the extreme
+roots when the index grows. Our proof works with relative polynomial
+errors on the logarithmic coordinate and with a scale-independent
+positive-weight inequality. The resulting threshold is intentionally
+conservative, but it is explicit, uniform in the Lerch parameter, and
+applies to every positive root at once.
+
+The algebraic part is separate from those analytic estimates. A rational
+rank says that a coordinate system works over $\mathbb Q$. Integral
+diagonalization additionally determines its torsion and all primes of
+coordinate failure. The matrix is closely related to Zagier's double-zeta
+matrix \cite{Zagier,Ma,MaTeo}; this connection is credited rather than
+treated as evidence of new priority. The proof given here is constructive
+and supplies the integral information directly in the manuscript's
+shuffle coordinates.
+
+\subsection{A claim and dependency map}
+
+\begin{longtable}{@{}P{0.19\textwidth}P{0.46\textwidth}P{0.29\textwidth}@{}}
+\toprule
+Result & New conclusion & Inherited input or limitation\\
+\midrule
+\endhead
+Euler remainder & The least constant uniform in $a,b>0$ and $N\ge1$ is
+$C_*$; $C(b)$ is optimal at each fixed $b$. & The source's unique-axis-maximum
+theorem identifies the sole maximizing $b_*$.\\
+Exact maximum & Rational enclosures for $b_*$ and $C_*$, and the useful
+budget $C_*<57/50$. & Finite exact arithmetic plus the proved qualitative
+unimodality.\\
+Reflected moments & All fixed asymptotic orders, uniformly for
+$0\le m\le n$ as $n\to\infty$. & The previously certified global
+log-gamma slope inequality; no exponentially small error is claimed.\\
+Lerch zeros & Explicit $K_n$ and relative locations uniform in every
+branch and $0\le\rho\le1$; a growing-index regime follows. & The
+standard positive integral and Laplace zero-count principle, reviewed
+in the proof. The threshold is sufficient, not sharp.\\
+Shuffle lattice & Integral equivalence to
+$\diag(1,3,\ldots,2m-1)$, hence the full arithmetic of the minor. & A
+formal shuffle presentation; no period-independence conclusion.\\
+Gaussian candidates & Frozen $S_{10}$ and $S_{12}$ formulas with exact
+normalized residual bounds below $10^{-650}$. & They remain conjectures;
+the residual intervals contain zero.\\
+\bottomrule
+\end{longtable}
+
+All main analytic and algebraic statements are proved in ordinary
+mathematical language. The exact certificates have explicitly narrower
+roles: they certify constant brackets, check a pre-existing slope
+inequality, or establish finite residual enclosures. They are not a
+substitute for an identity proof, and no Lean formalization is claimed.
+
+\subsection{Notation and branch conventions}
+
+We use decreasing nested indices:
+\[
+ \Li_{a,b}(z,1)=\sum_{n>r\ge1}\frac{z^n}{n^a r^b},\qquad
+ H_n^{(b)}=\sum_{r=1}^n r^{-b},\qquad H_n=H_n^{(1)}.
+\]
+The double family $F_{a,b}(z)$ always denotes this one-variable
+specialization, initially in $|z|<1$. Real-order values at $i$ mean
+the principal analytic continuation. At some small real orders the
+ordinary boundary series does not converge, which does not affect the
+finite Euler transforms or their proved limit. All gamma powers in real
+integrals use positive real bases. The Dirichlet beta and eta functions
+are denoted by $\beta$ and $\eta$; Euler's constant is $\gamma$.
+
+In the moment section only, $F(x)=-\psi(x)$ is a positive real function;
+the argument and absence of subscripts distinguish it from the double
+polylogarithm. In the Lerch section $F_{n,k}^\rho$ is a signed normalization
+of a parameter derivative, defined explicitly there. These local
+notations follow the corresponding source problems and are not
+identifications of different functions.
+
+\subsection{Reading the computational evidence}
+
+The accompanying archive contains the full LaTeX source, compiled PDF,
+reusable section fragments, exact verifiers, frozen candidates, interval
+certificates, numerical diagnostics, figure-generation code, a provenance
+record, and integration notes. Each computational result says what it
+establishes. For example, the equality $UMV=D$ is exact integer algebra;
+an enclosure $|R|<10^{-650}$ is a finite analytic error statement; and
+a plot of asymptotic errors is a floating-point diagnostic. None of these
+labels is used interchangeably.
+
+The original log-gamma moment problem and its fixed-order asymptotics
+have substantial prior literature \cite{Amdeberhan,Bailey}. Our contribution
+is the unrestricted-ratio theorem, rather than the definition or first
+asymptotic observation. Likewise, the classical Laplace and gamma-series
+tools used below are standard \cite{DLMFLaplace,DLMFGamma}; uniformity in
+the present parameter domain is proved explicitly.

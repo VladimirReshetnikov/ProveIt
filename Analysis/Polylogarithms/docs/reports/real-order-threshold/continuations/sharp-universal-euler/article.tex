@@ -1,0 +1,75 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=27mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,xcolor,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!35!black,citecolor=blue!35!black,urlcolor=blue!35!black]{hyperref}
+\usepackage{bookmark}
+\emergencystretch=2em
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{14pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Imag}{Im}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\Var}{Var}
+\newcommand{\E}{\mathbb E}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\C}{\mathbb C}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\D}{\mathcal D}
+\newcommand{\Cs}{C_*}
+\newcommand{\src}[1]{\texttt{\small\nolinkurl{#1}}}
+\title{The Sharp Universal Euler Constant\texorpdfstring{\\}{: }for Harmonic Polylogarithms\large\par\vspace{7pt}Positive divided differences, exact certificates,\texorpdfstring{\\}{ }and all-order error-moment identities}
+\author{Research continuation for the ProveIt project}
+\date{10 October 2026}
+\hypersetup{pdftitle={The Sharp Universal Euler Constant for Harmonic Polylogarithms},pdfauthor={Research continuation for the ProveIt project}}
+\begin{document}
+\maketitle
+\begin{abstract}
+For $a,b>0$ let $g_{a,b}=\Imag\Li_{a,b}(\ii,1)$, interpreted by principal analytic continuation, and let $E_N(a,b)$ be the $N$-term Euler transform of its odd harmonic coefficient sequence. We prove the parameter-free bound
+\[
+0<E_N(a,b)-g_{a,b}<\frac98\,2^{-N}\qquad(N\ge2).
+\]
+The proof reduces the entire parameter range to a two-variable rational kernel. Two finite polynomial positivity certificates and one elementary envelope argument treat every truncation length; the certificates comprise 1542 strictly positive rational Bernstein coefficients.
+Consequently the sharp constant uniform in $a,b>0$ and $N\ge1$ is
+\[
+\Cs=\max_{b>0}\{\beta(b)+2^{-b}\eta(b)\},
+\]
+where $\beta$ and $\eta$ are the Dirichlet beta and eta functions. This identifies the previously unresolved global Euler constant with the manuscript's already established Gaussian axis maximum. Exact arithmetic additionally proves
+$1.3021<b_*<1.3023$ and
+$1.1365611033<\Cs<1.1365611046$.
+We derive a generating function for all Euler errors and exact binomial-moment identities that lower the outer polylogarithm order. They give new explicit convergent identities and extend Gaussian negativity to every real outer order at least $-1$. The report distinguishes inherited results, new proofs, exact computation and numerical diagnostics, and supplies proposed manuscript edits and independent verifiers. The mixed-period $S_6$ conjecture is not resolved here.
+\end{abstract}
+\vfill
+\noindent\small\textbf{Source snapshot.} The analysis is relative to ProveIt commit
+\src{3447bc59b78d138a7f0d536b66ac6e5cc5d5e49f}, the reviewed real-order manuscript milestone of 10 October 2026. This is an AI-assisted research contribution, not an externally refereed paper or a proof-assistant formalization. No assertion of literature priority is made.
+\normalsize
+\newpage
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+\input{sections/01-context}
+\input{sections/02-kernel}
+\input{sections/03-inequality}
+\input{sections/04-sharp}
+\input{sections/05-certification}
+\input{sections/06-identities}
+\input{sections/07-audit}
+\input{sections/08-questions}
+\appendix
+\input{sections/09-appendix}
+\input{references}
+\end{document}

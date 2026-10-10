@@ -1,0 +1,130 @@
+\clearpage
+\section{Audit findings and proposed manuscript amendments}
+\label{sec:audit}
+
+The source review found several statements whose status can now be
+strengthened, two important antecedents that should be cited, and a
+small notation error. It did not find a counterexample to the canonical
+theorems used as inputs here. In particular, the source material itself
+correctly warns that formal critical values do not select an inverse
+sheet, that local kernel convergence does not prove convergence of
+global maxima, and that floating-point agreement is not an arithmetic
+identity proof. Those distinctions should be preserved when the present
+results are integrated.
+
+\subsection{Changes in theorem and conjecture status}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.29\textwidth}>{\raggedright\arraybackslash}p{0.65\textwidth}@{}}
+\toprule
+Source target & Proposed status and supporting result\\
+\midrule
+\endfirsthead
+\toprule
+Source target & Proposed status and supporting result\\
+\midrule
+\endhead
+Uniform-bounds report, \texttt{conj:euler-rate}
+& Promote the matching global asymptotic to a theorem. Cite
+\cref{eul:thm:main,eul:thm:joint-profile,eul:thm:second-term} for
+eventual exact axis reduction, the complete near-optimality criterion,
+and the sharper next term.\\[5pt]
+Sharp-Euler report, \texttt{conj:limit}
+& Promote to a theorem with the quantifier covering every sequence of
+global maximizers. The proof is \cref{thm:kernel-global-limit};
+\cref{thm:kernel-expansion} adds analytic perturbation and eventual
+uniqueness and decrease.\\[5pt]
+Sharp-Euler report, \texttt{conj:maxima}
+& Retain the all-index conjecture. Its uniqueness and interiority
+assertion is proved for $N=2$; uniqueness and strict decrease are
+proved for all sufficiently large $N$. No verified finite threshold
+covers every remaining index.\\[5pt]
+The proposed $K_2$ elimination target
+& Mark completed. \Cref{thm:M2} proves a unique global interior
+maximum and its irreducible degree-seven equation, with an exact
+rational certificate.\\[5pt]
+Harmonic continuation, \texttt{diag:q:dominance}
+& Promote from a conjecture at $A=2$ to the selected-sheet theorem
+for every $A>1$, \cref{thm:selected-sheet}. Include the square-root
+sign and the radial-slit continuation domain.\\[5pt]
+Harmonic continuation, \nolinkurl{diag:q:conditional-asymptotic}
+& Remove the conditional hypothesis after the selected-sheet theorem
+has been inserted. Credit the existing local calculation and retain
+the additive form of the error.\\[5pt]
+Diagonal coefficient polynomials
+& Identify them explicitly as Cohen's Lambert polynomials up to a
+sign. Add the bulk law, largest-root expansion, and Bessel endpoint
+limit as further results; do not present the coefficient array itself
+as newly discovered.\\
+\bottomrule
+\end{longtable}
+
+The independent maximum on the axis is unique and nondegenerate at
+every integer index, by \cref{eul:prop:axisunique}, and its continuous
+interpolation is strictly log-convex. This does not settle all-index
+axis reduction for the two-parameter global problem. Similarly, the
+analytic dependence of the \emph{kernel} optimum on $1/N$ is a
+convergent expansion, whereas the all-orders Lambert-root expansion is
+an asymptotic expansion. Their convergence statuses must remain distinct.
+
+\subsection{Two substantive attribution corrections}
+
+\paragraph{The Lambert inverse series.}
+In the discussion following the exact generating function, add the
+map $\lambda=\log A$, $\sigma=-t/A$, $v=V_A(t)$ to
+Kalugin and Jeffrey's equation
+$1-e^{-v}+\sigma v-\sigma\lambda=0$
+\cite{KaluginJeffrey2012}. Their fixed-$\lambda$ series and radius
+criterion are antecedents of the coefficient and radius formulas here.
+The repository's missing selected-sheet proof is supplied by the
+barrier argument; it should not be described as the first occurrence
+of the radius formula.
+
+\paragraph{The Lambert coefficient polynomials.}
+Add $L_n(X)=(-1)^np_n(X)$ and the generalized normalization from
+Cohen's Proposition 4.8 \cite{Cohen2021}. The real-rooted operator
+argument already present in the harmonic report is directly relevant
+to Cohen's conjecture. The present interlacing and extreme-root proofs
+make the comparison explicit. When quoting the numerical constant in
+Cohen's original question \cite{CohenMO2020}, distinguish the two
+normalizations:
+\begin{align*}
+ X_{n,1,1}
+ &=n+\log n+\gamma
+       -\frac{\frac32+\zeta(2)+\zeta(3)}n+O(n^{-2}),\\
+ &=n+H_n
+       -\frac{2+\zeta(2)+\zeta(3)}n+O(n^{-2}).
+\end{align*}
+The difference of $1/2$ in the coefficients comes from
+$H_n=\log n+\gamma+1/(2n)+O(n^{-2})$; it is not a discrepancy in
+the root asymptotic.
+
+\subsection{A verified notation cleanup}
+
+In the proof of \texttt{rw:thm:transport} in
+\nolinkurl{chapters/05-real-positive-kernel.tex}, the instruction to
+use the Hurwitz formula ``with $q=n$'' should read ``with $x=n$''.
+Here $x$ is the Hurwitz argument; $q$ is the regularizing kernel used
+in the neighboring formula. The following sentence refers to boundedness
+of $h$, but the regularizer was named $q(t)$, so that occurrence should
+read boundedness of $q$. These are notation corrections and do not
+change the transport identity or its proof. The package includes a
+small unified diff against the pinned source for these two replacements.
+
+\subsection{Integration boundaries and verification status}
+
+The integration notes identify exact source paths and labels, suggest
+a placement for the new sections, and list the accompanying verifier
+commands. They do not modify the remote repository. The assembled
+article is also supplied as modular TeX to make relocation of sections
+and theorem environments straightforward.
+
+The exact checks prove finite polynomial identities, finite-field
+irreducibility, rational interval enclosures, and the displayed finite
+coefficient cancellations. They do not formally verify Rouch\'e's
+theorem, the probability representation, singularity transfer, or
+asymptotic uniformity. Those claims have the complete mathematical
+proofs in the article and the separate review notes in the package.
+The source scan and targeted primary-literature comparison support
+the stated continuation of this repository; they are not an exhaustive
+bibliographic priority search.
+

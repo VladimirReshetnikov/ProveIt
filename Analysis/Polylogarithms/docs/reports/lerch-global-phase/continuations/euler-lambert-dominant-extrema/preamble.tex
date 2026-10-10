@@ -1,0 +1,71 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{graphicx,booktabs,longtable,array,enumitem}
+\usepackage{xurl}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage[dvipsnames]{xcolor}
+\definecolor{Ink}{HTML}{15324C}
+\definecolor{Teal}{HTML}{146B72}
+\usepackage[colorlinks=true,linkcolor=Ink,citecolor=Teal,urlcolor=Teal,breaklinks=true]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Dominant singularities and Euler extrema}
+\fancyhead[R]{\small ProveIt continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\E}{\mathbb E}
+\DeclareMathOperator{\Var}{Var}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\src}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\stirling}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
+\newcommand{\snapshot}{4c173c06cc32c9cea554b39be1837ad2ae897fc1}
+\hypersetup{pdftitle={Dominant Singularities, Sharp Euler Extrema, and Lambert Polynomial Zeros},pdfauthor={ProveIt research continuation},pdfsubject={Rigorous continuation, Lerch zero velocities, optimal Euler remainders, Lambert polynomial zeros}}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{1cm}
+{\large\color{Teal} PROVEIT\quad /\quad RESEARCH CONTINUATION\par}
+\vspace{1.0cm}
+{\huge\bfseries\color{Ink} Dominant Singularities, Sharp Euler Extrema, and Lambert Polynomial Zeros\par}
+\vspace{0.7cm}
+{\Large A rigorous continuation of the ProveIt\par
+polylogarithm and harmonic-order programs\par}
+\vspace{1cm}
+{\large Prepared for Vladimir Reshetnikov\par}
+\vspace{0.3cm}
+{\large October 10, 2026\par}
+\vfill
+\noindent\textbf{Source baseline.}\quad
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/4c173c06cc32c9cea554b39be1837ad2ae897fc1/Analysis/Polylogarithms/docs/manuscript}{Polylogarithms and their Arithmetic Bridges},
+its harmonic-order continuation, and the six archives present in
+\src{docs/incoming} at the pinned revision.
+\par\medskip
+\noindent\textbf{Research status.}\quad
+Theorems have ordinary mathematical proofs. Finite algebraic certificates
+and high-precision numerical diagnostics have separate roles.
+The statements are not presented as Lean formalizations or as claims of
+priority over the entire literature.
+\par\medskip
+\noindent\textbf{Revision.}\quad\texttt{4c173c06cc32c9cea554b39be1837ad2ae897fc1}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+

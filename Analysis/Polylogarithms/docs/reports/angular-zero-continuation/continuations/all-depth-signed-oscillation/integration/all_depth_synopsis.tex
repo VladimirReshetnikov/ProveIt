@@ -1,0 +1,119 @@
+% Additive synopsis. Full proofs are in the companion all-depth report.
+% Requires the manuscript's theorem/proof environments and amsmath/amssymb.
+% All new labels and macros use an ADO/ado: prefix.
+\providecommand{\ADOA}{\mathsf A}
+\providecommand{\ADOB}{\mathsf B}
+\providecommand{\ADOIm}{\operatorname{Im}}
+\section{All-depth signed oscillation and minimal positive compensation}
+\label{ado:integration:section}
+This section records the all-depth extension proved in the report
+\emph{Signed-Kernel Oscillation at Every Depth: Minimal Pick Compensation,
+Zero Geometry, and Certified Polylogarithmic Identities} (October 10, 2026).
+The full proof and replay artifacts belong under
+\texttt{docs/reports/all-depth-signed-oscillation/}.
+
+Use strict decreasing summation indices and the convention
+\[
+ L_{s_1,\ldots,s_d}(z)=
+ \sum_{n_1>\cdots>n_d\ge1}
+ \frac{z^{n_1}}{n_1^{s_1}\cdots n_d^{s_d}},
+ \qquad s_1,\ldots,s_{d-1}\in\mathbb Z_{\ge1},\quad s_d=b>0.
+\]
+For $f\in L^1(0,1)$ put
+\[
+ (\ADOA f)(u)=\int_u^1\frac{f(v)}v\,dv,
+ \qquad
+ (\ADOB f)(u)=\int_0^u\frac{f(v)}{1-v}\,dv-
+                         \int_u^1\frac{f(v)}v\,dv.
+\]
+If $m_n(f)=\int_0^1u^{n-1}f(u)\,du$, then
+\[
+ m_n(\ADOA f)=\frac{m_n(f)}n,
+ \qquad m_n(\ADOB f)=\frac1n\sum_{j=1}^{n-1}m_j(f),
+ \qquad \|\ADOA f\|_1\le\|f\|_1,\quad
+ \|\ADOB f\|_1\le2\|f\|_1.
+\]
+Thus, starting with $f_b(u)=(-\log u)^{b-1}/\Gamma(b)$, the density
+\[
+ \kappa=\ADOA^{s_1-1}\ADOB\cdots
+             \ADOA^{s_{d-1}-1}\ADOB f_b
+\]
+realizes the coefficients of $L$ as its moments and satisfies
+$\|\kappa\|_1\le2^{d-1}$.
+
+\begin{theorem}[All-depth oscillation and compensation]
+\label{ado:integration:compensation}
+The density $\kappa$ has exactly $d-1$ simple zeros
+$0<r_1<\cdots<r_{d-1}<1$, alternating signs, and positive sign near one.
+Set $P(u)=\prod_j(u-r_j)$ and $D(z)=\prod_j(1-r_jz)$. Then
+$P\kappa\,du$ is a positive measure and
+\[
+ L(z)=\frac{z^d}{D(z)}H(z),\qquad
+ H(z)=\int_0^1\frac{P(u)\kappa(u)}{1-zu}\,du,
+ \qquad z\in\mathbb C\setminus[1,\infty).
+\]
+Its mass is $[d^{s_1}(d-1)^{s_2}\cdots2^{s_{d-1}}]^{-1}$.
+The only zero of $L$ on the slit plane is its order-$d$ zero at zero.
+Among real polynomials $E$ with $E(0)=1$ making $EL/z^d$ a finite
+positive Hausdorff--Stieltjes transform, $D$ is the unique polynomial
+of least degree; that degree is $d-1$.
+\end{theorem}
+\begin{proof}[Proof structure]
+The first $d-1$ moments vanish. These force at least $d-1$ sign changes
+by orthogonality against the polynomial of any proposed smaller set of
+changes. The derivative identities
+$(\ADOA f)'=-f/u$ and $(\ADOB f)'=f/[u(1-u)]$, together with
+$(\ADOA f)(1)=0$, give the matching upper bound by Rolle's theorem.
+They also give simplicity and strict interlacing. Multiplication by the
+monic zero polynomial makes the density positive. The initial zero
+moments give $DL=z^dH$ by finite polynomial cancellation. Positive
+transform signs prove nonvanishing. For any polynomial $E$ of degree
+at most $d-1$, the unique signed representing density of $EL/z^d$ is
+$u^{d-1}E(1/u)\kappa(u)$. Positivity forces a root of $E$ at every
+$1/r_j$, proving minimality and uniqueness. The report gives the endpoint
+and integrability details of these steps.
+\end{proof}
+
+\begin{theorem}[Complete angular count and strict radial motion]
+\label{ado:integration:angular}
+For every $0<\rho\le1$, $\ADOIm L(\rho e^{i\theta})$ has exactly
+$d-1$ simple zeros $0<\theta_1<\cdots<\theta_{d-1}<\pi$. For
+$\alpha_k=k\pi/d$,
+\[
+ \alpha_k-\arcsin(\rho\sin\alpha_k)<\theta_k(\rho)<\alpha_k,
+ \qquad \theta_k'(\rho)<0\quad(d\ge2).
+\]
+The imaginary part starts positive and alternates sign. The value of $L$
+at the $k$th crossing is real with sign $(-1)^k$.
+\end{theorem}
+\begin{proof}[Proof structure]
+The imaginary part divided by $\rho\sin\theta$ is the signed Cauchy
+kernel integral with denominator $1-2\rho u\cos\theta+\rho^2u^2$.
+The change of variables $t=(1+\rho^2u^2)/(2\rho u)$ is strictly
+monotone for $\rho\le1$. A confluent partial-fraction argument bounds
+the number of zeros, including multiplicities, by the $d-1$ density
+sign changes. The factorization supplies a continuous unwrapped phase
+\[
+ d\theta+\sum_j[-\arg(1-\rho r_je^{i\theta})]
+                   +\arg H(\rho e^{i\theta}).
+\]
+It starts below $\pi$, including at unit radius by a positive-transform
+sector bound, and tends to $d\pi$ at the far endpoint. This forces all
+$d-1$ crossings. Positive atomic Stieltjes transforms have interlacing
+numerator zeros and denominator poles; pairing those factors proves
+nonnegative radial derivative of their arguments for $\rho\le1$.
+Weak approximation extends the inequality to $H$. The $d-1$ compensator
+factors make the radial phase derivative strictly positive, and implicit
+differentiation at the simple upward crossings gives $\theta_k'<0$.
+\end{proof}
+
+\paragraph{Scope and evidence.}
+The result also holds for a smooth strictly positive integrable terminal
+seed, including finite positive terminal-order mixtures and the terminal
+shift $(n_d+\lambda)^{-b}$ with $\lambda>-1$. It does not assert the
+same signed-density construction for arbitrary fractional leading indices.
+The all-depth report contains explicit positive logistic integral identities,
+24 rational angular brackets, eight stored Gaussian enclosures, and
+5,713 finite exact check groups. These are not proof-assistant certificates.
+The $S_6$ and $S_8$ arithmetic candidates and the normalized-radius
+conjecture retain their prior status.

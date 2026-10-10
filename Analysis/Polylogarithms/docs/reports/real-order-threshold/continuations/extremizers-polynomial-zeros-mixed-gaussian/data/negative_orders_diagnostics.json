@@ -1,0 +1,111 @@
+{
+  "exact_checks": {
+    "method": "Exact SymPy differentiation, simplification and integration",
+    "kernel_initial": "z**2/((1 - z)*(-y*z + 1))",
+    "derived_kernels": {
+      "2": "(y + 1)*(y**4 + 6*y**2 - 3)/(2*(y**2 + 1)**3)",
+      "3": "-(y + 1)*(y**4 - 22*y**2 + 1)/(y**2 + 1)**4",
+      "5": "-(y + 1)*(y**8 - 236*y**6 + 1446*y**4 - 236*y**2 + 1)/(y**2 + 1)**6"
+    },
+    "Li_negative_at_i": [
+      "-1/2 + I/2",
+      "-1/2",
+      "-I/2",
+      "1",
+      "5*I/2",
+      "-8"
+    ],
+    "beta_eta_combinations": {
+      "2": "-beta_D(b - 2)/2 - beta_D(b - 1) + eta_D(b)/(2*2**b) - 2*eta_D(b - 2)/2**b",
+      "3": "beta_D(b) - beta_D(b - 3)/2 - 3*beta_D(b - 2)/2 - 4*eta_D(b - 3)/2**b + 3*eta_D(b - 1)/2**b"
+    },
+    "exact_b_equals_one": {
+      "2": "-3/4 + log(2)/4",
+      "3": "pi/4 + 1",
+      "5": "-15/2 - 2*pi"
+    },
+    "b_equals_one_checks": [
+      "rational-kernel integration",
+      "differentiated log(1-z)^2/2",
+      "beta/eta specializations at m=2,3"
+    ],
+    "kernel_endpoint_values": {
+      "2": {
+        "at_zero": "-3/2",
+        "at_one": "1/2"
+      },
+      "3": {
+        "at_zero": "-1",
+        "at_one": "5/2"
+      },
+      "5": {
+        "at_zero": "-1",
+        "at_one": "-61/2"
+      }
+    },
+    "Sturm_root_counts_in_0_1": {
+      "2": 1,
+      "3": 1,
+      "5": 2
+    },
+    "q5_reciprocal_proof": {
+      "polynomial_in_t_equals_y_squared": "t**4 - 236*t**3 + 1446*t**2 - 236*t + 1",
+      "identity": "P(t)=t^2*((t+1/t)^2-236*(t+1/t)+1444)",
+      "two_v_values": [
+        "118 - 8*sqrt(195)",
+        "8*sqrt(195) + 118"
+      ],
+      "exact_positive_square_difference": 976,
+      "argument": "Both v values exceed 2. For each v, t+1/t=v has exactly one simple root in (0,1). The two v values differ, so q5 has exactly two simple zeros there.",
+      "kernel_signs_as_y_increases": [
+        "negative",
+        "positive",
+        "negative"
+      ]
+    }
+  },
+  "numerical_diagnostics": {
+    "status": "Decimal diagnostics, not root enclosures or a uniqueness certificate",
+    "decimal_working_precision": 85,
+    "mellin_evaluation": "t=u^16 in the gamma integral; quadrature without a certified error bound",
+    "roots": {
+      "2": {
+        "b_root": "0.42386119677075812695399781585001934476049632509083692273494808136684281317329426",
+        "Dirichlet_formula_residual": "2.01076468338595e-87",
+        "independent_Mellin_residual": "8.51996182278039e-90",
+        "numerical_derivative_at_root": "-1.13040450478262218759374007941042464906",
+        "sample_below": {
+          "b": "0.21193059838537906348",
+          "value": "0.2463572816348773259498927"
+        },
+        "sample_above": {
+          "b": "1.423861196770758127",
+          "value": "-0.8918717773897435802448975"
+        }
+      },
+      "3": {
+        "b_root": "2.4369081043976327447535806728811815003232088437488343099503276081733797718572037",
+        "Dirichlet_formula_residual": "-4.0215293667719e-87",
+        "independent_Mellin_residual": "-2.19988750913654e-89",
+        "numerical_derivative_at_root": "-0.8663416688581467426211658593398794927864",
+        "sample_below": {
+          "b": "1.2184540521988163724",
+          "value": "1.470997049269394122878196"
+        },
+        "sample_above": {
+          "b": "3.4369081043976327448",
+          "value": "-0.6090150997313832710827362"
+        }
+      }
+    },
+    "q5_kernel_roots_in_y": [
+      "0.065979718511458084907508360194804422152844597890204702112802",
+      "0.404135106179516125342532830421127898755335691270819290658272"
+    ]
+  },
+  "dependencies": {
+    "sympy": "1.14.0",
+    "mpmath": "1.3.0"
+  },
+  "elapsed_seconds": 3.592
+}

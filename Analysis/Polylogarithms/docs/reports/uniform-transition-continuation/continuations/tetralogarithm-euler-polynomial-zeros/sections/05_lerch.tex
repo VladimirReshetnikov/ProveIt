@@ -1,0 +1,421 @@
+% Research continuation, pinned against ProveIt 4c173c06cc32c9cea554b39be1837ad2ae897fc1.
+% Standalone SECTION fragment. Requires amsmath,amssymb,amsthm,booktabs,hyperref.
+% The root article supplies theorem,lemma,proposition,corollary,remark environments.
+
+\section{Polynomial separation and a larger uniform Lerch zero regime}
+\label{polylerch:sec:main}
+
+The incoming effective-saturation report~\cite{incoming-uniform} obtains an explicit separation
+bound $(3n)^{-(n-2)}$ for the reciprocal-gamma Appell polynomials and
+a sufficient derivative order of size $n^{2n+O(n)}$.  Two refinements
+give a polynomial sufficient order. First, a factorial diagonal
+multiplier converts a rational initial segment of the gamma product
+into a polynomial with quantitatively separated negative roots.
+Second, summing reciprocal distances from all roots replaces the
+coarser product estimate that charges every root the nearest distance.
+The resulting sufficient order is $O(n^6\log^2 n)$, uniformly in the
+entire Lerch deformation interval. This is a new consequence of
+classical multiplier and mesh theory; the underlying preservation
+theorems are not new claims.
+
+Write
+\[
+ \frac{e^{xz}}{\Gamma(1+z)}
+   =\sum_{n\ge0}Q_n(x)\frac{z^n}{n!},\qquad
+ W_\rho(t)=\frac1{1-\rho e^{-t}}.
+\]
+For $n\ge0$, $k\ge1$, and $0\le\rho\le1$, retain the manuscript's
+signed family
+\begin{equation}\label{polylerch:eq:F}
+ F_{n,k}^{\rho}(a)=(-1)^{n+k}D_{n,k}^{\rho}(a)
+ =\int_0^\infty t^k e^{-at}W_\rho(t)Q_n(\log t)\,dt.
+\end{equation}
+Thus $D_{n,k}^{1}=\gamma_n^{(k)}$, and for $\rho<1$ it is the
+$k$th $a$ derivative of
+$\sum_{m\ge0}\rho^m\log^n(a+m)/(a+m)$.
+Here the Stieltjes convention is
+$\zeta(s,a)=(s-1)^{-1}+\sum_{n\ge0}(-1)^n\gamma_n(a)(s-1)^n/n!$.
+The established Appell--Laplace formula is
+\cite[\texttt{zeros:thm:laplace}]{baseline}; it also follows by differentiating
+$t^z/\Gamma(1+z)$ under the defining gamma integral. We recall the
+variation proof below so that the completeness of the zero list does
+not depend on a numerical root search.
+
+\subsection{A factorial multiplier and a rational separation bound}
+
+For a polynomial whose nonzero roots all have one sign, order their
+absolute values as $0<r_1\le\cdots\le r_d$ and define its logarithmic
+mesh to be $\min_{i<d}r_{i+1}/r_i$. Ordinary mesh means the minimum
+additive distance between consecutive roots, counting multiplicity.
+
+We use the following two classical preservation statements. A
+real-rootedness-preserving operator commuting with translations does
+not reduce ordinary mesh. A real-rootedness-preserving diagonal
+operator does not reduce logarithmic mesh on polynomials with all
+roots of one sign. The second statement is the theorem of Katkova,
+Shapiro and Vishnyakova~\cite{polylerch:KSV}; the first includes the
+Riesz theorem for $1+c\partial_x$. Both follow from the interlacing
+pencil criterion: apply the operator to every real linear combination
+of $p(x),p(x+h)$, or $p(x),p(qx)$, respectively. Interlacing of the
+image pair gives the asserted mesh inequality. Here $h$ is below
+the original additive mesh and $1<q$ below the original logarithmic
+mesh; passage to the supremum includes equality.
+
+\begin{lemma}[A concrete diagonal multiplier]\label{polylerch:lem:multiplier}
+The operator
+\[
+ \mathcal M\left(\sum_{r=0}^d a_rx^r\right)
+   =\sum_{r=0}^d\frac{a_r}{(r+1)!}x^r
+\]
+preserves real-rootedness. If $p$ has strictly negative roots and positive
+leading coefficient, then $\mathcal Mp$ has strictly negative roots
+and logarithmic mesh at least that of $p$.
+\end{lemma}
+\begin{proof}
+Put $E=x\partial_x$ and, for integers $N\ge1$, define
+\[
+ \mathcal M_Np(x)
+ =\left[\prod_{j=2}^{N+1}(1+E/j)\right]p(x/N).
+\]
+Each factor preserves real-rootedness. Indeed, for positive integral $j$,
+\[
+ (1+E/j)p(x)=\frac{x^{1-j}}j\frac{d}{dx}\bigl(x^jp(x)\bigr).
+\]
+Rolle's theorem makes the derivative real-rooted; the division merely
+removes $j-1$ roots at zero. Positive dilation also preserves
+real-rootedness. On the monomial $x^r$ the multiplier is
+\[
+ N^{-r}\prod_{j=2}^{N+1}(1+r/j)
+ =\frac1{(r+1)!}\prod_{h=2}^{r+1}(1+h/N)
+ \longrightarrow\frac1{(r+1)!}.
+\]
+The empty product at $r=0$ equals one. Thus $\mathcal M_Np$ converges
+coefficientwise to $\mathcal Mp$. Its degree does not drop, and closure
+of real-rootedness proves the first assertion. The coefficients of a
+polynomial with negative roots and positive leading coefficient are
+strictly positive. Their images remain strictly positive, so the
+real roots of $\mathcal Mp$ cannot be nonnegative. The classical
+diagonal mesh statement now applies. In particular, a logarithmic
+mesh strictly greater than one proves simplicity of the image.
+\end{proof}
+
+\begin{theorem}[Polynomial Appell separation]\label{polylerch:thm:mesh}
+For every $n\ge3$, the polynomial $Q_n$ has $n$ distinct real roots and
+\begin{equation}\label{polylerch:eq:delta}
+ \operatorname{mesh}(Q_n)\ge\Delta_n,
+ \qquad \Delta_n=\frac4{n(n-1)(n-2)}.
+\end{equation}
+For $n=2$, one may take $\Delta_2=2$.
+\end{theorem}
+\begin{proof}
+Set
+\[
+ B_n(x)=\prod_{j=1}^{n-1}(1+\partial_x/j)x^n,
+ \qquad P_n(x)=\prod_{j=1}^{n-1}(1+jx).
+\]
+Complementation of elementary symmetric functions gives the exact
+identity
+\begin{equation}\label{polylerch:eq:Bidentity}
+ B_n(x)=n x R_n(x),\qquad R_n(x)=\mathcal MP_n(x).
+\end{equation}
+For explicit verification, if $e_r$ denotes the degree-$r$ elementary
+symmetric function of $1,2,\ldots,n-1$, then
+\[
+ R_n(x)=\sum_{r=0}^{n-1}\frac{e_r}{(r+1)!}x^r,
+ \qquad
+ e_{n-1-r}(1,1/2,\ldots,1/(n-1))=\frac{e_r}{(n-1)!}.
+\]
+
+The negative roots of $P_n$ have absolute values
+$1/(n-1),1/(n-2),\ldots,1$. Its logarithmic mesh is
+$(n-1)/(n-2)$. By Lemma~\ref{polylerch:lem:multiplier}, the roots of
+$R_n$ can be written as $-r_1,\ldots,-r_{n-1}$ with
+\[
+ 0<r_1<\cdots<r_{n-1},\qquad
+ \frac{r_{i+1}}{r_i}\ge\frac{n-1}{n-2}.
+\]
+The coefficient ratio supplies an absolute scale:
+\[
+ \sum_{i=1}^{n-1}\frac1{r_i}
+ =\frac{R_n'(0)}{R_n(0)}
+ =\frac12\sum_{j=1}^{n-1}j=\frac{n(n-1)}4.
+\]
+Consequently $r_1\ge4/[n(n-1)]$. Every consecutive nonzero-root
+gap is at least $r_1/(n-2)$, and the remaining gap, from $-r_1$ to
+the single zero at the origin in \eqref{polylerch:eq:Bidentity}, is
+$r_1$ itself. This proves $\operatorname{mesh}(B_n)\ge\Delta_n$.
+For $n=2$, $B_2=x(x+2)$ directly gives mesh two.
+
+For $N\ge n-1$ define the finite reciprocal-gamma Appell polynomial
+\[
+ Q_{n,N}(x)=\left[\prod_{j=1}^{N}(1+\partial_x/j)\right]
+                  (x+\gamma-H_N)^n.
+\]
+The first $n-1$ factors give a translation of $B_n$. Each remaining
+factor preserves real-rootedness and, by Riesz's theorem, does not
+decrease additive mesh. Hence $\operatorname{mesh}(Q_{n,N})\ge\Delta_n$.
+The Weierstrass product
+\[
+ \frac1{\Gamma(1+z)}=e^{\gamma z}
+             \prod_{j\ge1}(1+z/j)e^{-z/j}
+\]
+converges locally uniformly, so $Q_{n,N}$ converges coefficientwise
+to $Q_n$. Continuity of the ordered roots of monic real-rooted
+polynomials preserves the positive gap inequalities in the limit.
+This proves both the stated bound and simplicity.
+\end{proof}
+
+The zero at the origin belongs only to the auxiliary $B_n$. No
+logarithmic mesh is assigned to that zero: the multiplicative argument
+is applied to $R_n$, and the final additive gap is handled separately.
+This distinction is essential to the proof.
+
+\subsection{The inherited global zero bound, with multiplicity}
+
+\begin{lemma}[Laplace variation]\label{polylerch:lem:variation}
+For $n\ge0$, $k\ge1$, and $0\le\rho\le1$, the function
+$F_{n,k}^{\rho}$ has at most $n$ positive zeros counted with multiplicity.
+\end{lemma}
+\begin{proof}
+Here is the elementary argument from the manuscript
+\cite[\texttt{zeros:lem:variation}]{baseline}. If a nonzero real
+kernel $g$ has $m$ sign changes and its exponentially weighted
+polynomial moments exist, its Laplace transform $G$ has at most
+$m$ positive zeros. For $m=0$ the transform has a strict constant
+sign. For $m>0$, choose a sign-change point $t_0$.
+The kernel $(t_0-t)g(t)$ has $m-1$ sign changes, and its transform is
+\[
+ (\partial_a+t_0)G(a)
+   =e^{-t_0a}\frac{d}{da}\bigl(e^{t_0a}G(a)\bigr).
+\]
+Induction bounds its zeros by $m-1$ and precludes an identically
+zero transform. Any finite collection of zeros of $G$ of total
+multiplicity $M$ forces at least $M-1$ zeros of the displayed
+transformed derivative, by Rolle's theorem with multiplicities.
+Thus $M\le m$, completing induction, including nonvanishing.
+
+The factor $t^kW_\rho(t)$ is strictly positive. By
+Theorem~\ref{polylerch:thm:mesh}, $Q_n(\log t)$ has exactly $n$
+simple sign changes; the cases $n=0,1$ are immediate.
+Moreover $W_\rho(t)\le W_1(t)\le1+t^{-1}$, so $k\ge1$ gives
+integrability at zero and the exponential controls infinity.
+These bounds justify all differentiations used in the induction.
+\end{proof}
+
+\subsection{Sign control using the whole root configuration}
+
+Let $Y_k$ have gamma shape $k+1$ and rate $k$. For a real number $s$
+that is not a root of $Q_n$, set
+\[
+ S_n(s)=\sum_{j=1}^n\frac1{|s-x_{n,j}|},
+ \qquad m(s)=\left\lceil1+S_n(s)\right\rceil.
+\]
+Here $x_{n,1}>\cdots>x_{n,n}$ are the roots of $Q_n$.
+
+\begin{lemma}[Configuration-sensitive sign transfer]
+\label{polylerch:lem:transfer}
+If $k\ge16m(s)^2$, then uniformly for $0\le\rho\le1$,
+\begin{equation}\label{polylerch:eq:transfer}
+ \left|
+ \frac{(ke^{-s})^{k+1}F_{n,k}^{\rho}(ke^{-s})}
+ {k!W_\rho(e^s)Q_n(s)}-1\right|
+ \le\sqrt{2/3}<1.
+\end{equation}
+Thus $F_{n,k}^{\rho}(ke^{-s})$ and $Q_n(s)$ have the same strict sign.
+\end{lemma}
+\begin{proof}
+The exact gamma average obtained by setting $t=e^s y$ in
+\eqref{polylerch:eq:F} is
+\[
+ \frac{(ke^{-s})^{k+1}F_{n,k}^{\rho}(ke^{-s})}
+ {k!W_\rho(e^s)Q_n(s)}
+ =\mathbb E\left[
+ \frac{W_\rho(e^sY_k)}{W_\rho(e^s)}
+ \frac{Q_n(s+\log Y_k)}{Q_n(s)}\right].
+\]
+For real $u$, factorization over the roots yields
+\[
+ \left|\frac{Q_n(s+u)}{Q_n(s)}-1\right|
+ \le\prod_j\left(1+\frac{|u|}{|s-x_{n,j}|}\right)-1
+ \le e^{S_n(s)|u|}-1.
+\]
+Also
+\[
+ \left|\frac{d\log W_\rho(t)}{d\log t}\right|
+ =\frac{t\rho}{e^t-\rho}\le1,
+\]
+since $e^t-\rho\ge\rho t$. Therefore, writing
+$R=W_\rho(e^{s+u})/W_\rho(e^s)$, one has
+$R\le e^{|u|}$ and $|R-1|\le e^{|u|}-1$.
+The absolute difference of the full integrand from one is at most
+$e^{(1+S_n(s))|u|}-1\le e^{m(s)|u|}-1$.
+
+For completeness, the required gamma moment estimate is
+\[
+ \mathbb E(e^{m|\log Y_k|}-1)
+ \le\{2(e^{4m^2/k}-1)\}^{1/2}\le\sqrt{2/3}
+ \quad(k\ge16m^2).
+\]
+Indeed, the squared integrand is bounded by
+$(Y_k^m-1)^2+(Y_k^{-m}-1)^2$ and Cauchy--Schwarz applies. The exact
+integer moments are
+\[
+ \mathbb EY_k^r=\prod_{j=1}^{r}(1+j/k),\qquad
+ \mathbb EY_k^{-r}=\prod_{j=0}^{r-1}(1-j/k)^{-1}.
+\]
+Both moments with $r=m$ are at least one. For $r=2m$, their
+logarithms are at most $3m^2/k$ and $4m^2/k$, respectively, using
+$\log(1+v)\le v$ and $-\log(1-v)\le2v$ for $0\le v\le1/2$.
+The inverse moments exist because $2m\le k$. This gives the first
+bound. Finally $4m^2/k\le1/4$ and
+$e^{1/4}\le(1-1/4)^{-1}=4/3$ give the second. Taking expectations
+proves \eqref{polylerch:eq:transfer} and also verifies absolute
+integrability of every expression used.
+\end{proof}
+
+\subsection{The polynomial threshold and the simultaneous zero limit}
+
+\begin{theorem}[Uniform saturation at polynomial derivative order]
+\label{polylerch:thm:saturation}
+For $n\ge3$ define the explicit integer
+\begin{equation}\label{polylerch:eq:threshold}
+ \mathcal K_n=
+ \left\lceil\bigl(16+6n(n-1)(n-2)H_{n-1}\bigr)^2\right\rceil.
+\end{equation}
+For every integer $k\ge\mathcal K_n$ and every $0\le\rho\le1$,
+the function $D_{n,k}^{\rho}$ has exactly $n$ positive zeros, all simple.
+Numbering them increasingly as $a_{n,1,k}^{\rho},\ldots,a_{n,n,k}^{\rho}$
+and putting $c_{n,j}=e^{-x_{n,j}}$, one has
+\begin{equation}\label{polylerch:eq:location}
+ \left|\log\frac{a_{n,j,k}^{\rho}}{kc_{n,j}}\right|
+ <\frac8{\sqrt k}\qquad(1\le j\le n).
+\end{equation}
+In particular,
+\[
+ \mathcal K_n=36n^6\log^2 n\,(1+o(1)),\qquad
+ \mathcal K_n\le36n^4(n-1)^2(n-2)^2\le36n^8.
+\]
+The exact two-zero theorem remains stronger at $n=2$; for the stated
+location estimate alone, the same proof gives the sufficient value
+$k\ge784$ with $\Delta_2=2$.
+\end{theorem}
+\begin{proof}
+Let $\delta=\Delta_n$ and $\eta=8/\sqrt k$. The threshold condition is
+precisely
+\[
+ \sqrt k\ge16+\frac{24H_{n-1}}\delta.
+\]
+It implies $\eta<\delta/3$, because $H_{n-1}\ge1$. The intervals
+$[x_{n,j}-\eta,x_{n,j}+\eta]$ are disjoint. At either endpoint
+$s=x_{n,j}\pm\eta$, the reciprocal-distance sum obeys
+\begin{align*}
+ S_n(s)&\le\frac1\eta+
+       \frac3{2\delta}(H_{j-1}+H_{n-j})\\
+ &\le\frac1\eta+\frac{3H_{n-1}}\delta.
+\end{align*}
+For a root $h$ positions away, this uses
+$|s-x_{n,j\pm h}|\ge h\delta-\eta\ge2h\delta/3$.
+Consequently
+\[
+ m(s)\le2+S_n(s)
+ \le2+\frac{\sqrt k}8+\frac{3H_{n-1}}\delta
+ \le\frac{\sqrt k}4.
+\]
+Lemma~\ref{polylerch:lem:transfer} gives opposite endpoint signs for
+$F_{n,k}^{\rho}(ke^{-s})$ on each interval, uniformly in $\rho$.
+There is therefore a positive zero in each of the $n$ corresponding
+disjoint $a$ intervals. Lemma~\ref{polylerch:lem:variation}, which counts
+multiplicities, makes this list complete and every zero simple. The
+interval endpoints give \eqref{polylerch:eq:location}.
+
+The asymptotic size follows from $H_{n-1}=\log n+O(1)$. For the
+displayed elementary upper bound, use $H_{n-1}\le n-1$ and
+$16\le6n(n-1)(n-2)$ for $n\ge3$. They give
+$16+6n(n-1)(n-2)H_{n-1}\le6n^2(n-1)(n-2)$;
+the square on the right is already integral, so the ceiling preserves
+the inequality. For $n=2$, the threshold becomes $(16+24/2)^2=784$.
+\end{proof}
+
+\begin{remark}[Sharper finite thresholds from certified auxiliary roots]
+The proof uses only a lower bound $\delta$ on the Appell mesh. Thus every
+proved $\delta>0$ gives the sufficient order
+$\lceil(16+24H_{n-1}/\delta)^2\rceil$, with the same logarithmic
+location error $8/\sqrt k$. Exact rational isolation of all roots of
+$B_n$ supplies such a $\delta$ by Riesz's theorem. The accompanying
+script verifies the polynomial identity, isolates all 135 auxiliary
+roots for $2\le n\le16$, and validates the additive and logarithmic
+mesh inequalities with rational brackets. The following finite
+thresholds use those certified gaps:
+\[
+\begin{array}{c|rrrrrrrr}
+n&3&4&5&6&8&10&12&16\\\hline
+\text{sufficient }k&3629&12996&36442&85413&327915&926207&2152710&8065605.
+\end{array}
+\]
+They remain sufficient bounds, not least thresholds. No finite root
+calculation is needed for the all-index theorem or its growing-index
+corollary. The exact audit also checks 90 finite-multiplier coefficient
+identities and seven gamma-moment bounds.
+\end{remark}
+
+\begin{corollary}[A power-sized growing-index regime]
+\label{polylerch:cor:growing}
+Fix $0<c<1$. For all sufficiently large integers $k$, simultaneously for
+\[
+ 3\le n\le c\frac{k^{1/6}}{(\log k)^{1/3}},\qquad
+ 1\le j\le n,\qquad0\le\rho\le1,
+\]
+the function $D_{n,k}^{\rho}$ has exactly $n$ simple positive zeros and
+\[
+ \frac{a_{n,j,k}^{\rho}}{k e^{-x_{n,j}}}=1+O(k^{-1/2}).
+\]
+The implied constant can be chosen independently of $n,j,\rho$.
+\end{corollary}
+\begin{proof}
+The defining quantity in \eqref{polylerch:eq:threshold} is increasing
+in $n$. At the largest permitted index its ratio to $k$ has limsup
+at most $c^6<1$: substitute
+$n\sim c k^{1/6}(\log k)^{-1/3}$ into
+$36n^6\log^2 n$, noting $\log n\sim\tfrac16\log k$.
+Hence $k\ge\mathcal K_n$ throughout the range for all sufficiently
+large $k$. Theorem~\ref{polylerch:thm:saturation} applies.
+Exponentiation of the uniform logarithmic bound gives the conclusion;
+for example, for $k\ge64$ its relative error is less than
+$8e/\sqrt k$.
+\end{proof}
+
+\subsection{What has and has not been resolved}
+
+This argument strengthens the effective growing-index theorem from a
+logarithmic index range to a power-sized one. It gives a rigorous
+polynomial answer to the incoming report's question about substantially
+smaller explicit saturation orders. It does not determine the least
+uniform threshold, and the bound on the Appell mesh is not claimed
+optimal. In particular, the elementary endpoint still forces every
+uniform simplicity threshold to be at least $n-1$.
+Indeed, at $\rho=0$, writing $x=\log a$ gives
+\[
+ \frac{d^k}{da^k}\frac{\log^n a}{a}
+   =a^{-k-1}\prod_{j=1}^k(\partial_x-j)x^n.
+\]
+For $k\le n-2$, the right-hand polynomial is divisible by
+$x^{n-k}$, so its positive zero at $a=1$ is multiple.
+
+Further precise targets are: improve the $n^{-3}$ Appell mesh bound;
+determine whether the least uniform simplicity threshold is $n-1$;
+replace the absolute log-moment estimate by a signed concentration
+estimate to improve the $k^{-1/2}$ location error; and extend the
+configuration-sensitive argument to all-order offsets with a growing
+index. The lower-branch shape problem at index two belongs to a separate
+line of results already developed in the source reports. We do not
+count its previously established cases as new results here.
+
+% Bibliography item for the parent article:
+% \bibitem{polylerch:KSV}
+% O. Katkova, B. Shapiro and A. Vishnyakova,
+% Multiplier sequences and logarithmic mesh,
+% C. R. Math. Acad. Sci. Paris 349 (2011), nos. 1--2, 35--38.
+% doi:10.1016/j.crma.2010.11.031; arXiv:1010.6052.
+% Primary publisher page:
+% https://comptes-rendus.academie-sciences.fr/mathematique/articles/10.1016/j.crma.2010.11.031/
+% arXiv primary full text: https://arxiv.org/pdf/1010.6052

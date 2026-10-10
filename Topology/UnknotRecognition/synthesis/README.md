@@ -1258,3 +1258,42 @@ unresolved references. Reproduce publication checks with
 They verify 598 frozen/current runtime pins, 595 preceding-release evidence
 pins, the recoverable pilot, both final timing records and all 31 positive
 proofs with the producers disabled.
+
+[window_modes.tex](window_modes.tex) carries the small replacement and gauge
+operations through cached source potential modes. It proves exact equality
+with wide direct projection and records a polynomial one-time preparation
+followed by `O(T*d*(d0+2))` worst-case per-window propagation. Sparse storage
+and lazy column preparation remove products with algebraic zeros. All 1,408
+tests pass; the 85-source audit preserves all 31 positives, seven fresh
+Regina disc checks, 28 caps and 26 completed local misses. Measured complete
+recognition stays close to parity; the longer trefoil repeat gives only a
+1.015x gain. Guard calls rise modestly. The dense-mode pilot, final paired
+200-call run and 120-call repeat are retained in `data/window-modes-*`.
+
+The current [PDF](report.pdf) has 564 pages. Section 141 starts on page 557;
+the assessment is section 142 on page 560. Rendered pages 557–561 pass
+visual review with no new overflow or reference warnings. Reproduce
+publication checks with `python -B data/window_modes_review.py --publication`
+from this directory. They verify 599 frozen/current runtime pins, 598
+preceding-release evidence pins, the recoverable dense pilot, both final
+timing records and all 31 saved positives with the producers disabled.
+
+[window_geometry.tex](window_geometry.tex) keeps projected standard geometry
+sparse in the free Q coordinates. It proves exact dense/sparse equivalence,
+retains generic rank materialization, and bounds stored standard coefficients
+by `(k-d)*(d+1)+(p-g)*(d+2)` and stored potentials by `p*d`.
+All 1,411 tests pass, including genuine low-dimensional rays with dense form
+iteration disabled, nullity-four generic enumeration and huge exact lifts.
+The 85-source audit preserves every verdict and guard count, all 31 positives,
+seven fresh Regina discs, 28 caps and 26 completed local misses. The longer
+complete-recognition repeat gives 1.046x trefoil and 1.052x figure-eight gains.
+Both comparisons include complete fallback; the window default remains off.
+Raw final/repeat records and source proof replay are in `data/window-geometry-*`.
+
+The current [PDF](report.pdf) has 567 pages. Section 142 starts on page 560;
+the assessment is section 143 on page 563. Rendered pages 560–564 pass
+visual review, with the four pre-existing overflow warnings and no unresolved
+references. Reproduce publication checks with
+`python -B data/window_geometry_review.py --publication` from this directory.
+They verify 602 frozen/current runtime pins, 599 preceding-release evidence
+pins, all measured outcomes and all 31 saved positives with producers disabled.

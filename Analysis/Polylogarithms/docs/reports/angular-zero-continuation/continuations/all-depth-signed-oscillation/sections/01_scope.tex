@@ -1,0 +1,140 @@
+\section{The problem, conventions, and contribution}
+\label{ado:sec:scope}
+The existing ProveIt manuscript develops a successful bridge between
+nested sums, signed Hausdorff moments, positive transforms, and angular
+zero geometry. Its depth-two function is
+\[
+ F_{a,b}(z)=\sum_{n\ge1}\frac{H_{n-1}^{(b)}}{n^a}z^n,
+ \qquad H_{n-1}^{(b)}=\sum_{m=1}^{n-1}m^{-b}.
+\]
+In the reviewed snapshot, slit-plane nonvanishing and upper-semicircle
+angular uniqueness are already proved at every positive inner order and
+nonnegative outer order. The integer-order signed density and the later
+real-order and subcritical extensions are distinct parts of that
+argument~\cite{repoSigned,repoReal,repoSubcritical}. We do not present
+these depth-two conclusions as newly resolved conjectures.
+
+The question pursued here is what survives at arbitrary \emph{strict}
+depth. A positive integral with a product of several resolvent factors
+is useful but does not, by itself, imply nonvanishing. The missing
+structure is a signed density whose number of sign changes matches
+exactly the number of initially vanishing coefficients. This equality
+allows polynomial compensation and controls the full angular zero count.
+
+\subsection{Strict single-variable notation}
+For an index of depth $d$, define
+\begin{equation}\label{ado:eq:series}
+ L_{\svec}(z)=\Li_{s_1,\ldots,s_d}(z,1,\ldots,1)
+ =\sum_{n_1>\cdots>n_d\ge1}
+       \frac{z^{n_1}}{n_1^{s_1}\cdots n_d^{s_d}}
+ =\sum_{n\ge1}c_{\svec}(n)z^n,\qquad |z|<1.
+\end{equation}
+Our parameter domain is
+\begin{equation}\label{ado:eq:domain}
+ s_1,\ldots,s_{d-1}\in\bbN_{\ge1},\qquad s_d=b>0.
+\end{equation}
+At depth one, this means any $b>0$. Indices are strictly decreasing, not
+weakly decreasing. Only the outer summation variable receives $z^{n_1}$.
+This convention agrees with the single-variable convention in the
+manuscript and in the multiple-polylogarithm literature. Classical
+polylogarithm branch conventions are recorded in DLMF~\cite{DLMF}.
+
+Write
+\begin{equation}\label{ado:eq:leading}
+ C_{\svec}=c_{\svec}(d)
+ =\frac{1}{d^{s_1}(d-1)^{s_2}\cdots 2^{s_{d-1}}}>0.
+\end{equation}
+The empty product at depth one is one. The value of $C_{\svec}$ is
+independent of $b$, because the innermost index of the first admissible
+chain is one. Also $c_{\svec}(1)=\cdots=c_{\svec}(d-1)=0$.
+Throughout, principal continuation means continuation to
+\[
+ \Om=\bbC\setminus[1,\infty).
+\]
+The word ``zero'' refers to a zero of a holomorphic function, unless the
+imaginary part or a signed density is explicitly specified.
+
+\subsection{Main result}
+\begin{theorem}[All-depth compensation and zero geometry]
+\label{ado:thm:main}
+Let \eqref{ado:eq:domain} hold. There is a smooth real density
+$\kappa_{\svec}\in L^1(0,1)$ such that
+\[
+ \int_0^1u^{n-1}\kappa_{\svec}(u)\dd u=c_{\svec}(n),\qquad
+ \norm{\kappa_{\svec}}_1\le2^{d-1}.
+\]
+It has exactly $d-1$ simple zeros $0<r_1<\cdots<r_{d-1}<1$, with
+alternating signs and positive sign near one. Set
+\[
+ P_{\svec}(u)=\prod_{j=1}^{d-1}(u-r_j),\qquad
+ D_{\svec}(z)=\prod_{j=1}^{d-1}(1-r_jz).
+\]
+Then $\dd\mu_{\svec}=P_{\svec}\kappa_{\svec}\dd u$ is a positive
+measure of mass $C_{\svec}$, and
+\begin{equation}\label{ado:eq:mainfactor}
+ L_{\svec}(z)=\frac{z^d}{D_{\svec}(z)}H_{\svec}(z),\qquad
+ H_{\svec}(z)=\int_0^1\frac{\dd\mu_{\svec}(u)}{1-zu}.
+\end{equation}
+The polynomial $D_{\svec}$ is the unique normalized polynomial of
+smallest degree making $D_{\svec}L_{\svec}/z^d$ a positive
+Hausdorff--Stieltjes transform. In particular, $L_{\svec}$ has no zero
+in $\Om$ other than its zero of multiplicity $d$ at zero.
+
+For every $0<\rho\le1$, there are exactly $d-1$ simple zeros
+\[
+ 0<\theta_1(\rho)<\cdots<\theta_{d-1}(\rho)<\pi
+\]
+of $\theta\mapsto\Imn L_{\svec}(\rho e^{\ii\theta})$.
+With $\alpha_k=k\pi/d$ they satisfy
+\begin{equation}\label{ado:eq:mainangles}
+ \alpha_k-\arcsin(\rho\sin\alpha_k)
+ <\theta_k(\rho)<\alpha_k.
+\end{equation}
+Every branch satisfies $\theta_k'(\rho)<0$ for $0<\rho\le1$ (with the
+one-sided derivative at one). The imaginary part starts positive and
+alternates sign at these zeros;
+the value of $L_{\svec}$ at the $k$th crossing is real with sign $(-1)^k$.
+\end{theorem}
+The proof is divided into operator, oscillation, compensation, and
+angular-count steps below. None of those steps is inferred from the
+finite verification suite.
+
+\subsection{Relation to prior work and what is new here}
+Positive Hausdorff generating functions have a classical Pick-function
+interpretation; Liu and Pego give a systematic treatment~\cite{LiuPego}.
+The present $H_{\svec}$ belongs to that class. The substantial step is
+not that a positive measure has a Pick transform, but the construction
+of the \emph{minimal} polynomial that changes a strict-depth signed
+measure into a positive one.
+
+Recent work on multiple \emph{star} polylogarithms also uses positive
+Hausdorff measures~\cite{LiStar}. A star sum has weak inequalities in
+its nested indices. It must not be substituted for
+\eqref{ado:eq:series}: its first nonzero coefficient, normalization,
+and positive-measure properties are different. Our proof treats strict
+sums directly and retains their $d-1$ vanishing initial moments.
+
+Relative to the reviewed manuscript sections, the added results are the
+two-operator all-depth construction, exact oscillation and interlacing,
+minimal positive compensation, the all-depth slit-plane and angular-zero
+theorems, their uniform asymptotic consequences, and explicit
+compensated integral identities. The elementary all-ones logarithm
+formula and the general positive-transform theory are background, not
+claims of discovery. A targeted literature search did not establish
+priority for every theorem stated here; a broader novelty review remains
+appropriate before publication.
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}p{0.30\linewidth}X@{}}
+\toprule
+Claim & Status and scope\\
+\midrule
+All-depth kernel and zero count & Proved here on \eqref{ado:eq:domain}.\\
+Canonical compensator & Proved minimal and unique among normalized least-degree polynomials.\\
+Explicit integral identities & Proved; the underlying all-ones polylogarithm is classical.\\
+Gaussian and root certificates & Finite exact rational checks with analytic error bounds.\\
+Arbitrary fractional leading orders & Not covered by this proof.\\
+$S_6$, new $S_8$, period independence & Not settled or promoted by this package.\\
+\bottomrule
+\end{tabularx}
+\end{center}

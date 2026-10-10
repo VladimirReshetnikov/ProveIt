@@ -1,0 +1,102 @@
+\section{A Bessel limit for the smallest roots}
+\label{sec:bessel-edge}
+
+The fixed largest roots have size $n/j$, while the bulk law leaves the
+smallest roots unresolved. The opposite endpoint has a different,
+explicit scaling limit. It follows directly from the same Stirling
+coefficient formula, and completes the leading description of the
+three root regimes considered here.
+
+For $n,k\geq1$, use the harmless scalar normalization
+\begin{equation}\label{eq:bessel-normalization}
+ P_{n,k}(X)=\frac{(-1)^{n+k+1}L_{n,k}(X)}
+                   {k!\binom{n+k-1}{n}}
+ =\sum_{j=1}^n(-1)^j\stirling{n}{n-j+1}
+                     \frac{X^{k-1+j}}{(k-1+j)!}.
+\end{equation}
+In particular $P_{n,1}=p_n$. Let $z_{k,j}$ be the $j$th positive
+zero of the Bessel function $J_k$; these zeros are simple
+\cite{DLMFBessel}.
+
+\begin{theorem}[An entire Bessel scaling limit]
+\label{thm:bessel-edge}
+For each fixed positive integer $k$, locally uniformly for complex $x$,
+\begin{equation}\label{eq:bessel-limit}
+ n^{2k}P_{n,k}(x/n^2)
+       \longrightarrow -(2x)^{k/2}J_k(\sqrt{2x}).
+\end{equation}
+The right side is understood by its entire power series, so it has
+no square-root branch ambiguity. If $x_{n,k,j}$ denotes the $j$th
+smallest positive root of $L_{n,k}$, then for every fixed $j,k\geq1$,
+\begin{equation}\label{eq:small-root-limit}
+ n^2x_{n,k,j}\longrightarrow \frac{z_{k,j}^2}{2}.
+\end{equation}
+For the diagonal zero-velocity lattice parameters of
+\cref{sec:velocity-zero-law}, this says
+\begin{equation}\label{eq:small-spacing-limit}
+ n^2\log A_{n,j}\longrightarrow \frac{z_{1,j}^2}{2},
+ \qquad n^2(A_{n,j}-1)\longrightarrow\frac{z_{1,j}^2}{2}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Write $m=j-1$. The standard product for unsigned Stirling numbers gives
+\[
+ \stirling{n}{n-m}=e_m(1,2,\ldots,n-1),
+\]
+where $e_m$ is the elementary symmetric function of degree $m$.
+For each fixed $m$,
+\begin{equation}\label{eq:stirling-fixed-codimension}
+ n^{-2m}\stirling{n}{n-m}
+           \longrightarrow \frac1{2^m m!}.
+\end{equation}
+Indeed $(\sum_{r=1}^{n-1}r)^m$ is $m!e_m$ plus terms with repeated
+indices. For $m\geq2$ the sum of the latter is bounded by
+\[
+ \binom m2\left(\sum_{r=1}^{n-1}r^2\right)
+          \left(\sum_{r=1}^{n-1}r\right)^{m-2}
+       =O_m(n^{2m-1}).
+\]
+The cases $m=0,1$ are direct, and
+$n^{-2}\sum_{r=1}^{n-1}r\to1/2$.
+For all $m,n$ the same positive expansion gives the useful bound
+\begin{equation}\label{eq:stirling-domination}
+ 0\leq n^{-2m}\stirling{n}{n-m}
+       \leq\frac1{2^m m!},
+\end{equation}
+with the coefficient interpreted as zero for $m\geq n$.
+
+Substituting \eqref{eq:bessel-normalization} yields
+\[
+ n^{2k}P_{n,k}(x/n^2)
+  =-\sum_{m=0}^{n-1}(-1)^m
+       n^{-2m}\stirling{n}{n-m}\frac{x^{k+m}}{(k+m)!}.
+\]
+On every compact set, \eqref{eq:stirling-domination} gives an
+absolutely summable common bound for its terms. Termwise passage to
+the limit proves
+\[
+ -\sum_{m\geq0}\frac{(-1)^m x^{k+m}}{2^m m!(k+m)!}
+       =-(2x)^{k/2}J_k(\sqrt{2x}),
+\]
+the defining Bessel series \cite{DLMFBessel}, and proves local uniformity.
+
+The limiting function has a zero of multiplicity $k$ at zero and
+simple positive zeros $z_{k,j}^2/2$. Apply Rouch\'e's theorem on
+disjoint small circles around zero and the first finitely many positive
+zeros. The polynomial on the left has exactly multiplicity $k$ at
+zero, and its remaining zeros are real, simple, and positive by the
+operator theorem in \cref{sec:cohen-edges}. Uniform nonvanishing on
+the compact real intervals between those circles therefore identifies
+the first positive polynomial roots with the respective limiting
+zeros; no additional small root can enter at zero. This proves
+\eqref{eq:small-root-limit}. For $k=1$, $x_{n,1,j}=\log A_{n,j}$.
+Since this tends to zero, $e^x-1\sim x$ gives
+\eqref{eq:small-spacing-limit}.
+\end{proof}
+
+For example, $z_{1,1}^2/2=7.340985321\ldots$. This endpoint constant
+is not obtained by inserting a fixed $j$ into the bulk quantile formula:
+the bulk theorem assumes $j/(n-1)$ stays away from both endpoints.
+A uniform bridge between the Bessel regime, the angle-distributed
+bulk, and the largest-root expansion remains a substantive further
+problem.

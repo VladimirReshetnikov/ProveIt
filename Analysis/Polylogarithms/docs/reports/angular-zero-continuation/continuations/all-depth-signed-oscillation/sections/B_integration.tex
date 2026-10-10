@@ -1,0 +1,50 @@
+\section{Dependency map and integration instructions}
+\label{ado:app:integration}
+The logical dependencies are short enough to audit separately from the
+implementation:
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}p{0.34\linewidth}X@{}}
+\toprule
+Result & Dependencies\\
+\midrule
+Moment construction & Gamma integral; Fubini; the two operator identities.\\
+Exact density zeros & Initial zero moments; Rolle's theorem; endpoint value of $\Aop f$.\\
+Positive factorization & Exact density zeros; monic sign polynomial; polynomial cancellation.\\
+Minimality & Uniqueness of finite Hausdorff moments; sign changes.\\
+Global nonvanishing & Positive transform signs; compensator roots lie on the removed cut.\\
+Angular upper bound & Strict monotonicity of $t(u)$; confluent partial fractions.\\
+Angular lower bound & Positive-transform sector; continuous unwrapped phase.\\
+Strict radial motion & Rational positive-transform interlacing; weak approximation; simple upward phase crossings.\\
+Exact numerical bounds & Norm bound; centered geometric series; rational arithmetic.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+In particular, the numerical checks are downstream of the analytic
+proofs, and the angular upper and lower bounds have separate arguments.
+
+A suggested report destination is
+\begin{quote}\small\ttfamily
+Analysis/Polylogarithms/docs/reports/all-depth-signed-oscillation/
+\end{quote}
+The integration synopsis in
+\texttt{integration/all\_depth\_synopsis.tex} is a short standalone
+section, using prefixed macros and labels. It summarizes the proved
+scope and the proof chain; the full proofs remain in this article.
+It should be placed after the existing signed-kernel and all-positive
+depth-two developments, with the report cited as a separate contribution.
+The optional notation patch is independent of this addition.
+
+The manuscript's editorial ledger should distinguish four things:
+ordinary proved theorems in this article, finite exact replay evidence,
+proposed further questions, and previously open arithmetic candidates
+whose status is unchanged. The word ``minimal'' should always retain
+its qualifier ``polynomial compensation degree'' when discussing
+Theorem~\ref{ado:thm:minimality}.
+
+The package has no new dependency on a proof assistant, Wolfram Language,
+or the full ProveIt checkout. Python's standard library suffices for the
+exact evaluator. The replay additionally uses SymPy for the stated finite
+symbolic checks; regenerating candidate angular brackets uses mpmath and
+NumPy. The README records the versions actually used. A successful
+rebuild may change PDF metadata; the package hash manifest describes the
+delivered files, not every possible future rebuild.
