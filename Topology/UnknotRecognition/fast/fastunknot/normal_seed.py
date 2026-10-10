@@ -18,7 +18,7 @@ from .normal_cocycle_verify import inspect_cocycle_certificate
 from .normal_surface_geometry import NormalOrbitError, _coordinates
 
 
-def normal_seed_decide(diagram, *, optimize=True, annulus=True, planar=False, shellings=False, max_work=2000000,
+def normal_seed_decide(diagram, *, optimize=True, annulus=True, planar=False, shellings=False, edge_span=False, max_work=2000000,
                        max_cycles=None, tree_trials=4, face_roots=0, check=lambda: None):
     """Return UNKNOT with a source-bound disc or capping proof, or INCONCLUSIVE.
 
@@ -43,6 +43,8 @@ def normal_seed_decide(diagram, *, optimize=True, annulus=True, planar=False, sh
         raise ValueError('shellings must be bool')
     if type(planar) is not bool:
         raise ValueError('planar must be bool')
+    if type(edge_span) is not bool:
+        raise ValueError('edge_span must be bool')
     if max_cycles is not None and (type(max_cycles) is not int or max_cycles < 0):
         raise ValueError('max_cycles must be a nonnegative integer or None')
     if type(tree_trials) is not int or tree_trials < 0:
@@ -166,6 +168,28 @@ def normal_seed_decide(diagram, *, optimize=True, annulus=True, planar=False, sh
             result = evaluate('optimized', seed['heights'], optimized['coordinates'], optimized['certificate'])
             if result is not None:
                 return result
+        if edge_span:
+            from .cocycle_lex import _prepared_minimize_edge_span
+            from .cocycle_lex_verify import inspect_lex_cocycle_certificate
+            selected=_prepared_minimize_edge_span(prepared,seed['heights'],
+                optimized['certificate'] if optimize else None,budget.tick)
+            stats['edge_span']=selected['stats']
+            chi=selected['euler_characteristic']
+            entry=dict(stage='edge-span',status='COMPLETE',euler_characteristic=chi,
+                normal_pieces=selected['normal_pieces'],components=1,orientable_components=1,
+                compressing_discs=0,connectivity='edge-then-span')
+            if chi==1 or (annulus and chi==0):
+                proof=dict(schema='diagram-cocycle-lex-v1',input_pd=[list(row) for row in source.pd],
+                    triangulation=raw,heights=seed['heights'],coordinates=selected['coordinates'],
+                    optimality_certificate=selected['certificate'])
+                summary=(inspect_shelling_cocycle(source,wrap(proof),check=budget.tick) if shellings
+                         else inspect_lex_cocycle_certificate(source,proof,check=budget.tick))
+                if summary is None:raise ArithmeticError('edge/span primitive source replay failed')
+                entry.update(summary);entry['unknot_witness']='annulus-cap' if chi==0 else 'disc'
+                stages.append(entry)
+                return dict(status='UNKNOT',method='native-normal-cocycle',certificate=wrap(proof),
+                    stats=stats,stages=stages,work=budget.work)
+            stages.append(entry)
         for _ in range(4, tree_trials):
             result = tree_attempt()
             if result is not None:

@@ -20,6 +20,9 @@ def _details(certificate):
         return (verify_diagram_exterior(source, before, check=check)
                 and verify_boundary_shellings(before, final, certificate['shellings'], check=check))
     def inspect(diagram, surface, *, check):
+        if type(surface) is dict and surface.get('schema')=='diagram-cocycle-lex-v1':
+            from .cocycle_lex_verify import _inspect_lex_source
+            return _inspect_lex_source(diagram,surface,source_check,check=check)
         return _inspect_cocycle_source(diagram, surface, source_check, check=check)
     return certificate['surface_certificate'], inspect
 
@@ -49,6 +52,9 @@ def verify_shelling_certificate(diagram, certificate, *, check=lambda: None):
     surface, inspect = parts
     if type(surface) is not dict:return False
     kind = surface.get('schema')
+    if kind=='diagram-cocycle-lex-v1':
+        result=inspect(diagram,surface,check=check)
+        return result is not None and (result[0]['compressing_discs']==1 or result[0]['cappable_annulus'])
     if kind == 'diagram-cocycle-planar-v1':
         return _inspect_planar_surface(diagram, surface, inspect, check=check) is not None
     if kind not in ('diagram-cocycle-disc-v1', 'diagram-cocycle-annulus-v1'):
