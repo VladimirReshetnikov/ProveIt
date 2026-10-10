@@ -2,8 +2,8 @@
 
 Research checkpoint, October 9, 2026. The broader research and integration
 goal remains active. Authorship is **ProveIt Contributors** on the title
-and in PDF metadata. The canonical [PDF](polylogarithms.pdf) has **320 pages,
-twelve chapters, ten figures and 91 references**, with a literature appendix
+and in PDF metadata. The canonical [PDF](polylogarithms.pdf) has **340 pages,
+twelve chapters, ten figures and 93 references**, with a literature appendix
 preserving 94 distinct historical question leads.
 
 The recursive [inventory](source-inventory.json) accounts for **381 textual
@@ -17,7 +17,7 @@ continuation evidence remain preserved too.
 The reviewed PDF SHA-256 is:
 
 ```
-a7728ae8620fab2f94ab809a458fc566d80c738f603410f5c2deb956c8964b46
+0c27415b8024aa8448b46cc5b95197454b170c2a249e0c86d82e41e871bf845e
 ```
 
 ## Source reconciliation and evidence integrity
@@ -248,8 +248,8 @@ package versions are recorded in zero-profile-redraw.json.
 
 The 381-source inventory includes all new supporting prose, including material
 whose canonical integration remains pending. Source coverage is therefore
-distinct from completing every research item. The current book has **320 pages,
-twelve chapters, ten figures and 91 references**. The hourly incoming-report
+distinct from completing every research item. The current book has **340 pages,
+twelve chapters, ten figures and 93 references**. The hourly incoming-report
 watch is active; it is configured to stay quiet on an unchanged, non-actionable
 state.
 
@@ -260,17 +260,18 @@ auxiliary/reference state. The final log contains zero unresolved references
 or citations, duplicate-label warnings, overfull boxes, missing glyphs or
 rerun requirements. See [build-results.json](verification/build-results.json).
 
-The PDF text/bounds audit passes on all 320 pages. All pages were rasterized
-and visually reviewed in twenty contact sheets. Focused full-size review
-covered the title, reconstructed golden ladder, new S8 formula, modular
-polynomials, rational CM nonvanishing proof, product normalization, Weber
-field-degree certificate, genus seed formulas, all-weight quadratic-degree
-proof, cluster-set theorem and new genus figure/caption. The unchanged nine
-figures retain their earlier full-size reviews and were checked again in
-the current sheets. No clipping, overlap or illegible layout defects were
-found. [visual-review.json](verification/visual-review.json) records the
-actual full-page scope; [pdf-inspection.json](verification/pdf-inspection.json)
-records static checks and rendered candidates. The PDF is unchanged after review.
+The PDF text/bounds audit passes on all 340 pages. All pages were rasterized
+and visually reviewed in twenty-two contact sheets. Focused full-size review covered the integral-section introduction,
+normal-form table, weighted-resolution filtration and CRT gauge,
+fixed-point matrices and Tate calculation, characteristic-two rank locus,
+complete contact-order Smith exponents, finite integral-jet theorem,
+nonfree jet-module example, new separable multivariable product theorem,
+and all-order pole-cancelled identities. Ten unchanged figures retain their
+earlier full-size reviews and were checked in the current sheets.
+No clipping, overlap or illegible layout defects were found.
+[visual-review.json](verification/visual-review.json) records the actual
+full-page scope; [pdf-inspection.json](verification/pdf-inspection.json)
+records static checks and rendered candidates. The final whitespace-only rebuild preserves all reviewed rasters exactly, as recorded in final-raster-equivalence.json.
 
 ## CM proofs, new conjectural vector and two additional incoming batches
 
@@ -322,9 +323,45 @@ Focused incoming corrections are integrated: Clausen index versus character
 parity; failed numerical reduction searches versus nonreduction; the
 published 1987 plastic-field sequel; exact reconstruction of L12; omission
 of negative-factorial tail summands; and numerical versus proved ladder
-status. The substantial new integral, real-order, Lerch, uniform, golden-seed
-and Herglotz theorem integration is explicitly pending. Finite replay does
+status. The integral distribution/reflection proofs are now integrated as described
+below. Real-order, Lerch, uniform, golden-seed and Herglotz theorem integration
+is still explicitly pending. Finite replay does
 not substitute for auditing and incorporating those proofs.
+
+## Integral-distribution completion and multivariable research
+
+Chapter 9 now reconciles the two incoming integral reports into one full
+proof chain. It proves a fixed original-point basis and determinant-one
+minor over the polynomial weight ring, arbitrary-ring base change,
+a finite weighted resolution, the exact scalar reflection two-torsion,
+all-field reflected dimensions, the characteristic-two Koszul model and
+universal support, and the complete one-parameter Smith law. The integral
+finite-jet torsion theorem and its torsion-module refinement are included,
+with an explicit counterexample to jet-ring freeness of the torsion-free
+reflected quotient. Endpoint conventions and the two-prime active parameter
+A2(A2-1) are explicit. The complete level-twelve normal form and short
+level-12/15/30 raw certificates give all-order polylogarithm, spectral-jet
+and Hurwitz-Stieltjes identities, retaining the pole-cancellation term.
+
+Further research gives a closed separable multivariable law. If the active
+Koszul parameters are coordinate powers up to units, the reflected binary
+dimension is n*product(L_i)+2^(r-1)*product(min(d_i,L_i)). Both integral
+signs have free abelian rank n*product(L_i) and that second term as their
+two-torsion multiplicity; the torsion modules themselves are specified.
+The proof uses field Kunneth and the integral parity sums. It resolves this
+separable family and does not assert a minimum-valuation formula for
+arbitrary multivariable parameters or a splitting over the jet ring.
+
+The independent `check_multivariable_distribution.py` constructs the
+original prime and reflection rows in point/monomial coordinates without
+importing an incoming normal-form or Koszul implementation. All **210**
+finite binary matrix cases pass, including unequal lengths, zero powers,
+both two-prime branches and a three-prime level. One corruption control
+rejects omission of reflection rows. These finite checks test consequences;
+the all-level theorem rests on the written proof. The two earlier incoming
+integral suites and their independent Smith/resolution/product checks
+remain valid for their unchanged byte-pinned code and data; they were not
+rerun merely because the canonical prose was integrated.
 
 ## Limits of the evidence
 

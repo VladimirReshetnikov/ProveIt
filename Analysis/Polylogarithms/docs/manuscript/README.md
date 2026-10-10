@@ -1,8 +1,8 @@
 # Polylogarithms and their Arithmetic Bridges
 
 The collective manuscript, authored by **ProveIt Contributors**, is
-[polylogarithms.pdf](polylogarithms.pdf): **320 pages, twelve chapters,
-ten figures and 91 references**, with a literature appendix preserving
+[polylogarithms.pdf](polylogarithms.pdf): **340 pages, twelve chapters,
+ten figures and 93 references**, with a literature appendix preserving
 94 distinct historical question leads. Its editable source is
 [polylogarithms.tex](polylogarithms.tex) and the files in `chapters/`.
 
@@ -14,7 +14,7 @@ archives are preserved as **865 byte-identical members**. All their isolated
 replay suites pass; preservation and successful finite replay do not imply
 that every new analytic theorem has already been integrated.
 
-The current milestone proves the CM class-product formulas and the recorded
+The preceding milestone proves the CM class-product formulas and the recorded
 genus ratios, develops a rational principal-point nonvanishing bound, and
 proves exact quadratic degree at every even weight for discriminants
 -15, -20 and -39. Further genus results give norm identities, nine additional
@@ -25,9 +25,17 @@ cube-root obstruction. The latest reports also correct Clausen parity,
 unsupported numerical nonreduction, the published plastic-field sequel,
 and missing golden-ladder notation.
 
+The new integral development in Chapter 9 proves an all-ring raw-point
+basis, a universal unit minor, a weighted resolution, reflection torsion,
+modular rank loci and complete one-parameter Smith exponents. It also
+proves an exact product law for separable multivariable jets, checked by
+210 independent raw binary matrices. The level-12/15/30 certificates give
+all-order identities with pole-corrected derivatives. General multivariable
+extensions and numerical period independence remain open.
+
 The new S8 candidate is distinct from the old rigorously rejected vector.
 Its exact normalized residual enclosure is below `1e-355`; it and S6 remain
-conjectural. The substantial integral-distribution, real-order, Lerch,
+conjectural. The substantial real-order, Lerch,
 uniform-transition, golden-seed and Herglotz continuations remain on the
 active proof-audit and integration agenda.
 
@@ -47,7 +55,7 @@ stated at each transition.
 The [validation report](VALIDATION.md) records fresh native Wolfram and
 independent Python checks, exact rational certificates, the converged build
 and rendered review. [WORKLOG.md](WORKLOG.md) records the active research continuation.
-The five new packages add the exact S4 proof, complementary-depth transport,
+The earlier five-package intake added the exact S4 proof, complementary-depth transport,
 pure-complement classification, conductor descent and trace jets, proportional
 harmonic saddles, sharp reflected-moment remainders, and rational Herglotz
 derivatives with exponentially small oscillation. S6 remains a conjecture

@@ -1,0 +1,74 @@
+\section{Integral distribution, reflection and modular specialization}
+\label{ir:sec:scope}
+The character basis above gives efficient coordinates over a splitting
+field. To settle the integral question, retain the original grid symbols:
+Fourier transport is exact over its cyclotomic coefficient field, but
+inverse transforms introduce group-order denominators and need not be
+unimodular over integral rings. The following division-free construction
+proves an all-ring basis before imposing reflection. The resulting
+reflection quotients can have two-torsion even though the unreflected
+module is free. This develops the two overlapping integral continuations
+through a single proof chain: point basis, resolution, fixed-point
+homology, scalar torsion, jets and analytic identities.
+
+The ordinary distribution and its sign cohomology are classical
+\cite{dist:Kubert,intdist:KubertSign}; Ouyang's universal norm distribution
+and Anderson-type resolution supply broader antecedents
+\cite{dist:Ouyang}. We give the complete proofs for the specified weighted
+presentation. Neither formal freeness nor a formal torsion calculation
+asserts independence of evaluated periods.
+\newcommand{\intdistL}[2]{\mathcal L_{#1}(#2)}
+\newcommand{\intdistJ}[2]{\mathcal L^{[#1]}(#2)}
+
+For a positive integer $q$, let
+\[
+ X_q=(q^{-1}\Z)/\Z,\qquad P(q)=\{p:p\text{ is prime and }p\mid q\},
+ \qquad R_q=\Z[A_p:p\in P(q)].
+\]
+We write $\operatorname{den}(x)$ for the exact order of $x$ in $\Q/\Z$, and set
+$\operatorname{den}(0)=1$. A symbol $e_x$ is not itself a special value. It is a generator
+in a free module. Under polylogarithm evaluation, $e_0$ will become
+$\Li_s(1)=\zeta(s)$. Under Hurwitz evaluation, it becomes
+$\zeta(s,1)$, not the undefined expression $\zeta(s,0)$.
+
+For $d\mid q$, put $A_d=\prod_{p\mid d}A_p^{v_p(d)}$.
+Weights on composite divisors are thus multiplicative; an unrelated
+variable for every divisor would define a different module. The universal
+module and its relation submodule are
+\begin{align}
+ V_q&=\bigoplus_{x\in X_q}R_qe_x,\\
+ r_{p,x}&=\sum_{\substack{y\in X_q\\py=x}}e_y-A_pe_x
+       \qquad(p\mid q,\ x\in X_{q/p}),\label{ir:eq:prime-row}\\
+ \mathcal R_q&=\langle r_{p,x}\rangle_{R_q},\qquad
+ \mathcal D_q=V_q/\mathcal R_q.\label{ir:eq:module}
+\end{align}
+Every sum in \eqref{ir:eq:prime-row} has exactly $p$ terms. For a
+commutative ring $S$ and weights $a_p\in S$, write $\mathcal D_q(S,a)$ for the
+same presentation after $A_p\mapsto a_p$.
+
+\begin{lemma}[Prime rows suffice]\label{ir:lem:divisor}
+The relation $r_{d,x}=\sum_{dy=x}e_y-A_de_x$, for $d\mid q$ and
+$x\in X_{q/d}$, follows from the prime rows without division.
+\end{lemma}
+\begin{proof}
+For $ab\mid q$ and $x\in X_{q/(ab)}$, direct expansion gives
+\[
+ r_{ab,x}=\sum_{ay=x}r_{b,y}+A_b r_{a,x}.
+\]
+Here all $y$ belong to $X_{q/b}$, so every displayed prime or divisor
+row is legitimate. The intermediate symbols cancel. Induction on the
+number of prime factors of $d$, counted with multiplicity, proves the
+claim.
+\end{proof}
+
+This elementary observation already prevents a common ambiguity:
+``distribution rank'' is meaningful only after the row vocabulary,
+endpoint convention, coefficient ring, and divisor-weight convention
+have all been fixed.
+\input{chapters/08-integral-02-integral}
+\input{chapters/08-integral-03-resolution}
+\input{chapters/08-integral-04-reflection}
+\input{chapters/08-integral-05-modular-jets}
+\input{chapters/08-integral-jets}
+\input{chapters/08-integral-multivariable}
+\input{chapters/08-integral-06-identities}
