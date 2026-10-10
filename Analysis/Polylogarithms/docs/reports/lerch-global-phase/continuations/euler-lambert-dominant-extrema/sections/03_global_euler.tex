@@ -1,0 +1,605 @@
+\section{Global optimization of the real-order Euler remainder}
+\label{eul:sec:global}
+The matching upper asymptotic was explicitly left open as Conjecture
+\texttt{conj:euler-rate} in the incoming uniform-bounds report
+\cite{UniformBoundsIncoming}. Its axis lower bound already identified
+the candidate exponent and leading amplitude. The additional ingredients
+here are global localization over both orders, a positive loss that
+forces the outer order to the boundary, and uniform derivative control
+for the inner-order optimization. The region $a\geq1$ is excluded by
+\cref{lem:outer-order-one}, whose direct proof was given above.
+
+\subsection{Statement}
+Put
+\[
+ d=\log(3/2),\qquad p=\frac{\log2}{d},\qquad
+ q=\frac{\log3}{\log2},\qquad
+ c=(1-q^{-1})q^{-p},\qquad
+ \delta=\frac{\log(10/9)}d>0,
+\]
+and
+\[
+ \widehat b_N=\frac{\log(Nq)}d.
+\]
+Thus $p=1.7095112913514547\ldots$,
+$c=0.1679477965425128\ldots$, and
+$\delta=0.2598510045646633\ldots$.
+For independent gamma variables of rate one, with shape zero interpreted
+as the point mass at zero, define
+\[
+ W_N(z)=\frac{(1-z)^N}{1+z},\qquad
+ F_N(t)=W_N(e^{-2t}),\qquad
+ J_N(a)=\E F_N(T_a).
+\]
+The existing all-order Euler formula is
+\begin{equation}\label{eul:eq:R}
+ R_N(a,b)=\E\frac{F_N(T_a+U_b)-F_N(T_a)}{1-e^{-U_b}},
+ \qquad a\geq0,\quad b>0.
+\end{equation}
+In particular $J_N(0)=F_N(0)=0$.
+
+\begin{theorem}[Eventual exact axis reduction]\label{eul:thm:main}
+There is an integer $N_0$ such that for every $N\geq N_0$,
+\begin{equation}\label{eul:eq:axisexact}
+ C_N:=\sup_{a,b>0}R_N(a,b)
+   =\max_{b>0}R_N(0,b).
+\end{equation}
+The maximum on the right is attained at exactly one $b_N$, and
+\begin{align}
+ b_N&=\widehat b_N+O(N^{-\delta}),\label{eul:eq:bn}\\
+ C_N&=1+cN^{-p}+O(N^{-p-\delta}).\label{eul:eq:cn}
+\end{align}
+For $N\geq N_0$ the supremum on the positive quadrant is not attained;
+on the domain $a\geq0,b>0$ its unique maximizer is $(0,b_N)$.
+Moreover $C_{N+1}<C_N$ for every sufficiently large $N$.
+\end{theorem}
+
+\begin{theorem}[Scale of near maximizers]\label{eul:thm:near}
+If $a_N,b_N'>0$ and
+\[
+ C_N-R_N(a_N,b_N')=o(N^{-p}),
+\]
+then
+\[
+ b_N'-\widehat b_N\longrightarrow0,
+ \qquad
+ a_N=o\!\left(N^{-(p-1/2)}\log N\right).
+\]
+The same assertion holds with $a_N=0$ allowed.  This accuracy requirement
+is essential: the incoming moving-order phase law already gives many
+sequences with $R_N\to1$ and $a_N$ increasing to infinity.
+\end{theorem}
+
+\subsection{Elementary bounds and a gamma expansion}
+The function $F_N$ increases from zero to one.  Direct differentiation
+gives $0\leq F_N'\leq4$, uniformly in $N$, and $F_N'$ tends uniformly
+to zero on every fixed bounded interval.  These facts also follow from
+\[
+ F_N'(t)=\frac{2z(1-z)^{N-1}\{N+1+(N-1)z\}}{(1+z)^2},
+ \qquad z=e^{-2t}.
+\]
+For $N\geq2$ use $Nz(1-z)^{N-1}\leq1$; for $N=1$ the bound is
+immediate.
+
+For $b>1$ expand $(1-e^{-U_b})^{-1}$ positively.  Exponential tilting
+changes $U_b$ to a gamma variable $U_b^{(m)}$ of rate $m$, with total
+weight $m^{-b}$.  Consequently
+\begin{equation}\label{eul:eq:seriesR}
+ R_N(a,b)=\sum_{m\geq1}m^{-b}
+  \{\E F_N(T_a+U_b^{(m)})-J_N(a)\}.
+\end{equation}
+Every term in braces lies in $[0,1]$, and the term $m=1$ is
+$J_N(a+b)-J_N(a)$.  Therefore
+\begin{equation}\label{eul:eq:rough}
+ R_N(a,b)\leq\zeta(b),\qquad
+ R_N(a,b)\leq J_N(a+b)-J_N(a)+\zeta(b)-1.
+\end{equation}
+For $b\geq2$ the elementary integral estimate gives
+\begin{equation}\label{eul:eq:zetabound}
+ \zeta(b)-1\leq2^{-b}\left(1+\frac2{b-1}\right)\leq3\,2^{-b}.
+\end{equation}
+We will use the sharper factor $2$ once $b\to\infty$.
+
+The function $W_N$ is convex and
+\begin{equation}\label{eul:eq:etaylor}
+ W_N(z)=1-(N+1)z+e_N(z),\qquad
+ 0\leq e_N(z)\leq B_Nz^2,
+ \quad B_N=\frac{N^2+N+2}{2}.
+\end{equation}
+Furthermore $e_N$ is nondecreasing on $[0,1]$.
+For completeness, $W_N'(0)=-(N+1)$ and
+$0\leq W_N''(z)\leq W_N''(0)=N^2+N+2$.
+For $N\geq2$ the latter follows by differentiating
+$(1-z)^N/(1+z)$ twice and bounding each positive term at zero;
+for $N=1$ use $H_1(z)=2/(1+z)-1$.
+Convexity gives $W_N'(z)\geq W_N'(0)$, proving $e_N'\geq0$.
+
+Write $S_j(b)=\sum_{m\geq j+1}m^{-b}$.  Substitution of
+\eqref{eul:eq:etaylor} in \eqref{eul:eq:R}, with $x=e^{-T_a}$ and
+$v=e^{-U_b}$, gives the exact identity
+\begin{equation}\label{eul:eq:exactexpansion}
+ R_N(a,b)=\zeta(b)(1-J_N(a))
+ -(N+1)3^{-a}S_2(b)+\eta_N(a,b),
+\end{equation}
+where
+\begin{equation}\label{eul:eq:eta}
+ \eta_N(a,b)=\E\frac{e_N(x^2v^2)}{1-v},\qquad
+ 0\leq\eta_N(a,b)\leq B_N5^{-a}S_4(b).
+\end{equation}
+This is valid for $b>1$.  Gamma addition couples $T_{a_2}\geq T_{a_1}$
+when $a_2>a_1$.  Since $e_N$ is nondecreasing, it also proves the
+important exact monotonicity
+\begin{equation}\label{eul:eq:etamonotone}
+ a\longmapsto\eta_N(a,b)\quad\hbox{is nonincreasing}.
+\end{equation}
+
+\subsection{Uniform localization of every competitive pair}
+Call a pair competitive if
+\begin{equation}\label{eul:eq:competitive}
+ R_N(a,b)\geq1+\frac c2N^{-p}.
+\end{equation}
+The axis lower asymptotic already proved in the incoming report implies
+that competitive pairs exist for all sufficiently large $N$, including
+positive $a$ by continuity at $a=0$.
+By \cref{lem:outer-order-one}, every competitive pair has $0\leq a<1$.
+Set $\ell=\log N$ and $L=\ell/2$.
+
+\begin{lemma}[A fixed logarithmic band]\label{eul:lem:band}
+There are fixed constants $M_-,M_+>0$ such that for all sufficiently
+large $N$, every competitive pair satisfies
+\[
+ 0\leq a<1,\qquad
+ \widehat b_N-M_-\leq b\leq\widehat b_N+M_+.
+\]
+One may take $M_-=10$ and $M_+=5$ after increasing the unspecified
+threshold in $N$.
+\end{lemma}
+\begin{proof}
+We first prove that $R_N(a,b)<1$ whenever $0\leq a\leq1$ and
+$b\leq\widehat b_N-10$, for all sufficiently large $N$.
+
+\paragraph{Bounded inner orders, $0<b\leq2$.}
+Gamma addition permits a coupling with $T_a\leq T_1$ and
+$U_b\leq U_2$, independently.  The mean-value formula and
+$u/(1-e^{-u})\leq1+u$ imply
+\[
+ \frac{F_N(T_a+U_b)-F_N(T_a)}{1-e^{-U_b}}
+ \leq(1+U_2)\sup_{0\leq t\leq T_1+U_2}F_N'(t).
+\]
+The right side is independent of the smaller shapes, bounded by the
+integrable variable $4(1+U_2)$, and tends to zero almost surely.
+Dominated convergence proves uniform convergence $R_N\to0$ on this
+rectangle.
+
+\paragraph{Small growing orders, $2\leq b\leq\ell/4$.}
+The second inequality of \eqref{eul:eq:rough}, stochastic monotonicity of
+$J_N$, and $\zeta(2)-1\leq3/4$ give
+\[
+ R_N(a,b)\leq J_N(1+\ell/4)+3/4.
+\]
+The first term tends to zero.  Indeed a gamma variable of shape
+$1+\ell/4$ divided by $\ell$ tends to $1/4$ in probability, by its
+mean and variance; on $t\leq3\ell/8$,
+$F_N(t)\leq\exp(-N^{1/4})$, and the probability of the complement
+tends to zero.  Hence this whole range eventually has $R_N<1$.
+
+\paragraph{Intermediate growing orders, $\ell/4\leq b\leq2\ell$.}
+Put $s=a+b=\alpha\ell$.  For large $N$,
+$1/4\leq\alpha\leq2+1/\ell$.  For $t\in[L,L+1]$,
+\[
+ 1-F_N(t)\geq d_0:=1-\exp(-e^{-2})>0.
+\]
+Since $s\geq1$, the gamma density on that interval gives
+\begin{equation}\label{eul:eq:tailwindow}
+ 1-J_N(s)\geq
+ d_0e^{-1}N^{-1/2}\frac{L^{s-1}}{\Gamma(s)}.
+\end{equation}
+The real Stirling bound $\Gamma(s)\leq A s^{s-1/2}e^{-s}$ for
+$s\geq1$, with any fixed valid constant $A$, yields uniformly
+\[
+ 1-J_N(s)\geq A_1\ell^{-1/2}\exp\{-\ell I(\alpha)\},
+ \qquad I(\alpha)=\tfrac12-\alpha+\alpha\log(2\alpha).
+\]
+Comparison with $2^{-b}=2^a\exp(-\alpha\ell\log2)$ shows
+\[
+ \frac{1-J_N(a+b)}{2^{-b}}
+ \geq A_2\ell^{-1/2}\exp\{\ell Q(\alpha)\},
+ \qquad Q(\alpha)=\alpha-\tfrac12-\alpha\log\alpha.
+\]
+This tends uniformly to infinity.  To check uniformity explicitly,
+$Q$ is concave and positive at both endpoints of $[1/4,2]$:
+\[
+ Q(1/4)=(\log4-1)/4>0,\qquad Q(2)=3/2-2\log2>0.
+\]
+By continuity and concavity, its minimum on
+$[1/4,2+1/\ell]$ is bounded below by a fixed positive number for all
+large $\ell$.  For example $Q\geq1/40$ on $[1/4,21/10]$;
+the last upper endpoint contains the required interval when $\ell\geq10$.
+Thus \eqref{eul:eq:zetabound} gives
+$1-J_N(a+b)>\zeta(b)-1$ uniformly in this range.  Equation
+\eqref{eul:eq:rough} now proves $R_N(a,b)<1$.
+
+\paragraph{Upper logarithmic range, $2\ell\leq b\leq\widehat b_N-10$.}
+Average \eqref{eul:eq:etaylor} with a gamma shape $s=a+b$ to obtain
+\[
+ 1-J_N(s)\geq(N+1)3^{-s}-B_N5^{-s}.
+\]
+For $s\geq2\ell$, the ratio of the second term to the first is at most
+\[
+ \frac{B_N}{N+1}(3/5)^{2\ell}
+   =O\!\left(N^{1-2\log(5/3)}\right)=o(1),
+\]
+since $2\log(5/3)>1$.  With $0\leq a\leq1$ this gives, for large $N$,
+\[
+ 1-J_N(a+b)\geq\frac N4\,3^{-b}.
+\]
+On the other hand $\zeta(b)-1\leq2\,2^{-b}$ here.  At
+$b\leq\widehat b_N-10$,
+\[
+ \frac{(N/4)3^{-b}}{2^{-b}}
+ \geq\frac{(3/2)^{10}}{4q}>2.
+\]
+Thus the gamma loss again exceeds $\zeta(b)-1$, and
+\eqref{eul:eq:rough} proves $R_N<1$.
+
+These four ranges cover every $b\leq\widehat b_N-10$ for all large
+$N$, because $1/d>2$.  They prove the lower edge of the band.
+For a competitive pair, the first inequality of \eqref{eul:eq:rough} and
+$\zeta(b)-1\leq2\,2^{-b}$ imply
+\[
+ \frac c2N^{-p}\leq2\,2^{-b}.
+\]
+Using $2^{-\widehat b_N}=q^{-p}N^{-p}$, this gives
+\[
+ b-\widehat b_N\leq\log_2\frac4{1-q^{-1}}<5.
+\]
+This proves the upper edge and completes the proof.
+\end{proof}
+
+\subsection{A positive loss that forces the boundary maximum}
+\begin{lemma}[Uniform lower bound for the outer-order loss]\label{eul:lem:slope}
+There is a fixed $D>0$ such that, for all sufficiently large $N$,
+\[
+ J_N(a)\geq D a\frac{N^{-1/2}}{\log N}
+ \qquad(0\leq a\leq1).
+\]
+\end{lemma}
+\begin{proof}
+The assertion is immediate at $a=0$.  For $0<a\leq1$, integrate the
+positive gamma representation over $t\in[L+1,L+2]$.
+On this interval, Bernoulli's inequality gives
+\[
+ F_N(t)\geq F_N(L+1)\geq h_0:=\frac{1-e^{-2}}2>0.
+\]
+Log-convexity of $\Gamma$ and $\Gamma(1)=\Gamma(2)=1$ imply
+$\Gamma(a+1)\leq1$, so $1/\Gamma(a)=a/\Gamma(a+1)\geq a$.
+For large $N$, also $t^{a-1}\geq1/t\geq1/(L+2)$ on the interval,
+and $e^{-t}\geq e^{-2}N^{-1/2}$.  Therefore
+\[
+ J_N(a)\geq h_0e^{-2}\frac{aN^{-1/2}}{L+2},
+\]
+which proves the claimed uniform bound.
+\end{proof}
+
+\begin{proposition}[Strict comparison with the axis]\label{eul:prop:decrease}
+For all sufficiently large $N$ and every
+$b\in[\widehat b_N-10,\widehat b_N+5]$,
+\begin{equation}\label{eul:eq:gap-a}
+ R_N(0,b)-R_N(a,b)
+ \geq d_{\mathrm{loss}} a\frac{N^{-1/2}}{\log N}
+ \quad(0\leq a\leq1),
+\end{equation}
+for a fixed constant $d_{\mathrm{loss}}>0$.
+\end{proposition}
+\begin{proof}
+Subtract \eqref{eul:eq:exactexpansion} at $a$ and at zero, and use
+\eqref{eul:eq:etamonotone}, Lemma~\ref{eul:lem:slope}, $\zeta(b)\geq1$, and
+$1-3^{-a}\leq a\log3$.  This gives
+\[
+ R_N(a,b)-R_N(0,b)
+ \leq a\left\{
+ -D\frac{N^{-1/2}}{\log N}+(N+1)(\log3)S_2(b)\right\}.
+\]
+Uniformly in the stated band,
+$S_2(b)=O(3^{-b})$ and $N3^{-b}=O(N^{-p})$.
+Since $p>1/2$, the positive term is smaller than half the negative
+one for all sufficiently large $N$.  Take $d_{\mathrm{loss}}=D/2$.
+\end{proof}
+
+\subsection{Axis optimization with controlled derivatives}
+On the axis, the exact kernel is
+\[
+ R_N(0,b)=\E k_N(e^{-U_b}),\qquad
+ k_N(v)=\frac{(1+v)(1-v^2)^{N-1}}{1+v^2}.
+\]
+For every fixed $N\geq2$ this is continuous in $b>0$, tends to zero
+as $b\downarrow0$, and tends to one as $b\to\infty$.
+The last limit follows from bounded convergence under gamma addition,
+or directly from the moment expansion below.  That expansion also
+shows $R_N(0,b)>1$ for sufficiently large $b$, with $N$ fixed.
+Thus its global maximum is attained at a finite positive $b$.
+
+\begin{proposition}[Unique nondegenerate axis maximum at every index]
+\label{eul:prop:axisunique}
+For every integer $N\geq1$, $b\mapsto R_N(0,b)$ has exactly one
+stationary point.  It is a nondegenerate global maximum, of height
+strictly greater than one.
+\end{proposition}
+\begin{proof}
+For $N\geq2$, the sign of $k_N'(v)$ is that of
+\[
+ h_N(v)=1-(2N+1)v+v^2+(3-2N)v^3.
+\]
+Its derivative is strictly negative on $[0,1]$, while
+$h_N(0)=1$ and $h_N(1)=4-4N<0$.
+Thus $\widetilde k_N(t)=k_N(e^{-t})$ increases from zero to a unique maximum
+greater than one, then decreases to one.  For $N=1$ the same shape
+statement holds with value one at both endpoints; use
+$k_1'(v)=(1-2v-v^2)/(1+v^2)^2$.
+
+Fix $b$ and write $M=\E \widetilde k_N(U_b)=R_N(0,b)$.
+Differentiation under the gamma integral gives
+\[
+ R_N'(0,b)=\E\{(\widetilde k_N(U_b)-M)\log U_b\},
+\]
+where the notation here means the derivative in $b$ of the axis
+function.  If $M\leq1$, then $\widetilde k_N(t)-M$ has exactly one finite sign
+change, from negative to positive, at a point $t_0$.
+Subtracting $\log t_0$ in this expectation makes its integrand
+strictly positive except at the crossing, so the derivative is
+positive.  For $N=1$, $M>1$ automatically.
+
+At any stationary point we therefore have $M>1$.  The function
+$\widetilde k_N(t)-M$ then has exactly two crossings $t_1<t_2$, with signs
+negative, positive, negative.  Both its gamma average and its
+logarithmic first moment vanish at the stationary point.  A second
+differentiation consequently gives
+\begin{align*}
+ \frac{d^2}{db^2}R_N(0,b)
+ &=\E\{(\widetilde k_N(U_b)-M)(\log U_b)^2\}\\
+ &=\E\{(\widetilde k_N(U_b)-M)(\log U_b-\log t_1)
+                          (\log U_b-\log t_2)\}<0.
+\end{align*}
+The last integrand is strictly negative away from the crossings.
+All differentiations are justified by boundedness of $\widetilde k_N$ and the
+finite logarithmic moments of gamma laws locally in $b>0$.
+
+The endpoint limits and a value above one guarantee at least one
+interior maximum.  Every stationary point has negative second
+derivative, so there cannot be two: between two strict maxima there
+would be a stationary minimum (or the derivative would have to
+cross from negative to positive).  This proves the assertion.
+\end{proof}
+
+The incoming Taylor identity, restated to track its derivatives, is
+\begin{equation}\label{eul:eq:axisexp}
+ R_N(0,b)=1+2^{-b}-N3^{-b}-N4^{-b}+\varepsilon_N(b),
+\end{equation}
+where
+\begin{equation}\label{eul:eq:axisrem}
+ 0\leq\varepsilon_N(b)\leq
+ A_N(5^{-b}+6^{-b}),\qquad A_N=(N^2-N+2)/2.
+\end{equation}
+Indeed, for $G_N(z)=(1-z)^{N-1}/(1+z)$,
+$G_N(z)=1-Nz+r_N(z)$ with
+$0\leq r_N(z)\leq A_Nz^2$; multiply by $1+v$, set $z=v^2$, and
+integrate the gamma moments.
+
+For $k=0,1,2$, the remainder has the derivative bound
+\begin{equation}\label{eul:eq:derivative-bound}
+ |\varepsilon_N^{(k)}(b)|\leq A_k N^2\,5^{-b}
+ \qquad(b\geq1),
+\end{equation}
+with constants $A_k$ independent of $N,b$.
+To see this without differentiating an inequality, write the exact
+nonnegative remainder as
+\[
+ \varepsilon_N(b)=\frac1{\Gamma(b)}\int_0^\infty
+ t^{b-1}e^{-t}w_N(t)\dd t,
+ \quad 0\leq w_N(t)\leq A_N(e^{-4t}+e^{-5t}).
+\]
+The first two derivatives of the gamma density multiply it by
+\[
+ \log t-\psi(b),\qquad
+ (\log t-\psi(b))^2-\psi_1(b).
+\]
+After exponential tilting to rate $m\in\{5,6\}$, the score has
+mean $-\log m$ and variance $\psi_1(b)\leq\psi_1(1)=\pi^2/6$.
+Cauchy--Schwarz therefore bounds the absolute first score moment by
+$\log m+\pi/\sqrt6$, and the absolute second derivative factor by
+$(\log m)^2+\pi^2/3$.  These bounds prove
+\eqref{eul:eq:derivative-bound}.  Differentiation is justified by the same
+locally integrable domination.
+
+For bounded real $s$, equations \eqref{eul:eq:axisexp}--\eqref{eul:eq:derivative-bound}
+give, uniformly with two derivatives in $s$,
+\begin{equation}\label{eul:eq:C2profile}
+ N^p\{R_N(0,\widehat b_N+s)-1\}
+   =f(s)+O(N^{-\delta}),
+\end{equation}
+where
+\[
+ f(s)=q^{-p}2^{-s}-q^{-(p+1)}3^{-s}.
+\]
+For the error exponents, $N4^{-\widehat b_N}=O(N^{-p-(p-1)})$
+and $N^25^{-\widehat b_N}=O(N^{-p-\delta})$,
+with $p-1>\delta>0$.  The same statements hold after up to two
+derivatives.
+
+The function $f$ has its unique global maximum at $s=0$:
+\[
+ f(0)=c,\qquad f'(0)=0,\qquad
+ f''(0)=-(\log2)\,d\,q^{-p}<0.
+\]
+Its derivative has exactly one zero because its two exponential terms
+have distinct rates.
+
+\subsection{Completion of the proofs}
+\begin{proof}[Proof of Theorem~\ref{eul:thm:main}]
+The axis value at $\widehat b_N$ is
+$1+cN^{-p}+O(N^{-p-\delta})$, so its maximum exceeds
+$1+(c/2)N^{-p}$ for all sufficiently large $N$.
+Every pair that could exceed this axis maximum is therefore competitive.
+Lemma~\ref{eul:lem:band} places it in $0\leq a<1$ and the fixed
+logarithmic band.  Proposition~\ref{eul:prop:decrease} gives
+$R_N(a,b)\leq R_N(0,b)$ there, strictly for $a>0$.
+Pairs outside that competitive class cannot be maximizers.  This proves
+the exact global reduction \eqref{eul:eq:axisexact}; continuity at $a=0$
+shows that the same value is the supremum over $a,b>0$.
+
+Every axis maximizer also lies in the band of Lemma~\ref{eul:lem:band}.
+Uniform convergence in \eqref{eul:eq:C2profile}, compactness of the band,
+and the unique maximum of $f$ force every maximizing offset
+$b-\widehat b_N$ to tend to zero.  In a fixed small neighborhood of
+zero, $f''$ is bounded above by a strictly negative constant.  The
+uniform second derivative version of \eqref{eul:eq:C2profile} makes the
+axis function strictly concave there for all large $N$.
+Since all of its global maxima lie there, its global maximum is unique.
+Denote it by $b_N$.
+Its first derivative vanishes, so
+$f'(b_N-\widehat b_N)=O(N^{-\delta})$.
+The nonzero value of $f''(0)$ and the mean-value theorem imply
+\eqref{eul:eq:bn}.  Equation \eqref{eul:eq:C2profile} then gives
+\eqref{eul:eq:cn}.
+
+The strict axis comparison proves nonattainment in the positive quadrant
+and uniqueness on the closed axis domain.  Finally, for each finite
+$b>0$, $k_{N+1}(v)=(1-v^2)k_N(v)<k_N(v)$ on $(0,1)$.
+At the finite maximizer of the $(N+1)$st axis problem,
+\[
+ C_{N+1}=R_{N+1}(0,b_{N+1})
+  <R_N(0,b_{N+1})\leq C_N.
+\]
+This applies whenever both adjacent indices have the axis reduction.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{eul:thm:near}]
+The assumed accuracy makes the pair competitive for all large $N$.
+It therefore lies in the fixed band and $0\leq a_N<1$.
+By \eqref{eul:eq:gap-a},
+\[
+ C_N-R_N(a_N,b_N')
+ \geq R_N(0,b_N')-R_N(a_N,b_N')
+ \geq d_{\mathrm{loss}}a_N\frac{N^{-1/2}}{\log N}.
+\]
+This yields the stated little-oh estimate on $a_N$.
+Moreover
+$0\leq C_N-R_N(0,b_N')\leq C_N-R_N(a_N,b_N')=o(N^{-p})$.
+The compact profile convergence \eqref{eul:eq:C2profile} and the strict
+maximum of $f$ now imply $b_N'-\widehat b_N\to0$.
+\end{proof}
+
+\begin{remark}[What is and is not effective]
+The exponent, amplitude, center, and power error rate are explicit.
+The proof establishes an eventual axis theorem but does not supply a
+practical numerical value of $N_0$: the range
+$s\geq2\log N$ uses the slowly decreasing factor
+$N^{1-2\log(5/3)}$.  One could change the splitting point from $2$
+to a number between $2$ and the positive root of
+$\alpha-1/2-\alpha\log\alpha=0$ to improve that technical convergence.
+No statement that the axis reduction holds for \emph{every} index is
+proved here.  That finite-index conjecture remains a separate target.
+\end{remark}
+
+\begin{remark}[Small outer orders and the mechanism]
+The incoming lower asymptotic alone suggested axis extremizers.
+The missing mechanism is the loss $J_N(a)$: it is at least a constant
+times $aN^{-1/2}/\log N$, whereas the possible gain from moving the
+coefficient $3^{-a}$ is only $O(aN^{-p})$.
+Since $p>1/2$, every positive outer order gives a smaller error than the axis in the
+only inner-order band that can compete with the axis.
+The positivity and monotonicity of the exact Taylor remainder are
+what make this comparison rigorous without differentiating a big-oh term.
+\end{remark}
+
+\subsection{The sharp joint profile at the outer-order boundary}
+
+The necessary scale in Theorem~\ref{eul:thm:near} has a matching
+sufficiency statement and an explicit limiting loss. Define
+\[
+ s_N^{\mathrm{out}}=N^{-(p-1/2)}\log N,
+ \qquad f(s)=q^{-p}2^{-s}-q^{-(p+1)}3^{-s}.
+\]
+
+\begin{theorem}[Joint boundary profile and a complete near-optimality criterion]
+\label{eul:thm:joint-profile}
+Uniformly for $(\xi,s)$ in any compact subset of
+$[0,\infty)\times\mathbb R$,
+\begin{equation}\label{eul:eq:joint-profile}
+ N^p\left(R_N(\xi s_N^{\mathrm{out}},\widehat b_N+s)-1\right)
+       \longrightarrow f(s)-\sqrt\pi\,\xi.
+\end{equation}
+For any sequences $a_N\geq0$, $b_N'>0$,
+\begin{equation}\label{eul:eq:near-iff}
+ C_N-R_N(a_N,b_N')=o(N^{-p})
+ \quad\Longleftrightarrow\quad
+ \begin{cases}
+ b_N'-\widehat b_N\longrightarrow0,\\
+ a_N=o\bigl(s_N^{\mathrm{out}}\bigr).
+ \end{cases}
+\end{equation}
+\end{theorem}
+\begin{proof}
+It remains to compute the outer-order loss more sharply. Put
+$L=\tfrac12\log N$. For every fixed $M>0$, uniformly for
+$0<a\leq M s_N^{\mathrm{out}}$,
+\begin{equation}\label{eul:eq:sharp-J-small-a}
+ J_N(a)=\sqrt\pi\,a\frac{N^{-1/2}}{\log N}\{1+o(1)\}.
+\end{equation}
+To verify it, first restrict its defining gamma integral to $t\geq L/2$
+and set $t=L+y$. After extracting $N^{-1/2}L^{a-1}/\Gamma(a)$,
+the remaining integral is
+\[
+ \int_{-L/2}^{\infty}(1+y/L)^{a-1}e^{-y}
+       W_N(N^{-1}e^{-2y})\,dy.
+\]
+For all large $N$, $a\leq1/2$. The power factor is at most two
+when $-L/2\leq y\leq0$ and at most one for $y\geq0$.
+Also $W_N(z)\leq e^{-Nz}$ for $0\leq z\leq1$.
+An integrable common majorant is therefore
+$2e^{-y}\exp(-e^{-2y})$ on the whole real line.
+The integrand converges, uniformly in the stated small-$a$ range
+on each compact interval, to $e^{-y}\exp(-e^{-2y})$.
+Its integral is
+\[
+ \int_{-\infty}^{\infty}e^{-y}e^{-e^{-2y}}\,dy
+       =\frac12\Gamma(1/2)=\frac{\sqrt\pi}{2}.
+\]
+
+The omitted interval is uniformly negligible, including as $a\downarrow0$.
+For $0<t\leq1/2$,
+\[
+ W_N(e^{-2t})\leq(2t)^{N/2}e^{-N/(2e)};
+\]
+this follows by bounding one half of $(1-e^{-2t})^N$ by $(2t)^{N/2}$
+and the other by $e^{-(N/2)e^{-2t}}$.
+Its integral against $t^{a-1}e^{-t}$ is at most
+$2^{-a}e^{-N/(2e)}/(a+N/2)$.
+For $1/2\leq t\leq L/2$, use
+$W_N(e^{-2t})\leq e^{-\sqrt N}$ and $t^{a-1}\leq2$,
+giving at most $L e^{-\sqrt N}$.
+Both bounds are negligible relative to $N^{-1/2}L^{a-1}$.
+Finally $\Gamma(a)^{-1}/a\to1$ and
+$L^a\to1$ uniformly in the indicated range, because
+$s_N^{\mathrm{out}}\log L\to0$. This proves
+\eqref{eul:eq:sharp-J-small-a}; at $a=0$ both sides vanish.
+
+Subtract the exact expansion \eqref{eul:eq:exactexpansion} at $a=0$
+from that at $a=\xi s_N^{\mathrm{out}}$ and
+$b=\widehat b_N+s$. The difference is
+\[
+ -\zeta(b)J_N(a)
+ +(N+1)(1-3^{-a})S_2(b)+\eta_N(a,b)-\eta_N(0,b).
+\]
+On a compact $s$ interval, $\zeta(b)=1+o(1)$,
+$NS_2(b)=O(N^{-p})$, and
+$0\leq\eta_N(a,b)\leq\eta_N(0,b)=O(N^{-p-\delta})$.
+The last two displayed terms are consequently $o(N^{-p})$
+uniformly for bounded $\xi$. Equation \eqref{eul:eq:sharp-J-small-a}
+and the axis profile \eqref{eul:eq:C2profile} prove
+\eqref{eul:eq:joint-profile}.
+The forward implication of \eqref{eul:eq:near-iff} is
+Theorem~\ref{eul:thm:near}. For the reverse implication, use
+\eqref{eul:eq:joint-profile} with $\xi\to0$, $s\to0$,
+$f(0)=c$, and the already proved expansion of $C_N$.
+\end{proof}

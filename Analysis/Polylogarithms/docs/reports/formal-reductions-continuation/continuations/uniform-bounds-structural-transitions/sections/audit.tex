@@ -1,0 +1,264 @@
+\section{Audit, corrections, and verification}
+\label{sec:audit}
+
+The source audit was performed against the exact commit specified on
+the title page. It was selective and mathematical: we checked the
+definitions and proof dependencies needed for the four continuations,
+then compared the conclusions with the manuscript's explicit open
+questions. This is not an assertion that every formula in the entire
+repository has been independently re-proved.
+
+\subsection{A wording correction concerning non-elementarity}
+
+The paragraph preceding Equation~\texttt{vertical:eq:Im3} in
+\src{chapters/03-algebraic.tex} describes the imaginary part of
+$\Li_3(1+i)$ as \emph{no longer elementary at all}. The displayed
+hypergeometric representation does not establish that assertion.
+An exact expression in terms of a central-binomial tower constant
+is an evaluation in a specified language. It is not a proof that
+the value cannot belong to some smaller algebra of constants.
+Indeed, without specifying the meaning of elementary for a
+number, the assertion has no definite mathematical test.
+
+\begin{samepage}
+A precise replacement is:
+\begin{quote}
+The imaginary part at $1+i$ is represented here by the
+central-binomial Gaussian tower constant:
+\end{quote}
+\end{samepage}
+followed by the existing, unchanged equation, and then:
+\begin{quote}
+This representation does not establish non-reducibility to a
+specified smaller algebra of constants.
+\end{quote}
+The preceding claim that the general real part \emph{does not close}
+should similarly be scoped to the computation being described.
+One can say that differentiating and integrating the displayed
+formula introduces an inverse-tangent-square integral, and that
+no general reduction of that integral is supplied there.
+This is a correction to the strength of the prose; the displayed
+special-value formulas are not contradicted by this audit.
+An exact-context patch implementing these two edits is included
+in \src{integration/non_elementarity_wording.patch}.
+
+\subsection{Statements that should be updated after integration}
+
+\paragraph{Uniform Euler error.}
+The warning that a bound on $|g_{a,b}|$ is insufficient to control
+$2^N(E_N-g_{a,b})$ was correct. The explicit calculation in
+Section~\ref{sec:euler} shows $R_2(1,1)>R_1(1,1)$.
+Theorem~\ref{thm:Euler-uniform} now supplies the missing uniform
+comparison. The open-status sentences in the subcritical and
+real-order Euler sections should therefore be replaced by a
+reference to the new theorem. The sharper constant $1$ on the
+restricted domain $a\geq1$ remains useful and should be retained.
+A global budget of $57/50$ is convenient, but it is not the sharp
+bound on every subdomain.
+
+\paragraph{Quartic threshold.}
+The final paragraph of \src{chapters/05-real-turning.tex} correctly
+labels its approximate simultaneous zero as diagnostic. Our exact
+rectangle and derivative certificate promote that particular
+location, its local uniqueness, and its sixth-order behavior to
+theorems. They do not establish uniqueness on all $0<b<1$.
+The current existence proof based on opposite signs of the quartic
+coefficient remains a useful conceptual introduction. It should
+be followed by the new local classification and explicit rational
+two-extremum example, with a separate global open question.
+
+\paragraph{Reflected coefficients and residues.}
+The coefficient $A_{k,m}$ defined by Lagrange inversion and the
+meromorphic residue are related by
+\[
+ \operatorname*{Res}_{z=k}
+ \int_0^1\Gamma(x)^z\log^m\Gamma(1-x)\,dx=-kA_{k,m}.
+\]
+Any compact description of signs should retain this factor.
+The moving-parameter theorems extend the fixed-$m$ estimates;
+they do not justify inserting an arbitrary growing $m$ into a
+fixed-parameter error term. The moment transition governed by
+$n/(m+1)-\log m$ is a different simultaneous limit and should
+remain separately indexed.
+
+\paragraph{Height-one reductions and the literature.}
+The Nielsen-polylogarithm work of Charlton, Gangl, and Radchenko
+is a necessary part of the attribution for
+Section~\ref{gorbit:sec:main}. In particular, the weight-seven
+height-one reduction is an established functional equation.
+Our presentation supplies a directly replayable shuffle
+certificate, an explicit product correction, and a comparison
+with the full binary quotient. The finite-direction formula
+is stated in that full quotient, with its precise relation
+space visible. Even when a formal obstruction is nonzero,
+it must not be described as a proof that a complex number
+cannot reduce.
+
+\paragraph{Unresolved evaluations.}
+The $S_6$ and revised $S_8$ candidates in the existing discovery
+ledger remain conjectural. Neither the new Euler budget, a very
+small residual, nor a formal obstruction to one reduction method
+proves or disproves these special-value identities. This article
+does not alter their evaluation status.
+
+\subsection{The finite arithmetic proofs}
+
+The exact programs use Python integers and
+\src{fractions.Fraction}. No binary floating-point comparison
+decides the sign of an interval in these proofs. The use of
+Python is an implementation choice, not a trust claim about
+all software: the written formulas specify finite statements
+that can be replayed in another exact-arithmetic environment.
+These are computer-assisted arithmetic proofs, not
+proof-assistant formalizations.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.26\textwidth}>{\raggedright\arraybackslash}p{0.40\textwidth}>{\raggedright\arraybackslash}p{0.27\textwidth}@{}}
+\toprule
+Verifier & Exact task & Logical role\\
+\midrule
+\endhead
+\src{verify_euler.py}
+& Thirty-one rational axis enclosures, the rational global
+budget, selected rational-order enclosures, and corrupted
+candidate controls.
+& Proves the finite inequalities used in
+Proposition~\ref{prop:rational-budget}.\\[5pt]
+\src{verify_depth_orbits.py}
+& Exact Lyndon-bracket pairings, word-rank calculations,
+the weight-seven product expansion, and the weight-eight
+annihilator.
+& Finite proof certificates for the explicit identities;
+finite corroboration of the all-weight rank theorem.\\[5pt]
+\src{certify_radial_degeneracy.py}
+& Outward intervals for the simultaneous-zero rectangle,
+the endpoint signs, the Jacobian, and the sixth coefficient.
+& Supplies the finite sign claims needed for the analytic
+existence and unfolding proof.\\[5pt]
+\src{certify_two_extrema.py}
+& Traps the actual implicit zero; bounds the infinite
+series and its mixed derivatives; proves three signs
+and uniform strict concavity.
+& Proves the two-extremum statement for the exact
+rational parameter pair.\\
+\bottomrule
+\end{longtable}
+\addtocounter{table}{-1}
+
+The Euler verifier also checks $6120$ rational kernel instances.
+That grid is a useful regression check; the all-$N$ kernel theorem
+is proved by the probability-mixture argument, not by extrapolation
+from the grid. Its two deliberately false controls are a proposed
+global constant $1$ and the changed finite value
+$E_2(1,1)=-1/7$. The first is rejected by a certified analytic
+enclosure; the second is rejected by exact rational evaluation,
+which gives $-1/8$.
+
+The word-rank checks through weight ten cover $25$ weight-depth
+cases for each of the six-map and full-linear spans, and $34$
+additional finite-direction cases. They are deliberately computed
+from the expanded free-Lie words rather than by reusing the
+dimension formula as the answer. The height-one membership checks
+also test the asserted threshold on individual words. The
+weight-eight obstruction is checked on $222$ transformed seed
+words and $1792$ shuffle products. The weight-seven product
+correction contains $864$ collected monomials; expanding their
+shuffle products reproduces the residual word combination
+exactly.
+
+The first radial certificate uses a $2^{-192}$ outward grid.
+Its logarithms are bounded by an atanh series with an explicit
+geometric remainder, and exponentials by a positive Taylor sum
+and a geometric tail. The second certificate range-reduces
+logarithms before applying the same principle. The programs
+record both the raw rational intervals and the simpler rational
+enclosures printed in the theorems. Very small positive or
+negative quantities are therefore proved to have their asserted
+signs; their size is not inferred from decimal precision alone.
+
+\subsection{Numerical diagnostics and independent review}
+
+The optional numerical programs require \src{mpmath}, and the
+asymptotic symbolic checks additionally use \src{sympy}.
+They serve a different purpose from the exact programs.
+The complete weight-seven functional identity, including
+endpoint constants and products, was checked by direct disk
+series at $z=1/4$ and $z=1/3$ with $80$ working decimal digits.
+The discrepancies were approximately $3.7\cdot10^{-80}$ and
+$2.1\cdot10^{-80}$. The proof comes from the exact word
+identity and the branch argument; these numerical values
+check their implementation.
+
+The proposed sharp rate for $C_N-1$ is accompanied by $210$-digit
+axis calculations and a few positive-$a$ checks. The latter replace
+$g_{a,b}$ by $E_{512}$, with analytic contribution to the scaled
+truncation error at most $(5/4)2^{N-512}$. That proved truncation
+bound is separate from floating-point error. Neither these values
+nor the numerical axis stationary points certify a global maximum.
+
+For the reflected coefficients, the diagnostic data use $180$
+working digits, compare two cases with independent Cauchy
+quadrature, and repeat the six direct scaled-moment integrals
+at $215$ digits. The repeated moment ratios differed by less
+than $1.5\cdot10^{-108}$ in those cases. These are high-precision
+agreements, not rigorous interval error bounds.
+The accompanying tables retain examples outside the visible
+asymptotic regime, including large normalized deviations at
+moderate indices. Suppressing those rows would obscure the
+meaning of a uniform theorem whose constants depend on a
+fixed range parameter.
+
+\begin{table}[tbp]
+\centering
+\small
+\begin{tabular}{@{}rrrll@{}}
+\toprule
+$N$ & $n$ & $m$ & Observed normalized remainder
+& First-correction prediction\\
+\midrule
+24 & 30 & 5  & $0.5127180890556$ & $0.5116978569285$\\
+24 & 30 & 15 & $2.1726463253744$ & $0.5111559565783$\\
+48 & 61 & 7  & $0.5094463157920$ & $0.5091282364092$\\
+48 & 61 & 21 & $0.6787471547306$ & $0.5088627052376$\\
+96 & 121 & 10 & $0.5027543017622$ & $0.5026340767530$\\
+96 & 121 & 29 & $0.5028409944568$ & $0.5025085929532$\\
+\bottomrule
+\end{tabular}
+\caption{Diagnostic values for the left side of
+\eqref{moderate:eq:half}, compared with
+$1/2+(3/2-\delta_\Gamma m^2/N-\eta)/(4N)$.
+All six rows are retained, including the substantial
+preasymptotic deviations at larger $m$ and smaller $N$.
+The observed values are high-precision quadrature
+results, not interval enclosures.}
+\label{tab:half-diagnostics}
+\end{table}
+
+The four main arguments received separate mathematical
+cross-checks during preparation. In particular, the endpoint
+corrections in the Nielsen identity, the coefficient-dual
+normalization in the binary-form calculation, the signed-cut
+normalization in the half-term theorem, and the complete
+implicit-derivative certificate for the explicit radial example
+were checked independently of their initial derivations.
+This record describes the scope of review; it is not a
+substitute for external peer review.
+
+\subsection{Reproduction and integration}
+
+The archive includes a single entry point,
+\src{code/reproduce.py}, which runs the exact verifiers without
+requiring access to the original repository. Optional switches
+replay the numerical diagnostics and regenerate the figures.
+The figures are explanatory numerical plots; their captions
+identify the exact statements that supply proof.
+Run \src{latexmk -pdf article.tex} from the package root to
+rebuild the document using the supplied section and figure files.
+
+The provenance directory records the pinned commit, the
+relative source paths used in the audit, and their SHA-256
+digests. The integration guide maps each section and certificate
+to the appropriate manuscript chapter. It also records the
+small preamble requirements and label prefixes, so that the
+standalone article can be integrated without depending on an
+unstated local macro package. No changes were applied to the
+source repository.

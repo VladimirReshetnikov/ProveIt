@@ -1,0 +1,57 @@
+Primary comparison completed 2026-10-10.
+
+Source: Steven Charlton, Herbert Gangl, Danylo Radchenko,
+On functional equations for Nielsen polylogarithms,
+Communications in Number Theory and Physics 15(2) (2021), 363-454.
+DOI: https://doi.org/10.4310/CNTP.2021.v15.n2.a4
+Checked primary preprint: https://arxiv.org/pdf/1908.04770
+Version: arXiv:1908.04770v1 (13 August 2019), 36 pages.
+All proposition/theorem numbers below refer to that version.
+Author's publication metadata: https://stevencharlton.net/publications/
+
+Convention: our Li_{n+1,1,...,1}(z,1,...,1) is their Nielsen S_{n,p}(z),
+with p-1 trailing ones. Thus T_{w,h} corresponds to S_{w-h,h}.
+
+Precise correspondence:
+1. Lemma 6 and Section 3.3, printed pp. 5-6: the Nielsen quotient is
+   modeled by degree w-2 binary forms tensored with the sign representation.
+   This is our unique j=1 component, not a new height-one representation.
+2. Theorem 7, printed pp. 6-7: basis and uniform Nielsen depth bound
+   floor((w+1)/3)=ceil((w-1)/3). Our individual minimum formula is an
+   explicit fixed-presentation membership consequence of this structure,
+   proved independently by interpolation; do not advertise its analytic
+   upper bound as new. Remark 8 discusses motivic depth lower bounds.
+3. Proposition 28, printed p. 25: EXACTLY our weight-seven congruence,
+   with all six coefficients unchanged after translating notation.
+   Our 864-term product file is an independently constructed explicit
+   completion/replay certificate, not a claim to a new identity.
+4. Section 9, preconsiderations, printed p. 28: S_{5,3}=Li_{6,1,1}
+   cannot reduce to Nielsen S_{6,2} motivically, even allowing more
+   complicated arguments. This is distinct from a claim about all
+   multiple-polylogarithm doubles at arbitrary arguments.
+   Our normalized primitive Omega_{8,2} verifies nonmembership against
+   ALL binary words of depth <=2 at the six fixed argument changes.
+   The exact Lie numerator and exhaustive certificate were constructed
+   independently here, but the height-one nonreduction phenomenon is known.
+
+Supported contribution: the full-binary finite-direction rank formula,
+including all GL2 irreducible components rather than just the Nielsen
+component, its finite-vs-full-linear orbit distinction starting at weight
+7, and independently replayable exact certificates. The inspected paper
+does not state this all-component formula. This comparison is not a global
+priority search; no worldwide novelty assertion is justified.
+
+No concrete height-one identity or height-one nonreduction in this section
+should be advertised as previously unknown. The particular certificate
+normalizations and product encoding may be new artifacts, not new-period
+or new-functional-equation claims.
+
+Exact verifier CLI (standard library only; writes companion certificates
+in the directory containing the --output file):
+python verify_depth_orbits.py --max-weight 10 --output depth_orbit_verification.json
+
+Optional numerical diagnostic (requires mpmath; not used as proof):
+python check_weight7_identity_numeric.py
+
+The final LaTeX source contains the explicit adjoint convention
+<P,gq>=<g^T P,q>, distinguished from the inverse-transpose group action.

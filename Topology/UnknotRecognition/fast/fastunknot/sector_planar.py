@@ -254,8 +254,10 @@ def _section_plan(kernel, check, stats):
     for corner in kernel.classes:
         check()
         potential = kernel.potentials[corner]
-        projected[corner] = tuple(sum(x*form[j] for x, form in zip(potential, qforms))
-                                  for j in range(width))
+        sparse_project=getattr(potential,'project',None)
+        projected[corner] = (sparse_project(qforms,width)if sparse_project is not None else
+                            tuple(sum(x*form[j] for x, form in zip(potential, qforms))
+                                  for j in range(width)))
     plan['class_forms'] = projected
     return plan
 

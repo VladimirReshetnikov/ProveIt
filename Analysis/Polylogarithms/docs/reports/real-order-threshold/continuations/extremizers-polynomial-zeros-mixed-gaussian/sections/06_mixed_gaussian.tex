@@ -1,0 +1,531 @@
+% Integration-ready: amsmath, amssymb, amsthm, booktabs, hyperref.
+% No priority claim beyond the pinned repository and inspected incoming files.
+\section{Exact sampling of the unresolved mixed Gaussian generator}
+\label{mix:sec}
+
+The mixed Gaussian sums
+\[
+ S_p=\sum_{n=0}^{\infty}\frac{(-1)^nH_n}{(2n+1)^p}
+\]
+have a proved reduction at $p=2,4$, while the fixed-weight reductions at
+$p=6,8$ remain conjectural in the pinned manuscript.  The incoming
+uniform-continuation report additionally supplies conjectures at $p=10,12$.
+The following results do not settle these fixed-weight questions. They give
+an exact arithmetic sampling theorem for the whole generator, explicit
+finite parts at its poles, and convergent identities involving the even
+indices. A new, separately validated candidate at $p=14$ follows below.
+
+Write $L=\log2$, $G=\beta(2)$ and
+\[
+ \mathcal S(t)=\sum_{p\ge1}S_pt^{p-1},\qquad
+ \mathcal O(t)=\frac{\mathcal S(t)-\mathcal S(-t)}2
+             =\sum_{m\ge1}S_{2m}t^{2m-1}.
+\]
+The canonical manuscript already proves the meromorphic continuation of
+$\mathcal S$, its Mellin integral and its simple poles. We retain these
+facts as prerequisites, and include the short derivations needed for the
+new formulas. In particular, no new assertion of period independence or
+of minimal depth is made.
+
+\subsection{A shift equation and rational sampling with all parameter jets}
+
+Put
+\[
+ B(t)=\int_0^1\frac{x^{-t}}{1+x^2}\,dx
+ =\frac14\left\{\psi\left(\frac{3-t}{4}\right)
+                  -\psi\left(\frac{1-t}{4}\right)\right\},
+ \qquad \Re t<1,
+\]
+and continue $B$ meromorphically. Its elementary recurrence and reflection
+formula are
+\begin{equation}\label{mix:eq:B}
+ B(t)+B(t-2)=\frac1{1-t},\qquad
+ B(t)+B(-t)=\frac{\pi}{2\cos(\pi t/2)}.
+\end{equation}
+The first follows by adding the two integrands; the second follows by
+splitting $\int_0^\infty x^{-t}/(1+x^2)\,dx$ at one.
+
+\begin{theorem}[Meromorphic shift equation]\label{mix:thm:shift}
+On the complex plane, as an identity of meromorphic functions,
+\begin{equation}\label{mix:eq:shift}
+ \boxed{\quad
+ \mathcal S(t)+\mathcal S(t-2)
+       =\frac{2B(t-2)-L}{1-t}.
+ \quad}
+\end{equation}
+Removable values and finite parts are taken after combining the terms.
+\end{theorem}
+\begin{proof}
+Let $q(x)=\log(1+x^2)/(1+x^2)$. The defining generating integral is
+$\mathcal S(t)=-\int_0^1x^{-t}q(x)\,dx$ for $\Re t<3$.
+Adding its shift by two gives
+$-\int_0^1x^{-t}\log(1+x^2)\,dx$.
+For $t\ne1$, integration by parts gives precisely
+\eqref{mix:eq:shift}; the lower boundary term vanishes because
+$x^{1-t}\log(1+x^2)=O(x^{3-\Re t})$.
+The identity first holds in an open half-plane and extends by the
+meromorphic identity theorem. The point $t=1$ is removable on both sides.
+\end{proof}
+
+We use the series convention
+\[
+ \operatorname{Li}_{a,b}(x,y)
+ =\sum_{n>m\ge1}\frac{x^ny^m}{n^am^b}.
+\]
+For $d\ge1$ let $\mathcal R_d=\{\xi:\xi^d=-1\}$.
+No member of $\mathcal R_d$ equals one. At unit-modulus arguments,
+we use the radial boundary values of the multiple polylogarithms; all
+values below also have ordinarily convergent defining series.
+Indeed, for $r\ge1$ the double series is absolutely convergent.
+For $r=0$, write its inner argument as $y=\xi/\eta$ and outer
+argument as $x=\xi^{-1}\ne1$. If $y\ne1$, the inner sum is
+$\Li_1(y)+O(n^{-1})$, so Dirichlet's test treats the main outer
+series and the remainder converges absolutely. If $y=1$,
+$H_{n-1}/n$ decreases eventually to zero, and the same test applies.
+
+\begin{theorem}[Cyclotomic rational sampling and parameter jets]
+\label{mix:thm:rational}
+Let $1\le A\le d$ be integers, put $\alpha=1-2A/d$, and let $r\ge0$
+be an integer. Then
+\begin{align}
+ \frac{\mathcal S^{(r)}(\alpha)}{r!}
+ &=\frac12\left(\frac d2\right)^r
+   \sum_{\xi,\eta\in\mathcal R_d}
+      \xi^A\operatorname{Li}_{r+1,1}
+                    \left(\xi^{-1},\frac\xi\eta\right).
+ \label{mix:eq:rational}\\[-1mm]
+ \frac{\mathcal S^{(r)}(\alpha)}{r!}
+ &=\sum_{k\ge0}\binom{k+r}{r}S_{k+r+1}\alpha^k.
+ \label{mix:eq:allweight}
+\end{align}
+Thus every rational sample in $[-1,1)$ and every parameter jet is an
+explicit $\mathbb Q(\zeta_{2d})$-linear combination of cyclotomic doubles
+of the fixed weight $r+2$.  All sums on the right of
+\eqref{mix:eq:rational} are finite; complex-conjugate terms make the
+result real. Choosing $A/d=(1-\alpha)/2$ in lowest terms gives level $2d$
+as an upper bound, not a claim of minimal conductor.
+The shift equation extends these evaluations to every rational sample
+at which $\mathcal S$ is regular, and gives Laurent coefficients at its
+remaining rational points.
+\end{theorem}
+\begin{proof}
+Substitute $u=x^2$ in the Mellin integral and then $u=v^d$. This gives
+\[
+ \mathcal S(\alpha)
+ =-\frac d2\int_0^1
+       \frac{v^{A-1}\log(1+v^d)}{1+v^d}\,dv.
+\]
+The exact partial fraction identity is
+\begin{equation}\label{mix:eq:partial}
+ \frac{d\,v^{A-1}}{1+v^d}
+       =-\sum_{\xi\in\mathcal R_d}\frac{\xi^A}{v-\xi}.
+\end{equation}
+Both sides are proper rational functions with the same simple poles and
+residues: the residue on the left at $\xi$ is
+$\xi^{A-d}=-\xi^A$. Their difference therefore vanishes.
+Along $0\le v\le1$,
+\[
+ \log(1+v^d)=\sum_{\eta\in\mathcal R_d}\log(1-v/\eta).
+\]
+The logarithms are their principal values, continued from $v=0$; equality
+follows by differentiating and matching the value at zero. None of the
+factors meets its branch cut on this path.
+
+Differentiating $r$ times with respect to $t$ inserts
+$(-\log x)^r=(d/2)^r(-\log v)^r$. Finally, the standard convergent
+iterated-integral formula, with the displayed series convention, is
+\[
+ \operatorname{Li}_{r+1,1}(\xi^{-1},\xi/\eta)
+ =\frac1{r!}\int_0^1
+       \frac{(-\log v)^r\log(1-v/\eta)}{v-\xi}\,dv.
+\]
+Substitution proves \eqref{mix:eq:rational}. All integrals converge
+absolutely; at zero the logarithm is $O(v)$, and the root denominators
+do not vanish on $[0,1]$. Parameter differentiation is justified on
+compact subsets of $\Re t<3$ by integrable powers of $|\log x|$.
+Taylor differentiation inside $|t|<3$ proves
+\eqref{mix:eq:allweight}.  Repeated application and differentiation of
+\eqref{mix:eq:shift} proves the last assertion.
+\end{proof}
+
+For example, at $\alpha=1/3$ one may take $(A,d)=(1,3)$, so the
+whole infinite sum $\sum_{p\ge1}S_p3^{1-p}$ is a finite combination
+of weight-two values at sixth roots of unity. At $\alpha=1/2$, one takes
+$(A,d)=(1,4)$ and obtains level eight. This is a fixed-weight evaluation
+of an infinite generating sum; it is not a termwise reduction of the
+individual periods $S_p$.
+
+\subsection{Elementary values and finite parts of the odd generator}
+
+Define the rational finite sums
+\[
+ a_N=\sum_{j=1}^N\frac{(-1)^{j-1}}{2j-1},\quad
+ b_N=\sum_{j=1}^N\frac{a_{j-1}}{2j-1},\quad
+ c_N=\sum_{j=1}^N\frac{(-1)^{j-1}}{(2j-1)^2},
+\]
+with empty sums zero. Also put
+\[
+ \bar H_N^{(s)}=\sum_{j=1}^N\frac{(-1)^{j-1}}{j^s},\qquad
+ e_N=\sum_{j=1}^N\frac{\bar H_{j-1}^{(1)}}j,
+ \qquad P=\frac{L^2}{4}-\frac{\pi^2}{48}.
+\]
+The notation $\operatorname{FP}_{t=t_0}$ denotes the constant term in
+the Laurent expansion in the local coordinate $t-t_0$.
+
+\begin{theorem}[All integer samples of the unresolved parity component]
+\label{mix:thm:integer}
+For every integer $N\ge0$,
+\begin{equation}\label{mix:eq:even-sample}
+ \boxed{\quad
+ \mathcal O(2N)=(-1)^N\{c_N+2b_N-a_NL\}.
+ \quad}
+\end{equation}
+At $t=2N+1$, its residue is
+$(-1)^{N+1}H_N/2$, and its finite part is
+\begin{align}
+ \operatorname{FP}_{t=2N+1}\mathcal O(t)
+ ={}&(-1)^N\left\{
+ P-\frac L2(H_N+\bar H_N^{(1)})\right.\notag\\
+ &\left.\hspace{13mm}
+ +\frac{H_N^{(2)}+\bar H_N^{(2)}}4+\frac{e_N}2
+ \right\}.
+ \label{mix:eq:odd-fp}
+\end{align}
+For $N=0$ the pole is absent, and \eqref{mix:eq:odd-fp} is the
+ordinary value $\mathcal O(1)=P$.
+\end{theorem}
+\begin{proof}
+First, the elementary beta/reflection evaluation gives
+$\mathcal S(0)=G-\pi L/2$. Direct integration after $u=x^2$ gives
+\[
+ \mathcal S(-1)=-\frac{L^2}4,\qquad
+ \mathcal S(1)=\frac{L^2}4-\frac{\pi^2}{24}.
+\]
+The recurrence \eqref{mix:eq:B}, starting with $B(0)=\pi/4$, yields
+\[
+ B(2j)=(-1)^j(\pi/4+a_j),\qquad
+ B(-2j)=(-1)^j(\pi/4-a_j).
+\]
+Let $h_N^{\mathrm o}=\sum_{j=1}^N(2j-1)^{-1}$. Iterating
+\eqref{mix:eq:shift} at positive and negative even integers gives
+\begin{align*}
+ \mathcal S(2N)&=(-1)^N\{
+ \mathcal S(0)-La_N+(\pi/2)h_N^{\mathrm o}+2b_N\},\\
+ \mathcal S(-2N)&=(-1)^N\{
+ \mathcal S(0)+La_N+(\pi/2)h_N^{\mathrm o}-2b_N-2c_N\}.
+\end{align*}
+Subtracting proves \eqref{mix:eq:even-sample}.
+
+For the odd finite parts, the normally convergent pole expansion of $B$
+or its digamma formula gives, for $j\ge0$,
+\[
+ \operatorname*{Res}_{t=2j+1}B(t)=(-1)^{j+1},\qquad
+ \operatorname{FP}_{t=2j+1}B(t)
+       =\frac{(-1)^j}{2}(\bar H_j^{(1)}-L).
+\]
+Write $\mathcal C_N^{\mathrm{fp}}=\operatorname{FP}_{t=2N+1}\mathcal S(t)$.
+Extracting the
+constant term of \eqref{mix:eq:shift} gives, for $N\ge1$,
+\[
+ \mathcal C_N^{\mathrm{fp}}+\mathcal C_{N-1}^{\mathrm{fp}}
+ =\frac{(-1)^N}{2N^2}
+  +\frac{(-1)^N\bar H_{N-1}^{(1)}}{2N}
+  +\frac{1-(-1)^N}{2N}L.
+\]
+The first term is essential: it comes from the pole of $B(t-2)$ times
+the linear term of $(1-t)^{-1}$.
+Starting with $\mathcal C_0^{\mathrm{fp}}=L^2/4-\pi^2/24$,
+the recurrence gives
+\[
+ \mathcal C_N^{\mathrm{fp}}=(-1)^N\left\{
+ \mathcal C_0^{\mathrm{fp}}+\frac{H_N^{(2)}}2+\frac{e_N}2
+       -\frac L2(H_N+\bar H_N^{(1)})\right\}.
+\]
+On the negative odd axis, polynomial division of $u^N/(1+u)$ gives
+\[
+ \mathcal S(-(2N+1))=(-1)^N\left\{
+ -\frac{L^2}4+\frac L2(H_N+\bar H_N^{(1)})
+       -\frac{e_N+\bar H_N^{(2)}}2\right\}.
+\]
+Taking half the difference proves \eqref{mix:eq:odd-fp}.
+The residue is half the already known residue of $\mathcal S$ at the
+positive pole; $\mathcal S(-t)$ is regular there.
+\end{proof}
+
+\subsection{Convergent identities after subtracting known poles}
+
+\begin{corollary}[Three explicit identities across all even indices]
+\label{mix:cor:resummation}
+The following series converge absolutely and satisfy
+\begin{align}
+ \sum_{m\ge1}S_{2m}
+ &=\frac{L^2}4-\frac{\pi^2}{48},\label{mix:eq:sum1}\\
+ \sum_{m\ge1}2^{2m-1}S_{2m}
+ &=L-1,\label{mix:eq:sum2}\\
+ \sum_{m\ge1}3^{2m-1}(S_{2m}+3^{-2m})
+ &=L-\frac{L^2}4+\frac{\pi^2}{48}-\frac7{12}.
+ \label{mix:eq:sum3}
+\end{align}
+\end{corollary}
+\begin{proof}
+The first two are $\mathcal O(1)$ and $\mathcal O(2)$, inside the
+Taylor disk of radius three. The $n=1$ term of the defining harmonic
+sum contributes $t/(t^2-9)$ to $\mathcal O(t)$. Subtracting it leaves
+a function analytic in $|t|<5$. Its value at $t=3$ is
+\[
+ \operatorname{FP}_{t=3}\mathcal O(t)-\frac1{12}
+ =-P+L-\frac12-\frac1{12},
+\]
+which is the last right side. This also explains why adding $3^{-2m}$
+before summation is necessary at this boundary point.
+\end{proof}
+
+More generally, for an integer $K\ge0$, set
+\[
+ T_p^{[K]}=S_p-\sum_{n=1}^K\frac{(-1)^nH_n}{(2n+1)^p},\qquad
+ \mathcal O^{[K]}(t)=\mathcal O(t)
+   -\sum_{n=1}^K\frac{(-1)^nH_nt}{(2n+1)^2-t^2}.
+\]
+Then $\mathcal O^{[K]}(t)=\sum_{m\ge1}T_{2m}^{[K]}t^{2m-1}$ has
+Taylor radius exactly $2K+3$. Theorem~\ref{mix:thm:integer} supplies
+its value at $t=2K+2$ and its regular value at $t=2K+1$ after the
+indicated finite rational pole contributions are removed. This gives an
+infinite family of convergent identities with elementary right sides.
+For $d=2K+3$, $|t|<d$, and $M\ge0$, a useful explicit remainder bound is
+\begin{equation}\label{mix:eq:tail}
+ \left|\sum_{m>M}T_{2m}^{[K]}t^{2m-1}\right|
+ \le \frac{H_{K+1}|t|^{2M+1}}
+ {d^{2M+2}(1-|t|^2/d^2)}.
+\end{equation}
+Indeed $H_n/(2n+1)^p$ strictly decreases for $n\ge1,p\ge2$, so the
+alternating-series estimate gives $|T_p^{[K]}|\le H_{K+1}/d^p$.
+Summing the resulting geometric series proves the bound. The actual
+nonzero poles at $\pm d$ prove the exact Taylor radius.
+
+These formulas impose exact analytic consistency constraints on an
+entire proposed sequence of fixed-weight reductions. They do not prove
+any individual $S_{2m}$ reduction, because the resummations combine
+different weights. The distinction matters when they are used to audit
+conjectural coefficient families.
+
+\section{A new frozen mixed Gaussian candidate at weight fifteen}
+\label{mix:sec:S14}
+
+Put $g_{a,b}=\operatorname{Im}\operatorname{Li}_{a,b}(i,1)$.
+The inspected incoming reports reach $S_{12}$; the present search advances
+this particular candidate family to $S_{14}$.  The old $S_6$ and $S_8$
+relations, and the incoming $S_{10}$ and $S_{12}$ relations, remain
+conjectural.  The coefficient table below completely specifies the new
+identity without rounding or an implicitly chosen numerical basis.
+
+\begin{conjecture}[Mixed Gaussian reduction at weight fifteen]
+\label{mix:conj:S14}
+Let $(X_j,c_j)$ be the ordered rows in Table~\ref{mix:tab:S14}. Then
+\begin{equation}\label{mix:eq:S14}
+ \sum_{j=0}^{15}c_jX_j=0,
+ \qquad\text{equivalently}\qquad
+ S_{14}=-\sum_{j=1}^{15}\frac{c_j}{c_0}X_j.
+\end{equation}
+\end{conjecture}
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}lr@{}}
+\toprule
+Period $X_j$ & Integer coefficient $c_j$\\
+\midrule
+$S_{14}$ & $17137739346472321847995257166233600$ \\
+$g_{14,1}$ & $-23326883533329005530721963055513600$ \\
+$g_{12,3}$ & $-1241749496845608511840387596288000$ \\
+$g_{10,5}$ & $577580508445935074901301710028800$ \\
+$g_{8,7}$ & $-584626148672522170960472702976000$ \\
+$g_{6,9}$ & $1032524260038200489807505575116800$ \\
+$g_{4,11}$ & $-2814967862322082111057500831744000$ \\
+$g_{2,13}$ & $16994562809106694872629900633702400$ \\
+$\pi^{15}$ & $-969820884575582157963236591$ \\
+$\beta(2)\zeta(13)$ & $2074025115468857154352052304000$ \\
+$\beta(4)\zeta(11)$ & $23496914452549436838383360716800$ \\
+$\beta(6)\zeta(9)$ & $112557931663509122499903946752000$ \\
+$\beta(8)\zeta(7)$ & $319433131232914030174904411750400$ \\
+$\beta(10)\zeta(5)$ & $765318186561145170729756524544000$ \\
+$\beta(12)\zeta(3)$ & $3477679796290052414651630616576000$ \\
+$\beta(14)L$ & $34275478692944643695990514332467200$ \\
+\bottomrule
+\end{tabular}
+\caption{The complete primitive integer vector for the conjecture
+\eqref{mix:eq:S14}; the first row is $j=0$.}
+\label{mix:tab:S14}
+\end{table}
+
+For orientation, the first right-side coefficient and the last are
+\[
+ -\frac{c_1}{c_0}=\frac{28551728212443286}{20976315815914861},
+ \qquad
+ -\frac{c_{15}}{c_0}=-2.
+\]
+The intermediate coefficients are part of the displayed vector and
+should not be replaced by decimals.  Its entries have greatest common
+divisor one.  The coefficient of $\beta(14)L$ matches the value $-2$
+in the preceding frozen even-index candidates; this pattern is evidence
+for a possible uniform formula, not a proof of one.
+
+\subsection{Discovery and independent numerical audit}
+
+The exploratory evaluation used $3600$ finite Euler weights computed as
+exact integers, with $1100$ decimal digits in the subsequent arithmetic.
+PSLQ then ran at $850$ digits, tolerance $10^{-800}$, coefficient bound
+$10^{65}$, and an iteration cap of $200000$. It returned the primitive
+vector in Table~\ref{mix:tab:S14}. After that vector was frozen, its
+normalized residual at the retained $1100$-digit precision was
+approximately $1.6223\times10^{-1084}$.  This is a numerical diagnostic;
+Euler truncation and finite-precision arithmetic are not thereby made
+exact. The independent exact certificate below is the authoritative
+proximity statement.
+
+A second calculation, at $110$ decimal digits, evaluated the periods
+from Mellin integrals rather than the finite Euler sums. It used
+\[
+ S_{14}=-\frac1{13!}\int_0^\infty
+     \frac{t^{13}e^{-t}\log(1+e^{-2t})}{1+e^{-2t}}\,dt
+\]
+and, for $a\ge2$,
+\[
+ g_{a,b}=\frac1{(a-1)!}\int_0^\infty t^{a-1}
+  \operatorname{Im}\frac{ie^{-t}\operatorname{Li}_b(ie^{-t})}
+                                  {1-ie^{-t}}\,dt.
+\]
+At $b=1$ it used the integrated logarithmic formula
+\[
+ g_{a,1}=-\frac1{2(a-2)!}\int_0^\infty
+ t^{a-2}\log(1+e^{-2t})\arctan(e^{-t})\,dt.
+\]
+The normalized residual was approximately
+$-1.2378\times10^{-110}$. No rigorous quadrature-error enclosure is
+claimed for this numerical audit. It checks conventions and gives
+independent corroboration of the finite-sum calculation.
+
+\begin{proposition}[Exact rational proximity at weight fifteen]
+\label{mix:prop:proximity}
+For the actual periods in Table~\ref{mix:tab:S14}, put
+$R_{14}=\sum_{j=0}^{15}c_jX_j/c_0$. Then
+\begin{equation}\label{mix:eq:proximity}
+ \boxed{\qquad |R_{14}|<10^{-775}.\qquad}
+\end{equation}
+The delivered rational interval contains zero. This proves proximity;
+the assertion $R_{14}=0$ remains the conjecture.
+\end{proposition}
+
+\subsection{Every analytic premise of the rational certificate}
+
+For a sequence $f_n$, define
+\[
+ \Delta^jf_0=\sum_{n=0}^j(-1)^n\binom jn f_n,
+ \qquad E_N(f)=\sum_{j=0}^{N-1}2^{-j-1}\Delta^jf_0.
+\]
+A finite interchange of sums and Pascal's identity give
+\begin{equation}\label{mix:eq:finite-euler}
+ E_N(f)=2^{-N}\sum_{n=0}^{N-1}(-1)^n f_n
+                    \sum_{r=n+1}^N\binom Nr.
+\end{equation}
+The positive weights inside the last sum are exact integers. This
+avoids an unstable floating-point finite-difference triangle.
+
+For integer $a\ge2,b\ge1$, the ordinary Mellin formulas give
+\[
+ \frac{H_{2n}^{(b)}}{(2n+1)^a}
+ =\frac1{\Gamma(a)\Gamma(b)}\int_0^1\int_0^1
+ \frac{(-\log x)^{a-1}(-\log y)^{b-1}}{1-y}
+       \{(x^2)^n-(x^2y^2)^n\}\,dy\,dx.
+\]
+Keep the two terms grouped, especially at $b=1$. Finite differences
+replace them by $(1-x^2)^j-(1-x^2y^2)^j$. Summing the omitted Euler tail
+shows that $g_{a,b}-E_N(f)$ is the same positive Mellin measure applied
+to
+\[
+ 2^{-N}\{W_N(x^2)-W_N(x^2y^2)\},\qquad
+ W_N(u)=\frac{(1-u)^N}{1+u}.
+\]
+On $[0,1]$, $W_N$ decreases and $|W_N'|\le N+1$. Consequently
+\begin{equation}\label{mix:eq:g-bound}
+ E_N(f)-\frac{N+1}{2^N3^a}(1+2^{-b})
+       \le g_{a,b}\le E_N(f).
+\end{equation}
+Indeed the difference of $W_N$ values is between
+$-(N+1)x^2(1-y^2)$ and zero, and its integral is
+$-(N+1)3^{-a}(1+2^{-b})$.
+For $f_n=H_n/(2n+1)^p$, replace $y^2$ by $y$, obtaining
+\begin{equation}\label{mix:eq:S-bound}
+ E_N(f)-\frac{N+1}{2^N3^p}\le S_p\le E_N(f),\qquad p\ge2.
+\end{equation}
+All interchanges follow either from absolute convergence of the
+original series at these integer orders or from the displayed integrable
+bound on the grouped Euler kernels.
+
+The single-value sequences $(2n+1)^{-s}$ and $(n+1)^{-s}$ are moments
+of positive measures of mass one. Their omitted Euler tails are
+nonnegative and at most $2^{-N}$. This encloses $\beta(s)$ and
+$\eta(s)$; multiplying by $(1-2^{1-s})^{-1}$ encloses $\zeta(s)$
+when $s>1$. Finally, use
+\[
+ \pi=16\arctan(1/5)-4\arctan(1/239),\qquad
+ L=2\sum_{n\ge0}\frac1{(2n+1)3^{2n+1}}.
+\]
+The first omitted term encloses each alternating arctangent series.
+For $M$ terms of the logarithm series, its positive tail is at most
+$9/[4(2M+1)3^{2M+1}]$.  Machin's identity uses the real arctangent:
+the tangent of $4\arctan(1/5)-\arctan(1/239)$ is one, and this angle
+lies in $(0,\pi/2)$, fixing its value as $\pi/4$.
+
+\begin{proof}[Proof of Proposition~\ref{mix:prop:proximity}]
+The standalone program \texttt{code/verify\_s14.py} reconstructs all
+sixteen period intervals using $N=2600$, $650$ terms in each arctangent
+series, and $M=950$ logarithm terms.  For the nested sums it takes the
+common denominator $D=\operatorname{lcm}(1,\ldots,2N)$: each harmonic
+numerator and each power denominator in \eqref{mix:eq:finite-euler}
+can then be accumulated as an integer before one final rational division.
+No decimal input, numerical period evaluation, PSLQ calculation or
+assumed identity enters the replay.
+
+The verifier reads the frozen integer vector, forms the normalized
+interval dot product by exact rational interval arithmetic, and compares
+its endpoints to $\pm10^{-775}$. These comparisons are strict, and the
+interval contains zero. It also compares every reconstructed basket
+interval and both final endpoints against
+\texttt{data/s14\_rational\_certificate.json}. This is a finite proof
+of the enclosure \eqref{mix:eq:proximity} using only the analytic bounds
+just established. It supplies no mechanism for replacing a zero-containing
+interval by exact equality.
+\end{proof}
+
+\subsection{Provenance, replay and the remaining proof problem}
+
+The common finite-Euler arithmetic is a small adaptation of the incoming
+uniform-continuation report's exact proximity implementation, and its
+error theorem is retained rather than claimed as new.  The inspected
+archive is \texttt{proveit\_polylogarithms\_research\_2026-10-10 (1).zip}
+in the pinned repository. Source-member and archive SHA-256 digests are
+recorded in \texttt{data/mixed\_gaussian\_provenance.json}.
+The new deliverables are the $S_{14}$ vector, its exact proximity
+certificate, its independent quadrature audit, and the rational
+sampling/finite-part theorems above.
+
+From the package root, the exact certificate is replayed by
+\begin{quote}\ttfamily
+python code/verify\_s14.py
+\end{quote}
+It requires only the Python standard library.
+Optional diagnostics use \path{code/audit_s14.py},
+\path{code/search_s14.py}, and \path{code/verify_mixed_generator.py};
+these require \texttt{mpmath}. The search is separate from the
+proof of proximity.
+
+A useful next target is a uniform functional identity that implies the
+fixed-weight conjectures simultaneously. The existing restricted
+single-product obstruction remains valid: it excludes only that stated
+row span. The known weight-five octahedral certificate supplies
+information outside it. The higher-weight problem is therefore to give
+an equally explicit new relation or an independently replayable finite
+certificate, not to infer global irreducibility from the restricted
+obstruction. The exact resummations above offer consistency constraints
+for any proposed uniform formula, while the $S_{14}$ vector supplies a
+fresh high-weight target.

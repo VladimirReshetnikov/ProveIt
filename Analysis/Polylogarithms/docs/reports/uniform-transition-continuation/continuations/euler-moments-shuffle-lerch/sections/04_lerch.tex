@@ -1,0 +1,459 @@
+\section{Effective uniform saturation and a growing-index zero regime}
+\label{efflerch:sec:main}
+
+The fixed-index concentration theorem in the manuscript gives an
+existential derivative-order threshold and confines its expansion to a
+compact interval of the scale $a/k$.  The estimates below remove both
+restrictions for a leading-order location theorem.  They give an explicit,
+deliberately conservative threshold in terms of the Laurent index alone.
+The proof treats the smallest and largest zero on the same footing.
+
+Retain the reciprocal-gamma polynomials and the positive Lerch weight
+\[
+ \frac{e^{xz}}{\Gamma(1+z)}
+   =\sum_{n\geq0}Q_n(x)\frac{z^n}{n!},
+ \qquad W_\rho(t)=\frac1{1-\rho e^{-t}},\quad 0\leq\rho\leq1.
+\]
+For $k\geq1$, write
+\begin{equation}\label{efflerch:eq:F}
+ F_{n,k}^\rho(a)=(-1)^{n+k}D_{n,k}^\rho(a)
+ =\int_0^\infty t^k e^{-at}W_\rho(t)Q_n(\log t)\,dt.
+\end{equation}
+Here $D_{n,k}^\rho=\partial_a^k\ell_n(\rho,a)$ for $\rho<1$
+and $D_{n,k}^1=\gamma_n^{(k)}(a)$, with
+\[
+ \ell_n(\rho,a)=\sum_{m\geq0}
+       \frac{\rho^m\log^n(a+m)}{a+m}
+ =(-1)^n\left.\partial_s^n\Phi(\rho,s,a)\right|_{s=1}.
+\]
+The integral representation and the
+global bound of at most $n$ positive zeros, counted with multiplicity,
+are existing results of the manuscript.  We use them explicitly;
+the new argument concerns quantitative separation and uniform sign
+stability.
+
+Order the roots of $Q_n$ decreasingly as
+$x_{n,1}>\cdots>x_{n,n}$ and put $c_{n,j}=e^{-x_{n,j}}$.
+
+\begin{theorem}[Explicit saturation and simultaneous location bounds]
+\label{efflerch:thm:explicit}
+For every integer $n\geq2$, define
+\begin{equation}\label{efflerch:eq:Kn}
+ \delta_n=(3n)^{-(n-2)},\qquad
+ K_n=576n^2(3n)^{2n-4}=(24n/\delta_n)^2.
+\end{equation}
+For every integer $k\geq K_n$ and every $0\leq\rho\leq1$,
+$D_{n,k}^\rho$ has exactly $n$ positive zeros.  All are simple.
+If they are ordered increasingly as $a_{n,1,k}^\rho<\cdots<a_{n,n,k}^\rho$,
+then
+\begin{equation}\label{efflerch:eq:location}
+ \left|\log\frac{a_{n,j,k}^\rho}{k c_{n,j}}\right|
+   <\frac{8n}{\sqrt{k}},\qquad 1\leq j\leq n.
+\end{equation}
+Thus the relative bounds
+\[
+ e^{-8n/\sqrt{k}}k c_{n,j}
+  <a_{n,j,k}^\rho<e^{8n/\sqrt{k}}k c_{n,j}
+\]
+hold simultaneously for every branch and every deformation parameter.
+No compactness assumption on the collection of slopes $c_{n,j}$ is made.
+\end{theorem}
+
+The threshold is an upper bound, not a proposed sharp value.  In particular,
+the existing index-two theorem gives saturation already at $k=1$, whereas
+\eqref{efflerch:eq:Kn} gives $K_2=2304$.  The value of the bound is its
+uniformity and explicit dependence on $n$.
+
+\subsection{An explicit separation bound for the Appell roots}
+
+For a real-rooted polynomial, its \emph{mesh} is the minimum gap between
+consecutive roots, counted with multiplicity.  A multiple root gives mesh
+zero.  During a temporary repeated-root stage, we separately refer to
+the minimum gap between its \emph{distinct} roots.
+
+We need the classical fact that $p\mapsto p+cp'$ does not decrease
+mesh.  This is the theorem of Riesz recorded as Theorem~1 of
+Br\"and\'en--Krasikov--Shapiro~\cite{efflerch:BKS}.  The following proof
+also explains why it applies to the infinite reciprocal-gamma product.
+
+\begin{lemma}[Preservation of mesh]
+\label{efflerch:lem:mesh-preserve}
+If $p$ is real-rooted and $c\in\mathbb R$, then
+\[
+ \operatorname{mesh}(p+cp')\geq\operatorname{mesh}(p).
+\]
+\end{lemma}
+\begin{proof}
+The operator $T=1+c\partial_x$ preserves real-rootedness: away from
+the distinct roots $r_i$ of multiplicities $m_i$, its new roots solve
+$\sum_i m_i/(x-r_i)=-1/c$.  This sum is strictly decreasing on each
+complementary interval.  Its inherited roots have multiplicity $m_i-1$.
+The assertion is immediate when $c=0$ or $p$ has mesh zero.
+
+Suppose the mesh of $p$ is $d>0$.  For any $0<h<d$, the roots of $p(x)$
+and $p(x-h)$ interlace.  The elementary real-rooted-pencil criterion
+says that two real-rooted polynomials of the same degree interlace
+if and only if every real linear combination is real-rooted or zero.
+One proof divides one polynomial by the other: the interlacing case
+has residues of one sign, which makes the rational quotient strictly
+monotone between poles.  Conversely, if every pencil member is
+real-rooted, that quotient cannot take a real value in the upper
+half-plane; its imaginary part has constant sign there, forcing the
+residues, and hence the interlacing order.  Common roots follow by
+cancellation or a limiting argument.
+
+Apply $T$ to this pencil.  Since $T$ preserves real-rootedness and
+commutes with translation, every real combination of $Tp(x)$ and
+$Tp(x-h)$ is real-rooted or zero.  The criterion gives interlacing
+of this shifted pair, which is equivalent to
+$\operatorname{mesh}(Tp)\geq h$.  Let $h\uparrow d$.
+\end{proof}
+
+\begin{lemma}[Quantitative separation while removing multiplicities]
+\label{efflerch:lem:split}
+Let $p$ be real-rooted of degree $n\geq2$, with at least two distinct
+roots separated by at least $d$, where $0<d\leq1$.  If $c\geq1/n$,
+the distinct roots of $p+cp'$ are separated by at least $d/(3n)$.
+\end{lemma}
+\begin{proof}
+Write the distinct roots as $r_1<\cdots<r_q$, with multiplicities $m_i$.
+There is one new root $s_i$ in each gap $(r_i,r_{i+1})$, one new root
+$s_0<r_1$, and the inherited roots of reduced multiplicity.  In an
+interior gap put $u=s_i-r_i$ and $v=r_{i+1}-s_i$.
+
+If $u<d/2$, every root to the right is at distance at least $d/2$.
+In the equation $p'(s_i)/p(s_i)=-1/c$, the positive part includes
+$m_i/u$, and the magnitude of the negative part is at most $2n/d$.
+Consequently $u\geq d/(2n)$.  This same lower bound is immediate
+if $u\geq d/2$.
+If $v<d/2$, the positive part is at most $2n/d$, so the negative
+part, which includes $m_{i+1}/v$, is at most $2n/d+1/c$.
+Thus in every case
+\[
+ u\geq\frac{d}{2n},\qquad
+ v\geq\frac{d}{2n+d/c}\geq\frac{d}{3n}.
+\]
+For the exterior root,
+$\sum_i m_i/(r_i-s_0)=1/c$ implies $r_1-s_0\geq cm_1\geq1/n$.
+Every possible pair of consecutive distinct new or inherited roots
+is therefore separated by at least $d/(3n)$.
+\end{proof}
+
+\begin{proposition}[A fully explicit Appell mesh bound]
+\label{efflerch:prop:mesh}
+For every $n\geq2$,
+\begin{equation}\label{efflerch:eq:mesh}
+ \operatorname{mesh}(Q_n)\geq\delta_n=(3n)^{-(n-2)}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Start with $x^n$ and apply $1+\partial_x$.  The result
+$x^{n-1}(x+n)$ has two distinct roots at distance $n\geq1$.
+Apply next $1+\partial_x/j$, for $j=2,\ldots,n-1$.
+Their coefficients $1/j$ are all at least $1/n$.
+Lemma~\ref{efflerch:lem:split}, used $n-2$ times starting with $d=1$,
+shows that the distinct-root gaps of
+\[
+ B_n(x)=\prod_{j=1}^{n-1}(1+\partial_x/j)x^n
+\]
+are at least $(3n)^{-(n-2)}$.  At each step inherited multiplicities
+drop by one and all new roots are simple.  After these $n-1$ steps,
+every root is simple, so this is a bound for the ordinary mesh of $B_n$.
+
+For $N\geq n-1$ the reciprocal-gamma finite-product polynomial is
+\[
+ Q_{n,N}(x)=
+  \left(\prod_{j=1}^N(1+\partial_x/j)\right)(x+\gamma-H_N)^n.
+\]
+Translations preserve mesh.  The remaining factors, with $j\geq n$,
+do not decrease it by Lemma~\ref{efflerch:lem:mesh-preserve}.
+Hence every $Q_{n,N}$ has mesh at least $\delta_n$.
+The Weierstrass product
+\[
+ \Gamma(1+z)^{-1}=e^{\gamma z}
+   \prod_{j\geq1}(1+z/j)e^{-z/j}
+\]
+converges locally uniformly.  Thus $Q_{n,N}\to Q_n$ coefficientwise.
+Continuity of the ordered real roots of monic polynomials of fixed
+degree preserves the gap inequalities in the limit.  This proves
+\eqref{efflerch:eq:mesh}, including strict simplicity of the limit.
+\end{proof}
+
+\begin{lemma}[The inherited global zero bound]
+\label{efflerch:lem:variation}
+For $n\geq0$, $k\geq1$, and $0\leq\rho\leq1$,
+$F_{n,k}^\rho$ has at most $n$ positive zeros, counted with multiplicity.
+\end{lemma}
+\begin{proof}
+We recall the short variation argument so that the completeness claim
+does not depend on a root scan.  If a real kernel $g$ has
+$N$ sign changes, its Laplace transform has at most $N$ positive zeros,
+provided the exponentially weighted polynomial moments exist.
+For $N=0$ the transform has a strict constant sign.  For $N>0$, choose
+a sign-change point $t_0$.  Multiplication by $t_0-t$ removes that
+change.  The new transform is
+\[
+ (\partial_a+t_0)G(a)
+   =e^{-t_0a}\frac{d}{da}\bigl(e^{t_0a}G(a)\bigr).
+\]
+By induction it has at most $N-1$ zeros.  Any finite collection of
+$M$ zeros of $G$, counted with multiplicity, forces at least $M-1$
+zeros of the displayed derivative by Rolle's theorem with multiplicities.
+Thus $M\leq N$.  Induction also precludes an identically zero transform.
+
+In \eqref{efflerch:eq:F}, the factor $t^kW_\rho(t)$ is positive and
+$Q_n(\log t)$ has $n$ simple sign changes by
+Proposition~\ref{efflerch:prop:mesh}, with the cases $n=0,1$ immediate.
+The bound $W_\rho(t)\leq W_1(t)\leq1+t^{-1}$ gives all required
+integrability near zero, and $e^{-at}$ controls infinity.
+\end{proof}
+
+\subsection{A scale-free positive-weight estimate}
+
+The decisive improvement over a compact-scale Taylor estimate is the
+following uniform control of the weight on the logarithmic coordinate.
+
+\begin{lemma}[Logarithmic variation of the Lerch weight]
+\label{efflerch:lem:weight}
+For $x,y>0$ and $0\leq\rho\leq1$,
+\begin{equation}\label{efflerch:eq:weight}
+ \left|\log\frac{W_\rho(xy)}{W_\rho(x)}\right|\leq|\log y|.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Direct differentiation gives
+\[
+ \frac{d\log W_\rho(x)}{d\log x}
+  =-\frac{x\rho}{e^x-\rho}.
+\]
+Its magnitude is at most one: since $e^x\geq1+x$ and $0\leq\rho\leq1$,
+$e^x-\rho\geq1+x-\rho\geq\rho x$.
+Integrate this derivative between $\log x$ and $\log x+\log y$.
+The proof is valid at both deformation endpoints.
+\end{proof}
+
+Let $Y_k$ have gamma density
+\[
+ \frac{k^{k+1}}{k!}y^k e^{-ky},\qquad y>0.
+\]
+This is shape $k+1$ and rate $k$.  Keeping the shape shift is important:
+for example $\mathbb E Y_k^{-1}=1$ exactly.
+
+\begin{lemma}[An elementary exponential log-moment bound]
+\label{efflerch:lem:moments}
+For positive integers $m,k$ with $k\geq16m^2$,
+\begin{equation}\label{efflerch:eq:moments}
+ \mathbb E\bigl(e^{m|\log Y_k|}-1\bigr)
+ \leq\left[2\bigl(e^{4m^2/k}-1\bigr)\right]^{1/2}
+ \leq\sqrt{2/3}<1.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For a positive number $y$, according to whether $y\geq1$ or $y<1$,
+the square of $e^{m|\log y|}-1$ is one of
+$(y^m-1)^2$ and $(y^{-m}-1)^2$.  Cauchy--Schwarz therefore bounds
+the square of the left side by
+\[
+ \mathbb E Y_k^{2m}+\mathbb E Y_k^{-2m}
+  -2\mathbb E Y_k^m-2\mathbb E Y_k^{-m}+2.
+\]
+The integer gamma moments are
+\[
+ \mathbb E Y_k^r=\prod_{j=1}^r(1+j/k),\qquad
+ \mathbb E Y_k^{-r}=\prod_{j=0}^{r-1}(1-j/k)^{-1}\quad(r\leq k).
+\]
+Both are at least one.  Since $k\geq4m$,
+\begin{align*}
+ \log\mathbb E Y_k^{2m}
+  &\leq\frac{m(2m+1)}k\leq\frac{3m^2}k,\\
+ \log\mathbb E Y_k^{-2m}
+  &\leq\frac2k\sum_{j=0}^{2m-1}j
+   \leq\frac{4m^2}k.
+\end{align*}
+Here $-\log(1-u)\leq2u$ for $0\leq u\leq1/2$ supplies the second
+line.  These estimates prove the first inequality in
+\eqref{efflerch:eq:moments}.  Finally $4m^2/k\leq1/4$ and
+$e^{1/4}\leq(1-1/4)^{-1}=4/3$ give the displayed rational bound.
+\end{proof}
+
+\begin{proposition}[Uniform relative sign control away from Appell roots]
+\label{efflerch:prop:sign}
+Fix $n,k\geq1$, a real $s$ at distance at least $d>0$ from every
+root of $Q_n$, and put $m=\lceil1+n/d\rceil$.
+If $k\geq16m^2$, then, simultaneously for $0\leq\rho\leq1$,
+\begin{equation}\label{efflerch:eq:relative}
+ \left|
+  \frac{(ke^{-s})^{k+1}F_{n,k}^\rho(ke^{-s})}
+       {k! W_\rho(e^s)Q_n(s)}-1
+ \right|\leq\sqrt{2/3}<1.
+\end{equation}
+In particular, $F_{n,k}^\rho(ke^{-s})$ and $Q_n(s)$ have the same sign.
+\end{proposition}
+\begin{proof}
+The substitution $t=e^s y$ in \eqref{efflerch:eq:F} gives the exact
+normalized expression
+\[
+ \frac{(ke^{-s})^{k+1}F_{n,k}^\rho(ke^{-s})}
+      {k!W_\rho(e^s)Q_n(s)}
+ =\mathbb E\left[
+  \frac{W_\rho(e^sY_k)}{W_\rho(e^s)}
+  \frac{Q_n(s+\log Y_k)}{Q_n(s)}\right].
+\]
+For $u\in\mathbb R$, the product over roots gives
+\[
+ \left|\frac{Q_n(s+u)}{Q_n(s)}-1\right|
+  \leq\prod_{j=1}^n\left(1+\frac{|u|}{|s-x_{n,j}|}\right)-1
+  \leq e^{n|u|/d}-1.
+\]
+Put $R=W_\rho(e^{s+u})/W_\rho(e^s)$.  Lemma~\ref{efflerch:lem:weight}
+implies $R\leq e^{|u|}$ and $|R-1|\leq e^{|u|}-1$.
+Consequently
+\[
+ \left|R\frac{Q_n(s+u)}{Q_n(s)}-1\right|
+  \leq e^{(1+n/d)|u|}-1\leq e^{m|u|}-1.
+\]
+Take expectations and apply Lemma~\ref{efflerch:lem:moments}.
+This also supplies all needed absolute integrability.
+\end{proof}
+
+\subsection{Completion of the zero theorem and the joint limit}
+
+\begin{proof}[Proof of Theorem~\ref{efflerch:thm:explicit}]
+Put $\eta=8n/\sqrt{k}$.  By \eqref{efflerch:eq:Kn},
+$\eta\leq\delta_n/3$ and $k\geq256$.
+The intervals $[x_{n,j}-\eta,x_{n,j}+\eta]$ are disjoint.
+Each endpoint is at distance at least $\eta$ from every Appell root.
+For $d=\eta$ the integer in Proposition~\ref{efflerch:prop:sign} satisfies
+\[
+ m=\left\lceil1+\frac{\sqrt{k}}8\right\rceil
+  \leq2+\frac{\sqrt{k}}8\leq\frac{\sqrt{k}}4,
+\]
+so $k\geq16m^2$.  That proposition transfers the opposite Appell
+signs at the two endpoints to the normalized Lerch family, uniformly
+in $\rho$.  The decreasing change of coordinate $a=ke^{-s}$ gives
+one positive zero in each of the corresponding $n$ disjoint intervals.
+
+The global zero bound counts multiplicity and allows at most $n$.
+It therefore excludes every additional positive zero and every
+multiple zero.  The $j$th interval consequently contains precisely
+$a_{n,j,k}^\rho$ in the stated ordering.  Its endpoints yield
+\eqref{efflerch:eq:location}.
+\end{proof}
+
+\begin{corollary}[A growing Laurent index]
+\label{efflerch:cor:growing}
+Fix $0<\alpha<1/2$.  For all sufficiently large integers $k$,
+simultaneously for
+\[
+ 2\leq n\leq\alpha\frac{\log k}{\log\log k},\qquad
+ 1\leq j\leq n,\qquad 0\leq\rho\leq1,
+\]
+the family has exactly $n$ simple positive zeros and
+\begin{equation}\label{efflerch:eq:growing}
+ \frac{a_{n,j,k}^\rho}{k e^{-x_{n,j}}}=1+o(1).
+\end{equation}
+More precisely, the logarithmic error is bounded by $8n/\sqrt{k}$
+throughout this range.
+\end{corollary}
+\begin{proof}
+Equation~\eqref{efflerch:eq:Kn} gives
+$\log K_n=2n\log n+O(n)$.  At the largest permitted $n$, this is
+at most $(2\alpha+o(1))\log k<\log k$; the same bound holds for
+every smaller $n$, with finitely many bounded indices absorbed by
+increasing the lower threshold for $k$.  Thus $k\geq K_n$ throughout
+the range.  Theorem~\ref{efflerch:thm:explicit} applies, and
+$8n/\sqrt{k}\to0$ uniformly there.  Exponentiation proves
+\eqref{efflerch:eq:growing}.
+\end{proof}
+
+\begin{remark}[A replaceable separation input]
+The argument actually proves the stronger reusable statement: if any
+$\delta>0$ is a proved lower bound for $\operatorname{mesh}(Q_n)$, then
+the same location bound holds once
+\[
+ k\geq\max\{256,(24n/\delta)^2\}.
+\]
+The explicitly constructed $\delta_n$ makes this unconditional for every
+index.  Sharper analytic estimates or certified Appell root brackets can
+be inserted without changing the positive-kernel proof.  This is a
+natural route to much smaller effective thresholds.
+\end{remark}
+
+\subsection{Concrete sufficient thresholds from rational root isolation}
+
+The proof of Proposition~\ref{efflerch:prop:mesh} gives the more precise
+inequality $\operatorname{mesh}(Q_n)\geq\operatorname{mesh}(B_n)$.
+The latter is a rational-polynomial problem.  The accompanying
+\texttt{lerch\_verify\_effective.py} constructs $B_n$ in exact fraction
+arithmetic, removes its simple zero at the origin, and isolates every
+remaining root by a Sturm sequence.  If $[\ell_i,u_i]$ are the ordered
+isolating intervals, then
+$\min_i(\ell_{i+1}-u_i)$ is a rational lower mesh bound.
+The exact root count certifies completeness of this finite list.
+
+The table records a subset of the replayed cases $2\leq n\leq12$.
+Its last column is exactly
+$\left\lceil\max\{256,(24n/\underline\delta)^2\}\right\rceil$.
+The executable checks both the upper-ceiling inequality and its minimality
+as an integer ceiling by rational comparisons.
+\begin{center}
+\begin{tabular}{rcc}
+\hline
+$n$ & Certified $\underline\delta\leq\operatorname{mesh}(B_n)$
+ & Sufficient $k$ for every $\rho\in[0,1]$\\
+\hline
+2 & $16383/8192$ & $577$\\
+3 & $3333/4096$ & $7830$\\
+4 & $29421/65536$ & $45729$\\
+5 & $4683/16384$ & $176261$\\
+6 & $6495/32768$ & $527797$\\
+7 & $9557/65536$ & $1327197$\\
+8 & $3663/32768$ & $2950044$\\
+\hline
+\end{tabular}
+\end{center}
+These are sufficient thresholds obtained from a common quantitative
+argument; they are not sharp classifications.  The known sharp uniform
+threshold at $n=2$ remains $k=1$.  The same replay verifies six exact
+gamma-moment controls at $k=16m^2$, for $m=1,2,4,8,16,32$, and rejects
+a deliberately out-of-hypothesis control at $m=2,k=4$.
+These finite checks audit the implementation.  The all-index theorem
+and its growing-index corollary rest on the preceding proofs.
+
+\subsection{The terminal branch at arbitrary index}
+
+One further general consequence does not require concentration.  It
+extends the known index-two terminal-branch motion law to any index and
+derivative order whenever the last positive zero is simple.
+
+\begin{proposition}[Strict leftward motion of a simple terminal zero]
+\label{efflerch:prop:terminal}
+Fix $n,k\geq1$.  On an interval $I\subset[0,1)$ suppose the largest
+positive zero $r(\rho)$ of $F_{n,k}^\rho$ exists, is simple, and is
+followed by no further positive zero.  Then $r'(\rho)<0$ on the interior
+of $I$.  At $\rho=0$ the same conclusion holds for a right derivative
+if the simple terminal branch persists there.  In particular, for
+$n\geq2$ and $k\geq K_n$ the last branch is strictly decreasing on $[0,1]$.
+\end{proposition}
+\begin{proof}
+For $0\leq\rho<1$, absolute convergence gives the resolvent identity
+\begin{equation}\label{efflerch:eq:resolvent}
+ \partial_\rho F_{n,k}^\rho(a)
+  =\sum_{h\geq1}\rho^{h-1}F_{n,k}^\rho(a+h).
+\end{equation}
+Indeed, write $F_{n,k}^\rho(a)=\sum_{m\geq0}\rho^m f(a+m)$,
+where $f=F_{n,k}^0$, and sum over $h+m$; the coefficient of
+$\rho^{q-1}f(a+q)$ is $q$.  Every summand on the right of
+\eqref{efflerch:eq:resolvent}, evaluated at $a=r(\rho)$, has the
+same strict sign as $F_{n,k}^\rho$ just to the right of this last
+simple zero.  That is also the sign of $\partial_aF_{n,k}^\rho(r(\rho))$.
+Implicit differentiation yields $r'=-F_\rho/F_a<0$.
+
+In the saturated regime all branches are simple for every
+$\rho\in[0,1]$.  The uniform compact brackets supplied by
+\eqref{efflerch:eq:location}, continuity of the integral in $\rho$,
+and uniqueness inside each bracket give continuity at both endpoints.
+Strict decrease on the interior therefore extends to the closed interval.
+No finite $\rho$-derivative at $\rho=1$ is asserted here.
+\end{proof}
+

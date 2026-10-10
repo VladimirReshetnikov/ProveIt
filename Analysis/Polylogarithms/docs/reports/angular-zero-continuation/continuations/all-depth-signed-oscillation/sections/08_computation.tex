@@ -1,0 +1,182 @@
+\section{Exact rational evaluation and finite certificates}
+\label{ado:sec:computation}
+The density zeros need not be computed in order to obtain numerical
+certificates. The unsigned norm bound $\norm\kappa_1\le2^{d-1}$
+already gives an explicit geometric remainder for a centered
+resolvent expansion. The proof works with real final order; the delivered
+exact implementation accepts positive integer indices so that all
+required moments are rational.
+
+\subsection{A centered-moment expansion}
+Define
+\begin{equation}\label{ado:eq:centeredmoments}
+ B_k=\int_0^1(2u-1)^k\kappa(u)\dd u
+ =\sum_{j=0}^k(-1)^{k-j}\binom{k}{j}2^j c_{\svec}(j+1).
+\end{equation}
+Then $|B_k|\le M$, where $M=2^{d-1}$. For $\Ren z<1$, put
+\[
+ w=\frac{z}{2-z},\qquad |w|<1.
+\]
+The inequality is equivalent to $|z|<|2-z|$. The identity
+$1-zu=(1-z/2)(1-w(2u-1))$ gives
+\begin{theorem}[Geometric exact-evaluation certificate]
+\label{ado:thm:evaluator}
+For every integer $N\ge1$,
+\begin{align}
+ V_N(z)&=\frac{z}{1-z/2}\sum_{k=0}^{N-1}B_kw^k,
+ \label{ado:eq:centeredvalue}\\
+ |L(z)-V_N(z)|
+ &\le\left|\frac{z}{1-z/2}\right|
+          \frac{M|w|^N}{1-|w|}.
+ \label{ado:eq:centerederror}
+\end{align}
+At $z=\ii$ and even $N=2m$, a purely rational bound is
+\begin{equation}\label{ado:eq:gaussianerror}
+ |L(\ii)-V_{2m}(\ii)|<\frac{2^d}{5^m}.
+\end{equation}
+For $|z|\le1/2$, the uniform bound is
+\begin{equation}\label{ado:eq:halferror}
+ |L(z)-V_N(z)|\le\frac{2^{d-1}}{3^N}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The centered geometric series converges uniformly for $u\in[0,1]$,
+and its tail is bounded by $|w|^N/(1-|w|)$. Integrating against
+$|\kappa|$ proves \eqref{ado:eq:centerederror}. At $z=\ii$,
+$|w|=1/\sqrt5$ and $|z/(1-z/2)|=2/\sqrt5$. The multiplicative
+constant is therefore $2M/(\sqrt5-1)<2M=2^d$ after extracting
+$5^{-m}$. On $|z|\le1/2$, one has $|w|\le1/3$ and
+$|z/(1-z/2)|\le2/3$, proving \eqref{ado:eq:halferror}.
+\end{proof}
+For integer indices, \eqref{ado:eq:centeredmoments} and
+\eqref{ado:eq:centeredvalue} use only rational arithmetic at rational
+complex $z$. An enclosing complex disk gives enclosing intervals for
+each coordinate by adding and subtracting its radius. The evaluator
+never treats a small residual as a proof of an identity.
+
+\subsection{Implementation choices and replay}
+The file \texttt{code/exact\_evaluator.py} first obtains the moments
+by dynamic strict prefix sums. It computes $B_k$ with a common integer
+denominator and a repeated-difference transform, rather than a
+floating-point alternating binomial sum. Horner evaluation then gives
+the exact rational center. The generic branch can upper-bound square
+roots by dyadic rationals; the Gaussian and half-disk cases use the
+closed rational bounds above. Near $\Ren z=1$, the fixed norm-bound
+precision in the generic branch can be insufficient, in which case the
+implementation raises an error rather than returns an uncertified value.
+It is not advertised as a complete optimal evaluator on the entire slit
+plane.
+
+From the package root, the principal replay is
+\begin{verbatim}
+python code/verify.py
+\end{verbatim}
+It reads frozen rational certificates and independently recomputes them.
+The optional command
+\begin{verbatim}
+python code/verify.py --regenerate
+\end{verbatim}
+uses floating point to \emph{propose} angular brackets, then requires
+rational arithmetic to certify both endpoint signs before saving them.
+The proposal stage uses a strict-disk series and does not decide any
+accepted sign. This discovery/replay separation is deliberate.
+
+\subsection{Gaussian values}
+The delivered Gaussian certificate file contains eight mixed-depth
+examples, all evaluated with $N=240$ centered terms. Each complex-disk
+radius is smaller than $10^{-81}$. The decimal entries below are
+readable midpoint diagnostics; the certificates are the rational
+endpoints in \texttt{data/gaussian\_enclosures.json}.
+\begin{center}\small
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Index & $\Ren L_{\svec}(\ii)$, approximately
+      & $\Imn L_{\svec}(\ii)$, approximately\\
+\midrule
+$(2,1)$ & $-0.174715661158$ & $-0.113648917600$\\
+$(1,1,1)$ & $0.099953993665$ & $-0.033577147847$\\
+$(2,1,2)$ & $0.032383901801$ & $-0.026348629072$\\
+$(1,2,1,1)$ & $0.001158016810$ & $0.008343470492$\\
+$(2,1,1,2)$ & $0.001825088603$ & $0.006510815484$\\
+$(1,1,1,1,1)$ & $-0.003396506582$ & $-0.001886779708$\\
+$(2,1,2,1,1)$ & $-0.000326599679$ & $-0.000010475684$\\
+$(1,1,1,1,1,1)$ & $0.000443168800$ & $-0.000335617002$\\
+\bottomrule
+\end{tabular}
+\end{center}
+In addition, the eight all-ones Gaussian values at depths one through
+eight are checked against \emph{independent exact} intervals for
+\[
+ L_{\one_d}(\ii)=\frac{(-\tfrac12\log2+\tfrac{\ii\pi}{4})^d}{d!}.
+\]
+The logarithm and $\pi$ intervals are derived from different rational
+series, as detailed in Appendix~\ref{ado:app:controls}. These eight
+normalization controls are distinct from the eight stored mixed-depth
+examples above.
+
+\subsection{Certified angular brackets}
+On the semicircle of radius $1/2$, set
+\begin{equation}\label{ado:eq:rationalcircle}
+ z(t)=\frac{1-t^2}{2(1+t^2)}+\ii\frac{t}{1+t^2},
+ \qquad \theta=2\arctan t,\quad t>0.
+\end{equation}
+Rational $t$ gives rational real and imaginary coordinates. Every saved
+root bracket has $t$-width at most $10^{-12}$; the corresponding
+angle-width is less than $2\cdot10^{-12}$. With $N=104$, the
+error bound \eqref{ado:eq:halferror} proves the two endpoint signs by
+strict rational comparisons. For illustration:
+\begin{center}\small
+\begin{tabular}{@{}lcrr@{}}
+\toprule
+Index & $k$ & $10^{12}t_{\rm left}$ & $10^{12}t_{\rm right}$\\
+\midrule
+$(2,1,2)$ & 1 & 472099547153 & 472099547154\\
+$(2,1,2)$ & 2 & 1487963538987 & 1487963538988\\
+$(1,2,1,1)$ & 1 & 314972569528 & 314972569529\\
+$(1,2,1,1)$ & 2 & 806524527583 & 806524527584\\
+$(1,2,1,1)$ & 3 & 2019771345242 & 2019771345243\\
+$(1,1,1,1,1,1)$ & 3 & 774596669241 & 774596669242\\
+\bottomrule
+\end{tabular}
+\end{center}
+The file \texttt{data/angular\_brackets.json} contains 24 brackets in
+eight complete index families of depths two through six, together with
+all exact coordinate intervals. The existence of a zero in each bracket
+follows from the opposite signs. The theorem, rather than a scan,
+proves uniqueness in every bracket and excludes all additional angular
+zeros. For the displayed middle branch at depth six, the all-ones
+formula independently gives
+$\theta_3(1/2)=\arccos(1/4)$ and $t=\sqrt{3/5}$.
+
+\subsection{What the exact suite checks}
+The fresh replay reports 5,713 finite check groups:
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}Xr@{}}
+\toprule
+Check family & Count\\
+\midrule
+Strict coefficients against direct finite nested enumeration & 1080\\
+Initial zero moments and leading coefficients & 120\\
+Centered moments: independent binomial formula and norm bound & 2880\\
+Polynomial compensation identities for arbitrary test roots & 1200\\
+All-ones moments against unsigned Stirling recurrence & 240\\
+Logistic-kernel derivatives through depth twelve & 11\\
+Depth-three/four symbolic kernel formulas & 2\\
+Exact generalized-kernel counterexample checks & 2\\
+Rejected negative controls & 2\\
+Rational atomic radial-argument derivative signs & 80\\
+Independent exact all-ones Gaussian controls & 8\\
+Replayed stored Gaussian enclosures & 8\\
+Replayed angular endpoint signs & 48\\
+Replayed root brackets and complete families & $24+8$\\
+\midrule
+Total & 5713\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The polynomial compensation tests deliberately use arbitrary rational
+roots: they test the cancellation identity, \emph{not} positivity for
+those roots. Positivity requires the actual density zeros and is proved
+analytically. Similarly, finite atomic derivative checks do not replace
+the interlacing-and-approximation proof of
+Lemma~\ref{ado:lem:radialPick}.

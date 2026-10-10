@@ -1,0 +1,142 @@
+\section{Exact oscillation and two interlacing laws}
+\label{ado:sec:oscillation}
+The central mechanism is a balance between moment orthogonality and
+Rolle's theorem. Vanishing moments force sign changes; the two derivative
+identities prevent extra zeros. This proof does not assume a
+variation-diminishing theorem for fractional integration.
+
+\begin{lemma}[Vanishing moments force sign changes]
+\label{ado:lem:momentchanges}
+Suppose a nonzero continuous real $f\in L^1(0,1)$ has finitely many
+zeros and
+\[
+ \int_0^1u^j f(u)\dd u=0\qquad(0\le j\le m-1).
+\]
+Then $f$ has at least $m$ sign changes in $(0,1)$.
+\end{lemma}
+\begin{proof}
+If its sign changes were $t_1,\ldots,t_k$ with $k<m$, the polynomial
+$Q(u)=\prod_{j=1}^k(u-t_j)$ would have degree at most $m-1$ and
+$Qf$ would have one fixed nonzero sign except at finitely many points.
+Its integral would be nonzero, contradicting orthogonality. A zero at
+which no sign change occurs is not included in $Q$.
+\end{proof}
+
+\begin{theorem}[Exact density zeros]
+\label{ado:thm:oscillation}
+For \eqref{ado:eq:domain}, $\kappa_{\svec}$ has exactly $d-1$
+distinct simple zeros in $(0,1)$. Its sign alternates at those zeros,
+and it is positive on the interval to the right of its largest zero.
+\end{theorem}
+\begin{proof}
+At depth one, $f_b$ is strictly positive and has no zero. Suppose first
+that a density $f$ at depth $d-1$ has exactly $d-2$ simple zeros.
+By \eqref{ado:eq:opderivatives}, the derivative of $\Bop f$ has
+exactly those zeros. Rolle's theorem therefore bounds the number of
+distinct zeros of $\Bop f$ by $d-1$. This also rules out an infinite
+set of zeros: any $d$ distinct zeros would already force too many
+zeros of the derivative.
+
+The first $d-1$ moments of the new density vanish, by
+\eqref{ado:eq:opmoments}. Lemma~\ref{ado:lem:momentchanges} supplies
+at least $d-1$ sign changes, so the upper bound is attained. There is
+one derivative zero between each pair of consecutive new zeros, using
+all $d-2$ derivative zeros. None remains at a new zero. Hence every
+new zero is simple.
+
+Now suppose $f$ is a depth-$d$ density with exactly $d-1$ simple
+zeros, and put $g=\Aop f$. We have $g(1)=0$. If $g$ had $k$
+interior zeros, Rolle's theorem between successive interior zeros and
+between the largest one and the endpoint one would give at least $k$
+zeros of $g'=-f/u$. Thus $k\le d-1$. Its first $d-1$ moments still
+vanish, so the same lower bound gives exactly $d-1$ sign changes.
+The derivative zeros are now all allocated to those successive
+intervals, including the last interval ending at one. Consequently the
+interior zeros of $g$ are simple. Repeating this argument for each
+occurrence of $\Aop$ and $\Bop$ proves the zero count.
+
+Let $P(u)$ be the monic polynomial whose roots are the resulting
+$d-1$ zeros. The product $P\kappa_{\svec}$ has a fixed strict sign
+off its roots. Orthogonality to degrees at most $d-2$ gives
+\[
+ \int_0^1P(u)\kappa_{\svec}(u)\dd u
+ =\int_0^1u^{d-1}\kappa_{\svec}(u)\dd u=C_{\svec}>0.
+\]
+Thus $P\kappa_{\svec}$ is positive, and since $P$ is positive to
+the right of its largest root, so is $\kappa_{\svec}$.
+\end{proof}
+
+\begin{corollary}[Index raising and depth raising interlace]
+\label{ado:cor:interlacing}
+If $f=\kappa_{\svec}$ has roots $r_1<\cdots<r_{d-1}$ and
+$\Aop f$ has roots $q_1<\cdots<q_{d-1}$, then
+\begin{equation}\label{ado:eq:Ainterlace}
+ q_1<r_1<q_2<r_2<\cdots<q_{d-1}<r_{d-1}<1.
+\end{equation}
+Thus raising the first index by one moves every density zero strictly
+toward zero. If a depth-$(d-1)$ density has roots
+$t_1<\cdots<t_{d-2}$ and $\Bop f$ has roots $r_1<\cdots<r_{d-1}$,
+then
+\begin{equation}\label{ado:eq:Binterlace}
+ r_1<t_1<r_2<\cdots<t_{d-2}<r_{d-1}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+These are precisely the derivative-zero allocations in the preceding
+proof. In the $\Aop$ case the last interval is $(q_{d-1},1)$; in the
+$\Bop$ case all intervals are between consecutive interior zeros.
+The number of derivative zeros equals the number of allocated intervals,
+so the inequalities are strict and exhaustive.
+\end{proof}
+
+\subsection{Positive seeds, terminal mixtures, and a Lerch extension}
+The preceding proof used only positivity, smoothness, integrability, and
+the positive mass of the initial density. The explicit form
+\eqref{ado:eq:seed} was needed to identify its moments as $n^{-b}$.
+
+\begin{theorem}[Positive-seed extension]
+\label{ado:thm:seedextension}
+Let $f$ be a smooth strictly positive density in $L^1(0,1)$, of mass
+$M_0>0$. Replace $f_b$ by $f$ in \eqref{ado:eq:kappaconstruction}.
+All density-zero, interlacing, compensation, slit-plane nonvanishing,
+and angular-count conclusions of this article remain valid. The norm
+bound becomes $2^{d-1}M_0$, and the mass of the positive compensated
+measure is
+\[
+ \frac{M_0}{d^{s_1}(d-1)^{s_2}\cdots2^{s_{d-1}}}.
+\]
+\end{theorem}
+\begin{proof}
+The operator identities still hold. After $d-1$ strict prefix steps,
+the first $d-1$ moments vanish and the first nonzero moment is the
+stated positive number. The proof of Theorem~\ref{ado:thm:oscillation}
+therefore applies unchanged. The arguments in the next two sections
+use only these moment and oscillation properties, and so establish the
+remaining assertions as well.
+\end{proof}
+In particular, for fixed leading indices, every finite positive linear
+combination
+\begin{equation}\label{ado:eq:terminalmixture}
+ \sum_{j=1}^N a_j L_{s_1,\ldots,s_{d-1},b_j}(z),
+ \qquad a_j>0,\quad b_j>0,
+\end{equation}
+has the same nonvanishing and exact angular-count properties. Its seed
+is $\sum a_jf_{b_j}$. This is a special convex-closure statement; sums
+of arbitrary zero-free holomorphic functions need not be zero-free.
+
+For a second application, take $\lambda>-1$ and
+\[
+ f_{b,\lambda}(u)=u^\lambda
+                \frac{(-\log u)^{b-1}}{\Gamma(b)}.
+\]
+Its moments are $(n+\lambda)^{-b}$ and its mass is
+$(1+\lambda)^{-b}$. The resulting strict shifted-terminal family is
+\begin{equation}\label{ado:eq:lerchfamily}
+ L^{(\lambda)}_{s_1,\ldots,s_{d-1};b}(z)
+ =\sum_{n_1>\cdots>n_d\ge1}
+ \frac{z^{n_1}}{n_1^{s_1}\cdots n_{d-1}^{s_{d-1}}(n_d+\lambda)^b}.
+\end{equation}
+It has the same minimal compensator degree $d-1$ and exactly $d-1$
+angular zeros for $0<\rho\le1$. At depth one it is the usual
+$z$-multiple of a Lerch series. No assertion is made here about shifts
+in all denominators simultaneously.

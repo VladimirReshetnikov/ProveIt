@@ -1,8 +1,9 @@
 """Exact small-parameter matching updates for a source residual window."""
 from fractions import Fraction
 
-from .normal_sector import _nullspace,_rref,SectorKernel,_dot
+from .normal_sector import _nullspace,_rref,SectorKernel
 from .normal_surface_geometry import _coordinates
+from .sector_linear_form import SparseLinearForm
 
 
 def canonical_matching_basis(vectors,width,check,*,return_transform=False):
@@ -145,9 +146,9 @@ class ProjectedWindowKernel(SectorKernel):
     def lift(self,quadrilaterals,check=lambda:None):
         q=tuple(quadrilaterals)
         if (len(q)!=len(self.support)or any(type(x)is not int or x<0 for x in q)
-                or any(_dot(row,q)for row in self.cycle_rows)):
+                or any(row.dot(q)for row in self.cycle_rows)):
             raise ValueError('quadrilateral vector is outside the updated cone')
-        values={c:_dot(self.potentials[c],q)for c in self.classes}
+        values={c:self.potentials[c].dot(q)for c in self.classes}
         for group in self.groups:
             minimum=min(values[c]for c in group)
             for c in group:
@@ -207,26 +208,26 @@ def projected_window_kernel(raw,prepared,support,basis,global_potentials,check,*
     classes=tuple(sorted(c for group in groups for c in group));lookup={c:i for i,c in enumerate(classes)}
     potentials={}
     for c in classes:
-        row=[Fraction(0)]*k
-        for p,value in zip(free,coefficient_forms[c]):row[p]=value
-        potentials[c]=tuple(row)
+        potentials[c]=SparseLinearForm(k,dict(zip(free,coefficient_forms[c])))
     cycle_rows=[]
     for j in range(k):
         check()
         if j in free:continue
-        row=[Fraction(0)]*k;row[j]=1
-        for p,vector in zip(free,basis):row[p]-=vector[j]
-        cycle_rows.append(tuple(row))
-    matrix=[(Fraction(0),)*len(classes)+row for row in cycle_rows]
+        row={j:1}
+        for p,vector in zip(free,basis):row[p]=-vector[j]
+        cycle_rows.append(SparseLinearForm(k,row))
+    matrix=[SparseLinearForm(len(classes)+k,{len(classes)+j:value for j,value in row.coefficients.items()})
+            for row in cycle_rows]
     for group in groups:
         anchor=group[0]
         for c in group[1:]:
-            check();row=[Fraction(0)]*(len(classes)+k)
-            row[lookup[c]]=1;row[lookup[anchor]]=-1
-            for j in range(k):row[len(classes)+j]=potentials[anchor][j]-potentials[c][j]
-            matrix.append(tuple(row))
+            check();row={lookup[c]:1,lookup[anchor]:-1}
+            for j in free:row[len(classes)+j]=potentials[anchor][j]-potentials[c][j]
+            matrix.append(SparseLinearForm(len(classes)+k,row))
     stats=dict(tetrahedra=len(prepared['tetrahedra']),allowed_types=k,matching_nullity=d,
         matching_rank=k-d,triangle_classes=len(classes),kernel_variables=len(classes)+k,
-        kernel_equations=len(matrix),projected_window_kernel=True)
+        kernel_equations=len(matrix),projected_window_kernel=True,sparse_window_geometry=True,
+        stored_matrix_coefficients=sum(len(row.coefficients)for row in matrix),
+        stored_potential_coefficients=sum(len(row.coefficients)for row in potentials.values()))
     return ProjectedWindowKernel(raw,prepared,support,tuple(corner_class),classes,groups,tuple(matrix),
         potentials,tuple(cycle_rows),basis,stats)

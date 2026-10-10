@@ -1731,3 +1731,7 @@ if os.path.exists('data/window-euler-benchmark.json'):
 if os.path.exists('data/window-modes-benchmark.json'):
     import runpy
     runpy.run_path('data/window_modes_tables.py')
+
+if os.path.exists('data/window-geometry-benchmark.json'):
+    import runpy
+    runpy.run_path('data/window_geometry_tables.py')

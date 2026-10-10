@@ -1,0 +1,131 @@
+\section{Small-radius and large-outer-index expansions}
+\label{ado:sec:asymptotics}
+The global count removes an ambiguity from local expansions: the zeros
+found near the first Fourier-mode zeros are the entire list of angular
+zeros, not just selected branches.
+
+\begin{theorem}[Two-term radial expansion]
+\label{ado:thm:radialexpansion}
+Fix an index satisfying \eqref{ado:eq:domain} with $d\ge2$, and put
+\[
+ p=\frac{c_{\svec}(d+1)}{C_{\svec}},\qquad
+ q=\frac{c_{\svec}(d+2)}{C_{\svec}},\qquad
+ \alpha_k=\frac{k\pi}{d}.
+\]
+The $k$th angular branch extends real analytically to $\rho=0$, and
+\begin{align}
+ \theta_k(\rho)={}&\alpha_k
+ -\frac{p}{d}\sin\alpha_k\,\rho \notag\\
+ &+\left(\frac{d+1}{d^2}p^2-\frac{2q}{d}\right)
+       \sin\alpha_k\cos\alpha_k\,\rho^2
+ +O_{\svec}(\rho^3).
+ \label{ado:eq:radialexpansion}
+\end{align}
+In particular, every branch initially moves strictly toward smaller
+angles as the radius increases from zero.
+\end{theorem}
+\begin{proof}
+Divide the imaginary part of the disk series by $C_{\svec}\rho^d$.
+The resulting analytic equation is
+\[
+ 0=\sin(d\theta)+p\rho\sin((d+1)\theta)
+                   +q\rho^2\sin((d+2)\theta)+O(\rho^3).
+\]
+At $(\rho,\theta)=(0,\alpha_k)$ its $\theta$ derivative is
+$d(-1)^k\ne0$, so the analytic implicit-function theorem applies.
+There are $d-1$ such branches; for small positive radius they exhaust
+the global list from Theorem~\ref{ado:thm:angular}.
+
+Write $\theta=\alpha_k+A\rho+B\rho^2+O(\rho^3)$ and divide by
+$(-1)^k$. The coefficients of $\rho$ and $\rho^2$ are respectively
+\[
+ dA+p\sin\alpha_k,
+ \qquad dB+(d+1)pA\cos\alpha_k+q\sin(2\alpha_k).
+\]
+Solving gives \eqref{ado:eq:radialexpansion}. The first derivative is
+negative because $p>0$ and $0<\alpha_k<\pi$.
+\end{proof}
+Higher Taylor coefficients are obtained by the same finite coefficient
+recursion. At each order the new unknown occurs with coefficient
+$d(-1)^k$, while all remaining terms depend only on earlier
+coefficients and finitely many moments. This is an exact algebraic
+recurrence, not a proof of any global radial sign.
+
+\subsection{Uniformity as the first index increases}
+Fix $d\ge2$ and positive integer middle indices
+$s_2,\ldots,s_{d-1}$. Let the first index be $a\in\bbN$ and the
+last be $b>0$. Define
+\[
+ T_N(b)=\sum_{N\ge n_2>\cdots>n_d\ge1}
+       \frac1{n_2^{s_2}\cdots n_{d-1}^{s_{d-1}}n_d^b},
+ \qquad T_*=T_{d-1}(b)>0.
+\]
+The latter number is a single-chain value and is independent of $b$.
+At depth two, $T_N(b)=H_N^{(b)}$ and $T_*=1$.
+
+\begin{theorem}[First displacement, uniformly in the final order]
+\label{ado:thm:largeouter}
+Set $\lambda=d/(d+1)$ and $\mu=d/(d+2)$. As $a\to\infty$ through
+positive integers, uniformly for $b>0$, $0\le\rho\le1$, and
+$1\le k\le d-1$,
+\begin{equation}\label{ado:eq:largeouter}
+ \theta_k(\rho)
+ =\alpha_k-\frac{T_d(b)}{dT_*}\sin\alpha_k\,
+                      \rho\lambda^a
+       +O\bigl(\rho^2\mu^a\bigr).
+\end{equation}
+At $\rho=0$, the branch is interpreted by its analytic extension.
+The implied constant and the starting threshold for $a$ may depend on
+the fixed depth and middle indices, but not on $b$, $\rho$, or $k$.
+\end{theorem}
+\begin{proof}
+The normalized imaginary part is
+\begin{equation}\label{ado:eq:outereq}
+ \sin(d\theta)+\frac{T_d(b)}{T_*}\rho\lambda^a
+                   \sin((d+1)\theta)+R(\theta),
+\end{equation}
+where
+\[
+ R(\theta)=\sum_{n\ge d+2}\frac{T_{n-1}(b)}{T_*}
+        \rho^{n-d}\left(\frac dn\right)^a\sin(n\theta).
+\]
+All inner denominators are at least one, so
+$0\le T_{n-1}(b)\le n^{d-1}$ uniformly for $b>0$. Choose the fixed
+integer $a_0=d+3$. For $a\ge a_0$, termwise differentiation is
+absolutely justified and
+\begin{equation}\label{ado:eq:outertail}
+ |R(\theta)|+|R'(\theta)|\le K\rho^2\mu^a,
+ \quad
+ K=\frac2{T_*}\sum_{n\ge d+2}n^d
+                        \left(\frac{d+2}{n}\right)^{a_0}<\infty.
+\end{equation}
+Also $T_d(b)/T_*\le d^{d-1}/T_*$, independently of $b$.
+
+On disjoint fixed small neighborhoods of the $\alpha_k$, the derivative
+of the first term of \eqref{ado:eq:outereq} is bounded away from zero.
+Its perturbation tends to zero uniformly by \eqref{ado:eq:outertail}.
+Evaluating at $\alpha_k\pm K_1\rho\lambda^a$, for a sufficiently
+large fixed $K_1$, gives opposite signs for all sufficiently large $a$.
+This follows from the linear term $d(\theta-\alpha_k)$ and the
+uniform bounds on the perturbations; $\mu/\lambda<1$. Thus each
+neighborhood contains a unique root with displacement
+$\delta=O(\rho\lambda^a)$. The global count identifies these roots
+as all the branches in their established order.
+
+Expand \eqref{ado:eq:outereq} at $\alpha_k$ and divide by $(-1)^k$.
+The root equation becomes
+\[
+ 0=d\delta+\frac{T_d(b)}{T_*}\rho\lambda^a\sin\alpha_k
+     +O\bigl(\delta^2+\rho\lambda^a|\delta|
+                         +\rho^2\mu^a\bigr).
+\]
+Because $\lambda^2<\mu$, the previously obtained displacement bound
+makes the error $O(\rho^2\mu^a)$. Division by $d$ proves
+\eqref{ado:eq:largeouter}. All constants used above are independent
+of the final order.
+\end{proof}
+At depth two and unit radius this recovers the leading scale
+$(2/3)^a$ already present in the manuscript's more detailed depth-two
+expansion~\cite{repoSigned}. The added content is the simultaneous
+all-depth statement, the exact branch indexing, and uniformity over the
+entire range $b>0$ and $0\le\rho\le1$.

@@ -1,0 +1,1364 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newpxtext,newpxmath}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{microtype,booktabs,array,longtable,enumitem}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{bookmark}
+\crefname{theorem}{Theorem}{Theorems}
+\crefname{lemma}{Lemma}{Lemmas}
+\crefname{proposition}{Proposition}{Propositions}
+\crefname{corollary}{Corollary}{Corollaries}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.1em}
+\setlist{itemsep=3pt,topsep=5pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Imn}{Im}
+\DeclareMathOperator{\supp}{supp}
+\newcommand{\E}{\mathbb E}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\cut}{\C\setminus[1,\infty)}
+\newcommand{\repo}{\texttt{ProveIt}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Global radial monotonicity}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\hypersetup{pdftitle={Global Radial Monotonicity for Harmonic Polylogarithms},pdfauthor={OpenAI-assisted research for the ProveIt project},pdfsubject={Exact all-radius inequalities, quantitative stability and positive binomial identities}}
+\begin{document}
+\begin{titlepage}
+\setlength{\parindent}{0pt}
+\thispagestyle{empty}
+{\small\sffamily\bfseries PROVEIT\quad /\quad ANALYSIS\quad /\quad POLYLOGARITHMS\par}
+\vspace{17mm}
+{\Huge\bfseries Global Radial Monotonicity\par}
+\vspace{3mm}
+{\Huge\bfseries for Harmonic Polylogarithms\par}
+\vspace{8mm}
+{\Large A uniform outer-order theorem, quantitative\par
+inner-order stability, and positive binomial identities\par}
+\vspace{13mm}
+{\large Research continuation prepared for\par
+Vladimir Reshetnikov's ProveIt project\par}
+\vspace{4mm}
+{10 October 2026\par}
+\vspace{12mm}
+\begin{minipage}{\textwidth}
+\textbf{Abstract.}
+For $F_{a,b}(z)=\sum_{n>m\ge1}z^n/(n^a m^b)$, let
+$\theta_{a,b}(\rho)$ be the unique upper-semicircle zero of its imaginary
+part and put $\eta_{a,b}(\rho)=\cos\theta_{a,b}(\rho)/\rho$.
+We prove strict decrease of $\eta$ on the entire interval $0<\rho\le1$
+for every real $a\ge8$ and every $b>0$, with the explicit differential
+bound $\eta'(\rho)<-\rho H_4^{(b)}(2/5)^a/120$.
+The argument combines a uniform localization of the zero, a low-mode
+inequality certified by ten positive rational Bernstein coefficients,
+and analytic bounds for the full infinite tail.
+A separate stability theorem proves the same global direction for every
+$a>0$ whenever $2^{-b}<[(2/5)^a-(3/8)^a]/256$.
+Thus the integer outer-order conjecture is reduced to six bounded
+inner-order strips, rather than merely verified near the origin.
+We derive a weighted cubic-moment criterion for radial motion, a
+positive squared-resolvent representation, and convergent binomial
+identities with exact remainders, including a specialization for
+$\pi\log2$. Standard-library rational verifiers certify the uniform
+bounds, eight angular-root brackets, and nine Gaussian values.
+The full normalized-radius conjecture and the arithmetic $S_6,S_8$
+candidates are not claimed resolved.
+\end{minipage}
+\vfill
+{\small Ordinary analytic proofs with finite exact certificates; not a proof-assistant
+formalization or an externally refereed paper. No literature-wide priority claim is made.\par}
+\end{titlepage}
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{Research target, provenance, and principal results}
+\label{sec:overview}
+The current manuscript \emph{Polylogarithms and their Arithmetic Bridges}
+already proves that the first nonconstant radial coefficient has the
+conjectured sign for all real outer orders $a\ge2$ and all positive
+inner orders $b$ \cite{repo-local}. That is a local theorem: it does not
+exclude a derivative changing sign farther along the zero curve.
+The manuscript also proves global decrease in the exact limit
+$b=\infty$, while explicitly declining to infer the same assertion for
+finite $b$ \cite{repo-cartesian}. These are the two gaps addressed here.
+
+Our repository reference is the retrieved revision
+\begin{center}
+\small\texttt{3338e535ef54ad8f6be56bdce8b3d084a2924465}.
+\end{center}
+The relevant chapter paths and blob identifiers are recorded in
+\path{provenance/SOURCES.md}. The incoming directory was inventoried;
+this is not a claim that every incoming archive was fully audited.
+The accessible incoming quartic-bifurcation article treats a distinct,
+local fractional-order transition and two turning points
+\cite{incoming-bifurcation}. The incoming all-depth and sharp-Euler
+articles likewise address different questions
+\cite{incoming-oscillation,incoming-euler}.
+
+\subsection{Conventions and inherited facts}
+For $a,b>0$, write
+\begin{equation}\label{eq:def}
+ F_{a,b}(z)=\sum_{n\ge2}c_nz^n,
+ \qquad c_n=\frac{H_{n-1}^{(b)}}{n^a},
+ \qquad H_k^{(b)}=\sum_{j=1}^k j^{-b}.
+\end{equation}
+The sum is strict, not a multiple-star sum. We use the principal
+continuation to $\cut$, consistent with the depth-one conventions in
+DLMF \S25.12 \cite{dlmf-polylog}. Every boundary value below lies away
+from the cut. In both parameter regimes of our global theorems,
+$a+b>1$, so the boundary series is also ordinarily convergent.
+
+The manuscript's finite signed-measure theorem supplies the following
+fact on the domain $a,b>0$, $a+b>1$: on every open upper semicircle
+$z=\rho e^{\ii\theta}$, $0<\rho\le1$, the imaginary part has exactly one
+simple zero, denoted $\theta_{a,b}(\rho)$, with
+\begin{equation}\label{eq:inherited-angle}
+ \arccos\rho<\theta_{a,b}(\rho)<\frac\pi2,
+ \qquad \partial_\theta\Imn F_{a,b}(\rho e^{\ii\theta})<0
+ \quad\text{at the zero}.
+\end{equation}
+This statement and its proof are inherited from \cite{repo-orders},
+not claimed as a new result. For $a\ge8$ we also give an independent
+uniqueness argument using the same estimates as the radial proof.
+Define
+\begin{equation}\label{eq:normalization}
+ s=\rho^2,\qquad
+ m(s)=\frac{2\cos\theta_{a,b}(\rho)}\rho,\qquad
+ \eta_{a,b}(\rho)=\frac{m(\rho^2)}2.
+\end{equation}
+In particular, $\eta'(\rho)=\rho m'(s)$; this factor is essential.
+
+\subsection{Statements of the two global results}
+\begin{theorem}[Uniform outer-order theorem]\label{thm:main}
+For every real $a\ge8$, every $b>0$, and $0<\rho\le1$,
+\begin{equation}\label{eq:main-bound}
+ \eta_{a,b}'(\rho)
+ <-\frac{\rho}{120}H_4^{(b)}\left(\frac25\right)^a<0.
+\end{equation}
+The function extends continuously to zero with
+\begin{equation}\label{eq:initial}
+ \eta_{a,b}(0)=\frac{1+2^{-b}}2\left(\frac23\right)^a,
+\end{equation}
+and consequently
+\begin{equation}\label{eq:gap}
+ \eta_{a,b}(0)-\eta_{a,b}(\rho)
+ >\frac{\rho^2}{240}H_4^{(b)}\left(\frac25\right)^a.
+\end{equation}
+At $\rho=1$, the derivative is the derivative of the local analytic
+continuation of the zero curve, equivalently its left derivative.
+\end{theorem}
+
+\begin{theorem}[Quantitative finite-inner-order transfer]\label{thm:large-b}
+For $a>0$, put
+\begin{equation}\label{eq:delta}
+ \Delta(a)=\left(\frac25\right)^a-\left(\frac38\right)^a>0.
+\end{equation}
+If $b>0$ satisfies
+\begin{equation}\label{eq:large-b-condition}
+ 2^{-b}<\frac{\Delta(a)}{256},
+\end{equation}
+then $\eta_{a,b}'(\rho)<0$ for every $0<\rho\le1$.
+Under the stronger condition $2^{-b}\le\Delta(a)/512$,
+\begin{equation}\label{eq:large-b-gap}
+ \eta_{a,b}'(\rho)\le-\frac{\rho\Delta(a)}{16}.
+\end{equation}
+\end{theorem}
+
+For integer $a$ the first sufficient integer thresholds in
+\eqref{eq:large-b-condition} are as follows; these are not optimal
+thresholds for the actual phenomenon.
+\begin{center}
+\begin{tabular}{@{}lrrrrrrrr@{}}
+\toprule
+Outer order $a$ &1&2&3&4&5&6&7&8\\
+Sufficient $b\ge$&14&14&15&16&17&18&19&20\\
+\bottomrule
+\end{tabular}
+\end{center}
+For $a=8$ the entry is redundant by \cref{thm:main}. Thus the original
+integer conjecture for $a\ge2$ is reduced to the six strips
+$2\le a\le7$, with the integer $a$ fixed and $0<b<B_a$ bounded by this
+table. No proof is claimed for every point of those remaining strips.
+
+\subsection{Scope and originality discipline}
+The additions relative to the inspected sources are the two explicit
+all-radius regimes, their quantitative gaps, the cubic-moment velocity
+formula, and the stated binomial identities and certificates.
+Positive integral manipulations, Chebyshev representations, Bernstein
+positivity, and elementary geometric acceleration are background
+methods. An identity derived here need not be absent from the wider
+literature. In particular, the new positive series is not asserted to
+improve the sharp universal Euler evaluator in the incoming work.
+
+\section{Positive kernels, moments, and a real zero equation}
+\label{sec:kernels}
+\subsection{The inherited double kernel and its probability form}
+The manuscript proves \cite{repo-kernel}
+\begin{equation}\label{eq:double}
+ F_{a,b}(z)=z^2\int_{0<y<x<1}
+ \frac{W_{a,b}(x,y)}{(1-xz)(1-yz)}\dd y\dd x,
+\end{equation}
+where
+\begin{equation}\label{eq:weight}
+ W_{a,b}(x,y)=
+ \frac{(-\log x)^{a-1}(\log(x/y))^{b-1}}{\Gamma(a)\Gamma(b)},
+ \qquad \int W_{a,b}=2^{-a}=c_2.
+\end{equation}
+For completeness, the substitution $y=xv$ gives
+\[
+ \int W_{a,b}(x,y)x^j y^k\dd y\dd x
+   =\frac1{(j+k+2)^a(k+1)^b}.
+\]
+Geometric expansion and summation over $j+k=n-2$ recover $c_n$.
+Uniform domination on compact subsets of $\cut$ proves continuation.
+The positivity of this kernel will be used, but does not by itself
+settle the sign of a normalized radial derivative.
+
+Let $Y,Z$ be independent gamma variables with shapes $a,b$ and rates
+$2,1$, respectively. Set $X=e^{-Y}$ and $V=e^{-Z}$. The same substitution
+rewrites \eqref{eq:double} as
+\begin{equation}\label{eq:probability}
+ F_{a,b}(z)=c_2z^2\E\frac1{(1-Xz)(1-XVz)},
+ \qquad \E X^k=\left(\frac2{k+2}\right)^a,
+ \quad \E V^k=(k+1)^{-b}.
+\end{equation}
+All variables lie strictly between zero and one.
+
+\subsection{A positive squared-resolvent measure}
+\begin{proposition}\label[proposition]{prop:squared}
+There is a positive finite measure $\mu=\mu_{a,b}$, with full support
+$[0,1]$ and mass $c_2$, such that
+\begin{equation}\label{eq:squared}
+ F_{a,b}(z)=z^2\int_0^1\frac{\dd\mu(u)}{(1-uz)^2},
+ \qquad
+ \int_0^1u^k\dd\mu(u)=\frac{c_{k+2}}{k+1}\quad(k\ge0).
+\end{equation}
+In particular, for $\ell,k\ge0$,
+\begin{equation}\label{eq:hausdorff}
+ \sum_{j=0}^k(-1)^j\binom kj
+ \frac{H_{\ell+j+1}^{(b)}}{(\ell+j+1)(\ell+j+2)^a}>0.
+\end{equation}
+Every finite Hankel moment matrix of $\mu$ is positive definite.
+\end{proposition}
+\begin{proof}
+Use the elementary identity
+\[
+ \frac1{(1-xz)(1-yz)}=
+ \int_0^1\frac{\dd t}{[1-(tx+(1-t)y)z]^2}
+\]
+in \eqref{eq:double}. The image of the positive product measure under
+$u=tx+(1-t)y$ defines $\mu$. Every nonempty open subinterval of $(0,1)$
+has positive mass, so the support is full. Comparing coefficients in
+$(1-uz)^{-2}=\sum_{k\ge0}(k+1)u^kz^k$ proves the moments.
+The left side of \eqref{eq:hausdorff} is
+$\int u^\ell(1-u)^k\dd\mu>0$. For a nonzero polynomial $p$,
+$\int p(u)^2\dd\mu(u)>0$, proving the Hankel assertion.
+\end{proof}
+This is a positive representation with a \emph{squared} resolvent. It
+does not contradict the failure of a finite signed \emph{first}-resolvent
+representation in part of the low-order domain.
+
+\subsection{Two forms of the zero equation}
+For $s=\rho^2$ and $m=2\cos\theta/\rho$ let
+\begin{equation}\label{eq:D}
+ D_u(m,s)=1+s(u^2-mu).
+\end{equation}
+Rationalizing \eqref{eq:squared} yields
+\begin{equation}\label{eq:P-integral}
+ \Imn F_{a,b}(\rho e^{\ii\theta})
+ =\rho^3\sin\theta\,P(m,s),\qquad
+ P(m,s)=\int\frac{m-2u}{D_u(m,s)^2}\dd\mu(u).
+\end{equation}
+Similarly \eqref{eq:probability} yields
+\begin{equation}\label{eq:G-b}
+ P(m,s)=c_2G_b(m,s),\qquad
+ G_b(m,s)=\E\frac{m-X-XV}{D_X(m,s)D_{XV}(m,s)}.
+\end{equation}
+In particular $P(0,s)<0$ for all $0\le s\le1$, and the imaginary part
+is negative at every upper-half-disk point with $\cos\theta\le0$.
+
+For the series version, let $U_n$ denote the Chebyshev polynomial of the
+second kind. Its standard trigonometric representation is
+$U_{n-1}(\cos\theta)=\sin(n\theta)/\sin\theta$
+\cite{dlmf-chebyshev}. Define
+\begin{equation}\label{eq:T-def}
+ T_n(m,s)=\rho^{n-3}U_{n-1}(\rho m/2).
+\end{equation}
+Parity shows that this is a polynomial in $m,s$ for $n\ge2$, and
+\begin{equation}\label{eq:T-recurrence}
+ T_2=m,\quad T_3=sm^2-1,\quad
+ T_{n+1}=s(mT_n-T_{n-1}),\qquad
+ P(m,s)=\sum_{n\ge2}c_nT_n(m,s).
+\end{equation}
+The next four polynomials are
+\begin{align}\label{eq:T-low}
+ T_4&=s^2m^3-2sm,&
+ T_5&=s^3m^4-3s^2m^2+s,\notag\\
+ T_6&=s^4m^5-4s^3m^3+3s^2m,&
+ T_7&=s^5m^6-5s^4m^4+6s^3m^2-s^2.
+\end{align}
+At $s=0$ the equation is $c_2m-c_3=0$, giving
+$m(0)=c_3/c_2$ and \eqref{eq:initial}.
+
+\section{Uniform localization and control of the angular derivative}
+\label{sec:localization}
+From now until the end of \cref{sec:outer-proof}, assume $a\ge8$, $b>0$.
+Write
+\begin{equation}\label{eq:UVW}
+ x=2^{-b},\quad y=3^{-b},\quad
+ U=1+x,\quad V_0=1+x+y,\quad W=1+x+y+x^2.
+\end{equation}
+We distinguish $V_0$ from the random variable $V$ in
+\eqref{eq:probability}. Then
+$c_3=U3^{-a}$, $c_4=V_0 4^{-a}$, $c_5=W5^{-a}$, and
+\begin{equation}\label{eq:xy}
+ 0<x<1,\qquad x^2\le y\le x,\qquad
+ \frac{U^2}{V_0}\le\frac43.
+\end{equation}
+The last inequality follows from
+$(1+x)^2/(1+x+x^2)\le4/3$.
+
+\begin{lemma}[Uniform coefficient comparisons]\label[lemma]{lem:coefficients}
+For the indicated ranges of $n$,
+\begin{align}\label{eq:coeff-bounds}
+ \frac{c_n}{c_2}&\le(n-1)\left(\frac2n\right)^a &&(n\ge2),\notag\\
+ \frac{c_n}{c_3}&\le\frac{n-1}{2}\left(\frac3n\right)^a &&(n\ge3),\\
+ \frac{c_n}{c_5}&\le\frac{n-1}{4}\left(\frac5n\right)^a &&(n\ge5).\notag
+\end{align}
+\end{lemma}
+\begin{proof}
+The averages $H_k^{(b)}/k$ decrease because the summands $j^{-b}$
+decrease. Compare these averages at $k=n-1$ and at $k=1,2,4$.
+\end{proof}
+
+\begin{lemma}[Elementary Chebyshev bounds]\label[lemma]{lem:chebyshev}
+For $n\ge3$ and $0\le c\le1/6$,
+\begin{equation}\label{eq:Uprime}
+ |U_{n-1}'(c)|\le\frac{11}{10}n.
+\end{equation}
+For $0\le c\le1/20$,
+\begin{equation}\label{eq:U-parity}
+ |U_{n-1}(c)|\le
+ \begin{cases}
+ 101/100,&n\text{ odd},\\
+ (101/100)nc,&n\text{ even}.
+ \end{cases}
+\end{equation}
+For all $-1\le c\le1$, $|U_{n-1}(c)|\le n$.
+\end{lemma}
+\begin{proof}
+Differentiating the trigonometric representation gives
+\[
+ |U_{n-1}'(c)|\le\frac n{1-c^2}
+                 +\frac c{(1-c^2)^{3/2}}
+ \le\frac{36n}{35}+\frac15<\frac{11n}{10}.
+\]
+Here $n\ge3$ is used in the final comparison.
+Write $\theta=\pi/2-\delta$, so $\sin\delta=c$.
+For odd $n$, use $|\sin(n\theta)|\le1$; for even $n$, use
+$|\sin(n\delta)|\le n\sin\delta$. Division by
+$\sin\theta=\sqrt{1-c^2}>100/101$ gives \eqref{eq:U-parity}.
+Finally $|\sin(n\theta)|\le n\sin\theta$ proves the global bound,
+including endpoints by continuity.
+\end{proof}
+
+Set
+\begin{equation}\label{eq:C-M}
+ C=\frac{11}{10},\qquad q=\frac{c_3}{c_2},\qquad
+ M=Cq,\qquad M_8=\frac{11}{5}\left(\frac23\right)^8
+ =\frac{2816}{32805}<\frac1{10}.
+\end{equation}
+Three rationally certified bounds used below are
+\begin{align}\label{eq:certificate-three}
+ B_8&:=\sum_{n\ge3}n(n-1)(2/n)^8<\frac13,\notag\\
+ C\left(1-\frac{101}{200}E_8\right)-\frac{101}{100}O_8
+ &>\frac1{50},\\
+ O_8&:=\sum_{\substack{n\ge3\\ n\text{ odd}}}
+          \frac{n-1}{2}(3/n)^8,\quad
+ E_8:=\sum_{\substack{n\ge4\\ n\text{ even}}}n(n-1)(2/n)^8.\notag
+\end{align}
+The exact finite-sum and integral-tail verification is given in
+\cref{app:certificates}; no decimal approximation is an acceptance test.
+
+\begin{proposition}[Root strip and derivative bounds]\label[proposition]{prop:strip}
+Every upper-semicircle zero lies in
+\begin{equation}\label{eq:strip}
+ 0<m(s)<C\frac{c_3}{c_2}\le M_8<\frac1{10}.
+\end{equation}
+It is the only such zero, is simple, and on the larger strip
+$0\le m\le1/3$, $0\le s\le1$,
+\begin{equation}\label{eq:Pm}
+ \frac45c_2<P_m(m,s)<\frac65c_2.
+\end{equation}
+\end{proposition}
+\begin{proof}
+There is no zero with $\cos\theta\le0$ by \eqref{eq:G-b}.
+For any zero with $m>0$, the global Chebyshev bound and
+\eqref{eq:coeff-bounds} give
+\[
+ c_2m\le\sum_{n\ge3}n c_n\rho^{n-3}\le c_2B_8,
+\]
+so all possible zeros lie in $m<1/3$.
+On this strip $c=\rho m/2\le1/6$ and
+$\partial_mT_n=\rho^{n-2}U_{n-1}'(c)/2$. Therefore
+\[
+ |P_m-c_2|\le\frac{11}{20}\sum_{n\ge3}n c_n
+ \le\frac{11}{20}B_8c_2<\frac{11}{60}c_2,
+\]
+which implies \eqref{eq:Pm}.
+
+We have $P(0,s)<0$. At $m=M$, the parity bounds apply because
+$M\le M_8<1/10$. Bound all odd-indexed terms $n\ge3$ and all even-indexed
+terms $n\ge4$ in absolute value, while retaining $c_2M$:
+\[
+ \frac{P(M,s)}{c_3}\ge
+ C\left(1-\frac{101}{200}E_8\right)-\frac{101}{100}O_8
+ >\frac1{50}.
+\]
+The coefficient comparisons and the inequalities $(r/n)^a\le(r/n)^8$
+for $n\ge r$ justify the uniform replacements. Existence follows by
+the intermediate value theorem, and strict increase of $P$ on the
+containing strip proves uniqueness and simplicity.
+The estimates also justify termwise differentiation: the relevant
+majorants are bounded by constant multiples of $\sum n^{2-a}$.
+At zero the implicit-function theorem applies to $P(m,0)=c_2m-c_3$.
+Away from zero, analyticity of $F$ off the cut and simplicity give the
+local analytic continuation, including through $s=1$.
+\end{proof}
+
+\section{The uniform radial derivative inequality}
+\label{sec:outer-proof}
+We now prove the main sign. The distinction between localization and
+radial monotonicity matters: a small zero does not by itself fix the
+sign of its velocity.
+
+\subsection{A positive low-mode contribution}
+\begin{lemma}[The first five relevant modes]\label[lemma]{lem:low}
+At every point with $0\le m\le M$, $0\le s\le1$,
+\begin{equation}\label{eq:low-derivative}
+ \sum_{n=2}^6 c_n\partial_sT_n
+ \ge c_5+c_3m^2-2c_4m-6c_5m^2
+ >\frac25c_5.
+\end{equation}
+\end{lemma}
+\begin{proof}
+From \eqref{eq:T-low},
+\[
+ \partial_sT_3=m^2,\quad
+ \partial_sT_4\ge-2m,\quad
+ \partial_sT_5\ge1-6m^2,
+\]
+and
+\[
+ \partial_sT_6=sm(6-12sm^2+4s^2m^4)\ge0
+\]
+because $m<1/10$. This proves the first inequality.
+Moreover
+\[
+ \frac{M}{c_4/c_3}
+ =C\frac{U^2}{V_0}\left(\frac89\right)^a
+ \le2C\left(\frac89\right)^8<1.
+\]
+Thus $c_3m^2-2c_4m$ decreases on $[0,M]$. Substitution of $M=Cc_3/c_2$
+and $m^2\le M^2$ gives a lower bound $c_5\mathcal E(a,b)$, where
+\begin{equation}\label{eq:core}
+ \mathcal E(a,b)=1-2C\frac{UV_0}{W}\left(\frac56\right)^a
+  +C^2\frac{U^3}{W}\left(\frac{20}{27}\right)^a
+  -6C^2U^2\left(\frac49\right)^a.
+\end{equation}
+We prove that $\mathcal E(a,b)>2/5$ uniformly.
+
+First, $\mathcal E(a,b)$ increases with $a\ge8$. For the two middle
+exponentials, the ratio of the magnitude of the negative derivative to
+the positive derivative is
+\[
+ \frac{CU^2}{2V_0}\left(\frac89\right)^a
+       \frac{\log(27/20)}{\log(6/5)}
+ <\frac{22}{15}\left(\frac89\right)^8<1.
+\]
+We used $U^2/V_0\le4/3$ and
+$27/20<(6/5)^2$, which implies the logarithm ratio is less than two.
+The last term in \eqref{eq:core} also has positive derivative in $a$.
+
+It remains to verify $\mathcal E(8,b)>2/5$. Multiply the difference
+by the positive $W$. The resulting polynomial is
+\begin{equation}\label{eq:core-polynomial}
+ p(x,y)=\frac35W-2C(5/6)^8UV_0
+        +C^2(20/27)^8U^3-6C^2(4/9)^8U^2W.
+\end{equation}
+It is affine in $y$. On the entire larger region
+$0\le x\le1$, $x^2\le y\le x$, positivity therefore follows from
+positivity at $y=x^2$ and $y=x$. Each endpoint polynomial has degree at
+most four. In the degree-four Bernstein basis
+$\binom4j x^j(1-x)^{4-j}$, all ten coefficients are strictly positive.
+Their exact numerators with a common denominator are in
+\cref{tab:bernstein}. This proves positivity on the full region,
+including the actual curve $y=3^{-b}$, and finishes the proof.
+\end{proof}
+
+\begin{table}[htbp]
+\centering
+\caption{Exact Bernstein certificate for \eqref{eq:core-polynomial}.
+Divide every displayed integer by $7230196133913600$.}
+\label{tab:bernstein}
+\begin{tabular}{@{}crr@{}}
+\toprule
+$j$ & $p(x,x^2)$ & $p(x,x)$\\
+\midrule
+0&1351861016318884&1351861016318884\\
+1&1121529834868342&1261248688948063\\
+2&1434025919811540& 977124901564326\\
+3&1462870427049383& 617821376075897\\
+4& 221755156299224& 221755156299224\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{A bound for the entire remaining tail}
+\begin{lemma}[Radial tail]\label[lemma]{lem:tail}
+For $0\le m\le M_8$ and $0\le s\le1$,
+\begin{equation}\label{eq:radial-tail}
+ \left|\sum_{n\ge7}c_n\partial_sT_n(m,s)\right|
+ <\frac{39}{100}c_5.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $s>0$, differentiation of \eqref{eq:T-def} gives
+\[
+ \partial_sT_n=
+ \frac{n-3}{2}\rho^{n-5}U_{n-1}(\rho m/2)
+ +\frac m4\rho^{n-4}U_{n-1}'(\rho m/2).
+\]
+Using \cref{lem:chebyshev} and $\rho\le1$ yields
+\begin{equation}\label{eq:Bn}
+ |\partial_sT_n|\le B_n:=
+ \begin{cases}
+ \displaystyle \frac{101}{200}(n-3)+\frac{11}{40}M_8 n,
+   &n\text{ odd},\\[2mm]
+ \displaystyle \frac{M_8n(101n-193)}{400},
+   &n\text{ even}.
+ \end{cases}
+\end{equation}
+The even bound retains the extra factor $c=\rho m/2$ in
+\eqref{eq:U-parity}; losing that factor would make the estimate too weak.
+By continuity the same bounds hold at $s=0$.
+Now \cref{lem:coefficients} bounds the tail divided by $c_5$ by
+\begin{equation}\label{eq:R8}
+ R_8=\sum_{n\ge7}\frac{n-1}{4}\left(\frac5n\right)^8B_n.
+\end{equation}
+Exact summation through $n=100$ plus the integral bounds in
+\cref{app:certificates} gives
+\[
+ R_8<0.388094585988858<\frac{39}{100}.
+\]
+The displayed decimal is only a readable outward bound; the replay
+compares rational numbers exactly. The same majorant proves uniform
+convergence of the differentiated tail.
+\end{proof}
+
+\begin{proof}[Proof of \cref{thm:main}]
+At the zero, \cref{lem:low,lem:tail} give
+\begin{equation}\label{eq:Ps-gap}
+ P_s(m(s),s)>\left(\frac25-\frac{39}{100}\right)c_5
+ =\frac{c_5}{100}>0.
+\end{equation}
+Implicit differentiation and \eqref{eq:Pm} imply
+\[
+ m'(s)=-\frac{P_s}{P_m}
+ <-\frac{c_5}{120c_2}.
+\]
+Using \eqref{eq:normalization} proves \eqref{eq:main-bound}.
+The equation at $s=0$ gives \eqref{eq:initial}; integration from zero
+to $\rho$ proves \eqref{eq:gap}. Every estimate is uniform in $b>0$ and
+in the full interval $0\le s\le1$.
+\end{proof}
+
+\begin{remark}[Why this is not a local Taylor argument]
+Only finitely many modes are treated sharply, but the proof is not a
+truncation without an error estimate. The inequality
+$P_s>c_5/100$ incorporates \emph{every} mode $n\ge7$ and holds at
+\emph{every} radius up to one. The Bernstein step retains the dependence
+between $U,V_0,W$; replacing them by unrelated extreme values destroys
+the useful positive margin.
+\end{remark}
+
+\section{Quantitative transfer from the infinite-inner-order family}
+\label{sec:stability}
+The limiting function is
+$F_{a,\infty}(z)=\Li_a(z)-z$, whose strict global decrease is already
+proved in the manuscript \cite{repo-cartesian}. Here we make that
+limit stable with an explicit finite-$b$ criterion.
+
+\subsection{A uniform perturbation lemma}
+For $m,s,x,t\in[0,1]$ define
+\begin{equation}\label{eq:f}
+ f(m,s,x,t)=\frac{m-x-t}{D_x(m,s)D_t(m,s)}.
+\end{equation}
+The elementary bound
+\begin{equation}\label{eq:D-bounds}
+ \frac34\le D_u(m,s)\le2\qquad(0\le u,m,s\le1)
+\end{equation}
+follows by minimizing $u^2-mu$.
+
+\begin{lemma}\label[lemma]{lem:perturbation}
+On the unit four-dimensional cube,
+\begin{equation}\label{eq:perturbation-constants}
+ |f_t|\le\frac{304}{27}<12,
+ \qquad |f_{tm}|,|f_{ts}|\le\frac{4224}{81}<64.
+\end{equation}
+Consequently, if $\epsilon=2^{-b}$ and
+\begin{equation}\label{eq:Ginfty}
+ G_\infty(m,s)=\E\frac{m-X}{D_X(m,s)},
+\end{equation}
+then, uniformly for $m,s\in[0,1]$,
+\begin{equation}\label{eq:C1-stability}
+ |G_b-G_\infty|\le12\epsilon,
+ \quad |(G_b)_m-(G_\infty)_m|\le64\epsilon,
+ \quad |(G_b)_s-(G_\infty)_s|\le64\epsilon.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Put $Q=(D_xD_t)^{-1}$ and $N=m-x-t$. Then $|N|\le2$ and,
+using \eqref{eq:D-bounds},
+\[
+ |Q|\le\frac{16}{9},\quad
+ |Q_m|,|Q_s|,|Q_t|\le\frac{128}{27},\quad
+ |Q_{tm}|\le\frac{1728}{81},\quad
+ |Q_{ts}|\le\frac{1920}{81}.
+\]
+Here $|(D_t)_t|\le2$, $|(D_u)_m|,|(D_u)_s|\le1$,
+$|(D_t)_{tm}|\le1$, and $|(D_t)_{ts}|\le2$ give the bounds directly
+by the product rule. Thus
+\[
+ |f_t|\le |Q|+2|Q_t|\le\frac{304}{27},
+\]
+\[
+ |f_{tm}|\le |Q_m|+|Q_t|+2|Q_{tm}|
+ \le\frac{4224}{81},\qquad
+ |f_{ts}|\le |Q_s|+2|Q_{ts}|\le\frac{4224}{81}.
+\]
+The fundamental theorem of calculus in $t$ compares $t=XV$ with
+$t=0$. Since $0\le XV\le V$ and $\E V=2^{-b}$, expectation yields
+\eqref{eq:C1-stability}. The bounded derivatives also justify passing
+$m,s$ derivatives through the expectation.
+\end{proof}
+
+\subsection{A variance gap that is uniform in radius}
+\begin{lemma}\label[lemma]{lem:variance}
+For $0\le m,s\le1$,
+\begin{equation}\label{eq:limiting-derivatives}
+ (G_\infty)_m=\E D_X^{-2}\ge\frac14,
+ \qquad
+ (G_\infty)_s=\E\frac{X(X-m)^2}{D_X^2}
+ \ge\frac{\Delta(a)}4.
+\end{equation}
+Also
+\begin{equation}\label{eq:endpoint-infty}
+ G_\infty(1,s)\ge\frac{1-(2/3)^a}{2},
+ \qquad 0<\Delta(a)<1-(2/3)^a<1.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Differentiation of \eqref{eq:Ginfty} gives the two identities in
+\eqref{eq:limiting-derivatives}. By $D_X\le2$ and completing the
+square in $m$,
+\begin{align*}
+ (G_\infty)_s
+ &\ge\frac14\E[X(X-m)^2]\\
+ &\ge\frac14\left(\E X^3-\frac{(\E X^2)^2}{\E X}\right)
+ =\frac14\left((2/5)^a-(3/8)^a\right).
+\end{align*}
+The difference is strictly positive because $2/5>3/8$.
+At $m=1$, $1-X\ge0$ and $D_X\le2$, proving the endpoint bound.
+Finally
+\[
+ \Delta(a)=(2/5)^a[1-(15/16)^a]<1-(2/3)^a.
+\]
+\end{proof}
+
+\begin{proof}[Proof of \cref{thm:large-b}]
+Assume \eqref{eq:large-b-condition}. Since $\Delta(a)<1$, this implies
+$b>8$ and hence $a+b>1$, so the inherited uniqueness theorem
+\eqref{eq:inherited-angle} applies. Equations
+\eqref{eq:C1-stability} and \eqref{eq:limiting-derivatives} give
+\[
+ (G_b)_m>\frac14-\frac{\Delta(a)}4>0,
+ \qquad
+ (G_b)_s>\frac{\Delta(a)}4-\frac{\Delta(a)}4=0.
+\]
+Moreover $G_b(0,s)<0$ directly from \eqref{eq:G-b}, whereas
+\[
+ G_b(1,s)>\frac{1-(2/3)^a}{2}-\frac{3\Delta(a)}{64}>0.
+\]
+There is therefore a simple root in $0<m<1$, and it is the unique
+upper-semicircle root. Its derivative is
+$m'(s)=-(G_b)_s/(G_b)_m<0$, which proves the asserted direction.
+
+Under $\epsilon\le\Delta(a)/512$, the same estimates give
+$(G_b)_s\ge\Delta(a)/8$ and
+\[
+ (G_b)_m\le\frac{16}{9}+\frac{\Delta(a)}8<2.
+\]
+Thus $m'(s)\le-\Delta(a)/16$. Equation
+\eqref{eq:normalization} proves \eqref{eq:large-b-gap}.
+\end{proof}
+
+\begin{corollary}[A compact outer-order interval]\label[corollary]{cor:compact}
+Fix $0<\alpha\le A<\infty$. If
+\[
+ 2^{-b}<\frac1{256}\left(\frac25\right)^A
+                  \left[1-\left(\frac{15}{16}\right)^\alpha\right],
+\]
+then strict global decrease holds simultaneously for every
+$a\in[\alpha,A]$.
+\end{corollary}
+\begin{proof}
+The displayed numerator is a lower bound for
+$\Delta(a)=(2/5)^a[1-(15/16)^a]$ throughout that interval.
+\end{proof}
+
+The perturbation theorem supplies more than pointwise convergence as
+$b\to\infty$. It controls the zero equation and both of its relevant
+derivatives uniformly in radius, and gives a positive lower gap before
+the perturbation is made. Without these two properties, a strict sign
+in the limit need not persist on the entire interval.
+
+\section{An exact cubic-moment criterion for radial motion}
+\label{sec:cubic}
+The previous arguments prove two sign regimes. The following identity
+isolates the obstruction in the remaining cases. It is stated on
+$a,b>0$, $a+b>1$, where \eqref{eq:inherited-angle} supplies the required
+simple root and sign. The algebra also holds at any other simple root
+satisfying the same geometric hypotheses.
+
+Write $\widehat\eta(s)=\eta_{a,b}(\sqrt s)=m(s)/2$, and, at its zero,
+put
+\begin{equation}\label{eq:cubic-defs}
+ A=1-s\widehat\eta^2>0,\qquad
+ D=1+s(u^2-2\widehat\eta u),\qquad
+ M_j=\int (u-\widehat\eta)^jD^{-3}\dd\mu(u).
+\end{equation}
+The inequality $A>0$ follows from $0<\widehat\eta<1$ and $s\le1$.
+
+\begin{theorem}[Weighted cubic-moment velocity]\label{thm:cubic}
+At the angular zero,
+\begin{equation}\label{eq:root-moment}
+ A M_1+sM_3=0
+\end{equation}
+and
+\begin{equation}\label{eq:velocity}
+ \widehat\eta'(s)=
+ -\frac{2M_3}{A^2M_0-3sAM_2+4s^2\widehat\eta M_3}.
+\end{equation}
+The denominator is strictly positive. Consequently the sign of
+$\eta_{a,b}'(\rho)$ is the opposite of the sign of $M_3$.
+\end{theorem}
+\begin{proof}
+Set
+\[
+ \mathcal G(\eta,s)=\int(\eta-u)
+           [1+s(u^2-2\eta u)]^{-2}\dd\mu(u).
+\]
+Equation \eqref{eq:P-integral} gives $P(2\eta,s)=2\mathcal G(\eta,s)$.
+Since $D=A+s(u-\eta)^2$, the equation $\mathcal G=0$ is exactly
+\eqref{eq:root-moment}. Holding $\eta$ fixed when differentiating in
+$s$,
+\[
+ \mathcal G_s=2(M_3-\eta^2M_1)=\frac{2M_3}{A}.
+\]
+Similarly,
+\[
+ \mathcal G_\eta=A M_0-3sM_2-4s\eta M_1
+ =A M_0-3sM_2+\frac{4s^2\eta M_3}{A}.
+\]
+Implicit differentiation gives \eqref{eq:velocity}.
+At the inherited angular zero, the angular derivative of the imaginary
+part is negative, while $\partial_\theta m=-2\sin\theta/\rho<0$.
+Equation \eqref{eq:P-integral} therefore gives $P_m>0$.
+As $\mathcal G_\eta=P_m(2\eta,s)>0$, the denominator in
+\eqref{eq:velocity} is $A\mathcal G_\eta>0$.
+Finally $\eta'(\rho)=2\rho\widehat\eta'(s)$, which does not change sign.
+\end{proof}
+
+\begin{corollary}[A precise reformulation of the remaining conjecture]
+For integer $a\ge2$, global normalized-radius decrease is equivalent
+to positivity of
+\[
+ \int_0^1
+ \frac{(u-\eta_{a,b}(\rho))^3}
+ {[1+\rho^2(u^2-2\eta_{a,b}(\rho)u)]^3}\dd\mu_{a,b}(u)
+\]
+at every $0<\rho\le1$. The integral is strictly positive in both
+regimes of \cref{thm:main,thm:large-b}.
+\end{corollary}
+This moment is centered at the root parameter, not necessarily at the
+mean of the reweighted measure. Calling it a skewness criterion is
+useful shorthand, but it is not the usual normalized statistical
+skewness. Positivity of $\mu$ alone does not determine its sign.
+
+\section{Positive binomial identities and exact remainders}
+\label{sec:identities}
+Let $g_{a,b}=\Imn F_{a,b}(\ii)$. The squared-resolvent representation
+makes a particularly simple family of alternating finite sums positive.
+
+\begin{theorem}[Positive Gaussian binomial transform]\label{thm:binomial}
+For $a,b>0$ and every integer $k\ge0$, define
+\begin{equation}\label{eq:Bk}
+ \mathcal B_k(a,b)=\sum_{j=0}^k(-1)^j\binom kj
+   \frac{H_{2j+2}^{(b)}}{(2j+2)(2j+3)^a}.
+\end{equation}
+Then $\mathcal B_k(a,b)>0$, and
+\begin{equation}\label{eq:binomial}
+ -g_{a,b}=\sum_{k=0}^\infty\frac{k+1}{2^{k+1}}\mathcal B_k(a,b).
+\end{equation}
+For the partial sum $S_N$ over $0\le k<N$, the remainder is exactly
+\begin{equation}\label{eq:binomial-remainder}
+ -g_{a,b}-S_N
+ =2^{-N}\int_0^1
+ \frac{u(1-u^2)^N[(N+2)+Nu^2]}{(1+u^2)^2}\dd\mu(u),
+\end{equation}
+and hence, for every $N\ge1$,
+\begin{equation}\label{eq:binomial-error}
+ 0<-g_{a,b}-S_N<\frac{N+2}{2^{N+1}}\,
+             \frac{H_2^{(b)}}{3^a}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+By \eqref{eq:squared},
+\[
+ \mathcal B_k(a,b)=\int u(1-u^2)^k\dd\mu(u)>0,
+ \qquad -g_{a,b}=2\int\frac{u}{(1+u^2)^2}\dd\mu(u).
+\]
+Set $q=(1-u^2)/2\in[0,1/2]$. The identity
+$(1-q)^{-2}=\sum_{k\ge0}(k+1)q^k$ gives \eqref{eq:binomial}; all
+terms are nonnegative, so monotone convergence justifies integration.
+The finite algebraic remainder
+\[
+ \sum_{k=N}^\infty(k+1)q^k
+ =q^N\frac{(N+1)-Nq}{(1-q)^2}
+\]
+gives \eqref{eq:binomial-remainder} after substitution.
+For $v\in[0,1]$,
+$[(N+2)+Nv]/(1+v)^2\le N+2$. Since $\int u\dd\mu=c_3/2$,
+\eqref{eq:binomial-error} follows, with strictness because $\mu$
+has positive mass in the open interval.
+\end{proof}
+
+This theorem concerns a different transformation from the manuscript's
+Euler transform of odd harmonic coefficients. The one-sided remainder
+and the positivity of each $\mathcal B_k$ are useful structural facts;
+no claim is made that the bound $O(N2^{-N})$ supersedes the sharper
+existing $O(2^{-N})$ evaluator \cite{incoming-euler}.
+
+\subsection{Three explicit specializations}
+\begin{corollary}[An identity for $\pi\log2$]\label[corollary]{cor:pi-log}
+\begin{equation}\label{eq:pi-log}
+ \pi\log2=4\sum_{k=0}^\infty\frac{k+1}{2^k}
+ \sum_{j=0}^k(-1)^j\binom kj
+      \frac{H_{2j+2}}{(2j+2)(2j+3)}.
+\end{equation}
+Every inner finite sum is positive, and the error after $N$ outer terms
+is strictly between zero and $(N+2)2^{1-N}$.
+\end{corollary}
+\begin{proof}
+The classical identity $F_{1,1}(z)=\tfrac12\log^2(1-z)$ follows directly
+by differentiating its series and matching the value at zero.
+At $z=\ii$, $\log(1-\ii)=\tfrac12\log2-\ii\pi/4$, whence
+$-g_{1,1}=\pi\log2/8$. Apply \cref{thm:binomial} with
+$c_3=H_2/3=1/2$ and multiply the value and error bound by eight.
+\end{proof}
+
+Define $\beta(t)=\Imn\Li_t(\ii)$, the Dirichlet beta function with
+analytic continuation when necessary. Taking the endpoint limits in
+\cref{thm:binomial} gives two further identities.
+\begin{corollary}[Beta differences]\label[corollary]{cor:beta}
+For $a>0$,
+\begin{align}\label{eq:beta-zero}
+ \beta(a)-\beta(a-1)
+ &=\frac12\sum_{k=0}^\infty\frac{k+1}{2^k}
+       \sum_{j=0}^k(-1)^j\binom kj(2j+3)^{-a},\\
+ 1-\beta(a)
+ &=\frac12\sum_{k=0}^\infty\frac{k+1}{2^k}
+       \sum_{j=0}^k(-1)^j\binom kj
+                   \frac1{(2j+2)(2j+3)^a}.
+ \label{eq:beta-infty}
+\end{align}
+Every inner sum in these formulas is strictly positive.
+In particular $a=2$ in \eqref{eq:beta-zero} gives an explicit positive
+series for Catalan's constant minus $\pi/4$.
+\end{corollary}
+\begin{proof}
+As $b\downarrow0$, $V\to1$ in probability in
+\eqref{eq:probability}; as $b\to\infty$, $V\to0$ in probability.
+All relevant kernels at $z=\ii$ are bounded and continuous. The limits
+are respectively
+$F_{a,0}(z)=\Li_{a-1}(z)-\Li_a(z)$ and
+$F_{a,\infty}(z)=\Li_a(z)-z$.
+Their positive squared-resolvent measures are, respectively, $c_2$
+times the law of $X$ and $c_2$ times the mixture of the uniform laws on
+$[0,X]$. Both have full support. Their moments are the limits of
+\eqref{eq:squared}, which give the two displayed inner sums.
+Apply the same proof as \cref{thm:binomial} to these limiting measures.
+This avoids relying on an unjustified interchange of two infinite sums.
+\end{proof}
+
+\subsection{The generating function of the positive moments}
+For $|t|<1$, another useful exact identity is
+\begin{equation}\label{eq:B-generating}
+ \sum_{k=0}^\infty\mathcal B_k(a,b)t^k
+ =\int_0^1\frac{u}{1-t+tu^2}\dd\mu(u).
+\end{equation}
+The geometric expansion is uniformly convergent on compact subdisks.
+For $0<t<1$ the right-hand side is positive. More precisely,
+$\left.\tfrac12\frac{d}{dt}(t\sum_k\mathcal B_kt^k)\right|_{t=1/2}
+=-g_{a,b}$, which recovers \eqref{eq:binomial}. More generally, all derivatives in $t\in[0,1)$
+are positive, providing a generating-function form of the finite-sum
+positivity.
+
+\section{Reproducible exact computation}
+\label{sec:computation}
+All acceptance decisions in the supplied verifiers use Python's
+standard-library \path{fractions.Fraction}. The analytic arguments,
+not finite sampling, transfer those decisions to statements about the
+infinite functions and continuous parameter ranges.
+
+\subsection{Global certificate}
+The verifier \path{code/verify_global.py} checks the ten coefficients
+in \cref{tab:bernstein}, the root-strip and radial-tail inequalities,
+the rational comparisons extending the core to real $a\ge8$, and the
+eight integer thresholds for \cref{thm:large-b}.
+The finite sums use cutoff $100$. Representative exact outward bounds
+printed by the verifier are
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Certified quantity & Outward decimal information\\
+\midrule
+Upper bound for $B_8$ & $<0.302408858414858$\\
+Localization margin & $>0.022510694406543$\\
+Upper bound for $R_8$ & $<0.388094585988858$\\
+Low-mode contribution divided by $c_5$ & $>2/5$\\
+Full $P_s/c_5$ at the root & $>1/100$\\
+\bottomrule
+\end{tabular}
+\end{center}
+These decimals are not asserted to be optimal constants.
+
+\subsection{Independent angular-root certificates}
+There is an exponentially convergent rational evaluator for
+\eqref{eq:P-integral}. On $0\le m\le1/3$, $0\le s\le1$, define
+\begin{equation}\label{eq:E-eval}
+ E(u)=1-\frac23D_u=\frac13+\frac{2sm}{3}u-\frac{2s}{3}u^2.
+\end{equation}
+Since $35/36\le D_u\le2$,
+$|E(u)|\le19/54<3/8$. Thus
+\begin{equation}\label{eq:P-eval}
+ P_N(m,s)=\frac49\sum_{k=0}^{N-1}(k+1)
+             \int(m-2u)E(u)^k\dd\mu(u)
+\end{equation}
+is computable from finitely many rational moments when $a,b,m,s$ are
+rational with integer $a,b$. Its error is bounded by
+\begin{equation}\label{eq:P-error}
+ |P-P_N|\le\frac89 c_2
+       \left(\frac38\right)^N
+       \frac{(N+1)-3N/8}{(1-3/8)^2}.
+\end{equation}
+Indeed $|m-2u|\le2$, and the differentiated geometric tail used in
+\cref{thm:binomial} bounds the absolute series. This estimate is valid
+even though $E$ can be negative.
+
+The file \path{data/root_brackets.json} records candidate rational
+endpoints. Their method of discovery has no evidentiary role: the
+verifier accepts a bracket only when the upper error bound for $P$ at
+the lower endpoint is negative and the lower error bound at the upper
+endpoint is positive. Monotonicity in $m$ then certifies the unique
+root. The replay uses $N=36$ and certifies the following enclosures for
+$\eta=m/2$; the displayed endpoints are rounded outward.
+\begin{center}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$a$&$b$&$\rho$&Lower bound for $\eta$&Upper bound for $\eta$\\
+\midrule
+8&1&$1/2$&0.029174544600&0.029174544751\\
+8&1&$1$  &0.028924151300&0.028924151451\\
+8&2&$1/2$&0.024321334850&0.024321335001\\
+8&2&$1$  &0.024137504900&0.024137505051\\
+9&1&$1/2$&0.019469017900&0.019469018051\\
+9&1&$1$  &0.019354467350&0.019354467501\\
+12&1&$1/2$&0.005777259000&0.005777259151\\
+12&1&$1$  &0.005767707400&0.005767707551\\
+\bottomrule
+\end{tabular}
+\end{center}
+These checks illustrate and independently test the normalization and
+root evaluator. They are not used as a substitute for the uniform proof.
+
+\subsection{Gaussian enclosures and an elementary control}
+The script \path{code/verify_identities.py} computes 80 terms of
+\eqref{eq:binomial} for nine integer parameter pairs. It verifies 720
+strictly positive rational values of $\mathcal B_k$, and separately
+checks 100 polynomial geometric-remainder identities. The following
+are exact outward enclosures for $-g_{a,b}$:
+\begin{center}
+\small
+\begin{tabular}{@{}rrll@{}}
+\toprule
+$a$&$b$&Lower bound&Upper bound\\
+\midrule
+1&1&0.272198261287950266&0.272198261287950267\\
+1&2&0.251642673723681485&0.251642673723681486\\
+2&1&0.113648917599903643&0.113648917599903644\\
+2&2&0.101022920883400012&0.101022920883400013\\
+3&4&0.032901765615888080&0.032901765615888081\\
+8&1&0.000223662993166255&0.000223662993166256\\
+8&2&0.000187104280701129&0.000187104280701130\\
+9&4&0.000053452648646007&0.000053452648646008\\
+12&1&0.000002814149505465&0.000002814149505466\\
+\bottomrule
+\end{tabular}
+\end{center}
+For $(a,b)=(1,1)$ an independent interval for $\pi\log2/8$, obtained
+from rational arctangent and logarithm series, lies strictly inside
+the unrounded binomial enclosure. This checks the scale and sign
+against an elementary special value without relying on a floating-point
+polylogarithm implementation. Details are in \cref{app:control}.
+
+\section{Source audit, corrections, and integration boundaries}
+\label{sec:audit}
+\subsection{What should change in the manuscript}
+The final remark of the local-radius section should no longer leave
+\emph{all} integer outer orders in the global conjectural column.
+It can say that full-radius decrease is proved for every real $a\ge8$,
+and for every $a>0$ under \eqref{eq:large-b-condition}, while preserving
+the remaining cases as open. The left-endpoint limit theorem in the
+Cartesian-motion section should be followed by the quantitative
+finite-$b$ transfer rather than being replaced or presented as new.
+
+The new binomial identities can be added alongside positive-kernel
+identities. Their computational status should remain distinct from
+the sharp Euler theorem. The supplied \path{integration/} files use
+namespaced labels and provide an additive insertion, not an automatic
+rewrite of the canonical manuscript.
+
+\subsection{A small existing notation correction}
+The proof in \path{05-real-positive-kernel.tex} of the
+Hurwitz--polylogarithm transport theorem contains the phrases ``with $q=n$'' and
+``boundedness of $h$''. These are inconsistent with the remainder kernel
+notation $q(t)$ used in the same formulas. The intended substitution
+is the positive scalar argument of the Hurwitz formula equal to $n$;
+the bounded kernel in the displayed integral is $q(t)$.
+A safe wording is: ``Apply the Hurwitz difference formula at the
+positive integer argument $n$; use boundedness of $q(t)$ near zero and
+its bounded large-$t$ behavior.'' This is a notation repair, not a
+refutation of the transport identity. It should be checked against the
+surrounding notation at integration time. These editorial repairs should be deduplicated against incoming audit
+notes during integration; no claim of first discovery is made.
+
+\subsection{Non-errors that must not become errors during integration}
+The inspected local theorem is correctly restricted to a neighborhood
+of the origin. We found no new fatal flaw in that proof. A local
+coefficient sign must not be cited as a global radial sign. Likewise,
+the Cartesian quantity $\rho\cos\theta$ and the normalized quantity
+$\cos\theta/\rho$ have different derivatives: the manuscript's
+outward-abscissa theorem does not settle the normalized conjecture.
+
+The incoming fractional bifurcation article has a global statement in
+the inner-order parameter \emph{along a quadratic threshold}, but its
+turning-point geometry is local in radius. Those quantifiers should
+not be combined with the all-radius quantifiers of the present paper.
+The new large-$a$ theorem does not erase the fractional counterexamples.
+
+Finally, the positive squared-resolvent measure is not the manuscript's
+signed first-resolvent measure, and analytic positivity is not an
+arithmetic depth-reduction certificate. The $S_6$ and surviving $S_8$
+candidates keep their existing status. We do not present earlier
+all-depth oscillation, the sharp Euler constant, or the local quartic
+transition as newly solved here.
+
+\section{Further research questions and proposed directions}
+\label{sec:future}
+\subsection{The six remaining integer strips}
+The most concrete next target is
+\begin{conjecture}[Remaining integer normalized-radius problem]
+For $a\in\{2,3,4,5,6,7\}$ and every $b>0$,
+$\eta_{a,b}'(\rho)<0$ on $0<\rho\le1$.
+\end{conjecture}
+By \cref{thm:large-b}, only $0<b<B_a$ from the threshold table remains.
+The squared-resolvent evaluator is uniform in radius and avoids slowly
+converging unit-circle derivatives. This suggests a genuine
+computer-assisted proof strategy: cover each bounded $(b,s)$ region,
+isolate the root in $m$, and certify positivity of $P_s$ there using
+interval moments and analytic tails. Such a proof would require
+outward bounds for the noninteger powers in $H_n^{(b)}$, and a treatment
+of the edges $b\downarrow0$ and $s\downarrow0$. No such complete
+parameter-covering certificate is included here.
+
+\subsection{The first outer order}
+The manuscript predicts decrease for $a=1,b>1$, increase for
+$a=1,0<b<1$, and the constant $\eta=1/2$ at $(1,1)$.
+Our transfer theorem proves the decreasing claim only for $b\ge14$.
+The range $1<b<14$ remains a focused target. An integral comparison
+against the exact logarithmic solution may be more efficient there
+than a mode-by-mode estimate.
+
+\subsection{How small can the uniform outer threshold be?}
+The number eight is an explicit sufficient threshold of this proof,
+not a demonstrated phase boundary. Retaining favorable signs from
+more even and odd modes, or certifying the core in a smaller actual
+parameter region $y=x^{\log_2 3}$ rather than $x^2\le y\le x$, may lower
+it. A substantially different question asks for the least real $A$
+such that global decrease holds for all $a\ge A,b>0$. Fractional
+turning-point phenomena make it inappropriate to infer the answer
+from the local $a\ge2$ result alone.
+
+\subsection{Sharp stability in the inner order}
+The constants 12, 64, and 256 arise from deliberately uniform kernel
+bounds. Determine the least sufficient $B(a)$, or an asymptotically
+sharp $B(a)$ as $a\downarrow0$ and $a\to\infty$. The proof already
+isolates the useful variance gap
+$\Delta(a)=\E X^3-(\E X^2)^2/\E X$; retaining $\E(XV)$ rather than
+bounding it by $\E V$, and exploiting the root equation, should improve
+the perturbation threshold. These observations are proposals, not
+claims of a sharp asymptotic formula.
+
+\subsection{A structural cubic-moment theorem}
+The criterion in \cref{thm:cubic} reduces radial motion to a sign of a
+reweighted third moment. Characterize positive measures $\mu$ for
+which that sign is positive at every root. A useful theorem should
+state additional shape or transform hypotheses, because bare
+positivity cannot suffice. The harmonic moment family offers an
+explicit test class with known fractional changes of sign.
+
+\subsection{Further identities and arithmetic certificates}
+Equation \eqref{eq:B-generating} suggests specializations at rational
+$t$, derivatives of arbitrary order, and cyclotomic analogues of the
+positive Gaussian transform. Their analytic convergence and remainder
+bounds are accessible from the same measure. The separate question
+is whether any such identity yields a finite, meaningful reduction
+in the manuscript's arithmetic period basis. The $S_6,S_8$ targets
+require that second step; an accelerated positive infinite series is
+not itself the missing finite arithmetic certificate.
+
+\subsection{Deeper strict polylogarithms}
+The incoming all-depth report controls several angular roots for
+integer leading indices. It is natural to ask which normalized
+Cartesian displacements of those roots have uniform radial signs,
+and whether positive higher-resolvent measures lead to analogous
+central-moment identities. Multiple-star sums and strict sums must
+remain separate, as must the number of angular roots and the
+monotonicity of an individual normalized branch.
+
+\appendix
+\section{Finite certificates and analytic tail bookkeeping}
+\label{app:certificates}
+Let $N=100$ and $M=M_8$. The following are rational upper bounds for
+the sums in \eqref{eq:certificate-three}:
+\begin{align*}
+ \overline B&=\sum_{n=3}^{N}n(n-1)(2/n)^8
+                 +\frac{2^8}{5N^5},\\
+ \overline O&=\sum_{\substack{3\le n\le N\\n\text{ odd}}}
+                    \frac{n-1}{2}(3/n)^8
+                 +\frac{3^8}{12N^6},\\
+ \overline E&=\sum_{\substack{4\le n\le N\\n\text{ even}}}
+                    n(n-1)(2/n)^8
+                 +\frac{2^8}{5N^5}.
+\end{align*}
+For example, $n(n-1)n^{-8}\le n^{-6}$ and
+$\sum_{n>N}n^{-6}\le\int_N^\infty t^{-6}\dd t=1/(5N^5)$.
+For the odd sum, use $(n-1)n^{-8}/2\le n^{-7}/2$ and bound the
+remaining odd indices by \emph{all} indices; this is deliberately
+conservative. The same method bounds the radial sum by
+\begin{align}\label{eq:exact-tail-upper}
+ \overline R={}&\sum_{n=7}^{N}\frac{n-1}{4}(5/n)^8 B_n\notag\\
+ &+\frac{5^8}{4}\left(\frac{101}{200}+\frac{11M}{40}\right)
+                  \frac1{5N^5}
+ +\frac{5^8\,101M}{1600}\frac1{4N^4}.
+\end{align}
+Indeed the odd summand is bounded by
+$5^8(101/200+11M/40)n^{-6}/4$, and the even summand by
+$5^8\,101M n^{-5}/1600$.
+
+The verifier performs the exact rational comparisons
+\[
+ \overline B<\frac13,\quad
+ C\left(1-\frac{101}{200}\overline E\right)
+       -\frac{101}{100}\overline O>\frac1{50},\quad
+ \overline R<\frac{39}{100}.
+\]
+For a polynomial $p(x)=\sum_{k=0}^d p_kx^k$, the degree-$d$ Bernstein
+coefficients used in \cref{tab:bernstein} are
+\[
+ b_j=\sum_{k=0}^j p_k\frac{\binom jk}{\binom dk}.
+\]
+The code computes these from \eqref{eq:core-polynomial} over
+$\mathbb Q$, compares them with the displayed integers divided by
+the common denominator, and checks that every coefficient is positive.
+The Bernstein basis functions are nonnegative and sum to one on
+$[0,1]$, so these finite signs imply positivity on the full interval.
+
+There is no sampling in $a$ or $b$ in this proof: the exponential
+comparison proves the extension from $a=8$ to all real $a\ge8$, and
+the affine/Bernstein argument covers every $b>0$ through
+$x^2\le y\le x$. Only the elementary infinite sums are truncated,
+with the rigorous integral tails displayed above.
+
+\section{Independent control of the elementary special value}
+\label{app:control}
+For rational $0<x<1$, consecutive partial sums of
+\[
+ \arctan x=\sum_{k=0}^\infty\frac{(-1)^kx^{2k+1}}{2k+1}
+\]
+bracket the exact value by the alternating-series theorem.
+The verifier uses 100 terms at $x=1/5$ and 35 at $x=1/239$, together
+with Machin's identity
+\[
+ \pi=16\arctan(1/5)-4\arctan(1/239).
+\]
+For a direct check of the identity, the tangent addition formula gives
+$\tan(4\arctan(1/5))=120/119$ and
+$\tan(4\arctan(1/5)-\arctan(1/239))=1$; the angle is in $(0,\pi/2)$.
+
+For $\log2$, use
+\[
+ \log2=2\sum_{k=0}^\infty\frac{(1/3)^{2k+1}}{2k+1}.
+\]
+After $L$ terms the positive remainder is at most
+\[
+ \frac{2(1/3)^{2L+1}}{(2L+1)(1-1/9)}.
+\]
+The verifier takes $L=110$, multiplies the positive intervals for
+$\pi$ and $\log2$, divides by eight, and verifies strict containment
+inside the rational $(1,1)$ Gaussian enclosure. Every endpoint in
+this independent calculation is rational.
+
+\section{Reproduction, dependency map, and integration}
+\label{app:reproduce}
+From the package root, with Python 3.10 or newer and without optimized
+mode, run
+\begin{verbatim}
+python code/run_all.py
+\end{verbatim}
+The individual scripts are
+\begin{verbatim}
+python code/verify_global.py
+python code/verify_roots.py
+python code/verify_identities.py
+\end{verbatim}
+They regenerate their receipts under \path{data/}. Run them on a copy
+when preservation of delivered evidence bytes matters. No third-party
+Python dependency is needed. To rebuild the PDF with a standard TeX
+installation, run \path{build.sh}, or run \path{pdflatex article.tex}
+twice. The bibliography is included in the source, so no bibliography
+processor or network access is required.
+
+The proof dependencies are deliberately limited. The $a\ge8$ theorem
+uses the inherited positive kernel but proves its own root localization
+and uniqueness. The finite-$b$ transfer uses the inherited uniqueness
+result only to identify the constructed $0<m<1$ root as the sole upper
+angular zero. The cubic criterion uses the inherited angular-derivative
+sign. The binomial identities depend only on the positive squared
+resolvent, not on the radial theorem. The exact root and Gaussian
+brackets test concrete values and normalizations independently of
+the global parameter argument.
+
+The package is additive and makes no remote repository changes.
+Suggested placement is a new report directory under
+\path{Analysis/Polylogarithms/docs/reports/}, with the namespaced excerpt
+from \path{integration/} inserted in the real-order chapter after the
+local-radius material. The status ledger should record the two proved
+global regimes and preserve the unresolved strips, the first-order
+cases not covered here, and the arithmetic conjectures separately.
+
+\begin{thebibliography}{20}
+\small\raggedright
+\bibitem{repo-local}
+ProveIt Contributors,
+\emph{A proved local part of the normalized-radius conjecture},
+\path{Analysis/Polylogarithms/docs/manuscript/chapters/05-real-local-radius.tex},
+Git blob \texttt{30e3e31944be5bc0d03a8485386dd1608c075507}.
+Repository \url{https://github.com/VladimirReshetnikov/ProveIt},
+accessed 10 October 2026.
+
+\bibitem{repo-cartesian}
+ProveIt Contributors,
+\emph{Cartesian motion of the complete real-order zero arc},
+\path{Analysis/Polylogarithms/docs/manuscript/chapters/05-real-cartesian-motion.tex},
+Git blob \texttt{0deb9bb54adaef8783d4e0e7ce43d426643450a0}.
+Same repository and access date.
+
+\bibitem{repo-kernel}
+ProveIt Contributors,
+\emph{A positive two-variable representation at all positive orders},
+\path{Analysis/Polylogarithms/docs/manuscript/chapters/05-real-positive-kernel.tex},
+Git blob \texttt{044d3825b90dce437ac9007733e6447cf9563098}.
+Same repository and access date.
+
+\bibitem{repo-orders}
+ProveIt Contributors,
+\emph{Real orders: signed-measure domain and consequences for angular zeros},
+\path{Analysis/Polylogarithms/docs/manuscript/chapters/05-real-orders.tex},
+Git blob \texttt{61db4b7721bfdc78434c1efc9e932e15e1c79f33}.
+Read at revision
+\texttt{3338e535ef54ad8f6be56bdce8b3d084a2924465}.
+
+\bibitem{incoming-bifurcation}
+ProveIt research continuation,
+\emph{A Unique Quartic Transition, M\"obius Rigidity, and Two Radial
+Turning Points for Real-Order Double Polylogarithms},
+10 October 2026. Accessible delivered source
+\path{polylogarithms_radial_bifurcation.tex}; corresponding incoming
+archive \path{ProveIt_Polylogarithms_Radial_Bifurcation_2026-10-10.zip}.
+Scope and contribution statements consulted; not a full independent
+replay of that report's certificates.
+
+\bibitem{incoming-oscillation}
+ProveIt research continuation,
+\emph{Signed-Kernel Oscillation at Every Depth: Minimal Pick Compensation,
+Zero Geometry, and Certified Polylogarithmic Identities},
+10 October 2026. Corresponding incoming archive
+\path{ProveIt_AllDepth_Oscillation.zip}. Abstract and scope/audit excerpts
+consulted; not a full proof audit.
+
+\bibitem{incoming-euler}
+ProveIt research continuation,
+\emph{The Sharp Universal Euler Constant for Harmonic Polylogarithms},
+10 October 2026. Corresponding incoming archive
+\path{ProveIt_Sharp_Universal_Euler_2026-10-10.zip}.
+Abstract and contribution statements consulted.
+
+\bibitem{dlmf-polylog}
+NIST Digital Library of Mathematical Functions,
+\S25.12, \emph{Polylogarithms}, in particular the defining series and
+Mellin integral, equations 25.12.10--11.
+\url{https://dlmf.nist.gov/25.12}, accessed 10 October 2026.
+
+\bibitem{dlmf-chebyshev}
+NIST Digital Library of Mathematical Functions,
+\S18.5, \emph{Explicit Representations}, trigonometric representations
+of the Chebyshev polynomials.
+\url{https://dlmf.nist.gov/18.5}, accessed 10 October 2026.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,80 @@
+\section{Further research questions and a sharper kernel conjecture}
+\label{sec:questions}
+The universal Euler constant is now determined, but the pointwise kernel bound is intentionally not optimized. This leaves several concrete problems whose formulations no longer depend on a broad numerical search for an unspecified constant.
+
+\subsection{The exact later-truncation kernel extrema}
+Define
+\[
+ M_N=\max_{0\le p,y\le1}K_N(p,y).
+\]
+Continuity gives existence. Theorem~\ref{thm:kernel} proves $M_N<9/8$ for $N\ge2$, while \eqref{eq:K1} gives $M_1=(1+\sqrt2)/2$. Numerical optimization of the explicit rational function gives the following diagnostics:
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+$N$ & $p$ at a found maximizer & $y$ at a found maximizer & Found value\\
+\midrule
+2 & 0.852259 & 0.252703 & 1.118938686\\
+3 & 0.692966 & 0.223626 & 1.097887069\\
+4 & 0.583633 & 0.208496 & 1.087814658\\
+8 & 0.361111 & 0.182102 & 1.072237961\\
+16 & 0.206992 & 0.165668 & 1.063669537\\
+32 & 0.112212 & 0.156110 & 1.058981067\\
+128 & 0.030040 & 0.148143 & 1.055192383\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are floating-point optimization results, not certified global maxima.
+
+\begin{conjecture}[A monotone sequence of kernel maxima]\label{conj:maxima}
+For every $N\ge2$, $K_N$ has a unique global maximizer in $(0,1)^2$, and $M_{N+1}<M_N$.
+\end{conjecture}
+The monotonicity of the auxiliary envelope $B_m$ proved earlier is not this conjecture: $K_N$ and $B_N$ are different functions. Likewise, $R_N$ at a fixed order pair need not decrease, as Proposition~\ref{prop:nonmonotone} shows. A useful first target is an exact algebraic characterization and root-isolation certificate for the maximum of $K_2$. Clearing the denominators of its two gradient equations produces a finite elimination problem; boundary comparisons must still be supplied.
+
+\subsection{An exponential limiting kernel}
+For fixed $c\ge0$ and $0\le y\le1$, the scaling $p=c/N$ suggests
+\begin{equation}\label{eq:limitingkernel}
+ K_N(c/N,y)\longrightarrow
+ H(c,y):=\frac{e^{-cy^2}-e^{-c}}{1-y}.
+\end{equation}
+At $y=1$ the continuous limit is $H(c,1)=2ce^{-c}$.
+\begin{proposition}[Local scaling limit]\label{prop:scaling}
+Convergence in \eqref{eq:limitingkernel} is uniform on every compact rectangle $0\le c\le A$, $0\le y\le1$.
+\end{proposition}
+\begin{proof}
+For bounded $v\ge0$ set $h_N(v)=f_N(v/N)$. The elementary binomial-to-exponential limit, and its first derivative, give $h_N\to e^{-v}$ in $C^1([0,A])$. For $y<1$,
+\[
+ K_N(c/N,y)=\frac{h_N(cy^2)-h_N(c)}{1-y}
+ =-c(1+y)\int_0^1 h_N'\bigl(cy^2+u c(1-y^2)\bigr)\dd u.
+\]
+Uniform convergence of the derivative proves the claim including $y=1$.
+\end{proof}
+For fixed $0<y<1$, $H$ has a unique maximum in $c$ at
+\[
+ c(y)=\frac{-2\log y}{1-y^2},\qquad
+ H(c(y),y)=(1+y)y^{2y^2/(1-y^2)}.
+\]
+Both statements follow by a single differentiation. The endpoint limits of the last expression are one at $y=0$ and $2/e$ at $y=1$. At $y=1/4$ its value exceeds one, since $(5/4)^{15}>16$, so its maximum is attained in the interior. A numerical calculation finds $c\approx3.9410662$, $y\approx0.1453037$ and $H\approx1.0538619304$.
+
+\begin{conjecture}[Limit of the optimal kernel constants]\label{conj:limit}
+The global maxima satisfy
+\[
+ \lim_{N\to\infty}M_N
+ =\max_{0<y<1}(1+y)y^{2y^2/(1-y^2)}.
+\]
+Moreover, the maximizers obey $Np_N\to c_\infty$ and $y_N\to y_\infty$, where $(c_\infty,y_\infty)$ is the unique maximizer of $H$.
+\end{conjecture}
+The proved compact scaling limit alone does not establish this assertion. A proof must exclude maximizing sequences escaping to $Np\to\infty$ or into problematic boundary regimes, and establish uniqueness for the limiting one-variable maximum. This makes the missing global step explicit.
+
+\subsection{Order-averaged optimality is a different problem}
+For fixed $N$, define $C_N=\sup_{a,b>0}\E K_N(X^2,Y)$. Then $C_N\le M_N$, but equality is not automatic. Two gamma shape parameters do not allow arbitrary concentration at an independently selected interior point $(p,y)$ with fixed rate one. Determine $C_N$, whether it is attained, and which parameter limits control it. The theorem of this report only needs $\sup_{N\ge2}C_N<\Cs$; it does not identify every $C_N$.
+
+\subsection{Further analytic and arithmetic directions}
+The error-moment identities suggest a structured route into negative outer orders. Determine, for each $b>0$, the sign changes of $s\mapsto g_{s,b}$ below $s=-1$, and identify optimal linear inequalities from the positive coefficients of $P_n$. The explicit opposite signs at $g_{-1,1}$ and $g_{-3,1}$ show that a blanket extension of Gaussian negativity would be false. The moment identities also offer certified evaluations of selected negative-order combinations from rapidly convergent positive-order Euler errors.
+
+Other acceleration schemes replace $(1-v)^N$ by a different residual polynomial. Find conditions on such polynomials that control the divided difference uniformly. The positive-moment acceleration literature is relevant, but its theorems should not be applied by silently discarding the compensation factor $1-Y$ in this problem. A useful goal is a class of admissible residual functions with explicit derivative or Bernstein certificates.
+
+For other roots of unity, the remainder kernel generally becomes complex rather than positive. Determine whether a sector-valued or matrix-valued analogue gives equally uniform bounds. At higher depth, seek iterated positive differences rather than assuming that a depth-two proof automatically iterates without integrability losses.
+
+The mixed Gaussian $S_6$ relation remains a separate arithmetic reduction problem. The present theorem can certify evaluations that support its investigation, but a vanishing numerical residual would still not prove that relation. The global normalized-radius conjecture also remains separate from the radial substitution in the error generating function.
+
+Finally, the finite proof components are natural formalization targets: the Euler coefficient identity, the three polynomial identities, Bernstein basis conversion and exact integer-root intervals. Formalizing the probability kernel and analytic continuation would then connect those certificates to the global theorem. At present this is a proposed development, not an existing Lean certificate.

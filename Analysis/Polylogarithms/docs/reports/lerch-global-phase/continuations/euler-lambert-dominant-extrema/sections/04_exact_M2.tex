@@ -1,0 +1,102 @@
+\section{An exact algebraic solution at the first later truncation}
+\label{sec:exact-M2}
+
+The sharp-Euler incoming report explicitly proposed exact elimination
+and boundary comparison for $K_2$ as a first target
+\cite[Section 8]{SharpEulerIncoming}. Both can be completed with small
+polynomials. This gives an exact answer, including uniqueness, rather
+than an enclosure of a numerically located stationary point.
+
+\begin{theorem}[The unique maximum of $K_2$]\label{thm:M2}
+Let $y_2$ be the unique root in $(0,1)$ of
+\begin{equation}\label{eq:M2-R}
+ R(y)=y^7+3y^6-2y^5-10y^4+17y^3+59y^2-4.
+\end{equation}
+Define
+\begin{align}
+ D(y)&=y^6+2y^5-2y^4-6y^3+17y^2+36y+4,
+ \label{eq:M2-D}\\
+ r_2&=12/D(y_2),\qquad M_2=K_2(r_2,y_2).
+ \label{eq:M2-r}
+\end{align}
+Then $(r_2,y_2)$ is the unique global maximizer of $K_2$ on
+$[0,1]^2$. The number $M_2$ has degree seven over $\mathbb Q$ and
+satisfies
+\begin{equation}\label{eq:M2-minpoly}
+\begin{split}
+ 0={}&32M_2^7-416M_2^6+2538M_2^5-4523M_2^4\\
+    &-32216M_2^3-66352M_2^2+99072M_2+20736.
+\end{split}
+\end{equation}
+In particular $M_2=1.11893868596105\ldots$.
+\end{theorem}
+\begin{proof}
+The kernel simplifies to
+\begin{equation}\label{eq:K2-rational}
+ K_2(r,y)=\frac{r(1+y)(3-r-ry^2-r^2y^2)}{(1+r)(1+ry^2)}.
+\end{equation}
+Its partial derivatives, after removing positive denominators and
+the negative factors $-(1+y)$ and $-r$, have numerators
+\begin{align*}
+ P(r,y)={}&r^4y^4+2r^3y^4+2r^3y^2+r^2y^4+8r^2y^2\\
+          &+r^2+2ry^2+2r-3,\\
+ Q(r,y)={}&r^3y^4+r^2y^4+2r^2y^2+6ry^2+8ry+r-3.
+\end{align*}
+The exact polynomial identities used in the elimination are
+\begin{equation}\label{eq:M2-resultant}
+ \operatorname{Res}_r(P,Q)=-192y^{10}(y+1)R(y),
+\end{equation}
+and the penultimate subresultant
+\begin{equation}\label{eq:M2-subresultant}
+ 16y^{10}\bigl(rD(y)-12\bigr).
+\end{equation}
+These are finite algebraic identities; the accompanying verifier
+reconstructs them from the derivative polynomials.
+
+There is exactly one zero of $R$ in $(0,1)$. Indeed $R(0)=-4$,
+$R(1)=64$, and
+\[
+ R'(y)=y\bigl(7y^5+18y^4-10y^3-40y^2+51y+118\bigr)>68y.
+\]
+For each such $y$, $P(r,y)$ is strictly increasing in $r\ge0$,
+and $P(0,y)=-3$, $P(1,y)=4y^4+12y^2>0$. Thus at most one
+interior stationary point can occur.
+
+We next prove that a global maximum is interior. At $r=0$ the
+kernel is zero, and at $y=0$ it is $1-W_2(r)\le1$. At $y=1$,
+\[
+ K_2(r,1)=\frac{2r(1-r)(3+r)}{(1+r)^2}<1,
+\]
+because the denominator minus the numerator equals
+$(1-2r)^2+r^2+2r^3>0$. At $r=1$ and $0<y<1$,
+$\partial_pK_2<0$ by $P(1,y)>0$, so moving into the square
+increases the value. Finally
+\[
+ K_2(3/4,1/4)=\frac{8325}{7504}>1.
+\]
+Compactness therefore supplies an interior global maximum.
+It must be the unique stationary point identified above.
+The subresultant gives $r_2=12/D(y_2)$; its denominator is positive,
+since $D(y)\ge y^6+2y^5+9y^2+36y+4$ on $(0,1)$.
+
+Substituting $r=12/D(y)$ in \eqref{eq:K2-rational}, clearing its
+positive denominator, and eliminating $y$ against $R(y)$ gives
+\eqref{eq:M2-minpoly}. To establish the degree assertion, reduce its
+primitive polynomial modulo $5$ and make it monic. The exact certificate
+checks
+\[
+ \gcd(f,X^5-X)=1,\qquad X^{5^7}\equiv X\pmod f.
+\]
+Since $7$ is prime, these are the finite-field irreducibility criterion
+in degree seven. Its leading coefficient does not vanish modulo $5$,
+so Gauss's lemma proves irreducibility over $\mathbb Q$.
+Rational bisection of $R$ followed by interval evaluation of
+\eqref{eq:M2-r} certifies the displayed decimal prefix.
+\end{proof}
+
+The geometric significance of this computation is limited but precise.
+It solves a pointwise maximization problem for the remainder kernel.
+It does not identify the order-averaged $C_2$: the two gamma shape
+parameters cannot be assumed to concentrate independently at
+$(r_2,y_2)$.
+

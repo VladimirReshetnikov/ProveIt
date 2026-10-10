@@ -1,0 +1,432 @@
+% Proof notes for the root article. Requires amsmath, amssymb, amsthm,
+% booktabs, hyperref. The table input is supplied beside the certificate.
+% This is a complete mathematical contribution, not a proposed proof.
+
+\section{An exact proof of the rational tetralogarithm conjecture}
+\label{rattetra:sec}
+
+The manuscript's equation \texttt{golden:eq:tetra} reproduces the
+six-term relation proposed by Vladimir Reshetnikov in 2015 and again
+in 2017~\cite{Reshetnikov2015,Reshetnikov2017}. Its present proof discussion reduces it to a cross-base Kummer
+specialization but does not prove that specialization. We fill this local
+gap. The proof below is self-contained apart from elementary differential
+identities for the classical polylogarithms and a small finite rational
+certificate, supplied in full. It also proves a one-parameter functional
+identity from which the rational evaluation follows. No claim of worldwide
+priority for the underlying classical functional-equation mechanism is made.
+
+\begin{theorem}[The six rational arguments]
+\label{rattetra:thm:main}
+Put $A=\log2$ and $B=\log3$. Then
+\begin{align}
+&720\operatorname{Li}_4(\tfrac12)
+ -2160\operatorname{Li}_4(\tfrac13)
+ +2160\operatorname{Li}_4(\tfrac23)
+ +270\operatorname{Li}_4(\tfrac14)\notag\\
+&\qquad+540\operatorname{Li}_4(\tfrac34)
+ +135\operatorname{Li}_4(\tfrac19)\notag\\
+&=19\pi^4+30(\pi^2-B^2)(10A^2-12AB+3B^2)
+       -30A^2(19A^2-24AB+8B^2).
+\label{rattetra:eq:main}
+\end{align}
+In particular, the intermediate relation \texttt{golden:eq:kummer}
+in the manuscript is also proved, by the two elementary duplications
+already recorded there.
+\end{theorem}
+
+\subsection{A real generalized Rogers function and its exact descent}
+
+Write $\ell_n(x)=\operatorname{Re}\operatorname{Li}_n(x)$ on the
+principal branch. For $x\in\mathbb R\setminus\{0,1\}$ set
+$L=\log|x|$, $M=\log|1-x|$, so $\ell_1(x)=-M$. Define
+\begin{align*}
+R_2(x)&=\ell_2(x)-\tfrac12L\ell_1(x),\\
+R_3(x)&=\ell_3(x)-L\ell_2(x)+\tfrac13L^2\ell_1(x),\\
+R_4(x)&=\ell_4(x)-L\ell_3(x)
+                +\tfrac12L^2\ell_2(x)-\tfrac18L^3\ell_1(x).
+\end{align*}
+These functions extend continuously by $R_n(0)=0$ and
+$R_n(1)=\zeta(n)$. Direct telescoping differentiation gives
+\begin{equation}
+ dR_n(x)=\frac{(-1)^n(n-1)}{n!}
+ L^{n-2}(L\,dM-M\,dL),\qquad n=2,3,4.
+\label{rattetra:eq:derivative}
+\end{equation}
+At a crossing of $x=1$, all logarithmically singular terms have positive
+powers of $L$, which tend to zero; this proves the stated continuity and
+allows identities obtained on regular subintervals to be joined.
+
+Let $V=\mathbb Q(t)^\times\otimes_{\mathbb Z}\mathbb Q$, written
+additively, and put
+\[
+ \beta_n[f]=f^{\otimes(n-2)}\otimes(f\wedge(1-f)).
+\]
+The sign of a rational function is torsion and vanishes in $V$.
+Rational prime factors do not vanish and must be retained.
+
+\begin{lemma}[Descent with several independent logarithms]
+\label{rattetra:lem:descent}
+Let $f_i(t)$ be nonconstant rational functions with no zero or pole
+on an interval $I$, and let $v_i\in\mathbb Q$ satisfy
+$\sum_i v_i\beta_4[f_i]=0$. For every linear functional
+$\eta:V\to\mathbb R$ and each $n=2,3,4$,
+\[
+ \sum_i v_i\eta(f_i)^{4-n}R_n(f_i(t))
+\]
+is constant on $I$, with the continuous interpretation at $f_i(t)=1$.
+\end{lemma}
+
+\begin{proof}
+Contract $4-n$ of the first two tensor slots with $\eta$.
+The result is $\sum_i v_i\eta(f_i)^{4-n}\beta_n[f_i]=0$.
+Evaluate the remaining ordinary tensor slots by $g\mapsto\log|g(t)|$
+and the wedge by
+$g\wedge h\mapsto\log|g|\,d\log|h|-\log|h|\,d\log|g|$.
+Equation~\eqref{rattetra:eq:derivative} gives a zero derivative on every
+regular subinterval. Continuity joins the constants across the finitely
+many crossings of $f_i=1$.
+\end{proof}
+
+The point of the lemma is that $\eta(f_i)$ need not be a rational
+multiple of a single logarithm. At the final specialization $t=1/2$,
+the needed values are independent linear forms in $A=\log2$ and
+$B=\log3$. Thus the one-logarithm golden descent does not have to be
+applied outside its stated hypotheses.
+
+\subsection{The complete finite certificate}
+
+For the following forty-two rows define
+\begin{equation}
+ f_i(t)=\varepsilon_i2^{d_i}t^{a_i}(1-t)^{b_i}(1+t)^{c_i}.
+\label{rattetra:eq:arguments}
+\end{equation}
+All $a_i\ge0$, and all factors except the displayed sign are positive
+for $0<t<1$. The coefficients below are primitive integers.
+
+\begin{center}\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{r r c r r r r@{\qquad}r r c r r r r}
+\toprule
+$i$&$v_i$&$\varepsilon_i$&$d_i$&$a_i$&$b_i$&$c_i$&
+$i$&$v_i$&$\varepsilon_i$&$d_i$&$a_i$&$b_i$&$c_i$\\
+\midrule
+1 & -1 & + & -1 & 0 & 0 & 1 & 22 & 3 & + & -1 & 1 & 0 & -1 \\
+2 & -11 & + & 0 & 0 & 0 & 1 & 23 & -4 & + & 0 & 1 & 0 & -1 \\
+3 & -6 & - & 0 & 0 & 0 & 1 & 24 & 6 & - & 0 & 1 & 0 & -1 \\
+4 & -3 & + & 1 & 0 & 0 & 1 & 25 & 1 & + & 1 & 1 & 0 & -1 \\
+5 & -4 & + & 0 & 0 & 1 & -1 & 26 & -3 & + & -1 & 1 & 0 & 0 \\
+6 & 4 & - & 0 & 0 & 1 & -1 & 27 & -3 & - & -1 & 1 & 0 & 0 \\
+7 & -1 & + & -1 & 0 & 1 & 0 & 28 & 6 & + & 0 & 1 & 0 & 0 \\
+8 & 22 & + & 0 & 0 & 1 & 0 & 29 & -6 & - & 0 & 1 & 0 & 0 \\
+9 & 21 & - & 0 & 0 & 1 & 0 & 30 & 3 & + & 1 & 1 & 0 & 0 \\
+10 & -3 & + & 1 & 0 & 1 & 0 & 31 & 3 & - & 1 & 1 & 0 & 0 \\
+11 & 4 & + & 0 & 0 & 1 & 1 & 32 & 1 & + & -1 & 1 & 0 & 1 \\
+12 & -1 & + & 0 & 0 & 2 & 1 & 33 & 1 & - & -1 & 1 & 1 & 0 \\
+13 & -1 & - & 0 & 0 & 3 & 0 & 34 & 3 & + & 0 & 1 & 1 & 0 \\
+14 & -1 & + & -1 & 1 & -2 & 0 & 35 & 3 & - & 0 & 1 & 1 & 0 \\
+15 & -6 & - & 0 & 1 & -2 & 0 & 36 & -4 & - & 0 & 2 & -1 & -1 \\
+16 & -6 & - & 0 & 1 & -1 & -1 & 37 & -3 & - & 0 & 2 & -1 & 0 \\
+17 & 3 & - & -1 & 1 & -1 & 0 & 38 & -1 & + & 1 & 2 & -1 & 0 \\
+18 & -21 & + & 0 & 1 & -1 & 0 & 39 & -3 & + & 0 & 2 & 0 & -1 \\
+19 & -7 & - & 0 & 1 & -1 & 0 & 40 & -1 & + & 1 & 2 & 0 & -1 \\
+20 & 1 & - & 1 & 1 & -1 & 0 & 41 & 1 & + & 0 & 3 & -3 & 0 \\
+21 & -1 & - & -1 & 1 & 0 & -2 & 42 & 1 & - & 0 & 3 & -1 & -2 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{lemma}[Exact tensor cancellation]
+\label{rattetra:lem:certificate}
+The displayed rational functions satisfy
+\begin{equation}
+ \sum_{i=1}^{42}v_i\beta_4[f_i]=0.
+\label{rattetra:eq:tensor}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The complete factor list needed for all $f_i$ and $1-f_i$, modulo
+sign, is
+\[
+ 2,\quad t,\quad t-1,\quad t+1,\quad
+ t-2,\quad t+2,\quad2t-1,\quad2t+1,\quad
+ t^2-t-1,\quad t^2-t+1.
+\]
+Use their exponent vectors as coordinates in $V$. For example,
+the constant $2$ occurs in
+\[
+ 1-\frac{1+t}{2}=\frac{1-t}{2},\qquad
+ 1-\frac{t}{2(1-t)^2}
+   =\frac{(2t-1)(t-2)}{2(1-t)^2}.
+\]
+The first two slots of $\beta_4$ are symmetric. For each of the ten
+unordered pairs of coordinates of $2,t,1-t,1+t$, multiply the
+corresponding exponents and the two-by-two alternating minors of
+the vectors of $f_i,1-f_i$, and sum with coefficient $v_i$.
+Every resulting coordinate is zero. There are $230$ coordinates
+touched by the finite sum.
+
+The accompanying \texttt{tetralogarithm\_certificate.json} gives
+exactly the forty-two displayed rows. The self-contained verifier
+independently factors every rational function, checks the polynomial
+factorizations by multiplication, retains the prime-$2$ coordinate,
+and performs the indicated sums over rational integers. It does not
+search for a relation or use numerical polylogarithms in this check.
+This is a finite exact verification of~\eqref{rattetra:eq:tensor}.
+\end{proof}
+
+\subsection{The functional identity proved by the certificate}
+
+For $0<t<1$, put
+\[
+ A=\log2,\qquad X=\log t,\qquad
+ Y=\log(1-t),\qquad Z=\log(1+t),
+\]
+and define
+\begin{align}
+P_4={}&\frac{A^4}{4}-\frac{A^3(Y+Z)}6
+       +\frac{A^2(Y^2+Z^2)}4+\frac{5A(Y^3+Z^3)}6
+       -XY(3Y+Z)(Y+Z)\notag\\
+ &+\frac{17Y^4+8Y^3Z+9Y^2Z^2+2YZ^3+2Z^4}{6},
+ \label{rattetra:eq:P4}\\
+P_2={}&-6A^2-4A(Y+Z)+\frac52Y^2+8YZ-8Z^2.
+ \label{rattetra:eq:P2}
+\end{align}
+
+\begin{theorem}[A rational-function identity]
+\label{rattetra:thm:functional}
+With the forty-two rows of the table,
+\begin{equation}
+ \sum_{i=1}^{42}v_i\operatorname{Re}\operatorname{Li}_4(f_i(t))
+ -4\operatorname{Li}_4(\tfrac12)
+ =P_4+\zeta(2)P_2-\frac{71}{4}\zeta(4),
+ \qquad 0<t<1.
+\label{rattetra:eq:functional}
+\end{equation}
+The principal real parts and continuous values are used when an
+argument is greater than one or equals one.
+\end{theorem}
+
+\begin{proof}
+Fix $t\in(0,1)$ and write $L_i=\log|f_i(t)|$.
+Apply Lemma~\ref{rattetra:lem:descent} with the functional sending a
+prime or irreducible factor $2,s,1-s,1+s$ respectively to
+$A,X,Y,Z$, and extend it linearly to the factor space, assigning
+arbitrary values to its other basis elements. Unique factorization
+shows that such a functional exists, and its value on every
+$f_i(s)$ is $L_i$. This definition remains valid when one of the
+additional factors of $1-f_i(t)$ vanishes; no logarithm of zero
+is used to define the functional. The table functions have limits
+\[
+ e_i=\lim_{s\to0^+}f_i(s)=
+ \begin{cases}0,&a_i>0,\\ \varepsilon_i2^{d_i},&a_i=0.
+ \end{cases}
+\]
+Thus for $n=2,3,4$,
+\[
+ \sum_i v_iL_i^{4-n}R_n(f_i(t))
+  =\sum_{a_i=0}v_iL_i^{4-n}R_n(e_i).
+\]
+The elementary triangular identity
+\[
+ \ell_4(x)=R_4(x)+L R_3(x)+\tfrac12L^2R_2(x)
+                         +\tfrac1{24}L^3\ell_1(x)
+\]
+then supplies an exact ordinary-polylogarithm identity. More explicitly,
+put $M_i=\log|e_i|=d_iA$ for $a_i=0$, and set
+$Q_i=-M_i^3/8+L_iM_i^2/3-L_i^2M_i/4$. The result is
+\begin{align}
+\sum_i v_i\ell_4(f_i(t))={}&\sum_{a_i=0}v_i\bigl\{
+ \ell_4(e_i)+(L_i-M_i)\ell_3(e_i)
+ +\tfrac12(L_i-M_i)^2\ell_2(e_i)+Q_i\ell_1(e_i)\bigr\}\notag\\
+ &+\frac1{24}\sum_i v_iL_i^3\ell_1(f_i(t)).
+\label{rattetra:eq:descent-master}
+\end{align}
+When $e_i=1$, $Q_i=0$ and the corresponding last term in braces
+is zero; no divergent value is assigned to $\ell_1(1)$.
+Likewise $L_i^3\ell_1(f_i(t))$ is assigned its limiting value zero
+at $f_i(t)=1$.
+
+Only $e_i\in\{1,-1,1/2,2\}$ occur. The required lower values are
+\[
+\begin{array}{c|ccc}
+e&\ell_1(e)&\ell_2(e)&\ell_3(e)\\ \hline
+-1&-A&-\zeta(2)/2&-3\zeta(3)/4\\
+1/2&A&\zeta(2)/2-A^2/2&7\zeta(3)/8-\zeta(2)A/2+A^3/6\\
+2&0&3\zeta(2)/2&7\zeta(3)/8+3\zeta(2)A/2
+\end{array}
+\]
+and $\ell_2(1)=\zeta(2)$, $\ell_3(1)=\zeta(3)$.
+For completeness, the lower reflection and Landen identities are
+\begin{align*}
+\operatorname{Li}_2(x)+\operatorname{Li}_2(1-x)
+ &=\zeta(2)-\log x\log(1-x),\\
+\operatorname{Li}_2\!\left(-\frac{x}{1-x}\right)
+ &=-\operatorname{Li}_2(x)-\frac12\log^2(1-x),\\
+\operatorname{Li}_3(x)+\operatorname{Li}_3(1-x)
+ +\operatorname{Li}_3\!\left(-\frac{x}{1-x}\right)
+ &=\zeta(3)+\zeta(2)\log(1-x)\\
+ &\quad-\frac12\log x\log^2(1-x)+\frac16\log^3(1-x),
+\end{align*}
+for $0<x<1$. Differentiating the first two identities gives zero
+differences, with constants fixed at $x\to0^+$. Using them in the
+derivative of the third gives zero as well, and the same endpoint
+fixes its constant. Substitution $x=1/2$ proves the displayed half
+values. The values at $2$ follow by real inversion. Thus these
+endpoint reductions require no integer-relation recognition.
+
+The endpoint weight-four sum is exactly
+\[
+ \sum_{a_i=0}v_i\ell_4(e_i)
+ =4\operatorname{Li}_4(\tfrac12)+\frac{A^4}{4}
+       -6\zeta(2)A^2-\frac{71}{4}\zeta(4).
+\]
+Substitute $L_i=d_iA+a_iX+b_iY+c_iZ$ and the factorizations of
+$1-f_i$ in~\eqref{rattetra:eq:descent-master}. All logarithms of the
+six additional polynomial factors cancel, as do the $\zeta(3)$ terms.
+The remaining polynomial is precisely
+$P_4+\zeta(2)P_2-71\zeta(4)/4$, which proves the theorem.
+The verifier expands both the master formula and the displayed
+$P_4,P_2$ independently and checks their exact polynomial difference
+is zero.
+\end{proof}
+
+\subsection{The rational specialization, including all inversion terms}
+
+For $r>1$, the real inversion formulas at weight four are
+\begin{align*}
+ \ell_4(r)+\operatorname{Li}_4(r^{-1})
+   &=-\frac{\log^4r}{24}+\zeta(2)\log^2r+2\zeta(4),\\
+ \operatorname{Li}_4(-r)+\operatorname{Li}_4(-r^{-1})
+   &=-\frac{\log^4r}{24}-\frac12\zeta(2)\log^2r
+       -\frac74\zeta(4).
+\end{align*}
+They follow by repeated differentiation from the real logarithm
+and dilogarithm inversion laws, fixing the constants at $r=1$.
+Negative arguments inside the unit interval are removed by
+\[
+ \operatorname{Li}_4(-r)=\tfrac18\operatorname{Li}_4(r^2)
+                                  -\operatorname{Li}_4(r),
+ \qquad 0\le r\le1.
+\]
+At $t=1/2$ one has $X=Y=-A$, $Z=B-A$ and
+$f_i(1/2)=\varepsilon_i2^{d_i-a_i-b_i-c_i}3^{c_i}$.
+Applying the three displayed rules to the left side of
+\eqref{rattetra:eq:descent-master}, after subtracting its endpoint
+weight-four sum and multiplying by $180$, gives exactly the six
+tetralogarithms in~\eqref{rattetra:eq:main}. The remaining polynomial
+from those inversions is
+\begin{align*}
+I={}&120A^4-510A^3B+765A^2B^2-510AB^3+150B^4\notag\\
+ &+\zeta(2)(90A^2+2880AB-1980B^2)-1710\zeta(4).
+\end{align*}
+The non-weight-four part of the specialized descent master formula is
+\begin{align*}
+D={}&-450A^4+210A^3B+225A^2B^2-150AB^3+60B^4\notag\\
+ &+\zeta(2)(1890A^2+720AB-1440B^2).
+\end{align*}
+Consequently the six-term sum equals $D-I$, namely
+\begin{align*}
+&-570A^4+720A^3B-540A^2B^2+360AB^3-90B^4\notag\\
+&\qquad+\zeta(2)(1800A^2-2160AB+540B^2)+1710\zeta(4).
+\end{align*}
+Using $\zeta(2)=\pi^2/6$, $\zeta(4)=\pi^4/90$ gives exactly
+\eqref{rattetra:eq:main}, proving Theorem~\ref{rattetra:thm:main}.
+
+% Optional insertion after identities_notes.tex; the certificate is shared.
+% Requires the same theorem environments, amsmath and booktabs.
+\subsection{A further proved rational specialization}
+\label{rattetra:sec:onethird}
+
+The functional identity also produces explicit identities beyond the
+six-term conjecture. The specialization $t=1/3$ is convenient because
+all logarithms reduce to $A=\log2$ and $B=\log3$. The following
+corollary is a new entry in this report, with no claim of priority
+among classical tetralogarithm identities.
+
+\begin{corollary}[Twenty-five positive rational arguments]
+\label{rattetra:cor:onethird}
+For the argument--coefficient pairs $(r,c_r)$ in the table,
+\begin{align}
+\sum_r c_r\operatorname{Li}_4(r)
+={}&\frac{109}{3}A^4-116A^3B+54A^2B^2+36AB^3-21B^4\notag\\
+ &+\zeta(2)(316A^2-408AB+132B^2)+53\zeta(4).
+\label{rattetra:eq:onethird}
+\end{align}
+All arguments lie in $(0,1)$, and the integer coefficient list is
+primitive: its greatest common divisor is one.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{c r@{\qquad\qquad}c r}
+\toprule
+$r$&$c_r$&$r$&$c_r$\\
+\midrule
+$1/1024$ & $1$ & $9/64$ & $-6$ \\
+$9/1024$ & $-1$ & $1/6$ & $16$ \\
+$1/81$ & $1$ & $2/9$ & $8$ \\
+$1/64$ & $-4$ & $1/4$ & $-107$ \\
+$1/36$ & $-6$ & $8/27$ & $8$ \\
+$1/32$ & $-8$ & $1/3$ & $80$ \\
+$4/81$ & $3$ & $3/8$ & $64$ \\
+$1/16$ & $9$ & $4/9$ & $24$ \\
+$1/12$ & $-24$ & $1/2$ & $-200$ \\
+$64/729$ & $-1$ & $16/27$ & $-8$ \\
+$3/32$ & $8$ & $3/4$ & $112$ \\
+$1/9$ & $-14$ & $8/9$ & $32$ \\
+$1/8$ & $64$ & & \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{corollary}
+
+\begin{proof}
+Set $t=1/3$ in Theorem~\ref{rattetra:thm:functional}. The logarithms
+are $X=-B$, $Y=A-B$, and $Z=2A-B$. Apply the real inversion
+formulas to arguments whose absolute value exceeds one, then the
+duplication formula
+$\operatorname{Li}_4(-r)=\operatorname{Li}_4(r^2)/8-
+\operatorname{Li}_4(r)$ to negative arguments in $[-1,0]$.
+Multiplication by eight clears the resulting coefficient denominators.
+Collecting equal positive arguments gives exactly the table, and
+collecting all inversion terms gives the displayed polynomial.
+The same certificate verifier performs these reductions over
+$\mathbb Q$ and checks that the ordinary-polynomial residual is zero.
+As an independent audit only, a direct evaluation of the reduced
+identity at ninety working decimal digits has absolute residual
+below $8\times10^{-90}$.
+\end{proof}
+
+The argument list and polynomial are supplied separately in
+\src{tetralogarithm_one_third.json}, and are also included in the
+shared certificate data. The replay checks the original conjecture,
+the functional identity, and this corollary in a single run.
+
+\subsection{Verification, provenance, and further questions}
+
+The exact verifier finishes with a zero tensor residual, a zero
+ordinary-polynomial residual, and the six specified rational arguments
+with coefficients $(720,-2160,2160,270,540,135)$. Separately, it evaluates
+the functional identity at $t=1/5,37/100,1/2,4/5$ using $90$ working
+decimal digits. The largest numerical discrepancy is approximately
+$7.9\times10^{-90}$. These calculations check the branch conventions;
+the proof is the finite tensor cancellation and the analytic descent.
+
+The original questions are
+\url{https://math.stackexchange.com/questions/1373123/} and
+\url{https://mathoverflow.net/questions/261408/}.
+The former still presents a proposed Kummer route, while the latter's
+answer identifies the separate golden weight-five ladders. Those two
+facts should not be conflated: the certificate here settles the rational
+weight-four formula directly. The method is compatible with the
+higher-Bloch-condition approach to functional equations, but no unproved
+period conjecture or transcendence assertion is used.
+
+Three useful next problems are to decompose the forty-two rows into a
+small set of named classical Kummer specializations; to specialize the
+proved functional identity at other rational or quadratic arguments and
+systematically reduce the resulting baskets; and to search for similarly
+complete certificates for the unresolved golden weights six and seven.
+The Gaussian $S_6$ conjecture remains a distinct problem and is not
+promoted by this result. No minimality or arithmetic independence of
+the six rational tetralogarithms is asserted.

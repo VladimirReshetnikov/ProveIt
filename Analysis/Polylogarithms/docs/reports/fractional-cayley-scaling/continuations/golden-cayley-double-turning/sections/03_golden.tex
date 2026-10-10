@@ -1,0 +1,648 @@
+\section{Exact certificates for the remaining golden weight-five ladders}
+\label{gold:sec}
+
+Put
+\[
+ \rho=\frac{\sqrt5-1}{2},\qquad \phi=\rho^{-1},\qquad
+ \lambda=\log\rho=-\log\phi.
+\]
+The golden-ratio discussion in the audited manuscript identifies three
+weight-five evaluations with the index-$12$, $20$, and $24$ ladder
+families, and records numerical evidence for them \cite{Repo}.
+The first evaluation has already received an analytic proof in the
+preceding research.  The contribution here is a complete local proof
+certificate for each of the other two evaluations, together with all
+its lower-weight companions.  These are statements about what is now
+proved explicitly in the repository's research program; they do not
+assert historical priority for the ladder evaluations.  The general
+connection between rational-function identities, tensor kernels, and
+polylogarithm ladders is classical; see Gangl \cite{Gangl}.
+
+The certificates use rational functions of one variable.  Consequently,
+the lower-weight conclusions follow from identities holding on an open
+interval.  No differentiation of an identity valid only at the isolated
+algebraic number $\rho$ is involved.
+
+\subsection{The two evaluations and their full descent}
+
+Define two finitely supported coefficient vectors by
+\begin{align}
+ (c^{\mathrm{II}}_2,c^{\mathrm{II}}_4,c^{\mathrm{II}}_{10},
+     c^{\mathrm{II}}_{20})&=(45000,-16875,-144,9),
+ \label{gold:eq:cII}\\
+ (c^{\mathrm{III}}_2,c^{\mathrm{III}}_4,c^{\mathrm{III}}_6,
+     c^{\mathrm{III}}_8,c^{\mathrm{III}}_{24})
+     &=(15660,-19440,7680,2430,-15).
+ \label{gold:eq:cIII}
+\end{align}
+A missing coefficient means zero.  The superscripts refer to the
+second and third displayed golden weight-five formulas in the
+manuscript; the third vector is the displayed formula before the
+canonical index-$24$ recombination.
+
+\begin{theorem}[Golden evaluations with exact descent]
+\label{gold:thm:main}
+For either vector $c=c^{\mathrm{II}},c^{\mathrm{III}}$, put
+\[
+ S_m=\sum_{j\ge1}c_jj^{5-m}\Li_m(\rho^j),\qquad 1\le m\le5.
+\]
+Then
+\begin{equation}
+ S_m=\frac{a\lambda^m}{m!}
+     +\sum_{r=2}^{m}q_r\zeta(r)\frac{\lambda^{m-r}}{(m-r)!},
+ \label{gold:eq:all-weights}
+\end{equation}
+where the constants are
+\begin{center}
+\begin{tabular}{c|rrrrr}
+ & $a$ & $q_2$ & $q_3$ & $q_4$ & $q_5$\\ \hline
+ $\mathrm{II}$ & $720000$ & $-57600$ & $0$ & $32040$ & $28944$\\
+ $\mathrm{III}$ & $-250560$ & $8640$ & $0$ & $2520$ & $5025$
+\end{tabular}
+\end{center}
+In particular, writing $\ell=\log\phi$, the two weight-five evaluations are
+\begin{align}
+ &45000\Li_5(\rho^2)-16875\Li_5(\rho^4)
+       -144\Li_5(\rho^{10})+9\Li_5(\rho^{20})\notag\\
+ &\hspace{12mm}=28944\zeta(5)-6000\ell^5
+           +1600\pi^2\ell^3-356\pi^4\ell,
+ \label{gold:eq:II-five}\\[2mm]
+ &15660\Li_5(\rho^2)-19440\Li_5(\rho^4)
+       +7680\Li_5(\rho^6)+2430\Li_5(\rho^8)
+       -15\Li_5(\rho^{24})\notag\\
+ &\hspace{12mm}=5025\zeta(5)+2088\ell^5
+          -240\pi^2\ell^3-28\pi^4\ell.
+ \label{gold:eq:III-five}
+\end{align}
+\end{theorem}
+
+The vanishing $q_3=0$ matters: the descent produces no
+$\zeta(3)\lambda^2$ term at weight five.  This cancellation will follow
+from the exact endpoint arithmetic of the functional certificates.
+
+\subsection{A real generalized Rogers function}
+
+For $n\ge2$ and real $x\ne0,1$, define
+\begin{align}
+ \mathcal R_n(x)
+ &=\sum_{r=0}^{n-2}\frac{(-\log|x|)^r}{r!}
+                  \operatorname{Re}\Li_{n-r}(x)\notag\\
+ &\quad+\frac{(-1)^{n-1}(n-1)}{n!}
+           \log^{n-1}|x|\operatorname{Re}\Li_1(x).
+ \label{gold:eq:R-definition}
+\end{align}
+Here the ordinary polylogarithms use their principal branches, and
+$\operatorname{Re}\Li_1(x)=-\log|1-x|$.  We extend the definition
+continuously by $\mathcal R_n(0)=0$ and $\mathcal R_n(1)=\zeta(n)$.
+The first functions are
+\begin{align*}
+ \mathcal R_2(x)&=\operatorname{Re}\Li_2(x)
+                +\tfrac12\log|x|\log|1-x|,\\
+ \mathcal R_3(x)&=\operatorname{Re}\Li_3(x)
+                -\log|x|\operatorname{Re}\Li_2(x)
+                -\tfrac13\log^2|x|\log|1-x|,\\
+ \mathcal R_4(x)&=\operatorname{Re}\Li_4(x)
+                -\log|x|\operatorname{Re}\Li_3(x)
+                +\tfrac12\log^2|x|\operatorname{Re}\Li_2(x)
+                -\tfrac18\log^3|x|\operatorname{Re}\Li_1(x),\\
+ \mathcal R_5(x)&=\operatorname{Re}\Li_5(x)
+                -\log|x|\operatorname{Re}\Li_4(x)
+                +\tfrac12\log^2|x|\operatorname{Re}\Li_3(x)\\
+ &\qquad-\tfrac16\log^3|x|\operatorname{Re}\Li_2(x)
+                +\tfrac1{30}\log^4|x|\operatorname{Re}\Li_1(x).
+\end{align*}
+In particular, $\mathcal R_3$ is the usual real single-valued
+trilogarithm.  At higher weights it is useful to retain
+$\mathcal R_n$ itself, including at even weights.
+
+\begin{lemma}[Derivative, inversion, and duplication]
+\label{gold:lem:R}
+Write $L=\log|x|$ and $M=\log|1-x|$.  On each real interval avoiding
+$0$ and $1$,
+\begin{equation}
+ d\mathcal R_n(x)
+   =\frac{(-1)^n(n-1)}{n!}
+       L^{n-2}\bigl(L\,dM-M\,dL\bigr).
+ \label{gold:eq:R-derivative}
+\end{equation}
+Let
+\[
+ h_n(+1)=1,\qquad h_n(-1)=-(1-2^{1-n}).
+\]
+For nonzero real $x$,
+\begin{align}
+ \mathcal R_n(x^{-1})
+ &=(-1)^{n-1}\mathcal R_n(x)
+   +\bigl(1-(-1)^{n-1}\bigr)h_n(\operatorname{sgn}x)\zeta(n),
+ \label{gold:eq:R-inversion}\\
+ \mathcal R_n(x)+\mathcal R_n(-x)
+ &=2^{1-n}\mathcal R_n(x^2).
+ \label{gold:eq:R-duplication}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+The derivative relation
+$d\operatorname{Re}\Li_j(x)=\operatorname{Re}\Li_{j-1}(x)\,dL$
+holds for $j\ge2$.  Consequently the derivative of
+\[
+ F_n(x)=\sum_{r=0}^{n-1}\frac{(-L)^r}{r!}
+                      \operatorname{Re}\Li_{n-r}(x)
+\]
+telescopes to $(-1)^nL^{n-1}dM/(n-1)!$.
+Since
+\[
+ \mathcal R_n=F_n+\frac{(-1)^{n-1}}{n!}L^{n-1}M,
+\]
+one more differentiation proves \eqref{gold:eq:R-derivative}.
+Under inversion, $(L,M)$ becomes $(-L,M-L)$.  Substitution in the
+derivative formula shows that the difference in
+\eqref{gold:eq:R-inversion} is constant separately on each of the
+positive and negative half-axes.  Evaluation at $x=1$ and $x=-1$
+fixes the constants, because
+\[
+ \mathcal R_n(-1)=\Li_n(-1)=-(1-2^{1-n})\zeta(n).
+\]
+The duplication formula follows term by term from the ordinary
+polylogarithm duplication formula and $\log(x^2)=2\log|x|$.
+These arguments extend across $x=1$ by continuity.  In
+\eqref{gold:eq:R-definition}, the potentially singular monologarithm
+is multiplied by a positive power of $\log|x|$, and its product tends
+to zero as $x\to1$.
+\end{proof}
+
+\subsection{A tensor certificate with an elementary analytic interpretation}
+
+Let $V=\mathbb Q(t)^\times\otimes_{\mathbb Z}\mathbb Q$, with the
+multiplicative group written additively.  Signs are torsion and therefore
+vanish in $V$.  For a nonzero rational function $f\ne1$, put
+\[
+ \beta_n[f]=f^{\otimes(n-2)}\otimes\bigl(f\wedge(1-f)\bigr).
+\]
+The repeated first factors can equivalently be placed in a symmetric
+tensor power.  Only elementary linear algebra with this notation is
+needed below.
+
+The rational functions in the certificates have the form
+\begin{equation}
+ f_{s,a,b,c}(t)=s\,t^a(1-t)^b(1+t)^c,
+ \qquad s\in\{1,-1\}.
+ \label{gold:eq:arguments}
+\end{equation}
+They have neither zeros nor poles for $0<t<1$.  Define
+\begin{equation}
+ k(a,b,c)=a+2b-c.
+ \label{gold:eq:k}
+\end{equation}
+This integer is the exponent after golden specialization, since
+$1-\rho=\rho^2$ and $1+\rho=\rho^{-1}$.
+
+\begin{lemma}[Exact descent from a rational-function certificate]
+\label{gold:lem:descent}
+Suppose $f_i=f_{s_i,a_i,b_i,c_i}$ and $u_i\in\mathbb Q$ satisfy
+\begin{equation}
+ \sum_i u_i\beta_5[f_i]=0.
+ \label{gold:eq:tensor-certificate}
+\end{equation}
+Write $k_i=a_i+2b_i-c_i$.  For $2\le n\le5$, the function
+\begin{equation}
+ H_n(t)=\sum_i u_i k_i^{5-n}\mathcal R_n(f_i(t))
+ \label{gold:eq:functional-family}
+\end{equation}
+is constant on $0<t<1$.  If all $a_i\ge0$, its value is
+\begin{equation}
+ H_n(t)=E_n\zeta(n),\qquad
+ E_n=\sum_{a_i=0}u_i k_i^{5-n}h_n(s_i).
+ \label{gold:eq:E}
+\end{equation}
+We use $k_i^0=1$, including when $k_i=0$.
+\end{lemma}
+
+\begin{proof}
+Extend the assignments
+\[
+ \eta(t)=1,\qquad \eta(1-t)=2,\qquad \eta(1+t)=-1
+\]
+to a linear functional $\eta:V\to\mathbb Q$.  For example, assign
+zero to every other primitive irreducible polynomial and every rational
+prime.  Then $\eta(f_i)=k_i$.  Contracting $5-n$ of the first three
+tensor factors in \eqref{gold:eq:tensor-certificate} gives
+\begin{equation}
+ \sum_i u_i k_i^{5-n}\beta_n[f_i]=0.
+ \label{gold:eq:contracted}
+\end{equation}
+For a fixed regular $t$, evaluate a tensor factor $g$ by $\log|g(t)|$,
+and evaluate a wedge $g\wedge h$ by
+\[
+ \log|g(t)|\,d\log|h(t)|
+ -\log|h(t)|\,d\log|g(t)|.
+\]
+Equation \eqref{gold:eq:contracted}, together with
+\eqref{gold:eq:R-derivative}, gives $dH_n=0$.
+There are only finitely many points in $(0,1)$ where some $f_i(t)=1$.
+The functions $\mathcal R_n(f_i(t))$ are continuous at these points,
+so the constants on the intervening intervals agree.
+Finally, if $a_i>0$ then $f_i(t)\to0$ as $t\to0^+$, while if
+$a_i=0$ then $f_i(t)\to s_i$.  These limits prove \eqref{gold:eq:E}.
+\end{proof}
+
+A rational constant in $1-f_i$ must be retained when verifying the
+tensor equation.  For example,
+\[
+ 1-\frac{1-t}{1+t}=\frac{2t}{1+t}
+\]
+contributes the independent constant-prime coordinate $2$ to $1-f_i$.
+It has logarithm $\log2$ and derivative zero; discarding it would change
+both the tensor equation and its analytic interpretation.  The
+certificates below and the verification program retain this coordinate.
+
+\subsection{The two finite certificates}
+
+Table~\ref{gold:tab:certificates} defines coefficients $u_{s,a,b,c}$
+and $v_{s,a,b,c}$.  An entry $0$ means that the corresponding argument
+is absent.  There are $58$ nonzero $u$ entries and $60$ nonzero $v$
+entries.  For each column separately,
+\begin{equation}
+ \sum_{s,a,b,c}u_{s,a,b,c}\beta_5[f_{s,a,b,c}]=0,
+ \qquad
+ \sum_{s,a,b,c}v_{s,a,b,c}\beta_5[f_{s,a,b,c}]=0.
+ \label{gold:eq:two-certificates}
+\end{equation}
+Thus the table also gives two explicit rational-function identities
+\eqref{gold:eq:functional-family}, and four weights of each identity.
+Their endpoint constants are displayed below.
+
+Here is a completely finite interpretation of the two checks in
+\eqref{gold:eq:two-certificates}.  Factor every $f$ and $1-f$ over
+$\mathbb Q(t)$, including the rational contents.  Use rational primes
+and primitive irreducible polynomials as a multiplicative basis modulo
+signs.  Write the factor vectors as $e_f$ and $d_f$.  For each unordered
+pair of basis indices $(p,q)$ and each triple $(i,j,k)$ chosen with
+repetition from the three coordinates $t,1-t,1+t$, verify
+\begin{equation}
+ \sum_f u_f(e_f)_i(e_f)_j(e_f)_k
+ \bigl((e_f)_p(d_f)_q-(e_f)_q(d_f)_p\bigr)=0,
+ \label{gold:eq:finite-coordinate-check}
+\end{equation}
+and then the same equation with $u$ replaced by $v$.
+The first column has $16$ basis coordinates, including the prime $2$;
+the second has $18$, also including $2$.  There are respectively
+$330$ and $370$ potentially nonzero weight-five coordinate sums, and
+every one is zero.  These are exact integer equalities.
+The supplied verifier factors the functions afresh and performs these
+sums using rational arithmetic.  It additionally checks all four
+contracted tensor equations directly.
+
+\begingroup
+\small
+\setlength{\tabcolsep}{9pt}
+\begin{longtable}{rrrrrr}
+\caption{The two weight-five rational-function certificates.  The
+argument in a row is $s\,t^a(1-t)^b(1+t)^c$.}
+\label{gold:tab:certificates}\\
+\hline
+$s$&$a$&$b$&$c$&$u$&$v$\\ \hline
+\endfirsthead
+\multicolumn{6}{c}{Table~\ref{gold:tab:certificates} continued}\\
+\hline $s$&$a$&$b$&$c$&$u$&$v$\\ \hline
+\endhead
+\hline
+\endfoot
+1&0&0&1&-2166&-1161\\
+-1&0&0&1&-3240&-2025\\
+-1&0&0&3&40&25\\
+1&0&1&-1&-80&-288\\
+-1&0&1&-1&-80&-288\\
+1&0&1&0&2178&3510\\
+-1&0&1&0&2916&4536\\
+1&0&1&1&6&-270\\
+1&0&1&2&26&72\\
+-1&0&2&-2&10&36\\
+1&0&2&1&-54&-27\\
+-1&0&3&0&-36&-56\\
+-1&1&-3&-2&8&9\\
+1&1&-2&-3&-4&-9\\
+-1&1&-2&-1&-40&0\\
+-1&1&-2&0&284&405\\
+1&1&-1&-1&-6&27\\
+-1&1&-1&-1&-162&-351\\
+1&1&-1&0&2268&2997\\
+-1&1&-1&0&1722&2430\\
+-1&1&-1&1&-105&-360\\
+1&1&0&-2&-320&-144\\
+1&1&0&-1&-1710&-81\\
+-1&1&0&-1&-2592&-486\\
+1&1&0&0&-1236&-54\\
+-1&1&0&0&528&1539\\
+1&1&0&1&-126&-414\\
+-1&1&0&1&-480&-405\\
+1&1&1&-1&-70&-270\\
+1&1&1&0&444&909\\
+-1&1&1&0&-42&9\\
+1&1&1&1&-72&-81\\
+-1&1&1&1&42&81\\
+-1&1&2&1&0&9\\
+-1&1&3&1&5&0\\
+-1&2&-2&-1&-72&-81\\
+-1&2&-1&-2&32&81\\
+-1&2&-1&-1&6&-270\\
+1&2&-1&0&-206&-504\\
+-1&2&-1&0&204&234\\
+1&2&0&-1&38&99\\
+-1&2&0&-1&-240&270\\
+-1&2&0&0&-210&-540\\
+1&2&1&0&-60&0\\
+-1&2&1&0&0&81\\
+1&3&-3&-3&0&-1\\
+1&3&-3&0&-28&-37\\
+1&3&-2&-1&-46&-9\\
+-1&3&-1&-2&18&54\\
+-1&3&-1&-1&-30&0\\
+-1&3&-1&0&-72&-81\\
+1&3&-1&1&14&45\\
+-1&3&0&-3&32&6\\
+1&3&0&-1&12&81\\
+-1&3&0&-1&0&81\\
+-1&3&0&0&4&19\\
+1&4&-3&-2&4&0\\
+-1&4&-1&-2&0&9\\
+-1&4&0&1&8&9\\
+-1&4&1&0&-8&-9\\
+1&5&-3&-1&8&9\\
+-1&5&-1&-3&-3&-9\\
+1&5&1&-1&0&9\\
+-1&6&3&0&0&-1\\
+-1&7&1&-1&1&0\\
+-1&9&0&-3&0&-1\\
+\end{longtable}
+\endgroup
+
+The table was obtained by exact linear algebra on the functions
+\eqref{gold:eq:arguments} with numerator and denominator degrees at most
+$9$, after cancellation of common factors.  The search discovers the
+rows; the explicit table and the coordinate equations
+\eqref{gold:eq:finite-coordinate-check} are the proof certificate.
+A complete classification of all functional identities in this or a
+larger alphabet is not needed for the argument.
+
+\subsection{Golden specialization and the endpoint constants}
+
+At $t=\rho$, the table argument becomes $s\rho^k$, with
+$k=a+2b-c$.  Applying inversion to negative exponents and duplication
+to negative arguments gives
+\begin{align}
+ \sum_f u_f k_f^{5-n}\mathcal R_n(f(\rho))
+ &=\frac1{144}\sum_{j\ge1}c^{\mathrm{II}}_j
+           j^{5-n}\mathcal R_n(\rho^j)
+      +B_n^{\mathrm{II}}\zeta(n),
+ \label{gold:eq:u-image}\\
+ \sum_f v_f k_f^{5-n}\mathcal R_n(f(\rho))
+ &=\frac1{120}\sum_{j\ge1}c^{\mathrm{III}}_j
+           j^{5-n}\mathcal R_n(\rho^j)
+      +B_n^{\mathrm{III}}\zeta(n).
+ \label{gold:eq:v-image}
+\end{align}
+The constant $B_n$ includes the inversion constants at even weights
+and any terms with $k=0$ at weight five.  All remaining coefficients
+in \eqref{gold:eq:u-image}--\eqref{gold:eq:v-image} are exact rational
+row sums.  The boundary computation is
+\begin{center}
+\small
+\begin{tabular}{c|rrr|rrr}
+ &\multicolumn{3}{c|}{$u$ column}&\multicolumn{3}{c}{$v$ column}\\
+$n$&$E_n$&$B_n$&$E_n-B_n$&$E_n$&$B_n$&$E_n-B_n$\\ \hline
+2&$7122$&$7522$&$-400$&$7695$&$7623$&$72$\\
+3&$0$&$0$&$0$&$0$&$0$&$0$\\
+4&$-2721/2$&$-1583$&$445/2$&$-7269/4$&$-7353/4$&$21$\\
+5&$2205/8$&$597/8$&$201$&$-1011/4$&$-2357/8$&$335/8$
+\end{tabular}
+\end{center}
+For example, the weight-five rational-function identities themselves are
+\begin{equation}
+ \sum_f u_f\mathcal R_5(f(t))=\frac{2205}{8}\zeta(5),\qquad
+ \sum_f v_f\mathcal R_5(f(t))=-\frac{1011}{4}\zeta(5),
+ \quad 0<t<1.
+ \label{gold:eq:new-functional-identities}
+\end{equation}
+The golden power with exponent zero contributes $597\zeta(5)/8$ in
+the first specialization and $-2357\zeta(5)/8$ in the second.
+Subtracting these terms gives $201\zeta(5)$ and
+$335\zeta(5)/8$, respectively.  Multiplication by $144$ and $120$
+therefore gives the weight-five constants $28944$ and $5025$.
+
+For transparency, the power and sign bookkeeping in every weight can
+be expressed without any polylogarithm manipulation.  A row of
+coefficient $w$ has weighted coefficient $w k^{5-n}$.  If $k<0$ and
+$n$ is even, add $2wk^{5-n}h_n(s)$ to $B_n$ and negate the remaining
+coefficient.  Replace $k$ by $|k|$.  If $s=-1$, replace its remaining
+coefficient $z$ at $-\rho^k$ by $-z$ at $\rho^k$ and
+$2^{1-n}z$ at $\rho^{2k}$.  If $k=0$, put the resulting constant into
+$B_n$.  This finite procedure gives every entry above.
+Consequently
+\begin{equation}
+ \sum_{j\ge1}c_jj^{5-n}\mathcal R_n(\rho^j)=q_n\zeta(n),
+ \qquad 2\le n\le5,
+ \label{gold:eq:golden-R}
+\end{equation}
+with the constants stated in Theorem~\ref{gold:thm:main}.
+
+\subsection{Removing the lower polylogarithms}
+
+The weight-one companion can be computed using the following elementary
+factorizations.  Each equality follows by reduction modulo
+$\rho^2+\rho-1=0$, with $\sqrt5=2\rho+1$:
+\begin{center}
+\begin{tabular}{c|l@{\qquad}c|l}
+$j$&$1-\rho^j$&$j$&$1-\rho^j$\\ \hline
+$2$&$\rho$&$10$&$11\rho^5$\\
+$4$&$\sqrt5\rho^2$&$12$&$8\sqrt5\rho^6$\\
+$6$&$4\rho^3$&$20$&$55\sqrt5\rho^{10}$\\
+$8$&$3\sqrt5\rho^4$&$24$&$144\sqrt5\rho^{12}$
+\end{tabular}
+\end{center}
+For either vector $c$, the coefficients of $\log2$, $\log3$,
+$\log5$, and $\log11$ in
+$\sum_j c_jj^4\log(1-\rho^j)$ vanish.  Hence
+\begin{equation}
+ S_1=-\sum_jc_jj^4\log(1-\rho^j)
+     =-\frac12\sum_jc_jj^5\lambda=a\lambda.
+ \label{gold:eq:S1}
+\end{equation}
+The two sums $\sum_j c_jj^5$ are $-1440000$ and $501120$,
+which give $a=720000$ and $a=-250560$.
+
+\begin{proof}[Proof of Theorem~\ref{gold:thm:main}]
+The finite polynomial identities \eqref{gold:eq:two-certificates},
+Lemma~\ref{gold:lem:descent}, and the exact specialization arithmetic
+prove \eqref{gold:eq:golden-R}.  Expand the definition of
+$\mathcal R_n$ at $\rho^j$.  Since $\log(\rho^j)=j\lambda$, it gives
+\begin{equation}
+ q_n\zeta(n)=
+ \sum_{r=0}^{n-2}\frac{(-\lambda)^r}{r!}S_{n-r}
+ +\frac{(-1)^{n-1}(n-1)}{n!}\lambda^{n-1}S_1.
+ \label{gold:eq:triangular}
+\end{equation}
+Starting with \eqref{gold:eq:S1}, this triangular system has the unique
+solution \eqref{gold:eq:all-weights}.  One may also verify the formula
+by substitution: the coefficients of each $q_j\zeta(j)$ reduce to
+\[
+ \sum_{r=0}^{n-j}\frac{(-1)^r}{r!(n-j-r)!}
+   =\begin{cases}1,&j=n,\\0,&j<n,\end{cases}
+\]
+and the $a$ term cancels because
+\[
+ \sum_{r=0}^{n-2}\frac{(-1)^r}{r!(n-r)!}
+   +\frac{(-1)^{n-1}(n-1)}{n!}=0.
+\]
+This proves all five weights.  Substituting
+$\zeta(2)=\pi^2/6$, $\zeta(4)=\pi^4/90$, and $\lambda=-\ell$ in
+the case $n=5$ proves the two asserted evaluations.
+\end{proof}
+
+Some useful lower-weight consequences, written with smaller integer
+coefficient vectors, are
+\begin{align}
+ 5\Li_2(\rho^2)-15\Li_2(\rho^4)-2\Li_2(\rho^{10})
+    +\Li_2(\rho^{20})
+ &=5\lambda^2-\frac{2\pi^2}{15},
+ \label{gold:eq:II-two}\\
+ 50\Li_3(\rho^2)-75\Li_3(\rho^4)-4\Li_3(\rho^{10})
+    +\Li_3(\rho^{20})
+ &=\frac{100\lambda^3-8\pi^2\lambda}{3},
+ \label{gold:eq:II-three}\\
+ 500\Li_4(\rho^2)-375\Li_4(\rho^4)-8\Li_4(\rho^{10})
+    +\Li_4(\rho^{20})
+ &=\frac{500\lambda^4}{3}-\frac{80\pi^2\lambda^2}{3}
+    +\frac{89\pi^4}{45}.
+ \label{gold:eq:II-four}
+\end{align}
+For the third displayed ladder one obtains
+\begin{align}
+ &87\Li_2(\rho^2)-864\Li_2(\rho^4)+1152\Li_2(\rho^6)
+       +864\Li_2(\rho^8)-144\Li_2(\rho^{24})
+    =\pi^2-87\lambda^2,
+ \label{gold:eq:III-two}\\
+ &87\Li_3(\rho^2)-432\Li_3(\rho^4)+384\Li_3(\rho^6)
+       +216\Li_3(\rho^8)-12\Li_3(\rho^{24})\notag\\
+ &\hspace{25mm}=-58\lambda^3+2\pi^2\lambda,
+ \label{gold:eq:III-three}\\
+ &87\Li_4(\rho^2)-216\Li_4(\rho^4)+128\Li_4(\rho^6)
+       +54\Li_4(\rho^8)-\Li_4(\rho^{24})\notag\\
+ &\hspace{25mm}=-29\lambda^4+2\pi^2\lambda^2+\frac{7\pi^4}{90}.
+ \label{gold:eq:III-four}
+\end{align}
+These companions are exact consequences of the same certificate, with
+no separate recognition of numerical constants.
+
+\subsection{The first ladder and canonical normalization}
+
+The first golden formula is included in the supplied replay data as a
+small consistency and normalization certificate.  Its ordinary
+coefficient vector is
+\[
+ (c^{\mathrm I}_2,c^{\mathrm I}_4,c^{\mathrm I}_6,c^{\mathrm I}_{12})
+       =(4455,-1215,-360,15).
+\]
+A primitive functional certificate has the following twelve rows in
+the notation \eqref{gold:eq:arguments}:
+\begin{center}
+\small
+\begin{tabular}{rrrr|r@{\qquad}rrrr|r}
+$s$&$a$&$b$&$c$&$w$&$s$&$a$&$b$&$c$&$w$\\ \hline
+$1$&$0$&$0$&$1$&$-54$&$1$&$1$&$0$&$0$&$-81$\\
+$-1$&$0$&$0$&$1$&$-81$&$-1$&$1$&$0$&$0$&$-54$\\
+$-1$&$0$&$0$&$3$&$1$&$-1$&$1$&$0$&$1$&$-9$\\
+$1$&$1$&$0$&$-2$&$-9$&$-1$&$2$&$0$&$-1$&$-9$\\
+$1$&$1$&$0$&$-1$&$-54$&$-1$&$3$&$0$&$-3$&$1$\\
+$-1$&$1$&$0$&$-1$&$-81$&$1$&$3$&$0$&$0$&$1$
+\end{tabular}
+\end{center}
+Its scale factor is $240$.  The same calculation gives
+\[
+ (a,q_2,q_3,q_4,q_5)=(84240,-6480,0,3420,3015),
+\]
+recovering the previously proved first evaluation.
+
+For completeness, define the manuscript's canonical ladders explicitly.
+For $N\in\{12,20,24\}$, write
+\[
+ T_N(m)=D_{N,1}\frac{\lambda^m}{m!}
+       +D_{N,2}\zeta(2)\frac{\lambda^{m-2}}{(m-2)!}
+       +D_{N,3}\zeta(4)\frac{\lambda^{m-4}}{(m-4)!},
+\]
+with any term having a negative factorial index omitted, and put
+\begin{align*}
+ L_{12}(m)&=\frac{\Li_m(\rho^{12})}{12^{m-1}}
+ -\frac32\frac{\Li_m(\rho^6)}{6^{m-1}}
+ -\frac{\Li_m(\rho^4)}{4^{m-1}}
+ +\frac{11}{48}\frac{\Li_m(\rho^2)}{2^{m-1}}+T_{12}(m),\\
+ L_{20}(m)&=\frac{\Li_m(\rho^{20})}{20^{m-1}}
+ -\frac{\Li_m(\rho^{10})}{10^{m-1}}
+ -3\frac{\Li_m(\rho^4)}{4^{m-1}}
+ +\frac12\frac{\Li_m(\rho^2)}{2^{m-1}}+T_{20}(m),\\
+ L_{24}(m)&=\frac{\Li_m(\rho^{24})}{24^{m-1}}
+ -\frac43\frac{\Li_m(\rho^{12})}{12^{m-1}}
+ -2\frac{\Li_m(\rho^8)}{8^{m-1}}\\
+ &\quad+\frac73\frac{\Li_m(\rho^4)}{4^{m-1}}
+ -\frac{205}{576}\frac{\Li_m(\rho^2)}{2^{m-1}}+T_{24}(m).
+\end{align*}
+The correction coefficients are
+\[
+\begin{array}{c|rrr}
+ N&D_{N,1}&D_{N,2}&D_{N,3}\\ \hline
+ 12&-13/48&1/48&-19/1728\\
+ 20&-1/2&1/25&-89/4000\\
+ 24&179/576&-5/192&629/41472
+\end{array}
+\]
+With these definitions, exact equality holds in
+\[
+ L_{12}(5)=\frac{67}{6912}\zeta(5),\qquad
+ L_{20}(5)=\frac{201}{10000}\zeta(5),\qquad
+ L_{24}(5)=-\frac{1541}{110592}\zeta(5).
+\]
+For the last value, add $64/3$ times the first ordinary weight-five
+formula to the third, and divide by $-15\cdot24^4$; this eliminates
+$\Li_5(\rho^6)$ and gives the manuscript's canonical index-$24$
+combination.  The corresponding normalized first-degree ladders vanish
+at weights $1,2,3,4$.  These statements follow by exact rational
+recombination of \eqref{gold:eq:all-weights} and its first-ladder
+counterpart.
+
+\subsection{Verification, integration, and further questions}
+
+The files \texttt{golden\_rational\_certificates.json} and
+\texttt{certify\_golden\_ladders.py} contain the complete finite data and
+an independent replay of the polynomial checks.  The verifier uses
+SymPy to factor every rational function, retains rational-prime
+coordinates, checks the tensor equations directly in all four weights,
+performs every golden specialization, and checks the eight elementary
+factorizations used for $S_1$.  Its separate $85$-digit calculations
+verify the rational-function identities at $t=37/100$ and the ordinary
+companions at $\rho$; these numerical diagnostics do not enter the proof.
+The detailed receipt is
+\texttt{golden\_certificate\_verification.json}.
+
+For manuscript integration, the second and third displayed weight-five
+formulas can be marked proved and linked to this section.  Their
+first-degree lower-weight vanishing and the canonical values just
+displayed can be marked proved as well.  The weight-$6$ through
+weight-$9$ reconstructions have a different status: the present
+certificates establish no upward continuation beyond weight five.
+The contraction in Lemma~\ref{gold:lem:descent} decreases weight;
+there is no inverse contraction that would produce the missing higher
+functional identity.
+
+Several follow-up questions are concrete.  First, can the $58$- and
+$60$-term certificates be decomposed into a short list of named Kummer
+specializations, giving a smaller human derivation?  Second, can a
+larger rational-function alphabet produce the manuscript's weight-$6$
+and weight-$7$ golden identities with similarly complete endpoint
+bookkeeping?  Third, which part of the golden relation space is obtained
+from a prescribed degree bound, and can exact matrix-rank certificates
+prove useful minimality statements within that finite search model?
+Fourth, the rational-function identities
+\eqref{gold:eq:new-functional-identities} can be specialized at other
+algebraic values satisfying multiplicative relations among
+$t,1-t,1+t$; determining when their descended constants close on a
+small polylogarithm basket is a systematic route to additional ladders.

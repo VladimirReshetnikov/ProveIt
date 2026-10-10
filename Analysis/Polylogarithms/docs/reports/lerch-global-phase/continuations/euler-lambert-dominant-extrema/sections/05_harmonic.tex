@@ -1,0 +1,487 @@
+\section{Diagonal Lerch velocities and their classical inverse series}
+\label{sec:diagonal-inverse}
+
+The harmonic-order continuation report \cite{HarmonicBaseline} defines,
+for integers $n\geq 0$, $k\geq 1$, lattice spacing $h>0$, and
+$0\leq\rho\leq1$,
+\[
+ f_{n,k}(a)=(-1)^{n+k}\frac{d^k}{da^k}
+                  \left(\frac{\log^n a}{a}\right),\qquad
+ \mathscr F_{n,k}^{\rho,h}(a)
+       =\sum_{m\geq0}\rho^m f_{n,k}(a+mh).
+\]
+For fixed $n,k$, the derivative series converges locally uniformly on
+$a>0$, including at $\rho=1$.  When $k=n-1$ and $n\geq2$, the smallest
+positive elementary zero is $a=1$, it is simple, and
+$f_{n,n-1}'(1)=-n!$.  Consequently it has an analytic local continuation
+$a_n^{(h)}(\rho)$ near $\rho=0$.  Put $A=1+h>1$ and
+\begin{equation}\label{eq:velocity-normalization}
+ v_n(A)=-\frac1{n!}
+   \left.\frac{d^{n-1}}{da^{n-1}}
+                  \left(\frac{\log^n a}{a}\right)\right|_{a=A}.
+\end{equation}
+Implicit differentiation gives
+$(a_n^{(h)})'(0)=v_n(A)$ for $n\geq2$.  The auxiliary coefficient
+$v_1(A)=-(\log A)/A$ completes the generating series; no zero-branch
+interpretation is asserted for this auxiliary index.
+
+Let $\stirling{n}{j}$ denote the unsigned Stirling numbers of
+the first kind and write $L=\log A$.  The baseline proves the exact
+identities
+\begin{align}
+ v_n(A)&=A^{-n}\sum_{j=1}^n
+           \stirling{n}{n-j+1}\frac{(-L)^j}{j!},
+                  \label{eq:velocity-stirling}\\
+ V_A(t)&=\sum_{n\geq1}v_n(A)t^n=L-U_A(t),\qquad
+ e^{U_A(t)}=A+tU_A(t),\qquad U_A(0)=L.
+                  \label{eq:velocity-inverse}
+\end{align}
+For clarity, the second formula is initially a statement about analytic
+germs at zero.  It follows from Lagrange inversion \cite{Gessel2016} applied to
+$X=A+t\log X$, with $U_A=\log X$; the analytic implicit function theorem
+applies since the derivative with respect to $U$ at $(0,L)$ is $A\neq0$.
+
+The polynomial $p_n(L)=A^n v_n(A)$ is also, up to the explicit sign
+$L_n(L)=(-1)^n p_n(L)$, Cohen's Lambert polynomial
+\cite[Proposition~4.8]{Cohen2021}.  This identification connects the
+velocity problem to the real-root and extreme-root questions treated
+in Sections~\ref{sec:velocity-zero-law} and~\ref{sec:cohen-edges}.
+
+These coefficient polynomials have a classical antecedent that should be
+made explicit.  Kalugin and Jeffrey \cite[\S2.1, Theorem~1]{KaluginJeffrey2012}
+consider
+\[
+ 1-e^{-v}+\sigma v-\sigma\lambda=0,\qquad v(0)=0.
+\]
+The exact change of variables
+\begin{equation}\label{eq:classical-variable-map}
+ \lambda=L,\qquad \sigma=-t/A,\qquad v=V_A(t)
+\end{equation}
+identifies their fixed-$\lambda$ series with \eqref{eq:velocity-inverse}.
+Their double series, specialized by $\tau=\lambda\sigma$, gives exactly
+\eqref{eq:velocity-stirling}.  Their convergence criterion also gives the
+radius obtained below.  Thus neither the coefficient array nor the
+radius formula is presented as a new discovery in the broader literature.
+The purpose here is to give a direct barrier proof with full sheet
+selection and a radial-slit continuation, thereby settle the precisely
+stated accessibility conjecture in \cite{HarmonicBaseline}, and derive
+its quantitative consequences for the Lerch zero velocities.
+
+\section{An exact barrier selects the dominant conjugate pair}
+\label{sec:dominant-pair}
+
+For $A>1$ define $\theta\in(0,\pi)$ by
+\begin{equation}\label{eq:theta-definition}
+ 1-\theta\cot\theta+
+       \log\left(\frac{\theta}{\sin\theta}\right)=\log A,
+\end{equation}
+and set
+\begin{equation}\label{eq:critical-parameters}
+ a=1-\theta\cot\theta,\qquad u_*=a+i\theta,\qquad
+ \tau=e^{u_*},\qquad R=e^a.
+\end{equation}
+The left side of \eqref{eq:theta-definition} increases from zero to
+infinity, since its derivative is
+\[
+ \theta\csc^2\theta+\frac1\theta-2\cot\theta
+ =\frac{(\theta-\sin\theta\cos\theta)^2+\sin^4\theta}
+        {\theta\sin^2\theta}>0.
+\]
+Hence $\theta$ exists and is unique.  Moreover $a>0$, since
+$\sin\theta-\theta\cos\theta>0$ on $(0,\pi)$, and
+\begin{equation}\label{eq:critical-relations}
+ \frac AR=\frac{\theta}{\sin\theta},\qquad
+ (1-u_*)\tau=A.
+\end{equation}
+Equivalently, $u_*=1+W_0(-A/e+i0)$, using the upper boundary value of
+the principal Lambert branch \cite{DLMFLambert}.  The angle definition
+avoids a dependence on boundary-value conventions.
+
+\begin{theorem}[Selected inverse sheet and its exact singularities]
+\label{thm:selected-sheet}
+For every $A>1$, the analytic germ $U_A$ in
+\eqref{eq:velocity-inverse} has radius of convergence exactly $R$.
+Its only singularities on $|t|=R$ are $\tau$ and $\overline\tau$.
+There exists $\epsilon>0$ such that it has a single-valued holomorphic
+continuation to
+\begin{equation}\label{eq:slit-domain}
+ \{t:|t|<R+\epsilon\}\setminus
+ \left(\{s\tau:1\leq s<1+\epsilon/R\}
+       \cup\{s\overline\tau:1\leq s<1+\epsilon/R\}\right).
+\end{equation}
+At the upper endpoint, writing $z=1-t/\tau$, the continued branch has a
+convergent expansion
+\begin{equation}\label{eq:selected-puiseux}
+ U_A(t)=u_*+\chi z^{1/2}+b z+c_3z^{3/2}+b_2z^2+O(z^{5/2}),
+\end{equation}
+where
+\begin{equation}\label{eq:puiseux-first-coefficients}
+ \chi=\sqrt{-2u_*},\quad\Re\chi>0,\quad\Im\chi<0,
+ \qquad b=\frac{u_*}{3}-1,
+ \qquad c_3=\chi\left(\frac12-\frac{u_*}{18}-\frac1{4u_*}\right).
+\end{equation}
+Here $z^{1/2}$ is positive on the inward radial segment $t=s\tau$,
+$s<1$.  The lower-endpoint expansion is the complex conjugate.
+\end{theorem}
+
+\begin{proof}
+Write $F_t(u)=e^u-A-tu$.  We first construct a domain in the $u$-plane
+that contains exactly one root for every $|t|<R$.  Put $d=1-a$ and
+consider the rectangle
+\[
+ D_M=\{u=x+iy:0<x<M,\ |y|<\theta\},
+\]
+where $M>L$ will be chosen large.  On its upper horizontal side, set
+$h=x-a$.  Equations \eqref{eq:critical-relations} give the exact
+factorization
+\begin{align}
+ &|e^{x+i\theta}-A|^2-R^2(x^2+\theta^2)\notag\\
+ &\quad=R^2\bigl((e^h-d)^2-(h+1-d)^2\bigr)\notag\\
+ &\quad=R^2(e^h-1-h)(e^h+1+h-2d).
+                         \label{eq:barrier-factorization}
+\end{align}
+The same identity holds on the lower side.  For $x\geq0$ we have
+$h\geq-a$, and the second factor is increasing in $h$; its value at
+$h=-a$ is $e^{-a}-1+a>0$.  The first factor is nonnegative and vanishes
+only at $h=0$.  Therefore
+\begin{equation}\label{eq:horizontal-bound}
+ |e^u-A|\geq R|u|\quad(\Im u=\pm\theta,\ \Re u\geq0),
+\end{equation}
+with equality only at $u_*$ on the upper side and $\overline{u_*}$ on
+the lower side.
+
+On the left side, for $0<|y|\leq\theta$,
+\begin{equation}\label{eq:vertical-bound-formula}
+ \frac{|e^{iy}-A|^2}{y^2}
+   =\frac{(A-1)^2}{y^2}
+      +A\left(\frac{\sin(y/2)}{y/2}\right)^2.
+\end{equation}
+As a function of positive $y\leq\theta<\pi$, both terms decrease and
+the first decreases strictly.  Its minimum occurs at $y=\theta$,
+where \eqref{eq:barrier-factorization} is strictly positive because
+$x=0\neq a$.  Thus $|e^{iy}-A|>R|y|$ on the entire left side; at
+$y=0$ this is simply $A-1>0$.  Choose $M$ so large that
+\[
+ e^M-A>R\sqrt{M^2+\theta^2}.
+\]
+The right side then satisfies the same strict bound.
+
+For $|t|<R$ the full boundary of $D_M$ consequently satisfies
+$|tu|<|e^u-A|$.  Rouch\'e's theorem says that $F_t$ and $e^u-A$ have
+the same number of zeros in $D_M$, counted with multiplicity.  The
+latter has exactly the one simple zero $L$: the other zeros
+$L+2\pi ik$ are excluded by $\theta<\pi$.  Hence $F_t$ also has exactly
+one zero, and it is simple.  The implicit-function branches glue by
+uniqueness, so $U_A$ is holomorphic for $|t|<R$, with
+\begin{equation}\label{eq:root-strip}
+ 0<\Re U_A(t)<M,\qquad |\Im U_A(t)|<\theta.
+\end{equation}
+
+If $|t_0|=R$ and $t_0\notin\{\tau,\overline\tau\}$, then
+$F_{s t_0}$ has no boundary zero for $0\leq s\leq1$.  For $s<1$ this
+follows from the strict bounds.  At $s=1$ a boundary zero could occur
+only at one of the two equality points in \eqref{eq:horizontal-bound},
+and then \eqref{eq:critical-relations} would force $t_0$ to be the
+corresponding excluded parameter.  The argument-principle count is
+therefore one throughout the homotopy.  At $t_0$ there is precisely one
+simple root inside $D_M$, and the implicit function theorem continues
+$U_A$ through $t_0$.
+
+It remains to identify the branch at a critical endpoint.  Set
+$t=\tau(1-z)$ and $u=u_*+w$.  The exact local equation is
+\begin{equation}\label{eq:local-implicit-equation}
+ e^w-1-w+z(u_*+w)=0.
+\end{equation}
+Since $u_*\neq0$, its two local inverses are convergent power series
+in $z^{1/2}$, beginning $w=\pm\chi z^{1/2}+O(z)$ with the choice
+of $\chi$ in \eqref{eq:puiseux-first-coefficients}.  For positive real
+$z$ sufficiently small, the plus branch has imaginary part strictly
+less than $\theta$ and real part inside $(0,M)$; it lies in $D_M$.
+The minus branch lies above the upper horizontal side.  Since
+$|\tau(1-z)|<R$, uniqueness inside $D_M$ identifies the plus branch
+with $U_A$.  The coefficients $b,c_3$ follow by substituting the
+Puiseux series into \eqref{eq:local-implicit-equation}.  Complex
+conjugation settles the lower endpoint.  The nonzero square-root
+coefficient makes both endpoints genuine singularities, and the
+radius is exactly $R$.
+
+For completeness, the local continuations give the full slit domain
+in \eqref{eq:slit-domain}.  Take disjoint small disks around the two
+critical endpoints, with the selected Puiseux branches cut along the
+outward radial rays.  At each regular point on $|t|=R$, choose an
+implicit-function disk centered there and small enough to avoid both
+critical endpoints.  Such a disk avoids both radial cuts: the point
+of an outward ray closest to its center is the corresponding endpoint.
+Two overlapping disks whose centers lie on $|t|=R$ have an overlap
+meeting $|t|<R$, as seen by taking a suitable point of the chord between
+their centers.  Regular overlaps, including regular/critical ones,
+are connected and contain no cut, while the critical disks are disjoint.
+Thus all analytic branches agree on overlaps by the identity theorem.
+A finite cover of the circle by the underlying uncut disks has a
+positive collar width.  Subtracting the radial rays from this collar
+proves \eqref{eq:slit-domain} after decreasing $\epsilon$.
+\end{proof}
+
+The proof selects a bounded inverse sheet directly.  In particular, it
+does not minimize the moduli of all formal critical values
+$-A/W_k(-A/e)$, which accumulate at zero on other sheets.  That
+minimization would be invalid for the germ under consideration.  The
+radius agrees with \cite[Eq.~(2.9)]{KaluginJeffrey2012} under
+\eqref{eq:classical-variable-map}; the barrier supplies the additional
+continuation and branch information used below.
+
+\section{Unconditional oscillatory asymptotics to arbitrary order}
+\label{sec:velocity-asymptotics}
+
+\begin{theorem}[Two terms and all orders]
+\label{thm:velocity-asymptotics}
+Fix $A>1$ and let the parameters be as in
+\eqref{eq:critical-parameters}--\eqref{eq:puiseux-first-coefficients}.
+Define
+\begin{equation}\label{eq:chi-correction}
+ \chi_1=\chi\left(-\frac38+\frac{u_*}{12}+\frac3{8u_*}\right).
+\end{equation}
+Then
+\begin{equation}\label{eq:velocity-two-term}
+ v_n(A)=\frac{R^{-n}}{\sqrt\pi\,n^{3/2}}
+    \Re\left[e^{-in\theta}
+                      \left(\chi+\frac{\chi_1}{n}\right)\right]
+           +O_A(R^{-n}n^{-7/2}).
+\end{equation}
+In particular, with $\phi=-\arg\chi\in(\pi/4,\pi/2)$,
+\begin{equation}\label{eq:velocity-leading-cosine}
+ v_n(A)=\frac{|\chi|}{\sqrt\pi\,R^n n^{3/2}}
+               \cos(n\theta+\phi)+O_A(R^{-n}n^{-5/2}).
+\end{equation}
+These are additive estimates, including at indices where the displayed
+cosine is small.  An expansion to any prescribed number of inverse
+powers of $n$ follows from explicitly computable local coefficients.
+\end{theorem}
+
+\begin{proof}
+At $\tau$, the nonintegral terms of $V_A=L-U_A$ are
+$-\chi(1-t/\tau)^{1/2}-c_3(1-t/\tau)^{3/2}$, with conjugate terms
+at $\overline\tau$.  The slit domain from
+Theorem~\ref{thm:selected-sheet} permits the standard finite-singularity
+transfer theorem \cite[Chapter~VI]{FlajoletSedgewick2009}.  For a fixed
+nonintegral exponent $\alpha$,
+\[
+ [t^n](1-t/\tau)^\alpha
+ =\frac{\tau^{-n}n^{-\alpha-1}}{\Gamma(-\alpha)}
+     \left(1+\frac{\alpha(\alpha+1)}{2n}+O(n^{-2})\right).
+\]
+Using $\Gamma(-1/2)=-2\sqrt\pi$ and
+$\Gamma(-3/2)=4\sqrt\pi/3$, the upper singularity contributes
+\[
+ \frac{\tau^{-n}}{2\sqrt\pi\,n^{3/2}}
+       \left(\chi+\frac{3\chi/8-3c_3/2}{n}\right)
+       +O_A(R^{-n}n^{-7/2}).
+\]
+Adding its conjugate and substituting for $c_3$ gives
+\eqref{eq:velocity-two-term}.
+
+For an explicit all-orders construction, put
+\[
+ K(w)=\frac{2u_*(e^w-1-w)}{w^2(u_*+w)},\qquad K(0)=1.
+\]
+Equation \eqref{eq:local-implicit-equation} becomes
+$w=\chi z^{1/2}K(w)^{-1/2}$.  Lagrange inversion gives the convergent
+Puiseux coefficients
+\begin{equation}\label{eq:all-puiseux-coefficients}
+ U_A(t)=u_*+\sum_{m\geq1}c_mz^{m/2},\qquad
+ c_m=\frac{\chi^m}{m}[w^{m-1}]K(w)^{-m/2}.
+\end{equation}
+For any integer $J\geq1$, transfer of the odd coefficients yields the
+particularly convenient form
+\begin{equation}\label{eq:binomial-all-order}
+ v_n(A)=-2\Re\left[\tau^{-n}
+       \sum_{j=0}^{J-1}c_{2j+1}(-1)^n\binom{j+\tfrac12}{n}\right]
+       +O_{A,J}(R^{-n}n^{-J-3/2}).
+\end{equation}
+The next omitted nonintegral exponent is $J+1/2$; the integer powers
+are locally analytic and do not contribute algebraic transfer terms.
+Expanding the exact binomial coefficients by gamma-ratio asymptotics
+gives the requested expansion in inverse powers of $n$.
+\end{proof}
+
+For $A=2$, the exact angle definition gives numerically
+\[
+ u_*=0.469353635658274\ldots+1.132672497604881\ldots i,
+ \qquad R=1.598960348180173\ldots,
+\]
+and
+\[
+ \chi=0.869892622200723\ldots-1.302083117729355\ldots i.
+\]
+The two-term formula in \cite{HarmonicBaseline} is therefore now
+unconditional.  These decimals merely illustrate the exact parameters;
+they have no role in the continuation proof.
+
+\section{Bounded sign gaps and a complete density alternative}
+\label{sec:velocity-signs}
+
+The earlier infinite-sign theorem leaves open the lengths of possible
+runs in one direction.  The singularity analysis gives a uniform bound
+on such runs for each fixed lattice spacing.
+
+\begin{corollary}[Every sufficiently late short block has both signs]
+\label{cor:bounded-sign-gaps}
+For $A>1$ put
+\[
+ K_A=\left\lfloor\frac\pi\theta\right\rfloor+2.
+\]
+Every sufficiently late block of $K_A$ consecutive coefficients $v_n(A)$
+contains a strictly positive and a strictly negative coefficient.  In
+particular, every sufficiently late block of four coefficients $v_n(2)$
+has both signs.
+\end{corollary}
+
+\begin{proof}
+Put $m=K_A-1$.  Then $\pi<m\theta\leq\pi+\theta<2\pi$.
+The points $0,\theta,\ldots,m\theta$ on the circle have largest
+circular gap
+\[
+ g=\max\{\theta,2\pi-m\theta\}<\pi.
+\]
+Choose $\eta>0$ with $\pi-2\eta>g$.  Every rotation of these points
+meets both an arc where $\cos x\geq\sin\eta$ and an arc where
+$\cos x\leq-\sin\eta$, since each arc has length $\pi-2\eta$.
+After division by the positive prefactor in
+\eqref{eq:velocity-leading-cosine}, the error is $O_A(1/n)$ and is
+eventually smaller than $\sin\eta/2$.  Thus both strict signs occur.
+
+For the final assertion, $\pi/3<\theta(2)<\pi/2$ can be proved without
+decimal computation.  At $\theta=\pi/3$ put
+$x=\pi/(3\sqrt3)\in(0,1)$.  The corresponding value of $A$ is
+$2xe^{1-x}<2$, by $\log x<x-1$.  At $\theta=\pi/2$ it is
+$\pi e/2>2$.  Monotonicity in \eqref{eq:theta-definition} gives the
+claimed bracket and hence $K_2=4$.
+\end{proof}
+
+\begin{theorem}[Sign densities for every lattice parameter]
+\label{thm:sign-density}
+If $\theta/(2\pi)$ is irrational, the positive and negative velocities
+each have natural density $1/2$, and the zero velocities have density
+zero.  If $\theta/(2\pi)=p/q$ is rational in lowest terms, the velocity
+signs are eventually periodic of period dividing $q$, none is eventually
+zero, and their densities are
+\begin{equation}\label{eq:rational-sign-density}
+ d_+(A)=\frac1q\#\{0\leq j<q:
+                     \cos(2\pi j/q+\phi)>0\},\qquad
+ d_-(A)=1-d_+(A).
+\end{equation}
+For even $q$ both densities are $1/2$; for odd $q$ the positive count is
+$(q-1)/2$ or $(q+1)/2$.
+\end{theorem}
+
+\begin{proof}
+In the irrational case the sequence $n\theta+\phi$ is equidistributed
+modulo $2\pi$ by Weyl's theorem \cite{Weyl1916}.  For any $\delta>0$, the additive estimate
+\eqref{eq:velocity-leading-cosine} implies that any disagreement with
+the cosine sign, including a zero coefficient, eventually occurs only
+where $|\cos(n\theta+\phi)|<\delta$.  The density of this set tends to
+zero with $\delta$.  The asserted densities follow.
+
+In the rational case it is essential to rule out a zero among the finite
+leading cosine values.  Such a zero would make $\phi/\pi$ rational.
+Since $\arg u_*=\pi-2\phi$, the positive number
+$b_0=\theta/a=\tan(\arg u_*)$ would then be algebraic.  Also
+$\cot\theta$ is algebraic when $\theta/\pi$ is rational.  But
+$a=1-\theta\cot\theta$ implies
+\[
+ \theta(1+b_0\cot\theta)=b_0.
+\]
+The coefficient of $\theta$ cannot vanish, because $b_0>0$.  This would
+make $\theta$ algebraic, contradicting the transcendence of $\pi$ \cite{Lindemann1882}.
+Thus every leading cosine has a nonzero margin from zero, and the
+$O_A(1/n)$ error gives eventual periodicity.  Multiplication by $p$
+permutes the $q$ phase points, proving \eqref{eq:rational-sign-density}.
+Antipodal pairing gives the even-$q$ statement.  For odd $q$, an open
+semicircle avoiding the sample points contains $(q-1)/2$ or $(q+1)/2$
+of the equally spaced points.
+\end{proof}
+
+The rational-angle parameters form the explicit countable set
+\[
+ A=\frac\theta{\sin\theta}\exp(1-\theta\cot\theta),
+ \qquad \theta=2\pi p/q\in(0,\pi).
+\]
+No irrationality claim is made for the particular angle associated with
+$A=2$.  The four-term sign-block result is unconditional and does not
+require deciding that arithmetic question.
+
+\section{Convergent identities at regular and critical parameters}
+\label{sec:convergent-velocity-identities}
+
+The preceding estimates turn formal substitutions in the inverse
+equation into justified convergent identities.  They also describe the
+first differentiated series at the critical endpoints.
+
+\begin{proposition}[Interior sums and critical boundary values]
+\label{prop:velocity-summations}
+For every $A>1$, both of the following series converge absolutely:
+\begin{align}
+ \sum_{n\geq1}v_n(A)
+    &=\log A+A+W_{-1}(-e^{-A}),
+                       \label{eq:sum-plus-one}\\
+ \sum_{n\geq1}(-1)^n v_n(A)
+    &=\log A-A+W_0(e^A).
+                       \label{eq:sum-minus-one}
+\end{align}
+On the critical circle the series still converges absolutely, and
+\begin{align}
+ \sum_{n\geq1}v_n(A)R^n\cos(n\theta)&=\log A-a,
+                           \label{eq:critical-cosine-sum}\\
+ \sum_{n\geq1}v_n(A)R^n\sin(n\theta)&=-\theta.
+                           \label{eq:critical-sine-sum}
+\end{align}
+The differentiated critical series has the precise finite-part limit
+\begin{equation}\label{eq:critical-finite-part}
+ \sum_{n=1}^N n v_n(A)\tau^n
+   =\frac{\chi}{\sqrt\pi}\sqrt N+\frac{u_*}{3}-1
+                  +O_A(N^{-1/2}).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Since $a>0$, we have $R>1$, so substitution of $t=\pm1$ lies strictly
+inside the disk of convergence.  On the positive real $U$ axis the
+solutions at those parameters are
+\[
+ U_A(1)=-A-W_{-1}(-e^{-A}),\qquad
+ U_A(-1)=A-W_0(e^A).
+\]
+They are positive and satisfy the implicit equation.  They are the
+selected roots by uniqueness in the rectangle, or by continuation along
+the real interval, where $U_A>0$.  Substitution into $V_A=\log A-U_A$
+proves \eqref{eq:sum-plus-one}--\eqref{eq:sum-minus-one}.
+
+Equation \eqref{eq:velocity-leading-cosine} gives
+$\sum_{n\geq1}|v_n(A)|R^n<\infty$.  Abel continuity at $\tau$ and
+Theorem~\ref{thm:selected-sheet} therefore yield
+$\sum_{n\geq1}v_n(A)\tau^n=\log A-u_*$.  Real and imaginary parts
+give \eqref{eq:critical-cosine-sum}--\eqref{eq:critical-sine-sum}.
+
+Finally write $r=t/\tau$ and
+$B(r)=r\,dV_A(\tau r)/dr=\sum_{n\geq1}nv_n(A)\tau^n r^n$.
+The expansion at $r=1$ is
+\[
+ B(r)=\frac\chi2(1-r)^{-1/2}+b+O((1-r)^{1/2}).
+\]
+The partial sum in \eqref{eq:critical-finite-part} is
+$[r^N]B(r)/(1-r)$.  Its singular terms at $r=1$ give
+\[
+ \frac\chi2\,[r^N](1-r)^{-3/2}+b
+     =\frac\chi{\sqrt\pi}\sqrt N+b+O_A(N^{-1/2}).
+\]
+The other singularity is at $r=\overline\tau/\tau=e^{-2i\theta}\neq1$.
+There the factor $1/(1-r)$ is regular and $B$ has exponent $-1/2$,
+so its coefficient contribution is $O_A(N^{-1/2})$.  Transfer of the
+remaining terms has the same or smaller order.  This proves the
+finite-part formula.
+\end{proof}
+
+All sums in this proposition become explicit Stirling identities on
+using \eqref{eq:velocity-stirling}.  Their derivation is a consequence
+of the proved continuation and classical inverse representation;
+no claim of independent priority for each specialized identity is made.

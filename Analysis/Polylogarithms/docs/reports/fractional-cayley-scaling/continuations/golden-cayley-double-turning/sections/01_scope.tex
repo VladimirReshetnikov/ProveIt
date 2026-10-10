@@ -1,0 +1,109 @@
+\section{The audited problem and the result boundary}
+\label{sec:scope}
+
+The source of this continuation is the collective manuscript
+\emph{Polylogarithms and their Arithmetic Bridges}, in
+\src{Analysis/Polylogarithms/docs/manuscript} of ProveIt
+\cite{Repo}. We fixed the repository revision before beginning the
+mathematical audit. The revision is
+\begin{center}\baseline.\end{center}
+The reading artifact at that revision has twelve chapters and 375 pages.
+The audit also inspected the associated research reports and the incoming
+polylogarithm archives when determining which results had already been
+obtained. The present deliverable is a separate article for integration;
+it does not alter the repository remotely.
+
+\subsection{What was already known}
+
+Several attractive-looking targets were no longer open. In particular,
+the $S_4$ evaluation, the stated Gaussian relation-space rank formulas,
+the signed-measure threshold, principal slit-plane nonvanishing,
+angular uniqueness, subcritical radial motion, fixed-total Gaussian
+monotonicity, and the sharp critical Euler constant had already acquired
+proofs. A previous continuation had also proved the first golden
+weight-five identity. These facts determine the novelty boundary of
+the present work: re-establishing one of them is useful only as a
+clearly credited prerequisite or independent derivation.
+
+The canonical manuscript still explicitly asks for a universal Euler
+constant outside the critical triangle. It also gives a numerical
+location at which the quartic radial coefficient vanishes along the
+quadratic threshold, while leaving the higher local geometry open.
+The two golden formulas with indices 20 and 24 are printed as numerical
+identities without executable analytic certificates. The weight-seven
+$S_6$ relation remains conjectural. These are the four interfaces
+addressed here.
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.24\linewidth}p{0.32\linewidth}p{0.34\linewidth}@{}}
+\toprule
+Target & Baseline status & Contribution here\\
+\midrule
+Universal Euler error & Parameter-dependent supercritical bounds;
+sharp critical constant & A universal $9/8$ bound for $N\ge2$;
+the exact best constant for all $N\ge1$\\[5pt]
+Golden index 20 and 24 & Numerical weight-five formulas & Exact
+functional certificates and a proved finite descent\\[5pt]
+Quartic transition & Existence and a diagnostic location & Exact local
+uniqueness, negative sextic term, two turning points and scaling laws\\[5pt]
+Cayley relations for $S_6$ & Abstract quotient and bounded search
+obstructions & Explicit quotient projector and a nonzero full-ideal
+normal form; the special-value identity remains open\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Conventions}
+
+For real $a,b>0$, put
+\begin{equation}\label{eq:basic-family}
+ H_m^{(b)}=\sum_{j=1}^{m}j^{-b},\qquad H_0^{(b)}=0,\qquad
+ F_{a,b}(z)=\sum_{n=2}^{\infty}\frac{H_{n-1}^{(b)}}{n^a}z^n.
+\end{equation}
+The last series initially defines a holomorphic function on $|z|<1$.
+For integer orders it is the depth-two polylogarithm
+$\Li_{a,b}(z,1)$ in the nested-sum convention
+$\sum_{n>m\ge1}z^n/(n^am^b)$. Values at $i$ mean the principal analytic
+continuation, equivalently the radial Abel value. This convention matters
+when $a+b\le1$, because the ordinary alternating coefficient series
+need not converge. The positive double integral below defines the
+continuation without applying a convergence theorem outside its domain.
+
+We use $\beta(s)=\sum_{j\ge0}(-1)^j/(2j+1)^s$ and
+$\eta(s)=\sum_{j\ge1}(-1)^{j-1}/j^s$ for $s>0$. Both series converge
+on that domain. In the radial geometry, the conventional symbol
+$\eta_{a,b}(\rho)$ denotes a normalized angle; its subscripts and
+argument distinguish it from the Dirichlet eta function. To avoid a
+collision between the Euler limit and a radial coefficient, the
+quartic coefficient is always written with its arguments or in a
+locally specified coordinate system.
+
+The golden ratio and its reciprocal are
+\[
+ \phi=\frac{1+\sqrt5}{2},\qquad \rho=\phi^{-1},\qquad
+ \ell=\log\rho=-\log\phi.
+\]
+The golden section uses this constant $\rho$; the radial section uses
+$\rho$ as a variable radius and restates that convention locally.
+All logarithms of positive real numbers are real logarithms. Real
+parts of analytically continued polylogarithms at real arguments are
+specified when intermediate functional identities leave $(0,1)$.
+
+\subsection{What a certificate proves}
+
+The Euler positivity verifier performs rational polynomial arithmetic
+and proves positivity by Bernstein coefficients on a finite partition.
+The radial verifier evaluates finitely many explicit elementary
+expressions by outward rational interval arithmetic. The golden
+certificates are exact tensor identities coupled to a written
+differential and endpoint argument. The Cayley computation takes place
+in a specified formal shuffle algebra. Its nonzero normal form proves
+nonmembership in that algebraic relation ideal, and does not imply
+nonvanishing of a numerical period.
+
+These are ordinary mathematical proofs with finite computational
+premises. The executable code and exact records expose those premises
+for review. Numerical quadrature, plots, and stationary-point solvers
+serve only as diagnostics. They are neither the source of an exact
+sign claim nor a substitute for the analytic arguments.

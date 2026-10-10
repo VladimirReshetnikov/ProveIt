@@ -1,0 +1,65 @@
+\section{The problem selected from the manuscript}
+\label{sec:context}
+\subsection{Notation and the boundary-value convention}
+We use the decreasing-index convention
+\begin{equation}\label{eq:F}
+ F_{a,b}(z)=\Li_{a,b}(z,1)
+ =\sum_{n=1}^{\infty}\frac{H_{n-1}^{(b)}}{n^a}z^n,
+ \qquad H_m^{(b)}=\sum_{j=1}^{m}j^{-b},\quad H_0^{(b)}=0.
+\end{equation}
+Initially $|z|<1$ and $a,b>0$. The positive integral below continues $F$ to $\C\setminus[1,\infty)$. In particular,
+\[
+ g_{a,b}=\Imag F_{a,b}(\ii)
+\]
+always denotes this analytic value. The ordinary Fourier series at $\ii$ need not converge when the coefficients in \eqref{eq:F} fail to tend to zero. Nothing in the following proofs requires it to converge.
+
+Set
+\begin{equation}\label{eq:Euler}
+ A_k(a,b)=\frac{H_{2k}^{(b)}}{(2k+1)^a},\qquad
+ d_j(a,b)=\sum_{k=0}^{j}(-1)^k\binom jk A_k(a,b),\qquad
+ E_N(a,b)=\sum_{j=0}^{N-1}\frac{d_j(a,b)}{2^{j+1}}.
+\end{equation}
+Thus $A_0=d_0=E_1=0$. We also use $E_0=0$ and distinguish the unscaled and scaled errors
+\begin{equation}\label{eq:errors}
+ e_N=E_N-g_{a,b},\qquad R_N=2^N e_N\quad(N\ge0).
+\end{equation}
+That distinction matters: $e_N$ decreases, but $R_N$ need not do so.
+
+The auxiliary parameter $b$ is a real order, not a depth. The function has depth two throughout. We retain the standard notation
+\[
+ \beta(s)=\sum_{k\ge0}\frac{(-1)^k}{(2k+1)^s},\qquad
+ \eta(s)=\sum_{n\ge1}\frac{(-1)^{n-1}}{n^s}
+\]
+when the series converge, and use their analytic continuations otherwise. The elementary polylogarithm and gamma identities used here are consistent with the principal conventions in the DLMF \cite{DLMFpoly,DLMFgamma}.
+
+\subsection{What was already proved, and what remained open}
+At the pinned snapshot, the manuscript's signed-kernel and real-order chapters establish one-sided Euler convergence, a constant-one estimate for $a\ge1$, and several parameter-dependent bounds for $0<a<1$. The subcritical chapter proves the sharp constant
+\begin{equation}\label{eq:critical}
+ C_{\rm crit}=\frac\pi4+\frac{\log2}{2}
+\end{equation}
+uniformly on $a,b>0$, $a+b\le1$. It also proves that
+\begin{equation}\label{eq:axisC}
+ C(b)=\beta(b)+2^{-b}\eta(b)
+\end{equation}
+has a unique nondegenerate global maximum, at an order $b_*\in(1,2)$, and that this is the supremum of $-2g_{a,b}$ over all positive orders. Those results are inherited, not discoveries of this continuation \cite{RepoSubcritical,RepoEuler}.
+
+The research programme nevertheless explicitly leaves a universal real-order Euler estimate above the critical triangle open. The warning is correct: bounding the Gaussian value only controls $N=1$, since $2(E_1-g)=-2g$. It does not control later scaled errors without another theorem. This is precisely the gap treated here \cite{RepoDiscovery}.
+
+The new contribution is the uniform estimate for \emph{every} $N\ge2$. It makes the inherited axis maximum decisive for the full Euler problem. The sharp constant is not guessed by maximizing a finite numerical table. An analytic reduction and exact polynomial certificates exclude all later truncations from competing with the first one.
+
+\subsection{Main result and its logical components}
+\begin{theorem}[Sharp unrestricted real-order Euler bound]\label{thm:main}
+For all $a,b>0$ and integers $N\ge1$,
+\begin{equation}\label{eq:sharp-main}
+ 0<E_N(a,b)-g_{a,b}<\Cs\,2^{-N},
+ \qquad \Cs=\max_{b>0}C(b).
+\end{equation}
+The constant $\Cs$ is the least constant valid uniformly on this domain. More strongly,
+\begin{equation}\label{eq:nine-eighths}
+ 0<E_N(a,b)-g_{a,b}<\frac98\,2^{-N}\qquad(N\ge2).
+\end{equation}
+The sharp supremum in \eqref{eq:sharp-main} is approached with $N=1$, $b=b_*$ and $a\downarrow0$. If the axis $a=0$, $b>0$ is included, the non-strict sharp estimate has equality only at $(a,b,N)=(0,b_*,1)$.
+\end{theorem}
+The proof of \eqref{eq:nine-eighths} occupies Sections~\ref{sec:kernel}--\ref{sec:ineq}; Section~\ref{sec:sharp} identifies the optimum. Section~\ref{sec:cert} gives exact rational enclosures, not just numerical approximations. Section~\ref{sec:identities} derives an independent family of all-order identities from the error generating function.
+
+The underlying Euler transform is classical. Positive-measure arguments for sequence acceleration go back well beyond this project; the framework of Cohen--Rodriguez Villegas--Zagier is especially relevant \cite{CRVZ}. Euler-type transformations involving harmonic numbers also have a substantial literature \cite{Boyadzhiev}. The present claim is a specific uniform theorem for the harmonic depth-two family, not the invention of Euler acceleration or of positive-kernel methods.

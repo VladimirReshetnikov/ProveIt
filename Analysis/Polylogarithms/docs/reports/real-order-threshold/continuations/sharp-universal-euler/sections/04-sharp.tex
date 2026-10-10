@@ -1,0 +1,75 @@
+\section{Identification of the sharp constant}
+\label{sec:sharp}
+\subsection{Only the first truncation can determine the optimum}
+The first kernel has the particularly simple form
+\begin{equation}\label{eq:K1}
+ K_1(p,y)=\frac{2p(1+y)}{(1+p)(1+py^2)}.
+\end{equation}
+Its derivative in $p$ has the sign of $1-p^2y^2$. Hence it is strictly increasing for $0<p<1$, $0\le y<1$. For $a>0$, $X^2<1$ almost surely, so
+\begin{equation}\label{eq:R1axis}
+ R_1(a,b)<\E K_1(1,Y)=\E\frac{1+Y}{1+Y^2}=C(b).
+\end{equation}
+The last equality can also be checked without summing an integral kernel: residue classes give
+$\Li_b(\ii)=-2^{-b}\eta(b)+\ii\beta(b)$, and \eqref{eq:axis-F} gives $-2g_{0,b}=C(b)$. The two Dirichlet series converge for every $b>0$.
+
+The gamma variable $S$ tends to zero in probability as $a\downarrow0$, for example by $\E S=a$ and Markov's inequality. Since $K_1$ is bounded and continuous, \eqref{eq:R1axis} tends to equality. Thus the exact supremum at the first truncation is the supremum of the axis function.
+
+For completeness, there is a strict elementary separation between this supremum and the later-truncation bound:
+\begin{equation}\label{eq:separation}
+ C(1)=\frac\pi4+\frac{\log2}{2}>\frac98.
+\end{equation}
+One exact verification uses Machin's identity and the positive artanh series:
+\[
+ \frac\pi4=4\arctan(1/5)-\arctan(1/239)
+ >4\left(\frac15-\frac1{3\cdot5^3}\right)-\frac1{239}
+ >\frac{25}{32},
+\]
+\[
+ \log2=2\sum_{j\ge0}\frac{3^{-2j-1}}{2j+1}
+ >2\left(\frac13+\frac1{81}\right)>\frac{11}{16}.
+\]
+Adding proves \eqref{eq:separation}. The last two comparisons are checked as rational inequalities by the verifier.
+
+\subsection{An ordinary proof of the inherited axis maximum}
+The existence, uniqueness and nondegeneracy of the maximum were established in the manuscript \cite{RepoSubcritical}. We include a short self-contained argument, both to expose the exact dependency and to justify the localization procedure in the next section.
+
+\begin{proposition}[Unique axis maximum]\label{prop:axismax}
+There is exactly one stationary point $b_*>0$ of $C$. It is a nondegenerate global maximum. Moreover, $C'(b)>0$ for $b<b_*$ and $C'(b)<0$ for $b>b_*$.
+\end{proposition}
+\begin{proof}
+Write
+\[
+ C(b)=\frac1{\Gamma(b)}\int_0^\infty T^{b-1}e^{-T}\phi(T)\dd T,
+ \qquad \phi(T)=\frac{1+e^{-T}}{1+e^{-2T}}.
+\]
+The function $\phi$ is strictly above one on $(0,\infty)$, tends to one at both endpoints, and increases and then decreases with unique maximum
+\[
+ \phi\bigl(\log(1+\sqrt2)\bigr)=\frac{1+\sqrt2}{2}.
+\]
+These assertions follow by differentiating $(1+y)/(1+y^2)$ on $0<y<1$. Thus
+$1<C(b)<(1+\sqrt2)/2$ for every $b>0$.
+
+As $b\downarrow0$, a gamma variable of shape $b$ tends to zero in probability. As $b\to\infty$, it tends to infinity in probability: its mean and variance are both $b$, so Chebyshev's inequality suffices. Bounded convergence in probability yields $C(b)\to1$ at both ends. Therefore an interior maximum exists. Differentiation under the integral is valid locally in $b>0$, since all required logarithmic moments are integrable.
+
+Consider any stationary point $b_0$, and put $\lambda=C(b_0)$. The function $f(T)=\phi(T)-\lambda$ has exactly two roots $T_1<T_2$ and sign pattern $-,+,-$. Define
+\[
+ M(b)=\int_0^\infty f(T)T^{b-1}e^{-T}\dd T
+      =\Gamma(b)\{C(b)-\lambda\}.
+\]
+Then $M(b_0)=M'(b_0)=0$. Consequently
+\begin{align*}
+ M''(b_0)
+ &=\int_0^\infty f(T)T^{b_0-1}e^{-T}
+       (\log T-\log T_1)(\log T-\log T_2)\dd T\\
+ &<0.
+\end{align*}
+The product has strictly negative sign except at the two roots. As $M''(b_0)=\Gamma(b_0)C''(b_0)$, every stationary point is a strict nondegenerate local maximum. Two such maxima would force an intervening local minimum and hence another stationary point that is not a strict maximum. There is therefore exactly one stationary point. Continuity of $C'$ and the endpoint limits give its asserted signs.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+For $N=1$, \eqref{eq:R1axis} gives $R_1(a,b)<C(b)\le\Cs$. For $N\ge2$, Theorem~\ref{thm:kernel} gives $R_N<9/8<C(1)\le\Cs$. Positivity is Proposition~\ref{prop:remainder}. To prove optimality, fix $b=b_*$ and let $a\downarrow0$ with $N=1$; the scaled error tends to $\Cs$. Thus no smaller constant works. On the included axis, equality is possible at $N=1$ only, and Proposition~\ref{prop:axismax} makes $b_*$ the unique order where it occurs.
+\end{proof}
+
+\begin{remark}[Sharpness on different domains]
+The value $9/8$ is a convenient rigorous separator, not claimed to be optimal for $N\ge2$. The constant one remains the manuscript's sharp uniform constant on its restricted domain $a\ge1$; the smaller critical constant \eqref{eq:critical} remains sharp on the critical/subcritical triangle. The new theorem answers a different optimization question: simultaneous uniformity over all positive real orders and all truncation lengths.
+\end{remark}

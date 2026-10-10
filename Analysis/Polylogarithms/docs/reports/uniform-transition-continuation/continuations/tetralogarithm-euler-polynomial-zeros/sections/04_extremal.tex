@@ -1,0 +1,575 @@
+% Research continuation of the pinned ProveIt snapshot
+% 4c173c06cc32c9cea554b39be1837ad2ae897fc1, 2026-10-10.
+% This is an insertion fragment, not a stand-alone document.
+% Prior sources: chapters/05-real-euler.tex, 05-universal-euler.tex;
+% incoming ProveIt_Polylogarithms_Research_2026-10-10/
+% polylogarithms_uniform_bounds_20261010/sections/euler.tex.
+
+\section{The optimal late Euler constant: eventual axis reduction}
+\label{lateaxis:sec:global}
+
+The incoming uniform-bounds report~\cite{incoming-bounds} proves $C_N\to1$ and an explicit
+lower asymptotic $\liminf N^p(C_N-1)\ge c$.  It leaves the matching
+upper asymptotic open.  We prove the stronger fact that, after an
+explicit (deliberately conservative) index, the exact global supremum
+is the maximum on the zero outer-order axis.  This also identifies
+the extremizing inner order and a second asymptotic scale.
+
+Write
+\[
+ W_N(x)=\frac{(1-x)^N}{1+x},\qquad
+ F_N(y)=W_N(e^{-2y}),\qquad
+ J_N(s)=\mathbb E F_N(T_s),\qquad D_N(s)=1-J_N(s),
+\]
+where $T_s$ is a rate-one gamma variable of shape $s>0$ and $T_0=0$.
+Thus $J_N(0)=0$.  Define
+\[
+ R_N(a,b)=2^N(E_N(a,b)-g_{a,b}),\qquad
+ C_N=\sup_{a,b>0}R_N(a,b),\qquad
+ A_N=\max_{b>0}R_N(0,b).
+\]
+The exact representation already established in the manuscript is
+\begin{equation}\label{lateaxis:eq:kernel}
+ R_N(a,b)=\mathbb E\frac{F_N(T_a+U_b)-F_N(T_a)}{1-e^{-U_b}},
+\end{equation}
+with independent rate-one gamma variables.  Its positive gamma-series
+form, valid also when $b\le1$, is
+\begin{equation}\label{lateaxis:eq:series}
+ R_N(a,b)=\sum_{r\ge1}r^{-b}
+ \mathbb E\{F_N(T_a+U_b/r)-F_N(T_a)\}.
+\end{equation}
+For $b>1$ this gives the useful upper bound
+\begin{equation}\label{lateaxis:eq:zetaJ}
+ R_N(a,b)\le\zeta(b)J_N(a+b).
+\end{equation}
+Indeed $F_N$ is increasing, so every first expectation in
+\eqref{lateaxis:eq:series} is at most $J_N(a+b)$, while the subtracted
+expectations are nonnegative.  The known strict estimate
+$R_N(a,b)<1$ for $a\ge1$, $b>0$ is the first case of the manuscript's
+Theorem~\texttt{rw:thm:euler}.  For clarity, it can also be recovered from the compensated density.
+At $a=1$,
+\[
+ K_{1,b}(T)=-\frac{T^b}{\Gamma(b+1)}+h_b(T).
+\]
+Each of the two positive terms has $e^{-T}\,dT$ integral one;
+for $h_b$, interchange its positive integrals and use
+$(1-e^{-v})/(e^v-1)=e^{-v}$. Their strict overlap makes the positive
+and negative Jordan masses strictly less than one. For $a>1$,
+convolution with $T^{a-2}/\Gamma(a-1)$ in the $T$ variable preserves
+zero total weighted mass and contracts the $L^1(e^{-T}dT)$ norm.
+Since $0\le W_N\le1$, the exact remainder integral is bounded above
+by the negative Jordan mass, and hence is strictly less than one.
+This gives the needed bound directly for every real $a\ge1$.
+
+\subsection{A gamma-transform shape principle}
+
+We shall use the following elementary observation twice.  Let
+$h(y)>0$ be continuous, increase strictly to one maximum, and then
+decrease strictly, with distinct finite endpoint limits $h(0)$ and
+$h(\infty)$.  Suppose each horizontal level between the smaller
+endpoint limit and the maximum crosses $h$ either once or twice,
+as its shape prescribes.  Consider
+\[
+ H(s)=\frac{r^s}{\Gamma(s)}\int_0^\infty
+                  h(y)y^{s-1}e^{-ry}\,dy,\qquad s>0.
+\]
+For the bounded functions used below, every derivative in $s$ exists.
+At a stationary point $s_0$, set $\lambda=H(s_0)$ and
+$f=h-\lambda$.  Since $H(s_0)=\lambda$ and $H'(s_0)=0$,
+\[
+ \int f(y)y^{s_0-1}e^{-ry}\,dy
+ =\int f(y)\log y\,y^{s_0-1}e^{-ry}\,dy=0.
+\]
+If $f$ has just one sign change at $y_1$, multiplication by
+$\log y-\log y_1$ produces an integrand of one strict sign,
+a contradiction.  If $f$ has signs $-,+,-$ and zeros $y_1<y_2$,
+then $-(\log y-\log y_1)(\log y-\log y_2)$ has the same signs.
+Its integral against $f(y)y^{s_0-1}e^{-ry}\,dy$ is strictly positive.
+The two vanishing integrals therefore imply $H''(s_0)<0$.
+Consequently every stationary point is a nondegenerate maximum.
+There is at most one, and the minimum of $H$ on any compact interval
+is attained at an endpoint.  Existence of one value above both
+endpoint limits implies a unique global maximum.
+
+\begin{lemma}[Quasiconcavity of a tilted defect]\label{lateaxis:lem:defect}
+For every integer $N\ge2$, the function
+\[
+ Q_N(s)=2^sD_N(s),\qquad s>0,
+\]
+has no interior minimum; in particular, its minimum on every compact
+interval is attained at an endpoint.
+\end{lemma}
+\begin{proof}
+It is the gamma transform of shape $s$ and rate two of
+\[
+ \psi_N(y)=e^y\{1-W_N(e^{-2y})\}.
+\]
+This bounded positive function has endpoint limits one and zero.
+We check its strict one-maximum shape.  Put $x=e^{-2y}$ and
+\[
+ B_N(x)=\frac{(1-x)^{N-1}
+                 \{1+2(N+1)x+(2N-3)x^2\}}{(1+x)^2}.
+\]
+Direct differentiation gives
+\[
+ \psi_N'(y)=e^y\{1-B_N(x)\}.
+\]
+The numerator of the logarithmic derivative of $B_N$ after
+multiplication by the positive denominator
+$(1-x)(1+x)\{1+2(N+1)x+(2N-3)x^2\}$ is
+\begin{align*}
+ P_N(x)={}&N+1-(2N^2+N+5)x\notag\\
+          &-(4N^2-3N-7)x^2-(2N-3)(N-1)x^3.
+\end{align*}
+For $N\ge2$ every nonconstant coefficient is negative, so $P_N$
+decreases strictly and has exactly one zero in $(0,1)$.
+Since $B_N(0)=1$, $B_N(1)=0$, it first increases and then decreases,
+and crosses the level one exactly once in $(0,1)$.  It follows that
+$\psi_N$ first increases and then decreases.  The preceding
+gamma-transform principle, at rate two, proves the claim.
+\end{proof}
+
+\subsection{Excluding bounded and moderately growing inner orders}
+
+\begin{lemma}[An explicit region below one]\label{lateaxis:lem:exclude}
+Let $N$ be an integer with $N\ge e^{24}$ and write $\ell=\log N$.
+Then
+\[
+ R_N(a,b)<1\qquad(0\le a\le1,\quad 0<b\le2\ell).
+\]
+\end{lemma}
+\begin{proof}
+First suppose $0<b\le3$.  Direct differentiation yields, for $N\ge2$,
+\[
+ 0\le F_N'(y)\le4Nx(1-x)^{N-1}\le4,
+ \qquad x=e^{-2y}.
+\]
+Couple independent gamma variables so that $T_a\le T_1$ and
+$U_b\le U_3$, and put $V=T_1+U_3$.  Since
+$u/(1-e^{-u})\le1+u$, the exact kernel is at most
+\[
+ (1+U_3)\sup_{0\le y\le V}F_N'(y).
+\]
+On $V\le10$, set $z=Nx\ge Ne^{-20}\ge e^4>50$.  Then
+\[
+ F_N'(y)\le4z e^{-z/2}\le200e^{-25}.
+\]
+On $V>10$ use $F_N'\le4$.  Now $V$ has shape four, and the
+conditional mean of $U_3$ given $V$ is $3V/4$.  The elementary
+integer-shape gamma tails give
+\begin{align*}
+ R_N(a,b)
+ &\le800e^{-25}+4\{\mathbb P(T_4>10)
+                         +3\mathbb P(T_5>10)\}\\
+ &=800e^{-25}+\frac{25928}{3}e^{-10}<1.
+\end{align*}
+All constants in this estimate are explicit; for instance $e>27/10$
+suffices to verify the last inequality.
+
+Next suppose $3\le b\le2\ell$.  By
+\eqref{lateaxis:eq:zetaJ} and the increase of $J_N$,
+\[
+ R_N(a,b)\le\zeta(b)\{1-D_N(b+1)\}.
+\]
+We prove $2^bD_N(b+1)>4$ on this entire interval by checking its
+endpoints and using Lemma~\ref{lateaxis:lem:defect}.
+
+At $b=3$, Chebyshev's inequality gives
+$\mathbb P(T_4\le8)\ge3/4$.  Since
+$W_N(x)\le e^{-Nx}$,
+\[
+ D_N(4)\ge\frac34\{1-e^{-Ne^{-16}}\}
+        \ge\frac34\{1-e^{-e^8}\}>\frac12.
+\]
+At $b=2\ell$, use
+\[
+ 1-W_N(x)\ge1-(1-x)^N\ge\frac{Nx}{1+Nx}
+                       \ge\frac{Nx}{2}\quad(0\le x\le N^{-1}).
+\]
+Thus, for $s=2\ell+1$ and a gamma variable $Z_s$ of shape $s$
+and rate three,
+\[
+ D_N(s)\ge\frac N2\,3^{-s}\,\mathbb P(Z_s\ge\ell/2).
+\]
+Its mean is $s/3$ and its variance is $s/9$, so
+\[
+ \mathbb P(Z_s<\ell/2)
+ \le\frac{4(2\ell+1)}{(\ell+2)^2}\le\frac12
+ \qquad(\ell\ge24).
+\]
+Writing $L=\log(3/2)<5/12$, we conclude that
+\[
+ 2^{2\ell}D_N(2\ell+1)
+ \ge\frac{N^{1-2L}}{12}
+ >\frac{e^4}{12}>4.
+\]
+The bound $L<5/12$ follows from the trapezoidal bound for
+$\int_1^{3/2}dt/t$.  Lemma~\ref{lateaxis:lem:defect}, applied on
+$4\le s\le2\ell+1$, proves $D_N(b+1)>4\,2^{-b}$ throughout.
+Finally,
+\[
+ \zeta(b)-1\le2^{-b}\left(1+\frac2{b-1}\right)\le2\,2^{-b}.
+\]
+Hence $\zeta(b)(1-D_N(b+1))<1$, as required.
+\end{proof}
+
+\subsection{Outer-order monotonicity in the remaining region}
+
+For a bounded Lipschitz function $f$, gamma addition gives the exact
+shape-generator formula
+\begin{equation}\label{lateaxis:eq:generator}
+ \frac{d}{da}\mathbb E f(T_a)
+ =\int_0^\infty\frac{e^{-u}}u
+             \mathbb E\{f(T_a+u)-f(T_a)\}\,du.
+\end{equation}
+It includes the right derivative at $a=0$.  Indeed, divide the
+gamma-addition identity at $a+h$ by $h$ and use
+$h\Gamma(h)\to1$.  A Lipschitz bound at zero and boundedness at
+infinity justify dominated convergence.
+
+\begin{lemma}[An explicit strictly decreasing outer-order range]
+\label{lateaxis:lem:outer}
+If $N\ge e^{24}$, $b\ge2\log N$, and $0\le a\le1$, then
+\[
+ \partial_a R_N(a,b)<0,
+\]
+with the one-sided interpretation at $a=0$.
+\end{lemma}
+\begin{proof}
+Put $t_0=\frac12\log N$.  In \eqref{lateaxis:eq:generator} for
+$J_N$, restrict to $T_a\le1$ and $u\in[t_0+1,t_0+2]$.
+Gamma addition gives $\mathbb P(T_a\le1)\ge1-e^{-1}$.  For $N\ge16$,
+\[
+ F_N(T_a+u)-F_N(T_a)
+ \ge F_N(t_0+1)-F_N(1)>\frac12.
+\]
+To check the last inequality, use
+$1-W_N(x)\le(N+1)x$, $W_N(x)\le e^{-Nx}$, and $7<e^2<8$.
+Consequently
+\begin{equation}\label{lateaxis:eq:Jprime}
+ J_N'(a)\ge
+ \frac{(1-e^{-1})e^{-2}}{\sqrt N(\log N+4)}
+ >\frac{1}{18\sqrt N(\log N+4)}.
+\end{equation}
+
+For $b>1$, rewrite the positive series as
+\[
+ R_N(a,b)=\zeta(b)\{1-J_N(a)\}-\mathcal D_N(a,b),
+ \quad
+ \mathcal D_N(a,b)=\sum_{r\ge1}r^{-b}
+       \mathbb E\{1-F_N(T_a+U_b/r)\}.
+\]
+The derivative of $1-W_N(x)$ lies in $[0,N+1]$, and therefore
+\[
+ 0\le F_N(y+u)-F_N(y)
+ \le(N+1)e^{-2y}(1-e^{-2u}).
+\]
+Apply \eqref{lateaxis:eq:generator} to each summand.  Positivity and
+the following summable bound justify interchanging derivative and sum:
+\begin{align}
+ 0\le-\partial_a\mathcal D_N(a,b)
+ &\le (N+1)\log3\,3^{-a}\sum_{k\ge3}k^{-b}.
+ \label{lateaxis:eq:Dprime}
+\end{align}
+Here $\int_0^\infty(e^{-u}-e^{-3u})\,du/u=\log3$, and
+$r^{-b}\mathbb E e^{-2U_b/r}=(r+2)^{-b}$.
+Since $b\ge2\log N\ge3$,
+\[
+ \sum_{k\ge3}k^{-b}\le3^{-b}\left(1+\frac3{b-1}\right)
+ \le3\,3^{-b}\le3N^{-2},
+\]
+where $3>e$ was used in the last step.  Thus the right side of
+\eqref{lateaxis:eq:Dprime} is at most $12/N$.
+By \eqref{lateaxis:eq:Jprime},
+\[
+ \partial_a R_N(a,b)
+ <-\frac1{18\sqrt N(\log N+4)}+\frac{12}{N}<0.
+\]
+The final inequality follows from
+$\sqrt N>216(\log N+4)$ for $\log N\ge24$.
+\end{proof}
+
+\begin{theorem}[Eventual exact reduction of the global supremum]
+\label{lateaxis:thm:reduction}
+For every integer $N\ge\lceil e^{24}\rceil$,
+\[
+ \boxed{\quad C_N=A_N=\max_{b>0}R_N(0,b).\quad}
+\]
+Every positive outer order gives a strict inequality
+$R_N(a,b)<A_N$.  If the axis $a=0$ is admitted, the unique maximizing
+pair is $(0,b_N)$, where $b_N$ is the unique maximum of the axis
+function proved below.  The threshold is an explicit sufficient
+condition, not an estimate of the smallest index for which the
+conclusion holds.
+\end{theorem}
+\begin{proof}
+The axis maximum is greater than one.  This follows already from the
+exact Taylor lower bound
+\[
+ R_N(0,b)\ge1+2^{-b}-N3^{-b}-N4^{-b}>1
+\]
+for all sufficiently large $b$ at fixed $N$.
+For $a\ge1$ the previously proved strict bound is $R_N(a,b)<1$.
+For $0\le a\le1$ and $b\le2\log N$ use
+Lemma~\ref{lateaxis:lem:exclude}.  In the remaining range,
+Lemma~\ref{lateaxis:lem:outer} gives
+$R_N(a,b)<R_N(0,b)\le A_N$ when $a>0$.
+Finally the bounded kernel in \eqref{lateaxis:eq:kernel} is continuous
+under $a\downarrow0$, so the axis values are approached by positive
+outer orders.  This proves equality of the suprema and all strict
+claims.  Uniqueness on the axis follows from the next theorem.
+\end{proof}
+
+\section{The maximizing inner order and a fractional second scale}
+\label{lateaxis:sec:asymptotic}
+
+On the axis the exact integral is
+\[
+ A_N(b):=R_N(0,b)=\frac1{\Gamma(b)}\int_0^\infty
+        y^{b-1}e^{-y}K_N(e^{-y})\,dy,
+ \qquad K_N(u)=\frac{(1+u)(1-u^2)^{N-1}}{1+u^2}.
+\]
+In this section $A_N(b)$ denotes the function and $A_N$ without an
+argument its maximum.
+
+\begin{theorem}[A unique axis maximum at every index]
+\label{lateaxis:thm:unique}
+For each integer $N\ge2$, $A_N(b)$ has exactly one stationary point
+$b_N>0$.  It is a nondegenerate global maximum, greater than one;
+$A_N'$ is positive below $b_N$ and negative above it.
+\end{theorem}
+\begin{proof}
+The sign of $K_N'(u)$ on $0<u<1$ is the sign of
+\[
+ 1-(2N+1)u+u^2-(2N-3)u^3.
+\]
+This polynomial decreases strictly, from a positive value to a
+negative value, because its derivative is at most $-(2N+1)+2<0$.
+Thus $K_N(e^{-y})$ increases strictly from zero to one maximum,
+then decreases strictly to one.  The gamma-transform principle
+proves that all stationary points of $A_N$ are nondegenerate
+maxima.  Moreover $A_N(b)\to0$ as $b\downarrow0$,
+$A_N(b)\to1$ as $b\to\infty$, and the preceding Taylor lower
+bound gives values greater than one.  A global maximum therefore
+exists, and the shape principle makes it unique.
+\end{proof}
+
+\begin{corollary}[Monotone height and maximizing inner order]
+\label{lateaxis:cor:monotone}
+For every integer $N\ge2$,
+\[
+ A_{N+1}<A_N,\qquad b_{N+1}>b_N.
+\]
+In particular $C_N$ is strictly decreasing for
+$N\ge\lceil e^{24}\rceil$.
+\end{corollary}
+\begin{proof}
+The pointwise relation $K_{N+1}(u)=(1-u^2)K_N(u)<K_N(u)$
+implies $A_N(b_{N+1})>A_{N+1}(b_{N+1})=A_{N+1}$,
+and hence $A_N>A_{N+1}$.  For the locations, the ratio
+$A_{N+1}(b)/A_N(b)$ is the expectation of
+$1-e^{-2T}$ under the probability density proportional to
+$K_N(e^{-T})T^{b-1}e^{-T}$.  Its derivative in $b$ is the strictly
+positive covariance of $1-e^{-2T}$ and $\log T$ under that density.
+Thus $A_{N+1}'(b_N)>0$, since $A_N'(b_N)=0$.
+The unique-maximum theorem gives $b_{N+1}>b_N$.
+The eventual reduction transfers the height inequality to $C_N$.
+\end{proof}
+
+Set
+\begin{gather*}
+ L=\log(3/2),\qquad B=L^{-1},\qquad
+ p=B\log2,\qquad q=\frac{\log3}{\log2},\qquad
+ d_0=B\log q,\\
+ c=(1-q^{-1})q^{-p},\qquad
+ \nu=B-\frac12,\qquad
+ I=\frac12-B+B\log(2B),\\
+ D=\sqrt{\frac{B}{2\pi}}\,\Gamma\left(\frac12-B\right)
+                          (2B)^{-d_0},\qquad
+ K=\frac{\log(2B)D}{(\log2)Lq^{-p}}.
+\end{gather*}
+The elementary bounds $2/5<L<5/12$ show $1<\nu<2$, so
+$D>0$.  Also $p<I<2p-1$.
+
+\begin{theorem}[The sharp global late asymptotic and maximizing order]
+\label{lateaxis:thm:sharpasymptotic}
+As $N\to\infty$, with $\ell=\log N$,
+\begin{align}
+ C_N=A_N
+ &=1+cN^{-p}
+     +D\frac{N^{-I}}{\sqrt\ell}
+     +o\left(\frac{N^{-I}}{\sqrt\ell}\right),
+ \label{lateaxis:eq:second}\\
+ b_N
+ &=\frac{\log(Nq)}{\log(3/2)}
+   -K\frac{N^{-(I-p)}}{\sqrt\ell}
+   +o\left(\frac{N^{-(I-p)}}{\sqrt\ell}\right).
+ \label{lateaxis:eq:location}
+\end{align}
+In particular the incoming conjecture is settled:
+\[
+ \lim_{N\to\infty}N^p(C_N-1)=c.
+\]
+The numerical diagnostics are
+\begin{align*}
+ p&=1.70951129135\ldots,& c&=0.16794779654\ldots,\\
+ I&=1.96959041447\ldots,& D&=1.56777020071\ldots.
+\end{align*}
+The second correction comes from a gamma-density transition near
+$y=\frac12\log N$; it is not the full quadratic Taylor moment.
+\end{theorem}
+\begin{proof}
+Put
+\[
+ P_N(s)=\frac{(1-s)^{N-1}}{1+s},\qquad
+ h_N(t)=P_N(t/N)-1+t\quad(0\le t\le N).
+\]
+The elementary Taylor estimates
+\[
+ P_N(0)=1,\quad P_N'(0)=-N,\quad
+ 0\le P_N''(s)\le N^2-N+2
+\]
+give, for $N\ge2$,
+\begin{equation}\label{lateaxis:eq:hbound}
+ 0\le h_N(t)\le\min(t,t^2).
+\end{equation}
+They also give the exact decomposition
+\begin{equation}\label{lateaxis:eq:decompose}
+ A_N(b)=1+2^{-b}-N3^{-b}-N4^{-b}+M_N(b),
+\end{equation}
+where
+\[
+ M_N(b)=\mathbb E\{(1+e^{-T_b})h_N(Ne^{-2T_b})\}\ge0.
+\]
+For $b=B\ell+d$, where $d$ ranges over a fixed compact interval,
+center this last integral at $t_0=\ell/2$.  If
+$p_b(t)=t^{b-1}e^{-t}/\Gamma(b)$, then
+\begin{align*}
+ \frac{M_N(b)}{p_b(t_0)}
+ =\int_{-t_0}^\infty &e^{-y}(1+2y/\ell)^{b-1}
+       (1+N^{-1/2}e^{-y})h_N(e^{-2y})\,dy.
+\end{align*}
+For each fixed $y$ the integrand converges to
+\[
+ e^{(2B-1)y}\{e^{-e^{-2y}}-1+e^{-2y}\}.
+\]
+This passage is dominated, uniformly for bounded $d$.  Indeed, choose
+$\varepsilon>0$ so that $2<2B-1-\varepsilon<2B-1+\varepsilon<4$.
+The inequality $\log(1+v)\le v$ and \eqref{lateaxis:eq:hbound}
+give an integrable majorant proportional to
+$e^{(2B-1-\varepsilon-2)y}$ on $y<0$ and
+$e^{(2B-1+\varepsilon-4)y}$ on $y>0$.
+The factor $1+N^{-1/2}e^{-y}$ is at most two on the integration
+domain.  Extending by zero below $-t_0$ completes the domination.
+
+With $t=e^{-2y}$ the limiting integral equals
+\begin{equation}\label{lateaxis:eq:mellin}
+ \frac12\int_0^\infty
+       (e^{-t}-1+t)t^{-\nu-1}\,dt
+ =\frac12\Gamma(-\nu).
+\end{equation}
+Both integrations by parts used in the last equality are convergent
+because $1<\nu<2$; equivalently the value is
+$\Gamma(2-\nu)/(2\nu(\nu-1))$.
+Stirling's formula, uniformly for bounded $d$, gives
+\[
+ p_{B\ell+d}(\ell/2)
+ =\sqrt{\frac{2B}{\pi}}\,(2B)^{-d}
+       \frac{N^{-I}}{\sqrt\ell}\{1+O(\ell^{-1})\}.
+\]
+Consequently
+\begin{equation}\label{lateaxis:eq:Mlimit}
+ M_N(B\ell+d)=D(d)\frac{N^{-I}}{\sqrt\ell}\{1+o(1)\},
+ \quad D(d)=\sqrt{\frac{B}{2\pi}}\,\Gamma(-\nu)(2B)^{-d}.
+\end{equation}
+
+Differentiating the gamma density inserts the score
+$\log(t_0+y)-\psi(b)$, which tends to $-\log(2B)$.
+The same domination is valid after multiplication by this score.
+For $y\ge0$ its absolute value is bounded by $C(1+y)$.
+For $y<0$, put $z=1+2y/\ell\in(0,1)$ and use
+$(-\log z)z\le1/e$ to replace $z^{b-1}$ by $z^{b-2}$;
+this only changes the exponent of the preceding majorant by
+$O(\ell^{-1})$.  Hence, uniformly for bounded $d$,
+\begin{equation}\label{lateaxis:eq:Mprime}
+ M_N'(B\ell+d)=-\log(2B)D(d)
+                       \frac{N^{-I}}{\sqrt\ell}\{1+o(1)\}.
+\end{equation}
+
+Let $f(d)=2^{-d}-3^{-d}$.  Since $B\log3-1=p$, the first two
+nonconstant terms in \eqref{lateaxis:eq:decompose} equal
+$N^{-p}f(d)$.  The term $N4^{-b}$ and its derivative have order
+$N^{1-2p}=o(N^{-I}/\sqrt\ell)$.  The inequalities $p<I$ and
+$I<2p-1$ follow, for example, from
+\[
+ I-p=B\log(2B/3)-B+\frac32>0
+\]
+(strict convexity of $x\log x-x+1$), together with
+$12/5<B<5/2$, $\log5<5/3$, and $\log2>2/3$ for the second
+inequality.  The latter crude bounds give $I<13/6$ and
+$2p-1>11/5$.
+
+Now $f'$ is positive below $d_0$, negative above it, and
+\[
+ f(d_0)=c,\qquad f''(d_0)=-(\log2)Lq^{-p}<0.
+\]
+For every fixed $\delta>0$, equations
+\eqref{lateaxis:eq:decompose} and \eqref{lateaxis:eq:Mprime}
+give opposite derivative signs at $B\ell+d_0\pm\delta$ for all
+sufficiently large $N$.  The unique critical point therefore has
+$b_N=B\ell+d_0+o(1)$.  Substituting it into the stationary-point
+equation and using $f''(d_0)\ne0$ yields
+\eqref{lateaxis:eq:location}.  Its displacement changes the maximum
+value by $o(N^{-I}/\sqrt\ell)$, so
+\eqref{lateaxis:eq:decompose} and \eqref{lateaxis:eq:Mlimit} give
+\eqref{lateaxis:eq:second} for $A_N$.  The exact eventual reduction
+Theorem~\ref{lateaxis:thm:reduction} transfers it to $C_N$.
+\end{proof}
+
+\begin{corollary}[Concentration of almost maximizing orders]
+\label{lateaxis:cor:concentration}
+Let $a_N,b_N^{\circ}>0$ satisfy
+\[
+ C_N-R_N(a_N,b_N^{\circ})=o(N^{-p}).
+\]
+Then
+\[
+ a_N=o\bigl(N^{1/2-p}\log N\bigr),\qquad
+ b_N^{\circ}=\frac{\log(Nq)}{\log(3/2)}+o(1).
+\]
+Thus orders attaining the leading excess over one must approach the
+outer-order axis at a quantified rate.
+\end{corollary}
+\begin{proof}
+The sharp asymptotic implies $R_N(a_N,b_N^{\circ})>1$ eventually,
+so the exclusion argument forces $a_N<1$ and $b_N^{\circ}>2\log N$.
+The estimates in Lemma~\ref{lateaxis:lem:outer} in fact give
+\[
+ \partial_aR_N(a,b)\le-\frac1{36\sqrt N(\log N+4)}
+\]
+on that region, because $\sqrt N>432(\log N+4)$ for $\log N\ge24$.
+Integrating in $a$ yields
+\[
+ C_N-R_N(a,b)\ge A_N-A_N(b)
+                     +\frac a{36\sqrt N(\log N+4)}.
+\]
+Both terms on the right are nonnegative, proving the bound on $a_N$.
+For each fixed $\varepsilon>0$, the axis values at
+$B\log N+d_0\pm\varepsilon$ have leading coefficients
+$f(d_0\pm\varepsilon)<c$.  Axis unimodality therefore excludes
+every $b$ outside this interval from having
+$A_N-A_N(b)=o(N^{-p})$.  Let $\varepsilon\downarrow0$ to obtain
+the asserted location of $b_N^{\circ}$.
+\end{proof}
+
+\paragraph{Scope and next questions.}
+The proof establishes an eventual theorem with a conservative explicit
+threshold; it does not establish $C_N=A_N$ at every $N\ge2$.
+Determining the smallest such index, or proving equality at all indices,
+is a precise remaining question.  A second question is an effective
+error bound in \eqref{lateaxis:eq:second}; dominated convergence gives
+the stated asymptotic but no small numerical error estimate at ordinary
+truncation indices.  Expanding the centered gamma density suggests an
+inverse-logarithm series multiplying $N^{-I}/\sqrt{\log N}$, with
+coefficients given by derivatives of $\Gamma(-\nu)$, before still
+smaller powers of $N$.  That longer expansion is not claimed here.

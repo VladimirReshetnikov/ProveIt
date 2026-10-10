@@ -1,0 +1,52 @@
+\section{Reproduction contract and certificate inventory}
+\label{sec:reproduction}
+The package is self-contained for the exact finite replay. Python's standard library suffices for its core checker. The commands below are run from the package root:
+\noindent\begin{minipage}{\linewidth}
+\begin{verbatim}
+python code/verify_exact.py
+python -O code/verify_exact.py
+python code/verify_sympy.py
+python code/numerical_checks.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+\end{minipage}
+
+The last two Python programs require the dependencies documented in \src{requirements.txt}; SciPy is used only for optional numerical optimization. The exact checker uses explicit exceptions rather than Python assertions, so its checks remain active under \texttt{-O}.
+
+\subsection{Frozen data versus independent generation}
+The JSON polynomial file records every cell, degree and rational coefficient, not only a claimed minimum. The exact checker reconstructs the same data from the printed polynomial formulas. The symbolic checker instead reconstructs the rational kernels from $f_N$, clears their denominators, and independently converts the resulting polynomials to the Bernstein basis. Its separate generation route reduces the risk of an unnoticed copied coefficient error.
+
+The axis JSON file records the proposed lower grid numerator for each rational power, the exact finite-sum interval and the reported global brackets. The checker verifies all defining integer inequalities before using these values. It also checks that the center axis interval lies above both neighbors and that the interpolation bound implies the claimed enclosure of $\Cs$. The analytic premise $|C''|<1$ is the written Lemma~\ref{lem:curvature}, not a numerical second-derivative estimate.
+
+The expected finite inventory is:
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Object checked & Count\\
+\midrule
+Exact defining polynomial identities & 3\\
+Bernstein cells across all three certificates & 82\\
+Strictly positive rational Bernstein coefficients & 1542\\
+Independent Euler weight comparisons & 528\\
+Integer-certified rational power brackets & 282\\
+Axis function enclosures & 3\\
+Moment-polynomial generating coefficients, degrees $0$--$12$ & 13\\
+\bottomrule
+\end{tabular}
+\end{center}
+The corrupted-polynomial negative control is required to fail. The scaled-error monotonicity counterexample is checked as an exact finite rational inequality. The generator is not run by the read-only verifier; intentional regeneration is a separate command.
+
+\subsection{Numerical evidence}
+The numerical JSON is explicitly labeled nonrigorous. It records working precision, independently evaluated values, discrepancies, found kernel maximizers and the limiting-kernel optimization. The script fixes the optional optimizer's random seed. The raw text reports are retained so that a later integration can compare a fresh replay with this delivery. These reports do not replace the source code or mathematical proofs.
+
+\subsection{Source and integration boundaries}
+The provenance file records the pinned source commit and the three source sections most directly affected. The integration directory contains a compact manuscript insertion and proposed editorial wording. Applying them requires review in the repository's own build and reference environment. This delivery does not modify the remote repository, replace historical source archives, or regenerate the source manuscript's inventory. Its standalone PDF is the compiled report associated with the supplied TeX sources.
+
+\section{A short independent derivation of the envelope limit}
+The explicit maximum of $J_m$ can also be used to see why the exponential problem is natural. If $y\in(0,1)$ is fixed, then
+\[
+ B_m(y)=(1+y)\left(
+ \frac{1-y^2}{1-y^2e^{2\log y/(m-1)}}\right)^{m-1}
+ \longrightarrow(1+y)y^{2y^2/(1-y^2)}.
+\]
+This follows by taking logarithms and expanding the denominator to first order in $(m-1)^{-1}$. It is consistent with the maximum of $H$ computed in Section~\ref{sec:questions}. However, the envelope convergence at fixed $y$ still does not justify exchanging a global maximum and a limit without uniform endpoint control. This is another way to locate, rather than hide, the remaining step in Conjecture~\ref{conj:limit}.
