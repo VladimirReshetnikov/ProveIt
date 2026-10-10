@@ -67,7 +67,7 @@ outcomes['Herglotz-quadrature']=all(Decimal(c['absolute_residual'])<Decimal('1e-
 archive_errors=[]
 archives=sum((read(name) for name in ['incoming-archives.json',
     'research-incoming-archives.json','third-incoming-archives.json',
-    'fourth-incoming-archives.json']), [])
+    'fourth-incoming-archives.json','fifth-incoming-archives.json']), [])
 for archive in archives:
     p=B.parents[3]/archive['archive']
     blob=p.read_bytes() if p.is_file() else subprocess.check_output(['git','show',archive['archive_git_revision']+':'+archive['archive']],cwd=B.parents[3])
@@ -77,11 +77,14 @@ for archive in archives:
         p=B.parent/member['path']
         if not p.is_file() or digest(p,False)!=member['sha256']:
             archive_errors.append(member['path'])
-outcomes['incoming-archive-preservation']=len(archives)==21 and sum(len(a['files']) for a in archives)==865 and not archive_errors
+outcomes['incoming-archive-preservation']=len(archives)==26 and sum(len(a['files']) for a in archives)==1043 and not archive_errors
 x=read('incoming-retirement.json')
 archive_by_path={a['archive']:a for a in archives}
 outcomes['imported-archive-retirement']=x['archive_count']==16 and x['preserved_members']==691 and len(x['archives'])==16 and sum(a['members'] for a in x['archives'])==691 and (B.parents[3]/'docs/incoming/README.md').is_file() and all(
     not (B.parents[3]/a['archive']).exists() and a['all_members_match_placement_blobs'] and a['archive'] in archive_by_path and a['arrival_commit']==archive_by_path[a['archive']]['archive_git_revision'] and a['members']==len(archive_by_path[a['archive']]['files']) and (B.parents[3]/a['destination']).is_dir() for a in x['archives'])
+x=read('fifth-incoming-retirement.json')
+outcomes['fifth-archive-retirement']=x['archive_count']==5 and x['preserved_members']==178 and len(x['archives'])==5 and sum(a['members'] for a in x['archives'])==178 and all(
+    not (B.parents[3]/a['archive']).exists() and a['all_members_match_placement_blobs'] and a['archive'] in archive_by_path and a['arrival_commit']==archive_by_path[a['archive']]['archive_git_revision'] and a['members']==len(archive_by_path[a['archive']]['files']) for a in x['archives'])
 for part,count in [('rigidity',1),('distribution',7),('conductor',4),('complement',5),('reflection',8)]:
     x=read(f'incoming-replay/{part}/replay-summary.json')
     outcomes['incoming-replay/'+part]=x['passed'] and len(x['commands'])==count and all(c['exit_code']==0 for c in x['commands']) and all((V/'incoming-replay'/part/p).is_file() for p in x['fresh_result_files'])
@@ -184,14 +187,40 @@ x=read('real-order-replay/boundary/data/geometry_boundary_diagnostics.json')
 outcomes['real-order-boundary-diagnostics']=x['status']=='all diagnostic assertions passed' and x['precision_decimal_digits']==90 and len(x['rows'])==21
 x=read('Gaussian-axis-plot.json')
 outcomes['Gaussian-axis-plot-diagnostic']=x['working_precision']==40 and len(x['points'])==180
+x=read('axis-wording-raster-comparison.json')
+outcomes['final-axis-wording-raster-review']=x['pdf_sha256']==pdfhash and x['previous_pdf_sha256']=='b416e14735a4c3aeba8fcac288673846ef12a41125f5e11936b185be85159afd' and x['page_count']==379 and x['thumbnail_pages_compared']==379 and x['changed_thumbnail_pages']==[165] and x['contact_sheets_compared']==24 and x['changed_contact_sheets']==[161] and x['changed_full_pages']==[165]
+for part,count in [('beta',4),('compensated',4),('critical',3),('extremal',1),('harmonic',1)]:
+    x=read(f'fifth-replay/{part}/replay-summary.json')
+    outcomes['fifth-replay/'+part]=x['passed'] and len(x['commands'])==count and all(c['exit_code']==0 for c in x['commands']) and bool(x['fresh_result_files']) and all((V/'fifth-replay'/part/p).is_file() for p in x['fresh_result_files'])
+x=read('fifth-replay/extremal/results/replay_summary.json')
+outcomes['fifth-extremal-exact-suite']=x['all_passed'] and not x['diagnostics_requested'] and len(x['checks'])==5 and all(c['returncode']==0 for c in x['checks'])
+x=read('fifth-replay/extremal/results/gaussian_envelope_certificate.json')
+outcomes['Gaussian-maximum-exact-enclosure']=x['decimal_grid_digits']==90 and x['euler_terms']==160 and x['certified_sign_tests']==4 and x['root_decimal_enclosure']==['1.30221658710124120959237170','1.30221658710124120959237171'] and x['maximum_enclosure']==['1.136561103339509560952586375779942387681723540','1.136561103339509560952586375779942387681723541'] and 0<Fraction(x['derivative_at_left'][0])<=Fraction(x['derivative_at_left'][1]) and Fraction(x['derivative_at_right'][0])<=Fraction(x['derivative_at_right'][1])<0 and Fraction(x['maximum_enclosure'][1])<Fraction(57,50)
+x=read('universal-Euler-certificates.json')
+outcomes['universal-Euler-finite-kernel-checks']=x['status']=='PASS' and x['kernel_grid_cases']==7581 and x['power_grid_cases']==12369 and x['kernel_equality_cases']==19 and x['quadratic_optimum_equalities']==19 and x['exact_tail_normalizations']==560 and x['coefficient_corruption_controls']==1 and len(x['kernel_rows'])==19 and all(Fraction(c['minimum_strict_slack'])>0 for c in x['kernel_rows'])
+outcomes['universal-Euler-exact-enclosures']=x['integer_root_inequalities']==2552 and x['Euler_increment_signs']==352 and x['scaled_tail_enclosures']==66 and len(x['Gaussian_cases'])==11 and all(c['passed'] and c['Euler_terms']==160 and c['rational_error_constant']=='5/4' and Fraction(c['Gaussian_interval']['lower'])<Fraction(c['Gaussian_interval']['upper'])<0 and len(c['tails'])==6 and all(0<Fraction(t['scaled_error_interval']['lower'])<Fraction(t['scaled_error_interval']['upper']) and (t['upper_below_axis_lower'] or (c['a']=='0' and t['N']==1)) for t in c['tails']) for c in x['Gaussian_cases'])
+x=read('universal-Euler-native.json')
+outcomes['universal-Euler-native-diagnostics']=x['all_pass'] and x['working_precision']==90 and len(x['checks'])==11 and all(c['within_exact_interval'] and len(c['tails'])==6 and all(t['within_exact_interval'] for t in c['tails']) for c in x['checks'])
+x=read('fifth-replay/beta/data/exact_certificates.json')
+outcomes['fifth-beta-certificates']=x['status']=='PASS' and x['root_inequalities_checked']==1755 and len(x['values'])==12
+x=read('fifth-replay/beta/data/symbolic_checks.json')
+outcomes['fifth-beta-symbolic']=x['status']=='PASS' and x['number_of_exact_checks']==176 and len(x['checks'])==176
+x=read('fifth-replay/critical/data/exact_certificates.json')
+outcomes['fifth-critical-certificates']=x['status']=='PASS' and x['root_acceptance_inequalities_checked']==2555 and len(x['rows'])==5 and Fraction(x['R128_half_minus_quarter']['lower'])>0
+x=read('fifth-replay/extremal/results/s6/verification_receipt.json')
+outcomes['fifth-S6-prescribed-span-separator']=x['result']=='PASS' and x['rows_verified']==5131 and x['ambient_coordinates']==2546 and int(x['target_pairing'])!=0 and x['complete_family_reenumeration']=='PASS'
+x=read('fifth-replay/extremal/results/cyclic_prime_results.json')
+outcomes['fifth-cyclic-raw-Smith-checks']=x['all_passed'] and x['verified_cases']==52 and len(x['checks'])==52
+x=read('fifth-replay/harmonic/logs/verification_run.json')
+outcomes['fifth-harmonic-default-suite']=len(x['checks'])==4 and all(c['exit_code']==0 for c in x['checks']) and not x['requested_full_harmonic_numerics']
 visual=read('visual-review.json')
-outcomes['recorded-visual-review']=visual['passed'] and visual['pdf_sha256']==pdfhash and visual['page_count']==375 and visual['all_contact_sheets_reviewed']==24 and visual['scientific_figures_reviewed']==13 and not visual['findings']
+outcomes['recorded-visual-review']=visual['passed'] and visual['pdf_sha256']==pdfhash and visual['page_count']==379 and visual['all_contact_sheets_reviewed']==24 and visual['scientific_figures_reviewed']==13 and not visual['findings']
 result=dict(changed_sources=changed,changed_dependencies=changed_dependencies,pdf_sha256=pdfhash,
  pdf_matches_build=pdfhash==build['pdf_sha256'],pdf_matches_render=pdfhash==render['pdf_sha256'],
  page_count=render['page_count'],source_documents=doc['source_documents'],converged_build=build['passed'],
  pdf_static_checks=render['static_passed'],document_integrity=doc['passed'],recorded_outcomes=outcomes,
  asymptotic_diagnostic_records=diagnostic_records,incoming_archive_errors=archive_errors,
  scope='Recorded evidence integrity only; visual review and scientific replay are separate activities.')
-result['passed']=not changed and not changed_dependencies and all(outcomes.values()) and all(result[k] for k in ['pdf_matches_build','pdf_matches_render','converged_build','pdf_static_checks','document_integrity']) and result['page_count']==375 and result['source_documents']==381 and render.get('pdf_author')=='ProveIt Contributors'
+result['passed']=not changed and not changed_dependencies and all(outcomes.values()) and all(result[k] for k in ['pdf_matches_build','pdf_matches_render','converged_build','pdf_static_checks','document_integrity']) and result['page_count']==379 and result['source_documents']==439 and render.get('pdf_author')=='ProveIt Contributors'
 (V/'receipt-integrity.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
 print(json.dumps(result,indent=2));raise SystemExit(0 if result['passed'] else 1)

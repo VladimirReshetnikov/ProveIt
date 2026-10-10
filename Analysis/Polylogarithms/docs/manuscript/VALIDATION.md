@@ -2,28 +2,28 @@
 
 Research checkpoint, October 10, 2026. The broader research and integration
 goal remains active. Authorship is **ProveIt Contributors** on the title
-and in PDF metadata. The canonical [PDF](polylogarithms.pdf) has **375 pages,
-twelve chapters, thirteen figures and 98 references**, with a literature appendix
+and in PDF metadata. The canonical [PDF](polylogarithms.pdf) has **379 pages,
+twelve chapters, thirteen figures and 99 references**, with a literature appendix
 preserving 94 distinct historical question leads.
 
-The recursive [inventory](source-inventory.json) accounts for **381 textual
+The recursive [inventory](source-inventory.json) accounts for **439 textual
 source files**, including assembled/fragment versions and correction registers.
 The [editorial ledger](EDITORIAL-LEDGER.md) distinguishes integrated proofs
-from incoming analytic claims still awaiting reconciliation. Twenty-one
-incoming archives are preserved as **865 byte-identical members**. All 21
+from incoming analytic claims still awaiting reconciliation. Twenty-six
+incoming archives are preserved as **1,043 byte-identical members**. All 26
 isolated package replay suites pass. The original drafts and initial
 continuation evidence remain preserved too.
 The imported arrival ZIPs have been retired from `docs/incoming` under
-section 7 of its README. The last sixteen packages' 691 members were checked
+section 7 of its README. The earlier sixteen packages' 691 members were checked
 against their original placement commits before their explicit Git removal.
 [incoming-retirement.json](verification/incoming-retirement.json) records
 each arrival, placement, destination and recovery path. Archive-preservation
-validation now reads all twenty-one ZIPs from their pinned arrival commits.
+validation now reads all twenty-six ZIPs from their pinned arrival commits. The five latest packages and 178 retained members were retired in placement commit 4fa256d3dc; fifth-incoming-retirement.json records their placement and recovery paths.
 
 The reviewed PDF SHA-256 is:
 
 ```
-41c1ee04ffc80352d3d007a4779596fb9e1a7c46d5a2852945cf93ac65623d49
+3f9a6a957e932c9c6d0351c32c705dca61f5f391462f9ccf255d5fc06f21eb5f
 ```
 
 ## New real-order proofs and fresh evidence
@@ -52,8 +52,7 @@ and **seven** rational Gaussian enclosures at 192 Euler terms. The axis
 case b=3/2 proves C(3/2)>227/200, used in the exact maximum bracket.
 All seven independent native Wolfram evaluations at **100 working digits**
 lie within those enclosures. Native quadrature remains a numerical diagnostic,
-not interval quadrature. The 55-digit stationary-point solver and 180-point
-plot are diagnostics; the displayed maximum's digits are not certified.
+not interval quadrature. The 55-digit stationary-point solver and 180-point plot remain diagnostics. The independent incoming extremal certificate now rigorously encloses the stationary point and maximum; it does not certify every plotted value.
 
 Three fresh isolated real-order replay suites pass. Their threshold replay
 checks **nine** symbolic identities, **eight** exact Euler cases, **twelve**
@@ -63,9 +62,62 @@ arcs; boundary diagnostics include twenty-one crossing rows at 90 digits.
 Original code, figures, data and conjectural report wording remain unchanged.
 The finite checks support the written proofs and do not replace them.
 
+## Sharp universal Euler constant and the fifth intake
+
+The new ordinary proof in Section 5.19 establishes, for every a>=0,b>0 and
+N>=1, a positive double-probability representation of the scaled remainder
+and the bound 2^N(E_N-g_ab)<=C(b). A power-difference maximum and strict
+log-concavity in its exponent prove the universal tail-kernel contraction.
+Equality holds exactly at a=0,N=1; the sharp constant uniform over all
+parameters is C*=C(b*). Over positive orders it is a strict bound and its
+least possible uniform constant. Gaussian magnitude alone is not used as
+an error theorem. Constant one on a>=1 and pi/4+log(2)/2 on a+b<=1 remain
+valid sharper bounds on their respective domains.
+
+Section 5.10 integrates the independently supplied strict normalized Mellin
+comparison and proves (log(C(b)-1))''<0, Turan inequalities, and strict increase
+of 2^b(C(b)-1) from zero to one. The audited and freshly replayed rational
+certificate encloses b* between 1.30221658710124120959237170 and
+1.30221658710124120959237171, and C* between
+1.136561103339509560952586375779942387681723540 and
+1.136561103339509560952586375779942387681723541. The certificate uses
+160 Euler terms, explicit differentiated-tail bounds and outward integer
+intervals on a 90-digit grid. It proves the global rational budget 57/50.
+
+The new standard-library certifier passes 7,581 exact kernel grid cases,
+12,369 power grid cases, 560 exact finite-tail normalization identities,
+one coefficient corruption control, 2,552 integer-root inequalities,
+352 negative Euler increment signs and 66 scaled-tail enclosures across
+eleven rational parameter pairs. Its Gaussian enclosures use the separately
+proved conservative budget 5/4. All eleven independent native Gaussian
+values and all 66 native scaled errors agree at 90 working digits. These
+native evaluations are numerical diagnostics, not interval quadrature.
+Finite grids support the written all-parameter proof rather than establish it.
+
+Five new packages contribute 178 original members and 58 additional prose
+inventory entries, including historical OVERVIEW notes. They are placed on
+the real-order-threshold, formal-reductions and Lerch global-phase spines.
+All five isolated replay suites pass. The extremal runner executes five exact
+subchecks, including 52 raw Smith examples and the integer separator for
+5,131 prescribed S6 rows in 2,546 coordinates. This excludes the specified
+formal span, not the numerical S6 identity. Beta transfer checks twelve exact
+Gaussian enclosures, six cyclotomic specializations and 176 symbolic identities;
+critical transport certifies its finite-depth reversal independently of the
+new sharp constant. The compensated and harmonic suites retain their own
+exact/diagnostic distinctions.
+
+The harmonic runner's first terminal failure was missing matplotlib package
+metadata, before any mathematical check. Its successful retry used existing
+local plotting dependencies without changing delivered code. The initial
+failure log is retained. Default harmonic replay does not rerun the full
+optional quadrature grid. Other new density, drift, strict-depth, cyclic,
+inverse and Lerch proofs remain pending canonical analytic integration;
+successful finite replay is not their acceptance. Raw reports and their
+original scope statements are preserved.
+
 ## Source reconciliation and evidence integrity
 
-All 381 source digests match; no textual source is unlisted or uncovered.
+All 439 source digests match; no textual source is unlisted or uncovered.
 The static audit finds no duplicate labels or bibliography keys, missing
 references/citations, missing TeX inputs or missing figures. See
 [document-integrity.json](verification/document-integrity.json).
@@ -289,10 +341,10 @@ Q_n notation, and its previously undefined Gamma-expectation profile is now
 specified. Its original source and plot remain intact; the new drawing and
 package versions are recorded in zero-profile-redraw.json.
 
-The 381-source inventory includes all new supporting prose, including material
+The 439-source inventory includes all new supporting prose, including material
 whose canonical integration remains pending. Source coverage is therefore
-distinct from completing every research item. The current book has **375 pages,
-twelve chapters, thirteen figures and 98 references**. The hourly incoming-report
+distinct from completing every research item. The current book has **379 pages,
+twelve chapters, thirteen figures and 99 references**. The hourly incoming-report
 watch is active; it is configured to stay quiet on an unchanged, non-actionable
 state.
 
@@ -303,20 +355,19 @@ auxiliary/reference states. The final log contains zero unresolved references
 or citations, duplicate-label warnings, overfull boxes, missing glyphs or
 rerun requirements. See [build-results.json](verification/build-results.json).
 
-The PDF text/bounds audit passes on all 375 pages. Every page was rasterized
-and visually reviewed in twenty-four contact sheets. Full-size review covered
-23 new proof, figure and research-programme pages, including the positive
-difference measure, slit-plane factorization, endpoint Fatou argument,
-Euler continuation, Gamma/Beta monotonicity, Mellin maximum proof, Cartesian
-motion, critical defects, fractional turning points and two-scale boundary law.
-The three added figures and their captions were reviewed at full size; ten
-unchanged figures retain earlier full-size reviews and were checked in the
-current sheets. No clipping, overlap or illegible layout defects were found.
+The PDF text/bounds audit passes on all 379 pages. Every current page was
+rasterized and reviewed in twenty-four contact sheets. Focused full-size
+review covered the revised Gaussian scope and caption, strict Mellin proof,
+Turan inequality, rational maximum certificate, contraction and equality
+proofs, probability normalization, research-status promotion and new bibliography
+entry. The thirteen unchanged scientific figure assets retain their previous
+full-size reviews; all were checked in the current sheets, and the revised
+Gaussian figure/caption received a fresh full-size review. No clipping,
+overlap or illegible layout defects were found. The final axis equality wording explicitly treats pi_0 as an atom. Its rebuild changed only page 165; all other page thumbnails, 23 contact sheets and nine listed full-size pages exactly match the preceding manual review. The changed page and its contact sheet were reviewed freshly; axis-wording-raster-comparison.json records the comparison.
 [visual-review.json](verification/visual-review.json) records the actual
 full-page scope; [pdf-inspection.json](verification/pdf-inspection.json)
-records static checks and rendered candidates. The old 340-page whitespace
-raster-equivalence receipt remains historical evidence and is explicitly
-excluded from establishing review of the current expanded PDF.
+records static checks and rendered candidates. The historical 340-page
+raster-equivalence receipt does not establish review of the current PDF.
 
 ## CM proofs, new conjectural vector and two additional incoming batches
 

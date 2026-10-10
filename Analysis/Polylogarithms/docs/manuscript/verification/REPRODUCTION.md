@@ -180,3 +180,32 @@ python verification/build.py --output-directory verification/.scratch-build-fina
 ```
 
 The first command uses standard-library integer roots and Fractions for 616 difference signs, 112 Euler increments and seven analytic-value enclosures. Native Wolfram checks use independent depth-one polylogarithms and Gamma quadrature at 100 working digits; their numerical agreement does not certify quadrature error. The axis solver and plot are diagnostics. The replay wrapper preserves original layouts in isolated copies and retains fresh exact certificates, symbolic identities and separately labeled boundary/geometry diagnostics. The optional build output directory avoids a Windows PDF-viewer lock; after three converged serial passes it copies the final PDF to the canonical path.
+
+## Universal Euler contraction and fifth incoming continuations
+
+```powershell
+python verification/certify_universal_euler.py
+wolfram -script verification/check-universal-euler.wls
+python verification/replay_fifth.py --part beta --fresh-run
+python verification/replay_fifth.py --part compensated --fresh-run
+python verification/replay_fifth.py --part critical --fresh-run
+python verification/replay_fifth.py --part extremal --fresh-run
+python verification/replay_fifth.py --part harmonic --fresh-run
+```
+
+The universal certifier uses integer roots and Fractions for finite power and
+kernel grids, 560 independent finite-tail normalizations, a corruption control,
+352 negative Euler signs and 66 scaled error enclosures. Its eleven Gaussian
+enclosures use the proved global rational budget 5/4. Native Wolfram performs
+independent numerical comparisons at 90 working digits; quadrature rounding
+is not interval-certified. The separately audited Gaussian maximum certificate
+also proves the stronger global budget 57/50.
+
+The five wrappers preserve delivered code and data and execute only isolated
+copies. The fresh-run option creates a new scratch layout; inspect previous
+process handles before retrying a still-running suite. The harmonic runner's
+first attempt lacked matplotlib package metadata. Its terminal failure log
+is preserved, and the successful retry uses the existing local plotting
+dependency directory through PYTHONPATH, without changing the delivered code.
+Default harmonic replay includes exact checks and separately labeled diagonal
+diagnostics; it does not rerun the full optional harmonic quadrature grid.

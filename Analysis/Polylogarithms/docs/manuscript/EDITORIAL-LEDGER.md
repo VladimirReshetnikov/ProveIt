@@ -1,7 +1,7 @@
 # Source reconciliation and mathematical corrections
 
 The reading manuscript is `polylogarithms.tex` / `polylogarithms.pdf`.
-The inventory now covers 381 textual source files: the original 39 flat drafts
+The inventory now covers 439 textual source files: the original 39 flat drafts
 and the scientific sources, correction registers and supporting prose of eleven
 fully integrated continuation packages (seventeen deliveries), with subsequent research packages under active audit and selected results already integrated. Repeated assembled source and
 section fragments are counted as provenance files, not as independent results.
@@ -290,4 +290,29 @@ does not assert completion of every package's analytic integration.
 
 The collective continuation supplies a positive Hausdorff measure for coefficient differences precisely when a=0 or a+b<=1, with a Bernstein interpolation on the same domain. It closes the principal slit-plane zero problem for all a>=0,b>0, proves angular uniqueness throughout this range and Cartesian motion, and establishes strict normalized-radius increase on and below the critical line and on the full outer-order axis. Ordinary boundary convergence is distinguished from analytic/Abel values.
 
-Gaussian Gamma/Beta representations prove strict decrease with outer order and at every fixed total order. A Mellin sign-change argument gives a unique nondegenerate axis maximum, with exact bracket 1<b*<2; its decimal location remains diagnostic. The sharp critical/subcritical uniform Euler constant is pi/4+log(2)/2. The independent b=3/2 enclosure, six triangle budgets and full-axis budget have separate proof roles. General supercritical Euler constants, integer-order global normalized motion, and uniqueness of quartic transition locations remain open. Original reports and their conjectural wording are preserved as historical evidence.
+Gaussian Gamma/Beta representations prove strict decrease with outer order and at every fixed total order. A Mellin sign-change argument gives a unique nondegenerate axis maximum, with the broad exact bracket 1<b*<2; its initially diagnostic location is now sharply enclosed by the audited fifth-intake certificate. The sharp critical/subcritical uniform Euler constant is pi/4+log(2)/2. The independent b=3/2 enclosure, six triangle budgets and full-axis budget have separate proof roles. The universal real-order Euler constant is now settled by the separate contraction proof recorded below. Integer-order global normalized motion and uniqueness of quartic transition locations remain open. Original reports and their conjectural wording are preserved as historical evidence.
+
+## Fifth incoming continuation batch, October 10
+
+Five packages at the recorded arrival commit are placed on their existing
+thematic spines, with 178 original members and historical OVERVIEW notes.
+Their ZIPs were retired in placement commit 4fa256d3dc, retaining the
+drop-zone README. The archive and retirement records give recovery paths.
+The provenance census now includes these sources even where analytic
+integration remains pending; census coverage is not proof acceptance.
+
+| Source group | Reconciliation and current audit scope |
+|---|---|
+| beta-transfer-critical-euler | On the real-order-threshold spine. Fixed-total Gaussian decrease and the sharp critical constant overlap with existing collective proofs. Radius extension, refined density, drifting error maxima and rational cyclotomic profiles await analytic integration. Exact and symbolic replay pass; quadrature remains diagnostic. |
+| compensated-polylogarithms | On the real-order-threshold spine. Its compensation, subcritical nonvanishing and angular/radial mechanism corroborate the integrated proofs. The required convergent differences, boundary interpretation and unit-radius Fatou argument are already explicit in the book. Affine transport and strict-depth Stieltjes order/normalization await audit and integration. |
+| critical-euler-transport | On the same threshold spine beside beta transfer. Common critical results are not counted as separate discoveries. Positive surplus, endpoint-uniform expansion and the Stieltjes correction to maximizer drift remain under analytic audit; finite reversal certificates are preserved. |
+| extremal-bounds-cyclic-descent | On the formal-reductions spine. Its strict envelope log-concavity, Turan inequalities and rigorous axis-maximum enclosure are audited and integrated in Chapter 5, refining the earlier independent three-power proof. Cyclic-prime torsion/jets, inverse expansion, Lerch branch descent and the prescribed finite S6 separator remain pending canonical proof integration. The separator is not a proof or refutation of the numerical S6 identity. |
+| harmonic-order-lerch-geometry | On the Lerch global-phase spine, whose exterior-cutoff question it addresses. Entire harmonic interpolation, full real-zero classification, diagonal velocity signs and barrier optimality remain under analytic audit. Finite checks and separately labeled quantitative diagnostics replay successfully. Accessible-singularity dominance stays conjectural. |
+
+The collective continuation separately proves the all-parameter Euler kernel
+contraction. Thus the Gaussian axis maximum is now the sharp uniform Euler
+constant for a>=0,b>0, with equality only at a=0,N=1 and the unique maximizing
+inner order. Its audited incoming enclosure proves the rational global budget
+57/50. This is a promotion beyond the incoming reports' stated first-error
+and critical-line scope, not an assertion that they had claimed more.
+The critical constant and constant one on a>=1 remain valid sharper bounds.
