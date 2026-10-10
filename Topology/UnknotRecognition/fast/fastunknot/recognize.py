@@ -211,7 +211,8 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
                           check_d_squared, scan_options, window_options=None,
                           twist_source=None, defer_twist=False, checked_modular=False,
                           r3_options=None, normal_options=None, group_options=None,
-                          two_meridian_options=None, normal_seed_options=None) -> tuple[str, str]:
+                          two_meridian_options=None, normal_seed_options=None,
+                          pachner_seed_options=None) -> tuple[str, str]:
     """Verdict and method for one summand (already simplified by the caller)."""
     def check():
         if deadline is not None and monotonic() > deadline:
@@ -246,6 +247,11 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
         evidence["normal_seed"] = witness
         if witness["status"] == "UNKNOT":
             return "UNKNOT", witness.get("method", "native-normal-cocycle")
+    if pachner_seed_options is not None:
+        from .normal_pachner_search import pachner_seed_decide
+        witness=pachner_seed_decide(diagram,check=check,**pachner_seed_options)
+        check();evidence['pachner_seed']=witness
+        if witness['status']=='UNKNOT':return 'UNKNOT','native-pachner-search'
     if normal_options is not None and diagram.crossings >= 32:
         # Startup dominates the small survivors in our corpus. Once cheap
         # filters fail on a larger diagram, try a different complete algorithm
@@ -391,6 +397,9 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
               normal_seed_shellings: bool = False,
               normal_seed_edge_span: bool = False,
               normal_seed_sector_radius: int = 0,
+              use_pachner_seed: bool = False, pachner_seed_max_upward: int = 1,
+              pachner_seed_max_nodes: int | None = 1000,
+              pachner_seed_max_work: int | None = 2000000,
               use_group: bool = False, group_seconds: float | None = 0.05,
               group_relators: bool = False, group_max_work: int = 2000000,
               group_compressed: bool = False, group_compressed_search: bool = False,
@@ -437,6 +446,13 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
         raise ValueError("use_treewidth_two must be boolean")
     if type(use_regina) is not bool:
         raise ValueError("use_regina must be boolean")
+    if type(use_pachner_seed)is not bool:
+        raise ValueError('use_pachner_seed must be boolean')
+    if type(pachner_seed_max_upward)is not int or pachner_seed_max_upward<0:
+        raise ValueError('pachner_seed_max_upward must be a nonnegative integer')
+    for name,value in (('pachner_seed_max_nodes',pachner_seed_max_nodes),('pachner_seed_max_work',pachner_seed_max_work)):
+        if value is not None and (type(value)is not int or value<0):
+            raise ValueError(name+' must be a nonnegative integer or None')
     if (type(use_normal_seed) is not bool or type(normal_seed_optimize) is not bool
             or type(normal_seed_annulus) is not bool
             or type(normal_seed_planar) is not bool
@@ -746,6 +762,10 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
                            face_roots=normal_seed_face_roots, annulus=normal_seed_annulus, planar=normal_seed_planar,
                            shellings=normal_seed_shellings, edge_span=normal_seed_edge_span,
                            sector_radius=normal_seed_sector_radius) if use_normal_seed else None,
+                       pachner_seed_options=dict(max_upward=pachner_seed_max_upward,
+                           max_region_size=3*pachner_seed_max_upward+3,
+                           max_nodes=pachner_seed_max_nodes,max_work=pachner_seed_max_work,
+                           shellings=True,optimize=True)if use_pachner_seed else None,
                        two_meridian_options=dict(seconds=two_meridian_seconds,
                            max_work=two_meridian_max_work,
                            max_attempts=two_meridian_max_attempts) if use_two_meridian else None,
