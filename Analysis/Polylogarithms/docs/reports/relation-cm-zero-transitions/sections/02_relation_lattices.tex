@@ -1,0 +1,298 @@
+\section{Exact ranks and Smith forms for the level-four product system}
+\label{newrank:sec:main}
+
+The manuscript's odd-weight rank conjecture concerns a fully specified
+matrix of depth-two relations.  It does not concern the dimension of the
+space of numerical periods.  We prove that conjecture, determine the
+corresponding matrices in even weight, and compute their integral Smith
+forms.  The reason for the simple answer is a polynomial involution which
+becomes a permutation of monomials after an integral change of variables.
+
+\subsection{The matrix and the result}
+
+For $a+b=w$, write formal coordinates
+\[
+ x_{a,b}^{r,s},\qquad r,s\in\mathbb Z/4\mathbb Z,
+\]
+representing $\Im\operatorname{Li}_{a,b}(i^r,i^s)$.  Set them equal to zero
+when $r,s$ are both even, and impose
+$x_{a,b}^{r,s}=-x_{a,b}^{-r,-s}$.  The six canonical color pairs are
+\begin{equation}\label{newrank:eq:pairs}
+ (0,1),\ (1,0),\ (1,1),\ (1,2),\ (1,3),\ (2,1).
+\end{equation}
+Remove $x_{1,w-1}^{0,1}$, the single divergent imaginary coordinate after
+conjugation.  Thus the coordinate count is $6w-7$.
+
+For $p+q=w$ and $x=i^r,y=i^s$, the two product rows have left sides
+\begin{align}
+ \mathsf S_{p,q}^{r,s}
+ &=x_{p,q}^{r,s}+x_{q,p}^{s,r},\label{newrank:eq:stuffle}\\
+ \mathsf H_{p,q}^{r,s}
+ &=\sum_{j=0}^{p-1}\binom{q+j-1}{j}x_{q+j,p-j}^{s,r-s}
+  +\sum_{j=0}^{q-1}\binom{p+j-1}{j}x_{p+j,q-j}^{r,s-r}.
+ \label{newrank:eq:shuffle}
+\end{align}
+Their analytic right sides are respectively
+\[
+ \Im\bigl(\operatorname{Li}_p(x)\operatorname{Li}_q(y)
+           -\operatorname{Li}_w(xy)\bigr),\qquad
+ \Im\bigl(\operatorname{Li}_p(x)\operatorname{Li}_q(y)\bigr).
+\]
+When both single factors are finite, retain both rows.  When exactly one
+factor is $\operatorname{Li}_1(1)$, retain the difference
+$\mathsf S-\mathsf H$, in which the divergent coordinate cancels.
+Its right side is $-\Im\operatorname{Li}_w(xy)$.
+Discard zero rows and retain the remaining integer coefficient matrix
+$A_w$.  Repeated rows do not affect the assertions below.  This is
+precisely the matrix in the manuscript's Conjecture~\texttt{signed:conj:rank}.
+Let $A_w^{\neg g}$ be the matrix obtained by deleting the $w-1$ columns
+$x_{a,w-a}^{1,0}$; it has $5w-6$ columns.
+
+\begin{theorem}[All-weight ranks and integral invariant factors]
+\label{newrank:thm:smith}
+For every odd $w\ge3$,
+\begin{equation}\label{newrank:eq:odd}
+ \operatorname{rank}A_w=5w-6,\qquad
+ \operatorname{rank}A_w^{\neg g}=\frac{9w-11}{2}.
+\end{equation}
+Every nonzero Smith invariant of either integer matrix is one.
+For every even $w\ge4$, both matrices have full column rank, and their
+nonzero Smith invariants are
+\begin{align}
+ \operatorname{SNF}(A_w)
+ &=\operatorname{diag}\bigl(1^{[5w-7]},2^{[w]}\bigr),
+ \label{newrank:eq:evenfull}\\
+ \operatorname{SNF}(A_w^{\neg g})
+ &=\operatorname{diag}\bigl(1^{[(9w-12)/2]},2^{[w/2]}\bigr).
+ \label{newrank:eq:evennong}
+\end{align}
+Here the bracketed exponent denotes multiplicity; extra zero rows in a
+rectangular Smith form are suppressed.
+\end{theorem}
+
+\subsection{A unit pivot restores the omitted coordinate}
+
+Restore $t=x_{1,w-1}^{0,1}$ and impose both homogeneous rows
+\eqref{newrank:eq:stuffle}--\eqref{newrank:eq:shuffle} for every color and
+index pair.  Denote the resulting auxiliary matrix by $M_w$.
+The excluded stuffle row for $(p,q,r,s)=(1,w-1,0,1)$ is
+\begin{equation}\label{newrank:eq:restore}
+ t+x_{w-1,1}^{1,0}=0.
+\end{equation}
+Every excluded stuffle row with a nonzero imaginary part is this row up
+to sign and interchange of factors.  The other excluded stuffle rows
+vanish under the imposed color conventions.  Adding
+\eqref{newrank:eq:restore} to the baseline difference rows therefore
+recovers all the missing individual stuffle and shuffle rows by integral
+row combinations.  Conversely, their differences recover the baseline
+rows.  A finite-product row cannot contain $t$: an outer index one and
+outer color zero in a shuffle term require the corresponding input
+factor to be $\operatorname{Li}_1(1)$.
+
+The coefficient of $t$ in \eqref{newrank:eq:restore} is one, so eliminating
+it is unimodular.  The row-module quotients for $M_w$ and $A_w$ are
+isomorphic; the Smith form of $M_w$ has exactly one additional unit.
+Their homogeneous nullspaces over any field are isomorphic, with
+$t=-x_{w-1,1}^{1,0}$.  After deleting the Gaussian columns, the same
+argument applies with those coordinates set to zero and $t=0$.
+
+This auxiliary construction is a statement about integer coefficient
+matrices.  It assigns no analytic finite value to the divergent
+coordinate and introduces no new analytic relation.
+
+\subsection{Six polynomials reduce to two involutions}
+
+Put $n=w-2$ and encode a vector of coordinates by homogeneous polynomials
+\[
+ f_{r,s}(X,Y)=\sum_{a=1}^{w-1}
+ x_{a,w-a}^{r,s}X^{a-1}Y^{w-a-1}.
+\]
+The complete homogeneous product equations are exactly
+\begin{align}
+ f_{r,s}(X,Y)+f_{s,r}(Y,X)&=0,\label{newrank:eq:polyS}\\
+ f_{s,r-s}(X+Y,X)+f_{r,s-r}(X+Y,Y)&=0.
+ \label{newrank:eq:polyH}
+\end{align}
+For example, the coefficient of $X^{p-1}Y^{q-1}$ in the second term of
+\eqref{newrank:eq:polyH} is
+\[
+ \sum_{j=0}^{q-1}\binom{p+j-1}{j}x_{p+j,q-j}^{r,s-r},
+\]
+which is the second binomial sum in \eqref{newrank:eq:shuffle}.
+
+Write
+\[
+ A=f_{0,1},\quad B=f_{1,0},\quad C=f_{1,1},\quad
+ D=f_{1,2},\quad E=f_{1,3},\quad F=f_{2,1}.
+\]
+The stuffle equations become
+\begin{align}
+ A(X,Y)&=-B(Y,X),&F(X,Y)&=-D(Y,X),\label{newrank:eq:AF}\\
+ C(X,Y)&=-C(Y,X),&E(X,Y)&=E(Y,X).
+ \label{newrank:eq:CE}
+\end{align}
+Up to conjugation and interchange of the factors, the nonzero shuffle
+equations are exhausted by colors $(0,1),(1,1),(2,1),(1,3)$.
+With $V=X+Y$, their left sides are respectively
+\[
+ E(V,X)+A(V,Y),\quad B(V,X)+B(V,Y),\quad
+ C(V,X)-F(V,Y),\quad -D(V,X)+D(V,Y).
+\]
+The color pairs $(0,0)$, $(0,2)$, $(2,0)$, $(2,2)$ vanish. Conjugation supplies
+the pairs $(0,3)$, $(3,0)$, $(3,3)$, $(3,2)$, $(3,1)$, $(2,3)$; the remaining pairs
+$(1,0)$ and $(1,2)$ are factor interchanges.  This checks all sixteen
+color pairs.
+
+Combining these equations with \eqref{newrank:eq:AF} gives
+\begin{align}
+ E(X,Y)&=B(X-Y,X),& B(X,X-Y)&=-B(X,Y),\label{newrank:eq:B}\\
+ C(X,Y)&=-D(X-Y,X),& D(X,X-Y)&=D(X,Y).
+ \label{newrank:eq:D}
+\end{align}
+Thus $A,F,E,C$ are eliminated and no relation couples $B$ to $D$.
+
+Let $T(X,Y)=(X,X-Y)$.  The remaining conditions
+\eqref{newrank:eq:CE}, transported through the substitution
+$U(X,Y)=(X-Y,X)$, yield the coefficient rows
+\begin{equation}\label{newrank:eq:normal}
+ (I+T)B,\quad (I-(-1)^nT)B,\qquad
+ (I-T)D,\quad (I+(-1)^nT)D.
+\end{equation}
+Here $T$ acts by substitution.  To check the signs, if $S(X,Y)=(Y,X)$,
+then $USU^{-1}=-T$, and a degree-$n$ homogeneous polynomial takes the
+factor $(-1)^n$ under simultaneous sign change.
+
+These are integral presentation operations.  Each of the four eliminated
+polynomials has coefficient one.  The substitutions and their inverses
+have integer coefficients and determinant $\pm1$, so they induce
+unimodular maps of the coefficient lattices.  Consequently the four
+eliminations contribute $4(w-1)$ Smith units, and the remaining Smith
+problem is exactly \eqref{newrank:eq:normal}.
+
+\subsection{The integral monomial permutation proves the theorem}
+
+Make the unimodular change of variables
+\begin{equation}\label{newrank:eq:uv}
+ u=Y,\qquad v=X-Y,\qquad X=u+v,\quad Y=u.
+\end{equation}
+The involution $T$ now exchanges $u,v$.  It therefore permutes the
+integral monomial basis $u^jv^{n-j}$ by $j\leftrightarrow n-j$.
+
+If $n=2m-1$ is odd, this permutation has $m$ two-element orbits and no
+fixed monomial.  On each orbit the two $B$ relations in
+\eqref{newrank:eq:normal} coincide and give the primitive row $(1,1)$.
+The two $D$ relations coincide and give $(1,-1)$.  Each orbit contributes
+one Smith unit and one free coordinate in each polynomial.  Hence the
+full nullity is $2m=w-1$, and the nullity with $B=0$ is $m=(w-1)/2$.
+Counting the $4(w-1)$ eliminated units and subtracting the auxiliary
+unit \eqref{newrank:eq:restore} gives respectively
+\[
+ 4(w-1)-1+(w-1)=5w-6,
+ \qquad
+ 4(w-1)-1+\frac{w-1}{2}=\frac{9w-11}{2}
+\]
+nonzero Smith units.  This proves \eqref{newrank:eq:odd} and its
+integral strengthening.
+
+If $n=2h$ is even, there are $h$ two-element orbits and one fixed
+monomial.  Both plus and minus relations occur for each of $B,D$.
+A two-element orbit gives
+\[
+ \begin{pmatrix}1&1\\1&-1\end{pmatrix},
+\]
+with Smith form $\operatorname{diag}(1,2)$; a fixed monomial gives the
+single nonzero row $(2)$.  Each polynomial therefore contributes $h$
+units and $h+1$ twos, with no free coordinate.  Adding the eliminated
+units and removing the auxiliary unit gives
+\[
+ 4(w-1)-1+(w-2)=5w-7\quad\hbox{units},\qquad w\quad\hbox{twos}
+\]
+for $A_w$, and
+\[
+ 4(w-1)-1+\frac{w-2}{2}=\frac{9w-12}{2}\quad\hbox{units},
+ \qquad\frac w2\quad\hbox{twos}
+\]
+for $A_w^{\neg g}$.  This proves
+\eqref{newrank:eq:evenfull}--\eqref{newrank:eq:evennong} and completes
+the proof of Theorem~\ref{newrank:thm:smith}.
+
+\subsection{Primitive witnesses and exact certificate consequences}
+
+For odd $n=2m-1$ and $0\le j<m$, define
+\begin{align*}
+ P_j(X,Y)&=Y^j(X-Y)^{n-j}-Y^{n-j}(X-Y)^j,\\
+ Q_j(X,Y)&=Y^j(X-Y)^{n-j}+Y^{n-j}(X-Y)^j.
+\end{align*}
+The complete integer nullspace is obtained, uniquely, by setting
+\[
+ B=\sum_{j=0}^{m-1}b_jP_j,\qquad
+ D=\sum_{j=0}^{m-1}d_jQ_j,\qquad b_j,d_j\in\mathbb Z,
+\]
+using \eqref{newrank:eq:AF}, \eqref{newrank:eq:B},
+\eqref{newrank:eq:D} for the other colors, and omitting the restored
+coordinate.  Primitivity follows directly from the monomial pairs in
+the unimodular coordinates \eqref{newrank:eq:uv}.
+
+\begin{corollary}[All Gaussian-only consequences]
+\label{newrank:cor:gaussian}
+In odd weight $w$, the rational row space of $A_w$ supported only on the
+Gaussian columns has dimension $(w-1)/2$.  It is exactly the span of the
+$(w-1)/2$ same-point shuffle rows.  Every integer vector in this space
+is a unique integer combination of those rows.
+\end{corollary}
+\begin{proof}
+The kernel of projection of the row space to non-Gaussian columns has
+dimension
+$\operatorname{rank}A_w-\operatorname{rank}A_w^{\neg g}=(w-1)/2$.
+The same-point shuffle rows with $p+q=w$, $1\le p\le m=(w-1)/2$,
+have Gaussian coefficients
+\[
+ R_{p,a}=\binom{a-1}{p-1}+\binom{a-1}{w-p-1}.
+\]
+Their first $m$ columns form the triangular Pascal matrix
+$\binom{a-1}{p-1}$, with determinant one.  They are independent and
+span the indicated rational space.  The same unit minor shows that an
+integer vector in this space has integer expansion coefficients.
+\end{proof}
+
+The Smith forms have two further direct consequences.  In odd weight,
+every integer coefficient vector in the rational row span has an integer
+row certificate.  In even weight, twice every coordinate vector has an
+integer row certificate.  Thus every convergent imaginary level-four
+double in even weight reduces with coefficients in $\tfrac12\mathbb Z$
+to the raw finite-product and single-value right sides of the stated
+system.  This denominator assertion is relative to that raw vocabulary;
+rewriting the single values in powers of $\pi$, zeta values, and beta
+values can introduce their usual additional rational factors.
+
+At weight five a particularly short obstruction is obtained by choosing
+$B=0,D=X^3$.  Then
+\[
+ C=-(X-Y)^3,\quad F=-Y^3,\quad A=E=0.
+\]
+The six nonzero coordinates of this integer kernel vector are
+\[
+ x_{4,1}^{1,2}=1,\quad x_{1,4}^{2,1}=-1,\quad
+ x_{4,1}^{1,1}=-1,\quad x_{3,2}^{1,1}=3,\quad
+ x_{2,3}^{1,1}=-3,\quad x_{1,4}^{1,1}=1.
+\]
+The manuscript's target
+$3g_{4,1}+3g_{3,2}+9g_{2,3}+7u_{4,1}$ pairs with this vector to give
+$7$.  This proves again that the proposed mixed relation is absent from
+the specified linear product system.  It does not disprove the numerical
+identity or preclude its derivation from additional relations.
+
+\paragraph{Scope and verification.}
+The theorem proves the manuscript's conjecture and a stronger integral
+normal form.  It makes no assertion that this relation system contains
+all standard polylogarithm relations, and no assertion of arithmetic
+independence.  Formal double spaces, polynomial relation methods, and
+colored regularization are established tools; appropriate context is
+provided by Yuan--Zhao \cite{YuanZhao} and Zhao \cite{Zhao}.  The new contribution here
+is the exact normal form of the particular matrix family under study.
+The independent companion script reconstructs the displayed rows,
+recovers the baseline $92\times23$ matrix size at weight five, checks
+ranks and primitive nullspace residuals through weight thirteen, and
+checks both Smith forms through weight twelve.  The general result rests
+on the integral proof above, rather than on extrapolation from these
+finite checks.

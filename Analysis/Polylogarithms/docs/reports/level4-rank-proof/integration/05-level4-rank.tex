@@ -1,0 +1,214 @@
+% ProveIt research continuation, 9 October 2026 (Pacific time).
+% Replaces only the final rank-conjecture subsection of 05-signed-kernels.tex
+% at commit 9bc738d3be22b8586a24693f19fb2e2a50ecd1bf.
+% Full article, exact code and certificates accompany this fragment.
+
+\subsection{Exact ranks from two polynomial reflections}
+\label{l4rank:sec:rank}
+Retain exactly the coefficient matrix $A_w$ defined above, including the
+stuffle-minus-shuffle boundary rows and excluding the one divergent imaginary
+coordinate. No distribution or higher-depth relations are added. Let
+$A_w^{\neg g}$ denote the submatrix with the Gaussian columns deleted.
+The following theorem replaces the former rank conjecture.
+
+\begin{theorem}[All-weight ranks]
+\label{signed:conj:rank}\label{l4rank:thm:rank}
+For every odd $w\ge3$,
+\begin{equation}\label{signed:eq:rank-conjecture}
+ \operatorname{rank} A_w=5w-6,\qquad
+ \operatorname{rank} A_w^{\neg g}=\frac{9w-11}{2}.
+\end{equation}
+For every even $w\ge2$,
+\begin{equation}\label{l4rank:eq:even-rank}
+ \operatorname{rank} A_w=6w-7,\qquad
+ \operatorname{rank} A_w^{\neg g}=5w-6.
+\end{equation}
+In particular, the Gaussian-supported row space has dimension $(w-1)/2$
+in odd weight and $w-1$ in even weight. In odd weight it is exactly the span
+of the same-point shuffle rows.
+\end{theorem}
+
+\begin{proof}
+Put $N=w-2$. Use six degree-$N$ polynomials $A,B,C,D,E,F$ to encode
+a homogeneous null vector. Their respective colors are $(0,1),(1,0),(1,1),(1,2),(1,3),(2,1)$. Coefficients of $X^{a-1}Y^{b-1}$ have $a+b=w$.
+Complete the missing coefficient of $A$ by
+$v_{1,w-1}^{0,1}=-v_{w-1,1}^{1,0}$. This satisfies the missing stuffle row;
+the missing shuffle row follows from its retained difference with stuffle.
+The omitted coordinate occurs in no other row: outer index one in a
+shuffle sum forces one of its factors to be $\Li_1(1)$.
+Thus completion and restriction identify the matrix kernel with the full
+homogeneous polynomial solution space.
+
+Writing $P^{\mathsf T}(X,Y)=P(Y,X)$, the stuffle equations are
+\begin{equation}\label{l4rank:eq:st}
+ A=-B^{\mathsf T},\quad C=-C^{\mathsf T},\quad
+ D=-F^{\mathsf T},\quad E=E^{\mathsf T}.
+\end{equation}
+The shuffle equations are
+\begin{align}
+ E(X+Y,X)+A(X+Y,Y)&=0,\notag\\
+ B(X+Y,X)+B(X+Y,Y)&=0,\notag\\
+ C(X+Y,Y)-F(X+Y,X)&=0,\notag\\
+ D(X+Y,Y)-D(X+Y,X)&=0.\label{l4rank:eq:sh}
+\end{align}
+For general colors $(r,s)$ the shuffle polynomial is
+$P_{s,r-s}(X+Y,X)+P_{r,s-r}(X+Y,Y)$; its coefficient of
+$X^{p-1}Y^{q-1}$ is the stated binomial row. The four equations above come
+from product colors $(0,1),(1,1),(1,2),(1,3)$. Swapping the factors,
+conjugating, and discarding even-even imaginary rows exhaust the other cases.
+
+The first two equations give
+\[
+ E(X,Y)=B(X-Y,X),\qquad B(X,Y)+B(X,X-Y)=0.
+\]
+With $\varepsilon=(-1)^N$, this implies
+$E(Y,X)=-\varepsilon E(X,Y)$. Since $E=E^{\mathsf T}$, the whole $A,B,E$
+block vanishes if $N$ is even. If $N=2m-1$ is odd, its free polynomial $B$
+is precisely an anti-invariant under $Y\mapsto X-Y$, with basis
+\begin{equation}\label{l4rank:eq:B-basis}
+ B_j=X^{N-2j-1}(2Y-X)^{2j+1},\qquad 0\le j<m.
+\end{equation}
+Indeed, $U=X,V=2Y-X$ changes this reflection into $V\mapsto -V$.
+
+The remaining equations give
+\[
+ F(X,Y)=C(X,X-Y),\quad D(X,Y)=-C(Y,Y-X),\quad C=-C^{\mathsf T}.
+\]
+They imply $D(X,X-Y)=-\varepsilon D(X,Y)$, while the last shuffle asks
+for equality. Hence the $C,D,F$ block is zero when $N$ is even. When
+$N=2m-1$, it has the basis determined by
+\begin{equation}\label{l4rank:eq:C-basis}
+ C_j=X^jY^{N-j}-X^{N-j}Y^j,\qquad 0\le j<m.
+\end{equation}
+Conversely, the displayed substitutions satisfy every homogeneous equation.
+The $B_j$ and $C_j$ are independent and are retained in full after deleting
+the missing coefficient of $A$. They therefore give an integral
+$\mathbb Q$-basis of the full nullspace.
+
+For odd $w=2m+1$, the nullity is $2m=w-1$, proving
+$\operatorname{rank}A_w=(6w-7)-(w-1)=5w-6$. A null vector of
+$A_w^{\neg g}$ extends by zero on the Gaussian columns; this is exactly
+the $C$ block, of dimension $m$. Its $5w-6$ columns thus have rank
+$5w-6-m=(9w-11)/2$. For even $w$ all columns of $A_w$ are independent,
+and so are all columns of its submatrix.
+
+Projection of the row space onto the non-Gaussian columns gives the stated
+supported-row dimensions by taking the difference of the two ranks. In odd
+weight $w=2m+1$, the same-point shuffle coefficient on $g_{a,w-a}$ is
+$\binom{a-1}{p-1}+\binom{a-1}{w-p-1}$, $1\le p\le m$.
+Its first $m$ columns form a triangular Pascal matrix with diagonal one.
+These $m$ independent Gaussian-supported rows therefore exhaust that space.
+\end{proof}
+
+\paragraph{Exact membership and the harmonic-sum obstruction.}
+Let $K_w$ have the preceding integer null vectors as columns. A rational
+coefficient row $t$ is in the specified row space exactly when $tK_w=0$.
+Otherwise any column with nonzero pairing is a separating certificate.
+The basis is constructible in $O(w^2)$ integer arithmetic operations and
+has $O(w)$-bit coefficients; coefficient recurrences and bit bounds are
+given in the accompanying article.
+
+For odd $w=2m+1$, choose $B=0$, $C=Y^{2m-1}-X^{2m-1}$.
+It vanishes on every Gaussian column and has $D(1,0)=1$.
+Since $S_{2m}=g_{2m,1}+\operatorname{Im}D_{2m,1}(\mathrm i,-1)$,
+it pairs to one with $S_{2m}$. Thus no rational linear combination of these
+fixed-weight product rows reduces $S_{2m}$ to Gaussian doubles and the
+associated single-value right sides. In the formal quotient, adjoining it
+to the Gaussian span increases the dimension from $m$ to $m+1$.
+For the weight-five target above, this witness gives $T\cdot v=7$.
+This is a uniform proof-system obstruction, not a numerical independence
+theorem and not a disproof of the $S_4$ candidate.
+
+\subsubsection{Restoring the right sides: an explicit compiler}
+\label{l4rank:sec:compiler}
+Set $\ell_k(r)=\Li_k(\mathrm i^r)$, with the formal regularization
+$\ell_1(0)=0$, and define known degree-$N$ polynomials
+\begin{align*}
+ P_{r,s}(X,Y)&=\sum_{p+q=w}\operatorname{Im}(\ell_p(r)\ell_q(s))
+                    X^{p-1}Y^{q-1},\\
+ H_N(X,Y)&=\sum_{j=0}^{N}X^jY^{N-j},\\
+ S_{01}&=P_{0,1}-\beta(w)H_N,\qquad
+ S_{12}=P_{1,2}+\beta(w)H_N.
+\end{align*}
+The same six letters now encode the actual imaginary double values,
+with the artificial missing coefficient $[X^0Y^N]A=-g_{w-1,1}-\beta(w)$.
+Put
+\begin{align*}
+ e(X,Y)&=P_{0,1}(Y,X-Y)-S_{01}(X,X-Y),\\
+ d(X,Y)&=S_{12}(X,Y)+P_{1,2}(X,Y-X),\\
+ b(X,Y)&=P_{1,1}(Y,X-Y),\\
+ h(X,Y)&=P_{1,3}(Y,Y-X)-e(Y,Y-X)+e(Y-X,Y).
+\end{align*}
+
+\begin{theorem}[Even-weight polynomial solution]\label{l4rank:thm:compiler}
+For even $w\ge2$ the full solution is
+\begin{align*}
+ B(X,Y)&=\tfrac12\bigl(b(X,Y)+h(X,Y)\bigr),\\
+ C(X,Y)&=\tfrac12\bigl(P_{1,3}(X,-Y)+P_{1,1}(Y,X)
+                    -d(X-Y,-Y)+d(X-Y,X)\bigr),\\
+ A(X,Y)&=S_{01}(X,Y)-B(Y,X),\\
+ E(X,Y)&=B(X-Y,X)+e(X,Y),\\
+ F(X,Y)&=C(X,X-Y)-P_{1,2}(Y,X-Y),\\
+ D(X,Y)&=-C(Y,Y-X)+d(X,Y).
+\end{align*}
+Discarding the artificial coefficient gives explicit single-value reductions
+for every convergent imaginary double at fourth roots of unity.
+\end{theorem}
+\begin{proof}
+The affine stuffle equations are
+$A+B^{\mathsf T}=S_{01}$, $C+C^{\mathsf T}=P_{1,1}$,
+$D+F^{\mathsf T}=S_{12}$, $E-E^{\mathsf T}=P_{1,3}$.
+The four shuffle right sides in \eqref{l4rank:eq:sh} are now
+$P_{0,1},P_{1,1},P_{1,2},P_{1,3}$, respectively.
+Elimination gives the last four displayed formulas and
+$B(X,Y)+B(X,X-Y)=b(X,Y)$.
+Even homogeneity and the $E$ stuffle give the difference
+$B(X,Y)-B(X,X-Y)=h(X,Y)$, proving the formula for $B$.
+For $C$, the last shuffle is
+$D(u,u-v)-D(u,v)=P_{1,3}(v,u-v)$.
+Use
+$C(u-v,-v)=C(v-u,v)=P_{1,1}(v-u,v)-C(v,v-u)$
+and then $(X,Y)=(v,v-u)$ to get the asserted formula.
+Actual values satisfy these equations, and the zero homogeneous kernel
+makes the solution unique.
+\end{proof}
+
+\paragraph{Two mixed leading-index families.}
+Let $c_p=\operatorname{Im}D_{p,1}(\mathrm i,\mathrm i)$ and
+$e_p=\operatorname{Im}D_{p,1}(\mathrm i,-\mathrm i)$. For all $m\ge1$,
+\begin{align}
+ c_{2m-1}&=(m-1)\beta(2m)-\tfrac12\log2\,\beta(2m-1)
+ -\sum_{k=1}^{m-1}(1-2^{1-2k})\zeta(2k)\beta(2m-2k),
+ \label{l4rank:eq:c-family}\\
+ e_{2m-1}&=m\beta(2m)-\tfrac12\log2\,\beta(2m-1)
+ -\sum_{k=1}^{m-1}\zeta(2k)\beta(2m-2k).
+ \label{l4rank:eq:e-family}
+\end{align}
+For a direct coefficient proof, evaluate $C(1,0)$ and $E(1,0)$ in the compiler.
+The resulting equations are
+\begin{align*}
+ 2C(1,0)&=P_{1,3}(1,0)+P_{1,1}(0,1)-d(1,0)+d(1,1),\\
+ 2E(1,0)&=P_{1,1}(1,0)+P_{1,3}(1,0)+e(1,0)+e(0,1).
+\end{align*}
+In both lines the first two terms are $-\log2\,\beta(w-1)$, and
+\begin{align*}
+ d(1,1)-d(1,0)&=P_{1,2}(1,1)-P_{1,2}(1,-1)+N\beta(w),\\
+ e(1,0)+e(0,1)&=-P_{0,1}(1,1)+P_{0,1}(1,-1)+w\beta(w).
+\end{align*}
+Only even inner, respectively even outer, indices survive the differences.
+Using $\ell_{2k}(2)=-(1-2^{1-2k})\zeta(2k)$ and
+$\operatorname{Im}\ell_j(1)=\beta(j)$ proves both formulas.
+
+\paragraph{Status and evidence.}
+The rank theorem proves both individual ranks, rather than inferring them
+from their difference. The previous word ``Equivalently'' should therefore
+be read as ``In particular.'' Independent matrix construction, exact integer
+kernel checks and modular lower-bound certificates cover every weight
+$2$--$41$; 210 even-weight formulas through weight 12 satisfy all 816 product
+rows, and both leading-index formulas are checked through weight 16.
+These finite checks support the uniform proofs; they are not their substitute.
+The known general parity theorem already gives the relevant reduction
+phenomenon. The new contribution here is the explicit solution of this
+specified coefficient module. Numerical period independence and the $S_4$
+identity remain outside the claims. Historical conjectural receipts are
+retained as provenance rather than silently rewritten.

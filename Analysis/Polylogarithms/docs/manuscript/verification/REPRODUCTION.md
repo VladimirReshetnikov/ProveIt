@@ -94,3 +94,29 @@ For a new release, run `check_document.py`, `build.py` (three serial passes),
 immutable package dependencies and raw archive/member hashes; when an arrival
 archive has been retired upstream, it reads its pinned Git blob. It records
 hashes and cannot itself confer a mathematical or visual review.
+
+## Continuing research: new batch and higher zero thresholds
+
+```powershell
+python verification/replay_research.py --part rank
+python verification/replay_research.py --part cm-zero
+python verification/replay_research.py --part formal
+python verification/replay_research.py --part angular
+python verification/replay_research.py --part cayley
+python verification/replay_research.py --part lerch
+python verification/explore_higher_zero_transitions.py
+python verification/certify_higher_zero_transitions.py
+python verification/replay_higher_zero_independent.py
+wolfram -script verification/check-research.wls
+python verification/redraw_zero_profiles.py
+```
+
+Exploration proposes rational brackets; it supplies no accepted sign or
+completeness assertion. The two exact higher-index certifiers enclose all
+126 signs, using distinct coefficient implementations and cutoffs. Native
+S2 quadrature is an independent numerical diagnostic. The plot redraw uses
+Matplotlib, NumPy and SciPy; its dependency versions and preserved source
+hash are recorded in zero-profile-redraw.json. It changes the notation,
+not the historical mathematical curves, and writes a separate canonical
+figure. Full incoming package layouts remain immutable; replays run in
+.scratch-research. The active broader audit and research goal remain open.

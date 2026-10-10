@@ -1,0 +1,844 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,microtype,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!40!black,citecolor=blue!40!black,urlcolor=blue!40!black]{hyperref}
+\usepackage{xcolor}
+\usepackage{bookmark}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Lerch endpoints and Stieltjes zero bifurcations}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{3em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\sgn}{sgn}
+\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}\newcommand{\E}{\mathbb E}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Dcal}{\mathcal D}
+\newcommand{\F}{F}
+\newcommand{\coef}[2]{[#1^{#2}]}
+\newcommand{\fall}[2]{#1^{\underline{#2}}}
+\newcommand{\repo}{\texttt{ProveIt}}
+\newcommand{\sha}{\texttt{a2a4cf58c49c745058c40e4a6748d472a3420f18}}
+\hypersetup{pdftitle={Lerch Endpoint Singularities and Stieltjes Zero Bifurcations},pdfauthor={OpenAI-assisted research continuation for ProveIt}}
+
+\title{Lerch Endpoint Singularities and\\Stieltjes Zero Bifurcations\\[5pt]
+\large All-order renormalization, nonmonotone branches, and a sharp fifth-index zero count}
+\author{Research continuation prepared for Vladimir Reshetnikov's \repo\ project\\
+\small OpenAI-assisted mathematical research draft}
+\date{October 9, 2026\quad (America/Los\_Angeles)}
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+We continue the positive-kernel and polylogarithmic order-derivative programme in the \repo\ manuscript. The limit of the Lerch parameter $\rho$ at the Stieltjes endpoint $\rho=1$ is continuous but not smoothly uniform in derivative order. A pole cancellation in the classical Erd\'elyi expansion yields an exact all-order decomposition: after multiplication by $e^{-a\mu}$, the entire nonanalytic contribution is $\mu^k$ times an explicitly generated polynomial of degree $n+1$ in $\log\mu$, where $\mu=-\log\rho$. This gives finite-part identities for polylogarithmic order derivatives, sharp endpoint regularity, and logarithmically divergent velocities of simple low-order zeros.
+
+For the second Laurent index and first parameter derivative, we prove that there are exactly two positive zeros throughout $0\leq\rho\leq1$. The upper zero is strictly decreasing, but the lower zero has exactly one nondegenerate interior minimum. Thus a global all-branch monotonicity extension is false. In contrast, every branch is strictly decreasing in $\rho$ once the parameter derivative order is sufficiently large. We also determine the small-$\rho$ positive-zero count for every Laurent index at derivative order one, and prove the existence and uniqueness of a left-hand fold for index three.
+
+Finally, exact outward-rounded Euler--Maclaurin certificates settle the classical fifth-index question at every derivative order: $\gamma_5'$ and $\gamma_5''$ have exactly three simple positive zeros, whereas $\gamma_5^{(k)}$ has exactly five for every $k\geq3$. The certificate includes sign enclosures on entire critical-point brackets, not merely decimal root searches. Classical ingredients, new deductions relative to the inspected manuscript, proof-bearing arithmetic, and numerical diagnostics are explicitly separated.
+\end{abstract}
+\vspace{4pt}
+\noindent\textbf{Status.} Ordinary mathematical proofs and finite exact-arithmetic certificates; not proof-assistant verified or externally refereed. The classical Lerch expansion is not claimed as new. No repository files were modified.
+\newpage
+\tableofcontents
+\newpage
+
+\section{Scope, provenance, and principal conclusions}\label{sec:scope}
+The inspected source is the manuscript under
+\begin{center}\small
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/Polylogarithms/docs/manuscript}.
+\end{center}
+The reference branch was pinned to commit \sha. Its recorded UTC commit date is October 10, 2026, corresponding to October 9 in the user's Pacific timezone. The relevant source chapter, \texttt{09-zero-geometry.tex}, has Git blob identifier
+\texttt{7f41eb87ed5e0bf90a2dffa489a8e2cd552056be}.
+The research questions in \texttt{10-discovery.tex} explicitly leave small derivative orders at Laurent index $n\geq5$ and higher-branch Lerch monotonicity unresolved \cite{repozeros,repodiscovery}.
+
+The source already establishes the Appell--Laplace representation, the upper bound of $n$ positive zeros, and uniform eventual saturation at fixed $n$. It also establishes all-order location expansions and monotonicity at $n=1$. We use these ideas but reproduce the precise foundational arguments needed below. The present continuation does not repackage the manuscript's recently integrated Gaussian shuffle reductions as new work.
+
+The main advances relative to that source are as follows.
+\begin{center}\small
+\begin{tabular}{p{0.23\linewidth}p{0.61\linewidth}}
+\toprule
+Result & Mathematical content and evidence\\
+\midrule
+Endpoint decomposition & An exact all-$n$, all-$k$ finite-part identity, with a universal logarithmic polynomial; analytic proof from the classical Lerch expansion.\\[3pt]
+Monotonicity dichotomy & A unique minimum for the first $n=2$ branch, versus strict decrease of every branch at sufficiently large $k$; analytic proofs, with two exact low-index anchors.\\[3pt]
+Small-$\rho$ unfolding & One positive zero for odd $n\geq3$, two for even $n\geq2$, at $k=1$ and sufficiently small positive $\rho$; an explicit fractional-power expansion.\\[3pt]
+Index-three left fold & A unique nondegenerate pair-creation threshold in $0<a<3/2$; the statement is deliberately local in $a$.\\[3pt]
+Sharp fifth-index count & Three zeros at $k=1,2$ and five at every $k\geq3$; 35 exact sign enclosures and a critical-point descent argument.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Attribution and limits.}
+The starting expansion is Erd\'elyi's classical formula, recorded in DLMF 25.14.3\_1 \cite{dlmflerch}. The Hurwitz parameter-derivative identity is also classical; the source identifies Coffey's Stirling-number representation as its relevant precedent \cite{coffey,repozeros}. Our novelty claim is restricted to the stated deductions relative to the inspected \repo\ text. A targeted literature search did not establish an exhaustive priority claim. In particular, we do not claim a resolution of the mixed $S_4$ special-value conjecture or of numerical period independence.
+
+\section{The derivative family and its zero-counting framework}\label{sec:family}
+For $a>0$, use the convention
+\begin{equation}\label{eq:laurent}
+\zeta(s,a)=\frac1{s-1}+\sum_{n\geq0}\frac{(-1)^n}{n!}\gamma_n(a)(s-1)^n.
+\end{equation}
+A superscript $(k)$ on $\gamma_n$ means differentiation in $a$. Derivatives of $\zeta$ or $\Li_s$ with respect to their order will always be stated separately.
+For $0\leq\rho<1$, put
+\[
+\ell_n(\rho,a)=\sum_{m\geq0}\frac{\rho^m\log^n(a+m)}{a+m},
+\qquad
+\Dcal_{n,k}^{\rho}(a)=\partial_a^k\ell_n(\rho,a),\quad k\geq1,
+\]
+and define $\Dcal_{n,k}^{1}(a)=\gamma_n^{(k)}(a)$.
+The undifferentiated $\ell_n$ generally diverges at $\rho=1$; the derivative family is what extends there.
+
+Write
+\begin{equation}\label{eq:P}
+P_k(t)=\prod_{j=1}^k\left(1+\frac tj\right)=\sum_j e_j(k)t^j,
+\qquad (1+t)_k=k!P_k(t),
+\end{equation}
+with $e_j(k)=0$ outside $0\leq j\leq k$. The sign-normalized family is
+\begin{equation}\label{eq:F}
+F_{n,k}^{\rho}(a)=(-1)^{n+k}\Dcal_{n,k}^{\rho}(a)
+=n![t^n](1+t)_k\Phi(\rho,k+1+t,a).
+\end{equation}
+For $\rho=1$ the last $\Phi$ means the convergent Hurwitz zeta function. Formula \eqref{eq:F} follows by differentiating $(a+m)^{-s}$ in $a$ and extracting the coefficient at $s=1+t$. In particular,
+\begin{equation}\label{eq:shiftseries}
+F_{n,k}^{\rho}(a)=\sum_{m\geq0}\rho^m f_{n,k}(a+m),\qquad
+f_{n,k}(a)=\frac{n!}{a^{k+1}}[t^n](1+t)_k e^{-t\log a}.
+\end{equation}
+This series and its fixed $a$ derivatives converge locally uniformly up to $\rho=1$.
+
+\subsection{Reciprocal-gamma polynomials and a positive weight}
+Define monic Appell polynomials $Q_n$ by
+\begin{equation}\label{eq:Qgen}
+\frac{e^{xt}}{\Gamma(1+t)}=\sum_{n\geq0}Q_n(x)\frac{t^n}{n!},
+\qquad W_\rho(x)=\frac1{1-\rho e^{-x}}.
+\end{equation}
+The first three are
+\[
+Q_1(x)=x+\gamma,\quad
+Q_2(x)=(x+\gamma)^2-\zeta(2),\quad
+Q_3(x)=(x+\gamma)^3-3\zeta(2)(x+\gamma)+2\zeta(3).
+\]
+
+\begin{lemma}[Appell--Laplace representation]\label{lem:laplace}
+For $n\geq0$, $k\geq1$, $a>0$, and $0\leq\rho\leq1$,
+\begin{equation}\label{eq:laplace}
+F_{n,k}^{\rho}(a)=\int_0^\infty x^k e^{-ax}W_\rho(x)Q_n(\log x)\dd x.
+\end{equation}
+Every fixed number of $a$ derivatives is locally uniformly integrable in $a$, uniformly in $\rho\in[0,1]$.
+\end{lemma}
+\begin{proof}
+Multiply the Lerch Mellin representation \cite{dlmflerch} by $(1+t)_k$. The factor $\Gamma(k+1+t)$ in its denominator cancels, leaving $1/\Gamma(1+t)$. Extracting $n![t^n]$ gives \eqref{eq:laplace}. At zero, $W_\rho(x)\leq W_1(x)=O(x^{-1})$; at infinity it is uniformly bounded away from the origin. The remaining factors are bounded by $x^{k-1}$ times a fixed power of $|\log x|$ near zero and by an exponentially decaying function at infinity. The same bounds, with extra powers of $x$, justify $a$ differentiation.
+\end{proof}
+
+\begin{lemma}[Real roots of $Q_n$]\label{lem:Qroots}
+Every $Q_n$ has $n$ distinct real roots. Consecutive polynomials strictly interlace.
+\end{lemma}
+\begin{proof}
+If a real-rooted polynomial $p$ has distinct roots $r_i$ of multiplicities $m_i$, the new roots of $p+cp'$, away from inherited roots, solve
+\[
+\sum_i\frac{m_i}{x-r_i}=-\frac1c.
+\]
+The left side is strictly decreasing on each complementary interval. Degree counting gives real-rootedness, simple new roots, and a decrease by one in each inherited multiplicity. Thus $n-1$ operators $1+c\partial_x$, with $c\ne0$, make a degree-$n$ real-rooted polynomial strictly real-rooted.
+
+Use the Weierstrass product
+\[
+\Gamma(1+t)^{-1}=e^{\gamma t}\prod_{m\geq1}(1+t/m)e^{-t/m}.
+\]
+For finite products, the Appell polynomial is obtained from $x^n$ by translations and operators $1+\partial_x/m$. Coefficient limits preserve real-rootedness. For simplicity, remove the first $n-1$ factors, apply this argument to the remaining infinite product, and restore the removed factors. The multiplicity argument just given proves simplicity in the limit, rather than merely in finite approximants. Finally $Q_n'=nQ_{n-1}$ gives interlacing.
+\end{proof}
+
+\begin{lemma}[Variation bound]\label{lem:variation}
+A Laplace transform of a nonzero real kernel with $N$ sign changes has at most $N$ positive zeros, counted with multiplicity, provided the required exponentially weighted polynomial moments converge.
+\end{lemma}
+\begin{proof}
+For $N=0$ the transform has a strict constant sign. At a sign-change point $x_0$, multiplication of the kernel by $x_0-x$ removes one sign change. On transforms this is the operator $\partial_a+x_0$. If the original transform has $M$ zeros counted with multiplicity in any finite collection, Rolle's theorem applied to $e^{x_0a}F(a)$ gives at least $M-1$ zeros of the transformed function. Induction yields $M-1\leq N-1$. The same induction excludes an identically zero transform. Since any finite collection is bounded, the full zero count is bounded as well.
+\end{proof}
+
+\begin{proposition}[Global bound and derivative persistence]\label{prop:global}
+The function $F_{n,k}^{\rho}$ has at most $n$ positive zeros, counted with multiplicity. If it has $n$ distinct positive zeros at one order $k$, then it has exactly $n$ simple positive zeros at every larger order. The zeros interlace to the right between consecutive saturated orders.
+\end{proposition}
+\begin{proof}
+The weight $x^kW_\rho(x)$ is positive, and $Q_n(\log x)$ has exactly $n$ sign changes. Lemmas \ref{lem:laplace}--\ref{lem:variation} prove the bound. Moreover,
+\begin{equation}\label{eq:derivative}
+F_{n,k+1}^{\rho}=-\partial_a F_{n,k}^{\rho}.
+\end{equation}
+Rolle's theorem supplies a zero between successive simple zeros. There is another stationary point after the last zero, since the function has a fixed nonzero sign there and tends to zero at infinity. These are $n$ distinct zeros of the next derivative, so the global bound makes them all simple and excludes any others. Iteration proves persistence.
+\end{proof}
+
+For later use, the endpoint signs are
+\begin{align}
+F_{n,k}^{\rho}(a)&\sim k!a^{-k-1}\log^n(1/a) &&(a\downarrow0),\label{eq:small-a}\\
+F_{n,k}^{1}(a)&\sim (k-1)!a^{-k}(-\log a)^n &&(a\to\infty).\label{eq:large-a}
+\end{align}
+The first relation is uniform in $\rho\in[0,1]$. Both follow by scaling the Laplace integral and using monicity of $Q_n$; in the second, $W_1(x)\sim x^{-1}$ at zero. They can also be obtained from the first term of the Euler--Maclaurin expansion. The limit to zero at infinity needed above also holds for $\rho<1$ by \eqref{eq:shiftseries}.
+
+\section{An exact all-order endpoint decomposition}\label{sec:endpoint}
+Set $\rho=e^{-\mu}$, $0<\mu<2\pi$. Define the \emph{gamma-moment polynomials} $R_m$ by
+\begin{equation}\label{eq:Rgen}
+\Gamma(1-t)e^{Xt}=\sum_{m\geq0}R_m(X)\frac{t^m}{m!}.
+\end{equation}
+These are different from the reciprocal-gamma polynomials $Q_n$. Put
+\begin{align}
+A_{n,k,r}(a)&=n![t^n](1+t)_k\zeta(k+1-r+t,a),\quad r\ne k,\label{eq:A}\\
+C_{n,k}(a)&=n![t^n]\left(P_k(t)\zeta(1+t,a)-\frac1t\right).\label{eq:C}
+\end{align}
+The expression defining $C_{n,k}$ is regular at $t=0$.
+
+\begin{theorem}[Universal logarithmic block]\label{thm:endpoint}
+For every $n\geq0$, $k\geq1$, and $a>0$,
+\begin{equation}\label{eq:exactendpoint}
+\boxed{\begin{aligned}
+e^{-a\mu}F_{n,k}^{e^{-\mu}}(a)
+={}&\sum_{\substack{r\geq0\\r\ne k}}\frac{(-\mu)^r}{r!}A_{n,k,r}(a)\\
+&+(-1)^k\mu^k\left(C_{n,k}(a)-\frac{R_{n+1}(\log\mu)}{n+1}\right).
+\end{aligned}}
+\end{equation}
+The series converges locally uniformly for $0<\mu<2\pi$ and $a$ in a compact positive interval. After removal of the displayed logarithmic block, the remainder is analytic at $\mu=0$. In particular,
+\begin{align}\label{eq:endpointasympt}
+e^{-a\mu}F_{n,k}^{e^{-\mu}}(a)
+={}&\sum_{r=0}^{k-1}\frac{(-\mu)^r}{r!}A_{n,k,r}(a)\notag\\
+&+(-1)^k\mu^k\left(C_{n,k}(a)-\frac{R_{n+1}(\log\mu)}{n+1}\right)
++O(\mu^{k+1}),
+\end{align}
+uniformly on such $a$ intervals, including any fixed number of $a$ derivatives.
+\end{theorem}
+\begin{proof}
+The classical Erd\'elyi expansion is
+\begin{equation}\label{eq:erdelyi}
+e^{-a\mu}\Phi(e^{-\mu},s,a)
+=\Gamma(1-s)\mu^{s-1}+\sum_{r\geq0}\zeta(s-r,a)\frac{(-\mu)^r}{r!}.
+\end{equation}
+It is initially written for nonintegral positive $s$ and extends by cancellation at positive integers \cite{dlmflerch}. Substitute $s=k+1+t$ and multiply by $(1+t)_k$. The key exact identity is
+\begin{equation}\label{eq:cancellation}
+(1+t)_k\Gamma(-k-t)=\frac{(-1)^{k+1}}{t}\Gamma(1-t).
+\end{equation}
+It follows directly by applying the gamma recurrence $k+1$ times, or from reflection \cite{dlmfgamma}. The only colliding pole in the zeta sum is the term $r=k$. Its coefficient is $(-1)^k\mu^k P_k(t)\zeta(1+t,a)$. Together the two singular terms become
+\[
+(-1)^k\mu^k\left(P_k(t)\zeta(1+t,a)-\frac{\Gamma(1-t)e^{t\log\mu}}t\right).
+\]
+Their residues cancel. Extracting $n![t^n]$ yields \eqref{eq:exactendpoint}, because
+\[
+n![t^n]\frac{\Gamma(1-t)e^{Xt}-1}{t}=\frac{R_{n+1}(X)}{n+1}.
+\]
+Normal convergence of the classical expansion on compact subsets, with the colliding pole removed, permits coefficient extraction and $a$ differentiation. The remaining series is a power series in $\mu$ of radius at least $2\pi$. Truncating after degree $k$ proves \eqref{eq:endpointasympt}.
+\end{proof}
+
+\subsection{Explicit coefficients and a moment interpretation}
+From \eqref{eq:laurent},
+\begin{equation}\label{eq:Cexplicit}
+C_{n,k}(a)=n!e_{n+1}(k)
++\sum_{j=0}^{\min(n,k)}\frac{n!e_j(k)(-1)^{n-j}}{(n-j)!}\gamma_{n-j}(a).
+\end{equation}
+Writing $Y=X+\gamma$, the first polynomials are
+\begin{align}
+R_1(X)&=Y,\notag\\
+R_2(X)&=Y^2+\zeta(2),\notag\\
+R_3(X)&=Y^3+3\zeta(2)Y+2\zeta(3),\label{eq:Rexamples}\\
+R_4(X)&=Y^4+6\zeta(2)Y^2+8\zeta(3)Y+3\zeta(2)^2+6\zeta(4).\notag
+\end{align}
+All higher coefficients follow from
+\begin{equation}\label{eq:Rrec}
+R_{m+1}(X)=(X+\gamma)R_m(X)
++\sum_{r=1}^m\binom mr r!\zeta(r+1)R_{m-r}(X).
+\end{equation}
+
+\begin{proposition}[A complementary real-root geometry]\label{prop:Rmoment}
+For real $X$,
+\begin{equation}\label{eq:Rmoment}
+R_m(X)=\int_0^\infty e^{-u}(X-\log u)^m\dd u.
+\end{equation}
+Every even $R_{2m}$ is strictly positive on $\R$. Every odd $R_{2m+1}$ is strictly increasing and has exactly one real zero, which is simple.
+\end{proposition}
+\begin{proof}
+Differentiate the gamma integral for $\Gamma(1-t)$ near $t=0$. This gives \eqref{eq:Rmoment} with absolute domination of all fixed logarithmic moments. Even powers have positive integral. The Appell identity $R_{2m+1}'=(2m+1)R_{2m}$ gives strict increase, and monicity gives the opposite signs at the two infinities.
+\end{proof}
+Thus the local singularity is governed by gamma-moment polynomials with a very different real-zero structure from the reciprocal-gamma polynomials governing the global Laplace sign changes.
+
+\subsection{Finite-part identities for polylogarithmic order derivatives}
+At $a=1$, the factor on the left of \eqref{eq:exactendpoint} cancels the relation $\Phi(\rho,s,1)=\Li_s(\rho)/\rho$. Set
+\begin{equation}\label{eq:Hpoly}
+\mathcal H_{n,k}(\mu)=n![t^n](1+t)_k\Li_{k+1+t}(e^{-\mu}).
+\end{equation}
+Theorem \ref{thm:endpoint} gives the following exact family of finite-part limits:
+\begin{equation}\label{eq:finitepart}
+\boxed{\lim_{\mu\downarrow0}\left\{
+\frac{(-1)^k}{\mu^k}\left(\mathcal H_{n,k}(\mu)-\sum_{r=0}^{k-1}\frac{(-\mu)^r}{r!}A_{n,k,r}(1)\right)
++\frac{R_{n+1}(\log\mu)}{n+1}\right\}=C_{n,k}(1).}
+\end{equation}
+This is a consequence of a classical expansion, not an assertion of previously unknown arithmetic relations among Stieltjes constants. Its value is the all-order explicit cancellation and its use in stable evaluation and zero motion.
+
+For a concrete example, let $\Li_s^{[j]}(z)=\partial_s^j\Li_s(z)$ and $Y=\log\mu+\gamma$. Then
+\begin{align}\label{eq:Li2identity}
+\lim_{\mu\downarrow0}\Bigg\{&
+\frac{\Li_2^{[2]}(e^{-\mu})+2\Li_2^{[1]}(e^{-\mu})-\zeta''(2)-2\zeta'(2)}{\mu}\notag\\
+&\hspace{18mm}-\frac{Y^3}{3}-\zeta(2)Y-\frac{2\zeta(3)}3\Bigg\}
+=2\gamma_1-\gamma_2.
+\end{align}
+At $k=2$, define
+\[
+B(s)=2\zeta''(s)+6\zeta'(s)+2\zeta(s),\quad
+\mathcal H_{2,2}=2\Li_3^{[2]}+6\Li_3^{[1]}+2\Li_3,
+\]
+where all polylogarithms are evaluated at $e^{-\mu}$. Another explicit identity is
+\begin{equation}\label{eq:Li3identity}
+\lim_{\mu\downarrow0}\left\{
+\frac{\mathcal H_{2,2}(\mu)-B(3)+\mu B(2)}{\mu^2}
++\frac{Y^3}{3}+\zeta(2)Y+\frac{2\zeta(3)}3\right\}
+=\gamma_2-3\gamma_1+\gamma.
+\end{equation}
+The cases $n=0$ recover the familiar integer-order logarithmic term of the polylogarithm. The general formula supplies all higher order-derivative analogues at once.
+
+\section{Sharp endpoint regularity and zero displacement}\label{sec:regularity}
+Put $L=\log(1/\mu)$, so $L\to\infty$ as $\rho=e^{-\mu}\uparrow1$.
+
+\begin{theorem}[Exact differentiability threshold]\label{thm:regularity}
+For every fixed $a>0$, $n\geq0$, and $k\geq1$, the function $\rho\mapsto F_{n,k}^{\rho}(a)$ extends to $C^{k-1}$ at $\rho=1$, but not to $C^k$. More precisely,
+\begin{equation}\label{eq:highestderivative}
+\partial_\rho^k F_{n,k}^{\rho}(a)
+\sim \frac{(-1)^n k!}{n+1}L^{n+1}.
+\end{equation}
+The assertion is locally uniform in $a$. The $(k-1)$st derivative is H\"older continuous of every exponent less than one near the endpoint, but is not Lipschitz there.
+\end{theorem}
+\begin{proof}
+The series \eqref{eq:shiftseries} has absolutely convergent $\rho$ derivatives of order $r\leq k-1$, since its summands are $O(m^{r-k-1}\log^n m)$. This proves $C^{k-1}$ extension. In \eqref{eq:endpointasympt}, the leading nonanalytic term is
+\begin{equation}\label{eq:sing-leading}
+\frac{(-1)^{n+k}}{n+1}\mu^k L^{n+1}.
+\end{equation}
+The exact convergent decomposition permits differentiation, unlike an uncontrolled big-$O$ expansion. Applying $\partial_\rho=-\rho^{-1}\partial_\mu$ $k$ times yields \eqref{eq:highestderivative}. Its nonzero divergent coefficient excludes $C^k$. One integration gives a nonzero leading increment proportional to $(1-\rho)\log^{n+1}(1/(1-\rho))$ for the $(k-1)$st derivative, excluding Lipschitz continuity. Integrating the logarithmic upper bound over an interval of length $\delta$ gives $O(\delta(1+|\log\delta|^{n+1}))$, which is $O(\delta^\alpha)$ for every $\alpha<1$.
+\end{proof}
+
+\begin{theorem}[A simple zero at derivative order one]\label{thm:rootendpoint}
+Suppose $\alpha>0$ is a simple zero of $F_{n,1}^{1}$, with $n\geq1$. Its nearby zero $a(\rho)$ exists uniquely for $\rho$ sufficiently close to one and satisfies
+\begin{equation}\label{eq:rootfull}
+a(e^{-\mu})=\alpha-
+\frac{\mu}{\partial_aF_{n,1}^{1}(\alpha)}
+\left(\frac{R_{n+1}(\log\mu)}{n+1}-C_{n,1}(\alpha)\right)
++O\!\left(\mu^2L^{2n+2}\right).
+\end{equation}
+In particular,
+\begin{align}
+a(e^{-\mu})-\alpha
+&\sim \frac{(-1)^n}{(n+1)\partial_aF_{n,1}^{1}(\alpha)}\mu L^{n+1},\label{eq:rootlead}\\
+a'(\rho)
+&\sim \frac{(-1)^{n+1}}{(n+1)\partial_aF_{n,1}^{1}(\alpha)}L^{n+1}.\label{eq:rootvelocity}
+\end{align}
+\end{theorem}
+\begin{proof}
+The family and its $a$ derivative converge locally uniformly as $\rho\uparrow1$. A small interval around a simple zero retains opposite endpoint signs and a derivative bounded away from zero, giving existence and uniqueness. For $k=1$, \eqref{eq:exactendpoint} reads
+\[
+e^{-a\mu}F_{n,1}^{e^{-\mu}}(a)
+=F_{n,1}^{1}(a)+\mu\left(\frac{R_{n+1}(\log\mu)}{n+1}-C_{n,1}(a)\right)+O(\mu^2),
+\]
+uniformly with $a$ derivatives. It first gives $a-\alpha=O(\mu L^{n+1})$. Taylor expansion of $F^1$ and $C$ then gives \eqref{eq:rootfull}, since the quadratic root error is $O(\mu^2L^{2n+2})$. For the velocity, differentiate the exact decomposition and the implicit equation in the open interval $\rho<1$; the derivative of the analytic remainder is controlled by convergence. Its leading term is \eqref{eq:rootvelocity}.
+\end{proof}
+
+When the endpoint has simple ordered zeros $\alpha_j$ and all its positive zeros are accounted for, the initial positive sign in \eqref{eq:small-a} gives
+$\sgn\partial_aF^1(\alpha_j)=(-1)^j$. Thus the signs of the near-endpoint velocities at $k=1$ alternate as $(-1)^{n+1+j}$. No all-branch decreasing law can hold at this order whenever two or more such zeros exist.
+
+\section{Eventual monotonicity of every branch}\label{sec:eventual}
+The previous section concerns fixed small $k$ and $\rho\uparrow1$. It does not contradict the large-$k$ location expansion in the source. We now strengthen that expansion to a theorem about the derivative of the zero with respect to $\rho$.
+
+Order the roots of $Q_n$ as $x_{n,1}>\cdots>x_{n,n}$ and set
+\[
+c_{n,j}=e^{-x_{n,j}},\qquad E_{n,j}=\exp(1/c_{n,j}).
+\]
+
+\begin{theorem}[All-branch eventual decrease]\label{thm:eventualmono}
+For each fixed $n\geq1$ there is an integer $K_n$ such that, for every integer $k\geq K_n$, the family has exactly $n$ simple positive zeros for all $\rho\in[0,1]$, and every ordered zero is strictly decreasing in $\rho$. Uniformly in $\rho$,
+\begin{equation}\label{eq:eventualvelocity}
+\partial_\rho a_{n,j,k}^{\rho}
+=-\frac{E_{n,j}}{(E_{n,j}-\rho)^2}+O_n(k^{-1}).
+\end{equation}
+At $\rho=1$ the derivative is the one-sided endpoint derivative. The threshold is existential here; no explicit optimal value of $K_n$ is claimed.
+\end{theorem}
+\begin{proof}
+Normalize at $a=ck$:
+\[
+T_{n,k}^{\rho}(c)=\frac{(ck)^{k+1}}{k!}F_{n,k}^{\rho}(ck)
+=\E\,h_{n,\rho}(Y_k/c),\quad h_{n,\rho}(x)=W_\rho(x)Q_n(\log x),
+\]
+where $Y_k$ has gamma shape $k+1$ and rate $k$. Its moment generating function about one is
+$\E e^{t(Y_k-1)}=e^{-t}(1-t/k)^{-k-1}$. In particular,
+\[
+\E(Y_k-1)=k^{-1},\quad
+\E(Y_k-1)^2=k^{-1}+O(k^{-2}),\quad
+\E(Y_k-1)^3=O(k^{-2}),\quad
+\E(Y_k-1)^4=O(k^{-2}).
+\]
+Taylor expansion through the cubic term, with fourth-order remainder, gives
+\begin{equation}\label{eq:concentration}
+T_{n,k}^{\rho}(c)=G_0(c,\rho)+\frac{G_1(c,\rho)}k+O_n(k^{-2}),
+\end{equation}
+where
+\[
+G_0(c,\rho)=W_\rho(1/c)Q_n(-\log c),\qquad
+G_1(c,\rho)=\left(xh_{n,\rho}'(x)+\tfrac12x^2h_{n,\rho}''(x)\right)_{x=1/c}.
+\]
+Importantly, this is uniform on compact positive $c$ intervals after one $\rho$ derivative and any of the fixed $c$ derivatives needed for the implicit argument. Here is the extra endpoint justification. For fixed $q$,
+\[
+\partial_\rho^qW_\rho(x)=\frac{q!e^{-qx}}{(1-\rho e^{-x})^{q+1}},
+\]
+so these derivatives, and fixed $x$ derivatives, have only fixed inverse-power growth at zero, uniformly for $0\leq\rho\leq1$. The resulting logarithmic factors may be absorbed in slightly larger powers. Outside $1/2\leq Y_k\leq3/2$, gamma Chernoff bounds, also after multiplication by any fixed positive or negative power of $Y_k$, are exponentially small for sufficiently large $k$. On the central interval all required derivatives are uniformly bounded. This proves the stated mixed-derivative remainder, rather than differentiating a previously unqualified remainder.
+
+At each $c=c_{n,j}$,
+\[
+\partial_cG_0(c_{n,j},\rho)
+=-\frac{W_\rho(1/c_{n,j})}{c_{n,j}}Q_n'(x_{n,j})\ne0.
+\]
+Disjoint intervals around these roots, \eqref{eq:concentration}, and Proposition \ref{prop:global} give exactly $n$ simple zeros uniformly in $\rho$ for large $k$. The implicit expansion, with its mixed derivatives, gives
+\[
+a_{n,j,k}^{\rho}=kc_{n,j}+d_{n,j}(\rho)+O_n(k^{-1})
+\]
+in $C^1$ with respect to $\rho$, where a direct differentiation of $h$ yields
+\[
+d_{n,j}(\rho)=\frac{c_{n,j}}2\left(1+\frac{Q_n''(x_{n,j})}{Q_n'(x_{n,j})}\right)
+-\frac{\rho}{E_{n,j}-\rho}.
+\]
+Differentiating this explicit coefficient proves \eqref{eq:eventualvelocity}. The positive function $E_{n,j}/(E_{n,j}-\rho)^2$ has a positive minimum on $[0,1]$; there are finitely many branches. Increasing $K_n$ makes the uniform error smaller than half of the least such minimum. Every velocity is then strictly negative.
+\end{proof}
+
+\begin{remark}
+The endpoint is $C^1$ once $k\geq2$, but this alone does not imply monotonicity. Theorem \ref{thm:eventualmono} uses a uniform mixed-derivative concentration estimate. Its conclusion is stronger than reading a negative first correction from a location formula.
+\end{remark}
+
+\section{The elementary endpoint and fractional-power unfolding}\label{sec:smallrho}
+At derivative order one and $n\geq1$, \eqref{eq:shiftseries} simplifies to
+\begin{equation}\label{eq:fn1}
+f_{n,1}(a)=\frac{(-1)^n\log^{n-1}a\,(\log a-n)}{a^2}.
+\end{equation}
+Its zero at $a=e^n$ is simple, and its zero at $a=1$ has multiplicity $n-1$ when $n\geq2$.
+
+\begin{theorem}[Small-$\rho$ positive-zero count, all indices]\label{thm:smallrho}
+Fix $n\geq2$. For all sufficiently small $\rho>0$, $F_{n,1}^{\rho}$ has exactly one positive zero when $n$ is odd, and exactly two positive zeros when $n$ is even. All these zeros are simple.
+
+There is always a zero $b_n(\rho)=e^n+O(\rho)$. For even $n$, the other zero satisfies
+\begin{equation}\label{eq:puiseux}
+a_n(\rho)=1-\left(\frac{(\log2)^{n-1}(n-\log2)}{4n}\right)^{1/(n-1)}\rho^{1/(n-1)}
++O\!\left(\rho^{2/(n-1)}\right).
+\end{equation}
+For odd $n\geq3$, none of the $n-1$ local complex branches from $a=1$ is real at sufficiently small positive $\rho$.
+\end{theorem}
+\begin{proof}
+The simple zero at $e^n$ persists by the analytic implicit function theorem applied to \eqref{eq:shiftseries}. Put $d=n-1$, $a=1+\delta$, and $L_2=\log2$. Locally,
+\[
+F_{n,1}^{\rho}(1+\delta)
+=(-1)^{n-1}n\delta^d
++\rho\frac{(-1)^{n-1}L_2^{n-1}(n-L_2)}4
++O(\delta^{d+1}+\rho|\delta|+\rho^2).
+\]
+Let $\rho=\varepsilon^d$ and $\delta=\varepsilon u$. After division by $(-1)^{n-1}n\varepsilon^d$, the limiting equation is
+\[
+u^d=-\frac{L_2^{n-1}(n-L_2)}{4n}.
+\]
+Its $d$ complex roots are distinct. Analytic implicit continuation in $\varepsilon$ gives $d$ local branches; equivalently one may apply Rouch\'e's theorem on disjoint small circles. When $d$ is even there are no real roots, and their nonzero imaginary parts persist. When $d$ is odd exactly one branch is real, with the negative leading coefficient in \eqref{eq:puiseux}. The other branches remain nonreal. The real branch is simple for $\varepsilon>0$ sufficiently small.
+
+It remains to exclude roots outside these neighbourhoods. For $a>e^n$, every term in \eqref{eq:shiftseries} has sign $(-1)^n$, so there are no zeros. For $a$ sufficiently small, $f_{n,1}(a)>0$ dominates the remaining series uniformly for $0\leq\rho\leq1/2$. On the compact set left after deleting small neighbourhoods of $1$ and $e^n$, uniform convergence to the nonzero function $f_{n,1}$ excludes zeros. This accounts for all positive zeros.
+\end{proof}
+
+The displacement of the upper elementary zero also has an explicit analytic coefficient. With $A=e^n$ and $L_+=\log(A+1)$,
+\begin{equation}\label{eq:outer-smallrho}
+b_n(\rho)=A-\frac{A^3L_+^{n-1}(L_+-n)}{n^{n-1}(A+1)^2}\rho+O(\rho^2).
+\end{equation}
+It follows by $b_n'(0)=-f_{n,1}(A+1)/f_{n,1}'(A)$; the coefficient of $\rho$ is strictly negative.
+
+\section{A complete two-zero geometry at index two}\label{sec:n2}
+We now resolve a concrete global monotonicity question without relying on a plot.
+
+\begin{lemma}[Power-series variation and crossing direction]\label{lem:descartes}
+Let $g(\rho)=\sum_{m\geq0}c_m\rho^m$ converge for $0<\rho<1$ and have finitely many coefficient sign changes, ignoring zero coefficients. Its number of zeros on this interval, counted with multiplicity, is at most that number of sign changes. If the coefficient signs change once from negative to positive, then $g'(\rho)>0$ at every zero; for one change from positive to negative the derivative at every zero is negative.
+\end{lemma}
+\begin{proof}
+Put $\rho=e^t$ with $t<0$. Choose a real $\lambda$ strictly between the two integer blocks at one sign change. The operator $\partial_t-\lambda$ multiplies the coefficients by $m-\lambda$ and removes one sign change. Induction and Rolle's theorem applied to $e^{-\lambda t}g(e^t)$ prove the multiplicity bound exactly as in Lemma \ref{lem:variation}. At a zero,
+\[
+\rho g'(\rho)=\sum_m(m-\lambda)c_m\rho^m.
+\]
+Every nonzero summand is positive for a negative-to-positive change, and negative for the opposite change. This proves the crossing assertion.
+\end{proof}
+
+The proof below uses the exact rational certificates
+\begin{align}\label{eq:n2anchors}
+-0.0710586421856583&<F_{2,1}^{1}(13/10)<-0.0710586421856582,\notag\\
+0.1141837256672135&<F_{2,1}^{1}(1)<0.1141837256672136.
+\end{align}
+Their derivation, with a proved remainder and outward rounding, is given in Section \ref{sec:certification}.
+
+\begin{theorem}[Exactly one nondegenerate minimum]\label{thm:n2}
+For every $\rho\in[0,1]$, $F_{2,1}^{\rho}$ has exactly two positive zeros, both simple. Denote them by $a_-(\rho)<a_+(\rho)$. They are continuous on $[0,1]$ and analytic on $[0,1)$, with
+\[
+a_-(\rho)<13/10<a_+(\rho),\quad
+ a_-(0)=1,\quad a_+(0)=e^2.
+\]
+The upper branch is strictly decreasing on the whole interval. The lower branch has a unique interior minimizer $\rho_*$, is strictly decreasing before it and strictly increasing after it, and satisfies $a_-''(\rho_*)>0$.
+Moreover,
+\begin{equation}\label{eq:n2start}
+a_-'(0)=-\frac{\log2\,(2-\log2)}8<0,
+\qquad a_-(1)>1,
+\end{equation}
+and $a_-'(\rho)\to+\infty$ as $\rho\uparrow1$.
+\end{theorem}
+\begin{proof}
+At any fixed $a\in(1,e^2)$, the coefficients
+\[
+c_m=f_{2,1}(a+m)=\frac{\log(a+m)(\log(a+m)-2)}{(a+m)^2}
+\]
+are initially negative and eventually positive, with exactly one sign change. Lemma \ref{lem:descartes}, or direct comparison of the weights before and after a crossing index, shows that negativity at $\rho=1$ implies negativity at every smaller $\rho\geq0$. Thus \eqref{eq:n2anchors} proves $F_{2,1}^{\rho}(13/10)<0$ for all $\rho$. The small-$a$ sign is positive; for $a>e^2$ all terms are positive. There are at least two positive zeros. Proposition \ref{prop:global} makes them the only zeros and makes them simple. The same signs give the common separating point $13/10$. Uniform convergence and the simple-root property give continuity at one and analyticity below one.
+
+At the upper root, $a_+>13/10>1$, so the coefficient signs are negative then positive. Hence $\partial_\rho F(a_+,\rho)>0$, while $\partial_aF(a_+,\rho)>0$. Implicit differentiation gives $a_+'(\rho)<0$ for $0<\rho<1$. The endpoint conclusions follow by continuity; strict decrease extends to the closed interval. Formula \eqref{eq:n2start} at zero follows directly from \eqref{eq:puiseux}, and the positive value at $a=1$, together with the separator, proves $a_-(1)>1$.
+
+For uniqueness of the minimum, fix $0<a<1$. The coefficient signs of $F(a,\rho)$ are positive, then negative, then positive. There are at most two zeros in $\rho$, counted with multiplicity. Since $F(a,0)>0$, its negative set in $[0,1]$ is an interval, possibly empty. Because $a<a_+(\rho)$, this set is precisely $\{\rho:a_-(\rho)<a\}$. For $1\leq a<13/10$, the coefficient signs have at most one negative-to-positive change; its negative set is again an interval. For levels $a\geq13/10$ the sublevel set is the whole interval, and for $a\leq0$ it is empty. Therefore every strict sublevel set of $a_-$ is an interval: the branch is quasiconvex.
+
+The initial decrease and $a_-(1)>1$ give an interior minimum with value below one. Quasiconvexity makes the minimizer set an interval; analyticity excludes a nontrivial constant interval, so the minimizer is unique. The same argument gives strict decrease on its left and strict increase on its right. At the minimum, $F(a_-(\rho_*),\rho)$ is positive on either side of its zero at $\rho_*$. The two-sign-change bound makes this zero exactly double, so $F_{\rho\rho}>0$. Since $F_a<0$ at the lower branch,
+\[
+a_-''(\rho_*)=-\frac{F_{\rho\rho}}{F_a}>0.
+\]
+Finally Theorem \ref{thm:rootendpoint}, with $n=2$ and $F_a(a_-(1),1)<0$, proves divergence of the velocity to $+\infty$.
+\end{proof}
+
+The non-certified numerical solution of the defining system $F=F_\rho=0$ gives
+\begin{equation}\label{eq:n2numeric}
+\rho_*\approx0.9156050732477000984,
+\qquad a_-(\rho_*)\approx0.8786326838557674127.
+\end{equation}
+These decimals illustrate the proved unique minimum; they are not isolating intervals and are not used in the proof.
+
+\section{A rigorously localized fold at index three}\label{sec:n3}
+The small-$\rho$ theorem gives one positive zero at $n=3,k=1$ for sufficiently small positive $\rho$, while the classical endpoint has three. One can rigorously isolate the onset of its left-hand pair without asserting a complete global bifurcation diagram.
+
+The exact anchors are
+\begin{equation}\label{eq:n3anchors}
+\begin{aligned}
+F_{3,1}^{1}(1)&\in(-0.0323050999463418,-0.0323050999463417),\\
+F_{3,1}^{1}(3/2)&\in(0.0249055835689205,0.0249055835689206).
+\end{aligned}
+\end{equation}
+
+\begin{theorem}[Unique left-hand pair creation]\label{thm:n3fold}
+There is a unique $\rho_c\in(0,1)$ with the following properties. In the interval $0<a<3/2$, $F_{3,1}^{\rho}$ has no zero for $0<\rho<\rho_c$, exactly one double zero $a_c$ at $\rho=\rho_c$, and exactly two simple zeros for $\rho_c<\rho\leq1$. At the separate elementary endpoint $\rho=0$, there is instead a double zero at $a=1$. At the interior critical point,
+\[
+F_\rho(a_c,\rho_c)<0,\qquad F_{aa}(a_c,\rho_c)>0.
+\]
+Consequently, as $\rho\downarrow\rho_c$ from above, the two zeros satisfy
+\begin{equation}\label{eq:fold}
+a_{\mathrm L,\mathrm R}(\rho)=a_c\mp
+\sqrt{-\frac{2F_\rho(a_c,\rho_c)}{F_{aa}(a_c,\rho_c)}}\sqrt{\rho-\rho_c}
++O(\rho-\rho_c).
+\end{equation}
+Above the threshold the total number of positive zeros is exactly three. The left and right members of the new pair move strictly left and strictly right, respectively, as $\rho$ increases in the open interval $(\rho_c,1)$.
+\end{theorem}
+\begin{proof}
+For $n=3$,
+$f_{3,1}(x)=\log^2x(3-\log x)/x^2$ is nonnegative for $x<e^3$ and negative for $x>e^3$, with its zero at $x=1$ not changing sign. At each fixed $0<a<e^3$, the coefficient signs in \eqref{eq:shiftseries} therefore change once from positive to negative, after zeros are ignored. Every zero as a function of $\rho\in(0,1)$ is crossed with negative derivative. Negativity, once attained, persists for larger $\rho$.
+
+The positive anchor at $3/2$ implies $F(3/2,\rho)>0$ for all $\rho\in[0,1]$. For $\rho>0$, $F(e^3,\rho)<0$, so there is at least one outer zero in $(3/2,e^3)$. Hence the global multiplicity bound leaves room for at most two zeros in $(0,3/2)$.
+
+Let $S$ be the set of $\rho$ for which $F(a,\rho)<0$ at some $a\in(0,3/2)$. The preceding coefficient argument makes $S$ an upper interval. Theorem \ref{thm:smallrho} makes it empty near zero, while the negative anchor at $a=1$ makes it nonempty near one. Thus its lower endpoint $\rho_c$ lies strictly between zero and one. The uniform positive small-$a$ sign and the positive separator keep any limiting minimizer in a compact subinterval of $(0,3/2)$. At $\rho_c$, the function is nonnegative there and attains zero at some interior $a_c$; therefore $F_a=0$.
+
+This zero has even multiplicity at least two. The outer zero and the total bound of three force its multiplicity to be exactly two, force uniqueness of $a_c$, and make $F_{aa}>0$. The coefficient crossing lemma gives $F_\rho<0$. A hypothetical zero at $0<\rho<\rho_c$ would be an even zero of a nonnegative function, but $F_\rho<0$ would create negativity immediately afterwards, contradicting the definition of $\rho_c$. Thus no such zero exists. Above $\rho_c$, a negative interior value between positive endpoints gives two simple left-hand zeros; together with the outer zero these exhaust the global bound. Their velocity signs follow from $a'=-F_\rho/F_a$.
+
+For \eqref{eq:fold}, substitute $a=a_c+u\sqrt{\rho-\rho_c}$ into the local analytic Taylor expansion. The first nonzero terms are $F_\rho(\rho-\rho_c)+F_{aa}(a-a_c)^2/2$. Their two simple limiting roots continue analytically in $\sqrt{\rho-\rho_c}$, giving the stated remainder.
+\end{proof}
+
+A numerical diagnostic gives
+\[
+\rho_c\approx0.9999904668377386342,\qquad a_c\approx1.0497530508802554583,
+\]
+with $F_\rho\approx-2536.5328994$ and $F_{aa}\approx3.3249145434$. These values are not certificates. Notice how close the fold lies to one: a coarse uniform grid in $\rho$ could easily miss it.
+
+\begin{remark}[What the theorem does not prove]
+For $0<\rho<\rho_c$, the theorem excludes left-hand zeros, but does not by itself exclude an additional pair entirely to the right of $3/2$ at an intermediate parameter. It proves a single total zero for sufficiently small positive $\rho$, and exactly three above $\rho_c$. The assertion that the total count is one at every $\rho<\rho_c$ remains a separate global question. This restriction avoids inferring a complete bifurcation diagram from local fold data or from nested negative sets alone.
+\end{remark}
+
+\section{The fifth Laurent index: an exact count at every order}\label{sec:n5}
+This section answers the first unresolved classical small-index case in the source.
+
+\begin{theorem}[Sharp fifth-index saturation threshold]\label{thm:n5}
+For $a>0$,
+\begin{equation}\label{eq:n5count}
+\boxed{\#\{a>0:\gamma_5^{(k)}(a)=0\}=
+\begin{cases}
+3,&k=1,2,\\
+5,&k\geq3.
+\end{cases}}
+\end{equation}
+Every zero counted here is simple. Thus the least classical derivative order after which the global bound of five is always attained is exactly three.
+\end{theorem}
+
+\subsection{Certificates at the top derivative order}
+For this section abbreviate $F_k=F_{5,k}^{1}$. The following disjoint rational intervals contain the five zeros of $F_3$. The endpoint signs are certified, and the last column encloses $F_2$ on the \emph{whole interval}, not just at its midpoint.
+\begin{center}\small
+\begin{tabular}{clcc}
+\toprule
+$j$ & Interval $I_j$ & Signs of $F_3$ at endpoints & Enclosure of $F_2(I_j)$\\
+\midrule
+1 & $[0.94095,0.94096]$ & $+,-$ & $[0.014677,0.014873]$\\
+2 & $[1.12928,1.12930]$ & $-,+$ & $[0.056849,0.057229]$\\
+3 & $[1.63577,1.63579]$ & $+,-$ & $[-0.044565,-0.044163]$\\
+4 & $[6.1361,6.1362]$ & $-,+$ & $[0.922051,0.922577]$\\
+5 & $[319.61,319.63]$ & $+,-$ & $[-0.008314,-0.008300]$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The displayed decimal endpoints are finite decimals and hence exact rationals. They are outward coarsenings of the machine certificate.
+
+The sign changes give five distinct roots of $F_3$. Proposition \ref{prop:global} proves that they are all the roots and are all simple. Write them $b_1<\cdots<b_5$. Since $F_2'=-F_3$, the function $F_2$ is strictly monotone between these five critical points. Its values at them have signs
+\begin{equation}\label{eq:F2crit}
++,+,-,+,-.
+\end{equation}
+By \eqref{eq:small-a} and \eqref{eq:large-a}, $F_2$ starts at $+\infty$ and tends to zero from below. It decreases to its first, positive minimum; increases to its next, positive maximum; then changes sign exactly once on each of $(b_2,b_3)$, $(b_3,b_4)$, and $(b_4,b_5)$. It remains negative after the last critical point. Therefore it has exactly three simple zeros.
+
+\subsection{Descending one more derivative}
+The three zeros of $F_2$ lie in the following rational intervals. Again, predecessor values are enclosed on the entire interval.
+\begin{center}\small
+\begin{tabular}{clcc}
+\toprule
+$j$ & Interval $J_j$ & Signs of $F_2$ at endpoints & Enclosure of $F_1(J_j)$\\
+\midrule
+1 & $[1.37132,1.37134]$ & $+,-$ & $[-0.008046,-0.007646]$\\
+2 & $[1.91135,1.91138]$ & $-,+$ & $[0.007558,0.008160]$\\
+3 & $[148.91,148.92]$ & $+,-$ & $[-21.057951,-21.054233]$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Let the corresponding exact roots be $d_1<d_2<d_3$. The function $F_1$ has no critical points other than these, and its critical values have signs $-,+,-$. Starting at $+\infty$ and ending at $0^-$, it crosses zero exactly once before $d_1$, once between $d_1$ and $d_2$, and once between $d_2$ and $d_3$. It has no zero after $d_3$. Each crossing lies in an interval where its derivative is nonzero, so each root is simple.
+
+This proves the two deficient cases of \eqref{eq:n5count}. Saturation of $F_3$ and Proposition \ref{prop:global} prove the conclusion at every $k\geq3$.
+
+For practical use, the three zeros at order one are isolated by
+\begin{equation}\label{eq:n5firstbrackets}
+[1.13788,1.13790],\quad [1.63892,1.63895],\quad [2.12489,2.12492].
+\end{equation}
+Their numerical approximations are $1.1378900542$, $1.6389372768$, and $2.1249028499$. The proof of completeness comes from critical-point descent, not from the precision of these approximations.
+
+\paragraph{Why an upward-only argument would miss this result.}
+The manuscript's persistence principle can propagate a saturated order, but cannot alone establish that a lower order has fewer roots. The additional information here is the sign of a predecessor at \emph{every} critical point. It supplies a finite, general-purpose mechanism for proving exact deficits below saturation.
+
+\section{A proved exact-arithmetic certification method}\label{sec:certification}
+The proof-bearing computation uses Python's standard library only. All arithmetic that decides signs is integer or rational arithmetic; the implementation rounds every fixed-point operation outwards. Floating-point quadrature is confined to a separately labelled diagnostic script.
+
+\subsection{Euler--Maclaurin coefficient extraction}
+Let $N\geq1$, $M\geq1$, and $A=a+N\geq1$. The usual Hurwitz Euler--Maclaurin formula \cite{dlmfhurwitz} gives
+\begin{align}\label{eq:EM}
+\zeta(s,a)={}&\sum_{m=0}^{N-1}(a+m)^{-s}
++\frac{A^{1-s}}{s-1}+\frac{A^{-s}}2\notag\\
+&+\sum_{r=1}^{M}\frac{B_{2r}}{(2r)!}(s)_{2r-1}A^{-s-2r+1}
++\mathcal R_M(s,a).
+\end{align}
+Its periodic-Bernoulli remainder is, up to an irrelevant sign for the bound,
+\[
+\frac{(s)_{2M}}{(2M)!}\int_N^\infty \widetilde B_{2M}(x)(a+x)^{-s-2M}\dd x.
+\]
+The Bernoulli Fourier series implies
+$|\widetilde B_{2M}(x)|\leq|B_{2M}|$ \cite{dlmfbernoulli}.
+
+Multiply \eqref{eq:EM} by $(1+t)_k$, put $s=k+1+t$, and extract $n![t^n]$. All finite terms are products of integer polynomials, rational powers of rational positive arguments, and the truncated exponential
+\[
+[t^j]e^{-t\log x}=\frac{(-\log x)^j}{j!}.
+\]
+The integral term $A^{1-s}/(s-1)$ is especially simple: $(1+t)_k/(k+t)=(1+t)_{k-1}$. Thus no singular division is introduced into the certificate.
+
+\begin{theorem}[Rationally evaluable remainder bound]\label{thm:EMbound}
+Put $h=k+2M$ and write $(1+t)_h=\sum_j c_jt^j$, with $c_j\geq0$. The error in the coefficient approximation to $F_{n,k}^{1}(a)$ is at most
+\begin{equation}\label{eq:EMbound}
+\boxed{\frac{n!|B_{2M}|}{(2M)!}
+\sum_{j=0}^{n}\frac{c_j}{(n-j)!}A^{-h}
+\sum_{v=0}^{n-j}\frac{(n-j)!}{(n-j-v)!}\frac{\log^{n-j-v}A}{h^{v+1}}.}
+\end{equation}
+For an input interval $a\in[a_-,a_+]$, use $(a_-+N)^{-h}$ and an upper logarithm bound for $a_++N$ to obtain a uniform bound.
+\end{theorem}
+\begin{proof}
+The rising factorial in the coefficient remainder is exactly
+$(1+t)_k(k+1+t)_{2M}=(1+t)_{k+2M}$. Take absolute values after coefficient extraction. Since $A\geq1$, all logarithmic powers in the upper bound are nonnegative, and
+\[
+\int_A^\infty x^{-h-1}\log^d x\dd x
+=A^{-h}\sum_{v=0}^d\frac{d!}{(d-v)!}\frac{\log^{d-v}A}{h^{v+1}}.
+\]
+Repeated integration by parts proves this identity. Multiplying by $n!|B_{2M}|/(2M)!$ gives \eqref{eq:EMbound}. For interval input, the proposed replacements only increase each nonnegative factor and are therefore valid uniformly.
+\end{proof}
+
+\subsection{Rational logarithms and rounding}
+For a positive rational $x$, write $x=2^e y$ with $1\leq y\leq2$. Let $u=(y-1)/(y+1)$, so $0\leq u\leq1/3$. Then
+\begin{equation}\label{eq:logbound}
+2\sum_{j=0}^{J-1}\frac{u^{2j+1}}{2j+1}
+\leq\log y\leq
+2\sum_{j=0}^{J-1}\frac{u^{2j+1}}{2j+1}
++\frac{2u^{2J+1}}{(2J+1)(1-u^2)}.
+\end{equation}
+The remainder is bounded by replacing every later denominator by $2J+1$ and summing a geometric series. The same construction bounds $\log2$, and interval multiplication by the possibly negative integer $e$ handles the range reduction.
+
+The implementation uses scale $10^{55}$, $J=72$ logarithm terms, $N=32$ initial Hurwitz terms, and $M=16$ Bernoulli corrections. Endpoint numerators are integers. Products and quotients are rounded using floor and ceiling integer division; reciprocal operations reject intervals containing zero. The logarithm interval is computed at both endpoints of every interval argument. The error bound \eqref{eq:EMbound} is then added symmetrically outwards.
+
+\subsection{Executed checks and their interpretation}
+The released certificate records 35 exact sign assertions. They consist of five low-index anchors, ten endpoint signs and five whole-bracket predecessor signs at order three, six endpoint signs and three whole-bracket predecessor signs at order two, and six endpoint signs at order one.
+
+A separate exact regression run passed 10,972 counted assertions: 10,752 interval-operation checks against exact rational endpoint arithmetic, 156 elementary derivative-polynomial recurrences, eight Bernoulli values, 21 logarithm range-reduction identities, and replay of all 35 sign certificates. These are finite implementation tests; they are not a proof of arbitrary program correctness or a substitute for Theorem \ref{thm:EMbound}.
+
+Independent 40-decimal-digit diagnostics compared the Mellin integral with elementary or Euler--Maclaurin series in 108 cases, with scaled differences below $10^{-27}$. Four further comparisons checked the polylogarithmic order-derivative specialization directly. Fifteen diagnostics checked the next analytic coefficient after subtraction of the full logarithmic block. The critical-point decimals for the index-two minimum and index-three fold were recomputed by quadrature. None of these floating-point tests is used to certify an exact equality or an interval sign.
+
+The distinction is essential: Section \ref{sec:n5} is a computer-assisted theorem based on outward interval enclosures and a proved analytic zero bound. The all-order statements are ordinary analytic theorems, supported but not proved by the finite diagnostics.
+
+\section{Audit notes and proposed manuscript corrections}\label{sec:audit}
+\subsection{The monotonicity question must distinguish two regimes}
+The source's research discussion suggests higher-branch monotonicity from the first location correction, while proving a global result only for $n=1$. That suggestion should not be promoted to an all-$k$ conjecture. Theorem \ref{thm:n2} gives a rigorous counterexample already at $(n,k)=(2,1)$: the lower branch initially decreases, later increases, and has a unique nondegenerate minimum.
+
+A sound replacement is the combination of Theorem \ref{thm:eventualmono} and the remaining question of an explicit least monotonicity threshold. The source's existing uniform large-$k$ location theorem is not invalidated. Its missing step for a monotonicity conclusion is the mixed-derivative remainder proved in Section \ref{sec:eventual}.
+
+\subsection{Uniform endpoint continuity is not endpoint differentiability}
+The source carefully avoids assuming $\rho$ differentiability at one in its $n=1$ argument. Theorem \ref{thm:regularity} explains why: at $k=1$ the first $\rho$ derivative diverges, and at general $k$ the first divergent derivative is the $k$th. Any future argument that differentiates an estimate uniform in $\rho$ needs an independently justified derivative bound. This is a methodological warning, not a claim that the source's continuity proof is wrong.
+
+\subsection{A definite notation error in the half-unit proof}
+In the source's classical half-unit-bracket proof, the sentence immediately before the appeal to its zero-location theorem refers to the root of $P_1$ as $-\gamma$. Under the chapter's own definitions, $P_1(t)=1+t$ has root $-1$. The intended polynomial is $Q_1(x)=x+\gamma$. Replace $P_1$ by $Q_1$ there. The same proof begins with a duplicated phrase about endpoint signs; the integration notes supply a textual cleanup. Neither correction changes the underlying half-unit-bracket theorem.
+
+\subsection{A refined zero-count statement, not an extrapolation}
+The established count of $n$ zeros at every derivative order for $n\leq4$ does not extend unchanged to $n=5$. Theorem \ref{thm:n5} gives the correct replacement: the first two orders have a deficit of two. The existing eventual-saturation theorem remains correct, and its threshold is now sharp in this first unresolved classical case.
+
+\subsection{Unchanged unresolved arithmetic questions}
+No conclusion here proves or disproves the mixed $S_4$ identity. No numerical-independence assertion, period-injectivity claim, or new classical special-value reduction is inferred from our endpoint identities. Integration should preserve the source's distinctions between exact functional laws, formal relation-space obstructions, and high-precision residuals.
+
+\section{Further research questions and proposed conjectures}\label{sec:questions}
+\paragraph{1. Exact classical saturation thresholds.}
+Define $K_{\mathrm{sat}}(n)$ as the least $k$ after which every classical derivative has $n$ simple positive zeros. The source gives $K_{\mathrm{sat}}(n)=1$ for $n\leq4$; here $K_{\mathrm{sat}}(5)=3$. Determine subsequent values and bounds in $n$. Critical-point descent can certify exact deficits below any saturated order, including cases where a simple sign-grid search finds too few roots.
+
+\paragraph{2. Quantitative monotonicity thresholds.}
+Make Theorem \ref{thm:eventualmono} effective. The ingredients are explicit separation bounds for the roots of $Q_n$, a lower bound for $\min_j e^{-1/c_{n,j}}$, and a computable mixed-derivative concentration remainder. Then determine whether the least all-branch monotonicity threshold has a simple relation to $n$ or to $K_{\mathrm{sat}}(n)$. No such simple formula is asserted here.
+
+\paragraph{3. The full index-three phase diagram.}
+The localized fold suggests the following sharpened conjecture.
+\begin{conjecture}[No additional outer pair at index three]\label{conj:n3}
+With $\rho_c$ as in Theorem \ref{thm:n3fold}, the total number of positive zeros of $F_{3,1}^{\rho}$ is one for every $0<\rho<\rho_c$, two distinct zeros (one double) at $\rho=\rho_c$, and three simple zeros above it.
+\end{conjecture}
+At $\rho=0$ the elementary formula has two distinct positive zeros, $1$ (double) and $e^3$ (simple), so that endpoint is explicitly excluded from the proposed one-zero interval. Only the possible extra pair to the right of $3/2$ at a positive parameter below the threshold is unresolved. A proof needs a global one-crossing argument on that region or a certified two-parameter exclusion; the uniqueness of the left fold does not supply it. The numerical critical point is evidence for the local picture, not a certification of this global exclusion.
+
+\paragraph{4. Uniform saturation over the entire deformation.}
+At $\rho=0$, the polynomial in $-\log a$ has a zero of multiplicity $n-k$ when $n>k$, so an all-$\rho$ simplicity threshold must be at least $n-1$. Is this necessary lower bound sufficient for zero-count saturation and simplicity, or do some positive parameters create further deficits? This is posed as a question rather than an evidence-free theorem. The distinction from the stronger monotonicity property is already visible at $n=2$.
+
+\paragraph{5. Higher-index fold classification.}
+For every odd $n\geq3$, Theorem \ref{thm:smallrho} gives only one simple positive zero near $\rho=0$, despite an $n$-sign-change Mellin kernel. Determine which pairs become real as $\rho$ increases. Higher multiplicities, fold annihilation, and collisions near the Stieltjes endpoint should be treated separately. The universal logarithmic block gives a natural coordinate for boundary-sensitive continuation.
+
+\paragraph{6. Stable evaluation by subtracting the singular block.}
+Implement \eqref{eq:exactendpoint} with interval arithmetic for order derivatives of $\Li_s(e^{-\mu})$ when both $\mu$ is tiny and $n$ is moderate or large. The nonanalytic term is completely explicit. What remain are certified Hurwitz jets and a tail bound for the analytic power series. This should be compared with direct nested sums on both accuracy and bit complexity, not merely on a few decimal timings.
+
+\paragraph{7. Renormalized identities at rational shifts.}
+At rational $a$, $C_{n,k}(a)$ is an explicit combination of generalized Stieltjes constants. Combining \eqref{eq:finitepart} with finite Fourier transforms may isolate Dirichlet-character components of the singular and regular blocks. The cancellation should be performed before specialization to integral orders, so that an individual gamma pole is never evaluated numerically.
+
+\paragraph{8. Formal verification.}
+The fixed-point interval ring, logarithm enclosure, and coefficient recurrence are finite interfaces suitable for Lean verification. The analytic prerequisites can be isolated as the periodic-Bernoulli remainder bound, reciprocal-gamma root preservation, Laplace variation, and implicit-root continuation. A proof assistant should check the exact interval input data and the critical-point descent argument, not merely accept a floating-point list of roots.
+
+\section{Reproducibility and integration}\label{sec:repro}
+The package contains this article in \LaTeX\ and compiled PDF, the proof-bearing verifier, exact certificate JSON, finite regression tests, numerical diagnostics, a manuscript insertion, and editorial replacement instructions. The main commands, run from the package root, are
+\begin{verbatim}
+python verification/certify.py
+python verification/test_exact.py
+python verification/diagnostics.py --full
+make pdf
+\end{verbatim}
+The first two commands require only Python's standard library. The third requires \texttt{mpmath}. The optional symbolic polynomial generator requires \texttt{sympy}. Neither numerical nor symbolic optional code is needed for the 35 proof-bearing sign assertions.
+
+The integration fragment is intended as an added section after the existing zero-geometry chapter's results, with a bibliography item pointing to this standalone report. The full analytic and certification proofs should remain available rather than being reduced to unexplained decimal tables. No remote write, commit, or pull request was performed during preparation of this package.
+
+\appendix
+\section{Useful coefficient identities and regression formulas}\label{app:identities}
+For $n\geq1$,
+\[
+C_{n,1}(a)=(-1)^n\bigl(\gamma_n(a)-n\gamma_{n-1}(a)\bigr),
+\qquad C_{0,1}(a)=1+\gamma_0(a).
+\]
+At $k=2$,
+\begin{align*}
+C_{0,2}(a)&=\tfrac32+\gamma_0(a),\\
+C_{1,2}(a)&=\tfrac12-\gamma_1(a)+\tfrac32\gamma_0(a),\\
+C_{2,2}(a)&=\gamma_2(a)-3\gamma_1(a)+\gamma_0(a),\\
+C_{3,2}(a)&=-\gamma_3(a)+\tfrac92\gamma_2(a)-3\gamma_1(a).
+\end{align*}
+For every $r\ne k$,
+\[
+A_{n,k,r}(a)=k!\sum_{j=0}^{\min(n,k)}\frac{n!e_j(k)}{(n-j)!}
+\zeta^{(n-j)}(k+1-r,a),
+\]
+where the zeta superscript here explicitly denotes differentiation in its first argument.
+
+The numerator polynomial of the elementary endpoint can be written
+\[
+g_{n,k}(L)=n![t^n](1+t)_k e^{-Lt},\qquad
+f_{n,k}(a)=a^{-k-1}g_{n,k}(\log a).
+\]
+It obeys the exact integer-coefficient recurrence
+\begin{equation}\label{eq:greg}
+g_{n,k+1}(L)=(k+1)g_{n,k}(L)-g_{n,k}'(L).
+\end{equation}
+This is the elementary version of $F_{n,k+1}=-\partial_aF_{n,k}$. It supplies 156 exact finite regression checks in the delivered code.
+
+There is also a useful differential identity in the Lerch parameter. For $k\geq2$,
+\begin{equation}\label{eq:rhodiff}
+\rho\partial_\rho F_{n,k}^{\rho}(a)
+=kF_{n,k-1}^{\rho}(a)+nF_{n-1,k-1}^{\rho}(a)-aF_{n,k}^{\rho}(a),
+\end{equation}
+with the term containing $F_{-1,k-1}$ omitted when $n=0$. It follows from
+$\rho\partial_\rho\Phi(\rho,s,a)=\Phi(\rho,s-1,a)-a\Phi(\rho,s,a)$ and
+$(1+t)_k=(k+t)(1+t)_{k-1}$. The identity extends continuously to $\rho=1$ for these $k$, because the first parameter derivative is absolutely summable. At a simple zero its right side, together with $F_a=-F_{n,k+1}$, gives an alternative exact formula for the zero velocity. At $k=1$ one must not replace the lower-order family at $\rho=1$ by a convergent series.
+
+\clearpage
+\section{Numerical diagnostic examples, not interval certificates}\label{app:numerics}
+The lower index-two branch was evaluated independently by the Mellin integral:
+\begin{center}\small
+\begin{tabular}{rr}
+\toprule
+$\rho$ & Numerical value of $a_-(\rho)$\\
+\midrule
+0 & 1\\
+0.1 & 0.9884188245376475\\
+0.3 & 0.9635544069413519\\
+0.5 & 0.9360641170648367\\
+0.7 & 0.9058477993723233\\
+0.9 & 0.8790498787495029\\
+0.99 & 0.9252636288492692\\
+\bottomrule
+\end{tabular}
+\end{center}
+Theorem \ref{thm:n2}, rather than this table, proves uniqueness and nondegeneracy of the minimum.
+
+The fifth-index critical values demonstrate why testing only the sign of a function at its apparent roots is inadequate. At the first two zeros of $F_{5,3}^{1}$, the values of $F_{5,2}^{1}$ are approximately $0.0147750$ and $0.0570392$: both have the same sign. Thus the extra two critical points do not force extra zeros in the predecessor. The whole-bracket enclosures in Section \ref{sec:n5} turn this observation into an exact exclusion.
+
+\begingroup\small
+\begin{thebibliography}{9}
+\setlength{\itemsep}{3pt}
+\bibitem{repozeros}
+ProveIt Contributors, \emph{Polylogarithms and their Arithmetic Bridges}, chapter ``Positive kernels and the geometry of Stieltjes zeros,'' source file \texttt{09-zero-geometry.tex}, inspected at commit \sha, October 2026.\newline
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/a2a4cf58c49c745058c40e4a6748d472a3420f18/Analysis/Polylogarithms/docs/manuscript}.
+
+\bibitem{repodiscovery}
+ProveIt Contributors, same manuscript, chapter ``Experimental discovery and the route to proof,'' especially ``Questions sharpened by the exact continuations,'' source file \texttt{10-discovery.tex}, October 2026.
+
+\bibitem{dlmflerch}
+NIST Digital Library of Mathematical Functions, \S25.14, \emph{Lerch's Transcendent}, especially 25.14.3\_1 and 25.14.5. Formula 25.14.3\_1 is attributed there to A. Erd\'elyi et al., \emph{Higher Transcendental Functions}, vol.~I (1953), Eq.~(1.11.8), p.~29. Accessed October 9, 2026.\newline
+\url{https://dlmf.nist.gov/25.14}.
+
+\bibitem{dlmfhurwitz}
+NIST Digital Library of Mathematical Functions, \S25.11, \emph{Hurwitz Zeta Function}, particularly its Euler--Maclaurin representations. Accessed October 9, 2026.\newline
+\url{https://dlmf.nist.gov/25.11}.
+
+\bibitem{dlmfgamma}
+NIST Digital Library of Mathematical Functions, \S\S5.5 and 5.7, \emph{Gamma Function: Functional Relations and Series Expansions}. Accessed October 9, 2026.\newline
+\url{https://dlmf.nist.gov/5.5}; \url{https://dlmf.nist.gov/5.7}.
+
+\bibitem{dlmfbernoulli}
+NIST Digital Library of Mathematical Functions, \S24.8, \emph{Bernoulli and Euler Polynomials: Series Expansions}, especially the Fourier series for even Bernoulli polynomials. Accessed October 9, 2026.\newline
+\url{https://dlmf.nist.gov/24.8}.
+
+\bibitem{coffey}
+M. W. Coffey, \emph{The Stieltjes constants, their relation to the $\eta_j$ coefficients, and representation of the Hurwitz zeta function}, arXiv:0706.0343, 2007; version 2, 2009. Cited for historical context; the parameter-derivative calculation used here is reproduced in Section \ref{sec:family}.\newline
+\url{https://arxiv.org/abs/0706.0343}.
+\end{thebibliography}
+\endgroup
+\end{document}

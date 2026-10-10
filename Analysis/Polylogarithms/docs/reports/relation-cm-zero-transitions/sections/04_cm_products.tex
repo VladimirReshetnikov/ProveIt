@@ -1,0 +1,512 @@
+% Contribution for the ProveIt continuation. No document preamble.
+% Requires amsmath, amssymb, amsthm, booktabs, hyperref.
+% References supplied in cm_norms_references.tex.
+
+\section{Exact CM row products from class polynomials}
+\label{cmnorm:sec:main}
+
+The manuscript's complex-multiplication chapter records striking products
+of weight-four polygamma row sums at discriminants $-15,-20,-23,-39,-47$.
+Its displayed numerical residuals establish useful evidence, but do not
+explain the prime factors or provide proofs of the gamma products.
+The following argument supplies that missing step. It also evaluates
+the corresponding products at every even weight by a finite computation
+with a Hilbert class polynomial.
+
+The analytic ingredients are classical: the Kronecker limit formula,
+the Lerch--Chowla--Selberg formula, and the algebra of modular forms.
+The contribution here is an explicit, uniformly normalized consequence
+for the manuscript's row sums, accompanied by certified class-polynomial
+data and new displayed weight-six evaluations. We do not claim that the
+underlying CM period theory is new.
+
+\subsection{Conventions and the main theorem}
+
+Let $D=-d<-4$ be a fundamental discriminant, let
+$\chi_D(r)=(D/r)$ be its primitive quadratic Dirichlet character,
+and let $h=h(D)$. Take the standard reduced primitive positive definite
+forms
+\[
+ \mathcal Q_D=\{(a,b,c):b^2-4ac=D,\ |b|\leq a\leq c,\
+ b\geq0\text{ if }|b|=a\text{ or }a=c\}.
+\]
+There is one representative for each proper ideal class. Write
+\begin{align}
+ \tau_Q&=\frac{-b+i\sqrt d}{2a},&
+ A_D&=\prod_{Q\in\mathcal Q_D}a,&
+ P_D&=\prod_{\substack{1\leq r<d\\\chi_D(r)=1}}
+       \Gamma(r/d),\label{cmnorm:eq:data}\\
+ H_D(X)&=\prod_{Q\in\mathcal Q_D}(X-j(\tau_Q)),&
+ C_d&=\Phi_d(1),&\varphi_d&=\varphi(d).\notag
+\end{align}
+Thus $H_D\in\mathbb Z[X]$ is monic; $C_d=p$ if $d$ is a positive
+power of a prime $p$, and $C_d=1$ otherwise. All fractional powers of
+positive real numbers below denote their positive values.
+
+For even $w\geq4$, use exactly the lattice normalization of the manuscript:
+\begin{equation}
+ G_w(\tau)=\sum_{(m,n)\neq(0,0)}(m+n\tau)^{-w}
+ =2\zeta(w)E_w(\tau).
+ \label{cmnorm:eq:G}
+\end{equation}
+The modular discriminant is $\Delta(\tau)=\eta(\tau)^{24}$;
+in particular $j=E_4^3/\Delta$ and $j-1728=E_6^2/\Delta$.
+
+\begin{lemma}[The polynomial attached to an even weight]
+\label{cmnorm:lem:polynomial}
+For every even integer $w\geq4$, there is a unique monic polynomial
+$F_w\in\mathbb Q[X]$ of degree $w$ such that
+\begin{equation}
+ \frac{E_w(\tau)^{12}}{\Delta(\tau)^w}=F_w(j(\tau)).
+ \label{cmnorm:eq:Fw}
+\end{equation}
+It is effectively computable using exact rational Fourier coefficients.
+\end{lemma}
+\begin{proof}
+The left side is a weight-zero modular function, holomorphic on the
+upper half-plane since $\Delta$ has no zeros there, with a pole of order
+$w$ at the cusp and no other poles. The field of modular functions is
+$\mathbb C(j)$, and a modular function with no finite poles is a
+polynomial in $j$. Since $E_w=1+O(q)$, $\Delta=q+O(q^2)$, and
+$j=q^{-1}+744+O(q)$, this polynomial is monic of degree $w$.
+Successively removing its Laurent coefficients at $q^{-w},\ldots,q^0$
+computes all coefficients. The input coefficients are rational, hence so
+are the polynomial coefficients. Equivalently, one can work in the exact
+graded algebra $\mathbb Q[E_4,E_6]$.
+\end{proof}
+
+Set
+\[
+ \mathcal R_{D,w}=\operatorname{Res}_X(H_D(X),F_w(X)).
+\]
+Our resultant convention is
+$\operatorname{Res}(H_D,F_w)=\prod_QF_w(j(\tau_Q))$, since $H_D$
+is monic. No unidentified sign or leading coefficient is implicit.
+
+\begin{theorem}[CM product formula at every even weight]
+\label{cmnorm:thm:allweights}
+With the preceding definitions, for every even $w\geq4$,
+\begin{align}
+ \prod_{Q\in\mathcal Q_D}|G_w(\tau_Q)|
+ &=\left(\frac{|B_w|}{w!}\right)^h
+   \left(\frac{A_D}{d^h}\right)^{w/2}
+   C_d^{w/4}(2\pi)^{w(2h-\varphi_d)/4}
+   P_D^w\,|\mathcal R_{D,w}|^{1/12}.
+ \label{cmnorm:eq:allweights}
+\end{align}
+Here the Bernoulli numbers satisfy $B_2=1/6$. The formula includes a
+zero product: it vanishes precisely when $\mathcal R_{D,w}=0$.
+\end{theorem}
+
+The absolute values are essential in a uniform statement. Selecting one
+standard representative for each class need not make the product of
+positive-weight modular forms real. Section~\ref{cmnorm:sec:phase} gives
+the phase information needed for the manuscript's examples.
+
+\subsection{Derivation of the period factor}
+
+Put
+\[
+ R_D=\prod_{r=1}^{d-1}\Gamma(r/d)^{\chi_D(r)}.
+\]
+We first establish the precise normalization
+\begin{equation}
+ \prod_{Q\in\mathcal Q_D}|\Delta(\tau_Q)|
+ =\frac{A_D^6 R_D^6}{(2\pi d)^{6h}}.
+ \label{cmnorm:eq:delta}
+\end{equation}
+This is the fundamental-discriminant case of the classical
+Lerch--Chowla--Selberg formula. For a modern primary treatment with
+all normalization factors, see Barquero-Sanchez et al.\
+\cite{cmnorm:Barquero} and Cohen\cite{cmnorm:Cohen2026}.
+Here is a derivation that makes the powers of $2$, $\pi$, and $d$
+checkable.
+
+For $\operatorname{Re}s>1$, define the full Epstein sum
+\[
+ Z(\tau,s)=\sum_{(m,n)\neq(0,0)}
+       \frac{(\operatorname{Im}\tau)^s}{|m+n\tau|^{2s}}.
+\]
+The class decomposition of the Dedekind zeta function gives
+\begin{equation}
+ \sum_{Q\in\mathcal Q_D} Z(\tau_Q,s)
+ =2\left(\frac{\sqrt d}{2}\right)^s\zeta(s)L(s,\chi_D).
+ \label{cmnorm:eq:epstein}
+\end{equation}
+Indeed $Q(m,-n)=a|m+n\tau_Q|^2$ (the sign change in $n$ does not
+affect the full lattice sum), while
+$a\operatorname{Im}\tau_Q=\sqrt d/2$; the factor $2$ is the
+number of units, since $D<-4$.
+
+The Kronecker limit formula at zero reads
+\[
+ Z(\tau,0)=-1,\qquad
+ Z'(\tau,0)=-2\log\bigl(2\pi\sqrt{\operatorname{Im}\tau}
+                               |\eta(\tau)|^2\bigr).
+\]
+Also $L(0,\chi_D)=h$, and the finite Hurwitz-zeta expression for $L$
+and Lerch's identity give
+\[
+ L'(0,\chi_D)=-h\log d+\log R_D.
+\]
+Differentiate \eqref{cmnorm:eq:epstein} at zero, using
+$\zeta(0)=-1/2$ and $\zeta'(0)=-\tfrac12\log(2\pi)$.
+After collecting terms, one obtains
+\begin{equation}
+ \prod_Q\sqrt{\operatorname{Im}\tau_Q}|\eta(\tau_Q)|^2
+ =(4\pi\sqrt d)^{-h/2}R_D^{1/2}.
+ \label{cmnorm:eq:CS}
+\end{equation}
+Finally,
+$\prod_Q\operatorname{Im}\tau_Q=(\sqrt d/2)^h/A_D$.
+Dividing \eqref{cmnorm:eq:CS} by the square root of this product
+and raising to the twelfth power proves \eqref{cmnorm:eq:delta}.
+
+Because $\chi_D$ is odd, the positive and negative character residues
+are interchanged by $r\mapsto d-r$. Euler reflection therefore gives
+\begin{equation}
+ R_D=\frac{P_D^2}{\pi^{\varphi_d/2}}
+       \prod_{\chi_D(r)=1}\sin(\pi r/d)
+     =\frac{P_D^2\sqrt{C_d}}{(2\pi)^{\varphi_d/2}}.
+ \label{cmnorm:eq:reflection}
+\end{equation}
+To verify the last equality, square the sine product: it becomes the
+product over all reduced residues, because paired sines are equal.
+The identity $|1-e^{2\pi ir/d}|=2\sin(\pi r/d)$ and the cyclotomic
+polynomial evaluated at $1$ give its square as $C_d/2^{\varphi_d}$.
+Every sine is positive, fixing the square-root sign.
+
+\begin{proof}[Proof of Theorem~\ref{cmnorm:thm:allweights}]
+Multiply \eqref{cmnorm:eq:Fw} over the class representatives and take
+absolute values:
+\[
+ \prod_Q|E_w(\tau_Q)|
+ =\left(\prod_Q|\Delta(\tau_Q)|\right)^{w/12}
+       |\mathcal R_{D,w}|^{1/12}.
+\]
+Substitute \eqref{cmnorm:eq:delta}, then
+$2\zeta(w)=|B_w|(2\pi)^w/w!$ and
+\eqref{cmnorm:eq:reflection}. Directly collecting exponents gives
+\eqref{cmnorm:eq:allweights}. No logarithm is taken of $E_w$, so the
+same argument applies when a factor vanishes.
+\end{proof}
+
+\subsection{A finite arithmetic recipe and useful low weights}
+
+The general formula is particularly simple in the first few weights:
+\begin{center}
+\begin{tabular}{c l l}
+\toprule
+$w$ & $F_w(X)$ & $|\mathcal R_{D,w}|^{1/12}$\\
+\midrule
+$4$ & $X^4$ & $|H_D(0)|^{1/3}$\\
+$6$ & $(X-1728)^6$ & $|H_D(1728)|^{1/2}$\\
+$8$ & $X^8$ & $|H_D(0)|^{2/3}$\\
+$10$ & $X^4(X-1728)^6$ & $|H_D(0)|^{1/3}|H_D(1728)|^{1/2}$\\
+$12$ & $(X-432000/691)^{12}$ & $|H_D(432000/691)|$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For the last row, use
+$E_{12}=(441E_4^3+250E_6^2)/691
+       =\Delta(j-432000/691)$.
+This table is an exact algebraic calculation. In particular, the prime
+factors of a class product are no longer guessed from a ratio: at weights
+four and six they are determined by the factorizations of $H_D(0)$ and
+$H_D(1728)$, together with the explicitly displayed elementary factors.
+
+Specializing the theorem to weight four gives
+\begin{equation}
+ \prod_Q|G_4(\tau_Q)|
+ =\frac{|H_D(0)|^{1/3}A_D^2C_d}
+        {180^h d^{2h}2^{\varphi_d}\pi^{\varphi_d-2h}}P_D^4.
+ \label{cmnorm:eq:weightfour}
+\end{equation}
+At weight six it gives
+\begin{equation}
+ \prod_Q|G_6(\tau_Q)|
+ =\frac{A_D^3C_d^{3/2}|H_D(1728)|^{1/2}}
+        {30240^h d^{3h}}
+   (2\pi)^{3h-3\varphi_d/2}P_D^6.
+ \label{cmnorm:eq:weightsix}
+\end{equation}
+
+\input{sections/04a_modular_polynomials}
+
+\subsection{The phase and the exceptional class-pair average}
+\label{cmnorm:sec:phase}
+
+For a form strictly inside the reduced domain with $b\neq0$, the form
+with $-b$ also occurs. Their $G_w$ values are complex conjugates, so their
+product is positive unless a factor is zero. Boundary forms with $b=0$
+or $b=a<c$ give real $G_4$ and $G_6$, and these values are positive.
+For $G_4$ this follows from its positive value high on each boundary ray,
+continuity, and the fact that $E_4$ has no zero there except the hexagonal
+endpoint; for $G_6$ the same argument uses the unique elliptic zero at $i$.
+The excluded discriminants $-3,-4$ are exactly the exceptional endpoints.
+These are the usual zero-divisor consequences of the valence formula.
+
+The remaining boundary type is $a=c$ and $0<b<a$. Then $|\tau_Q|=1$.
+Modularity and conjugation imply
+$\overline{E_4(\tau_Q)}=\tau_Q^4E_4(\tau_Q)$.
+Following the unit arc from $i$ and using the absence of an interior zero
+fixes the sign and yields
+\begin{equation}
+ G_4(\tau_Q)=-\tau_Q^{-2}|G_4(\tau_Q)|
+ =\left(\frac{d-b^2}{4a^2}
+         -\frac{ib\sqrt d}{2a^2}\right)|G_4(\tau_Q)|.
+ \label{cmnorm:eq:arcphase}
+\end{equation}
+Thus an unqualified equality between a raw class product and its positive
+gamma norm is not valid for arbitrary discriminants. Recent detailed work
+on the analogous eta-phase issue is Cohen\cite{cmnorm:Cohen2026};
+the elementary modular calculation above suffices for the present cases.
+
+For $D=-15$ the nonprincipal form is $(2,1,2)$. Consequently
+\[
+ G_4((-1+i\sqrt{15})/4)
+ =\frac{7-i\sqrt{15}}8
+       |G_4((-1+i\sqrt{15})/4)|.
+\]
+The manuscript uses its real part, which is $7/8$ of the absolute value.
+This explains its factor $7$ exactly; averaging a conjugate pair must
+not be confused with taking one class representative in a norm.
+
+\subsection{Proofs of the manuscript's five class products}
+
+The needed class-polynomial constants and leading-coefficient products
+are as follows. The supplied interval certificate proves these are the
+exact Hilbert class polynomials, independently of numerical recognition.
+\begin{center}
+\begin{tabular}{c r r l l}
+\toprule
+$D$&$h$&$A_D$&$H_D(0)$&$H_D(1728)$\\
+\midrule
+$-15$&2&2&$-3^6 5^3 11^3$&$3^6 7^4 11^2$\\
+$-20$&2&2&$-2^{12}5^3 11^3$&$-2^{16}11^2 19^2$\\
+$-23$&3&4&$5^9 11^3 17^3$&$7^6 11^4 19^2 23$\\
+$-39$&4&12&$3^{15}17^3 23^3 29^3$&$3^{12}7^8 19^4 23^2$\\
+$-47$&5&36&$5^{15}11^6 23^3 29^3$&$11^6 19^4 23^4 31^2 43^2 47$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The signs and factorizations in this table are exact integer arithmetic;
+they are also recorded in the machine receipt.
+
+For $D=-23,-39,-47$ there are no unit-arc boundary representatives.
+The preceding positivity argument removes the absolute values in
+\eqref{cmnorm:eq:weightfour}. It gives precisely
+\begin{align}
+ \prod_{Q\in\mathcal Q_{-23}}G_4(\tau_Q)
+ &=\frac{11\cdot17\,P_{-23}^4}
+        {2^{24}3^6 23^5\pi^{16}},\label{cmnorm:eq:G4d23}\\
+ \prod_{Q\in\mathcal Q_{-39}}G_4(\tau_Q)
+ &=\frac{17\cdot23\cdot29\,P_{-39}^4}
+        {2^{28}3^9 5^4 13^8\pi^{16}},\label{cmnorm:eq:G4d39}\\
+ \prod_{Q\in\mathcal Q_{-47}}G_4(\tau_Q)
+ &=\frac{11^2\cdot23\cdot29\,P_{-47}^4}
+        {2^{52}3^6 47^9\pi^{36}}.\label{cmnorm:eq:G4d47}
+\end{align}
+These formulas upgrade the three previously empirical product evaluations
+to consequences of established analytic identities and exact CM data.
+No gamma-period independence assertion is used.
+
+For $D=-15$, the extra factor $7/8$ from
+\eqref{cmnorm:eq:arcphase} gives, with
+$\tau_1=(1+i\sqrt{15})/2$ and
+$\widehat G_4=\operatorname{Re}G_4((1+i\sqrt{15})/4)$,
+\begin{equation}
+ G_4(\tau_1)\widehat G_4
+ =\frac{77P_{-15}^4}{2^{13}3^6 5^5\pi^4},\qquad
+ P_{-15}=\Gamma(1/15)\Gamma(2/15)\Gamma(4/15)\Gamma(8/15).
+ \label{cmnorm:eq:G4d15}
+\end{equation}
+For $D=-20$, \eqref{cmnorm:eq:weightfour} first gives
+\[
+ \prod_QG_4(\tau_Q)=\frac{11P_{-20}^4}{2^{14}3^4 5^5\pi^4}.
+\]
+The multiplication and reflection formulas yield
+\[
+ \frac{\Gamma(1/20)\Gamma(9/20)}
+      {\Gamma(3/20)\Gamma(7/20)}
+ =4\,5^{1/4}\sin(3\pi/20)\sin(7\pi/20)
+ =5^{1/4}\phi,
+\]
+where $\phi=(1+\sqrt5)/2$. For the first equality, apply the
+fivefold gamma multiplication formula at $1/20$ and reflect its
+$13/20$ and $17/20$ factors. Hence
+$P_{-20}=5^{1/4}\phi\Gamma(3/20)^2\Gamma(7/20)^2$, proving
+\begin{equation}
+ G_4(i\sqrt5)G_4((-1+i\sqrt5)/2)
+ =\frac{11\phi^4\Gamma(3/20)^8\Gamma(7/20)^8}
+        {2^{14}3^4 5^4\pi^4}.
+ \label{cmnorm:eq:G4d20}
+\end{equation}
+
+\subsection{Three explicit weight-six extensions}
+
+The same exact class data now produce formulas that were not displayed
+in the baseline manuscript:
+\begin{align}
+ \prod_{Q\in\mathcal Q_{-23}}G_6(\tau_Q)
+ &=\frac{11^2\cdot19\,P_{-23}^6}
+       {2^{33}3^9 5^3 23^7\pi^{24}},\label{cmnorm:eq:G6d23}\\
+ \prod_{Q\in\mathcal Q_{-39}}G_6(\tau_Q)
+ &=\frac{19^2\cdot23\,P_{-39}^6}
+       {2^{38}3^{15}5^4 13^{12}\pi^{24}},\label{cmnorm:eq:G6d39}\\
+ \prod_{Q\in\mathcal Q_{-47}}G_6(\tau_Q)
+ &=\frac{11^3 19^2 23^2\cdot31\cdot43\,P_{-47}^6}
+       {2^{73}3^9 5^5 7^5 47^{13}\pi^{54}}.
+       \label{cmnorm:eq:G6d47}
+\end{align}
+They follow by inserting the factorizations of $H_D(1728)$ in
+\eqref{cmnorm:eq:weightsix}; positivity was already established.
+For example, at $D=-23$ the square root is
+$7^3 11^2 19\sqrt{23}$, and $C_{23}^{3/2}=23^{3/2}$.
+Their product contributes $23^2$, which changes $23^9$ in the
+denominator to $23^7$. This calculation is a useful check on the
+normalization.
+
+Every factor here is a polygamma row sum. For example,
+\[
+ G_6(\tau)=2\zeta(6)+\frac1{60}
+  \sum_{n\geq1}\left[\psi^{(5)}(n\tau)
+                         +\psi^{(5)}(1-n\tau)\right].
+\]
+Consequently \eqref{cmnorm:eq:G6d23}--\eqref{cmnorm:eq:G6d47}
+are exact identities for finite products of exponentially convergent
+polygamma-row combinations. Weight twelve gives a further family whose
+entire arithmetic factor is the rational number
+$|H_D(432000/691)|$.
+
+\subsection{How the class-polynomial data are certified}
+\label{cmnorm:sec:certification}
+
+The program \texttt{cm\_norms.py} enumerates reduced forms by exact
+integer arithmetic. It then evaluates all singular moduli in rectangular
+complex intervals using 120 decimal digits of directed interval
+arithmetic and 70 terms of the Lambert series
+\[
+ E_4=1+240\sum_{n\geq1}\frac{n^3q^n}{1-q^n},\qquad
+ E_6=1-504\sum_{n\geq1}\frac{n^5q^n}{1-q^n},\qquad
+ j=\frac{1728E_4^3}{E_4^3-E_6^2}.
+\]
+The interval engine encloses $\pi$, $\sqrt d$, and the complex
+exponential. Its output endpoints are finite binary rationals; the
+program converts them to exact Python fractions before every final
+containment comparison.
+
+Reduced points satisfy $\operatorname{Im}\tau\geq\sqrt3/2$, hence
+$|q|\leq e^{-\pi\sqrt3}<1/200$. This last strict inequality needs
+no floating-point assumption: use $\pi>314/100$,
+$\sqrt3>173/100$, their product greater than $27/5$, and the rational
+partial sum $\sum_{k=0}^{15}(27/5)^k/k!>200$.
+For $r=1/200$ and $p=3,5$, the omitted tail satisfies
+\begin{equation}
+ \left|\sum_{n>N}\frac{n^pq^n}{1-q^n}\right|
+ \leq\frac{(N+1)^p r^{N+1}\mathcal A_p(r)}{(1-r)^{p+2}},
+ \label{cmnorm:eq:tail}
+\end{equation}
+where
+\[
+ \mathcal A_3(r)=1+4r+r^2,\qquad
+ \mathcal A_5(r)=1+26r+66r^2+26r^3+r^4.
+\]
+Indeed $n=N+1+j\leq(N+1)(j+1)$, and
+$\sum_{j\geq0}(j+1)^pr^j=\mathcal A_p(r)/(1-r)^{p+1}$.
+The code adds the resulting error bound in both real and imaginary
+coordinates before forming $j$ or multiplying the class polynomial.
+
+Classical CM theory proves in advance that each coefficient of $H_D$
+is an integer. The interval product encloses every coefficient in an
+interval strictly contained in its asserted integer plus
+$(-1/2,1/2)$; its imaginary interval contains zero. Thus the unique
+possible integer is proved, rather than merely recognized to many digits.
+The maximum real interval widths were
+\begin{center}
+\begin{tabular}{c c c c c}
+\toprule
+$D=-15$&$D=-20$&$D=-23$&$D=-39$&$D=-47$\\
+\midrule
+$1.36\cdot10^{-109}$&$3.95\cdot10^{-108}$&$1.83\cdot10^{-103}$&
+$2.80\cdot10^{-95}$&$1.51\cdot10^{-88}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The displayed bounds have been rounded upward. Exact interval endpoints,
+all polynomial coefficients, and the integer factorizations are saved
+in \texttt{cm\_norms\_receipt.json}.
+
+An additional 25 numerical comparisons test the gamma norm formula at
+weights $4,6,8,10,12$ for each of the five discriminants. They have
+relative residuals below $1.1\cdot10^{-119}$ at 120 digits. These
+comparisons are regression checks: they are not interval proofs of the
+gamma identities, whose proof is Theorem~\ref{cmnorm:thm:allweights}.
+Similarly, the certified-polynomial computation is a numerical proof
+conditional on the standard CM integrality theorem and on the interval
+library's directed-rounding implementation; it is not a Lean
+formalization. This evidence boundary is explicit and reproducible.
+
+\subsection{Extension to arbitrary quadratic orders}
+
+There is also a direct version for $D=D_0f^2$, where $D_0$ is fundamental,
+including the unit exceptions $D_0=-3,-4$. Let $h=h(D)$ and
+$d=|D|$, and let $\mathrm{CS}(D_0)$ be Cohen's normalized gamma
+quotient
+\[
+ \mathrm{CS}(D_0)=
+ \left(\prod_{r=1}^{|D_0|-1}\Gamma(r/|D_0|)^{\chi_{D_0}(r)}
+ \right)^{w(D_0)/(2h(D_0))}.
+\]
+Define the explicit conductor factor
+\[
+ c(D_0,f)=\prod_{p\mid f}p^{e(p)},\qquad
+ e(p)=\frac{(1-p^{-v_p(f)})(1-\chi_{D_0}(p))}
+ {(1-1/p)(p-\chi_{D_0}(p))}.
+\]
+The order form of Lerch--Chowla--Selberg\cite{cmnorm:Barquero,cmnorm:Cohen2026}
+gives the following immediate extension of the proof:
+\begin{equation}
+ \prod_{Q\in\mathcal Q_D}|G_w(\tau_Q)|
+ =(2\zeta(w))^h A_D^{w/2}
+ \left(\frac{c(D_0,f)\mathrm{CS}(D_0)}{2\pi d}\right)^{hw/2}
+ |\operatorname{Res}(H_D,F_w)|^{1/12}.
+ \label{cmnorm:eq:orders}
+\end{equation}
+Thus nonmaximal orders require an explicit conductor correction, not a
+new unidentified period basket. Setting $f=1$ and $D<-4$ recovers the
+main theorem.
+
+\subsection{Research directions and scope}
+
+The theorem suggests several concrete continuations.
+\begin{enumerate}
+\item Extend the exact polynomial $F_w$ generator supplied here and combine it with
+certified class-polynomial software such as Sutherland's CRT methods
+\cite{cmnorm:Sutherland}. This extends the product database to large
+weights and class numbers without integer-relation searches.
+\item Determine signed, rather than absolute, products for all weights
+by tracking the phases of boundary representatives and the zero signs
+of $E_w$ along the unit arc. The present phase proof covers the displayed
+weight-four and weight-six examples; a general norm alone does not
+settle this problem.
+\item Use factorizations of $H_D(0)$ and $H_D(1728)$ to compare the prime
+support with arithmetic formulas for norms of singular-modulus
+differences. This gives an explanation for the prime patterns observed
+in the manuscript, beyond using those patterns to build a PSLQ basis.
+\item Extend the certified computations to class-by-class algebraic
+factors and genus-wise products. A full class norm does not by itself
+prove class ratios. Section~\ref{cmgenus:sec:main} supplies the additional
+genus-character argument for the recorded ratios at $D=-15,-20,-39$;
+extending it beyond these examples remains a natural direction.
+\item Build a uniform certificate format containing the discriminant,
+reduced forms, exact $H_D$, exact $F_w$, resultant, conductor factor,
+phase convention, gamma residue set, and analytic tail bound. Each
+claimed identity then has a finite, reviewable provenance chain.
+\end{enumerate}
+
+None of these norm computations proves linear or algebraic independence
+of individual gamma values or individual polygamma rows. Nor does it
+imply that arbitrary sums of raw positive-weight CM values are class
+invariants. The result is a precise product theorem with completely
+specified representative dependence.

@@ -1,23 +1,27 @@
 # Validation of the unified manuscript
 
-Completed October 9, 2026. Authorship is **ProveIt Contributors** on the title
-page and in the PDF metadata. The canonical [PDF](polylogarithms.pdf) has **287
+Research checkpoint, October 9, 2026. The broader research and integration
+goal remains active. Six new packages have been preserved and replayed;
+audited results are integrated below, while CM, Lerch and angular material
+is still being reconciled. This validation is for the current artifact.
+ Authorship is **ProveIt Contributors** on the title
+page and in the PDF metadata. The canonical [PDF](polylogarithms.pdf) has **298
 pages, twelve chapters**, a literature appendix with 94 distinct historical
 question leads, and 79 bibliography entries. It incorporates the original
 39 drafts and all eleven nested continuation packages in the requested tree.
-The recursive [inventory](source-inventory.json) contains **179 textual source
+The recursive [inventory](source-inventory.json) contains **248 textual source
 files**, including assembled/fragment versions and correction registers.
 Their overlap is reconciled in the [editorial ledger](EDITORIAL-LEDGER.md).
 
 The reviewed PDF SHA-256 is:
 
 ```
-d589b97556c858d9bd4444adda1b06d949e93179b1de44f1412cea75aef8975d
+da36e67251d6e82ea73f2902c0b1a34ad2cf9c30365ab88fa5df95c42794d200
 ```
 
 ## Source reconciliation and evidence integrity
 
-All 179 source digests match; no textual source is unlisted or uncovered.
+All 248 source digests match; no textual source is unlisted or uncovered.
 The static audit finds no duplicate labels or bibliography keys, missing
 references/citations, missing TeX inputs or missing figures. See
 [document-integrity.json](verification/document-integrity.json).
@@ -117,9 +121,10 @@ The final synchronization added deliveries 18 and 19 to the Gaussian package.
 Their shared formulas are fused with the earlier proofs. The new Chapter 5
 organizes the signed density, unique angular zero, uniform four-term zero
 asymptotic, one-sided Euler certificates, sharp logarithmic error, bounded
-S4 obstruction and exact Holder computation. The all-odd-weight pattern for that specified matrix vocabulary remains
-conjectural despite its finite exact census. The later all-weight theorem
-for a separately specified product quotient has its own proof and scope.
+S4 obstruction and exact Holder computation. The all-odd-weight pattern was conjectural at that earlier checkpoint.
+The current Chapter 5 now proves both original matrix ranks and the
+Gaussian-supported saturation uniformly; the separately specified
+product quotient retains its own proof and scope.
 
 Part 18 freshly passes **588** exact/interval check cases at 400 Euler terms:
 39 shuffle inverses, 56 kernel recurrences, 8 base derivatives, 384 Euler
@@ -156,7 +161,8 @@ flattened placement supplies twenty additional duplicate editorial fragments;
 all twenty match originals after LF normalization. The archive bytes are
 recoverable at the recorded immutable Git revision after upstream retired
 the arrival ZIPs. The textual inventory includes these copies and the five
-updated overview notes, for 179 provenance files.
+updated overview notes, for 179 provenance files at that checkpoint.
+The current six-package research intake brings the census to 248.
 
 All five isolated replay suites exit successfully; their commands, exact
 parameters, original code digests and freshly produced result filenames are
@@ -191,6 +197,61 @@ conjectural: those strings describe the earlier report's scope. The current
 canonical S4 statement is proved by the later exact certificate. The S6
 status has not been promoted.
 
+## Current research milestone: six further continuations
+
+All **267** members of the six new packages are byte-preserved; their raw
+hashes and arrival revision are in research-incoming-archives.json. All six
+isolated replay suites pass. Their claims retain distinct proof scopes, and
+a passing packaged suite does not promote every general theorem or imply
+that all six packages have been fully integrated. The editorial ledger lists
+the remaining analytic reconciliation explicitly.
+
+The canonical additions are:
+
+- The original specified-matrix rank conjecture is now proved by two
+  polynomial reflection blocks, with full rational kernel, Gaussian-supported
+  saturation, a membership certificate and an even-weight compiler. Fresh
+  checks cover **40** weights (2-41), **210** even formulas, **816** affine
+  row checks and **420** Gaussian membership checks. The kernel vectors have
+  integer coordinates; no saturated integer-lattice basis is inferred.
+- The S2 identity has its complete **25-row** certificate (23 double shuffle
+  plus two convergent octahedral rows), independently replayed by two word
+  implementations. Native Wolfram defining integrals check both its double
+  and classical half-point forms at **80 digits**, gate **1e-45**.
+- The complete fifth-index zero transition is integrated with its **22**
+  endpoint and **8** whole critical-interval signs. The new sixth/seventh-index
+  theorem proves counts **4,4,4,6,...** and **5,5,5,5,7,...**, all zeros simple.
+  Both implementations pass **90** endpoint and **36** whole critical-interval
+  enclosures. One uses scale 1e80 and 24 initial Hurwitz terms; the independent
+  coefficient engine uses scale 1e100 and 32 terms. Their analytic remainder
+  proof, global multiplicity bound and critical-point descent establish the
+  global result. Numerical bracket proposals are never accepted as signs.
+- The affine signed-moment error theorem is extended from integer to real
+  outer order a >= 1 by the same Gamma-density variation proof. The rational
+  implementation remains restricted to integer indices.
+- Two convergent weight-seven shuffle rows give an exact Gaussian coordinate
+  identity and prove equivalence of the earlier and Cayley S6 candidates.
+  The rational coefficient check has zero residual, and a third native
+  Wolfram check corroborates the identity at 80 digits. **S6 remains unproved.**
+- The frozen S8 search vector is rigorously rejected by a rational residual
+  interval lying near -1.3274179020580458e-86 and excluding zero. The N=1000
+  replay recomputes all atom/residual endpoints exactly; its interval width
+  is below 2.080e-290. This rejects only the explicit vector, not all possible
+  relations or period independence.
+
+Two half-unit proof errors (the duplicated endpoint phrase and P1/Q1
+confusion) are corrected. The inherited profile figure is regenerated with
+Q_n notation, and its previously undefined Gamma-expectation profile is now
+specified. Its original source and plot remain intact; the new drawing and
+package versions are recorded in zero-profile-redraw.json.
+
+The 248-source inventory includes all new supporting prose, including material
+whose canonical integration remains pending. Source coverage is therefore
+distinct from completing every research item. The current book has **298 pages,
+twelve chapters, nine figures and 79 references**. The hourly incoming-report
+watch is active; it is configured to stay quiet on an unchanged, non-actionable
+state.
+
 ## Build and rendered review
 
 Three serial LuaLaTeX passes exit successfully and have identical final
@@ -198,17 +259,17 @@ auxiliary/reference state. The final log contains zero unresolved references
 or citations, duplicate-label warnings, overfull boxes, missing glyphs or
 rerun requirements. See [build-results.json](verification/build-results.json).
 
-The PDF text/bounds audit passes on all 287 pages. All pages were rasterized
-and visually reviewed in eighteen contact sheets. Full-size review covered the collective title, S4 relation schemas and exact
-certificate, pure-complement classification, complementary-depth formula,
-saddle theorem, sharp and reflected moment proofs, conductor determinant and
-principal trace jets, Tornheim sign/evaluator, Herglotz derivative/sector proofs
-and all eight scientific figures. No clipping, overlap or illegible layout
-defects were found. [visual-review.json](verification/visual-review.json) records
-the actual reviewed pages; [pdf-inspection.json](verification/pdf-inspection.json)
-records static checks and all rendered candidates. The collective author was
-confirmed on the title and in metadata. The manuscript PDF is unchanged after
-that review.
+The PDF text/bounds audit passes on all 298 pages. All pages were rasterized
+and visually reviewed in nineteen contact sheets. Full-size review of the current artifact covered the exact S6 coordinate
+identity/reconciliation, real-order signed-moment proof, corrected Q_n profile
+figure/caption, new fifth-index plot and sixth/seventh-index theorem, tables
+and proof. The unchanged other figures retain their previous full-size review
+and were checked again in the current sheets. No clipping, overlap or
+illegible layout defects were found. The current collective title was checked
+in the sheets and the PDF metadata. [visual-review.json](verification/visual-review.json)
+records the actual current full-page scope;
+[pdf-inspection.json](verification/pdf-inspection.json) records static checks
+and all rendered candidates. The manuscript PDF is unchanged after that review.
 
 ## Limits of the evidence
 

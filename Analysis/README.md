@@ -17,7 +17,7 @@ and Coq proofs; the Fabius project is currently a Lean statement formalization.
   statements of every result in arXiv:1702.06487v3.  Proofs are the next
   formalization phase.
 - [`Polylogarithms/`](Polylogarithms/) collects Vladimir Reshetnikov's PolyLog
-  research programme in a collective 287-page [unified manuscript](Polylogarithms/docs/manuscript/polylogarithms.pdf), with source drafts moved from the private Smithereens repository: eight
+  research programme in a collective 298-page [unified manuscript](Polylogarithms/docs/manuscript/polylogarithms.pdf), with source drafts moved from the private Smithereens repository: eight
   articles and thirty-one reports, supplemented by eleven continuation packages,
   on multiple polylogarithms at roots of unity,
   the polylogarithm–polygamma bridge, the Γ-value lattice, polygamma at CM

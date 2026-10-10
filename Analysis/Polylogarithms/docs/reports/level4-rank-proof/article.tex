@@ -1,0 +1,1025 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{mathpazo}
+\usepackage[margin=26mm,headheight=14pt]{geometry}
+\usepackage{microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable,enumitem}
+\usepackage{xcolor,xurl,hyperref,fancyhdr}
+\definecolor{inkblue}{HTML}{193C60}
+\hypersetup{colorlinks=true,linkcolor=inkblue,citecolor=inkblue,urlcolor=inkblue,
+ pdftitle={Two reflections and exact ranks for level-four double polylogarithms},
+ pdfauthor={OpenAI-assisted research contribution for ProveIt}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Level-four double-shuffle ranks}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\Imag}{\operatorname{Im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\Row}{\operatorname{Row}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\kerdim}{\operatorname{nullity}}
+\newcommand{\rev}{\mathsf T}
+\newcommand{\refl}{\mathsf R}
+\newcommand{\Gset}{\mathcal G}
+\newcommand{\Nset}{\mathcal N}
+\newcommand{\V}{\mathcal V}
+\newcommand{\R}{\mathcal R}
+\newcommand{\Ltwo}{\log 2}
+\newcommand{\pathtext}[1]{\nolinkurl{#1}}
+\title{\vspace{-9mm}\textbf{Two reflections and exact ranks for\\level-four double polylogarithms}\\[5pt]
+\large A proof of the manuscript's odd-weight rank conjecture,\\an explicit parity compiler, and uniform harmonic-sum obstructions}
+\author{OpenAI-assisted research contribution prepared for\\Vladimir Reshetnikov's ProveIt project}
+\date{9 October 2026, Pacific time}
+\begin{document}
+\maketitle
+\begin{abstract}
+The ProveIt manuscript records an all-odd-weight conjecture for a particular
+rational matrix of level-four depth-two shuffle and stuffle product relations.
+We prove both asserted ranks, not only their difference. If $A_w$ is the
+matrix on its $6w-7$ convergent imaginary coordinates, then
+$\rank A_w=5w-6$ for odd $w\ge3$, and $\rank A_w=6w-7$ for even $w\ge2$.
+After deleting the Gaussian columns, the corresponding ranks are
+$(9w-11)/2$ and $5w-6$. The proof converts the binomial rows into equations
+for six homogeneous polynomials. Two independent polynomial reflections
+then give an explicit integer basis of the entire odd-weight nullspace.
+This yields a complete row-membership test and proves that the Gaussian-only
+linear consequences are exactly the same-point shuffle consequences.
+
+Keeping the single-value right sides gives a closed polynomial compiler for
+all even-weight imaginary double values at fourth roots of unity. We extract
+two compact mixed-color identities in every even weight. A second consequence
+is a uniform obstruction: in every odd weight, the sum
+$S_{2m}=\sum_{n\ge0}(-1)^nH_n/(2n+1)^{2m}$ introduces one additional formal
+direction beyond the Gaussian doubles in this restricted linear system.
+The proposed numerical evaluation of $S_4$ is neither proved nor refuted.
+Exact certificates cover weights $2$--$41$, and 210 explicit even-weight
+formulas through weight $12$ are checked against all 816 product rows.
+All ranks are formal; no numerical period independence is asserted.
+\end{abstract}
+\vspace{3mm}
+\noindent\textbf{Keywords.} Multiple polylogarithms; colored double zeta values;
+double shuffle; Gaussian periods; exact linear algebra; parity.
+\newpage
+\tableofcontents
+\newpage
+
+\section{Research target, result, and scope}
+\label{sec:scope}
+The source for this continuation is the consolidated ProveIt manuscript at
+commit \pathtext{9bc738d3be22b8586a24693f19fb2e2a50ecd1bf}. The target is the
+conjecture labeled \pathtext{signed:conj:rank} in
+\pathtext{chapters/05-signed-kernels.tex}; the underlying file has Git blob
+\pathtext{e61ff32263722d7575ca0202fba4dd7dad534861}. That conjecture gives two
+ranks for an explicitly specified family of rational matrices, with exact
+experimental evidence through odd weight $31$ \cite{repo}.
+
+This target is distinct from the manuscript's previously proved Gaussian
+weight-six formulas, its earlier shuffle-rank theorem, and its distribution
+rank results. The result below settles the remaining matrix conjecture and
+explains its experimental pattern. The method also covers the even weights
+and produces an explicit solution operator for the inhomogeneous equations.
+
+\begin{theorem}[All-weight rank theorem]\label{thm:main}
+Let $A_w$ be the level-four imaginary depth-two product matrix defined in
+Section~\ref{sec:model}. Let $A_w^{\neg g}$ be obtained by deleting all columns
+$\Imag\Li_{a,w-a}(\ii,1)$, $1\le a<w$. Then
+\begin{align}
+\rank A_w&=
+\begin{cases}
+5w-6,&w\ge3\text{ odd},\\
+6w-7,&w\ge2\text{ even},
+\end{cases}\label{eq:main-rank}\\
+\rank A_w^{\neg g}&=
+\begin{cases}
+(9w-11)/2,&w\ge3\text{ odd},\\
+5w-6,&w\ge2\text{ even}.
+\end{cases}\label{eq:main-nong}
+\end{align}
+For odd $w$, an explicit integer basis of $\ker A_w$ has $w-1$ members,
+split into two families of $(w-1)/2$ members. One family controls the Gaussian
+coordinates; the other vanishes on every Gaussian coordinate.
+\end{theorem}
+
+The rank refers to coefficient rows after the known single-value right sides
+have been suppressed. It is not a dimension of numerical periods. If the
+evaluation map has further identities, those identities can reduce the
+numerical span without changing $A_w$. Similarly, an obstruction in this
+matrix system excludes only a rational linear combination of its stated
+rows. It does not exclude argument transformations, elimination from higher
+depth, or products of lower-weight relations followed by further reduction.
+
+The even-weight reduction phenomenon belongs to the established parity theory
+of multiple polylogarithms, notably Panzer's theorem \cite{panzer}. Our
+contribution here is an explicit description of this particular linear
+product module and its compiler; we do not claim a new general parity
+principle. Standard cyclotomic relation systems are substantially broader
+than this module \cite{zhao}. The literature search also located recent work
+on a different, weight-two conjecture of Zhao \cite{bachmann}; it should not
+be conflated with the manuscript conjecture proved here. No exhaustive claim
+of worldwide priority is made for individual special-value identities.
+
+\section{The exact product model}
+\label{sec:model}
+\subsection{Colors, indices, and convergent coordinates}
+Our convention is
+\begin{equation}
+D_{a,b}(x,y)=\Li_{a,b}(x,y)
+ =\sum_{n>m\ge1}\frac{x^ny^m}{n^a m^b},\qquad a,b\ge1.
+\label{eq:series}
+\end{equation}
+Thus $a$ is the outer index. We use
+\[
+H_n^{(b)}=\sum_{j=1}^n j^{-b},\quad H_n=H_n^{(1)},\quad H_0^{(b)}=0,
+\qquad \beta(k)=\sum_{j\ge0}\frac{(-1)^j}{(2j+1)^k}\quad(k\ge1),
+\]
+and $\zeta(k)=\sum_{n\ge1}n^{-k}$ for $k\ge2$.
+The series for $\beta(1)$ is understood in its ordinary alternating sense.
+Put
+\[
+x_{a,b}^{r,s}=\Imag D_{a,b}(\ii^r,\ii^s),\qquad r,s\in\Z/4\Z.
+\]
+Conjugation gives $x_{a,b}^{r,s}=-x_{a,b}^{-r,-s}$. When both colors are even,
+the imaginary coordinate is zero. The six remaining color representatives are
+\begin{equation}
+(0,1),\ (1,0),\ (1,1),\ (1,2),\ (1,3),\ (2,1).
+\label{eq:colors}
+\end{equation}
+For each representative, retain $a=1,\ldots,w-1$, except for
+$x_{1,w-1}^{0,1}$. This last coordinate has a logarithmically divergent
+imaginary part. There are consequently $6(w-1)-1=6w-7$ retained coordinates.
+We order them lexicographically by $(a,b,r,s)$, with $b=w-a$.
+
+For $a>1$, absolute convergence follows from
+$H_{n-1}=O(\log n)$ and $H_{n-1}^{(b)}\le H_{n-1}$.
+For $a=1$ and outer color different from $1$, summation by parts gives the
+usual convergent boundary values. For example, when the inner color is $1$,
+$H_{n-1}^{(b)}/n$ tends to zero and has summable eventual variation; when the
+inner color is nontrivial, its partial sums converge to a finite single value
+with an $O(n^{-b})$ remainder. The exceptional outer color $1$ and imaginary
+inner color produces the removed logarithm. Purely real divergent expressions
+are not assigned finite numerical values: their imaginary equations are
+simply zero.
+
+\subsection{The row vocabulary}
+The stuffle product is
+\begin{equation}
+D_{p,q}(x,y)+D_{q,p}(y,x)
+ =\Li_p(x)\Li_q(y)-\Li_w(xy),\qquad p+q=w.
+\label{eq:stuffle}
+\end{equation}
+The indices \emph{and the colors} exchange together. The product shuffle is
+\begin{align}
+&\sum_{j=0}^{p-1}\binom{q+j-1}{j}
+       D_{q+j,p-j}(y,x/y)\notag\\
+&\qquad+\sum_{j=0}^{q-1}\binom{p+j-1}{j}
+       D_{p+j,q-j}(x,y/x)
+ =\Li_p(x)\Li_q(y).
+\label{eq:shuffle}
+\end{align}
+The first identity follows by partitioning the product of two sums into
+$n>m$, $m>n$, and $m=n$. The second is the iterated-integral shuffle, with the
+binomial coefficients counting interleavings of the zero letters; its
+coefficient form is also checked directly in Section~\ref{sec:polys}.
+The boundary and regularization conventions agree with the source model
+and standard regularized double-shuffle relations \cite{repo,zhao}.
+
+For each $p+q=w$ and $r,s\in\Z/4\Z$, take imaginary parts with
+$x=\ii^r$, $y=\ii^s$. If neither factor is $\Li_1(1)$, retain both coefficient
+rows. If exactly one factor is $\Li_1(1)$, retain only the
+\emph{stuffle-minus-shuffle} row. Its divergent double coordinate cancels and
+its right side is $-\Imag\Li_w(xy)$. If both factors are divergent, the
+imaginary equation is zero. Discard zero rows; retain duplicates if desired.
+This is $A_w$. Repeated rows affect neither rank nor row membership.
+
+For example, the implementation with repetitions has $92$ rows and $23$
+columns at weight $5$, exactly matching the canonical manuscript model.
+We do not add distribution relations, arbitrary changes of argument, or
+higher-depth relations. Suppressing the single-value right sides gives the
+homogeneous coefficient system used in the rank proof.
+
+\subsection{A formal quotient and its evaluation meaning}
+Let $\V_w=\Q^{6w-7}$, viewed as row vectors of formal double-coordinate
+coefficients, and set
+\[
+\R_w=\Row(A_w),\qquad \mathcal Q_w=\V_w/\R_w.
+\]
+The quotient suppresses the single-value right sides of the specified rows.
+It is deliberately not the algebra of all colored periods modulo all
+products. A vector in $\R_w$ yields a valid reduction to a particular linear
+combination of the displayed single-value right sides. The converse need not
+hold for true numerical identities. This separation is essential when using
+$\mathcal Q_w$ to reject an insufficient proof search.
+
+\section{Completing the missing coordinate and encoding the rows}
+\label{sec:polys}
+Set $N=w-2$, and introduce six homogeneous polynomials of degree $N$:
+\begin{equation}
+\begin{array}{c|cccccc}
+\text{color}&(0,1)&(1,0)&(1,1)&(1,2)&(1,3)&(2,1)\\ \hline
+\text{polynomial}&A&B&C&D&E&F.
+\end{array}
+\label{eq:poly-names}
+\end{equation}
+For example,
+$B(X,Y)=\sum_{a+b=w}v_{a,b}^{1,0}X^{a-1}Y^{b-1}$ for a candidate null vector
+$v$. The coefficient absent from the matrix occurs in $A$.
+
+\begin{lemma}[Unique homogeneous completion]\label{lem:completion}
+Every vector in $\ker A_w$ extends uniquely to six complete polynomials
+satisfying all homogeneous shuffle and stuffle equations. The missing
+coefficient is assigned
+\begin{equation}
+v_{1,w-1}^{0,1}=-v_{w-1,1}^{1,0}.
+\label{eq:completion}
+\end{equation}
+Restriction to the retained coordinates is an isomorphism back to $\ker A_w$.
+\end{lemma}
+\begin{proof}
+Assigning \eqref{eq:completion} makes the missing stuffle equation zero.
+Its shuffle equation is then zero because the retained difference equation
+is zero. This handles the two orders of the divergent factor and their
+conjugates. The absent coefficient occurs nowhere else: in a shuffle sum it
+can have outer index $1$ only when $q=1,j=0$ or $p=1,j=0$, precisely the
+divergent-factor cases. All other equations were already retained. Conversely,
+a complete homogeneous solution satisfies every retained row. The missing
+stuffle equation forces \eqref{eq:completion}, giving uniqueness. The argument
+includes $w=2$; the equation with two divergent factors is purely real.
+\end{proof}
+
+For a homogeneous polynomial $P$, write $P^\rev(X,Y)=P(Y,X)$. The stuffle
+equations reduce to
+\begin{equation}
+A=-B^\rev,\qquad C=-C^\rev,\qquad
+D=-F^\rev,\qquad E=E^\rev.
+\label{eq:stuff-polys}
+\end{equation}
+For instance, swapping the colors $(1,3)$ gives $(3,1)$, which is minus
+$(1,3)$ under conjugation; this explains the positive symmetry of $E$.
+
+\begin{lemma}[Polynomial form of the shuffle rows]\label{lem:shuffle-polys}
+The remaining equations are exactly
+\begin{align}
+E(X+Y,X)+A(X+Y,Y)&=0,\label{eq:sh-A}\\
+B(X+Y,X)+B(X+Y,Y)&=0,\label{eq:sh-B}\\
+C(X+Y,Y)-F(X+Y,X)&=0,\label{eq:sh-C}\\
+D(X+Y,Y)-D(X+Y,X)&=0.\label{eq:sh-D}
+\end{align}
+Together with \eqref{eq:stuff-polys}, these equations include all colors and
+all weight splits, including the completed boundary equations.
+\end{lemma}
+\begin{proof}
+For general color polynomials $P_{r,s}$, the polynomial whose coefficient of
+$X^{p-1}Y^{q-1}$ is the shuffle row is
+\[
+P_{s,r-s}(X+Y,X)+P_{r,s-r}(X+Y,Y).
+\]
+Indeed, the term with indices $(a,b)=(q+j,p-j)$ in the first summand has the
+coefficient $\binom{q+j-1}{q-1}=\binom{q+j-1}{j}$, exactly as in
+\eqref{eq:shuffle}. The second summand gives the other binomial sum.
+Use the color pairs $(0,1)$, $(1,1)$, $(1,2)$, and $(1,3)$ in turn. Their
+polynomials are the four displayed left sides. The pairs $(1,0)$ and $(2,1)$
+just exchange $X,Y$ in equations already obtained. Conjugate pairs multiply
+an equation by $-1$; even-even pairs are zero. This exhausts the possibilities.
+\end{proof}
+
+The binomial matrices have now disappeared. What remains is a pair of
+reflection problems for ordinary polynomials.
+
+\section{The two reflection blocks}
+\label{sec:blocks}
+\subsection{The block carrying Gaussian coordinates}
+From \eqref{eq:sh-A} and $A=-B^\rev$, the invertible change of variables
+$(X,Y)\mapsto(X+Y,X)$ gives
+\begin{equation}
+E(X,Y)=B(X-Y,X).
+\label{eq:E-from-B}
+\end{equation}
+Equation \eqref{eq:sh-B} becomes
+\begin{equation}
+B(X,Y)+B(X,X-Y)=0.
+\label{eq:B-reflection}
+\end{equation}
+Let $\varepsilon=(-1)^N$. Homogeneity and \eqref{eq:B-reflection} imply
+\begin{align*}
+E(Y,X)&=B(Y-X,Y)
+ =\varepsilon B(X-Y,-Y)\\
+&=-\varepsilon B(X-Y,X)=-\varepsilon E(X,Y).
+\end{align*}
+Because $E=E^\rev$, it follows that $(1+\varepsilon)E=0$.
+If $N$ is even, $E=0$, hence $B=0$ and $A=0$. If $N$ is odd, the symmetry
+of $E$ imposes no additional condition.
+
+When $N=2m-1$ is odd, the change of variables $U=X$, $V=2Y-X$ turns
+\eqref{eq:B-reflection} into oddness in $V$. Consequently the complete
+Gaussian block has the basis
+\begin{equation}
+B_j(X,Y)=X^{N-2j-1}(2Y-X)^{2j+1},\qquad 0\le j<m,
+\label{eq:B-basis}
+\end{equation}
+with $A_j=-B_j^\rev$ and
+\begin{equation}
+E_j(X,Y)=(X-Y)^{N-2j-1}(X+Y)^{2j+1}.
+\label{eq:E-basis}
+\end{equation}
+Its dimension is exactly $m$.
+
+\subsection{The complementary block}
+Equations \eqref{eq:sh-C} and \eqref{eq:stuff-polys} give
+\begin{equation}
+F(X,Y)=C(X,X-Y),\qquad D(X,Y)=-C(Y,Y-X),
+\label{eq:DF-from-C}
+\end{equation}
+where $C=-C^\rev$. The last shuffle equation asks for
+$D(X,Y)=D(X,X-Y)$. But
+\begin{align*}
+D(X,X-Y)&=-C(X-Y,-Y)\\
+&=-\varepsilon C(Y-X,Y)
+ =\varepsilon C(Y,Y-X)=-\varepsilon D(X,Y).
+\end{align*}
+Thus $(1+\varepsilon)D=0$. If $N$ is even, $D=0$ forces $C=F=0$. If $N$ is
+odd, the only condition is $C=-C^\rev$. A basis is
+\begin{equation}
+C_j(X,Y)=X^jY^{N-j}-X^{N-j}Y^j,\qquad 0\le j<m.
+\label{eq:C-basis}
+\end{equation}
+This block also has dimension $m$ and vanishes identically on the Gaussian
+polynomial $B$.
+
+\begin{theorem}[Complete nullspace normal form]\label{thm:nullspace}
+In every even weight $w\ge2$, $\ker A_w=0$. In odd weight $w=2m+1$, set
+$N=2m-1$. Every vector in $\ker A_w$ is obtained uniquely by choosing
+\begin{align*}
+B&\in\Span_\Q\{B_0,\ldots,B_{m-1}\},\\
+C&\in\Span_\Q\{C_0,\ldots,C_{m-1}\},
+\end{align*}
+then setting
+\begin{equation}
+(A,B,C,D,E,F)
+ =\bigl(-B^\rev,\ B,\ C,\ -C(Y,Y-X),\ B(X-Y,X),\ C(X,X-Y)\bigr),
+\label{eq:normal-form}
+\end{equation}
+and dropping the missing coefficient of $A$.
+All resulting basis vectors have integer coordinates.
+\end{theorem}
+\begin{proof}
+The preceding two block computations prove necessity and show that the two
+blocks have disjoint determining polynomials. Substitution into
+\eqref{eq:stuff-polys}--\eqref{eq:sh-D} proves sufficiency. The bases
+\eqref{eq:B-basis} and \eqref{eq:C-basis} are independent respectively by the
+change to $(U,V)$ and by their disjoint antisymmetric monomial pairs.
+Deleting the missing coefficient cannot destroy independence, because the
+$B$ and $C$ polynomials are retained in full. Lemma~\ref{lem:completion}
+finishes the argument.
+\end{proof}
+
+\subsection{Proof of both rank formulas}
+For even $w$, the column count and zero nullity give
+$\rank A_w=6w-7$. Every column subfamily is independent, so deleting the
+$w-1$ Gaussian columns gives rank $5w-6$.
+
+For odd $w=2m+1$, Theorem~\ref{thm:nullspace} gives
+$\kerdim A_w=2m=w-1$. Thus $\rank A_w=(6w-7)-(w-1)=5w-6$.
+A null vector of $A_w^{\neg g}$ extends by zero on the Gaussian columns to a
+null vector of $A_w$ with $B=0$. Exactly the $C$ block remains, of dimension
+$m$. Since $A_w^{\neg g}$ has $5w-6$ columns,
+\[
+\rank A_w^{\neg g}=5w-6-m=\frac{9w-11}{2}.
+\]
+This proves Theorem~\ref{thm:main}, including the second rank separately.
+
+\section{Gaussian saturation and an exact membership algorithm}
+\label{sec:membership}
+Let $\Gset_w\subset\V_w$ be the subspace supported on Gaussian columns.
+Projection of the row space onto the other columns gives
+\begin{equation}
+\dim(\R_w\cap\Gset_w)=\rank A_w-\rank A_w^{\neg g}.
+\label{eq:rank-difference}
+\end{equation}
+
+\begin{corollary}[Gaussian saturation in the stated module]\label{cor:saturation}
+For odd $w\ge3$, the Gaussian-supported row space has dimension $(w-1)/2$
+and is exactly the space spanned by the same-point product shuffles
+$\Li_p(\ii)\Li_{w-p}(\ii)$, $1\le p\le(w-1)/2$.
+For even $w$, the Gaussian-supported row space has dimension $w-1$.
+\end{corollary}
+\begin{proof}
+The dimensions follow from \eqref{eq:rank-difference}. The indicated
+same-point rows belong to the Gaussian-supported space: their shuffle
+arguments are $(\ii,1)$. To check independence without importing any period
+claim, write their coefficient on $g_{a,w-a}$ as
+\[
+\binom{a-1}{p-1}+\binom{a-1}{w-p-1}.
+\]
+For odd $w=2m+1$, restrict to $1\le a,p\le m$. The second binomial term
+vanishes, and the remaining Pascal block is triangular with diagonal one.
+There are $m$ independent rows in a space of dimension $m$.
+\end{proof}
+
+This is stronger than merely knowing that the small shuffle system has rank
+$m$: it proves that eliminating every other color from the larger system
+cannot add a new Gaussian-only coefficient relation at odd weight.
+
+Let $K_w$ be the integer matrix whose columns are the basis vectors in
+Theorem~\ref{thm:nullspace}. Finite-dimensional duality gives the following
+complete decision procedure.
+\begin{corollary}[Membership and separating certificates]\label{cor:membership}
+For a rational row vector $t$,
+\begin{equation}
+t\in\R_w\quad\Longleftrightarrow\quad tK_w=0.
+\label{eq:membership}
+\end{equation}
+When the product is nonzero, any column $v$ with $tv\ne0$ is an exact
+certificate $A_wv=0$, $tv\ne0$ against membership. In even weight every
+coefficient vector belongs to $\R_w$.
+\end{corollary}
+\begin{proof}
+The row space is the annihilator of the nullspace over $\Q$. The displayed
+columns are a basis of that nullspace, not just sampled null vectors.
+\end{proof}
+
+\subsection{Coefficient size and construction cost}
+The basis can be constructed in $O(w^2)$ integer arithmetic operations.
+Dehomogenize with $X=1$ and write $t=Y$. In the first block,
+\[
+B_j(1,t)=(2t-1)^{2j+1},\qquad
+E_j(1,t)=(1-t)^{N-2j-1}(1+t)^{2j+1}.
+\]
+Successive $B_j$ arise by multiplication by $(2t-1)^2$. Successive $E_j$
+arise by two exact divisions by $1-t$, followed by multiplication by
+$(1+t)^2$. Each operation uses $O(w)$ coefficient updates. The divisions
+have zero remainder by the displayed factorization and are implemented by
+prefix sums with an explicit remainder check. The $C$ block has
+\[
+F_j(1,t)=(1-t)^{N-j}-(1-t)^j,
+\]
+and $D_j$ is minus its reversed coefficient vector. Binomial recurrences
+therefore generate this block in the same bound.
+
+All coefficients have $O(w)$ bits: the $B_j$ coefficients are bounded in
+absolute value by $3^N$, the $E_j$ coefficients by $2^N$, and the remaining
+binomial coefficients by $2^{N+1}$. A membership test then uses $O(w^2)$
+integer arithmetic operations. For an integer target of coefficient height
+at most $2^H$, a conservative schoolbook bit bound is
+$O(w^2(H+w+\log w)^2)$, including basis construction. Rational inputs can
+first be cleared of denominators; the bit size of that step must be charged
+to the input representation. These are bounds for the membership task,
+not for discovering every analytic relation among periods.
+
+\section{A uniform obstruction for the even-index harmonic sums}
+\label{sec:obstruction}
+Define
+\[
+S_p=\sum_{n\ge0}\frac{(-1)^nH_n}{(2n+1)^p},\qquad
+u_{p,1}=\Imag D_{p,1}(\ii,-1),\qquad
+g_{p,1}=\Imag D_{p,1}(\ii,1).
+\]
+For $p\ge2$, absolute convergence permits separating the odd outer terms.
+For an outer index $2n+1$,
+\[
+H_{2n}+\sum_{m=1}^{2n}\frac{(-1)^m}{m}=H_n.
+\]
+Consequently
+\begin{equation}
+S_p=g_{p,1}+u_{p,1}.
+\label{eq:S-color}
+\end{equation}
+
+\begin{theorem}[All-odd-weight obstruction]\label{thm:S-obstruction}
+For every odd $w=2m+1\ge3$, no rational linear combination of the rows of
+$A_w$ can express $S_{2m}$ as a rational linear combination of Gaussian
+doubles and the associated single-value products. More precisely, in the
+formal quotient $\mathcal Q_w$, adjoining $S_{2m}$ to the Gaussian-coordinate
+span increases its dimension from $m$ to $m+1$.
+\end{theorem}
+\begin{proof}
+Choose the complementary null vector with
+\[
+B=0,\qquad C=C_0=Y^N-X^N,\qquad N=2m-1.
+\]
+It annihilates every Gaussian coordinate. Its $D$ polynomial is
+$D(X,Y)=-C(Y,Y-X)$, so
+\[
+D(1,0)=-C(0,-1)=1.
+\]
+Therefore this null vector pairs to one with $u_{2m,1}$, hence also with
+$S_{2m}$ in \eqref{eq:S-color}. It pairs to zero with every vector in the
+row space and with every Gaussian-supported vector. This excludes a
+reduction using the stated rows. The Gaussian span in $\mathcal Q_w$ has
+dimension $m$ by Corollary~\ref{cor:saturation}; one new vector outside that
+span increases the dimension by exactly one.
+\end{proof}
+
+\subsection{An integer certificate at weight five}
+The source $S_4$ target has coefficient vector
+\begin{equation}
+T=3g_{4,1}+3g_{3,2}+9g_{2,3}+7u_{4,1}.
+\label{eq:S4-target}
+\end{equation}
+Our $C_0$ witness has the following nonzero coordinates:
+\begin{center}
+\begin{tabular}{@{}crcr@{}}
+\toprule
+$(a,b,r,s)$&value&$(a,b,r,s)$&value\\\midrule
+$(1,4,1,1)$&$1$&$(1,4,2,1)$&$-1$\\
+$(2,3,1,2)$&$3$&$(2,3,2,1)$&$3$\\
+$(3,2,1,2)$&$-3$&$(3,2,2,1)$&$-3$\\
+$(4,1,1,1)$&$-1$&$(4,1,1,2)$&$1$\\\bottomrule
+\end{tabular}
+\end{center}
+Thus $A_5v=0$ and $Tv=7$. The package records the full $92\times23$ matrix,
+all four nullspace columns, the target, and this witness. In contrast to a
+single isolated obstruction, the proof gives the same certificate pattern
+in every odd weight. The previously supplied rational witness remains valid;
+this is a simpler complementary-block alternative, not a correction to it.
+
+The manuscript's proposed numerical $S_4$ evaluation remains open in this
+article. The obstruction is fully compatible with its truth. A successful
+proof must bring in a relation outside this fixed linear row vocabulary, or
+use algebraic operations not already represented by these rows.
+
+\section{The inhomogeneous compiler and exact odd-weight coordinates}
+\label{sec:affine}
+We now restore the right sides. This is also an independent route from the
+rank theorem to explicit identities, without a search for integer relations.
+Set
+\[
+\ell_k(r)=\Li_k(\ii^r),\qquad \ell_1(0)=0
+\]
+where the last assignment is a formal regularization used only in the
+completed equations. It is not the value of a convergent series. Define
+\begin{align}
+P_{r,s}(X,Y)&=\sum_{p+q=w}\Imag(\ell_p(r)\ell_q(s))X^{p-1}Y^{q-1},
+\label{eq:P-def}\\
+H_N(X,Y)&=\sum_{j=0}^{N}X^jY^{N-j},\notag\\
+S_{01}&=P_{0,1}-\beta(w)H_N,\qquad
+S_{12}=P_{1,2}+\beta(w)H_N.\label{eq:S-def}
+\end{align}
+The notation $P$ here denotes a known product polynomial, not an unknown
+coordinate polynomial. Define $A,B,C,D,E,F$ as in
+\eqref{eq:poly-names}, now with the actual imaginary double values as
+coefficients, and complete the missing coefficient by
+\begin{equation}
+[X^0Y^N]A=-g_{w-1,1}-\beta(w).
+\label{eq:affine-completion}
+\end{equation}
+This is simply the missing stuffle equation with $\ell_1(0)=0$. The same
+completion argument as Lemma~\ref{lem:completion} makes the system equivalent
+to the original finite rows and their retained cancellation equations.
+
+The inhomogeneous stuffle equations are
+\begin{equation}
+A+B^\rev=S_{01},\quad C+C^\rev=P_{1,1},\quad
+D+F^\rev=S_{12},\quad E-E^\rev=P_{1,3}.
+\label{eq:affine-st}
+\end{equation}
+The four shuffle right sides, in the order
+\eqref{eq:sh-A}--\eqref{eq:sh-D}, are
+$P_{0,1},P_{1,1},P_{1,2},P_{1,3}$ respectively.
+
+Introduce the known polynomials
+\begin{align}
+e(X,Y)&=P_{0,1}(Y,X-Y)-S_{01}(X,X-Y),\label{eq:e}\\
+d(X,Y)&=S_{12}(X,Y)+P_{1,2}(X,Y-X),\label{eq:d}\\
+b(X,Y)&=P_{1,1}(Y,X-Y),\label{eq:b}\\
+h(X,Y)&=P_{1,3}(Y,Y-X)-e(Y,Y-X)+e(Y-X,Y).
+\label{eq:h}
+\end{align}
+
+\begin{theorem}[Closed even-weight compiler]\label{thm:compiler}
+For even $w\ge2$, all the imaginary double coefficients are obtained from
+\begin{align}
+B(X,Y)&=\frac{b(X,Y)+h(X,Y)}2,\label{eq:B-aff}\\
+C(X,Y)&=\frac12\bigl(P_{1,3}(X,-Y)+P_{1,1}(Y,X)\notag\\
+&\hspace{26mm}-d(X-Y,-Y)+d(X-Y,X)\bigr),\label{eq:C-aff}\\
+A(X,Y)&=S_{01}(X,Y)-B(Y,X),\label{eq:A-aff}\\
+E(X,Y)&=B(X-Y,X)+e(X,Y),\label{eq:E-aff}\\
+F(X,Y)&=C(X,X-Y)-P_{1,2}(Y,X-Y),\label{eq:F-aff}\\
+D(X,Y)&=-C(Y,Y-X)+d(X,Y).\label{eq:D-aff}
+\end{align}
+The artificial coefficient in \eqref{eq:affine-completion} is discarded.
+Every retained value is consequently an explicit rational combination of
+single values and products of two single values.
+\end{theorem}
+\begin{proof}
+Eliminating $A$ from the first affine shuffle gives
+$E(X,Y)=B(X-Y,X)+e(X,Y)$. The second shuffle gives
+\[
+B(X,Y)+B(X,X-Y)=b(X,Y).
+\]
+Substitute the formula for $E$ in $E-E^\rev=P_{1,3}$ and use the even
+homogeneity degree $N$; this gives
+\[
+B(X,Y)-B(X,X-Y)=h(X,Y).
+\]
+Adding proves \eqref{eq:B-aff}.
+
+Similarly, eliminating $F$ gives \eqref{eq:D-aff}. The last shuffle states
+$D(u,u-v)-D(u,v)=P_{1,3}(v,u-v)$. As $N$ is even,
+\[
+C(u-v,-v)=C(v-u,v)=P_{1,1}(v-u,v)-C(v,v-u).
+\]
+Substitution therefore gives
+\begin{align*}
+2C(v,v-u)= {}&P_{1,3}(v,u-v)+P_{1,1}(v-u,v)\\
+&-d(u,u-v)+d(u,v).
+\end{align*}
+Put $(X,Y)=(v,v-u)$ to obtain \eqref{eq:C-aff}. The other formulas have
+already been derived. Actual values satisfy the original equations, so
+these necessary formulas evaluate them. Alternatively, the zero homogeneous
+kernel proves uniqueness of the solution. No unproved independence of the
+single values is needed.
+\end{proof}
+
+\begin{corollary}[Exact coordinates in the odd weights]\label{cor:odd-affine}
+For odd $w=2m+1$, define
+\[
+B^\circ=B-\tfrac12 b,\qquad C^\circ=C-\tfrac12 P_{1,1}.
+\]
+Then $B^\circ(X,Y)=-B^\circ(X,X-Y)$ and
+$C^\circ(X,Y)=-C^\circ(Y,X)$. They have unique expansions in the bases
+\eqref{eq:B-basis} and \eqref{eq:C-basis}. Every other color polynomial is
+recovered by \eqref{eq:A-aff} and \eqref{eq:E-aff}--\eqref{eq:D-aff}.
+Thus precisely $m$ Gaussian and $m$ complementary coordinates remain in
+this product system.
+\end{corollary}
+\begin{proof}
+The polynomial $P_{1,1}$ is symmetric. Hence $b(X,Y)$ is invariant under
+$Y\mapsto X-Y$. Subtract half of the two affine symmetrization equations
+for $B$ and $C$. The homogeneous basis theorem then applies. The recovery
+formulas did not require an assumption on the parity of $N$.
+\end{proof}
+
+For explicit scalar formulas, the single values used by the compiler are
+\begin{align*}
+\ell_1(1)&=-\tfrac12\Ltwo+\tfrac{\pi\ii}4,&\ell_1(2)&=-\Ltwo,\\
+\ell_n(0)&=\zeta(n),&\ell_n(2)&=(2^{1-n}-1)\zeta(n),\quad n\ge2,\\
+\ell_n(1)&=2^{-n}(2^{1-n}-1)\zeta(n)+\ii\beta(n),&
+\ell_n(3)&=\overline{\ell_n(1)}.
+\end{align*}
+Even zeta values and odd beta values are then replaced by their standard
+Bernoulli- and Euler-number expressions in powers of $\pi$. The implementation
+keeps even beta values, odd zeta values, $\pi$, and $\log2$ as formal real
+atoms. Testing equality of the resulting polynomial expressions does not
+presume that their evaluated atoms are algebraically independent.
+
+\section{Two all-weight mixed-color identities}
+\label{sec:families}
+The polynomial compiler has particularly simple endpoint coefficients.
+Define
+\[
+c_p=\Imag D_{p,1}(\ii,\ii),\qquad
+e_p=\Imag D_{p,1}(\ii,-\ii).
+\]
+These are different color patterns from $g_{p,1}=\Imag D_{p,1}(\ii,1)$.
+
+\begin{theorem}[Mixed leading-index families]\label{thm:families}
+For every integer $m\ge1$,
+\begin{align}
+c_{2m-1}={}&(m-1)\beta(2m)-\frac{\log2}{2}\beta(2m-1)\notag\\
+&-\sum_{k=1}^{m-1}(1-2^{1-2k})\zeta(2k)\beta(2m-2k),
+\label{eq:C-family}\\
+e_{2m-1}={}&m\beta(2m)-\frac{\log2}{2}\beta(2m-1)\notag\\
+&-\sum_{k=1}^{m-1}\zeta(2k)\beta(2m-2k).
+\label{eq:E-family}
+\end{align}
+In particular,
+\begin{equation}
+e_{2m-1}-c_{2m-1}
+=\beta(2m)-\sum_{k=1}^{m-1}2^{1-2k}\zeta(2k)\beta(2m-2k).
+\label{eq:difference-family}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Set $w=2m$, $N=w-2$. The desired coefficients are $C(1,0)$ and $E(1,0)$.
+By \eqref{eq:C-aff},
+\[
+2C(1,0)=P_{1,3}(1,0)+P_{1,1}(0,1)-d(1,0)+d(1,1).
+\]
+The first two terms sum to $-(\log2)\beta(w-1)$. Definition \eqref{eq:d}
+and $H_N(1,1)=N+1$ give
+\[
+d(1,1)-d(1,0)=P_{1,2}(1,1)-P_{1,2}(1,-1)+N\beta(w).
+\]
+In the difference of the two product polynomials, only even inner index
+$q=2k$ remains. Its coefficient is
+$2\beta(w-2k)\ell_{2k}(2)
+=-2(1-2^{1-2k})\zeta(2k)\beta(w-2k)$.
+Dividing by two proves \eqref{eq:C-family}.
+
+For the second identity, \eqref{eq:B-aff} and \eqref{eq:E-aff} imply
+\begin{align*}
+2E(1,0)={}&P_{1,1}(1,0)+P_{1,3}(1,0)\\
+&+e(1,0)+e(0,1).
+\end{align*}
+Again the first two terms give $-(\log2)\beta(w-1)$. Definition \eqref{eq:e}
+yields
+\[
+e(1,0)+e(0,1)
+=-P_{0,1}(1,1)+P_{0,1}(1,-1)+w\beta(w).
+\]
+Here $\ell_1(0)=0$ and $N$ is even. The product-polynomial difference is
+$-2\sum_{k=1}^{m-1}\zeta(2k)\beta(w-2k)$. This proves
+\eqref{eq:E-family}. Subtraction gives \eqref{eq:difference-family}.
+\end{proof}
+
+\subsection{Explicit examples}
+With $G=\beta(2)$, the first weights are
+\begin{align*}
+c_1&=-\frac\pi8\log2,&e_1&=G-\frac\pi8\log2,\\
+c_3&=\beta(4)-\frac{\pi^2G}{12}-\frac{\pi^3\log2}{64},&
+e_3&=2\beta(4)-\frac{\pi^2G}{6}-\frac{\pi^3\log2}{64}.
+\end{align*}
+At weight six the formulas become
+\begin{align}
+\Imag\Li_{5,1}(\ii,\ii)
+ &=2\beta(6)-\frac{\pi^2\beta(4)}{12}
+   -\frac{7\pi^4G}{720}-\frac{5\pi^5\log2}{3072},\label{eq:c5}\\
+\Imag\Li_{5,1}(\ii,-\ii)
+ &=3\beta(6)-\frac{\pi^2\beta(4)}6
+   -\frac{\pi^4G}{90}-\frac{5\pi^5\log2}{3072}.\label{eq:e5}
+\end{align}
+A non-endpoint example from the full compiler is
+\begin{align}
+\Imag\Li_{4,2}(\ii,-1)
+={}&-\frac92\beta(6)-\frac{\pi^2\beta(4)}{48}
+ +\frac{3\pi^3\zeta(3)}{64}+\frac{465\pi\zeta(5)}{512}.
+\label{eq:d42}
+\end{align}
+The package contains all $210$ retained-coordinate identities in even weights
+$2,4,6,8,10,12$. It separately checks both leading-index families through
+weight $16$. These formulas are proved specializations, not PSLQ guesses.
+Their identification as consequences of known product and parity structures
+is preferable to an unsupported novelty claim for each individual number.
+
+\section{Verification, provenance, and editorial corrections}
+\label{sec:verification}
+\subsection{Exact verification layers}
+The core implementation constructs the coefficient matrix directly from
+\eqref{eq:stuffle}--\eqref{eq:shuffle}, independently of the polynomial proof.
+A second routine constructs the nullspace basis using coefficient recurrences,
+not Gaussian elimination. For each tested weight, it verifies $A_wK_w=0$
+as an exact integer matrix identity.
+
+For rank lower bounds, a deterministic computation reduces the integer
+matrices modulo the prime $65521$. A nonzero minor modulo that prime is a
+nonzero rational minor. The explicit independent integer nullspace supplies
+the matching rational upper bound. Thus the resulting rank certificates are
+exact over $\Q$; they are not estimates of numerical rank and not a
+probabilistic extrapolation from random primes. The same method handles the
+non-Gaussian submatrix using the $C$ block. The central weight-five ranks are
+also recomputed separately by rational elimination.
+
+The default verification receipt records:
+\begin{center}
+\begin{tabular}{@{}p{.76\linewidth}r@{}}
+\toprule
+Verification scope&Count\\\midrule
+All-weight matrix and deleted-column rank certificates, $2\le w\le41$&40\\
+Odd-weight integer nullspace bases and uniform $S$ witnesses&20\\
+Explicit even-weight coordinate formulas, $2\le w\le12$&210\\
+Inhomogeneous product-row polynomial residuals&816\\
+Odd-weight affine compatibility checks, $3\le w\le13$&6\\
+Gaussian shuffle membership checks through weight $41$&420\\
+Mixed leading-index coefficient checks through weight $16$&16\\
+Independent floating-point direct-series diagnostics&54\\\bottomrule
+\end{tabular}
+\end{center}
+The first seven rows are exact arithmetic checks. The last row is a separate
+diagnostic and is not counted as a proof or an interval enclosure. The proof
+of the infinite family is Sections~\ref{sec:polys}--\ref{sec:blocks}, not the
+finite extent of the verification run.
+
+\begin{samepage}
+Selected exact rank results are
+\begin{center}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$w$&columns&$\rank A_w$&$\rank A_w^{\neg g}$&$\kerdim A_w$\\\midrule
+2&5&5&4&0\\
+3&11&9&8&2\\
+4&17&17&14&0\\
+5&23&19&17&4\\
+6&29&29&24&0\\
+7&35&29&26&6\\
+15&83&69&62&14\\
+31&179&149&134&30\\
+40&233&233&194&0\\
+41&239&199&179&40\\\bottomrule
+\end{tabular}
+\end{center}
+\end{samepage}
+
+\subsection{Independent direct-series diagnostics}
+The numerical script does not use the shuffle rows to evaluate its left
+sides. It sums \eqref{eq:series} directly with $4096$ outer terms at $70$
+decimal working digits for $54$ cases with outer index at least $3$ in
+weights $4,6,8$. The absolute mathematical truncation bound used for
+comparison is
+\[
+\sum_{n>M}\frac{H_{n-1}^{(b)}}{n^a}\le
+\begin{cases}
+M^{1-a}\left(\dfrac{1+\log M}{a-1}+\dfrac1{(a-1)^2}\right),&b=1,\\[4pt]
+\dfrac{b}{b-1}\dfrac{M^{1-a}}{a-1},&b\ge2.
+\end{cases}
+\]
+It follows by the integral test and $H_{n-1}\le1+\log n$ or
+$H_{n-1}^{(b)}\le b/(b-1)$. Every observed discrepancy is smaller than this
+bound; the largest ratio is about $0.797$. Floating-point arithmetic in this
+script is not outward rounded, so these comparisons are diagnostics rather
+than fully certified intervals. Exact polynomial row residuals provide a
+separate algebraic check on every delivered formula.
+
+\subsection{A local correction to the source's logical wording}
+The source states the two rank formulas and then calls the Gaussian-only
+row-space dimension an equivalent statement. Rank-nullity gives
+\eqref{eq:rank-difference}, so the pair of ranks implies the dimension of
+the supported row space. The difference alone does not determine the two
+ranks individually. The correct wording before an independent rank proof is
+``In particular,'' not ``Equivalently.'' Theorem~\ref{thm:main} now proves
+both ranks and removes the need for this overstatement.
+
+The source's $92\times23$ obstruction matrix and its rational witness need
+no correction. The previously repaired color-swapping rule also needs no
+new correction: this article uses it essentially. This audit is focused on
+the rank section and its algebraic dependencies; it is not a fresh,
+exhaustive audit of all 228 manuscript pages.
+
+\subsection{Integration and trust boundaries}
+The supplied integration fragment replaces the last rank-conjecture
+subsection in \pathtext{05-signed-kernels.tex}. It preserves the existing
+labels \pathtext{signed:conj:rank} and
+\pathtext{signed:eq:rank-conjecture} as compatibility aliases, but places
+them on a theorem and a proved formula. The fragment includes a proof and
+new labels under the prefix \pathtext{l4rank:}. Historical arrival sources
+and receipts should remain unchanged as provenance.
+
+The package includes the article source and compiled PDF, the matrix and
+compiler routines, the exact verifier, a separate numerical script,
+JSON certificates, an editorial audit, provenance metadata, and an optional
+integration helper that refuses to operate on an unexpected Git blob.
+The remote repository has not been modified. The ordinary mathematical
+proofs have not been checked by Lean or another proof assistant, and the
+article has not undergone independent peer review. These qualifications do
+not turn the proved matrix theorem into a numerical conjecture; they specify
+the verification boundary.
+
+\section{Further research questions and next proof targets}
+\label{sec:future}
+\paragraph{The missing $S_4$ relation.}
+Test each proposed additional law against the explicit complementary
+$C_0$ witness. A law annihilating this witness cannot by itself remove the
+obstruction. The source's suggested M\"obius transformation
+$z\mapsto(1-z)/(1+z)$, or elimination from depth three and above, is a
+concrete next source of candidate rows. The task is to derive an exact law
+with a nonzero witness pairing and the correct single-value right side,
+not merely a close numerical relation.
+
+\paragraph{The complementary block in every odd weight.}
+The polynomial $C$ now supplies explicit coordinates for the part missed by
+Gaussian-only searches. Determine which additional relations act on these
+coordinates and whether they have a uniform form. Since all mixed leading
+harmonic sums already detect $C_0$, this is a systematic target rather than
+a separate unstructured search at each weight.
+
+\paragraph{Other cyclotomic levels.}
+At level four the six conjugation classes split into two uncoupled reflection
+blocks. At levels three, six, and eight, write the analogous color-polynomial
+system and determine its orbit decomposition. The objective is a proven
+nullspace parametrization, not a fit to a dimension sequence. Modular-form
+and period-polynomial methods at general level offer related structures
+\cite{hirose}, but their relation vocabulary must be matched carefully to the
+one used here.
+
+\paragraph{The real-part sector.}
+The real sector retains even-even color coordinates and has different
+conjugation signs. Its boundary completion also includes different divergent
+components. A complete analogous analysis would show precisely where the
+two-reflection simplification survives and where extra blocks arise.
+
+\paragraph{Integral structure and Smith normal forms.}
+The displayed basis is integral, but this article does not claim it is a
+basis of the full integral kernel lattice. Determine the lattice index and
+the Smith normal form of independent row submatrices. These invariants could
+control unavoidable denominators in rational reduction certificates and
+explain which small primes are exceptional.
+
+\paragraph{A faster constructive positive certificate.}
+The membership test immediately returns a separating vector when the answer
+is negative. When the answer is positive, extend the reflection eliminations
+to output an explicit sparse combination of the original matrix rows for the
+target. The even-weight compiler is already constructive, but a uniformly
+sparse, row-indexed certificate format would improve independent verification
+and integration into a proof assistant.
+
+\paragraph{Formal verification.}
+The purely algebraic core is a feasible first formalization target: binomial
+coefficient extraction, completion of one missing coordinate, homogeneous
+polynomial substitutions, and dimensions of two eigenspaces. The analytic
+shuffle and regularized boundary laws can initially be explicit hypotheses,
+then discharged in a separate development. This separates the finite algebra
+from the analytic theory rather than mixing their trusted assumptions.
+
+\paragraph{Arithmetic identities beyond the formal quotient.}
+The $w-1$ formal odd-weight coordinates need not be independent numerical
+periods. Study their images under known motivic or analytic constructions,
+stating every additional relation or period-map assumption explicitly.
+The rank theorem gives a reliable coordinate system for this question, not
+an arithmetic independence result.
+
+\section{Conclusion}
+The all-odd-weight matrix conjecture is settled by a complete, uniform
+nullspace description. Its two ranks arise from two independent degree
+$w-2$ polynomial eigenspaces, and the same calculation makes the even-weight
+matrix injective. This resolves the source conjecture, establishes exact
+Gaussian saturation for the specified product system, and provides a
+quadratic-arithmetic membership test with explicit separating certificates.
+
+Retaining the right sides gives a full even-weight compiler and the mixed
+families \eqref{eq:C-family}--\eqref{eq:E-family}. The complementary block
+explains the $S_4$ proof obstruction in every odd weight. The next genuinely
+new step for $S_4$ is now sharply identified: find an analytically valid law
+outside this module that acts nontrivially on its complementary coordinates.
+
+\appendix
+\section{Reproduction commands and data contracts}
+\label{app:reproduction}
+From the package root:
+\begin{verbatim}
+python -m pip install -r requirements.txt
+python code/verify.py
+python code/numerics.py
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The default exact run uses \pathtext{--rank-max 41 --even-max 12}.
+Each coordinate in the JSON data is the tuple $(a,b,r,s)$ with the series
+convention \eqref{eq:series}. The matrix keeps repeated nonzero rows. Kernel
+columns are the $B_j$ family followed by the $C_j$ family. All matrix and
+kernel entries are integers; scalar formulas use explicit rational
+coefficients and named real atoms. The strings are data for the bundled
+SymPy code, not assertions of numerical independence.
+
+\pathtext{rank_certificates.json} records pivot-column information over the
+fixed prime and the exact upper-bound checks.
+\pathtext{weight5_certificate.json} contains the full central matrix and
+witness. \pathtext{S_even_obstructions.json} records the uniform witness
+through weight $41$. \pathtext{even_weight_identities.json} contains the
+210 compiler outputs. \pathtext{leading_families.json} independently records
+the 16 endpoint comparisons. \pathtext{verification_report.json} identifies
+software versions and measured run time; that timing is environment-specific,
+not an asymptotic performance claim. The numerical diagnostics have their
+own file and expressly separate scope.
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{repo}
+ProveIt Contributors,
+\emph{Polylogarithms and their Arithmetic Bridges}, consolidated manuscript,
+repository \texttt{VladimirReshetnikov/ProveIt}, commit
+\pathtext{9bc738d3be22b8586a24693f19fb2e2a50ecd1bf},
+particularly Chapter 5, the section containing
+\pathtext{signed:conj:rank}, and Chapter 4's Gaussian product conventions.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/9bc738d3be22b8586a24693f19fb2e2a50ecd1bf/Analysis/Polylogarithms/docs/manuscript}.
+
+\bibitem{zhao}
+Jianqiang Zhao,
+\emph{Standard relations of multiple polylogarithm values at roots of unity},
+Documenta Mathematica \textbf{15} (2010), 1--34.
+\url{https://doi.org/10.4171/DM/291}; arXiv:0707.1459.
+
+\bibitem{panzer}
+Erik Panzer,
+\emph{The parity theorem for multiple polylogarithms},
+Journal of Number Theory \textbf{172} (2017), 93--113.
+Preprint arXiv:1512.04482v3 (2016).
+\url{https://arxiv.org/abs/1512.04482}.
+
+\bibitem{bachmann}
+Henrik Bachmann and Khalef Yaddaden,
+\emph{On a conjecture of Zhao related to standard relations among cyclotomic
+multiple zeta values}, Journal of Algebra \textbf{688} (2026), 21--58.
+Preprint arXiv:2411.18952.
+\url{https://arxiv.org/abs/2411.18952}.
+
+\bibitem{hirose}
+Minoru Hirose,
+\emph{Colored double zeta values and modular forms of general level},
+arXiv:2205.08507.
+\url{https://arxiv.org/abs/2205.08507}.
+\end{thebibliography}
+\end{document}
