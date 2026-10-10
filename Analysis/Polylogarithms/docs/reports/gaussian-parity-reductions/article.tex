@@ -1,0 +1,116 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,graphicx,xcolor,microtype}
+\usepackage{xurl,fancyhdr}
+\definecolor{navy}{RGB}{24,55,81}
+\definecolor{teal}{RGB}{0,104,112}
+\usepackage[colorlinks=true,linkcolor=navy,citecolor=teal,urlcolor=teal]{hyperref}
+\usepackage{bookmark}
+\hypersetup{pdftitle={From Polylogarithm Conjectures to Exact Reductions},
+pdfauthor={Research continuation prepared for Vladimir Reshetnikov},
+pdfsubject={Gaussian multiple polylogarithms, exact shuffle certificates, unit ladders, and log-gamma asymptotics}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{navy}Polylogarithms: exact reductions and asymptotics}
+\fancyhead[R]{\small 9 October 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.3em}
+\setlength{\parindent}{1.25em}
+\setlength{\emergencystretch}{3em}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Rea}{Re}
+\DeclareMathOperator{\Ima}{Im}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\rank}{rank}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\sh}{\mathbin{\shuffle}}
+\newcommand{\shuffle}{\mathbin{\amalg}}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\one}{\boldsymbol 1}
+\newcommand{\LG}{\mathcal L}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\code}[1]{\nolinkurl{#1}}
+
+\begin{document}
+\begin{center}
+{\LARGE\bfseries\color{navy}From Polylogarithm Conjectures\\[3pt]
+to Exact Reductions}\\[9pt]
+{\large Shuffle certificates, complementary-power ladders,\\
+and effective log-gamma moment asymptotics}\\[12pt]
+{\normalsize Research continuation for the ProveIt project}\\[3pt]
+{\normalsize Prepared for Vladimir Reshetnikov}\\[3pt]
+{\normalsize 9 October 2026}
+\end{center}
+
+\begin{abstract}
+We continue the arithmetic-bridge programme of the ProveIt polylogarithm
+manuscript with explicit analytic proofs and reproducible finite
+certificates. Eleven identities that the audited manuscript presents as
+numerically supported receive local proofs: its weight-five Gaussian
+double relation, five weight-six Gaussian double evaluations, three
+weight-four Gaussian triple evaluations, and the cubic and quartic
+algebraic-base trilogarithm ladders. The weight-five relation is a
+two-product shuffle consequence; retaining both products improves the
+same-argument spanning bound from three generators to two. An explicit
+binomial transform proves the appropriate parity reductions at every
+double weight, while a one-zero iterated-integral formula reduces all
+indices consisting of one two and any number of ones.
+
+We identify the exact formal shuffle quotient at every weight and depth
+using its multigraded Lyndon count, and give an executable rational
+normal-form procedure. The cubic ladder receives a certificate comprising
+two Kummer substitutions, one Landen relation, and four Rogers pentagons;
+the quartic ladder extends to every complementary pair of powers.
+In the log-gamma programme we correct the literature status of the cubic
+moment, give a rational interval certificate for 112 decimal places,
+and study the coefficients of the known factorial moment expansion.
+A Lagrange-inverse and local-limit argument determines their exponential
+growth and \(k^{-3/2}\) factor, proves divergence at every fixed moment,
+and yields an explicit superexponentially small remainder when the
+truncation order grows with the moment. Classical tools and previously
+known general theorems are attributed throughout. Formal quotient
+dimensions and numerical checks are never used as arithmetic
+independence proofs.
+\end{abstract}
+
+\noindent\textbf{Source checkpoint.}
+The starting manuscript is
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/afed07429d3d37eceb6c8e9e54cf4da2d3f39d53/Analysis/Polylogarithms/docs/manuscript}
+{the ProveIt polylogarithms manuscript},
+at commit \code{afed07429d3d37eceb6c8e9e54cf4da2d3f39d53}.
+The companion archive records source hashes, exact certificates,
+numerical diagnostics, and reproduction commands.
+
+\newpage
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+
+\input{sections/01_scope.tex}
+\input{sections/02_shuffle.tex}
+\input{sections/03_depth.tex}
+\input{sections/04_ladders.tex}
+\input{sections/05_gamma.tex}
+\input{sections/06_computation.tex}
+\input{sections/07_research.tex}
+\input{references.tex}
+\end{document}

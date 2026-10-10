@@ -69,6 +69,20 @@ Credit all three. These are the intake dossier's (dossier138_POLYLOG)
 findings; it recomputed the exact ranks for `q ≤ 60` (and with reflection
 for `q ≤ 40`, `k ≤ 4`), but the comparison is not re-proved in this note.
 
+**A fourth proof (batch 139, dated note 2026-10-09).** 15
+(`polylogarithm_research_20261009`, placed in
+[`../gaussian-parity-reductions/`](../gaussian-parity-reductions/), files
+`15-parity-ranks-*`) proves the same all-denominator laws again from the manuscript's
+labels (`stieltjes:prop:jetrank`, `tower:thm:rank`): the weighted distribution module
+with any completely multiplicative rational weight is the regular representation of
+`(Z/qZ)^×` (`thm:distribution`), with the jet, first-Stieltjes and parameter-derivative
+counts as corollaries, 1,087 exact rank checks, and, for weight `m^s` with `s` a
+nonzero integer, a `Q`-basis on the primitive residues with eight rational
+elimination certificates (`cor:primitive`). The basis statement is the rational form
+of the top-denominator basis proved here (paragraph after `eq:dist-top-coordinate`,
+`Re s ≠ 0`); 15 did not cite this report. Credit it as a further proof, not a new
+result.
+
 ## Caveats
 
 - The ranks are dimensions of formal quotients, not arithmetic independence

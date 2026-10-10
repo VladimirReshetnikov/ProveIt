@@ -1,0 +1,24 @@
+PYTHON ?= python
+PDFLATEX ?= pdflatex
+ARTICLE = mixed_polylog_gap_reductions
+
+.PHONY: all verify symbolic certificates numerical pdf tables clean
+all: verify pdf tables
+verify: symbolic certificates numerical
+symbolic:
+	$(PYTHON) src/symbolic_checks.py
+certificates:
+	$(PYTHON) src/certify.py
+numerical: certificates
+	$(PYTHON) src/numerical_checks.py
+pdf:
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error $(ARTICLE).tex
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error $(ARTICLE).tex
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error $(ARTICLE).tex
+tables:
+	cd generated && $(PDFLATEX) -interaction=nonstopmode -halt-on-error -jobname=parity_tables parity_tables_document.tex
+	cd generated && $(PDFLATEX) -interaction=nonstopmode -halt-on-error -jobname=parity_tables parity_tables_document.tex
+clean:
+	rm -f $(ARTICLE).aux $(ARTICLE).log $(ARTICLE).out $(ARTICLE).toc
+	rm -rf src/__pycache__
+	rm -f generated/parity_tables.aux generated/parity_tables.log generated/parity_tables.out

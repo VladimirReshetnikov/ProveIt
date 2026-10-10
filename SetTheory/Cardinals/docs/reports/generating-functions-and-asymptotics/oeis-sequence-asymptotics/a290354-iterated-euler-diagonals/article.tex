@@ -3843,6 +3843,51 @@ $\log2$; Question~\ref{ied:par:q:large} is the $\beta\to\infty$ half of
 item~\ref{ied:q:endpoint}; Question~\ref{ied:par:q:germ} is the open part of
 item~\ref{ied:q:analytic}.
 \end{writenote}
+\begin{writenote}[Independent check of the Part~IV write, 9 October 2026]
+An independent adversarial check of the Part~IV write (\file{03c28e4c8}) re-derived its
+statements with its own code. \emph{The identity and the trust boundary.} The proof of
+Theorem~\ref{ied:par:thm:identity} was re-derived: \eqref{ied:par:eq:LLT} divided by $n!$
+gives the factor $1/n$; $\Phi(r_m)=-m$ gives $2/r_m=m-\frac13\log m+\frac13\log2+o(1)$, so
+the tilt leaves exactly $2^{-t/3}$; the masses of $\mu_m$ are $f^{\circ m}(P(-m))=P(0)$; and
+the compact-test identification gives $h(t)=2^{-t/3}I(t)/t$. The four inputs were read in
+\file{a139383-iterated-bell-diagonals} at the pin (blob \file{2b1d8fbe81}):
+\file{ibd:pd:eq:absolute} is stated for $\eta=n/m\in[b,B]$ with remainder
+$\Oh(m^{-1}(1+\log m)^D)$ and is proved from the ``certified common finite entry'' on the
+outer arcs and the endpoint estimate $\Rea\Psi(-s+i0)\le3-1/s$ of \file{ibd:pd:eq:seed}
+(the interval-certificate dependency of Remark~\ref{ied:par:rem:seed}); that report's Part~II
+is stated as conditional on its Part~I; and the holomorphy paragraph of
+\file{ibd:pd:prop:positive} uses a local integrable majorant, not the numerical seed
+$1.64<I(1)$, which enters only its positivity paragraph. The trust boundary of
+Section~\ref{ied:par:sec:trust} is therefore exact. \emph{Numbers.} $2^{1/3}h(1)$ is
+$2.286264781775815\ldots$ with the delivered density ($h(1)=1.8146095598343874\ldots$) and
+$2.286264781776587\ldots$ with the earlier check's independent $1.814609559835$, so
+``$2.2862647817\ldots$'' is a correct truncation for both; the three runs of the iterated Bell
+report exceed it by $1.642\times10^{-8}$, $2.92\times10^{-9}$, $4.52\times10^{-9}$, and its
+$C=\sqrt{2\pi}I(1)/2=2.86540797264\ldots$. Through Lengyel's constant from OEIS A086053
+(independent of Part~IV's density), $h(\log2)=2C/(2\log2)^{(\log2)/3}=2.03764226105491367\ldots$,
+against the delivered $2.03764226105491440\ldots$. \emph{The write's observation} was
+recomputed by other routes: at $L=\log2$, $S_n(L)=2z_n$ exactly and the main term is $2Cf_n$
+with Lengyel's $C$; at $L=1$, $S_n(1)=(q+1)Z_n(q)$ with $q=1/(e-1)$ from the marked recurrence
+(equal to the Newton form at $n=25$ to 25 digits). The values $n(\text{ratio}-1)=0.11555847$
+and $0.16669412$ at $n=320$ are reproduced, and both agree with $L/6+c_2(L)/n$, the chain
+report's first two coefficients ($0.11555871$, $0.16669464$), to $6\times10^{-7}$; at $L=1$
+this is again only numerical evidence (uncertified, outside that report's disk). Also
+confirmed: the Newton form, the chain counts against A005121 (19 terms), the majorant for
+$n\le30$, $m\le60$, the mixture identity for $n\le25$ at five rational $q$; with SymPy, the
+endpoint expansion and its exponentiation through $t^2$, the main term of
+Theorem~\ref{ied:par:thm:aggregate} and the Lengyel form; the archive (1{,}394{,}668 bytes, 45
+files, 1{,}636{,}954 bytes unpacked; manuscript~02 of 12 files), the 9 byte-identical staged
+files, the pin \file{58175ca455} and its three blobs, the stale-blob correction
+(\file{ab5014ecd6} until \file{3f9fc9d4f}, \file{2b1d8fbe81} since), the numbering (all
+earlier labels unchanged, the 56 delivered labels at section $+38$, 23 added), the 51
+references, the README's 42 files. \emph{Since the write}: commit \file{7354dd9e13} added the
+proposed notes to \file{a005121-strict-partition-chains} and
+\file{a139383-iterated-bell-diagonals} (an added note each; their \file{article.tex} blobs are
+now \file{9f84153329} and \file{8b759cc0cb}), so the statements in
+Sections~\ref{ied:par:sec:provenance} and~\ref{ied:par:sec:answers} and in the front matter
+that those blobs are unchanged at HEAD and the notes not applied describe the state at the
+write. No claim of Part~IV or of the write was found wrong.
+\end{writenote}
 
 \appendix
 \section{A short proof checklist for independent review}\label{ied:par:app:checklist}

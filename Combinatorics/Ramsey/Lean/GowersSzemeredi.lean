@@ -991,6 +991,7 @@ import GowersSzemeredi.Proofs16PropNineThreeIteration
 import GowersSzemeredi.Proofs16ProgressionImagePurification
 import GowersSzemeredi.Proofs16CommonValueSharp
 import GowersSzemeredi.Proofs16ClaimNineFive
+import GowersSzemeredi.Proofs16GlobalAllQuadImageCore
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

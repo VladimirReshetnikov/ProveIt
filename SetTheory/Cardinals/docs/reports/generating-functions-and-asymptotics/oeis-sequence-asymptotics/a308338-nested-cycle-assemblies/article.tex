@@ -3520,6 +3520,13 @@ The shipped programs, rerun on a copy at the write, reproduce the three CSV
 files to relative $2\times10^{-8}$ and the six exact fractions exactly
 (Section~\ref{ncy:gb:sec:checks}).
 \end{writenote}
+\begin{writenote}[A precision from the independent check, 9 October 2026]
+In the quantile sentence of the note above, the largest correction term
+$|(L+x_p)^2-(L+x_p)-1-\beta_p(L+x_p+1)^2|/(4c)$ at $n=10^5$ is $25.48$ (at
+$p=0.1$); ``reaches $26$'' should read ``reaches $25.5$''. The three intervals,
+the atoms, the ratios and the saddle values of the note were confirmed
+(note at the end of Section~\ref{ncy:gb:sec:future}).
+\end{writenote}
 
 \section{Further research questions}\label{ncy:gb:sec:future}
 
@@ -3631,6 +3638,68 @@ certified value, and whether $\alpha=1$ exactly, stay open.
 Question~\ref{ncy:q:periodic}, and \emph{Question~\ref{ncy:gb:q:effective}}
 that of Part~I's Question~\ref{ncy:q:effective}; none of the three is
 answered.
+\end{writenote}
+\begin{writenote}[Independent check of the Part~II write: $E_*$ in closed form, 9 October 2026]
+An independent adversarial check of the Part~II write (\file{aeecf5e9e})
+answers Question~\ref{ncy:gb:q:affine} of this section. Let $\omega=W(1/e)=0.2784645427610737951\ldots$
+be the real solution of $\omega e^{\omega}=e^{-1}$. Then
+\[
+ E_*=\frac{W(1/e)}{e}=0.1024413803770050319\ldots,
+\]
+and the infimum in~\eqref{ncy:gb:eq:Estar} is attained only at $\alpha=1$,
+$b=-\omega$. \emph{Proof.} Put $\psi_{\alpha,b}(x)=G'(x)(1-e^{-x}-\alpha x-b)$
+and $\psi=\psi_{1,-\omega}$. Since $G''(x)=G'(x)(e^{-x}-1)$,
+\[
+ \psi'(x)=G'(x)\,(e^{-x}-1)\,(2+\omega-x-e^{-x}).
+\]
+The function $u(x)=x+e^{-x}$ decreases on $(-\infty,0]$, increases on
+$[0,\infty)$ and has $u(0)=1<2+\omega$, so $\psi'$ vanishes exactly at $x=0$
+and at two points $x_1<0<x_3$ with $u(x_i)=2+\omega$. There
+$1-e^{-x_i}-x_i+\omega=-1$, so
+$\psi(x_i)=-G'(x_i)=-\exp(-u(x_i))=-\exp(-2-\omega)=-\omega/e$ (because
+$\exp(-\omega)=e\,\omega$), while $\psi(0)=\omega G'(0)=\omega/e$. As
+$\psi(x)\to0$ for $x\to\pm\infty$, $\sup_x|\psi(x)|=\omega/e$, attained with
+the signs $-,+,-$ at $x_1<0<x_3$. For any $(\alpha,b)$,
+$\psi_{\alpha,b}=\psi-G'\ell$ with $\ell(x)=(\alpha-1)x+b+\omega$. If
+$\sup|\psi_{\alpha,b}|\le\omega/e$, then $\ell(x_1)\le0$, $\ell(0)\ge0$ and
+$\ell(x_3)\le0$; as $0$ lies between $x_1$ and $x_3$, $\ell(0)$ is a convex
+combination of $\ell(x_1)$ and $\ell(x_3)$, so all three vanish and
+$\ell\equiv0$. Hence $E_*=\omega/e$, attained only at $(1,-\omega)$; in the
+parametrization $a_n=1+\delta\alpha$, $b_n=\delta b$ of the proof of
+Theorem~\ref{ncy:gb:thm:affine} this is $a_n=1+\delta$, $b_n=-\omega\delta$.
+\emph{Numerically}: $x_1=-1.26514618766573\ldots$, $x_3=2.16354785338817\ldots$;
+a 40-digit solution of the six alternation equations gives $\alpha=1$ and
+$E_*$ to all 40 digits, and a linear-programming minimax on two grids agrees.
+So the write's uncertified value $E_*\approx0.1024413800$ is low by
+$3.8\times10^{-10}$ (a grid estimate of a supremum lies below it), its slope
+$\alpha\approx1$, shift $b\approx-0.2784645$ and alternation points were right,
+$\kappa/E_*=3.0164059\ldots$, and ``whether $\alpha=1$ exactly'' is answered:
+it is. A finite-$n$ certified error bound is still Question~\ref{ncy:gb:q:effective}.
+
+\emph{The rest of the check.} Re-derived with the check's own code: the
+whole law of $M_n$ at $n=1000$ in exact integer arithmetic (blocks of equal
+components added cutoff by cutoff), and at $n=10^4$, $10^5$ by a fourth,
+signed route, $\Pbb(M_n\le m)=[w^n]E(w)\exp(-\sum_{k>m}a_kw^k)/[w^n]E(w)$
+built downward from $m=n$ (equal to the exact law at $n=1000$ to
+$4\times10^{-15}$; used for $x\ge-2.5$, below which every error is at most
+$1.6\times10^{-5}$). The write's four error values at $n=1000$ are the exact
+ones to every printed digit, the delivered ones differ by at most
+$3\times10^{-10}$, and at $n=10^4$, $10^5$ all agree to $10^{-13}$; the
+atoms, the ratios $2.52,1.87,1.57$; $5.54,4.69,3.58$; $5.69,5.92,5.19$, the
+quantile intervals and the saddle values were reproduced. The six $n=50$
+fractions, the 22 counts and $a(50)$ equal A308338 (revision \#21 of
+5~October 2026, b-file read again). With mpmath and SymPy: $\kappa$ (the
+printed digit is rounded, as the write says), the other stationary value, the
+ratio $(2+\sqrt5)^2e^{-\sqrt5}$, the corollary constants (truncations), the
+lower bound $0.0402300054\ldots$, $R_1,R_2,R_3$, the exact geometric tail and
+its expansion, the derivative~\eqref{ncy:gb:eq:full-calibration-derivative}
+and its region minima $0.565687$ and $0.8125$, and that $G'(h_\tau-x)$ is the
+smooth part of $U_n$. Also confirmed: the archive and the 18 byte-identical
+staged files, the pins, the 94 + 72 labels with 19 added (185), the 102
+references, and the README's 38 files. One sentence of the note at the end of
+Section~\ref{ncy:gb:sec:computation} is made precise there. Apart from that
+sentence and the value of $E_*$ above, no claim of Part~II or of the write was
+found wrong.
 \end{writenote}
 
 \appendix

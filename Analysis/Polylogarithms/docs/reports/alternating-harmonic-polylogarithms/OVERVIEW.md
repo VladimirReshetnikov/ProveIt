@@ -80,3 +80,18 @@ comparison is not re-proved in this note.
 - `apply_goncharov_fix.py` (in `../corpus-corrections/code/`) patches a
   historical draft; it has not been run, and must not be applied without
   Vladimir's decision. The correction is recorded in the project README.
+
+## Later sources (batch 139, 9 October 2026)
+
+Dated note, 2026-10-09. Four continuations of the unified manuscript were placed as
+the new merged report [`../gaussian-parity-reductions/`](../gaussian-parity-reductions/)
+(sources 14–17, base 14). Two of its threads touch this report:
+
+- **Repeats.** 15, 17 (and 14, which says so) re-derive 10's inverse-argument
+  reduction of `Li_{a,b}(z,1/z)` and the four mixed constants credited here; 17's
+  `thm:gap` is 10's formula term for term. Nothing new is added to this report by them.
+- **`S₄` stays open** (question 1, "the complementary reflection sector"). 15 proves
+  `S_p = Im Li_{p,1}(i,1) + Im Li_{p,1}(i,−1)` for `p ≥ 2` and reduces the open
+  identity to one relation (`problem:S4`); 14 gives the equivalent short form
+  `S₄ = (58g₄₁ + 24g₃₂)/7 + 19π⁵/3584 − 2β(4)log2`, using the second weight-five
+  shuffle row; 16 encloses the residual numerically. None proves it.

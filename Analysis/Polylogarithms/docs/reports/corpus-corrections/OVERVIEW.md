@@ -115,3 +115,22 @@ elsewhere and are credited there:
 - `code/11-reflection-transition-apply_goncharov_fix.py` patches a
   historical draft in place; it has not been run, and must not be applied
   without Vladimir's decision.
+
+## Later corrections (batch 139, 9 October 2026)
+
+Dated note, 2026-10-09. The four continuations of batch 139
+([`../gaussian-parity-reductions/`](../gaussian-parity-reductions/), sources 14–17)
+deliver no correction register; their integration guides
+(`14-exact-reductions-integration_register.*`, `15-parity-ranks-integration_notes.md`,
+`16-gaussian-certified-INTEGRATION.md`, `17-gap-reductions-INTEGRATION.md`) map the
+manuscript's labels to proofs and stay with that report. Two consequences for the
+historical drafts are recorded in the project README's "Status of claims":
+
+- `articles/gaussian-multiple-polylog-depth.tex`, "A sporadic relation: the generator
+  space is three-dimensional" (lines 284–292): there is a second, independent
+  shuffle relation, `g₂₃ = −6g₄₁ − 3g₃₂ − (3/32)Gζ(3) − π⁵/1536`, so the four
+  weight-five generators span at most two directions modulo `π⁵, Gζ(3), β(4)log2`
+  (14, 15, 17; checked at intake).
+- `reports/binet-malmsten-lambert-bridge__a3c91e07f5d2.md`, section 2 ("The cubic
+  moment is open"): 14 cites a published Tornheim-derivative evaluation
+  (Bailey–Borwein–Borwein 2015, Theorem 6); not checked at intake.
