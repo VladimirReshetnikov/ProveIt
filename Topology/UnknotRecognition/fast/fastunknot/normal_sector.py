@@ -444,8 +444,34 @@ def _discover_in_kernel(kernel, *, phase, method='auto', max_bases=None,
             return screened
         used=screened['stats']['bases_attempted']
         remaining=None if max_bases is None else max_bases-used
-        result=_discover_in_kernel(kernel,phase='standard',max_bases=remaining,
+        present=[False]*len(kernel.support)
+        for entry in screened['certificate']['rays']:
+            check()
+            for i,value in enumerate(entry['quadrilaterals']):
+                check()
+                if value:present[i]=True
+        keep=[i for i,value in enumerate(present)if value]
+        reduced=kernel
+        if len(keep)<len(kernel.support):
+            # Only a completed Q enumeration proves these types vanish on
+            # the whole feasible cone. Rebuild matching geometry so automatic
+            # standard enumeration uses the actual feasible span dimension.
+            reduced=build_sector_kernel(kernel.triangulation,[kernel.support[i]for i in keep],check=check)
+        result=_discover_in_kernel(reduced,phase='standard',max_bases=remaining,
             max_orbit_cycles=max_orbit_cycles,check=check,corner_first=False)
+        if reduced is not kernel:
+            result['stats']['support_reduction']=dict(requested_kernel=dict(kernel.stats),
+                retained_indices=keep,forced_zero_types=len(kernel.support)-len(keep))
+            if 'certificate'in result:
+                certificate=result['certificate']
+                certificate['allowed_types']=[list(x)for x in kernel.support]
+                if certificate['schema']=='normal-sector-exhaustion-v1':
+                    for entry in certificate['rays']:
+                        check()
+                        expanded=[0]*len(kernel.support)
+                        for i,value in zip(keep,entry['quadrilaterals']):expanded[i]=value
+                        entry['quadrilaterals']=expanded
+                    certificate['q_support_certificate']=screened['certificate']
         result['stats']['q_screen_stats']=screened['stats']
         result['stats']['bases_attempted']+=used
         return result

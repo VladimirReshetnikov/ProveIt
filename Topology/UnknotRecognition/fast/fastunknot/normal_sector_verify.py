@@ -227,8 +227,36 @@ def verify_sector_exhaustion(triangulation, certificate, *, check=lambda: None):
         support = _allowed(certificate.get('allowed_types'), len(prepared['tetrahedra']))
     except ValueError:
         return False
-    model = dense_sector_model(triangulation, support, check=check)
-    expected = dense_reference_rays(model, phase, check=check)
+    if 'q_support_certificate'in certificate:
+        qproof=certificate['q_support_certificate']
+        # No producer data or inferred support is trusted. Independently
+        # reconstruct the complete original Q cone first; recursion is limited
+        # to one ordinary Q certificate, which cannot itself carry a reduction.
+        if (phase!='standard' or type(qproof)is not dict
+                or qproof.get('phase')!='quadrilateral'
+                or qproof.get('status')!='POSITIVE_EULER_ONLY'
+                or qproof.get('allowed_types')!=certificate.get('allowed_types')
+                or 'q_support_certificate'in qproof):return False
+        if not verify_sector_exhaustion(triangulation,qproof,check=check):return False
+        present=[False]*len(support)
+        for entry in qproof['rays']:
+            check()
+            for i,value in enumerate(entry['quadrilaterals']):
+                check()
+                if value:present[i]=True
+        retained=[i for i,value in enumerate(present)if value]
+        if not retained or len(retained)==len(support):return False
+        reduced_support=[support[i]for i in retained]
+        model=dense_sector_model(triangulation,reduced_support,check=check)
+        reduced_expected=dense_reference_rays(model,phase,check=check)
+        expected={}
+        for q,value in reduced_expected.items():
+            check();full=[0]*len(support)
+            for i,count in zip(retained,q):full[i]=count
+            expected[tuple(full)]=value
+    else:
+        model = dense_sector_model(triangulation, support, check=check)
+        expected = dense_reference_rays(model, phase, check=check)
     entries = certificate.get('rays')
     if type(entries) is not list or len(entries) != len(expected):
         return False
