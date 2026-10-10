@@ -1,3 +1,44 @@
+# Active research checkpoint
+
+The broad research goal remains active. Six packages arrived in cc34f73596;
+all 267 members are byte-preserved and all six isolated replays passed.
+Intake commit: 0c9bf73f27. The current source inventory has 248 entries.
+
+New proved additions: original all-weight rank conjecture/kernel/compiler,
+the S2 identity and its complete 25-row certificate, fifth-index zero
+transition, and the independently certified sixth/seventh-index transitions
+4,4,4,6,... and 5,5,5,5,7,..., with sharp thresholds 4 and 5. Both exact
+implementations certify 126 signs (90 endpoints and 36 whole intervals).
+The first independent replay's 55-digit defaults produced unresolved
+intervals; increasing to 100 digits resolved every sign without a numerical
+acceptance shortcut. A serialization path error was also repaired.
+
+Further additions: affine signed moments for real outer order a >= 1, the
+exact two-shuffle weight-seven coordinate identity reconciling the two S6
+candidates, and the rigorous rejection of the frozen S8 vector. Native
+Wolfram 80-digit audits pass all three S2/coordinate checks. S6 remains
+conjectural. The original 911-row S4 proof is retained, with the new
+independent smaller certificates as corroborating preserved artifacts.
+
+The corrected zero-profile plot uses Q_n and its caption defines the
+Gamma-expectation profile. The current collective PDF has 298 pages, twelve
+chapters, nine figures and 79 references; three serial LuaLaTeX passes
+converge with no final warnings. Final PDF SHA:
+da36e67251d6e82ea73f2902c0b1a34ad2cf9c30365ab88fa5df95c42794d200.
+All pages were reviewed in nineteen contact sheets, with focused full-size
+proof/certificate/figure review. Author remains ProveIt Contributors.
+
+Remaining authorized work: reconcile integral Smith forms, CM normalized
+class products and genus ratios, full J(p/q) calculus/evaluations, Lerch
+endpoint renormalization and folds/nonmonotone branches, real-order angular
+nonvanishing/motion, all-exponential coefficients and divergence, the optimal
+Euler constant, and alternative S4 certificates. Continue attempts on S6 and
+other conjectures, discover further identities, and audit any flaws.
+Incoming-report heartbeat watch is active hourly, quiet when unchanged.
+Do not mark the whole research goal complete at this publication checkpoint.
+
+Previous completed material below is historical continuation context.
+
 # Completed incoming integration
 
 The five incoming packages are integrated by mathematical dependency in the

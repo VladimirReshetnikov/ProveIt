@@ -1,15 +1,22 @@
 # Polylogarithms and their Arithmetic Bridges
 
 The collective manuscript, authored by **ProveIt Contributors**, is [polylogarithms.pdf](polylogarithms.pdf):
-**287 pages, twelve chapters**, a literature appendix preserving 94 distinct
+**298 pages, twelve chapters**, a literature appendix preserving 94 distinct
 historical question leads, and a central bibliography of 79 works. Its editable
 source is [polylogarithms.tex](polylogarithms.tex) and the files in `chapters/`.
 
 The book consolidates the original 39 drafts and all eleven nested continuation
-packages in the requested directory. The recursive inventory covers **179
+packages in the requested directory. The recursive inventory covers **248
 textual source files**; assembled articles and their fragments are provenance
 files, not independent results. The [editorial ledger](EDITORIAL-LEDGER.md)
 maps the sources and explains which later proofs replace earlier claims.
+Six further packages arrived during continuing research. All 267 new
+archive members are preserved and their replay suites pass; the rank proof,
+S2 identity, fifth-index zero transition and signed-moment/error results
+are integrated. New independent certificates prove complete sixth- and
+seventh-index zero counts. CM, Lerch and angular results remain under
+analytic reconciliation, as recorded in the ledger.
+
 Original drafts, code, data and PDFs remain historical evidence. This book is
 the canonical reading artifact.
 
@@ -25,7 +32,7 @@ stated at each transition.
 
 The [validation report](VALIDATION.md) records fresh native Wolfram and
 independent Python checks, exact rational certificates, the converged build
-and rendered review. [WORKLOG.md](WORKLOG.md) records the completed integration.
+and rendered review. [WORKLOG.md](WORKLOG.md) records the active research continuation.
 The five new packages add the exact S4 proof, complementary-depth transport,
 pure-complement classification, conductor descent and trace jets, proportional
 harmonic saddles, sharp reflected-moment remainders, and rational Herglotz

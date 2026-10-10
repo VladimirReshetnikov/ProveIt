@@ -1,0 +1,287 @@
+% Contribution for the pinned ProveIt manuscript continuation.
+% Dependencies: amsmath, amssymb, amsthm, booktabs, hyperref.
+% The root article supplies theorem/proposition/lemma/corollary environments.
+% Existing manuscript labels are referenced only where explicitly stated.
+
+\section{The first classical failure of saturation: the fifth index}
+\label{n5:sec:transition}\label{sec:classical-zeros}
+
+The first four Stieltjes indices in the preceding discussion have the maximum possible
+number of positive parameter-derivative zeros at every derivative order.
+That pattern fails at the next index.  The failure is not restricted to a
+Lerch deformation: it occurs at the classical Hurwitz endpoint itself.
+We prove the exact transition
+\begin{equation}\label{n5:eq:count-sequence}
+ \#\{a>0:\gamma_5^{(k)}(a)=0\}=
+ \begin{cases}3,&k=1,2,\\5,&k\geq3,\end{cases}
+\end{equation}
+and every zero in this display is simple.  Thus the least derivative order
+after which fifth-index saturation persists is exactly three.
+
+Two ingredients distinguish this conclusion from a numerical zero scan.
+A general upper bound of five controls the entire positive axis at order
+three.  Certified signs at its stationary points then count the zeros at
+orders two and one by monotonicity.  The large positive zeros near
+$148.9122$ and $319.6184$ are essential to this argument; a scan confined to
+a small neighborhood of $a=1$ misses them.
+
+\subsection{Endpoint signs, parity, and monotonicity of zero counts}
+
+Retain the Laurent convention
+\[
+ \zeta(s,a)=\frac1{s-1}+
+       \sum_{n\geq0}\frac{(-1)^n}{n!}\gamma_n(a)(s-1)^n,
+ \qquad a>0.
+\]
+For the classical family write
+\[
+ U_{n,k}(a)=(-1)^{n+k}\gamma_n^{(k)}(a),\qquad k\geq1.
+\]
+Then $U_{n,k}'=-U_{n,k+1}$.  The established Appell--Laplace formula is
+\begin{equation}\label{n5:eq:laplace}
+ U_{n,k}(a)=\int_0^\infty
+ \frac{t^k e^{-at}}{1-e^{-t}}\,Q_n(\log t)\,dt,
+ \qquad
+ \frac{e^{xz}}{\Gamma(1+z)}=
+       \sum_{n\geq0}Q_n(x)\frac{z^n}{n!}.
+\end{equation}
+The reciprocal-gamma product makes $Q_n$ strictly real-rooted, and Laplace
+variation diminution therefore bounds the positive zero count by $n$,
+including multiplicities.  These are the global zero theorem
+and its proof mechanism, reproduced in Section~\ref{zeros:sec:zerobound}
+for completeness.  The classical parameter-derivative identity underlying
+\eqref{n5:eq:laplace} is also contained in Coffey's all-order
+formulas~\cite{stieltjes:Coffey}.
+
+For fixed $n\geq0$ and $k\geq1$ the endpoint expansions are
+\begin{align}
+ U_{n,k}(a)&\sim k!a^{-k-1}\log^n(1/a),&&a\downarrow0,\label{n5:eq:left}\\
+ U_{n,k}(a)&\sim(-1)^n(k-1)!a^{-k}\log^n a,&&a\to\infty.
+ \label{n5:eq:right}
+\end{align}
+When $n=0$, the logarithmic powers mean one.  The first formula follows
+either by scaling the integral or by differentiating the shift term
+$\log^n a/a$ in
+$\gamma_n(a)=\log^n a/a+\gamma_n(a+1)$.  For the second, set $t=u/a$ in
+\eqref{n5:eq:laplace} and use
+$(1-e^{-u/a})^{-1}=a/u+O(1+u/a)$ together with monicity of $Q_n$.
+The bound
+$(1-e^{-v})^{-1}\leq1+v^{-1}$ supplies an integrable majorant after
+expanding the fixed polynomial in $\log u-\log a$.
+In particular, every $U_{n,k}$ tends to zero at infinity and has fixed
+strict signs near both endpoints.
+
+\begin{proposition}[Parity and persistence before saturation]
+\label{n5:prop:count}
+Let $N_{n,k}$ be the total multiplicity of the positive zeros of
+$\gamma_n^{(k)}$.  Then
+\begin{equation}\label{n5:eq:count-law}
+ 0\leq N_{n,k}\leq n,\qquad
+ N_{n,k}\equiv n\pmod2,\qquad N_{n,k+1}\geq N_{n,k}.
+\end{equation}
+Consequently every strict increase in the total zero count is by an even
+integer.  The same assertions hold, at each fixed
+$0\leq\rho\leq1$, for the Stieltjes--Lerch family
+$D_{n,k}^{\rho}$.
+\end{proposition}
+\begin{proof}
+The upper bound is the global variation theorem.  The endpoint signs in
+\eqref{n5:eq:left}--\eqref{n5:eq:right} show that the total multiplicity
+has parity $n$: a real analytic zero reverses sign exactly when its
+multiplicity is odd.
+
+Suppose the distinct zeros of $U_{n,k}$ are
+$r_1<\cdots<r_q$, with multiplicities $m_1,\ldots,m_q$ and
+total $N=\sum_i m_i>0$.  Its derivative has inherited multiplicity
+$m_i-1$ at each $r_i$, and Rolle's theorem supplies a zero between each
+successive pair.  These account for at least
+$(N-q)+(q-1)=N-1$ derivative zeros counted with multiplicity.  There is one
+more stationary point strictly after $r_q$: a nonzero function leaving
+zero at $r_q$, with constant sign afterwards and limit zero at infinity,
+must attain an interior extremum.  Thus $U_{n,k+1}=-U_{n,k}'$ has at least
+$N$ zeros counted with multiplicity.  The case $N=0$ is immediate.
+
+For fixed $\rho<1$, the analogous Mellin weight
+$(1-\rho e^{-t})^{-1}$ is positive and tends to $(1-\rho)^{-1}$ at zero.
+The large-$a$ leading term is then
+$(-1)^n k!(1-\rho)^{-1}a^{-k-1}\log^n a$; the small-$a$ leading term
+is unchanged.  The same endpoint and Rolle arguments apply, including
+the possible multiple zeros at $\rho=0$.
+\end{proof}
+
+\begin{proposition}[A classical lower bound from matching endpoint data]
+\label{n5:prop:lower}
+For every $k\geq1$, $\gamma_n^{(k)}$ has at least two distinct positive
+zeros if $n\geq2$ is even, and at least three distinct positive zeros if
+$n\geq3$ is odd.  In particular, saturation for $n=2,3$ at every
+derivative order follows analytically, without a finite sign certificate.
+\end{proposition}
+\begin{proof}
+For $n\geq2$, the shift identity at $a=1$ and its first derivative give
+\[
+ \gamma_n(1)=\gamma_n(2),\qquad
+ \gamma_n'(1)=\gamma_n'(2),\qquad
+ \int_1^2\gamma_n'(a)\,da=0.
+\]
+Put $g=\gamma_n'$.  This is a nonzero real analytic function.  If its
+common endpoint value is positive, its integral forces a negative
+interior value; hence there are at least two sign-changing zeros in
+$(1,2)$.  The same conclusion holds with signs reversed when the common
+endpoint value is negative.  If the common endpoint value is zero, the
+integral forces both signs in the interior, and there are at least three
+distinct zeros in $[1,2]$, including the endpoints.
+
+For odd $n$ in the nonzero-endpoint case, the two interior sign-changing
+zeros have odd multiplicities.  The odd total parity from
+Proposition~\ref{n5:prop:count} forces an additional odd-multiplicity
+zero, distinct from them.  This proves the asserted lower bounds at
+$k=1$.  Rolle's theorem between distinct zeros, together with the
+stationary point after the last zero used above, preserves a lower bound
+on the number of distinct zeros at every subsequent derivative order.
+The global upper bound makes the two or three zeros simple when
+$n=2$ or $n=3$.
+\end{proof}
+
+Thus the count three in \eqref{n5:eq:count-sequence} is the smallest
+possible classical fifth-index count.  Passing from order two to order
+three raises the positive zero count by exactly two.
+
+\subsection{A finite certificate that controls the whole positive axis}
+
+For the remainder of the proof abbreviate
+\[
+ U_k=U_{5,k},\qquad
+ V_k(a)=\frac{a^{k+1}}{k!}U_k(a).
+\]
+The normalization $V_k$ preserves signs, but its stationary points are
+not the zeros of $U_{k+1}$.  All monotonicity arguments below are applied
+to $U_k$, while $V_k$ is used only for stable sign enclosures.
+
+Let $\varepsilon=10^{-16}$.  Each row of
+Table~\ref{n5:tab:roots} specifies a rational interval
+$[\ell,\ell+\varepsilon]$.  The stated endpoint signs of $V_k$ are
+certified by the rational Euler--Maclaurin enclosure already derived above;
+the displayed error bound is valid for every fixed nonnegative index.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{ccrcc}
+\toprule
+$k$&$j$&$\ell$&sign at $\ell$&sign at $\ell+10^{-16}$\\
+\midrule
+3&1&0.9409528529131887&$+$&$-$\\
+3&2&1.1292935180347063&$-$&$+$\\
+3&3&1.6357795548293846&$+$&$-$\\
+3&4&6.1361342793896981&$-$&$+$\\
+3&5&319.6184025568026870&$+$&$-$\\
+\midrule
+2&1&1.3713298168772550&$+$&$-$\\
+2&2&1.9113619446041762&$-$&$+$\\
+2&3&148.9122045692035618&$+$&$-$\\
+\midrule
+1&1&1.1378900542449414&$+$&$-$\\
+1&2&1.6389372768448503&$-$&$+$\\
+1&3&2.1249028498579805&$+$&$-$\\
+\bottomrule
+\end{tabular}
+\caption{Rational isolating intervals of width $10^{-16}$.  These
+endpoint signs and the critical-value signs in the next table are finite
+certificates.  The proof establishes uniqueness and completeness.}
+\label{n5:tab:roots}
+\end{table}
+
+Denote the five third-order roots by $c_1<\cdots<c_5$ and the three
+second-order roots by $d_1<d_2<d_3$.  The interval computation also
+encloses the preceding-order function uniformly on every indicated
+root interval.  Table~\ref{n5:tab:critical} lists rational enclosures
+with outward rounding; they apply in particular at the true roots.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{cl}
+\toprule
+Quantity&Certified rational enclosure\\
+\midrule
+$V_2(c_1)$&$[0.006154632340,\ 0.006154632341]$\\
+$V_2(c_2)$&$[0.041073722584,\ 0.041073722585]$\\
+$V_2(c_3)$&$[-0.097090480335,\ -0.097090480334]$\\
+$V_2(c_4)$&$[106.545043234228,\ 106.545043234229]$\\
+$V_2(c_5)$&$[-135615.425337743697,\ -135615.425337743695]$\\
+\midrule
+$V_1(d_1)$&$[-0.014754703693,\ -0.014754703692]$\\
+$V_1(d_2)$&$[0.028710652775,\ 0.028710652776]$\\
+$V_1(d_3)$&$[-466915.576951780840,\ -466915.576951780837]$\\
+\bottomrule
+\end{tabular}
+\caption{Signs of the lower-order function at every critical point.
+The verifier encloses the function on the entire rational root bracket,
+so these signs do not presume a floating-point approximation to a root.}
+\label{n5:tab:critical}
+\end{table}
+
+\begin{theorem}[The exact fifth-index transition]
+\label{n5:thm:transition}
+The positive zero counts are exactly those in
+\eqref{n5:eq:count-sequence}.  All zeros are simple.  The eleven
+intervals in Table~\ref{n5:tab:roots} isolate all zeros at derivative
+orders one, two, and three.  For every $k\geq3$, the five zeros at order
+$k+1$ strictly interlace to the right of those at order $k$.
+\end{theorem}
+\begin{proof}
+The five third-order interval signs give at least five distinct zeros of
+$U_3$.  The global upper bound of five, counting multiplicity, shows that
+they are all its positive zeros and that each is simple.  Starting with
+the positive left endpoint sign, the signs of $U_3$ on the six
+complementary intervals are
+\[
+  +,\ - ,\ +,\ -,\ +,\ -.
+\]
+Consequently $U_2'=-U_3$ has constant nonzero sign on each such
+interval.  Its values at the five critical points have signs
+\[
+ \operatorname{sgn}(U_2(c_1),\ldots,U_2(c_5))=(+,+,-,+,-).
+\]
+Therefore there is exactly one second-order zero in each of
+$(c_2,c_3)$, $(c_3,c_4)$, and $(c_4,c_5)$, and no zero in
+$(0,c_1)$ or $(c_1,c_2)$.  After $c_5$, the function $U_2$ is strictly
+increasing from a negative value to its limit zero, so there is no zero
+there either.  The three zeros lie away from the critical points, so
+each is simple.  Their brackets in Table~\ref{n5:tab:roots} consequently
+identify them as $d_1,d_2,d_3$.
+
+The signs of $U_2$ are now $+,-,+,-$ on the four intervals cut out by
+the $d_j$, and $U_1'=-U_2$.  The critical-value signs are $-,+,-$.
+Since $U_1$ is positive near zero, strict monotonicity gives exactly one
+zero in each of $(0,d_1)$, $(d_1,d_2)$, and $(d_2,d_3)$.  After $d_3$,
+$U_1$ increases from a negative value to zero, so it has no further
+zero.  Again all three crossings are simple.
+
+Finally, five simple zeros at order three force at least five distinct
+zeros at the next order: Rolle supplies four between adjacent roots
+and the vanishing tail supplies one after the last root.  The global
+upper bound gives exactly five simple zeros, with no additional zero
+before the first interval.  Repeating proves saturation and strict
+right interlacing for every $k\geq3$.
+\end{proof}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{../reports/relation-cm-zero-transitions/figures/n5_certified_zero_locations.pdf}
+\caption{The eleven certified zero locations. The local panel separates the near-unit roots; the logarithmic panel includes the large roots. The brackets have width $10^{-16}$, much smaller than a plotted marker.}
+\label{fig:n5-locations}
+\end{figure}
+
+This proof uses no claim that a dense set of sampled values accounts for
+every zero.  Completeness at the highest checked order comes from a
+global analytic theorem; completeness at lower orders comes from the
+complete list of stationary points and their certified signs.
+
+
+The fresh replay supplies twenty-two root endpoint signs and eight signs
+on whole critical-point intervals, using denominator $10^{80}$, 120
+logarithm-series terms, 24 initial Hurwitz summands and 16 Bernoulli
+corrections. The generic remainder proof in the preceding certificate
+subsection applies with $n=5$. No floating-point sign enters acceptance.
+The data and executable verifier remain with the full incoming package.

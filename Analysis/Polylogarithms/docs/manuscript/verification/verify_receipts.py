@@ -65,7 +65,7 @@ x=read('Herglotz-truncation-results.json')
 diagnostic_records=dict(transition=len(x['transition_checks']),remainder=len(x['remainder_checks']),quadrature=len(x['independent_gamma_quadrature_checks']))
 outcomes['Herglotz-quadrature']=all(Decimal(c['absolute_residual'])<Decimal('1e-40') for c in x['independent_gamma_quadrature_checks'])
 archive_errors=[]
-archives=read('incoming-archives.json')
+archives=read('incoming-archives.json')+read('research-incoming-archives.json')
 for archive in archives:
     p=B.parents[3]/archive['archive']
     blob=p.read_bytes() if p.is_file() else subprocess.check_output(['git','show',archive['archive_git_revision']+':'+archive['archive']],cwd=B.parents[3])
@@ -75,7 +75,7 @@ for archive in archives:
         p=B.parent/member['path']
         if not p.is_file() or digest(p,False)!=member['sha256']:
             archive_errors.append(member['path'])
-outcomes['incoming-archive-preservation']=len(archives)==5 and sum(len(a['files']) for a in archives)==174 and not archive_errors
+outcomes['incoming-archive-preservation']=len(archives)==11 and sum(len(a['files']) for a in archives)==441 and not archive_errors
 for part,count in [('rigidity',1),('distribution',7),('conductor',4),('complement',5),('reflection',8)]:
     x=read(f'incoming-replay/{part}/replay-summary.json')
     outcomes['incoming-replay/'+part]=x['passed'] and len(x['commands'])==count and all(c['exit_code']==0 for c in x['commands']) and all((V/'incoming-replay'/part/p).is_file() for p in x['fresh_result_files'])
@@ -104,14 +104,31 @@ x=read('incoming-native-results.json')
 outcomes['incoming-native']=x['all_pass'] and len(x['checks'])==5
 x=read('reflected-sharp-results.json')
 outcomes['reflected-sharp-diagnostics']=x['all_pass'] and len(x['checks'])==9 and all(c['passed'] for c in x['checks'])
+for part,count in [('rank',2),('cm-zero',1),('formal',1),('angular',1),('cayley',4),('lerch',2)]:
+    x=read(f'research-replay/{part}/replay-summary.json')
+    outcomes['research-replay/'+part]=x['passed'] and len(x['commands'])==count and all(c['exit_code']==0 for c in x['commands'])
+x=read('higher-zero-certificates.json')
+outcomes['higher-zero-primary']=x['status']=='PASS' and x['root_endpoint_enclosures']==90 and x['critical_interval_enclosures']==36 and x['counts']['6']['counts_before_and_at_threshold']==[4,4,4,6] and x['counts']['7']['counts_before_and_at_threshold']==[5,5,5,5,7]
+x=read('higher-zero-independent.json')
+outcomes['higher-zero-independent']=x['status']=='PASS' and x['endpoint_checks']==90 and x['critical_interval_checks']==36 and all(c['sign']!=0 for c in x['checks']) and x['input_sha256']==digest(V/'higher-zero-certificates.json',False)
+x=read('research-native-results.json')
+outcomes['research-native']=x['all_pass'] and len(x['checks'])==3
+x=read('research-replay/angular/fresh-receipt.json')
+outcomes['S2-exact-and-independent']=x['reference_data_unchanged'] and all(c['status']=='pass' for c in x['checks']) and x['checks'][1]['result']['exact_target_verified'] and x['checks'][1]['result']['rows']==25 and all(c['pass'] for c in x['checks'][2]['result'])
+x=read('research-replay/rank/data/verification_report.json')
+outcomes['all-weight-rank-replay']=x['status']=='PASS' and x['rank_weights']==40 and x['rank_max']==41 and x['even_formula_count']==210 and x['affine_row_checks']==816 and x['gaussian_membership_checks']==420
+x=json.loads((B.parent/'reports/cayley-s4-continuation/data/S8_exclusion_N1000.json').read_text())
+outcomes['S8-frozen-vector-exclusion']=x['N']==1000 and not x['contains_zero'] and Fraction(x['residual']['upper'])<0 and Fraction(x['residual']['upper'])-Fraction(x['residual']['lower'])<Fraction('2.080e-290')
+x=read('S6-coordinate-change.json')
+outcomes['S6-coordinate-equivalence']=x['status']=='PASS' and x['residual_terms']==0 and x['standard_rows']==[[2,5],[3,4]]
 visual=read('visual-review.json')
-outcomes['recorded-visual-review']=visual['passed'] and visual['pdf_sha256']==pdfhash and visual['page_count']==287 and visual['all_contact_sheets_reviewed']==18 and visual['scientific_figures_reviewed']==8 and not visual['findings']
+outcomes['recorded-visual-review']=visual['passed'] and visual['pdf_sha256']==pdfhash and visual['page_count']==298 and visual['all_contact_sheets_reviewed']==19 and visual['scientific_figures_reviewed']==9 and not visual['findings']
 result=dict(changed_sources=changed,changed_dependencies=changed_dependencies,pdf_sha256=pdfhash,
  pdf_matches_build=pdfhash==build['pdf_sha256'],pdf_matches_render=pdfhash==render['pdf_sha256'],
  page_count=render['page_count'],source_documents=doc['source_documents'],converged_build=build['passed'],
  pdf_static_checks=render['static_passed'],document_integrity=doc['passed'],recorded_outcomes=outcomes,
  asymptotic_diagnostic_records=diagnostic_records,incoming_archive_errors=archive_errors,
  scope='Recorded evidence integrity only; visual review and scientific replay are separate activities.')
-result['passed']=not changed and not changed_dependencies and all(outcomes.values()) and all(result[k] for k in ['pdf_matches_build','pdf_matches_render','converged_build','pdf_static_checks','document_integrity']) and result['page_count']==287 and result['source_documents']==179 and render.get('pdf_author')=='ProveIt Contributors'
+result['passed']=not changed and not changed_dependencies and all(outcomes.values()) and all(result[k] for k in ['pdf_matches_build','pdf_matches_render','converged_build','pdf_static_checks','document_integrity']) and result['page_count']==298 and result['source_documents']==248 and render.get('pdf_author')=='ProveIt Contributors'
 (V/'receipt-integrity.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
 print(json.dumps(result,indent=2));raise SystemExit(0 if result['passed'] else 1)
