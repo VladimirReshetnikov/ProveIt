@@ -6156,6 +6156,44 @@ the decomposition with these named constants, but not `Theorem162At 3`.
 
                 Both remain research questions. The F_p^n argument does not
                 transfer verbatim to general abelian groups at this step.
+              - *How [49] gets coherence (Discrete Analysis 2024:20, p. 31,
+                after Corollary 20).* It uses Hosseini–Lovett averaging.
+                1. Only `ℓ₀ = log^O(1)` of the `m` maps cover each `U_y`.
+                2. Average over `ℓ₀`-subsets to pin the patterns
+                   `I_{y+z} = J₁`, `I_z = J₂`, `I_{y+w} = J₃`,
+                   `I_{w} = J₄`, then *fix* `z, w`.
+                3. For the varying `y`, every `J₁`-map is defined at
+                   `y + z`, because its index was used there. So
+                   `Y² ⊆ ⋂_{J₁}(C_i − z) ∩ ⋂_{J₃}(C_i − w)`.
+                4. Proposition 18 then finds one proper coset progression in
+                   that intersection that meets `Y²` densely.
+
+                This works there because the target is a dense set with a
+                *pointwise* property. Pinning loses a proportional factor,
+                and no failure count has to be beaten.
+              - *The analogue for Proposition 9.3: fix the final pair.*
+                - Choose one pair `(x*, y*)` for *all* `a`, rather than
+                  `(x_a, y_a)` per `a`. Then `S_a = I_{x*,a} ∪ I_{y*,a}`, so
+                  pinning `S_a = J*` gives coherence exactly as in [49].
+                - The containment (24) for the triples `(x*, y*, a)` costs
+                  only an average over `(x*, y*)`, which is proportional.
+                - The x-side 8-tuples become original quadruples
+                  `(x* + a_j)_j`, also proportional.
+                - The obstruction is (26). It is now needed on *diagonal*
+                  12-tuples (`x_j = x*`, `y_j = y*`). There are `N⁵` of
+                  these against `N¹¹` general ones, and the iteration
+                  controls only the general ones.
+                - A diagonal Claim 9.5 loses the two-sided separation that
+                  makes the new map Freiman. With a shared `x`, the value
+                  `F_j(x, a_j)` is determined only together with `x`, through
+                  the other coordinates `F_k(x, a_k)`.
+                - Grouping coordinates restores separation only for sums
+                  such as `ψ₀ + ψ₃(· + a₁ − a₂)`. The iteration's
+                  pair-level escape needs a single coordinate.
+                - Open sub-questions: a diagonal Claim 9.5 with a
+                  grouped-coordinate invariant, or a derivation of diagonal
+                  (26) from (24) using Lemma 2.40-type genericity of the
+                  frequencies.
          2. *Explicit exponents (done, `Proofs16PropNineThreeBudget`).*
             With `L = d·log(2R+1)` and `ℓ = log(1/ε)`:
             - `log(1/claimNineFourDensity) ≤ 6540·log 2 + 37264·L + 9316·ℓ`;
