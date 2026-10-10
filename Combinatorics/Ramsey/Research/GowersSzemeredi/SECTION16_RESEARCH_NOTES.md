@@ -5968,6 +5968,16 @@ the decomposition with these named constants, but not `Theorem162At 3`.
            for the x-side 8-tuple `v` of `u`. So "not bad" is exactly F2's
            split hypothesis `hd` at radius `r/4`: run the iteration at
            `ρ = r/4`.
+         - *Tools (done, `Proofs16FinalAssemblyTools`).*
+           - `columnTupleFrequencies_twelveXSide` / `…YSide`: the
+             identification above.
+           - `exists_quadruple_window`: the window chosen for quadruples,
+             `|J| = 4k`.
+           - `dense_additive_quadruples_ge`: at least
+             `|A|³ − (N − |A|)N²` additive quadruples in `A`
+             (`additiveQuadruplesIn`).
+           - `markov_large_fibers`: at least `(1 − 2η)N` values of `a`
+             have `|G_a| ≥ M/2`.
          Quantitatively, `s₀ = O(d log(dR))`, and
          `δ` is polynomial in `ε` and `(2R+1)^(−d)`. With
          `R = (ρ^(−1))^O(d)`, this makes `m ≤ s₀/δ = exp(O(d² log 1/ρ))`
