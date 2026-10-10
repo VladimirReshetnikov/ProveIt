@@ -10885,3 +10885,131 @@ parameter `p` supplied by the column sampling construction. It does not
 prove that this parameter is polynomial in `log(alpha^-1)`, or that all
 initial and final controls meet `milicevicBound D alpha` or the printed
 Gowers numerical contract. Those parameter comparisons remain required.
+
+### J.151. Joint selection and a source-agreeing compatible core
+
+Continuation checkpoint 296, 2026-10-09. Fourteen original modules add
+28 named proofs. They supply the missing joint representative selection
+and retain source agreement on the same core as all-quadruple compatibility.
+
+**Exact replacement counting.** `alternative_coordinate_total` counts
+replacements in a finite choice box. Each original bad configuration
+contributes exactly one term for each possible unused old coordinate:
+
+```
+sum_b number_of_bad_replacements(b,i) = |F_i| * |Bad|.
+```
+
+A fixed four-term sum has at most `N^3` representations, by projecting
+onto its first three coordinates. Hence configurations with more than
+`kappa*N^3/2` bad alternatives at one row have cardinality at most
+`(2/kappa)*|Bad|`. Union the four heavy replacement events with the
+selected bad 16-tuple event. Their summed query mass is at most
+`(1+8/kappa)*|Bad16|`, charged to the same original tuple family by the
+injective flattening argument.
+
+**One joint selection.** `exists_joint_progression_representatives`
+uses the existing four-coordinate product law to choose one global
+assignment with at most `9*|Bad16|/(kappa^5*N^12)` bad distinct-index
+queries, for `0<kappa<=1`. All other coordinate products cancel.
+Every good query has a good selected original 16-tuple and at least
+`kappa*N^3/2` good alternatives in each of its four rows. The factor
+`kappa^-5` uses the `N^3` upper bound for the unused row; it is a fixed
+local loss, with no power depending on the number of progression points.
+
+`exists_joint_selected_progression_maps` retains the actual valid
+representatives, normalized local-map data and index-zero value. It
+explicitly marks the at most `6N^2` repeated-index queries. Normalized
+quadruple image failures are a subset of the joint exceptional queries.
+The full error bound is
+
+```
+9*epsilon*N^3/(2*kappa^5) + 6*N^2.
+```
+
+**Original alternatives compare with the raw selected maps.** A good
+selected 16-tuple and a good row replacement have bounded images on their
+actual original domains. Subtract the defects, reversing their order in
+the two negative rows. This gives the selected raw four-column map minus
+the alternative original four-column map. Its endpoint spectrum has size
+at most `8d`; the three remaining selected rows contribute at most `12d`
+auxiliary frequencies. Keep those frequencies in the intermediate domain,
+then remove them through the linear-cap theorem. The resulting comparison
+has image cap
+
+```
+K^2 * refinementKernelCap (8d) (12d) (rho/2) (rho/2)
+```
+
+on its endpoint-only Bohr set at radius `rho/4`. No reference-map value is
+cancelled from a source comparison: these statements use the raw
+representation maps, before index-zero normalization.
+`query_original_representation_agreement` gives the half-mass family of
+actual original alternatives for every coordinate of every good query.
+
+**Original-data joint queries.**
+`global_joint_progression_maps_with_source_queries` uses
+`epsilon = eta*kappa^5/9`, with the existing condition `N>=12/eta`, to
+bound both query events by `eta*N^3`. Its witness system, witness masses,
+column data, robust original representation families, progression geometry,
+and normalized maps remain linked to the original dense bihomomorphism.
+The source comparison holds at `1/(16*pi)`, with its explicit image cap,
+for every coordinate of every nonexceptional query.
+
+**Query participation gives good vertices.** A vertex `x` in `Q/16`
+and two points `y,z` in `Q/32` form the parent query
+`(x,y,z,x-y+z)`. The final point lies in `Q/8`; signed-coordinate bounds
+prove all parent memberships. This completion is injective in the three
+free points. Therefore vertices with no good query satisfy
+
+```
+number_of_bad_vertices * |Q/32|^2 <= number_of_bad_queries.
+```
+
+If `|Q|>=delta*N` and there are at most `eta*N^3` bad queries, the vertex
+exception mass is at most `eta*4096^rank*N/delta^2`. A vertex with too few
+original agreement alternatives belongs only to bad queries. Thus the
+same bound controls the actual source-agreement exceptions, rather than
+assuming good-vertex participation separately.
+
+**Preserve the anchor reserve while pruning.** The stronger accuracy
+
+```
+eta <= delta^3 / (4096 * 4194304^rank)
+```
+
+absorbs both the earlier quadruple-core loss and the new source-vertex
+loss. `exists_source_agreement_quad_core` retains a single core in `Q/16`
+whose missing mass is at most `delta*N/(16*1024^rank)`. Every quadruple
+on that core satisfies the prior endpoint image bound, and every core
+vertex has at least `kappa*N^3/2` original source-agreement alternatives.
+
+`global_source_agreement_quad_core` chooses that accuracy from the
+original density and the uniform rank ceiling. It constructs the actual
+core and preserves the original witnesses, representation choices and
+normalized map data. The core is nonempty, with density at least the
+previous `globalProgressionPurificationCoreDensity`; the stronger pruning
+accuracy does not change its proved degree-eight density scale in the
+parent parameter. Quadruple compatibility holds at `1/(32*pi)`, and
+pointwise raw source comparison at `1/(16*pi)`.
+
+This supplies the joint and vertex source-agreement inputs to the final
+map transfer. A full `N^7` family of original eight-tuples still needs to
+be assembled from the valid anchor pairs and the two alternative families,
+with its map-value and domain identities proved. That assembly must use
+this same jointly selected system; the independently chosen system in
+J.150 cannot be combined with it merely because both have compatible
+maps. The five numbered statements and the final parameter comparisons
+remain open. No upstream modules or licensing scope are added here.
+
+**Verification.** The original-data source-agreement core compiles in a
+413-module production closure. All 28 new named proofs are included in
+the completed combined audit: 9,525 public Gowers theorems across 5,572
+modules, with 5,570 modules in the facade closure. Only `propext`,
+`Classical.choice`, and `Quot.sound` occur. The selected OAI audit closure
+remains 4,152 modules, and its port scope check passes. The source ledger
+is byte-identical to the 115-companion / five-open catalogue, with the
+existing fidelity qualifications. Incoming twelve-tuple iteration, glued
+pair maps, final pair/window choices and deterministic assembly tools are
+included in the same full audit. No source agreement for an `N^7` family
+or final printed bound is inferred from these checks.
