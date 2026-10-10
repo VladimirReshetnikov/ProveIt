@@ -3760,3 +3760,27 @@ python -B -m normal_orbit_research.disc_context benchmark --rounds 5 --output /t
 acceptance equivalence and states ownership, per-proof work and cost limits.
 Raw source/timing/repeat records and disabled-context publication replay are
 retained in the article data.
+
+Euler screening now refines its objective only after a nonpositive first Q
+corner. It groups equal projected forms within each source vertex, absorbs
+anchors and constant groups into the linear term, and evaluates later corners
+using distinct nonzero differences. Empty/scalar sections, early positive
+progress and generic higher-nullity paths retain their previous behavior.
+
+All 1,417 tests pass, including exact direct/grouped/source Euler comparisons,
+huge scale, anchor-gauge invariance and unused-grouping prevention. The source
+audit preserves all 85 verdicts and 31 positives, with seven fresh Regina discs,
+22 caps and 32 completed local misses. The longer timing repeat is near parity;
+no reliable small-case wall-clock gain is claimed. The concrete improvement is
+`O(T+k^2)` post-projection scalar arithmetic at nullity at most three, with
+source projection, hash/index costs and coefficient bits separately charged.
+Windows still default off; global quasi-polynomial recognition remains open.
+
+```sh
+python -B -m normal_orbit_research.euler_aggregate audit --fresh-regina --output /tmp/euler-aggregate-audit.json
+python -B -m normal_orbit_research.euler_aggregate benchmark --rounds 5 --output /tmp/euler-aggregate-benchmark.json
+```
+
+[Grouped Euler theory](../synthesis/euler_aggregate.tex) proves the exact
+anchor formula, source distinct-form bound and progress-driven cost accounting.
+Pilot, final and repeat records are preserved in the article data.
