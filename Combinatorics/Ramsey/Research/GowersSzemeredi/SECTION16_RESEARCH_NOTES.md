@@ -11500,3 +11500,116 @@ existing fidelity qualifications. Incoming twelve-tuple iteration, glued
 pair maps, final pair/window choices and deterministic assembly tools are
 included in the same full audit. No source agreement for an `N^7` family
 or final printed bound is inferred from these checks.
+
+### J.152. Full original eight-tuple transfer on the natural domains
+
+Continuation checkpoint 297, 2026-10-10. Twelve original modules add
+26 named proofs. The same jointly selected original-data system now
+supplies both progression compatibility and the full `N^7` source
+agreement family, on the maps' full original-radius domains.
+
+**Distinct original tuples.** `joinSourceRepresentations` concatenates two
+original four-term representations, swapping adjacent entries in the
+negative block. Its index equation is the difference of the two original
+four-sums, and its map value is the difference of their original column
+maps. Both the value identity and the endpoint-domain identity are proved.
+
+`sourceEightFamilies` varies `u` over the valid anchor pairs for an index
+`a`, then takes one original alternative at `u+a` and one at `u`. Joining
+is injective: the eight-tuple determines both four-tuples, and the negative
+four-tuple determines `u`. Thus an anchor mass `lambda*N` and two
+alternative masses `kappa*N^3/2` give
+
+```
+lambda*kappa^2/4 * N^7
+```
+
+distinct original additive eight-tuples. No representation multiplicity
+or missing factor of `N` is hidden in this bound.
+
+**Image agreement from one system.** The tiny-core eight-term relation
+compares the selected difference map at `v(a)` with every other valid
+anchor `u`. Use the paired tuple
+`[(v+a,v),(u,u+a),(v,v),(v,v)]`. Padding adds no frequency outside the
+existing selected-map domain. The normalized reference-map values cancel
+in the defect; their frequencies remain in the selected and auxiliary
+spectra.
+
+Combine this cross-anchor image bound `J8` with the two actual raw
+source comparisons, each of cap `Jsrc`. The endpoint spectrum consists
+of the selected-map spectrum and the eight original column spectra, with
+size at most `24d`. The variable anchor contributes at most `16d`
+auxiliary frequencies. The three-defect image bound and explicit
+auxiliary removal give cap
+
+```
+Jorig = Jsrc^2 * J8 * refinementKernelCap (24d) (16d) sigma sigma
+```
+
+at endpoint radius `sigma/2`, where initially `sigma=1/(64*pi)`.
+`original_eight_agreement_mass` proves the mass bound for the actual
+agreement predicate, including original index-set membership, the
+additive sum, the map values, and the endpoint Bohr domain.
+
+**Preserve the source-agreeing core.** The prescribed-core helpers extend
+J.151's actual core to its tiny intersection and choose the final anchors
+there. They do not choose another representative system or another core.
+`global_original_eight_progression_transfer` constructs the proper
+progression `P=Q/1024` and actual normalized maps. It preserves the original
+witness system, witness masses, source columns, index density, robust
+representation families and chosen representatives. It proves every
+quadruple compatible and gives an original agreement family at every
+index of `P`.
+
+The uniform agreement density is
+
+```
+gamma(alpha) = delta(alpha)*kappa(alpha)^2/(8*1024^R(alpha)).
+```
+
+The verified comparison `globalOriginalEightAgreementDensity_lower` gives
+
+```
+gamma(alpha) >= exp(-(C_P + 47 + 10*C_B)*(p+1)^8).
+```
+
+Here `delta=exp(-C_P*(p+1)^8)`, `kappa=exp(-p)^4/8`, and the integer rank
+ceiling has its earlier bound. Powers of two give the logarithmic costs
+`512<=exp(9)` and `1024<=exp(10)`. The agreement mass stays on the parent's
+degree-eight exponential scale.
+
+**Full natural domains, with no remaining radius loss.** Shrinking every
+original column domain would control a smaller set than the natural
+intersection used in the sum. `freiman_image_expand_radius` closes this
+fidelity obligation. A Freiman-linear map on `B(T;rho)` with image cap `K`
+on `B(T;r)` takes at most `ceil(1/r)^|T|*K` values on its entire original
+domain. Partition residues by their Dirichlet-cell signatures. Two points
+of the same cell have difference in `B(T;r)`; the Freiman equation then
+puts each cell's image in one translate of the small-domain image.
+There are at most `ceil(1/r)^|T|` signatures.
+
+Every original eight-tuple defect is proved Freiman-linear on the full
+endpoint intersection at `rho=1/(4*pi)`. Expand its small-domain image
+bound, and expand the quadruple defect similarly. The final uniform cap
+is
+
+```
+max( refinementCells(1/(64*pi))^(64d) * J8,
+     refinementCells(1/(128*pi))^(24d) * Jorig ).
+```
+
+`global_original_eight_full_domain_transfer` proves both conclusions on
+`1/(4*pi)`: every quadruple of the proper index progression has bounded
+image, and every index has at least `gamma(alpha)*N^7` original eight-tuples
+agreeing on the full natural intersection of the selected and original
+column domains. Both origin normalizations and the `16d` local rank bound
+remain. The extra cap factors are independent of the modulus and linear
+in the previous caps; the original tuple family is retained.
+
+This completes compatibility and original eight-tuple correspondence in
+the original-data cyclic map transfer. The remaining bilinear/variety
+assembly and the initial and final parameter comparisons are still
+required for the five numbered open statements. A bound in the parent
+sampling parameter `p` does not by itself establish the modern
+`milicevicBound D alpha` interface or the printed Gowers contract.
+No upstream code or licensing scope is added here.
