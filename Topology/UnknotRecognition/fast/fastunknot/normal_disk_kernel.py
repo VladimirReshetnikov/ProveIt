@@ -6,6 +6,7 @@ It makes no inference about a different surface or an unbound knot diagram.
 """
 
 from math import gcd
+from copy import deepcopy
 
 from .integer_codec import encoded_integer, certificate_equal
 from .normal_surface_geometry import _prepare, _coordinates, _fingerprint, NormalOrbitError
@@ -155,6 +156,11 @@ def verify_normal_disk_count_certificate(triangulation, coordinates, certificate
         analysed = _coordinates(prepared, coordinates, check)
     except NormalOrbitError:
         return False
+    return _verify_analysed_disk_certificate(triangulation,prepared,analysed,certificate,ray,check)
+
+
+def _verify_analysed_disk_certificate(triangulation,prepared,analysed,certificate,ray,check,basis_provider=None):
+    """Verifier-only arithmetic; prepared data and analysis must be verifier-owned."""
     if certificate.get('input_sha256') != _fingerprint(triangulation, analysed, check):
         return False
     # Independent arithmetic reconstruction; do not invoke canonical_disk_core.
@@ -196,14 +202,14 @@ def verify_normal_disk_count_certificate(triangulation, coordinates, certificate
                     'euler_characteristic','boundary_homology_mod2','compressing_disk_components'}
                 or core_proof['schema'] != 'normal-unit-ray-disc-v1'):
             return False
-        core_data = _coordinates(prepared, core, check)
+        core_data = analysed if core == analysed['rows'] else _coordinates(prepared, core, check)
         support = core_proof['support_certificate']
         if not verify_support_ray(prepared, core_data, support, check):
             return False
         seed = encoded_integer(support['seed'])
         if core[seed//7][seed % 7] != 1:
             return False
-        basis = boundary_homology_basis(prepared, check)
+        basis = boundary_homology_basis(prepared, check)if basis_provider is None else basis_provider()
         parity = []
         for cycle in basis:
             check()
@@ -225,3 +231,49 @@ def verify_normal_disk_count_certificate(triangulation, coordinates, certificate
             return False
         expected = 0
     return certificate_equal(certificate.get('compressing_disk_components'), expected)
+
+
+def _same_source_snapshot(left,right,check):
+    """Type-preserving source equality; bool/int aliases must not bind."""
+    if type(left)is not type(right):return False
+    if type(right)is dict:
+        check()
+        return left.keys()==right.keys()and all(_same_source_snapshot(left[k],right[k],check)for k in right)
+    if type(right)is list:
+        check()
+        return len(left)==len(right)and all(_same_source_snapshot(a,b,check)for a,b in zip(left,right))
+    return left==right
+
+
+class _DiskCertificateVerifier:
+    """Replay a fixed-source batch using independently constructed geometry.
+
+    No producer-prepared object or producer coordinate analysis is accepted.
+    The snapshot is owned by this verifier; every call compares the actual
+    supplied source and freshly validates its coordinates against that source.
+    """
+    def __init__(self,triangulation,check=lambda:None):
+        check()
+        self._source=deepcopy(triangulation)
+        self._prepared=_prepare(self._source,check)
+        self._basis=None
+
+    def _homology_basis(self,check):
+        if self._basis is None:
+            from .normal_component_geometry import boundary_homology_basis
+            basis=boundary_homology_basis(self._prepared,check)
+            self._basis=basis
+        return self._basis
+
+    def verify(self,triangulation,coordinates,certificate,*,check=lambda:None):
+        check()
+        if not _same_source_snapshot(triangulation,self._source,check):return False
+        if (type(certificate)is not dict or certificate.get('schema')not in
+                ('normal-disc-count-v1','normal-disc-count-v2')):return False
+        ray=certificate['schema']=='normal-disc-count-v2'
+        if ray and set(certificate)!={'schema','input_sha256','coordinate_divisor','vertex_links',
+                'core_coordinates','core_certificate','compressing_disk_components'}:return False
+        try:analysed=_coordinates(self._prepared,coordinates,check)
+        except NormalOrbitError:return False
+        return _verify_analysed_disk_certificate(self._source,self._prepared,analysed,
+            certificate,ray,check,lambda:self._homology_basis(check))
