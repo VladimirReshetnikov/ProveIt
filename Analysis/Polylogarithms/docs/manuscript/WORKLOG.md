@@ -1,4 +1,35 @@
-# Active integration of five new incoming reports
+# Current integration checkpoint
+
+All five incoming reports have been integrated by mathematical dependency.
+The current book builds to 286 pages, twelve chapters and 79 bibliography
+entries. ProveIt Contributors remains the title and PDF author. Three serial
+LuaLaTeX passes converge, with zero unresolved references, overfull boxes or
+missing glyphs. The preliminary PDF SHA is
+ba637e3c619f8e5b3e8893774e9ed049e922f9b3acf09687bf58476a6a9973d3.
+
+New canonical files: 03-complement-rigidity, 04-S4-proof,
+04-complementary-depth, 04-proportional-depth, 04-cyclotomic-quotients,
+07-sharp-moments, 07-reflected-moments, 07-tornheim-evaluation,
+08-conductor-jets and 09-herglotz-jets. The S4 exact certificate, its analytic
+relation schemas and independent 70-digit Wolfram integral audit passed.
+S6 remains conjectural with the new exact residual enclosure.
+
+All five isolated replay suites have completed: rigidity, distribution,
+conductor, complement and reflection. Fresh outputs are in
+verification/incoming-replay; incoming-native-results.json contains five
+passing Wolfram audits. Imported source packages remain byte-identical to
+the 174 archive members recorded in incoming-archives.json. The recursive
+textual inventory contains 159 sources.
+
+Remaining work: editorial completeness audit, rendered review of the final
+book (all pages and dense new proofs/figures), any required repairs, updated
+README/ledger/VALIDATION, regenerated source/dependency receipts and a strict
+post-merge integrity/publication check. Goal remains active. Do not apply
+the old 228-page acceptance hash to this working PDF. Do not rerun the two
+integration helpers: they are one-shot transformations of the already edited
+canonical source.
+
+# Initial intake context
 
 The active goal is to integrate all five new packages placed from incoming
 archives into reports/conductor-descent, reflection-euler-tornheim,

@@ -1,0 +1,471 @@
+% Parent document supplies amsmath, amssymb, amsthm, and theorem environments.
+% Bibliography key ACEMKM is specified in gamma_provenance.txt.
+\section{Reflected log-gamma moments and their late coefficients}
+\label{reflected:sec:reflected-moments}
+
+Set $f(x)=\log\Gamma(x)$ for $0<x<1$, and define
+\[
+ M_{n,m}=\int_0^1 f(x)^n f(1-x)^m\,dx,
+ \qquad n,m\in\mathbb Z_{\ge0}.
+\]
+These integrals already occur as $T_{n+m,n}$ in
+Amdeberhan et al.\ \cite[Section~5]{gaussian:ACEMKM}.  Their symmetry
+$M_{n,m}=M_{m,n}$ and the identities obtained by expanding Euler's
+reflection formula are therefore classical.  The asymptotic question here
+is different: keep the reflected exponent $m$ fixed and let $n$ tend to
+infinity.  The factor $f(1-x)^m$ vanishes to order $m$ at the endpoint
+that produces the factorial growth.  This shifts the first exponential
+scale from $1$ to $m+1$ without removing the eventual divergence of the
+full expansion.  Theorem~\ref{reflected:gam:thm:late} identifies its late terms,
+including their signs and the first relative correction.
+
+\subsection{The meromorphic transform and all finite asymptotic orders}
+
+Put
+\[
+ B(x)=\log\Gamma(1-x)
+ =\gamma x+\sum_{j\ge2}\frac{\zeta(j)}j x^j,
+ \qquad |x|<1,
+\]
+where $\gamma$ is Euler's constant.  For $k\ge1$ define
+\begin{equation}\label{reflected:gam:eq:residue-coefficients}
+ A_{k,m}=\frac1k[x^{k-1}]\exp\{kB(-x)\}B(x)^m.
+\end{equation}
+The convention $B(x)^0=1$ is in force.  In particular $A_{k,m}=0$
+when $k\le m$.  Every coefficient is a finite polynomial over
+$\mathbb Q$ in $\gamma,\zeta(2),\ldots,\zeta(k-1)$.
+
+\begin{theorem}[Reflected moment expansion]\label{reflected:gam:thm:expansion}
+For each fixed integer $m\ge0$, the function
+\[
+ F_m(z)=\int_0^1\Gamma(x)^z f(1-x)^m\,dx
+\]
+is holomorphic for $\operatorname{Re}z<m+1$, has Taylor expansion
+\[
+ F_m(z)=\sum_{n\ge0}\frac{M_{n,m}}{n!}z^n
+ \qquad (|z|<m+1),
+\]
+and extends meromorphically to $\mathbb C$.  Its only possible poles
+are simple poles at integers $k\ge m+1$, with
+\begin{equation}\label{reflected:gam:eq:poles}
+ \operatorname*{Res}_{z=k}F_m(z)=-kA_{k,m}.
+\end{equation}
+The first pole is present.  For every fixed integer $K\ge m+1$,
+\begin{equation}\label{reflected:gam:eq:fixed-expansion}
+ \frac{M_{n,m}}{n!}
+ =\sum_{k=m+1}^{K}\frac{A_{k,m}}{k^n}
+   +O_{m,K}\bigl((K+1)^{-n}\bigr),\qquad n\longrightarrow\infty.
+\end{equation}
+Consequently
+\begin{equation}\label{reflected:gam:eq:leading}
+ M_{n,m}\sim \frac{\gamma^m n!}{(m+1)^{n+1}}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+As $x\downarrow0$, $f(x)=-\log x+O(x)$ and
+$B(x)=\gamma x+O(x^2)$.  At the other endpoint,
+$f(x)=O(1-x)$ and $f(1-x)=O(1+|\log(1-x)|)$.
+These estimates prove absolute convergence and compact domination in
+the asserted half-plane, including after any number of differentiations
+in $z$.  They also justify the Taylor expansion near zero.
+
+Fix $0<a<1$ and an integer $J\ge1$.  Taylor expansion in $x$ gives
+\[
+ \Gamma(1+x)^z B(x)^m
+ =\sum_{j=0}^{J-1}b_{j,m}(z)x^j+x^J E_{J,m}(x,z),
+\]
+where each $b_{j,m}$ is an entire function of $z$, and the remainder is
+uniformly bounded for $0\le x\le a$ and $z$ in compact sets.
+The integral over $[0,a]$ is therefore
+\[
+ \sum_{j=0}^{J-1}\frac{b_{j,m}(z)a^{j+1-z}}{j+1-z}
+ +\int_0^a x^{J-z}E_{J,m}(x,z)\,dx.
+\]
+The last integral is holomorphic for $\operatorname{Re}z<J+1$.
+The integral over $[a,1]$ is entire, since its logarithmic singularity
+at $1$ is integrable uniformly for $z$ in compact sets.  Letting $J$
+increase gives the continuation.  At $z=k$ its residue is
+$-b_{k-1,m}(k)=-kA_{k,m}$.  Since $B(x)^m$ starts with
+$\gamma^m x^m$, the first nonzero coefficient is
+$A_{m+1,m}=\gamma^m/(m+1)>0$.
+
+For the asymptotic assertion, subtract the polar functions
+\[
+ \sum_{k=m+1}^{K+1}\frac{kA_{k,m}}{k-z}
+\]
+from $F_m(z)$.  The difference is holomorphic on $|z|<K+2$.
+Cauchy's estimate on any circle $K+1<R<K+2$ bounds its $n$th Taylor
+coefficient by $O_{m,K,R}(R^{-n})$.  Restoring the term at $K+1$
+proves \eqref{reflected:gam:eq:fixed-expansion}, even if that particular coefficient
+happens to vanish.  Taking $K=m+1$ proves \eqref{reflected:gam:eq:leading}.
+\end{proof}
+
+The first three coefficients are explicit.  Write $k=m+3$ in the last line:
+\begin{align}
+ A_{m+1,m}&=\frac{\gamma^m}{m+1},\label{reflected:gam:eq:first-three}\\
+ A_{m+2,m}&=\frac{\gamma^{m-1}}{m+2}
+ \left(\frac{m\zeta(2)}2-(m+2)\gamma^2\right),\notag\\
+ A_{m+3,m}&=\frac{\gamma^m}{k}
+ \left\{\frac{m\zeta(3)}{3\gamma}
+ +\frac{m(m-1)\zeta(2)^2}{8\gamma^2}
+ +\frac{k(1-m)\zeta(2)}2+\frac{k^2\gamma^2}2\right\}.\notag
+\end{align}
+These displays also apply to $m=0$, since $\gamma>0$ and factors of
+$m$ remove the superfluous terms.  For example,
+\begin{align*}
+ \frac{M_{n,1}}{n!}
+ &=\frac{\gamma}{2^{n+1}}
+ +\frac{\zeta(2)/2-3\gamma^2}{3^{n+1}}
+ +\frac{\zeta(3)/3+8\gamma^3}{4^{n+1}}+O(5^{-n}),\\
+ \frac{M_{n,2}}{n!}
+ &=\frac{\gamma^2}{3^{n+1}}
+ +\frac{\gamma\zeta(2)-4\gamma^3}{4^{n+1}}+O(5^{-n}).
+\end{align*}
+The second displayed correction is positive, whereas the corresponding
+correction for $m=1$ is negative.  Thus strict alternation from the first
+term cannot be imported from the unreflected family.  The two signs can,
+for instance, be checked using the elementary enclosures
+$0.577<\gamma<0.578$ and $1.644<\zeta(2)<1.646$.
+Eventual alternation has a different, precise rule.
+
+\subsection{Late coefficients and a universal inverse-gamma scale}
+
+Let $\phi(u)=\Gamma(1-u)$ and $D=u\,d/du$.  Define $\tau\in(0,1)$ by
+\begin{equation}\label{reflected:gam:eq:critical}
+ D\log\phi(\tau)=-\tau\psi(1-\tau)=1,
+\end{equation}
+and put
+\begin{equation}\label{reflected:gam:eq:constants}
+ \rho=\frac{\tau}{\phi(\tau)},\quad
+ v=D^2\log\phi(\tau)=1+\tau^2\psi'(1-\tau),\quad
+ C=\frac{\tau}{\sqrt{2\pi v}},\quad
+ b=-\log\Gamma(1+\tau).
+\end{equation}
+The equation for $\tau$ has a unique solution: its left side equals
+$\gamma u+\sum_{j\ge2}\zeta(j)u^j$, which is strictly increasing from
+zero to infinity.  Also $0<\rho<1$ and $b>0$, the latter by strict
+log-convexity of $\Gamma$ between $1$ and $2$.  Numerically,
+$\tau=0.5040830082\ldots$ and $\rho=0.2821158090\ldots$.
+Only the exact definitions are used below.
+
+\begin{theorem}[Late reflected coefficients]\label{reflected:gam:thm:late}
+For every fixed nonnegative integer $m$,
+\begin{equation}\label{reflected:gam:eq:late}
+ A_{k,m}=(-1)^{k+m-1}C b^m\rho^{-k}k^{-3/2}
+ \left(1+\frac{\beta_m}{k}+O_m(k^{-2})\right).
+\end{equation}
+There is a full asymptotic expansion in integer powers of $1/k$.
+To specify the first correction, set
+$G(u)=\log\Gamma(1+u)$, $H_m(u)=G(u)^m$, and
+$\kappa_j=D^j\log\phi(\tau)$.  All quantities on the right below
+are evaluated at $u=\tau$:
+\begin{equation}\label{reflected:gam:eq:beta}
+ \beta_m=
+ -\frac{(D+1)^2H_m}{2vH_m}
+ +\frac{\kappa_3(D+1)H_m}{2v^2H_m}
+ +\frac{\kappa_4}{8v^2}
+ -\frac{5\kappa_3^2}{24v^3}.
+\end{equation}
+In particular, every sufficiently large possible pole in
+Theorem~\ref{reflected:gam:thm:expansion} is present.  More explicitly,
+\[
+ \operatorname{Res}_{z=k}F_m(z)
+ =(-1)^{k+m}C b^m\rho^{-k}k^{-1/2}
+   \left(1+\frac{\beta_m}{k}+O_m(k^{-2})\right),
+\]
+so the eventual residue sign is $(-1)^{k+m}$.  For every fixed real $n$, the formal series
+$\sum_{k\ge m+1}A_{k,m}/k^n$ diverges because its terms do not tend to zero.
+\end{theorem}
+
+\begin{proof}
+Replacing $x$ by $-u$ in \eqref{reflected:gam:eq:residue-coefficients} gives
+\[
+ A_{k,m}=\frac{(-1)^{k-1}}k[u^{k-1}]\phi(u)^k H_m(u).
+\]
+The function $H_m$ is holomorphic for $|u|<1$.  If
+$\phi(u)=\sum_{j\ge0}a_ju^j$, all the $a_j$ are strictly positive,
+since $\log\phi$ has positive coefficients.  Thus
+\[
+ p_j=\frac{a_j\tau^j}{\phi(\tau)}
+\]
+is a probability distribution with exponential moments, mean one,
+variance $v>0$, and positive mass at both $0$ and $1$.  It follows
+that the function
+\[
+ Q(t)=\frac{\phi(\tau e^{it})}{\phi(\tau)}e^{-it}
+\]
+has modulus strictly less than one for $0<|t|\le\pi$, while
+\[
+ \log Q(t)=-\frac v2t^2-\frac{i\kappa_3}6t^3
+ +\frac{\kappa_4}{24}t^4+O(t^5)
+\]
+near zero.  Cauchy's coefficient formula becomes
+\begin{equation}\label{reflected:gam:eq:cauchy}
+ A_{k,m}=
+ \frac{(-1)^{k-1}\tau\rho^{-k}}{2\pi k}
+ \int_{-\pi}^{\pi}Q(t)^k e^{it}H_m(\tau e^{it})\,dt.
+\end{equation}
+
+Fix a sufficiently small $\delta>0$.  On $\delta\le|t|\le\pi$
+the integral is $O(q^k)$ for some $q<1$.  On
+$k^{-2/5}\le|t|\le\delta$ it is $O(e^{-c k^{1/5}})$, because
+$|Q(t)|\le e^{-ct^2}$.  The analytic amplitude is bounded on the
+whole circle.  On the remaining interval set $t=y/\sqrt{k}$.
+Gaussian domination and Taylor expansion to any fixed order, with
+an analytic remainder, give a full expansion.  Odd terms integrate
+to zero, so only integer powers of $1/k$ occur.  The leading integral is
+\[
+ H_m(\tau)\sqrt{\frac{2\pi}{vk}}
+ =(-1)^m b^m\sqrt{\frac{2\pi}{vk}},
+\]
+which proves the leading term in \eqref{reflected:gam:eq:late}.
+
+For the first correction, the amplitude derivatives at $t=0$ are
+$H_m$, $i(D+1)H_m$, and $-(D+1)^2H_m$.
+The Gaussian moments of degrees $2$, $4$, and $6$ contribute,
+respectively, the amplitude's quadratic term, the amplitude--cubic
+cross term together with the quartic phase term, and the square of
+the cubic phase term.  Their normalized sum is exactly
+\eqref{reflected:gam:eq:beta}.  Expanding two further even orders gives a
+relative $O_m(k^{-2})$ remainder after the displayed correction.
+Since $C b^m>0$ and $\rho<1$, the assertions about nonvanishing,
+signs, and divergence follow at once.
+\end{proof}
+
+This proof uses the circle $|u|=\tau$ and a strict modulus inequality;
+it does not presume a classification of all complex critical values
+of the reciprocal gamma function.  The same circle governs every fixed
+reflected exponent.  With $\alpha=-\log\rho$, the continuous minimum
+of the leading term magnitude $\rho^{-k}k^{-n-3/2}$ occurs at
+$k=(n+3/2)/\alpha$.  A least-term calculation alone does not bound the
+remainder.  The next result supplies an explicit bound with a growing
+number of terms.
+
+\subsection{An effective remainder despite the initial sign changes}
+
+\begin{theorem}[Explicit reflected truncation bound]\label{reflected:gam:thm:effective}
+Let $m\ge0$, $n\ge1$, and $K\ge1$ be integers, put
+$\alpha=-\log\rho$ and $T_m=\tau B(\tau)^m$, and suppose $K\alpha<n$.
+With
+\[
+ R^{(m)}_{n,K}=\frac{M_{n,m}}{n!}
+             -\sum_{k=1}^K\frac{A_{k,m}}{k^n},
+ \qquad \Gamma(n,s)=\int_s^\infty t^{n-1}e^{-t}\,dt,
+\]
+one has the entirely explicit estimate
+\begin{align}\label{reflected:gam:eq:effective}
+ |R^{(m)}_{n,K}|\le{}&\frac{\alpha^n}{n!}
+ \left(m!+\frac{nT_m}{n-K\alpha}\right)\notag\\
+ &+\frac{T_m\rho^{-K-1}}{(K+1)^n}
+          \frac{\Gamma(n,(K+1)\alpha)}{\Gamma(n)}.
+\end{align}
+If $n\ge\max\{2,4\alpha^2\}$ and
+$K=\lfloor n/\alpha-\sqrt n\rfloor$, then $K\ge1$ and
+\begin{equation}\label{reflected:gam:eq:optimized}
+ |R^{(m)}_{n,K}|\le
+ \left(\frac{m!}{\sqrt{2\pi n}}+
+       \frac{T_m}{\alpha\sqrt{2\pi}}+T_m e^{2\alpha^2}\right)
+ \left(\frac{e\alpha}{n}\right)^n.
+\end{equation}
+This bound holds for every $m$, but no useful uniform relative error is
+asserted when $m$ grows with $n$.
+\end{theorem}
+\begin{proof}
+The function $f$ decreases from infinity to zero on $(0,1]$:
+$\psi'(x)>0$ and $\psi(1)=-\gamma<0$.  Let $x(y)$ denote its inverse,
+and set $W_m(x)=\int_0^x B(t)^m\,dt$.  Tonelli's theorem applied to
+$f(x)^n=n\int_0^{f(x)}y^{n-1}\,dy$ gives
+\begin{equation}\label{reflected:gam:eq:layercake}
+ \frac{M_{n,m}}{n!}
+ =\frac1{\Gamma(n)}\int_0^\infty y^{n-1}W_m(x(y))\,dy.
+\end{equation}
+
+Let $h(q)$ be the local solution of $h=q\phi(h)$ with $h(0)=0$.
+Lagrange inversion gives positive coefficients
+\[
+ h(q)=\sum_{k\ge1}c_kq^k,
+ \qquad c_k=\frac1k[u^{k-1}]\phi(u)^k.
+\]
+The $m=0$ case of Theorem~\ref{reflected:gam:thm:late} proves that its radius
+is $\rho$ and that the series converges absolutely on $|q|\le\rho$.
+The map $u\mapsto u/\phi(u)$ increases strictly from $0$ to $\rho$
+on $[0,\tau]$, so inversion along this interval and continuity imply
+$h(\rho)=\tau$.  No other inverse branch is used.
+
+Lagrange--B\"urmann inversion now gives
+\[
+ W_m(x(y))=\sum_{k\ge1}A_{k,m}e^{-ky}
+ \qquad(y\ge\alpha).
+\]
+Indeed $x(y)=-h(-e^{-y})$ initially for large $y$, and then throughout
+$y>\alpha$ by analytic continuation along the strictly monotone real
+inverse.  The endpoint follows by absolute convergence.  To prove that
+convergence and obtain its quantitative majorant, define
+\[
+ d_{k,m}=\frac1k[u^{k-1}]\phi(u)^k B(u)^m\ge0.
+\]
+Coefficientwise absolute values in $B(-u)^m$ are $B(u)^m$.
+Consequently $|A_{k,m}|\le d_{k,m}$, while another application of
+Lagrange--B\"urmann gives
+\[
+ \sum_{k\ge1}d_{k,m}\rho^k=W_m(h(\rho))=W_m(\tau)
+ \le\tau B(\tau)^m=T_m.
+\]
+Here $B$ has positive Taylor coefficients and is increasing on $[0,\tau]$.
+Thus on $y\ge\alpha$,
+\[
+ \left|W_m(x(y))-\sum_{k=1}^K A_{k,m}e^{-ky}\right|
+ \le T_m\rho^{-K-1}e^{-(K+1)y}.
+\]
+Its integral in \eqref{reflected:gam:eq:layercake} is the second term of
+\eqref{reflected:gam:eq:effective}.
+
+On $0\le y\le\alpha$, use $0\le W_m(x(y))\le M_{m,0}\le m!$.
+The last inequality follows from
+$0\le\log\Gamma(x)\le-\log x$, since log-convexity gives
+$\Gamma(1+x)\le1$ for $0\le x\le1$.  Also, for $k\le K$,
+\[
+ \int_0^\alpha y^{n-1}e^{-ky}\,dy
+ \le\frac{\alpha^n e^{-k\alpha}}{n-k\alpha}.
+\]
+This follows by differentiating $y^ne^{-ky}$ and using
+$n-ky\ge n-k\alpha>0$.  Summing with
+$\sum|A_{k,m}|\rho^k\le T_m$ proves the first term of
+\eqref{reflected:gam:eq:effective}.
+
+For the stated choice of $K$, $n-K\alpha\ge\alpha\sqrt n$ and
+$\theta=(K+1)\alpha/n$ lies in $[1/2,1]$.
+The inequality $\theta-1-\log\theta\le2(1-\theta)^2$ gives
+\[
+ \rho^{-K-1}(K+1)^{-n}
+ \le e^{2\alpha^2}(e\alpha/n)^n.
+\]
+Finally, $\Gamma(n,s)\le\Gamma(n)$ and
+$n!\ge\sqrt{2\pi n}(n/e)^n$ yield \eqref{reflected:gam:eq:optimized}.
+\end{proof}
+
+\subsection{An exact identity coupling all reflected residues}
+
+The coefficients across different $m$ satisfy a finite identity in which
+Euler's constant and all odd zeta values cancel.
+
+\begin{proposition}[Reflection sum for the residues]\label{reflected:gam:prop:residue-sum}
+For every integer $k\ge1$,
+\begin{equation}\label{reflected:gam:eq:residue-sum}
+ \sum_{m=0}^{k-1}\frac{k^m}{m!}A_{k,m}
+ =\begin{cases}
+ 0,&k\text{ even},\\[2pt]
+ \displaystyle\frac{\pi^{k-1}}{k\,2^{k-1}}
+ \binom{k-1}{(k-1)/2},&k\text{ odd}.
+ \end{cases}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Because $B(x)^m$ has order $m$, extending the sum over $m$ to infinity
+does not affect $[x^{k-1}]$.  Euler's reflection formula gives
+\[
+ \sum_{m=0}^{k-1}\frac{k^m}{m!}A_{k,m}
+ =\frac1k[x^{k-1}]\bigl(\Gamma(1+x)\Gamma(1-x)\bigr)^k
+ =\frac1k[x^{k-1}]\left(\frac{\pi x}{\sin\pi x}\right)^k.
+\]
+The coefficient is zero for even $k$.  For odd $k$, compute it as
+the residue at $x=0$ of $(\pi/\sin\pi x)^k\,dx$.
+The local change of variable $t=\sin\pi x$ gives
+\[
+ [x^{k-1}]\left(\frac{\pi x}{\sin\pi x}\right)^k
+ =\pi^{k-1}[t^{k-1}](1-t^2)^{-1/2},
+\]
+and the binomial expansion proves \eqref{reflected:gam:eq:residue-sum}.
+\end{proof}
+
+For example, the cases $k=2,3$ read
+$A_{2,0}+2A_{2,1}=0$ and
+$A_{3,0}+3A_{3,1}+\tfrac92 A_{3,2}=\pi^2/6$.
+They are exact identities among the asymptotic coefficients, rather
+than convergent sums of the moment expansions.  No summation over
+the late index $k$ is used.
+
+\subsection{A recorded log-sine conjecture has a formal proof}
+
+There is also a small but useful correction to the logical status of
+a claim in the literature.  The author preprint of \cite{gaussian:ACEMKM}
+labels a coefficient identity as Conjecture~5.5 and motivates it using
+transcendence assumptions on $\log 2$ and $\log\pi$.
+For the canonical formal polynomials supplied by the beta integral,
+the coefficient identity needs none of those assumptions.  Under the
+preprint's assumptions these formal coefficients coincide with its
+uniquely specified numerical coefficients, so the result also proves
+that stated implication.  We do not assert uniqueness of arbitrary
+numerical expressions in zeta values and logarithms, nor priority over
+any later treatment.
+
+Define polynomials $\mathcal P_N(X)$ by
+\begin{equation}\label{reflected:gam:eq:appell-egf}
+ \sum_{N\ge0}\mathcal P_N(X)\frac{z^N}{N!}
+ =\exp\left\{Xz+\sum_{j\ge2}
+       \frac{(1-2^{1-j})\zeta(j)}jz^j\right\}.
+\end{equation}
+\begin{proposition}[Unconditional coefficient and translation identities]
+\label{reflected:gam:prop:appell}
+For $N\ge0$,
+\begin{align}
+ \int_0^1[-\log\sin(\pi x)]^N\,dx&=\mathcal P_N(\log2),\label{reflected:gam:eq:logsine}\\
+ [X^j]\mathcal P_N(X)&=\binom Nj \mathcal P_{N-j}(0),\qquad 0\le j\le N,\notag\\
+ \sum_{j=0}^N\binom Nj M_{j,N-j}&=\mathcal P_N(\log(2\pi)).\notag
+\end{align}
+Moreover, the coefficients admit the finite partition formula
+\begin{equation}\label{reflected:gam:eq:appell-partitions}
+ \mathcal P_N(X)=N!\!\sum_{r_1+2r_2+\cdots+Nr_N=N}
+ \frac{X^{r_1}}{r_1!}
+ \prod_{j=2}^N\frac1{r_j!}
+ \left(\frac{(1-2^{1-j})\zeta(j)}j\right)^{r_j}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+For $\operatorname{Re}z<1$, the beta integral gives
+\[
+ \int_0^1\sin(\pi x)^{-z}\,dx
+ =\frac{\Gamma((1-z)/2)}{\sqrt\pi\,\Gamma(1-z/2)}.
+\]
+Expanding its logarithm at zero gives the right side of
+\eqref{reflected:gam:eq:appell-egf} with $X=\log2$; its degree-$j$ coefficient
+for $j\ge2$ is $(1-2^{1-j})\zeta(j)/j$.
+Extracting Taylor coefficients proves \eqref{reflected:gam:eq:logsine}.
+The factor $e^{Xz}$ gives $[X^j]\mathcal P_N=\binom Nj\mathcal P_{N-j}(0)$ by
+formal coefficient extraction.  Euler's reflection formula turns
+the sum of mixed moments into the integral of
+$(\log\pi-\log\sin\pi x)^N$, which translates $X$ by $\log\pi$.
+Expanding each exponential factor separately proves
+\eqref{reflected:gam:eq:appell-partitions}.  All formal operations in a fixed
+degree involve only finitely many coefficients.
+\end{proof}
+
+The constant-column generating function has the additional factorization
+\begin{equation}\label{reflected:gam:eq:even-odd-factor}
+ \sum_{N\ge0}\mathcal P_N(0)\frac{z^N}{N!}
+ =\sqrt{\frac{\tan(\pi z/2)}{\pi z/2}}
+ \exp\left\{\sum_{\substack{j\ge3\\j\text{ odd}}}
+       \frac{(1-2^{1-j})\zeta(j)}jz^j\right\},
+\end{equation}
+where the square root is the formal branch with constant term one.
+Indeed, multiplying the left side by its value at $-z$ and applying
+the reflection formula yields $\tan(\pi z/2)/(\pi z/2)$.
+The even logarithmic part is therefore the displayed square root.
+This makes the multiplicative factorization of its formal odd-zeta
+monomial coefficients explicit, while the even-zeta contribution has
+an elementary trigonometric generating function.
+
+\paragraph{Verification and remaining questions.}
+The accompanying script \src{code/verify_reflected_moments.py} checks the
+three coefficient formulas by exact symbolic arithmetic, checks finite
+reflection sums and the formal Appell formulas, and compares independent
+quadrature with the fixed-order expansion.  It also compares the late
+coefficients with \eqref{reflected:gam:eq:late} and \eqref{reflected:gam:eq:beta}.
+The numerical calculations are diagnostics; the preceding analytic and
+formal arguments are the proofs.
+Two substantive next questions are uniformity when $m$ increases with
+$n$ and a signed remainder at the least term for each reflected exponent.
+In the former regime the endpoint approximation
+$B(x)^m\approx\gamma^m x^m$ need not be uniform, so the fixed-$m$
+theorem does not settle the simultaneous large-exponent problem.

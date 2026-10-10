@@ -1,0 +1,103 @@
+{
+  "part": "reflection",
+  "source_folder": "reflection-euler-tornheim",
+  "source_code_sha256": {
+    "scripts/certify_s6.py": "6b854bc3eb97b7576aae2b33e58b6edc9f905ef3c97b05aa1b02089e1d831a69",
+    "scripts/make_figures.py": "60acdeff21399383896ade4699d44ddedbb938d25d81f97a0a98dfd30e796846",
+    "scripts/series_crosscheck.py": "8692ff28df401310742f23bc4198abc9d835c47581a9e54229532f4fecf2ad6e",
+    "scripts/verify_analytic_identities.py": "294a10718626a1150ba12289de1add41911e31f7939a3d5dcc9c38966da4c60a",
+    "scripts/verify_herglotz.py": "066ea1528be5bf117edec53bae66d922d900d8fb7373ac24fd68421d5959d209",
+    "scripts/verify_moments.py": "4b290477fb6a30f638cb3efe98d3f0d1c99b8e46a8bd9455bcbd111a4eebbd63",
+    "scripts/verify_relation_spaces.py": "fa595572cfafa15a9431f70f8d715378497907f5a73ae8c08d92efeb755ad0ac",
+    "scripts/verify_s6_mellin.py": "1943b2a3e5d6e77248fee02c62b2839c0697793a9275c443dbf01ce5e0563e42",
+    "scripts/verify_tornheim.py": "1eb530c267201079b535a55fbce1bb996400544527f3551388a7a955ae006ec4"
+  },
+  "commands": [
+    {
+      "program": "scripts/certify_s6.py",
+      "arguments": [
+        "--output",
+        "data/s6_rational_certificate.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "program": "scripts/verify_relation_spaces.py",
+      "arguments": [
+        "--output",
+        "data/relation_space_certificates.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "program": "scripts/verify_moments.py",
+      "arguments": [
+        "--dps",
+        "180",
+        "--output",
+        "data/moment_checks.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "program": "scripts/verify_herglotz.py",
+      "arguments": [
+        "--dps",
+        "70",
+        "--output",
+        "data/herglotz_checks.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "program": "scripts/verify_tornheim.py",
+      "arguments": [
+        "--dps",
+        "80",
+        "--degree",
+        "120",
+        "--diagonal",
+        "240",
+        "--output",
+        "data/tornheim_checks.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "program": "scripts/verify_analytic_identities.py",
+      "arguments": [
+        "--output",
+        "data/analytic_identity_checks.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "program": "scripts/verify_s6_mellin.py",
+      "arguments": [
+        "--output",
+        "data/s6_mellin_check.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "program": "scripts/series_crosscheck.py",
+      "arguments": [
+        "--output",
+        "data/series_crosscheck.json"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "fresh_result_files": [
+    "data/analytic_identity_checks.json",
+    "data/herglotz_checks.json",
+    "data/moment_checks.json",
+    "data/relation_space_certificates.json",
+    "data/s6_mellin_check.json",
+    "data/s6_rational_certificate.json",
+    "data/series_crosscheck.json",
+    "data/tornheim_checks.json"
+  ],
+  "passed": true,
+  "scope": "Written analytic proofs, exact finite certificates and numerical diagnostics have distinct evidence scopes."
+}

@@ -1,9 +1,9 @@
 # Source reconciliation and mathematical corrections
 
 The reading manuscript is `polylogarithms.tex` / `polylogarithms.pdf`.
-The inventory now covers 109 textual source files: the original 39 flat drafts
-and the scientific sources, correction registers and supporting prose of six
-later continuation packages (twelve deliveries). Repeated assembled source and
+The inventory now covers 159 textual source files: the original 39 flat drafts
+and the scientific sources, correction registers and supporting prose of eleven
+later continuation packages (seventeen deliveries). Repeated assembled source and
 section fragments are counted as provenance files, not as independent results.
 The 39 textual drafts remain historical source evidence in the sibling
 `articles` and `reports` directories. Their PDFs and unsupported claims are
@@ -152,3 +152,25 @@ and their independent nested-sum centers, alongside diagnostic asymptotics.
   formulas/asymptotics, specified cyclotomic relation-space ranks and the S6
   candidate; reconcile repeated cubic moments and annotate the inspected
   external preprint sign correction.
+
+## Verified incoming supersession
+
+The S4 theorem uses a convergent octahedral duality and 911 regenerated
+standard rows, with exact zero residual. It supersedes every stale
+conjectural-status statement for that identity in the canonical book. Earlier
+restricted-row-space obstructions remain correct: their vocabulary excludes
+the new proof ingredients. The S6 relation is retained as a separate conjecture.
+
+Shared universal distribution, one-two, triple and cubic-moment treatments
+were merged through the existing stronger proofs. New determinant/Smith
+factors, finite primitive-grid/Mobius descent and pole-corrected trace/Stieltjes
+formulas are integrated without changing the complete quotient rank. Both
+character-trace conventions are reconciled explicitly. Pure-complement
+classification and plastic proofs, proportional harmonic saddles, sharp and
+reflected moment theory, formal log-sine Appell identities and Herglotz jets
+are now part of the mathematical development.
+
+The remaining even modified-polylog assertion and the zeta(0) coefficient
+label were corrected. The auxiliary Tornheim sign check is confined to the
+inspected June 27, 2012 author preprint at carmamaths.org, whose equation
+numbers differ from the later author copy. The delivered inputs remain intact.
