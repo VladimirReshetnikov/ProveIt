@@ -23,7 +23,7 @@ validation now reads all twenty-six ZIPs from their pinned arrival commits. The 
 The reviewed PDF SHA-256 is:
 
 ```
-3f9a6a957e932c9c6d0351c32c705dca61f5f391462f9ccf255d5fc06f21eb5f
+71f50bc5bc15a3bbb0c2793bf98efe4a15c46440ca9951f919cabb2d5b03ea73
 ```
 
 ## New real-order proofs and fresh evidence
@@ -471,3 +471,5 @@ searches do not prove independence, non-elementarity or minimal depth.
 Rohrlich completeness and Stark predictions retain their conjectural boundaries.
 The external counterexample applies to the inspected 2020 author preprint;
 the separately published 2023 version was not audited in this check.
+
+The final normalized Mellin statement explicitly assumes p>0. After three converged serial passes, only page 142 changes relative to the previously published reviewed artifact. The other 378 thumbnails, 23 contact sheets and nine listed full-size pages are byte-identical; page 142 and its contact sheet were freshly reviewed. See mellin-domain-raster-comparison.json.

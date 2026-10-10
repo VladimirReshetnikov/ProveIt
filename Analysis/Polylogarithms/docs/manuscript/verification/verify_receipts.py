@@ -188,7 +188,9 @@ outcomes['real-order-boundary-diagnostics']=x['status']=='all diagnostic asserti
 x=read('Gaussian-axis-plot.json')
 outcomes['Gaussian-axis-plot-diagnostic']=x['working_precision']==40 and len(x['points'])==180
 x=read('axis-wording-raster-comparison.json')
-outcomes['final-axis-wording-raster-review']=x['pdf_sha256']==pdfhash and x['previous_pdf_sha256']=='b416e14735a4c3aeba8fcac288673846ef12a41125f5e11936b185be85159afd' and x['page_count']==379 and x['thumbnail_pages_compared']==379 and x['changed_thumbnail_pages']==[165] and x['contact_sheets_compared']==24 and x['changed_contact_sheets']==[161] and x['changed_full_pages']==[165]
+outcomes['historical-axis-wording-raster-review']=x['pdf_sha256']=='3f9a6a957e932c9c6d0351c32c705dca61f5f391462f9ccf255d5fc06f21eb5f' and x['previous_pdf_sha256']=='b416e14735a4c3aeba8fcac288673846ef12a41125f5e11936b185be85159afd' and x['page_count']==379 and x['thumbnail_pages_compared']==379 and x['changed_thumbnail_pages']==[165] and x['contact_sheets_compared']==24 and x['changed_contact_sheets']==[161] and x['changed_full_pages']==[165]
+x=read('mellin-domain-raster-comparison.json')
+outcomes['final-Mellin-domain-raster-review']=x['pdf_sha256']==pdfhash and x['previous_pdf_sha256']=='3f9a6a957e932c9c6d0351c32c705dca61f5f391462f9ccf255d5fc06f21eb5f' and x['page_count']==379 and x['thumbnail_pages_compared']==379 and x['changed_thumbnail_pages']==[142] and x['contact_sheets_compared']==24 and x['changed_contact_sheets']==[129] and x['changed_full_pages']==[142]
 for part,count in [('beta',4),('compensated',4),('critical',3),('extremal',1),('harmonic',1)]:
     x=read(f'fifth-replay/{part}/replay-summary.json')
     outcomes['fifth-replay/'+part]=x['passed'] and len(x['commands'])==count and all(c['exit_code']==0 for c in x['commands']) and bool(x['fresh_result_files']) and all((V/'fifth-replay'/part/p).is_file() for p in x['fresh_result_files'])

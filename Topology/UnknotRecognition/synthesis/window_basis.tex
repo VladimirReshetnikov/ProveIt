@@ -1,0 +1,142 @@
+\section{Updating window kernels in their small parameter space}
+\label{sec:window-basis}
+
+The signed-residual filter avoids most nearby type assignments, but the
+first implementation still rebuilds a matching kernel for each retained
+one. Its motivating example queries 32 sectors. Each rebuild repeats
+contraction, cycle construction and rational elimination on nearly the
+same source. The new implementation retains the exact information computed
+by the residual planner and updates the kernel in at most $d_0+2$
+parameters. It also reuses source triangle potentials instead of rebuilding
+the triangle graph. The independent diagram/disc certificate contract
+remains the same.
+
+\subsection{Column decompositions retain more than a residual key}
+
+Use the fixed full-Q matrix $A$ of Section~\ref{sec:sector-windows} and
+the old support $S$. During exact elimination retain coefficient vectors
+alongside the column-space basis. For every nonbase column this gives
+\[
+                 A_j=A_Sc_j+r_j.
+\]
+The old planner stored only the projective direction and sign of $r_j$.
+The new records also retain $c_j$ and the actual rational residual values.
+The forest's original corner potential matrix $P$ is retained as sparse
+integer rows. It describes signed matching triangle coordinates $Pq$;
+subtracting each global vertex minimum gives the canonical nonnegative lift.
+Neither record expands elementary normal pieces.
+
+Let $K$ be a row basis of $\ker A_S$, already computed by the first sector
+query. The old kernel vectors, padded with zero new coordinates, remain
+kernel vectors when types are added algebraically. The following small
+updates supply all remaining directions.
+
+\begin{proposition}[Exact augmented Q kernels]
+For a single zero-residual column, append the vector $(-c_j,1)$ to $K$.
+For two zero-residual columns, append their two independent vectors.
+For a nonzero opposite pair $a,b$, choose $\gamma>0$ with
+$r_a+\gamma r_b=0$, and append
+\[
+                    (-c_a-\gamma c_b,1,\gamma).
+\]
+In each case these vectors and the padded old basis span the full augmented
+matching kernel and are linearly independent.
+\end{proposition}
+\begin{proof}
+Each displayed vector satisfies the matching equation by its column
+decomposition. For zero residuals the new coordinates are independent.
+For a nonzero opposite pair the quotient equation forces the two new
+coordinates to be proportional with ratio $\gamma$, giving exactly one
+new direction. Subtracting the appropriate displayed vector from any
+augmented kernel vector leaves zero new coordinates and hence an old
+kernel vector. This proves spanning, while independence follows by first
+examining the new coordinates and then the independent old basis.
+\end{proof}
+
+Replacement edits must also set the replaced old coordinates to zero.
+If $W$ is the augmented basis with $m\le d_0+2$ rows, impose
+\[
+                    \sum_{a=1}^m z_aW_{a,i}=0
+\]
+for each removed old index $i$. There are at most two such equations.
+Their small nullspace gives the exact remaining parameter vectors; apply
+them to $W$ and drop the removed coordinates. This preserves all replacement
+constraints without solving a fresh wide matching system.
+
+\subsection{Recovering the incumbent's canonical basis gauge}
+
+The basis gauge matters for deterministic projective charts and traversal
+order. The native wide elimination chooses the earliest possible pivot
+columns, leaving the complementary free coordinates. Starting from the
+spanning kernel rows, reduce with columns scanned from right to left.
+Its pivots are those complementary free coordinates. Reverse the columns
+back and order the rows by increasing free index. The result is exactly
+the native nullspace basis, with an identity matrix in those free slots.
+
+This uses thin row elimination on at most $d_0+2$ rows. The underlying
+linear fact is the complementary-basis duality between a matrix's column
+matroid and its kernel coordinate matroid. Equivalently, the greedy latest
+independent coordinate functionals on the kernel complement the greedy
+earliest independent matching columns. The normalized kernel basis is
+unique once these free coordinates are fixed. Exact source comparisons
+below test the resulting full basis, not merely its dimension.
+
+\subsection{Projected triangle geometry without a new contraction}
+
+For an updated Q basis $K'$, compute the source corner forms $PK'$ using
+the retained sparse forest potentials. Equal forms at a global vertex are
+identified, keeping the first physical corner as representative. This is
+an exact contraction on the entire updated matching space. It can merge
+more corners than the old zero-label contraction, because matching
+constraints can force a nonzero-looking potential difference to vanish.
+Single-form vertex groups are pure link factors and are omitted in the
+canonical lift, just as before.
+
+The canonical basis gauge provides free coordinates $F$ with
+$q_{F_a}=z_a$. A corner form can therefore be expressed directly in those
+physical Q coordinates, using nonzero coefficients only at the free slots.
+The normalized envelope and planar producers can reuse their existing
+interfaces. Potential values can be rational in this representation, but
+the exact lift at an integral matching Q vector is integral by the original
+source forest equations. The producer checks this integrality and validates
+the full normal coordinates against the actual source.
+
+Higher-nullity fallbacks remain complete. The projected kernel supplies
+linear Q constraints
+\[
+                  q_j-\sum_a K'_{a,j}q_{F_a}=0\qquad(j\notin F)
+\]
+and triangle constraints equating each class to its vertex anchor plus
+the corresponding potential difference. These describe precisely the
+updated standard matching space, including one free link offset per
+nontrivial vertex group. Coordinate-face extremality and the generic
+support/rank tests therefore continue to apply. Nullity zero means no
+non-link ray and completes without allocating another geometry kernel.
+
+The change is implemented in \code{sector\_window\_basis.py}. It replaces
+the internal per-window rebuild; the public sparse constructor, standalone
+enumeration and independent coverage checkers retain their previous paths.
+The source is read-only throughout the query. Positive source replay still
+reconstructs geometry independently and never trusts the cached potentials,
+updated basis, class identifications or planner statistics.
+
+\subsection{Complexity and retained scope}
+
+The residual planner pays a polynomial one-time cost for the actual column
+decompositions. Per edit the matching update combines at most two new
+directions with the old kernel, solves at most two equations in at most
+$d_0+2$ parameters, and canonicalizes that thin basis. Triangle projection
+then uses the retained sparse source rows. Wide kernel elimination and
+repeated source graph contraction are removed from each candidate query.
+Exact rational coefficient bits and output costs remain separately charged.
+
+This preserves the local quasi-polynomial accounting for logarithmic
+nullity and window radius from the preceding section. It neither expands
+the radius-one/two window nor supplies a universal distance bound. The
+default window radius remains zero unless the measured full-recognition
+tradeoff justifies a later policy change. Changes to deterministic guard
+counts can alter which queries complete under a finite shared work limit;
+they do not turn capped local searches into absence certificates.
+
+\subsection{Source comparisons, timings and publication checks}
+\input{window_basis_results.tex}

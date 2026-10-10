@@ -1,3 +1,7 @@
+# Final Mellin parameter-domain clarification
+
+Made p>0 explicit in the normalized Mellin lemma, matching its Gamma-density comparison. Three serial passes converge with no log issues. The 379-page structure is unchanged; only page 142 differs in the exact raster comparison with the previously published reviewed PDF. That page and contact sheet were reviewed freshly, and the nine other listed full-size pages and 378 thumbnails are identical. Historical axis-wording and 340-page comparisons retain their earlier artifact scope. The sharp universal Euler result, certified constant, incoming preservation and remaining research agenda retain the scopes recorded below.
+
 # October 10: reviewed universal Euler and fifth-intake milestone
 
 The canonical collective manuscript now has 379 pages, twelve chapters,
@@ -38,7 +42,7 @@ checked in the current sheets; the Gaussian caption is freshly reviewed.
 
 Reviewed PDF SHA-256:
 
-3f9a6a957e932c9c6d0351c32c705dca61f5f391462f9ccf255d5fc06f21eb5f
+71f50bc5bc15a3bbb0c2793bf98efe4a15c46440ca9951f919cabb2d5b03ea73
 
 The remaining density/drift, strict-depth, inverse, cyclic-prime and Lerch
 proofs remain on the analytic integration agenda. The finite 5131-row S6

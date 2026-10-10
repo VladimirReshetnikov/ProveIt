@@ -69,6 +69,20 @@ def normal_compressing_disk_count(triangulation, coordinates, *, max_cycles=None
     check()
     prepared = _prepare(triangulation, check)
     analysed = _coordinates(prepared, coordinates, check)
+    return _count_prepared_discs(triangulation, prepared, analysed, max_cycles=max_cycles,
+        periodic_rule=periodic_rule, check=check, record_certificate=record_certificate,
+        unit_ray=unit_ray)
+
+
+def _count_prepared_discs(triangulation, prepared, analysed, *, max_cycles=None,
+                          periodic_rule='fine_wilf', check=lambda: None,
+                          record_certificate=False, unit_ray=True):
+    """Private observer on geometry already validated against this source.
+
+    The caller owns the read-only source and freshly validated analysis.
+    Public entry points still validate both; independent certificate replay
+    always reconstructs its own source and geometry.
+    """
     divisor, core, links = canonical_disk_core(prepared, analysed, check)
     metadata = dict(coordinate_divisor=divisor, vertex_links=links,
                     input_coordinate_bits=analysed['maximum_coordinate_bits'],
@@ -78,7 +92,7 @@ def normal_compressing_disk_count(triangulation, coordinates, *, max_cycles=None
         from .normal_support_peeling import peel_support_ray
         from .normal_support_peeling_verify import verify_support_ray
         from .normal_component_geometry import boundary_homology_basis
-        core_data = _coordinates(prepared, core, check)
+        core_data = analysed if core == analysed['rows'] else _coordinates(prepared, core, check)
         support_proof = peel_support_ray(prepared, core_data, check)
         if support_proof is not None:
             if not verify_support_ray(prepared, core_data, support_proof, check):
