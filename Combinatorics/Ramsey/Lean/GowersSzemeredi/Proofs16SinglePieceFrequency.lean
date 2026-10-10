@@ -5,6 +5,11 @@ import GowersSzemeredi.Proofs15ExplicitThresholds
 /-! The single-piece lift, step 6 (Notes L.1): a dense multilinear frequency
 box from local inputs only.
 
+**Warning.** Its inputs include the box-local `LocalRelationCoverAt` and
+`LocalMultilinearPieceAt`, false for growing widths (Notes L.2), so this
+statement is vacuous. The global-to-local replacement goes through
+`single_piece_lift_core`.
+
 `single_piece_frequency_box` is a conditional replacement for
 `section16_joint_frequency_box`. Take `f` that is not uniform of degree
 `k + 2`. Then some proper box `P ⊆ (ℤ/N)^(k+1)` and one multilinear `μ` have

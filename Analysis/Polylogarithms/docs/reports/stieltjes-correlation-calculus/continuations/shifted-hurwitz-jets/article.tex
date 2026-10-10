@@ -1,0 +1,55 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=0.96in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,longtable,array}
+\usepackage{microtype,xcolor,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!50!black]{hyperref}
+\usepackage{bookmark}
+\emergencystretch=2em
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\FP}{FP}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\CT}{CT}
+\DeclareMathOperator{\sgn}{sgn}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\ii}{\mathrm{i}}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\T}{\mathbb T}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\hypersetup{pdftitle={Shifted Hurwitz-Zeta Correlations: Exact Stieltjes Closure and Polygamma Contact Terms},pdfauthor={OpenAI, prepared for the ProveIt research programme}}
+\title{Shifted Hurwitz-Zeta Correlations\\[5pt]\large Exact Stieltjes Closure, Polygamma Contact Terms,\\and Log-Gamma Antiderivatives}
+\author{Prepared for Vladimir Reshetnikov's ProveIt programme\\\small Mathematical research continuation assisted by OpenAI}
+\date{October 10, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We develop an exact calculus for translated, bilinear correlations of Hurwitz-zeta jets. The ordinary shifted Hurwitz correlation has both a polylogarithmic Fourier representation and a two-term beta--Hurwitz representation. Expanding the latter at the double pole proves that every canonically regularized product of two generalized Stieltjes functions is a \emph{linear} combination of single Stieltjes functions, with coefficients polynomial in positive integer zeta values. In particular,
+\[
+\FP\int_0^1\psi(x)\psi(\{x+a\})\dd x
+=\gamma_1(a)+\gamma_1(1-a)-\frac{\pi^2}{3},\qquad 0<a<1.
+\]
+We determine the contact terms needed to differentiate these identities: periodic finite-part extension and ordinary parameter differentiation do not commute. The resulting all-order formula reduces every shifted polygamma product to first spectral derivatives of Hurwitz zeta. A second-primitive lifting theorem converts the entire Stieltjes closure into \emph{ordinary convergent} integrals of Stieltjes antiderivatives. Its first case evaluates the translated log-gamma correlation using first and second Hurwitz-zeta derivatives at $-1$ and a Bernoulli polynomial. Explicit rational specializations, exact coefficient code, numerical cross-checks, and integration notes accompany the proofs. Classical antecedents are credited separately from the continuation developed here; no claim of global priority or resolution of the repository's $S_6$ and $S_8$ conjectures is made.
+\end{abstract}
+\vspace{4pt}
+\noindent\textbf{Keywords.} Hurwitz zeta; generalized Stieltjes constants; spectral derivatives; periodic finite parts; polygamma; polylogarithms; log-gamma correlations.\\
+\textbf{Status.} Analytic proofs with exact symbolic and numerical diagnostics; not proof-assistant formalized or independently peer reviewed.
+\newpage
+\tableofcontents
+\newpage
+\input{sections}
+\input{references}
+\end{document}
