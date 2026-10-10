@@ -1735,3 +1735,7 @@ if os.path.exists('data/window-modes-benchmark.json'):
 if os.path.exists('data/window-geometry-benchmark.json'):
     import runpy
     runpy.run_path('data/window_geometry_tables.py')
+
+if os.path.exists('data/disc-context-benchmark.json'):
+    import runpy
+    runpy.run_path('data/disc_context_tables.py')

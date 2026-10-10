@@ -316,3 +316,43 @@ inner order. Its audited incoming enclosure proves the rational global budget
 57/50. This is a promotion beyond the incoming reports' stated first-error
 and critical-line scope, not an assertion that they had claimed more.
 The critical constant and constant one on a>=1 remain valid sharper bounds.
+
+## Sixth continuation batch: placement and audited finite replay
+
+Six packages at 6dc67e9d3d are placed in 159a27b9f2: 250 original tracked
+members and three ignored SHA256SUMS members recoverable in their arrival
+archives. All six isolated default suites pass. The radial suite covers the
+complete 2,304-cell mesh and 4,609 root brackets. Neither finite replay nor
+this census entry substitutes for integrating the full analytic proof.
+
+| Source group | Canonical reconciliation and remaining scope |
+|---|---|
+| all-depth-signed-oscillation | The signed moment operators, exact density zero count, minimal polynomial compensation, all-depth upper-arc count and inward angular motion have been read and audited; full canonical insertion remains pending. Leading indices are positive integers and the terminal index is positive real. This is not a normalized-radius sign theorem at every depth. |
+| radial-bifurcation | Global quartic-transition and local fold certificates replay in full, including actual-function witnesses. The global-in-inner-order theorem, local classification and the distinct full-function turning count await canonical analytic reconciliation. |
+| sharp-universal-euler | The independent universal constant overlaps the collective contraction proof. The full 9/8 later-step proof is now integrated with all finite polynomial premises and the analytic all-index reduction. Generating identities and negative-outer-order Gaussian signs remain pending. Scaled-error monotonicity is false; the exact (4,1) reversal is retained. |
+| golden-cayley-double-turning | Independent Euler proof corroborates the integrated 9/8 budget. The remaining golden weight-five ladders, all-weight Cayley projector, formal S6 separator and turning-point proofs pass exact replay and await canonical insertion. Formal quotient exclusion is not period independence. |
+| uniform-bounds-structural-transitions | Uniform moving-order bounds, orbit ranks and actual-function radial certificates pass. Analytic integration remains pending. The unsupported non-elementarity prose in Chapter 3 is corrected without altering its valid hypergeometric formula. The growing-reflection coefficient and remainder regimes remain distinct. |
+| euler-moments-shuffle-lerch | All-ratio moments, effective Lerch bounds, odd-shuffle integral diagonalization and Gaussian proximity checks pass. Analytic insertion is pending; S10 and the retained S12 vector remain conjectural, and the first rejected S12 vector remains historical evidence. |
+
+## Seventh continuation batch: new identities and global radius proof
+
+Five packages at 5b1a7ace41 are placed in 0e5ab2f60f with all 203 original
+members. Their five ZIPs were retired after placement. All five isolated
+standard suites pass; optional large numerical and plotting runs are not
+claimed rerun. Original historical receipts and PDFs remain unchanged.
+
+| Source group | Canonical reconciliation and remaining scope |
+|---|---|
+| euler-lambert-dominant-extrema | Four finite verifiers pass. Selected-sheet singularities, Lambert polynomial laws and global Euler asymptotics remain under analytic reconciliation. Accessible-singularity dominance is still pending promotion in the canonical harmonic-order development. |
+| global-radial-large-orders | Exact all-radius inequality, Bernstein, binomial and root-bracket suite passes. The a>=8 and quantitative large-b proofs await canonical insertion. They leave six bounded higher-integer strips unresolved. |
+| leading-one-global-radius | The full Green-density, strict mode, reflected single-crossing and inverse-height-to-radius proof is audited and integrated in Chapter 5 for every b>0: decreasing for b>1, increasing for b<1, constant at b=1. All 1,938 finite algebra/moment checks, 18 rational brackets and five symbolic identities pass. Outer-disk cutoff, shifted sectors and cross-weight identities remain pending insertion. |
+| tetralogarithm-euler-polynomial-zeros | The full forty-two-row rational tensor proof, lower-weight descent, real-branch constants, six-argument specialization and twenty-five-argument corollary are audited and integrated in Chapter 3. Fractional Euler asymptotics, fixed-total phase, eventual axis reduction and polynomial Lerch thresholds pass finite replay but await analytic reconciliation; no identity status follows merely from tensor cancellation. |
+| extremizers-polynomial-zeros-mixed-gaussian | Exact pointwise-extremum, exponent, mesh and S14 residual verifiers pass. Full extrema, negative-order, mesh and mixed-generator proofs remain under analytic audit. S14 proximity below 10^-775 is not equality, and S6/S8/S10/S12 remain conjectural. Eventual statements do not solve every finite index. |
+
+The complete a=1 full-radius branch is now proved in the collective book.
+The full higher-integer normalized-radius problem remains active. Source
+coverage is 37 recoverable archives and 1,496 preserved tracked members,
+with the three ignored manifests recoverable in the sixth arrival archives.
+The manuscript author remains ProveIt Contributors. Canonical publication
+requires rebuilding and reviewing the expanded book, separately from these
+source-preservation and arithmetic milestones.

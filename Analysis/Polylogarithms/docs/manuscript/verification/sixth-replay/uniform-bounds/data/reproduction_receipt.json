@@ -1,0 +1,46 @@
+{
+  "status": "PASS",
+  "python": "3.14.4 (tags/v3.14.4:23116f9, Apr  7 2026, 14:10:54) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26340-SP0",
+  "exact_certificates": true,
+  "numerical_diagnostics": false,
+  "regenerated_figures": false,
+  "runs": [
+    {
+      "script": "code/verify_euler.py",
+      "arguments": [
+        "--output",
+        "data/euler_exact_certificate.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.727,
+      "log": "data/replay_logs/verify_euler.txt"
+    },
+    {
+      "script": "code/verify_depth_orbits.py",
+      "arguments": [
+        "--max-weight",
+        "10",
+        "--output",
+        "data/depth_orbit_verification.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 16.54,
+      "log": "data/replay_logs/verify_depth_orbits.txt"
+    },
+    {
+      "script": "code/certify_radial_degeneracy.py",
+      "arguments": [],
+      "exit_code": 0,
+      "elapsed_seconds": 19.349,
+      "log": "data/replay_logs/certify_radial_degeneracy.txt"
+    },
+    {
+      "script": "code/certify_two_extrema.py",
+      "arguments": [],
+      "exit_code": 0,
+      "elapsed_seconds": 11.307,
+      "log": "data/replay_logs/certify_two_extrema.txt"
+    }
+  ]
+}

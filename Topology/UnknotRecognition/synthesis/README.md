@@ -1297,3 +1297,24 @@ references. Reproduce publication checks with
 `python -B data/window_geometry_review.py --publication` from this directory.
 They verify 602 frozen/current runtime pins, 599 preceding-release evidence
 pins, all measured outcomes and all 31 saved positives with producers disabled.
+
+[disc_context.tex](disc_context.tex) amortizes source-only work using an
+independently constructed verifier-owned snapshot and geometry. It proves
+fixed-source acceptance equivalence while retaining fresh coordinate,
+reduction, fingerprint and proof checks. Type-preserving binding rejects
+mutated sources and equal Boolean/integer aliases. All 1,415 tests pass;
+all 85 verdicts and 31 positives remain, with seven fresh Regina disc checks.
+Caps fall from 28 to 22; six extra completed windows remain native misses.
+Complete enabled-recognition gains are 1.18–1.26x; the longer trefoil repeat
+confirms about 1.22x gains for both native and complete recognition. Eight
+legacy component-based proofs, including the empty vector, also pass
+producer-disabled fresh/context replay. Records are in `data/disc-context-*`.
+
+The current [PDF](report.pdf) has 570 pages. Section 143 starts on page 563;
+the assessment is section 144 on page 565. Rendered pages 563–567, including
+the full assessment continuation, pass visual review. Only the four
+pre-existing overflow warnings remain and all references resolve. Reproduce
+publication checks with `python -B data/disc_context_review.py --publication`
+from this directory. They verify 604 current/frozen runtime pins, 602 incumbent
+pins, final/repeat outcomes, eight generic legacy proof replays and all 31
+saved positives with the batch context and producers disabled.

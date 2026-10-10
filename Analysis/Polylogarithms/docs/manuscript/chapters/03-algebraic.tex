@@ -62,9 +62,9 @@ $y$:
   \Real\Li_3(1+\iu)=\frac{35}{64}\zeta(3)+\frac{\pi^2\ln2}{32},\qquad
   \Real\Li_3(1+\iu\sqrt3)=\frac{35\zeta(3)+18\Li_3(\tfrac14)+6\pi^2\ln2-24\ln^3 2}{144},
 \end{equation}
-the second being the exact weight-3 analogue of the $\Li_2(\tfrac14)$ in~\eqref{vertical:eq:mse}. But the general
-real part does \emph{not} close: differentiating, $\partial_y\Real\Li_3(1+\iu y)=-\bigl(\Imag\Li_2(1+\iu y)-y\,\Real\Li_2(1+\iu y)\bigr)/(1+y^2)$,
-and integrating the $\Ti_2$ contribution produces $\int_0^y\arctan^2(t)/t\,dt$, a weight-three inverse-tangent-square integral. The displayed special cases at $y=1,\sqrt3$ simplify, without giving an elementary-value classification for every rational angle. Meanwhile the \emph{imaginary} part is no longer elementary at all: it is the
+the second being the exact weight-3 analogue of the $\Li_2(\tfrac14)$ in~\eqref{vertical:eq:mse}. For the general
+real part, the displayed calculation introduces a further integral: differentiating, $\partial_y\Real\Li_3(1+\iu y)=-\bigl(\Imag\Li_2(1+\iu y)-y\,\Real\Li_2(1+\iu y)\bigr)/(1+y^2)$,
+and integrating the $\Ti_2$ contribution produces $\int_0^y\arctan^2(t)/t\,dt$, a weight-three inverse-tangent-square integral. The displayed special cases at $y=1,\sqrt3$ simplify, without giving an elementary-value classification for every rational angle. The \emph{imaginary} part at $1+\iu$ is represented here by the
 central-binomial Gaussian tower constant
 \begin{equation}\label{vertical:eq:Im3}
   \Imag\Li_3(1+\iu)=\mathcal F_3-\frac{\pi^3}{192},\qquad
@@ -74,6 +74,14 @@ the $n=3$ entry of the $\Imag\Li_n(1+\iu)$ tower (companion report
 \texttt{gaussian-1plusi-tower}). So on $\Real z=1$ the imaginary part is precisely the deep object that
 the central-binomial ladder measures, while the real part remains tractable---the two halves of the
 polylogarithm part ways at weight $3$.
+\begin{remark}[An unsupported nonreduction claim]\label{vertical:rem:nonreduction}
+Earlier prose asserted that this imaginary part was not elementary, without
+specifying a comparison algebra or supplying an obstruction. That assertion
+is an open reducibility question, rather than a consequence of
+\eqref{vertical:eq:Im3}. The displayed hypergeometric representation remains
+valid; any proposed reduction or nonreduction must name its algebra of
+constants and establish a separate proof.
+\end{remark}
 \section{The integral and its provenance}
 The object (Math.StackExchange \href{https://math.stackexchange.com/q/564816}{question 564816}) is
 \begin{equation}\label{cleo:eq:I}
@@ -254,12 +262,12 @@ a useful check, but does not establish exact equality.
 The source recovered the following tetralogarithm relation
 (\href{https://math.stackexchange.com/q/1373123}{MSE 1373123},
 \href{https://mathoverflow.net/q/261408}{MO 261408}) numerically.
-With $\alpha=\ln2,\beta=\ln3$, its proposed form is
+The exact proof below now establishes it. With $\alpha=\ln2,\beta=\ln3$, its form is
 \begin{multline}\label{golden:eq:tetra}
   720\Li_4(\tfrac12)-2160\Li_4(\tfrac13)+2160\Li_4(\tfrac23)\\+270\Li_4(\tfrac14)+540\Li_4(\tfrac34)+135\Li_4(\tfrac19)\\
   =19\pi^4+30(\pi^2-\beta^2)(10\alpha^2-12\alpha\beta+3\beta^2)-30\alpha^2(19\alpha^2-24\alpha\beta+8\beta^2),
 \end{multline}
-The source recovered this relation in its weight-four basket; uniqueness of all numerical relations is not established.
+The source recovered this relation in its weight-four basket; Theorem~\ref{rattetra:thm:main} proves it without a numerical-recognition premise. Uniqueness of all relations among the individual values remains a separate question.
 For the three $\Li_5$ golden formulas below, the source reports residuals
 of approximately $10^{-257}$. Their connection with the ladders of
 Abouzahra and Lewin~\cite{golden:AbouzahraLewin1985} is described below:
@@ -338,15 +346,15 @@ questions.
 \end{remark}
 
 \section{Reducing the tetralogarithm relation to a functional identity}
-Duplication reduces the proposed tetralogarithm relation
-\eqref{golden:eq:tetra} to the following cross-base relation.
-Proving that specialized relation would complete this derivation;
+Duplication reduces the proved tetralogarithm relation
+\eqref{golden:eq:tetra} to the following equivalent cross-base relation.
+The complete certificate proof that follows establishes both;
 no independence claim about the six individual values is needed.
 
 Two duplications
 $\Li_4(\tfrac14)=8\bigl(\Li_4(\tfrac12)+\Li_4(-\tfrac12)\bigr)$ and
 $\Li_4(\tfrac19)=8\bigl(\Li_4(\tfrac13)+\Li_4(-\tfrac13)\bigr)$ reduce the left side to the reflected arguments,
-leaving the following proposed \emph{cross-base Kummer specialization}:
+giving the following \emph{cross-base Kummer specialization}:
 {\footnotesize
 \begin{multline}\label{golden:eq:kummer}
   \Li_4(\tfrac34)+4\Li_4(\tfrac23)=-\tfrac{16}3\Li_4(\tfrac12)-4\Li_4(-\tfrac12)+2\Li_4(\tfrac13)-2\Li_4(-\tfrac13)
@@ -355,10 +363,11 @@ leaving the following proposed \emph{cross-base Kummer specialization}:
 \end{multline}}
 Substituting the two duplication identities into
 \eqref{golden:eq:kummer} cancels the tetralogarithms in
-\eqref{golden:eq:tetra}. A complete proof from Kummer's general functional
-equation requires its branch conditions; the displayed specialized identity
-was checked numerically in the source and is retained as the explicit
-intermediate relation.
+\eqref{golden:eq:tetra}. The next proof supplies rational-function
+cancellation, real branch conventions, and endpoint descent directly,
+closing the earlier unproved-specialization gap.
+
+\input{chapters/03-rational-tetralogarithm-proof}
 
 \section{Canonical index-12/20/24 ladders and a $\zeta$-elimination chain}
 Reshetnikov's $\Li_5$ conjectures are the weight-$5$ entries of three first-degree golden ladders (Abouzahra--Lewin).
