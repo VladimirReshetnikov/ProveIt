@@ -1,27 +1,28 @@
 # Validation of the unified manuscript
 
 Research checkpoint, October 9, 2026. The broader research and integration
-goal remains active. Six new packages have been preserved and replayed;
-audited results are integrated below, while CM, Lerch and angular material
-is still being reconciled. This validation is for the current artifact.
- Authorship is **ProveIt Contributors** on the title
-page and in the PDF metadata. The canonical [PDF](polylogarithms.pdf) has **298
-pages, twelve chapters**, a literature appendix with 94 distinct historical
-question leads, and 79 bibliography entries. It incorporates the original
-39 drafts and all eleven nested continuation packages in the requested tree.
-The recursive [inventory](source-inventory.json) contains **248 textual source
-files**, including assembled/fragment versions and correction registers.
-Their overlap is reconciled in the [editorial ledger](EDITORIAL-LEDGER.md).
+goal remains active. Authorship is **ProveIt Contributors** on the title
+and in PDF metadata. The canonical [PDF](polylogarithms.pdf) has **320 pages,
+twelve chapters, ten figures and 91 references**, with a literature appendix
+preserving 94 distinct historical question leads.
+
+The recursive [inventory](source-inventory.json) accounts for **381 textual
+source files**, including assembled/fragment versions and correction registers.
+The [editorial ledger](EDITORIAL-LEDGER.md) distinguishes integrated proofs
+from incoming analytic claims still awaiting reconciliation. Twenty-one
+incoming archives are preserved as **865 byte-identical members**. All 21
+isolated package replay suites pass. The original drafts and initial
+continuation evidence remain preserved too.
 
 The reviewed PDF SHA-256 is:
 
 ```
-da36e67251d6e82ea73f2902c0b1a34ad2cf9c30365ab88fa5df95c42794d200
+a7728ae8620fab2f94ab809a458fc566d80c738f603410f5c2deb956c8964b46
 ```
 
 ## Source reconciliation and evidence integrity
 
-All 248 source digests match; no textual source is unlisted or uncovered.
+All 381 source digests match; no textual source is unlisted or uncovered.
 The static audit finds no duplicate labels or bibliography keys, missing
 references/citations, missing TeX inputs or missing figures. See
 [document-integrity.json](verification/document-integrity.json).
@@ -162,7 +163,7 @@ all twenty match originals after LF normalization. The archive bytes are
 recoverable at the recorded immutable Git revision after upstream retired
 the arrival ZIPs. The textual inventory includes these copies and the five
 updated overview notes, for 179 provenance files at that checkpoint.
-The current six-package research intake brings the census to 248.
+The six-package intake brought that historical census to 248; the subsequent ten packages bring the current census to 381.
 
 All five isolated replay suites exit successfully; their commands, exact
 parameters, original code digests and freshly produced result filenames are
@@ -245,10 +246,10 @@ Q_n notation, and its previously undefined Gamma-expectation profile is now
 specified. Its original source and plot remain intact; the new drawing and
 package versions are recorded in zero-profile-redraw.json.
 
-The 248-source inventory includes all new supporting prose, including material
+The 381-source inventory includes all new supporting prose, including material
 whose canonical integration remains pending. Source coverage is therefore
-distinct from completing every research item. The current book has **298 pages,
-twelve chapters, nine figures and 79 references**. The hourly incoming-report
+distinct from completing every research item. The current book has **320 pages,
+twelve chapters, ten figures and 91 references**. The hourly incoming-report
 watch is active; it is configured to stay quiet on an unchanged, non-actionable
 state.
 
@@ -259,17 +260,71 @@ auxiliary/reference state. The final log contains zero unresolved references
 or citations, duplicate-label warnings, overfull boxes, missing glyphs or
 rerun requirements. See [build-results.json](verification/build-results.json).
 
-The PDF text/bounds audit passes on all 298 pages. All pages were rasterized
-and visually reviewed in nineteen contact sheets. Full-size review of the current artifact covered the exact S6 coordinate
-identity/reconciliation, real-order signed-moment proof, corrected Q_n profile
-figure/caption, new fifth-index plot and sixth/seventh-index theorem, tables
-and proof. The unchanged other figures retain their previous full-size review
-and were checked again in the current sheets. No clipping, overlap or
-illegible layout defects were found. The current collective title was checked
-in the sheets and the PDF metadata. [visual-review.json](verification/visual-review.json)
-records the actual current full-page scope;
-[pdf-inspection.json](verification/pdf-inspection.json) records static checks
-and all rendered candidates. The manuscript PDF is unchanged after that review.
+The PDF text/bounds audit passes on all 320 pages. All pages were rasterized
+and visually reviewed in twenty contact sheets. Focused full-size review
+covered the title, reconstructed golden ladder, new S8 formula, modular
+polynomials, rational CM nonvanishing proof, product normalization, Weber
+field-degree certificate, genus seed formulas, all-weight quadratic-degree
+proof, cluster-set theorem and new genus figure/caption. The unchanged nine
+figures retain their earlier full-size reviews and were checked again in
+the current sheets. No clipping, overlap or illegible layout defects were
+found. [visual-review.json](verification/visual-review.json) records the
+actual full-page scope; [pdf-inspection.json](verification/pdf-inspection.json)
+records static checks and rendered candidates. The PDF is unchanged after review.
+
+## CM proofs, new conjectural vector and two additional incoming batches
+
+The CM product and genus theorems now have written normalization proofs,
+with positive roots, conductor corrections, unit counts and boundary phases
+specified. Five Hilbert class polynomials and three labeled genus
+factorizations have directed mpmath.iv coefficient enclosures combined with
+CM integrality. These are interval certificates with stated analytic tail
+bounds, not integer-relation fits. Eleven modular polynomials through weight
+24 have exact rational q-expansion/Sturm certificates. Six seed radical
+identities and positive-root choices have independent Fraction arithmetic.
+
+New exact receipts establish two rational principal-lattice caps (yielding
+|G_w(tau_D)| > 7/20), five additional lattice caps for all-weight quadratic
+degree, and nine explicit weight-12/16/18 genus evaluations. The general
+nonvanishing, norm, degree and cluster-set statements depend on their written
+analytic and CM arguments. Non-elliptic CM nonvanishing is classical; the
+explicit quantitative principal bound and ensuing genus extensions are the
+additional development here. Two further interval certificates cover class
+number one at discriminants -8 and -16. The discriminant -23 Weber resultant
+is exact; an independent standard-library Frobenius/gcd certificate proves
+irreducibility modulo five at discriminant -39, giving the degree-twelve
+cube-root obstruction. See the `CM-*.json` receipts.
+
+All **25 native Wolfram checks** pass at 90 working digits with a `1e-60`
+relative residual gate: ten absolute class products, nine new genus ratios,
+four individual values and two phase projections. This is independent
+Fourier/gamma numerical corroboration, separate from the written proofs and
+exact or directed-interval arithmetic.
+
+The distinct new S8 vector has an exact primitive-coordinate check. The
+signed/zero package independently reconstructs both its S6 and S8 rational
+proximity certificates; the 1200-term direct scheme proves normalized
+residuals below `1e-355`. Both intervals contain zero. **S6 and the new S8
+identity remain conjectural.** The previously rejected S8 vector remains
+rigorously rejected; these are different vectors and baskets.
+
+The five third-batch replay suites (197 immutable members) all pass:
+Herglotz, global Lerch phase, uniform transition, Lerch boundary and signed
+continuation. The five fourth-batch suites (227 immutable members) also
+pass: integral reflection jets, integral distributions, fractional Cayley
+scaling, real-order threshold and golden/uniform continuation. The latter
+includes independent raw-row verification, Smith calculations, binary
+resolutions, fractional turning signs, real-order integer-root intervals,
+golden seed/depth certificates and separately labeled notation diagnostics.
+Their fresh outputs live in `third-replay/` and `fourth-replay/`.
+
+Focused incoming corrections are integrated: Clausen index versus character
+parity; failed numerical reduction searches versus nonreduction; the
+published 1987 plastic-field sequel; exact reconstruction of L12; omission
+of negative-factorial tail summands; and numerical versus proved ladder
+status. The substantial new integral, real-order, Lerch, uniform, golden-seed
+and Herglotz theorem integration is explicitly pending. Finite replay does
+not substitute for auditing and incorporating those proofs.
 
 ## Limits of the evidence
 

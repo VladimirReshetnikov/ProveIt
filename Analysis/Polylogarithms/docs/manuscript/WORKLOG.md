@@ -1,3 +1,27 @@
+# Reviewed 320-page CM milestone
+
+The collective manuscript is now 320 pages / 12 chapters / 10 figures /
+91 references. Three serial LuaLaTeX passes converge without final warnings.
+All 320 pages pass static bounds/reference checks and were reviewed in
+20 contact sheets; selected CM proofs, S8, ladder reconstruction and the
+new genus figure were checked at full size. PDF SHA-256:
+a7728ae8620fab2f94ab809a458fc566d80c738f603410f5c2deb956c8964b46
+
+All 21 incoming package suites pass and all 865 incoming archive members
+are byte-identical. Textual provenance census: 381. Current CM proofs,
+exact certificates, native checks and status limits are in VALIDATION.md.
+Preservation/replay intake commit 5537940fde is already published.
+
+The broad research goal stays ACTIVE. Next substantial work: reconcile the
+integral all-ring/reflection/Koszul results across overlapping packages,
+extend signed kernels to the sharp real-order region with the correct
+endpoint atoms and domain-specific error bounds, and integrate uniform
+transitions, complete Lerch phase/boundary results, golden seeds and J(p/q)
+classification. Continue attempts on S6 and new S8 and explore further
+identities. The hourly incoming watch remains active and quiet when unchanged.
+
+The following is historical checkpoint context.
+
 # Active CM research and fourth incoming batch
 
 The research goal remains active. Third intake: five archives, 197 members,

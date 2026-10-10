@@ -1,6 +1,22 @@
 # Polylogarithms
 
-The canonical reading artifact is the unified manuscript [Polylogarithms and their Arithmetic Bridges](docs/manuscript/polylogarithms.pdf), with [editable LaTeX source](docs/manuscript/polylogarithms.tex) and a [source reconciliation ledger](docs/manuscript/EDITORIAL-LEDGER.md). Authored by ProveIt Contributors, its 298 pages and twelve chapters consolidate the original 39 drafts and all eleven nested continuation packages into a single mathematical development. The five newest packages add the exact S4 proof, conductor and trace jets, complementary-power rigidity, complementary depth, and sharp moment/Herglotz asymptotics; S6 remains conjectural. The inventory covers 248 textual provenance files, including six further packages whose analytic integration is ongoing. The current research milestone proves the specified all-weight matrix ranks and complete Stieltjes zero counts through index seven, and adds the S2 identity. The original articles, reports and PDFs described below remain historical evidence; the manuscript supersedes them as a reading artifact. The [validation record](docs/manuscript/VALIDATION.md) documents fresh native Wolfram and independent Python checks, exact rational certificates, the converged build and all-page visual review.
+The canonical reading artifact is the collective manuscript
+[Polylogarithms and their Arithmetic Bridges](docs/manuscript/polylogarithms.pdf),
+with [editable LaTeX source](docs/manuscript/polylogarithms.tex) and an
+[editorial ledger](docs/manuscript/EDITORIAL-LEDGER.md). Authored by
+**ProveIt Contributors**, it has **320 pages, twelve chapters, ten figures
+and 91 references**. Its development links rigorous proofs, exact finite
+certificates and experiments. The current milestone proves CM class products,
+genus ratios, all-weight quadratic degree in three discriminants, norm laws
+and a dense cluster-set theorem. The S2/S4 proofs, all-weight distribution
+rank theorem and Stieltjes zero counts through index seven are retained.
+S6 and the distinct new S8 candidate remain conjectural despite certified
+proximity. The inventory covers **381 textual provenance files**; **21
+incoming archives / 865 members** are byte-preserved and their replay suites
+pass. New integral, real-order, uniform, Lerch and Herglotz proof integration
+is ongoing and explicitly tracked. The [validation record](docs/manuscript/VALIDATION.md)
+separates proofs, finite certificates, numerical diagnostics, build and
+rendered review. Original articles and reports remain historical evidence.
 
 Special values and functional equations of polylogarithms and their relatives:
 - multiple polylogarithms and multiple zeta values at roots of unity;

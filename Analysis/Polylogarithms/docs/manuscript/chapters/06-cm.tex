@@ -190,7 +190,7 @@ tower over both lattices is polygamma-explicit.
 The same row-sum at the next two CM points, with closed forms found by PSLQ
 \dps{$120$-dps canaries}:
 
-\begin{result}\label{cm:res:2i}
+\begin{theorem}\label{cm:res:2i}
 \begin{gather*}
 G_4(2i)=\frac{11}{15360}\,\frac{\Gamma(1/4)^8}{\pi^2}
 \quad\text{\dps{canary $0$ at $120$ dps}},\\
@@ -202,11 +202,10 @@ The weight-6 row at the same points \dps{$160$-dps canaries}:
 G_6(2i)=\frac{\Gamma(1/4)^{12}}{2^{14}\cdot 5\cdot\pi^3},\qquad
 G_6(i\sqrt2)=\frac{\Gamma(1/8)^6\,\Gamma(3/8)^6}{2^{12}\cdot 3^3\cdot 5\cdot\pi^3}.
 \]
-\end{result}
+\end{theorem}
 
 The first value confirms the isogeny picture: $2i$ sits over the same field $\mathbb{Q}(i)$,
-so only the rational factor changes ($G_4(i)/G_4(2i)=16/11$). The second imports a genuinely
-\emph{new period}: discriminant $-8$, field $\mathbb{Q}(\sqrt{-2})$ --- the polygamma sum
+so only the rational factor changes ($G_4(i)/G_4(2i)=16/11$). The second uses the period coordinate associated with discriminant $-8$, field $\mathbb{Q}(\sqrt{-2})$ --- the polygamma sum
 $\sum_n[\psi^{(3)}(ni\sqrt2)+\psi^{(3)}(1-ni\sqrt2)]$ evaluates in $\Gamma(1/8)\Gamma(3/8)$.
 The fundamental unit $1+\sqrt2$ was offered in the PSLQ basis and declined (exponent $0$).
 Together with Section~\ref{cm:sec:maximal} this makes three distinct Chowla--Selberg periods
@@ -219,7 +218,7 @@ At $\mathbb{Q}(\sqrt{-5})$ (class number $2$) a monomial-only logarithmic basket
 monomial. The structure that works is the Hecke/Damerell pair \cite{cm:Damerell} over the two reduced forms
 $x^2+5y^2$ ($\tau_1=i\sqrt5$) and $2x^2+2xy+3y^2$ ($\tau_2=(-1+i\sqrt5)/2$).
 
-\begin{result}[disc $-20$]\label{cm:res:d20}
+\begin{theorem}[disc $-20$]\label{cm:res:d20}
 \[
 \frac{G_4(\tau_1)}{G_4(\tau_2)}=\frac{29+12\sqrt5}{44}=\frac{(3+2\sqrt5)^2}{44}
 \quad\text{\dps{canary $0$ at $160$ dps}},
@@ -232,9 +231,9 @@ G_4(\tau_1)\,G_4(\tau_2)
 where $\varphi$ is the golden ratio. The ratio is algebraic of degree $2$ with norm
 $N(29+12\sqrt5)=121=11^2$; the class product is a period monomial carrying the prime $11$
 and a golden unit.
-\end{result}
+\end{theorem}
 
-\begin{result}[disc $-15$]\label{cm:res:d15}
+\begin{theorem}[disc $-15$]\label{cm:res:d15}
 With $\tau_1=(1+i\sqrt{15})/2$ for $x^2+xy+4y^2$ and the conjugate pair
 $\tau_{2,3}=(\pm1+i\sqrt{15})/4$ representing $2x^2+xy+2y^2$, write
 $\widehat G_4=\tfrac12\bigl[G_4(\tau_2)+G_4(\tau_3)\bigr]
@@ -248,8 +247,9 @@ G_4(\tau_1)\,\widehat G_4
 \]
 Unlike disc $-20$, the non-principal value here is genuinely complex (the form
 $(2,1,2)$ has $|\tau_2|=1$, where conjugation acts nontrivially on $G_4$); the
-class-pair average is the Galois-natural object.
-\end{result}
+real-part projection matches the representative convention used in these
+formulas; its period factor is fixed in the proof below.
+\end{theorem}
 
 The $\Gamma$-block in Result~\ref{cm:res:d15} is exactly the set of residues
 $\{1,2,4,8\}$ with $\chi_{-15}=+1$; the golden unit is declined by PSLQ (exponent $0$); and
@@ -263,7 +263,7 @@ $\mathbb{Q}(\sqrt{-23})$ has $h=3$, with Hilbert class field generated over $\ma
 $\tau_{2,3}=(\pm1+i\sqrt{23})/4$; $G_4(\tau_1)$ is real and $G_4(\tau_{2,3})$ form a
 conjugate pair.
 
-\begin{result}[disc $-23$ class product]\label{cm:res:d23}
+\begin{theorem}[disc $-23$ class product]\label{cm:res:d23}
 \dps{canary $1.4\times10^{-160}$}
 \[
 G_4(\tau_1)\,G_4(\tau_2)\,G_4(\tau_3)
@@ -271,19 +271,21 @@ G_4(\tau_1)\,G_4(\tau_2)\,G_4(\tau_3)
 P=\!\!\prod_{\substack{k\bmod 23\\ (\frac{k}{23})=+1}}\!\!\Gamma\!\Bigl(\frac{k}{23}\Bigr)
 \quad\text{(11 factors)}.
 \]
-\end{result}
+\end{theorem}
 
-\begin{result}[the $\mathfrak{g}_2$ class polynomial from row-sums]\label{cm:res:d23poly}
-With $\mathfrak{g}_2=E_4/\eta^8$ phase-corrected by the canonical cube root (the $q^{1/3}$
-ambiguity of $\eta^8$ at these points), the three values $\mathfrak{g}_2(\tau_i)$ computed from the
-polygamma row-sums are exactly the roots of the classical class polynomial
+\begin{theorem}[the $\mathfrak{g}_2$ class polynomial from row-sums]\label{cm:res:d23poly}
+Let $P(X)=X^3+155X^2+650X+23375$. For each of the three singular
+moduli $j_Q$, define $\xi_Q$ as the unique root of $P$ satisfying
+$\xi_Q^3=j_Q$. Thus $\xi_Q$ equals $E_4(\tau_Q)/\eta(\tau_Q)^8$
+times a cube root of unity, with its phase fixed by this algebraic
+condition. The three $\xi_Q$ have the exact class polynomial
 \[
-x^3+155x^2+650x+23375=0
-\qquad\text{\dps{coefficients integer to $10^{-80}$}},
+ P(X)=X^3+155X^2+650X+23375.
 \]
-whose constant term $23375=5^3\cdot11\cdot17$ forecast the primes $11$, $17$ in the class
-product --- the norm heuristic of Section~\ref{cm:sec:h2}, one degree up.
-\end{result}
+Its constant term $23375=5^3\cdot11\cdot17$ identifies the same prime
+support as the proved class product. The cube-image identity and uniqueness
+of the phase choice are proved below in Proposition~\ref{cmweber:prop:degrees}.
+\end{theorem}
 
 \begin{negative}[weight-4 sums are not Galois-clean]\label{cm:neg:sums}
 The dimensionless symmetric functions $e_1^3/e_3$ and $e_2^3/e_3^2$ of the raw $G_4$ values
@@ -300,7 +302,7 @@ $\mathfrak{g}_2=E_4/\eta^8$ (or $j$), not from the $G_4$ values themselves.
 The four reduced forms of discriminant $-39$, namely $(1,1,10)$, $(2,\pm1,5)$, $(3,3,4)$,
 give $\tau\in\{(1+i\sqrt{39})/2,\ (\pm1+i\sqrt{39})/4,\ (3+i\sqrt{39})/6\}$.
 
-\begin{result}[disc $-39$ class product]\label{cm:res:d39}
+\begin{theorem}[disc $-39$ class product]\label{cm:res:d39}
 \dps{$160$-dps canary}
 \[
 \prod_{i=1}^{4}G_4(\tau_i)
@@ -308,30 +310,32 @@ give $\tau\in\{(1+i\sqrt{39})/2,\ (\pm1+i\sqrt{39})/4,\ (3+i\sqrt{39})/6\}$.
 P=\!\!\prod_{\substack{k\bmod 39\\ \chi_{-39}(k)=+1}}\!\!\Gamma\!\Bigl(\frac{k}{39}\Bigr)
 \quad\text{(12 factors)}.
 \]
-\end{result}
+\end{theorem}
 
-A wrinkle relative to Section~\ref{cm:sec:h3}: $\mathfrak{g}_2$ is \emph{not} a class invariant here
-($3\mid 39$, the classical obstruction \cite{cm:Cox}; observed directly --- no cube-root phase choice makes
-the $\mathfrak{g}_2$-sums rational). But $j$ always is, and the row-sum values deliver the Hilbert
-class polynomial outright.
+At this discriminant no cube root of a singular modulus can belong to the
+Hilbert class field: Proposition~\ref{cmweber:prop:degrees} proves its degree
+is twelve, while that class field has degree eight over $\Q$. This supplies
+an exact obstruction to every cube-root phase choice. The weight-zero
+$j$-invariant still gives the Hilbert class polynomial directly.
 
-\begin{result}[Hilbert class polynomial of disc $-39$]\label{cm:res:H39}
+\begin{theorem}[Hilbert class polynomial of disc $-39$]\label{cm:res:H39}
 \[
 H_{-39}(x)=x^4+331531596\,x^3-429878960946\,x^2+109873509788637459\,x
 +20919104368024767633
 \]
 \dps{$e_1,\dots,e_3$ PSLQ-exact integers; $e_4$ integral to $10^{-137}$}.
-\end{result}
+\end{theorem}
 
 Worth dwelling on: a quartic with $20$-digit integer coefficients recovered from sums of
 polygamma values at quadratic-irrational complex points. The polygamma row-sum is a
 perfectly serviceable special-function front door to the classical CM tower.
 
-\begin{result}[genus structure inside the quartet]\label{cm:res:genus}
+\begin{theorem}[genus structure inside the quartet]\label{cm:res:genus}
 The class group is $\mathbb{Z}/4$, with the ambiguous form $(3,3,4)$ as the order-$2$ class.
-The raw cross-class ratio $v_1/v_4$ is a quartic candidate; no degree-two polynomial was found up to height $10^{12}$, but the genus-wise ratio --- principal genus $\{1,A^2\}$
+The genus-wise ratio --- principal genus $\{1,A^2\}$
 over $\{A,A^3\}$ --- is exactly quadratic, in the real part of the genus field
-$\mathbb{Q}(\sqrt{-3},\sqrt{13})$ as genus theory demands
+$\mathbb{Q}(\sqrt{-3},\sqrt{13})$; its precise period cancellation
+and positive-root extraction are proved by Theorem~\ref{cmgenus:thm:four}
 \dps{$160$-dps canary; $\sqrt3$, $\sqrt{39}$ declined by PSLQ}:
 \[
 \frac{G_4(\tau_1)\,G_4(\tau_4)}{G_4(\tau_2)\,G_4(\tau_3)}
@@ -339,14 +343,19 @@ $\mathbb{Q}(\sqrt{-3},\sqrt{13})$ as genus theory demands
 N=\Bigl(\frac{9}{16}\Bigr)^{\!2},\qquad 181424=16\cdot17\cdot23\cdot29 .
 \]
 The denominator reuses the class-product primes $17$, $23$, $29$.
-\end{result}
+\end{theorem}
+
+The raw cross-class ratio $G_4(\tau_1)/G_4(\tau_4)$ was separately
+reported as a quartic candidate. No degree-two polynomial was found up
+to height $10^{12}$ in that search. Neither its quartic candidate nor
+that unsuccessful search establishes its minimal polynomial or degree.
 
 \section{Class number 5: discriminant \texorpdfstring{$-47$}{-47}}\label{cm:sec:h5}
 
 The five reduced forms $(1,1,12)$, $(2,\pm1,6)$, $(3,\pm1,4)$ give the quintet
 $\tau\in\{(1+i\sqrt{47})/2,\ (\pm1+i\sqrt{47})/4,\ (\pm1+i\sqrt{47})/6\}$.
 
-\begin{result}[disc $-47$ class product]\label{cm:res:d47}
+\begin{theorem}[disc $-47$ class product]\label{cm:res:d47}
 \dps{$200$-dps canary}
 \[
 \prod_{i=1}^{5}G_4(\tau_i)
@@ -354,20 +363,24 @@ $\tau\in\{(1+i\sqrt{47})/2,\ (\pm1+i\sqrt{47})/4,\ (\pm1+i\sqrt{47})/6\}$.
 P=\!\!\prod_{\substack{k\bmod 47\\ (\frac{k}{47})=+1}}\!\!\Gamma\!\Bigl(\frac{k}{47}\Bigr)
 \quad\text{(23 factors)}.
 \]
-\end{result}
+\end{theorem}
 
-\begin{result}[Hilbert class polynomial of disc $-47$]\label{cm:res:H47}
+\begin{theorem}[Hilbert class polynomial of disc $-47$]\label{cm:res:H47}
 The row-sum $j$-values deliver the quintic Hilbert class polynomial
 \dps{all symmetric functions integral to $10^{-129}$ or better}:
 \begin{align*}
 H_{-47}(x)=x^5&+2257834125\,x^4-9987963828125\,x^3+5115161850595703125\,x^2\\
 &-14982472850828613281250\,x+16042929600623870849609375 .
 \end{align*}
-\end{result}
+\end{theorem}
 
 The CM tower is now polygamma-explicit through class number $5$ with one uniform recipe:
 \emph{row-sum $\to$ class-product log-PSLQ (norm-forecast primes) $\to$
 $j$-symmetric-function integrality.}
+
+\input{chapters/06-cm-products}
+\input{chapters/06-cm-genus}
+\input{chapters/06-cm-genus-extensions}
 
 \section{The opaque components}\label{cm:sec:opaque}
 
