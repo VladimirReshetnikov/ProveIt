@@ -2456,12 +2456,95 @@ Two comparisons:
 
 The kernel-checked length-6 budget comparison is still to be done.
 
+**Step 7 (repaired route): a conditional degree-four inverse theorem.**
+`Proofs18SinglePieceInverse`:
+- `single_piece_localization_global`: the frequency box of width `≥ N^e`,
+  localized by `polynomial_localization_of_dense_frequency_box` at
+  parameter `singlePieceEta = 2^(−2(k+2)³)·(ρ/2^(k+1))·α²/4`.
+- `single_piece_inverse_step_global`: a degree-`(k+1)` discrepancy bound
+  gives a degree-`(k+2)` bound at parameter `η·β/4`, given the per-modulus
+  conditions `SinglePieceModulusConditions` above a threshold `Tloc`.
+- `single_piece_quartic_inverse_global`: `FunctionDiscrepancyBound 4` at
+  parameter `η·β₃/4`, where `β₃` is the proved Fejér cubic parameter at
+  input `η/(2·10⁵)`.
+  - *Inputs:* `PolyCoverAt 1` (proved), `PolyCoverAt 2`, the retiled
+    linearity bound (witnessed by
+    `exists_polynomial_retiled_linearity_profile`), and the per-modulus
+    scale conditions.
+  - *Consequence:* `theorem_18_2_of_function_discrepancy_budget`'s
+    mechanism then gives Theorem 18.2 at length six, once the closed
+    threshold fits.
+
+**Order-of-magnitude budget (informal; not kernel-checked).** Write
+`D` for the polynomial degree of `PolyCoverAt 2`'s controls
+`Qb ≈ (γθσ)^(−D)` and `Eb ≈ (γθσ)^D`, and set `k = 2`, `θ = α`, `γ = α/2`.
+- *Densities.*
+  - `θ₁ = (α²/8)^(2^128)`, `θ₂ ≈ θ₁⁸`, and the deletion budget is
+    `θ′ = θ₂/10`.
+  - Each provider density is `s ↦ s^(1+D)(γθ′)^D`; each unused coordinate
+    adds one degree.
+  - So `ρ₁ = C^[3](θ₂/2) ≈ θ₂^(O(D³))`, then `ρ′ ≈ ρ₁²` and
+    `θ₁′ = ρ′³/4`.
+  - The final density is `θ₁′·c(c(θ₁′)) ≈ θ₂^(O(D⁵)) ≈ α^(2^132·O(D⁵))`.
+- *Parameters.* `η ≈` the density, and the Fejér parameter costs a power
+  `2^59`, so `β₄ ≈ α^(2^191·O(D⁵))`. The length exponent `σ` is
+  `exp(−poly(1/α))`. That is admissible: `densityIterationClosedThreshold_le_double_exp_of_exp_budget`
+  takes `σ⁻¹ ≤ exp(X^r)`. The modulus thresholds (widths `N^(poly α)`,
+  the retiling threshold `exp(poly(q))`, `q ≤ Qb`) are single
+  exponential in `poly(1/α)`.
+- *Threshold.* The closed threshold is about `exp(exp(α_δ^(−P)))` with
+  `P ≈ 2^200·D⁵`, where `α_δ = intervalUniformityParameter δ 6 ≥ 2^(−544)·δ^192`.
+  `szemerediThreshold δ 6 = 2^(2^(δ^(−2^32768)))`. The comparison holds
+  when `P ≲ 2^32768/800`, i.e. `D ≲ 2^6500`.
+
+So, up to bookkeeping that is not yet kernel-checked: **a polynomial
+`PolyCoverAt 2` of degree up to about `2^6500` would give Theorem 18.2 at
+length six.** The kernel-checked part ends at
+`single_piece_quartic_inverse_global`. Closing the budget formally needs
+explicit upper bounds for:
+- `shortLocalizationThreshold` and `inverseStepThreshold`;
+- the provider width chains under power-law controls.
+
+The corpus does not have these yet (the five-term case has its own,
+`fejer_five_term_step_threshold_le_double_exp`).
+
+**On the open core `PolyCoverAt 2`.**
+- It is Theorem 16.2 in dimension two with polynomial controls. The
+  corpus has tower-type controls (`theorem_16_2_at_two`).
+- Cover form is essential. A single piece per box is not enough, because
+  every proper box needs all but `σ` of its points covered.
+- Peeling global pieces cannot replace it: pieces live on boxes of width
+  `N^(poly α)`, so about `N^(2−o(1))` pieces would be needed.
+- It is the dimension-two analogue of the proved dimension-one
+  `section16_product_relation_cubic_cover`, without the stackable-union
+  requirement.
+- *Relation to Part J's variety route.* J.4 splits dimension-two
+  structure into three steps:
+  - (1) `BihomExtraction`, open;
+  - (2) Milićević's deep variety structure, behind the Prop 9.3 coherence
+    gap of J.5c;
+  - (3) stackability.
+
+  Then the readout (R) turns variety pieces into multilinear maps on
+  boxes. **The single-piece route removes step (3).** A
+  `MultiplyLinearWith` cover per relation is all it needs, with no unions
+  of members. So `PolyCoverAt 2` would follow from (1), (2) and (R) alone:
+  - at quasi-polynomial strength, if (1), (2) and (R) are
+    quasi-polynomial. Nesting compounds the quasi-polynomial exponent,
+    though: `c∘c` turns `exp(−C·log^A(1/t))` into exponent about `A²`,
+    and the route nests about five times. So only input exponents `A`
+    around `3400^(1/5) ≈ 5` would meet K.4's half-density budget
+    (`A ≲ 3400`) for Corollary 18.7 at `k = 6`.
+  - at polynomial strength, if they are polynomial. Theorem 18.2 at length
+    six needs this.
+
 **Next.**
-1. The length-6 budget: instantiate `single_piece_lift_global` at `k = 2`
-   inside the frequency-box → localization → `FunctionDiscrepancyBound 4`
-   route. Then compare with `szemerediThreshold δ 6`, under `PolyCoverAt 2`
-   with power-law controls.
-2. Study `PolyCoverAt 2` itself, the non-stackable dimension-two cover.
+1. Kernel-check the budget: explicit upper bounds for
+   `shortLocalizationThreshold`, `inverseStepThreshold` and the width chains
+   under power-law controls, giving `Theorem182At 6` from a power-law
+   `PolyCoverAt 2`.
+2. The open core `PolyCoverAt 2`, via J.4's steps (1), (2) and (R), with
+   no stackability needed.
 
 ## F. Routes
 
