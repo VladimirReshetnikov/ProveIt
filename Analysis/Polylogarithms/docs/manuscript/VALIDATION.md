@@ -1,9 +1,9 @@
 # Validation of the unified manuscript
 
-Research checkpoint, October 9, 2026. The broader research and integration
+Research checkpoint, October 10, 2026. The broader research and integration
 goal remains active. Authorship is **ProveIt Contributors** on the title
-and in PDF metadata. The canonical [PDF](polylogarithms.pdf) has **340 pages,
-twelve chapters, ten figures and 93 references**, with a literature appendix
+and in PDF metadata. The canonical [PDF](polylogarithms.pdf) has **375 pages,
+twelve chapters, thirteen figures and 98 references**, with a literature appendix
 preserving 94 distinct historical question leads.
 
 The recursive [inventory](source-inventory.json) accounts for **381 textual
@@ -17,8 +17,45 @@ continuation evidence remain preserved too.
 The reviewed PDF SHA-256 is:
 
 ```
-0c27415b8024aa8448b46cc5b95197454b170c2a249e0c86d82e41e871bf845e
+41c1ee04ffc80352d3d007a4779596fb9e1a7c46d5a2852945cf93ac65623d49
 ```
+
+## New real-order proofs and fresh evidence
+
+Chapter 5 now integrates the three overlapping real-order report cores into
+one dependency chain: the finite signed-measure classification, positive
+double kernel, complementary positive difference measure, global nonvanishing
+and angular uniqueness, radial/Cartesian motion, Gaussian monotonicity,
+critical defects, local signs and turning points, atomic edges, quantitative
+mass concentration, and Euler certificates. The new written proofs establish:
+
+- Nonvanishing on the principal slit plane away from the double origin for
+  every a>=0,b>0, including orders below the finite signed-measure threshold.
+- Positive Hausdorff differences and Bernstein interpolation precisely for
+  a=0 or a+b<=1; strict normalized-radius increase throughout that domain.
+- Strict Gaussian magnitude decrease in outer order and at every fixed total
+  order; a unique nondegenerate axis maximum with exact bracket 1<b*<2.
+- The sharp uniform Euler constant pi/4+log(2)/2 on the positive triangle
+  a+b<=1. The rational budget 57/50 is valid there; the full-axis b=3/2
+  comparison independently uses 5/4. General supercritical bounds have their
+  stated separate scope.
+
+The standard-library certifier checks **616** strictly positive difference
+signs, **112** negative Euler increments, **3064** integer-root inequalities
+and **seven** rational Gaussian enclosures at 192 Euler terms. The axis
+case b=3/2 proves C(3/2)>227/200, used in the exact maximum bracket.
+All seven independent native Wolfram evaluations at **100 working digits**
+lie within those enclosures. Native quadrature remains a numerical diagnostic,
+not interval quadrature. The 55-digit stationary-point solver and 180-point
+plot are diagnostics; the displayed maximum's digits are not certified.
+
+Three fresh isolated real-order replay suites pass. Their threshold replay
+checks **nine** symbolic identities, **eight** exact Euler cases, **twelve**
+exact angular brackets and **7430** integer-root inequalities. Geometry
+diagnostics include nine independent kernel comparisons and sixteen zero
+arcs; boundary diagnostics include twenty-one crossing rows at 90 digits.
+Original code, figures, data and conjectural report wording remain unchanged.
+The finite checks support the written proofs and do not replace them.
 
 ## Source reconciliation and evidence integrity
 
@@ -248,30 +285,32 @@ package versions are recorded in zero-profile-redraw.json.
 
 The 381-source inventory includes all new supporting prose, including material
 whose canonical integration remains pending. Source coverage is therefore
-distinct from completing every research item. The current book has **340 pages,
-twelve chapters, ten figures and 93 references**. The hourly incoming-report
+distinct from completing every research item. The current book has **375 pages,
+twelve chapters, thirteen figures and 98 references**. The hourly incoming-report
 watch is active; it is configured to stay quiet on an unchanged, non-actionable
 state.
 
 ## Build and rendered review
 
-Three serial LuaLaTeX passes exit successfully and have identical final
-auxiliary/reference state. The final log contains zero unresolved references
+Three serial LuaLaTeX passes exit successfully and have matching final two
+auxiliary/reference states. The final log contains zero unresolved references
 or citations, duplicate-label warnings, overfull boxes, missing glyphs or
 rerun requirements. See [build-results.json](verification/build-results.json).
 
-The PDF text/bounds audit passes on all 340 pages. All pages were rasterized
-and visually reviewed in twenty-two contact sheets. Focused full-size review covered the integral-section introduction,
-normal-form table, weighted-resolution filtration and CRT gauge,
-fixed-point matrices and Tate calculation, characteristic-two rank locus,
-complete contact-order Smith exponents, finite integral-jet theorem,
-nonfree jet-module example, new separable multivariable product theorem,
-and all-order pole-cancelled identities. Ten unchanged figures retain their
-earlier full-size reviews and were checked in the current sheets.
-No clipping, overlap or illegible layout defects were found.
+The PDF text/bounds audit passes on all 375 pages. Every page was rasterized
+and visually reviewed in twenty-four contact sheets. Full-size review covered
+23 new proof, figure and research-programme pages, including the positive
+difference measure, slit-plane factorization, endpoint Fatou argument,
+Euler continuation, Gamma/Beta monotonicity, Mellin maximum proof, Cartesian
+motion, critical defects, fractional turning points and two-scale boundary law.
+The three added figures and their captions were reviewed at full size; ten
+unchanged figures retain earlier full-size reviews and were checked in the
+current sheets. No clipping, overlap or illegible layout defects were found.
 [visual-review.json](verification/visual-review.json) records the actual
 full-page scope; [pdf-inspection.json](verification/pdf-inspection.json)
-records static checks and rendered candidates. The final whitespace-only rebuild preserves all reviewed rasters exactly, as recorded in final-raster-equivalence.json.
+records static checks and rendered candidates. The old 340-page whitespace
+raster-equivalence receipt remains historical evidence and is explicitly
+excluded from establishing review of the current expanded PDF.
 
 ## CM proofs, new conjectural vector and two additional incoming batches
 

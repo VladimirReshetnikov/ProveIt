@@ -1,8 +1,8 @@
 # Polylogarithms and their Arithmetic Bridges
 
 The collective manuscript, authored by **ProveIt Contributors**, is
-[polylogarithms.pdf](polylogarithms.pdf): **340 pages, twelve chapters,
-ten figures and 93 references**, with a literature appendix preserving
+[polylogarithms.pdf](polylogarithms.pdf): **375 pages, twelve chapters,
+thirteen figures and 98 references**, with a literature appendix preserving
 94 distinct historical question leads. Its editable source is
 [polylogarithms.tex](polylogarithms.tex) and the files in `chapters/`.
 
@@ -35,9 +35,7 @@ extensions and numerical period independence remain open.
 
 The new S8 candidate is distinct from the old rigorously rejected vector.
 Its exact normalized residual enclosure is below `1e-355`; it and S6 remain
-conjectural. The substantial real-order, Lerch,
-uniform-transition, golden-seed and Herglotz continuations remain on the
-active proof-audit and integration agenda.
+conjectural. The real-order core is now integrated in Chapter 5, with new proofs of unrestricted slit-plane nonvanishing, angular uniqueness, subcritical radial motion, Gaussian fixed-total monotonicity, a unique axis maximum and the sharp critical/subcritical Euler constant pi/4+log(2)/2. The maximum has exact bracket 1<b*<2; its decimal location remains diagnostic. Bessel, full Cayley, Lerch, uniform-transition, golden-seed and Herglotz continuations remain on the active proof-audit and integration agenda.
 
 Original drafts, code, data and PDFs remain historical evidence. This book is
 the canonical reading artifact.

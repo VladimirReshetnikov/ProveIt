@@ -4,8 +4,8 @@ The canonical reading artifact is the collective manuscript
 [Polylogarithms and their Arithmetic Bridges](docs/manuscript/polylogarithms.pdf),
 with [editable LaTeX source](docs/manuscript/polylogarithms.tex) and an
 [editorial ledger](docs/manuscript/EDITORIAL-LEDGER.md). Authored by
-**ProveIt Contributors**, it has **340 pages, twelve chapters, ten figures
-and 93 references**. Its development links rigorous proofs, exact finite
+**ProveIt Contributors**, it has **375 pages, twelve chapters, thirteen figures
+and 98 references**. Its development links rigorous proofs, exact finite
 certificates and experiments. The preceding CM milestone proves class products,
 genus ratios, all-weight quadratic degree in three discriminants, norm laws
 and a dense cluster-set theorem. The S2/S4 proofs, all-weight distribution
@@ -15,8 +15,7 @@ proximity. The inventory covers **381 textual provenance files**; **21
 incoming archives / 865 members** are byte-preserved and their replay suites
 pass. Integral basis, reflection torsion and modular/jet proofs are now integrated,
 with a new separable multivariable product law and 210 independent raw-matrix
-checks. Real-order, uniform, Lerch and Herglotz proof integration remains
-ongoing and explicitly tracked. The [validation record](docs/manuscript/VALIDATION.md)
+checks. The real-order core is integrated with new all-parameter slit-plane and angular proofs, Gaussian monotonicity and a unique axis maximum, and the sharp critical/subcritical Euler constant pi/4+log(2)/2. Bessel, full Cayley, uniform, Lerch and Herglotz proof integration remains ongoing and explicitly tracked. The [validation record](docs/manuscript/VALIDATION.md)
 separates proofs, finite certificates, numerical diagnostics, build and
 rendered review. Original articles and reports remain historical evidence.
 

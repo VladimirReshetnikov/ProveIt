@@ -1,4 +1,41 @@
-# Verified real-order research source checkpoint
+# October 10: reviewed real-order manuscript milestone
+
+The canonical artifact now has 375 pages, twelve chapters, thirteen figures
+and 98 references, authored by ProveIt Contributors. The complete report-core
+integration and new collective proofs are in Chapter 5; Chapter 12 and the
+editorial ledger now promote exactly the settled questions. Cartesian motion,
+the opposite endpoint limit family and the quantitative two-scale atomic
+boundary law complete the source checkpoint 4d88f22ac9, published via
+762ebe9a851dd9c445add28651783cf029ab4cbc.
+
+All three fresh real-order replay processes completed with exit zero. The
+616/112 sign checks, seven exact/native Gaussian comparisons and independent
+axis comparison are retained. Three serial isolated LuaLaTeX passes completed
+with exit zero, matching final reference states and no final log issues.
+The Windows PDF-viewer overwrite lock required an isolated output directory;
+the canonical PDF was copied only after convergence. No Wolfram process was
+killed and no license contention occurred.
+
+All 375 pages passed the static audit and were reviewed in 24 contact sheets.
+Twenty-three new proof/figure/programme pages were reviewed at full size.
+The three added figures are legible; ten unchanged figures retain their
+previous full-size reviews and were checked in the current sheets.
+The reviewed PDF SHA-256 is:
+
+41c1ee04ffc80352d3d007a4779596fb9e1a7c46d5a2852945cf93ac65623d49
+
+The 340-page raster-equivalence receipt is historical, not current-artifact
+acceptance. The expanded book has its own matching build, render, visual
+and source/dependency receipts. Publication and final closure are verified
+by the task's Git record after the final commit and fresh origin/main merge.
+No new polylogarithm/incoming report was found on the latest fetch.
+The broader research goal and hourly incoming watch continue; S6/S8,
+global integer normalized motion and other listed continuations remain open.
+
+The entries below record earlier states, including jobs that have since
+completed and provisional artifacts superseded by this reviewed milestone.
+
+# Historical real-order source checkpoint (superseded by final artifact below)
 
 New unrestricted Stieltjes/zero/angular/radial proofs, the Gaussian fixed-total
 monotonicity theorem, unique axis maximum, and sharp critical/subcritical

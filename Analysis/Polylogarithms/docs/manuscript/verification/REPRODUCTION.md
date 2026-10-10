@@ -165,3 +165,18 @@ truncated monomials, constructs the raw prime and reflection rows, and
 computes their binary ranks with integer bit vectors. It imports no
 normal-form or Koszul implementation. The 210-case sweep tests the new
 all-level formula's finite consequences; its proof is in the manuscript.
+
+## Real-order positive differences and Gaussian continuation
+
+```powershell
+python verification/certify_subcritical_differences.py
+wolfram -script verification/check-subcritical.wls
+python verification/explore_gaussian_axis.py
+python verification/plot_gaussian_axis.py
+python verification/replay_real_orders.py --part threshold
+python verification/replay_real_orders.py --part geometry
+python verification/replay_real_orders.py --part boundary
+python verification/build.py --output-directory verification/.scratch-build-final
+```
+
+The first command uses standard-library integer roots and Fractions for 616 difference signs, 112 Euler increments and seven analytic-value enclosures. Native Wolfram checks use independent depth-one polylogarithms and Gamma quadrature at 100 working digits; their numerical agreement does not certify quadrature error. The axis solver and plot are diagnostics. The replay wrapper preserves original layouts in isolated copies and retains fresh exact certificates, symbolic identities and separately labeled boundary/geometry diagnostics. The optional build output directory avoids a Windows PDF-viewer lock; after three converged serial passes it copies the final PDF to the canonical path.
