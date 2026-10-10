@@ -1026,6 +1026,8 @@ import GowersSzemeredi.Proofs16SinglePieceGlobal
 import GowersSzemeredi.Proofs16SinglePieceGlobalFrequency
 import GowersSzemeredi.Proofs18SinglePieceInverse
 import GowersSzemeredi.Proofs16WithCoordinateLifts
+import GowersSzemeredi.Proofs16Lemma9WithRemainder
+import GowersSzemeredi.Proofs16PolynomialLemma9WithRemainder
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
