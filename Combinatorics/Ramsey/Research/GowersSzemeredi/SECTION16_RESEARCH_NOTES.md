@@ -2404,14 +2404,64 @@ proper box by few multilinear graphs (`MultiplyLinearWith Qb Eb`).
   no union over members is needed, because the single-piece route never
   forms unions. That is weaker than Part J's `StackableStructureAt 2`.
 
-**Next (after the correction).**
-1. Kernel-check the counterexample, so the retraction is itself proved.
-2. Restate the inputs as `PolyCoverAt l Qb Eb`, the global-to-local
-   polynomial cover, and derive providers on good domains. Rebuild
-   `single_piece_lift` and the frequency box with good-set intersections
-   (each costs `θ′N^(k+1)` globally). Discharge `l = 1` by
-   `section16_product_relation_cubic_cover`.
-3. Then the length-6 budget.
+**The repair (same day): global-to-local inputs and providers on good
+domains.**
+
+`Proofs16GlobalCoverProviders`:
+- `PolyCoverAt l Qb Eb` is the global-to-local polynomial cover. A relation
+  with the global product property and `|Γ| ≤ γ⁻²N^l`, after deleting
+  `θN^l` base points, is `MultiplyLinearWith (Qb γ θ) (Eb γ θ)`-covered on
+  every proper box.
+  - `polyCoverAt_one` proves it in dimension one from
+    `section16_product_relation_cubic_cover`. There
+    `Qb = 3·section16BaseFamilyBound γ θ ≤ 3(2/(γθ))^10002`, independent of
+    the loss, and `Eb = cubicBaseExponent = 2^(−27)σ³/q⁴`.
+- `MultiplyLinearWith.localRelationCoverFor` turns a cover on a good set
+  `J` into a per-relation local cover provider on `J`.
+  `MultiplyLinearWith.localPieceFor` does the same for a function: a
+  dense cell, then pigeonhole over the graphs, giving density
+  `(θ/2)/Qb(θ/2)` and width `⌈L^(Eb(θ/2))⌉`.
+- `card_filter_selected_not_mem_le` counts preimages: deleting `θN^l`
+  points in an `l`-dimensional face costs `θN^n` points of `(ℤ/N)^n`.
+
+Generalizations:
+- `single_piece_of_spectrum_cover_for` takes a provider for the spectrum
+  relation on a domain containing the base points. It needs no product
+  property and no fibre bound.
+- `remainder_piece_on` takes vertex providers on arbitrary domains.
+- `vertex_localPieceFor_of_face` lifts any face provider to the translated
+  cube vertex.
+
+`Proofs16SinglePieceGlobal`:
+- `single_piece_lift_core` is the lift from providers on explicit domains,
+  for any dense part `B₁′` of Gowers's good domain `B₁` inside them.
+- `single_piece_lift_global` builds every provider from `PolyCoverAt` and
+  calls the core. It covers three kinds of retained objects:
+  - the spectrum relation `Δ` (dimension `k`, parameter `δ`);
+  - each non-top vertex face pullback (dimension `|S_e| ≤ k`);
+  - each translated last-coordinate slice (dimension `k`).
+
+  It then removes the three bad sets. Each costs at most
+  `θ′N^(k+1)`, with `θ′ = θ₂/(2(2^k+1))`, so `|B₁′| ≥ (θ₂/2)N^(k+1)`.
+
+**Where the gap now stands.** The single trilinear piece (`k = 2`) needs
+only `PolyCoverAt 1`, which is proved, and `PolyCoverAt 2`.
+`PolyCoverAt 2` is a polynomial-control, **non-stackable** cover theorem
+for two-dimensional product relations. It is the remaining open core.
+Two comparisons:
+- It is weaker than Part J's `StackableStructureAt 2`, which also asks
+  that unions of members stay covered.
+- It is stronger than the proved `theorem_16_2_at_two`, whose controls
+  are tower-type.
+
+The kernel-checked length-6 budget comparison is still to be done.
+
+**Next.**
+1. The length-6 budget: instantiate `single_piece_lift_global` at `k = 2`
+   inside the frequency-box → localization → `FunctionDiscrepancyBound 4`
+   route. Then compare with `szemerediThreshold δ 6`, under `PolyCoverAt 2`
+   with power-law controls.
+2. Study `PolyCoverAt 2` itself, the non-stackable dimension-two cover.
 
 ## F. Routes
 
@@ -12051,3 +12101,228 @@ The selected OAI audit closure remains 4,152 modules, and its
 4,134-upstream / 17-compatibility scope check passes. The source ledger
 remains byte-identical at 115 companions and five open statements.
 Independent incoming reports and polylogarithm updates are synchronized.
+
+### J.155. Complete and recenter the active chart windows
+
+Continuation checkpoint 301, 2026-10-10. Seven original modules add
+27 named proofs. This supplies a coherent common-domain chart construction
+from dense order-eight chart domains and a good quadruple family tested
+on its actual active frequencies. The original chart domains need not
+intersect, and inactive original values are not forced to agree.
+
+**Stronger active assembly.** `milicevic_prop_9_3_active_domains` retains
+Proposition 9.3's numerical window, map-family and quadruple bounds, with
+local-map and quadruple tests on the indices active at each individual
+vertex. `twelve_good_respected_active` proves that the good twelve-tuple
+split needs only these active values. The legacy full-window conclusion
+alone would be too weak to change inactive frequencies afterwards.
+
+A completed window which agrees with every active value still imposes
+every original active constraint, even if its other values change. Hence
+it preserves the glued maps' local Freiman data and all good quadruple
+identities. The completed windows retain the original fixed frequencies
+when there is an existing fixed base.
+
+**Cell completion.** Given a chart `theta_i` on `D_i` and its Sanders
+linear part `psi_i`, choose a base in `D_i ∩ C` when that intersection is
+nonempty. Otherwise choose a base in the cell and use zero offset. Set
+
+```
+completed_i(x) = offset_i + psi_i(x-base_i).
+```
+
+This agrees with `theta_i` on `D_i ∩ C` and is Freiman-linear on all of
+`C` when cell differences lie in the linear part's Bohr domain. Even an
+empty active intersection uses the same slope `psi_i`. After recentering
+at any `t` in the cell,
+
+```
+completed_i(x) = completed_i(t) + psi_i(x-t).
+```
+
+No agreement is asserted for an inactive original chart value.
+
+**Common Sanders data.** For `ell` chart domains of density at least
+`exp(-p)`, with genuine `FreimanHom 8` maps and `p>=0`, the proved
+`sanders_linear_part` theorem supplies all linear parts on one domain:
+
+```
+rho = exp(-C*(p+1))/(2*pi),
+|Gamma| <= ell*(1+C*(p+1)^4),
+C = quarticBogolyubovConstant.
+```
+
+Only the linear-part Bohr sets are intersected. No intersection of the
+original `D_i` is used. Dirichlet signatures with `M >= 4/rho` give
+`M^|Gamma|` cells whose differences lie in `B(Gamma;rho/4)`. The completion
+and Freiman-linearity proofs include empty cells.
+
+**Choose cells for good quadruples.** A four-cell pattern retains at least
+`1/M^(4*|Gamma|)` of the already-good quadruples. Choose one retained
+quadruple `t` as the translation. Recenter each row by its own `t_j`, then
+apply the existing row-label selection, so the resulting maps form one
+function of the recentered point rather than conflicting coloured values.
+The retained quadruples still realize original members of the good family.
+There is no attempt to choose one dense cell first and then bound errors
+inside it.
+
+Every recentered point lies in `B(Gamma;rho/4)`. The chart offsets at the
+four translation points become a fixed frequency base `B'` with
+
+```
+B subset B',   |B'| <= |B|+4*ell.
+```
+
+On `B(B' union {psi_i(u)};eta/2)`, all original active constraints at the
+source point `t_color(u)+u` hold. This preserves the original local map,
+its value at zero, and the quadruple identity. The variable maps `psi_i`
+are normalized native `FreimanHom 2` maps on the common Bohr domain.
+
+**Uniform numerical wrapper.** Put
+
+```
+D = ceil(ell*(1+C*(p+1)^4)),
+M = ceil(1/(rho/4)),
+lambda = kappa/(512*M^(4*D)).
+```
+
+`exists_coherent_completed_sanders_charts` requires
+`8 <= (kappa/M^(4*D))*N` and `kappa*N^3` good original quadruples. It
+constructs a common Bohr family with rank at most `D`, a retained vertex
+set of size at least `lambda*N`, and at least `lambda*N^3` respected
+quadruples. The source-index translations are recorded explicitly;
+source agreement at `t_color(u)+u` must not be silently relabelled as
+agreement at the unshifted index `u`.
+
+**Scope and next input.** This proves the chart-completion and common-
+domain recentering step under ordinary dense Freiman chart data and
+active tests, without a new structural-existence hypothesis. The
+strengthened Proposition 9.3 provides the active tests, but its current
+output does not yet record a uniform density lower bound for every
+`D_i`. That bound must be retained from the actual chart-selection
+construction before applying the uniform Sanders wrapper to all of its
+charts. Applying the global frequency iteration to the actual retained
+progression, subsequent structural assembly, original-bihomomorphism
+agreement and final printed-budget comparisons remain separate. All
+five numbered targets remain open and unchanged. No raw growing local
+input or newly ported upstream module is used.
+
+**Production checks.** The affine completion source compiles in 165
+modules; active glue in 458; the strengthened Proposition 9.3 in 462;
+Sanders cells in 166; recentered frequency domains in 534; chart
+localization in 535; and the uniform Sanders wrapper in 536. The combined
+axiom audit includes all 27 new named proofs and checks 9,939 public
+Gowers theorems across 5,618 modules, with a 5,616-module facade closure.
+Only `propext`, `Classical.choice` and `Quot.sound` occur. The selected
+OAI audit closure remains 4,152 modules, and its 4,134-upstream /
+17-compatibility scope check passes. The 115-companion / five-open source
+ledger is byte-identical. The incoming global-to-local provider calculus
+and repaired single-piece lift are included in the same audit.
+
+### J.156. Dense frequency iteration and coherent Proposition 9.3 output
+
+Continuation checkpoint 302, 2026-10-10. Eight original modules add
+20 named proofs. The uniform chart-domain density needed by J.155 is
+now retained from the actual extraction and through the full iteration.
+The resulting active Proposition 9.3 output feeds the coherent common-
+domain construction without a new chart-density assumption.
+
+**Derive domain density.** Each Claim 9.4 or 9.5 extraction supplies a
+pair support `P` of size at least its claim density times `N^2`, with
+every second coordinate in the new domain `B`. At most `N` pairs carry
+each value, hence `|B| >= delta*N`. The deterministic append keeps all
+older domains unchanged and installs `B` only at the new index. The
+stronger append records every domain density and the same exact
+potential increase `|P|`.
+
+Take the common lower bound
+
+```
+delta = min(claimNineFourDensity eps R d,
+            claimNineFiveDensity eps R d).
+```
+
+Both rounds carry `delta*N <= |D_i|` at every constructed index. The
+finite-potential termination theorem retains this field, alongside its
+original bad-triple, bad-twelve-tuple and family-size bounds:
+
+```
+ceil(delta*N^2)*m <= N^2*s0,
+therefore m <= ceil(s0/delta).
+```
+
+`milicevic_prop_9_3_dense_active_domains` records the same density in the
+actual assembled output, with the active-domain tests of J.155 and all
+existing numerical counts unchanged.
+
+**Finite windows and padding.** Reindex the chosen finite `J` as
+`Fin J.card`. At indices below `m`, use the original domain and map.
+Other indices are inactive everywhere in the retained set; replace them
+by zero maps on the full domain. This gives a genuine dense order-eight
+chart family even when the common window contains padding. Its active
+frequency image is proved exactly equal to the original active image.
+No active value is changed, and no inactive original value is forced
+to agree. Put `p=max(0,log(1/delta))`; then `p>=0` and `exp(-p)<=delta`.
+
+`complete_dense_index_window_charts` consumes these proved fields and
+constructs the common Sanders charts. It retains the original fixed
+frequencies, source maps, good quadruples and source-index translations.
+
+**Uniform good-quadruple density.** Let `a` be Proposition 9.3's original
+quadruple coefficient, and set
+
+```
+W = choose(ceil(s0/delta)+8*s0, 8*s0),
+kappa = (a/2)/W.
+```
+
+`W>0`. If `12<=a*N`, the `6*N^2` repeated-index term costs at most half
+of `a*N^3`. The N-independent family-size bound and binomial monotonicity
+then give at least `kappa*N^3` good quadruples in the selected window.
+This uses the original good-family count before chart localization,
+without a new error estimate after selection.
+
+**Coherent Proposition 9.3.** `milicevic_prop_9_3_coherent_charts` starts
+from the standard column-map, rank, iteration and almost-all-relation
+inputs. In the positive-coefficient regime, with the explicit conditions
+
+```
+12 <= a*N,
+8 <= (kappa/coherentChartCells(p)^(4*coherentChartRankCap(8*s0,p)))*N,
+```
+
+it constructs the original active selection plus one coherent chart
+family. Its common Bohr rank is at most
+`coherentChartRankCap(8*s0,p)`, its fixed frequency set has cardinality
+at most `32*s0`, and both retained vertex and quadruple densities are
+at least `coherentChartDensity(kappa,8*s0,p)`. The varying maps are
+normalized native Freiman 2-homomorphisms on one common Bohr domain;
+the retained vertices lie in its quarter-radius subset. Every local
+map is the original chosen glued map at the recorded source index
+`t_color(u)+u`, and every retained quadruple realizes an original good
+active quadruple. Relating back to the original column differences is
+retained. The extra chart-domain density is constructed, not assumed.
+
+**Scope and next application.** This closes the missing density bridge
+and constructs the common-domain coherence output under Proposition
+9.3's stated ambient input conditions. The exact original-data transfer
+of J.154 has a retained progression; its local anchor candidates and
+relative error counts must be used to supply a suitable localized
+selection, rather than silently assuming N/2 good global columns or
+applying an ambient error bound to a small retained set. Subsequent
+structural assembly, original-bihomomorphism agreement and final printed
+Gowers budget comparisons remain open. All five numbered targets are
+unchanged. No raw growing local input or new upstream port is used.
+
+**Production checks.** The append and both rounds compile in a
+176-module closure; the dense iteration in 177; the dense active
+assembly and finite-window modules together in 574; completion in 538;
+the uniform quadruple budget in 538; and the coherent Proposition 9.3
+in 577. The completed combined audit includes all 20 new named proofs
+and checks 9,985 public Gowers theorems across 5,627 modules, with a
+5,625-module facade closure. Only `propext`, `Classical.choice` and
+`Quot.sound` occur. The selected OAI audit closure remains 4,152 modules,
+and its 4,134-upstream / 17-compatibility scope check passes. The source
+ledger is byte-identical at 115 companions and five open statements.
+The incoming global-cover frequency-box reduction and independent
+repository updates are included in the same audit.

@@ -12,9 +12,11 @@ property. The input asks for one proper sub-box `R`, of width
 `≥ w θ (width P)`, and one multilinear map that agrees with the function
 on `c θ·|R|` points of `B ∩ R`. It is a named hypothesis, not asserted. With
 `w θ L = min 1 L` and `c ≤ 1` it holds trivially, through single-point boxes
-(an empty box forces `w θ 0 = 0`). Its content is a
-width `w` that grows with the width of `P`, at a density `c` polynomial in
-`θ`; that is the open core of Notes L.
+(an empty box forces `w θ 0 = 0`). **With any growing width it is false**
+(Notes L.2, `not_localMultilinearPieceAt_of_quadratic`): the product
+property is normalized by the whole modulus, so it holds automatically on
+short boxes. Theorems assuming it with growing widths are vacuous; use
+the provider forms (`single_piece_on_line_cell_of_slices`, `LocalPieceFor`).
 
 `single_piece_on_line_cell` takes a cell `T × J` and a set `D` of density `θ`
 in it. Each fibre of `D` is split into at most `q` classes, and `φ(h, ·)` is
