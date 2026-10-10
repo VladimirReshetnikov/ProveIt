@@ -12101,3 +12101,120 @@ The selected OAI audit closure remains 4,152 modules, and its
 4,134-upstream / 17-compatibility scope check passes. The source ledger
 remains byte-identical at 115 companions and five open statements.
 Independent incoming reports and polylogarithm updates are synchronized.
+
+### J.155. Complete and recenter the active chart windows
+
+Continuation checkpoint 301, 2026-10-10. Seven original modules add
+27 named proofs. This supplies a coherent common-domain chart construction
+from dense order-eight chart domains and a good quadruple family tested
+on its actual active frequencies. The original chart domains need not
+intersect, and inactive original values are not forced to agree.
+
+**Stronger active assembly.** `milicevic_prop_9_3_active_domains` retains
+Proposition 9.3's numerical window, map-family and quadruple bounds, with
+local-map and quadruple tests on the indices active at each individual
+vertex. `twelve_good_respected_active` proves that the good twelve-tuple
+split needs only these active values. The legacy full-window conclusion
+alone would be too weak to change inactive frequencies afterwards.
+
+A completed window which agrees with every active value still imposes
+every original active constraint, even if its other values change. Hence
+it preserves the glued maps' local Freiman data and all good quadruple
+identities. The completed windows retain the original fixed frequencies
+when there is an existing fixed base.
+
+**Cell completion.** Given a chart `theta_i` on `D_i` and its Sanders
+linear part `psi_i`, choose a base in `D_i ∩ C` when that intersection is
+nonempty. Otherwise choose a base in the cell and use zero offset. Set
+
+```
+completed_i(x) = offset_i + psi_i(x-base_i).
+```
+
+This agrees with `theta_i` on `D_i ∩ C` and is Freiman-linear on all of
+`C` when cell differences lie in the linear part's Bohr domain. Even an
+empty active intersection uses the same slope `psi_i`. After recentering
+at any `t` in the cell,
+
+```
+completed_i(x) = completed_i(t) + psi_i(x-t).
+```
+
+No agreement is asserted for an inactive original chart value.
+
+**Common Sanders data.** For `ell` chart domains of density at least
+`exp(-p)`, with genuine `FreimanHom 8` maps and `p>=0`, the proved
+`sanders_linear_part` theorem supplies all linear parts on one domain:
+
+```
+rho = exp(-C*(p+1))/(2*pi),
+|Gamma| <= ell*(1+C*(p+1)^4),
+C = quarticBogolyubovConstant.
+```
+
+Only the linear-part Bohr sets are intersected. No intersection of the
+original `D_i` is used. Dirichlet signatures with `M >= 4/rho` give
+`M^|Gamma|` cells whose differences lie in `B(Gamma;rho/4)`. The completion
+and Freiman-linearity proofs include empty cells.
+
+**Choose cells for good quadruples.** A four-cell pattern retains at least
+`1/M^(4*|Gamma|)` of the already-good quadruples. Choose one retained
+quadruple `t` as the translation. Recenter each row by its own `t_j`, then
+apply the existing row-label selection, so the resulting maps form one
+function of the recentered point rather than conflicting coloured values.
+The retained quadruples still realize original members of the good family.
+There is no attempt to choose one dense cell first and then bound errors
+inside it.
+
+Every recentered point lies in `B(Gamma;rho/4)`. The chart offsets at the
+four translation points become a fixed frequency base `B'` with
+
+```
+B subset B',   |B'| <= |B|+4*ell.
+```
+
+On `B(B' union {psi_i(u)};eta/2)`, all original active constraints at the
+source point `t_color(u)+u` hold. This preserves the original local map,
+its value at zero, and the quadruple identity. The variable maps `psi_i`
+are normalized native `FreimanHom 2` maps on the common Bohr domain.
+
+**Uniform numerical wrapper.** Put
+
+```
+D = ceil(ell*(1+C*(p+1)^4)),
+M = ceil(1/(rho/4)),
+lambda = kappa/(512*M^(4*D)).
+```
+
+`exists_coherent_completed_sanders_charts` requires
+`8 <= (kappa/M^(4*D))*N` and `kappa*N^3` good original quadruples. It
+constructs a common Bohr family with rank at most `D`, a retained vertex
+set of size at least `lambda*N`, and at least `lambda*N^3` respected
+quadruples. The source-index translations are recorded explicitly;
+source agreement at `t_color(u)+u` must not be silently relabelled as
+agreement at the unshifted index `u`.
+
+**Scope and next input.** This proves the chart-completion and common-
+domain recentering step under ordinary dense Freiman chart data and
+active tests, without a new structural-existence hypothesis. The
+strengthened Proposition 9.3 provides the active tests, but its current
+output does not yet record a uniform density lower bound for every
+`D_i`. That bound must be retained from the actual chart-selection
+construction before applying the uniform Sanders wrapper to all of its
+charts. Applying the global frequency iteration to the actual retained
+progression, subsequent structural assembly, original-bihomomorphism
+agreement and final printed-budget comparisons remain separate. All
+five numbered targets remain open and unchanged. No raw growing local
+input or newly ported upstream module is used.
+
+**Production checks.** The affine completion source compiles in 165
+modules; active glue in 458; the strengthened Proposition 9.3 in 462;
+Sanders cells in 166; recentered frequency domains in 534; chart
+localization in 535; and the uniform Sanders wrapper in 536. The combined
+axiom audit includes all 27 new named proofs and checks 9,939 public
+Gowers theorems across 5,618 modules, with a 5,616-module facade closure.
+Only `propext`, `Classical.choice` and `Quot.sound` occur. The selected
+OAI audit closure remains 4,152 modules, and its 4,134-upstream /
+17-compatibility scope check passes. The 115-companion / five-open source
+ledger is byte-identical. The incoming global-to-local provider calculus
+and repaired single-piece lift are included in the same audit.
