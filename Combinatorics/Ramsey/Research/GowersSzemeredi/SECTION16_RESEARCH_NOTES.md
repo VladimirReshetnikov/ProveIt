@@ -6075,6 +6075,29 @@ the decomposition with these named constants, but not `Theorem162At 3`.
               Possibly every `C_i` contains the small `C₀` in which the
               `a`'s live. That would need the Theorem 2.26 progressions to
               contain `C₀`, which is not stated.
+            - *The ε-proportionality principle (2026-10-10).* Every
+              candidate repair has failed in the same way.
+              - The candidates: per-round localization; a pigeonholed
+                common index set `S*`; a common translate `s + ⋂K_i` with
+                local quadruple counting; recentring through the affine
+                linear parts `L_i = λ_i + u_i` on `⋂K_i`.
+              - Each pays a factor built from the iteration's output: the
+                round count `m`, or the ranks of the `K_i`, which are
+                `polylog(1/δ)` with `log(1/δ) ≥ 9316·log(1/ε)`. The
+                failing-quadruple bound `O(ε)N³` must then beat that
+                factor. So `log(1/ε)` must exceed a power `> 1` of
+                `log(1/ε)`, which is circular.
+              - Milićević's window is the one step that escapes: it loses
+                the same factor `C(m, 8s₀)⁻¹` on good and failing
+                quadruples alike.
+              - So a repair of coherence must likewise be *proportional*.
+                It must select domains by an operation that scales good
+                and failing configurations equally, or produce domains
+                (such as a fixed `C₀ ⊆ C_i`) whose size does not depend on
+                the iteration.
+              - With affine `L_i = λ_i + u_i` on centred `K_i`, everything
+                reduces to one question: can the `a`'s be confined in
+                advance to a centred set contained in every `K_i`?
          2. *Explicit exponents (done, `Proofs16PropNineThreeBudget`).*
             With `L = d·log(2R+1)` and `ℓ = log(1/ε)`:
             - `log(1/claimNineFourDensity) ≤ 6540·log 2 + 37264·L + 9316·ℓ`;
