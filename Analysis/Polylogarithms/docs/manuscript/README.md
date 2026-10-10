@@ -1,21 +1,25 @@
 # Polylogarithms and their Arithmetic Bridges
 
 The collective manuscript, authored by **ProveIt Contributors**, is
-[polylogarithms.pdf](polylogarithms.pdf): **379 pages, twelve chapters,
-thirteen figures and 99 references**, with a literature appendix preserving
+[polylogarithms.pdf](polylogarithms.pdf): **392 pages, twelve chapters,
+thirteen figures and 105 references**, with a literature appendix preserving
 94 distinct historical question leads. Its editable source is
 [polylogarithms.tex](polylogarithms.tex) and the files in `chapters/`.
 
-The [inventory](source-inventory.json) accounts for **439 textual source
+The [inventory](source-inventory.json) accounts for **599 textual source
 files**, including overlapping assembled articles, fragments and correction
 registers. The [editorial ledger](EDITORIAL-LEDGER.md) maps their mathematical
-status and identifies pending research integration. Twenty-six incoming
-archives are preserved as **1,043 byte-identical members**. All their isolated
+status and identifies pending research integration. Thirty-seven incoming
+archives are preserved as **1,496 preserved original members**. All their isolated
 replay suites pass; preservation and successful finite replay do not imply
 that every new analytic theorem has already been integrated. The imported
 ZIPs have been retired from the drop zone under its intake procedure; the
 arrival commits and recovery paths remain recorded in
-`verification/*incoming-archives.json` and the two retirement records. The five latest packages are placed on existing thematic spines with historical OVERVIEW notes; their remaining analytic claims retain the ledger's pending scope.
+`verification/*incoming-archives.json` and the retirement records. Three ignored
+SHA256SUMS members remain recoverable in the sixth arrival archives; the
+existing ignore rules were followed without manifest verification. The eleven
+latest packages are placed on existing thematic spines with historical
+OVERVIEW notes; their remaining analytic claims retain the ledger's pending scope.
 
 The preceding milestone proves the CM class-product formulas and the recorded
 genus ratios, develops a rational principal-point nonvanishing bound, and
@@ -100,3 +104,20 @@ does not rerun mathematics or confer review on a changed artifact. Additional
 continuation replays and their exact configurations are listed in
 [verification/REPRODUCTION.md](verification/REPRODUCTION.md). Every replay
 uses a separate manuscript output directory, preserving historical receipts.
+
+The latest canonical milestone integrates the complete forty-two-row rational
+tetralogarithm proof, including lower-weight descent, branch constants and the
+additional twenty-five-argument specialization. An independent ordered-tensor
+implementation verifies the printed canonical table and rejects a changed
+coefficient. Chapter 5 proves the full leading-index-one normalized-radius
+trichotomy for all b>0 and the strictly smaller 9/8 Euler budget for every
+truncation N>=2. The unsupported elementary-value impossibility claim is
+corrected, and two transport-notation slips are repaired.
+
+All eleven new isolated default suites pass. The radial replay checks the
+full 2,304-cell cover and 4,609 root boxes. The exact S14 proximity verifier
+also passes, while equality remains conjectural. Finite certificates support
+the separately audited analytic proofs; they do not promote the other
+preserved continuum claims automatically. The active goal continues with
+all-depth geometry, higher-order normalized-radius sectors, global Euler
+extremizers, Lerch thresholds and arithmetic continuations.

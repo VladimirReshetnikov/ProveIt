@@ -5,7 +5,7 @@ This reads pinned receipts; it does not rerun mathematics or perform visual QA.
 from pathlib import Path
 from fractions import Fraction
 from decimal import Decimal
-import hashlib, json, sys, subprocess
+import hashlib, json, sys, subprocess, io, zipfile
 # The committed exact endpoints contain up to several thousand integer digits.
 sys.set_int_max_str_digits(100000)
 B=Path(__file__).resolve().parents[1]
@@ -67,17 +67,21 @@ outcomes['Herglotz-quadrature']=all(Decimal(c['absolute_residual'])<Decimal('1e-
 archive_errors=[]
 archives=sum((read(name) for name in ['incoming-archives.json',
     'research-incoming-archives.json','third-incoming-archives.json',
-    'fourth-incoming-archives.json','fifth-incoming-archives.json']), [])
+    'fourth-incoming-archives.json','fifth-incoming-archives.json',
+    'sixth-incoming-archives.json','seventh-incoming-archives.json']), [])
 for archive in archives:
     p=B.parents[3]/archive['archive']
     blob=p.read_bytes() if p.is_file() else subprocess.check_output(['git','show',archive['archive_git_revision']+':'+archive['archive']],cwd=B.parents[3])
     if hashlib.sha256(blob).hexdigest()!=archive['archive_sha256']:
         archive_errors.append(archive['archive'])
+    with zipfile.ZipFile(io.BytesIO(blob)) as preserved_zip:
+        for opaque in archive.get('archive_only_members',[]):
+            if opaque['member'] not in preserved_zip.namelist():archive_errors.append(opaque['member'])
     for member in archive['files']:
         p=B.parent/member['path']
         if not p.is_file() or digest(p,False)!=member['sha256']:
             archive_errors.append(member['path'])
-outcomes['incoming-archive-preservation']=len(archives)==26 and sum(len(a['files']) for a in archives)==1043 and not archive_errors
+outcomes['incoming-archive-preservation']=len(archives)==37 and sum(len(a['files']) for a in archives)==1496 and not archive_errors
 x=read('incoming-retirement.json')
 archive_by_path={a['archive']:a for a in archives}
 outcomes['imported-archive-retirement']=x['archive_count']==16 and x['preserved_members']==691 and len(x['archives'])==16 and sum(a['members'] for a in x['archives'])==691 and (B.parents[3]/'docs/incoming/README.md').is_file() and all(
@@ -190,7 +194,7 @@ outcomes['Gaussian-axis-plot-diagnostic']=x['working_precision']==40 and len(x['
 x=read('axis-wording-raster-comparison.json')
 outcomes['historical-axis-wording-raster-review']=x['pdf_sha256']=='3f9a6a957e932c9c6d0351c32c705dca61f5f391462f9ccf255d5fc06f21eb5f' and x['previous_pdf_sha256']=='b416e14735a4c3aeba8fcac288673846ef12a41125f5e11936b185be85159afd' and x['page_count']==379 and x['thumbnail_pages_compared']==379 and x['changed_thumbnail_pages']==[165] and x['contact_sheets_compared']==24 and x['changed_contact_sheets']==[161] and x['changed_full_pages']==[165]
 x=read('mellin-domain-raster-comparison.json')
-outcomes['final-Mellin-domain-raster-review']=x['pdf_sha256']==pdfhash and x['previous_pdf_sha256']=='3f9a6a957e932c9c6d0351c32c705dca61f5f391462f9ccf255d5fc06f21eb5f' and x['page_count']==379 and x['thumbnail_pages_compared']==379 and x['changed_thumbnail_pages']==[142] and x['contact_sheets_compared']==24 and x['changed_contact_sheets']==[129] and x['changed_full_pages']==[142]
+outcomes['historical-Mellin-domain-raster-review']=x['pdf_sha256']=='71f50bc5bc15a3bbb0c2793bf98efe4a15c46440ca9951f919cabb2d5b03ea73' and x['previous_pdf_sha256']=='3f9a6a957e932c9c6d0351c32c705dca61f5f391462f9ccf255d5fc06f21eb5f' and x['page_count']==379 and x['thumbnail_pages_compared']==379 and x['changed_thumbnail_pages']==[142] and x['contact_sheets_compared']==24 and x['changed_contact_sheets']==[129] and x['changed_full_pages']==[142]
 for part,count in [('beta',4),('compensated',4),('critical',3),('extremal',1),('harmonic',1)]:
     x=read(f'fifth-replay/{part}/replay-summary.json')
     outcomes['fifth-replay/'+part]=x['passed'] and len(x['commands'])==count and all(c['exit_code']==0 for c in x['commands']) and bool(x['fresh_result_files']) and all((V/'fifth-replay'/part/p).is_file() for p in x['fresh_result_files'])
@@ -215,14 +219,44 @@ x=read('fifth-replay/extremal/results/cyclic_prime_results.json')
 outcomes['fifth-cyclic-raw-Smith-checks']=x['all_passed'] and x['verified_cases']==52 and len(x['checks'])==52
 x=read('fifth-replay/harmonic/logs/verification_run.json')
 outcomes['fifth-harmonic-default-suite']=len(x['checks'])==4 and all(c['exit_code']==0 for c in x['checks']) and not x['requested_full_harmonic_numerics']
+
+for batch, parts in [('sixth', {'all-depth':1,'radial':5,'sharp':4,'golden':1,'uniform-bounds':1,'uniform-continuation':1}),
+                     ('seventh', {'lambert':1,'large-orders':1,'leading-one':2,'tetra':1,'extremizers':1})]:
+    for part,count in parts.items():
+        x=read(f'{batch}-replay/{part}/replay-summary.json')
+        folder=B.parent/'reports'/x['source_folder']
+        outcomes[f'{batch}-replay/'+part]=(x['passed'] and len(x['commands'])==count and
+            all(c['exit_code']==0 for c in x['commands']) and
+            all((V/f'{batch}-replay'/part/p).is_file() for p in x['fresh_result_files']) and
+            all(digest(folder/p,False)==h for p,h in x['source_code_sha256'].items()))
+    x=read(f'{batch}-incoming-retirement.json')
+    outcomes[batch+'-archive-retirement']=(x['archive_count']==len(parts) and
+        len(x['archives'])==len(parts) and x['preserved_members']==sum(a['members'] for a in x['archives']) and
+        all(a['retired'] and not (B.parents[3]/a['archive']).exists() and
+            a['arrival_commit']==archive_by_path[a['archive']]['archive_git_revision'] and
+            a['members']==len(archive_by_path[a['archive']]['files']) for a in x['archives']))
+x=read('sixth-replay/radial/certificates/global_verified.json')
+outcomes['sixth-full-radial-cover']=x['status']=='PASS' and x['full_cover'] and x['start']==0 and x['stop']==2304 and x['cells_verified']==2304 and x['root_boxes_verified']==4609
+x=read('seventh-replay/leading-one/reproduction/exact/exact-results.json')
+outcomes['leading-one-exact']=x['status']=='PASS' and x['counts']=={'odd_central_moment_signs':180,'halfshift_coefficient_equalities':768,'positive_shift_coefficient_equalities':960,'local_coefficient_equalities':30,'certified_root_brackets':18}
+x=read('seventh-replay/leading-one/reproduction/symbolic/symbolic-results.json')
+outcomes['leading-one-symbolic']=x['status']=='PASS' and len(x['checks'])==5
+x=read('seventh-replay/tetra/code/tetralogarithm_receipt.json')
+outcomes['tetralogarithm-exact-descent']=x['status']=='PASS' and x['rows']==42 and x['tensor_coordinates']==230 and not x['nonzero_tensor_residual'] and x['matches_conjecture_exactly'] and x['general_functional_identity_exact']
+x=read('tetralogarithm-table-audit.json')
+outcomes['printed-tetralogarithm-independent-audit']=x['status']=='PASS' and x['printed_rows_checked']==42 and x['ordered_tensor_residual_coordinates']==0 and x['corrupted_first_coefficient_nonzero_coordinates']==12 and x['retains_rational_prime_two']
+x=read('seventh-replay/extremizers/verification/replay_report.json')
+outcomes['seventh-extremizer-finite-suite']=x['status']=='passed' and not x['diagnostics_requested'] and len(x['scripts'])==4 and all(c['status']=='passed' and c['return_code']==0 for c in x['scripts'])
+x=read('seventh-final-raster-comparison.json')
+outcomes['seventh-final-raster-review']=x['pdf_sha256']==pdfhash and x['previous_pdf_sha256']=='839a763e832960fec3728797bb5de9b86a671836358ae844659e523686f9d54f' and x['page_count']==392 and x['thumbnail_pages_compared']==392 and x['contact_sheets_compared']==25 and x['changed_thumbnail_pages']==[2,37,156] and x['changed_contact_sheets']==[1,33,145] and x['changed_full_pages']==[2,37,156]
 visual=read('visual-review.json')
-outcomes['recorded-visual-review']=visual['passed'] and visual['pdf_sha256']==pdfhash and visual['page_count']==379 and visual['all_contact_sheets_reviewed']==24 and visual['scientific_figures_reviewed']==13 and not visual['findings']
+outcomes['recorded-visual-review']=visual['passed'] and visual['pdf_sha256']==pdfhash and visual['page_count']==392 and visual['all_contact_sheets_reviewed']==25 and visual['scientific_figures_reviewed']==13 and not visual['findings']
 result=dict(changed_sources=changed,changed_dependencies=changed_dependencies,pdf_sha256=pdfhash,
  pdf_matches_build=pdfhash==build['pdf_sha256'],pdf_matches_render=pdfhash==render['pdf_sha256'],
  page_count=render['page_count'],source_documents=doc['source_documents'],converged_build=build['passed'],
  pdf_static_checks=render['static_passed'],document_integrity=doc['passed'],recorded_outcomes=outcomes,
  asymptotic_diagnostic_records=diagnostic_records,incoming_archive_errors=archive_errors,
  scope='Recorded evidence integrity only; visual review and scientific replay are separate activities.')
-result['passed']=not changed and not changed_dependencies and all(outcomes.values()) and all(result[k] for k in ['pdf_matches_build','pdf_matches_render','converged_build','pdf_static_checks','document_integrity']) and result['page_count']==379 and result['source_documents']==439 and render.get('pdf_author')=='ProveIt Contributors'
+result['passed']=not changed and not changed_dependencies and all(outcomes.values()) and all(result[k] for k in ['pdf_matches_build','pdf_matches_render','converged_build','pdf_static_checks','document_integrity']) and result['page_count']==392 and result['source_documents']==599 and render.get('pdf_author')=='ProveIt Contributors'
 (V/'receipt-integrity.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
 print(json.dumps(result,indent=2));raise SystemExit(0 if result['passed'] else 1)

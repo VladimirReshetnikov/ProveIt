@@ -1,0 +1,156 @@
+\section{A uniform rational kernel inequality}
+\label{latebudget:sec:ineq}
+The independent continuations~\cite{latebudget:sharp,latebudget:golden}
+separate the first Euler step from every later one. Retain the residual
+function $H_N(t)$ above, and define the continuously extended kernel
+\[
+ K_N(p,y)=\frac{H_N(py^2)-H_N(p)}{1-y},\qquad
+ K_N(p,1)=-2pH_N'(p).
+\]
+It is nonnegative. The following finite polynomial certificate and analytic
+mixture reduction prove a stronger uniform budget for $N\ge2$.
+
+\begin{theorem}[Kernel bound for every later truncation]\label{latebudget:thm:kernel}
+For every integer $N\ge2$ and $0\le p,y\le1$,
+\begin{equation}\label{latebudget:eq:kernel-bound}
+ 0\le K_N(p,y)<\frac98.
+\end{equation}
+The lower bound is strict when $p>0$ and $y<1$. The strict upper bound includes the continuous boundary values.
+\end{theorem}
+The proof has two finite base cases and an all-$N$ envelope. We give enough information to reconstruct every rational certificate without a symbolic algebra system.
+
+\subsection{Two explicit polynomial base cases}
+Multiplication by the positive denominator shows that $K_N<9/8$ is equivalent to positivity of
+\[
+ P_N(p,y)=8(1+p)(1+py^2)\{9/8-K_N(p,y)\}.
+\]
+For $N=2,3$ these are the following polynomials:
+\begin{align}
+P_2={}&8y^2(1+y)p^3+(8y^3+17y^2+8y+8)p^2\notag\\
+&+(9y^2-24y-15)p+9,\label{latebudget:eq:P2}\\
+P_3={}&-8y^2(y+1)(y^2+1)p^4\notag\\
+&+(-8y^5-8y^4+16y^3+16y^2-8y-8)p^3\notag\\
+&+(24y^3+33y^2+24y+24)p^2
+ +(9y^2-32y-23)p+9.\label{latebudget:eq:P3}
+\end{align}
+An identity check can avoid rational-function division altogether:
+\begin{align}\label{latebudget:eq:polynomial-check}
+(1-y)P_N={}&9(1-y)(1+p)(1+py^2)\notag\\
+&-8\{(1-py^2)^N(1+p)-(1-p)^N(1+py^2)\}.
+\end{align}
+Both verifiers check this identity or independently reconstruct its quotient.
+
+For a polynomial $P(x,y)=\sum c_{kl}x^ky^l$ of bidegree at most $(r,s)$, its tensor Bernstein coefficients on the unit square are
+\begin{equation}\label{latebudget:eq:bernstein}
+ B_{ij}=\sum_{k\le i,\,l\le j}c_{kl}
+ \frac{\binom ik}{\binom rk}\frac{\binom jl}{\binom sl}.
+\end{equation}
+The Bernstein basis functions are nonnegative and sum to one. Hence a strictly positive minimum of these coefficients proves strict positivity of $P$ on the whole square, including its boundary.
+
+For a mesh of denominator $d$, first substitute
+$p=(u+i)/d$, $y=(v+j)/d$ on each cell. Formula \eqref{latebudget:eq:bernstein} then gives an exact certificate. The data are summarized by
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+Polynomial & Bidegree & Mesh & Coefficients & Smallest coefficient\\
+\midrule
+$P_2$ & $(3,3)$ & $8\times8$ & $1024$ & $631/12288$\\
+$P_3$ & $(4,5)$ & $4\times4$ & $480$ & $11337/40960$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every coefficient is stored as a rational number in the accompanying JSON file. More importantly, the standard-library verifier regenerates all of them from \eqref{latebudget:eq:P2}--\eqref{latebudget:eq:bernstein}; it does not trust a stored minimum. These finitely many exact additions and multiplications prove the two base cases.
+
+\subsection{An envelope for binomial differences}
+Introduce
+\[
+ J_m(p,y)=\frac{(1-py^2)^m-(1-p)^m}{1-y},\qquad m\ge2.
+\]
+For fixed $0<y<1$, differentiation in $p$ gives a unique interior maximum at
+\begin{equation}\label{latebudget:eq:pmax}
+ p_m(y)=\frac{1-y^{2/(m-1)}}{1-y^{2m/(m-1)}}.
+\end{equation}
+Indeed the derivative changes sign exactly when
+$1-p=y^{2/(m-1)}(1-py^2)$. Its sign is positive at $p=0$ and negative at $p=1$. Substitution yields the exact envelope
+\begin{equation}\label{latebudget:eq:envelope}
+ J_m(p,y)\le B_m(y):=(1+y)
+ \left(\frac{1-y^2}{1-y^{2m/(m-1)}}\right)^{m-1}.
+\end{equation}
+The endpoint values follow by continuity.
+
+\begin{lemma}[The binomial envelope decreases in its index]\label{latebudget:lem:envelope}
+For every $0<y<1$, $B_{m+1}(y)<B_m(y)$ for $m\ge2$.
+\end{lemma}
+\begin{proof}
+Put $k=m-1$, $t=-2\log y>0$ and
+$h(v)=\log(1-e^{-(1+v)t})$. Direct differentiation gives $h''(v)<0$ for $v\ge0$. Apart from $\log(1+y)$, the logarithm of \eqref{latebudget:eq:envelope} is
+\[
+ k\{h(0)-h(1/k)\}=-\frac{h(1/k)-h(0)}{1/k}.
+\]
+The secant slope of a strictly concave function decreases as the right endpoint increases. Thus the displayed negative secant slope decreases strictly when $k$ increases. Exponentiation proves the claim.
+\end{proof}
+
+\subsection{The fourth envelope is below nine eighths}
+Set $y=t^3$, $0\le t\le1$. The inequality $B_4(y)<9/8$ is equivalent away from $t=1$ to
+\begin{equation}\label{latebudget:eq:Qfactor}
+9(1-t^8)^3-8(1+t^3)(1-t^6)^3=(1-t^2)^3Q(t)>0,
+\end{equation}
+where
+\begin{align}\label{latebudget:eq:Q}
+Q(t)={}&9t^{18}+27t^{16}-8t^{15}+54t^{14}-24t^{13}+82t^{12}
+ -48t^{11}\notag\\
+&+84t^{10}-56t^9+60t^8-48t^7+34t^6-24t^5
+ +6t^4-8t^3+3t^2+1.
+\end{align}
+The degree-18 Bernstein coefficients after $t=u/2$ and $t=(1+u)/2$ have respectively the strictly positive minima
+\begin{equation}\label{latebudget:eq:Qmin}
+ \frac{192789}{262144},\qquad \frac{690189}{1949696}.
+\end{equation}
+There are only $38$ coefficients. Formula \eqref{latebudget:eq:bernstein} with one variable regenerates them. At $y=1$ the envelope limit is
+$B_4(1)=2(3/4)^3=27/32<9/8$, so the endpoint is covered as well.
+
+\subsection{The infinite family follows without an infinite computation}
+Since $1/(1+v)=\sum_{j\ge0}(1-v)^j/2^{j+1}$ on $[0,1]$,
+\begin{equation}\label{latebudget:eq:mixture}
+ K_N(p,y)=\sum_{j=0}^{\infty}2^{-j-1}J_{N+j}(p,y).
+\end{equation}
+For $y<1$ this follows by subtracting the two convergent geometric series. If $N\ge4$, \eqref{latebudget:eq:envelope}, Lemma~\ref{latebudget:lem:envelope} and \eqref{latebudget:eq:Qfactor} give
+\[
+ J_{N+j}(p,y)\le B_{N+j}(y)\le B_4(y)<9/8.
+\]
+Averaging proves $K_N\le B_4<9/8$ for every $N\ge4$. Continuity covers $y=1$. The polynomial base cases cover $N=2,3$, completing Theorem~\ref{latebudget:thm:kernel}.
+
+
+\begin{corollary}[A smaller uniform budget after the first step]
+\label{latebudget:cor:error}
+For every $a\ge0,b>0$ and integer $N\ge2$,
+\[
+ 0<2^N(E_N-g_{a,b})<\frac98.
+\]
+\end{corollary}
+\begin{proof}
+Take expectations of the strict pointwise inequality in
+\eqref{univeuler:eq:tail}, with $p=x^2$ and $y=v$.
+The measures are probability measures, and their kernel is strictly
+positive almost everywhere, including the $a=0$ axis.
+\end{proof}
+The first-step maximum $C_*$ is strictly larger than $9/8$, already by
+$C_*>227/200$ in Theorem~\ref{univeuler:thm:sharp}. This does not imply
+that scaled errors decrease at each fixed pair: the exact incoming replay
+certifies $R_2(4,1)>R_1(4,1)$, where $R_N=2^N(E_N-g)$.
+The unscaled $E_N$ still decrease by the theorem above.
+
+
+\begin{remark}[Nature of the finite computation]
+The inequality is a computer-assisted ordinary proof: three stated polynomial identities, a stated rational basis conversion, and $1542$ strictly positive rational numbers close its finite component. The all-index reduction is analytic. The check is reproducible under Python's optimized mode and is not a test of finitely many real sample points. The supplied SymPy replay independently derives the two rational kernels rather than importing their coefficient arrays.
+\end{remark}
+
+The fresh standard-library replay regenerates all 1,542 coefficients on
+82 cells, checks the three defining polynomial identities, and rejects a
+corrupted polynomial. The same verifier succeeds with optimized Python,
+whose disabled assertions do not bypass its explicit validations. A
+separate SymPy program reconstructs the base rational kernels. Receipts
+are preserved in \src{verification/sixth-replay/sharp/}. The independently
+replayed golden/Cayley delivery uses another positive-mixture route and
+its own finite base certificates; it is supporting evidence for the same
+bound, not a second definition of the sharp all-index constant.

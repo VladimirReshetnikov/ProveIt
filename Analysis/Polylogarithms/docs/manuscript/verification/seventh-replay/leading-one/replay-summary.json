@@ -1,0 +1,34 @@
+{
+  "part": "leading-one",
+  "source_folder": "angular-zero-continuation/continuations/leading-one-global-radius",
+  "source_code_sha256": {
+    "verification/core_numeric.py": "916dcdb2360e6d93b6696291c29d75e5572a61c4ef01454a53a2ece0206153db",
+    "verification/verify_exact.py": "3325d19f96f78cd19ea43d8c2f5f80334a1288904ce60b5d570d64df5b63dff6",
+    "verification/verify_numeric.py": "53fa0f01e93b593d96f52af395fed1494d9382b3853ebeeb44ad5f2a0f14fd47",
+    "verification/verify_symbolic.py": "3e48a1947e65719310e8dc706b49bc7fe6b04eb67bfb1f9c4b4b80ca9f3d16ce"
+  },
+  "commands": [
+    {
+      "arguments": [
+        "verification/verify_exact.py",
+        "--output-dir",
+        "reproduction/exact"
+      ],
+      "exit_code": 0
+    },
+    {
+      "arguments": [
+        "verification/verify_symbolic.py",
+        "--output-dir",
+        "reproduction/symbolic"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "fresh_result_files": [
+    "reproduction/exact/exact-results.json",
+    "reproduction/symbolic/symbolic-results.json"
+  ],
+  "passed": true,
+  "scope": "Fresh exact/symbolic suites and separately labeled diagnostics. Successful finite replay does not complete analytic integration or establish numerical period identities."
+}
