@@ -118,7 +118,7 @@ results it re-derives. Credit all four for the shared results.
 
 Dated note, 2026-10-09. Two more continuations of the same manuscript chapter
 arrived after this report was placed and are added to it as sources 18 and 19,
-prefixed like 15–17 (placement `<batch-140 placement commit>`). Their
+prefixed like 15–17 (placement `49a6356865`). Their
 manuscripts, PDFs and READMEs are not staged; they are retrievable from the
 arrival commit `412dbd0048`. Both were pinned before this report existed (18 at
 `afed07429d`, 19 at `09812e81e5`; the manuscript is unchanged from both pins),
@@ -207,3 +207,141 @@ midpoint rule, 18's signed Euler sums and 19's Hölder decomposition.
   locations and rewrite their recorded outputs; rerun on copies in a scratch
   directory under the delivered names. 19's `check_source_patch.py` compares the
   same newline-shifted SHA-256 values and would report a mismatch on this checkout.
+
+## Later sources (batch 141, 9 October 2026)
+
+Dated note, 2026-10-09. Five continuations arrived together (arrival commit
+`a2a4cf58c4`); three of them are added here as sources 21, 23 and 24, prefixed like
+15–19 (placement `3b0bae5f5a`), and two (20, 22) are added to
+[`../rational-grid-distribution-ranks/`](../rational-grid-distribution-ranks/). Their
+manuscripts, PDFs and delivery READMEs are not staged; they are retrievable from the
+arrival commit. All three were pinned before this report existed (21 at `29d9344771`,
+23 at `78f9e5df05`, 24 at `d00eba30c1`; the batch-139 placement is `d4dead2c6b`), and the
+manuscript under `../../manuscript/` has been rebuilt since all three pins, so their
+manuscript line numbers are stale. 24 had read 14's arrival archive and cites it; 21 and
+23 cite no source of this report. All are unrefereed; 23 and 24 say they were prepared
+with OpenAI assistance; none claims a proof-assistant check.
+
+**21 `ProveIt_polylogarithms_complementary_depth`**, *Complementary depth, classical
+ladders, and exact shuffle ranks* (18 pp.): `21-complementary-depth-BUILD-REPORT.md`,
+the proposed manuscript material `21-complementary-depth-integration-EDITORIAL-NOTES.md`
+and `21-complementary-depth-integration-complementary-depth-insert.tex`,
+`code/21-complementary-depth-*` (the exact word engine `polylog_words.py`, checks,
+interval certifier, `S₄` row audit, standard-library replay, `Makefile`),
+`data/21-complementary-depth-*` (the high-depth catalogue, 1.06 MB, one-zero and
+two-zero tables, the weight-six triple matrix, Gaussian interval endpoints, the `S₄`
+row matrix and witness, `tables-shuffle_ranks.csv`, `SOURCE-PROVENANCE.json`,
+`MANIFEST.sha256` as delivered, and the run record `verification.log`, force-added
+because the root `.gitignore` ignores `*.log`).
+
+**23 `polylogarithms_research_2026-10-10`**, *Sharp Remainders and Exact Reductions in
+Polylogarithm Arithmetic Bridges* (37 pp.; master, `sections/` and `references.tex` not
+staged): `23-sharp-remainders-proposed_changes-README.md`, the manuscript patch
+`23-sharp-remainders-proposed_changes-manuscript-corrections.patch` (not applied; it no
+longer applies to the rebuilt manuscript) and the fragment
+`23-sharp-remainders-proposed_changes-mixed_survivor_insertion.tex`,
+`code/23-sharp-remainders-*` (moments, Herglotz, Tornheim, relation spaces, `S₆` Mellin,
+Euler and exact rational residual certificate, figures, `Makefile`), `data/23-sharp-remainders-*`
+(check records, `claim_ledger.json`, `source_manifest.json`, the `audit-` records and the
+exact `S₆` residual-enclosure certificate, which does not prove `S₆`), and `figures/23-sharp-remainders-{herglotz_oscillation,moment_remainders}.{pdf,png}`.
+
+**24 `polylogarithms_rigidity_20261010`**, *Complementary-Power Rigidity, a Gaussian
+Euler-Sum Identity, and Reflected Gamma Moments* (35 pp.; master, `article/sections/`
+and `article/references.tex` not staged): `24-rigidity-integration-INTEGRATION.md`, the
+manuscript patch `24-rigidity-integration-even_weight_normalization.patch` and its text
+`24-rigidity-integration-proposed_P_even_correction.tex` (not applied),
+`code/24-rigidity-*` (the `S₄` verifier `verify_s4.py`, standard library only, and its
+discovery program, ladder, reflected-moment and saddle checks, `Makefile`),
+`data/24-rigidity-*` (`S4_certificate.json`, 538 kB, its verification and numerical
+audit, ladder certificates, degree counts, reflected-moment and saddle records,
+`provenance.json`, `mathematical_review.json`), and `figures/24-rigidity-saddle_rate.{pdf,png}`.
+
+### `S₄`, proved by an exact certificate
+
+24 (`thm:s4`) gives `gauss:eq:S4-closed` in the form: with `S₄ = g₄₁ + Im Li₄,₁(i,−1)`,
+`Im Li₄,₁(i,−1) = −(3g₄₁ + 3g₃₂ + 9g₂₃)/7 + π⁵/224 − (27/224)Gζ(3) − 2β(4)log2`. This is
+proved by 24's exact rational certificate (911 double-shuffle and distribution rows plus
+one convergent duality), replayed at intake with the delivered standard-library verifier
+(empty residual), row schemas checked by hand and the identity confirmed to 40 digits;
+no independent re-derivation of all 911 rows has been made.
+The certificate is an exact rational identity `F = −1120D + Σ q_r R_r` among formal weight-five
+words: 911 standard rows (713 convergent double-shuffle rows, 181 rows with one
+regularized `Li₁(1)` factor, 17 lifted convergent distribution rows, with products of
+depth one by depth up to four) and one convergent instance `D` of the involution
+`t ↦ (1−t)/(1+t)`, which permutes `{0, ∞, ±1, ±i}`. This answers question 1 of 14
+(`sections/07_research.tex`, "Prove the `S₄` relation with an exact colored certificate").
+
+Intake (dossier141_POLYLOG, not re-proved in this note): the delivered verifier, read in
+full, replayed the certificate on a copy with an empty residual; the pullback
+`φ*ω_a = ω_{φ(a)} − ω_{−1}`, the distribution normalization `2^{w−d}` and the
+single-divergence cancellation were checked by hand; the identity holds numerically to
+40 digits. The four restricted-row obstructions delivered at the same time (20: 96 rows;
+21: 134 rows; 22: 96 rows; 23: a separating functional) and 18's (92 rows) concern
+families of depth-two product rows only, so they do not conflict with 24: they show
+what such rows cannot reach. 24 credits an earlier representation of `S₄` by two
+colored doubles to a 2021 discussion (Hintze and pisco); not checked.
+
+### What 21, 23 and 24 repeat
+
+| Result | Earlier sources | 21 | 23 | 24 |
+|---|---|---|---|---|
+| the three weight-four Gaussian triples | 14, 19 | ✓ `thm:gaussian` (via the one-zero family) | | |
+| every position of one `2` among `1`s (`Li_{{1}^a,2,{1}^b}`) | 14 `thm:one-two`, 19 `one2:thm:closed` | ✓ `thm:onezero`, `thm:terminal` (via `q = 1/(1−z)`, like 19) | | |
+| formal shuffle count `ℓ_{w,d}` (Witt) and rank 7 on the ten weight-six triples | 14 `thm:witt`; C11 | ✓ `thm:rank` | | |
+| the two weight-five shuffle rows (span at most two) | 14, 15, 17, 18 | | ✓ `prop:two-g` | used, not counted as new |
+| inverse-argument mixed doubles; `Im Li₅,₁(i,−i)` reduces | 10 (X1); 14, 15, 17, 19 | | ✓ `prop:inverse-mixed`, `eq:mixed-weight-six` (credits 10) | |
+| the mixed-point antisymmetry must swap colours | 19 (batch 140) | ✓ exact value at `a = b = 1` | | |
+| cubic log-gamma moment in Tornheim–Witten derivatives (Bailey–Borwein–Borwein 2015, Thm 6) | 14 | | ✓ `sec:cubic`, independent proof and evaluator | |
+| late coefficients `c_k ~ Cρ^{−k}k^{−3/2}` of the log-gamma moment expansion | 14 | | ✓ complete expansion (`thm:late`) | the case `m = 0` of `gam:thm:late` (credited) |
+| `S₄` not reachable from a specified family of depth-two product rows | 18 | ✓ 134 × 23, rank 19 → 20 | ✓ separating functional | `S₄` proved by an exact certificate with a larger family (replayed at intake; see above) |
+
+### What is new in 21, 23 and 24
+
+- **21:** complementary depth (`thm:complement`): every one-variable multiple
+  polylogarithm of weight `w` and depth `d` is a rational combination of
+  `L^j Li_A(q,1,…) ζ(B)` with `q = 1/(1−z)`, `L = log q`, `depth(A) + depth(B) ≤ w − d`,
+  hence depth at most `⌊w/2⌋` with the argument family enlarged (`cor:halfb`); a
+  two-zero height-one reduction of `Li_{3,{1}^{w−3}}` to doubles (`thm:twozero`);
+  rational interval certificates for the triples below `10⁻⁹⁰`.
+- **23:** for the classical log-gamma moment expansion, the least term at
+  `k = (n + 3/2)/Λ + O(1)` and the sharp remainder, half the first omitted term with two
+  corrections (`thm:optimal-moment`, `cor:moment-second`; question 7 of 14); for the
+  Herglotz function, a finite Bernoulli–Hurwitz evaluator of `F^{(r)}(p/q)`
+  (constructive form of Radchenko–Zagier's closure, credited), an effective remainder at
+  large derivative order, a two-term oscillatory asymptotic and infinitely many sign
+  changes (`thm:herglotz-*`, `cor:herglotz-signs`; a different limit from the large-`x`
+  truncation of [`../herglotz-cyclotomic-obstructions/`](../herglotz-cyclotomic-obstructions/));
+  the all-exponent Gaussian mixed endpoint identity (`thm:mixed-endpoint`); all-weight
+  dimensions of one specified imaginary quotient at levels 3 and 4 (`thm:level-three`,
+  `thm:level-four`; formal only); and a new conjecture for `S₆` (`conj:S6`, weight seven)
+  with a frozen integer vector and an exact rational residual enclosure below `10⁻²⁶⁰`
+  (`thm:euler-certificate`).
+- **24:** the `S₄` proof above; complementary-power rigidity: a real `0 < r < 1` has at
+  most two pairs `r^a + r^b = 1`, two exactly when `r^d = ω` (`ω` the root of
+  `x³ + x² − 1`), with pairs `(d,5d)`, `(2d,3d)` (`thm:complement-collisions`, from
+  Ljunggren–Tverberg), signed unit counts `0, 3, 6, 12`, an exhaustive exponent bound and
+  an exact count of bases by degree (question 5 of 14); proofs of the plastic `Li₂` and
+  `Li₃` ladders and two log-free plastic identities; exponential cancellation at
+  proportional harmonic depth for `T_{p,h}` (`thm:saddle`, continuing the transition of
+  [`../alternating-harmonic-polylogarithms/`](../alternating-harmonic-polylogarithms/));
+  reflected log-gamma moments `∫₀¹ Γ(x)^z f(1−x)^m dx` at fixed `m` (continuation,
+  residues, late coefficients, effective remainder; question 8 of 14), a finite
+  reflection identity among their residues, and a formal proof of Conjecture 5.5 of the
+  2010 Amdeberhan et al. author preprint (third-party; not checked).
+
+### Caveats for 21, 23 and 24
+
+- Intake checked numerically (40 digits; dossier141_POLYLOG): `thm:s4` and its mixed
+  form, 23's two rows, `eq:S4-two`, `thm:mixed-endpoint` for `p = 2, 3, 4`, `eq:K41`,
+  `eq:mixed-weight-six`, `conj:S6` and its integer vector (evidence only), 21's exact
+  antisymmetric value, the four plastic identities, and 24's degree claims on
+  complementary pairs for five bases. 23's and 24's asymptotic theorems, 21's general
+  theorems and the triples were not re-derived.
+- `S₆` is a conjecture; the `10⁻²⁶⁰` enclosure does not prove it.
+- 21's and 23's dimension statements are dimensions of specified formal quotients, not
+  of evaluated periods; 24's 911-row count is not minimal.
+- 23's patch and 24's patch target the manuscript, which this report does not edit; 23's
+  no longer applies to the rebuilt manuscript, 24's still does.
+- The prefixed scripts resolve inputs and outputs relative to their delivered locations
+  and rewrite their records; rerun on copies in a scratch directory under the delivered
+  names. `24-rigidity-verify_s4.py` takes the certificate path as an argument.
