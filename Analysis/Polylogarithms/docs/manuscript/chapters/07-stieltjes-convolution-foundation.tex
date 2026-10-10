@@ -1,0 +1,395 @@
+% Canonical reconciliation of the independently delivered correlation reports.
+\providecommand{\stconvT}{\mathbb T}
+\providecommand{\stconvId}{\mathsf I}
+\providecommand{\stconvG}{\mathcal G}
+\providecommand{\stconvBell}{\mathcal B}
+\providecommand{\stconvCT}{\operatorname{CT}}
+\providecommand{\stconvFp}{\operatorname{Fp}}
+\providecommand{\FP}{\operatorname{FP}}
+The single-function jet calculus extends to products once the endpoint
+normalization is fixed. The four independent continuations
+\cite{stconv:algebra-report,stconv:shifted-report,stconv:closure-report,stconv:calculus-report}
+agree on the scale-one finite parts used below. Their common proof is
+organized through Fourier normalization, singular Laurent coefficients,
+convolution closure, translated products and normalized primitive lifting.
+The contact terms belong to the differentiated extension in the next chapter.
+
+\section{Fourier conventions and the Hurwitz semigroup}
+\label{stconv:sec:semigroup}
+We work on $\stconvT=\mathbb R/\mathbb Z$, with normalized Lebesgue measure.
+For a periodic distribution $T$, use the convention
+\[
+ \widehat T(k)=\langle T,e^{-2\pi i kx}\rangle,\qquad k\in\Z.
+\]
+The constant function $1$ and the point mass $\delta_0$ both have mean
+one, but their nonzero Fourier coefficients are respectively $0$ and $1$.
+Thus
+\[
+ \stconvId=\delta_0-1
+\]
+is the convolution identity on the space of mean-zero distributions. In
+particular, $\stconvId*T=T$ whenever $\widehat T(0)=0$.
+
+The logarithm used throughout is
+\begin{equation}\label{stconv:eq:logbranch}
+ \lambda_k=\log(2\pi i k)
+ =\log(2\pi|k|)+\frac{\pi i}{2}\operatorname{sgn}k,
+ \qquad k\ne0.
+\end{equation}
+All powers below refer to this fixed branch.
+
+\begin{definition}\label{stconv:def:R}
+For $\alpha\in\C$, define $R_\alpha$ by
+\begin{equation}\label{stconv:eq:Rfourier}
+ \widehat R_\alpha(0)=0,\qquad
+ \widehat R_\alpha(k)=e^{-\alpha\lambda_k}\quad(k\ne0).
+\end{equation}
+Equivalently, its Fourier series is
+$\sum_{k\ne0}(2\pi i k)^{-\alpha}e^{2\pi i kx}$ in the distribution sense.
+\end{definition}
+
+\begin{lemma}[Entire distribution family]\label{stconv:lem:entire}
+The family $\alpha\mapsto R_\alpha$ is entire as a periodic-distribution
+family. It is represented by an absolutely convergent Fourier series for
+$\Rea\alpha>1$. For $\Rea\alpha>0$, it is the locally integrable periodic
+extension of
+\begin{equation}\label{stconv:eq:Rhurwitz}
+ R_\alpha(x)=\frac{\zeta(1-\alpha,x)}{\Gamma(\alpha)},\qquad0<x<1.
+\end{equation}
+\end{lemma}
+\begin{proof}
+On each compact set of parameters, the coefficients in
+\eqref{stconv:eq:Rfourier}, together with any fixed number of parameter derivatives,
+have at most polynomial growth in $|k|$. Fourier coefficients of a smooth
+test function decay faster than every polynomial. Hence the paired Fourier
+series and all its parameter derivatives converge locally uniformly. This
+proves the first assertion; the absolute-convergence assertion follows
+immediately from $\sum k^{-\Rea\alpha}$.
+
+For $\Rea\alpha>1$, equation~\eqref{stconv:eq:Rhurwitz} is precisely Hurwitz's
+Fourier formula. To continue to $\Rea\alpha>0$, use
+\[
+ \zeta(1-\alpha,x)=x^{\alpha-1}+\zeta(1-\alpha,1+x).
+\]
+On compact parameter subsets of that half-plane, the first term and its
+parameter derivatives are dominated by integrable powers of $x$ times
+powers of $|\log x|$. The second term is regular in $x\in[0,1]$; any
+apparent parameter singularity at $\alpha=0$ is outside the stated open
+half-plane. The two holomorphic distribution families agree in an open
+subregion, and hence agree throughout the half-plane.
+\end{proof}
+
+\begin{theorem}[Semigroup and differential ladder]\label{stconv:thm:semigroup}
+For all $\alpha,\beta\in\C$,
+\begin{equation}\label{stconv:eq:semigroup}
+ R_\alpha*R_\beta=R_{\alpha+\beta},\qquad
+ DR_\alpha=R_{\alpha-1},\qquad R_0=\stconvId.
+\end{equation}
+If $J_{\alpha,r}=\partial_\alpha^rR_\alpha$, then
+\begin{equation}\label{stconv:eq:mixedjets}
+ J_{\alpha,r}*J_{\beta,s}=J_{\alpha+\beta,r+s},\qquad
+ D^kJ_{\alpha,r}=J_{\alpha-k,r}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Periodic distributions can be convolved: equivalently, their
+polynomially growing Fourier coefficients can be multiplied. For $k\ne0$,
+\[
+ e^{-\alpha\lambda_k}e^{-\beta\lambda_k}
+ =e^{-(\alpha+\beta)\lambda_k},\qquad
+ (2\pi i k)e^{-\alpha\lambda_k}=e^{-(\alpha-1)\lambda_k}.
+\]
+Both sides have zero zeroth coefficient. Fourier uniqueness proves
+\eqref{stconv:eq:semigroup}. Differentiating the locally uniformly paired
+Fourier series gives~\eqref{stconv:eq:mixedjets}.
+\end{proof}
+
+For real $\alpha,\beta>1$, the first identity, expressed using
+\eqref{stconv:eq:Rhurwitz}, is the nonsingular law in Sun~\cite[Remark 3.2]{stconv:Sun}.
+The new use here is at its singular integer parameters and their spectral
+jets. At positive integers,
+\[
+ R_m(x)=-\frac{B_m(\{x\})}{m!}\quad(m\ge1),
+\]
+up to immaterial point values of the sawtooth for $m=1$. At negative
+integers,
+\begin{equation}\label{stconv:eq:negativeR}
+ R_{-k}=\delta_0^{(k)}\quad(k\ge1).
+\end{equation}
+The quotient in~\eqref{stconv:eq:Rhurwitz} vanishes pointwise at $\alpha=-k$
+away from the integers, while the distribution is nonzero. This is the
+basic reason contact terms must be retained.
+
+\section{Canonical finite parts of the Stieltjes functions}
+\label{stconv:sec:finiteparts}
+The generalized Stieltjes functions are defined for $x>0$ by
+\begin{equation}\label{stconv:eq:laurent}
+ \zeta(1-z,x)=-\frac1z+\sum_{n=0}^\infty\gamma_n(x)\frac{z^n}{n!}.
+\end{equation}
+Thus $\gamma_0(x)=-\psi(x)$. The Hurwitz shift relation gives
+\begin{equation}\label{stconv:eq:stshift}
+ \gamma_n(x)=\frac{\log^n x}{x}+\gamma_n(1+x).
+\end{equation}
+Consequently, periodic extension of $\gamma_n$ is not locally integrable
+at $0$; a convention is necessary.
+
+\begin{definition}[Canonical periodic finite part]\label{stconv:def:G}
+For a smooth periodic test function $\phi$, define
+\begin{align}
+ \langle G_n,\phi\rangle
+ &=\int_0^1\left(\gamma_n(x)\phi(x)
+       -\frac{\log^n x}{x}\phi(0)\right)\dd x\label{stconv:eq:Gdefinition}\\
+ &=\lim_{\epsilon\downarrow0}\left\{
+       \int_\epsilon^1\gamma_n(x)\phi(x)\dd x
+       +\frac{\log^{n+1}\epsilon}{n+1}\phi(0)\right\}.
+       \label{stconv:eq:Gcutoff}
+\end{align}
+\end{definition}
+The integrand in~\eqref{stconv:eq:Gdefinition} is integrable: its singular part is
+$\log^n x\,[\phi(x)-\phi(0)]/x$, which is $O(|\log x|^n)$.
+No arbitrary finite multiple of $\delta_0$ is added.
+
+\begin{lemma}[The distributional Laurent expansion]\label{stconv:lem:Laurentdist}
+Let
+\[
+ Z(s)=\Gamma(1-s)R_{1-s}.
+\]
+It is a meromorphic periodic-distribution family, agreeing with the
+periodic locally integrable Hurwitz zeta for $\Rea s<1$. Near $z=0$,
+\begin{equation}\label{stconv:eq:ZLaurent}
+ Z(1-z)=\frac{\stconvId}{z}+\sum_{n=0}^\infty G_n\frac{z^n}{n!}.
+\end{equation}
+Every $G_n$ has mean zero.
+\end{lemma}
+\begin{proof}
+The meromorphic continuation follows from Lemma~\ref{stconv:lem:entire}. For
+$\Rea z>0$, split the pairing using
+$\zeta(1-z,x)=x^{z-1}+\zeta(1-z,1+x)$. The first term has expansion
+\[
+ \int_0^1x^{z-1}\phi(x)\dd x
+ =\frac{\phi(0)}z+
+   \sum_{n\ge0}\frac{z^n}{n!}
+   \int_0^1\frac{\log^n x}{x}[\phi(x)-\phi(0)]\dd x.
+\]
+The second term contributes $-z^{-1}\int_0^1\phi$ and the coefficients
+$\int_0^1\gamma_n(1+x)\phi(x)\dd x$. These expansions converge locally
+near zero after pairing, by the same endpoint domination used above.
+Combining them proves~\eqref{stconv:eq:ZLaurent} with the exact subtraction in
+Definition~\ref{stconv:def:G}. Since $\widehat Z(s)(0)=0$, every coefficient has
+mean zero. Equivalently, direct integration over $[1,2]$ gives
+$\int_1^2\zeta(1-z,x)\dd x=-1/z$, whose regular coefficients vanish.
+\end{proof}
+
+\begin{remark}[Two different residues]
+The scalar function in~\eqref{stconv:eq:laurent} has residue $-1$ as a function
+of $z$, whereas the periodic-distribution family has residue
+$\delta_0-1$. Analytic continuation across a nonintegrable endpoint adds
+a point-supported residue. Treating the scalar residue as the whole
+periodic residue gives wrong convolution constants.
+\end{remark}
+
+\section{All-index convolution closure and exact normal forms}
+\label{stconv:sec:algebra}
+Write $\stconvG(z)=\sum_{n\ge0}G_nz^n/n!$, holomorphic as a distribution family
+for $|z|<1$. By~\eqref{stconv:eq:ZLaurent},
+\begin{equation}\label{stconv:eq:masterG}
+ \stconvId+z\stconvG(z)=\Gamma(1+z)R_z.
+\end{equation}
+Let $X=G_0$. For a complete exponential Bell polynomial we use
+\begin{equation}\label{stconv:eq:Belldef}
+ \exp\left(\sum_{j\ge1}b_j\frac{z^j}{j!}\right)
+ =\sum_{r\ge0}\stconvBell_r(b_1,\ldots,b_r)\frac{z^r}{r!}.
+\end{equation}
+When its arguments are distributions, all products in this definition
+are convolution products and its scalar unit is $\stconvId$.
+
+\begin{theorem}[One-generator convolution algebra]\label{stconv:thm:Bell}
+For every $n\ge0$,
+\begin{equation}\label{stconv:eq:BellG}
+ (n+1)G_n=\stconvBell_{n+1}(b_1,\ldots,b_{n+1}),\qquad
+ b_1=X,\quad b_j=(-1)^j(j-1)!\zeta(j)\stconvId\ (j\ge2).
+\end{equation}
+The span of $\stconvId,G_0,G_1,\ldots$ is a convolution algebra isomorphic to
+the polynomial algebra $\C[X]$. These distributions form a basis of that
+algebra, with the unit listed first.
+\end{theorem}
+\begin{proof}
+For $k\ne0$, the Fourier transform of~\eqref{stconv:eq:masterG} is
+\[
+ 1+z\widehat\stconvG(z)(k)
+ =\Gamma(1+z)e^{-z\lambda_k}
+ =\exp\left[(-\gamma-\lambda_k)z+
+       \sum_{j\ge2}\frac{(-1)^j\zeta(j)}jz^j\right].
+\]
+The linear coefficient is
+$\widehat X(k)=-\gamma-\lambda_k$. Comparing with
+\eqref{stconv:eq:Belldef} proves~\eqref{stconv:eq:BellG}; the zero Fourier coefficient
+of each distributional expression vanishes. The leading term in $G_n$
+is $X^{*(n+1)}/(n+1)$, so the listed distributions span exactly the
+polynomial algebra generated by $X$.
+
+There are no polynomial relations among its powers. Indeed, if
+$P(X)=0$ distributionally, then
+$P(-\gamma-\log(2\pi k)-i\pi/2)=0$ for every positive integer $k$.
+These are infinitely many distinct complex numbers, and hence $P$ is the
+zero polynomial. This also proves the basis assertion.
+\end{proof}
+
+This algebraic freeness concerns distributions as functions of the
+variable $x$. It is not an independence theorem about their values at a
+fixed rational point, nor about zeta or Stieltjes constants as numbers.
+
+The first Bell forms are
+\begin{align}
+ 2G_1&=X^{*2}+\zeta(2)\stconvId,\label{stconv:eq:Belllow}\\
+ 3G_2&=X^{*3}+3\zeta(2)X-2\zeta(3)\stconvId,\notag\\
+ 4G_3&=X^{*4}+6\zeta(2)X^{*2}-8\zeta(3)X
+                +[3\zeta(2)^2+6\zeta(4)]\stconvId.\notag
+\end{align}
+They already imply many exact integrals. An efficient all-index
+multiplication rule is supplied by the following Gamma quotient.
+
+\begin{theorem}[Bivariate multiplication law]\label{stconv:thm:product}
+Define, near $(u,v)=(0,0)$,
+\begin{align}
+ B(u,v)&=\frac{\Gamma(1+u)\Gamma(1+v)}{\Gamma(1+u+v)}\label{stconv:eq:Buv}\\
+ &=\exp\left(\sum_{j\ge2}\frac{(-1)^j\zeta(j)}j
+          [u^j+v^j-(u+v)^j]\right).\notag
+\end{align}
+Then
+\begin{align}
+ uv\,\stconvG(u)*\stconvG(v)={}&[B(u,v)-1]\stconvId\label{stconv:eq:Gproduct}\\
+ &+B(u,v)(u+v)\stconvG(u+v)-u\stconvG(u)-v\stconvG(v).\notag
+\end{align}
+The right side is divisible by $uv$ as a convergent distribution-valued
+power series. In particular,
+\begin{equation}\label{stconv:eq:topindex}
+ G_m*G_n-\frac{m+n+2}{(m+1)(n+1)}G_{m+n+1}
+       \in\operatorname{span}_{\C}(\{\stconvId\}\cup\{G_j:0\le j<m+n\}),
+\end{equation}
+where the lower Stieltjes span is empty when $m+n=0$. The index
+$m+n$ is absent because the Gamma quotient has no linear term. Every
+coefficient is a polynomial over $\Q$ in zeta values at positive
+integers. Its complete value is obtained by multiplying the coefficient
+of $u^{m+1}v^{n+1}$ in~\eqref{stconv:eq:Gproduct} by $m!n!$.
+\end{theorem}
+\begin{proof}
+Convolve~\eqref{stconv:eq:masterG} at parameters $u$ and $v$ and apply
+Theorem~\ref{stconv:thm:semigroup}. The result is
+\[
+ [\stconvId+u\stconvG(u)]*[\stconvId+v\stconvG(v)]
+ =B(u,v)[\stconvId+(u+v)\stconvG(u+v)].
+\]
+Subtract the unit and the two linear summands. Both restrictions $u=0$
+and $v=0$ vanish identically, proving divisibility. Coefficient extraction
+is legitimate in a sufficiently small bidisc. The largest-index term
+comes from $(u+v)\stconvG(u+v)$ with the constant coefficient of $B$; its
+coefficient is
+$\frac{m!n!}{(m+n+1)!}\binom{m+n+2}{m+1}$, which equals the number in
+\eqref{stconv:eq:topindex}. The exponential expansion of $B$ proves the
+zeta-polynomial assertion.
+\end{proof}
+
+Four useful multiplication rules are
+\begin{align}
+ G_0*G_0&=2G_1-\zeta(2)\stconvId,\label{stconv:eq:product00}\\
+ G_0*G_1&=\frac32G_2-\zeta(2)G_0+\zeta(3)\stconvId,\label{stconv:eq:product01}\\
+ G_0*G_2&=\frac43G_3-2\zeta(2)G_1+2\zeta(3)G_0-2\zeta(4)\stconvId,\label{stconv:eq:product02}\\
+ G_1*G_1&=G_3-2\zeta(2)G_1+2\zeta(3)G_0-\frac14\zeta(4)\stconvId.
+ \label{stconv:eq:product11}
+\end{align}
+The last simplification uses $\zeta(2)^2=5\zeta(4)/2$. The verification
+catalog retains independent formal symbols for zeta values until such a
+specific relation is explicitly applied.
+
+\section{Ordinary integral realizations and explicit Stieltjes identities}
+\label{stconv:sec:integrals}
+The singular support of $G_n$ is contained in $\{0\}$. Thus its
+convolution with another $G_m$ is smooth away from $0$: in a local
+convolution integral at $0<x<1$, the two singular factors occur at the
+distinct integration points $t=0$ and $t=x$. We now give a direct formula
+that also proves this local realization without requiring a product of
+distributions at the same point.
+
+\begin{theorem}[Absolutely convergent subtracted integrals]\label{stconv:thm:integral}
+Put $a_n(t)=\log^n(t)/t$. For $m,n\ge0$ and $0<x<1$, define
+\begin{align}
+ C_{m,n}(x)={}&\int_0^x\big[\gamma_m(t)\gamma_n(x-t)
+          -\gamma_n(x)a_m(t)-\gamma_m(x)a_n(x-t)\big]\dd t
+          \label{stconv:eq:Cmn}\\
+ &+\int_x^1\gamma_m(t)\gamma_n(1+x-t)\dd t\notag\\
+ &+\gamma_n(x)\frac{\log^{m+1}x}{m+1}
+  +\gamma_m(x)\frac{\log^{n+1}x}{n+1}.\notag
+\end{align}
+Both displayed integrals are absolutely convergent, and
+$C_{m,n}(x)=(G_m*G_n)(x)$. In particular, every expression
+\eqref{stconv:eq:Cmn} has a finite exact reduction using Theorem~\ref{stconv:thm:product}.
+\end{theorem}
+\begin{proof}
+Near $t=0$, the shift relation~\eqref{stconv:eq:stshift} leaves a possible
+singularity
+\[
+ a_m(t)[\gamma_n(x-t)-\gamma_n(x)]=O(|\log t|^m).
+\]
+The other endpoint is the same argument with $m,n$ interchanged. The
+second integral is nonsingular. These observations prove absolute
+convergence, locally uniformly with derivatives in $x$ after using
+endpoint-fixed local coordinates.
+
+For the normalization, approximate $G_m$ by the cutoff function
+$\mathbf1_{[\epsilon,1)}\gamma_m$ plus
+$\log^{m+1}\epsilon\,\delta_0/(m+1)$, and similarly for $G_n$. On a
+compact subinterval of $0<x<1$, their convolution consists of
+\[
+ \int_\epsilon^{x-\epsilon}\gamma_m(t)\gamma_n(x-t)\dd t
+ +\int_x^1\gamma_m(t)\gamma_n(1+x-t)\dd t
+\]
+plus the two logarithmic counterterms multiplying $\gamma_n(x)$ and
+$\gamma_m(x)$. The product of the two delta counterterms is supported
+at $0$, outside that compact subinterval. Integrating the two subtracted
+$a$-terms explicitly and taking the limit gives~\eqref{stconv:eq:Cmn}.
+The locally uniform endpoint argument identifies this limit with the
+restriction of the distributional convolution.
+\end{proof}
+
+\begin{corollary}[Four scalar identity families]\label{stconv:cor:scalar}
+For $0<x<1$,
+\begin{align}
+ C_{0,0}(x)&=2\gamma_1(x)+\zeta(2),\label{stconv:eq:C00}\\
+ C_{0,1}(x)&=\frac32\gamma_2(x)-\zeta(2)\gamma_0(x)-\zeta(3),\label{stconv:eq:C01}\\
+ C_{0,2}(x)&=\frac43\gamma_3(x)-2\zeta(2)\gamma_1(x)
+                    +2\zeta(3)\gamma_0(x)+2\zeta(4),\label{stconv:eq:C02}\\
+ C_{1,1}(x)&=\gamma_3(x)-2\zeta(2)\gamma_1(x)
+                    +2\zeta(3)\gamma_0(x)+\frac14\zeta(4).
+ \label{stconv:eq:C11}
+\end{align}
+\end{corollary}
+\begin{proof}
+Restrict~\eqref{stconv:eq:product00}--\eqref{stconv:eq:product11} to $0<x<1$, where
+$G_n$ agrees with $\gamma_n$ and $\stconvId$ agrees with the constant $-1$.
+\end{proof}
+
+\subsection{A concrete digamma integral}
+Since $\gamma_0=-\psi$, the first case reads
+\begin{align}
+ &\int_0^x\left[\psi(t)\psi(x-t)+\psi(x)\left(\frac1t+\frac1{x-t}\right)\right]\dd t
+ \label{stconv:eq:digamma-integral}\\
+ &\qquad+\int_x^1\psi(t)\psi(1+x-t)\dd t-2\psi(x)\log x
+ =2\gamma_1(x)+\frac{\pi^2}{6}.\notag
+\end{align}
+The two divergent-looking summands inside the first bracket must be
+integrated together; their sum is integrable. Equation~\eqref{stconv:eq:digamma-integral}
+is not an assertion that either unregularized convolution integral exists.
+
+At $x=1/2$, the Hurwitz identity
+$\zeta(s,1/2)=(2^s-1)\zeta(s)$ implies
+\[
+ \gamma_1(1/2)=\gamma_1-2\gamma\log2-\log^22.
+\]
+Thus the left side of~\eqref{stconv:eq:digamma-integral} at $1/2$ equals
+\begin{equation}\label{stconv:eq:half}
+ 2\gamma_1-4\gamma\log2-2\log^22+\frac{\pi^2}{6}.
+\end{equation}
+The same method at any rational argument turns the full multiplication
+table into exact relations among rational-argument Stieltjes functions,
+with no integer-relation search.

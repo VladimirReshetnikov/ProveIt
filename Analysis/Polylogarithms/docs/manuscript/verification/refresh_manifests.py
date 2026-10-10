@@ -22,7 +22,8 @@ for name,entry in previous.items():
 archives=sum((read(V/name) for name in ['incoming-archives.json',
     'research-incoming-archives.json','third-incoming-archives.json',
     'fourth-incoming-archives.json','fifth-incoming-archives.json',
-    'sixth-incoming-archives.json','seventh-incoming-archives.json']), [])
+    'sixth-incoming-archives.json','seventh-incoming-archives.json',
+    'eighth-incoming-archives.json']), [])
 for a in archives:
     archive=B.parents[3]/a['archive']
     blob=archive.read_bytes() if archive.is_file() else subprocess.check_output(['git','show',a['archive_git_revision']+':'+a['archive']],cwd=B.parents[3])

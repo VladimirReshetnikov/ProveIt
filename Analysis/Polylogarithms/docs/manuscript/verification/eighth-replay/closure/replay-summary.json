@@ -1,0 +1,49 @@
+{
+  "part": "closure",
+  "source_folder": "stieltjes-correlation-calculus/continuations/bilinear-correlation-closure",
+  "source_code_sha256": {
+    "code/exact_coefficients.py": "6bf13185ee03f8ae3729558911194850aba953db993386ee4d74700624ecca79",
+    "code/polylog_derivative_canary.py": "46f3c25d0453ee42b839a52c080b89ed2b4b6f8df2d87de38ff630714ad1d476",
+    "code/verify_numeric.py": "cebf8b0fc94b3dd77c14f1c61c5e3e9e776305c0705d25aeab13af5c08f94a10",
+    "code/verify_stieltjes_pairs.py": "f5bb0e85d59ac35fb1d14cd7a0133672afffaa3f677ddd38fca934eaf8165a41"
+  },
+  "commands": [
+    {
+      "arguments": [
+        "code/exact_coefficients.py",
+        "--max-total",
+        "8"
+      ],
+      "exit_code": 0
+    },
+    {
+      "arguments": [
+        "code/verify_numeric.py",
+        "--dps",
+        "45"
+      ],
+      "exit_code": 0
+    },
+    {
+      "arguments": [
+        "code/verify_stieltjes_pairs.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "arguments": [
+        "code/polylog_derivative_canary.py"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "fresh_result_files": [
+    "results/coefficients.json",
+    "results/exact_verification.json",
+    "results/numeric_verification.json",
+    "results/polylog_derivative_canary.json",
+    "results/stieltjes_pair_verification.json"
+  ],
+  "passed": true,
+  "scope": "Fresh exact/symbolic suites and separately labeled diagnostics. Successful finite replay does not complete analytic integration or establish numerical period identities."
+}

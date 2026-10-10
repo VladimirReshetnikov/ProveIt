@@ -1,25 +1,26 @@
 # Polylogarithms and their Arithmetic Bridges
 
 The collective manuscript, authored by **ProveIt Contributors**, is
-[polylogarithms.pdf](polylogarithms.pdf): **417 pages, twelve chapters,
-thirteen figures and 106 references**, with a literature appendix preserving
+[polylogarithms.pdf](polylogarithms.pdf): **446 pages, twelve chapters,
+thirteen figures and 111 references**, with a literature appendix preserving
 94 distinct historical question leads. Its editable source is
 [polylogarithms.tex](polylogarithms.tex) and the files in `chapters/`.
 
-The [inventory](source-inventory.json) accounts for **599 textual source
+The [inventory](source-inventory.json) accounts for **642 textual source
 files**, including overlapping assembled articles, fragments and correction
 registers. The [editorial ledger](EDITORIAL-LEDGER.md) maps their mathematical
-status and identifies pending research integration. Thirty-seven incoming
-archives are preserved as **1,496 preserved original members**. All their isolated
+status and identifies pending research integration. Forty-two incoming
+archives are preserved as **1,627 original tracked members**. All their isolated
 replay suites pass; preservation and successful finite replay do not imply
 that every new analytic theorem has already been integrated. The imported
 ZIPs have been retired from the drop zone under its intake procedure; the
 arrival commits and recovery paths remain recorded in
-`verification/*incoming-archives.json` and the retirement records. Three ignored
-SHA256SUMS members remain recoverable in the sixth arrival archives; the
-existing ignore rules were followed without manifest verification. The eleven
-latest packages are placed on existing thematic spines with historical
-OVERVIEW notes; their remaining analytic claims retain the ledger's pending scope.
+`verification/*incoming-archives.json` and the retirement records. Five ignored
+SHA256SUMS members remain recoverable in the sixth and eighth arrival archives; the
+existing ignore rules were followed without manifest verification. The latest five
+packages are placed on the Stieltjes-correlation and uniform-transition spines
+with historical OVERVIEW notes; their remaining analytic claims retain the
+ledger's pending scope.
 
 The preceding milestone proves the CM class-product formulas and the recorded
 genus ratios, develops a rational principal-point nonvanishing bound, and
@@ -139,3 +140,28 @@ disk range is sharp by an explicit two-atom counterexample at every
 prescribed larger radius. This does not assert a uniform normalized-radius
 sign or settle the unresolved arithmetic Gaussian sums. Experiments,
 finite exact arithmetic and full analytic identities keep distinct roles.
+
+The Stieltjes correlation material now forms a single proof chain in Chapters
+8 and 9: the entire Fourier Hurwitz family, canonical finite parts, the Bell
+convolution algebra, all-index shifted closure, coincident subtraction and
+convergent collision expansion, all primitive orders, ordinary log-Gamma
+correlations and every circular log-Gamma convolution power. Laurent residues
+then give the derivative contact law and every translated polygamma product.
+These proofs share one normalization and distinguish ordinary integrals from
+finite parts. The original pointwise derivative tower remains valid.
+
+A collective continuation proves the exact dilation action and its logarithmic
+contact corrections at every Stieltjes and derivative order. The normalized
+trace translates the convolution generator by minus log(q). Covering pullback
+and distribution trace have different contact supports and signs; the proof
+computes both, including the all-order polygamma specialization. Independent
+SymPy checks cover 224 exact identities plus a corruption control. Wolfram
+15.0.1 supplies 36 further exact checks and four direct subtracted-integral
+diagnostics; another fifteen diagnostics use 60 decimal digits. Numerical
+checks are not interval certificates or substitutes for the all-index proofs.
+
+All five new packages received complete isolated replay, including the full
+seven-script calculus run and all four resonance suites. Uniform resonance,
+joint Herglotz limits, nonseparable module theorems, higher negative-integer
+collision regularity and Hankel developments remain pending canonical analytic
+audit. Successful finite replay does not promote those claims to proved status.

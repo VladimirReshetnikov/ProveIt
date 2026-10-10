@@ -1,0 +1,16 @@
+ClearAll[zz,xx,ll,ss,nn,rr,jj,cc,anom];
+cc[m_,x_] := Factorial[m] Coefficient[Normal[Series[Exp[(x+EulerGamma) zz] Gamma[1+zz],{zz,0,m+1}]],zz,m+1];
+anom[m_,r_] := (-1)^(m+1) Factorial[m] Coefficient[Expand[Product[1+zz/j,{j,1,r}]],zz,m+1];
+trace=Table[TrueQ[FullSimplify[cc[m,xx-ll]-Sum[Binomial[m,j] (-ll)^(m-j) cc[j,xx],{j,0,m}]-(-ll)^(m+1)/(m+1)]===0],{m,0,5}];
+derivs=Flatten[Table[kappa=(-ll)^(m+1)/(m+1)+Sum[Binomial[m,j] (-ll)^(m-j) anom[j,r],{j,0,m}]-anom[m,r];
+TrueQ[FullSimplify[cc[m,xx-ll]-anom[m,r]-Sum[Binomial[m,j] (-ll)^(m-j) (cc[j,xx]-anom[j,r]),{j,0,m}]-kappa]===0],{m,0,5},{r,1,5}]];
+rows=Table[b=1-a;pa=PolyGamma[0,a];pb=PolyGamma[0,b];
+value=NIntegrate[PolyGamma[0,1+x] PolyGamma[0,x+a]-(PolyGamma[0,x+a]-pa)/x,{x,0,b},WorkingPrecision->70,AccuracyGoal->45,PrecisionGoal->45,MaxRecursion->25]+NIntegrate[PolyGamma[0,1+x] PolyGamma[0,b+x]-(PolyGamma[0,b+x]-pb)/x,{x,0,a},WorkingPrecision->70,AccuracyGoal->45,PrecisionGoal->45,MaxRecursion->25]-pa Log[b]-pb Log[a];
+target=StieltjesGamma[1,a]+StieltjesGamma[1,b]-Pi^2/3;error=Abs[value-N[target,70]];
+<|"kind"->"shifted-digamma-finite-part","a"->ToString[a,InputForm],"absolute_residual"->ToString[error,InputForm],"passed"->TrueQ[error<10^-40]|>,{a,{1/4,37/100,1/2}}];
+value=NIntegrate[PolyGamma[0,1+x]^2-2 (PolyGamma[0,1+x]+EulerGamma)/x,{x,0,1},WorkingPrecision->70,AccuracyGoal->45,PrecisionGoal->45,MaxRecursion->25]-1;
+error=Abs[value-N[2 StieltjesGamma[1]-Pi^2/3,70]];
+AppendTo[rows,<|"kind"->"coincident-digamma-finite-part","absolute_residual"->ToString[error,InputForm],"passed"->TrueQ[error<10^-40]|>];
+record=<|"all_pass"->(And@@trace && And@@derivs && And@@Lookup[rows,"passed"]),"engine"->$Version,"exact_generator_trace_checks"->Length[trace],"exact_derivative_trace_checks"->Length[derivs],"all_exact_pass"->(And@@trace && And@@derivs),"numerical_diagnostics"-><|"working_precision"->70,"interval_certified"->False,"rows"->rows|>,"scope"->"Native Gamma-series polynomial identities and direct subtracted-integral diagnostics; the all-index distribution identities are proved analytically."|>;
+Export[FileNameJoin[{DirectoryName[$InputFileName],"stieltjes-correlation-native.json"}],record,"RawJSON"];
+Print[ExportString[record,"RawJSON"]];Exit[If[TrueQ[record["all_pass"]],0,1]];

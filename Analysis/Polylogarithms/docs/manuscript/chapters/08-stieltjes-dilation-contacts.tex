@@ -1,0 +1,138 @@
+\section{Dilation, distribution traces and exact logarithmic contacts}
+\label{dilfp:sec:main}
+The contact theorem answers an extension question suggested by the
+correlation reports: classical distribution rows need a normalization
+correction when interpreted as finite-part identities. Fourier traces
+make the correction computable at every Stieltjes and derivative order.
+This also describes how dilation acts on the one-generator convolution
+algebra, without any arithmetic-independence assumption.
+
+For a positive integer $q$, define the trace $\mathcal S_q$ and covering
+pullback $\mathcal P_q$ on periodic distributions by
+\[
+ \widehat{\mathcal S_qT}(k)=q\widehat T(qk),\qquad
+ \widehat{\mathcal P_qT}(k)=
+ \begin{cases}\widehat T(k/q),&q\mid k,\\0,&q\nmid k.\end{cases}
+\]
+For ordinary periodic functions these are
+$\mathcal S_qf(x)=\sum_{j=0}^{q-1}f((x+j)/q)$ and
+$\mathcal P_qf(x)=f(\{qx\})$. Put $\ell_q=\log q$ and
+$\mathcal L_q=q^{-1}\mathcal S_q$.
+
+\begin{theorem}[The trace translates the convolution generator]
+\label{dilfp:thm:trace}
+For every $m\ge0$,
+\begin{equation}\label{dilfp:eq:trace}
+ \mathcal S_qG_m
+ =q\sum_{j=0}^m\binom mj(-\ell_q)^{m-j}G_j
+   +\frac{q(-\ell_q)^{m+1}}{m+1}\stconvId.
+\end{equation}
+The normalized trace $\mathcal L_q$ is a unital homomorphism of the
+mean-zero convolution algebra. On its generator $X=G_0$ it acts by
+$X\mapsto X-\ell_q\stconvId$. These actions compose as
+$\mathcal L_q\mathcal L_r=\mathcal L_{qr}$.
+\end{theorem}
+\begin{proof}
+The Fourier definition gives
+$\mathcal S_qR_\alpha=q^{1-\alpha}R_\alpha$. Apply this to the
+Laurent family \eqref{stconv:eq:ZLaurent}:
+\[
+ \mathcal S_q\left(\frac{\stconvId}{z}
+                  +\sum_{m\ge0}G_m\frac{z^m}{m!}\right)
+ =q e^{-\ell_qz}\left(\frac{\stconvId}{z}
+                  +\sum_{m\ge0}G_m\frac{z^m}{m!}\right).
+\]
+The regular coefficients give \eqref{dilfp:eq:trace}, including the
+term produced by the pole. On Fourier coefficients,
+$\mathcal L_q(T*S)=(\mathcal L_qT)*(\mathcal L_qS)$ and
+$\mathcal L_q\stconvId=\stconvId$. The generator formula is the
+$m=0$ case, and repeated traces evaluate a Fourier coefficient at $qrk$.
+\end{proof}
+
+\begin{theorem}[Finite part does not commute with covering pullback]
+\label{dilfp:thm:cover}
+Let $\operatorname{Fp}_x\gamma_m(\{qx\})$ use the constant term in
+the unscaled local coordinate $x-j/q$ at each of the $q$ singularities,
+with right-hand cutoffs tending independently to zero. Then
+\begin{equation}\label{dilfp:eq:cover}
+ \mathcal P_qG_m
+ =\operatorname{Fp}_x\gamma_m(\{qx\})
+ +\frac{\ell_q^{m+1}}{q(m+1)}
+                    \sum_{j=0}^{q-1}\delta_{j/q}.
+\end{equation}
+In particular the raw-coordinate finite part has mean
+$-\ell_q^{m+1}/(m+1)$, while the covering pullback has mean zero.
+\end{theorem}
+\begin{proof}
+On the $j$th segment substitute $y=q(x-j/q)$. Pulling back the
+cutoff prescription \eqref{stconv:eq:Gcutoff} gives its local
+counterterm
+\[
+ \frac{\log^{m+1}(q\epsilon)}{q(m+1)}\phi(j/q).
+\]
+The raw-coordinate constant-term prescription keeps only the divergent
+powers of $\log\epsilon$ in this expression. Their difference is its
+constant coefficient, $\ell_q^{m+1}\phi(j/q)/(q(m+1))$.
+All Taylor remainder integrals converge as in the definition of $G_m$.
+Summing the segments proves \eqref{dilfp:eq:cover}. The Fourier
+pullback preserves the zeroth coefficient, and pairing the contact sum
+with the constant function proves the mean statement.
+\end{proof}
+
+For the trace itself, put $c_{m,q}=-q(-\ell_q)^{m+1}/(m+1)$.
+The classical pointwise multiplication row and its raw-coordinate
+extension read
+\[
+ \operatorname{Fp}_x[\mathcal S_q\gamma_m]
+ =q\sum_{j=0}^m\binom mj(-\ell_q)^{m-j}G_j+c_{m,q}\,1.
+\]
+Comparing with \eqref{dilfp:eq:trace} gives the separate identity
+\begin{equation}\label{dilfp:eq:trace-commutator}
+ \mathcal S_qG_m
+ =\operatorname{Fp}_x[\mathcal S_q\gamma_m]-c_{m,q}\delta_0.
+\end{equation}
+The logarithmic term thus has different signs and support for covering
+pullback and trace; substituting one convention for the other is invalid.
+
+\begin{theorem}[Every differentiated trace and its contact]
+\label{dilfp:thm:derivative}
+Use $F_{m,r}$ and $a_{m,r}=(-1)^{m+1}m!e_{m+1}(r)$ from the
+contact theorem, and let $r\ge1$. Then
+\begin{align}\label{dilfp:eq:derivative}
+ \mathcal S_qF_{m,r}
+ ={}&q^{r+1}\sum_{j=0}^m\binom mj(-\ell_q)^{m-j}F_{j,r}
+                         +q^{r+1}\kappa_{m,r}(\ell_q)\delta_0^{(r)},\notag\\
+ \kappa_{m,r}(\ell)
+ ={}&\frac{(-\ell)^{m+1}}{m+1}
+       +\sum_{j=0}^m\binom mj(-\ell)^{m-j}a_{j,r}-a_{m,r}.
+\end{align}
+The first sum is exactly
+$\operatorname{Fp}_x[\mathcal S_q\gamma_m^{(r)}]$.
+For the canonical polygamma finite parts, the particularly simple
+all-order specialization is
+\begin{equation}\label{dilfp:eq:polygamma}
+ \mathcal S_q\Psi_r=q^{r+1}
+                   (\Psi_r+\ell_q\delta_0^{(r)}),\qquad r\ge1.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Fourier coefficients give
+$\mathcal S_qD^r=q^rD^r\mathcal S_q$ and
+$\mathcal S_q\delta_0^{(r)}=q^{r+1}\delta_0^{(r)}$.
+Apply these identities to $F_{m,r}=D^rG_m-a_{m,r}\delta_0^{(r)}$,
+use \eqref{dilfp:eq:trace}, and then replace each
+$D^rG_j$ by $F_{j,r}+a_{j,r}\delta_0^{(r)}$.
+Because $D^r\stconvId=\delta_0^{(r)}$, the contact coefficient is
+precisely the displayed $\kappa_{m,r}$. Differentiating the classical
+pointwise multiplication row $r$ times proves the raw-coordinate
+interpretation of the first sum. Finally $\Psi_r=-F_{0,r}$ and
+$\kappa_{0,r}=-\ell_q$, proving \eqref{dilfp:eq:polygamma}.
+\end{proof}
+
+These identities answer the normalization question for integer covering
+maps and their distribution traces at every index. They also show that
+the polynomial convolution algebra is preserved by the normalized trace.
+Twisted character projections and products at several independent shifted
+singularities still require separate calculations. Exact Fourier-polynomial
+and local logarithmic-counterterm controls, with a corruption check, are
+recorded in \src{verification/certify_stieltjes_dilation.py}.
