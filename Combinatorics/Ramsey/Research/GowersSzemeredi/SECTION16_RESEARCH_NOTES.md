@@ -2054,6 +2054,47 @@ development.** The existing gap theorems rule out the encoded earlier
 parameter choices; they do not prove that every alternative route needs
 a particular external inverse theorem.
 
+## L. Where the gap in Gowers's proof stands (synthesis, 2026-10-10)
+
+The user's priority is Gowers's proof, not any particular source. This
+section collects what every examined route needs.
+
+- **The printed defect.** Lemma 16.10's anchor lift: `r = ⌈qσ⁻²⌉` anchors
+  with `σ = ρ/4`, and unions over `r²` anchor pairs, give the parameter
+  `p = 4r²γ⁻²s`. The comparison `q(σ/p, γ, k+1)^p ≤ q(ρ, γ, k+1)` fails
+  because `p` grows with `1/ρ` (A). Behind it lies the union rule of
+  multiply-linear sets, which costs exponentially in the number of pieces
+  (B).
+- **Slope relations do not avoid it (checked today).** The slope relation
+  `h ↦ λ_t(h)` does inherit the product property, at parameter `γ²`, from
+  pairs of `φ₁`-restrictions on linear classes. But covering all but `ρ` of
+  a fibre needs `poly(1/ρ)` classes (already at `k = 1`). So the
+  relation's fibre size, and with it `γ′` and `s(θ, γ′, k)`, depend on `ρ`.
+  Lemma 16.8 then turns this into `exp(poly(1/ρ))`. Any exact repair needs
+  a *stackable* invariant (H.4).
+- **The common core.** Every route needs an inverse theorem for Freiman
+  multi-homomorphisms over `ℤ/N` with good bounds.
+  - Dimension 2 (degree 3, five-term APs): already sufficient here, since
+    18.2 and 18.7 are proved for `k ≤ 5`. Milićević 2026 would give the
+    deep form, but its Proposition 9.3 has the coherence gap (J.5c).
+  - Dimension 3 (six-term APs, the first open case of 18.2 and 18.7): needs
+    a dense trilinear piece of density polynomial in `α` (or
+    quasi-polynomial for 18.7 only); see K.4. No such bound is known;
+    Gowers–Milićević 2020 is iterated-exponential.
+- **Explicit-constant alternatives.** None exist.
+  - The openai/math port reduces 18.2 and 18.7 to a dense Szemerédi
+    theorem at Gowers's tower scale (`PORT_CONSTANTS_SURVEY.md`).
+  - Leng–Sah–Sawhney's exponent `c_k` is only shown to exist.
+  - Gowers's 2001 bound is the only explicit one in the literature.
+- **Consequence.** Closing the open entries for `k ≥ 6` by any known means
+  needs a new multilinear inverse theorem: a structure theorem for
+  three-variable frequency functions with at most quasi-polynomial loss
+  in `ℤ/N`. For Theorem 16.2 in every dimension the same is needed in
+  every dimension. That is an open research problem, not a formalization
+  task. The Milićević Step 5 work (J.5c) bears on `Theorem162At 3` through
+  the dimension-two deep structure, but by K.4 it does not reach
+  Corollary 18.7 at `k = 6`.
+
 ## F. Routes
 
 1. **Quantitative repair (research).**
