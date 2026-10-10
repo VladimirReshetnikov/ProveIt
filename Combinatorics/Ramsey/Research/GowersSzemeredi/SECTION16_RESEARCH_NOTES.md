@@ -12211,4 +12211,10 @@ input or newly ported upstream module is used.
 modules; active glue in 458; the strengthened Proposition 9.3 in 462;
 Sanders cells in 166; recentered frequency domains in 534; chart
 localization in 535; and the uniform Sanders wrapper in 536. The combined
-axiom audit is pending for this checkpoint.
+axiom audit includes all 27 new named proofs and checks 9,939 public
+Gowers theorems across 5,618 modules, with a 5,616-module facade closure.
+Only `propext`, `Classical.choice` and `Quot.sound` occur. The selected
+OAI audit closure remains 4,152 modules, and its 4,134-upstream /
+17-compatibility scope check passes. The 115-companion / five-open source
+ledger is byte-identical. The incoming global-to-local provider calculus
+and repaired single-piece lift are included in the same audit.
