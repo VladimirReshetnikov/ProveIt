@@ -1,0 +1,1394 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,xcolor,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!40!black,citecolor=blue!40!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{bookmark,fancyhdr}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Stieltjes correlations and spectral jets}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{3pt}
+\emergencystretch=2em
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\FP}{FP}
+\DeclareMathOperator{\Rea}{Re}
+\DeclareMathOperator{\Ima}{Im}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Zalg}{\mathcal Z}
+\newcommand{\gzero}{\gamma}
+\newcommand{\coeff}[1]{\left[#1\right]}
+\newcommand{\LiJ}[2]{\left.\partial_s^{#1}\Li_s(#2)\right|_{s=2}}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\title{Bilinear Closure of Generalized\ Stieltjes Correlations\\[5pt]
+\large Gamma-ratio kernels, polylogarithmic jets,\ exact collision expansions and antiderivatives}
+\author{Research continuation prepared for Vladimir Reshetnikov's ProveIt project\\
+\small Mathematical derivations and computational audit with OpenAI assistance}
+\date{10 October 2026}
+\hypersetup{pdftitle={Bilinear Closure of Generalized Stieltjes Correlations},pdfauthor={ProveIt research continuation with OpenAI assistance}}
+\begin{document}
+\maketitle
+\thispagestyle{plain}
+\begin{abstract}
+We study products of generalized Stieltjes functions under a circular
+translation. Their ordinary integrals diverge, but a specified endpoint
+finite part admits a holomorphic two-parameter generating function.
+A Gamma-ratio identity proves that every bilinear finite-part correlation
+is a finite \emph{linear} combination of single Stieltjes values at the
+translation and its reflection, with coefficients polynomial in positive
+integer zeta values. The highest Stieltjes order is explicit, and the next
+order is absent identically. We derive the coincident-endpoint analogue,
+an exact convergent collision expansion with a canonical logarithmic
+counterterm, rational-grid and character identities, and explicit
+antiderivatives. An ordinary, nonregularized log-Gamma autocorrelation
+also reduces to Hurwitz-zeta derivatives at $-1$, equivalently to spectral
+polylogarithm derivatives at $2$.
+
+The proofs use classical Hurwitz Fourier theory and local subtraction;
+the finite-part closure and its consequences are developed here as a
+continuation, not asserted to have established literature priority.
+The package contains exact coefficient identities through total order
+$8$, $272$ symbolic checks, and $22$ independent numerical diagnostics.
+A reproducible numerical differentiation canary is recorded separately.
+Neither floating-point agreement nor the symbolic checks replace the
+analytic proofs, and no proof-assistant formalization is claimed.
+\end{abstract}
+\newpage
+\tableofcontents
+\newpage
+
+\section{Research position and the main result}
+\label{sec:position}
+
+The ProveIt manuscript connects polylogarithms, Gamma values, Hurwitz-zeta
+jets and generalized Stieltjes functions. Its integration chapter already
+contains the classical single-function ladder that expresses an
+antiderivative of $\gamma_n(a)$ through $\zeta^{(n+1)}(0,a)$
+\cite{repo-integration}. A natural next question is whether a product of two
+Stieltjes functions introduces genuinely bilinear special-function
+coordinates after integration. For the translated finite parts studied
+here, the answer is particularly simple: \emph{it does not}.
+
+Here and below, a superscript on $\zeta$ differentiates its spectral
+variable. The functions $\gamma_n(a)$ are fixed by
+\begin{equation}
+ \zeta(1+u,a)=\frac1u+
+ \sum_{n\geq0}\frac{(-1)^n}{n!}\gamma_n(a)u^n,
+ \qquad \gamma_0(a)=-\psi(a).
+ \label{eq:stieltjes-definition}
+\end{equation}
+Write $b=1-a$ for $0<a<1$, and let $I_{mn}(a)$ denote the endpoint finite
+part specified in Definition~\ref{def:finitepart}. Our principal result is
+\begin{equation}
+\begin{split}
+ I_{mn}(a)={}&\frac{\gamma_{m+n+1}(a)}{m+1}
+       +\frac{\gamma_{m+n+1}(1-a)}{n+1}+e_{mn}\\
+ &+\sum_{j=0}^{m+n-1}
+       \bigl(c_{mn,j}\gamma_j(a)+d_{mn,j}\gamma_j(1-a)\bigr),
+ \label{eq:front-result}
+\end{split}
+\end{equation}
+where the sum is empty if $m+n=0$, and all coefficients belong to
+$\Q[\zeta(2),\ldots,\zeta(m+n+2)]$. In particular there is no term of
+order $\gamma_{m+n}$. The statement is an identity for every $m,n\geq0$,
+not an extrapolation from the accompanying finite table.
+
+At the first order, the result reads
+\begin{equation}
+ \FP\int_0^1\psi(x)\psi(x\mathbin\oplus a)\dd x
+ =\gamma_1(a)+\gamma_1(1-a)-\frac{\pi^2}{3}.
+ \label{eq:first-result}
+\end{equation}
+Here $x\mathbin\oplus a$ is addition modulo one, interpreted on the open
+pieces of the interval. The symbol $\FP$ is essential. Removing it makes
+\eqref{eq:first-result} false as a statement about an ordinary integral.
+An equivalent absolutely convergent form is given in
+\eqref{eq:digamma-convergent}.
+
+The relevant classical background is the Hurwitz Fourier expansion,
+its parameter-shift law, and the Lerch identity
+\cite{dlmf-hurwitz,dlmf-polylog}. Integrals of products of Hurwitz zeta
+functions have substantial prior literature; in particular
+Shpot--Chaudhary--Paris treat products of the auxiliary functions
+$\zeta(s,1+x)$ and related reflected products \cite{shpot}.
+We do not claim the Fourier correlation mechanism itself is new.
+The specific all-order finite-part closure, its missing-order rule,
+and the collision-compatible coefficient presentation are the research
+outputs proved in this article. A comprehensive priority determination
+would require a wider literature comparison than this delivery provides.
+
+\subsection{What is, and is not, settled}
+This continuation proves exact identities rather than addressing the
+recent zero-geometry and extremizer problems. It does not prove numerical
+independence of the resulting constants. Nor does it settle the remaining
+colored-polylogarithm reduction problems in the manuscript.
+The inspected current $S_4$ chapter already contains an exact proof and
+certificate \cite{repo-s4}; it must not be reclassified as an open
+conjecture on the basis of older research notes. The surviving $S_6$
+reduction problem recorded in the discovery chapter is not resolved here
+\cite{repo-discovery}.
+
+The repository review was targeted: selected manuscript sections, source
+metadata, and the incoming directory inventory and intake instructions
+were inspected. The incoming binary ZIP contents were not audited.
+No existing repository theorem is declared false in this report.
+Section~\ref{sec:audit} identifies normalization and computational hazards
+that an integration of these new formulas must avoid.
+
+\section{Analytic conventions and a translated Hurwitz kernel}
+\label{sec:kernel}
+
+For $0<a<1$, set $b=1-a$ and define
+\begin{equation}
+\begin{split}
+ C(s,t;a)={}&\int_0^b\zeta(s,x)\zeta(t,a+x)\dd x\\
+ &+\int_0^a\zeta(s,b+y)\zeta(t,y)\dd y.
+ \label{eq:C-definition}
+\end{split}
+\end{equation}
+This is the circularly translated product, without complex conjugation.
+All powers of positive real quantities use their real logarithms.
+At $e^{\pm2\pi ia}$ we use the standard polylogarithm continuation in its
+argument, with spectral derivatives taken on that fixed branch.
+Since $0<a<1$, these arguments are never $1$.
+
+\begin{lemma}[Convergence and zero mean]
+\label{lem:convergence}
+The integral \eqref{eq:C-definition} is absolutely convergent and jointly
+holomorphic for $\Rea s<1$, $\Rea t<1$. In this region,
+\begin{equation}
+ \int_0^1\zeta(s,x)\dd x=0.
+ \label{eq:zero-mean}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Use $\zeta(s,x)=x^{-s}+\zeta(s,1+x)$.
+On the first piece only the factor with parameter $x$ is singular at
+zero; on the second piece only the factor with parameter $y$ is singular.
+On compact subsets of the stated spectral region, the other factors and
+all their spectral derivatives are bounded. The potentially singular
+terms are dominated by $x^{-\sigma}(1+|\log x|^k)$ with $\sigma<1$,
+or the corresponding expression in $y$. This proves convergence,
+holomorphy and differentiation under the integral on compact subsets.
+Finally, the parameter derivative identity
+\begin{equation}
+ \partial_x\zeta(s-1,x)=(1-s)\zeta(s,x)
+ \label{eq:hurwitz-derivative}
+\end{equation}
+and the shift law show that the endpoint values of
+$\zeta(s-1,x)$ at zero and one agree when $\Rea s<1$.
+Integration proves \eqref{eq:zero-mean}.
+\end{proof}
+
+\begin{theorem}[Two forms of the translated kernel]
+\label{thm:kernel}
+For $0<a<1$ and $\Rea s,\Rea t<1$, put $z=e^{2\pi ia}$.
+Then
+\begin{align}
+ C(s,t;a)={}&\Gamma(1-s)\Gamma(1-t)(2\pi)^{s+t-2}
+ \bigl\{e^{i\pi(s-t)/2}\Li_{2-s-t}(z^{-1})\notag\\
+ &\hspace{42mm}+e^{-i\pi(s-t)/2}\Li_{2-s-t}(z)\bigr\},
+ \label{eq:C-polylog}\\
+ C(s,t;a)={}&\Gamma(s+t-1)
+ \left\{\frac{\Gamma(1-t)}{\Gamma(s)}\zeta(s+t-1,b)
+       +\frac{\Gamma(1-s)}{\Gamma(t)}\zeta(s+t-1,a)\right\}.
+ \label{eq:C-hurwitz}
+\end{align}
+All apparent singularities of the complete right side in this region
+are interpreted by analytic continuation. The formulas also give a
+meromorphic continuation in the two spectral variables.
+\end{theorem}
+\begin{proof}
+For $\Rea s<0$, the classical Hurwitz Fourier series is absolutely and
+uniformly convergent, and its nonzero Fourier coefficients are
+\begin{equation}
+ \widehat\zeta_s(n)=
+ \frac{\Gamma(1-s)}{(2\pi)^{1-s}|n|^{1-s}}
+ \exp\!\left(-\frac{i\pi(1-s)}2\operatorname{sgn}n\right),
+ \qquad n\ne0.
+ \label{eq:fourier-coefficients}
+\end{equation}
+The zero coefficient is zero. This is the exponential form of the
+Hurwitz Fourier identity \cite[Eq.~25.11.9]{dlmf-hurwitz}.
+Multiplying the two absolutely convergent Fourier series and integrating
+leaves only frequencies $n$ and $-n$. Translation contributes the phase
+$e^{-2\pi ina}$. The sum over $n>0$ is the first polylogarithm in
+\eqref{eq:C-polylog}, and the sum over $n<0$ is the second.
+
+For completeness, write $r=s+t-1$ and insert the Hurwitz Fourier
+expansions of $\zeta(r,a)$ and $\zeta(r,b)$ into
+\eqref{eq:C-hurwitz}. Gamma reflection reduces the coefficient of
+$\Li_{1-r}(z)$ to the desired phase, using
+\[
+ \frac{\sin(\pi s)e^{-i\pi(s+t)/2}
+       +\sin(\pi t)e^{i\pi(s+t)/2}}{\sin\pi(s+t)}
+ =e^{-i\pi(s-t)/2}.
+\]
+The other coefficient follows by reversing the phases. Initially avoid
+integer hyperplanes where this manipulation divides by zero. The
+result on their complement extends across removable singularities.
+The identity theorem and Lemma~\ref{lem:convergence} now extend both
+expressions to $\Rea s,\Rea t<1$. Their right sides supply the asserted
+meromorphic continuation.
+\end{proof}
+
+\begin{remark}[Translation is not ordinary reflection]
+The two-piece definition is not
+$\int_0^1\zeta(s,x)\zeta(t,1-x)\dd x$ and is not
+$\int_0^1\zeta(s,x)\zeta(t,a+x)\dd x$ without wrapping.
+Replacing one by another changes the Fourier phase and the endpoint
+terms. Also, $a=0$ is not a harmless substitution in the ordinary integral:
+the two singularities then coincide. A sufficient convergence region at
+$a=0$ includes $\Rea(s+t)<1$ as well as $\Rea s,\Rea t<1$.
+Section~\ref{sec:coincident} handles the required continuation explicitly.
+\end{remark}
+
+\section{Endpoint subtraction and the Stieltjes generating function}
+\label{sec:finitepart}
+
+The Hurwitz shift law gives the exact local decomposition
+\begin{equation}
+ \gamma_m(x)=\frac{\log^m x}{x}+\gamma_m(1+x),
+ \qquad x>0.
+ \label{eq:stieltjes-shift}
+\end{equation}
+This identity determines the counterterms without a numerical fitting
+procedure or a choice of divergent Fourier summation.
+
+\begin{definition}[Separated-endpoint finite part]
+\label{def:finitepart}
+For integers $m,n\ge0$ and $0<a<1$, define
+\begin{align}
+ I_{mn}(a)=\lim_{\epsilon\downarrow0}\biggl\{
+ &\int_\epsilon^b\gamma_m(x)\gamma_n(a+x)\dd x
+ +\int_\epsilon^a\gamma_m(b+y)\gamma_n(y)\dd y\notag\\
+ &+\frac{\gamma_n(a)}{m+1}\log^{m+1}\epsilon
+ +\frac{\gamma_m(b)}{n+1}\log^{n+1}\epsilon\biggr\}.
+ \label{eq:I-cutoff}
+\end{align}
+The cutoff is smaller than $\min(a,b)$. Equivalently the two endpoints
+can be assigned separate cutoffs, with their respective counterterms.
+\end{definition}
+
+\begin{lemma}[An absolutely convergent implementation]
+\label{lem:FP-exists}
+The limit exists and equals
+\begin{align}
+ I_{mn}(a)={}&\int_0^b\left\{\gamma_m(x)\gamma_n(a+x)
+               -\gamma_n(a)\frac{\log^m x}{x}\right\}\dd x\notag\\
+ &+\int_0^a\left\{\gamma_m(b+y)\gamma_n(y)
+               -\gamma_m(b)\frac{\log^n y}{y}\right\}\dd y\notag\\
+ &+\frac{\gamma_n(a)}{m+1}\log^{m+1}b
+  +\frac{\gamma_m(b)}{n+1}\log^{n+1}a.
+ \label{eq:I-convergent}
+\end{align}
+It also satisfies $I_{mn}(a)=I_{nm}(1-a)$.
+\end{lemma}
+\begin{proof}
+On the first interval, use \eqref{eq:stieltjes-shift}. The singular
+remainder is
+$\log^m x\,[\gamma_n(a+x)-\gamma_n(a)]/x$, which is integrable because
+the bracket is $O(x)$. The other term is bounded there. The argument at
+the second endpoint is identical. Integrating the explicitly subtracted
+$\log^m x/x$ and $\log^n y/y$ terms gives
+\eqref{eq:I-convergent}. Interchange the two intervals for the symmetry.
+\end{proof}
+
+Set
+\begin{equation}
+ G(u,x)=\zeta(1+u,x)-\frac1u,
+ \qquad G(0,x)=-\psi(x),\qquad g(u)=\Gamma(1-u)(2\pi)^u.
+ \label{eq:G}
+\end{equation}
+The removable value of $G$ at zero is always included. Define
+\begin{align}
+ K(u,v;a)=g(u)g(v)\bigl\{
+ &e^{i\pi(u-v)/2}\Li_{-u-v}(e^{-2\pi ia})\notag\\
+ &+e^{-i\pi(u-v)/2}\Li_{-u-v}(e^{2\pi ia})\bigr\}.
+ \label{eq:K-polylog}
+\end{align}
+It is holomorphic near $(u,v)=(0,0)$.
+
+\begin{theorem}[Holomorphic finite-part generating theorem]
+\label{thm:generating}
+Define the mixed divided difference
+\begin{equation}
+ R(u,v;a)=\frac{K(u,v;a)-K(u,0;a)-K(0,v;a)+K(0,0;a)}{uv}.
+ \label{eq:R-divided}
+\end{equation}
+The apparent coordinate-axis singularities are removable and
+\begin{equation}
+ R(u,v;a)=\sum_{m,n\ge0}
+       \frac{(-1)^{m+n}}{m!n!}I_{mn}(a)u^mv^n
+ \label{eq:R-series}
+\end{equation}
+in a neighborhood of the origin. In particular,
+\begin{align}
+ I_{mn}(a)&=(-1)^{m+n}m!n!\coeff{u^{m+1}v^{n+1}}K(u,v;a),
+ \label{eq:I-extract}\\
+ I_{mn}(a)&=\frac{(-1)^{m+n}}{(m+1)(n+1)}
+   \partial_u^{m+1}\partial_v^{n+1}K(0,0;a).
+ \label{eq:I-derivative}
+\end{align}
+\end{theorem}
+\begin{proof}
+For $\Rea u,\Rea v<0$, Lemma~\ref{lem:convergence} implies
+\[
+ \int_0^1G(u,x)G(v,x\mathbin\oplus a)\dd x
+ =C(1+u,1+v;a)+\frac1{uv}.
+\]
+Subtracting the endpoint poles therefore gives the meromorphic expression
+\begin{equation}
+ R=C(1+u,1+v;a)+\frac1{uv}
+       +\frac{G(v,a)}u+\frac{G(u,b)}v.
+ \label{eq:R-meromorphic}
+\end{equation}
+Its holomorphy is best proved before any coefficient extraction. Put
+\[
+ T(u,c)=\frac{1-c^{-u}}u,\qquad T(0,c)=\log c.
+\]
+A direct local subtraction rewrites \eqref{eq:R-meromorphic} as
+\begin{align}
+ R={}&\int_0^b\left\{x^{-1-u}[G(v,a+x)-G(v,a)]
+                    +G(u,1+x)G(v,a+x)\right\}\dd x\notag\\
+ &+\int_0^a\left\{y^{-1-v}[G(u,b+y)-G(u,b)]
+                    +G(v,1+y)G(u,b+y)\right\}\dd y\notag\\
+ &+G(v,a)T(u,b)+G(u,b)T(v,a).
+ \label{eq:R-subtracted}
+\end{align}
+The differences in square brackets vanish linearly at zero. Consequently
+this expression is jointly holomorphic for $u,v$ in a sufficiently small
+polydisc about zero; all its spectral derivatives are controlled by
+integrable powers times logarithms. Expanding $G$ by
+\eqref{eq:stieltjes-definition} gives precisely
+\eqref{eq:I-convergent}, coefficient by coefficient, including its upper
+endpoint logarithms.
+
+Theorem~\ref{thm:kernel} and $\Gamma(-u)=\Gamma(1-u)/(-u)$ give
+$C(1+u,1+v;a)=K(u,v;a)/(uv)$. Moreover the axis values are
+\begin{equation}
+ K(u,0;a)=-1-uG(u,b),\quad
+ K(0,v;a)=-1-vG(v,a),\quad K(0,0;a)=-1.
+ \label{eq:K-axes}
+\end{equation}
+They follow either from \eqref{eq:C-hurwitz} or the Gamma-ratio formula
+below. Substitution in \eqref{eq:R-meromorphic} proves
+\eqref{eq:R-divided}. Dividing a holomorphic mixed difference by $uv$
+removes exactly the axis coefficients, proving \eqref{eq:I-extract}.
+Conversion between Taylor coefficients and derivatives gives
+\eqref{eq:I-derivative}.
+\end{proof}
+
+\begin{remark}[Why a finite part, rather than a product of formal series]
+A Fourier expansion at the Stieltjes pole is not an absolutely convergent
+series whose factors may be multiplied without qualification.
+The proof instead begins in an ordinary convergence region, continues a
+specified integral, and matches the continuation to local counterterms.
+This matching fixes the finite constant; it is not optional regularization
+terminology.
+\end{remark}
+
+\section{Gamma-ratio reduction and all-order linear closure}
+\label{sec:closure}
+
+Define, with $w=u+v$,
+\begin{equation}
+ A(u,v)=\frac{\Gamma(1+w)\Gamma(1-v)}{\Gamma(1+u)},
+ \qquad B(u,v)=A(v,u).
+ \label{eq:A}
+\end{equation}
+Theorem~\ref{thm:kernel} becomes the particularly useful identity
+\begin{equation}
+ K(u,v;a)=-uA(u,v)\zeta(1+w,b)-vB(u,v)\zeta(1+w,a).
+ \label{eq:K-hurwitz}
+\end{equation}
+No product of two Hurwitz functions remains on the right.
+
+\begin{lemma}[Removal of the diagonal pole]
+\label{lem:Q}
+The function
+\begin{equation}
+ Q(u,v)=\frac{uA(u,v)+vB(u,v)}{u+v}
+ \label{eq:Q}
+\end{equation}
+is holomorphic near zero and
+\begin{equation}
+ K=-Q-uA(u,v)G(w,b)-vB(u,v)G(w,a).
+ \label{eq:K-regular}
+\end{equation}
+Furthermore
+\begin{equation}
+ \log A(u,v)=\sum_{k\ge2}\frac{\zeta(k)}k
+ \left\{(-1)^k\bigl((u+v)^k-u^k\bigr)+v^k\right\}.
+ \label{eq:logA}
+\end{equation}
+\end{lemma}
+\begin{proof}
+At $v=-u$, the Gamma ratios $A(u,-u)$ and $B(u,-u)$ both equal one.
+The numerator in \eqref{eq:Q} therefore vanishes on $u+v=0$ and is
+holomorphically divisible by $u+v$. Splitting off $1/w$ from each Hurwitz
+function gives \eqref{eq:K-regular}.
+The expansion
+$\log\Gamma(1+z)=-\gamma z+\sum_{k\ge2}(-1)^k\zeta(k)z^k/k$
+in the defining ratio yields \eqref{eq:logA}. All Euler-constant linear
+terms cancel exactly.
+\end{proof}
+
+\begin{theorem}[Bilinear closure and the missing-order rule]
+\label{thm:closure}
+For every $m,n\ge0$, let $N=m+n+1$. There are explicitly computable
+coefficients in $\Q[\zeta(2),\ldots,\zeta(N+1)]$ such that
+\begin{equation}
+ I_{mn}(a)=e_{mn}+\sum_{j=0}^{N}
+       \bigl(c_{mn,j}\gamma_j(a)+d_{mn,j}\gamma_j(b)\bigr).
+ \label{eq:closure-full}
+\end{equation}
+The two highest orders satisfy
+\begin{equation}
+ c_{mn,N}=\frac1{m+1},\qquad d_{mn,N}=\frac1{n+1},\qquad
+ c_{mn,N-1}=d_{mn,N-1}=0.
+ \label{eq:top-coefficients}
+\end{equation}
+The symmetry is $c_{mn,j}=d_{nm,j}$ and $e_{mn}=e_{nm}$.
+Assigning formal weight $k$ to $\zeta(k)$, the coefficients
+$c_{mn,j},d_{mn,j}$ are homogeneous of weight $N-j$, and $e_{mn}$ is
+homogeneous of weight $N+1$. Zero coefficients obey the same convention.
+\end{theorem}
+\begin{proof}
+Set $D=N+1=m+n+2$ and $f=(-1)^{m+n}m!n!$.
+Let $A_d$ be the homogeneous part of total degree $d$ in $A$, and put
+$B_d(u,v)=A_d(v,u)$. Equation~\eqref{eq:K-regular} gives the finite
+coefficient formulas
+\begin{align}
+ e_{mn}&=-f\coeff{u^{m+1}v^{n+1}}
+              \frac{uA_D+vB_D}{u+v},\label{eq:coefficient-e}\\
+ c_{mn,j}&=-\frac{f(-1)^j}{j!}
+       \coeff{u^{m+1}v^{n+1}}vB_{N-j}(u,v)(u+v)^j,\label{eq:coefficient-c}\\
+ d_{mn,j}&=-\frac{f(-1)^j}{j!}
+       \coeff{u^{m+1}v^{n+1}}uA_{N-j}(u,v)(u+v)^j.
+       \label{eq:coefficient-d}
+\end{align}
+Each numerator in \eqref{eq:coefficient-e} is polynomially divisible by
+$u+v$, by homogeneous decomposition of Lemma~\ref{lem:Q}.
+Every term in \eqref{eq:logA} has spectral degree and zeta weight equal
+to its index. This proves the finite coefficient algebra and weight
+statements.
+
+For $j=N$, use $A_0=B_0=1$. The binomial coefficient in
+$v(u+v)^N$ gives
+\[
+ -\frac{(-1)^{m+n+N}m!n!}{N!}\binom{N}{m+1}
+ =\frac1{m+1},
+\]
+and the other coefficient is $1/(n+1)$. For $j=N-1$, both expressions
+contain $A_1$ or $B_1$, which are zero because \eqref{eq:logA} has no
+linear term. The symmetry follows by swapping $u,v$ and the two
+Stieltjes arguments.
+\end{proof}
+
+The theorem does not treat positive zeta values as algebraically
+independent. Formal homogeneity describes the explicit expressions
+produced by the Gamma expansion. Classical relations among even zeta
+values may be applied afterward, or the unsimplified expressions may be
+retained to preserve an auditable coefficient convention.
+
+\subsection{A terminating exact coefficient algorithm}
+Write $\ell_k$ for the degree-$k$ summand of \eqref{eq:logA}.
+The homogeneous exponential satisfies
+\begin{equation}
+ A_0=1,\qquad A_1=0,\qquad
+ A_d=\frac1d\sum_{k=2}^d k\ell_k A_{d-k}\quad(d\ge2).
+ \label{eq:recurrence}
+\end{equation}
+To prove it, insert an auxiliary variable $r$ into
+$\exp(\sum_{k\ge2}r^k\ell_k)$, differentiate in $r$, and compare
+coefficients. For a fixed pair $(m,n)$, only degrees $d\le m+n+2$ are
+needed. Thus the calculation terminates by rational polynomial
+arithmetic, without integer-relation searches or numerical constants.
+The program \file{code/exact_coefficients.py} implements exactly
+\eqref{eq:recurrence} and \eqref{eq:coefficient-e}--\eqref{eq:coefficient-d}.
+
+\section{Explicit identities and a convergent digamma formula}
+\label{sec:examples}
+
+For compactness in this section only, write
+$a_j=\gamma_j(a)$, $b_j=\gamma_j(b)$ and $z_k=\zeta(k)$.
+The first identities are
+\begin{align}
+ I_{00}&=a_1+b_1-2z_2,\label{eq:I00}\\
+ I_{10}&=\tfrac12a_2+b_2+z_2(a_0+b_0)-z_3,\label{eq:I10}\\
+ I_{11}&=\tfrac12(a_3+b_3)+2z_2(a_1+b_1)
+                       +z_3(a_0+b_0)-z_2^2-z_4,\label{eq:I11}\\
+ I_{20}&=\tfrac13a_3+b_3+2z_2(a_1+b_1)+2z_3b_0-z_2^2-3z_4,
+                       \label{eq:I20}\\
+ I_{21}&=\tfrac13a_4+\tfrac12b_4+3z_2(a_2+b_2)
+                  +2z_3a_1+4z_3b_1\notag\\
+       &\quad +(2z_2^2+2z_4)a_0+(z_2^2+3z_4)b_0
+                    -4z_2z_3-4z_5,\label{eq:I21}\\
+ I_{30}&=\tfrac14a_4+b_4+3z_2(a_2+b_2)+6z_3b_1
+                    +(3z_2^2+3z_4)a_0+6z_4b_0-6z_5.
+                    \label{eq:I30}
+\end{align}
+All formulas with the indices reversed follow by $a\leftrightarrow b$.
+For example, the lack of $a_2,b_2$ in $I_{11}$ is the universal
+missing-order rule, not an accidental low-weight simplification.
+
+\begin{corollary}[Ordinary convergent digamma integrals]
+\label{cor:digamma}
+For $0<a<1$, $b=1-a$,
+\begin{align}
+ &\int_0^b\left\{\psi(x)\psi(x+a)+\frac{\psi(a)}x\right\}\dd x
+ +\int_0^a\left\{\psi(y)\psi(y+b)+\frac{\psi(b)}y\right\}\dd y\notag\\
+ &\hspace{10mm}=\gamma_1(a)+\gamma_1(b)-\frac{\pi^2}{3}
+                       +\psi(a)\log b+\psi(b)\log a.
+ \label{eq:digamma-convergent}
+\end{align}
+Both displayed integrals converge absolutely.
+\end{corollary}
+\begin{proof}
+Insert $\gamma_0=-\psi$ into \eqref{eq:I-convergent} and use
+\eqref{eq:I00}. Near zero, $\psi(x)=-1/x-\gamma+O(x)$, so each
+subtracted integrand is bounded. This also verifies the convergence
+directly, without relying on finite-part notation.
+\end{proof}
+
+At $a=1/2$, the distribution identity gives
+\[
+ I_{00}(1/2)=2\gamma_1-4\gamma\log2-2\log^22-\frac{\pi^2}{3}.
+\]
+This follows from $\gamma_1(1/2)=\gamma_1-2\gamma\log2-\log^22$.
+The defining quadratic integral has been replaced by a short linear
+expression in the ordinary Stieltjes constants and elementary constants.
+
+\section{Coincident endpoints and canonical collision subtraction}
+\label{sec:coincident}
+
+A translated correlation has two separated logarithmic endpoint
+divergences. At zero translation they merge into an additional
+$x^{-2}$ singularity. We now show that the same coefficient table still
+applies, but only after the merged singularity is subtracted explicitly.
+
+For an integer $r\ge0$, put
+\begin{equation}
+ E_r(L)=\sum_{k=0}^r\frac{r!}{k!}L^k.
+ \label{eq:E-polynomial}
+\end{equation}
+The identity $E_r-E_r'=L^r$ implies
+\begin{equation}
+ \int_\epsilon^1\frac{\log^r x}{x^2}\dd x
+ =\frac{E_r(\log\epsilon)}{\epsilon}-r!.
+ \label{eq:double-endpoint}
+\end{equation}
+
+\begin{definition}[Coincident-endpoint finite part]
+\label{def:J}
+Write $\gamma_j=\gamma_j(1)$ and define
+\begin{align}
+ J_{mn}=\lim_{\epsilon\downarrow0}\biggl\{
+ &\int_\epsilon^1\gamma_m(x)\gamma_n(x)\dd x
+       -\frac{E_{m+n}(\log\epsilon)}\epsilon\notag\\
+ &+\frac{\gamma_n}{m+1}\log^{m+1}\epsilon
+       +\frac{\gamma_m}{n+1}\log^{n+1}\epsilon\biggr\}.
+ \label{eq:J-cutoff}
+\end{align}
+\end{definition}
+
+\begin{theorem}[Coincident closure]
+\label{thm:coincident}
+The finite part \eqref{eq:J-cutoff} exists. With exactly the coefficients
+of Theorem~\ref{thm:closure},
+\begin{equation}
+ J_{mn}=e_{mn}+\sum_{j=0}^{m+n+1}(c_{mn,j}+d_{mn,j})\gamma_j.
+ \label{eq:J-closure}
+\end{equation}
+Equivalently it is the same mixed coefficient of
+\begin{equation}
+ K_0(u,v)=-(uA(u,v)+vB(u,v))\zeta(1+u+v).
+ \label{eq:K0}
+\end{equation}
+In particular,
+\begin{equation}
+ J_{00}=2\gamma_1-\frac{\pi^2}{3}.
+ \label{eq:J00}
+\end{equation}
+\end{theorem}
+\begin{proof}
+By \eqref{eq:stieltjes-shift}, the cutoff in Definition~\ref{def:J}
+converges to the absolutely convergent expression
+\begin{align}
+ J_{mn}={}&-(m+n)!\notag\\
+ &+\int_0^1\biggl\{
+ \frac{\log^m x}{x}[\gamma_n(1+x)-\gamma_n]
+ +\frac{\log^n x}{x}[\gamma_m(1+x)-\gamma_m]\notag\\
+ &\hspace{35mm}+\gamma_m(1+x)\gamma_n(1+x)\biggr\}\dd x.
+ \label{eq:J-convergent}
+\end{align}
+The two bracketed differences vanish linearly at zero, and
+\eqref{eq:double-endpoint} supplies the constant $-(m+n)!$.
+
+To identify the coefficients, start where the ordinary coincident
+Hurwitz integral converges, for example $\Rea s,\Rea t<0$.
+Fourier orthogonality gives
+\[
+ C_0(s,t)=2\Gamma(1-s)\Gamma(1-t)(2\pi)^{s+t-2}
+       \cos\!\left(\frac{\pi(s-t)}2\right)\zeta(2-s-t).
+\]
+The Riemann functional equation, equivalently the specialization of the
+Fourier calculation in Theorem~\ref{thm:kernel}, gives
+$uvC_0(1+u,1+v)=K_0(u,v)$. Meromorphic continuation is justified by
+subtracting the local terms as above.
+
+More explicitly, the holomorphic generating expression near zero is
+\begin{align*}
+ R_0(u,v)={}&-\frac1{1+u+v}\\
+ &+\int_0^1\bigl\{
+ x^{-1-u}[G(v,1+x)-G(v,1)]
+ +x^{-1-v}[G(u,1+x)-G(u,1)]\\
+ &\hspace{39mm}+G(u,1+x)G(v,1+x)\bigr\}\dd x.
+\end{align*}
+The first term is the analytic continuation of
+$\int_0^1x^{-2-u-v}\dd x$, not a discarded divergence. The remaining
+integrals converge locally uniformly near zero. On a starting convergence
+region, and hence by continuation,
+\[
+ R_0=\frac{K_0+1+uG(u,1)+vG(v,1)}{uv}.
+\]
+Its Taylor coefficients are \eqref{eq:J-convergent}. Decomposing
+\eqref{eq:K0} as $-Q-(uA+vB)G(u+v,1)$ now gives
+\eqref{eq:J-closure} by the identical finite algebra used earlier.
+\end{proof}
+
+For the first case, an ordinary integral version is worth recording:
+\begin{equation}
+ \int_0^1\left\{\psi(1+x)^2
+       -\frac{2[\psi(1+x)+\gamma]}x\right\}\dd x
+ =1+2\gamma_1-\frac{\pi^2}{3}.
+ \label{eq:digamma-square-convergent}
+\end{equation}
+The apparently singular numerator in the second term vanishes at zero.
+There is no positivity contradiction in the negative value of $J_{00}$:
+it is a finite part of a positive divergent square, not its ordinary
+nonnegative integral.
+
+\subsection{An exact convergent expansion at collision}
+The relationship between the separated and coincident finite parts can
+be expressed by an equality of convergent series, not merely an
+asymptotic prescription.
+
+\begin{theorem}[Collision polynomial and convergent regular part]
+\label{thm:collision}
+For $m,n\ge0$ define a polynomial
+\begin{equation}
+ \mathcal P_{mn}(L)=(-1)^{m+n+1}m!n!
+       \coeff{u^{m+1}v^n}B(u,v)e^{-(u+v)L}.
+ \label{eq:collision-polynomial}
+\end{equation}
+It has degree $m+n+1$, leading coefficient $1/(m+1)$, and coefficients
+in positive integer zeta values. There is an exact expansion
+\begin{equation}
+ I_{mn}(a)=\frac{\mathcal P_{mn}(\log a)}a
+                +J_{mn}+\sum_{k\ge1}h_{mn,k}a^k,
+ \qquad 0<a<1,
+ \label{eq:collision-series}
+\end{equation}
+whose regular power series converges locally uniformly for $|a|<1$.
+Its coefficients are
+\begin{align}
+ h_{mn,k}={}&\frac{(-1)^{m+n+1}m!n!}{k!}
+ \coeff{u^{m+1}v^{n+1}}\notag\\
+ &\quad\bigl(uA(u,v)+(-1)^kvB(u,v)\bigr)
+               (1+u+v)_k\zeta(1+u+v+k).
+ \label{eq:collision-coefficients}
+\end{align}
+For $m=n$, all odd-indexed $h_{mm,k}$ vanish. In particular,
+\begin{equation}
+ \lim_{a\downarrow0}\left\{I_{mn}(a)
+             -\frac{\mathcal P_{mn}(\log a)}a\right\}=J_{mn}.
+ \label{eq:collision-limit}
+\end{equation}
+\end{theorem}
+\begin{proof}
+The classical parameter Taylor series at one gives, locally uniformly
+in the spectral variable,
+\[
+ \zeta(1+w,1-a)=\sum_{k\ge0}\frac{(1+w)_k}{k!}
+                      \zeta(1+w+k)a^k,
+\]
+while the shift law gives
+\[
+ \zeta(1+w,a)=a^{-1-w}
+        +\sum_{k\ge0}\frac{(1+w)_k}{k!}\zeta(1+w+k)(-a)^k.
+\]
+These are meromorphic in $w$ at zero, with the $k=0$ pole explicitly
+visible. Substitution in \eqref{eq:K-hurwitz} yields
+\begin{align}
+ K(u,v;a)={}&-vB(u,v)a^{-1-w}\notag\\
+ &-\sum_{k\ge0}\frac{uA(u,v)+(-1)^kvB(u,v)}{k!}
+                      (1+w)_k\zeta(1+w+k)a^k.
+ \label{eq:K-collision}
+\end{align}
+The $k=0$ summand is exactly $K_0$; its apparent pole at $w=0$ is
+removable. The remaining series is holomorphic for small $u,v$ and
+$|a|<1$, uniformly on compact subsets. For example, on a fixed small
+spectral polydisc its terms and spectral derivatives grow at most
+polynomially in $k$ times powers of $\log k$, whereas $|a|^k$ decays
+geometrically on compact subdiscs. Coefficient extraction is therefore
+legitimate. The singular first term gives
+\eqref{eq:collision-polynomial}, the constant gives
+Theorem~\ref{thm:coincident}, and the other terms give
+\eqref{eq:collision-coefficients}.
+
+The highest power of $L$ comes from $B_0=1$ and has degree $m+n+1$;
+a binomial coefficient gives its stated leading coefficient.
+For $m=n$ and odd $k$, the factor
+$uA-vB$ is antisymmetric under $u\leftrightarrow v$, while every other
+factor in \eqref{eq:collision-coefficients} is symmetric. Its diagonal
+mixed coefficient is zero. Finally the regular series has zero limit
+at $a=0$, proving \eqref{eq:collision-limit}.
+\end{proof}
+
+The first collision polynomials are
+\begin{equation}
+ \mathcal P_{00}(L)=L,\qquad
+ \mathcal P_{10}(L)=\frac{L^2}{2}+\zeta(2),\qquad
+ \mathcal P_{01}(L)=L^2+\zeta(2).
+ \label{eq:collision-examples}
+\end{equation}
+The asymmetry of the last two is required: the factor that becomes
+singular at $a=0$ has changed its index. In particular,
+\[
+ I_{00}(a)-\frac{\log a}{a}\longrightarrow
+                   2\gamma_1-\frac{\pi^2}{3}.
+\]
+There is no arbitrary additional finite constant in this limit. It is
+fixed by the initial endpoint subtraction and agrees with the coincident
+prescription.
+
+\section{An ordinary log-Gamma autocorrelation identity}
+\label{sec:loggamma}
+
+The same two-parameter kernel has a regular spectral specialization at
+zero. Unlike the Stieltjes correlations, the following integral needs no
+finite-part interpretation:
+\begin{align}
+ F(a)={}&\int_0^b\log\Gamma(x)\log\Gamma(x+a)\dd x\notag\\
+       &+\int_0^a\log\Gamma(b+y)\log\Gamma(y)\dd y,
+ \qquad 0<a<1.
+ \label{eq:F-definition}
+\end{align}
+The endpoint singularities are logarithmic and integrable. Define
+$L=\log(2\pi)$, $\alpha=\gamma+L$ and
+$B_2(a)=a^2-a+1/6$.
+
+\begin{theorem}[Zeta and polylogarithm forms of the autocorrelation]
+\label{thm:loggamma}
+For $0<a<1$,
+\begin{align}
+ F(a)={}&\frac{L^2}{4}+(1+\zeta(2))B_2(a)
+        -\zeta'(-1,a)-\zeta'(-1,b)\notag\\
+        &\hspace{29mm}-\frac12\bigl(\zeta''(-1,a)+\zeta''(-1,b)\bigr).
+ \label{eq:F-hurwitz}
+\end{align}
+With $z=e^{2\pi ia}$, an equivalent identity is
+\begin{equation}
+ F(a)=\frac{L^2}{4}+\frac{1}{2\pi^2}
+ \left\{\left(\alpha^2+\frac{\pi^2}{4}\right)\Rea\Li_2(z)
+       -2\alpha\Rea\LiJ{1}{z}+\Rea\LiJ{2}{z}\right\}.
+ \label{eq:F-polylog}
+\end{equation}
+Both formulas extend continuously to $a=0$ and $a=1$.
+\end{theorem}
+\begin{proof}
+Lerch's formula gives
+$\zeta'(0,x)=\log\Gamma(x)-L/2$ and its integral over $[0,1]$ is
+zero. Differentiating \eqref{eq:C-definition} once in each spectral
+variable at zero is legitimate by Lemma~\ref{lem:convergence}; hence
+\begin{equation}
+ F(a)=L^2/4+\partial_s\partial_tC(0,0;a).
+ \label{eq:F-derivative}
+\end{equation}
+For the first expression let $w=s+t$ and use the same Gamma ratio $A$
+as in \eqref{eq:A}, now in variables $s,t$. Equation~\eqref{eq:C-hurwitz}
+rewrites as
+\begin{equation}
+ C(s,t;a)=\frac{sA(s,t)\zeta(w-1,b)+tB(s,t)\zeta(w-1,a)}{w(w-1)}.
+ \label{eq:C-near-zero}
+\end{equation}
+Since $\zeta(-1,a)=\zeta(-1,b)=-B_2(a)/2$, the $w=0$
+singularity is removable. Also
+$A(s,t)=1+\zeta(2)t(s+t)+O((|s|+|t|)^3)$.
+Expanding the numerator through total degree three and extracting $st$
+after division gives
+\begin{align*}
+ \partial_s\partial_t C(0,0;a)
+ ={}&-2(1+\zeta(2))\zeta(-1,a)\\
+    &-\zeta'(-1,a)-\zeta'(-1,b)
+      -\tfrac12\bigl(\zeta''(-1,a)+\zeta''(-1,b)\bigr).
+\end{align*}
+This proves \eqref{eq:F-hurwitz}.
+
+Alternatively, differentiate the Fourier-coefficient identity
+\eqref{eq:fourier-coefficients} at $s=0$. This is justified by the
+endpoint domination in Lemma~\ref{lem:convergence}, applied to each
+coefficient integral. For $n>0$ the coefficient of the centered
+log-Gamma function is
+\[
+ -\frac{i}{2\pi n}\left(\alpha+\log n+\frac{i\pi}{2}\right).
+\]
+Its product with the coefficient at $-n$ is
+$((\alpha+\log n)^2+\pi^2/4)/(4\pi^2n^2)$.
+The centered log-Gamma function is square-integrable, so the bilinear
+Parseval identity for its translation consequently gives
+\[
+ F(a)-L^2/4=\frac1{2\pi^2}\sum_{n\ge1}
+ \frac{(\alpha+\log n)^2+\pi^2/4}{n^2}\cos(2\pi na).
+\]
+The series is absolutely and uniformly convergent. Expanding the square
+and using the spectral derivative series of $\Li_s$ at $s=2$ gives
+\eqref{eq:F-polylog}. Uniform convergence establishes continuity on the
+closed interval. Equivalently, log-Gamma is square-integrable and its
+circular autocorrelation is continuous.
+\end{proof}
+
+\subsection{Half- and quarter-period evaluations}
+Write $\ell=\log2$ and $Z_j=\zeta^{(j)}(-1)$. Differentiating the elementary
+Hurwitz distribution identities at $-1$ gives
+\begin{align}
+ F(1/2)={}&\frac{L^2}{4}+(1-\ell)Z_1+\frac{Z_2}{2}
+       +\frac{\ell-1-\zeta(2)}{12}+\frac{\ell^2}{24},
+ \label{eq:F-half}\\
+ F(1/4)={}&\frac{L^2}{4}+\frac{Z_1}{4}+\frac{Z_2}{8}
+       +\frac{\ell^2-1-\zeta(2)}{48}.
+ \label{eq:F-quarter}
+\end{align}
+For the first identity use $\zeta(s,1/2)=(2^s-1)\zeta(s)$.
+For the second use
+\[
+ \zeta(s,1/4)+\zeta(s,3/4)=(4^s-2^s)\zeta(s).
+\]
+Thus these translated products require only two Riemann-zeta jets at
+$-1$, not an unresolved numerical relation between a large set of
+Gamma values.
+
+The zero-shift limit reads
+\begin{equation}
+ F(0)=\frac{L^2}{4}+\frac{1+\zeta(2)}6
+                          -2\zeta'(-1)-\zeta''(-1).
+ \label{eq:F-zero}
+\end{equation}
+Differentiating the Riemann functional equation converts it to the
+classical quadratic log-Gamma moment recorded in the manuscript
+\cite{repo-integration}:
+\[
+ \int_0^1\log^2\Gamma(x)\dd x
+ =\frac{\gamma^2}{12}+\frac{\pi^2}{48}+\frac{\gamma L}{6}
+  +\frac{L^2}{3}-\frac{(\gamma+L)\zeta'(2)}{\pi^2}
+  +\frac{\zeta''(2)}{2\pi^2}.
+\]
+This is a compatibility check, not a claim to rediscover the classical
+moment as a new theorem.
+
+\section{Derivatives, polygamma and exact antiderivatives}
+\label{sec:primitives}
+
+The closure theorem is useful not only because it eliminates a product.
+It also converts differentiation and integration of the entire family
+into standard operations on one Hurwitz function.
+
+\begin{proposition}[Parameter-derivative dictionary]
+\label{prop:derivative}
+For integers $r\ge1$, $n\ge0$, and $a>0$,
+\begin{equation}
+ \gamma_n^{(r)}(a)=(-1)^{r+n}n!\coeff{u^n}
+                  (1+u)_r\zeta(r+1+u,a).
+ \label{eq:gamma-derivatives}
+\end{equation}
+In particular,
+\begin{equation}
+ \gamma_1^{(r)}(a)=(-1)^{r+1}r!
+                   \bigl(\zeta'(r+1,a)+H_r\zeta(r+1,a)\bigr).
+ \label{eq:gamma1-derivatives}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Iterate the Hurwitz parameter derivative identity to obtain
+$\partial_a^r\zeta(1+u,a)=(-1)^r(1+u)_r\zeta(r+1+u,a)$.
+The derivative of $1/u$ in $a$ is zero. Coefficient comparison in
+\eqref{eq:stieltjes-definition} gives \eqref{eq:gamma-derivatives}.
+The first two terms of $(1+u)_r=r!(1+H_ru+O(u^2))$ give
+\eqref{eq:gamma1-derivatives}.
+\end{proof}
+
+For instance,
+\begin{align}
+ \frac{\mathrm d^r}{\mathrm da^r}I_{00}(a)
+ =(-1)^{r+1}r!\bigl\{&\zeta'(r+1,a)+H_r\zeta(r+1,a)\notag\\
+ &+(-1)^r[\zeta'(r+1,b)+H_r\zeta(r+1,b)]\bigr\}.
+ \label{eq:I00-derivatives}
+\end{align}
+Ordinary polygamma values enter through
+$\psi^{(r)}(a)=(-1)^{r+1}r!\zeta(r+1,a)$.
+Equations \eqref{eq:gamma-derivatives} and \eqref{eq:closure-full} give
+all higher derivatives of every $I_{mn}$ without differentiating an
+ill-defined product at a singular endpoint.
+
+\begin{proposition}[A closed primitive of every correlation]
+\label{prop:primitive}
+Suppose $I_{mn}(a)$ is written as in \eqref{eq:closure-full}.
+A primitive on $0<a<1$ is
+\begin{equation}
+ e_{mn}a+\sum_{j=0}^{m+n+1}\frac{(-1)^{j+1}}{j+1}
+ \left\{c_{mn,j}\zeta^{(j+1)}(0,a)
+              -d_{mn,j}\zeta^{(j+1)}(0,1-a)\right\}.
+ \label{eq:general-primitive}
+\end{equation}
+In particular,
+\begin{equation}
+ \int I_{00}(a)\dd a
+ =\frac{\zeta''(0,a)-\zeta''(0,1-a)}2
+                  -\frac{\pi^2}{3}a+\text{constant}.
+ \label{eq:I00-primitive}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Expand $\partial_a\zeta(s,a)=-s\zeta(s+1,a)$ at $s=0$.
+Comparing coefficients gives
+\[
+ \partial_a\zeta^{(j+1)}(0,a)=(-1)^{j+1}(j+1)\gamma_j(a).
+\]
+This is the classical antiderivative ladder already used in the
+repository \cite{repo-integration}. Apply it termwise to
+\eqref{eq:general-primitive}; the reflected argument contributes a minus
+sign by the chain rule. Equation~\eqref{eq:I00-primitive} is the first
+specialization.
+\end{proof}
+
+Repeated primitives can also be written with no recursively undefined
+functions. If $r\ge1$ and $j\ge0$, then
+\begin{equation}
+ \left.\partial_s^j
+ \left\{\frac{\zeta(s-r,a)}{\prod_{k=1}^r(k-s)}\right\}\right|_{s=0}
+ \label{eq:repeated-primitive}
+\end{equation}
+is an $r$-fold primitive of $\zeta^{(j)}(0,a)$.
+Indeed $r$ parameter derivatives of the numerator multiply it by
+$\prod_{k=1}^r(k-s)$ and restore $\zeta(s,a)$.
+The integration polynomial of degree at most $r-1$ can be fixed by any
+specified basepoint normalization. At $j=1$, these formulas are one way
+to represent the negative-polygamma ladder; they do not silently change
+the zero-based or balanced conventions in the existing manuscript.
+
+\section{Rational grids and Dirichlet-character coordinates}
+\label{sec:arithmetic}
+
+The finite linear closure interacts particularly well with classical
+Hurwitz distribution. For integers $q\ge2$ put
+\begin{equation}
+ T_j(q)=\sum_{r=1}^{q-1}\gamma_j(r/q).
+ \label{eq:T-definition}
+\end{equation}
+
+\begin{proposition}[Exact rational-grid traces]
+\label{prop:trace}
+For $j\ge0$,
+\begin{equation}
+ T_j(q)=(q-1)\gamma_j+
+ q\sum_{k=1}^j\binom{j}{k}(-\log q)^k\gamma_{j-k}
+       +\frac{(-1)^j q}{j+1}(\log q)^{j+1}.
+ \label{eq:T-formula}
+\end{equation}
+Consequently
+\begin{equation}
+ \sum_{r=1}^{q-1}I_{mn}(r/q)
+ =(q-1)e_{mn}+\sum_{j=0}^{m+n+1}
+                    (c_{mn,j}+d_{mn,j})T_j(q).
+ \label{eq:I-trace}
+\end{equation}
+The first case is
+\begin{equation}
+ \sum_{r=1}^{q-1}I_{00}(r/q)
+ =2(q-1)(\gamma_1-\zeta(2))-2q\gamma\log q-q\log^2q.
+ \label{eq:I00-trace}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Sum the Hurwitz distribution identity and remove the $r=q$ term:
+\[
+ \sum_{r=1}^{q-1}\zeta(1+u,r/q)
+                         =(q^{1+u}-1)\zeta(1+u).
+\]
+The residue on both sides is $(q-1)/u$. Expanding the regular part and
+multiplying its $u^j$ coefficient by $(-1)^jj!$ gives
+\eqref{eq:T-formula}; the last term comes from the pole times the
+exponential $q^u$, and must be retained. Summing the closure formula and
+permuting $r\leftrightarrow q-r$ gives \eqref{eq:I-trace}.
+\end{proof}
+
+Let $\chi$ be any nonprincipal Dirichlet character modulo $q$, not
+necessarily primitive, and define
+$W_j(\chi)=\sum_{r=1}^{q-1}\chi(r)\gamma_j(r/q)$.
+Our convention uses $\chi$, not its complex conjugate, in this sum.
+
+\begin{proposition}[Character resolution]
+\label{prop:character}
+For $j\ge0$,
+\begin{equation}
+ W_j(\chi)=(-1)^jq\sum_{k=0}^j\binom{j}{k}
+                (\log q)^{j-k}L^{(k)}(1,\chi).
+ \label{eq:W-formula}
+\end{equation}
+Moreover
+\begin{equation}
+ \sum_{r=1}^{q-1}\chi(r)I_{mn}(r/q)
+ =\sum_{j=0}^{m+n+1}
+           \bigl(c_{mn,j}+\chi(-1)d_{mn,j}\bigr)W_j(\chi).
+ \label{eq:character-correlation}
+\end{equation}
+In particular the character trace of $I_{mm}$ vanishes for every odd
+character.
+\end{proposition}
+\begin{proof}
+The identity
+$\sum_r\chi(r)\zeta(s,r/q)=q^sL(s,\chi)$ has no pole at $s=1$,
+because $\sum_r\chi(r)=0$. Differentiating $j$ times there gives
+\eqref{eq:W-formula}. The constant in the closure formula sums to zero,
+and the reflected Stieltjes term transforms by
+$\chi(q-r)=\chi(-1)\chi(r)$. This proves
+\eqref{eq:character-correlation}. For $m=n$, the two coefficients are
+equal and their odd-character contribution cancels.
+\end{proof}
+
+These statements reduce arithmetic traces of nonlinear-looking
+integrals to a finite spectral jet of a single Dirichlet $L$-function.
+They do not prove that the surviving even-character derivative
+coordinates are independent of other periods. No such independence
+assumption is used in their derivation.
+
+\section{Computational reproduction and evidence separation}
+\label{sec:verification}
+
+The proof of Theorem~\ref{thm:closure} is uniform in the indices.
+Computations serve a different purpose: detecting coefficient, phase,
+normalization and implementation mistakes. The supplied programs retain
+this separation in their module documentation and result files.
+
+\subsection{Exact algebra}
+The coefficient engine generates all $45$ ordered pairs $(m,n)$ with
+$m+n\le8$. Zeta values are formal symbols during this calculation.
+The run recorded in \file{results/exact_verification.json} checks
+$272$ exact assertions: polynomial divisibility is enforced during
+coefficient construction; the counted assertions verify reflection
+symmetry, the two highest nonzero Stieltjes coefficients, the missing
+next order, the leading collision coefficient, and two explicitly
+specified base identities. The result is \texttt{PASS}.
+
+The full data in \file{results/coefficients.json} store the constant,
+the coefficients of $\gamma_j(a)$ and $\gamma_j(1-a)$, and the collision
+polynomial for every pair. The companion \file{results/identities.txt}
+is a human-readable rendering. No transcendental equality is inferred
+from rational rank computations, and the symbolic checks are not a
+formalization of the convergence proofs.
+
+\subsection{Independent numerical diagnostics}
+With Python 3.13.5, mpmath 1.3.0 and $45$ decimal working digits,
+\file{code/verify_numeric.py} passed $19$ checks. They compare ordinary
+or explicitly subtracted quadrature with the closed formulas, compare
+polylogarithm and Hurwitz kernels at noninteger real and complex orders,
+check rational traces, and differentiate a closed antiderivative.
+The largest recorded absolute residual in this run is approximately
+$1.06\times10^{-44}$.
+
+A separate program, \file{code/verify_stieltjes_pairs.py}, evaluates the
+regularized products $I_{10},I_{11},I_{20}$ at $a=1/2$ by quadrature.
+It evaluates the necessary Stieltjes functions through a $140$-term
+parameter Taylor expansion at one, using Hurwitz spectral derivatives
+for the coefficients, rather than evaluating the closed correlation
+formula inside its own integrand. The recorded comparisons are
+\begin{center}
+\begin{tabular}{@{}lrl@{}}
+\toprule
+Quantity & Quadrature value (rounded) & Absolute residual\\
+\midrule
+$I_{10}(1/2)$ & $6.71092887447221586072$ & $3.98\times10^{-41}$\\
+$I_{11}(1/2)$ & $-8.64046177754241055451$ & $1.61\times10^{-40}$\\
+$I_{20}(1/2)$ & $-11.02758300286848051739$ & $2.34\times10^{-40}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The Taylor truncation and quadrature errors are not enclosed by directed
+interval arithmetic. The table is therefore numerical evidence, not
+certified error bounds. The combined numerical count is $22$, separate
+from the $272$ exact symbolic checks.
+
+A negative control omits the term $-2\zeta(2)$ from $I_{00}$ and verifies
+that the resulting discrepancy is $2\zeta(2)$. This tests the particular
+finite constant that is easy to lose when endpoint subtraction is
+replaced by an informal cancellation of divergent Fourier terms.
+
+\subsection{A reproducible order-differentiation canary}
+\label{sec:canary}
+At integer spectral orders, differentiating a polylogarithm numerical
+routine with default finite-difference settings can lose substantially
+more digits than direct function evaluation suggests. The exact identity
+\begin{equation}
+ \Rea\Li_s(i)=2^{-s}(2^{1-s}-1)\zeta(s)
+ \label{eq:cyclotomic-canary}
+\end{equation}
+for real $s$ near $2$ supplies a simple test. It follows by grouping
+the absolutely convergent series by even indices, and then continues
+in $s$.
+
+In the installed mpmath 1.3.0, at $40$ working digits and with the exact
+argument \texttt{mp.mpc(0,1)}, applying the default \texttt{mp.diff}
+to the left and right sides of \eqref{eq:cyclotomic-canary} gives zero
+recorded discrepancy for the values, but absolute discrepancies
+\[
+ 2.33945455584\times10^{-12}\quad\hbox{and}\quad
+ 2.44970539683\times10^{-16}
+\]
+for the first and second spectral derivatives, respectively.
+The minimal reproducer and full observed values are supplied in
+\file{code/polylog_derivative_canary.py} and its JSON output.
+
+This is a version- and method-specific observation, not a counterexample
+to \eqref{eq:cyclotomic-canary}, nor a claim that every polylogarithm
+implementation has the same behavior. The validating log-Gamma tests
+therefore use exact cyclotomic reduction before spectral differentiation
+at $i$ and $-1$. The raw polylogarithm kernel is also checked separately
+at noninteger spectral parameters. Future numerical implementations may
+remove the canary discrepancy; the reproducer records it rather than
+requiring it to persist.
+
+\section{Audit, normalization safeguards and integration scope}
+\label{sec:audit}
+
+\paragraph{Finite part versus ordinary integral.}
+The new formulas must be integrated with Definition~\ref{def:finitepart},
+not with a bare integral sign. Counterterms include both endpoint
+coefficients and the correct powers of logarithms. At collision, the
+extra $\epsilon^{-1}E_{m+n}(\log\epsilon)$ term is indispensable.
+For users who prefer ordinary integrals,
+\eqref{eq:I-convergent}, \eqref{eq:digamma-convergent} and
+\eqref{eq:J-convergent} eliminate finite-part notation entirely.
+
+\paragraph{Analytic continuation and diagonal cancellation.}
+Gamma poles in \eqref{eq:C-hurwitz} and the apparent pole at $u+v=0$
+in \eqref{eq:K-hurwitz} cancel only in the combined expression.
+Expanding or evaluating the individual terms at a pole is invalid.
+The regular expression \eqref{eq:K-regular} or exact homogeneous
+coefficients should be used near the intersection of the axes.
+The limit $(1-c^{-u})/u\to\log c$ also fixes an easily reversed sign in
+subtraction code.
+
+\paragraph{Differentiating singular products.}
+The parameter derivatives in Section~\ref{sec:primitives} differentiate
+a proved closed expression. We do not assert that differentiation
+commutes with an unmodified finite-part product integral. Moving the
+break point, differentiating endpoint values, and differentiating
+counterterms can all contribute. A separate commutation theorem would
+be required for that claim.
+
+\paragraph{Repository status and existing corrections.}
+The inspected integration material already distinguishes classical
+identities from experimental searches, and its denominator-five
+log-Gamma correction retains the required Dirichlet derivative
+\cite{repo-integration}. We do not replace that term by an unsupported
+Clausen-only reduction. The current exact $S_4$ proof must retain its
+proved status \cite{repo-s4}. Neither the $S_6$ problem nor period
+independence has been settled by the present bilinear calculus.
+
+\paragraph{Computational finding, not an invented source erratum.}
+The observed polylogarithm order-derivative accuracy loss is a real
+reproducible finding in the delivery environment. It motivates a
+regression canary for future repository computations. We have not
+established that a particular existing repository result relied on the
+failing default differentiation path, so no existing theorem is
+retracted on that basis.
+
+\paragraph{Review boundaries.}
+The read of \file{main} at the end of the review returned commit
+\file{e1294e75708b84986bfdaf103892ac9ac78a0580}.
+Individual selected file blob identifiers are recorded separately in
+\file{notes/PROVENANCE.json}; the earlier reads were not all pinned to
+that commit. Incoming ZIPs were inventoried but not unpacked or audited.
+The package proposes a new report and a namespaced integration section,
+without modifying any live repository file. This respects the incoming
+archive distinction documented by the repository \cite{repo-incoming}.
+
+\section{Further research questions}
+\label{sec:questions}
+
+\subsection{A trilinear analogue and its genuine new coordinates}
+For three distinct translations, define a product finite part by
+subtracting the local singular terms at all three endpoints. Does its
+spectral generating function reduce to finitely many Tornheim-type or
+colored double-zeta jets, and what is a useful exact coefficient normal
+form? Unlike the bilinear Fourier calculation, a trilinear integral
+retains a nontrivial additive relation among three frequencies. A
+linear closure theorem analogous to Theorem~\ref{thm:closure} should not
+be presumed without proving those remaining relations.
+
+\subsection{Unequal integer dilations}
+Replace the translated factor by a periodic function of $qx+a$, or
+allow different positive integer dilations in the two factors. Fourier
+orthogonality imposes a divisibility condition instead of equality of
+frequencies. Determine a finite distribution formula for the resulting
+finite parts, including the endpoints introduced by the dilation. This
+could connect the Gamma-ratio coefficient algebra directly to the
+manuscript's rational-grid modules.
+
+\subsection{Parameter differentiation with moving counterterms}
+Prove an explicit commutation law between differentiation in $a$ and the
+finite-part operation. The desired theorem should list every endpoint
+term and yield independent integral identities involving higher
+polygamma and Stieltjes derivatives, rather than merely restating the
+closed parameter derivative in Section~\ref{sec:primitives}.
+
+\subsection{Higher integral spectral resonances}
+The expansions here are centered at spectral pairs $(1,1)$ and $(0,0)$.
+At other integer pairs, Gamma factors and Hurwitz poles can meet in
+more complicated ways. Classify the corresponding removable combinations
+and determine which products reduce to finite single-function jets.
+The first useful examples involve a Stieltjes factor paired with a
+polygamma or an explicitly normalized negative-polygamma factor.
+
+\subsection{Compatibility of successive renormalized convolutions}
+Theorem~\ref{thm:collision} proves compatibility of one collision with a
+specified finite part. It does not establish associativity of successive
+renormalized products. Determine whether an associative convolution
+operation can be defined on a suitable space of periodic distributions,
+and identify any finite local terms needed to recover the present
+normalization.
+
+\subsection{Arithmetic traces beyond the linear closure}
+Character traces of the bilinear family reduce to ordinary Dirichlet
+$L$-jets. Which additional coordinates survive for trilinear products,
+unequal dilations, or nonrational shifts? Any claim of irreducibility
+should be stated in an explicit formal law quotient unless numerical
+period independence has actually been proved.
+
+\subsection{Priority comparison, formalization and exact certificates}
+Compare the all-order coefficient theorem systematically with the wider
+Hurwitz-transform and finite-part-integral literature. A result already
+implicit in a classical source should receive appropriate attribution,
+while the explicit counterterm and coefficient presentation can still
+serve as a useful repository contribution. Formalization can then
+separate the local analytic lemmas, Fourier orthogonality, meromorphic
+continuation and finite homogeneous algebra. The last layer already has
+replayable exact data, but the present package is not a proof-assistant
+certificate.
+
+The existing colored-polylogarithm problems, including the next mixed
+Gaussian reduction after $S_4$, remain distinct. They may benefit from
+spectral generating functions, but no implication from this closure
+theorem to their resolution is asserted.
+
+\appendix
+\section{Reproduction commands and artifact map}
+\label{app:reproduce}
+
+From the package root, the mathematical checks are run by
+\begin{verbatim}
+python code/exact_coefficients.py --max-total 8
+python code/verify_numeric.py --dps 45
+python code/verify_stieltjes_pairs.py
+python code/polylog_derivative_canary.py
+\end{verbatim}
+The tested dependencies are SymPy 1.14.0 and mpmath 1.3.0. The scripts
+write JSON result records and return a nonzero exit code when a required
+identity check fails; the version-specific canary records its observation
+without assuming that future software must reproduce the same loss.
+For the PDF, use
+\begin{verbatim}
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The Makefile exposes these as \texttt{make check} and \texttt{make pdf}.
+The integration fragment defines its own auxiliary macro names and uses
+the label prefix \texttt{corrclosure:}. It is a proposed mathematical
+section, not an automatic patch against a moving repository snapshot.
+The article itself is self-contained and requires no external figure or
+bibliography files.
+
+\section{Coefficient data conventions}
+
+Each row of \file{results/coefficients.json} contains the integer indices
+\texttt{m}, \texttt{n}, a constant polynomial, an array \texttt{a} of
+coefficients of $\gamma_j(a)$, an array \texttt{b} of coefficients of
+$\gamma_j(1-a)$, and a polynomial \texttt{collision}.
+Within these strings, \texttt{z2}, \texttt{z3}, and so on denote Riemann
+zeta values; \texttt{L} denotes $\log a$ only in the collision polynomial.
+This differs from the local notation $L=\log(2\pi)$ used in
+Section~\ref{sec:loggamma}. The distinction is explicit in the JSON
+schema and must be preserved when importing the data.
+
+The symbolic table intentionally retains expressions such as
+$\zeta(2)^2$ and $\zeta(4)$ separately. One may subsequently apply
+$\zeta(2)^2=\tfrac52\zeta(4)$, but doing so changes the presentation
+rather than the theorem. The coefficient generator does not use any
+unproved independence conjecture to certify the rows.
+
+\begin{thebibliography}{99}
+\bibitem{dlmf-hurwitz}
+NIST Digital Library of Mathematical Functions,
+\emph{Section 25.11: Hurwitz Zeta Function}, particularly the shift,
+Fourier, distribution, special-value and derivative identities.
+\url{https://dlmf.nist.gov/25.11}. Accessed 10 October 2026.
+
+\bibitem{dlmf-polylog}
+NIST Digital Library of Mathematical Functions,
+\emph{Section 25.12: Polylogarithms}.
+\url{https://dlmf.nist.gov/25.12}. Accessed 10 October 2026.
+
+\bibitem{shpot}
+M.~A. Shpot, M.~P. Chaudhary and R.~B. Paris,
+\emph{Integrals of products of Hurwitz zeta functions and the Casimir
+effect in $\phi^4$ field theories}, arXiv:1603.00722, version 2.
+\url{https://arxiv.org/html/1603.00722v2}.
+
+\bibitem{repo-integration}
+ProveIt contributors,
+\emph{Zeta jets, Stieltjes antiderivatives and negative polygamma},
+chapter source \file{07-integration.tex} in
+\file{Analysis/Polylogarithms/docs/manuscript/chapters/}.
+Selected sections inspected 10 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/Polylogarithms/docs/manuscript}.
+
+\bibitem{repo-s4}
+ProveIt contributors,
+\emph{The mixed Gaussian weight-five identity and its exact proof},
+\file{04-S4-proof.tex}, blob
+\file{7ed3a5f375c027cc87a9c90d9f50e35ca447f1d2}, in the same manuscript.
+Selected sections inspected 10 October 2026.
+
+\bibitem{repo-discovery}
+ProveIt contributors,
+\emph{Experimental discovery and the route to proof},
+\file{10-discovery.tex}, blob
+\file{207c719ae6e7fb1639401f449216ae9b695afd40}, in the same manuscript.
+Selected sections inspected 10 October 2026.
+
+\bibitem{repo-incoming}
+ProveIt contributors,
+\emph{Incoming reports: intake instructions},
+\file{docs/incoming/README.md}, blob
+\file{9956ad83c5ddfa3c75e5f2946481a83082bc81e8}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/docs/incoming}.
+Selected intake sections and directory inventory inspected 10 October 2026.
+\end{thebibliography}
+\end{document}

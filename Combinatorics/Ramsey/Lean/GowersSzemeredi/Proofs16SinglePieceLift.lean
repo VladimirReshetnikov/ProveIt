@@ -28,8 +28,14 @@ densities whenever the providers are. The chain:
    (`slice_localPieceFor`).
 5. Translate the piece of `φ₁` back to a piece of `φ`.
 
-The inputs are named hypotheses, not asserted:
-* `LocalRelationCoverAt k δ` (the open core);
+**Warning.** `single_piece_lift` assumes the box-local inputs
+`LocalRelationCoverAt` and `LocalMultilinearPieceAt`, which are false for
+growing widths (Notes L.2). It is therefore vacuous as stated. The
+provider form `single_piece_lift_core` (`Proofs16SinglePieceGlobal`) is the
+usable statement. The helpers here (`lastSliceFace`, `fullSpaceBox`,
+`exists_short_parent_dense_cell`, `section16SpectrumRelation_fibre_le`)
+remain valid. The inputs of `single_piece_lift`:
+* `LocalRelationCoverAt k δ`;
 * `LocalMultilinearPieceAt k` for the slices;
 * vertex providers `(C, W)`, which `vertex_localPieceFor` supplies from
   lower-dimensional inputs;

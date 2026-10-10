@@ -1,0 +1,13 @@
+ClearAll[tt,zz,uu,pm];
+pm[m_,t_,z_] := Sum[Binomial[m-2,j] Pochhammer[t+1,j] z^j (1-z)^(m-2-j)/Factorial[j+1],{j,0,m-2}];
+exact = Flatten[Table[TrueQ[FullSimplify[Coefficient[Normal[Series[(1-zz)^(-tt-m+1) pm[m,tt,zz],{zz,0,n}]],zz,n]-Binomial[m+n-1,n] Pochhammer[tt+1,n]/Factorial[n+1]] === 0],{m,2,6},{n,0,8}]];
+lambda=Log[2]/2-I Pi/4;
+rows=Table[target=Factorial[k] Coefficient[Normal[Series[(Pi tt/Sin[Pi tt]) Exp[-lambda tt] pm[m,tt,I],{tt,0,k}]],tt,k]/(1-I)^(m-1);
+value=NIntegrate[Log[uu/(1-uu)]^k/(1-I uu)^m,{uu,0,1},WorkingPrecision->70,AccuracyGoal->45,PrecisionGoal->45,MaxRecursion->30];
+error=Abs[value-N[target,70]];
+<|"m"->m,"k"->k,"absolute_residual"->ToString[error,InputForm],"passed"->TrueQ[error<10^-40]|>,{m,{2,3}},{k,{0,2,4}}];
+rows=Flatten[rows];
+record=<|"all_pass"->(And@@exact && And@@Lookup[rows,"passed"]),"engine"->$Version,"exact_coefficient_identities"->Length[exact],"all_exact_pass"->And@@exact,"numerical_diagnostics"-><|"interval_certified"->False,"working_precision"->70,"rows"->rows|>,"scope"->"Native exact finite coefficient identities and separately labeled numerical integral diagnostics; the arbitrary-order identities have analytic proofs."|>;
+Export[FileNameJoin[{DirectoryName[$InputFileName],"logistic-resolvent-native.json"}],record,"RawJSON"];
+Print[ExportString[record,"RawJSON"]];
+Exit[If[TrueQ[record["all_pass"]],0,1]];

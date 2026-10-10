@@ -1,0 +1,113 @@
+\section{Scope, notation, and the status of the results}
+
+This article continues the collective manuscript \emph{Polylogarithms and
+their Arithmetic Bridges} in Vladimir Reshetnikov's ProveIt repository.
+The source review is frozen at commit
+\begin{center}\small\ttfamily
+570b0567f311cf1890865065896be2665f469e4f.
+\end{center}
+The two entry points supplied for this task were the canonical manuscript
+directory and \texttt{docs/incoming}. At the frozen revision the latter
+contains its intake ledger; the relevant previous arrivals have been placed
+in the thematic reports tree. The canonical README reports a 379-page
+manuscript and explicitly distinguishes preserved reports, finite replay,
+and integrated proofs \cite{repoManuscript}. We follow that distinction.
+
+\subsection{What was already available}
+The reviewed source includes the established $S_4$ proof, rational
+distribution-rank theorems, signed-kernel results, log-Gamma moment
+asymptotics, Stieltjes parameter derivatives, and the existing sharp
+fixed-argument Herglotz expansion. These form the baseline, rather than new
+claims of this continuation. In particular, the exact evaluation of the
+manuscript's $S_6$ remains a separate problem. Nothing in the present work
+proves its special-value conjecture.
+
+Two previous developments are particularly close to the present analysis.
+The boundary continuation already pairs the Gamma and zeta poles in the
+Lerch expansion and proves endpoint differentiability thresholds
+\cite{repoBoundary}. The integrated zeta-jet chapters already identify
+Stieltjes primitives with spectral derivatives of Hurwitz zeta at zero
+\cite{repoIntegration}. Our first two analytic developments connect and
+extend those mechanisms in different directions: uniformity in a growing
+integer order, and nonzero shifts in bilinear integrals.
+
+\subsection{The principal additions}
+Table~\ref{scope:contributions} separates the new conclusions proved here from their
+classical or previously established inputs. ``New'' in this table means a
+continuation beyond the inspected ProveIt material; no claim of worldwide
+priority is made without a separate literature investigation.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Contributions and their established inputs.}
+\label{scope:contributions}
+\medskip
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.19\textwidth}>{\raggedright\arraybackslash}p{0.44\textwidth}>{\raggedright\arraybackslash}p{0.29\textwidth}@{}}
+\toprule
+Topic & Conclusion established here & Input credited separately\\
+\midrule
+Resonant Lerch limits & An arbitrary-order expansion uniform in all integer
+$k\geq0$, with a common centered scale and an exponentially small analytic
+tail & Classical Lerch expansion; fixed-order pole cancellation\\[5pt]
+Shifted Gamma correlations & Exact autocorrelation and increment formulas;
+strict convexity of the autocorrelation; unique half-period extremum;
+mixed Hurwitz-jet cusps & Hurwitz Fourier expansion; classical unshifted
+integral calculus\\[5pt]
+Herglotz joint limit & Complete compact-ratio expansion and a finite-$r$
+Taylor bound; a profile with arithmetic, Bessel, Gamma, and dilogarithm
+representations & Digamma integral; classical partial fractions and zeta
+functional equation\\[5pt]
+Nonseparable jets & A two-generator colength theorem in any local
+Frobenius algebra; exact reflection dimensions and integer torsion;
+three-generator obstruction & The manuscript's all-ring distribution
+basis and reflection--Koszul model\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The analytic results have complementary roles. The Lerch theorem controls a
+moving spectral order near an integer. The Gamma correlation theorem
+integrates two spectral jets against a periodic shift. The Herglotz theorem
+controls a moving argument when differentiation order grows. The final
+algebraic section concerns the formal distribution relations satisfied by
+families of these functions; it makes no assertion of transcendental
+independence of their evaluated values.
+
+\subsection{Conventions}
+We use the Hurwitz Laurent convention
+\begin{equation}\label{scope:laurent}
+ \zeta(s,a)=\frac1{s-1}
+       +\sum_{n=0}^{\infty}\frac{(-1)^n\gamma_n(a)}{n!}(s-1)^n.
+\end{equation}
+Thus $\gamma_0(a)=-\psi(a)$ and $\gamma_0(1)=\gamma$, Euler's constant.
+Square-bracket superscripts denote spectral derivatives:
+\[
+ \zeta^{[r]}(s,a)=\partial_s^r\zeta(s,a),\qquad
+ \Li_s^{[r]}(z)=\partial_s^r\Li_s(z).
+\]
+An ordinary prime on $\zeta(s)$ also denotes an $s$ derivative. Parenthesized
+superscripts on $\psi$, $\Gamma$, or a named real-variable function denote
+derivatives in that function's argument. Each section specifies any further
+local notation. All logarithms of positive real numbers are real logarithms;
+complex logarithms and square roots are principal unless another branch is
+explicitly specified. The fractional part $\{x\}$ is used only under
+integrals or away from its integer discontinuities, so values assigned at
+the isolated endpoints do not affect the integrals.
+
+The source identities for Hurwitz zeta, Gamma, and Lerch are recorded in
+DLMF \cite{dlmfhurwitz,dlmflerch}. In particular,
+\begin{equation}\label{scope:lerchidentity}
+ \zeta^{[1]}(0,a)=\log\Gamma(a)-\tfrac12\log(2\pi),
+ \qquad \partial_a\zeta(s,a)=-s\zeta(s+1,a).
+\end{equation}
+These identities fix the normalization of every antiderivative below.
+
+\subsection{How the evidence is used}
+Theorems in this article are proved analytically or by exact linear algebra.
+The computational artifacts have three distinct purposes. Symbolic
+recurrences and finite-field ranks are checked exactly. Independent
+high-precision evaluations test normalizations and signs in the analytic
+identities. Asymptotic tables illustrate the stated remainder orders, without
+claiming that a finite table proves a uniform estimate. None of the proofs
+depends on accepting a small floating-point residual as zero.

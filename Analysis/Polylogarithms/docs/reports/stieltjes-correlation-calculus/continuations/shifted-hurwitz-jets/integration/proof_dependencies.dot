@@ -1,0 +1,27 @@
+digraph ShiftedHurwitz {
+  rankdir=LR;
+  node [shape=box];
+  Fourier [label="Classical Hurwitz Fourier expansion"];
+  Master [label="3.1 Shifted correlation\nFourier + beta forms"];
+  Residue [label="4.1 Periodic residues\nTaylor subtraction"];
+  Coeff [label="4.2 Canonical Laurent coefficients"];
+  Closure [label="5.1 Linear Stieltjes closure"];
+  Contact [label="6.1 Contact terms"];
+  Polygamma [label="6.2 Polygamma reductions"];
+  Primitive [label="7.2 Normalized primitives"];
+  Lift [label="7.3 All-order convergent lift"];
+  Gamma [label="8.1-8.2 Log-Gamma identities"];
+  Fourier -> Master;
+  Residue -> Coeff;
+  Master -> Coeff;
+  Coeff -> Closure;
+  Residue -> Contact;
+  Closure -> Polygamma;
+  Contact -> Polygamma;
+  Residue -> Primitive;
+  Fourier -> Lift;
+  Primitive -> Lift;
+  Closure -> Lift;
+  Lift -> Gamma;
+  Master -> Gamma;
+}

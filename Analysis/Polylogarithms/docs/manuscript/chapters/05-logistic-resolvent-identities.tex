@@ -1,0 +1,181 @@
+\section{A divided-difference identity across depths and colors}
+\label{logres:sec:main}
+The explicit logistic density suggests an identity search that keeps the
+depth parameter symbolic instead of recognizing one numerical value at a
+time. Its beta moments already determine the one-resolvent transform.
+Partial fractions then introduce several independent colors, while
+coalescing those colors produces finite formulas at every resolvent order.
+The resulting Gaussian logarithmic moments are exact polynomials in
+$\pi$ and $\log2$, with no integer-relation premise.
+
+For $-1<\Real t<1$ put
+\[
+ W_t(u)=\left(\frac{u}{1-u}\right)^t\frac{\sin\pi t}{\pi t},
+ \qquad 0<u<1,
+\]
+using the removable value at $t=0$. This is the generating density
+\eqref{ado:eq:kernelgenerator}. Its integral is one, even for complex $t$;
+for real $-1<t<1$ it is positive. Denote divided differences by
+$[z_1,\ldots,z_m]f$, with the continuous confluent interpretation when
+nodes coincide.
+
+\begin{theorem}[Several resolvents and their confluent limits]
+\label{logres:thm:colors}
+Let $z_1,\ldots,z_m\in\Omega$, where $\Omega=\C\setminus[1,\infty)$.
+For distinct nodes and $m\ge2$,
+\begin{equation}\label{logres:eq:colors}
+ \int_0^1\frac{W_t(u)}{\prod_{j=1}^m(1-z_ju)}\,du
+ =\frac1t[z_1,\ldots,z_m]
+       \{z^{m-2}((1-z)^{-t}-1)\}.
+\end{equation}
+For $m=1$ the transform is
+\begin{equation}\label{logres:eq:one}
+ \int_0^1\frac{W_t(u)}{1-zu}\,du
+       =\frac{(1-z)^{-t}-1}{tz}.
+\end{equation}
+All powers use the principal logarithm; the apparent singularities at
+$t=0$, $z=0$, and coincident nodes are removable. In particular, for
+$m\ge2$,
+\begin{align}\label{logres:eq:confluent}
+ \int_0^1\frac{W_t(u)}{(1-zu)^m}\,du
+ &=(1-z)^{-t-m+1}\mathcal P_m(t,z),\notag\\
+ \mathcal P_m(t,z)
+ &=\sum_{j=0}^{m-2}\binom{m-2}{j}
+       \frac{(t+1)_j}{(j+1)!}
+       z^j(1-z)^{m-2-j},
+\end{align}
+where $(t+1)_j$ is the rising factorial and $(t+1)_0=1$.
+\end{theorem}
+\begin{proof}
+The beta identity \eqref{ado:eq:mellin} gives
+\[
+ \int_0^1u^nW_t(u)\,du=\frac{(1+t)_n}{(n+1)!}.
+\]
+For $|z|<1$, expand the geometric kernel and sum the binomial series.
+Its result is \eqref{logres:eq:one}. The integrable endpoint majorants
+$u^{-1+\epsilon}(1-u)^{-1+\epsilon}$, on smaller parameter strips,
+justify local holomorphy and continuation to the principal slit plane.
+For distinct nonzero nodes, the exact partial fractions are
+\[
+ \frac1{\prod_j(1-z_ju)}
+ =\sum_{j=1}^m
+   \frac{z_j^{m-1}}{\prod_{k\ne j}(z_j-z_k)}\frac1{1-z_ju}.
+\]
+Integrating and using \eqref{logres:eq:one} gives the Lagrange formula
+for \eqref{logres:eq:colors}. Continuity allows zero nodes.
+
+When every node tends to $z$, the divided difference becomes the
+$(m-1)$st derivative divided by $(m-1)!$. Apply the product rule to
+$z^{m-2}((1-z)^{-t}-1)/t$. The term differentiating the second factor
+zero times vanishes, because the polynomial has degree $m-2$.
+For $j+1\ge1$ derivatives of the second factor one has
+\[
+ \frac{d^{j+1}}{dz^{j+1}}
+       \frac{(1-z)^{-t}-1}{t}
+       =(t+1)_j(1-z)^{-t-j-1}.
+\]
+Collecting the binomial factors proves \eqref{logres:eq:confluent}.
+All confluent limits also follow directly from domination of the
+original integral on compact subsets of $\Omega$.
+\end{proof}
+
+For example, the first three confluent cases are
+\begin{align*}
+ \mathcal P_2&=1,\\
+ \mathcal P_3&=1+(t-1)z/2,\\
+ \mathcal P_4&=(1-z)^2+(t+1)z(1-z)
+                         +(t+1)(t+2)z^2/6.
+\end{align*}
+Thus the squared-resolvent identity has the particularly simple form
+\[
+ \int_0^1\frac{W_t(u)}{(1-zu)^2}\,du=(1-z)^{-t-1}.
+\]
+The several-color identity is symmetric in its nodes; repeated colors
+are derivatives, rather than a separate guessed formula.
+
+\begin{corollary}[Every Gaussian logarithmic moment]
+\label{logres:cor:Gaussian}
+For integers $m\ge2$ and $k\ge0$, define
+\[
+ I_{m,k}=\int_0^1\frac{\log^k(u/(1-u))}{(1-\iu u)^m}\,du,
+ \qquad \lambda=\tfrac12\log2-\tfrac{\iu\pi}4.
+\]
+These are ordinary absolutely convergent integrals, and
+\begin{equation}\label{logres:eq:Gaussian}
+ I_{m,k}=\frac{k!}{(1-\iu)^{m-1}}
+ [t^k]\left\{\mathcal P_m(t,\iu)
+   \exp\left(-\lambda t+
+       \sum_{j\ge1}\frac{\zeta(2j)}j t^{2j}\right)\right\}.
+\end{equation}
+In particular $I_{m,k}\in\Q[\iu,\pi,\log2]$ for every $m,k$.
+For the squared resolvent,
+\begin{align*}
+ I_{2,0}&=\frac1{1-\iu},&
+ I_{2,1}&=-\frac{\lambda}{1-\iu},\\
+ I_{2,2}&=\frac{\lambda^2+\pi^2/3}{1-\iu},&
+ I_{2,3}&=-\frac{\lambda^3+\pi^2\lambda}{1-\iu},\\
+ I_{2,4}&=\frac{\lambda^4+2\pi^2\lambda^2+7\pi^4/15}{1-\iu}.
+\end{align*}
+\end{corollary}
+\begin{proof}
+Multiply \eqref{logres:eq:confluent} by $\pi t/\sin\pi t$ and
+differentiate $k$ times at zero. Powers of the endpoint logarithms
+are integrable, so this differentiation is legitimate. The reflection
+formula and its local logarithmic expansion give
+\[
+ \frac{\pi t}{\sin\pi t}=\Gamma(1+t)\Gamma(1-t)
+    =\exp\left(\sum_{j\ge1}\frac{\zeta(2j)}j t^{2j}\right),
+ \qquad |t|<1.
+\]
+At $z=\iu$, the principal logarithm is
+$\log(1-\iu)=\lambda$. This proves the coefficient formula and the
+listed values. Only finitely many terms enter a coefficient of order
+$k$, and every even zeta value is a rational multiple of $\pi^{2j}$.
+\end{proof}
+
+
+For a concrete weight-two pair, the real and imaginary parts of
+$I_{2,2}$ give the ordinary integral identities
+\begin{align}\label{logres:eq:real-second-moments}
+ \int_0^1\frac{(1-u^2)\log^2(u/(1-u))}{(1+u^2)^2}\,du
+ &=\frac{\log^2 2}{8}+\frac{13\pi^2}{96}
+                            +\frac{\pi\log2}{8},\notag\\
+ \int_0^1\frac{2u\log^2(u/(1-u))}{(1+u^2)^2}\,du
+ &=\frac{\log^2 2}{8}+\frac{13\pi^2}{96}
+                            -\frac{\pi\log2}{8}.
+\end{align}
+Both follow by expanding $\lambda^2$ in the proved formula, so their
+constants are derived rather than recognized numerically.
+
+\begin{corollary}[Two real Gaussian generating identities]
+\label{logres:cor:real-generators}
+For real $-1<t<1$,
+\begin{align}\label{logres:eq:real-generators}
+ \int_0^1\frac{(u/(1-u))^t}{1+u^2}\,du
+ &=\frac{\pi\,2^{-t/2}\sin(\pi t/4)}{\sin\pi t},\notag\\
+ \int_0^1\frac{u(u/(1-u))^t}{1+u^2}\,du
+ &=\frac{\pi\{1-2^{-t/2}\cos(\pi t/4)\}}{\sin\pi t}.
+\end{align}
+At $t=0$ the removable values are respectively $\pi/4$ and
+$\log2/2$. Differentiating at zero supplies every real logarithmic
+moment of these two kernels.
+\end{corollary}
+\begin{proof}
+Use \eqref{logres:eq:one} at $z=\iu$ and $z=-\iu$ and the identities
+\[
+ \frac1{1+u^2}=\frac12\left(\frac1{1-\iu u}+\frac1{1+\iu u}\right),
+ \quad
+ \frac{u}{1+u^2}=\frac1{2\iu}\left(\frac1{1-\iu u}-\frac1{1+\iu u}\right).
+\]
+Multiply by $\pi t/\sin\pi t$ and simplify the conjugate principal
+powers. Continuity gives the zero-parameter values.
+\end{proof}
+
+The finite confluent polynomials and moment recurrence are checked exactly
+in \src{verification/certify_logistic_resolvents.py}. Independent
+logistic-coordinate quadratures are labeled as numerical diagnostics;
+the arbitrary-order identities follow from the beta moments, partial
+fractions and analytic parameter differentiation. These formulas add a
+several-color integral family to the development; they do not settle the
+separate mixed harmonic sums $S_6$ or $S_8$, and no literature-priority
+claim is made for this classical beta-integral mechanism.

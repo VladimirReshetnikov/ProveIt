@@ -149,16 +149,18 @@ theorem nonTopVertices_card (k : Nat) :
   rw [heq, Finset.card_erase_of_mem (Finset.mem_univ _)]
   simp
 
-/-- **One multilinear map for the remainder.** -/
-theorem remainder_piece {N k : Nat} [NeZero N] [Fact N.Prime]
+/-- **One multilinear map for the remainder**, with vertex providers on
+arbitrary domains. -/
+theorem remainder_piece_on {N k : Nat} [NeZero N] [Fact N.Prime]
     {C : Real → Real} {W : Real → Nat → Nat}
-    {B : Finset (Point N (k + 1))} {phi : Point N (k + 1) → ZMod N} {x0 : Point N k}
+    {phi : Point N (k + 1) → ZMod N} {x0 : Point N k}
+    (Dom : (Fin k → Bool) → Finset (Point N (k + 1)))
     (hvert : ∀ e : Fin k → Bool, e ≠ (fun _ => true) →
-      LocalPieceFor C W (vertexDomain B x0 e) (section16TranslatedVertex phi x0 e))
+      LocalPieceFor C W (Dom e) (section16TranslatedVertex phi x0 e))
     (hC : ∀ t, 0 < t → t ≤ 1 → 0 < C t ∧ C t ≤ 1) (hW : ∀ t, Monotone (W t))
     {theta : Real} (hθ : 0 < theta) (hθ1 : theta ≤ 1)
     (P : Box N (k + 1)) (H : Finset (Point N (k + 1))) (hP : P.IsProper) (hHP : H ⊆ P.carrier)
-    (hHD : ∀ e : Fin k → Bool, e ≠ (fun _ => true) → H ⊆ vertexDomain B x0 e)
+    (hHD : ∀ e : Fin k → Bool, e ≠ (fun _ => true) → H ⊆ Dom e)
     (hHc : theta * P.carrier.card ≤ H.card) :
     ∃ (R : Box N (k + 1)) (mu : Point N (k + 1) → ZMod N),
       R.IsProper ∧ R.carrier ⊆ P.carrier ∧
@@ -197,5 +199,56 @@ theorem remainder_piece {N k : Nat} [NeZero N] [Fact N.Prime]
         rw [hxg e he]
         push_cast [Int.cast_negSucc]
         ring
+
+/-- **One multilinear map for the remainder.** -/
+theorem remainder_piece {N k : Nat} [NeZero N] [Fact N.Prime]
+    {C : Real → Real} {W : Real → Nat → Nat}
+    {B : Finset (Point N (k + 1))} {phi : Point N (k + 1) → ZMod N} {x0 : Point N k}
+    (hvert : ∀ e : Fin k → Bool, e ≠ (fun _ => true) →
+      LocalPieceFor C W (vertexDomain B x0 e) (section16TranslatedVertex phi x0 e))
+    (hC : ∀ t, 0 < t → t ≤ 1 → 0 < C t ∧ C t ≤ 1) (hW : ∀ t, Monotone (W t))
+    {theta : Real} (hθ : 0 < theta) (hθ1 : theta ≤ 1)
+    (P : Box N (k + 1)) (H : Finset (Point N (k + 1))) (hP : P.IsProper) (hHP : H ⊆ P.carrier)
+    (hHD : ∀ e : Fin k → Bool, e ≠ (fun _ => true) → H ⊆ vertexDomain B x0 e)
+    (hHc : theta * P.carrier.card ≤ H.card) :
+    ∃ (R : Box N (k + 1)) (mu : Point N (k + 1) → ZMod N),
+      R.IsProper ∧ R.carrier ⊆ P.carrier ∧
+      nestW (fun _ => C) (fun _ => W) (2 ^ k - 1) theta P.width ≤ R.width ∧
+      IsMultilinear mu ∧
+      nestC (fun _ => C) (2 ^ k - 1) theta * R.carrier.card ≤
+        (H.filter fun x => x ∈ R.carrier ∧ section16PhiRemainder phi x0 x = mu x).card :=
+  remainder_piece_on (vertexDomain B x0) hvert hC hW hθ hθ1 P H hP hHP hHD hHc
+
+/-- **A vertex provider from a face provider.** A provider for the face
+pullback on any face domain lifts to the translated cube vertex. -/
+theorem vertex_localPieceFor_of_face {N k : Nat} [NeZero N] [Fact N.Prime]
+    {c : Real → Real} {w : Real → Nat → Nat} (e : Fin k → Bool)
+    (hc : ∀ t, 0 < t → t ≤ 1 → 0 < c t ∧ c t ≤ 1) (hw : ∀ t, Monotone (w t))
+    {phi : Point N (k + 1) → ZMod N} (x0 : Point N k)
+    {DomF : Finset (Point N (section16VertexDirections e).card)}
+    (hF : LocalPieceFor c w DomF
+      ((coordinateSubsetFace (section16VertexDirections e) (appendCoordinate x0 0)).pullback phi)) :
+    LocalPieceFor (liftLastC^[k + 1 - (section16VertexDirections e).card] c)
+      (liftLastW^[k + 1 - (section16VertexDirections e).card] w)
+      (Finset.univ.filter fun z => selectedCoordinates
+        (coordinateSubsetFace (section16VertexDirections e) (appendCoordinate x0 0)).free
+          (z + appendCoordinate x0 0) ∈ DomF)
+      (section16TranslatedVertex phi x0 e) := by
+  set S := section16VertexDirections e with hSdef
+  set t := appendCoordinate x0 0 with htdef
+  set F := coordinateSubsetFace S t with hFdef
+  have hs : 0 < S.card := Finset.card_pos.mpr ⟨_, section16VertexDirections_last e⟩
+  have h2 := (hF.lift_embedding hs hc hw F.free).translate t
+  have heq : ∀ z : Point N (k + 1), F.map (selectedCoordinates F.free (z + t)) =
+      appendCoordinate (fun i => x0 i + if e i then section16Init z i else 0)
+        (section16Last z) := by
+    intro z
+    rw [← section16_vertex_coordinate_mask x0 e z]
+    funext j
+    exact coordinateSubsetFace_retraction S t (z + t) j
+  refine h2.congr ?_ (fun z => by
+    simp only [CoordinateFace.pullback, section16TranslatedVertex, heq])
+  ext z
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and, mem_selectedDomain]
 
 end LeanProofs.GowersSzemeredi

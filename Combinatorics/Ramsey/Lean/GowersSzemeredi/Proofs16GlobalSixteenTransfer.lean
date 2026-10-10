@@ -1,0 +1,236 @@
+import GowersSzemeredi.Proofs16GlobalFullyExactTransfer
+import GowersSzemeredi.Proofs16ActiveColumnGraph
+import GowersSzemeredi.Proofs16GlobalColumnWordEndpoints
+
+/-! Original-data transfer with exact order-eight index coherence.
+One proper progression simultaneously carries exact quadruple, eight- and
+sixteen-endpoint relations, and retains the original N^7 source family.
+Its progression density and source-agreement density are unchanged from
+the eight-endpoint transfer. Only the explicit common radius and modulus
+condition are refined. Final printed-budget comparisons remain open. -/
+set_option autoImplicit false
+noncomputable section
+namespace LeanProofs.GowersSzemeredi
+open Classical
+
+/-- Cap for removing the eight chain-anchor spectra from sixteen endpoints. -/
+def globalOriginalExactSixteenImageCap (alpha : Real) : Nat :=
+  let d := 16 * columnSpectrumCap (columnEightDensity alpha)
+  let sigma := ((1 : Real)/(4*Real.pi)) / globalOriginalExactTransferImageCap alpha
+  refinementKernelCap (16*d) (8*d) sigma sigma
+
+/-- One positive radius for quadruples, eight- and sixteen-endpoint relations,
+order-eight active-fibre linearity and original-source agreement. -/
+def globalOriginalExactSixteenRadius (alpha : Real) : Real :=
+  (((1 : Real)/(4*Real.pi)) / globalOriginalExactTransferImageCap alpha) /
+    (2 * globalOriginalExactSixteenImageCap alpha)
+
+/-- Preserve the original selection bound and exceed the sixteen-tuple cap. -/
+def globalOriginalExactSixteenModulusBound (alpha : Real) : Nat :=
+  max (globalOriginalExactTransferModulusBound alpha) (globalOriginalExactSixteenImageCap alpha + 1)
+
+/-- Explicit density of the actual active local-map graph. -/
+def globalOriginalActiveColumnGraphDensity (alpha : Real) : Real :=
+  globalExactEightProgressionDensity alpha /
+    (refinementCells (globalOriginalExactSixteenRadius alpha) : Real)^
+      (16 * columnSpectrumCap (columnEightDensity alpha))
+
+theorem globalOriginalActiveColumnGraphDensity_pos (alpha : Real) :
+    0 < globalOriginalActiveColumnGraphDensity alpha := by
+  have hr : 0 < globalOriginalExactSixteenRadius alpha := by
+    have hK : (0 : Real) < globalOriginalExactTransferImageCap alpha := by
+      exact_mod_cast globalOriginalExactTransferImageCap_pos alpha
+    have hJ : (0 : Real) < globalOriginalExactSixteenImageCap alpha := by
+      unfold globalOriginalExactSixteenImageCap
+      exact_mod_cast refinementKernelCap_pos _ _ (by positivity) (by positivity)
+    unfold globalOriginalExactSixteenRadius
+    positivity
+  have hM : (0 : Real) < refinementCells (globalOriginalExactSixteenRadius alpha) := by
+    exact_mod_cast Nat.ceil_pos.mpr (by positivity : 0 < 1 / globalOriginalExactSixteenRadius alpha)
+  unfold globalOriginalActiveColumnGraphDensity globalExactEightProgressionDensity
+  exact div_pos (div_pos (globalDifferenceProgressionDensity_pos alpha) (by positivity)) (by positivity)
+
+theorem globalOriginalExactSixteenImageCap_pos (alpha : Real) :
+    0 < globalOriginalExactSixteenImageCap alpha := by
+  have hK : (0 : Real) < globalOriginalExactTransferImageCap alpha := by
+    exact_mod_cast globalOriginalExactTransferImageCap_pos alpha
+  unfold globalOriginalExactSixteenImageCap
+  exact refinementKernelCap_pos _ _ (by positivity) (by positivity)
+
+theorem globalOriginalExactSixteenRadius_pos (alpha : Real) :
+    0 < globalOriginalExactSixteenRadius alpha := by
+  have hK : (0 : Real) < globalOriginalExactTransferImageCap alpha := by
+    exact_mod_cast globalOriginalExactTransferImageCap_pos alpha
+  have hJ : (0 : Real) < globalOriginalExactSixteenImageCap alpha := by
+    exact_mod_cast globalOriginalExactSixteenImageCap_pos alpha
+  unfold globalOriginalExactSixteenRadius
+  positivity
+
+theorem globalOriginalExactEightImageCap_le_sixteen (alpha : Real) :
+    globalOriginalExactEightImageCap alpha ≤ globalOriginalExactSixteenImageCap alpha := by
+  have hK : (0 : Real) < globalOriginalExactTransferImageCap alpha := by
+    exact_mod_cast globalOriginalExactTransferImageCap_pos alpha
+  unfold globalOriginalExactEightImageCap globalOriginalExactSixteenImageCap
+  exact refinementKernelCap_mono_dimensions (by positivity) (by positivity) (by omega) (by omega)
+
+theorem globalOriginalExactSixteenRadius_le_eight (alpha : Real) :
+    globalOriginalExactSixteenRadius alpha ≤ globalOriginalExactEightRadius alpha := by
+  have hK : (0 : Real) < globalOriginalExactTransferImageCap alpha := by
+    exact_mod_cast globalOriginalExactTransferImageCap_pos alpha
+  have hJ : (0 : Real) < globalOriginalExactEightImageCap alpha := by
+    exact_mod_cast globalOriginalExactEightImageCap_pos alpha
+  have hle : (globalOriginalExactEightImageCap alpha : Real) ≤ globalOriginalExactSixteenImageCap alpha :=
+    Nat.cast_le.mpr (globalOriginalExactEightImageCap_le_sixteen alpha)
+  unfold globalOriginalExactSixteenRadius globalOriginalExactEightRadius
+  apply div_le_div_of_nonneg_left (by positivity) (by positivity)
+  exact mul_le_mul_of_nonneg_left hle (by norm_num)
+
+theorem globalOriginalExactEightModulusBound_le_sixteen (alpha : Real) :
+    globalOriginalExactEightModulusBound alpha ≤ globalOriginalExactSixteenModulusBound alpha := by
+  exact max_le_max le_rfl (Nat.add_le_add_right (globalOriginalExactEightImageCap_le_sixteen alpha) 1)
+
+/-- The same original witness system has exact order-eight active-fibre
+linearity, retaining all original source agreement at one natural radius. -/
+theorem global_original_sixteen_endpoint_transfer {N : Nat} [NeZero N] [Fact N.Prime]
+    (A : Finset (ZMod N × ZMod N)) (phi : ZMod N × ZMod N → ZMod N)
+    {alpha : Real} (ha : 0 < alpha) (ha1 : alpha ≤ 1)
+    (hA : alpha*(N : Real)^2 ≤ A.card) (hphi : IsEBihomomorphism A phi {0})
+    (hN : globalOriginalExactSixteenModulusBound alpha ≤ N) :
+    let d := columnSpectrumCap (columnEightDensity alpha)
+    let r := (1 : Real)/(8*Real.pi)
+    let kappa := globalProgressionRepresentationDensity alpha
+    let delta := globalProgressionPurificationParentDensity alpha
+    let K := globalColumnAlmostAllTupleImageCap alpha (globalJointProgressionSourceError alpha (globalSourceAgreementCoreError alpha))
+    let Jsrc := K*K*refinementKernelCap (8*d) (12*d) r r
+    let M := K*K*refinementKernelCap (4*(8*d)) (2*(8*d)) r r
+    let H := M*M*refinementKernelCap (4*(8*d)) (2*(8*d)) (r/2) (r/2)
+    let J8 := H^4*refinementKernelCap (8*(8*d)) (4*(8*d)) (r/4) (r/4)
+    let Jorig := Jsrc*Jsrc*J8*refinementKernelCap (24*d) (16*d) (r/8) (r/8)
+    let JquadFull := (refinementCells (r/8))^(64*d)*J8
+    let JorigFull := (refinementCells (r/16))^(24*d)*Jorig
+    let Jfull := max JquadFull JorigFull
+    let Jcap := max 1 Jfull
+    let sigma := (1/(4*Real.pi))/Jcap
+    let Jeff := globalOriginalExactSixteenImageCap alpha
+    let rExact := sigma/(2*Jeff)
+    ∃ (X : Finset (ZMod N)) (T : ZMod N → Finset (ZMod N))
+      (L : ZMod N → ZMod N → ZMod N) (W : ZMod N → Finset (Fin 4 → ZMod N))
+      (U : Finset (ZMod N)) (Q P R : CenteredProgression N) (f : ZMod N → FourRepresentationTuple N)
+      (C : Finset (ZMod N)) (v : ZMod N → ZMod N),
+      IsColumnWitnessSystem A phi X T L W (1/(4*Real.pi)) ∧
+      (∀ x ∈ X, columnWitnessDensity (columnEightDensity alpha)*(N : Real)^4 ≤ (W x).card) ∧
+      (∀ x ∈ X, (T x).card ≤ d ∧ IsFreimanLinearOn (bohr (T x) (1/(4*Real.pi))) (L x) ∧ L x 0 = 0) ∧
+      U ⊆ X ∧ globalColumnAlmostAllTupleDensity alpha*N ≤ (U.card : Real) ∧
+      Q.rank ≤ globalProgressionPurificationRank alpha ∧ Q.Proper ∧ delta*N ≤ (Q.carrier.card : Real) ∧
+      (∀ x ∈ Q.carrier, kappa*(N : Real)^3 ≤ ((fourDifferenceRepresentations U x).card : Real)) ∧
+      (∀ x ∈ Q.carrier, f x ∈ fourDifferenceRepresentations U x) ∧
+      P = centeredProgressionShrink Q 1024 ∧ P.Proper ∧ P.rank ≤ globalProgressionPurificationRank alpha ∧
+      globalDifferenceProgressionDensity alpha*N ≤ (P.carrier.card : Real) ∧
+      R = centeredProgressionShrink P 256 ∧ R.Proper ∧
+      R.rank ≤ globalProgressionPurificationRank alpha ∧
+      globalExactEightProgressionDensity alpha*N ≤ (R.carrier.card : Real) ∧
+      C ⊆ (centeredProgressionShrink Q 256).carrier ∧ C.Nonempty ∧
+      delta*N/(2*(512 : Real)^Q.rank) ≤ (C.card : Real) ∧
+      (∀ a ∈ P.carrier, v a ∈ C ∧ v a+a ∈ C ∧
+        delta*N/(2*(1024 : Real)^Q.rank) ≤ ((progressionBridgeSet C a).card : Real)) ∧
+      (∀ a ∈ P.carrier, (differenceAnchorSpectrum (normalizedRepresentationSpectrum T f) v a).card ≤ 16*d ∧
+        IsFreimanLinearOn (bohr (differenceAnchorSpectrum (normalizedRepresentationSpectrum T f) v a) (1/(4*Real.pi)))
+          (differenceAnchorMap (normalizedRepresentationMap L f) v a) ∧ differenceAnchorMap (normalizedRepresentationMap L f) v a 0=0) ∧
+      (∀ y, differenceAnchorMap (normalizedRepresentationMap L f) v 0 y=0) ∧
+      (∀ a b c e : ZMod N, a ∈ R.carrier → b ∈ R.carrier → c ∈ R.carrier → e ∈ R.carrier → a-b=c-e →
+        ColumnPairCompatible (differenceAnchorSpectrum (normalizedRepresentationSpectrum T f) v)
+          (differenceAnchorMap (normalizedRepresentationMap L f) v) rExact (a,b) (c,e)) ∧
+      (∀ q : PairedColumnTuple N, (∀ i, (q i).1 ∈ R.carrier ∧ (q i).2 ∈ R.carrier) →
+        pairedColumnIndex q = 0 → ∀ y ∈ bohr
+          (pairedColumnSpectrum (differenceAnchorSpectrum (normalizedRepresentationSpectrum T f) v) q) rExact,
+          pairedColumnDefect (differenceAnchorMap (normalizedRepresentationMap L f) v) q y = 0) ∧
+      (∀ q : PairedSixteenTuple N, (∀ i, (q i).1 ∈ R.carrier ∧ (q i).2 ∈ R.carrier) →
+        pairedSixteenIndex q = 0 → ∀ y ∈ bohr
+          (pairedSixteenSpectrum (differenceAnchorSpectrum (normalizedRepresentationSpectrum T f) v) q) rExact,
+          pairedSixteenDefect (differenceAnchorMap (normalizedRepresentationMap L f) v) q y = 0) ∧
+      (∀ y, FreimanHom 8 (R.carrier.filter fun x => y ∈ bohr
+          (differenceAnchorSpectrum (normalizedRepresentationSpectrum T f) v x) rExact)
+          (fun x => differenceAnchorMap (normalizedRepresentationMap L f) v x y)) ∧
+      IsEBihomomorphism
+        (activeColumnGraph R.carrier (differenceAnchorSpectrum (normalizedRepresentationSpectrum T f) v) rExact)
+        (fun p => differenceAnchorMap (normalizedRepresentationMap L f) v p.1 p.2) {0} ∧
+      globalOriginalActiveColumnGraphDensity alpha * (N : Real)^2 ≤
+        ((activeColumnGraph R.carrier (differenceAnchorSpectrum (normalizedRepresentationSpectrum T f) v) rExact).card : Real) ∧
+      ∀ a ∈ R.carrier, globalOriginalEightAgreementDensity alpha*(N : Real)^7 ≤
+        ((originalEightExactAgreementSet U T L (differenceAnchorSpectrum (normalizedRepresentationSpectrum T f) v a)
+          (differenceAnchorMap (normalizedRepresentationMap L f) v a) a rExact).card : Real) := by
+  intro d r kappa delta K Jsrc M H J8 Jorig JquadFull JorigFull Jfull Jcap sigma Jeff rExact
+  have hNold : globalOriginalExactTransferModulusBound alpha ≤ N :=
+    (le_max_left _ _).trans hN
+  have hJeffN : Jeff < N := by
+    have h := (le_max_right _ _).trans hN
+    change Jeff + 1 ≤ N at h
+    omega
+  have hcap_pos : 0 < Jcap := globalOriginalExactTransferImageCap_pos alpha
+  have hcap_real : (1 : Real) ≤ Jcap := by exact_mod_cast hcap_pos
+  have hJeffpos : 0 < Jeff := globalOriginalExactSixteenImageCap_pos alpha
+  have hJeffreal : (1 : Real) ≤ Jeff := by exact_mod_cast hJeffpos
+  have hsigma : 0 < sigma := by dsimp only [sigma]; positivity
+  have hsigma_le : sigma ≤ (1 : Real)/(4*Real.pi) := by
+    dsimp only [sigma]
+    rw [div_le_iff₀ (by positivity)]
+    have h0 : (0 : Real) ≤ 1/(4*Real.pi) := by positivity
+    exact le_mul_of_one_le_right h0 hcap_real
+  have hrExact_le : rExact ≤ sigma := by
+    dsimp only [rExact]
+    rw [div_le_iff₀ (by positivity)]
+    have htwo : (1 : Real) ≤ 2 * Jeff := by linarith only [hJeffreal]
+    exact le_mul_of_one_le_right hsigma.le htwo
+  obtain ⟨X,T,L,W,U,Q,P,f,C,v,hsys,hW,hcol,hUX,hU,hQr,hproper,hmass,hrep,hvalid,hPeq,hPproper,hPrank,hPmass,
+      hC,hCne,hCmass,hv,hdiff,hzero,hquad,hagree⟩ :=
+    global_original_eight_exact_transfer A phi ha ha1 hA hphi hNold
+  let Tpsi := differenceAnchorSpectrum (normalizedRepresentationSpectrum T f) v
+  let psi := differenceAnchorMap (normalizedRepresentationMap L f) v
+  let R := centeredProgressionShrink P 256
+  have hRP : R.carrier ⊆ P.carrier := centered_progression_shrink_subset P 256
+  have hRproper : R.Proper := centered_progression_shrink_proper P hPproper 256
+  have hRrank : R.rank ≤ globalProgressionPurificationRank alpha := hPrank
+  have hRmass : globalExactEightProgressionDensity alpha*N ≤ (R.carrier.card : Real) := by
+    have hcount : (P.carrier.card : Real) ≤ (512 : Real)^P.rank * R.carrier.card := by
+      exact_mod_cast centered_progression_shrink_card P hPproper (by norm_num : 0 < (256 : Nat))
+    have hpower : (512 : Real)^P.rank ≤ (512 : Real)^globalProgressionPurificationRank alpha :=
+      pow_le_pow_right₀ (by norm_num) hPrank
+    have hmassR : globalDifferenceProgressionDensity alpha*N ≤
+        (512 : Real)^globalProgressionPurificationRank alpha * R.carrier.card :=
+      hPmass.trans (hcount.trans (mul_le_mul_of_nonneg_right hpower (by positivity)))
+    unfold globalExactEightProgressionDensity
+    rw [div_mul_eq_mul_div, div_le_iff₀ (by positivity)]
+    simpa only [mul_comm] using hmassR
+  have hdata : ∀ x ∈ P.carrier, (Tpsi x).card ≤ 16*d ∧
+      IsFreimanLinearOn (bohr (Tpsi x) sigma) (psi x) ∧ psi x 0 = 0 := by
+    intro x hx
+    exact ⟨(hdiff x hx).1,(hdiff x hx).2.1.mono (bohr_mono_radius _ hsigma_le),(hdiff x hx).2.2⟩
+  have h16 : ∀ q : PairedSixteenTuple N, (∀ i, (q i).1 ∈ R.carrier ∧ (q i).2 ∈ R.carrier) →
+      pairedSixteenIndex q = 0 → ∀ y ∈ bohr (pairedSixteenSpectrum Tpsi q) rExact,
+        pairedSixteenDefect psi q y = 0 := by
+    intro q hq hadd
+    exact progression_all_sixteen_exact_of_quad_compatible P Tpsi psi hsigma hdata hquad hJeffN q hq hadd
+  have hF8 : ∀ y, FreimanHom 8 (R.carrier.filter fun x => y ∈ bohr (Tpsi x) rExact)
+      (fun x => psi x y) := fun y => freiman_eight_on_active_fibre_of_sixteen R.carrier Tpsi psi rExact h16 y
+  have hvertical : ∀ x ∈ R.carrier, IsFreimanLinearOn (bohr (Tpsi x) rExact) (psi x) := by
+    intro x hx
+    exact (hdiff x (hRP hx)).2.1.mono (bohr_mono_radius _ (hrExact_le.trans hsigma_le))
+  have hgraph := active_column_graph_bihom R.carrier Tpsi psi rExact hF8 hvertical
+  have hgraphmass : globalOriginalActiveColumnGraphDensity alpha * (N : Real)^2 ≤
+      (activeColumnGraph R.carrier Tpsi rExact).card := by
+    exact active_column_graph_density R.carrier Tpsi (globalOriginalExactSixteenRadius_pos alpha)
+      hRmass (fun x hx => (hdiff x (hRP hx)).1)
+  refine ⟨X,T,L,W,U,Q,P,R,f,C,v,hsys,hW,hcol,hUX,hU,hQr,hproper,hmass,hrep,hvalid,hPeq,hPproper,hPrank,hPmass,
+    rfl,hRproper,hRrank,hRmass,hC,hCne,hCmass,hv,hdiff,hzero,?_,?_,h16,hF8,hgraph,hgraphmass,?_⟩
+  · intro a b c e haR hbR hcR heR hadd
+    exact (hquad a b c e (hRP haR) (hRP hbR) (hRP hcR) (hRP heR) hadd).radius_mono hrExact_le
+  · intro q hq hadd y hy
+    have h8N : globalOriginalExactEightImageCap alpha < N :=
+      (globalOriginalExactEightImageCap_le_sixteen alpha).trans_lt hJeffN
+    have h8 := progression_all_eight_exact_of_quad_compatible P Tpsi psi hsigma hdata hquad h8N q hq hadd
+    exact h8 y (bohr_mono_radius _ (globalOriginalExactSixteenRadius_le_eight alpha) hy)
+  · intro a haR
+    exact (hagree a (hRP haR)).trans (Nat.cast_le.mpr (Finset.card_le_card
+      (original_eight_exact_agreement_radius_mono U T L (Tpsi a) (psi a) a hrExact_le)))
+
+end LeanProofs.GowersSzemeredi
