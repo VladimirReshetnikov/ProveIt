@@ -382,3 +382,507 @@ found nothing at small coefficient heights --- consistent with genuinely new con
 Recorded as an honest negative; the Lambert-series face ($\sum\sigma_5(n)q^n$ at
 $q=e^{-2\pi}$ and $q=-e^{-\pi\sqrt3}$) is the natural next probe surface.
 \end{negative}
+
+\section{Summation order, differentiation and certified tails}
+Absolute convergence made the preceding weights straightforward. Weight
+two needs a specified order of summation. Once that boundary is handled,
+Ramanujan's differential algebra turns the existing CM period seeds into
+all derivative evaluations, with explicit exponential tail estimates.
+
+\section{Regularized modular rows and all derivative evaluations}
+\label{modular:sec:modular}
+
+The modular draft obtains even-weight Eisenstein series by pairing
+polygamma values along lattice rows. Its weight-two question requires
+care: the paired rows converge rapidly, although the ungrouped lattice
+sum is not absolutely convergent. We first prove an explicit bound for
+every differentiated row. We then determine the change of summation
+order directly, before using any modular transformation law. Finally,
+Ramanujan's differential system evaluates all the resulting derivative
+rows at the square and hexagonal CM points.
+
+Throughout this section, let
+\[
+\tau\in\mathbb H:=\{z\in\C:\Imag z>0\},\qquad
+q=e^{2\pi\iu\tau},\qquad r=|q|=e^{-2\pi\Imag\tau}<1,
+\qquad \rho=\tau_{\mathrm{hex}}=\frac{1+\iu\sqrt3}{2}.
+\]
+For even \(w\ge2\) and an integer \(j\ge0\), put
+\begin{equation}
+\mathcal T_{w,j}(\tau)
+=\sum_{n\ge1}n^j\left[
+ \psi^{(w-1+j)}(n\tau)
+ +(-1)^j\psi^{(w-1+j)}(1-n\tau)\right].
+\label{modular:eq:modular-T-definition}
+\end{equation}
+Convergence will follow from the next theorem. The sign on the reflected
+term is part of the definition; differentiating that term changes its
+sign at every step.
+
+\subsection{Rational row formulas and explicit tail bounds}
+
+The negative-index polylogarithms appearing below are elementary
+rational functions. For \(d\ge0\), define
+\[
+R_d(t)=\Li_{-d}(t),\qquad
+R_0(t)=\frac{t}{1-t},\qquad
+R_{d+1}(t)=t\frac{d}{dt}R_d(t).
+\]
+These relations are identities of rational functions, since on
+\(|t|<1\) they follow by differentiating
+\(R_d(t)=\sum_{\ell\ge1}\ell^d t^\ell\). In particular,
+\[
+R_1(t)=\frac{t}{(1-t)^2},\qquad
+R_2(t)=\frac{t(1+t)}{(1-t)^3},\qquad
+R_3(t)=\frac{t(1+4t+t^2)}{(1-t)^4}.
+\]
+
+\begin{theorem}[Rational rows and an explicit remainder]
+\label{modular:thm:modular-rows-tail}
+For \(w,j,\tau\) as above,
+\begin{align}
+&\psi^{(w-1+j)}(n\tau)
+ +(-1)^j\psi^{(w-1+j)}(1-n\tau)
+ =(2\pi\iu)^{w+j}\Li_{1-w-j}(q^n),
+\label{modular:eq:modular-single-row}\\
+&\mathcal T_{w,j}(\tau)
+ =(2\pi\iu)^{w+j}\sum_{n\ge1}n^j\Li_{1-w-j}(q^n).
+\label{modular:eq:modular-rational-rows}
+\end{align}
+The series converges normally on every compact subset of \(\mathbb H\).
+If \(\mathcal T_{w,j}^{[N]}\) is its sum through \(n=N\), where
+\(N\ge0\), then
+\begin{equation}
+\left|\mathcal T_{w,j}(\tau)-\mathcal T_{w,j}^{[N]}(\tau)\right|
+\le (2\pi)^{w+j}(N+1)^j
+ \frac{\Li_{-j}(r)}{r}\,
+ \Li_{1-w-j}\!\left(r^{N+1}\right).
+\label{modular:eq:modular-tail-bound}
+\end{equation}
+Thus the bound contains only rational functions of \(r\) and
+\(r^{N+1}\), together with an explicit power of \(\pi\).
+\end{theorem}
+
+\begin{proof}
+For \(\Imag z>0\), splitting the absolutely convergent bilateral
+power sum into its nonnegative and negative indices gives
+\begin{equation}
+\sum_{m\in\Z}(m+z)^{-w}
+=\frac{\psi^{(w-1)}(z)+\psi^{(w-1)}(1-z)}{(w-1)!}.
+\label{modular:eq:modular-bilateral-polygamma}
+\end{equation}
+Here evenness of \(w\) is essential. The classical cotangent expansion
+and its partial-fraction interpretation~\cite{hstruct:DLMF} read
+\[
+\pi\cot(\pi z)=-\pi\iu
+ -2\pi\iu\sum_{\ell\ge1}e^{2\pi\iu\ell z},\qquad
+\pi\cot(\pi z)=\lim_{M\to\infty}\sum_{m=-M}^{M}\frac1{m+z}.
+\]
+Differentiate \(w-1\) times. On compact subsets of the upper
+half-plane the exponential series and its derivatives converge
+uniformly. After the first derivative, the bilateral series and all
+its subsequent derivatives also converge normally. Since
+\((-1)^{w-1}=-1\), the two minus signs cancel and yield
+\[
+\psi^{(w-1)}(z)+\psi^{(w-1)}(1-z)
+=(2\pi\iu)^w\sum_{\ell\ge1}\ell^{w-1}e^{2\pi\iu\ell z}.
+\]
+Differentiating another \(j\) times with respect to \(z\) proves
+\eqref{modular:eq:modular-single-row}. Multiplication by \(n^j\) gives the
+summand in \eqref{modular:eq:modular-rational-rows}.
+
+To prove the remainder bound, expand the rational polylogarithm in
+its nonnegative majorizing series. The absolute value of the omitted
+rows is at most
+\begin{equation}
+(2\pi)^{w+j}\sum_{\ell\ge1}\ell^{w+j-1}
+                  \sum_{n>N}n^j r^{n\ell}.
+\label{modular:eq:modular-positive-majorant}
+\end{equation}
+Write \(n=N+1+a\). For \(a\ge0\) and \(\ell\ge1\),
+\[
+n^j\le(N+1)^j(a+1)^j,\qquad r^{a\ell}\le r^a.
+\]
+Consequently
+\[
+\sum_{n>N}n^j r^{n\ell}
+\le (N+1)^j r^{(N+1)\ell}
+       \sum_{a\ge0}(a+1)^j r^a
+=(N+1)^j r^{(N+1)\ell}\frac{\Li_{-j}(r)}{r}.
+\]
+Substitution in \eqref{modular:eq:modular-positive-majorant} proves
+\eqref{modular:eq:modular-tail-bound}. In particular, the majorant is finite.
+On a compact subset of \(\mathbb H\), one has \(r\le r_0<1\), and
+each of its power series with nonnegative coefficients is bounded by
+its value at \(r_0\). This proves normal convergence, for every fixed
+\(w,j\), and justifies all subsequent termwise differentiations.
+\end{proof}
+
+For \(j=0\), the tail formula simplifies to
+\[
+\left|\mathcal T_{w,0}-\mathcal T_{w,0}^{[N]}\right|
+\le\frac{(2\pi)^w}{1-r}\Li_{1-w}\!\left(r^{N+1}\right).
+\]
+The case \(w=2\), which will be particularly useful, is
+\begin{equation}
+\left|\mathcal T_{2,0}-\mathcal T_{2,0}^{[N]}\right|
+\le\frac{4\pi^2r^{N+1}}
+ {(1-r)(1-r^{N+1})^2}.
+\label{modular:eq:modular-weight-two-tail}
+\end{equation}
+Theorem~\ref{modular:thm:modular-rows-tail} also proves
+\begin{equation}
+\frac{d^j}{d\tau^j}\mathcal T_{w,0}(\tau)
+=\mathcal T_{w,j}(\tau).
+\label{modular:eq:modular-termwise-derivatives}
+\end{equation}
+Computationally, \eqref{modular:eq:modular-single-row} is preferable to
+evaluating its two polygamma terms separately. Their algebraic
+asymptotic contributions cancel, leaving the exponentially small
+paired row. The rational formula performs that cancellation exactly
+before numerical evaluation.
+
+\subsection{The weight-two ordering correction from telescoping}
+
+For \(w\ge4\), the ordinary absolutely convergent lattice series is
+\[
+G_w(\tau)=\sum_{(m,n)\in\Z^2\setminus\{(0,0)\}}
+                  (m+n\tau)^{-w}
+=2\zeta(w)+\frac{2}{(w-1)!}\mathcal T_{w,0}(\tau).
+\]
+For \(w=2\), specify the order explicitly:
+\begin{align}
+G_2(\tau)&=\sum_{n\in\Z}
+        \left(\sum_{m\in\Z}'(m+n\tau)^{-2}\right)
+ =\frac{\pi^2}{3}+2\mathcal T_{2,0}(\tau),
+\label{modular:eq:modular-G2-definition}\\
+C_2(\tau)&=\sum_{m\in\Z}
+        \left(\sum_{n\in\Z}'(m+n\tau)^{-2}\right).
+\label{modular:eq:modular-C2-definition}
+\end{align}
+The prime omits only \((m,n)=(0,0)\). In the first expression, each
+inner row and the outer series of completed rows converge absolutely.
+The reverse expression exists as well: changing the names and signs
+of the one-dimensional indices gives
+\begin{equation}
+C_2(\tau)=\tau^{-2}G_2(-1/\tau).
+\label{modular:eq:modular-C2-coordinate}
+\end{equation}
+This is a coordinate identity for the prescribed iterated sums, not
+an assumption of modularity. The series of absolute values over all
+lattice points diverges, so an interchange of the two orders still
+requires a calculation.
+
+\begin{theorem}[Summation-order anomaly]
+\label{modular:thm:modular-ordering}
+For every \(\tau\in\mathbb H\),
+\begin{equation}
+C_2(\tau)=G_2(\tau)-\frac{2\pi\iu}{\tau}.
+\label{modular:eq:modular-anomaly}
+\end{equation}
+Consequently
+\begin{equation}
+G_2(-1/\tau)=\tau^2G_2(\tau)-2\pi\iu\tau,
+\qquad G_2(\tau+1)=G_2(\tau).
+\label{modular:eq:modular-G2-transform}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+We prove the difference of the two orders by replacing their common
+part with an absolutely convergent series. Put
+\[
+h(z)=\frac1z-\frac1{z+1},\qquad
+f(z)=\frac1{z^2}-h(z)=\frac1{z^2(z+1)},
+\]
+and define
+\[
+F(\tau)=\sum_{\substack{n\in\Z\setminus\{0\}\\m\in\Z}}
+                    f(m+n\tau).
+\]
+No pole occurs in this sum. The real-linear map
+\((m,n)\mapsto m+n\tau\) is invertible, so for some \(c_\tau>0\),
+\(|m+n\tau|\ge c_\tau\sqrt{m^2+n^2}\).
+Outside a finite set, \(|f(z)|\le2|z|^{-3}\); hence \(F\) converges
+absolutely. It can therefore be summed in either order.
+
+For each fixed \(n\ne0\), the series \(\sum_m h(m+n\tau)\) is
+absolutely convergent and its symmetric partial sum telescopes:
+\[
+\sum_{m=-M}^{M}h(m+n\tau)
+=\frac1{-M+n\tau}-\frac1{M+1+n\tau}\longrightarrow0.
+\]
+Separating the row \(n=0\) proves
+\begin{equation}
+G_2(\tau)=\frac{\pi^2}{3}+F(\tau).
+\label{modular:eq:modular-G2-absolute-part}
+\end{equation}
+
+For the reverse order, define for integer \(m\)
+\[
+A(m)=\lim_{K\to\infty}
+              \sum_{0<|n|\le K}\frac1{m+n\tau}.
+\]
+This symmetric limit exists: pairing \(n\) and \(-n\) gives an
+\(O(n^{-2})\) summand. The cotangent partial-fraction formula gives
+\begin{equation}
+A(m)=\frac{\pi}{\tau}\cot\!\left(\frac{\pi m}{\tau}\right)-\frac1m
+\quad(m\ne0),\qquad A(0)=0.
+\label{modular:eq:modular-A-cotangent}
+\end{equation}
+The value at zero is also the removable limit of the expression on
+the right. For each fixed \(m\), the \(n\)-series of \(h(m+n\tau)\)
+is absolutely convergent. Taking its symmetric partial sums shows
+\[
+\sum_{n\ne0}h(m+n\tau)=A(m)-A(m+1).
+\]
+It follows that
+\begin{align*}
+C_2(\tau)-\frac{\pi^2}{3}-F(\tau)
+&=\lim_{M\to\infty}\sum_{m=-M}^{M}\sum_{n\ne0}h(m+n\tau)\\
+&=\lim_{M\to\infty}\bigl(A(-M)-A(M+1)\bigr).
+\end{align*}
+The extraction of \(F\) here is legitimate by its absolute
+convergence; no rearrangement of the original double power sum has
+been made.
+
+Since \(\Imag(1/\tau)<0\),
+\[
+\cot(\pi m/\tau)\longrightarrow\iu\quad(m\to+\infty),
+\qquad
+\cot(\pi m/\tau)\longrightarrow-\iu\quad(m\to-\infty).
+\]
+Equation~\eqref{modular:eq:modular-A-cotangent} therefore gives
+\(A(-M)-A(M+1)\to-2\pi\iu/\tau\). Combining this with
+\eqref{modular:eq:modular-G2-absolute-part} proves
+\eqref{modular:eq:modular-anomaly}. Equation~\eqref{modular:eq:modular-C2-coordinate}
+now gives the first transformation in
+\eqref{modular:eq:modular-G2-transform}. Periodicity follows directly from
+the \(q\)-series in \eqref{modular:eq:modular-rational-rows}.
+\end{proof}
+
+The anomaly is classical; Romik and Scherer discuss it together with
+more general shape-dependent summation procedures~\cite{modular:RomikScherer}.
+The proof above fixes both its sign and the normalization needed for
+the draft's polygamma sums.
+
+\begin{corollary}[The missing weight-two CM rows]
+\label{modular:cor:modular-weight-two-CM}
+One has
+\begin{align}
+G_2(\iu)&=\pi,&G_2(\rho)&=\frac{2\pi}{\sqrt3},
+\label{modular:eq:modular-G2-CM}\\
+\mathcal T_{2,0}(\iu)&=\frac\pi2-\frac{\pi^2}{6},&
+\mathcal T_{2,0}(\rho)&=\frac\pi{\sqrt3}-\frac{\pi^2}{6}.
+\label{modular:eq:modular-trigamma-CM}
+\end{align}
+\end{corollary}
+\begin{proof}
+At \(\tau=\iu\), the first transformation in
+\eqref{modular:eq:modular-G2-transform} gives
+\(G_2(\iu)=-G_2(\iu)+2\pi\).
+For \(\rho\), use \(-1/\rho=\rho-1\) and periodicity. The same
+transformation becomes
+\[
+(\rho^2-1)G_2(\rho)=2\pi\iu\rho.
+\]
+Since \(\rho^2-1=\iu\sqrt3\rho\), this proves the second value in
+\eqref{modular:eq:modular-G2-CM}. Substitution into
+\eqref{modular:eq:modular-G2-definition} proves
+\eqref{modular:eq:modular-trigamma-CM}.
+\end{proof}
+
+\subsection{CM seeds and the complete differential tower}
+
+Normalize the Eisenstein series by
+\[
+E_2=\frac{3G_2}{\pi^2},\qquad
+E_4=\frac{G_4}{2\zeta(4)},\qquad
+E_6=\frac{G_6}{2\zeta(6)}.
+\]
+The seed values, in precisely this normalization, are
+\begin{align}
+(E_2(\iu),E_4(\iu),E_6(\iu))
+&=\left(\frac3\pi,
+ \frac{3\Gamma(1/4)^8}{64\pi^6},0\right),
+\label{modular:eq:modular-square-seeds}\\
+(E_2(\rho),E_4(\rho),E_6(\rho))
+&=\left(\frac{2\sqrt3}\pi,0,
+ \frac{27\Gamma(1/3)^{18}}{512\pi^{12}}\right).
+\label{modular:eq:modular-hex-seeds}
+\end{align}
+We have already proved the weight-two entries. The zero entries follow
+by rotating the absolutely convergent lattices. Multiplication by
+\(\iu\) fixes the square lattice and sends its weight-six sum to its
+negative; multiplication by \(\rho\) fixes the hexagonal lattice and
+multiplies its weight-four sum by \(\rho^{-4}\ne1\).
+
+For completeness, the classical period integrals fix the nonzero
+entries without numerical identification. The standard inverse
+Weierstrass integral~\cite{hstruct:DLMF}, with
+\(g_2=60G_4\) and \(g_3=140G_6\), gives positive real periods
+\begin{align*}
+p_{\mathrm{sq}}
+&=2\int_1^\infty\frac{dx}{\sqrt{4x^3-4x}}
+ =2\int_0^1\frac{du}{\sqrt{1-u^4}}
+ =\frac12 B\!\left(\frac14,\frac12\right)
+ =\frac{\Gamma(1/4)^2}{2\sqrt{2\pi}},\\
+p_{\mathrm{hex}}
+&=2\int_1^\infty\frac{dx}{\sqrt{4x^3-4}}
+ =\frac13 B\!\left(\frac16,\frac12\right)
+ =\frac{\Gamma(1/3)^3}{2^{4/3}\pi}.
+\end{align*}
+The corresponding lattices are
+\(p_{\mathrm{sq}}(\Z+\iu\Z)\) for \((g_2,g_3)=(4,0)\), and
+\(p_{\mathrm{hex}}(\Z+\rho\Z)\) for \((g_2,g_3)=(0,4)\).
+Their square and equianharmonic shapes follow from the rotations of
+the respective cubics; the real period integral fixes the scale and
+orientation. The first substitution above is \(x=u^{-2}\); in the
+second beta integral use \(t=x^{-3}\). Euler's reflection and
+duplication formulas give the displayed gamma evaluations.
+Scaling the lattice invariants consequently yields
+\[
+G_4(\iu)=\frac{p_{\mathrm{sq}}^4}{15}
+ =\frac{\Gamma(1/4)^8}{960\pi^2},\qquad
+G_6(\rho)=\frac{p_{\mathrm{hex}}^6}{35}
+ =\frac{\Gamma(1/3)^{18}}{8960\pi^6}.
+\]
+Using \(2\zeta(4)=\pi^4/45\) and
+\(2\zeta(6)=2\pi^6/945\) proves the remaining entries of
+\eqref{modular:eq:modular-square-seeds}--\eqref{modular:eq:modular-hex-seeds}.
+
+Ramanujan's classical differential identities~\cite{modular:Ramanujan} are
+\begin{equation}
+\theta E_2=\frac{E_2^2-E_4}{12},\qquad
+\theta E_4=\frac{E_2E_4-E_6}{3},\qquad
+\theta E_6=\frac{E_2E_6-E_4^2}{2},\qquad
+\theta=\frac1{2\pi\iu}\frac{d}{d\tau}.
+\label{modular:eq:modular-Ramanujan-system}
+\end{equation}
+Encode these identities by the rational derivation
+\begin{equation}
+\mathcal V
+=\frac{X^2-Y}{12}\frac{\partial}{\partial X}
+ +\frac{XY-Z}{3}\frac{\partial}{\partial Y}
+ +\frac{XZ-Y^2}{2}\frac{\partial}{\partial Z},
+\qquad P_0=X,\quad P_{j+1}=\mathcal V P_j.
+\label{modular:eq:modular-P-recurrence}
+\end{equation}
+For example,
+\begin{align*}
+P_1&=\frac{X^2-Y}{12},\\
+P_2&=\frac{X^3-3XY+2Z}{72},\\
+P_3&=\frac{X^4-6X^2Y+8XZ-3Y^2}{288}.
+\end{align*}
+
+\begin{theorem}[All differentiated weight-two rows]
+\label{modular:thm:modular-all-jets}
+Set \(\mathcal S_j(\tau)=\mathcal T_{2,j}(\tau)\). For every
+\(\tau\in\mathbb H\),
+\begin{align}
+\mathcal S_0(\tau)&=\frac{\pi^2}{6}\bigl(E_2(\tau)-1\bigr),
+\label{modular:eq:modular-S0}\\
+\mathcal S_j(\tau)&=\frac{\pi^2}{6}(2\pi\iu)^j
+ P_j(E_2(\tau),E_4(\tau),E_6(\tau)),\qquad j\ge1.
+\label{modular:eq:modular-all-jets}
+\end{align}
+In particular, substitution of
+\eqref{modular:eq:modular-square-seeds}--\eqref{modular:eq:modular-hex-seeds}
+evaluates every \(\mathcal S_j(\iu)\) and
+\(\mathcal S_j(\rho)\) by a finite polynomial calculation over
+\(\Q\) and the indicated gamma periods.
+\end{theorem}
+
+\begin{proof}
+Equation~\eqref{modular:eq:modular-G2-definition} and the definition of
+\(E_2\) give \eqref{modular:eq:modular-S0}. By the chain rule and
+\eqref{modular:eq:modular-Ramanujan-system}, every polynomial
+\(P\in\Q[X,Y,Z]\) satisfies
+\[
+\theta\bigl(P(E_2,E_4,E_6)\bigr)
+=(\mathcal V P)(E_2,E_4,E_6).
+\]
+Induction from \(P_0=X\) therefore gives
+\(\theta^jE_2=P_j(E_2,E_4,E_6)\).
+Differentiate \eqref{modular:eq:modular-S0} \(j\ge1\) times and use
+\eqref{modular:eq:modular-termwise-derivatives}. The constant term disappears,
+and \(d/d\tau=2\pi\iu\theta\) contributes the factor
+\((2\pi\iu)^j\). This proves \eqref{modular:eq:modular-all-jets}; the CM
+specializations use the established seed values.
+\end{proof}
+
+For clarity, the first two differentiated evaluations are
+\begin{align}
+\sum_{n\ge1}n\left[\psi''(n\iu)-\psi''(1-n\iu)\right]
+ &=\frac{\iu\pi}{4}
+   -\frac{\iu\Gamma(1/4)^8}{768\pi^3},
+\label{modular:eq:modular-S1-square}\\
+\sum_{n\ge1}n\left[\psi''(n\rho)-\psi''(1-n\rho)\right]
+ &=\frac{\iu\pi}{3},
+\label{modular:eq:modular-S1-hex}\\
+\sum_{n\ge1}n^2\left[\psi'''(n\iu)+\psi'''(1-n\iu)\right]
+ &=-\frac\pi4+\frac{\Gamma(1/4)^8}{256\pi^3},
+\label{modular:eq:modular-S2-square}\\
+\sum_{n\ge1}n^2\left[\psi'''(n\rho)+\psi'''(1-n\rho)\right]
+ &=-\frac{2\sqrt3\pi}{9}
+   -\frac{\Gamma(1/3)^{18}}{1024\pi^8}.
+\label{modular:eq:modular-S2-hex}
+\end{align}
+These follow by substituting the seed values into \(P_1,P_2\), so
+their derivation contains no integer-relation search.
+
+\begin{corollary}[Polynomial degree bounds for the CM row formulas]
+\label{modular:cor:modular-CM-degree}
+Put
+\(A=\Gamma(1/4)^8/\pi^4\) and
+\(B=\Gamma(1/3)^{18}/\pi^9\). For each \(j\ge1\), there are
+polynomials \(U_j\in\Q[t]\) and
+\(V_j\in\Q(\sqrt3)[t]\) such that
+\[
+\frac{\mathcal S_j(\iu)}{\iu^j\pi}=U_j(A),\qquad
+\frac{\mathcal S_j(\rho)}{\iu^j\pi}=V_j(B),
+\]
+with
+\[
+\deg U_j\le\left\lfloor\frac{j+1}{2}\right\rfloor,
+\qquad
+\deg V_j\le\left\lfloor\frac{j+1}{3}\right\rfloor.
+\]
+\end{corollary}
+\begin{proof}
+Give \(X,Y,Z\) weights \(2,4,6\). Each term of
+\(\mathcal V\) raises weight by two, so \(P_j\) is homogeneous
+of weight \(2j+2\). At the square point, the surviving monomials
+\(X^aY^b\) have \(a+2b=j+1\). On inserting the seeds into
+\eqref{modular:eq:modular-all-jets} and dividing by \(\iu^j\pi\), each
+becomes a rational multiple of \(A^b\). At the hexagonal point,
+the surviving monomials \(X^aZ^c\) satisfy \(a+3c=j+1\), and
+the same substitution produces an element of
+\(\Q(\sqrt3)B^c\). The stated degree bounds follow.
+\end{proof}
+
+\subsection{What this resolves and how it is verified}
+
+Corollary~\ref{modular:cor:modular-weight-two-CM} resolves the weight-two
+row-sum question posed in the modular draft. Theorem~\ref{modular:thm:modular-all-jets}
+extends it to all polynomially weighted derivative rows, with the
+explicit error estimate of Theorem~\ref{modular:thm:modular-rows-tail}.
+These are evaluations of specified infinite aggregates. They do not
+evaluate an isolated component such as \(\Imag\psi'(\iu)\), nor
+do they prove that such a component is an Eichler integral. Any proposed
+identification of that isolated constant needs its own exact transform
+or functional equation.
+
+The accompanying \path{code/modular_rows.py} constructs the rational
+functions \(R_d\) and the polynomials \(P_j\) by exact arithmetic.
+It checks individual rows against a separate complex-polygamma
+implementation, compares the CM formulas for \(j=0,\ldots,4\) with
+their rapidly convergent row sums, and checks representative tails.
+The output \path{data/modular_rows.json} records the exact coefficients,
+analytic truncation bounds, and numerical residuals. Its decimal
+calculations use ordinary high-precision arithmetic; they are numerical
+checks, not outward-rounded interval certificates. A machine enclosure
+can be obtained by evaluating the rational formulas and
+\eqref{modular:eq:modular-tail-bound} with directed interval arithmetic. The
+identities themselves are proved above and do not depend on the
+numerical checks.

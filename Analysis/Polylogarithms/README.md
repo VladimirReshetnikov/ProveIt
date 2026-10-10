@@ -1,6 +1,6 @@
 # Polylogarithms
 
-The canonical reading artifact is the unified manuscript [Polylogarithms and their Arithmetic Bridges](docs/manuscript/polylogarithms.pdf), with [editable LaTeX source](docs/manuscript/polylogarithms.tex) and a [source reconciliation ledger](docs/manuscript/EDITORIAL-LEDGER.md). It consolidates the 39 drafts into a single mathematical development and corrects superseded claims. The original articles, reports and PDFs described below are historical source evidence; the manuscript supersedes them. Its final layout audit is in progress.
+The canonical reading artifact is the unified manuscript [Polylogarithms and their Arithmetic Bridges](docs/manuscript/polylogarithms.pdf), with [editable LaTeX source](docs/manuscript/polylogarithms.tex) and a [source reconciliation ledger](docs/manuscript/EDITORIAL-LEDGER.md). Its 177 pages and eleven chapters consolidate the original 39 drafts and all five nested continuation packages into a single mathematical development. The inventory covers 79 textual provenance files. The original articles, reports and PDFs described below remain historical evidence; the manuscript supersedes them as a reading artifact. The [validation record](docs/manuscript/VALIDATION.md) documents fresh native Wolfram and independent Python checks, exact rational certificates, the converged build and all-page visual review.
 
 Special values and functional equations of polylogarithms and their relatives:
 - multiple polylogarithms and multiple zeta values at roots of unity;

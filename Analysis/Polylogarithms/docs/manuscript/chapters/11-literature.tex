@@ -29,11 +29,11 @@ in the external report without relying on numerical recognition.
 \begin{longtable}{@{}p{.13\textwidth}p{.53\textwidth}p{.28\textwidth}@{}}
 \toprule Thread & Research question & Historical category\\\midrule
 \endhead
-\href{https://math.stackexchange.com/questions/1424600/conjecture-re-operatornameli-2-left-frac12-frac-i6-right-frac7-pi2}{MSE 1424600} & 1424600 & Summary\\
-\href{https://math.stackexchange.com/questions/1430169/conjectured-closed-form-for-operatornameli-2-left-sqrt2-sqrt3-cdot-e}{MSE 1430169} & 1430169 & Summary\\
-\href{https://math.stackexchange.com/questions/1373123/a-conjectured-identity-for-tetralogarithms-operatornameli-4}{MSE 1373123} & 1373123 & Summary\\
-\href{https://math.stackexchange.com/questions/945972/relations-connecting-values-of-the-polylogarithm-operatornameli-n-at-ration}{MSE 945972} & 945972 & Summary\\
-\href{https://math.stackexchange.com/questions/1579355/trilogarithm-operatornameli-3z-and-the-imaginary-golden-ratio-i-phi}{MSE 1579355} & 1579355 & Summary\\
+\href{https://math.stackexchange.com/questions/1424600/conjecture-re-operatornameli-2-left-frac12-frac-i6-right-frac7-pi2}{MSE 1424600} & Real part of $\Li_2(1/2+i/6)$ & Seed question\\
+\href{https://math.stackexchange.com/questions/1430169/conjectured-closed-form-for-operatornameli-2-left-sqrt2-sqrt3-cdot-e}{MSE 1430169} & Dilogarithm values at algebraic complex arguments & Seed question\\
+\href{https://math.stackexchange.com/questions/1373123/a-conjectured-identity-for-tetralogarithms-operatornameli-4}{MSE 1373123} & An identity for six rational tetralogarithm values & Seed question\\
+\href{https://math.stackexchange.com/questions/945972/relations-connecting-values-of-the-polylogarithm-operatornameli-n-at-ration}{MSE 945972} & Relations among rational polylogarithm values & Seed question\\
+\href{https://math.stackexchange.com/questions/1579355/trilogarithm-operatornameli-3z-and-the-imaginary-golden-ratio-i-phi}{MSE 1579355} & Trilogarithms and the imaginary golden ratio & Seed question\\
 \href{https://math.stackexchange.com/questions/918680/closed-form-for-the-imaginary-part-of-textli-3-big-frac1i2-big}{MSE 918680} & Closed Form for the Imaginary Part of Li\_3((1+i)/2) & Primary answered matches on Math Stack Exchange\\
 \href{https://math.stackexchange.com/questions/3290798/a-conjectured-value-for-operatornamere-operatornameli-4-1-i}{MSE 3290798} & A conjectured value for Re Li\_4(1+i) & Primary answered matches on Math Stack Exchange\\
 \href{https://math.stackexchange.com/questions/3447529/on-the-relationship-between-re-operatornameli-n1i-and-operatornameli}{MSE 3447529} & On the relationship between Re Li\_n(1+i) and Li\_n(1/2) when n >= 5 & Primary answered matches on Math Stack Exchange\\
@@ -151,3 +151,44 @@ replay here. The new verification scripts exercise representative corrected
 formulas from independent definitions. Their receipt specifies engine,
 precision, tolerance and actual residuals; it does not assert a complete
 replay of every historical experiment.
+
+\section{A version-specific external consistency check}
+\label{external:sec:preprint-counterexample}
+
+The final paragraph of \S7.2, printed page~16 of the inspected
+18-page 2020 preprint \cite{RadchenkoZagier}, displays the untwisted identity
+\begin{equation}\label{external:eq:printed-finite-identity}
+ \beta_p(n)=\beta_p(n+1)+\beta_p\!\left(\frac n{n+1}\right).
+\end{equation}
+For its stated exterior-square symbol, this identity is false.
+Take $p=7$, $n=2$. Since $2/3=3$ in $\mathbb F_7$ and the class
+of $3$ is inverse to that of $2$ modulo sign,
+\[
+ \beta_7(3)=-\beta_7(2).
+\]
+Equation \eqref{external:eq:printed-finite-identity} would therefore imply
+$3\beta_7(2)=0$. But $2^2=4$ is neither $1$ nor $-1$ modulo $7$,
+so Theorem~\ref{hstruct:thm:kernel} proves $\beta_7(2)\ne0$.
+
+There is also a small exact matrix certificate. In the regular basis
+of sign classes $1,2,3$, the image of the defect under the coordinate
+model $\beta_7(a)\mapsto P_a-P_{a^{-1}}$ is
+\begin{equation}\label{external:eq:p7-defect}
+ \begin{pmatrix}
+ 0&3&-3\\-3&0&3\\3&-3&0
+ \end{pmatrix}\ne0.
+\end{equation}
+Its entries are integers; no numerical logarithm independence test
+enters this counterexample.
+
+\paragraph{Proposed correction and version scope.}
+Withdraw the untwisted identity as printed, or supply a corrected
+coefficient action or quotient together with a proof. This article
+does not guess what a missing action should be. The definition of
+$\beta$ and the boundary formula \eqref{hstruct:eq:delta-xi} remain valid;
+the latter was independently derived in Section~\ref{hstruct:sec:reduction}.
+The statement was verified against the 18-page author preprint and
+its 2020 version; the separately published 2023 journal version is not
+covered by this particular check. The correction is therefore specifically to the inspected
+2020 preprint, and must not be attributed to an unchecked version.
+

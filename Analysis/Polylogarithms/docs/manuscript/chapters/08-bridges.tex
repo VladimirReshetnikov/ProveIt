@@ -1,0 +1,351 @@
+\section{One normalized functional equation for all derivative bridges}
+\label{jets:sec:bridges}
+
+The Stieltjes drafts connect derivatives of \(L(s,\chi)\) at a positive
+integer with derivatives at its reflected negative integer. A single
+identity of analytic germs organizes all these formulas and treats
+trivial zeros without differentiating singular logarithms. It also
+makes the conjugation required for complex characters unavoidable.
+The input is the classical primitive Dirichlet functional equation
+and the reflection and duplication formulas for \(\Gamma\)
+\cite{hstruct:DLMF}; the all-order normalized form below is a systematic
+continuation of the bridges used in the corpus.
+
+\subsection{Regularization and the normalized germ}
+
+Let \(\chi\) be primitive of conductor \(q\), allowing the trivial
+character of conductor \(1\), for which \(L(s,\chi)=\zeta(s)\).
+Fix \(k\geq1\), and write
+\[
+ \delta=\frac{1-\chi(-1)}2\in\{0,1\},\qquad
+ \nu=
+ \begin{cases}
+ 1,&\chi(-1)=(-1)^k,\\
+ 0,&\chi(-1)\ne(-1)^k.
+ \end{cases}
+\]
+Define
+\begin{equation}
+ B(t)=\frac{L(-k+t,\chi)}{t^\nu},
+ \qquad
+ B^\#(z)=\overline{B(\overline z)},
+ \label{jets:eq:bridge-regularization}
+\end{equation}
+with the removable value filled in when \(\nu=1\).
+The function \(B^\#\) is holomorphic near zero; it is coefficientwise
+conjugation of the Taylor series of \(B\).
+
+\begin{theorem}[Normalized positive--negative germ]
+\label{jets:thm:bridge-normalized}
+The quantities \(L(k+1,\chi)\) and \(B(0)\) are nonzero. On a
+sufficiently small disk about \(z=0\),
+\begin{equation}
+ \frac{L(k+1+z,\chi)}{L(k+1,\chi)}
+ =
+ K_\nu(z)\frac{B^\#(-z)}{B^\#(0)},
+ \label{jets:eq:bridge-normalized-germ}
+\end{equation}
+where
+\begin{equation}
+ \begin{aligned}
+ K_\nu(z)&=
+ \left(\frac{2\pi}{q}\right)^z
+ \frac{\Gamma(k+1)}{\Gamma(k+1+z)}\,T_\nu(z),\\
+ T_0(z)&=\sec\frac{\pi z}{2},\qquad
+ T_1(z)=\frac{\pi z/2}{\sin(\pi z/2)},\quad T_1(0)=1.
+ \end{aligned}
+ \label{jets:eq:bridge-elementary-kernel}
+\end{equation}
+All three normalized factors in
+\eqref{jets:eq:bridge-normalized-germ} equal \(1\) at the origin.
+\end{theorem}
+
+\begin{proof}
+The Euler product gives \(L(k+1,\chi)\ne0\), since \(k+1>1\).
+Use the completed function
+\[
+ \Lambda(s,\chi)=
+ \left(\frac q\pi\right)^{(s+\delta)/2}
+ \Gamma\!\left(\frac{s+\delta}{2}\right)L(s,\chi)
+\]
+and its functional equation
+\begin{equation}
+ \Lambda(s,\chi)=\varepsilon_\chi\Lambda(1-s,\overline\chi),
+ \qquad |\varepsilon_\chi|=1.
+ \label{jets:eq:bridge-completed-fe}
+\end{equation}
+At \(s=-k\), the gamma factor is finite and nonzero if
+\(\nu=0\), and has a simple pole if \(\nu=1\).
+The reflected completed value at \(k+1\) is finite and nonzero.
+Consequently \(L(-k,\chi)\ne0\) in the first case, and
+\(L(s,\chi)\) has a simple zero at \(-k\) in the second.
+In either case \(B\) is holomorphic and \(B(0)\ne0\).
+
+Put
+\[
+ a=\frac{\delta-k}{2},\qquad
+ b=\frac{k+1+\delta}{2}.
+\]
+Solving \eqref{jets:eq:bridge-completed-fe} at \(s=k+1+z\) gives
+\begin{equation}
+ L(k+1+z,\chi)
+ =\varepsilon_\chi
+ \left(\frac q\pi\right)^{-k-\frac12-z}
+ \frac{\Gamma(a-z/2)}{\Gamma(b+z/2)}
+ L(-k-z,\overline\chi).
+ \label{jets:eq:bridge-fe-before-normalization}
+\end{equation}
+Since
+\(L(-k-z,\overline\chi)=(-z)^\nu B^\#(-z)\),
+the numerator
+\[
+ F_\nu(z)=(-z)^\nu\Gamma(a-z/2)
+\]
+has a nonzero removable value at the origin.
+Dividing \eqref{jets:eq:bridge-fe-before-normalization} by its value
+at \(z=0\) cancels the root number and all constant factors:
+\begin{equation}
+ \frac{L(k+1+z,\chi)}{L(k+1,\chi)}
+ =
+ \left(\frac q\pi\right)^{-z}
+ \frac{F_\nu(z)}{F_\nu(0)}
+ \frac{\Gamma(b)}{\Gamma(b+z/2)}
+ \frac{B^\#(-z)}{B^\#(0)}.
+ \label{jets:eq:bridge-normalized-intermediate}
+\end{equation}
+
+If \(\nu=0\), then \(a\) is a half-integer.
+The gamma reflection formula and
+\(\sin(\pi(a-z/2))=\sin(\pi a)\cos(\pi z/2)\)
+give
+\begin{equation}
+ \frac{F_0(z)}{F_0(0)}
+ =\frac{\Gamma(1-a)}{\Gamma(1-a+z/2)}
+       \sec\frac{\pi z}{2}.
+ \label{jets:eq:bridge-gamma-half-integer}
+\end{equation}
+If \(\nu=1\), write \(a=-m\), \(m\geq0\).
+Then \(F_1(0)=2(-1)^m/m!\), and the same reflection formula
+gives
+\begin{equation}
+ \frac{F_1(z)}{F_1(0)}
+ =\frac{\Gamma(1-a)}{\Gamma(1-a+z/2)}
+       \frac{\pi z/2}{\sin(\pi z/2)}.
+ \label{jets:eq:bridge-gamma-integer}
+\end{equation}
+For example, the pole in \(\Gamma(-m-z/2)\) is canceled by
+the explicit factor \(-z\), so no logarithm of a function
+vanishing at zero has been taken.
+
+The unordered pair \(\{b,1-a\}\) is
+\(\{(k+1)/2,(k+2)/2\}\), for either value of \(\delta\).
+Duplication therefore yields
+\begin{equation}
+ \frac{\Gamma(b)\Gamma(1-a)}
+ {\Gamma(b+z/2)\Gamma(1-a+z/2)}
+ =2^z\frac{\Gamma(k+1)}{\Gamma(k+1+z)}.
+ \label{jets:eq:bridge-gamma-duplication}
+\end{equation}
+Substituting \eqref{jets:eq:bridge-gamma-half-integer} or
+\eqref{jets:eq:bridge-gamma-integer}, followed by
+\eqref{jets:eq:bridge-gamma-duplication}, into
+\eqref{jets:eq:bridge-normalized-intermediate} proves the theorem.
+\end{proof}
+
+\begin{remark}
+The statement concerns analytic germs and local logarithms.
+It requires no claim about a global zero-free region.
+For a complex character the functional equation involves
+\(\overline\chi\), and therefore the reflected Taylor coefficients
+are conjugated. Replacing \(B^\#\) by \(B\) is justified for a real
+character but generally false for a complex one.
+\end{remark}
+
+\subsection{Closed logarithmic coefficients at every order}
+
+Choose the normalized local logarithms, each zero at the origin,
+of \(L(k+1+z,\chi)/L(k+1,\chi)\) and \(B(t)/B(0)\).
+For \(r\geq1\), set
+\[
+ \mathcal L_r=
+ \left.\frac{d^r}{ds^r}\log L(s,\chi)\right|_{s=k+1},
+ \qquad
+ b_r=
+ \left.\frac{d^r}{dt^r}\log B(t)\right|_{t=0}.
+\]
+These derivatives do not depend on a choice of logarithm branch.
+Write
+\[
+ H_k^{(r)}=\sum_{j=1}^{k}j^{-r},\qquad H_k=H_k^{(1)},
+ \qquad
+ \eta(r)=(1-2^{1-r})\zeta(r)\quad(r\geq2).
+\]
+
+\begin{theorem}[All-order logarithmic bridges]
+\label{jets:thm:bridge-log-jets}
+For every \(r\geq1\),
+\begin{equation}
+ \mathcal L_r-(-1)^r\overline{b_r}=\kappa_r,
+ \label{jets:eq:bridge-log-jets}
+\end{equation}
+where
+\begin{equation}
+ \kappa_r=
+ \begin{cases}
+ \displaystyle\gamma+\log\frac{2\pi}{q}-H_k,
+       &r=1,\\[4pt]
+ \displaystyle(r-1)!\bigl(\zeta(r)-H_k^{(r)}\bigr),
+       &r\geq3\ \text{odd},\\[4pt]
+ \displaystyle(r-1)!\bigl(H_k^{(r)}+(-1)^\nu\eta(r)\bigr),
+       &r\geq2\ \text{even}.
+ \end{cases}
+ \label{jets:eq:bridge-kappa}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Taking normalized logarithms of
+\eqref{jets:eq:bridge-normalized-germ} gives
+\[
+ \log\frac{L(k+1+z,\chi)}{L(k+1,\chi)}
+ =\log K_\nu(z)
+  +\overline{\log\frac{B(-\overline z)}{B(0)}}.
+\]
+The \(r\)-th derivative of the last term at zero is
+\((-1)^r\overline{b_r}\). It remains to compute the
+derivatives of \(\log K_\nu\).
+
+The convergent gamma expansion, on \(|z|<1\), is
+\begin{equation}
+ \log\frac{\Gamma(k+1+z)}{\Gamma(k+1)}
+ =(H_k-\gamma)z+
+ \sum_{r\geq2}\frac{(-1)^r}{r}
+       \bigl(\zeta(r)-H_k^{(r)}\bigr)z^r.
+ \label{jets:eq:bridge-log-gamma-series}
+\end{equation}
+The sine and cosine products give, in the same disk,
+\begin{align}
+ \log\sec\frac{\pi z}{2}
+ &=\sum_{m\geq1}
+   \frac{(1-2^{-2m})\zeta(2m)}{m}z^{2m},
+ \label{jets:eq:bridge-log-sec-series}\\
+ \log\frac{\pi z/2}{\sin(\pi z/2)}
+ &=\sum_{m\geq1}
+   \frac{2^{-2m}\zeta(2m)}{m}z^{2m}.
+ \label{jets:eq:bridge-log-sinc-series}
+\end{align}
+These identities also follow directly by taking logarithms
+of the absolutely locally convergent products
+\(\cos(\pi z/2)=\prod_{j\geq0}(1-z^2/(2j+1)^2)\) and
+\(\sin(\pi z/2)/(\pi z/2)
+=\prod_{j\geq1}(1-z^2/(2j)^2)\).
+
+The linear term of \(\log K_\nu\) is the stated
+\(\kappa_1\). Odd coefficients of order at least three come
+only from the negative of
+\eqref{jets:eq:bridge-log-gamma-series}, giving the second case.
+For \(r=2m\), the secant coefficient combines with the gamma
+coefficient to give
+\[
+ (r-1)!\left[
+  H_k^{(r)}-\zeta(r)+2(1-2^{-r})\zeta(r)\right]
+ =(r-1)!\bigl(H_k^{(r)}+\eta(r)\bigr).
+\]
+Replacing the secant factor by the sine quotient instead gives
+\[
+ (r-1)!\left[
+  H_k^{(r)}-\zeta(r)+2^{1-r}\zeta(r)\right]
+ =(r-1)!\bigl(H_k^{(r)}-\eta(r)\bigr).
+\]
+These are exactly the two even cases in
+\eqref{jets:eq:bridge-kappa}.
+\end{proof}
+
+At a nonzero reflected value, \(\nu=0\), the first two identities
+read
+\begin{align}
+ \frac{L'(k+1,\chi)}{L(k+1,\chi)}
+ +\overline{\frac{L'(-k,\chi)}{L(-k,\chi)}}
+ &=\gamma+\log\frac{2\pi}{q}-H_k,
+ \label{jets:eq:bridge-first-nonzero}\\
+ (\log L)''(k+1,\chi)
+ -\overline{(\log L)''(-k,\chi)}
+ &=H_k^{(2)}+\frac{\pi^2}{12}.
+ \label{jets:eq:bridge-second-nonzero}
+\end{align}
+At a trivial zero, \(\nu=1\), the Taylor expansion
+\[
+ B(t)=L'(-k,\chi)
+   +\frac{L''(-k,\chi)}2t
+   +\frac{L'''(-k,\chi)}6t^2+\cdots
+\]
+instead gives
+\begin{align}
+ \frac{L'(k+1,\chi)}{L(k+1,\chi)}
+ +\frac12\overline{\frac{L''(-k,\chi)}{L'(-k,\chi)}}
+ &=\gamma+\log\frac{2\pi}{q}-H_k,
+ \label{jets:eq:bridge-first-zero}\\
+ (\log L)''(k+1,\chi)
+ -\overline{\left(
+    \frac{L'''(-k,\chi)}{3L'(-k,\chi)}
+   -\frac{L''(-k,\chi)^2}{4L'(-k,\chi)^2}
+   \right)}
+ &=H_k^{(2)}-\frac{\pi^2}{12}.
+ \label{jets:eq:bridge-second-zero}
+\end{align}
+These formulas preserve the familiar first-order harmonic
+bridge and supply a uniform extension to every derivative
+order and both character parities.
+
+\subsection{Raw jets and an exact triangular implementation}
+
+The normalized germ also gives direct formulas for ordinary
+derivatives, without first converting each order to logarithmic
+derivatives. Define \(K_m\) by
+\[
+ K_\nu(z)=\sum_{m\geq0}K_m\frac{z^m}{m!},\qquad K_0=1.
+\]
+Since \(\log K_\nu(z)=\sum_{r\geq1}\kappa_rz^r/r!\),
+these coefficients are the complete exponential Bell polynomials:
+\begin{equation}
+ K_m=
+ m!\!\!\sum_{\substack{m_1,\ldots,m_m\geq0\\
+                     m_1+2m_2+\cdots+mm_m=m}}
+ \prod_{r=1}^{m}\frac1{m_r!}
+       \left(\frac{\kappa_r}{r!}\right)^{m_r}
+ \qquad(m\geq1).
+ \label{jets:eq:bridge-bell-coefficients}
+\end{equation}
+Leibniz's rule in \eqref{jets:eq:bridge-normalized-germ} proves
+\begin{equation}
+ \frac{L^{(m)}(k+1,\chi)}{L(k+1,\chi)}
+ =
+ \sum_{j=0}^{m}\binom mj K_{m-j}(-1)^j
+       \overline{\frac{B^{(j)}(0)}{B(0)}}.
+ \label{jets:eq:bridge-raw-jets}
+\end{equation}
+The required regularized derivatives are explicitly
+\begin{equation}
+ \frac{B^{(j)}(0)}{B(0)}
+ =\frac{j!\,\nu!}{(j+\nu)!}
+    \frac{L^{(j+\nu)}(-k,\chi)}{L^{(\nu)}(-k,\chi)}.
+ \label{jets:eq:bridge-regularized-raw-jets}
+\end{equation}
+The diagonal coefficient in
+\eqref{jets:eq:bridge-raw-jets} is \((-1)^m\), so the transformation
+is triangular and invertible. Its coefficients belong to the
+ring generated by the explicit \(\kappa_r\)'s. This supplies
+exact relation certificates at arbitrary order and avoids
+repeated symbolic differentiation across gamma poles.
+
+\begin{remark}[Correction of the complex-character formulas]
+The older derivative-relations report omits the conjugation
+in versions of the trivial-zero first bridge and the nonzero
+second bridge. Equations~\eqref{jets:eq:bridge-first-zero} and
+\eqref{jets:eq:bridge-second-nonzero} give the required replacements.
+The two main Stieltjes articles already include conjugation
+in their displayed first bridges; those correct formulas
+should be retained. Exact source locators and numerical
+counterexamples to the omitted-conjugation versions appear
+in the correction register.
+\end{remark}
