@@ -6038,7 +6038,87 @@ the decomposition with these named constants, but not `Theorem162At 3`.
            - Option (ii) looks natural: the linear parts are Freiman
              2-homomorphisms on `B(spec; ρ′)`, and an intersection of
              `8s₀` such Bohr sets has density `≥ ∏ρ′^{|spec|}`.
-           - Recorded under "further questions" until settled.
+           - Recorded under "Further questions (Step 5)" below until settled.
+         - *Regime check against the contract.* `DeepStructureAt Bnd`
+           bounds ranks (`|Γ|, |Ψ|, r`) by `Bnd(c)`, and radius and
+           agreement density from below by `exp(−Bnd(c))`, with
+           `Bnd ≤ (4/c)^K`. So polynomial ranks and `exp(−poly)` densities
+           are what is required. Proposition 9.3's output fits:
+           - rank `|J| = 8s₀ = poly(d, log 1/r)`;
+           - radius `η ≈ 1/s₀`;
+           - `log(1/density) ≈ 8s₀·log m`, with `m ≤ s₀/δ` and
+             `log(1/δ) = O(d log R)`, also polynomial.
+
+           An explicit-exponent audit is still to be written.
+
+         **Further questions (Step 5).**
+         1. *Domain coherence.* The final structure needs frequency maps
+            Freiman-linear on one centered Bohr set
+            (`IsFreimanLinearOn (bohr Ψ ρ) (L i)` in
+            `MilicevicDeepVarietyStructure`). The current `θ_i` are Freiman
+            8-homomorphisms on uncentered dense sets `D_i`, and `a ∈ D_i`
+            is known only for `i ∈ S_a`.
+            - *Partial repair.* Following the paper's `θ = φ^lin − u`:
+              `shift_agreement` gives `ψ₁ = Ψ + u` on a dense fiber, and
+              Lemma 7.8 gives `Ψ`'s linear part `λ` on a centered Bohr set
+              `K`. Then `Θ(a) = λ(a) − u` wherever `x, x + a` lie in `Ψ`'s
+              affine domain and `a ∈ K`. So the new frequency map can be
+              taken affine on a centered Bohr set.
+            - *What this does not settle.* It still does not put `a ∈ K_i`
+              for `i ∈ J ∖ S_a`.
+            - *A dead end.* Localizing every round to `⋂_{i≤m} K_i` would
+              multiply the rank by `m`. Since `m = exp(poly)`, the density
+              would become doubly exponential.
+            - *The paper.* Milićević's statement intersects the coset
+              progressions of the `J` maps, but the printed proof does not
+              show that `X` meets the intersection with many quadruples.
+              Possibly every `C_i` contains the small `C₀` in which the
+              `a`'s live. That would need the Theorem 2.26 progressions to
+              contain `C₀`, which is not stated.
+         2. *Explicit exponents* for the regime check above.
+         3. **The rank obstruction, and why Theorem 2.26 is needed here
+            (2026-10-10).** Domain coherence hides a rank problem.
+            - *The obstruction.* In Claims 9.4/9.5 the Freiman step runs at
+              density `κ = 2^(−1882)((c/2)^4)^1164·…` with
+              `c = (ε/K⁴)²` and `K = (2R+1)^d`, so `κ = exp(−poly(d))`. The
+              polynomial substitute for Theorem 2.26 (Corollary 7.6 +
+              Lemma 7.8, as in `milicevic_lemma_9_2_pair`) puts the linear
+              part on a Bohr set of rank `16κ^(−2) = exp(poly(d))`. But the
+              deep contract needs the frequency maps Freiman-linear on
+              `bohr Ψ ρ` with `|Ψ| ≤ Bnd(c) ≤ (4/c)^K`. So any structured
+              domain built from the substitute violates the contract.
+            - *What suffices.* Sanders-strength Theorem 2.26 gives rank
+              `(log 1/κ)^O(1) = poly(d)`, which fits. So at this step the
+              Milićević route cannot use the polynomial substitute.
+            - *Available input.* `lib/openai-math` already supplies the
+              Sanders-type estimate in `ℤ/N`:
+              `OAI.Erdos3.CyclicCrootSisask.exists_quartic_bogolyubov`
+              (`Estimates/LocalizedSiftingAlmostPeriods`). For `A` of
+              density `e^(−p)` it gives a rank-regular Bohr set in
+              `2A − 2A` with rank `≤ 1 + C(p+1)⁴` and radius
+              `≥ exp(−C(p+1))`. The `…_progression` variant gives a proper
+              centred GAP of the same rank with volume
+              `exp(−C(p+1)⁸)N`. The corpus already uses these: Theorem 7.1
+              in `Proofs07FreimanClosure`, via `exists_dense_cyclic_model`
+              and `exists_bounded_affine_box_of_cyclic_model`, and the
+              peer's `Proofs16RobustDifferenceBohr`.
+            - *Plan, "Theorem 2.26 at Sanders strength" in `ℤ/N`.*
+              1. Start from an approximate homomorphism: many respected
+                 quadruples, i.e. the graph has energy `≥ c|A|³`.
+              2. The graph BSG, which is polynomial (Proposition 7.3 /
+                 `abstract_bsg_core`), gives a graph piece of doubling
+                 `poly(1/c)`.
+              3. A dense cyclic model of order 8 follows from
+                 `exists_dense_cyclic_model`.
+              4. The Bogolyubov affine box in the model comes from
+                 `exists_bounded_affine_box_of_cyclic_model`, with rank
+                 `polylog(1/c)`.
+              5. Pull back: the graph meets a low-rank affine box. On it
+                 the graph is the graph of a Freiman-affine function,
+                 because a graph piece projects injectively.
+
+              This replaces Lemma 7.8 wherever a structured domain must
+              have low rank, and is the next large task on this route.
          Quantitatively, `s₀ = O(d log(dR))`, and
          `δ` is polynomial in `ε` and `(2R+1)^(−d)`. With
          `R = (ρ^(−1))^O(d)`, this makes `m ≤ s₀/δ = exp(O(d² log 1/ρ))`
