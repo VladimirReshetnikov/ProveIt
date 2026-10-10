@@ -1,0 +1,108 @@
+\section{Reconciling the two weight-seven Gaussian candidates}
+\label{s6audit:sec:main}
+
+The pinned manuscript's Conjecture~\texttt{cycloquot:conj:S6} and the
+incoming Cayley continuation state different-looking formulas for $S_6$.
+They are exactly equivalent. This fact neither proves nor refutes the
+common conjecture, but it prevents the same proposed identity from being
+counted twice and removes an unnecessary product from one presentation.
+Write $G=\beta(2)$ and $L=\log2$, and recall
+\[
+ S_6=\sum_{n\ge0}\frac{(-1)^nH_n}{(2n+1)^6},
+ \qquad g_{a,b}=\operatorname{Im}\operatorname{Li}_{a,b}(i,1).
+\]
+The canonical candidate is
+\begin{align}
+ S_6\stackrel{?}{=}&\frac{722}{527}g_{6,1}
+ +\frac{40}{527}g_{4,3}-\frac{128}{155}g_{2,5}
+ +\frac{15191}{28569600}\pi^7\notag\\
+ &-\frac3{124}G\zeta(5)-\frac{2373}{10540}\beta(4)\zeta(3)
+ -2\beta(6)L.\label{s6audit:eq:old-candidate}
+\end{align}
+It was supported in the baseline by two independent high-precision
+methods after its coefficients were frozen. Those numerical records
+are inherited evidence, not a new verification performed here.
+The present exact calculation concerns the equivalence of
+\eqref{s6audit:eq:old-candidate} and the incoming Cayley presentation
+\cite{cont:CayleyIncoming}.
+
+\begin{proposition}[Exact change of Gaussian coordinates]\label{s6audit:prop:coordinate}
+With $g_{a,b}=\operatorname{Im}\operatorname{Li}_{a,b}(i,1)$,
+\begin{align}
+ g_{2,5}={}&30g_{6,1}+15g_{5,2}+5g_{4,3}
+ -\frac{11\pi^7}{368640}
+ -\frac{15}{512}G\zeta(5)
+ +\frac3{16}\beta(4)\zeta(3).
+ \label{s6audit:eq:coordinate}
+\end{align}
+Consequently the manuscript's $S_6$ conjecture is equivalent to
+\begin{align}
+ S_6\stackrel{?}{=}&-\frac{12334}{527}g_{6,1}
+        -\frac{384}{31}g_{5,2}
+        -\frac{2136}{527}g_{4,3}
+        +\frac{3179}{5713920}\pi^7\notag\\
+       &-\frac{801}{2108}\beta(4)\zeta(3)
+        -2\beta(6)L.
+ \label{s6audit:eq:reduced-candidate}
+\end{align}
+The latter is precisely the incoming Cayley candidate after dividing its
+stored primitive integer vector by its $S_6$ coefficient.
+\end{proposition}
+
+\begin{proof}
+The convergent integral-shuffle products, valid first for $|z|<1$ and
+then by ordinary convergence at $z=i$, are
+\begin{align*}
+ \operatorname{Li}_2(z)\operatorname{Li}_5(z)
+ &=10F_{6,1}(z)+5F_{5,2}(z)+3F_{4,3}(z)
+   +2F_{3,4}(z)+F_{2,5}(z),\\
+ \operatorname{Li}_3(z)\operatorname{Li}_4(z)
+ &=20F_{6,1}(z)+10F_{5,2}(z)+4F_{4,3}(z)+F_{3,4}(z),
+\end{align*}
+where $F_{a,b}(z)=\operatorname{Li}_{a,b}(z,1)$.
+Subtract twice the second equation from the first. Since
+\begin{align*}
+ \operatorname{Im}(\operatorname{Li}_2(i)\operatorname{Li}_5(i))
+ &=-\frac{5\pi^7}{73728}-\frac{15}{512}G\zeta(5),\\
+ \operatorname{Im}(\operatorname{Li}_3(i)\operatorname{Li}_4(i))
+ &=-\frac{7\pi^7}{368640}-\frac3{32}\beta(4)\zeta(3),
+\end{align*}
+taking imaginary parts gives \eqref{s6audit:eq:coordinate}.
+Substitution in the manuscript candidate cancels its entire
+$G\zeta(5)$ coefficient and gives \eqref{s6audit:eq:reduced-candidate}.
+
+For an explicit relation certificate, let $R_{\rm old}$ and
+$R_{\rm Cayley}$ denote the two residuals normalized to coefficient
+$+1$ on $S_6$. Let $E_{p,q}$ denote the shuffle sum minus
+$\operatorname{Im}(\operatorname{Li}_p(i)\operatorname{Li}_q(i))$.
+Then, as an exact formal coefficient identity,
+\[
+ R_{\rm old}-R_{\rm Cayley}
+ =\frac{128}{155}\bigl(E_{2,5}-2E_{3,4}\bigr).
+\]
+The right-hand side vanishes by two convergent shuffles. The
+dependency-free program \texttt{verify\_s6\_equivalence.py} rebuilds the
+binomial shuffle rows and verifies this coefficient identity and the
+direct substitution independently, using exact rational arithmetic.
+\end{proof}
+
+\paragraph{Scope of the search.}
+A new exploratory system, within the broader standard-relation
+setting discussed in \cite{cont:Zhao}, was generated using the pinned incoming
+word convention. It contains $51\,244$ nonzero projected weight-seven
+double-shuffle rows and three convergent Cayley rows, with initial
+imaginary coordinates drawn from $24\,514$ possible convergent words.
+The double-shuffle inputs are convergent except for the permitted single
+factor $\operatorname{Li}_1(1)$; its common divergence cancels between
+shuffle and stuffle. The Cayley seeds are the words of
+$F_{6,1}(i),F_{5,2}(i),F_{4,3}(i)$.
+
+Sparse elimination modulo $1\,000\,003$ was stopped for resource control
+after $8\,000$ logged pivots, while the target residual remained
+nonzero and fill-in had exceeded $20$ million coefficient entries.
+This incomplete search is inconclusive: it proves neither membership
+nor nonmembership in the row span. It provides no proof of the $S_6$
+conjecture, and the word ``proved'' should not be attached to either
+equivalent $S_6$ presentation. A future search should exploit shuffle
+indecomposables or a better sparse elimination ordering before expanding
+the entire weight-seven standard-relation space.

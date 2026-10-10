@@ -1,0 +1,149 @@
+\section{Reproducible verification and what the computations establish}
+\label{ir:sec:verification}
+
+\subsection{The exact core and its independent certificate replay}
+The package's core is ordinary Python integer arithmetic; it has no
+third-party dependency. A sparse polynomial is encoded as integer
+coefficients indexed by exponent tuples in the ordered prime variables.
+No source string is passed to an evaluator, and no floating-point number
+enters a polynomial equality check.
+
+The file \code{distribution.py} constructs the basis, terminates the
+straightener, and produces raw-row certificates. The independent
+\code{verify\_certificates.py} does not call the basis selector,
+straightener, or certificate generator. It reads the frozen JSON,
+reconstructs each prime fiber directly in the original $q$-point grid,
+expands the polynomial row combination, and checks exact coefficient
+cancellation. It shares only the sparse integer-polynomial arithmetic.
+A deliberate one-coefficient corruption is also tested and rejected.
+This controls a simple failure mode of the replay code; it is not a
+transcendental-independence test.
+
+The three certified identities use $3$, $4$, and $5$ raw rows at
+levels $12$, $15$, and $30$, respectively. Their selected universal
+unit minors have sizes $8$, $7$, and $22$. The coefficients and row
+indices are preserved in
+\src{data/identity_certificates.json}; the exact replay result is in
+\src{logs/certificate_replay.json}.
+
+\subsection{Exact regression coverage}
+The fresh exact tests produced the counts in
+Table~\ref{ir:tab:tests}. They check a range of specializations,
+including ones where character diagonalization would be unavailable.
+They do not establish the all-level theorems by finite extrapolation;
+those rest on the proofs above.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{p{0.64\textwidth}r}
+\toprule
+Exact check & Count\\
+\midrule
+Universal levels: $1\le q\le120$, plus $150,180,210$ &123\\
+Raw prime rows reducing to zero as integer polynomials &3905\\
+Triangular universal unit-minor checks &123\\
+Normal-form support and multidegree checks &25628\\
+Binary weight specializations of the reflection rank &478\\
+Weight specializations over $\F_4$ &240\\
+Characteristic-two truncated-series jet cases &385\\
+Resolution checks over $\F_2,\F_3,\F_5$ &123\\
+Integer Smith forms for both reflection signs &576\\
+Independent frozen identity-certificate replays &3\\
+\bottomrule
+\end{tabular}
+\caption{Fresh exact computations included with this delivery.}
+\label{ir:tab:tests}
+\end{table}
+
+The resolution tests construct its matrices from
+\eqref{ir:eq:chain-differential}, verify $d^2=0$, and check that
+adjacent boundary ranks add to the chain dimension in every positive
+degree. They use $2\le q\le40$ and $q=60,105$, in each of the three
+specified characteristics. Their degree-zero quotient dimension is
+checked against $\varphi(q)$.
+
+The jet tests work with bit-encoded polynomials in
+$\F_2[t]/(t^L)$, for $1\le L\le7$, eleven levels, and five weight
+profiles. They expand the reflection operator as a binary matrix on
+all basis-point/jet-degree pairs and compute its exact rank. The
+profiles include a curve entirely on the exceptional locus, different
+positive contact orders, the $a_2=0$ branch, and a generic point.
+The predicted contact order is computed directly from the active
+scalars, not fitted to the matrix rank.
+
+The optional integer Smith tests use SymPy's integer Smith algorithm,
+independently of the binary-rank formula. At fifteen specified levels,
+they use all combinations of weights in $\{-1,0,1,2\}$ and both
+reflection signs. They verify $c^2=1$ as an integer matrix and compare
+every invariant factor, including the zeros. Exact logs record the
+versions used: Python 3.13.5 and SymPy 1.14.0. These version strings
+report the executed environment, not requirements for a future run.
+
+\subsection{Numerical diagnostics use a separate analytic representation}
+The analytic equalities already have exact proofs. Numerical work is
+included to expose convention and branch errors, not to upgrade a
+small residual into a proof. The level-$15$ spectral identity was
+checked at $s=2,3,1/2,1.2+0.4i,-2,1$, at both 65 and 95 decimal
+working digits. At 95 digits, the largest recorded absolute residual
+in these six checks is approximately $1.82\times10^{-94}$.
+
+For an independent mathematical representation, use
+\begin{equation}\label{ir:eq:mellin}
+ \Li_s(z)=\frac1{\Gamma(s)}\int_0^\infty
+ u^{s-1}\frac{ze^{-u}}{1-ze^{-u}}\,du,
+ \qquad\Re s>0,\quad |z|=1,\ z\ne1.
+\end{equation}
+This is the standard Mellin representation \cite{dlmf-polylog}; it
+also follows by first working with $|z|<1$ and passing to the boundary
+away from $z=1$. Its integral is locally uniformly convergent in
+$\Re s>0$. Near zero, the kernel is bounded, and
+$u^{\sigma-1}|\log u|^N$ is integrable for $\sigma>0$;
+at infinity there is exponential decay. These bounds justify spectral
+differentiation under the integral on compact subsets.
+
+Instead of numerically differencing polylogarithm order at an integer,
+we differentiate \eqref{ir:eq:mellin} analytically. The first four
+polynomial multipliers are
+\begin{align*}
+ P_0(X)&=1,\\
+ P_1(X)&=X+\gamma_0,\\
+ P_2(X)&=(X+\gamma_0)^2-\zeta(2),\\
+ P_3(X)&=(X+\gamma_0)^3-3\zeta(2)(X+\gamma_0)+2\zeta(3).
+\end{align*}
+They are the derivatives of $e^{tX}/\Gamma(1+t)$ at zero.
+A factor $p^{-t}$ replaces $X$ by $X-\log p$. Integrating the
+corresponding combined level-$15$ kernels tests
+\eqref{ir:eq:jets15} for $0\le N\le3$. At 65 working digits, the
+largest recorded residual among these four checks is approximately
+$5.95\times10^{-63}$. Separate Mellin checks at $s=1,2$ also agree
+with the direct polylogarithm evaluation.
+
+These are floating-point quadrature diagnostics. No interval enclosure
+or rigorous numerical error bound is claimed. A recorded zero residual
+means zero at the working precision, not a newly certified exact zero.
+All 18 diagnostics, their precisions, and their residuals are preserved
+in \src{logs/numerical_diagnostics.json}. The exact equality certificates
+remain the polynomial identities and the analytic argument translating
+them.
+
+\subsection{Replay commands}
+From the package root, the exact core is replayed by
+\begin{verbatim}
+python code/verify_certificates.py
+python code/test_exact.py
+\end{verbatim}
+The optional independent Smith and numerical diagnostics are
+\begin{verbatim}
+python code/test_smith.py
+python code/numerical_diagnostics.py
+\end{verbatim}
+The first optional command requires SymPy; the second requires mpmath.
+The delivered versions are pinned in an optional requirements file.
+The certificate generator is provided separately, so replay does not
+silently regenerate a claimed certificate before checking it.
+
+A Makefile builds the article with three LaTeX passes and exposes the
+same checks. The supplied PDF has been compiled and visually inspected.
+Neither these programs nor the prose have been checked in Lean or another
+proof assistant. The theorem statements and algebraic interfaces are
+suitable future formalization targets, not already formalized results.

@@ -1,0 +1,167 @@
+{
+  "known_inputs": [
+    {
+      "id": "K1",
+      "status": "known_input",
+      "statement": "Classical Herglotz finite dilogarithm formula, inversion, three-term and determinant-2 Hecke equations",
+      "source": "Radchenko-Zagier, arXiv:2012.15805v1"
+    },
+    {
+      "id": "K2",
+      "status": "known_input",
+      "statement": "Bloch-group invariant vanishing and rationalized K2(Q) surjectivity",
+      "source": "Established rationalized algebraic K-theory; references in article"
+    },
+    {
+      "id": "K3",
+      "status": "known_input",
+      "statement": "All-conductor kernel of the cyclotomic beta symbol span",
+      "source": "Reviewed ProveIt manuscript; proof recalled in Section 2"
+    },
+    {
+      "id": "K4",
+      "status": "known_input",
+      "statement": "Rogers reflection and five-term identities on (0,1)",
+      "source": "Classical; references in article"
+    },
+    {
+      "id": "K5",
+      "status": "known_input",
+      "statement": "J(1/3), J(1/5), and earlier J(2/q) special cases",
+      "source": "Reviewed ProveIt manuscript and classical Herglotz identities"
+    }
+  ],
+  "proved_results": [
+    {
+      "id": "T1",
+      "label": "thm:doubling",
+      "status": "ordinary_proof_in_article",
+      "statement": "Odd-conductor doubling: beta_(2m)(a)=3 beta_m(a)-beta_m(2a)-beta_m(a/2)",
+      "dependencies": [
+        "multiplicative factorization and root-set splitting"
+      ],
+      "priority_scope": "no exhaustive priority claim"
+    },
+    {
+      "id": "T2",
+      "label": "thm:layer",
+      "status": "ordinary_proof_in_article",
+      "statement": "New dyadic layer rigidity: descent of beta_(2m)(a) to the preceding field forces zero",
+      "dependencies": [
+        "K3",
+        "regular group-algebra four-term witness"
+      ],
+      "priority_scope": "no exhaustive priority claim"
+    },
+    {
+      "id": "T3",
+      "label": "thm:classification",
+      "status": "ordinary_proof_in_article",
+      "statement": "Complete formal logarithmic and rational-dilogarithmic classification of J(p/q)",
+      "dependencies": [
+        "K1",
+        "K2",
+        "K3",
+        "T1",
+        "T2",
+        "normalized norms",
+        "finite-group difference lemmas"
+      ],
+      "priority_scope": "no exhaustive priority claim"
+    },
+    {
+      "id": "T4",
+      "label": "thm:recurrences",
+      "status": "ordinary_proof_in_article",
+      "statement": "All logarithmic pairs are adjacent terms in even-coefficient plus/minus quadratic recurrences",
+      "dependencies": [
+        "T3",
+        "Vieta descent"
+      ],
+      "priority_scope": "no exhaustive priority claim"
+    },
+    {
+      "id": "T5",
+      "label": "thm:counting",
+      "status": "ordinary_proof_in_article",
+      "statement": "All-fixed-order expansion N(B)=3B/2+sum_(r=2)^R B^(1/r)+O_R(B^(1/(R+1)) log B)",
+      "dependencies": [
+        "T4",
+        "recurrence polynomial asymptotics and uniform geometric tail bound"
+      ],
+      "priority_scope": "no exhaustive priority claim"
+    },
+    {
+      "id": "T6",
+      "label": "thm:neighbor",
+      "status": "ordinary_proof_in_article",
+      "statement": "Full log-sine identity for J(n/(n+1)), every n>=1",
+      "dependencies": [
+        "K1",
+        "K4",
+        "integer Herglotz evaluations"
+      ],
+      "priority_scope": "no exhaustive priority claim"
+    },
+    {
+      "id": "T7",
+      "label": "thm:J35",
+      "status": "ordinary_proof_in_article",
+      "statement": "Compact full evaluation of J(3/5) in Li2(1/3), Li2(1/5), real logarithm squares and pi^2",
+      "dependencies": [
+        "K1",
+        "K4",
+        "classical F(2/5) evaluation"
+      ],
+      "priority_scope": "no exhaustive priority claim"
+    },
+    {
+      "id": "C1",
+      "label": "cor:small-J",
+      "status": "ordinary_proof_in_article",
+      "statement": "Full real-logarithmic evaluations of J(4/3) and J(4/5)",
+      "dependencies": [
+        "T6"
+      ],
+      "priority_scope": "no exhaustive priority claim"
+    },
+    {
+      "id": "C2",
+      "label": "cor:exceptional-relation",
+      "status": "ordinary_proof_in_article",
+      "statement": "J(1/3)-J(1/5)+J(3/5)=log(2)^2/2+2 log(phi)^2-2 pi^2/45",
+      "dependencies": [
+        "T7",
+        "K5"
+      ],
+      "priority_scope": "no exhaustive priority claim"
+    },
+    {
+      "id": "A1",
+      "label": "prop:counterexample",
+      "status": "ordinary_proof_in_article",
+      "statement": "Prime-seven counterexample to the reviewed finite-field three-term assertion",
+      "dependencies": [
+        "elementary sign/inverse symmetries",
+        "strict two-embedding exterior-logarithm determinant"
+      ],
+      "priority_scope": "no exhaustive priority claim"
+    }
+  ],
+  "not_claimed": [
+    "unconditional numerical independence or non-reducibility",
+    "proof-assistant verification",
+    "numerical interval certification",
+    "short full logarithmic certificates for every recurrence pair",
+    "uniform height expansion with R growing with B",
+    "resolution of S_6 or unrelated polylogarithmic conjectures"
+  ],
+  "open_directions": [
+    "short full branch-certified recurrence reductions",
+    "other-prime filters",
+    "integral torsion and certificate denominators",
+    "uniform large-depth counting",
+    "numerical period injectivity",
+    "corrected finite-field cocycle formulation and colored Herglotz extensions"
+  ]
+}

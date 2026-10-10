@@ -1,0 +1,94 @@
+% Editorial insertion. Complete proofs are in the standalone real-order report.
+% Requires the manuscript's standard theorem environments and amsmath.
+% Label namespace: realorder:
+\section{The sharp real-order threshold and its endpoint atom}
+\label{realorder:sec:threshold}
+
+For positive real $a,b$, put $w=a+b$ and
+$F_{a,b}(z)=\sum_{n\ge1}H_{n-1}^{(b)}z^n/n^a$.
+The following result extends the real-$a\ge1$ signed-kernel theory;
+its critical boundary is not represented by an integrable density alone.
+Write $k_s(T)=T^{s-1}/\Gamma(s)$ and
+\[
+ \mathfrak h(t)=\frac1{1-e^{-t}}-\frac1t,\qquad
+ C_{a,b}(T)=\frac1{\Gamma(a)\Gamma(b)}
+ \int_0^T(T-t)^{a-1}t^{b-1}\mathfrak h(t)\,dt.
+\]
+Here $\mathfrak h$ increases strictly from $1/2$ to $1$.
+
+\begin{theorem}[Sharp signed-moment threshold]
+\label{realorder:thm:threshold}
+A finite signed measure $\mu$ on $[0,1]$ satisfying
+$\int u^{n-1}\,d\mu=H_{n-1}^{(b)}/n^a$ for all $n\ge1$ exists
+if and only if $a+b\ge1$, and it is unique.
+When $w>1$, it has density $K_{a,b}(-\log u)$ with
+\[
+ K_{a,b}(T)=\zeta(b)k_a(T)-\frac{k_{w-1}(T)}{b-1}-C_{a,b}(T)
+ \quad(b\ne1),
+\]
+and
+\[
+ K_{a,1}(T)=k_a(T)(\gamma+\psi(a)-\log T)-C_{a,1}(T).
+\]
+This density has exactly one negative--positive crossing in $u$.
+When $w=1$, $a=1-b\in(0,1)$ and
+\[
+ \mu=\frac1a\delta_1-\nu,\qquad
+ d\nu(u)=\bigl[-\zeta(b)k_a(-\log u)+C_{a,b}(-\log u)\bigr]du.
+\]
+The density of $\nu$ is strictly positive and $\nu([0,1])=1/a$.
+\end{theorem}
+
+\paragraph{Proof mechanism.}
+The regularized Hurwitz integral gives the moments exactly. For $w>1$,
+normalizing $K$ by $k_a$ gives, when $b\ne1$,
+\[
+ \left(\frac{K_{a,b}(T)}{k_a(T)}\right)'
+ =-\frac{\Gamma(a)T^{b-2}}{\Gamma(w-1)}
+ -\frac{\Gamma(a)T^{b-1}}{\Gamma(w)}
+   \mathbb E\bigl[b\mathfrak h(TV)+TV\mathfrak h'(TV)\bigr]<0,
+ \quad V\sim\operatorname{Beta}(b,a).
+\]
+The endpoint signs give a unique crossing; the $b=1$ derivative is
+$-1/T-a^{-1}\mathbb E[\mathfrak h(TV)+TV\mathfrak h'(TV)]<0$.
+On the critical line the moments tend to $1/a$, forcing an atom of
+that mass at one. Below the line the moments are unbounded, precluding
+a finite signed measure. Full integrability, continuation and endpoint
+arguments are in Sections 2--4 of the accompanying report.
+
+\begin{corollary}[Extended zero geometry]
+\label{realorder:cor:zeros}
+For $a,b>0$, $a+b\ge1$, the principal branch of $F_{a,b}$ has no
+nonzero zeros on $\mathbb C\setminus[1,\infty)$. Its imaginary part
+has one simple zero on every upper semicircle $0<\rho\le1$, with
+$\arccos\rho<\theta_{a,b}(\rho)<\pi/2$.
+\end{corollary}
+The usual ordered-sign Stieltjes proof applies. At unit radius the
+critical atom requires its own dominance argument; one must not
+assume that the negative density is supported away from one.
+
+\begin{theorem}[Critical normalized-radius monotonicity]
+\label{realorder:thm:radial}
+On $a+b=1$, both orders positive, the function
+$\eta(\rho)=\cos\theta_{a,b}(\rho)/\rho$ increases strictly for
+$0<\rho\le1$ and belongs to $(1/2,1)$.
+Set $x=\rho^2$, $m=2\eta-1$, $d\omega=(1-u)d\nu$ and
+$D(u)=1+x(u^2-(1+m)u)$. Then
+\[
+ \frac{dm}{dx}=
+ \frac{\displaystyle\int (u-m)^2(1-u)D(u)^{-2}\,d\omega(u)}
+ {(1-xm)\displaystyle\int (1-xu)D(u)^{-2}\,d\omega(u)}>0.
+\]
+\end{theorem}
+This is an additional exact regime, not a proof of the earlier broad
+finite-$b$ normalized-radius conjecture.
+
+\paragraph{Euler and boundary scope.}
+At $a+b=1$ the ordinary boundary series diverges and boundary values
+mean analytic/Abel values. For $a+b\ge1$ the Euler approximants satisfy
+$E_N-M2^{-N}<\operatorname{Im}F_{a,b}(i)<E_N$, with $M=1$ for $a\ge1$;
+for $0<a<1$ one may take $M=(1-b)^{-1}$ at $b<1$,
+$M=b/(b-1)$ at $b>1$, and $M=1+1/a$ at $b=1$.
+The report's exact rational certificate proves
+$\operatorname{Im}F_{1/10,9/10}(i)<-0.52$, so $M=1$ cannot be
+extended without qualification beyond its original $a\ge1$ domain.

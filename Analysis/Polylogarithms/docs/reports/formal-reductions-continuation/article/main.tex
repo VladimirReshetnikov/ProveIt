@@ -1,0 +1,113 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,top=27mm,bottom=27mm,left=27mm,right=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{microtype,booktabs,array,longtable,tabularx,enumitem}
+\usepackage{graphicx,xcolor,fancyhdr,needspace}
+\usepackage[hyphens]{url}
+\usepackage[colorlinks=true,linkcolor=midnightblue,citecolor=midnightblue,urlcolor=midnightblue]{hyperref}
+\usepackage{bookmark}
+\definecolor{midnightblue}{RGB}{26,58,82}
+\definecolor{quietgray}{RGB}{85,92,101}
+\hypersetup{pdftitle={Formal Reductions and Singular Limits in Polylogarithm Arithmetic},pdfauthor={Research continuation for the ProveIt project},pdfsubject={Cyclotomic rank theorems, Herglotz reductions, Lerch zeros, and angular asymptotics},pdfkeywords={polylogarithms, double shuffle, Herglotz function, Stieltjes constants, Lerch transcendent, asymptotic expansion}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{question}[theorem]{Question}
+\numberwithin{equation}{section}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Imag}{Im}
+\DeclareMathOperator{\Rea}{Re}
+\DeclareMathOperator{\Gal}{Gal}
+\DeclareMathOperator{\rank}{rank}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\ii}{\mathrm i}
+\setlist{itemsep=3pt,topsep=5pt,parsep=0pt}
+\setlength{\parindent}{1.3em}
+\setlength{\parskip}{2pt}
+\setlength{\emergencystretch}{1.5em}
+\allowdisplaybreaks[2]
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{quietgray}{Polylogarithm arithmetic}}
+\fancyhead[R]{\small\textcolor{quietgray}{Research continuation \textbullet\ 10 October 2026}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\footrulewidth}{0pt}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\thispagestyle{empty}
+\setlength{\parindent}{0pt}
+\vspace*{12mm}
+{\small\scshape\textcolor{midnightblue}{ProveIt \quad Analysis / Polylogarithms}\par}
+\vspace{9mm}
+{\LARGE\bfseries\textcolor{midnightblue}{Formal Reductions and Singular Limits\\[3mm] in Polylogarithm Arithmetic}\par}
+\vspace{8mm}
+{\large Cyclotomic coefficient ranks, rational Herglotz values,\\[1mm]
+Lerch zero geometry, and complete angular asymptotics\par}
+\vspace{12mm}
+{\normalsize A research continuation prepared for Vladimir Reshetnikov\par}
+\vspace{2mm}
+{\normalsize 10 October 2026\par}
+\vspace{13mm}
+\begin{abstract}
+We continue the ProveIt polylogarithm manuscript at a fixed repository
+snapshot, distinguishing newly proved results from recently completed
+incoming research. We prove its odd-weight Gaussian coefficient-rank
+conjecture, determine the even-weight ranks, and construct a canonical
+same-point splitting at every cyclotomic level. For the companion
+Herglotz integral $J(p/q)$, we give a complete rational-dilogarithm and
+logarithmic classification in the manuscript's rationalized five-term
+calculus, together with explicit positive-real evaluations. For
+differentiated Lerch logarithmic sums, we classify every small-parameter
+zero pattern, prove the optimal uniform threshold $K_2=1$, exhibit a
+nonmonotone zero branch, and compute the first singular Abel coefficient
+and the exact endpoint regularity of simple zero branches. Finally,
+we construct the angular-zero expansion to every exponential order,
+uniformly in the second index, and prove that its untruncated series
+diverges at every fixed first index. Exact coefficient generators, rational sign certificates, independent numerical diagnostics, a narrow
+editorial patch, and a proposed research program accompany the proofs.
+Formal relation ranks and five-term obstructions are kept distinct from
+unproved independence statements about numerical periods.
+\end{abstract}
+\vfill
+{\small\textcolor{quietgray}{Source baseline: ProveIt commit
+\texttt{a2a4cf58c49c745058c40e4a6748d472a3420f18}.\\[2mm]
+AI-assisted research preparation; proofs and verification scope are
+documented explicitly. This article is an additive research contribution
+for review and integration.}\par}
+\end{titlepage}
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+\input{sections/introduction}
+\input{sections/gaussian_rank}
+\input{sections/universal_lift}
+\input{sections/herglotz_classification}
+\input{sections/herglotz_rank}
+\input{sections/herglotz_identities}
+\input{sections/lerch_background}
+\input{sections/lerch_zeros}
+\input{sections/lerch_shape}
+\input{sections/lerch_abel}
+\input{sections/angular_expansion}
+\input{sections/angular_divergence}
+\input{sections/audit}
+\input{sections/research}
+\input{sections/verification}
+\input{references}
+\end{document}

@@ -1,0 +1,325 @@
+% Research contribution for the pinned ProveIt manuscript.
+% Standard theorem environments and amsmath/amssymb are assumed.
+\section{A complete formal classification of rational companion values}
+\label{jnew:sec:classification}
+
+Put
+\[
+ J(x)=\int_0^1\frac{\log(1+t^x)}{1+t}\,dt,
+ \qquad
+ F(x)=\sum_{n\ge1}\frac{\psi(nx)-\log(nx)}n.
+\]
+Radchenko--Zagier's identity~\cite{RadchenkoZagier} is
+\begin{equation}\label{jnew:eq:JF}
+ J(x)=F(2x)-2F(x)+F(x/2)+\frac{\pi^2}{12x}.
+\end{equation}
+All identities in this section at positive real arguments use real logarithms.
+Our negative statements concern the rationalized five-term calculus, not
+numerical independence of periods.
+
+Write $A(K)=K^\times\otimes_{\mathbb Z}\mathbb Q$ additively, using
+$\langle u\rangle$ for the class of $u$. Roots of unity disappear.
+Let $\mathcal P(K)$ be the rationalized pre-Bloch group, with
+$\partial[z]=\langle z\rangle\wedge\langle1-z\rangle$ and
+$[0]=[1]=0$. For coprime positive $p,q$, let $\xi_{p/q}$ denote the
+Galois-invariant element supplied by the finite cyclotomic formula for
+$F(p/q)-F(1)$. Its normalization is
+\begin{equation}\label{jnew:eq:xi-boundary}
+ \partial\xi_{p/q}
+ =\beta_q(p)-\beta_p(q)-\langle p\rangle\wedge\langle q\rangle,
+ \qquad
+ \beta_m(a)=\sum_{k=1}^{m-1}
+ \langle1-\zeta_m^{ak}\rangle\wedge\langle1-\zeta_m^k\rangle.
+\end{equation}
+Set $\beta_1=\beta_2=0$. Fractions in subscripts are always reduced
+before using \eqref{jnew:eq:xi-boundary}. Define
+\begin{equation}\label{jnew:eq:eta}
+ \eta_{p/q}=\xi_{2p/q}-2\xi_{p/q}+\xi_{p/(2q)}
+ \quad\text{in }\mathcal P(\mathbb Q(\zeta_{2pq})).
+\end{equation}
+A formal logarithmic reduction of $J(p/q)$ means $\eta_{p/q}=0$;
+a formal rational-dilogarithm reduction means
+$\eta_{p/q}\in\operatorname{im}\mathcal P(\mathbb Q)$.
+Products of algebraic logarithms and rational multiples of $\pi^2$
+are the terms suppressed by this terminology.
+
+We use the established rationalized facts
+\[
+ \ker(\partial|_{\mathcal P(K)})^{\operatorname{Gal}(K/\mathbb Q)}=0,
+ \qquad
+ \partial\mathcal P(\mathbb Q)=\Lambda^2 A(\mathbb Q)
+\]
+for Galois number fields $K$ \cite[\texttt{hstruct:eq:bloch-facts}]{ProveItSnapshot}. These are the Bloch-group descent and
+$K_2(\mathbb Q)$ inputs already used in the manuscript. Consequently,
+for an invariant $\eta$, the two kinds of reduction are equivalent,
+respectively, to $\partial\eta=0$ and
+$\partial\eta\in\Lambda^2 A(\mathbb Q)$.
+
+\subsection{The existing Gram theorem and a new subfield consequence}
+
+For $M\ge3$, set $G_M=(\mathbb Z/M\mathbb Z)^\times/\{\pm1\}$.
+The all-conductor Gram theorem of the manuscript
+\cite[\texttt{hstruct:thm:kernel}, \texttt{hstruct:lem:positive-Gram}]{ProveItSnapshot}
+states that
+\begin{equation}\label{jnew:eq:kernel}
+ \sum_{a\in G_M}c_a\beta_M(a)=0
+ \quad\Longleftrightarrow\quad c_a=c_{a^{-1}}\quad(a\in G_M).
+\end{equation}
+In particular $\beta_M(a)=0$ precisely when $a^2\equiv\pm1\pmod M$.
+Its proof provides more information than this zero test. Put
+\[
+ v_k=(\log|1-\zeta_M^{bk}|)_{b\in G_M},\qquad
+ A_M=\sum_{k=1}^{M-1}v_kv_k^{\mathsf T},\qquad
+ (P_av)_b=v_{ba}.
+\]
+Then $A_M$ is positive definite, commutes with every $P_a$, and the
+logarithmic exterior image of $\beta_M(a)$ is
+\begin{equation}\label{jnew:eq:Gram-image}
+ A_M(P_a-P_{a^{-1}}).
+\end{equation}
+The positivity uses all roots, including roots of lower order: for a
+nontrivial even character of primitive conductor $f\mid M$, the
+$k=M/f$ vector has a nonzero Fourier coefficient proportional to
+$\tau(\chi)L(1,\overline\chi)$. Prime-order roots supply the trivial
+character. This is an exact nonvanishing argument, not a numerical
+determinant test. We never assume that the logarithmic exterior map
+is injective on the whole exterior square.
+
+\begin{theorem}[No proper real subfield for a nonzero individual symbol]
+\label{jnew:thm:subfield}
+Let $L=\mathbb Q(\zeta_M)^+$ and let $E$ be a proper subfield of $L$.
+If the element $\beta_M(a)$ belongs to the image of
+$\Lambda^2 A(E)$ in $\Lambda^2 A(L)$, then $\beta_M(a)=0$.
+\end{theorem}
+\begin{proof}
+The symbols do belong to the real field, because
+\[
+ \langle1-\zeta_M^k\rangle
+ =\tfrac12\langle(1-\zeta_M^k)(1-\zeta_M^{-k})\rangle.
+\]
+Let $H=\operatorname{Gal}(L/E)$, a nontrivial subgroup of $G_M$.
+Logarithmic vectors of elements of $E$ lie in
+$W=(\mathbb R^{G_M})^H$. A skew matrix arising from
+$\Lambda^2 W$ annihilates $W^\perp$. On the complex character line
+of a character $\chi$ nontrivial on $H$, formula
+\eqref{jnew:eq:Gram-image} therefore gives
+\[
+ \lambda_\chi\bigl(\chi(a)-\chi(a)^{-1}\bigr)=0,
+ \qquad\lambda_\chi>0.
+\]
+Thus $\chi(a)^2=1$ for every such character. Let $X_0$ be the
+proper subgroup of characters trivial on $H$, and choose
+$\chi_0\notin X_0$. For every $\psi\in X_0$, both $\chi_0$ and
+$\chi_0\psi$ are outside $X_0$. Dividing their squared values gives
+$\psi(a)^2=1$. Thus all characters of $G_M$ are trivial at $a^2$.
+Characters separate points, so $a^2=1$ in $G_M$, and
+\eqref{jnew:eq:kernel} gives $\beta_M(a)=0$.
+\end{proof}
+
+This statement concerns a single $\beta_M(a)$. It does not assert
+that every nonzero linear combination of symbols has this property.
+
+\subsection{Two exact dyadic identities}
+
+\begin{lemma}[Odd conductor doubling]\label{jnew:lem:odd-double}
+If $m$ is odd and $a$ is odd with $(a,m)=1$, then, inside
+$\mathbb Q(\zeta_{2m})=\mathbb Q(\zeta_m)$,
+\begin{equation}\label{jnew:eq:odd-double}
+ \beta_{2m}(a)=3\beta_m(a)-\beta_m(2a)-\beta_m(a/2),
+\end{equation}
+where division by $2$ means multiplication by its inverse modulo $m$.
+\end{lemma}
+\begin{proof}
+The even-indexed roots contribute $\beta_m(a)$. Write the odd-indexed
+roots as $-\zeta_m^j$, $0\le j<m$. The $j=0$ term is
+$\langle2\rangle\wedge\langle2\rangle=0$.
+For $j\ne0$, put $u_j=\langle1-\zeta_m^j\rangle$. Factorization gives
+$\langle1+\zeta_m^j\rangle=u_{2j}-u_j$. The remaining contribution is
+\[
+ \sum_{j=1}^{m-1}(u_{2aj}-u_{aj})\wedge(u_{2j}-u_j)
+ =2\beta_m(a)-\beta_m(2a)-\beta_m(a/2).
+\]
+Adding the even-root contribution proves the identity.
+\end{proof}
+
+\begin{lemma}[Even conductor second difference]\label{jnew:lem:even-difference}
+Let $e\ge2$ be even and $(a,2e)=1$. Put
+\[
+ \Delta_e(a)=\beta_{2e}(a)-2\beta_e(a)+\beta_{e/2}(a).
+\]
+Then
+\begin{equation}\label{jnew:eq:Delta-zero}
+ \Delta_e(a)=0
+ \quad\Longleftrightarrow\quad a^2\equiv1\pmod{2e}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $e=2$ all three symbols vanish and every odd square is $1$
+modulo $4$. Suppose $e\ge4$. Let $N$ be the normalized field norm
+from $\mathbb Q(\zeta_{2e})$ to $\mathbb Q(\zeta_e)$, acting on
+$A$ by division by the extension degree $2$. Even-indexed roots
+are fixed. If $k$ is odd, then
+\[
+ N\langle1-\zeta_{2e}^k\rangle
+ =\tfrac12\langle1-\zeta_e^k\rangle,
+\]
+because the nontrivial automorphism sends $\zeta_{2e}$ to
+$-\zeta_{2e}$. Every odd residue modulo $e$ has two odd lifts
+modulo $2e$, hence
+\begin{equation}\label{jnew:eq:dyadic-norm}
+ (\Lambda^2N)\beta_{2e}(a)
+ =\beta_e(a)+\tfrac12\bigl(\beta_e(a)-\beta_{e/2}(a)\bigr).
+\end{equation}
+It follows that
+\[
+ (\Lambda^2N)\Delta_e(a)
+ =-\tfrac12\bigl(\beta_e(a)-\beta_{e/2}(a)\bigr).
+\]
+If $\Delta_e(a)=0$, then $\beta_e(a)=\beta_{e/2}(a)$, and its
+definition gives $\beta_{2e}(a)=\beta_e(a)$. The right side belongs
+to $\Lambda^2 A(\mathbb Q(\zeta_e)^+)$. This real field has index
+$2$ in $\mathbb Q(\zeta_{2e})^+$, so Theorem
+\ref{jnew:thm:subfield} implies $\beta_{2e}(a)=0$.
+Thus $a^2\equiv\pm1\pmod{2e}$. Since $4\mid2e$ and $a$ is odd,
+the negative sign is impossible. Conversely,
+$a^2\equiv1\pmod{2e}$ makes each of the three symbols zero.
+\end{proof}
+
+\subsection{The two odd-conductor coefficient tests}
+
+For odd $m$ and $(a,m)=1$, define
+\[
+ D_m(a)=\beta_m(a)-\beta_m(a/2),\qquad
+ T_m(a)=\beta_m(2a)-2\beta_m(a)+\beta_m(a/2).
+\]
+The convention at $m=1$ is zero.
+
+\begin{lemma}\label{jnew:lem:DT}
+For every odd $m\ge1$ and every unit $a$ modulo $m$,
+\begin{align}
+ D_m(a)=0&\quad\Longleftrightarrow\quad m\in\{1,3,5\},
+ \label{jnew:eq:D-zero}\\
+ T_m(a)=0&\quad\Longleftrightarrow\quad a^2\equiv\pm1\pmod m.
+ \label{jnew:eq:T-zero}
+\end{align}
+\end{lemma}
+\begin{proof}
+By \eqref{jnew:eq:kernel}, equality of two symbols
+$\beta_m(a)=\beta_m(b)$ occurs only when $a=b$ in $G_m$ or when
+both classes are self-inverse. Take $b=a/2$. The first alternative
+gives $2=1$ in $G_m$, hence $m=1$ or $3$. In the second,
+both $a^2$ and $(a/2)^2$ are signs, so $4$ is a sign modulo $m$;
+thus $m=1,3,5$. Conversely, the symbol is identically zero at these
+three odd conductors.
+
+For the second assertion, use the group algebra $\mathbb R[G_m]$.
+Let $g$ be the class of $2$ and let
+$V_a=[a]-[a^{-1}]$. The image of $T_m(a)$ under the exact coefficient
+model is
+\[
+ (P_g+P_{g^{-1}}-2I)V_a.
+\]
+On each orbit of multiplication by $g$, the kernel of this cyclic
+Laplacian consists of constants. If $V_a\ne0$, its support consists
+of two points with opposite coefficients. It cannot be constant
+on nontrivial $g$-orbits. If $g=1$, then $m=1$ or $3$ and
+$V_a=0$ anyway. Thus $T_m(a)=0$ forces $V_a=0$, which is precisely
+the square congruence. The converse follows from the same displayed
+formula.
+\end{proof}
+
+\subsection{Separation and classification}
+
+If $r,s$ are coprime, normalized norms on the individual exterior
+factors separate symbols from $\mathbb Q(\zeta_r)$ and
+$\mathbb Q(\zeta_s)$. In detail, every summand of a $\beta$-symbol
+has conjugate factors. Its normalized norm to $\mathbb Q$ has equal
+factors and therefore zero wedge. A normalized norm from the compositum
+to one of the two fields fixes symbols in that field and kills symbols
+from the other, by linear disjointness. Consequently, for combinations
+$U_r,U_s$ of $\beta$-symbols at divisors of $r,s$,
+\begin{equation}\label{jnew:eq:separation}
+ U_r-U_s\in\Lambda^2 A(\mathbb Q)
+ \quad\Longleftrightarrow\quad U_r=U_s=0.
+\end{equation}
+Indeed, taking either field norm and then the norm to $\mathbb Q$
+first shows that the rational wedge must be zero, and then that both
+components vanish. This uses norms on factors; averaging a
+Galois-invariant exterior symbol itself would not give separation.
+
+\begin{theorem}[All rational values of the companion]
+\label{jnew:thm:classification}
+Let $p,q$ be coprime positive integers.
+\begin{enumerate}
+\item If $p$ and $q$ are odd, $J(p/q)$ has a formal
+      rational-dilogarithm reduction exactly when
+      $p,q\in\{1,3,5\}$. It has a formal logarithmic reduction
+      exactly when $p=q=1$.
+\item Otherwise, let $e$ be the even member of $\{p,q\}$ and $o$
+      the odd member. Formal rational-dilogarithm and formal logarithmic
+      reductions are equivalent, and occur exactly when
+\begin{equation}\label{jnew:eq:main-congruences}
+ \boxed{\qquad e^2\equiv\pm1\pmod o,
+                  \qquad o^2\equiv1\pmod{2e}.\qquad}
+\end{equation}
+\end{enumerate}
+Congruences modulo $1$ are vacuous.
+\end{theorem}
+\begin{proof}
+If $p,q$ are odd, equations \eqref{jnew:eq:xi-boundary} and
+\eqref{jnew:eq:odd-double} give the exact boundary
+\begin{equation}\label{jnew:eq:odd-boundary}
+ \partial\eta_{p/q}
+ =D_q(p)-D_p(q)+\langle2\rangle\wedge\langle p/q\rangle.
+\end{equation}
+The field separation \eqref{jnew:eq:separation} and
+\eqref{jnew:eq:D-zero} show that this boundary is rational precisely
+when $p,q\in\{1,3,5\}$. The normalized norm to $\mathbb Q$ sends
+the boundary to $\langle2\rangle\wedge\langle p/q\rangle$.
+Since $p/q$ has odd numerator and denominator, its prime-exponent
+vector is independent of that of $2$ unless $p=q=1$. Thus the
+boundary is zero only in that case.
+
+Now suppose $p=e$ is even and $q=o$ is odd. The argument $x/2$
+reduces to $(e/2)/o$, and the rational wedge terms cancel exactly.
+Hence
+\begin{equation}\label{jnew:eq:even-boundary}
+ \partial\eta_{e/o}=T_o(e)-\Delta_e(o).
+\end{equation}
+The fields with conductors $o$ and $2e$ are linearly disjoint.
+By \eqref{jnew:eq:separation}, a rational boundary is possible
+exactly when both blocks vanish; it is then zero. Lemmas
+\ref{jnew:lem:even-difference} and \ref{jnew:lem:DT} give precisely
+\eqref{jnew:eq:main-congruences}.
+
+Finally, $\xi_x+\xi_{1/x}=0$ in the invariant pre-Bloch group:
+their boundaries cancel, and invariant Bloch descent applies.
+Pairing the three terms in \eqref{jnew:eq:eta} gives
+$\eta_x+\eta_{1/x}=0$. This handles odd numerator and even
+denominator. In each positive case, invariant Bloch descent also
+proves the asserted converse from the boundary test to the actual
+formal reduction.
+\end{proof}
+
+\begin{remark}[Why the doubled modulus cannot be dropped]
+The pair $(e,o)=(8,3)$ satisfies $e^2\equiv1\pmod o$ and
+$o^2\equiv1\pmod e$, but $o^2=9\not\equiv1\pmod{16}$.
+Thus $F(3/8)-F(1)$ has the manuscript's rational-dilogarithm core,
+while $J(3/8)$ fails the formal rational-dilogarithm test. Similarly
+$(10,3)$ passes the two signed congruences for $F$ but fails the
+condition for $J$. These are exact algebraic obstructions, not
+failed integer-relation searches.
+\end{remark}
+
+\begin{corollary}[Two infinite families]\label{jnew:cor:families}
+For every integer $n\ge1$, $J(n/(n+1))$ has a formal logarithmic
+reduction. For every even integer $e\ge2$, both
+$J(e/(e^2-1))$ and $J(e/(e^2+1))$ do as well.
+\end{corollary}
+\begin{proof}
+For consecutive integers, write the odd one as $o=e\pm1$.
+Then $e^2\equiv1\pmod o$ and
+$o^2-1=e(e\pm2)$ is divisible by $2e$.
+For $o=e^2\pm1$, the first condition is immediate and
+$o^2-1=e^2(e^2\pm2)$ is divisible by $2e$ because $e$ is even.
+\end{proof}

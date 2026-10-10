@@ -1,0 +1,246 @@
+\section{A transition for two growing log-gamma exponents}
+\label{sec:gamma}
+
+Write $f(x)=\log\Gamma(x)$, which is positive for $0<x<1$, and extend
+the reflected moments to positive real exponents:
+\[
+ M_{n,m}=\int_0^1 f(x)^n f(1-x)^m\,\dd x.
+\]
+The moments themselves, their reflection symmetry, and associated exact
+identities are classical \cite{ACEKMM}. The pinned manuscript proves,
+for every \emph{fixed} nonnegative integer $m$,
+\begin{equation}\label{eq:fixedm}
+ M_{n,m}\sim\frac{\gamma^m\Gamma(n+1)}{(m+1)^{n+1}}
+ \qquad(n\longrightarrow\infty),
+\end{equation}
+and develops a considerably sharper fixed-$m$ theory. It explicitly leaves
+simultaneous growth as a separate problem. Here we locate and resolve a
+transition in which \eqref{eq:fixedm} no longer has relative error tending
+to zero.
+
+Set
+\begin{equation}\label{eq:gamma-constants}
+ A=\frac{\zeta(2)}{2\gamma},\qquad
+ B=\frac{\zeta(3)}{3\gamma}-\frac{\zeta(2)^2}{8\gamma^2},\qquad
+ C=A-\gamma.
+\end{equation}
+Thus $C=0.84767122475766887678956780929\ldots>0$.
+Only the exact definitions enter the proofs. Positivity also follows
+without decimals: $\gamma<H_5-\log5<7/10$, using the first three
+positive terms of $2\operatorname{arctanh}(2/3)$ to bound $\log5$
+from below, while $\zeta(2)>1>2(7/10)^2$.
+
+\begin{theorem}[Critical reflected-moment transition]\label{thm:gamma-transition}
+Let $c$ range over a fixed compact subset of $\mathbb R$. As $m$ tends
+to infinity through positive real values, put
+\[
+ L=\log m+c,\qquad q=e^{-c},\qquad n=(m+1)L.
+\]
+Then, uniformly in $c$,
+\begin{equation}\label{eq:gamma-transition}
+ \frac{(m+1)^{n+1}M_{n,m}}{\gamma^m\Gamma(n+1)}
+ =e^{Cq}\left\{1+\frac{P_1(L,q)}m
+       +O\!\left(\frac{L^2}{m^2}\right)\right\},
+\end{equation}
+where
+\begin{equation}\label{eq:gamma-P1}
+ P_1(L,q)=\frac L2(Cq+C^2q^2)
+             -(A+\gamma)q+(B+\gamma^2)q^2.
+\end{equation}
+In particular, if integer pairs $(n,m)$ satisfy
+$n/(m+1)-\log m\to c$, their normalized moments converge to
+$\exp(Ce^{-c})$.
+\end{theorem}
+
+For example, at $c=0$ the limiting ratio is
+$e^C=2.3342046795191067941\ldots$. This is an explicit counterexample
+to an unrestricted extension of \eqref{eq:fixedm} to a growing reflected
+exponent. It is not a counterexample to the manuscript, which keeps $m$
+fixed in that assertion.
+
+\subsection{The exact gamma expectation}
+The local series needed below follow from the usual expansion of
+$\log\Gamma(1+z)$ \cite{DLMFgamma}. Define
+\[
+ p(x)=\log\Gamma(1+x),\qquad
+ h(x)=\log\left(\frac{\log\Gamma(1-x)}{\gamma x}\right).
+\]
+Both are real analytic near zero, with
+\begin{align}\label{eq:gamma-germs}
+ p(x)&=-\gamma x+\frac{\zeta(2)}2x^2+O(x^3),\\
+ h(x)&=Ax+Bx^2+O(x^3).\notag
+\end{align}
+Substitution $x=e^{-t}$ gives an exact identity. If $T$ has gamma
+density
+\begin{equation}\label{eq:gamma-density}
+ \frac{(m+1)^{n+1}}{\Gamma(n+1)}t^n e^{-(m+1)t},\qquad t>0,
+\end{equation}
+then the left side of \eqref{eq:gamma-transition} is
+\begin{equation}\label{eq:gamma-expectation}
+ \E e^{H_m(T)},\qquad
+ H_m(t)=n\log\left(1+\frac{p(e^{-t})}{t}\right)+mh(e^{-t}).
+\end{equation}
+The logarithm is real: $t+p(e^{-t})=f(e^{-t})>0$.
+The base approximation treats $f(e^{-t})$ as $t$ and
+$f(1-e^{-t})$ as $\gamma e^{-t}$. Their first corrections act
+together at the scale $me^{-L}=q$.
+
+\begin{lemma}[Localization with the full weight]\label{lem:gamma-localization}
+Fix a compact set of $c$ values and $\delta\in(0,1/2)$. Under the
+hypotheses of Theorem~\ref{thm:gamma-transition}, for every fixed $N>0$,
+\[
+ \E\left[e^{H_m(T)}\mathbf1_{\{|T-L|>\delta\}}\right]
+       =O_N(m^{-N}).
+\]
+The same superpolynomial bound holds for the unweighted gamma
+expectations of any fixed power of $|T-L|$ on this complement.
+\end{lemma}
+
+\begin{proof}
+All constants below may depend on the compact set of $c$ values and on
+$\delta$. First, $p(x)<0$ for $0<x<1$: strict log-convexity of $\Gamma$
+between $1$ and $2$ gives $\Gamma(1+x)<1$. Thus
+\[
+ e^{H_m(t)}\le e^{mh(e^{-t})}.
+\]
+On $t\ge L/2$, the Taylor expansion of $h$ bounds this by
+$\exp(Kme^{-t})\le\exp(K'\sqrt m)$. The gamma moment-generating
+function is $(1-v/(m+1))^{-(n+1)}$. Its Chernoff bounds give
+\[
+ \Pr(|T-L|>\delta)\le 2\exp(-c_\delta m/L)
+\]
+for large $m$. Since $m/L\gg\sqrt m$, the contribution of this
+part of the complement is smaller than every inverse power of $m$.
+
+Choose a fixed $\varepsilon\in(0,1/2)$. On
+$\varepsilon\le t\le L/2$, $h(e^{-t})$ is bounded above by a
+constant. The same gamma Chernoff calculation at $T\le L/2$ gives
+$\Pr(T\le L/2)\le\exp(-c_0mL)$, with $c_0>0$; multiplying by
+$e^{Km}$ preserves superpolynomial decay.
+
+For $0<t<\varepsilon$, use the elementary endpoint bounds
+\[
+ f(e^{-t})\le Kt,\qquad
+ f(1-e^{-t})\le D+|\log t|,
+\]
+with fixed positive $K,D$. The contribution before normalization is
+at most
+\[
+ K^n\int_0^\varepsilon t^n(D-\log t)^m\,\dd t
+ \le\frac{K^nD^m}{n+1-m/D}.
+\]
+Here $(D+y)^m\le D^m e^{my/D}$ was used, and the denominator is
+positive for large $m$. Stirling's estimate shows that division by
+$\gamma^m\Gamma(n+1)/(m+1)^{n+1}$ makes the logarithm of this
+bound at most $-n\log L+O(n+m)$. This again is smaller than every
+inverse power. The unweighted polynomial-tail assertions follow
+from the same gamma bounds, or from their moment-generating
+function after a fixed small exponential tilt.
+\end{proof}
+
+\subsection{Proof of the transition and its first correction}
+\begin{proof}[Proof of Theorem~\ref{thm:gamma-transition}]
+Put $U=T-L$. Its first raw moments about $L$, directly from
+\eqref{eq:gamma-density}, are
+\begin{align}\label{eq:gamma-central}
+ \E U&=\frac1{m+1},&
+ \E U^2&=\frac{L}{m+1}+\frac2{(m+1)^2},\\
+ \E U^3&=\frac{5L}{(m+1)^2}+\frac6{(m+1)^3},&
+ \E U^4&=O(L^2/m^2).\notag
+\end{align}
+The coefficient $5$ in the third raw moment includes the shift
+between $L$ and the mean $L+1/(m+1)$.
+
+On $|u|\le\delta$, the functions $e^{H_m(L+u)}$ and their first
+four derivatives are uniformly bounded. Indeed $e^{-L}=q/m$,
+$L/(L+u)$ is bounded, and the germs in \eqref{eq:gamma-germs}
+can be differentiated uniformly there. To leading order write
+\[
+ H_0(u)=q e^{-u}\left(A-\frac{\gamma L}{L+u}\right).
+\]
+The values required through order $m^{-1}$ are
+\begin{align}\label{eq:gamma-local-values}
+ H_m(L)&=Cq+\frac1m\left\{-\gamma q
+       +q^2\left(B+\frac{\zeta(2)}2-\frac{\gamma^2}{2L}\right)\right\}
+       +O(m^{-2}),\\
+ H_0'(0)&=q(-C+\gamma/L),\notag\\
+ H_0''(0)&=q(C-2\gamma/L-2\gamma/L^2).\notag
+\end{align}
+The first two derivatives of $H_m(L+u)$ differ from the corresponding
+derivatives of $H_0(u)$ by $O(m^{-1})$.
+
+Taylor-expand $e^{H_m(L+u)}$ through the cubic term, with a
+uniform $O(u^4)$ remainder. Lemma~\ref{lem:gamma-localization}
+permits use of the full moments \eqref{eq:gamma-central}. The cubic
+contribution is $O(L/m^2)$ and the quartic remainder is
+$O(L^2/m^2)$. Therefore
+\begin{align*}
+ e^{-Cq}\E e^{H_m(T)}
+ =1+\frac1m\bigg[&-\gamma q
+ +q^2\left(B+\frac{\zeta(2)}2-\frac{\gamma^2}{2L}\right)
+ +H_0'(0)\\
+ &+\frac L2\left\{H_0''(0)+H_0'(0)^2\right\}\bigg]
+ +O(L^2/m^2).
+\end{align*}
+Inserting \eqref{eq:gamma-local-values} cancels every displayed
+negative power of $L$. Since $\gamma A=\zeta(2)/2$, the remaining
+coefficient is exactly \eqref{eq:gamma-P1}. This proves the uniform
+expansion. The assertion for integer pairs follows by using their
+actual $c_m=n/(m+1)-\log m$ in the uniform formula.
+\end{proof}
+
+\subsection{Higher orders and the early-pole resummation}
+The proof is effective at every finite order. One expands the two
+analytic germs to the required degree, expands in $u$ on the localized
+interval, and uses exact gamma moments. For any fixed $R$, taking
+the Taylor expansion in $u$ through degree $2R+1$ bounds its next
+remainder by $O((L/m)^{R+1})$. The terms from odd moments must be
+kept with their signs; replacing all of them by absolute-moment
+bounds would lose powers of $m$.
+
+There is a useful algebraic description of the first correction.
+Let $p_1=-\gamma$, $p_2=\zeta(2)/2$, and $s_2=p_2+B$.
+The formal early-pole coefficients are
+\[
+ C_j(m)=[x^j]\exp\{(m+j+1)p(x)+mh(x)\}.
+\]
+For fixed $j$, $C_j(m)=m^jC^j/j!+O_j(m^{j-1})$, whereas
+\[
+ \left(\frac{m+1}{m+j+1}\right)^{n+1}
+ =\left(\frac qm\right)^j
+ \left\{1+\frac{Lj^2/2-j}{m}+O_j(L^2/m^2)\right\}.
+\]
+Thus the leading formal resummation is
+$\sum_{j\ge0}(Cq)^j/j!=e^{Cq}$. With $\mathcal D=q\partial_q$,
+the next coefficient is
+\begin{equation}\label{eq:gamma-operator}
+ e^{Cq}P_1(L,q)=
+ \left\{s_2q^2+p_1q(\mathcal D+2)
+                    +\frac L2\mathcal D^2-\mathcal D\right\}e^{Cq}.
+\end{equation}
+This identity is checked by ordinary differentiation and provides an
+independent symbolic derivation of \eqref{eq:gamma-P1}.
+It is not an instruction to sum the manuscript's divergent infinite
+pole series. The localization proof above controls the actual integral
+and supplies the analytic justification for the displayed transition.
+
+\subsection{Location of the transition on the integer lattice}
+The scale is $m\asymp n/\log n$. More precisely, if $c$ is fixed and
+$w=W(e^c(n+1))$, put $k_0=(n+1)/w$. The positive real solution of
+$n=(m+1)(\log m+c)$ satisfies
+\begin{equation}\label{eq:gamma-inverse}
+ m=k_0-1+\frac1{2k_0(w+1)}
+       +O\!\left(\frac1{k_0^2(w+1)}\right).
+\end{equation}
+To check this, write $k=m+1$ and expand
+\[
+ n=k(\log k+c)-1-\frac1{2k}+O(k^{-2}).
+\]
+The equation $k_0(\log k_0+c)=n+1$ and one Taylor expansion, whose
+derivative is $w+1$, give \eqref{eq:gamma-inverse}. Nearest-integer
+choices may then be inserted using their actual value of $c_m$.
+
+The transition settles a concrete part of the simultaneous-exponent
+problem. It does not classify the regime $m/n\to\lambda>0$, nor the
+uniform least-term remainder when both $m$ and the truncation index
+grow. Those require additional saddle and inverse-function estimates.

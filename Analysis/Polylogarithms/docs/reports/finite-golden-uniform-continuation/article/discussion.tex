@@ -1,0 +1,370 @@
+\section{Corrections and status revisions for the manuscript}
+\label{editorial:sec}
+The source's discovery chapter already gives a careful distinction
+between experimental evidence, exact relation matrices, and numerical
+period identities. A few earlier passages should be brought into line
+with that standard. The proposed patch is restricted to the pinned
+source and is supplied for review; it has not been applied to the
+remote repository.
+
+\subsection{A definite bibliographic correction}
+The plastic-base discussion in
+\path{chapters/03-algebraic.tex} describes a sequel of
+Abouzahra--Lewin as never published. The sequel was published:
+M.~Abouzahra, L.~Lewin, and Xiao Hongnian,
+\emph{Polylogarithms in the field of omega (a root of a given cubic):
+Functional equations and ladders},
+\emph{Aequationes Mathematicae} \textbf{33} (1987), 23--45
+\cite{AbouzahraLewinXiao1987}.
+The publisher records the issue date as February 1987 and the DOI as
+\texttt{10.1007/BF01836149}.
+Its abstract distinguishes analytically derived lower-order results
+from numerically found higher-order ladders. Restoring this reference
+therefore improves both attribution and proof-status tracking.
+
+The later literature also includes Gangl's functional equations and
+proved ladders in weights six and seven \cite{Gangl2013}.
+Those statements use a single-valued modified polylogarithm; the
+projection is the real part in odd weight and the imaginary part in
+even weight. In particular, an even-weight modified identity at real
+arguments cannot simply be read as an identity for ordinary real
+\(\Li_{2k}\). The correction patch makes this normalization distinction
+explicit.
+
+\subsection{Numerical confirmation is a distinct status}
+The golden-ladder discussion uses headings and phrases such as
+\emph{conjectures, verified}, \emph{also hold}, and \emph{are correct}
+beside finite-precision residual checks. A small computed residual
+establishes numerical consistency with a formula. By itself it does
+not establish an identity of periods. The proposed edits say
+\emph{numerically confirmed} where that is the evidence actually
+provided, and retain analytic or exact status when a proof is present.
+
+This is a local editorial correction, not a claim that every displayed
+historical ladder lacks a proof in the literature. A formula with a
+published proof should be matched to that proof, including its
+normalization and branches. A proposed specialization of a functional
+equation should include the exact substitution and residual
+cancellation. In particular, citing a family of Kummer equations
+without supplying or identifying the required specialization is less
+specific than a replayable derivation.
+
+The new seed theorem sharpens the source's support question but does
+not remove this distinction. It proves that no new positive even
+golden power adds a multiplicative seed. It does not prove the
+constants in each higher ladder or a maximal ladder weight of nine.
+The remaining question concerns compatibility with functional equations,
+products, and regulator data on an already complete seed space.
+
+\subsection{Restoring a missing canonical ladder definition}
+The canonical elimination chain in the same source uses \(L_{12}\)
+without defining it. Its logarithmic tail also contains factorials
+with negative indices at the low orders where vanishing is discussed.
+The proposed repair omits those summands and reconstructs the missing
+notation from the first displayed weight-five formula.
+Put \(\ell=\log\rho\) and, for \(n\ge1\), define
+\begin{align}
+ \mathrm{tw}_{12}(n)={}&-\frac{13}{48}\frac{\ell^n}{n!}
+ +\frac1{48}\zeta(2)\frac{\ell^{n-2}}{(n-2)!}
+ -\frac{19}{1728}\zeta(4)\frac{\ell^{n-4}}{(n-4)!},
+ \label{editorial:eq:tail}\\
+ L_{12}(n)={}&\frac{\Li_n(\rho^{12})}{12^{n-1}}
+ -\frac32\frac{\Li_n(\rho^6)}{6^{n-1}}
+ -\frac{\Li_n(\rho^4)}{4^{n-1}}
+ +\frac{11}{48}\frac{\Li_n(\rho^2)}{2^{n-1}}
+ +\mathrm{tw}_{12}(n).
+ \label{editorial:eq:L12}
+\end{align}
+The negative-factorial convention applies in \eqref{editorial:eq:tail}.
+If \(E_1,E_2,E_3\) are the left-minus-right residuals of the
+three displayed source weight-five formulas, the exact rational
+normalizations are
+\begin{align}
+ L_{12}(5)-\frac{67}{6912}\zeta(5)
+    &=\frac{E_1}{15\cdot12^4},\notag\\
+ L_{20}(5)-\frac{201}{10000}\zeta(5)
+    &=\frac{E_2}{9\cdot20^4},\label{editorial:eq:normalization}\\
+ L_{24}(5)+\frac{1541}{110592}\zeta(5)
+    &=\frac{E_3+(64/3)E_1}{-15\cdot24^4}.\notag
+\end{align}
+Thus the canonical \(L_{24}\) requires a recombination before
+rescaling. These equalities follow by exact rational coefficient
+comparison, and restore a reviewable meaning to the source's
+elimination chain. They do not assert \(E_j=0\) without a proof
+of the underlying evaluations.
+
+The replay program checks all three transformations exactly and
+compares \(\Li_n\) from \texttt{mpmath} with a separate 600-term
+defining series at 160 working digits. The largest recorded canonical
+residual over orders one through five is below
+\(1.12\times10^{-161}\). The series has an analytic truncation
+bound; floating-point rounding is not interval-enclosed.
+The notation repair and the numerical evaluation therefore retain
+their different logical statuses.
+
+\subsection{Limits that should remain explicit}
+The fixed-\(m\) moment theorem in the source is sound in its stated
+regime. The factor \(e^{c e^{-s}}\) in
+Theorem~\ref{moment:thm:transition} explains why extending that regime
+without a uniform analysis would be incorrect. The source's broader
+question about simultaneous large exponents is only partially resolved:
+the present strip is near \(n\sim m\log m\), and does not cover every
+fixed ratio \(n/m\).
+
+For real-order depth-two functions, the equality \(a+b=1\) changes the
+meaning of a unit-circle value. The coefficients then tend to \(1/a\),
+so individual terms of the boundary series do not tend to zero.
+The signed-measure continuation gives well-defined analytic values
+away from the cut; ordinary series convergence must not be asserted.
+
+Finally, the \(S_4\) identity is already proved in the pinned source.
+Its \(S_6\) identity has total weight seven and remains conjectural.
+The source also already proves that two displayed \(S_6\) coordinate
+forms are equivalent. That exact coordinate change is not a proof
+that either conjectural residual vanishes.
+
+\section{Further research questions and proposed relations}
+\label{future:sec}
+The following program separates promising conjectures from questions
+for which even the correct global statement remains uncertain.
+The priority order reflects how directly each task builds on a
+proved result in this article.
+
+\subsection{From complete seeds to analytic golden ladders}
+The complete even-power alphabet is now
+\[
+ \{\rho^2,\rho^4,\rho^6,\rho^8,\rho^{10},
+       \rho^{12},\rho^{20},\rho^{24}\}.
+\]
+The next task is to obtain explicit analytic certificates for the
+source's higher golden formulas on this finite set. A useful
+certificate would list the functional equations used, the algebraic
+substitutions, every lower-weight product contribution, and the
+constant fixed by evaluation at a regular point. The six integral
+seed vectors provide canonical input rows, and the exterior-symbol
+calculation supplies an exact first obstruction at every weight.
+
+Three questions are especially concrete. Which of the four even
+symbol directions extend through each weight? Can the regulator or
+coaction constraints be expressed in a finite sequence of exact
+matrices? If extension ceases in a specified ladder class, can one
+prove that failure inside that class? A numerical absence of another
+ladder, or the completeness of its argument list, is not such a proof.
+
+\subsection{Classifying all quadratic bases with nontrivial seeds}
+The uniform cutoff reduces any positive real quadratic unit to at
+most twenty-four indices. One can therefore seek a classification in
+terms of its trace, norm, and power within the unit group. For a fixed
+base, ideal factorization followed by an integral nullspace and unit
+calculation gives a finite algorithm. The stronger family problem is
+to determine all bases for which the nullspace is nonzero, without
+enumerating an unbounded range of traces.
+
+The golden ranks \(6,4,1,1,0,\ldots\) show why retaining the base, not
+merely its number field, matters. Extending this classification to
+cubic or quartic units will require a different effective
+primitive-divisor analysis and careful treatment of the larger unit
+rank. The plastic examples are a particularly relevant first case
+because their published functional equations are already available
+\cite{AbouzahraLewinXiao1987}.
+Campbell's more recent construction of dilogarithm families with
+unboundedly many terms in the defining base polynomials
+\cite{Campbell2024} supplies a complementary direction in which the
+degree of the base is allowed to grow. A useful comparison would
+separate that variable-degree construction from the fixed-degree
+primitive-divisor bounds used here.
+
+\subsection{A proposed strict angular monotonicity}
+Theorem~\ref{real:thm:arc} proves \(x'(s)>0\), but the angle also
+depends on the changing radius. The stronger statement is the
+following plausible continuation.
+
+\begin{conjecture}[Radial angular monotonicity]
+\label{future:conj:angle}
+For every \(a,b>0\) with \(a+b\ge1\),
+\[
+ \frac{d}{dR}\theta_{a,b}(R)<0
+ \qquad(0<R\le1).
+\]
+Equivalently, the analytic abscissa from
+Theorem~\ref{real:thm:arc} satisfies
+\[
+ 2s\,x_{a,b}'(s)>x_{a,b}(s)\qquad(0<s\le1).
+\]
+\end{conjecture}
+
+The small-radius expansion proves the assertion for sufficiently
+small \(R\), for each fixed pair \(a,b\).
+It holds exactly when \(a=b=1\), and the recorded numerical samples
+show decreasing angles at the four tested radii for each of four
+parameter pairs. That is limited evidence, not a proof over the
+parameter domain. The existing sign argument establishes positivity
+of \(G_x\) and negativity of \(G_s\); it does not establish the
+stronger comparison \(-2sG_s>xG_x\) required here.
+A proof may need a further inequality for the cumulative signed
+measure, or a counterexample may reveal the correct restricted domain.
+
+Separate questions concern monotonicity in \(a\) and \(b\).
+The strictly decreasing density-crossing location in
+Corollary~\ref{real:cor:order-motion} does not settle them. A
+likelihood-ratio comparison for the cumulative measures would give
+more useful information than comparing the densities' zeros alone.
+
+\subsection{Below the finite-measure threshold and at its corners}
+For \(a+b<1\), the coefficients grow like \(n^{1-a-b}/(1-b)\).
+Finite signed measures are therefore impossible, but the generating
+function and its analytic continuation remain meaningful.
+Can a controlled derivative or fractional derivative of a measure
+replace the representation used here? Does the unique angular zero
+survive throughout that larger domain, and what happens to it as
+\(a+b\downarrow0\)? These are open questions in this continuation,
+not consequences of the signed-measure theorem.
+
+At the critical boundary, Section~\ref{real:sec:boundary} fixes \(b\) in
+\((0,1)\). Joint limits \(b\downarrow0\) or \(b\uparrow1\) can change
+the scale and the constants. Determining a uniform description in
+those corners would connect power-law density crossings with
+logarithmic regimes. The proved exponential concentration law also
+suggests using its rescaled coordinate for quadrature, with explicit
+error bounds that remain stable as \(a+b\downarrow1\).
+
+\subsection{The full two-exponent moment problem}
+The integral obeys the exact symmetry \(M_{n,m}=M_{m,n}\).
+The present transition describes one highly asymmetric region, and
+reflection gives the opposite region. A complete asymptotic theory
+should connect these regions with the interior saddle for bounded
+positive \(n/m\). A starting point is the phase
+\[
+ \Phi_\alpha(x)=\alpha\log f(x)+(1-\alpha)\log f(1-x),
+ \qquad \alpha=\frac{n}{n+m}.
+\]
+Before asserting a uniform saddle formula, one should prove the
+number and nondegeneracy of its maxima as \(\alpha\) varies.
+The central symmetric case and possible transitions in the saddle
+structure merit separate analysis.
+
+Another question is how far the proved critical strip can widen with
+\(m\). The weighted localization proof identifies two competing
+requirements: the endpoint amplitude must remain uniformly
+expandable, and the tilted gamma tails must remain negligible.
+An explicit maximal window, or several matched windows, would be
+more informative than an unspecified two-variable asymptotic.
+
+\subsection{A structural conjecture for all correction coefficients}
+The construction in Theorem~\ref{moment:thm:all-orders} initially
+produces rational functions of \(t\). Exact simplification removes
+every negative power of \(t\) from \(C_1\) and \(C_2\). The following
+is an exploratory coefficient identity, with evidence currently
+limited to those two nontrivial orders.
+
+\begin{conjecture}[Polynomial correction structure]
+\label{future:conj:polynomial}
+For every \(j\ge1\), the coefficient defined by
+\eqref{moment:coefficient-algorithm} belongs to
+\[
+ \mathbb Q[\gamma,\gamma^{-1},\zeta(2),\ldots,\zeta(j+2)]
+       [t,\lambda],
+ \qquad
+ \deg_t C_j\le j,\quad \deg_\lambda C_j\le2j,
+ \qquad C_j(t,0)=0.
+\]
+\end{conjecture}
+
+The theorem already proves the growth bound \(C_j=O(t^j)\) for
+bounded \(\lambda\); the additional assertion is exact cancellation
+of inverse powers and a uniform polynomial degree in \(\lambda\).
+The diagonal residue identity
+\eqref{moment:diagonal-generator} suggests a combinatorial mechanism.
+Turning that suggestion into a coefficientwise argument would avoid
+an invalid summation of the full divergent pole expansion.
+A useful intermediate deliverable is an exact \(C_3\) or \(C_4\)
+certificate obtained both from the gamma cumulants and from
+finite residue diagonals.
+
+\subsection{Lifting the depth congruences and resolving \texorpdfstring{\(S_6\)}{S6}}
+The two congruences in Proposition~\ref{depthnew:prop:congruences}
+can be lifted to complete functional identities by decomposing their
+word residuals into shuffle products and transporting the endpoints.
+An explicit lifted formula should contain every product and endpoint
+constant, with branches fixed, and should be checked by differentiation
+and one base value. This would make the formal reduction directly
+usable for Gaussian special values.
+
+At higher weights, compute the annihilators of the low-depth
+\(\operatorname{GL}_2\)-orbit in the free Lie coalgebra.
+The determinant-cube covariant at weight six is a particularly small
+example. A representation-theoretic classification would replace
+unstructured searches by a prediction of the missing directions,
+while keeping evaluations at cyclotomic points separate.
+
+For clarity, a concrete pre-existing target is retained below.
+Let \(G=\beta(2)\), let
+\(\beta(s)=\sum_{n\ge0}(-1)^n/(2n+1)^s\), and put
+\[
+ S_6=\sum_{n\ge0}\frac{(-1)^nH_n}{(2n+1)^6},
+ \qquad g_{a,b}=\Im\Li_{a,b}(i,1).
+\]
+The pinned manuscript conjectures the weight-seven identity
+\begin{align}
+ S_6={}&\frac{722}{527}g_{6,1}
+       +\frac{40}{527}g_{4,3}
+       -\frac{128}{155}g_{2,5}
+       +\frac{15191}{28569600}\pi^7\notag\\
+      &-\frac3{124}G\zeta(5)
+       -\frac{2373}{10540}\beta(4)\zeta(3)
+       -2\beta(6)\log2.
+ \label{future:eq:S6}
+\end{align}
+This article does not prove \eqref{future:eq:S6}.
+The exact equivalence with the source's alternative coordinate
+form is already established there. A substantive next step is to
+find a convergent higher-weight analogue of the octahedral or
+Cayley relation used for \(S_4\), or to reduce the residual in a
+larger rigorously specified iterated-integral alphabet.
+Repeating integer-relation searches in equivalent coordinate
+systems supplies no missing analytic law.
+
+\section{Reproducibility and integration}
+\label{repro:sec}
+The archive contains the full LaTeX source, the compiled article,
+standalone figures, executable verification programs, their recorded
+outputs, source provenance, and a proposed manuscript correction patch.
+The four main mathematical sections can be integrated independently;
+their labels have separate prefixes. The boundary section depends on
+the signed-kernel section.
+
+The golden certificate uses only integer and rational arithmetic,
+checking six generating relations, two restricted-base identities,
+eighteen primitive prime-ideal witnesses, and the finite restriction
+ranks. Its independent audit checks every smaller residue exponent,
+not just the proper-power tests in the original script. The infinite
+support theorem additionally uses the cited primitive-divisor theorem.
+
+The depth certificate reconstructs the Lie polynomial and all six
+letter substitutions. It verifies the determinant-one minor, the
+two quotient identities, and all 320 nonempty binary shuffle products
+at weight six. These are exact finite calculations.
+
+The moment program derives \(C_1,C_2\) by symbolic algebra and
+checks the gamma moments about the mode. Its numerical part compares
+direct \(x\)-quadrature with the transformed \(y=-\log x\) integral
+in eight cases at 60 decimal digits of working precision.
+The geometric diagnostics compare two kernel integrals, test the
+critical density and deficit, and locate interior-disk zeros,
+including the exact circular example. The boundary diagnostics
+are documented alongside the additional local expansion.
+All floating-point outputs are labeled as numerical checks, not
+interval certificates or equality proofs.
+
+The package's \path{README.md} gives the build and replay commands;
+\path{integration/README.md} maps the sections to the pinned
+manuscript. The exact scripts require only the Python standard
+library; symbolic and numerical checks declare their additional
+dependencies. Source hashes and the pinned commit make the
+editorial patch reviewable against an unambiguous baseline.
+
+The intended integration preserves the distinction between proved
+theorems, formal quotient statements, established external inputs,
+and the explicit conjectures in Section~\ref{future:sec}.
+The latter should remain in the research agenda until an appropriate
+proof or counterexample is supplied.

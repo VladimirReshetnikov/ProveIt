@@ -1,0 +1,130 @@
+\section{Scope, conventions, and the status of the results}
+\label{sec:scope}
+
+The point of departure is the 228-page collective manuscript in
+\path{Analysis/Polylogarithms/docs/manuscript} of the ProveIt repository
+\cite{ProveIt}. The source was pinned before starting this continuation:
+\begin{center}
+\small\texttt{9bc738d3be22b8586a24693f19fb2e2a50ecd1bf}.
+\end{center}
+This matters because the manuscript already contains several earlier
+continuations. Its Gaussian parity reductions, depth-four reciprocal
+identities, modular row convergence bounds, and global Stieltjes zero
+theorem are established material. They are used as context or reproved
+where needed, rather than presented as new discoveries.
+
+The present work follows three distinct threads. The first concerns the
+exact integer structure of a specified relation matrix. The second turns
+empirical CM products into consequences of the arithmetic of modular
+functions and a classical period formula. The third determines positive
+real zeros by combining global analytic bounds with finite certificates.
+These threads share a methodological point: a proposed identity or zero
+count becomes substantially more useful when its precise proof mechanism
+and its limits are stated.
+
+\subsection{What is proved, and what remains open}
+
+The following map separates the main claims and their evidence.
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.23\textwidth}@{}}
+\toprule
+Claim & Result and proof mechanism & Location\\
+\midrule
+Odd-weight formal ranks & The rank conjecture holds for every odd weight;
+integer polynomial substitutions also determine saturation of the row
+lattice. & Theorem~\ref{newrank:thm:smith}\\[3pt]
+Even-weight formal system & Full column rank; all nonunit invariant
+factors equal $2$. & Theorem~\ref{newrank:thm:smith}\\[3pt]
+Mixed-color values & A finite product certificate evaluates
+$\Im\Li_{w-1,1}(i,-1)$ at every even weight. &
+Theorem~\ref{newmixed:thm:family}\\[3pt]
+CM class products & An all-even-weight resultant formula; five baseline
+weight-four products and three displayed weight-six extensions. &
+Theorem~\ref{cmnorm:thm:allweights}\\[3pt]
+CM genus ratios & The recorded ratios and weight-six extensions are
+proved; one number field of degree at most $12$ contains every even-weight
+ratio for a fixed character. & Theorems~\ref{cmgenus:thm:four},
+\ref{cmgenus:thm:degree}\\[3pt]
+Fifth-index real zeros & Exactly three at derivative orders one and two,
+and five thereafter, all simple. & Theorem~\ref{n5:thm:transition}\\[3pt]
+Lerch deformation & Complete small-parameter classification, alternating
+branch directions, and a proved double-zero bifurcation. &
+Theorems~\ref{thm:small-rho}, \ref{thm:rho-direction}, \ref{thm:fold}\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The Gaussian matrix theorem is about \emph{formal relations}. It does not
+compute the dimension of a space of actual transcendental numbers. The CM
+identities use classical period theory; the contribution is a fully
+specified formula in the manuscript's normalization and its exact
+applications. The fifth-index zero count uses a computer-assisted finite
+lemma with explicit rational arithmetic, not an unproved numerical root
+scan. The small-parameter and bifurcation results have analytic proofs;
+decimal bifurcation coordinates are supplementary diagnostics.
+
+We do not settle the manuscript's $S_4$ mixed-relation conjecture, general
+rational-argument weight-four ladders, or its highest-weight algebraic
+ladder claims. In particular, an obstruction to one finite relation system
+is not an obstruction to all functional equations. Priority claims here
+are relative to the pinned manuscript. The literature survey identifies
+the classical ingredients and relevant existing methods, but does not
+justify asserting that every displayed consequence is absent from the
+entire historical literature.
+
+\subsection{Polylogarithms, convergence, and color conventions}
+
+We use the strict nested-sum convention
+\begin{equation}\label{eq:depth-two-convention}
+ \Li_{a,b}(x,y)=\sum_{m>n\ge1}\frac{x^m y^n}{m^a n^b},
+ \qquad \Li_s(z)=\sum_{m\ge1}\frac{z^m}{m^s}.
+\end{equation}
+This fixes the distinction between colors $(x,y)$ and the adjacent-letter
+coordinates in an iterated integral. At roots of unity the values are
+ordinary convergent boundary values where the series converges; the one
+divergent imaginary coordinate that occurs in the formal system is
+explicitly omitted. Its regularized cancellation rows are exactly those
+specified by the baseline. No additional regularization convention is
+silently introduced.
+
+For positive integer $s$, write
+\[
+ \beta(s)=\sum_{m\ge0}\frac{(-1)^m}{(2m+1)^s}
+          =\Im\Li_s(i),\qquad
+ \eta_{\mathrm{alt}}(s)=\sum_{m\ge1}\frac{(-1)^{m-1}}{m^s}.
+\]
+Thus $\eta_{\mathrm{alt}}(1)=\log2$ and
+$\eta_{\mathrm{alt}}(s)=(1-2^{1-s})\zeta(s)$ for $s>1$.
+The subscript distinguishes this alternating Dirichlet series from the
+Dedekind eta function $\eta(\tau)$ in the CM sections.
+
+The colored shuffle and stuffle framework is standard. Zhao's work
+\cite{Zhao} distinguishes the various classes of standard relations,
+while Yuan--Zhao \cite{YuanZhao} provide closely relevant formal
+double-space and polynomial constructions. We use this context to locate
+the exact matrix theorem, without identifying its particular quotient
+with a larger motivic or numerical period space.
+
+\subsection{Analytic conventions}
+
+The generalized Stieltjes constants are defined by
+\begin{equation}\label{eq:laurent-convention}
+ \zeta(s,a)=\frac1{s-1}+\sum_{n\ge0}
+       \frac{(-1)^n}{n!}\gamma_n(a)(s-1)^n,
+ \qquad a>0.
+\end{equation}
+A superscript $(k)$ on $\gamma_n$ means an $a$ derivative. A derivative
+$\partial_s$ of a zeta or Lerch function always means a derivative in its
+complex order. We keep these two operations separate. The elementary
+Lerch endpoint is $\rho=0$; the classical Hurwitz endpoint is $\rho=1$.
+The coefficients themselves need not have a convergent series at the
+classical endpoint, but their parameter derivatives of positive order do.
+Definitions and the standard Mellin representations are recorded in the
+DLMF \cite{DLMFHurwitz,DLMFLerch}.
+
+All root counts are on the open positive real axis. A count with
+\emph{multiplicity} is explicitly identified as such. When a theorem
+asserts simplicity, the multiplicity count and the number of distinct
+zeros agree. This distinction is essential at the elementary endpoint
+and at a bifurcation.

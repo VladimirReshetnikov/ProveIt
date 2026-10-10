@@ -1,0 +1,80 @@
+\subsection{Affine harmonic sequences as signed moments}
+\label{affine:sec:moments}
+The signed-measure formulation also certifies sequences whose harmonic and
+denominator steps differ. The Cayley continuation supplies the integer-order
+case; its Gamma-density argument extends without change to real outer order
+$a\ge1$. It complements the sharper one-sided bounds above.
+
+\begin{theorem}[Affine signed-moment bound]\label{affine:thm:moments}
+Let $r,d$ be positive integers, $a\ge1$ real and $b>0$ real. Set
+\[
+ A_k=\frac{H_{rk}^{(b)}}{(dk+1)^a},\qquad
+ m_1=1,\qquad m_a=\frac{(a-1)^{a-1}e^{-(a-1)}}{\Gamma(a)}\quad(a>1).
+\]
+There is a finite signed measure $\nu$ on $[0,1]$, with no atom at one,
+such that $A_k=\int x^k\,d\nu(x)$ and
+\[
+ \|\nu\|_{\rm TV}\le\frac{2r}{d}m_a b\zeta(b+1).
+\]
+For $b>1$ one also has $\|\nu\|_{\rm TV}\le2\zeta(b)$.
+Consequently the ordinary alternating series converges, and its $N$-term
+Euler transform $E_N$ satisfies
+\[
+ \left|\sum_{k\ge0}(-1)^kA_k-E_N\right|\le C2^{-N},
+\]
+where $C$ may be either applicable bound. For integer $b$, valid rational
+choices are $C=10r/(3d)$ at $b=1$ and $C=10/3$ at $b\ge2$.
+\end{theorem}
+\begin{proof}
+Let $Y$ have Gamma density $y^{a-1}e^{-y}/\Gamma(a)$, and let $\mu$ be
+the law of $X=e^{-dY}$. Then $\int x^k\,d\mu=(dk+1)^{-a}$.
+In the logarithmic coordinate $s=-\log x$, its density is
+\[
+ f(s)=\frac{s^{a-1}e^{-s/d}}{d^a\Gamma(a)}\,\mathbf1_{s>0}.
+\]
+For every real $a\ge1$ its maximum is $m_a/d$. Extended by zero to the
+negative axis, the total variation of its distributional derivative is
+$2m_a/d$: the rise and fall give this for $a>1$, while at $a=1$ the
+jump at zero and the decreasing exponential each contribute $1/d$.
+The $L^1$ distance from a bounded-variation density to its translate by
+$h\ge0$ is at most $h$ times this derivative variation. Indeed, integrate
+$f(s-h)-f(s)=-\int_{s-h}^s f'(v)\,dv$ and use Fubini; smooth convolution
+proves the same bound for the jump case. Thus, writing $D_\rho\mu$ for
+pushforward by $x\mapsto\rho x$,
+\[
+ \|\mu-D_{e^{-rt}}\mu\|_{\rm TV}
+ \le\min\left(2,\frac{2m_ar}{d}t\right).
+\]
+The generalized harmonic integral gives the measure
+\[
+ \nu=\frac1{\Gamma(b)}\int_0^\infty
+   \frac{t^{b-1}}{e^t-1}(\mu-D_{e^{-rt}}\mu)\,dt.
+\]
+This integral converges in total variation: the translation bound supplies
+an additional factor $t$ at zero, and exponential decay controls infinity.
+Taking moments gives $A_k$, since the moments of the measure difference are
+$(dk+1)^{-a}(1-e^{-rkt})$. Its total-variation bounds follow from
+\[
+ \frac1{\Gamma(b)}\int_0^\infty\frac{t^b}{e^t-1}\,dt
+ =b\zeta(b+1),\qquad
+ \frac1{\Gamma(b)}\int_0^\infty\frac{t^{b-1}}{e^t-1}\,dt
+ =\zeta(b)\quad(b>1).
+\]
+Each constituent has no atom at one, and variation domination passes that
+property to $\nu$. The finite alternating kernel is bounded by two and
+converges for $x<1$ to $(1+x)^{-1}$, so dominated convergence proves
+ordinary convergence. The exact remainder kernel in the Euler expansion is
+$2^{-N}(1-x)^N/(1+x)$, bounded by $2^{-N}$; integrating against $\nu$
+proves the stated error. Finally $m_a\le1$, by bounding the maximum of the
+unit-scale Gamma density, and $\zeta(2)<5/3$. For the displayed rational
+bound at $b=1$ one may also use only the integer $a$ needed by the rational
+evaluator: then $m_a\le1$ follows directly from
+$e^{a-1}\ge(a-1)^{a-1}/(a-1)!$. For the real-$a$ inequality, write the
+Gamma density as the convolution of an exponential density and a
+Gamma$(a-1,1)$ probability density when $a>1$; its supremum is at most one.
+For integer $b\ge2$, $\zeta(b)\le\zeta(2)$ gives $10/3$.
+\end{proof}
+The real-order theorem does not make its centers rational at noninteger
+indices. The finite rational implementation uses integer $a,b,r,d$ and
+binomial-tail Euler weights. No complete monotonicity of $A_k$ is assumed:
+the representing measure is signed and has total mass zero, since $A_0=0$.

@@ -1,0 +1,97 @@
+LERCH DEFORMATION: ZERO GEOMETRY AT BOTH ENDPOINTS
+
+Analytic contributions
+----------------------
+article/sections/lerch_background.tex gives a compact standalone account of the Stieltjes
+and Lerch definitions, Appell--Laplace representation, strict real roots
+of the reciprocal-gamma polynomials, global upper bound with multiplicity,
+and persistence/rightward interlacing. These are attributed existing inputs.
+
+article/sections/lerch_zeros.tex contains the complete proofs and integration notes:
+
+1. Uniform compact containment of all positive zeros for rho in [0,1].
+2. Complete small-positive-rho zero count for every fixed n > k >= 1,
+   and convergent Puiseux expansions from the multiple zero at a=1.
+3. For k=1, exactly one positive zero near rho=0 if n is odd, and
+   exactly two if n is even; all of these positive zeros are simple.
+4. Interior multiple-zero events forced for n=3,4 by the source endpoint
+   certificates. No unproved saddle-node nondegeneracy is asserted.
+5. Exact counterexample to decreasing-rho monotonicity: the smallest
+   n=4,k=3 zero has a positive derivative at rho=0.
+6. At n=2, exactly two simple positive zeros for every k>=1 and every
+   rho in [0,1], so the optimal uniform saturation threshold is K_2=1.
+7. At n=2,k=1, the first zero branch is not monotone on [0,1].
+
+article/sections/lerch_abel.tex is an optional, independently usable continuation:
+
+8. The critical Abel coefficient at rho=1 is
+   (-1)^(n+k) tau^k log(1/tau)^(n+1)/(k! (n+1)), tau=-log(rho),
+   after subtracting the Taylor polynomial through degree k-1.
+9. A simple endpoint zero is C^(k-1), but not C^k, in the deformation
+   parameter. The complete leading displacement and kth-derivative
+   coefficients are proved directly.
+10. The two n=2,k=1 branches have slopes tending to +infinity and
+    -infinity, respectively, as rho increases to 1.
+
+Reproduction
+------------
+From the archive root, run Python 3.10 or later; only the standard library is required:
+
+    python3 code/verify_lerch_boundary.py --output data/lerch_boundary_certificates.json
+
+The program regenerates data/lerch_boundary_certificates.json and checks:
+
+- 152 polynomial identities by independent coefficient constructions;
+- 120 exact rational sign intervals for Delta_(n,k), through n=16;
+- the counterexample derivative interval
+  (0.0122109650329620, 0.0122109650329621);
+- 11 outward-integer Euler--Maclaurin endpoint certificates: precisely
+  the two n=2 signs and the nine n=3,4 signs used in the analytic results.
+
+No floating-point operation enters these certificates. The proof, not a
+numerical root census, establishes the complete zero counts. The package
+does not supply an explicit numerical small-rho threshold, an interior
+multiple-zero location, or a nondegeneracy certificate for such an event.
+
+Numerical figure
+----------------
+Run with mpmath and matplotlib installed:
+
+    python3 code/plot_lerch_n2_branches.py
+
+This generates the PDF and PNG in article/figures/, and
+lerch_n2_branches.csv and lerch_n2_branches.json in data/. The two-panel figure
+uses separate vertical scales to display both n=2,k=1 positive zero
+branches at 51 parameter values, with dense samples near rho=1.
+Safeguarded Newton uses the Appell--Laplace integral after u=log(x).
+Fourteen selected root residuals are checked by an independent
+Lerch/Hurwitz spectral representation at higher precision. The plot and
+these residuals are numerical diagnostics, not interval certificates.
+
+Upstream provenance
+-------------------
+Pinned ProveIt commit: a2a4cf58c49c745058c40e4a6748d472a3420f18
+
+upstream_stieltjes_certificate.py is copied verbatim from:
+Analysis/Polylogarithms/docs/reports/stieltjes-derivative-zeros/code/
+06-zero-geometry-exact_verify.py
+
+Its SHA-256 is:
+b877ec00a6ac016f937ec7375eea1ca74a0d455dac2c8bf37ad0a994d629f519
+
+The global upper bound, polynomial real-rootedness mechanism, persistence
+in k, and source endpoint signs are attributed to the zero-geometry
+chapter and its rational-certificate appendix. The new sections do not
+claim these earlier results as new. Nonvanishing of Delta uses the
+classical Hermite--Lindemann theorem via transcendence of log(2).
+
+Independent mathematical review
+-------------------------------
+The root agent independently reviewed the small-rho classification and
+the explicit n=4,k=3 counterexample. The zero-geometry agent independently
+audited the companion Herglotz classification, including proper-subfield
+faithfulness, normalized dyadic norms, both coefficient tests, and the
+parity-dependent boundary formulas, with no gap found.
+The Herglotz agent independently audited the Abel endpoint section,
+including its signs, normalization, critical derivative estimate,
+root displacement, and endpoint regularity, with no gap found.

@@ -1,0 +1,88 @@
+% Additive manuscript excerpt. See integration/README.md for placement.
+\section{All-rational formal classification of the Herglotz companion}
+\label{hjr:sec:classification}
+
+The conductor-doubling continuation~\cite{hergj:continuation} extends the
+classification of $J(2/q)$ to every rational argument. The terminology
+below refers to the rationalized five-term calculus, not to the kernel of
+numerical period evaluation.
+
+\begin{theorem}[All-rational formal classification]
+\label{hjr:thm:classification}
+Let $p,q$ be coprime positive integers. If they have different parity,
+write $e$ for the even entry and $o$ for the odd entry. Then formal
+rational-dilogarithmic and formal logarithmic reducibility of $J(p/q)$
+coincide, and hold exactly when
+\[
+ e^2\equiv\pm1\pmod o,\qquad o^2\equiv1\pmod{2e}.
+\]
+If both entries are odd, formal rational-dilogarithmic reducibility holds
+exactly when $p,q\in\{1,3,5\}$, and formal logarithmic reducibility holds
+only when $p=q=1$. Thus the six non-logarithmic formal rational-dilogarithmic
+exceptions are $1/3,3,1/5,5,3/5,5/3$.
+\end{theorem}
+
+The two new structural statements are an odd-conductor identity
+\[
+ \beta_{2m}(a)=3\beta_m(a)-\beta_m(2a)-\beta_m(a/2)
+ \quad(m\text{ odd},\ (a,2m)=1)
+\]
+and even-conductor rigidity: for even $m$, a symbol $\beta_{2m}(a)$
+can belong to the exterior square from $\Q(\zeta_m)$ only when it is
+zero. The latter follows by restricting the positive Gram-matrix model
+to the new character layer. Norm separation and two finite-group
+difference tests then prove the classification; complete proofs are in
+\cite[Sections 2--4]{hergj:continuation}.
+
+\begin{theorem}[Recurrences and height counts]
+\label{hjr:thm:recurrences}
+Apart from $J(1)$, all unordered logarithmic pairs are adjacent terms in
+$w_0=1$, $w_1=c$, $w_{j+1}=c w_j\pm w_{j-1}$ with even $c\ge2$.
+The signs share only the seeds $(1,c)$. If $N(B)$ counts unordered pairs
+of height at most $B$, then, for every fixed $R\ge2$,
+\[
+ N(B)=\frac32 B+\sum_{r=2}^{R}B^{1/r}
+       +O_R\bigl(B^{1/(R+1)}\log B\bigr).
+\]
+\end{theorem}
+
+\begin{theorem}[Full analytic evaluations]
+\label{hjr:thm:evaluations}
+Put $S(m)=\sum_{k=1}^{m-1}\log^2(2\sin(\pi k/m))$, with $S(1)=0$.
+For every $n\ge1$,
+\[
+\begin{split}
+ J(n/(n+1))={}&\frac12\log^22
+ +\frac12\bigl(S(n)-S(n+1)+S(2n+2)-S(2n)\bigr)\\
+ &-\frac{\pi^2(n^2-n-1)}{24n(n+1)}.
+\end{split}
+\]
+With $\phi=(1+\sqrt5)/2$,
+\[
+\begin{split}
+ J(3/5)={}&\Li_2(1/3)-\frac12\Li_2(1/5)
+ +\frac12\log^22+\frac12\log^23-\frac14\log^25\\
+ &+\log^2\phi-\frac{7\pi^2}{180}.
+\end{split}
+\]
+All logarithms here are real logarithms of positive algebraic numbers.
+\end{theorem}
+
+The proofs use the normalized determinant-$2$ Hecke equation and Rogers
+five-term substitutions within $(0,1)$, retaining all constants
+\cite[Section 6]{hergj:continuation}. In particular,
+\[
+ J(1/3)-J(1/5)+J(3/5)
+ =\frac12\log^22+2\log^2\phi-\frac{2\pi^2}{45}.
+\]
+
+\begin{remark}[A preprint finite-field assertion]
+\label{hjr:rem:audit}
+The finite-field identity
+$\beta_p(n)=\beta_p(n+1)+\beta_p(n/(n+1))$ printed in
+Section 7.2 of the reviewed Radchenko--Zagier preprint fails at $p=7,n=2$:
+its defect is $3\beta_7(2)\ne0$. A strict two-embedding logarithmic
+determinant proves nonvanishing. This does not affect the direct rational
+boundary formula used in this chapter; see
+\cite[Section 7]{hergj:continuation} for the exact witness and version scope.
+\end{remark}

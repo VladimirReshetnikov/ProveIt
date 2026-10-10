@@ -1,0 +1,166 @@
+\section{Manuscript audit, integration, and further research}
+\label{ir:sec:audit}
+
+\subsection{A concrete Clausen-parity correction}
+The inspected chapter
+\src{chapters/02-cyclotomic.tex} explicitly adopts
+\[
+ \Cl_{2m}(\theta)=\Im\Li_{2m}(e^{i\theta}),\qquad
+ \Cl_{2m+1}(\theta)=\Re\Li_{2m+1}(e^{i\theta}).
+\]
+Here $\Cl$ denotes the manuscript's Clausen notation.
+Later, under ``The fundamental constants, by conductor'', the sentence
+``Odd Clausen values use the odd character sector'' is inconsistent
+with this weight-index convention \cite{repo}. Odd-index Clausen values
+are cosine-type real parts and use even characters, as the chapter's
+own $\Cl_3(2\pi/5)$ formula with the even quadratic character already
+illustrates.
+
+A precise replacement is:
+\begin{quote}
+Imaginary, sine-type cyclotomic values use the odd character sector;
+real, cosine-type values use the even sector. Under the Clausen
+convention used here, even-index Clausen functions belong to the odd
+sector and odd-index Clausen functions belong to the even sector.
+\end{quote}
+This is a terminology correction at the identified occurrence. It does
+not invalidate the correctly stated Fourier formulas elsewhere in that
+chapter. The integration directory supplies a guarded replacement script
+and the exact old and new text; it does not modify the repository during
+this delivery.
+
+\subsection{An integral qualification, not a refutation of field results}
+The manuscript's descriptions of Fourier-conjugate relations should
+always retain their coefficient field. A Fourier transform is invertible
+over a suitable cyclotomic field. It is not automatically a unimodular
+change of integral lattices, since its inverse has a denominator.
+Accordingly, agreement of field-valued ranks does not prove agreement of
+integral Smith forms. This is a clarification of scope, not a claim
+that the manuscript's explicitly field-valued identities are false.
+
+The present calculations show why the qualification matters. Before
+reflection, the chosen integral presentation has a unit maximal minor
+and no torsion. After reflection, the quotient can contain a nonzero
+$(\Z/2)^h$, although both characteristic-zero sign dimensions are
+still $\varphi(q)/2$. In characteristic two, the rank jump is controlled
+by the active ideal \eqref{ir:eq:universal-ideal}, not by a failure of
+freeness of the unreflected distribution module.
+
+It would therefore be inaccurate to summarize the result as
+``distribution rank jumps at exceptional weights''. The correct
+statement is that the \emph{reflection coinvariant} dimension can jump
+in characteristic two. The original distribution module remains free
+with the same raw-point basis at those weights.
+
+\subsection{How to integrate the results without changing older claims}
+A natural insertion is a section following the existing distribution
+normal-form discussion, with cross-references from the surviving
+research programme. The complete statement should include
+Theorems~\ref{ir:thm:integral}, \ref{ir:thm:integer-reflection},
+\ref{ir:thm:char2-koszul}, and \ref{ir:thm:smith-jets}. The
+fixed-point reduction is short enough to retain rather than hide behind
+an unexplained rank calculation. The analytic application can be
+inserted beside the existing spectral-jet identities, with
+\eqref{ir:eq:cert15} retained as a compact executable certificate.
+
+The original characteristic-zero conductor basis remains useful and
+correct within its stated scope. Its complex spectral weights should
+not be reduced ``modulo two'' without first choosing a genuine integral
+or modular coefficient model. The formal characteristic-two jets in
+this article are power-series deformations of algebraic weights;
+they are not reductions of real logarithms or complex spectral
+parameters. Both uses of the word ``jet'' are explicit here, but their
+coefficient categories are different.
+
+The ordinary specialization is to be cited to the classical distribution
+literature. The new integration should not relabel it as a first proof.
+The existing mixed Gaussian $S_6$ conjecture retains its current status:
+none of the depth-one module calculations in this article proves that
+depth-two period identity. Similarly, no new numerical independence
+claim follows from any formal free basis or nonzero module obstruction.
+
+\subsection{Further research questions}
+\paragraph{Integral equivariant structure beyond reflection.}
+The proof treats one involution. For a subgroup of $(\Z/q\Z)^\times$
+of higher order, determine the integral coinvariants and their primary
+torsion. An appropriate orbit filtration would have to distinguish
+several stabilizer types, rather than only fixed and moving points.
+A first concrete target is a subgroup of prime order and a coefficient
+characteristic equal to that prime. The raw basis and the finite
+resolution give an explicit starting presentation.
+
+\paragraph{A full equivariant normal form.}
+The integral basis is deliberately not reflection-stable. Can one give
+an explicit decomposition of the specialized lattice into trivial,
+sign, and regular involution blocks, together with unimodular change
+matrices of controlled size? The torsion calculation determines strong
+constraints on such a decomposition, but the short fixed-complex proof
+does not itself output those basis changes.
+
+\paragraph{Multivariate deformation invariants.}
+Theorem~\ref{ir:thm:char2-koszul} identifies every characteristic-two
+base change through Koszul homology. Over a multivariate power-series
+ring there need not be a Smith diagonal. Determine a useful replacement
+in terms of Fitting ideals, minimal free resolutions, and intersection
+multiplicities of the active ideal. The complete-intersection support
+and the one-variable contact law provide tests for any proposed
+multivariate formula. In particular, the universal cyclic homology
+must not be naively specialized as if homology were flat.
+
+\paragraph{Explicit transition to conductor-character coordinates.}
+Construct the matrix between the raw-point basis and the manuscript's
+conductor basis over cyclotomic integers localized at specified primes.
+Determine its denominator ideal, not merely its determinant over a
+splitting field. This would isolate exactly which arithmetic primes
+obstruct character-coordinate replay and permit certified transport
+between Fourier and raw-row certificates.
+
+\paragraph{Shortest certificates and coefficient growth.}
+The selected-row straightener gives one certificate, not necessarily
+a shortest one. Determine coefficient-height and sparsity bounds as
+functions of $q$, its prime factorization, and the target denominator.
+At levels with many prime factors, compare different distinguished-lift
+choices and pivot orders. A concrete optimization problem is to minimize
+the number of raw rows for a fixed normal-form identity while keeping
+integer polynomial coefficients.
+
+\paragraph{Higher-depth distribution.}
+At depth one, every root sum has a single target and the resolution
+separates prime directions. Multiple polylogarithms introduce nested
+index constraints, several colors, and shuffle/stuffle compatibility.
+Define an integral higher-depth presentation before asking for its
+rank or torsion. It would be especially useful to identify which
+parts of the present unit-pivot argument survive and which introduce
+new syzygies. This is a route toward stronger exact certificate
+infrastructure, not a present proof of the $S_6$ conjecture.
+
+\paragraph{Pole-aware identity generation.}
+Use the degree bound \eqref{ir:eq:degree-bound} to generate families of
+spectral derivatives at nonpositive integers and at the simple pole,
+while keeping the endpoint contribution symbolic. Seek selections
+whose real or imaginary parts remove most derivative coordinates.
+The all-order family \eqref{ir:eq:jets15} is a small test case;
+arithmetic reduction of its surviving period coordinates remains a
+separate problem.
+
+\paragraph{Certified numerics and formal proof.}
+Replace the floating-point Mellin diagnostics by interval quadrature
+with explicit endpoint and tail budgets. Independently, formalize
+finite grids, the straightening termination order, and raw certificate
+replay in Lean. The next algebraic layer is the split local complex
+and finite-filtration proof; the periodic fixed-point reduction can
+then be treated as a separate homological interface. These tasks would
+convert precisely identified pieces of the present ordinary proofs
+into machine-checked results.
+
+\subsection{Conclusion}
+The continuation resolves the integral and modular structure of the
+specified depth-one weighted distribution presentation, while keeping
+its analytic meaning and its limitations explicit. A basis can remain
+free under every specialization even though a later symmetry quotient
+acquires torsion. The fixed-point Koszul complex explains both the
+integer parity rule and the full characteristic-two jet law. At the
+analytic end, short polynomial row certificates give exact identities
+at every spectral order, and their endpoint derivatives force a visible
+Stieltjes correction. These are complementary uses of the same
+integral presentation, rather than unrelated numerical discoveries.

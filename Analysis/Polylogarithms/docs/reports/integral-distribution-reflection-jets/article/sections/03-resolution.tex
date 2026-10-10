@@ -1,0 +1,157 @@
+\section{A finite weighted resolution and a proof of independence}
+\label{ir:sec:resolution}
+
+\subsection{The complex}
+Order the primes dividing $q$. For $S\subseteq P(q)$ put
+$p_S=\prod_{p\in S}p$, and define
+\begin{equation}\label{ir:eq:chain-groups}
+ C_j=\bigoplus_{\substack{S\subseteq P(q)\\|S|=j}}
+       R_q[X_{q/p_S}].
+\end{equation}
+A generator is written $[S,x]$. Define
+\begin{align}
+ d[S,x]=\sum_{p\in S}(-1)^{\#\{\ell\in S:\ell<p\}}
+ \left(\sum_{py=x}[S\setminus\{p\},y]
+       -A_p[S\setminus\{p\},x]\right).
+ \label{ir:eq:chain-differential}
+\end{align}
+The roots in each inner sum belong to $X_{q/p_{S\setminus\{p\}}}$.
+The augmentation $C_0\to\D_q$ is the defining quotient.
+
+\begin{lemma}\label{ir:lem:complex}
+The operators in distinct prime directions commute before the exterior
+signs are applied. Hence $d^2=0$, and the image of $C_1\to C_0$ is
+exactly $\R_q$.
+\end{lemma}
+\begin{proof}
+Both successive root sums in prime directions $p$ and $\ell$ enumerate
+once all solutions of $p\ell z=x$. The two terms consisting of one
+root sum and one multiplication by a weight agree in either order,
+and so do the terms with coefficient $A_pA_\ell$. All intermediate
+points lie in the required grids. The exterior signs make each pair
+cancel in $d^2$. The assertion about $C_1$ is its definition.
+\end{proof}
+
+\subsection{A filtration that removes the weights}
+Associate to a generator the integer
+\begin{equation}\label{ir:eq:augmented-conductor}
+ \nu(S,x)=p_S\den(x),
+\end{equation}
+which divides $q$. Filter the complex by increasing $\nu$.
+If $p\in S$, a root of $py=x$ has denominator either
+$\den(x)$ or $p\den(x)$. Thus the differential does not increase
+$\nu$. Its top-filtration part retains exactly the roots of denominator
+$p\den(x)$; the term with coefficient $A_p$ lies strictly lower.
+The associated graded differential is consequently independent of all
+weights.
+
+Fix a divisor $m\mid q$. In its associated graded summand, a generator
+with subset $S$ has exact denominator $m/p_S$, so necessarily
+$S\subseteq P(m)$. For $p^a\parallel m$, the local coordinate belongs
+to $U_{p^{a-1}}$ when $p\in S$, and to $U_{p^a}$ otherwise. At exponent
+zero the unique local coordinate is zero, represented by the one-element
+set $U_1$.
+
+There is a harmless CRT twist: division by a prime changes the other
+primary coordinates by a unit. We spell out its removal because omitting
+it would leave a gap in a claimed tensor-product argument. If $x_\ell$
+is the $\ell$-primary component of $x$, replace it in the $S$-summand by
+\begin{equation}\label{ir:eq:gauge}
+ z_\ell=\left(\prod_{p\in S\setminus\{\ell\}}p\right)^{-1}x_\ell.
+\end{equation}
+The inverse exists on the $\ell$-primary group. Under a differential
+edge removing $p$, the coordinates $z_\ell$ for $\ell\ne p$ are
+unchanged: the factor $p^{-1}$ in a root coordinate cancels the removal
+of $p$ from the product. The $p$-coordinate is carried to all its lifts
+under multiplication by $p$.
+
+It follows that the associated graded summand at $m$ is the tensor
+product, with its usual exterior signs, of the two-term complexes
+\begin{equation}\label{ir:eq:local-complex}
+ R_q[U_{p^{a-1}}]\xrightarrow{\,N_{p,a}\,}R_q[U_{p^a}],
+ \qquad
+ N_{p,a}(b)=\sum_{\substack{u\in U_{p^a}\\u\mapsto b}}u,
+ \quad p^a\parallel m.
+\end{equation}
+For $a=1$, the image of the single generator is the sum of all $p-1$
+nonzero residues. For $a\ge2$, each fiber has $p$ elements.
+
+\begin{lemma}[Local splitting]\label{ir:lem:local-splitting}
+Each $N_{p,a}$ is a split injection. Its cokernel is free with basis the
+images of $E_{p,a}$.
+\end{lemma}
+\begin{proof}
+Different fibers have disjoint supports. In one fiber, the sum of its
+basis vectors has a coefficient equal to $1$ on the distinguished lift.
+Replace that one vector by the fiber sum; this is a unimodular basis
+change. The remaining vectors are exactly the allowed lifts. Doing this
+in all fibers proves both claims over any coefficient ring.
+\end{proof}
+
+\begin{theorem}[Exact weighted resolution]\label{ir:thm:resolution}
+The augmented complex
+\[
+ 0\longrightarrow C_{|P(q)|}\longrightarrow\cdots
+ \longrightarrow C_1\longrightarrow C_0\longrightarrow\D_q
+ \longrightarrow0
+\]
+is exact. The images of $\B_q$ are a basis of $\D_q$, proving
+Theorem~\ref{ir:thm:integral}.
+\end{theorem}
+\begin{proof}
+By Lemma~\ref{ir:lem:local-splitting}, each local two-term complex is
+a direct sum of a contractible identity complex and its free cokernel
+in degree zero. Its finite tensor product is therefore acyclic in
+positive degrees. Its degree-zero homology has the tensor-product
+basis of the allowed local residues. In the graded summand at $m$,
+these are exactly the basis points of denominator $m$.
+
+Now lift through the finite filtration. If a positive-degree cycle
+has highest nonzero filtration $m$, its highest component is a
+boundary in the associated graded complex. Subtract a lift of that
+boundary to obtain a cycle of lower filtration. Repetition makes the
+cycle a boundary in the original complex. This proves positive-degree
+exactness without any convergence issue.
+
+For degree zero, suppose a linear combination of allowed points is
+$d w$ with $w\in C_1$, and let $M$ be the highest filtration present
+in that linear combination. If $w$ has higher filtration, its leading
+component is a cycle in degree one of the associated graded complex.
+Positive-degree exactness there allows us to subtract a lifted boundary
+$d v$, $v\in C_2$, from $w$ and lower its filtration without changing
+$d w$. Repetition gives a preimage of filtration at most $M$. Its
+leading boundary would now be a relation among the allowed points in
+the graded summand at $M$. Those points form a free basis of its
+zero-degree homology, so all their coefficients must vanish. Descending
+$M$ proves independence. Spanning was proved by
+\eqref{ir:eq:straighten}. Thus the claimed points form a basis of
+$H_0(C_\bullet)=\D_q$.
+\end{proof}
+
+\subsection{Base change and the rank identity}
+The proof works verbatim over an arbitrary commutative ring with
+arbitrary weights. Alternatively, the augmented complex over $R_q$
+is split exact as an underlying $R_q$-module complex: its degree-zero
+homology is free, and successive surjections onto projective kernels
+split. Tensoring with any $R_q$-algebra therefore preserves exactness.
+No flatness hypothesis on the target algebra is needed.
+
+Taking the alternating ranks of the chain groups gives a useful check:
+\begin{equation}\label{ir:eq:euler-rank}
+ \rank\D_q
+ =\sum_{S\subseteq P(q)}(-1)^{|S|}\frac{q}{p_S}
+ =q\prod_{p\mid q}(1-p^{-1})=\varphi(q).
+\end{equation}
+This rank computation alone would not prove integral freeness. The
+local unimodular splittings and the lifted basis are the missing
+integral information.
+
+\begin{remark}[Relation to character normal forms]
+Over a characteristic-zero splitting field, both the conductor-character
+basis in the source and the present raw-point basis describe the same
+free module. Their transition matrix is a legitimate field-valued
+change of coordinates. Its construction can involve divisions by
+character-group orders. The raw-point basis is designed to avoid those
+divisions, not to replace the arithmetic convenience of character
+coordinates where those coordinates are available.
+\end{remark}

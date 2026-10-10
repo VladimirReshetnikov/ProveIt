@@ -1,0 +1,110 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{booktabs,longtable,array,microtype,xcolor,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!40!black,citecolor=blue!40!black,urlcolor=blue!40!black]{hyperref}
+\usepackage{bookmark,fancyhdr,etoolbox}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Integral cyclotomic distributions}
+\fancyhead[R]{\small ProveIt continuation}
+\fancyfoot[C]{\thepage}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Cl}{Cl}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Fitt}{Fitt}
+\DeclareMathOperator{\den}{den}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\C}{\mathbb C}
+\newcommand{\F}{\mathbb F}
+\newcommand{\R}{\mathcal R}
+\newcommand{\D}{\mathcal D}
+\newcommand{\B}{\mathcal B}
+\newcommand{\NF}{\operatorname{NF}}
+\newcommand{\TT}{\widehat H}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\newcommand{\LL}[2]{\mathscr L_{#1}(#2)}
+\newcommand{\jj}[2]{\mathscr L^{[#1]}(#2)}
+\title{\textbf{Integral Cyclotomic Distribution Relations}\\[7pt]
+\large Reflection torsion, modular rank loci, contact-order Smith laws,\\
+and exact spectral-jet identities}
+\author{A research continuation prepared for the ProveIt project\\
+\small OpenAI-assisted mathematical research; supplied for independent review}
+\date{9 October 2026}
+\hypersetup{pdftitle={Integral Cyclotomic Distribution Relations},pdfauthor={Research continuation prepared for ProveIt}}
+\begin{document}
+\maketitle
+\begin{abstract}
+The ProveIt polylogarithm manuscript proves freeness of a weighted finite
+cyclotomic distribution module over a characteristic-zero character
+splitting field and leaves its integral and modular structure for further
+research. We give a division-free construction over
+$\Z[A_p:p\mid q]$, including an explicit raw-point basis, a maximal relation
+minor equal to one, and a finite exact resolution. These tools distinguish
+unreflected distribution relations, which have no torsion after any integer
+weight specialization, from reflection coinvariants, which can acquire
+precisely determined $2$-torsion.
+
+For $q>2$, put $n=\varphi(q)/2$,
+$r=\#\{p>2:p\mid q\}+\one_{4\mid q}$ and $h=2^{r-1}$.
+Both integer reflection signs give $\Z^n\oplus(\Z/2)^h$ when all odd-prime
+weights are odd, and $\Z^n$ otherwise. In characteristic two, the entire
+obstruction is a Koszul complex on the odd-prime quantities $A_p-1$,
+together with $A_2(A_2-1)$ when $4\mid q$. In particular its universal
+homology is the coordinate ring of an explicit reduced complete
+intersection. Along a one-parameter deformation with contact order $d$,
+the reflection matrix has $h$ nonunit Smith factors $t^d$, and its
+length-$L$ jet cokernel has dimension $nL+h\min(d,L)$.
+
+Three short polynomial certificates also produce all-spectral-order
+cyclotomic identities and an all-derivative level-$15$ family involving
+Stieltjes constants, with the pole at order one cancelled explicitly.
+The ordinary distribution and its ordinary sign cohomology are classical;
+we identify these antecedents rather than claiming their rediscovery as
+new. Full proofs, exact replay programs, numerical diagnostics, a focused
+manuscript correction, and integration notes accompany the article.
+\end{abstract}
+\noindent\textbf{Scope.} The results concern explicitly presented modules
+and exact functional identities, not numerical independence of periods.
+No proof-assistant verification or exhaustive priority claim is made.
+The existing $S_6$ conjecture is not proved in this contribution.
+\newpage
+\begingroup
+\fontsize{10}{10.7}\selectfont
+\makeatletter
+\patchcmd{\l@section}{1.0em}{0.3em}{}{}
+\makeatother
+\tableofcontents
+\endgroup
+\newpage
+\input{sections/01-scope}
+\input{sections/02-integral}
+\input{sections/03-resolution}
+\input{sections/04-reflection}
+\input{sections/05-modular-jets}
+\input{sections/06-identities}
+\input{sections/07-verification}
+\input{sections/08-audit-research}
+\clearpage
+\input{references}
+\end{document}

@@ -1,0 +1,237 @@
+\section{Characteristic two, the universal support, and all jet lengths}
+\label{ir:sec:modular}
+
+\subsection{A characteristic-two homology theorem over arbitrary algebras}
+Assume now that the coefficient ring $S$ has characteristic two.
+Write $N=c-1=c+1$. Then $N^2=0$, and both periodic cohomology
+groups are the same module $\ker N/\im N$. On a fixed-point module
+both periodic differentials vanish. The comparison
+\eqref{ir:eq:tate-comparison} therefore has a particularly simple
+consequence.
+
+\begin{theorem}[Koszul model in characteristic two]
+\label{ir:thm:char2-koszul}
+For every commutative characteristic-two ring $S$ and every choice
+of its weights,
+\begin{equation}\label{ir:eq:char2-homology}
+ \frac{\ker(N:\D_q(S,a)\to\D_q(S,a))}{\im N}
+ \simeq\bigoplus_{j=0}^{r(q)}H_j(K_S(\boldsymbol\delta)),
+\end{equation}
+where the active sequence is \eqref{ir:eq:active-koszul}.
+\end{theorem}
+\begin{proof}
+Remove the moving-orbit subcomplex as in
+Section~\ref{ir:sec:reflection}. On its fixed quotient the vertical
+periodic differential is zero. Total cohomology is therefore the
+direct sum of the horizontal homology groups, one from each of the
+finitely many chain degrees. Apply the chain-homotopy reduction of
+Proposition~\ref{ir:prop:fixed-koszul}.
+\end{proof}
+
+\subsection{The universal obstruction is a reduced complete intersection}
+Let $R_2=\F_2[A_p:p\mid q]$ and let $I_q\subseteq R_2$ be the ideal
+\begin{equation}\label{ir:eq:universal-ideal}
+ I_q=(A_p-1:\ p>2,\ p\mid q)
+       +(A_2(A_2-1):\ 4\mid q),
+\end{equation}
+where the second summand is omitted unless indicated. Its generators
+form a regular sequence. Indeed the odd-prime entries are independent
+linear variables shifted by one; after removing them, the possible
+last entry is a nonzero monic polynomial in the still-free variable
+$A_2$. At each step multiplication by that entry is injective in the
+quotient by the earlier ones.
+
+The Koszul complex on a regular sequence resolves its quotient. This
+can be seen inductively here without a general regular-sequence
+criterion: tensor a free resolution of the previous quotient with
+$[R_2\xrightarrow{\delta}R_2]$. Its homology consists of the kernel
+and cokernel of multiplication by $\delta$ on that quotient. The
+kernel is zero, and the cokernel is the next quotient.
+
+\begin{corollary}[Universal characteristic-two support]
+\label{ir:cor:universal-support}
+Over $R_2$, the reflection homology is a cyclic module:
+\begin{equation}\label{ir:eq:universal-homology}
+ \ker N/\im N\simeq R_2/I_q.
+\end{equation}
+Its zeroth Fitting ideal is exactly $I_q$. The closed locus defined
+by $I_q$ is reduced. For odd $q>1$ it is the single point with every
+weight equal to one. For $4\mid q$ it has two points, with all
+odd-prime weights equal to one and $A_2=0$ or $1$. For $q$ twice an
+odd number, $A_2$ is free and the locus is an affine line.
+\end{corollary}
+\begin{proof}
+The positive Koszul homology vanishes by the preceding argument;
+apply Theorem~\ref{ir:thm:char2-koszul}. A cyclic module $R_2/I_q$
+has zeroth Fitting ideal $I_q$ by its one-generator presentation.
+After the odd linear equations, the only possible further equation
+is $A_2(A_2-1)$, whose two factors are relatively prime. Its quotient
+is a product of two fields, or of two copies of the remaining
+coefficient ring if one extends scalars. The stated descriptions
+and reducedness follow.
+\end{proof}
+
+The cyclic universal answer does \emph{not} imply that every fiber
+of the reflection homology is one-dimensional. Homology need not
+commute with a nonflat specialization. At an exceptional field-valued
+point the differentials of the specialized Koszul complex all vanish,
+so its homology has total dimension $2^{r(q)}$. This is the precise
+source of the larger fiber defect.
+
+There is also an integral universal formulation. With the periodic
+convention \eqref{ir:eq:tate-definition}, the same fixed-complex
+calculation, followed by reduction modulo two, gives
+\begin{equation}\label{ir:eq:universal-integral-tate}
+ \TT^{2j}(\D_q)\simeq R_q/(2,\boldsymbol\delta),\qquad
+ \TT^{2j+1}(\D_q)=0.
+\end{equation}
+Here $\D_q$ is still over the polynomial ring, not an integer weight
+fiber. The regularity argument is in $R_q/2R_q$. Odd periodic
+cohomology appearing after integer specialization is another
+nonflat-base-change effect, not a contradiction to
+\eqref{ir:eq:universal-integral-tate}.
+
+\subsection{The exact rank locus over every field}
+For a field $k$ of characteristic two, a nonzero active scalar is a
+unit and makes the Koszul complex contractible. If all active scalars
+vanish, its differentials vanish and its total homology dimension is
+$2^{r(q)}$. To pass from homology to the desired coinvariants, note
+that an endomorphism $N$ with $N^2=0$ on a $d$-dimensional vector
+space satisfies
+\begin{equation}\label{ir:eq:nilpotent-dimension}
+ \dim(\ker N/\im N)=d-2\rank N,
+ \qquad
+ \dim\coker N=\frac{d+\dim(\ker N/\im N)}2.
+\end{equation}
+
+\begin{theorem}[All-field reflection dimension]
+\label{ir:thm:field-locus}
+Let $q>2$, let $k$ be a field, and use arbitrary weights $a_p\in k$.
+If $\operatorname{char}k\ne2$, both sign coinvariants have dimension
+$n(q)$. If $\operatorname{char}k=2$, the signs coincide and
+\begin{equation}\label{ir:eq:field-locus}
+ \dim_k\D_q(k,a)/(c-1)\D_q(k,a)
+ =n(q)+h(q)\one_{\mathcal E_q(a)},
+\end{equation}
+where $\mathcal E_q(a)$ means
+\[
+ a_p=1\quad\text{for every odd }p\mid q,
+ \qquad a_2\in\{0,1\}\quad\text{if }4\mid q.
+\]
+There is no condition on $a_2$ when $v_2(q)=1$.
+\end{theorem}
+\begin{proof}
+For characteristic different from two use
+Lemma~\ref{ir:lem:balanced}. In characteristic two use the Koszul
+calculation and \eqref{ir:eq:nilpotent-dimension} with
+$d=\varphi(q)$. Over a field, $a_2(a_2-1)=0$ is equivalent to
+$a_2=0$ or $1$.
+\end{proof}
+
+Over $\F_2$, the condition at $2$ is automatic. Over $\F_4$ it is
+not: a weight satisfying $a_2^2+a_2+1=0$ is neither zero nor one,
+and the reflection defect disappears when $4\mid q$. Thus an
+experiment restricted to binary weights would miss part of the
+geometry. The exact regression suite includes all four field
+weights at selected levels to test this distinction.
+
+\subsection{A complete one-parameter Smith law}
+Let $k$ have characteristic two, let $O=k[[t]]$, and choose power
+series weights $a_p(t)$. The module $\D_q(O,a)$ is free of rank
+$2n=\varphi(q)$. Form the active sequence $\boldsymbol\delta(t)$
+as before, and define its contact order by
+\begin{equation}\label{ir:eq:contact-order}
+ d=\min_i v_t(\delta_i(t)),\qquad v_t(0)=\infty.
+\end{equation}
+The word ``contact'' refers to the pullback of the explicit ideal
+$I_q$ along the chosen formal curve. It is not an approximation to a
+root of a transcendental function.
+
+Each active prime contributes a factor at least two to $\varphi(q)$,
+so $\varphi(q)\ge2^{r(q)}$ and $n\ge h$. Thus all block sizes in
+the following statement are nonnegative.
+
+\begin{theorem}[Contact-order Smith law]\label{ir:thm:smith-jets}
+Let $q>2$, $n=n(q)$, $h=h(q)$, and use the above characteristic-two
+power series weights. If $d<\infty$, the Smith diagonal of
+$N=c-1$ over $O$ is, up to units,
+\begin{equation}\label{ir:eq:smith-contact}
+ \operatorname{diag}\bigl(
+    \underbrace{1,\ldots,1}_{n-h},
+    \underbrace{t^d,\ldots,t^d}_{h},
+    \underbrace{0,\ldots,0}_{n}\bigr).
+\end{equation}
+When $d=0$, the first two blocks together are $n$ unit entries.
+When $d=\infty$, replace the $h$ entries $t^d$ by zero; there are
+then $n-h$ unit entries and $n+h$ zeros.
+
+For every integer $L\ge1$, put $O_L=k[t]/(t^L)$. The complete jet
+cokernel formula is
+\begin{equation}\label{ir:eq:jet-length}
+ \dim_k\frac{\D_q(O_L,a)}{(c-1)\D_q(O_L,a)}
+ =nL+h\min(d,L),
+\end{equation}
+with $\min(\infty,L)=L$.
+\end{theorem}
+
+\begin{proof}
+First work over $O_L$ and put $d_L=\min(d,L)$. Elementary invertible
+operations on the active sequence identify its Koszul complex with
+that on $(t^{d_L},0,\ldots,0)$, with the convention that $t^L=0$.
+To see this explicitly when $d_L<L$, choose an entry with least
+valuation, multiply it by a unit to make it $t^{d_L}$, and subtract
+its multiples from all other entries. Every other entry is divisible
+by it in $O_L$. If $d_L=L$, all entries already vanish. Invertible
+changes of the sequence induce invertible changes on its exterior
+algebra, hence isomorphisms of Koszul complexes.
+
+The kernel and cokernel of multiplication by $t^{d_L}$ on $O_L$
+each have $k$-dimension $d_L$. Tensoring with $r-1$ zero-differential
+two-term complexes multiplies total homology dimension by $2^{r-1}$.
+The right-hand side of \eqref{ir:eq:char2-homology} therefore has
+$k$-dimension $2^r d_L$. The underlying vector space of
+$\D_q(O_L,a)$ has dimension $2nL$, by the integral basis theorem.
+Applying \eqref{ir:eq:nilpotent-dimension} proves
+\eqref{ir:eq:jet-length}.
+
+It remains to show that these length formulas determine all Smith
+exponents, rather than just their sum. A matrix over the discrete
+valuation ring $O$ has nonzero invariant factors $t^{e_i}$ up to
+units, together with some zero factors. If there are $z$ zero
+factors, its cokernel modulo $t^L$ has length
+\[
+ zL+\sum_i\min(e_i,L).
+\]
+The first difference in $L$ is $z+\#\{i:e_i\ge L\}$ for $L\ge1$.
+For finite $d$, the formula already proved has first difference
+$n+h$ for $1\le L\le d$, and $n$ for $L>d$. Thus exactly $n$
+factors are zero and exactly $h$ nonunit factors have exponent $d$;
+the remaining $n-h$ factors are units. For $d=0$ there are no
+positive exponents. For $d=\infty$, the first difference is always
+$n+h$, so there are $n+h$ zero factors and no positive finite
+exponents. This proves every case of \eqref{ir:eq:smith-contact}.
+\end{proof}
+
+\subsection{Examples of the jet law}
+At level $15$, take
+\[
+ a_3(t)=1+t^2,\qquad a_5(t)=1+t^5.
+\]
+Here $(n,r,h)=(4,2,2)$ and $d=2$. The reflection matrix has Smith
+entries $1,1,t^2,t^2,0,0,0,0$, and its jet cokernel dimensions at
+$L=1,2,3,4$ are $6,12,16,20$. A rank calculation at $t=0$ alone
+would detect the first number, but not the exponent two.
+
+At level $12$, take $a_2(t)=t^3$ and $a_3(t)=1+t^5$.
+Then $a_2(a_2-1)=t^3(1+t^3)$, so $d=3$. Since $(n,h)=(2,2)$,
+there are no unit Smith factors and the diagonal is
+$t^3,t^3,0,0$. Every jet of length at most three has trivial
+reflection matrix up to equivalence; later lengths detect the
+nonzero factors.
+
+If the entire curve is contained in the exceptional locus, then
+$d=\infty$ and the dimension is $(n+h)L$. If any active scalar
+has a nonzero constant term, $d=0$ and the dimension is $nL$.
+These are exact boundary cases of the same formula. In contrast,
+the \emph{unreflected} distribution module always has dimension
+$\varphi(q)L$ at length $L$ and never exhibits this jump.

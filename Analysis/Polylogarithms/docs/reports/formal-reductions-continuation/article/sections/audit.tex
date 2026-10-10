@@ -1,0 +1,124 @@
+\section{Audit findings and proposed manuscript corrections}
+\label{audit:sec:corrections}
+
+The research does not require withdrawing the source's global zero
+bound, its eventual uniform saturation theorem, its $n=1$ monotonicity
+theorem, or its all-conductor symbol kernel theorem. Those results
+survive the present analysis. The following corrections and status
+updates are narrower and should be integrated with their supporting
+proofs.
+
+\subsection{A logical wording correction in the rank conjecture}
+
+In \path{chapters/05-signed-kernels.tex}, Conjecture
+\texttt{signed:conj:rank} states two absolute ranks and then describes
+their difference as an equivalent statement. The difference follows
+from the two absolute formulas, but it does not recover them without
+another premise. Replace ``Equivalently'' by ``Consequently'' and
+``The equivalence'' by ``This implication.'' This is a logical wording
+correction, independent of whether the conjecture is true. Theorem
+\ref{fg:thm:rank} now proves both absolute ranks, so after its proof
+has been integrated the conjecture can be promoted to a theorem.
+
+The attached patch makes only those wording changes and the duplicated
+phrase correction below. It deliberately leaves the conjecture
+environment intact: installing a new theorem label without its proof
+and dependencies would be a poor intermediate repository state.
+
+\subsection{Boundary regularization must remain explicit}
+
+The removed coordinate $X_1^{0,1}$ and the retained difference row are
+essential parts of the matrix definition. A computation that discards
+both boundary rows, or retains them separately as homogeneous rows,
+solves a different problem. The canonical defect $cY^n$ in Lemma
+\ref{fg:lem:boundary} identifies exactly what the valid regularization
+preserves. The matrix generator includes column order, row labels, and
+the weight-five matrix itself so future implementations can compare
+the actual presentation, not merely a rank value.
+
+Similarly, the new universal splitting concerns only the specified
+single-product coefficient system. Adding distribution or higher-depth
+relations can change the residual kernel. The theorem should not be
+paraphrased as a numerical dimension conjecture for all cyclotomic
+multiple polylogarithms.
+
+\subsection{The angular expansion is no longer an open construction}
+
+The paragraph following the source's angular numerical table describes
+a systematic expansion beyond four terms as a separate research
+problem. Theorem~\ref{angular:thm:allorders} resolves that problem at
+every fixed exponential accuracy, and extends the uniformity from
+$b\geq1$ to $b>0$. The correct replacement should also mention
+Theorem~\ref{angular:thm:divergence}: the infinite grouped series has
+unbounded terms at fixed $a,b$. Ordinary convergence is therefore
+ruled out, not merely unproved.
+
+An analytic implicit-function argument on the entire complex Fourier
+series would be invalid without additional work: its frequencies grow
+exponentially off the real axis. The finite-mode argument in this
+article is part of the proof, not an implementation detail that may
+be dropped from an abbreviated presentation.
+
+\subsection{Higher-index monotonicity needs counterexamples, not extrapolation}
+
+The source proves a decreasing branch at $n=1$. It does not thereby
+prove decreasing branches at larger indices. Theorem
+\ref{lerchboundary:thm:counterexample} gives a strictly positive initial
+velocity for the smallest $n=4,k=3$ branch. Theorem
+\ref{lerchboundary:thm:n2global} gives an entire $n=2,k=1$ branch that
+is nonmonotone on $[0,1]$. These are useful additions to the discussion
+of higher-index motion; they do not contradict the correctly restricted
+$n=1$ theorem.
+
+The regularity statement must distinguish the two endpoints. At a
+simple elementary zero, analytic dependence on $\rho$ extends through
+$0$. At a simple Stieltjes endpoint zero, Theorem
+\ref{lerchboundary:thm:abel-root} gives exactly $C^{k-1}$ regularity,
+with a divergent $k$th derivative. An unqualified claim of analyticity
+on a neighborhood of the closed parameter interval would be false.
+
+In the proof of the source result \texttt{half:zero:first}, replace
+``The endpoint signs in the endpoint signs and the Laplace representation
+above'' by ``The endpoint signs and the Laplace representation above.''
+This is an editorial duplication only.
+
+\subsection{Formal Herglotz obstructions and analytic evaluations}
+
+The general companion classification must retain the condition modulo
+$2e$. For example, the pair $e=8,o=3$ passes the corresponding tests
+modulo $o$ and $e$, but fails $o^2\equiv1\pmod{2e}$. A criterion that
+simply reuses the two moduli from the source's $F$-classification would
+give an incorrect answer for $J(3/8)$.
+
+The term ``no reduction'' in this setting means no reduction of the
+specified invariant pre-Bloch element. The boundary argument is not
+a transcendence theorem for actual values of $J$. Conversely, the
+positive cases of the formal theorem ensure existence in the stated
+calculus; they need not provide a short explicit logarithmic formula
+until a constructive five-term reduction is supplied. The consecutive
+family and $3/5$ evaluation provide such explicit analytic formulas
+in useful cases.
+
+The adjacent-argument functional identity used for these evaluations
+is an independently derived reformulation of the known Choie--Kumar
+functional equation \cite[Theorem 3.2(1)]{ChoieKumar2023}. It should be
+credited accordingly. We do not claim priority for a general functional
+equation already present in that paper. The inspected follow-up work
+on character-weighted Herglotz integrals supplies relevant future
+directions \cite{DixitSathyanarayanaSharan2024}.
+
+\subsection{Status synchronization across incoming reports}
+
+The recent rigidity report already proves the $S_4$ identity by an
+explicit combination of standard rows and a Möbius-duality row
+\cite{PriorRigidity}. Older descriptions of $S_4$ as an unresolved
+global identity should be updated when that report is integrated.
+The earlier obstruction for a smaller relation space remains a valid
+statement about that smaller space. It should be preserved with its
+scope, not treated as a contradiction to the later proof.
+
+Likewise, the residual level-three and level-four invariant spaces
+were computed in the preceding report \cite{PriorResearch}. The
+new contribution is the free same-point lift and the full ranks under
+the manuscript's exact boundary convention. The supplied integration
+guide records this dependency to avoid duplicate priority claims.

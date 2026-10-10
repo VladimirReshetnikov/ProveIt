@@ -1,0 +1,150 @@
+% Proposed manuscript insertion. See integration/README.md before installing.
+% Uses the manuscript's existing theorem environments; no global macros added.
+\section{Integral distribution normal forms and reflection torsion}
+\label{intdist:sec:integral}
+The characteristic-zero conductor decomposition can be strengthened to an
+integral original-symbol statement. Reflection then introduces a separate,
+exactly computable two-torsion phenomenon. We record the results of the
+integral continuation~\cite{IntegralDistributionReflection2026}; that report
+contains complete proofs, an explicit resolution, and independent certificates.
+
+For $q\ge2$, let $P$ be its prime divisors and put
+\[
+ R=\mathbb Z[A_p:p\in P],\qquad X_q=(q^{-1}\mathbb Z)/\mathbb Z.
+\]
+Let $\mathcal U_q$ be the free $R$-module on $e_x$, $x\in X_q$, modulo
+all rows
+\[
+ r_{p,x}=\sum_{py=x}e_y-A_pe_x,\qquad p\mid q,\quad x\in X_{q/p}.
+\]
+Composite weights are products of the prime weights. The endpoint $e_0$
+is a formal symbol; under polylogarithm evaluation it means $\zeta(s)$.
+
+For $q=\prod p^{e_p}$, write uniquely
+$x=\sum a_p/p^{e_p}$ with $0\le a_p<p^{e_p}$. Retain the point $x$ when
+\[
+ a_p\notin\{1,\ldots,p^{e_p-1}\}\quad\hbox{for every }p\mid q,
+\]
+and denote the resulting set by $\mathcal B_q$. It has $\varphi(q)$
+points and contains zero.
+
+\begin{theorem}[Integral original-symbol basis]
+\label{intdist:thm:unit}
+The classes $e_b$, $b\in\mathcal B_q$, form a basis of $\mathcal U_q$
+over $R$. A fixed subset of $q-\varphi(q)$ original prime rows has a
+unit lower triangular submatrix on the complementary point columns.
+The entire raw matrix is equivalent over $R$ to an identity block of
+size $q-\varphi(q)$ and zeros. These assertions survive arbitrary base
+change to every commutative coefficient ring.
+\end{theorem}
+\begin{proof}[Proof outline]
+For a nonretained point choose its least forbidden prime $p$ and the row
+$r_{p,px}$. Order points by total exact prime-power height, then by the
+number of forbidden coordinates. Every other point in this row precedes
+$x$, and the coefficient of $e_x$ is one. This gives the triangular unit
+minor and a free quotient by the selected rows. The complete conductor
+calculation over the fraction field gives rank $q-\varphi(q)$ for all
+prime rows. The selected quotient is torsion-free over $R$, so every
+remaining raw row already vanishes integrally in that quotient. The
+resulting polynomial matrix equivalence survives every base change.
+\end{proof}
+
+The associated normal forms are computed without division:
+\[
+ \operatorname{NF}(x)=A_p\operatorname{NF}(px)
+       -\sum_{j=1}^{p-1}\operatorname{NF}(x+j/p)
+\]
+for a nonretained point, and $\operatorname{NF}(b)=e_b$ on the basis.
+This determines explicit integer polynomials $P_{x,b}(\boldsymbol A)$.
+It proves that the unreflected integer Smith factors are all one,
+including expanded finite-jet matrices. A character Fourier transform
+is not needed in the actual certificate verifier.
+
+\subsection{Reflection is a different integral quotient}
+Let $J e_x=e_{-x}$ and define
+\[
+ C_+(U)=U/(J-1)U,\qquad C_-(U)=U/(J+1)U.
+\]
+These are coinvariants, not integral eigensublattices. Put
+\[
+ r_* = \#\{p\mid q:p\text{ odd}\}+\boldsymbol1_{4\mid q}.
+\]
+\begin{theorem}[Scalar reflected Smith factors]
+\label{intdist:thm:scalar}
+For $q>2$ and arbitrary integer weights $A_p=a_p$,
+\[
+ C_\pm\simeq\mathbb Z^{\varphi(q)/2}\oplus(\mathbb Z/2\mathbb Z)^h,
+ \qquad
+ h=\begin{cases}
+ 0,&\text{some odd-prime weight is even},\\
+ 2^{r_*-1},&\text{all odd-prime weights are odd}.
+ \end{cases}
+\]
+For $q=2$, $C_+=\mathbb Z$ and $C_-=\mathbb Z/2\mathbb Z$.
+\end{theorem}
+
+A full proof uses the weighted Anderson resolution with terms
+$\bigoplus_{|S|=k}R[X_{q/\prod_{p\in S}p}]$.
+The two-periodic reflection complex has an explicit acyclic subcomplex
+consisting of nonfixed point coordinates and even multiples of fixed
+coordinates in even degree, and all coordinates in odd degree.
+The remaining fixed-point complex is the binary Koszul complex on
+\[
+ 1-\overline a_p\quad(p\text{ odd}),\qquad
+ \overline a_2(1-\overline a_2)\quad\text{when }4\mid q.
+\]
+Its odd homology gives the torsion of $C_+$ and its even homology gives
+that of $C_-$. This also explains why a lone factor of two in the level
+does not increase $r_*$.
+
+\begin{theorem}[One-variable integral jets]
+\label{intdist:thm:jets}
+Let $q>2$, $B_L=\mathbb Z[u]/(u^L)$, and take arbitrary weights
+$a_p(u)\in B_L$. Reduce the preceding Koszul parameters modulo two,
+and let $v$ be their minimum truncated $u$-valuation, with the zero
+polynomial assigned valuation $L$. Then, as abelian groups,
+\[
+ C_\pm\simeq\mathbb Z^{L\varphi(q)/2}
+       \oplus(\mathbb Z/2\mathbb Z)^{v2^{r_*-1}}.
+\]
+Their integer-torsion submodules, as $B_L$-modules, are each
+$(B_L/(2,u^v))^{2^{r_*-1}}$.
+\end{theorem}
+Indeed, over $\mathbb F_2[u]/(u^L)$ the parameter vector is equivalent
+to $(u^v,0,\ldots,0)$. Its Koszul homology has
+$\binom{r_*}{k}$ copies of $\mathbb F_2[u]/(u^v)$ in degree $k$.
+The free ranks follow from the zero rational reflection trace.
+The free abelian part need not be a free $B_L$-module; no such claim
+is part of the theorem.
+
+\subsection{An exact all-order identity}
+Substitute $A_p=p^{1-s}$ into the polynomial normal forms. Root filtering
+and meromorphic continuation prove their evaluation for every complex
+order. A three-row certificate at level twelve yields
+\begin{align}
+ &\Li_s(e^{\pi i/6})+\Li_s(e^{5\pi i/6})
+       +(1+3^{1-s})\Li_s(-i)\nonumber\\
+ &\hspace{35mm}=(12^{1-s}-6^{1-s})\zeta(s).
+ \label{intdist:eq:level12}
+\end{align}
+The apparent pole at $s=1$ is removable, with value $-\log2$.
+The continuation gives all order derivatives there by Laurent
+multiplication; the first derivative of the right side is
+\[
+ \frac{\log^2 12-\log^2 6}{2}-\gamma\log2.
+\]
+In general, differentiating an endpoint coefficient that vanishes at
+$s=1$ produces an extra contribution from its derivative of order
+one higher. The report states the complete finite-part formula and an
+analogous five-row identity at level thirty.
+
+\paragraph{Scope of the completion.}
+These results settle the integral basis, unreflected Smith, scalar
+reflection, and one-variable integral-jet questions for this precise
+presentation. Multivariate reflection is reduced to Koszul homology,
+not to an unjustified single valuation. Arithmetic independence of the
+evaluated periods, higher-depth relations, and the Gaussian $S_6$
+conjecture remain distinct questions. The ordinary distribution and
+Anderson resolution have classical antecedents; the report preserves
+the relevant attributions and does not claim worldwide priority for
+all of the displayed consequences.

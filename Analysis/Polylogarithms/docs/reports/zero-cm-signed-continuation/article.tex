@@ -1,0 +1,272 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx,booktabs,longtable,array,enumitem,xcolor,microtype,xurl}
+\usepackage{fancyhdr,lastpage}
+\definecolor{ink}{HTML}{17324D}
+\definecolor{accent}{HTML}{2C6077}
+\usepackage[colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent]{hyperref}
+\usepackage{bookmark}
+\usepackage{titlesec}
+\titleformat{\section}{\Large\bfseries\color{ink}}{\thesection}{0.65em}{}
+\titleformat{\subsection}{\large\bfseries\color{ink}}{\thesubsection}{0.65em}{}
+\emergencystretch=3em
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.1em}
+\setlist{itemsep=0.25em,topsep=0.35em}
+\numberwithin{equation}{section}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\E}{\mathbb E}
+\newcommand{\D}{\mathcal D}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Polylogarithmic families}
+\fancyhead[R]{\small Research continuation}
+\fancyfoot[C]{\small\thepage\ / \pageref*{LastPage}}
+\renewcommand{\headrulewidth}{0.35pt}
+\hypersetup{
+ pdftitle={Uniform Asymptotics and Zero Bifurcations for Polylogarithmic Families},
+ pdfauthor={ProveIt research continuation; prepared with OpenAI assistance},
+ pdfsubject={Uniform harmonic-depth saddles, reflected log-gamma moments, Lerch zeros, and Gaussian Euler sums}
+}
+
+\begin{document}
+\begin{titlepage}
+\centering
+\vspace*{0.65in}
+{\small\scshape\color{accent}ProveIt research continuation\par}
+\vspace{0.45in}
+{\Huge\bfseries\color{ink}Uniform Asymptotics\\[0.15em]
+and Zero Bifurcations\\[0.15em]
+for Polylogarithmic Families\par}
+\vspace{0.45in}
+{\large Harmonic depth, reflected log-gamma moments,\\
+Lerch derivatives, and a weight-nine identity candidate\par}
+\vspace{0.45in}
+{\normalsize Prepared with OpenAI assistance\\
+10 October 2026\par}
+\vfill
+\begin{minipage}{0.9\textwidth}
+\small
+\textbf{Source revision.}\quad
+\src{cc34f73596336f2466d9754cb0f3635bd2bedade}\\
+\textbf{Source manuscript.}\quad
+\src{Analysis/Polylogarithms/docs/manuscript}\\[0.8em]
+The statements below distinguish ordinary analytic proofs, proofs with
+finite exact rational certificates, and numerical conjectures. The
+accompanying programs reconstruct their certificates from defining formulas.
+No claim of proof-assistant formalization or numerical period independence
+is made.
+\end{minipage}
+\vspace*{0.6in}
+\end{titlepage}
+
+\begin{abstract}
+This continuation addresses parameter ranges and zero phenomena left
+unresolved by the consolidated ProveIt polylogarithm manuscript.
+For alternating elementary-harmonic sums we prove a saddle expansion
+with a relative remainder uniform in the harmonic depth, the shift, and
+the ratio of outer exponent to depth. It gives one formula across the
+proportional-depth regime and the transition near \(p=h\log h\).
+For reflected log-gamma moments we establish a unique saddle for every
+positive ratio of the two exponents, with an exact rational certificate
+for the sole compact-interval inequality needed in the proof, and derive
+both a joint Laplace expansion and a separate critical-window expansion.
+For the Stieltjes--Lerch derivative family we determine how an endpoint
+multiple zero unfolds: at first derivative order there are only one or
+two positive zeros for sufficiently small positive Lerch parameter,
+according to the parity of the index. Fresh rational sign certificates
+then force an interior multiple-root transition at indices three and
+four. Finally, a new weight-nine candidate reduces \(S_8\) to four
+single-color Gaussian double polylogarithms and explicit products.
+Its very small rigorously enclosed residual is kept separate from a
+proof of equality. The article supplies full derivations, a source audit,
+reproducible code, and a focused further research programme.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Scope, source status, and principal contributions}
+\label{cont26:sec:scope}
+
+The starting point is the consolidated manuscript
+\emph{Polylogarithms and their Arithmetic Bridges}, at the fixed revision
+shown on the title page \cite{ProveIt}. Its present form already includes
+the octahedral certificate for \(S_4\), all-weight Gaussian parity
+relations, complementary-depth transport, conductor normal forms,
+positive-kernel zero bounds, and several distinct asymptotic regimes.
+Those are inputs to this continuation. In particular, the older reports
+calling \(S_4\) conjectural are superseded by the current source.
+
+The work here follows four concrete questions that remain meaningful
+after those integrations. Can one control the harmonic-depth saddle
+while its location moves through the transition range? What happens to
+reflected moments when both exponents grow? Does the eventual
+Stieltjes--Lerch zero count extend to every small derivative order at
+positive parameter? Which next Gaussian Euler sum has a useful,
+precisely testable reduction?
+
+\begin{center}
+\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.28\linewidth}>{\raggedright\arraybackslash}p{0.39\linewidth}>{\raggedright\arraybackslash}p{0.23\linewidth}}
+\toprule
+Problem & Result in this article & Evidence type\\
+\midrule
+Harmonic depth with moving \(p/h\) &
+All-orders relative expansion, uniform for \(p\to\infty\),
+\(h\geq1\), and \(a>0\) &
+Analytic proof\\[0.35em]
+Two growing reflected exponents &
+Unique saddle, joint expansion, and critical-window expansion &
+Analytic proof; one finite exact inequality certificate\\[0.35em]
+Small-parameter Lerch zeros &
+Puiseux unfolding and exact small-parameter counts; interior
+multiple-root transitions &
+Analytic proof; endpoint sign certificates\\[0.35em]
+Mixed Gaussian weight nine &
+A frozen \(S_8\) relation with independent evaluation and
+rational residual enclosure &
+Conjecture with certified numerical evidence\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{What is new relative to the source}
+The harmonic theorem supplies the expanding-range estimate explicitly
+requested at the end of the source's proportional-depth section. It
+retains the shift in the saddle, so the bound does not silently lose
+uniformity when \(p/h\) grows. The reflected-moment work addresses
+simultaneous growth, which is excluded from the source's
+fixed-reflected-exponent remainder theorem. The Lerch analysis proves a
+specific obstruction to extending eventual saturation to every
+strictly positive parameter at low derivative order. The \(S_8\)
+candidate advances the sequence of mixed reductions beyond the source's
+\(S_6\) conjecture.
+
+Laplace's method, gamma concentration, analytic root perturbation, and
+interval arithmetic are established methods \cite{DLMF23,TemmeUniform}.
+The contributions claimed here are the stated family-specific theorems,
+parameter ranges, coefficients, and certificates. A bounded literature
+check cannot establish worldwide priority; no such priority claim is
+needed for the mathematical statements or their use in ProveIt.
+The classical work on log-gamma moments and on cyclotomic polylogarithm
+relations remains the appropriate background
+\cite{ACEMKM,Zhao2008,Coffey}.
+
+\subsection{Conventions}
+All real logarithms have positive arguments. We use
+\[
+ \Li_{s_1,\ldots,s_d}(z_1,\ldots,z_d)
+ =\sum_{n_1>\cdots>n_d\geq1}
+   \frac{z_1^{n_1}\cdots z_d^{n_d}}
+        {n_1^{s_1}\cdots n_d^{s_d}}.
+\]
+Thus the colors are attached to decreasing summation indices, with
+the outer index first. Write
+\[
+ \beta(s)=\sum_{n\geq0}\frac{(-1)^n}{(2n+1)^s},\qquad
+ G=\beta(2),\qquad
+ g_{a,b}=\Im\Li_{a,b}(i,1).
+\]
+The Gaussian values used in the new candidate are absolutely convergent.
+In the asymptotic sections, an assertion uniform in parameters means
+that the remainder constant is independent of those parameters
+throughout the stated set. It does not mean that the underlying
+asymptotic series converges.
+
+\input{sections/uniform_saddle}
+\input{sections/reflected_moments}
+\input{sections/lerch_bifurcations}
+\input{sections/gaussian_candidate}
+\input{sections/verification_and_audit}
+\input{sections/further_research}
+
+\begin{thebibliography}{99}
+\bibitem{ProveIt}
+ProveIt Contributors,
+\emph{Polylogarithms and their Arithmetic Bridges: Special Values,
+Zeta Jets, Lattices and Experimental Discovery},
+consolidated manuscript, October 2026.
+Revision \src{cc34f73596336f2466d9754cb0f3635bd2bedade}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/cc34f73596336f2466d9754cb0f3635bd2bedade/Analysis/Polylogarithms/docs/manuscript}.
+
+\bibitem{DLMF23}
+NIST Digital Library of Mathematical Functions,
+\S2.3, \emph{Integrals of a Real Variable}, especially
+\S2.3(iii), Laplace's method.
+\url{https://dlmf.nist.gov/2.3}.
+
+\bibitem{DLMF511}
+NIST Digital Library of Mathematical Functions,
+\S5.11, \emph{Asymptotic Expansions}, including the scaled gamma
+function and positive-real Stirling remainder.
+\url{https://dlmf.nist.gov/5.11}.
+
+\bibitem{DLMFGamma}
+NIST Digital Library of Mathematical Functions,
+\S5.8, \emph{Infinite Products}.
+\url{https://dlmf.nist.gov/5.8}.
+
+\bibitem{DLMFTaylor}
+NIST Digital Library of Mathematical Functions,
+\S5.7, \emph{Series Expansions}.
+\url{https://dlmf.nist.gov/5.7}.
+
+\bibitem{DLMFPolygamma}
+NIST Digital Library of Mathematical Functions,
+\S5.15, \emph{Polygamma Functions}.
+\url{https://dlmf.nist.gov/5.15}.
+
+\bibitem{TemmeUniform}
+N.~M. Temme,
+\emph{Uniform Asymptotic Methods for Integrals},
+Indagationes Mathematicae \textbf{24} (2013), 739--765.
+\url{https://doi.org/10.1016/j.indag.2013.08.001}.
+Author repository: \url{https://ir.cwi.nl/pub/21470/}.
+
+\bibitem{ACEMKM}
+T.~Amdeberhan, M.~W. Coffey, O.~Espinosa, C.~Koutschan,
+D.~V. Manna, and V.~H. Moll,
+\emph{Integrals of powers of loggamma},
+Proceedings of the American Mathematical Society \textbf{139}
+(2011), 535--545.
+\url{https://doi.org/10.1090/S0002-9939-2010-10589-0}.
+Author copy: \url{https://www.math.tulane.edu/~vhm/papers_html/lg-subm.pdf}.
+
+\bibitem{Coffey}
+M.~W. Coffey, \emph{Series representations for the Stieltjes constants},
+Rocky Mountain Journal of Mathematics \textbf{44} (2014), 443--477.
+\url{https://arxiv.org/abs/0905.1111}.
+
+\bibitem{Zhao2008}
+J.~Zhao,
+\emph{Standard Relations of Multiple Polylogarithm Values at Roots of Unity},
+Documenta Mathematica \textbf{15} (2010), 1--34.
+\url{https://arxiv.org/abs/0707.1459}.
+\end{thebibliography}
+\end{document}

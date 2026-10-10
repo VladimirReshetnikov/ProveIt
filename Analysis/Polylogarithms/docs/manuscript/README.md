@@ -1,15 +1,36 @@
 # Polylogarithms and their Arithmetic Bridges
 
-The collective manuscript, authored by **ProveIt Contributors**, is [polylogarithms.pdf](polylogarithms.pdf):
-**287 pages, twelve chapters**, a literature appendix preserving 94 distinct
-historical question leads, and a central bibliography of 79 works. Its editable
-source is [polylogarithms.tex](polylogarithms.tex) and the files in `chapters/`.
+The collective manuscript, authored by **ProveIt Contributors**, is
+[polylogarithms.pdf](polylogarithms.pdf): **320 pages, twelve chapters,
+ten figures and 91 references**, with a literature appendix preserving
+94 distinct historical question leads. Its editable source is
+[polylogarithms.tex](polylogarithms.tex) and the files in `chapters/`.
 
-The book consolidates the original 39 drafts and all eleven nested continuation
-packages in the requested directory. The recursive inventory covers **179
-textual source files**; assembled articles and their fragments are provenance
-files, not independent results. The [editorial ledger](EDITORIAL-LEDGER.md)
-maps the sources and explains which later proofs replace earlier claims.
+The [inventory](source-inventory.json) accounts for **381 textual source
+files**, including overlapping assembled articles, fragments and correction
+registers. The [editorial ledger](EDITORIAL-LEDGER.md) maps their mathematical
+status and identifies pending research integration. Twenty-one incoming
+archives are preserved as **865 byte-identical members**. All their isolated
+replay suites pass; preservation and successful finite replay do not imply
+that every new analytic theorem has already been integrated.
+
+The current milestone proves the CM class-product formulas and the recorded
+genus ratios, develops a rational principal-point nonvanishing bound, and
+proves exact quadratic degree at every even weight for discriminants
+-15, -20 and -39. Further genus results give norm identities, nine additional
+explicit evaluations, and the full finite cluster set [1/2, infinity) for
+the weight-12m ratios at discriminant -15. An independent finite-field
+certificate replaces a failed-search argument for the discriminant -39
+cube-root obstruction. The latest reports also correct Clausen parity,
+unsupported numerical nonreduction, the published plastic-field sequel,
+and missing golden-ladder notation.
+
+The new S8 candidate is distinct from the old rigorously rejected vector.
+Its exact normalized residual enclosure is below `1e-355`; it and S6 remain
+conjectural. The substantial integral-distribution, real-order, Lerch,
+uniform-transition, golden-seed and Herglotz continuations remain on the
+active proof-audit and integration agenda.
+
 Original drafts, code, data and PDFs remain historical evidence. This book is
 the canonical reading artifact.
 
@@ -25,12 +46,12 @@ stated at each transition.
 
 The [validation report](VALIDATION.md) records fresh native Wolfram and
 independent Python checks, exact rational certificates, the converged build
-and rendered review. [WORKLOG.md](WORKLOG.md) records the completed integration.
+and rendered review. [WORKLOG.md](WORKLOG.md) records the active research continuation.
 The five new packages add the exact S4 proof, complementary-depth transport,
 pure-complement classification, conductor descent and trace jets, proportional
 harmonic saddles, sharp reflected-moment remainders, and rational Herglotz
 derivatives with exponentially small oscillation. S6 remains a conjecture
-despite its exact residual enclosure below `1e-260`.
+despite the strengthened exact normalized residual enclosure below `1e-355`.
 
 Numerical period independence and minimal depth are not inferred from failed
 searches. Gamma completeness beyond the stated relation system and Stark

@@ -94,3 +94,62 @@ For a new release, run `check_document.py`, `build.py` (three serial passes),
 immutable package dependencies and raw archive/member hashes; when an arrival
 archive has been retired upstream, it reads its pinned Git blob. It records
 hashes and cannot itself confer a mathematical or visual review.
+
+## Continuing research: new batch and higher zero thresholds
+
+```powershell
+python verification/replay_research.py --part rank
+python verification/replay_research.py --part cm-zero
+python verification/replay_research.py --part formal
+python verification/replay_research.py --part angular
+python verification/replay_research.py --part cayley
+python verification/replay_research.py --part lerch
+python verification/explore_higher_zero_transitions.py
+python verification/certify_higher_zero_transitions.py
+python verification/replay_higher_zero_independent.py
+wolfram -script verification/check-research.wls
+python verification/redraw_zero_profiles.py
+```
+
+Exploration proposes rational brackets; it supplies no accepted sign or
+completeness assertion. The two exact higher-index certifiers enclose all
+126 signs, using distinct coefficient implementations and cutoffs. Native
+S2 quadrature is an independent numerical diagnostic. The plot redraw uses
+Matplotlib, NumPy and SciPy; its dependency versions and preserved source
+hash are recorded in zero-profile-redraw.json. It changes the notation,
+not the historical mathematical curves, and writes a separate canonical
+figure. Full incoming package layouts remain immutable; replays run in
+.scratch-research. The active broader audit and research goal remain open.
+
+## CM proofs and the two latest incoming batches
+
+```powershell
+python verification/replay_third.py --part herglotz
+python verification/replay_third.py --part phase
+python verification/replay_third.py --part uniform
+python verification/replay_third.py --part boundary
+python verification/replay_third.py --part signed
+python verification/replay_fourth.py --part jets
+python verification/replay_fourth.py --part integral
+python verification/replay_fourth.py --part fractional
+python verification/replay_fourth.py --part threshold
+python verification/replay_fourth.py --part golden
+python verification/certify_cm_nonvanishing.py
+python verification/derive_cm_genus_extensions.py
+python verification/certify_cm_single_and_weber.py
+python verification/verify_cm_weber_field.py
+wolfram -script verification/check-cm-research.wls
+python verification/plot_cm_genus_embeddings.py
+```
+
+The wrappers copy immutable packages into ignored `.scratch-third` and
+`.scratch-fourth` layouts. Exact reconstruction and optional Smith checks
+are separate from the notation diagnostics. New CM scripts use rational
+lattice caps and quadratic arithmetic, directed coefficient intervals with
+CM integrality, and an independent finite-field irreducibility witness.
+Native Wolfram checks and the finite-lattice plot are numerical diagnostics.
+The all-parameter CM conclusions require the manuscript's written proofs.
+The saved S8 coordinate receipt is an exact Fraction check of the displayed
+normalized coefficients and primitive vector; it does not prove equality.
+The signed replay reconstructs both frozen S6/S8 proximity enclosures.
+Neither zero-containing residual interval proves a period identity.

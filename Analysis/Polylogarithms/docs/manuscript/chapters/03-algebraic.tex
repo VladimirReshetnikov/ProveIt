@@ -235,22 +235,34 @@ evaluation, while its minimality and non-elementarity remain unproved.
 
 \section{Unit relations and the golden family}
 With $\phi=\tfrac{1+\sqrt5}2$, $\rho=\phi^{-1}$, the defining relation $1-\rho^2=\rho$ is the seed of the
-golden ladders. Reshetnikov's conjectures live among the values $\Li_n(\phi^{-2k})$; all coefficients below were
-obtained or verified by PSLQ (\texttt{mpmath}, $130$--$420$ digits, Champernowne canary) and, where the
-cancellation depth allows, cross-checked in Wolfram.
+golden ladders. Reshetnikov's conjectures live among the values $\Li_n(\phi^{-2k})$.
+The source used PSLQ to recover coefficient vectors and tested the resulting
+relations numerically (\texttt{mpmath}, $130$--$420$ digits, Champernowne
+canary), with Wolfram comparisons where the cancellation depth allowed.
+Exact functional-equation certificates, where supplied, are identified
+separately. This description concerns the evidence presented here; it does
+not assert that the corresponding identities lack proofs in the literature.
 \begin{remark}
-These golden combinations cancel $\sim10^8$-sized terms down to zero across $100$+ digits. The historical Wolfram evaluation under-resolved some cancellations; independently controlled precision in mpmath supplied a comparator. Neither engine is an accuracy oracle. (Per-term polylogarithm values agree between the two engines.)
+The source reports cancellation of $\sim10^8$-sized terms with more
+than $100$ matching decimal digits. Its historical Wolfram evaluation
+under-resolved some cancellations, so independently controlled precision
+in mpmath supplied a comparator. Agreement between numerical engines is
+a useful check, but does not establish exact equality.
 \end{remark}
 
-\section{Reshetnikov's conjectures, verified}
-The tetralogarithm conjecture (\href{https://math.stackexchange.com/q/1373123}{MSE 1373123},
-\href{https://mathoverflow.net/q/261408}{MO 261408}) holds: with $\alpha=\ln2,\beta=\ln3$,
+\section{Reshetnikov's formulas and their numerical evidence}
+The source recovered the following tetralogarithm relation
+(\href{https://math.stackexchange.com/q/1373123}{MSE 1373123},
+\href{https://mathoverflow.net/q/261408}{MO 261408}) numerically.
+With $\alpha=\ln2,\beta=\ln3$, its proposed form is
 \begin{multline}\label{golden:eq:tetra}
   720\Li_4(\tfrac12)-2160\Li_4(\tfrac13)+2160\Li_4(\tfrac23)\\+270\Li_4(\tfrac14)+540\Li_4(\tfrac34)+135\Li_4(\tfrac19)\\
   =19\pi^4+30(\pi^2-\beta^2)(10\alpha^2-12\alpha\beta+3\beta^2)-30\alpha^2(19\alpha^2-24\alpha\beta+8\beta^2),
 \end{multline}
 The source recovered this relation in its weight-four basket; uniqueness of all numerical relations is not established.
-The three $\Li_5$ golden conjectures also hold (verified to $\sim10^{-257}$):
+For the three $\Li_5$ golden formulas below, the source reports residuals
+of approximately $10^{-257}$. Their connection with the ladders of
+Abouzahra and Lewin~\cite{golden:AbouzahraLewin1985} is described below:
 {\scriptsize
 \begin{align}
   4455\Li_5(\phi^{-2})-1215\Li_5(\phi^{-4})-360\Li_5(\phi^{-6})+15\Li_5(\phi^{-12})
@@ -263,10 +275,12 @@ The three $\Li_5$ golden conjectures also hold (verified to $\sim10^{-257}$):
   &=5025\zeta(5)+2088\lp^5-240\pi^2\lp^3-28\pi^4\lp.\notag
 \end{align}}
 
-\section{Completing Tito's family: the unwritten weight-6 and weight-7 ladders}
-Tito's ``old answer'' lists the golden family at weights $2$--$5$ (all verified here), then states the weight-$6$
-and weight-$7$ ladders only schematically, the integer coefficients ``too tedious to write.'' We recover them by
-PSLQ. On the six-argument set $\{\phi^{-2},\phi^{-4},\phi^{-6},\phi^{-8},\phi^{-12},\phi^{-24}\}$:
+\section{Reconstructing Tito's weight-6 and weight-7 formulas}
+Tito's ``old answer'' lists the golden family at weights $2$--$5$
+(numerically checked in the source), then states the weight-$6$ and
+weight-$7$ ladders only schematically, the integer coefficients ``too
+tedious to write.'' PSLQ recovers the following candidate coefficient
+vectors on the six-argument set $\{\phi^{-2},\phi^{-4},\phi^{-6},\phi^{-8},\phi^{-12},\phi^{-24}\}$:
 {\footnotesize
 \begin{align}
 \label{golden:eq:Li6}
@@ -276,13 +290,21 @@ PSLQ. On the six-argument set $\{\phi^{-2},\phi^{-4},\phi^{-6},\phi^{-8},\phi^{-
   &74707920\Li_7(\phi^{-2})-39497220\Li_7(\phi^{-4})+8346240\Li_7(\phi^{-6})+1377810\Li_7(\phi^{-8})-6300\Li_7(\phi^{-12})-945\Li_7(\phi^{-24})\notag\\
   &\qquad=2814912\lp^7-979776\pi^2\lp^5+213696\pi^4\lp^3-51448\pi^6\lp+\mathbf{44689995}\,\zeta(7).
 \end{align}}
-The $\zeta(6)$ and $\zeta(7)$ coefficients reproduce Tito's stated $32155$ and $44689995$ \emph{exactly}---an
-independent confirmation that the reconstructions~\eqref{golden:eq:Li6}--\eqref{golden:eq:Li7} are correct (residuals
-$10^{-117}$, $10^{-114}$ by direct substitution; coefficients primitive).
+The $\zeta(6)$ and $\zeta(7)$ coefficients reproduce Tito's stated
+$32155$ and $44689995$ exactly. The source also reports direct-substitution
+residuals $10^{-117}$ and $10^{-114}$ for
+\eqref{golden:eq:Li6}--\eqref{golden:eq:Li7}, with primitive coefficient
+vectors. These are consistent numerical checks; an exact derivation of
+these displayed reconstructions is not supplied in this section.
 
-\section{Two weights beyond: explicit ladders at weight 8 and 9}
-Tito remarks that the index-$24$ ladder ``can be extended even to $n=9$'' but gives no formula. We find the
-explicit ladders. The searches on the six-argument set of~\eqref{golden:eq:Li6}--\eqref{golden:eq:Li7} found reductions at weights $2$--$7$ and none at $8$ or $9$. The accepted higher-weight formulas use the \emph{eight}-argument union of the index-$12$, $20$, $24$
+\section{Explicit candidate formulas at weights 8 and 9}
+Tito remarks that the index-$24$ ladder ``can be extended even to $n=9$''
+but gives no formula. The source recovers the following candidates.
+Its searches on the six-argument set of
+\eqref{golden:eq:Li6}--\eqref{golden:eq:Li7} detected numerical reductions
+at weights $2$--$7$ and none at $8$ or $9$ within the tested bounds.
+The accepted higher-weight candidates use the \emph{eight}-argument union
+of the index-$12$, $20$, $24$
 sets, $\mathcal A=\{\phi^{-2},\phi^{-4},\phi^{-6},\phi^{-8},\phi^{-10},\phi^{-12},\phi^{-20},\phi^{-24}\}$:
 {\scriptsize
 \begin{align}
@@ -295,27 +317,36 @@ sets, $\mathcal A=\{\phi^{-2},\phi^{-4},\phi^{-6},\phi^{-8},\phi^{-10},\phi^{-12
   &\quad-855671040\Li_9(\phi^{-10})-393750000\Li_9(\phi^{-12})+3342465\Li_9(\phi^{-20})+708750\Li_9(\phi^{-24})\notag\\
   &\qquad=-2364192000\lp^9+1022976000\pi^2\lp^7-258249600\pi^4\lp^5\notag\\ &\qquad\quad+55329600\pi^6\lp^3-14149132\pi^8\lp+125596001790\,\zeta(9).
 \end{align}}
-Both are verified by direct substitution (residuals $0$ at $150$ digits for~\eqref{golden:eq:Li8}, $10^{-190}$ at $200$
-digits for~\eqref{golden:eq:Li9}); coefficients are primitive. The weight-$9$ ladder appeared identically across three
-independent searches with different padding arguments (the extra arguments returned coefficient $0$), a strong
-guard against over-fitting.
+The source reports a residual printed as $0$ at $150$ working digits for
+\eqref{golden:eq:Li8}, and approximately $10^{-190}$ at $200$ working
+digits for \eqref{golden:eq:Li9}; both coefficient vectors are primitive.
+The weight-$9$ vector was recovered in three searches with different
+padding arguments, all of which received coefficient $0$.
+These observations support the formulas numerically. A residual printed
+as zero at finite precision does not establish exact equality.
 \begin{remark}
-So the golden family does \emph{not} cap at weight $7$: the closure persists, but the argument set grows---four
-or five arguments per index at weight $5$, six arguments at weights $6$--$7$, eight arguments (the full union) at
-weights $8$--$9$. Whether the growth can be sustained to arbitrarily high weight is exactly the question
-Abouzahra--Lewin address in the negative; our data are consistent with an eventual stop once the required
-argument set outgrows the available golden multiplicative relations.
+These experiments support golden formulas through weight $9$, using
+four or five arguments per index at weight $5$, six arguments at weights
+$6$--$7$, and eight arguments at weights $8$--$9$.
+Higher-order golden extrapolations and their numerical construction
+appear in Abouzahra--Lewin~\cite{golden:AbouzahraLewin1985} and
+Bailey--Broadhurst~\cite{golden:BaileyBroadhurst1999}.
+The present numerical evidence does not prove a maximal ladder weight.
+Completeness of a multiplicative seed list, additional higher-weight
+compatibility conditions, and numerical period independence are separate
+questions.
 \end{remark}
 
 \section{Reducing the tetralogarithm relation to a functional identity}
-The tetralogarithm relation~\eqref{golden:eq:tetra} follows from
-duplication together with the following cross-base functional identity.
-No independence claim about the six individual values is needed.
+Duplication reduces the proposed tetralogarithm relation
+\eqref{golden:eq:tetra} to the following cross-base relation.
+Proving that specialized relation would complete this derivation;
+no independence claim about the six individual values is needed.
 
 Two duplications
 $\Li_4(\tfrac14)=8\bigl(\Li_4(\tfrac12)+\Li_4(-\tfrac12)\bigr)$ and
 $\Li_4(\tfrac19)=8\bigl(\Li_4(\tfrac13)+\Li_4(-\tfrac13)\bigr)$ reduce the left side to the reflected arguments,
-and a single \emph{cross-base Kummer relation} then cancels every tetralogarithm:
+leaving the following proposed \emph{cross-base Kummer specialization}:
 {\footnotesize
 \begin{multline}\label{golden:eq:kummer}
   \Li_4(\tfrac34)+4\Li_4(\tfrac23)=-\tfrac{16}3\Li_4(\tfrac12)-4\Li_4(-\tfrac12)+2\Li_4(\tfrac13)-2\Li_4(-\tfrac13)
@@ -329,11 +360,24 @@ equation requires its branch conditions; the displayed specialized identity
 was checked numerically in the source and is retained as the explicit
 intermediate relation.
 
-\section{Canonical index-20/24 ladders and a $\zeta$-elimination chain}
+\section{Canonical index-12/20/24 ladders and a $\zeta$-elimination chain}
 Reshetnikov's $\Li_5$ conjectures are the weight-$5$ entries of three first-degree golden ladders (Abouzahra--Lewin).
-In canonical (monic, $a^{n-1}$-normalized) form, with $\rho=\phi^{-1}$, $\ell=\ln\rho$, and
-$\mathrm{tw}(n)=D_1\tfrac{\ell^n}{n!}+D_2\zeta(2)\tfrac{\ell^{n-2}}{(n-2)!}+D_3\zeta(4)\tfrac{\ell^{n-4}}{(n-4)!}$:
+For positive integer $n$, use the following canonical
+(monic, $a^{n-1}$-normalized) notation. Put $\rho=\phi^{-1}$,
+$\ell=\ln\rho$, and
+\[
+\mathrm{tw}(n)=D_1\frac{\ell^n}{n!}
+ +D_2\zeta(2)\frac{\ell^{n-2}}{(n-2)!}
+ +D_3\zeta(4)\frac{\ell^{n-4}}{(n-4)!},
+\]
+where a summand with a negative factorial index is omitted.
+The previously implicit $L_{12}$ is reconstructed from the first
+displayed weight-$5$ formula using the same normalization:
 \begin{align*}
+L_{12}(n)&=\frac{\Li_n(\rho^{12})}{12^{n-1}}
+-\frac32\frac{\Li_n(\rho^6)}{6^{n-1}}
+-\frac{\Li_n(\rho^4)}{4^{n-1}}
++\frac{11}{48}\frac{\Li_n(\rho^2)}{2^{n-1}}+\mathrm{tw}(n),\\
 L_{20}(n)&=\frac{\Li_n(\rho^{20})}{20^{n-1}}
 -\frac{\Li_n(\rho^{10})}{10^{n-1}}-3\frac{\Li_n(\rho^4)}{4^{n-1}}
 +\frac12\frac{\Li_n(\rho^2)}{2^{n-1}}+\mathrm{tw}(n),\\
@@ -343,25 +387,56 @@ L_{24}(n)&=\frac{\Li_n(\rho^{24})}{24^{n-1}}
 &\quad+\frac73\frac{\Li_n(\rho^4)}{4^{n-1}}
 -\frac{205}{576}\frac{\Li_n(\rho^2)}{2^{n-1}}+\mathrm{tw}(n).
 \end{align*}
-The coefficient triples are respectively
-$(-1/2,1/25,-89/4000)$ and $(179/576,-5/192,629/41472)$, and
+For $L_{12},L_{20},L_{24}$ respectively, the triples $(D_1,D_2,D_3)$ are
 \[
-L_{20}(5)=\frac{201}{10000}\zeta(5),\qquad
-L_{24}(5)=-\frac{1541}{110592}\zeta(5).
+(-13/48,1/48,-19/1728),\quad
+(-1/2,1/25,-89/4000),\quad
+(179/576,-5/192,629/41472).
 \]
-\!each vanishing for $n\le4$. The shared factor $67$ in $201=3\cdot67$, $1541=23\cdot67$ is what lets the three
-indices jointly eliminate $\zeta(5)$. Combining them removes higher zetas: $M_{20}=L_{20}-\tfrac{1296}{625}L_{12}$ and
-$M_{24}=L_{24}+\tfrac{23}{16}L_{12}$ kill $\zeta(5)$ and reach weight $7$, and
-$T=M_{24}+\tfrac{409375}{373248}M_{20}$ kills $\zeta(7)$ and reaches weight $9$, with
-$T(9)=\tfrac{66452911}{41278242816000}\zeta(9)+\tfrac{3537283}{2063912140800}\zeta(8)\ell-\tfrac{11527}{2866544640}\zeta(6)\tfrac{\ell^3}{3!}$
-(confirmed by direct substitution and an independent PSLQ at $460$ digits). This is the Abouzahra--Lewin route to
-weight $9$, distinct from the single eight-argument ladders~\eqref{golden:eq:Li8}--\eqref{golden:eq:Li9}.
+The displayed weight-$5$ formulas are equivalent, by exact rational
+recombination and normalization, to
+\[
+\begin{aligned}
+L_{12}(5)&=\frac{67}{6912}\zeta(5),&
+L_{20}(5)&=\frac{201}{10000}\zeta(5),\\
+L_{24}(5)&=-\frac{1541}{110592}\zeta(5).
+\end{aligned}
+\]
+For the last formula, first add $64/3$ times the first displayed
+weight-$5$ formula to the third, eliminating $\Li_5(\rho^6)$, then
+divide by $-15\cdot24^4$.
+This supplies the missing notation; it does not provide a new proof of
+those evaluations. The source's low-order vanishing statements, with the
+factorial convention above, concern $1\le n\le4$.
+The rational combinations
+$M_{20}=L_{20}-\tfrac{1296}{625}L_{12}$ and
+$M_{24}=L_{24}+\tfrac{23}{16}L_{12}$ cancel the displayed
+$\zeta(5)$ coefficients exactly. The source's subsequent numerical
+extrapolation reaches weight $7$ and forms
+$T=M_{24}+\tfrac{409375}{373248}M_{20}$ to cancel its
+$\zeta(7)$ term and reach weight $9$, proposing
+\[
+T(9)=\frac{66452911}{41278242816000}\zeta(9)
+ +\frac{3537283}{2063912140800}\zeta(8)\ell
+ -\frac{11527}{2866544640}\zeta(6)\frac{\ell^3}{3!}.
+\]
+The source reports direct substitution and an independent PSLQ check at
+$460$ digits for this expression. Those checks record numerical evidence
+for the higher-order extrapolation, rather than a functional-equation
+certificate. This presentation follows the Abouzahra--Lewin ladder
+construction~\cite{golden:AbouzahraLewin1985}; the single eight-argument
+formulas \eqref{golden:eq:Li8}--\eqref{golden:eq:Li9} are written separately.
 
-\section{A new ladder base: the minimal Pisot number}
-Beyond the golden ratio, the reciprocal of the minimal Pisot number $\omega=0.7548776\ldots$ (the real root of $x^3+x^2-1$, the base
-Abouzahra--Lewin deferred to a never-published sequel) carries its own ladder. Its seeds are pure units---$1-\omega=\omega^5$,
-$1-\omega^2=\omega^3$, $1-\omega^3=\omega^2$, $1-\omega^5=\omega$---and the first-degree ladder climbs to weight $4$
-(with $\lambda=\ln\omega$):
+\section{The minimal Pisot ladder base}
+Beyond the golden ratio, the reciprocal of the minimal Pisot number
+$\omega=0.7548776\ldots$, the real root of $x^3+x^2-1$, carries its
+own ladders. Abouzahra, Lewin, and Xiao Hongnian studied this field in
+their published 1987 sequel~\cite{golden:AbouzahraLewinXiao1987}.
+Its seeds include the pure-unit relations
+$1-\omega=\omega^5$, $1-\omega^2=\omega^3$,
+$1-\omega^3=\omega^2$, and $1-\omega^5=\omega$.
+The source records the following low-weight formulas, with
+$\lambda=\ln\omega$:
 {\footnotesize
 \begin{align*}
   &\tfrac12\Li_2(\omega^2)-\Li_2(\omega^5)-\lambda^2=0,\qquad
@@ -392,9 +467,12 @@ Pisot number $x^4-x^3-1$),
 \end{align*}}
 \!each verified in two engines (and by direct substitution to $400$+ digits). The lesson is methodological:
 \textbf{a PSLQ ``no relation'' is not a proof of non-existence.} The first relation above was \emph{missed} by a
-pure-tower PSLQ search at $300$ digits, yet holds by direct substitution to $400$---so the survey's negative
-verdicts were false negatives. The reliable test is to take a candidate relation and substitute it at precision far
-above where it was found. Their analytic proofs follow below; whether these two bases climb past weight $3$ remains open; the question is delicate
+pure-tower PSLQ search at $300$ digits, yet passed direct substitution
+at $400$ digits. Its exact proof below establishes that this was a false
+negative. Recomputing a frozen candidate at precision well above its
+discovery precision is a useful diagnostic; the analytic proofs below
+establish the two identities. Whether these two bases climb past weight
+$3$ remains open in the present investigation; the question is delicate
 precisely because PSLQ negatives cannot settle it.
 \input{chapters/03-ladder-certificates}
 \input{chapters/03-complement-rigidity}
@@ -469,12 +547,22 @@ a lower bound for a kernel or exhaust that chosen construction. It does
 not prove there are no additional seeds, no dependencies among constraints,
 and no other functional identities at higher weight.
 
-The later source identifies the minimal-Pisot ladders through weight six
-and points to Cohen--Lewin--Zagier's published numerical sixteenth-order Lehmer ladder~\cite{CohenLewinZagier}. These supersede earlier negative searches. Its stronger assertion
-that the supergolden field has no weight-five real ladder is not justified
-by exhausting its selected seed set, and is omitted. Determining a maximal
-ladder weight requires a completeness theorem for the chosen class of
-relations.
+The later project source identifies minimal-Pisot ladders through
+weight six. The published literature already includes the 1987
+Abouzahra--Lewin--Xiao paper~\cite{golden:AbouzahraLewinXiao1987},
+which distinguishes analytic low-weight results from numerical higher
+ladders, and Gangl's proved weight-six and weight-seven relations for
+single-valued modified polylogarithms~\cite{golden:Gangl2013}.
+The modified and ordinary polylogarithms must be distinguished when
+comparing these statements, particularly at real arguments and even
+weight. Cohen--Lewin--Zagier's published numerical sixteenth-order
+Lehmer ladder~\cite{CohenLewinZagier} supplies another substantial example.
+These results supersede earlier bounded negative searches. The project
+source's stronger assertion that the supergolden field has no weight-five
+real ladder is not justified by exhausting its selected seed set, and
+is omitted. A maximal-weight theorem needs completeness for the chosen
+class of higher-weight relations; completeness of multiplicative seeds
+alone does not establish it.
 
 \section{Attributed dilogarithm and inverse-binomial examples}\label{sec:dilog-examples}
 The following examples are attributed to Hakimoglu-Brown~\cite{HakimogluBrown}. Their displayed numerical checks in the source are historical.

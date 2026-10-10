@@ -1,0 +1,156 @@
+\section{A self-contained analytic foundation for the zero results}
+\label{sec:zero-preliminaries}
+
+The new zero-count arguments require a bound valid on the entire positive
+axis, including multiple zeros. We give the necessary proof here. This
+section reproduces the mechanism already established in the baseline;
+the subsequent classical and deformation results are the continuation.
+
+For $n\ge0$, $k\ge1$, and $0\le\rho\le1$, set
+\begin{equation}\label{eq:unified-D}
+ D_{n,k}^{\rho}(a)=\sum_{m\ge0}\rho^m
+       \frac{d^k}{da^k}\frac{\log^n(a+m)}{a+m}.
+\end{equation}
+The summands are $O(m^{-k-1}(1+\log^n m))$ on compact positive
+$a$ intervals. Thus this series and all its fixed $a$ derivatives converge
+normally, uniformly in $\rho\in[0,1]$. For $\rho<1$ it equals the
+$k$th derivative of
+$(-1)^n\partial_s^n\Phi(\rho,s,a)|_{s=1}$.
+
+At $\rho=1$, differentiating the Hurwitz identity
+\[
+ \partial_a^k\zeta(s,a)=(-1)^k(s)_k\zeta(s+k,a)
+\]
+in a right half-plane and continuing to $s=1$ proves
+$D_{n,k}^1=\gamma_n^{(k)}$. More explicitly, if
+\[
+ P_k(z)=\prod_{j=1}^k(1+z/j)=\sum_i e_i(k)z^i,
+\]
+then coefficient comparison at $s=1+z$ gives
+\begin{equation}\label{eq:master-coefficients}
+ D_{n,k}^{\rho}(a)=(-1)^{n+k}k!n!
+ \sum_{i+j=n}\frac{e_i(k)}{j!}
+     \partial_s^j\Phi(\rho,k+1,a).
+\end{equation}
+At $\rho=1$, the last $\Phi$ denotes $\zeta$. The pole in
+\eqref{eq:laurent-convention} is independent of $a$, which is why no pole
+term remains after a positive number of parameter derivatives. This is
+the harmonic-coordinate version of the all-order formula treated by
+Coffey \cite{Coffey}.
+
+\subsection{The positive weight and the reciprocal-gamma polynomial}
+
+Define monic Appell polynomials by
+\begin{equation}\label{eq:Q-generating}
+ \frac{e^{xz}}{\Gamma(1+z)}=\sum_{n\ge0}Q_n(x)\frac{z^n}{n!}.
+\end{equation}
+For example, with $y=x+\gamma$,
+\[
+ Q_1=y,\qquad Q_2=y^2-\zeta(2),\qquad
+ Q_3=y^3-3\zeta(2)y+2\zeta(3).
+\]
+The Mellin formula and $(1+z)_k/\Gamma(k+1+z)=1/\Gamma(1+z)$
+give
+\begin{equation}\label{eq:positive-Laplace}
+ (-1)^{n+k}D_{n,k}^{\rho}(a)
+ =\int_0^\infty\frac{t^k e^{-at}}{1-\rho e^{-t}}Q_n(\log t)\dd t.
+\end{equation}
+To justify coefficient extraction and differentiation, use
+\[
+ 1\le\frac1{1-\rho e^{-t}}\le\frac1{1-e^{-t}}\le1+\frac1t.
+\]
+Near zero the integrable majorants are
+$t^{k-1-\epsilon}(1+|\log t|^n)$ with $0<\epsilon<k$;
+at infinity a positive lower bound on $a$ supplies exponential decay.
+Any fixed number of $a$ derivatives only multiplies by a power of $t$.
+These estimates also prove continuity at $\rho=1$.
+
+\begin{lemma}[Root preservation and strictness]\label{lem:root-operator}
+If a real polynomial $p$ has only real roots and $c\ne0$ is real, then
+$p+cp'$ has only real roots. A root of multiplicity $m\ge2$ is inherited
+with multiplicity $m-1$; all other roots are simple. Consequently any
+sequence of $n-1$ such operators makes a degree-$n$ real-rooted polynomial
+strictly real-rooted.
+\end{lemma}
+\begin{proof}
+Away from the distinct roots $r_i$ of $p$, of multiplicities $m_i$, the
+new roots satisfy
+\[
+ \frac{p'}p=\sum_i\frac{m_i}{x-r_i}=-\frac1c.
+\]
+The left side has strictly negative derivative on each complementary
+interval. Its endpoint limits give one simple solution in each gap and
+one in the appropriate exterior interval. Factoring at $r_i$ gives the
+inherited multiplicity, and the degree accounts for all roots.
+Repeated application reduces every possible multiplicity without
+introducing new multiple roots.
+\end{proof}
+
+\begin{proposition}\label{prop:Q-simple}
+For each $n\ge1$, $Q_n$ has $n$ distinct real roots. The zeros of
+$Q_{n-1}$ strictly interlace them.
+\end{proposition}
+\begin{proof}
+Use the locally uniform Weierstrass product \cite{DLMFGamma}
+\[
+ \frac1{\Gamma(1+z)}=e^{\gamma z}
+       \prod_{m\ge1}(1+z/m)e^{-z/m}.
+\]
+For a finite product, extracting $n![z^n]$ after multiplying by $e^{xz}$
+amounts to applying real translations and the operators
+$1+\partial_x/m$ to $x^n$. Lemma~\ref{lem:root-operator} proves real
+rootedness of every such polynomial. Coefficient convergence preserves
+real rootedness for monic polynomials of fixed degree.
+
+Simplicity requires an additional step: a limit of polynomials with simple
+roots need not have simple roots. Remove the first $n-1$ factors from the
+infinite product. The same argument makes the polynomial associated with
+the tail real-rooted. Restore those $n-1$ factors; their translations
+commute with the differential operators, and the lemma makes every root
+simple. Finally $Q_n'=nQ_{n-1}$ gives strict interlacing by Rolle's theorem.
+\end{proof}
+
+\subsection{The global bound counts multiplicities}
+
+\begin{lemma}[Laplace variation bound]\label{lem:laplace-variation}
+Suppose $g(t)$ has exactly $N$ sign changes on $(0,\infty)$, with a
+fixed nonzero sign between successive sign-change points up to null sets.
+Suppose its exponentially weighted polynomial moments are absolutely
+integrable for every positive Laplace parameter. Then
+$G(a)=\int_0^\infty e^{-at}g(t)\dd t$ is nonzero as a function and has
+at most $N$ zeros on $(0,\infty)$, counted with multiplicity.
+\end{lemma}
+\begin{proof}
+For $N=0$ the integral has fixed strict sign. For $N>0$, choose a
+sign-change point $t_0$. The function $(t_0-t)g(t)$ has one fewer sign
+change, and its transform is
+\[
+ (\partial_a+t_0)G(a)
+ =e^{-t_0a}\frac{d}{da}\bigl(e^{t_0a}G(a)\bigr).
+\]
+Induction bounds its zeros by $N-1$. If any finite collection of zeros
+of $G$ has total multiplicity $M$, Rolle's theorem with multiplicity
+gives at least $M-1$ zeros of the displayed derivative, including the
+inherited endpoint multiplicities. Hence $M\le N$. This applies to every
+finite collection. The induction also proves nonvanishing: an identically
+zero $G$ would have an identically zero transformed derivative.
+\end{proof}
+
+\begin{theorem}[Baseline global zero theorem, reproduced]
+\label{thm:global-zero-bound}
+For every $n\ge0$, $k\ge1$, and $0\le\rho\le1$,
+$D_{n,k}^{\rho}$ has at most $n$ positive zeros, counted with multiplicity.
+\end{theorem}
+\begin{proof}
+In \eqref{eq:positive-Laplace}, the factor $t^k/(1-\rho e^{-t})$ is
+strictly positive. Proposition~\ref{prop:Q-simple} says that
+$Q_n(\log t)$ has exactly $n$ simple sign changes. The domination already
+proved supplies the moment hypotheses of Lemma~\ref{lem:laplace-variation}.
+That lemma proves the conclusion, including nonvanishing.
+\end{proof}
+
+This bound will serve two distinct purposes. At a derivative order with
+$n$ certified sign changes it proves completeness and simplicity. At a
+parameter where a double zero is known to exist, it can rule out higher
+degeneracy once the other zeros use the remaining available multiplicity.
+The latter use is what makes the Lerch bifurcation proof rigorous.

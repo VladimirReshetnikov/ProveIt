@@ -1,0 +1,157 @@
+\section{Scope, conventions, and principal results}
+\label{cont:sec:introduction}
+
+This article continues the research programme in \emph{Polylogarithms
+and their Arithmetic Bridges} at the immutable ProveIt commit
+\texttt{cc34f73596336f2466d9754cb0f3635bd2bedade}, dated
+10 October 2026 \cite{cont:ProveIt}. The baseline includes both the
+consolidated manuscript and six newly deposited research archives.
+This distinction matters: several conjectures still labelled open in
+the consolidated text already have proofs in those incoming archives.
+The present contribution does not count those proofs as new work.
+An accompanying inventory records the exact source and archive hashes.
+
+The results concern three structures which recur throughout the
+programme. Positive Mellin integrals control alternating harmonic sums;
+gamma concentration describes a transition in reflected log-gamma
+moments; integral distribution relations organize rational-grid special
+values. A shorter fourth part reconciles the two recorded weight-seven
+Gaussian candidates by an exact shuffle identity. The proofs are analytic
+and algebraic, with one explicitly identified computer-assisted inequality
+whose finite middle-interval step uses exact integer arithmetic. Other
+computations supply reproducible checks and examples, and are identified
+explicitly when they provide only numerical evidence.
+
+\subsection{What is already known in the pinned material}
+
+The consolidated manuscript already proves the mixed Gaussian
+$S_4$ evaluation, signed first-omitted-term bounds for the harmonic
+family, its first-pole transition, an all-orders expansion within that
+transition, and a saddle expansion when the exponent-to-depth ratio
+stays in a fixed positive compact interval. Its reflected log-gamma
+theory includes fixed-reflected-exponent expansions, late coefficients,
+and a sharp optimal-truncation remainder. Its distribution theory
+includes arbitrary complex weights, conductor coordinates, exceptional
+spectral jets, and a primitive-grid determinant up to a constant from
+the choice of complex coordinates.
+
+The six incoming archives additionally include proofs of the odd-weight
+rank conjecture for the signed depth-two product module, extensions to
+other levels, integral Smith calculations for that product module,
+independent $S_4$ certificates, complement-collision classifications,
+CM evaluations, and further zero-geometry results. These are distinct
+from the integral distribution lattice studied here. A small apparent
+coefficient relation found numerically at a higher weight is not made
+a theorem by being stored in an incoming report. In particular, both
+recorded $S_6$ formulas remain conjectural.
+
+\subsection{The contributions proved here}
+
+\begin{enumerate}[leftmargin=*,label=\arabic*.]
+\item \textbf{A single harmonic saddle over the whole moving range.}
+Theorem~\ref{us:thm:uniform} gives an all-orders \emph{relative}
+expansion as $p\to\infty$, uniformly for all integers $h\ge1$ and
+all $a>0$. It allows $p/h$ to tend to zero, to remain bounded, or to
+grow without bound. The exact saddle incorporates the shift $a$.
+A global gamma-phase upper bound makes this uniformity possible.
+This resolves the request in the proportional-depth chapter for an
+approximation which continues through the growing-ratio transition.
+
+\item \textbf{An inverse transition with explicit corrections.}
+Theorem~\ref{us:thm:inverse} determines the unique real outer exponent
+at which the normalized harmonic sum reaches a prescribed value
+$\theta\in(0,1)$. It gives a finite recursion to every order and
+prints the first two correction polynomials. Its error is proved by
+asymptotic brackets, without differentiating an unspecified remainder.
+
+\item \textbf{A transition when both reflected moment exponents grow.}
+Theorem~\ref{joint:thm:transition} treats
+$(n+1)/(m+1)=\log m+O(1)$ with $m\to\infty$. The fixed-$m$
+endpoint formula acquires a surviving factor
+\[
+ \exp\!\left[\left(\frac{\zeta(2)}{2\gamma}-\gamma\right)
+       m\exp\!\left(-\frac{n+1}{m+1}\right)\right].
+\]
+Two corrections and an all-orders coefficient rule are proved.
+Corollary~\ref{joint:cor:top-coefficients} gives exact identities for
+two extremal coefficient families in every order.
+
+\item \textbf{A unique saddle for every proportional moment.}
+Theorem~\ref{gs:thm:monotonicity} proves that
+\[
+ x\longmapsto
+ \frac{-\psi(x)\log\Gamma(1-x)}
+      {-\psi(1-x)\log\Gamma(x)}
+\]
+is strictly increasing on $(0,1)$. The proof combines analytic
+endpoint estimates with a small exact rational interval certificate.
+Theorem~\ref{gs:thm:proportional} consequently gives the complete
+moment expansion for exponent ratios in any compact positive
+interval, including a unique nondegenerate saddle. This settles
+another part of the simultaneous large-exponent problem.
+
+\item \textbf{Integral coordinates and the complete two-prime
+primitive cokernel.} Theorem~\ref{intdist:thm:basis} gives a concrete
+grid basis over every commutative coefficient ring. Its finite
+resolution is an explicit adaptation of classical universal-distribution
+methods. The principal additional calculation is
+Theorem~\ref{intdist:thm:two-prime}: a complete presentation of the
+primitive-grid cokernel at $q=p\ell$, including torsion at singular
+weights. Its Smith factors give the exact denominator required to
+express all grid points in primitive coordinates. Explicit level-fifteen
+Hurwitz-zeta identities illustrate the result.
+
+\item \textbf{An exact reconciliation of the weight-seven
+candidates.} Proposition~\ref{s6audit:prop:coordinate} proves a
+coordinate identity among Gaussian doubles and shows that the two
+$S_6$ candidates are the same conjecture. The displayed certificate
+uses two convergent shuffles. An incomplete larger relation search
+is reported as inconclusive.
+\end{enumerate}
+
+The phrase ``additional result'' means an extension of the audited
+baseline, with the antecedents stated below. It is not a claim of
+global priority after an exhaustive literature search. In particular,
+the freeness/resolution principle in universal distributions is
+classical; its role here is to support explicit integral calculations,
+not to rename an existing general theory.
+
+\subsection{Notation and interpretation}
+
+We use $\gamma$ for Euler's constant and
+$\beta(s)=\sum_{n\ge0}(-1)^n(2n+1)^{-s}$ for the Dirichlet beta
+function when the defining series converges. The multiple-polylogarithm
+convention is
+\[
+ \operatorname{Li}_{s_1,\ldots,s_d}(z_1,\ldots,z_d)
+ =\sum_{n_1>\cdots>n_d\ge1}
+    \frac{z_1^{n_1}\cdots z_d^{n_d}}
+         {n_1^{s_1}\cdots n_d^{s_d}},
+\]
+continued only where a continuation is expressly indicated. All
+Gaussian shuffles used for the coordinate theorem converge ordinarily.
+The normalized harmonic quantity $R_{p,h}$ and the normalized moment
+$\mathcal R_{n,m}$ are different functions. The symbol $\lambda$ is a
+local transition parameter defined separately in each section.
+
+The term \emph{formal distribution module} refers to symbols subject
+to specified linear multiplication relations. Its rank is not the
+dimension of the span of the corresponding evaluated special values.
+Similarly, a Smith factor describes a particular integral inclusion;
+it is not an assertion of algebraic or transcendence independence.
+These distinctions are essential at exceptional weights and in finite
+characteristic.
+
+\subsection{Reading and integration guide}
+
+Sections~\ref{us:sec:uniform}--\ref{us:sec:inverse} extend the harmonic
+chapters. Sections~\ref{joint:sec:moments}--\ref{gs:sec:main} belong
+after the fixed-$m$ reflected-moment and sharp-remainder material.
+Section~\ref{intdist:sec:main} supplements the distribution and
+conductor chapters. Section~\ref{s6audit:sec:main} belongs beside the
+weight-seven conjecture. Section~\ref{cont:sec:editorial} records
+proposed corrections and status changes; the final sections describe
+the computational evidence and a prioritized research agenda.
+The archive includes both an assembled \TeX{} article and modular
+section files, together with exact verifiers, numerical diagnostics,
+source receipts, and a small proposed editorial patch.

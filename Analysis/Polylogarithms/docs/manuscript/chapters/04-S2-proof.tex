@@ -1,0 +1,112 @@
+\subsection{A weight-three companion with its full small certificate}
+
+\begin{theorem}[The first even-index harmonic sum]\label{s2proof:thm:S2}
+With $G=\beta(2)$ and $L=\log2$,
+\begin{align*}
+ S_2&=-2g_{2,1}+\frac{\pi^3}{32}-2GL\\
+ &=2\operatorname{Im}\operatorname{Li}_3\!\left(\frac{1+i}{2}\right)
+ -GL-\frac{\pi L^2}{16}-\frac{\pi^3}{64}.
+\end{align*}
+\end{theorem}
+
+This is the first even-index companion of the weight-five reduction.  It is presented
+as a proved addition, without a claim of priority in the broader
+Euler-sum literature.
+
+\begin{proof}
+Use the convergent integral word $J(w)=\mathcal I(w)$ of the preceding
+$S_4$ proof, with forms $dt/(t-a)$. The short certificate makes the
+weight-three argument fully explicit.  Code the letters by
+\[
+ a=-i,\qquad b=-1,\qquad c=1,\qquad d=i,\qquad o=0.
+\]
+Let $\mathcal D(U,V)$ be signed stuffle minus shuffle in this integral-word
+convention. Let $P$ be the letter pullback of the preceding octahedral
+involution, so $P(a)=d-b$, $P(b)=-b$, $P(c)=o-b$,
+$P(d)=a-b$ and $P(o)=c-b$. Put
+$\mathcal O(w)=w+\operatorname{rev}P(w)$ at weight three.  Both evaluate
+to zero, with the degree-one regularization used when $U=c$, as justified by
+the comparison operator in the preceding $S_4$ proof. Every final word
+is convergent.
+Let $\mathfrak I$ denote projection to the formal imaginary word space:
+$\mathfrak I(\bar w)=-\mathfrak I(w)$, and entirely real words are zero.
+Here the space has $(80-12)/2=34$ coordinates, with no assertion of
+numerical independence.
+
+The target is
+\[
+ T_3=12oaa+4oad+(d-a)^{\sh3}-8(oa)\sh b.
+\]
+The complete certificate is
+\begin{equation}\label{s2proof:certificate}
+ \mathfrak I(T_3)=
+ \sum_{(U,V,k)\text{ in Table }\ref{s2proof:ds}}
+ k\mathfrak I(\mathcal D(U,V))
+ +8\mathfrak I(\mathcal O(aab))-8\mathfrak I(\mathcal O(aaa)).
+\end{equation}
+This is a finite rational word identity: expand each shuffle and signed
+stuffle, apply the five-letter pullback, and identify conjugates.  Every
+coefficient agrees exactly.  Both provided implementations reconstruct
+and verify the identity using rational arithmetic; the second imports
+none of the first implementation's word code.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{ccc|ccc}
+$U$&$V$&$k$&$U$&$V$&$k$\\ \hline
+$a$&$aa$&$-12$&$b$&$ba$&$24$\\
+$a$&$ab$&$-6$&$c$&$ba$&$-48$\\
+$a$&$ad$&$12$&$a$&$dc$&$-14$\\
+$a$&$bb$&$-48$&$a$&$db$&$10$\\
+$a$&$bc$&$32$&$c$&$ad$&$24$\\
+$a$&$oa$&$6$&$c$&$aa$&$-24$\\
+$a$&$da$&$12$&$b$&$ad$&$-4$\\
+$a$&$dd$&$12$&$a$&$bd$&$-4$\\
+$a$&$ac$&$6$&$a$&$od$&$-10$\\
+$b$&$ab$&$16$&$a$&$oc$&$-26$\\
+$a$&$ob$&$22$&$c$&$oa$&$48$\\
+$b$&$ac$&$8$&&&\\ \hline
+\end{tabular}
+\caption{All $23$ double-shuffle coefficients in the $S_2$ certificate.
+The four rows with first factor $c$ use one degree of regularization.}
+\label{s2proof:ds}
+\end{table}
+
+The two additional octahedral rows are completely explicit:
+\[
+\begin{array}{c|l|r}
+w&\mathcal O(w)&\text{coefficient}\\ \hline
+aab&aab-b(d-b)^2&8\\
+aaa&aaa+(d-b)^3&-8
+\end{array}
+\]
+All products inside these two word expressions are concatenations,
+not shuffle products.  For example, $P(a)=d-b$ and $P(b)=-b$;
+reversal therefore gives
+$\operatorname{rev}P(aab)=-b(d-b)^2$.
+
+To translate the target, the elementary harmonic parity split yields
+\[
+ S_2=g_{2,1}+u_{2,1},\qquad
+ u_{2,1}=\operatorname{Im}\operatorname{Li}_{2,1}(i,-1).
+\]
+Furthermore,
+\[
+ J(d)-J(a)=\frac{i\pi}{2},\qquad J(b)=L,\qquad
+ J(oa)=-\operatorname{Li}_2(i).
+\]
+Consequently
+\[
+ \operatorname{Im}J(T_3)
+ =4\left(S_2+2g_{2,1}-\frac{\pi^3}{32}+2GL\right).
+\]
+All rows on the right of \eqref{s2proof:certificate} evaluate to zero,
+proving the first formula.  The height-one reduction below, obtained from
+\eqref{gaussian:eq:height-one-general}, gives
+\[
+ g_{2,1}=-\frac{GL}{2}+\frac{\pi L^2}{32}
+ -\operatorname{Im}\operatorname{Li}_3\!\left(\frac{1+i}{2}\right)
+ +\frac{3\pi^3}{128}
+\]
+then gives the second formula by substitution.
+\end{proof}

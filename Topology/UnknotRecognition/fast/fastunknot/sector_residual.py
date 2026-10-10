@@ -36,7 +36,7 @@ def _projective(vector,check):
     return tuple((i,value//(divisor*sign))for i,value in sorted(integers.items())),sign
 
 
-def _full_quad_columns(prepared,check):
+def _full_quad_columns(prepared,check,retain_potentials=False):
     """Eliminate triangle incidence by a sparse forest, keeping all Q types."""
     count=len(prepared['tetrahedra']);adjacency=[[]for _ in range(4*count)]
     edges=[];constraints=[]
@@ -71,7 +71,7 @@ def _full_quad_columns(prepared,check):
     for r,row in enumerate(rows):
         check()
         for i,value in row:columns[i][r]=value
-    return columns,len(rows)
+    return (columns,len(rows),potentials)if retain_potentials else (columns,len(rows))
 
 
 def _reduce(vector,basis,check):
@@ -81,24 +81,46 @@ def _reduce(vector,basis,check):
     return vector
 
 
+def _reduce_with_coefficients(vector,basis,representations,check):
+    coefficients={}
+    for pivot,row in sorted(basis.items()):
+        check()
+        if pivot in vector:
+            value=vector[pivot]
+            vector=_add(vector,row,-value,check)
+            coefficients=_add(coefficients,representations[pivot],value,check)
+    return vector,coefficients
+
+
 def _signature(rows):
     return tuple(next((q for q in range(3)if row[4+q]),-1)for row in rows)
 
 
-def _plan_window(prepared,rows,radius,check):
-    base=_signature(rows);columns,count=_full_quad_columns(prepared,check);basis={}
-    for t,q in enumerate(base):
+def _plan_window(prepared,rows,radius,check,base_basis=None):
+    base=_signature(rows);basis={};representations={}
+    if base_basis is None:columns,count=_full_quad_columns(prepared,check)
+    else:columns,count,potentials=_full_quad_columns(prepared,check,True)
+    selected=tuple((t,q)for t,q in enumerate(base)if q>=0)
+    for index,(t,q) in enumerate(selected):
         check()
-        if q<0:continue
-        vector=_reduce(columns[3*t+q],basis,check)
+        if base_basis is None:vector=_reduce(columns[3*t+q],basis,check)
+        else:vector,coefficients=_reduce_with_coefficients(columns[3*t+q],basis,representations,check)
         if vector:
             pivot=min(vector);scale=Fraction(vector[pivot])
             basis[pivot]={i:value/scale for i,value in vector.items()}
+            if base_basis is not None:
+                combination=_add({index:1},coefficients,-1,check)
+                representations[pivot]={i:value/scale for i,value in combination.items()}
     zero=[];groups={}
+    residuals={};coefficients_by_type={}
     for t,q in product(range(len(base)),range(3)):
         check()
         if q==base[t]:continue
-        key,sign=_projective(_reduce(columns[3*t+q],basis,check),check)
+        if base_basis is None:vector=_reduce(columns[3*t+q],basis,check)
+        else:
+            vector,coefficients=_reduce_with_coefficients(columns[3*t+q],basis,representations,check)
+            residuals[t,q]=vector;coefficients_by_type[t,q]=coefficients
+        key,sign=_projective(vector,check)
         if not key:zero.append((t,q))
         else:groups.setdefault(key,{1:[],-1:[]})[sign].append((t,q))
     opposite=[];zero_pairs=[]
@@ -112,11 +134,15 @@ def _plan_window(prepared,rows,radius,check):
             if a[0]!=b[0]:zero_pairs.append((a,b))
     opposite=sorted(set(opposite));zero_pairs=sorted(zero_pairs)
     edits=[()] + [(item,)for item in zero]+opposite+zero_pairs
-    return dict(base_types=base,edits=edits,stats=dict(radius=radius,
+    plan=dict(base_types=base,edits=edits,stats=dict(radius=radius,
         global_cycle_rows=count,base_rank=len(basis),
         base_nullity=sum(q>=0 for q in base)-len(basis),
         zero_columns=len(zero),projective_groups=len(groups),opposite_pairs=len(opposite),
         zero_pairs=len(zero_pairs),candidate_sectors=len(edits)))
+    if base_basis is not None:
+        from .sector_window_basis import WindowBasis
+        plan['_matching_updates']=WindowBasis(selected,base_basis,residuals,coefficients_by_type,potentials)
+    return plan
 
 
 def plan_sector_window(triangulation,coordinates,*,radius=2,check=lambda:None):
@@ -142,14 +168,26 @@ def search_sector_window(triangulation,coordinates,*,radius=2,max_cycles=None,
         raise ValueError('invalid orbit allowance')
     if stats is None:stats={}
     stats.update(radius=radius,sectors_queried=0,rays=0,orbit_cycles=0,
-                 incomplete_disc_queries=0,window_complete=False)
+                 incomplete_disc_queries=0,window_complete=False,full_basis_builds=0,basis_updates=0)
     source=PreparedSectorSource(triangulation,check=check)
     rows=_coordinates(source.prepared,coordinates,check)['rows'];base=_signature(rows)
-    def query(edits):
+    base_kernel=None
+    def query(edits,matching_basis=None,matching_model=None):
+        nonlocal base_kernel
         signature=list(base)
         for t,q in edits:signature[t]=q
         allowed=[(t,q)for t,q in enumerate(signature)if q>=0]
-        kernel=source.build(allowed,check=check)
+        if matching_basis is None:
+            kernel=source.build(allowed,check=check);stats['full_basis_builds']+=1
+        else:
+            stats['basis_updates']+=1
+            if not matching_basis:
+                stats['sectors_queried']+=1
+                return None
+            from .sector_window_basis import projected_window_kernel
+            kernel=projected_window_kernel(triangulation,source.prepared,allowed,matching_basis,
+                matching_model.potentials,check)
+        if not edits:base_kernel=kernel
         stats['sectors_queried']+=1
         if len(kernel.basis)==3:
             from .sector_planar import sector_planar_discovery_rays
@@ -174,9 +212,12 @@ def search_sector_window(triangulation,coordinates,*,radius=2,max_cycles=None,
         return None
     answer=query(())
     if answer is not None:return answer
-    plan=_plan_window(source.prepared,rows,radius,check);stats.update(plan['stats'])
+    plan=_plan_window(source.prepared,rows,radius,check,base_kernel.basis);stats.update(plan['stats'])
     for edits in plan['edits'][1:]:
-        check();answer=query(edits)
+        check();allowed,basis=plan['_matching_updates'].for_edits(edits,check)
+        expected=tuple((t,q)for t,q in enumerate(base)if q>=0 and t not in {t for t,_ in edits})+tuple(edits)
+        if allowed!=tuple(sorted(expected)):raise ArithmeticError('matching update support mismatch')
+        answer=query(edits,basis,plan['_matching_updates'])
         if answer is not None:return answer
     stats['window_complete']=stats['incomplete_disc_queries']==0
     return dict(status='INCONCLUSIVE',reason='no certified disc in the tested sector window',stats=stats)

@@ -1,0 +1,216 @@
+\section{The exact symbol calculus and the established kernel theorem}
+\label{sec:symbols}
+
+\subsection{Rationalized exterior symbols}
+
+For a number field $K$, put
+\[
+ \A(K)=K^\times\otimes_\Z\Q,
+ \qquad \cl{uv}=\cl u+\cl v.
+\]
+All exterior powers in this article are over $\Q$. Roots of unity vanish
+in $\A(K)$. Embeddings of fields induce injective maps on these vector
+spaces and on their exterior powers, so we identify old-field symbols
+with their images in larger fields.
+
+\begin{definition}[Formal reductions]\label{def:formal}
+Let $\Pcal(K)$ be the rationalized pre-Bloch group: the vector space on
+symbols $[z]$, modulo five-term relations, with $[0]=[1]=0$. Write
+\[
+ \partial[z]=\cl z\wedge\cl{1-z}\quad(z\ne0,1),
+ \qquad \B(K)=\ker\partial.
+\]
+For a Galois-invariant element $\eta\in\Pcal(K)$, a
+\emph{formal logarithmic reduction} means $\eta=0$. A
+\emph{formal rational-dilogarithmic reduction} means that $\eta$ belongs
+to the image of $\Pcal(\Q)$.
+\end{definition}
+
+The terminology suppresses products of logarithms of algebraic numbers
+and rational multiples of $\pi^2$ in evaluation. Compatible complex
+logarithms are allowed in this definition. The worked analytic identities
+below use only real logarithms of positive algebraic numbers and
+$\Li_2$ on $(0,1)$.
+
+For finite Galois number fields, the standard rationalized inputs are
+\begin{equation}\label{eq:K-inputs}
+ \B(K)^{\Gal(K/\Q)}=\B(\Q)=0,
+ \qquad \partial\Pcal(\Q)=\Lambda^2\A(\Q).
+\end{equation}
+These are Bloch-group descent, the torsion of $\B(\Q)$ and the torsion
+of $K_2(\Q)$; the last assertion uses the identification of the
+Steinberg quotient with $K_2$ for a field. They are the same inputs used
+in \cite[\S7.2]{RZ}. For the Bloch-group and $K$-theoretic framework,
+see \cite{ZagierDilog,CGZ}. Consequently, for invariant $\eta$,
+\begin{align}
+ \eta=0&\ \Longleftrightarrow\ \partial\eta=0,
+ \label{eq:zero-detection}\\
+ \eta\in\operatorname{im}\Pcal(\Q)
+ &\ \Longleftrightarrow\
+ \partial\eta\in\Lambda^2\A(\Q).
+ \label{eq:rational-detection}
+\end{align}
+For the reverse implication in the second line, choose a rational
+pre-Bloch element with the same boundary and apply the first line to
+the invariant difference. This makes clear where the established
+$K$-theory input enters; it is not replaced by a numerical observation.
+
+\subsection{Cyclotomic symbols and the direct boundary formula}
+
+For $m\ge3$ and $(a,m)=1$, define
+\begin{equation}\label{eq:beta}
+ \beta_m(a)=\sum_{k=1}^{m-1}
+ \cl{1-\zeta_m^{ak}}\wedge\cl{1-\zeta_m^k},
+ \qquad \zeta_m=e^{2\pi i/m}.
+\end{equation}
+Use $\beta_1=\beta_2=0$. The excluded term $k=0$ is important: there is
+no multiplicative-group element $\cl0$. Reindexing gives
+\begin{equation}\label{eq:symmetries}
+ \beta_m(-a)=\beta_m(a),\qquad
+ \beta_m(a\inv)=-\beta_m(a).
+\end{equation}
+Every $\beta_m(a)$ is Galois invariant. The inverse is taken modulo $m$.
+
+For coprime positive $p,q$, the finite formula of \cite[Theorem 3]{RZ}
+defines an invariant element $\xi_{p/q}\in\Pcal(\Q(\zeta_{pq}))$
+representing the dilogarithmic part of $F(p/q)-F(1)$. Explicitly it is
+\begin{equation}\label{eq:xi-finite}
+ \xi_{p/q}=\sum_{\alpha^p=1}
+ \left(\sum_{\substack{\beta^q=1\\\beta\ne1}}h(\alpha,\beta)
+       -\sum_{\substack{\beta^p=1\\\beta\ne1}}h(\alpha,\beta)\right),
+ \quad
+ h(\alpha,\beta)=
+ \left[\frac{\beta}{\beta-1}\right]
+ -\left[\frac{\alpha-\beta}{1-\beta}\right].
+\end{equation}
+
+\begin{proposition}[Established boundary formula]\label{prop:boundary}
+For coprime $p,q>0$,
+\begin{equation}\label{eq:boundary-F}
+ \partial\xi_{p/q}
+ =\beta_q(p)-\beta_p(q)-\cl p\wedge\cl q.
+\end{equation}
+\end{proposition}
+\begin{proof}
+This is the boundary used in both \cite{RZ} and \cite{Repo}; we recall its
+direct verification to avoid relying on the assertion audited in
+Section~\ref{sec:audit}. Terms with $\alpha=1$ or $\alpha=\beta$
+have zero boundary. For the others set
+$A=\cl{1-\alpha}$, $B=\cl{1-\beta}$, $C=\cl{\alpha-\beta}$.
+Since roots of unity vanish, direct expansion gives
+\[
+ \partial h(\alpha,\beta)=-C\wedge A+C\wedge B+B\wedge A.
+\]
+The subtracted double sum in \eqref{eq:xi-finite} has zero boundary by
+antisymmetry under $\alpha\leftrightarrow\beta$. In the first double
+sum, the product identities
+\[
+ \prod_{\substack{\beta^q=1\\\beta\ne1}}(\alpha-\beta)
+ =\frac{\alpha^q-1}{\alpha-1},\qquad
+ \prod_{\substack{\alpha^p=1\\\alpha\ne1}}(\beta-\alpha)
+ =\frac{\beta^p-1}{\beta-1}
+\]
+make the first two wedge contributions $-\beta_p(q)$ and $\beta_q(p)$.
+The last contribution is $\cl q\wedge\cl p$, since the products of
+$1-\alpha$ and $1-\beta$ over the nontrivial roots are $p$ and $q$.
+Coprimality ensures that no additional common root was omitted.
+\end{proof}
+
+\subsection{A faithful model on the symbol span}
+
+Put $G_m=(\Z/m\Z)^\times/\{\pm1\}$ for $m\ge3$. The following theorem
+is an existing result of the manuscript \cite{Repo}; its proof is
+included because the new layer argument uses its Gram matrix, not just
+its conclusion.
+
+\begin{theorem}[Existing all-conductor kernel theorem]\label{thm:kernel}
+For $c_a\in\Q$,
+\begin{equation}\label{eq:kernel}
+ \sum_{a\in G_m}c_a\beta_m(a)=0
+ \quad\Longleftrightarrow\quad c_a=c_{a\inv}\quad(a\in G_m).
+\end{equation}
+Thus the map on the symbol span
+\begin{equation}\label{eq:group-model}
+ \beta_m(a)\longmapsto \ee_a-\ee_{a\inv}\in\Q[G_m]
+\end{equation}
+is faithful, and
+\begin{equation}\label{eq:beta-zero}
+ \beta_m(a)=0\quad\Longleftrightarrow\quad
+ a^2\equiv\pm1\pmod m.
+\end{equation}
+\end{theorem}
+\begin{proof}
+For $1\le k<m$ define vectors and a matrix
+\[
+ v_k=(\log|1-\zeta_m^{bk}|)_{b\in G_m},
+ \qquad A_m=\sum_{k=1}^{m-1}v_kv_k^{\mathsf T}.
+\]
+Let $(P_av)_b=v_{ba}$. Then $P_av_k=v_{ak}$, so $A_m$ commutes with
+all $P_a$.
+
+The vectors $v_k$ span the regular representation. Indeed their span
+is invariant, and it has a nonzero projection to each character. For a
+nontrivial even character of primitive conductor $f\mid m$, use
+$k=m/f$. Its Fourier coefficient is a positive integer multiple of
+\[
+ \sum_{b\in G_f}\chi^*(b)\log|1-\zeta_f^b|
+ =-\tfrac12\tau(\chi^*)L(1,\overline{\chi^*})\ne0.
+\]
+The equality follows by Abel-regularizing
+$\log|1-r e^{i\theta}|=-\sum_{n\ge1}r^n\cos(n\theta)/n$ and applying
+the primitive Gauss-sum identity. Nonvanishing uses the nonzero primitive
+Gauss sum and Dirichlet's theorem $L(1,\chi)\ne0$ for nonprincipal
+characters \cite[25.15.9]{DLMF}. The trivial character occurs using
+$k=m/\ell$ for a prime divisor $\ell$ of $m$: the logarithmic product
+is $\log\ell$; for $\ell=2$ the vector is the nonzero constant vector
+$\log2$. All nontrivial roots, not just primitive $m$th roots, are used.
+Therefore $A_m$ is positive definite.
+
+Apply the exterior square of the logarithm map
+$\A(\Q(\zeta_m))\to\R^{G_m}$, and identify $v\wedge w$ with
+$vw^{\mathsf T}-wv^{\mathsf T}$. Its value on a symbol is
+\begin{equation}\label{eq:skew-image}
+ \ell_\wedge(\beta_m(a))
+ =P_aA_m-A_mP_a^{\mathsf T}
+ =A_m(P_a-P_{a\inv}).
+\end{equation}
+A zero combination of symbols therefore gives
+$\sum_a(c_a-c_{a\inv})P_a=0$ after multiplication by $A_m^{-1}$.
+The regular permutation matrices are linearly independent, so the
+coefficients are symmetric. Conversely symmetric coefficients cancel
+by \eqref{eq:symmetries}; self-inverse classes contribute zero over
+$\Q$. This proves all assertions.
+\end{proof}
+
+\begin{remark}
+The exterior logarithm map is not asserted to be injective on all of
+$\Lambda^2\A(K)$. Its explicitly computed value suffices on the
+particular span in Theorem~\ref{thm:kernel}. Positivity above is proved
+by character nonvanishing, not by a floating-point determinant.
+\end{remark}
+
+\subsection{Separating coprime conductors}
+
+\begin{lemma}[Normalized norm separation]\label{lem:norm}
+Let $(r,s)=1$, with $U$ a rational combination of the $\beta_r(a)$ and
+$V$ a rational combination of the $\beta_s(b)$, viewed in a common
+cyclotomic field. Then
+\[
+ U-V\in\Lambda^2\A(\Q)\quad\Longleftrightarrow\quad U=V=0.
+\]
+Moreover, normalized norm to $\Q$ kills each such symbol combination.
+\end{lemma}
+\begin{proof}
+The linear normalized field norm to $E$ is
+$N_E\cl u=\cl{\Norm_{K/E}u}/[K:E]$. It fixes old-field elements;
+apply its exterior square to wedges. Coprime cyclotomic fields are
+linearly disjoint over $\Q$. The norm of either factor of a term of
+$\beta_s(b)$ to $\Q(\zeta_r)$ is the same rational vector, since the
+factors are Galois conjugates in $\Q(\zeta_s)$. Thus that wedge is
+killed, while every old $r$-conductor wedge is fixed. Reversing the
+roles gives the other projection. If $U-V=W$ is rational, the two
+projections give $U=W$ and $-V=W$; projecting either again to $\Q$
+gives $W=0$. The cases of conductor $1$ or $2$ follow from the
+zero-symbol conventions. The same conjugate-factor argument proves
+the last assertion.
+\end{proof}

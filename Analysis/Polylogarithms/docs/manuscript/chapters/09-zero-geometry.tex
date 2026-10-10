@@ -431,7 +431,7 @@ Formula~\eqref{zeros:eq:b1} supplies the next coefficient
 and an $O(k^{-2})$ remainder.
 \end{theorem}
 \begin{proof}
-The endpoint signs in the endpoint signs and the Laplace representation above
+The endpoint signs, the Laplace representation above,
 and the bound of one zero prove existence, uniqueness, and simplicity.
 To obtain the bracket, normalize the positive density
 $t^k e^{-at}/(1-e^{-t})$.  The sign of $F_{1,k}(a)$ is the sign of
@@ -471,7 +471,7 @@ $(t-t_0)f(t)>0$ except at $t_0$.  Thus
  F_{1,k+1}(a_k)=\int_0^\infty (t-t_0)e^{-a_kt}f(t)\,dt>0.
 \]
 Since $F_{1,k+1}$ crosses from positive to negative at its unique
-zero, $a_{k+1}>a_k$.  The root of $P_1$ is $-\gamma$, so
+zero, $a_{k+1}>a_k$.  The root of $Q_1$ is $-\gamma$, so
 \eqref{half:zero:first-asymptotic} is Theorem~\ref{zeros:thm:zeroasympt}.
 \end{proof}
 
@@ -483,10 +483,11 @@ an initial zero from a graph.
 
 \begin{figure}[tbp]
 \centering
-\includegraphics[width=0.98\linewidth]{../reports/corpus-corrections/figures/12-relation-spaces-stieltjes_profiles.pdf}
+\includegraphics[width=0.98\linewidth]{figures/stieltjes_profiles.pdf}
 \caption{Normalized derivative profiles
-$(1-e^{-e^x})\mathcal H_{n,K}(e^x)$ approach $P_n(x)$ as $K=k+1$
-increases.  The plots illustrate $n=1,2,3$.  Quadrature produces the
+$(1-e^{-e^x})\mathcal H_{n,K}(e^x)$ approach $Q_n(x)$ as $K=k+1$
+increases. Here $\mathcal H_{n,K}(t)=\mathbb E[Q_n(\log(tY/K))/(1-e^{-tY/K})]$
+for $Y\sim\mathrm{Gamma}(K,1)$. The plots illustrate $n=1,2,3$. Quadrature produces the
 curves; Theorems~\ref{zeros:thm:globalzeros} and \ref{zeros:thm:zeroasympt}, rather
 than the plots, prove the zero counts and asymptotic completeness.}
 \label{half:zero:profile-figure}
@@ -945,3 +946,6 @@ classical mechanism, closely related to mod-Poisson asymptotics
 explicit spectral transfer, the uniform second coefficient estimate,
 and the exact rational enclosure, not a claim that the
 reciprocal-gamma phenomenon itself is new.
+
+\input{chapters/09-classical-zero-transitions}
+\input{chapters/09-higher-zero-transitions}

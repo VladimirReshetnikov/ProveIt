@@ -1,0 +1,87 @@
+% Replacement for the complete subsection "The surviving mixed relation"
+% in chapters/04-shuffle-parity.tex. Do not insert in addition to that
+% subsection: the legacy labels are intentionally retained.
+% Add bibliography-entry.tex to the central bibliography.
+\subsection{The mixed Gaussian relation: an exact Cayley certificate}
+
+For the harmonic sums
+\[
+ S_p=\sum_{n\ge0}\frac{(-1)^nH_n}{(2n+1)^p},
+\]
+one has the exact bridge
+\begin{equation}
+ S_p=\Im\bigl(F_{p,1}(i)+\Li_{p,1}(i,-1)\bigr).
+ \label{gaussian:eq:S-mixed}
+\end{equation}
+For an odd outer index $m=2n+1$, the inner coefficient
+$\sum_{k<m}(1+(-1)^k)/k$ is $H_n$; even outer indices have zero
+imaginary coefficient. This proves the bridge by absolute convergence
+for $p>1$ and by convergent Abel limits for $p=1$.
+
+\begin{theorem}[Mixed Gaussian reduction; exact Cayley certificate]
+\label{gaussian:conj:S4}
+\begin{equation}
+ S_4=\frac{58g_{41}+24g_{32}}7
+          +\frac{19\pi^5}{3584}-2\beta(4)\log2.
+ \label{gaussian:eq:S4-short}
+\end{equation}
+\end{theorem}
+\begin{proof}
+The complete finite certificate and two independent exact verifiers are
+supplied in \cite{CayleyS4Continuation2026}. Here is the analytic and
+algebraic content of that certificate. Use the outer-letter-first forms
+$Z=dt/t$ and $e_j=i^jdt/(1-i^jt)$, with conjugation fixing $Z,e_0,e_2$
+and exchanging $e_1,e_3$. Put
+\[
+ A=Z^3e_1e_1,\quad B=Z^2e_1Ze_1,\quad C=Z^3e_1e_3,
+ \quad V=Z^3e_1,\quad q=e_1-e_3.
+\]
+Write $\Delta P=P-\overline P$ and let $\mathbin{\sqcup\!\sqcup}$
+denote shuffle multiplication. The target polynomial is
+\[
+ T=56\Delta C-408\Delta A-192\Delta B
+       -19q^{\mathbin{\sqcup\!\sqcup}5}
+       -112(\Delta V\mathbin{\sqcup\!\sqcup}e_2).
+\]
+Its iterated integral is
+\[
+ I(T)=16i\left(7S_4-58g_{41}-24g_{32}
+                 -\frac{19\pi^5}{512}+14\beta(4)\log2\right).
+\]
+Indeed $I(q)=i\pi/2$, $I(e_2)=-\log2$, and
+$I(\Delta V)=2i\beta(4)$.
+
+The rational certificate expresses the odd-conjugation projection of
+$T$ as 852 raw double-shuffle rows plus 224 times the odd projection of
+$A-\mathcal D(A)$. Here $\mathcal D$ reverses word order and substitutes
+\[
+ Z\mapsto e_0-e_2,\quad e_0\mapsto Z+e_2,\quad
+ e_1\mapsto e_2-e_3,\quad e_2\mapsto e_2,\quad
+ e_3\mapsto e_2-e_1.
+\]
+The substitution $t\mapsto(1-t)/(1+t)$ proves $I(A)=I(\mathcal D(A))$;
+all transformed words are admissible. Of the double-shuffle rows, 123
+contain one initially divergent factor $\Li_1(1)$. Their divergent word
+cancels, and equality of their cutoff and Abel finite parts is proved
+in the cited continuation. Every other row uses only convergent values.
+Thus every row has zero imaginary integral, and the verified rational
+word identity gives $\Im I(T)=0$. Dividing by 16 and then by 7 proves
+the formula. No numerical relation search is used as a proof premise.
+\end{proof}
+
+Equivalently, using the previously proved shuffle elimination,
+\begin{equation}
+ S_4=\frac{4g_{41}-3g_{32}-9g_{23}}7+\frac{\pi^5}{224}
+        -\frac{27G\zeta(3)}{224}-2\beta(4)\log2.
+ \label{gauss:eq:S4-closed}
+\end{equation}
+Both versions are now proved. The same certificate and one stuffle give
+\begin{align}
+ \Im\bigl(\Li_{4,1}(i,-1)-\Li_{1,4}(-1,i)\bigr)
+ =\frac{102g_{41}+48g_{32}}7+\frac{79\pi^5}{10752}
+     -3\beta(4)\log2.
+ \label{cayley:eq:mixed-antisymmetric}
+\end{align}
+This is a weight-five mixed antisymmetric reduction to the $(i,1)$
+double basket and single-value products. It does not prove minimal
+depth or arithmetic independence of any remaining coordinate.
