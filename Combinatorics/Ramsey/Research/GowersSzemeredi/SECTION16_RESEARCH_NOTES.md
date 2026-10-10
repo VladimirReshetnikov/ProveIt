@@ -5811,8 +5811,71 @@ the decomposition with these named constants, but not `Theorem162At 3`.
            `2s₀η ≤ 1/4` is the triangle-inequality condition of the
            escape step.
 
-         Still to do: Claim 9.5 (the 12-tuple version, the same pattern
-         with four escapes), and the final selection of pairs `(x_a, y_a)`
+         **Claim 9.5 (kernel-checked):** `claim_9_5`
+         (`Proofs16ClaimNineFive`).
+         - *Coordinates.* A 12-tuple `(x[4], y[4], a[4])` with
+           `a₀ + a₁ = a₂ + a₃` is stored as `u : Fin 11 → ZMod N`, with
+           `a₃ = u₈ + u₉ − u₁₀` (`twelveX`, `twelveY`, `twelveA`).
+           `twelveRest j` keeps the nine coordinates other than `x_j` and
+           one `a`-coordinate. `twelve_agree_off` shows they determine the
+           tuple off `x_j` (the index tables are checked by `decide`).
+         - *Input.* Frequencies `ξ_{j,k}` in the span balls at the 16 points
+           `x_j + a_j, x_j, y_j + a_j, y_j`, with
+           `∑_j(ξ_{j,0} − ξ_{j,1}) = ∑_j(ξ_{j,2} − ξ_{j,3})`, and *some*
+           `ξ_{j,0} − ξ_{j,1}` outside `S(x_j, a_j)`. This is what the
+           escape gives: a sum of forbidden elements is excluded only if
+           some summand escapes.
+         - *Proof.*
+           1. Select 16 maps (`exists_good_selection_indexed_le`, the
+              `n`-point selection lemma), at a loss `K^(−16)`.
+           2. Pigeonhole an escaping coordinate `j` on a quarter of the
+              tuples.
+           3. `F_j(x_j, a_j) = ∑_k G_k − ∑_{k≠j} F_k` is determined by
+              `(a_j, twelveRest j u)`, so `exists_common_value_det` gives
+              `Θ(a_j)`. Only one common value is needed, not one per
+              coordinate as in Milićević's application of Lemma 9.2 to all
+              16 maps.
+           4. Each pair `(x_j, a_j)` carries at most `N⁹` tuples. Then
+              `freiman_common_value` applies.
+         - *Sharp counting.* `exists_common_value_sharp`
+           (`Proofs16CommonValueSharp`) replaces the AM–GM factor
+           `((|X|+|Y|)/2)²` by `|X|·|Y|`, through
+           `∑_v √x_v √y_v ≤ √(∑x_v)√(∑y_v)`. With `|X| = N` and `|Y| = N⁹`,
+           the AM–GM form would lose a power of `N`.
+         - *Output.* The same shape as `claim_9_4`, with
+           `claimNineFiveDensity ε R d = κ(c/2)²` and
+           `c = (ε/(4K¹⁶))²`, again polynomial.
+
+         **The full iteration terminates (kernel-checked):**
+         `milicevic_prop_9_3_iteration` (`Proofs16PropNineThreeTwelve`),
+         with both claims.
+         - *Shared update.* `propNineThree_append`
+           (`Proofs16PropNineThreeIteration`) appends any Freiman `Θ` whose
+           values on the pairs of `P` lie in the span balls and escape the
+           current `{-1,0,1}`-spans. Both rounds use it. The rank cap of
+           the escape is now any `r ≥ 2d`, with one radius
+           `R = propNineThreeRadius r M ρ`.
+         - *Bad 12-tuples* (`propNineThreeBad12`). Some `d` is small
+           against all current `θ_i(a_j)` but
+           `d ∉ B(K_u; ρ) + B(L_u; ρ)`, where `K_u = ⋃_j(Γ_{x_j+a_j} ∪ Γ_{x_j})`
+           (`twelveK`). Since `B(K_u; ρ) ⊆ ∑_j(B_{x_j+a_j} ∩ B_{x_j})`, a
+           good 12-tuple satisfies Milićević's (26), so the stopping
+           condition here is stronger than the paper's.
+         - *Claim 9.5 round* (`milicevic_prop_9_3_round_twelve`).
+           1. Theorem 27 at rank `8d ≤ r`.
+           2. Cut `ξ` into sixteen pieces (`spanBall_biUnion_split` with
+              `spanBall_union_split`).
+           3. Some coordinate escapes, because the four forbidden spans add
+              into the radius-4 span of all current values
+              (`add_mem_spanBall_of_subset`, `sum_mem_spanBall_of_subset`),
+              and the escape excludes that span. The escape's
+              triangle-inequality condition is `32s₀η ≤ 1/4`.
+         - *Termination.* With
+           `δ = min(claimNineFourDensity, claimNineFiveDensity)`, the
+           result is a state with fewer than `εN³` bad triples and fewer
+           than `εN¹¹` bad 12-tuples, and `⌈δN²⌉·m ≤ N²s₀`.
+
+         Still to do: the final selection of pairs `(x_a, y_a)`
          with gluing by Lemma 9.1 (`compatible_bohr_sum_quadruple`) and
          the random index set `J`. Quantitatively, `s₀ = O(d log(dR))`, and
          `δ` is polynomial in `ε` and `(2R+1)^(−d)`. With
@@ -10581,3 +10644,132 @@ the existing fidelity qualifications. The incoming Proposition 9.3
 iteration, uniform escape argument, and subset-sum invariant changes are
 included in the same full audit. Independent reports were merged before
 verification.
+
+### J.150. Eight-term compatibility and actual maps on a proper progression
+
+Continuation checkpoint 295, 2026-10-09. Twelve original modules add
+31 named proofs. They complete the compatibility part of the Section 7
+progression-map transfer from the original dense bihomomorphism.
+
+**Common anchors and the closed chain.** A finite family of translations
+charges each missing core vertex at most once. Its common-good candidate
+count is at least the candidate cardinality minus the number of shifts
+times the core complement cardinality. For an additive eight-tuple,
+encoded by four ordered pairs, take the four partial alternating sums.
+Every partial sum uses at most six endpoints. Signed-coordinate bounds
+show that a common candidate in `Q/32`, translated by any partial sum of
+endpoints in `Q/256`, stays inside `Q/16`.
+
+When four times the missing `Q/16` mass is smaller than `|Q/32|`, a common
+candidate puts all four chain vertices inside the core. The eight-tuple
+index equation closes the chain. Summing its four quadruple defects
+cancels the anchor values exactly, while retaining the actual endpoint
+and anchor Bohr constraints.
+
+**Images and their domains.** `image_sum_defects_card_le` bounds a finite
+sum's image by the product of its summands' image sizes. Four core
+quadruples with image cap `H` therefore give eight-column cap `H^4` on the
+common domain. The eight-column endpoint defect is Freiman-linear on its
+endpoint spectrum, of size at most `8d`. The four auxiliary anchor spectra
+have size at most `4d`. Removing them through the linear-cap theorem gives
+
+```
+H^4 * refinementKernelCap (8d) (4d) sigma sigma
+```
+
+at endpoint radius `sigma/2`. No cancelled anchor frequency is dropped
+without that proved removal estimate.
+
+**Reserve enough mass for both extension and difference maps.** The
+stronger accuracy
+
+```
+eta <= delta^3 / (1024 * 65536^rank)
+```
+
+bounds the missing larger-core mass by `delta*N/(16*1024^rank)`. This
+reserves four common chain vertices and a later two-point anchor pair.
+`exists_progression_all_eight_image_core` constructs a tiny endpoint core
+`C = S intersect Q/256`, with mass at least `delta*N/(2*512^rank)`, on which
+every additive eight-tuple has the endpoint image bound. The larger core
+and its explicit complement bound remain available.
+
+For every `a` in `Q/1024`, a candidate `u` in `Q/512` has `u,u+a` in
+`Q/256`. Missing-vertex counting gives at least
+`delta*N/(2*1024^rank)` valid anchors in `C`. This is a cardinality bound,
+not merely existence of one pair. It preserves the linear-size family
+needed for the later original eight-tuple agreement count.
+
+**The final difference maps.** Choose a valid anchor `v(a)` for every
+index `a` of the proper progression `P=Q/1024`, and set
+
+```
+psi_a(y) = F(v(a)+a,y) - F(v(a),y),
+T'_a = T(v(a)+a) union T(v(a)).
+```
+
+They use at most twice the original local rank, retain Freiman-linearity,
+and vanish at both the vertical origin and index zero. Their quadruple
+defect is an eight-column defect from `C`, with the correct signs in the
+two negative pairs. The difference-map common domain retains all eight
+anchor spectra. Consequently `exists_compatible_difference_progression_maps`
+controls every additive quadruple on the whole proper progression, with
+no exceptional set or supplied compatibility hypothesis.
+
+**Original-data assembly and uniform bounds.** Use
+`R=globalProgressionPurificationRank alpha`,
+`delta=globalProgressionPurificationParentDensity alpha`, and
+`eta=delta^3/(1024*65536^R)` in the original representative selection.
+`global_compatible_difference_progression_maps` retains the original
+witness system, witness masses, column data, index density, robust
+four-representation families, chosen representatives, and normalized local
+maps. It constructs the tiny core, all anchor families, and the actual
+proper progression `P` of rank at most `R`. The final maps use at most
+`16d` frequencies and are Freiman-linear at the original radius
+`1/(4*pi)`. Every additive quadruple has the explicit image cap at
+`1/(64*pi)`. Both origin normalizations and the raw tiny-core eight-term
+compatibility are retained.
+
+The proper progression has density at least `delta/2048^R`. The proved
+comparison `2048=2^11 <= exp(11)` yields
+
+```
+delta/2048^R >= exp(-(C_P + 33 + 11*C_B)*(p+1)^8),
+```
+
+where `p=globalColumnProgressionLogDensity alpha`. Thus both the
+compatibility and shrinking steps remain on the robust parent's
+degree-eight exponential density scale.
+
+This proves the compatibility conclusion of Proposition 7.1 in the
+original-data cyclic setting. Its agreement with many original additive
+eight-tuples is still separate and unproved. That requires enough
+alternative original four-representations at the selected vertices; the
+current selection guarantees quadruple errors but not that additional
+property. The anchor counts proved here supply one of the three factors
+needed for an `N^7` source agreement family. The five numbered statements
+and the final printed numerical comparison remain open. No upstream code
+or licensing scope is added at this checkpoint.
+
+**Verification.** The original-data production closure compiles across
+409 modules. All 31 named proofs are included in the completed combined
+axiom audit: 9,394 public Gowers theorems across 5,552 modules, with 5,550
+modules in the facade closure. Only `propext`, `Classical.choice`, and
+`Quot.sound` occur. The selected OAI audit closure remains 4,152 modules,
+and its port scope check passes. The regenerated catalogue is
+byte-identical to the 115-companion / five-open ledger, retaining the
+existing fidelity qualifications. Independent main updates were merged
+before the full audit.
+
+**Final merged verification.** The incoming Claim 9.5 twelve-tuple
+construction and sharp common-value counting are included in a second
+completed combined audit. The final counts are 9,394 public Gowers
+theorems in 5,552 modules, with 5,550 facade modules and the unchanged
+4,152-module selected OAI audit closure. The catalogue remains
+byte-identical at 115 companions and five open statements.
+
+The density comparison in this checkpoint uses the specific parent
+parameter `p` supplied by the column sampling construction. It does not
+prove that this parameter is polynomial in `log(alpha^-1)`, or that all
+initial and final controls meet `milicevicBound D alpha` or the printed
+Gowers numerical contract. Those parameter comparisons remain required.

@@ -1,0 +1,255 @@
+--- a/Analysis/Polylogarithms/docs/manuscript/chapters/04-depth.tex
++++ b/Analysis/Polylogarithms/docs/manuscript/chapters/04-depth.tex
+@@ -78,16 +78,19 @@
+ depth two. No such conclusion follows merely from the absence of a new
+ odd beta value.
+ 
+-\section{Candidate Gaussian reductions at weights five and six}
+-The following equations collect the source's accepted numerical relations.
+-They include the corrected dependence among the four weight-five generators,
+-the five weight-six double reductions, and the triple reductions through
+-weight five. Historical residuals range from about $10^{-193}$ to
+-$10^{-690}$. The source scripts for every such relation are not present in
+-this checkout, so these remain numerically supported identities unless an
+-analytic derivation is explicitly supplied. In particular the weight-five
+-relation gives a spanning set of at most three directions, rather than an
+-independence theorem.
++\section{Gaussian reductions at weights five and six}
++The following equations collect the source's accepted relations.
++The companion article proves the five weight-six double identities
++\eqref{gauss:eq:g51}--\eqref{gauss:eq:g15} by an explicit depth-two
++inversion formula, and the three weight-four triple identities below by
++classical reduction at $(1+i)/2$.
++% Companion proof pointers: sections/parity.tex, sec:gaussian-six-proof;
++% sections/one_two.tex, one2:sec:triples and one2:thm:triples.
++Historical residuals range from about $10^{-193}$ to $10^{-690}$.
++The remaining displayed numerical relations retain that status unless an
++analytic derivation is supplied. In particular the weight-five relation
++gives a conditional spanning set of at most three directions, rather than
++an independence theorem.
+ \begin{equation}
+   \label{gauss:eq:S4-closed}
+   S_4 \;=\; \sum_{n\ge0}\frac{(-1)^n H_n}{(2n+1)^4}
+@@ -164,22 +167,40 @@
+ \begin{equation}\label{double:eq:g-diag}
+   \Li_{a,a}(\iu,\iu)=\tfrac12\!\left(\Li_a(\iu)^2-\Li_{2a}(-1)\right).
+ \end{equation}
+-Every single polylogarithm on the right is elementary in the level-$4$ vocabulary:
+-$\Imag\Li_n(\iu)=\beta(n)$ is the Dirichlet beta value, $\Real\Li_n(\iu)$ and $\Li_n(-1)=-\eta(n)$
+-are rational multiples of $\zeta(n)$ (or $\pi^n$ at even $n$), and $\Li_n(-\iu)=\overline{\Li_n(\iu)}$.
+-So Family~1 reduces every symmetric and diagonal Gaussian double to single $L$-values in closed form.
++Every single polylogarithm on the right belongs to the level-$4$ vocabulary.
++For $n\ge2$,
++\[
++\Li_n(\iu)=-2^{-n}(1-2^{1-n})\zeta(n)+i\beta(n),\qquad
++\Li_n(-1)=-(1-2^{1-n})\zeta(n).
++\]
++At $n=1$ the separate formulas are
++$\Li_1(\iu)=-\tfrac12\log2+i\pi/4$ and $\Li_1(-1)=-\log2$;
++one must not substitute the divergent $\zeta(1)$ into the preceding display.
++Also $\Li_n(-\iu)=\overline{\Li_n(\iu)}$.
++Thus Family~1 reduces every symmetric and diagonal Gaussian double to
++single $L$-values in closed form.
+ 
+ \begin{remark}
+ The three stuffle identities \eqref{double:eq:g-sym-ii}--\eqref{double:eq:g-sym-mix} were checked against the stored
+ $700$-digit values to ${\sim}10^{-692}$ for every admissible $a,b$, and the closed forms were
+-confirmed symbolically and numerically by Wolfram~$15$ at low weight, including the weight-$6$
+-diagonal $\Li_{3,3}(\iu,\iu)=\tfrac12(\Li_3(\iu)^2-\Li_6(-1))$, for which the kernel returns a form in
+-$\beta(4)$, $\pi^4$, $\zeta(3)$.
++confirmed symbolically and numerically by Wolfram~$15$ at low weight, including the weight-$6$ diagonal. The stuffle identity gives its exact value:
++\[
++\Li_{3,3}(\iu,\iu)
++=\tfrac12\bigl(\Li_3(\iu)^2-\Li_6(-1)\bigr)
++=\frac{9\zeta(3)^2}{2048}+\frac{47\pi^6}{1935360}
++ -\frac{3i\pi^3\zeta(3)}{1024}.
++\]
+ \end{remark}
+ 
+-The consequence is structural: all depth-$2$ content of the Gaussian doubles lives in the
+-\emph{antisymmetric} parts $\Li_{a,b}(P)-\Li_{b,a}(P)$, which vanish on the diagonal. These are what
+-the double shuffle of the next section reduces.
++The relevant antisymmetric combination exchanges both indices and colors:
++\[
++A_{a,b}(x,y)=\Li_{a,b}(x,y)-\Li_{b,a}(y,x),\qquad
++2\Li_{a,b}(x,y)=\Li_a(x)\Li_b(y)-\Li_{a+b}(xy)+A_{a,b}(x,y).
++\]
++It vanishes when both $a=b$ and $x=y$. At mixed colors, setting $a=b$
++alone does not force it to vanish. Thus the mixed-point stuffles relate
++two color-swapped points, rather than two index orders at one fixed point.
++The next section studies further reductions by double shuffle.
+ 
+ \subsection{Family 2: antisymmetric reductions to the $(\iu,1)$ algebra}
+ 
+@@ -311,8 +332,11 @@
+   \Real\Li_n(\rho)=\tfrac12(3^{1-n}-1)\,\zeta(n),\qquad
+   \Imag\Li_n(\rho)=\Cl_n(2\pi/3),
+ \end{equation}
+-the real part a rational multiple of $\zeta(n)$ (or $\pi^n$ at even $n$), the imaginary part the
+-Clausen value---the level-$3$ analogue of $\beta(n)$, with $\Cl_2(2\pi/3)$ Gieseking's constant. All
++for $n\ge2$. At $n=1$ one instead uses
++$\Li_1(\rho)=-\tfrac12\log3+i\pi/6$.
++Thus, for $n\ge2$, the real part is a rational multiple of $\zeta(n)$
++(or $\pi^n$ at even $n$), and the imaginary part is the Clausen value---the
++level-$3$ analogue of $\beta(n)$, with $\Cl_2(2\pi/3)$ Gieseking's constant. All
+ of \eqref{double:eq:eis-sym}--\eqref{double:eq:eis-single} are confirmed in Wolfram~$15$.
+ 
+ \subsection{The $(\rho,\rho)$ frontier: one constant}
+@@ -426,49 +450,47 @@
+   \Imag\Li_{1,1}(\rr^2,\rr)=-\bigl(\Cl_2(\tfrac{2\pi}3)+\Imag\Li_{1,1}(\rr,1)\bigr),\qquad
+   \Real\Li_{1,1}(\rr^2,\rr)=5\,\Real\Li_{1,1}(\rr,1)-\tfrac12\log^2 3.
+ \end{equation}
+-(The full list of ${\sim}16$ reductions is in \code{harvest\_eis\_mixed.py}.) The weight-5 \emph{real}
+-parts and all of weight $6$ do \emph{not} reduce to this basis at height $\lesssim 10^{4}$.
+-
+-\section{The completed level-3 double-shuffle dimension}\label{mixed:sec:eisdim}
+-
+-Two computations pin the dimension of the full level-3 depth-2 space---all four colored points
+-$(\rr,\rr),(\rr^2,\rr^2),(\rr^2,\rr),(\rr,\rr^2)$---modulo single polylogarithms and the $(\rr,1)$
+-generators.
+-\begin{itemize}
+-\item The \textbf{exact-rank convergent double shuffle} (stuffle and shuffle of products
+-  $\Li_p(s)\Li_q(t)$, $s,t\in\{\rr,\rr^2\}$, together with the convergent zeta-products
+-  $\Li_p(s)\zeta(q)$ whose shuffle reaches the mixed points) gives an \emph{upper bound} of $\mathbf 7$
+-  through weight $6$ (the divergent $\Li_1$ words, needing shuffle regularization, are omitted).
+-\item \textbf{Combining} that exact rank with the PSLQ closed forms of Section~\ref{mixed:sec:eisforms}
+-  collapses it:
+-\end{itemize}
+-\begin{center}
+-\begin{tabular}{ccl}
+-\toprule
+-weight & reported residual count & survivors\\
+-\midrule
+-$2$ & $0$ & ---\\
+-$3$ & $0$ & ---\\
+-$4$ & $0$ & ---\\
+-$5$ & $2$ & $\Imag\Li_{3,2}(\rr,\rr)$ \emph{(article)},\quad $\Real\Li_{4,1}(\rr^2,\rr)$ \textbf{(new)}\\
+-$6$ & $1$ & $\Imag\Li_{5,1}(\rr^2,\rr)$ \textbf{(new)}\\
+-\bottomrule
+-\end{tabular}
+-\end{center}
+-So the tested level-three quotient, after the numerical reductions, has reported residual count
+-$\mathbf 3$ through weight $6$. Everything through weight $4$ collapses entirely into the
+-$(\rr,1)$-generator world; the mixed cube-root points contribute \textbf{exactly two new constants}
+-beyond the article's single $(\rr,\rr)$ survivor---a \emph{real} direction $\Real\Li_{4,1}(\rr^2,\rr)$
+-at weight $5$ and an \emph{imaginary} direction $\Imag\Li_{5,1}(\rr^2,\rr)$ at weight $6$.
+-
+-\begin{remark}[the article's own lesson]
+-Non-reduction by integer-relation search is strong evidence, not proof: a genuine reduction of large
+-height is invisible to PSLQ, and the convergent double shuffle omits the regularized $\Li_1$ relations.
+-So the two new survivors are best read as \emph{candidate} new level-3 depth-2 constants; regularized double shuffle can improve upper bounds; numerical independence would still need a separate theorem or a stated period conjecture. As an additional check, an \emph{enriched}-basis probe
+-(\code{probe\_eis\_candidates.py})---adding $\Li_n$ at candidate level-3 CM half-points
+-$\tfrac{1\pm\rr}2,\ \tfrac1{1-\rr},\ \tfrac{\rr}{\rr-1},\ 1-\rr$ (the level-3 analogue of the Gaussian
+-$\tfrac{1+\iu}2$ that resolved the article's Family-2)---fails to crack either candidate:
+-$\Real\Li_{4,1}(\rr^2,\rr)$ resists a $105$-atom basis (spurious scale ${\sim}10^{4}$).
++(The full list of ${\sim}16$ reductions is in \code{harvest\_eis\_mixed.py}.) The source search did not find reductions for the weight-5 real parts or
++all weight-6 values at its stated height $\lesssim10^4$.
++The exact parity reductions below show that these search failures do not
++imply non-reduction: the real weight-5 and imaginary weight-6 components
++are covered by the established parity theorem.
++
++\section{Parity corrections for the level-3 mixed point}\label{mixed:sec:eisdim}
++
++The source's convergent double-shuffle computation left formal residual
++coordinates. Such a residual describes the chosen relations; it does not
++exclude reductions supplied by other identities. In particular, put
++$C_j=\Imag\Li_j(\rr)$ for even $j$. The two mixed coordinates presented
++as new in the source have the exact reductions
++\begin{align}
++\Real\Li_{4,1}(\rr^2,\rr)
++ &=\frac{2\pi^4\log3}{243}+\frac{2\pi^2\zeta(3)}{27}
++   -\frac{281\zeta(5)}{162},\label{mixed:eq:eis-parity-41}\\
++\Imag\Li_{5,1}(\rr^2,\rr)
++ &=-3C_6+\frac{\pi^2C_4}{6}+\frac{\pi^4C_2}{90}
++   +\frac{\pi^5\log3}{729}.\label{mixed:eq:eis-parity-51}
++\end{align}
++These are proved in the companion article by the inverse-color
++specialization of depth-two parity; the Bernoulli index-one terms cancel
++before the product of the colors is set to one.
++% Companion proof pointer: sections/mixed.tex, thm:inverse-color.
++All right-hand atoms already occur in the stated single-value basket.
++Consequently these two coordinates add no new directions modulo that
++basket. The full formal quotient must be recomputed after these exact
++relations are included; no corrected numerical dimension is asserted.
++
++\begin{remark}[an explicit search audit target]
++The first reduction is equivalently
++\[
++486\Real\Li_{4,1}(\rr^2,\rr)
++ =4\pi^4\log3+36\pi^2\zeta(3)-843\zeta(5).
++\]
++Its integer-relation height, including the target coefficient, is $843$.
++Thus the source's failure to find it below an approximate $10^4$ scale
++cannot be attributed solely to large coefficients. Reproducing the input
++values, basis, dependence handling and stopping rules is needed to explain
++the failed search; without its scripts, a particular cause is not known.
+ \end{remark}
+ 
+ \section{The Gaussian \texorpdfstring{$(\iu,-\iu)$}{(i,-i)} point and an exact parallel}\label{mixed:sec:gauss}
+@@ -484,22 +506,34 @@
+   \begin{equation}\label{mixed:eq:gauss-w2}
+     \Li_{1,1}(\iu,-\iu)=-\Li_2\!\left(\tfrac{1-\iu}2\right)\qquad(\text{verified to } 10^{-50}).
+   \end{equation}
+-\item \textbf{Dimension.} The corrected exact-rank double shuffle (now including $(\iu,-\iu)$) gives an
+-  upper bound of $12$; combined with the closed forms it collapses to the article's five $(\iu,-1)$
+-  constants plus \textbf{the same two new mixed directions}---$\Real\Li_{4,1}(\iu,-\iu)$ at weight $5$
+-  and $\Imag\Li_{5,1}(\iu,-\iu)$ at weight $6$. (One weight-3 residual, $\Imag\Li_{2,1}(\iu,-1)$, is a
+-  value the article already reduces to the half-point $\lambda/\mu$ basis, outside the convergent
+-  double shuffle's reach.)
++\item \textbf{Exact parity reductions.} The two coordinates presented as new
++  mixed directions in the source are proved in the companion article to satisfy
++  \begin{align}
++  \Real\Li_{4,1}(\iu,-\iu)
++    &=\frac{3\pi^4\log2}{512}+\frac{\pi^2\zeta(3)}{64}
++       -\frac{587\zeta(5)}{1024},\label{mixed:eq:gauss-parity-41}\\
++  \Imag\Li_{5,1}(\iu,-\iu)
++    &=3\beta(6)-\frac{\pi^2\beta(4)}6-\frac{\pi^4G}{90}
++       -\frac{5\pi^5\log2}{3072}.\label{mixed:eq:gauss-parity-51}
++  \end{align}
++  % Companion proof pointer: sections/mixed.tex, thm:inverse-color.
++  Both reduce within the stated single-value basket. In particular, the
++  first has the integer form
++  $1024\Real\Li_{4,1}(\iu,-\iu)=6\pi^4\log2+16\pi^2\zeta(3)-587\zeta(5)$,
++  of height $1024$. The remaining formal double-shuffle quotient requires
++  recomputation with these relations; no numerical dimension follows
++  merely by subtracting these two coordinates from the source count.
+ \end{itemize}
+ 
+-\begin{observation}[the parallel]\label{mixed:thm:parallel}
+-In \emph{both} towers the $w=1$ mixed point leaves, beyond the earlier tested generators, two candidate mixed directions, and \emph{in the same two positions}:
+-\[
+-  \boxed{\ \Real\Li_{4,1}(\mathrm{mixed})\ \text{at weight }5,\qquad
+-            \Imag\Li_{5,1}(\mathrm{mixed})\ \text{at weight }6.\ }
+-\]
++\begin{observation}[the parity correction]\label{mixed:thm:parallel}
++In both towers, the proposed real weight-5 and imaginary weight-6 mixed
++directions are in precisely the components reduced by depth-two parity.
++Equations~\eqref{mixed:eq:eis-parity-41}--\eqref{mixed:eq:eis-parity-51} and
++\eqref{mixed:eq:gauss-parity-41}--\eqref{mixed:eq:gauss-parity-51} prove
++that they add no new directions modulo the stated single-value baskets.
+ \end{observation}
+-That the level-3 and level-4 mixed points add new content at identical weights and index patterns
+----a \emph{real} $\Li_{4,1}$ direction and an \emph{imaginary} $\Li_{5,1}$ direction---is the report's
+-most suggestive finding, and a natural target for the regularized double shuffle to explain.
+-
++The matching index patterns reflect parity. The complementary components
++and a reproducible formal relation system remain appropriate research
++targets; the reductions above do not establish numerical independence of
++any surviving coordinates.
++
+--- a/Analysis/Polylogarithms/docs/manuscript/chapters/06-cm.tex
++++ b/Analysis/Polylogarithms/docs/manuscript/chapters/06-cm.tex
+@@ -88,8 +88,11 @@
+ \operatorname{Re}\bigl[\psi^{(2)}(\tfrac34+it)-\psi^{(2)}(\tfrac14+it)\bigr]
+ &=8\pi^3\sech^3(2\pi t)-4\pi^3\sech(2\pi t).
+ \end{align*}
+-At each weight the alternating component ($\operatorname{Re}$ at odd weight,
+-$\operatorname{Im}$ at even weight) stays opaque, exactly as in
++At each weight this differentiated line law evaluates the alternating
++component ($\operatorname{Re}$ at odd weight, $\operatorname{Im}$ at even
++weight). The complementary component ($\operatorname{Im}$ at odd weight,
++$\operatorname{Re}$ at even weight) is not fixed by this law. This does not
++assert non-reducibility under other identities; compare
+ Section~\ref{cm:sec:opaque}.
+ 
+ \section{Maximal symmetry: vanishing identities and \texorpdfstring{$\Gamma$}{Gamma}-periods}

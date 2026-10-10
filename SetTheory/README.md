@@ -24,12 +24,13 @@ collection of research reports on other subjects.
   synthesis's ZFC theorems about a single witness in Mathlib's `ZFSet`. The
   Lean library closes nineteen published results with `admit`, which no
   other ProveIt set-theory project does; `Cardinals/Cardinals/README.md`
-  lists them and its audit exposes them. The directory also holds 277
+  lists them and its audit exposes them. The directory also holds 289
   research reports without Lean counterparts, on ordinals and
   well-quasi-orders, Hankel determinants, supercongruences, tetration,
   log-concavity, graphs, automata, enumerative combinatorics,
   generating-function asymptotics, quaternionic analysis, the Jacobian
-  conjecture, radicals, and Diophantine representations of computation.
+  conjecture, radicals, Diophantine representations of computation,
+  convex geometry and probability.
   It is a Lake package that requires this repository's root by path
   (`lake --dir SetTheory/Cardinals build`).
 

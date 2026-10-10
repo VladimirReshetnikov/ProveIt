@@ -2,14 +2,14 @@
 
 # Research reports
 
-Two hundred and seventy-seven independent mathematical research packages, unpacked
+Two hundred and eighty-nine independent mathematical research packages, unpacked
 from the
 archives in which they were delivered and grouped by subject.  Each directory
 holds a typeset article with its LaTeX source, a `README.md`, and in most cases
 verification code together with the recorded output of running it.
 
 **[`manifest.pdf`](manifest.pdf)** ([source](manifest.tex)) is the catalogue: it
-numbers all two hundred and seventy-seven reports, names the problem each one attacks
+numbers all two hundred and eighty-nine reports, names the problem each one attacks
 and the
 result it claims, and records the archives each directory came from.  These are
 AI-assisted drafts; none is refereed or machine-checked, and the manifest
@@ -23,14 +23,16 @@ records what each report claims rather than verifying it.
 | [`log-concavity-and-unimodality/`](log-concavity-and-unimodality) — cluster variables, chromatic coefficients, Stirling rows, independence systems, MDS codes, binomial decompositions, Bernoulli entropy, matching-rank normalization, preorder gamma polynomials | 14 |
 | [`congruences-and-valuations/`](congruences-and-valuations) — supercongruences, Apéry and Motzkin congruences, iterated series, integrality of asymptotic coefficients, valuations and periodicity | 11 |
 | [`tetration-and-digit-stabilization/`](tetration-and-digit-stabilization) — congruence speed, frozen digits, `q`-Newton series | 6 |
-| [`generating-functions-and-asymptotics/`](generating-functions-and-asymptotics) — Stanley's rationality question, Gregory thresholds, records, discrepancy, single-sequence OEIS studies (power-tower derivative supports, restricted and weighted partitions, excursions and restricted permutations, Fourier peaks, gamma constants, L-convex polyominoes, pattern-avoiding ascent sequences, iterated Bell diagonals, corner polyhedra, powered Catalan and Mahonian numbers, divisor-weighted products, phylogenetic trees and networks, Airy amplitudes of trees and automata, historic and identity trees, Takeuchi numbers, tournament scores, involutions, parabolic cosets and signed permutations, rook paths, cyclic word covers, colored and radix-layer partitions, acyclic orientations, chess placements, football seasons, vincular avoiders, Beta renewals, signed moments, moving zeros and fugacities, rounding extinction, matrix compositions, extensional acyclic digraphs, long increasing subsequences, shifted rectangles, clipping tables, stable Hilbert series, bipartite and leafless multigraphs, strict twice partitions, column-convex permutominoes, self-modified and weak ascent sequences, one-sided rectangulations, Tesler matrices, closed lambda terms, self-complementary tournament scores, inversion-sequence classes, diagonally symmetric alternating sign matrices, unique pattern occurrences, a weighted Dyck Newton diagonal, a proportional placement game, alternating Baxter involutions, circle, permutation and interval graphs, diagonal and iterated Euler transforms, strict partition chains, sub- and superdiagonal partitions, Stirling products and transforms, disjoint partition families, odious and evil partitions, pop-stacked permutations, bounded-indegree DAGs, nested cycle assemblies, constrained 0-1 and integer matrices, maximum-density kings, nonattacking bishops, maximal matchings of tripartite graphs, outerplanar graphs, planar Eulerian orientations, sums of square roots, diagonal alignments, lazy closed walks, the modified Entringer diagonal, tableau defect clusters, rounded running means, square-root factorial sampling, minimum-length compositions, decorated eta products, spiral Fibonacci sequences, exponential towers, maximal Schreier supports, distinct sizes and multiplicities of partitions, extreme-part conditions, power-weighted Dyck moments, sparse graph moments, labeled fat trees, uniform trees and binary partitions, many-color and high-outdegree rooted trees, commutative magmas, distinguished maximal independent sets, self-powered binomial sums, first-block maxima, ordered tuple relations, fixed-couple ménage rows, restricted two-covers and line graphs, cycle-minima sums, total Kostka sums, singleton-free hypergraphs), Apéry arrays | 151 |
+| [`generating-functions-and-asymptotics/`](generating-functions-and-asymptotics) — Stanley's rationality question, Gregory thresholds, records, discrepancy, single-sequence OEIS studies (power-tower derivative supports, restricted and weighted partitions, excursions and restricted permutations, Fourier peaks, gamma constants, L-convex polyominoes, pattern-avoiding ascent sequences, iterated Bell diagonals, corner polyhedra, powered Catalan and Mahonian numbers, divisor-weighted products, phylogenetic trees and networks, Airy amplitudes of trees and automata, historic and identity trees, Takeuchi numbers, tournament scores, involutions, parabolic cosets and signed permutations, rook paths, cyclic word covers, colored and radix-layer partitions, acyclic orientations, chess placements, football seasons, vincular avoiders, Beta renewals, signed moments, moving zeros and fugacities, rounding extinction, matrix compositions, extensional acyclic digraphs, long increasing subsequences, shifted rectangles, clipping tables, stable Hilbert series, bipartite and leafless multigraphs, strict twice partitions, column-convex permutominoes, self-modified and weak ascent sequences, one-sided rectangulations, Tesler matrices, closed lambda terms, self-complementary tournament scores, inversion-sequence classes, diagonally symmetric alternating sign matrices, unique pattern occurrences, a weighted Dyck Newton diagonal, a proportional placement game, alternating Baxter involutions, circle, permutation and interval graphs, diagonal and iterated Euler transforms, strict partition chains, sub- and superdiagonal partitions, Stirling products and transforms, disjoint partition families, odious and evil partitions, pop-stacked permutations, bounded-indegree DAGs, nested cycle assemblies, constrained 0-1 and integer matrices, maximum-density kings, nonattacking bishops, maximal matchings of tripartite graphs, outerplanar graphs, planar Eulerian orientations, sums of square roots, diagonal alignments, lazy closed walks, the modified Entringer diagonal, tableau defect clusters, rounded running means, square-root factorial sampling, minimum-length compositions, decorated eta products, spiral Fibonacci sequences, exponential towers, maximal Schreier supports, distinct sizes and multiplicities of partitions, extreme-part conditions, power-weighted Dyck moments, sparse graph moments, labeled fat trees, uniform trees and binary partitions, many-color and high-outdegree rooted trees, commutative magmas, distinguished maximal independent sets, self-powered binomial sums, first-block maxima, ordered tuple relations, fixed-couple ménage rows, restricted two-covers and line graphs, cycle-minima sums, total Kostka sums, singleton-free hypergraphs, distinct distances in a cubic lattice), Apéry arrays, Ford's renewal remainders | 153 |
 | [`automata-and-formal-languages/`](automata-and-formal-languages) — shuffle state complexity, DFAO reversal, synchronization, language hierarchies, additive complexity, counting accessible and strongly connected automata, binary two-way automata and corank budgets in Brauer monoids | 9 |
 | [`quaternionic-analysis/`](quaternionic-analysis) — slice regularity, Cauchy–Fueter analysis, the global inverse Fueter problem | 1 |
 | [`graph-theory/`](graph-theory) — mutual visibility, domination roots, minimal dominating sets | 3 |
 | [`jacobian-conjecture/`](jacobian-conjecture) — fibers and dynamics of Keller maps: Gao's five-dimensional map, arithmetic fibers, weighted rigidity and dynamical degrees of the three-variable counterexample | 4 |
 | [`galois-theory-and-radicals/`](galois-theory-and-radicals) — bad characteristics of radical solvers, Fourier–Kummer charts, finite separating ranges for sextic resolvents | 2 |
 | [`hilbert-tenth-problem/`](hilbert-tenth-problem) — witness-faithful Diophantine certificates for discrete computation; Diophantine laws of probabilistic, quantum and continuous computation; recurrence and liveness beyond halting; groups as Diophantine substrates; signal-machine collision certificates; exact events in stochastic and thermal systems; quadratic orthant certificates; polynomial witness histories; smooth Diophantine finalizers; five-particle binary automata; fixed universal polynomials; periodic turmites and a literal Langton ant | 12 |
-| **Total** | **277** |
+| [`convex-geometry/`](convex-geometry) — optimal simplex products for projection-body volume | 1 |
+| [`probability/`](probability) — tree-broadcast renormalization, longest progressions in random sets, a Bose-gas crossover, random reshuffling, exponential tilting and contingency-table sampling, nonuniform coupon collection, total variation of product laws, Gaussian quadratic forms | 9 |
+| **Total** | **289** |
 
 ## Later deliveries
 
@@ -1112,7 +1114,8 @@ catalogued below. Batch 114 is the other arrivals of the same day; Report
 274 and three manuscripts of 7 October that arrived outside the bundle are
 described after it. Batches 115 to 137, the Gowers–Szemerédi manuscripts
 of 6 and 7 October, went to a research report beside the Lean development
-of Gowers's proof, not to this collection (see below).
+of Gowers's proof, not to this collection (see below). Batches 138 and 139,
+the arrivals of 8 and 9 October, are described at the end.
 
 Batch 99 brought nothing here: its thirteen archives, taken from the
 session bundle `60f54ea06` (Thue–Morse trace and interval parts, a checker
@@ -1559,7 +1562,8 @@ stated in A252782 and A270917; the write's bound
 proving the form of Kotěšovec's conjectured asymptotic for A290354 (the
 digits of its constant uncertified). It is a separate report and not a
 Part of `a139383-iterated-bell-diagonals`; the two share Report 228's
-conjectured amplitude identity as a further question. Report 223
+conjectured amplitude identity as a further question (batch 138's Part IV
+of a290354 proves it under four unrefereed inputs; see below). Report 223
 (`44ebdfef9`) became
 [`a005121-strict-partition-chains`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a005121-strict-partition-chains),
 Lengyel's numbers to every fixed order, recording a sign error in the
@@ -1658,7 +1662,7 @@ that CGP's printed list of positive poles omits `ρ₁₂ = 5.33887671271979…`
 (`e5152f378`; an Airy `n^(1/3)` term in `log a_n`, modulo Mallein's two
 lemmas, also used by `a238873-diagonal-partitions`) and Report 167
 [`a308338-nested-cycle-assemblies`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a308338-nested-cycle-assemblies)
-(`399df8a49`), which proves the boxed conjecture `E[X] ~ N√n` of Riedel's
+(`399df8a49`; a Part II came with batch 138, see below), which proves the boxed conjecture `E[X] ~ N√n` of Riedel's
 January 2026 note with `N = e^(−γ/2)` and refutes its alternative `n^M`,
 `M` "close to but not equal to 1/2"; his `N ≈ 0.7719351399` is
 `E K_4500/√4500`. The placement message, and this README until now,
@@ -1759,7 +1763,7 @@ squarefree radicands are equivalent (at `n = 2`: 8 values, not 7);
 order; and
 [`a328716-lazy-closed-walks`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a328716-lazy-closed-walks)
 (179, `f3fb85cb6`), whose write also proves Kotěšovec's 2019 row conjecture
-in A328718 (a Part II from a later non-bundle arrival is placed; see below).
+in A328718 (a Part II from a later non-bundle arrival is written and checked; see below).
 The independent checks corrected wording, rounded digits and
 quotation sources, not theorems: `80177120d` (a137432: the fixture's SHA-256
 is that of Matsuo's table; three rounded digits, one range), `ae0721fd9`
@@ -1888,7 +1892,7 @@ one commit (`f79c9bef1`) as seven new reports under
 `oeis-sequence-asymptotics/`. Reports 214 (base), 213, 212, 210 and 209, one
 chain on OEIS A094149, became
 [`a094149-sparse-graph-moments`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a094149-sparse-graph-moments)
-(`e4199e04f`), five Parts printed newest first, each repeated proof block
+(`e4199e04f`), five Parts printed newest first (a Part VI came with batch 138; see below), each repeated proof block
 printed once: `M_2k ~ 2B_{k+1}` and every fixed collision order of
 `a_k/(2B_{k+1})`; Report 212's unproved reduction is completed by Report
 213, and its spectral-transfer heuristic is an open question. Reports 227
@@ -2068,18 +2072,23 @@ Three manuscripts of 7 October 2026 from outside the session bundle came
 here through that day's non-Gowers queue; the others of that queue went to
 new topic directories outside this collection, which
 [`docs/incoming`](../../../../docs/incoming/README.md) lists. All three are
-placed, and their writes are pending.
+placed, written and independently checked, and no check found a
+mathematical error.
 `ProveIt_Binary_Two_Way_Corank.zip` (`964621dd2`) was placed (`bdcae034b`)
 as the new report
 [`binary-two-way-corank`](automata-and-formal-languages/binary-two-way-corank),
-delivered layout kept and no article or README write yet: for every `h ≥ 2`
+written as a single-source report (`d89be4d77`, 37 pages): for every `h ≥ 2`
 an explicit binary language recognized by a `(6h+2)`-state 1NFA whose every
 `s`-state 2DFA satisfies `8s + 2 ≥ 2(5/2)^⌊(h−2)/9⌋`, by repetition-independent
 corank budgets in Brauer monoids. Its binary complementation bound is
 conditional on an unreproved premise of an external OpenAI manuscript; its
 architecture is adapted, with attribution, from an external openai/math
 release, whose Apache-2.0 licence and third-party notices are staged with
-the report as its nested licence. The partitions manuscript of
+the report as its nested licence. Its check (`417ff568f`) confirmed the
+headline bound, rebuilt the sparse-slot representation of Theorem 3.1 from
+the text alone, and added two precisions on the trust boundary: Lemma 5.2
+is the companion manuscript's lemma, of which only an outline is printed,
+and the dependency set of Theorem 1.1 is now stated exactly. The partitions manuscript of
 `ProveIt_Research_2026-10-07.zip` (`7b8ed30e7`) was placed (`9a10a617f`) as
 Part III of
 [`a373271-distinct-multiplicity-values`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a373271-distinct-multiplicity-values):
@@ -2087,24 +2096,136 @@ it answers Part I's question on variance and fluctuations
 (`Var D₀ ~ v₀ n^(1/4)` and a central limit theorem), Part II's question on
 weighted fluctuations (a Gumbel law for `D₁`) and, for the fluctuation laws,
 the question on the weights `m^α`. It was written as Sections 25–34
-(`b0ad11d15`); its independent check is pending. `uniform-lattice-bridges-research.zip`
+(`b0ad11d15`); the check (`4163d271d`) confirmed every constant, table and
+label, explained the gap between `v₀` and the exact variances at fixed `n`
+by the size conditioning, and restricted one re-scoping: a second term is
+proved only for `0 < α ≤ 1`. `uniform-lattice-bridges-research.zip`
 (`fe7165a3c`) was placed (`3cf0a2758`) as Part II of
 [`a328716-lazy-closed-walks`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a328716-lazy-closed-walks):
 an expansion uniform in the dimension and in all nonnegative activities,
 which answers the host's question on sparse and dense ratios, and an exact
 counterexample at `D = 16`, `N = 26` to the universal Gaussian return bound
-of Felker–Lyons and Ball–Sterbenz. No statement of the three is
-formalized, and nothing was submitted to the OEIS.
+of Felker–Lyons and Ball–Sterbenz. It was written as Sections 13–21
+(`3257a20bd`), and the check (`640d9375d`) confirmed the `D = 16`
+counterexample by two further exact routes, relabelled one comparison with
+Part I's leading term and added two precisions of scope. No statement of
+the three is formalized, and nothing was submitted to the OEIS.
 
 Batches 115 to 137 brought nothing here. Their one hundred and six
-manuscripts of 6 and 7 October 2026 all sharpen local estimates of
-Gowers's proof of Szemerédi's theorem, and by Vladimir's direction they
-form one report beside the Lean development of that proof, outside this
-collection:
+manuscripts of 6 and 7 October 2026, and a hundred and seventh from
+batch 138 (placed `0e05d71a1`, written `643803af9`), all sharpen local
+estimates of Gowers's proof of Szemerédi's theorem, and by Vladimir's
+direction they form one report beside the Lean development of that proof,
+outside this collection:
 [`Combinatorics/Ramsey/Research/GowersSzemeredi/local-quantitative-refinements`](../../../../Combinatorics/Ramsey/Research/GowersSzemeredi/local-quantitative-refinements/README.md),
 whose README is its own index. Manuscripts that arrived with them but do
 not concern Gowers's argument were placed separately, three of them here
 (above).
+
+Batch 138 is the arrivals of 8 October 2026 (`b28d0850b`, `36f1dd8ef`,
+`fcfe6ef6a`, `2c7f4fd68`): twenty-nine manuscripts in twenty-six archives,
+placed in six groups, three of which brought work here. The OEIS group
+(`803f4d937`) gave three hosts new Parts, each written and independently
+checked.
+[`a308338-nested-cycle-assemblies`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a308338-nested-cycle-assemblies)
+gained Part II (`sharp_gumbel_assemblies.zip`; write `aeecf5e9e`, Sections
+12–23): sharp Gumbel errors and the optimal continuous calibration for the
+largest outer component. It answers none of Part I's questions; its check
+(`96002ee3f`) proved the affine minimax constant `E_* = W(1/e)/e`, which
+answers Part II's Question 23.3 (the write's uncertified value was
+`3.8·10⁻¹⁰` low), and corrected one rounding.
+[`a094149-sparse-graph-moments`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a094149-sparse-graph-moments)
+gained Part VI (`sparse_graph_moments_research.zip`; write `cebf43994`,
+Sections 57–64): every fixed collision order uniformly in a compact mean
+degree `c`, which answers the host's mean-degree question and its suborder
+question in part, sharp and optimal Poisson laws for the deficit, and a
+growing-degree Catalan transition; its check (`443af1da6`) found nothing
+wrong.
+[`a290354-iterated-euler-diagonals`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a290354-iterated-euler-diagonals)
+gained Part IV (the parabolic-amplitudes manuscript of
+`ProveIt_Research_2026-10-08 (1).zip`; write `03c28e4c8`, Sections 38–48):
+`I(t) = t 2^(t/3) h(t)` for every `t > 0`, the identity that its Part III
+and `a139383-iterated-bell-diagonals` left as a shared question, `h`
+holomorphic on `Re t > 0`, and the leading amplitude of
+`a005121-strict-partition-chains` (Lengyel's constant), all under four
+unrefereed inputs proved in those reports. Reciprocal notes went to
+a005121 and a139383 (`7354dd9e1`), and the check (`d00eba30c`) found
+nothing wrong. The same group placed two single-manuscript reports that
+are not written:
+[`ford-renewal-logarithmic-remainder`](generating-functions-and-asymptotics/ford-renewal-logarithmic-remainder)
+(for Ford's renewal recurrence the remainder is `E_n ~ 1/(n² log² n)`, with
+every inverse-logarithmic order, an exact positive density and explicit
+bounds, sharpening the bounded error of Ford's Lemma 3.7) and
+[`a275672-cubic-distances`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a275672-cubic-distances)
+(Vladimir's A275672: `a(7) = 10` and `a(8) = 12` from exhaustive searches
+recorded as computations, not formal certificates, `a(9) ≥ 13`,
+`a(10) ≥ 14`, and `limsup a(n)/n ≤ 1.84889…` by a rational Gaussian
+certificate). Their delivered PDFs were not staged, so the manifest names
+their TeX sources. The group's sixth manuscript went to the Fabius drafts
+tree.
+
+The combinatorics group (`18abb81b2`) opened the category
+[`convex-geometry/`](convex-geometry) with
+[`optimal-simplex-products`](convex-geometry/optimal-simplex-products), from
+`ProveIt_Research_2026-10-08.zip`: over affine images of products of
+simplices, the maximal normalized projection-body volume is
+`P_n = max ∏ s_(d_i)`, the block size 13 is the unique optimal rate, and
+from `n = 100` an exact rule modulo 13 gives the unique optimal multiset;
+within the product class only (Brannen's conjecture had been refuted by
+Feng–Hu–Liu–Xu, credited). It is placed with its delivered layout and
+without a PDF; its `main.tex` inputs `../common/preamble.tex`, whose copy is
+staged inside the report, so it does not build where it is. The group's
+other three manuscripts went to `Combinatorics/BooleanFunctions` and
+`Combinatorics/Sidorenko`.
+
+The probability group (`0599fe867`) opened the category
+[`probability/`](probability) with nine reports, each from one manuscript
+that continues nothing in the tree. By Vladimir's direction of 9 October
+2026, a single manuscript on a new topic is placed only: no write and no
+independent check follow, the delivered layout, names and PDF are kept
+with the wrapper removed, and the delivery README serves as the report
+README. The nine are
+[`tree-broadcast-renormalization`](probability/tree-broadcast-renormalization)
+(a sharp analytic renormalization threshold `θ > b^(−3/4)` for binary
+broadcasts on `b`-ary trees, distinct from the reconstruction threshold),
+[`random-progressions-sharp-poisson`](probability/random-progressions-sharp-poisson)
+(sharp Poisson asymptotics for the longest arithmetic progression in a
+random set; the delivery's path under `Combinatorics/Ramsey` was declined),
+[`marginal-bose-crossover`](probability/marginal-bose-crossover)
+(the convergent expansion of a quartic Bose-gas crossover sum, which fixes
+the constant Łebek and Jakubczyk left unspecified),
+[`random-reshuffling-criterion`](probability/random-reshuffling-criterion)
+(an exact small-step criterion for when one block of random reshuffling
+beats sampling with replacement),
+[`uniform-exponential-tilting`](probability/uniform-exponential-tilting)
+(certified coefficients of Poisson-binomial laws and exact sampling of
+two-row contingency tables),
+[`nonuniform-coupon-collection`](probability/nonuniform-coupon-collection)
+(explicit Poisson–Charlier remainders, pointwise smaller than
+Hwang–Li–Zacharovas's Lemma 5.3),
+[`product-total-variation`](probability/product-total-variation)
+(deterministic relative approximation of the total variation between
+product laws),
+[`gaussian-quadratic-concentration`](probability/gaussian-quadratic-concentration)
+(the optimal tail coefficient `c(s)` at cubic spectral balance `s`) and
+[`gaussian-quadratic-two-mode`](probability/gaussian-quadratic-two-mode)
+(two-mode convex-order extremality at fixed skewness). The last two study
+the same form `Q = gᵀAg − tr A` under different normalizations (operator
+norm and `v = tr A²` against Frobenius norm one) and share no theorem. They
+meet at zero skewness, where the two-mode extremizer `√2 UV` attains the
+coefficient `c(0) = (√5 − 1 − log φ)/4` (checked at intake); neither cites
+the other, and a joint two-part report remains possible if a write is ever
+scheduled.
+
+Batch 138's other groups went outside this collection: the
+Gowers–Szemerédi manuscript became source 107 (above), three
+recurrence-avoidance manuscripts became sources 02–04 of
+`Analysis/ErdosSimilarity/Research/uniform-geometric-avoidance`, and six
+PolyLog continuations became five merged reports in
+`Analysis/Polylogarithms/docs/reports/`. Batch 139 (9 October), four
+continuations of the unified PolyLog manuscript, went to the same place as
+one merged report (`d4dead2c6`) and brought nothing here. No statement of
+batch 138 is formalized, and nothing was submitted to the OEIS.
 
 A report that continues a formal project gains no formal status from it:
 each README names the project declarations it builds on and says that its

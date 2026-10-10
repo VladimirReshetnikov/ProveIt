@@ -1,0 +1,249 @@
+% Independent audit, 2026-10-09. Notes for integration by the parent agent.
+\section{Exact rational certificates for Gaussian values}\label{holder:sec:certificates}
+
+We use the outermost-letter-first convention
+\[
+ G(a_1,\ldots,a_w;z)=\int_0^z
+       \frac{G(a_2,\ldots,a_w;t)}{t-a_1}\,dt,
+ \qquad G(;z)=1.
+\]
+Define the permitted alphabet region
+\[
+ \mathcal A=\{0,1\}\cup
+ \{a\in\mathbb Q(i): |a|\geq1,\ |1-a|\geq1\}.
+\]
+The two inequalities are exact rational comparisons after squaring the
+moduli. The Gaussian alphabet and the letter $1-i$ both belong to this
+region.
+
+\begin{theorem}[Uniform exact certificate]\label{holder:thm:certificate}
+Let $w\geq1$, let $a_1,\ldots,a_w\in\mathcal A$, and assume
+$a_1\ne1$ and $a_w\ne0$. Then $G(a_1,\ldots,a_w;1)$ exists as an ordinary
+convergent iterated integral. It has the Hölder decomposition
+\begin{equation}\label{holder:audit:eq:holder}
+ G(a_1,\ldots,a_w;1)
+ =\sum_{j=0}^w(-1)^j
+  G(1-a_j,\ldots,1-a_1;1/2)
+  G(a_{j+1},\ldots,a_w;1/2),
+\end{equation}
+where a missing word denotes $1$.
+Replace each factor by its Taylor polynomial through degree $N$, evaluated
+at $1/2$, and call the resulting Gaussian rational number $C_N$. Then
+\begin{equation}\label{holder:audit:eq:radius}
+ |G(a_1,\ldots,a_w;1)-C_N|
+ \leq 2(w+1)\,T_w(N),\qquad
+ T_d(N)=2^{-N}\sum_{k=0}^{d-1}\binom Nk.
+\end{equation}
+Here $\binom Nk=0$ for $k>N$ and $T_0(N)=0$.
+All the Taylor polynomials required by one word are computed using
+$O(wN)$ exact rational arithmetic operations.
+For an integer $P\geq0$, the explicit choice
+\begin{equation}\label{holder:audit:eq:Nchoice}
+ N=3\bigl(P+w+\lceil\log_2(w+1)\rceil\bigr)
+\end{equation}
+guarantees an error at most $2^{-P}$. In particular, $N=O(P+w)$.
+\end{theorem}
+
+\begin{proof}
+The hypotheses exclude singularities in the open integration segment.
+They also ensure integrability at its endpoints: the last letter is
+nonzero, and any logarithmic singularities at $1$ are integrated against
+an outermost kernel regular there. Partition the ordered integration
+simplex according to the number $j$ of variables above $1/2$. Replacing
+those variables by their complements reverses their word and contributes
+$(-1)^j$. This gives \eqref{holder:audit:eq:holder}; this is the standard Hölder
+convolution, with its endpoint hypotheses made explicit.
+
+Every nonzero letter in either factor of \eqref{holder:audit:eq:holder} has
+modulus at least $1$. Moreover, every nonempty right factor ends at
+$a_w\ne0$, and every nonempty left factor ends at $1-a_1\ne0$.
+Thus these factors have Taylor series with zero constant coefficient.
+
+Consider a word $v$ of this kind, with $d$ nonzero letters, and write
+$G(v;z)=\sum_{n\geq0}c_nz^n$. Coefficientwise absolute values are bounded
+by replacing each nonzero kernel with $1/(1-z)$. Inserting a zero kernel
+divides the coefficient of $z^n$ by $n\geq1$, so deleting all zero letters
+can only increase this majorant. Consequently
+\[
+ |c_n|\leq[z^n]\frac{(-\log(1-z))^d}{d!}
+ \leq\binom{n-1}{d-1}\quad(n\geq d),
+ \qquad c_n=0\quad(n<d).
+\]
+For the second inequality, expand the $d$ logarithms; each composition of
+$n$ into $d$ positive parts contributes at most $1$, and the additional
+factor $1/d!$ can be discarded. The empty word is handled separately.
+It follows that
+\[
+ |G(v;1/2)|\leq1,\qquad
+ \left|\sum_{n=0}^Nc_n2^{-n}\right|\leq1,
+\]
+because $\sum_{n\geq d}\binom{n-1}{d-1}2^{-n}=1$.
+The tail of this majorant is exactly
+\[
+ \sum_{n>N}\binom{n-1}{d-1}2^{-n}
+ =2^{-N}\sum_{k=0}^{d-1}\binom Nk=T_d(N).
+\]
+One proof interprets the left side as the probability that the $d$th
+success in fair independent Bernoulli trials occurs after trial $N$;
+the right side counts fewer than $d$ successes among the first $N$
+trials. Equivalently, the equality follows by Pascal's identity.
+
+For each product $AB$ in the Hölder sum, with truncations $A_N,B_N$,
+\[
+ |AB-A_NB_N|
+ \leq |A-A_N|\,|B|+|A_N|\,|B-B_N|
+ \leq T_{d_A}(N)+T_{d_B}(N)\leq2T_w(N).
+\]
+Summing over the $w+1$ cuts proves \eqref{holder:audit:eq:radius}.
+
+For the complexity claim, let $b_n$ be the Taylor coefficients of a
+tail and $c_n$ those of the word obtained by prepending $a$. For $n\geq1$,
+\begin{equation}\label{holder:audit:eq:recurrence}
+ c_n=
+ \begin{cases}
+   b_n/n,&a=0,\\
+   \bigl((n-1)c_{n-1}-b_{n-1}\bigr)/(an),&a\ne0.
+ \end{cases}
+\end{equation}
+In both cases $c_0=0$, and the empty tail has $b_0=1$, $b_n=0$ for
+$n\geq1$. The second recurrence is coefficient comparison in
+$(z-a)G'(a,v;z)=G(v;z)$.
+It takes $O(N)$ operations per prepended letter. Compute the original
+suffix chain starting from the last letter; this gives every right
+factor. Compute the reflected reversed-prefix chain by successively
+prepending $1-a_1,1-a_2,\ldots,1-a_w$; this gives every left factor.
+Each chain requires $O(wN)$ operations in total. Summing the $w+1$
+products adds $O(w)$ operations.
+
+Finally, the binomial theorem gives the useful bound
+\[
+ T_w(N)\leq 2^{w-1}(3/4)^N.
+\]
+Indeed, for $k\leq w-1$ one has $2^{-k}\geq2^{-(w-1)}$, so
+\[
+ \sum_{k=0}^{w-1}\binom Nk
+ \leq2^{w-1}\sum_{k=0}^N\binom Nk2^{-k}
+ =2^{w-1}(3/2)^N.
+\]
+With $M=P+w+\lceil\log_2(w+1)\rceil$ and $N=3M$,
+\[
+ 2(w+1)T_w(N)
+ \leq(w+1)2^w(3/4)^{3M}
+ \leq(w+1)2^{w-M}\leq2^{-P},
+\]
+since $27/64<1/2$. This proves \eqref{holder:audit:eq:Nchoice}.
+\end{proof}
+
+\begin{corollary}[Fixed imaginary quadratic fields]
+\label{holder:cor:quadratic-certificate}
+Let $K\subset\mathbb C$ be an imaginary quadratic field with its fixed
+complex embedding. Replace $\mathbb Q(i)$ in the alphabet definition by
+$K$. The same H\"older sum, tail bound, precision prescription, and
+$O(wN)$ arithmetic-operation count hold, with the center now in $K$.
+\end{corollary}
+\begin{proof}
+The proof of Theorem~\ref{holder:thm:certificate} uses the coefficient field
+only for exact additions, multiplications, and reciprocals. Each
+Taylor coefficient therefore lies in $K$, and the analytic majorant
+is unchanged. The tests $|a|^2\ge1$ and $|1-a|^2\ge1$ are exact
+rational comparisons because these squared moduli are field norms.
+Arithmetic in a fixed quadratic field requires a bounded number of
+rational operations per field operation.
+\end{proof}
+
+In particular, every sixth root of unity satisfies the alphabet
+condition: apart from $1$, its distance from $1$ is at least $1$.
+Thus the theorem also supplies an exact-certificate route for the
+Eisenstein values. The supplied core implementation specializes to
+$\mathbb Q(i)$; the four mixed Eisenstein formulas are established
+analytically and checked numerically in the independent scripts.
+
+\paragraph{A safe bit-complexity statement.}
+The count $O(wN)$ is an arithmetic-operation count; it does not assign
+unit cost to arbitrarily large integers. Let $Q$ be a common positive
+denominator for the real and imaginary components of the reciprocals
+of all nonzero letters used in both Hölder chains. Let
+$L_N=\operatorname{lcm}(1,\ldots,N)$. For a word of length $\ell\leq w$,
+each component of its degree-$n$ Taylor coefficient has denominator
+dividing $Q^nL_n^\ell$. This follows from the convolution form of
+\eqref{holder:audit:eq:recurrence}: a term uses total reciprocal-letter degree
+$n$ and one integer divisor at most $n$ for each integration.
+Thus all evaluated partial sums have denominators dividing
+\[
+ D_N=(2Q)^N L_N^w.
+\]
+The coefficient majorant bounds their numerator bit lengths by
+\[
+ B=O\bigl(N\log(2Q)+wN\log(N+1)+N\bigr),
+\]
+using only the elementary estimate $L_N\leq N!$.
+All product sums have denominator dividing $D_N^2$ and comparable
+operand lengths. Therefore standard exact rational arithmetic yields
+polynomial bit complexity in $w,N,\log Q$. For an entirely conservative
+explicit estimate, naive multiplication and division use $O(B^2)$ bit
+operations, the Euclidean algorithm uses at most $O(B)$ such divisions,
+and normalization after every operation yields $O(wNB^3)$ bit
+operations. This deliberately loose bound requires no fast-arithmetic
+assumptions. Standard fast multiplication and gcd algorithms improve it.
+
+\paragraph{What is and is not new here.}
+Hölder convolution and its use for numerical multiple-polylogarithm
+evaluation are established; see Borwein--Bradley--Broadhurst--Lison\v ek~\cite{gaussian:BBBL2001}
+and Vollinga--Weinzierl~\cite{gaussian:VollingaWeinzierl2005}. The contribution of this specialization is the
+explicit rational tail certificate, the permitted rational Gaussian
+letter region, the reuse of both chains, and the uniform linear bound
+$N=O(P+w)$. This is an error bound for computing periods, not a proof of
+an identity inferred from a small residual.
+
+\paragraph{Application to the manuscript's constants.}
+The letters needed for $\pi$, $\log2$, $\zeta(n)$ for $n\geq2$,
+$\beta(n)$, and $\lambda_n=\Im\Li_n((1+i)/2)$ all satisfy the hypotheses:
+\[
+ \pi=4\Im\Li_1(i),\quad \log2=-2\Re\Li_1(i),\quad
+ \Li_n(z)=-G(0^{n-1},z^{-1};1).
+\]
+For the half point the nonzero letter is $1-i$, whose reflected letter
+is $i$. Hence both sides of the Gaussian conjectures can be enclosed
+using one exact Gaussian-rational arithmetic framework.
+
+\subsection{Agreement with ordinary boundary series}
+
+For completeness, suppose $s_1,\ldots,s_d$ are positive integers and
+$|z_j|=1$. The outer-first colored multiple-polylogarithm series converges
+absolutely if $s_1\geq2$, and converges ordinarily if $s_1=1$ and
+$z_1\ne1$. These sufficient conditions include every colored value used
+in the Gaussian tables.
+
+For $d\geq2$, put
+\[
+ B_n=\sum_{n>n_2>\cdots>n_d\geq1}
+       \prod_{j=2}^d\frac{z_j^{n_j}}{n_j^{s_j}}.
+\]
+The elementary symmetric harmonic bound gives
+$|B_n|=O((1+\log n)^{d-1})$ and
+\[
+ |B_{n+1}-B_n|
+   =O\bigl((1+\log n)^{d-2}/n\bigr).
+\]
+The first estimate proves absolute convergence for $s_1\geq2$.
+For $s_1=1$ set $b_n=B_n/n$. Then $b_n\to0$ and
+\[
+ |b_{n+1}-b_n|
+    =O\bigl((1+\log n)^{d-1}/n^2\bigr),
+\]
+which is summable. The geometric partial sums of $z_1^n$ are bounded
+when $z_1\ne1$, so summation by parts proves convergence of
+$\sum z_1^n b_n$. At $d=1$ this is the usual Dirichlet test.
+
+Introduce $0<r<1$ in the outer color, $z_1\mapsto rz_1$. The absolutely
+convergent series/integral dictionary gives the GPL with the original
+word and endpoint $r$. Abel's theorem identifies the limit of the
+series with its ordinary boundary sum. On the integral side, the last
+letter is nonzero. Near zero every nonempty suffix is analytic and
+$O(t)$. Near one, recursive integration gives at worst powers of
+$|\log(1-t)|$ in an interior suffix. The outer letter is either $0$
+(when $s_1\geq2$) or $z_1^{-1}\ne1$ (when $s_1=1$), so its kernel is
+bounded near one and these logarithmic powers are integrable. Thus the
+GPL has a continuous limit as $r\uparrow1$ and agrees with the ordinary
+boundary series. No regularization is being silently used in these
+cases.

@@ -1,0 +1,56 @@
+\subsubsection*{A finite inversion formula}
+The earlier draft inferred failure of closure from a search in the basket
+$\{S_{1,2}(z),\zeta(3),\pi^2\log z,\log^3z\}$. That basket omits
+polylogarithms and mixed log products needed by the actual transformation.
+Inversion does close in the Nielsen family after those products and endpoint
+constants are included. The following direct coefficient construction makes
+the distinction precise.
+
+\begin{proposition}[Nielsen inversion with explicit endpoint data]
+For integers $n,p\ge1$, let $u=\log(-z)$ on
+$\mathbb C\setminus[0,\infty)$ and define
+\begin{align*}
+\mathcal N_{n,p}(z)={}&\frac{u^{n+p}}{(n+p)!}\\
+&+\sum_{r=1}^p\sum_{\ell=0}^{p-r}(-1)^\ell
+ \binom{n+\ell-1}{\ell}
+ \frac{u^{p-r-\ell}}{(p-r-\ell)!}S_{n+\ell,r}(z).
+\end{align*}
+Then
+\[
+S_{n,p}(1/z)=(-1)^n\mathcal N_{n,p}(z)+C_{n,p}(u),
+\]
+where $C_{n,p}$ is a polynomial of degree at most $n-1$. Its coefficients
+are determined entirely by Nielsen values at $-1$: for $0\le j<n$,
+\begin{align*}
+C_{n,p}^{(j)}(0)={}&(-1)^j S_{n-j,p}(-1)\\
+&-(-1)^n\sum_{r=1}^p(-1)^{p-r}
+ \binom{n-j+p-r-1}{p-r}S_{n-j+p-r,r}(-1).
+\end{align*}
+All logarithms and polylogarithms use the common principal continuation.
+\end{proposition}
+\begin{proof}
+First take $z<0$. Extend the notation by
+$S_{0,r}(z)=(-1)^r\log^r(1-z)/r!$ and $S_{0,0}=1$.
+Since $\log(1-1/z)=\log(1-z)-u$, the binomial theorem gives
+\[
+S_{0,p}(1/z)=\sum_{r=0}^p\frac{u^{p-r}}{(p-r)!}S_{0,r}(z).
+\]
+The ladder $dS_{m,r}/du=S_{m-1,r}$ implies, by Pascal's identity,
+that $d\mathcal N_{n,p}/du=\mathcal N_{n-1,p}$, with
+$\mathcal N_{0,p}=S_{0,p}(1/z)$. On the other hand
+$dS_{n,p}(1/z)/du=-S_{n-1,p}(1/z)$.
+Consequently the difference has vanishing $n$th derivative in $u$
+and is a polynomial of degree at most $n-1$. Evaluate its first
+$n$ derivatives at $u=0$, namely $z=-1$, to obtain the displayed
+endpoint coefficients. Both sides are holomorphic on the stated slit
+plane, so the identity theorem supplies the continuation.
+\end{proof}
+At weight three this gives the particularly useful exact identity
+\[
+S_{1,2}(1/z)=-S_{1,2}(z)+\Li_3(z)-\log(-z)\Li_2(z)
+-\frac16\log^3(-z)+\zeta(3).
+\]
+Closure of a function representation does not establish independence of
+its values. Other argument changes should likewise be derived by transporting
+the kernels in the appropriate alphabet, rather than by an unsuccessful
+search in an underspecified basket.

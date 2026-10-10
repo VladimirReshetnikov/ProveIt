@@ -1,0 +1,582 @@
+{
+  "description": "Regularized modular polygamma rows and their CM derivative jets",
+  "precision_decimal_digits": 65,
+  "numeric_status": "Ordinary high-precision numerical verification; decimal values are not outward-rounded intervals. The article proves the exact formulas and bounds.",
+  "libraries": {
+    "sympy": "1.14.0",
+    "mpmath": "1.3.0"
+  },
+  "definition": "T[w,j](tau)=sum(n^j*(psi^(w-1+j)(n*tau)+(-1)^j*psi^(w-1+j)(1-n*tau)),n>=1), w even >=2",
+  "row_formula": "(2*pi*i)^(w+j)*n^j*Li_(1-w-j)(exp(2*pi*i*n*tau))",
+  "tail_bound": "(2*pi)^(w+j)*(N+1)^j*Li_(-j)(r)/r*Li_(1-w-j)(r^(N+1)), r=exp(-2*pi*Im(tau))",
+  "negative_polylogarithms": [
+    {
+      "order": 0,
+      "expression": "-t/(t - 1)"
+    },
+    {
+      "order": 1,
+      "expression": "t/(t - 1)**2"
+    },
+    {
+      "order": 2,
+      "expression": "-t*(t + 1)/(t - 1)**3"
+    },
+    {
+      "order": 3,
+      "expression": "t*(t**2 + 4*t + 1)/(t - 1)**4"
+    },
+    {
+      "order": 4,
+      "expression": "-t*(t + 1)*(t**2 + 10*t + 1)/(t - 1)**5"
+    },
+    {
+      "order": 5,
+      "expression": "t*(t**4 + 26*t**3 + 66*t**2 + 26*t + 1)/(t - 1)**6"
+    },
+    {
+      "order": 6,
+      "expression": "-t*(t + 1)*(t**4 + 56*t**3 + 246*t**2 + 56*t + 1)/(t - 1)**7"
+    },
+    {
+      "order": 7,
+      "expression": "t*(t**6 + 120*t**5 + 1191*t**4 + 2416*t**3 + 1191*t**2 + 120*t + 1)/(t - 1)**8"
+    },
+    {
+      "order": 8,
+      "expression": "-t*(t + 1)*(t**6 + 246*t**5 + 4047*t**4 + 11572*t**3 + 4047*t**2 + 246*t + 1)/(t - 1)**9"
+    }
+  ],
+  "Ramanujan_polynomials": [
+    {
+      "j": 0,
+      "expression": "X",
+      "weight": 2,
+      "terms": [
+        {
+          "powers_of_X_Y_Z": [
+            1,
+            0,
+            0
+          ],
+          "numerator": 1,
+          "denominator": 1
+        }
+      ]
+    },
+    {
+      "j": 1,
+      "expression": "(X**2 - Y)/12",
+      "weight": 4,
+      "terms": [
+        {
+          "powers_of_X_Y_Z": [
+            2,
+            0,
+            0
+          ],
+          "numerator": 1,
+          "denominator": 12
+        },
+        {
+          "powers_of_X_Y_Z": [
+            0,
+            1,
+            0
+          ],
+          "numerator": -1,
+          "denominator": 12
+        }
+      ]
+    },
+    {
+      "j": 2,
+      "expression": "(X**3 - 3*X*Y + 2*Z)/72",
+      "weight": 6,
+      "terms": [
+        {
+          "powers_of_X_Y_Z": [
+            3,
+            0,
+            0
+          ],
+          "numerator": 1,
+          "denominator": 72
+        },
+        {
+          "powers_of_X_Y_Z": [
+            1,
+            1,
+            0
+          ],
+          "numerator": -1,
+          "denominator": 24
+        },
+        {
+          "powers_of_X_Y_Z": [
+            0,
+            0,
+            1
+          ],
+          "numerator": 1,
+          "denominator": 36
+        }
+      ]
+    },
+    {
+      "j": 3,
+      "expression": "(X**4 - 6*X**2*Y + 8*X*Z - 3*Y**2)/288",
+      "weight": 8,
+      "terms": [
+        {
+          "powers_of_X_Y_Z": [
+            4,
+            0,
+            0
+          ],
+          "numerator": 1,
+          "denominator": 288
+        },
+        {
+          "powers_of_X_Y_Z": [
+            2,
+            1,
+            0
+          ],
+          "numerator": -1,
+          "denominator": 48
+        },
+        {
+          "powers_of_X_Y_Z": [
+            1,
+            0,
+            1
+          ],
+          "numerator": 1,
+          "denominator": 36
+        },
+        {
+          "powers_of_X_Y_Z": [
+            0,
+            2,
+            0
+          ],
+          "numerator": -1,
+          "denominator": 96
+        }
+      ]
+    },
+    {
+      "j": 4,
+      "expression": "(X**5 - 10*X**3*Y + 20*X**2*Z - 15*X*Y**2 + 4*Y*Z)/864",
+      "weight": 10,
+      "terms": [
+        {
+          "powers_of_X_Y_Z": [
+            5,
+            0,
+            0
+          ],
+          "numerator": 1,
+          "denominator": 864
+        },
+        {
+          "powers_of_X_Y_Z": [
+            3,
+            1,
+            0
+          ],
+          "numerator": -5,
+          "denominator": 432
+        },
+        {
+          "powers_of_X_Y_Z": [
+            2,
+            0,
+            1
+          ],
+          "numerator": 5,
+          "denominator": 216
+        },
+        {
+          "powers_of_X_Y_Z": [
+            1,
+            2,
+            0
+          ],
+          "numerator": -5,
+          "denominator": 288
+        },
+        {
+          "powers_of_X_Y_Z": [
+            0,
+            1,
+            1
+          ],
+          "numerator": 1,
+          "denominator": 216
+        }
+      ]
+    },
+    {
+      "j": 5,
+      "expression": "(5*X**6 - 75*X**4*Y + 200*X**3*Z - 225*X**2*Y**2 + 120*X*Y*Z - 9*Y**3 - 16*Z**2)/10368",
+      "weight": 12,
+      "terms": [
+        {
+          "powers_of_X_Y_Z": [
+            6,
+            0,
+            0
+          ],
+          "numerator": 5,
+          "denominator": 10368
+        },
+        {
+          "powers_of_X_Y_Z": [
+            4,
+            1,
+            0
+          ],
+          "numerator": -25,
+          "denominator": 3456
+        },
+        {
+          "powers_of_X_Y_Z": [
+            3,
+            0,
+            1
+          ],
+          "numerator": 25,
+          "denominator": 1296
+        },
+        {
+          "powers_of_X_Y_Z": [
+            2,
+            2,
+            0
+          ],
+          "numerator": -25,
+          "denominator": 1152
+        },
+        {
+          "powers_of_X_Y_Z": [
+            1,
+            1,
+            1
+          ],
+          "numerator": 5,
+          "denominator": 432
+        },
+        {
+          "powers_of_X_Y_Z": [
+            0,
+            3,
+            0
+          ],
+          "numerator": -1,
+          "denominator": 1152
+        },
+        {
+          "powers_of_X_Y_Z": [
+            0,
+            0,
+            2
+          ],
+          "numerator": -1,
+          "denominator": 648
+        }
+      ]
+    }
+  ],
+  "single_row_identity_checks": [
+    {
+      "weight": 2,
+      "j": 0,
+      "n": 1,
+      "tau": {
+        "real": "3.7e-1",
+        "imaginary": "6.5e-1"
+      },
+      "absolute_difference": "3.80008124881626033540001094054512726559703569e-66",
+      "floating_point_allowance": "1.0e-50",
+      "passed": true
+    },
+    {
+      "weight": 2,
+      "j": 1,
+      "n": 2,
+      "tau": {
+        "real": "3.7e-1",
+        "imaginary": "6.5e-1"
+      },
+      "absolute_difference": "9.05722522214851595361198924657323349615135899e-67",
+      "floating_point_allowance": "1.0e-50",
+      "passed": true
+    },
+    {
+      "weight": 2,
+      "j": 2,
+      "n": 1,
+      "tau": {
+        "real": "3.7e-1",
+        "imaginary": "6.5e-1"
+      },
+      "absolute_difference": "5.37150427539440987782850638065199223584506597e-65",
+      "floating_point_allowance": "2.39360066561812069529036831933038064667539446e-49",
+      "passed": true
+    },
+    {
+      "weight": 4,
+      "j": 1,
+      "n": 2,
+      "tau": {
+        "real": "3.7e-1",
+        "imaginary": "6.5e-1"
+      },
+      "absolute_difference": "2.52348174280316796591133811594001339399462373e-65",
+      "floating_point_allowance": "5.55173505191473159422373714673587161506904986e-50",
+      "passed": true
+    }
+  ],
+  "CM_checks": [
+    {
+      "CM_point": "i",
+      "j": 0,
+      "rows": 36,
+      "partial_sum": {
+        "real": "-7.41377400533298172410934750062737471203652015e-2",
+        "imaginary": "0.0"
+      },
+      "Ramanujan_CM_formula": {
+        "real": "-7.41377400533298172410934750062737471203652015e-2",
+        "imaginary": "0.0"
+      },
+      "absolute_difference": "1.48368246027496855429269410461905580534702591e-67",
+      "analytic_tail_bound": "4.29854354627340074707196074159599430017456153e-100",
+      "floating_point_allowance": "1.0e-50",
+      "passed": true
+    },
+    {
+      "CM_point": "i",
+      "j": 1,
+      "rows": 36,
+      "partial_sum": {
+        "real": "0.0",
+        "imaginary": "-4.68429253785804502733703263133068809314930062e-1"
+      },
+      "Ramanujan_CM_formula": {
+        "real": "0.0",
+        "imaginary": "-4.68429253785804502733703263133068809314930062e-1"
+      },
+      "absolute_difference": "0.0",
+      "analytic_tail_bound": "1.00118584636389783156827012480274096437644855e-97",
+      "floating_point_allowance": "1.0e-50",
+      "passed": true
+    },
+    {
+      "CM_point": "i",
+      "j": 2,
+      "rows": 36,
+      "partial_sum": {
+        "real": "2.97608408815231012743243148103895787004337489",
+        "imaginary": "0.0"
+      },
+      "Ramanujan_CM_formula": {
+        "real": "2.97608408815231012743243148103895787004337489",
+        "imaginary": "0.0"
+      },
+      "absolute_difference": "4.74778387287989937373662113478097857711048292e-66",
+      "analytic_tail_bound": "2.33624473616913932494910902598783342657746443e-95",
+      "floating_point_allowance": "2.97608408815231012743243148103895787004337489e-50",
+      "passed": true
+    },
+    {
+      "CM_point": "i",
+      "j": 3,
+      "rows": 36,
+      "partial_sum": {
+        "real": "0.0",
+        "imaginary": "1.91137227045193799113747504795757878494208911e+1"
+      },
+      "Ramanujan_CM_formula": {
+        "real": "0.0",
+        "imaginary": "1.91137227045193799113747504795757878494208911e+1"
+      },
+      "absolute_difference": "7.59645419660783899797859381564956572337677267e-65",
+      "analytic_tail_bound": "5.47185991089536631128653011617963646085906564e-93",
+      "floating_point_allowance": "1.91137227045193799113747504795757878494208911e-49",
+      "passed": true
+    },
+    {
+      "CM_point": "i",
+      "j": 4,
+      "rows": 36,
+      "partial_sum": {
+        "real": "-1.25332359974968010088173588408419715324947075e+2",
+        "imaginary": "0.0"
+      },
+      "Ramanujan_CM_formula": {
+        "real": "-1.25332359974968010088173588408419715324947075e+2",
+        "imaginary": "0.0"
+      },
+      "absolute_difference": "4.5578725179647033987871562893897394340260636e-64",
+      "analytic_tail_bound": "1.29104674737897512797163001824925729871094801e-90",
+      "floating_point_allowance": "1.25332359974968010088173588408419715324947075e-48",
+      "passed": true
+    },
+    {
+      "CM_point": "rho",
+      "j": 0,
+      "rows": 36,
+      "partial_sum": {
+        "real": "1.68865297385991414121663090996130543065116347e-1",
+        "imaginary": "-1.54059432178533942792303245015253560175941103e-67"
+      },
+      "Ramanujan_CM_formula": {
+        "real": "1.68865297385991414121663090996130543065116347e-1",
+        "imaginary": "0.0"
+      },
+      "absolute_difference": "1.78707189403753220809653524658688420531576483e-66",
+      "analytic_tail_bound": "1.44872743100764151901210735183358699391119078e-86",
+      "floating_point_allowance": "1.0e-50",
+      "passed": true
+    },
+    {
+      "CM_point": "rho",
+      "j": 1,
+      "rows": 36,
+      "partial_sum": {
+        "real": "9.42396808626595153422689132425417240791917409e-67",
+        "imaginary": "1.04719755119659774615421446109316762806572313"
+      },
+      "Ramanujan_CM_formula": {
+        "real": "0.0",
+        "imaginary": "1.04719755119659774615421446109316762806572313"
+      },
+      "absolute_difference": "4.84040942984041876859869926851438759527775017e-66",
+      "analytic_tail_bound": "3.38262882933433690095008853277491907321654209e-84",
+      "floating_point_allowance": "1.04719755119659774615421446109316762806572313e-50",
+      "passed": true
+    },
+    {
+      "CM_point": "rho",
+      "j": 2,
+      "rows": 36,
+      "partial_sum": {
+        "real": "-6.40713104662216031887060703109508962750399977",
+        "imaginary": "5.60124129613534624244686633485914577441785438e-66"
+      },
+      "Ramanujan_CM_formula": {
+        "real": "-6.40713104662216031887060703109508962750399977",
+        "imaginary": "0.0"
+      },
+      "absolute_difference": "1.10245050170901459626905151028547828240728838e-65",
+      "analytic_tail_bound": "7.9323144706354046471991187644187373086225637e-82",
+      "floating_point_allowance": "6.40713104662216031887060703109508962750399977e-50",
+      "passed": true
+    },
+    {
+      "CM_point": "rho",
+      "j": 3,
+      "rows": 36,
+      "partial_sum": {
+        "real": "-3.1200465142672770740390951151189021468927796e-65",
+        "imaginary": "-3.81067207068265686169199189249961992145774768e+1"
+      },
+      "Ramanujan_CM_formula": {
+        "real": "0.0",
+        "imaginary": "-3.81067207068265686169199189249961992145774768e+1"
+      },
+      "absolute_difference": "8.21223517760860491006734545630976551523028879e-65",
+      "analytic_tail_bound": "1.87612214998911308839976669698699147028950292e-79",
+      "floating_point_allowance": "3.81067207068265686169199189249961992145774768e-49",
+      "passed": true
+    },
+    {
+      "CM_point": "rho",
+      "j": 4,
+      "rows": 36,
+      "partial_sum": {
+        "real": "2.12754057123265184340566403060391847525342401e+2",
+        "imaginary": "-1.46377511317662202250465818558918370310200789e-64"
+      },
+      "Ramanujan_CM_formula": {
+        "real": "2.12754057123265184340566403060391847525342401e+2",
+        "imaginary": "0.0"
+      },
+      "absolute_difference": "3.37277574109826762310678021638050229152259581e-64",
+      "analytic_tail_bound": "4.51197319190477810342165814588516749975617715e-77",
+      "floating_point_allowance": "2.12754057123265184340566403060391847525342401e-48",
+      "passed": true
+    }
+  ],
+  "tail_checks": [
+    {
+      "weight": 2,
+      "j": 0,
+      "tau": {
+        "real": "0.0",
+        "imaginary": "1.0"
+      },
+      "cutoff": 4,
+      "reference_cutoff": 54,
+      "finite_tail_magnitude": "8.98272235928128544591383647028635471616342917e-13",
+      "reference_tail_bound": "3.27923539070443100607236212523207030127552559e-149",
+      "analytic_tail_bound": "8.98272235928128620643527744843099122715901098e-13",
+      "upper_estimate_divided_by_bound": "9.99999999999999915335083223145006562405814291e-1",
+      "passed": true
+    },
+    {
+      "weight": 2,
+      "j": 4,
+      "tau": {
+        "real": "5.0e-1",
+        "imaginary": "8.66025403784438646763723170752936183471402627e-1"
+      },
+      "cutoff": 4,
+      "reference_cutoff": 54,
+      "finite_tail_magnitude": "5.82404425675628667421022312329988840935085533e-5",
+      "reference_tail_bound": "6.39683860351768841541105720897851188076070311e-119",
+      "analytic_tail_bound": "6.29293038875999243635046729677895135615980873e-5",
+      "upper_estimate_divided_by_bound": "9.25490017680602581115840068154484857004390319e-1",
+      "passed": true
+    },
+    {
+      "weight": 4,
+      "j": 1,
+      "tau": {
+        "real": "3.7e-1",
+        "imaginary": "4.8e-1"
+      },
+      "cutoff": 5,
+      "reference_cutoff": 55,
+      "finite_tail_magnitude": "7.82028067780487271439088502042405948406500382e-4",
+      "reference_tail_bound": "2.71552510630767132892711625473612165778259177e-68",
+      "analytic_tail_bound": "8.99253478369728688249819682365437592734322156e-4",
+      "upper_estimate_divided_by_bound": "8.69641415453002998177932246691531737316534943e-1",
+      "passed": true
+    },
+    {
+      "weight": 6,
+      "j": 3,
+      "tau": {
+        "real": "2.0e-1",
+        "imaginary": "1.2"
+      },
+      "cutoff": 3,
+      "reference_cutoff": 53,
+      "finite_tail_magnitude": "7.79695378772529334389085180313756560750236782e-5",
+      "reference_tail_bound": "3.6263575063741673403906314214705256340946551e-165",
+      "analytic_tail_bound": "7.82765673879175487077966053756347078824148368e-5",
+      "upper_estimate_divided_by_bound": "9.96077631903005405799512395980978343376279532e-1",
+      "passed": true
+    }
+  ],
+  "summary": {
+    "single_row_checks_passed": 4,
+    "CM_checks_passed": 10,
+    "tail_checks_passed": 4,
+    "all_checks_passed": true
+  }
+}

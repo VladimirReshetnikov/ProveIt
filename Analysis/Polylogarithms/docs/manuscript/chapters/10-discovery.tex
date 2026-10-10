@@ -102,11 +102,11 @@ Several concrete proof problems now fit into one framework. The odd-weight
 $S_p$ directions need a precise choice of comparison algebra and a
 rigorous reduction or obstruction; the even-weight direction has the
 generating-integral proof of Chapter~\ref{ch:04-depth}. The Gaussian and
-Eisenstein mixed points need a full regularized relation computation with
-an explicit matrix and certified reductions. The Stieltjes distribution
-ranks need a uniform proof of the divisor-row structure. Numerical
-independence of character derivative coordinates remains a separate
-arithmetic problem.
+Eisenstein inverse-color points now have an all-weight partial-fraction
+reduction, and the distribution ranks have a complete character normal
+form. A full regularized relation computation remains useful for the other
+colored points. Numerical independence of character derivative coordinates
+remains a separate arithmetic problem.
 
 The gamma programme can transport its exact row certificates across the
 DFT and prove branch validity for each law instance. Its finite-matrix
@@ -117,9 +117,79 @@ conjugation. The Herglotz programme needs complete explicit class-character
 and unit definitions for the regulator candidates before they become
 locally replayable, followed by the relevant Stark argument.
 
-The cubic log-gamma moment and the opaque individual CM components are
-good discovery targets because their defining integrals are accessible,
-but the naive single-value baskets miss their likely depth or modular
-structure. A richer representation is often more productive than a
+The cubic log-gamma moment now has the explicit Tornheim representation
+and certified enclosure of Section~\ref{gaussian:sec:gamma}. Reduction of
+those derivative coordinates into a stated smaller algebra remains a precise
+question, alongside the opaque individual CM components. The Gaussian
+weight-five relation, weight-six doubles, weight-four triples and cubic/quartic
+ladders likewise now have exact proofs. The mixed $S_4$ relation, higher
+golden ladder certificates and numerical period independence remain open. A richer representation is often more productive than a
 larger unstructured search. The scientific value of the experiments is
 that they tell us which representation to seek next.
+
+\section{Questions sharpened by the exact continuations}
+\subsection{Zero geometry beyond a fixed Laurent index}
+The global upper bound and eventual saturation do not settle every small
+derivative order when $n\ge5$. The exact low-index certificates suggest a
+practical route: isolate a full set of base zeros and use persistence to
+propagate the result. Effective thresholds uniform in the positive Lerch
+parameter require quantitative separation of the Appell roots and explicit
+concentration remainders. The spectral coefficient expansion for
+$n=O(\log k)$ does not by itself supply moving-zero asymptotics throughout
+that range, because the extreme root slopes can leave a compact scale.
+For higher zero branches, monotonicity in the deformation parameter is
+suggested by the first correction but is proved globally only at $n=1$.
+
+\subsection{Certificates, integral structure and arithmetic evaluation}
+The complex distribution module is free even at resonant weights. What
+changes there is the usefulness of selected coordinates, not its rank.
+Integral Smith forms, torsion, cyclotomic coefficient arithmetic and short
+certificate generation remain separate questions. The same distinction
+applies to the exterior-symbol calculus: a nonzero formal obstruction rules
+out a certificate in that calculus, while the kernel of numerical period
+evaluation is a deeper arithmetic problem. Constructive reduction can now
+be benchmarked against an exact admissibility criterion rather than a
+denominator heuristic.
+
+\subsection{Further positive kernels and approximation regimes}
+The harmonic-index transition and Herglotz optimal cutoff illustrate two
+ways that positive kernels convert experiments into uniform asymptotics.
+Other roots of unity introduce complex weights and can destroy positivity;
+their extensions need a replacement argument rather than a formal reuse of
+the signed bounds. The general $J(p/q)$ symbol problem extends the proved
+$J(2/q)$ classification. At the optimal approximation scale, algebraic
+corrections and exponentially smaller arithmetic shifts require separately
+defined reference transitions. Their numerical diagnostics should retain
+that separation of scales.
+
+\subsection{A focused path toward formal verification}
+The finite algebraic interfaces are suitable first targets: character
+projectors, prime distribution edges, polynomial normal forms, exact
+partial fractions and the rational interval operations. Analytical
+formalization can then isolate the root-preserving operator, Laplace
+variation argument, positive-kernel remainder theorems and local normalized
+functional equation. These are explicit future tasks, not claims that the
+present ordinary proofs have already been checked by a proof assistant.
+
+
+\section{From decimal fits to short executable proofs}
+The Gaussian continuation illustrates a complete experimental cycle. A
+weight-five relation first found with large coefficients is the combination
+of two simple shuffle rows; the parity theorem then explains all five
+weight-six double reductions. The one-two integral supplies the three
+weight-four triples, while algebraic argument substitutions and rational
+row operations certify the cubic and quartic ladders. The cubic log-gamma
+moment requires a Tornheim derivative coordinate rather than a larger
+unstructured single-value basket.
+
+The accompanying fresh replay re-expands all 511 ending-in-one binary
+words through weight nine and checks 45 bigraded sectors. It verifies 35
+exact algebraic ladder substitutions and reproduces the integer cubic
+moment certificate, whose endpoints share 112 decimal places. Independent
+defining-integral comparisons check 64 double and one-two formulas. The
+Chebyshev implementation supplies 89 interval residual enclosures, including
+one for the conjectural $S_4$ identity; an enclosure containing zero is not
+a proof of that conjecture. Six separate midpoint rectangles enclose the
+Gaussian and Eisenstein inverse-color values to widths below $10^{-70}$.
+These finite replays test the implementations. The all-weight and asymptotic
+statements rest on the analytic and algebraic arguments in the chapters.

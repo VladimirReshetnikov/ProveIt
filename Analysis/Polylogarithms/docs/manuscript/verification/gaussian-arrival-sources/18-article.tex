@@ -1,0 +1,1087 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage[margin=26mm,headheight=14pt]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,longtable,array}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage[hidelinks,unicode]{hyperref}
+\usepackage{bookmark}
+\hypersetup{pdftitle={Gaussian Double Polylogarithms: Exact Reductions, Signed Kernels, and a Unique-Zero Theorem},pdfauthor={Research continuation prepared for the ProveIt project},pdfsubject={Proofs, asymptotics, and exact-rational certificates}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Gaussian double polylogarithms}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{14pt}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\Imag}{\operatorname{Im}}
+\newcommand{\Real}{\operatorname{Re}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\ii}{\mathrm{i}}
+\newcommand{\BB}{\mathcal B}
+\newcommand{\HH}{H}
+\newcommand{\repo}{\textsc{ProveIt}}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,breaklines=true,keepspaces=true,showstringspaces=false,frame=single,framerule=0.3pt,xleftmargin=3pt,xrightmargin=3pt}
+\title{\vspace{-12mm}\textbf{Gaussian Double Polylogarithms}\\[4pt]\Large Exact Reductions, Signed Kernels,\\and a Unique-Zero Theorem}
+\author{Research continuation prepared for the \repo\ project}
+\date{9 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We continue the Gaussian depth-two program in Chapter~4 of the \repo\ polylogarithm manuscript. Six equations recorded there as numerically supported are proved: the weight-five relation is a two-row shuffle consequence, and all five weight-six reductions follow from an explicitly specialized parity identity. The same machinery supplies a rational coefficient compiler and 64 even-weight formulas through weight~16.
+
+The main analytic development is a signed integral representation for
+$\Li_{a,b}(z,1)$. Its density has zero mass and exactly one sign change. We use this structure to prove that, for every integer $a\ge1$ and real $b>0$, the imaginary part on the upper unit semicircle has exactly one interior zero. The zero is simple and lies below $\pi/2$. We obtain a four-term large-$a$ expansion, uniform for $b\ge1$. The same density gives one-sided, exact-rational Euler certificates for the Gaussian values and a sharp error law whose leading coefficient depends only on total weight.
+
+We also determine the rank and inverse of the same-point shuffle system in every weight, isolate a finite linear obstruction to proving the remaining $S_4$ conjecture by a specified depth-two relation system, and formulate an all-odd-weight rank conjecture checked exactly through weight~31. Proofs, rational certificates, numerical diagnostics, and unresolved statements are kept distinct.
+\end{abstract}
+\vspace{5pt}
+\noindent\textbf{Status.} Proof-bearing research draft with reproducible supporting computations. The parity theorem and Euler transformation are established tools, not novelty claims. The results below are additions or proof upgrades for the pinned repository snapshot; exhaustive priority for the specific analytic formulations is not asserted.
+
+\noindent\textbf{Repository baseline.} Commit
+\texttt{afed07429d3d37eceb6c8e9e54cf4da2d3f39d53}; source chapter
+\texttt{04-depth.tex}, blob \texttt{6171912ff7724784cabb789a066c61223ab298bc}.
+\newpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{Research target, conventions, and evidence}
+\label{sec:scope}
+
+\subsection{What is being continued}
+The consolidated manuscript \cite{repo} carefully separates numerical relations, exact formal ranks, and actual period independence. In particular, its section ``Candidate Gaussian reductions at weights five and six'' retains a weight-five relation and five weight-six reductions without analytic proofs. The editorial ledger explicitly withdraws earlier inferences of independence from failed integer-relation searches. We retain that discipline.
+
+This continuation has three connected aims: turn the six specific candidate equations into theorems; develop a uniform analytic description of their Gaussian values, rather than only more numerical fits; and make the resulting computations reproducible without the historical evaluation scripts. The signed-density argument also leads outside the original list of special values, to a theorem about zeros on the entire upper unit semicircle.
+
+The following distinction is important. Panzer proves a general parity theorem and gives a depth-two formula \cite{Panzer}; Umezawa gives further explicit parity results \cite{Umezawa}. Unit-circle depth-two functional relations also occur in the Lerch--Tornheim setting \cite{Nakamura}. We specialize this known machinery with the repository's index convention and handle the apparently singular inner index~1. We do not claim to have discovered the general parity principle. Likewise, the Euler transformation itself is classical \cite{DLMF39}; the work here proves its signs, certified remainder, and sharp asymptotics for this family.
+
+\subsection{Definitions and branch conventions}
+We use decreasing indices:
+\begin{equation}\label{eq:double-def}
+ D_{a,b}(x,y)=\Li_{a,b}(x,y)
+ =\sum_{n>m\ge1}\frac{x^ny^m}{n^am^b},\qquad
+ F_{a,b}(z)=D_{a,b}(z,1).
+\end{equation}
+For $b>0$, put $H_n^{(b)}=\sum_{m=1}^n m^{-b}$, with $H_0^{(b)}=0$; write $H_n=H_n^{(1)}$. Initially, for $|z|<1$,
+\begin{equation}\label{eq:F-series}
+ F_{a,b}(z)=\sum_{n\ge1}\frac{H_{n-1}^{(b)}}{n^a}z^n.
+\end{equation}
+Unless explicitly extended to real $b>0$, the indices $a,b$ are positive integers and $w=a+b$ is the weight. At the Gaussian point,
+\begin{equation}\label{eq:g-def}
+ g_{a,b}=\Imag F_{a,b}(\ii)
+ =\sum_{n\ge0}\frac{(-1)^nH_{2n}^{(b)}}{(2n+1)^a}.
+\end{equation}
+We also write $G=\beta(2)$, where $\beta(s)=\sum_{n\ge0}(-1)^n/(2n+1)^s$.
+
+The functions on the unit circle are Abel boundary values. They agree with their ordinary convergent series when $z\ne1$. Indeed, $H_{n-1}^{(b)}/n^a$ tends to zero and is eventually decreasing for $a\ge1$, $b>0$: the standard integral comparison gives growth $n^{1-b}/(1-b)$ for $0<b<1$, $\log n$ for $b=1$, and a finite limit for $b>1$ before division by $n^a$. The ratio test for eventual monotonicity then applies, and Dirichlet summation handles the oscillation. For integer $b\ge1$, the Gaussian series is absolutely convergent if $a>1$ and conditionally convergent if $a=1$.
+
+We use the principal logarithm. Polylogarithms at non-real unit points are continued from the disk without crossing $[1,\infty)$; see also the classical conventions in \cite{DLMF2512}. The signed density introduced next is denoted $\kappa$, not $h$, because the source manuscript already uses $h_{a,b}$ for the real Gaussian component.
+
+\subsection{Results and their logical status}
+\begin{center}
+\small
+\begin{tabular}{@{}p{.52\linewidth}p{.39\linewidth}@{}}
+\toprule
+Result & Status in this continuation\\
+\midrule
+Weight-five relation and five weight-six formulas & Proved; six source labels can be upgraded\\
+Unique upper-semicircle zero; its four-term asymptotic & Proved from signed kernels\\
+One-sided Euler certificate and sharp error polynomial & Proved; rational implementation supplied\\
+Same-point shuffle rank and Pascal inverse & Proved in every weight\\
+64 even-weight formulas through weight 16 & Exact consequences of the parity specialization\\
+$S_4$ evaluation & Still conjectural; rigorously enclosed numerical difference\\
+All-odd-weight full-color rank pattern & Conjectural; exact finite checks through weight 31\\
+Numerical independence of surviving periods & Not asserted\\
+\bottomrule
+\end{tabular}
+\end{center}
+The proofs are mathematical arguments, not consequences of floating-point agreement. The exact computations replay algebra and inequalities; they do not constitute a formally verified proof assistant development.
+
+\section{A signed-kernel representation}
+\label{sec:kernel}
+
+\begin{definition}\label{def:kappa}
+For real $b>0$ and $T>0$, define
+\begin{equation}\label{eq:kappa-base}
+ \kappa_{1,b}(e^{-T})=
+ -\frac{T^b}{\Gamma(b+1)}
+ +\frac1{\Gamma(b)}\int_T^\infty\frac{v^{b-1}}{e^v-1}\dd v.
+\end{equation}
+For an integer $a\ge2$, define successively
+\begin{equation}\label{eq:kappa-recursion}
+ \kappa_{a,b}(u)=\int_u^1\frac{\kappa_{a-1,b}(v)}{v}\dd v,
+ \qquad 0<u<1.
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Moments and one sign change]\label{thm:kernel}
+For every integer $a\ge1$ and real $b>0$, the density $\kappa_{a,b}$ is integrable on $(0,1)$ and
+\begin{equation}\label{eq:kernel-moments}
+ \int_0^1u^{n-1}\kappa_{a,b}(u)\dd u
+ =\frac{H_{n-1}^{(b)}}{n^a},\qquad n\ge1.
+\end{equation}
+In particular its total mass is zero. There is exactly one $r_{a,b}\in(0,1)$ such that
+\begin{equation}\label{eq:kernel-sign}
+ \kappa_{a,b}(u)<0\quad(0<u<r_{a,b}),\qquad
+ \kappa_{a,b}(u)>0\quad(r_{a,b}<u<1).
+\end{equation}
+The crossing is strict, and $r_{a,b}<r_{a-1,b}$ when $a\ge2$.
+\end{theorem}
+\begin{proof}
+First consider $a=1$. The negative term in \eqref{eq:kappa-base} has moment $-n^{-b-1}$. Substituting $u=e^{-T}$ and interchanging nonnegative integrands in the positive term gives
+\begin{align*}
+ &\frac1{\Gamma(b)}\int_0^\infty e^{-nT}
+       \int_T^\infty\frac{v^{b-1}}{e^v-1}\dd v\dd T\\
+ &\hspace{12mm}=\frac1{n\Gamma(b)}\int_0^\infty
+       \frac{v^{b-1}(1-e^{-nv})}{e^v-1}\dd v
+ =\frac1n\sum_{k=1}^n k^{-b}.
+\end{align*}
+The final equality uses the finite geometric identity
+$(1-e^{-nv})/(e^v-1)=\sum_{k=1}^n e^{-kv}$.
+Subtracting $n^{-b-1}$ proves the base moment formula. At $n=1$, both positive and negative terms have finite integral~1, so integrability and zero mass are established without subtracting divergent quantities.
+
+As a function of $T$, the base density has derivative
+\begin{equation}\label{eq:kappa-base-derivative}
+ \frac{\mathrm d}{\mathrm dT}\kappa_{1,b}(e^{-T})
+ =-\frac{T^{b-1}}{\Gamma(b)(1-e^{-T})}<0.
+\end{equation}
+It is positive as $T\downarrow0$: the limit is $\zeta(b)>0$ if $b>1$, and is $+\infty$ if $0<b\le1$. It tends to $-\infty$ as $T\to\infty$. Thus it has exactly one crossing, with the sign pattern stated in the $u$ coordinate.
+
+For the induction, the integral operator in \eqref{eq:kappa-recursion} is an $L^1$ contraction:
+\[
+ \int_0^1\left|\int_u^1\frac{f(v)}v\dd v\right|\dd u
+ \le\int_0^1|f(v)|\dd v.
+\]
+Fubini's theorem gives the moment of the new density as $1/n$ times the previous moment; in particular it preserves zero mass. If the preceding crossing is $r$, the new density is positive on $[r,1)$, while on $(0,r)$ its derivative is $-\kappa_{a-1,b}(u)/u>0$. Zero mass forces it to be negative somewhere on that interval. Strict increase then gives exactly one crossing in $(0,r)$. This completes the induction.
+\end{proof}
+
+\begin{corollary}[Integral continuation]\label{cor:stieltjes}
+For $z\in\mathbb C\setminus[1,\infty)$,
+\begin{equation}\label{eq:stieltjes}
+ F_{a,b}(z)=\int_0^1\frac{z}{1-zu}\kappa_{a,b}(u)\dd u.
+\end{equation}
+In particular, if $0<\theta<\pi$,
+\begin{equation}\label{eq:angular-integral}
+ \Imag F_{a,b}(e^{\ii\theta})
+ =\sin\theta\,J_{a,b}(\cos\theta),\qquad
+ J_{a,b}(c)=\int_0^1\frac{\kappa_{a,b}(u)}{1-2cu+u^2}\dd u.
+\end{equation}
+\end{corollary}
+\begin{proof}
+For $|z|<1$, expand $z/(1-zu)$ and use the moments. On compact subsets of the slit plane the denominator is bounded away from zero uniformly in $u\in[0,1]$, so the integral is analytic there. This continues the disk identity. Taking the imaginary part of $e^{\ii\theta}/(1-ue^{\ii\theta})$ gives \eqref{eq:angular-integral}.
+\end{proof}
+
+\begin{lemma}[A sign test for zero-mass densities]\label{lem:sign-test}
+Let $\kappa$ have zero integral and the strict sign pattern \eqref{eq:kernel-sign}, with crossing $r$. If $q$ is strictly decreasing and the integral exists, then $\int q\kappa<0$. If $q$ is strictly increasing, the sign is positive.
+\end{lemma}
+\begin{proof}
+Subtract $q(r)\int\kappa=0$. The product $(q(u)-q(r))\kappa(u)$ has the asserted strict sign on each side of $r$.
+\end{proof}
+
+\section{The unique zero on the upper semicircle}
+\label{sec:zeros}
+
+\begin{theorem}[Existence, uniqueness, and simplicity]\label{thm:unique-zero}
+Let $a\ge1$ be an integer and let $b>0$ be real. There is exactly one
+$\theta_{a,b}\in(0,\pi)$ such that
+$\Imag F_{a,b}(e^{\ii\theta_{a,b}})=0$. It satisfies
+\begin{equation}\label{eq:zero-range}
+ 0<\theta_{a,b}<\frac\pi2.
+\end{equation}
+The imaginary part is positive for $0<\theta<\theta_{a,b}$ and negative for $\theta_{a,b}<\theta<\pi$. At its zero the angular derivative is strictly negative. Consequently,
+\begin{equation}\label{eq:g-negative}
+ g_{a,b}<0.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Suppress the indices in $J$ and $\kappa$. The kernel $u\mapsto(1+u^2)^{-1}$ is strictly decreasing, so Lemma~\ref{lem:sign-test} gives $J(0)<0$.
+
+We next show that the limit of $J(c)$ as $c\uparrow1$ is positive, possibly infinite. The negative density is supported in $(0,r)$, away from the singular endpoint, and its contribution has a finite limit. On $(r,1)$ monotone convergence applies. Expanding $(1-u)^{-2}$, treating these two parts separately, and using \eqref{eq:kernel-moments} yields
+\begin{equation}\label{eq:J-at-one}
+ \lim_{c\uparrow1}J(c)
+ =\int_0^1\frac{\kappa(u)}{(1-u)^2}\dd u
+ =\sum_{n\ge0}\frac{H_n^{(b)}}{(n+1)^{a-1}}>0.
+\end{equation}
+Every summand from $n=1$ onward is positive. Thus continuity produces at least one zero $c_0\in(0,1)$.
+
+For uniqueness, write $K_c(u)=(1-2cu+u^2)^{-1}$. If $c'>c$, then
+\begin{equation}\label{eq:kernel-ratio}
+ \frac{\mathrm d}{\mathrm du}\frac{K_{c'}(u)}{K_c(u)}
+ =\frac{2(c'-c)(1-u^2)}{(1-2c'u+u^2)^2}>0.
+\end{equation}
+At a zero $J(c)=0$, the signed density $K_c\kappa$ still has one sign change and zero mass. Applying Lemma~\ref{lem:sign-test} to the ratio in \eqref{eq:kernel-ratio} gives $J(c')>0$ for every $c'>c$. The same argument with a smaller parameter gives $J(c')<0$ for $c'<c$. There can be only one zero in $(-1,1)$, with the indicated signs.
+
+Finally,
+\[
+ J'(c_0)=\int_0^1 K_{c_0}(u)\kappa(u)
+        \frac{2u}{1-2c_0u+u^2}\dd u>0,
+\]
+because the last factor has derivative $2(1-u^2)/(1-2c_0u+u^2)^2>0$. Equation~\eqref{eq:angular-integral} therefore has derivative
+$-\sin^2\theta_{a,b}\,J'(c_0)<0$ at $\theta_{a,b}=\arccos c_0$. Since $c_0>0$, this zero is below $\pi/2$. The Gaussian inequality is its value at $\theta=\pi/2$.
+\end{proof}
+
+\begin{remark}[The first zero is elementary]
+The identity $F_{1,1}(z)=\tfrac12\log^2(1-z)$ gives
+\[
+ \Imag F_{1,1}(e^{\ii\theta})
+ =\log\!\left(2\sin\frac\theta2\right)\frac{\theta-\pi}{2}.
+\]
+Hence $\theta_{1,1}=\pi/3$ and $g_{1,1}=-\pi\log2/8$. This example also checks the direction of the sign change in Theorem~\ref{thm:unique-zero}.
+\end{remark}
+
+\section{A four-term asymptotic for the zero}
+\label{sec:zero-asymptotic}
+Put $\delta_{a,b}=\pi/2-\theta_{a,b}$. The first surviving Fourier mode at $\pi/2$ is the $n=3$ term, whereas the $n=2$ term controls the derivative. Their ratio suggests $(2/3)^a$; the theorem below identifies both the next Fourier corrections and the first nonlinear correction.
+
+\begin{theorem}[Uniform zero asymptotic]\label{thm:zero-asymptotic}
+For integer $a\to\infty$, uniformly for real $b\ge1$, set
+$A=H_2^{(b)}$, $B=H_3^{(b)}$, and $C=H_4^{(b)}$. Then
+\begin{align}\label{eq:zero-asymptotic}
+ \delta_{a,b}
+ &=\frac A2\left(\frac23\right)^a
+   -\frac C2\left(\frac25\right)^a
+   +AB\left(\frac13\right)^a
+   -\frac{23A^3}{48}\left(\frac8{27}\right)^a
+   +O\!\left(\left(\frac27\right)^a\right).
+\end{align}
+The implied constant and the threshold for $a$ can be chosen independently of $b\ge1$.
+\end{theorem}
+\begin{proof}
+For sufficiently large $a$, the boundary series and its derivative converge absolutely. Normalize the imaginary part by multiplying by $2^a$, and write $\theta=\pi/2-\delta$. The modes $n=2,3,4,5$ give
+\begin{align}\label{eq:zero-fourier}
+ 0={}&\sin(2\delta)-Aq^a\cos(3\delta)-Bs^a\sin(4\delta)
+       +Cr^a\cos(5\delta)\notag\\
+    &\quad+O\!\left(\delta\,3^{-a}+(2/7)^a\right),
+ \qquad q=\frac23,\quad s=\frac12,\quad r=\frac25.
+\end{align}
+The $n=6$ mode is $O(\delta3^{-a})$. For $n\ge7$, the bound
+$H_{n-1}^{(b)}\le1+\log n$ gives a uniform tail estimate: for $a\ge3$,
+\[
+ \sum_{n\ge7}(1+\log n)(2/n)^a
+ \le (2/7)^a\sum_{n\ge7}(1+\log n)(7/n)^3.
+\]
+The constant is finite and independent of $b$.
+
+Since $1\le A\le3/2$ and $B,C$ are bounded uniformly in $b$, the normalized expression is negative at $\delta=0$ and positive at $\delta=q^a$ for all sufficiently large $a$. Theorem~\ref{thm:unique-zero} identifies the root in that interval. Thus $\delta=O(q^a)$ uniformly.
+
+Taylor expansion of \eqref{eq:zero-fourier} now gives
+\begin{align}\label{eq:zero-expanded}
+ 0={}&2\delta-Aq^a-4Bs^a\delta+Cr^a
+       +\frac92Aq^a\delta^2-\frac43\delta^3
+       +O((2/7)^a).
+\end{align}
+For example, the omitted terms have exponential bases bounded by
+$q^5$, $sq^3$, $rq^2$, and $q/3$, all smaller than $2/7$. Insert first
+$\delta_0=Aq^a/2$. The linear perturbation $-4Bs^a\delta_0$ requires the correction $AB(qs)^a$, while the $n=5$ mode requires $-Cr^a/2$.
+The cubic contribution at $\delta_0$ is
+\[
+ \frac92Aq^a\delta_0^2-\frac43\delta_0^3
+ =\frac{23}{24}A^3q^{3a},
+\]
+so its compensating correction is $-23A^3q^{3a}/48$.
+Substitution of the full displayed approximation in \eqref{eq:zero-expanded} leaves a residual $O((2/7)^a)$; all cross-products of the corrections have smaller exponential bases. The derivative of the normalized expression with respect to $\delta$ is $2+o(1)$, uniformly on this interval. The mean-value theorem therefore converts the residual estimate into the error in \eqref{eq:zero-asymptotic}.
+\end{proof}
+
+\begin{center}
+\small
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$a$ & $b$ & $\theta_{a,b}$, approximately & $\delta_{a,b}$, approximately\\
+\midrule
+8&1&1.541868140889&0.02892818590626\\
+8&2&1.546656477391&0.02413984940401\\
+8&4&1.550268639150&0.02052768764464\\
+12&1&1.565028587360&0.005767739435093\\
+12&2&1.565988233290&0.004808093504888\\
+12&4&1.566708834682&0.004087492112621\\
+20&1&1.570570790993&0.0002255358018452\\
+20&2&1.570608378737&0.0001879480579893\\
+20&4&1.570636570306&0.0001597564888279\\
+\bottomrule
+\end{tabular}
+\end{center}
+These entries are numerical illustrations from a 300-term Fourier sum, not certified root intervals. Existence, uniqueness, and the asymptotic estimate do not depend on the table. At $a=20,40,80$ and $b=1,2,8$, the computed next normalized remainder approaches $H_6^{(b)}/2$, as suggested by the $n=7$ mode. A systematic expansion beyond the proved four terms is a separate research problem.
+
+\section{An explicit all-weight parity specialization}
+\label{sec:parity}
+
+\subsection{The branch-safe identity}
+For $\xi\notin[0,\infty)$ define the Bernoulli expression
+\begin{equation}\label{eq:Bernoulli-def}
+ \BB_k(\xi)=\frac{(2\pi\ii)^k}{k!}
+ B_k\!\left(\frac12+\frac{\log(-\xi)}{2\pi\ii}\right),\qquad k\ge0.
+\end{equation}
+Here $B_k(x)$ is the Bernoulli polynomial and $\BB_0=1$. At $z=e^{\ii\theta}$, $0<\theta<2\pi$, this becomes
+\begin{equation}\label{eq:Bernoulli-circle}
+ \BB_k(z)=\frac{(2\pi\ii)^k}{k!}B_k\!\left(\frac{\theta}{2\pi}\right).
+\end{equation}
+
+\begin{theorem}[Specialized depth-two parity]\label{thm:parity}
+Let $a,b\ge1$ be integers, $w=a+b$, and $z=e^{\ii\theta}$ with $0<\theta<2\pi$. Then
+\begin{align}\label{eq:parity-master}
+ F_{a,b}(z)-(-1)^wF_{a,b}(\bar z)
+ ={}&\sum_{\mu=b+1}^{w}(-1)^{b+\mu}
+       \binom{\mu-1}{b-1}\zeta(\mu)\BB_{w-\mu}(z)
+       -\Li_w(z)\notag\\
+ &+(-1)^a\sum_{\mu=a}^{w}\binom{\mu-1}{a-1}
+       \Li_\mu(\bar z)\BB_{w-\mu}(z).
+\end{align}
+This is an explicit specialization of Panzer's depth-two formula, including the limiting case $b=1$.
+\end{theorem}
+\begin{proof}
+Panzer uses increasing indices. In his equation~(3.2) \cite{Panzer}, substitute
+$(n_1,n_2;z_1,z_2)=(b,a;y,z)$. In our convention the resulting identity, before taking $y\to1$, is
+\begin{align*}
+ D_{a,b}(z,y)-(-1)^wD_{a,b}(z^{-1},y^{-1})
+ ={}&(-1)^b\sum_{\mu=b}^{w}(-1)^\mu\binom{\mu-1}{b-1}
+       \Li_\mu(y)\BB_{w-\mu}(zy)\\
+ &-\Li_w(zy)
+  +(-1)^a\sum_{\mu=a}^{w}\binom{\mu-1}{a-1}
+       \Li_\mu(z^{-1})\BB_{w-\mu}(zy)\\
+ &-\Li_b(y)\BB_a(z).
+\end{align*}
+The $\mu=b$ term and the last term combine to
+$\Li_b(y)[\BB_a(zy)-\BB_a(z)]$. For $b>1$ this tends to zero directly. For $b=1$, the bracket is $O(|y-1|)$, whereas $\Li_1(y)=-\log(1-y)$, so the product still tends to zero. All remaining $\Li_\mu(y)$ have $\mu\ge2$ and tend to $\zeta(\mu)$.
+
+Take the limit through a small non-real sector on which the logarithms have the branches in \eqref{eq:Bernoulli-def}. The double polylogarithms are regular at this inner argument $y=1$ because $z\ne1$ and $zy\ne1$ in a sufficiently small neighborhood; equivalently their standard iterated-integral continuation has no endpoint singularity there. The limiting values are the disk continuations of $F_{a,b}(z)$ and $F_{a,b}(z^{-1})$. Finally $z^{-1}=\bar z$ on the circle. This proves the formula without assigning any artificial value to $\zeta(1)$.
+\end{proof}
+
+At even weight the left side is $2\ii\Imag F_{a,b}(z)$; at odd weight it is $2\Real F_{a,b}(z)$. Thus the same exact formula has both an imaginary even-weight and a real odd-weight interpretation.
+
+\subsection{Gaussian reduction and its allowed atoms}
+At $z=\ii$, the depth-one evaluations are
+\begin{equation}\label{eq:single-gaussian}
+ \Li_n(\ii)=-2^{-n}\eta(n)+\ii\beta(n),\qquad
+ \eta(1)=\log2,\qquad
+ \eta(n)=(1-2^{1-n})\zeta(n)\quad(n\ge2).
+\end{equation}
+The real part follows by separating the even powers of $\ii$, and the imaginary part is the defining beta series. The standard even-zeta and odd-beta formulas reduce the appropriate terms to rational multiples of powers of $\pi$; in particular
+\[
+ \beta(1)=\frac\pi4,\quad \beta(3)=\frac{\pi^3}{32},\quad
+ \beta(5)=\frac{5\pi^5}{1536},\quad
+ \beta(7)=\frac{61\pi^7}{184320}.
+\]
+
+\begin{corollary}[A uniform spanning set]\label{cor:even-span}
+If $a+b=2m$, then $g_{a,b}$ lies in the rational span of
+\begin{align}\label{eq:even-basket}
+ &\pi^{2m-1}\log2,\notag\\
+ &\pi^{2m-2j}\beta(2j)\quad(1\le j\le m),\notag\\
+ &\pi^{2m-2j-1}\zeta(2j+1)\quad(1\le j\le m-1).
+\end{align}
+The coefficients are obtained by finite rational arithmetic from
+\eqref{eq:parity-master} and $B_k(1/4)$.
+\end{corollary}
+\begin{proof}
+At $\ii$, $\BB_k$ is real for even $k$ and purely imaginary for odd $k$. In the first sum of \eqref{eq:parity-master}, an imaginary contribution therefore requires odd $\mu$. In the last sum, even $\mu$ supplies an even beta value times a power of $\pi$, whereas odd $\mu$ supplies the real part in \eqref{eq:single-gaussian}; the exceptional $\mu=1$ supplies $\log2$. Taking imaginary parts and dividing by~2 gives precisely \eqref{eq:even-basket}.
+\end{proof}
+There are $2m$ displayed formal atoms. This is a spanning statement, not a theorem that these numbers are linearly independent.
+
+\subsection{The five source formulas are theorems}
+Applying Corollary~\ref{cor:even-span} in weight~6 gives, in the source normalization,
+\begin{align}
+ 2048g_{5,1}&=-64\pi^3\zeta(3)-527\pi\zeta(5)+4096\beta(6),\label{eq:g51}\\
+ 1536g_{4,2}&=96\pi^3\zeta(3)-32\pi^2\beta(4)
+              +1581\pi\zeta(5)-8448\beta(6),\label{eq:g42}\\
+ 1024g_{3,3}&=-3\pi^3\zeta(3)+64\pi^2\beta(4)
+              -1581\pi\zeta(5)+4608\beta(6),\label{eq:g33}\\
+ 23040g_{2,4}&=-14\pi^4G+135\pi^3\zeta(3)-1440\pi^2\beta(4)\notag\\
+             &\hspace{12mm}+23715\pi\zeta(5)-69120\beta(6),\label{eq:g24}\\
+ 92160g_{1,5}&=-150\pi^5\log2+56\pi^4G-270\pi^3\zeta(3)\notag\\
+             &\hspace{12mm}+1920\pi^2\beta(4)-675\pi\zeta(5).\label{eq:g15}
+\end{align}
+These are exactly the source's labels \texttt{gauss:eq:g51}, \texttt{g42}, \texttt{g33}, \texttt{g24}, and \texttt{g15}. They no longer require numerical-identity status. The exact symbolic checker independently subtracts each displayed right side from the coefficient compiler and obtains the zero polynomial in the named atoms.
+
+\subsection{A height-one formula and higher-weight identities}
+\begin{corollary}[The last Gaussian column]\label{cor:height-one}
+For every integer $m\ge2$,
+\begin{align}\label{eq:height-one}
+ g_{2m-1,1}={}&(m-1)\beta(2m)
+ -\sum_{j=1}^{m-1}\zeta(2j+1)\beta(2m-2j-1)\notag\\
+ &-\frac{1-2^{2-2m}}{2^{2m+1}}\pi\zeta(2m-1).
+\end{align}
+\end{corollary}
+\begin{proof}
+Set $a=2m-1,b=1$ in \eqref{eq:parity-master}. The depth-one inversion formula gives
+$\BB_{2r+1}(\ii)=-2\ii\beta(2r+1)$. Thus the first sum contributes the displayed convolution. The two terms with index $2m$ in the last sum and the separate $-\Li_{2m}(\ii)$ together contribute $(m-1)\beta(2m)$ after taking the imaginary part and dividing by~2. The remaining index $2m-1$ term uses the real part in \eqref{eq:single-gaussian} and supplies the final correction. All indices in the zeta sum are at least~3.
+\end{proof}
+For instance, two weight-eight consequences are
+\begin{align}
+ g_{7,1}&=3\beta(8)-\frac{5\pi^5\zeta(3)}{1536}
+                  -\frac{\pi^3\zeta(5)}{32}
+                  -\frac{8255\pi\zeta(7)}{32768},\label{eq:g71}\\
+ g_{6,2}&=-\frac{\pi^2\beta(6)}{48}-11\beta(8)
+          +\frac{5\pi^5\zeta(3)}{768}+\frac{\pi^3\zeta(5)}8
+          +\frac{24765\pi\zeta(7)}{16384}.\label{eq:g62}
+\end{align}
+The complete weight-eight list appears in Appendix~\ref{app:weight8}; the machine-readable table contains every even weight through~16. These are proved identities generated uniformly, rather than integer-relation guesses.
+
+Combining \eqref{eq:height-one} with Theorem~\ref{thm:unique-zero} gives the strict inequality
+\begin{align}\label{eq:beta-inequality}
+ (m-1)\beta(2m)<{}&\sum_{j=1}^{m-1}\zeta(2j+1)\beta(2m-2j-1)\notag\\
+ &+\frac{1-2^{2-2m}}{2^{2m+1}}\pi\zeta(2m-1).
+\end{align}
+Thus the signed-kernel theorem provides information about the sign of a fully reduced expression, not merely its algebraic shape.
+
+\section{The shuffle system and the weight-five proof}
+\label{sec:shuffle}
+
+\subsection{An all-weight Pascal inverse}
+The same-point product shuffle is particularly economical. It keeps the inner argument equal to~1 and requires no enlargement of the Gaussian family.
+
+\begin{theorem}[Same-point shuffle and exact rank]\label{thm:shuffle-rank}
+Let $p,q\ge1$, $w=p+q$, and $z\ne1$ be on the unit circle. Then
+\begin{equation}\label{eq:same-shuffle}
+ \Li_p(z)\Li_q(z)
+ =\sum_{a=1}^{w-1}
+ \left[\binom{a-1}{p-1}+\binom{a-1}{q-1}\right]F_{a,w-a}(z),
+\end{equation}
+where out-of-range binomial coefficients are zero.
+For fixed $w$, take $p=1,\ldots,m$, $q=w-p$, with $m=\lfloor w/2\rfloor$.
+The resulting $m\times(w-1)$ coefficient matrix has rank exactly~$m$ over $\mathbb Q$.
+
+More explicitly, divide row $p$ by $c_p=1+\mathbf1_{2p=w}$. The first $m$ columns of the normalized matrix are
+\begin{equation}\label{eq:Pascal-matrix}
+ P_{p,a}=\binom{a-1}{p-1},\qquad 1\le p,a\le m,
+\end{equation}
+with inverse
+\begin{equation}\label{eq:Pascal-inverse}
+ (P^{-1})_{i,j}=\begin{cases}
+ (-1)^{j-i}\binom{j-1}{i-1},&j\ge i,\\
+ 0,&j<i.
+ \end{cases}
+\end{equation}
+\end{theorem}
+\begin{proof}
+In the iterated-integral representation, the word for $\Li_p(z)$ has $p-1$ zero letters followed by the common nonzero letter. Shuffle its two words and count the zero letters preceding the first of the two nonzero letters. If the first nonzero letter comes from the first word, the multiplicity is $\binom{a-1}{p-1}$; interchanging the words gives the other binomial coefficient. All output words have two equal nonzero letters and hence correspond to $F_{a,w-a}(z)$ in the decreasing-index convention. This proves \eqref{eq:same-shuffle} in the disk; continuation or radial limits give the stated boundary identity.
+
+For $a\le m$, the second binomial coefficient vanishes unless $w=2m$ and $p=a=m$, in which case it duplicates the first. The normalization therefore gives exactly \eqref{eq:Pascal-matrix}. This matrix is upper triangular with diagonal~1, proving the rank. For $i\le j$, the $(i,j)$ entry of the product with the proposed inverse reduces to
+\[
+ \binom{j-1}{i-1}\sum_{k=i}^j(-1)^{j-k}\binom{j-i}{k-i},
+\]
+which is $1$ when $i=j$ and $0$ otherwise. Thus \eqref{eq:Pascal-inverse} is exact.
+\end{proof}
+
+Taking imaginary parts at $z=\ii$ shows that, modulo the stated products of single polylogarithms, the Gaussian family is spanned by at most
+\begin{equation}\label{eq:shuffle-bound}
+ (w-1)-\lfloor w/2\rfloor=\lfloor(w-1)/2\rfloor
+\end{equation}
+coordinates. A concrete choice is $g_{a,w-a}$ with $a>m$. The inverse is constructive: if $A$ is the unnormalized full matrix and $R_p=\Imag[\Li_p(\ii)\Li_{w-p}(\ii)]$, then for $1\le a\le m$,
+\begin{equation}\label{eq:shuffle-solve}
+ g_{a,w-a}=\sum_{p=a}^m(-1)^{p-a}\binom{p-1}{a-1}
+ \left(\frac{R_p}{c_p}-\sum_{j=m+1}^{w-1}\frac{A_{p,j}}{c_p}g_{j,w-j}\right).
+\end{equation}
+The dimension in \eqref{eq:shuffle-bound} is exact for the formal quotient by these rows; it need not be exact for actual periods or for a larger relation system.
+
+\subsection{A two-line proof of the source's sporadic relation}
+In weight~5, \eqref{eq:same-shuffle} and \eqref{eq:single-gaussian} give
+\begin{align}
+ g_{1,4}+g_{2,3}+g_{3,2}+2g_{4,1}
+ &=-\frac12\beta(4)\log2-\frac{7\pi^5}{46080},\label{eq:R14}\\
+ g_{2,3}+3g_{3,2}+6g_{4,1}
+ &=-\frac{3}{32}G\zeta(3)-\frac{\pi^5}{1536}.\label{eq:R23}
+\end{align}
+Multiply \eqref{eq:R14} by $960$ and subtract $224$ times \eqref{eq:R23}. The $\pi^5$ terms cancel, leaving
+\begin{equation}\label{eq:wt5-proved}
+ 576g_{4,1}+288g_{3,2}+736g_{2,3}+960g_{1,4}
+ =21G\zeta(3)-480\beta(4)\log2.
+\end{equation}
+This proves the source equation \texttt{gauss:eq:wt5-sporadic}. Its apparent sporadic nature is an artifact of how it was discovered: it is a small-height shuffle certificate.
+
+The two individual rows also give the stronger explicit spanning statement
+\begin{align}
+ g_{2,3}&=-6g_{4,1}-3g_{3,2}-\frac{\pi^5}{1536}
+                           -\frac{3G\zeta(3)}{32},\label{eq:g23-reduce}\\
+ g_{1,4}&=4g_{4,1}+2g_{3,2}+\frac{23\pi^5}{46080}
+                      +\frac{3G\zeta(3)}{32}-\frac12\beta(4)\log2.
+ \label{eq:g14-reduce}
+\end{align}
+Thus the manuscript's bound of at most three directions among these four generators can be sharpened to at most two, represented by $g_{4,1}$ and $g_{3,2}$, modulo the displayed lower-depth products. No claim of independence of those two periods is needed.
+
+\subsection{Two additional weight-seven identities}
+The same calculation at weight~7 gives useful relations without a pure $\pi^7$ term:
+\begin{align}
+ &740g_{6,1}+370g_{5,2}+432g_{4,3}
+       +463g_{3,4}+494g_{2,5}+525g_{1,6}\notag\\
+ &\hspace{18mm}=\frac{465}{512}G\zeta(5)
+                 -\frac{525}{2}\beta(6)\log2,\label{eq:w7-first}\\[3pt]
+ &430g_{6,1}+215g_{5,2}+79g_{4,3}+11g_{3,4}-7g_{2,5}\notag\\
+ &\hspace{18mm}=\frac{105}{512}G\zeta(5)
+                 -\frac{75}{32}\beta(4)\zeta(3).\label{eq:w7-second}
+\end{align}
+In the ordered shuffle rows $(p,q)=(1,6),(2,5),(3,4)$, their certificates are $(525,-31,0)$ and $(0,-7,25)$. Therefore both identities follow directly from Theorem~\ref{thm:shuffle-rank}. Their exact coefficient vectors and rational interval checks are supplied separately.
+
+\section{Certified Euler evaluation}
+\label{sec:euler}
+
+\subsection{A one-sided rational enclosure}
+Define the difference operator with the sign convention
+\[
+ (Df)(n)=f(n)-f(n+1).
+\]
+This is the negative of the usual forward difference; it makes the Euler transformation particularly simple. Let
+\begin{equation}\label{eq:euler-data}
+ f_{a,b}(n)=\frac{H_{2n}^{(b)}}{(2n+1)^a},\qquad
+ d_k=D^kf_{a,b}(0),\qquad
+ E_N(a,b)=\sum_{k=0}^{N-1}\frac{d_k}{2^{k+1}}.
+\end{equation}
+
+\begin{theorem}[Signed Euler certificate]\label{thm:euler-certificate}
+For positive integers $a,b$,
+\begin{equation}\label{eq:euler-signs}
+ d_0=0,\qquad d_k<0\quad(k\ge1),\qquad
+ g_{a,b}=\sum_{k\ge0}\frac{d_k}{2^{k+1}}.
+\end{equation}
+For every $N\ge1$,
+\begin{equation}\label{eq:euler-enclosure}
+ E_N(a,b)-C_b2^{-N}\le g_{a,b}\le E_N(a,b),\qquad
+ C_b=\begin{cases}1,&b=1,\\ b/(b-1),&b\ge2.\end{cases}
+\end{equation}
+The approximants decrease strictly from $E_1=0$ to $g_{a,b}$.
+\end{theorem}
+\begin{proof}
+The moment representation gives
+\begin{equation}\label{eq:d-kernel}
+ d_k=\int_0^1(1-u^2)^k\kappa_{a,b}(u)\dd u.
+\end{equation}
+For $k=0$ this is zero mass. For $k\ge1$ the weight is strictly decreasing, so Lemma~\ref{lem:sign-test} gives $d_k<0$.
+
+We bound either signed mass of the density. When $b=1$,
+\[
+ \kappa_{1,1}(u)=\log\frac{u}{1-u},\qquad
+ \int_0^1(\kappa_{1,1})_+\dd u=\log2<1.
+\]
+When $b\ge2$, the positive term of \eqref{eq:kappa-base} is at most $\zeta(b)$, so the positive mass is at most $\zeta(b)<1+1/(b-1)=C_b$. Zero mass makes the negative mass equal to the positive mass. The $L^1$ contraction used in Theorem~\ref{thm:kernel}, together with preservation of zero mass, gives the same bound for every $a$. Since $0\le(1-u^2)^k\le1$, we obtain $|d_k|\le C_b$.
+
+The series in \eqref{eq:euler-signs} is now absolutely convergent. Summing its geometric kernel gives
+\[
+ \sum_{k\ge0}\frac{d_k}{2^{k+1}}
+ =\int_0^1\frac{\kappa_{a,b}(u)}{1+u^2}\dd u
+ =g_{a,b},
+\]
+where the last equality is \eqref{eq:stieltjes} at $z=\ii$. All tail terms are negative, and their total absolute value is at most $C_b\sum_{k\ge N}2^{-k-1}=C_b2^{-N}$. This proves the certificate and strict monotonicity.
+\end{proof}
+
+The theorem is stronger than applying a general-purpose extrapolation rule and observing stability. Every endpoint in \eqref{eq:euler-enclosure} is rational. For $N=400$, the interval width is at most $2\cdot2^{-400}<8\cdot10^{-121}$. The accompanying files round the enclosures outward to convenient decimal strings; that display rounding is separate from the internal rational width.
+
+\subsection{An exact linear-work finite formula}
+Computing a full triangular difference table uses quadratic work. A finite rearrangement avoids it.
+
+\begin{proposition}[Binomial-tail weights]\label{prop:euler-weights}
+For $N\ge1$,
+\begin{equation}\label{eq:euler-weighted}
+ E_N(a,b)=2^{-N}\sum_{n=0}^{N-1}(-1)^n
+ \frac{H_{2n}^{(b)}}{(2n+1)^a}\sum_{j=n+1}^{N}\binom Nj.
+\end{equation}
+At fixed $a,b$, the right side can be formed with $O(N)$ exact rational or integer updates after choosing $N$. All denominators divide
+\begin{equation}\label{eq:denominator-bound}
+ 2^N\operatorname{lcm}(1,2,\ldots,2N)^{a+b}.
+\end{equation}
+In particular, the number of bit operations is polynomial in the requested precision at fixed indices.
+\end{proposition}
+\begin{proof}
+Expand $D^kf(0)=\sum_{n=0}^k(-1)^n\binom kn f(n)$ and interchange the two finite sums. The required weight identity is
+\[
+ \sum_{k=n}^{N-1}2^{N-k-1}\binom kn
+ =\sum_{j=n+1}^N\binom Nj.
+\]
+It follows by induction on $N$ using Pascal's recurrence, or by comparing binomial-tail generating functions. This proves \eqref{eq:euler-weighted}.
+
+The binomial coefficients are generated successively by
+$\binom Nn=\binom N{n-1}(N-n+1)/n$, and the cumulative tail is updated by subtracting one coefficient. Each harmonic number is updated by two rational summands. Thus only linearly many updates are needed. Each summand's denominator divides the indicated least-common-multiple power, and the additional factor is $2^N$.
+Finally, the elementary bound $\operatorname{lcm}(1,\ldots,2N)\le(2N)!$ gives bit length $O(N+(a+b)N\log N)$ for a common denominator; the numerator has a comparable polynomial bound. Since $N=O(d)$ suffices for $d$ decimal places by \eqref{eq:euler-enclosure}, even elementary integer arithmetic proves polynomial bit complexity. No optimal multiplication or sharp least-common-multiple estimate is required.
+\end{proof}
+
+\subsection{Independent depth-one interval arithmetic}
+The right sides of the reductions are evaluated using rational enclosures separate from the Gaussian evaluator. For $s\ge1$, the sequences $(2n+1)^{-s}$ and $(n+1)^{-s}$ are moments of positive densities, so all their $D$-differences are nonnegative. Their Euler sums give lower bounds for $\beta(s)$ and $\eta(s)$, with tails at most $2^{-N}$. For integer $s\ge2$, divide the latter interval by $1-2^{1-s}$ to enclose $\zeta(s)$.
+
+For $\pi$, the implementation uses Machin's formula
+\[
+ \pi=16\arctan(1/5)-4\arctan(1/239)
+\]
+and the alternating-series bounds for each rational arctangent series. The identity follows directly by tangent addition and the fact that the angle lies in the first quadrant. For $\log2$, it uses
+\begin{equation}\label{eq:log2-bound}
+ 0<\log2-2\sum_{n=0}^{N-1}\frac1{(2n+1)3^{2n+1}}
+ \le\frac9{4(2N+1)3^{2N+1}}.
+\end{equation}
+The expansion is $2\operatorname{arctanh}(1/3)$; the bound replaces the remaining denominators by $2N+1$ and sums a geometric series.
+
+Ordinary rational interval addition and multiplication then enclose every polynomial right side. An overlap check can detect an erroneous formula or implementation if the intervals separate. Overlap alone does not prove an identity; the proofs in Sections~\ref{sec:parity} and~\ref{sec:shuffle} do that.
+
+\section{An exact kernel and the sharp Euler error}
+\label{sec:sharp-error}
+
+\subsection{Separating the polynomial from the exponentially small part}
+For this section $a,b$ are positive integers, $w=a+b$, and $T=-\log u$.
+
+\begin{theorem}[Explicit density]\label{thm:explicit-kernel}
+Define the polynomial
+\begin{align}\label{eq:P-ab}
+ P_{a,b}(T)={}&-\frac{T^{w-1}}{(w-1)!}\notag\\
+ &+\sum_{\mu=b+1}^{w-1}(-1)^{\mu-b-1}\binom{\mu-1}{b-1}
+       \zeta(\mu)\frac{T^{w-1-\mu}}{(w-1-\mu)!}.
+\end{align}
+Then, for $T>0$,
+\begin{align}\label{eq:explicit-kernel}
+ \kappa_{a,b}(e^{-T})=P_{a,b}(T)
+ +(-1)^{a-1}\sum_{j=0}^{b-1}\binom{w-j-2}{a-1}
+       \frac{T^j}{j!}\Li_{w-1-j}(e^{-T}).
+\end{align}
+Consequently,
+\begin{equation}\label{eq:kernel-asymptotic}
+ \kappa_{a,b}(u)=P_{a,b}(-\log u)
+       +O\!\left(u(1+|\log u|^{b-1})\right)\quad(u\downarrow0).
+\end{equation}
+\end{theorem}
+\begin{proof}
+For $a=1$, expand $(e^v-1)^{-1}=\sum_{n\ge1}e^{-nv}$ in \eqref{eq:kappa-base}. The elementary incomplete-gamma integral for integer $b$ gives
+\[
+ \frac1{(b-1)!}\int_T^\infty\frac{v^{b-1}}{e^v-1}\dd v
+ =\sum_{j=0}^{b-1}\frac{T^j}{j!}\Li_{b-j}(e^{-T}),
+\]
+which is exactly the asserted base case.
+
+Write $K_{a,b}(T)=\kappa_{a,b}(e^{-T})$. The recursion is
+$K_{a,b}(T)=\int_0^T K_{a-1,b}(s)\dd s$. Differentiate the proposed right side of \eqref{eq:explicit-kernel}, using
+$\frac{\mathrm d}{\mathrm dT}\Li_s(e^{-T})=-\Li_{s-1}(e^{-T})$ and Pascal's identity. The polylogarithmic coefficients reduce to those for $(a-1,b)$; the derivative of $P_{a,b}$ is $P_{a-1,b}$. When $a\ge2$, the constant terms at $T=0$ cancel because
+\[
+ \binom{w-2}{b-1}=\binom{w-2}{a-1}
+\]
+and their signs are opposite. The asserted formula therefore has the correct derivative and initial value. This proves it by induction. Finally each $\Li_s(e^{-T})$ in the finite sum is $O(e^{-T})$ as $T\to\infty$, proving \eqref{eq:kernel-asymptotic}.
+\end{proof}
+
+\subsection{The complete logarithmic error polynomial}
+The exact error is
+\begin{equation}\label{eq:exact-error}
+ E_N(a,b)-g_{a,b}
+ =-2^{-N}\int_0^1\kappa_{a,b}(u)
+                    \frac{(1-u^2)^N}{1+u^2}\dd u.
+\end{equation}
+This follows by summing only the first $N$ terms of the geometric kernel in the proof of Theorem~\ref{thm:euler-certificate}. Its localization near $u=0$ explains why the polynomial in Theorem~\ref{thm:explicit-kernel} determines the error.
+
+\begin{theorem}[Sharp error with all logarithmic terms]\label{thm:error-polynomial}
+Define the polynomial of degree $w-1$
+\begin{align}\label{eq:Q-ab}
+ Q_{a,b}(L)
+ &=-\int_0^\infty e^{-t^2}P_{a,b}(L-\log t)\dd t\notag\\
+ &=-\sum_{j=0}^{w-1}\frac{(-1)^jP_{a,b}^{(j)}(L)}{j!\,2^{j+1}}
+       \Gamma^{(j)}(1/2).
+\end{align}
+For fixed $a,b$, as $N\to\infty$,
+\begin{align}\label{eq:error-polynomial}
+ E_N(a,b)-g_{a,b}=2^{-N}\bigg\{&N^{-1/2}Q_{a,b}\!\left(\frac12\log N\right)\notag\\
+ &+O\!\left(N^{-1}(1+\log^{b-1}N)
+       +N^{-3/2}(1+\log^{w-1}N)\right)\bigg\}.
+\end{align}
+In particular,
+\begin{equation}\label{eq:error-leading}
+ E_N(a,b)-g_{a,b}\sim
+ \frac{\sqrt\pi}{2^w(w-1)!}
+ \frac{2^{-N}(\log N)^{w-1}}{\sqrt N}.
+\end{equation}
+The leading coefficient depends only on the total weight, not on its split into $a$ and $b$.
+\end{theorem}
+\begin{proof}
+Choose a fixed $\varepsilon\in(0,1/2)$. The part of \eqref{eq:exact-error} with $u\ge\varepsilon$ is bounded by
+$2^{-N}(1-\varepsilon^2)^N\|\kappa_{a,b}\|_1$ and is negligible at the displayed scales. In the remaining part substitute $u=t/\sqrt N$ and use \eqref{eq:kernel-asymptotic}. For $t\le\varepsilon\sqrt N$,
+\[
+ \left|\frac{(1-t^2/N)^N}{1+t^2/N}-e^{-t^2}\right|
+ \le\frac{C}{N}e^{-t^2}(t^2+t^4).
+\]
+Indeed, $0\le-\log(1-x)-x\le Cx^2$ for $0\le x\le\varepsilon^2$, and the denominator changes the expression by at most $t^2/N$ times the Gaussian bound.
+
+The polynomial contribution, including the Jacobian $N^{-1/2}$, is therefore
+$N^{-1/2}Q_{a,b}(\tfrac12\log N)$ up to
+$O(N^{-3/2}(1+\log^{w-1}N))$. Extending the $t$ integral to infinity changes it only by an exponentially small amount. The remainder in \eqref{eq:kernel-asymptotic} contributes at most
+$O(N^{-1}(1+\log^{b-1}N))$; integrability of $t e^{-t^2}|\log t|^j$ at both endpoints justifies this estimate.
+
+To obtain the second line of \eqref{eq:Q-ab}, expand the polynomial and use
+\[
+ \int_0^\infty e^{-t^2}(\log t)^j\dd t
+ =2^{-j-1}\Gamma^{(j)}(1/2),
+\]
+which follows by differentiating $\tfrac12\Gamma(s/2)$ at $s=1$. Finally the leading term of $-P_{a,b}$ is $T^{w-1}/(w-1)!$. Its Gaussian integral is $\sqrt\pi/2$, and $L=(\log N)/2$. This gives \eqref{eq:error-leading}; both error terms in \eqref{eq:error-polynomial} are smaller than that leading term.
+\end{proof}
+
+For example,
+\begin{equation}\label{eq:Q11}
+ Q_{1,1}(L)=\frac{\sqrt\pi}{2}
+       \left(L+\frac{\gamma+2\log2}{2}\right),
+\end{equation}
+where $\gamma$ is Euler's constant. Keeping the lower logarithmic terms matters at practical truncation lengths. For $(a,b)=(1,1)$, the following ratios use the exact rational proxy $E_N-E_{2N}$; its distance from the true error is at most $2^{-2N}$.
+\begin{center}
+\begin{tabular}{@{}rrr@{}}
+\toprule
+$N$ & Ratio to the leading term & Ratio to the full $Q_{1,1}$ approximation\\
+\midrule
+64 &1.42496&0.967964\\
+128&1.37730&0.980510\\
+256&1.33791&0.988050\\
+512&1.30501&0.992593\\
+\bottomrule
+\end{tabular}
+\end{center}
+The asymptotic expansion is not substituted for the certified bound in the implementation. Its role is to explain the observed convergence and suggest more efficient future remainder enclosures.
+
+\section{The remaining \texorpdfstring{$S_4$}{S4} conjecture and a formal obstruction}
+\label{sec:S4}
+
+\subsection{Equivalent forms and a rigorous numerical enclosure}
+The source also records the candidate
+\begin{align}\label{eq:S4-source}
+ S_4:=\sum_{n\ge0}\frac{(-1)^nH_n}{(2n+1)^4}
+ \stackrel{?}{=}&\frac{4g_{4,1}-3g_{3,2}-9g_{2,3}}7
+ +\frac{\pi^5}{224}\notag\\
+ &-\frac{27G\zeta(3)}{224}-2\beta(4)\log2.
+\end{align}
+Using the proved equation \eqref{eq:g23-reduce}, this is equivalent to the more economical statement
+\begin{conjecture}[A two-coordinate form of the source $S_4$ identity]\label{conj:S4}
+\begin{equation}\label{eq:S4-simple}
+ S_4=\frac{58}{7}g_{4,1}+\frac{24}{7}g_{3,2}
+       +\frac{19\pi^5}{3584}-2\beta(4)\log2.
+\end{equation}
+\end{conjecture}
+The equivalence is exact: substitution cancels the $G\zeta(3)$ term, and the two $\pi^5$ coefficients sum to $19/3584$. We do not promote either form to a theorem.
+
+A rigorous error bound is nevertheless available for its left side.
+\begin{proposition}[Euler certificate for the odd-denominator harmonic family]\label{prop:S-euler}
+For integer $p\ge1$, let $f(n)=H_n/(2n+1)^p$, let $d_k=D^kf(0)$, and let $E_N^S=\sum_{k<N}d_k/2^{k+1}$. Then
+\begin{equation}\label{eq:S-euler}
+ E_N^S-\frac{N+1}{3^p2^N}\le S_p\le E_N^S,
+ \qquad S_p=\sum_{n\ge0}\frac{(-1)^nH_n}{(2n+1)^p}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Use $H_n=\int_0^1(1-t^n)/(1-t)\dd t$ and the Mellin integral for $(2n+1)^{-p}$. Finite differencing gives
+\[
+ d_k=\frac1{\Gamma(p)}\int_0^1(-\log u)^{p-1}
+  \int_0^1\frac{(1-u^2)^k-(1-u^2t)^k}{1-t}\dd t\dd u.
+\]
+Thus $d_0=0$ and $d_k<0$ for $k\ge1$. The numerator has absolute value at most $ku^2(1-t)$, so $|d_k|\le k/3^p$. Summing the Euler kernels yields
+\[
+ \sum_{k\ge0}\frac{d_k}{2^{k+1}}
+ =-\frac1{\Gamma(p)}\int_0^1
+  \frac{(-\log u)^{p-1}\log(1+u^2)}{1+u^2}\dd u=S_p.
+\]
+The final equality follows from the harmonic generating function, first with an Abel factor. The bound on $d_k$ justifies summing and integrating, and
+$\sum_{k\ge N}k/2^{k+1}=(N+1)2^{-N}$ proves \eqref{eq:S-euler}.
+\end{proof}
+
+At $N=400$, combine Proposition~\ref{prop:S-euler}, Theorem~\ref{thm:euler-certificate}, and the independent depth-one intervals. The exact rational computation encloses the difference between the two sides of \eqref{eq:S4-simple} in
+\begin{equation}\label{eq:S4-difference}
+ [-10^{-118},\,10^{-118}].
+\end{equation}
+Both sides begin
+\[
+ -0.01049345629733504345335675100620175196351061887732\ldots.
+\]
+This is certified proximity, not proof of equality. The file
+\texttt{s4\_interval\_certificate.json} records the outward-rounded enclosures and the tail bound used.
+
+\subsection{The precise relation system being tested}
+We now specify a finite-dimensional linear question; it must not be confused with completeness of all polylogarithm relations. Let
+\[
+ X_{a,b}^{r,s}=\Imag D_{a,b}(\ii^r,\ii^s),\qquad r,s\in\mathbb Z/4\mathbb Z,
+ \qquad a+b=w.
+\]
+Set $X^{r,s}=0$ when both $r,s$ are even, and impose conjugation
+$X^{r,s}=-X^{-r,-s}$. Choose the lexicographically smaller of each conjugate pair. Remove the divergent imaginary coordinate $X_{1,w-1}^{0,1}$; its conjugate is already identified. This leaves $6w-7$ formal coordinates.
+
+For every $p+q=w$ and colors $r,s$, take the imaginary parts of the finite product stuffle
+\begin{equation}\label{eq:full-stuffle}
+ D_{p,q}(x,y)+D_{q,p}(y,x)=\Li_p(x)\Li_q(y)-\Li_w(xy)
+\end{equation}
+and product shuffle
+\begin{align}\label{eq:full-shuffle}
+ &\sum_{j=0}^{p-1}\binom{q+j-1}{j}D_{q+j,p-j}(y,x/y)\notag\\
+ &\quad+\sum_{j=0}^{q-1}\binom{p+j-1}{j}D_{p+j,q-j}(x,y/x)
+ =\Li_p(x)\Li_q(y),
+\end{align}
+where $x=\ii^r$, $y=\ii^s$. If exactly one factor is $\Li_1(1)$, retain the stuffle-minus-shuffle cancellation row: the common divergent double coordinate cancels, leaving the right side $-\Imag\Li_w(xy)$. Such rows follow by subtracting before taking the regularized boundary limit. Zero rows are discarded; duplicate nonzero rows need not be discarded. This construction defines a rational coefficient matrix $A_w$ and its depth-one right side. It is precisely the model implemented in \texttt{code/full\_ds.py}.
+
+These are only linear depth-two product rows in a fixed weight. They do not include every relation obtained from distribution, argument transformations, higher-depth elimination, or the full algebraic consequences of standard relations. Zhao's treatment \cite{Zhao} provides broader context for these distinctions.
+
+\subsection{An exact obstruction at weight five}
+Let $u_{4,1}=\Imag D_{4,1}(\ii,-1)$. Splitting the inner harmonic sum into even and odd indices proves
+\begin{equation}\label{eq:S4-color}
+ S_4=g_{4,1}+u_{4,1}.
+\end{equation}
+Indeed, for an odd outer index $2n+1$, the sum of the two inner coefficients is
+$H_{2n}+\sum_{m=1}^{2n}(-1)^m/m=H_n$; even outer indices have zero imaginary part.
+Consequently, the left-hand coefficient vector needed for \eqref{eq:S4-source} is
+\begin{equation}\label{eq:S4-target}
+ T=3g_{4,1}+3g_{3,2}+9g_{2,3}+7u_{4,1}.
+\end{equation}
+
+\begin{proposition}[A finite linear-module obstruction]\label{prop:S4-obstruction}
+The coefficient vector $T$ in \eqref{eq:S4-target} is not in the rational row span of the explicitly defined weight-five matrix $A_5$. Therefore no rational linear combination of just those weight-five depth-two rows proves the $S_4$ identity.
+\end{proposition}
+\begin{proof}
+The matrix has 92 rows and 23 columns. In the canonical coordinate order above, define a vector $v$ by the following nonzero entries, setting every other entry to zero:
+\begin{center}
+\begin{tabular}{@{}crcr@{}}
+\toprule
+$(a,b,r,s)$ & $v$ & $(a,b,r,s)$ & $v$\\
+\midrule
+$(1,4,1,0)$&$-1/12$ & $(2,3,0,1)$&$1/24$\\
+$(2,3,1,0)$&$1/8$   & $(2,3,1,3)$&$-1/24$\\
+$(3,2,0,1)$&$-1/8$  & $(3,2,1,0)$&$-1/24$\\
+$(3,2,1,3)$&$-1/24$ & $(4,1,0,1)$&$1/12$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Substitution in the binomial rows \eqref{eq:full-stuffle}--\eqref{eq:full-shuffle} gives $A_5v=0$, while $T\cdot v=1$. These are finite rational equalities; the complete integer matrix, coordinate order, target, and witness are included in
+\texttt{s4\_linear\_module\_obstruction.json} and replayed by \texttt{verify.py}. Every row-span vector annihilates $v$, whereas $T$ does not. This proves the assertion.
+\end{proof}
+The proposition is neither a disproof of Conjecture~\ref{conj:S4} nor a proof that no double-shuffle argument of any kind could establish it. It identifies a precisely bounded, insufficient proof search. Enlarging the relation system is the relevant next step.
+
+\subsection{An exact-rank conjecture in all odd weights}
+Let $A_w^{\neg g}$ be the submatrix obtained by deleting the columns
+$X_{a,w-a}^{1,0}=g_{a,w-a}$.
+
+\begin{conjecture}[Odd-weight rank pattern]\label{conj:rank}
+For every odd $w\ge3$, the explicitly defined matrices satisfy
+\begin{equation}\label{eq:rank-conjecture}
+ \rank A_w=5w-6,\qquad
+ \rank A_w^{\neg g}=\frac{9w-11}{2}.
+\end{equation}
+Equivalently, the row space of $A_w$ supported only on the Gaussian columns has dimension $(w-1)/2$, already supplied by the independent same-point shuffle rows.
+\end{conjecture}
+The equivalence follows from rank-nullity for projection of the row space onto the non-Gaussian columns. Exact rational elimination verifies \eqref{eq:rank-conjecture} in all 15 odd weights from 3 through~31. Selected rows of the full receipt are
+\begin{center}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$w$ & Coordinates & $\rank A_w$ & $\rank A_w^{\neg g}$ & Difference\\
+\midrule
+3&11&9&8&1\\
+5&23&19&17&2\\
+7&35&29&26&3\\
+9&47&39&35&4\\
+15&83&69&62&7\\
+23&131&109&98&11\\
+31&179&149&134&15\\
+\bottomrule
+\end{tabular}
+\end{center}
+This is a conjecture about a fully specified rational matrix family, not a conjectured numerical dimension of Gaussian periods. A proof would explain why the simple same-point shuffle system already captures all Gaussian-only linear consequences of this larger depth-two product system at odd weight.
+
+\section{Reproducibility, verification, and repository integration}
+\label{sec:verification}
+
+\subsection{Exact checks}
+The default exact verification run uses Python~3.13.5 and SymPy~1.14.0. It completes 588 check cases with the following scope.
+\begin{center}
+\small
+\begin{tabular}{@{}p{.74\linewidth}r@{}}
+\toprule
+Check family & Cases\\
+\midrule
+Five weight-six source formulas, exact symbolic subtraction &5\\
+Weight-five source formula, exact two-row certificate &1\\
+Pascal inverse, weights 2 through 40 &39\\
+Explicit-kernel recurrences, $2\le a\le8$, $1\le b\le8$ &56\\
+Base-kernel derivatives, $1\le b\le8$ &8\\
+Finite Euler weights and signs, $1\le a,b\le4$, $1\le N\le24$ &384\\
+Gaussian/parity interval comparisons, even weights through 16 &64\\
+Weight-five interval comparison &1\\
+Full-color rational ranks, odd weights 3 through 31 &15\\
+The $S_4$ row-space obstruction &1\\
+Certified proximity for the still-conjectural $S_4$ equation &1\\
+Height-one formula, $2\le m\le12$ &11\\
+Two weight-seven identities, exact coefficients and intervals &2\\
+\midrule
+Total &588\\
+\bottomrule
+\end{tabular}
+\end{center}
+The 64 even-weight formulas through weight~16 are generated symbolically, and every one also has an independent rational interval comparison. The original harmonic series and the reduced right sides use separate evaluation formulas, joined only through general-purpose rational interval arithmetic.
+
+\subsection{Numerical diagnostics}
+A separate script uses mpmath~1.3.0 at 120 decimal working digits. It checks 16 Euler-error asymptotic cases and nine zero-asymptotic cases, generates nine illustrative zero-table entries, and repeats the $S_4$ candidate at two truncation lengths. These diagnostics are separate from the rational interval engine. The high-precision residuals do not supply a proof of the asymptotic theorems, the conjectural rank pattern, or period independence.
+
+The exact routines use Python's \texttt{Fraction}; Gaussian values, binomial weights, and interval endpoints never pass through binary floating-point arithmetic. The symbolic formulas treat $\pi$, $\log2$, odd zeta values, and even beta values as formal atoms. Exact equality of two polynomials in those atoms proves that two derived expressions agree; it does not assert independence of the atom values. The package does not claim Lean verification, a Wolfram-kernel replay, or an exhaustive replay of the historical manuscript experiments.
+
+\subsection{Files and commands}
+The core files are \texttt{article.tex}, the compiled \texttt{article.pdf}, four Python modules under \texttt{code/}, and generated data under \texttt{data/}. The provenance record pins the source commit and blobs. The integration directory supplies a manuscript-ready section and a source-label status map; no original chapter is overwritten automatically.
+
+From the package root, run
+\begin{lstlisting}
+python -m pip install -r requirements.txt
+python code/verify.py
+python code/numerics.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+For a higher-precision replay of every generated table entry, use
+\begin{lstlisting}
+python code/verify.py --terms 512 --max-weight 16 --rank-max 31
+\end{lstlisting}
+The default data files are reproducible apart from runtime and environment fields. File hashes in the package manifest identify the delivered snapshot.
+
+\subsection{Integration policy}
+Only six source equations should be reclassified as proved by this continuation: the five labels from \eqref{eq:g51}--\eqref{eq:g15} and \texttt{gauss:eq:wt5-sporadic}. The source statement ``at most three'' among the weight-five Gaussian generators may be refined to ``at most two modulo the displayed depth-one products.'' The $S_4$ label remains a candidate, although its equivalent form, certified discrepancy bound, and finite-module obstruction can be added. The source's triple-polylogarithm candidates and unrelated manuscript chapters are not resolved by this package.
+
+Because the repository may advance after the pinned commit, an integration should compare the relevant source labels before applying the supplied text. The package is an additive research contribution, not a blind replacement of the consolidated manuscript.
+
+\section{Further research questions}
+\label{sec:future}
+
+\paragraph{1. Prove the formal rank pattern.}
+Conjecture~\ref{conj:rank} is finite-dimensional linear algebra in each weight, with explicit binomial entries and a fixed six-color symmetry. A promising route is a generating-polynomial model for the two product laws followed by decomposition under color conjugation and index reversal. A successful proof should supply uniform pivot locations or a basis of the nullspace, rather than extrapolate the observed rank sequence.
+
+\paragraph{2. Find the missing relation for $S_4$.}
+Proposition~\ref{prop:S4-obstruction} supplies a separating functional against which proposed additional relations can be tested. Useful candidates include level-four distribution, changes of variable in iterated integrals, and relations obtained by eliminating higher-depth coordinates. The M\"obius transformation $(1-z)/(1+z)$ permutes the punctures $0,1,-1,\ii,-\ii,\infty$ and is a natural source of relations outside the restricted depth-two product system. The first target is one exact relation that does not annihilate the displayed witness and that eliminates the remaining colored coordinate.
+
+\paragraph{3. Extend the odd-denominator evaluation program.}
+The source already proves the even-weight $S_{2m+1}$ family. Its odd-weight companions $S_{2m}$ should be studied after exact reduction of the Gaussian shuffle variables, not by enlarging an uncalibrated numerical basis. Determine which additional argument transformations produce uniform expressions, and distinguish a spanning formula from an irreducibility claim.
+
+\paragraph{4. Prove or refute monotonicity of the zero.}
+The examples suggest that $\theta_{a,b}$ increases with both indices. Theorem~\ref{thm:kernel} proves an ordering of the density crossings as $a$ increases, but that alone does not order the roots of the transformed kernels. A proof needs an appropriate comparison of two signed densities or their likelihood ratios. The real-$b$ formulation makes a continuous monotonicity theorem in $b$ a meaningful target.
+
+\paragraph{5. Develop the full zero expansion.}
+Theorem~\ref{thm:zero-asymptotic} mixes new Fourier scales with nonlinear products of earlier scales. Construct a well-ordered expansion in the multiplicative semigroup of the relevant rational bases, handle collisions of equal scales, and derive computable uniform remainder bounds. The observed next coefficient $H_6^{(b)}/2$ is a useful first checkpoint, not a substitute for the all-order construction.
+
+\paragraph{6. Certify the zero locations themselves.}
+The table in Section~\ref{sec:zero-asymptotic} is not an interval table. Combine the uniqueness theorem with rational interval quadrature for \eqref{eq:angular-integral}, or with rigorously bounded Fourier tails, to isolate each zero. Simplicity gives a direct route from a function enclosure to a root enclosure. A useful implementation should also cover small $a$, where direct series convergence is slow.
+
+\paragraph{7. Improve and exploit the Euler remainder.}
+The bound $C_b2^{-N}$ is deliberately simple. The explicit density and polynomial $Q_{a,b}$ suggest a signed, finite-$N$ refinement of order $2^{-N}N^{-1/2}(\log N)^{w-1}$. Prove usable upper and lower remainder inequalities, including constants, before replacing the present certificate by an asymptotic estimate. Investigate adaptive precision and common-denominator arithmetic across many weights.
+
+\paragraph{8. Generalize the signed-density construction.}
+The representation \eqref{eq:stieltjes} resembles an integral transform of a measure with one sign change. Seek analogous densities for higher-depth harmonic polylogarithms and determine whether a controlled number of sign changes yields a controlled number of unit-circle zeros. Fractional integration in the outer index may extend the theorem from integer $a$ to real $a$, but preservation of a single crossing must be proved rather than assumed.
+
+\paragraph{9. Move beyond the Gaussian point.}
+The parity formula already applies at other roots of unity. The evaluation problem is subtler because the Gaussian Euler kernel $1+u^2$ is exceptionally simple. Develop period-aware rational enclosures at Eisenstein and mixed cyclotomic points, and compare the resulting signed kernels with the mixed-point numerical issues documented in the source chapter.
+
+\paragraph{10. Separate formal and numerical depth systematically.}
+The exact matrices here provide upper bounds and finite proof obstructions. They do not give numerical lower bounds. A longer-term program should relate these concrete matrices to motivic or iterated-integral relation spaces and state precisely which period-map assumptions would be required for independence. In parallel, formalize the finite rational certificates separately from the analytic kernel theorems; this keeps the trusted analytic boundary explicit.
+
+\section{Conclusion}
+The six selected manuscript equations now have explicit proof paths: two shuffle rows for the weight-five relation, and a branch-safe specialization of the known parity theorem for the five weight-six reductions. The continuation also supplies uniform higher-weight formulas, a constructive rank theorem, and exact rational evaluation certificates.
+
+The signed-density representation provides the main additional analytic structure. A single sign change of a zero-mass density proves a single simple zero of the imaginary polylogarithm on the upper semicircle, fixes the sign of every Gaussian harmonic value, and controls the Euler transformation. Its exact polynomial part yields a sharp, weight-universal leading error and a complete logarithmic correction polynomial.
+
+The unresolved $S_4$ identity remains explicitly unresolved. Its discrepancy is rigorously small, and its failure to lie in a specified linear relation module is exactly certified. This combination of positive theorems, bounded computational evidence, and a concrete missing-relation target gives a more reliable basis for the next phase of the manuscript than either numerical fitting or unsupported independence claims alone.
+
+\clearpage
+\appendix
+\section{The complete weight-eight Gaussian table}
+\label{app:weight8}
+Every equation below follows from Theorem~\ref{thm:parity}. The table uses $G=\beta(2)$ and is part of the 64-entry exact table in the data directory.
+\begin{align}
+ g_{1,7}={}&\frac{31\pi^6G}{1935360}+\frac{7\pi^4\beta(4)}{11520}
+ +\frac{\pi^2\beta(6)}{48}-\frac{61\pi^7\log2}{368640}\notag\\
+ &-\frac{5\pi^5\zeta(3)}{16384}-\frac{15\pi^3\zeta(5)}{16384}
+ -\frac{63\pi\zeta(7)}{32768},\\
+ g_{2,6}={}&-\frac{31\pi^6G}{1935360}-\frac{7\pi^4\beta(4)}{3840}
+ -\frac{5\pi^2\beta(6)}{48}-4\beta(8)\notag\\
+ &+\frac{5\pi^5\zeta(3)}{8192}+\frac{15\pi^3\zeta(5)}{4096}
+ +\frac{24765\pi\zeta(7)}{16384},\\
+ g_{3,5}={}&\frac{7\pi^4\beta(4)}{3840}+\frac{5\pi^2\beta(6)}{24}
+ +10\beta(8)-\frac{5\pi^5\zeta(3)}{16384}\notag\\
+ &-\frac{45\pi^3\zeta(5)}{8192}-\frac{123825\pi\zeta(7)}{32768},\\
+ g_{4,4}={}&-\frac{7\pi^4\beta(4)}{11520}-\frac{5\pi^2\beta(6)}{24}
+ -18\beta(8)+\frac{527\pi^3\zeta(5)}{4096}
+ +\frac{41275\pi\zeta(7)}{8192},\\
+ g_{5,3}={}&\frac{5\pi^2\beta(6)}{48}+17\beta(8)
+ -\frac{3087\pi^3\zeta(5)}{16384}-\frac{123825\pi\zeta(7)}{32768},\\
+ g_{6,2}={}&-\frac{\pi^2\beta(6)}{48}-11\beta(8)
+ +\frac{5\pi^5\zeta(3)}{768}+\frac{\pi^3\zeta(5)}8
+ +\frac{24765\pi\zeta(7)}{16384},\\
+ g_{7,1}={}&3\beta(8)-\frac{5\pi^5\zeta(3)}{1536}
+ -\frac{\pi^3\zeta(5)}{32}-\frac{8255\pi\zeta(7)}{32768}.
+\end{align}
+
+\section{A minimal exact evaluation recipe}
+\label{app:recipe}
+The following pseudocode describes the algorithm used for a Gaussian interval. All divisions are exact rational operations.
+\begin{lstlisting}
+Input: positive integers a, b, N
+H = 0; binomial = 1; tail = 2^N; numerator = 0
+For n = 0, ..., N-1:
+    If n > 0:
+        H += 1/(2*n-1)^b + 1/(2*n)^b
+        binomial = binomial * (N-n+1) / n
+    tail -= binomial
+    numerator += (-1)^n * tail * H / (2*n+1)^a
+E = numerator / 2^N
+C = 1 if b == 1, otherwise b/(b-1)
+Return [E - C/2^N, E]
+\end{lstlisting}
+No test of floating-point stability is used to choose the enclosure. The error follows from Theorem~\ref{thm:euler-certificate}. The numerical diagnostic script is intentionally a different entry point, so an integration can run exact certificates without importing or invoking the diagnostic routines.
+
+\section{Source-label reconciliation}
+\label{app:labels}
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.39\linewidth}>{\raggedright\arraybackslash}p{.52\linewidth}@{}}
+\toprule
+Source label & Proposed editorial action\\
+\midrule
+\texttt{gauss:eq:wt5-sporadic} & Promote to proved; cite \eqref{eq:R14}--\eqref{eq:wt5-proved}.\\
+\texttt{gauss:eq:g51}, \texttt{gauss:eq:g42} & Promote to proved; cite Theorem~\ref{thm:parity}.\\
+\texttt{gauss:eq:g33}, \texttt{gauss:eq:g24}, \texttt{gauss:eq:g15} & Promote to proved; retain source normalization.\\
+\texttt{gauss:eq:S4-closed} & Retain as candidate; add equivalent form \eqref{eq:S4-simple} and the carefully scoped obstruction.\\
+Weight-five spanning discussion & Improve ``at most three'' to ``at most two modulo the stated depth-one products.''\\
+Other candidate triple reductions & Leave their existing status unchanged.\\
+\bottomrule
+\end{tabular}
+\end{center}
+The precise source for this reconciliation is the pinned Chapter~4 blob, not a moving branch URL. The integration snippet uses a distinct label prefix and does not renumber the existing chapter automatically.
+
+\begin{thebibliography}{9}
+\raggedright
+\addcontentsline{toc}{section}{References}
+\bibitem{repo}
+Vladimir Reshetnikov, \emph{ProveIt: Polylogarithms manuscript}, Chapter~4, ``Gaussian and Eisenstein depth,'' with the editorial reconciliation ledger. Repository snapshot at commit \texttt{afed07429d3d37eceb6c8e9e54cf4da2d3f39d53}, accessed 9 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/afed07429d3d37eceb6c8e9e54cf4da2d3f39d53/Analysis/Polylogarithms/docs/manuscript}.
+
+\bibitem{Panzer}
+Erik Panzer, \emph{The parity theorem for multiple polylogarithms}, arXiv:1512.04482v3 (2016), especially equation~(3.2), p.~14.
+\url{https://arxiv.org/abs/1512.04482}.
+
+\bibitem{Umezawa}
+Ryota Umezawa, \emph{An explicit parity theorem for multiple polylogarithms}, arXiv:2508.02040v1 (2025).
+\url{https://arxiv.org/abs/2508.02040}.
+
+\bibitem{Nakamura}
+Takashi Nakamura, \emph{Simple proof of the functional relation for the Lerch type Tornheim double zeta function}, Tokyo Journal of Mathematics \textbf{35} (2012), 333--337; arXiv:1012.1144.
+\url{https://arxiv.org/abs/1012.1144}.
+
+\bibitem{Zhao}
+Jianqiang Zhao, \emph{Standard relations of multiple polylogarithm values at roots of unity}, arXiv:0707.1459.
+\url{https://arxiv.org/abs/0707.1459}.
+
+\bibitem{DLMF39}
+NIST Digital Library of Mathematical Functions, \S3.9(ii), ``Euler's transformation of series,'' especially equation~3.9.2. Accessed 9 October 2026.
+\url{https://dlmf.nist.gov/3.9}.
+
+\bibitem{DLMF2512}
+NIST Digital Library of Mathematical Functions, \S25.12, ``Polylogarithms.'' Accessed 9 October 2026.
+\url{https://dlmf.nist.gov/25.12}.
+\end{thebibliography}
+\end{document}

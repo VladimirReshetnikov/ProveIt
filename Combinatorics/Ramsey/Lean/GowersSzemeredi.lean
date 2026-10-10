@@ -989,7 +989,11 @@ import GowersSzemeredi.Proofs16SubsetSumIndependence
 import GowersSzemeredi.Proofs16IterationTools
 import GowersSzemeredi.Proofs16PropNineThreeIteration
 import GowersSzemeredi.Proofs16ProgressionImagePurification
+import GowersSzemeredi.Proofs16CommonValueSharp
+import GowersSzemeredi.Proofs16ClaimNineFive
 import GowersSzemeredi.Proofs16GlobalAllQuadImageCore
+import GowersSzemeredi.Proofs16GlobalCompatibleDifferenceMaps
+import GowersSzemeredi.Proofs16PropNineThreeTwelve
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

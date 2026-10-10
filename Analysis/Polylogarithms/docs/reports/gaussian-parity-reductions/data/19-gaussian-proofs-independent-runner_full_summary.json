@@ -1,0 +1,155 @@
+{
+  "mode": "full",
+  "started_utc": "2026-10-09T23:40:19.821192+00:00",
+  "status": "passed",
+  "jobs": [
+    {
+      "name": "weight6_ode_derivation",
+      "category": "parity",
+      "script": "code/independent/parity/derive.py",
+      "exit_code": 0,
+      "duration_seconds": 0.372,
+      "log": "results/independent/parity/logs/weight6_ode_derivation.log",
+      "status": "passed"
+    },
+    {
+      "name": "weight8_ode_derivation",
+      "category": "parity",
+      "script": "code/independent/parity/extend_weight8.py",
+      "exit_code": 0,
+      "duration_seconds": 0.42,
+      "log": "results/independent/parity/logs/weight8_ode_derivation.log",
+      "status": "passed"
+    },
+    {
+      "name": "parity_symbolic_comparison",
+      "category": "parity",
+      "script": "code/independent/parity/gaussian_parity.py",
+      "exit_code": 0,
+      "duration_seconds": 2.259,
+      "log": "results/independent/parity/logs/parity_symbolic_comparison.log",
+      "output": "results/independent/parity/gaussian_coefficients.json",
+      "validated_counts": {
+        "parity_rows": 12,
+        "general_formula_comparisons": 100
+      },
+      "status": "passed"
+    },
+    {
+      "name": "one_two_coefficient_derivation",
+      "category": "one_two",
+      "script": "code/independent/one_two/derive_rows.py",
+      "exit_code": 0,
+      "duration_seconds": 0.655,
+      "log": "results/independent/one_two/logs/one_two_coefficient_derivation.log",
+      "output": "results/independent/one_two/coefficients.json",
+      "validated_counts": {
+        "one_two_component_rows": 24
+      },
+      "status": "passed"
+    },
+    {
+      "name": "mixed_symbolic_derivation",
+      "category": "parity",
+      "script": "code/independent/parity/mixed_candidates.py",
+      "exit_code": 0,
+      "duration_seconds": 0.329,
+      "log": "results/independent/parity/logs/mixed_symbolic_derivation.log",
+      "output": "results/independent/parity/mixed_symbolic_checks.json",
+      "validated_counts": {
+        "mixed_symbolic_rows": 4
+      },
+      "status": "passed"
+    },
+    {
+      "name": "audit_exact_radius_checks",
+      "category": "audit",
+      "script": "code/independent/audit/verify_corrections.py",
+      "exit_code": 0,
+      "duration_seconds": 0.052,
+      "log": "results/independent/audit/logs/audit_exact_radius_checks.log",
+      "output": "results/independent/audit/exact_radius_checks.json",
+      "validated_counts": {
+        "exact_rational_radius_cases": 160
+      },
+      "status": "passed"
+    },
+    {
+      "name": "parity_quadrature",
+      "category": "parity",
+      "script": "code/independent/parity/check_quadrature.py",
+      "exit_code": 0,
+      "duration_seconds": 19.626,
+      "log": "results/independent/parity/logs/parity_quadrature.log",
+      "output": "results/independent/parity/quadrature_checks.json",
+      "validated_counts": {
+        "parity_quadrature_rows": 12,
+        "working_decimal_digits": 90
+      },
+      "status": "passed"
+    },
+    {
+      "name": "mixed_quadrature",
+      "category": "parity",
+      "script": "code/independent/parity/mixed_candidates.py",
+      "exit_code": 0,
+      "duration_seconds": 0.578,
+      "log": "results/independent/parity/logs/mixed_quadrature.log",
+      "output": "results/independent/parity/mixed_checks.json",
+      "validated_counts": {
+        "mixed_quadrature_rows": 4,
+        "working_decimal_digits": 60
+      },
+      "status": "passed"
+    },
+    {
+      "name": "one_two_broad_quadrature",
+      "category": "one_two",
+      "script": "code/independent/one_two/one_two_identities.py",
+      "exit_code": 0,
+      "duration_seconds": 11.608,
+      "log": "results/independent/one_two/logs/one_two_broad_quadrature.log",
+      "output": "results/independent/one_two/verification.json",
+      "validated_counts": {
+        "logarithmic_moment_comparisons": 112,
+        "direct_nested_series_comparisons": 30,
+        "explicit_formula_comparisons": 5,
+        "working_decimal_digits": 100
+      },
+      "status": "passed"
+    },
+    {
+      "name": "one_two_exported_coefficients",
+      "category": "one_two",
+      "script": "code/independent/one_two/verify_coefficients.py",
+      "exit_code": 0,
+      "duration_seconds": 1.442,
+      "log": "results/independent/one_two/logs/one_two_exported_coefficients.log",
+      "output": "results/independent/one_two/coefficient_verification.json",
+      "validated_counts": {
+        "independent_real_imaginary_component_checks": 24,
+        "working_decimal_digits": 100
+      },
+      "status": "passed"
+    },
+    {
+      "name": "audit_numerical_checks",
+      "category": "audit",
+      "script": "code/independent/audit/verify_corrections.py",
+      "exit_code": 0,
+      "duration_seconds": 0.215,
+      "log": "results/independent/audit/logs/audit_numerical_checks.log",
+      "output": "results/independent/audit/correction_checks.json",
+      "validated_counts": {
+        "digamma_component_checks": 15,
+        "exact_rational_radius_cases": 160,
+        "other_scalar_or_complex_identity_checks": 3,
+        "working_decimal_digits": 90
+      },
+      "status": "passed"
+    }
+  ],
+  "interpretation": "Symbolic identities and rational bounds are exact; quadrature residuals are independent numerical cross-checks.",
+  "duration_seconds": 37.569,
+  "finished_utc": "2026-10-09T23:40:57.389840+00:00"
+}

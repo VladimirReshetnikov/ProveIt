@@ -42,7 +42,7 @@ project, `Lean/` and `Coq/` are siblings; `Research/`, `Support/`, and
 | Topic | Contents |
 | --- | --- |
 | [`Algebra/`](Algebra/) | Linear-through-quartic root formulas; rational and generic Abel--Ruffini obstructions above degree four; a Lean-verified primitive-recursive radical-solvability criterion for individual integer quintics; Jacobian-conjecture counterexamples including the dimension-three witness, a lower-degree stable representative, and an exact cubic reduction; the Baker–Campbell–Hausdorff formula in [`BakerCampbellHausdorff/`](Algebra/BakerCampbellHausdorff/), formal and in Banach algebras, with a complete Lean proof and a combined article; and [`SurrealNumbers/`](Algebra/SurrealNumbers/): the surreal field built from sign sequences and proved real closed, the algebraically closed surcomplex numbers, and Conway's omnific integers, with research reports on surreal and surcomplex numbers. |
-| [`Analysis/`](Analysis/) | Exact trigonometric, arctangent, and exponential identities; Fabius-function definitions, exact dyadic arithmetic, and paper statements; transseries; and [`Polylogarithms/`](Analysis/Polylogarithms/): unformalized articles and research reports on special values of polylogarithms, polygamma and Γ, generalized Stieltjes constants and the Herglotz function. |
+| [`Analysis/`](Analysis/) | Exact trigonometric, arctangent, and exponential identities; Fabius-function definitions, exact dyadic arithmetic, and paper statements; transseries; and [`Polylogarithms/`](Analysis/Polylogarithms/): a consolidated manuscript with historical source drafts on special values of polylogarithms, polygamma and Γ, generalized Stieltjes constants and the Herglotz function. |
 | [`Combinatorics/`](Combinatorics/) | Enumeration of power towers and radical expressions, including OEIS certificates and research corpora; an exact `4.5235` upper-bound certificate for Klarner's polyomino growth constant; squaring the square (Duijvestijn's order-21 perfect squared square and small-order impossibility). |
 | [`Computability/`](Computability/) | Set Turing degrees (order, joins, cardinalities, jump/c.e. theory, and Post's problem) and coarse Turing degrees (the failure of C1 and of Martin's cone theorem; admitting published results, see below); Hilbert's tenth problem (MRDP in both directions, universal Diophantine equations, prime-representing polynomials, and corrected editions of six articles by J. P. Jones); lambda/SK/SKI/Iota universality; Busy Beaver semantics, domination, exact small-state scores and times, and certificate bridges. |
 | [`Logic/`](Logic/) | First-order completeness, propositional/equational axiom systems, modal Kripke semantics and correspondence theory, PA infinitude, PA/HF interpretability, and bounded-complexity self-consistency for PA and for ZFC-inside-PA. |
@@ -214,14 +214,15 @@ requirement to build Lean one module at a time.
   universal pair `(58, 4)`, prime-representing polynomials, and the Jones
   articles of 1974–1984 formalized statement by statement, next to corrected
   editions of the six articles with editorial notes on every discrepancy.
-- A [collection of 277 research reports](SetTheory/Cardinals/docs/reports/README.md)
+- A [collection of 289 research reports](SetTheory/Cardinals/docs/reports/README.md)
   without Lean counterparts, most of them attacking a specific conjecture from
   the literature or an OEIS entry: ordinals and well-quasi-orders, Hankel
   determinants, supercongruences, tetration and digit stabilization,
   log-concavity, graphs, automata and formal languages, enumerative
   combinatorics, generating-function asymptotics, quaternionic analysis, the
-  Jacobian conjecture, radicals and Galois theory, and Diophantine
-  representations of computation; about a quarter are counterexamples rather
+  Jacobian conjecture, radicals and Galois theory, Diophantine
+  representations of computation, convex geometry and probability; about a
+  quarter are counterexamples rather
   than proofs.  New external reports reach it through
   [`docs/incoming`](docs/incoming/README.md).
 

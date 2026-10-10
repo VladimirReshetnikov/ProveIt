@@ -11,11 +11,11 @@ that common mechanism before tabulating its moments and rational values.
 \label{integral:sec:psim2}
 
 One integration below the digamma sits $\psi^{(-2)}(z)=\int_0^z\log\Gamma(t)\,dt$.
-Integrating Kummer's Fourier series of $\log\Gamma$ \cite{integral:Kummer} predicts that at rational points this
-grid lands in $\{\text{Clausen values}\}/\pi\,\oplus\,\zeta'(-1)\,\oplus\,\text{logs}$:
-the weight-$2$ Clausen world enters through the negative-order polygamma ladder, with the
-Glaisher-layer constant $\zeta'(-1)$ as the genuinely new atom. PSLQ confirms
-\dps{$100$-digit canaries; residuals $\le10^{-60}$}:
+At denominators $3,4,6$, reflection and distribution reduce the
+integral to Clausen values, $\zeta'(-1)$ and logarithms. The odd character
+part is Clausen-explicit at general rational points, but the even part
+can retain Dirichlet derivatives. The three original examples below are
+correct; their earlier extrapolation to every denominator was too broad.
 
 \begin{result}[log-gamma integrals in the Clausen lattice]\label{integral:res:loggamma}
 \begin{align*}
@@ -48,6 +48,84 @@ level needs a properly prepared basis (presumably $\zeta'(-2)$-equivalents plus
 Barnes-$G$-layer logarithms).
 \end{negative}
 
+\section{The general log-gamma integral and the fifth-point obstruction}
+\begin{proposition}[An exact denominator-five correction]
+\label{loggamma:corr:loggamma-five}
+Let $\chi_5$ be the quadratic character modulo $5$, with values
+$(1,-1,-1,1)$ on residues $1,2,3,4$.  Then
+\begin{align}
+ \int_0^{1/5}\log\Gamma(t)\,dt
+ ={}&\frac{2}{25}+\frac{\log(2\pi)}{10}
+       +\frac{\operatorname{Cl}_2(2\pi/5)}{4\pi}
+       -\frac65\zeta'(-1) \notag\\
+    &+\frac1{20}L'(-1,\chi_5)-\frac{29}{1200}\log5.
+ \label{loggamma:corr:loggamma-five-formula}
+\end{align}
+More generally, for $a>0$,
+\begin{equation}\label{loggamma:corr:loggamma-general}
+ \int_0^a\log\Gamma(t)\,dt
+ =\zeta'(-1,a)-\zeta'(-1)
+       +\frac{a-a^2}{2}+\frac a2\log(2\pi).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Differentiate $\partial_a\zeta(s,a)=-s\zeta(s+1,a)$ with respect to
+$s$ at $s=-1$.  Lerch's identity and $\zeta(0,a)=\tfrac12-a$ give
+\[
+ \partial_a\zeta'(-1,a)
+ =\zeta'(0,a)-\zeta(0,a)
+ =\log\Gamma(a)-\tfrac12\log(2\pi)-\tfrac12+a.
+\]
+The shift identity for Hurwitz zeta shows that
+$\zeta'(-1,a)\to\zeta'(-1)$ as $a\downarrow0$, since the additional
+term is $-a\log a$.  Integration proves
+\eqref{loggamma:corr:loggamma-general}.  These are classical Hurwitz-zeta
+identities \cite{hstruct:DLMF}; the integrated theory is also developed by
+Espinosa and Moll \cite{loggamma:EspinosaMoll2002b}.
+
+Put $Z_r=\zeta'(-1,r/5)$ and $Z=\zeta'(-1)$.  The Fourier reflection
+formula at this weight is
+\begin{equation}\label{loggamma:corr:zeta-minus-one-reflection}
+ \zeta'(-1,a)-\zeta'(-1,1-a)
+       =\frac{\operatorname{Cl}_2(2\pi a)}{2\pi},
+       \qquad 0<a<1.
+\end{equation}
+For completeness, subtract the two Hurwitz Fourier expansions
+\[
+ \zeta(1-s,a)-\zeta(1-s,1-a)
+ =\frac{4\Gamma(s)}{(2\pi)^s}\sin\frac{\pi s}{2}
+       \sum_{m\geq1}\frac{\sin(2\pi ma)}{m^s}
+\]
+and differentiate at $s=2$.  Absolute local convergence of the
+series and its logarithmic derivative justifies the differentiation;
+the zero of the sine factor leaves precisely
+\eqref{loggamma:corr:zeta-minus-one-reflection}.
+
+Differentiating distribution and the character decomposition at $s=-1$
+gives
+\begin{align*}
+ Z_1+Z_2+Z_3+Z_4&=-\frac45 Z-\frac{\log5}{60},\\
+ Z_1-Z_2-Z_3+Z_4
+   &=\frac15\bigl(L'(-1,\chi_5)+\log5\,L(-1,\chi_5)\bigr).
+\end{align*}
+Here $L(-1,\chi_5)=-2/5$, obtained directly from
+$\zeta(-1,a)=-B_2(a)/2$.  Combining these equations with
+$Z_1-Z_4=\operatorname{Cl}_2(2\pi/5)/(2\pi)$ yields
+\[
+ Z_1=-\frac15 Z+\frac1{20}L'(-1,\chi_5)
+       -\frac{29}{1200}\log5
+       +\frac{\operatorname{Cl}_2(2\pi/5)}{4\pi}.
+\]
+Insert this into \eqref{loggamma:corr:loggamma-general} at $a=1/5$.
+\end{proof}
+
+The correction concerns the scope of the available reduction laws.
+It does not prove that $L'(-1,\chi_5)$ is transcendental or independent
+of the other constants in \eqref{loggamma:corr:loggamma-five-formula}.  A precise
+replacement for the earlier assertion is: the odd reflection component
+is Clausen-explicit, while the even component requires the appropriate
+Dirichlet-$L$ derivatives unless further relations have been proved.
+The general Hurwitz-jet ladder below agrees with this corrected scope.
 \section{Binet's second formula and Malmsten's integrals: the Lambert-kernel face}
 \label{integral:sec:binet}
 
@@ -73,7 +151,7 @@ turning every $\Gamma$-store atom into a closed-form arctan--Lambert integral; e
 \]
 \end{result}
 
-\begin{result}[Vardi's integral \cite{integral:Vardi}, re-derived blind]\label{integral:res:vardi}
+\begin{result}[Vardi's integral \cite{bridge:Vardi}, re-derived blind]\label{integral:res:vardi}
 PSLQ over $\{\pi\gamma,\ \pi\log2,\ \pi\log\pi,\ \pi\log\Gamma(1/4)\}$, with the $\gamma$
 atom \emph{declined} (coefficient $0$) \dps{canary exact at $80$ dps}:
 \[
@@ -94,7 +172,7 @@ formula, with the $\Gamma$-lattice reducer supplying the closed form mechanicall
 
 \section{The log-gamma moment ladder}\label{integral:sec:moments}
 
-\begin{result}[Hurwitz ladder; classical (Whittaker--Watson \cite{integral:WhittakerWatson})]\label{integral:res:hurwitzladder}
+\begin{result}[Hurwitz ladder; classical (Whittaker--Watson \cite{bridge:WhittakerWatson})]\label{integral:res:hurwitzladder}
 \[
 \log\Gamma(z)=\Bigl(z-\tfrac12\Bigr)\log z-z+\tfrac12\log(2\pi)
 +\frac12\sum_{n\ge2}\frac{n-1}{n(n+1)}\,\zeta(n,z+1)
@@ -106,7 +184,7 @@ the same point} --- a candidate certificate law binding the $\Gamma$ and trigamm
 into one linear system.
 \end{result}
 
-\begin{result}[second moment; classical (Espinosa--Moll \cite{integral:EspinosaMoll})]\label{integral:res:em}
+\begin{result}[second moment; classical (Espinosa--Moll \cite{bridge:EspinosaMoll})]\label{integral:res:em}
 With $L=\log(2\pi)$,
 \[
 \int_0^1\bigl[\log\Gamma(x)\bigr]^2dx
@@ -117,20 +195,12 @@ With $L=\log(2\pi)$,
 The quadratic-moment layer adds $\zeta''(2)$ to the atom inventory.
 \end{result}
 
-\begin{negative}[the cubic moment stays open]\label{integral:neg:cubic}
-\[
-\int_0^1\bigl[\log\Gamma(x)\bigr]^3dx
-=5.7403888072294742800195716881024614629610130074549\ldots
-\]
-($50$ digits, tanh-sinh quadrature cross-calibrated by the second moment). PSLQ over the
-natural weight-mixed basket ($\gamma^3,\dots,L^3$, $\pi^2\gamma$, $\pi^2L$,
-$\zeta(3)$, $(\gamma{+}L)\zeta'(2)/\pi^2$, $(\gamma{+}L)\zeta''(2)/\pi^2$,
-$\zeta'''(2)/\pi^2$, $\zeta'(2)^2/\pi^4$, $\zeta'(3)$, $\gamma\zeta'(2)/\pi^2$) returns
-only uniform-height junk at $60$ dps --- consistent with Espinosa--Moll and Bailey et al.
-The Kummer-cube resonance $k_1\pm k_2\pm k_3=0$ suggests a depth-two candidate
-(Tornheim--Witten-derivative flavour); finding the right \emph{named} atom is the open
-problem, not search depth.
-\end{negative}
+The numerical cubic moment originally suggested enlarging the constant
+basket. Its known Tornheim representation and the convergent certificate
+below settle that representation question; reduction to a specified smaller
+algebra remains separate.\label{integral:neg:cubic}
+
+\input{chapters/07-loggamma-moments}
 
 \section{The Stieltjes layer}\label{integral:sec:stieltjes}
 
@@ -159,10 +229,10 @@ as differentiated-Kummer predicts \dps{verified blind}:
 \gamma_1\!\bigl(\tfrac13\bigr)-\gamma_1\!\bigl(\tfrac23\bigr)
 =-\frac{\pi}{\sqrt3}\Bigl(\gamma+4\ln2-\tfrac12\ln3+4\ln\pi-6\ln\Gamma\bigl(\tfrac13\bigr)\Bigr),
 \]
-which is \emph{Malmsten's 1846 reflection identity} \cite{integral:Malmsten} (long misattributed
+which is \emph{Malmsten's 1846 reflection identity} \cite{bridge:Malmsten} (long misattributed
 to Almkvist--Meurman). The even combination did not reduce in the tested standard basket
 \dps{PSLQ junk at coefficient height $10^8$ --- honest negative}; pushing Blagouchine's
-rational-arguments theorem \cite{integral:BlagouchineJNT} through it collapses everything except a $\zeta''$-block
+rational-arguments theorem \cite{bridge:BlagouchineJNT} through it collapses everything except a $\zeta''$-block
 \dps{derived and verified to $10^{-50}$}:
 \[
 \gamma_1\!\bigl(\tfrac15\bigr)-\gamma_1\!\bigl(\tfrac25\bigr)
@@ -174,7 +244,7 @@ rational-arguments theorem \cite{integral:BlagouchineJNT} through it collapses e
 \end{result}
 
 The canonical atom for the even layer is thus the even-character $\zeta''(0,l/q)$
-combination (Deninger's layer \cite{integral:Deninger}); Malmsten integrals, even $\gamma_1$-combinations, and even
+combination (Deninger's layer \cite{bridge:Deninger}); Malmsten integrals, even $\gamma_1$-combinations, and even
 $L'(\chi,1)$ are all elementary-equivalent to it. Two practical records: Blagouchine's
 particular value $\gamma_1(1/4)$ was re-verified exactly against \texttt{mpmath}'s
 generalized Stieltjes constants, and the reduction coefficients live in
@@ -191,7 +261,7 @@ so that $\gamma_0(x)=-\psi(x)$ and $\gamma_n(1)=\gamma_n$ are the classical
 Stieltjes constants, $\gamma_0=\gamma$. Although universally called
 \emph{constants}, the $\gamma_n(x)$ are real-analytic functions of the
 argument on $(0,\infty)$, and it is this function-theoretic point of view we
-adopt. Following Blagouchine \cite{stieltjes:BlagouchineRJ,stieltjes:BlagouchineJNT} we write
+adopt. Following Blagouchine \cite{stieltjes:BlagouchineRJ,bridge:BlagouchineJNT} we write
 \[
 \Gamma_{\!n}(p)\;:=\;\int_1^p\gamma_n(x)\,dx ,
 \qquad\text{so that }\ \Gamma_{\!n}(1)=0 ,
@@ -281,7 +351,7 @@ $s^{n+1}$-coefficient is $\partial_x\zeta^{(n+1)}(0,x)/(n+1)!$. Equating gives
 
 The differential form \eqref{stieltjes:eq:chain} is Lemma~2 of
 Chakraborty--Kanemitsu--Kuzumaki \cite{stieltjes:CKK} (for $n=1$ it is Deninger's
-$R'$-law \cite{stieltjes:Deninger}); the integrated form \eqref{stieltjes:eq:antideriv} is
+$R'$-law \cite{bridge:Deninger}); the integrated form \eqref{stieltjes:eq:antideriv} is
 eq.~(2.16) of Connon \cite{stieltjes:Connon}. For $n=0$,
 $\zeta'(0,p)=\ln\Gamma(p)-\tfrac12\lntwopi$ recovers
 $\Gamma_{\!0}(p)=-\ln\Gamma(p)$.
@@ -428,7 +498,7 @@ canonical second-layer constants.
 
 \section{Reflection formulas}\label{stieltjes:sec:reflection}
 
-Hurwitz's formula (see, e.g., \cite[Ch.~12]{ApostolBook}), for $0<p/q<1$,
+Hurwitz's formula (see, e.g., \cite[Ch.~12]{stieltjes:ApostolBook}), for $0<p/q<1$,
 \[
 \zeta\Bigl(1-s,\frac pq\Bigr)
 =\frac{2\,\Gamma(s)}{(2\pi q)^{s}}
@@ -485,11 +555,11 @@ $e_4=\tfrac{\Lambda^4}{24}+\tfrac{\pi^2}{24}\Lambda^2+\tfrac{\zeta(3)}3\Lambda
 \eqref{stieltjes:eq:refl2}--\eqref{stieltjes:eq:refl4}.
 \end{proof}
 
-Formula \eqref{stieltjes:eq:refl2} is eq.~(89) of Blagouchine \cite{stieltjes:BlagouchineJNT},
+Formula \eqref{stieltjes:eq:refl2} is eq.~(89) of Blagouchine \cite{bridge:BlagouchineJNT},
 where a footnote records that it also appears in unpublished work of
 D.~Connon; \eqref{stieltjes:eq:refl3} and \eqref{stieltjes:eq:refl4} appear to be new. The same
 expansion, one order down, recovers Malmsten's reflection formula for
-$\gamma_1$ \cite{stieltjes:BlagouchineJNT}; an elementary alternative proof of that
+$\gamma_1$ \cite{bridge:BlagouchineJNT}; an elementary alternative proof of that
 $n=1$ case, via Kummer's Fourier expansion of $\ln\Gamma$ rather than
 Hurwitz's functional equation, is given by Kouba \cite{stieltjes:Kouba}. For $q=3$
 and $q=4$ the sums collapse
@@ -620,7 +690,7 @@ c:=-\tfrac12\zeta''(0)
 \]
 Moreover $\int_0^1\Gamma_{\!1}(x)\,dx=c$, equivalently
 \eqref{stieltjes:eq:mom-x} (since $\int_0^1\zeta''(0,x)\,dx=0$
-\cite{stieltjes:Deninger,stieltjes:Coffey}).
+\cite{bridge:Deninger,stieltjes:Coffey}).
 \end{theorem}
 
 \begin{theorem}[half-integral and even-sum values]\label{stieltjes:thm:G1half}
@@ -835,7 +905,7 @@ reflection formula of Theorem~\ref{stieltjes:thm:reflgen}. At denominators such 
 longer close over the principal character), and the values
 $\Gamma_{\!n}(p/q)$ additionally involve the even-character combinations of
 $\zeta^{(n+1)}(0,\cdot)$ — the obstruction layer studied, at $n=1$, in
-\cite{stieltjes:BlagouchineJNT}.
+\cite{bridge:BlagouchineJNT}.
 
 \section{The negative-order polygamma floor}\label{stieltjes:sec:negapoly}
 
@@ -1057,36 +1127,16 @@ between its $s=k+1$ and $s=-k$ spellings. Exact rational row-reduction of
 the full known-relation lattice (all reflection rows and all-divisor
 multiplication rows) makes this quantitative:
 
-\begin{proposition}[jet-grid residual dimension]\label{stieltjes:prop:jetrank}
-For every $3\le q\le30$ and $1\le k\le4$, the residual dimension of the
-grid $\{\zeta'(-k,j/q):1\le j\le q-1\}$ modulo the lattice generated by
-the reflection and multiplication rows equals
-\[
-r_{q,k}=\#\{\chi \text{ primitive of conductor } f\mid q,\ f>1,\
-\chi(-1)=(-1)^{k+1}\}
-=\begin{cases}\varphi(q)/2-1,& k\text{ odd},\\
-\varphi(q)/2,& k\text{ even},\end{cases}
-\]
-with no exceptions.
-\end{proposition}
-
-The epistemic status deserves precision. For each fixed $(q,k)$ in the
-stated range this \emph{is} a theorem: the relation lattice is a finite,
-explicitly known matrix over $\mathbb{Q}$, and the rank computation is
-exact rational row reduction (no floating point; the script and its $112$-cell output belong to the historical Smithereens snapshot and were not imported here). The
-character-count \emph{law}, as a statement for all $q$, is at present a
-verified conjecture, with the expected mechanism visible in the
-computation: decomposing the grid along Dirichlet characters, the
-reflection rows annihilate exactly the $(-1)^k$-parity eigenspace (whose
-$L$-jets are the Clausen material already on the reflection right-hand
-side), the divisor multiplication rows pin the imprimitive and principal
-directions (the constant $\zeta'(-k)$ belongs to the right-hand-side
-inventory: a generalized Glaisher constant $\ln\Glaisher_k$ for $k$ odd,
-a multiple of $\zeta(k+1)$ for $k$ even), and the surviving directions
-are precisely the parity-opposite primitive characters of
-Theorem~\ref{stieltjes:thm:hbridge}. For $k$ odd the count coincides with the
-residual law of the $\gamma_1$-grids — the two lattices see the same
-even-character obstruction space.
+\begin{corollary}[Uniform negative-jet ranks]\label{stieltjes:prop:jetrank}
+For all $q\ge3$ and $k\ge1$, the formal negative-jet grid modulo the
+specified reflection, distribution and endpoint rows has residual
+dimension $\varphi(q)/2-1$ for odd $k$, and $\varphi(q)/2$ for even $k$.
+\end{corollary}
+The exact character proof is given in
+Corollary~\ref{dist:cor:dist-all-ranks}. The original $112$-cell finite
+experiment supported the result; the polynomial normal form now proves
+it for every denominator and order. This does not assert arithmetic
+independence of the remaining $L$-derivative coordinates.
 
 \subsection{Rational values}\label{stieltjes:sec:negvalues}
 
