@@ -3856,3 +3856,31 @@ complete-Q implementation, including provenance preparation, independent
 replay and serialization. These are local source improvements, with no general
 quasi-polynomial recognition claim. Reproduce using the
 `normal_orbit_research.matching_support` audit and benchmark driver.
+
+Report 79's native bounded Pachner search is now integrated. Integral cochain
+transport, commitments/sleep search, connected regions, shared cover indexing,
+causal projection/composition and source replay use the maintained move
+primitives. `find_pachner_descent` completely decides bounded total-upward
+descent with connected cover size `min(t,3U+3)` when uncapped. The formal
+first-descent theorem gives `2^O(U) poly(t+B)` geometry; caps remain
+inconclusive, and no bounded negative is a knot verdict.
+
+`recognize(..., use_pachner_seed=True)` and `--pachner-seed` enable a new
+source-bound positive disc stage after filters. CLI controls are
+`--pachner-seed-max-upward`, `--pachner-seed-max-nodes` and
+`--pachner-seed-max-work`. It probes the source before indexing bounded
+covers and shares its node/work allowance with the later search. Only an
+independently replayed `diagram-transport-disc-v1` witness returns `UNKNOT`;
+local misses and caps continue the existing complete fallback.
+
+All 1,499 tests and 66 focused integration tests pass. Exact source audits
+match restarted endpoint classes and replay 124 retained endpoints plus
+two strict one-up/two-down descents; fresh Regina confirms the source and
+endpoint solid tori. First verified descent gains 37.7x and 79.7x on the
+two measured sources, including replay and serialization. Thirteen actual
+diagrams preserve all complete verdicts and exact disabled evidence. Their
+small direct-search allowance adds no nonempty-diagram successes, and enabling
+the stage adds about 0.21–0.23 seconds to three otherwise submillisecond
+controls. It **defaults off**. The universal small-upward/terminal hypothesis
+and general quasi-polynomial recognition remain open. Reproduce with the
+`causal_research.native` audit, source-benchmark and diagram-benchmark modes.
