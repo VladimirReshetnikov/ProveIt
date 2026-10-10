@@ -1,0 +1,142 @@
+\subsection{An Euler precheck using only quadrilateral rays}
+\label{sec:euler-corners}
+
+Complete standard-ray enumeration is more work than a query asking only
+whether a non-link ray has positive Euler characteristic. The following
+elementary consequence of canonical extension separates these two tasks.
+Its ingredients are classical: canonical surfaces have no vertex-link
+components, and canonical quadrilateral vertex surfaces are standard vertex
+surfaces \cite[Section 3 and Lemma 4.5]{burtonconversion}. The explicit
+convexity formulation below is used as a proposed optimization; no claim
+of literature priority is made.
+
+\begin{theorem}[Objectives nonnegative on links attain a maximum at Q-corners]
+\label{thm:euler-corners}
+Let $\lambda$ be a linear functional on standard matching vectors such
+that $\lambda(L_v)\ge0$ at every global vertex. On the supplied sector
+cone, $F_\lambda(q)=\lambda(\lift(q))$ is positively homogeneous and
+convex. If the normalized section $P$ is nonempty, then
+\[
+ \max_{q\in P}F_\lambda(q)
+   =\max_{a\in\operatorname{Vert}(P)}F_\lambda(a).
+\]
+Every corner lift $\lift(a)$ spans a non-link standard extreme ray.
+For a compact finite three-manifold triangulation, this applies to Euler
+characteristic, because each vertex link is a disc or sphere. Consequently
+there is a non-link standard ray of positive Euler characteristic if and
+only if some canonical lift of a quadrilateral-cone extreme ray has
+positive Euler characteristic. The convexity and equivalence hold in
+all matching dimensions.
+\end{theorem}
+
+\begin{proof}
+Let $U(q)$ be the signed linear matching vector with triangle entries
+$\ell_c(q)$ and quadrilateral entries $q$, with zero offsets in every
+vertex group. Include the singleton groups with potential zero. Then
+\[
+ \lift(q)=U(q)-\sum_v m_v(q)L_v,
+ \qquad
+ F_\lambda(q)=\lambda(U(q))-
+       \sum_v\lambda(L_v)\min_{c\in G_v}\ell_c(q).
+\]
+Each minimum of linear functions is concave and positively homogeneous.
+The coefficients $\lambda(L_v)$ are nonnegative, so the displayed
+expression is convex and positively homogeneous. If
+$q=\sum_i\alpha_i a_i$ is a convex combination of corners of $P$, then
+\[
+ F_\lambda(q)\le\sum_i\alpha_i F_\lambda(a_i)
+              \le\max_i F_\lambda(a_i).
+\]
+The reverse maximum inequality follows since every corner lies in $P$.
+
+A corner of $P$ spans an extreme ray of $\cone$. Choose any anchor cell
+containing it. That direction remains extreme in the anchor cell, so
+Theorem~\ref{thm:face} makes its lift standard-extreme. Conversely, every
+non-link standard extreme ray is canonical. Euler characteristic is a
+homogeneous linear functional in standard normal coordinates
+\cite[Section 2 and Lemma 10]{burtonozlen}, and its values on the links
+are one or two. Applying the maximum equality and positive rescaling
+proves the claimed positive-Euler equivalence.
+\end{proof}
+
+The comparison concerns the normalized quantity
+$\chi(\lift(q))/(\mathbf1^Tq)$ when primitive integer directions are used.
+Primitive normalization can change the value of Euler characteristic by
+a positive scale; it does not change its sign. Unnormalized numerical
+maxima of primitive representatives must not be substituted for the
+maximum in the theorem.
+
+\begin{corollary}[A negative Euler answer excludes essential normal discs]
+\label{cor:no-disc-corners}
+If all canonical corner lifts have nonpositive Euler characteristic,
+there is no essential normal disc anywhere in the supplied sector.
+\end{corollary}
+
+\begin{proof}
+An essential normal disc is connected and is not a vertex-link disc:
+the latter has boundary bounding the small disc about a boundary vertex.
+Hence it has no vertex-link component and is canonical
+\cite[Definitions 3.1 and 3.9, Lemma 3.5]{burtonconversion}. Its
+nonzero quadrilateral vector would give $F_\chi>0$, contradicting
+Theorem~\ref{thm:euler-corners}. The empty-section case has only
+vertex-link surfaces and gives the same conclusion.
+\end{proof}
+
+A positive answer has a different meaning. The returned standard ray
+may be a sphere, a projective plane, or an inessential disc. Its essentiality
+still requires the compressed topological observer. The theorem does
+not assert that an essential disc must itself occur among the canonical
+quadrilateral corner lifts. It also does not claim that all standard
+rays occur there; the additional overlay vertices remain necessary for
+complete enumeration.
+
+\begin{theorem}[Quadratic post-kernel Euler precheck]
+\label{thm:euler-complexity}
+For matching nullity at most three, the positive-Euler non-link ray query
+can be decided after kernel construction with
+\[
+ O(1+t+k^2)
+\]
+rational arithmetic operations using deterministic array bookkeeping.
+A positive answer can include one primitive full-coordinate standard ray
+within the same bound. This is an arithmetic bound with polynomial bit
+complexity; compressed component testing and independent dense replay
+are separate costs.
+\end{theorem}
+
+\begin{proof}
+First build a linear Euler functional $\chi(z)=e^Tz$ in $O(t)$ operations.
+Count one face for each elementary normal disc, count normal arcs on one
+representative of each physical triangulation face, and count intersection
+points on one representative local edge for each global triangulation
+edge. Matching makes the representative choices consistent. The formula
+$F-E+V$ yields integer coefficients between $-3$ and $5$: a normal disc
+meets at most four faces and four edges. The face and edge classes are
+obtained by traversing linear-size incidence graphs. This is the usual
+bounded-coefficient Euler construction \cite[Lemma 10]{burtonozlen}.
+
+Construct the normalized section by the bounded-chart clipping procedure,
+without constructing any minimum diagram. This costs $O(k^2)$ and gives
+at most $k$ corners; the empty, point, and segment cases satisfy the same
+bound on their number of corners. Preproject the $p=O(k)$ retained
+potentials to the at-most-two-dimensional chart in $O(k^2)$ operations.
+One pass through the original triangle corners and allowed quadrilateral
+entries then aggregates the affine coefficients of $\chi(U(q))$ and the
+link coefficients $\chi(L_v)$ in $O(t+k)$ operations. These are constant-size
+chart records indexed by the already-known class identifiers.
+
+At a section corner, evaluate the affine term and each group's minimum
+using $O(p+k)=O(k)$ operations. Evaluating all corners therefore costs
+$O(k^2)$. Theorem~\ref{thm:euler-corners} proves that their maximum decides
+the query. If a positive corner is found, its primitive canonical full
+lift costs an additional $O(t+k)$ operations. Exact rational chart and
+output sizes have the polynomial bit bounds established earlier.
+\end{proof}
+
+This Euler precheck is proved and examined by the separate exact-data
+audit, but is \emph{not installed in the delivered runtime dispatcher or
+certificate APIs}. A production integration should give its negative
+answer a certificate checking the complete quadrilateral-corner set and
+all Euler values, without pretending that this is a complete standard-ray
+list. The measured producer and benchmark source remain unchanged.
+

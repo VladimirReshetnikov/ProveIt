@@ -1,0 +1,18 @@
+
+
+The separate Euler-corner audit covers the same 607 independently replayed
+sector cases, including all 463 of raw nullity three. It compares exact
+normalized Euler maxima at the original projective corners with those of
+the complete frozen standard-ray lists, and checks that every corner lift
+belongs to the complete standard list. Every comparison agrees.
+The cases comprise 420 polygons, 43 segments, 68 points, and 76 empty
+sections. Among the nonempty cases, 243 have nonpositive maximum and 288
+have positive maximum. The corner rule evaluates 1,419 directions in place
+of 2,898 complete-list ray occurrences, a strict reduction in 446 cases.
+The 1,479 avoided evaluations are a finite operation-count comparison,
+not a measured runtime improvement. This audit deliberately obtains its
+corners from the existing complete planar plan and uses the baseline
+canonical lift; it tests the mathematical reduction, not an implementation
+of the proposed $O(1+t+k^2)$ precheck. The script and exact records are
+\code{experiments/audit_euler_corners.py} and
+\code{results/euler_corner_audit.json}.
