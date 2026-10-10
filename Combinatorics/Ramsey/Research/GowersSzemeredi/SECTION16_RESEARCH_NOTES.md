@@ -6098,6 +6098,31 @@ the decomposition with these named constants, but not `Theorem162At 3`.
               - With affine `L_i = λ_i + u_i` on centred `K_i`, everything
                 reduces to one question: can the `a`'s be confined in
                 advance to a centred set contained in every `K_i`?
+              - *Quantified obstruction.*
+                - Localizing to a common Bohr-type piece costs at least
+                  `exp(−C·rank(⋂_{i∈J} K_i)) ≥ exp(−C′·s₀·(log 1/δ)⁴)`,
+                  with `log(1/δ) = O(d log R) + 9316·log(1/ε)`.
+                - The failure count `O(ε)N³` must beat it. So
+                  `log(1/ε) ≳ s₀·(log 1/δ)⁴ ≥ s₀·(9316·log 1/ε)⁴`, which
+                  is impossible.
+                - Extending each `θ_i` from its dense `B_i` to the whole
+                  `C₀` is also impossible in general. A Freiman map on a
+                  dense set extends only to the thickening `B_i + K_i`.
+                  The same holds for maps on low-rank Bohr sets: they are
+                  linear forms in the GAP coordinates, not global
+                  multiplications `x ↦ t·x`.
+              - *Status against the paper.* The overview (p. 12) states
+                Step 5's output as `Θ₁, …, Θ_r` Freiman-linear on the whole
+                index progression `C`, with the index set becoming a dense
+                `X ⊆ C`. Proposition 9.3 states `Θ_i` on a coset
+                progression `C′` with `X ⊆ C′`. But the printed proof
+                produces each `θ_i` on its own Theorem 2.26 progression
+                `C_i`, and never shows that `X` meets `⋂_{i∈J} C_i` in a
+                set carrying many respected quadruples. By the bound above,
+                this cannot follow from any localization whose cost depends
+                on the iteration. **This appears to be a gap in the printed
+                proof of Proposition 9.3**, not only in our formalization.
+                Resolving it needs a new idea, or a different Step 5.
          2. *Explicit exponents (done, `Proofs16PropNineThreeBudget`).*
             With `L = d·log(2R+1)` and `ℓ = log(1/ε)`:
             - `log(1/claimNineFourDensity) ≤ 6540·log 2 + 37264·L + 9316·ℓ`;
