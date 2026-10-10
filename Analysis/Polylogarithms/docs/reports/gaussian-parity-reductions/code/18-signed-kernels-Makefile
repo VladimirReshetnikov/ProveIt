@@ -1,0 +1,19 @@
+.PHONY: all article verify numerics check clean
+
+all: article
+
+article:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+
+verify:
+	python code/verify.py
+
+numerics:
+	python code/numerics.py
+
+check:
+	sha256sum -c MANIFEST.sha256
+
+clean:
+	latexmk -c article.tex
+	rm -rf code/__pycache__
