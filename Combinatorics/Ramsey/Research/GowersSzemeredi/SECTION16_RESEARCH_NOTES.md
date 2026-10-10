@@ -5987,8 +5987,58 @@ the decomposition with these named constants, but not `Theorem162At 3`.
              chosen pairs, is respected by the glued maps (`chosenGlued`)
              on `⋂_j B(θ_i(q_j) : i ∈ J; η)`.
 
-           What remains is the counting theorem chaining the iteration,
-           good pairs, Markov, F3, the quadruple window and Lemmas A/B.
+         **Proposition 9.3 is kernel-checked:** `milicevic_prop_9_3`
+         (`Proofs16PropNineThree`). It depends only on `propext`,
+         `Classical.choice` and `Quot.sound`.
+         - *Input.*
+           - Column maps `L x`, Freiman-linear on `B(T x; r)` with
+             `L x 0 = 0`, `|T x| ≤ d`, `0 < r < 4`.
+           - At most `ε₁N³` incompatible quadruples
+             (`incompatibleTriples (colComp T L r)`).
+           - At most `ε₂N¹¹` 12-tuples with an unrespected x- or y-side
+             8-tuple.
+           - The iteration parameters: a rank cap `rk ≥ 8d`; `M` with
+             `2 ≤ (r/4)M`; `s₀`; `η` with `32s₀η ≤ 1/4`; `ε > 0`; and
+             `5ε₁ + ε ≤ 1/2`.
+         - *Output.*
+           - `θ_i` Freiman 8-homomorphisms on `D_i` for `i < m`, and a
+             window `J` with `|J| = 8s₀`.
+           - A set `X` and chosen pairs `c(a)`. Every index `a` uses lies
+             in `J`, below `m`, and has `a ∈ D_i`.
+           - `ψ_a = chosenGlued T L r c a` is normalized and Freiman-linear
+             on `U_a = B(θ_i(a) : i ∈ J; η)`.
+           - Relating back: `x_a` is compatible with at least `N/2`
+             columns `z`, and `ψ_a = φ_{z+a} − φ_z` on the common quarter
+             Bohr set.
+           - `C(m + 8s₀, 8s₀) · #{respected additive quadruples in X} ≥
+             ((1 − 2η′)³ − 2η′ − 16(ε + 2ε₂))N³ − 6N²`, with
+             `η′ = 5ε₁ + ε`.
+           - `⌈δN²⌉·m ≤ N²s₀`.
+         - *Audit.*
+           - The count bound is positive for small `ε, ε₁, ε₂`, so `X` is
+             not empty.
+           - Indices `i ≥ m` in `J` carry `θ_i = 0` from the iteration's
+             initial state, so they add no constraint.
+           - **Open point, domain coherence.** For `i ∈ J ∖ S_a` with
+             `i < m`, nothing ensures `a ∈ D_i`. So `θ_i` need not be
+             Freiman on a set containing `X`. Respected quadruples are
+             unaffected, since extra frequencies only shrink `U_a`. But
+             Prop 10.1 needs the `Θ_i` Freiman on one domain `C ⊇ X`.
+             Milićević's coset-progression domains raise the same
+             intersection question, and the printed proof does not
+             address it.
+           - Candidate repairs:
+             (i) choose `J` among quadruples whose entries lie in
+             `⋂_{i∈J} D_i`, which needs a density argument for
+             intersections of the `D_i`;
+             (ii) replace each `θ_i` by its Lemma 7.8 linear extension on
+             a Bohr set (`freiman_common_value` already yields one), and
+             intersect Bohr sets, which have polynomial-density
+             intersections.
+           - Option (ii) looks natural: the linear parts are Freiman
+             2-homomorphisms on `B(spec; ρ′)`, and an intersection of
+             `8s₀` such Bohr sets has density `≥ ∏ρ′^{|spec|}`.
+           - Recorded under "further questions" until settled.
          Quantitatively, `s₀ = O(d log(dR))`, and
          `δ` is polynomial in `ε` and `(2R+1)^(−d)`. With
          `R = (ρ^(−1))^O(d)`, this makes `m ≤ s₀/δ = exp(O(d² log 1/ρ))`
