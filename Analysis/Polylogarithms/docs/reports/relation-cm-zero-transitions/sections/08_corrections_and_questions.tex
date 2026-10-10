@@ -1,0 +1,227 @@
+\section{Corrections, conjectures, and further research}
+\label{sec:research-program}
+
+\subsection{Two precise corrections to the pinned text}
+
+\paragraph{A consequence is not an equivalence.}
+In \texttt{05-signed-kernels.tex}, immediately after
+\texttt{signed:eq:rank-conjecture}, the manuscript calls the pair of rank
+formulas equivalent to a statement about the dimension of the
+Gaussian-supported row space. If $V_w$ is the row space, projection onto
+the non-Gaussian columns gives exactly
+\[
+ \dim\bigl(V_w\cap\QQ^{\{g\text{-columns}\}}\bigr)
+ =\rank A_w-\rank A_w^{\neg g}.
+\]
+Thus the two individual ranks imply the stated dimension, while their
+difference alone does not determine either individual rank. Replace
+``Equivalently'' by ``Consequently,'' and replace the following sentence
+about the equivalence by a sentence about this dimension formula.
+Theorem~\ref{newrank:thm:smith} now proves both ranks, so the conjecture can
+also be promoted to a theorem when its proof is integrated. The companion
+patch makes the narrow logical correction without assuming a particular
+chapter-insertion scheme.
+
+\paragraph{Even modified polylogarithms on real arguments.}
+In \texttt{03-algebraic.tex}, equation \texttt{bloch:eq:Pm} defines
+\[
+ P_m(x)=\operatorname{Re}_m\left(
+       \sum_{j=0}^{m-1}\frac{2^jB_j}{j!}\log^j|x|\,\Li_{m-j}(x)
+       \right),\qquad
+ \operatorname{Re}_m=
+ \begin{cases}\Re,&m\text{ odd},\\\Im,&m\text{ even}.
+ \end{cases}
+\]
+The later paragraph on higher golden ladders says that the same
+coordinates turn a real weight-six ladder into a $\zeta(6)$ multiple.
+With this definition, $P_6$ is identically zero on real arguments.
+The text itself correctly states this parity fact a little later. In
+particular, for the golden arguments in $(0,1)$ every summand inside the
+imaginary part is visibly real. A nonzero multiple of $\zeta(6)$ cannot
+be the value of that real-argument modified-polylogarithm combination.
+
+The correction is local: remove the weight-six assertion in these
+coordinates, retain the raw classical-polylogarithm identity at whatever
+status its independent evidence supports, and check odd-weight conversions
+directly from the definition. The supplied replacement text avoids
+asserting unverified conversions at the other higher weights. No claim
+that the raw weight-six ladder is false follows from this observation.
+
+\subsection{Statements that require qualification, not retraction}
+
+The fifth-index theorem does not contradict the baseline theorem, whose
+small-index conclusion is restricted to $n\le4$. It disproves the
+unrestricted extrapolation of that conclusion. Similarly, the increasing
+middle Lerch branch does not contradict a large-derivative asymptotic
+offset formula. It shows that its monotonic direction cannot be imposed
+on every branch at every small derivative order.
+
+The CM product theorem is a norm statement unless a phase is supplied.
+The real-part convention at discriminant $-15$ is mathematically material:
+the factor $7/8$ cannot be omitted. The absolute norm alone does not
+license a raw signed product at arbitrary discriminants or weights.
+
+The weight-five witness proves an obstruction only for the specified
+linear product matrix. No period-independence claim, no impossibility of
+using higher-depth relations, and no negative answer to the $S_4$
+conjecture follows. This scope was already correctly emphasized by the
+baseline; the shorter integral witness makes it easier to check.
+
+\subsection{A concrete next zero-count conjecture}
+
+\begin{conjecture}[Sixth- and seventh-index first derivatives]
+\label{conj:n6n7}
+The function $\gamma_6'$ has exactly four positive zeros and
+$\gamma_7'$ has exactly five positive zeros. In each case every positive
+zero is simple.
+\end{conjecture}
+
+The numerical candidates are
+\begin{align*}
+ n=6:\quad&0.8426787120,\ 1.2904536569,\ 1.7994089556,\ 2.2385946523;\\
+ n=7:\quad&0.7781418150,\ 0.9499243123,\ 1.4420456198,\\
+           &1.9499308927,\ 2.3354109288.
+\end{align*}
+These statements are \emph{conjectures}, not further certified theorems.
+The supplied diagnostic uses 70 decimal digits, an Euler--Maclaurin
+evaluation with $M=24$, $R=16$, and 992 test points at each index: 401
+logarithmic points spanning $10^{-3}$ to $10^{3.1}$ and 591 linear points
+$j/200$, $60\le j\le650$. Root refinement produces the displayed values.
+At first derivative order the spectral summands are negative once
+$a>e^n$, so this upper tail is analytically free of zeros. Nevertheless,
+the finite scan does not certify the unsampled intervals or exclude a
+tangency. A proof should use global saturation at a higher derivative
+order and descend through every critical point, as in
+Theorem~\ref{n5:thm:transition}.
+
+The conjecture is deliberately finite. These two observations do not
+support a simple universal formula for the first-derivative count:
+the oscillation near $a=1$, the wide range of large roots at higher
+derivative orders, and the count plateaus already proved at index five
+make extrapolation hazardous.
+
+\subsection{A focused program for the formal relation system}
+
+\paragraph{Construct certificates without elimination.}
+The proof of Theorem~\ref{newrank:thm:smith} identifies a unimodular
+coordinate system in which the problem breaks into one- and two-variable
+blocks. Turn that proof into an explicit symbolic certificate compiler.
+For a target vector, it should either return an integer row combination
+(or, in even weight, one for twice the target) or return an integral
+annihilating witness. The witness basis is already explicit, so membership
+testing can be performed with only $w-1$ pairings in odd weight. Tracking
+the affine right sides through the same transformations is the remaining
+engineering and symbolic-algebra task.
+
+\paragraph{Identify the missing relation for $S_4$.}
+The six-entry witness pairs to $7$ with the target. Any proposed
+enlargement must include a relation whose coefficient vector does not
+annihilate that witness. This provides an exact preliminary test before
+computing a much larger matrix. Candidates include distribution,
+argument transformations, and elimination through higher depth. The
+research question is not merely whether an enlarged matrix has larger
+rank, but which analytically justified relation kills this particular
+obstruction and with what right side.
+
+\paragraph{Determine the effect of distribution integrally.}
+The $2$-torsion in even weight is a property of the stated product
+presentation. Does adjoining the appropriate distribution rows remove
+some or all of it? What is the Smith form of that enlarged lattice?
+This is a concrete question about an explicitly constructible sequence of
+integer modules; no unproved transcendence assumption is required.
+
+\paragraph{Generalize the involution method to other levels.}
+At level four, conjugation reduces the colors to six and the residual
+action becomes the swap $(u,v)\mapsto(v,u)$. At other small levels,
+determine whether an integral color decomposition produces similarly
+manageable finite-group actions on homogeneous polynomials. Rational
+rank formulas alone would miss torsion introduced by nonunimodular
+changes of basis, so an integral formulation should be maintained from
+the outset.
+
+\subsection{A focused program for CM identities}
+
+\paragraph{Automate the exact arithmetic factor.}
+For fixed even weight, generate $F_w$ in exact rational arithmetic and
+evaluate its resultant with a certified Hilbert class polynomial.
+At weights four and six the arithmetic is concentrated in
+$H_D(0)$ and $H_D(1728)$; in higher weights the zeros of the Eisenstein
+series create additional algebraic factors. A systematic collection of
+these factors would distinguish patterns forced by modular algebra from
+patterns inferred from decimal recognition.
+
+\paragraph{Classify phases and genus refinements.}
+Extend the phase analysis along the unit arc to every even weight,
+including the additional arc zeros of $E_w$. Extend the proved character
+products to nonmaximal orders and combine several independent genus
+characters to recover every genus product. For higher genus rank the
+plus and minus fibers of one character are unions of genera. These are the natural intermediate
+objects between a full class norm and an individual CM evaluation.
+Every claimed formula should specify the reduced representative,
+automorphy factor, and chosen algebraic embedding.
+
+\paragraph{Move beyond full norms.}
+For larger class groups, determine individual algebraic factors relative
+to a fixed CM period. For the genus ratios, determine when the uniform
+degree bound of Theorem~\ref{cmgenus:thm:degree} is attained, and which
+proper subfields occur as the weight changes. A rational class norm does not imply that raw sums of
+positive-weight CM values are rational or Galois-invariant. Replacing
+such raw sums by explicitly normalized modular quantities is the natural
+route to well-posed algebraicity questions.
+
+\subsection{A focused program for zero geometry}
+
+\paragraph{Determine saturation thresholds.}
+Set
+\[
+ K_n^{\mathrm{cl}}=\min\{k\ge1:\gamma_n^{(k)}
+       \text{ has }n\text{ positive simple zeros}\}.
+\]
+The exact values are now $K_n^{\mathrm{cl}}=1$ for $1\le n\le4$ and
+$K_5^{\mathrm{cl}}=3$. The baseline concentration theorem implies that
+the threshold exists for every fixed index. Find a useful effective
+bound in $n$, and then determine whether the sequence of thresholds has
+any monotonicity or regular asymptotic behavior. The proved parity and
+count monotonicity restrict possible answers but do not determine them.
+
+\paragraph{Make the small-parameter theorem effective.}
+Theorem~\ref{thm:small-rho} gives a complete count for sufficiently small
+positive $\rho$, but not an explicit threshold. Its proof suggests a
+constructive route: isolate the algebraic roots of the integer
+polynomial, bound derivatives on disjoint disks, and bound the remaining
+series uniformly. Quantifying the separation from $\log2$ is the
+sensitive step. Transcendence proves nonvanishing, while a useful
+numerical threshold needs an effective separation bound.
+
+\paragraph{Certify the fold coordinates.}
+The existence and nondegeneracy of the index-three fold are proved.
+The diagnostic predicts
+\[
+ a_*\approx1.04975305088025546,\qquad
+ \rho_*\approx0.999990466837738634.
+\]
+Produce a rational interval box for this pair by applying an interval
+Newton method to $(D,\partial_aD)$, with explicit quadrature or
+Euler--Maclaurin remainders in both variables. The determinant of the
+Jacobian is $-\partial_\rho D\,\partial_a^2D>0$ at the fold, so the
+proved nondegeneracy identifies the right certification problem. The
+decimals above are not yet such a box.
+
+\paragraph{Describe the entire deformation, not only its endpoints.}
+For odd $n$ at first derivative order,
+$\partial_\rho(\rho^{-(e^n-a)}D)<0$. Thus each fixed $a$ changes sign
+at most once. Determine the topology of the resulting sign domains:
+which negative intervals are created, which can merge, and which
+bifurcations are possible under the global multiplicity bound. For
+$n=3$, the proved fold controls all parameters after its first appearance
+in $[4/5,3/2]$, while the possible earlier configuration on the right
+remains a separate question.
+
+\paragraph{Treat the simultaneous large-index regime.}
+The baseline concentration expansion fixes $n$ and lets $k$ grow.
+The extreme roots of $Q_n$ change with $n$, and the small-parameter
+Puiseux exponent $1/(n-k)$ exhibits another nonuniform limit. Determine
+which double-scaling regimes preserve the known zero approximations,
+and where the right asymptotic description must change. A satisfactory
+answer would connect the formal spectral polynomials, reciprocal-gamma
+root geometry, and the observed threshold sequence.

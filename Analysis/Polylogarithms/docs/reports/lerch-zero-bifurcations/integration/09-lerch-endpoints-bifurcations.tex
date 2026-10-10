@@ -1,0 +1,182 @@
+% Addition to chapters/09-zero-geometry.tex.
+% Label prefix reserved for this continuation: lerchcont:
+% Requires only the theorem environments and amsmath already in the manuscript.
+% Add the bibliography item in bibliography-item.tex before compiling.
+\section{Lerch endpoint singularities and zero bifurcations}
+\label{lerchcont:section}
+The continuation \cite{lerchcont2026} gives an exact description of the
+Stieltjes endpoint, a low-order obstruction to all-branch monotonicity, and
+the first sharp deficient classical zero count. Its full analytic proofs and
+integer interval certificates accompany the standalone article. No numerical
+root list is used as a substitute for a completeness argument.
+
+Use the notation already established in this chapter:
+\[
+ F_{n,k}^{\rho}(a)=(-1)^{n+k}\mathcal D_{n,k}^{\rho}(a)
+ =n![t^n](1+t)_k\Phi(\rho,k+1+t,a),\qquad (1+t)_k=k!P_k(t).
+\]
+At $\rho=1$, this is $(-1)^{n+k}\gamma_n^{(k)}(a)$.
+
+\subsection{The universal logarithmic block}
+Define new gamma-moment polynomials $R_m$, distinct from $Q_n$, by
+\[
+ \Gamma(1-t)e^{Xt}=\sum_{m\ge0}R_m(X)\frac{t^m}{m!}.
+\]
+For $r\ne k$, put
+\[
+ A_{n,k,r}(a)=n![t^n](1+t)_k\zeta(k+1-r+t,a),\qquad
+ C_{n,k}(a)=n![t^n]\left(P_k(t)\zeta(1+t,a)-\frac1t\right).
+\]
+\begin{theorem}[Exact endpoint decomposition]\label{lerchcont:endpoint}
+For $n\ge0$, $k\ge1$, $a>0$, and $0<\mu<2\pi$,
+\begin{equation}\label{lerchcont:decomposition}
+\begin{aligned}
+ e^{-a\mu}F_{n,k}^{e^{-\mu}}(a)
+ ={}&\sum_{\substack{r\ge0\\r\ne k}}\frac{(-\mu)^r}{r!}A_{n,k,r}(a)\\
+ &+(-1)^k\mu^k\left(C_{n,k}(a)
+                 -\frac{R_{n+1}(\log\mu)}{n+1}\right).
+\end{aligned}
+\end{equation}
+The sum is an analytic power series at $\mu=0$. All nonanalytic terms occur
+in the single displayed $\mu^k$ times logarithmic polynomial.
+\end{theorem}
+\begin{proof}
+Apply the classical Erd\'elyi expansion for
+$e^{-a\mu}\Phi(e^{-\mu},s,a)$, substitute $s=k+1+t$, and multiply by
+$(1+t)_k$. The identity
+\[
+ (1+t)_k\Gamma(-k-t)=(-1)^{k+1}\Gamma(1-t)/t
+\]
+makes its pole cancel the $r=k$ Hurwitz term. Extracting $n![t^n]$ proves
+\eqref{lerchcont:decomposition}. The classical convergent expansion justifies
+coefficient extraction and differentiation on compact positive $a$ intervals.
+\end{proof}
+
+In particular, at $a=1$ this gives finite-part identities for order derivatives
+of $\operatorname{Li}_{k+1+t}(e^{-\mu})$. With $Y=X+\gamma$,
+\[
+ R_3(X)=Y^3+3\zeta(2)Y+2\zeta(3),\qquad
+ C_{2,1}(a)=\gamma_2(a)-2\gamma_1(a).
+\]
+The full coefficient recursion and concrete weight-two and weight-three
+order-derivative limits are given in \cite{lerchcont2026}.
+
+\begin{corollary}[Sharp endpoint smoothness]\label{lerchcont:regularity}
+For fixed $n,k,a$, the function $\rho\mapsto F_{n,k}^{\rho}(a)$ is
+$C^{k-1}$ but not $C^k$ at one. Writing $L=\log(1/\mu)$,
+\[
+ \partial_\rho^k F_{n,k}^{\rho}(a)
+ \sim\frac{(-1)^n k!}{n+1}L^{n+1}.
+\]
+If $\alpha$ is a simple zero of $F_{n,1}^{1}$, its nearby branch satisfies
+\[
+ a'(\rho)\sim
+ \frac{(-1)^{n+1}L^{n+1}}
+ {(n+1)\partial_aF_{n,1}^{1}(\alpha)}.
+\]
+\end{corollary}
+The first conclusion follows by differentiating the exact convergent
+decomposition, and the second by implicit differentiation at a simple zero.
+Thus uniform continuity of the family must not be confused with endpoint
+smoothness of the same order.
+
+\subsection{A monotonicity dichotomy}
+\begin{theorem}[A unique minimum at index two]\label{lerchcont:n2}
+For every $\rho\in[0,1]$, $F_{2,1}^{\rho}$ has exactly two positive zeros,
+both simple. The upper zero is strictly decreasing in $\rho$. The lower zero
+$a_-(\rho)$ has a unique nondegenerate interior minimum, is strictly decreasing
+before it, and strictly increasing afterwards. Moreover,
+\[
+ a_-(0)=1,\qquad
+ a_-'(0)=-\frac{\log2(2-\log2)}8<0,\qquad a_-(1)>1,
+ \qquad a_-'(\rho)\longrightarrow+\infty\quad(\rho\uparrow1).
+\]
+\end{theorem}
+\begin{proof}[Proof mechanism]
+The exact certificate gives $F_{2,1}^{1}(13/10)<0$ and $F_{2,1}^{1}(1)>0$.
+In the convergent series
+\[
+ F_{2,1}^{\rho}(a)=\sum_{m\ge0}\rho^m
+ \frac{\log(a+m)(\log(a+m)-2)}{(a+m)^2},
+\]
+the coefficient signs change once for $1<a<e^2$, and at most twice for
+$0<a<1$. The one-change argument propagates the negative separator to every
+$\rho$. Endpoint signs and the global bound give exactly two simple zeros.
+The two-change bound shows that every strict sublevel set of the lower branch
+is an interval. Analyticity and the endpoint inequalities make its minimum
+unique; the multiplicity version of that bound makes the minimum
+nondegenerate. The endpoint velocity follows from
+Corollary~\ref{lerchcont:regularity}. Full details, including the power-series
+variation proof, are in \cite{lerchcont2026}.
+\end{proof}
+
+\begin{theorem}[All-branch eventual monotonicity]\label{lerchcont:monotonicity}
+Fix $n\ge1$. For all sufficiently large $k$, every ordered zero
+$a_{n,j,k}^{\rho}$ is strictly decreasing throughout $0\le\rho\le1$.
+If $Q_n(x_{n,j})=0$, $c_{n,j}=e^{-x_{n,j}}$, and
+$E_{n,j}=e^{1/c_{n,j}}$, then uniformly in $\rho$,
+\[
+ \partial_\rho a_{n,j,k}^{\rho}
+ =-\frac{E_{n,j}}{(E_{n,j}-\rho)^2}+O_n(k^{-1}).
+\]
+\end{theorem}
+The proof strengthens the existing gamma-concentration expansion to one
+$\rho$ derivative, using
+$\partial_\rho^qW_\rho(x)=q!e^{-qx}/(1-\rho e^{-x})^{q+1}$.
+Its endpoint singularity has only fixed inverse-power growth, which the
+large-shape gamma tails control. An explicit optimal threshold is not supplied.
+Theorem~\ref{lerchcont:n2} shows why this eventual statement cannot be extended
+to every derivative order.
+
+\subsection{Small-parameter unfolding and an interior fold}
+For fixed $n\ge2$ and all sufficiently small \emph{positive} $\rho$,
+$F_{n,1}^{\rho}$ has one simple positive zero if $n$ is odd, and two if $n$
+is even. The zero near $e^n$ persists analytically. When $n$ is even, the
+other zero is
+\[
+ 1-\left(\frac{(\log2)^{n-1}(n-\log2)}{4n}\right)^{1/(n-1)}
+       \rho^{1/(n-1)}+O\bigl(\rho^{2/(n-1)}\bigr).
+\]
+This follows from expanding the elementary zero of multiplicity $n-1$ at
+$a=1$. The endpoint $\rho=0$ itself must retain that multiplicity.
+
+For $n=3$, there is a unique interior threshold $\rho_c$ at which a double
+zero forms in $0<a<3/2$. There are no zeros in that interval for
+$0<\rho<\rho_c$ and two simple zeros for $\rho_c<\rho\le1$. At the fold,
+$F_\rho<0$ and $F_{aa}>0$, and the pair splits as
+\[
+ a_c\mp\sqrt{-2F_\rho/F_{aa}}\,\sqrt{\rho-\rho_c}+O(\rho-\rho_c).
+\]
+At the separate endpoint $\rho=0$, $a=1$ is a double zero.
+Above the interior threshold, the total count is exactly three. Excluding an
+additional outer pair at every intermediate $0<\rho<\rho_c$ remains a
+separate conjecture, not a consequence of the localized fold proof.
+
+\subsection{The exact fifth-index count}
+\begin{theorem}[Sharp classical saturation at index five]\label{lerchcont:n5}
+Every positive zero of $\gamma_5^{(k)}$ is simple, and its positive-zero count is
+\[
+ \#\{a>0:\gamma_5^{(k)}(a)=0\}=
+ \begin{cases}3,&k=1,2,\\5,&k\ge3.\end{cases}
+\]
+\end{theorem}
+\begin{proof}[Certified critical-point descent]
+The verifier in \cite{lerchcont2026} gives five disjoint rational isolating
+intervals for $F_{5,3}^{1}$. The global bound proves completeness and simplicity.
+On those entire intervals, the predecessor $F_{5,2}^{1}$ has respective
+certified signs $+,+,-,+,-$. Since its derivative is $-F_{5,3}^{1}$ and its
+endpoint limits are $+\infty$ and $0^-$, it has exactly three simple zeros.
+On isolating intervals for these three zeros, the next predecessor
+$F_{5,1}^{1}$ has signs $-,+,-$. The same monotonic-interval argument proves
+exactly three simple zeros at order one. Persistence from the saturated third
+order gives five zeros at every higher order.
+
+The calculation uses 35 exact sign enclosures with outward integer rounding,
+rational logarithm bounds, and a proved Euler--Maclaurin remainder. In
+particular, the predecessor signs are certified on whole critical-point
+brackets, not at approximate critical points.
+\end{proof}
+
+The continuation settles the first $n\ge5$ small-order classical case left
+open in the source, while preserving the existing eventual-saturation theorem.
+It leaves the mixed $S_4$ identity and numerical period independence untouched.

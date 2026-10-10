@@ -1,0 +1,136 @@
+\section{Verification, artifacts, and integration procedure}
+\label{verify:sec:reproduction}
+
+The verification has two roles. Exact finite calculations check the
+implementation of the displayed coefficient formulas, relation systems,
+and rational signs. Independent numerical calculations test the analytic
+evaluations and illustrate the geometry. Neither kind of computation
+replaces the proofs for arbitrary indices or conductors.
+
+\subsection{Exact coefficient and sign checks}
+
+\begin{description}[style=nextline,leftmargin=0pt,labelwidth=0pt,labelsep=0pt]
+\item[Gaussian ranks.]
+The program \path{code/full_gaussian_rank.py} constructs the raw
+shuffle and stuffle rows directly, including the boundary difference.
+It independently performs rational elimination in weights $2$ through
+$11$, checks the explicit integer nullvectors in selected weights
+through $63$, and reproduces the source's $92\times23$ matrix at
+weight five. Its receipt contains column order, row labels, the entire
+weight-five matrix, and its kernel basis.
+
+\item[Universal lift.]
+The program \path{code/universal_gaussian_lift.py} generates the
+cyclotomic rows afresh and verifies that the proposed lift annihilates
+every row at levels $3,4,5,6,8,10,12$ in selected weights. It also
+checks the rank differences by independent rational elimination in
+weights $2,3,4$ at levels $3$ through $6$.
+
+\item[Herglotz symbol calculations.]
+The program \path{code/verify_j.py} performs $32{,}764$ exact
+first- and second-difference zero tests at odd conductors through $401$.
+Independent rational elimination checks the two spans, their common
+rank, and the rank formula through conductor $101$. The program also
+recovers the source's complete $J(2/q)$ classification from the general
+criterion, and checks the arithmetic of the displayed infinite families.
+These are integer group-algebra calculations; the logarithmic Gram
+nonvanishing is supplied by the analytic theorem, not by a floating-point
+determinant.
+
+\item[Lerch polynomial identities and endpoint certificates.]
+The program \path{code/verify_lerch_boundary.py} compares two exact
+constructions of $P_{n,k}$ in $152$ cases. It computes $120$ rational
+sign intervals for $\Delta_{n,k}$ through $n=16$ and certifies the
+positive $n=4,k=3$ initial velocity. Eleven endpoint signs are replayed
+using the source's outward-integer Euler--Maclaurin routine. Two signs
+prove the $n=2$ separator and endpoint displacement; nine provide the
+source's $n=3,4$ endpoint counts used to force interior multiple zeros.
+The upstream routine is included verbatim with its original repository
+path and SHA-256 recorded in the provenance data.
+
+\item[Angular coefficients.]
+The program \path{code/derive_angular.py} enumerates all rational
+exponential bases above a requested cutoff, computes their Lagrange
+coefficients exactly, combines collisions, and substitutes the result
+into an independently coded Fourier expansion. The supplied cutoffs
+$2/13$, $4/27$, $1/7$, and $1/10$ give respectively $10$, $11$, $12$,
+and $20$ nonzero combined bases. Every surviving symbolic residual
+vanishes exactly. The ten-term extraction examines $25$ multisets.
+
+\item[Divergence coefficients.]
+The program \path{code/check_angular_divergence.py} computes the
+prime-frequency coefficient polynomials through $s=6$, verifies their
+leading coefficients, and checks six cases against direct trigonometric
+series expansion. Unique factorization and the general leading-term
+argument establish divergence; the finite checks corroborate the
+normalization.
+\end{description}
+
+\subsection{Independent numerical diagnostics}
+
+The Herglotz verification uses $20$ independent integrations at $100$
+decimal digits. For a positive rational $p/q$ it substitutes $t=s^q$,
+so the integrand is
+\[
+q s^{q-1}\frac{\log(1+s^p)}{1+s^q}.
+\]
+It is regular at the lower endpoint and does not reuse the formula
+being tested. The absolute acceptance tolerance is $10^{-85}$; the
+largest observed residual in the supplied run is below $7\times10^{-100}$.
+This is high-precision corroboration, not an interval certificate.
+
+The angular diagnostic evaluates the real Fourier root in $15$ cases,
+with $a=16,32,64,128,256$ and $b=1,2,4$. It uses exact quadrant
+identities rather than subtracting trigonometric arguments close to
+integer multiples of $\pi/2$. An analytic bound controls the omitted
+Fourier tail; numerical rounding is not interval-enclosed. The theorem's
+uniformity over every real $b>0$ follows from its proof, not from this
+finite sample.
+
+The two-zero figure is also numerical. Its data and generating script
+are included, with independent spectral residual checks. The complete
+zero count, nonmonotonicity, and endpoint regularity follow from the
+proved sign and variation arguments independently of the plotted points.
+
+\subsection{Rebuilding the contribution}
+
+The archive has a single root directory. Its main components are
+\path{article/}, \path{code/}, \path{data/}, \path{integration/}, and
+\path{provenance/}. The complete source is
+\path{article/main.tex}; a flattened source is also supplied as
+\path{article/standalone.tex}. Both use the figures in
+\path{article/figures/}. From the archive root:
+\begin{verbatim}
+python code/run_checks.py
+make pdf
+\end{verbatim}
+The runner records package versions, script hashes, return codes, and
+output hashes in \path{data/validation_receipt.json}. The Python
+requirements are listed separately. The PDF build requires a standard
+LaTeX installation with the packages declared in the preamble and
+\texttt{latexmk}; no shell escape or network access is needed.
+The optional figure reconstruction is documented in the README.
+
+The PDF was compiled to a stable set of references and its rendered
+pages were visually inspected. Package-level checks cover archive
+integrity, presence of the stated artifacts, and checksums. These
+checks concern the delivered files; they do not turn the mathematical
+arguments into machine-checked proofs.
+
+\subsection{Recommended integration order}
+
+First apply the small editorial patch, which is independent of the new
+proofs. Next integrate the Gaussian rank section with the universal
+extension and its exact matrix generator. Integrate the Herglotz
+classification before its denominator-rank and analytic corollaries.
+For zero geometry, retain the existing global bound and insert the
+elementary-endpoint, two-zero, and Abel-endpoint results in that order.
+Finally replace the angular expansion's open-status paragraph with
+the complete expansion and divergence theorems together.
+
+The bibliography additions and the incoming-report status updates
+should accompany those insertions. All new labels use the prefixes
+\texttt{fg:}, \texttt{jnew:}, \texttt{lerchboundary:}, \texttt{lerchshape:}, and
+\texttt{angular:}. The repository was not modified by this contribution;
+the patch and fragments are proposed integration artifacts against the
+pinned commit.

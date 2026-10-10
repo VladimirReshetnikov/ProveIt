@@ -1,0 +1,163 @@
+% Optional additional section. Uses G_{n,k} from lerch_boundary_notes.tex.
+
+\section{The logarithmic singularity at the Stieltjes endpoint}
+\label{lerchboundary:sec:abel}
+
+The opposite endpoint $\rho=1$ is continuous for the differentiated
+Lerch family, but it is not infinitely differentiable in its deformation
+parameter.  The following elementary Abel estimate identifies the first
+singular term and transfers it to every simple endpoint zero.  Its
+logarithmic structure is the classical one for power-logarithm
+Dirichlet coefficients; the point here is its precise normalization
+and its consequence for zero branches.
+
+Put $\tau=-\log\rho$ and $L=\log(1/\tau)$, so that
+$\rho\uparrow1$ corresponds to $\tau\downarrow0$.  For
+$0\leq j\leq k-1$ define the absolutely convergent moments
+\begin{equation}\label{lerchboundary:eq:moments}
+ \mu_j(a)=\sum_{m=0}^{\infty}m^j f_{n,k}(a+m),
+ \qquad
+ H(a,\tau)=\sum_{j=0}^{k-1}\frac{(-\tau)^j}{j!}\mu_j(a).
+\end{equation}
+For $j=0$ use $m^0=1$, including at $m=0$.
+
+\begin{theorem}[The first singular Abel coefficient]
+\label{lerchboundary:thm:abel}
+Fix $n\geq1$, $k\geq1$, and a compact interval $I\subset(0,\infty)$.
+Uniformly for $a\in I$, as $\tau\downarrow0$,
+\begin{equation}\label{lerchboundary:eq:abel}
+ G_{n,k}(a,e^{-\tau})=H(a,\tau)
+ +\frac{(-1)^{n+k}}{k!(n+1)}\tau^k L^{n+1}
+ +O_{n,k,I}(\tau^k L^n).
+\end{equation}
+The family has continuous one-sided derivatives in $\tau$ through
+order $k-1$ at zero. Its next derivative satisfies
+\begin{equation}\label{lerchboundary:eq:abel-derivative}
+ \partial_\tau^kG_{n,k}(a,e^{-\tau})
+ =\frac{(-1)^{n+k}}{n+1}L^{n+1}+O_{n,k,I}(L^n).
+\end{equation}
+In particular it has no finite continuous $k$th derivative there.
+The leading singular coefficient is independent of $a$.
+\end{theorem}
+
+\begin{proof}
+Monicity of $P_{n,k}$ and a uniform expansion at large $m$ give
+\begin{equation}\label{lerchboundary:eq:tail-coefficient}
+ f_{n,k}(a+m)
+ =\frac{(-1)^n(\log m)^n}{m^{k+1}}
+ +O_{n,k,I}\left(\frac{(1+\log m)^{n-1}}{m^{k+1}}\right),
+ \qquad m\geq1.
+\end{equation}
+Each $a$-derivative adds a factor $O(m^{-1})$, apart from bounded-degree
+logarithmic factors.  All moments in \eqref{lerchboundary:eq:moments}
+therefore converge normally on positive compact $a$-sets, including
+any fixed number of $a$-derivatives. Differentiation in $\tau$ up to
+order $k-1$ is justified by dominated convergence.
+
+Write
+$R_{k-1}(x)=e^{-x}-\sum_{j=0}^{k-1}(-x)^j/j!$. For $0\leq x\leq1$,
+\[
+ R_{k-1}(x)=\frac{(-1)^k x^k}{k!}+O_k(x^{k+1}),
+\]
+and for $x\geq1$, $|R_{k-1}(x)|\leq C_k x^{k-1}$.
+Subtract $H$ from the defining series for $G$ and split the sum at
+$m=1/\tau$. The leading part of the lower range is
+\[
+ \frac{(-1)^{n+k}\tau^k}{k!}
+ \sum_{1\leq m\leq1/\tau}\frac{(\log m)^n}{m}
+ =\frac{(-1)^{n+k}\tau^k}{k!(n+1)}L^{n+1}+O_{n,k}(\tau^k).
+\]
+The Taylor remainder in that range is
+$O(\tau^{k+1}\sum_{m\leq1/\tau}(1+\log m)^n)
+=O(\tau^k L^n)$.  The lower-order coefficient term in
+\eqref{lerchboundary:eq:tail-coefficient} contributes
+$O(\tau^k\sum_{m\leq1/\tau}(1+\log m)^{n-1}/m)
+=O(\tau^kL^n)$. Finally the upper range is bounded by
+\[
+ C\tau^{k-1}\sum_{m>1/\tau}\frac{(1+\log m)^n}{m^2}
+ =O(\tau^kL^n).
+\]
+These bounds prove \eqref{lerchboundary:eq:abel}, uniformly in $a$.
+
+To avoid differentiating a remainder, compute the next derivative
+directly for $\tau>0$:
+\[
+ \partial_\tau^kG_{n,k}(a,e^{-\tau})
+ =(-1)^k\sum_{m\geq1}m^k e^{-m\tau}f_{n,k}(a+m).
+\]
+Equation~\eqref{lerchboundary:eq:tail-coefficient}, the same cutoff,
+and $|e^{-x}-1|\leq x$ for $0\leq x\leq1$ give
+\[
+ \sum_{m\geq1}\frac{e^{-m\tau}(\log m)^n}{m}
+ =\frac{L^{n+1}}{n+1}+O_n(L^n).
+\]
+The lower logarithmic powers contribute $O(L^n)$.
+This proves \eqref{lerchboundary:eq:abel-derivative} independently
+of differentiation of \eqref{lerchboundary:eq:abel}.
+\end{proof}
+
+\begin{theorem}[Endpoint regularity and singular displacement of simple zeros]
+\label{lerchboundary:thm:abel-root}
+Let $r>0$ be a simple zero of $G_{n,k}(\cdot,1)$, and write
+$q=\partial_aG_{n,k}(r,1)\neq0$.
+There is a unique nearby real zero $a(\tau)$ of
+$G_{n,k}(\cdot,e^{-\tau})$ for all sufficiently small $\tau\geq0$.
+Let $\alpha(\tau)$ be the real analytic zero of $H(\cdot,\tau)$
+through $\alpha(0)=r$. Then
+\begin{equation}\label{lerchboundary:eq:abel-root}
+ a(\tau)=\alpha(\tau)
+ -\frac{(-1)^{n+k}}{k!(n+1)q}\tau^k L^{n+1}
+ +O_{n,k,r}(\tau^kL^n).
+\end{equation}
+The branch is $C^{k-1}$, but not $C^k$, at the endpoint, in either
+$\tau$ or $\rho$. Moreover
+\begin{equation}\label{lerchboundary:eq:abel-root-derivative}
+ \frac{d^k a}{d\tau^k}
+ =-\frac{(-1)^{n+k}}{(n+1)q}L^{n+1}+O_{n,k,r}(L^n).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Uniform convergence of $G$ and $G_a$, together with $q\neq0$, gives
+one and only one zero near $r$, continuously in $\tau\geq0$.
+The ordinary analytic implicit function theorem applies to the finite
+polynomial $H$, since $H_a(r,0)=q$.
+Evaluating \eqref{lerchboundary:eq:abel} at $\alpha(\tau)$ and using a
+uniform lower bound for $|G_a|$ first gives
+$a-\alpha=O(\tau^kL^{n+1})$.  Taylor expansion in $a$, followed by
+$H_a(\alpha(\tau),\tau)=q+O(\tau)$, gives
+\eqref{lerchboundary:eq:abel-root}; the quadratic error in the
+displacement and the $O(\tau)$ change of the denominator are both
+$O(\tau^kL^n)$.
+
+The convergent differentiated series show that $G$ has all mixed
+derivatives of total order at most $k-1$ continuously at the endpoint.
+Implicit differentiation, or the one-sided implicit function theorem,
+therefore gives $a\in C^{k-1}$. Differentiate the implicit identity
+$k$ times for $\tau>0$.  Every mixed derivative involving at least
+one $a$-derivative remains bounded, because that derivative improves
+the spectral tail by one inverse power of $m$. All derivatives of
+$a$ of order below $k$ have finite limits. Thus the only unbounded
+term other than $G_a a^{(k)}$ is the pure $\tau$ derivative in
+\eqref{lerchboundary:eq:abel-derivative}. Solving for $a^{(k)}$ proves
+\eqref{lerchboundary:eq:abel-root-derivative}. In this step replacing
+$G_a(a(\tau),e^{-\tau})$ by $q$ incurs only $O(L^n)$:
+its difference is $O(\tau+|a(\tau)-r|)$, because $G_{a\tau}$ is
+bounded at the endpoint, and
+$|a(\tau)-r|=O(\tau+\tau^kL^{n+1})$.
+The leading coefficient is nonzero, so the $k$th derivative has no
+finite endpoint limit.  Finally $\tau=-\log\rho$ is a smooth local
+change of variable with nonzero derivative at $\rho=1$.
+\end{proof}
+
+For the two branches of Theorem~\ref{lerchboundary:thm:n2global}, this
+gives a particularly visible endpoint effect. If $r_i=a_i(1)$ and
+$q_i=\partial_aG_{2,1}(r_i,1)$, then $q_1<0<q_2$ and
+\[
+ a_i(\rho)=r_i+\frac{\tau}{3q_i}L^3+O(\tau L^2),\qquad
+ \frac{da_i}{d\rho}=-\frac{1}{3q_i}L^3+O(L^2).
+\]
+Thus $a_1'(\rho)\to+\infty$ and $a_2'(\rho)\to-\infty$ as
+$\rho\uparrow1$.  The nonmonotonicity of $a_1$ already follows from
+the elementary endpoint and the rational Stieltjes signs; this Abel
+calculation supplies its quantitative endpoint behavior.

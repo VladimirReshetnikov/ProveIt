@@ -1,0 +1,316 @@
+\section{Small positive Lerch parameters and real-zero bifurcations}
+\label{sec:lerch}
+The uniform eventual-zero theorem in the baseline holds with the Laurent
+index fixed and the derivative order sufficiently large. At a fixed small
+derivative order, the deformation parameter has a substantially different
+effect. A multiple real zero at the elementary endpoint can split into
+nonreal zeros, and real branches that do exist can move in opposite
+directions. We give an exact classification near that endpoint.
+
+\subsection{An elementary polynomial controls the splitting}
+For integers $n\ge1$, $k\ge1$, set
+\begin{equation}\label{eq:lerch-h}
+ h_{n,k}(a)=\frac{d^k}{da^k}\frac{\log^n a}{a},\qquad
+ D_{n,k}^{\rho}(a)=\sum_{m=0}^{\infty}\rho^m h_{n,k}(a+m)
+ \quad(0\le\rho\le1).
+\end{equation}
+At $\rho=1$ this is $\gamma_n^{(k)}(a)$. The series in
+\eqref{eq:lerch-h} converges absolutely even there because $k\ge1$.
+For $\rho<1$ it is the $k$th parameter derivative of
+$(-1)^n\partial_s^n\Phi(\rho,s,a)|_{s=1}$, so it agrees with the
+Lerch family used in the manuscript. The underlying Lerch series and
+Mellin integral are classical \cite{DLMFLerch,Coffey}.
+
+Define integer polynomials $\mathscr R_{n,k}$ by
+\begin{equation}\label{eq:R-recurrence}
+ \mathscr R_{n,0}(x)=x^n,\qquad
+ \mathscr R_{n,k+1}(x)=\mathscr R_{n,k}'(x)-(k+1)\mathscr R_{n,k}(x).
+\end{equation}
+Repeated differentiation gives the exact identity
+\begin{equation}\label{eq:R-identity}
+ h_{n,k}(a)=a^{-k-1}\mathscr R_{n,k}(\log a).
+\end{equation}
+This recurrence is an efficient way to decide the finite sign appearing
+in the theorem below; no evaluation of a special function is needed.
+
+\begin{lemma}\label{lem:elementary-roots}
+If $n>k$, then $h_{n,k}$ has a zero of multiplicity $r=n-k$ at $a=1$
+and exactly $k$ further positive zeros, all simple and greater than $1$.
+If $n\le k$, all its $n$ positive zeros are simple and greater than $1$.
+Moreover $h_{n,k}(2)\ne0$ for all $n,k\ge1$.
+\end{lemma}
+\begin{proof}
+Put
+\[
+ P_{n,k}(x)=\prod_{j=1}^{k}(1+\partial_x/j)x^n.
+\]
+Then $h_{n,k}(a)=(-1)^{n+k}k!a^{-k-1}P_{n,k}(-\log a)$.
+For a real-rooted polynomial $p$, the equation
+$p'/p=-1/c$ shows that $p+cp'$ with $c>0$ has one simple
+root in each gap between the distinct roots, one simple exterior root,
+and only the inherited multiple roots, each with its multiplicity reduced
+by one. Starting from $x^n$, after $k<n$ operations the root $0$ has
+multiplicity $n-k$ and all $k$ other roots are simple. Every coefficient
+of $P_{n,k}$ is nonnegative, and its nonzero coefficients have consecutive
+degrees. Thus none of its nonzero real roots is positive. After the
+$k=n$ step the constant coefficient is positive; all roots are then
+strictly negative and simple, and later steps preserve these properties.
+This proves the zero assertions after $a=e^{-x}$.
+
+The polynomial $\mathscr R_{n,k}$ is nonzero with integer coefficients. If
+$\mathscr R_{n,k}(\log2)$ vanished, $\log2$ would be algebraic, contrary to the
+Hermite--Lindemann theorem \cite{Baker}. Equivalently, the nontrivial
+zeros of $h_{n,k}$ are exponentials of nonzero algebraic numbers and
+cannot equal the algebraic number $2$.
+\end{proof}
+
+\begin{theorem}[Complete small-parameter zero count]
+\label{thm:small-rho}
+Fix $n,k\ge1$. If $k\ge n-1$, then, for every sufficiently small
+$\rho>0$, $D_{n,k}^{\rho}$ has exactly $n$ positive zeros, all simple.
+If $k<n-1$, write $r=n-k\ge2$ and $H=h_{n,k}(2)\ne0$. For every
+sufficiently small $\rho>0$, all positive zeros are simple and their
+number is
+\begin{equation}\label{eq:small-count}
+ N_{n,k}(\rho)=
+ \begin{cases}
+ k+1,&r\text{ odd},\\
+ k+2,&r\text{ even and }H<0,\\
+ k,&r\text{ even and }H>0.
+ \end{cases}
+\end{equation}
+More precisely, when $k<n$ put $r=n-k$. Near $a=1$, all $r$ complex zeros can be written as
+convergent series in $\varepsilon=\rho^{1/r}$, with leading terms
+\begin{equation}\label{eq:puiseux}
+ a_\omega(\rho)=1+\omega\rho^{1/r}+O(\rho^{2/r}),\qquad
+ \omega^r=-\frac{r!}{n!}\,h_{n,k}(2).
+\end{equation}
+Every other zero $\alpha>1$ of $h_{n,k}$ continues analytically as
+\begin{equation}\label{eq:simple-zero-shift}
+ \alpha(\rho)=\alpha-
+ \frac{h_{n,k}(\alpha+1)}{h_{n,k}'(\alpha)}\rho+O(\rho^2).
+\end{equation}
+The phrase ``sufficiently small'' may depend on $n,k$; the theorem does
+not assert a uniform quantitative threshold as those indices grow.
+\end{theorem}
+\begin{proof}
+First suppose $k<n$ and put $r=n-k$. On a complex disk $|a-1|<\delta<1$, all logarithms in the series have
+a consistent principal branch and the series is jointly analytic in
+$(a,\rho)$ for $|\rho|<1$. With $a=1+z$, Taylor expansion gives
+\begin{equation}\label{eq:local-unfolding}
+ D_{n,k}^{\rho}(1+z)
+ =\frac{n!}{r!}z^r+O(z^{r+1})+
+     \rho\{h_{n,k}(2)+O(z)\}+O(\rho^2).
+\end{equation}
+For $r\ge1$, substitute $z=\varepsilon u$, $\rho=\varepsilon^r$
+and divide by $\varepsilon^r$. The result extends analytically to
+$\varepsilon=0$ and equals $(n!/r!)u^r+H$ there. Its $r$ roots are
+simple by $H\ne0$. The analytic implicit-function theorem gives $r$
+distinct analytic functions of $\varepsilon$, and Rouch\'e's theorem
+on a fixed small disk around $a=1$ shows that these account for all
+nearby zeros. For positive real $\varepsilon$, a simple real limiting
+root gives a real branch by conjugation and uniqueness; a nonreal
+limiting root stays nonreal. Counting the real roots of
+$(n!/r!)u^r+H$ gives \eqref{eq:small-count}. When $r=1$ the same
+argument gives a single real simple continuation. When $k\ge n$ there
+is no multiple root to analyze. The other $k$ (or $n$) zeros are handled
+by the ordinary analytic implicit-function theorem, which also gives
+\eqref{eq:simple-zero-shift}.
+
+It remains to exclude positive zeros that escape these neighborhoods.
+This is a global, not just local, step. On $[1,\infty)$, $h_{n,k}$ and
+all its fixed derivatives are bounded. Therefore
+\[
+ \sup_{a>0}\left|\sum_{m\ge1}\rho^m h_{n,k}(a+m)\right|
+ \le M_{n,k}\frac{\rho}{1-\rho}.
+\]
+Near $a=0$, the unperturbed term has fixed sign and unbounded magnitude,
+so a sufficiently small fixed neighborhood of zero remains zero-free.
+Beyond the largest unperturbed zero, every summand has the same strict
+sign, except for the possible vanishing of the first summand at the
+endpoint. Hence no zero can escape to infinity. On the remaining compact
+set away from the chosen zero neighborhoods, $|h_{n,k}|$ has a positive
+minimum and the displayed uniform bound applies. These three regions
+exclude every additional positive zero.
+\end{proof}
+
+\begin{corollary}[First derivatives collapse to one or two zeros]
+\label{cor:first-lerch}
+For each fixed odd $n\ge3$, $D_{n,1}^{\rho}$ has exactly one positive
+zero for every sufficiently small $\rho>0$. For each fixed even $n\ge2$
+it has exactly two. In the even case the smaller zero satisfies
+\begin{equation}\label{eq:even-small-root}
+ a_-(\rho)=1-
+ \left(\frac{(\log2)^{n-1}(n-\log2)}{4n}\right)^{1/(n-1)}
+ \rho^{1/(n-1)}+O(\rho^{2/(n-1)}).
+\end{equation}
+In both cases the large zero tends to $e^n$.
+\end{corollary}
+\begin{proof}
+Here
+$h_{n,1}(a)=a^{-2}\log^{n-1}a\,(n-\log a)$, so
+$h_{n,1}(2)>0$ and $r=n-1$. Apply Theorem~\ref{thm:small-rho}.
+\end{proof}
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{c|rrrrrrr}
+\toprule
+$n\backslash k$&1&2&3&4&5&6&7\\\midrule
+2&2&2&2&2&2&2&2\\
+3&1&3&3&3&3&3&3\\
+4&2&2&4&4&4&4&4\\
+5&1&3&3&5&5&5&5\\
+6&2&2&4&6&6&6&6\\
+7&1&3&3&5&7&7&7\\
+8&2&2&4&4&6&6&8\\
+\bottomrule
+\end{tabular}
+\caption{The number of positive zeros for sufficiently small positive
+$\rho$, with $n,k$ fixed. All signs needed for this table, and the extended
+table through $n=16$, are certified using rational bounds on $\log2$.
+This table concerns the Lerch endpoint regime, not the classical endpoint
+$\rho=1$.}
+\label{tab:small-rho}
+\end{table}
+
+\subsection{Alternating motion of odd-index first-derivative zeros}
+The eventual large-$k$ offset in the baseline decreases with $\rho$ at
+every fixed zero label. That asymptotic fact does not extend to all
+small derivative orders. The following exact inequality resolves the
+issue for odd-index first derivatives.
+
+\begin{theorem}[Direction of motion at every real zero]
+\label{thm:rho-direction}
+Let $n\ge1$ be odd, $0<\rho<1$, and $D(a,\rho)=D_{n,1}^{\rho}(a)$.
+Then every positive zero lies below $e^n$, and
+\begin{equation}\label{eq:rho-negative}
+ \partial_\rho D(a,\rho)<0\quad\text{whenever }D(a,\rho)=0.
+\end{equation}
+For each fixed $a>0$, there is at most one zero in the parameter
+$0<\rho<1$. On any parameter interval with exactly $N$ positive
+simple zeros, numbered increasingly, their motion alternates:
+\begin{equation}\label{eq:alternating-motion}
+ \frac{d a_j}{d\rho}<0\quad(j\text{ odd}),\qquad
+ \frac{d a_j}{d\rho}>0\quad(j\text{ even}).
+\end{equation}
+Here $N$ is necessarily odd.
+\end{theorem}
+\begin{proof}
+Since $n-1$ is even, $h_{n,1}(t)$ is positive for $0<t<e^n$,
+apart from its zero at $t=1$ when $n>1$, and negative for $t>e^n$.
+Thus no zero is possible for $a\ge e^n$ when $\rho>0$.
+Put $\lambda=e^n-a$. For every $a>0$ and $0<\rho<1$, termwise
+differentiation gives the strict inequality
+\begin{equation}\label{eq:weighted-rho}
+ \rho\partial_\rho D(a,\rho)-\lambda D(a,\rho)
+ =\sum_{m\ge0}(m-\lambda)\rho^m h_{n,1}(a+m)<0.
+\end{equation}
+Every summand is nonpositive: the factors $m-\lambda$ and
+$n-\log(a+m)$ have opposite signs. Some summands are strictly
+negative, and the series converges absolutely. At a zero this proves
+\eqref{eq:rho-negative}. More generally,
+$\partial_\rho(\rho^{-\lambda}D)<0$, which proves that there is
+at most one parameter zero for each fixed $a$.
+
+The function is positive near $a=0$ and negative for $a\ge e^n$.
+Simple real zeros therefore cross with $\partial_aD<0$ at the odd
+labels and $\partial_aD>0$ at the even labels. Implicit
+differentiation gives $a_j'=-\partial_\rho D/\partial_aD$ and the
+claimed signs. This argument only asserts differentiability for
+$\rho<1$; it makes no endpoint regularity assumption at $\rho=1$.
+\end{proof}
+
+\begin{corollary}[An increasing middle branch]
+\label{cor:increasing-middle}
+For $n=3$, $k=1$, there is a number $\rho_0<1$ such that for
+$\rho_0<\rho<1$ the three positive simple zeros satisfy
+\[
+ a_1'(\rho)<0,\qquad a_2'(\rho)>0,\qquad a_3'(\rho)<0.
+\]
+Consequently the proposal that all higher branches decrease with $\rho$
+at every derivative order is false. The fixed-index, large-derivative
+asymptotic statement in the baseline remains valid.
+\end{corollary}
+\begin{proof}
+At $\rho=1$, the classical $n=3$ function has exactly three positive
+simple zeros; an analytic proof is given in Section~\ref{sec:classical-zeros}.
+Uniform convergence of \eqref{eq:lerch-h} and its $a$ derivative on
+compact positive intervals as $\rho\uparrow1$ preserves opposite
+endpoint signs in three disjoint isolating intervals. The global bound
+of three zeros counted with multiplicity makes these the only zeros
+and makes them simple. Apply Theorem~\ref{thm:rho-direction}.
+\end{proof}
+
+\subsection{A nondegenerate creation of two real zeros}
+The following endpoint signs, consistent with the baseline small-index certificates, are verified afresh by the rational checker in this package:
+\[
+ D_{3,1}^1(4/5)>0,\qquad D_{3,1}^1(11/10)<0,\qquad
+ D_{3,1}^1(3/2)>0.
+\]
+These three signs are also recomputed in the present package. They
+suffice to make the bifurcation statement fully analytic.
+
+\begin{theorem}[A real saddle-node in the Lerch deformation]
+\label{thm:fold}
+There are $0<\rho_*<1$ and $4/5<a_*<3/2$ such that
+\[
+ D_{3,1}^{\rho_*}(a_*)=\partial_aD_{3,1}^{\rho_*}(a_*)=0,
+ \quad \partial_a^2D_{3,1}^{\rho_*}(a_*)>0,
+ \quad \partial_\rho D_{3,1}^{\rho_*}(a_*)<0.
+\]
+This is the first parameter at which a zero occurs in $[4/5,3/2]$;
+there is only one double zero there at that parameter. For every
+$\rho_*<\rho<1$, the interval contains exactly two simple zeros and
+there is exactly one further positive zero. Near $\rho_*$ the two
+zeros have the expansions
+\begin{equation}\label{eq:fold-expansion}
+ a_\pm(\rho)=a_*\pm
+ \sqrt{-\frac{2\partial_\rho D(a_*,\rho_*)}
+                  {\partial_a^2D(a_*,\rho_*)}}
+       \sqrt{\rho-\rho_*}+O(\rho-\rho_*).
+\end{equation}
+The smaller branch decreases and the middle branch increases throughout
+$(\rho_*,1)$.
+\end{theorem}
+\begin{proof}
+For a fixed $a$, \eqref{eq:weighted-rho} shows that a negative value,
+once reached as $\rho$ increases, remains negative. Since the two
+endpoint values are positive at $\rho=1$, they are positive for every
+$0<\rho<1$. Corollary~\ref{cor:first-lerch} and its proof show that
+$D$ is strictly positive on the whole interval $[4/5,3/2]$ for all
+sufficiently small positive $\rho$. The negative value at $11/10$ for
+$\rho=1$ persists for parameters sufficiently close to one. Compactness
+and continuity therefore give a first parameter $\rho_*\in(0,1)$
+where the minimum on the interval is zero. More explicitly, take
+\[
+ \rho_*=\inf\{0<\rho<1:\min_{a\in[4/5,3/2]}D(a,\rho)\le0\}.
+\]
+The restriction $\rho>0$ excludes the multiple zero of the elementary endpoint itself. The preceding small-parameter positivity keeps this infimum away from zero. That minimum is attained
+at an interior point $a_*$, where $D=\partial_aD=0$.
+
+For every $0<\rho<1$, positivity at $3/2$ and negativity at $e^3$
+force a further sign-changing zero in $(3/2,e^3)$. At $\rho_*$,
+the double-or-higher zero in $[4/5,3/2]$ together with that further
+zero uses at least three units of multiplicity. The global bound of
+three therefore makes the first zero exactly double, makes it unique
+in the first interval, and excludes every additional zero. Since it
+is a local minimum, $\partial_a^2D>0$. Equation~\eqref{eq:rho-negative}
+gives $\partial_\rho D<0$.
+
+For every $\rho>\rho_*$, the value at the fixed point $a_*$ is
+negative. The positive endpoints give two distinct zeros in the
+interval, and the right-hand sign change gives a third. The global
+bound makes all three simple and excludes others. Their directions
+follow from Theorem~\ref{thm:rho-direction}. Finally the analytic
+Taylor expansion at the double zero, or the implicit-function theorem
+applied with $\sqrt{\rho-\rho_*}$ as local parameter, gives
+\eqref{eq:fold-expansion}.
+\end{proof}
+
+The supplied quadrature diagnostic locates the fold and illustrates the
+square-root law. Those decimal estimates are not used to prove the
+bifurcation, its nondegeneracy, or the direction of the middle branch.
+The theorem does not claim that no other changes in the rightmost
+zero configuration occur below $\rho_*$; a complete classification of
+that earlier parameter interval is a separate question.

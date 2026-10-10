@@ -1,0 +1,285 @@
+\section{A complete exponential expansion for the angular zero}
+\label{angular:sec:main}
+
+For integers $a\geq1$ and real $b>0$, write
+\[
+ H_j^{(b)}=\sum_{m=1}^j m^{-b},\qquad
+ F_{a,b}(z)=\Li_{a,b}(z,1)
+   =\sum_{n=2}^{\infty}\frac{H_{n-1}^{(b)}}{n^a}z^n.
+\]
+The signed-density theorem in the pinned manuscript
+\cite[\texttt{signed:thm:unique-zero}]{ProveItSnapshot}
+proves that $\Imag F_{a,b}(e^{i\theta})$ has exactly one zero
+$\theta_{a,b}$ in the open upper semicircle, that it is simple, and
+that $0<\theta_{a,b}<\pi/2$.  Its proof uses a zero-mass density
+with one sign change and a strictly ordered Cauchy kernel.  The source
+also proves a four-term expansion as $a\to\infty$, uniformly for
+$b\geq1$, and explicitly leaves a systematic further expansion open.
+
+We give every coefficient, with a remainder at any prescribed
+exponential scale.  The result is uniform throughout $b>0$.  Only
+the elementary bound
+\begin{equation}\label{angular:eq:hbound}
+ 1\leq H_j^{(b)}\leq j\qquad(j\geq1,\ b>0)
+\end{equation}
+is needed for this stronger uniformity.  The expansion is complete in the asymptotic sense. Theorem
+\ref{angular:thm:divergence} proves that its infinite untruncated sum
+diverges at every fixed $a,b$, even after equal bases are combined.
+
+\subsection{The locally finite scale and its coefficients}
+
+Let $\mathscr M$ be the set of nonzero finitely supported sequences
+$\mathbf m=(m_3,m_4,\ldots)$ of nonnegative integers. Put
+\[
+ |\mathbf m|=\sum_{n\geq3}m_n,
+ \qquad q(\mathbf m)=\prod_{n\geq3}(2/n)^{m_n}.
+\]
+For every $0<\eta<1$, only finitely many $\mathbf m$ have
+$q(\mathbf m)>\eta$. Indeed, each occupied index satisfies
+$n<2/\eta$, and $(2/3)^{|\mathbf m|}\geq q(\mathbf m)>\eta$ bounds
+the total multiplicity. Distinct multisets can give the same rational
+base: those coefficients must be added, not interpreted as distinct
+asymptotic scales.
+
+Define the analytic germ
+\begin{equation}\label{angular:eq:phi}
+ \phi_n(u)=-\frac{u\sin(n\pi/2-nu)}{\sin(2u)}\qquad(n\geq3),
+\end{equation}
+with its removable value at $u=0$. Its Taylor coefficients are rational.
+For $k=|\mathbf m|$ define
+\begin{equation}\label{angular:eq:coefficient}
+ C_{\mathbf m}(b)=
+ \frac{(k-1)!}{\prod_{n\geq3}m_n!}
+ [u^{k-1}]\prod_{n\geq3}\phi_n(u)^{m_n}
+ \prod_{n\geq3}\bigl(H_{n-1}^{(b)}\bigr)^{m_n}.
+\end{equation}
+Thus $C_{\mathbf m}(b)$ is an explicitly given rational polynomial
+in finitely many generalized harmonic numbers. In particular it is
+rational when $b$ is a positive integer.
+
+\begin{theorem}[All exponential orders, uniformly in the second index]
+\label{angular:thm:allorders}
+For every fixed $0<\eta<1$, as the integer $a\to\infty$,
+\begin{equation}\label{angular:eq:allorders}
+ \delta_{a,b}:=\frac\pi2-\theta_{a,b}
+ =\sum_{\substack{\mathbf m\in\mathscr M\\q(\mathbf m)>\eta}}
+ C_{\mathbf m}(b)q(\mathbf m)^a+O_\eta(\eta^a),
+\end{equation}
+uniformly for all real $b>0$. The constant and the threshold for $a$
+depend on $\eta$, but not on $b$. The coefficient vanishes whenever
+the total multiplicity $\sum_{n\text{ odd}}m_n$ is even.
+\end{theorem}
+
+\begin{proof}
+For $a\geq4$, the Fourier series and its first angular derivative
+converge absolutely, uniformly under \eqref{angular:eq:hbound}.
+The equation for the zero, normalized by $2^a$, is
+\begin{equation}\label{angular:eq:fourier}
+ S_{a,b}(\delta)=\sin(2\delta)+
+ \sum_{n\geq3}H_{n-1}^{(b)}(2/n)^a
+      \sin(n\pi/2-n\delta)=0.
+\end{equation}
+The $n=3$ term at $\delta=0$ is
+$-H_2^{(b)}(2/3)^a$; the remaining nonzero terms there have
+size $O((2/5)^a)$ uniformly in $b>0$.  On
+$0\leq\delta\leq2(2/3)^a$, differentiating the series gives
+\[
+ S_{a,b}'(\delta)=2+O((2/3)^a).
+\]
+For example, the differentiated tail is bounded by
+\[
+ \sum_{n\geq3}n(n-1)(2/n)^a
+ \leq (2/3)^a\sum_{n\geq3}n^2(3/n)^4,
+\]
+whose last sum is finite. The same elementary estimate bounds the
+undifferentiated tails. Since $1\leq H_2^{(b)}\leq2$,
+$S_{a,b}(0)<0<S_{a,b}(2(2/3)^a)$ for all sufficiently large $a$.
+Consequently the zero in this interval is unique and
+\begin{equation}\label{angular:eq:smallroot}
+ \delta_{a,b}=O((2/3)^a),\qquad
+ S_{a,b}'(\delta)\geq1
+\end{equation}
+there, uniformly in $b$. The source's global uniqueness identifies
+this local root with $\pi/2-\theta_{a,b}$.
+
+If $\eta\geq2/3$, the sum in \eqref{angular:eq:allorders} is empty
+and \eqref{angular:eq:smallroot} proves the assertion.  Otherwise
+take $N=\lceil2/\eta\rceil-1\geq3$ and keep only the modes
+$3\leq n\leq N$ in \eqref{angular:eq:fourier}. On the real root
+interval the omitted tail is bounded by
+\begin{align*}
+ \sum_{n>N}(n-1)(2/n)^a
+ &\leq (2/(N+1))^a
+       \sum_{n>N}(n-1)((N+1)/n)^4\\
+ &=O_\eta(\eta^a).
+\end{align*}
+The derivative bounds give a unique small root $\delta_N$ of this
+finite equation and
+\begin{equation}\label{angular:eq:finiteerror}
+ \delta_{a,b}-\delta_N=O_\eta(\eta^a).
+\end{equation}
+One can apply the mean value theorem between the two roots; both
+are in a common interval where the derivative of the finite
+equation is bounded below by $1$.
+
+Now regard $z_3,\ldots,z_N$ as independent complex variables. The
+finite equation
+\[
+ \sin(2\delta)+\sum_{n=3}^Nz_n\sin(n\pi/2-n\delta)=0
+\]
+has a holomorphic solution $\delta=\Psi_N(\mathbf z)$ near
+$\mathbf z=0$, by the implicit function theorem with derivative $2$.
+Dividing by $\sin(2\delta)/\delta$ gives
+\[
+ \delta=\sum_{n=3}^Nz_n\phi_n(\delta).
+\]
+Apply the finite-variable Lagrange--B\"urmann formula, or insert an
+auxiliary scalar multiplying all $z_n$ and use the ordinary formula.
+The coefficient of $\prod z_n^{m_n}$ is precisely
+\[
+ \frac{(k-1)!}{\prod m_n!}
+ [u^{k-1}]\prod\phi_n(u)^{m_n}.
+\]
+This is a finite-variable use of classical Lagrange inversion;
+Dirichlet-series inversion has a wider literature, for example
+Kuznetsov~\cite{Kuznetsov2019}, but no infinite-variable convergence
+theorem is being assumed here.
+
+Choose $K$ so that $(2/3)^{K+1}\leq\eta$. Truncate the convergent
+Taylor expansion of $\Psi_N$ at total degree $K$, then substitute
+$z_n=H_{n-1}^{(b)}(2/n)^a$. Its Taylor remainder is
+$O_\eta((2/3)^{(K+1)a})=O_\eta(\eta^a)$, uniformly by the finite
+bounds $H_{n-1}^{(b)}\leq N$. Every discarded monomial whose
+base is at most $\eta$ also has size $O_\eta(\eta^a)$.
+Every multiset with base greater than $\eta$ is supported on
+$\{3,\ldots,N\}$ and has total degree at most $K$. Combining
+this observation with \eqref{angular:eq:finiteerror} proves
+\eqref{angular:eq:allorders}.
+
+Finally, $\phi_n$ is even in $u$ for odd $n$ and odd in $u$ for
+even $n$. Its product can have a coefficient at $u^{k-1}$ only if
+$\sum_{n\text{ even}}m_n\equiv k-1\pmod2$, equivalently if
+$\sum_{n\text{ odd}}m_n$ is odd. This proves the vanishing assertion.
+\end{proof}
+
+\begin{remark}[Why the proof truncates the Fourier modes first]
+The original Fourier series does not converge absolutely in a complex
+neighborhood of a real angular argument: high frequencies grow on
+one side of that neighborhood. An unqualified infinite-dimensional
+analytic implicit-function argument would therefore leave a real gap.
+The finite cutoff followed by a real derivative estimate avoids that
+gap and proves exactly the asymptotic assertion stated above. Theorem~\ref{angular:thm:divergence} proves that the formal sum over
+all multisets, and even the sum grouped by equal bases, diverges.
+\end{remark}
+
+\subsection{Ten terms and the next signed remainder}
+
+Write $h_j=H_j^{(b)}$. Let $T_{10}(a,b)$ be the sum of $c(q)q^a$
+over the ten rows in Table~\ref{angular:tab:ten}. The first four rows
+recover the source's theorem. The next six and the uniformity for
+all $b>0$ are supplied here.
+
+\begin{table}[ht]
+\centering
+\caption{The complete angular expansion above the scale $(2/13)^a$.
+Equal rational bases have already been combined.}
+\label{angular:tab:ten}
+\begin{tabular}{@{}cl@{}}
+\toprule
+$q$& $c(q)$ in $T_{10}=\sum c(q)q^a$\\
+\midrule
+$2/3$ & $h_2/2$\\
+$2/5$ & $-h_4/2$\\
+$1/3$ & $h_2h_3$\\
+$8/27$ & $-23h_2^3/48$\\
+$2/7$ & $h_6/2$\\
+$2/9$ & $-(3h_2h_5+h_8)/2$\\
+$1/5$ & $-h_3h_4$\\
+$2/11$ & $h_{10}/2$\\
+$8/45$ & $39h_2^2h_4/16$\\
+$1/6$ & $2h_2(h_3^2+h_7)$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{corollary}[A sharp signed remainder after ten terms]
+\label{angular:cor:ten}
+Uniformly for $b>0$,
+\begin{equation}\label{angular:eq:eleven}
+ \delta_{a,b}=T_{10}(a,b)-\frac{h_{12}}2(2/13)^a
+       +O((4/27)^a).
+\end{equation}
+In particular,
+\[
+ \frac{\delta_{a,b}-T_{10}(a,b)}{(2/13)^a}
+   =-\frac{h_{12}}2+O((26/27)^a).
+\]
+For all sufficiently large integer $a$, with a threshold independent
+of $b>0$, the ten-term approximation strictly overestimates
+$\delta_{a,b}$ and therefore gives a strict lower approximation to
+$\theta_{a,b}$.
+\end{corollary}
+
+\begin{proof}
+Apply Theorem~\ref{angular:thm:allorders} at the cutoff $4/27$.
+The only additional nonzero base strictly between $4/27$ and
+$2/13$, including $2/13$ itself, is $2/13$ with coefficient
+$-h_{12}/2$.  This finite assertion can be checked by the multiset
+bounds in the proof, or by the exact generator supplied with the
+article.  The source four-term coefficient and all six new displayed
+coefficients are also verified by substitution into the original
+Fourier equation, independently of the Lagrange coefficient formula.
+Finally $h_{12}\geq1$, so the uniform remainder gives the eventual
+strict sign.
+\end{proof}
+
+For illustration, at $a=256$, $b=4$, direct Fourier root evaluation
+gives
+\[
+ \delta_{256,4}\approx4.42523791578002118187450681399\times10^{-46}.
+\]
+The ten-term absolute error is approximately $4.24289006845\times10^{-209}$.
+Its normalized error is $-0.541353663458730256$, approaching the
+predicted limit
+\[
+ -H_{12}^{(4)}/2=-0.541076555073967515\ldots.
+\]
+The convergence of this last ratio is deliberately slow: its proved
+next scale is $(26/27)^a$.  These decimal values are independent
+high-precision diagnostics, not interval certificates or inputs to
+the proof.  The supplied script bounds the omitted Fourier tail and
+labels its floating-point status explicitly.
+
+The next coefficient can also be made explicit. Extraction through the
+cutoff $1/7$ gives
+\begin{align*}
+ \delta_{a,b}={}&T_{10}(a,b)-\frac{h_{12}}2(2/13)^a
+ -\frac{27}{8}h_2^3h_3(4/27)^a+O((1/7)^a),
+\end{align*}
+uniformly for $b>0$. The nonzero contribution at base $4/27$ comes
+from the multiset $(3,3,3,4)$; the other representations vanish by
+parity. The accompanying audit extraction substitutes all twelve
+terms back into the Fourier equation with exactly zero surviving
+residual above the cutoff. This extra negative term explains the
+direction of approach of the normalized numerical error.
+
+\subsection{An exact and finite coefficient algorithm}
+
+To compute the expansion above a prescribed rational cutoff $\eta$,
+enumerate nondecreasing multisets of integers $n\geq3$ while
+$\prod(2/n)>\eta$.  The total multiplicity and the possible indices
+are bounded as in the theorem. Remove multisets containing an even
+number of odd indices. Compute the coefficient in
+\eqref{angular:eq:coefficient} with exact polynomial arithmetic and
+combine equal rational bases. This algorithm terminates for every
+cutoff, uses no integer-relation search, and returns the complete
+coefficient set at that scale.
+
+For the cutoff $2/13$, it examines 25 multisets and produces the ten
+nonzero combined bases in Table~\ref{angular:tab:ten}. The verification
+routine then substitutes the answer into \eqref{angular:eq:fourier}
+in a separately implemented finite algebra of rational exponential
+bases. Every surviving coefficient cancels exactly. Thus the artifact
+checks the coefficient identities, while the theorem proves the
+uniform analytic remainder and the applicability of those identities
+to the actual zero.

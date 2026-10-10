@@ -1,0 +1,87 @@
+\subsection{An exact generator for the modular weight polynomial}
+\label{newmodular:sec:generator}
+
+Normalize the Eisenstein series to have constant coefficient one:
+\[
+ E_w(\tau)=1-\frac{2w}{B_w}\sum_{m\ge1}\sigma_{w-1}(m)q^m,
+ \qquad q=e^{2\pi i\tau},
+\]
+and set
+\[
+ \Delta=q\prod_{m\ge1}(1-q^m)^{24}
+       =\frac{E_4^3-E_6^2}{1728},\qquad j=\frac{E_4^3}{\Delta}.
+\]
+For each even $w\ge4$, let $a\in\{0,1,2\}$, $b\in\{0,1\}$, and
+$c\ge0$ be the unique integers satisfying
+\begin{equation}\label{newmodular:eq:residue}
+ w=4a+6b+12c.
+\end{equation}
+The excluded weight two is precisely the exceptional small weight in
+this residue prescription.
+
+The level-one graded-ring structure \cite{Stein} gives a unique monic polynomial
+$P_w\in\mathbb Q[X]$ of degree $c$ such that
+\begin{equation}\label{newmodular:eq:reduced}
+ E_w=E_4^aE_6^b\Delta^cP_w(j).
+\end{equation}
+This can be computed using only rational arithmetic.  Write
+$P_w(X)=\sum_{r=0}^c p_rX^r$ and expand the basis
+\[
+ E_4^{a+3r}E_6^b\Delta^{c-r},\qquad 0\le r\le c.
+\]
+The basis element indexed by $r$ has first term $q^{c-r}$ with
+coefficient one.  Successive coefficient comparison at
+$q^0,q^1,\ldots,q^c$ therefore determines $p_c,p_{c-1},\ldots,p_0$
+by unit triangular elimination.  Since $E_w$ has constant term one,
+$p_c=1$.
+
+Consequently the polynomial in the CM norm formula is explicitly
+\begin{equation}\label{newmodular:eq:F-factor}
+ \boxed{\displaystyle
+ F_w(X)=X^{4a}(X-1728)^{6b}P_w(X)^{12}.}
+\end{equation}
+Indeed, raising \eqref{newmodular:eq:reduced} to the twelfth power and
+using $E_4^3=j\Delta$, $E_6^2=(j-1728)\Delta$, and
+\eqref{newmodular:eq:residue} gives
+$E_w^{12}/\Delta^w=F_w(j)$.  The degree of $F_w$ is exactly $w$
+and its leading coefficient is one.
+
+\paragraph{Finite certificates.}
+The companion generator computes $\Delta$ independently from its Euler
+product and verifies its normalization against $E_4^3-E_6^2$.
+For every even $w$ from four through twenty-four, it verifies exactly
+the coefficients of $q^0,\ldots,q^w$ in
+\begin{equation}\label{newmodular:eq:cleared}
+ E_w^{12}=\sum_{r=0}^{w}[X^r]F_w(X)\,
+                     E_4^{3r}\Delta^{w-r}.
+\end{equation}
+Both sides are holomorphic modular forms of weight $12w$ on
+$\mathrm{SL}_2(\mathbb Z)$.  The level-one Sturm bound is $w$, so
+these finitely many rational equalities certify the identity.  In
+characteristic zero this bound follows directly from the valence
+formula \cite[Theorem 2.11]{Stein}: a nonzero weight-$12w$ holomorphic modular form has order
+at infinity at most $w$.
+
+The JSON artifact stores the exact rational coefficients, the compact
+factorization, the degree and monicity checks, and the finite
+coefficient certificates.  It contains the full range, including
+\begin{align}
+ F_{14}(X)&=X^8(X-1728)^6,\label{newmodular:eq:F14}\\
+ F_{16}(X)&=X^4\left(X-\frac{3456000}{3617}\right)^{12},
+ \label{newmodular:eq:F16}\\
+ F_{18}(X)&=(X-1728)^6\left(X-\frac{9504000}{43867}\right)^{12},\\
+ F_{20}(X)&=X^8\left(X-\frac{209520000}{174611}\right)^{12},\\
+ F_{22}(X)&=X^4(X-1728)^6
+                  \left(X-\frac{35424000}{77683}\right)^{12},\\
+ F_{24}(X)&=\left(X^2-\frac{340364160000}{236364091}X
+                         +\frac{30710845440000}{236364091}\right)^{12}.
+\end{align}
+For example,
+\[
+ E_{14}=E_4^2E_6,\qquad
+ E_{16}=\frac{1617E_4^4+2000E_4E_6^2}{3617}
+       =E_4\Delta\left(j-\frac{3456000}{3617}\right),
+\]
+which directly explain \eqref{newmodular:eq:F14}--\eqref{newmodular:eq:F16}.
+The generator implements a standard modular-form construction, supplying
+explicit reusable coefficients and proof certificates for the CM recipe.

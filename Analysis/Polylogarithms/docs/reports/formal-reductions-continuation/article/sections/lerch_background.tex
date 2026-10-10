@@ -1,0 +1,153 @@
+% Compact standalone background for the new Lerch zero-geometry sections.
+
+\section{Background: the derivative family and its finite zero bound}
+\label{lerchboundary:sec:background}
+
+We recall the exact framework from the zero-geometry chapter of the
+pinned manuscript \cite{ProveItSnapshot}. The following statements are established inputs to
+this continuation; their short proofs are included to make the new
+endpoint results readable independently of the repository.
+
+The generalized Stieltjes constants use the convention
+\[
+ \zeta(s,a)=\frac1{s-1}
+ +\sum_{n=0}^{\infty}\frac{(-1)^n}{n!}\gamma_n(a)(s-1)^n,
+ \qquad a>0.
+\]
+For $0\leq\rho<1$, define
+\[
+ \ell_n(\rho,a)=\sum_{m=0}^{\infty}
+      \frac{\rho^m\log^n(a+m)}{a+m},
+ \qquad
+ \mathcal D_{n,k}^{\rho}(a)=\partial_a^k\ell_n(\rho,a),
+ \quad k\geq1.
+\]
+At $\rho=1$ set $\mathcal D_{n,k}^{1}(a)=\gamma_n^{(k)}(a)$,
+where this derivative is with respect to $a$. Only the differentiated
+family extends this way: the series defining $\ell_n$ does not
+generally converge at $\rho=1$.
+
+Introduce the reciprocal-gamma Appell polynomials
+\begin{equation}\label{lerchboundary:eq:Q-background}
+ \frac{e^{xt}}{\Gamma(1+t)}
+ =\sum_{n=0}^{\infty}Q_n(x)\frac{t^n}{n!},
+ \qquad Q_n'(x)=nQ_{n-1}(x).
+\end{equation}
+The first three are $Q_0=1$, $Q_1=x+\gamma$, and
+$Q_2=(x+\gamma)^2-\zeta(2)$.
+
+\begin{proposition}[Appell--Laplace representation]
+\label{lerchboundary:prop:laplace-background}
+For $n\geq0$, $k\geq1$, $a>0$, and $0\leq\rho\leq1$,
+\begin{equation}\label{lerchboundary:eq:laplace-background}
+ F_{n,k}^{\rho}(a):=(-1)^{n+k}\mathcal D_{n,k}^{\rho}(a)
+ =\int_0^\infty
+   \frac{x^k e^{-ax}}{1-\rho e^{-x}}Q_n(\log x)\,dx.
+\end{equation}
+The integral, and every fixed number of $a$-derivatives, converge
+locally uniformly for positive $a$, uniformly in $\rho\in[0,1]$.
+In particular $F_{n,k+1}^{\rho}=-\partial_aF_{n,k}^{\rho}$.
+\end{proposition}
+
+\begin{proof}
+For the Lerch series
+$\Phi(\rho,s,a)=\sum_{m\geq0}\rho^m(a+m)^{-s}$,
+parameter differentiation gives
+$\partial_a^k\Phi(\rho,s,a)=(-1)^k(s)_k\Phi(\rho,s+k,a)$.
+At $\rho=1$ the analogous Hurwitz identity follows first from the
+convergent series and then by continuation; the Laurent pole at $s=1$
+is independent of $a$. Put $s=1+t$ and use the Mellin integral to get
+\[
+ k!\prod_{j=1}^k(1+t/j)\Phi(\rho,k+1+t,a)
+ =\frac1{\Gamma(1+t)}\int_0^\infty
+        \frac{x^{k+t}e^{-ax}}{1-\rho e^{-x}}\,dx.
+\]
+Here $\Phi(1,s,a)$ means $\zeta(s,a)$ in its convergent half-plane.
+Extracting the coefficient of $t^n$ proves the formula. Near zero,
+$(1-\rho e^{-x})^{-1}\leq(1-e^{-x})^{-1}=O(x^{-1})$,
+so the integrand is bounded by a constant times
+$x^{k-1}(1+|\log x|^n)$. At infinity, $a$ bounded away from zero
+gives exponential decay. These estimates justify the extraction,
+all stated $a$-derivatives, and continuity at $\rho=1$.
+\end{proof}
+
+\begin{lemma}[Strict real-rootedness of the Appell polynomials]
+\label{lerchboundary:lem:Q-roots-background}
+For every $n\geq1$, $Q_n$ has $n$ distinct real roots.
+\end{lemma}
+
+\begin{proof}
+The Weierstrass product \cite{DLMFGamma}
+\[
+ \frac1{\Gamma(1+t)}
+ =e^{\gamma t}\prod_{m=1}^{\infty}(1+t/m)e^{-t/m}
+\]
+converges locally uniformly. At any finite stage, coefficient
+extraction in \eqref{lerchboundary:eq:Q-background} amounts to real
+translations and operators $1+\partial_x/m$ applied to $x^n$.
+These operators preserve real-rootedness: away from roots of $p$,
+new zeros of $p+cp'$ solve $p'/p=-1/c$, whose left side is strictly
+decreasing between consecutive poles. Every new zero is simple;
+an inherited multiple zero loses one in multiplicity.
+Coefficient convergence and closure of monic real-rooted polynomials
+give real-rootedness in the infinite-product limit.
+
+To prove simplicity, first remove the first $n-1$ linear factors and
+their exponential translation factors from the product. The Appell
+polynomial for the remaining tail is still real-rooted by the same
+argument. Restore the removed factors. Translations commute with
+the differential operators and preserve multiplicity, while the
+$n-1$ operators each lower inherited multiplicities and create only
+simple new zeros. Thus every final root is simple.
+\end{proof}
+
+\begin{proposition}[Global upper bound and persistence]
+\label{lerchboundary:prop:bound-background}
+For every $n\geq0$, $k\geq1$, and $\rho\in[0,1]$,
+$\mathcal D_{n,k}^{\rho}$ has at most $n$ positive zeros counted
+with multiplicity. Once it has $n$ distinct positive zeros at an
+order $k$, it has exactly $n$ simple positive zeros at every higher
+order. With the zeros numbered increasingly,
+\[
+ a_{j,k}<a_{j,k+1}<a_{j+1,k}\quad(1\leq j<n),
+ \qquad a_{n,k}<a_{n,k+1}.
+\]
+\end{proposition}
+
+\begin{proof}
+We use the elementary variation bound for Laplace transforms.
+If an integrable signed kernel has $N$ sign changes, multiplication
+by $x_0-x$ at a sign-change location removes one sign change.
+On its transform $G(a)$ this operation acts as
+\[
+ (\partial_a+x_0)G(a)
+ =e^{-x_0a}\frac{d}{da}\bigl(e^{x_0a}G(a)\bigr).
+\]
+For $N=0$ the transform has fixed strict sign. Induction, together
+with Rolle's theorem counted with multiplicity, proves the bound
+of $N$ zeros for general $N$; it also proves nonvanishing of the
+transform. The same induction applies to every finite collection
+of zeros, so an infinite zero set cannot evade the bound.
+In \eqref{lerchboundary:eq:laplace-background}, the positive
+weight leaves exactly the $n$ sign changes of $Q_n(\log x)$.
+The domination already proved justifies the polynomial moments
+used in the variation argument.
+
+Suppose now that $F_{n,k}^{\rho}$ has $n$ distinct zeros. They are
+simple by the upper bound. Rolle's theorem gives a derivative zero
+between successive zeros. There is also a derivative zero after
+the last one: the function has a constant nonzero sign there and
+tends to zero at infinity, so it cannot depart from zero and then
+return toward zero without a stationary point. The identity
+$F_{n,k+1}^{\rho}=-\partial_aF_{n,k}^{\rho}$ supplies at least $n$
+distinct zeros at the next order. The upper bound supplies exact
+completeness and simplicity, and excludes any extra zero or
+coincidence with an old simple zero. Iterate this argument.
+The limit at infinity follows by dominated convergence in the
+Laplace representation, using any fixed positive reference $a$.
+\end{proof}
+
+These are the manuscript's existing positivity and variation arguments.
+The new theorems below use their global multiplicity bound to turn
+local perturbation information and finitely certified signs into
+complete zero classifications.

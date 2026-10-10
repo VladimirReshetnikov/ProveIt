@@ -1,0 +1,711 @@
+{
+  "status": "pass",
+  "started_utc": "2026-10-10T01:33:20.852380+00:00",
+  "python_version": "3.12.14",
+  "package_versions": {
+    "sympy": "1.14.0",
+    "mpmath": "1.3.0",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0"
+  },
+  "certificates_only": false,
+  "numerical_diagnostics_requested": false,
+  "reference_data_unchanged": true,
+  "reference_sha256": {
+    "s2_exact_certificate.json": "619bdb0cbed945bda74472d60fedce45a78c1ab309637261a6abeb31ebc63436",
+    "s4_exact_certificate.json": "738b3f1b63aba0ef3392c002abbed3e62a75a43e0a55635664ab928962c13085",
+    "zero_coefficients.json": "f10fde3d2c13973964e33ae1f9b8eba749de172f36be3193402b43cd3b710cc0",
+    "zero_brackets.json": "1dda4a973ba04be261a2f1c120e7540c443e90e5bf1506cfd8bb8bc6915b4666",
+    "rank_parametrization_receipt.json": "4df7b158c28960405831cef40f5eca497e4b31330b815de7cb85f2a2b3942538",
+    "normal_form_receipt.json": "6769e8ed45d43902194ed2f6931f9958135f9cd94d93b5266aaad3f3618b10c8",
+    "general_level_rank_receipt.json": "1059bef9046e4f9bad5d3b26d2bf735e6c57576879326a7332d8b330405a996d",
+    "universal_euler_receipt.json": "419a6f35b0732f9a017e6724924d47f445f8806f07eb5a86290aaf9a5b2d5a93",
+    "diagnostics.json": "ed65ca764afda532b899336bd27c11b062df9fe993182538c856370e5a15db85"
+  },
+  "code_sha256": {
+    "all_order_zeros.py": "4e8bb730090871f6b1cf43cbf4ed8b9ad2c57d5189f03d7865e4983212c2374e",
+    "certify_zeros.py": "22fdf23529c74f218641753c4694270da43bb5dd78ac39d4a379762b049fd3a2",
+    "check_general_level.py": "790ffd01a3d43b1a0712b3dbbae84e726e67176c4e3d79ac2ab2eb2ee34b6984",
+    "diagnostics.py": "21c4fba9789627cb8e6bfbfd66f40d28f4d7f293cb874d27f8923582d9d64de9",
+    "independent_s4_replay.py": "ffce526c0e737e56e200cc690717baaca0f85bd7fed3cfc24e24a07f5806c0a3",
+    "kernel_normal_form.py": "73c5c391dff317c10a767f288d8e64796a7bdcbbc9a9f30ca3709e432864a603",
+    "octet.py": "f7804dfcd2247edbc7a5ef8322d24cf8cf20ece2ec8b5b33436f58d68d312d5f",
+    "package_io.py": "37836c72e701e37e628d32227b52e388efcccd7535880b3acb7d012c90a3d1db",
+    "prove_s2.py": "13c406c33975136fe9f68b80113d07a56df9cd5fb43365e169eca64dd364ee99",
+    "run_verification.py": "1604cbfe0d96dee3d79bcc45b174bbe79fc495b19b9204d90052b87e2a81d0db",
+    "universal_euler.py": "7234f3c8539761d15cce286933f50ea072b3e6dda4894cbf8c5a1235cc9185be",
+    "verify_normal_form.py": "b986b0145379d52c795710be9d0b4e89f6588a616d08f9f519b93f2787ee93ea",
+    "verify_rank_parametrization.py": "8367c425c8f89bed4bb9c86c60292f427b8672d950edce3dd3992bc78ddf4c92",
+    "verify_s4_certificate.py": "883841abb2d5f8107b94cc529984f9be107c662cd18b28921b54b3f30f6dfe49",
+    "upstream/full_ds.py": "c800e2c354b130e6ff6db1d5728ba0fba313ffa571d1e69848982b3224d2a9f7",
+    "upstream/gaussian.py": "d35247d63b24c922d3195325091eeb2424318d0523f8465b2e0fc47302cace4c"
+  },
+  "checks": [
+    {
+      "name": "S4 exact word certificate",
+      "kind": "exact",
+      "status": "pass",
+      "elapsed_seconds": 0.100105,
+      "result": {
+        "ds": 854,
+        "octa": 15
+      }
+    },
+    {
+      "name": "S2 exact word certificate",
+      "kind": "exact",
+      "status": "pass",
+      "elapsed_seconds": 0.002039,
+      "result": {
+        "weight": 3,
+        "rows": 25,
+        "exact_target_verified": true
+      }
+    },
+    {
+      "name": "Independent S2/S4 word replay",
+      "kind": "exact",
+      "status": "pass",
+      "elapsed_seconds": 0.092621,
+      "result": [
+        {
+          "pass": true,
+          "independent_generator_replay": true,
+          "weight": 3,
+          "relations": {
+            "ds": 23,
+            "octa": 2
+          },
+          "target_support": 9,
+          "arithmetic": "exact Python integers and fractions"
+        },
+        {
+          "pass": true,
+          "independent_generator_replay": true,
+          "weight": 5,
+          "relations": {
+            "ds": 854,
+            "octa": 15
+          },
+          "target_support": 30,
+          "arithmetic": "exact Python integers and fractions"
+        }
+      ]
+    },
+    {
+      "name": "All-order zero coefficient table and finite substitution",
+      "kind": "exact",
+      "status": "pass",
+      "elapsed_seconds": 0.006837,
+      "result": {
+        "coefficient_table_matched": true,
+        "cutoff_exclusive": "9",
+        "scale_groups": 17,
+        "exact_checks": [
+          {
+            "cutoff": "4",
+            "nonzero_coefficients": 5,
+            "residual_coordinates_checked": 5,
+            "all_residuals_exactly_zero": true
+          },
+          {
+            "cutoff": "8",
+            "nonzero_coefficients": 20,
+            "residual_coordinates_checked": 20,
+            "all_residuals_exactly_zero": true
+          },
+          {
+            "cutoff": "9",
+            "nonzero_coefficients": 21,
+            "residual_coordinates_checked": 21,
+            "all_residuals_exactly_zero": true
+          }
+        ],
+        "scope": "finite exact coefficients and substitution; analytic remainder is proved in the article"
+      }
+    },
+    {
+      "name": "Rational angular-zero endpoint certificates",
+      "kind": "exact",
+      "status": "pass",
+      "elapsed_seconds": 0.74389,
+      "result": {
+        "arithmetic": "Python fractions.Fraction only",
+        "certified_brackets": [
+          {
+            "a": 8,
+            "b": 1,
+            "terms": 128,
+            "taylor_degree": 60,
+            "delta_lower": "289281857/10000000000",
+            "delta_upper": "144640931/5000000000",
+            "left_upper_strictly_negative": true,
+            "right_lower_strictly_positive": true,
+            "stored_fourier_tail_matched": true
+          },
+          {
+            "a": 12,
+            "b": 1,
+            "terms": 80,
+            "taylor_degree": 60,
+            "delta_lower": "57677394350927/10000000000000000",
+            "delta_upper": "14419348587733/2500000000000000",
+            "left_upper_strictly_negative": true,
+            "right_lower_strictly_positive": true,
+            "stored_fourier_tail_matched": true
+          },
+          {
+            "a": 20,
+            "b": 1,
+            "terms": 48,
+            "taylor_degree": 60,
+            "delta_lower": "225535801845172805243/1000000000000000000000000",
+            "delta_upper": "1761998451915412541/7812500000000000000000",
+            "left_upper_strictly_negative": true,
+            "right_lower_strictly_positive": true,
+            "stored_fourier_tail_matched": true
+          },
+          {
+            "a": 40,
+            "b": 1,
+            "terms": 32,
+            "taylor_degree": 60,
+            "delta_lower": "169570737507300371487754896694561297/2500000000000000000000000000000000000000000",
+            "delta_upper": "678282950029201485951019586778245193/10000000000000000000000000000000000000000000",
+            "left_upper_strictly_negative": true,
+            "right_lower_strictly_positive": true,
+            "stored_fourier_tail_matched": true
+          },
+          {
+            "a": 12,
+            "b": 2,
+            "terms": 80,
+            "taylor_degree": 60,
+            "delta_lower": "12020233762219/2500000000000000",
+            "delta_upper": "48080935048881/10000000000000000",
+            "left_upper_strictly_negative": true,
+            "right_lower_strictly_positive": true,
+            "stored_fourier_tail_matched": true
+          },
+          {
+            "a": 20,
+            "b": 4,
+            "terms": 48,
+            "taylor_degree": 60,
+            "delta_lower": "79878244413969086887/500000000000000000000000",
+            "delta_upper": "159756488827938173779/1000000000000000000000000",
+            "left_upper_strictly_negative": true,
+            "right_lower_strictly_positive": true,
+            "stored_fourier_tail_matched": true
+          }
+        ],
+        "scope": "exact endpoint signs and tails; uniqueness is proved in the article"
+      }
+    },
+    {
+      "name": "Universal Euler interval self-test",
+      "kind": "exact",
+      "status": "pass",
+      "elapsed_seconds": 0.010271,
+      "result": {
+        "status": "PASS",
+        "cases": 6,
+        "independent_g11_containment_checks": 3,
+        "difference_sign_checks": 146,
+        "receipt_match": true,
+        "receipt_modified": false
+      }
+    },
+    {
+      "name": "Level-four kernel parametrization and ranks",
+      "kind": "exact",
+      "status": "pass",
+      "elapsed_seconds": 2.086359,
+      "result": [
+        {
+          "weight": 3,
+          "rows": 44,
+          "columns": 11,
+          "rank": 9,
+          "rank_without_g": 8,
+          "kernel_basis_rank": 2,
+          "kernel_descriptors": [
+            [
+              "G",
+              1
+            ],
+            [
+              "D",
+              0
+            ]
+          ],
+          "verified_matrix_times_basis_zero": true
+        },
+        {
+          "weight": 5,
+          "rows": 92,
+          "columns": 23,
+          "rank": 19,
+          "rank_without_g": 17,
+          "kernel_basis_rank": 4,
+          "kernel_descriptors": [
+            [
+              "G",
+              1
+            ],
+            [
+              "G",
+              3
+            ],
+            [
+              "D",
+              0
+            ],
+            [
+              "D",
+              2
+            ]
+          ],
+          "verified_matrix_times_basis_zero": true
+        },
+        {
+          "weight": 7,
+          "rows": 140,
+          "columns": 35,
+          "rank": 29,
+          "rank_without_g": 26,
+          "kernel_basis_rank": 6,
+          "kernel_descriptors": [
+            [
+              "G",
+              1
+            ],
+            [
+              "G",
+              3
+            ],
+            [
+              "G",
+              5
+            ],
+            [
+              "D",
+              0
+            ],
+            [
+              "D",
+              2
+            ],
+            [
+              "D",
+              4
+            ]
+          ],
+          "verified_matrix_times_basis_zero": true
+        },
+        {
+          "weight": 9,
+          "rows": 188,
+          "columns": 47,
+          "rank": 39,
+          "rank_without_g": 35,
+          "kernel_basis_rank": 8,
+          "kernel_descriptors": [
+            [
+              "G",
+              1
+            ],
+            [
+              "G",
+              3
+            ],
+            [
+              "G",
+              5
+            ],
+            [
+              "G",
+              7
+            ],
+            [
+              "D",
+              0
+            ],
+            [
+              "D",
+              2
+            ],
+            [
+              "D",
+              4
+            ],
+            [
+              "D",
+              6
+            ]
+          ],
+          "verified_matrix_times_basis_zero": true
+        },
+        {
+          "weight": 11,
+          "rows": 236,
+          "columns": 59,
+          "rank": 49,
+          "rank_without_g": 44,
+          "kernel_basis_rank": 10,
+          "kernel_descriptors": [
+            [
+              "G",
+              1
+            ],
+            [
+              "G",
+              3
+            ],
+            [
+              "G",
+              5
+            ],
+            [
+              "G",
+              7
+            ],
+            [
+              "G",
+              9
+            ],
+            [
+              "D",
+              0
+            ],
+            [
+              "D",
+              2
+            ],
+            [
+              "D",
+              4
+            ],
+            [
+              "D",
+              6
+            ],
+            [
+              "D",
+              8
+            ]
+          ],
+          "verified_matrix_times_basis_zero": true
+        },
+        {
+          "weight": 13,
+          "rows": 284,
+          "columns": 71,
+          "rank": 59,
+          "rank_without_g": 53,
+          "kernel_basis_rank": 12,
+          "kernel_descriptors": [
+            [
+              "G",
+              1
+            ],
+            [
+              "G",
+              3
+            ],
+            [
+              "G",
+              5
+            ],
+            [
+              "G",
+              7
+            ],
+            [
+              "G",
+              9
+            ],
+            [
+              "G",
+              11
+            ],
+            [
+              "D",
+              0
+            ],
+            [
+              "D",
+              2
+            ],
+            [
+              "D",
+              4
+            ],
+            [
+              "D",
+              6
+            ],
+            [
+              "D",
+              8
+            ],
+            [
+              "D",
+              10
+            ]
+          ],
+          "verified_matrix_times_basis_zero": true
+        }
+      ]
+    },
+    {
+      "name": "Level-four normal forms and even-weight ranks",
+      "kind": "exact",
+      "status": "pass",
+      "elapsed_seconds": 2.597029,
+      "result": [
+        {
+          "weight": 3,
+          "original_rows_checked": 44,
+          "coordinates": 11,
+          "deterministic_random_targets": 10,
+          "pass": true
+        },
+        {
+          "weight": 5,
+          "original_rows_checked": 92,
+          "coordinates": 23,
+          "deterministic_random_targets": 10,
+          "pass": true
+        },
+        {
+          "weight": 7,
+          "original_rows_checked": 140,
+          "coordinates": 35,
+          "deterministic_random_targets": 10,
+          "pass": true
+        },
+        {
+          "weight": 9,
+          "original_rows_checked": 188,
+          "coordinates": 47,
+          "deterministic_random_targets": 10,
+          "pass": true
+        },
+        {
+          "weight": 11,
+          "original_rows_checked": 236,
+          "coordinates": 59,
+          "deterministic_random_targets": 10,
+          "pass": true
+        },
+        {
+          "weight": 13,
+          "original_rows_checked": 284,
+          "coordinates": 71,
+          "deterministic_random_targets": 10,
+          "pass": true
+        },
+        {
+          "weight": 15,
+          "original_rows_checked": 332,
+          "coordinates": 83,
+          "deterministic_random_targets": 10,
+          "pass": true
+        },
+        {
+          "weight": 2,
+          "full_column_rank": 5,
+          "full_column_rank_without_g": 4,
+          "pass": true
+        },
+        {
+          "weight": 4,
+          "full_column_rank": 17,
+          "full_column_rank_without_g": 14,
+          "pass": true
+        },
+        {
+          "weight": 6,
+          "full_column_rank": 29,
+          "full_column_rank_without_g": 24,
+          "pass": true
+        },
+        {
+          "weight": 8,
+          "full_column_rank": 41,
+          "full_column_rank_without_g": 34,
+          "pass": true
+        },
+        {
+          "weight": 10,
+          "full_column_rank": 53,
+          "full_column_rank_without_g": 44,
+          "pass": true
+        },
+        {
+          "weight": 12,
+          "full_column_rank": 65,
+          "full_column_rank_without_g": 54,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "name": "General-level rank checks",
+      "kind": "exact",
+      "status": "pass",
+      "elapsed_seconds": 4.023553,
+      "result": [
+        {
+          "level": 3,
+          "weight": 3,
+          "columns": 7,
+          "exact_rank": 6,
+          "nullity": 1
+        },
+        {
+          "level": 3,
+          "weight": 4,
+          "columns": 11,
+          "exact_rank": 11,
+          "nullity": 0
+        },
+        {
+          "level": 3,
+          "weight": 5,
+          "columns": 15,
+          "exact_rank": 12,
+          "nullity": 3
+        },
+        {
+          "level": 4,
+          "weight": 3,
+          "columns": 11,
+          "exact_rank": 9,
+          "nullity": 2
+        },
+        {
+          "level": 4,
+          "weight": 4,
+          "columns": 17,
+          "exact_rank": 17,
+          "nullity": 0
+        },
+        {
+          "level": 4,
+          "weight": 5,
+          "columns": 23,
+          "exact_rank": 19,
+          "nullity": 4
+        },
+        {
+          "level": 5,
+          "weight": 3,
+          "columns": 22,
+          "exact_rank": 18,
+          "nullity": 4
+        },
+        {
+          "level": 5,
+          "weight": 4,
+          "columns": 34,
+          "exact_rank": 34,
+          "nullity": 0
+        },
+        {
+          "level": 5,
+          "weight": 5,
+          "columns": 46,
+          "exact_rank": 38,
+          "nullity": 8
+        },
+        {
+          "level": 6,
+          "weight": 3,
+          "columns": 30,
+          "exact_rank": 25,
+          "nullity": 5
+        },
+        {
+          "level": 6,
+          "weight": 4,
+          "columns": 46,
+          "exact_rank": 46,
+          "nullity": 0
+        },
+        {
+          "level": 6,
+          "weight": 5,
+          "columns": 62,
+          "exact_rank": 51,
+          "nullity": 11
+        },
+        {
+          "level": 7,
+          "weight": 3,
+          "columns": 45,
+          "exact_rank": 37,
+          "nullity": 8
+        },
+        {
+          "level": 7,
+          "weight": 4,
+          "columns": 69,
+          "exact_rank": 69,
+          "nullity": 0
+        },
+        {
+          "level": 7,
+          "weight": 5,
+          "columns": 93,
+          "exact_rank": 77,
+          "nullity": 16
+        },
+        {
+          "level": 8,
+          "weight": 3,
+          "columns": 57,
+          "exact_rank": 47,
+          "nullity": 10
+        },
+        {
+          "level": 8,
+          "weight": 4,
+          "columns": 87,
+          "exact_rank": 87,
+          "nullity": 0
+        },
+        {
+          "level": 8,
+          "weight": 5,
+          "columns": 117,
+          "exact_rank": 97,
+          "nullity": 20
+        },
+        {
+          "level": 9,
+          "weight": 3,
+          "columns": 76,
+          "exact_rank": 63,
+          "nullity": 13
+        },
+        {
+          "level": 9,
+          "weight": 4,
+          "columns": 116,
+          "exact_rank": 116,
+          "nullity": 0
+        },
+        {
+          "level": 9,
+          "weight": 5,
+          "columns": 156,
+          "exact_rank": 129,
+          "nullity": 27
+        }
+      ]
+    }
+  ],
+  "scope": "Finite exact certificates and replay checks. General mathematical theorems and remainder estimates are proved in the accompanying article. Numerical diagnostics, when requested, are not proofs."
+}

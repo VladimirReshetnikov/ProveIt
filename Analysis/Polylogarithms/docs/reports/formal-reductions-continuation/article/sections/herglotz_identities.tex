@@ -1,0 +1,248 @@
+\section{Explicit logarithmic evaluations and a rational dilogarithm value}
+\label{jnew:sec:analytic}
+
+The formal classification is complemented by full analytic evaluations.
+These proofs use the positive real domain throughout, so their
+logarithmic correction terms and multiples of $\pi^2$ are fixed exactly.
+
+Define, as in Radchenko--Zagier~\cite{RadchenkoZagier},
+\[
+ \mathcal F(x)=F(x)-F(1)
+  +\frac{\pi^2}{12}(x-2+x^{-1})-\frac14\log^2x,
+ \qquad
+ \mathcal J(x)=J(x)-\frac12\log^22
+  +\frac{\pi^2}{24}(x-x^{-1}).
+\]
+Let $L(z)=\operatorname{Li}_2(z)+\tfrac12\log z\log(1-z)$ for
+$0<z<1$, with the continuous endpoint values. The following are
+established identities from Radchenko--Zagier,
+equations (15) and (22a)~\cite{RadchenkoZagier}:
+\begin{align}
+ \mathcal F(x)-\mathcal F(x+1)-\mathcal F\left(\frac{x}{x+1}\right)
+ &=L(1/2)-L\left(\frac{x}{x+1}\right),
+ \label{jnew:eq:RZ-three}\\
+ \mathcal F(x)+\mathcal F(1/x)&=0,
+ \label{jnew:eq:RZ-recip}\\
+ \mathcal F(2x)+\mathcal F(x/2)
+ +\mathcal F\left(\frac{x+1}{2}\right)
+ +\mathcal F\left(\frac{2x}{x+1}\right)-3\mathcal F(x)
+ &=L\left(\frac{x}{x+1}\right)-L(1/2)
+   +\tfrac12\log2\log x.
+ \label{jnew:eq:RZ-Hecke2}
+\end{align}
+We use them as established analytic inputs, not as new results.
+The Rogers five-term relation on $(0,1)^2$ is
+\begin{equation}\label{jnew:eq:Rogers}
+ L(u)+L(v)=L(uv)+L\left(\frac{u(1-v)}{1-uv}\right)
+                    +L\left(\frac{v(1-u)}{1-uv}\right).
+\end{equation}
+Unlike its continuation to arbitrary real arguments, this displayed
+identity holds as an equality in $\mathbb R$, with no unspecified
+multiple of $\pi^2$.
+
+The next lemma is a useful reformulation of known functional equations:
+it also follows from Choie--Kumar's Theorem~3.2(1), equation (3.3),
+after reciprocity and the three-term equation for
+$\mathcal F$~\cite{ChoieKumar2023}. We give a direct positive-real
+proof to fix every correction term. We do not claim it as a new
+general functional equation. The explicit rational specializations
+below are proposed additions to the manuscript; no exhaustive claim
+of historical priority is made for those evaluations.
+
+\begin{lemma}[A finite difference at adjacent positive arguments]
+\label{jnew:lem:analytic-difference}
+For every real $x>0$,
+\begin{align}
+ \mathcal J\left(\frac{x}{x+1}\right)
+ ={}&\mathcal F(x)-\mathcal F(x+1)-\mathcal F(2x)
+       +\mathcal F(2x+2)-L(1/2)\nonumber\\
+ &\hspace{13mm}+\frac12\log2\log\left(\frac{x}{x+1}\right).
+ \label{jnew:eq:analytic-difference}
+\end{align}
+\end{lemma}
+\begin{proof}
+Let $r=x/(x+1)$. By \eqref{jnew:eq:RZ-Hecke2} and
+$\mathcal J(r)=\mathcal F(2r)-2\mathcal F(r)+\mathcal F(r/2)$,
+\[
+ \mathcal J(r)=\mathcal F(r)
+ -\mathcal F\left(\frac{2x+1}{2x+2}\right)
+ -\mathcal F\left(\frac{2x}{2x+1}\right)
+ +L\left(\frac{x}{2x+1}\right)-L(1/2)
+ +\tfrac12\log2\log r.
+\]
+Apply \eqref{jnew:eq:RZ-three} at $2x$ and $2x+1$. The two
+middle $\mathcal F$ terms telescope to
+\[
+ -\mathcal F(2x)+\mathcal F(2x+2)+2L(1/2)
+ -L\left(\frac{2x}{2x+1}\right)
+ -L\left(\frac{2x+1}{2x+2}\right).
+\]
+In \eqref{jnew:eq:Rogers}, take
+$u=2x/(2x+1)$ and $v=(2x+1)/(2x+2)$.
+The three arguments on the right are $r$, $x/(2x+1)$, and $1/2$.
+Thus all Rogers terms in the preceding expression reduce to $-L(r)$.
+The result is
+\[
+ \mathcal J(r)=\mathcal F(r)-L(r)-\mathcal F(2x)
+                       +\mathcal F(2x+2)+\tfrac12\log2\log r.
+\]
+One final application of \eqref{jnew:eq:RZ-three} at $x$ gives
+\eqref{jnew:eq:analytic-difference}.
+\end{proof}
+
+\begin{theorem}[The complete consecutive rational family]
+\label{jnew:thm:consecutive-analytic}
+Put
+\[
+ S(n)=\sum_{k=1}^{n-1}\log^2\left(2\sin\frac{\pi k}{n}\right),
+ \qquad S(1)=0.
+\]
+For every integer $n\ge1$,
+\begin{align}
+ \boxed{\displaystyle
+ J\left(\frac{n}{n+1}\right)
+ =\frac12\log^22
+  -\frac{n^2-n-1}{24n(n+1)}\pi^2
+  +\frac12\bigl(S(n)-S(n+1)-S(2n)+S(2n+2)\bigr).}
+ \label{jnew:eq:consecutive-analytic}
+\end{align}
+Every logarithm has a positive algebraic argument.
+\end{theorem}
+\begin{proof}
+The established integer value of $F$~\cite[eq.~(23)]{RadchenkoZagier} gives
+\begin{equation}\label{jnew:eq:F-normalized-integer}
+ \mathcal F(n)=\frac{n-1}{24}\pi^2
+              +\frac14\log^2n+\frac12S(n).
+\end{equation}
+Insert this into \eqref{jnew:eq:analytic-difference}, with $x=n$.
+The $\pi^2$ terms from the four $\mathcal F$ values sum to
+$\pi^2/24$; subtracting $L(1/2)=\pi^2/12$ leaves $-\pi^2/24$.
+The ordinary log-square terms sum to
+$\tfrac12\log2\log((n+1)/n)$ and cancel the last term of
+\eqref{jnew:eq:analytic-difference}. Therefore
+\[
+ \mathcal J\left(\frac n{n+1}\right)
+ =-\frac{\pi^2}{24}
+   +\frac12\bigl(S(n)-S(n+1)-S(2n)+S(2n+2)\bigr).
+\]
+Returning from $\mathcal J$ to $J$ proves the displayed formula.
+\end{proof}
+
+\begin{corollary}[Two small explicit values]\label{jnew:cor:small-evenodd}
+With $\phi=(1+\sqrt5)/2$ and $\varepsilon=1+\sqrt2$,
+\begin{align}
+ J(3/4)&=-\frac{5\pi^2}{288}+\frac18\log^22
+                         +\frac12\log^2\varepsilon,
+ \label{jnew:eq:J34}\\
+ J(4/5)&=-\frac{11\pi^2}{480}+\frac78\log^22
+             +2\log^2\phi-\frac12\log^2\varepsilon.
+ \label{jnew:eq:J45}
+\end{align}
+\end{corollary}
+\begin{proof}
+Direct pairing of the sine factors gives
+\begin{align*}
+ S(3)&=\tfrac12\log^23,& S(4)&=\tfrac32\log^22,\\
+ S(5)&=\tfrac14\log^25+\log^2\phi,
+ &S(6)&=\log^22+\tfrac12\log^23,\\
+ S(8)&=\tfrac74\log^22+\log^2\varepsilon,
+ &S(10)&=\log^22+\tfrac14\log^25+5\log^2\phi.
+\end{align*}
+For example, the logarithms of $2\sin(\pi/8)$ and
+$2\sin(3\pi/8)$ have sum $\tfrac12\log2$ and difference
+$\log\varepsilon$. Their squares therefore give the stated $S(8)$
+formula. Substitute $n=3,4$ in
+\eqref{jnew:eq:consecutive-analytic}.
+\end{proof}
+
+\begin{theorem}[A rational-dilogarithm value at $3/5$]
+\label{jnew:thm:J35}
+The following analytic identity holds:
+\begin{align}
+ \boxed{\displaystyle
+ J(3/5)=\operatorname{Li}_2(1/3)-\frac12\operatorname{Li}_2(1/5)
+ -\frac{7\pi^2}{180}+\frac12\log^22+\frac12\log^23
+ -\frac14\log^25+\log^2\phi.}
+ \label{jnew:eq:J35}
+\end{align}
+Its rational-dilogarithm core is exactly
+$[1/3]-\tfrac12[1/5]$ in the formal calculus.
+\end{theorem}
+\begin{proof}
+Take $x=3/2$ in \eqref{jnew:eq:analytic-difference} and use
+\eqref{jnew:eq:RZ-recip}:
+\[
+ \mathcal J(3/5)
+ =-\mathcal F(2/3)+\mathcal F(2/5)-\mathcal F(3)+\mathcal F(5)
+  -L(1/2)+\tfrac12\log2\log(3/5).
+\]
+Equation \eqref{jnew:eq:RZ-three} at $x=2$ says
+$\mathcal F(2/3)=\mathcal F(2)-\mathcal F(3)-L(1/2)+L(2/3)$.
+Consequently,
+\begin{equation}\label{jnew:eq:J35-short-proof}
+ \mathcal J(3/5)=\mathcal F(2/5)+\mathcal F(5)-\mathcal F(2)
+       -L(2/3)+\tfrac12\log2\log(3/5).
+\end{equation}
+Use the established Radchenko--Zagier evaluation
+\cite[eq.~(24)]{RadchenkoZagier}
+\begin{align*}
+ F(2/5)-F(1)
+  ={}&\tfrac12\operatorname{Li}_2(4/5)-\frac{\pi^2}{5}
+    +\log^2\left(2\sin\frac\pi5\right)
+    +\log^2\left(2\sin\frac{2\pi}5\right)
+    +\log2\log(2/5),
+\end{align*}
+together with \eqref{jnew:eq:F-normalized-integer} at $2,5$.
+The two log-sine squares in this formula have sum
+$\tfrac18\log^25+\tfrac12\log^2\phi$.
+Simplifying \eqref{jnew:eq:J35-short-proof} and applying Euler's
+reflection identity to $\operatorname{Li}_2(4/5)$ and
+$\operatorname{Li}_2(2/3)$ gives
+\[
+ \mathcal J(3/5)=\operatorname{Li}_2(1/3)
+    -\tfrac12\operatorname{Li}_2(1/5)-\frac{\pi^2}{12}
+    +\tfrac12\log^23-\tfrac14\log^25+\log^2\phi.
+\]
+Since $3/5-5/3=-16/15$, the conversion from $\mathcal J$ to $J$
+adds $\tfrac12\log^22+2\pi^2/45$, proving
+\eqref{jnew:eq:J35}. All Rogers and Euler reflection arguments
+lie in $(0,1)$, so there is no branch ambiguity.
+
+For an independent boundary check,
+\[
+ \partial\left([1/3]-\tfrac12[1/5]\right)
+ =\langle2\rangle\wedge\langle3/5\rangle,
+\]
+which agrees with \eqref{jnew:eq:odd-boundary} because the symbols
+at conductors $3$ and $5$ vanish.
+\end{proof}
+
+\begin{proposition}[Reciprocity and the remaining odd rational cores]
+\label{jnew:prop:reciprocity}
+For every $x>0$,
+\begin{equation}\label{jnew:eq:analytic-reciprocity}
+ J(x)+J(1/x)=\log^22.
+\end{equation}
+In particular, the established $J(1/3)$ and $J(1/5)$ formulas yield
+\begin{align*}
+ J(3)&=-\frac{\pi^2}{9}+\frac12\log^22+\frac12\log^23
+                                     +\operatorname{Li}_2(1/3),\\
+ J(5)&=-\frac{7\pi^2}{60}+\frac12\log^22+\frac14\log^25
+                    +\log^2\phi+\frac12\operatorname{Li}_2(1/5).
+\end{align*}
+The value $J(5/3)$ is $\log^22-J(3/5)$. These account for all
+nontrivial odd/odd cases in Theorem~\ref{jnew:thm:classification}.
+\end{proposition}
+\begin{proof}
+Integration by parts gives
+\[
+ J(x)=\log^22-
+ x\int_0^1\frac{t^{x-1}\log(1+t)}{1+t^x}\,dt.
+\]
+Substitute $u=t^x$ in the remaining integral to obtain $J(1/x)$.
+The boundary at zero vanishes and the boundary at one is $\log^22$.
+This reciprocity is elementary and already known; see, for example,
+Choie--Kumar~\cite[Theorem~3.1]{ChoieKumar2023}. It is included to
+make the analytic consequences complete. The displayed values follow
+by substitution in the existing $1/3$ and $1/5$ formulas.
+\end{proof}

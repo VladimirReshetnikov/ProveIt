@@ -1,0 +1,100 @@
+% Add after the global n=2 two-zero theorem in lerch_boundary_notes.tex.
+% No numerical input beyond the exact endpoint sign already certified there.
+
+\subsection{Monotonicity of the larger branch and a unique level crossing}
+\label{lerchshape:sec:n2}
+
+The single change of coefficient sign also determines the shape of the
+larger zero branch and the part of the smaller branch above $a=1$.
+These conclusions leave a sharper question about the number of extrema
+of the smaller branch below this level.
+
+\begin{corollary}[Shape constraints for the two zero branches]
+\label{lerchshape:cor:n2}
+Let $a_1(\rho)<a_2(\rho)$ be the two simple positive zeros in
+Theorem~\ref{lerchboundary:thm:n2global}. Then $a_2$ is strictly
+decreasing on $[0,1]$, with
+\[
+ \frac{13}{10}<a_2(\rho)<e^2\qquad(0<\rho\leq1),
+ \qquad a_2(0)=e^2.
+\]
+There is a unique $\rho_c\in(0,1)$ such that $a_1(\rho_c)=1$.
+Moreover,
+\[
+ a_1(\rho)<1\quad(0<\rho<\rho_c),\qquad
+ a_1(\rho)>1\quad(\rho_c<\rho\leq1),
+\]
+and
+\[
+ a_1'(\rho)>0\quad(\rho_c\leq\rho<1),\qquad
+ a_2'(\rho)<0\quad(0<\rho<1).
+\]
+In particular, the level crossing is transverse, and every interior
+critical point of $a_1$ lies in $(0,\rho_c)$.
+\end{corollary}
+
+\begin{proof}
+Write $G=G_{2,1}$ and
+\[
+ f(u)=\frac{\log u(\log u-2)}{u^2},\qquad
+ G(a,\rho)=\sum_{m=0}^{\infty}\rho^m f(a+m).
+\]
+For a fixed $a\in[1,e^2)$ set $c=e^2-a>0$ and $b_m=f(a+m)$.
+The coefficient $b_m$ is nonpositive for $m<c$ and nonnegative
+for $m>c$, and it vanishes if $m=c$. Thus
+\[
+ (m-c)b_m\geq0\qquad(m\geq0).
+\]
+There are strictly positive terms, for example every integer $m>c$.
+Termwise differentiation is valid for $0<\rho<1$, and gives the
+strict differential inequality
+\begin{equation}\label{lerchshape:eq:weighted}
+ \rho G_\rho(a,\rho)-cG(a,\rho)
+   =\sum_{m=0}^{\infty}(m-c)b_m\rho^m>0.
+\end{equation}
+The use of a real cutoff $c$ includes without exception the possibility
+that one coefficient vanishes at $a+m=e^2$.
+
+For $\rho>0$, the $m=0$ term at $a=e^2$ vanishes and all terms with
+$m\geq1$ are positive. Therefore $G(e^2,\rho)>0$. Together with
+$G(13/10,\rho)<0$ and the two-zero theorem, this places the larger
+zero in $(13/10,e^2)$, including at $\rho=1$. The signs at the
+simple zeros are
+\[
+ G_a(a_1(\rho),\rho)<0,
+ \qquad G_a(a_2(\rho),\rho)>0,
+\]
+since $G$ is positive before the smaller zero, negative between
+the two zeros, and positive after the larger zero. At any zero
+in $[1,e^2)$, \eqref{lerchshape:eq:weighted} gives $G_\rho>0$.
+Implicit differentiation consequently gives $a_2'=-G_\rho/G_a<0$
+for $0<\rho<1$. Continuity at both endpoints proves strict decrease
+on the whole closed interval.
+
+Now fix $a=1$ and put $c_0=e^2-1$. The same inequality shows that
+\[
+ \frac{d}{d\rho}\bigl(\rho^{-c_0}G(1,\rho)\bigr)
+ =\rho^{-c_0-1}\bigl(\rho G_\rho(1,\rho)-c_0G(1,\rho)\bigr)>0
+ \qquad(0<\rho<1).
+\]
+The expression is continuous up to $\rho=1$. Since $f(1)=0$ and
+$f(2)<0$, one has $G(1,\rho)=\rho f(2)+O(\rho^2)<0$ for small
+positive $\rho$. The exact certificate
+\eqref{lerchboundary:eq:n2cert-one} gives $G(1,1)>0$.
+Strict increase of the weighted expression therefore gives precisely
+one zero $\rho_c\in(0,1)$, with negative sign before and positive
+sign after it.
+
+Because $1<13/10<a_2(\rho)$, the sign of $G(1,\rho)$ is negative
+exactly when $a_1(\rho)<1$, and positive exactly when $a_1(\rho)>1$.
+This proves the asserted unique crossing and the inequalities on
+each side. When $\rho_c\leq\rho<1$, the smaller root lies in
+$[1,13/10)$, so \eqref{lerchshape:eq:weighted} applies there as well.
+Its negative $a$ derivative now gives $a_1'=-G_\rho/G_a>0$,
+including at the crossing itself.
+\end{proof}
+
+The remaining shape question is whether $a_1$ has exactly one minimum
+in $(0,\rho_c)$; a sharper version asks whether its derivative has
+exactly one zero there. Neither uniqueness assertion is required for
+the corollary.

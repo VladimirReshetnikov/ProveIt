@@ -1,0 +1,110 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{booktabs,array,longtable,tabularx}
+\usepackage{graphicx,xcolor,microtype}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{xurl}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,
+ urlcolor=blue!45!black,pdftitle={Exact Relation Lattices, CM Class Products, and Zero Transitions},
+ pdfauthor={Research continuation prepared for Vladimir Reshetnikov},
+ pdfsubject={Rigorous continuation of the ProveIt polylogarithms manuscript}}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\SNF}{SNF}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\CC}{\mathbb C}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{2em}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small ProveIt research continuation}
+\fancyhead[R]{\small Relation lattices, CM products, and zeros}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\allowdisplaybreaks[2]
+
+\title{\bfseries Exact Relation Lattices, CM Class Products,\\
+and Zero Transitions\\[5pt]
+\large Further Results on Polylogarithmic Arithmetic Bridges}
+\author{Research continuation prepared for Vladimir Reshetnikov}
+\date{10 October 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+We continue the ProveIt polylogarithms manuscript at the explicitly pinned
+commit \texttt{9bc738d3be22b8586a24693f19fb2e2a50ecd1bf}.
+The odd-weight rank conjecture for its level-four imaginary depth-two
+product matrix is proved for every odd weight and strengthened to an
+integral Smith-form theorem covering both parities. In even weight the same matrices have full column
+rank and only elementary $2$-torsion; a concrete mixed-color evaluation
+is obtained at every even weight. A resultant formula, derived with
+explicit Chowla--Selberg normalization, proves the five recorded CM
+weight-four class products and evaluates their analogues at every even
+weight. A genus-character refinement proves the three recorded class
+ratios and gives explicit weight-six ratio identities. For a fixed admissible
+genus character, all even-weight ratios lie in one number field of degree at
+most twelve over $\mathbb Q$; the three worked examples have quadratic closure. On the analytic side, we prove that the positive zero counts of
+$\gamma_5^{(k)}$ are $3,3,5,5,\ldots$, with every zero simple. Exact
+rational certificates establish the finite signs needed for this global
+statement. We also classify all positive zeros near the elementary Lerch
+endpoint, prove alternating directions of motion for odd-index first
+derivatives, and establish a nondegenerate creation of two real zeros at
+index three. Two specific textual corrections, an explicit distinction
+between proofs and numerical evidence, and a program of further research
+complete the article. Companion source code and machine-readable receipts
+make the finite algebraic and analytic claims independently reproducible.
+\end{abstract}
+
+\vspace{5pt}
+\noindent\textbf{Keywords.} Colored multiple polylogarithms; double shuffle;
+Smith normal form; complex multiplication; gamma products; generalized
+Stieltjes constants; Lerch transcendent; certified zero isolation.
+
+\clearpage
+\tableofcontents
+\clearpage
+\input{sections/01_scope_and_conventions}
+\input{sections/02_relation_lattices}
+\input{sections/03_mixed_identity}
+\input{sections/04_cm_products}
+\IfFileExists{sections/04b_cm_genus.tex}{\input{sections/04b_cm_genus}}{}
+\input{sections/05_zero_preliminaries}
+\input{sections/06_classical_zeros}
+\input{sections/07_lerch_bifurcations}
+\input{sections/08_corrections_and_questions}
+\appendix
+\input{sections/09_reproducibility}
+\clearpage
+\begingroup
+\small
+\begin{thebibliography}{99}
+\raggedright
+\input{references}
+\end{thebibliography}
+\endgroup
+\end{document}

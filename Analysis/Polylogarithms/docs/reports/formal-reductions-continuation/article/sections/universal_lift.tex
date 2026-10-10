@@ -1,0 +1,165 @@
+% Optional continuation of full_gaussian_rank.tex; same theorem environments.
+\section{A universal splitting at every cyclotomic level}
+\label{fg:sec:universal}
+
+The boundary lift used above does not depend on the number four. It
+separates the same-point coordinates from the remaining color problem
+at every cyclotomic level.
+
+Let $N\ge3$, $\omega=e^{2\pi i/N}$, and define the formal imaginary
+coordinates for $D_{a,w-a}(\omega^r,\omega^s)$ exactly as before, now
+with colors modulo $N$. Impose conjugation, discard its fixed
+coordinates, and remove one divergent coordinate $X_1^{0,r}$ for
+each conjugate pair of nonreal roots. Let $A_{N,w}$ be the matrix of
+finite single-product shuffle and stuffle rows, with only their
+difference retained when exactly one factor diverges. Put
+\[
+ R_N=\{1,\ldots,\lfloor(N-1)/2\rfloor\},\qquad k_N=|R_N|.
+\]
+The matrix has
+\[
+ d_{N,w}=\frac{N^2-\gcd(N,2)^2}{2}(w-1)-k_N
+\]
+columns: conjugation has $\gcd(N,2)^2$ fixed color pairs, and the
+last term counts the removed divergent coordinates. Let
+$A_{N,w}^{\neg g}$ delete all $k_N(w-1)$ same-point columns
+$X_a^{r,0}$ with $r\in R_N$. These are formal matrices with the same
+restricted meaning as $A_w$; distribution and higher-depth rows
+have not been added.
+
+For a homogeneous degree-$n$ polynomial, where $n=w-2$, define
+\[
+ \mathcal H_n^-=
+ \{G\in\mathbb Q[X,Y]_n:G(X,Y)=-G(X,X-Y)\}.
+\]
+
+\begin{theorem}[Universal same-point splitting]\label{fg:thm:universal}
+For odd $w=2m+1$, there is a canonical split exact sequence
+\[
+ 0\longrightarrow\ker A_{N,w}^{\neg g}
+ \longrightarrow\ker A_{N,w}
+ \longrightarrow\bigoplus_{r\in R_N}\mathcal H_{2m-1}^-
+ \longrightarrow0.
+\]
+The last map records the same-point polynomials $G_r$.
+In particular,
+\begin{equation}\label{fg:eq:universal-nullity}
+ \dim\ker A_{N,w}-\dim\ker A_{N,w}^{\neg g}=k_Nm.
+\end{equation}
+At even $w$, every vector in $\ker A_{N,w}$ has all same-point
+coordinates zero, so the two kernels are naturally identical.
+Consequently
+\begin{equation}\label{fg:eq:universal-rank-difference}
+ \operatorname{rank}A_{N,w}-\operatorname{rank}A_{N,w}^{\neg g}
+ =\begin{cases}
+    k_N(w-1),&w\text{ even},\\
+    k_N(w-1)/2,&w\text{ odd}.
+  \end{cases}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Fix $r\in R_N$ and abbreviate the polynomials for colors
+$(r,0),(0,r),(r,-r)$ by $G_r,U_r,M_r$. The product-color classes
+$(r,r),(0,r),(r,-r)$ imply exactly the same necessary conditions
+as in the Gaussian proof:
+\begin{align*}
+ G_r(X,Y)&=-G_r(X,X-Y),\\
+ U_r(X,Y)&=-G_r(Y,X)+c_rY^n,\qquad c_r=[X^n]G_r,\\
+ M_r(X,Y)&=G_r(X-Y,X),\qquad M_r=M_r^\sigma.
+\end{align*}
+The boundary equation uses the single regularized difference,
+so its derivation is unchanged. Homogeneity gives
+$M_r^\sigma=(-1)^{n+1}M_r$. Thus even $n$ forces $G_r=0$.
+For odd $n$, the symmetry of $M_r$ is automatic.
+
+For odd $n$, define a section by assigning the displayed values to
+these three color pairs for each $r$, their negatives to conjugate
+pairs, and zero to every other color pair. This assignment satisfies
+all rows. Here is a support check that prevents an implicit assumption
+about the other colors. A shuffle can meet a nonzero $G_r$ coordinate
+only when its two product colors are $(r,r)$, and then it is exactly
+the antireflection equation. It can meet $U_r$ or $M_r$ only for
+product colors $(0,r)$ or $(r,0)$, and then it is exactly the boundary
+equation. The stuffle rows meeting these coordinates are the boundary
+class and $(r,-r)$, which is the symmetry of $M_r$. Transposition
+and conjugation cover the reversed and conjugate classes. Thus no
+unexamined row couples the proposed section to other colors.
+The supports for distinct $r\in R_N$ are disjoint.
+
+Subtracting this section from any kernel vector leaves all $G_r=0$;
+the remainder is naturally a vector in $\ker A_{N,w}^{\neg g}$.
+This proves the splitting. Since
+$\dim\mathcal H_{2m-1}^-=m$, it gives
+\eqref{fg:eq:universal-nullity}. Subtracting kernel dimensions from
+column counts proves \eqref{fg:eq:universal-rank-difference}.
+\end{proof}
+
+At odd weight, an immediate consequence is that every coefficient
+relation supported only on these same-point columns is spanned by
+the independent same-point shuffle rows, separately for each root
+pair. Those rows already supply $k_N(w-1)/2$ dimensions, equal to
+\eqref{fg:eq:universal-rank-difference}. Thus the Gaussian-only
+completeness result above is one instance of a level-independent
+fact about this particular single-product coefficient system.
+
+\subsection{The complete level-three ranks}
+
+The earlier incoming report \cite{PriorResearch} already identifies the residual
+level-three space after $G=0$. In that case the boundary formulas
+force $U=M=0$, so its regularized presentation and the present
+removed-coordinate presentation agree. Its remaining polynomial
+satisfies
+\[
+ A(Y,X)=-A(X,Y),\qquad A(X,X-Y)=A(X,Y),
+\]
+and is parameterized by
+\[
+ A=\Delta\,\mathbb Q[Q,\Delta^2],\qquad
+ \Delta=XY(X-Y),\quad Q=X^2-XY+Y^2.
+\]
+At odd weight its homogeneous degree-$w-2$ component has dimension
+$\lfloor(w+1)/6\rfloor$, and at even weight it is zero.
+For completeness, antisymmetry and reflection force the three
+linear factors of $\Delta$; after their removal the quotient is
+invariant under the group generated by the two transformations.
+That group acts as permutations and global negation on
+$(X,-Y,Y-X)$, whose sum is zero, giving the invariant ring
+$\mathbb Q[Q,\Delta^2]$. Counting monomials of degrees
+$3+2a+6b=w-2$ gives the stated dimension.
+This residual description is credited to the preceding report; the
+new assertion is its extension to the free same-point family under
+the manuscript's boundary convention.
+
+\begin{corollary}[Level-three extension]\label{fg:cor:level3}
+The analogous full level-three matrix has $4w-5$ columns and satisfies
+\[
+ \operatorname{rank}A_{3,w}
+ =\begin{cases}
+    4w-5,&w\text{ even},\\
+    (7w-9)/2-\lfloor(w+1)/6\rfloor,&w\text{ odd},
+  \end{cases}
+\]
+while the matrix with all same-point columns deleted satisfies
+\[
+ \operatorname{rank}A_{3,w}^{\neg g}
+ =\begin{cases}
+    3w-4,&w\text{ even},\\
+    3w-4-\lfloor(w+1)/6\rfloor,&w\text{ odd}.
+  \end{cases}
+\]
+\end{corollary}
+\begin{proof}
+At odd weight the full kernel has dimension
+$(w-1)/2+\lfloor(w+1)/6\rfloor$ by
+Theorem~\ref{fg:thm:universal}; its restricted kernel has only the
+second summand. Both vanish at even weight. Subtraction from the
+respective column counts proves the formulas.
+\end{proof}
+
+The supplementary program \texttt{universal\_gaussian\_lift.py}
+verifies the lift directly against every raw row at selected weights
+and levels $3,4,5,6,8,10,12$. Independent exact ranks in weights
+$2,3,4$ at levels $3$ through $6$ check the rank differences. This
+establishes neither a formula for the remaining kernel at arbitrary
+level nor numerical period independence; those remain separate
+questions.

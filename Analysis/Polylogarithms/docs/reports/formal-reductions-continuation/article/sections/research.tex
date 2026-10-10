@@ -1,0 +1,190 @@
+\section{A proposed research program}
+\label{research:sec:program}
+
+The results suggest concrete next problems. They are ordered by their
+direct dependence on the new structure, rather than by a claim that
+every direction has equal difficulty. Statements phrased as questions
+below are not theorems of this article.
+
+\subsection{Cyclotomic coefficient systems}
+
+\paragraph{1. Determine the residual kernel at general level.}
+Theorem~\ref{fg:thm:universal} removes every same-point sector
+canonically. What is the remaining Hilbert series of
+$\ker A_{N,w}^{\neg g}$ for fixed $N$? At levels three and four,
+linear substitutions reduce the problem to small reflection groups.
+At levels five, six, and eight, the next step is to write the remaining
+color-polynomial equations, decompose them under color automorphisms,
+and look for a finite invariant-theoretic presentation. Exact matrices
+are valuable for selecting a candidate Hilbert series, but a proof
+must identify generators, relations, and all boundary defects.
+
+\paragraph{2. Add distribution without losing the canonical boundary data.}
+Which of the free sectors survive when distribution rows are added?
+The universal lift is supported on three colors per root pair, which
+makes the image of each distribution row explicitly computable.
+A useful first result would be a closed formula for the rank increment
+at prime-power levels. This would also clarify the relation between
+the coefficient systems here and the broader standard-relation spaces
+of \cite{Zhao2010}.
+
+\paragraph{3. Construct short relation certificates from the explicit dual basis.}
+The nullspace test decides whether a proposed row is derivable, but
+does not by itself minimize the number or coefficient height of the
+rows used in a proof. Can the polynomial normal form be upgraded to
+a constructive reduction algorithm whose certificate length is
+polynomial in the weight? The existing $S_4$ certificate shows why
+the choice of extra argument transformations matters. A principled
+comparison between short certificates and large eliminated systems
+would be useful for future repository formalization.
+
+\subsection{Formal and analytic Herglotz arithmetic}
+
+\paragraph{4. Make every positive classification case constructive.}
+The congruence test answers whether the invariant companion symbol
+vanishes, but a Bloch-group descent argument does not necessarily
+produce a compact five-term derivation. Find an explicit logarithmic
+formula, with a controllable number of terms, for all even--odd pairs
+obeying the two congruences. The families
+$J(e/(e^2-1))$ and $J(e/(e^2+1))$ are natural first targets beyond
+consecutive arguments. Their formal reductions are proved here;
+their simplest analytic evaluations remain to be found.
+
+\paragraph{5. Classify subfield descent for combinations of symbols.}
+An individual nonzero $\beta_M(a)$ cannot descend to a proper real
+subfield, but combinations can. Character decomposition of the Gram
+image should classify which coefficient vectors yield an element of
+$\Lambda^2A(E)$ for a prescribed real subfield $E$. A complete answer
+would generalize the denominator-rank formula and could distinguish
+the smallest field needed by an explicit reduction from the ambient
+cyclotomic field.
+
+\paragraph{6. Complete the rank problem for companion values at fixed denominator.}
+Theorem~\ref{jnew:thm:denominator-rank} gives an exact denominator
+obstruction rank and a corresponding lower bound for formal companion
+values modulo rational dilogarithms. What additional rank is supplied
+by the numerator-conductor blocks? A useful formulation should fix a
+finite numerator set and a common cyclotomic field, then compute the
+intersection of the norm kernels. It should not confuse independence
+in a symbol space with numerical independence of the evaluated periods.
+
+\paragraph{7. Replace the dyadic difference by other Hecke combinations.}
+The proof uses a cyclic Laplacian for multiplication by $2$ and a
+quadratic field norm between adjacent dyadic conductors. Analogous
+operators for an odd prime should interact with the Hecke functional
+equations of \cite{RadchenkoZagier} and the character-weighted integrals
+of \cite{DixitSathyanarayanaSharan2024}. Identify a natural companion
+whose formal reduction is governed by a similarly explicit group
+operator, and determine its exact kernel. The first challenge is to
+keep rational wedge terms and conductor cancellation visible.
+
+\subsection{Lerch bifurcations and uniform zero counts}
+
+\paragraph{8. Prove or disprove uniqueness of the two-zero branch minimum.}
+The smaller $n=2,k=1$ branch has at least one interior minimum and
+an endpoint slope tending to $+\infty$. Does it have exactly one
+critical point? Corollary~\ref{lerchshape:cor:n2} proves that the
+larger branch is strictly decreasing, and that the smaller branch
+increases after its unique crossing of $a=1$. The remaining question
+therefore concerns only its motion below $1$. Differentiating the implicit equation gives
+$a'=-G_\rho/G_a$; hence the first question reduces to the number of
+solutions of $G=G_\rho=0$ on the first branch. A proof would require
+a new sign-variation statement for this pair of kernels. A visually
+single turn in the diagnostic plot is not enough to settle it.
+
+\begin{conjecture}[Unique stationary point of the smaller branch]
+\label{research:conj:minimum}
+For $n=2,k=1$, the derivative $a_1'(\rho)$ vanishes at exactly one
+point of $(0,1)$.
+\end{conjecture}
+The proved endpoint signs and Corollary~\ref{lerchshape:cor:n2}
+would then identify that point as the unique global minimum, below
+$\rho_c$. The numerical curve motivates the conjecture; no global
+exclusion of additional stationary points is asserted here.
+
+\paragraph{9. Locate and classify the forced interior events at $n=3,4$.}
+At $k=1$, the small-$\rho$ counts and the certified $\rho=1$ counts
+differ by two. We prove that an interior multiple zero occurs.
+Determine whether there is exactly one event, and whether it is a
+nondegenerate saddle-node, by certifying
+\[
+G=G_a=0,\qquad G_{aa}\ne0,\qquad G_\rho\ne0.
+\]
+Interval Newton or a two-variable argument principle could locate a
+candidate, but global exclusion of further events must be supplied
+separately. The current theorem deliberately makes no unverified
+nondegeneracy claim.
+
+\paragraph{10. Determine the optimal uniform threshold $K_n$.}
+The present result gives $K_2=1$. The elementary endpoint forces
+$K_n\geq n-1$: when $k<n-1$, the zero at $a=1$ is multiple and
+uniform saturation by $n$ simple zeros fails at $\rho=0$.
+The natural sharp question is whether $K_n=n-1$ for every $n\geq2$.
+This equality is a candidate to test, not a conclusion of the existing
+large-$k$ theorem. Exact sign certificates at selected separating
+points, extended uniformly in $\rho$ by coefficient-sign arguments,
+could prove the first new cases. A counterexample would reveal where
+an interior loss of simplicity first occurs after the elementary
+endpoint has already split completely.
+
+\paragraph{11. Make the small-parameter classification effective in both indices.}
+The sign of $\Delta_{n,k}$ is decidable by exact rational intervals
+for $\log2$, but the proof gives no uniform lower bound for its
+magnitude and no numerical value of $\rho_{n,k}$. Can one estimate
+the distances of the roots of $P_{n,k}$ from $-\log2$ when $n,k$
+grow? Such an estimate, together with a quantitative Rouché argument,
+would turn the local classification into an explicit parameter range.
+The resulting sign diagram may have a useful asymptotic description
+when $k/n$ tends to a fixed ratio.
+
+\paragraph{12. Compute the full Abel expansion of the zero branches.}
+The leading singular coefficient is independent of $a$, while later
+coefficients involve the tail expansion of $f_{n,k}(a+m)$ and the
+regular moments. Derive the complete expansion in powers of $\tau$
+and $\log\tau$, including collision terms from implicit inversion.
+A particularly useful outcome would be a renormalized branch whose
+successive singular terms can be subtracted algorithmically, with an
+explicit differentiable remainder. This would also improve numerical
+continuation near $\rho=1$.
+
+\subsection{Divergent angular expansions}
+
+\paragraph{13. Determine optimal truncation and the smallest attainable error.}
+Theorem~\ref{angular:thm:allorders} keeps the cutoff fixed as
+$a\to\infty$, whereas Theorem~\ref{angular:thm:divergence} rules out
+ordinary convergence at fixed $a$. The next problem is quantitative:
+how should the cutoff depend on $a$ to minimize the remainder, and
+what is the resulting error scale? The proof must control the growth
+of the finite implicit-function constants as the number of retained
+modes increases. The prime-frequency obstruction supplies explicit
+large coefficients and should constrain any proposed optimal rule.
+
+\paragraph{14. Find a justified summation procedure.}
+Can one recover the actual angular zero from the divergent coefficient
+family by a natural summation method? Possible approaches include
+keeping a finite Fourier equation exact while expanding only its low
+modes, or reorganizing terms by a parameter introduced before the
+mode cutoff. Any summability theorem must specify the order of
+summation and explain why the unbounded grouped terms do not invalidate
+the proposed procedure. A formal appeal to analyticity of the complete
+Fourier series is insufficient.
+
+\paragraph{15. Extend the angular theorem to other colors and depths.}
+The current local root is governed by a dominant Fourier mode and
+a nonzero real derivative, while the source's signed density proves
+global uniqueness. Which depth-three or non-Gaussian color families
+have both properties? Separate these two tasks: a local expansion can
+be constructed before global uniqueness is known, but identifying it
+with the intended geometric zero requires an independent global
+argument. Multi-sign-change densities may produce several roots and
+coupled singular limits, which would connect this direction with the
+Lerch bifurcation analysis above.
+
+\paragraph{A practical order of attack.}
+The most immediate projects are the first residual levels in item~1,
+constructive logarithmic evaluations in item~4, certified interior
+events in item~9, and the first optimal-truncation estimates in item~13.
+Each has a precise finite or analytic starting point supplied by this
+article. The broader period-independence questions remain important,
+but should be pursued with the formal-versus-numerical distinction
+preserved at every stage.
