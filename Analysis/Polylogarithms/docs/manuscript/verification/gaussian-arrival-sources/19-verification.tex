@@ -1,0 +1,165 @@
+\section{Reproducible verification and integration}
+\label{sec:verification}
+
+\subsection{What establishes equality}
+
+The logical dependencies are explicit. Theorem~\ref{thm:gaussian-inversion}
+and Corollary~\ref{cor:gaussian-coefficient-rule} prove the Gaussian
+double rows. Theorem~\ref{one2:thm:closed}, together with the two proved
+half-point evaluations, proves the three triples and their extensions.
+Theorem~\ref{thm:inverse-color} proves the mixed-root reductions.
+The exact coefficient checks then verify that the printed polynomials
+agree with these finite formulas. Neither high-precision quadrature
+nor a small certified residual is used as a substitute for any of
+these analytic arguments.
+
+There is one useful distinction concerning numerical certificates.
+An interval excluding zero disproves a proposed equality. An interval
+containing zero, however narrow, cannot by itself prove equality of
+arbitrary transcendental constants. Here the exact enclosures provide
+independent reproducibility and error detection for identities proved
+by other means. For the mixed diagonal counterexample, the entire
+enclosure is strictly positive, which independently certifies its
+nonvanishing as well as the integral proof.
+
+\subsection{The exact pipeline}
+
+The core evaluator uses only the Python standard library's rational
+arithmetic. Symbolic coefficient extraction uses SymPy. No quadrature,
+floating-point MPL routine, or black-box integer-relation search is
+called by the exact certificate producer. The dependency chain is:
+\begin{enumerate}
+\item Convert the MPL indices and colors to the GPL word by
+\eqref{eq:mpl-gpl}, checking the endpoint and letter hypotheses exactly.
+\item Choose the least cutoff passing the word-specific sum of the
+proved binomial tails. The explicit bound in
+\eqref{audit:eq:Nchoice} supplies a guaranteed finite search endpoint.
+\item Compute all H\"older factors through two shared chains of exact
+Taylor coefficients, form the rational center, and record the exact
+rational error radius.
+\item Enclose the real and imaginary coordinates of all required atoms.
+Evaluate each polynomial with exact rational interval operations.
+Every product and power is enclosed by its interval extremal values.
+\item Independently reproduce each H\"older factor by finite nested
+sums and cumulative inner sums, rather than by the differential
+recurrence used by the producer. Recompute the tail budget and require
+exact equality of every rational center and radius.
+\end{enumerate}
+
+The encoded interpretation of a record is
+\[
+ \left|\texttt{prefactor}\,G(\texttt{word};1)
+                 -\texttt{center}\right|\le\texttt{radius},
+ \qquad\texttt{prefactor}\in\{-1,1\}.
+\]
+The prefactor incorporates the MPL-to-GPL sign once. The center already
+includes it. The replay checker independently validates the cutoff,
+endpoint hypotheses, permitted letters, and sign before accepting a
+record. Names such as \texttt{G} or \texttt{beta\_6} in the atom catalog
+refer to the imaginary coordinate of a certificate for the full
+complex value $\Li_2(i)$ or $\Li_6(i)$; the exact GPL word and the
+displayed convention determine the underlying complex value.
+
+\begin{center}
+\small
+\begin{tabular}{@{}P{0.51\textwidth}P{0.40\textwidth}@{}}
+\toprule
+Check & Recorded result\\
+\midrule
+Original conjectural polynomials & 8 exact symbolic agreements\\[3pt]
+General double-parity components, weights $2$--$8$ & 28 exact interval comparisons\\[3pt]
+Every position of one $2$, imaginary components, weights $2$--$8$
+& 28 exact interval comparisons\\[3pt]
+Gaussian mixed-root correction rows & 2 exact interval comparisons\\[3pt]
+Underlying value certificates & 75 rational centers independently replayed\\[3pt]
+Requested precision of each atom & 384 bits in complex modulus\\[3pt]
+Largest rigorous absolute residual bound over the 58 comparisons
+& $3.6465827\times10^{-114}$\\[3pt]
+Largest Taylor cutoff used & 434\\[3pt]
+Further exact enclosure checks & Positive mixed antisymmetry; both
+components of $\Li_{3,3}(i,i)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The scientific-notation residual bound in the table is rounded upward.
+The authoritative bounds in the JSON files are exact fractions.
+Thus the claims do not depend on decimal formatting or a chosen
+floating-point precision. The replay of the saved centers uses a
+different finite formula but shares the elementary rational arithmetic
+class; it is an independent mathematical implementation, not a claim
+of independent hardware or a formally verified arithmetic library.
+
+\subsection{Independent high-precision checks}
+
+The package also retains the independent computations developed during
+the proofs. These include two exact parity coefficient implementations
+through every even weight $2,4,\ldots,20$ (100 pairs), the differential
+derivation of the twelve displayed weight-six and weight-eight rows,
+and exact extraction of all 24 real and imaginary one-$2$ rows at
+weights four, five, and six.
+
+Separate quadratures compare the twelve Gaussian double rows at 90
+decimal digits, the four mixed-root correction rows at 60 digits,
+and the all-position one-$2$ formula at 100 digits. For the last family,
+the 112 moment comparisons cover all positions at weights two through
+eight at four distinct endpoints, and additional direct nested-series
+checks use interior points of the disk. The separate sixth-root
+script adds 56 moment comparisons at the two conjugate primitive sixth
+roots and four explicit example checks. Fifteen shifted-polygamma
+checks and 160 exact checks of the explicit tail prescription are
+included. These are described as numerical cross-checks where
+appropriate; their recorded small residuals are not mislabeled as
+rigorous quadrature errors.
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\textwidth]{figures/branch_and_alphabet.pdf}
+\caption{Two geometric ingredients of the proofs. Left: the radial
+path $z=it$ becomes $w(t)=(1+it)/(1+t^2)$ and reaches $(1+i)/2$
+without crossing the classical polylogarithm cut; the initial point
+$1$ is handled by the proved endpoint limit. Right: the shaded region
+satisfies $|a|\ge1$ and $|1-a|\ge1$. Rational Gaussian points in
+that region, together with the two exceptional letters $0,1$, form
+the permitted alphabet. The marked letter $1-i$ evaluates the
+half-Gaussian constants.}
+\label{fig:geometry}
+\end{figure}
+
+\subsection{Files, commands, and proposed source changes}
+
+The article is built from a standalone root \TeX\ file and modular
+section files. The package includes a \texttt{Makefile}, dependency
+versions, exact JSON results, source hashes, the independent scripts,
+and a unified patch against the pinned manuscript. In a terminal
+opened at the extracted package root, the principal commands are
+\begin{verbatim}
+make pdf
+python3 code/verify.py --bits 384
+python3 code/replay_certificates.py
+python3 code/run_independent.py --quick
+python3 code/run_independent.py
+python3 code/independent/one_two/sixth_root.py --digits 100
+\end{verbatim}
+The first two Python commands regenerate the core evidence. The quick
+independent run performs symbolic and exact finite checks; the final
+independent runner also runs its quadratures at their original
+precisions; the final command checks the sixth-root specialization. These scripts locate outputs relative to their own paths,
+so they do not require a particular current working directory or any
+network service. The compiled PDF is supplied, so compilation is
+optional for reading the article.
+
+The correction patch is a proposed change for review. It updates the
+proof status of the eight displayed identities, supplies the four
+mixed reductions, fixes the color-exchange statement and the diagonal
+example, and corrects the shifted-polygamma commentary. It deliberately
+does not replace a reported formal residual count with an invented
+numerical dimension. Those relation matrices need a separate exact
+recomputation. The patch has been checked for applicability to the
+pinned source; integration into a later revision requires resolving
+any intervening editorial changes.
+
+The package's \texttt{INTEGRATION.md} gives the intended companion
+location, the theorem labels needed for proof pointers, and the source
+hashes. The existing source files were read and audited; the repository
+was not changed as part of preparing this deliverable.

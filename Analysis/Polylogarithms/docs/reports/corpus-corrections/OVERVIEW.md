@@ -134,3 +134,25 @@ historical drafts are recorded in the project README's "Status of claims":
 - `reports/binet-malmsten-lambert-bridge__a3c91e07f5d2.md`, section 2 ("The cubic
   moment is open"): 14 cites a published Tornheim-derivative evaluation
   (Bailey–Borwein–Borwein 2015, Theorem 6); not checked at intake.
+
+## Later corrections (batch 141, 9 October 2026)
+
+Dated note, 2026-10-09. The five continuations of batch 141 (sources 20 and 22 of
+[`../rational-grid-distribution-ranks/`](../rational-grid-distribution-ranks/), 21, 23
+and 24 of [`../gaussian-parity-reductions/`](../gaussian-parity-reductions/)) deliver
+their corrections as manuscript patches and notes, which stay with those reports. For
+the historical drafts, the project README's "Status of claims" records:
+
+- **X16b confirmed.** 10's register, item 16(b) (`10-exact-structure-CORRECTIONS.txt`):
+  in the proof of `thm:G1half` of `articles/stieltjes-antiderivative-ladder.tex`
+  (line 531), `ln²6 − ln²3 − ln²2` is the coefficient of `ζ(0)`, not of `ζ''(0)`. Found
+  again by 23 (its C4) and checked at intake; now under "False as printed".
+- **Two new items** for the ladder reports: `reports/ladders-as-bloch-elements`,
+  lines 63–65 (an even-weight golden ladder cannot become a nonzero `ζ(6)` multiple of
+  `P_6`, which vanishes at real arguments; 24), and `reports/golden-polylog-ladders`,
+  lines 169–172 (the two degree-6 "four-seed" bases have two seeds each; found at intake
+  from 24's theorem plus a numerical search; not stated by any delivery).
+- **Further sources** for items already recorded: the colour swap at mixed points
+  (20, 21), the weight-one exceptions (22), the second weight-five shuffle row (23), the
+  cubic moment's Tornheim evaluation (20, 23), and the inverse-argument mixed doubles of
+  X1 (23).

@@ -1,0 +1,99 @@
+\subsection{A rigorous rational certificate for the new conjecture}
+
+The floating-point checks above can be strengthened to an exact
+residual enclosure without resolving the equality itself.
+
+\begin{theorem}[Euler remainder for harmonic numerators]\label{thm:euler-certificate}
+Let \(a,b,q\) be positive integers,
+\(c_n=H_{qn}^{(b)}/(2n+1)^a\), and
+\(L=\sum_{n\geq0}(-1)^nc_n\).
+Define \(\Delta c_n=c_{n+1}-c_n\) and
+\[
+ E_N=\sum_{k=0}^{N-1}\frac{(-\Delta)^k c_0}{2^{k+1}},
+ \qquad N\geq1.
+\]
+Then
+\begin{equation}\label{eq:euler-harmonic-bound}
+ 0\leq E_N-L\leq (N+1)2^{-N}c_1
+     =(N+1)2^{-N}\frac{H_q^{(b)}}{3^a}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+On the unit square use the positive measure
+\[
+ \dd\mu(t,u)=
+ \frac{(-\log t)^{a-1}(-\log u)^{b-1}}
+ {(a-1)!(b-1)!(1-u)}\dd t\,\dd u.
+\]
+Set \(v=t^2\), \(z=t^2u^q\). Integral representations for reciprocal
+integer powers give
+\[
+ c_n=\int(v^n-z^n)\dd\mu,\qquad
+ \int(v-z)\dd\mu=c_1<\infty.
+\]
+The measure itself need not have finite mass. All differences below
+are integrable because they are bounded by a constant times \(v-z\).
+For \(k\geq1\),
+\[
+ (-\Delta)^k c_0
+ =\int[(1-v)^k-(1-z)^k]\dd\mu\leq0,\qquad
+ |(-\Delta)^k c_0|\leq k c_1.
+\]
+Thus the Euler series converges absolutely.
+It equals \(L\): introduce an Abel factor into the original series,
+sum the geometric differences under an integrable bound, and let
+the factor increase to 1. The ordinary series converges absolutely
+for \(a>1\). When \(a=1\), its magnitudes eventually decrease to zero:
+the harmonic increment divided by \(H_{qn}^{(b)}\) is
+\(O(1/(n\log n))\) for \(b=1\) and \(O(n^{-b})\) for \(b>1\),
+whereas the denominator ratio is \(1+2/(2n+1)\).
+Abel's theorem identifies the limits.
+Every omitted Euler term is nonpositive, and
+\[
+ \sum_{k=N}^{\infty}\frac{k}{2^{k+1}}=(N+1)2^{-N}.
+\]
+This proves both the sign and the bound.
+\end{proof}
+
+The finite sum has the exact rational form
+\begin{equation}\label{eq:finite-euler-integer}
+ E_N=2^{-N}\sum_{n=0}^{N-1}(-1)^nc_n
+             \sum_{j=n+1}^{N}\binom Nj.
+\end{equation}
+Indeed,
+\(\sum_{k=n}^{N-1}\binom{k}{n}2^{-k-1}
+=2^{-N}\sum_{j=n+1}^{N}\binom Nj\).
+When \(q=1\) or \(2\), a common denominator is
+\(2^N\operatorname{lcm}(1,2,\ldots,2N)^{a+b}\).
+Thus all four nonclassical constants in the \(S_6\) basket have
+rapid exact rational enclosures.
+
+For \(c_n=(dn+1)^{-s}\), \(d=1\) or \(2\), a positive
+moment measure of total mass 1 instead gives
+\(0\leq L-E_N\leq2^{-N}\).
+This encloses \(\eta(s)\), \(\beta(s)\), and hence
+\(\zeta(3),\zeta(5),\log2\) using rational factors.
+For \(\pi\) use Machin's identity
+\[
+ \pi=16\arctan(1/5)-4\arctan(1/239)
+\]
+and the alternating-series bound for each arctangent.
+
+The delivered standard-library script \texttt{certify\_s6.py} uses
+\(N=900\), 240 arctangent terms at \(1/5\), and 80 at \(1/239\).
+It performs every interval operation with integers and rational
+fractions, and rounds final decimal endpoints outward.
+The resulting integer-normalized residual \(R_6\) satisfies the
+deliberately widened, easily readable rational enclosure
+\begin{equation}\label{eq:S6-certificate}
+ -5.016\times10^{-261}\leq R_6\leq3.845\times10^{-262}.
+\end{equation}
+The full 280-place endpoints are recorded in the JSON certificate.
+The exact arithmetic gate checks, in particular,
+\[
+ \boxed{|R_6|<10^{-260}.}
+\]
+This is a rigorous error statement about the residual.
+It is still not a proof that the residual equals zero.
+

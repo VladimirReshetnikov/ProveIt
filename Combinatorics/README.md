@@ -26,8 +26,8 @@ and exact growth-rate bounds for square-lattice polyominoes.
   builds on its parity recurrences and Sharma's Theorem 2.8; its own
   theorems are not formalized.  Beside the Gowers–Szemerédi development,
   [`Ramsey/Research/GowersSzemeredi/local-quantitative-refinements`](Ramsey/Research/GowersSzemeredi/local-quantitative-refinements/README.md)
-  is a research report built from one hundred and six external manuscripts
-  of 6 and 7 October 2026 (batches 115–137 of [`docs/incoming`](../docs/incoming/README.md),
+  is a research report built from one hundred and seven external manuscripts
+  of 6 to 8 October 2026 (batches 115–138 of [`docs/incoming`](../docs/incoming/README.md),
   all written in): sharper local estimates
   for density transfer and phase-flat partitions, the inverse step, cube
   and progression counts and the Proposition 17.7 phase extraction, each
@@ -38,7 +38,8 @@ and exact growth-rate bounds for square-lattice polyominoes.
   formalized and gains no formal status from its placement.  Three more
   research reports sit under `Ramsey/Research/`, placed on 7 October 2026
   from manuscripts that arrived with the Gowers batches but do not concern
-  Gowers's argument, with their delivered layout and their writes pending:
+  Gowers's argument, with their delivered layout; under Vladimir's rule of 9 October 2026
+  they are placement only, with no write planned:
   [`VanDerWaerden/superexponential-lower-bounds`](Ramsey/Research/VanDerWaerden/superexponential-lower-bounds/)
   (superexponential lower bounds for two-colour van der Waerden numbers by
   robust colourings),
@@ -53,15 +54,23 @@ and exact growth-rate bounds for square-lattice polyominoes.
 - [`BooleanFunctions/`](BooleanFunctions/), [`Sidorenko/`](Sidorenko/) and
   [`OrderedMatrices/`](OrderedMatrices/), opened on 7 October 2026, hold
   research reports only, placed from [`docs/incoming`](../docs/incoming/README.md)
-  with their delivered layout and their writes pending:
-  `BooleanFunctions/Research/square-root-degree-bound` (cell Fourier degree
-  against retained variance on the Boolean cube, from three manuscripts) and
-  `BooleanFunctions/Research/sensitivity-block-sensitivity` (an explicit
-  exponent above 65/32 for block against ordinary sensitivity);
+  with their delivered layout and no article write yet:
+  [`BooleanFunctions/Research/square-root-degree-bound`](BooleanFunctions/Research/square-root-degree-bound/README.md)
+  (cell Fourier degree against retained variance on the Boolean cube, from
+  four manuscripts; the fourth, of batch 138, re-derives the first without
+  citing it and supersedes nothing) and
+  [`BooleanFunctions/Research/sensitivity-block-sensitivity`](BooleanFunctions/Research/sensitivity-block-sensitivity/README.md)
+  (an explicit exponent above 65/32 for block against ordinary sensitivity;
+  its batch-138 Part II, a threshold-resolved amplification, reaches only
+  `3667/1809`), each with a README of dated reconciliation notes
+  (`eb8dee994`) pending the write;
   `Sidorenko/Research/local-fourier-sign-codes`,
   `Sidorenko/Research/polar-discriminant-mixing` and
   `Sidorenko/Research/sharp-incidence-stability`, three refinements of one
-  external Sidorenko preprint that share no theorem; and
+  external Sidorenko preprint that share no theorem, and
+  `Sidorenko/Research/four-cycle-quasirandomness` (batch 138, placed without
+  a write: the sharp set-cut discrepancy of kernels with small four-cycle
+  excess; it uses no Sidorenko theorem and is filed here by provenance); and
   `OrderedMatrices/Research/ordered-matrix-removal` (a 5 × 5 pattern for
   which polynomial ordered matrix removal fails, under a nested Apache-2.0
   licence).  Each builds on an external openai/math release, with

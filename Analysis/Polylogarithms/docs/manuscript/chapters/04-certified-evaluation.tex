@@ -1,0 +1,454 @@
+\section{A geometric evaluation formula that survives \texorpdfstring{$xy=1$}{xy=1}}
+\label{cert:sec:spectral}
+The preceding sections concern finite identities. We now give an evaluation
+method for the full double polylogarithm, including components for which
+no finite classical reduction has been established.
+
+\begin{lemma}[One-dimensional integral]
+\label{cert:lem:integral}
+For $a,b\ge1$, $|x|\le1$, $x\ne1$, and $|y|\le1$,
+\begin{equation}
+ \Li_{a,b}(x,y)=\frac{x}{(a-1)!}
+  \int_0^1\frac{(-\log t)^{a-1}\Li_b(xyt)}{1-xt}\,dt.
+\label{cert:eq:integral}
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $|x|<1$, the Mellin identity
+$n^{-a}=\int_0^1 t^{n-1}(-\log t)^{a-1}\,dt/(a-1)!$
+and absolute convergence give
+\[
+ \sum_{n>m\ge1}(xt)^ny^m/m^b
+ =\frac{xt}{1-xt}\Li_b(xyt).
+\]
+This proves \eqref{cert:eq:integral}. For a nontrivial unit outer argument,
+$1-rxt$ stays uniformly away from zero for $r$ sufficiently close to one.
+Also $|\Li_b(rxyt)|\le\Li_b(t)$, and
+\begin{equation}
+ \frac1{(a-1)!}\int_0^1(-\log t)^{a-1}\Li_b(t)\,dt
+ =\sum_{m\ge1}\frac1{m^b(m+1)^a}\le\zeta(a+b).
+\label{cert:eq:momentbound}
+\end{equation}
+Dominated convergence and summation by parts in the nested series therefore give the boundary
+case. Notice that $xy=1$ causes no problem: the logarithmic endpoint at
+$b=1$ is integrable in \eqref{cert:eq:momentbound}.
+\end{proof}
+
+Let $T_n$ denote the Chebyshev polynomial defined by
+$T_n(\cos u)=\cos(nu)$. Put
+\begin{equation}
+ d=\sqrt{1-x},\qquad r=\frac{1-d}{1+d},\qquad R=|r|,
+\label{cert:eq:dr}
+\end{equation}
+where the square root has positive real part. For $|x|\le1$, $x\ne1$,
+we have $\Real d>0$ and therefore $R<1$.
+
+\begin{lemma}[The kernel expansion]
+\label{cert:lem:kernel}
+Uniformly for $0\le t\le1$,
+\begin{equation}
+ \frac1{1-xt}=\frac1d\left(1+2\sum_{n\ge1}r^nT_n(2t-1)\right).
+\label{cert:eq:kernel}
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $s\in[-1,1]$, summing the two geometric series associated with
+$s=\cos u$ gives the classical identity
+\[
+ 1+2\sum_{n\ge1}r^nT_n(s)=\frac{1-r^2}{1-2rs+r^2}.
+\]
+This is also a direct consequence of the generating function in
+\cite{hstruct:DLMF}. Substituting \eqref{cert:eq:dr} shows
+\[
+ 1-xt=d\frac{1-2r(2t-1)+r^2}{1-r^2}.
+\]
+The series is uniform because $|T_n(s)|\le1$ and $R<1$.
+\end{proof}
+
+\begin{definition}
+For $v=xy$ and $n\ge0$, define the Chebyshev moment
+\begin{equation}
+ \mathcal M_n^{a,b}(v)=\frac1{(a-1)!}
+ \int_0^1(-\log t)^{a-1}T_n(2t-1)\Li_b(vt)\,dt.
+\label{cert:eq:Chebmoment}
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Certified Chebyshev--moment expansion]
+\label{cert:thm:spectral}
+Under the hypotheses of Lemma~\ref{cert:lem:integral}, with $x\ne0$,
+\begin{equation}
+ \Li_{a,b}(x,y)=\frac{x}{d}
+ \left(\mathcal M_0^{a,b}(v)+2\sum_{n\ge1}r^n\mathcal M_n^{a,b}(v)\right).
+\label{cert:eq:spectral}
+\end{equation}
+For $K\ge1$, let $E_K$ be the difference between the left side and the
+truncation with indices $0\le n<K$. Then
+\begin{equation}
+ |E_K|\le
+ \frac{2|x|\zeta(a+b)}{|d|(1-R)}R^K.
+\label{cert:eq:error}
+\end{equation}
+This estimate is uniform over $|y|\le1$, including $xy=1$.
+For nontrivial level-three or level-four outer roots,
+\begin{equation}
+ |E_K|\le\frac{16}{3\,4^K}.
+\label{cert:eq:uniformerror}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Insert \eqref{cert:eq:kernel} into \eqref{cert:eq:integral}. The integrable majorant
+in \eqref{cert:eq:momentbound} justifies termwise integration and gives
+$|\mathcal M_n^{a,b}(v)|\le\zeta(a+b)$ for all $n$.
+The tail of the resulting geometric series is \eqref{cert:eq:error}.
+For the specified roots, direct substitution in \eqref{cert:eq:dr} gives
+$R<1/4$ and $|d|>1$; the code also proves these inequalities by interval
+arithmetic before using them. Since $\zeta(a+b)\le\zeta(2)<2$, the
+bound becomes $4(1/4)^K/(1-1/4)=16/(3\,4^K)$.
+The zero outer argument, omitted only to avoid unnecessary notation,
+gives $\Li_{a,b}(0,y)=0$ directly.
+\end{proof}
+
+The proof does not appeal to cancellation in a sampled sequence, a fitted
+asymptotic expansion, or an empirical convergence diagnostic. In particular,
+when the product of two roots is one, the same argument and the same bound
+apply. The only new feature is the elementary cancellation in the exact
+moment formula, to which we now turn.
+
+\section{Every moment reduces to classical polylogarithms}
+\label{cert:sec:moments}
+Write the shifted Chebyshev polynomial as
+\begin{equation}
+ Q_n(t):=T_n(2t-1)=\sum_{j=0}^n c_{n,j}t^j.
+\label{cert:eq:Q}
+\end{equation}
+Its coefficients are integers and can be generated without symbolic
+integration:
+\begin{equation}
+ Q_0=1,\quad Q_1=2t-1,\quad Q_{n+1}=2(2t-1)Q_n-Q_{n-1}.
+\label{cert:eq:Qrec}
+\end{equation}
+Thus
+\begin{equation}
+ \mathcal M_n^{a,b}(v)=\sum_{j=0}^n c_{n,j}J_{a,b}(j+1;v),
+\label{cert:eq:momentpoly}
+\end{equation}
+where
+\begin{equation}
+ J_{a,b}(c;v)=\sum_{m\ge1}\frac{v^m}{m^b(m+c)^a},\qquad c\in\Z_{>0}.
+\label{cert:eq:J}
+\end{equation}
+The power series in \eqref{cert:eq:J} is absolutely convergent for $|v|\le1$.
+
+\begin{lemma}[Two-pole partial fractions]
+\label{cert:lem:partial}
+Put
+\begin{align}
+ A_s&=(-1)^{b-s}\binom{a+b-s-1}{a-1}c^{-(a+b-s)}
+          &&(1\le s\le b),\notag\\
+ C_s&=(-1)^b\binom{a+b-s-1}{b-1}c^{-(a+b-s)}
+          &&(1\le s\le a).
+\label{cert:eq:AC}
+\end{align}
+Then, for $u\ne0,-c$,
+\begin{equation}
+ \frac1{u^b(u+c)^a}=\sum_{s=1}^b\frac{A_s}{u^s}
+                          +\sum_{s=1}^a\frac{C_s}{(u+c)^s}.
+\label{cert:eq:partial}
+\end{equation}
+In particular, $A_1+C_1=0$.
+\end{lemma}
+\begin{proof}
+The principal part at $u=0$ follows by expanding
+$(u+c)^{-a}=c^{-a}(1+u/c)^{-a}$. Its coefficient of $u^{-s}$ after
+multiplication by $u^{-b}$ is exactly $A_s$.
+At $u=-c$, write $w=u+c$ and expand
+$u^{-b}=(-1)^bc^{-b}(1-w/c)^{-b}$; this gives $C_s$.
+The difference between the two sides has no finite poles and tends to
+zero at infinity, so it is identically zero.
+The equality $A_1=-C_1$ follows from
+$\binom{a+b-2}{a-1}=\binom{a+b-2}{b-1}$.
+\end{proof}
+
+For $s\ge1$, let
+$H_c^{(s)}(v)=\sum_{k=1}^c v^k/k^s$ and $H_c^{(s)}=H_c^{(s)}(1)$.
+A coefficient outside the ranges in \eqref{cert:eq:AC} is understood to be
+zero in the following theorem.
+
+\begin{theorem}[Finite classical moment formula]
+\label{cert:thm:moments}
+For $0<|v|\le1$, $v\ne1$,
+\begin{equation}
+ J_{a,b}(c;v)=\sum_{s=1}^b A_s\Li_s(v)
+       +v^{-c}\sum_{s=1}^a C_s\bigl(\Li_s(v)-H_c^{(s)}(v)\bigr).
+\label{cert:eq:momentfinite}
+\end{equation}
+At the resonant endpoint $v=1$ the finite expression is instead
+\begin{equation}
+ J_{a,b}(c;1)
+ =-C_1H_c^{(1)}+
+   \sum_{s=2}^{\max(a,b)}(A_s+C_s)\zeta(s)
+   -\sum_{s=2}^a C_sH_c^{(s)}.
+\label{cert:eq:momentone}
+\end{equation}
+No regularized zeta value is needed. At $v=0$, $J_{a,b}(c;0)=0$.
+\end{theorem}
+\begin{proof}
+Multiply \eqref{cert:eq:partial} by $v^m$ and sum over $m\ge1$.
+For $|v|<1$, all rearrangements are absolute, and
+\[
+ \sum_{m\ge1}\frac{v^m}{(m+c)^s}
+ =v^{-c}\bigl(\Li_s(v)-H_c^{(s)}(v)\bigr).
+\]
+Radial limits give \eqref{cert:eq:momentfinite} at $|v|=1$, $v\ne1$.
+At $v=1$, combine the two $s=1$ pieces at the level of partial sums:
+\[
+ A_1\sum_{m=1}^N\frac1m+C_1\sum_{m=1}^N\frac1{m+c}
+ =-C_1H_c^{(1)}+C_1\sum_{m=N+1}^{N+c}\frac1m.
+\]
+The last term tends to zero. Every $s\ge2$ term converges separately,
+which gives \eqref{cert:eq:momentone}.
+\end{proof}
+
+For example, when $a=b=1$, \eqref{cert:eq:momentone} reduces to
+\begin{equation}
+ J_{1,1}(c;1)=\frac{H_c}{c}.
+\label{cert:eq:J11}
+\end{equation}
+Consequently the resonant depth-two function has the explicit expansion
+\begin{equation}
+ \Li_{1,1}(x,x^{-1})=
+ \frac{x}{\sqrt{1-x}}\left[
+ 1+2\sum_{n\ge1}r^n\sum_{j=0}^n c_{n,j}\frac{H_{j+1}}{j+1}
+ \right],
+\label{cert:eq:resonant11}
+\end{equation}
+valid for a nontrivial unit outer argument. Its coefficients are rational.
+The error after $K$ terms is bounded by \eqref{cert:eq:error}, and the uniform
+level-three/four bound \eqref{cert:eq:uniformerror} applies.
+This is an exact infinite identity for a conditionally
+convergent depth-two case; it is not a finite rational expression in
+classical constants.
+
+\subsection{A resonant example beyond the first weight}
+For $(a,b)=(2,1)$, the coefficients are
+$A_1=c^{-2}$, $C_1=-c^{-2}$, and $C_2=-c^{-1}$, giving
+\begin{equation}
+ J_{2,1}(c;1)=\frac{H_c}{c^2}+\frac{H_c^{(2)}-\zeta(2)}{c}.
+\label{cert:eq:J21}
+\end{equation}
+Substitution in \eqref{cert:eq:momentpoly} and \eqref{cert:eq:spectral} yields a
+geometrically convergent formula for
+$\Li_{2,1}(\rho,\rho^{-1})$, $\rho=e^{2\pi\iu/3}$,
+whose coefficient data involve only rational numbers and $\zeta(2)$.
+The location of the singular product $v=1$ has become an explicit,
+finite harmonic-sum correction rather than a numerical failure mode.
+
+\section{Optimal geometric rate and the conductor dependence}
+\label{cert:sec:optimal}
+The rate in Theorem~\ref{cert:thm:spectral} is not merely an artifact of an
+arbitrary expansion point. It is the best exponential rate obtainable
+by uniformly approximating its outer rational kernel with polynomials.
+This statement concerns the kernel, not the minimal complexity of all
+possible algorithms for evaluating a special value.
+
+\begin{theorem}[Sharp exponential rate for polynomial kernels]
+\label{cert:thm:optimal}
+Fix $0<|x|\le1$, $x\ne1$, and let $d,r,R$ be as in \eqref{cert:eq:dr}.
+For $K\ge1$, define
+\[
+ e_{K-1}(x)=\inf_{\deg p<K}\max_{0\le t\le1}
+           \left|\frac1{1-xt}-p(t)\right|,
+\]
+where the infimum allows complex polynomial coefficients. Then
+\begin{equation}
+ \frac{R^K}{|d|}\le e_{K-1}(x)
+       \le\frac{2R^K}{|d|(1-R)}.
+\label{cert:eq:bestpoly}
+\end{equation}
+In particular,
+$\lim_{K\to\infty}e_{K-1}(x)^{1/K}=R$.
+\end{theorem}
+\begin{proof}
+The upper bound is the uniform tail bound in \eqref{cert:eq:kernel}.
+For the lower bound, use the $K$th Chebyshev coefficient of
+$f(s)=(1-x(s+1)/2)^{-1}$. By \eqref{cert:eq:kernel}, it is $2r^K/d$.
+The corresponding coefficient of a polynomial of degree less than $K$
+vanishes. For any continuous complex function $g$ on $[-1,1]$,
+\[
+ \left|\frac2\pi\int_0^\pi g(\cos u)\cos(Ku)\,du\right|
+ \le2\|g\|_\infty.
+\]
+Apply this with $g=f-p$ to obtain
+$2R^K/|d|\le2\|f-p\|_\infty$ and take the infimum.
+Taking $K$th roots proves the final statement.
+\end{proof}
+
+\begin{corollary}[Adjacent roots]
+\label{cert:cor:conductor}
+For $x_q=e^{2\pi\iu/q}$, as $q\to\infty$,
+\begin{equation}
+ -\log R_q=2\sqrt{\frac\pi q}+O(q^{-3/2}).
+\label{cert:eq:rateq}
+\end{equation}
+For fixed $a,b$, the bound \eqref{cert:eq:error} guarantees an absolute error
+at most $10^{-P}$ using
+\begin{equation}
+ K=O\bigl(\sqrt q(P+\log q)\bigr)
+\label{cert:eq:Kq}
+\end{equation}
+outer-kernel terms, uniformly in $|y|\le1$.
+\end{corollary}
+\begin{proof}
+With $\theta=2\pi/q$,
+$d=\sqrt{1-e^{\iu\theta}}
+=e^{-\iu\pi/4}\sqrt\theta\,(1+O(\theta))$.
+Hence
+\[
+ -\log|r|=\Real\left(\log(1+d)-\log(1-d)\right)
+ =2\Real(d+d^3/3+\cdots)
+ =\sqrt{2\theta}+O(\theta^{3/2}),
+\]
+which is \eqref{cert:eq:rateq}. Also $|d|\asymp q^{-1/2}$ and
+$1-R\asymp q^{-1/2}$, so the prefactor in \eqref{cert:eq:error} is $O(q)$.
+Solving the resulting geometric inequality gives \eqref{cert:eq:Kq}.
+\end{proof}
+
+For comparison, expansion around $t=1/2$ gives
+\[
+ \frac1{1-xt}=\frac1{1-x/2}
+ \sum_{n\ge0}\left(\frac{x(t-1/2)}{1-x/2}\right)^n.
+\]
+At a unit outer argument its uniform ratio is
+$R_{\mathrm{mid}}=1/|2-x|$. For $x=x_q$,
+\begin{equation}
+ -\log R_{\mathrm{mid}}
+ =\tfrac12\log(5-4\cos(2\pi/q))
+ =\frac{4\pi^2}{q^2}+O(q^{-4}).
+\label{cert:eq:midrate}
+\end{equation}
+Thus its corresponding sufficient degree is
+$O(q^2(P+\log q))$. This is a comparison between two proved expansions,
+not a claim to improve every previously published polylogarithm algorithm.
+
+\paragraph{Arithmetic cost versus approximation degree.}
+With weights fixed, the monomial moments for $1\le c\le K$ can be
+assembled from finitely many single values and incrementally updated
+$H_c^{(s)}(v)$ in $O((a+b)K)$ arithmetic operations.
+The triangular transform \eqref{cert:eq:momentpoly} costs $O(K^2)$ operations
+in the direct implementation. Thus, after the necessary classical values
+are available, $O(K^2+(a+b)K)$ arithmetic operations suffice for the
+spectral truncation. These are unit-cost arithmetic counts, not bit
+complexity bounds. At general large conductor, computing the inner single
+values and representing the algebraic arguments have their own costs.
+The implementation supplied here certifies levels three and four; the
+analytic theorem has the wider stated domain.
+
+\section{Outward-rounded evaluation and the treatment of cancellation}
+\label{cert:sec:cert}
+A theorem about a truncation error is not by itself a certificate for a
+floating-point implementation. This section specifies how finite
+arithmetic errors are enclosed in the accompanying executable code.
+
+\subsection{An independent geometric expansion for the single values}
+To avoid using the desired parity identities inside their own numerical
+checks, the certified evaluator computes its classical constants from a
+separate Euler expansion.
+
+\begin{lemma}[Euler expansion with a simple rigorous tail]
+\label{cert:lem:euler}
+Let $s\ge1$ be an integer and let $z\ne1$, with
+$\tau=z/(z-1)$ satisfying $|\tau|<1$. For the arguments used below,
+\begin{equation}
+ \Li_s(z)=-\sum_{N\ge1}\tau^N\frac{h_{s-1}^{\star}(N)}{N},
+\label{cert:eq:euler}
+\end{equation}
+where $h_d^{\star}(N)$ is the complete homogeneous symmetric polynomial
+of degree $d$ in $1,1/2,\ldots,1/N$, and $h_0^{\star}(N)=1$.
+If $|\tau|\le r_0<1$, then the error after $N\le M$ is at most
+\begin{equation}
+ \frac{r_0^{M+1}}{1-r_0}.
+\label{cert:eq:eulertail}
+\end{equation}
+\end{lemma}
+\begin{proof}
+In the standard Mellin integral for $\Li_s(z)$, expand
+\[
+ \frac{z}{1-zt}=-\sum_{N\ge1}\tau^N(1-t)^{N-1}.
+\]
+The coefficient integral is
+\[
+ \frac1{(s-1)!}\int_0^1(-\log t)^{s-1}(1-t)^{N-1}\,dt
+ =\frac{h_{s-1}^{\star}(N)}{N}.
+\]
+Indeed, summing its generating series in $u^{s-1}$ gives
+\[
+ \int_0^1 t^{-u}(1-t)^{N-1}\,dt
+ =\frac1N\prod_{j=1}^N(1-u/j)^{-1},
+\]
+first for $u$ close to zero. This can be proved by the beta integral or
+by $N-1$ integrations by parts. Each coefficient integral is between
+zero and one, since $(1-t)^{N-1}\le1$. The geometric tail then proves
+\eqref{cert:eq:eulertail}.
+\end{proof}
+
+For the nontrivial roots of levels three and four, and for $z=-1$,
+$|\tau|\le1/\sqrt2<3/4$.
+The implementation uses the rational choice $r_0=3/4$ and computes the
+coefficients incrementally from
+\begin{equation}
+ h_d^{\star}(N)=h_d^{\star}(N-1)+\frac{h_{d-1}^{\star}(N)}{N}.
+\label{cert:eq:hrec}
+\end{equation}
+It obtains $\zeta(s)$ for $s\ge2$ from
+$-\Li_s(-1)/(1-2^{1-s})$, obtains $\pi$ from
+$4\Imag\Li_1(\iu)$, and obtains $L$ from $-\Li_1(-1)$.
+No conjectural reduction enters these evaluations.
+
+\subsection{The interval arithmetic contract}
+Fix a decimal scale $Q=10^D$. A real interval is stored as integers
+$[l,u]/Q$. Addition is exact at this scale. For multiplication, the four
+integer endpoint products are enclosed by a floor of their minimum
+and a ceiling of their maximum after division by $Q$.
+A reciprocal is permitted only when zero is excluded, and is again
+rounded outward. A nonnegative square root is enclosed with integer
+square roots of $lQ$ and $uQ$. Complex values are rectangular pairs of
+such real intervals.
+
+All these rules are elementary rational inequalities. By induction over
+the expression tree, the computed rectangle contains the exact finite
+expression. The analytic disk radius from \eqref{cert:eq:error} or
+\eqref{cert:eq:eulertail} is then added to both real and imaginary coordinate
+intervals. Enclosing a disk by a square is conservative but valid.
+The square-root branch in \eqref{cert:eq:dr} is fixed by its positive real
+part and the sign of the imaginary part of $1-x$.
+
+The executable checks $R<1/4$ and $|d|\ge1$ by interval inequalities
+before using \eqref{cert:eq:uniformerror}. It rejects unsupported outer
+arguments instead of silently using an unproved bound. In particular,
+the supplied certified implementation does not accept outer argument one.
+
+\subsection{Why extra working precision is necessary}
+The coefficients in \eqref{cert:eq:Q} alternate in sign and satisfy
+\begin{equation}
+ \sum_{j=0}^n|c_{n,j}|=T_n(3)
+ =\frac{(3+2\sqrt2)^n+(3-2\sqrt2)^n}{2}.
+\label{cert:eq:cnnorm}
+\end{equation}
+The alternating signs follow, for example, from the explicit formula
+\[
+ c_{n,j}=(-1)^{n-j}\frac{n}{n+j}\binom{n+j}{2j}4^j
+ \quad(n\ge1),
+\]
+and evaluating $Q_n$ at $t=-1$ gives \eqref{cert:eq:cnnorm}.
+Thus computing the moments by monomial conversion can lose a number of
+digits proportional to $K$, even though the moments themselves are bounded.
+
+The interval code does not assume that this cancellation is harmless.
+For target $P=35$ it uses $K=73$ spectral terms and $D=246$ working decimal
+places. Each single value uses $M=1997$ Euler terms and its own rigorous
+tail. These are conservative choices rather than tuned speed records.
+The actual final widths, not a heuristic guard-digit count, determine
+whether a certificate is accepted. A future stable recurrence or validated
+Clenshaw-style evaluation could reduce the guard overhead; that is not
+needed for the present certificates.

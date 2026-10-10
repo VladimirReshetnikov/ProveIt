@@ -1,0 +1,320 @@
+% Research contribution for the parent manuscript; not a standalone document.
+% Suggested citation key: Panzer2017 (arXiv:1512.04482v3).
+
+\section{Proof of the five Gaussian weight-six identities}
+\label{sec:gaussian-six-proof}
+
+Put
+\[
+ D_{a,b}(z)=\operatorname{Li}_{a,b}(z,1)
+   =\sum_{n>m\ge1}\frac{z^n}{n^a m^b},\qquad
+ g_{a,b}=\Im D_{a,b}(i),\qquad w=a+b.
+\]
+We use the principal analytic continuation from the unit disk. In particular,
+on the open upper unit semicircle, $D_{a,b}(1/z)=\overline{D_{a,b}(z)}$.
+The case $a=1$ is interpreted by the convergent boundary series, or
+equivalently its Abel limit. For $b>1$, this boundary convergence follows
+by writing $H_{n-1}^{(b)}=\zeta(b)+O(n^{1-b})$; for $b=1$, Dirichlet's
+test applies to the eventually decreasing sequence $H_{n-1}/n$.
+
+The five identities labelled \texttt{gauss:eq:g51} through
+\texttt{gauss:eq:g15} in the source manuscript are all exact. Their
+coefficients require no correction. What changes is their status: the
+finite formulas below give proofs and reproducible rational certificates.
+The general parity principle and its depth-two formula are known; the
+contribution here is their careful specialization to the manuscript's
+convention, explicit verification of the five rows, and a complete extension
+to weight eight. No claim of priority for the general parity theorem is made.
+
+\subsection{A finite inversion formula with the boundary cancellation exposed}
+
+For $\Im z>0$, write $L=\Log z$ and set
+\[
+ \mathcal B_n(z)=\frac{(2\pi i)^n}{n!}
+ B_n\!\left(\frac{L}{2\pi i}\right),\qquad n\ge0,
+\]
+where $B_1(x)=x-\tfrac12$. Thus $\mathcal B_0=1$ and
+$\mathcal B_n(i)=(2\pi i)^nB_n(1/4)/n!$.
+
+\begin{theorem}[Explicit depth-two inversion at $(z,1)$]
+\label{thm:gaussian-inversion}
+For integers $a,b\ge1$ and $\Im z>0$,
+\begin{align}
+ D_{a,b}(z)-(-1)^wD_{a,b}(1/z)
+ ={}&-\operatorname{Li}_w(z)\label{eq:gaussian-inversion}\\
+ &+\sum_{k=1}^{a}(-1)^k
+   \binom{b+k-1}{b-1}\zeta(b+k)\mathcal B_{a-k}(z)\notag\\
+ &+(-1)^a\sum_{k=0}^{b}\binom{a+k-1}{a-1}
+   \operatorname{Li}_{a+k}(1/z)\mathcal B_{b-k}(z).\notag
+\end{align}
+In particular, no divergent $\zeta(1)$ occurs, including when $a=1$ or
+$b=1$.
+\end{theorem}
+
+\begin{proof}
+Apply the depth-two functional equation of Panzer,
+\cite[Eq.~(3.2)]{Panzer2017}, with his ascending-index pair $(n_1,n_2)=(b,a)$
+and arguments $(z_1,z_2)=(u,z)$, taking $u=e^{i\varepsilon}$ with
+$\varepsilon\downarrow0$ small enough that $uz$ remains in the upper
+half-plane. His Bernoulli factor
+is exactly $\mathcal B_n(z)$ on the indicated branch, since
+$\Log(-z)=L-i\pi$ in the upper half-plane. The term with $\mu=b$ in
+the first sum and the separate product term cancel: their difference is
+\[
+ \operatorname{Li}_b(u)
+ \bigl(\mathcal B_a(uz)-\mathcal B_a(z)\bigr)\longrightarrow0.
+\]
+For $b\ge2$ this is continuity. For $b=1$, the first factor is
+$O(|\log(1-u)|)$ and the second $O(|1-u|)$, so it still tends to zero.
+All remaining zeta arguments are at least $b+1\ge2$.
+Reindexing the surviving sums gives \eqref{eq:gaussian-inversion}.
+The left side has the required limit because both relevant multiple
+polylogarithms are analytic near $(1,z)$ when $z$ is nonreal. The
+independent differential proof below also verifies the specialization
+without an appeal to a formal divergent substitution.
+\end{proof}
+
+\subsection{A rational coefficient formula at every even weight}
+
+Let
+\[
+ q_n=\frac{2^n}{n!}B_n(1/4),\qquad
+ C_{\mu,r}=\begin{cases}\binom{\mu-1}{r-1},&\mu\ge r,\\0,&\mu<r,
+ \end{cases}
+ \qquad d_\mu=2^{-\mu}(1-2^{1-\mu})\quad(\mu\ge2).
+\]
+Every $q_n$ is rational. Recall $\beta(s)=\sum_{j\ge0}(-1)^j/(2j+1)^s$
+and $G=\beta(2)$.
+
+\begin{corollary}[Explicit Gaussian coefficient rule]
+\label{cor:gaussian-coefficient-rule}
+If $w=a+b$ is even, then
+\begin{align}
+ g_{a,b}={}&\frac12\sum_{\substack{2\le\mu\le w\\\mu\ \mathrm{even}}}
+ \left[(-1)^{a+1+(w-\mu)/2}C_{\mu,a}q_{w-\mu}
+       -\delta_{\mu,w}\right]\pi^{w-\mu}\beta(\mu)
+ \label{eq:gaussian-real-coefficients}\\
+ &+\frac12\sum_{\substack{3\le\mu<w\\\mu\ \mathrm{odd}}}
+ (-1)^{a+1+(w-\mu-1)/2}q_{w-\mu}
+ \left[C_{\mu,b}-\delta_{\mu,b}+d_\mu C_{\mu,a}\right]
+ \pi^{w-\mu}\zeta(\mu)\notag\\
+ &+\frac{\delta_{a,1}}4(-1)^{w/2-1}q_{w-1}\pi^{w-1}\log2.\notag
+\end{align}
+Consequently $g_{a,b}$ lies in the rational linear span of
+$\pi^{w-2j}\beta(2j)$, $\pi^{w-2j-1}\zeta(2j+1)$, and, only if $a=1$,
+$\pi^{w-1}\log2$. This is a linear reduction to single special values
+times powers of $\pi$.
+\end{corollary}
+
+\begin{proof}
+At $z=i$ the left side of \eqref{eq:gaussian-inversion} is $2ig_{a,b}$.
+Insert
+\[
+ \operatorname{Li}_1(-i)=-\tfrac12\log2-\tfrac{i\pi}{4},\qquad
+ \operatorname{Li}_\mu(-i)=-d_\mu\zeta(\mu)-i\beta(\mu)\quad(\mu\ge2),
+ \qquad\mathcal B_n(i)=i^n\pi^nq_n.
+\]
+Even $\mu$ in the last sum supplies its beta term; odd $\mu$ supplies
+its real single-polylogarithm part. The first sum contributes only at odd
+$\mu=b+k$, with $\mu>b$. This last strict inequality is represented by
+$C_{\mu,b}-\delta_{\mu,b}$. Taking imaginary parts and dividing by two
+gives the displayed formula.
+\end{proof}
+
+Two useful checks follow immediately. The coefficient of $\beta(w)$ is
+\[
+ \frac{(-1)^{a+1}\binom{w-1}{a-1}-1}{2},
+\]
+so it vanishes in $g_{1,w-1}$. Also $\beta(2j)$ can occur only when
+$2j\ge a$, apart from the already included collision term at $2j=w$.
+These structural zeros explain several sparse rows in the tables; they
+are not conclusions drawn from a numerical search.
+
+\subsection{The five manuscript rows are theorems}
+
+Applying \eqref{eq:gaussian-real-coefficients} at $w=6$ gives
+\begin{align}
+ 2048g_{5,1}&=-64\pi^3\zeta(3)-527\pi\zeta(5)+4096\beta(6),\\
+ 1536g_{4,2}&=96\pi^3\zeta(3)-32\pi^2\beta(4)
+              +1581\pi\zeta(5)-8448\beta(6),\\
+ 1024g_{3,3}&=-3\pi^3\zeta(3)+64\pi^2\beta(4)
+              -1581\pi\zeta(5)+4608\beta(6),\\
+ 23040g_{2,4}&=-14\pi^4G+135\pi^3\zeta(3)-1440\pi^2\beta(4)
+               +23715\pi\zeta(5)-69120\beta(6),\\
+ 92160g_{1,5}&=-150\pi^5\log2+56\pi^4G-270\pi^3\zeta(3)
+               +1920\pi^2\beta(4)-675\pi\zeta(5).
+\end{align}
+Thus every coefficient and sign in the original five conjectural rows is
+confirmed by exact finite algebra. This does not assert independence of
+the remaining real components or of any single-value basis.
+
+\subsection{The complete next even-weight table}
+
+The same rule proves the following seven identities at weight eight.
+These are extensions of the snapshot's displayed table; their global
+bibliographic novelty is not asserted.
+\begin{align}
+ 98304g_{7,1}={}&294912\beta(8)-320\pi^5\zeta(3)
+                    -3072\pi^3\zeta(5)-24765\pi\zeta(7),\\
+ 49152g_{6,2}={}&-1024\pi^2\beta(6)-540672\beta(8)
+        +320\pi^5\zeta(3)+6144\pi^3\zeta(5)+74295\pi\zeta(7),\\
+ 98304g_{5,3}={}&10240\pi^2\beta(6)+1671168\beta(8)
+                   -18522\pi^3\zeta(5)-371475\pi\zeta(7),\\
+ 368640g_{4,4}={}&-224\pi^4\beta(4)-76800\pi^2\beta(6)
+          -6635520\beta(8)+47430\pi^3\zeta(5)+1857375\pi\zeta(7),\\
+ 491520g_{3,5}={}&896\pi^4\beta(4)+102400\pi^2\beta(6)
+                    +4915200\beta(8)\notag\\
+          &-150\pi^5\zeta(3)-2700\pi^3\zeta(5)-1857375\pi\zeta(7),\\
+ 15482880g_{2,6}={}&-248\pi^6G-28224\pi^4\beta(4)
+                  -1612800\pi^2\beta(6)-61931520\beta(8)\notag\\
+          &+9450\pi^5\zeta(3)+56700\pi^3\zeta(5)+23402925\pi\zeta(7),\\
+ 30965760g_{1,7}={}&496\pi^6G+18816\pi^4\beta(4)+645120\pi^2\beta(6)
+                    -5124\pi^7\log2\notag\\
+          &-9450\pi^5\zeta(3)-28350\pi^3\zeta(5)-59535\pi\zeta(7).
+\end{align}
+
+\subsection{Independent differential proof and exact boundary data}
+
+This provides a second derivation, with different bookkeeping, of every
+coefficient in the two tables. Set $Q_n(L)=-\mathcal B_n(e^L)$, so
+$Q_0=-1$ and $Q'_n=Q_{n-1}$ for $n\ge1$. Classical inversion is
+\[
+ \operatorname{Li}_n(z)+(-1)^n\operatorname{Li}_n(1/z)=Q_n(L).
+\]
+For $P_{a,b}(z)=D_{a,b}(z)-(-1)^{a+b}D_{a,b}(1/z)$ and $D=d/dL$,
+termwise differentiation inside the disk followed by analytic continuation
+gives
+\[
+ DP_{a,b}=P_{a-1,b}\quad(a>1),\qquad
+ DP_{1,b}=-\operatorname{Li}_b(z)+\frac{Q_b(L)}{1-z}.
+\]
+Define the explicit function
+\[
+ R_{a,b}(L)=Q_{a+b}(L)-\operatorname{Li}_{a+b}(e^L)
+ +\sum_{k=0}^{b}(-1)^k\binom{a+k-1}{k}
+       Q_{b-k}(L)\operatorname{Li}_{a+k}(e^L).
+\]
+Pascal's identity gives $DR_{a,b}=R_{a-1,b}$ for $a>1$. At $a=1$,
+the sum telescopes to
+$DR_{1,b}=-\operatorname{Li}_b(z)+Q_b(L)/(1-z)$, with the $k=b$ term
+$(-1)^bQ_0\operatorname{Li}_{b+1}$ essential. Hence
+\begin{equation}\label{eq:gaussian-ode-certificate}
+ P_{a,b}(z)=R_{a,b}(L)+\sum_{j=0}^{a-1}\frac{c_{a-j,b}}{j!}L^j,
+\end{equation}
+where
+\begin{align}
+ c_{1,b}&=(-1)^{b+1}b\zeta(b+1),\label{eq:gaussian-base-constant}\\
+ c_{r,b}&=(1-(-1)^{r+b})\zeta(r,b)-R_{r,b}(0)\qquad(r\ge2).
+ \label{eq:gaussian-other-constants}
+\end{align}
+In the second line every single polylogarithm in $R_{r,b}(0)$ is replaced
+by its zeta value. The double-zeta convention is again descending:
+$\zeta(r,b)=\sum_{n>m}n^{-r}m^{-b}$.
+
+Here is a careful verification of the exceptional boundary line
+\eqref{eq:gaussian-base-constant}. For $b>1$,
+\[
+ D_{1,b}(z)=\zeta(b)\operatorname{Li}_1(z)-\zeta(b,1)-\zeta(b+1)+o(1)
+ \quad(z\to1),
+\]
+because the coefficient difference is absolutely summable and its value
+at one is
+$-\sum_{m\ge n\ge1}n^{-1}m^{-b}=-\zeta(b,1)-\zeta(b+1)$.
+With $z=e^{i\theta}$, $\theta\downarrow0$,
+$\operatorname{Li}_1(z)=-\log\theta+i\pi/2+o(1)$.
+Thus for odd $b>1$, $P_{1,b}\to i\pi\zeta(b)$; for even $b$,
+\[
+ P_{1,b}=-2\zeta(b)\log\theta-2\zeta(b,1)-2\zeta(b+1)+o(1).
+\]
+Now use $Q_{2m}(0)=2\zeta(2m)$, $Q_1(0)=i\pi$,
+$Q_{2m+1}(0)=0$ for $m\ge1$, and the two classical identities
+\begin{align*}
+ \zeta(b,1)&=\frac b2\zeta(b+1)
+ -\frac12\sum_{r=2}^{b-1}\zeta(r)\zeta(b+1-r),\\
+ \sum_{j=1}^{m-1}\zeta(2j)\zeta(2m-2j)&=\frac{2m+1}{2}\zeta(2m),\qquad m\ge2.
+\end{align*}
+They give exactly $P_{1,b}-R_{1,b}\to(-1)^{b+1}b\zeta(b+1)$.
+For $b=1$ use $D_{1,1}(z)=\tfrac12\log^2(1-z)$ directly and
+\[
+ \Log(1-1/z)=\Log(1-z)-L+i\pi\quad(\Im z>0).
+\]
+This yields $P_{1,1}=R_{1,1}+\zeta(2)$, verifying the same formula.
+For $r\ge2$, absolute convergence at $z=1$ proves
+\eqref{eq:gaussian-other-constants}; induction then proves
+\eqref{eq:gaussian-ode-certificate}.
+
+\paragraph{Finite double-zeta certificates.}
+Only odd-weight double zeta values at weights three, five, and seven are
+needed for the two tables. They need no unproved reduction. The elementary
+depth-two sum theorem is
+\[
+ \sum_{a=2}^{N-1}\zeta(a,N-a)=\zeta(N),\qquad N\ge3.
+\]
+Indeed, with $n=m+k$, the inner geometric sum is
+\[
+ \sum_{a=2}^{N-1}\frac1{n^a m^{N-a}}
+ =\frac1{m^{N-1}}\left(\frac1k-\frac1{m+k}\right)
+      -\frac1{k(m+k)^{N-1}}.
+\]
+Summing first over $k$ changes the first term to
+$\sum_mH_m/m^{N-1}$, whereas the second is
+$\sum_mH_{m-1}/m^{N-1}$. Their difference is $\zeta(N)$.
+Summing stuffles then also proves the displayed height-one formula for
+$\zeta(b,1)$. For completeness, the even-zeta convolution follows by
+squaring $\sum_{j\ge1}\zeta(2j)x^{2j}=(1-\pi x\cot\pi x)/2$
+and differentiating this elementary generating function.
+
+At weight five, putting $X=\zeta(2,3)$, $Y=\zeta(3,2)$,
+$Z=\zeta(4,1)$, the sum theorem, stuffle, and shuffle give
+\[
+ X+Y+Z=\zeta(5),\quad X+Y=\zeta(2)\zeta(3)-\zeta(5),\quad
+ X+3Y+6Z=\zeta(2)\zeta(3).
+\]
+Their unique solution is
+\[
+ X=\tfrac92\zeta(5)-2\zeta(2)\zeta(3),\quad
+ Y=3\zeta(2)\zeta(3)-\tfrac{11}2\zeta(5),\quad
+ Z=2\zeta(5)-\zeta(2)\zeta(3).
+\]
+At weight seven let $x_a=\zeta(a,7-a)$ for $2\le a\le6$, and put
+$A=\zeta(2)\zeta(5)$, $B=\zeta(3)\zeta(4)$, $Z=\zeta(7)$.
+The corresponding exact system is
+\[
+ \begin{pmatrix}
+ 1&1&1&1&1\\1&0&0&1&0\\0&1&1&0&0\\
+ 1&2&3&5&10\\0&1&4&10&20
+ \end{pmatrix}
+ \begin{pmatrix}x_2\\x_3\\x_4\\x_5\\x_6\end{pmatrix}
+ =\begin{pmatrix}Z\\A-Z\\B-Z\\A\\B\end{pmatrix}.
+\]
+Its determinant is $-2$. Thus
+\[
+ (x_2,x_3,x_4,x_5,x_6)
+ =(10Z-4A-2B,\,-18Z+10A+B,\,17Z-10A,\,-11Z+5A+2B,\,3Z-A-B).
+\]
+The shuffle coefficients used here are exactly
+\[
+ \zeta(p)\zeta(q)=
+ \sum_{j=0}^{p-1}\binom{q+j-1}{j}\zeta(q+j,p-j)
+ +\sum_{j=0}^{q-1}\binom{p+j-1}{j}\zeta(p+j,q-j),\qquad p,q\ge2.
+\]
+Consequently both derivations of all twelve rows reduce to explicitly
+displayed finite rational operations.
+
+\paragraph{Reproducibility and validation.}
+The script \texttt{gaussian\_parity.py} implements both
+\eqref{eq:gaussian-inversion} and \eqref{eq:gaussian-real-coefficients}.
+The independently organized script \texttt{extend\_weight8.py} implements
+the differential certificate and solves the exact double-zeta systems.
+All twelve identities agree symbolically. A separate 90-digit numerical
+check evaluates
+\[
+ D_{a,b}(i)=\frac{i}{(a-1)!}\int_0^1
+       \frac{(-\log t)^{a-1}\operatorname{Li}_b(it)}{1-it}\,dt,
+\]
+whose power-series expansion proves the formula for the integral directly.
+The largest observed absolute residual over the twelve rows was below
+$2.3\times10^{-90}$. These quadratures are numerical cross-checks; the
+finite formulas and proofs establish the identities. Exact rational
+coefficient vectors are recorded in \texttt{gaussian\_coefficients.json}.
+

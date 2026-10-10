@@ -1,0 +1,69 @@
+Independent mathematical audit of the S6 rational residual certificate
+====================================================================
+
+Audited implementation: scripts/certify_s6.py
+Source SHA256 before the suggested assertion hardening:
+b7b00d84eab152c1166ee6b6157aeee814fb25e1fb050a9f8b88fa852e296306
+Audited proof: the positive-measure Euler-tail argument reproduced in
+article.pdf, Section 4.8. The proof and implementation were reviewed
+independently within this research task. This is an internal audit,
+not an external referee report or formal proof-assistant verification.
+
+RESULT: PASS. The current exact certificate rigorously encloses the
+integer-normalized candidate residual within (-10^-260, 10^-260).
+It does not prove that residual equals zero.
+
+Mathematical checks
+------------------
+1. With v=t^2, z=t^2*u^q and the positive measure in Section 4.8,
+   c_n = integral(v^n-z^n) and integral(v-z)=c_1=H_q^(b)/3^a.
+   Although the measure has infinite total mass, v-z is integrable.
+2. For k>=1, the backward finite-difference numerator is
+   integral[(1-v)^k-(1-z)^k]. It is nonpositive and has absolute value
+   at most k*c_1. Hence all Euler-tail terms have the asserted sign,
+   and summing k>=N gives (N+1)*2^(-N)*c_1 exactly. The alternative
+   derivative bound for the finite Euler-tail kernel gives the same result.
+3. For elementary coefficients 1/(d*n+1)^s, the moment measure is
+   positive with total mass 1. Euler-tail terms are nonnegative and
+   their sum is at most 2^(-N).
+4. The conversions zeta(3)=(4/3)eta(3), zeta(5)=(16/15)eta(5),
+   G=beta(2), and log(2)=eta(1) are correct.
+5. Machin's identity has the correct factors and sign. Exact rational
+   tangent arithmetic gives tan(4 atan(1/5)-atan(1/239))=1; the angle
+   lies in (0,pi/2). Both used truncation counts are even, so their
+   arctangent partial sums are lower bounds. Scaling the second interval
+   by -4 correctly reverses its endpoints.
+6. All interval multiplication extrema are taken over the four corners;
+   powers use repeated sound multiplication; negative coefficient
+   scalings reverse endpoints. Shared constants cause no validity issue
+   because this merely enlarges an enclosure.
+7. Denominator divisibility is correct for q,d in {1,2}: every divisor
+   in the N input terms is at most 2N and divides lcm(1,...,2N).
+8. The integer tail-weight recurrence gives sum_{j=n+1}^N binom(N,j).
+   These are the exact Euler weights for k=0,...,N-1.
+9. Signed floor and ceiling implement outward decimal rounding. Every
+   endpoint is inclusive. The claimed absolute bound is strict.
+
+Independent execution checks
+----------------------------
+The original source was executed unchanged in a separate audit directory,
+leaving the source and its original certificate intact.
+The regenerated report is identical to the original report. Every basket
+and residual decimal interval was checked against the underlying exact
+Fraction endpoints for outward enclosure and rounding width <10^-280.
+All 96 independent finite-difference-versus-binomial-weight comparisons
+for the four harmonic baskets and N=1,...,24 agreed exactly.
+
+The residual enclosure, displayed here to 20 significant digits, is
+[-5.0156638589421246319e-261, 3.844034286695850983e-262].
+The complete 280-decimal-place outward-rounded endpoints are in
+data/s6_rational_certificate.json. Both the exact rational interval and
+those full exported endpoints lie strictly between -10^-260 and 10^-260.
+
+Assertion hardening completed
+-----------------------------
+The final implementation requires digits_bound>=260 and directly checks
+both rational endpoints against +/-10^-260. These assertions strengthen
+the release gate; they do not change the computed interval. The hardened
+implementation was rerun successfully, including through make exact.
+Its delivered checksum is recorded in SHA256SUMS.

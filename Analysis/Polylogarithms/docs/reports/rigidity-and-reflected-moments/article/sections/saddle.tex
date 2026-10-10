@@ -1,0 +1,287 @@
+\section{Exponential cancellation at proportional harmonic depth}
+\label{sec:saddle}
+
+The algebraic results above organize special arguments. We now turn to an
+analytic question left open by the earlier alternating-harmonic report
+\cite{repoHarmonic}: how rapidly does its normalized sum tend to zero
+below the first-term transition? The case of proportional outer exponent
+and harmonic depth has an explicit rate function. This is a continuation
+of that report's results, not another proof of its already established
+reflection identity.
+
+For integers $h,n\geq0$, define
+\[
+ e_h(n)=[u^h]\prod_{j=1}^n(1+u/j),\qquad
+ T_{p,h}(a)=\sum_{n\geq0}\frac{(-1)^ne_h(n)}{(n+a)^p},
+ \quad a,p>0.
+\]
+Thus $e_0(n)=1$, $e_1(n)=H_n$, and
+$e_2(n)=(H_n^2-H_n^{(2)})/2$. Ordinary convergence holds for $p>0$;
+absolute convergence holds for $p>1$. The Gaussian normalization is
+$S_{p,h}=2^{-p}T_{p,h}(1/2)$. The positive Mellin integral
+\begin{equation}\label{eq:positive-mellin}
+ T_{p,h}(a)=\frac{(-1)^h}{h!\,\Gamma(p)}
+ \int_0^\infty
+ \frac{x^{p-1}e^{-ax}\log^h(1+e^{-x})}{1+e^{-x}}\,dx
+\end{equation}
+follows from
+\[
+ \sum_{n\geq0}e_h(n)z^n
+ =\frac{(-\log(1-z))^h}{h!(1-z)}
+\]
+by inserting an Abel factor, using the gamma integral, and taking its
+limit. The exponential decay at infinity and the bound
+$\log(1+e^{-x})\leq\log2$ near zero justify the integral limit.
+The convergence and Abel-limit argument are also proved in
+\cite[Section 3]{repoHarmonic}. In particular,
+$(-1)^hT_{p,h}(a)>0$.
+
+Put
+\begin{equation}\label{eq:R-definition}
+ R_{p,h}(a)=(-1)^h h!(h+a)^p T_{p,h}(a).
+\end{equation}
+The earlier report proves $0<R_{p,h}(a)<1$ and identifies the threshold
+$p\sim h\log h$. When $p/h-\log h\to-\infty$, it proves that
+$R_{p,h}(a)\to0$. The following theorem quantifies this statement when
+$p/h$ remains in a fixed positive compact interval.
+
+\subsection{The unique saddle and the rate function}
+
+Write
+\begin{equation}\label{eq:L-w}
+ L(x)=\log(1+e^{-x}),\qquad
+ w(x)=\frac1{(1+e^x)L(x)}=-\frac{d}{dx}\log L(x),\quad x>0.
+\end{equation}
+
+\begin{lemma}\label{lem:w}
+The function $w$ is strictly increasing, with
+\[
+ \frac1{2\log2}<w(x)<1.
+\]
+For every $\alpha>0$ there is exactly one $x_\alpha>0$ satisfying
+\begin{equation}\label{eq:saddle-equation}
+ x_\alpha w(x_\alpha)=\alpha.
+\end{equation}
+Moreover $\alpha<x_\alpha<2\alpha\log2$.
+\end{lemma}
+\begin{proof}
+Set $t=e^{-x}\in(0,1)$. Then
+$w=t/((1+t)\log(1+t))$ and
+\[
+ \frac{d}{dt}\log w
+ =\frac{\log(1+t)-t}{t(1+t)\log(1+t)}<0.
+\]
+Consequently $w$ increases with $x$. Its endpoint limits give the bounds.
+The function $xw(x)$ has derivative $w+xw'>0$, tends to zero at zero,
+and tends to infinity at infinity. This proves existence, uniqueness,
+and the stated enclosure.
+\end{proof}
+
+For $x=x_\alpha$, set
+\begin{align}
+ \Phi_\alpha(y)&=\alpha\log y+\log L(y),\label{eq:phase}\\
+ A_\alpha&=\frac{\alpha}{x^2}+w'(x)>0,\label{eq:A}\\
+ I(\alpha)&=-\alpha\log(x/\alpha)-\alpha-\log L(x),\label{eq:rate}\\
+ C(\alpha,a)&=
+ \frac{\sqrt{\alpha/A_\alpha}}{x(1+e^{-x})}
+ \exp\bigl(a(\alpha-x)\bigr).\label{eq:C}
+\end{align}
+All of these functions are real analytic for $\alpha>0$.
+
+\begin{theorem}[Proportional-depth asymptotics]\label{thm:saddle}
+Let $a$ and $\alpha$ range over fixed compact subsets of $(0,\infty)$,
+and put $p=\alpha h$. As the integer $h\to\infty$,
+\begin{equation}\label{eq:saddle-leading}
+ R_{\alpha h,h}(a)
+ =C(\alpha,a)e^{-hI(\alpha)}\bigl(1+O(h^{-1})\bigr),
+\end{equation}
+uniformly on those compact sets. In fact
+\begin{equation}\label{eq:saddle-second}
+ R_{\alpha h,h}(a)
+ =C(\alpha,a)e^{-hI(\alpha)}
+ \left(1+\frac{D(\alpha,a)}h+O(h^{-2})\right),
+\end{equation}
+where, with $x=x_\alpha$, $A=A_\alpha$, and
+$g(y)=e^{-ay}/(y(1+e^{-y}))$,
+\begin{align}
+ D(\alpha,a)={}&
+ \frac{g''(x)}{2Ag(x)}
+ +\frac{\Phi_\alpha'''(x)g'(x)}{2A^2g(x)}
+ +\frac{\Phi_\alpha''''(x)}{8A^2}
+ +\frac{5\Phi_\alpha'''(x)^2}{24A^3}
+ -\frac{\alpha a^2}{2}-\frac1{12\alpha}.
+ \label{eq:D}
+\end{align}
+Every fixed further order in $h^{-1}$ exists and is effectively obtained
+from derivatives of $L$ and $g$ at $x_\alpha$ and the Stirling series.
+The remainder at every fixed order is uniform on the same compact sets.
+\end{theorem}
+
+\begin{proof}
+Equation \eqref{eq:positive-mellin} gives
+\[
+ R_{\alpha h,h}(a)
+ =\frac{(h+a)^{\alpha h}}{\Gamma(\alpha h)}
+ \int_0^\infty e^{h\Phi_\alpha(y)}g(y)\,dy.
+\]
+We have
+$\Phi_\alpha'(y)=\alpha/y-w(y)$ and
+$\Phi_\alpha''(y)=-\alpha/y^2-w'(y)<0$.
+The sole critical point is therefore a strict global maximum.
+Its location stays in a fixed compact subinterval of $(0,\infty)$ as
+$\alpha$ varies in the prescribed compact set, and its curvature is
+bounded away from zero.
+
+Here are explicit tail controls for the application of Laplace's method
+\cite[\S2.3(iii)]{DLMFLaplace}
+\cite[Section 2.3(iii)]{DLMFLaplace}. Near zero,
+$\exp(h\Phi_\alpha(y))\leq y^{h\alpha}(\log2)^h$,
+while $g(y)=O(y^{-1})$ uniformly in $a$. Choosing the endpoint interval
+small enough makes its integral exponentially smaller than the maximum,
+uniformly in $\alpha$. At infinity, $L(y)<e^{-y}$ implies
+$\Phi_\alpha(y)<\alpha\log y-y$; this supplies an integrable
+exponential bound uniform in the same compact parameters. On the
+remaining compact set outside a fixed neighborhood of $x_\alpha$,
+strict concavity and compactness give a uniform negative gap from the
+maximum. These observations justify discarding both tails with an
+exponentially small relative error.
+
+In the neighborhood, substitute
+$y=x+v/\sqrt h$. Taylor expansion, followed by Gaussian integration,
+gives
+\begin{align*}
+ \int_0^\infty e^{h\Phi_\alpha(y)}g(y)\,dy
+ ={}&e^{h\Phi_\alpha(x)}g(x)
+ \sqrt{\frac{2\pi}{hA}}\left(1+\frac Eh+O(h^{-2})\right),\\
+ E={}&\frac{g''}{2Ag}
+ +\frac{\Phi'''g'}{2A^2g}
+ +\frac{\Phi''''}{8A^2}
+ +\frac{5(\Phi''')^2}{24A^3},
+\end{align*}
+with all derivatives evaluated at $x$. Odd Gaussian moments vanish;
+the even moments $1/A$, $3/A^2$, and $15/A^3$ produce precisely these
+four terms. The analytic functions have uniformly bounded derivatives
+on a common neighborhood of the saddle. Taylor remainders there,
+together with the tail bounds just given, prove the claimed uniform
+error and also permit expansion to any prescribed order.
+
+Finally Stirling's formula, uniformly for $\alpha$ in its compact set,
+and $\alpha h\log(1+a/h)=\alpha a-\alpha a^2/(2h)+O(h^{-2})$
+give
+\[
+ \frac{(h+a)^{\alpha h}}{\Gamma(\alpha h)}
+ =\sqrt{\frac{\alpha h}{2\pi}}
+ e^{h\alpha(1-\log\alpha)+a\alpha}
+ \left(1-\frac{\alpha a^2/2+1/(12\alpha)}h+O(h^{-2})\right).
+\]
+Multiplying the two expansions proves
+\eqref{eq:saddle-leading}--\eqref{eq:D}.
+\end{proof}
+
+\begin{remark}[Integer exponents and rounding]
+For integer $p$, set $\alpha=p/h$ in the theorem. If instead one fixes
+$\alpha_0$ and rounds $\alpha_0h$ to $p$, the $O(1/h)$ change of
+$\alpha$ must remain inside $e^{-hI(\alpha)}$: replacing it by
+$e^{-hI(\alpha_0)}$ changes the leading constant by a generally
+nontrivial bounded factor. This is a practical distinction in numerical
+comparisons.
+\end{remark}
+
+\subsection{Monotonicity, convexity, and matching limits}
+
+\begin{proposition}\label{prop:rate-properties}
+The rate $I$ is positive, strictly decreasing, and strictly convex on
+$(0,\infty)$. More explicitly,
+\begin{equation}\label{eq:rate-derivatives}
+ I'(\alpha)=\log\frac{\alpha}{x_\alpha}=\log w(x_\alpha)<0,
+ \qquad
+ I''(\alpha)=\frac{w'(x_\alpha)}
+ {w(x_\alpha)(w(x_\alpha)+x_\alpha w'(x_\alpha))}>0.
+\end{equation}
+Its endpoint limits are
+\[
+ I(0+)=-\log\log2,\qquad I(+\infty)=0.
+\]
+As $\alpha\to\infty$,
+\begin{align}
+ x_\alpha&=\alpha+\frac{\alpha}{2}e^{-\alpha}
+             +O(\alpha^2e^{-2\alpha}),\label{eq:x-large}\\
+ I(\alpha)&=\frac12e^{-\alpha}
+      -\frac{3\alpha+5}{24}e^{-2\alpha}
+      +O(\alpha^2e^{-3\alpha}),\label{eq:I-large}\\
+ C(\alpha,a)&=1-
+ \left(\frac{(a+1/2)\alpha}{2}+1\right)e^{-\alpha}
+ +O_a(\alpha^2e^{-2\alpha}).\label{eq:C-large}
+\end{align}
+Also $C(\alpha,a)\to1/2$ as $\alpha\downarrow0$.
+\end{proposition}
+\begin{proof}
+Differentiating the optimized value in \eqref{eq:rate} cancels its
+$x_\alpha'$ terms by \eqref{eq:saddle-equation}. This gives the first
+identity in \eqref{eq:rate-derivatives}. Differentiating
+$\alpha=xw(x)$ gives the second. Positivity also follows directly:
+$\log L(y)<-y$, so
+\[
+ \max_{y>0}\{\alpha\log(y/\alpha)+\alpha+\log L(y)\}
+ <\max_{y>0}\{\alpha\log(y/\alpha)+\alpha-y\}=0.
+\]
+The strict inequality is valid because the first maximum is attained;
+at its maximizing point the second expression is at most zero.
+
+The small-$\alpha$ limits follow from
+$x_\alpha/\alpha\to2\log2$ and
+$A_\alpha\sim\alpha/x_\alpha^2$. At infinity, put $t=e^{-y}$ and use
+\[
+ \log L(y)=-y-\frac t2+\frac{5t^2}{24}+O(t^3),
+ \qquad
+ w(y)=1-\frac t2+\frac{5t^2}{12}+O(t^3).
+\]
+Substitution in \eqref{eq:saddle-equation} first gives
+\eqref{eq:x-large}. Taylor expansion of \eqref{eq:rate} around
+$y=\alpha$, retaining the quadratic displacement, gives
+\eqref{eq:I-large}. Expansion of \eqref{eq:C} and
+$A_\alpha=\alpha/x_\alpha^2+w'(x_\alpha)$ gives
+\eqref{eq:C-large}. The remainders stated above follow from analyticity
+of $\log(\log(1+t)/t)$ for $t$ near zero, with
+$x_\alpha-\alpha=O(\alpha e^{-\alpha})$.
+\end{proof}
+
+The rate formula explains the scale of cancellation even when the terms
+of the original alternating sum are much larger than its value. For
+example, $I(1)=0.15091647898554\ldots$ and
+$C(1,1/2)=0.66325765726435\ldots$. Thus
+\[
+ R_{h,h}(1/2)\sim0.66325765726435\ldots\,
+ e^{-0.15091647898554\ldots h}.
+\]
+This is a proved exponential rate, rather than just a limit of zero.
+
+The large-$\alpha$ expansions also explain why the transition parameter
+in the previous report was $\lambda=he^{-\alpha}/2$. Formally putting
+$\alpha=\log h+c$ in $hI(\alpha)$ gives the leading value
+$e^{-c}/2$. This agrees with the independently proved transition
+$R\to\exp(-e^{-c}/2)$ in \cite{repoHarmonic}. Such matching is a
+consistency calculation: the compact-$\alpha$ theorem proved here does
+\emph{not} by itself establish a uniform error for growing $\alpha$.
+Obtaining a single effective formula across that expanding range
+remains a precise further problem.
+
+\subsection{A probability law at the saddle}
+
+There is a useful formulation independent of the alternating series.
+Normalize the positive integrand in \eqref{eq:positive-mellin}, with
+$p=\alpha h$, to a probability density and call the resulting random
+variable $X_h$. Then
+\begin{equation}\label{eq:saddle-clt}
+ \sqrt{hA_\alpha}(X_h-x_\alpha)
+ \ \Longrightarrow\ N(0,1).
+\end{equation}
+Indeed, the same change of variables used in the proof of
+Theorem~\ref{thm:saddle}, its uniform Gaussian domination on a shrinking
+neighborhood, and its exponentially negligible tails prove convergence
+against every bounded continuous test function. The associated rate
+for $X_h$ is
+$\Phi_\alpha(x_\alpha)-\Phi_\alpha(y)$.
+This identifies which part of the positive integral carries the very
+small alternating sum and gives a stable center for numerical quadrature.
+

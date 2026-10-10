@@ -5846,12 +5846,150 @@ the decomposition with these named constants, but not `Theorem162At 3`.
            `claimNineFiveDensity ε R d = κ(c/2)²` and
            `c = (ε/(4K¹⁶))²`, again polynomial.
 
-         Still to do: feed Claim 9.5 into the round lemma. The 12-tuple
-         escape uses Theorem 27 on the unions `⋃_j K_j`, `⋃_j L_j`, since
-         `⋂_j B(K_j; ρ) ⊆ ∑_j B(K_j; ρ)`, at rank `8d`, and an iterated
-         union split. Then the final selection of pairs `(x_a, y_a)`
-         with gluing by Lemma 9.1 (`compatible_bohr_sum_quadruple`) and
-         the random index set `J`. Quantitatively, `s₀ = O(d log(dR))`, and
+         **The full iteration terminates (kernel-checked):**
+         `milicevic_prop_9_3_iteration` (`Proofs16PropNineThreeTwelve`),
+         with both claims.
+         - *Shared update.* `propNineThree_append`
+           (`Proofs16PropNineThreeIteration`) appends any Freiman `Θ` whose
+           values on the pairs of `P` lie in the span balls and escape the
+           current `{-1,0,1}`-spans. Both rounds use it. The rank cap of
+           the escape is now any `r ≥ 2d`, with one radius
+           `R = propNineThreeRadius r M ρ`.
+         - *Bad 12-tuples* (`propNineThreeBad12`). Some `d` is small
+           against all current `θ_i(a_j)` but
+           `d ∉ B(K_u; ρ) + B(L_u; ρ)`, where `K_u = ⋃_j(Γ_{x_j+a_j} ∪ Γ_{x_j})`
+           (`twelveK`). Since `B(K_u; ρ) ⊆ ∑_j(B_{x_j+a_j} ∩ B_{x_j})`, a
+           good 12-tuple satisfies Milićević's (26), so the stopping
+           condition here is stronger than the paper's.
+         - *Claim 9.5 round* (`milicevic_prop_9_3_round_twelve`).
+           1. Theorem 27 at rank `8d ≤ r`.
+           2. Cut `ξ` into sixteen pieces (`spanBall_biUnion_split` with
+              `spanBall_union_split`).
+           3. Some coordinate escapes, because the four forbidden spans add
+              into the radius-4 span of all current values
+              (`add_mem_spanBall_of_subset`, `sum_mem_spanBall_of_subset`),
+              and the escape excludes that span. The escape's
+              triangle-inequality condition is `32s₀η ≤ 1/4`.
+         - *Termination.* With
+           `δ = min(claimNineFourDensity, claimNineFiveDensity)`, the
+           result is a state with fewer than `εN³` bad triples and fewer
+           than `εN¹¹` bad 12-tuples, and `⌈δN²⌉·m ≤ N²s₀`.
+
+         **Final selection, plan and first pieces.** The plan uses the
+         corpus's column vocabulary: `L x y = φ_x(y)`, spectra `T`,
+         `columnDifferenceMap L (x+a, x) = φ_{x+a} − φ_x`,
+         `ColumnPairCompatible` (the quadruple `(x+a, x, y+a, y)` is
+         Bohr-respected), and `ColumnTupleRespected` (an 8-tuple of
+         columns is respected).
+         - *F1, Lemma 9.1 per good pair (done).* `gluedPairMap`
+           (`Proofs16GluedPairMaps`) is `bohrSumExtension` of the two
+           column differences. `gluedPairMap_spec` makes it
+           Freiman-linear on the quarter sum, normalized, and equal to
+           each difference on its quarter Bohr set.
+           `columnDifferenceMap_freimanOn` derives the hypothesis from
+           per-column Freiman-linearity.
+         - *F2, the deterministic heart (done).*
+           `glued_quadruple_respected`. Suppose four compatible pairs
+           `(P_j, Q_j)` have both 8-tuples respected, and `d = u + u'`
+           with `u, u'` in the two tuple Bohr sets at quarter radius,
+           which is our stronger form of (26). Then
+           `ψ₀(d) + ψ₁(d) = ψ₂(d) + ψ₃(d)`, because each glued value
+           splits as `ψ_j(u + u') = Δ_{P_j}(u) + Δ_{Q_j}(u')` and both
+           8-tuples cancel. The statement is generic in the 8-tuples;
+           the `a`-structure enters only when they are read off a 12-tuple.
+         - *F3, choosing the pairs (done).* `exists_pair_choice_few_bad`
+           (`Proofs16FinalPairChoice`) is the peer's
+           `exists_independent_choice_few_bad_queries`
+           (`Proofs16IndependentChoiceSelection`), read through
+           `twelveOf q c`, the 12-tuple of a quadruple and its chosen
+           pairs. `twelveOf` is injective on additive quadruples
+           (`twelveOf_injective`). So for *any* set `Bad` of 12-tuples, some
+           choice has at most `|Bad|/D` failing distinct-index queries.
+           - Inputs: indices `I = A′` (the `a`'s); choice sets
+             `F_a = {good pairs for a}`; queries `Q` = distinct additive
+             quadruples `a[4]`; bad sets `B_q` = choice 4-tuples whose
+             12-tuple is in `propNineThreeBad12` or whose x- or y-side
+             8-tuple is not respected.
+           - The bound: `∑_q |B_q| ≤ |Bad12| + 2N⁴·|unrespected 8-tuples|`,
+             and `D = min ∏_j |F_{a_j}| ≥ (γN²)⁴`. So at most
+             `(ε + 2ε′)N³/γ⁴` quadruples fail.
+           - Repeated-index quadruples (at most `6N²`) are counted
+             separately, as in J.147.
+         - *F4, linear domains (done).* `exists_index_window`
+           (`Proofs16FinalWindow`). Index sets `S_a ⊆ [m]` with
+           `|S_a| ≤ k ≤ m` have a common `J ⊆ [m]` of size `k` containing
+           `S_a` for at least `|A|/C(m, k)` of the `a`'s. The proof
+           pigeonholes a `k`-superset of each `S_a`, which gives the same
+           loss as Milićević's random `J`. Then
+           `U_a = B(θ_i(a) : i ∈ J; η)` is linear in `a`, and it lies inside
+           the domain built from `S_a` (`bohr_anti`), so every containment
+           survives. Take `k = 2s₀`.
+         - *F5, relating back (done).* `gluedPairMap_relate`: if the chosen
+           pair `p` for `a` is compatible with `(z + a, z)`, the glued map
+           equals `φ_{z+a} − φ_z` on the common quarter-radius Bohr set.
+           This is the exact form of
+           `|Z(φ_a − φ_{z+a} + φ_z)| ≥ (ρ/4)^{4d}|G₂|`; the Bohr lower bound
+           gives the size.
+
+         **Assembly design (and a trap avoided).**
+         - *Order.*
+           1. Run the iteration to a state with fewer than `εN³` bad
+              triples and fewer than `εN¹¹` bad 12-tuples.
+           2. Call a pair `(x, y)` good for `a` when
+              `(x+a, x, y+a, y)` is compatible and the triple is not bad.
+              Let `A′ = {a : |G_a| ≥ N²/2}`. By Markov,
+              `|A′| ≥ (1 − 2(ε + ε₁))N`, where `ε₁N³` bounds the
+              incompatible quadruples of the input.
+           3. Choose the pairs by F3 with
+              `Bad = Bad12 ∪ {12-tuples with an unrespected 8-tuple}`.
+              Then `|Bad| ≤ (ε + 2ε₂)N¹¹`, where `ε₂N⁷` bounds the
+              unrespected 8-tuples, and `D = (N²/2)⁴`. So at most
+              `16(ε + 2ε₂)N³` distinct quadruples in `A′` fail. Every
+              other quadruple is respected by the glued maps on
+              `⋂_j U_{a_j}`, by F2.
+           4. Choose `J` *for quadruples*, not for single `a`'s: apply
+              `exists_index_window` to the respected quadruples `q`, with
+              `S_q = ⋃_j (I_{x_{a_j},a_j} ∪ I_{y_{a_j},a_j})`, `|S_q| ≤ 8s₀`.
+              The output set is `X = {a ∈ A′ : S_a ⊆ J}`. It contains all
+              four entries of at least `C(m, 8s₀)^(−1)·#respected`
+              quadruples, which also bounds `|X|` from below.
+         - *The trap.* Choosing `J` to maximize `|X|` first, and only then
+           counting respected quadruples inside `X`, is circular. The
+           failure bound would need `ε ≪ C(m, k)^(−4)`, but `m ≤ s₀/δ(ε)`
+           grows as `ε` shrinks. Choosing `J` for quadruples is why
+           Milićević takes `|J| = 8s₀`. With it, `ε, ε₁, ε₂` only need to
+           be small absolute constants.
+         - *Counting quadruples in `A′`.* No energy bound is needed. Since
+           `A′` has density `1 − O(ε + ε₁)`, at least
+           `|A′|³ − |ℤ/N ∖ A′|·N²` triples `(a₀, a₁, a₂)` in `A′` have
+           `a₀ + a₁ − a₂ ∈ A′`. Repeated-index quadruples number at most
+           `6N²` (`repeated_additive_quadruples_card_le`).
+         - *Identification.* `twelveK Γ u` is `columnTupleFrequencies T v`
+           for the x-side 8-tuple `v` of `u`. So "not bad" is exactly F2's
+           split hypothesis `hd` at radius `r/4`: run the iteration at
+           `ρ = r/4`.
+         - *Tools (done, `Proofs16FinalAssemblyTools`).*
+           - `columnTupleFrequencies_twelveXSide` / `…YSide`: the
+             identification above.
+           - `exists_quadruple_window`: the window chosen for quadruples,
+             `|J| = 4k`.
+           - `dense_additive_quadruples_ge`: at least
+             `|A|³ − (N − |A|)N²` additive quadruples in `A`
+             (`additiveQuadruplesIn`).
+           - `markov_large_fibers`: at least `(1 − 2η)N` values of `a`
+             have `|G_a| ≥ M/2`.
+         - *Deterministic links (done, `Proofs16PropNineThreeGlue`).*
+           - `good_pair_domain` (Lemma A): a good pair's glued map is
+             Freiman-linear on a domain containing
+             `B(θ_i(a) : i ∈ J; η)` for every `J ⊇ I_{x,a} ∪ I_{y,a}`.
+           - `twelve_good_respected` (Lemma B): a quadruple whose 12-tuple
+             is not bad, has both 8-tuples respected, and has compatible
+             chosen pairs, is respected by the glued maps (`chosenGlued`)
+             on `⋂_j B(θ_i(q_j) : i ∈ J; η)`.
+
+           What remains is the counting theorem chaining the iteration,
+           good pairs, Markov, F3, the quadruple window and Lemmas A/B.
+         Quantitatively, `s₀ = O(d log(dR))`, and
          `δ` is polynomial in `ε` and `(2R+1)^(−d)`. With
          `R = (ρ^(−1))^O(d)`, this makes `m ≤ s₀/δ = exp(O(d² log 1/ρ))`
          rounds: exp-poly in `d` and `log 1/ρ`, as in the paper.

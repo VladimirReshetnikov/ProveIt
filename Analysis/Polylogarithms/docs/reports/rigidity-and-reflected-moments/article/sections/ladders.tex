@@ -1,0 +1,638 @@
+% Contribution for the continuing Polylogarithms report.
+% Requires amsmath, amssymb, amsthm, booktabs, hyperref.
+% Citation keys: Ljunggren1960, Tverberg1960, BoydMartinThom2015,
+% AartsFokkinkKruijtzer2001.
+
+\section{Rigidity of complementary powers}
+\label{sec:complementary-rigidity}
+
+The earlier complementary-power ladder starts from a relation
+$r^a+r^b=1$, where $0<r<1$ and $a,b$ are positive integers.
+That construction raises a concrete completeness question: can one base
+have many different pairs of complementary powers?  We settle this
+question for pure powers, including arbitrary common divisors in the
+exponents.  The decisive arithmetic input is a classical irreducibility
+theorem for trinomials.  Our conclusions concern this precisely specified
+class of seeds; they do not classify general multiplicative relations
+among $1-r^k$, or bound the maximum weight of polylogarithm ladders.
+
+For $0<r<1$, define
+\[
+\mathcal C(r)=\{(a,b)\in\mathbb Z_{>0}^2:
+                 a\le b,\ r^a+r^b=1\}.
+\]
+Let $\omega$ be the unique root in $(0,1)$ of
+$X^3+X^2-1$.  Thus $\omega$ is the reciprocal of the plastic number.
+
+\begin{theorem}[Complete classification of collisions]
+\label{thm:complement-collisions}
+For every real $0<r<1$, the set $\mathcal C(r)$ has at most two elements.
+It has two elements if and only if $r^d=\omega$ for some positive
+integer $d$, in which case
+\[
+\mathcal C(r)=\{(d,5d),(2d,3d)\}.
+\]
+If $\mathcal C(r)$ contains $(a,a)$, then
+$\mathcal C(r)=\{(a,a)\}$ and $r=2^{-1/a}$.
+\end{theorem}
+
+The theorem supplies an exact answer to the seed-classification question
+posed after the earlier cubic and quartic ladder certificates.  It is
+proved below as a consequence of the Ljunggren--Tverberg theorem, with
+all additional arguments included.  We make no claim that this
+consequence is globally new in the literature.  The related theorem of
+Aarts, Fokkink, and Kruijtzer classifies the two morphic numbers, by
+requiring both $p+1$ and $p-1$ to be powers of $p$; their proof also uses
+trinomial irreducibility \cite{AartsFokkinkKruijtzer2001}.  Our formulation
+permits arbitrary positive exponent pairs and explicitly handles power
+substitutions.
+
+\subsection{The irreducibility input and the entire cyclotomic factor}
+
+For $1\le a<b$, put $d=\gcd(a,b)$, $A=a/d$, $B=b/d$, and
+\[
+F_{a,b}(X)=X^b+X^a-1.
+\]
+The following precise specialization is the arithmetic input.
+
+\begin{theorem}[Ljunggren--Tverberg, specialized]
+\label{thm:trinomial-input}
+The polynomial $F_{a,b}$ has exactly one irreducible factor over
+$\mathbb Q$ whose roots are not roots of unity.  Its other factor is
+\[
+C_{a,b}(X)=
+\begin{cases}
+ X^{2d}-X^d+1,&(A,B)\equiv(1,5)\text{ or }(5,1)\pmod6,\\
+ 1,&\text{otherwise}.
+\end{cases}
+\]
+In particular $H_{a,b}=F_{a,b}/C_{a,b}$ is irreducible, monic,
+and has constant term $-1$.  Moreover
+$H_{a,b}(X)=H_{A,B}(X^d)$.
+\end{theorem}
+
+This is the trinomial result of Ljunggren and Tverberg
+\cite{Ljunggren1960,Tverberg1960}; a modern explicit formulation,
+including the assertion that $H_{A,B}(X^d)$ remains irreducible, is
+Boyd--Martin--Thom, Lemma~4.1(a),(b) \cite{BoydMartinThom2015}.
+Only the trinomial theorem is used.  Its separate quadrinomial analogue
+has a more delicate history and plays no role here.
+
+For clarity, the displayed cyclotomic factor can be obtained directly,
+without relying on a table of sign cases.  Suppose $|z|=1$ and
+$z^a+z^b=1$.  The two unit vectors must be the two numbers
+$e^{i\pi/3}$ and $e^{-i\pi/3}$, in either order.  If $w=z^d$, then
+$w^A$ and $w^B$ are these primitive sixth roots.  A Bezout identity for
+$A,B$ implies $w^6=1$, and $w^A$ of order six then implies that $w$
+itself has order six.  Consequently $A,B$ have opposite residues
+$1,5$ modulo six.  Conversely those residues make every root of
+$X^{2d}-X^d+1$ a root of $F_{a,b}$.  These roots are simple: a common
+zero of $F_{a,b}$ and its derivative on the unit circle would give
+$a|z^a|=b|z^b|$, hence $a=b$, a contradiction.  Thus the formula for
+$C_{a,b}$ accounts for the \emph{entire} cyclotomic factor.  The
+remaining assertion, irreducibility of $H_{a,b}$, is the cited theorem.
+
+\subsection{A conjugate-rotation invariant}
+
+\begin{lemma}[The common divisor is intrinsic]
+\label{lem:intrinsic-gcd}
+Suppose $r^a+r^b=r^c+r^e=1$, where $0<r<1$,
+$1\le a<b$, and $1\le c<e$.  Then
+\[
+\gcd(a,b)=\gcd(c,e).
+\]
+\end{lemma}
+
+\begin{proof}
+Set $d=\gcd(a,b)$.  Since $0<r<1$, it is not a root of unity, so
+its minimal polynomial is $H_{a,b}$.  Theorem~\ref{thm:trinomial-input}
+shows that this polynomial is a polynomial in $X^d$.  If $\zeta$ is a
+primitive $d$th root of unity, $r\zeta$ is therefore a conjugate of $r$.
+The second equation also holds at this conjugate:
+\[
+r^c\zeta^c+r^e\zeta^e=1.
+\]
+Taking absolute values gives equality in the triangle inequality,
+because $r^c+r^e=1$.  Both summands must have the argument of their
+positive real sum.  Thus $\zeta^c=\zeta^e=1$, proving
+$d\mid\gcd(c,e)$.  Interchanging the pairs proves the reverse
+divisibility.
+\end{proof}
+
+This step prevents a gap that would arise from normalizing the two
+pairs independently.  The cyclotomic factor can have degree $2d$,
+so a degree comparison before proving that the common divisors agree
+would not suffice.
+
+\subsection{The primitive coefficient comparison}
+
+\begin{proof}[Proof of Theorem~\ref{thm:complement-collisions}]
+First suppose an equal pair occurs.  Then $r^a=1/2$, so $r$ cannot
+be an algebraic integer: otherwise the rational number $r^a=1/2$
+would be an algebraic integer.  Any unequal pair would make $r$ a
+root of the monic integer polynomial $F_{c,e}$, a contradiction.
+There is only one equal pair because the powers of $r$ strictly
+decrease.
+
+Now suppose two distinct unequal pairs occur.  By
+Lemma~\ref{lem:intrinsic-gcd} they have a common gcd $d$.
+Replace $r$ by $r^d$ and divide all four exponents by $d$.
+Both pairs are now primitive.  Their trinomials have the same
+irreducible noncyclotomic factor, and their cyclotomic factors belong
+to $\{1,\Phi_6\}$, where $\Phi_6=X^2-X+1$.
+If the two cyclotomic factors agree, the trinomials agree, contrary
+to distinctness.  After interchanging them if necessary, there must
+therefore be a polynomial identity
+\begin{equation}
+(X^2-X+1)(X^n+X^m-1)=X^{n+2}+X^k-1,
+\quad 1\le m<n,\quad 1\le k<n+2.
+\label{eq:primitive-collision-factor}
+\end{equation}
+The coefficient of $X^{n+1}$ on the left is $-1$ unless
+$m=n-1$, in which case it is zero.  The right-hand coefficient is
+zero or one.  Hence $m=n-1$, and the identity reduces to
+\[
+X^{n+2}+X^{n-1}-X^2+X-1=X^{n+2}+X^k-1.
+\]
+For $n=2$ the remaining polynomial is $2X-X^2$, which is not a
+monomial.  For $n>3$ its coefficient at $X^2$ is $-1$.
+Thus $n=3$, which gives $m=2$ and $k=1$.
+The common factor is $X^3+X^2-1$, and the two normalized pairs are
+$(1,5)$ and $(2,3)$.  Conversely,
+\[
+X^5+X-1=(X^2-X+1)(X^3+X^2-1)
+\]
+shows that these two pairs do occur at $\omega$.
+Finally, a third pair would have to be the same exceptional companion
+of either existing pair, so no third pair occurs.
+\end{proof}
+
+\subsection{All signed pure-power unit equations}
+
+The functional equations for polylogarithms use signs and inverses as
+well as positive powers.  The preceding classification automatically
+controls all such complementary arguments.
+
+\begin{corollary}[Sharp signed-unit count]
+\label{cor:signed-unit-count}
+Let $\Gamma_r=\{\pm r^k:k\in\mathbb Z\}$ and
+\[
+\mathcal U(r)=\{x\in\Gamma_r:1-x\in\Gamma_r\}.
+\]
+Then $|\mathcal U(r)|$ is one of $0,3,6,12$.
+For every unequal pair $(a,b)\in\mathcal C(r)$, its contribution is
+the six-element set
+\begin{equation}
+\left\{r^a,r^b,r^{-a},r^{-b},-r^{b-a},-r^{a-b}\right\}.
+\label{eq:six-unit-orbit}
+\end{equation}
+These sets are disjoint for different unordered pairs.
+An equal pair contributes precisely $\{1/2,2,-1\}$.
+The case $|\mathcal U(r)|=12$ occurs exactly when $r^d=\omega$
+for some positive integer $d$.
+\end{corollary}
+
+\begin{proof}
+The transformations $x\mapsto1-x$ and $x\mapsto1/x$ preserve
+$\mathcal U(r)$.  For example,
+$1-1/x=-(1-x)/x\in\Gamma_r$ whenever $x,1-x\in\Gamma_r$.
+Their orbit consists of
+\[
+x,\quad1-x,\quad x^{-1},\quad(1-x)^{-1},
+\quad x/(x-1),\quad(x-1)/x.
+\]
+Every real orbit has a representative in $(0,1)$: use $1/x$ if
+$x>1$ and $1/(1-x)$ if $x<0$.  Such a representative and its
+complement are $r^a,r^b$ with $a,b>0$.  The two members of a
+nondegenerate real orbit that lie in $(0,1)$ are exactly $x$ and
+$1-x$, so its unordered positive pair is unique.  Substituting
+$x=r^a$, $1-x=r^b$ gives \eqref{eq:six-unit-orbit}.
+All six entries are distinct unless $a=b$, when they reduce to
+the stated three values.  The cardinalities now follow from
+Theorem~\ref{thm:complement-collisions}.
+\end{proof}
+
+All four possibilities occur: $r=1/3$, $1/2$, the reciprocal golden
+ratio, and $\omega$ give respectively $0,3,6,12$.
+The conclusion classifies \emph{pure signed-power complements}.
+It does not say that there are at most twelve useful polylogarithm
+arguments: products of units $1-r^k$ can introduce many more arguments.
+
+\begin{corollary}[Rational exponents]
+\label{cor:rational-complements}
+The same collision classification holds for positive rational
+exponents, with the exceptional common scale $d$ allowed to be a
+positive rational number.  In particular there are at most two
+unordered positive rational pairs, and
+\[
+\#\{x\in\{\pm r^q:q\in\mathbb Q\}:1-x\in
+                          \{\pm r^q:q\in\mathbb Q\}\}\le12.
+\]
+\end{corollary}
+
+\begin{proof}
+Given two pairs, choose a common denominator $N$ and apply
+Theorem~\ref{thm:complement-collisions} to $r^{1/N}$.
+A third rational pair could be included in the same denominator
+and would contradict the integer theorem.  The orbit proof is
+unchanged.
+\end{proof}
+
+\subsection{A provably complete bounded-degree search}
+
+\begin{corollary}[Degree and an exhaustive exponent bound]
+\label{cor:degree-search}
+If $r^a+r^b=1$ with $1\le a<b$, then
+\[
+[\mathbb Q(r):\mathbb Q]=
+\begin{cases}
+b-2d,&(a/d,b/d)\equiv(1,5)\text{ or }(5,1)\pmod6,\\
+b,&\text{otherwise},
+\end{cases}
+\qquad d=\gcd(a,b).
+\]
+Consequently all such bases of degree at most $D$ are found by
+enumerating
+\[
+1\le a<b\le\left\lfloor\frac{5D}{3}\right\rfloor
+\]
+and retaining those whose displayed degree is at most $D$.
+For primitive pairs it suffices to enumerate $b\le D+2$.
+The only repeated bases in either enumeration are the classified
+plastic pairs.  Equal pairs add the separate bases $2^{-1/a}$,
+with $a\le D$.
+\end{corollary}
+
+\begin{proof}
+The degree formula is Theorem~\ref{thm:trinomial-input}.  In the
+exceptional case $b/d\ge5$, so $b-2d\ge3d$.  If the degree is
+at most $D$, then $d\le D/3$ and
+$b=(b-2d)+2d\le5D/3$.  The nonexceptional case is immediate.
+For primitive pairs the possible degree loss is only two.
+The equal-pair polynomial $2X^a-1$ has degree $a$ and is
+irreducible: its reciprocal is, up to a nonzero scalar,
+$X^a-2$, which is Eisenstein at $2$.
+\end{proof}
+
+This bound is sharp for infinitely many $D$: the pair $(d,5d)$
+has degree $3d$ and largest exponent $5d$.
+Unlike a search over bounded polynomial coefficients, the algorithm
+has an explicit completeness theorem for its stated class.  No
+numerical equality test is required.  A base is stored by the exact
+irreducible polynomial $H_{a,b}$ together with its unique root in
+$(0,1)$, and duplicate detection is exact polynomial comparison.
+
+For illustration, the complete unequal-pair list through degree four is
+\[
+\begin{array}{ccl}
+\text{degree}&\text{complement pair(s)}&\text{minimal polynomial}\\\hline
+2&(1,2)&X^2+X-1\\
+3&(1,3)&X^3+X-1\\
+3&(1,5),(2,3)&X^3+X^2-1\\
+4&(1,4)&X^4+X-1\\
+4&(2,4)&X^4+X^2-1\\
+4&(3,4)&X^4+X^3-1
+\end{array}
+\]
+The degree-four entry with pair $(2,4)$ is exactly a square root of
+the reciprocal golden ratio.  Its presence illustrates why normalization
+of exponents is necessary when counting bases rather than primitive
+seed types.
+
+The exact enumeration in the accompanying certificate gives:
+\[
+\begin{array}{c|rrrrrrrrrrrr}
+D&1&2&3&4&5&6&7&8&9&10&11&12\\\hline
+\text{unequal-pair bases}&0&1&3&6&10&15&20&27&37&46&56&67\\
+\text{primitive bases}&0&1&3&5&9&11&16&20&28&32&42&46\\
+\text{all bases}&1&3&6&10&15&21&27&35&46&56&67&79
+\end{array}
+\]
+Each row counts bases of degree at most $D$.  A primitive base has
+an unequal complementary pair of gcd one; the intrinsic-gcd lemma
+makes this definition independent of the choice of pair.
+The last row also includes the $D$ equal-pair bases $2^{-1/a}$,
+$1\le a\le D$.
+
+\subsection{An exact counting formula}
+
+The classification also counts bases without constructing or factoring
+their minimal polynomials.  For $n\ge1$ define
+\[
+e(n)=\#\{a:1\le a<n,\ \gcd(a,n)=1,
+            \ (a,n)\equiv(1,5)\text{ or }(5,1)\pmod6\}.
+\]
+In particular $e(n)=0$ unless $n\equiv1$ or $5\pmod6$,
+and $e(1)=0$.
+
+\begin{corollary}[Counting all bases by algebraic degree]
+\label{cor:base-count}
+Let $N(D)$ be the number of real $0<r<1$ with
+$[\mathbb Q(r):\mathbb Q]\le D$ and $\mathcal C(r)\ne\varnothing$.
+For every positive integer $D$,
+\begin{align}
+N(D)&=\frac{D(D+1)}2-\left\lfloor\frac D3\right\rfloor\notag\\
+&\quad+\sum_{d=1}^{\lfloor D/3\rfloor}
+\left\{e\!\left(\left\lfloor\frac Dd\right\rfloor+1\right)
+       +e\!\left(\left\lfloor\frac Dd\right\rfloor+2\right)\right\}.
+\label{eq:exact-base-count}
+\end{align}
+In particular,
+\[
+N(D)=\frac12D^2+O(D\log D),\qquad D\longrightarrow\infty.
+\]
+\end{corollary}
+
+\begin{proof}
+There are $D(D-1)/2$ unequal pairs with largest exponent at most
+$D$, and their associated bases all have degree at most $D$.
+A pair with largest exponent greater than $D$ can still have degree
+at most $D$ only in the exceptional cyclotomic case.  Write that
+pair $(dA,dB)$, where $\gcd(A,B)=1$ and the residues are opposite
+$1,5$ modulo six.  The two inequalities are
+\[
+dB>D,\qquad d(B-2)\le D.
+\]
+Equivalently,
+$B\in\{\lfloor D/d\rfloor+1,\lfloor D/d\rfloor+2\}$.
+Since the exceptional normalized degree $B-2$ is at least three,
+only $d\le D/3$ can occur.  This gives the sum in
+\eqref{eq:exact-base-count}.
+Every base counted twice is $\omega^{1/d}$, of degree $3d$;
+there are exactly $\lfloor D/3\rfloor$ such duplicates.
+Finally the $D$ equal-pair bases are distinct from all unequal-pair
+bases and from each other.  This proves the exact formula.
+
+For the asymptotic statement, use $0\le e(n)\le n$ to bound the sum
+by
+\[
+\sum_{d\le D/3}\left(2\left\lfloor\frac Dd\right\rfloor+3\right)
+\le2D\sum_{d\le D/3}\frac1d+D.
+\]
+The harmonic sum is $O(\log D)$, proving the claim.
+\end{proof}
+
+For an alternative exact implementation, when $n>1$ is coprime to
+six, Mobius inversion gives
+\begin{equation}
+e(n)=\sum_{d\mid n}\mu(d)
+       \left\lfloor\frac{n/d+1}{6}\right\rfloor.
+\label{eq:exceptional-count-mobius}
+\end{equation}
+Indeed, after writing $a=dj$, the condition
+$a\equiv-n\pmod6$ becomes $j\equiv-(n/d)\pmod6$ because every
+unit modulo six is its own inverse.  For $t$ coprime to six,
+the number of integers $1\le j<t$ in the residue class $-t$
+is $\lfloor(t+1)/6\rfloor$.  Summing with $\mu(d)$ imposes
+$\gcd(a,n)=1$.
+
+% Citation keys: ZagierPolylogs1991, NakamuraShiraishi2025.
+
+\section{Exact proofs and log-free ladders at the plastic base}
+\label{sec:plastic-proofs}
+
+The exceptional base in Theorem~\ref{thm:complement-collisions}
+has two complementary pairs.  This additional structure produces
+short proofs of two previously numerically supported formulas in
+the manuscript, as well as log-free identities for $\zeta(2)$ and
+$\zeta(3)$.
+
+Throughout this section, $0<q<1$, $q^2+q^3=1$, and
+$\lambda=\log q$.  The factorization in the preceding proof gives
+\begin{equation}
+1-q=q^5,\qquad1-q^2=q^3,\qquad
+1-q^3=q^2,\qquad1-q^5=q.
+\label{eq:plastic-complements}
+\end{equation}
+All logarithms used in the final identities are real.
+
+\subsection{The dilogarithm formula: one Rogers pentagon}
+
+Write
+\[
+R(x)=\operatorname{Li}_2(x)+\frac12\log x\log(1-x),
+\qquad 0<x<1.
+\]
+The Rogers reflection and pentagon equations are
+\begin{align}
+R(x)+R(1-x)&=\zeta(2),\label{eq:plastic-R-reflect}\\
+R(x)+R(y)&=R(xy)
+ +R\!\left(\frac{x(1-y)}{1-xy}\right)
+ +R\!\left(\frac{y(1-x)}{1-xy}\right).
+\label{eq:plastic-R-pentagon}
+\end{align}
+They hold for $0<x,y<1$ and follow from the classical dilogarithm
+functional equations; alternatively one can differentiate in $x$
+and evaluate at $x=0$.  This real-domain formulation avoids branch
+choices \cite{ZagierPolylogs1991}.
+
+\begin{theorem}[The manuscript's plastic dilogarithm formula]
+\label{thm:plastic-dilog}
+\begin{equation}
+\frac12\operatorname{Li}_2(q^2)-\operatorname{Li}_2(q^5)
+=\lambda^2.
+\label{eq:plastic-dilog-proved}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Set $R_k=R(q^k)$.  At $(x,y)=(q,q^2)$ the three pentagon
+arguments are
+\[
+xy=q^3,\qquad
+\frac{x(1-y)}{1-xy}=q^2,\qquad
+\frac{y(1-x)}{1-xy}=q^5.
+\]
+Hence $R_1+R_2=R_3+R_2+R_5$, or $R_1=R_3+R_5$.
+Reflection gives $R_1+R_5=R_2+R_3=\zeta(2)$, so
+$R_2=2R_5$.  Expanding the logarithmic corrections by
+\eqref{eq:plastic-complements} gives
+\[
+\operatorname{Li}_2(q^2)+3\lambda^2
+=2\operatorname{Li}_2(q^5)+5\lambda^2,
+\]
+as required.
+\end{proof}
+
+\subsection{The trilogarithm formula: one Kummer specialization}
+
+For real nonzero $z\ne1$, define the single-valued trilogarithm
+\[
+P(z)=\operatorname{Re}\operatorname{Li}_3(z)
+ -\log|z|\operatorname{Re}\operatorname{Li}_2(z)
+ -\frac13\log^2|z|\log|1-z|,
+\]
+with the continuous value $P(1)=\zeta(3)$.
+The inversion and duplication equations are
+\[
+P(z^{-1})=P(z),\qquad P(z)+P(-z)=\frac14P(z^2).
+\]
+Kummer's nine-term equation, in this single-valued real form, is
+\begin{align}
+&2P(x)+2P(y)
+ +2P\!\left(\frac{x(1-y)}{x-1}\right)
+ +2P\!\left(\frac{y(1-x)}{y-1}\right)\notag\\
+&\quad+2P\!\left(\frac{1-x}{1-y}\right)
+ +2P\!\left(\frac{x(1-y)}{y(1-x)}\right)
+ -P(xy)-P(x/y)\notag\\
+&\quad-P\!\left(\frac{x(1-y)^2}{y(1-x)^2}\right)
+ =2\zeta(3).
+\label{eq:plastic-Kummer}
+\end{align}
+We use the form recorded by Zagier, Section~7, Example~3,
+equation~(7) \cite{ZagierPolylogs1991}.
+
+The single-valued Landen equation is
+\[
+P(x)+P(1-x)+P(1-x^{-1})=\zeta(3),\qquad0<x<1.
+\]
+Its ordinary real counterpart is
+\begin{align}
+\operatorname{Li}_3(x)+\operatorname{Li}_3(1-x)
+ +\operatorname{Li}_3(1-x^{-1})
+ &=\zeta(3)+\zeta(2)\log x\notag\\
+ &\quad-\frac12\log^2x\log(1-x)+\frac16\log^3x.
+\label{eq:plastic-ordinary-Landen}
+\end{align}
+One obtains it by differentiation using dilogarithm reflection and
+Landen, with the integration constant determined at $x=1$.
+See also Nakamura--Shiraishi \cite{NakamuraShiraishi2025}.
+
+\begin{theorem}[The manuscript's plastic trilogarithm formula]
+\label{thm:plastic-trilog}
+\begin{equation}
+-\operatorname{Li}_3(q)+\frac32\operatorname{Li}_3(q^2)
+ +\frac13\operatorname{Li}_3(q^3)-\operatorname{Li}_3(q^5)
+=\lambda^3.
+\label{eq:plastic-trilog-proved}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Put $P_k=P(q^k)$.  At $(x,y)=(q,q^2)$, the nine arguments in
+\eqref{eq:plastic-Kummer}, in displayed order, are
+\[
+q,\quad q^2,\quad -q^{-1},\quad -q^4,\quad q^2,
+\quad q^{-3},\quad q^3,\quad q^{-1},\quad q^{-5}.
+\]
+Using inversion and duplication, the equation becomes
+\[
+\mathsf K=-P_1+\frac92P_2+P_3-2P_4-P_5+\frac12P_8
+=2\zeta(3).
+\]
+Landen at $x=q$, with $1-q=q^5$, similarly gives
+\[
+\mathsf A=P_1+P_5-P_4+\frac14P_8=\zeta(3).
+\]
+Consequently the exact row operation $(\mathsf K-2\mathsf A)/3$
+proves
+\begin{equation}
+-P_1+\frac32P_2+\frac13P_3-P_5=0.
+\label{eq:plastic-P3-proved}
+\end{equation}
+
+It remains to convert this to ordinary trilogarithms.  Denote the
+left side of \eqref{eq:plastic-trilog-proved} by $D$, and put
+\[
+S=-\operatorname{Li}_2(q)+3\operatorname{Li}_2(q^2)
+ +\operatorname{Li}_2(q^3)-5\operatorname{Li}_2(q^5).
+\]
+The two ordinary reflection equations and
+Theorem~\ref{thm:plastic-dilog} give
+\begin{align*}
+\operatorname{Li}_2(q)+\operatorname{Li}_2(q^5)
+ &=\zeta(2)-5\lambda^2,\\
+\operatorname{Li}_2(q^2)+\operatorname{Li}_2(q^3)
+ &=\zeta(2)-6\lambda^2,\\
+\tfrac12\operatorname{Li}_2(q^2)-\operatorname{Li}_2(q^5)
+ &=\lambda^2.
+\end{align*}
+Taking minus the first row, plus the second, plus four times the
+third yields $S=3\lambda^2$.
+The remaining logarithmic coefficient in the definition of $P$ is
+\[
+T=\{-1\cdot1^2\cdot5
+ +(3/2)\cdot2^2\cdot3
+ +(1/3)\cdot3^2\cdot2
+ -1\cdot5^2\cdot1\}\lambda=-6\lambda.
+\]
+Thus the left side of \eqref{eq:plastic-P3-proved} is
+\[
+D-\lambda S-\frac{\lambda^2}{3}T
+=D-3\lambda^3+2\lambda^3=D-\lambda^3.
+\]
+This proves \eqref{eq:plastic-trilog-proved}.
+\end{proof}
+
+The proof promotes the two displayed manuscript formulas from
+numerical support to exact consequences of classical functional
+equations.  It does not rely on pseudointegration at an isolated
+algebraic base.
+
+\subsection{Two log-free identities}
+
+\begin{theorem}[Log-free plastic ladders]
+\label{thm:plastic-logfree}
+At the same base $q$, the following identities hold:
+\begin{align}
+&6\operatorname{Li}_2(q)-5\operatorname{Li}_2(q^2)
+ -5\operatorname{Li}_2(q^3)+6\operatorname{Li}_2(q^5)
+ =\zeta(2),\label{eq:plastic-logfree2}\\
+&12\operatorname{Li}_3(q)-5\operatorname{Li}_3(q^2)
+ -4\operatorname{Li}_3(q^3)-8\operatorname{Li}_3(q^4)
+ +8\operatorname{Li}_3(q^5)+2\operatorname{Li}_3(q^8)
+ =4\zeta(3).
+\label{eq:plastic-logfree3}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Six times the first ordinary reflection equation minus five times
+the second proves \eqref{eq:plastic-logfree2}.
+For the trilogarithm, write $L_k=\operatorname{Li}_3(q^k)$.
+Equation~\eqref{eq:plastic-ordinary-Landen} at $x=q$ and $x=q^2$,
+with duplication to eliminate negative arguments, gives
+\begin{align*}
+A&=L_1+L_5-L_4+\frac14L_8
+  =\zeta(3)+\zeta(2)\lambda-\frac73\lambda^3,\\
+B&=\frac54L_2+L_3-L_1
+  =\zeta(3)+2\zeta(2)\lambda-\frac{14}3\lambda^3.
+\end{align*}
+The logarithmic tails are proportional.  Therefore
+$4(2A-B)=4\zeta(3)$, exactly the claimed six-argument identity.
+\end{proof}
+
+These formulas are explicit additional identities for the package.
+Their derivations and the classical origins of the functional
+equations are given in full; no global priority claim is made.
+They also give exponentially convergent algebraic series, for example
+\begin{equation}
+\zeta(3)=\sum_{n=1}^{\infty}
+\frac{3q^n-\tfrac54q^{2n}-q^{3n}-2q^{4n}
+                 +2q^{5n}+\tfrac12q^{8n}}{n^3}.
+\label{eq:plastic-zeta3-series}
+\end{equation}
+Absolute convergence justifies expansion of the polylogarithms.
+If this series is truncated after $N$ terms, its absolute tail is
+at most
+\[
+\frac{39}{4}\,
+\frac{q^{N+1}}{(N+1)^3(1-q)},
+\]
+obtained by summing the absolute coefficients and using
+$q^{kn}\le q^n$ for $k\ge1$.  The constant $39/4$ is deliberately
+simple; the sharper sum of the six individual geometric tails can
+also be used.
+
+\subsection{Exact certificates and their scope}
+
+The accompanying script checks the polynomial identities and all
+three Rogers and nine Kummer argument reductions in
+$\mathbb Q[X]/(X^3+X^2-1)$.  It constructs the Kummer row from the
+signed exponent list and performs the displayed rational row
+operations.  Separately, it enumerates a bounded collection of
+trinomials, checks the predicted cyclotomic factors and irreducible
+quotients with exact polynomial arithmetic, and groups exact
+minimal polynomials to verify the expected collision table.
+The finite enumeration is a reproducible consistency check; the
+unbounded completeness result is Theorem~\ref{thm:complement-collisions}.

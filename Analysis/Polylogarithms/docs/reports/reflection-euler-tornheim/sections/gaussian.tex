@@ -1,0 +1,493 @@
+\section[Cyclotomic double relations: exact identities and formal obstructions]{Cyclotomic double relations:\\exact identities and formal obstructions}
+\label{sec:gaussian}
+
+Set
+\[
+ g_{a,b}=\Impart\Li_{a,b}(\ii,1),\quad
+ A_{a,b}=\Impart\Li_{a,b}(\ii,\ii),\quad
+ K_{a,b}=\Impart\Li_{a,b}(\ii,-1).
+\]
+The manuscript's mixed harmonic sums are
+\[
+ S_p=\sum_{n\geq0}\frac{(-1)^nH_n}{(2n+1)^p},\qquad p\geq1.
+\]
+For \(p>1\) this converges absolutely; at \(p=1\) it converges
+conditionally. The all-odd-index evaluation of \(S_p\) has already
+been proved in the repository's continuations. Our questions concern
+even indices and what exact relations can establish about them.
+
+\subsection{Two exact weight-five reductions}
+
+\begin{proposition}[Two coordinates suffice for the weight-five \(g\)-family]
+\label{prop:two-g}
+The four values of weight five satisfy
+\begin{align}
+ g_{2,3}+3g_{3,2}+6g_{4,1}
+   &=-\frac3{32}G\zeta(3)-\frac{\pi^5}{1536},
+     \label{eq:g-five-first}\\
+ g_{1,4}+g_{2,3}+g_{3,2}+2g_{4,1}
+   &=-\frac12\beta(4)\log2-\frac{7\pi^5}{46080}.
+     \label{eq:g-five-second}
+\end{align}
+Thus they lie in the span of any two suitably chosen coordinates,
+for example \(g_{4,1},g_{2,3}\), together with the displayed products
+of single values. This is a spanning statement, not an independence
+statement.
+\end{proposition}
+
+\begin{proof}
+Shuffle the two iterated-integral words for
+\(\Li_2(\ii)\Li_3(\ii)\). Their imaginary part is
+\(g_{2,3}+3g_{3,2}+6g_{4,1}\).
+Since
+\[
+ \Li_2(\ii)=-\frac{\zeta(2)}8+\ii G,\qquad
+ \Li_3(\ii)=-\frac{3\zeta(3)}{32}+\ii\frac{\pi^3}{32},
+\]
+its product gives \eqref{eq:g-five-first}.
+Likewise, the shuffle of \(\Li_1(\ii)\Li_4(\ii)\) has imaginary part
+\(g_{1,4}+g_{2,3}+g_{3,2}+2g_{4,1}\). Use
+\[
+ \Li_1(\ii)=-\tfrac12\log2+\ii\tfrac\pi4,\qquad
+ \Li_4(\ii)=-\tfrac7{128}\zeta(4)+\ii\beta(4).
+\]
+The two rows have rank two already in their \(g\)-coefficients.
+\end{proof}
+
+The manuscript's displayed sporadic row
+\[
+ 576g_{4,1}+288g_{3,2}+736g_{2,3}+960g_{1,4}
+ =21G\zeta(3)-480\beta(4)\log2
+\]
+is \(-224\) times \eqref{eq:g-five-first} plus \(960\) times
+\eqref{eq:g-five-second}. It therefore has a direct proof from
+these two elementary shuffles. The manuscript's \emph{at most three}
+statement can be strengthened to \emph{at most two}. Existing
+continuations already address proofs of the sporadic relation; the
+point here is the sharper two-row organization.
+
+\subsection{An all-exponent mixed endpoint identity}
+
+\begin{theorem}[Gaussian mixed endpoint]\label{thm:mixed-endpoint}
+For every integer \(p\geq1\),
+\begin{equation}\label{eq:mixed-endpoint}
+ K_{p,1}+(-1)^{p-1}A_{1,p}
+ =\beta(p+1)-2\log2\,\beta(p)
+       +\sum_{j=2}^{p}(-1)^j\eta(j)\beta(p+1-j).
+\end{equation}
+Moreover,
+\begin{equation}\label{eq:harmonic-split}
+ S_p=g_{p,1}+K_{p,1}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+All the boundary values used here converge. First-index-one values
+with first argument \(\ii\) can be obtained by Dirichlet's test or
+radial Abel limits. The shuffle and stuffle identities may therefore
+be justified by convergent iterated integrals and Abel limiting.
+
+Fix \(w=p+1\), and define homogeneous generating polynomials of
+degree \(w-2\):
+\[
+ \mathscr A(X,Y)=\sum_{a+b=w}A_{a,b}X^{a-1}Y^{b-1},
+ \quad
+ \mathscr K(X,Y)=\sum_{a+b=w}K_{a,b}X^{a-1}Y^{b-1}.
+\]
+Let \(\mathscr V\) denote the same polynomial for
+\(\Impart\Li_{a,b}(-1,\ii)\), and put
+\[
+ P(X,Y)=\sum_{a+b=w}
+  \Impart[\Li_a(-1)\Li_b(\ii)]X^{a-1}Y^{b-1},
+ \qquad
+ H(X,Y)=\sum_{a+b=w}X^{a-1}Y^{b-1}.
+\]
+Stuffle and shuffle respectively give
+\[
+ \mathscr V(X,Y)+\mathscr K(Y,X)=P(X,Y)+\beta(w)H(X,Y),
+\]
+\[
+ \mathscr A(X+Y,X)-\mathscr V(X+Y,Y)=P(X,Y).
+\]
+The collision term in the first equation is
+\(-\Impart\Li_w(-\ii)=\beta(w)\).
+Eliminating \(\mathscr V\) yields
+\[
+ \mathscr K(U,V)=P(V-U,U)+P(V,U)+\beta(w)H(V,U)
+                  -\mathscr A(V,V-U).
+\]
+Set \(V=0\) and compare coefficients of \(U^{w-2}\).
+The evaluation \(\Li_j(-1)=-\eta(j)\) gives
+\eqref{eq:mixed-endpoint}, including the two occurrences of
+\(-\log2\,\beta(p)\).
+
+For \eqref{eq:harmonic-split}, taking imaginary parts of the outer
+index in \(\Li_{p,1}(\ii,1)+\Li_{p,1}(\ii,-1)\) retains indices
+\(2n+1\), with sign \((-1)^n\). Their inner sum is
+\[
+ \sum_{m=1}^{2n}\frac{1+(-1)^m}{m}=H_n.
+\]
+Absolute convergence proves the result directly for \(p>1\).
+An Abel limit gives the endpoint \(p=1\).
+\end{proof}
+
+At \(p=4\) this specializes to
+\begin{equation}\label{eq:K41}
+ K_{4,1}=A_{1,4}+\frac{191\pi^5}{23040}
+                  -\frac34G\zeta(3)-2\beta(4)\log2.
+\end{equation}
+
+\subsection{Inverse-argument mixed values and a source correction}
+
+A useful regularization identity also removes a specific proposed
+mixed survivor from the manuscript. Inverse-argument double reductions
+are part of the existing repository programme; the following short
+derivation makes the correction explicit.
+
+\begin{proposition}[Inverse-argument endpoint]\label{prop:inverse-mixed}
+For \(p\geq1\) and \(z=\ii\) or \(e^{2\pi\ii/3}\),
+\begin{align}
+ \Impart\Li_{p,1}(z,z^{-1})
+ &=\sum_{a=1}^{p}\Impart\Li_{a,p+1-a}(z,1)
+     +p\,\Impart\Li_{p+1}(z)\notag\\
+ &\quad-\sum_{j=2}^{p}\zeta(j)\Impart\Li_{p+1-j}(z).
+ \label{eq:inverse-mixed}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+Give \(\Li_1(1)\) its usual real regularization parameter \(T\).
+The shuffle expansion of \(T\Li_p(z)\) is
+\[
+ \Li_{p,1}(z,z^{-1})+\sum_{a=1}^{p}\Li_{a,p+1-a}(1,z),
+\]
+and its stuffle expansion is
+\[
+ \Li_{1,p}(1,z)+\Li_{p,1}(z,1)+\Li_{p+1}(z).
+\]
+The divergent leading term cancels on subtraction. For \(2\leq a\leq p\)
+use the convergent stuffle
+\[
+ \Li_{a,p+1-a}(1,z)
+ =\zeta(a)\Li_{p+1-a}(z)
+       -\Li_{p+1-a,a}(z,1)-\Li_{p+1}(z).
+\]
+Taking imaginary parts gives \eqref{eq:inverse-mixed}.
+For \(p=1\) there is only one divergent factor because \(z\ne1\);
+the same cancellation proves the formula.
+\end{proof}
+
+Substitution of the already proved Gaussian weight-six \(g\)-values
+gives the particularly short identity
+\begin{equation}\label{eq:mixed-weight-six}
+ \boxed{\displaystyle
+ \Impart\Li_{5,1}(\ii,-\ii)
+ =3\beta(6)-\frac{\pi^2}{6}\beta(4)
+            -\frac{\pi^4}{90}G-\frac{5\pi^5}{3072}\log2.}
+\end{equation}
+Thus this imaginary weight-six value is in the depth-one product
+basket. The candidate-survivor wording in Chapter~4 should be removed.
+
+For \(\omega=e^{2\pi\ii/3}\), define
+\(C_s=\Impart\Li_s(\omega)\); this is the sine-part convention for every
+integer \(s\). Then
+\begin{align}
+ \Impart\Li_{5,1}(\omega,\omega^2)
+ &=\sum_{a=1}^{5}\Impart\Li_{a,6-a}(\omega,1)
+     +5C_6-\frac{\pi^2}{6}C_4-\frac{\pi^4}{90}C_2\notag\\
+ &\quad-\frac{2\pi^3}{81}\zeta(3)-\frac{\pi}{6}\zeta(5).
+ \label{eq:eisenstein-weight-six}
+\end{align}
+Here \(C_1=\pi/6\) and \(C_3=2\pi^3/81\).
+It follows that the corresponding level-three imaginary value
+contributes no new direction modulo the stated \(g\)-family and
+single products. This conclusion says nothing about the manuscript's
+real weight-five candidate.
+
+\subsection{A precisely defined formal presentation}
+
+Fix a level \(L=3\) or \(4\) and a weight \(w\geq2\). Let
+\(\omega=e^{2\pi\ii/L}\).
+Introduce rational formal symbols
+\[
+ D_a(r,s)\quad(1\leq a<w,\quad r,s\in\Z/L\Z)
+\]
+for imaginary parts of \(\Li_{a,w-a}(\omega^r,\omega^s)\).
+Impose conjugation \(D_a(-r,-s)=-D_a(r,s)\).
+Symbols fixed by this involution vanish. Put all single values and
+imaginary parts of products of two single values in the background,
+and also set \(D_a(1,0)=0\). The latter is precisely quotienting by
+the chosen \(g\)-family.
+
+The only further rows imposed are, for \(p+q=w\),
+\begin{align}
+ D_p(r,s)+D_q(s,r)&=0,\label{eq:formal-stuffle}\\
+ \sum_{j=0}^{p-1}\binom{q+j-1}{j}D_{q+j}(s,r-s)
+ +\sum_{j=0}^{q-1}\binom{p+j-1}{j}D_{p+j}(r,s-r)&=0.
+ \label{eq:formal-shuffle}
+\end{align}
+They are the stuffle and shuffle rows of two single values, with their
+one-leading-one regularizations. A regularized product involving the
+real parameter \(T\) belongs to the background. At \(w=2\), the only
+two-divergent-factor correction is real and disappears on taking
+imaginary parts. Call the resulting quotient \(V_{L,w}\).
+
+This is \emph{not} the full cyclotomic double-shuffle algebra. Products
+involving a depth-two factor, relations lifted through higher depths,
+additional functional equations, and motivic period assertions have
+not been imposed. In particular, Zhao's standard relations
+\cite{Zhao} are substantially broader than this presentation.
+The theorem below computes \(V_{L,w}\), not a dimension of actual
+numbers.
+
+For a scalar assignment to the symbols, introduce
+\[
+ \mathscr F^{r,s}(X,Y)=
+ \sum_{a=1}^{w-1}D_a(r,s)X^{a-1}Y^{w-a-1}.
+\]
+The conditions that the assignment annihilate all rows are exactly
+\begin{align}
+ \mathscr F^{r,s}(X,Y)+\mathscr F^{s,r}(Y,X)&=0,
+ \label{eq:poly-stuffle}\\
+ \mathscr F^{s,r-s}(X+Y,X)+
+       \mathscr F^{r,s-r}(X+Y,Y)&=0.
+ \label{eq:poly-shuffle}
+\end{align}
+These follow by comparing binomial coefficients after substitution.
+They describe the dual of \(V_{L,w}\), so their solution dimension is
+the required quotient dimension.
+
+\subsection{All-weight dimension theorems}
+
+\begin{theorem}[Level four]\label{thm:level-four}
+The formal quotient satisfies
+\[
+ \dim_\Q V_{4,w}=
+ \begin{cases}
+ 0,&w\ \text{even},\\
+ (w-1)/2,&w\ \text{odd}.
+ \end{cases}
+ \qquad
+ \sum_{w\geq2}\dim V_{4,w}\,t^w=\frac{t^3}{(1-t^2)^2}.
+\]
+At odd weight, its dual is parameterized by arbitrary antisymmetric
+homogeneous polynomials of degree \(w-2\).
+\end{theorem}
+
+\begin{proof}
+Up to conjugation, the six color pairs are
+\((0,1),(1,0),(1,1),(1,2),(1,3),(2,1)\).
+Write their polynomials as \(U,G,A,K,M,V\), respectively, and let
+\(n=w-2\). The background condition gives \(G=0\);
+stuffle gives
+\[
+ U=0,\quad A(Y,X)=-A(X,Y),\quad
+ V(X,Y)=-K(Y,X),\quad M(Y,X)=M(X,Y).
+\]
+The shuffle with colors \((1,0)\) forces \(M=0\).
+The shuffle with colors \((2,1)\) gives
+\[
+ A(X+Y,X)+K(Y,X+Y)=0,
+\]
+hence \(K(X,Y)=-A(Y,Y-X)\).
+The shuffle with colors \((1,3)\) is
+\(K(X,Y)=K(X,X-Y)\).
+After substitution and antisymmetry this condition is
+\(A=(-1)^{n+1}A\).
+
+For even \(n\) all polynomials therefore vanish.
+For odd \(n\), any antisymmetric \(A\), with \(K,V\) as above and
+\(U=G=M=0\), satisfies the rows. To check exhaustiveness, the
+unordered color classes up to conjugation are
+\[
+ (0,0),(0,1),(0,2),(1,1),(1,2),(1,3),(2,2).
+\]
+The real classes vanish, and the remaining classes are precisely the
+conditions just used, together with their transposes. Thus there are
+no unexamined rows.
+A basis for \(A\) at odd \(w\) is
+\[
+ X^{a-1}Y^{w-a-1}-X^{w-a-1}Y^{a-1},
+ \qquad 1\leq a\leq(w-1)/2.
+\]
+Counting these basis vectors and summing over odd weights proves
+the formulas.
+\end{proof}
+
+\begin{theorem}[Level three]\label{thm:level-three}
+The formal quotient satisfies
+\[
+ \dim_\Q V_{3,w}=
+ \begin{cases}
+ 0,&w\ \text{even},\\
+ \lfloor(w+1)/6\rfloor,&w\ \text{odd},
+ \end{cases}
+ \qquad
+ \sum_{w\geq2}\dim V_{3,w}\,t^w
+       =\frac{t^5}{(1-t^2)(1-t^6)}.
+\]
+Writing \(\Delta=XY(X-Y)\), \(Q=X^2-XY+Y^2\), the dual is parameterized
+by the homogeneous polynomials
+\[
+ A(X,Y)=\Delta\,P(Q,\Delta^2)
+\]
+of degree \(w-2\).
+\end{theorem}
+
+\begin{proof}
+Up to conjugation the four pairs are
+\((0,1),(1,0),(1,1),(1,2)\).
+As before the first two vanish and the shuffle with a zeta factor kills
+the inverse-argument polynomial. The remaining polynomial \(A\)
+satisfies exactly
+\[
+ A(Y,X)=-A(X,Y),\qquad A(X,X-Y)=A(X,Y).
+\]
+Antisymmetry implies divisibility by \(X-Y\); the second symmetry then
+forces divisibility by \(Y\), and antisymmetry forces divisibility by
+\(X\). Hence \(A=\Delta B\). The polynomial \(\Delta\) has the same
+two transformation signs as \(A\), so \(B\) is invariant under swapping
+\(X,Y\) and under \((X,Y)\mapsto(X,X-Y)\).
+
+On the plane \(a+b+c=0\), with
+\((a,b,c)=(X,-Y,Y-X)\), the second transformation swaps \(b,c\);
+the first is global negation followed by the transposition of \(a,b\).
+The generated group contains global negation, obtained by cubing
+the product, and all permutations. The elementary symmetric-polynomial
+theorem therefore identifies its invariant ring with
+\[
+ \Q[e_2,e_3^2]=\Q[Q,\Delta^2].
+\]
+Conversely every \(\Delta P(Q,\Delta^2)\) has the required symmetries,
+and direct substitution verifies all the original color rows.
+Counting monomials of degrees \(3+2a+6b=w-2\) gives the result.
+Explicitly, at odd \(w\geq5\) a basis is
+\[
+ \Delta^{2b+1}Q^{(w-5)/2-3b},
+ \qquad 0\leq b\leq\lfloor(w-5)/6\rfloor .
+\]
+\end{proof}
+
+For comparison, the exact dimensions at the first few odd weights are
+\[
+\begin{array}{c|rrrrrrr}
+ w&3&5&7&9&11&13&15\\ \hline
+ \dim V_{3,w}&0&1&1&1&2&2&2\\
+ \dim V_{4,w}&1&2&3&4&5&6&7
+\end{array}
+\]
+and all even-weight dimensions are zero. The exact matrix script
+checks both formulas through weight 16, including that the displayed
+polynomial bases annihilate every raw row and have the stated rank.
+
+\subsection{A separating functional for the \texorpdfstring{$S_4$}{S4} conjecture}
+
+At every odd weight \(w\geq3\), choose
+\(A(X,Y)=(Y-X)^{w-2}\) in the level-four theorem.
+Then \(K(X,Y)=X^{w-2}\), \(V(X,Y)=-Y^{w-2}\).
+This gives a rational linear functional \(\ell\) that annihilates every
+defining row and every background value:
+\begin{align}
+ \ell(D_a(1,1))&=(-1)^{a+1}\binom{w-2}{a-1},\notag\\
+ \ell(D_{w-1}(1,2))&=1,\qquad
+ \ell(D_1(2,1))=-1. \label{eq:separating}
+\end{align}
+All other entries vanish, apart from conjugates with opposite signs.
+
+At weight five its nonzero entries are particularly transparent:
+\[
+\begin{array}{c|rrrrrr}
+ \text{symbol}&A_{1,4}&A_{2,3}&A_{3,2}&A_{4,1}
+       &\Impart\Li_{1,4}(-1,\ii)&K_{4,1}\\ \hline
+ \ell&1&-3&3&-1&-1&1
+\end{array}
+\]
+The polynomial proof verifies all weights; the delivered certificate
+also checks this six-entry vector against every exact weight-five row.
+
+\begin{conjecture}[The manuscript's \(S_4\) identity]\label{conj:S4}
+The following identity remains unproved in this continuation:
+\begin{align}
+ S_4&=\frac{4g_{4,1}-3g_{3,2}-9g_{2,3}}7
+       +\frac{\pi^5}{224}-\frac{27}{224}G\zeta(3)
+       -2\beta(4)\log2. \label{eq:S4-original}
+\end{align}
+\end{conjecture}
+
+The exact identity \eqref{eq:K41} makes this equivalent to
+\begin{equation}\label{eq:S4-A}
+ 161280A_{1,4}+69120(g_{4,1}+g_{3,2}+3g_{2,3})
+       +617\pi^5-101520G\zeta(3)=0.
+\end{equation}
+The functional \(\ell\) sends its left side to \(161280\).
+Consequently this relation does not follow from
+\eqref{eq:formal-stuffle}--\eqref{eq:formal-shuffle} and the stated
+background alone. This is an exact obstruction to a specific proof
+strategy. Additional true analytic relations may still prove it.
+
+Using \eqref{eq:g-five-first}, an equivalent version with only two
+\(g\)-coordinates is
+\begin{equation}\label{eq:S4-two}
+ S_4=\frac{10g_{4,1}-8g_{2,3}}7
+       +\frac{7\pi^5}{1536}-\frac3{28}G\zeta(3)
+       -2\beta(4)\log2.
+\end{equation}
+All three displayed candidates are equivalent by proved identities;
+none is silently promoted to a theorem.
+
+\subsection{A new weight-seven candidate}
+
+\begin{conjecture}[A reduction for \(S_6\)]\label{conj:S6}
+With the same definitions,
+\begin{align}
+ S_6={}&\frac{722}{527}g_{6,1}
+       +\frac{40}{527}g_{4,3}
+       -\frac{128}{155}g_{2,5}
+       +\frac{15191}{28569600}\pi^7\notag\\
+      &-\frac3{124}G\zeta(5)
+       -\frac{2373}{10540}\beta(4)\zeta(3)
+       -2\beta(6)\log2. \label{eq:S6}
+\end{align}
+\end{conjecture}
+
+The candidate was found in the ordered basket
+\[
+ (S_6,g_{6,1},g_{4,3},g_{2,5},\pi^7,
+          G\zeta(5),\beta(4)\zeta(3),\beta(6)\log2).
+\]
+Its primitive integer relation vector is
+\[
+ \begin{split}
+ (&485683200,-665395200,-36864000,401080320,\\
+  &-258247,11750400,109347840,971366400).
+ \end{split}
+\]
+A 100-digit search used coefficient bound \(10^{12}\) and tolerance
+\(10^{-90}\). After the coefficients were frozen, reevaluation by
+Mellin integrals at 220 working digits gave an integer-normalized
+residual of approximately \(-2.315\times10^{-213}\).
+An independent Euler transformation of the defining alternating
+series, using 900 terms and 300 working digits, gave approximately
+\(2.854\times10^{-263}\). The script records the full values and
+the exact integer vector. These are numerical evidence, not a proof
+or an interval certificate.
+
+For the second method, the defining series are
+\[
+ g_{a,b}=\sum_{n\geq0}
+       \frac{(-1)^nH_{2n}^{(b)}}{(2n+1)^a},
+ \qquad H_m^{(b)}=\sum_{j=1}^{m}j^{-b},
+\]
+and the analogous series with \(H_n\) for \(S_6\).
+Thus the second evaluation does not reuse the discovery integral.
+Last transformed terms are recorded as diagnostics; their small
+size alone is not asserted to bound the complete tail.
+
+The weight-seven functional \eqref{eq:separating} sends the
+integer-normalized candidate to \(485683200\). Its proof therefore
+also requires information beyond the restricted single-product
+presentation. A useful next step is to obtain a functional equation
+that proves both \eqref{eq:S4-original} and \eqref{eq:S6}, with the
+nonzero functional serving as a check that the missing relation has
+actually been introduced.
+

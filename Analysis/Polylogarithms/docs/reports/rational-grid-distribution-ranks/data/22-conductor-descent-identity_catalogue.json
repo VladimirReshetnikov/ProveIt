@@ -1,0 +1,62 @@
+{
+  "order_derivative_convention": "L^[j](z) = partial_s^j Li_s(z) evaluated at s=1",
+  "entries": [
+    {
+      "id": "principal-trace-all-levels",
+      "status": "proved",
+      "hypotheses": "q>1, r=omega(q), Uq=(Z/qZ)^x",
+      "formula": "sum_(a in Uq) L^[j](exp(2*pi*i*a/q)) = 0 for 0<=j<r-1; at j=r-1 it equals (-1)^r (r-1)! product_(p|q) log(p)",
+      "article": "Theorem 7.1"
+    },
+    {
+      "id": "level30-second-order",
+      "status": "proved",
+      "q": 30,
+      "derivative_order": 2,
+      "rhs": "-2*log(2)*log(3)*log(5)",
+      "lower_orders_vanish": [
+        0,
+        1
+      ],
+      "full_trace_numerically_tested": true
+    },
+    {
+      "id": "level210-third-order",
+      "status": "proved",
+      "q": 210,
+      "derivative_order": 3,
+      "rhs": "6*log(2)*log(3)*log(5)*log(7)",
+      "lower_orders_vanish": [
+        0,
+        1,
+        2
+      ],
+      "full_trace_numerically_tested": false
+    },
+    {
+      "id": "chi4-level260-second-order",
+      "status": "proved",
+      "q": 260,
+      "weight": "chi4(a)=(-1)^((a-1)/2) for a odd",
+      "derivative_order": 2,
+      "rhs": "i*pi*log(5)*log(13)",
+      "lower_orders_vanish": [
+        0,
+        1
+      ],
+      "full_trace_numerically_tested": false,
+      "multiplier_exactly_tested": true
+    },
+    {
+      "id": "S4-candidate",
+      "status": "conjectural in this contribution",
+      "formula": "S4=(4*g41-3*g32-9*g23)/7+pi^5/224-27*G*zeta(3)/224-2*beta(4)*log(2)",
+      "source_label": "gauss:eq:S4-closed",
+      "numerically_tested": true,
+      "proved": false,
+      "disproved": false,
+      "finite_row_span_obstruction": "certificates/s4_obstruction.json"
+    }
+  ],
+  "priority": "No global novelty claim; classical character/Euler-factor identities are credited."
+}

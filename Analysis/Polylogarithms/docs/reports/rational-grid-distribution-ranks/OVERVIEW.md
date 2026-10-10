@@ -90,3 +90,85 @@ result.
 - The prefixed scripts still name their delivered paths, and `article.tex`
   expects its figure under the delivered name; rerun on copies in a scratch
   directory under the delivered names.
+
+## Later sources (batch 141, 9 October 2026)
+
+Dated note, 2026-10-09. Two continuations of the unified manuscript's chapter-8
+distribution-rank observation (`tower:thm:rank`) are added to this report as sources 20
+and 22 (placement `3b0bae5f5a`; arrival commit `a2a4cf58c4`). Their
+manuscripts, PDFs and delivery READMEs are not staged; they are retrievable from the
+arrival commit. Three companions of the same arrival went to
+[`../gaussian-parity-reductions/`](../gaussian-parity-reductions/) (21, 23, 24). Both were
+pinned after this report was placed (20 at `29d9344771`, 22 at `85c89e5d0b`), but
+neither cites it or 15: both work from the manuscript alone and credit only the classical
+universal-distribution antecedents (Kubert; Ouyang). Both are unrefereed and say they were prepared with OpenAI assistance (22:
+ChatGPT); neither claims a proof-assistant check.
+
+**20 `ProveIt_Polylogarithms_Distribution_Jets_2026-10-09`**, *Finite Distribution
+Modules, Spectral Jets, and Cyclotomic Trace Identities* (26 pp.):
+`20-distribution-jets-{AUDIT,RESULTS}.md`, the proposed manuscript fragments
+`20-distribution-jets-integration-*` (README, chapters 4, 7 and 8, a bibliography item),
+`code/20-distribution-jets-*` (exact and character verifiers, numerical diagnostics,
+`S₄` row generator and standard-library certificate replay, `build.sh`, `test.sh`),
+`data/20-distribution-jets-*` (rank and character check records, primitive-grid
+certificates for `q = 12, 21, 30, 60`, the `S₄` row matrix and annihilator, numerical
+records, `provenance.json`).
+
+**22 `polylogarithms_conductor_descent_2026-10-09`**, *Conductor Descent and Flat
+Distribution Ranks* (21 pp.): `22-conductor-descent-{CORRECTIONS,INTEGRATION,STATUS}.md`,
+the proposed fragments `22-conductor-descent-integration-chapter08_distribution_rank.tex`
+and `…-integration-editorial_ledger_entry.md`, `code/22-conductor-descent-*` (the
+delivered `src/` scripts and `Makefile`), `data/22-conductor-descent-*` (exact checks, the
+level-12 polynomial normal form, trace coefficients, the `S₄` obstruction, identity
+catalogue, `SOURCE_SNAPSHOT.json`, `MANIFEST.sha256` as delivered).
+
+### The rank theorem, fifth and sixth times
+
+Both prove this report's theorem again, over a polynomial ring in independent prime
+weights over a characteristic-zero character splitting field: the distribution quotient
+is free of rank `φ(q)` with a conductor basis (20 `thm:universal`, 22 `thm:free`; the
+coefficient `A_{d,f,χ}` is 10's `eq:dist-normal-coefficient`), the endpoint-fixed rank is
+`q − φ(q)` at every specialization (20 `cor:anchored`, 22 `cor:rank`), and finite jets
+are free of the same rank (20 `thm:jet-rank`, 22 `thm:jets`). 20's local Smith factors
+and single-prime resonances (`thm:smith`, `cor:central`) are 10's
+`thm:dist-jet-defect` and `prop:dist-resonance-multiplicity` (the same count
+`#{p | q : p ∤ f, p^{s₀} = χ(p)}`). Credit 10 as the base and 20, 22 as further proofs,
+as for 12, 13 and 15.
+
+### What is new in 20 and 22
+
+- **Both:** all-order Hurwitz–Stieltjes reductions for every index `n ≥ 0`, including
+  the principal pole correction at parameter order `k = 0` (20 `thm:underived`, 22
+  `prop:kzero`); and cyclotomic polylogarithm traces
+  `Σ_{a ∈ U_q} χ(a) ∂_s^j Li_s(e^{2πia/q})|_{s=1}`: the principal trace vanishes to exact
+  order `ω(q) − 1` with leading value `(−1)^{ω}(ω−1)! Π_{p|q} log p` (20 `thm:principal`,
+  22 `thm:principalzero`), so at level 30 the second derivative is `−2 log2 log3 log5`.
+- **20:** the factored primitive-grid determinant (`thm:determinant`), finite residue
+  formulas with negative spectral parameter, exact support, signs, complete monotonicity
+  and a uniform denominator (`thm:finite-C`, `cor:support`, `cor:monotone`,
+  `prop:denominator`), and nonprincipal trace zeros (`thm:trace-zero`).
+- **22:** finite Möbius conductor descent for every Stieltjes layer
+  (`thm:stieltjes`), descent of the primitive-root traces (`thm:polylogdescent`), the
+  next two principal coefficients, and the twisted level-260 identity
+  `Σ_{a ∈ U_260} χ₄(a) ∂_s² Li_s(e^{2πia/260})|_{s=1} = iπ log5 log13` (`thm:twisted`).
+- Both also ship a finite `S₄` row-space obstruction (96 rows); see
+  [`../gaussian-parity-reductions/`](../gaussian-parity-reductions/), where `S₄` is
+  proved by 24's exact rational certificate (911 double-shuffle and distribution rows
+  plus one convergent duality), replayed at intake with the delivered standard-library
+  verifier (empty residual), row schemas checked by hand and the identity confirmed to
+  40 digits; no independent re-derivation of all 911 rows has been made. That relation
+  family is larger than these 96 rows. Both repeat corrections already recorded in the
+  project README (the mixed-point antisymmetry, the weight-one endpoint, the cubic
+  moment's attribution).
+
+### Caveats for 20 and 22
+
+- Intake checked the level-30 and level-210 principal traces and the level-260 twisted
+  trace independently (Cauchy coefficients of `q^{−s} Σ_b c_b ζ(s, b/q)` on a circle about
+  `s = 1`, 30 digits; dossier141_POLYLOG); the general theorems were not re-derived.
+- The ranks are formal-quotient dimensions; 20 and 22 say they did not recover the
+  historical matrices of the manuscript's finite observation.
+- Their chapter-8 replacement texts are superseded: the rebuilt manuscript already
+  states `tower:thm:rank` as a uniform corollary.
+- The prefixed scripts resolve delivered relative paths and rewrite their records;
+  rerun on copies under the delivered names.

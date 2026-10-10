@@ -30,3 +30,67 @@ The SHA manifests pin a particular reviewed release. Replaying may change
 execution-time or environment metadata. Do not refresh hashes to disguise a
 changed source, failed check or unreviewed PDF; perform the relevant checks
 and rendered review before recording a new release.
+
+## Gaussian parity, ladders, moments and certified evaluation
+
+```powershell
+python verification/replay_gaussian.py --part 14
+python verification/replay_gaussian.py --part 16
+python verification/replay_gaussian.py --part 17
+```
+
+These runs restore the delivered filenames inside the ignored, isolated
+`verification/.scratch-gaussian/` directory. Historical placed files are read
+only. Fresh reports are copied to `verification/gaussian-replay/`. Part 14
+replays the word algebra, exact depth and ladder substitutions, cubic moment
+certificate and independent numerical depth/ladder checks. It bypasses the
+delivery's plotting dependency, which its original driver required even in
+fast mode. Part 16 tests interval arithmetic, symbolic specialization and 89
+interval residuals with eight independent quadratures. Part 17 replays its
+symbolic solver and six positive-measure midpoint certificates. The source
+hashes and restored-file maps are recorded for each part.
+
+## Signed Euler kernels and Holder certificates
+
+```powershell
+python verification/replay_gaussian.py --part 18
+python verification/replay_gaussian.py --part 19
+python verification/replay_gaussian.py --part 19b
+```
+
+Part 18 uses 400 Euler terms, even weights through 16 and odd matrix ranks
+through 31, plus a separate numerical diagnostic entry point. Part 19 uses
+384-bit atom precision and independently replays every Holder center and
+tail budget through finite nested sums. Part 19b generates 24 one-two rows
+and compares them with integrals, checks the general closed formula, and
+checks all positions through weight 8 at both sixth roots at 100 digits.
+These runs read the immutable prefixed sources and write fresh receipts in
+`gaussian-replay/18`, `/19` and `/19b`. The complete analytic arrival excerpts
+in `gaussian-arrival-sources/` came from commit 412dbd0048 and are provenance
+inputs; the canonical text is the edited chapter files.
+
+## Five incoming packages
+
+```powershell
+python verification/replay_incoming.py --part rigidity
+python verification/replay_incoming.py --part distribution
+python verification/replay_incoming.py --part conductor
+python verification/replay_incoming.py --part complement
+python verification/replay_incoming.py --part reflection
+wolfram -script verification/check-incoming.wls
+python verification/check_reflected_sharp.py
+```
+
+The five wrappers restore full delivered layouts in `.scratch-incoming/`.
+They never run the upstream flattening or manuscript patchers. Result files
+are copied only if freshly modified by the run. Replays distinguish exact
+finite arithmetic, outward rational certificates and floating-point
+diagnostics; their summaries preserve the specific configurations. The
+reflected sharp-corollary script uses 180-digit diagnostics, not intervals.
+
+For a new release, run `check_document.py`, `build.py` (three serial passes),
+`inspect_pdf.py`, and manually review the rendered PDF before running
+`refresh_manifests.py` and `verify_receipts.py`. The refresher refuses changed
+immutable package dependencies and raw archive/member hashes; when an arrival
+archive has been retired upstream, it reads its pinned Git blob. It records
+hashes and cannot itself confer a mathematical or visual review.

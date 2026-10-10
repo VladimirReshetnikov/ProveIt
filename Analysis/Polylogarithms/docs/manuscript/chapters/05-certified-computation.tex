@@ -1,0 +1,37 @@
+\chapter{Signed kernels and certified polylogarithm computation}
+\label{ch:certified-computation}
+The exact reductions suggest evaluation methods that expose more analytic
+structure. A signed density for $F_{a,b}(z)=\Li_{a,b}(z,1)$ proves a unique
+angular zero and makes Gaussian Euler errors one-sided. The general double
+integral supports Chebyshev and midpoint expansions, while Holder convolution
+provides uniform rational certificates for a wider alphabet. These methods
+connect experiments, geometry and finite arithmetic: their tail theorems and
+rounding contracts determine what a numerical comparison establishes.
+Write $D_{a,b}(x,y)=\Li_{a,b}(x,y)$. Throughout the signed-density discussion,
+$H_n^{(b)}=\sum_{j=1}^n j^{-b}$, $H_0^{(b)}=0$, and
+$g_{a,b}=\Imag F_{a,b}(\iu)$; real $b>0$ is allowed where stated.
+
+\input{chapters/05-signed-kernels}
+
+\input{chapters/04-certified-evaluation}
+
+\subsection{A positive-measure midpoint alternative}
+For inverse colors, the same integral defines the positive measure
+\[
+ d\mu_{a,b}(t)=\frac{(-\log t)^{a-1}\Li_b(t)}{(a-1)!}\,dt.
+\]
+Its total mass is $J_{a,b}(1;1)\le J_{1,1}(1;1)=1$.
+Set $\alpha=z/(1-z/2)$ and
+$m_r=\int_0^1(t-1/2)^r\,d\mu_{a,b}(t)$. The kernel's geometric series gives
+\[
+ \Li_{a,b}(z,z^{-1})=\alpha\sum_{r\ge0}\alpha^r m_r,
+ \qquad q=\frac{|z|}{|2-z|}<1.
+\]
+The tail after $r<N$ is at most
+$|\alpha|J_{a,b}(1;1)q^N/(1-q)$. Each $m_r$ is an exact binomial
+combination of $J_{a,b}(j+1;1)$ from Theorem~\ref{cert:thm:moments}.
+This is useful at Gaussian and Eisenstein points; near the outer root one,
+the Chebyshev expansion has the stronger kernel rate proved above.
+Neither rate statement is a lower bound for every evaluation algorithm.
+
+\input{chapters/05-holder-evaluation}
