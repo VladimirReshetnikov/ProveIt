@@ -5875,9 +5875,55 @@ the decomposition with these named constants, but not `Theorem162At 3`.
            result is a state with fewer than `εN³` bad triples and fewer
            than `εN¹¹` bad 12-tuples, and `⌈δN²⌉·m ≤ N²s₀`.
 
-         Still to do: the final selection of pairs `(x_a, y_a)`
-         with gluing by Lemma 9.1 (`compatible_bohr_sum_quadruple`) and
-         the random index set `J`. Quantitatively, `s₀ = O(d log(dR))`, and
+         **Final selection, plan and first pieces.** The plan uses the
+         corpus's column vocabulary: `L x y = φ_x(y)`, spectra `T`,
+         `columnDifferenceMap L (x+a, x) = φ_{x+a} − φ_x`,
+         `ColumnPairCompatible` (the quadruple `(x+a, x, y+a, y)` is
+         Bohr-respected), and `ColumnTupleRespected` (an 8-tuple of
+         columns is respected).
+         - *F1, Lemma 9.1 per good pair (done).* `gluedPairMap`
+           (`Proofs16GluedPairMaps`) is `bohrSumExtension` of the two
+           column differences. `gluedPairMap_spec` makes it
+           Freiman-linear on the quarter sum, normalized, and equal to
+           each difference on its quarter Bohr set.
+           `columnDifferenceMap_freimanOn` derives the hypothesis from
+           per-column Freiman-linearity.
+         - *F2, the deterministic heart (done).*
+           `glued_quadruple_respected`. Suppose four compatible pairs
+           `(P_j, Q_j)` have both 8-tuples respected, and `d = u + u'`
+           with `u, u'` in the two tuple Bohr sets at quarter radius,
+           which is our stronger form of (26). Then
+           `ψ₀(d) + ψ₁(d) = ψ₂(d) + ψ₃(d)`, because each glued value
+           splits as `ψ_j(u + u') = Δ_{P_j}(u) + Δ_{Q_j}(u')` and both
+           8-tuples cancel. The statement is generic in the 8-tuples;
+           the `a`-structure enters only when they are read off a 12-tuple.
+         - *F3, choosing the pairs (done).* `exists_pair_choice_few_bad`
+           (`Proofs16FinalPairChoice`) is the peer's
+           `exists_independent_choice_few_bad_queries`
+           (`Proofs16IndependentChoiceSelection`), read through
+           `twelveOf q c`, the 12-tuple of a quadruple and its chosen
+           pairs. `twelveOf` is injective on additive quadruples
+           (`twelveOf_injective`). So for *any* set `Bad` of 12-tuples, some
+           choice has at most `|Bad|/D` failing distinct-index queries.
+           - Inputs: indices `I = A′` (the `a`'s); choice sets
+             `F_a = {good pairs for a}`; queries `Q` = distinct additive
+             quadruples `a[4]`; bad sets `B_q` = choice 4-tuples whose
+             12-tuple is in `propNineThreeBad12` or whose x- or y-side
+             8-tuple is not respected.
+           - The bound: `∑_q |B_q| ≤ |Bad12| + 2N⁴·|unrespected 8-tuples|`,
+             and `D = min ∏_j |F_{a_j}| ≥ (γN²)⁴`. So at most
+             `(ε + 2ε′)N³/γ⁴` quadruples fail.
+           - Repeated-index quadruples (at most `6N²`) are counted
+             separately, as in J.147.
+         - *F4, linear domains.* A `J ⊆ [m]` of size `2s₀` (Milićević takes
+           `8s₀`), chosen by averaging, keeps the `a` with `I_{x_a,a} ∪ I_{y_a,a} ⊆ J`.
+           That is a `C(m, 2s₀)^(−1)` fraction, and
+           `U_a = B(θ_i(a) : i ∈ J; η/4)` is linear in `a`.
+         - *F5, relating back.* `ψ_a = φ_{z+a} − φ_z` on a dense part of
+           `B_{z+a} ∩ B_z` for most `z`, from `x_a ∈ X_a`.
+
+         Still to do after F5: the Prop 9.3 output statement itself.
+         Quantitatively, `s₀ = O(d log(dR))`, and
          `δ` is polynomial in `ε` and `(2R+1)^(−d)`. With
          `R = (ρ^(−1))^O(d)`, this makes `m ≤ s₀/δ = exp(O(d² log 1/ρ))`
          rounds: exp-poly in `d` and `log 1/ρ`, as in the paper.
