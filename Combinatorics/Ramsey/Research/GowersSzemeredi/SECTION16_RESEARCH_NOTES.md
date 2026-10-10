@@ -2341,26 +2341,77 @@ replacement for `section16_joint_frequency_box`.
   case (`fejerFiveTermThreshold_le_explicit_tower`, exponents up to
   `2^73`).
 
-**Where the reduction now stands.** Once the bookkeeping of step (b) below
-is kernel-checked, Theorem 18.2 at length six (`Theorem182At 6`) will
-follow from these inputs, all in dimension `≤ 2`:
-- `LocalRelationCoverAt 2 δ` with polynomial `c_R`, `Q_c` (the open core);
-- `LocalMultilinearPieceAt l` for `l = 1, 2`, with polynomial densities and
-  power-law widths.
+**Correction (2026-10-10, same day): the box-local input hypotheses are
+false; steps 2–7 are vacuous as stated.**
 
-The dimension-one inputs are expected to follow from the corpus's
-dimension-one local structure (the regime behind the double-exponential
-four-term bound). The dimension-two inputs are genuinely open. A *global*
-version of them would be polynomial-Freiman–Ruzsa strength over `ℤ`.
+`LocalMultilinearPieceAt k γ c w` and `LocalRelationCoverAt k δ Qc c w` ask
+for pieces or covers in *every* proper box, for *every* set with the
+product property. But `HasProductProperty` is normalized by the whole
+modulus: its inequality is `γ^(8p)·N⁻¹·(Σθ)⁴ ≤ energy`. The energy contains
+the diagonal quadruples `(x, y, x, y)`, so
+`energy ≥ (Σθ²)² ≥ (Σθ)⁴/|E|²`. Hence the inequality holds automatically
+whenever every coordinate line of `B` has at most `√N` points.
 
-**Next.**
-- (a) Discharge `LocalMultilinearPieceAt 1` and `LocalRelationCoverAt 1`
-  from proved dimension-one results, if their bounds are polynomial.
-- (b) Kernel-check the length-6 budget under power-law inputs: frequency
-  box width `≥ N^e`, then `FunctionDiscrepancyBound 4` with
-  `β ≥ α^(D_total)`, then
-  `intervalDiscrepancyClosedThreshold 6 ≤ szemerediThreshold δ 6`.
-- (c) Study the dimension-two core in its local form.
+*Counterexample.* Take a proper box `P` with all axes of length `≤ √N`,
+`B = P` (so `θ = 1`), and `φ(x) = (x₀)²`.
+- `φ` has the product property on `B` for every `γ ≤ 1`, by the diagonal
+  bound above.
+- A multilinear `μ` is affine along every coordinate-0 line, and a
+  quadratic agrees with an affine map at no more than 2 points of a proper
+  progression. So `μ` agrees with `φ` on at most `2|R|/width(R)` points of
+  any sub-box `R`.
+- So `c(1)·|R| ≤ 2|R|/width(R)` forces `width(R) ≤ 2/c(1)`. Since `N` is an
+  arbitrary prime, `w(1, L) ≤ 2/c(1)` for every `L`.
+
+Any growing `w` makes both hypotheses false. The theorems that assume them
+remain true but are **vacuous**:
+- `single_piece_on_line_cell` (the product-property corollary);
+- `single_piece_of_spectrum_cover`;
+- `LocalRelationCoverAt.localMultilinearPieceAt`;
+- `vertex_localPieceFor` and `vertex_providers_of_low`;
+- `slice_localPieceFor`;
+- `single_piece_lift` and `single_piece_frequency_box`;
+- `SinglePieceInputs` (step 7, not yet published).
+
+The order-of-magnitude "fits K.4" count above is therefore withdrawn, until
+the inputs are restated.
+
+*What survives.* Everything stated in terms of *providers* stays valid and
+reusable:
+- `exists_anchor_pair_capture` and `anchor_reconstruction`;
+- `single_piece_on_line_cell_of_slices`;
+- the provider calculus `LocalPieceFor`: `transport`, `translate`,
+  `reindex`, `lift_last`, `lift_embedding`, `simultaneous`,
+  `simultaneous_finset`, `mono`;
+- `remainder_piece`, `exists_dense_cell`, `exists_short_parent_dense_cell`,
+  `section16SpectrumRelation_fibre_le`;
+- the `*_of_arrangements` forms of Lemma 16.5.
+
+A provider is a statement about one function on one domain, and it *is*
+satisfiable on good domains.
+
+*The repair.* The inputs must be **global-to-local**, as Gowers's own
+Theorem 16.2 is. A relation with the (global) product property and
+`|Γ| ≤ γ⁻²N^l`, after deleting `θN^l` base points, is covered on every
+proper box by few multilinear graphs (`MultiplyLinearWith Qb Eb`).
+- Dimension one is **proved** with polynomial controls:
+  `section16_product_relation_cubic_cover` has `Qb ≤ 3(2/(γθ))^10002` and
+  `Eb = 2^(−27)σ³/q⁴`.
+- From such a cover, a provider follows on the good domain: a dense cell,
+  then pigeonhole over the graphs.
+- So the restated open core is a polynomial-control
+  `MultiplyLinearWith`-cover at dimension 2. It is **non-stackable**:
+  no union over members is needed, because the single-piece route never
+  forms unions. That is weaker than Part J's `StackableStructureAt 2`.
+
+**Next (after the correction).**
+1. Kernel-check the counterexample, so the retraction is itself proved.
+2. Restate the inputs as `PolyCoverAt l Qb Eb`, the global-to-local
+   polynomial cover, and derive providers on good domains. Rebuild
+   `single_piece_lift` and the frequency box with good-set intersections
+   (each costs `θ′N^(k+1)` globally). Discharge `l = 1` by
+   `section16_product_relation_cubic_cover`.
+3. Then the length-6 budget.
 
 ## F. Routes
 
@@ -11610,3 +11661,289 @@ existing fidelity qualifications. Incoming twelve-tuple iteration, glued
 pair maps, final pair/window choices and deterministic assembly tools are
 included in the same full audit. No source agreement for an `N^7` family
 or final printed bound is inferred from these checks.
+
+### J.152. Full original eight-tuple transfer on the natural domains
+
+Continuation checkpoint 297, 2026-10-10. Twelve original modules add
+26 named proofs. The same jointly selected original-data system now
+supplies both progression compatibility and the full `N^7` source
+agreement family, on the maps' full original-radius domains.
+
+**Distinct original tuples.** `joinSourceRepresentations` concatenates two
+original four-term representations, swapping adjacent entries in the
+negative block. Its index equation is the difference of the two original
+four-sums, and its map value is the difference of their original column
+maps. Both the value identity and the endpoint-domain identity are proved.
+
+`sourceEightFamilies` varies `u` over the valid anchor pairs for an index
+`a`, then takes one original alternative at `u+a` and one at `u`. Joining
+is injective: the eight-tuple determines both four-tuples, and the negative
+four-tuple determines `u`. Thus an anchor mass `lambda*N` and two
+alternative masses `kappa*N^3/2` give
+
+```
+lambda*kappa^2/4 * N^7
+```
+
+distinct original additive eight-tuples. No representation multiplicity
+or missing factor of `N` is hidden in this bound.
+
+**Image agreement from one system.** The tiny-core eight-term relation
+compares the selected difference map at `v(a)` with every other valid
+anchor `u`. Use the paired tuple
+`[(v+a,v),(u,u+a),(v,v),(v,v)]`. Padding adds no frequency outside the
+existing selected-map domain. The normalized reference-map values cancel
+in the defect; their frequencies remain in the selected and auxiliary
+spectra.
+
+Combine this cross-anchor image bound `J8` with the two actual raw
+source comparisons, each of cap `Jsrc`. The endpoint spectrum consists
+of the selected-map spectrum and the eight original column spectra, with
+size at most `24d`. The variable anchor contributes at most `16d`
+auxiliary frequencies. The three-defect image bound and explicit
+auxiliary removal give cap
+
+```
+Jorig = Jsrc^2 * J8 * refinementKernelCap (24d) (16d) sigma sigma
+```
+
+at endpoint radius `sigma/2`, where initially `sigma=1/(64*pi)`.
+`original_eight_agreement_mass` proves the mass bound for the actual
+agreement predicate, including original index-set membership, the
+additive sum, the map values, and the endpoint Bohr domain.
+
+**Preserve the source-agreeing core.** The prescribed-core helpers extend
+J.151's actual core to its tiny intersection and choose the final anchors
+there. They do not choose another representative system or another core.
+`global_original_eight_progression_transfer` constructs the proper
+progression `P=Q/1024` and actual normalized maps. It preserves the original
+witness system, witness masses, source columns, index density, robust
+representation families and chosen representatives. It proves every
+quadruple compatible and gives an original agreement family at every
+index of `P`.
+
+The uniform agreement density is
+
+```
+gamma(alpha) = delta(alpha)*kappa(alpha)^2/(8*1024^R(alpha)).
+```
+
+The verified comparison `globalOriginalEightAgreementDensity_lower` gives
+
+```
+gamma(alpha) >= exp(-(C_P + 47 + 10*C_B)*(p+1)^8).
+```
+
+Here `delta=exp(-C_P*(p+1)^8)`, `kappa=exp(-p)^4/8`, and the integer rank
+ceiling has its earlier bound. Powers of two give the logarithmic costs
+`512<=exp(9)` and `1024<=exp(10)`. The agreement mass stays on the parent's
+degree-eight exponential scale.
+
+**Full natural domains, with no remaining radius loss.** Shrinking every
+original column domain would control a smaller set than the natural
+intersection used in the sum. `freiman_image_expand_radius` closes this
+fidelity obligation. A Freiman-linear map on `B(T;rho)` with image cap `K`
+on `B(T;r)` takes at most `ceil(1/r)^|T|*K` values on its entire original
+domain. Partition residues by their Dirichlet-cell signatures. Two points
+of the same cell have difference in `B(T;r)`; the Freiman equation then
+puts each cell's image in one translate of the small-domain image.
+There are at most `ceil(1/r)^|T|` signatures.
+
+Every original eight-tuple defect is proved Freiman-linear on the full
+endpoint intersection at `rho=1/(4*pi)`. Expand its small-domain image
+bound, and expand the quadruple defect similarly. The final uniform cap
+is
+
+```
+max( refinementCells(1/(64*pi))^(64d) * J8,
+     refinementCells(1/(128*pi))^(24d) * Jorig ).
+```
+
+`global_original_eight_full_domain_transfer` proves both conclusions on
+`1/(4*pi)`: every quadruple of the proper index progression has bounded
+image, and every index has at least `gamma(alpha)*N^7` original eight-tuples
+agreeing on the full natural intersection of the selected and original
+column domains. Both origin normalizations and the `16d` local rank bound
+remain. The extra cap factors are independent of the modulus and linear
+in the previous caps; the original tuple family is retained.
+
+This completes compatibility and original eight-tuple correspondence in
+the original-data cyclic map transfer. The remaining bilinear/variety
+assembly and the initial and final parameter comparisons are still
+required for the five numbered open statements. A bound in the parent
+sampling parameter `p` does not by itself establish the modern
+`milicevicBound D alpha` interface or the printed Gowers contract.
+No upstream code or licensing scope is added here.
+
+**Verification.** The full-domain original-data transfer compiles in a
+434-module production closure. All 26 named proofs are included in the
+completed combined audit: 9,683 public Gowers theorems across 5,594 modules,
+with 5,592 modules in the facade closure. Only `propext`, `Classical.choice`,
+and `Quot.sound` occur. The selected OAI audit closure remains 4,152 modules,
+and its port scope check passes. The source ledger is byte-identical to
+the 115-companion / five-open catalogue, retaining its fidelity caveats.
+Incoming Sanders linear-part/thickening results, Proposition 9.3
+prerequisites, single-piece anchor/section/spectrum lemmas and the
+linearity-bound correction are included in the same full audit.
+
+### L.2. The raw local inputs cannot have growing width
+
+Continuation checkpoint 298, 2026-10-10. The production module
+`Proofs16SmallDomainLocalObstruction` proves nine results auditing the
+local inputs of the single-piece lift. These are original proofs using
+the existing weighted-energy API; no additional upstream port is used.
+
+The issue is normalization. `HasProductProperty` has denominator the
+ambient modulus `N`, whereas `LocalMultilinearPieceAt` measures density
+relative to a possibly much shorter box. If every coordinate section has
+at most `sqrt(N)` points, **every map** has the unit product property.
+Indeed, for a nonempty parallel family, its common test domain `E` has
+`|E|^2 <= N`. The support of all simultaneous graph-pair sums has at most
+`|E|^2` elements. The existing weighted collision bound gives
+
+```
+(sum_E weight)^4 <= N * weightedSimultaneousAdditiveEnergy.
+```
+
+This includes arbitrary real weights in the support estimate. The
+zero-size parallel family is handled separately by ordinary additive
+energy, so no empty-family case is omitted. Consequently arbitrary maps
+on an interval box of width `L` have genuine unit product property when
+`L^2 <= N`, in every dimension. Unit property also supplies every
+parameter `0 <= gamma <= 1`.
+
+Now take dimension one and the quadratic `phi(z) = (z 0)^2`. Over the
+prime field, it agrees with any multilinear (hence affine) map at at most
+two points, on any partial domain. The proof subtracts the equations at
+two roots to obtain `(x-r)*(x+r-a)=0`; all roots lie in `{r,a-r}`.
+
+For any `L >= 1`, place the proper interval box in a prime modulus
+`N >= L^2`, and take `B` to be its whole carrier, so its local density is
+one. A proper one-dimensional sub-box has cardinality equal to width.
+The raw input would therefore imply the necessary budget
+
+```
+c(1) * w(1,L) <= 2.
+```
+
+`not_localMultilinearPieceAt_of_quadratic` formally refutes the input
+whenever this budget fails, for every `0 <= gamma <= 1`. Its positive
+density and growing-width specialization cannot be proved, even in
+dimension one. `LocalMultilinearPieceAt.unit_density_width_budget` records
+the necessary inequality directly. Averaging a relation cover into a
+function piece gives the same obstruction for `LocalRelationCoverAt`:
+with `Qc(t,1) >= 1`, its controls must satisfy
+
+```
+(c(1)/Qc(1,1)) * w(1,L) <= 2.
+```
+
+**Scope and next route.** This refutes auxiliary interfaces, not Theorem
+16.2 or Gowers's final conclusions. The original global theorem can
+discard a small part of ambient space; the short-box example does not
+refute that conclusion. The single-piece averaging, capture, remainder
+and retiling lemmas remain valid conditional deductions. Their raw local
+inputs cannot be discharged with growing-width controls. A usable lift
+must construct providers for the actual retained structured slices and
+spectrum relation, or derive a suitably normalized local energy input
+from the original data. Merely renaming a stronger premise does not
+complete that derivation. The numbered targets and their requested
+bounds remain unchanged; the ledger remains 115 companions / five open.
+
+**Verification.** All nine named results compile in a 131-module production
+closure. After merging the incoming conditional frequency-box reduction,
+the full combined audit checks 9,777 public Gowers theorems across 5,599
+modules; the facade closure contains 5,597 modules. Only `propext`,
+`Classical.choice` and `Quot.sound` occur. The selected OAI audit closure
+remains 4,152 modules, and the 4,134-upstream / 17-compatibility port scope
+check passes. The source ledger remains byte-identical at 115 companions
+and five open statements. The incoming frequency-box theorem is included
+in the audit and retains the local inputs refuted here for growing controls.
+
+### J.153. Exact original-data transfer on one proper progression
+
+Continuation checkpoint 299, 2026-10-10. Five original modules add
+19 named proofs. Prime-cyclic small-image rigidity turns the completed
+original-data map transfer into exact compatibility and genuine exact
+source agreement on explicit smaller natural domains. All original
+column witnesses, representations, ranks and normalizations are retained.
+
+**Quadruples and original source tuples.** A normalized Freiman defect
+with at most `K<N` values vanishes on the same frequency set at radius
+`rho/K`. Applied to a bounded quadruple image, this is precisely
+`ColumnPairCompatible` for its two difference maps. Applied separately
+to every original source eight-tuple defect, it gives
+`originalEightExactAgreementSet`: the chosen map equals the alternating
+sum of the eight original column maps on the intersection of all their
+domains. The same family is retained, with no tuple-count or agreement
+density loss. The common positive cap `K0` is the maximum of one and
+checkpoint 297's full original-domain cap. The exact modulus bound is
+the maximum of the earlier selection bound and `K0+1`.
+
+**Every additive eight-tuple.** On a full progression `P`, exact
+quadruples have defect image at most one. The shared-anchor chain gives
+bounded eight-tuple defects on `P/256`. Its intermediate domain retains
+the anchor constraints. The existing linear-cap theorem removes them
+with endpoint budget `8*dpsi` and anchor budget `4*dpsi`, where
+`dpsi=16*d` is the chosen-map rank cap. Prime-cyclic rigidity then gives
+exact eight-tuple relations on the natural endpoint domains. There is
+no iterative local-model packing in this conversion.
+
+Write `rho0=1/(4*pi)` and
+
+```
+sigma = rho0/K0,
+K8 = refinementKernelCap (8*dpsi) (4*dpsi) sigma sigma,
+rExact = sigma/(2*K8),
+R = P/256.
+```
+
+`K0`, `K8` and `rExact` are positive. Under the explicit maximum of the
+earlier exact-transfer modulus bound and `K8+1`,
+`global_original_fully_exact_progression_transfer` constructs the same
+original-data system and one proper `R` with all of these properties:
+
+- rank at most `globalProgressionPurificationRank alpha`;
+- density at least the old difference-progression density divided by
+  `512^globalProgressionPurificationRank alpha`;
+- exact compatibility for every additive quadruple in `R`;
+- exact alternating-map sum for every additive eight-tuple in `R`;
+- at every index in `R`, at least
+  `globalOriginalEightAgreementDensity alpha * N^7` distinct original
+  source tuples agree exactly with the chosen map.
+
+All three exact statements use the common positive `rExact` and their
+natural endpoint domains. The local chosen maps remain Freiman-linear
+on their full original-radius domains, with both zero normalizations.
+Shrinking the index progression changes its density, not the pointwise
+source-agreement density or the selected representation system.
+
+**Native interface.** `balancedColumnPairs` swaps the endpoints in the
+last two pairs. The index and map-defect identities are proved, and its
+frequency union is unchanged. Thus the paired-sum relation becomes
+`ColumnDifferenceQuadruple`, and
+`column_tuple_respected_of_paired_exact` supplies the existing
+`ColumnTupleRespected` predicate with its documented quarter-radius
+convention. This bridge keeps the actual endpoint spectra.
+
+**Scope.** This closes exact compatibility and source-agreement inputs
+for the progression maps, not the full structural assembly. In
+particular, an eight-tuple relation here has eight endpoints; no
+sixteen-endpoint or arbitrary-order Freiman relation is asserted. The
+new explicit modulus and radius bounds have not been compared with the
+printed Gowers thresholds or the deep bound in the original density
+parameter. All five numbered targets and their requested bounds remain
+open and unchanged. The false raw growing-width local inputs of L.2
+are not used. No upstream modules or licensing scope are added.
+
+**Production checks.** The generic exact-agreement source compiles in
+a 435-module closure; the first global exact transfer in 450; the
+progression eight-tuple extension in 436; the fully exact global
+transfer in 452; and the native interface in 551. These closures include
+up-to-date dependencies. The completed combined audit includes all 19 new
+named proofs and checks 9,818 public Gowers theorems across 5,604 modules;
+the facade closure contains 5,602 modules. Only `propext`,
+`Classical.choice` and `Quot.sound` occur. The selected OAI audit closure
+remains 4,152 modules, and its 4,134-upstream / 17-compatibility scope check
+passes. The source ledger remains byte-identical at 115 companions and
+five open statements. The incoming local-input retraction is synchronized.
