@@ -1,0 +1,49 @@
+{
+  "status": "PASS",
+  "python_version": "3.14.4",
+  "scope": "Finite exact checks plus a numerical branch audit. The analytic proofs are in the article. Larger Euler quadratures run only when --numerical is passed.",
+  "larger_numerical_diagnostics_rerun": false,
+  "checks": [
+    {
+      "name": "tetralogarithm",
+      "status": "PASS",
+      "elapsed_seconds": 13.54,
+      "log": "data\\tetralogarithm_replay.log"
+    },
+    {
+      "name": "fractional",
+      "status": "PASS",
+      "elapsed_seconds": 2.838,
+      "log": "data\\fractional_replay.log"
+    },
+    {
+      "name": "fractional_threshold",
+      "status": "PASS",
+      "elapsed_seconds": 2.336,
+      "log": "data\\fractional_threshold_replay.log"
+    },
+    {
+      "name": "polynomial_mesh",
+      "status": "PASS",
+      "elapsed_seconds": 2.219,
+      "log": "data\\polynomial_mesh_replay.log"
+    },
+    {
+      "name": "late_euler_symbolic",
+      "status": "PASS",
+      "checks": {
+        "tilted_defect_polynomial": true,
+        "axis_derivative_polynomial": true,
+        "tilted_defect_derivative": true
+      }
+    }
+  ],
+  "input_sha256": {
+    "code\\verify_tetra.py": "ed333dc202aebb94f07584c7571b9a9f61dea22a64353ed9a10f295b608aa9bb",
+    "code\\tetralogarithm_certificate.json": "a1863f40f416e40938c78f3ff903d512f086702a0882c498ffc2d38270fa22ff",
+    "code\\verify_fractional.py": "78728762530f6175329906e2345c598b033f1c44ecc0f53d9cc0efa193814335",
+    "code\\verify_fractional_threshold.py": "4bd3272031609ffd002cc0e5ada685d981cd279fd4596013f7aec71d5ee62c55",
+    "code\\verify_polynomial_mesh.py": "6996ff45c7490909d7a7d59b9adf658d59235ba73bb4ecb1be1b726273590f0e",
+    "code\\verify_late_euler.py": "003a314a90bdd597a9a2af6c7761d225883a97504cf3fb14663bcb275ec4ab50"
+  }
+}
