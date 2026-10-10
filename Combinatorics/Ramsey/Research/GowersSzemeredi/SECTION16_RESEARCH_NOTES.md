@@ -12218,3 +12218,104 @@ OAI audit closure remains 4,152 modules, and its 4,134-upstream /
 17-compatibility scope check passes. The 115-companion / five-open source
 ledger is byte-identical. The incoming global-to-local provider calculus
 and repaired single-piece lift are included in the same audit.
+
+### J.156. Dense frequency iteration and coherent Proposition 9.3 output
+
+Continuation checkpoint 302, 2026-10-10. Eight original modules add
+20 named proofs. The uniform chart-domain density needed by J.155 is
+now retained from the actual extraction and through the full iteration.
+The resulting active Proposition 9.3 output feeds the coherent common-
+domain construction without a new chart-density assumption.
+
+**Derive domain density.** Each Claim 9.4 or 9.5 extraction supplies a
+pair support `P` of size at least its claim density times `N^2`, with
+every second coordinate in the new domain `B`. At most `N` pairs carry
+each value, hence `|B| >= delta*N`. The deterministic append keeps all
+older domains unchanged and installs `B` only at the new index. The
+stronger append records every domain density and the same exact
+potential increase `|P|`.
+
+Take the common lower bound
+
+```
+delta = min(claimNineFourDensity eps R d,
+            claimNineFiveDensity eps R d).
+```
+
+Both rounds carry `delta*N <= |D_i|` at every constructed index. The
+finite-potential termination theorem retains this field, alongside its
+original bad-triple, bad-twelve-tuple and family-size bounds:
+
+```
+ceil(delta*N^2)*m <= N^2*s0,
+therefore m <= ceil(s0/delta).
+```
+
+`milicevic_prop_9_3_dense_active_domains` records the same density in the
+actual assembled output, with the active-domain tests of J.155 and all
+existing numerical counts unchanged.
+
+**Finite windows and padding.** Reindex the chosen finite `J` as
+`Fin J.card`. At indices below `m`, use the original domain and map.
+Other indices are inactive everywhere in the retained set; replace them
+by zero maps on the full domain. This gives a genuine dense order-eight
+chart family even when the common window contains padding. Its active
+frequency image is proved exactly equal to the original active image.
+No active value is changed, and no inactive original value is forced
+to agree. Put `p=max(0,log(1/delta))`; then `p>=0` and `exp(-p)<=delta`.
+
+`complete_dense_index_window_charts` consumes these proved fields and
+constructs the common Sanders charts. It retains the original fixed
+frequencies, source maps, good quadruples and source-index translations.
+
+**Uniform good-quadruple density.** Let `a` be Proposition 9.3's original
+quadruple coefficient, and set
+
+```
+W = choose(ceil(s0/delta)+8*s0, 8*s0),
+kappa = (a/2)/W.
+```
+
+`W>0`. If `12<=a*N`, the `6*N^2` repeated-index term costs at most half
+of `a*N^3`. The N-independent family-size bound and binomial monotonicity
+then give at least `kappa*N^3` good quadruples in the selected window.
+This uses the original good-family count before chart localization,
+without a new error estimate after selection.
+
+**Coherent Proposition 9.3.** `milicevic_prop_9_3_coherent_charts` starts
+from the standard column-map, rank, iteration and almost-all-relation
+inputs. In the positive-coefficient regime, with the explicit conditions
+
+```
+12 <= a*N,
+8 <= (kappa/coherentChartCells(p)^(4*coherentChartRankCap(8*s0,p)))*N,
+```
+
+it constructs the original active selection plus one coherent chart
+family. Its common Bohr rank is at most
+`coherentChartRankCap(8*s0,p)`, its fixed frequency set has cardinality
+at most `32*s0`, and both retained vertex and quadruple densities are
+at least `coherentChartDensity(kappa,8*s0,p)`. The varying maps are
+normalized native Freiman 2-homomorphisms on one common Bohr domain;
+the retained vertices lie in its quarter-radius subset. Every local
+map is the original chosen glued map at the recorded source index
+`t_color(u)+u`, and every retained quadruple realizes an original good
+active quadruple. Relating back to the original column differences is
+retained. The extra chart-domain density is constructed, not assumed.
+
+**Scope and next application.** This closes the missing density bridge
+and constructs the common-domain coherence output under Proposition
+9.3's stated ambient input conditions. The exact original-data transfer
+of J.154 has a retained progression; its local anchor candidates and
+relative error counts must be used to supply a suitable localized
+selection, rather than silently assuming N/2 good global columns or
+applying an ambient error bound to a small retained set. Subsequent
+structural assembly, original-bihomomorphism agreement and final printed
+Gowers budget comparisons remain open. All five numbered targets are
+unchanged. No raw growing local input or new upstream port is used.
+
+**Production checks.** The append and both rounds compile in a
+176-module closure; the dense iteration in 177; the dense active
+assembly and finite-window modules together in 574; completion in 538;
+the uniform quadruple budget in 538; and the coherent Proposition 9.3
+in 577. The combined axiom audit is pending for this checkpoint.
