@@ -1,0 +1,85 @@
+{
+  "part": "distribution",
+  "source_folder": "distribution-jets",
+  "source_code_sha256": {
+    "code/distribution.py": "3990073004846acaed7039624bf8bf2a27a6ee9ae8c2072b54fdb1829c515b4b",
+    "code/replay_certificate.py": "b049ebde5cb658962eddbcff37a3357c41b4a7f63a0d1f92f53cfd3003dd7a7c",
+    "code/verify_characters.py": "57cc5b6b1d78bf761b05f7abba3265dc1add90b33aaa9bbff366daf440f5567c",
+    "code/verify_exact.py": "b6b2ee4ccab8c12db456efe31cd9aeab5a52636a48965c6ff6a44996bf1a37b2",
+    "code/verify_numeric.py": "0ce7827646d0e3f5486a4f14c941c4a23ce68f99d2628816ae6823a0f9656bed",
+    "code/verify_s4_presentation.py": "c26be6c899f37e78f2deab971cb4a072fffb0d2890ebb4c1fd28b9f3b986debc"
+  },
+  "commands": [
+    {
+      "program": "code/verify_exact.py",
+      "arguments": [
+        "--max-q",
+        "60"
+      ],
+      "exit_code": 0
+    },
+    {
+      "program": "code/verify_characters.py",
+      "arguments": [
+        "--max-q",
+        "60"
+      ],
+      "exit_code": 0
+    },
+    {
+      "program": "code/verify_s4_presentation.py",
+      "arguments": [],
+      "exit_code": 0
+    },
+    {
+      "program": "code/replay_certificate.py",
+      "arguments": [],
+      "exit_code": 0
+    },
+    {
+      "program": "code/verify_numeric.py",
+      "arguments": [
+        "--group",
+        "traces",
+        "--dps",
+        "55"
+      ],
+      "exit_code": 0
+    },
+    {
+      "program": "code/verify_numeric.py",
+      "arguments": [
+        "--group",
+        "stieltjes",
+        "--dps",
+        "55"
+      ],
+      "exit_code": 0
+    },
+    {
+      "program": "code/verify_numeric.py",
+      "arguments": [
+        "--group",
+        "s4",
+        "--dps",
+        "55"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "fresh_result_files": [
+    "certificates/character_examples.json",
+    "certificates/primitive_q12_s2.json",
+    "certificates/primitive_q21_s-1.json",
+    "certificates/primitive_q30_s3.json",
+    "certificates/primitive_q60_s2.json",
+    "certificates/s4_rowspace_obstruction.json",
+    "data/character_checks.json",
+    "data/exact_summary.json",
+    "data/numeric_s4.json",
+    "data/numeric_stieltjes.json",
+    "data/numeric_traces.json"
+  ],
+  "passed": true,
+  "scope": "Written analytic proofs, exact finite certificates and numerical diagnostics have distinct evidence scopes."
+}

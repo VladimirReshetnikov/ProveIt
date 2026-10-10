@@ -1,0 +1,348 @@
+\section{Mixed endpoints and all-weight cyclotomic product quotients}
+Put $A_{a,b}=\Imag\Li_{a,b}(\iu,\iu)$ and
+$K_{a,b}=\Imag\Li_{a,b}(\iu,-1)$; retain $g_{a,b}$ and $S_p$ as above.
+The all-exponent endpoint identity relates the mixed family to the same-color
+family before any period-independence question is asked.
+
+\subsection{An all-exponent mixed endpoint identity}
+
+\begin{theorem}[Gaussian mixed endpoint]\label{cycloquot:thm:mixed-endpoint}
+For every integer \(p\geq1\),
+\begin{equation}\label{cycloquot:eq:mixed-endpoint}
+ K_{p,1}+(-1)^{p-1}A_{1,p}
+ =\beta(p+1)-2\log2\,\beta(p)
+       +\sum_{j=2}^{p}(-1)^j\eta(j)\beta(p+1-j).
+\end{equation}
+Moreover,
+\begin{equation}\label{cycloquot:eq:harmonic-split}
+ S_p=g_{p,1}+K_{p,1}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+All the boundary values used here converge. First-index-one values
+with first argument \(\iu\) can be obtained by Dirichlet's test or
+radial Abel limits. The shuffle and stuffle identities may therefore
+be justified by convergent iterated integrals and Abel limiting.
+
+Fix \(w=p+1\), and define homogeneous generating polynomials of
+degree \(w-2\):
+\[
+ \mathcal A(X,Y)=\sum_{a+b=w}A_{a,b}X^{a-1}Y^{b-1},
+ \quad
+ \mathcal K(X,Y)=\sum_{a+b=w}K_{a,b}X^{a-1}Y^{b-1}.
+\]
+Let \(\mathcal V\) denote the same polynomial for
+\(\Imag\Li_{a,b}(-1,\iu)\), and put
+\[
+ P(X,Y)=\sum_{a+b=w}
+  \Imag[\Li_a(-1)\Li_b(\iu)]X^{a-1}Y^{b-1},
+ \qquad
+ H(X,Y)=\sum_{a+b=w}X^{a-1}Y^{b-1}.
+\]
+Stuffle and shuffle respectively give
+\[
+ \mathcal V(X,Y)+\mathcal K(Y,X)=P(X,Y)+\beta(w)H(X,Y),
+\]
+\[
+ \mathcal A(X+Y,X)-\mathcal V(X+Y,Y)=P(X,Y).
+\]
+The collision term in the first equation is
+\(-\Imag\Li_w(-\iu)=\beta(w)\).
+Eliminating \(\mathcal V\) yields
+\[
+ \mathcal K(U,V)=P(V-U,U)+P(V,U)+\beta(w)H(V,U)
+                  -\mathcal A(V,V-U).
+\]
+Set \(V=0\) and compare coefficients of \(U^{w-2}\).
+The evaluation \(\Li_j(-1)=-\eta(j)\) gives
+\eqref{cycloquot:eq:mixed-endpoint}, including the two occurrences of
+\(-\log2\,\beta(p)\).
+
+For \eqref{cycloquot:eq:harmonic-split}, taking imaginary parts of the outer
+index in \(\Li_{p,1}(\iu,1)+\Li_{p,1}(\iu,-1)\) retains indices
+\(2n+1\), with sign \((-1)^n\). Their inner sum is
+\[
+ \sum_{m=1}^{2n}\frac{1+(-1)^m}{m}=H_n.
+\]
+Absolute convergence proves the result directly for \(p>1\).
+An Abel limit gives the endpoint \(p=1\).
+\end{proof}
+
+At \(p=4\) this specializes to
+\begin{equation}\label{cycloquot:eq:K41}
+ K_{4,1}=A_{1,4}+\frac{191\pi^5}{23040}
+                  -\frac34G\zeta(3)-2\beta(4)\log2.
+\end{equation}
+
+\subsection{A precisely defined formal presentation}
+
+Fix a level \(L=3\) or \(4\) and a weight \(w\geq2\). Let
+\(\omega=e^{2\pi\iu/L}\).
+Introduce rational formal symbols
+\[
+ D_a(r,s)\quad(1\leq a<w,\quad r,s\in\Z/L\Z)
+\]
+for imaginary parts of \(\Li_{a,w-a}(\omega^r,\omega^s)\).
+Impose conjugation \(D_a(-r,-s)=-D_a(r,s)\).
+Symbols fixed by this involution vanish. Put all single values and
+imaginary parts of products of two single values in the background,
+and also set \(D_a(1,0)=0\). The latter is precisely quotienting by
+the chosen \(g\)-family.
+
+The only further rows imposed are, for \(p+q=w\),
+\begin{align}
+ D_p(r,s)+D_q(s,r)&=0,\label{cycloquot:eq:formal-stuffle}\\
+ \sum_{j=0}^{p-1}\binom{q+j-1}{j}D_{q+j}(s,r-s)
+ +\sum_{j=0}^{q-1}\binom{p+j-1}{j}D_{p+j}(r,s-r)&=0.
+ \label{cycloquot:eq:formal-shuffle}
+\end{align}
+They are the stuffle and shuffle rows of two single values, with their
+one-leading-one regularizations. A regularized product involving the
+real parameter \(T\) belongs to the background. At \(w=2\), the only
+two-divergent-factor correction is real and disappears on taking
+imaginary parts. Call the resulting quotient \(V_{L,w}\).
+
+This is \emph{not} the full cyclotomic double-shuffle algebra. Products
+involving a depth-two factor, relations lifted through higher depths,
+additional functional equations, and motivic period assertions have
+not been imposed. In particular, Zhao's standard relations
+\cite{cycloquot:Zhao} are substantially broader than this presentation.
+The theorem below computes \(V_{L,w}\), not a dimension of actual
+numbers.
+
+For a scalar assignment to the symbols, introduce
+\[
+ \mathcal F^{r,s}(X,Y)=
+ \sum_{a=1}^{w-1}D_a(r,s)X^{a-1}Y^{w-a-1}.
+\]
+The conditions that the assignment annihilate all rows are exactly
+\begin{align}
+ \mathcal F^{r,s}(X,Y)+\mathcal F^{s,r}(Y,X)&=0,
+ \label{cycloquot:eq:poly-stuffle}\\
+ \mathcal F^{s,r-s}(X+Y,X)+
+       \mathcal F^{r,s-r}(X+Y,Y)&=0.
+ \label{cycloquot:eq:poly-shuffle}
+\end{align}
+These follow by comparing binomial coefficients after substitution.
+They describe the dual of \(V_{L,w}\), so their solution dimension is
+the required quotient dimension.
+
+\subsection{All-weight dimension theorems}
+
+\begin{theorem}[Level four]\label{cycloquot:thm:level-four}
+The formal quotient satisfies
+\[
+ \dim_\Q V_{4,w}=
+ \begin{cases}
+ 0,&w\ \text{even},\\
+ (w-1)/2,&w\ \text{odd}.
+ \end{cases}
+ \qquad
+ \sum_{w\geq2}\dim V_{4,w}\,t^w=\frac{t^3}{(1-t^2)^2}.
+\]
+At odd weight, its dual is parameterized by arbitrary antisymmetric
+homogeneous polynomials of degree \(w-2\).
+\end{theorem}
+
+\begin{proof}
+Up to conjugation, the six color pairs are
+\((0,1),(1,0),(1,1),(1,2),(1,3),(2,1)\).
+Write their polynomials as \(U,G,A,K,M,V\), respectively, and let
+\(n=w-2\). The background condition gives \(G=0\);
+stuffle gives
+\[
+ U=0,\quad A(Y,X)=-A(X,Y),\quad
+ V(X,Y)=-K(Y,X),\quad M(Y,X)=M(X,Y).
+\]
+The shuffle with colors \((1,0)\) forces \(M=0\).
+The shuffle with colors \((2,1)\) gives
+\[
+ A(X+Y,X)+K(Y,X+Y)=0,
+\]
+hence \(K(X,Y)=-A(Y,Y-X)\).
+The shuffle with colors \((1,3)\) is
+\(K(X,Y)=K(X,X-Y)\).
+After substitution and antisymmetry this condition is
+\(A=(-1)^{n+1}A\).
+
+For even \(n\) all polynomials therefore vanish.
+For odd \(n\), any antisymmetric \(A\), with \(K,V\) as above and
+\(U=G=M=0\), satisfies the rows. To check exhaustiveness, the
+unordered color classes up to conjugation are
+\[
+ (0,0),(0,1),(0,2),(1,1),(1,2),(1,3),(2,2).
+\]
+The real classes vanish, and the remaining classes are precisely the
+conditions just used, together with their transposes. Thus there are
+no unexamined rows.
+A basis for \(A\) at odd \(w\) is
+\[
+ X^{a-1}Y^{w-a-1}-X^{w-a-1}Y^{a-1},
+ \qquad 1\leq a\leq(w-1)/2.
+\]
+Counting these basis vectors and summing over odd weights proves
+the formulas.
+\end{proof}
+
+\begin{theorem}[Level three]\label{cycloquot:thm:level-three}
+The formal quotient satisfies
+\[
+ \dim_\Q V_{3,w}=
+ \begin{cases}
+ 0,&w\ \text{even},\\
+ \lfloor(w+1)/6\rfloor,&w\ \text{odd},
+ \end{cases}
+ \qquad
+ \sum_{w\geq2}\dim V_{3,w}\,t^w
+       =\frac{t^5}{(1-t^2)(1-t^6)}.
+\]
+Writing \(\Delta=XY(X-Y)\), \(Q=X^2-XY+Y^2\), the dual is parameterized
+by the homogeneous polynomials
+\[
+ A(X,Y)=\Delta\,P(Q,\Delta^2)
+\]
+of degree \(w-2\).
+\end{theorem}
+
+\begin{proof}
+Up to conjugation the four pairs are
+\((0,1),(1,0),(1,1),(1,2)\).
+As before the first two vanish and the shuffle with a zeta factor kills
+the inverse-argument polynomial. The remaining polynomial \(A\)
+satisfies exactly
+\[
+ A(Y,X)=-A(X,Y),\qquad A(X,X-Y)=A(X,Y).
+\]
+Antisymmetry implies divisibility by \(X-Y\); the second symmetry then
+forces divisibility by \(Y\), and antisymmetry forces divisibility by
+\(X\). Hence \(A=\Delta B\). The polynomial \(\Delta\) has the same
+two transformation signs as \(A\), so \(B\) is invariant under swapping
+\(X,Y\) and under \((X,Y)\mapsto(X,X-Y)\).
+
+On the plane \(a+b+c=0\), with
+\((a,b,c)=(X,-Y,Y-X)\), the second transformation swaps \(b,c\);
+the first is global negation followed by the transposition of \(a,b\).
+The generated group contains global negation, obtained by cubing
+the product, and all permutations. The elementary symmetric-polynomial
+theorem therefore identifies its invariant ring with
+\[
+ \Q[e_2,e_3^2]=\Q[Q,\Delta^2].
+\]
+Conversely every \(\Delta P(Q,\Delta^2)\) has the required symmetries,
+and direct substitution verifies all the original color rows.
+Counting monomials of degrees \(3+2a+6b=w-2\) gives the result.
+Explicitly, at odd \(w\geq5\) a basis is
+\[
+ \Delta^{2b+1}Q^{(w-5)/2-3b},
+ \qquad 0\leq b\leq\lfloor(w-5)/6\rfloor .
+\]
+\end{proof}
+
+For comparison, the exact dimensions at the first few odd weights are
+\[
+\begin{array}{c|rrrrrrr}
+ w&3&5&7&9&11&13&15\\ \hline
+ \dim V_{3,w}&0&1&1&1&2&2&2\\
+ \dim V_{4,w}&1&2&3&4&5&6&7
+\end{array}
+\]
+and all even-weight dimensions are zero. The exact matrix script
+checks both formulas through weight 16, including that the displayed
+polynomial bases annihilate every raw row and have the stated rank.
+
+\subsection{A separating functional and the scope of the S4 proof}
+
+At every odd weight \(w\geq3\), choose
+\(A(X,Y)=(Y-X)^{w-2}\) in the level-four theorem.
+Then \(K(X,Y)=X^{w-2}\), \(V(X,Y)=-Y^{w-2}\).
+This gives a rational linear functional \(\ell\) that annihilates every
+defining row and every background value:
+\begin{align}
+ \ell(D_a(1,1))&=(-1)^{a+1}\binom{w-2}{a-1},\notag\\
+ \ell(D_{w-1}(1,2))&=1,\qquad
+ \ell(D_1(2,1))=-1. \label{cycloquot:eq:separating}
+\end{align}
+All other entries vanish, apart from conjugates with opposite signs.
+
+At weight five its nonzero entries are particularly transparent:
+\[
+\begin{array}{c|rrrrrr}
+ \text{symbol}&A_{1,4}&A_{2,3}&A_{3,2}&A_{4,1}
+       &\Imag\Li_{1,4}(-1,\iu)&K_{4,1}\\ \hline
+ \ell&1&-3&3&-1&-1&1
+\end{array}
+\]
+The polynomial proof verifies all weights; the delivered certificate
+also checks this six-entry vector against every exact weight-five row.
+
+The now-proved identity of Theorem~\ref{gaussian:thm:S4} has an
+informative image in this restricted presentation.
+
+The exact identity \eqref{cycloquot:eq:K41} makes this equivalent to
+\begin{equation}\label{cycloquot:eq:S4-A}
+ 161280A_{1,4}+69120(g_{4,1}+g_{3,2}+3g_{2,3})
+       +617\pi^5-101520G\zeta(3)=0.
+\end{equation}
+The functional \(\ell\) sends its left side to \(161280\).
+Consequently this relation does not follow from
+\eqref{cycloquot:eq:formal-stuffle}--\eqref{cycloquot:eq:formal-shuffle} and the stated
+background alone. This is an exact obstruction to a specific proof
+strategy. The convergent octahedral relation used in its proof supplies precisely information outside this presentation.
+
+\subsection{A new weight-seven candidate}
+
+\begin{conjecture}[A reduction for \(S_6\)]\label{cycloquot:conj:S6}
+With the same definitions,
+\begin{align}
+ S_6={}&\frac{722}{527}g_{6,1}
+       +\frac{40}{527}g_{4,3}
+       -\frac{128}{155}g_{2,5}
+       +\frac{15191}{28569600}\pi^7\notag\\
+      &-\frac3{124}G\zeta(5)
+       -\frac{2373}{10540}\beta(4)\zeta(3)
+       -2\beta(6)\log2. \label{cycloquot:eq:S6}
+\end{align}
+\end{conjecture}
+
+The candidate was found in the ordered basket
+\[
+ (S_6,g_{6,1},g_{4,3},g_{2,5},\pi^7,
+          G\zeta(5),\beta(4)\zeta(3),\beta(6)\log2).
+\]
+Its primitive integer relation vector is
+\[
+ \begin{split}
+ (&485683200,-665395200,-36864000,401080320,\\
+  &-258247,11750400,109347840,971366400).
+ \end{split}
+\]
+A 100-digit search used coefficient bound \(10^{12}\) and tolerance
+\(10^{-90}\). After the coefficients were frozen, reevaluation by
+Mellin integrals at 220 working digits gave an integer-normalized
+residual of approximately \(-2.315\times10^{-213}\).
+An independent Euler transformation of the defining alternating
+series, using 900 terms and 300 working digits, gave approximately
+\(2.854\times10^{-263}\). The script records the full values and
+the exact integer vector. These are numerical evidence, not a proof
+or an interval certificate.
+
+For the second method, the defining series are
+\[
+ g_{a,b}=\sum_{n\geq0}
+       \frac{(-1)^nH_{2n}^{(b)}}{(2n+1)^a},
+ \qquad H_m^{(b)}=\sum_{j=1}^{m}j^{-b},
+\]
+and the analogous series with \(H_n\) for \(S_6\).
+Thus the second evaluation does not reuse the discovery integral.
+Last transformed terms are recorded as diagnostics; their small
+size alone is not asserted to bound the complete tail.
+
+The weight-seven functional \eqref{cycloquot:eq:separating} sends the
+integer-normalized candidate to \(485683200\). Its proof therefore
+also requires information beyond the restricted single-product
+presentation. The S4 certificate suggests seeking a corresponding weight-seven functional equation
+for \eqref{cycloquot:eq:S6}, with the
+nonzero functional serving as a check that the missing relation has
+actually been introduced.
+

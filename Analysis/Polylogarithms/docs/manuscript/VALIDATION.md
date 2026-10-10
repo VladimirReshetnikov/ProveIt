@@ -1,27 +1,23 @@
-> Historical validated 228-page checkpoint. Five subsequent incoming packages
-> are being integrated. The source inventory, mathematical replays and final
-> PDF/build/render hashes must be refreshed for the expanded release.
-
 # Validation of the unified manuscript
 
 Completed October 9, 2026. Authorship is **ProveIt Contributors** on the title
-page and in the PDF metadata. The canonical [PDF](polylogarithms.pdf) has **228
+page and in the PDF metadata. The canonical [PDF](polylogarithms.pdf) has **287
 pages, twelve chapters**, a literature appendix with 94 distinct historical
-question leads, and 65 bibliography entries. It incorporates the original
-39 drafts and all six nested continuation packages in the requested tree.
-The recursive [inventory](source-inventory.json) contains **109 textual source
+question leads, and 79 bibliography entries. It incorporates the original
+39 drafts and all eleven nested continuation packages in the requested tree.
+The recursive [inventory](source-inventory.json) contains **179 textual source
 files**, including assembled/fragment versions and correction registers.
 Their overlap is reconciled in the [editorial ledger](EDITORIAL-LEDGER.md).
 
 The reviewed PDF SHA-256 is:
 
 ```
-25769461206dcab29e42c584e3f15ed74c5bd638afdad044b36b390ca99f447c
+d589b97556c858d9bd4444adda1b06d949e93179b1de44f1412cea75aef8975d
 ```
 
 ## Source reconciliation and evidence integrity
 
-All 109 source digests match; no textual source is unlisted or uncovered.
+All 179 source digests match; no textual source is unlisted or uncovered.
 The static audit finds no duplicate labels or bibliography keys, missing
 references/citations, missing TeX inputs or missing figures. See
 [document-integrity.json](verification/document-integrity.json).
@@ -37,7 +33,10 @@ and raster receipts. Integrity is distinct from rerunning a computation.
 
 ## Fresh mathematical checks
 
-The numerical and exact evidence have different scopes; their counts are
+The following core receipts were produced during the preceding consolidation
+and remain valid for the unchanged identities and inputs; they were not all
+rerun in this incoming-report pass. The five new packages and native supplement
+were freshly replayed below. The numerical and exact evidence have different scopes; their counts are
 reported separately rather than combined into a theorem count.
 
 | Replay | Fresh evidence | Arithmetic and scope |
@@ -105,8 +104,9 @@ Fresh replays in `verification/gaussian-replay/` include:
 - **6** exact rational midpoint rectangles with widths below `1e-70`;
   separate symbolic partial-fraction and matrix certificates.
 
-The residual enclosure for S4 remains numerical evidence for a conjecture.
-It is expressly excluded from the proved identities. The kernel-rate theorem
+That historical S4 residual enclosure is numerical evidence only. The later
+rigidity package supplies the exact proof now integrated in Chapter 4;
+the enclosure is not used as a proof step. The kernel-rate theorem
 concerns uniform polynomial approximation, not a lower bound for every
 possible polylogarithm algorithm. The published cubic Tornheim evaluation
 and fixed-order moment expansion are attributed rather than claimed as new.
@@ -117,8 +117,9 @@ The final synchronization added deliveries 18 and 19 to the Gaussian package.
 Their shared formulas are fused with the earlier proofs. The new Chapter 5
 organizes the signed density, unique angular zero, uniform four-term zero
 asymptotic, one-sided Euler certificates, sharp logarithmic error, bounded
-S4 obstruction and exact Holder computation. The all-odd-weight rank pattern
-remains conjectural despite its finite exact census.
+S4 obstruction and exact Holder computation. The all-odd-weight pattern for that specified matrix vocabulary remains
+conjectural despite its finite exact census. The later all-weight theorem
+for a separately specified product quotient has its own proof and scope.
 
 Part 18 freshly passes **588** exact/interval check cases at 400 Euler terms:
 39 shuffle inverses, 56 kernel recurrences, 8 base derivatives, 384 Euler
@@ -145,6 +146,51 @@ exact outward-rounded certificates. The top-two series-depth layers, signed
 binomial coefficients modulo stated products, and sixth-root closure retain
 their explicit branch and quotient hypotheses.
 
+## Five incoming packages and fresh replay
+
+The full original conductor-descent, distribution-jets, complementary-depth,
+rigidity-and-reflected-moments and reflection-euler-tornheim packages are
+preserved byte for byte: **174 archive members**, pinned in
+[incoming-archives.json](verification/incoming-archives.json). Upstream's
+flattened placement supplies twenty additional duplicate editorial fragments;
+all twenty match originals after LF normalization. The archive bytes are
+recoverable at the recorded immutable Git revision after upstream retired
+the arrival ZIPs. The textual inventory includes these copies and the five
+updated overview notes, for 179 provenance files.
+
+All five isolated replay suites exit successfully; their commands, exact
+parameters, original code digests and freshly produced result filenames are
+in `verification/incoming-replay/*/replay-summary.json`. Originals are read
+only; each run operates in an ignored scratch copy.
+
+| New evidence | Fresh result and scope |
+|---|---|
+| S4 proof certificate | One convergent octahedral duality and **911** regenerated rational rows: 713 convergent double shuffle, 181 single-divergence regularized double shuffle, 17 lifted convergent distribution; **zero residual terms**. Written branch/convergence/regularization proofs justify the analytic schemas. |
+| Complement rigidity/plastic ladders | **2,012** checks including four numerical diagnostics; **435** exact trinomial quotient irreducibility checks, degree census through 12, exact plastic substitutions and count identities. Universal classification follows from the cited trinomial theorem and the written proof. |
+| Reflected moments and harmonic saddle | **119** exact reflected/Appell assertions; **16** late-coefficient, **9** moment-bound, **3** independent reflected quadrature and **24** saddle quadrature diagnostics. |
+| Distribution and conductor descent | Distribution: **295** exact rank and **295** normal-form cases through q=60. Conductor: **295** exact ranks, **29** all-divisor and **18** symbolic jet cases, level-12 normal form, six principal next-jet coefficient calculations and the twisted level-260 leading coefficient. |
+| Complementary depth | **511** exact trailing-zero re-expansions, **66** one-zero and **10** two-zero independent formulas, **142** catalogue entries (5,763 terms), **1,023** Lyndon checks, rank-7 triple matrix and three printed triple substitutions; **153** independent 75-digit diagnostics. An independent standard-library replay checks all 142 catalogue entries and six rational component widths. |
+| Restricted cyclotomic quotients | **30** exact finite matrix checks at levels 3 and 4 through weight 16 corroborate the separate all-weight formal quotient proofs; evaluated-period independence is not claimed. |
+| S6 candidate | **900** Euler terms, exact integer/fraction arithmetic and outward decimal endpoints enclose the frozen integer-vector residual below **1e-260**. Independent 220-digit Mellin and 300-digit Euler diagnostics support compatibility. **The identity remains unproved.** |
+| Sharp moments, Herglotz jets and Tornheim evaluation | Six least-term moment diagnostics at 180 digits; **40** finite Herglotz derivative checks, 12 exact sample formulas, three arithmetic-sector comparisons, large-order/oscillatory diagnostics; independent Tornheim/log-gamma quadrature with analytic truncation budgets at 80 digits. These floating-point comparisons are separate from exact certificates. |
+| Native Wolfram supplement | **5/5** at 70 digits, gate 1e-40: S4 defining integrals, principal level-30 trace orders 0/1/2, and the M11 reflected/Appell identity. No license-seat process termination was needed. |
+| Cross-report sharp reflected remainder | **9/9** diagnostics at 180 digits for n=20,40,60 and m=1,2,3. The corresponding Chapter 8 corollary is proved for every fixed m by composition with the slit-disk inverse, cut-contour transfer and gamma concentration. No growing-m uniformity is inferred. |
+
+The inspected June 27, 2012 CARMA author copy of Bailey–Borwein–Borwein
+has an incorrect sign on the positive auxiliary Tornheim sum in equations
+63 and 65. The canonical derivation uses the correct positive sign. This
+audit does not assert that the same error occurs in the journal version or
+the later author copy. The 2010 Amdeberhan et al. author preprint's log-sine
+coefficient claim has an unconditional formal-polynomial proof here; no
+unconditional uniqueness of numerical zeta/logarithm representations is
+claimed. The even modified-polylogarithm assertion and the zeta(0) coefficient
+label are also repaired.
+
+Historical receipts and delivered script status strings can still call S4
+conjectural: those strings describe the earlier report's scope. The current
+canonical S4 statement is proved by the later exact certificate. The S6
+status has not been promoted.
+
 ## Build and rendered review
 
 Three serial LuaLaTeX passes exit successfully and have identical final
@@ -152,17 +198,17 @@ auxiliary/reference state. The final log contains zero unresolved references
 or citations, duplicate-label warnings, overfull boxes, missing glyphs or
 rerun requirements. See [build-results.json](verification/build-results.json).
 
-The PDF text/bounds audit passes on all 228 pages. All pages were rasterized
-and visually reviewed in fifteen contact sheets. Full-size review of selected
-pages covered the Nielsen formula, mixed reductions, harmonic transition,
-q=5 correction, uniform rank proof, normalized jets, zero expansions and
-certificates, all five scientific figures, cubic certificate table,
-version-specific external counterexample and bibliography. The collective author credit was checked on the rendered title and in
-metadata. No clipping,
-overlap or illegible layout defects were found. See
-[pdf-inspection.json](verification/pdf-inspection.json); its full-page list
-records rendered candidates, while this paragraph states the actual review
-scope. The manuscript PDF is unchanged after that review.
+The PDF text/bounds audit passes on all 287 pages. All pages were rasterized
+and visually reviewed in eighteen contact sheets. Full-size review covered the collective title, S4 relation schemas and exact
+certificate, pure-complement classification, complementary-depth formula,
+saddle theorem, sharp and reflected moment proofs, conductor determinant and
+principal trace jets, Tornheim sign/evaluator, Herglotz derivative/sector proofs
+and all eight scientific figures. No clipping, overlap or illegible layout
+defects were found. [visual-review.json](verification/visual-review.json) records
+the actual reviewed pages; [pdf-inspection.json](verification/pdf-inspection.json)
+records static checks and all rendered candidates. The collective author was
+confirmed on the title and in metadata. The manuscript PDF is unchanged after
+that review.
 
 ## Limits of the evidence
 

@@ -1,0 +1,288 @@
+\section{From one-two reductions to general complementary depth}
+
+For positive indices we abbreviate
+\begin{equation}\label{complement:eq:mpl}
+\Li_{s_1,\ldots,s_d}(z)
+ :=\Li_{s_1,\ldots,s_d}(z,1,\ldots,1)
+ =\sum_{n_1>\cdots>n_d\ge1}
+ \frac{z^{n_1}}{n_1^{s_1}\cdots n_d^{s_d}},\qquad |z|<1.
+\end{equation}
+The indices decrease in the summation order, as in the manuscript.
+Weight is $w=s_1+\cdots+s_d$ and series depth is $d$.
+An empty index denotes the multiplicative identity.
+We use convergent multiple zeta values
+$\zeta(\boldsymbol s)=\Li_{\boldsymbol s}(1)$ when $s_1\ge2$.
+
+Let
+\[
+ \omega_0(t)=\frac{dt}{t},\qquad
+ \omega_1(t)=\frac{dt}{1-t}.
+\]
+Words are written \emph{outer letter first}. Thus
+\begin{equation}\label{complement:eq:word}
+H_{0^{s_1-1}1\cdots0^{s_d-1}1}(z)=\Li_{s_1,\ldots,s_d}(z).
+\end{equation}
+In particular $H_{01}=\Li_2$, not its negative or a reversed word.
+The recursion is
+$H_{av}(z)=\int_0^z\omega_a(t)H_v(t)$ whenever this is an ordinary
+convergent integral. Pure-zero words are defined by
+$H_{0^r}(z)=\log^r z/r!$, and trailing-zero words are obtained by shuffle
+regularization. Every word ending in $1$ is convergent at its initial
+endpoint and has the ordinary interpretation in \eqref{complement:eq:word}.
+
+Throughout the functional identities we use
+\begin{equation}\label{complement:eq:domain}
+ D=\C\setminus[0,\infty),\qquad
+ q=\frac1{1-z},\qquad L=\log q=-\log(1-z),\qquad z\in D,
+\end{equation}
+with principal logarithms and principal polylogarithms. The image of $D$
+avoids both $(-\infty,0]$ and $[1,\infty)$ in the $q$-plane, so the
+hyperlogarithms with possible trailing zeros have unambiguous branches.
+The origin is a limiting point, not an included point of $D$.
+
+We first prove formulas on $z<0$, where $0<q<1$ and all logarithms in
+$q$ are real. Analytic continuation on the connected slit domain $D$
+then proves the stated complex identities. This method avoids an
+unstated choice of a value on the polylogarithm cut. It includes both
+$z=i$ and $z=\rho=e^{2\pi i/3}$:
+\begin{align}
+ z=i:&\quad q=\frac{1+i}{2},&L&=-\frac12\log2+\frac{i\pi}{4},\label{complement:eq:gausspoint}\\
+ z=\rho:&\quad q=\frac12+\frac{i\sqrt3}{6},&L&=-\frac12\log3+\frac{i\pi}{6}.\label{complement:eq:eispoint}
+\end{align}
+Their transformed moduli are $2^{-1/2}$ and $3^{-1/2}$ respectively.
+
+\begin{definition}[Depth with logarithmic coefficients]
+A term $L^j\Li_{\boldsymbol a}(q)\zeta(\boldsymbol b)$ has
+\emph{reduced depth} $\dep(\boldsymbol a)+\dep(\boldsymbol b)$.
+The factor $L^j$ is a coefficient, not an additional nested sum.
+\end{definition}
+This is an explicit convention for the following reduction. It is not
+an identification with every motivic depth filtration, and does not
+turn arbitrary products of deep factors into depth-one objects.
+
+\section{An explicit complementary-depth theorem}
+
+\subsection{Endpoint transport with convergent constants}
+For a word $v$ ending in $0$, write $J_v(q)$ for the iterated integral
+from $1$ to $q$ using the same forms and the same outer-first convention.
+These integrals converge at $1$: the innermost form is $\omega_0$, which
+is regular there; preceding $\omega_1$ integrations do not destroy
+integrability. Set $J_\emp=1$.
+
+\begin{lemma}[Connection formula]\label{complement:lem:connection}
+For every nonempty word $v$ ending in $0$ and $0<q<1$,
+\begin{equation}\label{complement:eq:connection}
+ J_v(q)=\sum_{v=uv'}(-1)^{|v'|}H_u(q)H_{\operatorname{rev}(v')}(1).
+\end{equation}
+The sum includes empty prefixes and suffixes. Every nonempty endpoint
+word $\operatorname{rev}(v')$ starts in $0$, so its value at $1$ is
+convergent after the usual trailing-zero normalization at $0$.
+\end{lemma}
+\begin{proof}
+We give the endpoint justification rather than silently substituting into
+a divergent path identity. Fix a maximum word length $N$ and work in the
+truncated noncommutative algebra on $e_0,e_1$. Let
+$F(q)=\sum_{|u|\le N}H_u(q)u$. It satisfies
+\[
+ F'(q)=\left(\frac{e_0}{q}+\frac{e_1}{1-q}\right)F(q).
+\]
+Put $\ell=-\log(1-q)$. The function $e^{-\ell e_1}F(q)$ has a finite
+coefficientwise limit $Z$ as $q\to1^-$: its differential equation has
+coefficient $e^{-\ell e_1}e_0e^{\ell e_1}/q$, a finite polynomial in
+$\ell$ at each truncated weight, and this is integrable at $1$.
+Consequently
+$F(q)=e^{\ell e_1}Z+O((1-q)\log^M(1-q))$
+coefficientwise, for a sufficiently large finite $M$.
+
+Shuffle identities say that $F$ is group-like; the same holds for $Z$.
+The inverse coefficient in a group-like word series is
+$(Z^{-1})_{v'}=(-1)^{|v'|}Z_{\operatorname{rev}(v')}$, by the shuffle
+antipode, or equivalently by reversal of an iterated path.
+The coefficients of $R(q)=F(q)Z^{-1}$ solve the same differential
+recursion and tend to zero at $1$ for every nonempty word ending in $0$.
+Induction on word length therefore identifies them with the convergent
+integrals $J_v(q)$.
+
+If $v'$ is a nonempty suffix of $v$, its reverse begins in $0$.
+The corresponding coefficient of $Z$ is simply
+$H_{\operatorname{rev}(v')}(1)$: multiplication by
+$e^{-\ell e_1}$ only changes words beginning with $1$.
+Taking the coefficient of $v$ in $F(q)Z^{-1}$ proves
+\eqref{complement:eq:connection}. Since $N$ was arbitrary, this proves every finite
+word identity.
+\end{proof}
+
+\subsection{The word formula and the depth bound}
+For a word $w$ ending in $1$, let $K$ be its number of zeros. Replace
+each original $1$ by $0$, and replace each original $0$ independently
+by either $0$ or $1$. Denote the resulting $2^K$ words by $\tau_A(w)$,
+where $A$ records the zero positions replaced by $1$.
+Every $\tau_A(w)$ ends in $0$.
+
+\begin{theorem}[Complementary depth]\label{complement:thm:complement}
+For $z\in D$ and every nonempty word $w$ ending in $1$,
+\begin{equation}\label{complement:eq:master}
+ H_w(z)=(-1)^K\sum_A\ \sum_{\tau_A(w)=uv}
+ (-1)^{|v|}H_u(q)H_{\operatorname{rev}(v)}(1).
+\end{equation}
+After trailing-zero normalization, this is a finite rational linear
+combination of terms
+\begin{equation}\label{complement:eq:termshape}
+ L^j\Li_{\boldsymbol a}(q)\zeta(\boldsymbol b),\qquad
+ j+\wt(\boldsymbol a)+\wt(\boldsymbol b)=|w|,
+ \quad \dep(\boldsymbol a)+\dep(\boldsymbol b)\le K.
+\end{equation}
+Nonempty zeta indices are convergent. Thus a one-variable polylogarithm
+of weight $w$ and depth $d$ has the stated reduction with $K=w-d$.
+\end{theorem}
+\begin{proof}
+On $z<0$, make the substitution $u=(1-t)^{-1}$ in every integration.
+Its pullbacks are
+\begin{equation}\label{complement:eq:pullbacks}
+ \frac{dt}{t}=-\frac{du}{u}-\frac{du}{1-u},\qquad
+ \frac{dt}{1-t}=\frac{du}{u}.
+\end{equation}
+The initial endpoint $t=0$ becomes $u=1$. Multilinearity gives
+$H_w(z)=(-1)^K\sum_A J_{\tau_A(w)}(q)$.
+Lemma~\ref{complement:lem:connection} proves \eqref{complement:eq:master}.
+
+It remains to check the claimed normal form. The identity
+$H_vH_0=H_{v\sh0}$ removes a trailing zero. If a word ends in exactly
+$r$ zeros, its coefficient in the shuffle of its prefix with $0$ is
+$r$; all other words in that shuffle have fewer trailing zeros.
+Induction therefore expresses each $H_u(q)$ as a rational combination
+of $L^jH_{u'}(q)$ with $u'$ empty or ending in $1$.
+The operation preserves the number of $1$ letters.
+
+For an endpoint word beginning in $0$, the same normalization preserves
+its initial $0$ in every nonzero term with no logarithmic factor.
+Terms containing a positive power of $\log1$ vanish. The surviving
+nonempty terms begin in $0$ and end in $1$, hence are convergent MZVs.
+In each split of $\tau_A(w)$ the total number of $1$ letters in the
+two factors is $|A|\le K$. This proves the depth bound and the weight
+identity. Finally continue analytically from $z<0$ to $D$.
+\end{proof}
+
+\begin{corollary}[An argument-enlarged depth bound]\label{complement:cor:halfb}
+For $w\ge2$, every one-variable MPL of weight $w$ can be represented
+using nonlogarithmic factors of depth at most $\lfloor w/2\rfloor$,
+allowing both the original argument $z$ and $q=(1-z)^{-1}$, MZVs, and
+powers of $L$ as coefficients. More precisely, use the original
+expression when $d\le w/2$, and Theorem~\ref{complement:thm:complement} otherwise.
+The all-one case is $L^w/w!$.
+\end{corollary}
+
+This corollary is deliberately not phrased as a theorem about arbitrary
+multivariable MPLs, or as a reduction inside an unchanged root-of-unity
+basket. At $z=i$ the half-point $q$ is not a root of unity. The theorem
+explains an argument-enlarged upper bound; it does not prove the absence
+or presence of new cyclotomic periods in a smaller comparison algebra.
+
+
+For the next family put $F_r(z)=\Li_{2,\ones{r-1}}(z)$, as in the
+one-two formulas above. Their reciprocal-complementary form is
+\[
+ F_r(z)=\sum_{k=1}^{r+1}\frac{(-1)^kL^{r+1-k}}{(r+1-k)!}\Li_k(q)
+ +(-1)^r\zeta(r+1)-\frac{L^{r+1}}{(r+1)!}.
+\]
+\section{A double-polylogarithm formula for an all-weight family}
+
+The next formula addresses the first case beyond the classical ladder.
+It reduces the height-one family with initial index $3$ to singles and
+doubles at $q$, irrespective of its original depth.
+Let
+\begin{equation}\label{complement:eq:Ck}
+ C_1(q)=0,\qquad C_k(q)=\sum_{a=1}^{k-1}\Li_{a,k-a}(q)\quad(k\ge2).
+\end{equation}
+All MPLs on the right have the one-variable meaning \eqref{complement:eq:mpl}.
+
+\begin{theorem}[Two-zero height-one identity]\label{complement:thm:twozero}
+For every $w\ge3$ and $z\in D$,
+\begin{align}
+\Li_{3,\ones{w-3}}(z)
+={}&\frac{L^w}{w!}
+ +\sum_{k=1}^{w}\frac{(-1)^kL^{w-k}}{(w-k)!}
+   \bigl((k-2)\Li_k(q)+C_k(q)\bigr)\notag\\
+&+(-1)^{w-1}\Bigl((L+\Li_1(q))\zeta(w-1)
+ +(w-2)\zeta(w)-\zeta(w-1,1)\Bigr).
+\label{complement:eq:twozero}
+\end{align}
+The right side has reduced depth at most two.
+\end{theorem}
+
+\begin{proof}
+Write $D_q=q\,d/dq=d/dL$. Direct differentiation of the nested series,
+followed by continuation, gives
+\[
+ D_qC_k=C_{k-1}+\frac{q}{1-q}\Li_{k-1}\quad(k\ge2).
+\]
+Put $V_k=(k-2)\Li_k+C_k$, with $V_1=-\Li_1$.
+Then
+\[
+ D_qV_k=V_{k-1}+\frac{\Li_{k-1}}{1-q}\quad(k\ge2),
+ \qquad D_qV_1=-\frac{q}{1-q}.
+\]
+Differentiating the finite sum in \eqref{complement:eq:twozero} telescopes and yields
+\[
+ \frac{F_{w-2}(z)-(-1)^{w-2}\zeta(w-1)}{q-1}.
+\]
+The derivative of the explicit $(L+\Li_1(q))\zeta(w-1)$ term supplies
+the missing constant term, because
+$D_q(L+\Li_1(q))=1/(1-q)$.
+The derivative of the entire right side is therefore
+$F_{w-2}(z)/(q-1)$.
+The left side has the same derivative, since
+$d\Li_{3,\ones{w-3}}(z)/dz=F_{w-2}(z)/z$ and
+$dz/z=dL/(q-1)$.
+
+For the endpoint constant, recall the convergent depth-two sum identity
+\begin{equation}\label{complement:eq:eulersum}
+ \sum_{a=2}^{w-1}\zeta(a,w-a)=\zeta(w),\qquad w\ge3.
+\end{equation}
+It follows, for example, by subtracting the shuffle and stuffle
+expansions of the once-regularized product $\zeta(1)\zeta(w-1)$:
+its common divergent term $\zeta(1,w-1)$ cancels, leaving precisely
+\eqref{complement:eq:eulersum}. Only one logarithmic divergence is involved, so
+no higher regularization correction enters. Equivalently one may use
+finite cutoffs and subtract the common harmonic-logarithmic part
+before taking the limit.
+
+The convergent colored stuffle identity, for $0<q<1$, gives
+\[
+ \Li_{1,w-1}(q)-\Li_1(q)\zeta(w-1)
+ =-\Li_{w-1,1}(1,q)-\Li_w(q).
+\]
+The right side tends to $-\zeta(w-1,1)-\zeta(w)$ by dominated
+convergence. Combining this with \eqref{complement:eq:eulersum} yields
+\[
+ \lim_{q\to1^-}\bigl(C_w(q)-\Li_1(q)\zeta(w-1)\bigr)
+ =-\zeta(w-1,1).
+\]
+All positive powers of $L$ multiplying at most logarithmically singular
+terms vanish. The remaining constants in \eqref{complement:eq:twozero} cancel,
+so its right side tends to zero as $z\to0^-$. The left side does too.
+Equality of derivatives and the endpoint limit proves the result;
+continue to $D$.
+\end{proof}
+
+\begin{remark}[The sum identity and the proof dependency]
+Equation~\eqref{complement:eq:eulersum} is the classical depth-two Euler sum
+formula, not a new conjecture assumed here. The same two-zero formula
+can also be obtained directly from Theorem~\ref{complement:thm:complement} by
+expanding its two zero positions and normalizing trailing zeros.
+The supplied code verifies the agreement of these two independently
+specified formulas through weight twelve.
+\end{remark}
+
+At weight six, \eqref{complement:eq:twozero} is a complete depth-two representation
+of $\Li_{3,1,1,1}(i)$ and of $\Li_{3,1,1,1}(\rho)$.
+In particular a depth-four index does not by itself identify a new
+depth-four period in the enlarged comparison algebra.
+The endpoint double is harmless as a named convergent constant;
+standard Euler reductions can simplify it further. For example,
+\[
+ \zeta(4,1)=2\zeta(5)-\zeta(2)\zeta(3),\qquad
+ \zeta(5,1)=\frac34\zeta(6)-\frac12\zeta(3)^2.
+\]
+These last simplifications are not required for the theorem.
+
