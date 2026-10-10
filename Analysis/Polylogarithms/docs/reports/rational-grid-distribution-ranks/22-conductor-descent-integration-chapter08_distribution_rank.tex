@@ -1,0 +1,92 @@
+% Replace the old observation tower:thm:rank and its following paragraph.
+% This fragment uses only the manuscript's existing theorem/proof environments.
+\begin{theorem}[Uniform rank of the complete distribution presentation]
+\label{tower:thm:rank}
+For $q\ge2$, let $M_q(\mathbf t)$ have columns $e_1,\ldots,e_q$,
+where $e_a$ represents the reduced fraction $a/q$ and $e_q$ is the endpoint.
+Its rows, for every prime $p\mid q$ and $1\le b\le q/p$, are
+\[
+ \sum_{j=0}^{p-1}e_{b+jq/p}-t_p e_{pb}.
+\]
+For every complex specialization of the prime weights,
+\[
+ \operatorname{rank}M_q(\mathbf t)
+ =\operatorname{rank}\widehat M_q(\mathbf t)=q-\varphi(q),
+\]
+where $\widehat M_q$ is obtained by deleting the endpoint column, not
+by omitting rows that involve the endpoint. Thus the endpoint-fixed
+formal quotient has dimension $\varphi(q)-1$.
+In particular this holds for the Stieltjes top-index distribution rows
+$t_p=p^{k+1}$ for all $k\ge1$ and all Stieltjes indices $n\ge0$,
+with lower indices treated as known.
+\end{theorem}
+\begin{proof}
+Work first over a characteristic-zero splitting field $K$, with
+independent variables $t_p$ and coefficient ring $R=K[t_p:p\mid q]$.
+Organize the $q$ fraction symbols by exact denominator $d\mid q$.
+For each primitive character $\chi^*$ of conductor $f\mid d$, set
+\[
+ Z_{d,\chi^*}=\sum_{a\in(\mathbb Z/d\mathbb Z)^\times}
+       \chi^*(a)E(a/d),
+\]
+using $Z_{1,1}=E(1)$ at conductor one. Character orthogonality is an
+invertible change of coordinates at each denominator.
+
+The prime row with reduced parent $a/d$ is
+\[
+ \sum_{j=0}^{p-1}E\bigl((a+jd)/(pd)\bigr)-t_pE(a/d),
+ \qquad pd\mid q.
+\]
+Summing over units $a$ with weight $\chi^*(a)$ gives
+\[
+ Z_{pd,\chi^*}=\begin{cases}
+ t_pZ_{d,\chi^*},&p\mid d,\\
+ (t_p-\chi^*(p))Z_{d,\chi^*},&p\nmid d.
+ \end{cases}
+\]
+In the second case exactly one lift is divisible by $p$; after reducing
+it contributes $\chi^*(p)Z_{d,\chi^*}$. Fourier inversion on the parent
+units recovers every original row, so these are all relations in each
+character component.
+
+For fixed $\chi^*$, the available denominators are $f\mid d\mid q$.
+The edge relations express all coordinates in terms of $Z_{f,\chi^*}$:
+\[
+ Z_{d,\chi^*}=\left(
+ \prod_{p\mid f}t_p^{v_p(d)-v_p(f)}
+ \prod_{\substack{p\mid d\\p\nmid f}}
+ t_p^{v_p(d)-1}(t_p-\chi^*(p))\right)Z_{f,\chi^*}.
+\]
+Different primes commute. Mapping $Z_{d,\chi^*}$ to the displayed
+polynomial respects every row and maps $Z_{f,\chi^*}$ to $1$.
+Thus each character component is free of rank one, not merely generated
+by one element. The number of primitive characters with conductor dividing
+$q$ is $\varphi(q)$. The quotient is therefore free of rank $\varphi(q)$
+over $R$, and this normal form survives every specialization without division.
+
+The endpoint is the free basis vector $Z_{1,1}$. Fixing it removes exactly
+one quotient dimension, proving the same rank after endpoint-column deletion.
+Finally,
+\[
+ \sum_{n\ge0}\frac{(-1)^n\gamma_n^{(k)}(a)}{n!}\varepsilon^n
+ =(-1)^k(1+\varepsilon)_k\zeta(k+1+\varepsilon,a)
+\]
+has a common invertible factor for $k\ge1$. At top index $n$ its
+coefficient rows have $t_p=p^{k+1}$; lower-index terms are inhomogeneous
+known quantities. This gives the Stieltjes assertion.
+\end{proof}
+
+\begin{remark}[Scope and higher jets]
+This theorem specifies the complete presentation rather than identifying
+it with an unavailable historical script. Composite divisor rows follow
+from prime rows by repeated distribution, with multiplicative weights.
+For jets through order $N$, substitute
+$t_p=p^{s_0}\exp(\varepsilon\log p)$ in the polynomial normal form,
+modulo $\varepsilon^{N+1}$. The full rank is
+$(N+1)(q-\varphi(q))$, and fixing all endpoint jets leaves
+$(N+1)(\varphi(q)-1)$ formal coordinates. These are dimensions of a
+presented quotient, not numerical independence results for the evaluated
+constants. The character method is compatible with classical
+universal-distribution theory; the accompanying research note gives
+attribution, constructive descent formulas and exact certificates.
+\end{remark}
