@@ -3784,3 +3784,26 @@ python -B -m normal_orbit_research.euler_aggregate benchmark --rounds 5 --output
 [Grouped Euler theory](../synthesis/euler_aggregate.tex) proves the exact
 anchor formula, source distinct-form bound and progress-driven cost accounting.
 Pilot, final and repeat records are preserved in the article data.
+
+The canonical Euler screen now covers matching nullity above three through
+exact Q-hyperplane intersections. Each extreme direction selects one canonical
+independent active subset, giving deterministic deduplication with polynomial
+work per candidate. A complete nonpositive screen uses at most `choose(k,d-1)`
+candidates and avoids the larger standard arrangement. Positive sectors retain
+the complete fallback; a partial scan cannot exclude a sector.
+
+Automatic supplied-sector discovery above nullity three also tries Q rays
+first. It returns the existing independently replayable Q exclusion certificate
+when that phase excludes positive Euler, or resumes standard discovery after
+positive nonessential Q rays, sharing the candidate allowance across phases.
+Explicit standard enumeration keeps its previous behavior. All 1,422 tests
+pass. The 188-sector source audit agrees with native and retained standard
+oracles; fresh Regina enumerations confirm all twelve exclusions across four
+sources. Complete negative source queries gain 2.7–4.5x in paired measurements,
+while one positive control is about eleven percent slower. These are local
+source-query gains. All 85 diagram verdicts and work counts remain exactly
+unchanged, and none of their windows enters the new generic branch. The
+optional window stage still defaults off; a general subexponential recognition
+bound remains unproved. Reproduce with
+`python -B -m normal_orbit_research.generic_euler sector-audit --fresh-regina --output /tmp/sector-audit.json`
+and the driver's `sector-benchmark`, `audit` and `benchmark` modes.

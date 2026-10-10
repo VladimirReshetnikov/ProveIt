@@ -1339,3 +1339,26 @@ Reproduce publication checks with
 The review verifies all 605 runtime pins, incumbent evidence, timing outcomes,
 eight generic legacy proofs and all 31 saved positives with aggregation,
 the batch verifier context and producers disabled.
+
+[generic_euler.tex](generic_euler.tex) implements all-dimensional Q screening
+above the planar gate, proves coverage even with a smaller feasible span, and
+charges deterministic canonical-active-subset deduplication. A complete
+nonpositive screen has bit cost `poly(T+k+B)(1+k)^(d-1)`. Automatic generic
+discovery tries Q rays first, then shares its candidate cap with standard
+fallback. All 1,422 tests pass; all 188 retained higher-nullity sectors agree
+with the source oracles. Fresh Regina enumerations confirm twelve exclusions
+across four triangulations. Complete negative source queries gain 2.7–4.5x;
+one positive control is slower. The 85-diagram verdicts, proofs and work counts
+remain unchanged, and those windows do not enter the new generic branch.
+The general recognition bound and coverage obligations remain unchanged.
+
+The current [PDF](report.pdf) has 577 pages. Section 145 starts on page 569;
+the assessment is section 146 on page 573. Rendered pages 569–575, including
+the full assessment continuation and references, pass visual review. Only
+the four pre-existing overflow warnings remain; all references resolve.
+Reproduce publication checks with
+`python -B data/generic_euler_review.py --publication` from this directory.
+The review checks 607 runtime pins, 605 incumbent evidence pins, all timing
+outcomes, twelve negative source proofs, all 31 saved native positives and
+eight generic legacy proofs with the Q iterator, Euler compiler and producers
+disabled during independent replay.
