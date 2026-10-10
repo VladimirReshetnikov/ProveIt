@@ -32,6 +32,8 @@ theorem exists_compatible_difference_progression_maps {N d K : Nat} [NeZero N]
         IsFreimanLinearOn (bohr (differenceAnchorSpectrum T v a) rho) (differenceAnchorMap F v a) ∧
         differenceAnchorMap F v a 0 = 0) ∧
       (∀ y, differenceAnchorMap F v 0 y = 0) ∧
+      (∀ q : PairedColumnTuple N, (∀ i, (q i).1 ∈ C ∧ (q i).2 ∈ C) → pairedColumnIndex q = 0 →
+        PairedColumnImageRelation T F (rho/8) J q) ∧
       ∀ a b c e : ZMod N, a ∈ (centeredProgressionShrink Q 1024).carrier →
         b ∈ (centeredProgressionShrink Q 1024).carrier → c ∈ (centeredProgressionShrink Q 1024).carrier →
         e ∈ (centeredProgressionShrink Q 1024).carrier → a-b = c-e →
@@ -71,7 +73,7 @@ theorem exists_compatible_difference_progression_maps {N d K : Nat} [NeZero N]
   choose v hv using hex
   have hCdata : ∀ x ∈ C, (T x).card ≤ d ∧ IsFreimanLinearOn (bohr (T x) rho) (F x) ∧ F x 0 = 0 :=
     fun x hx => hdata x (centered_progression_shrink_subset Q 256 (hC hx))
-  refine ⟨C,v,hC,hCne,hCmass,?_,?_,difference_anchor_index_zero F v,?_⟩
+  refine ⟨C,v,hC,hCne,hCmass,?_,?_,difference_anchor_index_zero F v,h8,?_⟩
   · intro a ha
     exact ⟨(hv a ha).1,(hv a ha).2,hanchors a ha⟩
   · intro a ha
