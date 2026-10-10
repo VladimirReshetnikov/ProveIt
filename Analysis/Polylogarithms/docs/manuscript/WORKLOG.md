@@ -1,4 +1,53 @@
-# Universal Euler source checkpoint
+# October 10: reviewed universal Euler and fifth-intake milestone
+
+The canonical collective manuscript now has 379 pages, twelve chapters,
+thirteen figures and 99 references. The power/chord and tail-kernel proofs
+give the sharp universal constant C(b*) for every a>=0,b>0, with equality
+only at a=0,b=b*,N=1. The separate normalized Mellin comparison proves
+strict log-concavity of C(b)-1 and Turan inequalities. The audited incoming
+certificate encloses the root to 26 decimal places and the value to an
+interval of width 10^-45, proving the rational global budget 57/50.
+The earlier constant one and critical pi/4+log(2)/2 retain their sharper domains.
+
+The ordinary proof source checkpoint b0b813702e was published via 4fa83394d8.
+Five new reports arrived during its publication. Their 178 original members
+were placed by thematic spine in 4fa256d3dc, with historical OVERVIEW notes,
+and their ZIPs were retired in the same placement commit. Fresh main merges
+and ordinary pushes published that placement via e30cb772dd. The census is
+439 textual provenance files, 26 arrival archives and 1043 original members.
+The drop zone retains its README; archive recovery remains pinned in Git.
+
+All native and incoming replay sessions are terminal. Eleven native Gaussian
+values and 66 native scaled errors agree with rational enclosures at 90
+working digits. Exact checks include 7581 kernel cases, 12369 power cases,
+560 tail identities plus a corruption control, 2552 integer-root inequalities,
+352 negative increments and 66 tail enclosures. All five new isolated suites
+pass. The harmonic runner's first attempt stopped before mathematics because
+matplotlib metadata was absent; the existing local plotting dependencies
+resolved it, without modifying delivered code. The failed log is retained.
+The full optional harmonic quadrature sweep was not rerun.
+
+Three final serial LuaLaTeX passes converge with no log issues. All 379 pages
+pass the static PDF audit and are reviewed across 24 contact sheets. Ten new
+or revised proof/caption/programme/bibliography pages have full-size review.
+The final axis-equality clarification changes only page 165; all other page
+thumbnails, 23 contact sheets and nine listed full-size rasters are identical
+to the preceding reviewed artifact. The changed page and sheet were reviewed
+freshly. Thirteen figure assets retain earlier full-size review and are
+checked in the current sheets; the Gaussian caption is freshly reviewed.
+
+Reviewed PDF SHA-256:
+
+3f9a6a957e932c9c6d0351c32c705dca61f5f391462f9ccf255d5fc06f21eb5f
+
+The remaining density/drift, strict-depth, inverse, cyclic-prime and Lerch
+proofs remain on the analytic integration agenda. The finite 5131-row S6
+separator is not a proof or refutation of its numerical identity. S6/S8,
+global integer normalized-radius motion and other open targets remain active.
+The following entries are historical states and may name superseded artifacts
+or process handles that have now completed.
+
+# Historical universal Euler source checkpoint (superseded below)
 
 The new written power/chord and Euler-kernel contraction proofs establish the sharp all-parameter budget C(b*) for a>=0,b>0, with equality only at the axis maximum and N=1. Exact finite checks pass: 7581 kernel inequalities, 12369 power inequalities, 560 tail-normalization identities plus a corruption control, 352 negative Euler signs and 66 scaled-tail enclosures across eleven rational parameter pairs. The uniform rational budget 5/4 follows from the written proof.
 

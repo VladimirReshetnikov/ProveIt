@@ -1,21 +1,21 @@
 # Polylogarithms and their Arithmetic Bridges
 
 The collective manuscript, authored by **ProveIt Contributors**, is
-[polylogarithms.pdf](polylogarithms.pdf): **375 pages, twelve chapters,
-thirteen figures and 98 references**, with a literature appendix preserving
+[polylogarithms.pdf](polylogarithms.pdf): **379 pages, twelve chapters,
+thirteen figures and 99 references**, with a literature appendix preserving
 94 distinct historical question leads. Its editable source is
 [polylogarithms.tex](polylogarithms.tex) and the files in `chapters/`.
 
-The [inventory](source-inventory.json) accounts for **381 textual source
+The [inventory](source-inventory.json) accounts for **439 textual source
 files**, including overlapping assembled articles, fragments and correction
 registers. The [editorial ledger](EDITORIAL-LEDGER.md) maps their mathematical
-status and identifies pending research integration. Twenty-one incoming
-archives are preserved as **865 byte-identical members**. All their isolated
+status and identifies pending research integration. Twenty-six incoming
+archives are preserved as **1,043 byte-identical members**. All their isolated
 replay suites pass; preservation and successful finite replay do not imply
 that every new analytic theorem has already been integrated. The imported
 ZIPs have been retired from the drop zone under its intake procedure; the
 arrival commits and recovery paths remain recorded in
-`verification/*incoming-archives.json` and `verification/incoming-retirement.json`.
+`verification/*incoming-archives.json` and the two retirement records. The five latest packages are placed on existing thematic spines with historical OVERVIEW notes; their remaining analytic claims retain the ledger's pending scope.
 
 The preceding milestone proves the CM class-product formulas and the recorded
 genus ratios, develops a rational principal-point nonvanishing bound, and
@@ -38,7 +38,7 @@ extensions and numerical period independence remain open.
 
 The new S8 candidate is distinct from the old rigorously rejected vector.
 Its exact normalized residual enclosure is below `1e-355`; it and S6 remain
-conjectural. The real-order core is now integrated in Chapter 5, with new proofs of unrestricted slit-plane nonvanishing, angular uniqueness, subcritical radial motion, Gaussian fixed-total monotonicity, a unique axis maximum and the sharp critical/subcritical Euler constant pi/4+log(2)/2. The maximum has exact bracket 1<b*<2; its decimal location remains diagnostic. Bessel, full Cayley, Lerch, uniform-transition, golden-seed and Herglotz continuations remain on the active proof-audit and integration agenda.
+conjectural. The real-order core is now integrated in Chapter 5, with new proofs of unrestricted slit-plane nonvanishing, angular uniqueness, subcritical radial motion, Gaussian fixed-total monotonicity, a unique axis maximum and the sharp critical/subcritical Euler constant pi/4+log(2)/2. Its location and height now have rigorous rational enclosures. A separate Euler-kernel contraction proof establishes the sharp universal constant C(b*) for all a>=0,b>0, with equality only at a=0,N=1 and the maximizing inner order. The rational budget 57/50 is valid throughout the positive quadrant. Strict log-concavity of C(b)-1 also gives Turan inequalities. Bessel, full Cayley, Lerch, uniform-transition, golden-seed and Herglotz continuations remain on the active proof-audit and integration agenda.
 
 Original drafts, code, data and PDFs remain historical evidence. This book is
 the canonical reading artifact.

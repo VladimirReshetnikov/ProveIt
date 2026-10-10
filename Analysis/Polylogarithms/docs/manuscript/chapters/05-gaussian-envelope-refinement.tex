@@ -1,0 +1,154 @@
+\section{Strict Gaussian envelope shape and a certified maximum}
+\label{envref:sec:main}
+The incoming extremal continuation~\cite{envref:report} independently
+develops the axis maximum and strengthens its description. Its strict
+normalized Mellin comparison gives a second proof of unimodality, Turan
+inequalities and a rigorous enclosure of the maximum. We retain the
+earlier three-power proof as a distinct route and reconcile the common
+axis normalization before using the stronger certificate.
+
+\begin{lemma}[A strict normalized Mellin comparison]\label{envref:lem:Mellin}
+Suppose $f:(0,\infty)\to(0,\infty)$ is strictly log-concave, and that
+its Mellin integrals and their first two parameter derivatives are finite
+and admit differentiation under the integral. Then
+\[
+ M(p)=\frac1{\Gamma(p)}\int_0^\infty T^{p-1}f(T)\,dT
+ \quad\text{satisfies}\quad (\log M)''(p)<0.
+\]
+\end{lemma}
+\begin{proof}
+Normalize $T^{p-1}f(T)$ to a probability density $P$. Choose the gamma
+density $Q$ of shape $p$ and rate $\lambda>0$ so that
+$\psi(p)-\log\lambda=\mathbb E_P\log T$.
+The two densities have matching mass and matching logarithmic mean.
+Their log likelihood ratio is $\log f(T)+\lambda T$ plus a constant,
+hence strictly concave. Its positive set is an interval, and matching
+mass forces both signs. A single crossing at $T_0$ is impossible:
+$\log(T/T_0)(P-Q)$ would have one strict sign while its integral is
+zero by the two matching moments. There must therefore be two crossings
+$T_1<T_2$ and the sign pattern of $P-Q$ is negative, positive, negative.
+
+It follows that
+\[
+ \int(\log T-\log T_1)(\log T-\log T_2)(P-Q)(T)\,dT<0.
+\]
+The constant and linear terms vanish by the matching moments. Thus
+$\operatorname{Var}_P(\log T)<\operatorname{Var}_Q(\log T)=\psi_1(p)$.
+Differentiation of $\log M$ gives exactly this variance difference.
+\end{proof}
+
+\begin{theorem}[Strict envelope log-concavity]\label{envref:thm:shape}
+Put $D(b)=C(b)-1$, with $C$ defined in
+Theorem~\ref{subpick:thm:axis-maximum}. For every $b>0$,
+\[
+ D(b)>0,\qquad (\log D)''(b)<0.
+\]
+Consequently $D(b)^2>D(b-h)D(b+h)$ for $0<h<b$.
+Moreover $2^bD(b)$ increases strictly from zero to one.
+\end{theorem}
+\begin{proof}
+Subtract the ordinary gamma integral for one from the axis integral:
+\[
+ D(b)=\frac1{\Gamma(b)}\int_0^\infty T^{b-1}f(T)\,dT,
+ \qquad f(T)=\frac{e^{-T}(1-e^{-T})}{2\cosh T}.
+\]
+Here $f(T)=T/2+O(T^2)$ near zero, $f(T)<e^{-2T}$ at infinity, and
+\[
+ (\log f)''(T)=-\frac{e^T}{(e^T-1)^2}-\operatorname{sech}^2T<0.
+\]
+All differentiated integrals are locally dominated on $b>0$, so the
+lemma applies. Strict midpoint concavity gives the Turan inequality.
+The endpoint limits $D(b)\to0$ at zero and infinity also give a second
+proof of a unique nondegenerate maximum: at its stationary point
+$D''=D(\log D)''<0$.
+
+For the final assertion let $T_b$ have gamma shape $b$ and rate two.
+Then
+\[
+ 2^bD(b)=\mathbb E\frac{1-e^{-T_b}}{1+e^{-2T_b}}.
+\]
+The displayed function increases strictly from zero to one. Gamma
+addition gives strict increase with $b$. The gamma laws tend to zero
+and infinity in probability at the respective parameter endpoints;
+bounded convergence proves the limits.
+\end{proof}
+
+For example, the Turan inequality at $b=2,h=1$ gives the explicit
+constant comparison
+\[
+ \left(G+\frac{\pi^2}{48}-1\right)^2>
+ \left(\frac\pi4+\frac{\log2}{2}-1\right)
+ \left(\frac{\pi^3}{32}+\frac{3\zeta(3)}{32}-1\right).
+\]
+
+\subsection{Outward rational enclosure of the axis maximum}
+\begin{theorem}[Certified location and height]\label{envref:thm:certificate}
+The unique maximum satisfies the rational inequalities
+\begin{gather*}
+ 1.30221658710124120959237170<b_*<1.30221658710124120959237171,\\
+ 1.136561103339509560952586375779942387681723540
+ <C(b_*)\\
+ C(b_*)<1.136561103339509560952586375779942387681723541.
+\end{gather*}
+In particular $C(b_*)<57/50$.
+\end{theorem}
+\begin{proof}
+The incoming standard-library verifier
+\src{code/certify_gaussian_envelope.py} was replayed on an isolated copy.
+We give the analytic budgets used in its finite certificate, so its
+transcendental enclosures have explicit proof premises.
+For $d=1,2$, put
+\[
+ A_d(b)=\sum_{j\ge0}\frac{(-1)^j}{(dj+1)^b},\qquad
+ T_{d,N}(b)=2^{-N}\sum_{j=0}^{N-1}\frac{(-1)^j}{(dj+1)^b}
+                          \sum_{h=j+1}^N\binom Nh.
+\]
+These give $A_1=\eta$ and $A_2=\beta$. For $T$ with gamma shape $b$
+and rate one, finite geometric summation gives
+\[
+ A_d-T_{d,N}=2^{-N}\mathbb E
+             \frac{(1-e^{-dT})^N}{1+e^{-dT}}\in(0,2^{-N}).
+\]
+Differentiating the gamma density introduces the centered score
+$\log T-\psi(b)$. Cauchy--Schwarz and
+$\sqrt{\psi_1(b)}\le\pi/\sqrt6<2$ for $b\ge1$ yield
+$|A_d'-T_{d,N}'|<2^{1-N}$.
+For $C_N=T_{2,N}+2^{-b}T_{1,N}$ this proves
+\[
+ 0<C-C_N\le(1+2^{-b})2^{-N},\qquad
+ |C'-C_N'|<4\,2^{-N}\quad(1\le b\le2).
+\]
+
+The finite terms are enclosed on an outward-rounded $10^{90}$ grid.
+After reducing an integer logarithm to $1\le r\le2$, its expansion
+\[
+ \log r=2\sum_{j=0}^{M-1}\frac{v^{2j+1}}{2j+1}+R_M,
+ \quad v=\frac{r-1}{r+1},\quad
+ 0\le R_M\le\frac{2v^{2M+1}}{(2M+1)(1-v^2)}
+\]
+uses $M=160$. Exponentials are scaled to $[0,1]$, bounded by their
+positive Taylor polynomial through degree 180 and twice the first
+omitted term, then recovered by four outward-rounded squarings and
+positive reciprocals. Multiplication by the logarithm gives the
+derivative enclosure with the same rational arithmetic.
+
+With $N=160$, the resulting certificate proves $C'(\ell)>0$ and
+$C'(u)<0$ at the displayed location endpoints. Its separate checks
+give $C'(1)>0.03260$ and $C'(2)<-0.03561$.
+Strict log-concavity of $D$ provides the tangent upper bound
+\[
+ D(b_*)\le D(\ell)
+    \exp\left(\frac{C'(\ell)}{D(\ell)}(u-\ell)\right).
+\]
+The outward upper endpoint of this expression and the lower bound
+$C(\ell)$ give the displayed value interval. The fresh exact receipt is
+\src{verification/fifth-replay/extremal/results/gaussian_envelope_certificate.json}.
+The final comparison with $57/50$ is rational. No numerical optimizer
+or floating-point library evaluation is a premise.
+\end{proof}
+
+The old plotted stationary-point marker remains a diagnostic. The
+enclosures above now certify its location and the axis height to the
+displayed widths; they do not certify every plotted value.
+The further inverse generalized-power expansion in the incoming report
+is retained as a separate analytic integration task.
