@@ -6123,6 +6123,39 @@ the decomposition with these named constants, but not `Theorem162At 3`.
                 on the iteration. **This appears to be a gap in the printed
                 proof of Proposition 9.3**, not only in our formalization.
                 Resolving it needs a new idea, or a different Step 5.
+              - *Where the gap comes from (2026-10-10).* In the vector-space
+                predecessor (`F_p^n`), the `θ_i` are linear maps on
+                subspaces of bounded codimension. A linear map on a
+                subspace always extends to all of `F_p^n`, so coherence is
+                free there: every `θ_i` is defined everywhere and `X` lies
+                in every domain. The general-group version replaces
+                subspaces by coset progressions or Bohr sets, and this
+                extension step fails.
+              - *Checked in ℤ/N.*
+                - Take a Freiman-linear map on a sub-Bohr set
+                  `K = C₀(ν) ∩ B(Γ′)` of a proper progression `C₀`. It need
+                  not extend to `C₀` even when `C₀` has rank 1. `K`'s index
+                  set in `ℤ` is a Bohr set of `ℤ`, roughly a proper rank-2
+                  progression `{m₁q + m₂r′}`. A Freiman-linear map there is
+                  `m₁v₁ + m₂v₂`, which need not be a function of `n`
+                  linearly.
+                - The lattice route fails too. The relevant sublattice
+                  `{n : ⟨n, w_γ⟩ ≡ 0}` has index a power of `N`, so the
+                  "invertible index" extension is unavailable. Quantitative
+                  lattice regularization (Milićević §2.6, Lemma 2.32 and
+                  Theorem 2.33) could at best control *small* relations; it
+                  does not make the extension exist.
+              - *What a repair must supply.* Either:
+                (a) new frequency maps that are born Freiman on one fixed
+                    centred set `C₀ ⊇` all `a`'s. Claims 9.4/9.5 only define
+                    them on the escaping `a`'s plus Bohr thickenings; or
+                (b) a Step 6 (Proposition 10.1) that works with per-column
+                    index sets `S_a ⊆ J`, with `θ_i` Freiman only on its own
+                    `D_i ∋ a` for `i ∈ S_a`, rather than with one uniform
+                    Freiman `Θ` on `C`.
+
+                Both remain research questions. The F_p^n argument does not
+                transfer verbatim to general abelian groups at this step.
          2. *Explicit exponents (done, `Proofs16PropNineThreeBudget`).*
             With `L = d·log(2R+1)` and `ℓ = log(1/ε)`:
             - `log(1/claimNineFourDensity) ≤ 6540·log 2 + 37264·L + 9316·ℓ`;
