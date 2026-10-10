@@ -1,0 +1,1219 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{xcolor,enumitem,fancyhdr}
+\usepackage[hyphens]{url}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{aliascnt}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\crefname{lemma}{lemma}{lemmas}
+\Crefname{lemma}{Lemma}{Lemmas}
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\crefname{proposition}{proposition}{propositions}
+\Crefname{proposition}{Proposition}{Propositions}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\crefname{corollary}{corollary}{corollarys}
+\Crefname{corollary}{Corollary}{Corollarys}
+\newaliascnt{conjecture}{theorem}
+\newtheorem{conjecture}[conjecture]{Conjecture}
+\aliascntresetthe{conjecture}
+\crefname{conjecture}{conjecture}{conjectures}
+\Crefname{conjecture}{Conjecture}{Conjectures}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\crefname{definition}{definition}{definitions}
+\Crefname{definition}{Definition}{Definitions}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\crefname{remark}{remark}{remarks}
+\Crefname{remark}{Remark}{Remarks}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\D}{\mathcal D}
+\newcommand{\lc}{\rho_{\mathrm c}}
+\newcommand{\rs}{\rho_*}
+\newcommand{\ac}{a_{\mathrm c}}
+\newcommand{\aL}{a_{\mathrm L}}
+\newcommand{\aM}{a_{\mathrm M}}
+\newcommand{\aO}{a_{\mathrm O}}
+\newcommand{\ordli}[2]{\Li_{#1}^{\langle #2\rangle}}
+\newcommand{\sha}{\texttt{cc34f73596336f2466d9754cb0f3635bd2bedade}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Lerch zeros: global exclusion and unit-span rigidity}
+\fancyhead[R]{\small ProveIt continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\hypersetup{pdftitle={A Complete Index-Three Lerch Phase Diagram},pdfauthor={OpenAI-assisted research continuation for Vladimir Reshetnikov}}
+\title{A Complete Index-Three Lerch Phase Diagram\\[5pt]
+\large Global exclusion, sharp exterior barriers, and polylogarithmic unit-span identities}
+\author{Research continuation for Vladimir Reshetnikov's \texttt{ProveIt} project\\
+\small OpenAI-assisted mathematical research draft}
+\date{October 9, 2026\quad (America/Los\_Angeles)}
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+We resolve the remaining global-exclusion conjecture in the earlier report
+\emph{Lerch Endpoint Singularities and Stieltjes Zero Bifurcations}.
+For
+\[
+ F(a,\rho)=\sum_{m=0}^{\infty}\rho^m
+ \frac{\log^2(a+m)\,[3-\log(a+m)]}{(a+m)^2},
+ \qquad a>0,\quad 0\leq\rho\leq1,
+\]
+there is exactly one outer positive zero for every deformation parameter.
+Consequently the previously localized index-three fold is the complete global
+phase transition: one simple zero below the unique critical parameter, a double
+zero and a simple zero at the critical parameter, and three simple zeros above it.
+The proof combines an analytic exterior differential inequality with an exact
+rational interval certificate on one compact interval, uniformly over an entire
+parameter interval. It is not a numerical scan of a two-dimensional region.
+
+A general theorem supplies exterior one-crossing barriers at every Laurent
+index, with a sharp cutoff for the fixed differential operator
+$\partial_a+e^{-n}$ and an exponentially accurate asymptotic description of that
+cutoff. A separate rigidity theorem shows that the three-zero span is at most
+one. Equality occurs at a unique parameter where two zeros are exactly $1$ and
+$2$; the span has a nondegenerate global maximum there. The resonance and its
+curvature admit explicit formulas in polylogarithmic order derivatives.
+We also prove an all-odd-index restriction on integer-separated zeros and a
+family of strict polylogarithmic tail inequalities. All proof-bearing finite
+computations use integer interval arithmetic and a proved Euler--Maclaurin
+remainder; independent high-precision diagnostics are labeled separately.
+\end{abstract}
+\medskip
+\noindent\textbf{Status.} Ordinary mathematical proofs plus reproducible exact-arithmetic
+certificates; not proof-assistant verified or externally refereed. Novelty is
+asserted relative to the inspected manuscript and named companion, not as an
+exhaustive priority claim. No remote repository files were modified.
+\newpage
+\tableofcontents
+\newpage
+
+\section{Scope, provenance, and the resolved question}
+\label{sec:scope}
+The source is Vladimir Reshetnikov's \texttt{ProveIt} repository, with manuscript
+subtree
+\begin{center}\small
+\path{Analysis/Polylogarithms/docs/manuscript}.
+\end{center}
+The inspected branch was pinned to commit
+\begin{center}\small\sha.\end{center}
+GitHub records its UTC commit time as October 10, 2026, 02:47:46, which is
+October 9, 2026 in the user's Pacific timezone.
+The zero-geometry source chapter has Git blob identifier
+\texttt{7f41eb87ed5e0bf90a2dffa489a8e2cd552056be}.
+We inspected that chapter, relevant passages of \texttt{10-discovery.tex}, the
+manuscript directory inventory, and the earlier companion report
+\cite{repo,previous}. The latter was retrieved as its LaTeX source; its hash is
+recorded in the package. A same-named report archive is listed in
+\texttt{docs/incoming} at the pinned commit, but its archive bytes were not used.
+
+The manuscript already proves the positive-kernel representation, the
+$n$-zero upper bound, eventual saturation, and the low-index classical counts.
+The companion already proves a unique \emph{left-hand} index-three fold, but
+explicitly leaves open the possible existence of an additional outer pair below
+that fold. Its Conjecture 12.1 asks for the complete global count.
+This distinction matters: nested negative sets and a local fold do not,
+without further information, exclude a disconnected pair of zeros elsewhere.
+
+The principal new deductions are organized as follows.
+\begin{center}
+\small
+\begin{tabular}{p{.27\linewidth}p{.62\linewidth}}
+\toprule
+Result & Content and evidence\\
+\midrule
+Global outer exclusion & Exactly one simple zero in $(9/5,e^3)$ for each
+$0<\rho\leq1$; analytic barrier plus a finite exact certificate.\\
+Complete phase diagram & Resolves the companion's Conjecture 12.1, including
+multiplicity and branch directions.\\
+All-index exterior theorem & A strict first-order differential inequality,
+a sharp cutoff for its fixed coefficient, and a cutoff asymptotic.\\
+Unit-span rigidity & The span of the three zeros is at most $1$, with a unique,
+nondegenerate equality case at roots $1$ and $2$.\\
+Polylogarithmic identities & A unique order-derivative resonance, exact common
+velocity and curvature formulas, and strict tail-moment inequalities.\\
+Integer-gap restriction & For every odd index at derivative order one, the
+only possible positive integer gap between zeros is the pair $1,2$.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The recent $S_4$ proof is not repeated here. The weight-seven $S_6$ reduction,
+all-index saturation thresholds, and a classification of higher-index folds
+are not claimed to be settled. The classical Lerch shift equation, Mellin
+representation, gamma product, and Euler--Maclaurin formula are background
+rather than new discoveries \cite{dlmf-lerch,dlmf-hurwitz,dlmf-gamma,dlmf-em,coffey}.
+
+\section{The derivative family and conventions}
+\label{sec:family}
+We use the Laurent convention
+\begin{equation}
+ \zeta(s,a)=\frac1{s-1}+\sum_{n\geq0}\frac{(-1)^n}{n!}\gamma_n(a)(s-1)^n.
+\end{equation}
+For $0\leq\rho<1$, define
+\[
+ \ell_n(\rho,a)=\sum_{m\geq0}\rho^m\frac{\log^n(a+m)}{a+m},
+ \qquad
+ \Phi(\rho,s,a)=\sum_{m\geq0}\frac{\rho^m}{(a+m)^s}.
+\]
+Only the differentiated family extends by this series to $\rho=1$.
+Writing
+\begin{equation}\label{eq:gn}
+ g_n(x)=\frac{\log^{n-1}x\,(n-\log x)}{x^2},\qquad
+ U_n(a,\rho)=\sum_{m\geq0}\rho^m g_n(a+m),
+\end{equation}
+we have $U_n=\partial_a\ell_n$ for $\rho<1$, and
+$U_n(a,1)=\gamma_n'(a)$. A prime on $\gamma_n$ differentiates its parameter
+$a$. In contrast, $\zeta^{(j)}(s,a)$ below differentiates the complex order $s$.
+The identity at $\rho=1$ follows either from the standard parameter identity
+$\partial_a\zeta(s,a)=-s\zeta(s+1,a)$ or directly from its Laurent expansion.
+
+Our main function is
+\begin{equation}\label{eq:Fdef}
+ F(a,\rho)=U_3(a,\rho),\qquad
+ f(x)=g_3(x)=x^{-2}\log^2x(3-\log x).
+\end{equation}
+It agrees with the manuscript's $F_{3,1}^{\rho}$, since the sign normalization
+$(-1)^{n+k}$ is positive at $(n,k)=(3,1)$.
+For fixed positive $a$, and uniformly on compact positive $a$-intervals,
+the series defining $F$ and all its fixed-order $a$-derivatives converge
+absolutely, uniformly in $0\leq\rho\leq1$. This follows from the majorants
+$O(m^{-2-r}(1+\log^3m))$ after $r$ parameter derivatives.
+Thus $F$ is continuous up to $\rho=1$ and is real analytic in $(a,\rho)$ for
+$a>0$, $0<\rho<1$. No finite $\rho$-derivative at $\rho=1$ is assumed.
+
+Several elementary facts will be used repeatedly:
+\begin{align}
+ f(x)&\geq0 &&(0<x\leq e^3),\label{eq:signf}\\
+ f(x)&<0 &&(x>e^3),\notag\\
+ f(x)=0&\Longleftrightarrow x\in\{1,e^3\},\notag\\
+ f'(x)&=x^{-3}\bigl(2\log^3x-9\log^2x+6\log x\bigr),\label{eq:df}\\
+ F(a+1,\rho)&=\frac{F(a,\rho)-f(a)}{\rho}
+ &&(0<\rho\leq1).\label{eq:shift}
+\end{align}
+The last equation is the classical Lerch shift relation in the present
+coordinate. Since the tails with $m\geq1$ are uniformly bounded for $0<a\leq1$,
+$f(a)\to+\infty$ proves that $F(a,\rho)>0$ at sufficiently small $a$, uniformly
+in $\rho$. For $a>e^3$, every summand is negative. For $\rho>0$ the value at
+$a=e^3$ is also strictly negative.
+
+\section{Two variation principles and exact anchors}
+\label{sec:variation}
+We reproduce the ingredients needed for a self-contained zero count.
+
+\subsection{The multiplicity bound in the parameter \texorpdfstring{$a$}{a}}
+Define the reciprocal-gamma cubic
+\begin{equation}\label{eq:Q3}
+ Q_3(x)=(x+\gamma)^3-3\zeta(2)(x+\gamma)+2\zeta(3).
+\end{equation}
+It is the coefficient of $t^3/3!$ in $e^{xt}/\Gamma(1+t)$.
+The standard gamma expansion gives this coefficient explicitly
+\cite{dlmf-gamma}. The Mellin representation gives
+\begin{equation}\label{eq:laplace}
+ F(a,\rho)=\int_0^\infty
+ \frac{x e^{-ax}}{1-\rho e^{-x}}Q_3(\log x)\dd x.
+\end{equation}
+Indeed,
+\[
+ (1+t)\Phi(\rho,2+t,a)
+ =\frac1{\Gamma(1+t)}\int_0^\infty
+       \frac{x^{1+t}e^{-ax}}{1-\rho e^{-x}}\dd x,
+\]
+and $3![t^3]$ on the left is exactly the defining series for $F$.
+For $\rho=1$, the same equation holds in the convergent Hurwitz half-plane.
+Near zero the integrand in \eqref{eq:laplace} is bounded in absolute value by a
+constant times $1+|\log x|^3$, uniformly in $\rho$; at infinity the exponential
+factor dominates. These bounds justify extraction and all needed derivatives.
+
+\begin{lemma}[Laplace variation with multiplicity]\label{lem:laplacevariation}
+If an integrable signed kernel has $N$ sign changes on $(0,\infty)$, with
+nonzero constant sign between successive changes, and all required
+exponentially weighted moments exist, its nonzero Laplace transform has at
+most $N$ positive zeros, counted with multiplicity.
+\end{lemma}
+\begin{proof}
+For no sign changes the transform has a strict sign. If $x_0$ is a sign-change
+point, multiplication of the kernel by $x_0-x$ removes that change and no
+others. The corresponding transform is
+\[
+ (\partial_a+x_0)G(a)=e^{-x_0a}\frac{\mathrm d}{\mathrm da}
+                         \bigl(e^{x_0a}G(a)\bigr).
+\]
+Induction bounds its zeros by $N-1$. Any finite collection of zeros of $G$
+with total multiplicity $M$ forces at least $M-1$ zeros of the displayed
+weighted derivative by Rolle's theorem, including inherited multiplicities.
+Therefore $M\leq N$. The same induction proves nonvanishing, since an
+identically zero transform would have an identically zero weighted derivative.
+\end{proof}
+
+\begin{proposition}[Three-zero upper bound]\label{prop:three}
+For every $0\leq\rho\leq1$, $F(\cdot,\rho)$ has at most three positive zeros,
+counted with multiplicity.
+\end{proposition}
+\begin{proof}
+The discriminant of the centered cubic in \eqref{eq:Q3} is
+$108(\zeta(2)^3-\zeta(3)^2)>0$. For an elementary check of positivity,
+$\zeta(2)>5/4$ and
+$\zeta(3)<1+1/8+\int_2^\infty x^{-3}\dd x=5/4$ suffice.
+Thus $Q_3$ has three distinct real roots. The positive multiplier in
+\eqref{eq:laplace} leaves exactly three kernel sign changes, and
+\cref{lem:laplacevariation} applies. The positive small-$a$ sign also
+excludes an identically zero transform.
+\end{proof}
+
+\subsection{One crossing in the deformation parameter}
+\begin{lemma}[Geometric-weight crossing]\label{lem:rhocross}
+Fix $0<a<e^3$. The function $\rho\mapsto F(a,\rho)$ has at most one zero in
+$(0,1)$, and at every such zero
+\begin{equation}\label{eq:Frhoneg}
+ F_\rho(a,\rho)<0.
+\end{equation}
+If $F(a,\rho_0)>0$ for some $0<\rho_0\leq1$, then $F(a,\rho)>0$ for
+$0<\rho\leq\rho_0$. Negativity, once attained, persists for larger $\rho$.
+\end{lemma}
+\begin{proof}
+The coefficient signs in $\sum\rho^m f(a+m)$ change once from positive to
+negative, after zeros are omitted. Choose $\lambda$ strictly between the
+last nonnegative block and the first negative block. At a zero,
+\[
+ \rho F_\rho=\sum_{m\geq0}(m-\lambda)\rho^m f(a+m)<0.
+\]
+Every nonzero term is negative. Existence of a second zero would require
+another crossing direction, or a zero with vanishing derivative, which is
+impossible. Alternatively, comparison with a separating power of
+$\rho/\rho_0$ proves the sign persistence directly. The first nonzero
+coefficient is positive, so the sign near $\rho=0$ is positive, including
+when $a=1$ and the constant term vanishes.
+\end{proof}
+
+\subsection{Four exact endpoint anchors}
+The package independently recomputes the following enclosures. Every finite
+decimal here is an exact rational endpoint, with outward rounding:
+\begin{center}
+\begin{tabular}{cl}
+\toprule
+$a$ & Enclosure for $F(a,1)$\\
+\midrule
+$4/5$ & $[0.2560298104220831,\ 0.2560298104220832]$\\
+$1$ & $[-0.0323050999463418,\ -0.0323050999463417]$\\
+$3/2$ & $[0.0249055835689205,\ 0.0249055835689206]$\\
+$9/5$ & $[0.0052639818935007,\ 0.0052639818935008]$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The first three signs are consistent with the manuscript and companion;
+the fourth is the useful additional separator for the present exclusion.
+The proof of these inclusions, rather than their decimal appearance, is
+specified in \cref{sec:certificate} and implemented in
+\texttt{code/verify\_exact.py}.
+
+\begin{corollary}[Common zero-free regions]\label{cor:separator}
+For every $0<\rho\leq1$,
+\begin{equation}\label{eq:zerofree}
+ F(a,\rho)>0\quad\text{on }(0,4/5]\ \text{and on }[3/2,9/5].
+\end{equation}
+At $\rho=1$ there are precisely three simple zeros: one in $(4/5,1)$, one
+in $(1,3/2)$, and one in $(9/5,e^3)$.
+\end{corollary}
+\begin{proof}
+The four signs and $F(e^3,1)<0$ produce three disjoint sign-changing
+intervals. \Cref{prop:three} makes these all the zeros and all simple.
+The positive small-$a$ sign and absence of further zeros give positivity on
+the stated closed separators at $\rho=1$. \Cref{lem:rhocross} propagates it
+to smaller positive $\rho$.
+\end{proof}
+
+\section{An all-index exterior differential barrier}
+\label{sec:barrier}
+This section applies to every integer $n\geq2$, not just to the cubic case.
+
+\begin{theorem}[An explicit exterior one-crossing inequality]\label{thm:barrier}
+For $n\geq2$, $x\geq e^{(n-1)/2}$,
+\begin{equation}\label{eq:barrierpoint}
+ g_n'(x)+e^{-n}g_n(x)<0.
+\end{equation}
+Consequently, for every $0\leq\rho\leq1$,
+\begin{equation}\label{eq:barriersum}
+ \partial_a U_n(a,\rho)+e^{-n}U_n(a,\rho)<0,
+ \qquad a\geq e^{(n-1)/2}.
+\end{equation}
+The function $e^{a/e^n}U_n(a,\rho)$ is strictly decreasing there. In
+particular, there is at most one zero in this exterior interval, and any
+such zero is simple and crosses from positive to negative.
+\end{theorem}
+\begin{proof}
+Set $y=\log x$. Up to the positive factor $x^{-3}y^{n-2}$, the left side of
+\eqref{eq:barrierpoint} is
+\begin{equation}\label{eq:Rn}
+ R_n(y)=2y^2-3ny+n(n-1)+e^{y-n}y(n-y).
+\end{equation}
+For $y=n+r$, $r\geq0$, using $e^r\geq1+r$ gives
+\[
+ R_n(n+r)=2r^2+nr-n-e^r(n+r)r
+ \leq-r^3-(n-1)r^2-n<0.
+\]
+For $y=n-t$, $0\leq t\leq(n+1)/2$, the factor $(n-t)t$ is nonnegative.
+Since $e^{-t}\leq(1+t)^{-1}$,
+\[
+ (1+t)R_n(n-t)
+ \leq 2t^3+(1-n)t^2-nt-n
+ \leq 2t^2-nt-n.
+\]
+The last quadratic is convex. Its values at the endpoints of
+$[0,(n+1)/2]$ are $-n$ and $(1-n)/2$, both negative. Hence it is negative
+throughout the interval. This proves the pointwise inequality. Termwise
+summation with nonnegative weights and the established convergence proves
+\eqref{eq:barriersum}; its integrating factor gives the remaining claims.
+\end{proof}
+
+\begin{corollary}[Positive-measure extension]\label{cor:measure}
+Let $\nu$ be a nonzero nonnegative measure on $[0,\infty)$, and suppose
+\[
+ H_n(a)=\int_{[0,\infty)}g_n(a+t)\dd\nu(t)
+\]
+and its first derivative converge absolutely, locally uniformly on the
+region in question. Then $H_n'+e^{-n}H_n<0$ for
+$a\geq e^{(n-1)/2}$. The same exterior one-crossing conclusion holds.
+\end{corollary}
+\begin{proof}
+Integrate the strict pointwise inequality. A strictly negative integrable
+function has strictly negative integral against a nonzero positive measure.
+\end{proof}
+
+The positivity of the weights is essential. This argument does not extend
+formally to nonreal roots of unity or to arbitrary signed colors.
+
+\subsection{The sharp cutoff for the fixed coefficient \texorpdfstring{$e^{-n}$}{exp(-n)}}
+The convenient exponential cutoff above can be improved substantially.
+Define
+\[
+ \Delta_n=\sqrt{n^2+8n},\qquad
+ \alpha_n=\frac{3n-\Delta_n}{4}.
+\]
+The number $\alpha_n$ is the smaller positive root of the polynomial part
+of $R_n$.
+
+\begin{theorem}[Sharp fixed-operator cutoff]\label{thm:sharp}
+For every $n\geq2$, there is a unique
+\begin{equation}\label{eq:xirange}
+ \xi_n\in(\alpha_n,(n-1)/2)
+\end{equation}
+with $R_n(\xi_n)=0$. One has $R_n(y)<0$ for every $y>\xi_n$ and
+$R_n(y)>0$ for $0<y<\xi_n$. Thus
+\[
+ g_n'(x)+e^{-n}g_n(x)<0\qquad(x>e^{\xi_n}),
+\]
+and $e^{\xi_n}$ is the sharp lower cutoff for this strict pointwise inequality.
+At $x=e^{\xi_n}$ the left side is zero. For geometric weights, the summed
+inequality is strict even at $a=e^{\xi_n}$ when $\rho>0$; at $\rho=0$ that
+endpoint has equality in the differential inequality, not a zero of $U_n$.
+\end{theorem}
+\begin{proof}
+Write $H_n(t)=R_n(n-t)$. The preceding proof shows $H_n(t)<0$ for
+$0\leq t\leq(n+1)/2$. On $[(n+1)/2,n]$,
+\[
+ H_n''(t)=4+e^{-t}\bigl(-t^2+(n+4)t-2n-2\bigr)>4.
+\]
+The quadratic in parentheses is concave, with endpoint values
+$(n^2-1)/4$ and $2(n-1)$, so it is strictly positive. Since
+$H_n(n)=n(n-1)>0$, strict convexity gives precisely one zero in this
+interval: after a first crossing from a negative value, its derivative is
+positive and remains so. This determines a unique $\xi_n$ in
+$(0,(n-1)/2)$ and gives the asserted signs below $y=n$; the proof of
+\cref{thm:barrier} supplies the sign above $n$.
+Finally $R_n(\alpha_n)=e^{\alpha_n-n}\alpha_n(n-\alpha_n)>0$, proving
+$\alpha_n<\xi_n$. Below this cutoff the pointwise inequality fails, so no
+smaller cutoff works for all positive measures: take a point mass at zero.
+For $\rho>0$, the summand at $m=1$ is strictly negative even when the $m=0$
+summand has equality, proving the endpoint assertion for the sum.
+\end{proof}
+
+\begin{theorem}[Asymptotic location of the sharp cutoff]\label{thm:xiasympt}
+As $n\to\infty$,
+\begin{equation}\label{eq:xiasympt}
+ \xi_n=\alpha_n+
+ \frac{\alpha_n(n-\alpha_n)}{\Delta_n}e^{\alpha_n-n}
+ +O(n^2e^{-n}).
+\end{equation}
+In particular, the difference between the sharp cutoff in logarithmic
+coordinates and the first stationary point of $g_n$ is exponentially small.
+\end{theorem}
+\begin{proof}
+Let $\xi_n=\alpha_n+\delta$ and $E=e^{\alpha_n-n}$. The exact equation is
+\begin{equation}\label{eq:deltaeq}
+ 0=-\Delta_n\delta+2\delta^2+
+ E e^\delta\bigl(\alpha_n(n-\alpha_n)+(n-2\alpha_n)\delta-\delta^2\bigr).
+\end{equation}
+Here $\Delta_n\asymp n$, $\alpha_n=n/2-1+O(n^{-1})$, and
+$E\asymp e^{-n/2}$. Evaluating the right side first at zero and then at
+twice $E\alpha_n(n-\alpha_n)/\Delta_n$ gives opposite signs for all
+sufficiently large $n$: the omitted terms have size $O(n^3E^2)$ whereas
+the main magnitude is of order $n^2E$. Uniqueness from \cref{thm:sharp}
+therefore gives $\delta=O(nE)$. Substitute that estimate back into
+\eqref{eq:deltaeq}. After division by $\Delta_n$, all terms besides the
+first correction contribute $O(n^2E^2)=O(n^2e^{-n})$, as claimed.
+\end{proof}
+
+For orientation only, the non-certified diagnostics give
+$\xi_2\approx0.4122953342$, $\xi_3\approx0.8515049859$, and
+$e^{\xi_3}\approx2.3431706385$. The proof of the cubic phase diagram below
+uses the simpler cutoff $e$, so none of these decimal approximations is
+proof-bearing. Sharpness here concerns the fixed operator
+$\partial_a+e^{-n}$, not an optimization over all positive operator coefficients.
+
+\section{A compact-interval exclusion with exact arithmetic}
+\label{sec:compact}
+We now bridge the gap between the positive separator $9/5$ and the analytic
+exterior region $a\geq e$.
+
+\begin{lemma}[An elementary low-$\rho$ positivity bound]\label{lem:lowrho}
+For $0\leq\rho\leq9/10$ and $9/5\leq a\leq11/4$,
+\begin{equation}\label{eq:lowrhomargin}
+ F(a,\rho)\geq \frac6{121}-\frac{33}{160}\left(\frac9{10}\right)^{18}>0.
+\end{equation}
+For $4/5\leq a\leq3/2$ and $0<\rho\leq9/10$, the same positive lower
+bound multiplied by $\rho$ is valid.
+\end{lemma}
+\begin{proof}
+The elementary exponential series proves $e<11/4<3$ and
+$e^3>(163/60)^3>20$. For $x\in[9/5,11/4]$, these inequalities imply
+$1/2<\log x<3/2$, and consequently
+\[
+ f(x)\geq\frac{(1/2)^2(3/2)}{(11/4)^2}=\frac6{121}.
+\]
+For $x=e^{3+t}$, $t\geq0$, the magnitude of the negative part is
+\[
+ |f(x)|=e^{-6}(t^3+6t^2+9t)e^{-2t}
+ \leq\frac{33}{4}e^{-6}<\frac{33}{1600}.
+\]
+We used $t^j e^{-2t}\leq j!/2^j$, which follows from the exponential
+series, separately for $j=1,2,3$.
+For $a\leq11/4$, no negative summand occurs before $m=18$.
+Keep the $m=0$ term, discard all other positive terms, and bound the
+negative geometric tail to obtain \eqref{eq:lowrhomargin}.
+
+For the second interval use the $m=1$ term instead: $a+1\in[9/5,5/2]$.
+The $m=0$ term is nonnegative, and no negative term occurs before $m=19$.
+Factoring out one power of $\rho$ gives the stated estimate. The exact
+positive margin is
+\[
+ \frac{360672121259082509847}{19360000000000000000000}.
+\]
+\end{proof}
+
+\begin{lemma}[Certified derivative strip]\label{lem:strip}
+For every $9/5\leq a\leq11/4$ and $9/10\leq\rho\leq1$,
+\begin{equation}\label{eq:strip}
+ \partial_aF(a,\rho)<-\frac1{40}<0.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Partition $[9/5,11/4]$ into $128$ equal rational closed intervals.
+For each such interval $I$, compute an outward enclosure of
+$f'(I+m)$ for $0\leq m<64$ using \eqref{eq:df} and rational logarithm
+bounds. Denote its upper endpoint by $u_m(I)$. For the entire parameter
+interval, an upper bound for the weighted summand is
+\[
+ \rho^m f'(a+m)\leq
+ \begin{cases}(9/10)^m u_m(I),&u_m(I)\leq0,\\
+ u_m(I),&u_m(I)>0.
+ \end{cases}
+\]
+This remains valid if the underlying interval straddles zero.
+For $b=64+9/5=329/5$, the uniform tail is bounded above by
+\begin{equation}\label{eq:derivtail}
+ T_b=\frac{2\log^3b}{b^3}
+ +\frac{\log^3b+\frac32\log^2b+\frac32\log b+\frac34}{b^2}.
+\end{equation}
+Indeed, $f'(x)\leq2\log^3x/x^3$ for $x\geq b$; the latter positive
+majorant is decreasing, so a first term plus its integral bounds the
+sum. Negative tail terms, if any, only improve this upper bound.
+
+Every rational interval computation is specified in \cref{sec:certificate}
+and recomputed by the accompanying standard-library verifier. The largest
+upper bound among the $128$ cells, including $T_b$, is enclosed by
+\[
+ [-0.0256107476350181,\,-0.0256107476350180],
+\]
+which is strictly below $-1/40$. The tail bound alone is enclosed by
+\[ [0.0251601160205428,0.0251601160205429]. \]
+The JSON certificate records the rational endpoints and upper bound of
+\emph{every} cell. Thus the finite verification covers the complete closed
+strip, not a set of sampled points.
+\end{proof}
+
+\begin{remark}
+The certificate is deliberately elementary rather than optimized. It uses
+only $64$ summands and a rough tail majorant. The proof does not need a
+high-precision evaluation of $\rho_{\mathrm c}$, a near-endpoint Lerch
+summation, or an interval treatment of the singular $\rho$-derivative at one.
+\end{remark}
+
+\section{Unique outer zero and the complete phase diagram}
+\label{sec:phase}
+
+\begin{theorem}[Global outer exclusion]\label{thm:outer}
+For every $0<\rho\leq1$, $F(\cdot,\rho)$ has exactly one zero in
+$(9/5,\infty)$. It lies in $(9/5,e^3)$, is simple, and has negative
+$a$-derivative. Denote it by $\aO(\rho)$.
+It extends continuously to $\aO(0)=e^3$, is analytic for $0\leq\rho<1$,
+and is strictly decreasing on $[0,1]$.
+\end{theorem}
+\begin{proof}
+Existence between $9/5$ and $e^3$ follows from \cref{cor:separator} and
+\eqref{eq:signf}. If $0<\rho\leq9/10$, \cref{lem:lowrho} excludes zeros
+up to $11/4>e$; \cref{thm:barrier} with $n=3$ allows at most one zero
+thereafter, with negative derivative.
+
+If $9/10\leq\rho\leq1$, \cref{lem:strip} makes $F$ strictly decreasing
+on $[9/5,e]$. Above $e$, the function $e^{a/e^3}F(a,\rho)$ is strictly
+decreasing. A crossing before $e$ therefore leaves a negative value
+which cannot cross back above $e$; if no crossing occurs before $e$,
+the exterior barrier permits at most one afterwards. A crossing exactly
+at $e$ also has negative derivative. This proves uniqueness and simplicity
+in every case.
+
+For $0<\rho<1$, \cref{lem:rhocross} gives $F_\rho<0$ at the zero,
+whereas $F_a<0$. Implicit differentiation gives
+\begin{equation}\label{eq:outervelocity}
+ \aO'(\rho)=-\frac{F_\rho(\aO(\rho),\rho)}{F_a(\aO(\rho),\rho)}<0.
+\end{equation}
+At $\rho=0$, the outer elementary zero $e^3$ is simple, so analytic
+continuation is available there. Uniform convergence, the compact
+bracket $[9/5,e^3]$, and uniqueness imply continuity at both endpoints.
+Strict decrease on the open interval extends to strict decrease on the
+closed interval by continuity and the intermediate comparisons.
+\end{proof}
+
+\begin{theorem}[Complete index-three phase diagram]\label{thm:phase}
+There is a unique $\lc\in(9/10,1)$ and a unique $\ac\in(4/5,3/2)$ such that
+\[
+ F(\ac,\lc)=F_a(\ac,\lc)=0.
+\]
+The total positive-zero count is as follows:
+\begin{center}
+\begin{tabular}{cll}
+\toprule
+Parameter & Distinct zeros & Multiplicities\\
+\midrule
+$\rho=0$ & $1,e^3$ & $2,1$\\
+$0<\rho<\lc$ & one & simple\\
+$\rho=\lc$ & two & one double, one simple\\
+$\lc<\rho\leq1$ & three & all simple\\
+\bottomrule
+\end{tabular}
+\end{center}
+At the fold,
+\begin{equation}\label{eq:foldnondeg}
+ F_\rho(\ac,\lc)<0,\qquad F_{aa}(\ac,\lc)>0.
+\end{equation}
+Above it, label the zeros $\aL<\aM<\aO$. The first two lie in $(4/5,3/2)$,
+while $\aO>9/5$. On $(\lc,1)$, $\aL$ and $\aO$ are strictly decreasing,
+and $\aM$ is strictly increasing. As $\rho\downarrow\lc$,
+\begin{equation}\label{eq:foldexp}
+ \aL(\rho),\aM(\rho)=\ac\mp
+ \sqrt{-\frac{2F_\rho(\ac,\lc)}{F_{aa}(\ac,\lc)}}\sqrt{\rho-\lc}
+ +O(\rho-\lc).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Only the interval $(4/5,3/2)$ can contain zeros other than the unique outer
+one, by \cref{cor:separator,thm:outer}. Let $S$ be the set of parameters
+for which $F(a,\rho)<0$ somewhere in that interval.
+\Cref{lem:rhocross} makes $S$ an upper interval. \Cref{lem:lowrho} makes it
+empty for $0<\rho\leq9/10$, with a positive uniform margin at $9/10$.
+The negative anchor at $a=1,\rho=1$ makes it nonempty near one.
+Thus $S=(\lc,1]$ with $9/10<\lc<1$.
+
+The positive endpoint values at $4/5,3/2$, uniform continuity, and compactness
+show that at $\lc$ the nonnegative function on this interval attains zero
+at an interior point $\ac$. Its zero has even multiplicity at least two.
+The outer simple zero and \cref{prop:three} force multiplicity exactly two
+and uniqueness of $\ac$. This proves $F_{aa}>0$; \cref{lem:rhocross} gives
+$F_\rho<0$.
+
+Below $\lc$ a hypothetical left zero would be a zero of a nonnegative
+function. Its strictly negative $\rho$-derivative would create negativity
+at a slightly larger parameter still below $\lc$, a contradiction.
+Above $\lc$, a negative value between positive endpoints gives two
+sign-changing left zeros. The global multiplicity bound makes both
+simple and excludes all additional zeros. At their crossings $F_a$ is
+negative and positive, respectively; the common inequality $F_\rho<0$
+gives the stated velocity directions. The fold expansion follows by
+substituting $a=\ac+u\sqrt{\rho-\lc}$ into the analytic Taylor series.
+Its limiting quadratic has two distinct roots, which continue analytically
+in $\sqrt{\rho-\lc}$. Finally, at zero parameter the elementary formula
+has exactly the two displayed zeros with the stated multiplicities.
+\end{proof}
+
+\Cref{thm:phase} proves precisely the global exclusion left open in the
+companion's Conjecture 12.1. The local fold argument alone would not have
+proved it; \cref{thm:outer} is the missing global input.
+
+\section{Integer-gap rigidity and the exact unit-span maximum}
+\label{sec:rigidity}
+A classical shift identity now yields a stronger, less obvious geometric
+conclusion.
+
+\begin{theorem}[Integer-separated zeros, all odd indices]\label{thm:integergap}
+Let $n\geq3$ be odd and $0<\rho\leq1$. If two positive zeros of
+$U_n(\cdot,\rho)$ differ by a positive integer, they are exactly $1$ and $2$.
+In particular, no positive integer gap of size at least two is possible.
+\end{theorem}
+\begin{proof}
+For odd $n$, $g_n(x)$ is nonnegative on $(0,e^n)$, with its only zero there
+at $1$. It is strictly negative on $(e^n,\infty)$. Hence every positive
+zero lies below $e^n$, and $e^n$ itself is not a zero for $\rho>0$.
+Iterating the shift equation gives
+\[
+ \rho^q U_n(a+q,\rho)=U_n(a,\rho)-
+             \sum_{j=0}^{q-1}\rho^j g_n(a+j),\qquad q\in\N.
+\]
+If both endpoints are zeros, all arguments in the finite sum lie below
+$e^n$, so every summand is nonnegative. Vanishing forces every one to be
+zero. This is possible only for $q=1,a=1$.
+\end{proof}
+
+\begin{theorem}[Sharp unit-span bound and resonance]\label{thm:span}
+For $\lc<\rho\leq1$, let
+\[
+ D(\rho)=\aO(\rho)-\aL(\rho).
+\]
+Then
+\begin{equation}\label{eq:span}
+ D(\rho)\leq1.
+\end{equation}
+There is a unique $\rs\in(\lc,1)$ at which equality holds. At this parameter,
+\begin{equation}\label{eq:lockedzeros}
+ \aL(\rs)=1,\qquad \aO(\rs)=2.
+\end{equation}
+The bound extends by continuity to the fold, where it is strict.
+\end{theorem}
+\begin{proof}
+Since $\aL>4/5$, one has $\aL+1>9/5>\aM$.
+The shift equation and $f(\aL)\geq0$ give
+\[
+ F(\aL+1,\rho)=-\frac{f(\aL)}{\rho}\leq0.
+\]
+Between $\aM$ and $\aO$ the function is strictly positive, and after
+$\aO$ it is strictly negative. Therefore $\aL+1\geq\aO$, proving
+\eqref{eq:span}. Equality holds exactly when $f(\aL)=0$, hence exactly
+when $\aL=1$.
+
+At $a=1$ the first nonzero coefficient of $F(1,\rho)$ is
+$\rho f(2)>0$, whereas $F(1,1)<0$. \Cref{lem:rhocross} gives a unique
+$\rs\in(0,1)$ with $F(1,\rs)=0$. The shift equation then gives
+$F(2,\rs)=0$. The phase diagram excludes $\rs<\lc$.
+Nor can $\rs=\lc$: if $1$ were the double fold zero, differentiating
+\eqref{eq:shift} and using $f'(1)=0$ would also make $2$ a multiple zero,
+contradicting the multiplicity bound of three. Thus $\rs>\lc$.
+The zero at $2$ is the outer one. If the zero at $1$ were the middle one,
+then the span from the left zero to $2$ would exceed one. Hence it is the
+left zero. Uniqueness of the parameter zero proves uniqueness of equality.
+At the fold, equality would again force a double zero at $1$ and a
+multiple zero at $2$, so the limiting span is strictly smaller than one.
+\end{proof}
+
+\begin{theorem}[Common velocity and nondegenerate span maximum]\label{thm:curvature}
+At the resonance, the two locked branches have the same nonzero velocity:
+\begin{equation}\label{eq:velocitylock}
+ v:=\aL'(\rs)=\aO'(\rs)
+   =-\frac{F_\rho(1,\rs)}{F_a(1,\rs)}<0.
+\end{equation}
+Moreover,
+\begin{equation}\label{eq:curvature}
+ D''(\rs)=\frac{6v^2}{F_a(1,\rs)}<0.
+\end{equation}
+In particular, the unique global maximum $D(\rs)=1$ is nondegenerate, and
+\begin{equation}\label{eq:spantaylor}
+ D(\rho)=1+\frac{3v^2}{F_a(1,\rs)}(\rho-\rs)^2
+                    +O((\rho-\rs)^3).
+\end{equation}
+\end{theorem}
+\begin{proof}
+At a simultaneous zero at $1,2$, differentiation of the shift equation
+in $a$ and $\rho$ gives
+\[
+ F_a(2,\rs)=\frac{F_a(1,\rs)}{\rs},\qquad
+ F_\rho(2,\rs)=\frac{F_\rho(1,\rs)}{\rs}.
+\]
+Here $f'(1)=0$ and $F(1,\rs)=0$ remove the extra terms. Implicit
+differentiation gives the common velocity.
+
+Put $\delta(\rho)=1-D(\rho)=\aL+1-\aO$. At the resonance,
+$\delta=\delta'=0$. Taylor expansion at the outer simple zero yields
+\[
+ F(\aL+1,\rho)=F_a(2,\rs)\delta+O((\rho-\rs)^3),
+\]
+where analyticity and $\delta=O((\rho-\rs)^2)$ justify the remainder.
+On the other hand,
+$f(1+u)=3u^2+O(u^3)$ and the shift identity give
+\[
+ F(\aL+1,\rho)=-\frac{3v^2}{\rs}(\rho-\rs)^2
+                         +O((\rho-\rs)^3).
+\]
+Use $\rs F_a(2,\rs)=F_a(1,\rs)$ and compare coefficients. Since the
+left zero has $F_a<0$ and $v\ne0$, the curvature is strictly negative.
+\end{proof}
+
+The maximum theorem does not, by itself, prove that the span is strictly
+increasing before $\rs$ and strictly decreasing afterwards. Additional
+smaller local extrema are not excluded by a unique global maximum. This
+stronger shape question is kept separate in \cref{sec:questions}.
+
+\section{Polylogarithmic identities and strict inequalities}
+\label{sec:polylog}
+For clarity, angle brackets denote differentiation in order:
+\[
+ \ordli{s}{j}(\rho)=\left.\partial_z^j\Li_z(\rho)\right|_{z=s}.
+\]
+They never denote repeated differentiation in the argument $\rho$.
+For $0<\rho<1$ these derivatives follow from the absolutely convergent
+power series, and commute with argument differentiation.
+
+\subsection{A unique order-derivative resonance}
+Define
+\begin{align}
+ B(\rho)&=\ordli{2}{3}(\rho)+3\ordli{2}{2}(\rho),\label{eq:B}\\
+ C(\rho)&=\ordli{1}{3}(\rho)+3\ordli{1}{2}(\rho),\label{eq:C}\\
+ T(\rho)&=2\ordli{3}{3}(\rho)+9\ordli{3}{2}(\rho)
+                                      +6\ordli{3}{1}(\rho).\label{eq:T}
+\end{align}
+Direct comparison of coefficients gives
+\begin{equation}\label{eq:BTrelation}
+ F(1,\rho)=\frac{B(\rho)}\rho,\qquad
+ F_a(1,\rho)=-\frac{T(\rho)}\rho,\qquad
+ B'(\rho)=\frac{C(\rho)}\rho.
+\end{equation}
+
+\begin{corollary}[Root-locked polylogarithmic identities]\label{cor:polyidentities}
+The equation
+\begin{equation}\label{eq:resonanceidentity}
+ \boxed{\ordli{2}{3}(\rs)=-3\ordli{2}{2}(\rs)}
+\end{equation}
+has exactly one solution $\rs\in(0,1)$. It is precisely the unit-span
+resonance of \cref{thm:span}, and $\lc<\rs<1$.
+At this parameter,
+\begin{align}
+ \boxed{\aL'(\rs)=\aO'(\rs)=\frac{C(\rs)}{\rs T(\rs)}} ,
+ \label{eq:polyvelocity}\\
+ \boxed{D''(\rs)=-\frac{6C(\rs)^2}{\rs T(\rs)^3}} .
+ \label{eq:polycurvature}
+\end{align}
+One has $C(\rs)<0$ and $T(\rs)>0$.
+\end{corollary}
+\begin{proof}
+The unique parameter zero of $F(1,\rho)$ was proved in \cref{thm:span};
+\eqref{eq:BTrelation} identifies it with \eqref{eq:resonanceidentity}.
+At the zero, $F_\rho(1,\rs)=B'(\rs)/\rs=C(\rs)/\rs^2<0$.
+Since $F_a(1,\rs)<0$, the signs of $C,T$ follow.
+Substitution into \cref{thm:curvature} gives the two formulas.
+\end{proof}
+
+These are exact identities at a uniquely characterized interior parameter,
+not a claim that $\rs$ is algebraic or that its value reduces to a previously
+named constant. The uniqueness, simultaneous integer zeros, and curvature
+formula carry the additional content; merely defining a constant as a zero
+of $B$ would not establish those facts.
+
+There is also a parameter-interval inequality without an implicitly defined
+special value. Since $f'(1)=0$, differentiating the shift equation gives
+$F_a(2,\rho)=F_a(1,\rho)/\rho$. \Cref{lem:strip} therefore proves
+\begin{equation}\label{eq:Tpositive}
+ \boxed{2\ordli{3}{3}(\rho)+9\ordli{3}{2}(\rho)+6\ordli{3}{1}(\rho)>0
+ \quad(9/10\leq\rho\leq1).}
+\end{equation}
+All order derivatives in this display converge at the endpoint $\rho=1$.
+
+\subsection{An all-index tail-moment inequality}
+For an integer $M\geq1$, set
+\begin{equation}
+ L_{s,j}^{[M]}(\rho)=\sum_{r=M}^\infty\frac{\rho^r\log^jr}{r^s}
+ =(-1)^j\ordli{s}{j}(\rho)-
+                  \sum_{r=1}^{M-1}\frac{\rho^r\log^jr}{r^s}.
+\end{equation}
+At $s=2,3$ all these sums converge even when $\rho=1$.
+
+\begin{corollary}[Strict polylogarithmic tail inequalities]\label{cor:tailineq}
+Let $n\geq2$, $0<\rho\leq1$, and let $M$ be an integer with
+$M\geq e^{\xi_n}$. Then
+\begin{align}\label{eq:tailineq}
+ &2L_{3,n}^{[M]}-3nL_{3,n-1}^{[M]}+n(n-1)L_{3,n-2}^{[M]}\notag\\
+ &\hspace{25mm}+e^{-n}\bigl(nL_{2,n-1}^{[M]}-L_{2,n}^{[M]}\bigr)<0.
+\end{align}
+The simpler sufficient condition $M\geq e^{(n-1)/2}$ avoids the implicit
+cutoff. In particular, for every integer $M\geq3$,
+\begin{equation}\label{eq:cubic-tailineq}
+ 2L_{3,3}^{[M]}-9L_{3,2}^{[M]}+6L_{3,1}^{[M]}
+       +e^{-3}(3L_{2,2}^{[M]}-L_{2,3}^{[M]})<0.
+\end{equation}
+\end{corollary}
+\begin{proof}
+At $a=M$, multiply the differential inequality of \cref{thm:sharp} by
+$\rho^M>0$ and change summation variable from $m$ to $r=M+m$.
+Differentiation of \eqref{eq:gn} supplies the three order-three moments.
+The endpoint equality of the pointwise inequality, if it occurs, is made
+strict by later positive-weight summands. The cubic sufficient condition
+follows already from $e<3$ and \cref{thm:barrier}.
+\end{proof}
+
+These inequalities furnish sign tests for combinations of polylogarithmic
+order derivatives and finite logarithmic sums. They are different in kind
+from rational reductions of cyclotomic multiple polylogarithms: the relevant
+structure here is a positive real deformation and a first-order barrier.
+
+\section{Proof-bearing arithmetic and independent diagnostics}
+\label{sec:certificate}
+The finite parts of the proof are intentionally small enough to reproduce
+without a computer algebra system. The verifier uses only Python's standard
+library. This section specifies the mathematics behind it so that the
+certificate is not an unexplained software output.
+
+\subsection{Integer interval arithmetic and logarithms}
+An interval is stored as $[l/S,u/S]$ with integers $l\leq u$ and
+$S=10^{60}$. Each operation rounds down its lower endpoint and rounds up its
+upper endpoint. Multiplication takes the minimum and maximum of the four
+endpoint products. Reciprocal intervals reject a zero-containing input.
+Thus induction on the computation tree proves inclusion for every result.
+No floating-point comparison decides a proof-bearing sign.
+
+For a positive rational $x$, range reduction writes $x=2^k v$ with
+$1\leq v\leq2$. With $z=(v-1)/(v+1)\in[0,1/3]$,
+\begin{equation}\label{eq:logseries}
+ \log v=2\sum_{j=0}^{J-1}\frac{z^{2j+1}}{2j+1}+R_J,
+ \qquad
+ 0\leq R_J\leq
+ \frac{2(1/3)^{2J+1}}{(2J+1)(1-1/9)}.
+\end{equation}
+The code uses $J=68$, computes the finite sum with outward interval
+operations, and adds the explicit rational tail. The same formula gives
+$\log2$, after which $\log x=k\log2+\log v$. On an input interval,
+monotonicity of logarithm supplies the endpoint enclosure. This is valid
+for intervals as well as point inputs; it is why the derivative strip
+covers every $a$, not only the cell endpoints.
+
+\subsection{Euler--Maclaurin anchors with a stated remainder}
+Let $P_0(y)=3y^2-y^3$, and recursively define
+\begin{equation}\label{eq:polyrec}
+ P_{r+1}(y)=P_r'(y)-(r+2)P_r(y).
+\end{equation}
+Then $f^{(r)}(x)=x^{-r-2}P_r(\log x)$ exactly.
+For $b=a+N$ and a positive integer $p$, Euler--Maclaurin gives
+\begin{align}\label{eq:EM}
+ F(a,1)={}&\sum_{m=0}^{N-1}f(a+m)-\frac{\log^3b}{b}
+ +\frac{f(b)}2\notag\\
+ &-\sum_{j=1}^p\frac{B_{2j}}{(2j)!}f^{(2j-1)}(b)+R,
+\end{align}
+with
+\begin{equation}\label{eq:EMerror}
+ |R|\leq\frac{|B_{2p}|}{(2p)!}
+                 \int_b^\infty |f^{(2p)}(x)|\dd x.
+\end{equation}
+The integral term in \eqref{eq:EM} is exact because
+$\partial_x(\log^3x/x)=f(x)$ and $\log^3x/x\to0$.
+The standard periodic-Bernoulli remainder yields \eqref{eq:EMerror};
+its bound $|\widetilde B_{2p}(x)|\leq|B_{2p}|$ also follows immediately
+from the absolutely convergent cosine Fourier series for $p\geq1$
+\cite{dlmf-em}. All derivatives at infinity vanish here.
+
+If $P_{2p}(y)=\sum_j c_jy^j$ and $b\geq1$, the absolute integral is at
+most $\sum_j|c_j|I_{2p+2,j}(b)$, where repeated integration by parts gives
+\begin{equation}\label{eq:logintegral}
+ I_{d,j}(b)=\int_b^\infty\frac{\log^jx}{x^d}\dd x
+ =b^{1-d}\sum_{h=0}^j
+   \frac{j!}{(j-h)!(d-1)^{h+1}}\log^{j-h}b.
+\end{equation}
+This is a finite interval expression. The four anchors use $N=32,p=6$;
+Bernoulli numbers are constructed as exact rationals from their defining
+recurrence. The certificate includes the actual remainder enclosure for
+each anchor, not only the final sign.
+
+\subsection{What the machine certificate does and does not prove}
+The verifier reconstructs four endpoint enclosures, the elementary rational
+low-$\rho$ margin, all $128$ derivative-strip bounds, the common tail bound,
+and the exponential rational estimates used in the proof. A separate test
+file checks the interval primitives against exact rational arithmetic and
+checks the differentiation polynomials.
+The infinite-parameter consequences are the theorems above; they are not
+inferred by extrapolating the finite cell count.
+
+The file \texttt{certificates/exact.json} is generated evidence, not a
+trusted oracle. Running the verifier recomputes it from the formulas.
+The mathematical proof still requires the stated convergence, variation,
+and barrier arguments. Conversely, none of those arguments excuses a
+failed finite sign check.
+
+\subsection{Independent numerical diagnostics and a differentiation trap}
+The optional \texttt{numerical\_diagnostics.py} uses the defining Laplace
+integral, with $\mu=-\log\rho$, rather than the finite Euler--Maclaurin
+anchor procedure. It gives the following \emph{non-certified} approximations:
+\begin{align*}
+ \lc&\approx0.9999904668377386342470714889616,\\
+ \ac&\approx1.049753050880255458339760685838,\\
+ \rs&\approx0.9999923567014181627908364969005,\\
+ \aM(\rs)&\approx1.111482903903473928636617026947.
+\end{align*}
+At the resonance, the common branch velocity is approximately
+$-12527.90098335$ and $D''(\rs)\approx-4.26341756559\times10^9$.
+These decimals are not isolating intervals and are not used in any proof.
+Their large scales explain why a coarse grid in $\rho$ can miss the fold
+and the narrow maximum.
+
+A default tiny-step numerical differentiation of the polylogarithm in its
+order gave a residual of about $1.28\times10^{-17}$ in the resonance check
+in this environment despite a 40-decimal working precision. That is not
+evidence against the identity and is not a 40-digit verification.
+The diagnostics therefore also differentiate by Cauchy/Fourier coefficient
+extraction on a radius-$1/4$ circle, using $128$ shifted angular nodes.
+Its residual and the independent Laplace residual are recorded separately.
+This comparison is still numerical, not an interval quadrature certificate.
+The script preserves the naive residual so that loss of effective accuracy
+is visible rather than silently discarded.
+
+\section{Audit notes and integration corrections}
+\label{sec:audit}
+\subsection{An already reported notation error remains in the inspected source}
+Near the end of the classical half-unit proof in
+\texttt{09-zero-geometry.tex}, the sentence saying that the root of $P_1$
+is $-\gamma$ uses the wrong polynomial label. In that chapter,
+$P_k(t)=\prod_{j=1}^k(1+t/j)$, so $P_1(t)=1+t$ has root $-1$.
+The intended polynomial is $Q_1(x)=x+\gamma$. The companion already
+identified this issue; we confirm that it remains in the inspected blob
+rather than presenting it as a newly discovered mathematical flaw.
+The proposed correction is $P_1\mapsto Q_1$ in that sentence.
+
+The same proof begins with a duplicated phrase, ``The endpoint signs in
+the endpoint signs and the Laplace representation above''. The package
+proposes a local prose correction. Neither edit changes a theorem.
+Both replacements are explicit in \texttt{integration/corrections.json};
+the helper emits a diff by default and checks the baseline blob before
+an explicitly requested local application.
+
+\subsection{Update the conjecture status, but not its history}
+The companion's localized-fold theorem is correctly restricted. Its
+Conjecture 12.1 should now be marked proved by \cref{thm:outer,thm:phase},
+not retroactively described as following from the earlier local argument.
+The missing input was a global outer exclusion. The integration fragment
+preserves that dependency and uses new label prefixes to avoid collisions.
+
+\subsection{Normalization and endpoints must remain explicit}
+The four anchors in this article enclose $F$ itself. Some manuscript tables
+instead enclose $a^2F$ at derivative order one. For example the earlier
+normalized value at $a=3/2$ is approximately $0.05603756$, whereas the
+unnormalized value here is approximately $0.02490558$; these are consistent,
+not a discrepancy. Similarly, zero counts with multiplicity differ from
+counts of distinct zeros at $\rho=0$ and at the fold.
+
+The all-index sharp barrier has equality in its \emph{differential}
+expression at its pointwise cutoff. Strictness at the cutoff for a
+geometric sum requires $\rho>0$. We state this explicitly rather than
+extending a strict inequality to a boundary where it is false.
+
+\section{Further research questions and proposed conjectures}
+\label{sec:questions}
+\paragraph{1. A stronger shape theorem for the span.}
+The exact unit maximum motivates the following strengthening. It is not
+proved by the present maximum theorem and is not needed by any result above.
+\begin{conjecture}[Strict span unimodality]\label{conj:span}
+The function $D$ is strictly increasing on $(\lc,\rs)$ and strictly
+decreasing on $(\rs,1)$, with no other stationary point.
+\end{conjecture}
+A possible route is to differentiate the exact shifted-root equation
+$F(\aL+1,\rho)=-f(\aL)/\rho$ and control the average negative outer slope.
+The sign of $f(\aL)$ alone proves the maximum but does not control that
+average's variation.
+
+\paragraph{2. The optimal exterior operator.}
+For each $n$, determine the least cutoff obtainable from
+$g_n'+\lambda g_n<0$ after optimizing over $\lambda>0$.
+\Cref{thm:sharp} optimizes the cutoff only with $\lambda=e^{-n}$ fixed.
+The optimized problem can be expressed as a separation of logarithmic
+slope ranges on the positive and negative parts of $g_n$.
+It may substantially reduce the compact interval left for certification.
+
+\paragraph{3. All-index outer uniqueness.}
+Determine for which $n$ the largest positive zero of $U_n$ is unique in a
+common exterior region for every $\rho$. The barrier supplies a uniform
+one-crossing region, but not automatic positivity at its left endpoint.
+The index-three argument suggests combining a few certified separators
+with a sign-aware geometric-weight bound, rather than scanning the full
+$(a,\rho)$ plane.
+
+\paragraph{4. Which odd indices admit an integer resonance?}
+For odd $n\geq3$, an integer-separated pair must be $1,2$ by
+\cref{thm:integergap}. A necessary and sufficient condition for an interior
+resonance is $\gamma_n'(1)<0$, because $U_n(1,\rho)$ starts positive
+and has one coefficient sign change. A zero exactly at the endpoint
+$\rho=1$ should be treated separately. Determining these signs uniformly
+in $n$ would connect a rigid root geometry with oscillatory Stieltjes
+coefficient data. No all-index sign pattern is asserted here.
+
+\paragraph{5. Certify the critical parameters themselves.}
+The present proof certifies the existence, uniqueness, and nondegeneracy
+of the fold and the resonance, but the displayed many-digit parameter
+values are diagnostics. Interval Newton or a Krawczyk enclosure, together
+with a rigorously subtracted endpoint singularity, should supply narrow
+rational isolating boxes. The near-endpoint variable $\mu=-\log\rho$ is
+preferable to an unstructured high-order $\rho$ grid.
+
+\paragraph{6. Higher derivative orders and formal verification.}
+The unresolved uniform-saturation question asks whether the necessary
+threshold $k\geq n-1$, imposed by the elementary endpoint, is sufficient
+throughout the deformation. Our result does not settle it. The integer
+interval engine, logarithm remainder, exact derivative-polynomial
+recurrence, and rational strip bound are natural first proof-assistant
+targets. Formalizing the analytic variation and compactness arguments
+would then isolate a relatively small trusted analysis layer.
+
+\paragraph{7. Sharp inequalities for order derivatives.}
+The moment inequality \eqref{eq:tailineq} can be combined with optimized
+operators or several shifts to produce stronger sign certificates for
+polylogarithmic order derivatives. Investigate whether such inequalities
+can guide integer-relation searches without confusing inequalities with
+identities, and whether analogous barriers survive positive mixtures of
+Lerch parameters or nonuniform sampling measures.
+
+\section{Reproduction and repository integration}
+\label{sec:reproduce}
+The package is independent of the user's working checkout. From its root,
+\begin{verbatim}
+python code/verify_exact.py
+python code/test_exact.py
+python code/numerical_diagnostics.py --dps 40   # optional; requires mpmath
+cd article
+pdflatex -interaction=nonstopmode -halt-on-error lerch_global_phase.tex
+pdflatex -interaction=nonstopmode -halt-on-error lerch_global_phase.tex
+\end{verbatim}
+The first command reconstructs the proof-bearing JSON. The second checks
+arithmetic and polynomial regression tests. The optional third command is
+not part of the proof. The final two commands compile this article.
+
+For integration, a suggested report destination is
+\path{Analysis/Polylogarithms/docs/reports/lerch-global-phase/}.
+The package includes a manuscript-sized theorem fragment and instructions
+for adding it at the end of the current zero-geometry chapter. Any code or fragment
+should be reviewed against the actual integration commit, since the
+repository may have changed after the pinned snapshot. The guarded
+correction helper refuses an unexpected baseline rather than overwriting
+unseen edits. No automatic remote write is part of the package.
+
+\appendix
+\section{A general existence criterion for odd-index resonances}
+\label{app:oddres}
+For odd $n\geq3$, the first nonzero coefficient of $U_n(1,\rho)$ is
+$\rho g_n(2)>0$, because $\log2<n$. Its coefficients have precisely one
+positive-to-negative sign change. The crossing argument in
+\cref{lem:rhocross} applies without alteration. Therefore:
+\begin{proposition}\label{prop:oddres}
+For odd $n\geq3$, there is at most one $\rho\in(0,1)$ with positive zeros
+at both $1$ and $2$. Such an interior parameter exists if and only if
+$\gamma_n'(1)<0$. If $\gamma_n'(1)=0$, there is no interior parameter,
+but the endpoint $\rho=1$ has both zeros. If $\gamma_n'(1)>0$, there is
+no such parameter in $(0,1]$.
+\end{proposition}
+\begin{proof}
+The only possible integer pair is $1,2$, and the shift equation makes its
+existence equivalent to $U_n(1,\rho)=0$. The function starts positive,
+has at most one interior zero with strictly negative derivative, and is
+continuous at one. An interior crossing forces a strictly negative
+endpoint value by the separating-power comparison, even if one attempts
+to approach the endpoint from below. Conversely a negative endpoint
+forces an interior zero. A zero endpoint cannot coexist with an interior
+crossing, by the same strict comparison.
+\end{proof}
+In polylogarithmic notation the unique interior resonance, when it exists,
+satisfies
+\begin{equation}\label{eq:generalresonance}
+ \boxed{\ordli{2}{n}(\rho)+n\ordli{2}{n-1}(\rho)=0.}
+\end{equation}
+For odd $n$, direct coefficient comparison identifies the left side with
+$\rho U_n(1,\rho)$. Thus \eqref{eq:generalresonance} is an all-odd-index
+family with an exact existence criterion, not an assertion that such a
+parameter exists at every odd index. The cubic case is the one completely
+resolved here, including its surrounding global zero geometry.
+
+\section{Certificate parameters and dependency map}
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Item & Fixed value or dependency\\
+\midrule
+Interval denominator & $10^{60}$\\
+Logarithm terms & $68$, with rational atanh tail\\
+Anchor summands & $N=32$\\
+Euler--Maclaurin order & $p=6$\\
+Derivative cells & $128$ equal closed rational intervals\\
+Derivative summands & $64$ per cell\\
+Derivative parameter strip & $[9/10,1]$\\
+Coarse derivative conclusion & $F_a<-1/40$\\
+Fold existence & anchors, positivity, compactness, three-zero bound\\
+Global exclusion & low-$\rho$ bound, derivative strip, analytic barrier\\
+Unit-span maximum & global diagram, shift equation, multiplicity bound\\
+Many-digit diagnostics & not used by any theorem\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{thebibliography}{9}
+\bibitem{repo}
+V.~Reshetnikov, \emph{ProveIt: Analysis/Polylogarithms manuscript},
+pinned commit \sha, especially
+\texttt{chapters/09-zero-geometry.tex} and \texttt{chapters/10-discovery.tex}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/cc34f73596336f2466d9754cb0f3635bd2bedade/Analysis/Polylogarithms/docs/manuscript}.
+
+\bibitem{previous}
+\emph{Lerch Endpoint Singularities and Stieltjes Zero Bifurcations},
+OpenAI-assisted research continuation for Vladimir Reshetnikov's ProveIt
+project, October 9, 2026, especially Theorem 8.1 and Conjecture 12.1.
+Retrieved LaTeX source \texttt{lerch\_zero\_bifurcations.tex}; source hash
+recorded in the accompanying provenance manifest.
+
+\bibitem{dlmf-lerch}
+NIST Digital Library of Mathematical Functions, \S25.14,
+\emph{Lerch's Transcendent}, including the defining series, shift relation,
+and Mellin integral. \url{https://dlmf.nist.gov/25.14}.
+
+\bibitem{dlmf-hurwitz}
+NIST Digital Library of Mathematical Functions, \S25.11,
+\emph{Hurwitz Zeta Function}, including parameter differentiation and
+Euler--Maclaurin representations. \url{https://dlmf.nist.gov/25.11}.
+
+\bibitem{dlmf-gamma}
+NIST Digital Library of Mathematical Functions, \S5.8,
+\emph{Infinite Products for the Gamma Function}.
+\url{https://dlmf.nist.gov/5.8}.
+
+\bibitem{dlmf-em}
+NIST Digital Library of Mathematical Functions, \S2.10,
+\emph{Sums and Sequences}, especially the Euler--Maclaurin formula.
+\url{https://dlmf.nist.gov/2.10}.
+
+\bibitem{coffey}
+M.~W.~Coffey, \emph{Series representations for the Stieltjes constants},
+Rocky Mountain Journal of Mathematics \textbf{44} (2014), 443--477;
+preprint arXiv:0905.1111 (2009).
+\url{https://arxiv.org/abs/0905.1111}.
+\end{thebibliography}
+\end{document}

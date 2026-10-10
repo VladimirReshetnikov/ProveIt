@@ -1,0 +1,650 @@
+% Contribution to the polylogarithms continuation.
+% Baseline: cc34f73596336f2466d9754cb0f3635bd2bedade.
+% Parent document supplies amsmath, amssymb, amsthm, theorem environments.
+\section{A uniform transition for two large reflected log-gamma exponents}
+\label{joint:sec:moments}
+
+Write
+\[
+ f(x)=\log\Gamma(x),\qquad
+ M_{n,m}=\int_0^1 f(x)^n f(1-x)^m\,dx,
+ \qquad n,m\in\mathbb Z_{\geq0}.
+\]
+The mixed integrals themselves are classical: they occur as
+$T_{n+m,n}$ in Amdeberhan et al.\ \cite[Section~5]{gaussian:ACEMKM}.
+The pinned manuscript proves a fixed-$m$ expansion, its late coefficients,
+and a sharp remainder at optimal truncation. It explicitly leaves the
+regime in which both exponents increase as a separate question.
+Here we resolve a transition inside that joint regime.
+
+For fixed $m$, the first endpoint term is
+\[
+ M_{n,m}\sim\frac{\gamma^m n!}{(m+1)^{n+1}}.
+\]
+When $m$ increases, its first neglected local perturbation has size
+$m\exp[-n/(m+1)]$. Thus it can survive in the limit even though the
+relevant endpoint $x$ tends to zero. The transition occurs around
+$n/m=\log m$. The theorem below gives its complete expansion, with
+explicit first and second corrections. In particular, it does not
+substitute a growing $m$ into a fixed-$m$ error estimate.
+
+\subsection{The transition theorem and its first two corrections}
+
+Define the exact constants
+\begin{align}
+ c&=\frac{\zeta(2)}{2\gamma},&
+ d&=\frac{\zeta(3)}{3\gamma}-\frac{c^2}{2},&
+ e&=\frac{\zeta(4)}{4\gamma}
+       -\frac{c\zeta(3)}{3\gamma}+\frac{c^3}{3},\label{joint:eq:constants1}\\
+ \delta&=c-\gamma,&
+ \varepsilon&=\gamma^2+d,&
+ \eta&=e+\frac{\gamma^3}{2}-\frac{\gamma^2\delta}{2}
+          +\frac{\gamma\delta^2}{2}-5\gamma\varepsilon.
+ \label{joint:eq:constants2}
+\end{align}
+In particular,
+\[
+ \delta=0.84767122475766887678\ldots,
+ \qquad
+ \varepsilon=0.01219631601207367653\ldots.
+\]
+The definitions, rather than these diagnostic decimals, specify the
+constants in all statements. Notice that $\delta>0$; for example,
+$\gamma<0.6$ and $\zeta(2)>1.6$ already suffice.
+
+\begin{theorem}[Uniform joint-exponent transition]\label{joint:thm:transition}
+Let
+\[
+ r=m+1,\qquad t=\frac{n+1}{m+1},\qquad
+ \lambda=me^{-t},\qquad
+ \mathcal R_{n,m}=\frac{(m+1)^{n+1}M_{n,m}}{\gamma^m n!}.
+\]
+Fix $0<a<b<\infty$. As $m\to\infty$, uniformly over positive
+integers $n$ for which $a\leq\lambda\leq b$,
+\begin{equation}\label{joint:eq:two-corrections}
+ \mathcal R_{n,m}
+ =e^{\delta\lambda}
+ \left\{1+\frac{P_1(t,\lambda)}m
+          +\frac{P_2(t,\lambda)}{m^2}
+          +O_{a,b}\left(\frac{t^3}{m^3}\right)\right\},
+\end{equation}
+where
+\begin{equation}\label{joint:eq:P1}
+ P_1(t,\lambda)=\frac{t}{2}\delta\lambda(1+\delta\lambda)
+                      -2\gamma\lambda+\varepsilon\lambda^2,
+\end{equation}
+and
+\begin{align}
+ P_2(t,\lambda)={}&
+ \lambda\left\{\frac{\delta t^2}{8}
+                    -\left(\gamma+\frac{5\delta}{6}\right)t\right\}
+ \notag\\
+ &+\lambda^2\left\{\frac{7\delta^2t^2}{8}
+        +\left(-3\gamma\delta-\frac{3\delta^2}{2}
+                        +2\varepsilon\right)t
+        +\frac{15\gamma^2}{2}+3\gamma\delta\right\}\notag\\
+ &+\lambda^3\left\{\frac{3\delta^3t^2}{4}
+        +\left(-\gamma\delta^2-\frac{\delta^3}{3}
+                           +\frac{5\delta\varepsilon}{2}\right)t
+        +\eta\right\}\notag\\
+ &+\lambda^4\left\{\frac{\delta^4t^2}{8}
+                    +\frac{\delta^2\varepsilon t}{2}
+                    +\frac{\varepsilon^2}{2}\right\}.
+ \label{joint:eq:P2}
+\end{align}
+More generally, for every fixed integer $J\geq0$, there are explicitly
+computable polynomials $P_0=1,P_1,\ldots,P_J$ such that
+\begin{equation}\label{joint:eq:all-orders}
+ \mathcal R_{n,m}=e^{\delta\lambda}
+ \left\{\sum_{\ell=0}^J\frac{P_\ell(t,\lambda)}{m^\ell}
+       +O_{a,b,J}\left(\frac{t^{J+1}}{m^{J+1}}\right)\right\}.
+\end{equation}
+They have degree at most $\ell$ in $t$ and at most $2\ell$ in
+$\lambda$, and
+\[
+ P_\ell\in
+ \mathbb Q[\gamma,\gamma^{-1},\zeta(2),\ldots,\zeta(\ell+2)]
+ [t,\lambda].
+\]
+The finite coefficient prescription in
+\eqref{joint:eq:polynomial-prescription} below determines every
+$P_\ell$.
+\end{theorem}
+
+Here $t=\log m-\log\lambda=\log m+O_{a,b}(1)$, so the displayed
+remainders are successive powers of $(\log m)/m$.
+
+\begin{corollary}[The surviving correction to the endpoint formula]
+\label{joint:cor:limit}
+If $m\to\infty$ and
+\[
+ \frac{n+1}{m+1}-\log m\longrightarrow s\in\mathbb R,
+\]
+then
+\begin{equation}\label{joint:eq:limit}
+ \frac{(m+1)^{n+1}M_{n,m}}{\gamma^m n!}
+ \longrightarrow
+ \exp\left[\left(\frac{\zeta(2)}{2\gamma}-\gamma\right)e^{-s}\right].
+\end{equation}
+In particular the fixed-$m$ leading term does not have uniform relative
+error $o(1)$ on this window. At $s=0$ its missing factor tends to
+$e^\delta=2.3342\ldots$.
+\end{corollary}
+\begin{proof}
+Use $\lambda\to e^{-s}$ in \eqref{joint:eq:all-orders} with $J=0$.
+The corrections tend to zero because $t/m\to0$.
+\end{proof}
+
+\subsection{Exact gamma averaging and localization at the correct endpoint}
+
+Put
+\[
+ g(x)=\log\Gamma(1+x),\qquad
+ B(x)=\log\Gamma(1-x),\qquad
+ C(x)=\frac{B(x)}{\gamma x},\quad C(0)=1.
+\]
+The classical convergent log-gamma expansion
+\cite[\S5.7]{joint:DLMF} gives
+\begin{align}
+ g(x)&=-\gamma x+\frac{\zeta(2)}2x^2
+                         -\frac{\zeta(3)}3x^3+O(x^4),\notag\\
+ \log C(x)&=cx+dx^2+ex^3+O(x^4).
+ \label{joint:eq:local-series}
+\end{align}
+All these germs are holomorphic in a fixed disk about zero.
+For $0<x<1$, log-convexity of $\Gamma$ between $1$ and $2$ implies
+\begin{equation}\label{joint:eq:elementary-envelopes}
+ 0<f(x)\leq-\log x,\qquad
+ 0<B(x)\leq-\log(1-x).
+\end{equation}
+After $x=e^{-y}$, the normalized integral is the exact expectation
+\begin{equation}\label{joint:eq:expectation}
+ \mathcal R_{n,m}=\mathbb E e^{S(Y)},\qquad
+ S(y)=n\log\left(1+\frac{g(e^{-y})}{y}\right)
+                         +m\log C(e^{-y}),
+\end{equation}
+where $Y$ has a gamma distribution with shape $q=n+1=rt$ and rate
+$r=m+1$. Thus
+\[
+ \mathbb EY=t,\qquad
+ \operatorname{Var}Y=\frac tr.
+\]
+The powers and logarithms in \eqref{joint:eq:expectation} are real,
+since the original factors are positive.
+
+\begin{lemma}[Uniform localization]\label{joint:lem:localization}
+Under the compact-$\lambda$ hypotheses of
+Theorem~\ref{joint:thm:transition}, there is $\kappa>0$ such that
+\begin{equation}\label{joint:eq:localization}
+ \mathbb E\left[e^{S(Y)}\mathbf1_{|Y-t|>1}\right]
+       =O_{a,b}\left(e^{-\kappa m/t}\right).
+\end{equation}
+The same estimate holds with $e^{S(Y)}$ replaced by any fixed power
+of $|Y-t|$. In particular, the endpoint $x\to1$, corresponding to
+$y\to0$, is negligible on the normalization used in the theorem.
+\end{lemma}
+\begin{proof}
+The first summand of $S(y)$ is nonpositive by
+\eqref{joint:eq:elementary-envelopes}. Analyticity of $C$ and $C(0)=1$
+give a constant $K$ such that
+\[
+ e^{S(y)}\leq\exp(Kme^{-y})\qquad(y\geq1).
+\]
+For $y\geq t+1$ this weight is uniformly bounded, and the gamma
+Chernoff bound gives a tail $O(e^{-\kappa m/t})$.
+For example the gamma rate function is $I(u)=u-1-\log u$, and
+$rt I(1+1/t)\geq r/(3t)$ for all sufficiently large $t$.
+
+For the lower tail, let $p(y)$ denote the gamma density and put
+$v=t-y$. When $1\leq y\leq t-1$, we have
+\[
+ \frac{p(t-v)}{p(t)}
+  =\exp\{(rt-1)\log(1-v/t)+rv\}
+  \leq t\exp\left(-\frac{rv^2}{2t}\right).
+\]
+Here $1\leq v\leq t-1$, and $me^{-(t-v)}=\lambda e^v$.
+The maximum of $e^v/v^2$ on this interval is at one of its endpoints;
+consequently
+\[
+ K\lambda e^v\leq\frac{rv^2}{4t}
+ \qquad(1\leq v\leq t-1)
+\]
+for all sufficiently large $m$, uniformly in $a\leq\lambda\leq b$.
+Indeed the two required bounds reduce to $O(1)\leq r/(4t)$ and
+$O(m/t^2)\leq r/(4t)$. It follows that the weighted lower-tail
+integral over $[1,t-1]$ is at most
+\[
+ p(t)t^2e^{-r/(4t)}.
+\]
+Stirling's inequalities give $p(t)=O(\sqrt{r/t})$; the polynomial
+factor is absorbed by slightly reducing $\kappa$.
+
+It remains to bound $0<y<1$. Since $1-e^{-y}\geq y/e$ there,
+\[
+ B(e^{-y})\leq1-\log y,
+ \qquad (1-\log y)^m\leq y^{-m}.
+\]
+Using $f(e^{-y})\leq y$ in the original normalized integral bounds
+this part by
+\begin{equation}\label{joint:eq:opposite-endpoint}
+ \frac{r^{n+1}}{\gamma^m n!}
+ \int_0^1 y^n(1-\log y)^m\,dy
+ \leq\frac{r^{n+1}}{\gamma^m n!(n-m+1)}.
+\end{equation}
+Since $n+1=rt$ and $t=\log m+O(1)$, the logarithm of this bound is
+\[
+ rt(1-\log t)+O(m+\log n),
+\]
+which is smaller than $-\kappa m/t$ for large $m$.
+This also shows directly why the other endpoint cannot compete.
+The unweighted gamma estimates, with polynomial factors, follow by
+the same density estimates or by Chernoff's inequality with a
+slightly smaller exponent.
+\end{proof}
+
+\subsection{Derivation of the first two corrections}
+
+Write $U=Y-t$. On $|U|\leq1$, set $x=(\lambda/m)e^{-U}$ and use
+\eqref{joint:eq:local-series}. Uniformly there, together with every
+fixed number of $U$-derivatives,
+\begin{equation}\label{joint:eq:S-expansion}
+ S(t+U)=S_0(U)+\frac{S_1(U)}m+\frac{S_2(U)}{m^2}+O(m^{-3}),
+\end{equation}
+where
+\begin{align}
+ S_0(U)&=\lambda e^{-U}
+       \left(c-\frac{\gamma t}{t+U}\right),\notag\\
+ S_1(U)&=-\frac{\gamma\lambda e^{-U}(t-1)}{t+U}
+  +\lambda^2e^{-2U}
+       \left(d+\frac{\gamma ct}{t+U}
+                   -\frac{\gamma^2t}{2(t+U)^2}\right),\notag\\
+ S_2(U)&=\lambda^2e^{-2U}(t-1)
+       \left(\frac{\gamma c}{t+U}
+                    -\frac{\gamma^2}{2(t+U)^2}\right)\notag\\
+ &\quad+\lambda^3e^{-3U}
+       \left(e-\frac{\gamma t(d+c^2/2)}{t+U}
+          +\frac{\gamma^2ct}{(t+U)^2}
+          -\frac{\gamma^3t}{3(t+U)^3}\right).
+ \label{joint:eq:S012}
+\end{align}
+The remainders are uniform because $t/(t+U)$ is bounded,
+$x=O(m^{-1})$, and $n=O(mt)$. The displayed amplitudes and all their
+fixed-order derivatives are uniformly bounded.
+
+The central gamma moments needed for the first correction are
+\[
+ \mathbb EU=0,\qquad
+ \mathbb EU^2=\frac tr,\qquad
+ \mathbb EU^3=\frac{2t}{r^2},\qquad
+ \mathbb EU^4=\frac{3t^2}{r^2}+\frac{6t}{r^3}.
+\]
+In particular, for a smooth amplitude $H$ whose first four derivatives
+are uniformly bounded on $[-1,1]$, Taylor expansion through the cubic
+term, followed by the localization lemma, gives
+\[
+ \mathbb EH(U)=H(0)+\frac{t}{2m}H''(0)
+                        +O(t^2/m^2).
+\]
+This notation means that $H$ is averaged on the localized interval;
+any uniformly bounded extension outside is immaterial up to the
+exponentially small error already bounded. The signed third moment is used: an absolute
+third-moment estimate would only give an error of order
+$(t/m)^{3/2}$.
+
+Since $S_0(0)=\delta\lambda$, the first normalized correction equals
+\[
+ S_1(0)+\frac t2\bigl(S_0''(0)+S_0'(0)^2\bigr).
+\]
+The derivatives are
+\[
+ S_0'(0)=\lambda\left(-\delta+\frac\gamma t\right),\qquad
+ S_0''(0)=\lambda\left(\delta-\frac{2\gamma}t
+                                   -\frac{2\gamma}{t^2}\right).
+\]
+Substitution gives \eqref{joint:eq:P1}. The terms involving $1/t$
+cancel exactly; this is an algebraic cancellation, not an additional
+large-$t$ approximation.
+
+For an independently reproducible second-order calculation, define
+\[
+ a_j=S_0^{(j)}(0)\quad(1\leq j\leq4),\qquad
+ b_j=S_1^{(j)}(0)\quad(0\leq j\leq2).
+\]
+Then the second correction is exactly
+\begin{align}
+ P_2={}&S_2(0)+\frac{b_0^2}{2}
+       -\frac t2(a_2+a_1^2)\notag\\
+ &+\frac t2\{b_2+2a_1b_1+(a_2+a_1^2)b_0\}\notag\\
+ &+\frac t3(a_3+3a_1a_2+a_1^3)\notag\\
+ &+\frac{t^2}{8}
+     (a_4+4a_1a_3+3a_2^2+6a_1^2a_2+a_1^4).
+ \label{joint:eq:P2-derivative}
+\end{align}
+Expanding this finite formula gives \eqref{joint:eq:P2}.
+To justify the remainder, Taylor-expand the leading amplitude through
+degree five and bound its degree-six remainder. The central moments
+satisfy
+\[
+ \mathbb EU^5=\frac{20t^2}{r^3}+\frac{24t}{r^4},\qquad
+ \mathbb EU^6=\frac{15t^3}{r^3}+\frac{130t^2}{r^4}
+                                  +\frac{120t}{r^5}.
+\]
+Use also
+$\mathbb EU^2=t/m-t/m^2+O(t/m^3)$ and
+$\mathbb EU^3=2t/m^2+O(t/m^3)$.
+The $m^{-1}$ amplitude needs Taylor terms only through degree three,
+and the $m^{-2}$ amplitude only through degree one with a quadratic
+remainder. All omitted terms are $O(t^3/m^3)$.
+This proves \eqref{joint:eq:two-corrections} with its claimed uniformity.
+
+\subsection{Exact offset-residue identities and a finite all-order recipe}
+
+For comparison with the fixed-$m$ manuscript, retain its coefficients
+\[
+ A_{k,m}=\frac1k[x^{k-1}]\Gamma(1+x)^kB(x)^m.
+\]
+Set
+\[
+ H(x)=g(x)+\log C(x)=\sum_{j\geq1}h_jx^j,
+ \qquad g(x)=\sum_{j\geq1}g_jx^j.
+\]
+Then
+\[
+ h_1=\delta,\quad h_2=d+\gamma c,\quad
+ h_3=e-\gamma(d+c^2/2),\qquad g_1=-\gamma.
+\]
+
+\begin{proposition}[Exact polynomial structure at every fixed offset]
+\label{joint:prop:offset}
+For $j,m\geq0$,
+\begin{equation}\label{joint:eq:offset-identity}
+ Q_j(m):=\frac{(m+j+1)A_{m+j+1,m}}{\gamma^m}
+       =[x^j]\exp\{mH(x)+(j+1)g(x)\}.
+\end{equation}
+In particular $Q_j$ is a polynomial in $m$ of degree $j$, with
+leading coefficient $\delta^j/j!$. Its first two terms, for $j\geq2$,
+are
+\begin{equation}\label{joint:eq:offset-leading}
+ Q_j(m)=\frac{\delta^j}{j!}m^j
+ +\left\{\frac{h_2\delta^{j-2}}{(j-2)!}
+       -\frac{\gamma(j+1)\delta^{j-1}}{(j-1)!}\right\}m^{j-1}
+ +O_j(m^{j-2}).
+\end{equation}
+For $j=0,1$ the identity gives respectively
+$Q_0=1$ and $Q_1=m\delta-2\gamma$.
+\end{proposition}
+\begin{proof}
+Write $B(x)^m=(\gamma x)^mC(x)^m$ in the coefficient formula
+and use $m+j+1=m+(j+1)$. This gives
+\eqref{joint:eq:offset-identity} exactly.
+Each factor of $m$ in the exponential consumes at least one degree
+of $x$, proving the degree assertion. The degree-$j$ term uses only
+$h_1x$. The degree-$(j-1)$ term either uses $h_2x^2$ once or
+$(j+1)g_1x$ once. These are precisely
+\eqref{joint:eq:offset-leading}.
+\end{proof}
+
+The same identity provides a finite prescription for every correction
+in Theorem~\ref{joint:thm:transition}. Let $z,w$ be formal variables and
+put, for $j\geq0$,
+\begin{align*}
+ \Theta_j(z,t)
+ &=t\sum_{r\geq1}\frac{(-1)^{r+1}j^{r+1}}{r+1}
+                                  \left(\frac z{1+z}\right)^r,\\
+ K_j(z,w)
+ &=\exp\left\{\delta w+
+      \sum_{r\geq1}z^r
+        \bigl(h_{r+1}w^{r+1}+(j+1)g_rw^r\bigr)\right\}.
+\end{align*}
+Then
+\begin{equation}\label{joint:eq:polynomial-prescription}
+ \boxed{\displaystyle
+ P_\ell(t,\lambda)=e^{-\delta\lambda}[z^\ell]
+   \sum_{j\geq0}\lambda^j e^{\Theta_j(z,t)}[w^j]K_j(z,w).}
+\end{equation}
+Coefficient extraction in $z$ is performed before summing the
+resulting entire series in $\lambda$. This is essential: no convergence
+of the original infinite pole expansion is asserted.
+
+\paragraph{Why the prescription is finite.}
+At order $z^\ell$, only $h_1,\ldots,h_{\ell+1}$ and
+$g_1,\ldots,g_\ell$ can occur. Every summand is a finite linear
+combination of
+\[
+ j^p\frac{\delta^{j-d}}{(j-d)!}\lambda^j,
+\]
+with the expression understood to be zero for $j<d$.
+Their sums are obtained by applying powers of
+$D_\lambda=\lambda\,d/d\lambda$ to
+$\lambda^d e^{\delta\lambda}$.
+A term of cost $z^r$ in either exponential has total $j$-degree plus
+$w$-degree at most $2r$. Therefore
+$\deg_\lambda P_\ell\leq2\ell$; also
+$\deg_tP_\ell\leq\ell$. The coefficients lie in the ring stated in
+the theorem, since $h_{\ell+1}$ uses zeta values only through
+$\zeta(\ell+2)$.
+
+\begin{corollary}[Two coefficient identities at every asymptotic order]
+\label{joint:cor:top-coefficients}
+Let $T_k(u)=e^{-u}(u\,d/du)^ke^u$ be the Touchard polynomial,
+equivalently $T_k(u)=\sum_{j=0}^k\genfrac{\{}{\}}{0pt}{}{k}{j}u^j$. Then
+\begin{align}
+ [t^\ell]P_\ell(t,\lambda)
+   &=\frac{T_{2\ell}(\delta\lambda)}{2^\ell\ell!},\label{joint:eq:top-t}\\
+ [\lambda^{2\ell}]P_\ell(t,\lambda)
+   &=\frac1{\ell!}
+           \left(\varepsilon+\frac{\delta^2t}{2}\right)^\ell.
+ \label{joint:eq:top-lambda}
+\end{align}
+These are exact finite polynomial identities, for every $\ell\geq0$.
+\end{corollary}
+\begin{proof}
+The highest possible power $t^\ell z^\ell$ in
+\eqref{joint:eq:polynomial-prescription} comes only from the $\ell$th
+power of $tzj^2/2$. Summing $j^{2\ell}\lambda^j\delta^j/j!$
+gives \eqref{joint:eq:top-t}.
+For the second assertion, every exponent term of order $z^r$ with
+$r\geq2$ has total $j$-degree plus $w$-degree at most $r+1<2r$.
+Therefore the degree $2\ell$ in $\lambda$ comes only from the
+$\ell$th power of
+\[
+ h_2w^2+(j+1)g_1w+\frac t2j^2.
+\]
+At the highest degree, the summation rule replaces a monomial
+$w^dj^p$ by $\delta^p\lambda^{d+p}$.
+The resulting coefficient is
+$(h_2+g_1\delta+t\delta^2/2)^\ell/\ell!$.
+Since $h_2+g_1\delta=\varepsilon$, this is
+\eqref{joint:eq:top-lambda}.
+\end{proof}
+
+\paragraph{Why these are the analytic asymptotic coefficients.}
+The localization proof and \eqref{joint:eq:S-expansion} extend to any
+fixed order. All local amplitudes have bounded derivatives of every
+fixed order. The centered gamma cumulants are
+\[
+ \kappa_j(U)=(j-1)!\frac{t}{r^{j-1}}\quad(j\geq2),\qquad\kappa_1(U)=0.
+\]
+Consequently, Taylor expansion through degree $2J+1$, with its
+$2J+2$ remainder, yields \eqref{joint:eq:all-orders} initially with
+coefficients that are $e^{\delta\lambda}$ times polynomials in
+$\lambda,t,t^{-1}$. The moment--cumulant formula shows that each
+omitted contribution is $O(t^{J+1}m^{-J-1})$. The signed odd moments
+are again used.
+
+To identify these coefficients without retaining spurious negative
+powers of $t$, introduce the auxiliary holomorphic family
+\[
+ \mathcal R(\xi)=\frac{r^{n+1}}{n!}
+   \int_0^\infty
+      \bigl(y+g(\xi e^{-y})\bigr)^n C(\xi e^{-y})^m e^{-ry}\,dy.
+\]
+At $\xi=1$ this is the original normalized integral. Choose a fixed
+$a_0>0$ small enough that $g$ and $C$ are holomorphic on a
+neighborhood of $|x|\leq a_0$. For $|\xi|\leq a_0$ the displayed
+family is holomorphic; the exponents $n,m$ are integers, so zeros
+of the factors introduce no branch choices.
+
+The local expansion is uniform on that complex $\xi$-disk, with
+$\xi\lambda$ replacing $\lambda$. Here is the necessary tail check,
+since positivity cannot be used for complex $\xi$. For $y\geq1$,
+\[
+ \left|1+\frac{g(\xi e^{-y})}{y}\right|^n
+       |C(\xi e^{-y})|^m
+ \leq\exp\left(Kme^{-y}+Kne^{-y}/y\right).
+\]
+On $y\geq t/2$ this is bounded by $\exp(K'me^{-y})$, so the
+previous density argument applies. On $Y_0\leq y\leq t/2$,
+choose the fixed $Y_0$ sufficiently large: the last exponent is
+then at most $rt/16$, whereas the gamma density has a deficit of
+at least $rt/8$. On $0\leq y\leq Y_0$, bound the original
+integrand's two analytic factors by $L^nK_0^m$, with fixed
+$L,K_0$. After multiplication by $r^{n+1}/n!$, its logarithm is
+$rt(1-\log t+\log L)+O(m+\log n)$, again negligible.
+Thus the all-order remainders are uniform for $|\xi|\leq a_0$.
+Cauchy's coefficient formula consequently permits extraction of any
+fixed coefficient of $\xi^j$ from those finite asymptotic expansions.
+
+For such a fixed $j$, take $n\geq j$, which holds eventually in
+our regime. The binomial expansion is finite, and the elementary
+integral
+\[
+ \binom nh\frac{r^{n+1}}{n!}
+ \int_0^\infty y^{n-h}e^{-(r+j)y}\,dy
+ =\frac1{h!}\left(\frac r{r+j}\right)^{n+1}(r+j)^h
+\]
+shows that the exact $\xi^j$ coefficient is
+\begin{equation}\label{joint:eq:coefficient-integration}
+ [\xi^j]\mathcal R(\xi)
+   =\left(\frac r{r+j}\right)^{n+1}Q_j(m).
+\end{equation}
+The restriction $n\geq j$ ensures that every power of $g$ that can
+contribute is present in the finite binomial expansion.
+These operations concern a fixed Taylor coefficient; no divergent
+infinite sum is integrated.
+
+Now set $z=1/m$. The exact identities
+\[
+ z^jQ_j(1/z)=[w^j]K_j(z,w),\qquad
+ e^{jt}\left(\frac r{r+j}\right)^{rt}=e^{\Theta_j(z,t)}
+\]
+show that the expansion of \eqref{joint:eq:coefficient-integration}
+is exactly the $j$th coefficient in
+\eqref{joint:eq:polynomial-prescription}, with $\xi\lambda$ in place
+of $\lambda$. Compare successive powers of $m^{-1}$.
+Their coefficient functions are Laurent polynomials in $t$;
+a nonzero such function cannot be absorbed by an extra factor
+$m^{-1}$ when $t=\log m+O(1)$. Thus uniqueness identifies every
+fixed $\xi^j$ coefficient at every fixed asymptotic order.
+The local coefficient functions are entire in $\xi\lambda$:
+they are an exponential $e^{\delta\xi\lambda}$ times a polynomial
+in $\xi\lambda$. Equality of all their Taylor coefficients identifies
+them as entire functions, permitting evaluation at $\xi=1$ without
+requiring analytic continuation of the full auxiliary integral to
+that point. This proves the finite recipe and the cancellation of
+every negative power of $t$.
+It completes the all-order part of the theorem.
+
+\paragraph{An independent derivation of $P_1$ and $P_2$.}
+Let $E=e^{\delta\lambda}$, and write $D=\lambda\,d/d\lambda$.
+The first two subleading offset-residue sums are
+\begin{align*}
+ T_1={}&h_2\lambda^2E+g_1(D+1)(\lambda E),\\
+ T_2={}&h_3\lambda^3E+\frac{h_2^2}{2}\lambda^4E
+   +g_2(D+1)(\lambda^2E)
+   +g_1h_2(D+1)(\lambda^3E)
+   +\frac{g_1^2}{2}(D+1)^2(\lambda^2E).
+\end{align*}
+Formula \eqref{joint:eq:polynomial-prescription} yields
+\begin{align*}
+ EP_1&=T_1+\frac t2D^2E,\\
+ EP_2&=T_2+\frac t2D^2T_1
+       +\left(-\frac t2D^2-\frac t3D^3+\frac{t^2}{8}D^4\right)E.
+\end{align*}
+These give exactly \eqref{joint:eq:P1}--\eqref{joint:eq:P2}; the
+accompanying exact symbolic verifier checks agreement with the
+independent gamma-moment derivative calculation.
+
+\subsection{Numerical diagnostics and the scope of the advance}
+
+The script \texttt{verify\_joint\_moments.py} evaluates the defining
+integral after $x=e^{-y}$ and then centers and standardizes $y$ using
+the gamma mean and variance. It does not evaluate a residue expansion.
+It compares the leading transition function, one correction, and two
+corrections at three offsets $s=-1,0,1$ and several increasing $m$.
+The two integration-window choices are also compared.
+These high-precision checks are diagnostics, not interval certificates;
+the localization argument and Taylor remainders are the proof.
+
+For a compact example, define
+$A_J=e^{\delta\lambda}\sum_{\ell=0}^JP_\ell(t,\lambda)/m^\ell$.
+The following entries use
+$n=\operatorname{round}((m+1)\log m-1)$ and the exact $t,\lambda$
+from the theorem. All displayed decimals are rounded numerical
+approximations, including the errors.
+\begin{center}
+\begin{tabular}{rrrcc}
+\hline
+$m$ & $n$ & $\mathcal R_{n,m}$ & $|\mathcal R_{n,m}-A_1|/\mathcal R_{n,m}$
+   & $|\mathcal R_{n,m}-A_2|/\mathcal R_{n,m}$\\
+\hline
+100 & 464 & 2.3971135731 & $1.1853\times10^{-3}$ & $1.1477\times10^{-4}$\\
+300 & 1716 & 2.3595250117 & $2.3130\times10^{-4}$ & $8.0445\times10^{-6}$\\
+1000 & 6914 & 2.3435725531 & $3.4368\times10^{-5}$ & $4.1120\times10^{-7}$\\
+3000 & 24026 & 2.3382795613 & $5.5591\times10^{-6}$ & $2.5343\times10^{-8}$\\
+\hline
+\end{tabular}
+\end{center}
+The calculation uses 80 decimal digits. Across all 15 cases in the
+JSON data, changing the integration window from 25 to 30 standard
+deviations changed the result by at most $6.3\times10^{-63}$.
+That comparison is a reproducibility check, not a rigorous bound
+for the quadrature error or an additional proof of the theorem.
+
+The regime in this theorem is asymmetric: $n\sim m\log m$, with
+$n$ the larger exponent. Symmetry supplies the corresponding result
+when the roles of $n$ and $m$ are exchanged. Section~\ref{gs:sec:main} treats the complementary proportional regime
+$n/m\to c\in(0,\infty)$, proving a unique nondegenerate interior saddle.
+Neither compact-parameter theorem by itself provides a
+uniform sharp-truncation result when the reflected exponent grows
+on the inverse-gamma least-term scale.
+
+\paragraph{Editorial correction to the research status.}
+The pinned fixed-$m$ statements remain valid. Their warnings against
+substituting a growing $m$ are necessary, as
+\eqref{joint:eq:limit} demonstrates quantitatively. After integration
+of this contribution, the open problem should be narrowed from
+``the simultaneous large-exponent problem'' to uniform bridges beyond compact
+$m\exp[-(n+1)/(m+1)]$ and compact proportional ratios,
+using also Theorem~\ref{gs:thm:proportional}. No contradiction to an existing theorem is
+claimed.
+
+\subsection{Further research questions}
+
+\begin{enumerate}
+\item Prove a uniform continuation of the transition when
+$\lambda=me^{-t}$ also tends to zero or infinity. The compact-$\lambda$
+proof identifies its expansion but does not give useful relative
+bounds once the polynomials in $\lambda$ grow with $m$.
+\item Replace the finite interval certificate in
+Theorem~\ref{gs:thm:monotonicity} by a direct analytic inequality,
+and determine the best global lower bound for the logarithmic
+slope ratio. The proportional-saddle uniqueness question itself
+is settled in the next section.
+\item Build a uniform approximation joining the interior saddle to
+$x\asymp1/m$. The present theorem supplies the boundary value that
+such an approximation must reproduce.
+\item Study the large-$\ell$ behavior of the explicitly computable
+$P_\ell$. Does their growth lead to a useful optimal-truncation law
+inside this transition, and how does it interact with the already
+proved inverse-gamma late coefficients at fixed $m$?
+\item Determine the maximal growth of $m$ for which the manuscript's
+half-first-omitted-term law remains uniform. The local amplitude
+$B(-\tau)^m$ changes the saddle when $m$ grows, so a fixed-amplitude
+argument is insufficient.
+\item Extend the exact polynomial recipe to other analytic endpoint
+pairs $f(x)=-\log x+g(x)$ and $B(x)=b_1x+O(x^2)$. The leading
+transition constant is suggested by $g_1+b_2/b_1$; a general theorem
+should state explicit global endpoint hypotheses, not only a formal
+local series.
+\end{enumerate}

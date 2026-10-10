@@ -1,0 +1,88 @@
+{
+  "all_checks_passed": true,
+  "created_utc": "2026-10-10T03:35:43.319781+00:00",
+  "python": "3.12.14",
+  "sympy": "1.14.0",
+  "mpmath": "1.3.0",
+  "long_numerical_diagnostics_replayed": false,
+  "checks": [
+    {
+      "check": "Harmonic inverse by exact forward compilation",
+      "script": "harmonic/compile_inverse.py",
+      "passed": true,
+      "seconds": 0.501,
+      "stdout_sha256": "30e34985c5341bd845d0103829b67511a3fb080f45851ec033029969c391bdef"
+    },
+    {
+      "check": "Independent shifted-gamma inverse derivation",
+      "script": "gaussian/audit_inverse_q1.py",
+      "passed": true,
+      "seconds": 0.59,
+      "stdout_sha256": "fd6fd1ca789293133ebac2ea90ac6f3a38a895962b014f74719a72dd107798dc"
+    },
+    {
+      "check": "Moment corrections from centered gamma moments",
+      "script": "moments/derive_correction.py",
+      "passed": true,
+      "seconds": 0.898,
+      "stdout_sha256": "b3fd9368323031d6d66ff962764457e6b48bd21d6ae76730ff9111580d64baec"
+    },
+    {
+      "check": "Moment corrections from finite offset residues",
+      "script": "moments/verify_residue_polynomials.py",
+      "passed": true,
+      "seconds": 1.183,
+      "stdout_sha256": "336fc96a30136ad1b9efca7bd26776ba4d4cda0eb447288064d5437e3519a7d2"
+    },
+    {
+      "check": "All-order moment generator through order three",
+      "script": "moments/generate_transition_polynomials.py",
+      "passed": true,
+      "seconds": 0.496,
+      "stdout_sha256": "10023727096a62ada375c142ef3bc1ce91705c816a5d5d271462b534bb4d4db9"
+    },
+    {
+      "check": "Exact rational interval proof of reflected slope monotonicity",
+      "script": "moments/certify_gamma_saddle.py",
+      "passed": true,
+      "seconds": 0.439,
+      "stdout_sha256": "732a45ce37dd3f7771e7756798c3478f68c3076ded98bbc6b5819bdde9002fc2"
+    },
+    {
+      "check": "Integral grid, determinant, resolution, and Smith checks",
+      "script": "distribution/verify_integral_distribution.py",
+      "passed": true,
+      "seconds": 4.691,
+      "stdout_sha256": "0b564339949ee6ebfa20e70f992c0eb7cd1115e1cd5d68797c2f585249fc5820"
+    },
+    {
+      "check": "Exact equivalence of the two S6 conjectures",
+      "script": "gaussian/verify_s6_equivalence.py",
+      "passed": true,
+      "seconds": 0.022,
+      "stdout_sha256": "e2b997e02e9689e198bb457cf5ec628d3bef660d5a30ab14df54a7d17a22cf2a"
+    }
+  ],
+  "script_sha256": {
+    "code/distribution/integral_distribution.py": "d0b84746a82d7dbe484929f51068cb66f455e9bd072162b368b1426b41f4ea4b",
+    "code/distribution/verify_integral_distribution.py": "46e6ad76a54693ceec7d5035dbb40d2ec1c48fdd00c94f98767b5fe229ba66f3",
+    "code/gaussian/audit_inverse_q1.py": "4e1f31946dcb2857ff2c0321b9cdf14c8e53b9b737405db0a911c13ec87e53e8",
+    "code/gaussian/verify_s6_equivalence.py": "27ecc2b3a9955d7a89acd049dcc071fbe4afc8b2d23021b185b9eb0f6eb85f9f",
+    "code/harmonic/compile_inverse.py": "09c564ef32964d6c4d51f10e6fb40d7c287b55d0a4258dcb4d4a3b68419a0f89",
+    "code/harmonic/diagnostics.py": "4df4d71cf304f3dd10b38c6694d3d8466a2f603d80bdd8c359a4910ef072aad3",
+    "code/moments/certify_gamma_saddle.py": "584afa93ebfe1f7d5dd51ac23693aa147b051303d81342419f4fb00446c1539d",
+    "code/moments/derive_correction.py": "bce1ac57d123e6d949ba2cd55b5617f6d6645ae7862f1f31ec9ce51328b0e524",
+    "code/moments/generate_transition_polynomials.py": "f7f00f9d4280975343180c139ad7598b412e61c55920ecdd83b77029047c8609",
+    "code/moments/verify_joint_moments.py": "863e3528a7f37fab045c218fa8454247a3e68cde6aa57e47c7459be12563e777",
+    "code/moments/verify_residue_polynomials.py": "bb42b10114cbae9ff6cfb6c6cc6a22b2b67252fc306035b723dc20a5a8ee07ca",
+    "code/plot_diagnostics.py": "d4d0ab38d34932a988158a6ae4c3b05c02c348d3e47ebb10d3a48dc07bdbb2dd"
+  },
+  "distribution_counts": {
+    "symbolic_grid_levels": 59,
+    "integral_determinant_levels": 19,
+    "finite_characteristic_resolution_checks": 112,
+    "complete_two_prime_smith_checks": 504
+  },
+  "gamma_slope_minimum_certified_lower_bound": "2237344070433247164830307425599/1267650600228229401496703205376",
+  "scope": "Exact finite verification supplements article proofs. S6 itself remains conjectural."
+}

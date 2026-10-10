@@ -1,0 +1,347 @@
+\section{A certified unique saddle for every proportional reflected moment}
+\label{gs:sec:main}
+
+Put
+\[
+ f(x)=\log\Gamma(x),\qquad F(x)=-\psi(x),\qquad P(x)=\psi_1(x)
+ \qquad(0<x<1).
+\]
+All three functions are strictly positive. The local log-gamma series
+used below is classical; the new assertion here is the global
+monotonicity inequality, with its explicit exact certificate, and its
+application to the proportional moment regime. The monotonicity proof
+is \emph{computer assisted}: elementary analysis controls both endpoints,
+and a finite rational interval certificate controls the compact middle.
+It uses no numerical sampling, floating-point special functions, or
+unproved decimal values as a proof step. We prove the reflected-ratio
+inequality directly; no priority claim is made for this inequality or
+its symmetric special case.
+
+Ordinary convexity of $f$ does not furnish a shortcut. For example,
+the positive decreasing convex function $f_*(x)=x^{-2}-1$ has the
+analogous ratio $J_*(x)=(2-x)/(1+x)$, which decreases strictly.
+Moreover $\log\log\Gamma(x)$ is convex sufficiently near zero, so
+global logarithmic concavity is unavailable here. The argument must
+use more of the structure of the gamma function.
+
+\begin{theorem}[Certified global log-gamma slope ratio]
+\label{gs:thm:monotonicity}
+Define
+\[
+ J(x)=\frac{F(x)f(1-x)}{F(1-x)f(x)}.
+\]
+Then $J$ is a strictly increasing real-analytic bijection from $(0,1)$
+onto $(0,\infty)$. More quantitatively,
+\begin{equation}\label{gs:eq:global-derivative}
+ \frac{J'(x)}{J(x)}>\frac{176}{225}\qquad(0<x<1).
+\end{equation}
+Also $J(1-x)=J(x)^{-1}$, $J(1/2)=1$, and
+$J(x)\sim1/\log(1/x)$ as $x\downarrow0$.
+\end{theorem}
+
+\subsection{Elementary endpoint proof}
+
+Differentiating the displayed definition gives
+\begin{equation}\label{gs:eq:H}
+ \mathcal H(x):=\frac{J'(x)}{J(x)}
+ =\frac{F(x)}{f(x)}+\frac{F(1-x)}{f(1-x)}
+  -\frac{P(x)}{F(x)}-\frac{P(1-x)}{F(1-x)}.
+\end{equation}
+In particular $\mathcal H(1-x)=\mathcal H(x)$.
+The familiar convergent expansions \cite[\S5.7]{joint:DLMF}, valid
+for $|x|<1$ with the indicated real logarithm for $x>0$, are
+\begin{align}
+ f(x)&=-\log x-\gamma x+
+               \sum_{n\ge2}\frac{(-1)^n\zeta(n)}n x^n,\notag\\
+ f(1-x)&=\gamma x+\sum_{n\ge2}\frac{\zeta(n)}n x^n,\notag\\
+ F(x)&=\frac1x+\gamma+
+               \sum_{n\ge2}(-1)^{n-1}\zeta(n)x^{n-1},\notag\\
+ F(1-x)&=\gamma+\sum_{n\ge2}\zeta(n)x^{n-1},\notag\\
+ P(x)&=\frac1{x^2}+\sum_{n\ge2}(-1)^n(n-1)\zeta(n)x^{n-2},\notag\\
+ P(1-x)&=\sum_{n\ge2}(n-1)\zeta(n)x^{n-2}.
+ \label{gs:eq:series}
+\end{align}
+The differentiated series converge uniformly on every smaller closed
+disk. Only the elementary bounds $1/2<\gamma<3/5$ and
+$\zeta(n)\le\zeta(2)<2$ are needed in the endpoint argument; the
+certificate below also independently encloses these constants.
+
+For $0<x\le1/16$, rewrite \eqref{gs:eq:H} as
+\[
+ \mathcal H(x)=\frac{F(x)}{f(x)}-\frac{P(1-x)}{F(1-x)}
+ +\left(\frac{F(1-x)}{f(1-x)}-\frac1x\right)
+ +\left(\frac1x-\frac{P(x)}{F(x)}\right).
+\]
+Both parenthesized terms are nonnegative. For the first,
+\[
+ xF(1-x)-f(1-x)
+ =\sum_{n\ge2}\frac{n-1}{n}\zeta(n)x^n>0.
+\]
+For the second, the convergent series yields
+\begin{align*}
+ F(x)-xP(x)
+ &=\gamma+\sum_{k\ge1}(-1)^k(k+1)\zeta(k+1)x^k\\
+ &>\frac12-2\bigl((1-x)^{-2}-1\bigr)
+ \ge\frac12-\frac{62}{225}=\frac{101}{450}>0.
+\end{align*}
+Also
+\[
+ F(x)>\frac1x+\frac12-\frac{2x}{1-x}>\frac1x.
+\]
+Log-convexity of $\Gamma$ between one and two gives
+$0<f(x)\le-\log x$. Since $x\log(1/x)$ increases on $(0,1/16]$
+and $\log16<3$, it follows that
+\[
+ \frac{F(x)}{f(x)}>\frac1{x\log(1/x)}>\frac{16}{3}.
+\]
+The inequality $\log16<3$ follows, for example, from the strict
+trapezoidal upper bound $\log2<3/4$ for the integral of $1/t$ on
+$[1,2]$. Finally,
+\[
+ \frac{P(1-x)}{F(1-x)}
+ <\frac{4}{(1-x)^2}\le\frac{1024}{225}.
+\]
+Combining the four bounds proves
+$\mathcal H(x)>16/3-1024/225=176/225$ on $(0,1/16]$.
+Reflection proves the same bound on $[15/16,1)$.
+
+\subsection{The compact interval certificate}
+
+\begin{lemma}[Exact finite compact certificate]\label{gs:lem:certificate}
+For every $x\in[1/16,1/2]$,
+\[
+ \mathcal H(x)>\frac74.
+\]
+\end{lemma}
+
+\begin{proof}[Proof by a finite rational certificate]
+The dependency-free program \texttt{certify\_gamma\_saddle.py}
+recomputes the following enclosure procedure from scratch.
+Every interval endpoint is an integer multiple of $2^{-100}$.
+Addition is exact; multiplication, inversion and division round
+outward using integer floor and ceiling. Thus all intermediate
+intervals contain the corresponding exact real quantities, by induction
+on the arithmetic operations. No stored interval endpoint needs to be
+trusted by the verifier.
+
+For $2\le n\le40$, enclose $\zeta(n)$ using the first $64$ terms
+and the integral-test bounds
+\[
+ \sum_{k=1}^{64}k^{-n}+
+       \frac{65^{1-n}}{n-1}
+ \le\zeta(n)\le
+ \sum_{k=1}^{64}k^{-n}+
+       \frac{64^{1-n}}{n-1}.
+\]
+For $\gamma$, use
+\[
+ \gamma=\sum_{k\ge1}\left(\frac1k-\log(1+1/k)\right),
+\]
+and the alternating logarithm bounds. The tail after $K$ terms lies
+between
+\[
+ \frac1{2(K+1)}-\frac1{6K^2}
+ \quad\hbox{and}\quad\frac1{2K}.
+\]
+Taking $K=64$ gives a rational interval for
+$H_{64}-\log65$ plus that tail. The computed enclosure lies strictly
+inside $(1/2,3/5)$. Logarithms of positive rationals are enclosed by
+range reduction to $1\le u\le2$ and
+\[
+ \log u=2\sum_{k=0}^{47}\frac{y^{2k+1}}{2k+1}+R,
+ \qquad y=\frac{u-1}{u+1},\qquad
+ 0\le R\le\frac{2y^{97}}{97(1-y^2)}.
+\]
+The same formula supplies $\log2$ for the range reduction.
+All arguments and finite sums are rational.
+
+Truncate each series in \eqref{gs:eq:series} at $N=40$. On an interval
+$0<\ell\le x\le u\le1/2$, the absolute omitted tails for $f,F,P$
+are bounded respectively by
+\begin{equation}\label{gs:eq:tail-bounds}
+ T_f=\frac{2u^{N+1}}{(N+1)(1-u)},\qquad
+ T_F=\frac{2u^N}{1-u},\qquad
+ T_P=\frac{2Nu^{N-1}}{(1-u)^2}.
+\end{equation}
+These follow directly from $\zeta(n)<2$ and geometric sums.
+The positive reflected series receive one-sided positive tails;
+the alternating series receive symmetric tails. Their polynomial
+parts are evaluated by interval Horner arithmetic. Every denominator
+appearing in \eqref{gs:eq:H} is checked to have positive lower bound.
+
+Partition $[1/16,1/2]$ into the following $256$ closed intervals:
+\[
+ \left[\frac1{16}+\frac{7j}{4096},
+       \frac1{16}+\frac{7(j+1)}{4096}\right],
+ \qquad 0\le j<256.
+\]
+For each entire interval, the program evaluates
+\eqref{gs:eq:H} with the rigorous enclosures above. The smallest lower
+endpoint obtained is exactly
+\[
+ \frac{2237344070433247164830307425599}
+      {1267650600228229401496703205376}
+ >\frac74.
+\]
+It occurs on $[2041/4096,1/2]$. The program tests the inequality
+with integer arithmetic; the saved JSON file records every interval's
+lower numerator for inspection. Thus the finite certificate proves
+the asserted inequality on the complete compact interval.
+\end{proof}
+
+The endpoint proof, Lemma~\ref{gs:lem:certificate}, and reflection now
+prove \eqref{gs:eq:global-derivative}. The expansions
+\[
+ f(x)\sim\log(1/x),\quad F(x)\sim1/x,\quad
+ f(1-x)\sim\gamma x,\quad F(1-x)\sim\gamma
+\]
+give $J(x)\sim1/\log(1/x)$. Reciprocal symmetry gives the opposite
+endpoint limit. Positivity of $J'$ proves strict monotonicity;
+the endpoint limits prove surjectivity. Real analyticity and
+$J'>0$ prove that its inverse is also real analytic.
+This completes Theorem~\ref{gs:thm:monotonicity}.
+
+\subsection{The proportional all-orders moment theorem}
+
+For real $n,m>0$, define
+\[
+ M_{n,m}=\int_0^1 f(x)^n f(1-x)^m\,dx.
+\]
+These integrals converge. In particular, the following result applies
+to the integer moment family in the manuscript.
+
+\begin{theorem}[Unique proportional saddle and uniform expansion]
+\label{gs:thm:proportional}
+For $c>0$, put
+\[
+ \Phi_c(x)=c\log f(x)+\log f(1-x),\qquad
+ s(c)=J^{-1}(1/c),\qquad
+ A_c=-\Phi_c''(s(c)).
+\]
+Then $s(c)$ is the unique global maximizer of $\Phi_c$, and
+\begin{equation}\label{gs:eq:curvature}
+ A_c=\frac{F(1-s(c))}{f(1-s(c))}\mathcal H(s(c))>0.
+\end{equation}
+For every compact $C\subset(0,\infty)$ and every fixed $N\ge0$,
+uniformly for $c=n/m\in C$ as $m\to\infty$,
+\begin{equation}\label{gs:eq:laplace}
+ M_{n,m}=f(s(c))^n f(1-s(c))^m
+ \sqrt{\frac{2\pi}{mA_c}}
+ \left\{\sum_{j=0}^N\frac{L_j(c)}{m^j}
+                 +O_{C,N}(m^{-N-1})\right\}.
+\end{equation}
+The coefficient functions are real analytic on $(0,\infty)$, with
+$L_0=1$ and
+\begin{equation}\label{gs:eq:first-correction}
+ L_1(c)=\frac{\Phi_c^{(4)}(s(c))}{8A_c^2}
+       +\frac{5\Phi_c^{(3)}(s(c))^2}{24A_c^3}.
+\end{equation}
+Every higher coefficient is given by the finite Gaussian prescription
+below.
+\end{theorem}
+
+\begin{proof}
+Let $g=F/f$. The derivative has the decisive factorization
+\[
+ \Phi_c'(x)=g(1-x)(1-cJ(x)).
+\]
+Theorem~\ref{gs:thm:monotonicity} gives exactly one zero, with
+positive derivative sign before the zero and negative sign after it.
+Differentiating at that zero gives
+\[
+ \Phi_c''(s)=-c g(1-s)J'(s)
+           =-g(1-s)\mathcal H(s),
+\]
+which proves \eqref{gs:eq:curvature} and nondegeneracy.
+
+For completeness, the uniform endpoint control needed by Laplace's
+method follows from elementary bounds. At $0<x\le1/2$,
+$f(x)\le-\log x$, and \eqref{gs:eq:series} gives
+\[
+ f(1-x)\le\gamma x+\frac{\zeta(2)x^2}{2(1-x)}<2x.
+\]
+Thus as $x\downarrow0$,
+\[
+ \Phi_c(x)\le c\log\log(1/x)+\log(2x)\longrightarrow-\infty
+\]
+uniformly for $c$ in any fixed compact positive interval. Reflection
+gives the same statement at $x\uparrow1$, using the positive lower
+bound on $c$. Consequently all saddles stay inside a fixed compact
+subinterval. By uniqueness and compactness, outside any sufficiently
+small fixed neighborhood of the saddle there is a uniform positive
+gap below $\Phi_c(s(c))$. Integration of that bound over an interval
+of length one makes the complementary contribution exponentially
+small relative to the saddle term.
+
+On a common neighborhood of the saddle, every fixed phase derivative
+is bounded uniformly in $c$, and $A_c$ is uniformly bounded below by a
+positive number. Taylor-expand the analytic phase and set
+$x=s(c)+u/\sqrt m$. A uniform local Gaussian bound follows from the
+strictly negative second derivative and compactness. Taylor expansion
+to any fixed order, with its uniformly bounded remainder, followed by
+Gaussian integration proves \eqref{gs:eq:laplace}.
+Explicitly, $L_j(c)$ is the coefficient of $t^{2j}$ in the normalized
+Gaussian expectation, for $Z\sim N(0,A_c^{-1})$, of
+\[
+ \exp\left\{\sum_{k\ge3}
+      \frac{\Phi_c^{(k)}(s(c))}{k!}Z^k t^{k-2}\right\}.
+\]
+Only finitely many derivatives occur at every order. The $t^2$
+coefficient uses the fourth Gaussian moment and half the square of
+the cubic term, giving \eqref{gs:eq:first-correction}. The same
+finite formula proves real analyticity of the coefficient functions.
+\end{proof}
+
+\begin{corollary}[Balanced moments]\label{gs:cor:balanced}
+Put
+\[
+ f_0=\frac12\log\pi,\qquad F_0=\gamma+2\log2,\qquad
+ A_{\rm bal}=\frac{2F_0^2}{f_0^2}-\frac{\pi^2}{f_0}>0.
+\]
+Then the unique saddle of $M_{m,m}$ is $1/2$, and
+\[
+ M_{m,m}\sim
+ f_0^{2m}\sqrt{\frac{2\pi}{mA_{\rm bal}}}.
+\]
+It has the full expansion \eqref{gs:eq:laplace}; in its first correction
+the cubic phase derivative vanishes by reflection symmetry.
+\end{corollary}
+\begin{proof}
+Use $J(1/2)=1$, $\psi(1/2)=-\gamma-2\log2$, and
+$\psi_1(1/2)=\pi^2/2$ in \eqref{gs:eq:curvature}.
+\end{proof}
+
+\begin{corollary}[Saddle motion and a strictly convex limiting rate]
+\label{gs:cor:envelope}
+Define $\mathcal V(c)=\Phi_c(s(c))$. Then
+\[
+ s(1/c)=1-s(c),\qquad
+ s'(c)=-\frac{g(s(c))}{A_c}<0,
+\]
+and
+\[
+ \mathcal V'(c)=\log f(s(c)),\qquad
+ \mathcal V''(c)=\frac{g(s(c))^2}{A_c}>0,
+ \qquad \mathcal V(c)=c\mathcal V(1/c).
+\]
+In particular $m^{-1}\log M_{cm,m}\to\mathcal V(c)$ uniformly on
+compact positive $c$-intervals.
+\end{corollary}
+\begin{proof}
+Reciprocal symmetry of $J$ gives the first identity. Differentiate
+the stationary equation $\Phi_c'(s(c))=0$ for $s'$, and differentiate
+the phase value for the two envelope identities. The reciprocity of
+$\mathcal V$ follows by substituting $1-s(c)$ in $\Phi_{1/c}$.
+The last assertion follows from \eqref{gs:eq:laplace}.
+\end{proof}
+
+\paragraph{What remains open after this theorem.}
+The proportional regime on compact positive exponent ratios is now
+resolved, including uniqueness, curvature and all fixed asymptotic
+orders. A proof of the global inequality \eqref{gs:eq:global-derivative}
+using only an analytic inequality, without the finite interval
+certificate, remains a worthwhile simplification problem. The uniform
+bridge joining this compact-$c$ regime to the logarithmic transition
+of Theorem~\ref{joint:thm:transition}, and extending beyond that
+window, remains a separate problem. Compact-$c$ uniformity alone
+does not justify substitution of a growing exponent ratio.
