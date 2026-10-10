@@ -1,0 +1,129 @@
+\section{Scope, conventions, and main results}
+
+The source manuscript~\cite{ProveIt2026} assembles a substantial collection of exact
+identities, experimental reductions, and open questions about
+polylogarithmic constants. Its Gaussian depth chapter contains several
+precise conjectural rows for which a proof can be obtained without
+assuming a period conjecture or promoting numerical evidence to equality.
+We concentrate on those rows, their natural generalizations, and the
+reliability of the claimed remaining directions. The resulting article
+is a focused continuation of Chapters~4 and~6, with implications for the
+computational methodology of the wider manuscript. It is not an assertion
+that every claim in all chapters has been exhaustively checked.
+
+\subsection{Results and their logical status}
+
+\begin{center}
+\small
+\begin{tabular}{@{}P{0.25\textwidth}P{0.34\textwidth}P{0.33\textwidth}@{}}
+\toprule
+Source or family & Result established here & Scope of the conclusion\\
+\midrule
+Five Gaussian doubles, weight six & All five displayed rows proved;
+two exact derivations & Coefficients unchanged; no independence claim\\[4pt]
+Gaussian doubles, even weight & Finite rational coefficient formula;
+seven explicit weight-eight rows & Complete reduction of the indicated
+imaginary components\\[4pt]
+Three Gaussian triples, weight four & All three displayed rows proved
+from one uniform identity & Coefficients unchanged\\[4pt]
+One $2$ among any number of $1$'s & Classical formula at every position
+and every weight & At most one imaginary direction modulo the specified
+lower-weight products\\[4pt]
+Primitive sixth-root endpoints & Same-argument closure and an explicit
+rational parity component & Every weight and every position of the $2$\\[4pt]
+Four mixed-root candidates & Explicit Gaussian and Eisenstein reductions
+& These candidates do not add directions to the stated single-value basket\\[4pt]
+Numerical evaluation & Exact rational H\"older certificates and an
+independent replay & Certified enclosures; equality follows from the
+analytic proofs\\[4pt]
+Local editorial assertions & Corrected color exchange, diagonal value,
+and shifted-polygamma parity & Explicit replacement text and source patch\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+There are several different meanings of ``reduction'' in this subject.
+An identity may express a constant through a chosen collection of other
+constants. A relation matrix may have a specified rank over $\mathbb Q$.
+Neither statement proves that the corresponding numerical constants are
+independent. An integer-relation search that fails to find a relation
+does not prove nonexistence. We use ``basis'' only when discussing a
+chosen coordinate basket or a proved vector-space basis, and explicitly
+identify which is meant.
+
+\subsection{Series convention and iterated-integral dictionary}
+
+For positive integers $s_1,\ldots,s_d$, our colored convention is
+\begin{equation}\label{eq:mpl-definition}
+ \Li_{s_1,\ldots,s_d}(z_1,\ldots,z_d)
+ =\sum_{n_1>\cdots>n_d\ge1}
+ \frac{z_1^{n_1}\cdots z_d^{n_d}}
+ {n_1^{s_1}\cdots n_d^{s_d}}.
+\end{equation}
+The weight is $s_1+\cdots+s_d$ and the series depth is $d$.
+The abbreviation $\Li_{s_1,\ldots,s_d}(z)$ means
+$(z_1,z_2,\ldots,z_d)=(z,1,\ldots,1)$. In particular,
+$\Li_{a,b}(i)$ and $\Li_{a,b}(i,i)$ are different objects.
+Three families will be distinguished throughout:
+\[
+ D_{a,b}(z)=\Li_{a,b}(z,1),\qquad
+ U_{a,b}(z)=\Li_{\{1\}^a,2,\{1\}^b}(z),\qquad
+ M_{a,b}(x)=\Li_{a,b}(x,x^{-1}).
+\]
+
+With the outermost-letter-first integral convention
+$G(a_1,\ldots,a_w;z)=\int_0^zG(a_2,\ldots,a_w;t)\,dt/(t-a_1)$,
+the exact dictionary is
+\begin{equation}\label{eq:mpl-gpl}
+ \Li_{s_1,\ldots,s_d}(z_1,\ldots,z_d)
+ =(-1)^dG\left(0^{s_1-1},z_1^{-1},
+ 0^{s_2-1},(z_1z_2)^{-1},\ldots,
+ 0^{s_d-1},(z_1\cdots z_d)^{-1};1\right).
+\end{equation}
+For the single-endpoint family, an equivalent positive-form word uses
+$dt/t$ and $dt/(1-t)$ with endpoint $z$. The factor $(-1)^d$ in
+\eqref{eq:mpl-gpl} accounts for the convention difference. This
+dictionary is also the input specification of the rational evaluator.
+Section~\ref{sec:certificates} proves that the convergent boundary series
+used here agree with the ordinary iterated integrals; no divergent
+regularization is hidden in the notation.
+
+We write $\ell=\log2$, $G=\beta(2)$, and
+\[
+ \beta(s)=\sum_{n\ge0}\frac{(-1)^n}{(2n+1)^s},\qquad
+ h=\frac{1+i}{2},\qquad
+ \mu_s=\Re\Li_s(h),\qquad\lambda_s=\Im\Li_s(h).
+\]
+Locally in Section~\ref{one2:sec:general}, $w$ denotes the transformed
+argument $(1-z)^{-1}$; elsewhere a weight is explicitly identified as
+such. All logarithms and classical polylogarithms have their principal
+branches unless a continuation path is specified.
+
+\subsection{Relation to established results}
+
+Panzer's parity theorem already gives functional reductions of multiple
+polylogarithms and explicit formulas in depths two and three
+\cite{Panzer2017}. The present double identities specialize its depth-two
+formula, with an explicit singular-limit calculation and an independent
+differential verification. Umezawa subsequently gave a general explicit
+parity formula \cite{Umezawa2025}; accordingly, this article does not claim
+the first general or all-depth parity theorem.
+
+The classical reducibility of the height-one Nielsen family is also
+established. Borwein and Straub's complementary-argument formula
+\cite[Eq.~(33)]{BorweinStraub2015} is closely related to the logarithmic
+moment used below. Our useful form has argument $(1-z)^{-1}$, explicit
+coefficients for every position of the $2$, carefully fixed branches and
+endpoint constants, and a direct application to the three manuscript
+rows. Similarly, H\"older convolution and its use in multiple
+polylogarithm evaluation are classical \cite{BBBL2001,VollingaWeinzierl2005}.
+We supply an explicit rational certificate, a uniform precision bound,
+and a replayable implementation for the relevant Gaussian letters.
+
+These boundaries matter to the interpretation of the results. The
+contribution consists of proof upgrades, explicit extensions of the
+pinned tables, independently checkable formulas, and corrections to
+specific claims. Global bibliographic novelty of each isolated numerical
+identity is not asserted. The four mixed-root reductions are also
+presented as corroborated corrections; related companion work in this
+research program has already reported these reductions.

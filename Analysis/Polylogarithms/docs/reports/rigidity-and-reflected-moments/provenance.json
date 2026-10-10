@@ -1,0 +1,135 @@
+{
+  "title": "Complementary-Power Rigidity, a Gaussian Euler-Sum Identity, and Reflected Gamma Moments",
+  "prepared_for": "Vladimir Reshetnikov / ProveIt",
+  "snapshot_inspected_utc": "2026-10-10",
+  "repository": "https://github.com/VladimirReshetnikov/ProveIt",
+  "base_commit": "d00eba30c1ce73ee5cfbeb50bde9095246b9c25c",
+  "source_files": [
+    {
+      "path": "Analysis/Polylogarithms/docs/manuscript/chapters/03-algebraic.tex",
+      "sha256": "16eaf8728d244d927b8391d11200544fb02bd61014aefa515e4a8f156a267274",
+      "bytes": 33444
+    },
+    {
+      "path": "Analysis/Polylogarithms/docs/manuscript/chapters/04-depth.tex",
+      "sha256": "dd3f939b7b86c10c710da7e241e87bc3c92a73d654197cb2bd77d3e318a72b70",
+      "bytes": 27422
+    },
+    {
+      "path": "Analysis/Polylogarithms/docs/reports/alternating-harmonic-polylogarithms/article.tex",
+      "sha256": "abfcfefe62fd52d0451c71b0751ba59ceecd3c1bd5230fda2f05c3d1e1792fa8",
+      "bytes": 52602
+    },
+    {
+      "path": "docs/incoming/polylogarithms_exact_reductions_20261009.zip",
+      "sha256": "e218e972da9dfe22e0f064f76191369b88ef55eec4b11a5ecada3b2ca7233c07",
+      "bytes": 857965
+    },
+    {
+      "path": "Analysis/Polylogarithms/docs/manuscript/chapters/05-gamma.tex",
+      "sha256": "12a80392d2a6b5a1fa2974dedc2e7da918c581ab5ace9606b72c6c891ad8f86d",
+      "bytes": 18936
+    },
+    {
+      "path": "Analysis/Polylogarithms/docs/manuscript/chapters/07-integration.tex",
+      "sha256": "6add4801d7682b6673f989d8877a52bae890e5b2f04ec63182a96db83e4d67d3",
+      "bytes": 65728
+    }
+  ],
+  "claims": [
+    {
+      "topic": "Pure complementary powers",
+      "status": "proved",
+      "section": "article/sections/ladders.tex",
+      "inputs": [
+        "Ljunggren-Tverberg irreducibility in Boyd-Martin-Thom Lemma4.1",
+        "root rotation and equality in the triangle inequality"
+      ],
+      "new_relative_to_baseline": "complete collision classification, signed unit counts, exact degree enumeration"
+    },
+    {
+      "topic": "Plastic Li2 and Li3",
+      "status": "proved",
+      "section": "article/sections/ladders.tex",
+      "inputs": [
+        "Rogers pentagon",
+        "Kummer nine-term equation",
+        "Landen equation"
+      ],
+      "new_relative_to_baseline": "local analytic proofs of existing formulas and further log-free consequences"
+    },
+    {
+      "topic": "Gaussian S4 mixed reduction",
+      "status": "proved by exact rational certificate",
+      "section": "article/sections/gaussian.tex",
+      "certificate": "results/S4_certificate.json",
+      "verifier": "code/verify_s4.py",
+      "standard_rows": 911,
+      "duality_seeds": 1,
+      "single_divergence_rows": 181,
+      "independence_claim": false
+    },
+    {
+      "topic": "Proportional harmonic depth",
+      "status": "proved",
+      "section": "article/sections/saddle.tex",
+      "hypotheses": "alpha=p/h and a range over compact subsets of (0,infinity)",
+      "prior_result_excluded_from_novelty": "critical regime alpha=log(h)+c and its corrections"
+    },
+    {
+      "topic": "Reflected log-gamma moments",
+      "status": "proved",
+      "section": "article/sections/gamma.tex",
+      "hypotheses": "fixed nonnegative integer reflected exponent m",
+      "prior_result_excluded_from_novelty": "unreflected m=0 theory",
+      "limits": [
+        "late-index full series diverges",
+        "unsigned optimized remainder",
+        "no simultaneous n,m theorem"
+      ]
+    },
+    {
+      "topic": "Formal Appell coefficient identity",
+      "status": "proved for canonical formal polynomials",
+      "section": "article/sections/gamma.tex",
+      "source_formulation": "Conjecture5.5 and Note5.6 in ACEMKM author preprint dated2010-03-11",
+      "limits": [
+        "no numerical coefficient uniqueness without the needed independence assumptions",
+        "no historical priority claim"
+      ]
+    },
+    {
+      "topic": "Even-weight modified polylogarithm paragraph",
+      "status": "confirmed correction proposed",
+      "patch": "integration/even_weight_normalization.patch",
+      "patch_checked_against_baseline": true,
+      "patch_applied": false
+    }
+  ],
+  "external_sources": [
+    {
+      "title": "Squarefree values of trinomial discriminants",
+      "url": "https://doi.org/10.1112/S1461157014000436",
+      "location": "Lemma4.1(a),(b)"
+    },
+    {
+      "title": "Special values and functional equations of polylogarithms",
+      "url": "https://people.mpim-bonn.mpg.de/zagier/files/tex/LewinPolylogarithms/fulltext.pdf",
+      "location": "Section7 Example3 Eq(7)"
+    },
+    {
+      "title": "Standard relations of multiple polylogarithm values at roots of unity",
+      "url": "https://ems.press/content/serial-article-files/26074?nt=1",
+      "location": "Theorem2.9 and Eq(14)"
+    },
+    {
+      "title": "Integrals of powers of loggamma",
+      "url": "https://www.math.tulane.edu/~vhm/papers_html/lg-subm.pdf",
+      "location": "2010 author preprint; Section5 Conjecture5.5 and Note5.6"
+    }
+  ],
+  "proof_status": "Mathematical proofs and exact computer-assisted certificates, not a proof-assistant formalization. Numerical files are diagnostic, not interval certificates.",
+  "priority_statement": "No global historical novelty claim. New-to-package results are distinguished from existing ProveIt contributions.",
+  "repository_modified": false,
+  "python_version": "3.12.14"
+}

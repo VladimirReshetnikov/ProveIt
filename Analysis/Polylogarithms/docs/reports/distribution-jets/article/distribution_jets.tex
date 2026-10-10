@@ -1,0 +1,1669 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,microtype,xcolor,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!40!black,citecolor=blue!40!black,urlcolor=blue!40!black]{hyperref}
+\usepackage{bookmark,etoolbox}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Finite distribution modules and spectral jets}
+\fancyhead[R]{\small ProveIt research contribution}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\rad}{rad}
+\DeclareMathOperator{\Ree}{Re}
+\DeclareMathOperator{\Imm}{Im}
+\DeclareMathOperator{\cond}{cond}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\U}{\mathcal U}
+\newcommand{\V}{\mathcal V}
+\newcommand{\D}{\mathcal D}
+\newcommand{\cP}{\mathcal P}
+\newcommand{\wt}{\widetilde}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\newcommand{\Liord}[2]{\left.\partial_s^{#1}\Li_s(#2)\right|_{s=1}}
+\title{\textbf{Finite Distribution Modules, Spectral Jets,\\ and Cyclotomic Trace Identities}\\[8pt]
+\large Uniform rank proofs, explicit normal forms, exceptional zeros,\\
+and an exact audit of a Gaussian weight-five conjecture}
+\author{Research contribution prepared for the ProveIt project\\
+\small OpenAI-assisted mathematical research; supplied for independent review}
+\date{9 October 2026}
+\hypersetup{pdftitle={Finite Distribution Modules, Spectral Jets, and Cyclotomic Trace Identities},pdfauthor={Research contribution prepared for ProveIt}}
+\begin{document}
+\maketitle
+\begin{abstract}
+The ProveIt polylogarithm manuscript records finite experiments suggesting
+that rational distribution relations leave $\varphi(q)-1$ coordinates at
+level $q$, and $\varphi(q)/2-1$ after suitable reflection relations. We give
+a uniform proof for an explicitly defined presentation, simultaneously for
+all independent prime weights and every finite spectral-jet order. Over a
+character splitting field, the universal weighted quotient is a free
+polynomial module of rank $\varphi(q)$. Its conductor-indexed basis remains
+valid at resonant weights, whereas the basis consisting of primitive-grid
+points can fail. We factor the determinant of that change of coordinates,
+compute its local jet defects, and give rational primitive-grid normal
+forms with exact support, sign, and denominator information.
+
+The resulting calculus yields all-orders Hurwitz--Stieltjes reduction
+identities, including the pole correction for underived Stieltjes
+constants. Applying the same module to roots-of-unity polylogarithms gives
+character trace identities and exact orders of vanishing at spectral
+order one; for example, the primitive level-$30$ trace has second
+order derivative $-2\log2\log3\log5$. Separately, a rational certificate
+shows that the manuscript's $S_4$ conjecture is not a consequence of a
+specified $96$-row weight-five double-shuffle presentation, without
+asserting that the conjecture is false. An audit also corrects the status
+of the cubic log-gamma moment using the published work of
+Bailey--Borwein--Borwein. Complete proofs, exact regression programs,
+replayable certificates, numerical diagnostics, and integration notes
+accompany the article.
+\end{abstract}
+\noindent\textbf{Scope of claims.} All rank statements concern explicitly
+presented formal modules. They do not assert linear independence of
+transcendental values. No proof-assistant verification or global priority
+claim is made. Classical antecedents and the remaining conjecture are
+identified explicitly.
+\newpage
+\begingroup
+\small
+\makeatletter
+\patchcmd{\l@section}{1.0em}{0.4em}{}{}
+\makeatother
+\tableofcontents
+\endgroup
+\newpage
+
+\section{Research target, provenance, and mathematical context}\label{sec:scope}
+
+\subsection{The question resolved here}
+The starting point is Chapters 4, 7, 8, and 10 of the ProveIt manuscript
+\emph{Polylogarithms and their Arithmetic Bridges}~\cite{repo}.
+Chapter 8, Observation \code{tower:thm:rank}, reports exact finite
+experiments with $3\le q\le30$ and three parameter-derivative orders:
+\begin{equation}\label{eq:source-rank}
+(q-1)-\rank(\text{distribution rows})=\varphi(q)-1.
+\end{equation}
+Chapter 7 gives the analogous count $\varphi(q)/2-1$ after distribution
+and first-Stieltjes reflection. The manuscript correctly distinguishes
+these formal calculations from numerical independence and explicitly
+asks for a proof uniform in the denominator and derivative order.
+
+The historical matrices are not included in the cited manuscript
+snapshot. Consequently we do not claim to reconstruct their exact row
+ordering or to certify unseen computations. Instead, we define the
+canonical complete divisor-row presentation from the stated distribution
+law, prove its rank for every $q$, and give code generating every row.
+This resolves the uniform mathematical problem underlying the observation
+and supplies a precise replacement for its experimental formulation.
+
+The stronger result is useful: the rank does not depend on the
+multiplicative weights at all. Apparent failures at exceptional spectral
+parameters are failures of a chosen coordinate basis, not jumps in the
+rank of the complete relation module. A determinant factorization makes
+this distinction quantitative.
+
+\subsection{Classical antecedents and the contribution's status}
+Universal distributions are classical. In particular, the ordinary
+specialization of our module, with all prime weights equal to one,
+is a finite-level universal ordinary distribution. Ouyang's
+Proposition 3.1 records its integral freeness and rank
+$\varphi(q)$, citing the work of Kubert and Anderson~\cite{ouyang,kubert}.
+We do not present that specialization as a new theorem.
+
+The contribution developed here is an explicit polynomial-weight
+presentation with conductor normal forms, its determinant and jet
+specializations, and the resulting integration-ready proof of the
+manuscript's rank problem. The polylogarithm trace formulas derive from
+classical distribution and Gauss-sum identities; their concrete
+order-derivative evaluations are supplied as consequences, without a
+claim that each has not appeared elsewhere. The exact $S_4$ row-space
+obstruction concerns a newly specified finite presentation, rather than
+all possible multiple-polylogarithm identities.
+
+Standard analytic conventions for Hurwitz zeta, polylogarithms, and
+Dirichlet $L$-functions are as in the corresponding DLMF sections
+\cite{dlmf-hurwitz,dlmf-polylog,dlmf-dirichlet}. Every additional algebraic
+rank assertion used here is proved below rather than inferred from a
+numerical relation search.
+
+\subsection{Notation and endpoint convention}
+For $q\ge2$, let
+\[
+ X_q=(q^{-1}\Z)/\Z,\qquad U_m=(\Z/m\Z)^\times,
+ \qquad P(q)=\{p:p\text{ prime},\ p\mid q\}.
+\]
+We use $U_1$ as a one-element group and put $\varphi(1)=1$.
+The point $0\in X_q$ is a \emph{formal} point. Under Hurwitz evaluation it
+means the endpoint $1$, never the undefined expression $\zeta(s,0)$:
+\[
+ e_{a/m}\longmapsto\zeta(s,a/m)\quad(1\le a<m),
+ \qquad e_0\longmapsto\zeta(s,1).
+\]
+Under cyclotomic evaluation it means $\Li_s(1)=\zeta(s)$, initially
+away from the pole. This convention is essential when a distribution
+fiber passes through zero.
+
+Every character of $U_q$ has a unique primitive inducing character of
+conductor $f\mid q$. A symbol $\chi$ will denote that primitive character
+and, where specified, its inflation to $U_m$ for $f\mid m\mid q$.
+The principal character has conductor one. Character values at an
+integer prime to $f$ are roots of unity; primes dividing $f$ are treated
+separately, so no ambiguous evaluation at a nonunit is needed.
+
+\section{The universal weighted distribution module}\label{sec:universal}
+
+Fix a characteristic-zero field $K$ containing all values of characters
+of $U_q$, and put
+\[
+ R=K[A_p:p\in P(q)],\qquad
+ \V_q=\bigoplus_{x\in X_q}R e_x.
+\]
+The $A_p$ are algebraically independent indeterminates. For each
+$p\mid q$ and $x\in (p/q)\Z/\Z$, define a prime distribution row
+\begin{equation}\label{eq:prime-row}
+ r_{p,x}=\sum_{\substack{y\in X_q\\py=x}}e_y-A_p e_x.
+\end{equation}
+Let $\mathcal R_q$ be their $R$-span and let
+$\D_q=\V_q/\mathcal R_q$.
+
+For $d\mid q$ write $A_d=\prod_{p\mid d}A_p^{v_p(d)}$.
+The corresponding divisor row is
+\begin{equation}\label{eq:divisor-row}
+ r_{d,x}=\sum_{dy=x}e_y-A_d e_x,
+ \qquad x\in(d/q)\Z/\Z.
+\end{equation}
+The multiplicativity of $A_d$ is part of the definition; arbitrary
+unrelated weights on composite divisors would be a different problem.
+
+\begin{lemma}[Prime rows suffice]\label{lem:prime-suffice}
+Every row \eqref{eq:divisor-row} lies in $\mathcal R_q$.
+\end{lemma}
+\begin{proof}
+If $d=ab\mid q$, then for $x\in(d/q)\Z/\Z$ every solution of $ay=x$
+lies in $(b/q)\Z/\Z$, and
+\[
+ r_{ab,x}=\sum_{ay=x}r_{b,y}+A_b r_{a,x}.
+\]
+Each $z$ with $abz=x$ occurs exactly once in the double sum, and the
+intermediate $e_y$ terms cancel. Induction on the number of prime factors
+of $d$, counted with multiplicity, proves the assertion. No division by
+any weight is used.
+\end{proof}
+
+For $f=\cond(\chi)$ and $f\mid m\mid q$, set
+\begin{equation}\label{eq:v-character}
+ v_{m,\chi}=\sum_{a\in U_m}\chi(a)e_{a/m},
+ \qquad v_{1,\mathbf1}=e_0.
+\end{equation}
+Define the polynomial
+\begin{equation}\label{eq:E-polynomial}
+ E_{m,\chi}=
+ \prod_{p\mid f}A_p^{v_p(m)-v_p(f)}
+ \prod_{\substack{p\mid m\\p\nmid f}}
+ A_p^{v_p(m)-1}\bigl(A_p-\chi(p)\bigr).
+\end{equation}
+In particular $E_{f,\chi}=1$.
+
+\begin{theorem}[Universal conductor normal form]\label{thm:universal}
+The quotient $\D_q$ is a free $R$-module of rank $\varphi(q)$.
+One basis consists of
+\[
+ b_\chi=[v_{f,\chi}],\qquad f=\cond(\chi),\quad \chi\bmod q.
+\]
+In this basis,
+\begin{equation}\label{eq:conductor-normal}
+ [v_{m,\chi}]=E_{m,\chi}b_\chi\qquad(f\mid m\mid q).
+\end{equation}
+The relation module is free of rank $q-\varphi(q)$ and is a direct
+summand of $\V_q$. All these statements survive arbitrary specialization
+of the weights into any $K$-algebra, including $A_p=0$ and $A_p=1$.
+\end{theorem}
+
+\subsection{Proof: identify the complete relation module}
+It is not enough to exhibit character identities satisfied by evaluated
+special functions: that would give only one direction of a rank argument.
+We therefore identify the image of the entire relation map.
+
+The points of $X_q$ split by exact denominator. Hence
+\begin{equation}\label{eq:denominator-split}
+ \V_q=\bigoplus_{m\mid q}R[U_m].
+\end{equation}
+The reduction map $U_q\to U_m$ is surjective. Character orthogonality
+therefore gives an invertible Fourier change of basis on each summand.
+A character of conductor $f$ occurs exactly once in the summand indexed
+by $m$ when $f\mid m$, and does not occur otherwise. Thus the $\chi$
+block of \eqref{eq:denominator-split} has basis
+\[
+ v_{m,\chi},\qquad f\mid m\mid q.
+\]
+
+Fix $p\mid q$. The source labels $x$ of the rows $r_{p,x}$ themselves
+form a grid of level $q/p$. Fourier-transforming separately on its
+exact-denominator strata gives all transformed rows, not a selected
+subset of them. For $f\mid m$ and $pm\mid q$, the transformed row is
+\begin{equation}\label{eq:edge-relations}
+ v_{pm,\chi}-\lambda_{p,m,\chi}v_{m,\chi},
+ \qquad
+ \lambda_{p,m,\chi}=
+ \begin{cases}
+ A_p,&p\mid m,\\
+ A_p-\chi(p),&p\nmid m.
+ \end{cases}
+\end{equation}
+To check this directly, weight the row at $x=a/m$ by $\chi(a)$ and sum
+over $U_m$. If $p\mid m$, all $p$ preimages have exact denominator $pm$.
+If $p\nmid m$, one preimage has denominator $m$: it is $b/m$ with
+$pb\equiv a\pmod m$, and its coefficient is
+$\chi(a)=\chi(p)\chi(b)$. All other preimages have denominator $pm$.
+This proves \eqref{eq:edge-relations}. Since the Fourier transforms of
+the source and target are invertible, these edges span precisely the
+original relation module in character coordinates.
+
+Starting at $m=f$, multiply the edge factors while adjoining prime
+factors of $m/f$. A prime already dividing $f$ always contributes $A_p$.
+A prime not dividing $f$ contributes $A_p-\chi(p)$ on its first
+appearance and $A_p$ on every later appearance. The resulting product
+is exactly \eqref{eq:E-polynomial}, independently of the order of
+adjoining primes. Therefore all $v_{m,\chi}$ reduce to
+$E_{m,\chi}v_{f,\chi}$.
+
+There are no additional relations on $v_{f,\chi}$. Indeed, the map from
+the free $\chi$ block to $R$ defined by
+\[
+ v_{m,\chi}\longmapsto E_{m,\chi}
+\]
+annihilates every edge and sends $v_{f,\chi}$ to one. It induces an
+inverse to $R\to\D_{q,\chi}$, $1\mapsto[v_{f,\chi}]$. Moreover, its
+kernel has the explicit monic basis
+\begin{equation}\label{eq:monic-basis}
+ v_{m,\chi}-E_{m,\chi}v_{f,\chi},\qquad
+ f\mid m\mid q,\ m\ne f.
+\end{equation}
+These vectors are independent by their distinct non-base coordinates.
+There is one quotient coordinate for each character of $U_q$, hence
+$\varphi(q)$ in all, and the complementary kernel has rank
+$q-\varphi(q)$. This is a split decomposition over the polynomial ring
+itself, so any base change preserves it.\qed
+
+\begin{corollary}[Pointwise polynomial normal form]\label{cor:point-normal}
+For a reduced point $a/m$ with $m\mid q$,
+\begin{equation}\label{eq:point-normal}
+ [e_{a/m}]=\frac1{\varphi(m)}
+ \sum_{\chi\bmod m}\overline{\chi(a)}\,E_{m,\chi}b_\chi.
+\end{equation}
+The sum runs over characters of $U_m$, identified with their primitive
+inducing characters and then inflated to $U_q$.
+\end{corollary}
+\begin{proof}
+Apply inverse character Fourier transformation to
+\eqref{eq:v-character}, then use \eqref{eq:conductor-normal}.
+\end{proof}
+
+\subsection{A replayable symbolic reduction certificate}
+Choose a chain
+$f=m_0\mid m_1\mid\cdots\mid m_t=m$ in which each ratio is prime.
+Let $\lambda_j$ be its edge factor. The exact identity
+\begin{equation}\label{eq:telescoping-certificate}
+ v_{m,\chi}-E_{m,\chi}v_{f,\chi}
+ =\sum_{j=1}^t\left(\prod_{h=j+1}^t\lambda_h\right)
+ \bigl(v_{m_j,\chi}-\lambda_jv_{m_{j-1},\chi}\bigr)
+\end{equation}
+is a finite row-combination certificate. Its verification is polynomial
+cancellation. In particular, a certificate does not become invalid when
+one or several factors vanish. This is the practical advantage of
+conductor coordinates over a generic matrix inverse.
+
+\section{Anchoring, reflection, and uniform jet ranks}\label{sec:jets}
+
+\subsection{The precise replacement for the finite rank observation}
+For actual evaluations, the endpoint value and lower-order terms can be
+regarded as known. In a homogeneous difference system this amounts to
+setting the corresponding formal coordinates equal to zero.
+
+\begin{corollary}[Anchored rank]\label{cor:anchored}
+At every specialization of the weights, the quotient by the distribution
+relations and $e_0=0$ has dimension $\varphi(q)-1$. Equivalently, after
+deleting the endpoint column, the prime or complete divisor-row matrix
+on the remaining $q-1$ columns has rank $q-\varphi(q)$.
+\end{corollary}
+\begin{proof}
+The endpoint is $b_{\mathbf1}$, the basis vector of conductor one.
+It is nonzero and independent of every other conductor coordinate.
+Adding its row increases the full relation rank by one. Eliminating
+that endpoint column leaves rank $q-\varphi(q)$ on $q-1$ columns.
+\end{proof}
+
+This statement applies, in particular, to the homogeneous highest-order
+part of the manuscript's $\gamma_1^{(k)}$ distribution equations, where
+$A_p=p^{k+1}$. It holds for every $q\ge2$ and $k\ge1$, not only the
+finite experimental range. Known inhomogeneous right sides do not alter
+this rank provided the system is consistent; the analytic evaluations
+supply consistency.
+
+The reflection operator $J(e_x)=e_{-x}$ preserves the relation module.
+Since $Jv_{m,\chi}=\chi(-1)v_{m,\chi}$, its action is diagonal on the
+conductor basis.
+
+\begin{corollary}[Parity counts]\label{cor:parity}
+For $q>2$, the unanchored even and odd quotients have dimensions
+$\varphi(q)/2$ each. After anchoring the endpoint, their dimensions are
+respectively $\varphi(q)/2-1$ and $\varphi(q)/2$.
+Thus imposing known odd reflection differences leaves exactly
+$\varphi(q)/2-1$ formal homogeneous coordinates.
+\end{corollary}
+\begin{proof}
+The element $-1\in U_q$ has order two and is not the identity. Exactly
+half the characters take value $1$ there and half take value $-1$.
+The principal character is even, so anchoring removes one even
+coordinate. For $q=2$ the separate counts are zero even coordinates
+after anchoring and zero odd coordinates.
+\end{proof}
+
+This proves the canonical formal version of the Chapter 7 count. It does
+not say that $\varphi(q)/2-1$ numerical Stieltjes values are independent:
+additional identities may impose further relations after evaluation.
+
+\subsection{All finite jets by base change}
+Let $F$ be a field extending $K$, and consider the truncated ring
+\[
+ T_N=F[t]/(t^{N+1}),\qquad N\ge0.
+\]
+Choose arbitrary truncated prime weights $A_p(t)\in T_N$. Of particular
+interest are
+\begin{equation}\label{eq:spectral-weight}
+ A_p(t)=p^{s_0}\exp(t\log p)\pmod{t^{N+1}}
+\end{equation}
+for Hurwitz zeta, and $p^{1-s_0}\exp(-t\log p)$ for polylogarithms.
+The coefficient field may be $\C$, or a field containing the displayed
+constants; no algebraic independence of actual logarithms is assumed.
+
+\begin{theorem}[Uniform finite-jet ranks]\label{thm:jet-rank}
+The truncated distribution quotient is a free $T_N$-module of rank
+$\varphi(q)$ for every choice of $A_p(t)$. Its dimension over $F$ is
+$(N+1)\varphi(q)$, and the full coefficient-expanded relation matrix
+has rank
+\begin{equation}\label{eq:jet-rank}
+ (N+1)\bigl(q-\varphi(q)\bigr).
+\end{equation}
+After fixing all endpoint coefficients its dimension is
+$(N+1)(\varphi(q)-1)$. The anchored even and odd dimensions for $q>2$
+are $(N+1)(\varphi(q)/2-1)$ and $(N+1)\varphi(q)/2$.
+\end{theorem}
+\begin{proof}
+Apply the homomorphism $R\to T_N$ that sends each indeterminate to the
+chosen truncated weight. The split decomposition proved in
+Theorem~\ref{thm:universal} remains split under this base change.
+Expanding in the basis $1,t,\ldots,t^N$ multiplies every free rank by
+$N+1$. Anchoring and reflection act on the same conductor coordinates
+as before. This argument is stronger than an appeal to a block-triangular
+matrix with a possibly singular diagonal: it applies at every weight.
+\end{proof}
+
+If all lower jets are already fixed and only the highest jet is unknown,
+the homogeneous matrix is the order-zero distribution matrix. Its
+anchored residual dimension is therefore $\varphi(q)-1$. The full
+stacked system and this one-layer system are different matrices, and
+\eqref{eq:jet-rank} should not be confused with the one-layer rank.
+
+\section{The primitive-grid determinant and its exceptional locus}\label{sec:det}
+
+Conductor coordinates are polynomial and globally valid, but it is often
+more convenient to use the $\varphi(q)$ primitive-grid points
+$e_{u/q}$, $u\in U_q$. Fourier-transforming those points gives
+$v_{q,\chi}$. By Theorem~\ref{thm:universal}, the map from their formal
+span into $\D_q$ is diagonal in character coordinates:
+\begin{equation}\label{eq:primitive-diagonal}
+ v_{q,\chi}\longmapsto E_{q,\chi}b_\chi.
+\end{equation}
+Its determinant in these specified Fourier and conductor bases is
+$\Delta_q=\prod_{\chi\bmod q}E_{q,\chi}$.
+
+For $p^e\Vert q$, write
+\[
+ M_p=q/p^e,\qquad h_p=\ord_{M_p}(p),
+\]
+with $h_p=1$ when $M_p=1$.
+
+\begin{theorem}[Determinant factorization]\label{thm:determinant}
+One has the polynomial identity
+\begin{equation}\label{eq:determinant}
+ \boxed{\displaystyle
+ \Delta_q(\mathbf A)=
+ \prod_{p^e\Vert q}
+ A_p^{\varphi(M_p)(p^{e-1}-1)}
+ \bigl(A_p^{h_p}-1\bigr)^{\varphi(M_p)/h_p}.}
+\end{equation}
+Thus primitive-grid coordinates form a basis precisely when all the
+factors in \eqref{eq:determinant} are invertible in a field
+specialization. Their failure does not change the rank of $\D_q$.
+\end{theorem}
+\begin{proof}
+Fix $p^e\Vert q$ and inspect the $p$ factor of
+$\prod_\chi E_{q,\chi}$. Characters whose conductor is not divisible by
+$p$ are exactly the characters of $U_{M_p}$. Their additional factors
+are $A_p-\chi(p)$. In the character group of $U_{M_p}$, the values
+$\chi(p)$ run through every $h_p$th root of unity with multiplicity
+$\varphi(M_p)/h_p$. This follows by duality from the fact that $p$ has
+order $h_p$ in $U_{M_p}$. Their product is therefore
+$(A_p^{h_p}-1)^{\varphi(M_p)/h_p}$.
+
+It remains to count the pure powers of $A_p$. If $a=v_p(f)$, the
+exponent contributed by one character is $e-\max(1,a)$. Writing this
+as a sum of indicators gives
+\[
+ \sum_{\chi\bmod q}\bigl(e-\max(1,v_p(f_\chi))\bigr)
+ =\sum_{j=1}^{e-1}\#\{\chi:v_p(f_\chi)\le j\}.
+\]
+The count in the last sum is $\varphi(p^j)\varphi(M_p)$, since these
+are exactly the characters induced from level $p^jM_p$. Hence the
+exponent is
+$\varphi(M_p)\sum_{j=1}^{e-1}\varphi(p^j)
+=\varphi(M_p)(p^{e-1}-1)$. Multiply over the primes.
+\end{proof}
+
+\begin{example}[Level twelve]
+Let $\chi_3$ and $\chi_4$ be the nonprincipal quadratic characters of
+conductors three and four, and let $\chi_{12}=\chi_3\chi_4$.
+Their conductor generators are
+\begin{align*}
+ b_3&=e_{1/3}-e_{2/3},&
+ b_4&=e_{1/4}-e_{3/4},\\
+ b_{12}&=e_{1/12}-e_{5/12}-e_{7/12}+e_{11/12}.
+\end{align*}
+For $r\in U_{12}$, the normal form reads
+\begin{align}\label{eq:q12-normal}
+ [e_{r/12}]=\frac14\bigl[&A_2(A_2-1)(A_3-1)e_0
+ +\chi_3(r)A_2(A_2+1)b_3\notag\\
+ &+\chi_4(r)(A_3+1)b_4+\chi_{12}(r)b_{12}\bigr].
+\end{align}
+Consequently
+\[
+ \Delta_{12}=A_2^2(A_2^2-1)(A_3^2-1).
+\]
+At $A_2=A_3=1$, the primitive-grid span misses the principal conductor
+coordinate, even though the full quotient still has rank four.
+\end{example}
+
+\subsection{Local jet defects of the primitive-grid map}
+Specialize to $A_p(s)=p^s$, and let $s=s_0+t$. All exponential factors
+are nonzero. A factor $p^s-\chi(p)$ vanishes precisely when
+$p^{s_0}=\chi(p)$, and any such zero is simple because its derivative
+is $p^{s_0}\log p\ne0$.
+
+\begin{theorem}[Local Smith factors and primitive-jet ranks]\label{thm:smith}
+Define
+\begin{equation}\label{eq:rho-general}
+ \rho_\chi(s_0)=\#\{p\mid q:p\nmid f_\chi,\ p^{s_0}=\chi(p)\}.
+\end{equation}
+Over $\C[[t]]$, the diagonal factors of the primitive-grid map are
+units times $t^{\rho_\chi(s_0)}$. Consequently its rank on order-$N$
+truncated jets, as a complex linear map, is
+\begin{equation}\label{eq:primitive-jet-rank}
+ \sum_{\chi\bmod q}\max\{N+1-\rho_\chi(s_0),0\}.
+\end{equation}
+At $s_0=0$, this is determined by
+$\rho_\chi(0)=\#\{p\mid q:p\nmid f_\chi,\ \chi(p)=1\}$.
+\end{theorem}
+\begin{proof}
+Factor $E_{q,\chi}(s_0+t)$ into its simple vanishing factors and a unit.
+The primitive Fourier matrix is constant and invertible, so these are
+also the local invariant factors, up to permutation and units.
+Multiplication by $t^r$ on $\C[t]/(t^{N+1})$ has rank
+$\max(N+1-r,0)$. Summing over the diagonal coordinates proves the
+formula. This is the rank of a \emph{coordinate inclusion map}, not
+the rank of the distribution relation matrix.
+\end{proof}
+
+\begin{corollary}[Multiple-prime resonances are central]\label{cor:central}
+If $s_0\ne0$, at most one prime can satisfy
+$p^{s_0h_p}=1$. At a nonzero resonant point for that prime $p$, the
+primitive-grid rank defect is $\varphi(M_p)/h_p$, and every affected
+local factor has order one. The order-$N$ inclusion rank is then
+$(N+1)\varphi(q)-\varphi(M_p)/h_p$ for all $N\ge0$.
+\end{corollary}
+\begin{proof}
+A resonance forces $s_0$ to be purely imaginary. Resonances at distinct
+primes would make $\log p/\log\ell$ rational, because each phase is a
+rational multiple of $2\pi$. Unique prime factorization rules this out
+unless $s_0=0$. For the one resonant prime, the multiplicity count in
+Theorem~\ref{thm:determinant} gives the number of affected characters.
+Apply Theorem~\ref{thm:smith}.
+\end{proof}
+
+\begin{example}[Two exact jet-rank profiles]
+At level $12$ and $s_0=0$, the principal character has $\rho=2$ and the
+other three characters have $\rho=0$. For $N=0,1,2$, the primitive-jet
+ranks are $3,6,10$, while the full quotient dimensions are $4,8,12$.
+At level $21$, the principal character has $\rho=2$, the character
+induced from conductor three has $\rho=1$, and the other ten
+characters have $\rho=0$. The inclusion ranks are $10,21,33$, compared
+with full quotient dimensions $12,24,36$. Indeed,
+\[
+ \Delta_{21}=(A_3^6-1)(A_7-1)^2.
+\]
+Exact character-phase certificates for these examples are supplied.
+\end{example}
+
+\section{Explicit primitive-grid reduction coefficients}\label{sec:primitive}
+
+Away from the exceptional locus, the conductor normal form can be
+inverted to express all grid points through the primitive ones. For
+Hurwitz weights there is a particularly concrete answer that avoids
+character-field arithmetic.
+
+Let $\mathcal S_q$ be the multiplicative semigroup of positive integers
+whose prime factors divide $q$, including $1$. For $\Ree s>0$, define
+\begin{equation}\label{eq:C-smooth}
+ C_{r,u}(s)=\sum_{\substack{d\in\mathcal S_q\\du\equiv r\; (q)}}d^{-s},
+ \qquad 0\le r<q,\quad u\in U_q.
+\end{equation}
+The series is absolutely convergent, since
+$\sum_{d\in\mathcal S_q}d^{-\sigma}
+=\prod_{p\mid q}(1-p^{-\sigma})^{-1}$ for $\sigma>0$.
+
+\begin{theorem}[Primitive-grid extension]\label{thm:primitive}
+For $\Ree s>0$, the $q\times\varphi(q)$ matrix $C(s)$ satisfies every
+prime and divisor distribution relation with weights $p^s$, and its
+primitive rows form the identity matrix. It is the unique extension
+matrix from primitive-grid data. In particular,
+\begin{equation}\label{eq:Hurwitz-C}
+ \zeta(s,r/q)=\sum_{u\in U_q}C_{r,u}(s)\zeta(s,u/q)
+\end{equation}
+with the endpoint convention for $r=0$, initially for $\Ree s>1$ and
+then meromorphically wherever the coefficients are defined.
+\end{theorem}
+\begin{proof}
+For a primitive row $r$, the congruence $du\equiv r\pmod q$ forces
+$d$ to be prime to $q$, hence $d=1$. This gives the identity submatrix.
+For a prime distribution row indexed by $a\equiv0\pmod p$,
+\[
+ \sum_{pr\equiv a\;(q)}C_{r,u}(s)
+ =\sum_{\substack{d\in\mathcal S_q\\pdu\equiv a\;(q)}}d^{-s}
+ =p^s\sum_{\substack{d'\in\mathcal S_q\\d'u\equiv a\;(q)}}(d')^{-s}.
+\]
+In the last step $d'=pd$; conversely every $d'$ in the last sum is
+divisible by $p$, because $u$ is a unit and $a$ is divisible by $p$.
+The last expression is $p^sC_{a,u}(s)$. Prime sufficiency gives all
+divisor rows. Theorem~\ref{thm:universal} and the identity submatrix
+show that these $\varphi(q)$ independent columns exhaust the solution
+space. Hurwitz zeta satisfies the same distribution equations by
+regrouping its absolutely convergent defining series, proving
+\eqref{eq:Hurwitz-C}.
+\end{proof}
+
+\subsection{A finite formula, including negative spectral parameters}
+For $0\le r<q$, let
+\[
+ g=\gcd(r,q),\quad m=q/g,\quad a=r/g,
+ \quad P_r=\{p\mid q:p\nmid m\}.
+\]
+When $r=0$, this means $g=q$, $m=1$, $a=0$.
+For $p\in P_r$, put $h_{p,m}=\ord_m(p)$, with order one modulo one.
+
+\begin{theorem}[Finite residue formula]\label{thm:finite-C}
+The meromorphic continuation of \eqref{eq:C-smooth} is
+\begin{equation}\label{eq:C-finite}
+ C_{r,u}(s)=g^{-s}
+ \frac{\displaystyle
+ \sum_{\substack{0\le b_p<h_{p,m}\;(p\in P_r)\\
+ u\prod_{p\in P_r}p^{b_p}\equiv a\;(m)}}
+ \prod_{p\in P_r}p^{-s b_p}}
+ {\displaystyle\prod_{p\in P_r}(1-p^{-s h_{p,m}})}.
+\end{equation}
+Empty products have their usual value one. In particular,
+\begin{equation}\label{eq:C-endpoint}
+ C_{0,u}(s)=q^{-s}\prod_{p\mid q}(1-p^{-s})^{-1},
+\end{equation}
+independently of $u$.
+\end{theorem}
+\begin{proof}
+The congruence in \eqref{eq:C-smooth} forces the valuation of $d$ at
+an unsaturated prime, one dividing $m$, to be exactly $v_p(g)$.
+At a saturated prime, one not dividing $m$, it is at least $v_p(g)$.
+Thus $d=g\prod_{p\in P_r}p^{c_p}$ with $c_p\ge0$, and the remaining
+congruence is $u\prod p^{c_p}\equiv a\pmod m$.
+Write $c_p=b_p+h_{p,m}j_p$ and sum the independent geometric series in
+$j_p$. This proves the formula in $\Ree s>0$ and hence its meromorphic
+continuation. The endpoint has trivial congruence modulo one.
+\end{proof}
+
+Formula \eqref{eq:C-finite}, \emph{not} the divergent smooth-number
+series, is the definition used at negative real $s$. It has no pole at
+any nonzero real $s$, and the continued distribution identities remain
+valid there. At a zero of a displayed denominator, one should use the
+polynomial conductor normal form rather than cancel poles numerically.
+Some individual coefficients may have removable singularities, but
+Theorem~\ref{thm:determinant} gives the criterion for the entire
+primitive-grid coordinate system.
+
+\begin{corollary}[Exact support and signs]\label{cor:support}
+Let $H_r$ be the subgroup of $U_m$ generated by the classes of the
+primes in $P_r$. For every nonzero real $s$,
+\[
+ C_{r,u}(s)\ne0\quad\Longleftrightarrow\quad au^{-1}\in H_r.
+\]
+The number of supported primitive coordinates is
+\begin{equation}\label{eq:support-count}
+ \frac{\varphi(q)}{\varphi(m)}|H_r|.
+\end{equation}
+All supported coefficients are positive for $s>0$. For $s<0$, they
+all have sign $(-1)^{|P_r|}$.
+\end{corollary}
+\begin{proof}
+The numerator of \eqref{eq:C-finite} is a sum of positive real terms
+and is nonempty exactly under the subgroup condition. The reduction
+map $U_q\to U_m$ has fibers of cardinality
+$\varphi(q)/\varphi(m)$, giving \eqref{eq:support-count}.
+For $s>0$ every denominator factor is positive. For $s<0$ each of the
+$|P_r|$ denominator factors is negative, while the numerator and
+$g^{-s}$ are positive.
+\end{proof}
+
+\begin{corollary}[Complete monotonicity and normalization]\label{cor:monotone}
+For $s>0$ and $j\ge0$, put
+\begin{equation}\label{eq:W-definition}
+ W_{r,u}^{[j]}(s)=(-1)^j\frac{d^j}{ds^j}C_{r,u}(s)
+ =\sum_{\substack{d\in\mathcal S_q\\du\equiv r\;(q)}}
+ \frac{(\log d)^j}{d^s}.
+\end{equation}
+These quantities are nonnegative. Moreover,
+$\sum_u C_{r,u}(1)=1$ for every $r$, and
+$0\le C_{r,u}(k)\le1$ for integer $k\ge1$.
+\end{corollary}
+\begin{proof}
+The logarithmically weighted semigroup series converges locally
+uniformly in $\Ree s>0$, so termwise differentiation is valid.
+The constant grid vector satisfies the distribution equations at
+$s=1$, and its primitive entries are all one. Uniqueness of extension
+proves the row-sum identity. Monotonicity gives
+$C_{r,u}(k)\le C_{r,u}(1)\le1$.
+\end{proof}
+
+\begin{example}[Two reductions at denominator six]\label{ex:q6}
+The nontrivial coefficients for $r=2$ are
+\[
+ C_{2,1}(s)=\frac{2^s}{2^{2s}-1},\qquad
+ C_{2,5}(s)=\frac1{2^{2s}-1}.
+\]
+Thus, meromorphically,
+\begin{align}
+ \zeta(s,1/3)&=
+ \frac{2^s\zeta(s,1/6)+\zeta(s,5/6)}{2^{2s}-1},\label{eq:q6-one}\\
+ \zeta(s,1/2)&=
+ \frac{\zeta(s,1/6)+\zeta(s,5/6)}{3^s-1}.
+ \label{eq:q6-two}
+\end{align}
+At $s=1$, the coefficients in \eqref{eq:q6-one} are $2/3$ and $1/3$.
+At $s=-1$ they are $-2/3$ and $-4/3$, illustrating the sign theorem
+without using a divergent series. The poles at $s=0$ reflect a
+singular primitive basis, not a failure of the underlying distribution
+relations.
+\end{example}
+
+\subsection{Denominator certificates and construction cost}
+Let $M_p$ also denote, in this paragraph only, the pushforward matrix
+on grid vectors defined by
+\[
+ (M_pf)_r=\sum_{pu\equiv r\;(q)}f_u.
+\]
+To avoid confusion with the integer complement in
+Section~\ref{sec:det}, write that complement as $q_p=q/p^e$ here and
+put $h_p=\ord_{q_p}(p)$. Multiplication of residues gives
+$M_p^{e+h_p}=M_p^e$. For $z=p^{-s}$,
+\begin{equation}\label{eq:operator-inverse}
+ (I-zM_p)^{-1}
+ =\sum_{j=0}^{e-1}z^jM_p^j
+ +\frac{z^e}{1-z^{h_p}}\sum_{j=0}^{h_p-1}z^jM_p^{e+j}.
+\end{equation}
+This follows first from a geometric series for $|z|<1$, then as a
+rational matrix identity. The commuting product of these inverses,
+applied to vectors supported on $U_q$, is the extension $C(s)$.
+
+\begin{proposition}[A uniform rational denominator]\label{prop:denominator}
+For integer $k\ge1$, every reduced denominator of $C_{r,u}(k)$ divides
+\begin{equation}\label{eq:denominator-bound}
+ D_q(k)=\prod_{p^e\Vert q}
+ p^{k(e-1)}\bigl(p^{kh_p}-1\bigr).
+\end{equation}
+Its bit length is $O(kq\log q)$. The coefficients of the raw derivative
+$C_{r,u}^{(j)}(k)$, viewed as a polynomial in the symbols $\log p$,
+have denominators dividing $D_q(k)^{j+1}$.
+\end{proposition}
+\begin{proof}
+Every scalar coefficient on the right of
+\eqref{eq:operator-inverse} has denominator dividing
+$p^{k(e-1)}(p^{kh_p}-1)$. Multiplication over primes proves the first
+claim. Since $h_p\le q$ and $\sum_{p\mid q}\log p\le\log q$, its
+logarithm is at most a constant times $kq\log q$.
+The matrix product can be written as a ratio of integer polynomials in
+$p^s$, with denominator obtained from \eqref{eq:denominator-bound} by
+replacing $k$ with $s$. Repeated differentiation introduces polynomial
+factors in $\log p$ and raises the denominator power by at most one
+each time. For normalized Taylor coefficients, an additional factor
+$j!$ may be needed.
+\end{proof}
+
+The implementation computes \eqref{eq:C-finite} by convolution on
+residue classes modulo $m$, separately for each $m\mid q$. At a fixed
+$m$, each prime update takes at most $\varphi(m)^2$ rational arithmetic
+operations. A complete matrix can therefore be constructed in
+\[
+ O\!\left(\omega(q)\sum_{m\mid q}\varphi(m)^2+q\varphi(q)\right)
+ =O\bigl(\omega(q)q^2\bigr)
+\]
+rational arithmetic operations, using $\sum_{m\mid q}\varphi(m)=q$.
+This is an arithmetic-operation bound, not a constant-cost bit model
+or a claim of optimality. The denominator estimate supplies a
+conservative size control at positive integer orders.
+
+\section{All-orders Hurwitz--Stieltjes identities}\label{sec:stieltjes}
+
+Write the Laurent expansion as
+\begin{equation}\label{eq:stieltjes-laurent}
+ \zeta(1+t,x)=\frac1t+
+ \sum_{n\ge0}\frac{(-1)^n}{n!}\gamma_n(x)t^n,
+ \qquad x>0.
+\end{equation}
+Here $\gamma_n^{(k)}$ always means $k$ derivatives in $x$; a derivative
+on $C(s)$ is in the spectral variable. The coefficient identities in
+this section are analytic theorems, distinct from formal rank claims.
+
+\begin{theorem}[Derived Stieltjes reduction]\label{thm:derived-stieltjes}
+For $k\ge1$, $n\ge0$, and $x_r=r/q$ with the endpoint convention,
+\begin{equation}\label{eq:derived-stieltjes}
+ \boxed{\displaystyle
+ \gamma_n^{(k)}(x_r)=
+ \sum_{u\in U_q}\sum_{j=0}^n\binom nj
+ W_{r,u}^{[j]}(k+1)\,
+ \gamma_{n-j}^{(k)}(u/q).}
+\end{equation}
+All the coefficient functions are given by the finite formula
+\eqref{eq:C-finite} and its derivatives.
+\end{theorem}
+\begin{proof}
+Differentiating Hurwitz zeta in its parameter yields
+\[
+ \partial_x^k\zeta(1+t,x)=(-1)^k(1+t)_k\zeta(k+1+t,x).
+\]
+The pole in \eqref{eq:stieltjes-laurent} is independent of $x$, so for
+$k\ge1$ the left side is
+$\sum_n(-1)^n\gamma_n^{(k)}(x)t^n/n!$.
+Apply \eqref{eq:Hurwitz-C} at spectral parameter $k+1+t$ and multiply
+by the common scalar $(-1)^k(1+t)_k$. Taylor multiplication gives
+\eqref{eq:derived-stieltjes}, because
+$(-1)^j C_{r,u}^{(j)}=W_{r,u}^{[j]}$.
+\end{proof}
+
+This proof also explains why the harmonic-number master identity in
+Chapter 8 is compatible with the same reduction matrix at every
+Stieltjes order: the rising factorial is common to every rational
+argument. It does not create new independent distribution coordinates.
+
+\begin{theorem}[Underived Stieltjes reduction, with the pole term]\label{thm:underived}
+For $n\ge0$,
+\begin{equation}\label{eq:underived-stieltjes}
+ \boxed{\displaystyle
+ \gamma_n(x_r)=
+ \sum_{u\in U_q}\sum_{j=0}^n\binom nj
+ W_{r,u}^{[j]}(1)\gamma_{n-j}(u/q)
+ -\frac1{n+1}\sum_{u\in U_q}W_{r,u}^{[n+1]}(1).}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Apply \eqref{eq:Hurwitz-C} at $s=1+t$. The coefficients are analytic
+there. Multiplying their Taylor expansions by
+\eqref{eq:stieltjes-laurent}, the coefficient of $t^n$ receives the
+usual product terms and also
+$\sum_u C_{r,u}^{(n+1)}(1)/(n+1)!$ from the pole $1/t$.
+Multiplication by $(-1)^n n!$ converts that additional term to the
+negative last term of \eqref{eq:underived-stieltjes}. The coefficient
+of $1/t$ agrees because $\sum_u C_{r,u}(1)=1$.
+\end{proof}
+
+Omitting the last term would already give an incorrect formula for
+$\gamma_0$. The point is not a rank correction: a known scalar right
+side does not change a homogeneous rank. It is a correction to the
+actual analytic value identity.
+
+\begin{example}[An explicit first-order identity]
+From \eqref{eq:q6-one}, direct differentiation at $s=1$ gives
+\[
+ W_{2,1}^{[1]}(1)=\frac{10}{9}\log2,\qquad
+ W_{2,5}^{[1]}(1)=\frac89\log2.
+\]
+Consequently
+\begin{equation}\label{eq:gamma0-six}
+ \gamma_0(1/3)=\frac23\gamma_0(1/6)+\frac13\gamma_0(5/6)-2\log2.
+\end{equation}
+At $s=2$, the analogous coefficients give
+\begin{align}\label{eq:gamma1prime-six}
+ \gamma_1'(1/3)={}&\frac4{15}\gamma_1'(1/6)
+ +\frac1{15}\gamma_1'(5/6)\notag\\
+ &+\frac{68\log2}{225}\gamma_0'(1/6)
+ +\frac{32\log2}{225}\gamma_0'(5/6).
+\end{align}
+Since $\gamma_0'=-\psi'$, the signs can also be checked against the
+parameter-differentiated digamma multiplication identity.
+The verification program checks \eqref{eq:underived-stieltjes} through
+$n=2$ and \eqref{eq:gamma1prime-six} by numerical parameter
+differentiation of Stieltjes functions.
+\end{example}
+
+\section{Cyclotomic polylogarithm traces}\label{sec:traces}
+
+The same finite module applies to a second evaluation. Put
+$\zeta_m=\exp(2\pi\ii/m)$ and evaluate
+$e_x\mapsto\Li_s(\ee^{2\pi\ii x})$.
+For $\Ree s>1$, grouping the defining series by multiples of $p$ gives
+\[
+ \sum_{py=x}\Li_s(\ee^{2\pi\ii y})
+ =p^{1-s}\Li_s(\ee^{2\pi\ii x}).
+\]
+Thus the weights are now $A_p=p^{1-s}$, and analytic continuation
+extends the identity wherever the individual expressions are defined.
+
+For a primitive character $\chi$ of conductor $f\mid q$, define
+\begin{equation}\label{eq:trace-definition}
+ \cP_{q,\chi}(s)=
+ \sum_{u\in U_q}\chi(u)\Li_s(\zeta_q^u),\qquad
+ \tau(\chi)=\sum_{a\in U_f}\chi(a)\zeta_f^a.
+\end{equation}
+At conductor one take $\tau(\mathbf1)=1$ and $L(s,\mathbf1)=\zeta(s)$.
+
+\begin{theorem}[Conductor-lifted trace identity]\label{thm:trace}
+As a meromorphic identity, and with removable singularities interpreted
+by continuation,
+\begin{equation}\label{eq:trace-formula}
+ \boxed{\displaystyle
+ \cP_{q,\chi}(s)=
+ (q/f)^{1-s}
+ \prod_{\substack{p\mid q\\p\nmid f}}
+ \bigl(1-\chi(p)p^{s-1}\bigr)
+ \tau(\chi)L(s,\overline\chi).}
+\end{equation}
+For every $q>1$, the left side is an entire function of the spectral
+variable $s$.
+\end{theorem}
+\begin{proof}
+At primitive conductor $f>1$, absolute convergence and the primitive
+Gauss-sum identity give
+\[
+ \sum_{a\in U_f}\chi(a)\Li_s(\zeta_f^a)
+ =\sum_{n\ge1}\frac{\sum_a\chi(a)\zeta_f^{an}}{n^s}
+ =\tau(\chi)L(s,\overline\chi).
+\]
+The Gauss-sum convention, including the complex conjugate on $\chi$,
+is the one in~\cite{dlmf-dirichlet}. Applying
+\eqref{eq:conductor-normal} with $A_p=p^{1-s}$ multiplies this
+primitive trace by $E_{q,\chi}$. Extracting $p^{1-s}$ from each
+first-appearance factor gives precisely the factor in
+\eqref{eq:trace-formula}. The conductor-one case follows directly
+from $\Li_s(1)=\zeta(s)$ and the same polynomial identity.
+
+For completeness, when $z=\zeta_q^u\ne1$, regrouping by residues gives
+\begin{equation}\label{eq:polylog-Hurwitz-DFT}
+ \Li_s(z)=q^{-s}\sum_{a=1}^q z^a\zeta(s,a/q).
+\end{equation}
+Hurwitz zeta has only its simple pole at $s=1$, whose coefficient in
+this finite sum is $\sum_a z^a=0$. Hence $\Li_s(z)$ is entire in $s$.
+All arguments in the primitive level-$q$ trace differ from one.
+\end{proof}
+
+\begin{remark}[The character phase is consequential]
+For the order-four character modulo five with $\chi(2)=\ii$, the
+level-ten lifting factor is $2^{1-s}-\ii$, not
+$2^{1-s}+\ii$. A complex-character numerical check is included to
+catch an accidental interchange of $\chi$ and $\overline\chi$.
+Real quadratic examples alone would not detect that error.
+\end{remark}
+
+\subsection{Exact nonprincipal vanishing orders}
+For a nonprincipal primitive $\chi$, set
+\[
+ \rho_\chi=\#\{p\mid q:p\nmid f,\ \chi(p)=1\}.
+\]
+These are the same conductor statistics that controlled the
+primitive-grid jet defects at Hurwitz order zero.
+
+\begin{theorem}[Character trace zeros at order one]\label{thm:trace-zero}
+The entire function $\cP_{q,\chi}(s)$ has a zero of exact order
+$\rho_\chi$ at $s=1$, where order zero means a nonzero value.
+All lower derivatives vanish, and
+\begin{align}\label{eq:trace-leading}
+ \cP_{q,\chi}^{(\rho_\chi)}(1)
+ ={}&(-1)^{\rho_\chi}\rho_\chi!\,
+ \tau(\chi)L(1,\overline\chi)\notag\\
+ &\times\prod_{\substack{p\mid q,\ p\nmid f\\\chi(p)=1}}\log p
+ \prod_{\substack{p\mid q,\ p\nmid f\\\chi(p)\ne1}}(1-\chi(p)).
+\end{align}
+\end{theorem}
+\begin{proof}
+Each factor with $\chi(p)=1$ in \eqref{eq:trace-formula} is
+$1-p^{s-1}=-(s-1)\log p+O((s-1)^2)$.
+All other displayed factors are nonzero at $s=1$.
+A primitive Gauss sum is nonzero, and Dirichlet's nonvanishing theorem
+states $L(1,\overline\chi)\ne0$ for nonprincipal characters
+\cite[Eq.~25.15.9]{dlmf-dirichlet}. Thus there is no additional zero.
+Taking the first nonzero Taylor coefficient proves the formula.
+\end{proof}
+
+Increasing the exponents of primes already present in $q$ changes
+higher Taylor coefficients but not this first nonzero derivative:
+$(q/f)^{1-s}$ equals one at $s=1$. This invariance provides an
+additional family of identities between traces at different levels.
+
+\subsection{The principal trace and its pole cancellation}
+Write $\cP_q=\cP_{q,\mathbf1}$ and define
+\[
+ r=\omega(q),\quad P=\prod_{p\mid q}\log p,\qquad
+ B=\log q-\tfrac12\log\rad(q).
+\]
+The conductor-one factor contains a pole, so the vanishing order is
+one less than the number of primes, not equal to that number.
+
+\begin{theorem}[Principal trace jet generator]\label{thm:principal}
+In a neighborhood of $t=0$,
+\begin{equation}\label{eq:principal-generator}
+ \boxed{\displaystyle
+ \cP_q(1+t)=(-1)^rP\,t^{r-1}\,
+ \ee^{-Bt}\,[t\zeta(1+t)]
+ \prod_{p\mid q}\frac{\sinh(t\log p/2)}{t\log p/2}.}
+\end{equation}
+In particular its zero at $s=1$ has exact order $r-1$, and
+\begin{align}
+ \cP_q^{(j)}(1)&=0 &&(0\le j<r-1),\label{eq:principal-vanish}\\
+ \cP_q^{(r-1)}(1)&=(-1)^r(r-1)!P,\label{eq:principal-first}\\
+ \cP_q^{(r)}(1)&=(-1)^r r!P(\gamma-B),\label{eq:principal-second}\\
+ \cP_q^{(r+1)}(1)&=(-1)^r(r+1)!P
+ \left[-\gamma_1-B\gamma+\frac{B^2}{2}
+ +\frac1{24}\sum_{p\mid q}(\log p)^2\right].
+ \label{eq:principal-third}
+\end{align}
+Here $\gamma_1$ is the ordinary first Stieltjes constant in
+\eqref{eq:stieltjes-laurent}.
+\end{theorem}
+\begin{proof}
+The principal case of \eqref{eq:trace-formula} is
+\[
+ \cP_q(1+t)=q^{-t}\prod_{p\mid q}(1-p^t)\zeta(1+t).
+\]
+Use $1-\ee^x=-x\ee^{x/2}\sinh(x/2)/(x/2)$ in every factor.
+This proves \eqref{eq:principal-generator}.
+The factors in square brackets and in the hyperbolic-sine product are
+analytic and equal to one at zero. Expanding them gives
+\[
+ t\zeta(1+t)=1+\gamma t-\gamma_1t^2+O(t^3),\qquad
+ \prod_p\frac{\sinh(t\log p/2)}{t\log p/2}
+ =1+\frac{t^2}{24}\sum_p(\log p)^2+O(t^4).
+\]
+Multiplication by $\ee^{-Bt}$ gives all the displayed derivatives.
+\end{proof}
+
+\subsection{Concrete exact identities}
+The following examples are proved consequences of the preceding
+theorems, not integer-relation conjectures. The derivatives are in the
+\emph{order} of the polylogarithm, not its argument.
+
+At level thirty,
+\begin{align}
+ \sum_{u\in U_{30}}\Li_1(\zeta_{30}^u)&=0,\label{eq:q30-zero}\\
+ \sum_{u\in U_{30}}\Liord{1}{\zeta_{30}^u}&=0,\label{eq:q30-first}\\
+ \sum_{u\in U_{30}}\Liord{2}{\zeta_{30}^u}
+ &=\boxed{-2\log2\log3\log5}.\label{eq:q30-second}
+\end{align}
+The third derivative of this trace is
+$-6\log2\log3\log5\,[\gamma-\frac12\log30]$.
+At level $210$, derivatives of orders zero, one, and two vanish, while
+\begin{equation}\label{eq:q210}
+ \sum_{u\in U_{210}}\Liord{3}{\zeta_{210}^u}
+ =6\log2\log3\log5\log7.
+\end{equation}
+
+For the quadratic character $\chi_3$ with $\chi_3(1)=1$ and
+$\chi_3(2)=-1$, the primitive trace at order one is
+$\tau(\chi_3)L(1,\chi_3)=\ii\pi/3$. Since
+$\chi_3(7)=\chi_3(13)=1$, one obtains
+\begin{align}
+ \sum_{u\in U_{21}}\chi_3(u)\Liord{1}{\zeta_{21}^u}
+ &=-\frac{\ii\pi}{3}\log7,\label{eq:chi3-21}\\
+ \sum_{u\in U_{273}}\chi_3(u)\Liord{2}{\zeta_{273}^u}
+ &=\frac{2\ii\pi}{3}\log7\log13.\label{eq:chi3-273}
+\end{align}
+In the first equation the order-zero trace vanishes; in the second,
+both order-zero and first-order traces vanish.
+Likewise the character $\chi_4$ gives
+\begin{equation}\label{eq:chi4-20}
+ \sum_{u\in U_{20}}\chi_4(u)\Liord{1}{\zeta_{20}^u}
+ =-\frac{\ii\pi}{2}\log5.
+\end{equation}
+These primitive trace constants follow directly from
+$\Li_1(z)=-\log(1-z)$ with the values continued from inside the unit
+disk, so the signs do not depend on an unspecified logarithm branch.
+
+For the real quadratic character $\chi_5$, positive on residues
+$1,4$ and negative on $2,3$, let $\phi=(1+\sqrt5)/2$.
+Pairing conjugates in the primitive trace gives
+\[
+ \cP_{5,\chi_5}(1)
+ =2\log\frac{\sin(2\pi/5)}{\sin(\pi/5)}=2\log\phi.
+\]
+As $\chi_5(11)=1$,
+\begin{equation}\label{eq:chi5-55}
+ \sum_{u\in U_{55}}\chi_5(u)\Liord{1}{\zeta_{55}^u}
+ =-2\log\phi\log11.
+\end{equation}
+This derivation needs no numerical integer-relation search or
+unproved independence statement about logarithms.
+
+\subsection{A stable independent formula for numerical checks}
+Differentiation of \eqref{eq:polylog-Hurwitz-DFT} at its cancelled pole
+gives, for $z=\zeta_q^u\ne1$,
+\begin{equation}\label{eq:stable-polylog-jet}
+ \Liord{k}{z}
+ =\frac{(-1)^k}{q}\sum_{a=1}^q z^a
+ \sum_{j=0}^k\binom kj(\log q)^{k-j}\gamma_j(a/q).
+\end{equation}
+There is no pole term, because its complete Fourier coefficient
+vanishes identically. This supplies a finite Stieltjes-coordinate
+evaluator for the trace identities, independently of their
+Euler-factor right sides. In development, direct tiny-step numerical
+differentiation of a polylogarithm routine near integral order gave
+an unreliable trace derivative; the pole-cancelled formula avoids
+that cancellation problem. This observation is an implementation
+diagnostic, not a claimed theorem about all versions of a library.
+
+\section{The Gaussian \texorpdfstring{$S_4$}{S4} conjecture: an exact obstruction}\label{sec:s4}
+
+The manuscript uses decreasing nested indices:
+\[
+ \Li_{a,b}(x,y)=\sum_{m>n\ge1}\frac{x^my^n}{m^a n^b},\qquad
+ g_{a,b}=\Imm\Li_{a,b}(\ii,1),\quad G=\beta(2).
+\]
+Its equation \code{gauss:eq:S4-closed} is the following candidate.
+
+\begin{conjecture}[The manuscript's weight-five evaluation]\label{conj:S4}
+With $H_0=0$ and $H_n=\sum_{j=1}^n1/j$,
+\begin{equation}\label{eq:S4-conjecture}
+ S_4:=\sum_{n\ge0}\frac{(-1)^nH_n}{(2n+1)^4}
+ =\frac{4g_{4,1}-3g_{3,2}-9g_{2,3}}7
+ +\frac{\pi^5}{224}-\frac{27G\zeta(3)}{224}
+ -2\beta(4)\log2.
+\end{equation}
+\end{conjecture}
+
+We retain this as a conjecture here. The new rigorous result is a
+specific obstruction to deriving it from products of two single
+polylogarithms alone, in the exact presentation defined next. This is
+more informative than a failed numerical search, but it must not be
+misread as an obstruction to all possible proofs.
+
+\begin{lemma}[An exact even-inner-index filter]\label{lem:S4-filter}
+One has
+\begin{equation}\label{eq:S4-filter}
+ S_4=\Imm\bigl(\Li_{4,1}(\ii,1)+\Li_{4,1}(\ii,-1)\bigr).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The inner sum in the right side is
+\[
+ \sum_{n<m}\frac{1+(-1)^n}{n}=H_{\lfloor(m-1)/2\rfloor}.
+\]
+The imaginary part of $\ii^m$ vanishes at even $m$ and is $(-1)^j$
+at $m=2j+1$. Substitution gives the defining sum for $S_4$.
+The double sums are absolutely convergent, so this rearrangement is
+legitimate.
+\end{proof}
+
+\subsection{A fully specified finite law vocabulary}
+Introduce formal coordinates
+\[
+ X_{a;r,t}=\Imm\Li_{a,5-a}(\ii^r,\ii^t),\qquad 1\le a\le4.
+\]
+Complex conjugation identifies $X_{a;-r,-t}=-X_{a;r,t}$, and a pair
+of even residues has imaginary part zero. Choose the six representatives
+\begin{equation}\label{eq:S4-pairs}
+ (r,t)\in\{(0,1),(1,0),(1,1),(1,2),(1,3),(2,1)\}.
+\end{equation}
+They give $24$ double coordinates. Append three formal single-value
+product coordinates
+\[
+ A=\pi^5,\qquad B=G\zeta(3),\qquad C=\beta(4)\log2.
+\]
+For each $p+v=5$, $p,v\ge1$, and $r,t\in\Z/4\Z$, include the
+imaginary parts of the two identities
+\begin{align}
+ \Li_p(\ii^r)\Li_v(\ii^t)
+ ={}&\Li_{p,v}(\ii^r,\ii^t)+\Li_{v,p}(\ii^t,\ii^r)
+ +\Li_5(\ii^{r+t}),\label{eq:S4-stuffle}\\
+ \Li_p(\ii^r)\Li_v(\ii^t)
+ ={}&\sum_{j=0}^{p-1}\binom{v-1+j}{j}
+ \Li_{v+j,p-j}(\ii^t,\ii^{r-t})\notag\\
+ &+\sum_{j=0}^{v-1}\binom{p-1+j}{j}
+ \Li_{p+j,v-j}(\ii^r,\ii^{t-r}).\label{eq:S4-shuffle}
+\end{align}
+The first is the colored stuffle law. The second follows by shuffling
+$0^{p-1}(\ii^r)^{-1}$ with $0^{v-1}(\ii^t)^{-1}$ in the
+outer-letter-first iterated-integral convention; the binomial
+coefficients count the interspersed zero letters.
+
+Use the standard single-value reductions at fourth roots of unity.
+Their imaginary products at total weight five lie in the three atoms
+$A,B,C$. At the divergent factor $\Li_1(1)$, use regularized constant
+term zero. Only a linear divergence polynomial occurs here: a weight-one
+factor can multiply a convergent weight-four factor, but two divergent
+weight-one factors cannot occur at total weight five in this vocabulary.
+Thus shuffle and stuffle regularization agree on the degree-zero and
+degree-one terms being used; the general regularization framework is
+standard~\cite{racinet}. The formal row-space result below would remain
+well-defined even if these boundary rows were omitted; we report that
+smaller matrix separately.
+
+After conjugation reduction and removal of zero rows there are $96$
+rows and $27$ columns. Duplicate nonzero rows are intentionally retained,
+so the law-generation specification is simple and replayable. Without
+products containing $\Li_1(1)$ there are $88$ rows.
+
+\begin{theorem}[A finite row-space obstruction]\label{thm:S4-obstruction}
+Let $M$ be the $96\times27$ rational matrix just defined. Its rank is
+$20$. The row corresponding, via \eqref{eq:S4-filter}, to
+$224$ times the difference between the two sides of
+\eqref{eq:S4-conjecture} is
+\begin{equation}\label{eq:S4-target}
+ T=96X_{4;1,0}+96X_{3;1,0}+288X_{2;1,0}
+ +224X_{4;1,2}-A+27B+448C.
+\end{equation}
+It does not lie in the row span of $M$. The augmented matrix has rank
+$21$. The unregularized $88$-row matrix has rank $19$.
+\end{theorem}
+\begin{proof}
+The nonmembership assertion has a particularly small certificate.
+Define a linear functional $w$ on the $27$ coordinates by the following
+eight nonzero entries, and set it to zero on every other coordinate,
+including $A,B,C$:
+\begin{center}
+\begin{tabular}{cr@{\qquad}cr}
+\toprule
+Coordinate & $w$ & Coordinate & $w$\\\midrule
+$X_{1;1,0}$&$-2$&$X_{2;0,1}$&$1$\\
+$X_{2;1,0}$&$3$&$X_{2;1,3}$&$-1$\\
+$X_{3;0,1}$&$-3$&$X_{3;1,0}$&$-1$\\
+$X_{3;1,3}$&$-1$&$X_{4;0,1}$&$2$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Substitution in the two finite row formulas
+\eqref{eq:S4-stuffle}--\eqref{eq:S4-shuffle}, for their stated index
+ranges, gives $Mw=0$. This is $96$ exact rational zero checks, recorded
+in the certificate. On the target, however,
+\[
+ w(T)=96(-1)+288(3)=768\ne0.
+\]
+Thus no linear combination of the declared rows equals $T$.
+The rank assertions are additional finite exact calculations: Gaussian
+elimination gives ranks $20,21,19$, respectively. Both the generator
+using symbolic rational arithmetic and an independent standard-library
+rational replay program are supplied. The nonmembership proof itself
+needs only the displayed eight-entry witness, not the rank calculation.
+\end{proof}
+
+This theorem remains true after adding arbitrary relations supported
+only on the three product atoms, because $w$ annihilates those atoms.
+It does not remain a theorem about an enlarged multiple-polylogarithm
+presentation unless the new rows are also checked. Products involving
+doubles, elimination through depth three, distribution at other levels,
+or functional equations at transformed arguments may provide the missing
+relation. The witness directs future searches toward precisely the
+relations on which it does not vanish.
+
+\subsection{Fresh numerical evidence, with its exact limitation}
+An independent integral comparison uses
+\begin{align}
+ S_4&=-\frac16\int_0^1
+ \frac{(-\log x)^3\log(1+x^2)}{1+x^2}\,dx,\label{eq:S4-integral}\\
+ \Li_{a,b}(z,1)&=\frac1{(a-1)!}\int_0^1
+ (-\log t)^{a-1}\frac{z\Li_b(zt)}{1-zt}\,dt.
+ \label{eq:double-integral}
+\end{align}
+For \eqref{eq:S4-integral}, expand
+$\sum_{n\ge0}H_n(-x^2)^n=-\log(1+x^2)/(1+x^2)$ and integrate.
+For \eqref{eq:double-integral}, interchange absolutely convergent
+power series inside the integral and use
+$\int_0^1t^{m-1}(-\log t)^{a-1}\,dt=(a-1)!/m^a$.
+The relevant boundary values follow by dominated convergence.
+
+At $55$ decimal working digits the independent integral evaluations give
+\[
+ S_4=-0.01049345629733504345335675100620175196351061887731976151\ldots
+\]
+and the residual in \eqref{eq:S4-conjecture} is approximately
+$7.17\times10^{-57}$. This is floating-point agreement, not an interval
+proof and not a proof that the residual is exactly zero. The claim that
+has been proved is the finite-presentation obstruction, not the
+conjectured evaluation.
+
+\section{Corrections and clarifications for the manuscript}\label{sec:audit}
+
+\subsection{Replace the distribution-rank experiment by a defined theorem}
+Replace the experimental-only formulation at
+\code{tower:thm:rank} by Corollary~\ref{cor:anchored}, with an explicit
+prime/divisor row definition. Retain the explanation that formal quotient
+dimension does not prove numerical independence. The same addition
+supplies the uniform parity count in Chapter 7 and all-order jet
+extensions in Chapter 8. The historical data may remain as provenance,
+but should not be described as the proof of the uniform statement.
+
+At exceptional weights, do not infer a rank jump from a failed inverse.
+Theorem~\ref{thm:universal} gives a globally valid conductor basis;
+Theorems~\ref{thm:determinant} and \ref{thm:smith} identify the separate
+failure of primitive-grid coordinates. A proof based only on their
+inversion would miss this distinction.
+
+\subsection{The cubic log-gamma moment already has a named-constant formula}
+Chapter 7, \code{integral:neg:cubic}, correctly observes that a small
+basket of single zeta derivatives did not explain the cubic moment.
+However, its claim that finding the appropriate named Tornheim-type
+atoms is still open is superseded by Bailey--Borwein--Borwein:
+their paper explicitly evaluates the cubic moment in Theorem 6 and
+equation (11), using derivatives of Tornheim--Witten zeta
+functions~\cite{bbb}. The appropriate correction is to distinguish an
+existing formula in that larger vocabulary from the separate question
+of reduction to a smaller vocabulary. Appendix~\ref{app:cubic} gives
+the formula in the notation used here and an independent Fourier
+coefficient derivation.
+
+This is a literature correction, not a new evaluation claimed by this
+article. It does not imply that all derivatives appearing there reduce
+to ordinary zeta derivatives or classical single polylogarithms.
+
+\subsection{At mixed Gaussian points the relevant involution swaps arguments}
+The stuffle relation identifies a symmetric combination under
+\[
+ (a,b;x,y)\longmapsto(b,a;y,x),
+\]
+not merely $(a,b)\mapsto(b,a)$ with $(x,y)$ fixed. Thus at a mixed
+point the complementary antisymmetric combination is
+\[
+ \Li_{a,b}(x,y)-\Li_{b,a}(y,x).
+\]
+It need not vanish when $a=b$ and $x\ne y$. The manuscript's
+``all depth-two content'' sentence following its symmetric Gaussian
+formulas should be restricted to the paired involution. Nothing in
+this correction asserts that a nonzero antisymmetric combination is
+numerically independent of single-value products.
+
+\begin{proposition}[A nonzero mixed diagonal]\label{prop:mixed-diagonal}
+One has the strict inequality
+\begin{equation}\label{eq:mixed-positive}
+ \Imm\bigl(\Li_{2,2}(-1,\ii)-\Li_{2,2}(\ii,-1)\bigr)>0.
+\end{equation}
+\end{proposition}
+\begin{proof}
+The general double-integral formula, with $\Li_b(xyt)$ in the
+numerator, gives their difference as
+\[
+ -\int_0^1(-\log t)\,
+ \frac{(1+\ii)\Li_2(-\ii t)}{(1+t)(1-\ii t)}\,dt.
+\]
+Write $\operatorname{Ti}_2(t)=\int_0^t\arctan(v)\,dv/v>0$ for
+$0<t\le1$. Then
+$\Li_2(-\ii t)=\tfrac14\Li_2(-t^2)-\ii\operatorname{Ti}_2(t)$.
+The imaginary part of the displayed integrand, including $-\log t$,
+is
+\[
+ \frac{-\log t}{(1+t)(1+t^2)}
+ \left[(1-t)\operatorname{Ti}_2(t)
+       -\frac{1+t}{4}\Li_2(-t^2)\right].
+\]
+It is strictly positive on $(0,1)$, since $\Li_2(-t^2)<0$.
+The integral converges, proving \eqref{eq:mixed-positive}.
+\end{proof}
+
+\subsection{Keep three meanings of a certificate distinct}
+The polynomial row certificates prove formal identities from a defined
+law vocabulary. Their analytic evaluations require the convergence and
+continuation arguments supplied above. Floating-point residuals test
+implementations but prove neither formal row membership nor equality of
+general transcendental numbers. In particular, Theorem~\ref{thm:S4-obstruction}
+and the small numerical residual for $S_4$ are fully compatible facts.
+A proof-assistant port would add another layer of verification; none is
+claimed for this package.
+
+\section{Reproducible computations and integration}\label{sec:computations}
+
+\subsection{Exact checks actually executed}
+The package's exact verification program tests every $2\le q\le60$.
+For each denominator, it uses five weight patterns: $A_p=p^2$, all
+$A_p=1$, all $A_p=0$, all $A_p=-1$, and a mixed zero/nonzero pattern.
+In each of the resulting $295$ cases it checks the full rank,
+anchored rank, and applicable even/odd ranks with exact rational
+arithmetic. These include deliberately resonant and zero weights.
+
+A second set of $295$ cases uses spectral orders
+$s=-2,-1,1,2,3$ for the same denominators. It constructs
+\eqref{eq:C-finite} exactly and checks every divisor row, the identity
+primitive submatrix, the predicted support counts, the sign rule, and
+the endpoint formula. Negative orders use finite rational continuation,
+not an infinite series. Four complete matrices are included as JSON
+certificates, for $(q,s)=(12,2),(21,-1),(30,3),(60,2)$.
+
+The character verification covers the same denominator range. Characters
+are represented by rational phases modulo one, not approximate complex
+numbers. It checks conductor counts, the root multiplicities and pure
+powers in \eqref{eq:determinant}, and the central primitive-jet rank
+profiles. Character examples for levels $12,21,30$ are supplied.
+
+The $S_4$ matrix and the eight-entry obstruction witness are regenerated
+from the declared laws, then replayed independently with
+\code{fractions.Fraction}. The replay checks all $96$ annihilations,
+the target pairing $768$, and ranks $20$ and $21$.
+Finite regression ranges support the software; the uniform statements
+are established by the proofs, not by extrapolation from these tests.
+
+\subsection{Numerical diagnostics actually executed}
+The numerical program was run at $55$ decimal working digits. It checks
+seven trace/phase identities, three underived Stieltjes identities, one
+parameter-differentiated Stieltjes identity, and the $S_4$ integral
+comparison. Trace derivatives use \eqref{eq:stable-polylog-jet} with
+additional guard digits, while a nonintegral-order complex-character
+phase check uses direct polylogarithms. No target Euler-factor identity
+is used to evaluate its own trace side.
+
+\begin{center}
+\begin{tabular}{p{0.56\textwidth}r}
+\toprule
+Diagnostic family & Largest observed absolute residual\\\midrule
+Trace and complex-character checks & $5.77\times10^{-56}$\\
+Underived Stieltjes checks, $n=0,1,2$ & $8.16\times10^{-56}$\\
+Derived Stieltjes check, $k=n=1$ & $3.27\times10^{-55}$\\
+$S_4$ independent integral comparison & $7.17\times10^{-57}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Residuals smaller than the working precision can occur because rounded
+real parts coincide or because extra guard digits are retained. They
+are not claims of that many correct decimal places. These experiments
+use arbitrary-precision floating point, not interval arithmetic, and
+the JSON records say so explicitly.
+
+\subsection{Files and reproduction}
+The article is self-contained in \code{article/distribution\_jets.tex}.
+The principal programs are:
+\begin{center}
+\begin{tabular}{p{0.43\textwidth}p{0.50\textwidth}}
+\toprule
+File under \code{code/} & Purpose\\\midrule
+\code{distribution.py} & Exact distribution rows, rational ranks, finite normal forms.\\
+\code{verify\_exact.py} & Uniform-range regression checks and matrix certificates.\\
+\code{verify\_characters.py} & Exact character phases, determinant factors, and jet profiles.\\
+\code{verify\_s4\_presentation.py} & Generate the declared Gaussian row system and witness.\\
+\code{replay\_certificate.py} & Standard-library replay of the $S_4$ certificate.\\
+\code{verify\_numeric.py} & Separate trace, Stieltjes, and $S_4$ numerical diagnostics.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The distribution and replay modules use only the Python standard library.
+The character generator and symbolic Gaussian generator use SymPy;
+numerical diagnostics use mpmath. The versions used in this run are
+recorded in the package. The \code{integration/} directory provides
+editorial replacement text and a label map rather than silently
+rewriting the live manuscript. Source paths, inspected Git blob hashes,
+and the repository commit are recorded in \code{provenance.json}.
+No repository file was changed remotely.
+
+\section{Further research questions}\label{sec:future}
+
+\subsection{Complete the proof of the weight-five conjecture}
+The most direct next problem is to prove or refute
+Conjecture~\ref{conj:S4}. The exact witness makes an enlarged search
+more targeted: generate candidate new laws, apply $w$ first, and
+prioritize laws with nonzero pairing. Promising sources include
+products of a single and a double polylogarithm with elimination of
+triples, regularized distribution relations, and argument-changing
+functional equations. A successful proof should include the additional
+law instances and an exact final row combination, not just a larger
+integer-relation search.
+
+\subsection{Integral and modular versions of the weighted module}
+The proof of Theorem~\ref{thm:universal} divides by character group
+orders and works over a characteristic-zero splitting field. What is
+the exact integral structure of the independently weighted module?
+At ordinary weights, classical integral freeness provides an important
+benchmark. At general weights, one should determine torsion and the
+primes at which the conductor Fourier method ceases to describe the
+integral lattice. In positive characteristic, nonsemisimple character
+actions can change the argument; the characteristic-zero theorem
+alone does not settle that problem.
+
+\subsection{Multivariate jets and intersection multiplicities}
+Independent variables $t_p$ in $A_p=\exp(t_p)$ give a multivariate
+version of the normal form. The module remains free by base change,
+but the primitive-grid inclusion has a union of coordinate and
+cyclotomic divisors rather than one-variable Smith factors. It would
+be useful to compute its Fitting ideals, truncated multigraded ranks,
+and optimal minimal jet data. The determinant gives the first
+invariant, not the entire multivariate classification.
+
+\subsection{Sparse algorithms and certified numerical evaluation}
+The residue-subgroup support theorem can be used to avoid dense
+matrices. Can one give output-sensitive complexity bounds in terms of
+$\sum_r |\operatorname{supp}C_r|$, rather than $q^2$? Can the
+conductor basis be combined with interval arithmetic to evaluate
+spectral jets uniformly near resonances, without catastrophic
+cancellation? The coefficients have explicit denominators at positive
+integer orders; a certified remainder analysis for analytic jets would
+complement that exact arithmetic structure.
+
+\subsection{Trace identities at greater depth}
+For multiple polylogarithms, distributing a root argument interacts
+with several nested indices and with prefix products. A useful
+extension would identify an explicit finite module whose degree-one
+case is the present theory and whose higher-depth relations remain
+compatible with shuffle and stuffle. One should not assume that the
+rank simply becomes a power of $\varphi(q)$: depth, convergence,
+regularization, and diagonal terms all enter.
+
+\subsection{Arithmetic meaning of the trace-jet constants}
+Theorems~\ref{thm:trace-zero} and \ref{thm:principal} identify exact
+vanishing orders and first nonzero coefficients. The higher
+coefficients involve $L$-derivatives, Stieltjes constants, and
+logarithms. Which additional functional equations reduce their
+arithmetic vocabulary? Any claim of minimality must specify a
+comparison algebra and distinguish formal, motivic, and numerical
+independence. The present rank theorem alone gives none of those
+numerical lower bounds.
+
+\subsection{Log-gamma moments beyond the known Tornheim formula}
+The cubic moment should be studied starting from its existing
+Tornheim--Witten derivative expression, not by rediscovering the named
+atoms. Useful concrete questions include reductions among the
+particular derivatives $T_c,T_{ac},T_{ab}$, better certified evaluation
+of those derivatives, and the organization of higher log-gamma moments
+by Fourier resonance patterns. Any proposed smaller closed form should
+be tested against the established larger-vocabulary identity.
+
+\subsection{A proof-assistant development}
+A staged formalization can begin with the finite module: define the
+fiber rows, prove prime sufficiency, establish character-block edges,
+and verify the monic conductor normal form. This isolates finite
+algebra from analytic continuation. The second stage can formalize
+Hurwitz and polylogarithm evaluations and their local coefficient
+identities. The small $S_4$ annihilator is a separate attractive target
+for a finite rational certificate checker. None of these future
+formalizations is asserted to have been completed by the present work.
+
+\clearpage
+\appendix
+\section{The known cubic log-gamma formula in Tornheim notation}\label{app:cubic}
+
+Define, in an open neighborhood of $(1,1,1)$,
+\[
+ T(a,b,c)=\sum_{m,n\ge1}\frac1{m^a n^b(m+n)^c}.
+\]
+The series and all finite partial derivatives there converge
+absolutely. Let $T_c,T_{ac},T_{ab}$ mean the indicated partial
+derivatives evaluated at $(1,1,1)$, and put
+$L=\log(2\pi)$, $A=\gamma+L$. A form of the
+Bailey--Borwein--Borwein evaluation~\cite[Eq.~(11), Theorem~6]{bbb} is
+\begin{align}\label{eq:cubic-known}
+ \int_0^1\log^3\Gamma(x)\,dx
+ ={}&\frac{L^3}{8}+\frac{L\pi^2}{32}+\frac{LA^2}{8}
+ -\frac{3LA\zeta'(2)}{2\pi^2}
+ +\frac{3L\zeta''(2)}{4\pi^2}+\frac{3\zeta(3)}{16}\notag\\
+ &+\frac3{8\pi^2}
+ \bigl[2A^2\zeta(3)-2AT_c+2T_{ac}-T_{ab}\bigr].
+\end{align}
+Here $T_c=2\partial_u\zeta(u,1)|_{u=2}$, where in this sentence
+$\zeta(u,1)=\sum_{m>n\ge1}m^{-u}n^{-1}$ is the \emph{double zeta},
+not the Hurwitz zeta. This follows by partial fractions and identifies
+our notation with the published formula.
+
+A direct derivation is short. Kummer's Fourier expansion gives the
+mean $L/2$ and positive-frequency coefficients
+\[
+ \alpha_n=\frac1{4n}-\frac{\ii(A+\log n)}{2\pi n}
+ \qquad(n\ge1)
+\]
+for $\log\Gamma(x)$. The negative-frequency coefficients are their
+complex conjugates. Taking the zero-frequency coefficient of the
+cube yields
+\begin{equation}\label{eq:cubic-fourier}
+ (L/2)^3+6(L/2)\sum_{n\ge1}|\alpha_n|^2
+ +6\Ree\sum_{m,n\ge1}\alpha_m\alpha_n
+ \overline{\alpha_{m+n}}.
+\end{equation}
+The first sum is
+\[
+ \sum_{n\ge1}|\alpha_n|^2
+ =\frac{\pi^2}{96}+\frac{A^2}{24}
+ -\frac{A\zeta'(2)}{2\pi^2}+\frac{\zeta''(2)}{4\pi^2}.
+\]
+For the double sum, expand the three factors. The constant term uses
+$T(1,1,1)=2\zeta(3)$. Terms linear in the logarithms leave only the
+$\log(m+n)$ sum, namely $-T_c$; the quadratic terms give
+$2T_{ac}-T_{ab}$. Substitution in \eqref{eq:cubic-fourier} gives
+\eqref{eq:cubic-known}.
+
+To justify the multiplication, first multiply every Fourier
+coefficient by $\rho^{|n|}$ with $0<\rho<1$. The smoothed Fourier
+series is absolutely convergent. Since $\log\Gamma$ belongs to
+$L^3(0,1)$, these Poisson-smoothed functions converge in $L^3$, so
+the integrals of their cubes converge. The logarithmically weighted
+Tornheim sums are absolutely convergent near $(1,1,1)$ and dominate
+the corresponding smoothed double sums. Passage to the limit in both
+representations is therefore legitimate. This derivation is included
+to make the proposed correction mathematically self-contained, not to
+claim priority for the formula.
+
+\clearpage
+\section{Provenance, claim boundaries, and artifact checks}\label{app:provenance}
+
+The research baseline is repository commit
+\begin{center}
+\code{29d9344771b41df39ff9b7890c76b1f152572dde}.
+\end{center}
+The source root is
+\begin{center}
+\code{Analysis/Polylogarithms/docs/manuscript/}.
+\end{center}
+Relevant inspected blob hashes are recorded in the package's machine-readable
+provenance file. In particular, the weight-five conjecture was checked
+against the pinned Chapter 4 blob
+\code{6171912ff7724784cabb789a066c61223ab298bc}.
+The article is a companion contribution: it does not claim to audit
+all eleven chapters or every historical identity store.
+
+\begin{center}
+\begin{tabular}{p{0.51\textwidth}p{0.41\textwidth}}
+\toprule
+Claim & Status in this contribution\\\midrule
+Universal weighted rank and conductor normal form & Proved over a characteristic-zero splitting field.\\
+Primitive-grid determinant and local jet ranks & Proved; exact character checks included.\\
+Hurwitz--Stieltjes and cyclotomic trace formulas & Analytic identities proved with stated conventions.\\
+$S_4$ evaluation & Retained as conjectural; fresh numerical agreement only.\\
+$S_4$ nonmembership in the declared row span & Proved by a finite exact annihilator.\\
+Mixed Gaussian diagonal antisymmetry & A strictly positive imaginary difference is proved.\\
+Cubic log-gamma evaluation & Existing published result; notation and status corrected.\\
+Numerical independence; minimal transcendental basis & Not claimed.\\
+Proof-assistant verification; external peer review & Not claimed.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The bundled tests separate exact arithmetic from floating-point
+experiments. Every certificate has a declared meaning and an explicit
+coordinate convention. A checksum manifest is provided for the package
+contents. The build and test scripts operate locally and do not write
+to the remote repository.
+
+\clearpage
+\begin{thebibliography}{99}
+\bibitem{repo}
+V. Reshetnikov, \emph{Polylogarithms and their Arithmetic Bridges},
+ProveIt repository, consolidated manuscript, October 2026.
+Inspected commit \code{29d9344771b41df39ff9b7890c76b1f152572dde}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/29d9344771b41df39ff9b7890c76b1f152572dde/Analysis/Polylogarithms/docs/manuscript}.
+
+\bibitem{ouyang}
+Y. Ouyang, \emph{Group cohomology of the universal ordinary distribution},
+arXiv:math/9911032 (1999), especially Proposition 3.1.
+\url{https://arxiv.org/abs/math/9911032}.
+
+\bibitem{kubert}
+D. S. Kubert, \emph{The $\Z/2\Z$ cohomology of the universal ordinary
+distribution}, Bulletin de la Soci\'et\'e Math\'ematique de France
+\textbf{107} (1979), 203--224.
+\url{https://www.numdam.org/article/BSMF_1979__107__203_0.pdf}.
+
+\bibitem{dlmf-hurwitz}
+NIST Digital Library of Mathematical Functions, \S25.11,
+\emph{Hurwitz Zeta Function}. Accessed 9 October 2026.
+\url{https://dlmf.nist.gov/25.11}.
+
+\bibitem{dlmf-polylog}
+NIST Digital Library of Mathematical Functions, \S25.12,
+\emph{Polylogarithms}. Accessed 9 October 2026.
+\url{https://dlmf.nist.gov/25.12}.
+
+\bibitem{dlmf-dirichlet}
+NIST Digital Library of Mathematical Functions, \S25.15,
+\emph{Dirichlet $L$-functions}, including (25.15.4), (25.15.6),
+and the nonvanishing statement (25.15.9). Accessed 9 October 2026.
+\url{https://dlmf.nist.gov/25.15}.
+
+\bibitem{racinet}
+G. Racinet, \emph{Doubles m\'elanges des polylogarithmes multiples aux
+racines de l'unit\'e}, arXiv:math/0202142 (2002).
+\url{https://arxiv.org/abs/math/0202142}.
+
+\bibitem{bbb}
+D. H. Bailey, D. Borwein, and J. M. Borwein,
+\emph{On Eulerian Log-Gamma Integrals and Tornheim--Witten Zeta Functions},
+preprint dated 27 June 2012; Ramanujan Journal \textbf{36} (2015), 43--68.
+DOI: 10.1007/s11139-012-9427-1.
+\url{https://carmamaths.org/resources/jon/log-gamma.pdf}.
+\end{thebibliography}
+\end{document}

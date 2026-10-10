@@ -1,0 +1,106 @@
+{
+  "schema": "planar-sector-reproduction-v1",
+  "started_utc": "2026-10-09T22:31:22.259706+00:00",
+  "python": "3.12.14",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+  "baseline_commit": "8188525b70033dcfe7c51ea5ae2c8723ad0c0198",
+  "scope": "Supplied-sector tests and audits; no whole-recognizer complexity claim.",
+  "source_snapshot": {
+    "mode": "bundled",
+    "verified_files": 201,
+    "status": "PASS"
+  },
+  "package_provenance_sha256": "da51d412d41ef0fd4ba5121ee2aab4030044ec0782fbe1bd4d00b06ff4cd19f9",
+  "corpus_sha256": "0433e6c7d99bb402b79909467a7eada862ca004dc4082ee25794add0e712914e",
+  "reproduction_driver_sha256": "1a815745ba1a46272e144f9c905d5c6a0a53cc20bf5ee3628384896ea4a8284f",
+  "script_sha256": {
+    "experiments/audit.py": "5f46525227d879b17a08ab293cf14142063559e0004d78fa70c39c871b55a74c",
+    "experiments/audit_abstract.py": "f1cc465deefaf3416a530c475a2bcabc4c2d4e8e56ef899fd62879d833515094",
+    "experiments/audit_certificates.py": "30867972c624a8a13a2fa08aa46fd3e67267ed37f43cb0d9271e5dc1c8036b04",
+    "experiments/benchmark.py": "884bdf7a2755838c65b3fa8e30093afb9c8af8d504435e4644a6649a7f3fa693",
+    "experiments/fixtures.py": "cec6166f67874c5160ef4641e383ade6a4f795a3b13481ec0332920c5acef03d"
+  },
+  "requested": {
+    "full_audit": false,
+    "fresh_regina": false,
+    "benchmark": false
+  },
+  "steps": [
+    {
+      "step": "new_tests",
+      "returncode": 0,
+      "seconds": 1.4948724829991988,
+      "log": "new_tests.log",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "-S",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_sector_planar*.py",
+        "-v"
+      ],
+      "cwd": "/workspace/scratch/58d095d12044/unknot_planar_sector_overlays_20261009/code"
+    },
+    {
+      "step": "baseline_integration",
+      "returncode": 0,
+      "seconds": 0.12692356200022914,
+      "log": "baseline_integration.log",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "-S",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_normal_sector_integration.py",
+        "-v"
+      ],
+      "cwd": "/workspace/scratch/58d095d12044/unknot_planar_sector_overlays_20261009/code"
+    },
+    {
+      "step": "abstract_audit",
+      "returncode": 0,
+      "seconds": 0.678965467001035,
+      "log": "abstract_audit.log",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "-S",
+        "/workspace/scratch/58d095d12044/unknot_planar_sector_overlays_20261009/experiments/audit_abstract.py",
+        "--fast",
+        "/workspace/scratch/58d095d12044/unknot_planar_sector_overlays_20261009/code",
+        "--output",
+        "/workspace/scratch/58d095d12044/unknot_planar_sector_overlays_20261009/results/reproduction/20261009T223122Z_p3pktg_w/abstract_audit.json"
+      ],
+      "cwd": "/workspace/scratch/58d095d12044/unknot_planar_sector_overlays_20261009"
+    },
+    {
+      "step": "certificate_audit",
+      "returncode": 0,
+      "seconds": 0.13258924199908506,
+      "log": "certificate_audit.log",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "-S",
+        "/workspace/scratch/58d095d12044/unknot_planar_sector_overlays_20261009/experiments/audit_certificates.py",
+        "--fast",
+        "/workspace/scratch/58d095d12044/unknot_planar_sector_overlays_20261009/code",
+        "--output",
+        "/workspace/scratch/58d095d12044/unknot_planar_sector_overlays_20261009/results/reproduction/20261009T223122Z_p3pktg_w/certificate_audit.json"
+      ],
+      "cwd": "/workspace/scratch/58d095d12044/unknot_planar_sector_overlays_20261009"
+    }
+  ],
+  "status": "PASS",
+  "finished_utc": "2026-10-09T22:31:24.702901+00:00"
+}

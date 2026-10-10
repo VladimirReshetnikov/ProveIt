@@ -1,0 +1,1129 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array,enumitem}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Complementary depth in polylogarithms}\fancyhead[R]{\small ProveIt research contribution}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Rea}{Re}
+\DeclareMathOperator{\Ima}{Im}
+\DeclareMathOperator{\dep}{dep}
+\DeclareMathOperator{\wt}{wt}
+\newcommand{\Q}{\mathbb Q}\newcommand{\C}{\mathbb C}
+\newcommand{\emp}{\varnothing}\newcommand{\sh}{\mathbin{\amalg}}
+\newcommand{\ones}[1]{\{1\}^{#1}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\title{Complementary depth, classical ladders,\texorpdfstring{\\}{ }and exact shuffle ranks\large\medskip\\Gaussian and Eisenstein polylogarithms:\\proofs of three manuscript candidates and a mixed-point correction}
+\author{Research draft prepared for Vladimir Reshetnikov\\\small ProveIt / Analysis / Polylogarithms}
+\date{9 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We develop a branch-explicit reduction for one-variable multiple
+polylogarithms at the transformed argument $q=(1-z)^{-1}$. A word of weight
+$w$ and depth $d$ is expressed as a finite rational combination of
+$\log^j q\,\Li_{\boldsymbol a}(q)\zeta(\boldsymbol b)$ with
+$\dep(\boldsymbol a)+\dep(\boldsymbol b)\le w-d$. The logarithm is a
+coefficient in this depth statement; the argument family changes.
+The one-zero specialization yields classical formulas for every
+$\Li_{\ones a,2,\ones b}(z)$, and proves all three weight-four Gaussian
+triple identities printed as numerical candidates in the inspected
+manuscript. A particularly short terminal-$2$ ladder and an all-weight
+double-polylogarithm formula for $\Li_{3,\ones b}(z)$ give further explicit
+identities, including the Eisenstein specialization.
+
+Separately, a multigraded Lyndon-word calculation determines the exact
+formal shuffle-product rank at every weight and depth. It explains the
+reported rank seven on ten weight-six triples without implying numerical
+independence. We correct an incorrect mixed-point antisymmetry statement
+by an exact nonzero Gaussian diagonal example. We also record a rational
+dual witness showing that the manuscript's $S_4$ target is outside a
+specified finite depth-two double-shuffle row space; $S_4$ itself remains
+unproved here. Exact word certificates, 153 independent quadrature
+checks, and rational interval enclosures accompany the proofs.
+\end{abstract}
+\vspace{3pt}
+\noindent\textbf{Status.} Unrefereed research contribution with self-contained
+analytic arguments and reproducible finite checks. Not proof-assistant
+verified. The general harmonic-polylogarithm and Lyndon-algebra machinery
+is established mathematics; no global priority claim is made for it.
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{Scope, provenance, and the mathematical contribution}
+
+The input is Chapter 4, \emph{Gaussian and Eisenstein depth}, of the
+ProveIt polylogarithm manuscript, together with its discovery chapter
+\cite{ProveIt}. We inspected the repository at commit
+\begin{center}\small\code{29d9344771b41df39ff9b7890c76b1f152572dde}.\end{center}
+The Chapter 4 blob is
+\code{6171912ff7724784cabb789a066c61223ab298bc}.
+These identifiers distinguish this contribution from subsequent changes
+to a rapidly evolving repository.
+
+The manuscript lists three formulas for
+$\Ima\Li_{2,1,1}(i,1,1)$,
+$\Ima\Li_{1,2,1}(i,1,1)$, and
+$\Ima\Li_{1,1,2}(i,1,1)$ among numerically supported Gaussian reductions.
+It also reports a shuffle rank of seven on ten weight-six triple
+coordinates, and asks how a formal quotient relates to actual depth.
+These are the principal targets of this article. The existing
+weight-six double parity formulas and inverse-color gap reductions are
+not the main subject of the present continuation.
+
+The results have three logically different forms. The functional
+identities are equalities of analytic functions on an explicitly stated
+domain and hence equalities of their special values. The shuffle-rank
+result is an exact dimension theorem for a specified \emph{formal}
+algebra. The numerical calculations are either diagnostics or
+proof-backed enclosures; neither kind implies a new independence theorem.
+Keeping those distinctions visible is essential here.
+
+Harmonic polylogarithms, their change-of-variable formulas, and the
+Nielsen subfamilies have a substantial classical literature
+\cite{RemiddiVermaseren,Kolbig}. The structural shuffle-algebra theorem
+used below is due to Radford, with a useful triangular formulation in
+Melan\c{c}on--Reutenauer \cite{Radford,MelanconReutenauer}.
+Our contribution is the explicit branch-controlled organization needed
+for these manuscript questions: closed formulas with all endpoint
+constants retained, exact specializations of the printed candidates,
+a finite certificate catalogue, and corrections that prevent the formal
+calculations from being misread as arithmetic lower bounds.
+
+\subsection{A map of the principal results}
+The complementary-depth theorem is Theorem~\ref{thm:complement}.
+The complete one-zero reduction and terminal-$2$ ladder are
+Theorems~\ref{thm:onezero} and~\ref{thm:terminal}.
+The manuscript's three Gaussian candidates become
+Theorem~\ref{thm:gaussian}. The two-zero height-one family is
+Theorem~\ref{thm:twozero}. The all-weight formal rank is
+Theorem~\ref{thm:rank}. Proposition~\ref{prop:mixedcorrection} gives the
+nonzero diagonal counterexample. None of these statements asserts
+numerical independence of the weight-six triple candidates.
+
+\section{Conventions and analytic domains}
+
+For positive indices we abbreviate
+\begin{equation}\label{eq:mpl}
+\Li_{s_1,\ldots,s_d}(z)
+ :=\Li_{s_1,\ldots,s_d}(z,1,\ldots,1)
+ =\sum_{n_1>\cdots>n_d\ge1}
+ \frac{z^{n_1}}{n_1^{s_1}\cdots n_d^{s_d}},\qquad |z|<1.
+\end{equation}
+The indices decrease in the summation order, as in the manuscript.
+Weight is $w=s_1+\cdots+s_d$ and series depth is $d$.
+An empty index denotes the multiplicative identity.
+We use convergent multiple zeta values
+$\zeta(\boldsymbol s)=\Li_{\boldsymbol s}(1)$ when $s_1\ge2$.
+
+Let
+\[
+ \omega_0(t)=\frac{dt}{t},\qquad
+ \omega_1(t)=\frac{dt}{1-t}.
+\]
+Words are written \emph{outer letter first}. Thus
+\begin{equation}\label{eq:word}
+H_{0^{s_1-1}1\cdots0^{s_d-1}1}(z)=\Li_{s_1,\ldots,s_d}(z).
+\end{equation}
+In particular $H_{01}=\Li_2$, not its negative or a reversed word.
+The recursion is
+$H_{av}(z)=\int_0^z\omega_a(t)H_v(t)$ whenever this is an ordinary
+convergent integral. Pure-zero words are defined by
+$H_{0^r}(z)=\log^r z/r!$, and trailing-zero words are obtained by shuffle
+regularization. Every word ending in $1$ is convergent at its initial
+endpoint and has the ordinary interpretation in \eqref{eq:word}.
+
+Throughout the functional identities we use
+\begin{equation}\label{eq:domain}
+ D=\C\setminus[0,\infty),\qquad
+ q=\frac1{1-z},\qquad L=\log q=-\log(1-z),\qquad z\in D,
+\end{equation}
+with principal logarithms and principal polylogarithms. The image of $D$
+avoids both $(-\infty,0]$ and $[1,\infty)$ in the $q$-plane, so the
+hyperlogarithms with possible trailing zeros have unambiguous branches.
+The origin is a limiting point, not an included point of $D$.
+
+We first prove formulas on $z<0$, where $0<q<1$ and all logarithms in
+$q$ are real. Analytic continuation on the connected slit domain $D$
+then proves the stated complex identities. This method avoids an
+unstated choice of a value on the polylogarithm cut. It includes both
+$z=i$ and $z=\rho=e^{2\pi i/3}$:
+\begin{align}
+ z=i:&\quad q=\frac{1+i}{2},&L&=-\frac12\log2+\frac{i\pi}{4},\label{eq:gausspoint}\\
+ z=\rho:&\quad q=\frac12+\frac{i\sqrt3}{6},&L&=-\frac12\log3+\frac{i\pi}{6}.\label{eq:eispoint}
+\end{align}
+Their transformed moduli are $2^{-1/2}$ and $3^{-1/2}$ respectively.
+
+\begin{definition}[Depth with logarithmic coefficients]
+A term $L^j\Li_{\boldsymbol a}(q)\zeta(\boldsymbol b)$ has
+\emph{reduced depth} $\dep(\boldsymbol a)+\dep(\boldsymbol b)$.
+The factor $L^j$ is a coefficient, not an additional nested sum.
+\end{definition}
+This is an explicit convention for the following reduction. It is not
+an identification with every motivic depth filtration, and does not
+turn arbitrary products of deep factors into depth-one objects.
+
+\section{An explicit complementary-depth theorem}
+
+\subsection{Endpoint transport with convergent constants}
+For a word $v$ ending in $0$, write $J_v(q)$ for the iterated integral
+from $1$ to $q$ using the same forms and the same outer-first convention.
+These integrals converge at $1$: the innermost form is $\omega_0$, which
+is regular there; preceding $\omega_1$ integrations do not destroy
+integrability. Set $J_\emp=1$.
+
+\begin{lemma}[Connection formula]\label{lem:connection}
+For every nonempty word $v$ ending in $0$ and $0<q<1$,
+\begin{equation}\label{eq:connection}
+ J_v(q)=\sum_{v=uv'}(-1)^{|v'|}H_u(q)H_{\operatorname{rev}(v')}(1).
+\end{equation}
+The sum includes empty prefixes and suffixes. Every nonempty endpoint
+word $\operatorname{rev}(v')$ starts in $0$, so its value at $1$ is
+convergent after the usual trailing-zero normalization at $0$.
+\end{lemma}
+\begin{proof}
+We give the endpoint justification rather than silently substituting into
+a divergent path identity. Fix a maximum word length $N$ and work in the
+truncated noncommutative algebra on $e_0,e_1$. Let
+$F(q)=\sum_{|u|\le N}H_u(q)u$. It satisfies
+\[
+ F'(q)=\left(\frac{e_0}{q}+\frac{e_1}{1-q}\right)F(q).
+\]
+Put $\ell=-\log(1-q)$. The function $e^{-\ell e_1}F(q)$ has a finite
+coefficientwise limit $Z$ as $q\to1^-$: its differential equation has
+coefficient $e^{-\ell e_1}e_0e^{\ell e_1}/q$, a finite polynomial in
+$\ell$ at each truncated weight, and this is integrable at $1$.
+Consequently
+$F(q)=e^{\ell e_1}Z+O((1-q)\log^M(1-q))$
+coefficientwise, for a sufficiently large finite $M$.
+
+Shuffle identities say that $F$ is group-like; the same holds for $Z$.
+The inverse coefficient in a group-like word series is
+$(Z^{-1})_{v'}=(-1)^{|v'|}Z_{\operatorname{rev}(v')}$, by the shuffle
+antipode, or equivalently by reversal of an iterated path.
+The coefficients of $R(q)=F(q)Z^{-1}$ solve the same differential
+recursion and tend to zero at $1$ for every nonempty word ending in $0$.
+Induction on word length therefore identifies them with the convergent
+integrals $J_v(q)$.
+
+If $v'$ is a nonempty suffix of $v$, its reverse begins in $0$.
+The corresponding coefficient of $Z$ is simply
+$H_{\operatorname{rev}(v')}(1)$: multiplication by
+$e^{-\ell e_1}$ only changes words beginning with $1$.
+Taking the coefficient of $v$ in $F(q)Z^{-1}$ proves
+\eqref{eq:connection}. Since $N$ was arbitrary, this proves every finite
+word identity.
+\end{proof}
+
+\subsection{The word formula and the depth bound}
+For a word $w$ ending in $1$, let $K$ be its number of zeros. Replace
+each original $1$ by $0$, and replace each original $0$ independently
+by either $0$ or $1$. Denote the resulting $2^K$ words by $\tau_A(w)$,
+where $A$ records the zero positions replaced by $1$.
+Every $\tau_A(w)$ ends in $0$.
+
+\begin{theorem}[Complementary depth]\label{thm:complement}
+For $z\in D$ and every nonempty word $w$ ending in $1$,
+\begin{equation}\label{eq:master}
+ H_w(z)=(-1)^K\sum_A\ \sum_{\tau_A(w)=uv}
+ (-1)^{|v|}H_u(q)H_{\operatorname{rev}(v)}(1).
+\end{equation}
+After trailing-zero normalization, this is a finite rational linear
+combination of terms
+\begin{equation}\label{eq:termshape}
+ L^j\Li_{\boldsymbol a}(q)\zeta(\boldsymbol b),\qquad
+ j+\wt(\boldsymbol a)+\wt(\boldsymbol b)=|w|,
+ \quad \dep(\boldsymbol a)+\dep(\boldsymbol b)\le K.
+\end{equation}
+Nonempty zeta indices are convergent. Thus a one-variable polylogarithm
+of weight $w$ and depth $d$ has the stated reduction with $K=w-d$.
+\end{theorem}
+\begin{proof}
+On $z<0$, make the substitution $u=(1-t)^{-1}$ in every integration.
+Its pullbacks are
+\begin{equation}\label{eq:pullbacks}
+ \frac{dt}{t}=-\frac{du}{u}-\frac{du}{1-u},\qquad
+ \frac{dt}{1-t}=\frac{du}{u}.
+\end{equation}
+The initial endpoint $t=0$ becomes $u=1$. Multilinearity gives
+$H_w(z)=(-1)^K\sum_A J_{\tau_A(w)}(q)$.
+Lemma~\ref{lem:connection} proves \eqref{eq:master}.
+
+It remains to check the claimed normal form. The identity
+$H_vH_0=H_{v\sh0}$ removes a trailing zero. If a word ends in exactly
+$r$ zeros, its coefficient in the shuffle of its prefix with $0$ is
+$r$; all other words in that shuffle have fewer trailing zeros.
+Induction therefore expresses each $H_u(q)$ as a rational combination
+of $L^jH_{u'}(q)$ with $u'$ empty or ending in $1$.
+The operation preserves the number of $1$ letters.
+
+For an endpoint word beginning in $0$, the same normalization preserves
+its initial $0$ in every nonzero term with no logarithmic factor.
+Terms containing a positive power of $\log1$ vanish. The surviving
+nonempty terms begin in $0$ and end in $1$, hence are convergent MZVs.
+In each split of $\tau_A(w)$ the total number of $1$ letters in the
+two factors is $|A|\le K$. This proves the depth bound and the weight
+identity. Finally continue analytically from $z<0$ to $D$.
+\end{proof}
+
+\begin{corollary}[An argument-enlarged depth bound]\label{cor:halfb}
+For $w\ge2$, every one-variable MPL of weight $w$ can be represented
+using nonlogarithmic factors of depth at most $\lfloor w/2\rfloor$,
+allowing both the original argument $z$ and $q=(1-z)^{-1}$, MZVs, and
+powers of $L$ as coefficients. More precisely, use the original
+expression when $d\le w/2$, and Theorem~\ref{thm:complement} otherwise.
+The all-one case is $L^w/w!$.
+\end{corollary}
+
+This corollary is deliberately not phrased as a theorem about arbitrary
+multivariable MPLs, or as a reduction inside an unchanged root-of-unity
+basket. At $z=i$ the half-point $q$ is not a root of unity. The theorem
+explains an argument-enlarged upper bound; it does not prove the absence
+or presence of new cyclotomic periods in a smaller comparison algebra.
+
+\section{The complete one-zero classical ladder}
+
+The one-zero case admits a simpler derivation that is independent of
+the endpoint-transport implementation.
+For $r\ge1$ and $a,b\ge0$, put
+\[
+ F_r(z)=\Li_{2,\ones{r-1}}(z),\qquad
+ T_{a,b}(z)=\Li_{\ones a,2,\ones b}(z).
+\]
+The word of $T_{a,b}$ is $1^a01^{b+1}$.
+
+\begin{theorem}[One-zero reduction]\label{thm:onezero}
+On $D$,
+\begin{align}
+ F_r(z)
+ &=\sum_{k=1}^{r+1}\frac{(-1)^kL^{r+1-k}}{(r+1-k)!}\Li_k(q)
+   +(-1)^r\zeta(r+1)-\frac{L^{r+1}}{(r+1)!},\label{eq:Fr}\\
+ T_{a,b}(z)
+ &=\sum_{j=0}^{a}(-1)^j\binom{b+j+1}{j}
+    \frac{L^{a-j}}{(a-j)!}F_{b+j+1}(z).\label{eq:Tab}
+\end{align}
+In particular every such MPL, however large its series depth, belongs
+to the algebra generated by $L$, ordinary zeta values, and classical
+polylogarithms $\Li_k(q)$ of weight at most $a+b+2$.
+\end{theorem}
+\begin{proof}
+Repeated integration of the identical $\omega_1$ letters gives
+\begin{equation}\label{eq:Frintegral}
+ F_r(z)=\frac1{r!}\int_0^z\frac{[-\log(1-t)]^r}{t}\,dt.
+\end{equation}
+For $z<0$ substitute $u=(1-t)^{-1}$ to obtain
+\[
+ F_r(z)=\frac1{r!}\int_1^q\frac{\log^r u}{u(u-1)}\,du.
+\]
+A primitive of $\log^r u/(1-u)$ is
+\[
+ A_r(u)=\sum_{k=1}^{r+1}
+ (-1)^{k-1}\frac{r!}{(r+1-k)!}\log^{r+1-k}u\,\Li_k(u).
+\]
+Differentiation telescopes. At $u=1$ only the last term survives, with
+$A_r(1)=(-1)^rr!\zeta(r+1)$; the apparent
+$\log^r u\,\Li_1(u)$ singularity tends to zero because $r\ge1$.
+Using $1/[u(u-1)]=-1/u-1/(1-u)$ proves \eqref{eq:Fr}.
+
+The $a$ outer $\omega_1$ integrations can be performed first:
+\begin{equation}\label{eq:singleintegral}
+ T_{a,b}(z)=\frac1{a!(b+1)!}\int_0^z
+  \bigl(L+\log(1-t)\bigr)^a[-\log(1-t)]^{b+1}\frac{dt}{t}.
+\end{equation}
+Expand the first power and apply \eqref{eq:Frintegral}.
+The resulting factorial coefficient is exactly the binomial coefficient
+in \eqref{eq:Tab}. The integrals are convergent at $0$, and continuation
+on $D$ completes both proofs.
+\end{proof}
+
+\subsection{A particularly short \texorpdfstring{terminal-$2$}{terminal-2} identity}
+When the $2$ is the last index, substantial cancellation leaves only two
+classical polylogarithms at $q$.
+
+\begin{theorem}[Terminal-$2$ ladder]\label{thm:terminal}
+For every integer $a\ge0$,
+\begin{align}
+\Li_{\ones a,2}(z)
+={}&-\frac{L^{a+2}}{(a+2)!}
+ -\sum_{m=2}^{a+1}\frac{(m-1)L^{a+2-m}}{(a+2-m)!}\zeta(m)\notag\\
+ &-L\Li_{a+1}(q)+(a+1)\Li_{a+2}(q)
+ -(a+1)\zeta(a+2).\label{eq:terminal}
+\end{align}
+An empty sum is zero.
+\end{theorem}
+\begin{proof}
+For $a=0$ this is \eqref{eq:Fr} with $r=1$.
+Differentiate the right side with respect to $L$, using $q=e^L$.
+For $a\ge1$ the result is the right side for $a-1$; in particular the
+last term of the finite zeta sum supplies the required constant
+$-a\zeta(a+1)$. The same recursion holds on the left because an outer
+$\omega_1$ integration is integration in $L$.
+Both sides tend to zero as $q\to1^-$, or $z\to0^-$.
+The term $L\Li_1(q)$ tends to zero in the base case.
+Induction and continuation prove the formula.
+\end{proof}
+
+For example, two explicit higher-depth identities are
+\begin{align}
+\Li_{1,1,1,2}(z)
+={}&4\Li_5(q)-L\Li_4(q)-4\zeta(5)-3L\zeta(4)
+-L^2\zeta(3)\notag\\[-2pt]
+&-\frac{L^3}{6}\zeta(2)-\frac{L^5}{120},\label{eq:new5}\\
+\Li_{1,1,1,1,2}(z)
+={}&5\Li_6(q)-L\Li_5(q)-5\zeta(6)-4L\zeta(5)
+-\frac32L^2\zeta(4)\notag\\[-2pt]
+&-\frac13L^3\zeta(3)-\frac1{24}L^4\zeta(2)-\frac{L^6}{720}.
+\label{eq:new6}
+\end{align}
+These are proved functional identities, not PSLQ conjectures. Either
+Gaussian or Eisenstein substitution gives an explicit family of new
+entries for the manuscript's tables.
+
+\section{Proof of the three Gaussian triple candidates}
+
+Write $\ell=\log2$, $G=\beta(2)$, and
+$\lambda_n=\Ima\Li_n((1+i)/2)$ as in the manuscript.
+The low-weight classical evaluations needed below are
+\begin{align}
+\Li_1(q)&=\frac\ell2+\frac{i\pi}{4},\label{eq:atom1}\\
+\Li_2(q)&=\frac{5\pi^2}{96}-\frac{\ell^2}{8}
+ +i\left(G-\frac{\pi\ell}{8}\right),\label{eq:atom2}\\
+\Rea\Li_3(q)&=\frac{35}{64}\zeta(3)
+ -\frac{5\pi^2\ell}{192}+\frac{\ell^3}{48}.\label{eq:atom3}
+\end{align}
+We supply the short derivations to make the subsequent specialization
+independent of a computer algebra system's branch convention.
+
+\subsection{The required dilogarithm and trilogarithm evaluations}
+Equation~\eqref{eq:atom1} is the principal logarithm.
+The real part of \eqref{eq:atom2} follows from
+\[
+ \Li_2(q)+\Li_2(1-q)=\zeta(2)-\log q\log(1-q)
+\]
+and $1-q=\bar q$. The imaginary part follows from
+\eqref{eq:Fr} with $r=1$ at $z=i$, since
+$\Li_2(i)=-\pi^2/48+iG$; the latter equality follows directly by
+separating even and odd terms in the absolutely convergent series.
+
+For the trilogarithm use
+\begin{align}
+\Li_3(x)+\Li_3(1-x)+\Li_3\!\left(\frac{x}{x-1}\right)
+={}&\zeta(3)+\zeta(2)\log(1-x)\notag\\
+&-\frac12\log x\log^2(1-x)
+ +\frac16\log^3(1-x).\label{eq:trilog}
+\end{align}
+On $0<x<1$ its derivative follows from the dilogarithm reflection
+formula and
+$\Li_2(x/(x-1))=-\Li_2(x)-\tfrac12\log^2(1-x)$.
+The limit at $x=0$ fixes the integration constant. Continue into the
+upper half-plane to $x=q$; no principal cut is crossed.
+Here $q/(q-1)=-i$ and $\Rea\Li_3(-i)=-3\zeta(3)/32$.
+Taking real parts in \eqref{eq:trilog} gives \eqref{eq:atom3}.
+
+\subsection{The functional identities before specialization}
+Theorem~\ref{thm:onezero} first gives the stronger complex formulas
+\begin{align}
+\Li_{2,1,1}(z)
+={}&\Li_4(q)-L\Li_3(q)+\frac{L^2}{2}\Li_2(q)
+-\frac{L^3}{6}\Li_1(q)\notag\\
+&-\zeta(4)-\frac{L^4}{24},\label{eq:t211}\\
+\Li_{1,2,1}(z)
+={}&-3\Li_4(q)+2L\Li_3(q)-\frac{L^2}{2}\Li_2(q)
++L\zeta(3)\notag\\
+&+3\zeta(4)-\frac{L^4}{24},\label{eq:t121}\\
+\Li_{1,1,2}(z)
+={}&3\Li_4(q)-L\Li_3(q)-2L\zeta(3)
+-\frac{L^2}{2}\zeta(2)\notag\\
+&-3\zeta(4)-\frac{L^4}{24}.\label{eq:t112}
+\end{align}
+Their full real parts are determined as well; only the imaginary parts
+were printed in the source's candidate display.
+
+\begin{theorem}[The three manuscript identities]\label{thm:gaussian}
+All three of the following are exact:
+\begin{align}
+\Ima\Li_{2,1,1}(i)
+={}&\lambda_4+\frac\ell2\lambda_3
+-\frac{G(\pi^2-4\ell^2)}{32}
+-\frac{\pi(8\ell^3+105\zeta(3))}{768},\label{eq:g211}\\
+\Ima\Li_{1,2,1}(i)
+={}&-3\lambda_4-\ell\lambda_3
++\frac{G(\pi^2-4\ell^2)}{32}
+-\frac{3\pi^3\ell}{256}\notag\\
+&+\frac{\pi(2\ell^3+67\zeta(3))}{128},\label{eq:g121}\\
+\Ima\Li_{1,1,2}(i)
+={}&3\lambda_4+\frac\ell2\lambda_3
++\frac{5\pi^3\ell}{192}-\frac{163\pi\zeta(3)}{256}.
+\label{eq:g112}
+\end{align}
+\end{theorem}
+\begin{proof}
+Substitute $L=-\ell/2+i\pi/4$ and
+\eqref{eq:atom1}--\eqref{eq:atom3} in
+\eqref{eq:t211}--\eqref{eq:t112}, and collect imaginary parts.
+No unproved relation among the $\lambda_n$ is used.
+For example the only unknown real classical part that occurs before
+simplification is $\Rea\Li_3(q)$, already evaluated in
+\eqref{eq:atom3}; the coefficient of $\Li_4(q)$ is real.
+The exact symbolic substitutions are reproduced by
+\code{code/check_exact.py}.
+\end{proof}
+
+\subsection{The Eisenstein companion}
+Equations~\eqref{eq:t211}--\eqref{eq:t112},
+\eqref{eq:new5}, and~\eqref{eq:new6} apply unchanged at
+\eqref{eq:eispoint}. Thus the same index families reduce to classical
+polylogarithms at $q=1/2+i\sqrt3/6$, powers of
+$L=-\tfrac12\log3+i\pi/6$, and ordinary zeta values.
+This is already an explicit exact Eisenstein reduction; no independence
+claim about those half-point classical values is needed.
+
+For complete real and imaginary formulas define
+$U_n=\Rea\Li_n(q)$ and $V_n=\Ima\Li_n(q)$ and use
+\begin{equation}\label{eq:complexproduct}
+\Ima\bigl(L^j\Li_n(q)\bigr)
+=\Rea(L^j)V_n+\Ima(L^j)U_n.
+\end{equation}
+Every coefficient in \eqref{eq:complexproduct} is an explicit polynomial
+in $\log3$ and $\pi$, with rational coefficients.
+Keeping this small structured basket is preferable to asserting a
+further reduction into a smaller root-of-unity basket without proof.
+
+\section{A double-polylogarithm formula for an all-weight family}
+
+The next formula addresses the first case beyond the classical ladder.
+It reduces the height-one family with initial index $3$ to singles and
+doubles at $q$, irrespective of its original depth.
+Let
+\begin{equation}\label{eq:Ck}
+ C_1(q)=0,\qquad C_k(q)=\sum_{a=1}^{k-1}\Li_{a,k-a}(q)\quad(k\ge2).
+\end{equation}
+All MPLs on the right have the one-variable meaning \eqref{eq:mpl}.
+
+\begin{theorem}[Two-zero height-one identity]\label{thm:twozero}
+For every $w\ge3$ and $z\in D$,
+\begin{align}
+\Li_{3,\ones{w-3}}(z)
+={}&\frac{L^w}{w!}
+ +\sum_{k=1}^{w}\frac{(-1)^kL^{w-k}}{(w-k)!}
+   \bigl((k-2)\Li_k(q)+C_k(q)\bigr)\notag\\
+&+(-1)^{w-1}\Bigl((L+\Li_1(q))\zeta(w-1)
+ +(w-2)\zeta(w)-\zeta(w-1,1)\Bigr).
+\label{eq:twozero}
+\end{align}
+The right side has reduced depth at most two.
+\end{theorem}
+
+\begin{proof}
+Write $D_q=q\,d/dq=d/dL$. Direct differentiation of the nested series,
+followed by continuation, gives
+\[
+ D_qC_k=C_{k-1}+\frac{q}{1-q}\Li_{k-1}\quad(k\ge2).
+\]
+Put $V_k=(k-2)\Li_k+C_k$, with $V_1=-\Li_1$.
+Then
+\[
+ D_qV_k=V_{k-1}+\frac{\Li_{k-1}}{1-q}\quad(k\ge2),
+ \qquad D_qV_1=-\frac{q}{1-q}.
+\]
+Differentiating the finite sum in \eqref{eq:twozero} telescopes and yields
+\[
+ \frac{F_{w-2}(z)-(-1)^{w-2}\zeta(w-1)}{q-1}.
+\]
+The derivative of the explicit $(L+\Li_1(q))\zeta(w-1)$ term supplies
+the missing constant term, because
+$D_q(L+\Li_1(q))=1/(1-q)$.
+The derivative of the entire right side is therefore
+$F_{w-2}(z)/(q-1)$.
+The left side has the same derivative, since
+$d\Li_{3,\ones{w-3}}(z)/dz=F_{w-2}(z)/z$ and
+$dz/z=dL/(q-1)$.
+
+For the endpoint constant, recall the convergent depth-two sum identity
+\begin{equation}\label{eq:eulersum}
+ \sum_{a=2}^{w-1}\zeta(a,w-a)=\zeta(w),\qquad w\ge3.
+\end{equation}
+It follows, for example, by subtracting the shuffle and stuffle
+expansions of the once-regularized product $\zeta(1)\zeta(w-1)$:
+its common divergent term $\zeta(1,w-1)$ cancels, leaving precisely
+\eqref{eq:eulersum}. Only one logarithmic divergence is involved, so
+no higher regularization correction enters. Equivalently one may use
+finite cutoffs and subtract the common harmonic-logarithmic part
+before taking the limit.
+
+The convergent colored stuffle identity, for $0<q<1$, gives
+\[
+ \Li_{1,w-1}(q)-\Li_1(q)\zeta(w-1)
+ =-\Li_{w-1,1}(1,q)-\Li_w(q).
+\]
+The right side tends to $-\zeta(w-1,1)-\zeta(w)$ by dominated
+convergence. Combining this with \eqref{eq:eulersum} yields
+\[
+ \lim_{q\to1^-}\bigl(C_w(q)-\Li_1(q)\zeta(w-1)\bigr)
+ =-\zeta(w-1,1).
+\]
+All positive powers of $L$ multiplying at most logarithmically singular
+terms vanish. The remaining constants in \eqref{eq:twozero} cancel,
+so its right side tends to zero as $z\to0^-$. The left side does too.
+Equality of derivatives and the endpoint limit proves the result;
+continue to $D$.
+\end{proof}
+
+\begin{remark}[The sum identity and the proof dependency]
+Equation~\eqref{eq:eulersum} is the classical depth-two Euler sum
+formula, not a new conjecture assumed here. The same two-zero formula
+can also be obtained directly from Theorem~\ref{thm:complement} by
+expanding its two zero positions and normalizing trailing zeros.
+The supplied code verifies the agreement of these two independently
+specified formulas through weight twelve.
+\end{remark}
+
+At weight six, \eqref{eq:twozero} is a complete depth-two representation
+of $\Li_{3,1,1,1}(i)$ and of $\Li_{3,1,1,1}(\rho)$.
+In particular a depth-four index does not by itself identify a new
+depth-four period in the enlarged comparison algebra.
+The endpoint double is harmless as a named convergent constant;
+standard Euler reductions can simplify it further. For example,
+\[
+ \zeta(4,1)=2\zeta(5)-\zeta(2)\zeta(3),\qquad
+ \zeta(5,1)=\frac34\zeta(6)-\frac12\zeta(3)^2.
+\]
+These last simplifications are not required for the theorem.
+
+\section{Exact formal shuffle ranks at every weight and depth}
+
+\subsection{What is being counted}
+Let $\mathcal H^1$ be the rational vector space with basis the empty
+word and all binary words ending in $1$, equipped with the shuffle
+product. Its positive-weight part is $\mathcal H^1_+$.
+Define the indecomposable quotient
+\[
+ Q\mathcal H^1=\mathcal H^1_+/(\mathcal H^1_+)^2,
+\]
+where the square is taken with the shuffle product.
+This is a formal quotient before evaluating any word at a complex point.
+Weight is word length, and depth is the number of $1$ letters.
+
+\begin{theorem}[Multigraded shuffle rank]\label{thm:rank}
+For $1\le d\le w$, the weight-$w$, depth-$d$ part of
+$Q\mathcal H^1$ has dimension
+\begin{equation}\label{eq:witt}
+ \ell_{w,d}=\frac1w\sum_{k\mid\gcd(w,d)}
+ \mu(k)\binom{w/k}{d/k}.
+\end{equation}
+Consequently the space spanned by homogeneous shuffle products inside
+the $\binom{w-1}{d-1}$ word coordinates has rank
+\begin{equation}\label{eq:rank}
+ R_{w,d}=\binom{w-1}{d-1}-\ell_{w,d}.
+\end{equation}
+A basis of the quotient is given by the binary Lyndon words of that
+multidegree, with $0<1$.
+\end{theorem}
+\begin{proof}
+The Chen--Fox--Lyndon factorization uniquely writes every word as a
+concatenation of nonincreasing Lyndon words. The triangular shuffle
+basis theorem \cite{Radford,MelanconReutenauer} says that the shuffle
+product of those factors is
+\[
+ \left(\prod_\lambda m_\lambda!\right)w
+    +\text{lexicographically smaller words},
+\]
+where $m_\lambda$ counts repeated factors.
+A nontrivial binary Lyndon word begins in $0$ and ends in $1$.
+In the factorization of a word ending in $1$, the one-letter factor
+$0$ cannot occur: as the smallest factor it would occur last, making
+the word end in $0$. Thus every factor is an allowed generator of
+$\mathcal H^1$.
+
+Triangularity gives a polynomial basis indexed by monomials in these
+Lyndon generators. Passing to indecomposables leaves exactly the
+single-generator monomials. This proves the asserted quotient basis,
+without any evaluation or transcendence assumption.
+
+For completeness, count its multidegree by primitive necklaces. There
+are $\binom wd$ binary words of length $w$ containing $d$ ones.
+Every word is uniquely a power of a primitive word. M\"obius inversion
+therefore counts primitive words of this multidegree as
+$\sum_{k\mid\gcd(w,d)}\mu(k)\binom{w/k}{d/k}$.
+Each primitive rotation class contains exactly $w$ words and exactly
+one Lyndon representative, proving \eqref{eq:witt}.
+Finally, fixing the last letter to be $1$ gives
+$\binom{w-1}{d-1}$ original coordinates, proving \eqref{eq:rank}.
+\end{proof}
+
+\subsection{The manuscript's ten triples}
+For $d=3$ and $w\ge3$, \eqref{eq:witt} becomes
+\begin{equation}\label{eq:triplecount}
+ \ell_{w,3}=\frac{(w-1)(w-2)}6-\frac{\mathbf1_{3\mid w}}3.
+\end{equation}
+At $w=6$, the three Lyndon words are
+\[
+ 000111,\quad001011,\quad001101,
+\]
+corresponding respectively to $(4,1,1)$, $(3,2,1)$, and $(3,1,2)$.
+Thus $R_{6,3}=10-3=7$, exactly the reported formal count.
+
+The accompanying file \code{weight6_triples_shuffle.json} supplies a
+particularly transparent certificate: seven non-Lyndon factorization
+products give a $7\times10$ rational matrix of rank seven. It is not
+necessary to reconstruct the source's thirteen reported rows.
+For example,
+\begin{equation}\label{eq:sampleproduct}
+ \Li_2(z)\Li_{3,1}(z)
+ =9\Li_{4,1,1}(z)+4\Li_{3,2,1}(z)
+ +\Li_{3,1,2}(z)+\Li_{2,3,1}(z).
+\end{equation}
+The coefficient of the non-Lyndon word $010011$ is one.
+
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+Weight & Triple coordinates & Formal indecomposables & Product rank\\
+\midrule
+3&1&0&1\\
+4&3&1&2\\
+5&6&2&4\\
+6&10&3&7\\
+7&15&5&10\\
+8&21&7&14\\
+9&28&9&19\\
+10&36&12&24\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Why this is not a numerical depth theorem}
+Evaluation at $z=i$ or $z=\rho$ is an algebra map out of the formal
+shuffle algebra. It can have additional relations, and changing the
+allowed argument family can introduce additional reductions.
+Taking real or imaginary parts also changes how products are represented.
+Therefore the three formal Lyndon coordinates at weight six need not be
+three independent numbers. Theorems about parity give lower-depth
+conjugation combinations, not independence of the other components
+\cite{Panzer,Umezawa}.
+
+The contrast with Section 4 is instructive. A one-zero multidegree has
+one formal Lyndon generator, but that generator is nevertheless
+classically reducible after the argument is changed to $q$. Formal
+shuffle indecomposability is a property of a presentation, not a proof
+that a numerical period has minimal depth.
+
+\section{Corrections and the remaining \texorpdfstring{$S_4$}{S4} question}
+
+\subsection{The mixed-point antisymmetry must swap colors}
+The manuscript's discussion following the symmetric Gaussian doubles
+says that the remaining content lies in
+$\Li_{a,b}(P)-\Li_{b,a}(P)$ and that these differences vanish on the
+diagonal. This is correct when both colors in $P$ are equal, but not
+for a mixed point. The stuffle identity actually controls
+\begin{equation}\label{eq:colorswap}
+ \Li_{a,b}(x,y)+\Li_{b,a}(y,x)
+ =\Li_a(x)\Li_b(y)-\Li_{a+b}(xy).
+\end{equation}
+The corresponding antisymmetric combination is
+$\Li_{a,b}(x,y)-\Li_{b,a}(y,x)$.
+Even when $a=b$, it need not vanish if $x\ne y$.
+
+\begin{proposition}[An exact Gaussian diagonal counterexample]
+\label{prop:mixedcorrection}
+\begin{equation}\label{eq:counterexample}
+ \Li_{1,1}(i,-1)-\Li_{1,1}(-1,i)
+ =\frac{\pi^2}{24}-\frac{\log^22}{4}
+ +i\left(G-\frac\pi2\log2\right)\ne0.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Integrating the derivative in the first argument gives
+\[
+ \Li_{1,1}(i,-1)
+ =\log2\log(1-i)-\Li_2\left(\frac{1-i}{2}\right)+\Li_2(1/2).
+\]
+This can be checked directly by differentiating the corresponding
+formula with $i$ replaced by a variable $x$ along the segment from $0$
+to $i$: the derivative is $-\log(1+x)/(1-x)$ and both sides vanish
+at $x=0$. Principal branches are continuous along that segment.
+Using \eqref{eq:atom2} and
+$\Li_2(1/2)=\pi^2/12-\log^22/2$, we find
+\[
+ \Li_{1,1}(i,-1)
+ =\frac{\pi^2}{32}+\frac{\log^22}{8}
+ +i\left(G-\frac{3\pi}{8}\log2\right).
+\]
+On the other hand \eqref{eq:colorswap} gives the sum as
+\[
+ \frac{\log^22}{2}+\frac{\pi^2}{48}
+ +i\left(G-\frac\pi4\log2\right).
+\]
+Twice the first value minus this sum proves \eqref{eq:counterexample}.
+Its real part is positive: $\pi>3$ and $0<\log2<1$ already give a
+lower bound greater than $1/8$.
+\end{proof}
+
+The correction is not that the manuscript's symmetric stuffle formulas
+are wrong; they are correct. The error is the subsequent identification
+of the involution on a mixed-color family. The integration notes supply
+replacement wording and the counterexample.
+
+\subsection{A precise finite obstruction for the attempted \texorpdfstring{$S_4$}{S4} proof}
+Define $g_{a,b}=\Ima\Li_{a,b}(i,1)$ and
+$S_p=\sum_{n\ge0}(-1)^nH_n/(2n+1)^p$.
+An elementary parity filter gives, for $p>1$,
+\begin{equation}\label{eq:Spfilter}
+ S_p=g_{p,1}+\Ima\Li_{p,1}(i,-1).
+\end{equation}
+Indeed the sum of the inner colors $1+(-1)^m$ retains only even $m$,
+and the imaginary part of $i^{2n+1}$ is $(-1)^n$.
+Absolute convergence justifies the rearrangement.
+
+Thus the printed $S_4$ formula is equivalent to
+\begin{align}
+3g_{4,1}+3g_{3,2}+9g_{2,3}
++7\Ima\Li_{4,1}(i,-1)
+=\frac{\pi^5}{32}-\frac{27}{32}G\zeta(3)-14\beta(4)\log2.
+\label{eq:S4target}
+\end{align}
+We attempted to derive it from all weight-five products of two
+single polylogarithms with fourth-root colors, including the
+once-regularized product differences and internal doubling distribution.
+The finite test system has 134 rows and 23 imaginary-coordinate columns,
+after conjugation and removal of divergent first-index-one coordinates.
+Its rational rank is 19; adjoining the left side of
+\eqref{eq:S4target} raises the rank to 20.
+
+This is independently replayable by a particularly small dual witness.
+Write $X_{a,b}^{x,y}=\Ima\Li_{a,b}(i^x,i^y)$, with conjugate columns
+identified by sign. Give the following columns the listed rational
+values and give every other column zero:
+\begin{center}
+\begin{tabular}{rrrrrrrr}
+\toprule
+$X_{1,4}^{1,0}$&$X_{2,3}^{0,1}$&$X_{2,3}^{1,0}$&$X_{2,3}^{1,3}$&
+$X_{3,2}^{0,1}$&$X_{3,2}^{1,0}$&$X_{3,2}^{1,3}$&$X_{4,1}^{0,1}$\\
+\midrule
+$-2$&$1$&$3$&$-1$&$-3$&$-1$&$-1$&$2$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every homogeneous law row evaluates to zero, whereas the target left
+side evaluates to $24$. The JSON file contains every column, every row,
+and the witness; the script verifies $An=0$ and $v^Tn=24$ in exact
+arithmetic.
+
+This does \emph{not} disprove \eqref{eq:S4target}. It proves only that
+this specified finite row space cannot supply the missing derivation.
+Higher-depth relations, further argument transformations, or additional
+cyclotomic functional equations can enlarge the row space. No decision
+about the true period relation follows from the obstruction. We retain
+$S_4$ as an unresolved identity in this contribution rather than
+relabeling numerical agreement as proof.
+
+\section{Exact computation, numerical diagnostics, and enclosures}
+
+\subsection{The exact reduction engine}
+The core file \code{code/polylog_words.py} implements
+\eqref{eq:master}, the trailing-zero recursion, the one-zero closed
+formula, the two-zero closed formula, and Lyndon factorization.
+It uses Python integers and rational fractions for all coefficients.
+The JSON normal form uses a key $(j,\boldsymbol a,\boldsymbol b)$ for
+$L^j\Li_{\boldsymbol a}(q)\zeta(\boldsymbol b)$.
+Empty indices mean one. Each output term is checked for weight and
+reduced depth.
+
+The finite verification run performed the following exact checks:
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Check & Count\\
+\midrule
+Trailing-zero normalization re-expanded in the shuffle algebra & 511\\
+One-zero formula versus independent word transport & 66\\
+Two-zero height-one formula versus word transport & 10\\
+Lyndon triangular leading-word and multiplicity checks & 1023\\
+Printed Gaussian identities after symbolic substitution & 3\\
+High-depth catalogue entries, weight at most eight & 142\\
+Terms in that catalogue & 5763\\
+\bottomrule
+\end{tabular}
+\end{center}
+In addition, the weight-six triple certificate is checked directly as a
+$7\times10$ matrix of rational rank seven.
+These finite checks test the implementations; the all-weight claims
+come from the proofs, not extrapolation from the table.
+
+\subsection{Independent quadrature checks}
+The separate numerical implementation does not evaluate the original
+side by invoking the word-transport formula. For one-zero words it
+uses the single integral \eqref{eq:singleintegral}. For the two-zero
+height-one family it uses
+\begin{equation}\label{eq:twointegral}
+ \Li_{3,\ones b}(z)=\frac1{(b+1)!}\int_0^1
+ \frac{-\log t\,[-\log(1-zt)]^{b+1}}{t}\,dt.
+\end{equation}
+The transformed side uses convergent nested power series at $q$.
+At 75 decimal digits, 153 cases at $z=-1/2$, $z=i$, and $z=\rho$
+passed; the largest observed absolute residual was
+$1.378\times10^{-73}$ (rounded upward for this display).
+These mpmath quadratures are independent diagnostics, not rigorous
+interval calculations.
+
+\subsection{A simple rigorous series tail bound}
+\begin{proposition}\label{prop:tail}
+For $|q|=r<1$, positive indices $\boldsymbol s$ of depth $d$, and
+$N\ge0$, let $M=N+1$. If
+\[
+ s_1\ge\frac{d-1}{1+\log M},
+\]
+then truncating the outer index of \eqref{eq:mpl} at $N$ gives error at
+most
+\begin{equation}\label{eq:tail}
+ \frac{r^M(1+\log M)^{d-1}}
+ {(1-r)(d-1)!M^{s_1}}.
+\end{equation}
+For $d=1$ this is $r^{N+1}/((1-r)(N+1)^{s_1})$ for every $N$.
+\end{proposition}
+\begin{proof}
+The inner finite nested sum is at most
+$H_{n-1}^{d-1}/(d-1)!$, because its indices are positive and the product
+expansion of $H_{n-1}^{d-1}$ includes all strictly ordered distinct terms
+$(d-1)!$ times. Also $H_{n-1}\le1+\log n$.
+The logarithmic derivative of
+$(1+\log x)^{d-1}/x^{s_1}$ is nonpositive for $x\ge M$ under the stated
+condition. Bound this factor by its value at $M$ and sum the remaining
+geometric series.
+\end{proof}
+
+\subsection{Rational interval certificates for the Gaussian triples}
+The file \code{code/certify_gaussian.py} constructs rational endpoints,
+not floating-point guesses. Classical polylogarithms at $(1+i)/2$ are
+summed using exact rational real and imaginary parts for 850 terms.
+Since $|(1+i)/2|<3/4$, each component's tail is bounded by
+$4(3/4)^{851}/851^s$.
+The constants $\pi$ and $\log2$ use, respectively, the alternating
+Machin arctangent series and the positive $2\operatorname{artanh}(1/3)$
+series. Catalan's constant is evaluated as
+\[
+ G=\frac1{16}\bigl(\zeta(2,1/4)-\zeta(2,3/4)\bigr).
+\]
+The Hurwitz zeta values and $\zeta(3)$ use Euler--Maclaurin summation
+with rational Bernoulli numbers. For $s\ge2$, $x=N+a$, and $M$ retained
+Bernoulli corrections, the standard periodic-Bernoulli remainder obeys
+\begin{equation}\label{eq:EMbound}
+ |R_M|\le
+ \frac{|B_{2M}|}{(2M)!}(s)_{2M-1}x^{-s-2M+1}.
+\end{equation}
+This follows by bounding the periodic Bernoulli polynomial by
+$|B_{2M}|$ in the integral remainder and integrating
+$(x+t)^{-s-2M}$. The code uses $N=80$, $M=50$.
+
+Interval arithmetic then propagates these enclosures through the proven
+complex formulas and separately through the printed imaginary formulas.
+All six target components have enclosure width less than $10^{-90}$;
+the actual reported widths are smaller. The imaginary values begin
+\begin{align*}
+\Ima\Li_{2,1,1}(i)&=-0.0231000737339630776916090328202431130613391338545\ldots,\\
+\Ima\Li_{1,2,1}(i)&=-0.0285334247842249902585459705838397251944563205761\ldots,\\
+\Ima\Li_{1,1,2}(i)&=-0.0451614156780673253466795694168971191581439693134\ldots.
+\end{align*}
+The JSON output stores exact endpoint fractions as well as outward-rounded
+decimal displays. These are \emph{proof-backed value enclosures}; overlap
+of two intervals is not offered as a substitute for an analytic proof.
+
+\section{Proposed further research}
+
+\paragraph{The missing $S_4$ relation.}
+Use the dual witness to select genuinely new equations rather than
+repeating the same depth-two product system. The octahedral map
+$t\mapsto(1-t)/(1+t)$ permutes the level-four punctures and is a concrete
+candidate source. The first objective is an exact finite certificate
+for \eqref{eq:S4target}, with all endpoint constants justified.
+
+\paragraph{Weight-six triple candidates.}
+Determine explicit reductions, or a carefully stated motivic obstruction,
+for the imaginary components of the three Lyndon triples at $i$.
+Specify whether half-point doubles and triples are allowed. A result in
+one comparison algebra does not decide the question in another.
+
+\paragraph{Minimal two-zero baskets.}
+Formula~\eqref{eq:twozero} uses the symmetric index sums $C_k(q)$.
+Investigate whether the entire two-zero sector can be organized into
+fewer such combinations using shuffle and functional identities.
+This is an exact elimination problem before any independence question.
+
+\paragraph{Argument choice and conditioning.}
+The map $q=(1-z)^{-1}$ is favorable at the two points studied here but
+not uniformly over all $z$. Optimize among the six fractional-linear
+permutations of $0,1,\infty$, tracking both the number of transformed
+$1$ letters and the convergence radius. Include coefficient growth
+and cancellation in the optimization criterion.
+
+\paragraph{Arithmetic of the Eisenstein half-point.}
+Compare the classical basket at $1/2+i\sqrt3/6$ with the fixed-level-three
+cyclotomic basket. Prove any proposed bridge by functional equations
+rather than relying on an enriched PSLQ search that reports a survivor.
+
+\paragraph{Certified high-depth evaluation.}
+Extend the rational or algebraic interval implementation from the
+one-zero Gaussian family to the full catalogue. The difficult part is
+certified MZV endpoint evaluation, not the exponentially convergent
+$q$-series itself. An exact coefficient engine and an interval evaluator
+should remain independent modules.
+
+\paragraph{Formalization.}
+A proof-assistant development can separate the finite word algebra from
+analytic transport. The former needs finite words, shuffle, rational
+normalization, and the Lyndon count. The latter needs branch domains,
+regularized basepoints, and the finite-weight endpoint argument in
+Lemma~\ref{lem:connection}. No such formalization is claimed in this
+package.
+
+\paragraph{Uniform relation catalogues.}
+Replace isolated rank statements by public matrices, column conventions,
+and dual or row-combination certificates. The all-weight count in
+Theorem~\ref{thm:rank} is a model for the formal part; a corresponding
+complete cyclotomic relation theorem would require additional laws and
+must not be inferred from this binary-word calculation.
+
+\section{Integration and reproducibility}
+
+The package is additive: it does not overwrite the manuscript or commit
+changes to the repository. The proposed integration location is a new
+research-contribution directory under
+\code{Analysis/Polylogarithms/docs/}, with the relevant theorem summaries
+and correction copied into Chapter 4 after review.
+
+\code{integration/EDITORIAL-NOTES.md} distinguishes a proven correction,
+newly proved candidate displays, and unchanged open questions.
+\code{integration/complementary-depth-insert.tex} gives a compact
+manuscript-ready insert. The standalone article is the full proof source.
+
+A local reproduction requires Python 3.10 or later, SymPy, mpmath, and a
+standard LaTeX installation. Run
+\begin{verbatim}
+python code/check_exact.py
+python code/check_numerical.py
+python code/certify_gaussian.py
+python code/audit_s4_rows.py
+python code/replay_certificates.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The numerical and interval runs are separate so that an exact-algebra
+check never quietly substitutes for an analytic or numerical obligation.
+The included manifest hashes the deliverable files. No original
+repository file is silently edited, and no unsupported claim of Lean,
+Wolfram, or independent peer verification is made.
+
+\appendix
+\section{The exact certificate formats}
+
+Each reduction entry stores the original indices, weight, depth, and
+an array of terms. A term with data
+\begin{verbatim}
+{"log_power": j, "q_indices": [a1,...],
+ "zeta_indices": [b1,...],
+ "numerator": p, "denominator": r}
+\end{verbatim}
+means $(p/r)L^j\Li_{a_1,\ldots}(q)\zeta(b_1,\ldots)$.
+An empty index array means the factor $1$.
+The coefficient is exact, and the denominator is positive.
+
+\code{complementary_depth_catalogue.json} contains every word ending in
+$1$ of weight at most eight whose depth is greater than half its weight:
+142 entries and 5763 nonzero normal-form terms.
+\code{one_zero.json} contains all 66 pairs $a,b$ of weights two through
+twelve. Each formula applies at both special points and throughout $D$.
+\code{two_zero_height_one.json} records ten identities of weights three
+through twelve.
+
+The word transport enumerates $2^K$ transformed words and $w+1$ splits
+before normalization, so the raw number of connection terms is at most
+$(w+1)2^K$. This is a count before trailing-zero expansion, \emph{not}
+a polynomial-time claim for the full output. Normalization and the size
+of rational coefficients can increase the computational cost. For a
+fixed small zero count, the raw transport is particularly small, which
+explains the practical success of the one- and two-zero sectors.
+
+\section{The finite law system in the \texorpdfstring{$S_4$}{S4} audit}
+For transparency, the rows are generated as follows. For every
+$p+q=5$ with $p,q\ge1$ and $x,y\in\{1,i,-1,-i\}$, include the
+imaginary parts of the stuffle and shuffle products when both single
+factors converge. The shuffle is
+\begin{align*}
+\Li_p(x)\Li_q(y)
+={}&\sum_{k=0}^{p-1}\binom{q-1+k}{k}
+ \Li_{q+k,p-k}(y,x/y)\\
+&+\sum_{k=0}^{q-1}\binom{p-1+k}{k}
+ \Li_{p+k,q-k}(x,y/x).
+\end{align*}
+When one factor is $\Li_1(1)$, include only the once-regularized
+shuffle-minus-stuffle difference, where the common divergent coordinate
+cancels. Add the internal doubling rows
+\[
+ \sum_{\epsilon,\eta\in\{\pm1\}}
+ \Li_{a,b}(\epsilon x,\eta y)
+ =2^{2-a-b}\Li_{a,b}(x^2,y^2),
+\]
+using $x,y\in\{1,i\}$ and omitting rows with an uncancelled divergent
+coordinate. Some rows are zero or duplicate; they are retained so that
+the generator prescription remains simple and reproducible.
+
+The dual witness is a vector in the kernel of the matrix of these
+homogeneous left sides. Its pairing with the target is nonzero.
+This certificate does not require or imply that the right sides of all
+possible cyclotomic identities have been exhausted.
+
+\clearpage
+\begin{thebibliography}{99}
+\raggedright
+\bibitem{ProveIt}
+V. Reshetnikov, \emph{ProveIt, Analysis/Polylogarithms/docs/manuscript},
+Chapters 4 and 10, repository snapshot
+\code{29d9344771b41df39ff9b7890c76b1f152572dde}, inspected 9 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/29d9344771b41df39ff9b7890c76b1f152572dde/Analysis/Polylogarithms/docs/manuscript}.
+
+\bibitem{RemiddiVermaseren}
+E. Remiddi and J. A. M. Vermaseren,
+\emph{Harmonic polylogarithms}, International Journal of Modern Physics A
+\textbf{15} (2000), 725--754.
+\url{https://arxiv.org/abs/hep-ph/9905237}.
+
+\bibitem{Kolbig}
+K. S. K\"olbig, \emph{Nielsen's generalized polylogarithms},
+SIAM Journal on Mathematical Analysis \textbf{17} (1986), 1232--1258.
+DOI: 10.1137/0517086.
+\url{https://repository.cern/records/09vyq-j8461}.
+
+\bibitem{Radford}
+D. E. Radford, \emph{A natural ring basis for the shuffle algebra and an
+application to group schemes}, Journal of Algebra \textbf{58} (1979),
+432--454. DOI: 10.1016/0021-8693(79)90171-6.
+
+\bibitem{MelanconReutenauer}
+G. Melan\c{c}on and C. Reutenauer,
+\emph{Lyndon words, free algebras and shuffles}, Canadian Journal of
+Mathematics \textbf{41} (1989), 577--591.
+\url{https://reutenauer.math.uqam.ca/wp-content/uploads/2024/04/LyndonWordsFreeAlgebras-Shuffles1989.pdf}.
+
+\bibitem{Panzer}
+E. Panzer, \emph{The parity theorem for multiple polylogarithms},
+Journal of Number Theory \textbf{172} (2017), 93--113.
+\url{https://arxiv.org/abs/1512.04482}.
+
+\bibitem{Umezawa}
+R. Umezawa, \emph{An explicit parity theorem for multiple polylogarithms},
+preprint, 2025. \url{https://arxiv.org/abs/2508.02040}.
+\end{thebibliography}
+\end{document}

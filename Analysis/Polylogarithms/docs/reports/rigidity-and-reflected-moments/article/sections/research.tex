@@ -1,0 +1,155 @@
+\section{Further research questions}
+\label{sec:research}
+
+The completed results suggest specific next steps. We distinguish a
+request for a sharper proof from a conjecture about the mathematics;
+the absence of a reduction in a finite search is never used as an
+independence conjecture by itself.
+
+\subsection{Gaussian identities and proof compression}
+
+\paragraph{1. Compress the $S_4$ certificate.}
+Find a short derivation of Theorem~\ref{thm:s4} from a small collection
+of named functional identities. The present certificate is a complete
+proof, but its $911$ standard rows obscure which intermediate values
+are essential. A useful computational formulation is sparse exact
+elimination with penalties on depth, color changes, and coefficient
+height. Every proposed compression should be replayed by the independent
+verifier. This is a concrete optimization problem with an already
+certified target.
+
+\paragraph{2. Determine the higher even-index mixed reductions.}
+Apply the convergent involution to
+$\Li_{1,2m}(i,1)$ and to other low-depth seeds at weights $2m+1$.
+For $m=3,4$, ask whether $S_{2m}$ can be expressed using the same-point
+doubles $\operatorname{Im}\Li_{a,2m+1-a}(i,1)$ and an explicitly
+specified algebra of lower-weight products. The phrase ``explicitly
+specified'' is essential: changing the allowed basis changes the
+problem. A positive answer requires a rational certificate; a negative
+answer in a chosen formal relation system only describes that system.
+
+\paragraph{3. Organize the octahedral relations by representations.}
+The puncture set $\{0,\infty,\pm1,\pm i\}$ has a rich symmetry group.
+Its action on iterated-integral words suggests decomposing the formal
+weight space before elimination. Determine which symmetry component
+contains the $S_4$ target and why one additional convergent seed suffices
+for this particular calculation. The aim is a theorem about the relation
+module, with motivic and numerical period claims stated separately.
+
+\paragraph{4. Formalize the finite certificate.}
+The standard-library verifier has a deliberately small interface:
+word shuffles, stuffles, sign distribution, conjugation, and one
+M\"obius substitution. These are suitable for translation into a proof
+assistant. The mathematical task is to connect the formal relation
+schemas to the analytic definitions, including the single-divergence
+regularization. Checking a JSON residual alone would formalize only
+the linear algebra, not that analytic connection.
+
+\subsection{Algebraic bases and higher ladders}
+
+\paragraph{5. Prove the plastic tetralogarithm.}
+The adjacent manuscript formula, in reduced coefficients, is
+\begin{align}
+0={}&-71\Li_4(q)-15\Li_4(q^2)+39\Li_4(q^3)-17\Li_4(q^5)
+       +16\Li_4(q^7)-\Li_4(q^{14})\notag\\
+ &\quad+51\zeta(4)+\frac{335}{4}\lambda^4
+                 -42\zeta(2)\lambda^2,
+ \qquad q^3+q^2=1,\quad\lambda=\log q.
+ \label{eq:open-plastic-four}
+\end{align}
+This is an inherited, numerically supported target, not a new
+conjecture introduced by this article. The low-weight proofs suggest
+searching for a specialization of a tetralogarithm functional equation
+whose arguments close after introducing $q^7$ and $q^{14}$. A symbol or
+cobracket calculation can identify candidates, but the remaining
+constant and branch terms still need proof.
+
+\paragraph{6. Move from individual complements to product relations.}
+Classify, or effectively enumerate at bounded support and exponent
+height, relations
+$\prod_j(1-r^j)^{n_j}=r^N$ in a specified number field.
+The theorem in this article shows that individual pure complements
+have very limited redundancy. Higher ladders therefore invite a
+systematic study of product relations and of the additional units
+they introduce. Exact ideal valuations, units, and cyclotomic
+factorizations offer a natural algebraic starting point.
+
+\paragraph{7. Refine the degree count.}
+The exact formula for $N(D)$ reduces its error term beyond $D^2/2$ to
+an explicit sum involving $e(\lfloor D/d\rfloor+1)$ and
+$e(\lfloor D/d\rfloor+2)$. Determine its secondary asymptotic behavior,
+including any $D\log D$ contribution and arithmetic fluctuations.
+The formula permits large exact experiments without polynomial
+factorization. Such experiments should precede any proposed secondary
+constant; this article does not conjecture an unevidenced one.
+
+\paragraph{8. Allow two independent generators.}
+For multiplicatively independent positive algebraic numbers $r,s$,
+study solutions to $x+y=1$ in
+$\{\pm r^as^b:a,b\in\mathbb Z\}$. General unit-equation theory gives
+the surrounding framework, but a sharp, explicit analogue of the
+cyclic classification would require additional arithmetic input.
+Begin with fields and generators already appearing in the manuscript,
+and state the equivalence under a change of generators carefully.
+
+\subsection{Uniform asymptotics and gamma geometry}
+
+\paragraph{9. Connect the proportional and critical harmonic regimes.}
+Construct an error estimate uniform as $\alpha=p/h$ grows from a
+positive constant to $\log h+O(1)$. The present rate satisfies
+$I(\alpha)\sim e^{-\alpha}/2$, while the preceding report has a
+critical limit $\exp(-e^{-c}/2)$ for $\alpha=\log h+c$.
+These formulas match formally, but a connecting theorem needs moving
+saddles, parameter-dependent curvature, and quantitative tail bounds.
+It should recover both the present $D(\alpha,a)$ correction and the
+earlier critical correction in their overlapping range.
+
+\paragraph{10. Let both reflected gamma indices grow.}
+For $m/n\to\theta>0$, the integrand can be written
+\[
+ \exp\{n[\log(\log\Gamma(x))
+              +\theta\log(\log\Gamma(1-x))]\}.
+\]
+The endpoint mechanisms of the fixed-$m$ theorem then change.
+Locate the dominant point or points, establish uniqueness or a precise
+bifurcation statement, and derive a uniform Laplace expansion. At
+$\theta=1$, symmetry forces the phase to be symmetric about $1/2$;
+it does not by itself prove that $1/2$ is the global maximum.
+
+\paragraph{11. Determine the optimally truncated signed remainder.}
+The unsigned bound is sufficient for certified approximation, but it
+does not identify the leading exponentially small remainder when
+$K$ lies near the least term. Develop a contour or inverse-function
+description that determines its sign, scale, and dependence on the
+fractional part of the optimal truncation index. The already proved
+late-coefficient law supplies the candidate least-term location;
+turning it into a remainder theorem is a separate analytic step.
+
+\paragraph{12. Classify early residue zeros and sign changes.}
+The first coefficient is positive, and the late sign is
+$(-1)^{k+m-1}$. Early behavior depends on $m$: even the second
+nonzero coefficient changes sign between $m=1$ and $m=2$.
+Determine whether any early coefficient vanishes and obtain explicit
+bounds for the onset of the eventual sign law as a function of $m$.
+An exact identity in the formal zeta--gamma polynomial algebra should
+be distinguished from a numerical zero after substituting Euler's
+constant and zeta values.
+
+\paragraph{13. Develop weighted inverse-gamma moments.}
+Replace $B(x)^m$ by an analytic weight $W(x)$ with a specified order
+of vanishing at zero. The residue calculation suggests
+\[
+ A_k(W)=\frac1k[x^{k-1}]\Gamma(1+x)^kW(x),
+\]
+and the same Cauchy-circle method should yield a late-coefficient
+expansion when the transformed amplitude does not vanish at the
+critical point. Precisely identify the hypotheses under which this
+holds, including endpoint integrability, zeros at the saddle, and
+weights with their own singularities. Reflected integer powers are
+the fully proved case in this article.
+
+These questions have different proof requirements. Exact word
+identities and algebraic searches are natural targets for small
+certificates. Uniform asymptotics require analytic remainder estimates.
+Statements about numerical period independence require arithmetic
+ideas beyond the reduction and numerical methods used here.

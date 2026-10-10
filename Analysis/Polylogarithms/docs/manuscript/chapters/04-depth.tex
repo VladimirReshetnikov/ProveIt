@@ -1,7 +1,8 @@
 \chapter{Gaussian and Eisenstein depth}\label{ch:04-depth}
 The classical transformations suggest a sharper question: how much nesting
 is necessary after known identities have been used? We first prove an
-infinite family of reductions. The other families illustrate how a successful
+infinite family of reductions. The shuffle and parity proofs below settle several of the source's numerical
+relations. The other families illustrate how a successful
 experimental identity gives an upper bound on depth, while a failed search
 leaves open both a large-coefficient reduction and a missing argument family.
 
@@ -287,59 +288,7 @@ two-sided alternation theorem by \eqref{gauss:eq:even-general} and its proved
 even-weight membership statement, and retain the opposite direction
 as a research question.
 
-\section{Candidate Gaussian reductions at weights five and six}
-The following equations collect the source's accepted numerical relations.
-They include the corrected dependence among the four weight-five generators,
-the five weight-six double reductions, and the triple reductions through
-weight five. Historical residuals range from about $10^{-193}$ to
-$10^{-690}$. The source scripts for every such relation are not present in
-this checkout, so these remain numerically supported identities unless an
-analytic derivation is explicitly supplied. In particular the weight-five
-relation gives a spanning set of at most three directions, rather than an
-independence theorem.
-\begin{equation}
-  \label{gauss:eq:S4-closed}
-  S_4 \;=\; \sum_{n\ge0}\frac{(-1)^n H_n}{(2n+1)^4}
-  \;=\; \frac{4\,g_{41}-3\,g_{32}-9\,g_{23}}{7}
-        \;+\;\frac{\pi^5}{224}
-        \;-\;\frac{27}{224}\,G\,\zeta(3)
-        \;-\;2\,\beta(4)\log 2,
-\end{equation}
-
-\begin{equation}
-  \label{gauss:eq:wt5-sporadic}
-  576\,g_{41}+288\,g_{32}+736\,g_{23}+960\,g_{14}
-  \;=\; 21\,G\,\zeta(3)-480\,\beta(4)\log 2,
-\end{equation}
-
-\begin{align}
-  \label{gauss:eq:g51}
-  2048\,g_{51} &= -64\pi^3\zeta(3)-527\pi\zeta(5)+4096\,\beta(6),\\
-  \label{gauss:eq:g42}
-  1536\,g_{42} &= 96\pi^3\zeta(3)-32\pi^2\beta(4)+1581\pi\zeta(5)-8448\,\beta(6),\\
-  \label{gauss:eq:g33}
-  1024\,g_{33} &= -3\pi^3\zeta(3)+64\pi^2\beta(4)-1581\pi\zeta(5)+4608\,\beta(6),\\
-  \label{gauss:eq:g24}
-  23040\,g_{24} &= -14\pi^4 G+135\pi^3\zeta(3)-1440\pi^2\beta(4)+23715\pi\zeta(5)-69120\,\beta(6),\\
-  \label{gauss:eq:g15}
-  92160\,g_{15} &= -150\pi^5\log 2+56\pi^4 G-270\pi^3\zeta(3)+1920\pi^2\beta(4)-675\pi\zeta(5).
-\end{align}
-
-\begin{align}
-  \Im\Li_{2,1,1}(\iu,1,1)
-    &= \lambda_4 + \tfrac12\,\lambda_3\log 2
-       - \frac{G\,(\pi^2-4\log^2 2)}{32}
-       - \frac{\pi\,(8\log^3 2 + 105\,\zeta(3))}{768},\\[2pt]
-  \Im\Li_{1,2,1}(\iu,1,1)
-    &= -3\lambda_4 - \lambda_3\log 2
-       + \frac{G\,(\pi^2-4\log^2 2)}{32}
-       - \frac{3\pi^3\log 2}{256}
-       + \frac{\pi\,(2\log^3 2 + 67\,\zeta(3))}{128},\\[2pt]
-  \Im\Li_{1,1,2}(\iu,1,1)
-    &= 3\lambda_4 + \tfrac12\,\lambda_3\log 2
-       + \frac{5\pi^3\log 2}{192}
-       - \frac{163\,\pi\,\zeta(3)}{256}.
-\end{align}
+\input{chapters/04-shuffle-parity}
 
 \section{The colored stuffle identity}
 Whenever the defining sums are absolutely convergent, sorting the two
@@ -375,20 +324,79 @@ with the clean diagonal corollary
 \end{equation}
 Every single polylogarithm on the right is elementary in the level-$4$ vocabulary:
 $\Imag\Li_n(\iu)=\beta(n)$ is the Dirichlet beta value, $\Real\Li_n(\iu)$ and $\Li_n(-1)=-\eta(n)$
-are rational multiples of $\zeta(n)$ (or $\pi^n$ at even $n$), and $\Li_n(-\iu)=\overline{\Li_n(\iu)}$.
+are rational multiples of $\zeta(n)$ for $n\ge2$ (or $\pi^n$ at even $n$),
+and $\Li_n(-\iu)=\overline{\Li_n(\iu)}$. At $n=1$, the real values
+are $\Real\Li_1(\iu)=-\log2/2$ and $\Li_1(-1)=-\log2$.
 So Family~1 reduces every symmetric and diagonal Gaussian double to single $L$-values in closed form.
 
 \begin{remark}
 The three stuffle identities \eqref{double:eq:g-sym-ii}--\eqref{double:eq:g-sym-mix} were checked against the stored
 $700$-digit values to ${\sim}10^{-692}$ for every admissible $a,b$, and the closed forms were
 confirmed symbolically and numerically by Wolfram~$15$ at low weight, including the weight-$6$
-diagonal $\Li_{3,3}(\iu,\iu)=\tfrac12(\Li_3(\iu)^2-\Li_6(-1))$, for which the kernel returns a form in
-$\beta(4)$, $\pi^4$, $\zeta(3)$.
+diagonal. Its exact homogeneous expression follows directly from stuffle:
+\[
+ \Li_{3,3}(\iu,\iu)=\frac9{2048}\zeta(3)^2+\frac{47\pi^6}{1935360}
+ -\frac{3\iu\pi^3\zeta(3)}{1024}.
+\]
+Indeed $\Li_3(\iu)=(-3\zeta(3)+\iu\pi^3)/32$ and
+$\Li_6(-1)=-31\pi^6/30240$.
 \end{remark}
 
-The consequence is structural: all depth-$2$ content of the Gaussian doubles lives in the
-\emph{antisymmetric} parts $\Li_{a,b}(P)-\Li_{b,a}(P)$, which vanish on the diagonal. These are what
-the double shuffle of the next section reduces.
+After the symmetric stuffle combinations have been removed, the remaining
+information is carried by $\Li_{a,b}(x,y)-\Li_{b,a}(y,x)$, exchanging both
+indices and colors. Equal indices alone do not force it to vanish at mixed
+points. The same-color diagonal is a special case.
+
+Here is an exact counterexample entirely inside the manuscript's
+alphabet:
+\begin{equation}\label{colors:audit:eq:mixed-counterexample}
+ \Im\bigl(\Li_{1,1}(-1,i)-\Li_{1,1}(i,-1)\bigr)
+ =\frac\pi2\log2-G
+ =\int_0^1\frac{\log(1+t^2)}{1+t^2}\,dt>0.
+\end{equation}
+To prove the first equality, differentiating the convergent defining
+series in the disk gives
+\[
+ \frac{\partial}{\partial x}\Li_{1,1}(x,y)
+   =\frac{\Li_1(xy)}{1-x}.
+\]
+Continuation along the segment to $x=-1$ is nonsingular, and hence
+\[
+ \Im\Li_{1,1}(-1,i)=\int_0^1\frac{\arctan t}{1+t}\,dt.
+\]
+Put $K=\int_0^1\log(1+t)/(1+t^2)\,dt$. With $t=\tan\theta$,
+\[
+ K=\int_0^{\pi/4}\left(
+   \tfrac12\log2+\log\sin(\theta+\pi/4)-\log\cos\theta
+   \right)d\theta=\frac\pi8\log2.
+\]
+The last two integrals cancel after reflection about $\pi/2$.
+Integration by parts now gives
+$\Im\Li_{1,1}(-1,i)=\pi\log2/4-K=\pi\log2/8$.
+Stuffle and
+\[
+ \Li_1(-1)=-\log2,\qquad
+ \Li_1(i)=-\tfrac12\log2+\tfrac{\pi i}{4},\qquad
+ \Im\Li_2(-i)=-G
+\]
+give
+\[
+ \Im\bigl(\Li_{1,1}(-1,i)+\Li_{1,1}(i,-1)\bigr)
+   =G-\frac\pi4\log2.
+\]
+Subtracting proves the first equality in
+\eqref{colors:audit:eq:mixed-counterexample}; the second also follows directly by setting $t=\tan\theta$. Indeed,
+\[
+ \int_0^{\pi/4}\log\cos\theta\,d\theta
+ =-\frac\pi4\log2+\frac G2,
+\]
+which follows from the sum and difference of the corresponding
+log-sine and log-cosine integrals: their difference is $G$, and their
+sum is $-\pi\log2/2$ by the double-angle formula. Thus the displayed
+integral is $-2\int_0^{\pi/4}\log\cos\theta\,d\theta$.
+Its integrand is positive away from zero. The difference is approximately
+$0.17282745097458205019574093418642286289514247590297$.
+
 
 \subsection{Family 2: antisymmetric reductions to the $(\iu,1)$ algebra}
 
@@ -604,6 +612,10 @@ accelerates the resulting smooth, power-law-convergent sequence with \textbf{Wyn
 ---the algebraic-convergence counterpart of the $\varepsilon$-algorithm. The $\rho$-algorithm yields
 empirical convergence on the tested families; precision inflation and independent comparison are needed to assess its conditioning
 (\code{mpl\_w1.py}).
+
+The general certified evaluators and their geometric bounds are developed
+in Chapter~\ref{ch:certified-computation}. The historical Lerch evaluator
+above remains a useful independent comparison.
 
 \section{Validation}\label{mixed:sec:valid}
 

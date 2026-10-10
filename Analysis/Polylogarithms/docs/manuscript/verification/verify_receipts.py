@@ -43,6 +43,23 @@ x=read('spectral-replay/data/parameter_asymptotics.json');outcomes['spectral-rep
 def rational(endpoint):return Fraction(int(endpoint['numerator']),int(endpoint['denominator']))
 x=read('Herglotz-interval-results.json')
 outcomes['Herglotz-interval-results.json']=len(x['cases'])==4 and all(rational(c['F_interval']['lower'])<rational(c['F_interval']['upper']) for c in x['cases'])
+for part in ['14','16','17','18','19','19b']:
+    x=read(f'gaussian-replay/{part}/replay-summary.json')
+    outcomes['gaussian-replay/'+part]=x['all_programs_exited_zero']
+x=read('gaussian-replay/14/shuffle_verification.json')
+outcomes['gaussian-shuffle']=x['status']=='PASS' and x['normal_forms_reexpanded']==511 and x['bigraded_sectors_checked']==45
+x=read('gaussian-replay/14/exact-summary.json')
+outcomes['gaussian-ladders-and-cubic']=x['ladders']['passed']==35 and x['cubic_reference_reproduced_exactly']
+x=read('gaussian-replay/16/verification.json')
+outcomes['gaussian-Chebyshev']=x['total_interval_certificates']==89 and x['counts']['independent_high_precision_quadratures']==8
+x=read('gaussian-replay/17/rational_certificates.json')
+outcomes['gaussian-midpoint']=len(x['certificates'])==6
+x=read('gaussian-replay/18/verification_summary.json')
+outcomes['signed-Euler']=x['status']=='PASS' and x['total_check_cases']==588
+x=read('gaussian-replay/19/verification_summary.json');r=read('gaussian-replay/19/replay_summary.json')
+outcomes['Holder-values']=x['rational_value_certificates']==75 and r['count']==75 and all(c['center_equal'] and c['radius_equal'] for c in r['checks'])
+x=read('gaussian-replay/19b/sixth_root_checks.json')
+outcomes['sixth-root-one-two']=x['comparison_count']==56 and x['explicit_example_count']==4
 x=read('Herglotz-truncation-results.json')
 # These finite records are asymptotic diagnostics, not tests of a universal theorem.
 diagnostic_records=dict(transition=len(x['transition_checks']),remainder=len(x['remainder_checks']),quadrature=len(x['independent_gamma_quadrature_checks']))
@@ -53,6 +70,6 @@ result=dict(changed_sources=changed,changed_dependencies=changed_dependencies,pd
  pdf_static_checks=render['static_passed'],document_integrity=doc['passed'],recorded_outcomes=outcomes,
  asymptotic_diagnostic_records=diagnostic_records,
  scope='Recorded evidence integrity only; visual review and scientific replay are separate activities.')
-result['passed']=not changed and not changed_dependencies and all(outcomes.values()) and all(result[k] for k in ['pdf_matches_build','pdf_matches_render','converged_build','pdf_static_checks','document_integrity']) and result['page_count']==177 and result['source_documents']==79
+result['passed']=not changed and not changed_dependencies and all(outcomes.values()) and all(result[k] for k in ['pdf_matches_build','pdf_matches_render','converged_build','pdf_static_checks','document_integrity']) and result['page_count']==228 and result['source_documents']==109 and render.get('pdf_author')=='ProveIt Contributors'
 (V/'receipt-integrity.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
 print(json.dumps(result,indent=2));raise SystemExit(0 if result['passed'] else 1)

@@ -1,0 +1,282 @@
+\section{The cubic log-gamma moment: a classical evaluation and a source correction}
+\label{sec:cubic}
+
+Write
+\[
+ a=\frac12\log(2\pi),\qquad A=\gamma+\log(2\pi),\qquad
+ M_j=\int_0^1\log^j\Gamma(x)\,dx.
+\]
+The manuscript's statement that identifying a named depth-two atom for $M_3$
+is open requires correction.  Bailey, D.~Borwein, and J.~M.~Borwein evaluated
+$M_3$ using derivatives of Tornheim--Witten zeta functions in Theorem~6,
+equation~(61), of their 2015 paper~\cite{BBB}.  The author-hosted preprint is dated
+27 June 2012.  Their formula does not establish a reduction to a prescribed
+finite collection of ordinary zeta values and derivatives.  That more
+restrictive question should be kept distinct from the already established
+Tornheim evaluation.  The argument below independently derives an equivalent
+formula and supplies a convenient convergence justification.
+
+For complex parameters in an open neighbourhood of $(1,1,1)$, define
+\[
+ T(s,t,u)=\sum_{m,n\ge1}\frac1{m^s n^t(m+n)^u},
+ \qquad T_j=\partial_jT,\quad T_{ij}=\partial_i\partial_jT.
+\]
+Every derivative below is evaluated at $(1,1,1)$ unless arguments are shown.
+The notation $T_{12}$ and $T_{13}$ is preferable to an unqualified prime,
+because different parameter derivatives give different constants.
+
+\begin{theorem}[Classical cubic evaluation, with a direct proof]
+Set
+\[
+ V=\frac{\pi^2}{48}+\frac{A^2}{12}
+       -\frac{A\zeta'(2)}{\pi^2}+\frac{\zeta''(2)}{2\pi^2}.
+\]
+Then
+\begin{equation}\label{cubic:main}
+ \boxed{\displaystyle
+ M_3=a^3+3aV+\frac{3\zeta(3)}{16}
+ +\frac{3}{8\pi^2}
+   \left(2A^2\zeta(3)-2A T_3+2T_{13}-T_{12}\right).}
+\end{equation}
+All derivatives on the right are represented by absolutely convergent
+double series.  In particular, no analytic continuation or summation
+prescription is needed to define these constants.
+\end{theorem}
+
+\begin{proof}
+Let $f(x)=\log\Gamma(x)$, regarded as an integrable periodic function.
+Since $f(x)=-\log x+O(x)$ as $x\downarrow0$ and $f$ is bounded near $1$,
+we have $f\in L^p(0,1)$ for every finite $p\ge1$.
+Kummer's Fourier expansion gives
+\[
+ f(x)=a+\sum_{n\ge1}
+ \left(\frac{\cos(2\pi nx)}{2n}
+       +\frac{A+\log n}{\pi n}\sin(2\pi nx)\right),
+ \qquad 0<x<1.
+\]
+Equivalently, the positive Fourier coefficients are
+\[
+ h_n=\frac1n\left(\frac14-
+                   \frac{i(A+\log n)}{2\pi}\right),
+ \qquad h_{-n}=\overline{h_n}.
+\]
+For $0<r<1$, let $f_r$ be the Poisson mean of $f$, so that the coefficient
+$h_n$ is replaced by $r^{|n|}h_n$.  The Fourier series is now absolutely
+convergent, and Poisson approximate-identity convergence gives
+$f_r\to f$ in $L^3$.  Consequently $\int f_r^j\to\int f^j$ for $j=1,2,3$:
+for the cubic case this follows, for example, from
+\[
+ \|u^3-v^3\|_1\le\|u-v\|_3
+       (\|u\|_3^2+\|u\|_3\|v\|_3+\|v\|_3^2).
+\]
+
+Write $g=f-a$. Orthogonality first gives
+\begin{align*}
+ \int_0^1g(x)^2\,dx
+ &=2\sum_{n\ge1}|h_n|^2\\
+ &=\frac{\zeta(2)}8+
+   \frac{A^2\zeta(2)-2A\zeta'(2)+\zeta''(2)}{2\pi^2}=V.
+\end{align*}
+For the cube, a zero-sum triple of nonzero Fourier frequencies has two
+positive frequencies $m,n$ and one negative frequency $-(m+n)$, or the
+opposite signs.  Accounting for the three positions of the exceptional
+sign and then conjugation gives
+\begin{equation}\label{cubic:resonance}
+ \int_0^1g_r(x)^3\,dx
+ =6\mathop{\rm Re}\sum_{m,n\ge1}
+     r^{2(m+n)}h_mh_n\overline{h_{m+n}}.
+\end{equation}
+The factor is correct also when $m=n$: the ordered double sum accounts
+for the interchange of the two positive frequencies only when they differ.
+
+These resonant sums converge absolutely at $r=1$. Indeed,
+\[
+ \sum_{m=1}^{k-1}\frac1{m(k-m)k}
+       =\frac{2H_{k-1}}{k^2},
+\]
+and $|h_mh_nh_{m+n}|$ is bounded by a constant times
+$(1+\log(m+n))^3/[mn(m+n)]$.  The grouped majorant is
+$O((1+\log k)^4/k^2)$, which is summable.  Dominated convergence therefore
+permits $r\uparrow1$ in \eqref{cubic:resonance}.
+
+Put $p=1/4$ and $q_j=(A+\log j)/(2\pi)$.  Direct multiplication yields
+\[
+ \mathop{\rm Re}\bigl[(p-iq_m)(p-iq_n)(p+iq_{m+n})\bigr]
+ =p^3+p(q_mq_{m+n}+q_nq_{m+n}-q_mq_n).
+\]
+The numerator in the second term is, apart from $4\pi^2$,
+\[
+ A^2+2A\log(m+n)+\log m\log(m+n)+\log n\log(m+n)-\log m\log n.
+\]
+By the definitions of the Tornheim derivatives, symmetry in $m,n$,
+and $T(1,1,1)=2\zeta(3)$, we obtain
+\[
+ \int_0^1g(x)^3\,dx
+ =\frac{3\zeta(3)}{16}
+ +\frac{3}{8\pi^2}
+       \bigl(2A^2\zeta(3)-2AT_3+2T_{13}-T_{12}\bigr).
+\]
+Finally, $\int g=0$ and $\int f^3=a^3+3a\int g^2+\int g^3$.
+\end{proof}
+
+\paragraph{Holomorphy and differentiation.}
+For completeness, local holomorphy is also elementary.  If each real part
+of $s,t,u$ is at least $1-\epsilon$, with $0<\epsilon<1/3$, grouping by
+$k=m+n$ and splitting at $m=k/2$ gives a locally uniform majorant of order
+$k^{-2+3\epsilon}$.  The sum converges uniformly on compact subsets of
+such a neighbourhood.  Standard termwise differentiation therefore applies.
+Alternatively, at $(1,1,1)$ any prescribed logarithmic numerator of degree
+$d$ is dominated by $2H_{k-1}(\log k)^d/k^2$ after grouping.  These are
+ordinary convergent derivatives; Abel means are used only to justify the
+Fourier multiplication.
+
+\paragraph{Relations to Euler double zeta derivatives.}
+Define $Z(s)=\zeta(s,1)=\sum_{k\ge2}H_{k-1}k^{-s}$, so that the prime
+in $Z'(2)$ differentiates its first argument.  Then
+\begin{equation}\label{cubic:firstpartials}
+ T(1,1,u)=2Z(u+1),\qquad
+ T_3=2Z'(2),\qquad T_1=T_2=Z'(2)+\zeta'(3).
+\end{equation}
+The first identity follows from $1/[m(k-m)]=(1/m+1/(k-m))/k$.
+For the last identity, use
+$\sum_{n\ge1}1/[n(m+n)]=H_m/m$.
+Equation~\eqref{cubic:main} thus exactly matches the published cubic formula.
+It also makes clear why a search involving only ordinary Riemann-zeta
+derivatives need not find a relation.  Failure of a finite PSLQ search
+does not prove that such a reduction is impossible.
+
+\subsection{A positive summand form and an explicit tail bound}
+
+The combination in \eqref{cubic:main} can be computed without cancellation
+between separate Tornheim constants.  For $k=m+n$, define
+\[
+ R_A(m,n)=A^2+2A\log k+\log m\log k+\log n\log k-\log m\log n.
+\]
+Since $A>0$, $\log k\ge\log m,\log n\ge0$, we have $R_A(m,n)>0$.
+Writing $p=\log m,q=\log n,r=\log k$, one also has
+$r(p+q)-pq\le r^2$: for fixed $r$, the expression is increasing separately
+in $p,q\in[0,r]$.  Consequently
+\[
+ 0<R_A(m,n)\le(A+\log k)^2.
+\]
+Therefore the diagonal partial sums
+\[
+ C_N=\frac3{32}\sum_{m+n\le N}\frac1{mn(m+n)}
+    +\frac{3}{8\pi^2}
+       \sum_{m+n\le N}\frac{R_A(m,n)}{mn(m+n)}
+\]
+increase to the centered cubic moment $M_3-a^3-3aV$.  Moreover,
+\begin{align*}
+ 0<(M_3-a^3-3aV)-C_N
+ &\le\sum_{k>N}\frac{2(1+\log k)}{k^2}
+       \left(\frac3{32}+\frac{3(A+\log k)^2}{8\pi^2}\right).
+\end{align*}
+This gives a transparent computable enclosure, although its convergence
+is only $O(\log^3N/N)$.  An integral bound may be used once the explicit
+summand is decreasing; direct summation can handle the finite initial range.
+This positivity observation is an immediate corollary of the Fourier
+calculation, not a claim of a new classical-constant evaluation.
+
+\subsection{Exponentially convergent numerical reproduction}
+
+For $t>0$, put
+\[
+ C(t)=\operatorname{Li}_1(e^{-t})=-\log(1-e^{-t}),\qquad
+ F(t)=\left.\partial_s\operatorname{Li}_s(e^{-t})\right|_{s=1}.
+\]
+The usual Mellin representation of the Tornheim sum gives
+\begin{equation}\label{cubic:mellinpartials}
+ T_{12}=\int_0^\infty F(t)^2\,dt,\quad
+ T_{13}=\int_0^\infty F(t)C(t)(\log t+\gamma)\,dt,\quad
+ T_3=\int_0^\infty C(t)^2(\log t+\gamma)\,dt.
+\end{equation}
+For $0<t<2\pi$, cancellation of the two poles in Jonqui\`ere's expansion
+produces
+\begin{align*}
+ C(t)&=-\log t+\sum_{k\ge1}c_kt^k,
+ &c_k&=\frac{(-1)^k\zeta(1-k)}{k!},\\
+ F(t)&=-\alpha-\gamma\log t-\tfrac12\log^2t+\sum_{k\ge1}b_kt^k,
+ &b_k&=\frac{(-1)^k\zeta'(1-k)}{k!},\\
+ \alpha&=\gamma_1+\frac{\gamma^2}2+\frac{\pi^2}{12}.
+\end{align*}
+Here the Stieltjes convention is
+$\zeta(1+z)=z^{-1}+\sum_{j\ge0}(-1)^j\gamma_jz^j/j!$.
+For computational stability the coefficient formulas can be rewritten as
+\begin{align*}
+ c_1&=\tfrac12,&b_1&=\tfrac12\log(2\pi),\\
+ c_{2j}&=\frac{(-1)^j\zeta(2j)}{j(2\pi)^{2j}},&
+ b_{2j}&=c_{2j}\left(\log(2\pi)-\psi(2j)-\frac{\zeta'(2j)}{\zeta(2j)}\right),\\
+ c_{2j+1}&=0\quad(j\ge1),&
+ b_{2j+1}&=\frac{(-1)^{j+1}\pi\zeta(2j+1)}{(2j+1)(2\pi)^{2j+1}}
+ \quad(j\ge1).
+\end{align*}
+The functional equation of the Riemann zeta function proves these identities.
+Elementary bounds $\zeta(k)<2$, $|\zeta'(k)|<2$, $H_{k-1}\le k-1$,
+$\gamma<1$, $\log(2\pi)<2$, and $2\pi>6$ give, for $k\ge2$,
+\[
+ |b_k|\le12\,6^{-k},\qquad |c_k|\le2\,6^{-k}.
+\]
+Thus after degree $K\ge1$ their remainders on $0<t\le1$ are at most
+\[
+ \epsilon_b=\frac{12}{5}6^{-K},\qquad
+ \epsilon_c=\frac25 6^{-K}.
+\]
+All integrals of the resulting polynomials in $t$ and $\log t$ are evaluated
+using $\int_0^1t^k\log^jt\,dt=(-1)^jj!/(k+1)^{j+1}$.
+
+On $t\ge1$, insert
+$C(t)=\sum_{n\ge1}e^{-nt}/n$ and
+$F(t)=-\sum_{n\ge1}(\log n)e^{-nt}/n$.  The integral with the logarithmic
+factor uses
+\[
+ \int_1^\infty e^{-kt}(\log t+\gamma)\,dt
+ =\frac{E_1(k)+\gamma e^{-k}}k.
+\]
+Truncate this sum at $m+n\le N$.  A common upper bound for the three
+omitted tails is
+\[
+ B_N=4\sum_{k>N}ke^{-k}
+ =\frac{4e^{-(N+1)}((N+1)-Ne^{-1})}{(1-e^{-1})^2}.
+\]
+For the three integrals in the order $T_{12},T_{13},T_3$, safe total
+series-truncation bounds are respectively
+\[
+ \epsilon_b(12+\epsilon_b)+B_N,\qquad
+ 5\epsilon_b+15\epsilon_c+2\epsilon_b\epsilon_c+B_N,\qquad
+ 10\epsilon_c+2\epsilon_c^2+B_N.
+\]
+For example the elementary estimates
+$C(t)\le-\log t+1$ and
+$|F(t)|\le4-\log t+\tfrac12\log^2t$ on $(0,1]$ imply all the constants
+above.  The sharper bound $\int_0^1|F(t)|dt<6$ follows directly from its
+coefficient expansion (one may use $0<\alpha<2$).
+An elementary verification of the latter constant bound is available:
+the defining limit for $\gamma_1$ and the total variation of
+$x\mapsto\log x/x$ on $[1,\infty)$ give $|\gamma_1|\le2/e<3/4$;
+combine this with $0<\gamma<3/5$ and $3<\pi<\sqrt{12}$.
+This is an analytic truncation certificate; floating-point rounding must
+be handled separately to turn an implementation into interval arithmetic.
+
+The independent implementation \texttt{verify\_tornheim.py} evaluates the
+three partials and compares \eqref{cubic:main} against direct log-gamma
+quadrature.  Its output explicitly labels the rounding qualification.
+
+\subsection{A sign check for an auxiliary identity}
+
+If the June 2012 preprint is used, an auxiliary sign should be checked
+before copying its Remark~3.  Put
+\[
+ S_\gamma=\sum_{m,n\ge1}
+        \frac{(\gamma+\log m)(\gamma+\log n)}{mn(m+n)}.
+\]
+Directly expanding the numerator, with absolutely convergent sums, gives
+\[
+ T_{12}=S_\gamma+2\gamma\bigl(Z'(2)+\zeta'(3)\bigr)
+                  -2\gamma^2\zeta(3).
+\]
+The coefficient of $S_\gamma$ is positive.  The displayed minus sign in
+equations~(63) and~(65) of the author-hosted June 2012 preprint would make
+their right side negative, although $T_{12}>0$.  This issue does not
+affect the cubic formula proved above.  This note does not assert that
+the same typographical error occurs in the final journal typesetting.
+

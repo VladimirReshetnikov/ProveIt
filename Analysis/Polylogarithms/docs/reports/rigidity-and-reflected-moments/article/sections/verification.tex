@@ -1,0 +1,112 @@
+\section{Reproducibility and proof dependencies}
+\label{sec:verification}
+
+The archive contains the complete \LaTeX{} source, the compiled PDF,
+proof certificates, verification programs, result records, the plotted
+figure and its source program, and the proposed integration edits.
+The programs are included so that all finite claims can be replayed
+independently of the discovery process. The analytic proofs are in
+the article; the numerical files are supplementary diagnostics.
+
+\subsection{Exact checks}
+
+The $S_4$ verifier requires only the Python standard library. It rebuilds
+the relation rows from the stored descriptors and verifies the target
+coefficient by coefficient using integers and rational fractions.
+Its recorded result is
+\[
+ \begin{array}{c|r}
+ \text{convergent double-shuffle rows}&713\\
+ \text{single-divergence double-shuffle rows}&181\\
+ \text{lifted convergent distribution rows}&17\\
+ \text{convergent duality seeds}&1\\\hline
+ \text{nonzero residual coefficients}&0
+ \end{array}
+\]
+The coefficient file is approximately $538$ kB. A separate discovery
+program rebuilds a certificate by exact fraction-free elimination;
+it is optional for verification. Replaying the supplied certificate
+does not require it, a saved elimination matrix, or binary caches.
+The discovery run also succeeded and the newly generated certificate
+passed the independent verifier.
+
+The ladder program completed $2{,}012$ checks. Of these, $2{,}008$
+are exact algebraic or arithmetic checks, and four are high-precision
+numerical audits. They include $435$ exact irreducible-quotient checks
+for $1\le a<b\le30$, the six predicted scaled-plastic collisions in
+that range, all specialized Rogers and Kummer arguments, the rational
+row combinations, and the counting and M\"obius formulas through
+degree $100$. The finite survey corroborates the classification;
+the all-exponent proof depends on the cited irreducibility theorem
+and the argument in the text.
+
+The reflected-moment program completed $119$ exact symbolic assertions.
+They check the first three residue-coefficient formulas, the finite
+reflection sums through $k=10$, the Appell rules through degree ten,
+and the stated generating-function coefficients. Neither these checks
+nor the numerical asymptotic tests replace the continuation, saddle,
+or remainder proofs.
+
+\subsection{Numerical audits}
+
+At $70$ working decimal digits, independent quadratures for the two
+sides of the $S_4$ identity differ by approximately
+$4.58\times10^{-71}$. The four plastic identities were evaluated at
+$120$ working digits; the largest residual was below
+$8\times10^{-121}$. These figures describe the observed arithmetic
+of the stated runs. They are not rigorous interval enclosures.
+
+The proportional-depth program evaluates $24$ positive integrals at
+$70$ digits, using $h=20,40,80,160$, $\alpha=1/4,1,3$, and
+$a=1/2,6/5$. It checks the explicit rate derivative separately and
+records both the leading approximation and the first correction.
+The corrected relative errors have the predicted $h^{-2}$ scale in
+these experiments. The figure displays the exact rate and prefactor
+formulas, sampled numerically for illustration.
+
+At $120$ digits, the reflected-moment diagnostics compare $16$ late
+coefficients, $9$ finite-moment approximations and explicit bounds,
+and $3$ independent direct-$x$ versus transformed-variable quadratures.
+The late-coefficient tests include the predicted $\beta_m$ term.
+The moment tests verify that the observed errors lie below the
+displayed bounds in the selected cases. The proof establishes those
+bounds for the entire stated range, not just these samples.
+
+\subsection{Reproduction commands}
+
+From the root of the extracted package, the exact Gaussian proof can
+be checked with
+\begin{verbatim}
+python code/verify_s4.py results/S4_certificate.json
+\end{verbatim}
+The remaining supplied checks use \texttt{sympy}, \texttt{mpmath},
+and, for figure regeneration only, \texttt{matplotlib}. The command
+\begin{verbatim}
+python code/run_checks.py
+\end{verbatim}
+runs the packaged verifiers and writes a combined receipt. To rebuild
+the article use
+\begin{verbatim}
+latexmk -pdf -interaction=nonstopmode -halt-on-error \
+  polylogarithms_rigidity.tex
+\end{verbatim}
+The optional full Gaussian discovery command is
+\begin{verbatim}
+python code/discover_s4.py results/S4_certificate_rebuilt.json
+\end{verbatim}
+It does not overwrite the supplied proof certificate. The README
+documents individual commands, expected outputs, and the exact scope
+of the proposed patch. A manifest records the audited source revision
+and SHA-256 digests of the delivered files.
+
+\subsection{What has been certified}
+
+There are two mathematical proof mechanisms here: proofs from stated
+classical theorems and explicit analytic arguments, and a finite
+computer-assisted rational proof whose relation schemas are justified
+in the text. The article is not a Lean, Isabelle, or Coq development.
+No numerical lower bound on a period-space dimension, no general
+maximal ladder weight, and no historical priority over all equivalent
+formulas is asserted. The verified result is the collection of exact
+identities, classifications, asymptotic expansions, and error bounds
+with the hypotheses stated in their respective theorems.

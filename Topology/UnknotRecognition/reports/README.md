@@ -91,6 +91,7 @@ modification times.
 | `78/` | `ProveIt_Span_Excess_20261009.zip` | complete delivered manuscript, code and evidence | span-excess optimization research | delivered modules retained inside report; not applied during placement | arrival `36418cfb6` preserved; review and validation pending under the active goal |
 | `79/` | `unknot_causal_localization_20261009.zip` | complete delivered manuscript, code and evidence | causal localization and shared region search research | delivered modules retained inside report; not applied during placement | arrival `36418cfb6` preserved; review and validation pending under the active goal |
 | `80/` | `unknot_planar_sectors_20261009.zip` | complete delivered manuscript, code and evidence | planar sector enumeration research | delivered modules retained inside report; not applied during placement | arrival `36418cfb6` preserved; review and validation pending under the active goal |
+| `81/` | `unknot_planar_sector_overlays_20261009.zip` | complete delivered manuscript, code and evidence | sharp planar interactions, effective support reduction and Q-corner Euler precheck | alternative additive implementation retained inside report; no patch applied during placement | arrival `3e07f86cf` preserved; independent review follows under the active goal |
 
 Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 `docs/`, examples, recorded results, and a standard-library-only Python package.

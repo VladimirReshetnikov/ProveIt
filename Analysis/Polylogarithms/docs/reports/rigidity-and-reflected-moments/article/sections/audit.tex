@@ -1,0 +1,140 @@
+\section{Manuscript audit and proposed corrections}
+\label{sec:audit}
+
+The audit is tied to the fixed revision in Section~\ref{sec:scope}.
+Some objections recorded in earlier research packages have already been
+corrected in that revision. They should not be reported again as newly
+discovered defects. The following changes are supported by the proofs
+and direct source inspection in this article.
+
+\subsection{A confirmed even-weight normalization error}
+
+In \src{chapters/03-algebraic.tex}, equation
+\texttt{bloch:eq:Pm} defines
+\[
+ P_m(x)=\operatorname{Re}_m\left(
+  \sum_{j=0}^{m-1}\frac{2^jB_j}{j!}
+       (\log|x|)^j\Li_{m-j}(x)\right),
+ \qquad
+ \operatorname{Re}_m=
+ \begin{cases}\operatorname{Re},&m\text{ odd},\\
+ \operatorname{Im},&m\text{ even}.
+ \end{cases}
+\]
+For $0<x<1$, every term inside the parentheses is real. Consequently
+\begin{equation}\label{eq:even-P-zero}
+ P_{2j}(x)=0\qquad(0<x<1).
+\end{equation}
+This is also an immediate consequence of the conjugation law printed
+in the same chapter. The paragraph immediately following
+\texttt{bloch:eq:goldenP3} and \texttt{bloch:eq:sgP3} nevertheless says
+that the higher golden ladders become the stated zeta multiples under
+the same modification, and explicitly includes the weight-six multiple.
+That assertion is incompatible with \eqref{eq:even-P-zero}.
+
+The correction is local. Keep the two displayed weight-three formulas.
+Explain that their lower-weight logarithmic terms cancel under $P_3$.
+At other odd weights, carry out the full modified-polylogarithm
+calculation and state the proof status of the resulting formula. At
+even weight, keep the ordinary $\Li_{2j}$ identity in its ordinary
+normalization; it cannot become a nonzero real zeta multiple of this
+$P_{2j}$ at real arguments. A different real-valued normalization would
+need to be explicitly defined and checked. The file
+\src{integration/proposed_P_even_correction.tex} contains replacement
+prose ready to paste into the indicated location. The associated patch
+is restricted to this confirmed error.
+
+This correction does not disprove the numerical ordinary-polylogarithm
+formulas at weights six and eight. It corrects their asserted
+interpretation. The distinction matters because a vanishing
+single-valued evaluation cannot retain the nonzero zeta value that the
+paragraph assigns to it.
+
+\subsection{Three numerical statements can now be promoted}
+
+The equation \texttt{gauss:eq:S4-closed} in
+\src{chapters/04-depth.tex} is an exact theorem by
+Theorem~\ref{thm:s4}. The surrounding paragraph currently places the
+whole displayed group in a numerically supported category unless an
+analytic derivation is supplied. Add a specific reference to the present
+proof and certificate for this equation. This does not automatically
+promote neighboring identities whose proofs are not given here.
+
+In the subsection on the reciprocal minimal Pisot number in
+\src{chapters/03-algebraic.tex}, the displayed plastic dilogarithm and
+trilogarithm formulas now have the explicit proofs supplied in the
+preceding sections. Their normalization agrees exactly with the
+manuscript: $6/4=3/2$, $3/9=1/3$, and $6\lambda^3/3!=\lambda^3$.
+The adjacent plastic tetralogarithm, which introduces the exponents
+$7$ and $14$, is a separate identity. No proof of that formula follows
+merely by citing the two lower-weight results.
+
+Several higher golden formulas are described using language such as
+``hold'' or ``correct'' immediately after residual calculations.
+Where no independently traceable analytic proof is supplied, prefer
+``numerically verified to the stated precision.'' A residual, even an
+extremely small one reproduced by different evaluators, establishes
+neither an exact equality nor its uniqueness. This is a proof-status
+clarification, not an assertion that those formulas are false.
+
+\subsection{What the classification does and does not imply}
+
+The pure-complement classification is exhaustive. It permits the exact
+statement that the reciprocal plastic family is the only real positive
+cyclic-power family with two different complement pairs. It does not
+bound the maximal weight of a polylogarithm ladder. A relation such as
+\[
+ \prod_j(1-r^j)^{n_j}=r^N,
+ \qquad n_j,N\in\mathbb Z,
+\]
+may use many factors that are not themselves pure powers of $r$.
+Nor does the classification exclude additional units or nonmonomial
+arguments in the field. These possibilities are central to higher
+ladders and must remain distinct from the theorem proved here.
+
+The degree bound is also specific: it makes the search for
+$r^a+r^b=1$ complete at fixed degree. A finite coefficient-height box
+for arbitrary algebraic arguments has no comparable completeness
+consequence without an additional height theorem.
+
+\subsection{Analytic qualifications needed for integration}
+
+There are three limits on the gamma and harmonic statements worth
+preserving verbatim when they are integrated.
+
+First, the late reflected-coefficient series is divergent for every
+fixed $n$. Its finite truncations form an asymptotic expansion, and
+the growing-order theorem supplies a rigorously controlled truncation.
+The displayed bound is unsigned; eventual alternation of coefficients
+does not establish the sign of the optimized remainder.
+
+Second, $m$ is fixed in the reflected-moment theorems. Reflection
+symmetry $M_{n,m}=M_{m,n}$ does not turn these statements into a theorem
+when both indices grow proportionally. In the harmonic theorem,
+$\alpha=p/h$ stays in a compact subset of $(0,\infty)$. Substitution
+of $\alpha=\log h+c$ into its error term is not justified by that
+compact-uniform assertion alone.
+
+Third, the Appell identity concerns canonical formal coefficients
+defined by the generating function. It gives an unconditional formal
+version of the inspected author preprint's Conjecture~5.5. It does
+not prove transcendence or uniqueness of arbitrary numerical
+expressions involving logarithms and zeta values. The attribution is
+to the explicitly inspected 2010 preprint, without asserting that the
+formulation remained open in every later version of the literature.
+
+\subsection{Suggested integration sequence}
+
+The new material can be integrated in four independently reviewable
+units. Put the complementary-power classification and the two plastic
+proofs beside the existing algebraic ladders. Put the $S_4$ theorem,
+its word convention, and its certificate beside the Gaussian weight-five
+identities. Add the proportional-depth theorem to the alternating-harmonic
+report and cross-reference it from the depth chapter. Add the reflected
+moment results to the gamma-moment material, retaining the earlier
+unreflected theorem as the special case $m=0$.
+
+The article and all certificates are self-contained within this package.
+The supplied narrow patch uses the audited source context and can be
+reviewed before application. No repository branch, commit, or remote
+publication was created as part of this delivery.
