@@ -1016,6 +1016,7 @@ import GowersSzemeredi.Proofs16SinglePieceRemainder
 import GowersSzemeredi.Proofs16SinglePieceLift
 import GowersSzemeredi.Proofs16SmallDomainLocalObstruction
 import GowersSzemeredi.Proofs16ExactColumnTupleRespect
+import GowersSzemeredi.Proofs16GlobalSixteenTransfer
 import GowersSzemeredi.Proofs16SinglePieceFrequency
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue

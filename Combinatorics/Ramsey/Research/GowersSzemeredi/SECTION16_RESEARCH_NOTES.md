@@ -11947,3 +11947,101 @@ the facade closure contains 5,602 modules. Only `propext`,
 remains 4,152 modules, and its 4,134-upstream / 17-compatibility scope check
 passes. The source ledger remains byte-identical at 115 companions and
 five open statements. The incoming local-input retraction is synchronized.
+
+### J.154. Exact sixteen-endpoint coherence and the dense active graph
+
+Continuation checkpoint 300, 2026-10-10. Five original modules add
+23 named proofs. The original-data transfer now has native order-eight
+Freiman coherence in the index variable, on the actual active fibres,
+and a dense exact Freiman bihomomorphism on the active pair graph.
+The same original witness system and source-agreement families are kept.
+
+**Closed chain.** A sixteen-endpoint tuple consists of eight pairs. Its
+eight consecutive differences define nine prefix vertices. A padded
+sixteen-entry signed word bounds every vertex in the full parent
+progression when endpoints lie in its `1/256` shrinking. The last vertex
+equals the first when the index sum is zero. Thus only eight distinct
+anchor positions are charged, including the starting vertex. Every
+quadruple step has the required index equality; the eight map defects
+telescope to the original sixteen-endpoint defect. Repeated endpoints
+are allowed throughout.
+
+**Natural endpoint domain.** On the intersection with the anchor Bohr
+constraints, exact quadruple compatibility makes the defect zero. Its
+endpoint rank is at most `16*dpsi`, and its anchor rank at most
+`8*dpsi`. `freiman_zero_remove_frequencies` removes all anchor constraints
+at the explicit radius
+
+```
+sigma/(2*K16),
+K16 = refinementKernelCap (16*dpsi) (8*dpsi) sigma sigma.
+```
+
+The theorem requires `K16<N`. No temporary anchor frequency is retained
+in the final endpoint domain. The cap for eight endpoints is at most
+`K16`; the radius and modulus comparisons are proved.
+
+**Native order-eight coherence.** For every fixed argument `y`, the map
+`x ↦ psi(x,y)` is a genuine `FreimanHom 8` on
+
+```
+R.filter (fun x => y in bohr(Tpsi(x),rExact)).
+```
+
+The proof uses finite enumeration of multisets of cardinality eight,
+including repetitions. Equal sums become sixteen-endpoint relations.
+Only the local domains which actually contain `y` are used; there is
+no implicit extension to inactive indices or to a common frequency set.
+
+**Actual dense graph.** Define
+
+```
+B = {(x,y) : x in R and y in bohr(Tpsi(x),rExact)}.
+```
+
+Its exact cardinality is the sum of its Bohr-row cardinalities. If
+`deltaR*N <= |R|` and every local rank is at most `dpsi`, the existing
+Dirichlet-cell lower bound gives
+
+```
+|B| >= deltaR / ceil(1/rExact)^dpsi * N^2.
+```
+
+The density is explicitly positive. The native order-eight property
+reduces to order two on each horizontal fibre, and the existing local
+Freiman maps handle the vertical fibres. Hence the actual map
+`(x,y) ↦ psi(x,y)` on `B` satisfies `IsEBihomomorphism B psi {0}`. This is
+a constructed domain and map, not an assumed extraction contract.
+
+**Global integration.** `global_original_sixteen_endpoint_transfer`
+constructs one original-data system and a proper `R=P/256` with all of
+the preceding fields. It uses
+
+```
+sigma = (1/(4*pi))/K0,
+rExact = sigma/(2*K16),
+N >= max(originalExactTransferModulusBound(alpha),K16+1).
+```
+
+Both the progression density and the original pointwise
+`globalOriginalEightAgreementDensity alpha * N^7` source family are
+unchanged from checkpoint 299. Quadruple, eight- and sixteen-endpoint
+compatibility, native order-eight fibres, dense graph and exact source
+agreement use one common positive radius. Full original-radius local
+Freiman data, original column witnesses, representations, anchors and
+both zero normalizations remain in the conclusion.
+
+**Scope.** The compatibility input now includes sixteen endpoints, so
+the missing order-eight index identity of J.153 is supplied. Structural
+assembly, coherence on retained chart windows and final quantitative
+comparisons remain separate. In particular, the new active graph must
+not be confused with a proved global-to-local cover or with agreement of
+the original bihomomorphism on a final Bohr variety. The five numbered
+targets remain open, with their requested bounds unchanged. The false
+raw local hypotheses of L.2 are not used. No new upstream port or
+license scope is introduced.
+
+**Production checks.** The chain source compiles in a 437-module closure;
+the sixteen-endpoint relation in 438; the native fibre interface in 439;
+the active graph in 440; and the complete global integration in 457.
+The combined axiom audit is pending for this checkpoint.
