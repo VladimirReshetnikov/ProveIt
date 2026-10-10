@@ -6138,7 +6138,18 @@ the decomposition with these named constants, but not `Theorem162At 3`.
                 of Claim 9.4. `Θ`'s linear part lives on a Bohr set of rank
                 `1 + C(log(1/δ) + 1)⁴`, polylogarithmic in the density `δ`
                 of its value set, which satisfies `|B| ≥ δN`.
-              - Domain coherence (item 1) remains open.
+              - *Bohr thickenings (done).* `freiman_bohr_thickening`
+                (`Proofs16FreimanThickening`). Suppose
+                `bohr Γ ρ ⊆ 2A − 2A`. Then a Freiman 8-homomorphism `f`
+                on `A` extends, by `f̂(b + k) = ψ(k) + f(b)`, to a map that
+                is Freiman-linear on `A + B(Γ; ρ/4)`. So each `θ_i`
+                is Freiman on a structured, Bohr-thickened domain.
+              - Domain coherence (item 1) remains open: it is not known
+                whether `X` can be placed in all `J` thickenings at once.
+                Localizing every round would make the rank or density
+                doubly exponential. Theorem 2.26's progressions are
+                arbitrary coset progressions, so the printed argument has
+                the same gap.
          Quantitatively, `s₀ = O(d log(dR))`, and
          `δ` is polynomial in `ε` and `(2R+1)^(−d)`. With
          `R = (ρ^(−1))^O(d)`, this makes `m ≤ s₀/δ = exp(O(d² log 1/ρ))`

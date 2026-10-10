@@ -1004,6 +1004,7 @@ import GowersSzemeredi.Proofs16PropNineThree
 import GowersSzemeredi.Proofs16GlobalSourceAgreementCore
 import GowersSzemeredi.Proofs16SandersLinearPart
 import GowersSzemeredi.Proofs16CommonValueSanders
+import GowersSzemeredi.Proofs16FreimanThickening
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
