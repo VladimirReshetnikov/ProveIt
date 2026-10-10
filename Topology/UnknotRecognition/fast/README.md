@@ -3628,3 +3628,29 @@ coverage, the candidate bound, and conditional local QP enumeration for
 logarithmic initial nullity/radius. A complete global centre/distance theorem
 remains unproved. The separated native and full-recognition timings, noisy
 control repeat and producer-disabled source replay are retained.
+
+
+Residual-window queries now reuse the old Q kernel, column decompositions and
+source triangle potentials. Each candidate imposes at most two replacement
+constraints in at most `d0+2` parameters, recovers the native free-coordinate
+basis, and constructs the exact projected standard cone. Empty Q kernels
+finish without another geometry build. The generic higher-nullity fallback
+and independent positive source checks remain available.
+
+All 1,404 tests pass, including exact updated/fresh basis and ray comparisons
+and both generic methods at nullity four. The 85-source audit preserves all
+31 native witnesses; shared-work caps fall from 34 to 30. Paired complete
+recognition with radius-two windows enabled improves about 1.25–1.43x against
+the preceding rebuilding implementation on tested window-search cases.
+Early positives stay near parity. Radius zero remains the default: enabling
+windows still costs more than the small-input fallback without them.
+
+```sh
+python -B -m normal_orbit_research.window_basis audit --fresh-regina --output /tmp/window-basis-audit.json
+python -B -m normal_orbit_research.window_basis benchmark --rounds 5 --output /tmp/window-basis-benchmark.json
+```
+
+[Matching-update theory](../synthesis/window_basis.tex) proves full augmented
+kernels, exact replacement restrictions, canonical gauge and projected
+geometry. Frozen baseline/current source checks, positive certificate
+replay and the longer microsecond control are retained in the article data.

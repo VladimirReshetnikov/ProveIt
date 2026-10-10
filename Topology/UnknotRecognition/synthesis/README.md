@@ -1217,3 +1217,23 @@ with `python -B data/sector_windows_review.py --publication` from this
 directory. Exploratory scripts are retained as originally run; their
 absolute workspace and scratch paths document that execution, while the
 maintained native driver is the portable reproduction path.
+
+
+[window_basis.tex](window_basis.tex) removes repeated wide matching elimination
+and triangle-graph reconstruction from residual windows. It proves the
+augmented kernel formulas, small replacement constraints, canonical free
+coordinates and complete projected standard cone. All 1,404 tests pass;
+the source audit preserves 31/85 native positives with seven fresh Regina
+checks and reduces shared-work caps from 34 to 30. Complete enabled
+recognition gains are 1.25–1.43x against the preceding radius-two rebuilding
+implementation; this does not justify turning costly windows on by default.
+The paired 200-call/40-warmup run, 124-call microsecond control, exact source
+pins and producer-disabled replay are in `data/window-basis-*`.
+
+The current [PDF](report.pdf) has 557 pages. Section 139 starts on page 550;
+the assessment is section 140 on page 553. Rendered pages 550–554 pass
+visual review; the build has no new overflow or reference warnings.
+Reproduce publication checks with
+`python -B data/window_basis_review.py --publication` from this directory.
+They verify 595 frozen/current runtime pins, 592 preceding-release evidence
+pins and all 31 positive source proofs with the producers disabled.
