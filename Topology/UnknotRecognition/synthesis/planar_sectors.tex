@@ -1,0 +1,175 @@
+\section{Adaptive planar enumeration of complete standard rays}
+\label{sec:planar-sectors-native}
+
+Report 80 extends the minimum-envelope method from a projective interval
+to a projective polygon. Automatic STANDARD enumeration now selects it
+when matching nullity is three. The existing nullity-one/two envelope
+paths remain selected, and higher-dimensional sectors retain the earlier
+support/arrangement choice. Explicit planar enumeration also accepts
+lower nullity. Selection is based on an exact geometric parameter rather
+than elapsed-time guesses. Complete sector discovery still uses its
+existing independently replayable disc/exhaustion consumer.
+
+\subsection{The common minimum fan describes actual standard faces}
+
+Let $k$ be the number of allowed labelled quadrilateral variables and $d$
+the dimension of their matching kernel. Intersect its nonnegative cone
+with $\sum q_i=1$. This compact section $P$ has effective dimension at most
+$d-1$; raw nullity three can still give an empty set, point or segment.
+For each global vertex the triangle potentials are linear forms, and the
+canonical lift subtracts their minimum. Choosing an attaining corner
+therefore defines a convex minimum cell in $P$, by inequalities comparing
+its form to all the others. Identical projected forms are collapsed.
+
+The common refinement of these minimum fans and the coordinate faces of
+$P$ describes the canonical standard coordinate faces. A point is an
+extreme standard ray precisely at a vertex of this refinement. This
+follows directly from the matching equations and zero-coordinate faces:
+within a fixed minimum cell the canonical lift is linear; conversely,
+the zero triangle and quadrilateral coordinates defining a standard face
+recover the corresponding minimum and coordinate-face constraints.
+Thus Q-cone extremes alone need not give all standard extremes.
+
+In a two-dimensional section, full-dimensional minimum cells and their
+faces suffice. A label active only on a boundary face adds no geometry:
+the difference between it and the adjacent minimum is a nonnegative linear
+function, whose zero set on a face cannot be an isolated interior point.
+The implementation clips these convex cells, extracts their internal
+segments, and overlays segments from different global-vertex groups.
+The rays are the original polygon vertices, individual fan vertices and
+intersections between group segments. No standard-rank filter is needed
+to remove spurious arrangement crossings.
+
+\begin{proposition}[Output and construction bounds]
+Let $b$ be the number of vertices of $P$, and $m_v$ the number of distinct
+full-dimensional active minimum cells at global vertex $v$. Then
+\[
+ R\le b+2\sum_v(m_v-1)
+           +9\sum_{v<w}(m_v-1)(m_w-1)=O(k^2).
+\]
+With one nontrivial minimum group the bound is linear. After kernel
+construction, a deterministic realization has elementary scalar-operation cost
+$O(k^3+tk^2)$; rational coefficient-bit costs must also be included.
+\end{proposition}
+\begin{proof}
+A convex subdivision into $m$ minimum cells has at most $2(m-1)$ new
+vertices and at most $3(m-1)$ internal segments. Euler's planar formula
+and degree at least three at genuine new vertices give the first bound;
+the dual planar adjacency bound gives the second, since two convex cells
+share at most one segment. Summing individual fan vertices and the at most
+one crossing for each pair of segments from different groups gives the
+displayed output bound. The source equations provide only $O(k)$ relevant
+distinct potential forms after the equality contraction.
+Clipping every cell against its group's dominance inequalities costs
+$O(k^3)$ in this elementary construction; overlay costs $O(k^2)$ and lifting
+at most $O(k^2)$ rays into $7t$ coordinates costs $O(tk^2)$.
+The exact rational charts and intersections have polynomially bounded bit
+length in source coefficient bits. A unit-cost rational count alone would
+not establish the bit-complexity claim.
+\end{proof}
+
+\subsection{Independent area and length coverage replay}
+
+\begin{sloppypar}
+The producer is \code{sector\_planar.py}; the independent checker is
+\code{sector\_planar\_verify.py}, using the source-bound
+\code{normal-sector-planar-v1} format. Its source model reconstructs the
+full uncollapsed corner matching graph and checks the chart and bounds.
+It does not import the producer's polygon clipper. Each submitted convex
+cell has source-checked vertices and dominance inequalities. Linear
+dominance at all vertices proves dominance throughout the cell.
+\end{sloppypar}
+
+Within a group, cells with different projected active forms have disjoint
+interiors: simultaneous equality on an open set would make the forms
+identical, contrary to canonical collapse. The checker verifies that their
+exact areas sum to the area of $P$. A finite union of closed cells cannot
+leave an open gap of positive area, and closure then covers its boundary.
+Hence the cells cover $P$. For effective dimension one the corresponding
+argument uses exact lengths; points and empty sections have separate
+controls. The checker independently reconstructs the overlay vertices and
+compares every normalized primitive lifted ray with the submitted list.
+Missing rays, malformed fractions, incorrect charts, hidden lower forms,
+source substitutions and cancellation are rejected.
+
+This proves coverage of one supplied compatible sector. A negative disc
+result also checks every ray's disc predicate independently. It does not
+prove that the selected sector family contains a disc for every unknot,
+and its status must not be promoted to a knottedness verdict.
+
+\subsection{Reusable sparse source preparation, kept explicit}
+
+The additive \code{sector\_sparse.py} module validates and prepares immutable
+source geometry once. Building another sector reuses that prepared source,
+whose identity is checked before certificate emission. Union by size and
+path halving contract zero-type corner equalities. Only $4k$ active labelled
+edges carry dense length-$k$ potential tuples; zero records share constants.
+Fundamental-cycle coefficients lie in $[-4,4]$, permitting deterministic
+radix ordering in $O(k^2)$. Pre-elimination work is
+$O(t\log t+k^2)$, with subsequent rational elimination accounted separately.
+This reusable interface is valuable for repeated sector queries.
+The delivered one-shot measurements are slower than the current dense
+constructor, so native automatic one-shot enumeration retains that
+constructor. The planar enumeration benchmark below charges both arms
+for the same native full kernel preparation.
+
+\subsection{Seven rays and a uniform integral disc classification}
+
+The report gives a geometric family with $n$ Fibonacci base tetrahedra
+and two boundary caps. Use base type two and cap type one, and put
+$A=F_{n+1}$, $B=F_{n+2}$, $F_0=0$, $F_1=F_2=1$.
+Every standard matching solution has unique parameters $x,y,z,b,u,v$:
+\begin{align*}
+ i<n:\quad &(F_{n-i+1}x+b,F_{n-i+1}x+b,b,b;0,0,F_{n-i}x),\\
+ i=n:\quad &(Ax+b-y,Bx+b,u,b;0,y,0),\\
+ i=n+1:\quad &(Bx+b,Ax+b-z,b,v;0,z,0).
+\end{align*}
+Nonnegativity is exactly $x,b,u,v\ge0$ and $0\le y,z\le Ax+b$.
+The matching kernel has dimension three. Canonical lifting sets
+$h=\max(0,y-Ax,z-Ax)$, $b=h$, $u=v=0$; general solutions add the three
+boundary vertex links. Substitution into the base equations gives
+$W_i=W_{i+1}+W_{i+2}$ and hence the Fibonacci rows, while the two attaching
+face equations determine all cap triangles except $u,v$.
+
+\begin{proposition}[All-size double-cap classification]
+For every $n\ge1$, the canonical sector has precisely the seven rays
+\[
+ (1,0,0),\ (1,A,0),\ (1,0,A),\ (1,A,A),\
+ (0,1,0),\ (0,0,1),\ (0,1,1).
+\]
+The first four are essential meridian discs; the last three are inessential
+discs. Every integral canonical vector consists of $x$ meridian discs
+and $h$ inessential discs. A full integral vector consists of $x$ meridian
+discs and $b+u+v$ inessential discs.
+\end{proposition}
+\begin{proof}
+The three active forms are $0,Ax-y,Ax-z$. Their minimum fan in the
+nonnegative projective triangle has three cells and exactly the seven
+displayed vertices. Coordinate-face extremality proves these are all rays.
+For components, the base restriction is $x$ parallel meridian discs and
+$b$ vertex-link discs, identified by uniqueness of normal coordinates.
+With $u=v=0$, every cap piece meets its attaching face in one arc; the
+opposite-vertex triangle is absent. Attaching a disc leaf along one interval
+preserves a disc and cannot merge components. Apply this to the two caps
+successively. The arcs use distinct global edges even when attaching-face
+vertices are identified in the quotient.
+
+Essentiality is preserved by replacing each old arc with the corresponding
+cap-boundary arc. Two disjoint systems in an abstract disc with identical
+endpoint pairing are related by a PL homeomorphism fixed on the boundary,
+constructed by cutting outermost arcs. It respects boundary identifications
+and descends to the quotient boundary torus. Thus the original meridians
+remain essential and links remain inessential. The free triangles $u,v$
+are the new vertex links. Substituting $b=h$ gives the canonical census.
+The preserved realization proof handles quotient faces with an interior
+positive collar vanishing on the boundary, rather than assuming embedded
+face closures.
+\end{proof}
+
+Only $(1,0,0)$ among the essential rays is a Q-cone extreme; three further
+essential standard rays are created by the minimum fan. This uniform
+theorem explains why the planar enumeration is needed. Primitive integral
+coordinates alone still do not guarantee a connected surface.
+
+\subsection{Native validation and complete measurements}
+\input{planar_sectors_results.tex}

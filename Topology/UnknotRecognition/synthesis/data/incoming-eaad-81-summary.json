@@ -1,0 +1,126 @@
+{
+  "schema": "planar-sector-reproduction-v1",
+  "started_utc": "2026-10-10T01:13:45.346003+00:00",
+  "python": "3.13.14",
+  "platform": "Linux-5.15.0-186-generic-x86_64-with-glibc2.35",
+  "baseline_commit": "8188525b70033dcfe7c51ea5ae2c8723ad0c0198",
+  "scope": "Supplied-sector tests and audits; no whole-recognizer complexity claim.",
+  "source_snapshot": {
+    "mode": "bundled",
+    "verified_files": 201,
+    "status": "PASS"
+  },
+  "package_provenance_sha256": "a172de8d8c59a8090af185bf7dd5018954b6478925aa322248a597bd0783d17b",
+  "corpus_sha256": "0433e6c7d99bb402b79909467a7eada862ca004dc4082ee25794add0e712914e",
+  "reproduction_driver_sha256": "945604af988432841d025c77cd521424decdd109cb53c7bc4857266f72652129",
+  "script_sha256": {
+    "experiments/audit.py": "5f46525227d879b17a08ab293cf14142063559e0004d78fa70c39c871b55a74c",
+    "experiments/audit_abstract.py": "f1cc465deefaf3416a530c475a2bcabc4c2d4e8e56ef899fd62879d833515094",
+    "experiments/audit_certificates.py": "30867972c624a8a13a2fa08aa46fd3e67267ed37f43cb0d9271e5dc1c8036b04",
+    "experiments/audit_euler_corners.py": "5b56c22867f6109adfe6ba6e9d7b75b0d4b5501bf7b591b5248971b0e4923b6b",
+    "experiments/benchmark.py": "884bdf7a2755838c65b3fa8e30093afb9c8af8d504435e4644a6649a7f3fa693",
+    "experiments/fixtures.py": "cec6166f67874c5160ef4641e383ade6a4f795a3b13481ec0332920c5acef03d",
+    "experiments/make_article_assets.py": "47d6b2607176894d9e80737da2cc6185b62e34dc4f8a92f3a4d8c4501c8917d6",
+    "experiments/package_release.py": "e6ae4cc1b201d8c37c6a6104a6bce92f81fe1b63f0a5e3bd1ef4925c2efcb94a"
+  },
+  "requested": {
+    "full_audit": false,
+    "fresh_regina": false,
+    "benchmark": false
+  },
+  "steps": [
+    {
+      "step": "new_tests",
+      "returncode": 0,
+      "seconds": 2.4523398829624057,
+      "log": "new_tests.log",
+      "command": [
+        "/home/codex/.local/bin/python",
+        "-B",
+        "-S",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_sector_planar*.py",
+        "-v"
+      ],
+      "cwd": "/tmp/unknot-overlay-81/code"
+    },
+    {
+      "step": "baseline_integration",
+      "returncode": 0,
+      "seconds": 0.18995634745806456,
+      "log": "baseline_integration.log",
+      "command": [
+        "/home/codex/.local/bin/python",
+        "-B",
+        "-S",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_normal_sector_integration.py",
+        "-v"
+      ],
+      "cwd": "/tmp/unknot-overlay-81/code"
+    },
+    {
+      "step": "abstract_audit",
+      "returncode": 0,
+      "seconds": 1.0879051638767123,
+      "log": "abstract_audit.log",
+      "command": [
+        "/home/codex/.local/bin/python",
+        "-B",
+        "-S",
+        "/tmp/unknot-overlay-81/experiments/audit_abstract.py",
+        "--fast",
+        "/tmp/unknot-overlay-81/code",
+        "--output",
+        "/tmp/unknot-81-reproduction/20261010T011345Z_8bktce_k/abstract_audit.json"
+      ],
+      "cwd": "/tmp/unknot-overlay-81"
+    },
+    {
+      "step": "certificate_audit",
+      "returncode": 0,
+      "seconds": 0.2007952993735671,
+      "log": "certificate_audit.log",
+      "command": [
+        "/home/codex/.local/bin/python",
+        "-B",
+        "-S",
+        "/tmp/unknot-overlay-81/experiments/audit_certificates.py",
+        "--fast",
+        "/tmp/unknot-overlay-81/code",
+        "--output",
+        "/tmp/unknot-81-reproduction/20261010T011345Z_8bktce_k/certificate_audit.json"
+      ],
+      "cwd": "/tmp/unknot-overlay-81"
+    },
+    {
+      "step": "euler_corner_audit",
+      "returncode": 0,
+      "seconds": 4.500972936861217,
+      "log": "euler_corner_audit.log",
+      "command": [
+        "/home/codex/.local/bin/python",
+        "-B",
+        "-S",
+        "/tmp/unknot-overlay-81/experiments/audit_euler_corners.py",
+        "--fast",
+        "/tmp/unknot-overlay-81/code",
+        "--output",
+        "/tmp/unknot-81-reproduction/20261010T011345Z_8bktce_k/euler_corner_audit.json"
+      ],
+      "cwd": "/tmp/unknot-overlay-81"
+    }
+  ],
+  "status": "PASS",
+  "finished_utc": "2026-10-10T01:13:53.800571+00:00"
+}

@@ -1,0 +1,52 @@
+{
+  "manifest_files_checked": 230,
+  "runs": [
+    {
+      "name": "regression_tests",
+      "command": [
+        "/home/codex/.local/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "status": "PASS",
+      "seconds": 1.3913342142477632,
+      "log": "regression_tests.log"
+    },
+    {
+      "name": "planar_coverage_certificates_replay",
+      "command": [
+        "/home/codex/.local/bin/python",
+        "-m",
+        "planar_sector_research.replay",
+        "--certificates",
+        "/tmp/unknot-batch-eaad-80/evidence/planar_coverage_certificates.json",
+        "--output",
+        "/tmp/unknot-80-reproduction/planar_coverage_certificates_replay.json"
+      ],
+      "status": "PASS",
+      "seconds": 0.19020307157188654,
+      "log": "planar_coverage_certificates_replay.log"
+    },
+    {
+      "name": "double_cap_coverage_certificates_replay",
+      "command": [
+        "/home/codex/.local/bin/python",
+        "-m",
+        "planar_sector_research.replay",
+        "--certificates",
+        "/tmp/unknot-batch-eaad-80/evidence/double_cap_coverage_certificates.json",
+        "--output",
+        "/tmp/unknot-80-reproduction/double_cap_coverage_certificates_replay.json"
+      ],
+      "status": "PASS",
+      "seconds": 0.20199443120509386,
+      "log": "double_cap_coverage_certificates_replay.log"
+    }
+  ]
+}
