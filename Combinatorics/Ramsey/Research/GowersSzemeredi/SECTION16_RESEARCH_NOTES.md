@@ -11808,3 +11808,85 @@ remains 4,152 modules, and the 4,134-upstream / 17-compatibility port scope
 check passes. The source ledger remains byte-identical at 115 companions
 and five open statements. The incoming frequency-box theorem is included
 in the audit and retains the local inputs refuted here for growing controls.
+
+### J.153. Exact original-data transfer on one proper progression
+
+Continuation checkpoint 299, 2026-10-10. Five original modules add
+19 named proofs. Prime-cyclic small-image rigidity turns the completed
+original-data map transfer into exact compatibility and genuine exact
+source agreement on explicit smaller natural domains. All original
+column witnesses, representations, ranks and normalizations are retained.
+
+**Quadruples and original source tuples.** A normalized Freiman defect
+with at most `K<N` values vanishes on the same frequency set at radius
+`rho/K`. Applied to a bounded quadruple image, this is precisely
+`ColumnPairCompatible` for its two difference maps. Applied separately
+to every original source eight-tuple defect, it gives
+`originalEightExactAgreementSet`: the chosen map equals the alternating
+sum of the eight original column maps on the intersection of all their
+domains. The same family is retained, with no tuple-count or agreement
+density loss. The common positive cap `K0` is the maximum of one and
+checkpoint 297's full original-domain cap. The exact modulus bound is
+the maximum of the earlier selection bound and `K0+1`.
+
+**Every additive eight-tuple.** On a full progression `P`, exact
+quadruples have defect image at most one. The shared-anchor chain gives
+bounded eight-tuple defects on `P/256`. Its intermediate domain retains
+the anchor constraints. The existing linear-cap theorem removes them
+with endpoint budget `8*dpsi` and anchor budget `4*dpsi`, where
+`dpsi=16*d` is the chosen-map rank cap. Prime-cyclic rigidity then gives
+exact eight-tuple relations on the natural endpoint domains. There is
+no iterative local-model packing in this conversion.
+
+Write `rho0=1/(4*pi)` and
+
+```
+sigma = rho0/K0,
+K8 = refinementKernelCap (8*dpsi) (4*dpsi) sigma sigma,
+rExact = sigma/(2*K8),
+R = P/256.
+```
+
+`K0`, `K8` and `rExact` are positive. Under the explicit maximum of the
+earlier exact-transfer modulus bound and `K8+1`,
+`global_original_fully_exact_progression_transfer` constructs the same
+original-data system and one proper `R` with all of these properties:
+
+- rank at most `globalProgressionPurificationRank alpha`;
+- density at least the old difference-progression density divided by
+  `512^globalProgressionPurificationRank alpha`;
+- exact compatibility for every additive quadruple in `R`;
+- exact alternating-map sum for every additive eight-tuple in `R`;
+- at every index in `R`, at least
+  `globalOriginalEightAgreementDensity alpha * N^7` distinct original
+  source tuples agree exactly with the chosen map.
+
+All three exact statements use the common positive `rExact` and their
+natural endpoint domains. The local chosen maps remain Freiman-linear
+on their full original-radius domains, with both zero normalizations.
+Shrinking the index progression changes its density, not the pointwise
+source-agreement density or the selected representation system.
+
+**Native interface.** `balancedColumnPairs` swaps the endpoints in the
+last two pairs. The index and map-defect identities are proved, and its
+frequency union is unchanged. Thus the paired-sum relation becomes
+`ColumnDifferenceQuadruple`, and
+`column_tuple_respected_of_paired_exact` supplies the existing
+`ColumnTupleRespected` predicate with its documented quarter-radius
+convention. This bridge keeps the actual endpoint spectra.
+
+**Scope.** This closes exact compatibility and source-agreement inputs
+for the progression maps, not the full structural assembly. In
+particular, an eight-tuple relation here has eight endpoints; no
+sixteen-endpoint or arbitrary-order Freiman relation is asserted. The
+new explicit modulus and radius bounds have not been compared with the
+printed Gowers thresholds or the deep bound in the original density
+parameter. All five numbered targets and their requested bounds remain
+open and unchanged. The false raw growing-width local inputs of L.2
+are not used. No upstream modules or licensing scope are added.
+
+**Production checks.** The generic exact-agreement source compiles in
+a 435-module closure; the first global exact transfer in 450; the
+progression eight-tuple extension in 436; the fully exact global
+transfer in 452; and the native interface in 551. These closures include
+up-to-date dependencies. The combined audit is pending for this checkpoint.
