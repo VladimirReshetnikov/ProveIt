@@ -2320,16 +2320,47 @@ Lemma 16.9).
   This is an order-of-magnitude count, not yet a kernel-checked
   comparison.
 
+**Sixth piece, done: a dense frequency box from local inputs.**
+`Proofs16SinglePieceFrequency.single_piece_frequency_box`, a conditional
+replacement for `section16_joint_frequency_box`.
+- *Statement.* Let `f` not be uniform of degree `k + 2`. Then some proper
+  box `P ⊆ (ℤ/N)^(k+1)` and one multilinear `μ` have `ρ·|P|` points at which
+  `μ` is a large frequency, with `ρ` the polynomial density of step 5.
+- *Chain.* `section16_large_frequency_graph`, then explicit Lemma 15.6
+  (`β = γ = α/2`), then `single_piece_lift`.
+  - Lemma 15.6's arrangement parameter `(βγ/2)^E` equals
+    `section16ThetaOne α (α/2) k` exactly.
+  - So Lemma 16.4's dichotomy, and with it every cover-form
+    lower-dimensional `Theorem162At`, drops out of the route.
+- *Downstream.* The output has the shape
+  `polynomial_localization_of_dense_frequency_box` consumes. The existing
+  route (localization → `FunctionDiscrepancyBound.of_short_polynomial_localization`
+  → `theorem_18_2_of_function_discrepancy_budget`) therefore applies once
+  the width formula dominates `N^e`. The closing tool for the budget is
+  `densityIterationClosedThreshold_le_double_exp`, as in the five-term
+  case (`fejerFiveTermThreshold_le_explicit_tower`, exponents up to
+  `2^73`).
+
+**Where the reduction now stands.** Once the bookkeeping of step (b) below
+is kernel-checked, Theorem 18.2 at length six (`Theorem182At 6`) will
+follow from these inputs, all in dimension `≤ 2`:
+- `LocalRelationCoverAt 2 δ` with polynomial `c_R`, `Q_c` (the open core);
+- `LocalMultilinearPieceAt l` for `l = 1, 2`, with polynomial densities and
+  power-law widths.
+
+The dimension-one inputs are expected to follow from the corpus's
+dimension-one local structure (the regime behind the double-exponential
+four-term bound). The dimension-two inputs are genuinely open. A *global*
+version of them would be polynomial-Freiman–Ruzsa strength over `ℤ`.
+
 **Next.**
-1. Connect to the consumer. Follow
-   `f` not uniform → `section16_large_frequency_graph` (`B`, `φ`, product
-   property) → conditions (ii), (iii) (Lemma 15.6; check whether the
-   corpus derives them without the cover-form dichotomy of Lemma 16.4) →
-   `single_piece_lift` → `section16LargeMultilinearFrequencyCount` on `S`.
-   This is a conditional, polynomial-density replacement for
-   `section16_joint_frequency_box`.
-2. Then the kernel-checked K.4 comparison: under polynomial inputs, the
-   length-6 discrepancy threshold falls below `szemerediThreshold`.
+- (a) Discharge `LocalMultilinearPieceAt 1` and `LocalRelationCoverAt 1`
+  from proved dimension-one results, if their bounds are polynomial.
+- (b) Kernel-check the length-6 budget under power-law inputs: frequency
+  box width `≥ N^e`, then `FunctionDiscrepancyBound 4` with
+  `β ≥ α^(D_total)`, then
+  `intervalDiscrepancyClosedThreshold 6 ≤ szemerediThreshold δ 6`.
+- (c) Study the dimension-two core in its local form.
 
 ## F. Routes
 
