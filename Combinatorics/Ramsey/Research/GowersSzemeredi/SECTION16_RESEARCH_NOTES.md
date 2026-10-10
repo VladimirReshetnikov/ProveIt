@@ -12318,4 +12318,11 @@ unchanged. No raw growing local input or new upstream port is used.
 176-module closure; the dense iteration in 177; the dense active
 assembly and finite-window modules together in 574; completion in 538;
 the uniform quadruple budget in 538; and the coherent Proposition 9.3
-in 577. The combined axiom audit is pending for this checkpoint.
+in 577. The completed combined audit includes all 20 new named proofs
+and checks 9,985 public Gowers theorems across 5,627 modules, with a
+5,625-module facade closure. Only `propext`, `Classical.choice` and
+`Quot.sound` occur. The selected OAI audit closure remains 4,152 modules,
+and its 4,134-upstream / 17-compatibility scope check passes. The source
+ledger is byte-identical at 115 companions and five open statements.
+The incoming global-cover frequency-box reduction and independent
+repository updates are included in the same audit.
