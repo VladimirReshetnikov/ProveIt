@@ -6076,6 +6076,49 @@ the decomposition with these named constants, but not `Theorem162At 3`.
               `a`'s live. That would need the Theorem 2.26 progressions to
               contain `C₀`, which is not stated.
          2. *Explicit exponents* for the regime check above.
+         3. **The rank obstruction, and why Theorem 2.26 is needed here
+            (2026-10-10).** Domain coherence hides a rank problem.
+            - *The obstruction.* In Claims 9.4/9.5 the Freiman step runs at
+              density `κ = 2^(−1882)((c/2)^4)^1164·…` with
+              `c = (ε/K⁴)²` and `K = (2R+1)^d`, so `κ = exp(−poly(d))`. The
+              polynomial substitute for Theorem 2.26 (Corollary 7.6 +
+              Lemma 7.8, as in `milicevic_lemma_9_2_pair`) puts the linear
+              part on a Bohr set of rank `16κ^(−2) = exp(poly(d))`. But the
+              deep contract needs the frequency maps Freiman-linear on
+              `bohr Ψ ρ` with `|Ψ| ≤ Bnd(c) ≤ (4/c)^K`. So any structured
+              domain built from the substitute violates the contract.
+            - *What suffices.* Sanders-strength Theorem 2.26 gives rank
+              `(log 1/κ)^O(1) = poly(d)`, which fits. So at this step the
+              Milićević route cannot use the polynomial substitute.
+            - *Available input.* `lib/openai-math` already supplies the
+              Sanders-type estimate in `ℤ/N`:
+              `OAI.Erdos3.CyclicCrootSisask.exists_quartic_bogolyubov`
+              (`Estimates/LocalizedSiftingAlmostPeriods`). For `A` of
+              density `e^(−p)` it gives a rank-regular Bohr set in
+              `2A − 2A` with rank `≤ 1 + C(p+1)⁴` and radius
+              `≥ exp(−C(p+1))`. The `…_progression` variant gives a proper
+              centred GAP of the same rank with volume
+              `exp(−C(p+1)⁸)N`. The corpus already uses these: Theorem 7.1
+              in `Proofs07FreimanClosure`, via `exists_dense_cyclic_model`
+              and `exists_bounded_affine_box_of_cyclic_model`, and the
+              peer's `Proofs16RobustDifferenceBohr`.
+            - *Plan, "Theorem 2.26 at Sanders strength" in `ℤ/N`.*
+              1. Start from an approximate homomorphism: many respected
+                 quadruples, i.e. the graph has energy `≥ c|A|³`.
+              2. The graph BSG, which is polynomial (Proposition 7.3 /
+                 `abstract_bsg_core`), gives a graph piece of doubling
+                 `poly(1/c)`.
+              3. A dense cyclic model of order 8 follows from
+                 `exists_dense_cyclic_model`.
+              4. The Bogolyubov affine box in the model comes from
+                 `exists_bounded_affine_box_of_cyclic_model`, with rank
+                 `polylog(1/c)`.
+              5. Pull back: the graph meets a low-rank affine box. On it
+                 the graph is the graph of a Freiman-affine function,
+                 because a graph piece projects injectively.
+
+              This replaces Lemma 7.8 wherever a structured domain must
+              have low rank, and is the next large task on this route.
          Quantitatively, `s₀ = O(d log(dR))`, and
          `δ` is polynomial in `ε` and `(2R+1)^(−d)`. With
          `R = (ρ^(−1))^O(d)`, this makes `m ≤ s₀/δ = exp(O(d² log 1/ρ))`
