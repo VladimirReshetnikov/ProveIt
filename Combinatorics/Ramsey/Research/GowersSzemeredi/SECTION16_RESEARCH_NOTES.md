@@ -2240,17 +2240,55 @@ a single-piece Lemma 16.9).
   - one square root and a factor `8` (retiling);
   - the reciprocal-polynomial exponent `ε(q)`.
 
+**Fourth piece, done:** `Proofs16PieceCalculus` and
+`Proofs16SinglePieceRemainder` (the remainder half of a single-piece
+Lemma 16.9).
+- *A provider calculus.* `LocalPieceFor c w Dom g` says one function has
+  local pieces everywhere: every `θ`-dense `H ⊆ Dom` in every proper box
+  has one proper sub-box and one multilinear map agreeing on a `c θ`
+  fraction. It is closed under:
+  - the input: `LocalMultilinearPieceAt.localPieceFor`, given the
+    hereditary product property;
+  - translation and coordinate permutation (`LocalPieceFor.transport`),
+    with the same parameters;
+  - an unused final coordinate (`lift_last`): density
+    `c ↦ (θ/2)·c(θ/2)`, width `L ↦ ⌊√(w(θ/2)⌈L/8⌉ − 1)⌋ − 1`. The proof:
+    short-parent cells, a dense cell, popular fibres, the base provider,
+    synchronized retiling, and a dense retiled cell;
+  - any embedded active coordinate set (`lift_prefix`, `lift_embedding`,
+    mirroring the corpus's `MultiplyLinearFunction.lift_embedding`);
+  - nesting (`simultaneous`, `simultaneous_finset`): several providers give
+    one sub-box on which all functions agree with multilinear maps at
+    once, at density `C^[r](θ)`;
+  - weakening of parameters (`mono`).
+- *The remainder.*
+  - Each non-top vertex `φ_e(h, x) = φ(x₀ + e·h, x)` is a translated
+    pullback of `φ` to the coordinate face of its active directions.
+    `HasProductProperty.coordinateFace` passes the product property down,
+    so the dimension-`|S_e|` input gives it a provider
+    (`vertex_localPieceFor`).
+  - `remainder_piece` nests the `2^k − 1` vertex providers into one
+    multilinear map for `φ″ = section16PhiRemainder φ x₀`, at density
+    `C^[2^k−1](θ)`.
+  - Gowers's cover version sums vertex covers with Lemma 16.8, where the
+    graph count becomes `q(…)^(rs)`. The piece version pays only the
+    nesting depth in the density, which is polynomial for fixed `k` when
+    `C` is.
+
 **Next.**
-1. The remainder half: one multilinear `M″` for
-   `φ″ = Σ_{ε≠1} ±φ_ε` on a dense set. Each `φ_ε` is a cross-section
-   function of `|ε| + 1 ≤ k` variables (Lemma 16.9's proof). Nested pieces
-   of the `2^k − 1` terms, each lifted to a cylinder in the unused
-   variables, give a single `M″` at density `c^{∘(2^k−1)}`. That is
-   polynomial for fixed `k`.
-2. Instantiate with Gowers's objects (Lemmas 16.4–16.7: `φ′`, `B₁`, the
-   spectrum relation `Δ` via Lemma 14.3). Then compare the result with the
-   length-6 budget of K.4 through `section16_joint_frequency_box`'s output
-   form.
+1. Instantiate with Gowers's objects. The pieces are:
+   - Lemma 16.7's dense `B₁` (`θ₂N^(k+1)`);
+   - the identity `Section16PhiOneIdentity`;
+   - `φ′`'s Bohr linearity (`Section16InducedSelection`);
+   - the spectrum relation `Δ`, with its product property (Lemma 14.3)
+     and fibres `≤ δ⁻²`.
+
+   Combine `remainder_piece` (giving `M″` on a dense subset of `B₁` in a
+   sub-box) with `single_piece_of_spectrum_cover` (`φ₁ = (−1)^k φ′ + M″`
+   there) to get one `(k+1)`-piece of `φ₁`. The inputs are
+   `LocalRelationCoverAt k` and `LocalMultilinearPieceAt l`, `l ≤ k`.
+2. Compare with the length-6 budget of K.4 through
+   `section16_joint_frequency_box`'s output form.
 
 ## F. Routes
 
