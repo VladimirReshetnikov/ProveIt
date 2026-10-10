@@ -2198,15 +2198,97 @@ Two multilinear graphs, one for each cross-section, give one
   most `N/2` (as `Box.short_parent_partition` arranges), and
   `|J| ≥ 2q²/θ³`.
 
+**Third piece, done:** `Proofs16SinglePieceSpectrum` (the spectrum half of
+a single-piece Lemma 16.9).
+- *Why a piece input is not enough.* Lemma 16.9 writes
+  `φ₁ = (−1)^k φ′ + φ″`. `φ′(h, ·)` is linear on short progressions whose step
+  lies in the Bohr set of the **whole** large spectrum `K_h`. So every
+  frequency of `K_h` must lie on one of few multilinear graphs: a cover
+  requirement on a dense set of `h`. Peeling the `≤ δ⁻²` spectrum layers one
+  piece at a time would nest `c` up to `δ⁻²` times, at `exp(poly)` cost.
+  That is the stackability problem of H.3/H.4 again.
+- So the dimension-`k` open core is a **relation** statement,
+  `LocalRelationCoverAt k δ Qc c w`. Take a product-property relation with
+  fibres `≤ M` and a set `H` of density `θ` in a proper box. Then on one
+  proper sub-box `R` (width `≥ w θ (width P)`), a set `G ⊆ H ∩ R` with
+  `|G| ≥ c θ·|R|` has every value on `q ≤ Qc θ M` multilinear graphs.
+  - It is trivial with `w θ L = min 1 L`.
+  - Its content is polynomial `c` and `Qc` at growing `w`.
+  - `LocalRelationCoverAt.localMultilinearPieceAt` derives the function
+    form of step 2 at density `c/Qc`, by pigeonhole. **One hypothesis
+    therefore drives the whole lift.**
+- `single_piece_of_spectrum_cover` assembles step 3 with step 2.
+  - *Setting.* A dense `E` in a cell `T₀ × J₀` with
+    `φ = s·f + M″` on `E`, where `M″` is one multilinear map. `f(h, ·)` is
+    Bohr-linear for `K_h`, and `K_h` lies in a product-property relation
+    with fibres `≤ M_sp`. Both conditions are needed only at base points
+    that carry points of `E`, the form Lemma 16.5's good set gives.
+  - *Output.* One proper `(k+1)`-box inside `T₀ × J₀` and one multilinear
+    map agreeing with `φ` on a `singlePieceDensity c ρ 1` fraction, where
+    `ρ = (θ/2)·c_R(θ/2)`.
+  - *Proof.* Popular fibres, the cover hypothesis, and the corpus's
+    single-box Lemma 16.6 core. The core's statement shape
+    `Section16RetiledLinearityBound` was moved to the light module
+    `Proofs16RetiledLinearityBound`. `exists_polynomial_retiled_linearity_profile`
+    supplies it at width exponent `1/(2p(q+1)^(2^(k+2)))`, polynomial in `q`.
+    Then a dense cell (`exists_dense_cell`), a short-parent sub-cell, and
+    step 2 with one class (`single_piece_on_affine_cell`: `M″` is affine in
+    the last variable, so each fibre is affine).
+- With polynomial `c`, `c_R` and `Q_c`, every density in the chain is
+  polynomial in `θ`. The widths lose
+  - the input widths `w`, `w_R`;
+  - one square root and a factor `8` (retiling);
+  - the reciprocal-polynomial exponent `ε(q)`.
+
+**Fourth piece, done:** `Proofs16PieceCalculus` and
+`Proofs16SinglePieceRemainder` (the remainder half of a single-piece
+Lemma 16.9).
+- *A provider calculus.* `LocalPieceFor c w Dom g` says one function has
+  local pieces everywhere: every `θ`-dense `H ⊆ Dom` in every proper box
+  has one proper sub-box and one multilinear map agreeing on a `c θ`
+  fraction. It is closed under:
+  - the input: `LocalMultilinearPieceAt.localPieceFor`, given the
+    hereditary product property;
+  - translation and coordinate permutation (`LocalPieceFor.transport`),
+    with the same parameters;
+  - an unused final coordinate (`lift_last`): density
+    `c ↦ (θ/2)·c(θ/2)`, width `L ↦ ⌊√(w(θ/2)⌈L/8⌉ − 1)⌋ − 1`. The proof:
+    short-parent cells, a dense cell, popular fibres, the base provider,
+    synchronized retiling, and a dense retiled cell;
+  - any embedded active coordinate set (`lift_prefix`, `lift_embedding`,
+    mirroring the corpus's `MultiplyLinearFunction.lift_embedding`);
+  - nesting (`simultaneous`, `simultaneous_finset`): several providers give
+    one sub-box on which all functions agree with multilinear maps at
+    once, at density `C^[r](θ)`;
+  - weakening of parameters (`mono`).
+- *The remainder.*
+  - Each non-top vertex `φ_e(h, x) = φ(x₀ + e·h, x)` is a translated
+    pullback of `φ` to the coordinate face of its active directions.
+    `HasProductProperty.coordinateFace` passes the product property down,
+    so the dimension-`|S_e|` input gives it a provider
+    (`vertex_localPieceFor`).
+  - `remainder_piece` nests the `2^k − 1` vertex providers into one
+    multilinear map for `φ″ = section16PhiRemainder φ x₀`, at density
+    `C^[2^k−1](θ)`.
+  - Gowers's cover version sums vertex covers with Lemma 16.8, where the
+    graph count becomes `q(…)^(rs)`. The piece version pays only the
+    nesting depth in the density, which is polynomial for fixed `k` when
+    `C` is.
+
 **Next.**
-1. A single-piece Lemma 16.9: from a dense `(k+1)`-dimensional
-   product-property set, produce one line-covered cell of density
-   `poly(θ)` with `q = poly(1/θ)` classes. This is where the slope relation
-   and the remainders `φ_ε` enter, so it needs the structure of
-   `Proofs16Lemma9`.
-2. Assemble `LocalMultilinearPieceAt (k+1)` from `LocalMultilinearPieceAt k`
-   plus item 1. Then compare it with the length-6 discrepancy budget of
-   K.4, through `section16_joint_frequency_box`'s output form.
+1. Instantiate with Gowers's objects. The pieces are:
+   - Lemma 16.7's dense `B₁` (`θ₂N^(k+1)`);
+   - the identity `Section16PhiOneIdentity`;
+   - `φ′`'s Bohr linearity (`Section16InducedSelection`);
+   - the spectrum relation `Δ`, with its product property (Lemma 14.3)
+     and fibres `≤ δ⁻²`.
+
+   Combine `remainder_piece` (giving `M″` on a dense subset of `B₁` in a
+   sub-box) with `single_piece_of_spectrum_cover` (`φ₁ = (−1)^k φ′ + M″`
+   there) to get one `(k+1)`-piece of `φ₁`. The inputs are
+   `LocalRelationCoverAt k` and `LocalMultilinearPieceAt l`, `l ≤ k`.
+2. Compare with the length-6 budget of K.4 through
+   `section16_joint_frequency_box`'s output form.
 
 ## F. Routes
 

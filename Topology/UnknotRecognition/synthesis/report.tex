@@ -31,7 +31,7 @@
 \title{Six attempts at quasi-polynomial unknot recognition:\\
 synthesis, cross-validation, and a faster exact recognizer}
 \author{Synthesis report prepared with Claude Code}
-\date{17--18 September 2026; updated 9 October 2026}
+\date{17--18 September 2026; updated 10 October 2026}
 
 \begin{document}
 \maketitle
@@ -754,6 +754,9 @@ No general quasi-polynomial recognition bound is proved.
 \input{planar_overlay_refinements.tex}
 \input{planar_adaptive.tex}
 \input{sector_windows.tex}
+\input{window_basis.tex}
+\input{window_euler.tex}
+\input{window_modes.tex}
 
 \section{Assessment and recommendations}
 
@@ -797,6 +800,20 @@ Section~\ref{sec:sector-windows} then uses signed matching residuals to
 expose nearby admissible sectors and adds seven source-certified native
 witnesses. Its complete small-window filter and logarithmic-radius
 accounting are local theorems; the measured cost keeps this stage optional.
+Section~\ref{sec:window-basis} then removes repeated wide matching
+elimination and triangle-graph reconstruction from those window queries,
+using exact small-parameter kernel updates and source-projected geometry.
+All existing window witnesses remain source-certified; measured enabled
+recognition improves while the default continues to omit costly windows.
+Section~\ref{sec:window-euler} implements the retained Euler-corner criterion
+before allocating updated standard geometry and shares validated producer
+geometry with disc observers. Independent source replay remains in place;
+negative local screens do not supply a general recognition bound.
+Section~\ref{sec:window-modes} carries the thin replacement and gauge
+operations through lazily cached sparse source potentials, removing
+repeated wide projection while preserving exact corner geometry and
+independent disc replay. Its improvement is in amortized projection cost;
+the small-case recognition timings remain close to parity.
 
 \paragraph{Obstacles that remain.}
 The six items of Section \ref{sec:missing} remain obligations for a general

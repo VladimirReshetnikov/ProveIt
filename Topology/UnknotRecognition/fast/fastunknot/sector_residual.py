@@ -12,7 +12,7 @@ from math import gcd,lcm
 from .normal_surface_geometry import _prepare,_coordinates
 from .normal_sector import sector_rays
 from .sector_sparse import PreparedSectorSource
-from .normal_disk_kernel import normal_compressing_disk_count,verify_normal_disk_count_certificate
+from .normal_disk_kernel import _count_prepared_discs,verify_normal_disk_count_certificate
 
 
 def _add(vector,other,scale,check):
@@ -168,11 +168,13 @@ def search_sector_window(triangulation,coordinates,*,radius=2,max_cycles=None,
         raise ValueError('invalid orbit allowance')
     if stats is None:stats={}
     stats.update(radius=radius,sectors_queried=0,rays=0,orbit_cycles=0,
-                 incomplete_disc_queries=0,window_complete=False,full_basis_builds=0,basis_updates=0)
+                 incomplete_disc_queries=0,window_complete=False,full_basis_builds=0,basis_updates=0,
+                 euler_screens=0,euler_corners=0,euler_pruned_sectors=0,
+                 base_potential_builds=0,potential_transpositions=0,potential_columns_cached=0,mode_projections=0)
     source=PreparedSectorSource(triangulation,check=check)
     rows=_coordinates(source.prepared,coordinates,check)['rows'];base=_signature(rows)
-    base_kernel=None
-    def query(edits,matching_basis=None,matching_model=None):
+    base_kernel=None;source_euler=None
+    def query(edits,matching_basis=None,matching_model=None,projection=None):
         nonlocal base_kernel
         signature=list(base)
         for t,q in edits:signature[t]=q
@@ -184,9 +186,17 @@ def search_sector_window(triangulation,coordinates,*,radius=2,max_cycles=None,
             if not matching_basis:
                 stats['sectors_queried']+=1
                 return None
+            if len(matching_basis)==1 and any(x<0 for x in matching_basis[0]):
+                stats['euler_screens']+=1;stats['euler_pruned_sectors']+=1
+                stats['sectors_queried']+=1
+                return None
             from .sector_window_basis import projected_window_kernel
+            forms=matching_model.project_modes(projection,check,stats)
+            if source_euler.excludes_positive(allowed,matching_basis,forms,check,stats):
+                stats['sectors_queried']+=1
+                return None
             kernel=projected_window_kernel(triangulation,source.prepared,allowed,matching_basis,
-                matching_model.potentials,check)
+                matching_model.potentials,check,corner_forms=forms)
         if not edits:base_kernel=kernel
         stats['sectors_queried']+=1
         if len(kernel.basis)==3:
@@ -198,7 +208,7 @@ def search_sector_window(triangulation,coordinates,*,radius=2,max_cycles=None,
             analysed=_coordinates(source.prepared,vector,check)
             if analysed['euler_characteristic']<=0:continue
             remaining=None if max_cycles is None else max_cycles-stats['orbit_cycles']
-            count=normal_compressing_disk_count(triangulation,vector,max_cycles=remaining,
+            count=_count_prepared_discs(triangulation,source.prepared,analysed,max_cycles=remaining,
                 check=check,record_certificate=True)
             stats['orbit_cycles']+=count['stats']['orbit_cycles']
             if count['status']!='COMPLETE':
@@ -213,11 +223,13 @@ def search_sector_window(triangulation,coordinates,*,radius=2,max_cycles=None,
     answer=query(())
     if answer is not None:return answer
     plan=_plan_window(source.prepared,rows,radius,check,base_kernel.basis);stats.update(plan['stats'])
+    from .sector_euler import SourceEuler
+    source_euler=SourceEuler(source.prepared,plan['_matching_updates'].potentials,check)
     for edits in plan['edits'][1:]:
-        check();allowed,basis=plan['_matching_updates'].for_edits(edits,check)
+        check();allowed,basis,projection=plan['_matching_updates'].for_edits(edits,check,projection=True)
         expected=tuple((t,q)for t,q in enumerate(base)if q>=0 and t not in {t for t,_ in edits})+tuple(edits)
         if allowed!=tuple(sorted(expected)):raise ArithmeticError('matching update support mismatch')
-        answer=query(edits,basis,plan['_matching_updates'])
+        answer=query(edits,basis,plan['_matching_updates'],projection)
         if answer is not None:return answer
     stats['window_complete']=stats['incomplete_disc_queries']==0
     return dict(status='INCONCLUSIVE',reason='no certified disc in the tested sector window',stats=stats)

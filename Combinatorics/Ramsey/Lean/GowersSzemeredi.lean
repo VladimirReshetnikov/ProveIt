@@ -1008,6 +1008,10 @@ import GowersSzemeredi.Proofs16FreimanThickening
 import GowersSzemeredi.Proofs16PropNineThreeBudget
 import GowersSzemeredi.Proofs16SinglePieceAnchor
 import GowersSzemeredi.Proofs16SinglePieceSections
+import GowersSzemeredi.Proofs16RetiledLinearityBound
+import GowersSzemeredi.Proofs16SinglePieceSpectrum
+import GowersSzemeredi.Proofs16PieceCalculus
+import GowersSzemeredi.Proofs16SinglePieceRemainder
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

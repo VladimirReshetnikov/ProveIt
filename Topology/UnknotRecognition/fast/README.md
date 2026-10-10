@@ -3628,3 +3628,82 @@ coverage, the candidate bound, and conditional local QP enumeration for
 logarithmic initial nullity/radius. A complete global centre/distance theorem
 remains unproved. The separated native and full-recognition timings, noisy
 control repeat and producer-disabled source replay are retained.
+
+
+Residual-window queries now reuse the old Q kernel, column decompositions and
+source triangle potentials. Each candidate imposes at most two replacement
+constraints in at most `d0+2` parameters, recovers the native free-coordinate
+basis, and constructs the exact projected standard cone. Empty Q kernels
+finish without another geometry build. The generic higher-nullity fallback
+and independent positive source checks remain available.
+
+All 1,404 tests pass, including exact updated/fresh basis and ray comparisons
+and both generic methods at nullity four. The 85-source audit preserves all
+31 native witnesses; shared-work caps fall from 34 to 30. Paired complete
+recognition with radius-two windows enabled improves about 1.25–1.43x against
+the preceding rebuilding implementation on tested window-search cases.
+Early positives stay near parity. Radius zero remains the default: enabling
+windows still costs more than the small-input fallback without them.
+
+```sh
+python -B -m normal_orbit_research.window_basis audit --fresh-regina --output /tmp/window-basis-audit.json
+python -B -m normal_orbit_research.window_basis benchmark --rounds 5 --output /tmp/window-basis-benchmark.json
+```
+
+[Matching-update theory](../synthesis/window_basis.tex) proves full augmented
+kernels, exact replacement restrictions, canonical gauge and projected
+geometry. Frozen baseline/current source checks, positive certificate
+replay and the longer microsecond control are retained in the article data.
+
+Updated windows now compile the source Euler functional once and screen every
+Q corner at matching nullity at most three before constructing standard
+geometry. Empty or nonpositive sectors need no ray lifts; a positive corner
+resumes the existing complete standard search. Above nullity three, the
+existing generic fallback remains. Positive disc queries share the source
+and freshly validated coordinate analysis with a private observer. Public
+disc APIs and independent source-proof reconstruction retain validation.
+
+All 1,407 maintained tests pass. The 85-source audit preserves all disabled
+outputs, enabled verdicts and 31 native positives, with seven fresh Regina
+disc checks. Work caps fall from 30 to 28. Complete enabled recognition is
+1.23–1.32x faster on the measured window cases than the preceding updated
+kernel implementation. A 60-call repeat resolves a noisy native timing row.
+The default radius remains zero; these local gains do not prove general
+quasi-polynomial recognition or justify enabling windows on small inputs.
+
+```sh
+python -B -m normal_orbit_research.window_euler audit --fresh-regina --output /tmp/window-euler-audit.json
+python -B -m normal_orbit_research.window_euler benchmark --rounds 5 --output /tmp/window-euler-benchmark.json
+```
+
+[Euler-screening theory](../synthesis/window_euler.tex) derives the exact
+source functional, canonical formula and complete corner exclusion. Raw
+pilot/final/repeat records, source snapshots and producer-disabled positive
+replay are retained under `../synthesis/data/window-euler-*`.
+
+Residual windows now carry their thin replacement and canonical-gauge row
+operations through lazily cached sparse potential modes. Each corrected
+column is `P_j-P_S*c_j`; cancelling pairs and old basis modes are combined
+with the exact recorded row coefficients. This reproduces direct source
+projection at every physical corner while avoiding repeated wide scans.
+Source transposition and each needed correction are prepared at most once;
+interrupted construction never publishes a partial column.
+
+All 1,408 maintained tests pass, including exact propagated/direct forms,
+fresh source bases/rays and genuine nullity-four fallbacks. The 85-source
+audit preserves all verdicts, all 31 positives and all 28 work-capped cases,
+with seven fresh Regina disc checks. Small complete-recognition timings are
+close to parity: a longer trefoil repeat gives only a 1.015x gain. The
+improvement is in the amortized projection bound; it is not a uniform timing
+claim. Guard counts can increase with cache preparation. Radius zero stays
+the default, and general quasi-polynomial recognition remains unproved.
+
+```sh
+python -B -m normal_orbit_research.window_modes audit --fresh-regina --output /tmp/window-modes-audit.json
+python -B -m normal_orbit_research.window_modes benchmark --rounds 5 --output /tmp/window-modes-benchmark.json
+```
+
+[Cached-mode theory](../synthesis/window_modes.tex) proves exact propagation,
+explains lazy cache ownership and separates preparation, arithmetic, storage,
+bit costs and independent source replay. Raw pilot/final/repeat evidence and
+recoverable historical source snapshots are in the article data.

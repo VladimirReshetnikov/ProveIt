@@ -1,0 +1,127 @@
+\section{Carrying window updates through cached potential modes}
+\label{sec:window-modes}
+
+Matching updates use only $d_0+2$ parameters, but the preceding version
+still projects the full source potential matrix onto each updated wide
+Q basis. This continuation carries the same thin row operations through
+cached source modes. It computes exactly the same corner forms, then uses
+the existing Euler screen, standard geometry and independent disc observers.
+
+\subsection{Corrected columns and augmented potential modes}
+
+Retain the decompositions $A_j=A_Sc_j+r_j$ of
+Section~\ref{sec:window-basis}, with the source potential matrix $P$.
+For each nonbase type define its algebraic correction
+\[
+                 D_j=P_j-P_Sc_j.
+\]
+The old matching basis contributes $P_SK_0^T$. A zero-residual singleton
+adds $D_j$; two such columns add their separate corrections. An opposite
+pair adds $D_a+\gamma D_b$, with the same positive ratio satisfying
+$r_a+\gamma r_b=0$ as in the matching update.
+These are precisely the potentials of the augmented matching modes.
+A correction with nonzero residual is not a matching vector by itself;
+it becomes part of the actual matching space only through the cancelling
+pair and subsequent restrictions. No individual correction is asserted
+to be an admissible normal surface.
+
+Write the augmented matching rows in full global Q coordinates as $W$,
+and their potential columns as $\Phi_W=PW^T$. Replacement constraints give
+a thin row matrix $N$. Sorting the surviving support changes coordinate
+order but not the full global vector. Canonical gauge reduction gives a
+thin matrix $G$. Thus, before suppressing zero removed coordinates,
+\[
+              K'=GNW,\qquad
+              P(K')^T=\Phi_WN^TG^T.
+\]
+The implementation retains $Z=GN$, then combines the cached columns of
+$\Phi_W$ with its rows.
+
+\begin{proposition}[Exact propagated source potentials]
+The propagated corner forms equal direct multiplication of the source
+potentials by the updated canonical Q basis, at every physical corner.
+Consequently their equal-form identifications, canonical lifts, Euler
+screens and complete standard matching cones agree exactly.
+\end{proposition}
+\begin{proof}
+For every augmented mode its potential is the corresponding column of
+$PW^T$, by the linearity of $P$ and the displayed corrected-column formulas.
+Replacement and gauge reduction are ordinary linear combinations of these
+modes, so multiplication commutes with both operations. Removed coordinates
+are exactly zero after replacement constraints; dropping them therefore
+changes neither the full global Q vector nor its potential. The displayed
+matrix equality proves the corner-by-corner identity. Subsequent
+identification, minimum normalization and matching construction use only
+these exact forms and the unchanged source, giving the remaining claims.
+\end{proof}
+
+\subsection{Track the actual gauge operations}
+
+During the native reversed-column gauge reduction, append an identity
+matrix to the thin input rows. Only the original matching columns are
+eligible pivots. Every elimination operation also acts on the appended
+columns, recording the exact coefficients of the resulting rows in the
+input mode basis. Reversing the matching columns back and sorting by free
+index preserves the corresponding transformation rows. Composing this
+record with the replacement nullspace gives $Z$.
+
+Auxiliary identity columns never become matching variables or pivot choices.
+They do not change the canonical gauge. The untracked entry point continues
+to return the same ordinary support/basis pair. The window producer requests
+an additional private projection plan, which remains outside every portable
+positive certificate.
+
+\subsection{Lazy sparse source caches}
+
+The old basis potentials are projected at most once and stored by nonzero
+corner entries. The all-Q potential rows are transposed at most once into
+sparse columns. Each needed $D_j$ is then accumulated from $P_j$ and the
+nonzero coefficients of $c_j$, with exact zero cancellations removed.
+A correction is cached only after its complete construction. An interrupted
+transpose or column cannot publish an unfinished vector for another query.
+
+Per-window projection combines only the nonzero thin weights and sparse
+cached potential entries. It reconstructs a full tuple of corner forms for
+the existing Euler and standard-kernel interfaces. Algebraic zeros are
+represented exactly; no numerical threshold or hashing surrogate changes
+form equality. Source caches belong to one read-only source and fixed old
+support. They are not shared across unrelated centres or triangulations.
+
+Projection remains demand driven. An empty updated kernel or an immediately
+empty one-dimensional nonnegative cone returns before creating a cache.
+Unneeded correction columns are never computed. A positive result and all
+independent source replay retain their previous contract. High-nullity
+arrangement and support fallbacks use the identical propagated forms.
+
+\subsection{Arithmetic cost and retained scope}
+
+Let $C$ be the number of distinct correction columns actually needed and
+$m\le d_0+2$ the augmented parameter count. Transposition costs
+$O(\operatorname{nnz}P)$ once. The old basis projection costs
+$O(\operatorname{nnz}P+d_0\operatorname{nnz}P_S)$ once. A correction's sparse
+arithmetic costs
+\[
+ O\!\left(1+\|c_j\|_0+\operatorname{nnz}P_j+
+       \sum_{i:(c_j)_i\ne0}\operatorname{nnz}P_{S_i}\right),
+\]
+in addition to constructing its coefficient record. Its worst case is
+$O(T(k+1))$, while $C\le3T$. The complete correction preparation is
+therefore polynomial, bounded by $O(CT(k+1))$ arithmetic operations.
+
+After these preparations, each window uses thin matching/gauge operations
+and sparse combinations of at most $d_0+2$ source potential vectors per
+output basis row. Including dense interface reconstruction, potential
+propagation costs $O(Td(d_0+2))$ in the worst case. It removes repeated
+scanning of $\operatorname{nnz}P$ and repeated wide source projection from
+each candidate. The lazy cache can be more expensive on a short query that
+never reuses a column; the measured tradeoff must include its preparation.
+
+Cached coefficient bits, sparse-vector storage, exact rational arithmetic,
+output and independent replay remain charged. This changes a polynomial
+factor in the existing local logarithmic-nullity/radius bound. It does not
+supply global sector centres, a universal distance bound or a general
+quasi-polynomial recognition theorem. Shared deterministic guard counts may
+change separately from wall-clock time.
+
+\subsection{Validation and measured behavior}
+\input{window_modes_results.tex}

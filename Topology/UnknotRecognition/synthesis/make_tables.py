@@ -1719,3 +1719,15 @@ if os.path.exists('data/planar-adaptive-benchmark.json'):
 if os.path.exists('data/sector-windows-benchmark.json'):
     import runpy
     runpy.run_path('data/sector_windows_tables.py')
+
+if os.path.exists('data/window-basis-benchmark.json'):
+    import runpy
+    runpy.run_path('data/window_basis_tables.py')
+
+if os.path.exists('data/window-euler-benchmark.json'):
+    import runpy
+    runpy.run_path('data/window_euler_tables.py')
+
+if os.path.exists('data/window-modes-benchmark.json'):
+    import runpy
+    runpy.run_path('data/window_modes_tables.py')
