@@ -1,0 +1,100 @@
+\section{Grouped Euler minima and progress-driven screening}
+\label{sec:euler-aggregate}
+
+The source Euler compiler of Section~\ref{sec:window-euler} evaluates
+canonical Euler characteristic without constructing a normal vector.
+Its first implementation still scans all physical corners at every tested
+Q corner. This continuation groups equal projected forms within each
+source vertex and compiles one small nonlinear objective for the remaining
+corner queries. It retains the cheap one-dimensional branch and builds
+no grouping when the first corner is already positive.
+
+\subsection{Anchor shifts and constant vertex groups}
+
+For the updated basis $K'$ write
+\[
+ \alpha_a=\sum_j\gamma_jK'_{a,j},\qquad
+ F(z)=\alpha\cdot z-\sum_v\lambda_v\min_{c\in G_v}\ell_c(z).
+\]
+Choose one actual form $a_v$ as the anchor for vertex $v$, and let $D_v$
+be the distinct nonzero differences $\ell_c-a_v$. Define
+\[
+ \bar\alpha=\alpha-\sum_v\lambda_va_v.
+\]
+Then
+\[
+ F(z)=\bar\alpha\cdot z-
+       \sum_{v:D_v\ne\varnothing}\lambda_v
+                   \min\!\left(0,\min_{f\in D_v}f\cdot z\right).
+\]
+The zero anchor difference is supplied explicitly. If a vertex group has
+only one projected form, it contributes only to $\bar\alpha$ and disappears
+from the nonlinear minima. Adding any common linear offset to a vertex's
+forms, together with its exact link-weighted change to the signed linear
+term, cancels under this normalization.
+
+\begin{proposition}[Grouped Euler objective is exact]
+The grouped functional equals canonical source Euler characteristic at
+every parameter vector. Duplicated forms and constant vertex groups can
+be omitted as above without changing any corner value or exclusion result.
+\end{proposition}
+\begin{proof}
+For each vertex,
+$\min_c\ell_c(z)=a_v\cdot z+\min(0,\min_{f\in D_v}f\cdot z)$.
+Substitution and collecting the anchor terms give the displayed identity.
+Duplicates do not alter a minimum. An empty difference set contributes
+only its anchor linear form. The equality is algebraic and does not require
+positivity or integral coordinates. Applied to the normalized nonnegative
+Q section, it therefore retains the preceding complete nonpositive-corner
+criterion and its independent source interpretation.
+\end{proof}
+
+\subsection{Only refine the objective after a nonpositive first corner}
+
+The implementation tests the first Q corner with the existing direct
+canonical functional. A positive value immediately resumes ordinary
+standard discovery. A point section also finishes without aggregation.
+Only resuming to another corner triggers compilation of distinct forms
+and the anchor-adjusted linear term. Later corners use that one compiled
+objective. Empty sections and the scalar nullity-one branch keep their
+previous behavior; higher-nullity generic fallbacks remain available.
+
+The grouping belongs to one updated support, basis and source projection.
+It is not reused across different sectors. Equality is exact rational
+value equality, with no numerical tolerance. Compilation completes before
+a grouped value is used; callback interruptions propagate and cannot give
+an exclusion from a partial list of corners. Positive corner values still
+prove neither connectedness nor disc essentiality.
+
+\subsection{Distinct-form bound and arithmetic cost}
+
+The source support contraction of Section~\ref{sec:incoming-sectors} removes matching
+edges with identically zero allowed-Q labels. Corner forms are constant
+along every such contracted component. Equal-form grouping can merge those
+components further, including dropping groups that become constant; it
+cannot split them. Consequently the total number $p$ of distinct forms in
+nonconstant vertex groups is bounded by the original retained class bound
+$p\le8k$. This bound is about actual source matching geometry, not arbitrary
+families of affine functions.
+
+Compiling $\alpha$ costs $O(kd)$ arithmetic operations. Scanning the physical
+corner forms, adjusting anchors and creating distinct differences costs
+$O(Td+pd)$ coefficient operations, plus exact grouping/index costs.
+Each later corner evaluates only $O(pd)$ coefficients. Including the
+unaggregated first corner and compilation, $m$ tested corners cost
+$O(d(T+k+mp))$ arithmetic operations after source projection. At nullity
+at most three, the normalized polygon has $O(k)$ vertices; thus this
+implements the proposed $O(T+k^2)$ post-projection coefficient arithmetic.
+The normalized chart and polygon costs are still charged.
+
+Python dictionaries implement exact form grouping. Their expected lookup
+cost and rational hashing/bit costs are distinct from the scalar-operation
+bound; no deterministic linear-time hash guarantee is asserted.
+Source preparation, potential projection, coefficient storage, actual
+ray enumeration, full coordinate output and independent proof replay also
+remain separately charged. This improves a local polynomial factor. A
+global centre family, logarithmic distance bound and general quasi-polynomial
+unknot recognition theorem remain unproved.
+
+\subsection{Source comparisons and timings}
+\input{euler_aggregate_results.tex}

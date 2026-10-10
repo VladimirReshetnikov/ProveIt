@@ -1318,3 +1318,24 @@ publication checks with `python -B data/disc_context_review.py --publication`
 from this directory. They verify 604 current/frozen runtime pins, 602 incumbent
 pins, final/repeat outcomes, eight generic legacy proof replays and all 31
 saved positives with the batch context and producers disabled.
+
+[euler_aggregate.tex](euler_aggregate.tex) compiles exact vertex-group minima
+only after a nonpositive first Q corner. Anchor shifts and constant groups
+move into the linear term; at most `8k` distinct forms remain in nonconstant
+source groups. The resulting coefficient arithmetic after projection is
+`O(T+k^2)` at nullity at most three, with hashing, bits and preparation separate.
+All 1,417 tests pass; all 85 verdicts, 31 positives, seven fresh Regina discs,
+22 caps and 32 complete local misses remain. Guard calls rise modestly.
+Initial 3–4% timing gains do not persist in the longer repeat, which is near
+parity; no reliable wall-clock speedup is claimed. The 120-call pilot, 200-call
+final run and 120-call repeat are retained under `data/euler-aggregate-*`.
+
+The current [PDF](report.pdf) has 574 pages. Section 144 starts on page 566;
+the assessment is section 145 on page 569. Rendered pages 566–571, including
+the assessment continuation and first references page, pass visual review.
+All references resolve, with only the four pre-existing overflow warnings.
+Reproduce publication checks with
+`python -B data/euler_aggregate_review.py --publication` from this directory.
+The review verifies all 605 runtime pins, incumbent evidence, timing outcomes,
+eight generic legacy proofs and all 31 saved positives with aggregation,
+the batch verifier context and producers disabled.
