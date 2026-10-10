@@ -6,7 +6,7 @@ from pathlib import Path
 import argparse, hashlib, importlib.util, json, shutil, subprocess, sys
 B=Path(__file__).resolve().parents[1]
 S=B.parent/'reports/gaussian-parity-reductions'
-ap=argparse.ArgumentParser();ap.add_argument('--part',choices=['14','16','17'],required=True)
+ap=argparse.ArgumentParser();ap.add_argument('--part',choices=['14','16','17','18','19','19b'],required=True)
 a=ap.parse_args();root=B/'verification/.scratch-gaussian'/a.part
 out=B/'verification/gaussian-replay'/a.part
 root.mkdir(parents=True,exist_ok=True);out.mkdir(parents=True,exist_ok=True)
@@ -47,6 +47,31 @@ elif a.part=='16':
     for d in ['data','generated']:(root/d).mkdir(exist_ok=True)
     run('code/test_arithmetic.py');run('code/verify.py')
     results=sorted((root/'data').glob('*.json'))
+elif a.part=='18':
+    for name in ['verify.py','gaussian.py','full_ds.py','numerics.py']:
+        copy('code/18-signed-kernels-'+name,'code/'+name)
+    (root/'data').mkdir(exist_ok=True)
+    run('code/verify.py','--terms','400','--max-weight','16','--rank-max','31')
+    run('code/numerics.py')
+    results=sorted((root/'data').glob('*.json'))
+elif a.part=='19':
+    for name in ['verify.py','holder.py','identities.py','replay_certificates.py']:
+        copy('code/19-gaussian-proofs-'+name,'code/'+name)
+    (root/'results').mkdir(exist_ok=True)
+    run('code/verify.py','--bits','384')
+    run('code/replay_certificates.py')
+    results=sorted((root/'results').glob('*.json'))
+
+elif a.part=='19b':
+    for name in ['one_two_identities.py','derive_rows.py','verify_coefficients.py','sixth_root.py']:
+        copy('code/19-gaussian-proofs-independent-one_two-'+name,'code/independent/one_two/'+name)
+    resultsdir=root/'results/independent/one_two';resultsdir.mkdir(parents=True,exist_ok=True)
+    run('code/independent/one_two/derive_rows.py','--outdir',str(resultsdir))
+    run('code/independent/one_two/verify_coefficients.py','--coefficients',str(resultsdir/'coefficients.json'),'--output',str(resultsdir/'coefficient_verification.json'))
+    run('code/independent/one_two/one_two_identities.py','--digits','100','--output',str(resultsdir/'one_two_checks.json'))
+    run('code/independent/one_two/sixth_root.py','--digits','100','--output',str(resultsdir/'sixth_root_checks.json'))
+    results=sorted(resultsdir.glob('*.json'))
+
 else:
     for name in ['gap_reduce.py','certify.py','symbolic_checks.py']:
         copy('code/17-gap-reductions-'+name,'code/'+name)

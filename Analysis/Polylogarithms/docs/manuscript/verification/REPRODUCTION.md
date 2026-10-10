@@ -49,3 +49,22 @@ fast mode. Part 16 tests interval arithmetic, symbolic specialization and 89
 interval residuals with eight independent quadratures. Part 17 replays its
 symbolic solver and six positive-measure midpoint certificates. The source
 hashes and restored-file maps are recorded for each part.
+
+## Signed Euler kernels and Holder certificates
+
+```powershell
+python verification/replay_gaussian.py --part 18
+python verification/replay_gaussian.py --part 19
+python verification/replay_gaussian.py --part 19b
+```
+
+Part 18 uses 400 Euler terms, even weights through 16 and odd matrix ranks
+through 31, plus a separate numerical diagnostic entry point. Part 19 uses
+384-bit atom precision and independently replays every Holder center and
+tail budget through finite nested sums. Part 19b generates 24 one-two rows
+and compares them with integrals, checks the general closed formula, and
+checks all positions through weight 8 at both sixth roots at 100 digits.
+These runs read the immutable prefixed sources and write fresh receipts in
+`gaussian-replay/18`, `/19` and `/19b`. The complete analytic arrival excerpts
+in `gaussian-arrival-sources/` came from commit 412dbd0048 and are provenance
+inputs; the canonical text is the edited chapter files.

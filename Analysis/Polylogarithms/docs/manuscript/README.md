@@ -1,12 +1,12 @@
 # Polylogarithms and their Arithmetic Bridges
 
 The collective manuscript, authored by **ProveIt Contributors**, is [polylogarithms.pdf](polylogarithms.pdf):
-**204 pages, eleven chapters**, a literature appendix preserving 94 distinct
-historical question leads, and a central bibliography of 61 works. Its editable
+**228 pages, twelve chapters**, a literature appendix preserving 94 distinct
+historical question leads, and a central bibliography of 65 works. Its editable
 source is [polylogarithms.tex](polylogarithms.tex) and the files in `chapters/`.
 
 The book consolidates the original 39 drafts and all six nested continuation
-packages in the requested directory. The recursive inventory covers **102
+packages in the requested directory. The recursive inventory covers **109
 textual source files**; assembled articles and their fragments are provenance
 files, not independent results. The [editorial ledger](EDITORIAL-LEDGER.md)
 maps the sources and explains which later proofs replace earlier claims.
@@ -15,7 +15,8 @@ the canonical reading artifact.
 
 The development follows mathematical dependency: conventions and Nielsen
 calculus; cyclotomic coordinates; algebraic arguments and ladders; depth,
-inverse-color reductions and harmonic sums; gamma certificates; CM lattices;
+inverse-color reductions and harmonic sums; signed kernels and certified
+computation; gamma certificates; CM lattices;
 integrated zeta jets; differentiated jets and uniform distribution ranks;
 Stieltjes zero geometry and spectral asymptotics; Herglotz arithmetic and
 optimal truncation; and experimental discovery. Experiments motivate the

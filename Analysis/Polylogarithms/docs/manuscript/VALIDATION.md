@@ -1,28 +1,23 @@
-> **Validated checkpoint:** the record below applies to the exact 204-page
-> artifact. Batch-140 deliveries 18 and 19 were subsequently merged into the
-> requested source tree; their integration requires refreshed inventory,
-> mathematical checks, build and visual receipts.
-
 # Validation of the unified manuscript
 
 Completed October 9, 2026. Authorship is **ProveIt Contributors** on the title
-page and in the PDF metadata. The canonical [PDF](polylogarithms.pdf) has **204
-pages, eleven chapters**, a literature appendix with 94 distinct historical
-question leads, and 61 bibliography entries. It incorporates the original
+page and in the PDF metadata. The canonical [PDF](polylogarithms.pdf) has **228
+pages, twelve chapters**, a literature appendix with 94 distinct historical
+question leads, and 65 bibliography entries. It incorporates the original
 39 drafts and all six nested continuation packages in the requested tree.
-The recursive [inventory](source-inventory.json) contains **102 textual source
+The recursive [inventory](source-inventory.json) contains **109 textual source
 files**, including assembled/fragment versions and correction registers.
 Their overlap is reconciled in the [editorial ledger](EDITORIAL-LEDGER.md).
 
 The reviewed PDF SHA-256 is:
 
 ```
-8b5f6f3c0b406ae65202d8c4f8215bc4c370e6fc57e8dee82d027239e617e06b
+25769461206dcab29e42c584e3f15ed74c5bd638afdad044b36b390ca99f447c
 ```
 
 ## Source reconciliation and evidence integrity
 
-All 102 source digests match; no textual source is unlisted or uncovered.
+All 109 source digests match; no textual source is unlisted or uncovered.
 The static audit finds no duplicate labels or bibliography keys, missing
 references/citations, missing TeX inputs or missing figures. See
 [document-integrity.json](verification/document-integrity.json).
@@ -112,6 +107,40 @@ concerns uniform polynomial approximation, not a lower bound for every
 possible polylogarithm algorithm. The published cubic Tornheim evaluation
 and fixed-order moment expansion are attributed rather than claimed as new.
 
+## Signed kernels, one-two closure and Holder certificates
+
+The final synchronization added deliveries 18 and 19 to the Gaussian package.
+Their shared formulas are fused with the earlier proofs. The new Chapter 5
+organizes the signed density, unique angular zero, uniform four-term zero
+asymptotic, one-sided Euler certificates, sharp logarithmic error, bounded
+S4 obstruction and exact Holder computation. The all-odd-weight rank pattern
+remains conjectural despite its finite exact census.
+
+Part 18 freshly passes **588** exact/interval check cases at 400 Euler terms:
+39 shuffle inverses, 56 kernel recurrences, 8 base derivatives, 384 Euler
+weight/sign cases, 64 parity intervals, 15 finite formal ranks and the stated
+coefficient/obstruction checks. Separate floating-point diagnostics cover
+16 Euler-asymptotic cases, 9 zero-asymptotic cases, 9 illustrative root values
+and 1 S4 comparison. Its interval for the S4 difference lies within
+`[-1e-118,1e-118]`; this does not establish equality.
+
+Part 19 constructs **75** rational Holder value certificates at 384-bit atom
+precision. All 75 exact centers and tail budgets are reproduced by a separate
+finite nested-sum implementation. The 58 formula residual enclosures are
+compatibility checks alongside the independent written proofs. Its strictly
+positive mixed-color antisymmetry certificate supports the corrected color
+exchange rule. The homogeneous weight-six diagonal, the order-one logarithm
+exception and the known shifted-polygamma parity component are also repaired.
+
+Part 19b freshly generates **24** exact one-two coefficient rows and compares
+them with defining integrals; checks **112** general closed-form cases; and
+checks **56** sixth-root position/conjugation cases plus **4** explicit examples
+at 100 digits. Maximum closed-form/integral residuals are about `5.14e-100`
+and `6.59e-100`, respectively. These numerical comparisons are separate from
+exact outward-rounded certificates. The top-two series-depth layers, signed
+binomial coefficients modulo stated products, and sixth-root closure retain
+their explicit branch and quotient hypotheses.
+
 ## Build and rendered review
 
 Three serial LuaLaTeX passes exit successfully and have identical final
@@ -119,8 +148,8 @@ auxiliary/reference state. The final log contains zero unresolved references
 or citations, duplicate-label warnings, overfull boxes, missing glyphs or
 rerun requirements. See [build-results.json](verification/build-results.json).
 
-The PDF text/bounds audit passes on all 204 pages. All pages were rasterized
-and visually reviewed in thirteen contact sheets. Full-size review of selected
+The PDF text/bounds audit passes on all 228 pages. All pages were rasterized
+and visually reviewed in fifteen contact sheets. Full-size review of selected
 pages covered the Nielsen formula, mixed reductions, harmonic transition,
 q=5 correction, uniform rank proof, normalized jets, zero expansions and
 certificates, all five scientific figures, cubic certificate table,

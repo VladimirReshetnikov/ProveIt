@@ -169,6 +169,28 @@ unconditional spanning bound for the \(g_{a,b}\), with explicit
 single-value terms. It can be sharpened in the parity sector, as the
 next section shows.
 
+\subsection{A normalized Pascal inverse for the shuffle rows}
+The triangular elimination can be made explicit in outer-index coordinates.
+Let $m=\lfloor w/2\rfloor$ and let $A_{p,a}=\binom{a-1}{p-1}+
+\binom{a-1}{w-p-1}$, for $1\le p\le m$, $1\le a<w$.
+Divide row $p$ by $c_p=1+\mathbf1_{2p=w}$. Its first $m$ columns are
+$P_{p,a}=\binom{a-1}{p-1}$, with inverse
+\[
+ (P^{-1})_{i,j}=(-1)^{j-i}\binom{j-1}{i-1}\quad(j\ge i),
+ \qquad (P^{-1})_{i,j}=0\quad(j<i).
+\]
+Indeed the matrix product reduces to
+$\binom{j-1}{i-1}\sum_{k=i}^j(-1)^{j-k}\binom{j-i}{k-i}=\delta_{ij}$.
+Writing $R_p=\Imag(\Li_p(\iu)\Li_{w-p}(\iu))$, the constructive solution is
+\begin{equation}\label{signed:eq:shuffle-solve}
+ g_{a,w-a}=\sum_{p=a}^m(-1)^{p-a}\binom{p-1}{a-1}
+ \left[\frac{R_p}{c_p}-\sum_{j=m+1}^{w-1}\frac{A_{p,j}}{c_p}g_{j,w-j}\right],
+ \qquad 1\le a\le m.
+\end{equation}
+This explicitly leaves the same $\lfloor(w-1)/2\rfloor$ formal coordinates
+as Proposition~\ref{gaussian:prop:double-rank}; evaluation can impose further
+relations.
+
 \subsection{The weight-five relation is two shuffles}
 
 The words for \(\Li_1\Li_4\) and \(\Li_2\Li_3\) give
@@ -287,6 +309,15 @@ This theorem does not reduce every odd-weight $g_{a,b}$ individually.
 It supplies one explicit family of linear combinations in the parity
 component not individually reduced by Theorem~\ref{gaussian:thm:binomial-parity}.
 
+
+At weight seven a second combination complements the pure-$\pi$-free
+family above:
+\begin{align}\label{signed:eq:w7-second}
+ 430g_{6,1}+215g_{5,2}+79g_{4,3}+11g_{3,4}-7g_{2,5}
+ =\frac{105}{512}G\zeta(5)-\frac{75}{32}\beta(4)\zeta(3).
+\end{align}
+Its exact certificate is $-7$ times the $(2,5)$ shuffle row plus $25$ times
+the $(3,4)$ row, after evaluating their single values. The exact row calculation fixes the homogeneous weight-seven products.
 
 \subsection{The surviving mixed relation}
 
@@ -691,3 +722,5 @@ now proved. The arbitrary-depth theorem proves additional such identities
 without a new integer-relation search. It does not address the independent
 status of the weight-six triples $(3,1,2),(3,2,1),(4,1,1)$, which contain
 more than one zero letter and lie outside this reduction mechanism.
+
+\input{chapters/04-one-two-reciprocal}

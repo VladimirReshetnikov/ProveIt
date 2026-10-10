@@ -1,0 +1,537 @@
+\section{A signed-kernel representation}
+\label{signed:sec:kernel}
+
+\begin{definition}\label{signed:def:kappa}
+For real $b>0$ and $T>0$, define
+\begin{equation}\label{signed:eq:kappa-base}
+ \kappa_{1,b}(e^{-T})=
+ -\frac{T^b}{\Gamma(b+1)}
+ +\frac1{\Gamma(b)}\int_T^\infty\frac{v^{b-1}}{e^v-1}\dd v.
+\end{equation}
+For an integer $a\ge2$, define successively
+\begin{equation}\label{signed:eq:kappa-recursion}
+ \kappa_{a,b}(u)=\int_u^1\frac{\kappa_{a-1,b}(v)}{v}\dd v,
+ \qquad 0<u<1.
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Moments and one sign change]\label{signed:thm:kernel}
+For every integer $a\ge1$ and real $b>0$, the density $\kappa_{a,b}$ is integrable on $(0,1)$ and
+\begin{equation}\label{signed:eq:kernel-moments}
+ \int_0^1u^{n-1}\kappa_{a,b}(u)\dd u
+ =\frac{H_{n-1}^{(b)}}{n^a},\qquad n\ge1.
+\end{equation}
+In particular its total mass is zero. There is exactly one $r_{a,b}\in(0,1)$ such that
+\begin{equation}\label{signed:eq:kernel-sign}
+ \kappa_{a,b}(u)<0\quad(0<u<r_{a,b}),\qquad
+ \kappa_{a,b}(u)>0\quad(r_{a,b}<u<1).
+\end{equation}
+The crossing is strict, and $r_{a,b}<r_{a-1,b}$ when $a\ge2$.
+\end{theorem}
+\begin{proof}
+First consider $a=1$. The negative term in \eqref{signed:eq:kappa-base} has moment $-n^{-b-1}$. Substituting $u=e^{-T}$ and interchanging nonnegative integrands in the positive term gives
+\begin{align*}
+ &\frac1{\Gamma(b)}\int_0^\infty e^{-nT}
+       \int_T^\infty\frac{v^{b-1}}{e^v-1}\dd v\dd T\\
+ &\hspace{12mm}=\frac1{n\Gamma(b)}\int_0^\infty
+       \frac{v^{b-1}(1-e^{-nv})}{e^v-1}\dd v
+ =\frac1n\sum_{k=1}^n k^{-b}.
+\end{align*}
+The final equality uses the finite geometric identity
+$(1-e^{-nv})/(e^v-1)=\sum_{k=1}^n e^{-kv}$.
+Subtracting $n^{-b-1}$ proves the base moment formula. At $n=1$, both positive and negative terms have finite integral~1, so integrability and zero mass are established without subtracting divergent quantities.
+
+As a function of $T$, the base density has derivative
+\begin{equation}\label{signed:eq:kappa-base-derivative}
+ \frac{\mathrm d}{\mathrm dT}\kappa_{1,b}(e^{-T})
+ =-\frac{T^{b-1}}{\Gamma(b)(1-e^{-T})}<0.
+\end{equation}
+It is positive as $T\downarrow0$: the limit is $\zeta(b)>0$ if $b>1$, and is $+\infty$ if $0<b\le1$. It tends to $-\infty$ as $T\to\infty$. Thus it has exactly one crossing, with the sign pattern stated in the $u$ coordinate.
+
+For the induction, the integral operator in \eqref{signed:eq:kappa-recursion} is an $L^1$ contraction:
+\[
+ \int_0^1\left|\int_u^1\frac{f(v)}v\dd v\right|\dd u
+ \le\int_0^1|f(v)|\dd v.
+\]
+Fubini's theorem gives the moment of the new density as $1/n$ times the previous moment; in particular it preserves zero mass. If the preceding crossing is $r$, the new density is positive on $[r,1)$, while on $(0,r)$ its derivative is $-\kappa_{a-1,b}(u)/u>0$. Zero mass forces it to be negative somewhere on that interval. Strict increase then gives exactly one crossing in $(0,r)$. This completes the induction.
+\end{proof}
+
+\begin{corollary}[Integral continuation]\label{signed:cor:stieltjes}
+For $z\in\mathbb C\setminus[1,\infty)$,
+\begin{equation}\label{signed:eq:stieltjes}
+ F_{a,b}(z)=\int_0^1\frac{z}{1-zu}\kappa_{a,b}(u)\dd u.
+\end{equation}
+In particular, if $0<\theta<\pi$,
+\begin{equation}\label{signed:eq:angular-integral}
+ \Imag F_{a,b}(e^{\iu\theta})
+ =\sin\theta\,J_{a,b}(\cos\theta),\qquad
+ J_{a,b}(c)=\int_0^1\frac{\kappa_{a,b}(u)}{1-2cu+u^2}\dd u.
+\end{equation}
+\end{corollary}
+\begin{proof}
+For $|z|<1$, expand $z/(1-zu)$ and use the moments. On compact subsets of the slit plane the denominator is bounded away from zero uniformly in $u\in[0,1]$, so the integral is analytic there. This continues the disk identity. Taking the imaginary part of $e^{\iu\theta}/(1-ue^{\iu\theta})$ gives \eqref{signed:eq:angular-integral}.
+\end{proof}
+
+\begin{lemma}[A sign test for zero-mass densities]\label{signed:lem:sign-test}
+Let $\kappa$ have zero integral and the strict sign pattern \eqref{signed:eq:kernel-sign}, with crossing $r$. If $q$ is strictly decreasing and the integral exists, then $\int q\kappa<0$. If $q$ is strictly increasing, the sign is positive.
+\end{lemma}
+\begin{proof}
+Subtract $q(r)\int\kappa=0$. The product $(q(u)-q(r))\kappa(u)$ has the asserted strict sign on each side of $r$.
+\end{proof}
+
+\section{The unique zero on the upper semicircle}
+\label{signed:sec:zeros}
+
+\begin{theorem}[Existence, uniqueness, and simplicity]\label{signed:thm:unique-zero}
+Let $a\ge1$ be an integer and let $b>0$ be real. There is exactly one
+$\theta_{a,b}\in(0,\pi)$ such that
+$\Imag F_{a,b}(e^{\iu\theta_{a,b}})=0$. It satisfies
+\begin{equation}\label{signed:eq:zero-range}
+ 0<\theta_{a,b}<\frac\pi2.
+\end{equation}
+The imaginary part is positive for $0<\theta<\theta_{a,b}$ and negative for $\theta_{a,b}<\theta<\pi$. At its zero the angular derivative is strictly negative. Consequently,
+\begin{equation}\label{signed:eq:g-negative}
+ g_{a,b}<0.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Suppress the indices in $J$ and $\kappa$. The kernel $u\mapsto(1+u^2)^{-1}$ is strictly decreasing, so Lemma~\ref{signed:lem:sign-test} gives $J(0)<0$.
+
+We next show that the limit of $J(c)$ as $c\uparrow1$ is positive, possibly infinite. The negative density is supported in $(0,r)$, away from the singular endpoint, and its contribution has a finite limit. On $(r,1)$ monotone convergence applies. Expanding $(1-u)^{-2}$, treating these two parts separately, and using \eqref{signed:eq:kernel-moments} yields
+\begin{equation}\label{signed:eq:J-at-one}
+ \lim_{c\uparrow1}J(c)
+ =\int_0^1\frac{\kappa(u)}{(1-u)^2}\dd u
+ =\sum_{n\ge0}\frac{H_n^{(b)}}{(n+1)^{a-1}}>0.
+\end{equation}
+Every summand from $n=1$ onward is positive. Thus continuity produces at least one zero $c_0\in(0,1)$.
+
+For uniqueness, write $K_c(u)=(1-2cu+u^2)^{-1}$. If $c'>c$, then
+\begin{equation}\label{signed:eq:kernel-ratio}
+ \frac{\mathrm d}{\mathrm du}\frac{K_{c'}(u)}{K_c(u)}
+ =\frac{2(c'-c)(1-u^2)}{(1-2c'u+u^2)^2}>0.
+\end{equation}
+At a zero $J(c)=0$, the signed density $K_c\kappa$ still has one sign change and zero mass. Applying Lemma~\ref{signed:lem:sign-test} to the ratio in \eqref{signed:eq:kernel-ratio} gives $J(c')>0$ for every $c'>c$. The same argument with a smaller parameter gives $J(c')<0$ for $c'<c$. There can be only one zero in $(-1,1)$, with the indicated signs.
+
+Finally,
+\[
+ J'(c_0)=\int_0^1 K_{c_0}(u)\kappa(u)
+        \frac{2u}{1-2c_0u+u^2}\dd u>0,
+\]
+because the last factor has derivative $2(1-u^2)/(1-2c_0u+u^2)^2>0$. Equation~\eqref{signed:eq:angular-integral} therefore has derivative
+$-\sin^2\theta_{a,b}\,J'(c_0)<0$ at $\theta_{a,b}=\arccos c_0$. Since $c_0>0$, this zero is below $\pi/2$. The Gaussian inequality is its value at $\theta=\pi/2$.
+\end{proof}
+
+\begin{remark}[The first zero is elementary]
+The identity $F_{1,1}(z)=\tfrac12\log^2(1-z)$ gives
+\[
+ \Imag F_{1,1}(e^{\iu\theta})
+ =\log\!\left(2\sin\frac\theta2\right)\frac{\theta-\pi}{2}.
+\]
+Hence $\theta_{1,1}=\pi/3$ and $g_{1,1}=-\pi\log2/8$. This example also checks the direction of the sign change in Theorem~\ref{signed:thm:unique-zero}.
+\end{remark}
+
+\section{A four-term asymptotic for the zero}
+\label{signed:sec:zero-asymptotic}
+Put $\delta_{a,b}=\pi/2-\theta_{a,b}$. The first surviving Fourier mode at $\pi/2$ is the $n=3$ term, whereas the $n=2$ term controls the derivative. Their ratio suggests $(2/3)^a$; the theorem below identifies both the next Fourier corrections and the first nonlinear correction.
+
+\begin{theorem}[Uniform zero asymptotic]\label{signed:thm:zero-asymptotic}
+For integer $a\to\infty$, uniformly for real $b\ge1$, set
+$A=H_2^{(b)}$, $B=H_3^{(b)}$, and $C=H_4^{(b)}$. Then
+\begin{align}\label{signed:eq:zero-asymptotic}
+ \delta_{a,b}
+ &=\frac A2\left(\frac23\right)^a
+   -\frac C2\left(\frac25\right)^a
+   +AB\left(\frac13\right)^a
+   -\frac{23A^3}{48}\left(\frac8{27}\right)^a
+   +O\!\left(\left(\frac27\right)^a\right).
+\end{align}
+The implied constant and the threshold for $a$ can be chosen independently of $b\ge1$.
+\end{theorem}
+\begin{proof}
+For sufficiently large $a$, the boundary series and its derivative converge absolutely. Normalize the imaginary part by multiplying by $2^a$, and write $\theta=\pi/2-\delta$. The modes $n=2,3,4,5$ give
+\begin{align}\label{signed:eq:zero-fourier}
+ 0={}&\sin(2\delta)-Aq^a\cos(3\delta)-Bs^a\sin(4\delta)
+       +Cr^a\cos(5\delta)\notag\\
+    &\quad+O\!\left(\delta\,3^{-a}+(2/7)^a\right),
+ \qquad q=\frac23,\quad s=\frac12,\quad r=\frac25.
+\end{align}
+The $n=6$ mode is $O(\delta3^{-a})$. For $n\ge7$, the bound
+$H_{n-1}^{(b)}\le1+\log n$ gives a uniform tail estimate: for $a\ge3$,
+\[
+ \sum_{n\ge7}(1+\log n)(2/n)^a
+ \le (2/7)^a\sum_{n\ge7}(1+\log n)(7/n)^3.
+\]
+The constant is finite and independent of $b$.
+
+Since $1\le A\le3/2$ and $B,C$ are bounded uniformly in $b$, the normalized expression is negative at $\delta=0$ and positive at $\delta=q^a$ for all sufficiently large $a$. Theorem~\ref{signed:thm:unique-zero} identifies the root in that interval. Thus $\delta=O(q^a)$ uniformly.
+
+Taylor expansion of \eqref{signed:eq:zero-fourier} now gives
+\begin{align}\label{signed:eq:zero-expanded}
+ 0={}&2\delta-Aq^a-4Bs^a\delta+Cr^a
+       +\frac92Aq^a\delta^2-\frac43\delta^3
+       +O((2/7)^a).
+\end{align}
+For example, the omitted terms have exponential bases bounded by
+$q^5$, $sq^3$, $rq^2$, and $q/3$, all smaller than $2/7$. Insert first
+$\delta_0=Aq^a/2$. The linear perturbation $-4Bs^a\delta_0$ requires the correction $AB(qs)^a$, while the $n=5$ mode requires $-Cr^a/2$.
+The cubic contribution at $\delta_0$ is
+\[
+ \frac92Aq^a\delta_0^2-\frac43\delta_0^3
+ =\frac{23}{24}A^3q^{3a},
+\]
+so its compensating correction is $-23A^3q^{3a}/48$.
+Substitution of the full displayed approximation in \eqref{signed:eq:zero-expanded} leaves a residual $O((2/7)^a)$; all cross-products of the corrections have smaller exponential bases. The derivative of the normalized expression with respect to $\delta$ is $2+o(1)$, uniformly on this interval. The mean-value theorem therefore converts the residual estimate into the error in \eqref{signed:eq:zero-asymptotic}.
+\end{proof}
+
+\begin{center}
+\small
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$a$ & $b$ & $\theta_{a,b}$, approximately & $\delta_{a,b}$, approximately\\
+\midrule
+8&1&1.541868140889&0.02892818590626\\
+8&2&1.546656477391&0.02413984940401\\
+8&4&1.550268639150&0.02052768764464\\
+12&1&1.565028587360&0.005767739435093\\
+12&2&1.565988233290&0.004808093504888\\
+12&4&1.566708834682&0.004087492112621\\
+20&1&1.570570790993&0.0002255358018452\\
+20&2&1.570608378737&0.0001879480579893\\
+20&4&1.570636570306&0.0001597564888279\\
+\bottomrule
+\end{tabular}
+\end{center}
+These entries are numerical illustrations from a 300-term Fourier sum, not certified root intervals. Existence, uniqueness, and the asymptotic estimate do not depend on the table. At $a=20,40,80$ and $b=1,2,8$, the computed next normalized remainder approaches $H_6^{(b)}/2$, as suggested by the $n=7$ mode. A systematic expansion beyond the proved four terms is a separate research problem.
+
+\section{Certified Euler evaluation}
+\label{signed:sec:euler}
+
+\subsection{A one-sided rational enclosure}
+Define the difference operator with the sign convention
+\[
+ (Df)(n)=f(n)-f(n+1).
+\]
+This is the negative of the usual forward difference; it makes the Euler transformation particularly simple. Let
+\begin{equation}\label{signed:eq:euler-data}
+ f_{a,b}(n)=\frac{H_{2n}^{(b)}}{(2n+1)^a},\qquad
+ d_k=D^kf_{a,b}(0),\qquad
+ E_N(a,b)=\sum_{k=0}^{N-1}\frac{d_k}{2^{k+1}}.
+\end{equation}
+
+\begin{theorem}[Signed Euler certificate]\label{signed:thm:euler-certificate}
+For positive integers $a,b$,
+\begin{equation}\label{signed:eq:euler-signs}
+ d_0=0,\qquad d_k<0\quad(k\ge1),\qquad
+ g_{a,b}=\sum_{k\ge0}\frac{d_k}{2^{k+1}}.
+\end{equation}
+For every $N\ge1$,
+\begin{equation}\label{signed:eq:euler-enclosure}
+ E_N(a,b)-C_b2^{-N}\le g_{a,b}\le E_N(a,b),\qquad
+ C_b=\begin{cases}1,&b=1,\\ b/(b-1),&b\ge2.\end{cases}
+\end{equation}
+The approximants decrease strictly from $E_1=0$ to $g_{a,b}$.
+\end{theorem}
+\begin{proof}
+The moment representation gives
+\begin{equation}\label{signed:eq:d-kernel}
+ d_k=\int_0^1(1-u^2)^k\kappa_{a,b}(u)\dd u.
+\end{equation}
+For $k=0$ this is zero mass. For $k\ge1$ the weight is strictly decreasing, so Lemma~\ref{signed:lem:sign-test} gives $d_k<0$.
+
+We bound either signed mass of the density. When $b=1$,
+\[
+ \kappa_{1,1}(u)=\log\frac{u}{1-u},\qquad
+ \int_0^1(\kappa_{1,1})_+\dd u=\log2<1.
+\]
+When $b\ge2$, the positive term of \eqref{signed:eq:kappa-base} is at most $\zeta(b)$, so the positive mass is at most $\zeta(b)<1+1/(b-1)=C_b$. Zero mass makes the negative mass equal to the positive mass. The $L^1$ contraction used in Theorem~\ref{signed:thm:kernel}, together with preservation of zero mass, gives the same bound for every $a$. Since $0\le(1-u^2)^k\le1$, we obtain $|d_k|\le C_b$.
+
+The series in \eqref{signed:eq:euler-signs} is now absolutely convergent. Summing its geometric kernel gives
+\[
+ \sum_{k\ge0}\frac{d_k}{2^{k+1}}
+ =\int_0^1\frac{\kappa_{a,b}(u)}{1+u^2}\dd u
+ =g_{a,b},
+\]
+where the last equality is \eqref{signed:eq:stieltjes} at $z=\iu$. All tail terms are negative, and their total absolute value is at most $C_b\sum_{k\ge N}2^{-k-1}=C_b2^{-N}$. This proves the certificate and strict monotonicity.
+\end{proof}
+
+The theorem is stronger than applying a general-purpose extrapolation rule and observing stability. Every endpoint in \eqref{signed:eq:euler-enclosure} is rational. For $N=400$, the interval width is at most $2\cdot2^{-400}<8\cdot10^{-121}$. The accompanying files round the enclosures outward to convenient decimal strings; that display rounding is separate from the internal rational width.
+
+\subsection{An exact linear-work finite formula}
+Computing a full triangular difference table uses quadratic work. A finite rearrangement avoids it.
+
+\begin{proposition}[Binomial-tail weights]\label{signed:prop:euler-weights}
+For $N\ge1$,
+\begin{equation}\label{signed:eq:euler-weighted}
+ E_N(a,b)=2^{-N}\sum_{n=0}^{N-1}(-1)^n
+ \frac{H_{2n}^{(b)}}{(2n+1)^a}\sum_{j=n+1}^{N}\binom Nj.
+\end{equation}
+At fixed $a,b$, the right side can be formed with $O(N)$ exact rational or integer updates after choosing $N$. All denominators divide
+\begin{equation}\label{signed:eq:denominator-bound}
+ 2^N\operatorname{lcm}(1,2,\ldots,2N)^{a+b}.
+\end{equation}
+In particular, the number of bit operations is polynomial in the requested precision at fixed indices.
+\end{proposition}
+\begin{proof}
+Expand $D^kf(0)=\sum_{n=0}^k(-1)^n\binom kn f(n)$ and interchange the two finite sums. The required weight identity is
+\[
+ \sum_{k=n}^{N-1}2^{N-k-1}\binom kn
+ =\sum_{j=n+1}^N\binom Nj.
+\]
+It follows by induction on $N$ using Pascal's recurrence, or by comparing binomial-tail generating functions. This proves \eqref{signed:eq:euler-weighted}.
+
+The binomial coefficients are generated successively by
+$\binom Nn=\binom N{n-1}(N-n+1)/n$, and the cumulative tail is updated by subtracting one coefficient. Each harmonic number is updated by two rational summands. Thus only linearly many updates are needed. Each summand's denominator divides the indicated least-common-multiple power, and the additional factor is $2^N$.
+Finally, the elementary bound $\operatorname{lcm}(1,\ldots,2N)\le(2N)!$ gives bit length $O(N+(a+b)N\log N)$ for a common denominator; the numerator has a comparable polynomial bound. Since $N=O(d)$ suffices for $d$ decimal places by \eqref{signed:eq:euler-enclosure}, even elementary integer arithmetic proves polynomial bit complexity. No optimal multiplication or sharp least-common-multiple estimate is required.
+\end{proof}
+
+\subsection{Independent depth-one interval arithmetic}
+The right sides of the reductions are evaluated using rational enclosures separate from the Gaussian evaluator. For $s\ge1$, the sequences $(2n+1)^{-s}$ and $(n+1)^{-s}$ are moments of positive densities, so all their $D$-differences are nonnegative. Their Euler sums give lower bounds for $\beta(s)$ and $\eta(s)$, with tails at most $2^{-N}$. For integer $s\ge2$, divide the latter interval by $1-2^{1-s}$ to enclose $\zeta(s)$.
+
+For $\pi$, the implementation uses Machin's formula
+\[
+ \pi=16\arctan(1/5)-4\arctan(1/239)
+\]
+and the alternating-series bounds for each rational arctangent series. The identity follows directly by tangent addition and the fact that the angle lies in the first quadrant. For $\log2$, it uses
+\begin{equation}\label{signed:eq:log2-bound}
+ 0<\log2-2\sum_{n=0}^{N-1}\frac1{(2n+1)3^{2n+1}}
+ \le\frac9{4(2N+1)3^{2N+1}}.
+\end{equation}
+The expansion is $2\operatorname{arctanh}(1/3)$; the bound replaces the remaining denominators by $2N+1$ and sums a geometric series.
+
+Ordinary rational interval addition and multiplication then enclose every polynomial right side. An overlap check can detect an erroneous formula or implementation if the intervals separate. Overlap alone does not prove an identity; the proofs in Sections~\ref{gaussian:sec:double-parity} and~\ref{gaussian:sec:shuffle} do that.
+
+\section{An exact kernel and the sharp Euler error}
+\label{signed:sec:sharp-error}
+
+\subsection{Separating the polynomial from the exponentially small part}
+For this section $a,b$ are positive integers, $w=a+b$, and $T=-\log u$.
+
+\begin{theorem}[Explicit density]\label{signed:thm:explicit-kernel}
+Define the polynomial
+\begin{align}\label{signed:eq:P-ab}
+ P_{a,b}(T)={}&-\frac{T^{w-1}}{(w-1)!}\notag\\
+ &+\sum_{\mu=b+1}^{w-1}(-1)^{\mu-b-1}\binom{\mu-1}{b-1}
+       \zeta(\mu)\frac{T^{w-1-\mu}}{(w-1-\mu)!}.
+\end{align}
+Then, for $T>0$,
+\begin{align}\label{signed:eq:explicit-kernel}
+ \kappa_{a,b}(e^{-T})=P_{a,b}(T)
+ +(-1)^{a-1}\sum_{j=0}^{b-1}\binom{w-j-2}{a-1}
+       \frac{T^j}{j!}\Li_{w-1-j}(e^{-T}).
+\end{align}
+Consequently,
+\begin{equation}\label{signed:eq:kernel-asymptotic}
+ \kappa_{a,b}(u)=P_{a,b}(-\log u)
+       +O\!\left(u(1+|\log u|^{b-1})\right)\quad(u\downarrow0).
+\end{equation}
+\end{theorem}
+\begin{proof}
+For $a=1$, expand $(e^v-1)^{-1}=\sum_{n\ge1}e^{-nv}$ in \eqref{signed:eq:kappa-base}. The elementary incomplete-gamma integral for integer $b$ gives
+\[
+ \frac1{(b-1)!}\int_T^\infty\frac{v^{b-1}}{e^v-1}\dd v
+ =\sum_{j=0}^{b-1}\frac{T^j}{j!}\Li_{b-j}(e^{-T}),
+\]
+which is exactly the asserted base case.
+
+Write $K_{a,b}(T)=\kappa_{a,b}(e^{-T})$. The recursion is
+$K_{a,b}(T)=\int_0^T K_{a-1,b}(s)\dd s$. Differentiate the proposed right side of \eqref{signed:eq:explicit-kernel}, using
+$\frac{\mathrm d}{\mathrm dT}\Li_s(e^{-T})=-\Li_{s-1}(e^{-T})$ and Pascal's identity. The polylogarithmic coefficients reduce to those for $(a-1,b)$; the derivative of $P_{a,b}$ is $P_{a-1,b}$. When $a\ge2$, the constant terms at $T=0$ cancel because
+\[
+ \binom{w-2}{b-1}=\binom{w-2}{a-1}
+\]
+and their signs are opposite. The asserted formula therefore has the correct derivative and initial value. This proves it by induction. Finally each $\Li_s(e^{-T})$ in the finite sum is $O(e^{-T})$ as $T\to\infty$, proving \eqref{signed:eq:kernel-asymptotic}.
+\end{proof}
+
+\subsection{The complete logarithmic error polynomial}
+The exact error is
+\begin{equation}\label{signed:eq:exact-error}
+ E_N(a,b)-g_{a,b}
+ =-2^{-N}\int_0^1\kappa_{a,b}(u)
+                    \frac{(1-u^2)^N}{1+u^2}\dd u.
+\end{equation}
+This follows by summing only the first $N$ terms of the geometric kernel in the proof of Theorem~\ref{signed:thm:euler-certificate}. Its localization near $u=0$ explains why the polynomial in Theorem~\ref{signed:thm:explicit-kernel} determines the error.
+
+\begin{theorem}[Sharp error with all logarithmic terms]\label{signed:thm:error-polynomial}
+Define the polynomial of degree $w-1$
+\begin{align}\label{signed:eq:Q-ab}
+ Q_{a,b}(L)
+ &=-\int_0^\infty e^{-t^2}P_{a,b}(L-\log t)\dd t\notag\\
+ &=-\sum_{j=0}^{w-1}\frac{(-1)^jP_{a,b}^{(j)}(L)}{j!\,2^{j+1}}
+       \Gamma^{(j)}(1/2).
+\end{align}
+For fixed $a,b$, as $N\to\infty$,
+\begin{align}\label{signed:eq:error-polynomial}
+ E_N(a,b)-g_{a,b}=2^{-N}\bigg\{&N^{-1/2}Q_{a,b}\!\left(\frac12\log N\right)\notag\\
+ &+O\!\left(N^{-1}(1+\log^{b-1}N)
+       +N^{-3/2}(1+\log^{w-1}N)\right)\bigg\}.
+\end{align}
+In particular,
+\begin{equation}\label{signed:eq:error-leading}
+ E_N(a,b)-g_{a,b}\sim
+ \frac{\sqrt\pi}{2^w(w-1)!}
+ \frac{2^{-N}(\log N)^{w-1}}{\sqrt N}.
+\end{equation}
+The leading coefficient depends only on the total weight, not on its split into $a$ and $b$.
+\end{theorem}
+\begin{proof}
+Choose a fixed $\varepsilon\in(0,1/2)$. The part of \eqref{signed:eq:exact-error} with $u\ge\varepsilon$ is bounded by
+$2^{-N}(1-\varepsilon^2)^N\|\kappa_{a,b}\|_1$ and is negligible at the displayed scales. In the remaining part substitute $u=t/\sqrt N$ and use \eqref{signed:eq:kernel-asymptotic}. For $t\le\varepsilon\sqrt N$,
+\[
+ \left|\frac{(1-t^2/N)^N}{1+t^2/N}-e^{-t^2}\right|
+ \le\frac{C}{N}e^{-t^2}(t^2+t^4).
+\]
+Indeed, $0\le-\log(1-x)-x\le Cx^2$ for $0\le x\le\varepsilon^2$, and the denominator changes the expression by at most $t^2/N$ times the Gaussian bound.
+
+The polynomial contribution, including the Jacobian $N^{-1/2}$, is therefore
+$N^{-1/2}Q_{a,b}(\tfrac12\log N)$ up to
+$O(N^{-3/2}(1+\log^{w-1}N))$. Extending the $t$ integral to infinity changes it only by an exponentially small amount. The remainder in \eqref{signed:eq:kernel-asymptotic} contributes at most
+$O(N^{-1}(1+\log^{b-1}N))$; integrability of $t e^{-t^2}|\log t|^j$ at both endpoints justifies this estimate.
+
+To obtain the second line of \eqref{signed:eq:Q-ab}, expand the polynomial and use
+\[
+ \int_0^\infty e^{-t^2}(\log t)^j\dd t
+ =2^{-j-1}\Gamma^{(j)}(1/2),
+\]
+which follows by differentiating $\tfrac12\Gamma(s/2)$ at $s=1$. Finally the leading term of $-P_{a,b}$ is $T^{w-1}/(w-1)!$. Its Gaussian integral is $\sqrt\pi/2$, and $L=(\log N)/2$. This gives \eqref{signed:eq:error-leading}; both error terms in \eqref{signed:eq:error-polynomial} are smaller than that leading term.
+\end{proof}
+
+For example,
+\begin{equation}\label{signed:eq:Q11}
+ Q_{1,1}(L)=\frac{\sqrt\pi}{2}
+       \left(L+\frac{\gamma+2\log2}{2}\right),
+\end{equation}
+where $\gamma$ is Euler's constant. Keeping the lower logarithmic terms matters at practical truncation lengths. For $(a,b)=(1,1)$, the following ratios use the exact rational proxy $E_N-E_{2N}$; its distance from the true error is at most $2^{-2N}$.
+\begin{center}
+\begin{tabular}{@{}rrr@{}}
+\toprule
+$N$ & Ratio to the leading term & Ratio to the full $Q_{1,1}$ approximation\\
+\midrule
+64 &1.42496&0.967964\\
+128&1.37730&0.980510\\
+256&1.33791&0.988050\\
+512&1.30501&0.992593\\
+\bottomrule
+\end{tabular}
+\end{center}
+The asymptotic expansion is not substituted for the certified bound in the implementation. Its role is to explain the observed convergence and suggest more efficient future remainder enclosures.
+
+\begin{proposition}[Euler certificate for the odd-denominator harmonic family]\label{signed:prop:S-euler}
+For integer $p\ge1$, let $f(n)=H_n/(2n+1)^p$, let $d_k=D^kf(0)$, and let $E_N^S=\sum_{k<N}d_k/2^{k+1}$. Then
+\begin{equation}\label{signed:eq:S-euler}
+ E_N^S-\frac{N+1}{3^p2^N}\le S_p\le E_N^S,
+ \qquad S_p=\sum_{n\ge0}\frac{(-1)^nH_n}{(2n+1)^p}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Use $H_n=\int_0^1(1-t^n)/(1-t)\dd t$ and the Mellin integral for $(2n+1)^{-p}$. Finite differencing gives
+\[
+ d_k=\frac1{\Gamma(p)}\int_0^1(-\log u)^{p-1}
+  \int_0^1\frac{(1-u^2)^k-(1-u^2t)^k}{1-t}\dd t\dd u.
+\]
+Thus $d_0=0$ and $d_k<0$ for $k\ge1$. The numerator has absolute value at most $ku^2(1-t)$, so $|d_k|\le k/3^p$. Summing the Euler kernels yields
+\[
+ \sum_{k\ge0}\frac{d_k}{2^{k+1}}
+ =-\frac1{\Gamma(p)}\int_0^1
+  \frac{(-\log u)^{p-1}\log(1+u^2)}{1+u^2}\dd u=S_p.
+\]
+The final equality follows from the harmonic generating function, first with an Abel factor. The bound on $d_k$ justifies summing and integrating, and
+$\sum_{k\ge N}k/2^{k+1}=(N+1)2^{-N}$ proves \eqref{signed:eq:S-euler}.
+\end{proof}
+
+At $N=400$, combine Proposition~\ref{signed:prop:S-euler}, Theorem~\ref{signed:thm:euler-certificate}, and the independent depth-one intervals. The exact rational computation encloses the difference between the two sides of \eqref{gaussian:eq:S4-short} in
+\begin{equation}\label{signed:eq:S4-difference}
+ [-10^{-118},\,10^{-118}].
+\end{equation}
+Both sides begin
+\[
+ -0.01049345629733504345335675100620175196351061887732\ldots.
+\]
+This is certified proximity, not proof of equality. The file
+\texttt{s4\_interval\_certificate.json} records the outward-rounded enclosures and the tail bound used.
+
+\subsection{The precise relation system being tested}
+We now specify a finite-dimensional linear question; it must not be confused with completeness of all polylogarithm relations. Let
+\[
+ X_{a,b}^{r,s}=\Imag D_{a,b}(\iu^r,\iu^s),\qquad r,s\in\mathbb Z/4\mathbb Z,
+ \qquad a+b=w.
+\]
+Set $X^{r,s}=0$ when both $r,s$ are even, and impose conjugation
+$X^{r,s}=-X^{-r,-s}$. Choose the lexicographically smaller of each conjugate pair. Remove the divergent imaginary coordinate $X_{1,w-1}^{0,1}$; its conjugate is already identified. This leaves $6w-7$ formal coordinates.
+
+For every $p+q=w$ and colors $r,s$, take the imaginary parts of the finite product stuffle
+\begin{equation}\label{signed:eq:full-stuffle}
+ D_{p,q}(x,y)+D_{q,p}(y,x)=\Li_p(x)\Li_q(y)-\Li_w(xy)
+\end{equation}
+and product shuffle
+\begin{align}\label{signed:eq:full-shuffle}
+ &\sum_{j=0}^{p-1}\binom{q+j-1}{j}D_{q+j,p-j}(y,x/y)\notag\\
+ &\quad+\sum_{j=0}^{q-1}\binom{p+j-1}{j}D_{p+j,q-j}(x,y/x)
+ =\Li_p(x)\Li_q(y),
+\end{align}
+where $x=\iu^r$, $y=\iu^s$. If exactly one factor is $\Li_1(1)$, retain the stuffle-minus-shuffle cancellation row: the common divergent double coordinate cancels, leaving the right side $-\Imag\Li_w(xy)$. Such rows follow by subtracting before taking the regularized boundary limit. Zero rows are discarded; duplicate nonzero rows need not be discarded. This construction defines a rational coefficient matrix $A_w$ and its depth-one right side. It is precisely the model implemented in \texttt{code/full\_ds.py}.
+
+These are only linear depth-two product rows in a fixed weight. They do not include every relation obtained from distribution, argument transformations, higher-depth elimination, or the full algebraic consequences of standard relations. Zhao's treatment \cite{gaussian:Zhao} provides broader context for these distinctions.
+
+\subsection{An exact obstruction at weight five}
+Let $u_{4,1}=\Imag D_{4,1}(\iu,-1)$. Splitting the inner harmonic sum into even and odd indices proves
+\begin{equation}\label{signed:eq:S4-color}
+ S_4=g_{4,1}+u_{4,1}.
+\end{equation}
+Indeed, for an odd outer index $2n+1$, the sum of the two inner coefficients is
+$H_{2n}+\sum_{m=1}^{2n}(-1)^m/m=H_n$; even outer indices have zero imaginary part.
+Consequently, the left-hand coefficient vector needed for \eqref{gauss:eq:S4-closed} is
+\begin{equation}\label{signed:eq:S4-target}
+ T=3g_{4,1}+3g_{3,2}+9g_{2,3}+7u_{4,1}.
+\end{equation}
+
+\begin{proposition}[A finite linear-module obstruction]\label{signed:prop:S4-obstruction}
+The coefficient vector $T$ in \eqref{signed:eq:S4-target} is not in the rational row span of the explicitly defined weight-five matrix $A_5$. Therefore no rational linear combination of just those weight-five depth-two rows proves the $S_4$ identity.
+\end{proposition}
+\begin{proof}
+The matrix has 92 rows and 23 columns. In the canonical coordinate order above, define a vector $v$ by the following nonzero entries, setting every other entry to zero:
+\begin{center}
+\begin{tabular}{@{}crcr@{}}
+\toprule
+$(a,b,r,s)$ & $v$ & $(a,b,r,s)$ & $v$\\
+\midrule
+$(1,4,1,0)$&$-1/12$ & $(2,3,0,1)$&$1/24$\\
+$(2,3,1,0)$&$1/8$   & $(2,3,1,3)$&$-1/24$\\
+$(3,2,0,1)$&$-1/8$  & $(3,2,1,0)$&$-1/24$\\
+$(3,2,1,3)$&$-1/24$ & $(4,1,0,1)$&$1/12$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Substitution in the binomial rows \eqref{signed:eq:full-stuffle}--\eqref{signed:eq:full-shuffle} gives $A_5v=0$, while $T\cdot v=1$. These are finite rational equalities; the complete integer matrix, coordinate order, target, and witness are included in
+\texttt{s4\_linear\_module\_obstruction.json} and replayed by \texttt{verify.py}. Every row-span vector annihilates $v$, whereas $T$ does not. This proves the assertion.
+\end{proof}
+The proposition is neither a disproof of Conjecture~\ref{gaussian:conj:S4} nor a proof that no double-shuffle argument of any kind could establish it. It identifies a precisely bounded, insufficient proof search. Enlarging the relation system is the relevant next step.
+
+\subsection{An exact-rank conjecture in all odd weights}
+Let $A_w^{\neg g}$ be the submatrix obtained by deleting the columns
+$X_{a,w-a}^{1,0}=g_{a,w-a}$.
+
+\begin{conjecture}[Odd-weight rank pattern]\label{signed:conj:rank}
+For every odd $w\ge3$, the explicitly defined matrices satisfy
+\begin{equation}\label{signed:eq:rank-conjecture}
+ \rank A_w=5w-6,\qquad
+ \rank A_w^{\neg g}=\frac{9w-11}{2}.
+\end{equation}
+Equivalently, the row space of $A_w$ supported only on the Gaussian columns has dimension $(w-1)/2$, already supplied by the independent same-point shuffle rows.
+\end{conjecture}
+The equivalence follows from rank-nullity for projection of the row space onto the non-Gaussian columns. Exact rational elimination verifies \eqref{signed:eq:rank-conjecture} in all 15 odd weights from 3 through~31. Selected rows of the full receipt are
+\begin{center}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$w$ & Coordinates & $\rank A_w$ & $\rank A_w^{\neg g}$ & Difference\\
+\midrule
+3&11&9&8&1\\
+5&23&19&17&2\\
+7&35&29&26&3\\
+9&47&39&35&4\\
+15&83&69&62&7\\
+23&131&109&98&11\\
+31&179&149&134&15\\
+\bottomrule
+\end{tabular}
+\end{center}
+This is a conjecture about a fully specified rational matrix family, not a conjectured numerical dimension of Gaussian periods. A proof would explain why the simple same-point shuffle system already captures all Gaussian-only linear consequences of this larger depth-two product system at odd weight.
