@@ -1194,3 +1194,26 @@ visual review with no new LaTeX overflow/reference warnings. Reproduce
 publication checks with `python -B data/planar_adaptive_review.py --publication`
 from this directory; they check the 589 frozen/current runtime pins and
 producer-disabled saved proof replay.
+
+
+[sector_windows.tex](sector_windows.tex) connects nearby sector queries to
+actual diagram-source recognition. The signed matching residual filter
+preserves the complete radius-one/two compatible type window, including
+replacement and deletion faces. It proves the candidate bound and local
+`poly(t+B)*(1+t)^O(d0+r)` accounting for logarithmic nullity/radius, without
+asserting a complete global centre family or distance bound. The optional
+native stage increases 85-source coverage from 24 to 31 with seven fresh
+Regina disc checks; disabled source results remain exact. All 1,401 tests
+pass. Full small-case recognition regresses with extra window work, so the
+default stays off. The original exploratory failures, successful unfiltered
+and filtered probes, all 200 paired calls/40 warmups, the 180-call noisy-row
+repeat and producer-disabled positive source replay are in `data/sector-windows-*`.
+
+The current [PDF](report.pdf) has 554 pages. Section 138 starts on page 545;
+the assessment is section 139 on page 550. Rendered pages 545–551 pass
+visual review with no new overflow or reference warnings. Reproduce the
+frozen/current 592 source pins and 31 producer-disabled positive replays
+with `python -B data/sector_windows_review.py --publication` from this
+directory. Exploratory scripts are retained as originally run; their
+absolute workspace and scratch paths document that execution, while the
+maintained native driver is the portable reproduction path.

@@ -1,0 +1,204 @@
+\section{Signed residuals expose nearby disc sectors}
+\label{sec:sector-windows}
+
+The preceding planar work improves supplied-sector queries. The next step
+connects those queries to actual diagram exteriors: after coherent candidates
+fail, search compatible type assignments near one of their supports.
+This produces a new source-certified disc for a known coherent miss.
+The search remains optional because nearby-sector coverage is not guaranteed
+and its cost on misses can exceed the incumbent fallback.
+
+\subsection{A real disc outside the tested coherent families}
+
+The three-crossing closure of the two-strand word $(1,1,-1)$ is an unknot.
+Its canonical diagram exterior has sixty tetrahedra. The raw, tree and
+minimum-span coherent candidates do not supply a disc or cappable annulus.
+Complete standard enumeration of their actual sectors also misses a disc;
+positive Euler rays in some of those sectors are inessential.
+
+A radius-one type probe of the raw and optimized supports checks 360
+distinct neighbouring assignments without success. At radius two about
+the optimized support, an unfiltered scan finds a disc on its 4,920th
+query, after 36.464 seconds. The two edits permit type one at tetrahedron
+10 and type two at tetrahedron 12, both previously unoccupied. The resulting
+sector has matching nullity two. Its first tested standard ray is a
+primitive disc with every coordinate zero or one; only eight quadrilateral
+types are actually used, although the allowed sector retains the other
+seed types. Independent diagram-source and normal-disc replay accepts it.
+The source-disc proof is independent of the unsuccessful coherent surface.
+
+The two new columns cannot occur separately. Their joint exposure suggests
+an exact filter based on matching equations rather than attempting every
+nearby assignment. The filter reduces this example to two single-column
+candidates and 73 pairs. The standalone filtered probe finds the same disc
+after 31 queries in about 0.411 seconds, including residual planning.
+These exploratory measurements motivate the implementation; the paired
+native measurements below have separate, disclosed scopes.
+
+\subsection{Eliminating triangles once for all type alternatives}
+
+Use the actual standard matching equations, written
+$B\tau+Dq=0$. Here $q$ has all $3t$ labelled quadrilateral coordinates;
+the algebraic system temporarily permits all types so it can describe
+alternatives. Admissibility is imposed again when a compatible sector is
+queried. The triangle block is a signed graph-incidence transpose.
+A spanning forest expresses corner triangles as integral linear potentials
+in $q$, up to their free link offsets. Every non-tree edge contributes its
+cycle equation. Pure-Q equations are also retained. The resulting sparse
+matrix $A$ satisfies
+\[
+ \exists\tau\ (B\tau+Dq=0)\quad\Longleftrightarrow\quad Aq=0.
+\]
+This is exact linear elimination; no mod-two reduction or expanded normal
+pieces are used. For nonnegative compatible $q$, subtracting minima and
+adding link offsets gives the usual nonnegative canonical lift.
+
+Let $S$ be the positive quadrilateral support of an actual validated seed
+vector. Compute an exact column-space echelon basis for $A_S$, and let
+$\pi$ be its linear quotient projection. For any nonbase type $j$, define
+the residual $r_j=\pi(A_j)$. Thus $r_j=0$ precisely when $A_j$ is in the
+old column span. Nonzero rational residuals are reduced to a primitive
+integer direction with positive first entry, retaining a separate sign.
+Equality of unsigned keys then means proportionality; opposite signs mean
+a positive cancellation is possible. The scalar magnitudes need not agree.
+
+The forest construction and sparse rational column elimination take
+polynomial bit work and storage in the actual encoded source. Fundamental
+cycle entries are bounded integers; elimination coefficients and reduced
+residual keys have polynomial bit length by determinant bounds. Dictionary
+collisions can add polynomial work but do not change this complexity class.
+The residual matrix is a producer filter, not a certificate that the supplied
+source is the exterior of a particular diagram.
+
+\subsection{A complete radius-two filter, including replacements}
+
+Represent a compatible type assignment by a word of length $t$ in
+$\{\varnothing,0,1,2\}$. Distance counts tetrahedra whose assignments differ.
+Deleting a type only sets its coordinate to zero and therefore restricts
+to a coordinate face. It cannot create a standard extreme ray absent from
+the containing cone. Other edits add a type at an empty site or replace
+the previously allowed type.
+
+\begin{proposition}[Signed residual window filter]
+The union of non-link standard extreme rays over the full radius-two
+assignment window about $S$ is preserved by querying only:
+\begin{enumerate}
+\item the base sector;
+\item each single nonbase type with zero residual;
+\item each pair at distinct tetrahedra with both residuals zero;
+\item each pair at distinct tetrahedra with nonzero oppositely signed
+      proportional residuals.
+\end{enumerate}
+For a radius-one window, only the first two kinds are needed. Replacements
+remove their old type before adding the new one, preserving admissibility.
+\end{proposition}
+\begin{proof}
+For any admitted normal vector, let $J$ be its positive nonbase types.
+Within the window $|J|\le2$, and projection of its matching equation gives
+\[
+                  \sum_{j\in J}q_jr_j=0,\qquad q_j>0.
+\]
+If $J$ is empty its coordinates use only old types. If $|J|=1$, its
+residual must vanish. If $|J|=2$, either both vanish or they are nonzero
+opposite multiples. A pair with exactly one zero residual cannot cancel.
+This proves that every possible positive nonbase support is on the list.
+
+Unused edits need not be kept. If a queried assignment allows a new type
+whose coordinate on a particular ray is zero, setting all quadrilaterals
+at that site to zero gives a coordinate face containing the ray. This
+face also belongs to the retained assignment that restores the old type
+there. Extremality passes from the original cone to its face and then
+from that face to the containing retained cone. Pure deletions are handled
+the same way. Thus every original window ray remains extreme in one of the
+retained sectors, rather than merely belonging to their feasible union.
+Conversely every retained assignment is itself within the radius-two
+window. The ray unions are therefore equal.
+\end{proof}
+
+There is no necessity-only positivity shortcut hidden in the actual
+disc test: each retained sector still receives complete standard-ray
+enumeration and the established exact disc observer. Opposite residuals
+alone need not make a replacement feasible after its old columns are
+removed. For additions at previously empty sites, the seed's strictly
+positive old support does give sufficiency for feasibility: solve the
+old-span equation, then add a sufficiently large multiple of that positive
+seed to remove negative old coordinates. Feasibility still does not
+establish disc topology or essentiality.
+
+Writing $z$ for the number of zero residual columns and $p_h,m_h$ for
+the signed bucket sizes in nonzero projective class $h$, the unpruned
+candidate bound is
+\[
+                 1+z+\binom z2+\sum_h p_hm_h.
+\]
+Same-tetrahedron pairs are removed. This can be far below the naive
+$1+3t+9\binom t2$ assignment count, but its worst case remains quadratic.
+Nonzero residuals with the same sign are not paired; forgetting the sign
+would waste precisely the positivity information used by this theorem.
+
+\subsection{The logarithmic-radius conditional accounting}
+
+The type-window perspective supplies a precise remaining structural
+parameter. For a centre with matching nullity $d_0$, an edit deletes at
+most one old column and adds at most one new column. Deletion cannot
+increase kernel dimension, and addition increases it by at most one.
+Every radius-$r$ sector therefore has nullity at most $d_0+r$.
+The full assignment window has at most
+\[
+                   \sum_{j=0}^{r}\binom tj3^j
+\]
+members. By Section~\ref{sec:planar-adaptive}, complete local standard
+enumeration consequently has total bit cost
+\[
+ \operatorname{poly}(t+B)(1+t)^{O(d_0+r)}.
+\]
+In particular, polynomial source size and $d_0,r=O(\log n)$ permit
+quasi-polynomial complete window enumeration. The implemented residual
+planner treats radii one and two; larger radii require positive dependencies
+of several residuals rather than the pair classification above.
+
+This is a supplied-window theorem. A general recognizer would still need
+a bounded complete set of centres, a logarithmic-distance coverage theorem
+for an essential vertex disc, polynomial essentiality testing and controlled
+source construction. Finding one real disc at radius two proves none of
+those universal claims. The earlier failed radius-one searches are retained
+as counterevidence to simply activating the extra queries everywhere.
+
+\subsection{Native integration and independent source binding}
+
+\begin{sloppypar}
+The optional \code{sector\_radius} argument of \code{normal\_seed\_decide}
+accepts zero, one or two. Zero follows the prior code path exactly.
+After all configured coherent attempts fail, the new stage chooses the
+candidate with best Euler characteristic and then least piece span.
+\code{sector\_residual.py} tests its base sector, prepares signed residual
+groups, then queries single zero columns, opposite pairs and zero pairs.
+Every stage shares the original work callback. Remaining orbit cycles
+are shared across all window component queries and any earlier planar
+capping queries. Budget interruption or incomplete component work cannot
+become a negative knot claim.
+\end{sloppypar}
+
+A success uses the existing strict \code{diagram-normal-disc-v1} schema:
+canonical input PD, actual exterior triangulation, normal coordinates and
+the independently checked disc-count proof. The final checker authenticates
+the diagram exterior and its disc component; it does not run residual
+planning, coherent extraction or sector discovery. It neither requires nor
+infers that this new disc is coherent. Boundary-shelling wrappers can now
+carry this ordinary disc schema as well: the checker first binds the
+original canonical exterior and every shelling move to the final source.
+Callback errors remain observable even when inner geometry validators
+convert malformed source errors to rejection.
+
+\begin{sloppypar}
+The recognition switch is \code{normal\_seed\_sector\_radius}; its CLI
+counterpart is \code{--normal-seed-sector-radius}, used with the native
+seed stage enabled. A positive result reports
+\code{native-normal-sector-window}. The default remains zero, preserving
+the earlier fast path. This optional source-certified accelerator coexists
+with the complete recognition fallback; it supplies no negative verdict
+from a missed local window.
+\end{sloppypar}
+
+\subsection{Measured coverage, costs and publication checks}
+\input{sector_windows_results.tex}
