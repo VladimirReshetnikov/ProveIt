@@ -11799,5 +11799,12 @@ from the original data. Merely renaming a stronger premise does not
 complete that derivation. The numbered targets and their requested
 bounds remain unchanged; the ledger remains 115 companions / five open.
 
-**Production check.** All nine results compile in a 131-module closure.
-The combined axiom audit is pending for this checkpoint.
+**Verification.** All nine named results compile in a 131-module production
+closure. After merging the incoming conditional frequency-box reduction,
+the full combined audit checks 9,777 public Gowers theorems across 5,599
+modules; the facade closure contains 5,597 modules. Only `propext`,
+`Classical.choice` and `Quot.sound` occur. The selected OAI audit closure
+remains 4,152 modules, and the 4,134-upstream / 17-compatibility port scope
+check passes. The source ledger remains byte-identical at 115 companions
+and five open statements. The incoming frequency-box theorem is included
+in the audit and retains the local inputs refuted here for growing controls.
