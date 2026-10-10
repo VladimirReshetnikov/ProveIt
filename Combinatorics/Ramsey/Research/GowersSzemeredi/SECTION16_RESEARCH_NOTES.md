@@ -5915,14 +5915,26 @@ the decomposition with these named constants, but not `Theorem162At 3`.
              `(ε + 2ε′)N³/γ⁴` quadruples fail.
            - Repeated-index quadruples (at most `6N²`) are counted
              separately, as in J.147.
-         - *F4, linear domains.* A `J ⊆ [m]` of size `2s₀` (Milićević takes
-           `8s₀`), chosen by averaging, keeps the `a` with `I_{x_a,a} ∪ I_{y_a,a} ⊆ J`.
-           That is a `C(m, 2s₀)^(−1)` fraction, and
-           `U_a = B(θ_i(a) : i ∈ J; η/4)` is linear in `a`.
-         - *F5, relating back.* `ψ_a = φ_{z+a} − φ_z` on a dense part of
-           `B_{z+a} ∩ B_z` for most `z`, from `x_a ∈ X_a`.
+         - *F4, linear domains (done).* `exists_index_window`
+           (`Proofs16FinalWindow`). Index sets `S_a ⊆ [m]` with
+           `|S_a| ≤ k ≤ m` have a common `J ⊆ [m]` of size `k` containing
+           `S_a` for at least `|A|/C(m, k)` of the `a`'s. The proof
+           pigeonholes a `k`-superset of each `S_a`, which gives the same
+           loss as Milićević's random `J`. Then
+           `U_a = B(θ_i(a) : i ∈ J; η)` is linear in `a`, and it lies inside
+           the domain built from `S_a` (`bohr_anti`), so every containment
+           survives. Take `k = 2s₀`.
+         - *F5, relating back (done).* `gluedPairMap_relate`: if the chosen
+           pair `p` for `a` is compatible with `(z + a, z)`, the glued map
+           equals `φ_{z+a} − φ_z` on the common quarter-radius Bohr set.
+           This is the exact form of
+           `|Z(φ_a − φ_{z+a} + φ_z)| ≥ (ρ/4)^{4d}|G₂|`; the Bohr lower bound
+           gives the size.
 
-         Still to do after F5: the Prop 9.3 output statement itself.
+         Still to do: assemble the Prop 9.3 output statement from F1–F5,
+         the iteration's final state, and the respected-tuple densities of
+         the input system. This means fixing which sets of `a` and
+         `(x, y)` are "good" and checking the averaging thresholds.
          Quantitatively, `s₀ = O(d log(dR))`, and
          `δ` is polynomial in `ε` and `(2R+1)^(−d)`. With
          `R = (ρ^(−1))^O(d)`, this makes `m ≤ s₀/δ = exp(O(d² log 1/ρ))`
