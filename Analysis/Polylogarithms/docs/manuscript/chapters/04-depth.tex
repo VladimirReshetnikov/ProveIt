@@ -78,6 +78,215 @@ even beta values are independent, nor that the odd-weight sums have minimal
 depth two. No such conclusion follows merely from the absence of a new
 odd beta value.
 
+\paragraph{Literature and normalization.}
+The odd-index formulas specialize the established Euler-sum theory of
+Xu and Wang~\cite{XuWang2023}. In their notation
+\[
+R_{1,q}^{1,-1}=\sum_{n\ge1}
+ \frac{(-1)^{n-1}H_{n-1}}{(n-1/2)^q}=2^qS_q.
+\]
+The independent beta-integral and reflection proofs are retained because
+they make the normalization and the later certified generalizations
+transparent. No claim of worldwide priority is made for this evaluation.
+
+\section{Generators and their exact singularities}
+
+For this section, put $\mathfrak q(x)=\log(1+x^2)/(1+x^2)$.
+The beta-integral calculation above gives
+\begin{equation}\label{egen:eq:euler-full-mellin}
+\mathcal M(s):=\int_0^\infty x^{s-1}\mathfrak q(x)\,dx
+=\frac{\pi}{2\sin(\pi s/2)}\left[\psi(1)-\psi(1-s/2)\right],
+\qquad 0<\Re s<2.
+\end{equation}
+The harmonic generating function also gives, for integer $p\ge1$,
+\begin{equation}\label{egen:eq:euler-mellin}
+S_p=-\frac1{(p-1)!}\int_0^1(-\log x)^{p-1}\mathfrak q(x)\,dx.
+\end{equation}
+The first-omitted-term theorem below gives $|S_p|\le3^{-p}$.
+These facts make the actual poles visible even when a special-function
+expression contains removable singularities.
+
+\begin{theorem}[Even generator]\label{egen:thm:euler-generator}
+The power series
+\[
+\mathcal S_e(t)=\sum_{m\ge0}S_{2m+1}t^{2m}
+\]
+has radius of convergence exactly \(3\). It extends to an even
+meromorphic function on \(\C\), with the closed form
+\begin{equation}
+\boxed{\displaystyle
+\mathcal S_e(t)=\frac{\psi_1((1+t)/4)-\psi_1((3+t)/4)}{16}
+ +\frac{\pi\,[\psi((1+t)/2)-\psi(1)]}
+        {4\cos(\pi t/2)},}
+\label{egen:eq:euler-generator}
+\end{equation}
+where \(\psi_1=\psi'\), and apparent singularities are interpreted
+by meromorphic continuation. Its only poles are simple and occur at
+\(t=\pm(2n+1)\), \(n\ge1\), with
+\begin{equation}
+\Res_{t=2n+1}\mathcal S_e(t)=\frac{(-1)^{n+1}H_n}{2},\qquad
+\Res_{t=-(2n+1)}\mathcal S_e(t)=\frac{(-1)^nH_n}{2}.
+\label{egen:eq:euler-residues}
+\end{equation}
+In particular, the apparent singularities at \(t=\pm1\) are
+removable, and
+\begin{equation}
+\mathcal S_e(1)=\mathcal S_e(-1)=-\frac{\pi^2}{48}.
+\label{egen:eq:euler-removable}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The Mellin representation~\eqref{egen:eq:euler-mellin} and the bound \(|S_p|\le3^{-p}\)
+first define \(E\) on \(|t|<3\). Summing the even exponential
+series under the Mellin integral gives
+\begin{equation}
+\mathcal S_e(t)=-\frac12\int_0^1(x^t+x^{-t})\mathfrak q(x)\,dx.
+\label{egen:eq:euler-generator-integral}
+\end{equation}
+For \(|t|<3\), absolute values of the summed integrand are bounded
+by \(\mathfrak q(x)\cosh(|t|\log x)\), which is integrable at zero since
+\(\mathfrak q(x)=O(x^2)\). The right-hand side of
+\eqref{egen:eq:euler-generator-integral} is holomorphic on the larger
+vertical strip \(|\Real t|<3\): on each compact subset, the same
+argument applies with a fixed exponent strictly smaller than \(3\),
+and all parameter derivatives add only powers of \(|\log x|\).
+It also proves evenness there.
+
+To evaluate the integral, let
+\[
+J(t)=\int_0^1x^t\mathfrak q(x)\,dx,
+\qquad
+K(t)=\int_0^1\frac{x^t\log x}{1+x^2}\,dx.
+\]
+For \(|\Real t|<1\), splitting the full Mellin integral at one
+and inverting the second part gives
+\[
+\mathcal M(1-t)=J(-t)+J(t)-2K(t).
+\]
+In this strip, expansion of \((1+x^2)^{-1}\) and absolute
+summability after integration give
+\begin{align*}
+K(t)
+&=-\sum_{n\ge0}\frac{(-1)^n}{(2n+1+t)^2}\\
+&=-\frac1{16}
+ \bigl[\psi_1((1+t)/4)-\psi_1((3+t)/4)\bigr].
+\end{align*}
+Since \(\mathcal S_e(t)=-\mathcal M(1-t)/2-K(t)\), substitution of
+\eqref{egen:eq:euler-full-mellin} proves
+\eqref{egen:eq:euler-generator} in \(|\Real t|<1\).
+
+The exact global singularity statement should not be inferred merely
+from the individual terms of that formula, because they have cancelling
+poles. Instead, retain the conditionally convergent coefficient
+\(S_1\) separately and sum all the absolutely convergent higher
+coefficients. For \(|t|<3\), this gives
+\begin{equation}
+\mathcal S_e(t)=S_1+\sum_{n\ge1}
+ \frac{(-1)^nH_n t^2}
+ {(2n+1)((2n+1)^2-t^2)}.
+\label{egen:eq:euler-generator-partial-fractions}
+\end{equation}
+The interchange is valid because
+\[
+\sum_{n\ge1}\frac{H_n}{2n+1}
+ \sum_{m\ge1}\left(\frac{|t|}{2n+1}\right)^{2m}
+=\sum_{n\ge1}
+ \frac{H_n|t|^2}{(2n+1)((2n+1)^2-|t|^2)}<\infty.
+\]
+For any compact set avoiding the displayed poles in
+\eqref{egen:eq:euler-generator-partial-fractions}, the summands for
+sufficiently large \(n\) are uniformly
+\(O((1+\log n)/n^3)\). Thus the series converges normally there
+and defines a meromorphic function on \(\C\). At a point
+\(2n+1\) or \(-(2n+1)\), precisely one summand is singular;
+its elementary residue is \eqref{egen:eq:euler-residues}. These
+residues are nonzero, and there are no further poles. The right-hand
+side of \eqref{egen:eq:euler-generator} is also meromorphic on \(\C\)
+and agrees on an open strip, so the meromorphic identity theorem
+proves that the two representations agree everywhere. In particular,
+all additional apparent poles in the polygamma expression cancel.
+The nearest actual poles to zero are \(3\) and \(-3\), proving
+that the Taylor radius is exactly \(3\).
+
+Finally, \eqref{egen:eq:euler-generator-integral} can be evaluated directly
+at \(t=1\), inside its holomorphy strip:
+\[
+\mathcal S_e(1)=-\frac12\int_0^1\frac{\log(1+x^2)}{x}\,dx
+     =\frac14\Li_2(-1)=-\frac{\pi^2}{48}.
+\]
+Evenness gives the same value at \(-1\), proving
+\eqref{egen:eq:euler-removable} without a delicate cancellation of
+separate Laurent expansions.
+\end{proof}
+
+\subsection{The full generator and the unresolved parity direction}
+
+The symmetry can be stated more precisely by keeping all indices.
+
+\begin{proposition}\label{egen:prop:euler-full-generator}
+The full generating function
+\[
+\mathcal S(t)=\sum_{p\ge1}S_pt^{p-1}
+\]
+has Taylor radius \(3\), integral representation
+\begin{equation}
+\mathcal S(t)=-\int_0^1x^{-t}\mathfrak q(x)\,dx,\qquad \Real t<3,
+\label{egen:eq:euler-full-generator-integral}
+\end{equation}
+and global meromorphic representation
+\begin{equation}
+\mathcal S(t)=S_1+\sum_{n\ge1}
+ \frac{(-1)^nH_n t}{(2n+1)(2n+1-t)}.
+\label{egen:eq:euler-full-generator-poles}
+\end{equation}
+Its only poles are simple, at \(t=2n+1\), \(n\ge1\), with
+residue \((-1)^{n+1}H_n\). Moreover,
+\begin{equation}
+\frac{\mathcal S(t)+\mathcal S(-t)}2=\mathcal S_e(t),\qquad
+\frac{\mathcal S(t)-\mathcal S(-t)}2=\sum_{m\ge1}S_{2m}t^{2m-1}
+\quad (|t|<3).
+\label{egen:eq:euler-parity-generators}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+For \(|t|<3\), insert \eqref{egen:eq:euler-mellin} and sum the
+exponential series \(\sum_{p\ge1}t^{p-1}(-\log x)^{p-1}/(p-1)!
+=x^{-t}\). The absolute sum is bounded by \(x^{-|t|}\mathfrak q(x)\),
+which is integrable. The resulting integral is holomorphic for
+\(\Real t<3\), by the same compact-set bounds as above.
+Separating \(p=1\) and summing the geometric series for \(p\ge2\)
+gives \eqref{egen:eq:euler-full-generator-poles}; the needed absolute
+bound is
+\[
+\sum_{n\ge1}\frac{H_n|t|}{(2n+1)(2n+1-|t|)}<\infty,
+\qquad |t|<3.
+\]
+On a compact set avoiding positive odd integers at least three,
+the resulting rational summands are uniformly
+\(O((1+\log n)/n^2)\). Normal convergence gives the stated global
+continuation. The single summand singular at \(t=2n+1\) has residue
+\((-1)^{n+1}H_n\), and that residue is nonzero. This proves both
+the complete pole list and the exact radius. Taking even and odd
+parts of the Taylor series proves \eqref{egen:eq:euler-parity-generators}.
+\end{proof}
+
+The inversion \(x\mapsto1/x\) determines the even part of \(A\)
+through the full Mellin transform. It leaves the odd part as a
+different analytic quantity. The absence of the same reduction for
+that part is not a proof that its coefficients lie outside the algebra
+generated by single polylogarithmic values. In particular, no result
+here proves nonmembership for \(S_{2m}\), which have odd total
+weight. Such a claim requires an additional arithmetic or motivic
+argument for the specified constants and specified algebra. The
+presence of an even beta value likewise supplies no independence
+certificate: even the irrationality of \(G=\beta(2)\) is not known.
+The correction to the draft is therefore precise: replace the proposed
+two-sided alternation theorem by \eqref{gauss:eq:even-general} and its proved
+even-weight membership statement, and retain the opposite direction
+as a research question.
+
 \section{Candidate Gaussian reductions at weights five and six}
 The following equations collect the source's accepted numerical relations.
 They include the corrected dependence among the four weight-five generators,
@@ -258,10 +467,8 @@ weight-$4$ components to ${\sim}10^{-692}$.
 \begin{remark}[the methodological moral]
 Observation~\ref{double:thm:gauss-5} corrects the integer-relation count of $30$ by a factor of six. The
 reductions are exact consequences of the small-height double-shuffle generators, but the
-\emph{net} reductions are of large height---so high that an integer-relation search against any
-adequate basis cannot find them. This is the recurring trap of high-precision experimental
-mathematics, here biting in the direction of \emph{over}-stating independence. The derived double
-shuffle, with its exact rank, is immune.
+\emph{net} reductions are of large height---so a search at a specified precision and coefficient bound can miss them. This is the recurring trap of high-precision experimental
+mathematics, here biting in the direction of \emph{over}-stating independence. The exact-rank calculation determines the formal quotient by the supplied valid relations. It does not make an arithmetic-independence claim.
 \end{remark}
 
 \section{Triple sums and the scope of formal quotient dimensions}
@@ -429,79 +636,825 @@ re-verified to $10^{-425}$ against the \emph{complete} weight-graded basis). The
   \Imag\Li_{1,1}(\rr^2,\rr)=-\bigl(\Cl_2(\tfrac{2\pi}3)+\Imag\Li_{1,1}(\rr,1)\bigr),\qquad
   \Real\Li_{1,1}(\rr^2,\rr)=5\,\Real\Li_{1,1}(\rr,1)-\tfrac12\log^2 3.
 \end{equation}
-(The full list of ${\sim}16$ reductions is in \code{harvest\_eis\_mixed.py}.) The weight-5 \emph{real}
-parts and all of weight $6$ do \emph{not} reduce to this basis at height $\lesssim 10^{4}$.
+(The full list of ${\sim}16$ reductions is in \code{harvest\_eis\_mixed.py}.) The original weight-five real and weight-six searches failed in their
+selected baskets. The exact inverse-color reduction below supersedes the
+interpretation of that failure as a new mixed-point obstruction.
 
-\section{The completed level-3 double-shuffle dimension}\label{mixed:sec:eisdim}
+\section{Inverse colors: the exact reduction that the searches missed}
+The numerical evaluator above made the mixed points accessible, but its
+failed relation searches did not identify the correct quotient. An exact
+partial-fraction argument now proves that inverse-color doubles add no
+directions relative to the one-direction family and single-value products.
+This supersedes the earlier mixed-point candidate counts at weights five
+and six, in both the Gaussian and Eisenstein cases.
 
-Two computations pin the dimension of the full level-3 depth-2 space---all four colored points
-$(\rr,\rr),(\rr^2,\rr^2),(\rr^2,\rr),(\rr,\rr^2)$---modulo single polylogarithms and the $(\rr,1)$
-generators.
-\begin{itemize}
-\item The \textbf{exact-rank convergent double shuffle} (stuffle and shuffle of products
-  $\Li_p(s)\Li_q(t)$, $s,t\in\{\rr,\rr^2\}$, together with the convergent zeta-products
-  $\Li_p(s)\zeta(q)$ whose shuffle reaches the mixed points) gives an \emph{upper bound} of $\mathbf 7$
-  through weight $6$ (the divergent $\Li_1$ words, needing shuffle regularization, are omitted).
-\item \textbf{Combining} that exact rank with the PSLQ closed forms of Section~\ref{mixed:sec:eisforms}
-  collapses it:
-\end{itemize}
-\begin{center}
-\begin{tabular}{ccl}
-\toprule
-weight & reported residual count & survivors\\
-\midrule
-$2$ & $0$ & ---\\
-$3$ & $0$ & ---\\
-$4$ & $0$ & ---\\
-$5$ & $2$ & $\Imag\Li_{3,2}(\rr,\rr)$ \emph{(article)},\quad $\Real\Li_{4,1}(\rr^2,\rr)$ \textbf{(new)}\\
-$6$ & $1$ & $\Imag\Li_{5,1}(\rr^2,\rr)$ \textbf{(new)}\\
-\bottomrule
-\end{tabular}
-\end{center}
-So the tested level-three quotient, after the numerical reductions, has reported residual count
-$\mathbf 3$ through weight $6$. Everything through weight $4$ collapses entirely into the
-$(\rr,1)$-generator world; the mixed cube-root points contribute \textbf{exactly two new constants}
-beyond the article's single $(\rr,\rr)$ survivor---a \emph{real} direction $\Real\Li_{4,1}(\rr^2,\rr)$
-at weight $5$ and an \emph{imaginary} direction $\Imag\Li_{5,1}(\rr^2,\rr)$ at weight $6$.
+Put \(M_{a,b}(z)=\Li_{a,b}(z,z^{-1})\) and \(w=a+b\).
+We allow \(0<|z|<1\), and \(|z|=1,z\ne1\), with positive integers
+\(a,b\). Boundary sums use the stated outer-index order. They converge
+absolutely if \(a\ge2\). For \(a=1\), the inner colored harmonic sum
+equals its limit plus \(O(n^{-b})\); the outer sum is therefore a
+convergent oscillatory series plus an absolutely convergent remainder.
 
-\begin{remark}[the article's own lesson]
-Non-reduction by integer-relation search is strong evidence, not proof: a genuine reduction of large
-height is invisible to PSLQ, and the convergent double shuffle omits the regularized $\Li_1$ relations.
-So the two new survivors are best read as \emph{candidate} new level-3 depth-2 constants; regularized double shuffle can improve upper bounds; numerical independence would still need a separate theorem or a stated period conjecture. As an additional check, an \emph{enriched}-basis probe
-(\code{probe\_eis\_candidates.py})---adding $\Li_n$ at candidate level-3 CM half-points
-$\tfrac{1\pm\rr}2,\ \tfrac1{1-\rr},\ \tfrac{\rr}{\rr-1},\ 1-\rr$ (the level-3 analogue of the Gaussian
-$\tfrac{1+\iu}2$ that resolved the article's Family-2)---fails to crack either candidate:
-$\Real\Li_{4,1}(\rr^2,\rr)$ resists a $105$-atom basis (spurious scale ${\sim}10^{4}$).
+\begin{theorem}[All-weight inverse-argument reduction]\label{inverse:thm:mixed}
+In this domain,
+\begin{align}
+M_{a,b}(z)
+={}&(-1)^{b+1}\sum_{j=1}^{a}
+ \binom{w-j-1}{b-1}\Li_{w-j,j}(z,1)
+ +(-1)^{b+1}\binom{w-1}{b}\Li_w(z)\notag\\
+&+\sum_{j=2}^{b}(-1)^{b-j}
+ \binom{w-j-1}{a-1}\zeta(j)\Li_{w-j}(z)\notag\\
+&+(-1)^b\sum_{j=2}^{a}
+ \binom{w-j-1}{b-1}\zeta(j)\Li_{w-j}(z).
+\label{inverse:eq:mixedgeneral}
+\end{align}
+Empty sums are zero. In particular, \(F_a=M_{a,1}\) satisfies
+\begin{equation}
+F_a(z)=a\Li_{a+1}(z)+\sum_{j=1}^{a}\Li_{a+1-j,j}(z,1)
+       -\sum_{j=2}^{a}\zeta(j)\Li_{a+1-j}(z).
+\label{inverse:eq:mixedb1}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Set \(h=n-m\). Principal parts at \(m=0,-h\) give
+\begin{align}
+\frac1{m^b(m+h)^a}
+={}&\sum_{j=1}^{b}
+ \frac{(-1)^{b-j}\binom{w-j-1}{a-1}}{h^{w-j}m^j}\notag\\
+&+(-1)^b\sum_{j=1}^{a}
+ \frac{\binom{w-j-1}{b-1}}{h^{w-j}(m+h)^j}.
+\label{inverse:eq:partialfraction}
+\end{align}
+Indeed, the difference has no poles and tends to zero at infinity.
+The \(j=1\) coefficients are opposite; their sum over \(m\) is finite
+because \(\sum_{m\ge1}(1/m-1/(m+h))=H_h\).
+For \(j\ge2\), the shifted sum is \(\zeta(j)-H_h^{(j)}\).
+Consequently
+\begin{align*}
+c_h:=\sum_{m\ge1}\frac1{m^b(m+h)^a}
+={}&(-1)^{b+1}\sum_{j=1}^{a}
+ \binom{w-j-1}{b-1}\frac{H_h^{(j)}}{h^{w-j}}\\
+&+\sum_{j=2}^{b}(-1)^{b-j}\binom{w-j-1}{a-1}
+   \frac{\zeta(j)}{h^{w-j}}
+ +(-1)^b\sum_{j=2}^{a}\binom{w-j-1}{b-1}
+   \frac{\zeta(j)}{h^{w-j}}.
+\end{align*}
+Multiply by \(z^h\), sum, and use
+\[
+\sum_{h\ge1}\frac{z^h H_h^{(j)}}{h^{w-j}}
+=\Li_{w-j,j}(z,1)+\Li_w(z),\qquad
+\sum_{j=1}^{a}\binom{w-j-1}{b-1}=\binom{w-1}{b}.
+\]
+For \(|z|<1\) these operations are absolute.
+
+To justify the boundary even when \(a=1\), let \(O_N\) be the original
+sum over \(n\le N\) and \(D_N=\sum_{h=1}^{N-1}z^h c_h\).
+Partial summation gives
+\[
+\left|\sum_{h=h_0}^{h_1}\frac{z^h}{(m+h)^a}\right|
+\le \frac{4}{|1-z|(m+h_0)^a}.
+\]
+Splitting the discrepancy at \(m=N\) now yields
+\[
+|D_N-O_N|
+\le\frac4{|1-z|}
+\left(N^{-a}H_N^{(b)}+\sum_{m>N}m^{-a-b}\right)\longrightarrow0.
+\]
+The coefficients \(c_h\) decrease to zero, the latter by dominated
+convergence with majorant \(m^{-a-b}\).
+Dirichlet's test proves convergence of \(\sum z^h c_h\).
+The one-direction doubles on the right also converge. This proves the
+identity in the original boundary convention.
+\end{proof}
+
+\begin{corollary}[The mixed quotient is zero]\label{inverse:cor:mixedzero}
+Let \(\mathcal A_w(z)\) be the \(\Q\)-span of
+\[
+\Li_{r,w-r}(z,1)\ (1\le r<w),\quad
+\Li_w(z),\quad \zeta(j)\Li_{w-j}(z)\ (2\le j<w).
+\]
+Every \(M_{a,b}(z)\) of weight \(w\) belongs to \(\mathcal A_w(z)\).
+Adding the mixed values contributes zero dimension modulo this space.
+\end{corollary}
+
+At \(z=\iu\), this is the Gaussian family already used in the report.
+At \(z=\omega^2\), the one-direction values are conjugates of its
+\((\omega,1)\) values, whose real and imaginary parts it includes.
+Thus the proposed additional mixed directions disappear at every
+weight. The result concerns inverse-color pairs, and does not assert
+that all colored double polylogarithms reduce to one direction.
+
+\subsection{An independent integral representation}
+
+\begin{proposition}\label{inverse:prop:mixedintegral}
+In the same domain,
+\begin{align}
+M_{a,b}(z)&=\frac{z}{(a-1)!}\int_0^1
+ \frac{(-\log t)^{a-1}\Li_b(t)}{1-zt}\,dt,
+\label{inverse:eq:mixedintegral}\\
+\Li_{a,b}(z,1)&=\frac{z}{(a-1)!}\int_0^1
+ \frac{(-\log t)^{a-1}\Li_b(zt)}{1-zt}\,dt.
+\label{inverse:eq:directionintegral}
+\end{align}
+\end{proposition}
+\begin{proof}
+Insert
+\(n^{-a}=(a-1)!^{-1}\int_0^1(-\log t)^{a-1}t^{n-1}\,dt\).
+The \(h=n-m\) geometric sum gives \(zt/(1-zt)\);
+the \(m\)-sum gives \(\Li_b(t)\) or \(\Li_b(zt)\).
+At a fixed boundary point \(z\ne1\), the denominator is bounded away
+from zero on \([0,1]\), and the possible logarithmic endpoint
+singularities are integrable. Dominated convergence and the preceding
+boundary argument complete the proof.
+\end{proof}
+
+These formulas supply independent numerical checks without the
+power-law acceleration problem at \(z_1z_2=1\). Quadrature itself is
+not a rigorous certificate unless its numerical error is enclosed.
+
+\subsection{The mixed parity component reduces to single values}
+
+Panzer's theorem predicts lower depth for the real component at odd
+weight and the imaginary component at even weight~\cite{Panzer2017}.
+Here is a direct proof for the mixed \(F_a\) family.
+
+\begin{theorem}[Mixed parity formulas]\label{inverse:thm:mixedparity}
+For \(|z|=1,z\ne1\) and \(m\ge1\),
+\begin{align}
+\Real F_{2m}(z)
+={}&\frac{2m+1}{2}\Real\Li_{2m+1}(z)
+ -\sum_{j=1}^{m}\zeta(2j)\Real\Li_{2m+1-2j}(z)\notag\\
+&-\frac12\zeta(2m+1)
+ +\Real\Li_{2m}(z)\Real\Li_1(z).
+\label{inverse:eq:realparity}
+\end{align}
+For \(m\ge0\),
+\begin{align}
+\Imag F_{2m+1}(z)
+={}&(m+1)\Imag\Li_{2m+2}(z)
+ -\sum_{j=1}^{m}\zeta(2j)\Imag\Li_{2m+2-2j}(z)\notag\\
+&+\Imag\Li_{2m+1}(z)\Real\Li_1(z).
+\label{inverse:eq:imagparity}
+\end{align}
+\end{theorem}
+\begin{proof}
+For \(a\ge2\), set
+\(\mathcal B_a(z)=-\Li_a(z)-(-1)^a\Li_a(z^{-1})\).
+The Fourier series
+\(-\mathcal B_a(z)=\sum_{n\ne0}z^n/n^a\) is absolutely summable,
+while \(\Li_1(z^{-1})=\sum_{\ell\ge1}z^{-\ell}/\ell\) belongs to
+\(L^2\) on the circle. Their product has positive \(h\)-th coefficient
+\(c_h=\sum_{\ell\ge1}[\ell(\ell+h)^a]^{-1}\), constant coefficient
+\(\zeta(a+1)\), and negative \(h\)-th coefficient
+\[
+q_{-h}=\sum_{\ell\ge1,\ \ell\ne h}\frac1{\ell(\ell-h)^a}.
+\]
+The difference \(q_{-h}-(-1)^a c_h\) is
+\begin{equation}
+\sum_{\ell\in\Z\setminus\{0,h\}}\frac1{\ell(\ell-h)^a}
+=(-1)^a\left[
+ 2\sum_{j=1}^{\lfloor a/2\rfloor}
+       \frac{\zeta(2j)}{h^{a+1-2j}}
+ -\frac{a+1}{h^{a+1}}\right].
+\label{inverse:eq:bilateralpartial}
+\end{equation}
+To check this absolutely convergent bilateral sum, use
+\[
+\frac1{\ell(\ell-h)^a}
+=\frac1{(-h)^a\ell}
+ -\sum_{r=1}^{a}\frac1{(-h)^{a+1-r}(\ell-h)^r}.
+\]
+Symmetric summation of the \(r=1\) terms gives respectively
+\(-1/h\) and \(1/h\). For \(r\ge2\), the shifted sum is
+\((1+(-1)^r)\zeta(r)-(-h)^{-r}\). Substitution gives
+\eqref{inverse:eq:bilateralpartial}.
+Comparing all Fourier coefficients now gives
+\begin{align}
+F_a(z)+(-1)^aF_a(z^{-1})
+={}&(-1)^a\left[(a+1)\Li_{a+1}(z^{-1})
+ -2\sum_{j=1}^{\lfloor a/2\rfloor}
+       \zeta(2j)\Li_{a+1-2j}(z^{-1})\right]\notag\\
+&-\zeta(a+1)-\Li_1(z^{-1})\mathcal B_a(z).
+\label{inverse:eq:mixedfourier}
+\end{align}
+The equality holds first in \(L^2\), then pointwise by continuity away
+from \(z=1\). Real parts for even \(a\), and imaginary parts for odd
+\(a\), give the claims. The remaining case \(a=1\) follows from
+\(F_1(z)=\Li_2(z)+\tfrac12\Li_1(z)^2\), itself a consequence of
+\eqref{inverse:eq:mixedb1} and the elementary shuffle identity.
+\end{proof}
+
+\subsection{Four explicit replacements for the claimed survivors}
+
+\begin{corollary}\label{inverse:cor:four}
+The four highlighted mixed-point constants satisfy
+\begin{align}
+\Real\Li_{4,1}(\iu,-\iu)
+&=-\frac{587}{1024}\zeta(5)
+ +\frac3{32}\zeta(2)\zeta(3)
+ +\frac{135}{256}\zeta(4)\log2,
+\label{inverse:eq:gaussian4}\\
+\Imag\Li_{5,1}(\iu,-\iu)
+&=3\beta(6)-\zeta(2)\beta(4)-\zeta(4)G
+ -\frac{5\pi^5\log2}{3072},
+\label{inverse:eq:gaussian5}\\
+\Real\Li_{4,1}(\omega^2,\omega)
+&=-\frac{281}{162}\zeta(5)
+ +\frac49\zeta(2)\zeta(3)
+ +\frac{20}{27}\zeta(4)\log3,
+\label{inverse:eq:eisenstein4}\\
+\Imag\Li_{5,1}(\omega^2,\omega)
+&=-3C_6+\zeta(2)C_4+\zeta(4)C_2
+ +\frac{\pi^5\log3}{729}.
+\label{inverse:eq:eisenstein5}
+\end{align}
+\end{corollary}
+\begin{proof}
+Use Theorem~\ref{inverse:thm:mixedparity} with \(m=2\), together with
+\[
+\Real\Li_s(\iu)=-2^{-s}(1-2^{1-s})\zeta(s),\qquad
+\Real\Li_s(\omega)=\frac{3^{1-s}-1}{2}\zeta(s)\quad(s>1),
+\]
+and
+\[
+\Real\Li_1(\iu)=-\tfrac12\log2,\quad
+\Real\Li_1(\omega)=-\tfrac12\log3,\quad
+\Imag\Li_5(\iu)=\frac{5\pi^5}{1536},\quad
+\Imag\Li_5(\omega)=\frac{2\pi^5}{729}.
+\]
+The real identities follow by residue-class splitting; the imaginary
+fifth-order values follow from the odd-beta and Bernoulli Fourier
+formulas, with \(B_5(1/3)=-5/243\).
+Conjugation changes the sign of imaginary parts at \(\omega^2\).
+\end{proof}
+
+The four values, in the displayed order, are approximately
+\[
+\begin{aligned}
+&-0.01342026735728779,\qquad && 0.03269424445221378,\\
+&-0.03903921845650667,\qquad &&-0.02533938136807792.
+\end{aligned}
+\]
+Their right sides already belong to the report's listed single-value
+bases. Its \src{thm:parallel} is therefore false in the printed
+convention. The evaluator scripts and value stores cited by that report
+were not imported into ProveIt, so their precise failure cannot be
+diagnosed from the available files. Replace the survivor claims by
+Theorem~\ref{inverse:thm:mixed} and Corollary~\ref{inverse:cor:four}, and recompute any
+dimension conclusions that depended on the proposed new directions.
+
+\section{Harmonic index, reflection and certified asymptotics}
+The first-index sum $S_p$ is part of a larger family. Here the harmonic
+index measures the displayed nesting length, not the minimal arithmetic
+or motivic depth. The same beta kernel gives reflection identities,
+signed truncation certificates and a joint index--exponent transition.
+These are analytic consequences of a positive kernel, and therefore
+remain useful independently of unresolved period-independence questions.
+
+\section{The harmonic-index family and its integral representation}
+\label{harmonic:sec:family}
+
+\begin{definition}
+For integers $n,r\ge0$, put
+\begin{equation}\label{harmonic:eq:e}
+ e_r(n)=[u^r]\prod_{j=1}^n\left(1+\frac uj\right),
+ \qquad e_0(n)=1.
+\end{equation}
+Thus $e_r(n)=0$ for $n<r$, $e_1(n)=H_n$, and
+$e_2(n)=(H_n^2-H_n^{(2)})/2$. For real $a,p>0$, define
+\begin{equation}\label{harmonic:eq:T}
+ T_{p,r}(a)=\sum_{n\ge0}\frac{(-1)^n e_r(n)}{(n+a)^p},
+ \qquad S_{p,r}=2^{-p}T_{p,r}(1/2).
+\end{equation}
+The original $S_p$ is $S_{p,1}$, while $S_{p,0}=\beta(p)$.
+\end{definition}
+
+\begin{lemma}[Convergence]\label{harmonic:lem:conv}
+For fixed $r\ge0$ and $a,p>0$, the series \eqref{harmonic:eq:T} converges. It converges absolutely for $p>1$.
+\end{lemma}
+\begin{proof}
+The bound $e_r(n)\le H_n^r/r!$ proves absolute convergence for $p>1$ and convergence of the summand magnitude to zero for every $p>0$. For eventual monotonicity, when $r\ge1$ and $n\ge r$, counting each $r$-element subset in $r$ ways gives
+\[
+ r e_r(n)=\sum_{|A|=r-1}\left(\prod_{j\in A}\frac1j\right)
+              \left(H_n-\sum_{j\in A}\frac1j\right)
+ \ge (H_n-H_{r-1})e_{r-1}(n).
+\]
+Together with $e_r(n+1)=e_r(n)+e_{r-1}(n)/(n+1)$, this shows that the logarithm of the ratio of consecutive magnitudes is at most
+\[
+ \frac{r}{(n+1)(H_n-H_{r-1})}
+ -p\log\left(1+\frac1{n+a}\right)<0
+\]
+for sufficiently large $n$. The alternating-series test applies. The case $r=0$ is immediate.
+\end{proof}
+
+\begin{proposition}[Mellin integral]\label{harmonic:prop:integral}
+For the same parameters,
+\begin{equation}\label{harmonic:eq:mellin}
+ T_{p,r}(a)=\frac{(-1)^r}{r!\Gamma(p)}
+ \int_0^1 t^{a-1}(-\log t)^{p-1}
+             \frac{\log^r(1+t)}{1+t}\dd t.
+\end{equation}
+In particular, $(-1)^r T_{p,r}(a)>0$.
+\end{proposition}
+\begin{proof}
+The binomial theorem and \eqref{harmonic:eq:e} give, for $|t|<1$,
+\begin{equation}\label{harmonic:eq:hgen}
+ \sum_{n\ge0}(-1)^ne_r(n)t^n
+  =[u^r](1+t)^{-1-u}
+  =\frac{(-1)^r\log^r(1+t)}{r!(1+t)}.
+\end{equation}
+Insert an Abel factor $\rho^n$ with $0<\rho<1$, integrate termwise using
+$\int_0^1 t^{n+a-1}(-\log t)^{p-1}\dd t=\Gamma(p)/(n+a)^p$, and let $\rho\uparrow1$. Dominated convergence applies on the integral side, and Lemma~\ref{harmonic:lem:conv} identifies the Abel limit with the ordinary sum. The integrand in \eqref{harmonic:eq:mellin} is strictly positive almost everywhere after removing the sign.
+\end{proof}
+
+\subsection{Exact cyclotomic realizations}
+For integer $p\ge1$, the series connects directly to the repository's Gaussian multiple polylogarithms:
+\begin{equation}\label{harmonic:eq:gaussianMPL}
+ S_{p,r}=\sum_{\epsilon_1,\ldots,\epsilon_r\in\{1,-1\}}
+ \Im\Li_{p,\underbrace{1,\ldots,1}_{r}}
+               (\iu,\epsilon_1,\ldots,\epsilon_r).
+\end{equation}
+Indeed, write the outer index as $m_0=2n+1$ and the inner indices as $m_j=2k_j$. The $2^r$ from $1/k_j=2/m_j$ cancels the factors $1/2$ in the even-index filters. Finally,
+$\Im(\iu^{m_0})$ is exactly $(-1)^n$ for odd $m_0$ and zero for even $m_0$. This proves \eqref{harmonic:eq:gaussianMPL}, first with an Abel factor and then by convergence. For $r=1$, both second arguments $1$ and $-1$ occur; $S_p$ is not simply one of the draft's $g_{a,b}$.
+
+More generally, let $a=m/q$ with $0<m<q$ and $\xi=e^{\pi\iu/q}$. Residue-class filters give
+\begin{align}\label{harmonic:eq:rationalMPL}
+ T_{p,r}(m/q)
+ &=q^{p-1}\sum_{h=0}^{q-1}\sum_{b_1,\ldots,b_r=0}^{q-1}
+   \xi^{-(2h+1)m} \\
+ &\hspace{12mm}\cdot\Li_{p,1,\ldots,1}
+ (\xi^{2h+1},\xi^{2b_1},\ldots,\xi^{2b_r}).\notag
+\end{align}
+To check the normalization, the denominator rescaling contributes $q^{p+r}$, while the $r+1$ residue filters contribute $q^{-r-1}$. Thus rational parameters lead to level $2q$ values. This is a representation of nesting length at most $r+1$, not a minimal-depth assertion.
+
+\section{An all-index reflection identity}
+\label{harmonic:sec:reflection}
+
+Define, initially for $\Re(a-z)>0$,
+\begin{equation}\label{harmonic:eq:Phi}
+ \Phi_a(z,u)=\int_0^1 t^{a-z-1}(1+t)^{-1-u}\dd t.
+\end{equation}
+Near $(z,u)=(0,0)$, coefficient extraction in \eqref{harmonic:eq:mellin} yields
+\begin{equation}\label{harmonic:eq:PhiTaylor}
+ \Phi_a(z,u)=\sum_{p\ge1}\sum_{r\ge0}T_{p,r}(a)z^{p-1}u^r.
+\end{equation}
+There are no factorials in this ordinary Taylor series. This convention matters for every coefficient below.
+
+\begin{theorem}[Reflection]\label{harmonic:thm:reflection}
+If $0<a<1$, then as analytic germs at the origin,
+\begin{equation}\label{harmonic:eq:reflection}
+ \boxed{\quad
+ \Phi_a(z,u)+\Phi_{1-a}(-z-u,u)
+ =\frac{\Gamma(a-z)\Gamma(1-a+z+u)}{\Gamma(1+u)}.
+ \quad}
+\end{equation}
+More generally the identity holds whenever
+$\Re(a-z)>0$ and $\Re(1-a+z+u)>0$.
+\end{theorem}
+\begin{proof}
+The beta integral evaluates
+\[
+ \int_0^\infty t^{a-z-1}(1+t)^{-1-u}\dd t
+ =\frac{\Gamma(a-z)\Gamma(1-a+z+u)}{\Gamma(1+u)}.
+\]
+The part over $(0,1)$ is \eqref{harmonic:eq:Phi}. In the part over $(1,\infty)$, substitute $t=1/x$. The transformed integrand is
+$x^{-a+z+u}(1+x)^{-1-u}$, which is exactly the second term of \eqref{harmonic:eq:reflection}. The stated inequalities justify both integrals.
+\end{proof}
+
+Let
+\begin{equation}\label{harmonic:eq:C}
+ C_{p,r}(a)=[z^{p-1}u^r]
+ \frac{\Gamma(a-z)\Gamma(1-a+z+u)}{\Gamma(1+u)}.
+\end{equation}
+
+\begin{corollary}[Finite triangular reduction]\label{harmonic:cor:triangular}
+For integers $p\ge1,r\ge0$ and $0<a<1$,
+\begin{align}\label{harmonic:eq:triangular}
+ T_{p,r}(a)+(-1)^{p-1}T_{p,r}(1-a)
+ &=C_{p,r}(a)\\
+ &\quad-\sum_{j=1}^r(-1)^{p-1+j}
+   \binom{p-1+j}{j}T_{p+j,r-j}(1-a).\notag
+\end{align}
+Every sum on the right has smaller harmonic index.
+\end{corollary}
+\begin{proof}
+The coefficient of $z^{p-1}u^r$ in
+$\Phi_{1-a}(-z-u,u)$ is
+\[
+ \sum_{j=0}^r(-1)^{p-1+j}\binom{p-1+j}{j}
+                       T_{p+j,r-j}(1-a).
+\]
+Separate $j=0$ in Theorem~\ref{harmonic:thm:reflection}.
+\end{proof}
+
+\subsection{A finite compiler for the gamma coefficient}
+Put $R_a(z,u)$ equal to the gamma quotient in \eqref{harmonic:eq:C}, and write
+$R_a=(\pi/\sin\pi a)\exp(\sum_{d\ge1}\ell_d)$, with $\ell_d$ homogeneous of total degree $d$. Then
+\begin{equation}\label{harmonic:eq:loggammaCoeff}
+ \ell_d(z,u)=\frac{\psi^{(d-1)}(a)(-z)^d
+       +\psi^{(d-1)}(1-a)(z+u)^d
+       -\psi^{(d-1)}(1)u^d}{d!}.
+\end{equation}
+Here $\psi^{(0)}=\psi$. If $E_n$ is the homogeneous degree-$n$ part of the exponential, then
+\begin{equation}\label{harmonic:eq:expRec}
+ E_0=1,\qquad E_n=\frac1n\sum_{d=1}^n d\ell_d E_{n-d}.
+\end{equation}
+Only degrees through $p+r-1$ are needed for $C_{p,r}$. These recurrences are a finite identity certificate, not a relation search.
+
+For rational $a$, the coefficients reduce to ordinary cyclotomic values and their products. For derivatives of positive order, use
+$\psi^{(k)}(a)=(-1)^{k+1}k!\zeta(k+1,a)$. For $s\ge2$,
+\[
+ \zeta(s,m/q)=q^{s-1}\sum_{h=0}^{q-1}
+ e^{-2\pi\iu hm/q}\Li_s(e^{2\pi\iu h/q}).
+\]
+The Euler constants cancel in the linear part of \eqref{harmonic:eq:loggammaCoeff}; the remaining rational digamma combinations are expressible in logarithms and trigonometric constants. Thus \eqref{harmonic:eq:triangular} reduces the reflection combination to lower-index sums and products of depth-one values. It does not prove that the complementary combination is irreducible.
+
+\subsection{The self-reflecting Gaussian case}
+Set
+\[
+ F(z,u)=\tfrac12\Phi_{1/2}(z/2,u)
+       =\sum_{p\ge1,r\ge0}S_{p,r}z^{p-1}u^r.
+\]
+Then
+\begin{equation}\label{harmonic:eq:Freflection}
+ F(z,u)+F(-z-2u,u)=K(z,u),\qquad
+ K(z,u)=\frac{\Gamma((1-z)/2)\Gamma((1+z)/2+u)}{2\Gamma(1+u)}.
+\end{equation}
+For odd $p$,
+\begin{equation}\label{harmonic:eq:GaussianTriangle}
+ 2S_{p,r}=[z^{p-1}u^r]K
+   -\sum_{j=1}^r(-1)^j2^j\binom{p-1+j}{j}S_{p+j,r-j}.
+\end{equation}
+For example,
+\[
+ S_{p,2}=pS_{p+1,1}-p(p+1)\beta(p+2)
+               +\tfrac12[z^{p-1}u^2]K\qquad(p\text{ odd}).
+\]
+At even $p$, the coefficient of $S_{p,r}$ cancels. The identity then supplies relations among lower-index quantities rather than an unsupported converse to the odd-$p$ reduction.
+
+\section{The first harmonic index revisited}
+At $r=1$, the preceding reflection identity recovers
+equation~\eqref{gauss:eq:even-general}. Its explicit coefficient form is
+equivalent to the generating-integral proof at the beginning of this
+chapter. This is one theorem reached from two useful representations:
+the full beta integral and the incomplete-beta reflection germ.
+
+\section{Complete monotonicity and globally enveloping truncations}
+\label{harmonic:sec:envelopes}
+
+Define
+\begin{equation}\label{harmonic:eq:h}
+ h_r(t)=\frac1{1+t}\left(\frac{\log(1+t)}t\right)^r,
+ \qquad h_r(0)=1.
+\end{equation}
+The elementary representation
+\begin{equation}\label{harmonic:eq:mixture}
+ h_r(t)=\int_{[0,1]^r}\frac1{1+t}\prod_{j=1}^r\frac1{1+x_jt}
+                  \dd x_1\cdots\dd x_r
+\end{equation}
+is the source of the signed bounds.
+
+\begin{lemma}\label{harmonic:lem:CM}
+For $t\ge0$, $h_r$ is completely monotone: $(-1)^k h_r^{(k)}(t)\ge0$ for all $k\ge0$. Moreover,
+\begin{equation}\label{harmonic:eq:hTaylor}
+ h_r(t)=r!\sum_{j\ge0}(-1)^j e_r(r+j)t^j\quad (|t|<1).
+\end{equation}
+For every integer $M\ge0$ and $0\le t\le1$,
+\begin{equation}\label{harmonic:eq:pointEnvelope}
+ 0\le(-1)^M\left(h_r(t)-r!\sum_{j=0}^{M-1}(-1)^je_r(r+j)t^j\right)
+       \le r!e_r(r+M)t^M.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Every factor in \eqref{harmonic:eq:mixture} has derivatives of alternating sign, and products preserve this property by Leibniz's rule. Integration preserves it as well. Formula \eqref{harmonic:eq:hTaylor} follows from \eqref{harmonic:eq:hgen} after removing the zero of order $r$ at $t=0$. Taylor's integral remainder has sign $(-1)^M$. Its magnitude is at most $|h_r^{(M)}(0)|t^M/M!$ because complete monotonicity makes $|h_r^{(M)}(t)|$ nonincreasing. This is \eqref{harmonic:eq:pointEnvelope}; $M=0$ means $0\le h_r(t)\le1$.
+\end{proof}
+
+\begin{theorem}[First-omitted-term certificate]\label{harmonic:thm:envelope}
+For every real $p,a>0$, integer $r\ge0$, and integer $M\ge0$,
+\begin{align}\label{harmonic:eq:Tenvelope}
+0\le(-1)^{r+M}\left(
+ T_{p,r}(a)-\sum_{n=r}^{r+M-1}\frac{(-1)^ne_r(n)}{(n+a)^p}
+ \right)
+ \le \frac{e_r(r+M)}{(r+M+a)^p}.
+\end{align}
+In the Gaussian normalization, replace every $(n+a)^p$ by $(2n+1)^p$.
+\end{theorem}
+\begin{proof}
+Multiply \eqref{harmonic:eq:pointEnvelope} by
+$t^{a+r-1}(-\log t)^{p-1}/(r!\Gamma(p))$ and integrate. Equation \eqref{harmonic:eq:mellin} gives the middle term, and each monomial integrates explicitly.
+\end{proof}
+
+\begin{remark}
+The certificate holds even when the first few summand magnitudes increase. Its proof is not an application of the alternating-series remainder theorem at an unjustified starting index. For example $r$ may be large and $p$ small; the positivity of the integral, rather than early term monotonicity, controls the error.
 \end{remark}
 
-\section{The Gaussian \texorpdfstring{$(\iu,-\iu)$}{(i,-i)} point and an exact parallel}\label{mixed:sec:gauss}
-\sloppy
-The same evaluator handles the level-4 Gaussian point $(\iu,-\iu)$ that the article's level-4 run also
-skipped ($w=\iu\cdot(-\iu)=1$). The picture is identical in shape.
-\begin{itemize}
-\item \textbf{Closed forms.} PSLQ against the level-4 basis (single $L$-values
-  $\pi,\log 2,\beta(2),\beta(4),\beta(6),\zeta(3),\zeta(5)$, the half-point values
-  $\Real\Li_n(\tfrac{1+\iu}2),\Imag\Li_n(\tfrac{1+\iu}2)$, and the $(\iu,1)$ generators) reduces every
-  $(\iu,-\iu)$ value through weight $3$ and every weight-4 imaginary part. The weight-2 case is
-  especially clean:
-  \begin{equation}\label{mixed:eq:gauss-w2}
-    \Li_{1,1}(\iu,-\iu)=-\Li_2\!\left(\tfrac{1-\iu}2\right)\qquad(\text{verified to } 10^{-50}).
-  \end{equation}
-\item \textbf{Dimension.} The corrected exact-rank double shuffle (now including $(\iu,-\iu)$) gives an
-  upper bound of $12$; combined with the closed forms it collapses to the article's five $(\iu,-1)$
-  constants plus \textbf{the same two new mixed directions}---$\Real\Li_{4,1}(\iu,-\iu)$ at weight $5$
-  and $\Imag\Li_{5,1}(\iu,-\iu)$ at weight $6$. (One weight-3 residual, $\Imag\Li_{2,1}(\iu,-1)$, is a
-  value the article already reduces to the half-point $\lambda/\mu$ basis, outside the convergent
-  double shuffle's reach.)
-\end{itemize}
+Since $e_r(r)=1/r!$ and $e_r(r+1)=(r+2)/(2r!)$, we obtain
+\begin{equation}\label{harmonic:eq:relative}
+0\le 1-(-1)^rr!(r+a)^pT_{p,r}(a)
+ \le\frac{r+2}{2}\left(\frac{r+a}{r+a+1}\right)^p.
+\end{equation}
+The lower expression furnished by this bound may be negative for small $p$; positivity from Proposition~\ref{harmonic:prop:integral} remains available. For fixed $r,a$ and $p\to\infty$,
+\begin{equation}\label{harmonic:eq:fixedr}
+T_{p,r}(a)=\frac{(-1)^r}{r!(r+a)^p}
+ +\frac{(-1)^{r+1}(r+2)}{2r!(r+a+1)^p}
+ +R_{p,r},\quad
+ |R_{p,r}|\le\frac{e_r(r+2)}{(r+a+2)^p}.
+\end{equation}
+More generally, every finite number of exponential terms has its own signed explicit remainder. The first-omitted-term constant is asymptotically sharp for fixed $r,a,M$, by applying the bound once more to the remainder.
 
-\begin{observation}[the parallel]\label{mixed:thm:parallel}
-In \emph{both} towers the $w=1$ mixed point leaves, beyond the earlier tested generators, two candidate mixed directions, and \emph{in the same two positions}:
+\subsection{An exact symmetric-function certificate}
+Expanding \eqref{harmonic:eq:mixture} at zero gives
+\begin{equation}\label{harmonic:eq:composition}
+ r!e_r(r+j)=
+ \sum_{k_0+\cdots+k_r=j}\prod_{i=1}^r\frac1{k_i+1}.
+\end{equation}
+Equivalently, it is the integral of the complete homogeneous polynomial
+$h_j(1,x_1,\ldots,x_r)$ over $[0,1]^r$. This identity is checked using exact rational arithmetic by two different recurrences in the supplied code. In particular, for fixed $j$,
+\begin{equation}\label{harmonic:eq:coefficientAsymp}
+ r!e_r(r+j)=\frac{r^j}{2^j j!}+O_j(r^{j-1}).
+\end{equation}
+The leading contribution comes from $j$ distinct variables among $x_1,\ldots,x_r$; repeated variables and use of the distinguished entry $1$ contribute $O_j(r^{j-1})$.
+
+\subsection{Pole stripping and exact Taylor radius}
+Let $F_{a,r}(z)=[u^r]\Phi_a(z,u)$. The integral representation shows that it extends holomorphically to $\Re z<a+r$, because the numerator vanishes to order $r$ at the origin. Subtracting finitely many terms of \eqref{harmonic:eq:hgen} then continues it meromorphically to the entire $z$-plane, with precisely the simple poles
+\begin{equation}\label{harmonic:eq:poles}
+ z=a+n\quad(n\ge r),\qquad
+ \Res_{z=a+n}F_{a,r}(z)=(-1)^{n+1}e_r(n).
+\end{equation}
+For clarity, subtract through degree $N$ inside the integral. The remainder is $O(t^{N+1})$ at zero and is holomorphic for $\Re z<a+N+1$; the subtracted terms are $(-1)^ne_r(n)/(a+n-z)$. Every residue in \eqref{harmonic:eq:poles} is nonzero. Therefore the Taylor series
+$F_{a,r}(z)=\sum_{p\ge1}T_{p,r}(a)z^{p-1}$ has exact radius $a+r$. This explains the first exponential scale in \eqref{harmonic:eq:fixedr}.
+
+\section{The joint depth--exponent transition}
+\label{harmonic:sec:transition}
+
+For $r\ge1$, set
+\begin{equation}\label{harmonic:eq:normalized}
+ \mathcal R_{p,r}(a)=(-1)^r r!(r+a)^pT_{p,r}(a),
+ \qquad L=p/r,\quad c=L-\log r,\quad\lambda=\tfrac12e^{-c}.
+\end{equation}
+At $a=1/2$, this is $(-1)^r r!(2r+1)^pS_{p,r}$. By the strictly positive integral and $0<h_r(t)<1$ for $t>0$, we have $0<\mathcal R_{p,r}(a)<1$.
+
+\begin{proposition}[Gamma expectation]\label{harmonic:prop:gammaLaw}
+If $Y$ has gamma distribution with shape $p$ and rate $r+a$, then
+\begin{equation}\label{harmonic:eq:gammaLaw}
+ \mathcal R_{p,r}(a)=\E h_r(e^{-Y}).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Set $t=e^{-y}$ in \eqref{harmonic:eq:mellin} and factor $e^{-ry}$ out of $\log^r(1+e^{-y})$. Multiplying by the normalization in \eqref{harmonic:eq:normalized} leaves precisely the gamma density
+$(r+a)^p y^{p-1}e^{-(r+a)y}/\Gamma(p)$.
+\end{proof}
+
+\begin{theorem}[Uniform transition and first correction]\label{harmonic:thm:transition}
+Let $a$ range over a fixed compact subset of $(0,\infty)$ and let $c$ range over a fixed compact subset of $\mathbb R$. Put $p=r(\log r+c)$ and $L=\log r+c$. As the integer $r\to\infty$,
+\begin{align}\label{harmonic:eq:transition}
+ \mathcal R_{p,r}(a)
+ =e^{-\lambda}\left[1+\frac1r
+ \left\{\left(\frac{\lambda^2}{2}-(a+\tfrac12)\lambda\right)L
+                  +\frac{5\lambda^2}{6}-2\lambda\right\}\right]
+ +O\!\left(\frac{L^2}{r^2}\right),
+ \qquad \lambda=\tfrac12e^{-c}.
+\end{align}
+The implied constant is uniform on those compact sets. In particular,
+\begin{equation}\label{harmonic:eq:profile}
+ \mathcal R_{p,r}(a)\longrightarrow\exp(-e^{-c}/2).
+\end{equation}
+For integer $p$, use $c=p/r-\log r$ in the expansion; rounding $r(\log r+c_0)$ to an integer preserves the limit with $c_0$.
+\end{theorem}
+
+We prove a uniform kernel lemma first. It is also the basis of the all-orders result.
+
+\begin{lemma}[Uniform kernel expansion]\label{harmonic:lem:kernel}
+Write
+\begin{equation}\label{harmonic:eq:b}
+ \log\left(\frac{\log(1+t)}t\right)=\sum_{m\ge1}b_mt^m,
+ \qquad b_1=-\tfrac12,\quad b_2=\tfrac5{24}.
+\end{equation}
+Define polynomials $\mathcal U_j(v)$ by
+\begin{equation}\label{harmonic:eq:Qgen}
+ \sum_{j\ge0}\mathcal U_j(v)\varepsilon^j
+ =\exp\left(\sum_{k\ge1}\varepsilon^k
+ \left(2^{k+1}b_{k+1}v^{k+1}+\frac{(-1)^k2^kv^k}{k}\right)\right).
+\end{equation}
+For each fixed $J\ge0$,
+\begin{equation}\label{harmonic:eq:kernelExpansion}
+ \sup_{0\le t\le1}\left|
+ h_r(t)-e^{-rt/2}\sum_{j=0}^J\frac{\mathcal U_j(rt/2)}{r^j}\right|
+ \le C_J r^{-J-1}.
+\end{equation}
+In particular $\mathcal U_0=1$ and $\mathcal U_1(v)=5v^2/6-2v$.
+\end{lemma}
+\begin{proof}
+Put $v=rt/2$. Expanding $r\log(\log(1+t)/t)-\log(1+t)$ at zero gives $-v$ plus the exponent in \eqref{harmonic:eq:Qgen} with $\varepsilon=1/r$. Fix a sufficiently small $\delta>0$. On $0\le t\le\delta$, Taylor remainders are bounded by $r^{-J-1}$ times a fixed polynomial in $v$, after expansion through the required order. The perturbation of $-v$ is bounded by a small fixed multiple of $v$ (enlarge the threshold for $r$ if needed). Taylor's remainder for the exponential is consequently dominated by $r^{-J-1}\Theta_J(v)e^{-\eta v}$ for some $\eta>0$. Its supremum is finite.
+
+On $\delta\le t\le1$, the ratio $\log(1+t)/t$ is bounded above by a number strictly less than one. Hence $h_r(t)$ decays exponentially in $r$, while every term of the proposed approximation is a polynomial in $r$ times $e^{-r\delta/2}$. Both are $O_J(r^{-J-1})$. Combining the two ranges proves the claim. All constants here depend only on $J$ and the chosen fixed $\delta$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{harmonic:thm:transition}]
+Let $\Delta=Y-L$. Its mean and centered gamma moments give, uniformly in the stated parameter sets,
+\begin{align}\label{harmonic:eq:deltaMoments}
+ \E\Delta&=-\frac{aL}{r}+O(L/r^2),&
+ \E\Delta^2&=\frac Lr+O(L^2/r^2),\\
+ \E\Delta^3&=O(L^2/r^2),&
+ \E\Delta^4&=O(L^2/r^2).\notag
+\end{align}
+For example $\E Y=rL/(r+a)$, $\operatorname{Var}Y=rL/(r+a)^2$, and the centered third and fourth moments are $2rL/(r+a)^3$ and $3(rL)^2/(r+a)^4+6rL/(r+a)^4$. These formulas imply \eqref{harmonic:eq:deltaMoments} by translation.
+
+Define $v=\lambda e^{-\Delta}$,
+$f(\Delta)=e^{-\lambda e^{-\Delta}}$, and
+$g(\Delta)=e^{-v}(5v^2/6-2v)$. All derivatives of $f$ and $g$ of fixed order are bounded on the real line: each is a polynomial in $v\ge0$ times $e^{-v}$. Lemma~\ref{harmonic:lem:kernel} with $J=1$ gives
 \[
-  \boxed{\ \Real\Li_{4,1}(\mathrm{mixed})\ \text{at weight }5,\qquad
-            \Imag\Li_{5,1}(\mathrm{mixed})\ \text{at weight }6.\ }
+ \mathcal R_{p,r}(a)=\E f(\Delta)+r^{-1}\E g(\Delta)+O(r^{-2}).
 \]
-\end{observation}
-That the level-3 and level-4 mixed points add new content at identical weights and index patterns
----a \emph{real} $\Li_{4,1}$ direction and an \emph{imaginary} $\Li_{5,1}$ direction---is the report's
-most suggestive finding, and a natural target for the regularized double shuffle to explain.
+Taylor-expand $f$ through degree three, retaining the fourth-order remainder. Since
+$f'(0)=\lambda e^{-\lambda}$ and
+$f''(0)=(\lambda^2-\lambda)e^{-\lambda}$, \eqref{harmonic:eq:deltaMoments} yields
+\[
+ \E f(\Delta)=e^{-\lambda}
+ \left[1+\frac Lr\left(\frac{\lambda^2}{2}-(a+\tfrac12)\lambda\right)\right]
+ +O(L^2/r^2).
+\]
+A second-order Taylor bound gives
+$\E g(\Delta)=e^{-\lambda}(5\lambda^2/6-2\lambda)+O(L/r)$.
+Substitute the two estimates. Since $L\asymp\log r$, this is exactly \eqref{harmonic:eq:transition}.
+\end{proof}
+
+\subsection{A second proof of the limiting profile}
+Theorem~\ref{harmonic:thm:envelope} and \eqref{harmonic:eq:coefficientAsymp} provide a useful independent explanation. For fixed $j$ and $p=r(\log r+c)$,
+\[
+ r!e_r(r+j)\left(\frac{r+a}{r+a+j}\right)^p
+ \longrightarrow\frac{\lambda^j}{j!}.
+\]
+Every even and odd truncation bounds $\mathcal R_{p,r}(a)$ from opposite sides. Taking $r\to\infty$ for a fixed truncation and then increasing the truncation squeezes the limit between the alternating Taylor bounds for $e^{-\lambda}$. This argument does not interchange an uncontrolled infinite sum with a limit. It also gives compact-$c$ uniform convergence by making the finite exponential remainder uniformly small.
+
+\subsection{The threshold outside the compact transition window}
+For fixed $a>0$ (also uniformly on compact $a$-sets), if
+$p/r-\log r\to+\infty$, then \eqref{harmonic:eq:relative} implies
+$\mathcal R_{p,r}(a)\to1$. One may split into $p/r\le2\log r$ and $p/r>2\log r$ to verify the exponential estimate without assuming $p/r^2$ is small.
+
+If $p/r-\log r\to-\infty$, with $p>0$, then eventually $L\le\log r$, and $Y-L\to0$ in probability because its variance and mean shift tend to zero. Thus $re^{-Y}\to\infty$ in probability. The elementary inequality
+$\log(1+t)/t\le1-t/6$ on $0\le t\le1$ gives
+$h_r(t)\le e^{-rt/6}$. Bounded convergence in probability in \eqref{harmonic:eq:gammaLaw} now gives $\mathcal R_{p,r}(a)\to0$. Therefore $p\sim r\log r$ is the actual threshold for first-pole dominance.
+
+\subsection{All-orders transition polynomials}
+\label{harmonic:sec:allorders}
+Define the operator on polynomials in $v$
+\begin{equation}\label{harmonic:eq:Dop}
+ \calD P(v)=vP(v)-vP'(v),
+\end{equation}
+and the polynomials
+\begin{equation}\label{harmonic:eq:dj}
+ d_j(t;a)=\frac{(-1)^j}{j+1}
+              \bigl(a^{j+1}-(a-t)^{j+1}\bigr)\quad(j\ge1).
+\end{equation}
+The operator convention follows from
+$\partial_\Delta(e^{-v}P(v))=e^{-v}\calD P(v)$ for $v=\lambda e^{-\Delta}$.
+
+\begin{theorem}[All-orders compiler]\label{harmonic:thm:allorders}
+For every fixed $J\ge0$, in the parameter range of Theorem~\ref{harmonic:thm:transition},
+\begin{equation}\label{harmonic:eq:allorders}
+ \mathcal R_{p,r}(a)=e^{-\lambda}
+ \sum_{j=0}^J\frac{\Theta_j(L,\lambda;a)}{r^j}
+ +O_{J}\left(\frac{L^{J+1}}{r^{J+1}}\right),
+\end{equation}
+uniformly on compact $a,c$-sets. The $\Theta_j$ have rational coefficients and degree at most $j$ in $L$. They are determined by the finite formal prescription
+\begin{equation}\label{harmonic:eq:Pcompiler}
+ \sum_{j\ge0}\Theta_j(L,v;a)\varepsilon^j
+ =\exp\left(L\sum_{k\ge1}\varepsilon^k d_k(\calD;a)\right)
+       \left(\sum_{k\ge0}\varepsilon^k\mathcal U_k(v)\right).
+\end{equation}
+In particular
+\begin{equation}\label{harmonic:eq:P1}
+ \Theta_1=\left(\frac{v^2}{2}-(a+\tfrac12)v\right)L+\frac56v^2-2v.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The exact moment-generating function of $\Delta$ is
+\[
+ \log\E e^{t\Delta}
+ =-Lt+rL\{\log(1+a/r)-\log(1+(a-t)/r)\}
+ =L\sum_{j\ge1}r^{-j}d_j(t;a).
+\]
+Consequently expectation, formally through any fixed order in $r^{-1}$, is the differential operator
+$\exp(L\sum r^{-j}d_j(\partial_\Delta;a))$ evaluated at $\Delta=0$. Conjugation by $e^{-v}$ turns $\partial_\Delta$ into \eqref{harmonic:eq:Dop}, proving the coefficient rule.
+
+For the error justification, apply Lemma~\ref{harmonic:lem:kernel} through order $J$. For the term containing $r^{-k}\mathcal U_k$, Taylor-expand $e^{-v}\mathcal U_k(v)$ as a function of $\Delta$ through degree $2(J-k)+1$. Its fixed-order derivatives are bounded, and the gamma moments imply
+$\E|\Delta|^{2s}=O_s((L/r)^s)$ for each fixed $s$, since $L\asymp\log r$. The Taylor remainder therefore contributes
+$O(r^{-J-1}L^{J-k+1})$. The finitely many retained moments are explicit rational functions of $r+a$ with polynomial dependence on $rL$; expanding them through order $J$ yields the stated formal operator and an error $O_J(L^{J+1}/r^{J+1})$. This also controls the uniform kernel error. Finally, each factor in the operator exponent carries one $L$ and at least one power of $\varepsilon$, so the coefficient of $\varepsilon^j$ has degree at most $j$ in $L$.
+\end{proof}
+
+For reproducibility, write $\Theta_2=A_2L^2+B_2L+C_2$, where
+\begin{align*}
+ A_2={}&\frac{v^4}{8}-\left(\frac a2+\frac34\right)v^3
+ +\left(\frac{a^2}{2}+\frac{3a}{2}+\frac78\right)v^2
+ -\left(\frac{a^2}{2}+\frac a2+\frac18\right)v,\\
+ B_2={}&\frac{5v^4}{12}-\left(\frac{5a}{6}+\frac{11}{4}\right)v^3
+ +\left(\frac{8a}{3}+\frac{11}{3}\right)v^2
+ +\left(a^2-a-\frac23\right)v,\\
+ C_2={}&\frac{25v^4}{72}-\frac83v^3+4v^2.
+\end{align*}
+The supplementary symbolic script produces $\Theta_0,\ldots,\Theta_4$ from \eqref{harmonic:eq:Pcompiler}; it does not fit them to numerical data.
+
+\subsection{The complementary fixed-exponent regime}
+\label{harmonic:sec:fixedp}
+The transition theorem is not uniform down to fixed $p$. A separate endpoint expansion describes that regime.
+
+\begin{theorem}[Fixed $p$, growing harmonic index]\label{harmonic:thm:fixedp}
+Let $b=\log2$. For $p,a$ in compact subsets of $(0,\infty)$ and $r\to\infty$,
+\begin{align}\label{harmonic:eq:fixedp}
+ T_{p,r}(a)=\frac{(-1)^r2^{p-1}b^{r+p}}{r!r^p}
+ \left[1+\frac{(1-2a)bp+(b-1)p(p+1)/2}{r}+O(r^{-2})\right].
+\end{align}
+Thus
+\begin{equation}\label{harmonic:eq:fixedpS}
+ S_{p,r}=\frac{(-1)^r b^{r+p}}{2r!r^p}
+ \left[1+\frac{(b-1)p(p+1)}{2r}+O_p(r^{-2})\right].
+\end{equation}
+\end{theorem}
+\begin{proof}
+In the $y=-\log t$ form of \eqref{harmonic:eq:mellin}, the factor
+$\log^r(1+e^{-y})$ localizes the integral near $y=0$. Its logarithm expands as
+\[
+ \log\left(\frac{\log(1+e^{-y})}{b}\right)
+ =-\frac{y}{2b}+\frac{b-1}{8b^2}y^2+O(y^3),
+\]
+while
+$e^{-ay}/(1+e^{-y})=\tfrac12(1+(1/2-a)y+O(y^2))$.
+Set $y=2bv/r$. The integrand becomes $v^{p-1}e^{-v}$ times
+\[
+ 1+\frac{(1-2a)bv+(b-1)v^2/2}{r}+O\!\left(r^{-2}P(v)\right)
+\]
+in a fixed small-$y$ interval, with an integrable exponential majorant after the usual smaller-interval split. The complementary $y$-interval is exponentially small relative to $b^r r^{-p}$: the logarithmic ratio is uniformly below one there, and its large-$y$ decay supplies integrability. Integrating the displayed terms uses
+$\Gamma(p+1)/\Gamma(p)=p$ and $\Gamma(p+2)/\Gamma(p)=p(p+1)$. Uniform Taylor bounds on compact $a,p$-sets give the stated remainder. Finally divide by $2^p$ at $a=1/2$.
+\end{proof}
+
+\section{Geometric evaluation with explicit error bounds}
+\label{harmonic:sec:certification}
+
+The signed partial-sum bounds are exact but may converge slowly at small $p$. An incomplete-beta expansion supplies geometric convergence. In \eqref{harmonic:eq:Phi}, put $y=t/(1+t)$; then
+\begin{equation}\label{harmonic:eq:incomplete}
+ \Phi_a(z,u)=\int_0^{1/2}y^{a-z-1}(1-y)^{u-a+z}\dd y
+ =2^{-a+z}\sum_{n\ge0}
+ \frac{(a-z-u)_n}{n!\,2^n(n+a-z)}.
+\end{equation}
+This is the usual binomial expansion of the incomplete-beta integral, with all variables and normalizations displayed.
+
+\begin{theorem}[Explicit Cauchy tail bound]\label{harmonic:thm:cauchy}
+Let $p\ge1$ and $r\ge0$ be integers, and let $a>0$. Choose $0<\rho<a$, $\sigma>0$, and let $A=a+\rho+\sigma$. For an integer $N\ge1$, put
+\[
+ q_N=\frac12\max\left(1,\frac{N+A}{N+1}\right),
+ \qquad
+ B_N=2^{-a+\rho}\frac{(A)_N}{N!2^N(N+a-\rho)}.
+\]
+If $q_N<1$, the error after retaining $0\le n<N$ in \eqref{harmonic:eq:incomplete} has modulus at most $B_N/(1-q_N)$ on $|z|\le\rho,|u|\le\sigma$. Consequently the error in $T_{p,r}(a)$ is at most
+\begin{equation}\label{harmonic:eq:generalCauchy}
+ \rho^{-(p-1)}\sigma^{-r}\frac{B_N}{1-q_N}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+For every factor of the rising factorial,
+$|a-z-u+j|\le A+j$. Also
+$|n+a-z|\ge n+a-\rho$ and
+$|2^{-a+z}|\le2^{-a+\rho}$. The resulting positive majorant term has ratio
+\[
+ \frac{n+A}{2(n+1)}\frac{n+a-\rho}{n+1+a-\rho}\le q_N
+ \qquad(n\ge N).
+\]
+Sum the geometric majorant. The bivariate Cauchy coefficient estimate gives \eqref{harmonic:eq:generalCauchy}.
+\end{proof}
+
+\begin{corollary}[A rational Gaussian error bound]\label{harmonic:cor:rationalBound}
+For $a=1/2$ take $\rho=\sigma=1/4$. Let $S_{p,r}^{[N]}$ be the coefficient approximation from \eqref{harmonic:eq:incomplete}, divided by $2^p$. Then
+\begin{equation}\label{harmonic:eq:rationalBound}
+ \boxed{\qquad
+ |S_{p,r}-S_{p,r}^{[N]}|
+ \le\frac{2^{p+2r-1-N}}{N+1/4}.
+ \qquad}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Here $A=1$, $(A)_N/N!=1$, $q_N=1/2$, and $2^{-1/4}<1$. Insert these values into \eqref{harmonic:eq:generalCauchy} and multiply by $2^{-p}$.
+\end{proof}
+
+\subsection{How the supplied exact certificates are constructed}
+For rational $a=1/2$, the finite approximation has the form
+\begin{equation}\label{harmonic:eq:finitepoly}
+ S_{p,r}^{[N]}=2^{-p-1/2}\sum_{\ell=0}^{p-1}c_\ell(\log2)^\ell,
+ \qquad c_\ell\in\Q.
+\end{equation}
+The coefficients are computed exactly. Maintain the truncated bivariate polynomial
+$\Theta_n(z,u)=(1/2-z-u)_n/n!$ using
+\[
+ \Theta_{n+1}=\frac{n+1/2-z-u}{n+1}\Theta_n.
+\]
+Multiply by the truncated geometric expansion of $(n+1/2-z)^{-1}$, accumulate the $2^{-n}$ terms, and finally multiply by the Taylor polynomial of $e^{z\log2}$. All operations up to \eqref{harmonic:eq:finitepoly} are rational.
+
+The code then encloses $\log2$ using
+\[
+ \log2=2\sum_{k=0}^{K-1}\frac1{(2k+1)3^{2k+1}}+\eta_K,
+ \qquad0<\eta_K\le\frac9{4(2K+1)3^{2K+1}},
+\]
+and encloses $2^{-1/2}$ by an integer square-root computation on a dyadic scale. Rational interval Horner evaluation controls the error in \eqref{harmonic:eq:finitepoly}, and the rational bound \eqref{harmonic:eq:rationalBound} controls the infinite tail. Thus the resulting interval endpoints are exact fractions. They do not depend on trusting a floating-point quadrature result or a special-function library.
+
+These certificates establish enclosures for individual constants. Overlap of two intervals would not, by itself, prove an identity between the constants; the analytic proofs in earlier sections perform that task. Conversely, disjoint validated intervals can rigorously disprove a proposed equality. A finite-height exclusion program would require a further certified enumeration or lattice argument, which is not included here.

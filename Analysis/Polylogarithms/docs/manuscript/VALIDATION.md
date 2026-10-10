@@ -1,93 +1,107 @@
 # Validation of the unified manuscript
 
-Completed October 9, 2026. The reading artifact is
-[`polylogarithms.pdf`](polylogarithms.pdf): **100 pages**, ten chapters,
-a literature appendix with 94 distinct historical question leads, and one
-bibliography of 39 references. The source is
-[`polylogarithms.tex`](polylogarithms.tex) with its edited chapter files.
+Completed October 9, 2026. The canonical [PDF](polylogarithms.pdf) has **177
+pages, eleven chapters**, a literature appendix with 94 distinct historical
+question leads, and 55 bibliography entries. It incorporates the original
+39 drafts and all five nested continuation packages in the requested tree.
+The recursive [inventory](source-inventory.json) contains **79 textual source
+files**, including assembled/fragment versions and correction registers.
+Their overlap is reconciled in the [editorial ledger](EDITORIAL-LEDGER.md).
 
-The validated PDF SHA-256 is:
+The reviewed PDF SHA-256 is:
 
 ```
-2eb68c4f92a44b4422c9b92157779cc4c31d22f5dacec0a1ceb135a67cdeb9d2
+9e047bcbd3fbb97347d1875034114f88ec619f72f1345875cbda885a0f2a142e
 ```
 
-## Source reconciliation
+## Source reconciliation and evidence integrity
 
-- All **39** textual source documents are represented in the
-  [editorial ledger](EDITORIAL-LEDGER.md).
-- All original source digests match [the inventory](source-inventory.json).
-- Earlier material is merged through later corrected treatments. Session
-  commands for unavailable tools, repetitive abstracts and unsupported
-  external claims are not repeated as manuscript mathematics.
-- Static checks find no duplicate labels, missing references, missing
-  bibliography keys, duplicate bibliography keys or missing TeX inputs.
-  See [document-integrity.json](verification/document-integrity.json).
-- [source-sha256.json](verification/source-sha256.json) pins the LF-normalized
-  manuscript and verification-script contents used for this validation.
-  [receipt-integrity.json](verification/receipt-integrity.json) confirms the
-  source hashes and that the PDF matches both its build and raster receipts.
+All 79 source digests match; no textual source is unlisted or uncovered.
+The static audit finds no duplicate labels or bibliography keys, missing
+references/citations, missing TeX inputs or missing figures. See
+[document-integrity.json](verification/document-integrity.json).
+
+[source-sha256.json](verification/source-sha256.json) pins LF-normalized
+canonical TeX and verification scripts. The
+[dependency manifest](verification/dependency-sha256.json) pins the immutable
+continuation code, data and figure dependencies and the fresh check receipts.
+Its text hashes are LF-normalized and binary artifacts use raw SHA-256.
+[receipt-integrity.json](verification/receipt-integrity.json) verifies these
+hashes, successful recorded checks and agreement of the PDF with its build
+and raster receipts. Integrity is distinct from rerunning a computation.
 
 ## Fresh mathematical checks
 
-The native Wolfram Language battery passes **31/31** focused symbolic and
-numerical checks at 70-digit working precision, with a residual gate of
-`1e-45`. It covers the corrected rational dilogarithm, interface conventions,
-the four even-weight harmonic sums, the rational trigamma DFT grid,
-Gaussian mixed weight two, the g51 integral representation, a trig-root gamma
-identity, the Lee integral, the log-gamma quarter point and both basic CM
-periods. The high-weight `MultiplePolyLog` g51 call initially exceeded its
-90-second limit; the recorded successful check evaluates it by an independent
-iterated integral. See [wolfram-results.json](verification/wolfram-results.json).
+The numerical and exact evidence have different scopes; their counts are
+reported separately rather than combined into a theorem count.
 
-The independent mpmath battery passes **67/67** focused checks at 65 decimal
-digits, with gates of `1e-48` (and `1e-43` for numerical high derivatives of
-Stieltjes functions). It checks Clausen distribution tables, F(1/q) and
-F(2/q) for small denominators, direct Herglotz derivative quadrature,
-the harmonic-number master identity, both nonzero and trivial-zero bridge
-forms, the *printed* corrected Gamma1(1/3) expression, the negative-polygamma
-quarter point, the signed cubic-regulator numerical candidate, all seven
-displayed golden ladders at weights 5–9, and all five displayed Gaussian
-weight-six double reductions through integral representations.
-See [mpmath-results.json](verification/mpmath-results.json).
+| Replay | Fresh evidence | Arithmetic and scope |
+|---|---|---|
+| Native Wolfram core | **31/31** | 70-digit working precision; residual gate `1e-45` |
+| Independent mpmath core | **67/67** | 65 digits; gates `1e-48`, high Stieltjes derivatives `1e-43` |
+| Additional corrections | **5/5** | 65 digits; q=5 log-gamma, half-point Herglotz derivative, HPL endpoint, discarded Li0, corrected P4 display (printed 30-digit value uses `1e-29`) |
+| Nielsen inversion | **4/4** | 55 digits; defining-integral checks for (n,p)=(1,1),(1,2),(2,2),(3,2), gate `1e-45` |
+| Inverse-color double reduction | **64** partial-fraction identities, **18** mixed reductions, **4** survivor replacements, **5** Euler sums, **6** generator checks, **3** residue diagnostics | Exact coefficient identities plus 60-digit diagnostics; equality gate `1e-40`, maximum residual about `1.40e-60` |
+| Uniform distribution ranks and bridges | **594** exact finite rank cases; **12** bridge cases | q through 20: 162 distribution, 108 anchored, 216 reflected, 108 divisor comparisons; numerical bridges through order 3 at 65 digits |
+| Harmonic reflection and transition | **156** consistency checks plus **12** transition diagnostics | 63 exact composition identities, 40 exact envelope intersections, 8 rational intervals, 9 numerical odd formulas, 36 numerical reflections; numerical precision 65 digits |
+| Stieltjes zero certificates | **30** outward integer interval evaluations | Scale `10^90`: 14 base signs for n=1..4 at k=1; 16 endpoints isolating n=1 roots at eight derivative orders through k=200, interval width `1e-20` |
+| Spectral Stieltjes replay | **44** rational certificates, **40** exact recurrence comparisons, **40** positive signs; **16** tail diagnostics | Numerical tail checks at 55 digits; maximum observed error/bound ratio about 0.01122 |
+| Cyclotomic symbols | Exact elimination for q=1..40; rank and J criteria through q=1000 | Integer regular representations; exact zero-conductor list and the version-specific preprint counterexample |
+| Herglotz J evaluations | **25/25** | Independent direct quadrature at 65 digits, gate `1e-57`, maximum residual about `2.75e-64` |
+| Herglotz intervals | **4** exact rational certificates | F(2), F(4), F(8), F(16); final interval width at most `1.11e-46` |
+| Herglotz optimal truncation | **3** transition, **4** remainder, **2** independent gamma-quadrature diagnostics | 55-digit floating point with stated analytic tail bounds; bounded quick configuration |
+| Modular rows and CM jets | **18/18** | 4 row identities, 10 CM cases, 4 tail checks; 65-digit arithmetic, 36 rows |
+| Cubic class numbers | **5/5** finite arithmetic certificates | Exact integers: Dedekind/index/splitting/generator-norm premises for the stated Minkowski proof |
 
-The independent check also caught an erroneous proposed editorial change to
-W(12). The original coefficient was restored and is now derived explicitly:
-`W(12) = 11 sqrt(3) Cl2(pi/3)/9`. A failed intermediate proposal is not
-retained as an accepted identity.
+Individual configurations, residuals and endpoints are retained in
+`verification/`; [REPRODUCTION.md](verification/REPRODUCTION.md) gives commands.
+The core checks include all seven displayed golden ladders at weights 5–9,
+all five Gaussian weight-six reductions, harmonic sums, rational polygamma
+grids, Herglotz families and derivatives, corrected Gamma1(1/3), negative-order
+polygamma and the signed regulator candidate. The native high-weight g51
+`MultiplePolyLog` attempt exceeded its 90-second limit; the accepted native
+check uses an independent iterated integral.
 
-The new all-order even-weight odd-denominator harmonic-sum theorem is an
-analytic proof using a beta-integral generating function. Its first four
-cases were also checked numerically. The manuscript corrects gamma
-completeness attribution, convergence, word orientation, HPL alphabet
-transport, Nielsen signs, Clausen parity, depth/product conventions,
-trivial-zero normalization and class-field degrees. It supplies an exact
-derivation of the external rational-dilogarithm correction.
+The independent checks rejected an initially proposed editorial change to
+W(12). The source coefficient was restored and derived explicitly:
+`W(12) = 11 sqrt(3) Cl2(pi/3)/9`.
+
+The manuscript also supplies analytic proofs of the all-weight inverse-color
+reductions, uniform character normal form, complete Stieltjes zero expansions,
+cyclotomic symbol kernel and optimal Herglotz cutoff. A newly derived Nielsen
+inversion formula repairs the draft's unsupported nonclosure inference;
+its finite polynomial endpoint data and branch domain are explicit.
+The q=5 log-gamma correction retains the required L'(-1,chi5) term. Formal
+five-term reduction, exact relation-system ranks, numerical period dimensions
+and conjectural Stark predictions are kept distinct.
 
 ## Build and rendered review
 
-- Three serial LuaLaTeX passes all exit successfully.
-- The auxiliary/reference state is identical across the final passes.
-- The final log has **zero** unresolved references/citations, duplicate-label
-  warnings, overfull boxes, missing-glyph diagnostics or rerun requirements.
-  See [build-results.json](verification/build-results.json).
-- The PDF extraction audit finds no unresolved `??` text or text outside
-  page bounds on any of the 100 pages.
-- All pages were rasterized and reviewed in seven contact sheets. Full-size
-  inspection included the title, chapter openings, golden ladders,
-  even-weight proof, Gaussian reductions, CM normalization, expanded
-  Stieltjes values, sixth-point derivatives, regulator table, literature
-  tables and final bibliography. No clipping, overlap or illegible layout
-  defects were found.
-  See [pdf-inspection.json](verification/pdf-inspection.json).
+Three serial LuaLaTeX passes exit successfully and have identical final
+auxiliary/reference state. The final log contains zero unresolved references
+or citations, duplicate-label warnings, overfull boxes, missing glyphs or
+rerun requirements. See [build-results.json](verification/build-results.json).
+
+The PDF text/bounds audit passes on all 177 pages. All pages were rasterized
+and visually reviewed in twelve contact sheets. Full-size review of selected
+pages covered the Nielsen formula, mixed reductions, harmonic transition,
+q=5 correction, uniform rank proof, normalized jets, zero expansions and
+certificates, all four scientific figures, cubic certificate table,
+version-specific external counterexample and bibliography. No clipping,
+overlap or illegible layout defects were found. See
+[pdf-inspection.json](verification/pdf-inspection.json); its full-page list
+records rendered candidates, while this paragraph states the actual review
+scope. The manuscript PDF is unchanged after that review.
 
 ## Limits of the evidence
 
-These are focused checks, not a replay of all historical Smithereens
-experiments or absent certificate tools. Numerical candidate identities
-remain numerical where no proof is given. No unsuccessful relation search
-is used as a proof of independence, non-elementarity or minimal depth.
-Motivic and formal quotient dimensions are separated from numerical period
-dimensions. Rohrlich completeness and Stark regulator predictions retain
-their stated conjectural boundaries. No proof-assistant formalization or
-remote CI run is claimed.
+These are ordinary mathematical proofs, exact finite computations and focused
+numerical checks; no proof-assistant formalization or remote CI run is claimed.
+Historical Smithereens searches are provenance, not fresh replays. The general
+theorems rely on their analytic/algebraic proofs, not on finite checked ranges.
+Floating-point checks and plots are not outward-rounded interval certificates.
+Numerical candidates remain candidates where no proof is given. Unsuccessful
+searches do not prove independence, non-elementarity or minimal depth.
+Rohrlich completeness and Stark predictions retain their conjectural boundaries.
+The external counterexample applies to the inspected 2020 author preprint;
+the separately published 2023 version was not audited in this check.

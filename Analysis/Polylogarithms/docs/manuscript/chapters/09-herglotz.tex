@@ -193,7 +193,7 @@ The source's proposed criterion $\operatorname{rad}(q)\mid30$ is false
 as a necessary condition for a reduction to rational dilogarithms:
 Theorem~\ref{herg:thm:F1q} gives a pure-logarithm answer for $F(1/7)$.
 Numerator, denominator and the available functional equations must all be
-considered. No replacement universal classification is asserted here.
+considered. The formal five-term classification is proved in the following section.
 The following experimentally recovered samples are useful:
 \begin{align*}
 F(3/4)-F(1)&=-\frac{19}{144}\pi^2-\frac34\log^22
@@ -206,6 +206,653 @@ J(2/5)&=\frac{11\pi^2}{240}+\frac34\log^22-2\log^2\phi.
 The last two values follow by combining the $F$ evaluations through
 \eqref{herg:eq:Jint}. Their existence does not prove that these are the
 only $q$ for which $J(2/q)$ simplifies.
+
+\section{From rational examples to an exact formal criterion}
+The denominator-only condition was false, but the newer cyclotomic
+argument supplies a precise replacement. Its equivalences concern the
+specified five-term calculus. Successful cases give actual analytic
+evaluations; an unsuccessful formal test is not a proof of numerical
+period independence.
+
+\section{Cyclotomic symbols and formal reduction}
+\label{hstruct:sec:formal}
+We use additive notation for a multiplicative group after rationalization:
+\[
+ \Acal(K)=K^\times\otimes_\Z\Q,
+ \qquad \cl{uv}=\cl u+\cl v.
+\]
+Roots of unity map to zero. Exterior powers below are over $\Q$ unless
+otherwise specified.
+
+\begin{definition}[Pre-Bloch group and formal reduction]\label{hstruct:def:formal}
+Let $\Pcal(K)$ be the $\Q$-vector space on symbols $[z]$, $z\in K$, with
+$[0]=[1]=0$, modulo the five-term relations. Its differential is
+\[
+ \partial[z]=\cl z\wedge\cl{1-z}\quad(z\ne0,1),
+ \qquad \partial[0]=\partial[1]=0,
+ \qquad \Bcal(K)=\ker\partial.
+\]
+For an invariant dilogarithm element $\xi\in\Pcal(K)$, a
+\emph{formal logarithmic reduction} means $\xi=0$ in $\Pcal(K)$.
+A \emph{formal rational-dilogarithm reduction} means that $\xi$ belongs
+to the image of $\Pcal(\Q)$. Upon evaluation, five-term relations carry
+products of algebraic logarithms and rational multiples of $\pi^2$;
+these are the terms suppressed by this terminology.
+\end{definition}
+
+For a finite Galois number field $K/\Q$, two standard rationalized facts
+will be used:
+\begin{equation}\label{hstruct:eq:bloch-facts}
+ \Bcal(K)^{\Gal(K/\Q)}=\Bcal(\Q)=0,
+ \qquad \partial\Pcal(\Q)=\Lambda^2\Acal(\Q).
+\end{equation}
+The first is Bloch-group descent and the torsion of the Bloch group of
+$\Q$; the second is equivalent to the torsion of $K_2(\Q)$.
+These are established algebraic $K$-theory inputs, not new results of this
+article; see \cite{hstruct:Milnor,hstruct:ZagierDilog}. The same inputs underpin the
+symbol argument in \cite[\S7.2]{RadchenkoZagier}.
+
+Let $\zeta_q=e^{2\pi i/q}$ and, for $(a,q)=1$, set
+\begin{equation}\label{hstruct:eq:beta}
+ \beta_q(a)=\sum_{k=1}^{q-1}
+ \cl{1-\zeta_q^{ak}}\wedge\cl{1-\zeta_q^k}
+ \in\Lambda^2\Acal(\Q(\zeta_q)).
+\end{equation}
+We put $\beta_1=\beta_2=0$. The term $k=0$ is excluded:
+there is no multiplicative-group element $\cl0$.
+For coprime positive $p,q$, the finite cyclotomic dilogarithm sum for
+$F(p/q)-F(1)$ defines a Galois-invariant element $\xi_{p/q}$ with
+\begin{equation}\label{hstruct:eq:delta-xi}
+ \partial\xi_{p/q}=\beta_q(p)-\beta_p(q)-\cl p\wedge\cl q.
+\end{equation}
+One can take $K=\Q(\zeta_{pq})$. We retain this classical normalization
+throughout; the rational wedge in \eqref{hstruct:eq:delta-xi} matters for the
+distinction between logarithms and rational dilogarithms.
+
+\begin{lemma}[Elementary symmetries]\label{hstruct:lem:symmetry}
+For every conductor and every invertible residue $a$,
+\[
+ \beta_q(-a)=\beta_q(a),\qquad
+ \beta_q(a^{-1})=-\beta_q(a).
+\]
+Each $\beta_q(a)$ is Galois invariant.
+\end{lemma}
+\begin{proof}
+The identity $1-\zeta_q^{-ak}=-\zeta_q^{-ak}(1-\zeta_q^{ak})$
+proves the first claim after roots of unity are killed. In the sum for
+$\beta_q(a^{-1})$, replace $k$ by $ak$ and reverse the exterior factors.
+Finally, every Galois automorphism multiplies $k$ by a unit modulo $q$,
+permuting the summation set.
+\end{proof}
+
+\section{The all-conductor relation theorem}
+\label{hstruct:sec:rank}
+
+The following is the main algebraic theorem.
+
+\begin{theorem}[Complete kernel, every conductor]\label{hstruct:thm:kernel}
+Let $q\ge3$, $\mathcal{G}_q=(\Z/q\Z)^\times/\{\pm1\}$, and
+$(c_a)_{a\in \mathcal{G}_q}\in\Q^\mathcal{G}_q$. Then
+\begin{equation}\label{hstruct:eq:kernel}
+ \sum_{a\in \mathcal{G}_q}c_a\beta_q(a)=0
+ \quad\Longleftrightarrow\quad
+ c_a=c_{a^{-1}}\quad\hbox{for every }a\in \mathcal{G}_q.
+\end{equation}
+In particular,
+\begin{align}
+ \beta_q(a)=0&\quad\Longleftrightarrow\quad a^2\equiv\pm1\pmod q,
+ \label{hstruct:eq:zero-beta}\\
+ \dim_\Q\Span\{\beta_q(a):a\in \mathcal{G}_q\}
+ &=\frac{|\mathcal{G}_q|-|\mathcal{G}_q[2]|}{2}.
+ \label{hstruct:eq:rank-beta}
+\end{align}
+Choosing one $a$ from each inverse pair $\{a,a^{-1}\}$ with
+$a\ne a^{-1}$ gives a basis of the symbol space.
+\end{theorem}
+
+The proof is short after the correct positive matrix is identified.
+Its use of \emph{all} nontrivial roots, including those of smaller order,
+is essential at composite conductor.
+
+\subsection{Cyclotomic logarithms and a positive Gram matrix}
+
+For $1\le k<q$, define the real vector
+\begin{equation}\label{hstruct:eq:vk}
+ v_k=\bigl(\log|1-\zeta_q^{ak}|\bigr)_{a\in \mathcal{G}_q}\in\R^\mathcal{G}_q,
+ \qquad A_q=\sum_{k=1}^{q-1}v_kv_k^{\mathsf T}.
+\end{equation}
+The entries are independent of the representative of $a$ modulo sign.
+Let $P_b$ be the permutation matrix
+$(P_bv)_a=v_{ab}$. Then
+\begin{equation}\label{hstruct:eq:Gram-equiv}
+ P_bv_k=v_{bk},\qquad P_bA_qP_b^{\mathsf T}=A_q,
+ \qquad P_bA_q=A_qP_b.
+\end{equation}
+
+\begin{lemma}[Positive definiteness]\label{hstruct:lem:positive-Gram}
+The vectors $v_k$ span $\R^\mathcal{G}_q$. Hence $A_q$ is positive definite.
+\end{lemma}
+\begin{proof}
+Complexify the regular representation of the finite abelian group $\mathcal{G}_q$.
+Each character occurs once. The span of the $v_k$ is $\mathcal{G}_q$-invariant by
+\eqref{hstruct:eq:Gram-equiv}, so it suffices to show a nonzero Fourier component
+for every character.
+
+Let $\chi$ be nontrivial and let $f\mid q$ be its primitive Dirichlet
+conductor. It is an even character, so $f>2$. Write $\chi^*$ for the
+primitive character modulo $f$. Reduction gives a surjection
+$\mathcal{G}_q\longrightarrow G_f$. For the vector with $k=q/f$, its Fourier
+coefficient is a nonzero positive integer multiple of
+\begin{equation}\label{hstruct:eq:log-L}
+ \sum_{a\in G_f}\chi^*(a)\log|1-\zeta_f^a|
+ =-\frac12\tau(\chi^*)L(1,\overline{\chi^*})\ne0.
+\end{equation}
+The equality follows by Abel-regularizing
+$\log|1-re^{i\theta}|=-\sum_{n\ge1}r^n\cos(n\theta)/n$,
+summing over $a$, using the primitive Gauss-sum identity, and letting
+$r\uparrow1$. The Gauss sum is nonzero and Dirichlet's nonvanishing
+theorem gives $L(1,\overline{\chi^*})\ne0$. This is a standard
+cyclotomic-logarithm identity; cf.\ \cite{hstruct:Washington,hstruct:Sharifi}.
+
+For the trivial character, choose a prime $\ell\mid q$. If $\ell$ is
+odd, use $k=q/\ell$ and
+\[
+ \sum_{a\in G_\ell}\log|1-\zeta_\ell^a|
+ =\tfrac12\log\ell\ne0.
+\]
+If $\ell=2$, the vector $v_{q/2}$ is the nonzero constant vector
+$(\log2)_{a\in \mathcal{G}_q}$. Thus every character component occurs. This proves
+the spanning assertion, and
+$w^{\mathsf T}A_qw=\sum_k(w^{\mathsf T}v_k)^2>0$ for $w\ne0$.
+\end{proof}
+
+\subsection{From exterior symbols to skew matrices}
+
+There is a $\Q$-linear logarithm map
+\[
+ \ell:\Acal(\Q(\zeta_q))\longrightarrow\R^\mathcal{G}_q,
+ \qquad\ell(\cl u)=(\log|\sigma_a(u)|)_{a\in \mathcal{G}_q}.
+\]
+Composing its exterior square with the passage to the real exterior
+power and then identifying $v\wedge w$ with
+$vw^{\mathsf T}-wv^{\mathsf T}$ gives a $\Q$-linear map to real skew
+matrices. We do \emph{not} assume this map is injective on the whole
+exterior power. Its value on \eqref{hstruct:eq:beta} is explicitly
+\begin{equation}\label{hstruct:eq:skew-image}
+ \ell_\wedge(\beta_q(b))
+ =P_bA_q-A_qP_b^{\mathsf T}
+ =A_q(P_b-P_{b^{-1}}).
+\end{equation}
+
+\begin{proof}[Proof of Theorem~\ref{hstruct:thm:kernel}]
+If the left side of \eqref{hstruct:eq:kernel} vanishes, apply
+\eqref{hstruct:eq:skew-image} and multiply by the invertible matrix $A_q^{-1}$.
+We get
+\[
+ 0=\sum_{b\in \mathcal{G}_q}c_b(P_b-P_{b^{-1}})
+ =\sum_{b\in \mathcal{G}_q}(c_b-c_{b^{-1}})P_b.
+\]
+The regular permutation matrices $P_b$ are linearly independent, even
+over $\R$: their values on a single coordinate vector are the distinct
+coordinate vectors. Therefore $c_b=c_{b^{-1}}$.
+
+Conversely, if these equalities hold, group the sum into inverse pairs
+and use Lemma~\ref{hstruct:lem:symmetry}; self-inverse classes have
+$2\beta_q(b)=0$ and hence contribute zero. This proves
+\eqref{hstruct:eq:kernel}. Applying it to a coefficient vector supported at one
+class proves \eqref{hstruct:eq:zero-beta}, and counting nontrivial inverse pairs
+proves \eqref{hstruct:eq:rank-beta} and the basis assertion.
+\end{proof}
+
+\begin{remark}[Why the composite case is not a numerical rank claim]
+All matrix entries involving logarithms are used only in the proof of
+positive definiteness. The conclusion follows from exact character
+nonvanishing, not from a numerical determinant. In particular, no lower
+bound for a numerically computed singular value is required. The resulting
+coordinate model $\beta_q(a)\mapsto P_a-P_{a^{-1}}$ is exact on the
+symbol span, even though its derivation used a real logarithm map.
+\end{remark}
+
+\subsection{Explicit rank formula and zero conductors}
+
+\begin{corollary}\label{hstruct:cor:rank-CRT}
+For $q\ge3$,
+\[
+ d(q):=\dim_\Q\Span\{\beta_q(a)\}
+ =\frac{\varphi(q)-r_+(q)-r_-(q)}4.
+\]
+Write $q=2^e\prod_{j=1}^s p_j^{e_j}$ with distinct odd primes $p_j$.
+Then
+\[
+ r_+(q)=2^s\begin{cases}1&e=0,1,\\2&e=2,\\4&e\ge3,\end{cases}
+\]
+and $r_-(q)=0$ if $e\ge2$ or some $p_j\equiv3\pmod4$; otherwise
+$r_-(q)=2^s$.
+\end{corollary}
+\begin{proof}
+The self-inverse elements of $\mathcal{G}_q$ are the sign classes of roots of
+$u^2=1$ or $u^2=-1$. These two sets are disjoint for $q>2$, and every
+sign class has two representatives. Thus
+$|\mathcal{G}_q[2]|=(r_++r_-)/2$. The stated root counts follow from the Chinese
+remainder theorem and the elementary square-root counts at prime powers.
+\end{proof}
+
+\begin{corollary}[Complete list of identically zero conductors]
+\label{hstruct:cor:zero-conductors}
+With the conventions at $q=1,2$, the function $\beta_q$ is identically
+zero exactly for
+\begin{equation}\label{hstruct:eq:zero-conductors}
+ q\in\{1,2,3,4,5,6,8,10,12,24\}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+The condition is that $\mathcal{G}_q$ have exponent at most $2$. Projecting to
+each odd prime-power factor forces that factor to be $3$ or $5$ to the
+first power, since its unit group is cyclic and has order dividing $4$.
+The $2$-part is at most $8$: the square of $3$ modulo $16$ is neither
+$1$ nor $-1$. If $5$ occurs with $3$ or with $4$, the Chinese remainder
+theorem produces a unit whose square is $-1$ at $5$ and $1$ at the
+other factor; its square is not a global sign. Hence the cases containing
+$5$ are only $5,10$. Without $5$, all divisors of $24$ work. This is
+exactly \eqref{hstruct:eq:zero-conductors}.
+\end{proof}
+
+\begin{center}
+\begin{tabular}{rrrrrrrrrr}
+\toprule
+$q$ & $7$ & $9$ & $13$ & $15$ & $16$ & $24$ & $25$ & $60$ & $105$\\
+\midrule
+$d(q)$ & $1$ & $1$ & $2$ & $1$ & $1$ & $0$ & $4$ & $2$ & $10$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The rank concerns symbols, not the dimension of the numerical span of
+Herglotz values. Formula \eqref{hstruct:eq:rank-beta} makes the distinction
+computable without a height-bounded integer-relation search.
+
+\begin{figure}[!tb]
+\centering
+\includegraphics[width=.92\linewidth]{../reports/herglotz-cyclotomic-obstructions/figures/cyclotomic_rank.pdf}
+\caption{Exact ranks of the cyclotomic symbol spaces for conductors
+$1\le q\le200$. The plotted values come from integer residue counts
+and the proved rank formula. They are not numerical estimates of
+linear independence among evaluated periods.}
+\label{hstruct:fig:rank}
+\end{figure}
+
+\section{Exact reduction criteria and constructive rational cores}
+\label{hstruct:sec:reduction}
+
+The two cyclotomic pieces in \eqref{hstruct:eq:delta-xi} cannot cancel across
+coprime conductors. This needs a norm on the \emph{individual exterior
+factors}; averaging an exterior symbol under Galois action would not work,
+because the symbols themselves are invariant.
+
+\begin{lemma}[Separation by normalized field norms]\label{hstruct:lem:norm}
+Let $(p,q)=1$ and regard both symbols in
+$\Lambda^2\Acal(K)$, $K=\Q(\zeta_{pq})$. Then
+\begin{equation}\label{hstruct:eq:norm-separate}
+ \beta_q(p)-\beta_p(q)\in\Lambda^2\Acal(\Q)
+ \quad\Longleftrightarrow\quad
+ \beta_q(p)=\beta_p(q)=0.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let $E=\Q(\zeta_p)$ and define the linear normalized norm
+\[
+ N_p:\Acal(K)\longrightarrow\Acal(E),\qquad
+ \cl u\longmapsto\frac{\cl{\operatorname{Norm}_{K/E}(u)}}{[K:E]}.
+\]
+It fixes the vectors from $E$. The fields $\Q(\zeta_p)$ and
+$\Q(\zeta_q)$ are linearly disjoint over $\Q$. In each summand of
+$\beta_q(p)$, the two factors are Galois conjugate in $\Q(\zeta_q)$,
+so $N_p$ sends them to the same rational vector. Hence
+\[
+ (\Lambda^2N_p)\beta_q(p)=0,
+ \qquad(\Lambda^2N_p)\beta_p(q)=\beta_p(q).
+\]
+The analogous statements hold with $p,q$ exchanged. If the difference
+equals a rational wedge $W$, applying $\Lambda^2N_p$ gives
+$W=-\beta_p(q)$. Applying $\Lambda^2N_q$ to this equality gives $W=0$,
+and both symbols vanish. The converse is immediate. The conventions
+for conductor $1$ or $2$ make the same argument valid in the degenerate
+field cases.
+\end{proof}
+
+\begin{theorem}[Complete formal reduction criterion]\label{hstruct:thm:reduction}
+For coprime positive integers $p,q$, the following are equivalent:
+\begin{enumerate}
+\item $\xi_{p/q}$ has a formal rational-dilogarithm reduction.
+\item $\beta_q(p)=\beta_p(q)=0$.
+\item $p^2\equiv\pm1\pmod q$ and $q^2\equiv\pm1\pmod p$.
+\end{enumerate}
+Moreover, $\xi_{p/q}$ has a formal logarithmic reduction if and only if
+$p=1$ or $q=1$.
+\end{theorem}
+\begin{proof}
+If $\xi_{p/q}$ is represented by rational dilogarithms, its differential
+is a rational wedge. Equations \eqref{hstruct:eq:delta-xi} and
+\eqref{hstruct:eq:norm-separate} imply (2). Conversely, if (2) holds, the
+differential is $-\cl p\wedge\cl q$. By \eqref{hstruct:eq:bloch-facts} choose
+$\eta\in\Pcal(\Q)$ with this differential. Then
+$\xi_{p/q}-\eta$ is a Galois-invariant Bloch-group element and hence
+zero. The equivalence with (3) is Theorem~\ref{hstruct:thm:kernel}.
+
+For the last assertion, a normalized norm to $\Q$ sends every
+$\beta$-summand to zero on the exterior square. Thus
+$\partial\xi_{p/q}=0$ implies $\cl p\wedge\cl q=0$. If $p,q>1$
+are coprime, their prime-exponent vectors have disjoint nonempty supports,
+and their wedge is nonzero. If $p=1$ or $q=1$, all terms in
+\eqref{hstruct:eq:delta-xi} vanish; invariant Bloch descent gives the reduction.
+\end{proof}
+
+\begin{remark}[Interpretation of a failed test]
+The theorem gives a necessary and sufficient condition for a certificate
+in a specified algebraic calculus. A nonzero symbol is not a proof that
+the corresponding real number satisfies no other numerical identity.
+Such a statement would require additional information about the kernel
+of period evaluation. In particular, the theorem should not be restated
+as an unconditional transcendence theorem.
+\end{remark}
+
+\subsection{Checking the boundary formula directly}
+
+Because the reduction criterion depends on \eqref{hstruct:eq:delta-xi}, it is
+useful to audit that formula algebraically. The finite evaluation uses
+the formal summand
+\[
+ f(\alpha,\beta)=
+ \left[\frac{\beta}{\beta-1}\right]
+ -\left[\frac{\alpha-\beta}{1-\beta}\right],
+\]
+summed over $\alpha^p=1$, first over nontrivial $q$th roots $\beta$, and
+then with the analogous sum over nontrivial $p$th roots subtracted.
+Terms with $\alpha=1$ or $\alpha=\beta$ have zero differential and
+are set aside before taking multiplicative logarithms. For the remaining
+roots of unity $\alpha,\beta$, put
+$A=\cl{1-\alpha}$, $B=\cl{1-\beta}$,
+$C=\cl{\alpha-\beta}$. Away from the terms $[0],[1]$, which contribute
+zero, direct expansion gives
+\[
+ \partial f(\alpha,\beta)=-C\wedge A+C\wedge B+B\wedge A.
+\]
+The differential of the subtracted summand is antisymmetric under
+$\alpha\leftrightarrow\beta$, so that sum has zero differential.
+In the first sum use
+\[
+ \prod_{\substack{\beta^q=1\\\beta\ne1}}(\alpha-\beta)
+ =\frac{\alpha^q-1}{\alpha-1},\qquad
+ \prod_{\substack{\alpha^p=1\\\alpha\ne1}}(\beta-\alpha)
+ =\frac{\beta^p-1}{\beta-1}.
+\]
+The first two wedge terms then give $-\beta_p(q)$ and $\beta_q(p)$.
+The last gives $\cl q\wedge\cl p$. This proves
+\eqref{hstruct:eq:delta-xi} independently of any finite-field cocycle claim.
+
+\subsection{A recurrence parametrization of the reducible pairs}
+
+The congruence criterion has an elementary arithmetic description that
+connects it to the golden-ratio ladder thread of the repository.
+
+\begin{theorem}[Quadratic recurrence families]\label{hstruct:thm:recurrences}
+Apart from $(1,1)$, all coprime pairs $1\le p<q$ satisfying
+\eqref{hstruct:eq:zero-beta} and Theorem~\ref{hstruct:thm:reduction} are exactly the adjacent pairs in the following
+three families. Their union need not be disjoint.
+\begin{enumerate}
+\item For each integer $h\ge2$,
+      $u_0=1$, $u_1=h$, $u_{j+1}=h u_j-u_{j-1}$.
+\item $u_0=1$, $u_1=2$, $u_{j+1}=3u_j-u_{j-1}$.
+\item For each integer $h\ge1$,
+      $u_0=1$, $u_1=h$, $u_{j+1}=h u_j+u_{j-1}$,
+      retaining pairs in increasing order.
+\end{enumerate}
+The first family has both square congruences $+1$, the second both
+$-1$, and the third permits opposite signs, with the usual coincidences
+of signs modulo $1$ or $2$.
+\end{theorem}
+\begin{proof}
+Suppose $1<a<b$ and write
+$a^2\equiv s\pmod b$, $b^2\equiv t\pmod a$ with $s,t\in\{\pm1\}$.
+Set
+\[
+ c=\frac{a^2-s}{b}.
+\]
+Then $1\le c<a$, $(c,a)=1$, and the new pair $(c,a)$ satisfies the same
+conditions with signs $(t,s)$. Indeed $bc\equiv-s\pmod a$ implies
+$c^2\equiv b^{-2}\equiv t\pmod a$, while $a^2\equiv s\pmod c$.
+This gives a strictly descending process.
+
+If $s=t$, the positive integer
+$h=(a^2+b^2-s)/(ab)$ is preserved under descent and satisfies
+$b=h a-c$. For $s=1$, the terminal pair is $(1,h)$ with $h\ge2$.
+For $s=-1$, a terminal pair $(1,b)$ has $b\mid2$, so it is $(1,1)$
+or $(1,2)$ and the invariant is $h=3$.
+
+If $s=-t$, the positive integer
+$h=(b^2-a^2-t)/(ab)$ is preserved and satisfies $b=h a+c$.
+The terminal pairs are seeds $(1,h)$, with the terminal $(1,2)$ also
+lying in the $h=1$ sequence $1,1,2,3,5,\ldots$. Reversing descent gives
+the three displayed recurrences. Conversely their preserved quadratic
+identities, or the same recurrence step in reverse, verify both
+congruences and coprimality at every stage.
+\end{proof}
+
+For example, the second family is $1,2,5,13,34,\ldots$, the odd-index
+Fibonacci numbers. The first family with $h=3$ is
+$1,3,8,21,55,\ldots$, and the third with $h=3$ is
+$1,3,10,33,109,\ldots$. This is an arithmetic parametrization of
+\emph{which} rational arguments admit formal reduction, not an assertion
+that all their logarithmic correction terms are already tabulated.
+
+\subsection{An explicit rational-dilogarithm core}
+
+\begin{theorem}[A short core with a boundary certificate]\label{hstruct:thm:core}
+For every pair satisfying Theorem~\ref{hstruct:thm:reduction}, one can produce
+a rational combination $C_{p/q}$ of symbols $[z]$, $0<z<1$, such that
+\[
+ \partial C_{p/q}=-\cl p\wedge\cl q,
+ \qquad \xi_{p/q}-C_{p/q}=0\quad\hbox{in }\Pcal(K).
+\]
+The following recursion suffices for $1\le p<q$:
+\begin{enumerate}
+\item If $p=1$, use $C_{p/q}=0$.
+\item If $q=p+1$, use $C_{p/q}=[p/q]$.
+\item Otherwise choose $s\in\{\pm1\}$ with $q\mid p^2-s$, put
+      $c=(p^2-s)/q$, and use
+\begin{equation}\label{hstruct:eq:core-recursion}
+ C_{p/q}=C_{c/p}+
+ \begin{cases}
+ -\tfrac12[1-p^{-2}],&s=1,\\
+ \tfrac12[p^2/(p^2+1)],&s=-1.
+ \end{cases}
+\end{equation}
+\end{enumerate}
+Put $C_{1/1}=0$. For $p>q$, negate the core for $q/p$.
+After the consecutive-pair shortcut,
+the number of terms is $O(\log\max(p,q))$.
+\end{theorem}
+\begin{proof}
+The first two cases have the required differential. In the last case
+$cq=p^2-s$. Direct calculation gives
+\begin{align*}
+ -\tfrac12\partial[1-p^{-2}]
+   &=-\cl p\wedge\cl q-\cl p\wedge\cl c &&(s=1),\\
+ \tfrac12\partial[p^2/(p^2+1)]
+   &=-\cl p\wedge\cl q-\cl p\wedge\cl c &&(s=-1).
+\end{align*}
+Adding $\partial C_{c/p}=-\cl c\wedge\cl p$ leaves the required
+$-\cl p\wedge\cl q$. Descent terminates by the previous theorem.
+Both $C_{p/q}$ and $\xi_{p/q}$ are invariant; their difference lies in
+the Bloch group and vanishes by \eqref{hstruct:eq:bloch-facts}.
+
+For the length bound, the $h=2$ minus recurrence consists of consecutive
+integers and is handled in one step. Every remaining minus recurrence
+has $h\ge3$ and grows by a factor greater than $2$ after its seed.
+Each plus recurrence grows at least as fast as the Fibonacci recurrence.
+Thus the number of descent steps is logarithmic in the larger input.
+\end{proof}
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Argument & A rational-dilogarithm core for $F(p/q)-F(1)$\\
+\midrule
+$2/5$ & $\tfrac12\Li_2(4/5)$\\
+$3/8$ & $-\tfrac12\Li_2(8/9)$\\
+$4/17$ & $\tfrac12\Li_2(16/17)$\\
+$5/13$ & $\tfrac12\Li_2(4/5)+\tfrac12\Li_2(25/26)$\\
+$10/33$ & $\tfrac12\Li_2(9/10)-\tfrac12\Li_2(99/100)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+In this table the difference between $F(p/q)-F(1)$ and the displayed
+core is a combination of logarithm products and $\pi^2$. The core
+algorithm certifies the dilogarithm part; it does not yet print the full
+logarithmic correction. Constructing that correction efficiently and
+with a complete branch certificate is a further research task.
+
+\begin{corollary}[A lower bound for a family of formal values]
+Fix $q\ge3$ and choose one positive numerator representing each
+nontrivial inverse pair in $\mathcal{G}_q$. The corresponding $d(q)$ elements
+$\xi_{a/q}$ are linearly independent modulo rational dilogarithms.
+\end{corollary}
+\begin{proof}
+Take a common cyclotomic field for all numerators and $q$, and apply the
+exterior square of its normalized norm to $\Q(\zeta_q)$. The
+numerator-conductor symbols disappear and the denominator symbols
+$\beta_q(a)$ remain. If their combination were a rational wedge, the
+normalized norm to $\Q$ would kill it, so it would be zero. The chosen
+$\beta_q(a)$ are independent by Theorem~\ref{hstruct:thm:kernel}.
+\end{proof}
+
+\section{Complete classification and evaluations of \texorpdfstring{$J(2/q)$}{J(2/q)}}
+\label{hstruct:sec:J}
+
+Define
+\[
+ S(n)=\sum_{k=1}^{n-1}\log^2\!\left(2\sin\frac{\pi k}{n}\right),
+ \qquad S(1)=0,
+ \qquad \phi=\frac{1+\sqrt5}{2}.
+\]
+The reciprocal-integer identity, obtainable by pairing conjugate roots
+in the finite dilogarithm formula, is
+\begin{equation}\label{hstruct:eq:F1n}
+ F(1/n)-F(1)
+ =-\frac{(n-1)(3n-2)}{24n}\pi^2-\frac12 S(n),\qquad n\ge1.
+\end{equation}
+All logarithms here are real logarithms of positive algebraic numbers.
+
+\begin{theorem}[Complete formal classification]\label{hstruct:thm:J-class}
+For integers $q\ge2$:
+\begin{enumerate}
+\item $J(2/q)$ has a formal logarithmic reduction exactly when
+      $q\in\{2,3,5\}$ or $4\mid q$.
+\item It has a formal rational-dilogarithm reduction exactly when
+      $q\in\{2,3,5,6,10\}$ or $4\mid q$.
+\end{enumerate}
+In every positive case the evaluations below give the corresponding
+analytic identity.
+\end{theorem}
+\begin{proof}
+First suppose $q$ is odd. Applying \eqref{hstruct:eq:delta-xi} to
+\eqref{herg:eq:Jint} at $x=2/q$, the numerator symbols at conductors
+$1,2,4$ vanish and the rational wedges cancel. Thus the boundary is
+\[
+ \beta_q(4)-2\beta_q(2).
+\]
+Put $g=2\in \mathcal{G}_q$. By Theorem~\ref{hstruct:thm:kernel}, this vanishes exactly
+when $g$ has order at most $2$. To check the assertion directly, an
+element of order $3$ gives $\beta(g^2)-2\beta(g)=-3\beta(g)$; order
+$4$ gives $-2\beta(g)$; for order at least $5$, the two relevant
+inverse pairs are distinct. Hence vanishing is equivalent to
+$4\equiv\pm1\pmod q$, or $q=3,5$. A rational wedge cannot remove a
+nonzero combination of these symbols, since the normalized norm to
+$\Q$ kills the combination and fixes rational wedges. This proves
+both classifications for odd $q$.
+
+If $4\mid q$, all three arguments $4/q,2/q,1/q$ in
+\eqref{herg:eq:Jint} are reciprocal integers. Equation \eqref{hstruct:eq:F1n}
+gives a logarithmic reduction.
+
+The remaining case is $q=2m$ with $m$ odd. Its boundary is
+\begin{equation}\label{hstruct:eq:J-even-boundary}
+ \beta_m(2)-\cl2\wedge\cl m.
+\end{equation}
+For $m=1$ it is zero. For $m>1$, applying the normalized norm to
+$\Q$ gives the nonzero rational wedge $-\cl2\wedge\cl m$;
+there is no formal logarithmic reduction. Rational dilogarithms are
+allowed exactly when $\beta_m(2)=0$, equivalently $m=3,5$.
+Invariant Bloch descent supplies the stated formal reductions.
+\end{proof}
+
+\subsection{All positive evaluations}
+
+The isolated cases are
+\begin{align}
+ J(1)&=\tfrac12\log^22,\label{hstruct:eq:J1}\\
+ J(2/3)&=-\frac{\pi^2}{144}+\frac34\log^22,\label{hstruct:eq:J23}\\
+ J(2/5)&=\frac{11\pi^2}{240}+\frac34\log^22-2\log^2\phi,
+ \label{hstruct:eq:J25}\\
+ J(1/3)&=\frac{\pi^2}{9}+\frac12\log^22-\frac12\log^23
+          -\Li_2(1/3),\label{hstruct:eq:J13}\\
+ J(1/5)&=\frac{7\pi^2}{60}+\frac12\log^22-\frac14\log^25
+          -\log^2\phi-\frac12\Li_2(1/5).\label{hstruct:eq:J15}
+\end{align}
+For all even $m\ge2$, the infinite family is
+\begin{equation}\label{hstruct:eq:J-even-family}
+ \boxed{\displaystyle
+ J(1/m)=\frac{\pi^2(m^2-2)}{48m}
+       +S(m)-\frac12S(m/2)-\frac12S(2m).}
+\end{equation}
+Thus \eqref{hstruct:eq:J-even-family} evaluates $J(2/q)$ for every multiple
+$q$ of $4$, without a dilogarithm term.
+
+\begin{proof}[Derivation of the evaluations]
+Equation \eqref{hstruct:eq:J1} follows by integrating
+$\log(1+t)/(1+t)$. For \eqref{hstruct:eq:J-even-family}, substitute
+\eqref{hstruct:eq:F1n} at $n=m/2,m,2m$ in \eqref{herg:eq:Jint}. The constant
+$F(1)$ cancels; the polynomial coefficient simplifies to
+$m/48-1/(24m)$, yielding the formula.
+
+The small odd cases are obtained from the finite root-of-unity
+dilogarithm formula and the reflection, duplication, and Landen
+relations. For clarity, the two fractional $F$ evaluations needed in
+the calculation can be taken as
+\begin{align*}
+ F(2/3)-F(1)
+  &=\frac{\pi^2}{36}+\log^22-\frac34\log^23-\Li_2(1/3),\\
+ F(2/5)-F(1)
+  &=\tfrac12\Li_2(4/5)-\frac{\pi^2}{5}
+    +\log^2\!\left(2\sin\frac\pi5\right)
+    +\log^2\!\left(2\sin\frac{2\pi}5\right)
+    +\log2\log(2/5).
+\end{align*}
+The second is the previously known evaluation \cite{RadchenkoZagier}; the first
+follows by using $\cot^2(\pi/3)=1/3$ in the $F(2/q)$ sum and
+$\Li_2(-1/3)=2\Li_2(1/3)-\pi^2/6+\tfrac12\log^23$.
+Substitution in \eqref{herg:eq:Jint}, together with \eqref{hstruct:eq:F1n} and
+the two standard functional equations
+\begin{align*}
+ F(x)+F(1/x)&=2F(1)+\tfrac12\log^2x
+                 -\frac{\pi^2(x-1)^2}{6x},\\
+ F(x)-F(x+1)-F(x/(x+1))&=-F(1)+\Li_2(1/(1+x)),
+\end{align*}
+gives \eqref{hstruct:eq:J23}--\eqref{hstruct:eq:J15}. Reflection of
+$\Li_2(4/5)$ supplies the $\Li_2(1/5)$ in \eqref{hstruct:eq:J15}.
+All manipulations use arguments in $(0,1)$ or the real negative axis,
+so no unstated complex logarithm branches are involved.
+\end{proof}
+
+The first member of \eqref{hstruct:eq:J-even-family} is particularly useful
+for auditing the earlier claim:
+\begin{equation}\label{hstruct:eq:Jhalf}
+ J(1/2)=\frac{\pi^2}{48}+\frac14\log^22.
+\end{equation}
+The complete classification proves a precise replacement for the
+unsupported numerical ``if and only if'' in the draft. It also shows
+that the distinction between logarithms and rational dilogarithms is
+real at the level of the boundary: the cases $q=6,10$ have a nonzero
+rational wedge, even though their cyclotomic obstruction vanishes.
 
 \section{Bridges to the golden ladders and the Clausen lattice}\label{herg:sec:bridges}
 The new constants are not isolated; they touch two corpora we have already mapped.
@@ -249,6 +896,589 @@ Use $\Cl_2(\pi/6)-\Cl_2(5\pi/6)=V/2$ and
 $\Cl_2(2\pi/3)=2V/3$. This proves the original report's coefficient
 $22\sqrt3/9$ multiplying the first difference. It is also checked against
 direct derivative quadrature in the fresh verification battery.
+
+\section{Positive measures and sharp approximation}
+Binet's kernel, already encountered in the gamma-integral chapter, gives
+the Herglotz function a positive-measure representation. The same
+representation certifies truncation errors and explains the optimal
+cutoff's arithmetic fluctuations. These analytic results complement the
+exact symbol calculus without relying on period conjectures.
+
+\section{A positive measure and certified remainder bounds}
+\label{hstruct:sec:measure}
+
+The analytic part begins with a representation already obtained by
+Radchenko and Zagier \cite[\S7.3]{RadchenkoZagier}. We derive its consequences
+explicitly, keeping signs and normalizations visible. Put
+\begin{equation}\label{hstruct:eq:G}
+ G(x)=-F(x)-\frac{\zeta(2)}{2x},\qquad
+ \Lam(u)=\sum_{m=1}^{\infty}\sigma_{-1}(m)e^{-2\pi m u},
+ \qquad \sigma_{-1}(m)=\sum_{d\mid m}\frac1d.
+\end{equation}
+Expanding a geometric series gives
+\[
+ \Lam(u)=\sum_{n=1}^{\infty}\frac1{n(e^{2\pi n u}-1)}.
+\]
+Binet's digamma integral, followed by a positive change of variables
+and Tonelli's theorem, yields
+\begin{equation}\label{hstruct:eq:Stieltjes}
+ G(x)=2\int_0^\infty\frac{u\Lam(u)}{x^2+u^2}\,du
+     =\int_0^\infty\frac{d\mu(s)}{x^2+s},
+ \qquad d\mu(s)=\Lam(\sqrt{s})\,ds.
+\end{equation}
+Thus $y\mapsto G(\sqrt y)$ is a Stieltjes transform of a positive
+measure with a positive density on $(0,\infty)$.
+
+\begin{lemma}[Explicit moments]\label{hstruct:lem:moments}
+Every nonnegative moment exists, and
+\begin{equation}\label{hstruct:eq:moments}
+ \mu_j:=\int_0^\infty s^j\,d\mu(s)
+ =\frac{2\Gamma(2j+2)\zeta(2j+2)\zeta(2j+3)}
+        {(2\pi)^{2j+2}}
+ =\frac{|B_{2j+2}|}{2j+2}\zeta(2j+3).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Substitute $s=u^2$, integrate each positive exponential term, and use
+$\sum_m\sigma_{-1}(m)m^{-w}=\zeta(w)\zeta(w+1)$ for $w>1$.
+Euler's formula for the even zeta values gives the second equality.
+\end{proof}
+
+Define the approximation and its first omitted term by
+\begin{equation}\label{hstruct:eq:FN}
+ F_N(x)=-\frac{\zeta(2)}{2x}
+         -\sum_{j=0}^{N-1}\frac{(-1)^j\mu_j}{x^{2j+2}},
+ \qquad T_N(x)=\frac{\mu_N}{x^{2N+2}},
+ \qquad N\ge0.
+\end{equation}
+The empty sum for $N=0$ is zero. The series is asymptotic and divergent;
+we will work with its exact finite remainder.
+
+\begin{theorem}[Signed remainder and three-moment bounds]
+\label{hstruct:thm:remainder}
+For $x>0$ and $N\ge0$,
+\begin{align}
+ F(x)-F_N(x)&=(-1)^{N+1}R_N(x),\label{hstruct:eq:signed-R}\\
+ R_N(x)&=x^{-2N}\int_0^\infty\frac{s^N}{x^2+s}\,d\mu(s)>0,
+ \label{hstruct:eq:R-exact}\\
+ R_N(x)+R_{N+1}(x)&=T_N(x).\label{hstruct:eq:R-sum}
+\end{align}
+Set
+\[
+ A=\frac{\mu_{N+1}}{\mu_Nx^2},\qquad
+ B=\frac{\mu_{N+2}}{\mu_Nx^4}.
+\]
+Then the strict bounds
+\begin{equation}\label{hstruct:eq:three-moment}
+ \frac1{1+A}<\frac{R_N(x)}{T_N(x)}
+       <1-\frac{A^2}{A+B}<1
+\end{equation}
+hold. In particular, two consecutive truncations bracket $F(x)$.
+\end{theorem}
+\begin{proof}
+The finite geometric identity
+\[
+ \frac1{x^2+s}
+ =\sum_{j=0}^{N-1}\frac{(-s)^j}{x^{2j+2}}
+    +\frac{(-1)^Ns^N}{x^{2N}(x^2+s)}
+\]
+gives \eqref{hstruct:eq:signed-R}--\eqref{hstruct:eq:R-exact}, and multiplying the
+remainder integrand by $1+s/x^2$ gives \eqref{hstruct:eq:R-sum}.
+
+Under the probability measure $s^N\,d\mu(s)/\mu_N$ let $U=s/x^2$.
+Then $R_N/T_N=\E(1+U)^{-1}$, $\E U=A$, and $\E U^2=B$.
+Strict Jensen convexity gives the lower bound. Cauchy--Schwarz gives
+\[
+ \E\frac{U}{1+U}\ \E\bigl(U(1+U)\bigr)\ge(\E U)^2,
+\]
+so $\E(1+U)^{-1}\le1-A^2/(A+B)$. Both inequalities are strict
+because the measure has a nonconstant positive-density support.
+\end{proof}
+
+For interval computation, an equivalent and useful form is
+\begin{align}
+ L_N(x)&=\frac{x^{-2N}\mu_N^2}{x^2\mu_N+\mu_{N+1}},\nonumber\\
+ L_N(x)&<R_N(x)<T_N(x)-L_{N+1}(x).
+ \label{hstruct:eq:interval-R}
+\end{align}
+It uses only three adjacent moments, and hence only rational
+Bernoulli numbers and odd zeta values. No oscillatory integral is needed.
+
+\subsection{An exact rational certification scheme}
+
+For integer $s\ge2$, integer $M\ge2$, and $J\ge1$, Euler--Maclaurin
+gives
+\begin{align}
+ Z_{M,J}(s)
+ &=\sum_{n=1}^{M-1}n^{-s}
+   +\frac{M^{1-s}}{s-1}+\frac1{2M^s}\nonumber\\
+ &\quad+\sum_{j=1}^{J-1}
+ \frac{B_{2j}}{(2j)!}(s)_{2j-1}M^{-s-2j+1},\label{hstruct:eq:EM}\\
+ |\zeta(s)-Z_{M,J}(s)|
+ &\le
+ \frac{|B_{2J}|}{(2J)!}(s)_{2J-1}M^{-s-2J+1}.
+ \label{hstruct:eq:EM-bound}
+\end{align}
+Here $(s)_k$ is a rising factorial. A direct positive-kernel proof
+is useful because it fixes the endpoint convention in this bound.
+The partial fraction expansion of the hyperbolic cotangent gives
+\[
+ k(t):=\frac1{1-e^{-t}}-\frac1t-\frac12
+       =2t\sum_{n\ge1}\frac1{t^2+(2\pi n)^2},\qquad t>0.
+\]
+Expand each denominator through $J-1$ terms by the finite geometric
+identity. After summing, the result is
+\[
+ k(t)=\sum_{j=1}^{J-1}\frac{B_{2j}}{(2j)!}t^{2j-1}
+           +\varepsilon_J(t),\qquad
+ |\varepsilon_J(t)|
+ \le\frac{|B_{2J}|}{(2J)!}t^{2J-1}.
+\]
+Indeed the remainder before summing is
+$(-1)^{J-1}2t^{2J-1}/
+((2\pi n)^{2J-2}((2\pi n)^2+t^2))$, whose magnitude is bounded
+by replacing the last denominator by $(2\pi n)^2$.
+Integrate against $t^{s-1}e^{-Mt}/\Gamma(s)$, using
+\[
+ \sum_{n=M}^\infty n^{-s}
+ =\frac1{\Gamma(s)}
+       \int_0^\infty\frac{t^{s-1}e^{-Mt}}{1-e^{-t}}\,dt.
+\]
+This proves \eqref{hstruct:eq:EM}--\eqref{hstruct:eq:EM-bound}, including the
+first-omitted-term bound, rather than assuming a truncation-sign rule.
+Related sharper Hurwitz-zeta remainder bounds are discussed in
+\cite{hstruct:Nemes}.
+
+All quantities in \eqref{hstruct:eq:EM}--\eqref{hstruct:eq:EM-bound} are rational.
+Combining their enclosing intervals with
+\eqref{hstruct:eq:moments}, \eqref{hstruct:eq:FN}, and \eqref{hstruct:eq:interval-R} yields
+exact rational endpoints for $F(x)$ when $x$ is rational.
+The code uses interval operations with integer numerators and
+denominators throughout; decimal endpoints are rounded outward only
+for display.
+
+\begin{center}
+\begin{tabular}{rrl}
+\toprule
+$x$ & $N$ & Certified width of the interval for $F(x)$, at most\\
+\midrule
+$2$  & $6$  & $4.18751510340\times10^{-7}$\\
+$4$  & $12$ & $4.88272699850\times10^{-13}$\\
+$8$  & $25$ & $2.15471915709\times10^{-24}$\\
+$16$ & $50$ & $1.10232929493\times10^{-46}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are reproducible certificates, not estimates based on the number
+of floating-point digits. The file
+\texttt{data/rational\_intervals.json} contains the complete exact
+endpoints. The parameters here are $M=J=48$; no optimality of that
+computational choice is asserted.
+
+\subsection{Classical Stieltjes consequences}
+
+The representation also settles the qualitative approximation question
+without any new special-function identity.
+
+\begin{proposition}[Determinacy and positive rational approximation]
+\label{hstruct:prop:Stieltjes}
+The measure $\mu$ is uniquely determined by its moments. Gaussian
+quadrature for $\mu$ produces lower bounds that are rational functions of $y$ for
+$G(\sqrt y)$, $y>0$; Gauss--Radau quadrature with a prescribed node at
+$0$ produces rational upper bounds. These bounds converge pointwise to
+$G(\sqrt y)$ as their orders tend to infinity.
+\end{proposition}
+\begin{proof}
+Stirling's formula in \eqref{hstruct:eq:moments} gives
+$\mu_j^{-1/(2j)}\sim\pi e/j$. Thus the Stieltjes Carleman sum
+diverges, which implies determinacy. The quadrature error signs follow
+from the alternating derivatives of $(y+s)^{-1}$: Gaussian
+quadrature has a positive even-order remainder, while the Radau rule
+with left endpoint $0$ has a negative odd-order remainder.
+For convergence, the discrete positive quadrature measures have the
+same total mass and, eventually, every fixed finite set of moments as
+$\mu$. A first-moment bound gives tightness; higher moment bounds give
+uniform integrability of each fixed power. Every subsequential weak
+limit therefore has all the moments of $\mu$ and must equal $\mu$ by
+determinacy. Integration of the bounded continuous function
+$(y+s)^{-1}$ proves the claim. These are standard Stieltjes and Pad\'e
+consequences; see \cite{hstruct:Simon}.
+\end{proof}
+
+The value of the proposition here is practical: it explains why
+positive rational approximations are available even in parameter
+regimes where an asymptotic series is not an efficient evaluator.
+An effective convergence rate for this particular measure remains
+a separate problem.
+
+\section{Uniform sharp asymptotics at the optimal scale}
+\label{hstruct:sec:sharp}
+
+The scale $N\sim\pi x$ can be located from the ratio of consecutive
+moments. To obtain the error constant and its corrections, it is
+more efficient to convert the exact remainder into gamma expectations.
+Write
+\begin{equation}\label{hstruct:eq:gamma-notation}
+ a=2\pi x,\quad K=2N+2,\quad r=K-a=2\delta+2,\quad
+ \delta=N-\pi x.
+\end{equation}
+Let $T$ have gamma density $t^{K-1}e^{-t}/\Gamma(K)$ on $(0,\infty)$,
+and define
+\[
+ E_K(c)=\E\frac1{1+(T/c)^2},\qquad
+ w_m=\sigma_{-1}(m)m^{-K},\qquad
+ Z_K=\sum_{m\ge1}w_m=\zeta(K)\zeta(K+1).
+\]
+
+\begin{lemma}[Exact gamma mixture]\label{hstruct:lem:gamma-mixture}
+For all $x>0$ and $N\ge0$,
+\begin{equation}\label{hstruct:eq:gamma-mixture}
+ R_N(x)=\frac{2\Gamma(K)}{a^K}\sum_{m=1}^\infty w_m E_K(ma),
+ \qquad T_N(x)=\frac{2\Gamma(K)}{a^K}Z_K.
+\end{equation}
+For $K\ge4$,
+\begin{equation}\label{hstruct:eq:frequency-tail}
+ 0<Z_K-1\le4\,2^{-K}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+In each positive exponential summand of \eqref{hstruct:eq:R-exact}, written
+in the variable $u=\sqrt s$, substitute $t=2\pi m u$. Collecting
+powers gives \eqref{hstruct:eq:gamma-mixture}. For the tail, use
+$\sigma_{-1}(m)\le m$ and
+\[
+ \sum_{m\ge2}m^{1-K}
+ \le 2^{1-K}+\frac{2^{2-K}}{K-2}\le4\,2^{-K}.
+\]
+\end{proof}
+
+The arithmetic terms $m\ge2$ therefore do not affect any algebraic
+coefficient in the optimal-scale expansion. They do, however, move
+the exact transition point by an exponentially small amount; this
+effect is treated separately in Section~\ref{hstruct:sec:arithmetic}.
+
+\subsection{Gamma moments and a uniform remainder mechanism}
+
+Let $f(v)=(1+v^2)^{-1}$ and $H=(T-a)/a$. The local Taylor expansion is
+\[
+ f(1+H)=\frac12-\frac H2+\frac{H^2}4-\frac{H^4}8
+                +\frac{H^5}8-\frac{H^6}{16}+\cdots,
+\]
+and the moments are exactly
+\begin{equation}\label{hstruct:eq:gamma-moments}
+ \E H^\ell
+ =a^{-\ell}\sum_{j=0}^{\ell}
+       \binom{\ell}{j}(-a)^{\ell-j}(a+r)_j.
+\end{equation}
+This is an algebraic coefficient algorithm, not a fit to numerical data.
+
+For rigor at any fixed order $J$, Taylor-expand $f$ through degree
+$2J+1$. Every derivative of $f$ is bounded on $[0,\infty)$, so the
+absolute remainder is bounded by a constant times $|H|^{2J+2}$.
+The centered gamma cumulants are $K(j-1)!$ in orders $j\ge2$.
+Consequently each centered even moment of order $2J+2$ is a polynomial
+in $K$ of degree at most $J+1$. Translating the center from $K$ to
+$a=K-r$, with $r$ bounded, gives
+\[
+ \E|H|^{2J+2}=O_J(a^{-J-1})
+\]
+uniformly on each compact interval of $r$. This proves the required
+uniform remainder after taking expectations. In particular,
+\begin{align}
+ 2E_K(a)
+ &=1+\frac{1/2-r}{a}
+   +\frac{(r^2+r)/2-3/4}{a^2}
+   +\frac{-3r^2/2+r/4+13/8}{a^3}\nonumber\\
+ &\quad-\frac{4r^4-16r^3-66r^2+74r+59}{16a^4}
+   +O_D(a^{-5}).\label{hstruct:eq:gamma-expansion}
+\end{align}
+The subscript $D$ signifies that the constant may depend on a fixed
+bound for $|r|$; the same convention will be used for $\delta$.
+
+The classical shifted Stirling expansion \cite[\S5.11.8]{hstruct:DLMF} is
+\begin{equation}\label{hstruct:eq:shifted-Stirling}
+ \frac{\Gamma(a+r)}{a^{a+r}}
+ \sim \sqrt{2\pi}\,a^{-1/2}e^{-a}
+ \exp\left(\sum_{j=1}^\infty
+ \frac{(-1)^{j+1}B_{j+1}(r)}{j(j+1)a^j}\right).
+\end{equation}
+It is uniform for $r$ in compact sets. Combining its rigorous finite
+forms with the gamma-moment argument proves the following theorem.
+
+\begin{theorem}[Complete optimal-scale expansion]\label{hstruct:thm:sharp}
+For each fixed $D>0$ and each integer $J\ge0$, there are explicitly
+computable rational polynomials $C_j(\delta)$ such that, uniformly
+for integers $N\ge0$ with $|N-\pi x|\le D$,
+\begin{equation}\label{hstruct:eq:all-orders}
+ R_N(x)=\frac{e^{-2\pi x}}{\sqrt{x}}
+ \left(\sum_{j=0}^{J}\frac{C_j(\delta)}{(2\pi x)^j}
+       +O_{D,J}(x^{-J-1})\right).
+\end{equation}
+The first three are
+\begin{align}
+ C_0(\delta)&=1,\nonumber\\
+ C_1(\delta)&=2\delta^2+\delta-\frac5{12},\label{hstruct:eq:C1}\\
+ C_2(\delta)&=2\delta^4+\frac23\delta^3-\frac{10}3\delta^2
+                         -\frac7{12}\delta+\frac{205}{288}.
+ \label{hstruct:eq:C2}
+\end{align}
+Moreover, $R_N(x)/T_N(x)\longrightarrow1/2$ uniformly in that regime.
+\end{theorem}
+\begin{proof}
+Use \eqref{hstruct:eq:gamma-moments} to expand $2E_K(a)$, multiply by
+\eqref{hstruct:eq:shifted-Stirling}, and put $r=2\delta+2$.
+The frequency tail \eqref{hstruct:eq:frequency-tail} is smaller than every
+power of $a^{-1}$. The leading factor is
+$\sqrt{2\pi}\,a^{-1/2}e^{-a}=x^{-1/2}e^{-2\pi x}$.
+For an explicit check of the first two coefficients, put
+$g_1=B_2(r)/2$ and $g_2=-B_3(r)/6$. Before substituting for $r$ they are
+\[
+ g_1+\tfrac12-r,\qquad
+ \tfrac12g_1^2+g_2+g_1(\tfrac12-r)
+                       +\tfrac12(r+r^2)-\tfrac34.
+\]
+These simplify to \eqref{hstruct:eq:C1}--\eqref{hstruct:eq:C2}. The ratio assertion
+follows directly from \eqref{hstruct:eq:gamma-mixture}, since $E_K(a)\to1/2$
+and $Z_K\to1$.
+\end{proof}
+
+The leading constant is therefore exactly $1$. Replacing the true
+remainder by the first omitted term loses a factor of $2$ at the
+optimal scale. The three-moment bounds also approach this factor:
+there $A\to1$ and $B\to1$, so both sides of
+\eqref{hstruct:eq:three-moment} tend to $1/2$.
+
+The program \texttt{code/truncation\_coefficients.py} generates
+$C_j$ symbolically using rational polynomial operations and
+Bernoulli polynomials. The theorem's bounded-$\delta$ condition is
+essential to the stated uniformity. A growing window, for example
+$N-\pi x$ of order $\sqrt{x}$, requires a different scaling.
+
+\section{The exact best cutoff and its transitions}
+\label{hstruct:sec:cutoff}
+
+An asymptotic nearest-integer rule is useful, but it cannot determine
+the best cutoff arbitrarily close to a transition. The positive
+measure supplies an exact answer.
+
+\begin{theorem}[Unique transitions and global minimizers]
+\label{hstruct:thm:transitions}
+For every $N\ge0$, there is a unique $x_N>0$ such that
+$R_N(x_N)=R_{N+1}(x_N)$. The sequence $x_N$ is strictly increasing
+and tends to infinity. With $x_{-1}=0$, the index $N$ is a global
+minimizer of $R_j(x)$, $j\ge0$, exactly when
+\begin{equation}\label{hstruct:eq:exact-cutoff}
+ x_{N-1}\le x\le x_N.
+\end{equation}
+There are exactly two adjacent minimizing indices at an endpoint
+and exactly one elsewhere on $x>0$. An exact transition equation is
+\begin{equation}\label{hstruct:eq:transition-integral}
+ x_N^2\int_0^\infty\frac{s^N}{x_N^2+s}\,d\mu(s)=\frac{\mu_N}2.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Put $y=x^2$ and
+$M_N(y)=\int s^N(y+s)^{-1}\,d\mu(s)$.
+Strict Cauchy--Schwarz gives
+\[
+ M_{N+1}(y)^2<M_N(y)M_{N+2}(y).
+\]
+Hence $R_N=y^{-N}M_N(y)$ is strictly log-convex as a sequence in
+$N$, and its consecutive ratios are strictly increasing.
+The recurrence $M_{N+1}=\mu_N-yM_N$ gives
+\begin{equation}\label{hstruct:eq:ratio-R}
+ \frac{R_{N+1}(x)}{R_N(x)}
+ =\frac{\mu_N}{yM_N(y)}-1.
+\end{equation}
+By dominated convergence,
+$yM_N(y)=\int s^N y/(y+s)\,d\mu(s)$ increases continuously and
+strictly from $0$ to $\mu_N$ as $y$ increases from $0$ to infinity.
+The ratio in \eqref{hstruct:eq:ratio-R} thus decreases continuously from
+infinity to $0$, proving the unique transition and
+\eqref{hstruct:eq:transition-integral}.
+
+Strict increase of the ratios in $N$ forces $x_{N+1}>x_N$.
+For fixed $y$, the moment ratios $M_{N+1}/M_N$ tend to infinity.
+Indeed, if their increasing sequence were bounded by $B$, the
+moments would be at most $M_0B^N$, contradicting positive mass on
+an interval strictly to the right of $B$. This also proves
+$x_N\to\infty$ and existence of a global minimum. The strict ratio
+monotonicity now gives \eqref{hstruct:eq:exact-cutoff} and the assertions
+about ties.
+\end{proof}
+
+To expand the transition, let $\alpha_K$ be the unique positive root of
+\begin{equation}\label{hstruct:eq:alpha}
+ E_K(\alpha_K)=\frac12,
+\end{equation}
+and write $\beta_K=2\pi x_N$ for $K=2N+2$. The full transition is
+the unique root of
+\begin{equation}\label{hstruct:eq:Phi}
+ \Phi_K(a):=\sum_{m\ge1}w_m\left(E_K(ma)-\frac12\right)=0.
+\end{equation}
+The symbols $\alpha_K,\beta_K$ in this analytic section are real
+numbers; the subscript and argument distinguish $\beta_K$ from the
+cyclotomic symbol $\beta_q(a)$.
+
+\begin{theorem}[Algebraic transition expansion]\label{hstruct:thm:transition-exp}
+Put $b=K-\tfrac12=2N+\tfrac32$. As $N\to\infty$,
+\begin{equation}\label{hstruct:eq:transition-exp}
+ \alpha_K=b+\frac3{8b}-\frac1{b^2}
+                +\frac{407}{128b^3}+O(b^{-4}).
+\end{equation}
+The same expansion holds for $\beta_K=2\pi x_N$, and the two
+quantities have identical expansions to every algebraic order.
+\end{theorem}
+\begin{proof}
+The gamma law gives $T/K\to1$ in probability. Evaluating at $a=cK$
+shows that both roots have $a/K\to1$. More precisely, substitution
+of $a=K+C$ for fixed constants on either side of $C=-1/2$
+in \eqref{hstruct:eq:gamma-expansion} brackets both roots for large $K$;
+the frequency tail does not change these opposite signs. Therefore
+$r=K-a$ is bounded at the roots, and the uniform expansion applies.
+
+Solve $2E_K(a)=1$ from \eqref{hstruct:eq:gamma-expansion} to obtain
+\[
+ r=\frac12-\frac3{8a}+\frac1{a^2}
+                    -\frac{425}{128a^3}+O(a^{-4}).
+\]
+For example, putting $r=1/2+q_1/a+q_2/a^2+q_3/a^3$ gives
+successively $q_1=-3/8$, $q_2=1$, $q_3=-425/128$.
+Since $\partial_a[2E_K(a)]$, with $K$ fixed, is
+$1/K+O(K^{-2})$ near the root (see \eqref{hstruct:eq:shift-derivative}),
+a residual of order
+$a^{-j-1}$ locates the root to order $a^{-j}$. Thus the formal
+inversion has the asserted error control. Reexpressing it in
+$b=K-1/2$ yields \eqref{hstruct:eq:transition-exp}. Finally, the perturbing
+tail in \eqref{hstruct:eq:Phi} is $O(2^{-K})$, while its derivative is of
+order $1/K$; it changes the root by $O(K2^{-K})$. This proves the
+last assertion.
+\end{proof}
+
+To leading order, choose the integer nearest to $\pi x-1/4$.
+The exact prescription remains \eqref{hstruct:eq:exact-cutoff}; no rounding
+formula with an unspecified remainder resolves every near-tie case.
+
+\section{An arithmetic displacement beyond all algebraic orders}
+\label{hstruct:sec:arithmetic}
+
+The comparison in this section is between two exactly defined
+transition points. Subtracting a finite approximation such as
+$b+3/(8b)-1/b^2$ would leave an algebraic error much larger than
+the effect we want to measure.
+
+\begin{theorem}[First arithmetic shift]\label{hstruct:thm:arithmetic-shift}
+For every $K=2N+2\ge2$, the full transition satisfies
+$0<\beta_K<\alpha_K$. As $K\to\infty$,
+\begin{equation}\label{hstruct:eq:arithmetic-shift}
+ \boxed{\displaystyle
+ \beta_K-\alpha_K
+ =-\frac9{10}K2^{-K}
+  \left(1+O(K^{-1})+O((2/3)^K)\right).}
+\end{equation}
+Equivalently, with $x_N^{(1)}=\alpha_K/(2\pi)$,
+$x_N-x_N^{(1)}$ has leading term $-9K2^{-K}/(20\pi)$.
+\end{theorem}
+\begin{proof}
+The function $E_K(c)$ is strictly increasing in $c$. At
+$a=\alpha_K$, the $m=1$ term of \eqref{hstruct:eq:Phi} vanishes, while
+every $m\ge2$ term is positive. Hence $\Phi_K(\alpha_K)>0$.
+Since $\Phi_K$ is strictly increasing, its root lies below $\alpha_K$.
+
+For the coefficient, $\alpha_K=K+O(1)$ and gamma concentration
+with its second-moment bound gives
+\[
+ E_K(2\alpha_K)=\frac45+O(K^{-1}).
+\]
+Also $w_2=(3/2)2^{-K}$ and $\sum_{m\ge3}w_m=O(3^{-K})$.
+Therefore
+\begin{equation}\label{hstruct:eq:shift-numerator}
+ \Phi_K(\alpha_K)
+ =\frac9{20}2^{-K}
+   \left(1+O(K^{-1})+O((2/3)^K)\right).
+\end{equation}
+Differentiation under the expectation gives
+\[
+ E_K'(a)=\frac1a\,\E h(T/a),\qquad
+ h(v)=\frac{2v^2}{(1+v^2)^2}.
+\]
+On a bounded neighborhood of $K$, $h(1)=1/2$ and a
+second-moment expansion yield
+$E_K'(a)=(2K)^{-1}(1+O(K^{-1}))$.
+For any $m$, the derivative of $E_K(ma)$ with respect to $a$ is
+$a^{-1}\E h(T/(ma))$, and $0<h\le1/2$. Thus
+\begin{equation}\label{hstruct:eq:shift-derivative}
+ \Phi_K'(a)=\frac1{2K}\bigl(1+O(K^{-1})+O(2^{-K})\bigr)
+\end{equation}
+uniformly in that neighborhood. In particular it has a positive
+lower bound of order $K^{-1}$. The mean value theorem first gives
+$\beta_K-\alpha_K=O(K2^{-K})$ and then, using
+\eqref{hstruct:eq:shift-numerator}--\eqref{hstruct:eq:shift-derivative}, gives
+\eqref{hstruct:eq:arithmetic-shift}.
+\end{proof}
+
+The constant has a transparent decomposition:
+\[
+ \frac9{10}
+ =\underbrace{\frac32}_{\text{divisor weight at }m=2}
+  \underbrace{\left(\frac45-\frac12\right)}_{\text{kernel gap}}
+  \bigg/\underbrace{\frac12}_{\text{scaled derivative}}.
+\]
+It records the second Lambert frequency, rather than a correction to
+the Stirling expansion.
+
+\begin{remark}[A transferable positive-mixture calculation]
+The same argument applies to a positive exponential mixture with
+frequencies $1,\rho,\ldots$, $\rho>1$, and coefficients $c_1,c_\rho>0$.
+If its higher-frequency Dirichlet tail is $o(\rho^{-K})$, the
+corresponding normalized transition displacement is
+\[
+ -\frac{c_\rho}{c_1}\frac{\rho^2-1}{\rho^2+1}
+                 K\rho^{-K}(1+o(1)).
+\]
+This follows by replacing the kernel limit $4/5$ by
+$\rho^2/(1+\rho^2)$ in the proof. It is a useful extension of the
+calculation, rather than a claim to a new general method of
+exponentially improved asymptotics; see \cite[\S2.11]{hstruct:DLMF} for
+the broader established theory.
+\end{remark}
+
+\subsection{The periodic correction to the best attainable error}
+
+\begin{corollary}[Integer-cutoff oscillation]\label{hstruct:cor:lattice}
+Uniformly for real $x\to+\infty$,
+\begin{equation}\label{hstruct:eq:minimum-R}
+ \min_{N\ge0}R_N(x)
+ =\frac{e^{-2\pi x}}{\sqrt{x}}
+ \left[
+ 1+\frac{2\dist(\pi x-\tfrac14,\Z)^2-\tfrac{13}{24}}{2\pi x}
+ +O(x^{-2})
+ \right].
+\end{equation}
+The numerator of the first correction ranges from $-13/24$ to
+$-1/24$.
+\end{corollary}
+\begin{proof}
+Complete the square in \eqref{hstruct:eq:C1}:
+$C_1(\delta)=2(\delta+1/4)^2-13/24$.
+The exact transition expansion shows that the optimizing index
+differs from a nearest integer to $\pi x-1/4$ only within
+$O(x^{-1})$ of a tie phase. There the squared distances for the
+two competing integers differ by $O(x^{-1})$; after multiplication
+by $(2\pi x)^{-1}$ this contributes only $O(x^{-2})$.
+The bounded-$\delta$ uniformity of Theorem~\ref{hstruct:thm:sharp} completes
+the proof, including arbitrarily close approaches to transition points.
+\end{proof}
+
+\begin{figure}[!tb]
+\centering
+\includegraphics[width=.92\linewidth]{../reports/herglotz-cyclotomic-obstructions/figures/optimal_correction.pdf}
+\caption{The explicit first correction in \eqref{hstruct:eq:minimum-R}, as
+a function of the fractional part of $\pi x-1/4$. This plots a proved
+coefficient function, not fitted numerical data. The two endpoint
+phases represent the same point of the unit circle.}
+\label{hstruct:fig:optimal-correction}
+\end{figure}
 
 \section{Quadratic units and Kronecker-limit coordinates}
 Define the normalized functions
@@ -340,3 +1570,89 @@ because $\zeta_E(s)=-h_E\reg(E)s^2/2+O(s^3)$ and $\zeta(0)=-1/2$.
 Thus the coefficient equals $\reg(E)$ only after $h_E=1$ and the
 field-character identification have been established. This argument does
 not convert the numerical Herglotz fits into proofs of Stark's conjecture.
+
+\section{Exact class-number-one certificates}
+\begin{proposition}[Class-number certificates for the five cubic fields]
+\label{cubic:corr:cubic-class-numbers}
+Each of the five totally real cubic fields in
+Table~\ref{cubic:corr:classnumber-table} has class number one.  In the table,
+$\alpha$ denotes a root of the polynomial in its row, $d_H$ is the
+field discriminant, and $B=\lfloor 2\sqrt{d_H}/9\rfloor$ is the
+integer Minkowski bound.  The final column lists a generator of a
+principal ideal of norm $p$ for each indicated rational prime $p$;
+the field norm of the generator may be $-p$.
+\end{proposition}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{c|r|r|l}
+ Polynomial for $\alpha$ & $d_H$ & $B$ & $p:\ \text{generator}$\\\hline
+ $X^3-X^2-3X+1$ & $148$ & $2$ & $2:\alpha-1$\\
+ $X^3-X^2-5X-1$ & $404$ & $4$ &
+       $2:\alpha+1;\quad3:\alpha^2-2\alpha-2$\\
+ $X^3-X^2-7X-3$ & $788$ & $6$ &
+       $2:\alpha+1;\quad3:\alpha;\quad5:\alpha^2-2\alpha-4$\\
+ $X^3-X^2-4X+3$ & $257$ & $3$ & $3:\alpha$\\
+ $X^3-X^2-11X-7$ & $2708$ & $11$ &
+       $2:\alpha+1;\quad3:\alpha+2;\quad7:\alpha$\\
+ & & & $5:-\alpha^2+2\alpha+10;\quad11:2\alpha^2-4\alpha-17$
+\end{tabular}
+\caption{Exact generators used in the class-number-one proof.}
+\label{cubic:corr:classnumber-table}
+\end{table}
+
+\begin{proof}
+The rational-root test proves irreducibility of each polynomial $f$.
+Their polynomial discriminants are, in the displayed order,
+$148,404,788,257,2708$, all positive.  Thus all five fields are
+totally real.  At discriminant $257$, squarefreeness immediately gives
+$\mathcal O_{H_0}=\mathbb Z[\alpha]$.  In each other row only $2$
+could divide the index.  In all four cases
+$\overline f=(X+1)^3$ modulo $2$, while
+\[
+ \left.\frac{f(X)-(X+1)^3}{2}\right|_{X=1}
+                  \in\{-5,-7,-9,-13\}.
+\]
+These values are odd.  Dedekind's index criterion therefore excludes
+$2$ from the index.  Equivalently, each shifted polynomial $f(X+1)$
+is Eisenstein at $2$, so its root generates the local ring of integers
+\cite[Proposition~7.55 and Remark~7.56]{loggamma:MilneANT}.  This proves
+maximality and the asserted field discriminants.  The use of Dedekind factorization below is consequently
+valid also at $2$.
+
+Minkowski's theorem gives an integral ideal in every ideal class
+with norm at most $2\sqrt{d_H}/9$ for a totally real cubic field
+\cite{loggamma:MilneANT}.  It suffices to prove principalness for every prime
+ideal whose norm is at most $B$.  In the four even-discriminant rows,
+$2$ is totally ramified; the displayed norm-$2$ element generates its
+unique prime ideal.  At discriminant $257$, the polynomial is
+irreducible modulo $2$, so the prime above $2$ has norm $8>B$.
+
+For each relevant odd rational prime $p\leq B$, direct factorization
+of $f$ modulo $p$ has type $1+2$.  There is therefore exactly one
+prime ideal of norm $p$.  The corresponding element in the table
+has norm $\pm p$, so this degree-one prime is principal.  Its
+degree-two partner is principal as well, since their product is
+$(p)$.  This last observation covers in particular the prime of
+norm $9$ in the field of discriminant $2708$.  The table accounts
+for all rational primes $p\leq B$, hence for all prime ideals within
+the Minkowski bound.  Every ideal class is therefore trivial.
+
+All finite calculations in this proof---discriminants, index tests,
+modular splitting types, and generator norms---are reproduced with
+integer arithmetic by \path{../reports/corpus-corrections/code/12-relation-spaces-verify_cubic_class_numbers.py}.
+\end{proof}
+
+
+For the other polynomial used in the $257$ example,
+$x^3-2x^2-3x+1$, the same bound is three: it is irreducible modulo two,
+and its unique norm-three prime is generated by $\alpha-1$.
+Its squarefree discriminant is $257$, so its order is maximal.
+Thus that cubic also has class number one.
+The leading primitive Artin coefficient consequently specializes to the
+regulator in these cases. Inflating a primitive character to a ray modulus
+can remove Euler factors; at the $257$ modulus-two example the factor at
+zero is three. The primitive and ray-modulus Dirichlet series must be
+identified before comparing their leading coefficients. This still does
+not turn the fitted Herglotz evaluations into proved Stark identities.

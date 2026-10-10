@@ -1,46 +1,58 @@
 # Polylogarithms and their Arithmetic Bridges
 
-The unified reading manuscript is [polylogarithms.pdf](polylogarithms.pdf),
-built from [polylogarithms.tex](polylogarithms.tex) and its edited chapter
-sources. It integrates all 39 textual source documents into ten chapters and
-a literature appendix. The chapters follow mathematical dependency:
-foundations, cyclotomic coordinates, algebraic arguments and ladders, depth,
-gamma certificates, CM lattices, integrated zeta jets, differentiated zeta
-jets, Herglotz arithmetic, and experimental discovery.
+The completed unified manuscript is [polylogarithms.pdf](polylogarithms.pdf):
+**177 pages, eleven chapters**, a literature appendix preserving 94 distinct
+historical question leads, and a central bibliography of 55 works. Its editable
+source is [polylogarithms.tex](polylogarithms.tex) and the files in `chapters/`.
 
-The [editorial ledger](EDITORIAL-LEDGER.md) maps every source to its retained
-material and explains the corrections. The [source inventory](source-inventory.json)
-records SHA-256 digests. Original drafts and old PDFs remain historical
-evidence; the unified manuscript supersedes them as a reading artifact.
+The book consolidates the original 39 drafts and all five nested continuation
+packages in the requested directory. The recursive inventory covers **79
+textual source files**; assembled articles and their fragments are provenance
+files, not independent results. The [editorial ledger](EDITORIAL-LEDGER.md)
+maps the sources and explains which later proofs replace earlier claims.
+Original drafts, code, data and PDFs remain historical evidence. This book is
+the canonical reading artifact.
 
-The work combines proved analytic identities, exact finite computations
-relative to specified laws, numerical candidate identities, and bounded
-negative searches. These statuses are distinguished in the manuscript.
-There is no proof-assistant formalization. In particular, numerical
-independence, minimal depth, gamma completeness beyond the standard relations,
-and the Stark regulator candidates are not claimed as unconditional theorems.
+The development follows mathematical dependency: conventions and Nielsen
+calculus; cyclotomic coordinates; algebraic arguments and ladders; depth,
+inverse-color reductions and harmonic sums; gamma certificates; CM lattices;
+integrated zeta jets; differentiated jets and uniform distribution ranks;
+Stieltjes zero geometry and spectral asymptotics; Herglotz arithmetic and
+optimal truncation; and experimental discovery. Experiments motivate the
+exact identities, rank proofs and analytic asymptotics, with proof status
+stated at each transition.
+
+The [validation report](VALIDATION.md) records fresh native Wolfram and
+independent Python checks, exact rational certificates, the converged build
+and rendered review. [WORKLOG.md](WORKLOG.md) records the completed integration.
+Numerical period independence and minimal depth are not inferred from failed
+searches. Gamma completeness beyond the stated relation system and Stark
+regulator predictions retain their conjectural scope. There is no
+proof-assistant formalization.
 
 ## Reproduction
 
-Run from this directory, with LuaLaTeX, Python with mpmath, and Wolfram Language
-available:
+From this directory, with LuaLaTeX, Python (mpmath, sympy, PyMuPDF and Pillow)
+and Wolfram Language available:
 
 ```powershell
 python verification/check_document.py
 python verification/check_identities.py
 wolfram -script verification/check-identities.wls
-lualatex -interaction=nonstopmode -halt-on-error polylogarithms.tex
-lualatex -interaction=nonstopmode -halt-on-error polylogarithms.tex
-lualatex -interaction=nonstopmode -halt-on-error polylogarithms.tex
+python verification/check_additional_corrections.py
+python verification/check_nielsen_inversion.py
+python verification/replay_ranks.py
+python verification/replay_cyclotomic.py
+python verification/replay_spectral.py
+python verification/build.py
+python verification/inspect_pdf.py --render-directory C:/path/to/local/review
+python verification/verify_receipts.py
 ```
 
-Numerical receipts in `verification/` are fresh focused checks of the
-corrected and retained formulas, with engine, precision, tolerances and
-individual residuals. They are separate from historical Smithereens search
-receipts quoted in the text. The historical tools and stores were not all
-imported; their absence is documented rather than presented as a replay.
-
-The [validation report](VALIDATION.md) records the completed source audit,
-31 native Wolfram checks, 67 independent mpmath checks, converged 100-page
-PDF and visual review. It pins the artifact by SHA-256 and distinguishes
-these checks from unproved numerical identities and historical receipts.
+`build.py` runs three serial LuaLaTeX passes. The committed hash receipts pin
+the reviewed PDF: a rebuild may differ in binary metadata and requires its
+own rendered review. `verify_receipts.py` checks the committed evidence; it
+does not rerun mathematics or confer review on a changed artifact. Additional
+continuation replays and their exact configurations are listed in
+[verification/REPRODUCTION.md](verification/REPRODUCTION.md). Every replay
+uses a separate manuscript output directory, preserving historical receipts.
