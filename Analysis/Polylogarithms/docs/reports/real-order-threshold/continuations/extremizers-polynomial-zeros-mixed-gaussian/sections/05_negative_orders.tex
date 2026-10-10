@@ -1,0 +1,172 @@
+\section{Two exact Gaussian sign transitions below outer order minus one}
+\label{sec:negative}
+The incoming Euler moment identities prove $g_{s,b}<0$ for every
+$s\ge-1$ and $b>0$ \cite[Section 6]{IncomingSharp}. They also exhibit
+opposite signs farther down the outer-order ladder and ask for the
+resulting sign changes. We resolve the first two integer cases
+completely in the inner order $b$.
+
+\subsection{A finite identity at every negative integer outer order}
+At $a=0$, \eqref{ker:eq:continuation} simplifies to
+\[
+ F_{0,b}(z)=\frac{z\Li_b(z)}{1-z}=\Li_0(z)\Li_b(z).
+\]
+The product rule and $\D\Li_s(z)=\Li_{s-1}(z)$ give the following
+exact identity, with no relation search.
+
+\begin{proposition}[Negative-order product formula]\label{neg:prop:product}
+For every integer $m\ge0$ and every $b>0$,
+\begin{equation}\label{neg:eq:product}
+ F_{-m,b}(z)=\sum_{j=0}^m\binom mj
+                  \Li_{-j}(z)\Li_{b-m+j}(z)
+\end{equation}
+on the principal slit plane. In particular the Gaussian value is a
+finite combination of shifted Dirichlet beta and eta values.
+\end{proposition}
+\begin{proof}
+In the disk $F_{-m,b}=\D^mF_{0,b}$, by termwise differentiation.
+Apply the finite Leibniz rule to the displayed product, then continue
+analytically. No convergence of the original series at $z=\ii$ is
+asserted or needed.
+\end{proof}
+
+For all complex $s$, analytic continuation of the residue-class identity
+gives
+\begin{equation}\label{neg:eq:Li-beta}
+ \Li_s(\ii)=-2^{-s}\eta(s)+\ii\beta(s).
+\end{equation}
+Using
+$\Li_0(\ii)=(-1+\ii)/2$,
+$\Li_{-1}(\ii)=-1/2$,
+$\Li_{-2}(\ii)=-\ii/2$,
+and $\Li_{-3}(\ii)=1$ in \eqref{neg:eq:product} gives
+\begin{align}
+ 2g_{-2,b}={}&-\beta(b-2)-2\beta(b-1)
+              -2^{2-b}\eta(b-2)+2^{-b}\eta(b),\label{neg:eq:m2}\\
+ 2g_{-3,b}={}&2\beta(b)-\beta(b-3)-3\beta(b-2)
+              -2^{3-b}\eta(b-3)
+              +3\,2^{1-b}\eta(b-1).\label{neg:eq:m3}
+\end{align}
+The shifted arguments in these formulas can be nonpositive; they have
+their continued values. The next theorem is a global sign assertion
+about these finite combinations.
+
+\subsection{Rational kernels and one-crossing Mellin integrals}
+\begin{lemma}[A Mellin sign-change principle]\label{neg:lem:mellin}
+Suppose a real function $w$ is positive on $(0,\tau)$ and negative
+on $(\tau,\infty)$, up to null sets, and
+\[
+ J(b)=\int_0^\infty t^{b-1}w(t)\dd t
+\]
+and its first logarithmic derivative integral converge locally uniformly
+for $b>0$. Then $\tau^{-b}J(b)$ is strictly decreasing on $(0,\infty)$.
+Consequently $J$ has at most one positive zero. If it has one, that
+zero is simple and $J'$ is negative there.
+\end{lemma}
+\begin{proof}
+Differentiation gives
+\[
+ \frac{d}{db}\{\tau^{-b}J(b)\}
+ =\tau^{-b}\int_0^\infty
+       t^{b-1}\log(t/\tau)w(t)\dd t<0.
+\]
+The integrand is negative on both sides of $\tau$. At a zero of
+$J$, the same inequality gives $J'<0$.
+\end{proof}
+
+\begin{theorem}[Complete first negative-order sign transitions]
+\label{neg:thm:transitions}
+For each $m\in\{2,3\}$ there is exactly one $b_m>0$ such that
+$g_{-m,b_m}=0$. This zero is simple, and
+\begin{equation}\label{neg:eq:signs}
+ g_{-m,b}>0\quad(0<b<b_m),\qquad
+ g_{-m,b}<0\quad(b>b_m).
+\end{equation}
+Moreover $0<b_2<1<b_3$. The two Dirichlet combinations
+\eqref{neg:eq:m2} and \eqref{neg:eq:m3} have exactly the same
+respective zero and sign descriptions.
+\end{theorem}
+\begin{proof}
+Differentiate the axis case of \eqref{ker:eq:continuation} under its
+bounded rational integrand. If $Y_b=e^{-T_b}$ and
+$T_b\sim\operatorname{Gamma}(b,1)$, then
+\[
+ g_{-m,b}=\E q_m(Y_b),\qquad
+ q_m(y)=\Ima\left[
+   \D^m\frac{z^2}{(1-z)(1-zy)}\right]_{z=\ii}.
+\]
+For each fixed $m$, this differentiation is justified uniformly on a
+complex neighborhood of $\ii$, because $0\le y\le1$ and the
+denominators stay away from zero. Direct differentiation yields
+\begin{align}
+ q_2(y)&=\frac{(1+y)(y^4+6y^2-3)}{2(1+y^2)^3},\label{neg:eq:q2}\\
+ q_3(y)&=-\frac{(1+y)(y^4-22y^2+1)}{(1+y^2)^4}.
+                    \label{neg:eq:q3}
+\end{align}
+Each rational function has exactly one zero in $(0,1)$, namely
+\[
+ r_2=\sqrt{-3+2\sqrt3},\qquad
+ r_3=\sqrt{11-2\sqrt{30}}.
+\]
+It is negative below that zero and positive above it. After the change
+$y=e^{-t}$, write
+\begin{equation}\label{neg:eq:mellin}
+ \Gamma(b)g_{-m,b}=\int_0^\infty
+          t^{b-1}e^{-t}q_m(e^{-t})\dd t.
+\end{equation}
+The kernel $w_m(t)=e^{-t}q_m(e^{-t})$ is positive before
+$\tau_m=-\log r_m$ and negative after it. It is bounded at zero
+and decays exponentially at infinity, so all local parameter
+differentiations are legitimate. \Cref{neg:lem:mellin} proves at most
+one simple crossing, from positive to negative.
+
+As $b\downarrow0$, $T_b\to0$ in probability because $\E T_b=b$.
+As $b\to\infty$, $T_b\to\infty$ in probability, for example by
+Chebyshev's inequality using its mean $b$ and variance $b$.
+Since $q_m$ is bounded and continuous on $[0,1]$, these limits give
+\begin{align*}
+ g_{-2,0+}=q_2(1)=\tfrac12,&\qquad
+ g_{-2,\infty}=q_2(0)=-\tfrac32,\\
+ g_{-3,0+}=q_3(1)=\tfrac52,&\qquad
+ g_{-3,\infty}=q_3(0)=-1.
+\end{align*}
+Continuity therefore proves existence. Finally the exact values
+\[
+ g_{-2,1}=-\frac34+\frac{\log2}{4}<0,
+ \qquad g_{-3,1}=1+\frac\pi4>0
+\]
+locate the two roots relative to one. They follow either from
+\eqref{neg:eq:m2}--\eqref{neg:eq:m3} or from differentiating
+$F_{1,1}(z)=\tfrac12\log^2(1-z)$. These two isolated evaluations
+were already displayed in \cite[Section 6]{IncomingSharp}; the new
+conclusion is the complete one-crossing classification for all $b>0$.
+\end{proof}
+
+Independent numerical evaluation of the Dirichlet formulas and the
+Mellin integrals gives
+\[
+ b_2=0.4238611967707581269539978159\ldots,
+ \qquad b_3=2.4369081043976327447535806729\ldots.
+\]
+These decimals are diagnostics; uniqueness, simplicity, and the sign
+classification are analytic results. No small-residual test is used
+to decide whether a zero exists.
+
+\paragraph{Why the next integer orders need new analysis.}
+The rational kernel construction and finite identity
+\eqref{neg:eq:product} work for every $m$. A one-crossing argument
+does not automatically persist. For example,
+\[
+ q_5(y)=-\frac{(1+y)
+ (y^8-236y^6+1446y^4-236y^2+1)}{(1+y^2)^6}
+\]
+has two zeros in $(0,1)$. To see this exactly, divide its degree-eight
+numerator by $y^4$ and set $T=y^2+y^{-2}>2$. The resulting quadratic
+is $T^2-236T+1444$, whose distinct roots $118\pm8\sqrt{195}$
+both exceed $2$. The map $y\mapsto T$ decreases bijectively from
+$(0,1)$ onto $(2,\infty)$, giving exactly two simple zeros.
+More general Mellin variation bounds give
+an upper bound by the number of kernel sign changes, but existence
+of all the permitted crossings is a separate problem. This is a
+concrete continuation of the negative-order question, not a proposed
+blanket extension of Gaussian negativity.

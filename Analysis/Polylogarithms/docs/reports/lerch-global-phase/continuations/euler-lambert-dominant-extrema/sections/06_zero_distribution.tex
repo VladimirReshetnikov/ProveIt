@@ -1,0 +1,140 @@
+\section{The global distribution of zero-velocity lattice parameters}
+\label{sec:velocity-zero-law}
+
+The same singularity geometry has a second interpretation: one may fix
+the index and vary the lattice spacing.  Define
+\[
+ p_n(L)=\sum_{j=1}^n\stirling{n}{n-j+1}\frac{(-L)^j}{j!},
+ \qquad v_n(A)=A^{-n}p_n(\log A).
+\]
+For $n\geq2$, write the positive zeros of $p_n$ in increasing order as
+$L_{n,1}<\cdots<L_{n,n-1}$, and put $A_{n,j}=e^{L_{n,j}}$.
+Thus $A_{n,j}-1$ is a lattice spacing where the initial diagonal
+velocity vanishes.  Equivalently, these $L_{n,j}$ are the positive
+zeros of Cohen's Lambert polynomial $L_n(L)=(-1)^np_n(L)$
+\cite[Proposition~4.8]{Cohen2021}; the law below is therefore a bulk
+zero law for that known family.
+
+\begin{lemma}[Real-rootedness and compact uniformity]
+\label{lem:zero-law-inputs}
+The polynomial $p_n$ has exactly the simple zero $0$ and $n-1$ simple
+positive zeros.  The additive asymptotic
+\eqref{eq:velocity-leading-cosine} is uniform for $A$ in any compact
+subinterval of $(1,\infty)$.
+\end{lemma}
+
+\begin{proof}
+The real-rootedness is the elementary diagonal result from
+\cite{HarmonicBaseline}; here is its operator proof.  With $D=d/dx$,
+\[
+ n p_n(L)=
+ \left.\left(\prod_{j=1}^{n-1}(1+D/j)\right)x^n\right|_{x=-L}.
+\]
+For a polynomial $P$ with real roots $r_i$ of multiplicities $m_i$,
+the roots of $P+cP'$ away from inherited roots solve
+$\sum_i m_i/(x-r_i)=-1/c$.  For $c>0$, the left side is strictly
+decreasing between its poles.  There is one new simple root in each
+interval between distinct roots and one to the left of the smallest
+root; an inherited root loses one multiplicity.  Starting with $x^n$
+and applying $n-1$ such operators gives $n$ simple nonpositive roots,
+of which zero is the largest.  Replacing $x$ by $-L$ proves the assertion.
+
+For uniformity, fix a compact parameter interval.  Its angles stay a
+positive distance from $0$ and $\pi$, its values of $a$ stay positive,
+and the two critical points remain separated.  The critical parameters
+and local coefficients depend real analytically on $A$.  In the
+normalized variable $r=t/R(A)$, the rectangle estimates used in
+Theorem~\ref{thm:selected-sheet} have uniform strict margins away from
+small neighborhoods of the two equality points.  The right boundary
+can be chosen with one common sufficiently large $M$.  On the compact
+set of regular boundary parameter pairs, the analytic implicit function
+theorem therefore supplies a uniform collar after taking a finite cover.
+At the two moving endpoints the normalized local equation
+\eqref{eq:local-implicit-equation} has a quadratic coefficient bounded
+away from zero, giving uniform Puiseux neighborhoods and remainder
+bounds, again by compactness.  The resulting transfer contours may be
+chosen with fixed normalized sizes and fixed angular dents.  The proof
+of Theorem~\ref{thm:velocity-asymptotics} then gives a remainder constant
+independent of $A$ in the chosen interval.
+\end{proof}
+
+\begin{theorem}[Limiting zero law and explicit bulk quantiles]
+\label{thm:velocity-zero-law}
+For every $A>1$,
+\begin{equation}\label{eq:zero-law-cdf}
+ \lim_{n\to\infty}\frac1{n-1}
+       \#\{j:A_{n,j}\leq A\}=\frac{\theta(A)}\pi.
+\end{equation}
+Consequently, if $j_n/(n-1)\to x\in(0,1)$, then
+\begin{equation}\label{eq:zero-law-quantile}
+ A_{n,j_n}\longrightarrow
+ \frac{\pi x}{\sin(\pi x)}\exp\bigl(1-\pi x\cot(\pi x)\bigr).
+\end{equation}
+In the logarithmic coordinate $L=\log A$, the limiting probability
+measure has density
+\begin{equation}\label{eq:zero-law-density}
+ \frac{d\mu}{dL}
+   =\frac{\theta}{\pi(a^2+\theta^2)},\qquad
+ L=1-\theta\cot\theta+\log\frac\theta{\sin\theta},
+ \quad a=1-\theta\cot\theta.
+\end{equation}
+Equivalently, in the original coordinate $A>1$ its density is
+\begin{equation}\label{eq:zero-law-density-A}
+ \frac{d\mu}{dA}=\frac{\theta(A)}
+              {\pi A\bigl(a(A)^2+\theta(A)^2\bigr)}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let $0<\alpha<\beta<\pi$.  The parameter $A$ is a strictly increasing
+function of $\theta$.  Uniformly on $[\alpha,\beta]$, the polynomial
+$p_n(L(\theta))$ has the sign of
+\[
+ \cos(n\theta+\phi(\theta))+O_{\alpha,\beta}(1/n),
+\]
+apart from the ambiguity allowed by a small cosine.  The smooth function
+$\phi$ has bounded derivative there, so $n\theta+\phi(\theta)$ is
+strictly increasing for all sufficiently large $n$.  At its successive
+integer multiples of $\pi$, the leading cosines are alternately $1$
+and $-1$, and the error is eventually smaller than $1/2$.  Between
+successive such points the intermediate value theorem supplies a
+polynomial zero.  The number of these successive pairs is
+$n(\beta-\alpha)/\pi+O_{\alpha,\beta}(1)$.  Hence the lower limit
+of the fraction of zeros whose angle lies in $[\alpha,\beta]$ is at
+least $(\beta-\alpha)/\pi$.
+
+Fix $\theta_0\in(0,\pi)$.  Applying this lower bound on
+$[\epsilon,\theta_0]$ gives a lower limit at least
+$(\theta_0-\epsilon)/\pi$ for the fraction below $\theta_0$.
+Applying it on $[\theta_0+\epsilon,\pi-\epsilon]$ and subtracting
+from the total of exactly $n-1$ positive roots gives an upper limit
+at most $(\theta_0+2\epsilon)/\pi$.  Letting $\epsilon$ decrease
+to zero proves \eqref{eq:zero-law-cdf}.  Strict monotonicity and
+continuity of its limiting distribution function give the quantile
+limit \eqref{eq:zero-law-quantile} by bracketing $x$ between nearby
+continuity points.
+
+Finally,
+\[
+ \frac{dL}{d\theta}
+   =\theta\csc^2\theta+\frac1\theta-2\cot\theta
+   =\frac{(1-\theta\cot\theta)^2+\theta^2}{\theta}
+   =\frac{a^2+\theta^2}{\theta}.
+\]
+Pushing forward the uniform measure $d\theta/\pi$ proves
+\eqref{eq:zero-law-density}.  Since $\theta$ runs from $0$ to $\pi$,
+the density has total mass one, and the CDF also proves tightness of the
+empirical measures.
+\end{proof}
+
+This distribution has a heavy logarithmic tail.  As $L\to\infty$,
+$a\sim L$ and $\theta\to\pi$, so $d\mu/dL\sim L^{-2}$ and
+$\mu((L,\infty))\sim L^{-1}$.  There is no contradiction with the
+exact finite-degree first moment
+\begin{equation}\label{eq:zero-law-exact-moment}
+ \sum_{j=1}^{n-1}L_{n,j}=nH_{n-1},
+\end{equation}
+obtained by comparing the leading two coefficients of $p_n$: the
+limiting distribution has infinite mean.  The bulk law concerns indices
+proportional to $n$; it gives no uniform estimate for either extreme
+root, whose scaling requires separate analysis.

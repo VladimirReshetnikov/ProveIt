@@ -1,0 +1,183 @@
+\section{Further research questions and explicit conjectures}
+\label{sec:research-agenda}
+
+The results isolate several precise next problems. The first group
+would complete finite-parameter statements already suggested by the
+source reports. The later groups ask for uniform transitions or new
+structures beyond the results proved here.
+
+\subsection{Complete the finite-index Euler extremum problem}
+
+\begin{conjecture}[Axis reduction at every truncation]
+\label{conj:all-index-axis}
+For every integer $N\geq1$,
+\[
+ C_N=\max_{b>0}R_N(0,b),
+\]
+and the unique maximizer on $a\geq0$, $b>0$ lies on that axis.
+\end{conjecture}
+
+The case $N=1$ is part of the known universal-constant theorem;
+the present article proves all sufficiently large $N$. The conjecture
+is about a global maximum over both orders. It should not be replaced
+by a pointwise comparison $R_N(a,b)\leq R_N(0,b)$ at every fixed $b$:
+that stronger statement is not the claim and has no such proof here.
+A productive approach would combine exact small-index analysis with
+an effective, moderately sized threshold in the localization argument.
+The relevant difficulties occur outside the eventual competitive band.
+
+An explicit threshold $N_0$ is itself useful. The present split at
+$b=2\log N$ produces a slowly vanishing factor
+$N^{1-2\log(5/3)}$. Improving this estimate, perhaps with a more
+carefully optimized gamma lower-tail bound, would turn the eventual
+theorem into a practical enclosure theorem. A finite numerical scan
+without a proved tail threshold would not close this question.
+
+\begin{conjecture}[All-index kernel uniqueness and decrease]
+\label{conj:all-index-kernel}
+For every $N\geq2$, $K_N$ has a unique global maximizer in $(0,1)^2$
+and $M_{N+1}<M_N$.
+\end{conjecture}
+
+This restates the remaining portion of the sharp-Euler report's
+conjecture. The exact $N=2$ elimination and the analytic branch near
+$1/N=0$ suggest combining algebraic continuation with certified
+boundary exclusions. Monotonicity of the envelope $B_N$ alone does
+not prove monotonicity of $M_N$.
+
+\subsection{Refine the gamma-transition asymptotics}
+
+The next Euler scale has the form
+$N^{-\mu}(\log N)^{-1/2}$ and carries a large first inverse-logarithmic
+coefficient. Determine a uniformly useful approximation across the
+moderate-$N$ regime and the true asymptotic regime. The exact positive
+remainder integral is a better starting point than subtraction of
+nearly equal Euler sums. One target is a resummed transition integral
+whose error remains explicit while retaining the slowly decaying tail
+responsible for the large coefficient.
+
+For other residual kernels, moment competition may put the analogous
+Mellin exponent at an integer. Classify when logarithmic resonances
+replace a pure fractional-power correction, and determine the resulting
+maximizer displacement. The present proof suggests a general method:
+identify the competing exponential moments, localize the parameters,
+and analyze the positive remainder near the moving kernel transition.
+The exponent and amplitude need to be derived anew for each kernel.
+
+The joint profile in \cref{eul:thm:joint-profile} gives the exact first
+loss from leaving the axis. Higher joint terms could quantify stability
+of near-optimal order selection at prescribed precision. They should
+be stated on explicit joint scales for $a$, $b-\widehat b_N$, and $N$;
+pointwise small-$a$ and large-$N$ expansions are not automatically uniform.
+
+\subsection{Determine the arithmetic of the oscillation phase}
+
+For a fixed algebraic value such as $A=2$, is
+$\theta(A)/(2\pi)$ irrational? The article proves sign-density
+statements in both the rational and irrational cases, so no unproved
+phase arithmetic is needed for those theorems. A proof of irrationality
+at $A=2$ would give density $1/2$ for each sign and would make rotation
+methods available for more precise gap statistics.
+
+Find the least eventual block length that must contain both signs.
+The bound $\lfloor\pi/\theta\rfloor+2$ is explicit and gives four at
+$A=2$. Whether a smaller block can work is a question about the actual
+rotation orbit and its distances from the sign boundaries, together
+with the coefficient error. Likewise, quantify the number of indices
+where the normalized velocity is unusually small. A relative cosine
+approximation is unsuitable for these exceptional indices; the
+all-order additive expansion is the available tool.
+
+The finite-part identity for the critically weighted first derivative
+can be extended to higher derivative sums. Determine their full
+subtraction polynomials in fractional powers of the cutoff, and
+identify which finite constants are local Puiseux coefficients.
+This should give explicit renormalized Stirling identities, with
+ordinary convergence and regularized limits carefully distinguished.
+
+\subsection{A proposed bulk quantization formula}
+
+Let $L_{n,j}$ be the positive zeros of $p_n$ in increasing order,
+$\theta_{n,j}=\theta(e^{L_{n,j}})$, and evaluate $u_*,\chi,\chi_1$
+at $A=e^{L_{n,j}}$. Put $\phi=-\arg\chi$ as before.
+The following indexed refinement is consistent with the finite root
+isolations supplied in the package.
+
+\begin{conjecture}[An indexed phase formula in the bulk]
+\label{conj:bulk-quantization}
+For every fixed $\epsilon\in(0,1/2)$, uniformly for
+$\epsilon(n-1)\leq j\leq(1-\epsilon)(n-1)$,
+\begin{equation}\label{eq:bulk-quantization-conjecture}
+ n\theta_{n,j}+\phi(\theta_{n,j})
+ =\pi\left(j+\frac12\right)
+   +\frac1n\Im\left(\frac{\chi_1}{\chi}\right)
+   +O_\epsilon(n^{-2}).
+\end{equation}
+\end{conjecture}
+
+The unproved content includes the global root indexing, in particular
+the exact shift $j+1/2$. Local transfer locates roots near a half-integer
+phase and gives the displayed correction once the index is identified;
+the bulk counting theorem alone does not fix that index. One possible
+route is to match the Bessel endpoint asymptotic to a uniform interior
+expansion in an overlap where $j\to\infty$ and $j/n\to0$.
+This is a conjectural asymptotic identity, not a formula used anywhere
+in the proofs of this article.
+
+\subsection{Connect the smallest, bulk, and largest root regimes}
+
+The three proved regimes are
+\[
+ L_{n,j}\asymp n^{-2}\quad(j\text{ fixed from the small end}),
+ \qquad L_{n,j}=O(1)\quad(j/n\text{ in the bulk}),
+\]
+and $X_{n,k,j}\sim n/j$ for $j$ fixed from the large end.
+Develop uniform expansions when the root index grows while remaining
+$o(n)$. At the large end, the main question is how the expansion around
+the $j$th zero of $1/\Gamma(1-w)$ changes when $j$ is no longer fixed.
+At the small end, the Bessel zero expansion should be matched to the
+singularity-transfer phase. Either transition would sharpen the weak
+zero law and give useful discrepancy estimates.
+
+The all-orders largest-root theorem treats fixed positive integer $k$.
+Determine uniform ranges of $k=k(n)$, and carefully extend the theorem
+to Cohen's derivative interpretation for nonpositive $k$ if desired.
+The exact logarithmic change of variables remains a promising starting
+point, but the compact-parameter gamma expansion used here does not
+justify growing-$k$ or growing-$j$ conclusions.
+
+Recent polynomial-profile methods \cite{JalowyKabluchkoMarynych2026}
+may supply another description of the bulk law. Determine whether the
+Lambert polynomial family admits a useful limiting Cauchy transform,
+free-convolution interpretation, or a potential-theoretic variational
+principle. Any such identification should explicitly handle its
+degree-dependent differential operator; the fixed-function examples
+in the general theory are not automatic substitutes.
+
+\subsection{Return the analytic tools to polylogarithmic identities}
+
+The exact error kernels remain available as certified numerical tools
+for cyclotomic and Gaussian polylogarithm identities. The unresolved
+mixed $S_6$ reduction is an appropriate arithmetic target, but a
+candidate relation requires an independent reduction mechanism such
+as iterated-integral relations, a differential identity with controlled
+boundary values, or a valid coaction argument. A high-precision integer
+relation search alone would still leave a conjecture.
+
+For roots of unity beyond $i$, seek a sector or matrix positivity
+statement that replaces the scalar order of the present Gaussian
+kernel. At higher depth, identify the correct iterated compensated
+differences and prove integrability at each step. The all-depth
+oscillation results already in the incoming material concern a
+different part of this problem; they should be used with their stated
+hypotheses, not treated as a ready-made extension of the present
+two-order Euler extremum theorem.
+
+Finally, the exact finite components provide natural formalization
+targets: the Euler coefficient identity, the rational derivative and
+resultant certificates, finite-field irreducibility, the elementary
+real-rooted operators, and the algebra of the first edge coefficients.
+A later formal development could then connect them to gamma
+integration, Rouch\'e continuation, and singularity transfer. The
+package supplies reproducible ordinary proofs and finite arithmetic;
+that proposed formal bridge remains future work.

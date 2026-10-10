@@ -1,0 +1,260 @@
+\section{The global limiting Euler-kernel extremum}
+\label{sec:kernel-extrema}
+
+The pointwise kernel optimum and the optimum after averaging over
+polylogarithm orders are different quantities. This section resolves the
+limiting-kernel conjecture in the incoming sharp-Euler report
+\cite{SharpEulerIncoming}. The argument also proves eventual uniqueness
+of the maximizer and gives a convergent expansion in the reciprocal
+truncation index.
+
+For an integer $N\ge1$, put
+\begin{equation}\label{eq:kernel-def}
+ W_N(x)=\frac{(1-x)^N}{1+x},\qquad
+ K_N(r,y)=\frac{W_N(ry^2)-W_N(r)}{1-y},\qquad
+ M_N=\max_{(r,y)\in[0,1]^2}K_N(r,y).
+\end{equation}
+At $y=1$ the definition means $K_N(r,1)=-2rW_N'(r)$.
+The divided difference is continuous on the closed square; hence the
+maximum exists. We will use $c=Nr$ for the rescaled first coordinate.
+
+\subsection{A decreasing envelope with uniform endpoint control}
+
+\begin{lemma}[Exact power envelope]\label{lem:power-envelope}
+For every integer $m\ge2$, define
+\begin{equation}\label{eq:Bm}
+ B_m(y)=\frac{(1-y^2)^m}
+ {(1-y)(1-y^{2m/(m-1)})^{m-1}},\qquad 0<y<1.
+\end{equation}
+Its continuous endpoint values are
+\[
+ B_m(0)=1,\qquad B_m(1)=2\left(1-\frac1m\right)^{m-1}.
+\]
+Then
+\begin{equation}\label{eq:power-max}
+ B_m(y)=\max_{0\le r\le1}
+ \frac{(1-ry^2)^m-(1-r)^m}{1-y}.
+\end{equation}
+The sequence $B_m$ decreases pointwise on $[0,1]$ to the continuous
+function
+\begin{equation}\label{eq:B-limit}
+ B(y)=(1+y)y^{2y^2/(1-y^2)},\qquad B(0)=1,\quad B(1)=2/e.
+\end{equation}
+The convergence is uniform on $[0,1]$.
+\end{lemma}
+\begin{proof}
+For $v=y^2\in(0,1)$, differentiation in $r$ shows that the unique
+maximum of $(1-rv)^m-(1-r)^m$ satisfies
+\[
+ \frac{1-r}{1-rv}=v^{1/(m-1)}.
+\]
+Substitution proves \eqref{eq:power-max} and \eqref{eq:Bm}.
+The endpoint $y=1$ is also the direct maximum of
+$2mr(1-r)^{m-1}$.
+
+To prove monotonicity, set $q=1/(m-1)$ and
+$L(q)=\log(1-v^{1+q})$. Then
+\[
+ \log B_m(y)=\log(1+y)-\frac{L(q)-L(0)}q.
+\]
+The function $L$ is strictly concave, since
+\[
+ L''(q)=-\frac{(\log v)^2v^{1+q}}{(1-v^{1+q})^2}<0.
+\]
+Its secant slope from zero decreases as $q$ increases. Thus decreasing
+$q$, which means increasing $m$, decreases $B_m(y)$.
+As $q\downarrow0$, the secant slope tends to
+$-v\log v/(1-v)$, giving \eqref{eq:B-limit}.
+At $y=1$ the same monotonicity follows from the monotone increase of
+$(1+1/k)^k$ to $e$, with $k=m-1$; at zero all values are one.
+The limiting function is continuous at both endpoints because
+$y^2\log y\to0$ at zero and
+$2y^2\log y/(1-y^2)\to-1$ at one.
+Dini's theorem now gives uniform convergence on the compact interval.
+\end{proof}
+
+\begin{lemma}[Uniform domination and local scaling]\label{lem:kernel-scale}
+For $N\ge2$,
+\begin{equation}\label{eq:kernel-envelope}
+ K_N(r,y)\le B_N(y)\qquad(0\le r,y\le1).
+\end{equation}
+Moreover, on every compact rectangle $0\le c\le A$, $0\le y\le1$,
+\begin{equation}\label{eq:kernel-limit}
+ K_N(c/N,y)\longrightarrow
+ H(c,y):=\frac{e^{-cy^2}-e^{-c}}{1-y},\qquad H(c,1)=2ce^{-c},
+\end{equation}
+uniformly, together with every fixed number of derivatives on compact
+sets where the variables are interior.
+\end{lemma}
+\begin{proof}
+The positive geometric expansion
+\[
+ W_N(x)=\sum_{k\ge0}2^{-k-1}(1-x)^{N+k}
+\]
+converges uniformly on $[0,1]$. Apply \cref{lem:power-envelope}
+termwise and use $B_{N+k}\le B_N$. This also proves the continuous
+endpoint case by passage to the limit.
+
+For bounded $z$, the functions
+\[
+ h_N(z)=W_N(z/N)=\frac{(1-z/N)^N}{1+z/N}
+\]
+converge in $C^j$ to $e^{-z}$ for every fixed $j$. At $y=1$ use
+\[
+ \frac{h_N(cy^2)-h_N(c)}{1-y}
+ =-c(1+y)\int_0^1 h_N'\bigl(cy^2+t c(1-y^2)\bigr)\dd t.
+\]
+This removes the apparent singularity and proves the stated uniformity.
+\end{proof}
+
+\subsection{The unique limiting maximum}
+
+\begin{theorem}[Global kernel limit and maximizer localization]
+\label{thm:kernel-global-limit}
+There is exactly one $y_\infty\in(0,1)$ satisfying
+\begin{equation}\label{eq:yinfty}
+ 1+y-y^2-y^3+4y\log y=0.
+\end{equation}
+Put
+\begin{equation}\label{eq:cinfty}
+ c_\infty=\frac{-2\log y_\infty}{1-y_\infty^2},\qquad
+ M_\infty=(1+y_\infty)
+      y_\infty^{2y_\infty^2/(1-y_\infty^2)}.
+\end{equation}
+Then
+\begin{equation}\label{eq:Mnlimit}
+ M_N\longrightarrow M_\infty>1.
+\end{equation}
+For \emph{every} choice of global maximizers $(r_N,y_N)$,
+\begin{equation}\label{eq:kernel-localization}
+ Nr_N\longrightarrow c_\infty,\qquad y_N\longrightarrow y_\infty.
+\end{equation}
+The limiting function $H$ has a unique global maximum at
+$(c_\infty,y_\infty)$, with negative definite Hessian there.
+\end{theorem}
+\begin{proof}
+For fixed $0<y<1$, direct differentiation shows that $H(c,y)$ has
+exactly one maximum in $c$, attained at
+$c(y)=-2\log y/(1-y^2)$; its value is $B(y)$.
+The logarithmic derivative of $B$ has the sign of
+\[
+ F(y)=1+y-y^2-y^3+4y\log y,
+ \qquad
+ (\log B)'(y)=\frac{F(y)}{(1-y^2)^2}.
+\]
+We have $F(0+)=1$, $F(1)=F'(1)=0$, and
+\[
+ F''(y)=-\frac{2(3y-2)(y+1)}y.
+\]
+Thus $F'$ increases from $-\infty$ up to $y=2/3$, and then decreases
+to zero. Its maximum is positive because
+$F'(2/3)=7/3+4\log(2/3)>1/3$, using $\log(3/2)<1/2$.
+It follows that $F$ first decreases and then increases, with exactly
+one zero in $(0,1)$. At that zero $F'<0$, so $B''(y_\infty)<0$.
+The limiting maximum exceeds one: at $y=1/4$,
+$B(y)>1$ is equivalent to $(5/4)^{15}>16$.
+
+The uniform envelope in \cref{lem:kernel-scale} gives
+$\limsup M_N\le\max B=M_\infty$. Evaluating at
+$(r,y)=(c_\infty/N,y_\infty)$ gives the matching lower bound.
+If $(r_N,y_N)$ maximizes $K_N$, then
+\[
+ M_N\le B_N(y_N)=B(y_N)+o(1).
+\]
+Uniqueness of the maximum of $B$ and compactness force $y_N\to y_\infty$.
+In particular $y_N$ stays away from zero and one. If $c_N=Nr_N$
+were unbounded along a subsequence, the estimate
+\[
+ 0\le K_N(r_N,y_N)
+ \le\frac{e^{-Nr_Ny_N^2}}{1-y_N}
+\]
+would force its value to zero, a contradiction. Every bounded
+subsequence has a further limit $c$, and the local scaling theorem
+gives $H(c,y_\infty)=M_\infty$. The unique conditional maximum
+then gives $c=c_\infty$; this proves \eqref{eq:kernel-localization}.
+
+Finally $H_{cc}<0$ at each conditional maximum. Differentiating
+$H(c(y),y)=B(y)$ shows that the Schur complement of $H_{cc}$ in
+the full Hessian is
+$H_{yy}-H_{cy}^2/H_{cc}=B''(y_\infty)<0$.
+This proves negative definiteness.
+\end{proof}
+
+\subsection{Convergent reciprocal-index expansions}
+
+\begin{theorem}[Eventual uniqueness and analytic perturbation]
+\label{thm:kernel-expansion}
+For all sufficiently large integers $N$, $K_N$ has exactly one
+global maximizer. There are real analytic functions $c(s)$, $y(s)$,
+and $M(s)$ near $s=0$ such that
+\[
+ Nr_N=c(1/N),\qquad y_N=y(1/N),\qquad M_N=M(1/N).
+\]
+Their Taylor series give convergent expansions in $1/N$ for large $N$.
+In particular,
+\begin{equation}\label{eq:Mn-first}
+ M_N=M_\infty+\frac{\kappa_\infty}{N}+O(N^{-2}),\qquad
+ \kappa_\infty=
+ \frac{c_\infty^2y_\infty^2(1+y_\infty)
+       e^{-c_\infty y_\infty^2}}2>0.
+\end{equation}
+Consequently $M_{N+1}<M_N$ for all sufficiently large $N$.
+\end{theorem}
+\begin{proof}
+Define, with its removable value at $s=0$,
+\[
+ \mathcal W(s,z)=\exp\left(\frac{\log(1-sz)}s-\log(1+sz)\right),
+ \qquad \mathcal W(0,z)=e^{-z},
+\]
+and
+\[
+ \mathcal K(s,c,y)=
+ \frac{\mathcal W(s,cy^2)-\mathcal W(s,c)}{1-y}.
+\]
+It is analytic near $(0,c_\infty,y_\infty)$, and at $s=1/N$
+it is $K_N(c/N,y)$. The analytic implicit function theorem applied
+to $(\mathcal K_c,\mathcal K_y)$, whose Jacobian is the invertible
+Hessian in \cref{thm:kernel-global-limit}, gives a unique analytic
+stationary branch $(c(s),y(s))$. The localization theorem places
+every global maximizer in an arbitrarily small neighborhood of this
+point for large $N$. On a fixed smaller convex neighborhood, the Hessian
+remains negative definite for small $s$. Strict concavity there and
+the implicit-function uniqueness prove global uniqueness.
+
+The first two terms are
+\[
+ \mathcal K(s,c,y)=H(c,y)+sH_1(c,y)+O(s^2),
+\]
+where, writing $A(z)=z+z^2/2$,
+\begin{equation}\label{eq:H1}
+ H_1(c,y)=\frac{e^{-c}A(c)-e^{-cy^2}A(cy^2)}{1-y}.
+\end{equation}
+Stationarity gives $e^{-c_\infty}=y_\infty^2e^{-c_\infty y_\infty^2}$.
+Substitution into \eqref{eq:H1} gives exactly $\kappa_\infty$ in
+\eqref{eq:Mn-first}. The first location correction is the explicit
+matrix formula
+\begin{equation}\label{eq:kernel-drift}
+ \begin{pmatrix}c'(0)\\y'(0)\end{pmatrix}
+ =-\bigl(D^2H(c_\infty,y_\infty)\bigr)^{-1}
+        \nabla H_1(c_\infty,y_\infty).
+\end{equation}
+Higher corrections follow by ordinary power-series substitution.
+Because the optimized value is itself analytic and
+$M'(0)=\kappa_\infty>0$, it increases with $s$ near zero.
+Taking $s=1/N$ proves eventual strict decrease. The two-term
+asymptotic alone, without this derivative information, would not
+justify the last conclusion.
+\end{proof}
+
+The diagnostic values, computed independently of the proof, are
+\begin{align*}
+ y_\infty&=0.1453038592593584238735558631\ldots,\\
+ c_\infty&=3.9410648316472506681136817940\ldots,\\
+ M_\infty&=1.0538619303627116260728728105\ldots,\\
+ \kappa_\infty&=0.1727965939279004260875754084\ldots.
+\end{align*}
+The incoming conjecture concerning the limit and all maximizer sequences
+is therefore settled. The stronger assertion of uniqueness and decrease
+for \emph{every} $N\ge2$ remains a separate finite-index problem;
+\cref{sec:exact-M2} resolves the uniqueness assertion at $N=2$.
+

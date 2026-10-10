@@ -1,0 +1,81 @@
+# The exact second extreme-root coefficient
+
+This is an independent finite symbolic derivation after the log-free
+coefficient transform in `sections/07_cohen_extremes.tex` has been established.
+The error estimate is supplied by that transform's all-orders saddle lemma.
+
+Write `epsilon=1/n`, `eta=1/N`, `N=n+kappa`, `kappa=k-1`, and
+`v=N/(X-log n)`. The log-free amplitude has the expansion
+
+    h_n(v)=g(v)(1+q1(v) epsilon+q2(v) epsilon^2+...),
+    g(v)=1/Gamma(1-v),
+    q1(v)=v(v+1)/2,
+    q2(v)=v(v+1)(v+2)(3v+1)/24.
+
+Through order `eta^3`, its coefficient transform is
+
+    T=h+eta S1(h)+eta^2 S2(h)+eta^3 S3(h)+...,
+    S1(h)=-v^2 h''/2,
+    S2(h)=v^3 h'''/3+v^4 h''''/8,
+    S3(h)=-v^4 h''''/4-v^5 h'''''/6-v^6 h''''''/48.
+
+These coefficients follow from the exact central coefficient moments. The
+standard-library certificate `verify_cohen_c1.py` checks the moments directly.
+
+Put `v=1+z`, normalize `g'(1)=1` (which does not change any root), and use
+
+    g(1+z)=z exp(c z-s2 z^2/2+s3 z^3/3-s4 z^4/4+s5 z^5/5+O(z^6)),
+    c=-gamma, s2=zeta(2), s3=-zeta(3),
+    s4=zeta(4), s5=-zeta(5).
+
+Substitution of `eta=epsilon/(1+kappa epsilon)` gives
+`T=g+epsilon A1+epsilon^2 A2+epsilon^3 A3+...`, where
+
+    A1=q1 g+S1(g),
+    A2=q2 g+S1(q1 g)-kappa S1(g)+S2(g),
+    A3=S1(q2 g)-kappa S1(q1 g)+kappa^2 S1(g)
+         +S2(q1 g)-2kappa S2(g)+S3(g).
+
+The omitted term `q3 g` in `A3` vanishes at `v=1`, and therefore does not
+affect the next calculation. If
+
+    v=1+u1 epsilon+u2 epsilon^2+u3 epsilon^3+O(epsilon^4),
+
+with all expressions below evaluated at `v=1`, coefficient comparison gives
+
+    u1=-A1,
+    u2=-(c u1^2+A1' u1+A2),
+    u3=-(2c u1u2+(c^2-s2)u1^3/2+A1' u2
+            +A1'' u1^2/2+A2' u1+A3).
+
+Exact expansion yields
+
+    u1=c,
+    u2=s2-s3+c^2-c kappa+3/2.
+
+The reciprocal `X-log n=(epsilon^(-1)+kappa)/v` has coefficients
+
+    C0=u1^2-u2-kappa u1=-s2+s3-3/2,
+    C1=-u3+2u1u2-u1^3+kappa(u1^2-u2)
+       =-s2^2+s2s3+kappa(s2-s3)-2s3+5s4-3s5-1/12.
+
+Using `5 zeta(4)=2 zeta(2)^2` proves the identity
+
+\[
+C_1(k)=(k-1)\bigl(\zeta(2)+\zeta(3)\bigr)
+       +\zeta(2)^2-\zeta(2)\zeta(3)+2\zeta(3)+3\zeta(5)-\frac1{12}.
+\]
+
+Thus, for each fixed admissible generalized parameter `k`,
+
+\[
+X_{n,k,1}=n+k-1+\log n+\gamma
+ -\frac{3/2+\zeta(2)+\zeta(3)}n+\frac{C_1(k)}{n^2}+O_k(n^{-3}).
+\]
+
+The all-orders lemma justifies this power remainder; the previous weaker
+logarithmic-error theorem alone would not suffice. The exact certificate
+uses rational coefficients throughout, checks cancellation of the formal
+symbol `c` from both corrections, and writes `verify_cohen_c1.json`.
+The optional decimal for orientation is
+`C1(1)=6.16006747239651437705316324893...`; it is not used in the proof.

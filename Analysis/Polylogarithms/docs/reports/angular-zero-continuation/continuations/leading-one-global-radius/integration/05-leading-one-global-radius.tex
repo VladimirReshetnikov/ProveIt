@@ -1,0 +1,194 @@
+% Additive fragment for the canonical ProveIt polylogarithm manuscript.
+% Requires its existing amsmath/amsthm setup and \Li operator.
+% All labels introduced here use the prefix lone:.
+\section{Global normalized-radius motion at leading index one}
+\label{lone:sec:global-radius}
+
+The local $a=1$ sign extends to the full disk. This statement concerns
+zeros of the imaginary part, not zeros of the polylogarithm itself.
+The independent article \emph{Global Radial Monotonicity for
+Leading-Index-One Double Polylogarithms} supplies a broader Green-kernel
+theorem, an outer-radius cutoff, moment inequalities, and exact sums over
+inner orders. The proof needed for the present assertion follows here.
+
+\begin{theorem}[The complete leading-index-one branch]
+\label{lone:thm:global-radius}
+Let $b>0$, and let $\theta_{1,b}(\rho)$ be the unique upper-arc zero of
+$\operatorname{Im}F_{1,b}(\rho e^{\mathrm i\theta})$ for $0<\rho\le1$.
+Then $\eta_b(\rho)=\cos\theta_{1,b}(\rho)/\rho$ is strictly decreasing
+for $b>1$, strictly increasing for $0<b<1$, and identically $1/2$ for
+$b=1$. Its analytic even extension at zero has value
+$\eta_b(0)=(1+2^{-b})/3$.
+\end{theorem}
+
+Define
+\begin{align}
+ w_b(u)&=\frac{(-\log u)^{b-1}}{\Gamma(b)},\notag\\
+ Q_b(u)&=(1-u)\int_0^u\frac{w_b(t)}{1-t}\,dt
+             +u\int_u^1\frac{w_b(t)}t\,dt.
+ \label{lone:eq:green}
+\end{align}
+The ratio $\min(u,t)(1-\max(u,t))/(t(1-t))$ lies in $[0,1]$.
+Dominated convergence therefore extends $Q_b$ continuously to zero at
+both endpoints. Its first derivative is integrable, since each positive
+term in
+\[
+ Q_b'(u)=\int_u^1\frac{w_b(t)}t\,dt
+                 -\int_0^u\frac{w_b(t)}{1-t}\,dt
+\]
+has integral $1$. Thus $Q_b$ is absolutely continuous, positive inside,
+and
+\begin{equation}\label{lone:eq:curvature}
+ Q_b''(u)=-\frac{w_b(u)}{u(1-u)}<0.
+\end{equation}
+It is strictly log-concave as well. Direct integration of the Green
+kernel gives
+\[
+ \int_0^1u^jQ_b(u)\,du
+       =\frac{H_{j+1}^{(b)}}{(j+1)(j+2)}.
+\]
+Hence coefficient comparison and integration by parts establish
+\begin{equation}\label{lone:eq:stieltjes}
+ F_{1,b}(z)=z^2\int_0^1\frac{Q_b(u)}{(1-zu)^2}\,du
+           =z\int_0^1\frac{-Q_b'(u)}{1-zu}\,du
+\end{equation}
+on the principal slit plane. The mean of the probability density $2Q_b$
+is $\mu_b=(1+2^{-b})/3$.
+
+\begin{lemma}[A unique nondegenerate Cauchy mode]
+\label{lone:lem:mode}
+For every $y>0$, the function
+$A_y(x)=\int_0^1Q_b(u)((x-u)^2+y^2)^{-1}\,du$ has one stationary point
+$m_b(y)\in(0,1)$, and $A_y''(m_b(y))<0$.
+\end{lemma}
+\begin{proof}
+With $K(v)=(v^2+y^2)^{-1}$, $A_y'$ is positive on $x\le0$ and
+negative on $x\ge1$. At any stationary point $x$, the signed integrand
+$Q_b(x-v)K'(v)$ has zero integral, positive sign for $v<0$, and
+negative sign for $v>0$. The score
+$S(v)=Q_b'(x-v)/Q_b(x-v)$ is strictly increasing by strict
+log-concavity. Integration by parts, then subtraction of $S(0)$, gives
+\[
+ A_y''(x)=\int_{x-1}^x Q_b(x-v)K'(v)(S(v)-S(0))\,dv<0.
+\]
+The integrability of $Q_b'$ and the zero endpoint values justify the
+calculation even if endpoint scores diverge. Every stationary point
+is consequently a strict downward crossing of $A_y'$, so there is
+only one. The implicit-function theorem makes $m_b$ real analytic.
+\end{proof}
+
+\begin{lemma}[Reflected curvature controls the height derivative]
+\label{lone:lem:reflection}
+Put
+\[
+ I(x,t)=\int_0^1\frac{(u-x)Q_b(u)}{((u-x)^2+t)^2}\,du.
+\]
+At its zero $x=m_b(\sqrt t)$, $I_t>0$ for $b>1$ and $I_t<0$ for
+$0<b<1$. For $b=1$ the zero is $x=1/2$ for all $t$.
+\end{lemma}
+\begin{proof}
+Suppose $b>1$, so $w_b$ is strictly decreasing. Extend $Q_b$ by zero
+outside $[0,1]$, and let $\Delta_x(v)=Q_b(x+v)-Q_b(x-v)$ for $v\ge0$.
+At $x=1/2$, it is strictly convex between two zero endpoint values,
+because
+\[
+ \Delta_{1/2}''(v)=
+ \frac{w_b(1/2-v)-w_b(1/2+v)}{1/4-v^2}>0.
+\]
+Thus $I(1/2,t)<0$, and the unique mode lies below $1/2$.
+For $0<x<1/2$ and $0<v<x$,
+\[
+ \Delta_x''(v)=
+ \frac{w_b(x-v)}{(x-v)(1-x+v)}
+ -\frac{w_b(x+v)}{(x+v)(1-x-v)}>0.
+\]
+The first numerator is larger and its denominator smaller. Therefore
+$\Delta_x(v)/v$ is strictly increasing on $(0,x)$. Also
+$\Delta_x(x)=Q_b(2x)>0$, and $\Delta_x(v)>0$ on $x<v<1-x$.
+At the mode, the paired equation
+\[
+ I(x,t)=\int_0^\infty\frac{v\Delta_x(v)}{(v^2+t)^2}\,dv=0
+\]
+forces a negative part, so $\Delta_x$ has exactly one
+negative-to-positive crossing $v_0\in(0,x)$. Consequently
+\[
+ I_t=\int_0^\infty\frac{v\Delta_x(v)}{(v^2+t)^2}
+       \left(-\frac2{v^2+t}+\frac2{v_0^2+t}\right)\,dv>0.
+\]
+For $0<b<1$, reflect the increasing weight $w_b$ under $u\mapsto1-u$
+and apply the same argument to the resulting decreasing weight; the
+sign reverses. At $b=1$ the density is symmetric, so the mode is $1/2$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{lone:thm:global-radius}]
+For $z=(x-\mathrm i y)^{-1}$, \eqref{lone:eq:stieltjes} gives
+\[
+ \operatorname{Im}F_{1,b}(z)=-2y I(x,y^2).
+\]
+Thus the upper-half-plane imaginary zero has $x=m_b(y)$.
+To convert this to disk radius, set $s=\rho^2$ and
+$\mathcal I(x,s)=I(x,s^{-1}-x^2)$. At the angular zero $x=\eta_b(\sqrt s)$.
+
+The signed density $\kappa=-Q_b'$ has zero mass and one strict
+negative-to-positive crossing. Put
+\[
+ J_\rho(c)=\int_0^1\frac{\kappa(u)}{1-2\rho cu+\rho^2u^2}\,du.
+\]
+At its unique zero, $J_\rho'(c)>0$: the signed measure obtained by
+multiplying $\kappa$ by the positive denominator reciprocal still has
+zero mass and one crossing, and the derivative score
+$2\rho u/(1-2\rho cu+\rho^2u^2)$ is strictly increasing in $u$ for
+$0<\rho\le1$. Subtraction of its value at the crossing proves the sign.
+The root lies in $0<c<\rho$, since $J_\rho(0)<0<J_\rho(\rho)$;
+the upper endpoint at $\rho=1$ is interpreted by monotone convergence
+of its positive part.
+
+Since $\operatorname{Im}z=sy$, comparison of the two integral formulas
+gives
+\[
+ J_{\sqrt s}(\sqrt s\,x)=-\frac2s\mathcal I(x,s),
+ \qquad \mathcal I_x<0\ \text{at the root}.
+\]
+At fixed $x$, $\mathcal I_s=-s^{-2}I_t$. Hence
+\begin{equation}\label{lone:eq:radial-derivative}
+ \frac d{ds}\eta_b(\sqrt s)=\frac{s^{-2}I_t}{\mathcal I_x}.
+\end{equation}
+Lemma~\ref{lone:lem:reflection} gives all strict signs. Symmetry gives
+$\eta_1=1/2$. The local analytic extension and its value at zero follow
+either from the existing local coefficient calculation or from the
+analytic equation $J/s=\eta-\mu_b+O(s)$.
+\end{proof}
+
+\begin{corollary}[The local coefficient is a central moment]
+\label{lone:cor:moment}
+Let $U_b$ have density $2Q_b$ and mean $\mu_b$. Then
+\[
+ K(1,b)=-2\mathbb E(U_b-\mu_b)^3.
+\]
+More generally, every odd central moment of order $2m+1$, $m\ge1$,
+has the sign of $b-1$.
+\end{corollary}
+\begin{proof}
+At $x=\mu_b$, the mean identity gives
+$\int_0^\infty v\Delta_x(v)\,dv=0$. For $b>1$, the reflected-curvature
+argument gives exactly one negative-to-positive crossing $v_0$.
+Multiplication by the increasing factor $v^{2m}-v_0^{2m}$ shows
+$\int v^{2m+1}\Delta_x(v)\,dv>0$. Reflection handles $b<1$ and symmetry
+handles $b=1$. The raw moments from \eqref{lone:eq:green} yield
+\[
+ \mathbb E(U_b-\mu_b)^3
+ =\frac{H_4^{(b)}}{10}
+ -\frac{H_2^{(b)}H_3^{(b)}}6
+ +\frac{2(H_2^{(b)})^3}{27},
+\]
+which agrees with $-K(1,b)/2$.
+\end{proof}
+
+\begin{remark}[Scope]
+The theorem resolves the full-radius branch $a=1$, not the remaining
+higher-outer-order problem. Monotonicity should also not be replaced
+by a uniform convexity claim: the coefficient of $\rho^4$ in
+$\eta_2$ is $-263/777600$, whereas in $\eta_4$ it is
+$504047/3149280000$. The separate article proves these values and
+provides exact verification artifacts.
+\end{remark}

@@ -1,0 +1,395 @@
+\section{Audit findings, status changes, and reproducibility}
+\label{sec:audit}
+
+\subsection{What has changed mathematically}
+
+The source snapshot matters because several incoming reports overlap,
+and some questions in an earlier report are answered by a later one.
+We inspected the canonical manuscript and the textual contents of all
+six incoming archives at the pinned revision. We used that comparison
+to choose the present targets and to identify the inherited inputs.
+This is an audit of the dependencies and claims relevant to this
+continuation, not a new line-by-line certification of all 379 pages.
+
+The main changes of status are as follows.
+
+\begingroup
+\small
+\renewcommand{\arraystretch}{1.18}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.28\textwidth}
+ >{\raggedright\arraybackslash}p{.31\textwidth}
+ >{\raggedright\arraybackslash}p{.35\textwidth}@{}}
+\toprule
+Question in the snapshot & Previous status & Result in this article\\
+\midrule
+\endfirsthead
+\toprule
+Question in the snapshot & Previous status & Result in this article\\
+\midrule
+\endhead
+Global limit of the optimal kernel constants
+& Local scaling theorem; global limit conjectured in
+  \cite[Section 8]{IncomingSharp}
+& Theorem~\ref{ker:thm:limit} proves the limit, the limiting maximizer,
+  and a uniform quantitative enclosure.\\
+Uniqueness and decrease of kernel maxima
+& Conjectured at every finite truncation
+& Theorem~\ref{ker:thm:N2} proves uniqueness at $N=2$;
+  Theorem~\ref{ker:thm:analytic} proves eventual uniqueness,
+  decrease, and a convergent expansion.\\
+Sharp decay of $C_N-1$
+& A lower asymptotic; matching upper asymptotic conjectured in
+  \cite[Section 9]{IncomingBounds}
+& Theorems~\ref{ord:thm:axis-reduction} and
+  \ref{ord:thm:leading} prove the global asymptotic and the eventual
+  axis reduction.\\
+Next order scale and near maximizers
+& Not resolved by the leading candidate
+& Theorem~\ref{ord:thm:second} gives the threshold-layer correction;
+  Corollary~\ref{ord:cor:near-maximizers} gives the exact
+  $o(N^{-p})$ criterion.\\
+Polynomial Appell root separation
+& Exponential lower bound; a polynomial bound requested in
+  \cite[Section 8]{IncomingUniform}
+& Theorem~\ref{mesh:thm:polynomial} proves
+  $\mesh(Q_n)\ge1/(10n^2)$.\\
+Growing-index Lerch saturation
+& Explicit exponential threshold and logarithmic index range
+& Theorem~\ref{mesh:thm:saturation} gives an
+  $O(n^4\log^2n)$ threshold and a uniform $8/\sqrt{k}$ log error.\\
+Signs at outer orders $-2,-3$
+& Individual opposite-sign evaluations; negativity proved down to $-1$
+& Theorem~\ref{neg:thm:transitions} classifies all $b>0$:
+  one simple crossing in each case.\\
+Mixed Gaussian periods
+& $S_4$ proved; $S_6,S_8,S_{10},S_{12}$ conjectural
+& Exact generating and sampling identities are proved.
+  A new $S_{14}$ candidate is supplied with certified proximity;
+  its equality remains conjectural.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+The constants $M_N$ and $C_N$ must remain distinct. The former is the
+maximum of a pointwise two-variable kernel; the latter is the supremum
+after averaging that kernel against the particular gamma distributions
+coming from the two polylogarithm orders. Although $C_N\le M_N$, their
+limits are different:
+\[
+ M_N\longrightarrow1.05386193036\ldots,\qquad C_N\longrightarrow1.
+\]
+The limiting pointwise extremizer has $Np_N\to c_\infty$ and
+$y_N\to y_\infty$. The order-averaged extremizer instead approaches
+the outer-order boundary, with $b_N\sim\log N/\log(3/2)$. The probability
+laws allowed by the order parameters do not reproduce an arbitrary
+point mass at the pointwise maximizing pair.
+
+\subsection{Proposed corrections and precise integration instructions}
+
+No theorem-level error was established in the inherited results used
+in these proofs. The necessary manuscript changes are chiefly updates
+of status and explicit qualifications. They should not be presented
+as retractions of correct earlier results.
+
+\paragraph{The two Euler conjectures.}
+In \cite{IncomingSharp}, replace the conjectural status of
+\texttt{conj:limit} by Theorem~\ref{ker:thm:limit}. Retain the
+all-finite-index content of \texttt{conj:maxima}: the present eventual
+theorem and the exact $N=2$ case leave intermediate finite indices
+unclassified. In \cite{IncomingBounds}, replace
+\texttt{conj:euler-rate} by Theorem~\ref{ord:thm:leading}, and add
+the exact axis-reduction theorem before discussing the rate.
+It supplies the global upper bound that an axis computation alone
+cannot give.
+
+The strict domain-specific estimate $R_N(a,b)<1$ for $a\ge1$ in the
+canonical \path{chapters/05-real-euler.tex} is an explicit dependency.
+The larger universal constant $C_*$ does not supply the same
+exclusion. The already proved value
+$C_*=1.1365611033395\ldots$ remains a separate, all-index optimum.
+
+\paragraph{Quantifiers on asymptotics.}
+The uniqueness and monotonicity statements for the two maximizing
+problems are eventual unless explicitly stated at $N=2$.
+We do not provide a numerical starting index for those eventual
+statements. Also, the next Taylor moment of the axis kernel is not
+the next asymptotic term of the optimized remainder.
+The threshold layer gives
+$N^{-\kappa}(\log N)^{-1/2}$, and the first relative inverse-log
+coefficient is large in magnitude. Remark~\ref{ord:rem:late} explains
+why moderate-index agreement is an unreliable way to assess this
+second term. This is a qualification needed in further extrapolation,
+not a claim that the incoming reports made the incorrect expansion.
+
+\paragraph{Lerch geometry.}
+In \cite[Section 4]{IncomingUniform}, retain the original mesh bound:
+it is useful at small degrees and is compatible with the stronger
+polynomial estimate. Replace an exponential threshold as the only
+available effective theorem by
+Theorems~\ref{mesh:thm:saturation} and \ref{mesh:thm:transfer}.
+The sharper generic transfer can use any proved mesh bound, including
+the maximum of the old and new lower bounds.
+The family at $\rho=1$ is the derivative family with $k\ge1$;
+the undifferentiated Lerch sum need not converge there.
+The polynomial growing-index theorem establishes leading relative
+locations and the full zero count, not uniform constant offsets or
+complete zero expansions in the joint limit.
+
+\paragraph{Negative outer orders.}
+Keep the previously proved negativity for every real outer order
+at least $-1$. The two formulas at $b=1$ used in
+Theorem~\ref{neg:thm:transitions} were already in the incoming Euler
+report and should retain that provenance. What is new is the unique
+simple transition throughout $b>0$. The kernel $q_5$ shows why the
+one-crossing proof cannot simply be asserted for all lower orders.
+
+\paragraph{Arithmetic status and old labels.}
+The canonical \path{chapters/04-S4-proof.tex} labels
+\texttt{s4proof:thm:s4} and \texttt{gaussian:thm:S4} denote an
+already proved result; the older \texttt{gaussian:conj:S4} survives
+as a compatibility label, not as evidence that the identity is still
+open. By contrast, \texttt{cycloquot:conj:S6} in
+\path{chapters/04-cyclotomic-quotients.tex} and
+\texttt{s8new:conj:S8} in \path{chapters/04-S8-candidate.tex}
+remain conjectures. The $S_{10},S_{12}$ vectors in
+\cite[Section 5]{IncomingUniform} are prior candidates.
+Our weight-fifteen vector is new relative to those files; restricted
+relation-space calculations at the same weight were already present.
+
+A rational enclosure containing zero proves a bound on the residual,
+not its exact vanishing. Likewise, nonmembership in a specified
+finite relation space does not prove independence of complex periods
+or impossibility of a reduction using a larger alphabet.
+The generating identities of Section~\ref{mix:sec} also do not
+authorize coefficientwise fixed-weight conclusions beyond what their
+proofs actually establish.
+
+The companion integration note gives the source files and labels in
+machine-searchable form. Labels in this article use the prefixes
+\texttt{ker:}, \texttt{ord:}, \texttt{mesh:}, \texttt{neg:}, and
+\texttt{mix:} to reduce collision risk when sections are moved.
+
+\subsection{What the computational artifacts prove}
+
+The package separates exact replay from numerical diagnostics.
+The distinction is mathematical: increasing working precision is not
+a substitute for bounding an infinite tail, and a computed optimizer
+is not a global maximum certificate.
+
+\begin{enumerate}
+\item \textbf{Exact rational kernel enclosures.}
+  \path{code/verify_kernel.py} isolates the root defining $y_\infty$
+  using rational bounds for the logarithm, encloses the corresponding
+  exponential constant, and isolates the algebraic $N=2$ root and
+  its rationally defined maximum. The qualitative uniqueness and
+  global conclusions are supplied by Section~\ref{sec:kernel}.
+  The separate diagnostic script checks symbolic elimination and
+  plots locally computed stationary values.
+\item \textbf{Exact exponent comparisons.}
+  \path{code/verify_order_constants.py} uses rational atanh-series
+  bounds for logarithms to check the strict comparisons between the
+  exponents in Section~\ref{ord:sec:main}. These finite sign checks
+  support the stated separation of scales; the uniform analytic
+  arguments remain part of the proof.
+\item \textbf{Appell and transfer arithmetic.}
+  \path{code/verify_mesh.py} records exact algebraic and rational
+  checks used in the mesh constants and computes the sufficient
+  integer thresholds without rounding them downward. Its finite
+  examples are identified as checks of formulas, not a replacement
+  for the argument valid at every degree.
+\item \textbf{The frozen weight-fifteen certificate.}
+  \path{code/verify_s14.py} starts from the integer vector and uses
+  Python integers and rational fractions throughout. Its finite
+  Euler sums, elementary constant intervals, and analytic tails
+  produce the shipped interval for $R_{14}$ and verify
+  $|R_{14}|<10^{-775}$. Both endpoints and all basket intervals
+  are replayed exactly. The certificate contains zero and does not
+  prove $R_{14}=0$.
+\item \textbf{Independent diagnostics.}
+  Symbolic differentiation verifies the negative-order kernels,
+  and separate Dirichlet and Mellin evaluations check their displayed
+  decimals. The mixed-generator program checks rational samples,
+  integer samples, pole finite parts, and resummation tails.
+  A separate Mellin calculation checks the frozen $S_{14}$ vector
+  without using its discovery summation. These high-precision
+  computations are corroboration, with their precision and residuals
+  recorded in the data files.
+\end{enumerate}
+
+The default replay uses only the Python standard library for its exact
+certificates. Optional numerical and symbolic diagnostics use
+\texttt{mpmath}, \texttt{sympy}, and \texttt{matplotlib}; the versions
+used in this delivery are recorded. The main \path{article.tex}
+builds with pdfLaTeX and standard mathematics packages.
+The source revision, incoming archive hashes, relevant source hashes,
+verification commands, and PDF review are included in the package.
+No repository modification or publication is part of this delivery.
+
+\section{Further research questions}
+\label{sec:research}
+
+The results above remove several qualitative obstacles, but they also
+identify where the present methods lose information. The following
+questions are ordered by their relation to the proved theorems and by
+the kind of additional argument they require.
+
+\subsection{Finite-index extremizers and the order boundary}
+
+\paragraph{1. Is every $K_N$ uniquely maximized, and is $M_N$ strictly
+decreasing for every $N\ge2$?}
+The exact $N=2$ elimination and the analytic large-$N$ theorem leave
+a finite but presently unbounded intermediate region. One route is
+to obtain a quantitative neighborhood and starting index for the
+implicit-function argument, then certify the remaining rational
+kernels by elimination or interval subdivision. A more satisfying
+answer would be a direct comparison principle in $N$.
+Pointwise monotonicity of a fixed-order normalized remainder is
+unavailable in general, and monotonicity of the auxiliary envelope
+does not alone compare its underlying maxima.
+
+\paragraph{2. Does exact axis reduction hold at every truncation?}
+For sufficiently large $N$, every positive outer order is strictly
+inferior to the axis. The full finite-index question is to decide
+whether $C_N=\max_b A_N(b)$ holds for all $N$, and whether the
+axis maximum is always unique. If it fails, identify the first
+interior maximizer and its transition. The uniform comparison
+\eqref{ord:eq:axis-comparison} is a useful starting inequality, but
+its positive and negative terms are too coarse at modest indices
+to decide the question without further work.
+
+\paragraph{3. Make the eventual statements effective.}
+Produce explicit starting indices for axis reduction, axis uniqueness,
+kernel uniqueness, and the respective monotonicity results.
+The present proofs give concrete inequalities but leave several
+\emph{sufficiently large} transitions unevaluated. Quantitative gamma
+tail estimates and explicit bounds on derivatives of the limiting
+kernels could turn them into finite gates. The practical challenge is
+to obtain useful indices rather than enormous formal upper bounds.
+
+\paragraph{4. Describe the threshold regimes beyond the maximizing
+order.}
+The Mellin integral in Lemma~\ref{ord:lem:threshold} converges for
+$3/2<\alpha<5/2$. At the endpoints, a Taylor subtraction collides
+with the integrability boundary. Determine uniform formulas as
+$b/\log N$ approaches these values at a rate depending on $N$,
+and determine the subsequent subtraction hierarchy. The poles of
+the continued gamma factor suggest where logarithmic transition
+terms should enter, but the integral must be treated before any
+such expansion is asserted.
+
+\paragraph{5. Obtain usable remainder bounds at the second scale.}
+The inverse-log coefficient near the maximizing slope is large,
+so a few formal terms are not a reliable moderate-$N$ approximation.
+Find an expression retaining the threshold integral, or another
+uniform approximation, with a computable relative error.
+This would connect the exact extremizer theorem with practical
+Euler truncation budgets. It would also allow meaningful numerical
+tests of the optimizer displacement well before the extremely
+late asymptotic regime.
+
+\subsection{Appell spacing and joint zero geometry}
+
+\paragraph{6. Determine the true minimum-gap asymptotic.}
+The bound $1/(10n^2)$ answers the polynomial-separation question,
+but it is not expected to describe every feature of the root
+configuration. Determine the actual order and leading constant of
+$\mesh(Q_n)$, and locate the pair of roots where the minimum occurs.
+Bulk zero distributions alone need not control the smallest spacing,
+especially if it occurs at an edge. A result resolving this distinction
+would feed directly into the scale-free transfer theorem.
+
+\paragraph{7. Improve the remote-block method.}
+The proof uses $3n$ factors near $15n^2$ because that choice allows
+elementary Laguerre estimates with transparent constants. Optimize
+the block length, its position, and the ordered-root comparison.
+Can information on correlated root motion reduce the loss from
+the worst displacement of one endpoint? Can several blocks yield
+a stronger power of $n$? The mesh-preservation theorem should
+remain separate from any unsupported monotonicity in an individual
+factor coefficient.
+
+\paragraph{8. Find the optimal saturation scale and first offsets
+when $n$ grows.}
+The present sufficient threshold is $O(n^4\log^2 n)$, uniformly
+over $\rho$ and every root. It is not a lower bound on the first
+derivative order where saturation actually occurs. Determine the
+true scale, its dependence on the branch, and whether the harmonic
+factor is essential. Then strengthen the leading relative location
+to a uniform additive offset and a controlled higher expansion.
+This requires bounds on root-conditioned derivatives, not merely
+separation and total zero count.
+
+\paragraph{9. Extend the transfer theorem to other positive weights.}
+Its essential input is a bound on the logarithmic derivative of the
+positive weight, together with a real-rooted factor in $\log t$.
+Identify other polylogarithmic and zeta derivative families with
+that structure, including deformations whose logarithmic Lipschitz
+constant grows with the degree. Determine when the resulting
+constants still permit a polynomial joint-growth range.
+Sign-changing weights require additional control because the
+global variation bound may then change.
+
+\subsection{Sign transitions and exact period reductions}
+
+\paragraph{10. Classify every negative integer outer order.}
+The finite product formula gives an explicit rational Gaussian
+kernel for every $m$. Determine its number of roots in $(0,1)$,
+then determine which permitted sign changes survive its gamma
+average as $b$ varies. The $m=5$ example already separates the
+one-crossing mechanism from the general problem.
+Possible tools include reciprocal-polynomial substitutions,
+Eulerian polynomial recurrences, and Mellin variation arguments.
+A root count for the rational kernel is only an upper bound for
+the number of transitions in the averaged function.
+
+\paragraph{11. Construct a generating identity for the fixed-weight
+mixed Gaussian reductions.}
+The exact identities for $\mathcal S$ and $\mathcal O$ evaluate
+infinite sums across weights. They do not supply the finite
+weight-by-weight relation needed for $S_6$ or $S_{14}$.
+The central problem is to find a bivariate generating relation,
+a differential equation with enough boundary data, or an explicit
+iterated-integral reduction whose coefficients are the desired
+finite identities. Rational sampling may constrain such a
+construction and indicate which cyclotomic levels it naturally uses.
+
+\paragraph{12. Prove or refute the frozen $S_{14}$ relation.}
+The interval in Proposition~\ref{mix:prop:proximity} is a precise
+target for symbolic work. A proof should exhibit an exact algebraic
+or iterated-integral relation, including endpoint terms and branch
+conventions. Further digits would only strengthen proximity.
+If the current finite relation space is insufficient, specify the
+enlarged alphabet or class of relations and test the frozen vector
+there. Do not infer period independence from a restricted rank
+calculation.
+
+\paragraph{13. Determine the arithmetic structure of the coefficient
+vectors.}
+The previously recorded $S_{10},S_{12}$ candidates and the present
+$S_{14}$ vector have a common basket pattern. Establish whether
+there is a uniform rational formula, recurrence, or generating
+function for these coefficients, and explain the persistent
+$-2\beta(2m)\log2$ term where it occurs. Searches should freeze
+their basket and vector before independent evaluation and should
+report exact residual intervals with an explicit normalization.
+Any conjectured coefficient law needs testing outside the weights
+used to infer it.
+
+\subsection{Reproducible and formal continuations}
+
+\paragraph{14. Formalize small reusable proof components.}
+Several arguments here are natural proof-assistant targets:
+the divided-difference expectation, the elementary global
+maximum criterion, the rational $N=2$ elimination certificate,
+the ordered-root comparison for $1+c\partial$, and the gamma
+log-moment bound. They can be separated from the heavier complex
+analytic continuation machinery. A formal integration plan should
+distinguish algebraic certificate checking from formalized analysis
+and should retain the exact source revision for inherited
+dependencies.
+
+The first mathematical priorities are an effective finite-index
+extremizer classification, a sharper Appell mesh theorem, and an
+exact relation producing the fixed-weight mixed Gaussian identities.
+Each has a concrete obstruction exposed by the present proofs,
+and none is resolved by additional numerical precision alone.

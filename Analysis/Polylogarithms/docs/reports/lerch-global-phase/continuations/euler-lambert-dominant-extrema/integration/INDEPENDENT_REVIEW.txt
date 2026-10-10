@@ -1,0 +1,198 @@
+# Independent mathematical review and attribution notes
+
+This review concerns the proposed research article and its supporting scripts,
+against ProveIt commit `4c173c06cc32c9cea554b39be1837ad2ae897fc1`.
+It records checks of the proofs and the limits of the claims. Numerical plots
+and high precision computations were not used as substitutes for proof.
+
+## Selected inverse sheet and harmonic velocities
+
+The rectangle argument for the germ
+`exp(U_A(t)) = A + t U_A(t)`, `U_A(0) = log A`, was checked directly for
+every real `A > 1`. The horizontal factorization, strict vertical barrier,
+right-edge estimate, root count, and choice of the accessible square-root
+branch are correct. The proof identifies the singularities of the selected
+germ, rather than merely listing critical values of the entire inverse map.
+The compact boundary cover and the two local slit neighborhoods suffice for
+coefficient transfer; no unproved exclusion of other inverse sheets or of
+global asymptotic values is needed. In the cover argument, compactness applies
+to the underlying uncut neighborhoods; the two outward rays are removed
+afterward.
+
+The first two coefficient terms, the all-order Puiseux formula, the finite-part
+identity at a dominant critical parameter, bounded gaps between both signs,
+and the rational/irrational sign-density distinction were independently
+checked. The coefficient error must be stated additively: a relative error
+would not be valid near cancellation of the two dominant contributions.
+Compact-parameter uniformity is enough for the limiting zero distribution;
+the proof does not require a uniform estimate at either endpoint of the
+parameter range. The CDF proof uses a lower zero count on compact angle
+intervals and the exact total number of positive roots, which avoids an
+unjustified global bounded-discrepancy claim.
+
+The exact convergence radius is already present, after a change of variables,
+in G. A. Kalugin and D. J. Jeffrey, *Convergence in C of series for the Lambert
+W function*, arXiv:1208.0754, Theorem 1 and equation (2.9). The correspondence
+is `lambda = log A`, `sigma = -t/A`, and the series variable called `u` in that
+paper is the present `V_A = log A - U_A`. Thus the radius should be attributed
+as known. The self-contained selected-sheet proof and the stated subsequent
+consequences should be distinguished from a priority claim for the radius.
+
+The coefficient polynomials are also known: in Henri Cohen, *Lambert
+W-Function Branch Identities*, arXiv:2012.11698, Proposition 4.8, the Lambert
+polynomials satisfy `L_n(X) = (-1)^n p_n(X)`. Cohen's Conjecture 7.1 should be
+discussed with its individual parts separated. In particular, real-rootedness,
+interlacing, extreme-root expansions, and their generalized-parameter
+analogues are different assertions. The elementary differential-operator
+proof of real-rootedness already appears in the incoming harmonic baseline;
+the bulk zero law should not be presented as the discovery of the underlying
+polynomials. The literature comparisons are not an exhaustive priority search.
+
+The all-orders fixed-index extreme-root theorem was independently checked
+as well. The exact exponential extraction changes the reciprocal coordinate
+to `v = N/(X-log n)` and leaves the bounded amplitude
+`h_n(v)=n^v f_n(v)`. Its fixed derivatives are uniformly bounded on compact
+sets. Taylor expansion through degree `2M+1` on the central circle arc has
+an absolute Gaussian-integral remainder `O(N^(-M-1))`; the complementary arc
+is exponentially negligible. The exact coefficient-moment generating
+function gives all displayed saddle operators and their signs.
+
+The Bernoulli-polynomial gamma expansion and saddle expansion give a full
+two-parameter asymptotic series in `epsilon=1/n` and `eta=1/N`. The formal
+simple root equals exactly `j` when `eta=0`, so its displacement is divisible
+by `eta`. This divisibility makes the formal height series regular. The
+finite-order residual argument, with `N/n` in a fixed compact positive
+interval, and the limiting nonzero derivative justify the formal-to-actual
+passage. The proof correctly accounts for the factor `N` in recovering `X`
+and does not claim convergence of these formal asymptotic series.
+
+Substitution `eta=epsilon/(1+kappa epsilon)` makes the coefficient of
+`n^(-m)` a polynomial in `kappa=k-1` of exact degree `m-1`. For `m>=2`, the
+highest-degree coefficient comes solely from the term linear in `eta` and
+equals `(-1)^(m-1)(j^2 s3-j s2)`, where
+`s2=H_(j-1)^(2)+zeta(2)>0` and `s3=H_(j-1)^(3)-zeta(3)<0`.
+The first correction is `C_j=j^2 s3-j s2-j-1/2`. This proves the specified
+fixed-parameter, all-orders assertion in Cohen's Conjecture 7.1(4).
+The real-rooted pencil argument and the separate common-root contradiction
+also correctly prove strict interlacing of the nonzero roots in part (3).
+The theorem remains a fixed-index, fixed-parameter result, with no
+uniformity claimed when either index grows with the degree.
+
+Two explicit largest-root coefficients were checked independently:
+
+    C0(k) = -3/2-zeta(2)-zeta(3),
+    C1(k) = (k-1)(zeta(2)+zeta(3))+zeta(2)^2-zeta(2)zeta(3)
+               +2zeta(3)+3zeta(5)-1/12.
+
+The standard-library exact certificate `verify_cohen_c1.py` checks the
+coefficient moments, finite perturbation algebra, and cancellation of
+Euler's constant; its output is `verify_cohen_c1.json`. The local exponential
+extraction with `c=H_(j-1)-gamma` also verifies the arithmetic corollary:
+the coefficient of `n^(-m)` belongs to
+`Q[zeta(2),...,zeta(2m+1)][kappa]`. Euler's constant appears only in the
+leading additive shift. These formulas are derived symbolically, not by
+integer-relation fitting.
+
+The complementary smallest-root Bessel limit was checked directly from its
+Stirling coefficients. The repeated-index bound proves the fixed-codimension
+limit, and the positive elementary-symmetric bound dominates the entire
+series on compact sets. The normalization yields precisely
+`-(2x)^(k/2) J_k(sqrt(2x))`. Its fixed zero multiplicity at zero, local
+uniform convergence, and real-rootedness justify the ordered smallest-root
+limits, including the corresponding small lattice spacings.
+
+## Euler kernel optimization
+
+The exact pure-power envelope, its monotone decrease to a continuous limiting
+profile, and the application of Dini's theorem are correct, including both
+endpoints. All-maximizer localization, negative definiteness of the limiting
+Hessian, and the analytic implicit-function argument justify eventual global
+uniqueness and a convergent expansion in `1/N`. Eventual strict decrease follows
+from analyticity and a positive first derivative at `1/N = 0`; it should not be
+deduced solely from a two-term expansion with an uncontrolled remainder.
+These are eventual statements, and do not prove uniqueness or monotonicity
+for every finite `N`.
+
+The exact `N = 2` elimination and interval calculations were independently
+verified. The script `verify_kernel_algebra.py` uses only Python's standard
+library and exact integers and rational numbers. It checks the bivariate
+derivative numerators, the Sylvester resultant, the stationary-point
+substitution, a multiplication-matrix norm, irreducibility modulo 5, the
+unique root of the value polynomial in `(1,2)`, and rational enclosures for
+the maximizing coordinates and value. In particular, the algebraic degree
+seven is certified, rather than inferred merely from a degree-seven
+annihilating polynomial. Its machine-readable output is
+`verify_kernel_algebra.json`.
+
+## Global Euler constant
+
+The four-range localization argument was checked without relying on numerical
+inequalities. The middle-range large-deviation exponent is uniformly positive;
+the Taylor-remainder bounds and the monotonicity of the remainder in the first
+gamma shape parameter have the required direction. They imply the strict
+comparison with the boundary throughout the only competitive range. The
+uniform twice-differentiated expansion gives the unique boundary optimizer and
+the stated leading asymptotic behavior. The positive-quadrant result concerns
+a supremum approached at the boundary; it does not assert an interior
+maximizer.
+
+The exclusion of `a >= 1` also has a short self-contained proof. Write
+`T_a = T_1 + T_{a-1}` and `exp(-T_a) = Z U`, where `U` is uniform on `(0,1)`.
+For fixed positive `Z,v <= 1`, the conditional kernel average is
+
+    [v^(-1) integral_0^(Zv) W_N(t^2) dt
+       - integral_0^Z W_N(t^2) dt] / [Z(1-v)]
+
+and is at most the average of `W_N(t^2)` on `(0,Zv)`, strictly smaller than
+one. This removes the need to treat the corresponding canonical theorem as
+an external hypothesis.
+
+The sharper gamma-transition calculation was also checked. Its Mellin
+integral is `Gamma(1/2-lambda)/2`, with the positive sign required for the
+second contribution. The density rescaling, uniform domination of the first
+two shape derivatives, Stirling amplitude, strict ordering of the exponents,
+negative optimizing shift, and the displayed inverse-logarithmic coefficient
+are correct. For the inverse-logarithmic error estimate, a central interval
+of size `M log log N` and the two uniform exponential tails give the asserted
+remainder: `M` is fixed after selecting the desired logarithmic error power,
+and powers of `N` dominate all resulting fixed powers of `log N`. The
+strict log-convexity assertion for the optimized axis envelope uses an
+attained finite maximizer at the intermediate argument; this attainment is
+essential to the proof as written. Pointwise strict decrease and attainment
+also show that the axis envelope decreases strictly for every real index at
+least one.
+
+The sharp joint boundary profile was independently checked. Uniformly for
+outer order at most a fixed multiple of
+`N^(-(p-1/2)) log N`, the exact loss is
+`J_N(a) ~ sqrt(pi) a N^(-1/2)/log N`, including uniform control as `a`
+decreases to zero. The integral on the transition region gives
+`Gamma(1/2)/2`; conversion from `L=(log N)/2` supplies the factor two.
+The separate small-`t` bounds are negligible even before division by
+`Gamma(a)`. The exact error decomposition then gives the uniform joint
+profile and, together with the prior necessity theorem, the complete
+if-and-only-if criterion for near-optimality.
+
+## Corrections to the existing material
+
+No substantive mathematical error was established in the canonical
+real-order chapters audited here. Two notation corrections are proposed in
+`05-real-positive-kernel.tex`, in the proof of `rw:thm:transport`:
+
+* The instruction to use the Hurwitz formula “with `q=n`” should read
+  “with `x=n`”.
+* The reference to “boundedness of `h`” should read “boundedness of `q`”.
+
+The simultaneous radial degeneracy, its sextic behavior, and examples with
+two radial extrema were already treated in later incoming research. They
+should not be counted again as new results of this article. Claims that are
+retained as questions or conjectures should remain visibly distinct from the
+theorems proved in the article.
+
+## Reproducibility and limitations
+
+The exact certificate supplies a reproducible check of the finite algebra;
+the analytic theorems rest on their written proofs. Research diagnostics and
+plots are illustrative. In particular, the compact-parameter bulk law and the
+fixed-index extreme-root expansion use separate uniformity arguments; neither
+alone supplies an estimate for their intermediate transition regime.

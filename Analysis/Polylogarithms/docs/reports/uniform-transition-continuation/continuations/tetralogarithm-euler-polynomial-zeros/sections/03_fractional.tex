@@ -1,0 +1,349 @@
+\section{Fractional Euler tails at all logarithmic orders}
+\label{frac:sec:main}
+
+For positive real $a,b$, put $w=a+b$ and
+\[
+ H_m^{(b)}=\sum_{r=1}^m r^{-b},\qquad
+ F_{a,b}(z)=\sum_{n\ge1}\frac{H_{n-1}^{(b)}}{n^a}z^n
+ \quad(|z|<1),\qquad g_{a,b}=\Ima F_{a,b}(\ii).
+\]
+The last value uses principal analytic continuation. Define
+\begin{equation}\label{frac:eq:defs}
+ f_n=\frac{H_{2n}^{(b)}}{(2n+1)^a},\quad
+ d_j=\sum_{n=0}^j(-1)^n\binom jn f_n,\quad
+ E_N=\sum_{j=0}^{N-1}2^{-j-1}d_j,\quad
+ R_N(a,b)=2^N(E_N-g_{a,b}).
+\end{equation}
+The axis $a=0,b>0$ is included by the same continuation. The established
+positive two-measure formula proves convergence of $E_N$ and
+$0<R_N<57/50$ throughout the positive quadrant; it remains valid when
+the ordinary boundary series fails to converge. We use that exact
+continuation theorem, not a rearrangement of a divergent series.
+
+The manuscript proves, for integral orders, that $R_N$ is
+$N^{-1/2}$ times a polynomial in $\tfrac12\log N$, up to smaller
+power scales~\cite{baseline}. The incoming uniform-bounds report asks
+for its fractional continuation~\cite{incoming-bounds}. The answer
+contains two interlaced sequences of logarithmic powers. One terminates
+at positive integral total orders; the other terminates at positive
+integral outer orders. Their distinction is responsible for a change
+in the ordering of the errors.
+
+\subsection{A compensated kernel without a finite-measure restriction}
+
+Define, for $T>0$,
+\begin{equation}\label{frac:eq:h}
+ h_b(T)=\frac1{\Gamma(b)}\int_T^\infty
+                      \frac{v^{b-1}}{e^v-1}\dd v,
+ \qquad
+ I^ah_b(T)=\frac1{\Gamma(a)}\int_0^T(T-v)^{a-1}h_b(v)\dd v.
+\end{equation}
+The first function is locally integrable at zero for every $b>0$;
+it and each of its derivatives decrease exponentially at infinity,
+up to fixed powers. At $b=1$, it is $-\log(1-e^{-T})$.
+
+\begin{lemma}[Exact moments of the positive seed]\label{frac:lem:moments}
+For every $b>0$ and integer $j\ge0$,
+\begin{equation}\label{frac:eq:moments}
+ \int_0^\infty T^j h_b(T)\dd T
+   =\frac{(b)_{j+1}}{j+1}\zeta(b+j+1).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Tonelli's theorem changes the left side to
+$((j+1)\Gamma(b))^{-1}\int_0^\infty
+v^{b+j}/(e^v-1)\dd v$. Expanding the denominator as a positive
+geometric series and integrating each gamma integral gives the result.
+The exponent $b+j+1$ is greater than one, so every displayed zeta
+value is in its absolutely convergent range.
+\end{proof}
+
+\begin{theorem}[A compensated representation at every positive order]
+\label{frac:thm:kernel}
+Set
+\begin{equation}\label{frac:eq:VK}
+ V_{a,b}(T)=-\frac{T^{a+b}}{\Gamma(a+b+1)}+I^ah_b(T),
+ \qquad K_{a,b}(T)=V_{a,b}'(T),\qquad
+ W_N(x)=\frac{(1-x)^N}{1+x}.
+\end{equation}
+Then, for $a,b>0$ and integers $N\ge1$,
+\begin{equation}\label{frac:eq:exact}
+ R_N(a,b)=-\int_0^\infty
+       K_{a,b}(T)e^{-T}W_N(e^{-2T})\dd T.
+\end{equation}
+The integral is absolutely convergent, including when $a+b<1$.
+On the axis the same formula holds with
+\begin{equation}\label{frac:eq:axisK}
+ K_{0,b}(T)=-\frac{T^{b-1}}{\Gamma(b)(1-e^{-T})}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Splitting the fractional integral at $T/2$ and substituting $v=T-u$
+in its upper part shows that it is differentiable for $T>0$.
+Near zero the elementary bound on the Bose denominator gives
+\[
+ V_{a,b}(T)=O\bigl((T^{a+b-1}+T^a+T^{a+b})
+                     (1+|\log T|)\bigr),
+\]
+and differentiation of the same split gives
+\[
+ K_{a,b}(T)=O\bigl((T^{a+b-2}+T^{a-1}+T^{a+b-1})
+                     (1+|\log T|)\bigr).
+\]
+In particular, $TV_{a,b}(T)\to0$ and $T|K_{a,b}(T)|$ is locally
+integrable. Polynomial bounds suffice at infinity. These estimates
+can be made uniform on compact positive parameter sets; at $b=1$
+the logarithm bounds the removable difference quotient.
+
+For real $n>0$, Tonelli gives the Laplace transform
+\[
+ \int_0^\infty e^{-nT}h_b(T)\dd T
+ =\frac{1}{n\Gamma(b)}\int_0^\infty
+       \frac{v^{b-1}(1-e^{-nv})}{e^v-1}\dd v
+ =\frac{\zeta(b)-\zeta(b,n+1)}n.
+\]
+At $b=1$ the numerator means $\psi(n+1)+\gamma$.
+The integral establishes the continuation for $0<b\le1$ directly;
+the two zeta poles cancel. The usual Hurwitz recurrence
+\cite{DLMFHurwitz} therefore yields
+\[
+ n\int_0^\infty e^{-nT}V_{a,b}(T)\dd T
+ =n^{-a}\{\zeta(b)-\zeta(b,n)\}=:c(n).
+\]
+For positive integer $n$, this is $n^{-a}H_{n-1}^{(b)}$, and $c(1)=0$.
+Integration by parts against a test function vanishing at zero now gives
+\begin{equation}\label{frac:eq:compensated-moments}
+ c(n)=\int_0^\infty K_{a,b}(T)
+                  (e^{-nT}-e^{-T})\dd T.
+\end{equation}
+The boundary term vanishes by $TV(T)\to0$. This compensation is
+essential when the unweighted density is not integrable.
+
+For $j\ge1$, insert \eqref{frac:eq:compensated-moments} in the finite
+binomial sum to obtain
+\[
+ d_j=\int_0^\infty K_{a,b}(T)e^{-T}(1-e^{-2T})^j\dd T.
+\]
+The absolute sum over $j\ge1$, with weights $2^{-j-1}$, is bounded
+by an integral of a constant times
+$|K(T)|e^{-T}(1-e^{-2T})/(1+e^{-2T})$, which is integrable at both
+endpoints. Sum the tail and use the established analytic Euler limit
+to obtain \eqref{frac:eq:exact}. For $a=0$, differentiate
+$h_b(T)-T^b/\Gamma(b+1)$ and repeat the argument. This gives
+\eqref{frac:eq:axisK} and the axis formula.
+\end{proof}
+
+\begin{remark}[Critical atoms]
+When $a+b=1$, the primitive can have a nonzero limit at zero.
+The derivative in \eqref{frac:eq:VK} is the ordinary derivative on
+$(0,\infty)$; a possible distributional endpoint atom is invisible
+to the tests used here, all of which vanish at zero. The theorem
+does not assert that the earlier finite signed-measure threshold
+has changed. It provides a compensated representation for the
+particular coefficients and remainders needed in this section.
+\end{remark}
+
+\subsection{The fractional density expansion}
+
+We interpret $1/\Gamma(z)$ as its entire continuation, so it is zero
+at every nonpositive integer.
+
+\begin{theorem}[Two sources of large-$T$ behavior]\label{frac:thm:density}
+For every integer $M\ge0$, uniformly on compact subsets of
+$(a,b)\in(0,\infty)^2$,
+\begin{align}\label{frac:eq:density}
+ K_{a,b}(T)={}&-\frac{T^{w-1}}{\Gamma(w)}
+ +\sum_{k=1}^M
+ \frac{(-1)^{k+1}(b)_k\zeta(b+k)}{k!\Gamma(a-k)}T^{a-k-1}
+ +O(T^{a-M-2})
+\end{align}
+as $T\to\infty$. If $a$ is a positive integer, the sum terminates
+at $k=a-1$ and its remaining error is exponentially small times
+a fixed power of $T$.
+\end{theorem}
+\begin{proof}
+In $I^ah_b$, split at $T/2$. Differentiating the lower half is
+legitimate with its moving boundary. In the upper half write the
+integral as $\int_0^{T/2}u^{a-1}h_b(T-u)\dd u/\Gamma(a)$.
+Both this half's derivative and the boundary terms are exponentially
+small times a fixed power of $T$, since $T-u\ge T/2$. Consequently
+\[
+ (I^ah_b)'(T)=\frac1{\Gamma(a-1)}
+     \int_0^{T/2}(T-v)^{a-2}h_b(v)\dd v
+       +O(e^{-T/2}T^C)
+\]
+for some fixed $C$; the formula includes $a=1$ by the zero reciprocal
+gamma factor. Expand $(1-v/T)^{a-2}$ to $M$ terms on $0\le v/T\le1/2$.
+Taylor's remainder is bounded uniformly by a constant times
+$(v/T)^M$. The moments in Lemma~\ref{frac:lem:moments} give
+\[
+ \frac{(-1)^j}{j!\Gamma(a-j-1)}T^{a-j-2}
+       \int_0^\infty v^j h_b(v)\dd v\qquad(0\le j<M).
+\]
+Extending the moments to infinity changes only the exponential error.
+The next moment bounds the remainder by $O(T^{a-M-2})$.
+Substitute $k=j+1$ and differentiate the first term of $V$.
+
+For integral $a\ge2$, the relevant power $(T-v)^{a-2}$ is a
+polynomial. For $a=1$, the derivative is exactly $h_b(T)$.
+These observations establish the termination statement, including
+the exponential remainder. All estimates and reciprocal gamma
+coefficients are uniform across positive integral parameter values.
+\end{proof}
+
+For integral $a,b$, \eqref{frac:eq:density} agrees exactly with the
+manuscript's polynomial $P_{a,b}$. The companion verifier checks this
+coefficient identity at all $1\le a,b\le8$ by rational symbolic
+arithmetic; the general equality also follows immediately from
+$ (b)_k/k!=\binom{b+k-1}{b-1}$.
+
+\subsection{All logarithmic orders and their coefficient generator}
+
+Define the analytic functions near $z=0$
+\begin{align}
+ \mathcal M(z)&=\frac12\Gamma\left(\frac{1-z}{2}\right)
+       =\sum_{j\ge0}\mu_jz^j,
+ &\mu_j&=\frac{(-1)^j\Gamma^{(j)}(1/2)}{2^{j+1}j!},
+ \label{frac:eq:mu}\\
+ \mathcal D_b(z)&=\zeta(b)-\zeta(b,1+z)
+       =\sum_{k\ge1}\frac{(-1)^{k+1}(b)_k\zeta(b+k)}{k!}z^k,
+ &q_r(b)&=[z^r]\mathcal M(z)\mathcal D_b(z).
+ \label{frac:eq:q}
+\end{align}
+Here $\mathcal D_1(z)=\psi(1+z)+\gamma$. In particular, no pole at
+$b=1$ occurs in any coefficient. Writing $h=\gamma+2\log2$, the
+gamma derivative identities give the useful exact generating formula
+\begin{equation}\label{frac:eq:bell}
+ \mathcal M(z)=\frac{\sqrt\pi}{2}
+  \exp\left\{\frac h2z+
+       \sum_{r\ge2}\frac{(1-2^{-r})\zeta(r)}r z^r\right\}.
+\end{equation}
+Thus every $\mu_j$ is positive and can be generated by a finite
+Bell-polynomial calculation~\cite{DLMFGamma}.
+
+\begin{theorem}[All logarithmic orders for real parameters]
+\label{frac:thm:allorders}
+Let $L=\tfrac12\log N$. For integers $J\ge1$ and $M\ge0$,
+\begin{align}\label{frac:eq:allorders}
+ \sqrt N R_N(a,b)={}&
+  \sum_{j=0}^{J-1}\frac{\mu_j L^{w-1-j}}{\Gamma(w-j)}
+  -\sum_{r=1}^{M}\frac{q_r(b)L^{a-r-1}}{\Gamma(a-r)}\notag\\
+ &+O\left(L^{w-1-J}+L^{a-M-2}\right).
+\end{align}
+The estimate is uniform on every compact positive parameter set.
+The first and second sums can be truncated independently.
+\end{theorem}
+\begin{proof}
+In \eqref{frac:eq:exact}, set $e^{-T}=t/\sqrt N$. The exact kernel
+becomes $(1-t^2/N)^N/(1+t^2/N)$ and $T=L-\log t$.
+The contribution from $T<L/2$ is smaller than every logarithmic
+power: use
+\[
+ W_N(e^{-2T})\le(1-e^{-2T})
+                \exp(-(N-1)e^{-2T})
+ \le2T\exp(-(N-1)/\sqrt N)
+\]
+and local integrability of $T|K(T)|$. Polynomial growth controls the
+rest of this interval. The contribution of $0<t<N^{-1/4}$ is also
+smaller than every inverse power of $L$, after the common $N^{-1/2}$
+factor: logarithmic moments over that shrinking interval are bounded
+by $N^{-1/4}$ times a fixed power of $L$.
+
+On $N^{-1/4}\le t\le N^{1/4}$, one has $T\ge L/2$ and
+$|\log t|\le L/2$. The kernel can be replaced by $e^{-t^2}$ with
+an error bounded in integral by $N^{-1}$ times a fixed power of $L$.
+For example, its pointwise difference is at most
+$C N^{-1}e^{-t^2}(t^2+t^4)$ when $t^2/N\le1/2$.
+Expand each $(L-\log t)^\nu$ by Taylor's theorem; the remainder
+is bounded by the next logarithmic moment on this central interval.
+The required moments are
+\[
+ \int_0^\infty e^{-t^2}(\log t)^j\dd t
+       =2^{-j-1}\Gamma^{(j)}(1/2).
+\]
+Extending the central integrals to these full moments introduces only
+the negligible tails already bounded. Applied to the first power in
+Theorem~\ref{frac:thm:density}, this gives the first sum and its error.
+For the $k$th secondary power, retain $j$ with $k+j\le M$.
+The gamma denominator is $\Gamma(a-k-j)$, so grouping by $r=k+j$
+gives exactly $q_r(b)$ in \eqref{frac:eq:q}. All remaining secondary
+terms are $O(L^{a-M-2})$. Compact uniformity follows from the density
+estimate, Taylor bounds on compact exponent sets, and the entire
+reciprocal gamma function.
+\end{proof}
+
+\begin{corollary}[The fractional leading law]\label{frac:cor:leading}
+For all fixed $a,b>0$, including $a+b<1$,
+\begin{equation}\label{frac:eq:leading}
+ E_N-g_{a,b}\sim
+ \frac{\sqrt\pi}{2^{a+b}\Gamma(a+b)}
+ \frac{2^{-N}(\log N)^{a+b-1}}{\sqrt N}.
+\end{equation}
+\end{corollary}
+
+The first contributions, with their actual exponent order left visible,
+are
+\begin{align}\label{frac:eq:first}
+ R_N(a,b)\sim\frac{\sqrt\pi}{2\sqrt N}\bigg\{
+ &\frac{L^{w-1}}{\Gamma(w)}
+ +\frac h2\frac{L^{w-2}}{\Gamma(w-1)}
+ +\frac{h^2+\pi^2/2}{8}\frac{L^{w-3}}{\Gamma(w-2)}\notag\\
+ &-b\zeta(b+1)\frac{L^{a-2}}{\Gamma(a-1)}+\cdots\bigg\}.
+\end{align}
+For nonintegral $b$, the two sets of powers do not coincide. The
+secondary leading term is $b+1$ powers below the overall leading term.
+Consequently it lies between the first and second inverse-log
+corrections when $0<b<1$. Omitting it is not an all-orders extension
+of the integer formula.
+
+\subsection{Exactly what terminates, and what diverges}
+
+For a positive integer inner order $m$, the two sequences combine into
+a single coefficient generator:
+\begin{equation}\label{frac:eq:Gm}
+ \mathcal G_m(z)=\mathcal M(z)\bigl(1-z^m\mathcal D_m(z)\bigr),
+ \qquad \beta_j^{(m)}=[z^j]\mathcal G_m(z).
+\end{equation}
+The all-orders expansion is then
+\[
+ \sqrt N R_N(a,m)\sim\sum_{j\ge0}
+     \frac{\beta_j^{(m)}}{\Gamma(a+m-j)}L^{a+m-j-1}.
+\]
+The symbol $\sim$ here specifies finite truncation asymptotics; it
+does not assert convergence of the infinite series.
+
+\begin{proposition}[Factorial divergence off integral outer orders]
+\label{frac:prop:divergence}
+For fixed positive integral $m$ and positive nonintegral $a$,
+\begin{equation}\label{frac:eq:largecoefficient}
+ \frac{\beta_j^{(m)}}{\Gamma(a+m-j)}
+ \sim\frac{\sin(\pi a)}{2\pi\Gamma(m)}\Gamma(j-a)
+ \qquad(j\to\infty).
+\end{equation}
+Thus the logarithmic series diverges factorially, with coefficients
+of one eventual sign. When $a$ is a positive integer it terminates
+at $j=a+m-1$.
+\end{proposition}
+\begin{proof}
+The only apparent positive singularity of $\mathcal G_m$ inside
+$|z|<2$ is at $z=1$. It is removable because the Hurwitz recurrence
+gives $\mathcal D_m(1)=1$ and $\mathcal M$ has a simple pole there.
+At $z=-1$, $\mathcal D_m(z)=-(1+z)^{-m}$ plus a holomorphic function,
+and $\mathcal M(-1)=1/2$. Hence its highest principal part is
+$(-1)^m/(2(1+z)^m)$. Subtract the full principal part. The remainder
+is holomorphic on any disk of radius less than two, so Cauchy's
+coefficient bound proves
+\[
+ \beta_j^{(m)}\sim\frac{(-1)^{m+j}}{2\Gamma(m)}j^{m-1}.
+\]
+Reflection gives
+\[
+ \frac1{\Gamma(a+m-j)}=
+ \frac{(-1)^{m-j}\sin(\pi a)}\pi\Gamma(j+1-a-m).
+\]
+The gamma-ratio asymptotic converts the product with $j^{m-1}$
+to $\Gamma(j-a)$, proving \eqref{frac:eq:largecoefficient}.
+For integral $a$, the reciprocal gamma factors instead vanish
+identically after the stated degree.
+\end{proof}
+
