@@ -1,0 +1,28 @@
+PYTHON ?= python3
+ARTICLE = gaussian_polylogarithms_proofs
+
+.PHONY: all pdf verify replay independent quick figures clean
+all: pdf verify replay
+
+pdf:
+	mkdir -p build
+	latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build $(ARTICLE).tex
+	cp build/$(ARTICLE).pdf $(ARTICLE).pdf
+
+verify:
+	$(PYTHON) -B code/verify.py --bits 384
+
+replay:
+	$(PYTHON) -B code/replay_certificates.py
+
+independent:
+	$(PYTHON) -B code/run_independent.py
+
+quick:
+	$(PYTHON) -B code/run_independent.py --quick
+
+figures:
+	$(PYTHON) -B code/make_figure.py
+
+clean:
+	rm -rf build

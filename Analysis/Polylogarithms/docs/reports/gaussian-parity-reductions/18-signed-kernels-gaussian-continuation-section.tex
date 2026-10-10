@@ -1,0 +1,104 @@
+% Additive manuscript fragment.  See INTEGRATION.md before importing.
+% Requires the existing theorem environment and amsmath support.
+% Insert the companion bibliography-items.tex inside the existing bibliography.
+\section{Uniform Gaussian proofs and signed-kernel evaluation}
+\label{gcc:section}
+The following proof upgrades establish the weight-five Gaussian relation and
+the five weight-six double reductions displayed above.  The remaining $S_4$
+and triple-polylogarithm candidates retain their stated status.
+
+\subsection{A two-row certificate at weight five}
+The same-point iterated-integral shuffle gives, with $p+q=w$,
+\begin{equation}\label{gcc:shuffle}
+ \operatorname{Li}_p(i)\operatorname{Li}_q(i)
+ =\sum_{a=1}^{w-1}
+ \left[\binom{a-1}{p-1}+\binom{a-1}{q-1}\right]
+ \operatorname{Li}_{a,w-a}(i,1).
+\end{equation}
+Out-of-range binomial coefficients are zero. Taking imaginary parts at
+$(p,q)=(1,4)$ and $(2,3)$ yields
+\begin{align}
+ g_{1,4}+g_{2,3}+g_{3,2}+2g_{4,1}
+ &=-\tfrac12\beta(4)\log2-\tfrac{7\pi^5}{46080},\label{gcc:R14}\\
+ g_{2,3}+3g_{3,2}+6g_{4,1}
+ &=-\tfrac{3}{32}G\zeta(3)-\tfrac{\pi^5}{1536}.\label{gcc:R23}
+\end{align}
+Multiplying the first equation by $960$ and subtracting $224$ times the second
+proves the previously numerical weight-five identity exactly.  The same rows
+give
+\begin{align}
+ g_{2,3}&=-6g_{4,1}-3g_{3,2}-\frac{\pi^5}{1536}
+                         -\frac{3G\zeta(3)}{32},\label{gcc:g23}\\
+ g_{1,4}&=4g_{4,1}+2g_{3,2}+\frac{23\pi^5}{46080}
+       +\frac{3G\zeta(3)}{32}-\frac12\beta(4)\log2.
+\end{align}
+Thus at most two coordinates remain among these four Gaussian values, modulo
+the displayed depth-one products.  Their numerical independence is not asserted.
+
+\subsection{A parity identity proving the even-weight reductions}
+Put $F_{a,b}(z)=\operatorname{Li}_{a,b}(z,1)$ and $w=a+b$. For
+$z=e^{i\theta}$, $0<\theta<2\pi$, define
+\[
+ \mathcal B_k(z)=\frac{(2\pi i)^k}{k!}B_k\!\left(\frac\theta{2\pi}\right).
+\]
+\begin{theorem}[Inner-argument-one parity specialization]
+\label{gcc:parity}
+For positive integers $a,b$,
+\begin{align}
+ F_{a,b}(z)-(-1)^wF_{a,b}(\bar z)
+ ={}&\sum_{\mu=b+1}^w(-1)^{b+\mu}\binom{\mu-1}{b-1}
+       \zeta(\mu)\mathcal B_{w-\mu}(z)-\operatorname{Li}_w(z)\notag\\
+ &+(-1)^a\sum_{\mu=a}^w\binom{\mu-1}{a-1}
+       \operatorname{Li}_\mu(\bar z)\mathcal B_{w-\mu}(z).
+\end{align}
+\end{theorem}
+\begin{proof}
+In Panzer's increasing-index convention \cite{gcc:Panzer}, substitute
+$(n_1,n_2;z_1,z_2)=(b,a;y,z)$ in equation (3.2) and let $y\to1$ through a
+branch-consistent sector. The $\mu=b$ term and the separate subtraction combine
+to $\operatorname{Li}_b(y)[\mathcal B_a(zy)-\mathcal B_a(z)]$. This tends to zero
+also for $b=1$, since the bracket is $O(|y-1|)$ and
+$\operatorname{Li}_1(y)=-\log(1-y)$. The remaining inner polylogarithms have index
+at least two and tend to their zeta values.  This proves the formula without
+introducing $\zeta(1)$.
+\end{proof}
+For $z=i$ and even $w$, divide the imaginary part by two and use
+$\operatorname{Li}_n(i)=-2^{-n}\eta(n)+i\beta(n)$. This proves all five of the
+weight-six Gaussian double reductions in their existing normalization, and
+supplies every even weight by finite rational arithmetic. The continuation
+\cite{gcc:continuation} includes 64 exact formulas through weight 16 and
+independent rational interval comparisons for all of them.
+
+\subsection{Analytic structure and certification}
+The continuation also constructs an integrable signed density
+$\kappa_{a,b}$ with moments $H_{n-1}^{(b)}/n^a$, zero mass, and one strict
+negative-to-positive sign change. It represents
+\[
+ F_{a,b}(z)=\int_0^1\frac{z}{1-zu}\kappa_{a,b}(u)\,du.
+\]
+For every integer $a\ge1$ and real $b>0$, this proves that
+$\operatorname{Im}F_{a,b}(e^{i\theta})$ has exactly one zero in $0<\theta<\pi$,
+that the zero is simple and below $\pi/2$, and that $g_{a,b}<0$.
+
+For integer indices, write $f(n)=H_{2n}^{(b)}/(2n+1)^a$ and
+$Df(n)=f(n)-f(n+1)$. Then
+\[
+ E_N=\sum_{k=0}^{N-1}\frac{D^kf(0)}{2^{k+1}},\qquad
+ E_N-C_b2^{-N}\le g_{a,b}\le E_N,
+\]
+where $C_1=1$ and $C_b=b/(b-1)$ for $b\ge2$. Every endpoint is rational.
+The article proves the signed-kernel theorem, a uniform four-term zero
+asymptotic, and the sharp Euler error; the certificate implementation is
+additive and does not rely on the historical numerical scripts.
+
+Finally, the still-conjectural $S_4$ evaluation is equivalent, using
+\eqref{gcc:g23}, to
+\[
+ S_4\stackrel{?}{=}\frac{58}{7}g_{4,1}+\frac{24}{7}g_{3,2}
+                  +\frac{19\pi^5}{3584}-2\beta(4)\log2.
+\]
+The two sides differ by at most $10^{-118}$ in the delivered rational
+certificate, but equality is not proved. A separating vector in the
+continuation shows that a specified weight-five depth-two product relation
+system alone does not prove this identity. Neither that obstruction nor
+numerical agreement is an independence or nonexistence theorem.

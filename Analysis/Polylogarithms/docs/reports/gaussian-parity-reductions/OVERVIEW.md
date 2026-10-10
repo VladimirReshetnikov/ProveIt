@@ -4,7 +4,7 @@ Reconciliation note, 2026-10-09. `README.md` here is the base delivery's own
 README, kept as delivered; this file says how the merged report's sources
 fit together. Delivered files are not edited. All four sources are unrefereed
 research continuations (16 says AI-assisted; none claims peer review), and
-nothing is formalized. Placement `<placement commit>`; the status of every claim and
+nothing is formalized. Placement `d4dead2c6b`; the status of every claim and
 correction of the PolyLog programme is kept in the project README,
 [Status of claims, and known defects](../../../README.md#status-of-claims-and-known-defects).
 
@@ -113,3 +113,97 @@ results it re-derives. Credit all four for the shared results.
 - The prefixed scripts still name their delivered paths and write their outputs
   in place; `article.tex` expects `figures/moment_asymptotics.pdf` under its
   delivered name. Rerun on copies in a scratch directory under the delivered names.
+
+## Later sources (batch 140, 9 October 2026)
+
+Dated note, 2026-10-09. Two more continuations of the same manuscript chapter
+arrived after this report was placed and are added to it as sources 18 and 19,
+prefixed like 15–17 (placement `<batch-140 placement commit>`). Their
+manuscripts, PDFs and READMEs are not staged; they are retrievable from the
+arrival commit `412dbd0048`. Both were pinned before this report existed (18 at
+`afed07429d`, 19 at `09812e81e5`; the manuscript is unchanged from both pins),
+so neither cites 14–17. Both are unrefereed; 19's provenance record says it was
+prepared with ChatGPT; neither claims a proof-assistant check.
+
+**18 `polylogarithms_gaussian_continuation`**, *Gaussian Double Polylogarithms:
+Exact Reductions, Signed Kernels, and a Unique-Zero Theorem* (23 pp.):
+`18-signed-kernels-{INTEGRATION,RESULTS,VALIDATION}.md`, the proposed manuscript
+fragments `18-signed-kernels-gaussian-continuation-section.tex` and
+`18-signed-kernels-bibliography-items.tex` (`gcc:` labels), `code/18-signed-kernels-*`
+(with the delivered `.gitignore`, inert under its prefixed name),
+`data/18-signed-kernels-*` (the 64 even-weight formulas through weight 16 as JSON
+and TeX, interval certificates, the `S₄` enclosure and obstruction witness, the
+odd-weight rank census, `PROVENANCE.json`, `source-status.json`, and
+`MANIFEST.sha256` as delivered).
+
+**19 `gaussian_polylogarithms_research_package_20261009`**, *Gaussian
+polylogarithms: proofs, reductions, and exact certificates* (modular article;
+master, `sections/` and `references.tex` not staged):
+`19-gaussian-proofs-{CLAIM_STATUS,INTEGRATION}.md`, the proposed manuscript patch
+`19-gaussian-proofs-proposed_corrections.diff` (chapters 4 and 6 of the
+manuscript; not applied here), `code/19-gaussian-proofs-*` (the Hölder certificate
+engine, verifier, replay, and the `independent-*` derivations with their README),
+`data/19-gaussian-proofs-*` (coefficient tables, 75 rational certificates, enclosure
+and replay summaries, the `independent-*` results with their delivered
+`reference-` copies, and eleven `.log` run records, force-added because the root
+`.gitignore` ignores `*.log`), and
+`figures/19-gaussian-proofs-branch_and_alphabet.{pdf,png}`.
+
+### What 18 and 19 repeat
+
+| Result | Earlier sources | 18 | 19 |
+|---|---|---|---|
+| depth-two parity specialized to the unit circle, every weight | 14–17 | ✓ `thm:parity` (branch-safe, inner index 1 included) | ✓ `thm:gaussian-inversion` (singular limit exposed) |
+| the five weight-six doubles `gauss:eq:g51` … `g15` | 14–17 | ✓ | ✓, and again by a differential recurrence with exact double-zeta boundary data |
+| `gauss:eq:wt5-sporadic` = 960·(1,4) − 224·(2,3) shuffle rows; span at most two | 14, 15, 17 (16: `π`-free form) | ✓ (both rows, "at most two") | – (keeps the manuscript's conditional "at most three") |
+| even-weight Gaussian tables | through 12 (14, 15) | through 16 (64 formulas) | weight 8 (seven rows), Bernoulli rule at every even weight |
+| height-one column `g_{2m−1,1}` | 15, 16, 17 | ✓ `cor:height-one` | |
+| the three weight-four Gaussian triples; every position of one `2` among `1`s | 14 `thm:one-two` (via `Li_k(1−z)`) | | ✓ `one2:thm:triples`, `one2:thm:closed` (via `Li_k(1/(1−z))`) |
+| the four mixed constants `Re Li₄,₁`, `Im Li₅,₁` at `(i,−i)`, `(ρ²,ρ)` | 10 (batch 138, X1); 14 (inherited), 15, 17 | | ✓ `thm:inverse-color`; credits "companion work" without naming it |
+| `S₄` (`gauss:eq:S4-closed`) | open in 14–16 | open: the two-coordinate form of 14, a rational enclosure of the difference in `[−10⁻¹¹⁸, 10⁻¹¹⁸]` | – |
+
+Intake compared the tables exactly: 18's 36 rows of weights 2–12 equal 14's,
+18's twelve rows of weights 6 and 8 equal 19's, 18's height-one corollary equals its
+table for `m = 2,…,8`, and 18's weight-six rows equal the manuscript's five.
+
+### What is new in 18 and 19
+
+- **18:** a signed density for `Li_{a,b}(z,1)` (integer `a ≥ 1`, real `b > 0`):
+  moments `H_{n−1}^{(b)}/n^a`, zero mass, exactly one sign change
+  (`thm:kernel`); hence `Im Li_{a,b}(e^{iθ},1)` has exactly one zero in `(0,π)`,
+  simple and below `π/2`, and every `g_{a,b}` is negative (`thm:unique-zero`); a
+  four-term large-`a` expansion of the zero, uniform for `b ≥ 1`; a one-sided Euler
+  enclosure `[E_N − C_b2^{−N}, E_N]` with `O(N)` exact updates, and the sharp Euler
+  error with its full logarithmic polynomial; the rank `⌊w/2⌋` and Pascal inverse of
+  the same-point shuffle system in every weight; two weight-seven identities; a
+  rational witness that `S₄`'s target is not in the row span of one specified
+  `92 × 23` weight-five depth-two system (an obstruction for that system only); and
+  an odd-weight rank conjecture (`rank A_w = 5w − 6`), checked through weight 31.
+- **19:** the top coefficient `(−1)^{N+a}C(N−1,a)` of the one-2 family, giving at
+  most one imaginary direction per weight at the half-Gaussian point modulo stated
+  products, and closed forms for the top two series-depth layers; sixth-root
+  closure of the one-2 family; Gaussian weight-five and weight-six one-2 reductions;
+  an exact Hölder-convolution certificate with a uniform tail bound and polynomial
+  bit cost (also over a fixed imaginary quadratic field), 75 certificates replayed by
+  an independent nested sum; and three corrections to placed documents, recorded in
+  the project README.
+
+So the report now has four certified evaluators: 16's Chebyshev moments, 17's
+midpoint rule, 18's signed Euler sums and 19's Hölder decomposition.
+
+### Caveats for 18 and 19
+
+- 18's unique-zero, asymptotic and Euler theorems were checked at intake only by
+  sampling (one sign change, below `π/2`, at six index pairs including `b = 1/2`);
+  their proofs were not re-derived. 18's zero table is explicitly not certified.
+- 18's obstruction says nothing about relations outside its specified matrix; 18's
+  rank pattern is a conjecture.
+- 19's patch targets the manuscript, which this report does not edit. Its last
+  chapter-4 hunk does not apply to the repository's bytes (it removes a blank line
+  after the file's last line: the extra trailing newline of the retrieved copy that
+  also makes its recorded SHA-256 values differ), and its chapter-4 text still calls
+  the weight-five span "at most three", superseded by 14, 15, 17 and 18.
+- The prefixed scripts resolve inputs and outputs relative to their delivered
+  locations and rewrite their recorded outputs; rerun on copies in a scratch
+  directory under the delivered names. 19's `check_source_patch.py` compares the
+  same newline-shifted SHA-256 values and would report a mismatch on this checkout.
