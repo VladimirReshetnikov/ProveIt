@@ -79,7 +79,18 @@ class ProjectedWindowKernel(SectorKernel):
         return rows
 
 
-def projected_window_kernel(raw,prepared,support,basis,global_potentials,check):
+def projected_corner_forms(support,basis,global_potentials,check):
+    """Project retained source potentials once onto a matching basis."""
+    indices={3*t+q:i for i,(t,q)in enumerate(support)}
+    result=[]
+    for potential in global_potentials:
+        check()
+        selected=[(indices[j],value)for j,value in potential.items()if j in indices]
+        result.append(tuple(sum(value*vector[i]for i,value in selected)for vector in basis))
+    return tuple(result)
+
+
+def projected_window_kernel(raw,prepared,support,basis,global_potentials,check,*,corner_forms=None):
     """Build the exact matching cone directly from the updated Q basis.
 
     The basis is source-derived and in native free-coordinate gauge. Equal
@@ -89,7 +100,7 @@ def projected_window_kernel(raw,prepared,support,basis,global_potentials,check):
     remain available at higher nullity.
     """
     support=tuple(support);basis=tuple(tuple(row)for row in basis)
-    k=len(support);d=len(basis);indices={3*t+q:i for i,(t,q)in enumerate(support)}
+    k=len(support);d=len(basis)
     free=[]
     for vector in basis:
         check()
@@ -101,10 +112,10 @@ def projected_window_kernel(raw,prepared,support,basis,global_potentials,check):
         raise ArithmeticError('matching free-coordinate identity failed')
     by_vertex={};corner_class=[None]*(4*len(prepared['tetrahedra']))
     coefficient_forms={}
-    for corner,potential in enumerate(global_potentials):
+    if corner_forms is None:
+        corner_forms=projected_corner_forms(support,basis,global_potentials,check)
+    for corner,form in enumerate(corner_forms):
         check()
-        selected=[(indices[j],value)for j,value in potential.items()if j in indices]
-        form=tuple(sum(value*vector[i]for i,value in selected)for vector in basis)
         vertex=prepared['vertex_roots'][corner]
         group=by_vertex.setdefault(vertex,{})
         representative=group.setdefault(form,corner);corner_class[corner]=representative
