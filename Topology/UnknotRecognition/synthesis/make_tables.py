@@ -1767,3 +1767,7 @@ if os.path.exists('data/cover-oracle-diagram-benchmark.json'):
 if os.path.exists('data/pachner-epochs-benchmark.json'):
     import runpy
     runpy.run_path('data/pachner_epochs_tables.py')
+
+if os.path.exists('data/epoch-gauge-benchmark.json'):
+    import runpy
+    runpy.run_path('data/epoch_gauge_tables.py')

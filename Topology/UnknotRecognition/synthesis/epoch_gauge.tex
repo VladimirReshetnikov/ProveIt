@@ -1,0 +1,113 @@
+\section{Exact vertex gauges accelerate a strict-descent disc witness}
+\label{sec:epoch-gauge}
+
+The preceding epoch policy transports one cochain through smaller sources
+without changing its gauge. Reoptimizing that gauge on the new geometry
+can expose a simpler coherent fibre. This continuation does so periodically,
+adds exact independent coboundary replay, and obtains the same actual
+nonempty-diagram disc in fewer epochs. The optimization remains optional;
+source, move and final component authority are checked from the original
+input rather than inferred from a span objective.
+
+\subsection{A vertex change is an exact integral coboundary}
+
+Let $v(t,j)$ be the actual global vertex of corner $j$ in tetrahedron $t$.
+For a single integral potential $p$ on these global vertices, set
+\[
+ h'_{t,j}=h_{t,j}+p(v(t,j))-
+                         \bigl(h_{t,0}+p(v(t,0))\bigr).
+\]
+The final subtraction is only row normalization. Along an oriented source
+edge $a\to b$, the new edge cochain differs by $p(b)-p(a)$. A period around
+any closed source cycle is consequently unchanged by telescoping. Local
+triangle sums and consistency across shared edge occurrences are preserved.
+The correction is integral, so this is a change of representative within
+the same integral cohomology class.
+
+\begin{proposition}[Source gauge replay is exact]
+An independently prepared source, a complete vertex-potential list and the
+displayed corner equation suffice to authenticate the new edge cochain.
+No optimizer, claimed minimum, flow transcript or move producer is required.
+\end{proposition}
+\begin{proof}
+Preparation reconstructs the global vertex and oriented edge classes from
+actual face pairings. Every stated potential must refer to exactly one such
+vertex. Checking the displayed equation at all corners verifies every
+new local height difference. Checking all signed edge occurrences confirms
+that those differences form the same global source cochain plus the stated
+vertex coboundary. The closed-cycle period identity follows directly.
+The assertion concerns the cochain class; it does not assert equality of
+the represented embedded normal fibres.
+\end{proof}
+
+The native producer invokes the existing span optimizer on that current
+source and cochain. It anchors each connected vertex component's irrelevant
+constant, constructs the new normalized rows and independently verifies the
+gauge proof before using it. It also requires nonincreasing total disc span.
+These are producer checks for the chosen policy, not assumptions made by the
+positive disc verifier.
+
+\subsection{A mixed move/gauge chain retains the original source}
+
+The local \code{cocycle-vertex-gauge-v1} proof contains the actual source
+digest, sorted complete vertex/value pairs and new height rows. The checker
+reconstructs the source, rejects missing/extra/Boolean vertex identities,
+reads exact integers through the maintained codec, and checks every corner
+and signed edge equation. Arbitrary common potential offsets cancel under
+row normalization, including values requiring thousands of encoded bits.
+There is no expansion proportional to such a value.
+
+Mixed chains use \code{diagram-transport-disc-v2}. The top-level original
+PD, exterior, optional shellings, initial heights, final coordinates and
+terminal disc proof retain their meanings. A move step retains its original
+triangulation/transport pair and full geometric replay. A gauge step has
+only its source-bound gauge proof, leaves the current triangulation unchanged
+and supplies the authenticated next height rows. The independent full-chain
+checker accepts no gauge step under the old v1 schema. Old v1 proofs still
+use their original move-only path.
+
+Neither checker imports the gauge optimizer. Every topology-changing
+Pachner step still has its own source/relative-boundary proof; every gauge
+step is checked on the exact current source. A lower objective value does
+not imply an essential disc, and a change in fibre topology is not described
+as transport of one unchanged embedded surface. The final actual coherent
+coordinates and essential-component count are independently reconstructed
+and checked as before.
+
+\subsection{Periodic use and representation-size accounting}
+
+The epoch API exposes \code{regauge\_interval}; zero keeps the previous
+policy. A positive interval invokes the optimizer after that many strict
+descents, with the same global work and node allowance. Identity results
+need no new chain step. The recognizer and CLI expose the interval only with
+explicit epoch mode, and neither optimization nor epoch search becomes a
+default. A cap or failure before a complete positive replay remains
+inconclusive and reaches the complete fallback.
+
+Let $H$ bound each normalized height-row span and $t$ the initial source
+size. Its total disc span is $W=\sum_t(\max h_t-\min h_t)\le tH$.
+A verified nonincreasing span optimization has each new row span at most
+$W$, hence at most $tH$. In combination with the preceding $4H$ per-move
+bound, $m$ geometric moves and $g$ gauge calls give height bits bounded by
+\[
+                 B+O\bigl(m+g\log(t+1)\bigr).
+\]
+Strict descent gives $m\le t(2U+1)$ and $g\le t$ for a positive interval,
+so this growth is polynomial in $t,U,B$.
+
+Proof potentials are normalized per vertex component. Along a spanning
+path of its source one-skeleton, $p(b)-p(a)$ is the difference between new
+and old edge cochains. There are at most $4t$ vertices, and each edge
+correction is bounded by $(t+1)H$ for one gauge call. Anchoring therefore
+bounds potential magnitudes by $4t(t+1)H$; their bit size is also charged.
+The independent checker may accept larger harmless offsets supplied by a
+caller, but reading them costs their actual encoding size.
+
+Source preparation, the span optimizer, every gauge replay and every final
+component query remain explicit costs. This bound controls representation
+growth; it does not turn an unaccounted operation into a constant-time one.
+The bounded geometry/restart argument and the separate essentiality and
+universal reach obligations retain their preceding scope.
+
+\subsection{Actual proof reduction and complete configured-call measurements}
+\input{epoch_gauge_results.tex}

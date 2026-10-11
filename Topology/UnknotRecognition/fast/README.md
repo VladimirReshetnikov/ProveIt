@@ -3928,3 +3928,27 @@ focused tests pass. The geometric restart count is bounded by the initial
 tetrahedron count, but no small-upward universal reach or terminal theorem
 is claimed. Epoch mode and the optional Pachner stage stay off by default.
 Reproduce the actual-diagram audit with `causal_research.epochs`.
+
+Epoch mode can periodically reoptimize the current source's integral vertex
+gauge. API: `pachner_seed_regauge_interval=4`; CLI:
+`--pachner-seed --pachner-seed-epochs 64 --pachner-seed-regauge-interval 4`.
+The default zero interval preserves the preceding policy. The producer
+anchors component constants and requires nonincreasing disc span. Its
+independent `verify_cocycle_gauge` reconstructs source vertices and checks
+the exact corner equation; it imports no optimizer or flow solver. Edge
+changes are one global integer coboundary, so every cohomology period is
+preserved, although the coherent normal fibre can change topology.
+
+Mixed move/gauge proofs use `diagram-transport-disc-v2`, replaying every
+geometric move and every gauge from the original input; old v1 move-only
+proofs remain valid. No optimizer assertion, lower span or Euler value can
+replace the final essential-disc certificate. Shared caps and complete
+fallback remain, with no default activation of the optional stage.
+
+The actual genus-one-miss disc now needs 24 rather than 33 descents, 83
+rather than 191 nodes and about 32% fewer checkpoints. Six optimizer calls
+produce three actual changes; its full v2 proof has 32 geometric moves
+and three gauge steps. All 1,521 tests and 28 focused tests pass, including
+source/potential forgeries, schema downgrade rejection, optimizer-disabled
+replay and portable 9,000-bit common offsets. The precise source audit and
+configured-call timings are in `causal_research.epoch_gauge`.
