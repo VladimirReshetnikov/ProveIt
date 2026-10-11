@@ -1,0 +1,135 @@
+\section{Bounded cut cores and wholly prismatic components}
+\label{sec:cut-products}
+
+A cut can have exponentially many connected pieces even when its input
+coordinates are short. The chamber count alone does not distinguish which
+pieces require further geometric work. We now mark a linear number of local
+chambers that are not standard normal-disc prisms. Every cut component
+avoiding these marks is an interval bundle. This yields a source-certified
+count of a bounded conservative core and the remaining wholly prismatic
+pieces, including twisted bundles.
+
+\subsection{What the published cutting algorithms already supply}
+
+The earlier wording of Section~\ref{sec:missing} was too broad about the
+published record. Lackenby--Yazdi's Theorem 8.6\cite{lackenby-yazdi-genus}
+recalls a polynomial algorithm for an orientable normal cutting surface:
+it constructs the handle core outside the parallelity bundle, determines
+base-surface genus and boundary count, distinguishes product from twisted
+bundles, and locates their vertical attachments. The running time is
+polynomial in $T\log w(F)$. The source algorithm is Lackenby's
+Theorem 9.3\cite{lackenby-parallelity}. It distinguishes the handle core
+from the interval-bundle information instead of expanding every handle.
+
+These are published component algorithms, not absent theorems. Their
+source-relative realization and integration with the accelerated hierarchy's
+full patterns and restart bounds remain missing in our implementation.
+Our classification below is smaller than that parallelity-bundle algorithm:
+it detects whole components made entirely from prisms, not bundles attached
+inside a core component. It does not produce vertical attachment locations
+or a core handle structure.
+
+
+The output contract matters for arbitrary binary multiplicities. A cut
+along $m$ parallel meridian discs has $m$ connected pieces. Any ordinary
+explicit tetrahedron list for the entire cut therefore contains at least
+$m$ tetrahedra. Thus no bound such as $200T$ can describe that explicit
+output for all multiplicities on a fixed $T$-tetrahedron source. The printed
+sphere/disc retriangulation statements in Theorems 8.2--8.3 require a clarified
+restriction or compressed-repetition contract before they can be applied
+literally to such inputs. This is a direct output-cardinality observation,
+not a criticism of applications to bounded nonparallel cutting families.
+We do not use an unrestricted linear explicit-output assertion in the native
+algorithm or its complexity proof.
+
+\subsection{A linear set of exceptional chambers}
+
+In the chamber indexing of Section~\ref{sec:cut-complement}, mark the two
+endpoints of each occupied quadrilateral chain, coalescing them when $q=0$.
+Also mark the innermost chamber of each nonempty triangle arm. There are at
+most six distinct marks per tetrahedron. Every unmarked chamber lies between
+two successive parallel normal discs of the same type and is a prism
+$D^2\times I$. Its faces inherited from source faces are vertical rectangles;
+its two horizontal faces lie on the cutting surface.
+
+A corner region at a triangle/quad transition meets a quad-chain endpoint,
+and a central face region also meets a marked endpoint. Thus gluing an
+unmarked chamber only to other unmarked chambers matches vertical rectangles
+between consecutive parallel arcs. The face identifications preserve or
+reverse their interval direction. No global coorientation is assumed.
+
+\begin{proposition}[Conservative cores and normal bundle midsections]
+For a normal cut in the validated orientable source with $T$ tetrahedra,
+at most $6T$ components touch the exceptional chambers. Every remaining
+component is an interval bundle over a connected embedded normal midsection.
+The marked components may themselves be interval bundles. The distinction
+is sufficient rather than maximal.
+\end{proposition}
+\begin{proof}
+Each marked component contains a distinct exceptional chamber, proving the
+component bound. A component disjoint from the marks is assembled entirely
+from the stated prisms, glued along their vertical rectangles. Their interval
+fibres match, possibly with a reversal, giving an interval bundle. This is
+the usual parallelity construction; no claim is made that our selected
+components constitute the full maximal parallelity bundle.
+
+Choose compatible middle points of the interval fibres in these prisms. In each tetrahedron they
+form normal triangles or quadrilaterals of the original occupied type.
+Their face arcs match because the vertical rectangle gluing identifies the
+same two bounding normal arcs. Hence they form an embedded normal midsection.
+Projecting the connected bundle to its base proves that this surface is
+connected. Reversing fibre transitions can give a nonorientable midsection
+and a twisted interval bundle; it does not obstruct the construction.
+\end{proof}
+
+\begin{corollary}[Unpatterned component-type bound]
+Let $v$ be the number of source quotient vertices and $q$ the number of
+positive quadrilateral types in the cutting vector. The cut has at most
+$6T+v+2q\le12T$ distinct abstract unpatterned component homeomorphism types.
+\end{corollary}
+\begin{proof}
+There are at most $6T$ marked components. The normal midsections of the
+unmarked components are simultaneously disjoint, use only the original
+$q$ quadrilateral types, and form one admissible normal surface by union.
+The component-type theorem of Section~\ref{sec:compact-coordinates} therefore
+bounds their distinct full normal vectors by $v+2q$. Equal vectors give
+normally isotopic bases. Since the total manifold is orientable, its interval
+bundle is the product over an orientable base and the orientable twisted
+bundle over a nonorientable base. Thus the base determines the unpatterned
+bundle type. Finally $v\le4T$ and $q\le T$.
+\end{proof}
+
+This bounds types, not total multiplicity, marked-component cell complexity
+or the complexity of embeddings and attachment patterns. It does not
+construct a compressed inventory or prove that arbitrary labelled
+attachments have only linearly many types.
+
+\subsection{Count marked and prismatic pieces without expansion}
+
+Let $C$ be the original chamber-orbit count. Add singleton pairings joining
+all exceptional chamber points to point zero, which is itself marked.
+If $K$ original orbits touch marks, the new cone merges exactly those $K$
+orbits and leaves every unmarked orbit separate. Its orbit count is
+\[
+                 C_\mathrm{cone}=C-K+1.
+\]
+Therefore the core count is $K=C-C_\mathrm{cone}+1$ and the wholly prismatic
+count is $C_\mathrm{cone}-1$. The cone adds fewer than $6T$ pairings to the
+same binary universe, so both queries retain polynomial bit cost.
+
+The opt-in API flag is \code{classify\_prisms}. Default false preserves the
+original scalar count and its version-one proof. Version two binds both
+ordinary orbit traces and the conservative classification to the same
+normalized source/vector fingerprint. The independent checker reconstructs
+both the face-region system and the exceptional points; it imports neither
+mark producer nor orbit planner. It verifies both traces, the cone identity
+and the $6T$ bound. Cycle and replay-operation limits are shared across the
+two queries. An unfinished classification has no top-level count or proof.
+
+The result field \code{prismatic\_components} includes both product and
+twisted interval bundles. It is not an assertion that all bases are
+orientable, nor a maximal interval-bundle decomposition. No full cut
+geometry, pattern transport, component extraction or knot verdict is added.
+
+\subsection{Finite geometric and binary proof evidence}
+\input{cut_products_results.tex}

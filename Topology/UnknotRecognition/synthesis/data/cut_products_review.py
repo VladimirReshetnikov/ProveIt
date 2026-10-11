@@ -58,7 +58,7 @@ if '--publication'in sys.argv:
     assert visual['pdf_sha256']==sha256((ROOT/'synthesis/report.pdf').read_bytes()).hexdigest()
     assert visual['inspected_pages']==list(range(start,end+3))
     paths=['synthesis/report.tex','synthesis/report.pdf','synthesis/cut_products.tex','synthesis/cut_products_results.tex',
-        'synthesis/data/cut_products_review.py','synthesis/data/cut_products_tables.py',
+        'synthesis/data/cut_products_review.py','synthesis/data/cut_products_tables.py','synthesis/data/cut-products-literature.json',
         'synthesis/tables/cut_products_classification.tex','synthesis/make_tables.py','fast/README.md','synthesis/README.md']
     result.update(pdf_pages=int(re.search(r'Output written on report.pdf \((\d+) pages,',log).group(1)),
         section_start=start,assessment_page=end,visual_review=visual,preexisting_overfull_warnings=warnings,

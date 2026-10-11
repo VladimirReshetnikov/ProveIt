@@ -1,0 +1,68 @@
+All 1,555 maintained tests pass in 287.156 seconds; the 15 focused tests pass
+in 0.598 seconds. The seven new regressions check scaled actual sources,
+meridian/link/one-sided families, exact frozen disabled behavior, legacy
+proof replay, shared cycle and operation caps, malformed cone/classification
+data and cancellation. The final API uses ``prismatic'' rather than claiming
+that every interval bundle is a Cartesian product.
+
+The finite geometric pilot starts from the 1,635 earlier primitive or empty
+cases and adds parallel multiples two, three and five where the primitive
+disc count is at most 32. There are 5,241 cut-surface instances on 48 source
+triangulations. An explicit small chamber graph locates its unmarked components;
+each component's prism counts give a normal midsection satisfying the original
+matching equations. All 7,838 such midsections are connected according to
+Regina, and their interval-bundle Euler/boundary signatures occur with the
+required multiplicities among the actual Regina cut pieces.
+These signature checks are finite geometric consistency checks, not an
+independent complete 3-manifold homeomorphism test. The interval-bundle
+conclusion comes from the prism gluing proof above.
+
+The integrated 61.696-second audit matches all 5,241 count classifications
+and preserves the entire scalar output exactly against the frozen preceding
+implementation when classification is disabled. Every classification proof
+replays with mark, chamber and orbit producers disabled. All 157 preceding
+version-one certificates also replay. Seven large meridian cases on one-,
+four- and sixteen-tetrahedron sources use scales $2^{128}$, $2^{500}$ or
+$2^{16384}$. Each has one marked core and $m-1$ prismatic pieces. The
+one-tetrahedron family takes eight total orbit cycles, including the
+16,385-bit case; the sixteen-tetrahedron family takes 136 cycles at both
+large scales. The audit retains 55 representative version-two source proofs.
+
+Five paired timing rounds measure 80 completed classification calls and
+sixteen warmups, with A/A controls. Both arms construct the same valid
+one-tetrahedron meridian source and compute total, marked and wholly prismatic
+counts. The explicit reference expands the chamber graph, performs union-find
+and tests the marked roots. It is an expansion baseline, not an optimized
+Regina or published parallelity-bundle implementation. The native arm runs
+both compressed orbit queries, independently replays its complete certificate
+and serializes the result. All preparation and result serialization are
+included. Neither arm extracts full core geometry or a component inventory.
+\input{tables/cut_products_classification.tex}
+
+At 65,536 meridians the explicit graph has 196,609 points. Its median
+classification time is 83.157 milliseconds, versus 0.748 milliseconds for
+the native method; the paired ratio is 112.287. At 4,096 copies the ratio
+is 7.062. At sixteen and 256 copies the ratios are 0.230 and 0.611:
+proof production and independent native replay lose on these small cases.
+The old A/A ratios range from 0.976 to 1.018 and the new ones from 0.907
+to 1.015. These are host observations, not precise universal speedups.
+The asymptotic benefit is avoiding a graph with one node per represented
+chamber while returning the same conservative classification.
+
+The default scalar operation, the complete recognizer and the optional
+geometric recognition defaults remain unchanged. No full-recognition speedup
+or general quasi-polynomial bound follows from these count-task timings.
+The existence of linearly many abstract unpatterned types does not extract
+or authenticate their patterned representations.
+
+Runtime release \code{eced40c56}, the complete test logs, finite geometric
+pilot, source-proof audit and timing records are retained.
+
+The driver is \code{normal\_orbit\_research.cut\_products}. Records are
+under \code{data/cut-products-*} and \code{data/cut-product-pilot.*}.
+Publication review checks 660 source/evidence hashes, the exact pilot inputs,
+all timing outcomes and the passing test records. It independently replays
+all 55 saved version-two source proofs with producers disabled.
+The next step is a source-authenticated compressed inventory and core geometry,
+with boundary patterns and attachment data retained; those obligations remain
+open rather than being replaced by a count or a type bound.
