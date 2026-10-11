@@ -249,9 +249,15 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
             return "UNKNOT", witness.get("method", "native-normal-cocycle")
     if pachner_seed_options is not None:
         from .normal_pachner_search import pachner_seed_decide
-        witness=pachner_seed_decide(diagram,check=check,**pachner_seed_options)
+        options=dict(pachner_seed_options);epochs=options.pop('epochs',0)
+        if epochs:
+            from .pachner_epochs import pachner_epoch_seed_decide
+            options.pop('max_region_size')
+            options['max_upward_per_epoch']=options.pop('max_upward');options['max_epochs']=epochs
+            witness=pachner_epoch_seed_decide(diagram,check=check,**options)
+        else:witness=pachner_seed_decide(diagram,check=check,**options)
         check();evidence['pachner_seed']=witness
-        if witness['status']=='UNKNOT':return 'UNKNOT','native-pachner-search'
+        if witness['status']=='UNKNOT':return 'UNKNOT',witness['method']
     if normal_options is not None and diagram.crossings >= 32:
         # Startup dominates the small survivors in our corpus. Once cheap
         # filters fail on a larger diagram, try a different complete algorithm
@@ -398,6 +404,7 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
               normal_seed_edge_span: bool = False,
               normal_seed_sector_radius: int = 0,
               use_pachner_seed: bool = False, pachner_seed_max_upward: int = 1,
+              pachner_seed_epochs: int = 0,
               pachner_seed_max_nodes: int | None = 1000,
               pachner_seed_max_work: int | None = 2000000,
               use_group: bool = False, group_seconds: float | None = 0.05,
@@ -450,6 +457,8 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
         raise ValueError('use_pachner_seed must be boolean')
     if type(pachner_seed_max_upward)is not int or pachner_seed_max_upward<0:
         raise ValueError('pachner_seed_max_upward must be a nonnegative integer')
+    if type(pachner_seed_epochs)is not int or pachner_seed_epochs<0:
+        raise ValueError('pachner_seed_epochs must be a nonnegative integer')
     for name,value in (('pachner_seed_max_nodes',pachner_seed_max_nodes),('pachner_seed_max_work',pachner_seed_max_work)):
         if value is not None and (type(value)is not int or value<0):
             raise ValueError(name+' must be a nonnegative integer or None')
@@ -763,6 +772,7 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
                            shellings=normal_seed_shellings, edge_span=normal_seed_edge_span,
                            sector_radius=normal_seed_sector_radius) if use_normal_seed else None,
                        pachner_seed_options=dict(max_upward=pachner_seed_max_upward,
+                           epochs=pachner_seed_epochs,
                            max_region_size=3*pachner_seed_max_upward+3,
                            max_nodes=pachner_seed_max_nodes,max_work=pachner_seed_max_work,
                            shellings=True,optimize=True)if use_pachner_seed else None,
