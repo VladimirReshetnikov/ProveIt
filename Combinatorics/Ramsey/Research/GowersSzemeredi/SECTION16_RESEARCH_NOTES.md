@@ -4287,8 +4287,9 @@ The Cauchy--Schwarz assembly proves more generally that a progression
 partition of any finite residue set `S` has an integer-representative
 refinement with at most `4*sqrt(|S|*M)` cells. Empty cells and arbitrary
 initial modular parameterizations are allowed. Lemma 5.13 is its special
-case `S=univ`. The stronger conclusions are ready for catalogue integration
-and a refreshed full native audit. No counterexample to the paper's
+case `S=univ`. The numbered catalogue now requires these stronger conclusions,
+and `Proofs05Progressions` uses their genuine proofs. A refreshed full native
+audit is running serially. No counterexample to the paper's
 Lemmas 5.12--5.13 is claimed; other fidelity obligations remain open.
 
 ## F. Routes
