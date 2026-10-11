@@ -2934,6 +2934,37 @@ pieces. New ingredients:
 The printed comparison per `k` would follow, if the degree recursion
 `D_{k+1} ≤ poly(D_k)` fits `2^(2^(k+8))`.
 
+**(I) progress (2026-10-10): `FunctionDiscrepancyBound 4` from the
+recurrence profiles.** `length_six_function_discrepancy`
+(Proofs18LengthSixScale) is kernel-checked and light. Its inputs:
+- `Section16RecurrenceProfileWith 1 (familyRecThr 1 K₁ p₁) (familyRecExp 1 p₁)`;
+- `Section16RecurrenceProfileWith 2 (familyRecThr 2 K₂ p₂) (familyRecExp 2 p₂)`.
+
+It gives `FunctionDiscrepancyBound 4 α β σ T` for every `α ∈ (0, 1/2]`, at
+explicit `β, σ, T`.
+- The scale conditions are `ls_modulus_conditions`. Choose the largest
+  allowed spectrum scale `m`. Every per-`q` condition then reduces to
+  `m ≥ lsMReq` at the worst count `q = ⌊Q_max⌋`.
+- The width chain is a power `N^lsF` above `lsTloc` (Proofs18WidthPowerBounds).
+- `lsTloc` is a maximum of terms `c^(1/a)`, so its logarithm is
+  polynomial in the reciprocal exponents.
+
+*Remaining for `Theorem182At 6`.* For each `δ ∈ (0, 1/2]` with
+`α = intervalUniformityParameter δ 6`, show
+`intervalDiscrepancyClosedThreshold 6 δ β σ T ≤ szemerediThreshold δ 6`:
+1. Bound `β⁻¹, σ⁻¹ ≤ X^g` and `log T ≤ K·X^p` for `X = 2/α`, with explicit
+   (crude) `g, p, K`. This needs power bounds on the controls `sixQb`
+   and `sixEb` (through `polyTwoFamCount`/`polyTwoFamExp`,
+   `section16BaseFamilyBound`, Lemma 15.6's threshold, and
+   `ζ = 2^(−multipleS)`, which enters only through logarithms), on
+   `sixC`, and on the Fejér and inverse-step parameters.
+2. Apply `densityIterationClosedThreshold_le_double_exp`, then compare
+   `exp(exp((K+1)X^p))` with `2^2^(δ^(−2^32768))`. Since
+   `X ≤ δ^(−728)·const`, this needs `728p ≲ 2^32768`.
+3. Supply the recurrence constants explicitly in the heavy bridge
+   (`multilinearPartitionBoundAt_explicit`), with numeric upper bounds on
+   `K₁, p₁, K₂, p₂`, which enter `g, p, K` polynomially.
+
 ## F. Routes
 
 1. **Quantitative repair (research).**
