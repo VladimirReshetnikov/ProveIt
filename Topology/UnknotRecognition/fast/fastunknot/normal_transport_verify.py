@@ -14,6 +14,7 @@ from .cocycle_transport_verify import (
 from .normal_surface_geometry import _prepare, _quad, NormalOrbitError
 from .normal_disk_kernel import verify_normal_disk_count_certificate
 from .integer_codec import certificate_equal, encoded_integer
+from .cocycle_gauge_verify import verify_cocycle_gauge
 
 
 class _CallbackRaised(BaseException):
@@ -53,7 +54,7 @@ def _verify_transport_disk_certificate(diagram, certificate, *, check):
     fields = {'schema', 'input_pd', 'source_triangulation', 'shelling',
               'source_heights', 'steps', 'coordinates', 'disc_certificate'}
     if (type(certificate) is not dict or set(certificate) != fields
-            or certificate['schema'] != 'diagram-transport-disc-v1'
+            or certificate['schema'] not in ('diagram-transport-disc-v1','diagram-transport-disc-v2')
             or type(certificate['steps']) is not list):
         return False
     try:
@@ -80,6 +81,11 @@ def _verify_transport_disk_certificate(diagram, certificate, *, check):
             return False
         for step in certificate['steps']:
             check()
+            if type(step)is dict and set(step)=={'gauge'}:
+                if (certificate['schema']!='diagram-transport-disc-v2'
+                        or not verify_cocycle_gauge(raw,heights,step['gauge'],check=check)):return False
+                heights=_read_heights(step['gauge']['heights'],len(raw['tetrahedra']),check)
+                continue
             if type(step) is not dict or set(step) != {'triangulation', 'transport'}:
                 return False
             if not verify_cocycle_transport(raw, heights, step['triangulation'],

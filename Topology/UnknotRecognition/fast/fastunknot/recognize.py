@@ -249,11 +249,12 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
             return "UNKNOT", witness.get("method", "native-normal-cocycle")
     if pachner_seed_options is not None:
         from .normal_pachner_search import pachner_seed_decide
-        options=dict(pachner_seed_options);epochs=options.pop('epochs',0)
+        options=dict(pachner_seed_options);epochs=options.pop('epochs',0);regauge=options.pop('regauge_interval',0)
         if epochs:
             from .pachner_epochs import pachner_epoch_seed_decide
             options.pop('max_region_size')
             options['max_upward_per_epoch']=options.pop('max_upward');options['max_epochs']=epochs
+            options['regauge_interval']=regauge
             witness=pachner_epoch_seed_decide(diagram,check=check,**options)
         else:witness=pachner_seed_decide(diagram,check=check,**options)
         check();evidence['pachner_seed']=witness
@@ -405,6 +406,7 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
               normal_seed_sector_radius: int = 0,
               use_pachner_seed: bool = False, pachner_seed_max_upward: int = 1,
               pachner_seed_epochs: int = 0,
+              pachner_seed_regauge_interval: int = 0,
               pachner_seed_max_nodes: int | None = 1000,
               pachner_seed_max_work: int | None = 2000000,
               use_group: bool = False, group_seconds: float | None = 0.05,
@@ -459,6 +461,10 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
         raise ValueError('pachner_seed_max_upward must be a nonnegative integer')
     if type(pachner_seed_epochs)is not int or pachner_seed_epochs<0:
         raise ValueError('pachner_seed_epochs must be a nonnegative integer')
+    if type(pachner_seed_regauge_interval)is not int or pachner_seed_regauge_interval<0:
+        raise ValueError('pachner_seed_regauge_interval must be a nonnegative integer')
+    if pachner_seed_regauge_interval and not pachner_seed_epochs:
+        raise ValueError('pachner_seed_regauge_interval requires explicit descent epochs')
     for name,value in (('pachner_seed_max_nodes',pachner_seed_max_nodes),('pachner_seed_max_work',pachner_seed_max_work)):
         if value is not None and (type(value)is not int or value<0):
             raise ValueError(name+' must be a nonnegative integer or None')
@@ -773,6 +779,7 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
                            sector_radius=normal_seed_sector_radius) if use_normal_seed else None,
                        pachner_seed_options=dict(max_upward=pachner_seed_max_upward,
                            epochs=pachner_seed_epochs,
+                           regauge_interval=pachner_seed_regauge_interval,
                            max_region_size=3*pachner_seed_max_upward+3,
                            max_nodes=pachner_seed_max_nodes,max_work=pachner_seed_max_work,
                            shellings=True,optimize=True)if use_pachner_seed else None,
