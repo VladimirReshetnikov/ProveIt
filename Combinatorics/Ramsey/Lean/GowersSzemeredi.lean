@@ -1069,6 +1069,7 @@ import GowersSzemeredi.Proofs16PrintedControls
 import GowersSzemeredi.Proofs16PolyCoverThreeBounds
 import GowersSzemeredi.Proofs16PolyCoverThreeTheorem
 import GowersSzemeredi.Proofs16PolyCoverThreeExplicit
+import GowersSzemeredi.Proofs16PowerUniformClass
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
