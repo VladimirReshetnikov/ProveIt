@@ -1,4 +1,49 @@
-# Validation of the unified manuscript
+# Validation of the four-volume collective manuscript
+
+Current research checkpoint, October 10, 2026. The active research goal
+remains open. All four PDFs and the retained combined PDF are authored by
+**ProveIt Contributors**, on their title pages and in their metadata.
+
+The volumes contain 128, 119, 168 and 83 pages (498 total). The combined
+snapshot has 463 pages. They share twelve mathematical chapters, thirteen
+scientific figures, 120 references and the literature appendix's 94
+historical question leads. Chapter, equation and theorem numbering remains
+stable. The 828-document source inventory maps accepted proofs, corrections
+and pending analytic integration. Fifty-five archives preserve 2101 tracked
+original members; the latest six ZIPs were retired after placement in
+59764aec23 and publication via ee4288fc67. Originals and fresh replay
+receipts are kept separately. Five further committed arrivals were observed
+during that publication and await the next intake.
+
+The new Chapter 3 proofs evaluate the full weighted arctangent family using
+two real trilogarithmic kernels in hyperbolic sum and difference parameters.
+The inverse-hyperbolic companion includes all signed improper endpoints and
+the exact value 7 zeta(3)/2. The functional obstruction is strengthened:
+any putative one-variable function is forced to be analytic by fixing one
+nonzero parameter, after which the coefficients -2/9 and -1/4 contradict
+each other. The analytic proof controls the endpoint by C sin(x), despite
+the singular weight. Native Wolfram replay passes seven exact checks and
+seventeen 70-digit quadrature diagnostics; a separate fresh delivery replay
+passes all 78 weighted checks at 80 working digits. These are diagnostic
+residuals, not rigorous interval error bounds.
+
+The four-volume builder requires at least three complete rounds and global
+auxiliary/contents convergence. The separate cold-compilation gate builds
+each source three times without companion auxiliary files. Static inspection
+checks every page and all 38 external PDF destinations. Visual review checks
+the new proof pages at full size and current page contact sheets, retaining
+prior review only for exactly identical page or scientific page-body rasters. In the combined comparison, only centered footer page numbers are excluded; bounds checks retain all scientific text, images and drawings. The final structured
+receipts and artifact hashes are in `verification/`; the receipt verifier
+checks their agreement and every retained archive member.
+
+No proof-assistant formalization, remote CI, global priority or independence
+of individual periods is claimed. S6 and revised S8 remain open; the
+editorial ledger records the remaining Stieltjes, resonance and primitive
+integration targets. The following notes are archived checkpoints. Their
+page counts, hashes and words such as "final" refer to those earlier
+artifacts and do not describe this release.
+
+# Historical validation of the unified manuscript
 
 Research checkpoint, October 10, 2026. The broader research and integration
 goal remains active. Authorship is **ProveIt Contributors** on the title

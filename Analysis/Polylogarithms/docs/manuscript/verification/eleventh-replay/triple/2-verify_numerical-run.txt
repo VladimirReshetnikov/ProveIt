@@ -1,0 +1,76 @@
+PASS explicit_cubic: quarter-half PV; abs.error=0.0
+PASS stieltjes0_cot_quadrature: 1/4; abs.error=1.3898e-49
+PASS loggamma_cot_quadrature: 1/4; abs.error=5.3455e-51
+PASS stieltjes0_cot_quadrature: 1/3; abs.error=2.6193e-49
+PASS loggamma_cot_quadrature: 1/3; abs.error=0.0
+PASS stieltjes0_cot_quadrature: 1/2; abs.error=2.0313e-49
+PASS loggamma_cot_quadrature: 1/2; abs.error=0.0
+PASS stieltjes0_cot_quadrature: 2/5; abs.error=1.5502e-49
+PASS loggamma_cot_quadrature: 2/5; abs.error=2.6728e-51
+PASS stieltjes0_cot_quadrature: 2/3; abs.error=1.0691e-50
+PASS loggamma_cot_quadrature: 2/3; abs.error=0.0
+PASS rational_gamma_reduction: 1/2; abs.error=1.2999e-51
+PASS rational_gamma_reduction: 1/3; abs.error=1.0691e-50
+PASS rational_gamma_reduction: 2/3; abs.error=1.0691e-50
+PASS rational_gamma_reduction: 1/4; abs.error=1.0691e-50
+PASS rational_gamma_reduction: 2/4; abs.error=5.5752e-51
+PASS rational_gamma_reduction: 3/4; abs.error=2.1382e-50
+PASS rational_gamma_reduction: 1/5; abs.error=1.0691e-50
+PASS rational_gamma_reduction: 2/5; abs.error=0.0
+PASS rational_gamma_reduction: 3/5; abs.error=0.0
+PASS rational_gamma_reduction: 4/5; abs.error=5.3455e-50
+PASS rational_gamma_reduction: 1/6; abs.error=2.1382e-50
+PASS rational_gamma_reduction: 2/6; abs.error=1.6037e-50
+PASS rational_gamma_reduction: 3/6; abs.error=3.0188e-50
+PASS rational_gamma_reduction: 4/6; abs.error=3.2073e-50
+PASS rational_gamma_reduction: 5/6; abs.error=1.0691e-49
+PASS rational_gamma_reduction: 1/7; abs.error=0.0
+PASS rational_gamma_reduction: 2/7; abs.error=5.3455e-51
+PASS rational_gamma_reduction: 3/7; abs.error=1.8709e-50
+PASS rational_gamma_reduction: 4/7; abs.error=1.8709e-50
+PASS rational_gamma_reduction: 5/7; abs.error=2.1382e-50
+PASS rational_gamma_reduction: 6/7; abs.error=0.0
+PASS rational_gamma_reduction: 1/8; abs.error=4.2764e-50
+PASS rational_gamma_reduction: 2/8; abs.error=1.0691e-50
+PASS rational_gamma_reduction: 3/8; abs.error=0.0
+PASS rational_gamma_reduction: 4/8; abs.error=6.676e-51
+PASS rational_gamma_reduction: 5/8; abs.error=3.2073e-50
+PASS rational_gamma_reduction: 6/8; abs.error=3.2073e-50
+PASS rational_gamma_reduction: 7/8; abs.error=1.2829e-49
+PASS all_depth_direct_quadrature: [(1, 4), (1, 2)]; abs.error=6.4146e-49
+PASS all_depth_direct_quadrature: [(1, 5), (1, 3), (3, 4)]; abs.error=2.4579e-47
+PASS all_depth_direct_quadrature: [(1, 7), (2, 5), (3, 5), (5, 6)]; abs.error=6.8423e-48
+PASS hurwitz_cot_generator: u=0.4,d=1/3; abs.error=1.0691e-50
+PASS hurwitz_cot_generator: u=0.7,d=2/5; abs.error=5.3455e-51
+PASS six_sector_mellin_vs_bernoulli: (1, 1, 1); shifts=(0, 1/5, 2/3); exact=8/10125; abs.error=8.9683e-44
+PASS six_sector_mellin_vs_bernoulli: (1, 2, 1); shifts=(0, 1/4, 2/3); exact=-11/15360; abs.error=0.0
+PASS six_sector_mellin_vs_bernoulli: (2, 1, 2); shifts=(1/7, 2/5, 4/5); exact=6119/63026250; abs.error=1.4013e-45
+PASS polylog_boundary_jet_vs_gamma: 1/3; abs.error=2.5669e-41
+PASS polylog_boundary_jet_vs_gamma: 1/4; abs.error=1.1479e-41
+PASS polylog_boundary_jet_vs_gamma: 2/5; abs.error=3.2469e-41
+PASS polylog_boundary_jet_vs_gamma: 3/7; abs.error=4.7331e-41
+PASS polylog_boundary_jet_vs_gamma: 4/7; abs.error=5.1338e-41
+PASS polylog_boundary_jet_vs_gamma: 7/8; abs.error=9.1835e-41
+PASS triple_digamma_independent_integrals: 0.0,0.25,0.666666666667; abs.error=2.0938e-38
+PASS triple_digamma_independent_integrals: 0.0,0.2,0.428571428571; abs.error=2.9387e-38
+PASS triple_digamma_independent_integrals: 0.142857142857,0.4,0.8; abs.error=4.0408e-39
+{
+  "schema": "triple-stieltjes-numerical-v1",
+  "status": "PASS",
+  "python": "3.14.4",
+  "mpmath": "1.3.0",
+  "working_dps": 50,
+  "counts": {
+    "explicit_cubic": 1,
+    "stieltjes0_cot_quadrature": 5,
+    "loggamma_cot_quadrature": 5,
+    "rational_gamma_reduction": 28,
+    "all_depth_direct_quadrature": 3,
+    "hurwitz_cot_generator": 2,
+    "six_sector_mellin_vs_bernoulli": 3,
+    "polylog_boundary_jet_vs_gamma": 6,
+    "triple_digamma_independent_integrals": 3
+  },
+  "total_comparisons": 56,
+  "scope": "Floating-point diagnostics; no intervals and no numerical proof. Three triple-digamma cases are checked independently; higher Stieltjes triple jets are proved analytically, not all numerically evaluated."
+}

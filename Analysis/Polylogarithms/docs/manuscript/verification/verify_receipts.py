@@ -70,7 +70,7 @@ archives=sum((read(name) for name in ['incoming-archives.json',
     'research-incoming-archives.json','third-incoming-archives.json',
     'fourth-incoming-archives.json','fifth-incoming-archives.json',
     'sixth-incoming-archives.json','seventh-incoming-archives.json',
-    'eighth-incoming-archives.json','ninth-incoming-archives.json','tenth-incoming-archives.json']), [])
+    'eighth-incoming-archives.json','ninth-incoming-archives.json','tenth-incoming-archives.json','eleventh-incoming-archives.json']), [])
 for archive in archives:
     p=B.parents[3]/archive['archive']
     blob=p.read_bytes() if p.is_file() else subprocess.check_output(['git','show',archive['archive_git_revision']+':'+archive['archive']],cwd=B.parents[3])
@@ -83,7 +83,7 @@ for archive in archives:
         p=B.parent/member['path']
         if not p.is_file() or digest(p,False)!=member['sha256']:
             archive_errors.append(member['path'])
-outcomes['incoming-archive-preservation']=len(archives)==49 and sum(len(a['files']) for a in archives)==1889 and not archive_errors
+outcomes['incoming-archive-preservation']=len(archives)==55 and sum(len(a['files']) for a in archives)==2101 and not archive_errors
 x=read('incoming-retirement.json')
 archive_by_path={a['archive']:a for a in archives}
 outcomes['imported-archive-retirement']=x['archive_count']==16 and x['preserved_members']==691 and len(x['archives'])==16 and sum(a['members'] for a in x['archives'])==691 and (B.parents[3]/'docs/incoming/README.md').is_file() and all(
@@ -226,7 +226,8 @@ for batch, parts in [('sixth', {'all-depth':1,'radial':5,'sharp':4,'golden':1,'u
                      ('seventh', {'lambert':1,'large-orders':1,'leading-one':2,'tetra':1,'extremizers':1}),
                      ('eighth', {'resonance':1,'shifted':2,'algebra':3,'closure':4,'calculus':1}),
                      ('ninth', {'gauss':2,'mellin':9,'nested':1,'critical':1,'harmonic':1}),
-                     ('tenth', {'endpoint':3,'twisted':1})]:
+                     ('tenth', {'endpoint':3,'twisted':1}),
+                     ('eleventh', {'coincident':2,'dougall':2,'identities':1,'transport':2,'jets':1,'triple':2})]:
     for part,count in parts.items():
         x=read(f'{batch}-replay/{part}/replay-summary.json')
         folder=B.parent/'reports'/x['source_folder']
@@ -352,17 +353,51 @@ outcomes['mixed-twist-independent-diagnostics']=x['numerical_diagnostics']['work
 x=read('twisted-mixed-native.json')
 outcomes['twisted-mixed-native']=x['all_pass'] and x['all_exact_pass'] and x['exact_partial_fraction_checks']==25 and x['numerical_diagnostics']['working_precision']==70 and not x['numerical_diagnostics']['interval_certified'] and len(x['numerical_diagnostics']['rows'])==9 and all(c['passed'] for c in x['numerical_diagnostics']['rows'])
 visual=read('visual-review.json')
-outcomes['recorded-visual-review']=visual['passed'] and visual['pdf_sha256']==pdfhash and visual['page_count']==459 and visual['all_contact_sheets_reviewed']==29 and visual['scientific_figures_reviewed']==13 and not visual['findings']
+outcomes['recorded-visual-review']=visual['passed'] and visual['pdf_sha256']==pdfhash and visual['page_count']==463 and visual['visual_page_coverage']==463 and visual['contact_sheets_reviewed']==4 and visual['inherited_reviewed_scientific_page_bodies']==451 and len(visual['full_pages_reviewed'])==12 and visual['scientific_figures_reviewed']==13 and not visual['findings']
+x=read('eleventh-combined-raster-comparison.json')
+matched={r['page'] for r in x['exact_matching_page_bodies']}
+fresh=set(x['changed_page_bodies'])
+outcomes['weighted-combined-raster-review-coverage']=(x['pdf_sha256']==pdfhash and x['page_count']==463 and x['crop_bottom_points']==57 and x['excluded_content_is_only_page_numbers'] and len(matched)==451 and len(fresh)==12 and not matched&fresh and matched|fresh==set(range(1,464)) and fresh==set(visual['full_pages_reviewed']))
+x=read('weighted-arctangent-native.json')
+outcomes['weighted-arctangent-native-exact-and-diagnostics']=x['all_pass'] and x['exact_passed'] and x['exact_checks']==7 and all(x['exact_results']) and x['working_precision']==70 and not x['interval_certified'] and x['numerical_checks']==17 and len(x['rows'])==17 and all(r['passed'] for r in x['rows'])
+x=read('eleventh-replay/coincident/data/exact_validation.json')
+outcomes['coincident-exact-engine']=x['status']=='passed' and x['moment_count']==420 and x['polynomial_count']==420 and x['total_checks']==1641
+x=read('eleventh-replay/coincident/data/numerical_validation.json')
+outcomes['coincident-independent-quadrature']=x['status']=='passed' and x['count']==49 and x['dps']==55 and all(r['passed'] for r in x['checks'])
+x=read('eleventh-replay/dougall/results/exact_checks.json')
+outcomes['centered-Dougall-exact']=x['status']=='PASS' and x['total_assertions']==485
+x=read('eleventh-replay/dougall/results/numerical_checks.json')
+outcomes['centered-Dougall-diagnostics']=x['status']=='PASS' and x['total_diagnostics']==293 and x['working_decimal_digits']==70 and all(Decimal(r['scaled_error'])<Decimal(r['tolerance']) for r in x['checks'])
+x=read('eleventh-replay/identities/results/verification_summary.json')
+outcomes['collision-and-weighted-full-suite']=x['status']=='all gates passed' and len(x['runs'])==7 and all(r['returncode']==0 for r in x['runs']) and x['numerical_comparisons']==167 and x['exact_nonlinear_checks']==213 and x['exact_collision_checks']==33 and x['exact_weighted_differential_checks']==4 and x['exact_weighted_coefficient_obstruction'] and not x['numerical_checks_are_certified_intervals']
+x=read('eleventh-weighted-replay/weighted_arctangent_verification.json')
+outcomes['weighted-delivery-full-suite']=x['numeric_check_count']==78 and Decimal(x['maximum_absolute_error'])<Decimal('1e-60') and x['exact_checks']['coefficient_discrepancy']=='1/36'
+x=read('eleventh-weighted-replay/replay-summary.json')
+outcomes['weighted-separate-replay-provenance']=x['passed'] and x['exit_code']==0 and digest(B.parent/'reports/stieltjes-correlation-calculus/continuations/collision-and-weighted-identities/code/verify_weighted_arctangent.py',False)==x['source_code_sha256'] and x['fresh_result_files']==['weighted_arctangent_verification.json']
+x=read('eleventh-replay/jets/results/replay_summary.json')
+outcomes['resonant-jets-full-six-script-suite']=x['all_passed'] and len(x['processes'])==6 and all(r['return_code']==0 for r in x['processes'])
+x=read('eleventh-replay/triple/results/exact_checks.json')
+outcomes['triple-Tornheim-exact']=x['status']=='PASS' and x['total_assertions']==621 and x['counts']['corruption_controls']==3
+x=read('eleventh-replay/triple/results/numerical_checks.json')
+outcomes['triple-Tornheim-independent-diagnostics']=x['status']=='PASS' and x['working_dps']==50 and x['total_comparisons']==56 and all(r['pass'] for r in x['comparisons'])
+x=read('eleventh-replay/transport/results/nonlinear_checks.json')
+outcomes['resonance-transport-nonlinear-exact']=x['status']=='passed' and x['exact_checks']==138 and x['independent_cutoff']['status']=='passed' and x['independent_cutoff']['case_count']==48 and x['independent_cutoff']['monomial_pairing_count']==140
+x=read('eleventh-replay/transport/results/transport_checks.json')
+outcomes['resonance-transport-diagnostics']=x['all_passed'] and x['exact_polynomial_checks']==4 and x['numeric_checks']==13 and not x['numerical_checks_are_interval_certificates']
+x=read('eleventh-replay/transport/results/dougall_direct_checks.json')
+outcomes['resonance-raw-harmonic-sums']=x['status']=='passed' and x['checkpoint_discrepancies_decrease'] and x['precision_digits']==50
 volume_build=read('volume-build-results.json')
 volume_inspection=read('volume-inspection.json')
 volume_visual=read('volume-visual-review.json')
 volume_standalone=read('volume-standalone-results.json')
 volume_plan=read('volume-plan.json')
 outcomes['four-volume-build']=volume_build['passed'] and volume_build['converged'] and len(volume_build['volumes'])==4 and len(volume_build['rounds'])>=3 and volume_build['rounds'][-1]['reference_state_sha256']==volume_build['rounds'][-2]['reference_state_sha256']
-outcomes['four-volume-partition-and-links']=volume_inspection['passed'] and volume_inspection['chapter_partition_complete'] and volume_inspection['total_pages']==494 and volume_inspection['external_destinations_verified']==38 and not volume_inspection['issues']
+outcomes['four-volume-partition-and-links']=volume_inspection['passed'] and volume_inspection['chapter_partition_complete'] and volume_inspection['total_pages']==498 and volume_inspection['external_destinations_verified']==38 and not volume_inspection['issues']
 outcomes['four-volume-independent-compilation']=volume_standalone['passed'] and len(volume_standalone['volumes'])==4 and all(x['passed'] and x['text_matches_primary'] and x['PDF_link_targets_match'] and len(x['passes'])==3 for x in volume_standalone['volumes'])
-outcomes['four-volume-recorded-visual-review']=volume_visual['passed'] and not volume_visual['findings'] and volume_visual['total_pages']==494 and volume_visual['total_contact_sheets_reviewed']==33 and len(volume_visual['volumes'])==4
-for number,pages in [(1,124),(2,119),(3,168),(4,83)]:
+outcomes['four-volume-recorded-visual-review']=volume_visual['passed'] and not volume_visual['findings'] and volume_visual['total_pages']==498 and volume_visual['total_contact_sheets_reviewed']==8 and volume_visual['total_contact_sheets_covered']==33 and volume_visual['exactly_identical_pages_with_prior_review']==367 and len(volume_visual['volumes'])==4
+raster_comparison=read('eleventh-volume-raster-comparison.json')
+outcomes['weighted-volume-raster-review-coverage']=(sum(len(x['same_index_identical_pages']) for x in raster_comparison['volumes'][1:])==367 and all(not set(x['same_index_identical_pages'])&set(x['changed_pages']) and set(x['same_index_identical_pages'])|set(x['changed_pages'])==set(range(1,x['page_count']+1)) and digest(B/'volumes'/x['pdf'],False)==x['pdf_sha256'] for x in raster_comparison['volumes']))
+for number,pages in [(1,128),(2,119),(3,168),(4,83)]:
     item=next(x for x in volume_build['volumes'] if x['number']==number)
     inspection=next(x for x in volume_inspection['volumes'] if x['number']==number)
     review=next(x for x in volume_visual['volumes'] if x['number']==number)
@@ -376,6 +411,6 @@ result=dict(changed_sources=changed,changed_dependencies=changed_dependencies,pd
  pdf_static_checks=render['static_passed'],document_integrity=doc['passed'],recorded_outcomes=outcomes,
  asymptotic_diagnostic_records=diagnostic_records,incoming_archive_errors=archive_errors,
  scope='Recorded evidence integrity only; visual review and scientific replay are separate activities.')
-result['passed']=not changed and not changed_dependencies and all(outcomes.values()) and all(result[k] for k in ['pdf_matches_build','pdf_matches_render','converged_build','pdf_static_checks','document_integrity']) and result['page_count']==459 and result['source_documents']==746 and render.get('pdf_author')=='ProveIt Contributors'
+result['passed']=not changed and not changed_dependencies and all(outcomes.values()) and all(result[k] for k in ['pdf_matches_build','pdf_matches_render','converged_build','pdf_static_checks','document_integrity']) and result['page_count']==463 and result['source_documents']==828 and render.get('pdf_author')=='ProveIt Contributors'
 (V/'receipt-integrity.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
 print(json.dumps(result,indent=2));raise SystemExit(0 if result['passed'] else 1)

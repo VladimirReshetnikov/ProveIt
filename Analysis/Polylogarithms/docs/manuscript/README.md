@@ -5,7 +5,7 @@ organized as four volumes. Each has its own source and compiled PDF.
 
 | Volume | Material | PDF | Pages |
 |---|---|---|---:|
-| I | Polylogarithm identities, cyclotomic coordinates, algebraic ladders and Gaussian/Eisenstein reductions | [Polylogarithm Identities and Arithmetic Reductions](volumes/volume-1-polylogarithm-identities.pdf) | 124 |
+| I | Polylogarithm identities, cyclotomic coordinates, algebraic ladders and Gaussian/Eisenstein reductions | [Polylogarithm Identities and Arithmetic Reductions](volumes/volume-1-polylogarithm-identities.pdf) | 128 |
 | II | Signed kernels, angular and all-depth zero geometry, exact computation and experimental discovery; literature appendix | [Signed Kernels, Zero Geometry and Experimental Discovery](volumes/volume-2-signed-kernels.pdf) | 119 |
 | III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 168 |
 | IV | Gamma grids, CM lattice periods, class products and Herglotz arithmetic | [Gamma Grids, CM Periods and Herglotz Arithmetic](volumes/volume-4-cm-and-herglotz.pdf) | 83 |
@@ -14,26 +14,29 @@ The volumes partition all twelve chapters and the literature appendix.
 Chapter, theorem and equation numbering is retained so research-report
 citations stay stable. Cross-volume references link to their exact PDF
 destinations; keep the four PDFs together. Each volume has its own contents
-and the shared bibliography of 119 references. The scientific text is shared
+and the shared bibliography of 120 references. The scientific text is shared
 through chapter files and [preamble.tex](preamble.tex), avoiding duplicate
 copies of proofs. See [volume sources and build instructions](volumes/README.md).
 The [combined source](polylogarithms.tex) and its
-[459-page combined snapshot](polylogarithms.pdf) remain available.
+[463-page combined snapshot](polylogarithms.pdf) remain available.
 
-The [inventory](source-inventory.json) accounts for **746 textual source
+The [inventory](source-inventory.json) accounts for **828 textual source
 files**, including overlapping assembled articles, fragments and correction
 registers. The [editorial ledger](EDITORIAL-LEDGER.md) maps their mathematical
-status and identifies pending research integration. Forty-nine incoming
-archives are preserved as **1,889 original tracked members**. All their isolated
+status and identifies pending research integration. Fifty-five incoming
+archives are preserved as **2,101 original tracked members**. All their isolated
 replay suites pass; preservation and successful finite replay do not imply
 that every new analytic theorem has already been integrated. The imported
 ZIPs have been retired from the drop zone under its intake procedure; the
 arrival commits and recovery paths remain recorded in
-`verification/*incoming-archives.json` and the retirement records. Eight ignored
-SHA256SUMS members remain recoverable in the sixth, eighth, ninth and tenth arrival archives; the
-existing ignore rules were followed without manifest verification. The latest two
-packages are placed on the harmonic-resonance and Stieltjes-correlation spines
-with historical OVERVIEW notes; their remaining analytic claims retain the
+`verification/*incoming-archives.json` and the retirement records. Eleven ignored
+SHA256SUMS members remain recoverable in their recorded arrival archives; the
+existing ignore rules were followed without manifest verification. The latest six
+packages extend the harmonic-resonance and Stieltjes-correlation spines.
+Volume I now proves their weighted real arctangent Li3 family, the signed
+inverse-hyperbolic companion and its 7 zeta(3)/2 endpoint. An exact local
+obstruction excludes any one-variable product factorization without a
+regularity assumption. The other incoming analytic claims retain the
 ledger's pending scope.
 
 The preceding milestone proves the CM class-product formulas and the recorded
