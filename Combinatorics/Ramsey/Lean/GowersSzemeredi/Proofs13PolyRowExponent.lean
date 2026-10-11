@@ -16,7 +16,8 @@ machinery (`uniform_rounded_power_budgets_explicit`):
   where `u = θ₁²/(16q)` is the Stage 13.4 exponent and
   `u₁₃₅ = stage135UniformExponent p q`;
 * `catalogue_length_exponent_le_polyRowExponent`: `2^(−13Q) ≤ e` whenever
-  `p ≤ 2^(2^20)`, so the catalogue's Stage 13.6 length bound follows;
+  `p ≤ 2^(2^64)` (only `p ≤ 2^Q` is used), so the catalogue's Stage 13.6
+  length bound follows;
 * `polyRowExponent_antitone`: smaller densities give smaller exponents;
 * `two_mul_polyRowExponent_le_one`. -/
 set_option autoImplicit false
@@ -54,43 +55,48 @@ theorem two_mul_polyRowExponent_le_one {alpha : Real} (hα : 0 < alpha) (hαone 
   exact hden
 
 /-- **The power comparison.** `4Q³(2p(Q+1)^8)^4 ≤ 2^(13Q)` once `Q ≥ 512` and
-`p ≤ Q`. -/
-theorem poly_row_power_le {Q p : Real} (hQ : 512 ≤ Q) (hp0 : 0 ≤ p) (hpQ : p ≤ Q) :
+`p ≤ 2^Q`. -/
+theorem poly_row_power_le {Q p : Real} (hQ : 512 ≤ Q) (hp0 : 0 ≤ p) (hpQ : p ≤ (2 : Real) ^ Q) :
     4 * Q ^ 3 * (2 * p * (Q + 1) ^ 8) ^ 4 ≤ (2 : Real) ^ (13 * Q) := by
   have hQ0 : 0 ≤ Q := by linarith only [hQ]
-  have hc : (2 * p * (Q + 1) ^ 8) ^ 4 ≤ 2 ^ 36 * Q ^ 36 := by
-    have h1 : (Q + 1) ^ 8 ≤ (2 * Q) ^ 8 :=
-      pow_le_pow_left₀ (by linarith only [hQ]) (by linarith only [hQ]) 8
-    have h2 : 2 * p * (Q + 1) ^ 8 ≤ 2 * Q * (2 * Q) ^ 8 :=
-      mul_le_mul (by linarith only [hpQ]) h1 (by positivity) (by positivity)
-    calc (2 * p * (Q + 1) ^ 8) ^ 4 ≤ (2 * Q * (2 * Q) ^ 8) ^ 4 :=
-          pow_le_pow_left₀ (by positivity) h2 4
-      _ = 2 ^ 36 * Q ^ 36 := by ring
+  have hp4 : p ^ 4 ≤ (2 : Real) ^ (4 * Q) := by
+    calc p ^ 4 ≤ ((2 : Real) ^ Q) ^ 4 := pow_le_pow_left₀ hp0 hpQ 4
+      _ = (2 : Real) ^ (4 * Q) := by
+        rw [← Real.rpow_mul_natCast (by norm_num)]
+        congr 1
+        push_cast
+        ring
+  have hQ1 : (Q + 1) ^ 32 ≤ 2 ^ 32 * Q ^ 32 := by
+    have h := pow_le_pow_left₀ (by linarith only [hQ]) (show Q + 1 ≤ 2 * Q by linarith only [hQ]) 32
+    rwa [mul_pow] at h
   have hx := le_two_rpow_two_mul (x := Q / 128) (by positivity)
   have hQle : Q ≤ 128 * (2 : Real) ^ (Q / 64) := by
     have h : (2 : Real) * (Q / 128) = Q / 64 := by ring
     rw [h] at hx
     linarith only [hx]
-  have h273 : (2 : Real) ^ (273 : Real) = 128 ^ 39 := by
-    rw [show (273 : Real) = ((273 : Nat) : Real) by norm_num, Real.rpow_natCast,
+  have h245 : (2 : Real) ^ (245 : Real) = 128 ^ 35 := by
+    rw [show (245 : Real) = ((245 : Nat) : Real) by norm_num, Real.rpow_natCast,
       show (128 : Real) = 2 ^ 7 by norm_num, ← pow_mul]
   have h38 : (2 : Real) ^ (38 : Real) = 2 ^ 38 := by
     rw [show (38 : Real) = ((38 : Nat) : Real) by norm_num, Real.rpow_natCast]
-  have hsplit : (2 : Real) ^ (39 * Q / 64) = ((2 : Real) ^ (Q / 64)) ^ 39 := by
+  have hsplit : (2 : Real) ^ (35 * Q / 64) = ((2 : Real) ^ (Q / 64)) ^ 35 := by
     rw [← Real.rpow_mul_natCast (by norm_num)]
     congr 1
     push_cast
     ring
-  have hQ39 : Q ^ 39 ≤ (2 : Real) ^ (273 : Real) * (2 : Real) ^ (39 * Q / 64) := by
-    rw [h273, hsplit, ← mul_pow]
-    exact pow_le_pow_left₀ hQ0 hQle 39
-  calc 4 * Q ^ 3 * (2 * p * (Q + 1) ^ 8) ^ 4 ≤ 4 * Q ^ 3 * (2 ^ 36 * Q ^ 36) :=
-        mul_le_mul_of_nonneg_left hc (by positivity)
-    _ = 2 ^ 38 * Q ^ 39 := by ring
-    _ ≤ 2 ^ 38 * ((2 : Real) ^ (273 : Real) * (2 : Real) ^ (39 * Q / 64)) :=
-        mul_le_mul_of_nonneg_left hQ39 (by norm_num)
-    _ = (2 : Real) ^ ((38 : Real) + 273 + 39 * Q / 64) := by
-        rw [Real.rpow_add (by norm_num), Real.rpow_add (by norm_num), h38]
+  have hQ35 : Q ^ 35 ≤ (2 : Real) ^ (245 : Real) * (2 : Real) ^ (35 * Q / 64) := by
+    rw [h245, hsplit, ← mul_pow]
+    exact pow_le_pow_left₀ hQ0 hQle 35
+  have hQ3 : 0 ≤ 64 * Q ^ 3 := mul_nonneg (by norm_num) (pow_nonneg hQ0 3)
+  have h4Q : (0 : Real) ≤ (2 : Real) ^ (4 * Q) := Real.rpow_nonneg (by norm_num) _
+  calc 4 * Q ^ 3 * (2 * p * (Q + 1) ^ 8) ^ 4 = 64 * Q ^ 3 * p ^ 4 * (Q + 1) ^ 32 := by ring
+    _ ≤ 64 * Q ^ 3 * (2 : Real) ^ (4 * Q) * (2 ^ 32 * Q ^ 32) :=
+        mul_le_mul (mul_le_mul_of_nonneg_left hp4 hQ3) hQ1 (by positivity) (mul_nonneg hQ3 h4Q)
+    _ = 2 ^ 38 * Q ^ 35 * (2 : Real) ^ (4 * Q) := by ring
+    _ ≤ 2 ^ 38 * ((2 : Real) ^ (245 : Real) * (2 : Real) ^ (35 * Q / 64)) * (2 : Real) ^ (4 * Q) :=
+        mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hQ35 (by norm_num)) h4Q
+    _ = (2 : Real) ^ ((38 : Real) + 245 + 35 * Q / 64 + 4 * Q) := by
+        rw [Real.rpow_add (by norm_num), Real.rpow_add (by norm_num), Real.rpow_add (by norm_num), h38]
         ring
     _ ≤ (2 : Real) ^ (13 * Q) :=
         Real.rpow_le_rpow_of_exponent_le (by norm_num) (by linarith only [hQ])
@@ -98,16 +104,24 @@ theorem poly_row_power_le {Q p : Real} (hQ : 512 ≤ Q) (hp0 : 0 ≤ p) (hpQ : p
 /-- The catalogue's Stage 13.6 length exponent is below the polynomial one. -/
 theorem catalogue_length_exponent_le_polyRowExponent {alpha : Real} (hα : 0 < alpha)
     (hαone : alpha ≤ 1) {p : Nat} (hp : 0 < p)
-    (hpB : (p : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 20)) :
+    (hpB : (p : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 64)) :
     (1 : Real) / (2 : Real) ^ (13 * section13Q alpha) ≤ polyRowExponent p alpha := by
   have hQbase : (2 : Real) ^ ((2 : Nat) ^ 20) ≤ section13Q alpha := by
     have h := section13_monomial_le_Q hα hαone (a := 2 ^ 20) (b := 0) le_rfl (Nat.zero_le _)
     rwa [pow_zero, mul_one] at h
+  have hQ64 : (2 : Real) ^ (64 : Nat) ≤ section13Q alpha :=
+    (pow_le_pow_right₀ (by norm_num) (by norm_num)).trans hQbase
+  have hpQ : (p : Real) ≤ (2 : Real) ^ section13Q alpha := by
+    refine hpB.trans ?_
+    rw [← Real.rpow_natCast]
+    apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
+    rw [Nat.cast_pow, Nat.cast_ofNat]
+    exact hQ64
   have hQ512 : (512 : Real) ≤ section13Q alpha := section13Q_ge_512 hα hαone
   unfold polyRowExponent
   rw [one_div]
   exact inv_anti₀ (polyRowDenominator_pos hp (by linarith only [hQ512]))
-    (poly_row_power_le hQ512 (Nat.cast_nonneg p) (hpB.trans hQbase))
+    (poly_row_power_le hQ512 (Nat.cast_nonneg p) hpQ)
 
 /-- **The recurrence and Bohr margins.** `2e ≤ u·u₁₃₅` for every admissible
 spectrum size `q`. -/

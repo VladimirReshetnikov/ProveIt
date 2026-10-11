@@ -1100,6 +1100,9 @@ import GowersSzemeredi.Proofs13PolyStage136
 import GowersSzemeredi.Proofs13PolyRowExponent
 import GowersSzemeredi.Proofs13PolySquareExtraction
 import GowersSzemeredi.Proofs18FejerCubicAt
+import GowersSzemeredi.Proofs16PhasePartitionOne
+import GowersSzemeredi.Proofs18PolyCubicDegree
+import GowersSzemeredi.Proofs18PolyCubicDegreeExplicit
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

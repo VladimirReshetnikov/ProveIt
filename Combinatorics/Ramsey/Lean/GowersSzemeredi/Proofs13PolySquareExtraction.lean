@@ -19,7 +19,7 @@ Here the row exponent is `polyRowExponent p δ`, which is polynomial in
    `section13_square_extraction_of_scales`, unchanged.
 
 The phase partition enters as the hypothesis
-`ProgressionPhasePartition K p`, with `K ≤ 2^p` and `p ≤ 2^(2^20)`. -/
+`ProgressionPhasePartition K p`, with `K ≤ 2^p` and `p ≤ 2^(2^64)`. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -43,7 +43,7 @@ theorem stage135UniformExponent_le_one {p q : Nat} (hp : 0 < p) :
 /-- The integer budgets of Stage 13.6 at the polynomial exponents, for one
 spectrum size `q`. -/
 theorem section13_poly_integer_budgets {delta : Real} (hδ : 0 < delta) (hδone : delta ≤ 1)
-    {p q : Nat} (hp : 0 < p) (hpB : (p : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 20)) (hq : 0 < q) :
+    {p q : Nat} (hp : 0 < p) (hpB : (p : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 64)) (hq : 0 < q) :
     ∀ (N : Nat), section13PolyBudgetThreshold p delta q ≤ N → ∀ alpha : Real,
       delta ≤ alpha → alpha ≤ 1 →
       (q : Real) ≤ section13QBound (section10Lambda (alpha ^ 32 / 16)) → ∀ n L Q : Nat,
@@ -139,7 +139,7 @@ def section13PolyIntegerThreshold (p : Nat) (delta : Real) : Nat :=
     (fun q => Nat.ceil (section13PolyBudgetThreshold p delta q))
 
 theorem section13_uniform_poly_integer_budgets {delta : Real} (hδ : 0 < delta)
-    (hδone : delta ≤ 1) {p : Nat} (hp : 0 < p) (hpB : (p : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 20))
+    (hδone : delta ≤ 1) {p : Nat} (hp : 0 < p) (hpB : (p : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 64))
     (N : Nat) (hN : section13PolyIntegerThreshold p delta ≤ N)
     (alpha : Real) (hδα : delta ≤ alpha) (hαone : alpha ≤ 1) (q n L Q : Nat)
     (hq : 0 < q) (hqB : (q : Real) ≤ section13QBound (section10Lambda (alpha ^ 32 / 16)))
@@ -169,7 +169,7 @@ threshold depending only on the lower density. The row is at least
 `ζ(α)/2·N^(polyRowExponent p α)` long. -/
 theorem lemma_13_6_poly_explicit {delta : Real} (hδ : 0 < delta) (hδone : delta ≤ 1)
     {K : Real} {p : Nat} (hpp : ProgressionPhasePartition K p) (hp : 0 < p) (hK : K ≤ 2 ^ p)
-    (hpB : (p : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 20))
+    (hpB : (p : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 64))
     (N : Nat) [Fact N.Prime] (S : Section13Context N) (D : Stage134Data N)
     (hS : delta ≤ S.alpha) (hN : section13PolyIntegerThreshold p delta ≤ N)
     (h134 : IsStage134Data S (section10Lambda (S.alpha ^ 32 / 16)) D) :
@@ -207,7 +207,7 @@ density `2^(−137)δ^704`. -/
 theorem section13_complete_square_extraction_poly {delta : Real}
     (hδ : 0 < delta) (hδone : delta ≤ 1)
     {K : Real} {p : Nat} (hpp : ProgressionPhasePartition K p) (hp : 0 < p) (hK : K ≤ 2 ^ p)
-    (hpB : (p : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 20)) :
+    (hpB : (p : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 64)) :
     ∀ (N : Nat) [Fact N.Prime] (S : Section13Context N),
       delta ≤ S.alpha → section13PolyGeometricThreshold p delta ≤ N →
       ∃ V W : ModAP N, ∃ B : Finset (Pair N),

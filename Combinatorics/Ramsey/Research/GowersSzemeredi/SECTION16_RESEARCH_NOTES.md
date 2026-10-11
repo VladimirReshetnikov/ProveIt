@@ -3649,6 +3649,83 @@ mechanism.
 - `omega` lifts `2^n` to an `Int` atom without a sign. Add
   `Nat.one_le_two_pow` facts.
 
+### L.9 Theorem 18.1 at degree three (2026-10-11)
+
+**Correction to L.7c.** The polynomial simultaneous partition that L.7c asked
+for was already in the corpus. `CommonDiffPartitionBoundAt 1 K p`
+(Section 16's common-difference partition, built on the multiaffine Schmidt
+partition in dimension two) partitions a progression into cells of length at
+least `H`, with every phase `(a_i h + b_i)·step` at most `(4/H)·N`, as soon as
+`H^(p(q+1)^8) ≤ |P|`. That exponent is polynomial in `q`. The vendored
+Schmidt layer is exponential in the number of *polynomials*, but this
+partition handles the `q` affine forms as one multilinear family. L.7c's
+"one square root per form" describes the corpus *proof* of Lemma 13.5, not
+the problem.
+
+**The route.** The new modules are light and kernel-checked unless marked
+otherwise.
+- `Proofs13PolyRecurrence`: `lemma_13_5_poly`. Lemma 13.5 at both exponents
+  `e_q = (2p(q+1)^8)^(−2)`, given `ProgressionPhasePartition K p` (the
+  `ModAP` form of the partition). Its three cases are an empty `P`, the
+  singleton scale `|P|^e ≤ 2`, and the phase partition at
+  `H = ⌊|P|^(1/(p(q+1)^8))⌋`. The partition controls the phases at every
+  point of a cell, so the corpus's endpoint deletion is not needed.
+- `Proofs13PolyStage136`:
+  - `lemma_13_5_poly_with_catalogue`: one progression satisfying both
+    `IsStage135Data` and the polynomial bounds at `u = (2p(q+1)^8)^(−4)`.
+    Small `q` falls back to the corpus progression.
+  - Lemma 13.6 with the precision as a parameter.
+  - Everything downstream (13.7, 13.8, the square) keeps using the
+    catalogue predicates unchanged.
+- `Proofs13PolyRowExponent`:
+  - the row exponent `polyRowExponent p α = (4Q³(2p(Q+1)^8)^4)⁻¹`, polynomial
+    in `Q = section13Q α`;
+  - the margins `2e ≤ u·u₁₃₅`;
+  - `2^(−13Q) ≤ e` for `p ≤ 2^(2^64)`, using only `p ≤ 2^Q`.
+- `Proofs13PolySquareExtraction`: `section13_complete_square_extraction_poly`,
+  a bilinear square of side `N^(section13PolySquareExponent p δ)`.
+- `Proofs18FejerCubicAt`: the whole Fejér cubic chain (odd square, Section 17
+  localization, prime models, twisted and untwisted partitions) made generic
+  in the square exponent `e`. `FejerSquareAt.functionDiscrepancyBound`
+  gives `FunctionDiscrepancyBound 3` with `σ = phaseInverseExponent 3 (e·κ)`.
+- `Proofs18PolyCubicDegree`: `theorem_18_1_three_of_phase_partition`.
+  - `σ⁻¹ ≤ (2/α)^(2^74)`: the row exponent contributes `2^69`, the two
+    square factors `2^42` and `2^44`, `κ` contributes `2^59`.
+  - `β⁻¹ ≤ (2/α)^(2^59)`, as in the corpus.
+  - Both lie far inside the target `α^(2^8192)`
+    (`section18Exponent_le_of_inv_le`).
+- `Proofs16PhasePartitionOne`: `CommonDiffPartitionOne`, the `k = 1`
+  statement copied verbatim, and `progressionPhasePartition_of_commonDiffOne`
+  (a progression is a one-dimensional box; affine maps are multilinear).
+- `Proofs18PolyCubicDegreeExplicit` (bridge): **`theorem_18_1_three :
+  Theorem181At 3`** at the explicit constants.
+  - `explicit_family_constants_le 1` gives `⌈K⌉ + 2p ≤ 2^(2^64)`.
+  - `ProgressionPhasePartition.mono` raises `p` to `max p 2^64`, so that
+    `K ≤ 2^p`.
+  - Stub-checked faithfully: StubAll's verbatim definitions plus one axiom,
+    `commonDiffPartitionOne_explicit`, the one-line instantiation of
+    `commonDiffPartitionBoundAt_of 1`.
+
+**Degrees four to seven (plan, not yet checked).** The single-piece step of
+L.7b keeps `σ` polynomial only if its own losses are polynomial.
+- To verify: in `envBound_step`, does the `σ` envelope depend
+  exponentially on anything except the input `σ`? Candidates are the
+  thresholds and Lemma 15.6.
+- If not, the L.7c count applies: `genMu`-type sums with a polynomial
+  degree-three base fit `2^(k+10)` up to `k = 7`.
+- The work would be an `EnvBound` variant with `σ⁻¹ ≤ X^(2^μ)` in place of
+  `exp(X^(2^μ))`, and its step lemma.
+
+**Technique notes.**
+- `positivity` on terms containing `section13Q δ` unfolds into the hidden
+  `2^(2^20)` and reaches the recursion limit. Make `Q` opaque with
+  `obtain ⟨Q, hQ⟩ : ∃ Q, Q = section13Q δ`.
+- `norm_num` refuses powers above `2^256`, so `2^284 ≤ 2^512` stays open.
+  Use `pow_le_pow_right₀` on exponents.
+- Matching `2^(2^(2^(1+5)))` against `2^(2^64)` by `exact` unfolds the real
+  power. Rewrite the exponents syntactically first (`1+5 = 6`,
+  `2^6 = 64`).
+
 ## F. Routes
 
 1. **Quantitative repair (research).**
