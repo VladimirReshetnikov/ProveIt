@@ -1055,6 +1055,7 @@ import GowersSzemeredi.Proofs18LengthSixEnvelope
 import GowersSzemeredi.Proofs18LengthSixSzemeredi
 import GowersSzemeredi.Proofs18LengthSixExplicit
 import GowersSzemeredi.Proofs16UniformCoverTwo
+import GowersSzemeredi.Proofs16WithSum
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

@@ -3032,6 +3032,72 @@ Lean traps found here. Each cost a build:
 - A stub check against a stale olean reports phantom mismatches. Rebuild
   the light dependency first.
 
+### L.5 Route (II), first stage: `PolyCoverAt 3` and Theorem 16.2 in dimension three (plan, 2026-10-10)
+
+**Why not Part J.** `theorem_16_2_at_three_of_stackable` asks for a
+`CubicStackableClass 2 q`: the union of any `n` members must be covered
+with count exactly `3nq` and exponent `cubicBaseExponent(nq)`. The
+dimension-two family covers have counts of degree about 5 in `n`
+(`famPieceGraphBound`), so they cannot meet that form. Part J would have
+to be redone with general polynomial controls. Building `PolyCoverAt 3`
+the way `PolyCoverAt 2` was built is more direct.
+
+**The dimension-two piece, read for its dimension-specific inputs.** The
+Gowers side is generic in `k`:
+- the dense selection;
+- Lemma 16.7;
+- the vertex identity;
+- the spectrum relation and its product property;
+- Lemma 15.6;
+- the greedy decomposition;
+- `section16_piece_cover_with` and `abstract_family_piece_cover_with`.
+
+Exactly three inputs are dimension-one facts:
+1. the spectrum relation, covered by `polyCoverAt_one`;
+2. the remainder, one vertex `φ(x₀, x)`;
+3. the slices, Freiman families of the one-dimensional final-coordinate
+   sections.
+
+**Dimension three.** The three inputs become two-dimensional objects:
+1. *Spectra.* `section16SpectrumRelation B δ` is a two-dimensional product
+   relation. It decomposes into `polyTwoPieces` members of the class
+   `PolyPieceTwo` (`section16_poly_piece_decomposition_two`, done). The
+   spectra of many pieces are then covered together by
+   `section16_uniform_cover_two` (done).
+2. *Remainder.* It is a signed sum of `2^2 − 1 = 3` translated vertices:
+   two functions of `(h_i, x)` and one of `x`. Each is a cylinder over a
+   face relation of dimension ≤ 2. The face relations decompose into
+   pieces, the cylinders come from `relation_lift_last` and
+   `coordinateReindex`, and their sum is covered by
+   `MultiplyLinearWith.relationSum` (done, Proofs16WithSum: counts and
+   exponents multiply, three summands).
+3. *Slices.* For each `t`, the section `h ↦ φ(h, t)` is a two-dimensional
+   partial function with the product property. It decomposes into pieces
+   off a good set. Any `r` stacked slices are then covered by the uniform
+   cover at `r·polyTwoPieces` pieces. The slice provider needs `Pb`
+   monotone and `Es` antitone in `r`. Crude power envelopes give both,
+   from the count and exponent calculus of Proofs18LengthSixCounts and
+   Proofs18LengthSixExponents, generalized from `polyTwoPieces` to any
+   `M`.
+
+**Stages.**
+- (D1) Envelope controls for the uniform cover at any `M` pieces.
+- (D2) The three inputs above, for one piece and for families.
+- (D3) `PolyPieceThreeData` and the piece theorem, from Lemma 15.6's
+  arrangements at `k = 2`.
+- (D4) The family cover of dimension-three pieces
+  (`abstract_family_piece_cover_with` at `k = 2`, with
+  `AbstractFamilyLemma166At 2` from the heavy bridge), the greedy
+  decomposition, and `PolyCoverAt 3`.
+- (D5) `PolyCoverAt k ⇒ Theorem162At k`. Polynomial controls of degree at
+  most `2^(2^(k+8))` lie inside the printed `multipleQ^r` and
+  `multipleC^r`, since `r ≥ 2/θ`. This gives Theorem 16.2 and
+  Corollary 16.11 in dimension three. With the single-piece route, it
+  also gives the inputs for Theorem 18.2 at length seven.
+
+Each stage is the dimension-two construction one level up. The new
+ingredient is the uniform class.
+
 ## F. Routes
 
 1. **Quantitative repair (research).**
