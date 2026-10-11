@@ -173,7 +173,7 @@ envelopes grow like $472\cdot2^k<512\cdot2^k$.
 \toprule
 & printed & standard base & tight base\\
 \midrule
-Theorem 18.1, exponent $\alpha^{2^{2^{d+c}}}$ & $c=10$ & $c=8$ ($d\ge4$) & $c=7$ ($d\ge4$)\\
+Theorem 18.1, exponent $\alpha^{2^{2^{d+c}}}$ & $c=10$ & $c=8$ ($d\ge4$) & $c=7$ (every $d$)\\
 Theorem 18.2, threshold with $L+c$ & $c=9$ & $c=6$ ($L\ge6$) & $c=5$ ($L\ge11$)\\
 Corollary 18.7, threshold with $L+c$ & $c=9$ & $c=6$ ($L\ge6$) & $c=5$ ($L\ge11$)\\
 \bottomrule
@@ -207,7 +207,8 @@ envelopes & \lean{polyGenMuC\_le}, \lean{genMuC\_le}, \lean{genMuC\_le\_sharp}\\
 Theorems 18.1, 18.2, Cor.~18.7 & \lean{theorem\_18\_1\_explicit}, \lean{theorem\_18\_2\_explicit},\\
 & \lean{corollary\_18\_7\_explicit} (\lean{Proofs18CoverExplicit})\\
 sharper constants & \lean{Proofs18CoverSharper}, \lean{Proofs18CoverTightBase},\\
-& \lean{Proofs18CoverColorings}, \lean{Proofs18CoverSharperExplicit}\\
+& \lean{Proofs18CoverColorings}, \lean{Proofs18CoverSharperExplicit},\\
+& \lean{Proofs18CoverSharperLowDegrees}, \lean{Proofs18CoverSharperAllDegrees}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -219,12 +220,14 @@ Every result above is kernel-checked. The production audit of 2026-10-11,
 built 1,440 modules from source with Lean~4.32.0, checked the exact types of
 all 120 numbered catalogue statements and of the improved-bound theorems,
 and found only the axioms \lean{propext}, \lean{Classical.choice} and
-\lean{Quot.sound}. Its record is
+\lean{Quot.sound}. The extension of the $c=7$ row to degrees $0$--$3$
+postdates that audit and is so far checked against faithful stubs. The
+audit's record is
 \begin{center}\small
 \lean{Research/GowersSzemeredi/verification/}\\
 \lean{2026-10-11-numbered-and-bounds.json}.
 \end{center}
 The research notes
-(\lean{SECTION16\_RESEARCH\_NOTES.md}, \S\S L.11--L.15b) record the development.
+(\lean{SECTION16\_RESEARCH\_NOTES.md}, \S\S L.11--L.15c) record the development.
 
 \end{document}
