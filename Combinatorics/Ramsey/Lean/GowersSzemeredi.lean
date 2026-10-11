@@ -1042,6 +1042,7 @@ import GowersSzemeredi.Proofs16RelationLift
 import GowersSzemeredi.Proofs16RelFreimanCover
 import GowersSzemeredi.Proofs16PolyPieceTwoData
 import GowersSzemeredi.Proofs16PolyFamilyTwo
+import GowersSzemeredi.Proofs16PolyCoverTwo
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

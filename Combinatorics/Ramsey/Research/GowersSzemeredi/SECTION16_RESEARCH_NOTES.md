@@ -2817,6 +2817,69 @@ family layer must be stated over frame-free members.
    - Below Lemma 15.6's threshold `N₀ = poly(1/γθ)`, the coarse relation
      cover has count `3²·N < 9N₀`, which is still polynomial.
 
+### L.3b `PolyCoverAt 2` is proved (2026-10-10)
+
+`polyCoverAt_two_of_family_lemma6` (`Proofs16PolyCoverTwo`) is
+kernel-checked and light. It states:
+
+> `AbstractFamilyLemma166At 1 (section16PowerWidth A Bq)` with `A, B > 0`
+> implies `PolyCoverAt 2 polyTwoQb (polyTwoEb A Bq)`.
+
+The heavy bridge `exists_polyCoverAt_two`
+(`Proofs16PolynomialLemma9WithRemainder`) discharges the hypothesis from
+`exists_polynomial_section16_recurrence_profile`. It does so
+definitionally (`familyRecThr`/`familyRecExp` are verbatim copies of the
+simultaneous threshold and exponent). The bridge has not been elaborated
+on this machine because it needs the OAI closure; it awaits the full
+verification run.
+
+**The proof** (B7.1–B7.5 of L.3a).
+1. *Peeling.* `section16_greedy_relation_decomposition`. Each sub-relation
+   with projection at least `θN²` gives a piece:
+   - a one-value-per-point selection keeps the product property
+     (`RelationProductProperty`, hereditary);
+   - Lemma 15.6 at `β = θ/2` gives Lemma 16.4's arrangement conditions,
+     since `section16ThetaOne θ γ 1 = (βγ/2)^(2^64)`;
+   - `section16_poly_piece_two_data` gives the piece, in the original
+     frame, with its Freiman data.
+
+   At most `γ⁻²/(5θ′)` pieces are needed.
+2. *Padding.* Pad with empty pieces (mass 0) to
+   `polyTwoPieces = ⌊γ⁻²/(5θ′)⌋`, so the controls depend only on
+   `(γ, θ, ρ)`.
+3. *The simultaneous cover.* `section16_poly_family_two_cover`: one
+   `MultiplyLinearWith` cover of the union of all pieces. The three common
+   relations (spectra, a remainder cylinder, stacked slices) are unions of
+   the pieces' Freiman covers (`RelFreimanCover`).
+4. *Small moduli.* Below `polyTwoThreshold = max 3 (Lemma 15.6's
+   threshold)`, which is polynomial in `1/θγ`, the coarse relation cover
+   has count `9⌈N₀⌉`. This goes through
+   `multiplyLinearWith_of_large_box_covers` with threshold `N₀`.
+
+**The controls.**
+- *Count.* `polyTwoQb = max(polyTwoFamCount, 9⌈N₀⌉)`.
+  - The family count is `max(m·max(Pb, C(S,2)Pb²), 9m)`.
+  - Here `m = ⌊γ⁻²/(5θ′)⌋`, `S ≈ 24·Qr·m/ρ`, and `Pb = 3(m·S·q + 1)`.
+  - `q = section16BaseFamilyBound(γ, θ′)` and `θ′ = θ₂/8`.
+- *Width exponent.* `polyTwoEb` is a capped product of cubic exponents
+  and the recurrence divisor `8p(q+1)^8`. By
+  `piece_cover_exponent_lower` and `section16_cubic_capped_exponent_lower`
+  its capped parts keep a constant multiple of the product of the line
+  and slice exponents, up to a factor `log(16A/ζ)`.
+
+Everything is polynomial in `1/ρ` and in `1/θγ`. The degree is Gowers's
+fixed `2^(2^6)` from `θ₁`, which `δ` and `θ₂` inherit.
+
+**Consequences to pursue.**
+- `single_piece_lift_global` at `k = 2` needs exactly `PolyCoverAt 1`
+  (proved) and `PolyCoverAt 2` (now proved). Its chain ends in
+  `FunctionDiscrepancyBound 4` (L.1, step 7), so it becomes unconditional
+  up to the scale conditions and the budget.
+- The family cover does not need a common product property, only
+  per-piece data. So the pieces of a whole *family* of relations can be
+  covered at once, which is plausibly the covering half of
+  `StackableStructureAt 2` that Part J needs for dimension three.
+
 ## F. Routes
 
 1. **Quantitative repair (research).**
