@@ -1104,6 +1104,9 @@ import GowersSzemeredi.Proofs16PhasePartitionOne
 import GowersSzemeredi.Proofs18PolyCubicDegree
 import GowersSzemeredi.Proofs18PolyCubicDegreeExplicit
 import GowersSzemeredi.Proofs18PolyDegrees
+import GowersSzemeredi.Proofs16SinglePieceGradedRemainder
+import GowersSzemeredi.Proofs16SinglePieceGradedGlobal
+import GowersSzemeredi.Proofs18SinglePieceGradedInverse
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
