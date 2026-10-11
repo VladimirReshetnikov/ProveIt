@@ -1,0 +1,116 @@
+\section{Compressed inventories of normal bundle midsections}
+\label{sec:prismatic-inventory}
+
+The classifier of Section~\ref{sec:cut-products} counts wholly prismatic
+pieces but does not identify their normal bases. We now recover a binary
+inventory of those midsections with multiplicities. Marked core components
+remain counted, without a claimed description of their topology or geometry.
+This is not the inventory of the full parallelity bundle attached inside
+a core component.
+
+\subsection{Additive chamber weights identify actual midsections}
+
+Use the source-owned chamber system from Section~\ref{sec:cut-complement}.
+Give each exceptional chamber weight one in a leading marker coordinate.
+Give each unmarked triangle-prism chamber one in its original triangle
+coordinate, and each unmarked quad-prism chamber one in its original quad
+coordinate. The total dimension is $1+7T$. The quad interiors are one
+interval per occupied type, and triangle-arm interiors are one interval
+per arm. Along with the at most $6T$ singleton marks, there are at most
+$11T$ additive indicator intervals. None of these weights expands a
+represented chamber family.
+
+An orbit's leading sum is positive exactly when its component touches a
+mark. Such rows contribute only to the core count. A zero-leading row
+records one normal disc per local prism in that component; the remaining
+$7T$ entries are its connected normal midsection vector. Equal vectors
+are grouped with a binary orbit multiplicity. The weighted source and
+its independent orbit replay determine membership; merely summing proposed
+vectors to a plausible total would not establish an inventory.
+
+\begin{proposition}[Exact binary bundle-base inventory]
+The weighted chamber histogram determines the complete normal midsection
+inventory of the wholly prismatic cut components, and the conservative
+core count. With maximum source-coordinate bit length $B$, the returned
+inventory has $O(T^2(B+\log(T+1)))$ bits. Construction and discovery retain
+the polynomial encoded-input bound of the weighted orbit operation;
+independent verification also charges its supplied trace length.
+\end{proposition}
+\begin{proof}
+Each chamber receives either a marker or exactly one normal-disc indicator.
+Therefore a zero-leading orbit consists entirely of prisms. By the preceding
+midsection proposition, its indicators are the normal triangles and
+quadrilaterals of one connected midsection. Summing them gives its full
+normal vector. All orbits with that vector contribute to its multiplicity.
+Positive-leading orbits are exactly the conservative core components.
+
+There are at most $v+2q\le6T$ distinct midsection vectors by
+Section~\ref{sec:cut-products}. Each entry is bounded by the corresponding
+cutting coordinate: the total number of prism chambers of a given local
+type is at most its source disc count. Multiplicities are bounded by the
+$T+D$ chamber universe, and Euler values have polynomially bounded digits.
+This proves the stated output size. The weight dimension and indicator
+count are polynomial in $T$, their coefficients are zero or one, and their
+endpoints use $O(B+\log(T+1))$ bits. The existing weighted interval operation
+has its polynomial encoded-input cost\cite[Theorem 16]{aht-orbits}, with
+all dimension, run transport, arithmetic and trace work charged.
+\end{proof}
+
+The full normal coordinates are retained rather than divided by their gcd.
+A connected annular midsection can be the normal double of a one-sided
+M\"obius band. Dividing its vector by two changes the base and its horizontal
+boundary, even when the two associated total interval bundles happen to
+share an unpatterned homeomorphism type. For $m$ sheets of the retained
+M\"obius vector, an even $m$ produces one M\"obius base and $m/2-1$ annular
+bases, while odd $m$ produces $(m-1)/2$ annular bases. These are grouped
+normal vectors, not expanded surface lists.
+
+\subsection{Independent weights and trace reuse}
+
+The native API is \code{normal\_prismatic\_inventory}. It validates the
+actual source and coordinates, constructs the chamber intervals and
+weights, and applies the existing weighted orbit kernel. Its result
+contains core and prismatic counts, full normal base coordinates,
+multiplicities and independently computable Euler values. It does not
+assert a knot verdict.
+
+The checker reconstructs the chamber graph through the independent face
+segment model. Its own block-by-block weight construction identifies
+endpoint marks and prism interiors; it imports neither weight nor inventory
+producer. After exact weighted replay, it reconstructs every proposed base,
+checks normal matching, source coordinate bounds and the type bound, and
+compares the entire ordered inventory. Altered weights, base coordinates,
+multiplicities, Euler values or source identity do not authenticate a result.
+The schema is \code{normal-prismatic-inventory-v1}; signed hexadecimal
+integer transport is retained.
+
+A caller may supply a previously obtained ordinary cut-orbit certificate.
+The producer then independently checks its exact fresh geometric pairings
+and uses it for weighted replay, without another orbit search. A discovery
+cycle cap cannot be combined with this replay path. Reuse is not a source
+cache or an assertion that two inputs have the same geometry: only a trace
+that matches the current owned interval system is accepted, and the inventory
+proof binds the current source and vector separately.
+
+Cycle limits constrain the underlying orbit search, not all weighted
+arithmetic. Callbacks apply throughout validation, construction, transport
+and verification. An incomplete query has no inventory or certificate;
+a replay operation limit means unverified, never a geometric conclusion.
+
+\subsection{The remaining core problem}
+
+The inventory describes whole cut components made entirely of prisms. It
+omits the parallelity regions that attach to exceptional geometry inside
+a marked core component. In particular, connected primitive cuts may have
+only a core component even while containing extensive interior parallelity.
+The printed parallelity-bundle algorithms address that richer construction;
+we have not implemented their full core and attachment output here.
+
+Core geometry, boundary patterns, ordered vertical attachments, arbitrary
+later hierarchy-piece validation and bounded hierarchy depth remain open.
+The new standalone operator is not called by recognition and changes neither
+its defaults nor its general complexity bound. It provides a verified
+compressed inventory prerequisite without substituting it for full cutting.
+
+\subsection{Source inventories and complete-query measurements}
+\input{prismatic_inventory_results.tex}
