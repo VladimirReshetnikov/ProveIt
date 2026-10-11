@@ -1,0 +1,132 @@
+\section{Research targets, results, and source status}
+\label{sec:scope}
+
+The question motivating this continuation is how much of a singular
+\emph{ordered} nested sum can be evaluated using the familiar Gamma,
+polygamma, Hurwitz-zeta and Stieltjes functions. Full symmetrization
+removes ordering information and often reduces by the stuffle product.
+The individual ordered germ retains that information. Its singularities
+also meet along several hyperplanes, so a constant Laurent coefficient
+must specify the approach to their intersection.
+
+We work from the repository snapshot
+\begin{center}
+\small\texttt{4c1286161c425eca957b4b9f7cd436c37a4c98f3}.
+\end{center}
+The source survey includes the canonical manuscript, its status records,
+and the seven ZIP packages then present in \src{docs/incoming}. The
+mathematical audit concentrates on the relevant ordered-germ,
+coincident-product, resonance, and Gaussian-status material; it is
+not a re-verification of every proof in the full manuscript.
+The exact files and archive hashes are recorded in the accompanying
+\src{integration/source_snapshot.json}. All sources were inspected as
+research evidence; successful numerical replay is not treated as a
+proof of an analytic theorem.
+
+\subsection{The concrete questions answered}
+
+The incoming \emph{Resonant Gamma Jets and Directional Zeta Identities}
+report asks for an ordered depth-three germ with independent exponents,
+its intersecting polar divisors, a normally convergent remainder, and
+the constant along every transverse ray. It separately asks for
+tangential curves and the exact number of curve coefficients needed
+to determine a finite part \cite[Further research, Q1 and Q3]{repojets}.
+Both questions are answered here. The first answer also yields the
+following all-depth specialization:
+\begin{equation}\label{scope:mainfamily}
+ \FP_{\eps=0}Z_d(1+p\eps,1+q\eps,\ldots,1+q\eps;a),
+ \qquad a>0.
+\end{equation}
+It closes in ordinary Hurwitz-zeta derivatives and Stieltjes constants
+whenever all prefix slopes $p+jq$ are nonzero. The initial slope may
+differ from every trailing slope; no symmetrization of the ordered sum
+is needed.
+
+The \emph{Coincident Stieltjes} report asks for a cubic closure theorem
+and specifically for the coordinate-normalized digamma cube
+\cite[Further research: cubic coincident moments]{repocoincident}.
+We construct the full cubic completion and evaluate that finite part
+in terms of a single precisely defined diagonal Tornheim derivative.
+This is a finite reduction to an established higher-depth function.
+A further reduction of that derivative to ordinary constants is a
+separate unanswered question.
+
+\begin{center}
+\begin{tabular}{>{\raggedright\arraybackslash}p{.26\textwidth}>{\raggedright\arraybackslash}p{.64\textwidth}}
+\toprule
+Result & Exact outcome\\
+\midrule
+Ordered local germs & Convergent remainder construction at every depth and
+every common positive shift; finite coefficient recursion.\\[4pt]
+One distinguished slope & Every nonpositive Laurent coefficient reduces
+to finitely many ordinary Hurwitz and Stieltjes jets.\\[4pt]
+Independent depth three & Complete pole part and constant term; one
+harmonic Stieltjes coefficient contains the residual ordering dependence.\\[4pt]
+Tangential curves & Pole order $\sum\nu_j$ and a sharp required curve
+jet order $\sum\nu_j+\max\nu_j$.\\[4pt]
+Cubic coincident products & All Stieltjes indices and all argument
+derivatives; explicit digamma-cube reduction to $\tau'''(0)$.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{What is classical and what is added to this programme}
+
+Laurent expansions of Euler--Zagier multiple zeta functions have a
+substantial literature. Matsumoto, Onozuka and Wakabayashi analyze Laurent
+coefficients at integer points \cite{MOW}. Saha constructs regularized
+multiple Stieltjes germs and, in particular, gives the canonical
+ordered decomposition at the all-one point \cite[Theorem 2]{Saha}.
+Our tail-defect proof realizes that structure for an arbitrary
+positive common Hurwitz shift. The explicit slope evaluations, the
+reduction of every transverse depth-three directional finite part to
+one named harmonic coefficient and ordinary Hurwitz data, and the
+sharp curve-jet statement are the
+specific conclusions developed for the repository's current questions.
+
+The harmonic Hurwitz-zeta convention is that of Karg\i n, Dil,
+Cenkci and Can \cite{Kargin}; the strict ordered convention used
+here differs from their inclusive sum by a single Hurwitz-zeta term.
+We give the conversion rather than silently identifying the constants.
+The triple-Hurwitz Fourier relation is part of the Tornheim literature
+of Espinosa and Moll \cite{EMTornheim}. The Mellin method follows the
+established approach discussed by Borwein and Dilcher and by Bailey
+and Borwein \cite{BorweinDilcher,BaileyBorwein}. Low diagonal derivatives
+are recovered and used as consistency checks, without claiming their
+first evaluation. The bibliography is a targeted source comparison,
+not an exhaustive proof of publication priority.
+
+\subsection{Conventions and mathematical status}
+
+For $a>0$ we use real logarithms of $n+a$, and
+\begin{equation}\label{scope:stieltjes}
+ \zeta(1+u,a)=\frac1u+
+  \sum_{m\ge0}\frac{(-1)^m}{m!}\gamma_m(a)u^m,
+ \qquad \gamma_0(a)=-\psi(a).
+\end{equation}
+A prime on $\zeta$ denotes its first, spectral derivative. For $m\ge2$,
+\begin{equation}\label{scope:polygamma}
+ \zeta(m,a)=\frac{(-1)^m}{(m-1)!}\psi^{(m-1)}(a).
+\end{equation}
+These conventions follow the standard Hurwitz calculus \cite{DLMFHurwitz}.
+Without a shift, $\gamma_m=\gamma_m(1)$ and $\gamma=\gamma_0(1)$.
+The rising factorial is $(z)_k=\prod_{j=0}^{k-1}(z+j)$, with
+$(z)_0=1$.
+Brackets $[u^j]$ or $[y^jt^k]$ mean ordinary Taylor coefficients,
+so conversion to derivatives requires the displayed factorials.
+
+For a specified meromorphic function of one variable, $\FP$ means its
+coefficient of $\eps^0$. For a spatial endpoint integral, it means
+the constant remaining in the cutoff expansion in the stated spatial
+coordinate. These two operations are related by explicit corrections
+in Section~\ref{sec:cubic}; they are not interchangeable definitions.
+The holomorphic regular germ is a third object, defined by an exact
+subtraction recursion.
+
+The canonical manuscript already proves $S_4$ and retains the short
+$S_6$ and revised $S_8$ candidates as conjectures \cite{repomain}.
+No argument in this article changes that status. We do not infer
+period independence, minimal arithmetic bases, or nonreducibility
+from a failed search. Every theorem below is proved analytically;
+the attached computations check finite algebra and independently
+evaluated examples.

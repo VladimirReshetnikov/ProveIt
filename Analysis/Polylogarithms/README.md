@@ -498,3 +498,22 @@ Their new OVERVIEW notes record overlap, source pins and normalization guards.
 Independent replay and canonical proof acceptance are separate steps;
 placement alone does not change theorem status. All six suites are being
 replayed on isolated copies. The S6 and revised S8 conjectures remain open.
+
+## Twelfth continuation placement, October 10, 2026
+
+Five new deliveries retain 172 tracked originals, including their PDFs,
+mathematical sources, verification code and ten historical replay logs.
+The five named ZIPs were retired after placement; arrival recovery paths
+are recorded in the canonical verification registry. The incoming README
+is retained. No checksum manifest was verified or line ending normalized.
+
+The correlation spine receives `coincident-directional-zeta`,
+`periodic-collision-contacts` and `periodic-stieltjes-contact`.
+The harmonic-resonance spine receives `mixed-spectral-identities` and
+`ordered-hurwitz-resonances`. Their OVERVIEW notes identify independent
+overlap, source pins and normalization guards. Both periodic-contact routes
+claim the same all-index unit-coordinate law. The mixed spectral package
+adds a weighted trigamma-square target. Full isolated-copy replay is in
+progress, and analytic acceptance remains a separate step. The cubic
+Tornheim reduction, external errata and ordered higher-depth claims have
+explicit audit boundaries. S6 and revised S8 remain open.

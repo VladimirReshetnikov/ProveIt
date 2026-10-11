@@ -1,0 +1,99 @@
+% Unapplied manuscript insert. Requires the canonical theorem environment and
+% standard AMS packages. Unique pcc: labels/pcc macros limit namespace clashes.
+% Full analytic proof and provenance: Periodic_Stieltjes_Collisions.tex.
+\providecommand{\pccFP}{\operatorname{FP}}
+\providecommand{\pccH}{\mathsf H}
+\providecommand{\pccD}{\mathrm D}
+\providecommand{\pccP}{\mathcal P}
+\providecommand{\pccB}{\mathcal B}
+\section{Periodic collision contacts in a fixed coordinate}
+\label{pcc:section}
+An off-point collision formula does not determine a periodic distributional
+extension. The following comparison uses unit-coordinate Hadamard finite
+parts: the coordinate is $x$ for each factor, and the coordinates are $a$ and
+$1-a$ for the separated correlation as a function of its shift. The full
+analytic subtraction lemma, its proof, and reproducible checks are supplied
+in the accompanying report \emph{Periodic Stieltjes Collisions}.
+
+Put $T_{m,p}=\operatorname{Fp}_x\gamma_m^{(p)}(x)$ on
+$\mathbb R/\mathbb Z$, and let $R$ denote reflection. Write $J_{mn}^{p,q}(a)$
+for the separated correlation with the specified local coordinate finite
+parts, and $\pccH[J]$ for its two-endpoint Hadamard extension in $a$.
+Normalize $\langle\delta^{(r)},\varphi\rangle=(-1)^r\varphi^{(r)}(0)$.
+Set
+\[
+ P_j(t)=\frac{(1+t)_j}{j!},\qquad
+ A(u,v)=\frac{\Gamma(1-u)\Gamma(1-v)}{\Gamma(1-u-v)}
+ \frac{\cos(\pi(u-v)/2)}{\cos(\pi(u+v)/2)}.
+\]
+\begin{theorem}[All-index collision contact]
+\label{pcc:theorem}
+For $r=p+q$ and $N=m+n$,
+\[
+ (RT_{m,p})*T_{n,q}=\pccH[J_{mn}^{p,q}]
+       +\kappa_{mn}^{p,q}\delta^{(r)},
+\]
+where
+\begin{align*}
+\pccB_{pq}(u,v)={}&A(u,v)P_r(u+v)+P_p(u)P_q(v)\\
+ &-P_p(u)P_r(v)-P_q(v)P_r(u),\\
+\kappa_{mn}^{p,q}={}&(-1)^{p+N}m!n!
+ [u^{m+1}v^{n+1}]\pccB_{pq}(u,v).
+\end{align*}
+No lower delta derivatives occur in this comparison. At Stieltjes index zero,
+\[
+ \kappa_{00}^{p,q}=(-1)^p\left[2\zeta(2)
+ +(H_r-H_p)(H_r-H_q)-H_r^{(2)}\right].
+\]
+\end{theorem}
+\begin{proof}
+Let $\mathcal Z(t)$ be the meromorphic periodic Hurwitz family representing
+$\zeta(1+t,x)$, with zero Fourier coefficient at frequency zero and
+$\Gamma(-t)(2\pi\mathrm i k)^t$ at $k\ne0$. Its residue at zero is
+$1-\delta$. Full coordinate subtraction gives the holomorphic family
+\[
+ \mathcal T_p(t)=\pccD^p\mathcal Z(t)-\frac{\delta_{p0}}t
+                  +\frac{P_p(t)}t\delta^{(p)}.
+\]
+Indeed a local term $c(t)x^{-r-1-t}$ paired with a test function has resonant
+contribution
+\[-\frac{c(t)\varphi^{(r)}(0)}{r!t}.\]
+Its entire numerator must be
+subtracted, because the coordinate finite part of every
+$x^{-1}\log^j x$ is zero. The remaining Taylor-subtracted integral and all
+fixed spectral derivatives are dominated by $x^{-\eta}(1+|\log x|^M)$,
+$\eta<1$, so coefficient extraction is valid. Thus
+\[(-1)^m m![t^m]\mathcal T_p(t)=T_{m,p}.\]
+
+Write $E(u,v)=\Gamma(1-u)\Gamma(1+u+v)/\Gamma(1+v)$. Gamma reflection gives
+$vE(u,v)+uE(v,u)=(u+v)A(u,v)$. Let $\mathcal J^{\rm mer}_{pq}$ be the
+meromorphic separated generator before its shift-coordinate completion.
+For $r>0$, its completion replaces
+$W_r(t)=(-1)^r\pccD^r\mathcal Z(t)$ by
+$W_r(t)+(-1)^rP_r(t)\delta^{(r)}/t$ in each Hurwitz term, with reflection
+in the right-endpoint term. The resulting added coefficient is
+\[
+ \frac{(-1)^p}{uv}
+ \big(P_p(u)P_r(v)+P_q(v)P_r(u)-A(u,v)P_r(u+v)\big)
+ \delta^{(r)}.
+\]
+Expanding $(R\mathcal T_p(u))*\mathcal T_q(v)$ instead gives the same
+$\mathcal J^{\rm mer}_{pq}$, plus
+$(-1)^pP_p(u)P_q(v)\delta^{(r)}/(uv)$. At $r=0$, the constant terms from
+subtracting $1/t$ are retained in both generators and the same comparison
+holds. Subtraction gives $(-1)^p\pccB_{pq}(u,v)\delta^{(r)}/(uv)$.
+Since $A(u,0)=A(0,v)=1$ and $P_j(0)=1$, the numerator vanishes on both axes;
+coefficient extraction proves the theorem. Expanding
+$A=1+2\zeta(2)uv+O((|u|+|v|)^3)$ and
+$P_j=1+H_jt+(H_j^2-H_j^{(2)})t^2/2+O(t^3)$ proves the specialization.
+\end{proof}
+
+In particular,
+\[
+ (RT_{0,0})*T_{0,0}=T_{1,0}+RT_{1,0}+2\zeta(2)(\delta-1).
+\]
+Omitting the atom would give nonzero mean, although both factors have zero
+mean. The scalar finite constant of the prior off-point collision remainder
+is a different quantity and is unchanged. Under $h$ mean-zero integrations,
+$\pccD^{-h}(\delta-1)=-B_h/h!$, so the contact term becomes an explicit
+Bernoulli correction in ordinary primitive and log-Gamma correlations.

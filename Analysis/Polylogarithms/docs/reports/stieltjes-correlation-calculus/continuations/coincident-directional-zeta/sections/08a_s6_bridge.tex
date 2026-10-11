@@ -1,0 +1,117 @@
+\subsection{A convergent depth-three bridge for the Gaussian $S_6$ target}
+\label{audit:s6-bridge}
+
+The restricted quotient can be tested against an explicit relation just
+outside its defining schemas. This gives a concrete exact reduction to
+include in a future certificate, while leaving the $S_6$ conjecture open.
+Here the manuscript's harmonic sum and Dirichlet beta function are
+\[
+ S_p=\sum_{n\ge0}\frac{(-1)^nH_n}{(2n+1)^p}\quad(p>1),
+ \qquad
+ \beta(s)=\sum_{n\ge0}\frac{(-1)^n}{(2n+1)^s}.
+\]
+Use the series convention
+\[
+ \Li_{s_1,\ldots,s_d}(x_1,\ldots,x_d)
+ =\sum_{n_1>\cdots>n_d\ge1}
+   \frac{x_1^{n_1}\cdots x_d^{n_d}}
+        {n_1^{s_1}\cdots n_d^{s_d}},
+ \qquad K_{6,1}=\operatorname{Im}\Li_{6,1}(i,-1).
+\]
+For precision about colors, write $x_j=i^{c_j}$, with $c_j$ read modulo
+four. With $\omega_a=dt/(t-a)$ and outer-letter-first iterated integrals
+$\mathcal I$, the corresponding word convention is
+\begin{equation}
+ \Li_{\boldsymbol s}(i^{c_1},\ldots,i^{c_d})
+ =(-1)^d\mathcal I\left(
+ 0^{s_1-1}i^{-c_1}\cdots
+ 0^{s_d-1}i^{-(c_1+\cdots+c_d)}\right).
+ \label{audit:s6-word-convention}
+\end{equation}
+All words below have first letter different from $1$ and last letter
+different from $0$.
+
+\begin{proposition}[A single-by-double shuffle reduction]
+\label{audit:s6-depth-three}
+The following identity consists entirely of convergent values:
+\begin{align}
+ K_{6,1}+\operatorname{Im}\Li_{5,2}(1,-i)
+ ={}&\sum_{a=1}^{5}
+       \operatorname{Im}\Li_{a,6-a,1}(i,-i,-1)\notag\\
+ &+\operatorname{Im}\Li_{5,1,1}(1,i,i)
+   +\operatorname{Im}\Li_{5,1,1}(1,-1,-i)\notag\\
+ &-\operatorname{Im}\Li_{1,5,1}(i,1,-1)
+   -\operatorname{Im}\Li_{5,1,1}(1,i,-1)\notag\\
+ &-\operatorname{Im}\Li_{5,1,1}(1,-1,i).
+ \label{audit:s6-depth-three-identity}
+\end{align}
+\end{proposition}
+\begin{proof}
+Consider $P=\Li_1(i)\Li_{5,1}(1,-1)$. Its stuffle expansion is
+\begin{align*}
+ P={}&\Li_{1,5,1}(i,1,-1)+\Li_{5,1,1}(1,i,-1)
+       +\Li_{5,1,1}(1,-1,i)\\
+    &+\Li_{6,1}(i,-1)+\Li_{5,2}(1,-i).
+\end{align*}
+For its integral shuffle, insert the single letter $-i$ into the word
+$0^4(1)(-1)$ at each of its seven positions. Formula
+\eqref{audit:s6-word-convention} then gives
+\[
+ P=\sum_{a=1}^{5}\Li_{a,6-a,1}(i,-i,-1)
+       +\Li_{5,1,1}(1,i,i)+\Li_{5,1,1}(1,-1,-i).
+\]
+Subtract the two expansions and take imaginary parts. The first-index-one
+terms have first argument $i$ and converge by summation by parts; all
+remaining terms converge absolutely. Thus the finite-sum stuffle limit
+and the convergent integral shuffle both apply. No divergent
+$\Li_1(1)$ or regularization parameter is used.
+\end{proof}
+
+\paragraph{What this says about the known obstruction.}
+The weight-seven functional $\ell$ in the pinned manuscript,
+\texttt{cycloquot:eq:separating}, is a functional on a specified formal
+depth-two presentation, not a functional on actual periods
+\cite{Repo}. It annihilates the displayed single-by-single
+shuffle/stuffle rows and the stated background; in particular,
+\[
+ \ell(K_{6,1})=1,\qquad
+ \ell\bigl(\operatorname{Im}\Li_{5,2}(1,-i)\bigr)=0.
+\]
+Extend it to the free higher-depth word space by assigning zero to all
+depth-three symbols, and call this particular extension $\widetilde\ell$.
+For the convergent single-by-double row
+\[
+ R=\operatorname{Im}\{\mathsf{shuffle}(\Li_1(i),\Li_{5,1}(1,-1))
+               -\mathsf{stuffle}(\Li_1(i),\Li_{5,1}(1,-1))\},
+\]
+the explicit expansions prove $\widetilde\ell(R)=-1$. Hence the naive
+zero extension of the old separator already fails on this elementary
+additional row. This calculation does not rule out another extension of
+$\ell$, and it does not establish that any particular additional family,
+including octahedral relations, is indispensable.
+
+Let $Q_7$ denote the ten-term right side of
+\eqref{audit:s6-depth-three-identity}. The ordinary stuffle of
+$\Li_5(1)\Li_2(-i)$ gives
+\[
+ \operatorname{Im}\Li_{5,2}(1,-i)
+ =g_{2,5}+\beta(7)-G\zeta(5),
+ \qquad g_{a,b}=\operatorname{Im}\Li_{a,b}(i,1),\quad G=\beta(2).
+\]
+Selecting the even inner indices gives
+$S_6=g_{6,1}+K_{6,1}$, so there is the exact reduction
+\begin{equation}
+ S_6=g_{6,1}-g_{2,5}+G\zeta(5)-\beta(7)+Q_7.
+ \label{audit:s6-Q-reduction}
+\end{equation}
+The unresolved task is to reduce this specified $Q_7$ to the frozen
+conjectural basket by a finite exact certificate. The double-shuffle
+identities used here are classical; the contribution of this audit is
+the explicit target row and the precise diagnostic of the inherited
+obstruction.
+
+The accompanying \texttt{verify\_s6\_target.py} independently enumerates
+the seven integral shuffles and five stuffle terms using exact integer
+arithmetic. It also checks all $192$ defining weight-seven restricted
+rows against $\ell$, verifies the value $-1$ above, and records the
+unchanged conjectural target in \texttt{s6\_target\_audit.json}.

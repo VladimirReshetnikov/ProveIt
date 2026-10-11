@@ -1,0 +1,108 @@
+\section{Source audit and proposed corrections}
+\label{audit:sec}
+
+\subsection{The Gaussian candidates remain conjectures}
+
+The manuscript distinguishes proved reductions from frozen
+integer-relation candidates. That distinction is preserved here.
+The current $S_6$ statement is
+\texttt{cycloquot:conj:S6} in
+\texttt{chapters/04-cyclotomic-quotients.tex}; the current $S_8$
+statement is \texttt{s8new:conj:S8} in
+\texttt{chapters/04-S8-candidate.tex} \cite{Repo}.
+The latter is a different vector from an earlier rejected $S_8$
+candidate. An objection to that rejected vector is not an objection
+to the current one.
+
+The supplied rigorous proximity certificates for the current frozen
+vectors have residual intervals containing zero. In particular, a
+bound $|R|<10^{-355}$ proves a very strong approximation but does not
+prove $R=0$. Repeating floating-point integer-relation searches would
+not close that logical gap. Nothing proved in this article supplies
+the missing exact cyclotomic relation, so neither conjecture is
+promoted to a theorem.
+
+The finite separating functional already constructed for a restricted
+level-four quotient is useful but has a limited conclusion. It rules
+out a derivation inside the particular stated depth-one-product
+shuffle/stuffle presentation. It does not prove that the target
+constant lies outside every larger cyclotomic algebra, and it does
+not rule out octahedral functional equations or additional
+regularized relations. The exact proof of $S_4$ in the manuscript,
+with its explicitly verified additional relation families, is a
+model for the type of enlargement that would be needed.
+
+\input{sections/08a_s6_bridge}
+
+\subsection{Three carry-forward manuscript corrections}
+
+The following points were already identified in the incoming
+Twisted Stieltjes report \cite{IncomingTwisted}. They remain relevant
+at the pinned revision. The accompanying patch proposes only these
+narrow changes and is supplied unapplied.
+
+\paragraph{A real logarithm for the negative-parameter integral.}
+In \texttt{chapters/03-algebraic.tex}, the displayed formula labelled
+\texttt{cleo:eq:lintanh} uses $\log\tan(\theta/2)$ while its stated
+real parameter range includes negative values. The real formula needs
+$\log|\tan(\theta/2)|$. Under the principal complex logarithm,
+the incorrect right side at $\lambda=-1/2$ differs from the real
+integral by $-i\pi^2/6$. This is a branch correction, with the
+absolute value fixed by the real integral and its real derivative.
+
+\paragraph{Remove an unsupported nonreduction description.}
+The same chapter calls a specific exact diagonal value
+\emph{non-elementary} without defining a comparison algebra or proving
+nonmembership. Keep the exact value and remove that classification.
+An available special-function representation by itself proves no
+nonreduction theorem.
+
+\paragraph{Scope the coefficient field to the character in use.}
+In \texttt{chapters/07-integration.tex}, the field
+$\mathbb Q(\sqrt q)$ belongs to the particular quadratic-character
+example. General additive or multiplicative character coordinates
+can require cyclotomic and character values. The patch makes this
+scope explicit without altering the quadratic calculation.
+
+One earlier proposed wording change is already integrated: the PSLQ
+discussion now allows known dependencies to be removed or quotiented
+out and requires a nonzero coefficient of the target. It no longer
+requires a prior linear-independence theorem. That edit is therefore
+not repeated or counted as a new correction.
+
+\input{sections/08b_external_audit}
+
+\input{sections/08c_bailey_borwein_audit}
+
+\subsection{Conventions that must survive integration}
+
+No new false theorem was found among the inspected periodic Hurwitz,
+coordinate-residue, and coincident-pair premises used in this article.
+The following assumptions are nevertheless part of the mathematics
+and must remain attached to the statements.
+
+\begin{enumerate}
+\item The pointwise product finite part, the periodic distributional
+      convolution, and the canonical extension in the shift coordinate
+      are different constructions. Theorem~\ref{cont:main} computes
+      their relation, including its contact term.
+\item The argument finite part uses a specified cutoff coordinate.
+      In Theorem~\ref{cub:general-completion}, subtracting only the
+      residue restricted to a polar hyperplane loses finite numerator
+      derivatives and changes the requested answer.
+\item A fixed-integer identity may be differentiated only in variables
+      that remain free in that identity. In particular, the finite
+      positive-integer Tornheim sums in \eqref{sp:positive} do not
+      determine derivatives in either fixed inner order.
+\item An origin ray is restricted before its removable singularity is
+      filled in. The two distinct values $1/3$ and $5/12$ are both
+      correct for their respective rays.
+\item Numerical verification checks an implementation and can detect
+      mistakes. It does not replace the proofs or establish arithmetic
+      independence.
+\end{enumerate}
+
+The source audit and correction patch are separate from the new
+mathematical section files. Their provenance notes identify which
+findings are inherited, which are newly checked against an external
+PDF, and which are restrictions on interpretation.

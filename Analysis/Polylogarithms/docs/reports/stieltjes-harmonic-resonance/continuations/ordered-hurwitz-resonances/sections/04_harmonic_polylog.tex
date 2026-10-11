@@ -1,0 +1,229 @@
+\section{The harmonic coefficient and its polylogarithmic representations}
+\label{sec:harmonic}
+
+The coefficient $\eta(a)$ in \eqref{ord:etadef} is not an undefined
+remainder. It has an absolutely convergent Stieltjes series, belongs
+to an established harmonic-zeta convention, and admits a convergent
+Mellin representation with an elementary kernel when $a=1$.
+This section also records exact difference and derivative identities.
+
+\subsection{Strict and inclusive harmonic conventions}
+
+For $n\ge0$ define the strict shifted harmonic sum
+\[
+ H_n^{(s)}(a)=\sum_{k=0}^{n-1}(k+a)^{-s},\qquad H_0^{(s)}(a)=0.
+\]
+It is entire in $s$ for fixed $n$. Its spectral derivatives are
+finite logarithm-weighted harmonic sums. Summing first over the
+inner index gives
+\begin{equation}\label{harm:strict}
+ Z_2(s,1;a)=\sum_{n\ge0}\frac{H_n^{(1)}(a)}{(n+a)^s}.
+\end{equation}
+The canonical decomposition with the second deviation zero yields
+\begin{equation}\label{harm:etaLaurent}
+ Z_2(1+u,1;a)=\frac1{u^2}+\frac{\gamma_0(a)}u+
+ B_2(a)+\eta(a)u+O(u^2).
+\end{equation}
+Indeed the regular part is $R_2(u,0;a)$ and its first coefficient is
+exactly \eqref{ord:etadef}.
+
+Karg\i n et al. use the inclusive harmonic Hurwitz function
+\cite{Kargin}
+\[
+ \zeta_H(s,a)=\sum_{n\ge0}(n+a)^{-s}
+                           \sum_{k=0}^{n}(k+a)^{-1}.
+\]
+The relation and the coefficient conversion are
+\begin{align}
+ \zeta_H(s,a)&=Z_2(s,1;a)+\zeta(s+1,a),\label{harm:inclusive}\\
+ \gamma_H(0,a)&=\frac{\gamma_0(a)^2+\zeta(2,a)}2,\notag\\
+ \eta(a)&=\boxed{-\gamma_H(1,a)-\zeta'(2,a).}\label{harm:conversion}
+\end{align}
+Here $\gamma_H(m,a)$ is normalized by the coefficient
+$(-1)^m\gamma_H(m,a)/m!$ in the regular Laurent series of
+$\zeta_H(1+u,a)$. This fixes both the strict/inclusive difference and
+the sign of the first coefficient.
+
+\subsection{Shift and parameter-derivative identities}
+
+\begin{proposition}[Transport of the ordering coefficient]
+\label{harm:transport}
+For every $a>0$,
+\begin{equation}\label{harm:shift}
+ \boxed{\eta(a+1)-\eta(a)=\frac{\gamma_1(a+1)}a.}
+\end{equation}
+Writing $\partial_1,\partial_2$ for the spectral derivatives of
+$Z_2$, one also has the convergent identity
+\begin{align}\label{harm:derivative}
+ \eta'(a)={}&-Z_2(2,1;a)-\partial_1Z_2(2,1;a)
+                 +\partial_2Z_2(2,1;a)\notag\\
+ &+\gamma_1(a)\zeta(2,a)+\zeta'(3,a).
+\end{align}
+All three double sums on the right converge absolutely, including
+their indicated logarithmic insertions.
+\end{proposition}
+
+\begin{proof}
+Removing the terms with smallest index zero gives
+\[
+ Z_2(s,1;a)-Z_2(s,1;a+1)=a^{-1}\zeta(s,a+1).
+\]
+The coefficient of $s-1$ is
+$\eta(a)-\eta(a+1)=-\gamma_1(a+1)/a$, proving
+\eqref{harm:shift}.
+
+In an absolute-convergence domain differentiation in the common
+shift gives
+\[
+ \partial_a Z_2(s,1;a)=-sZ_2(s+1,1;a)-Z_2(s,2;a).
+\]
+Use the stuffle identity
+\[
+ Z_2(s,2;a)=\zeta(s,a)\zeta(2,a)-Z_2(2,s;a)-\zeta(s+2,a)
+\]
+and continue near $s=1$. Taking the coefficient of $s-1$ in
+\eqref{harm:etaLaurent} gives \eqref{harm:derivative}.
+Convergence follows from $H_n^{(1)}(a)=O(1+\log n)$ and the extra
+outer square; spectral derivatives add only logarithmic factors.
+\end{proof}
+
+For integer shifts, repeated use of \eqref{harm:shift} yields the
+finite identity
+\[
+ \eta(a+N)=\eta(a)+\sum_{k=0}^{N-1}
+                         \frac{\gamma_1(a+k+1)}{a+k}.
+\]
+These transport identities are consistent with the harmonic Hurwitz
+shift recurrence; they are included to make the ordering coefficient
+usable without a change of convention.
+
+\subsection{A convergent Lerch--polylogarithm Mellin formula}
+
+For $0<z<1$, let $\Phi(z,s,a)=\sum_{n\ge0}z^n/(n+a)^s$.
+The harmonic generating function is
+\begin{equation}\label{harm:gen}
+ \sum_{n\ge0}H_n^{(1)}(a)z^n=\frac{z\Phi(z,1,a)}{1-z}.
+\end{equation}
+It follows by interchanging two absolutely convergent sums. Hence
+\begin{equation}\label{harm:Mellin}
+ \Gamma(s)Z_2(s,1;a)=\int_0^\infty t^{s-1}K_a(t)\,dt,
+ \quad K_a(t)=\frac{e^{-(a+1)t}\Phi(e^{-t},1,a)}{1-e^{-t}},
+ \quad \Re s>1.
+\end{equation}
+
+Put $h_a=\gamma_0(a)-\gamma$ and define
+\begin{align}\label{harm:J}
+ J_a(s)={}&\int_0^1t^{s-1}
+       \left(K_a(t)-\frac{-\log t+h_a}{t}\right)\,dt\notag\\
+ &+\int_1^\infty t^{s-1}K_a(t)\,dt.
+\end{align}
+The kernel subtraction is $O(1+|\log t|)$ at zero. Indeed, put
+$d_n=(n+a)^{-1}-(n+1)^{-1}$. Then $d_n=O((n+1)^{-2})$,
+$\sum d_n=h_a$, and
+\[
+ \sum_{n\ge0}\frac{|1-e^{-nt}|}{(n+1)^2}
+        =O\bigl(t(1+|\log t|)\bigr).
+\]
+Comparing $\Phi(e^{-t},1,a)$ with $\Phi(e^{-t},1,1)$ proves the
+asserted estimate, locally uniformly for $a>0$.
+Thus $J_a$ is holomorphic for
+$\Re s>0$, with all fixed spectral derivatives obtained by inserting
+powers of $\log t$. We have the exact continuation
+\begin{equation}\label{harm:Jidentity}
+ \Gamma(s)Z_2(s,1;a)=\frac1{(s-1)^2}+
+                 \frac{h_a}{s-1}+J_a(s).
+\end{equation}
+
+\begin{proposition}[A normally convergent integral for $\eta$]
+\label{harm:etaIntegral}
+Let $g_0=\gamma_0(a)$. Then
+\begin{align}\label{harm:etaintegral}
+ \eta(a)={}&J_a'(1)+\gamma B_2(a)
+ -\frac{\gamma^2+\zeta(2)}2g_0
+ +\frac{\gamma^3}6+\frac{\gamma\zeta(2)}2+\frac{\zeta(3)}3,\\
+ J_a(1)={}&\frac{(g_0-\gamma)^2+\zeta(2)-\zeta(2,a)}2.\label{harm:Jone}
+\end{align}
+\end{proposition}
+\begin{proof}
+Multiply \eqref{harm:etaLaurent} by the Taylor expansion of
+$\Gamma(1+u)$ through cubic order and compare the constant and linear
+coefficients with \eqref{harm:Jidentity}. The expansion of
+$\log\Gamma(1+u)$ gives
+\[
+ [u^2]\Gamma(1+u)=\frac{\gamma^2+\zeta(2)}2,\quad
+ [u^3]\Gamma(1+u)=-\frac{\gamma^3}6-
+                  \frac{\gamma\zeta(2)}2-\frac{\zeta(3)}3,
+\]
+which proves the two formulas.
+\end{proof}
+
+At $a=1$, $\Phi(z,1,1)=\Li_1(z)/z=-\log(1-z)/z$ and
+\[
+ K_1(t)=-\frac{\log(1-e^{-t})}{e^t-1},\qquad J_1(1)=0.
+\]
+The integral formula reduces to
+\begin{align}\label{harm:etaone}
+ \eta(1)={}&\frac{\gamma^3}6-\frac{\gamma\zeta(2)}2+
+                \frac{\zeta(3)}3\notag\\
+ &+\int_0^1\log t\left(
+      -\frac{\log(1-e^{-t})}{e^t-1}+\frac{\log t}{t}\right)dt
+ +\int_1^\infty\frac{-\log t\log(1-e^{-t})}{e^t-1}\,dt.
+\end{align}
+Both integrals converge ordinarily. Numerically,
+$\eta(1)=0.5367870243584185675036078843488117\ldots$.
+The numerical section compares this integral with Cauchy extraction
+from an independently continued ordered double sum.
+
+All higher strict harmonic coefficients follow from the same kernel;
+they do not require a separate continuation. Put
+\[
+ e_j=[u^j]\frac1{\Gamma(1+u)},\qquad
+ C_m(a)=[u^m]R_2(u,0;a).
+\]
+Multiplying \eqref{harm:Jidentity} by $1/\Gamma(1+u)$ gives, for
+every integer $m\ge0$,
+\begin{align}\label{harm:allcoefficients}
+ C_m(a)&=e_{m+2}+h_a e_{m+1}
+       +\sum_{j=0}^m\frac{e_{m-j}}{j!}J_a^{(j)}(1),\\
+ C_m(a)&=\frac{(-1)^m\gamma_H(m,a)-\zeta^{(m)}(2,a)}{m!}.
+                  \label{harm:allconversion}
+\end{align}
+The second formula is \eqref{harm:inclusive} coefficient by
+coefficient. Each $J_a^{(j)}(1)$ is an ordinarily convergent integral
+obtained by inserting $\log^j t$ in \eqref{harm:J}. Thus the complete
+strict harmonic Stieltjes hierarchy has a single convergent kernel,
+with reciprocal-Gamma coefficients supplying its finite normalization.
+
+\subsection{Polylogarithmic primitives and harmonic coefficients}
+
+For $|z|<1$, the strict multiple polylogarithm
+\[
+ \Li_{s_1,\ldots,s_d}(z)=
+ \sum_{n_1>\cdots>n_d\ge1}
+       \frac{z^{n_1}}{n_1^{s_1}\cdots n_d^{s_d}}
+\]
+has the ordinary normalized Euler primitive
+\begin{equation}\label{harm:primitive}
+ \int_0^z\Li_{s_1,s_2,\ldots,s_d}(w)\,\frac{dw}{w}
+       =\Li_{s_1+1,s_2,\ldots,s_d}(z).
+\end{equation}
+All fixed spectral derivatives commute with this identity on compact
+subdisks. Their inner coefficients are the unshifted logarithm-weighted
+harmonic sums that also occur in the remainder construction
+\eqref{ord:Ecoeff}. At all indices one,
+\begin{equation}\label{harm:allones}
+ \Li_{\{1\}^d}(z)=\frac{[-\log(1-z)]^d}{d!},\qquad
+ \sum_{d\ge1}y^{d-1}\Li_{s,\{1\}^{d-1}}(z)
+ =\sum_{n\ge1}\frac{z^n}{n^s}
+             \frac{\Gamma(n+y)}{\Gamma(n)\Gamma(1+y)}.
+\end{equation}
+The second identity follows by taking elementary symmetric
+polynomials of $1,1/2,\ldots,1/(n-1)$; the Gamma quotient is the
+polynomial $\prod_{j=1}^{n-1}(1+y/j)$, including at its apparently
+exceptional parameters. One may first take $y$ near zero and then
+continue in $y$. These are classical
+polylogarithmic and harmonic generating identities, recorded here
+to give a concrete derivative and antiderivative dictionary for the
+Laurent coefficients. The extension at the singular endpoint is the
+specified spectral calculus proved above; the endpoint is not obtained
+by inserting $z=1$ into a divergent series.

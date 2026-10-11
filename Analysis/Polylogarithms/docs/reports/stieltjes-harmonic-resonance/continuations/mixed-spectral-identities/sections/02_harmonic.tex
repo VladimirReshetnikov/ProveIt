@@ -1,0 +1,591 @@
+\section{A Newton expansion for the entire harmonic difference}
+\label{hn:sec:newton}
+
+The exact-identities report \cite{RepoExact} leaves open the explicit evaluation of the
+higher spectral derivatives of its entire common-shift remainder.
+Its finite Stirling formula has an infinite, normally convergent
+extension. This extension gives every spectral derivative, continues
+the shift farther as harmonic depth increases, and identifies all shift
+jets at the unshifted base point with multiple Arakawa--Kaneko functions.
+Those functions are classical; the contribution here is their precise
+connection with the repository's entire difference and the convergent
+spectral-derivative formula. No literature-wide priority is asserted.
+
+\subsection{Definitions and the known entire remainder}
+
+For $\Re a>0$, use principal powers and put
+\[
+ \begin{gathered}
+ F_a(s,u)=\sum_{n\ge0}\frac{(a+u)_n}{(a)_n(n+a)^s},\qquad
+ K_a(u)=\frac{\Gamma(a)\Gamma(1+u)}{\Gamma(a+u)},\\[3pt]
+ D(s,u;a)=F_a(s,u)-K_a(u)F_1(s,u).
+ \end{gathered}
+\]
+The first series initially converges for $\Re s>1+\Re u$.
+The source proves that $D$ is entire in $s$, locally near $u=0$.
+If
+\[
+ e_r(n;a)=[u^r]\prod_{\nu=0}^{n-1}\left(1+\frac{u}{a+\nu}\right),
+ \qquad M_r(s;a)=\sum_{n\ge0}e_r(n;a)(n+a)^{-s},
+\]
+then its depth coefficients are
+\[
+ D_r(s;a)=[u^r]D(s,u;a)
+ =M_r(s;a)-\sum_{j=0}^r[u^j]K_a(u)\,M_{r-j}(s;1).
+\]
+In particular $D_0(s;a)=\zeta(s,a)-\zeta(s)$, with its removable
+singularity at $s=1$ understood. Each $D_r$ is entire in $s$.
+
+We use the source's exact Mellin remainder
+\begin{align}
+ R_a(t,u)
+ &=-\frac{a-1}{1+u}e^{-at}
+       {}_2F_1(1,a+u;2+u;1-e^{-t}),\label{hn:eq:R}\\
+ D(s,u;a)&=\frac1{\Gamma(s)}\int_0^\infty
+                         t^{s-1}R_a(t,u)\,dt,\qquad \Re s>0.
+ \label{hn:eq:mellin}
+\end{align}
+To check the normalization directly, the geometric generating function is
+\[
+ \sum_{n\ge0}\frac{(a+u)_n}{(a)_n}e^{-(n+a)t}
+ =e^{-at}{}_2F_1(1,a+u;a;e^{-t})
+ =K_a(u)\frac{e^{-t}}{(1-e^{-t})^{1+u}}+R_a(t,u).
+\]
+The Gauss connection formula about $z=1$ gives the last equality:
+the regular coefficient is $-(a-1)/(1+u)$ and the singular
+coefficient is $K_a(u)$; the remaining singular Gauss factor reduces
+to $e^{(a-1)t}$ before multiplication by $e^{-at}$.
+This initially holds for generic parameters, then throughout the
+stated germ by continuation \cite{DLMFHypergeom}.
+The kernel $R_a$ is analytic at zero and decays exponentially at infinity.
+Taking Mellin transforms proves \eqref{hn:eq:mellin} first in the
+original common half-plane and then for $\Re s>0$ by continuation. Taylor subtraction at
+zero proves the entire continuation in $s$.
+
+Define the finite exponential polynomial
+\begin{equation}\label{hn:eq:Aj}
+ A_j(s)=\sum_{\ell=1}^j(-1)^{j-\ell}\binom j\ell\ell^{1-s},
+ \qquad j\ge1.
+\end{equation}
+It is entire in $s$. At a nonpositive integer,
+\begin{equation}\label{hn:eq:Stirling}
+ A_j(-m)=j!\left\{\begin{matrix}m+1\\j\end{matrix}\right\},
+ \qquad m\ge0,
+\end{equation}
+and therefore it vanishes for $j>m+1$.
+
+\subsection{Normal convergence, including at nonpositive integers}
+
+\begin{lemma}[Finite-difference Mellin estimate]\label{hn:lem:Aj}
+For $\Re s>1-j$,
+\begin{equation}\label{hn:eq:Aintegral}
+ A_j(s)=\frac{(-1)^{j-1}j}{\Gamma(s)}
+       \int_0^\infty t^{s-1}e^{-t}(1-e^{-t})^{j-1}\,dt.
+\end{equation}
+At zeros of $1/\Gamma(s)$ this is its analytic product with the
+convergent integral. For every compact $S\subset\mathbb C$ there
+are constants $C,P$ such that
+\begin{equation}\label{hn:eq:Abound}
+ \sup_{s\in S}|A_j(s)|\le C(1+\log(j+1))^P\qquad(j\ge1).
+\end{equation}
+Every fixed spectral derivative obeys a bound of the same form,
+with constants depending on its order and $S$.
+\end{lemma}
+
+\begin{proof}
+For $\Re s>0$, expand the finite binomial power and use
+$j\binom{j-1}{\ell-1}=\ell\binom j\ell$.
+Termwise Laplace integration gives \eqref{hn:eq:Aintegral}.
+The integrand at zero is $O(t^{\Re s+j-2})$, so its integral is
+holomorphic on $\Re s>1-j$. Analytic continuation gives the formula
+on that larger half-plane. Thus it holds near any prescribed
+nonpositive integer as soon as $j$ is sufficiently large.
+
+Write $\sigma_-=\min_{s\in S}\Re s$ and
+$\sigma_+=\max_{s\in S}\Re s$. Choose an integer $N$ such that
+$\sigma_-+N-1>0$, and consider $j\ge N$. Put $q=1-e^{-1}<1$.
+On $0<t\le1$,
+\[
+ (1-e^{-t})^{j-1}\le t^{N-1}q^{j-N},
+\]
+so the integral on this interval, including its factor $j$, is at
+most $j q^{j-N}/(\sigma_-+N-1)$. This is exponentially small.
+On $t\ge1$, put $P=\max(0,\sigma_+-1)$. The function
+\[
+                 p_j(t)=je^{-t}(1-e^{-t})^{j-1}
+\]
+is a probability density on $(0,\infty)$. With
+$L_j=1+2\log(j+1)$, the integral on $[1,L_j]$ is bounded by $L_j^P$.
+On $[L_j,\infty)$ use $p_j(t)\le je^{-t}$ and
+\[
+ j\int_{L_j}^\infty t^Pe^{-t}\,dt
+ \le C_Pje^{-L_j}(1+L_j)^P
+ \le C'_P(1+\log(j+1))^P.
+\]
+The reciprocal gamma function is bounded on $S$. The finitely many
+remaining entire functions $A_j$ are harmless. Cauchy's estimate
+on a slightly enlarged compact proves the derivative assertion.
+\end{proof}
+
+\begin{lemma}[Uniform binomial estimate]\label{hn:lem:binomial}
+For a compact set $A\subset\mathbb C$,
+\[
+ \left|\binom{a-1}{j}\right|\le C_A j^{-\Re a}
+ \qquad(a\in A,\ j\ge1).
+\]
+\end{lemma}
+\begin{proof}
+Use $(-1)^j\binom{a-1}{j}=\prod_{\nu=1}^j(1-a/\nu)$.
+For $\nu>2\max_{a\in A}|a|$,
+$\log|1-a/\nu|=-\Re a/\nu+O_A(\nu^{-2})$, uniformly.
+Summing and bounding the initial finite factors proves the claim,
+including when $a$ passes through a positive integer.
+\end{proof}
+
+\begin{theorem}[Normally convergent Newton expansion]\label{hn:thm:newton}
+For $\Re a>0$ and $u\notin\{-1,-2,\ldots\}$,
+\begin{equation}\label{hn:eq:newton}
+ \boxed{\displaystyle
+ D(s,u;a)=-\sum_{j=1}^\infty
+                \binom{a-1}{j}\frac{A_j(s)}{u+j}.}
+\end{equation}
+The series converges normally on compact subsets of the indicated
+domain with $s\in\mathbb C$. It extends the depth germ to a
+meromorphic function of $u$, with at most simple poles at negative
+integers, and
+\begin{equation}\label{hn:eq:uresidue}
+ \mathop{\rm Res}_{u=-j}D(s,u;a)=-\binom{a-1}{j}A_j(s).
+\end{equation}
+These poles are removable when the indicated residues vanish.
+
+For every $r\ge0$,
+\begin{equation}\label{hn:eq:depthnewton}
+ \boxed{\displaystyle
+ D_r(s;a)=(-1)^{r+1}\sum_{j=1}^\infty
+          \binom{a-1}{j}\frac{A_j(s)}{j^{r+1}}.}
+\end{equation}
+This depth series converges normally on
+\begin{equation}\label{hn:eq:shift-domain}
+                  s\in\mathbb C,\qquad \Re a>-r,
+\end{equation}
+and supplies a jointly holomorphic continuation there.
+\end{theorem}
+
+\begin{proof}
+On a compact $u$-set avoiding the negative integers,
+$|u+j|^{-1}\le C/j$. The lemmas bound the summands by
+$Cj^{-1-\delta}(1+\log(j+1))^P$, where
+$\delta=\min\Re a>0$. In the depth series the same proof uses
+$\delta=\min(\Re a+r)>0$. This proves normal convergence and
+permits arbitrary fixed derivatives in $s$ and $a$.
+
+To identify the sum, put $w=1-e^{-t}$. Euler's hypergeometric
+transformation \cite{DLMFHypergeom} and then its series give
+\begin{align*}
+ R_a(t,u)
+ &=-\frac{a-1}{1+u}e^{-t}
+       {}_2F_1(2-a,1+u;2+u;w)\\
+ &=e^{-t}\sum_{j=1}^\infty
+        (-1)^j\binom{a-1}{j}\frac{j}{u+j}w^{j-1}.
+\end{align*}
+Initially $u$ is near zero and $0<w<1$. For $\Re s>0$ this
+series can be integrated absolutely against $t^{s-1}\,dt$:
+apply \eqref{hn:eq:Aintegral} with $s$ replaced by $\Re s$,
+and the estimates already proved. Its Mellin transform is
+\[
+ \frac1{\Gamma(s)}\int_0^\infty t^{s-1}R_a(t,u)\,dt
+ =-\sum_{j\ge1}\binom{a-1}{j}\frac{A_j(s)}{u+j}.
+\]
+It equals $D$ in a common domain; both sides are entire in $s$.
+The normal convergence gives the continuation and residues in $u$.
+Expand $(u+j)^{-1}$ on $|u|<1$ and extract depth coefficients.
+The enlarged shift domain follows from direct normal convergence,
+not interpolation from integer shifts.
+\end{proof}
+
+\subsection{All spectral derivatives}
+
+\begin{corollary}[Logarithmic finite-difference formula]\label{hn:cor:jets}
+For $m,k,r\ge0$,
+\begin{align}
+ \partial_s^kD(-m,u;a)
+ &=(-1)^{k+1}\sum_{j\ge1}\frac{\binom{a-1}{j}}{u+j}
+       \sum_{\ell=1}^j(-1)^{j-\ell}\binom j\ell
+                     \ell^{m+1}(\log\ell)^k,
+ \label{hn:eq:spectral-full}\\
+ \partial_s^kD_r(-m;a)
+ &=(-1)^{r+k+1}\sum_{j\ge1}\frac{\binom{a-1}{j}}{j^{r+1}}
+       \sum_{\ell=1}^j(-1)^{j-\ell}\binom j\ell
+                     \ell^{m+1}(\log\ell)^k.
+ \label{hn:eq:spectral-depth}
+\end{align}
+The first formula is normally convergent for $\Re a>0$, $u$ away
+from the negative integers; the second for $\Re a>-r$.
+At $k=0$ use $(\log1)^0=1$.
+\end{corollary}
+\begin{proof}
+Differentiate the normally convergent series using the compact
+spectral-derivative estimates.
+\end{proof}
+
+At $k=0$ this is exactly the source's finite Stirling formula,
+\[
+ D(-m,u;a)=-\sum_{j=1}^{m+1}
+       \left\{\begin{matrix}m+1\\j\end{matrix}\right\}
+       \frac{(a-1)^{\underline j}}{u+j}.
+\]
+For $k\ge1$ the finite difference generally no longer vanishes at
+large $j$. The answer is an absolutely convergent infinite identity;
+no finite reduction to polygamma functions at arbitrary depth is
+claimed. A finite value formula valid only at discrete values
+of $s$ cannot itself be differentiated in $s$.
+
+For clarity, if $[\epsilon^k]$ denotes a Laurent coefficient at
+$s=-m$, the identity defining $D_r$ gives, for $k\ge0$,
+\begin{align}
+ [\epsilon^k]M_r(-m+\epsilon;a)
+ ={}&\sum_{j=0}^r[u^j]K_a(u)\,
+                 [\epsilon^k]M_{r-j}(-m+\epsilon;1)\notag\\
+ &+\frac1{k!}\partial_s^kD_r(-m;a).
+ \label{hn:eq:regular-reconstruction}
+\end{align}
+Thus the theorem determines every coefficient of the entire
+shift correction. It does not by itself reduce the unshifted
+height-one Laurent coefficients, or the entire outer-shift family
+of the earlier report, to a finite basis of ordinary zeta derivatives.
+
+
+Depth-zero special cases give useful independent checks:
+\begin{align}
+ \log\Gamma(a)
+ &=\sum_{j\ge1}\frac{\binom{a-1}{j}}j
+      \sum_{\ell=1}^j(-1)^{j-\ell}\binom j\ell\ell\log\ell,
+ \label{hn:eq:loggamma}\\
+ \gamma_k(a)-\gamma_k(1)
+ &=-\sum_{j\ge1}\frac{\binom{a-1}{j}}j
+      \sum_{\ell=1}^j(-1)^{j-\ell}\binom j\ell(\log\ell)^k.
+ \label{hn:eq:Stieltjes-Newton}
+\end{align}
+The Stieltjes convention is
+$\zeta(1+z,a)=z^{-1}+\sum_{k\ge0}(-1)^k\gamma_k(a)z^k/k!$.
+The first identity follows from Lerch's formula \cite{DLMFHurwitz} and the second
+from the regular expansion of $D_0$ at $s=1$. These are
+specializations of a Newton/Hasse type calculus, with no claim
+that the classical log-gamma or Stieltjes expansions are new.
+
+There is a finite reduction at every nonnegative integer
+\emph{depth-generating parameter} $u=q$. For $q\ge1$ and initially $\Re a>0$,
+\begin{equation}\label{hn:eq:integeru}
+ D(s,q;a)=\frac1{(a)_q}\sum_{\ell=1}^q
+      \left[\begin{matrix}q\\\ell\end{matrix}\right]
+            \{\zeta(s-\ell,a)-\zeta(s-\ell)\},
+\end{equation}
+where brackets denote unsigned Stirling numbers of the first kind.
+Indeed $(a+q)_n/(a)_n=(n+a)_q/(a)_q$, and expand the rising
+factorial polynomial for both $F_a$ and $K_aF_1$.
+All spectral derivatives follow by replacing each zeta by its
+order derivative. In particular
+\[
+ \partial_s^kD(-m,1;a)
+   =\frac{\zeta^{(k)}(-m-1,a)-\zeta^{(k)}(-m-1)}a.
+\]
+Every zeta difference in \eqref{hn:eq:integeru} is entire,
+including at its removable principal pole.
+
+\subsection{The Arakawa--Kaneko boundary and every shift jet}
+
+For a positive integer multi-index
+$\boldsymbol{k}=(k_1,\ldots,k_p)$ use the descending-index convention
+\[
+ \operatorname{Li}_{\boldsymbol{k}}(z)
+ =\sum_{n_1>\cdots>n_p\ge1}
+       \frac{z^{n_1}}{n_1^{k_1}\cdots n_p^{k_p}}.
+\]
+Define the classical multiple Arakawa--Kaneko function by
+\begin{equation}\label{hn:eq:AK}
+ \Xi(\boldsymbol{k};s)=\frac1{\Gamma(s)}\int_0^\infty
+       \frac{t^{s-1}}{e^t-1}
+              \operatorname{Li}_{\boldsymbol{k}}(1-e^{-t})\,dt,
+ \qquad \Re s>0.
+\end{equation}
+Write $\Xi_r(s)=\Xi((r);s)$ for $r\ge1$.
+Arakawa--Kaneko \cite{AK1999} already define the multiple function.
+They use ascending summation indices, so
+$\Xi(r+1,\{1\}^{p-1};s)$ here corresponds to their
+$\xi(1,\ldots,1,r+1;s)$; the vector is reversed.
+At depth one there is no reversal ambiguity, and
+\[
+                         \Xi_1(s)=s\zeta(s+1),
+\]
+with a removable singularity at $s=0$.
+
+For completeness all functions in \eqref{hn:eq:AK} are entire in $s$.
+The polylogarithm is analytic at $z=0$ and begins at degree $p$,
+so its kernel is analytic at $t=0$, beginning at order $p-1$.
+At infinity its growth before multiplication by $(e^t-1)^{-1}$
+is at most polynomial: since all indices are positive, its
+positive terms are bounded by those of
+$\operatorname{Li}_{1,\ldots,1}(1-e^{-t})=t^p/p!$.
+Taylor subtraction at zero, followed by the zeros of $1/\Gamma(s)$,
+therefore proves entireness. This is also the continuation in
+the classical theory \cite{AK1999,KT2018}.
+
+\begin{theorem}[Boundary values and mixed shift jets]\label{hn:thm:AKbridge}
+For $r\ge1$, the continuation in \eqref{hn:eq:shift-domain} gives
+\begin{equation}\label{hn:eq:a0}
+                      D_r(s;0)=(-1)^r\Xi_r(s).
+\end{equation}
+For every $r\ge0$ and $p\ge1$,
+\begin{equation}\label{hn:eq:a1-jets}
+ \boxed{\displaystyle
+ \left.\partial_a^pD_r(s;a)\right|_{a=1}
+  =(-1)^{r+p}p!\,
+          \Xi(r+1,\underbrace{1,\ldots,1}_{p-1};s).}
+\end{equation}
+The identities hold for every $s\in\mathbb C$, and arbitrary
+fixed spectral derivatives can be applied to both sides.
+Consequently
+\begin{equation}\label{hn:eq:AK-Taylor}
+ D_r(s;a)=(-1)^r\sum_{p=1}^\infty
+       (1-a)^p\Xi(r+1,\{1\}^{p-1};s),
+ \qquad |a-1|<r+1.
+\end{equation}
+The series is locally normal jointly with $s$.
+\end{theorem}
+
+\begin{proof}
+For $a=0$, $\binom{-1}{j}=(-1)^j$. Substitute into the normally
+convergent depth series and apply \eqref{hn:eq:Aintegral}:
+\[
+ D_r(s;0)=\frac{(-1)^r}{\Gamma(s)}\int_0^\infty
+     t^{s-1}e^{-t}\sum_{j\ge1}\frac{(1-e^{-t})^{j-1}}{j^r}\,dt.
+\]
+For $\Re s>0$, termwise integration is justified absolutely.
+The sum is $\operatorname{Li}_r(w)/w$, where $w=1-e^{-t}$,
+giving \eqref{hn:eq:a0}. Continue in $s$.
+
+For the shift jets let $e_j(N)$ be the elementary symmetric
+polynomial of degree $j$ in $1,1/2,\ldots,1/N$, with $e_0(N)=1$
+and $e_j(N)=0$ for $j>N$. The finite product
+\[
+ \binom{a-1}{n}=\frac{(-1)^{n-1}(a-1)}n
+          \prod_{\nu=1}^{n-1}\left(1-\frac{a-1}{\nu}\right)
+\]
+gives
+\[
+ \left.\partial_a^p\binom{a-1}{n}\right|_{a=1}
+      =\frac{(-1)^{n-p}p!}{n}e_{p-1}(n-1).
+\]
+Normal convergence permits insertion into
+\eqref{hn:eq:depthnewton}. The Mellin integral then contains
+\[
+ \sum_{n\ge1}\frac{w^{n-1}}{n^{r+1}}e_{p-1}(n-1)
+ =\frac1w\operatorname{Li}_{r+1,\{1\}^{p-1}}(w),
+\]
+with overall sign $(-1)^{r+p}p!$. Absolute integration follows
+from positive coefficients and the logarithmic growth
+$e_{p-1}(n-1)=O((1+\log n)^{p-1})$.
+This proves \eqref{hn:eq:a1-jets} on $\Re s>0$, then everywhere.
+
+Finally $D_r(s;1)=0$, and $D_r$ is holomorphic for $\Re a>-r$.
+Its Taylor series centered at $1$ therefore converges throughout
+$|a-1|<r+1$. Cauchy estimates on compact $s$-sets prove joint
+local normality.
+\end{proof}
+
+The depth-zero case of \eqref{hn:eq:a1-jets} reduces to
+\[
+ \Xi(\underbrace{1,\ldots,1}_{p};s)
+        =\frac{(s)_p}{p!}\zeta(s+p).
+\]
+The boundary formula \eqref{hn:eq:a0}, however, excludes $r=0$.
+The original domain does not include $a=0$, and
+\[
+ D_0(s;a)=a^{-s}+\zeta(s,a+1)-\zeta(s)
+\]
+has no jointly holomorphic extension there for general $s$.
+A fictitious $\Xi_0$ with a nondecaying Mellin kernel cannot
+remove this obstruction.
+
+Some exact examples, with $\gamma_k=\gamma_k(1)$, are
+\begin{align*}
+ D_1(s;0)&=-s\zeta(s+1),\\
+ D_1(0;0)&=-1,&
+ \partial_sD_1(0;0)&=-\gamma,&
+ \partial_s^2D_1(0;0)&=2\gamma_1,\\
+ \partial_s^kD_1(0;0)&=(-1)^k k\gamma_{k-1}\quad(k\ge1),\\
+ \partial_sD_1(-1;0)&=\frac12-\frac12\log(2\pi),\\
+ \partial_sD_1(-2;0)&=\frac1{12}+2\zeta'(-1),\\
+ \partial_aD_1(s;1)&=\Xi_2(s),&
+ \partial_a^2D_1(s;1)&=-2\Xi(2,1;s).
+\end{align*}
+They are identities for the continued remainder, rather than
+ordinary sums of its divergent defining series.
+
+More generally, for an integer $N\ge0$ and depth $r\ge N+1$,
+\begin{equation}\label{hn:eq:negative-shifts}
+ D_r(s;-N)=\frac{(-1)^r}{N!}\sum_{h=0}^N
+     \left[\begin{matrix}N+1\\h+1\end{matrix}\right]\Xi_{r-h}(s).
+\end{equation}
+Indeed $\binom{-N-1}{j}=(-1)^j\binom{N+j}{N}$ and
+\[
+ \binom{N+j}{N}=\frac1{N!}\prod_{\nu=1}^N(j+\nu)
+   =\frac1{N!}\sum_{h=0}^N
+       \left[\begin{matrix}N+1\\h+1\end{matrix}\right]j^h.
+\]
+Insert this polynomial into the convergent Mellin series. The
+condition $r>N$ makes all polylogarithm indices positive and
+places the shift inside $\Re a>-r$. For example
+\[
+                   D_2(s;-1)=\Xi_2(s)+s\zeta(s+1).
+\]
+
+Specializing the convergent Taylor expansion to $a=0$ also gives
+$\Xi_r(s)=\sum_{p\ge1}\Xi(r+1,\{1\}^{p-1};s)$ for $r\ge1$,
+normally on compact $s$-sets. Its elementary polylogarithmic
+explanation is $\sum_{p\ge1}e_{p-1}(n-1)=n$.
+This is recorded as a consequence of the shift identification,
+with no new-priority assertion for the height-one summation itself.
+
+\subsection{A boundary corollary for generalized Stieltjes constants}
+
+The two-shift bridge in the source admits the same proof. Write
+$v=b-a$, $c=1+v$, and initially assume $\Re a,\Re b,\Re c>0$.
+Define
+\[
+ D_{a,b}(s,u)=\sum_{n\ge0}\frac{(a+u)_n}{(a)_n(n+b)^s}
+   -K_a(u)\sum_{n\ge0}\frac{(1+u)_n}{n!(n+c)^s},
+ \qquad D_{a,b,r}(s)=[u^r]D_{a,b}(s,u).
+\]
+Its entire Mellin remainder is $e^{-vt}R_a(t,u)$.
+Put
+\[
+ A_j(s;v)=\sum_{\ell=1}^j(-1)^{j-\ell}\binom j\ell
+                     \ell(\ell+v)^{-s},\qquad \Re v>-1.
+\]
+The Laplace calculation gives
+\[
+ A_j(s;v)=\frac{(-1)^{j-1}j}{\Gamma(s)}
+       \int_0^\infty t^{s-1}e^{-(1+v)t}(1-e^{-t})^{j-1}\,dt,
+ \qquad \Re s>1-j.
+\]
+Then
+\begin{equation}\label{hn:eq:twodepth}
+ D_{a,b,r}(s)=(-1)^{r+1}\sum_{j\ge1}\binom{a-1}{j}
+                           \frac{A_j(s;b-a)}{j^{r+1}},
+\end{equation}
+normally on the connected domain
+\begin{equation}\label{hn:eq:two-domain}
+              \Re(1+b-a)>0,\qquad \Re b>-r,\qquad s\in\mathbb C.
+\end{equation}
+This supplies a continuation without a restriction on $\Re a$.
+
+Here is the convergence detail needed for this enlarged domain.
+On compact $s,v$ sets with $\Re v>-1$, and $0<\epsilon<\min\Re(1+v)$ sufficiently small, the modified Mellin estimate is
+$|A_j(s;v)|\le C_\epsilon j^{-\Re v+\epsilon}$.
+On $(0,1)$ the previous proof is unchanged; on $t\ge1$ absorb
+the necessary power of $t$ into $C_\epsilon e^{\epsilon t}$ and use
+\[
+ j\int_0^\infty e^{-(1+\Re v-\epsilon)t}
+                  (1-e^{-t})^{j-1}\,dt
+ =jB(1+\Re v-\epsilon,j)
+ \le C_\epsilon j^{-\Re v+\epsilon}.
+\]
+The last bound follows directly by bounding
+$(1-x)^{j-1}$ by $e^{-(j-1)x}$ in the beta integral.
+Since $a+v=b$, choose $\epsilon$ below half of
+$\min(\Re b+r)$ on the compact under consideration. The series
+is then bounded by a summable power
+$Cj^{-1-(\Re b+r)+\epsilon}$. Identification uses the same
+kernel expansion as before. All fixed spectral derivatives are
+allowed by normal convergence.
+
+For $r\ge1$, $\Re x>0$, define the classical Hurwitz extension
+\[
+ \Xi_r(s,x)=\frac1{\Gamma(s)}\int_0^\infty
+       \frac{e^{-xt}}{1-e^{-t}}t^{s-1}
+                        \operatorname{Li}_r(1-e^{-t})\,dt.
+\]
+This convention agrees with Coppo--Candelpergher \cite{CC2010}, and
+$\Xi_r(s,1)=\Xi_r(s)$. It is entire in $s$ by the same Taylor
+subtraction argument. The point $a=0$, $b=x-1$ lies in
+\eqref{hn:eq:two-domain} for $r\ge1$, so
+\begin{equation}\label{hn:eq:generalized-boundary}
+                  D_{0,x-1,r}(s)=(-1)^r\Xi_r(s,x).
+\end{equation}
+At depth one, $\operatorname{Li}_1(1-e^{-t})=t$ gives
+\begin{equation}\label{hn:eq:Hurwitz-boundary}
+ D_{0,x-1,1}(s)=-s\zeta(s+1,x)=\partial_x\zeta(s,x).
+\end{equation}
+The right side is entire in $s$, including at zero.
+
+\begin{corollary}[Generalized Stieltjes boundary jets]\label{hn:cor:Stieltjes}
+For $\Re x>0$ and $k\ge1$,
+\begin{equation}\label{hn:eq:generalized-Stieltjes}
+ \boxed{\displaystyle
+ \left.\partial_s^kD_{0,x-1,1}(s)\right|_{s=0}
+      =(-1)^k k\,\gamma_{k-1}(x).}
+\end{equation}
+The zeroth derivative is $-1$. For $m\ge1$,
+\[
+ \left.\partial_s^kD_{0,x-1,1}(s)\right|_{s=-m}
+ =m\zeta^{(k)}(1-m,x)-k\zeta^{(k-1)}(1-m,x),
+\]
+with the last term omitted when $k=0$.
+At $k=1,m=0$ the boundary function is $\psi(x)$, and its
+antiderivative is $\log\Gamma(x)$.
+\end{corollary}
+\begin{proof}
+Insert the defining Laurent expansion of the Hurwitz zeta
+function in \eqref{hn:eq:Hurwitz-boundary}. The factor $s$
+removes its pole before coefficient extraction.
+\end{proof}
+
+Every one of these boundary jets also has a finite repeated
+antiderivative. For $m,k\ge0$ and $q\ge1$, define coefficients by
+\[
+ \prod_{\nu=1}^{q-1}\left(1-\frac z{m+\nu}\right)^{-1}
+     =\sum_{h\ge0}h_h^{[m,q-1]}z^h
+\]
+(the product is $1$ at $q=1$). Then
+\begin{equation}\label{hn:eq:boundary-primitives}
+ \mathcal P_{m,k}^{(q)}(x)=\frac{k!}{(m+1)_{q-1}}
+       \sum_{j=0}^k\frac{h_{k-j}^{[m,q-1]}}{j!}
+                    \zeta^{(j)}(1-m-q,x)
+\end{equation}
+satisfies
+\[
+ \frac{d^q}{dx^q}\mathcal P_{m,k}^{(q)}(x)
+       =\left.\partial_s^kD_{0,x-1,1}(s)\right|_{s=-m}.
+\]
+Indeed a $q$-fold primitive of $-s\zeta(s+1,x)$ is
+$\zeta(s-q+1,x)/(1-s)_{q-1}$. Its denominator is nonzero near
+$s=-m$, and differentiating $k$ times in $s$ proves the formula.
+The coefficients are complete homogeneous symmetric polynomials
+in $1/(m+1),\ldots,1/(m+q-1)$, equivalently Bell polynomials in
+generalized harmonic-number differences. Other $q$-fold
+primitives differ by a polynomial of degree less than $q$.
+
+\subsection{Scope and further questions}
+
+No substantive error was found in the inspected fully-shifted
+and outer-shift harmonic arguments. Their restriction of the
+finite coefficient rule to the principal part and finite part
+is correct. The new formulas identify the missing analytic
+information in higher spectral derivatives. Three extension
+requirements are explicit: a discrete finite value formula
+cannot be differentiated in $s$; depth and spectral manipulations
+must use the already entire remainder instead of disregarding
+the moving polar divisors of $F_a$; and the common-shift $a=0$
+Arakawa--Kaneko formula requires positive depth.
+
+Further questions include identifying finite combinations of
+spectral jets that reduce to ordinary Hurwitz-zeta derivatives;
+determining the exact shift singularities on $\Re a=-r$;
+developing stable evaluation of the finite differences, since
+naive binomial summation loses precision; comparing the present
+shift deformation systematically with existing generalized
+Arakawa--Kaneko families; and seeking multiple-zeta or
+iterated-integral identities for mixed spectral and shift
+derivatives beyond the standard integer specializations.
+

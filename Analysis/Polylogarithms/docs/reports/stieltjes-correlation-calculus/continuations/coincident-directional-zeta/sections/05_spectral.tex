@@ -1,0 +1,381 @@
+\section{Exact normal spectral jets at integer inner orders}
+\label{sp:sec:normal}
+
+Write
+\[
+ \mathcal T(A,B,C;X,Y)
+ =\sum_{m,n\geq1}\frac{X^mY^n}{m^A n^B(m+n)^C}.
+\]
+The orders are independent complex variables, and powers of positive
+integers use real logarithms.  The question in the incoming
+\emph{Resonance and Coordinate Transport} report asks for finite
+reductions of the normal $C$-derivatives at $C=0$, beginning with
+$A,B\in\{0,1\}$.  The negative-$C$ value identity by itself does not
+answer that question.  The reduction below keeps $C$ variable from
+the outset.
+
+The underlying positive-integer partial-fraction identity is classical:
+Zhao explicitly uses it to reduce colored Tornheim values to double
+polylogarithms \cite{sp:Zhao}.  Our use of that identity retains the
+complete complex $C$-dependence, specifies the continuation required
+by the normal jets, and combines it with a rational-function theorem
+covering arbitrary depth, integer weights, and coincident colors.
+These are exact reductions to stated function classes.  No arithmetic
+independence or global priority claim is inferred from them.
+
+For the double polylogarithm use the convention
+\begin{equation}\label{sp:doubleLi}
+ \operatorname{Li}_{u,v}(z,w)
+   =\sum_{k>n\geq1}\frac{z^k w^n}{k^u n^v}.
+\end{equation}
+Initially the colors can be taken with $|X|,|Y|<1$ and $X,Y\ne0$,
+so that the reindexed series below converge locally normally for all
+orders.  On $|X|=|Y|=1$ we assume $X,Y\ne1$ and use radial analytic
+continuation: replace $(X,Y)$ by $(\rho X,\rho Y)$ and let
+$\rho\uparrow1$.  In \eqref{sp:doubleLi} this means damping its outer
+color by $\rho$.  This convention is unambiguous for the combinations
+appearing here.  Indeed
+\[
+ \mathcal T(0,B,C;X,Y)
+ =\frac1{\Gamma(C)}\int_0^\infty
+ t^{C-1}\operatorname{Li}_0(Xe^{-t})
+                    \operatorname{Li}_B(Ye^{-t})\,dt
+\]
+for $\Re C>0$.  The product is analytic at $t=0$ and exponentially
+decreasing at infinity.  Taylor subtraction at zero, followed by the
+zeros of $1/\Gamma(C)$, gives an entire continuation in $(B,C)$.
+The same argument applies with arbitrary fixed integer first orders,
+and identifies the radial continuation locally uniformly in the
+orders.  Thus all the order derivatives used below exist.
+
+\begin{theorem}[Integer inner orders and all normal jets]
+\label{sp:integer}
+For positive integers $A,B$, one has the identity of entire functions
+of $C$ at nontrivial unit colors
+\begin{align}\label{sp:positive}
+ \mathcal T(A,B,C;X,Y)
+ ={}&\sum_{j=1}^{A}\binom{A+B-j-1}{B-1}
+       \operatorname{Li}_{C+A+B-j,j}(Y,X/Y)\notag\\
+ &+\sum_{j=1}^{B}\binom{A+B-j-1}{A-1}
+       \operatorname{Li}_{C+A+B-j,j}(X,Y/X).
+\end{align}
+For $M\geq0$ an integer and arbitrary $B\in\mathbb C$,
+\begin{equation}\label{sp:nonpositive}
+ \mathcal T(-M,B,C;X,Y)
+ =\sum_{j=0}^{M}(-1)^j\binom Mj
+       \operatorname{Li}_{C-M+j,B-j}(X,Y/X).
+\end{equation}
+Every fixed $C$-derivative can be applied to these formulas.  In
+\eqref{sp:nonpositive}, every fixed $B$-derivative is also valid.
+Together with exchange of the two inner variables, these formulas
+give a finite reduction for every pair of integer inner orders.
+\end{theorem}
+\begin{proof}
+For positive $m,n$,
+\[
+ \frac1{m^A n^B}
+ =\sum_{j=1}^{A}\binom{A+B-j-1}{B-1}
+     \frac1{m^j(m+n)^{A+B-j}}
+ +\sum_{j=1}^{B}\binom{A+B-j-1}{A-1}
+     \frac1{n^j(m+n)^{A+B-j}}.
+\]
+It follows by repeated use of
+$1/(mn)=(1/m+1/n)/(m+n)$, or by induction on $A+B$.
+Multiply by the colors and $(m+n)^{-C}$ and put $k=m+n$.
+The first sum has color $Y^k(X/Y)^m$, and the second has
+$X^k(Y/X)^n$.  This proves \eqref{sp:positive} in an absolutely
+convergent region.  For \eqref{sp:nonpositive}, expand
+$(k-n)^M=\sum_j(-1)^j\binom Mj k^{M-j}n^j$ after the same reindexing.
+Local normal convergence inside the bidisc and then the specified
+analytic continuation prove both identities and the derivative claims.
+\end{proof}
+
+Here is the promised complete $A,B\in\{0,1\}$ table.  A superscript
+$[r]$ on a double polylogarithm in this table differentiates only its
+first order.  For $X\ne Y$,
+\begin{align}
+ \partial_C^r\mathcal T(0,0,C;X,Y)
+ &=\frac{Y\operatorname{Li}_{C}^{[r]}(X)
+          -X\operatorname{Li}_{C}^{[r]}(Y)}{X-Y},
+ \label{sp:00}\\
+ \partial_C^r\mathcal T(0,1,C;X,Y)
+ &=\operatorname{Li}_{C,1}^{[r]}(X,Y/X),\label{sp:01}\\
+ \partial_C^r\mathcal T(1,0,C;X,Y)
+ &=\operatorname{Li}_{C,1}^{[r]}(Y,X/Y),\label{sp:10}\\
+ \partial_C^r\mathcal T(1,1,C;X,Y)
+ &=\operatorname{Li}_{C+1,1}^{[r]}(X,Y/X)
+   +\operatorname{Li}_{C+1,1}^{[r]}(Y,X/Y).
+ \label{sp:11}
+\end{align}
+The confluent version of \eqref{sp:00} is
+\begin{equation}\label{sp:00confluent}
+ \partial_C^r\mathcal T(0,0,C;z,z)
+ =\operatorname{Li}_{C-1}^{[r]}(z)
+    -\operatorname{Li}_{C}^{[r]}(z).
+\end{equation}
+All $C=-N$ and $C=0$ substitutions are now legitimate.  Formula
+\eqref{sp:11} is a finite depth-two answer; it does not claim a
+reduction of the remaining depth-two order derivatives to ordinary
+polylogarithms.
+
+\begin{remark}[The permitted derivative directions]
+\label{sp:directionwarning}
+In \eqref{sp:positive}, the first two orders are fixed integers.  Its
+finite expression does not authorize differentiating with respect to
+$A$ or $B$.  In particular, it does not reduce the full mixed jet
+$\partial_A\partial_B\partial_C\mathcal T$ by formal differentiation
+of the finite sums.  In \eqref{sp:nonpositive}, $B$ really is free,
+so $B$-derivatives are allowed, while $A$ remains the fixed integer
+$-M$.  This is the same distinction that prevents differentiating
+a negative-$C$ value formula transversely without further information.
+\end{remark}
+
+\subsection{Rational generating functions give depth-one closure}
+
+Let $d\geq1$, let $p_j$ be positive integers, let $a_j$ be nonnegative
+integers, and let $X_j$ be nonzero complex numbers with $|X_j|\leq1$.
+Define, initially for $\Re C>a_1+\cdots+a_d+d$,
+\begin{equation}\label{sp:weighteddef}
+ Z(C)=\sum_{m_1,\ldots,m_d\geq1}
+  \frac{\prod_{j=1}^d m_j^{a_j}X_j^{m_j}}
+       {(p_1m_1+\cdots+p_dm_d)^C}.
+\end{equation}
+Consider its coefficient generating function
+\begin{equation}\label{sp:rationalR}
+ R(t)=\prod_{j=1}^d\operatorname{Li}_{-a_j}(X_jt^{p_j})
+      =\sum_{n\geq1}r_nt^n.
+\end{equation}
+The elementary identity
+$\operatorname{Li}_{-a}(z)=(z\,d/dz)^a\{z/(1-z)\}$ proves that
+$R$ is rational and bounded at infinity.  Write its partial fractions
+in the form
+\begin{equation}\label{sp:partialR}
+ R(t)=c_\infty+
+       \sum_{\alpha}\sum_{h=1}^{M_\alpha}
+           \frac{c_{\alpha,h}}{(1-\alpha t)^h},
+\end{equation}
+where each $\alpha$ is a root of some equation
+$\alpha^{p_j}=X_j$.  A permissible multiplicity bound is
+\[
+ M_\alpha=\sum_{j:\,\alpha^{p_j}=X_j}(a_j+1).
+\]
+This is an upper bound: zeros of other factors can cancel some poles.
+In that event the corresponding highest coefficients are zero.
+There is no positive-degree polynomial part because $R$ is bounded
+at infinity.  An exact coefficient formula, also valid at repeated
+roots, is
+\begin{equation}\label{sp:cformula}
+ c_{\alpha,h}
+   =[u^{M_\alpha-h}]\,
+       u^{M_\alpha}R((1-u)/\alpha).
+\end{equation}
+The function whose coefficient is extracted is holomorphic at $u=0$.
+
+\begin{theorem}[Arbitrary depth, weights, multiplicities, and normal jets]
+\label{sp:rationaltheorem}
+Set
+\begin{align}
+ e_{h,r}
+  &=[u^r]\prod_{\nu=1}^{h-1}(1+u/\nu),\label{sp:eh}\\
+ d_{\alpha,r}
+  &=\sum_{h=r+1}^{M_\alpha}c_{\alpha,h}e_{h,r}.
+ \label{sp:dcoeff}
+\end{align}
+Empty products equal one.  Then
+\begin{equation}\label{sp:depthone}
+ Z(C)=\sum_\alpha\sum_{r=0}^{M_\alpha-1}
+               d_{\alpha,r}\operatorname{Li}_{C-r}(\alpha).
+\end{equation}
+This is the meromorphic continuation of \eqref{sp:weighteddef}, and
+every $C$-derivative is obtained by replacing each polylogarithm by
+the corresponding order derivative.
+
+If no $X_j$ equals one, the continuation is entire.  In general its
+only possible poles are simple poles at $C=r+1$ from the $\alpha=1$
+sector, with residue $d_{1,r}$.  For $k\geq0$, the constant Laurent
+coefficient of $Z^{(k)}$ at an integer $m\geq1$ is
+\begin{equation}\label{sp:stieltjesFP}
+ \operatorname{CT}_{C=m} Z^{(k)}(C)
+ =(-1)^k d_{1,m-1}\gamma_k
+   +\sum_{(\alpha,r)\ne(1,m-1)}
+      d_{\alpha,r}\operatorname{Li}_{m-r}^{[k]}(\alpha).
+\end{equation}
+Missing coefficients are zero; for $\alpha=1$ the nonsingular terms
+mean ordinary Riemann-zeta derivatives.
+\end{theorem}
+\begin{proof}
+The original multiple sum converges absolutely in the stated
+half-plane.  Grouping it according to $n=\sum p_jm_j$ gives
+$Z(C)=\sum_{n\geq1}r_n n^{-C}$.  The binomial series gives
+\[
+ [t^n](1-\alpha t)^{-h}
+ =\alpha^n\binom{n+h-1}{h-1}
+ =\alpha^n\prod_{\nu=1}^{h-1}(1+n/\nu)
+ =\alpha^n\sum_{r=0}^{h-1}e_{h,r}n^r.
+\]
+For $n\geq1$ the constant $c_\infty$ contributes nothing.  Substitution
+proves \eqref{sp:depthone} where the series converges absolutely and hence
+by continuation.  If $\alpha\ne1$ and $|\alpha|\leq1$, the fixed-color
+polylogarithm is entire in its order; for $\alpha=1$ it is $\zeta$.
+The pole and derivative statements follow.  Finally
+\[
+ \zeta(1+v)=v^{-1}+
+       \sum_{j\geq0}\frac{(-1)^j\gamma_j}{j!}v^j
+\]
+shows that the constant coefficient after $k$ differentiations is
+$(-1)^k\gamma_k$.  The other terms are holomorphic at the specified
+integer, proving \eqref{sp:stieltjesFP}.
+\end{proof}
+
+The harmonic-number coefficients in this theorem can be computed by
+the finite-degree expansion
+\begin{equation}\label{sp:harmonicexp}
+ \prod_{\nu=1}^{h-1}(1+u/\nu)
+ =\exp\!\left(
+    \sum_{j\geq1}\frac{(-1)^{j+1}}j H_{h-1}^{(j)}u^j\right).
+\end{equation}
+For example $e_{h,0}=1$, $e_{h,1}=H_{h-1}$, and
+$e_{h,2}=(H_{h-1}^2-H_{h-1}^{(2)})/2$.
+All multiplicity corrections are consequently finite polynomials in
+generalized harmonic numbers.  Coincidence in this statement concerns
+the poles of the rational coefficient generating function.  It does
+not identify two independently specified spatial finite parts.
+
+\subsection{Roots of unity, Gamma values, and an explicit weighted example}
+
+For a nontrivial $q$th root of unity $\alpha$, residue-class summation
+gives
+\begin{equation}\label{sp:DFT}
+ \operatorname{Li}_s(\alpha)
+   =q^{-s}\sum_{j=1}^q\alpha^j\zeta(s,j/q).
+\end{equation}
+It follows first where the series converge absolutely and then by
+continuation.  In particular, for $s\ne1$,
+\begin{equation}\label{sp:DFTjets}
+ \operatorname{Li}_s^{[k]}(\alpha)
+ =q^{-s}\sum_{j=1}^q\alpha^j
+       \sum_{\ell=0}^k\binom{k}{\ell}(-\log q)^{k-\ell}
+                 \zeta^{[\ell]}(s,j/q).
+\end{equation}
+At $s=1$, cancellation of the common pole gives instead
+\begin{equation}\label{sp:DFTstieltjes}
+ \operatorname{Li}_1^{[k]}(\alpha)
+ =\frac1q\sum_{j=1}^q\alpha^j
+       \sum_{\ell=0}^k\binom{k}{\ell}
+        (-\log q)^{k-\ell}(-1)^\ell\gamma_\ell(j/q).
+\end{equation}
+The cancellation is performed before evaluation.  Applying Lerch's
+formula $\zeta'(0,a)=\log\Gamma(a)-\tfrac12\log(2\pi)$
+\cite[Eq.~25.11.18]{DLMFHzeta} gives
+\begin{equation}\label{sp:Gammajet}
+ \operatorname{Li}_0^{[1]}(\alpha)
+   =\sum_{j=1}^q\alpha^j\log\Gamma(j/q)
+       -\log q\,\frac{\alpha}{1-\alpha}.
+\end{equation}
+Thus simple poles in \eqref{sp:partialR} yield a finite log-Gamma
+evaluation for $Z'(0)$ at roots of unity.  Repeated poles additionally
+introduce the explicitly listed Hurwitz derivatives at negative
+integers from \eqref{sp:DFTjets}; they should not be silently discarded.
+
+For a concrete unequal-weight example, put
+\[
+ Z_{2,3}(C)=\sum_{m,n\geq1}\frac{(-1)^{m+n}}{(2m+3n)^C}
+ \qquad(\Re C>2).
+\]
+Its rational generating function has the exact certificate
+\begin{equation}\label{sp:weightedcertificate}
+ \frac{t^5}{(1+t^2)(1+t^3)}
+ =\frac{t^5-t^7-t^8+t^9+t^{10}-t^{12}}{1-t^{12}}.
+\end{equation}
+Consequently, for every $C$ by entire continuation,
+\begin{align}\label{sp:weightedHurwitz}
+ Z_{2,3}(C)=12^{-C}\bigl\{
+  &\zeta(C,5/12)-\zeta(C,7/12)-\zeta(C,2/3)\notag\\
+  &+\zeta(C,3/4)+\zeta(C,5/6)-\zeta(C,1)\bigr\}.
+\end{align}
+The six residues at $C=1$ cancel.  In particular,
+\begin{equation}\label{sp:weightedGamma}
+ Z_{2,3}'(0)
+ =\log\frac{\Gamma(5/12)\Gamma(3/4)\Gamma(5/6)}
+                 {\Gamma(7/12)\Gamma(2/3)}-\frac14\log12.
+\end{equation}
+An entirely convergent integral version, with no formal double sum
+at $C=0$, is
+\begin{align}\label{sp:weightedIntegral}
+ &\int_0^1\left\{\frac1{(e^{2t}+1)(e^{3t}+1)}-\frac14\right\}
+                         \frac{dt}{t}
+ +\int_1^\infty\frac{dt}{t(e^{2t}+1)(e^{3t}+1)}
+ +\frac\gamma4\notag\\
+ &\hspace{24mm}=
+ \log\frac{\Gamma(5/12)\Gamma(3/4)\Gamma(5/6)}
+                 {\Gamma(7/12)\Gamma(2/3)}-\frac14\log12.
+\end{align}
+To verify the integral, insert the Mellin representation for
+$\Re C>0$, subtract its constant $1/4$ at zero, and use
+$1/\Gamma(C)=C+\gamma C^2+O(C^3)$.
+
+For a fully confluent example, $d$ identical colors with unit weights
+and zero inner orders give
+\begin{equation}\label{sp:compositions}
+ \sum_{m_1,\ldots,m_d\geq1}
+       \frac{z^{m_1+\cdots+m_d}}{(m_1+\cdots+m_d)^C}
+ =\frac1{(d-1)!}\sum_{r=0}^{d-1}s(d,r+1)
+                         \operatorname{Li}_{C-r}(z),
+\end{equation}
+where $s(d,j)$ are the signed Stirling numbers of the first kind.
+Indeed the coefficient at total index $n$ counts compositions and
+equals $\binom{n-1}{d-1}$, including its zero values for $1\leq n<d$.
+This proves the identity and all its normal derivatives.  For $d=3$,
+$z=-1$, and differentiation at $C=0$, it yields
+\begin{equation}\label{sp:triplealternating}
+ \left.\frac{d}{dC}
+ \sum_{m,n,k\geq1}\frac{(-1)^{m+n+k}}{(m+n+k)^C}
+ \right|_{C=0}^{\mathrm{cont}}
+ =-\frac{7\zeta(3)}{8\pi^2}
+   -\frac92\zeta'(-1)-\frac12\log\pi.
+\end{equation}
+Here ``cont'' explicitly means continuation from $\Re C>3$.
+The reduction uses
+$\operatorname{Li}_s(-1)=(2^{1-s}-1)\zeta(s)$,
+$\zeta'(0)=-\tfrac12\log(2\pi)$, and
+$\zeta'(-2)=-\zeta(3)/(4\pi^2)$.
+
+\subsection{An exact primitive hierarchy}
+
+Keep the coefficients $r_n$ of \eqref{sp:rationalR} and put
+$Z(C;z)=\sum_{n\geq1}r_n z^n/n^C$ for $|z|<1$.
+The proof of Theorem~\ref{sp:rationaltheorem} gives
+\[
+ Z(C;z)=\sum_{\alpha,r}d_{\alpha,r}
+                    \operatorname{Li}_{C-r}(\alpha z).
+\]
+For every nonnegative integer $k$,
+\begin{equation}\label{sp:primitive}
+ \int_0^z Z^{(k)}(C;t)\frac{dt}{t}=Z^{(k)}(C+1;z),
+ \qquad
+ z\frac{d}{dz}Z^{(k)}(C;z)=Z^{(k)}(C-1;z).
+\end{equation}
+The integrand is holomorphic at zero after division by $t$, and the
+primitive is fixed by its zero value there.  These identities follow
+termwise in the unit disc and continue along any common path avoiding
+the polylogarithmic singularities.  This gives exact antiderivatives
+of every normal jet without changing its spectral direction.
+
+\subsection{Independent algebraic and numerical checks}
+
+The accompanying script \texttt{verify\_spectral.py} performs 402
+exact finite checks: 25 positive-order partial fractions, 12
+composition polynomials, 105 harmonic--Stirling coefficients, seven
+reconstructions of rational generating functions, 252 independently
+convolved coefficients, and the cyclotomic certificate
+\eqref{sp:weightedcertificate}.  The rational cases include unequal
+weights, repeated roots, multiplicity six, and cancellation of an
+otherwise apparent pole.  Nine independently evaluated convergent
+Mellin integrals at 60 decimal digits check the first normal jets for
+distinct colors $i,-i$, repeated color $-1$ in depths two and three,
+the unequal weights $(2,3)$, and the root-Gamma formula for roots of
+orders $3,4,5,6,12$.  The largest observed discrepancy is
+$4.7\times10^{-61}$.  The exact algebraic checks and analytic proofs
+are separate from these floating-point diagnostics; the latter are
+not interval-certified error bounds.  Inputs, formulas, and full
+outputs are supplied in \texttt{spectral\_results.json}.

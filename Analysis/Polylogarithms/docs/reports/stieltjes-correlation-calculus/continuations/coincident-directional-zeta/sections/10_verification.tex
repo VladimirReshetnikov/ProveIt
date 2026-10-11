@@ -1,0 +1,130 @@
+\section{Verification and reproducibility}
+\label{verify:sec}
+
+The proofs establish the all-parameter identities. The accompanying
+code checks finite algebra, signs, specializations, and independent
+analytic representations. Exact rational checks are distinguished
+from arbitrary-precision floating-point diagnostics throughout.
+The latter do not provide interval-certified error bounds.
+
+\subsection{Independent algebraic checks}
+
+The coordinate-invariance script compares two constructions of the
+defect: a residue extraction and the binomial coefficient formula.
+It performs 140 such exact comparisons, checks 36 obstruction ranks,
+and verifies 440 Stieltjes threshold and sharp-coefficient instances.
+All are finite symbolic computations.
+
+The spectral script performs 402 exact checks: positive-inner-order
+partial fractions, composition polynomials, harmonic--Stirling
+coefficients, rational partial-fraction reconstructions, independently
+convolved coefficient sequences, and the explicit weighted
+cyclotomic certificate. The harmonic script verifies recovery of
+the inherited one-direction residue formula for $m=0,\ldots,6$.
+An independent symbolic expansion of the local Tornheim
+decomposition gives identically zero residuals for the constant,
+linear, and quadratic coefficients in arbitrary $a,b,c$.
+
+For contacts, the direct $A$-generator and the symmetric
+Gamma--cosine form \eqref{cont:B-symmetric} agree through total degree
+four, after the exact even-zeta relations are applied. The script
+also checks all seven displayed low-index coefficients and the
+swap/reflection identity through total argument order five.
+
+The focused $S_6$ audit independently regenerates the convergent
+single-by-double row in Proposition~\ref{audit:s6-depth-three}, checks
+all 192 rows of the restricted presentation against its separator,
+and verifies the exact target normalization and two admissible
+Cayley seeds. These checks certify the stated reduction and the
+obstruction diagnostic; they do not certify the conjecture.
+
+\subsection{Numerical checks using different representations}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.26\textwidth}
+ >{\raggedright\arraybackslash}p{0.44\textwidth}
+ >{\raggedright\arraybackslash}p{0.23\textwidth}@{}}
+\toprule
+Identity family & Independent comparison & Largest observed
+absolute discrepancy\\
+\midrule
+\endhead
+Cubic digamma finite part &
+Local convergent digamma integral versus a
+Jonqui\`ere/incomplete-Gamma evaluation of $\omega'''(0)$ &
+$2.19\times10^{-35}$\\[3pt]
+Multivariate cubic completion &
+Direct Taylor-subtracted Hurwitz integral versus three independently
+continued Tornheim kernels; real and complex asymmetric triples &
+$5.84\times10^{-50}$\\[3pt]
+Distributional contact generator &
+Full meromorphic Hurwitz Fourier coefficient versus canonical
+off-point coefficient plus contact; 189 mode comparisons &
+$2.71\times10^{-76}$\\[3pt]
+Quadratic Tornheim rays &
+Independent Mellin continuation and symmetric extrapolation on
+four distinct rays &
+$2.60\times10^{-37}$\\[3pt]
+Weighted and root-of-unity identities &
+Nine convergent Mellin quadratures versus Gamma/zeta
+specializations &
+$4.68\times10^{-61}$\\[3pt]
+Two-exponent harmonic Laurent data &
+21 coefficients in eight cases, extracted by discrete Cauchy
+averages from a continued nested sum &
+$2.25\times10^{-46}$\\[3pt]
+Stieltjes primitive hierarchy &
+Six numerical shift derivatives compared with generalized
+Stieltjes values &
+$2.04\times10^{-56}$\\
+\bottomrule
+\end{longtable}
+
+The cubic calculation uses 65 decimal working digits and refines
+its finite-difference step. The leading known diagonal derivatives
+are recovered well beyond the precision required for the cubic
+comparison. The multivariate complex case was repeated with longer
+independent truncations; its cross-error decreased to
+$5.22\times10^{-58}$, while the direct integral changed by less
+than $1.51\times10^{-63}$.
+
+The contact check uses 85 working digits, three asymmetric complex
+parameter pairs, frequencies $-3,1,4$, and all $p+q\le5$.
+Its maximum scaled residual is less than
+$2.52\times10^{-84}$. Omitting the proposed contact term in a
+negative control produces an error of approximately $3.2457$,
+so the comparison is sensitive to the delta contribution.
+Zero modes and reflection signs are checked separately.
+
+The harmonic extraction uses 65 working digits and keeps the first
+64 original summands, with 32 Euler--Maclaurin tail terms and
+32-point Cauchy averages on radius $0.01$. It does not subtract the
+predicted Laurent expression before extraction. Repeating one
+evaluation with cutoff 88 and 40 tail terms changes the result by
+less than $5.9\times10^{-52}$. Details and parameters are preserved
+in the JSON outputs.
+
+\subsection{Package organization and integration}
+
+The archive contains the modular \texttt{article.tex}, a flattened
+standalone \TeX\ source, the compiled PDF, section sources,
+reproducible Python scripts, their data outputs, and a source receipt.
+It also includes a theorem-status ledger, independent review notes,
+an integration guide, and the unapplied correction patch.
+The \texttt{README.md} gives the build and verification commands.
+The scripts depend on Python, SymPy, and mpmath; the document uses
+standard pdf\LaTeX\ packages and requires no external bibliography
+processor.
+
+For manuscript integration, retain the proof of the cubic local
+completion before the asymmetric ray theorem, because the ray proof
+uses the diagonal quadratic coefficient. The contact and coordinate
+classification sections can be integrated independently once their
+finite-part conventions are retained. The spectral and harmonic
+sections use independent notation and state the free variables
+needed for their derivative claims.
+
+The source receipt pins this continuation to a concrete repository
+state. The patch was checked against that state and remains
+unapplied. No theorem status in the repository is changed by the
+existence of this archive; the result ledger is a proposal for
+integration with the corresponding proofs.

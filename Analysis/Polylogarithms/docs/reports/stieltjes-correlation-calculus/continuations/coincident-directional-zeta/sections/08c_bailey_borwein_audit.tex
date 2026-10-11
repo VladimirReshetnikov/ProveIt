@@ -1,0 +1,119 @@
+\subsection{Further transcription corrections in a Bailey--Borwein author PDF}
+\label{audit:BB2014}
+
+The following corrections concern the inspected author PDF of
+\emph{Computation and theory of Mordell--Tornheim--Witten sums II},
+dated 5 May 2014, printed pages 17--19 \cite{BB2014}. Equation numbers in
+this subsection refer to that PDF. No assertion about other versions
+is intended. Use its derivative convention
+\begin{align}
+ \omega_{a,b,c}(q,r,s)
+ &=\sum_{n,m\ge1}
+   \frac{(-\log n)^a(-\log m)^b(-\log(n+m))^c}
+        {n^q m^r(n+m)^s},\notag\\
+ \zeta_{a,b}(r,s)
+ &=\sum_{k>j\ge1}\frac{(-\log k)^a(-\log j)^b}{k^rj^s}.
+ \label{audit:BB-definitions}
+\end{align}
+Superscripts on $\Li$ and $\zeta$ below denote derivatives with respect
+to their orders; $a,b,c$ are nonnegative integers.
+
+\paragraph{Order-derivative signs in Eq.~(84).}
+The factors printed as $(-1)^n\log^a n$ and $(-1)^m\log^b m$
+must be $(-1)^a\log^a n$ and $(-1)^b\log^b m$.
+Writing $\Gamma(s,z)=\int_z^\infty e^{-y}y^{s-1}\,dy$, the corrected
+formula is
+\begin{align}
+ \omega_{a,b,c}(q,r,s)
+ ={}&\sum_{n,m\ge1}\frac{(-\log n)^a(-\log m)^b}{n^q m^r}
+     \partial_s^c\left\{
+       \frac{\Gamma(s,n+m)}{\Gamma(s)(n+m)^s}\right\}\notag\\
+ &+\int_{1/e}^{1}
+    \partial_s^c\left\{\frac{(-\log u)^{s-1}}{\Gamma(s)}\right\}
+    \Li_q^{(a)}(u)\Li_r^{(b)}(u)\,\frac{du}{u}.
+ \label{audit:BB84}
+\end{align}
+Indeed $\partial_q^a n^{-q}=(-\log n)^a n^{-q}$.
+Expanding the two polylogarithms in the integral from $0$ to $1/e$
+and setting $y=-\log u$ gives the incomplete-Gamma term, including
+the complete derivative of its Gamma ratio. There is no alternation
+in $n$ or $m$.
+
+\paragraph{The sign in Eq.~(86).}
+The corrected identity is
+\begin{equation}
+ \omega_{0,0,b}(0,0,t)
+ =\zeta^{(b)}(t-1)-\zeta^{(b)}(t).
+ \label{audit:BB86}
+\end{equation}
+For $t>2$, exactly $k-1$ positive pairs have $n+m=k$, so its left
+side is $\sum_{k\ge2}(k-1)(-\log k)^b/k^t$. This proves
+\eqref{audit:BB86} directly. The printed right side has the opposite
+sign; already at $b=0$ it is negative while the defining sum is positive.
+
+\paragraph{Swapping orders also swaps derivative labels in Eqs.~(90)--(91).}
+The corrected formulas are
+\begin{align}
+ \omega_{a,0,b}(s,0,t)+\omega_{b,0,a}(t,0,s)
+ &=\zeta^{(a)}(s)\zeta^{(b)}(t)
+        -\zeta^{(a+b)}(s+t),\label{audit:BB90}\\
+ \omega_{a,b,0}(s,t,0)-\omega_{b,0,a}(t,0,s)
+        -\omega_{a,0,b}(s,0,t)
+ &=\zeta^{(a+b)}(s+t).\label{audit:BB91}
+\end{align}
+To see the indexing, $\omega_{a,0,b}(s,0,t)=\zeta_{b,a}(t,s)$.
+Differentiate
+$\zeta(t,s)+\zeta(s,t)=\zeta(s)\zeta(t)-\zeta(s+t)$
+$a$ times in $s$ and $b$ times in $t$. The second omega term must
+therefore carry the derivative labels $(b,0,a)$ when its spectral
+arguments are $(t,0,s)$. The correction is invisible in the special
+case $a=b$.
+
+\paragraph{Gamma arguments in Eqs.~(93)--(94).}
+Gamma functions and their derivatives are evaluated at the spectral
+variable, not the number of differentiations. The corrected ladders are
+\begin{align}
+ \zeta_{b,a}(t,s)
+ ={}&-\sum_{k=0}^{b-1}\binom bk
+       \frac{\Gamma^{(b-k)}(t)}{\Gamma(t)}\zeta_{k,a}(t,s)\notag\\
+ &+\frac1{\Gamma(t)}\int_0^1
+   \frac{\Li_s^{(a)}(x)}{1-x}
+   \log^b(-\log x)(-\log x)^{t-1}\,dx,
+ \label{audit:BB93}\\
+ \omega_{a,b,c}(q,r,s)
+ ={}&-\sum_{k=0}^{c-1}\binom ck
+       \frac{\Gamma^{(c-k)}(s)}{\Gamma(s)}\omega_{a,b,k}(q,r,s)\notag\\
+ &+\frac1{\Gamma(s)}\int_0^1
+   \Li_q^{(a)}(x)\Li_r^{(b)}(x)
+   \log^c(-\log x)(-\log x)^{s-1}\,\frac{dx}{x}.
+ \label{audit:BB94}
+\end{align}
+An empty sum is zero. For \eqref{audit:BB93}, differentiate
+\[
+ \Gamma(t)\zeta_{0,a}(t,s)
+ =\int_0^1(-\log x)^{t-1}\frac{\Li_s^{(a)}(x)}{1-x}\,dx
+\]
+$b$ times with respect to $t$ and isolate the term with no derivative
+on $\Gamma(t)$. The same Leibniz argument applied to
+$\Gamma(s)\omega_{a,b,0}(q,r,s)$ gives \eqref{audit:BB94}.
+Thus the occurrences of the Gamma argument $b$ in Eq.~(93) must be
+$t$, and those of $c$ in Eq.~(94) must be $s$.
+
+\paragraph{Direct convergence domains.}
+These derivations require actual convergence before any continuation.
+For real $q,r\ge0$, the integral formulas
+\eqref{audit:BB84} and \eqref{audit:BB94} hold under
+\begin{equation}
+ s>0,\qquad q+s>1,\qquad r+s>1,\qquad q+r+s>2.
+ \label{audit:BB-domain}
+\end{equation}
+The printed total-weight condition alone omits the two pair conditions:
+at $(q,r,s)=(2,0,1)$ the $n=1$ subseries is harmonic and diverges.
+Splitting the sum into $m\le n$ and $n<m$ proves sufficiency of the
+three strict summability conditions; finite logarithmic powers do not
+alter this open domain. Formula \eqref{audit:BB93} holds, for example,
+when $t>1$ and $t+s>2$, while \eqref{audit:BB90}--\eqref{audit:BB91}
+follow directly for $s,t>1$. The latter identities and
+\eqref{audit:BB86} then extend meromorphically. Such continuation does
+not assert ordinary convergence of the displayed integrals or series
+outside their stated domains.

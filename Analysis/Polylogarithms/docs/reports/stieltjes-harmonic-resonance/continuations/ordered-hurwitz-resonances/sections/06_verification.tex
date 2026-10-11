@@ -1,0 +1,139 @@
+\section{Verification, proposed status updates, and integration}
+\label{sec:verification}
+
+\subsection{What the proofs establish and what the computations check}
+
+The analytic arguments establish the normal convergence of the tail
+remainders, the meromorphic identities, the exact curve-jet bound,
+and the endpoint completion at every stated index. These conclusions
+do not depend on numerical precision. The attached verification has
+two distinct roles: exact algebra checks the printed coefficients,
+and independent numerical constructions test signs, normalizations,
+and representative specializations.
+
+The primary exact calculation uses Newton's elementary-symmetric
+recurrence with a separate formal symbol for every Hurwitz jet. It
+does not obtain the displayed coefficients by differentiating a copy
+of the displayed exponential. Sixty checks cover the Gamma polynomials
+$B_1,\ldots,B_5$, the explicit formulas through depth five, the
+equal-slope Laurent coefficients through depth seven, the zero-trailing
+slope family, and the complete six-permutation depth-three stuffle
+identity. A separately written calculation performs seven additional
+ordered-coefficient checks. Five further exact checks verify the
+cubic pole cancellations, the complete constant in (C9), and the
+Mellin counterterm exponents. The seventy-two checks all pass.
+
+For the ordered numerical diagnostic, the double and triple sums are
+continued directly by summing a finite initial range and attaching
+Euler--Maclaurin tails of the ordinary Hurwitz factors. Cauchy
+coefficient extraction then obtains the finite part on a small
+complex circle. This calculation does not use the regular-germ
+recursion to evaluate the left side. At $a=1$, the additional
+coefficient $\eta$ is also computed from the independently convergent
+integral \eqref{harm:etaone}. The cubic-product diagnostic separately
+uses the polylogarithmic Mellin formula and the spatially subtracted
+digamma integral described in Section~\ref{sec:cubic}.
+
+\begin{center}
+\small
+\begin{tabular}{p{.44\textwidth}p{.42\textwidth}}
+\toprule
+Diagnostic & Representative value\\
+\midrule
+$\eta(1)$ & $0.536787024358418567503607884349\ldots$\\[3pt]
+$\mathcal F_3(1,\tfrac12;1)$ &
+ $0.446979185190867817804303675619\ldots$\\[3pt]
+$\FP Z_3(1+\tfrac54\eps,1+\tfrac12\eps,
+1+\tfrac34\eps;\tfrac34)$ &
+ $0.169462871179343781164830292059\ldots$\\[3pt]
+$\tau'''(0)$ & $86.6578666011000736529032768588\ldots$\\[3pt]
+$\FP\int_0^1\psi(x)^3\,dx$ &
+ $1.96626273439153434066437533841\ldots$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The recorded ordered run uses 50 working decimal digits, twenty
+Cauchy nodes, a finite cutoff of 36, and twenty Euler--Maclaurin terms.
+The direct triple evaluation uses forty additional guard digits to
+protect the small high-order Hurwitz tails before their multiplication
+by large Euler--Maclaurin coefficients.
+Across the four depth-three comparisons at $a=1$ and $a=3/4$, the
+largest absolute residual is below $8\times10^{-35}$; the independent
+$\eta(1)$ comparison is below $10^{-38}$. The digamma-cube comparison
+uses 35 working digits and fifty Jonqui\`ere terms, with residual
+below $4.1\times10^{-34}$. The saved JSON records the actual complex
+values and residuals. These are floating-point diagnostics, with
+truncation and roundoff; the number of working digits is not a claim
+that every printed digit is certified. No integer-relation search is
+used as proof, and no interval enclosure is asserted.
+
+\subsection{Independent review and limits of the source audit}
+
+The ordered and cubic derivations were reviewed independently of
+their initial derivation, including the tail majorants, divided
+differences, factorials, Fourier phases, endpoint resonances, and the
+third-order Tornheim expansion. A separate review checked the sharp
+curve perturbation, the slope residue, the harmonic conversion, and
+the Mellin kernel. Review led to a more explicit argument-derivative
+kernel: both the triple and pair kernels carry their shifted spectral
+arguments. It also led to an explicit remainder subtraction through
+the full integrability threshold. Those clarifications are incorporated
+in the proofs, rather than left as qualifications to the formulas.
+
+No new concrete false mathematical claim was identified in the
+inspected canonical or incoming material. In particular, the inspected
+quadratic coincident completion and the recent Dougall resonance
+formulas were consistent with their stated scope. This is a targeted
+audit, not a claim that the hundreds of pages in the canonical
+manuscript have all been re-proved. Several tempting proposed
+extensions were already present in the incoming reports and have not
+been relabelled as new results here.
+
+The changes recommended for the repository are therefore precise
+status and normalization updates:
+\begin{enumerate}[leftmargin=*,itemsep=4pt]
+\item Mark the independent-exponent ordered depth-three question in
+the resonant-jets report as answered by Theorems
+\ref{ord:canonical} and \ref{ord:threedirections}. Record the stronger
+all-depth specialization in Theorem~\ref{ord:oneslope}.
+\item Mark its tangential-curve question as answered by
+Theorem~\ref{curve:main}, retaining the hypothesis that no prefix is
+identically zero. The required jet order is a theorem with a sharpness
+construction, not an empirical order suggested by examples.
+\item Mark the cubic coincident-moment target as solved in specified
+Tornheim coordinates by (C3)--(C6), and the digamma cube as reduced by
+(C9). Keep the reduction of $\tau'''(0)$ to a chosen depth-one algebra
+as an open question.
+\item Cite the established Laurent work of Saha and of Matsumoto,
+Onozuka and Wakabayashi; preserve the harmonic convention conversion
+\eqref{harm:conversion}. Cite the classical triple-Hurwitz and
+Mellin--Tornheim inputs when integrating the cubic section.
+\item Distinguish the spatial finite part, the regularized
+multivariate germ, and the constant on a specified spectral curve.
+Formula (C10) gives their concrete cubic comparison. It should be
+added as a normalization identity, not announced as an erratum to a
+source that has not been shown to confuse them.
+\item Preserve the conjectural status of the short $S_6$ and revised
+$S_8$ candidates. Their existing proximity certificates and restricted
+separation results are not proofs or general disproofs of the proposed
+period identities.
+\end{enumerate}
+
+\subsection{Reproducible package}
+
+The package contains the modular article source, a flattened
+standalone TeX source, the compiled PDF, exact-check programs,
+independent numerical programs, recorded JSON results, pinned source
+hashes, and a claim-by-claim integration ledger. The proofs are
+ordinary mathematical proofs; no Lean or other proof-assistant
+formalization is claimed. The build script compiles the article
+without fetching any mathematical data. Verification uses Python,
+SymPy and mpmath; its commands and recorded versions are in the
+package README.
+
+The proposed placement follows the repository's existing thematic
+research-report structure. The delivered section sources can also be
+integrated into the canonical manuscript after notation reconciliation.
+The present delivery does not modify the repository or promote its
+unrelated conjectures.
