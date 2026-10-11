@@ -2965,6 +2965,139 @@ explicit `β, σ, T`.
    (`multilinearPartitionBoundAt_explicit`), with numeric upper bounds on
    `K₁, p₁, K₂, p₂`, which enter `g, p, K` polynomially.
 
+**(I) complete (2026-10-10): `Theorem182At 6` and `Corollary187At 6`.**
+`theorem_18_2_six` and `corollary_18_7_six` (Proofs18LengthSixExplicit) use
+the source's own threshold `szemerediThreshold δ 6`. The light part is
+kernel-checked locally and needs only `propext`, `Classical.choice` and
+`Quot.sound`. It is
+`theorem_18_2_six_of_profiles` (Proofs18LengthSixSzemeredi): the
+conclusion follows from the two recurrence profiles at any constants
+`2 ≤ K`, `0 < p`, `K, p ≤ 2^2000`. The heavy bridge supplies the profiles
+in every dimension `k` with
+- `K = ⌈multiaffinePartitionK (k+1) (2^(k+1))⌉`;
+- `p = (k+1)·multiaffinePartitionP (k+1) (2^(k+1))`.
+
+The chain is `multilinearPartitionBoundAt_explicit`,
+`commonDiffPartitionBoundAt_of`, `commonDiffPartitionTwoBoundAt_of`,
+`polynomialSection16RecurrenceProfileAt_of` and
+`section16RecurrenceProfileWith_of_polynomial`. At `k = 1, 2` these
+constants are `explicitVarietyK`, `2·explicitVarietyP`, `explicitLiftK` and
+`explicitLiftP`, all `≤ 2^1701` by `explicit_constants_le`. The bridge
+was stub-checked locally: opaque stand-ins for the heavy constants and
+lemmas, against the real light modules. It still needs the
+full-verification host. `theorem_18_2_le_six` and `corollary_18_7_le_six`
+collect the lengths `k ≤ 6`.
+
+The comparison, step by step, with `X = 2/α`:
+1. *Counts* (Proofs18LengthSixCounts):
+   `sixQb l γ θ ρ ≤ (2/(γθρ))^(2^90)`.
+2. *Density* (Proofs18LengthSixDensity): `β⁻¹ ≤ X^(2^664)`. The lift
+   densities are tracked as `(c s)⁻¹ ≤ X^a s^(-b)` (`RecipPowerLB`, closed
+   under `liftLastC` and `min`). Then `ρ₁ ≥ X^(-2^412)`, the single-piece
+   density is `≥ X^(-2^601)` and `η ≥ X^(-2^602)`. The cubic input
+   `y = η/(2·10⁵)` enters through `fejer_cubic_gain_inv_le_power`.
+3. *Width exponents* (Proofs18LengthSixExponents):
+   `(sixEb …)⁻¹ ≤ (2/(γθρ))^(2^132)` once `K₁, p₁ ≤ (2/(γθρ))³`. The Bohr
+   radius `ζ = 2^(-s)` enters only as `ζ⁻¹ ≤ exp(w^(2^128))`, inside a
+   rounded power threshold that the cap `log 2/log(max 2 T)` turns back
+   into a polynomial exponent.
+4. *Scale exponents* (Proofs18LengthSixParameters): `lsNestExp`, `lsEm`,
+   `lsMExp`, `lsB`, `lsEth`, `lsEc` and `lsF` are all polynomial, and
+   `lsE⁻¹ ≤ X^(2^643)`.
+5. *Local threshold* (Proofs18LengthSixThresholds):
+   `lsTloc ≤ exp(X^(2^644))`. Lemma 15.6 at `k = 2` is `≤ X^(2^81)` and
+   `lsMReq ≤ exp(X^(2^510))`.
+6. *Envelope* (Proofs18LengthSixEnvelope): `σ⁻¹ ≤ exp(X^(2^664+2))` and
+   `T ≤ exp(exp(X^(2^700)))`. The degree-four refinement constant
+   (`≤ 2^(2^2562)`) is absorbed by `X ≥ 2^700`.
+7. *Iteration and tower* (Proofs18LengthSixSzemeredi). At length six,
+   `α = (δ⁶/110592)^32`, so `2^700 ≤ X ≤ δ^(-737)`. The closed threshold
+   is `≤ exp(exp(X^(2^700+3)))`, and that is `≤ 2^(2^(δ^(-2^711)))`. The
+   source has `δ^(-2^32768)`, so the margin is enormous: crude bounds
+   were enough everywhere.
+
+Lean traps found here. Each cost a build:
+- `linarith` panics: through `cancel_denoms` it computes `1^n` for every
+  power atom `x^n` in context, and `n ≥ 2^24` gives "Nat.pow exponent is
+  too big". The panic also hides all later errors in the file. Use
+  `linarith only` or derive arithmetic facts before huge-exponent
+  hypotheses exist.
+- `exponentiation.threshold` (default 256) silently stops `norm_num` on
+  `2^412` and larger. Raise it per file; 4096 sufficed.
+- `ring` on `W + W = 2^(2^2561+1)` stalls. With a literal degree 4,
+  `simp` evaluates the Weyl exponent `2^(40·4³)`; keep the degree a
+  variable.
+- `set x := e` before `unfold D` leaves `e` inside the unfolded `D`, and
+  unifying it with the abstract `x` timed out in `whnf`.
+- A stub check against a stale olean reports phantom mismatches. Rebuild
+  the light dependency first.
+
+### L.5 Route (II), first stage: `PolyCoverAt 3` and Theorem 16.2 in dimension three (plan, 2026-10-10)
+
+**Why not Part J.** `theorem_16_2_at_three_of_stackable` asks for a
+`CubicStackableClass 2 q`: the union of any `n` members must be covered
+with count exactly `3nq` and exponent `cubicBaseExponent(nq)`. The
+dimension-two family covers have counts of degree about 5 in `n`
+(`famPieceGraphBound`), so they cannot meet that form. Part J would have
+to be redone with general polynomial controls. Building `PolyCoverAt 3`
+the way `PolyCoverAt 2` was built is more direct.
+
+**The dimension-two piece, read for its dimension-specific inputs.** The
+Gowers side is generic in `k`:
+- the dense selection;
+- Lemma 16.7;
+- the vertex identity;
+- the spectrum relation and its product property;
+- Lemma 15.6;
+- the greedy decomposition;
+- `section16_piece_cover_with` and `abstract_family_piece_cover_with`.
+
+Exactly three inputs are dimension-one facts:
+1. the spectrum relation, covered by `polyCoverAt_one`;
+2. the remainder, one vertex `φ(x₀, x)`;
+3. the slices, Freiman families of the one-dimensional final-coordinate
+   sections.
+
+**Dimension three.** The three inputs become two-dimensional objects:
+1. *Spectra.* `section16SpectrumRelation B δ` is a two-dimensional product
+   relation. It decomposes into `polyTwoPieces` members of the class
+   `PolyPieceTwo` (`section16_poly_piece_decomposition_two`, done). The
+   spectra of many pieces are then covered together by
+   `section16_uniform_cover_two` (done).
+2. *Remainder.* It is a signed sum of `2^2 − 1 = 3` translated vertices:
+   two functions of `(h_i, x)` and one of `x`. Each is a cylinder over a
+   face relation of dimension ≤ 2. The face relations decompose into
+   pieces, the cylinders come from `relation_lift_last` and
+   `coordinateReindex`, and their sum is covered by
+   `MultiplyLinearWith.relationSum` (done, Proofs16WithSum: counts and
+   exponents multiply, three summands).
+3. *Slices.* For each `t`, the section `h ↦ φ(h, t)` is a two-dimensional
+   partial function with the product property. It decomposes into pieces
+   off a good set. Any `r` stacked slices are then covered by the uniform
+   cover at `r·polyTwoPieces` pieces. The slice provider needs `Pb`
+   monotone and `Es` antitone in `r`. Crude power envelopes give both,
+   from the count and exponent calculus of Proofs18LengthSixCounts and
+   Proofs18LengthSixExponents, generalized from `polyTwoPieces` to any
+   `M`.
+
+**Stages.**
+- (D1) Envelope controls for the uniform cover at any `M` pieces.
+- (D2) The three inputs above, for one piece and for families.
+- (D3) `PolyPieceThreeData` and the piece theorem, from Lemma 15.6's
+  arrangements at `k = 2`.
+- (D4) The family cover of dimension-three pieces
+  (`abstract_family_piece_cover_with` at `k = 2`, with
+  `AbstractFamilyLemma166At 2` from the heavy bridge), the greedy
+  decomposition, and `PolyCoverAt 3`.
+- (D5) `PolyCoverAt k ⇒ Theorem162At k`. Polynomial controls of degree at
+  most `2^(2^(k+8))` lie inside the printed `multipleQ^r` and
+  `multipleC^r`, since `r ≥ 2/θ`. This gives Theorem 16.2 and
+  Corollary 16.11 in dimension three. With the single-piece route, it
+  also gives the inputs for Theorem 18.2 at length seven.
+
+Each stage is the dimension-two construction one level up. The new
+ingredient is the uniform class.
+
 ## F. Routes
 
 1. **Quantitative repair (research).**
