@@ -1,0 +1,238 @@
+
+\section{Canonical integration by parts and Gamma parity}
+\label{ibp:section}
+
+The pole calculus determines a finite part from a differential polynomial;
+it does not yet identify a preferred polynomial representative.  The
+three continuations in \cite{dpm:reports} also give compatible answers
+to that formal question.  We retain one triangular basis, its explicit
+endpoint functional, and the inverse-Gamma parity argument.  This is a
+quotient of vector spaces before evaluation in special values.
+
+Let $\mathcal A=\mathbb Q[u_0,u_1,\ldots]$, with each polynomial
+using finitely many variables, and set
+\[
+ \mathcal D=\sum_{r\ge0}u_{r+1}\frac{\partial}{\partial u_r},
+ \qquad \operatorname{wt}(u_r)=r+1.
+\]
+The factor degree of a monomial is its number of factors, counted with
+multiplicity.  The derivation increases weight by one and preserves
+factor degree.  Under $u_r=\psi^{(r)}(x)$ it becomes $d/dx$.
+Write $\mathcal A_w$ for weight $w$ and $p(w)$ for the partition
+number, so $\dim\mathcal A_w=p(w)$.
+For $w\ge2$, let $\mathcal B_w$ be the monomials whose largest
+variable index occurs at least twice; this includes $u_0^w$.
+At weights zero and one use $\mathcal B_0=\{1\}$ and
+$\mathcal B_1=\{u_0\}$ separately.
+
+\begin{theorem}[A unique formal normal form at every weight]
+\label{ibp:normal}
+For $w\ge2$,
+\begin{equation}\label{ibp:direct}
+ \mathcal A_w=\mathcal D\mathcal A_{w-1}
+          \oplus\operatorname{span}_{\mathbb Q}\mathcal B_w.
+\end{equation}
+Thus every $P\in\mathcal A_w$ has a unique decomposition
+$P=\mathcal D Q+N$, with $Q\in\mathcal A_{w-1}$ and $N$ in
+the displayed normal space.  A terminating rational algorithm computes
+both terms.  If $p_\ell(w)$ counts partitions of $w$ with exactly
+$\ell$ parts, the dimension at factor degree $\ell$ is
+$p_\ell(w)-p_\ell(w-1)$.  In particular
+\[
+ |\mathcal B_w|=p(w)-p(w-1),\qquad
+ \sum_{w\ge0}\dim(\mathcal A_w/\mathcal D\mathcal A_{w-1})t^w
+       =t+\prod_{j\ge2}(1-t^j)^{-1}.
+\]
+Every retained positive derivative has order at most
+$\lfloor w/2\rfloor-1$.
+\end{theorem}
+
+\begin{proof}
+A monomial outside the normal space has a unique largest index
+$r\ge1$.  Write it as $u_r u_{r-1}^a V$, where $V$ uses indices
+at most $r-2$.  The product rule gives
+\begin{equation}\label{ibp:step}
+ u_r u_{r-1}^a V
+ =\mathcal D\left(\frac{u_{r-1}^{a+1}V}{a+1}\right)
+       -\frac{u_{r-1}^{a+1}\mathcal D V}{a+1}.
+\end{equation}
+The remainder has strictly smaller largest index, and factor degree
+is unchanged.  Repeated application terminates in the finite set of
+partitions of $w$, proving spanning and the algorithm.
+
+For directness, a nonconstant $Q$ with largest index $m$ has in
+$\mathcal DQ$ the nonzero terms
+$u_{m+1}\partial Q/\partial u_m$.  These have largest index $m+1$
+exactly once; the other terms have smaller largest index.  No element
+of the normal space has this support.  Characteristic zero gives
+$\partial Q/\partial u_m\ne0$, so the intersection is zero and
+$\mathcal D$ is injective on positive weights.  Equivalently, increasing
+one largest part of a partition of $w-1$ gives a distinct leading
+partition with unique largest part at weight $w$.  Decreasing that
+unique part is its inverse.  The bijection preserves the number of
+parts, proving both dimension formulas.  The constant kernel at
+weight zero supplies the exceptional $t$ in the generating series.
+A repeated largest part has size at most $w/2$, giving the derivative
+order bound.
+\end{proof}
+
+For instance the bases at weights four through seven are
+\[
+\begin{array}{c|l}
+4&u_0^4,\ u_1^2\\
+5&u_0^5,\ u_0u_1^2\\
+6&u_0^6,\ u_0^2u_1^2,\ u_1^3,\ u_2^2\\
+7&u_0^7,\ u_0^3u_1^2,\ u_0u_1^3,\ u_0u_2^2.
+\end{array}
+\]
+The image $\mathcal D\mathcal A$ is not generally an ideal.
+For example $u_1=\mathcal D u_0$, whereas $u_1^2$ is a nonzero
+normal representative at weight four.  Multiplication of quotient
+classes is therefore not being defined.  The dimensions count formal
+representatives, without asserting independence after integration.
+
+\subsection{The endpoint functional is retained}
+
+For a differential polynomial $Q$, write $f_Q$ for its digamma
+substitution as in Section~\ref{dpm:section}, and define
+\begin{equation}\label{ibp:endpoint}
+ \mathcal E(Q)=f_Q(1)-[x^0]f_Q(x).
+\end{equation}
+The coefficient includes products between pole and regular terms.
+It is not the product of the individual constant coefficients.
+
+\begin{corollary}[Exact finite-part integration by parts]
+\label{ibp:integral}
+For $P=\mathcal DQ+N$ from Theorem~\ref{ibp:normal},
+\begin{equation}\label{ibp:FP}
+ \operatorname{FP}_x\int_0^1 f_P(x)\,dx
+       =\mathcal E(Q)+\operatorname{FP}_x\int_0^1f_N(x)\,dx.
+\end{equation}
+For $\operatorname{Re}a>0$, the corresponding ordinary shifted
+identity retains both endpoints:
+\[
+ \int_0^1 f_P(a+x)\,dx
+  =f_Q(a+1)-f_Q(a)+\int_0^1 f_N(a+x)\,dx.
+\]
+\end{corollary}
+
+\begin{proof}
+Integrate $f_{\mathcal DQ}=f_Q'$ over $[\varepsilon,1]$ before
+taking the constant term.  The answer is $f_Q(1)-f_Q(\varepsilon)$,
+whose constant is exactly \eqref{ibp:endpoint}.  Linearity of the
+fixed-coordinate finite part proves \eqref{ibp:FP}.  With the stated
+shift the interval avoids all poles, and the fundamental theorem of
+calculus gives the ordinary identity.
+\end{proof}
+
+The functional is explicitly finite.  For homogeneous $Q$ of weight
+$W>0$, substitute the differentiated truncation
+\[
+ -x^{-1}-\gamma+\sum_{j=2}^{W}(-1)^j\zeta(j)x^{j-1}
+\]
+to compute $[x^0]f_Q(x)$.  An omitted digamma term starts at $x^W$;
+replacing a leading pole by it in a weight-$W$ product raises the total
+exponent by at least $W+1$, so it cannot contribute a constant.
+The other endpoint uses
+$\psi(1)=-\gamma$ and
+$\psi^{(r)}(1)=(-1)^{r+1}r!\zeta(r+1)$ for $r\ge1$.
+Consequently $\mathcal E(Q)$ lies in
+$\mathbb Q[\gamma,\zeta(2),\ldots,\zeta(W)]$.
+
+Three useful exact examples are
+\[
+ \mathcal E(u_0^2)=2\zeta(2),\qquad
+ \mathcal E(u_0u_1)=-\zeta(3),\qquad
+ \mathcal E(u_1u_2)=4\zeta(5).
+\]
+Thus dropping a total derivative would lose a nonzero endpoint.
+Together with the trigamma-square calculation in
+Section~\ref{dpm:section}, the middle identity gives
+\begin{equation}\label{ibp:digamma-trigamma}
+ \operatorname{FP}_x\int_0^1\psi(x)\psi''(x)\,dx
+          =-3\zeta(3)-4\zeta'(3).
+\end{equation}
+Also $[x^0]\psi'(x)^2=\zeta(2)^2+6\zeta(4)$, so integrating
+$(\psi'^2)'/2$ gives
+\begin{equation}\label{ibp:trigamma-tetragamma}
+ \operatorname{FP}_x\int_0^1\psi'(x)\psi''(x)\,dx=-3\zeta(4).
+\end{equation}
+The identities are proved by finite pole algebra and endpoint extraction;
+independent native quadrature is a separate diagnostic.
+
+\subsection{Inverse-Gamma normal forms have factor parity}
+
+Define $A_0=1$ and $A_{m+1}=u_0A_m-\mathcal DA_m$.  After
+substitution these are the differential coefficients of the Gamma ratio:
+\[
+ A_m(x)=(-1)^m\Gamma(x)\frac{d^m}{dx^m}\Gamma(x)^{-1},\qquad
+ \frac{\Gamma(x)}{\Gamma(x-t)}
+       =\sum_{m\ge0}A_m(x)\frac{t^m}{m!}.
+\]
+Let $A_m=N_m+\mathcal DT_m$ be the unique normal decomposition,
+with $N_0=1$, $N_1=u_0$, $T_0=T_1=0$.
+
+\begin{theorem}[All-degree parity and a recurrence retaining the primitive]
+\label{ibp:parity}
+Every monomial in $N_m$ has factor degree congruent to $m$ modulo two.
+For $m\ge1$, decompose
+\[
+ u_0N_m-u_1T_m=R_m+\mathcal DS_m
+\]
+by Theorem~\ref{ibp:normal}.  Then
+\begin{equation}\label{ibp:pairrecurrence}
+ N_{m+1}=R_m,\qquad
+ T_{m+1}=S_m+u_0T_m-N_m-\mathcal DT_m.
+\end{equation}
+All operations are finite and rational.
+\end{theorem}
+
+\begin{proof}
+Introduce $p=e^F$, $q=e^{-F}$ with $F'=u_0$ only as a convenient
+notation: the products below are differential polynomials because the
+exponential factors cancel.  Set
+\[
+ L_m=\sum_{j=0}^{m-1}(-1)^j p^{(j)}q^{(m-1-j)}.
+\]
+The product rule telescopes to
+\[
+ \mathcal DL_m=pq^{(m)}+(-1)^{m-1}p^{(m)}q
+         =(-1)^m A_m(u)-A_m(-u).
+\]
+This is also a purely formal identity: replace
+$p^{(j)}/p$ by $(-1)^jA_j(-u)$ and
+$q^{(j)}/q$ by $(-1)^jA_j(u)$.
+Projection onto the normal space annihilates the derivative and
+preserves factor degree.  Therefore
+$N_m(-u)=(-1)^mN_m(u)$, proving parity.
+For the recurrence, substitute $A_m=N_m+\mathcal DT_m$ and use
+$u_0\mathcal DT_m=\mathcal D(u_0T_m)-u_1T_m$.
+The result is
+\[
+ A_{m+1}=u_0N_m-u_1T_m
+           +\mathcal D(u_0T_m-N_m-\mathcal DT_m).
+\]
+Uniqueness gives \eqref{ibp:pairrecurrence}.
+\end{proof}
+
+The first informative remainders are
+\begin{align*}
+ N_4&=u_0^4-u_1^2,\qquad
+ N_5=u_0^5-5u_0u_1^2,\\
+ N_6&=u_0^6-15u_0^2u_1^2+u_2^2,\\
+ N_7&=u_0^7-35u_0^3u_1^2+7u_0u_2^2,\\
+ N_8&=u_0^8-70u_0^4u_1^2+28u_0^2u_2^2-7u_1^4-u_3^2.
+\end{align*}
+In particular $u_1^3$, although a valid weight-six normal coordinate,
+is excluded from $N_6$ by parity.  Every identity
+$A_m=N_m+\mathcal DT_m$ yields an exact finite-part identity with
+$\mathcal E(T_m)$ retained.  No vanishing endpoint or arithmetic
+independence is inferred from this formal cancellation.
+
+Independent rational matrix certificates verify the two-sided basis
+inverses and all monomial decompositions through weight fourteen.
+Separate exponential Bell and Lagrange-concomitant constructions check
+the inverse-Gamma coefficients through degree twelve.  They check the
+implementation and the printed examples; the preceding proofs establish
+the all-weight statements.  The Gamma--Appell transport and explicit
+sixth/seventh spectral-coordinate reductions remain separate audit targets.

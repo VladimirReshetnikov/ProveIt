@@ -2,9 +2,9 @@
 
 The canonical reading artifact is the collective four-volume manuscript,
 [Polylogarithms and their Arithmetic Bridges](docs/manuscript/README.md),
-authored by **ProveIt Contributors**. The volumes have **129, 127, 208 and
+authored by **ProveIt Contributors**. The volumes have **129, 127, 211 and
 84 pages**, each compiling independently; the retained
-[combined edition](docs/manuscript/polylogarithms.pdf) has **510 pages**.
+[combined edition](docs/manuscript/polylogarithms.pdf) has **513 pages**.
 They share twelve chapters, thirteen figures and 136 references. The
 [editorial ledger](docs/manuscript/EDITORIAL-LEDGER.md) separates accepted
 proofs from pending analytic claims, and the
@@ -26,6 +26,8 @@ packages pass isolated mathematical replay; their broader branches retain
 separate analytic scopes. The differential-polynomial core now proves unsubtracted expansions and
 ordinary finite-part coordinates for every derivative-containing polynomial;
 combined with scalar powers, it handles every fixed differential polynomial.
+The all-weight integration-by-parts normal form and inverse-Gamma parity are
+also proved, with exact endpoint constants and independent matrix certificates.
 The preceding accepted additions prove all centered trigamma-square moments,
 their ordinary subtracted sums and a classical-polylogarithm generator.
 An independently replayed full-Cayley ideal certificate excludes the S6

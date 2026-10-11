@@ -1,5 +1,55 @@
 # Validation of the four-volume collective manuscript
 
+Integration-by-parts checkpoint, October 11, 2026. The four collective PDFs
+contain 129/127/211/84 pages (551 total), with a 513-page combined edition.
+Authorship remains **ProveIt Contributors**, with twelve chapters, thirteen
+figures, 136 bibliography entries and 94 historical question leads. The
+research remains unfinished; original theorem/equation labels are retained.
+
+Chapter 8 now proves the formal normal decomposition at every weight, with
+factor degree preserved, a partition-count dimension and a finite endpoint
+functional. Total derivatives are retained through that functional; their
+image is not treated as an ideal. A formal Lagrange concomitant establishes
+inverse-Gamma factor parity at every degree, and the primitive-carrying
+recurrence is explicit. Formal dimensions do not prove period independence.
+
+The independent exact verifier imports no delivered reduction program.
+It inverts the complete derivative/normal-basis matrices at weights 2--14,
+checks both inverse products and factor-degree preservation, and verifies
+506 monomial decompositions. Independent exponential Bell and Lagrange
+constructions, parity and pair recurrence all pass at degrees 2--12.
+Five printed remainders, three endpoint constants and a missing-cross-pole
+control pass. These finite certificates check implementation and examples;
+the all-weight conclusions follow from the manuscript proofs.
+
+Native Wolfram 15.0.1 independently checks three exact endpoint constants
+and two finite-part identities by local subtraction and quadrature at 90
+working digits, Taylor degree 105 and split 1/10. Both diagnostic residuals
+are below 1e-50, with no interval-error claim. The endpoint identities give
+FP integral psi*psi'' = -3*zeta(3)-4*zeta'(3) and FP integral psi'*psi''
+= -3*zeta(4), in the original coordinate. Removing total derivatives without
+endpoint constants would give false integral relations.
+
+All volumes complete three converged coupled rounds and three independent
+cold-compilation passes. Static checks cover every page and all 40 external
+destinations. Six changed Volume III bodies and two unmatched combined
+contents pages were reviewed at full size. The other 545 volume bodies and
+506 combined bodies match the preceding reviewed edition; all full rasters
+of Volumes I, II and IV are identical. Bounds checks exclude only centered
+footer numbers. No current contact sheet was opened. All 551/513 bodies have
+explicit inherited or fresh review.
+
+The preservation census remains 90 archives, 3328 tracked originals,
+33 ignored manifests recoverable in arrival history and 1333 textual source
+documents. No new report arrived in the inspected incoming state. Original
+report evidence remains immutable. Gamma-Appell transport, sixth/seventh
+arithmetic coordinate reductions and the broader pending report branches
+retain their individual audit scopes. S6 and revised S8 remain conjectural.
+No global priority, arithmetic independence, Lean formalization or remote
+CI is claimed. The checkpoints below describe their own historical artifacts.
+
+# Historical fifteenth-batch validation
+
 Current checkpoint, October 11, 2026. Authorship remains **ProveIt Contributors**.
 The four volumes have 129/127/208/84 pages (548 total); the retained combined
 edition has 510 pages. There are twelve chapters, thirteen scientific figures,
