@@ -84,7 +84,21 @@ The report PDFs inside `proposals/01` .. `09` are omitted by the same rule
 PDFs without a same-name source are always included: the preprint's figure
 PDFs in `docs/arXiv-2607.23350v1/`.
 
-## Current integration (7 October 2026)
+## Compressed geometry continuation (11 October 2026)
+
+Weighted static contraction now merges ordered boundaries in linear work.
+Core-facing prism ports use an exact three-coordinate additive bitset when
+there are at least two ports, with independent replay of current and legacy
+proofs. All 1,579 maintained tests pass with eight skips, all 21 final focused
+prism tests pass, and all 5,289 supplied structures agree with explicit
+source-face recovery. The maintained article contains the proofs, encoded
+bit-cost qualifications, controlled measurements and remaining hierarchy
+obligations in [`synthesis/weighted_sweep.tex`](synthesis/weighted_sweep.tex)
+and [`synthesis/prism_port_encoding.tex`](synthesis/prism_port_encoding.tex).
+These standalone operators do not change the full recognizer's general
+exponential guarantee; the quasi-polynomial goal remains open.
+
+## Integration checkpoint (7 October 2026)
 
 The maintained Python suite now passes 277 tests. The latest work adds
 twist-compressed homology with a quasi-polynomial bound for braid presentations

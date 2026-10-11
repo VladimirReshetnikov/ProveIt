@@ -49,3 +49,39 @@ pointwise oracle and independent checker. This is an improvement to a
 compressed hierarchy prerequisite. It does not supply core topology,
 ordered attachments or a bound on hierarchy depth, and it does not establish
 a general quasi-polynomial unknot recognition algorithm.
+
+\subsection{Controlled contraction and complete-query measurements}
+
+The initial maintained-suite checkpoint passes all 1,574 tests, with eight
+skips; the final port-encoding checkpoint passes 1,579 tests with the same
+eight skips. The existing pointwise weighted-orbit oracle and separate
+checker remain in use. The final independent decoder additionally passes
+all 21 focused prism tests and the complete source-face audit.
+
+The comparison loads the former contraction function directly from commit
+\code{5a5c0ed65}; the full revision and source hash are in the saved record.
+It changes only that function while retaining current discovery, source
+geometry and verifier.
+Every arm forces the same original vector port encoding. All complete
+output digests agree, including weight statistics and proof data.
+Five shuffled paired rounds follow one warmup round, with three repetitions
+per measured arm and an identical sorted-function control.
+
+Local cases include fresh histogram allocation and contraction, excluding
+prepared inputs and digest comparison. Complete query cases include source
+validation, clipping, orbit discovery, weighted transport, independent
+certificate replay and JSON serialization. Ratios are medians of the paired
+sorted/sweep ratios; values above one favour the sweep. The A/A column uses
+two identical sorted arms. It exposes measurement variability rather than
+being an additional algorithm.
+\input{tables/weighted_sweep.tex}
+
+Isolated contraction ratios range from 1.176 to 1.891. Complete query ratios
+range from 1.006 to 1.021, near their identical-control ratios of 0.993 to
+1.003. We therefore claim reduced local boundary cost, not a demonstrated
+complete-query speedup from this change alone. All outcomes and controls are
+retained. No universal elapsed-time speedup is inferred from the linear
+boundary bound, and these are not full-recognizer measurements. Reproduce with
+\code{benchmark\_weighted\_contraction.py --output FILE} from \code{fast/}.
+The source-pinned samples are retained in
+\code{data/weighted-sweep-benchmark.json}.

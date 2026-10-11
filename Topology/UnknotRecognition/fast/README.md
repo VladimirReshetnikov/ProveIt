@@ -1,5 +1,20 @@
 # fastunknot 0.3.0: braid and structural certificates with optional shared backends
 
+The 11 October continuation contracts static weighted-orbit gaps with a
+linear boundary sweep and encodes unique source ports with exact additive
+bitsets. `normal_prism_face_regions(..., port_encoding='auto')` uses three
+weight coordinates when there are at least two ports; `vector` preserves the
+original proof format, and both proof versions independently replay.
+All 1,579 maintained tests pass with eight skips, all 21 final focused prism
+tests pass, and all 5,289 supplied geometric structures agree with explicit
+recovery. These improve standalone compressed geometry operators; they do
+not establish a general quasi-polynomial recognizer. Proofs and complete-query
+measurements are in [`weighted_sweep.tex`](../synthesis/weighted_sweep.tex)
+and [`prism_port_encoding.tex`](../synthesis/prism_port_encoding.tex).
+Reproduce timings with `benchmark_weighted_contraction.py --output FILE`
+and `benchmark_prism_port_encoding.py --output FILE`. Both include identical
+controls and preserve inconclusive-query semantics.
+
 `cocycle_span.minimize_cocycle_span` now handles a single global vertex with
 a direct primal/dual certificate: every potential is a uniform height shift,
 so the optimum is the original sum of spans. This takes linear arithmetic

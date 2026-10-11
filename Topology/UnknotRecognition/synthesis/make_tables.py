@@ -1795,3 +1795,8 @@ if os.path.exists('data/prismatic-inventory-benchmark.json'):
 if os.path.exists('data/prism-interfaces-benchmark.json'):
     import runpy
     runpy.run_path('data/prism_interfaces_tables.py')
+
+if (os.path.exists('data/weighted-sweep-benchmark.json') and
+        os.path.exists('data/prism-port-encoding-benchmark.json')):
+    import runpy
+    runpy.run_path('data/weighted_prism_tables.py')

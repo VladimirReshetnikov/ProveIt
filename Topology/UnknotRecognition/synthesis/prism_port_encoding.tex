@@ -55,7 +55,10 @@ the vector whose dimension is no larger. Vector proofs retain
 \code{normal-prism-interfaces-v1}; bitset proofs use
 \code{normal-prism-interfaces-v2}. Both versions independently reconstruct
 source-face events and weights before weighted replay. The checker's
-right-shift decoder is separate from the producer's least-set-bit decoder.
+binary-digit decoder is separate from the producer's least-set-bit decoder.
+It first bounds the mask length by $P$, then converts it once and visits
+at most $P$ binary digits per profile. This avoids repeatedly right-shifting
+a large integer through its absent low-order ports.
 The geometric structure and ribbon-only interpretation are unchanged.
 
 Tests compare both encodings with pointwise source-face geometry, exercise
@@ -63,3 +66,55 @@ more than one hundred ports with a 501-bit multiplicity, reject altered
 source masks and ownership summaries, and replay all 58 saved version-one
 proofs with producers disabled. General core topology, edge/vertex handles,
 ordered parallelity boundaries and later hierarchy stages remain unresolved.
+
+\subsection{Exact source structures and complete-query timing}
+
+All 5,289 supplied source structures agree with explicit face recovery,
+including 48 mixed cases and seven large binary cases. Previous whole-piece
+counts are preserved. The 58 new proofs and all 58 legacy proofs independently
+replay with producers disabled. The retained audit authenticates 672 source
+and evidence hashes. The final full suite passes 1,579 tests with eight skips;
+all 21 focused tests also pass after the independent decoder improvement.
+The test and audit logs remain under \code{data/prism-port-encoding-*}.
+
+Both measured encodings use the same linear contraction kernel. Each timed
+call includes fresh source validation, clipping, discovery, weighted
+transport, independent replay and complete result serialization. Input
+preparation and structure-digest comparison are outside timing. The output
+structures agree in all arms, while their certificate encodings and sizes
+can differ. Five shuffled paired rounds follow one warmup round; an
+identical vector arm supplies the A/A control. The ratio is the median
+paired vector/auto ratio, with values above one favouring auto.
+Prior results are released and garbage is collected before each arm's
+timer. This prevents small cases from inheriting cleanup of a preceding
+large workload; those cleanup costs are excluded equally in all arms.
+\input{tables/prism_port_encoding.tex}
+
+The primitive $T=16,32,64$ cases have paired vector/auto ratios
+1.654, 2.791 and 5.034, with corresponding identical-vector controls
+1.010, 1.003 and 0.985. At $T=64$ the weight dimension drops from 128 to
+three and the complete serialized result shrinks from 417,245 to 325,587
+bytes. The 501-bit multiplicity case has ratio 1.527 with control 0.981.
+The $T=4$ case stays near parity, at 1.008 with control 0.992. With no
+ports, the $T=1$ auto and vector paths are identical; its observed ratio
+1.041 and control 1.083 illustrate small-call timing variability.
+
+These are standalone source-geometry queries. Their gains do not establish
+a full-recognizer improvement or a quasi-polynomial recognition theorem.
+Reproduce timings from \code{fast/} with:
+\begin{quote}\small
+\code{benchmark\_prism\_port\_encoding.py --output FILE}
+\end{quote}
+Saved samples include wire sizes, weight dimensions, run counts, source
+hashes and all timing controls. Run the source audit from \code{fast/}:
+\begin{quote}\footnotesize
+\code{python -B -m normal\_orbit\_research.prism\_interfaces audit --output FILE}
+\end{quote}
+Run the combined publication check from \code{synthesis/}:
+\begin{quote}\small
+\code{python -B data/weighted\_prism\_review.py --publication}
+\end{quote}
+Older dated publication checks retain their original
+source pins and PDF page numbers; they describe their original releases.
+The combined current check authenticates both saved proof versions on the
+updated implementation, rather than rewriting those historical records.

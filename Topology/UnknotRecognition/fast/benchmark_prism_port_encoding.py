@@ -1,6 +1,7 @@
 """Complete vector/automatic port queries with independent replay and an A/A control."""
 import argparse
 from hashlib import sha256
+import gc
 import json
 from pathlib import Path
 import platform
@@ -38,6 +39,7 @@ def main():
         rng.shuffle(tasks)
         for name, arm in tasks:
             raw, rows = cases[name]
+            gc.collect()
             start = perf_counter()
             answer = normal_prism_face_regions(raw, rows, record_certificate=True, port_encoding=arms[arm])
             assert verify_normal_prism_interfaces(raw, rows, answer['certificate'])
@@ -51,6 +53,7 @@ def main():
             samples.append(dict(case=name, arm=arm, round=round_number, warmup=round_number == 0,
                 seconds=elapsed, structure_sha256=digest, result_bytes=len(wire),
                 weight_dimension=answer['weight_dimension'], maximum_weight_runs=answer['stats']['maximum_weight_runs']))
+            del answer, wire
         print('completed round', round_number, flush=True)
     for p in paths:
         assert sha256(p.read_bytes()).hexdigest() == pins[str(p.relative_to(REPO))]
@@ -70,7 +73,8 @@ def main():
                'source/certificate replay and result serialization are all timed. Workload preparation '
                'and structure digest comparison are excluded. Five shuffled paired rounds plus one '
                'warmup and an identical vector control. Both encodings use the same linear contraction '
-               'kernel. These are standalone geometry queries, not full recognizer timings.',
+               'kernel. Prior results are released and garbage is collected outside each timer. '
+               'These are standalone geometry queries, not full recognizer timings.',
         details=details, summary=summary, samples=samples)
     args.output.write_text(json.dumps(output, indent=2) + '\n')
     print(json.dumps(summary, indent=2))

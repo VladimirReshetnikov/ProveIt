@@ -1665,3 +1665,34 @@ They verify 668 current source/evidence hashes, all 5,289 exact structures,
 previous whole-piece counts and passing test/timing records, and replay all
 58 saved source proofs with producers disabled. The remaining topology is
 edge/vertex handles and actual ordered parallelity-base boundaries.
+
+The 11 October continuation adds [linear static contraction](weighted_sweep.tex)
+and [carry-free port ownership](prism_port_encoding.tex). The former avoids
+sorting two already ordered boundary families; the latter replaces one
+coordinate per unique source port with an exact binary integer. The bit-cost
+and source-uniqueness hypotheses are explicit. Current and legacy proofs have
+separate independent source reconstruction, and the final checker decodes a
+bounded binary spelling once rather than repeatedly shifting large masks.
+
+All 1,579 maintained tests pass with eight skips, and all 21 final focused
+prism tests pass. Every one of the 5,289 supplied source structures agrees
+with explicit recovery and preserves previous whole-piece counts. All 58
+legacy and 58 current saved proofs replay with producers disabled. Controlled
+measurements compare local contraction and complete source-geometry queries,
+including independent replay and serialization, with identical-code controls.
+Prior-result cleanup and garbage collection occur outside each timer.
+
+Reproduce the combined evidence and publication checks with
+`python -B data/weighted_prism_review.py --publication` from this directory.
+Regenerate the new tables with `python -B data/weighted_prism_tables.py`, or
+use the usual `build.sh`. Older dated reviews retain their original source
+pins and page numbers. The new combined review authenticates the current
+sources and both proof formats without rewriting those historical records.
+Core topology, ordered parallelity boundaries, hierarchy integration and a
+general quasi-polynomial complexity bound remain open.
+
+The current [PDF](report.pdf) has 625 pages. The new sections 159 and 160
+start on pages 616 and 617; assessment starts on page 619. Pages 616–621
+have been visually reviewed, including both proofs, both complete timing
+tables and the assessment update. All references resolve and only the four
+pre-existing overflow warnings remain.
