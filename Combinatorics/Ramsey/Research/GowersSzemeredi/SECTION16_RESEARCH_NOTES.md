@@ -3360,6 +3360,51 @@ dimension three.
   now available in every dimension (`PowerUniformClass.polyCoverAt` at
   every `k`).
 
+### L.7 Theorem 18.2 at every length: feasibility and plan (2026-10-11)
+
+**The step exists in every degree.** `single_piece_inverse_step_global {k}`
+(Proofs18SinglePieceInverse) is generic: a degree-`(k+1)` discrepancy bound
+at parameter `y = η/2/(2(k+3))^(k+3)` gives a degree-`(k+2)` bound at
+`η·β/4`. Its inputs are `PolyCoverAt l` for `l ≤ k` (now available in every
+dimension), the retiled linearity bound (from the profiles), and the
+per-modulus conditions. Length six is this step once, from the Fejér cubic
+bound. Length `L` is `L − 5` steps.
+
+**Does the printed threshold fit?** `szemerediThreshold δ L =
+2^(2^(δ^(−2^(2^(L+9)))))`, and `X = 2/α ≤ δ^(−c_L)` with
+`c_L ≈ L·2^(L−1)`. So the X-degree `deg′` of `log log T` must satisfy
+`log₂ deg′ ≲ 2^(L+9)`. Over the steps, `log deg′` adds `log deg y_j`, which
+is about `log D_j + 2^(j+5)`, where `D_j` is the degree of the dimension-`j`
+cover and `2^(j+5)` comes from `θ₁(j)`.
+- With the classes of L.6, `log D_k ≈ 64k·2^k`, because degrees square per
+  dimension (L.6a). Then `log deg′ ≈ 2^(L+5)(L−2)`, which fits `2^(L+9)`
+  only for `L ≲ 18`.
+- The squaring comes from mixing the family size `n` into the parameter
+  base. Separate them: class controls `(n+1)^a · W^D`, with
+  `W = V·2/(γθρ)`. Then the recursions are
+  `log a_{k+1} ≈ 2·log a_k + k`, so `log a_k = O(2^k)` since `Σ j/2^j`
+  converges, and
+  `log D_{k+1} ≈ log D_k + log a_k + 2^(k+5)`, so `log D_k = O(2^k)`.
+  This gives `log deg′ = O(2^L)`, which fits every length if the constant
+  stays below about `2^11`. The dimension-two numbers (`a, D ≈ 2^89`,
+  `2^130`) suggest a constant near `2^5`.
+
+**Plan (F).**
+- (F1) `SplitUniformClass k V a D T`: family exponent `a` and parameter
+  degree `D`. Instance at dimension two from the D1 bounds. Map back to
+  `PowerUniformClass` (and to `PolyCoverAt`).
+- (F2) The step with split controls. The E3–E4 machinery is unchanged;
+  only the bounds of E5 are redone (`a′ = poly(a)·2^k`, `D′ = D + O(a·…)`).
+- (F3) Discrepancy bounds in every degree: induction on the degree with
+  `single_piece_inverse_step_global`. The parameters `β_d`, `σ_d`, `T_d`
+  are tracked as power and exponential envelopes in `X`, generalizing
+  Proofs18LengthSix*.
+- (F4) The comparison with `szemerediThreshold δ L` for every `L`, then
+  `theorem_18_2` and, at half density, `corollary_18_7`.
+
+Theorem 18.1 is not on this path. Its obstacle is the Section 13
+localization loss (L.6).
+
 ## F. Routes
 
 1. **Quantitative repair (research).**
