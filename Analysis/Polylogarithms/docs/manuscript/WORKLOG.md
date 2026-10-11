@@ -571,3 +571,35 @@ receipts separately. Rebuild serially, review the changed PDF and rerun
 relevant mathematics before refreshing hashes. Do not rerun historical
 extraction helpers against the edited manuscript. Git publication, build
 convergence, visual review and mathematical checks are separate claims.
+
+
+## Fourteenth intake: all digamma powers and primary-source corrections
+
+Preserved six deliveries (194 original members, 189 tracked) and retired their
+ZIPs in af4815fef0b2; published placement e82ddda729. Every specified full
+mathematical suite passes on isolated copies. Canonical integration accepts
+the all-power and complete fifth-power cores, with normalized global expansion,
+contour constant, finite harmonic-word reduction, ordinary subtracted series,
+primitives, differentiated identities and positive Cauchy coefficients.
+Three fifth-power routes agree after the exact Omega4/J'(1) coordinate change.
+The scalar-polynomial cancellation is relative to that coordinate ledger,
+without an arithmetic independence claim.
+
+Primary-source audit fixes the initial term of the introductory Stieltjes
+limit in arXiv:2403.07123v1 and Young A43's description of the height-one
+linear coefficient. Exact counterexamples and an all-depth sign proof are
+canonical; the latter preserves the published ordinary Stieltjes example.
+Independent native and rational checks retain precise diagnostic scopes.
+
+S6 work adds 19 exact bounded-span escapes, then eliminates every depth-five
+component in 190 selected double-shuffle rows. The exact kernel has dimension
+24, yielding 24 reconstructed bounded relations. Modular rank rises from
+1893 to 1897 but the target remains outside that modular span. No rational
+nonmembership follows. Search evidence is retained in verification/S6-RESEARCH.md;
+S6/revised S8 and broader incoming analytic branches remain active targets.
+
+Four volumes compile and pass independent cold builds: 129/127/205/84 pages,
+545 total; combined 507. All 40 external PDF destinations verified. Every
+changed page body reviewed at full size; inherited raster equivalence covers
+the rest. Inventory 1251 textual sources; cumulative 84 archives/3111 tracked
+originals; bibliography 135. Original report evidence stays immutable.

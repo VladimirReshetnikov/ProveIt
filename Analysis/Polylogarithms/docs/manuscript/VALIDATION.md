@@ -1,6 +1,91 @@
 # Validation of the four-volume collective manuscript
 
 Current research checkpoint, October 11, 2026. The research goal remains
+active. All four PDFs and the combined edition retain **ProveIt Contributors**
+on the title pages and in metadata. The volumes have 129, 127, 205 and 84
+pages (545 total); the combined edition has 507 pages. They share twelve
+chapters, thirteen scientific figures, 135 references and 94 historical
+question leads. Earlier numbered results retain their citations.
+
+The inventory covers 1251 textual provenance documents. Eighty-four archives
+preserve 3111 tracked original members. The newest six ZIPs were removed in
+placement commit af4815fef0b2 after preserving all 194 original members:
+189 tracked and five ignored manifests recoverable from arrival history.
+The cumulative ignored-manifest count is thirty. Original ignored log/build
+receipts were staged explicitly. Delivered OVERVIEW files are preserved;
+new intake notes use INTAKE-RECONCILIATION.md. No original evidence is run or
+regenerated in place. No checksum-manifest verification was performed.
+
+All six complete specified mathematical suites pass on fresh isolated copies:
+algebraic Gauss reflection, canonical fifth digamma moment, continuous-depth
+Lerch, higher digamma powers, mixed resolvents/harmonic powers and tilted Lerch.
+Both tilted precisions (45 and 60 digits) and per-command outputs are retained.
+Passing finite checks and diagnostics does not analytically accept every branch.
+The all-power and fifth-moment cores are now proved in Chapter 8; other Gauss,
+Lerch, ordered, resolvent and collision branches remain pending reconciliation.
+
+Chapter 8 proves the normalized global pole expansion, full large-circle
+boundary polynomial, harmonic spectral finite-part formula and ordinary
+subtracted-series form for every positive integer digamma power. It specifies
+a terminating strict harmonic-word reduction and every Stieltjes correction.
+The fifth-power calculation reconciles singular Omega4 and ordinary J'(1)
+coordinates; omission of the finite Stieltjes term is rejected exactly.
+Normalized all-power primitives and differentiated polygamma identities follow
+by normal convergence. A positive rational Cauchy series specifies every
+height-one linear Laurent coefficient, with an independent involution proof.
+These are fixed-coordinate identities, not arbitrary regularization claims.
+
+Native Wolfram 15.0.1 passes ten exact closed residue polynomials, one
+corruption control and three checked moment diagnostics (powers 1, 2, 5),
+at 100 working digits with Taylor degree 130 and split 1/10. Fifth-power
+quadrature agrees with independent harmonic arithmetic within 1e-50.
+Powers 3, 4 and 6 in this native receipt are exploratory. Working precision,
+truncated tails and quadrature agreement are not interval error certificates.
+The independent coordinate audit checks four polynomial cancellations, sixteen
+positive rational Cauchy coefficients and thirty-two binomial/log identities.
+
+Appendix A's two source corrections are checked against the exact versions
+identified in the bibliography: arXiv:2403.07123v1, printed page 1, and Young,
+Integers 24 (2024), A43, printed page 12. The first missing initial term gives
+a counterexample gamma-1 at m=0,a=1. The second description reverses the literal
+linear coefficient at every depth; the ordinary Stieltjes example is retained.
+An exact rational Euler-Maclaurin/log certificate proves -3/40 < gamma1 <
+-7/100. Primary PDFs were inspected as text; no primary-page raster review
+is claimed. Other suggested literature corrections remain pending source audit.
+
+For S6, the preceding complete-Cayley formal obstruction remains valid for its
+specified bounded family. New exact double-shuffle probes give 19 nonzero
+bounded-span pairings among 22 projected inputs. A larger 190-input probe has
+depth-five sector rank 166 and kernel dimension 24 over Q; each resulting
+bounded relation is independently reconstructed from its source combination,
+with every outside coordinate canceled. The native finite-field search on
+5131 old plus 24 new rows has rank 1897 modulo 2147483647 and leaves a nonzero
+target residual. This is a search diagnostic, not rational nonmembership or
+a period counterexample. S6 and revised S8 remain conjectural. The stopped
+Python search and its corrected parity-projection mistake are retained as
+superseded implementation evidence, not completed target tests.
+
+The four-volume build completes three coupled rounds; each source also passes
+three isolated cold-compilation passes with matching page text and PDF links.
+All pages pass static inspections and all 40 external destinations are verified.
+Every one of the 27 changed volume page bodies is reviewed at full size; the
+other 518 exactly match the preceding reviewed edition. The combined edition
+inherits 484 matching bodies, matches eighteen freshly reviewed volume bodies,
+and has five remaining bodies reviewed at full size. Only centered footer
+page numbers are excluded, with bounds audits retaining all scientific text,
+images and drawings. No current contact sheet was opened. Thus all 545 volume
+page bodies and 507 combined bodies have explicit inherited or fresh review.
+
+Earlier results retain their mathematical and diagnostic scopes. No Lean
+formalization, remote CI, global priority or period independence is claimed.
+Structured receipts record artifact agreement separately from analytic proofs.
+The following checkpoints are historical, with their own older artifacts.
+
+# Historical thirteenth-batch validation
+
+# Validation of the four-volume collective manuscript
+
+Current research checkpoint, October 11, 2026. The research goal remains
 open. All four PDFs and the retained combined edition are authored by
 **ProveIt Contributors**, on their title pages and in their metadata.
 

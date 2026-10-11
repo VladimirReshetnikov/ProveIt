@@ -2,23 +2,28 @@
 
 The canonical reading artifact is the collective four-volume manuscript,
 [Polylogarithms and their Arithmetic Bridges](docs/manuscript/README.md),
-authored by **ProveIt Contributors**. The volumes have **129, 125, 189 and
+authored by **ProveIt Contributors**. The volumes have **129, 127, 205 and
 84 pages**, each compiling independently; the retained
-[combined edition](docs/manuscript/polylogarithms.pdf) has **489 pages**.
-They share twelve chapters, thirteen figures and 130 references. The
+[combined edition](docs/manuscript/polylogarithms.pdf) has **507 pages**.
+They share twelve chapters, thirteen figures and 135 references. The
 [editorial ledger](docs/manuscript/EDITORIAL-LEDGER.md) separates accepted
 proofs from pending analytic claims, and the
 [validation record](docs/manuscript/VALIDATION.md) distinguishes proofs,
 finite certificates, numerical diagnostics, PDF builds and visual review.
 
-The inventory covers **1181 textual provenance documents**. **78 incoming
-archives / 2922 original tracked members** are preserved; imported ZIPs are
+The inventory covers **1251 textual provenance documents**. **84 incoming
+archives / 3111 original tracked members** are preserved; imported ZIPs are
 retired in their placement commits and recoverable from arrival history.
-The latest eighteen deliveries retain their own PDFs, sources, code and
+The latest six deliveries retain their own PDFs, sources, code and
 receipts. Intake notes use a separate filename, preserving delivered
 OVERVIEW files. Original articles and reports remain historical evidence.
 
-The latest accepted additions prove all centered trigamma-square moments,
+The latest accepted additions prove all positive-integer digamma-power finite
+parts and normalized primitives, reconcile the full fifth-power correction,
+and give a positive Cauchy series for every height-one coefficient. Two
+version-specific source corrections carry exact proofs. All six newest
+packages pass isolated mathematical replay; their broader branches retain
+separate analytic scopes. The preceding accepted additions prove all centered trigamma-square moments,
 their ordinary subtracted sums and a classical-polylogarithm generator.
 An independently replayed full-Cayley ideal certificate excludes the S6
 target from the complete ideal plus a specified bounded relation span;

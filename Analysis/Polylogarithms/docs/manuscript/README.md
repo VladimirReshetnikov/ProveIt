@@ -6,34 +6,36 @@ organized as four volumes. Each has its own source and compiled PDF.
 | Volume | Material | PDF | Pages |
 |---|---|---|---:|
 | I | Polylogarithm identities, cyclotomic coordinates, algebraic ladders and Gaussian/Eisenstein reductions | [Polylogarithm Identities and Arithmetic Reductions](volumes/volume-1-polylogarithm-identities.pdf) | 129 |
-| II | Signed kernels, angular and all-depth zero geometry, exact computation and experimental discovery; literature appendix | [Signed Kernels, Zero Geometry and Experimental Discovery](volumes/volume-2-signed-kernels.pdf) | 125 |
-| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 189 |
+| II | Signed kernels, angular and all-depth zero geometry, exact computation and experimental discovery; literature appendix | [Signed Kernels, Zero Geometry and Experimental Discovery](volumes/volume-2-signed-kernels.pdf) | 127 |
+| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 205 |
 | IV | Gamma grids, CM lattice periods, class products and Herglotz arithmetic | [Gamma Grids, CM Periods and Herglotz Arithmetic](volumes/volume-4-cm-and-herglotz.pdf) | 84 |
 
 The volumes partition all twelve chapters and the literature appendix.
 Chapter, theorem and equation numbering is retained so research-report
 citations stay stable. Cross-volume references link to their exact PDF
 destinations; keep the four PDFs together. Each volume has its own contents
-and the shared bibliography of 130 references. The scientific text is shared
+and the shared bibliography of 135 references. The scientific text is shared
 through chapter files and [preamble.tex](preamble.tex), avoiding duplicate
 copies of proofs. See [volume sources and build instructions](volumes/README.md).
 The [combined source](polylogarithms.tex) and its
-[489-page combined snapshot](polylogarithms.pdf) remain available.
+[507-page combined snapshot](polylogarithms.pdf) remain available.
 
-The [inventory](source-inventory.json) accounts for **1,181 textual source
+The [inventory](source-inventory.json) accounts for **1,251 textual source
 files**, including overlapping assembled articles, fragments and correction
 registers. The [editorial ledger](EDITORIAL-LEDGER.md) maps their mathematical
-status and identifies pending research integration. Seventy-eight incoming
-archives are preserved as **2,922 original tracked members**. The first sixty packages have full isolated replay passes. In the latest
+status and identifies pending research integration. Eighty-four incoming
+archives are preserved as **3,111 original tracked members**. The first sixty packages have full isolated replay passes. In the latest
 batch, the full harmonic-parity suite and selected complete-Cayley certificate
 pass; the other deliveries retain pending full-replay and analytic scopes.
 Preservation and finite replay do not imply that every theorem is integrated. The imported
 ZIPs have been retired from the drop zone under its intake procedure; the
 arrival commits and recovery paths remain recorded in
-`verification/*incoming-archives.json` and the retirement records. Twenty-five ignored
+`verification/*incoming-archives.json` and the retirement records. Thirty ignored
 SHA256SUMS members remain recoverable in their recorded arrival archives; the
-existing ignore rules were followed without manifest verification. The latest eighteen
-packages extend the harmonic-resonance and Stieltjes-correlation spines.
+existing ignore rules were followed without manifest verification. The latest six
+packages extend the harmonic-resonance and Stieltjes-correlation spines; all six
+full mathematical replays pass on isolated copies. Their non-power branches
+retain separate pending analytic scopes.
 Volume III now proves the all-index fixed-coordinate periodic contact law,
 its Bernoulli primitives and ordinary vanishing-weight Hurwitz identities.
 A self-contained first-resonance Rogers-Dougall proof gives all fixed mixed
@@ -53,10 +55,26 @@ generator. Every moment is a rational number plus a rational multiple of
 zeta(3); the proof is finite summation and Bernoulli constant extraction.
 Volume II proves that the full convergent Cayley shuffle ideal, together
 with the specified 5131-row bounded relation span, cannot close the S6
-search. The period equality remains conjectural. Further arrivals stay in
+search. The period equality remains conjectural. New exact higher-depth experiments
+produce 19 bounded-span escapes and a complete 24-row bounded intersection
+from 190 selected inputs. A modular search raises the enlarged rank to 1897
+without closing the target; no rational nonmembership is inferred. Further arrivals stay in
 the drop zone for their own intake. Other analytic claims retain the
 ledger's pending scopes. The contents number column has been widened so
 long chapter/section numbers remain separated from their titles.
+
+The newest Chapter 8 development proves the normalized Mittag-Leffler formula,
+a fixed-coordinate finite-part formula and normalized primitive for every
+positive integer power of digamma. Its residue polynomial has a closed form;
+finite harmonic-word reduction specifies every spectral coefficient. The fifth
+power retains every mixed-depth correction and reconciles three independent
+routes. A positive Cauchy-coefficient series supplies every height-one Laurent
+coefficient. Native Wolfram checks ten exact residue polynomials and three
+moment diagnostics at 100 working digits; diagnostic precision is separate
+from rigorous interval accuracy. Appendix A corrects the initial summation
+index in arXiv:2403.07123v1 and the description of the sign of Young's
+published height-one coefficient, with exact counterexamples and an all-depth
+sign proof. Historical originals remain unchanged.
 
 The preceding milestone proves the CM class-product formulas and the recorded
 genus ratios, develops a rational principal-point nonvanishing bound, and
