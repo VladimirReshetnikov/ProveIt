@@ -163,27 +163,35 @@ def _truncate_reflection(runs, size, cut, left_endpoint, dimension, check):
 
 
 def _contract_weights(runs, size, gaps, histogram, check):
-    """Emit singleton representative weights and close the static gaps."""
+    """Merge ordered runs and static gaps without sorting their boundaries.
+
+    Runs cover [0,size); gaps are ordered, disjoint inclusive intervals from
+    the orbit kernel. Each sweep step exhausts a run or a gap boundary.
+    Surviving vectors are shared, and adjoining equal vectors are coalesced.
+    """
     if not runs:
         return [], 0
-    cuts = sorted({0, size}
-                  | {endpoint for lo, hi, _ in runs for endpoint in (lo, hi)}
-                  | {endpoint for lo, hi in gaps for endpoint in (lo, hi + 1)})
-    run_index = gap_index = removed = emitted = 0
+    gap_index = removed = emitted = 0
     result = []
-    for lo, hi in zip(cuts, cuts[1:]):
-        check()
-        while runs[run_index][1] <= lo:
-            run_index += 1
-        while gap_index < len(gaps) and gaps[gap_index][1] < lo:
-            gap_index += 1
-        value = runs[run_index][2]
-        if gap_index < len(gaps) and gaps[gap_index][0] <= lo:
-            histogram[value] = histogram.get(value, 0) + hi - lo
-            removed += hi - lo
-            emitted += 1
-        else:
-            _append(result, lo - removed, hi - removed, value)
+    for lo, hi, value in runs:
+        while lo < hi:
+            check()
+            while gap_index < len(gaps) and gaps[gap_index][1] < lo:
+                gap_index += 1
+            if gap_index == len(gaps):
+                stop = hi
+                deleted = False
+            else:
+                left, right = gaps[gap_index]
+                deleted = left <= lo
+                stop = min(hi, right + 1 if deleted else left)
+            if deleted:
+                histogram[value] = histogram.get(value, 0) + stop - lo
+                removed += stop - lo
+                emitted += 1
+            else:
+                _append(result, lo - removed, stop - removed, value)
+            lo = stop
     return result, emitted
 
 
