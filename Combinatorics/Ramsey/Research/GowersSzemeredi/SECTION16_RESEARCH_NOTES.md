@@ -3562,6 +3562,68 @@ step.
   polynomial Lemma 13.5, the single-piece route would therefore give
   Theorem 18.1 in degrees `3 … 7`, not every degree.
 
+### L.8 A route to every length: precision-free counts (analysis, 2026-10-11)
+
+L.7a showed that the nest of `2^k − 1` vertex providers composes the lift
+density `C`. Its degree in `t` then multiplies the log-degree by `2^k`.
+This section locates the two sources of that degree. Both are artifacts of
+the present design, not of the problem.
+
+**Source 1: the count depends on the precision.** `MultiplyLinearWith Qb Eb Γ`
+is **box-local**. For every precision `θ` and every proper box `P` it gives:
+- a partition of `P` into boxes of width `≥ |P|^(Eb θ)`;
+- at most `Qb θ` multilinear maps per box;
+- coverage of the relation on a `(1−θ)` fraction of `P`.
+
+A provider built from it has `C(t) = t/(2·Qb(t/2))`. In dimension one the
+count is precision-free (`polyCoverAt_one`: `Qb = 3·section16BaseFamilyBound(γ,θ)`),
+and `θ` enters only the width exponent `cubicBaseExponent(·, θ)`. In route
+(II) the count depends on the precision through one step: the family cover
+samples `famPieceSamples ≈ 6·Qr(ρ/8)·n/(ρ/4)` slices. Every graph class of
+frequency `≥ ρ/q` must be sampled, so the count is `∝ 1/ρ`. Through
+`Qr(ρ/8)` this compounds into the `ρ`-degree `D_k`.
+
+**Source 2: the lift loses a factor `t`.** `liftLastC c θ = θ/2·c(θ/2)` picks
+a popular fibre. A box-local *cover* of a face lifts to cylinders with no
+loss:
+- partition the face projection `π(B)` of the current box;
+- the bad mass of `A` over `π⁻¹(π(B)∖H)` is at most `θ|B|`;
+- average over the cylinder boxes, then pigeonhole the `q` maps.
+
+This gives density `(t − θ)/q` directly.
+
+**The reduction.** Suppose that in every dimension `l ≤ k` the covers have:
+- a precision-free count `q_l(γ, θ)`, with `log₂ deg_X q_l = O(2^l)`
+  (the split classes give `76·2^l` for the `γθ` part);
+- width exponents polynomial in the precision.
+
+Then:
+- vertex providers are cylinder covers, with `C(t) = t/(2q)`, linear in `t`;
+- the `2^k − 1`-fold nest gives `t·(2q)^(−2^k)`, costing
+  `k + log₂ deg q_k` in log-degree;
+- the nested width exponents multiply to `t^(rD_E)·(2q)^(−D_E r²/2)`,
+  costing `O(k) + log D_E + log deg q`;
+- the retiling exponent `QM^(2^(k+2))` costs `k + 2`.
+
+So each step costs `O(2^k)`. The sum `Σ_{k ≤ L−4} 76·2^k ≈ 10·2^L` is far
+below `2^(L+9)`, which would give **Theorem 18.2 and Corollary 18.7 at
+every length**. The same budget fits Theorem 18.1's `2^(k+10)` in every
+degree, once Lemma 13.5 is polynomial (L.7c).
+
+**The open lemma.** *Precision-free local structure.* A relation
+`Γ ⊂ (ℤ/N)^k × ℤ/N` with the `γ`-product property and `|Γ| ≤ γ^(−2)N^k`
+should have, outside a `θ`-small set:
+- on every box of width `≥ |P|^(E(γ,θ,ρ))`, a cover by at most `q(γ,θ)`
+  multilinear graphs;
+- `q` independent of `ρ`;
+- `E` polynomial in `ρ`.
+
+Heuristically `q` should be the local multiplicity of `Γ` (about `γ^(−2)`),
+and finer boxes should absorb the precision. Dimension one is proved. The
+first open case is dimension two, where the slices' sheets must be linked
+without sampling `1/ρ` slices: work on boxes short in the last coordinate
+instead.
+
 **Technique notes.**
 - Large proofs over `GenParams.std …` terms with `set` time out in whnf.
   Split them into lemmas over plain reals and compose by `rfl`.
