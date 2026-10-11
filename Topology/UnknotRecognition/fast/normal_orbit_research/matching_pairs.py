@@ -39,8 +39,8 @@ def cases():
     result=[(f'figure-eight-pair-{i}',dict(raw=bank[h['id']]['triangulation'],support=h['support']))for i,h in enumerate(targets)]
     result.append(('existing-single-row',dict(raw=bank['cap_3_5_2']['triangulation'],
         support=[[0,0],[1,1],[2,2],[3,0],[4,1]])))
-    result.append(('no-pair-control',dict(raw=bank['finite_figureEight_interior']['triangulation'],
-        support=[[i,0]for i in range(13)])))
+    result.append(('no-pair-control',dict(raw=bank['fibonacci_lst_09']['triangulation'],
+        support=[[0,0],[1,2],[2,1],[3,0],[4,2],[5,1],[6,0],[7,2],[8,1]])))
     return result
 
 def query(case,old):
