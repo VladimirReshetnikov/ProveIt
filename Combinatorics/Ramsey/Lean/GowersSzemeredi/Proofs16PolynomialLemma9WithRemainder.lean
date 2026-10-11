@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16PolynomialAllScaleLemma9
 import GowersSzemeredi.Proofs16Lemma9WithRemainder
+import GowersSzemeredi.Proofs16PieceCoverWithRemainder
 
 /-! The polynomial all-scale Lemma 16.9 with arbitrary remainder controls.
 
@@ -28,5 +29,28 @@ theorem exists_all_scale_polynomial_lemma_16_9_with (k : Nat) :
   obtain ⟨C, p, hC, hp, hlemma6⟩ := exists_all_scale_polynomial_lemma_16_6 k
   exact ⟨C, p, hC, hp,
     allScaleLemma169WithAt_of k (section16PolynomialLinearityWidth_transfer k C p) hlemma6⟩
+
+/-- The polynomial width is a power width, with prefactor `4·C·(q+1)` and
+exponent divisor `4·2p(q+1)^(2^(k+2))`. -/
+def section16PolynomialWidthPrefactor (C : Nat) (q : Nat) : Real :=
+  4 * ((C * (q + 1) : Nat) : Real)
+
+def section16PolynomialWidthDivisor (k p : Nat) (q : Nat) : Real :=
+  4 * ((2 * (p * (q + 1) ^ (2 * (2 ^ (k + 1)))) : Nat) : Real)
+
+theorem allScaleLemma166WidthAt_power_of_polynomial (k : Nat) {C p : Nat}
+    (h : AllScalePolynomialLemma166At k C p) :
+    AllScaleLemma166WidthAt k (section16PowerWidth (section16PolynomialWidthPrefactor C)
+      (section16PolynomialWidthDivisor k p)) := h
+
+/-- The polynomial all-scale Lemma 16.6 in the form used by
+`section16_piece_cover_with`: a power width with positive prefactor and
+divisor. -/
+theorem exists_all_scale_power_lemma_16_6 (k : Nat) :
+    ∃ C p : Nat, 2 ≤ C ∧ 0 < p ∧
+      AllScaleLemma166WidthAt k (section16PowerWidth (section16PolynomialWidthPrefactor C)
+        (section16PolynomialWidthDivisor k p)) := by
+  obtain ⟨C, p, hC, hp, hlemma6⟩ := exists_all_scale_polynomial_lemma_16_6 k
+  exact ⟨C, p, hC, hp, allScaleLemma166WidthAt_power_of_polynomial k hlemma6⟩
 
 end LeanProofs.GowersSzemeredi

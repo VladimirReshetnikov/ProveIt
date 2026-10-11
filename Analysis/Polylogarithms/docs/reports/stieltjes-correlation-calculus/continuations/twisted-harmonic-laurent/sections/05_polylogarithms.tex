@@ -1,0 +1,211 @@
+\section{An explicit polylogarithm realization of the convolution calculus}
+\label{poly:sec}
+
+The circle Fourier description gives a direct bridge to the
+polylogarithm's order derivatives at nonpositive integers. The underlying
+Fourier summation is classical \cite{DLMFPolylog,DLMFHurwitz}.
+The full mixed kernel and the symmetric first-Stieltjes specialization
+also occur in the archived continuations
+\cite{RepoConvolutionAlgebra,RepoConvolutionCalculus}.
+This section consolidates their order-derivative form while preserving
+the endpoint distributions.
+
+\subsection{A two-parameter kernel}
+
+For \(\alpha,\beta\in\bbC\), define the zero-mean distribution
+\(\mathcal N_{\alpha,\beta}\) by
+\begin{equation}\label{poly:N-fourier}
+ \widehat{\mathcal N_{\alpha,\beta}}(n)=
+ (2\pi\numi n)^\alpha(-2\pi\numi n)^\beta\quad(n\ne0),
+ \qquad \widehat{\mathcal N_{\alpha,\beta}}(0)=0.
+\end{equation}
+The two powers use the logarithms specified in Section~\ref{scope:sec}.
+On every compact set of parameters their coefficients and any fixed
+number of parameter derivatives have a common polynomial growth
+bound. This proves that \(\mathcal N\) is entire as a
+distribution-valued function.
+
+\begin{theorem}[Polylogarithm kernel for every mixed order]
+\label{poly:master}
+For \(0<h<1\), put \(z=\rme^{2\pi\numi h}\). Then
+\begin{align}\label{poly:N}
+ \mathcal N_{\alpha,\beta}(h)
+ =(2\pi)^{\alpha+\beta}\bigl[
+ &\rme^{\pi\numi(\alpha-\beta)/2}
+                 \rLi_{-\alpha-\beta}(z)\notag\\
+ &+\rme^{-\pi\numi(\alpha-\beta)/2}
+                 \rLi_{-\alpha-\beta}(z^{-1})\bigr].
+\end{align}
+The formula represents the restriction to the open interval of the
+entire distribution family, not an assertion of ordinary convergence
+of its Fourier series at every order.
+
+Let \(P_k\) be the spectral finite-part polygamma distribution, so that
+\[
+ \widehat P_k(n)=(2\pi\numi n)^k
+  \bigl[\gamma+\log(2\pi\numi n)-H_k\bigr]\quad(n\ne0),
+ \qquad H_0=0.
+\]
+For all \(k,l\geq0\), one has the distribution identity
+\begin{equation}\label{poly:mixed}
+ P_k*\check P_l=
+ \left.
+ (\partial_\alpha+\gamma-H_k)
+ (\partial_\beta+\gamma-H_l)
+       \mathcal N_{\alpha,\beta}
+ \right|_{\alpha=k,\ \beta=l}.
+\end{equation}
+For the derivative-compatible normalization \(Q_k=D^kP_0\), the same
+formula holds with \(H_k,H_l\) replaced by zero.
+\end{theorem}
+
+\begin{proof}
+If \(\Re(\alpha+\beta)<-1\), the Fourier series is absolutely convergent.
+The positive and negative indices separately give
+\eqref{poly:N}. The same argument applies after parameter
+differentiation on any smaller open region. The right side has an
+entire continuation in its orders for \(z\ne1\), and is smooth in \(h\)
+on compact subintervals of \((0,1)\). To identify its distributional
+extension, insert the Abel factor \(\rho^{|n|}\), \(0<\rho<1\),
+and take its limit in distributions. The Hurwitz Fourier formula
+identifies the same local analytic continuation. The identity
+therefore extends to all \(\alpha,\beta\). This argument also
+specifies terms supported at \(h=0\), which a pointwise formula alone
+could not recover.
+
+Each parameter derivative in \eqref{poly:N-fourier} multiplies the
+coefficient by the corresponding logarithm. At \((k,l)\), this gives
+\(\widehat P_k(n)\widehat P_l(-n)\), exactly the Fourier coefficient of
+\(P_k*\check P_l\). Fourier coefficients determine a distribution on
+the circle. The formula for \(Q_k\) follows from its Fourier coefficient
+\((2\pi\numi n)^k[\gamma+\log(2\pi\numi n)]\).
+\end{proof}
+
+The sine phases must be retained for complex parameters. A real-part
+notation would not preserve holomorphic dependence on
+\(\alpha,\beta\). At integer orders
+\(\mathcal N_{k,l}=(-1)^lD^{k+l}\Delta\).
+For \(k+l>0\) this is supported at the endpoint; for \(k=l=0\) its
+open-interval value is \(-1\). Its parameter derivatives retain
+additional, nonconstant interior terms. Substituting an integer
+before differentiating would lose the desired information.
+
+The unreflected kernel is obtained using one spectral parameter:
+\(\mathcal M_\alpha=\mathcal N_{\alpha,0}\). Then
+\begin{align}\label{poly:unreflected}
+ P_k*P_l=\left.
+ \bigl[\partial_\alpha^2
+  +(2\gamma-H_k-H_l)\partial_\alpha
+  +(\gamma-H_k)(\gamma-H_l)\bigr]\mathcal M_\alpha
+ \right|_{\alpha=k+l}.
+\end{align}
+The equality is checked on each nonzero Fourier coefficient.
+It also determines all the contact terms.
+
+\subsection{First-Stieltjes identities at polylogarithm order zero}
+
+Write \(c=\gamma+\log(2\pi)\), \(d=\pi/2\), and
+\[
+ L_j(h)=\left.\partial_s^j
+                 \rLi_s(\rme^{2\pi\numi h})\right|_{s=0}.
+\]
+These derivatives are values of the analytically continued function.
+They are not defined by directly summing a growing logarithmic
+Fourier series.
+
+\begin{corollary}[Two explicit order-derivative reductions]
+\label{poly:gamma1}
+For every \(0<h<1\),
+\begin{align}
+ \gamma_1(h)+\gamma_1(1-h)
+ &=2\Re L_2(h)-4c\Re L_1(h)-c^2+\frac{\pi^2}{12},
+ \label{poly:symmetric}\\
+ \gamma_1(h)
+ &=\Re L_2(h)-2c\Re L_1(h)+\pi\Im L_1(h)
+      -\frac{c^2}{2}+\frac{\pi^2}{24}
+      -\frac{\pi c}{2}\cot(\pi h).
+ \label{poly:individual}
+\end{align}
+\end{corollary}
+
+\begin{proof}
+At \(k=l=0\), the operator on the positive-frequency part of
+\eqref{poly:N} is
+\[
+ (c+d\numi-\partial_s)(c-d\numi-\partial_s)
+       =(c-\partial_s)^2+d^2 .
+\]
+For real \(h\) the negative-frequency part is its conjugate.
+The reflected convolution identity proved above reads on the open
+interval
+\[
+ \gamma_1(h)+\gamma_1(1-h)-\frac{\pi^2}{3}
+ =2\Re\bigl[L_2-2cL_1+(c^2+\pi^2/4)L_0\bigr].
+\]
+Since \(\Re L_0=-1/2\), this is \eqref{poly:symmetric}.
+
+For the unreflected convolution, the operator is
+\((c+d\numi-\partial_s)^2\). Its value is
+\(2\gamma_1(h)+\zeta(2)\). Finally,
+\[
+ L_0(h)=-\frac12+\frac{\numi}{2}\cot(\pi h)
+\]
+gives \eqref{poly:individual} after expanding the real part.
+Every constant comes from an explicit Gamma coefficient or
+a contact term.
+\end{proof}
+
+These formulas belong to the classical differentiated Hurwitz
+functional-equation framework. Their role here is an explicit
+application of the finite-part normalization. They also check the
+sign of the \(\cot(\pi h)\) contribution and the \(\pi^2\) constants.
+
+At \(h=1/2\), the identity
+\(\rLi_s(-1)=(2^{1-s}-1)\zeta(s)\) turns the corollary into an identity
+among \(\zeta^{[j]}(0)\), \(\gamma_1\), \(\gamma\), and \(\log2\).
+On the Stieltjes side,
+\[
+ \gamma_1(1/2)=\gamma_1-2\gamma\log2-\log^22,
+\]
+obtained directly by expanding
+\(\zeta(s,1/2)=(2^s-1)\zeta(s)\).
+Thus the convergent digamma convolution from the preceding part,
+at \(a=1/2\), has the explicit value
+\begin{equation}\label{poly:half-convolution}
+ 2\gamma_1-4\gamma\log2-2\log^22+\frac{\pi^2}{6}.
+\end{equation}
+This evaluates the fully subtracted integral; the corresponding
+unsubtracted product integral diverges.
+
+\subsection{Rational shifts and a finite coordinate algorithm}
+
+The pending report asks for rational-shift coordinate formulas
+\cite{RepoIncoming}. The conversion follows from a finite Fourier
+transform already present in the manuscript. The distributional
+extension now makes it applicable to mixed polygamma kernels at
+singular spectral orders.
+
+For \(q\geq2\), \(1\leq p<q\), and \(z=\rme^{2\pi\numi p/q}\),
+\begin{equation}\label{poly:rational}
+ \rLi_s(z)=q^{-s}\sum_{a=1}^q z^a\zeta(s,a/q).
+\end{equation}
+At any regular spectral point \(s_0\),
+\begin{equation}\label{poly:rational-jets}
+ \rLi_{s_0}^{[j]}(z)
+ =q^{-s_0}\sum_{a=1}^q z^a
+   \sum_{v=0}^j\binom jv(-\log q)^{j-v}
+             \zeta^{[v]}(s_0,a/q).
+\end{equation}
+At \(s=1\) the pole cancels because \(\sum_{a=1}^qz^a=0\);
+one must expand the finite combined expression before specializing.
+Equations \eqref{poly:N}--\eqref{poly:rational-jets}
+are a finite algorithm for every rational-shift polygamma
+convolution and every fixed spectral derivative.
+
+A multiplicative-character transform then converts these Hurwitz
+coordinates to primitive Dirichlet-\(L\) coordinates. Conductor
+logarithms are generated by differentiating the explicit factors.
+The manuscript's conductor-lifted trace theorem and pole-corrected
+jets already prove that arithmetic conversion \cite{RepoManuscript}.
+We use them as an available normal form and do not claim
+independence of the resulting evaluated constants.

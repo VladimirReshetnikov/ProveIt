@@ -500,3 +500,65 @@ translation diagnostics and all nine transition samples. Numerical outcomes
 remain non-interval evidence; general theorems retain the acceptance status
 of their individual ledger rows. The final release has 448 pages and 114
 references, with 721 source documents and 47 archived arrivals accounted for.
+
+## Tenth intake: endpoint regulators and nonintegral twists
+
+Both packages are preserved in placement 6c0adb7f1d, with 62 tracked original
+members and one ignored SHA256SUMS recoverable in its committed arrival.
+Three original historical logs are retained. The imported ZIPs are retired,
+with docs/incoming/README.md unchanged. A combined historical object search
+found no previous delivery member, and the fresh full suites run on copies.
+
+| Source group | Canonical reconciliation and remaining scope |
+|---|---|
+| endpoint-regularization | On the harmonic-resonance spine beside nested jets. Cutoff polynomials, Abel Gamma transfer, one-decoration Stieltjes cancellation, beta moments and integer-shift primitives are preserved with their full proofs. Canonical integration remains pending. Keep the decorated Gamma master formal, not a holomorphic germ; distinguish sharp, Abel and spectral-ray constants and root-filter logarithmic scales. Its search-basket wording correction is already canonical. |
+| twisted-harmonic-laurent | On the correlation spine. The full twisted Lerch family, covariant residues, all-index Bell and reflected tables, rational and half-twist reductions, convergent alternating integral, quarter-Gamma value, unique covariant primitives and exact zero-mode degeneration are proved and integrated. Full shifted-harmonic Laurent, symmetry and primitive developments remain pending canonical audit. |
+
+The real arctanh formula now uses log(abs(tan(theta/2))) on both sides of
+zero. A direct derivative proof gives theta/sin(theta), fixes the zero value
+and extends to both endpoints by monotone convergence and oddness. The
+unsupported claim that the (1,1) diagonal is non-elementary is removed.
+The correct diagonal value is unchanged and no nonreduction is inferred.
+
+A collective extension gives the Dirichlet beta mixture for any finite number
+of unequal twists in one nonintegral frequency interval. For positive integer
+orders, explicit partial fractions reduce every product to elementary
+covariant kernels, with coincident orders combined by addition. The zero
+mode is retained. Mixed Stieltjes jets in a prescribed finite Hurwitz basket
+remain a separate question. Classical beta integrals and partial fractions
+are the mechanism; no global novelty or arithmetic independence is claimed.
+
+The tenth endpoint replay passes all 2600 exact assertions, 158 diagnostics
+at 60 digits and all 32 direct endpoint-array diagnostics. The twisted replay
+runs all five scripts: untwisted and twisted finite parts, exact harmonic
+Laurent laws, independent 110-digit continued-Mellin comparisons and the
+nine extra integral/branch checks. Their full finite scope is preserved in
+verification/tenth-replay, separate from the accepted all-parameter proofs.
+
+The collective mixed-twist controls pass 64 exact rational identities and
+reject a sign corruption. Twenty-five independent 60-digit diagnostics check
+fractional beta mixing at positive, negative and zero modes and direct
+wrapped ordinary convolutions. Wolfram passes 25 exact identities and nine
+70-digit arctanh, quarter-Gamma integral and Stieltjes-conversion diagnostics.
+The native residuals are floating-point quantities with precision metadata,
+not exact zeros or interval bounds. The canonical release has 459 pages,
+119 references and 746 textual source documents; all imported archives in
+this batch are retired while their arrival history remains recoverable.
+
+## Four-volume organization requested by the contributors
+
+The primary reading edition now comprises four separately compiled PDFs:
+polylogarithm identities and arithmetic reductions; signed kernels and
+experimental discovery; Hurwitz/Stieltjes/Gamma calculus; and Gamma grids,
+CM periods and Herglotz arithmetic. Their chapter assignment is recorded in
+verification/volume-plan.json. It includes all twelve original chapters once
+and keeps the literature appendix with the experimental volume. Existing
+chapter/theorem/equation numbers are retained for citation stability.
+
+The four drivers share the preamble, mathematical chapter files and
+bibliography. Generated companion-label indices allow each driver to compile
+independently. The coupled builder uses current auxiliary files and checks
+global convergence. Coverage, every external PDF named destination, all-page
+static inspection, fresh standalone compilation and human visual review are
+separate records. The earlier combined source and snapshot are retained.
+No mathematical theorem is duplicated or dropped by the volume assignment.

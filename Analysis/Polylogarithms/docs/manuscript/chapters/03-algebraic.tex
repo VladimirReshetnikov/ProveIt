@@ -191,7 +191,7 @@ $\lambda$, since $u_{\sqrt\phi}^2=\phi^{-3}$, $u_{\sqrt{2+2\sqrt2}}^2=\sqrt2-1$,
   \int_0^{\pi/2}\!\arctan^2(\sqrt\phi\,\sin x)\,dx=\frac{\pi^3}{24}-\frac{3\pi}{4}\ln^2\phi,\quad
   \int_0^{\pi/2}\!\arctan^2\!\bigl(2\phi^{3/2}\sin x\bigr)\,dx=\frac{\pi^3}{12}-\frac{3\pi}{4}\ln^2\phi.
 \end{equation}
-The simplest non-elementary diagonal is the $(1,1)$ case $\int_0^{\pi/2}\arctan^2(\sin x)\,dx=\pi\,\chitwo(3-2\sqrt2)$.
+The $(1,1)$ diagonal is $\int_0^{\pi/2}\arctan^2(\sin x)\,dx=\pi\,\chitwo(3-2\sqrt2)$. No elementary reduction or nonreduction theorem for this value is established here.
 
 \section{A sibling trichotomy}
 The master formula has two siblings under the companion half-angle substitution
@@ -205,11 +205,19 @@ arctangents by $\arctanh$ produces:
 \end{equation}
 where $\Ti_2(z)=\Im\Li_2(\mathrm iz)=\int_0^z\frac{\arctan t}{t}\,dt$ is the inverse-tangent integral: like
 pairs give the Legendre chi, the mixed pair gives the inverse-tangent integral. The linear shadows are
-$\int_0^{\pi/2}\arctan(\lambda\sin x)\,dx=2\chitwo(u_\lambda)$ (Reshetnikov) and, with $\theta=\arcsin\lambda$,
+$\int_0^{\pi/2}\arctan(\lambda\sin x)\,dx=2\chitwo(u_\lambda)$ (Reshetnikov) and, for $-1<\lambda<1$ with $\theta=\arcsin\lambda$,
 \begin{equation}\label{cleo:eq:lintanh}
-  \int_0^{\pi/2}\arctanh(\lambda\sin x)\,dx=\theta\,\ln\tan\tfrac\theta2+2\Cl_2(\theta)-\tfrac12\Cl_2(2\theta),
+  \int_0^{\pi/2}\arctanh(\lambda\sin x)\,dx=\theta\,\ln\left|\tan\tfrac\theta2\right|+2\Cl_2(\theta)-\tfrac12\Cl_2(2\theta),
 \end{equation}
-the latter showing that the $\arctanh$ branch is \emph{not} a clean $2\chitwo(v_\lambda)$ mirror---that
+with the value at zero defined by continuity. Indeed, differentiation of the
+integral with respect to $\theta$ and the substitution $t=\cos x$ give
+$\cos\theta\int_0^1(\cos^2\theta+\sin^2\theta\,t^2)^{-1}dt
+=\theta/\sin\theta$. The derivative of the right side is the same,
+using $\Cl_2'(t)=-\log|2\sin(t/2)|$, and both sides tend to zero at
+$\theta=0$. This proves the real branch on both sides of zero. Monotone
+convergence and oddness extend the formula to $\lambda=\pm1$, with values
+$\pm2\Cl_2(\pi/2)$.
+The latter shows that the $\arctanh$ branch is \emph{not} a clean $2\chitwo(v_\lambda)$ mirror---that
 coincidence is special to $\arctan$. By $x\mapsto\frac\pi2-x$ the $\cos$ versions of all of these equal the
 $\sin$ versions. The weight-$3$ analogue $\int_0^{\pi/2}\arctan(p\sin x)\arctan(q\sin x)/\sin x\,dx$ does not factor by the same mechanism into a single $\chi_3$: its coefficient $\frac{4^N}{(2N+1)\binom{2N}{N}}$ couples the two
 summation indices only through $N=m+n$, so it does not factor through $\up\uq$ (numerically no clean

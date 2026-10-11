@@ -1,0 +1,128 @@
+\section{Unequal twists through beta mixtures and finite resolvent identities}
+\label{mxtw:sec:main}
+The fixed-twist calculus suggests a next question: how do kernels with
+different frequency shifts convolve? The Fourier multipliers give an
+explicit answer. Fractional orders admit a Dirichlet beta mixture of
+intermediate twists, while positive integer orders reduce to finitely
+many elementary kernels. These statements use the classical beta
+integral and partial fractions; they make no literature-priority or
+arithmetic-independence claim.
+
+Write $K_\alpha^\theta=W_{1-\alpha}^\theta$, so that
+\[
+ \widehat K_\alpha^\theta(n)
+       =(2\pi i(n+\theta))^{-\alpha}.
+\]
+The twists in the fractional-mixture theorem lie in $(0,1)$, with the
+logarithms of \eqref{tw:eq:lambda}. More generally one may put them in a common
+open interval between consecutive integers. This condition keeps the
+frequencies at each fixed mode on the same imaginary ray.
+
+\begin{theorem}[Any finite number of fractional twist kernels]
+\label{mxtw:thm:mixture}
+Let $d\ge2$, $\theta_j\in(0,1)$ and
+$\operatorname{Re}\alpha_j>0$. Put $A=\sum_j\alpha_j$ and let
+$\Sigma_{d-1}=\{t_j\ge0:\sum_jt_j=1\}$, with measure
+$dt_1\cdots dt_{d-1}$. Then, as periodic distributions,
+\begin{equation}\label{mxtw:eq:mixture}
+ K_{\alpha_1}^{\theta_1}*\cdots*K_{\alpha_d}^{\theta_d}
+ =\frac{\Gamma(A)}{\prod_j\Gamma(\alpha_j)}
+   \int_{\Sigma_{d-1}}
+       \left(\prod_jt_j^{\alpha_j-1}\right)
+       K_A^{\sum_jt_j\theta_j}\,dt.
+\end{equation}
+The mixture includes the zero Fourier coefficient. Its normalized
+right side, continued as a whole, is entire in all $\alpha_j$.
+For two twists the simplex is the interval $0\le t\le1$ and the
+intermediate twist is $t\theta_1+(1-t)\theta_2$.
+\end{theorem}
+\begin{proof}
+For positive real $a_j$ and $\operatorname{Re}\alpha_j>0$, change
+variables $y_j=rt_j$ in the product of Gamma integrals
+\[
+ \prod_j a_j^{-\alpha_j}
+ =\frac1{\prod_j\Gamma(\alpha_j)}
+   \int_{(0,\infty)^d}\prod_j y_j^{\alpha_j-1}
+                         e^{-\sum_j a_jy_j}\,dy.
+\]
+The Jacobian is $r^{d-1}$. Integrating $r$ gives the scalar
+Dirichlet formula with $(\sum_jt_ja_j)^{-A}$.
+At Fourier mode $n$, all $n+\theta_j$ have the same sign.
+Apply the scalar formula to $a_j=|2\pi(n+\theta_j)|$ and restore
+their common phase $\exp(-i\pi A\operatorname{sgn}(n+\theta_j)/2)$.
+The resulting coefficient is exactly that of
+\eqref{mxtw:eq:mixture}, including $n=0$.
+
+The intermediate twists range in a compact subinterval of $(0,1)$.
+On compact parameter subsets, the kernel coefficients have a common
+polynomial growth bound, and the simplex weight is integrable.
+Rapid decrease of the Fourier coefficients of each smooth test
+function therefore justifies integration and summation. Fourier
+uniqueness proves the distribution identity. For continuation outside
+the initial half-planes, subtract finite Taylor polynomials at the
+simplex faces before integrating; the added monomials have meromorphic
+beta integrals. Their combined normalized continuation has the same
+Fourier coefficients as the left side, which are entire in every
+$\alpha_j$. Test-function pairing gives normal convergence on compact
+parameter sets. Thus all apparent poles of the combined continuation
+are removable. It is this continuation, not a divergent unsubtracted
+simplex integral, that is asserted to be entire.
+\end{proof}
+
+\begin{theorem}[Finite reduction at every positive integer order]
+\label{mxtw:thm:integer}
+For distinct real nonintegral $\theta,\phi$, set
+$\Delta=2\pi i(\phi-\theta)$. For positive integers $r,s$,
+\begin{align}\label{mxtw:eq:partial-fractions}
+ K_r^\theta*K_s^\phi
+ ={}&\sum_{j=1}^r
+   \frac{(-1)^{r-j}\binom{r+s-j-1}{r-j}}
+        {\Delta^{r+s-j}}K_j^\theta\notag\\
+ &+\sum_{k=1}^s
+   \frac{(-1)^r\binom{r+s-k-1}{s-k}}
+        {\Delta^{r+s-k}}K_k^\phi.
+\end{align}
+Every ordinary representative on $(0,1)$ is elementary, since
+\begin{equation}\label{mxtw:eq:elementary}
+ K_1^\theta(x)=\frac{e^{-2\pi i\theta x}}{1-e^{-2\pi i\theta}},
+ \qquad
+ K_r^\theta(x)=
+ \frac{(-1)^{r-1}}{(2\pi i)^{r-1}(r-1)!}
+           \partial_\theta^{r-1}K_1^\theta(x).
+\end{equation}
+If two twists coincide, their orders add:
+$K_r^\theta*K_s^\theta=K_{r+s}^\theta$.
+\end{theorem}
+\begin{proof}
+At a Fourier mode put $X=2\pi i(n+\theta)$; the second multiplier
+has denominator $X+\Delta$. The principal part at $X=0$ of
+$X^{-r}(X+\Delta)^{-s}$ is obtained by expanding
+$(X+\Delta)^{-s}$ through degree $r-1$; this gives the first sum.
+At $X=-\Delta$, expand $X^{-r}$ in $X+\Delta$ through degree
+$s-1$; this gives the second sum. Their difference from the rational
+function has no finite poles and tends to zero at infinity, so it is
+zero. Apply this identity at every Fourier mode and use uniqueness.
+The representative for $K_1$ is \eqref{tw:eq:Lerch} at $s=0$.
+Differentiation of its multiplier gives
+$\partial_\theta K_r^\theta=-2\pi i rK_{r+1}^\theta$;
+distributional differentiation in the parameter is legitimate by the
+same compact Fourier estimates. This proves
+\eqref{mxtw:eq:elementary}. The coincident identity is
+\eqref{tw:eq:group}.
+\end{proof}
+
+For instance, the first unequal-twist convolution is the explicit
+ordinary integral
+\[
+ (K_1^\theta*K_1^\phi)(x)
+   =\frac{K_1^\theta(x)-K_1^\phi(x)}{2\pi i(\phi-\theta)}.
+\]
+Its coincident limit is
+$-\partial_\theta K_1^\theta/(2\pi i)=K_2^\theta$.
+Any finite number of distinct twists and positive integer orders is
+handled by the same principal-part argument; repeated twists are
+combined first. These integer-order reductions require no common
+frequency interval. Fractional orders have the precise mixture
+\eqref{mxtw:eq:mixture}. Finite reduction of every mixed Stieltjes
+order jet to a prescribed list of single Hurwitz values remains a
+separate question; the mixture does not assert such a reduction.

@@ -1,0 +1,122 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[sc]{mathpazo}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{microtype,graphicx,xcolor,booktabs,longtable,tabularx,array}
+\usepackage{enumitem,listings,fancyhdr}
+\usepackage[hyphens]{url}
+\usepackage{hyperref,bookmark}
+\definecolor{Ink}{HTML}{17344A}
+\definecolor{Accent}{HTML}{24655A}
+\definecolor{Muted}{HTML}{52616A}
+\hypersetup{colorlinks=true,linkcolor=Ink,citecolor=Accent,urlcolor=Accent,
+ pdftitle={Twisted Stieltjes Convolutions and Harmonic Laurent Identities},
+ pdfauthor={Research continuation prepared for Vladimir Reshetnikov},
+ pdfsubject={Polylogarithms, Gamma, polygamma, generalized harmonic numbers, Hurwitz zeta and Stieltjes constants}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{Muted}{Twisted convolutions and harmonic Laurent identities}}
+\fancyhead[R]{\small\textcolor{Muted}{ProveIt}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{question}[theorem]{Question}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\bbT}{\mathbb T}
+\newcommand{\bbC}{\mathbb C}
+\newcommand{\bbR}{\mathbb R}
+\newcommand{\bbZ}{\mathbb Z}
+\newcommand{\bbQ}{\mathbb Q}
+\newcommand{\fp}{\operatorname{FP}}
+\newcommand{\res}{\operatorname{Res}}
+\newcommand{\numi}{\mathrm i}
+\newcommand{\rd}{\mathrm d}
+\newcommand{\rme}{\mathrm e}
+\newcommand{\rLi}{\operatorname{Li}}
+\newcommand{\ordder}[2]{\left.\partial_s^{#1}\rLi_s(#2)\right|_{s=0}}
+\newcommand{\pinned}{\texttt{e0d9463bdee9685dfb1dddb819059cc738540c57}}
+\begin{document}
+\begin{titlepage}
+\thispagestyle{empty}
+{\color{Accent}\large PROVEIT RESEARCH CONTINUATION\par}
+\vspace{1.25cm}
+{\color{Ink}\huge\bfseries Twisted Stieltjes Convolutions\\[5pt]
+and Harmonic Laurent Identities\par}
+\vspace{0.65cm}
+{\Large Periodic Stieltjes constants, polygamma contact terms,\\
+polylogarithm order derivatives, and shifted harmonic sums\par}
+\vspace{0.8cm}
+{\large Prepared for Vladimir Reshetnikov\par}
+{\small Research continuation prepared with OpenAI assistance\par}
+{\large 10 October 2026\par}
+\vspace{0.7cm}
+\noindent\textcolor{Accent}{\rule{\textwidth}{0.6pt}}
+\begin{abstract}
+We continue the exact-identity programme of the ProveIt polylogarithm
+manuscript in two directions. First, we answer an archived research
+question about the all-index half-twist Stieltjes multiplication law,
+including point-supported counterterms. A meromorphic periodic Lerch
+family gives the construction for every real nonintegral twist. Its
+convolution identity is the full Dirac mass, and its covariant
+derivative correction is an explicit harmonic-number multiple of a
+Dirac derivative. Rational twists reduce to finite Hurwitz and
+Stieltjes combinations. At the half-twist, an ordinary convergent
+subtracted digamma integral evaluates in terms of
+\(\log\Gamma(1/4)\), Euler's constant, and logarithms.
+An exact zero-frequency subtraction controls the untwisted limit.
+
+Second, a two-variable Mellin continuation determines every principal
+Laurent coefficient and finite part of
+\(\sum_{n\geq1}H_{n-1}(\{1\}^r)/(n+a)^s\)
+at \(s=1\) and at all nonpositive integers. Gamma and generalized
+Bernoulli coefficients give a finite formula at every harmonic depth
+and complex outer shift. We derive residue-aware differentiation,
+depth-mixing reflection, rational multiplication, and complete
+antiderivative ladders for these coefficient polynomials, with
+explicit half-shift examples.
+
+For self-contained proofs and consistent normalizations we consolidate
+the untwisted periodic Stieltjes algebra and polylogarithm kernels
+already developed in archived repository continuations, crediting those
+results and their classical antecedents. The package includes exact
+symbolic checks, independent numerical diagnostics, a source audit,
+two proposed manuscript corrections, and further research questions.
+No universal priority claim is made; the remaining \(S_6\) and newer
+\(S_8\) special-value conjectures remain unresolved.
+\end{abstract}
+\vfill
+\noindent\small
+Source baseline: \pinned.\par
+The archive contains this article, its complete \LaTeX\ source,
+reproducible verification code, a source manifest, and proposed
+integration patches.
+\end{titlepage}
+\tableofcontents
+\clearpage
+\input{sections/01_scope}
+\input{sections/02_periodic_calculus}
+\input{sections/03_convolutions}
+\input{sections/03_twisted}
+\input{sections/04_harmonic_laurent}
+\input{sections/04b_harmonic_symmetries}
+\input{sections/05_polylogarithms}
+\input{sections/06_audit}
+\input{sections/07_verification_questions}
+\input{references}
+\end{document}

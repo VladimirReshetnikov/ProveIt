@@ -2669,6 +2669,71 @@ polynomial slice controls (`3rq`, `cubicBaseExponent(rq)`), and at
 - (C) The same for families, which gives the stackability that dimension
   three needs.
 
+### L.3a Progress on (A): the polynomial piece cover (2026-10-10)
+
+Loss 1 above is repaired at the interface level. Every piece-level control
+is now a parameter, and the piece cover is polynomial when its inputs are.
+
+- **Coordinate lifts with arbitrary controls**
+  (`Proofs16WithCoordinateLifts`).
+  - `MultiplyLinearWith.lift_last` (count `max(Qb θ, 3^(k+1))`, width
+    exponent `Eb θ/16`).
+  - `MultiplyLinearWith.coordinateReindex` (controls unchanged).
+  - `lift_prefix` and `lift_embedding` (count `max(Qb θ, 3^d)`, exponent
+    `Eb θ/16^(d−l)`).
+
+  These carry a face cover from `PolyCoverAt l` to the ambient dimension
+  without the printed `(γ, R)`.
+- **Lemma 16.9 with remainder controls** (`Proofs16Lemma9WithRemainder`).
+  - The proof touches the remainder only through one cover at loss `σ/2`.
+    So `AllScaleLemma169SubdomainAt` takes `MultiplyLinearWith Qr Er` on any
+    sub-domain `D ⊆ B₁`, giving count `Qr(σ/2)` and exponent
+    `Er(σ/2)·Eb(σ/2)`.
+  - Sub-domains are needed because `PolyCoverAt` covers only off a global
+    deletion (L.2): `D` is `B₁` minus that deletion.
+  - Lemma 16.6 enters through its statement with an abstract width `W`
+    (`AllScaleLemma166WidthAt`). `AllScalePolynomialLemma166At` is
+    definitionally the polynomial instance.
+  - This keeps the module off the polynomial recurrence's import closure,
+    the OpenAI Schmidt stack of about 490 modules.
+  - `allScaleLemma169WithAt_printed` recovers `AllScalePolynomialLemma169At`
+    exactly, so nothing is lost.
+- **The piece cover** (`Proofs16PieceCoverWithRemainder`,
+  `section16_piece_cover_with`). The inputs are:
+  - spectrum controls `(Qb, Eb)`;
+  - remainder controls `(Qr, Er)` on `D`;
+  - a slice provider `(Pb, Es)` on `D`, with `Pb` monotone and `Es`
+    antitone in the sample size;
+  - Lemma 16.6 at a power width `ζ/A(q)·m^(a/B(q))`.
+
+  The output is `MultiplyLinearWith` for `φ₁` on `D` at every scale:
+  - The count is `max(Pb(S,ρ/4), C(S,2)·Pb(S,ρ/4)², 3^(k+1))`, with
+    `S = ⌈24·max(1, Qr(ρ/8))/ρ⌉`.
+  - The width exponent is at least `e·a/(16 + 4 log(16A(q)/ζ))`
+    (`piece_cover_exponent_lower`). Here `e = Er·Eb/B(⌊Qb⌋)` and
+    `a = Es(S, ρ/4)`, all at loss `ρ/8`.
+- **Bridge** (`Proofs16PolynomialLemma9WithRemainder`).
+  - `exists_all_scale_power_lemma_16_6` gives the power width with
+    `A(q) = 4C(q+1)` and `B(q) = 8p(q+1)^(2^(k+2))`, both polynomial.
+  - This module imports the OAI closure, so it has not been elaborated on
+    this machine. Its definitional step was tested on copies of the two
+    width definitions.
+
+**Remaining for `PolyCoverAt 2`.**
+1. Instantiate at `k = 1`:
+   - the spectrum cover from `polyCoverAt_one` on
+     `restrictRelation (section16SpectrumRelation B δ) J`;
+   - the remainder from the face `{x₀} × ℤ_N`. For `k = 1` the remainder
+     is exactly `φ(x₀, x)`, a single vertex. It comes from
+     `PolyCoverAt.face_cover` and `lift_embedding`, with `D` = `B₁`
+     minus the face's deleted fibres;
+   - the slice provider from the Freiman families, which is already
+     polynomial.
+
+   The good sets must be chosen globally (the per-`x₀` fibre deletions
+   are paid for by averaging over `x₀`).
+2. (B): the simultaneous union over the pieces of one relation.
+
 ## F. Routes
 
 1. **Quantitative repair (research).**

@@ -1,0 +1,178 @@
+\section{Source corrections and the scope of the conclusions}
+\label{audit:sec:corrections}
+
+The following audit concerns the pinned manuscript, rather than earlier
+versions already corrected there.  It distinguishes a branch error, an
+unsupported description of a special value, and an editorial clarification
+about coefficient fields.  The accompanying patch changes only the first
+two items; it does not alter the source files in this research package.
+
+\subsection{A real branch correction for the arctanh integral}
+
+In \path{chapters/03-algebraic.tex}, equation
+\texttt{cleo:eq:lintanh} occurs in the discussion of real parameters of
+absolute value less than one.  It writes
+\[
+ \int_0^{\pi/2}\operatorname{arctanh}(\lambda\sin x)\,dx
+ =\theta\log\tan\frac\theta2
+       +2\operatorname{Cl}_2(\theta)
+       -\frac12\operatorname{Cl}_2(2\theta),
+ \qquad \theta=\arcsin\lambda.
+\]
+The displayed logarithm is correct for positive $\lambda$.  For negative
+$\lambda$, its argument is negative, and the principal complex logarithm
+adds an imaginary term that cannot occur in the real integral.
+
+\begin{proposition}[The real-parameter formula]
+\label{audit:prop:arctanh}
+For $-1\le\lambda\le1$, put $\theta=\arcsin\lambda$.  Then
+\begin{equation}
+ \int_0^{\pi/2}\operatorname{arctanh}(\lambda\sin x)\,dx
+ =\theta\log\left|\tan\frac\theta2\right|
+       +2\operatorname{Cl}_2(\theta)
+       -\frac12\operatorname{Cl}_2(2\theta).
+ \label{audit:eq:arctanh-corrected}
+\end{equation}
+At $\lambda=0$ the right side is its continuous value zero.  At
+$\lambda=\pm1$ the integrals are convergent improper integrals.
+\end{proposition}
+
+\begin{proof}
+Let the integral be $F(\lambda)$.  For $|\lambda|<1$, differentiation
+under the integral is valid locally uniformly in $\lambda$.  The
+substitution $t=\cos x$ gives
+\[
+ F'(\lambda)=\int_0^1
+       \frac{dt}{1-\lambda^2+\lambda^2t^2}
+ =\frac{\arcsin\lambda}{\lambda\sqrt{1-\lambda^2}},
+\]
+where the quotient has value one at zero.  Therefore
+$dF(\sin\theta)/d\theta=\theta/\sin\theta$.
+
+The classical Fourier definition of the Clausen function gives
+$\operatorname{Cl}_2'(u)=-\log|2\sin(u/2)|$ away from multiples
+of $2\pi$.  On either interval $(-\pi/2,0)$ or $(0,\pi/2)$,
+differentiating the right side of \eqref{audit:eq:arctanh-corrected}
+gives $\theta/\sin\theta$: the three logarithmic terms cancel by
+$\sin\theta=2\sin(\theta/2)\cos(\theta/2)$.
+Both sides tend to zero at the origin, proving the identity on
+$(-1,1)$.  Finally $\operatorname{arctanh}(\sin x)$ has only an
+integrable logarithmic singularity at $x=\pi/2$; dominated convergence
+and oddness give the endpoint cases.
+\end{proof}
+
+The failure at a specific admissible negative parameter is exact.  At
+$\lambda=-1/2$, $\theta=-\pi/6$, the printed principal-logarithm
+right side differs from the integral by
+\[
+ i\pi\theta=-\frac{i\pi^2}{6}.
+\]
+The real integral is approximately
+$-0.5317299165586139653837501727942413753$.
+Thus the correction is a branch issue, not a numerical uncertainty.
+The smallest repair is to insert the absolute value in the logarithm
+and specify the continuous value at zero.  Restricting the printed
+identity to $0<\lambda<1$ would also make its original logarithm valid.
+
+\subsection{Remove a remaining unsupported non-elementarity label}
+
+The same chapter, at line 194 of the pinned source, calls
+\[
+ \int_0^{\pi/2}\arctan^2(\sin x)\,dx
+       =\pi\chi_2(3-2\sqrt2)
+\]
+the ``simplest non-elementary diagonal.''  The exact evaluation is
+retained.  The manuscript gives neither a specified comparison algebra
+nor a proof that this constant lies outside one.  Its later discussion
+correctly distinguishes exact formulas from unproved minimality and
+non-elementarity.  The proposed patch replaces the unsupported adjective
+by an explicit statement that no elementary reduction or nonreduction
+theorem for this value is established there.  This is a correction of
+the claim's status; it is not a proof of a new reduction.
+
+\subsection{Coefficient fields depend on the coordinates}
+
+The paragraph following \texttt{integral:res:parity} in
+\path{chapters/07-integration.tex} says that the reduction coefficients
+live in $\mathbb Q(\sqrt q)$.  That description fits the immediately
+displayed real quadratic character modulo five.  It should not be read
+as a field assertion for arbitrary rational grids or arbitrary
+characters.  Chapter~2 already correctly uses the cyclotomic DFT field
+$\mathbb Q(\zeta_q)$; passing to multiplicative characters can also
+introduce character values and Gauss sums.
+
+For example, the primitive character modulo five specified by
+$\chi(2)=i$ takes the values $1,i,-i,-1$ on $1,2,3,4$.
+The character-coordinate coefficients therefore include $i$, which is
+not in the real field $\mathbb Q(\sqrt5)$.  Even a real sine-coordinate
+presentation need not stay in that quadratic field:
+\[
+ \sin^2\frac{2\pi}{5}=\frac{5+\sqrt5}{8},\qquad
+ N_{\mathbb Q(\sqrt5)/\mathbb Q}
+      \left(\sin^2\frac{2\pi}{5}\right)=\frac5{16}.
+\]
+If $\sin(2\pi/5)$ belonged to $\mathbb Q(\sqrt5)$, the last
+quantity would be the square of a rational norm, which it is not.
+The displayed quadratic-character identity itself requires no repair.
+The appropriate clarification is to state the coefficient field for
+the chosen additive, character, or real-paired coordinates.
+
+\subsection{Prior in-repository continuations must be credited}
+
+The pinned repository already contains substantial periodic Stieltjes
+calculus outside the manuscript chapters, under
+\path{docs/reports/stieltjes-correlation-calculus/continuations/}
+relative to \path{Analysis/Polylogarithms/} \cite{RepoConvolutionAlgebra,RepoConvolutionCalculus,RepoShiftedJets}.
+In particular, \path{convolution-algebra/article.tex} proves the
+one-generator Bell algebra in \texttt{thm:Bell}, the Gamma-quotient
+multiplication law in \texttt{thm:product}, the polygamma contact
+correction, and the reflected spectral kernel in
+\texttt{thm:reflected}.  The file
+\path{convolution-calculus/Stieltjes_Convolution_Calculus.tex}
+already records the symmetric first-Stieltjes order-zero
+polylogarithm formula in \texttt{eq:Li0identity}.
+The file \path{shifted-hurwitz-jets/sections.tex} gives the complete
+normalized primitive tower in \texttt{shj:Uformula} and proves its
+endpoint regularity.
+
+The untwisted periodic results identified above therefore consolidate and
+independently verify those untwisted foundations. The nonintegral-twist
+section separately answers the explicit open target in the archived
+convolution-algebra report.  The appearance of a
+question in an earlier intake report does not establish its current open
+status when a later in-repository continuation has already answered it.
+The shifted harmonic Laurent and nonintegral-twist results are assessed
+separately, with their own source and literature qualifications, rather
+than deriving a novelty claim from the untwisted periodic construction.
+
+An explicitly open target in the same
+\path{convolution-algebra/article.tex} is the subsection
+``Twists, characters, and alternate endpoint normalizations.''
+It asks for the nonintegral frequency-shift analogue and an all-index
+half-twist table with its point-supported terms.
+Section~\ref{tw:sec:main} answers this specified target: the convolution
+unit is $\delta_0$, the scalar Gamma coefficients remain ordinary zeta
+values, the basis consists of Lerch jets, and the covariant contact
+terms are given explicitly by Theorem~\ref{tw:thm:contacts}.
+The nonsingular alternating convolution and the modified Stieltjes
+functions themselves have the antecedents cited there.  The resolved
+repository question concerns their singular extension and normalization.
+
+\subsection{What this continuation does not prove}
+
+At the pinned snapshot, the mixed sums $S_2$ and $S_4$ already have
+exact proofs.  The weight-seven relation
+\texttt{cycloquot:conj:S6} and the newer weight-nine relation
+\texttt{s8new:conj:S8} remain conjectural.  A different frozen
+weight-nine vector was rigorously rejected in
+\texttt{research:prop:S8-rejected}; its rejection must not be confused
+with the status of the newer candidate.  No result of the present
+continuation promotes either surviving numerical candidate to a theorem.
+
+The distributional identities proved above fix their extensions through
+meromorphic continuation, or equivalently the stated cutoff finite parts.
+Agreement with an ordinary function away from the endpoint and zero mean
+alone do not characterize every higher derivative extension: derivatives
+of the endpoint delta distribution have zero mean.  The explicit endpoint
+terms in those theorems are part of the statements and must be preserved
+when the formulas are integrated or differentiated.

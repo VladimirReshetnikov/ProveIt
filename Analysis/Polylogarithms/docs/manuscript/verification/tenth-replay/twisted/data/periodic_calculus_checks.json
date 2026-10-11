@@ -1,0 +1,223 @@
+{
+  "purpose": "Independent tests of finite-part normalization and exact identities",
+  "python": "3.14.4",
+  "mpmath": "1.3.0",
+  "sympy": "1.14.0",
+  "working_decimal_precision": 50,
+  "symbolic": [
+    {
+      "name": "T0*T0",
+      "residual": "0"
+    },
+    {
+      "name": "T0*T1",
+      "residual": "0"
+    },
+    {
+      "name": "T0*T2",
+      "residual": "0"
+    },
+    {
+      "name": "T1*T1",
+      "residual": "0"
+    },
+    {
+      "name": "T0*reflected(T1)",
+      "residual": "0"
+    },
+    {
+      "name": "T1*reflected(T1)",
+      "residual": "0"
+    },
+    {
+      "name": "reflected generator Hilbert phase through degree 8",
+      "residual": "0",
+      "frequency_signs": 2,
+      "coefficients_per_sign": 9
+    },
+    {
+      "name": "all polygamma products k,l<=7",
+      "residual": "0",
+      "cases": 128
+    },
+    {
+      "name": "all repeated primitive recursions n<=5,2<=q<=6",
+      "residual": "0",
+      "cases": 30
+    }
+  ],
+  "numerical": [
+    {
+      "name": "P0 test-function finite part",
+      "parameters": {
+        "mode": 1
+      },
+      "computed": "(2.4150927313108783441671715628936377107649542832155 + 1.5707963267948966192313216916397514420985846996876j)",
+      "predicted": "(2.4150927313108783441671715628936377107649542832155 + 1.5707963267948966192313216916397514420985846996876j)",
+      "absolute_residual": "5.34552942018e-51",
+      "tolerance": "3.88098490123e-41",
+      "passed": true
+    },
+    {
+      "name": "P0 test-function finite part",
+      "parameters": {
+        "mode": -2
+      },
+      "computed": "(3.1082399118708236535844036843518142788404544175757 - 1.5707963267948966192313216916397514420985846996876j)",
+      "predicted": "(3.1082399118708236535844036843518142788404544175757 - 1.5707963267948966192313216916397514420985846996876j)",
+      "absolute_residual": "0.0",
+      "tolerance": "4.48260770832e-41",
+      "passed": true
+    },
+    {
+      "name": "P0 test-function finite part",
+      "parameters": {
+        "mode": 3
+      },
+      "computed": "(3.5137050199789880355624167998161634154124448410382 + 1.5707963267948966192313216916397514420985846996876j)",
+      "predicted": "(3.5137050199789880355624167998161634154124448410382 + 1.5707963267948966192313216916397514420985846996876j)",
+      "absolute_residual": "0.0",
+      "tolerance": "4.84883411798e-41",
+      "passed": true
+    },
+    {
+      "name": "Pk test-function finite part",
+      "parameters": {
+        "k": 1,
+        "mode": 1
+      },
+      "computed": "(-9.8696044010893586188344909998761511353136994072408 + 8.8912898576691411794743635957510229272365155442413j)",
+      "predicted": "(-9.8696044010893586188344909998761511353136994072408 + 8.8912898576691411794743635957510229272365155442413j)",
+      "absolute_residual": "2.13821176807e-50",
+      "tolerance": "1.4283980065e-40",
+      "passed": true
+    },
+    {
+      "name": "Pk test-function finite part",
+      "parameters": {
+        "k": 1,
+        "mode": -2
+      },
+      "computed": "(-19.739208802178717237668981999752302270627398814482 - 26.49292407655269088095148278445250164382736588996j)",
+      "predicted": "(-19.739208802178717237668981999752302270627398814482 - 26.49292407655269088095148278445250164382736588996j)",
+      "absolute_residual": "0.0",
+      "tolerance": "3.40380294549e-40",
+      "passed": true
+    },
+    {
+      "name": "Pk test-function finite part",
+      "parameters": {
+        "k": 2,
+        "mode": 1
+      },
+      "computed": "(-36.126412993402907309373324809556059365365209536037 - 62.01255336059964035095263013420279040445057713177j)",
+      "predicted": "(-36.126412993402907309373324809556059365365209536037 - 62.01255336059964035095263013420279040445057713177j)",
+      "absolute_residual": "1.20955523265e-49",
+      "tolerance": "7.27681997132e-40",
+      "passed": true
+    },
+    {
+      "name": "Pk test-function finite part",
+      "parameters": {
+        "k": 2,
+        "mode": -2
+      },
+      "computed": "(-253.96306739532549395505296570148977460225730291515 + 248.05021344239856140381052053681116161780230852708j)",
+      "predicted": "(-253.96306739532549395505296570148977460225730291515 + 248.05021344239856140381052053681116161780230852708j)",
+      "absolute_residual": "3.42113882892e-49",
+      "tolerance": "3.56001616883e-39",
+      "passed": true
+    },
+    {
+      "name": "Pk test-function finite part",
+      "parameters": {
+        "k": 3,
+        "mode": 1
+      },
+      "computed": "(389.63636413600974894576133075482044499891034269074 - 144.30554284045132990283366888009017738962942619923j)",
+      "predicted": "(389.63636413600974894576133075482044499891034269074 - 144.30554284045132990283366888009017738962942619923j)",
+      "absolute_residual": "1.02634164868e-48",
+      "tolerance": "4.16500404274e-39",
+      "passed": true
+    },
+    {
+      "name": "Pk test-function finite part",
+      "parameters": {
+        "k": 3,
+        "mode": -2
+      },
+      "computed": "(3117.0909130880779915660906460385635599912827415259 + 2529.9267914027403095436488431492042765141037590385j)",
+      "predicted": "(3117.0909130880779915660906460385635599912827415259 + 2529.9267914027403095436488431492042765141037590385j)",
+      "absolute_residual": "5.47382212627e-48",
+      "tolerance": "4.01557162476e-38",
+      "passed": true
+    },
+    {
+      "name": "convergent digamma convolution",
+      "parameters": {
+        "a": "0.3"
+      },
+      "computed": "-6.3142495703458128900582676352217170585597337248508",
+      "predicted": "-6.3142495703458128900582676352217170585597337248508",
+      "absolute_residual": "0.0",
+      "tolerance": "7.31424957035e-41",
+      "passed": true
+    },
+    {
+      "name": "ordinary centered log-Gamma convolution",
+      "parameters": {
+        "a": "0.3"
+      },
+      "computed": "0.37001588465309487430311638533699806982481176821541",
+      "predicted": "0.37001588465309487430311638533699806982481176821541",
+      "absolute_residual": "0.0",
+      "tolerance": "1.37001588465e-41",
+      "passed": true
+    },
+    {
+      "name": "convergent digamma convolution",
+      "parameters": {
+        "a": "0.5"
+      },
+      "computed": "-1.0619852947616565989449591717101036179636226768659",
+      "predicted": "-1.0619852947616565989449591717101036179636226768659",
+      "absolute_residual": "2.67276471009e-51",
+      "tolerance": "2.06198529476e-41",
+      "passed": true
+    },
+    {
+      "name": "ordinary centered log-Gamma convolution",
+      "parameters": {
+        "a": "0.5"
+      },
+      "computed": "0.1128754296490187340540411996350949887414385358177",
+      "predicted": "0.1128754296490187340540411996350949887414385358177",
+      "absolute_residual": "1.67047794381e-52",
+      "tolerance": "1.11287542965e-41",
+      "passed": true
+    },
+    {
+      "name": "convergent digamma convolution",
+      "parameters": {
+        "a": "0.77"
+      },
+      "computed": "0.94162501326561567329234706121225505382374597582558",
+      "predicted": "0.94162501326561567329234706121225505382374597582557",
+      "absolute_residual": "5.34552942018e-51",
+      "tolerance": "1.94162501327e-41",
+      "passed": true
+    },
+    {
+      "name": "ordinary centered log-Gamma convolution",
+      "parameters": {
+        "a": "0.77"
+      },
+      "computed": "-0.30245081307357318366862318210335538894120219318778",
+      "predicted": "-0.30245081307357318366862318210335538894120219318778",
+      "absolute_residual": "0.0",
+      "tolerance": "1.30245081307e-41",
+      "passed": true
+    }
+  ],
+  "passed": true
+}

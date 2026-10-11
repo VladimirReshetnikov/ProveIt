@@ -103,6 +103,30 @@ commit prefix. Article ↔ report links are listed below.
 
 ## Status of claims, and known defects
 
+The collective reading edition is now split into four separately compiled
+volumes: polylogarithm identities; signed kernels and experimental discovery;
+Hurwitz/Stieltjes/Gamma calculus; and Gamma grids, CM periods and Herglotz
+arithmetic. All mathematical chapter sources are shared, every original
+chapter appears exactly once, and ProveIt Contributors remains the author.
+See [the four-volume index](docs/manuscript/volumes/README.md). Chapter and
+theorem numbers are retained, with working links into companion PDFs.
+
+
+The tenth polylogarithm intake preserves Endpoint Regularization on the
+harmonic-resonance spine and Twisted Stieltjes Harmonic Laurent Identities
+on the correlation spine. The former distinguishes sharp cutoff, Abel and
+spectral-ray constants and keeps its decorated Gamma kernel formal. The
+latter retains the zero Fourier coefficient, the Dirac convolution unit and
+covariant point masses. Both complete isolated replays pass. The twisted Lerch/Bell/contact,
+half-twist integral, quarter-Gamma and covariant primitive proofs are now
+canonical, together with a collective unequal-twist beta mixture and finite
+integer-order reduction. Its real arctanh branch and unsupported
+non-elementarity corrections are applied with an independent derivative
+proof. Endpoint regulators and the additional shifted-harmonic Laurent
+developments retain their pending integration scope. S6/S8 status is
+unchanged; original report files and evidence are preserved.
+
+
 The 10 October harmonic-resonance intake preserves five further reports under
 `docs/reports/stieltjes-harmonic-resonance/` and continuations of the
 Stieltjes-correlation and uniform-transition spines. Their proposed new

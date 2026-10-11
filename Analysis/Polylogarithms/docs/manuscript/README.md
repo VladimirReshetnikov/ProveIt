@@ -1,25 +1,38 @@
 # Polylogarithms and their Arithmetic Bridges
 
-The collective manuscript, authored by **ProveIt Contributors**, is
-[polylogarithms.pdf](polylogarithms.pdf): **448 pages, twelve chapters,
-thirteen figures and 114 references**, with a literature appendix preserving
-94 distinct historical question leads. Its editable source is
-[polylogarithms.tex](polylogarithms.tex) and the files in `chapters/`.
+The collective manuscript, authored by **ProveIt Contributors**, is now
+organized as four volumes. Each has its own source and compiled PDF.
 
-The [inventory](source-inventory.json) accounts for **721 textual source
+| Volume | Material | PDF | Pages |
+|---|---|---|---:|
+| I | Polylogarithm identities, cyclotomic coordinates, algebraic ladders and Gaussian/Eisenstein reductions | [Polylogarithm Identities and Arithmetic Reductions](volumes/volume-1-polylogarithm-identities.pdf) | 124 |
+| II | Signed kernels, angular and all-depth zero geometry, exact computation and experimental discovery; literature appendix | [Signed Kernels, Zero Geometry and Experimental Discovery](volumes/volume-2-signed-kernels.pdf) | 119 |
+| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 168 |
+| IV | Gamma grids, CM lattice periods, class products and Herglotz arithmetic | [Gamma Grids, CM Periods and Herglotz Arithmetic](volumes/volume-4-cm-and-herglotz.pdf) | 83 |
+
+The volumes partition all twelve chapters and the literature appendix.
+Chapter, theorem and equation numbering is retained so research-report
+citations stay stable. Cross-volume references link to their exact PDF
+destinations; keep the four PDFs together. Each volume has its own contents
+and the shared bibliography of 119 references. The scientific text is shared
+through chapter files and [preamble.tex](preamble.tex), avoiding duplicate
+copies of proofs. See [volume sources and build instructions](volumes/README.md).
+The [combined source](polylogarithms.tex) and its
+[459-page combined snapshot](polylogarithms.pdf) remain available.
+
+The [inventory](source-inventory.json) accounts for **746 textual source
 files**, including overlapping assembled articles, fragments and correction
 registers. The [editorial ledger](EDITORIAL-LEDGER.md) maps their mathematical
-status and identifies pending research integration. Forty-seven incoming
-archives are preserved as **1,827 original tracked members**. All their isolated
+status and identifies pending research integration. Forty-nine incoming
+archives are preserved as **1,889 original tracked members**. All their isolated
 replay suites pass; preservation and successful finite replay do not imply
 that every new analytic theorem has already been integrated. The imported
 ZIPs have been retired from the drop zone under its intake procedure; the
 arrival commits and recovery paths remain recorded in
-`verification/*incoming-archives.json` and the retirement records. Seven ignored
-SHA256SUMS members remain recoverable in the sixth, eighth and ninth arrival archives; the
-existing ignore rules were followed without manifest verification. The latest five
-packages are placed on the harmonic-resonance, Stieltjes-correlation and
-uniform-transition spines
+`verification/*incoming-archives.json` and the retirement records. Eight ignored
+SHA256SUMS members remain recoverable in the sixth, eighth, ninth and tenth arrival archives; the
+existing ignore rules were followed without manifest verification. The latest two
+packages are placed on the harmonic-resonance and Stieltjes-correlation spines
 with historical OVERVIEW notes; their remaining analytic claims retain the
 ledger's pending scope.
 
@@ -186,3 +199,24 @@ Mellin-dilation (742 exact assertions and 77 diagnostics through nine entry
 points), and the complete exact/numeric/Euler critical-transition suite.
 The nonzero thirty-term formal S6 projection is preserved with its explicit
 qualification: it makes no assertion about the numerical residual.
+
+The tenth intake adds endpoint-regulator and twisted harmonic-Laurent reports.
+Both full isolated suites pass. The twisted Lerch family now has a complete
+canonical proof chain: all nonintegral twists, full Dirac residues, all-index
+Bell and reflected products, covariant contact corrections, rational Hurwitz
+coordinates, the convergent half-twist integral and its quarter-Gamma value,
+unique covariant primitives, and exact zero-frequency subtraction back to
+the untwisted normalization. Its shifted-harmonic Laurent developments and
+the endpoint-regulator report remain explicitly pending canonical integration.
+
+A collective continuation gives a Dirichlet beta mixture for any finite number
+of unequal twists in one interval between integers. Positive integer orders
+admit an exact finite partial-fraction reduction to elementary covariant
+kernels; repeated twists combine by addition. Independent exact controls
+cover 64 identities and a rejected corruption, alongside 25 separate 60-digit
+diagnostics including zero and negative modes and ordinary wrapped integrals.
+Wolfram 15.0.1 confirms 25 further exact identities and nine 70-digit branch,
+endpoint and quarter-Gamma diagnostics. These numerical records are not
+interval certificates. The real arctanh formula now uses an absolute value
+in its logarithm; its derivative proof covers negative parameters and both
+endpoints. The unsupported non-elementarity description is removed.
