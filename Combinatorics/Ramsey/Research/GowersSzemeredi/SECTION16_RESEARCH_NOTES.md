@@ -4132,6 +4132,27 @@ recursion grows like `536·2^k` (L.12's model), above `512·2^k`, so `d + 7`
 and `L + 5` would need a smaller per-step cost than `268·2^k`, i.e. a
 smaller class degree than `68·2^l` or a cheaper spectrum and slice stage.
 
+**L.15a (same day): one constant further, from the base budget.** The step
+cost `268·2^k` is `68·2^k` (vertex covers) + `μ₀` + `136·2^k` (two slice
+controls), and the standard `μ₀ = genMu0 k ≈ 64·2^k` comes from the loose
+`V ≤ 2^(2^(2^(k+6)))`. Every summand of `classV k` is at most
+`2^(2^(2^(k+4)))`, so `V ≤ 2^(2^(2^(k+4)+1))` (`classV_le_tight`) and
+`μ₀ = tightMu0 k = 2^(k+5) + 9` suffices. The step then costs
+`236·2^k + O(k²)` (`envStepC_le_tight`) and the envelopes grow like
+`472·2^k`. `Proofs18CoverTightBase` (light, kernel-checked):
+- `polyGenMuT_le` (`≤ 500·2^k`, `k ≥ 4`; degrees 4–5 by evaluation):
+  **Theorem 18.1 at every `d ≥ 4` with exponent `α^(2^(2^(d+7)))`**
+  (`theorem_18_1_d7_of_profiles_cover`);
+- `genMuT_le` (`≤ 505·2^k`, `k ≥ 7`): **Theorem 18.2 at every `L ≥ 11`
+  with `L + 5`** (`theorem_18_2_L5_of_profiles_cover`); for `L ≤ 10` the
+  cubic stopping term `40(k+2)³ + 1095` exceeds `2^(L+5)`.
+Bridge additions in `Proofs18CoverSharperExplicit`:
+`theorem_18_1_d7_four_le`, `theorem_18_2_L5_eleven_le` (same stub axioms).
+`d + 6` and `L + 4` would need a step cost below `128·2^k`, i.e. both the
+cover degree and the slice controls would have to shrink: the
+`68·2^l` class degree (L.10b fixed point `67·2^l`) alone already costs
+`3·68·2^k` per step.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

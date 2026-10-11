@@ -1128,6 +1128,7 @@ import GowersSzemeredi.Proofs18CoverEnvelopeArithmetic
 import GowersSzemeredi.Proofs18CoverSharperArithmetic
 import GowersSzemeredi.Proofs18CoverSharper
 import GowersSzemeredi.Proofs18CoverSharperExplicit
+import GowersSzemeredi.Proofs18CoverTightBase
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
