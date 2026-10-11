@@ -1081,6 +1081,7 @@ import GowersSzemeredi.Proofs16AllDimensions
 import GowersSzemeredi.Proofs16WeylBudgetGrowth
 import GowersSzemeredi.Proofs16AllDimensionsExplicit
 import GowersSzemeredi.Proofs16SplitUniformClass
+import GowersSzemeredi.Proofs16SplitStepBounds
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
