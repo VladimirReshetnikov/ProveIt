@@ -150,7 +150,7 @@ theorem polyPieceSpecCount_le_power {gamma theta : Real} (hg : 0 < gamma) (hg1 :
   obtain ⟨hb, hb1⟩ := polyPieceBudget_pos_le hg hg1 ht ht1
   have hdi := section16Delta_one_inv_le hg hg1 ht ht1
   have hbi := polyPieceBudget_inv_le_power hg hg1 ht ht1
-  have hBF := section16BaseFamilyBound_le_power hd0 hd1 hb hb1
+  have hBF := section16BaseFamilyBound_le_dyadic_power hd0 hd1 hb hb1
   unfold polyPieceSpecCount
   set d := section16Delta (section16ThetaOne theta gamma 1)
   set b := polyPieceBudget theta gamma
@@ -468,7 +468,7 @@ theorem sixEb_inv_le_power (l : Nat) {K1 p1 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1)
       have := inv_pos.mpr hr
       nlinarith
     obtain ⟨hv2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
-    have hB := section16BaseFamilyBound_le_power hg hg1 ht ht1
+    have hB := section16BaseFamilyBound_le_dyadic_power hg hg1 ht ht1
     have hB0 := section16BaseFamilyBound_pos gamma theta
     set v := 2 / (gamma * theta) with hv
     set w := 2 / (gamma * theta * rho) with hw

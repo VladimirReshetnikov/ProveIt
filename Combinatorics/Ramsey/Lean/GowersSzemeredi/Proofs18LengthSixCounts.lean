@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs18LengthSixScale
+import GowersSzemeredi.Proofs16BaseFamilyPowerBound
 
 /-! Polynomial bounds on the graph counts of the length-six route.
 
@@ -48,48 +49,16 @@ theorem ceil_le_pow_succ {x y : Real} {a : Nat} (hx : 2 ≤ x) (hy0 : 0 ≤ y) (
 
 /-! ### The base family bound -/
 
-/-- `section16BaseFamilyBound γ θ ≤ (2/(γθ))^(2^14)`. -/
-theorem section16BaseFamilyBound_le_power {gamma theta : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1)
-    (ht : 0 < theta) (ht1 : theta ≤ 1) :
+/-- `section16BaseFamilyBound γ θ ≤ (2/(γθ))^(2^14)`, from the sharper
+`section16BaseFamilyBound_le_power` (exponent `10002`). -/
+theorem section16BaseFamilyBound_le_dyadic_power {gamma theta : Real} (hg : 0 < gamma)
+    (hg1 : gamma ≤ 1) (ht : 0 < theta) (ht1 : theta ≤ 1) :
     (section16BaseFamilyBound gamma theta : Real) ≤ (2 / (gamma * theta)) ^ ((2 : Nat) ^ 14) := by
-  set u := 2 / (gamma * theta) with hu
   have hgt : 0 < gamma * theta := mul_pos hg ht
-  have hgt1 : gamma * theta ≤ 1 := mul_le_one₀ hg1 ht.le ht1
-  have hu2 : 2 ≤ u := by rw [hu, le_div_iff₀ hgt]; linarith
-  have hu1 : 1 ≤ u := by linarith
-  have hu0 : 0 ≤ u := by linarith
-  -- 1/γ ≤ u and 1/(γθ) ≤ u
-  have hinv : (gamma * theta)⁻¹ ≤ u := by
-    rw [hu, div_eq_mul_inv]; linarith [inv_pos.mpr hgt]
-  have hginv : gamma⁻¹ ≤ u := by
-    refine le_trans ?_ hinv
-    exact inv_anti₀ hgt (by nlinarith)
-  -- the ratio γ⁻² / α163
-  have hα := lemma163Alpha_pos hg ht
-  have hratio : gamma ^ (-(2 : Int)) / lemma163Alpha gamma theta ≤ u ^ 12002 := by
-    unfold lemma163Alpha
-    have h2000 : (2 : Real) ^ (2000 : Real) ≤ u ^ 2000 := by
-      rw [show (2000 : Real) = ((2000 : Nat) : Real) by norm_num, Real.rpow_natCast]
-      exact pow_le_pow_left₀ (by norm_num) hu2 _
-    have hg2 : gamma ^ (-(2 : Int)) ≤ u ^ 2 := by
-      rw [zpow_neg, zpow_ofNat, ← inv_pow]
-      exact pow_le_pow_left₀ (by positivity) hginv 2
-    have hgt10 : ((gamma * theta) ^ (10000 : Nat))⁻¹ ≤ u ^ 10000 := by
-      rw [← inv_pow]
-      exact pow_le_pow_left₀ (by positivity) hinv _
-    rw [div_eq_mul_inv, mul_inv, Real.rpow_neg (by norm_num), inv_inv]
-    calc gamma ^ (-(2 : Int)) * ((2 : Real) ^ (2000 : Real) * ((gamma * theta) ^ (10000 : Nat))⁻¹)
-        ≤ u ^ 2 * (u ^ 2000 * u ^ 10000) := by
-          apply mul_le_mul hg2 (mul_le_mul h2000 hgt10 (by positivity) (by positivity))
-            (by positivity) (by positivity)
-      _ = u ^ 12002 := by rw [← pow_add, ← pow_add]
-  unfold section16BaseFamilyBound
-  rw [Nat.cast_max, Nat.cast_one]
-  apply max_le
-  · exact one_le_pow₀ hu1
-  · refine (Nat.floor_le (by positivity)).trans (hratio.trans ?_)
-    exact pow_le_pow_right₀ hu1 (by norm_num)
-
+  have hu1 : 1 ≤ 2 / (gamma * theta) := by
+    rw [le_div_iff₀ hgt]; nlinarith [mul_le_one₀ hg1 ht.le ht1]
+  exact (section16BaseFamilyBound_le_power hg hg1 ht ht1).trans
+    (pow_le_pow_right₀ hu1 (by norm_num))
 
 /-! ### The piece budget, the face count and the piece count
 
@@ -192,7 +161,7 @@ theorem polyPieceFaceCount_le_power {gamma theta : Real} (hg : 0 < gamma) (hg1 :
   obtain ⟨hu2, -, h2g, -, -⟩ := prod_scale_basic hg hg1 ht ht1
   obtain ⟨hb, hb1⟩ := polyPieceBudget_pos_le hg hg1 ht ht1
   have hbinv := polyPieceBudget_inv_le_power hg hg1 ht ht1
-  have hBF := section16BaseFamilyBound_le_power hg hg1 hb hb1
+  have hBF := section16BaseFamilyBound_le_dyadic_power hg hg1 hb hb1
   set u := 2 / (gamma * theta) with hu
   clear_value u
   have hu1 : 1 ≤ u := le_trans (by norm_num) hu2
@@ -503,7 +472,7 @@ theorem sixQb_le_power (l : Nat) {gamma theta rho : Real} (hg : 0 < gamma) (hg1 
     have hvw : 2 / (gamma * theta) ≤ 2 / (gamma * theta * rho) :=
       div_le_div_of_nonneg_left (by norm_num) (mul_pos hgt hr) (by nlinarith)
     obtain ⟨hv2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
-    have hB := section16BaseFamilyBound_le_power hg hg1 ht ht1
+    have hB := section16BaseFamilyBound_le_dyadic_power hg hg1 ht ht1
     set v := 2 / (gamma * theta) with hv
     set w := 2 / (gamma * theta * rho) with hw
     clear_value v w

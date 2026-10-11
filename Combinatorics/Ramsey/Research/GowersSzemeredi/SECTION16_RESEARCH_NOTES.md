@@ -3098,6 +3098,79 @@ Exactly three inputs are dimension-one facts:
 Each stage is the dimension-two construction one level up. The new
 ingredient is the uniform class.
 
+### L.5a Route (II) in dimension three is complete (2026-10-11)
+
+**Result.** Theorem 16.2 and Corollary 16.11 hold in dimension three
+without any Milićević hypothesis:
+- `theorem_16_2_three_of_profiles` and `corollary_16_11_three_of_profiles`
+  (Proofs16PolyCoverThreeTheorem). These are light and kernel-checked
+  locally; their axioms are propext, Classical.choice and Quot.sound. They
+  take the recurrence profiles in dimensions one and two at constants
+  `K, p ≤ 2^2000`, the same hypotheses as `theorem_18_2_six_of_profiles`.
+- `theorem_16_2_three` and `corollary_16_11_three`
+  (Proofs16PolyCoverThreeExplicit). This is the heavy bridge: it supplies
+  those profiles from `section16RecurrenceProfileWith_explicit` and
+  `lengthSix_explicit_constants`. It is stub-checked here: the only extra
+  axioms are opaque stand-ins for the four heavy facts. The final check is
+  on the full-verification host.
+
+Every earlier dimension-three statement (Part J, Proofs16Variety*) assumes
+`MilicevicDeepVarietyStructure`, `MilicevicDeepEventuallyPrime` or
+polynomially bounded controls. This one assumes none of them.
+
+**How the stages landed.**
+
+| Stage | Modules |
+|---|---|
+| D1 | Proofs16UniformCoverTwoBounds |
+| D2 | Proofs16ThreeSlices, Proofs16ThreeCylinders, Proofs16WithSum, Proofs16ProductTranslate, Proofs16PolyPieceThreeInputs |
+| D3 | Proofs16PolyFamilyThree, Proofs16PolyPieceThreeData |
+| D4 | Proofs16PolyCoverThree, plus the bridge Proofs16PolyCoverThreeBridge |
+| D5 | Proofs16PrintedControls, Proofs16PolyCoverThreeBounds, Proofs16PolyCoverThreeTheorem, Proofs16PolyCoverThreeExplicit |
+
+**The envelope.** Write `B = W₀·2/(γθρ)` with `W₀ = K₁ + p₁ + K₂ + p₂`.
+- The count of `PolyCoverAt 3` is at most `B^(2^321)`.
+- The width exponent is at least `B^(-2^361)`.
+- The dimension-two pieces are bounded in the base `B^(2^136)`. There the
+  general-base bounds of D1 apply: count `≤ w^(2^89)` and exponent
+  `≥ w^(-2^130)`.
+- `theorem162At_of_polyCover` then needs `D = 2^361 ≤ 2^(2^11)` and
+  `W₀ ≤ 2^2002 ≤ 2^(2^512 − 1)`. Both margins are enormous: the printed
+  controls of Theorem 16.2 allow degree `2^(2^(k+8))`.
+
+**A defect found on the way.** Proofs18LengthSixCounts (2b12bac)
+re-declared `section16BaseFamilyBound_le_power`. The peer's
+Proofs16BaseFamilyPowerBound already had a sharper version (exponent
+`10002`). Each module built green on its own, but the facade imports both,
+so the duplicate broke it. It is now the corollary
+`section16BaseFamilyBound_le_dyadic_power` (exponent `2^14`), derived from
+the peer's lemma. A source-level scan of all 6998 top-level names in
+GowersSzemeredi finds no other live duplicate. The one other hit,
+`multiplyLinear_downward_closed_holds`, is in the orphan module
+Proofs16Closure, which nothing imports.
+
+**Next.** Route (II) in every dimension. The dimension-three construction
+used dimension two in three places:
+1. the uniform class `PolyPieceTwo` and its family cover;
+2. Lemma 15.6's arrangements at `k = 2`;
+3. the abstract family Lemma 16.6 at `k = 1, 2`.
+
+The induction needs a `UniformCoverAt k` statement: a cover of the
+spectra of any `M` pieces of the dimension-`k` uniform class, with
+envelope controls in a base `w`. Two things must then be shown:
+- `UniformCoverAt k` together with the family lemma at `k` gives
+  `UniformCoverAt (k+1)`;
+- `UniformCoverAt k` gives `PolyCoverAt (k+1)`.
+
+The exponent tower grows by a fixed factor per dimension, so the degrees
+are about `2^(c·k)`, far below `2^(2^(k+8))`.
+
+Theorem 18.2 at length seven needs dimension-three inputs of the same kind
+that dimensions one and two supplied at length six. That is the
+recurrence profile, or the lifted family cover, not just `Theorem162At 3`.
+Whether `PolyCoverAt 3` and the uniform class give them directly is open.
+L.4 lists what length seven consumes.
+
 ## F. Routes
 
 1. **Quantitative repair (research).**

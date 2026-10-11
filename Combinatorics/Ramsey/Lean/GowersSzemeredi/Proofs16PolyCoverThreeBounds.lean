@@ -157,7 +157,7 @@ theorem threeFaceCount_le_power {gamma theta : Real} (hg : 0 < gamma) (hg1 : gam
     (threeFaceCount theta gamma : Real) ≤ (2 / (gamma * theta)) ^ ((2 : Nat) ^ 149) := by
   obtain ⟨b0, b1, bi⟩ := threeBudget_bounds hg hg1 ht ht1
   obtain ⟨hu2, hginv, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
-  have hBF := section16BaseFamilyBound_le_power hg hg1 b0 b1
+  have hBF := section16BaseFamilyBound_le_dyadic_power hg hg1 b0 b1
   have hw := two_div_three_params_le hg hg1 ht ht1 hg
     (hginv.trans (le_self_pow₀ (le_trans (by norm_num) hu2) (by norm_num)))
   unfold threeFaceCount
