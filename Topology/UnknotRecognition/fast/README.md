@@ -3952,3 +3952,29 @@ and three gauge steps. All 1,521 tests and 28 focused tests pass, including
 source/potential forgeries, schema downgrade rejection, optimizer-disabled
 replay and portable 9,000-bit common offsets. The precise source audit and
 configured-call timings are in `causal_research.epoch_gauge`.
+
+Explicit epoch mode can authenticate a primitive annulus cap with
+`pachner_seed_annulus=True` or
+`--pachner-seed --pachner-seed-epochs 64 --pachner-seed-annulus`.
+The default is false. The adapter retains current-source minimum-span
+witnesses at optimization checkpoints and discards them after geometry
+changes. A zero-Euler candidate is accepted only by independent source,
+matching, primitive-period and connectivity/optimality replay. A valid
+nonprimitive minimum-span witness is explicitly rejected.
+
+`diagram-transport-annulus-v1` carries the original source and complete
+move/gauge chain plus the terminal primitive surface certificate.
+`verify_transport_annulus_certificate` replays the exact final source and
+uses the existing connected primitive annulus theorem to authenticate its
+boundary cap. It imports no optimizer or source/move producer and stores
+no fictitious normal vector for the capped disc. Existing v1/v2 normal-disc
+proofs retain their final component authority.
+
+The actual optimized-positive source now returns a certified annulus at
+48,281 checkpoints and zero epochs, instead of reaching the two-million
+work cap. All 1,529 tests and 36 focused tests pass, including a nonempty
+move/gauge chain, topology/dual/source forgeries, valid doubled nonprimitive
+arithmetic, CLI routing and cap-safe complete fallback. The other sampled
+disc proofs and negative controls are preserved. All optional defaults
+remain off; the general quasi-polynomial recognition bound is still open.
+Reproduce the audit and configured-call timings with `causal_research.annulus`.
