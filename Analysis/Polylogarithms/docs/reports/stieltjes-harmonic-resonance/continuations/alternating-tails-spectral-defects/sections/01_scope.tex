@@ -1,0 +1,123 @@
+\section{Scope, conventions, and the results established}
+\label{intro:section}
+
+This article continues the exact-identity programme in the unified
+ProveIt manuscript and the six archives present in its incoming
+directory at commit
+\begin{center}\sourcepin.\end{center}
+The commit is dated 11 October 2026, 18:22:01 UTC. The incoming archive
+interiors were retrieved and inspected for overlap with the selected
+targets. The repository manuscript and the relevant primary references
+were checked where the proofs use them. This is a targeted mathematical
+audit of those dependencies, not an exhaustive certification of every
+statement in the repository. The deliverable is a separate article;
+repository integration can preserve the existing thematic organization.
+
+The main technical theme is to retain exact finite differences and
+finite asymptotic terms before taking a limit. For tails, the missing
+information is an endpoint product. For zeta continuation, it is a
+finite residue contribution. For moment reconstruction, it is an exact
+rational determinant rather than a floating rank test. These three
+mechanisms lead to complementary identities among the functions named
+in the research programme.
+
+\subsection{A map from source questions to the present results}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}p{0.46\textwidth}>{\raggedright\arraybackslash}p{0.24\textwidth}@{}}
+\toprule
+Source target & Result established here & Precise status\\
+\midrule
+\endfirsthead
+\toprule Source target & Result established here & Precise status\\\midrule
+\endhead
+Harmonic-tail square identities & A rational-tail finite certificate,
+continuous order, all-index Stieltjes products, and anchored Gamma
+integration (Section~\ref{ats:section}) & Additional identities with
+ordinary convergence.\\[5pt]
+Shifts and Twists, question Q6 \cite{HTST} & A finite generator for
+arbitrary root-of-unity inner and outer colors
+(Theorem~\ref{cyc:master}) & Solved for the specified parity/conjugation
+sector; the complementary sector remains open.\\[5pt]
+Quadratic-Spectrum Stieltjes, question 2 \cite{QSpec} & Every order
+$\Delta_r$ for every polynomial weight
+(Theorem~\ref{sd:thm:all-orders}) & Complete explicit correction formula;
+generic finite polylogarithm reduction is not claimed.\\[5pt]
+The same report, question 7 & Any number of quadratic factors, every
+even polynomial weight, and every coincident-mass coefficient
+(Theorems~\ref{mm:thm:second}--\ref{mm:thm:confluence}) & Complete at the
+second spectral derivative in this setting.\\[5pt]
+Optimal moment prefix, order eight \cite{PRR} & Full formal rank for
+$p=8$, $q=2b$, $b\ge5$, outside $8001\pmod{16384}$
+(Theorem~\ref{rt:rank8}) & Strengthens the existing exclusion
+$1\pmod{16}$; one smaller progression remains.\\[5pt]
+Optimal moment prefix, order ten & Full formal rank for $p=10$,
+$q=2b$, $b\ge6$, outside $962\pmod{2048}$
+(Theorem~\ref{rt:rank10}) & New infinite family and exact finite base
+cases; no all-order theorem is inferred.\\
+\bottomrule
+\end{longtable}
+
+The gap-four moment-prefix theorem is already established in the two
+latest harmonic-tail reports \cite{HTGC,HTST}. It is not reproved here
+as a new result. The Gaussian weight-six and revised weight-eight
+numerical conjectures are not settled by this article. The new
+cyclotomic identities concern different, explicitly specified sums;
+their existence is not a missing proof of those numerical equalities.
+
+\subsection{Conventions fixed throughout}
+
+The Hurwitz zeta function is initially
+$\zeta(s,a)=\sum_{n\ge0}(n+a)^{-s}$ for $\Re s>1$, $\Re a>0$,
+then continued in its usual variables. Our generalized Stieltjes
+constants are defined by
+\begin{equation}\label{intro:stieltjes}
+ \zeta(1+u,a)=\frac1u+
+       \sum_{r\ge0}\frac{(-1)^r}{r!}\gamma_r(a)u^r.
+\end{equation}
+Thus $\gamma_0(a)=-\psi(a)$, $\gamma_0(1)=\gamma$, and a literal
+linear Laurent coefficient is $-\gamma_1(a)$.
+The prime in $\zeta'(s,a)$ always differentiates $s$; a derivative
+in $a$ is written $\partial_a$. We use
+\[
+ \psi(a)=\frac{\Gamma'(a)}{\Gamma(a)},\qquad
+ \psi^{(r)}(a)=(-1)^{r+1}r!\zeta(r+1,a)\quad(r\ge1),
+\]
+and $H_n^{(r)}=\sum_{k=1}^{n}k^{-r}$, with $H_n=H_n^{(1)}$ and
+$H_0=0$. The polylogarithm is
+$\operatorname{Li}_s(z)=\sum_{k\ge1}z^k/k^s$ in its convergence
+disk, with continuation or ordinary boundary values stated when used.
+These conventions agree with the standard references
+\cite{DLMFZeta,DLMFPolylog,DLMFPolygamma}.
+
+All complex powers use principal logarithms on the initial positive
+shift domains. Any later continuation or antiderivative specifies its
+domain and its anchor. A square of a complex tail means its algebraic
+square; a modulus square is written explicitly. A series called
+\emph{ordinary} is a limit of its stated partial sums. A continued
+spectral value is never silently substituted for a divergent ordinary
+sum. ``Locally normally convergent'' means locally uniform absolute
+convergence, sufficient for holomorphic parameter differentiation.
+
+The symbols used for colors in Section~\ref{cyc:sec} are roots of
+unity; the positive real shift and mass variables in
+Sections~\ref{sd:section}--\ref{mm:section} are local to those sections.
+Nielsen's alternating Hurwitz function $\mathcal B_s$ is distinguished
+from the Bernoulli polynomials $B_j$ and the cyclotomic generating
+function $B_\omega$. The moment-rank statements concern a formal
+coordinate space in which only the specified exact reduction relations
+have been imposed. They make no arithmetic independence assertion
+about actual zeta values.
+
+\subsection{What counts as proof in the companion package}
+
+The infinite-dimensional assertions below have written analytic proofs,
+including convergence, pole cancellation, and branch control. Exact
+symbolic certificates verify the finite algebra used in those proofs.
+The moment nonvanishing theorems combine a uniform Bernoulli congruence
+with exact polynomial identities and finitely many rational base cases.
+High-precision evaluations supply independent diagnostics for signs,
+factors, and endpoint conventions. They are not interval certificates,
+proofs of an infinite family, or proofs of period independence.
+No statement in this delivery is claimed to have been formalized in
+Lean or another proof assistant.
+

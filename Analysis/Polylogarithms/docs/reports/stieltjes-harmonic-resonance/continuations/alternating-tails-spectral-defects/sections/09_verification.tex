@@ -1,0 +1,121 @@
+\section{Reproducibility and integration}
+\label{verify:section}
+
+\subsection{Exact algebra and independent numerical diagnostics}
+
+The companion programs use Python, SymPy, and mpmath. They are
+self-contained relative to the delivered certificate files and require
+no private paths or network access. The recorded environment uses
+Python 3.12.14, SymPy 1.14.0, and mpmath 1.3.0. The proofs themselves
+do not depend on a particular floating-point library.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}p{0.36\textwidth}>{\raggedright\arraybackslash}p{0.31\textwidth}@{}}
+\toprule
+Component & Exact verification & Numerical diagnostics\\
+\midrule
+\endfirsthead
+\toprule Component & Exact verification & Numerical diagnostics\\\midrule
+\endhead
+Tail square and Stieltjes identities & 96 exact assertions, including
+the finite endpoint and deliberately incorrect color-sign rejection &
+29 diagnostics at 75 decimal digits; independent integral, finite-cutoff,
+and order-derivative calculations.\\[5pt]
+Cyclotomic generator & Written bilateral proof and finite parity
+coefficient extraction in Section~\ref{cyc:sec} & 12 diagnostics at
+60--65 digits, including trivial colors, arbitrary outer character,
+odd conductor, rational examples, and the Gamma primitive.\\[5pt]
+Spectral defects and mass kernels & 194 exact assertions for harmonic
+coefficients, Laurent multiplication, logarithmic kernels, variance,
+and confluence & 21 diagnostics at 65 digits, including independent
+spectral continuation, Gamma integrals, mass differentiation, and
+anchored primitives.\\[5pt]
+Moment-rank refinements & Complete rational polynomial determinant
+replay, coefficientwise modular substitutions, and original finite
+source-matrix determinants & No floating rank test is used as evidence
+for a nonvanishing theorem.\\
+\bottomrule
+\end{longtable}
+
+The 62 high-precision checks complement the 290 exact assertions in
+the two analytic verification suites. The larger determinant
+certificates are a separate exact calculation, not included in that
+assertion count. The order-ten numerator has 10,403 integer monomials
+in its full expansion. The verifier reconstructs the determinant from
+the displayed rational matrix and cross-multiplies coefficientwise;
+it does not infer a polynomial by interpolation at sample values.
+
+The numerical spectral comparison does not merely evaluate the same
+closed form twice. It constructs the quadratic zeta by a separate
+Pochhammer--Hurwitz expansion, differentiates the finite linear-factor
+Hurwitz expression, and compares their difference with the
+finite-subtracted logarithmic formula. The tail checks use finite
+endpoint identities and independent integral representations where
+appropriate. Nonetheless, all decimal results remain diagnostics.
+The recorded error tolerances are not rigorous enclosures of the
+infinite sums.
+
+The determinant proof was independently reviewed against the original
+binomial source matrix, in addition to the factorial form used in the
+delivered verifier. The Bernoulli thresholds, division of moduli,
+source normalization, and exceptional classes were also checked
+independently. The exact replay and the written proof have different
+roles: the replay validates finite algebra; the uniform congruence
+argument makes that finite algebra apply to infinitely many $b$.
+
+\subsection{Files and commands}
+
+The package has two equivalent \LaTeX\ entry points:
+\path{article.tex} inputs the modular sections, while
+\path{Alternating_Tails_and_Spectral_Defects.tex} contains the complete
+standalone article. The supplied PDF is compiled from the standalone
+source. The modular files make thematic integration straightforward.
+The bibliography is local to the package; no external bibliography
+database is required.
+
+From the extracted package directory, the verification entry point is
+\begin{verbatim}
+python verification/run_all.py
+\end{verbatim}
+The exact determinant replay may take longer than the small symbolic
+checks. A diagnostic shortcut, which intentionally omits reconstruction
+of the two multivariate determinant identities, is
+\begin{verbatim}
+python verification/verify_rank_refinement.py --quick
+\end{verbatim}
+Quick mode is useful during editing; the recorded delivery was checked
+with the full replay. The programs rewrite their result JSON files.
+For an independent review that preserves the delivered evidence,
+run them in a copy of the extracted package.
+
+The PDF can be rebuilt with
+\begin{verbatim}
+latexmk -pdf -interaction=nonstopmode -halt-on-error \
+    Alternating_Tails_and_Spectral_Defects.tex
+\end{verbatim}
+The package includes a short build helper that first regenerates the
+standalone source from the modular files. The only nonstandard Python
+dependencies are pinned in \path{requirements.txt}. No source
+repository checkout is required to reproduce the new certificates.
+
+\subsection{Suggested placement and claim ledger}
+
+This continuation belongs with the harmonic-tail and spectral/Stieltjes
+thematic reports under
+\path{Analysis/Polylogarithms/docs/reports/}. The delivered directory
+can be preserved intact and cross-referenced from both themes. Later
+editorial integration into the unified manuscript can use
+Sections~\ref{ats:section}--\ref{cyc:sec} for tail identities,
+Sections~\ref{sd:section}--\ref{mm:section} for spectral derivatives
+and primitives, and Section~\ref{rt:section} for moment rank.
+The current incoming procedure treats placement and manuscript
+rewriting as separate stages \cite{Incoming}.
+
+The machine-readable claim ledger records what is proved, inherited,
+partially advanced, and still open. In particular it keeps the
+Gaussian conjectures, complementary cyclotomic sector, independent
+tail shifts, global gap-six family, and two exceptional moment
+progressions open. The provenance record names the exact repository
+pin and the six inspected archive sources. The integration notes
+identify the source research questions updated by the new theorems
+and preserve the earlier correction history.
+

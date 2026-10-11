@@ -1,0 +1,148 @@
+\section{Source audit, mathematical status, and reproducible evidence}
+\label{hqj:sec:audit}
+
+\subsection{What was actually inspected}
+The canonical manuscript README, its directory structure, the incoming
+directory listing, and repository tree metadata were retrieved through
+the connected GitHub tools. The tree commit returned during this
+reading was
+\begin{center}\small\pin\end{center}
+The incoming catalogue contained six archives. Their names and Git blob
+identifiers are recorded in \file{PROVENANCE.json}. Their binary members
+were not inspected: direct binary retrieval was unavailable in this
+session. It would therefore be incorrect to claim a full audit of those
+archives or a proof that none contains overlapping results.
+
+The complete matching-title TeX of
+\file{ProveIt_Quadratic_Spectrum_Stieltjes_2026-10-10.tex} was recovered
+from the user's Library and materialized for programmatic inspection.
+The targeted proof sections, finite first-jet formulas, and final
+research questions were read. Its SHA-256 is
+\begin{center}\small
+\nolinkurl{4185cc4aa2299c8f417ca376b3ddc4af3fab58752d4cd93f70c2afad661f95aa}
+\end{center}
+The predecessor records its own earlier repository pin; that pin is not
+replaced by the newer metadata anchor above. Matching the title does
+not prove byte identity with the incoming ZIP. The source hash is
+recorded so a future repository integration can resolve that provenance
+question exactly.
+
+The source's higher-jet warning was correct. No new error in the
+inspected first-jet proof is asserted here. The work extends that proof
+rather than silently replacing it. The canonical Gaussian $S_6$ and
+revised $S_8$ conjectures are not settled by these spectral identities,
+and their status must not be changed on the basis of this report.
+
+\subsection{Corrections to tempting but invalid extensions}
+The following are safeguards demonstrated by the present formulas,
+not accusations that the predecessor made these mistakes.
+
+\paragraph{First-jet parity is not higher-jet multiplicativity.}
+Even $W$ eliminates the residue coefficients $R_k$, but not the
+regular terms. Formula \eqref{hqj:eq:atan-square} disproves the
+extension already at $W=1$, $r=2$; Theorem~\ref{hqj:thm:rigidity}
+settles universal higher-order vanishing completely.
+
+\paragraph{The colliding coefficient is one order higher.}
+At $2j-d=1$, the Hurwitz pole turns $c_{j,r+1}s^{r+1}$ into a
+contribution of order $s^r$. The term $c_{j,r+1}/2$ in
+\eqref{hqj:eq:Tres} cannot be dropped. Weight finite parts and spectral
+derivatives differ by exactly \eqref{hqj:eq:rho-fp}.
+
+\paragraph{Finite heads matter beyond the first derivative.}
+The ordinary head in \eqref{hqj:eq:head} vanishes for $r=1$, but
+usually not for $r\ge2$. A calculation that merely replaces $a$ by
+$a+N$ in the tail loses an explicit finite term. The tests compare
+multiple head choices at masses both inside and outside the original
+small-mass disk.
+
+\paragraph{The polynomial subtraction is part of the two-mass answer.}
+At degree at least two, the raw logarithmic-square sum diverges.
+Equation \eqref{hqj:eq:PiP} gives every required term, and
+\eqref{hqj:eq:even-polynomial-zero} explains why no further finite
+constant is present. The second derivative of a product is not the
+sum of its two second derivatives; the scale factor and the correction
+are both shown in \eqref{hqj:eq:product-second}.
+
+\paragraph{A sufficient function family is not a minimal one.}
+The integral $\mathcal J_p$ makes the second-jet formula complete.
+Neither a failed reduction search nor the appearance of $E_1$ proves
+that $\mathcal J_p$ cannot be reduced further. That minimality question
+remains separate.
+
+\subsection{Executed finite exact checks}
+The standalone script \file{verification/check_exact.py} completed
+\textbf{834 exact assertions} using rational arithmetic and SymPy.
+It also rejected \textbf{five deliberately corrupted identities}.
+The exact suite independently compares the Pochhammer and harmonic
+coefficient constructions through $j=20$, checks the Bessel and
+order-differentiated differential equations through $m=10$, checks
+Gamma-normalization identities through $m=16$, verifies logarithmic-square
+coefficients through degree $18$, verifies polynomial resolvent
+remainders through weight degree $10$, and checks the relevant
+Bernoulli reflection and first-anomaly coefficients.
+
+The report \file{data/exact_results.json} enumerates every assertion
+rather than reporting an inferred count. The exact rational table
+\file{data/coefficient_table.json} gives low-order $C_j$, all checked
+$P_m,A_m,B_m$, and sample two-mass subtraction coefficients. These are
+finite regression certificates. The mathematical range beyond the
+checked indices follows from the proofs, not from extrapolation.
+
+\subsection{Executed numerical diagnostics}
+Three separately replayable suites completed \textbf{63 comparisons}
+at 50 decimal working digits with scaled tolerance $10^{-34}$.
+The retained maximum scaled discrepancy is below $8\cdot10^{-49}$.
+The factorization suite has 19 comparisons, the Fourier/Bessel suite
+24, and the collision suite 20. Their individual inputs, outputs,
+and discrepancies are in the three corresponding JSON files under
+\file{data/}.
+
+The independent comparisons include separate complex-shift Hurwitz
+jets versus the cancellation compiler, global digamma integrals
+versus the head/tail formula, Bessel order derivatives versus finite
+polynomials, ordinary polylogarithm integrals versus exponential-integral
+series, and the negative-integer second jets versus the independent
+quadratic binomial expansion. The collision tests compare subtracted
+spectral sums with ordinary integrals and Taylor expansions. Three
+additional comparisons compute the two-mass second derivative directly
+from its double Pochhammer expansion, independently of the
+logarithmic-square decomposition.
+
+These are not rigorous interval enclosures. The truncation routines
+choose generous precision-dependent cutoffs, and quadrature is
+floating-point. The implementation avoids a numerical library overflow
+at astronomically small complex polylogarithm arguments by using the
+leading term of their convergent series once the discarded terms are
+far below the diagnostic precision. That engineering safeguard does
+not replace an error-certified numerical analysis. No proof-assistant
+formalization or external peer review is claimed.
+
+\subsection{Replay and additive integration}
+From the package root, with Python, mpmath, SymPy, and a LaTeX engine:
+\begin{verbatim}
+python verification/verify_manifest.py
+python verification/check_exact.py
+python verification/check_numeric.py --part factorization \
+  --output data/numerical_factorization.json
+python verification/check_numeric.py --part fourier \
+  --output data/numerical_fourier.json
+python verification/check_numeric.py --part collision \
+  --output data/numerical_collision.json
+python verification/build.py
+\end{verbatim}
+Run manifest verification before replaying or rebuilding.
+The delivered JSON files are receipts of executed runs. Replaying with
+other output paths preserves those receipts. The build script assembles
+a self-contained TeX source from the modular sources and runs three
+serial LaTeX passes. Rebuilding can change PDF metadata; manifest
+verification is for the delivered bytes, not a certification of every
+future rebuild.
+
+A suitable additive destination is
+\file{Analysis/Polylogarithms/docs/reports/higher-quadratic-jets/}.
+The integration notes map each theorem to the predecessor's specific
+research question. All manuscript labels use the prefix \file{hqj:}.
+The short integration fragment is an overview with pointers, not a
+substitute for the full proofs. No remote commit, overwrite, or
+automatic conjecture-status change is part of this delivery.

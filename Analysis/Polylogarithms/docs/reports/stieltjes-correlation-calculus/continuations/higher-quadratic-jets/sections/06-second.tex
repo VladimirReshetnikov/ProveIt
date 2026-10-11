@@ -1,0 +1,235 @@
+\section{Every negative-integer second jet of the bilateral quadratic spectrum}
+\label{hqj:sec:second}
+
+For $0<a<1$, $b>0$, define
+\begin{equation}\label{hqj:eq:E}
+E(s;a,b)=\sum_{n\in\Z}\bigl((n+a)^2+b^2\bigr)^{-s},\qquad \Rea s>\tfrac12.
+\end{equation}
+Its Poisson representation is
+\begin{align}
+E(s;a,b)=\frac1{\Gamma(s)}\biggl\{&\sqrt\pi\Gamma(s-\tfrac12)b^{1-2s}
+\notag\\
+&+4\pi^s b^{1/2-s}\sum_{n\ge1}n^{s-1/2}\cos(2\pi na)
+K_{s-1/2}(2\pi bn)\biggr\}.
+\label{hqj:eq:Poisson}
+\end{align}
+For completeness, insert
+$Q^{-s}=\Gamma(s)^{-1}\int_0^\infty t^{s-1}e^{-Qt}\dd t$
+in \eqref{hqj:eq:E}. Gaussian Poisson summation converts the lattice
+heat kernel into
+$\sqrt{\pi/t}\sum_{k\in\Z}e^{-\pi^2k^2/t}e^{2\pi ika}$.
+The zero mode integrates to the first term in braces. Pair the positive
+and negative modes, and use the standard integral
+$\int_0^\infty t^{\nu-1}e^{-\beta t-\gamma/t}\dd t
+=2(\gamma/\beta)^{\nu/2}K_\nu(2\sqrt{\beta\gamma})$
+to obtain the second. Initial absolute convergence justifies these
+steps, and the exponentially convergent Bessel series then continues
+the result \cite{bessel}.
+
+The expression in braces is holomorphic at every $s=-m$, $m\ge0$.
+Since $1/\Gamma(s)$ has a simple zero there,
+\begin{equation}\label{hqj:eq:negative-zero}
+E(-m;a,b)=0.
+\end{equation}
+Write
+\[
+L_m(a,b)=E'(-m;a,b),\qquad M_m(a,b)=E''(-m;a,b).
+\]
+The first jet $L_m$ is the finite family in the predecessor. The second
+jet differentiates the Bessel order and cannot be obtained merely by
+squaring or differentiating its already specialized value.
+
+\subsection{An explicit half-integer order derivative}
+For $m\ge0$ let
+\begin{equation}\label{hqj:eq:PAB}
+P_m(y)=\sum_{j=0}^m\frac{(m+j)!}{j!(m-j)!2^j}y^j,
+\qquad A_m(y)=(-1)^mP_m(-y).
+\end{equation}
+Define polynomials $B_m$ by
+\begin{equation}\label{hqj:eq:Brec}
+B_0(y)=0,\quad B_1(y)=2y,\quad
+B_{m+1}=B_{m-1}+(2m+1)yB_m+2yP_m\quad(m\ge1).
+\end{equation}
+All have degree at most $m$. Let
+$E_1(x)=\int_x^\infty e^{-t}\dd t/t$ for $x>0$.
+
+\begin{lemma}[Finite polynomial form of the Bessel order derivative]
+\label{hqj:lem:Bessel}
+For $x>0$,
+\begin{equation}\label{hqj:eq:Korder}
+\left.\partial_\nu K_\nu(x)\right|_{\nu=m+1/2}
+=\sqrt{\frac\pi{2x}}e^{-x}
+\left\{A_m(1/x)e^{2x}E_1(2x)+B_m(1/x)\right\}.
+\end{equation}
+At $\nu=-m-1/2$ the derivative has the opposite sign.
+\end{lemma}
+\begin{proof}
+The classical base is $K_{1/2}(x)=k(x)=\sqrt{\pi/(2x)}e^{-x}$.
+Set $f(x)=e^{2x}E_1(2x)$, so
+$f'=2f-1/x$ and $f''-2f'=1/x^2$.
+The modified Bessel equation, differentiated in its order at $\nu=1/2$,
+is
+\[
+x^2D''+xD'-(x^2+\tfrac14)D=k.
+\]
+Substituting $D=kf$ reduces it exactly to
+$x^2(f''-2f')=1$. The real integral representation of $K_\nu$ and
+Laplace localization at its minimum give
+$(\partial_\nu K_\nu)/k=O(x^{-1})$ for fixed $\nu$ as $x\to\infty$;
+this also follows from the differentiated standard large-$x$ expansion.
+Our $f$ has the same decay. Their difference solves the homogeneous
+Bessel equation: the growing solution is excluded by decay, and the
+remaining multiple of $k$ is excluded by its ratio tending to zero.
+Thus \eqref{hqj:eq:Korder} holds at $m=0$.
+
+Differentiate the order recurrence
+$K_{\nu+1}=K_{\nu-1}+2\nu K_\nu/x$.
+The evenness $K_{-\nu}=K_\nu$ implies oddness of its order derivative.
+At $\nu=1/2$, this gives the $m=1$ polynomial $B_1=2y$ and
+$A_1=y-1$. Inductively the differentiated recurrence gives
+\eqref{hqj:eq:Brec}. The coefficient of $e^{2x}E_1(2x)$ satisfies the
+same homogeneous recurrence and equals $(-1)^mP_m(-y)$ by the finite
+recurrence for $P_m$. This proves the formula at all $m$.
+\end{proof}
+The Bessel recurrence and order differentiability are classical
+\cite{besselrec,order}; this lemma records a convenient exact
+normalization for the spectral calculation. The first polynomials are
+\begin{center}
+\begin{tabular}{c l l l}
+\toprule
+$m$ & $P_m(y)$ & $A_m(y)$ & $B_m(y)$\\
+\midrule
+0 & $1$ & $1$ & $0$\\
+1 & $1+y$ & $y-1$ & $2y$\\
+2 & $1+3y+3y^2$ & $1-3y+3y^2$ & $2y+8y^2$\\
+3 & $1+6y+15y^2+15y^3$ & $-1+6y-15y^2+15y^3$
+& $4y+16y^2+46y^3$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{One explicit polylogarithm integral family}
+For $p\in\C$ set
+\begin{equation}\label{hqj:eq:J}
+\mathcal J_p(a,b)=\int_1^\infty
+\frac{\Li_p(e^{-2\pi bw+2\pi ia})}{w+1}\dd w.
+\end{equation}
+This is an ordinary absolutely convergent integral, entire in $p$.
+For real $a$ and $b>0$, its series form is
+\begin{equation}\label{hqj:eq:Jseries}
+\mathcal J_p(a,b)=\sum_{n\ge1}
+\frac{e^{2\pi ian+2\pi bn}E_1(4\pi bn)}{n^p}.
+\end{equation}
+Indeed, expand the polylogarithm under the integral and substitute
+$t=2\pi bn(w+1)$ in each exponential integral. For $p$ in a compact
+set, each $p$ derivative only adds a power of $\log n$; the factor
+$e^{-2\pi b n w}$ dominates this uniformly when $b$ is bounded below
+by a positive constant. This proves normal convergence and all claimed
+interchanges, including parameter differentiation on smaller strips in
+complex $a$.
+
+Two exact identities make the added coordinate compatible with the
+existing calculus:
+\begin{equation}\label{hqj:eq:J-calculus}
+\partial_a\mathcal J_p=2\pi i\mathcal J_{p-1},\qquad
+\partial_b\mathcal J_p=2\pi\mathcal J_{p-1}
+-\frac{\Li_p(e^{-2\pi b+2\pi ia})}{b}.
+\end{equation}
+The first follows termwise. For the second, differentiate
+\eqref{hqj:eq:Jseries} and use
+$\frac{\dd}{\dd b}E_1(4\pi bn)=-e^{-4\pi bn}/b$.
+Every anchored primitive in $a$ is therefore explicit; for example
+\[
+\int_{a_0}^{a_1}\mathcal J_p(a,b)\dd a
+=\frac{\mathcal J_{p+1}(a_1,b)-\mathcal J_{p+1}(a_0,b)}{2\pi i}.
+\]
+The integral family is introduced to give a complete expression. No
+claim that it cannot be eliminated by another identity is made.
+
+\subsection{The complete second-jet formula}
+Let $q=e^{-2\pi b+2\pi ia}$ and, for real $p$, abbreviate
+\[
+U_p=\Rea\Li_p(q),\qquad V_p=\Rea\Li_p^{[1]}(q),\qquad
+I_p=\Rea\mathcal J_p(a,b).
+\]
+Write $P_m(y)=\sum_jp_{mj}y^j$, $A_m(y)=\sum_ja_{mj}y^j$,
+$B_m(y)=\sum_jb_{mj}y^j$. Define
+\begin{equation}\label{hqj:eq:Lzero}
+L_m^{(0)}(b)=-\frac{2^{2m+1}(m!)^2\pi}{(2m+1)!}b^{2m+1},
+\qquad c_m(b)=\gamma-H_m+\log(\pi/b).
+\end{equation}
+
+\begin{theorem}[All nonpositive-integer second jets]\label{hqj:thm:second}
+For every $m\ge0$, $0<a<1$, and $b>0$,
+\begin{align}
+M_m(a,b)={}&4L_m^{(0)}(b)
+\bigl(H_{2m+1}-H_m-\log(2b)\bigr)\notag\\
+&+\frac{4(-1)^m m!b^m}{\pi^m}
+\sum_{j=0}^m\frac1{(2\pi b)^j}
+\bigl\{p_{mj}(c_m(b)U_{m+j+1}-V_{m+j+1})\notag\\[-2pt]
+&\hspace{43mm}-b_{mj}U_{m+j+1}-a_{mj}I_{m+j+1}\bigr\}.
+\label{hqj:eq:second-all}
+\end{align}
+Thus a finite set of polylogarithms, their first order derivatives, and
+$\mathcal J_1,\ldots,\mathcal J_{2m+1}$ suffices for each second jet.
+\end{theorem}
+\begin{proof}
+Write \eqref{hqj:eq:Poisson} as $E(s)=H(s)/\Gamma(s)$.
+The reciprocal Gamma expansion at $s=-m+\varepsilon$ is
+\[
+\frac1{\Gamma(-m+\varepsilon)}
+=(-1)^mm!\left\{\varepsilon+(\gamma-H_m)\varepsilon^2
++O(\varepsilon^3)\right\}.
+\]
+Hence
+\begin{equation}\label{hqj:eq:second-H}
+M_m=2(-1)^mm!\bigl(H'(-m)+(\gamma-H_m)H(-m)\bigr).
+\end{equation}
+For the zero mode, its logarithmic derivative is
+$\psi(-m-1/2)-2\log b$. The recurrence for digamma gives
+\[
+\psi(-m-\tfrac12)=-\gamma-2\log2+2H_{2m+1}-H_m.
+\]
+Substitution in \eqref{hqj:eq:second-H} yields the first line of
+\eqref{hqj:eq:second-all}.
+
+For a nonzero Fourier mode, differentiating
+$\pi^s b^{1/2-s}n^{s-1/2}$ gives $\log(\pi n/b)$.
+At $s=-m$, $K_{s-1/2}=K_{m+1/2}$ has the finite polynomial $P_m$.
+Its order derivative has the minus sign in Lemma~\ref{hqj:lem:Bessel}.
+The resulting mode coefficient, apart from its common prefactor, is
+\[
+e^{-2\pi bn}n^{-m-1}
+\left\{P_m((2\pi bn)^{-1})(c_m(b)+\log n)
+-B_m((2\pi bn)^{-1})
+-A_m((2\pi bn)^{-1})e^{4\pi bn}E_1(4\pi bn)\right\}.
+\]
+Now
+$\sum q^n\log n/n^p=-\Li_p^{[1]}(q)$, and the last part sums by
+\eqref{hqj:eq:Jseries}. Expanding the three finite polynomials gives
+\eqref{hqj:eq:second-all}. The exponentially decaying modes and their
+order derivatives converge normally near $s=-m$, justifying the
+preceding differentiations and summations.
+\end{proof}
+
+The lowest case is already a nontrivial exact identity:
+\begin{align}
+M_0(a,b)={}&8\pi b\bigl(\log(2b)-1\bigr)\notag\\
+&+4\left\{(\gamma+\log(\pi/b))\Rea\Li_1(q)
+-\Rea\Li_1^{[1]}(q)-\Rea\mathcal J_1(a,b)\right\}.
+\label{hqj:eq:M0}
+\end{align}
+The formula includes the entire constant Fourier mode. It is not just
+an oscillatory correction to an unevaluated spectral quantity.
+
+An independent Hurwitz representation is available from the convergent
+small-mass expansion
+\begin{equation}\label{hqj:eq:Ebinomial}
+E(s;a,b)=\sum_{j\ge0}\frac{(-1)^j(s)_j}{j!}b^{2j}
+\bigl\{\zeta(2s+2j,a)+\zeta(2s+2j,1-a)\bigr\},
+\quad b<\min(a,1-a).
+\end{equation}
+Taylor differentiation at $s=-m$ therefore gives an identity between
+\eqref{hqj:eq:second-all} and an ordinary convergent series of Hurwitz
+jets. In the code this route is implemented independently of the Bessel
+polynomials and is used to test $m=0,1,2,3$.

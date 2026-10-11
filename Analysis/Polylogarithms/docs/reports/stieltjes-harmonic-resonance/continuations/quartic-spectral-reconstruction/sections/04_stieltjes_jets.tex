@@ -1,0 +1,451 @@
+\section{Every spectral derivative of a product of quadratic factors}
+\label{sec:onesided}
+
+The preceding quadratic-spectrum report asks both for higher factorization
+derivatives and for the logarithmic cross term for several masses
+\cite[Section 7, questions 2 and 7]{Quadratic}.  We give a finite
+subtraction formula at every derivative order, and then state its
+conjugate-linear specialization to the precise defect in question 2.
+Its one-sided version
+also identifies exactly which generalized Stieltjes constants occur.
+First-derivative multiplicative anomalies are classical
+\cite{EVZ,PolynomialAnomaly}; the result here concerns the specified
+higher derivatives and their explicit normalization.
+
+Fix $a>0$, an integer $r\ge2$, nonnegative real numbers
+$B_1,\ldots,B_r$, and a polynomial
+$W(x)=\sum_{d=0}^{D}w_dx^d$.  Write $x_n=n+a$ and
+$Q_j(x)=x^2+B_j$.  In their initial half-planes of absolute convergence set
+\begin{align}
+ E_{W,j}(s;a)&=\sum_{n\ge0}W(x_n)Q_j(x_n)^{-s},\\
+ Z_{W,\boldsymbol B}(s;a)&=
+       \sum_{n\ge0}W(x_n)\prod_{j=1}^rQ_j(x_n)^{-s}.
+\end{align}
+For the quadratic factors $Q_j$, logarithms are real logarithms of
+positive numbers.  The conjugate-linear specialization below explicitly
+uses principal complex logarithms.
+The normalized difference is
+\begin{equation}\label{one:defect}
+ \mathfrak D_W(s)=\frac1r\sum_{j=1}^rE_{W,j}(rs;a)
+                         -Z_{W,\boldsymbol B}(s;a),\qquad
+ \Delta_m(W)=\mathfrak D_W^{(m)}(0).
+\end{equation}
+Thus $\Delta_m=r^{m-1}\sum_jE_{W,j}^{(m)}(0)-Z_{W,\boldsymbol B}^{(m)}(0)$.
+The factor $r^{m-1}$ is part of the definition, and cannot be omitted
+when comparing different total spectral degrees.
+
+\subsection{A finite coefficient algebra}
+Define polynomials $h_k(s)$ by the Taylor expansion at $t=0$,
+\begin{equation}\label{one:h}
+ h(s,t)=\frac1r\sum_{j=1}^r(1+B_jt)^{-rs}
+                -\prod_{j=1}^r(1+B_jt)^{-s}
+       =\sum_{k\ge2}h_k(s)t^k.
+\end{equation}
+An entirely finite formula for each coefficient is
+\begin{equation}\label{one:hk}
+ h_k(s)=(-1)^k\left\{
+ \frac{(rs)_k}{r\,k!}\sum_jB_j^k
+ -\sum_{k_1+\cdots+k_r=k}
+                \prod_{j=1}^r\frac{(s)_{k_j}B_j^{k_j}}{k_j!}
+                  \right\}.
+\end{equation}
+Here $(s)_0=1$.  Put $A_{k,j}=h_k^{(j)}(0)$; it is zero for $j>k$.
+Both $h_0$ and $h_1$ vanish identically, and every $h_k$ is divisible
+by $s^2$.  The latter assertion follows before coefficient extraction:
+$h(0,t)=\partial_sh(0,t)=0$.  In particular, if
+\begin{equation}\label{one:variance}
+ V(\boldsymbol B)=\sum_{i<j}(B_i-B_j)^2,
+\end{equation}
+then $h_2(s)=V(\boldsymbol B)s^2/2$.
+
+\begin{theorem}[Finite subtraction at all spectral orders]
+\label{thm:alljets}
+Choose any integer
+\begin{equation}\label{one:K}
+ K\ge\max\left(1,\left\lfloor\frac{D+1}{2}\right\rfloor\right).
+\end{equation}
+The functions in \eqref{one:defect} are holomorphic at zero, and
+\begin{align}\label{one:master}
+ \mathfrak D_W(s)={}&\mathcal R_K(s)
+   +\sum_{d=0}^{D}w_d\sum_{k=2}^{K}
+                     h_k(s)\zeta(2rs+2k-d,a),\\
+ \mathcal R_K(s)={}&\sum_{n\ge0}W(x_n)x_n^{-2rs}
+       \left\{h(s,x_n^{-2})-\sum_{k=2}^{K}h_k(s)x_n^{-2k}\right\}.
+       \label{one:remainder}
+\end{align}
+The remainder is holomorphic in
+$\Re s>(D-2K-1)/(2r)$, with normally convergent fixed spectral
+derivatives there.  Every apparent pole of the finite sum at $s=0$
+is removable after multiplication by $h_k(s)$.
+
+For $m\ge1$ define
+\begin{align}
+ L_j(x)&=\log(x^2+B_j),\\
+ T_m(x)&=(-1)^m\left\{r^{m-1}\sum_j L_j(x)^m
+                         -\left(\sum_jL_j(x)\right)^m\right\},
+                         \label{one:T}\\
+ U_{k,m}(X)&=\sum_{j=2}^{m}\binom mj A_{k,j}(-2rX)^{m-j}.
+                         \label{one:U}
+\end{align}
+An empty sum is zero.  Then the following is an ordinary convergent
+series plus a finite, explicit correction:
+\begin{equation}\label{one:jet}
+ \boxed{\begin{aligned}
+ \Delta_m(W)={}&\sum_{n\ge0}W(x_n)
+       \left\{T_m(x_n)-\sum_{k=2}^{K}x_n^{-2k}
+                                      U_{k,m}(\log x_n)\right\}\\
+ &+\sum_{d=0}^{D}w_d\sum_{k=2}^{K}\mathcal C_{m,k}(2k-d;a),
+ \end{aligned}}
+\end{equation}
+where, if $\nu\ne1$,
+\begin{equation}\label{one:regularC}
+ \mathcal C_{m,k}(\nu;a)=
+       \sum_{j=2}^{m}\binom mj A_{k,j}(2r)^{m-j}
+                                     \zeta^{(m-j)}(\nu,a),
+\end{equation}
+and at the resonant value $\nu=1$,
+\begin{equation}\label{one:resonantC}
+ \boxed{\displaystyle
+ \mathcal C_{m,k}(1;a)=\frac{A_{k,m+1}}{2r(m+1)}
+       +\sum_{j=2}^{m}\binom mj A_{k,j}(-2r)^{m-j}
+                                     \gamma_{m-j}(a).}
+\end{equation}
+Consequently only $\gamma_0(a),\ldots,\gamma_{m-2}(a)$ can occur at
+the $m$th derivative.  They occur only through odd weight monomials
+$x^{2k-1}$ with $k\ge2$.
+\end{theorem}
+
+\begin{proof}
+For sufficiently large $\Re s$, subtract the finite Taylor polynomial
+in \eqref{one:h} from each summand in \eqref{one:defect}; the removed
+powers sum to the Hurwitz functions in \eqref{one:master}.  This proves
+the equality where all series converge absolutely.
+
+On a compact set of $s$ and masses, the Taylor remainder is
+$O(x^{-2K-2})$ as $x\to\infty$, uniformly with every fixed spectral
+derivative.  A derivative of $x^{-2rs}$ introduces only a power of
+$\log x$.  Hence the summands of \eqref{one:remainder} are bounded
+by $C x^{D-2K-2-2r\Re s}(1+\log x)^M$, which is summable in the
+stated half-plane.  This argument uses the Taylor expansion only for
+large $x$.  The finitely many small $x_n$ are kept in the original
+expression, so no assumption such as $B_j<a^2$ is needed.
+It proves normal convergence, holomorphy, and the legitimacy of
+termwise differentiation.  It also continues the original identity
+from its initial half-plane to a neighborhood of zero.
+
+The same finite-subtraction argument applied separately to
+$\prod_j(1+B_jt)^{-s}$ and $(1+B_jt)^{-s}$ proves that the original
+spectral functions are holomorphic at zero.  Their positive-$t$-degree
+coefficients vanish at $s=0$ and thus cancel any simple Hurwitz pole;
+their degree-zero terms are $\zeta(-d,a)$, regular at zero.
+
+The only finite term in \eqref{one:master} with a pole at zero has
+$2k-d=1$.  The Stieltjes convention is
+\begin{equation}\label{one:stieltjes}
+ \zeta(1+u,a)=\frac1u+
+                 \sum_{j\ge0}\frac{(-1)^j}{j!}\gamma_j(a)u^j.
+\end{equation}
+Since $h_k(s)=O(s^2)$, the product is holomorphic.  At a nonresonant
+integer, the ordinary product rule gives \eqref{one:regularC}.
+At a resonance, the pole is $1/(2rs)$, so its $m$th coefficient
+contributes $A_{k,m+1}/(2r(m+1))$.  The regular coefficients in
+\eqref{one:stieltjes} give the remaining terms of
+\eqref{one:resonantC}.  This proves the finite correction exactly,
+including its sign and the extra local term.
+
+Finally, differentiating the actual summands in the remainder gives
+\eqref{one:T} and \eqref{one:U}.  The normal convergence just proved
+allows the differentiation, and yields \eqref{one:jet}.  Increasing
+$K$ merely transfers an exactly summed term between the remainder
+and the correction, so the answer is independent of that choice.
+\end{proof}
+
+\subsection{The local first derivative and the nonlocal second derivative}
+
+The first derivative is particularly short:
+\begin{corollary}[First-derivative residue]\label{cor:firstanomaly}
+For the convention \eqref{one:defect},
+\begin{equation}\label{one:first}
+ \Delta_1(W)=\frac1{4r}[x^{-1}]\,W(x)
+       \sum_{i<j}\left\{\log\frac{x^2+B_i}{x^2+B_j}\right\}^{\!2}.
+\end{equation}
+It is independent of $a$.  If $\deg W\le2$, it vanishes for all masses.
+For $W=x^3$, it equals $V(\boldsymbol B)/(4r)$.
+\end{corollary}
+\begin{proof}
+The remainder and nonresonant corrections start at order $s^2$.
+Moreover $\partial_s^2h(0,t)$ equals the sum of the pairwise squared
+logarithmic differences in \eqref{one:first}.  Substitute $m=1$
+in \eqref{one:resonantC}.
+\end{proof}
+
+At the second derivative the pairwise logarithmic squares are still
+present, but are no longer purely local.  In addition, at resonances
+one must retain $A_{k,3}/(6r)$.  The next examples make both features
+explicit.
+
+\begin{corollary}[A single Stieltjes coefficient at every derivative]
+\label{cor:singleStieltjes}
+Take $r=2$, $W=x^3$, $B\ne C$, and set $\delta=B-C$.
+For every integer $m\ge2$, put
+\begin{equation}\label{one:cm}
+ c_m=\binom m2(-4)^{m-2}\delta^2.
+\end{equation}
+With $T_m$ as in \eqref{one:T},
+\begin{equation}\label{one:isolated}
+ \boxed{\displaystyle
+ \Delta_m(x^3)=
+   \sum_{n\ge0}\left\{x_n^3T_m(x_n)
+                -c_m\frac{\log^{m-2}x_n}{x_n}\right\}
+       +c_m\gamma_{m-2}(a).}
+\end{equation}
+The displayed series converges absolutely and locally uniformly in
+$a>0$ and the masses.  Also $\Delta_1(x^3)=\delta^2/8$.
+\end{corollary}
+\begin{proof}
+Choose $K=2$.  Here $h_2(s)=\delta^2s^2/2$ exactly, so
+$A_{2,2}=\delta^2$ and $A_{2,j}=0$ for $j>2$.
+There is just the single resonant integer $2k-d=1$.  Equations
+\eqref{one:jet} and \eqref{one:resonantC} give the result.
+\end{proof}
+
+For clarity the first two instances are
+\begin{align}
+ \Delta_2(x^3)&=\sum_{n\ge0}\left\{
+      x_n^3\log^2\frac{x_n^2+B}{x_n^2+C}-\frac{\delta^2}{x_n}\right\}
+                         -\delta^2\psi(a),\label{one:x3second}\\
+ \Delta_3(x^3)&=\sum_{n\ge0}\left\{
+      -3x_n^3\log((x_n^2+B)(x_n^2+C))
+                     \log^2\frac{x_n^2+B}{x_n^2+C}
+                 +12\delta^2\frac{\log x_n}{x_n}\right\}
+                         -12\delta^2\gamma_1(a).\label{one:x3third}
+\end{align}
+In \eqref{one:x3second} the summand is $O(x_n^{-3})$; in
+\eqref{one:x3third} it is $O(x_n^{-3}\log x_n)$.
+The all-order formula isolates one prescribed generalized Stieltjes
+constant, instead of introducing an undefined finite part of a
+logarithmic series.
+
+There is already an additional local correction at the next odd weight.
+For $W=x^5$ and $r=2$,
+\begin{equation}\label{one:x5second}
+ \begin{split}
+ \Delta_2(x^5)={}&\sum_{n\ge0}\left\{
+ x_n^5\log^2\frac{x_n^2+B}{x_n^2+C}
+       -\delta^2x_n+\frac{\delta^2(B+C)}{x_n}\right\}\\
+ &+\delta^2\zeta(-1,a)
+       -\delta^2(B+C)\gamma_0(a)-\frac{\delta^2(B+C)}4.
+ \end{split}
+\end{equation}
+Indeed $A_{3,2}=-\delta^2(B+C)$ and
+$A_{3,3}=-3\delta^2(B+C)$.  The final term in
+\eqref{one:x5second} comes from the latter coefficient multiplied
+by the Hurwitz pole.  Simply assigning finite parts to the squared
+logarithm would miss it.
+
+\subsection{The source's conjugate-linear factorization problem}
+\label{one:linear-section}
+
+The second question in \cite{Quadratic} specifically factors a single
+quadratic into its two conjugate linear factors.  This requires a
+different spectral scale from a product of two quadratics.  Here is the
+explicit specialization, including that scale.  For $a,b>0$ define
+\[
+ F_{W,\pm}(s)=\sum_{n\ge0}W(x_n)(x_n\pm ib)^{-s},\qquad
+ Z_W(s)=\sum_{n\ge0}W(x_n)(x_n^2+b^2)^{-s},
+\]
+using principal logarithms.  Since $x_n>0$,
+$\log(x_n+ib)+\log(x_n-ib)=\log(x_n^2+b^2)$ without a branch term.
+Put
+\[
+ \widehat{\mathfrak D}_W(s)=\tfrac12
+        \{F_{W,+}(2s)+F_{W,-}(2s)\}-Z_W(s),\qquad
+ \widehat\Delta_m=\widehat{\mathfrak D}_W^{(m)}(0).
+\]
+The relevant coefficient polynomials are
+\begin{align}
+ \widehat h(s,t)
+ &=\tfrac12\{(1+ibt)^{-2s}+(1-ibt)^{-2s}\}
+                              -(1+b^2t^2)^{-s}
+    =\sum_{k\ge1}\eta_k(s)t^{2k},\label{one:linear-h}\\
+ \eta_k(s)&=(-1)^kb^{2k}
+       \left\{\frac{(2s)_{2k}}{(2k)!}-\frac{(s)_k}{k!}\right\},
+ \qquad \widehat A_{k,j}=\eta_k^{(j)}(0).
+ \label{one:linear-eta}
+\end{align}
+Every $\eta_k$ is divisible by $s^2$, although its degree can now
+be $2k$.  In particular $\eta_1(s)=-2b^2s^2$.
+
+\begin{corollary}[Every conjugate-linear spectral defect]
+\label{cor:linear-jets}
+Choose $K$ as in \eqref{one:K}.  The complete formula
+\eqref{one:jet} holds for $\widehat\Delta_m$ with these replacements:
+the finite coefficient sums begin at $k=1$; $A_{k,j}$ is replaced by
+$\widehat A_{k,j}$; every spectral scale $2r$ is replaced by $2$;
+and the raw derivative becomes
+\begin{equation}\label{one:linear-T}
+ \widehat T_m(x)=(-1)^m\left\{
+   2^{m-1}(\ell_+(x)^m+\ell_-(x)^m)
+                    -(\ell_+(x)+\ell_-(x))^m\right\},\qquad
+ \ell_\pm(x)=\log(x\pm ib).
+\end{equation}
+In particular the resonant correction is exactly
+\begin{equation}\label{one:linear-contact}
+ \widehat{\mathcal C}_{m,k}(1;a)
+ =\frac{\widehat A_{k,m+1}}{2(m+1)}
+    +\sum_{j=2}^m\binom mj\widehat A_{k,j}(-2)^{m-j}
+                                      \gamma_{m-j}(a).
+\end{equation}
+All remainder sums are ordinary and absolutely convergent.
+\end{corollary}
+\begin{proof}
+The exact finite-subtraction identity is
+\begin{align*}
+ \widehat{\mathfrak D}_W(s)
+ ={}&\sum_{n\ge0}W(x_n)x_n^{-2s}
+       \left\{\widehat h(s,x_n^{-1})-
+                         \sum_{k=1}^K\eta_k(s)x_n^{-2k}\right\}\\
+ &+\sum_{d=0}^D w_d\sum_{k=1}^K
+                            \eta_k(s)\zeta(2s+2k-d,a).
+\end{align*}
+Its tail is normally convergent for $\Re s>(D-2K-1)/2$.
+The finitely many terms with $x_n\le b$ are kept exactly, so the
+binomial expansion is used only within its tail disk.  The principal
+logarithms are analytic because the linear factors stay in the right
+half-plane.  Taylor differentiation of this identity is the proof of
+Theorem~\ref{thm:alljets} with scale $2$ and coefficient
+\eqref{one:linear-eta}; its pole is $1/(2s)$.
+This proves the stated correction and convergence claims.
+\end{proof}
+
+For the first odd weight $W=x$, put
+$\widehat c_m=-4b^2\binom m2(-2)^{m-2}$ for $m\ge2$.
+Then the exact all-order identity simplifies to
+\begin{equation}\label{one:linear-isolate}
+ \widehat\Delta_m(x)=\sum_{n\ge0}\left\{
+ x_n\widehat T_m(x_n)-\widehat c_m
+                         \frac{\log^{m-2}x_n}{x_n}\right\}
+                         +\widehat c_m\gamma_{m-2}(a),
+ \qquad \widehat\Delta_1(x)=-b^2.
+\end{equation}
+At order two, $\widehat T_2(x)=-4\arctan^2(b/x)$, so
+\begin{equation}\label{one:linear-second}
+ \boxed{\displaystyle
+ \widehat\Delta_2(x)=
+ 4\sum_{n\ge0}\left\{\frac{b^2}{x_n}
+                       -x_n\arctan^2\frac b{x_n}\right\}
+                                      +4b^2\psi(a).}
+\end{equation}
+Evenness of $W$ removes the first-derivative local anomaly but does
+not remove the higher nonlocal part.  Already at $W=1$,
+\[
+ \widehat\Delta_2(1)=-4\sum_{n\ge0}\arctan^2\frac b{n+a}.
+\]
+The individual linear terms themselves have finite Hurwitz evaluations:
+\begin{equation}\label{one:linear-hurwitz}
+ F_{W,\pm}^{(m)}(0)=
+ \sum_{d=0}^D w_d\sum_{j=0}^d\binom dj
+       (\mp ib)^{d-j}\zeta^{(m)}(-j,a\pm ib).
+\end{equation}
+Thus the corollary evaluates every $Z_W^{(m)}(0)$ using a finite
+complex-Hurwitz part and the explicitly convergent remainder.
+For example,
+\begin{equation}\label{one:linear-unweighted}
+ Z_1''(0)=4\Re\zeta''(0,a+ib)
+                     +4\sum_{n\ge0}\arctan^2\frac b{n+a}.
+\end{equation}
+Equations \eqref{one:linear-contact} and \eqref{one:linear-T}
+answer the stated higher-jet factorization problem without assuming that
+its first-derivative parity criterion persists.
+
+\subsection{A digamma integral and an anchored dilogarithm primitive}
+
+The cubic-weight second derivative has a compact ordinary integral.
+For $B>C\ge0$,
+\begin{equation}\label{one:digammaintegral}
+ \boxed{\displaystyle
+ \Delta_2(x^3)=2\int_C^B
+       t\,\Re\psi(a+i\sqrt t)
+                       \log\frac{B-t}{t-C}\,dt.}
+\end{equation}
+The endpoint logarithms are integrable.  To prove it, first use
+\[
+ \log^2\frac{x^2+B}{x^2+C}
+       =\int_C^B\!\int_C^B\frac{ds\,dt}{(x^2+s)(x^2+t)}.
+\]
+The normally convergent digamma difference is
+\[
+ \sum_{n\ge0}\left\{\frac{x_n}{x_n^2+t}-\frac1{x_n}\right\}
+        =\psi(a)-\Re\psi(a+i\sqrt t).
+\]
+Partial fractions first give the subtracted double sum
+$\psi(a)+(f(s)-f(t))/(t-s)$, where
+$f(t)=t\Re\psi(a+i\sqrt t)$.  The term $\delta^2\psi(a)$
+from integrating its constant part is cancelled by the explicit
+$-\delta^2\psi(a)$ in \eqref{one:x3second}.  The remaining kernel is
+$(f(s)-f(t))/(t-s)$.
+The diagonal is removable.  A symmetric exclusion of $s=t$, followed
+by elementary integration of $1/(t-s)$, gives
+$2\int_C^B f(t)\log((B-t)/(t-C))dt$.  This proves
+\eqref{one:digammaintegral} without separating divergent series.
+
+For an explicit primitive in the shift, set $\delta=B-C>0$,
+$y=(x^2+B)/(x^2+C)>1$, and define
+\begin{align}
+ J_2(y)&=-\frac{y\log^2y}{y-1}-2\Li_2(1-y),\label{one:J2}\\
+ J_3(y)&=-\frac{\log^2y}{2(y-1)^2}+\frac12\log^2y
+       +\Li_2(1-y)-\frac{\log y}{y-1}
+       +\log(y-1)-\log y,\label{one:J3}\\
+ \Phi_{B,C}(x)&=-\frac{\delta^2}{2}J_3(y)
+       +\frac{C\delta}{2}J_2(y)-\delta^2\log x
+       +\frac{\delta^2}{2}\log\delta-\frac34\delta^2.
+       \label{one:Phi}
+\end{align}
+Here $1-y<0$, so the dilogarithm is real and unambiguous.
+
+\begin{theorem}[Convergent dilogarithm--Gamma primitive]
+\label{thm:primitive}
+For $a,a_0>0$ and $B>C\ge0$,
+\begin{equation}\label{one:primitive}
+ \boxed{\begin{aligned}
+ \int_{a_0}^{a}\Delta_2(x^3;u,B,C)\,du
+ ={}&\sum_{n\ge0}\{\Phi_{B,C}(n+a)-\Phi_{B,C}(n+a_0)\}\\
+ &-\delta^2\log\frac{\Gamma(a)}{\Gamma(a_0)}.
+ \end{aligned}}
+\end{equation}
+Even the two sums of $\Phi$ separately converge absolutely.  Every
+normalization constant has been fixed in \eqref{one:Phi}.
+\end{theorem}
+\begin{proof}
+Direct differentiation using
+$\Li_2'(z)=-\log(1-z)/z$ gives
+$J_2'(y)=\log^2y/(y-1)^2$ and
+$J_3'(y)=\log^2y/(y-1)^3$.
+The substitution $v=x^2=\delta/(y-1)-C$ consequently proves
+\[
+ \Phi_{B,C}'(x)=x^3\log^2\frac{x^2+B}{x^2+C}-\frac{\delta^2}{x}.
+\]
+As $y=1+\varepsilon\downarrow1$, $J_2(y)\to0$ and
+$J_3(y)=\log\varepsilon-3/2+O(\varepsilon)$.
+These expansions show that the last two constants in
+\eqref{one:Phi} make $\Phi_{B,C}(x)\to0$ as $x\to\infty$.
+Since its derivative is $O(x^{-3})$, one has
+$\Phi_{B,C}(x)=O(x^{-2})$.  Its series and its differentiated
+series are therefore locally normally convergent for $a>0$.
+Sum the derivative and use \eqref{one:x3second} together with
+$(\log\Gamma)'=\psi$.  Evaluation at $a_0$ fixes the anchor and
+proves the displayed identity.
+\end{proof}
+
+The higher Stieltjes terms in \eqref{one:isolated} also have the
+classical anchored primitives
+\begin{equation}\label{one:Stieltjesprimitive}
+ \int_{a_0}^a\gamma_n(u)\,du
+   =\frac{(-1)^{n+1}}{n+1}
+       \{\zeta^{(n+1)}(0,a)-\zeta^{(n+1)}(0,a_0)\}.
+\end{equation}
+This follows by expanding
+$\partial_a\zeta(s,a)=-s\zeta(s+1,a)$ at $s=0$; it is not a
+new identity claimed by this article.  Equation \eqref{one:primitive}
+provides the additional explicit dilogarithmic primitive for the
+convergent nonlinear part at the second derivative.
