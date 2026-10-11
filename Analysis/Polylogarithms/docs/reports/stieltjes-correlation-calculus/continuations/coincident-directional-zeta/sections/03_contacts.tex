@@ -1,0 +1,255 @@
+\section{The full distributional collision correction}
+\label{cont:sec}
+
+The incoming coincident-point report isolates the off-point collision
+singularity and its finite constant, but leaves the distribution
+supported at the collision undetermined \cite{IncomingCoincident}.
+We now specify the extension convention and calculate that distribution
+for every pair of Stieltjes indices and every pair of argument
+derivatives.  This is a comparison of two extensions of the same
+off-point function.  It does not identify a pointwise product of two
+singular distributions at the same argument.
+
+\subsection{The two extensions being compared}
+
+Work on $\mathbb T=\mathbb R/\mathbb Z$.  Let $G_m$ be the unit-coordinate
+Hadamard extension of $\gamma_m(x)$ from $0<x<1$, and let
+$F_{m,p}$ be the corresponding extension of
+$\gamma_m^{(p)}(x)$.  Thus, for a smooth periodic test function,
+\begin{equation}\label{cont:finite-part}
+ \langle F_{m,p},\phi\rangle
+ =\CT_{\epsilon\downarrow0}
+      \int_\epsilon^1\gamma_m^{(p)}(x)\phi(x)\,dx,
+ \qquad F_{m,0}=G_m.
+\end{equation}
+Write $D=d/dx$, $\Delta=\delta_0-1$, and
+$\check U(x)=U(-x)$.  The exact correlation is the well-defined
+periodic convolution
+\begin{equation}\label{cont:correlation}
+ \mathcal R_{mn}^{p,q}=\check F_{m,p}*F_{n,q}.
+\end{equation}
+For ordinary smooth functions this is
+$\int_0^1 f(x)g(x+a)\,dx$ as a function of $a$.
+
+For $0<a<1$, let $J_{mn}^{p,q}(a)$ be the unit-coordinate finite part
+of the separated product
+$\int_0^1\gamma_m^{(p)}(x)\gamma_n^{(q)}(\{x+a\})\,dx$.
+It is the off-point restriction of \eqref{cont:correlation}, as
+established in the manuscript's translated contact law
+\cite{Repo}.  Define its canonical extension in the shift coordinate by
+\begin{equation}\label{cont:shift-extension}
+ \left\langle\mathfrak F J_{mn}^{p,q},\phi\right\rangle
+ =\CT_{\epsilon,\eta\downarrow0}
+      \int_\epsilon^{1-\eta}J_{mn}^{p,q}(a)\phi(a)\,da.
+\end{equation}
+The two endpoint constants are taken independently in $a$ and $1-a$;
+there is no added delta term.  The local power--log expansions proved
+in the incoming collision report guarantee existence.
+
+\subsection{Finite generating polynomials}
+
+This section uses a raising parameter to simplify the Gamma quotient:
+\[
+ \mathcal G(u)=\sum_{m\ge0}(-1)^mG_m\frac{u^m}{m!},
+ \qquad \mathcal F_p(u)=\sum_{m\ge0}(-1)^mF_{m,p}\frac{u^m}{m!}.
+\]
+For $r\ge0$ set
+\begin{equation}\label{cont:P-H}
+ P_r(z)=\prod_{j=1}^r(1+z/j),\qquad
+ H_r(z)=\frac{P_r(z)-1}{z},\qquad P_0=1,\ H_0=0.
+\end{equation}
+$H_r$ is a polynomial, not the scalar harmonic number; its constant
+coefficient is $\sum_{j=1}^r1/j$.  All its coefficients are elementary
+symmetric polynomials in $1,1/2,\ldots,1/r$.
+
+Put $w=u+v$ and define
+\begin{equation}\label{cont:A-B}
+ A(u,v)=\frac{\Gamma(1-u)\Gamma(1+w)}{\Gamma(1+v)},
+ \qquad T_0(u,v)=\frac{A(u,v)-1}{uw},
+ \qquad B(u,v)=T_0(u,v)+T_0(v,u).
+\end{equation}
+The quotients are removable because $A(0,v)=A(u,-u)=1$.
+The convergent local series
+\begin{equation}\label{cont:log-A}
+ \log A(u,v)=\sum_{k\ge2}\frac{\zeta(k)}{k}
+       \left[u^k+(-1)^k\big((u+v)^k-v^k\big)\right]
+\end{equation}
+makes every coefficient an exact finite polynomial in positive
+integer zeta values.  The undifferentiated off-point use of this
+Gamma quotient is inherited from the manuscript \cite{Repo}.
+
+There is also a compact symmetric form:
+\begin{equation}\label{cont:B-symmetric}
+ B(u,v)=\frac1{uv}\left\{
+  \frac{\Gamma(1-u)\Gamma(1-v)}{\Gamma(1-u-v)}
+  \frac{\cos(\pi(u-v)/2)}{\cos(\pi(u+v)/2)}-1\right\}.
+\end{equation}
+Indeed,
+$uvB=(vA(u,v)+uA(v,u))/(u+v)-1$.
+The Gamma reflection formula turns the fraction before the subtraction
+into the Gamma quotient in \eqref{cont:B-symmetric} times
+$\{\sin(\pi u)+\sin(\pi v)\}/\sin(\pi(u+v))$.
+The sine addition formula gives the displayed cosine ratio. All
+apparent quotients are interpreted by their removable holomorphic
+extensions near $(0,0)$. This second form provides an independent
+coefficient check on the generator.
+
+\begin{theorem}[All-index collision contact distribution]
+\label{cont:main}
+Let $m,n,p,q\ge0$ and $r=p+q$.  Then
+\begin{equation}\label{cont:main-identity}
+ \boxed{\mathcal R_{mn}^{p,q}
+      =\mathfrak F J_{mn}^{p,q}+e_{mn}^{p,q}\delta_0^{(r)}}.
+\end{equation}
+There are no additional lower derivatives of $\delta_0$.
+The coefficient is explicitly
+\begin{equation}\label{cont:coefficient}
+ e_{mn}^{p,q}=(-1)^{m+n}m!n![u^mv^n]E_{p,q}(u,v),
+\end{equation}
+where the following holomorphic germ requires only polynomial
+arithmetic and \eqref{cont:log-A}:
+\begin{align}
+ E_{p,q}(u,v)=(-1)^p\bigg\{
+ &P_r(w)B(u,v)
+   +\frac{H_r(w)-H_r(v)}{u}
+   +\frac{H_r(w)-H_r(u)}{v}\notag\\
+ &-H_p(u)H_r(v)-H_q(v)H_r(u)+H_p(u)H_q(v)\bigg\}.
+ \label{cont:E}
+\end{align}
+Both divided differences in this formula are polynomials.
+\end{theorem}
+
+\begin{proof}
+Let $Z_s$ be the meromorphic periodic Hurwitz distribution.  Its
+Fourier coefficients are the Hurwitz coefficients used in
+Section~\ref{cub:sec}, with zero mean.  Local Taylor subtraction at
+the origin gives
+\begin{equation}\label{cont:Z-expansion}
+ Z_{1+u}=-\frac\Delta u+\mathcal G(u).
+\end{equation}
+For $p>0$, the same subtraction at the higher Hurwitz pole, together
+with $D^pZ_s=(-1)^p(s)_pZ_{s+p}$, gives
+\begin{equation}\label{cont:derivative-anomaly}
+ \mathcal F_p(u)=D^p\mathcal G(u)+H_p(u)\delta_0^{(p)}.
+\end{equation}
+This generating version of the manuscript's differentiation anomaly
+also holds for $p=0$.  For clarity, the polar term of
+$Z_{1+p+u}$ is $(-1)^{p+1}\delta_0^{(p)}/(p!u)$.
+Multiplication by $(-1)^p(1+u)_p$ produces
+$-P_p(u)\delta_0^{(p)}/u$; subtracting the pole of the left side
+leaves exactly \eqref{cont:derivative-anomaly}.
+
+The beta form of the classical correlation, continued as a periodic
+distribution, is
+\[
+ \check Z_{1+u}*Z_{1+v}
+ =-\frac{A(u,v)}u Z_{1+w}
+   -\frac{A(v,u)}v\check Z_{1+w}.
+\]
+It follows either from the Fourier coefficients or first in a
+convergent half-plane and then by meromorphic continuation.
+Substitute \eqref{cont:Z-expansion} and use
+$\Delta*\Delta=\Delta$ and $\Delta*G_m=G_m$.
+The result is the holomorphic distribution identity
+\begin{align}
+ \check{\mathcal G}(u)*\mathcal G(v)
+ ={}&B(u,v)\Delta
+ -\frac{\mathcal G(w)-\mathcal G(v)}u
+ -\frac{\check{\mathcal G}(w)-\check{\mathcal G}(u)}v
+       \notag\\
+ &-w\bigl[T_0(u,v)\mathcal G(w)
+              +T_0(v,u)\check{\mathcal G}(w)\bigr].
+ \label{cont:base-generator}
+\end{align}
+Its off-point constant is $-B$.  The canonical shift extension
+replaces each ordinary Stieltjes function by its corresponding $G_m$
+and retains that constant.  Consequently the difference for $r=0$
+is $B\delta_0$, as claimed; it is not $B\Delta$.
+
+For $r>0$, converting $D^r\mathcal G(z)$ to the canonical extension
+of its ordinary derivative adds the difference
+$-H_r(z)\delta_0^{(r)}$.  A reflected term has the same difference:
+reflection and the chain rule each contribute $(-1)^r$.
+Applying this to \eqref{cont:base-generator}, the contact coefficient
+of its $r$th derivative is
+\[
+ P_r(w)B+
+ \frac{H_r(w)-H_r(v)}u+
+ \frac{H_r(w)-H_r(u)}v.
+\]
+Finally expand the correlation of
+$D^p\mathcal G(u)+H_p(u)\delta_0^{(p)}$ and
+$D^q\mathcal G(v)+H_q(v)\delta_0^{(q)}$.
+The two cross terms and the delta--delta term supply, respectively,
+$-H_p(u)H_r(v)$, $-H_q(v)H_r(u)$, and $H_p(u)H_q(v)$.
+The orientation of the first factor contributes $(-1)^p$.
+This proves \eqref{cont:E}.  Every contact term in this calculation
+has derivative order $r$, proving the absence of lower orders.
+Coefficient extraction gives \eqref{cont:main-identity}.
+\end{proof}
+
+\subsection{Explicit contact coefficients}
+
+For undifferentiated factors, $E_{0,0}=B$ and the first values are
+\begin{center}
+\begin{tabular}{c c c}
+\toprule
+$(m,n)$ & $e_{mn}^{0,0}$ & contact term\\
+\midrule
+$(0,0)$ & $2\zeta(2)$ & $2\zeta(2)\delta_0$\\
+$(1,0)$ or $(0,1)$ & $\zeta(3)$ & $\zeta(3)\delta_0$\\
+$(2,0)$ or $(0,2)$ & $11\zeta(4)/2$ & $11\zeta(4)\delta_0/2$\\
+$(1,1)$ & $7\zeta(4)/2$ & $7\zeta(4)\delta_0/2$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The last two simplifications use $\zeta(2)^2=5\zeta(4)/2$.
+For Stieltjes indices $m=n=0$ and positive argument derivatives,
+\begin{align}
+ e_{00}^{1,0}&=1-2\zeta(2),\notag\\
+ e_{00}^{1,1}&=1-2\zeta(2),\notag\\
+ e_{00}^{2,0}&=2\zeta(2)-\frac54.
+ \label{cont:low-examples}
+\end{align}
+The associated distributions are $\delta_0'$, $\delta_0''$, and
+$\delta_0''$, respectively.  Swapping the two factors reflects the
+correlation; accordingly
+\begin{equation}\label{cont:reflection}
+ e_{nm}^{q,p}=(-1)^r e_{mn}^{p,q}.
+\end{equation}
+This identity is also immediate from \eqref{cont:E}.
+
+For instance, the known off-point identity is
+$J_{00}^{0,0}(a)=\gamma_1(a)+\gamma_1(1-a)-2\zeta(2)$.
+Its exact periodic distributional completion is
+\begin{equation}\label{cont:example00}
+ \check G_0*G_0=G_1+\check G_1+2\zeta(2)(\delta_0-1).
+\end{equation}
+An off-point numerical computation cannot see the delta term.
+In contrast, a nonzero Fourier coefficient of \eqref{cont:example00}
+contains the necessary constant $2\zeta(2)$; omitting it gives the
+wrong correlation even though the two functions agree for $0<a<1$.
+
+\subsection{Normalized primitives of the contact discrepancy}
+
+The contact formula also fixes constants in antiderivatives.
+Let $\mathcal I$ be the zero-mean inverse of $D$ on periodic
+distributions of mean zero.  For the periodic Bernoulli polynomial
+$B_j(\{a\})$,
+\begin{equation}\label{cont:Bernoulli-inverse}
+ \mathcal I^j\Delta=-\frac{B_j(\{a\})}{j!},\qquad j\ge1.
+\end{equation}
+This follows from $DB_1(\{a\})=1-\delta_0$ and
+$B_j'=jB_{j-1}$ for $j>1$, with zero means.
+For $r>0$, applying $\mathcal I^{r+j}$ to the discrepancy in
+\eqref{cont:main-identity} yields
+\begin{equation}\label{cont:contact-primitive}
+ \mathcal I^{r+j}\bigl(\mathcal R_{mn}^{p,q}
+             -\mathfrak FJ_{mn}^{p,q}\bigr)
+       =-e_{mn}^{p,q}\frac{B_j(\{a\})}{j!},\qquad j\ge1.
+\end{equation}
+For $r=0$, first subtract the mean of the discrepancy, replacing
+$e\delta_0$ by $e\Delta$, and the same formula applies.
+These are fixed normalized primitives, with no unspecified additive
+polynomial.  They explain exactly how a point-supported correction
+can become an ordinary Bernoulli term after repeated integration.

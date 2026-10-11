@@ -1,0 +1,236 @@
+\section{Tangential curves and the exact amount of curve data}
+\label{sec:curves}
+
+Straight rays are only the simplest restrictions of the ordered germ.
+A curve can be tangent to one or several prefix hyperplanes, producing
+a higher pole order. The canonical decomposition gives a finite
+calculus for all such cases, including a sharp statement about which
+Taylor coefficients of the curve can affect the answer.
+
+\subsection{A coefficient formula for every admissible analytic curve}
+
+Let $u_i(\eps)$ be analytic near zero, with $u_i(0)=0$, and let
+\begin{equation}\label{curve:prefix}
+ P_j(\eps)=\sum_{i=1}^j u_i(\eps).
+\end{equation}
+Assume that no $P_j$ is identically zero. There are unique integers
+$\nu_j\ge1$ and analytic units $p_j$ such that
+\begin{equation}\label{curve:units}
+ P_j(\eps)=\eps^{\nu_j}p_j(\eps),\qquad p_j(0)\ne0.
+\end{equation}
+Set $M_0=0$ and $M_k=\nu_1+\cdots+\nu_k$.
+
+\begin{theorem}[Exact curve finite part and sharp jet order]
+\label{curve:main}
+The composed ordered function has a pole of exactly order $M_d$, with
+leading coefficient $\prod_{j=1}^d p_j(0)^{-1}$. Its constant term is
+\begin{equation}\label{curve:FP}
+ \boxed{\displaystyle
+ \FP_{\eps=0}Z_d(1+u_1(\eps),\ldots,1+u_d(\eps);a)
+ =\sum_{k=0}^d[\eps^{M_k}]
+ \frac{R_{d-k}(u_{k+1}(\eps),\ldots,u_d(\eps);a)}
+      {p_1(\eps)\cdots p_k(\eps)}.}
+\end{equation}
+Regular-germ Taylor coefficients through total degree $M_d$ and curve
+Taylor coefficients through order
+\begin{equation}\label{curve:order}
+ J=M_d+\max_{1\le j\le d}\nu_j
+\end{equation}
+suffice. For the class of curves with the specified prefix orders,
+the bound $J$ cannot in general be decreased.
+\end{theorem}
+
+\begin{proof}
+Insert \eqref{curve:units} into \eqref{ord:canonicalformula}. Its $k$th
+summand is $\eps^{-M_k}$ times a holomorphic function. The constant is
+therefore precisely the coefficient on the right of \eqref{curve:FP}.
+Because $M_0<M_1<\cdots<M_d$, only the $k=d$ term can have pole order
+$M_d$. Its numerator is $R_0=1$, so its leading coefficient is nonzero
+and equals the asserted product.
+
+In the $k$th numerator, each $u_i$ vanishes at least to first order.
+Coefficients through order $M_k$ thus use only regular-germ monomials
+of total degree at most $M_k$, and only curve coefficients through
+that order. To invert $p_j=P_j/\eps^{\nu_j}$ through degree $M_k$
+requires $P_j$ through degree $\nu_j+M_k$. These degrees are all at
+most \eqref{curve:order}, proving sufficiency.
+
+For necessity, fix an index $j$ and perturb only that prefix by
+\begin{equation}\label{curve:perturb}
+ P_j(\eps)\longmapsto P_j(\eps)+
+                       \delta\eps^{\nu_j+M_d}.
+\end{equation}
+This is realized by opposite changes to $u_j,u_{j+1}$ when $j<d$,
+or by a change to $u_d$ when $j=d$. All prefix orders and all other
+prefixes stay fixed. The affected unit first changes in degree $M_d$.
+Every denominator change in a term with $k<d$ starts after its constant
+degree $M_k$; numerator changes start even later. In the $k=d$ term,
+ordinary inversion gives the exact change
+\begin{equation}\label{curve:sharpchange}
+ \Delta\FP=-\frac{\delta}
+ {p_j(0)\prod_{\ell=1}^d p_\ell(0)}.
+\end{equation}
+Choosing $j$ with maximal $\nu_j$ changes no curve coefficient below
+order $J$ but changes the finite part by a nonzero multiple of
+$\delta$. This proves sharpness.
+\end{proof}
+
+The theorem does not assign a restriction to a curve lying identically
+in a polar hyperplane. Such a restriction needs an additional
+operation, for example first removing a specified polar germ. A
+finite algebraic value obtained by continuing a slope formula is not
+by itself that extra prescription.
+
+\subsection{Transverse curves and a depth-three fourth-jet formula}
+
+When every prefix is transverse, $\nu_j=1$, Theorem~\ref{curve:main}
+requires the curve jet through degree $d+1$. Thus a quadratic curve
+description is insufficient even at depth two, and a cubic description
+is insufficient in general at depth three.
+
+An explicit example is a common reparametrization of a fixed ray.
+Suppose
+\[
+ Z_3(1+c_1t,1+c_2t,1+c_3t;a)
+ =A_{-3}t^{-3}+A_{-2}t^{-2}+A_{-1}t^{-1}+A_0+O(t),
+\]
+where all coefficients are given by
+\eqref{ord:threeFP}--\eqref{ord:threepoles}. Put
+\[
+ t=h(\eps)=\eps+\alpha\eps^2+\beta\eps^3+
+                         \chi\eps^4+O(\eps^5).
+\]
+Then exact series inversion yields
+\begin{equation}\label{curve:cubicreparam}
+ \boxed{\begin{aligned}
+ &\FP_{\eps=0}Z_3(1+c_1h(\eps),1+c_2h(\eps),1+c_3h(\eps);a)\\
+ &\quad=A_0-\alpha A_{-1}+(3\alpha^2-2\beta)A_{-2}\\
+ &\qquad\quad+(-10\alpha^3+12\alpha\beta-3\chi)A_{-3}.
+ \end{aligned}}
+\end{equation}
+For a transverse ray, $A_{-3}\ne0$, so the fourth coefficient $\chi$
+has an unavoidable effect. The identity follows by taking the
+constant coefficients of $h^{-1},h^{-2},h^{-3}$; their respective
+values are $-\alpha$, $3\alpha^2-2\beta$, and
+$-10\alpha^3+12\alpha\beta-3\chi$.
+
+At the equal-slope ray $c_1=c_2=c_3=1$, one may insert
+\[
+ A_{-3}=\frac16,\qquad A_{-2}=\frac{\gamma_0(a)}2,\qquad
+ A_{-1}=\frac{\gamma_0(a)^2-\gamma_1(a)-\zeta(2,a)}2,
+\]
+and $A_0=\mathcal F_3(1,1;a)$. This supplies a completely explicit
+curved depth-three identity using ordinary Hurwitz data.
+
+\subsection{A tangency example of arbitrarily high order}
+
+At depth two take
+\[
+ u_1(\eps)=\eps,\qquad u_2(\eps)=-\eps+\eps^r,
+ \qquad r\ge2.
+\]
+Here $(\nu_1,\nu_2)=(1,r)$, so the pole order is $r+1$ and the
+sharp jet order is $2r+1$. The canonical formula simplifies exactly to
+\[
+ Z_2=\eps^{-r-1}+\frac{R_1(-\eps+\eps^r;a)}\eps
+                  +R_2(\eps,-\eps+\eps^r;a).
+\]
+Consequently
+\begin{equation}\label{curve:tangentexample}
+ \FP Z_2=B_2(a)+\gamma_1(a).
+\end{equation}
+Now change $u_2$ by $\delta\eps^{2r+1}$. This leaves all lower curve
+coefficients unchanged, but the first displayed term contributes an
+additional constant $-\delta$. Thus the very short unperturbed answer
+does not reduce the amount of curve information needed in general.
+
+\subsection{Dependence on the ratio of straight slopes}
+
+For $q\ne0$, put $\lambda=p/q$ and write
+$\mathcal F_d(\lambda;a)=\mathcal F_d(p,q;a)$. Theorem
+\ref{ord:oneslope} gives the rational function
+\begin{equation}\label{curve:ratio}
+ \mathcal F_d(\lambda;a)=B_d(a)+
+  \sum_{k=1}^{d-1}\frac{[y^{d-k}t^k]F_a(y,t)}{(\lambda)_k}.
+\end{equation}
+It has at most simple poles at $0,-1,\ldots,2-d$. In particular,
+for $d\ge2$,
+\begin{equation}\label{curve:stieltjesresidue}
+ \boxed{\displaystyle
+ \operatorname*{Res}_{\lambda=2-d}\mathcal F_d(\lambda;a)
+ =-\frac{\gamma_{d-1}(a)}{(d-1)!(d-2)!}.}
+\end{equation}
+Only the $k=d-1$ summand can contribute to this residue; its numerator
+is $(-1)^{d-1}\gamma_{d-1}(a)/(d-1)!$, and the remaining factors in
+the denominator have product $(-1)^{d-2}(d-2)!$.
+Equation~\eqref{curve:stieltjesresidue} is an identity of the rational
+slope continuation. It is not a value of the original multiple zeta
+function on the excluded polar ray. It gives a useful inverse
+relation: a higher Stieltjes constant can be recovered from the
+slope dependence of the ordered finite-part family.
+
+In fact the entire coefficient family has an exact inverse in terms
+of these residues. For $d\ge2$, put
+\[
+ A_k=[y^{d-k}t^k]F_a(y,t),\qquad
+ \rho_j=\operatorname*{Res}_{\lambda=-j}\mathcal F_d(\lambda;a),
+ \quad 0\le j\le d-2.
+\]
+Partial fractions in \eqref{curve:ratio} give
+\begin{equation}\label{curve:residuetransform}
+ \rho_j=\frac{(-1)^j}{j!}
+          \sum_{k=j+1}^{d-1}\frac{A_k}{(k-1-j)!},\qquad
+ \boxed{A_k=(-1)^{k-1}\sum_{j=k-1}^{d-2}
+                   \frac{j!}{(j-k+1)!}\rho_j.}
+\end{equation}
+To verify the inverse, set $b_j=(-1)^j j!\rho_j$. The first transform
+is the upper-triangular convolution with $1/r!$; convolution with
+$(-1)^r/r!$ inverts it, because $e^z e^{-z}=1$. This proves the second
+formula and recovers \eqref{curve:stieltjesresidue} at $k=d-1$.
+
+\subsection{Recovering every regular jet from directional finite parts}
+
+The one-distinguished-slope family determines diagonal combinations
+of regular coefficients. Allowing all independent slopes recovers
+each coefficient that can appear, with no loss of information.
+
+Write $H_{r,m}(\boldsymbol v;a)=[t^m]R_r(t\boldsymbol v;a)$ for the
+homogeneous degree-$m$ Taylor polynomial, and let
+\[
+ \mathcal G_d(\boldsymbol c;a)=\FP_{\eps=0}
+ Z_d(1+c_1\eps,\ldots,1+c_d\eps;a).
+\]
+For $P_j=c_1+\cdots+c_j\ne0$, the canonical formula gives
+\begin{equation}\label{curve:generalray}
+ \mathcal G_d(\boldsymbol c;a)=B_d(a)+
+ \sum_{k=1}^{d-1}
+ \frac{H_{d-k,k}(c_{k+1},\ldots,c_d;a)}{P_1\cdots P_k}.
+\end{equation}
+
+\begin{corollary}[Exact reconstruction from directional data]
+\label{curve:reconstruction}
+The rational function $\mathcal G_d$ uniquely determines every
+$H_{d-k,k}$, $1\le k\le d-1$, and its constant $B_d$. In particular,
+the full collection of directional finite parts at all depths
+determines every regular germ $R_r$: its homogeneous degree-$m$ part
+is recovered at depth $r+m$.
+\end{corollary}
+
+\begin{proof}
+Use the independent prefix coordinates $P_1,\ldots,P_d$ and descend
+from $k=d-1$ to $k=1$. Suppose all higher-index summands in
+\eqref{curve:generalray} have been recovered and subtracted. Take the
+coefficient of $P_1^{-1}\cdots P_k^{-1}$ in the remainder, treating
+$P_{k+1},\ldots,P_d$ as generic parameters. The lower-index summands
+are holomorphic in at least one of these first $k$ variables and
+contribute zero. The surviving coefficient is
+\[
+ H_{d-k,k}(P_{k+1},P_{k+2}-P_{k+1},\ldots,P_d-P_{d-1};a).
+\]
+This invertible change of the remaining variables recovers the
+entire polynomial $H_{d-k,k}$. Subtracting all recovered terms leaves
+$B_d$. For a general $R_r$ and $m\ge1$, choose $d=r+m$ and $k=m$.
+The degree-zero part is $R_r(0)=B_r$, already known from the Gamma
+quotient. No higher Taylor degree than those in
+\eqref{curve:generalray} can affect a finite part at the fixed depth.
+\end{proof}

@@ -1,0 +1,652 @@
+\section{Mixed Dougall derivatives at a double residue zero}
+\label{dg:section}
+
+The centered resonance theorem already evaluates the minimal
+subtraction at every nonpositive integer excess parameter. Its
+residue-zero loci contain further identities: after restriction to
+some loci the remainder vanishes term by term, while derivatives
+transverse to those loci produce nonzero sums. We make this statement
+precise, give a finite formula at every mixed order, and evaluate a
+weighted square of trigamma differences for an arbitrary positive
+shift. An additional spectral variable gives an all-order generating
+function for generalized Stieltjes constants.
+
+The underlying summation is the classical Rogers--Dougall
+${}_5F_4(1)$ formula, DLMF 16.4.9~\cite{DLMFDougall}. The summation itself and the
+centered subtraction theorem are antecedents, not novelty claims~\cite{RepoDougall,RepoTransport}.
+The formulas below resolve the explicit mixed-parameter target
+at $b=c=1$ in the incoming coordinate-transport report. No claim of
+global literature priority is required for these deductions.
+
+\subsection{Exact polynomial collapse on the integer grid}
+
+Use the centered notation
+\[
+ \eta=a/2,\quad x_n=n+\eta,\quad d_0=1+a-b-c,
+\]
+and
+\[
+ r_n(u)=x_n\frac{\Gamma(n+a)\Gamma(n+b)\Gamma(n+c)
+                     \Gamma(n+d_0-u)}
+ {\Gamma(n+1)\Gamma(n+1+a-b)\Gamma(n+1+a-c)
+                     \Gamma(n+b+c+u)}.
+\]
+Reciprocal Gamma factors are interpreted as entire functions, including
+at their zeros. Put
+\[
+ (\alpha_1,\alpha_2,\alpha_3,\alpha_4)
+       =(a/2,b-a/2,c-a/2,d_0-u-a/2),
+\]
+and define finite polynomial data by
+\begin{align}
+ h_j(u)&=-\frac{\sum_{i=1}^4B_{2j+1}(\alpha_i)}{j(2j+1)},\qquad j\geq1,
+       \notag\\
+ C_0(u)&=1,\qquad
+ jC_j(u)=\sum_{k=1}^jkh_k(u)C_{j-k}(u).
+ \label{dg:centered-recurrence}
+\end{align}
+Here $B_j(z)$ denotes the Bernoulli polynomial with $B_1(z)=z-1/2$.
+These are exactly the centered asymptotic coefficients:
+\[
+ r_n(u)\sim x_n^{-1-2u}\sum_{j\geq0}C_j(u)x_n^{-2j},\qquad C_0=1.
+\]
+At $u=-N$, $N\geq1$, define the normally convergent bracket
+\[
+ F_{N,n}(a,b,c)=r_n(-N)-\sum_{j=0}^N C_j(-N)x_n^{2N-1-2j}.
+\]
+
+\begin{lemma}[Centered summation and residue transport: antecedent]
+\label{dg:antecedent}
+Suppose $a,b,c>0$ and $d_0>0$. For $K\geq1$ and
+$-K<\Re u<d_0$, the normally convergent series
+\begin{align}
+ R_K(u)&=\sum_{n\geq0}\left\{r_n(u)-
+       \sum_{j=0}^{K-1}C_j(u)x_n^{-1-2u-2j}\right\}\notag\\
+ &=G(u)-\sum_{j=0}^{K-1}C_j(u)\zeta(1+2u+2j,a/2),\notag\\
+ G(u)&=\frac{\Gamma(b)\Gamma(c)\Gamma(d_0-u)\Gamma(u)}
+          {2\Gamma(d_0)\Gamma(b+u)\Gamma(c+u)}.
+ \label{dg:antecedent-master}
+\end{align}
+The combined right side is holomorphic throughout this strip.
+For $N\geq0$, let
+\[
+ \rho_N=\frac{(-1)^N}{N!}(d_0)_N(1-b)_N(1-c)_N.
+\]
+Then
+\begin{align}
+ C_N(-N)&=\rho_N,\notag\\
+ R_{N+1}(-N)&=\rho_N\left\{\psi(a/2)+
+ \frac{\psi(N+1)-\psi(b)-\psi(c)-\psi(d_0+N)}2\right\}.
+ \label{dg:antecedent-closed}
+\end{align}
+All fixed spectral and parameter derivatives may be taken in the
+single bracket in \eqref{dg:antecedent-master}.
+\end{lemma}
+\begin{proof}
+At $x_n=n+a/2$, the denominator shifts are $1-\alpha_i$, so
+\[
+ r_n(u)=x_n\prod_{i=1}^4
+                   \frac{\Gamma(x_n+\alpha_i)}{\Gamma(x_n+1-\alpha_i)}.
+\]
+The finite Stirling--Bernoulli expansion~\cite{DLMFGammaAsymptotic} and Bernoulli reflection
+give, uniformly on compact parameter sets,
+\[
+ r_n(u)=x_n^{-1-2u}\left\{\sum_{j=0}^{K-1}C_j(u)x_n^{-2j}
+                                     +O(n^{-2K})\right\}.
+\]
+Only even inverse powers occur; exponentiating the finite logarithmic
+expansion gives \eqref{dg:centered-recurrence}. Thus the bracket is
+summable throughout $-K<\Re u<d_0$. Cauchy's formula on a slightly
+larger compact set proves the same for each derivative, with fixed
+logarithmic powers allowed. In $0<\Re u<d_0$, the classical
+Rogers--Dougall formula~\cite{DLMFDougall} sums $r_n(u)$ to $G(u)$:
+the upper parameters are $a,1+a/2,b,c,d_0-u$, the lower parameters
+are $a/2,1+a-b,1+a-c,b+c+u$, and the conventional excess is $2u$.
+Separate summation of the counterterms gives
+\eqref{dg:antecedent-master} there. Holomorphic continuation proves
+the full-strip identity and removability of its apparent poles.
+
+At $u=-N$ its Gamma residue is $\rho_N/2$. The only polar Hurwitz
+counterterm has index $N$ and residue $C_N(-N)/2$. Equality of
+residues gives $C_N(-N)=\rho_N$; since these are polynomial
+coefficients, this equality extends through every residue zero.
+
+For the constant term use
+\[
+ V=2\partial_a+\partial_b+\partial_c-\partial_u,
+ \qquad W=\partial_a+\tfrac12\partial_b+\tfrac12\partial_c.
+\]
+One has $V\alpha_1=1$ and $V\alpha_i=0$ for $i=2,3,4$.
+Consequently
+\[
+ Vh_k(u)=-\frac{B_{2k}(a/2)}k=2\zeta(1-2k,a/2),
+ \qquad VC_j(u)=2\sum_{k=1}^j\zeta(1-2k,a/2)C_{j-k}(u).
+\]
+The second formula follows by differentiating the formal exponential
+$\sum_jC_jy^j=\exp(\sum_kh_ky^k)$; every extracted coefficient is
+finite. At $u=-N$ it becomes
+\begin{equation}
+ \frac12C_N'(-N)+\sum_{j=0}^{N-1}
+ C_j(-N)\zeta(1-2N+2j,a/2)=W\rho_N.
+ \label{dg:residue-transport}
+\end{equation}
+For generic $b,c$, the Gamma term has constant coefficient
+\[
+ \frac{\rho_N}{2}
+ \{\psi(N+1)-\psi(d_0+N)-\psi(b-N)-\psi(c-N)\}.
+\]
+The resonant Hurwitz term has constant coefficient
+$C_N'(-N)/2-\rho_N\psi(a/2)$. Use
+\eqref{dg:residue-transport} to combine this derivative with all
+lower counterterms. Since $Wd_0=0$,
+\[
+ W\rho_N=\frac{\rho_N}{2}
+ \{\psi(b)-\psi(b-N)+\psi(c)-\psi(c-N)\}.
+\]
+The shifted digammas cancel and yield
+\eqref{dg:antecedent-closed}. Its final arguments are positive, so
+normal convergence and holomorphy extend it across all zeros of
+$\rho_N$. These antecedent formulas reproduce the needed part of
+the earlier resonance construction~\cite{RepoDougall,RepoTransport}.
+\end{proof}
+
+\begin{proposition}[Termwise collapse on every integer residue component]
+\label{dg:polynomial}
+Suppose $a,b,c>0$ and $d_0>0$. For $1\leq k\leq N$, at $c=k$,
+\begin{align}
+ r_n(-N)&=x_n
+  \prod_{r=1}^{k-1}\bigl(x_n^2-(\eta-r)^2\bigr)
+  \prod_{r=0}^{N-k-1}
+        \bigl(x_n^2-(\eta+1-b+r)^2\bigr).
+ \label{dg:grid-factor}
+\end{align}
+Consequently $F_{N,n}(a,b,k)=0$ for every $n$, and the same statement
+holds with $b$ and $c$ interchanged. Locally along any intersection
+$b=h$, $c=k$ with $h,k\in\{1,\ldots,N\}$, the holomorphic function
+$F_{N,n}$ is divisible by $(b-h)(c-k)$. Its quotient and every fixed
+derivative admit locally normally convergent sums. More globally, the
+quotient by $(1-b)_N(1-c)_N$ has a holomorphic extension throughout
+the stated parameter domain, and its sum is
+\begin{align}
+ &\sum_{n\geq0}\frac{F_{N,n}(a,b,c)}{(1-b)_N(1-c)_N}\notag\\
+ &\quad=\frac{(-1)^N(d_0)_N}{N!}
+ \left\{\psi(a/2)+
+ \frac{\psi(N+1)-\psi(b)-\psi(c)-\psi(d_0+N)}2\right\}.
+ \label{dg:divided-grid}
+\end{align}
+At a zero of either denominator factor, the summands in this formula
+mean their holomorphic extensions just described.
+\end{proposition}
+\begin{proof}
+The Gamma functional equation gives
+\[
+ r_n(-N)=x_n(n+1)_{k-1}(n+1+a-k)_{k-1}
+                 (n+1+a-b)_{N-k}(n+b+k-N)_{N-k}.
+\]
+Pair the factors symmetric about $x_n$ to obtain
+\eqref{dg:grid-factor}. This is an odd polynomial of degree
+$2N-1$ in $x_n$. Uniqueness of asymptotic coefficients shows that its
+centered coefficients are exactly $C_0(-N),\ldots,C_{N-1}(-N)$,
+whereas $C_N(-N)=0$ and every subsequent coefficient is zero.
+The identity includes the finitely many small indices where an
+individual reciprocal Gamma factor vanishes.
+
+For the divisibility statement, the holomorphic function vanishes
+when $b=h$ and when $c=k$. Successive one-variable Taylor expansions
+therefore factor $(b-h)(c-k)$. Cauchy's formula on a slightly larger
+parameter polydisc transfers the $O(n^{-3})$ uniform remainder bound
+to the divided function and to every prescribed derivative. This also
+proves normal convergence after division; a quotient cannot be justified
+merely by dividing two limiting sums at their common zero.
+Every zero of $(1-b)_N$ or $(1-c)_N$ is simple. The other local
+factors are units, so this establishes extension of the full divided
+sum. Its value follows from \eqref{dg:antecedent-closed} off the
+zero loci and then by holomorphy on them.
+\end{proof}
+
+The result is stronger than the vanishing of the residue polynomial
+or of the summed remainder. In particular, every derivative tangent
+to one of these components still has zero remainder termwise.
+Mixed transverse derivatives are the first potentially nonzero ones.
+For example, write
+\[
+ B_N(a,b,c)=\psi(a/2)+
+ \frac{\psi(N+1)-\psi(b)-\psi(c)-\psi(d_0+N)}2.
+\]
+At $b=h$, $c=k$ with $1\leq h,k\leq N$,
+\begin{align}
+ \sum_{n\geq0}\partial_b\partial_cF_{N,n}(a,h,k)
+ ={}&\frac{(-1)^{N+h+k}(d_0)_N}{N!}
+ (h-1)!(N-h)!(k-1)!(N-k)!\notag\\
+ &\times B_N(a,h,k),\qquad d_0=1+a-h-k.
+ \label{dg:grid-first-mixed}
+\end{align}
+This uses $\left.\partial_b(1-b)_N\right|_{b=h}
+=(-1)^h(h-1)!(N-h)!$ and keeps all finite-head terms.
+
+\subsection{A two-parameter generating identity for all positive shifts}
+
+Write $b=1+p$, $c=1+q$, $A=a-1$, and keep $u=-1$. Put
+\begin{align}
+ Q_n(a;p,q)
+ &=\frac{\Gamma(n+a)\Gamma(n+1+p)\Gamma(n+1+q)
+                         \Gamma(n+a-p-q)}
+ {\Gamma(n+1)\Gamma(n+a-p)\Gamma(n+a-q)
+                         \Gamma(n+1+p+q)},\label{dg:Q}\\
+ B_a(p,q)&=\psi(a/2)+\frac{\psi(2)-\psi(1+p)-\psi(1+q)
+                                      -\psi(a-p-q)}2.
+ \label{dg:B}
+\end{align}
+Thus $Q_n(a;p,0)=Q_n(a;0,q)=1$, and $r_n(-1)=x_nQ_n(a;p,q)$.
+
+\begin{theorem}[Double-zero generating function]
+\label{dg:generator}
+For every $a>0$ and sufficiently small complex $p,q$,
+\begin{align}
+ \sum_{n=0}^{\infty}\left\{
+ x_n\bigl(Q_n(a;p,q)-1\bigr)
+       +\frac{(A-p-q)pq}{x_n}\right\}
+ =-(A-p-q)pq\,B_a(p,q).
+ \label{dg:generator-eq}
+\end{align}
+The series is locally normally convergent in $(a,p,q)$ in a
+neighborhood of each point $(a,0,0)$ with $\Re a>0$. It may be
+differentiated at every fixed mixed order. Both sides are divisible
+by $pq$, and the divided identity also holds normally at $p=q=0$.
+\end{theorem}
+\begin{proof}
+For $a>1$ and small $p,q$, Lemma~\ref{dg:antecedent} applies with
+$N=1$. Its residue coefficient is
+\[
+ C_1(-1)=-(a-1-p-q)pq,
+\]
+and the closed resonance value is exactly the right side of
+\eqref{dg:generator-eq}. The centered expansion supplies
+\[
+ Q_n(a;p,q)=1-\frac{(A-p-q)pq}{x_n^2}+O(n^{-4})
+\]
+locally uniformly, so the displayed bracket is $O(n^{-3})$.
+All Gamma arguments in \eqref{dg:Q} lie in a pole-free
+neighborhood when $\Re a>0$ and $p,q$ are sufficiently small; the
+same centered expansion is uniform on compact subsets there.
+Thus the sum and the right side are holomorphic across $a=1$ and
+throughout this connected positive-half-plane germ. The identity
+theorem extends their equality from $a>1$ to all $a>0$.
+For any prescribed compact $a$-set one can choose a smaller common
+polydisc in $p,q$ and apply Cauchy's coefficient formula to the
+uniform remainder. This proves the derivative and division claims.
+\end{proof}
+
+The restriction $d_0>0$ was needed only in the original region from
+which continuation was proved. After the exact cancellation above,
+$a=1$ is a regular point, not an excluded parameter or a formal limit.
+
+\subsection{A finite Bell formula at every mixed order}
+
+For $k\geq2$, define
+\[
+ \Lambda_k(n;a)=(-1)^k\psi^{(k-1)}(n+a)
+                                -\psi^{(k-1)}(n+1).
+\]
+Taylor expansion of the four Gamma ratios gives the exact germ
+\begin{equation}
+ \log Q_n(a;p,q)=\sum_{r,s\geq1}
+       \Lambda_{r+s}(n;a)\frac{p^rq^s}{r!s!}.
+ \label{dg:logQ}
+\end{equation}
+Define a finite bivariate Bell polynomial by
+\[
+ \mathcal B_{rs}(n;a)=r!s![p^rq^s]
+ \exp\left(\sum_{i,j\geq1}
+       \Lambda_{i+j}(n;a)\frac{p^iq^j}{i!j!}\right).
+\]
+Only $i\leq r$, $j\leq s$, and powers at most $\min(r,s)$
+of the exponent are needed. In particular,
+\begin{align*}
+ \mathcal B_{11}&=\Lambda_2,&
+ \mathcal B_{21}&=\Lambda_3,&
+ \mathcal B_{31}&=\Lambda_4,\\
+ \mathcal B_{22}&=\Lambda_4+2\Lambda_2^2,&
+ \mathcal B_{32}&=\Lambda_5+6\Lambda_2\Lambda_3,\\
+ \mathcal B_{33}&=\Lambda_6+9\Lambda_2\Lambda_4
+                            +9\Lambda_3^2+6\Lambda_2^3.
+\end{align*}
+
+Set $B_{rs}=\partial_p^r\partial_q^sB_a(0,0)$, with
+\[
+ B_{00}=\psi(a/2)+\frac{1+\gamma-\psi(a)}2,
+\]
+and, for $r+s=k\geq1$,
+\begin{equation}
+ B_{rs}=-\frac12\left\{
+ \mathbf1_{s=0}\psi^{(r)}(1)+
+ \mathbf1_{r=0}\psi^{(s)}(1)+(-1)^k\psi^{(k)}(a)\right\}.
+ \label{dg:B-jets}
+\end{equation}
+Terms carrying a negative subscript below are omitted.
+
+\begin{corollary}[Complete mixed parameter table]
+\label{dg:all-parameter}
+For $r,s\geq1$, the single bracketed series
+\begin{align}
+ S_{rs}(a)=\sum_{n\geq0}\left\{
+ x_n\mathcal B_{rs}(n;a)
+ +\frac{A\mathbf1_{r=s=1}
+  -2\mathbf1_{(r,s)=(2,1)}-2\mathbf1_{(r,s)=(1,2)}}{x_n}
+ \right\}
+ \label{dg:S}
+\end{align}
+converges absolutely, and
+\begin{equation}
+ S_{rs}(a)=-rs\left\{
+ A B_{r-1,s-1}-(r-1)B_{r-2,s-1}-(s-1)B_{r-1,s-2}
+ \right\}.
+ \label{dg:all-parameter-eq}
+\end{equation}
+For every $r+s\geq4$, no counterterm is needed: the original
+polygamma polynomial $x_n\mathcal B_{rs}(n;a)$ is summable by itself.
+\end{corollary}
+\begin{proof}
+Differentiate \eqref{dg:generator-eq} and use
+\eqref{dg:logQ}. The counterterm is a polynomial of total
+degree three in $p,q$, which explains its exact disappearance at
+total derivative order four. Leibniz's rule gives
+\eqref{dg:all-parameter-eq}; normal convergence was proved
+before differentiation, including the small indices.
+\end{proof}
+
+For example, at $a=2$ the first rows are
+\[
+\begin{array}{c|c|c}
+ (r,s)&\mathcal B_{rs}&S_{rs}(2)\\\hline
+ (1,1)&\Lambda_2&0\\
+ (2,1)&\Lambda_3&1\\
+ (3,1)&\Lambda_4&-6\zeta(3)\\
+ (2,2)&\Lambda_4+2\Lambda_2^2&-4\zeta(3)\\
+ (3,2)&\Lambda_5+6\Lambda_2\Lambda_3&24\zeta(3)-18\zeta(4)\\
+ (3,3)&\Lambda_6+9\Lambda_2\Lambda_4+9\Lambda_3^2+6\Lambda_2^3
+                                    &108(\zeta(4)-\zeta(5)).
+\end{array}
+\]
+The first two rows use the counterterms in \eqref{dg:S}.
+Every later row is an ordinary convergent sum without subtraction.
+
+\subsection{A closed square of trigamma differences}
+
+\begin{theorem}[Weighted trigamma square]
+\label{dg:square}
+For every real $a>0$,
+\begin{align}
+ &\sum_{n=0}^{\infty}\left(n+\frac a2\right)
+       \bigl(\psi'(n+a)-\psi'(n+1)\bigr)^2\notag\\
+ &\qquad=\frac{a-1}{4}\psi''(a)
+     +\frac{\psi'(a)-\zeta(2)}2
+     +\frac{3(a-1)}2\zeta(3).
+ \label{dg:square-eq}
+\end{align}
+The series converges locally normally for $\Re a>0$, with an
+ordinary algebraic square in that complex extension.
+\end{theorem}
+\begin{proof}
+The $(2,2)$ and $(3,1)$ rows give respectively
+\begin{align*}
+ \sum_nx_n(\Lambda_4+2\Lambda_2^2)
+   &=2A\psi''(a)+4\psi'(a)-4\zeta(2),\\
+ \sum_nx_n\Lambda_4
+   &=\frac{3A}{2}\{\psi''(1)+\psi''(a)\}
+                                  +3\{\psi'(a)-\zeta(2)\}.
+\end{align*}
+Subtract and divide by two, using $\psi''(1)=-2\zeta(3)$.
+Every series used in the subtraction is absolutely convergent.
+Independently, the polygamma asymptotic or its convergent series
+shows $\Lambda_2(n;a)=O(n^{-2})$ uniformly on compact subsets of
+$\Re a>0$. Thus the weighted square is $O(n^{-3})$; this also
+directly verifies the domain and regularity at $a=1$.
+\end{proof}
+
+At $a=3/2$, the functional equation and duplication formula~\cite{DLMFPolygamma} give
+\[
+ \psi'(3/2)=3\zeta(2)-4,\qquad
+ \psi''(3/2)=-14\zeta(3)+16.
+\]
+The right side of \eqref{dg:square-eq} becomes
+\[
+ \frac18(-14\zeta(3)+16)
+ +\frac12(2\zeta(2)-4)+\frac34\zeta(3)
+ =\zeta(2)-\zeta(3).
+\]
+For $H_n^{(r)}=\sum_{k=1}^nk^{-r}$, $H_0^{(r)}=0$,
+\[
+ \psi'(n+1)-\psi'(n+3/2)
+ =2\{2H_{2n+1}^{(2)}-H_n^{(2)}-\zeta(2)\}.
+\]
+Therefore
+\begin{equation}
+ \boxed{\sum_{n=0}^{\infty}(4n+3)
+ \{2H_{2n+1}^{(2)}-H_n^{(2)}-\zeta(2)\}^{2}
+ =\zeta(2)-\zeta(3).}
+ \label{dg:half-harmonic-square}
+\end{equation}
+No regularized interpretation is involved in this positive series.
+
+The continuation to $a=1/2$ gives a companion identity,
+\begin{equation}
+ \sum_{n=0}^{\infty}(4n+1)
+ \{\zeta(2)-2H_{2n}^{(2)}+H_n^{(2)}\}^{2}
+ =\zeta(2)+\zeta(3).
+ \label{dg:other-half-harmonic-square}
+\end{equation}
+Here $\psi'(1/2)=3\zeta(2)$ and
+$\psi''(1/2)=-14\zeta(3)$. At $a=2$, the square formula reduces to
+$\sum_{k\geq1}k^{-3}=\zeta(3)$, a useful elementary normalization.
+
+The $(3,3)$ row also supplies a higher harmonic example. At $a=2$,
+writing $k=n+1$,
+\[
+ \Lambda_2=-k^{-2},\quad \Lambda_4=-6k^{-4},\quad
+ \Lambda_6=-120k^{-6},\quad
+ \Lambda_3=2\{2(\zeta(3)-H_{k-1}^{(3)})-k^{-3}\}.
+\]
+Substitution gives
+\begin{equation}
+ \boxed{\sum_{k=1}^{\infty}k
+ \{2(\zeta(3)-H_{k-1}^{(3)})-k^{-3}\}^2
+ =3\zeta(4)-\zeta(5).}
+ \label{dg:cubic-tail-square}
+\end{equation}
+
+\subsection{Every resonant polynomial moment from the same germ}
+
+For $N\geq1$, $s=p+q$, set
+\[
+ P_{N-1}(x;s)=\prod_{r=0}^{N-2}\{x^2-(a/2-s+r)^2\},\qquad P_0=1.
+\]
+The exact Gamma functional equation gives
+\begin{equation}
+ r_n(-N)=x_nP_{N-1}(x_n;p+q)Q_n(a;p,q).
+ \label{dg:N-transport}
+\end{equation}
+It retains every finite-head zero as a factor before derivatives are
+taken. This identity and the two-variable Bell germ generate the
+summands at every resonance without singular logarithmic derivatives.
+
+More explicitly, write
+\[
+ P_{N-1}(x;s)=\sum_{k=0}^{N-1}P_k(s)x^{2N-2-2k},\qquad
+ Q_n(a;p,q)\sim\sum_{j\geq0}D_j(p,q)x_n^{-2j}.
+\]
+Here $D_0=1$ and every $D_j$, $j\geq1$, is divisible by $pq$.
+The counterterms are the finite convolution
+\begin{equation}
+ C_j(-N)=\sum_{k=0}^{\min(j,N-1)}P_k(p+q)D_{j-k}(p,q).
+ \label{dg:N-coefficients}
+\end{equation}
+Equation~\eqref{dg:antecedent-closed} becomes
+\begin{align}
+ \sum_{n\geq0}F_{N,n}(a,1+p,1+q)
+ &=\frac{(-1)^N}{N!}(a-1-p-q)_N(-p)_N(-q)_N\notag\\
+ &\quad\times B_N(a,1+p,1+q).
+ \label{dg:N-all}
+\end{align}
+This holds as a normally convergent germ for every $a>0$, by the
+same continuation argument as Theorem~\ref{dg:generator}.
+Taking any prescribed $[p^rq^s]$ is a finite exact algorithm involving
+only the coefficients in \eqref{dg:N-coefficients}, polygamma
+values, and finite generalized harmonic numbers from the Pochhammer
+factors. Formula \eqref{dg:N-all} is a representation theorem;
+it does not assert that all possible products of polygamma functions
+can be separated individually by these mixed derivatives.
+
+\subsection{A mixed spectral germ containing every Stieltjes order}
+
+We now keep one derivative in each parameter direction and permit
+the spectral parameter to move: $u=-1+t$. For $a>0$, let
+\begin{align}
+ R_n(a;t)&=x_n\frac{\Gamma(n+1)\Gamma(n+a-t)}
+                       {\Gamma(n+a)\Gamma(n+1+t)},\notag\\
+ L_n(a;t)&=\psi(n+1)-\psi(n+a-t)+\psi(n+a)-\psi(n+1+t),\notag\\
+ K_n(a;t)&=\psi'(n+a-t)-\psi'(n+1+t).
+ \label{dg:spectral-summands}
+\end{align}
+At $p=q=0$, these satisfy
+\[
+ \partial_p\partial_q r_n(-1+t)
+                 =R_n(a;t)\{L_n(a;t)^2+K_n(a;t)\}.
+\]
+The identity uses the unspecialized summand before derivatives.
+
+To state the endpoint without a division by $a-1$, define
+\begin{align}
+ F_a(t)&=\frac{\Gamma(a-t)}{\Gamma(a)\Gamma(1+t)(1-t)},\notag\\
+ V_a(t)&=\psi(1)-\psi(a-t)+\psi(a)-\psi(1+t),\notag\\
+ W_a(t)&=\psi'(a-t)-\psi'(a),\notag\\
+ D_a(t)&=F_a(t)\left\{2t(1+tV_a(t))
+ -(a-1)\bigl[(1+tV_a(t))^2+t^2W_a(t)\bigr]\right\}.
+ \label{dg:D}
+\end{align}
+All of these are holomorphic near $t=0$ for every $a>0$, including
+$a=1$, and $D_a(0)=-(a-1)$.
+
+\begin{theorem}[Complete mixed spectral--Stieltjes germ]
+\label{dg:spectral}
+For $a>0$ and sufficiently small complex $t$, the series
+\begin{equation}
+ M_a(t)=\sum_{n=0}^{\infty}\left\{
+ R_n(a;t)\bigl(L_n(a;t)^2+K_n(a;t)\bigr)
+ +(a-1-2t)x_n^{-1-2t}\right\}
+ \label{dg:M}
+\end{equation}
+converges locally normally and equals
+\begin{equation}
+ M_a(t)=\frac{D_a(t)}{2t}
+             +(a-1-2t)\zeta(1+2t,a/2).
+ \label{dg:M-eq}
+\end{equation}
+The apparent singularity at $t=0$ is removable. Define $\gamma_m(v)$
+by the Laurent expansion at the simple Hurwitz pole~\cite{DLMFHurwitz}:
+\[
+ \zeta(1+z,v)=z^{-1}+\sum_{m\geq0}\frac{(-1)^m}{m!}\gamma_m(v)z^m.
+\]
+Then every fixed derivative has the explicit expression
+\begin{equation}
+ M_a^{(m)}(0)=\frac{D_a^{(m+1)}(0)}{2(m+1)}
+ -\mathbf1_{m=0}
+ +(-2)^m\{(a-1)\gamma_m(a/2)+m\gamma_{m-1}(a/2)\}.
+ \label{dg:all-Stieltjes}
+\end{equation}
+The $m\gamma_{m-1}$ term is omitted when $m=0$. Every derivative
+on the left can be taken in the single convergent bracket
+\eqref{dg:M}.
+\end{theorem}
+\begin{proof}
+For $a>1$, differentiate \eqref{dg:antecedent-master} with $K=2$
+once in $p$ and once in $q$. The lower counterterm $C_0=1$ is
+parameter independent. Direct differentiation of the cubic Bernoulli
+coefficient gives
+\[
+ \left.\partial_p\partial_qC_1(-1+t)\right|_{p=q=0}=-(a-1)+2t.
+\]
+The Gamma term is $E_1(t;p,q)/(2t)$, where
+\[
+ E_1(t;p,q)=
+ \frac{\Gamma(1+p)\Gamma(1+q)\Gamma(a-p-q-t)\Gamma(1+t)}
+ {\Gamma(a-1-p-q)\Gamma(1+p+t)\Gamma(1+q+t)}
+                  \frac{(p+t)(q+t)}{t-1}.
+\]
+The factors $(p+t)(q+t)$ must be retained: setting $p=q=0$
+before differentiating would erase the mixed derivative.
+Twice applying the product rule and using
+\[
+ \Gamma(a)=(a-1)\Gamma(a-1),\quad
+ \psi(a-1)=\psi(a)-(a-1)^{-1},\quad
+ \psi'(a-1)=\psi'(a)+(a-1)^{-2}
+\]
+shows that $\partial_p\partial_qE_1(t;0,0)=D_a(t)$.
+The resulting expression \eqref{dg:D} contains no singular
+factor at $a=1$. This proves \eqref{dg:M-eq} for $a>1$.
+Uniform Stirling remainders on a slightly enlarged parameter
+neighborhood give a bound
+$O(n^{-3-2\Re t}(1+\log^j n))$ for every fixed $t$-derivative of
+the bracket. The displayed functions are holomorphic for $\Re a>0$
+near $t=0$, so continuation gives all $a>0$ as before.
+
+Finally subtract the pole explicitly:
+\[
+ M_a(t)=\frac{D_a(t)+(a-1)-2t}{2t}
+ +(a-1-2t)\sum_{h\geq0}\frac{(-2)^h}{h!}\gamma_h(a/2)t^h.
+\]
+Taylor coefficient extraction yields
+\eqref{dg:all-Stieltjes}, including the constant $-1$ at
+$m=0$. The formula is for derivatives rather than divided Taylor
+coefficients; its factor $1/(m+1)$ is therefore essential.
+\end{proof}
+
+For an explicit first spectral derivative, write
+\[
+ \ell=1+\gamma-\psi(a),\quad
+ d=\psi'(a)-\zeta(2),\quad
+ \mu_n=-\psi(n+a)-\psi(n+1).
+\]
+Then \eqref{dg:all-Stieltjes} gives the ordinary identity
+\begin{align}
+ &\sum_{n=0}^{\infty}\left\{
+ x_n\bigl[\Lambda_3(n;a)+\mu_n\Lambda_2(n;a)\bigr]
+       -\frac{2+2(a-1)\log x_n}{x_n}\right\}\notag\\
+ &\quad=2\psi(a/2)+\ell
+       -\frac{a-1}{4}\bigl(\ell^2+5d+1\bigr)
+       -2(a-1)\gamma_1(a/2).
+ \label{dg:first-spectral}
+\end{align}
+Indeed the coefficient of $t^2$ in $D_a(t)$ is
+$2\ell-(a-1)(\ell^2+5d+1)/2$.
+At $a=2$, the right side reduces to
+$1-\gamma^2-2\gamma_1$. Writing $k=n+1$, this is equivalently
+\begin{align}
+ \sum_{k=1}^{\infty}\left\{
+ 4k(\zeta(3)-H_{k-1}^{(3)})-\frac1{k^2}-\frac2k
+ +\frac{2(H_{k-1}-\gamma-\log k)}k\right\}
+ =1-\gamma^2-2\gamma_1.
+ \label{dg:harmonic-Stieltjes}
+\end{align}
+The divergent-looking pieces in this last formula are one bracket;
+the proof supplies absolute convergence of their combination.
+
+\subsection{Further questions suggested by the mixed normal form}
+
+The arbitrary-order formulas above solve the requested first
+two-parameter table at $b=c=1$ and provide its spectral extension.
+Several sharper questions remain. First, at a fixed homogeneous
+order, which individual polygamma-product moments are recoverable
+from the finitely many mixed Bell combinations? Their number need
+not match the number of all possible products, so the all-order
+generating theorem alone does not prove complete separation.
+Second, the polynomial formula on $b=h$, $c=k$ supplies starting
+points at every residue-grid intersection; compact explicit tables
+away from $(1,1)$ should retain their finite-head zeros and avoid
+singular logarithmic derivative notation. Third, at rational $a$,
+the Stieltjes germ can be expressed in finite residue-class or
+Dirichlet-character coordinates; it is natural to determine which
+sectors cancel in particular mixed orders. Finally, primitive or
+generating-variable versions of the mixed identities can be tested
+for reductions to colored polylogarithms, with the function class
+and endpoint normalization stated before any claimed reduction.

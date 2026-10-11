@@ -1,0 +1,355 @@
+\section{Ordered Hurwitz germs and a family closing in ordinary zeta jets}
+
+Fix $a>0$. All logarithms of $n+a$ are real. Write
+\[
+ Z_d(s_1,\ldots,s_d;a)
+ =\sum_{n_1>\cdots>n_d\ge0}\prod_{j=1}^d(n_j+a)^{-s_j},
+ \qquad Z_0=1.
+\]
+The defining series converges normally whenever
+$\Re(s_1+\cdots+s_j)>j$ for $1\le j\le d$.
+Put $u_j=s_j-1$ and $P_k=u_1+\cdots+u_k$.
+Empty products equal one.
+
+\subsection{An elementary holomorphic remainder construction}
+
+Define the tail defect
+\begin{equation}\label{ord:taildefect}
+ D(s,x)=\zeta(s,x+1)-\frac{x^{1-s}}{s-1},\qquad x>0.
+\end{equation}
+Its apparent singularity at $s=1$ is removable. On $\Re s>0$ it has
+the absolutely convergent representation
+\begin{equation}\label{ord:tailmellin}
+ D(s,x)=\frac1{\Gamma(s)}\int_0^\infty
+ t^{s-1}e^{-xt}\left(\frac1{e^t-1}-\frac1t\right)\,dt.
+\end{equation}
+Initially this follows by subtracting the usual Mellin integrals in
+$\Re s>1$. The bracket is bounded near zero and is $O(1/t)$ at
+infinity, proving continuation and normal convergence in $\Re s>0$.
+In particular, uniformly for $s$ on a compact subset there,
+$D(s,x)=O(x^{-\Re s})$ as $x\to\infty$.
+
+For $d\ge2$, define
+\begin{equation}\label{ord:Edef}
+ E_d(u_1,\ldots,u_d;a)
+ =\sum_{n_2>\cdots>n_d\ge0}
+ D(1+u_1,n_2+a)\prod_{j=2}^d(n_j+a)^{-1-u_j}.
+\end{equation}
+This is holomorphic on the $\ell^1$ ball
+\[
+ \mathcal U_d=\{\mathbf u\in\mathbb C^d:
+                         |u_1|+\cdots+|u_d|<1/2\}.
+\]
+Indeed, on a compact subset the inner finite sum over $n_3,\ldots,n_d$
+is bounded by a constant times
+$(1+n_2)^{\sum_{j=3}^d|u_j|}(1+\log(1+n_2))^{d-2}$.
+The remaining outer summand is therefore
+$O((1+n_2)^{-2+\sum|u_j|}(1+\log(1+n_2))^{d-2})$.
+This is summable uniformly on compact subsets. Holomorphy follows by
+normal convergence; fixed spectral derivatives can also be taken termwise.
+
+Set $R_0=1$ and
+\[
+ R_1(u;a)=\zeta(1+u,a)-\frac1u.
+\]
+Recursively, for $d\ge2$, put
+\begin{equation}\label{ord:Rrecursion}
+ R_d(u_1,\ldots,u_d;a)=E_d(u_1,\ldots,u_d;a)
+ +\frac{R_{d-1}(u_1+u_2,u_3,\ldots,u_d;a)
+             -R_{d-1}(u_2,u_3,\ldots,u_d;a)}{u_1}.
+\end{equation}
+The last quotient is its holomorphic divided difference at $u_1=0$;
+equivalently, it equals the integral from zero to one of the first
+partial derivative of $R_{d-1}$ at
+$(u_2+\tau u_1,u_3,\ldots,u_d)$. Thus every $R_d$ is holomorphic on
+$\mathcal U_d$.
+
+\begin{theorem}[Canonical shifted ordered decomposition]
+\label{ord:canonical}
+As meromorphic germs on $\mathcal U_d$,
+\begin{equation}\label{ord:canonicalformula}
+ \boxed{\displaystyle
+ Z_d(1+u_1,\ldots,1+u_d;a)
+ =\sum_{k=0}^{d}
+ \frac{R_{d-k}(u_{k+1},\ldots,u_d;a)}{P_1P_2\cdots P_k}.}
+\end{equation}
+The local polar hyperplanes are precisely $P_k=0$, each generically
+simple in the independent prefix coordinates.
+\end{theorem}
+
+\begin{proof}
+Summing first over $n_1>n_2$ in the absolute-convergence domain gives
+\[
+ Z_d(1+\mathbf u;a)
+ =\frac1{u_1}Z_{d-1}(1+u_1+u_2,1+u_3,\ldots,1+u_d;a)
+       +E_d(\mathbf u;a).
+\]
+Apply the induction hypothesis to the depth $d-1$ function. Every term
+except its holomorphic remainder already has the required denominator
+$P_1\cdots P_k$. Splitting the remaining numerator into
+$R_{d-1}(u_2,\ldots,u_d)$ plus its difference gives exactly
+\eqref{ord:Rrecursion}. Normal convergence and the identity theorem then
+establish the meromorphic identity throughout $\mathcal U_d$.
+In the coordinates $P_1,\ldots,P_d$, every displayed denominator is
+square-free. The coefficient of $P_1^{-1}\cdots P_d^{-1}$ is one,
+because only the $k=d$ term contributes. Consequently no one of these
+polar divisors is removable as a germ.
+\end{proof}
+
+For $a=1$, the shape of \eqref{ord:canonicalformula} is the ordered
+Laurent decomposition of Saha\cite[Theorem 2]{Saha}. The construction above
+provides a short proof for arbitrary common shift $a>0$ and supplies
+absolutely convergent representatives for every regular coefficient.
+The canonical framework is credited to that work; the explicit shifted
+construction and the evaluations below are derived here.
+
+\subsection{Explicit coefficients in harmonic--Stieltjes coordinates}
+
+Let
+\[
+ Q_m(x)=\gamma_m(x+1)+\frac{\log^{m+1}x}{m+1}.
+\]
+In particular $Q_0(x)=\log x-\psi(x+1)$, and
+\[
+ D(1+u,x)=\sum_{m\ge0}\frac{(-1)^m}{m!}Q_m(x)u^m.
+\]
+Consequently, for a multi-index $\mathbf m=(m_1,\ldots,m_d)$,
+\begin{equation}\label{ord:Ecoeff}
+ [\mathbf u^{\mathbf m}]E_d(\mathbf u;a)
+ =\frac{(-1)^{|\mathbf m|}}{m_1!\cdots m_d!}
+ \sum_{n_2>\cdots>n_d\ge0}
+ \frac{Q_{m_1}(n_2+a)\log^{m_2}(n_2+a)}{n_2+a}
+ \prod_{j=3}^d\frac{\log^{m_j}(n_j+a)}{n_j+a}.
+\end{equation}
+These series are absolutely convergent. For a fixed outer index they
+are finite nested generalized harmonic sums with logarithmic insertions.
+If $r^{(d)}_{\mathbf m}=[\mathbf u^{\mathbf m}]R_d$, then
+\begin{equation}\label{ord:Rcoeffrec}
+ r^{(d)}_{m_1,\ldots,m_d}
+ =[\mathbf u^{\mathbf m}]E_d
+ +\binom{m_1+m_2+1}{m_1+1}
+ r^{(d-1)}_{m_1+m_2+1,m_3,\ldots,m_d}.
+\end{equation}
+This is a finite-depth, exact coefficient algorithm, with base
+$r^{(1)}_m=(-1)^m\gamma_m(a)/m!$.
+
+\subsection{The diagonal regular germ and its Gamma normalization}
+
+Write $r_d(t;a)=R_d(t,\ldots,t;a)$, with $r_0=1$.
+Define the generating function, formally in $y$ and analytically for
+sufficiently small $y,t$,
+\begin{equation}\label{ord:Fdef}
+ F_a(y,t)=\exp\left\{
+ y\left(\zeta(1+t,a)-\frac1t\right)
+ +\sum_{m\ge2}\frac{(-1)^{m-1}}m
+                   \zeta(m+mt,a)y^m\right\}.
+\end{equation}
+
+\begin{theorem}[Diagonal regular coefficients]
+\label{ord:diag}
+For every $d\ge0$,
+\begin{equation}\label{ord:diagformula}
+ r_d(t;a)=[y^d]F_a(y,t),\qquad
+ \sum_{d\ge0}r_d(0;a)y^d=\frac{\Gamma(a)}{\Gamma(a+y)}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For $\Re t>0$, the product over the common lattice gives the standard
+elementary-symmetric generating series
+\[
+ \sum_{d\ge0}Z_d(1+t,\ldots,1+t;a)y^d
+ =\prod_{n\ge0}\left(1+\frac{y}{(n+a)^{1+t}}\right)
+ =\exp\sum_{m\ge1}\frac{(-1)^{m-1}}m\zeta(m+mt,a)y^m.
+\]
+On the diagonal, \eqref{ord:canonicalformula} becomes
+$Z_d=\sum_{k=0}^dr_{d-k}(t)/(k!t^k)$.
+Thus multiplication by $\exp(-y/t)$ gives \eqref{ord:Fdef},
+coefficient by coefficient. Holomorphic continuation reaches $t=0$.
+Finally, the Taylor series of $\log\Gamma(a+y)$ is
+\[
+ \log\Gamma(a)+\psi(a)y
+       +\sum_{m\ge2}\frac{(-1)^m}{m}\zeta(m,a)y^m.
+\]
+Since $\gamma_0(a)=-\psi(a)$, exponentiation proves the last assertion.
+\end{proof}
+
+Let $B_d(a)=[y^d]\Gamma(a)/\Gamma(a+y)$.
+These are explicit Bell polynomials in digamma and polygamma values.
+For example, abbreviating $g=\gamma_0(a)$ and $z_m=\zeta(m,a)$,
+\begin{align*}
+ B_1&=g,& B_2&=\frac{g^2-z_2}{2},\\
+ B_3&=\frac{g^3-3gz_2+2z_3}{6},\\
+ B_4&=\frac{g^4-6g^2z_2+3z_2^2+8gz_3-6z_4}{24},\\
+ B_5&=\frac{g^5-10g^3z_2+15gz_2^2+20g^2z_3
+                   -20z_2z_3-30gz_4+24z_5}{120}.
+\end{align*}
+
+\subsection{All depths with one distinguished slope}
+
+The finite part below means the coefficient of $\varepsilon^0$ after
+the stated one-variable substitution. It is not a value assigned at the
+intersection of polar divisors.
+
+\begin{theorem}[A continuum of exact ordered finite parts at every depth]
+\label{ord:oneslope}
+Let $d\ge1$, and let $p,q\in\mathbb C$ satisfy
+$p+jq\ne0$ for $0\le j\le d-1$. Put
+$D_k(p,q)=\prod_{j=0}^{k-1}(p+jq)$.
+Then
+\begin{align}\label{ord:oneslopeformula}
+ &\operatorname{FP}_{\varepsilon=0}
+ Z_d(1+p\varepsilon,1+q\varepsilon,\ldots,1+q\varepsilon;a)
+ \notag\\
+ &\qquad=\boxed{\displaystyle B_d(a)+
+ \sum_{k=1}^{d-1}\frac{q^k}{D_k(p,q)}
+                      [y^{d-k}t^k]F_a(y,t).}
+\end{align}
+Every expression on the right is a finite polynomial in ordinary
+Hurwitz zeta derivatives and generalized Stieltjes constants, with
+coefficients rational in $p,q$. It uses only $\gamma_j(a)$ with
+$0\le j\le d-1$ and $\zeta^{(j)}(m,a)$ with
+$m\ge2$, $j\ge0$, and $m+j\le d$.
+The case $q=0$ is included and gives simply $B_d(a)$.
+\end{theorem}
+
+\begin{proof}
+For $k\ge1$, the tail in \eqref{ord:canonicalformula} is diagonal,
+and its denominator becomes $D_k(p,q)\varepsilon^k$.
+Its constant coefficient is therefore
+$q^k[t^k]r_{d-k}(t;a)/D_k(p,q)$. The $k=0$ term contributes
+$R_d(0)=B_d$, and the $k=d$ term is a pure pole and contributes zero.
+The coefficient formula \eqref{ord:Fdef} proves the closure and the
+stated finite range of orders.
+\end{proof}
+
+The same argument evaluates the complete polar part. More precisely,
+for $-d\le\ell\le0$,
+\begin{equation}\label{ord:allnonpositive}
+ [\varepsilon^\ell]Z_d(1+p\varepsilon,1+q\varepsilon,\ldots;a)
+ =\sum_{k=\max(0,-\ell)}^d
+ \frac{q^{k+\ell}}{D_k(p,q)}
+ [y^{d-k}t^{k+\ell}]F_a(y,t),
+\end{equation}
+where $D_0=1$ and $0^0=1$. For $k=0$ this formula is used only
+when $\ell=0$, where its contribution is $B_d$.
+Denote the finite part in \eqref{ord:oneslopeformula} by
+$\mathcal F_d(p,q;a)$. For $q\ne0$ it depends only on $\lambda=p/q$:
+\begin{equation}\label{ord:factorialdirection}
+ \mathcal F_d(p,q;a)=B_d(a)+
+ \sum_{k=1}^{d-1}\frac{[y^{d-k}t^k]F_a(y,t)}{(\lambda)_k}.
+\end{equation}
+Thus its dependence on the distinguished slope ratio is an explicit
+finite inverse-factorial expansion. Formula \eqref{ord:factorialdirection}
+can have a meromorphic continuation in $\lambda$ beyond the transverse
+directions; such a continuation of a coefficient must not be confused
+with restriction of the original multiple-zeta germ to a polar divisor.
+
+This is an exact evaluation theorem, not a claim of algebraic
+independence or minimality of the resulting constants. The general
+ordered problem is more complicated: independent trailing slopes can
+retain nonsymmetric multiple Stieltjes coefficients.
+
+\subsection{Explicit depths two through five}
+
+Set $g_j=\gamma_j(a)$, $g=g_0$, and
+$z_m^{[j]}=\partial_s^j\zeta(s,a)|_{s=m}$; thus
+$z_m=z_m^{[0]}$. Then
+\begin{align}\label{ord:F2}
+ \mathcal F_2&=B_2-\frac qp g_1,\\
+ \mathcal F_3&=B_3-\frac qp(gg_1+z_2^{[1]})
+                  +\frac{q^2g_2}{2p(p+q)}.\label{ord:F3}
+\end{align}
+At depth four one obtains
+\begin{align}\label{ord:F4}
+ \mathcal F_4={}&B_4+
+ \frac qp\left(-\frac{g^2g_1}{2}+\frac{g_1z_2}{2}
+                        -gz_2^{[1]}+z_3^{[1]}\right)\notag\\
+ &+\frac{q^2}{p(p+q)}
+       \left(\frac{g_1^2+gg_2}{2}-z_2^{[2]}\right)
+ -\frac{q^3g_3}{6p(p+q)(p+2q)}.
+\end{align}
+At depth five,
+\begin{align}\label{ord:F5}
+ \mathcal F_5={}&B_5+\frac qp A_{4,1}
+ +\frac{q^2}{p(p+q)}A_{3,2}
+ +\frac{q^3}{p(p+q)(p+2q)}A_{2,3}
+ +\frac{q^4g_4}{24p(p+q)(p+2q)(p+3q)},
+\end{align}
+where
+\begin{align*}
+ A_{4,1}={}&-\frac{g^3g_1}{6}+\frac{gg_1z_2}{2}
+ -\frac{g^2z_2^{[1]}}2+\frac{z_2z_2^{[1]}}2
+ -\frac{g_1z_3}{3}+gz_3^{[1]}-z_4^{[1]},\\
+ A_{3,2}={}&\frac{gg_1^2}{2}+\frac{g^2g_2}{4}
+ -\frac{g_2z_2}{4}+g_1z_2^{[1]}-gz_2^{[2]}
+ +\frac32z_3^{[2]},\\
+ A_{2,3}={}&-\frac{gg_3}{6}-\frac{g_1g_2}{2}
+ -\frac23z_2^{[3]}.
+\end{align*}
+These formulas can be checked exactly using Newton's identities, with
+independent formal symbols for every Hurwitz jet.
+
+\subsection{Arbitrary depth-three directions and the one extra constant}
+
+Define
+\begin{equation}\label{ord:etadef}
+ \eta(a)=\frac{\gamma_2(a)}2-
+ \sum_{n\ge0}\frac{\gamma_1(n+a+1)+\tfrac12\log^2(n+a)}{n+a}.
+\end{equation}
+The summand is $O((1+\log n)/n^2)$.
+The identities above imply
+\[
+ \eta(a)=[u]R_2(u,0;a),\qquad
+ [v]R_2(0,v;a)=-\gamma_0(a)\gamma_1(a)-\zeta'(2,a)-\eta(a).
+\]
+For the second identity use the depth-two stuffle law, which gives
+\[
+ R_2(u,v;a)+R_2(v,u;a)
+ =R_1(u;a)R_1(v;a)-\zeta(2+u+v,a).
+\]
+
+\begin{theorem}[Every transverse straight direction at depth three]
+\label{ord:threedirections}
+Let $c_1,c_2,c_3\in\mathbb C$ with
+$c_1(c_1+c_2)(c_1+c_2+c_3)\ne0$. Then
+\begin{align}\label{ord:threeFP}
+ &\operatorname{FP}_{\varepsilon=0}
+ Z_3(1+c_1\varepsilon,1+c_2\varepsilon,1+c_3\varepsilon;a)
+ \notag\\
+ &\quad=B_3(a)-\frac{c_3}{c_1}
+       \bigl(\gamma_0(a)\gamma_1(a)+\zeta'(2,a)\bigr)
+ +\frac{c_3^2\gamma_2(a)}{2c_1(c_1+c_2)}
+ +\frac{c_2-c_3}{c_1}\eta(a).
+\end{align}
+The complete polar part is
+\begin{align}\label{ord:threepoles}
+ &\frac{1}{c_1(c_1+c_2)(c_1+c_2+c_3)\varepsilon^3}
+ +\frac{\gamma_0(a)}{c_1(c_1+c_2)\varepsilon^2}\notag\\
+ &\quad+\frac1\varepsilon
+ \left\{\frac{B_2(a)}{c_1}
+       -\frac{c_3\gamma_1(a)}{c_1(c_1+c_2)}\right\}.
+\end{align}
+\end{theorem}
+
+\begin{proof}
+At depth three the canonical identity reads
+\[
+ Z_3=\frac1{u_1(u_1+u_2)(u_1+u_2+u_3)}
+ +\frac{R_1(u_3)}{u_1(u_1+u_2)}
+ +\frac{R_2(u_2,u_3)}{u_1}+R_3(u_1,u_2,u_3).
+\]
+Expand $R_1$ through quadratic order and $R_2$ through linear order;
+use $R_2(0,0)=B_2$, $R_3(0,0,0)=B_3$, and the two displayed
+first coefficients of $R_2$. This gives both assertions.
+\end{proof}
+
+The coefficient of $\eta$ vanishes exactly on the family $c_2=c_3$
+(without any assertion that $\eta$ is independent of the other constants,
+or that it is nonzero at every shift).
+The full labelled symmetrization also cancels it, because the two
+orders of the last two slopes have opposite coefficients.
+Thus generic depth-three directional finite parts need only one
+nonsymmetric depth-two coefficient beyond ordinary Hurwitz data;
+no new depth-three constant is required for the constant Laurent term.
+

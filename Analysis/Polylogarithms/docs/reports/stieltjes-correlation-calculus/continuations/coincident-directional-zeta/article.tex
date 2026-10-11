@@ -1,0 +1,123 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=26mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{microtype,booktabs,longtable,array}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{xurl}
+\usepackage{fancyhdr}
+\usepackage{tocloft}
+\setlength{\cftbeforesecskip}{4pt}
+\setlength{\cftbeforetoctitleskip}{0pt}
+\setlength{\cftaftertoctitleskip}{12pt}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
+ urlcolor=MidnightBlue,bookmarksnumbered=true]{hyperref}
+\hypersetup{
+ pdftitle={Coincident Stieltjes Products and Directional Zeta Identities},
+ pdfauthor={Research continuation prepared for Vladimir Reshetnikov},
+ pdfsubject={Finite parts, Tornheim derivatives, polylogarithms, harmonic sums and generalized Stieltjes constants},
+ pdfkeywords={Hurwitz zeta, Tornheim zeta, Stieltjes constants, finite part, polylogarithm, Gamma, harmonic numbers}
+}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator*{\FP}{FP}
+\DeclareMathOperator{\CT}{CT}
+\DeclareMathOperator{\Li}{Li}
+\numberwithin{equation}{section}
+\allowdisplaybreaks[2]
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Coincident Stieltjes products}
+\fancyhead[R]{\small Directional zeta identities}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\thispagestyle{empty}
+\vspace*{16mm}
+{\color{MidnightBlue}\Large ProveIt research continuation\par}
+\vspace{12mm}
+{\huge\bfseries Coincident Stieltjes Products\\[3mm]
+and Directional Zeta Identities\par}
+\vspace{8mm}
+{\Large Cubic finite parts, distributional contact terms,\\[2mm]
+coordinate invariance, and exact spectral reductions\par}
+\vspace{13mm}
+{\large Prepared for Vladimir Reshetnikov\par}
+\vspace{3mm}
+10 October 2026
+\vspace{12mm}
+\begin{abstract}
+\noindent
+This article continues the polylogarithm manuscript and six incoming
+research archives at a pinned ProveIt revision. We prove a finite
+holomorphic completion rule for coincident products of arbitrary
+Stieltjes argument derivatives, give its explicit cubic Tornheim
+realization, and reduce the requested cubic digamma finite part to the
+third derivative of the diagonal Tornheim function. The same local
+calculation evaluates its second derivative and, together with a
+Mellin decomposition, yields exact quadratic derivatives on every
+admissible asymmetric ray through the spectral origin.
+
+We also determine all delta-supported corrections between periodic
+distributional correlations and canonical finite parts in the shift
+variable. A closed Gamma and harmonic-polynomial generator gives every
+Stieltjes index and every argument-derivative order. We classify all
+finite logarithmic singular germs invariant under coordinates with a
+prescribed identity jet, including necessity and sharp Stieltjes
+thresholds. For colored weighted sums, finite rational generating
+functions give all outer-order derivatives in ordinary polylogarithms,
+with exact Gamma and generalized-Stieltjes specializations. Finally,
+we give all principal Laurent coefficients and finite parts at a
+common-shift harmonic resonance with two independently moving
+exponents and arbitrary trailing depth.
+
+Proofs specify the cutoff coordinate, the meromorphic restriction, and
+every allowed derivative direction. Classical ingredients and inherited
+results are credited; no general historical-priority claim is made.
+The Gaussian $S_6$ and current $S_8$ candidates remain conjectural.
+Reproducible exact and high-precision checks, narrowly scoped source
+corrections, and a proposed research agenda accompany the article.
+\end{abstract}
+\vfill
+\noindent\small
+Source revision:
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/dcd95baeb7c0e914b138bddef6829c5b1d52b726}
+{\texttt{dcd95baeb7c0e914b138bddef6829c5b1d52b726}}.
+The accompanying source receipt records verified Git blob identities.
+\end{titlepage}
+
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+{\small\tableofcontents}
+\clearpage
+\pagenumbering{arabic}
+\input{sections/01_scope}
+\input{sections/02_cubic}
+\input{sections/03_contacts}
+\input{sections/04_coordinates}
+\input{sections/05_spectral}
+\input{sections/06_rays}
+\input{sections/07_harmonic}
+\input{sections/08_audit}
+\input{sections/09_research}
+\input{sections/10_verification}
+
+\begin{thebibliography}{99}
+\input{references}
+\input{references_contributions}
+\end{thebibliography}
+\end{document}

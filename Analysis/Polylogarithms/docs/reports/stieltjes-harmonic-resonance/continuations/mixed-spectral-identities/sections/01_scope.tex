@@ -1,0 +1,142 @@
+\section{Scope, conventions, and source status}
+\label{scope:sec}
+
+\subsection{What this continuation establishes}
+
+The task is to extend the exact-identity programme in the ProveIt
+polylogarithm manuscript, not to reproduce results already supplied
+by its incoming research reports. We inspected the canonical
+manuscript and the six archives present in \src{docs/incoming}
+at commit \src{dcd95baeb7c0e914b138bddef6829c5b1d52b726}
+\cite{RepoMain,RepoEndpoint,RepoDougall,RepoTransport,RepoExact,
+RepoCoincident,RepoTwisted}.
+The mathematical work concentrates on four gaps explicitly left
+by those sources. The following table records the resulting status.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.26\textwidth}>{\raggedright\arraybackslash}p{0.64\textwidth}@{}}
+\toprule
+Source target & Result and its precise scope\\
+\midrule
+\endhead
+Higher spectral derivatives of the entire harmonic difference
+\cite{RepoExact}
+& Theorem~\ref{hn:thm:newton} and Corollary~\ref{hn:cor:jets}
+give convergent formulas at every order. Theorem~\ref{hn:thm:AKbridge}
+identifies all shift jets with classical multiple Arakawa--Kaneko
+functions. A finite reduction of every general spectral derivative
+to ordinary zeta derivatives is not asserted.\\[6pt]
+Mixed Dougall jets at $b=c=1$, Question~3 of \cite{RepoTransport}
+& Proposition~\ref{dg:polynomial} proves termwise collapse on the
+integer residue grid. Theorems~\ref{dg:generator} and
+\ref{dg:spectral} give every mixed parameter row and every
+mixed spectral--Stieltjes derivative.\\[6pt]
+Genuinely unequal twists, the first research question in \cite{RepoTwisted}
+& Theorem~\ref{tw:tailtheorem} gives a convergent normal form at
+arbitrary orders. The all-index formula \eqref{tw:alljets}
+and finite scalar reductions retain the phase and endpoint
+normalizations. The scalar classification is not an arithmetic
+independence theorem for Fourier samples.\\[6pt]
+Mixed triple collisions, Question~1 of \cite{RepoExact}
+& Theorems~\ref{cl:collision} and \ref{cl:allfactor} give an
+explicit triple collision expansion and the local completion for
+any finite number of factors. Unqualified equality of the geometric
+collision constant and the merged finite part is false. Theorem~\ref{cl:total-derivative} also resolves the one-derivative cancellation target.\\
+\bottomrule
+\end{longtable}
+
+The results are proved below as analytic identities with specified
+domains and normalizations. Exact finite calculations are supporting
+certificates for selected algebraic steps. Numerical comparisons
+test implementations and signs; they do not supply the infinite
+identities or establish arithmetic independence. The supplied proofs
+have not been formalized in a proof assistant.
+
+\subsection{Classical antecedents and attribution}
+
+The basic functions and summations are established mathematics.
+We use the Hurwitz-zeta shift and derivative formulas, the
+polygamma series, the Lerch transcendent, Euler's hypergeometric
+transformation, and the Rogers--Dougall ${}_5F_4(1)$ summation
+\cite{DLMFHurwitz,DLMFPolygamma,DLMFLerch,DLMFHypergeom,DLMFDougall}.
+The multiple Arakawa--Kaneko functions were already defined in
+\cite{AK1999}; related multiple and Hurwitz extensions are treated
+in \cite{KT2018,CC2010}. The Hurwitz--Tornheim relation used in the
+collision section has the antecedent \cite{EspinosaMoll}.
+The centered resonance theorem and the entire harmonic subtraction
+are results of the supplied reports. Where needed, their analytic
+mechanisms are reproduced to make the new deductions reviewable
+without reconstructing an entire earlier archive.
+
+The contribution claimed here is the collection of deductions,
+normal forms, convergence arguments, and corrections relative to
+that inspected source set. We make no exhaustive priority claim
+over the full special-functions literature. In particular, a
+recognition of a classical Arakawa--Kaneko function is recorded as
+an identification, not as the invention of a new special function.
+
+\subsection{Notation and the meaning of finite part}
+
+Write $(a)_n=\Gamma(a+n)/\Gamma(a)$ for a rising factorial,
+$(a)^{\underline n}=a(a-1)\cdots(a-n+1)$ for a falling factorial,
+and $[u^r]$ for coefficient extraction. The symbols
+$\left\{\begin{smallmatrix}m\\j\end{smallmatrix}\right\}$ and
+$\left[\begin{smallmatrix}m\\j\end{smallmatrix}\right]$ denote
+Stirling numbers of the second kind and unsigned Stirling numbers
+of the first kind, respectively. Empty products are $1$.
+The ordinary generalized harmonic numbers are
+\[
+ H_n^{(r)}=\sum_{k=1}^n k^{-r},\qquad H_0^{(r)}=0,
+ \qquad H_n=H_n^{(1)}.
+\]
+General shifts are defined explicitly in the relevant sections.
+The letters $a,b,u$ are local parameters and are reintroduced
+when their role changes.
+
+We set $\psi=\Gamma'/\Gamma$, and $\psi^{(r)}$ denotes an
+argument derivative. For zeta functions, $\zeta^{(k)}(s,x)$
+denotes a derivative in the first, spectral variable; derivatives
+in $x$ are written $\partial_x$. The generalized Stieltjes
+constants use the convention
+\begin{equation}\label{scope:stieltjes}
+ \zeta(1+z,x)=\frac1z+
+       \sum_{m=0}^{\infty}\frac{(-1)^m}{m!}\gamma_m(x)z^m,
+ \qquad \gamma_m=\gamma_m(1),\quad \gamma=\gamma_0.
+\end{equation}
+In particular $\gamma_0(x)=-\psi(x)$.
+Principal logarithms are used for powers in the right half-plane.
+The phases for two-sided Fourier powers are fixed separately
+in \eqref{tw:log}. A square at a complex shift is an algebraic
+square, not an absolute-value square.
+
+A series is \emph{normally convergent} on a parameter domain when
+it converges absolutely and uniformly on each compact subset.
+This is the hypothesis used for holomorphic differentiation of
+infinite sums. The distribution-valued version means normal
+convergence after pairing with each smooth test function, together
+with the displayed uniform growth estimates on Fourier coefficients.
+
+For a cutoff expansion in a positive ambient distance $\eta$,
+$\FP$ retains the coefficient of $\eta^0(\log\eta)^0$ after
+the divergent local terms are removed. At each singular grid
+point in Section~\ref{cl:sec}, the cutoff is on the right in
+the ambient coordinate $x$. This specifies a value; a change of
+coordinate can change it. The symbol $\CT_\epsilon$ has the
+analogous meaning for a geometric collision parameter $\epsilon$.
+For multivariate meromorphic functions with poles on sums of
+variables, an unqualified rectangular Laurent constant is not a
+definition. A chamber, a spectral restriction, or the holomorphic
+completion must first be specified.
+
+\subsection{Reading the four proof mechanisms}
+
+The harmonic argument first proves a compact-uniform estimate for
+finite differences, then identifies their Mellin transform. This
+order prevents the invalid differentiation of a formula known only
+at discrete spectral values. The Dougall argument keeps the Gamma
+ratios and the finite small-index terms intact until after the
+subtractions have been differentiated. The unequal-twist argument
+isolates finitely many modes before applying a binomial expansion,
+so that the logarithm branches agree on the remaining tail.
+The collision argument works with the complete local numerator of
+each resonant subset, retaining finite terms as well as residues.
+These are the analytic steps on which the extensions depend.

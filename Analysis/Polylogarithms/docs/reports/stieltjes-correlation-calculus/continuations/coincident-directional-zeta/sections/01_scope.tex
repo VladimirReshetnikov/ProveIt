@@ -1,0 +1,168 @@
+\section{Scope, results, and conventions}
+\label{scope:sec}
+
+\subsection{The research questions being continued}
+
+The source corpus is the manuscript in
+\texttt{Analysis/Polylogarithms/docs/manuscript} and the six research
+archives in \texttt{docs/incoming}, frozen at the revision on the title
+page \cite{Repo}. A read-only extraction verified the Git blob identity
+of 704 relevant text, code, data, bibliography, and archive files.
+This is a source-integrity statement, not a claim to have verified every
+theorem in those files. The mathematical audit is targeted to the
+questions and premises used below.
+
+Three developments in the incoming material make a further exact
+calculus possible. First, periodic Stieltjes functions have been given
+consistent distributional and pointwise finite-part conventions.
+Second, nonlinear coordinate changes have been reduced to finite
+residue expressions. Third, the shifted height-one harmonic family
+has an exact Gamma-ratio representation with a finite Stirling
+specialization. The present work uses those developments as
+established inputs and extends the questions they explicitly leave
+open \cite{IncomingCoincident,IncomingTransport,IncomingExact}.
+
+The main outcomes and their precise scope are as follows.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.25\textwidth}
+ >{\raggedright\arraybackslash}p{0.48\textwidth}
+ >{\raggedright\arraybackslash}p{0.20\textwidth}@{}}
+\toprule
+Incoming question or target & Result established here & Location\\
+\midrule
+\endhead
+Coincident products beyond degree two &
+A finite local completion for every number of factors; a fully
+explicit cubic global kernel at all argument orders &
+Theorem \ref{cub:general-completion};
+Proposition \ref{cub:global}\\[3pt]
+Cubic digamma finite part &
+An exact reduction to $\omega'''(0)$, where
+$\omega(t)=T(t,t,t)$; also an exact evaluation of $\omega''(0)$ &
+Theorem \ref{cub:diagonal}\\[3pt]
+Contact terms at a shift collision &
+One explicit Gamma--harmonic generator for every delta coefficient;
+no undetermined lower delta derivatives &
+Theorem \ref{cont:main}\\[3pt]
+Coordinate-invariant singular germs &
+Necessary and sufficient coefficient conditions for every prescribed
+order of tangency &
+Theorems \ref{invg:classification},
+\ref{invg:stieltjes-threshold}\\[3pt]
+Normal Tornheim derivatives at integer inner orders &
+Finite depth-two reductions at all integer inner orders, and
+depth-one closure at nonpositive orders with arbitrary weights &
+Theorems \ref{sp:integer}, \ref{sp:rationaltheorem}\\[3pt]
+Spectral direction dependence &
+Constant, linear, and quadratic terms on every ray with
+$(a+c)(b+c)\ne0$ &
+Theorem \ref{sp:raytheorem}\\[3pt]
+Independent harmonic exponents &
+Complete Laurent principal parts and finite parts for two moving
+exponents at every trailing depth and common shift &
+Theorem \ref{h2:thm:direction}\\
+\bottomrule
+\end{longtable}
+
+These statements answer several archived research questions, but they
+do not all have the same kind of closure. The cubic finite part is
+reduced to a specified multizeta derivative, not evaluated in ordinary
+zeta constants alone. The positive-inner-order colored formulas close
+in depth-two polylogarithms. The weighted nonpositive-inner-order
+theorem closes in ordinary polylogarithms and their order derivatives.
+The two-exponent harmonic theorem eliminates its holomorphic
+remainder through the finite part, but does not eliminate the
+remainder from every higher regular coefficient.
+
+\subsection{Relation to the literature}
+
+The analytic ingredients are classical. Hurwitz Fourier expansions
+and product integrals are treated by Espinosa and Moll
+\cite{EM2002,EM2006}. Bailey and Borwein systematically study
+Mordell--Tornheim order derivatives and their polylogarithmic integral
+representations \cite{BB2014}. Colored Tornheim partial fractions already appear
+in Zhao \cite{sp:Zhao}. Borwein and Dilcher give direction-dependent
+Tornheim values and first derivatives on the equal-inner-order family
+\cite{BorweinDilcher}; related Witten values are discussed by Romik
+\cite{sp:Romik}. Logarithmic finite parts and their change of variables
+have an established theory \cite{Latt2011}. Meromorphic continuation
+and Laurent algorithms for multiple zeta functions at integer points
+are supplied by Akiyama--Egami--Tanigawa and
+Matsumoto--Onozuka--Wakabayashi \cite{h2:AET,h2:MOW}.
+
+Accordingly, this article makes no claim to have discovered finite
+parts, the Tornheim--Hurwitz relation, directional regularization, or
+multiple-zeta continuation. The contributions are the stated explicit
+completion and contact generators, the invariant-subspace
+classification, the asymmetric quadratic formula, and the finite
+two-exponent harmonic coefficient rule relative to the audited corpus.
+The elementary weighted identities are included as proved, useful
+consequences of a general rational coefficient method.
+
+\subsection{Notation and finite-part prescriptions}
+
+We use
+\begin{equation}\label{scope:stieltjes}
+ \zeta(1+u,a)=\frac1u+
+       \sum_{n\ge0}\frac{(-1)^n}{n!}\gamma_n(a)u^n,
+ \qquad \gamma_0(a)=-\psi(a),
+ \qquad \gamma_n=\gamma_n(1).
+\end{equation}
+Here $\psi=\Gamma'/\Gamma$, and $\gamma=\gamma_0$ is Euler's
+constant. A prime on $\psi$ is an argument derivative. On $\zeta(s,a)$,
+a prime or $[k]$ superscript denotes a derivative in $s$ unless an
+argument derivative is explicitly written. Thus
+$\zeta^{[k]}(s,a)=\partial_s^k\zeta(s,a)$ and
+$\Li_s^{[k]}(z)=\partial_s^k\Li_s(z)$.
+All integer summation bases are raised to complex powers using their
+real logarithms. A common shift $a$ is initially in $\Re a>0$, with the
+analytic logarithm in that half-plane.
+
+The generalized harmonic numbers are
+\[
+ H_N^{(j)}=\sum_{\nu=1}^N\nu^{-j},\qquad H_N=H_N^{(1)},\qquad H_0=0.
+\]
+The rising factorial is $(a)_n=a(a+1)\cdots(a+n-1)$; the falling
+factorial is $a^{\underline n}=a(a-1)\cdots(a-n+1)$.
+The second-kind Stirling number is
+$\left\{\begin{smallmatrix}n\\k\end{smallmatrix}\right\}$;
+$s(n,k)$ denotes the signed first-kind Stirling number.
+Coefficient extraction $[u^j]F$ always refers to an ordinary power
+series, with any exponential-generating factorials displayed
+separately.
+
+For a function with a finite logarithmic singular expansion at zero,
+\begin{equation}\label{scope:FP}
+ \FP\int_0^1 f(x)\,dx
+   =\CT_{\varepsilon\downarrow0}\int_\varepsilon^1 f(x)\,dx.
+\end{equation}
+The constant term means the coefficient of
+$\varepsilon^0(\log\varepsilon)^0$ after discarding divergent powers
+and logarithms. It is a coordinate-dependent prescription. A spectral
+Laurent constant $\CT_{u=0}F(u)$ is a different operation; identifying
+the two requires a proof of their local counterterms. Such a proof is
+given in Section~\ref{cub:sec}.
+
+For periodic distributions, $\delta$ is the unit Dirac mass at the
+origin of $\mathbb R/\mathbb Z$, $D$ is the distribution derivative,
+and $\check F(x)=F(-x)$. We normalize convolution so that
+\[
+ (\check F*G)(a)=\int_0^1 F(x)G(x+a)\,dx
+\]
+whenever ordinary integration is valid. A finite part of a pointwise
+product is not defined by multiplying distributions. Section
+\ref{cont:sec} explicitly compares two independently defined
+extensions of the same off-collision function.
+
+\paragraph{Why the directions matter.}
+There is no single holomorphic Taylor germ of the uncolored Tornheim
+function at $(0,0,0)$. For example,
+\[
+ T(t,t,t)\big|_{t=0}^{\mathrm{cont}}=\frac13,\qquad
+ T(0,0,t)\big|_{t=0}^{\mathrm{cont}}=\frac5{12}.
+\]
+A notation such as $T''(0)$ without a specified one-variable
+restriction is therefore insufficient. The same distinction occurs
+when one exponent of a harmonic sum is fixed before differentiating
+another. Every derivative formula below preserves its stated
+restriction.

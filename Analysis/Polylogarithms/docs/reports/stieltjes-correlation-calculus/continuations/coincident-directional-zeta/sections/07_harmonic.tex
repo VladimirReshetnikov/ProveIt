@@ -1,0 +1,603 @@
+% Self-contained section. Requires amsmath, amssymb, amsthm, hyperref.
+% All labels/citation keys use h2: prefix. No custom macros required.
+\section{Two independent exponents at a harmonic resonance}
+\label{h2:sec:main}
+
+The fully shifted height-one theorem in the incoming exact-identities
+report varies the outer exponent and keeps every inner exponent equal
+to one. Its final research section asks what survives when inner
+exponents move independently. We answer a precise part of that question:
+the first inner exponent may vary independently of the outer exponent,
+with an arbitrary number of subsequent unit exponents. Every principal
+Laurent coefficient and the finite part along every transverse affine
+direction have a finite Gamma--Bernoulli formula. A polynomial in the
+common shift supplies the same correction in all directions.
+
+The meromorphic continuation of multiple zeta functions and the
+dependence of specializations on the approach direction are classical
+\cite{h2:AET,h2:MOW}. In particular, Matsumoto, Onozuka and Wakabayashi
+give algorithms for Laurent expansions at arbitrary integer points,
+allowing remainder integrals in general. The result below is a compact
+closed coefficient formula for this particular common-shift family,
+uniform in its trailing depth and its two-dimensional direction. We do
+not claim priority for general continuation or multivariable Laurent
+expansion. We also do not resolve arbitrary independent perturbations of
+all trailing exponents.
+
+\subsection{The family and its finite residue polynomial}
+
+Throughout this section, $\Re a>0$, and powers of $n+a$ use the principal
+logarithm. Define
+\begin{align}
+ e_r(n;a)&=[u^r]\prod_{j=0}^{n-1}\left(1+\frac{u}{j+a}\right),
+ &p_n(a,u)&=\frac{(a+u)_n}{(a)_n},\label{h2:eq:e}\\
+ Z_r(s,t;a)&=\sum_{n_0>n_1>\cdots>n_{r+1}\ge0}
+ \frac{1}{(n_0+a)^s(n_1+a)^t\prod_{j=2}^{r+1}(n_j+a)},
+ &&r\ge0.\label{h2:eq:Z}
+\end{align}
+The final product is empty at $r=0$. Thus $Z_0$ is a double Hurwitz
+zeta function, and $Z_r(s,1;a)$ is the height-one function with $r+1$
+inner unit exponents. Its depth generator is
+\begin{equation}\label{h2:eq:generator}
+ \mathcal Z_a(s,t,u)=\sum_{n\ge0}
+     p_n(a,u)(n+a)^{-t}\zeta(s,n+a+1)
+       =\sum_{r\ge0}Z_r(s,t;a)u^r.
+\end{equation}
+For example, absolute normal convergence holds when
+$\Re s>1$ and $\Re(s+t)>2+\Re u$; a small closed disc in $u$
+can be chosen in any strict version of these inequalities. The estimate
+$p_n=O(n^{\Re u})$ and the usual Hurwitz-tail estimate prove this
+claim and justify coefficient extraction. At each fixed depth,
+$e_r(n;a)=O((1+\log n)^r)$ gives the corresponding normal convergence.
+
+Let $B_k(x)$ denote Bernoulli polynomials, with $B_1(0)=-1/2$.
+Define polynomials $q_j(u)$ through the formal series
+\begin{equation}\label{h2:eq:qgen}
+ \sum_{j\ge0}q_j(u)z^j
+ =\exp\left(\sum_{k\ge1}
+       \frac{(-1)^{k+1}\{B_{k+1}(u)-B_{k+1}(0)\}}
+            {k(k+1)}z^k\right).
+\end{equation}
+This is a coefficient definition; no convergence of the infinite
+asymptotic series is asserted. The classical Gamma-ratio expansion
+\cite{DLMFGamma} reads
+\begin{equation}\label{h2:eq:ratio}
+ \frac{\Gamma(x+u)}{\Gamma(x)}
+   \sim x^u\sum_{j\ge0}q_j(u)x^{-j}.
+\end{equation}
+In particular,
+\[
+ \begin{aligned}
+ q_0&=1,& q_1&=\frac{u(u-1)}2,\\
+ q_2&=\frac{u(u-1)(u-2)(3u-1)}{24},&
+ q_3&=\frac{u^2(u-1)^2(u-2)(u-3)}{48}.
+ \end{aligned}
+\]
+Every finite truncation has a locally uniform remainder in $u$.
+Put
+\begin{align}
+ C_a(u)&=\frac{\Gamma(a)}{\Gamma(a+u)},\label{h2:eq:C}\\
+ A_0(s)&=\frac1{s-1},\quad A_1(s)=-\frac12,\quad
+ A_{2k}(s)=\frac{B_{2k}}{(2k)!}(s)_{2k-1}\ (k\ge1),\quad
+ A_{2k+1}(s)=0\ (k\ge1),\label{h2:eq:A}\\
+ P_m(s,u)&=\sum_{j=0}^{m+1}q_j(u)A_{m+1-j}(s).
+ \label{h2:eq:P}
+\end{align}
+Thus $P_m$ is a finite rational expression, analytic for $s$ near $-m$.
+Equivalently,
+\[
+ P_m(s,u)=\frac{q_{m+1}(u)}{s-1}-\frac{q_m(u)}2
+  +\sum_{k=1}^{\lfloor(m+1)/2\rfloor}
+       \frac{B_{2k}(s)_{2k-1}}{(2k)!}q_{m+1-2k}(u).
+\]
+The first two examples are
+\begin{align}
+ P_0(s,u)&=\frac{u(u-1)}{2(s-1)}-\frac12,
+ \label{h2:eq:P0}\\
+ P_1(s,u)&=\frac{u(u-1)(u-2)(3u-1)}{24(s-1)}
+             -\frac{u(u-1)}4+\frac{s}{12}.
+ \label{h2:eq:P1}
+\end{align}
+
+\begin{proposition}[One moving divisor before depth extraction]
+\label{h2:prop:local}
+For every integer $m\ge0$, there is a jointly holomorphic function
+$\mathcal H_{m,a}$ near $(s,t,u)=(-m,1,0)$ such that
+\begin{equation}\label{h2:eq:local}
+ \mathcal Z_a(s,t,u)=
+ \frac{C_a(u)P_m(s,u)}{s+t+m-1-u}+\mathcal H_{m,a}(s,t,u).
+\end{equation}
+The statement is also locally uniform in $a$ on the right half-plane.
+\end{proposition}
+\begin{proof}
+Write $x=n+a$. Since
+$\zeta(s,x+1)=\zeta(s,x)-x^{-s}$, the Hurwitz asymptotic expansion
+\cite{DLMFHzeta} gives
+\[
+ \zeta(s,x+1)\sim\sum_{k\ge0}A_k(s)x^{1-s-k}.
+\]
+Multiplying a finite truncation by \eqref{h2:eq:ratio} yields
+\[
+ p_n(a,u)x^{-t}\zeta(s,x+1)
+ \sim C_a(u)\sum_{\ell\ge0}
+   \left(\sum_{j+k=\ell}q_j(u)A_k(s)\right)
+                         x^{1-s-t+u-\ell}.
+\]
+Subtract sufficiently many terms from the summand in
+\eqref{h2:eq:generator}. The remainder series converges normally in a
+neighborhood of $(-m,1,0)$: after retaining $L$ terms, its
+summands satisfy
+\[
+ O(n^{1-\Re(s+t)+\Re u-L}).
+\]
+Choosing $L>m+2$ suffices on a small neighborhood. Parameter derivatives introduce only fixed powers
+of $\log n$ after shrinking that neighborhood.
+
+The sums of the subtracted terms are the corresponding finite linear
+combination of
+$\zeta(s+t-1-u+\ell,a)$. Exactly one can have a pole in this
+neighborhood: $\ell=m+1$. Its residue is
+$C_a(u)P_m(s,u)$, and subtracting its simple pole leaves a holomorphic
+function. This proves \eqref{h2:eq:local}. The use of finite asymptotic
+subtraction, with a normally convergent remainder, is what makes this a
+meromorphic identity rather than a formal asymptotic assertion.
+\end{proof}
+
+\subsection{An explicit value of the holomorphic remainder}
+
+The next lemma is the specialization mechanism from the incoming
+fully shifted height-one theorem \cite{IncomingExact}. We include its
+proof because the direction-independent correction in the main theorem
+depends on it.
+
+\begin{lemma}[A finite Stirling specialization]
+\label{h2:lem:stirling}
+Let
+\[
+ F_a(w,u)=\sum_{n\ge0}\frac{p_n(a,u)}{(n+a)^w},\qquad
+ T_m(a,u)=-\sum_{j=1}^{m+1}
+   \left\{\begin{matrix}m+1\\j\end{matrix}\right\}
+      \frac{(a-1)^{\underline j}}{u+j}.
+\]
+Here $(a-1)^{\underline j}$ is a falling factorial and braces denote
+Stirling numbers of the second kind. For sufficiently small nonzero
+$u$, the meromorphic continuation satisfies
+\begin{equation}\label{h2:eq:Fnegative}
+ F_a(-m,u)=T_m(a,u).
+\end{equation}
+Consequently, with
+\begin{equation}\label{h2:eq:L}
+ L_m(a,u)=\frac{T_m(a,u)-\zeta(-m,a)}u,
+\end{equation}
+one has
+\begin{equation}\label{h2:eq:Hvalue}
+ \mathcal H_{m,a}(-m,1,u)
+   =L_m(a,u)+\frac{C_a(u)P_m(-m,u)}u.
+\end{equation}
+The right side of \eqref{h2:eq:Hvalue} is holomorphic at $u=0$.
+\end{lemma}
+\begin{proof}
+The Mellin kernel of $F_a$ is
+\[
+ G_a(v,u)=e^{-av}\,{}_2F_1(1,a+u;a;e^{-v}).
+\]
+Gauss connection at one gives
+\begin{align*}
+ G_a(v,u)&=\frac{\Gamma(a)\Gamma(1+u)}{\Gamma(a+u)}
+       \frac{e^{-v}}{(1-e^{-v})^{1+u}}+R_a(v,u),\\
+ R_a(v,u)&=-\frac{a-1}{1+u}e^{-av}
+      {}_2F_1(1,a+u;2+u;1-e^{-v}).
+\end{align*}
+The second kernel is analytic at $v=0$ and decays exponentially at
+infinity, locally in the parameters. Mellin subtraction therefore
+shows that its quotient by $\Gamma(w)$ is entire in $w$, and has value
+$(-1)^m m![v^m]R_a(v,u)$ at $w=-m$. The first kernel has local
+exponents $-1-u+j$; for small nonzero $u$ its Mellin transform has no
+pole at $w=-m$, so division by $\Gamma(w)$ makes its value zero there.
+This proves that the left side of \eqref{h2:eq:Fnegative} is a
+polynomial in $a$ of degree at most $m+1$.
+
+To identify the polynomial, take a positive integer $a=A$. Direct
+index shifting in the original Dirichlet series gives
+\[
+ F_A(w,u)=\frac{\Gamma(A)\Gamma(1+u)}{\Gamma(A+u)}
+ \left(F_1(w,u)-\sum_{k=1}^{A-1}
+       \frac{(1+u)_{k-1}}{(k-1)!k^w}\right).
+\]
+At $w=-m$, the first term vanishes. The finite identity
+\[
+ k^m=\sum_{j=1}^{m+1}
+    \left\{\begin{matrix}m+1\\j\end{matrix}\right\}
+                           (k-1)^{\underline{j-1}}
+\]
+and the binomial summation
+\[
+ \frac{\Gamma(A)\Gamma(1+u)}{\Gamma(A+u)}
+ \sum_{k=1}^{A-1}\frac{(1+u)_{k-1}}{(k-1)!}
+           (k-1)^{\underline{j-1}}
+       =\frac{(A-1)^{\underline j}}{u+j}
+\]
+give $T_m(A,u)$. Both sides are polynomials in $a$ of degree at most
+$m+1$, and agreement at all positive integers proves
+\eqref{h2:eq:Fnegative} for every $\Re a>0$.
+
+Finally, $p_{n+1}-p_n=up_n/(n+a)$ implies, first by absolutely
+convergent summation,
+\begin{equation}\label{h2:eq:telescoping}
+ \mathcal Z_a(s,1,u)=\frac{F_a(s,u)-\zeta(s,a)}u.
+\end{equation}
+Meromorphic continuation, \eqref{h2:eq:local}, and
+\eqref{h2:eq:Fnegative} now give \eqref{h2:eq:Hvalue}. Its
+holomorphy also follows directly from Proposition~\ref{h2:prop:local}.
+\end{proof}
+
+The order of operations in \eqref{h2:eq:Fnegative} matters. It restricts
+$w$ to $-m$ for nonzero $u$ and then continues the resulting function in
+$u$. At a crossing of a moving pole it does not give the Laurent finite
+part obtained by first extracting a coefficient in $u$. The main
+theorem keeps these operations in the required order.
+
+For later use put
+\begin{equation}\label{h2:eq:Delta}
+ \Delta_{m,d}(a)=(-1)^{d+1}\sum_{j=1}^{m+1}
+  \left\{\begin{matrix}m+1\\j\end{matrix}\right\}
+                      \frac{(a-1)^{\underline j}}{j^{d+1}}.
+\end{equation}
+Thus $[u^r]L_m(a,u)=\Delta_{m,r+1}(a)$ for $r\ge0$.
+
+\subsection{The complete two-direction finite-part theorem}
+
+\begin{theorem}[All depths and every transverse affine direction]
+\label{h2:thm:direction}
+Let $m,r\ge0$, $\Re a>0$, and $\alpha,\beta\in\mathbb C$ with
+$q=\alpha+\beta\ne0$. Set $\theta=\alpha/q$ and define the analytic
+germ
+\begin{equation}\label{h2:eq:V}
+ V_{m,\theta}(u;a)=C_a(u)P_m(-m+\theta u,u).
+\end{equation}
+Then
+\begin{equation}\label{h2:eq:main}
+ \boxed{\displaystyle
+ Z_r(-m+\alpha\varepsilon,1+\beta\varepsilon;a)
+ =\sum_{h=0}^{r+1}
+     \frac{[u^{r+1-h}]V_{m,\theta}(u;a)}
+          {q^h\varepsilon^h}
+      +\Delta_{m,r+1}(a)+O(\varepsilon).}
+\end{equation}
+In particular,
+\begin{equation}\label{h2:eq:FP}
+ \operatorname{FP}_{\varepsilon=0}
+ Z_r(-m+\alpha\varepsilon,1+\beta\varepsilon;a)
+ =[u^{r+1}]V_{m,\theta}(u;a)+\Delta_{m,r+1}(a).
+\end{equation}
+Every displayed coefficient is a finite expression in rational numbers,
+$a$, $\theta$, $q^{-1}$, and the polygamma values
+\[
+ \psi(a),\psi'(a),\ldots,\psi^{(r)}(a).
+\]
+\end{theorem}
+\begin{proof}
+In \eqref{h2:eq:local}, substitute the affine path and put
+$f(\varepsilon,u)=C_a(u)P_m(-m+\alpha\varepsilon,u)$. The singular
+term becomes $f(\varepsilon,u)/(q\varepsilon-u)$. For fixed nonzero
+$\varepsilon$, expand in $u$ first:
+\[
+ \frac1{q\varepsilon-u}
+    =\sum_{n\ge0}\frac{u^n}{q^{n+1}\varepsilon^{n+1}}.
+\]
+If $h\ge1$, collecting the coefficient of
+$u^r\varepsilon^{-h}$ gives
+\[
+ q^{-h}[u^{r+1-h}]
+       C_a(u)P_m\left(-m+\frac{\alpha}{q}u,u\right).
+\]
+For the constant Laurent coefficient the same calculation excludes the
+term of degree zero in $\varepsilon$ in $f$, and therefore gives
+\[
+ [u^{r+1}]C_a(u)
+   \left(P_m(-m+\theta u,u)-P_m(-m,u)\right).
+\]
+The holomorphic remainder contributes
+$[u^r]\mathcal H_{m,a}(-m,1,u)$ to the constant coefficient and
+nothing to the principal part. Formula \eqref{h2:eq:Hvalue} cancels
+$-[u^{r+1}]C_a(u)P_m(-m,u)$ and leaves
+$[u^r]L_m=\Delta_{m,r+1}$. This proves \eqref{h2:eq:main}.
+
+Finally,
+\[
+ C_a(u)=\exp\left(-\sum_{k\ge1}
+                  \frac{\psi^{(k-1)}(a)}{k!}u^k\right).
+\]
+Only finitely many coefficients, through degree $r+1$, enter the
+formula. This proves the stated finite algebra and completes the proof.
+\end{proof}
+
+The choice $(\alpha,\beta)=(1,0)$ recovers the archived common-shift
+height-one expansion. Indeed comparison of the moving residues in
+\eqref{h2:eq:telescoping} proves the finite identity
+\begin{equation}\label{h2:eq:recovery}
+ uP_m(-m+u,u)=q_{m+1}(u).
+\end{equation}
+If the former notation is used, $q_{m+1}$ is precisely its polynomial
+$W_m$. The choice $(\alpha,\beta)=(0,1)$ instead keeps the outer
+exponent at $-m$ and moves the first inner exponent. Formula
+\eqref{h2:eq:FP} specifies their discrepancy at every depth; it is
+not legitimate to transfer a finite part from one direction to the
+other without that correction.
+
+\begin{corollary}[Pole order is independent of the transverse direction]
+\label{h2:cor:poles}
+For $m=0$ or positive odd $m$, the pole in \eqref{h2:eq:main} has order
+exactly $r+1$, with leading coefficient
+$\zeta(-m)/q^{r+1}$. For positive even $m$, it has order exactly $r$
+when $r\ge1$, with leading coefficient
+\[
+ \frac{m+1}{2m}\frac{B_m}{q^r}.
+\]
+At positive even $m$ and $r=0$ the function is holomorphic at the
+intersection, and the value is independent of the direction.
+\end{corollary}
+\begin{proof}
+From \eqref{h2:eq:qgen}, $q_0(0)=1$ and $q_j(0)=0$ for $j>0$.
+Hence $P_m(-m,0)=A_{m+1}(-m)=\zeta(-m)$. This proves the first
+assertion. For positive even $m$, $A_{m+1}$ is identically zero, so
+$[u]P_m(-m+\theta u,u)$ is independent of $\theta$. It can be
+computed at $\theta=1$ using \eqref{h2:eq:recovery}.
+
+For completeness, the Gamma-ratio coefficients also obey
+\[
+ q_{m+1}(u)=(u-m)_{m+1}[v^{m+1}]
+                e^{-v}\left(\frac{v}{1-e^{-v}}\right)^{1+u}.
+\]
+To justify this auxiliary identity, the beta integral gives, for
+$\Re u<0$ and sufficiently large positive $x$,
+\[
+ \frac{\Gamma(x+u)}{\Gamma(x)}
+ =\frac1{\Gamma(-u)}\int_0^\infty e^{-xv}v^{-1-u}
+       e^{-uv}\left(\frac{v}{1-e^{-v}}\right)^{1+u}\,dv.
+\]
+Expanding the analytic factor at $v=0$ and integrating a finite Taylor
+polynomial gives
+\[
+ q_j(u)=(-u)_j[v^j]\,
+          e^{-uv}\left(\frac{v}{1-e^{-v}}\right)^{1+u}.
+\]
+The analytic factor here is obtained from
+$e^{-v}(v/(1-e^{-v}))^{1+u}$ by replacing $v$ with $-v$.
+Since $(-1)^j(-u)_j=(u-j+1)_j$, this proves the identity with
+$j=m+1$. Both sides are polynomials in $u$, so it holds for every $u$
+by polynomial continuation.
+For even $m\ge2$, the coefficient at $u=0$ in the last bracket
+vanishes, while its coefficient of $u$ is
+\[
+ [v^{m+1}]\frac{v}{e^v-1}
+                   \log\frac{v}{1-e^{-v}}
+       =\frac{m+1}{2m}\frac{B_m}{m!}.
+\]
+This follows on multiplying the ordinary Bernoulli series by
+$v/2-\sum_{k\ge1}B_{2k}v^{2k}/(2k(2k)!)$.
+Since $(u-m)_{m+1}=m!u+O(u^2)$, one obtains
+$[u^2]q_{m+1}=(m+1)B_m/(2m)\ne0$. Formula
+\eqref{h2:eq:main} now gives the stated order and leading coefficient.
+For $r=0$, the local numerator $P_m(s,0)=A_{m+1}(s)$ vanishes
+identically, proving joint holomorphy.
+\end{proof}
+
+\paragraph{Directions within the polar hyperplane.}
+The condition $q\ne0$ is essential whenever the pole in
+Corollary~\ref{h2:cor:poles} is genuine. A nonconstant affine path with
+$\alpha+\beta=0$ remains inside $s+t+m-1=0$, so the meromorphic function
+has no ordinary one-variable restriction along that path. The exception
+is $r=0$ and positive even $m$, where the function is jointly holomorphic:
+all approach directions, including tangent ones, give
+\[
+ Z_0(-m,1;a)=\Delta_{m,1}(a)+\frac{m+1}{2m}B_m.
+\]
+
+\subsection{Explicit identities and direction corrections}
+
+Write $P=\psi(a)$ and $Q=\psi'(a)$. Formula \eqref{h2:eq:P0}
+gives
+\[
+ P_0(\theta u,u)=-\frac12+\frac u2
+       +\frac{\theta-1}{2}u^2
+       +\frac{\theta^2-\theta}{2}u^3+O(u^4).
+\]
+Consequently,
+\begin{align}
+ Z_0(\alpha\varepsilon,1+\beta\varepsilon;a)
+ &= -\frac1{2q\varepsilon}+a-\frac12+\frac P2
+                   +O(\varepsilon),\label{h2:eq:example00}\\
+ Z_1(\alpha\varepsilon,1+\beta\varepsilon;a)
+ &= -\frac1{2q^2\varepsilon^2}
+      +\frac{1+P}{2q\varepsilon}
+      +1-a+\frac{\theta-1}{2}-\frac P2
+             -\frac{P^2-Q}{4}+O(\varepsilon).
+ \label{h2:eq:example01}
+\end{align}
+Thus at total depth three the finite part changes by exactly
+$(\theta-\eta)/2$ when the direction parameter changes from $\eta$
+to $\theta$; the result holds at every common shift $a$.
+
+At the next outer integer one obtains
+\begin{equation}\label{h2:eq:example10}
+ Z_0(-1+\alpha\varepsilon,1+\beta\varepsilon;a)
+ =-\frac1{12q\varepsilon}
+    +\frac{a^2+a}{4}+\frac{2\theta-5}{24}+\frac P{12}
+                  +O(\varepsilon).
+\end{equation}
+The two coordinate directions differ by $1/12$ in their finite parts.
+For an example where the highest potential pole cancels, put
+$L=\gamma+2\log2$. At the half shift,
+\begin{equation}\label{h2:eq:example21}
+ Z_1(-2+\alpha\varepsilon,1+\beta\varepsilon;1/2)
+    =\frac1{8q\varepsilon}+\frac L8-\frac{7+12\theta}{288}
+                           +O(\varepsilon).
+\end{equation}
+At $\theta=1$ this is the previously obtained height-one finite part
+$L/8-19/288$; at $\theta=0$ it is $L/8-7/288$.
+
+In general define the difference between two directional finite parts
+by $\mathfrak A_{m,r}(\theta,\eta;a)$. It has the exact form
+\begin{equation}\label{h2:eq:anomaly}
+ \mathfrak A_{m,r}(\theta,\eta;a)
+ =[u^{r+1}]C_a(u)
+       \bigl(P_m(-m+\theta u,u)-P_m(-m+\eta u,u)\bigr).
+\end{equation}
+The Stirling polynomial has canceled completely. At double-zeta depth
+$r=0$ this reduces to
+\begin{equation}\label{h2:eq:anomaly0}
+ \mathfrak A_{m,0}(\theta,\eta;a)
+   =-(\theta-\eta)\zeta(-m)H_m,
+ \qquad H_0=0.
+\end{equation}
+To see the last equality, $[u]$ of the difference is
+$(\theta-\eta)A'_{m+1}(-m)$. For odd $m$,
+$A_{m+1}(s)=B_{m+1}(s)_m/(m+1)!$, and its logarithmic derivative
+at $s=-m$ is $-H_m$; the cases $m=0$ and positive even $m$ vanish.
+Thus the double-zeta directional correction is rational and independent
+of $a$, even though each individual finite part contains $\psi(a)$.
+
+\subsection{An exact normal slice and all Stieltjes derivatives}
+
+At depth two one can go beyond the finite part in the direction that
+keeps the outer exponent fixed. The resulting reduction is a classical
+Bernoulli specialization of a multiple zeta function; it also supplies
+particularly short mixed Gamma--Stieltjes identities.
+
+\begin{theorem}[The complete inner-exponent slice]
+\label{h2:thm:slice}
+For $m\ge0$, the meromorphic identity
+\begin{equation}\label{h2:eq:slice}
+ Z_0(-m,t;a)=-\frac1{m+1}\sum_{j=0}^{m+1}
+       \binom{m+1}{j}B_j(1)\zeta(t-m-1+j,a)
+\end{equation}
+holds. More generally, for every trailing depth $r$,
+\begin{equation}\label{h2:eq:slicedepth}
+ Z_r(-m,t;a)=-\frac1{m+1}\sum_{j=0}^{m+1}
+       \binom{m+1}{j}B_j(1)M_r(t-m-1+j;a),
+\end{equation}
+where $M_r(w;a)=\sum_{n\ge0}e_r(n;a)(n+a)^{-w}$.
+\end{theorem}
+\begin{proof}
+In the half-plane $\Re t>m+2$, the sum
+$\sum e_r(n;a)(n+a)^{-t}\zeta(s,n+a+1)$ is locally normally
+convergent for $s$ near $-m$. The Bernoulli evaluation
+\[
+ \zeta(-m,x+1)=-\frac{B_{m+1}(x+1)}{m+1}
+ =-\frac1{m+1}\sum_{j=0}^{m+1}
+       \binom{m+1}{j}B_j(1)x^{m+1-j}
+\]
+gives the finite formula termwise there. Continuing meromorphically in
+$t$ proves the identities. This argument specifies the restriction
+$s=-m$ before taking a Laurent coefficient in $t$.
+\end{proof}
+
+Use the Stieltjes convention
+\[
+ \zeta(1+\varepsilon,a)=\frac1\varepsilon
+       +\sum_{\ell\ge0}\frac{(-1)^\ell}{\ell!}
+                         \gamma_\ell(a)\varepsilon^\ell,
+ \qquad \gamma_0(a)=-\psi(a).
+\]
+Writing $\zeta^{(\ell)}(w,a)=\partial_w^\ell\zeta(w,a)$,
+\eqref{h2:eq:slice} yields the complete regular coefficients
+\begin{align}
+ [\varepsilon^\ell]Z_0(-m,1+\varepsilon;a)
+ ={}&-\frac1{(m+1)\ell!}\sum_{j=0}^{m}
+       \binom{m+1}{j}B_j(1)\zeta^{(\ell)}(j-m,a)
+       \notag\\
+ &+\frac{(-1)^\ell}{\ell!}\zeta(-m)\gamma_\ell(a),
+ \qquad \ell\ge0.\label{h2:eq:slicejets}
+\end{align}
+Its principal part is $\zeta(-m)/\varepsilon$. At $m=0$ this simplifies to
+\begin{equation}\label{h2:eq:allstieltjes}
+ \boxed{\displaystyle
+ \operatorname{FP}_{t=1}\partial_t^\ell Z_0(0,t;a)
+   =-\zeta^{(\ell)}(0,a)
+           +\frac{(-1)^{\ell+1}}2\gamma_\ell(a),
+ \qquad \ell\ge0.}
+\end{equation}
+For $\ell=1$, Lerch's classical identity
+\cite{DLMFHzeta} gives the concrete logarithmic formula
+\begin{equation}\label{h2:eq:firststieltjes}
+ \boxed{\displaystyle
+ \operatorname{FP}_{t=1}\partial_t Z_0(0,t;a)
+   =-\log\Gamma(a)+\frac12\log(2\pi)+\frac12\gamma_1(a).}
+\end{equation}
+The logarithm of $\Gamma$ is its analytic branch on $\Re a>0$,
+real for positive $a$. Equivalently,
+\begin{align}
+ Z_0(0,1+\varepsilon;a)
+  ={}&-\frac1{2\varepsilon}+a-\frac12+\frac12\psi(a)\notag\\
+  &+\varepsilon\left(-\log\Gamma(a)+\frac12\log(2\pi)
+                                     +\frac12\gamma_1(a)\right)
+       +O(\varepsilon^2).\label{h2:eq:Z0next}
+\end{align}
+This does not evaluate the first regular coefficient in the different
+slice $Z_0(\varepsilon,1;a)$; the two slices coincide only at those
+coefficients explicitly identified above.
+
+There is also a finite antiderivative at every Stieltjes order. Put
+$J_\ell(a)=\operatorname{FP}_{t=1}\partial_t^\ell Z_0(0,t;a)$.
+Then
+\begin{equation}\label{h2:eq:primitive}
+ \boxed{\displaystyle
+ \int J_\ell(a)\,da
+  =\frac{\zeta^{(\ell+1)}(0,a)}{2(\ell+1)}
+      -\ell!\sum_{j=0}^{\ell}
+                  \frac{\zeta^{(j)}(-1,a)}{j!}
+       +\text{constant}.}
+\end{equation}
+Indeed the Hurwitz shift derivative implies
+\[
+ \partial_a\zeta^{(j)}(-1,a)
+     =\zeta^{(j)}(0,a)-j\zeta^{(j-1)}(0,a),\qquad
+ \partial_a\zeta^{(\ell+1)}(0,a)
+     =(-1)^{\ell+1}(\ell+1)\gamma_\ell(a).
+\]
+The finite sum telescopes on differentiation. For example, a primitive
+of the right side of \eqref{h2:eq:firststieltjes} is
+\[
+ \frac14\zeta''(0,a)-\zeta'(-1,a)-\zeta(-1,a).
+\]
+These formulas provide exact derivative and antiderivative identities
+in the independent inner spectral direction, including every
+generalized Stieltjes order.
+
+\subsection{Scope, verification, and the next questions}
+
+The new finite-part theorem stops at $O(\varepsilon)$ because the
+first derivatives of $\mathcal H_{m,a}$ can enter that term.
+The normal slice at depth two is exceptional: the Bernoulli reduction
+evaluates all of its regular coefficients. Formula
+\eqref{h2:eq:slicedepth} reduces the corresponding problem at larger
+depth by one, but does not by itself reduce every resulting spectral
+derivative to ordinary Hurwitz data.
+
+The supplied program \texttt{verify\_two\_exponent.py} checks the
+residue identity \eqref{h2:eq:recovery} exactly for $0\le m\le6$.
+It separately evaluates the continued nested sum using its original
+finite initial segment and a long Euler--Maclaurin tail. Discrete Cauchy
+averages then extract Laurent coefficients without using the predicted
+principal part in the extraction. A second cutoff and longer tail
+check numerical stability. Eight cases at $65$ decimal working digits
+compare $21$ Laurent coefficients through the finite part; the maximum
+absolute discrepancy is below $2.25\times10^{-46}$. The longer-tail
+repeat differs by less than $5.9\times10^{-52}$. These are
+arbitrary-precision diagnostics;
+the normal-convergence and coefficient-extraction proofs above establish
+the identities for all parameters.
+
+Three further research directions are concrete. First, allow the
+second inner exponent to move as well; this introduces several
+intersecting polar divisors and tests whether a finite analogue of
+$P_m$ still eliminates every constant-term remainder. Second, determine
+linear combinations of first regular coefficients in different
+transverse directions that cancel the derivatives of
+$\mathcal H_{m,a}$. Third, compare the rational directional correction
+at $a=1$ with the general Laurent algorithms and with the
+Stirling-polynomial formulas for nonpositive multiple-zeta values
+\cite{h2:MOW,h2:IshiiShinohara}; this requires matching both the order of
+indices and the chosen regularization, since the present base point has
+unit inner exponents.

@@ -1,0 +1,53 @@
+% The discussion concerns the inspected author PDF, not every published version.
+% Bibliography keys to map in the parent: BorweinDilcher, DLMFpolylog.
+\subsection{Corrections in the inspected Borwein--Dilcher author PDF}
+\label{audit:BD}
+
+The author-hosted PDF of Borwein and Dilcher,
+\emph{Derivatives and fast evaluation of the Witten zeta function},
+\url{https://carmamaths.org/resources/jon/omega3.pdf}, contains two
+transcription errors relevant to a Mellin implementation.  Lemma~2.1(b),
+printed page~2, assigns $H_0=1$; the required convention is $H_0=0$.
+In Theorem~2.6, printed page~5, the positive-integer formula for $B_p$
+has an extra factor $H_{p-1}$.  The corrected coefficients are
+\begin{equation}\label{audit:BD-AB}
+ A_p=\frac{(-1)^{p-1}H_{p-1}}{\Gamma(p)},\qquad
+ B_p=\frac{(-1)^p}{\Gamma(p)},\qquad p=1,2,\ldots.
+\end{equation}
+These findings concern the inspected PDF; they do not assert that every
+published version repeats them.
+
+Here is an independent check.  Coalescing the Gamma pole and the
+$\zeta(1)$ term in Jonqui\`ere's formula gives
+\begin{equation}\label{audit:integer-Jonquiere}
+ \operatorname{Li}_p(e^{-x})
+ =\sum_{\substack{k\ge0\\k\ne p-1}}
+       \zeta(p-k)\frac{(-x)^k}{k!}
+ +\frac{(-x)^{p-1}}{(p-1)!}\bigl(H_{p-1}-\log x\bigr),
+ \qquad 0<x<2\pi.
+\end{equation}
+Thus the coefficient multiplying $x^{p-1}\log x$ is precisely $B_p$
+in \eqref{audit:BD-AB}.  At $p=3$, the required coefficient is $-1/2$,
+whereas the printed $B_3$ is $-3/4$.  Separately,
+$\operatorname{Li}_1(e^{-x})=-\log(1-e^{-x})=-\log x+O(x)$ forces
+$H_0=0$.  A test at $p=2$ would miss the $B_p$ error because $H_1=1$.
+
+Theorems~2.5 and~2.6 also state $\theta>0$ for their local power-series
+expansions.  For ordinary convergent summation, impose
+$0<\theta<2\pi$, as required by Jonqui\`ere's local series
+\cite[25.12.12]{DLMFpolylog}.  A larger splitting point is possible only
+with an additional continuation or intermediate-integral prescription.
+
+To see the issue without an error estimate, take $r=s=0,t=3$ in the
+double local series and keep $v=0,u=2k-1$.  The absolute value of this
+summand is
+\[
+ \frac{|B_{2k}|\,\theta^{2k+2}}{2(2k)!(2k+2)}
+ =\frac{\zeta(2k)\theta^2}{2k+2}
+                       \left(\frac\theta{2\pi}\right)^{2k}.
+\]
+It fails to tend to zero for $\theta>2\pi$.  The original Witten sum at
+$(0,0,3)$ converges, so the obstruction belongs to the displayed local
+series representation.  The corrected implementation can retain the
+classical theorem by choosing any $0<\theta<2\pi$; it does not need a
+new assignment to divergent power series.

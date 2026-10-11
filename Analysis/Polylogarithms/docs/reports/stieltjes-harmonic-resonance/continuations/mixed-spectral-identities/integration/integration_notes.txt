@@ -1,0 +1,124 @@
+INTEGRATION NOTES
+
+Base: ProveIt commit dcd95baeb7c0e914b138bddef6829c5b1d52b726.
+This package proposes additive mathematical sections and two source edits.
+No repository files have been modified.
+
+1. HARMONIC NEWTON SERIES AND SPECTRAL JETS
+
+Source: sections/02_harmonic.tex; label prefix hn:.
+Antecedents: Exact_Identities / fully_shifted_height_one.tex and its
+audit_research.tex question on higher derivatives of the entire difference.
+
+Main labels:
+    hn:thm:newton             Entire-spectral Newton expansion and depth domain
+    hn:cor:jets               All logarithmic finite-difference derivatives
+    hn:eq:regular-reconstruction  Contribution to regular Laurent coefficients
+    hn:thm:AKbridge           Multiple Arakawa--Kaneko shift jets
+    hn:eq:generalized-boundary    Hurwitz Arakawa--Kaneko boundary
+    hn:eq:boundary-primitives     Every repeated boundary antiderivative
+
+Keep the descending multiple-polylogarithm convention and reverse the index
+vector when comparing with the ascending convention of AK1999/KT2018.
+The common-shift boundary a=0 requires depth r>=1. Do not infer finite
+polygamma closure from the convergent representation at general parameters.
+The standalone outer-shift E_r family has not been globally reduced here.
+
+2. MIXED DOUGALL JETS
+
+Source: sections/03_dougall.tex; label prefix dg:.
+Antecedents: Dougall_Resonance and Resonance_Coordinate_Transport.
+The latter's research Question 3 explicitly requests the b=c=1 table.
+
+Main labels:
+    dg:antecedent            Reproduced centered summation/residue transport
+    dg:polynomial            Termwise collapse and divided residue-grid identity
+    dg:generator             Complete two-parameter generating function
+    dg:all-parameter         Finite Bell formula at every mixed order
+    dg:square                Weighted trigamma square for every a>0
+    dg:half-harmonic-square  Ordinary positive sum equal to zeta(2)-zeta(3)
+    dg:other-half-harmonic-square  Companion zeta(2)+zeta(3) sum
+    dg:cubic-tail-square     Square equal to 3*zeta(4)-zeta(5)
+    dg:spectral              All mixed spectral--Stieltjes derivatives
+    dg:harmonic-Stieltjes     Harmonic/logarithm identity at a=2
+
+Do not specialize a reciprocal-Gamma zero before differentiating its
+unspecialized summand. Keep the single bracket in the low-order subtracted
+sums. The a>0 extension is an addition, not a correction to the antecedent.
+
+3. UNEQUAL TWISTS
+
+Source: sections/04_twists.tex; label prefix tw:.
+Antecedent: Twisted_Stieltjes_Harmonic_Laurent, research question
+future:q:unequaltwists.
+
+Main labels:
+    tw:tailtheorem           Normally convergent single-twist Lerch expansion
+    tw:bounded               Bounded logarithm-difference kernel
+    tw:jets                  All mixed finite-part convolution jets
+    tw:firstmixed            Explicit U0*U0 polarization formula
+    tw:partial               Finite integer-order partial fractions
+    tw:classification        Exact scalar finite-reduction criterion
+    tw:primitive             Covariant periodic primitive
+
+Keep the finite exceptional modes and the principal phase convention.
+Indenting the twist integral below an integer gives the positive +pi*i
+crossing contribution in the stated orientation. These are convolutions
+of periodic distributions, distinct from the pointwise products in the
+collision section. The scalar criterion is not a theorem of arithmetic
+independence for sampled Fourier values.
+
+4. STIELTJES COLLISIONS
+
+Source: sections/05_collisions.tex; label prefix cl:.
+Antecedents: Exact_Identities / triple_dilation.tex, its research Questions
+1 and 3, Coincident_Stieltjes, and the specified-coordinate endpoint work.
+
+Main labels:
+    cl:collision             Complete zero-index triple rate expansion
+    cl:finite-anomaly        CT C_(1,2) = Q + zeta(2)*log(2)/2
+    cl:rate-difference       Fully evaluated difference between two rate constants
+    cl:allfactor             Local completion for every resonant subset
+    cl:triple-completion     Explicit same-point triple generator
+    cl:rays                  Spectral-ray correction
+    cl:chambers              Raw constants +zeta(3), 0, -zeta(3)
+    cl:total-derivative      All-factor endpoint projection
+    cl:equal-index-cancellation   Zero for equal positive Stieltjes indices
+
+The finite geometric anomaly corrects an expected extension in a research
+question; it does not refute the proved separated-grid theorem or the
+bilinear coincidence theorem. Arbitrary all-index geometric collision
+expansions are still research questions. The all-factor theorem solves
+the local completion at a fixed configuration, not the minimal global
+multiple-Tornheim lattice reduction for four or more frequencies.
+
+5. PROPOSED SOURCE PATCH
+
+File: proposed_source_corrections.patch
+Target: Analysis/Polylogarithms/docs/manuscript/chapters/03-algebraic.tex
+
+Change A: In cleo:eq:lintanh, replace log(tan(theta/2)) by
+log(abs(tan(theta/2))) for real negative theta as well, and state the
+continuous zero value. This was already noted in incoming audits and is
+carried forward because the canonical display at the pinned commit still
+omits it. The article gives a direct derivative proof.
+
+Change B: Replace 'simplest non-elementary diagonal' by neutral evaluation
+wording. The later source paragraph already states non-elementarity and
+minimality are unproved. The exact value remains unchanged.
+
+Check the patch from the ProveIt checkout before applying it:
+    git apply --check /absolute/path/to/proposed_source_corrections.patch
+Review the patch, then apply it only as part of normal integration.
+
+6. STATUS THAT MUST NOT CHANGE
+
+The current S6 and later S8 candidates remain conjectural. Preserve labels
+cycloquot:conj:S6 and s8new:conj:S8 and the exact frozen vectors. The older
+rejected S8 candidate is a different object. Do not reinterpret exact
+coordinate equivalence, finite-span obstruction, or a zero-containing
+residual interval as a proof of a period identity or independence.
+
+The source S2 and S4 proofs are antecedents and are not new results of
+this package. No proof-assistant formalization or repository-wide audit
+is claimed.

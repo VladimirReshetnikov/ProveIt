@@ -1,0 +1,340 @@
+\section{Cubic coincident Stieltjes products and a diagonal Tornheim jet}
+\label{sec:cubic}
+
+The incoming \emph{Coincident Stieltjes} article explicitly asks for the
+unit-coordinate finite part of $\int_0^1\psi(x)^3\,dx$ and an all-index
+three-factor closure theorem.  It suggests higher-depth coordinates and
+does not assume a reduction to ordinary zeta constants.  The results
+below supply an exact reduction to a specified diagonal Tornheim
+derivative, together with a holomorphic germ for all mixed Stieltjes
+indices.  They do not evaluate that remaining derivative in a
+depth-one constant algebra.
+
+The triple-Hurwitz/Tornheim correspondence is classical, as is the
+Mellin--polylogarithm continuation used to compute Tornheim functions.
+Relevant antecedents include Espinosa--Moll, Borwein--Dilcher,
+Bailey--Borwein, and Onodera\cite{EMTornheim,BorweinDilcher,BaileyBorwein,Onodera2021}.
+The low diagonal jets below are recovered identities from this established
+setting.
+
+\subsection{Normalization and the classical three-factor kernel}
+
+Use the unit coordinate $x$ and, for $e\in\mathbb Z$ and
+$k\in\mathbb Z_{\ge0}$, the convention
+\[
+ \operatorname{FP}\int_0^1 x^e\log^k x\,dx=
+ \begin{cases}(-1)^k k!/(e+1)^{k+1},&e\ne-1,\\0,&e=-1.
+ \end{cases}
+\]
+This agrees with the constant term after removing the divergent
+endpoint powers and logarithms from $\int_\epsilon^1$.
+Let
+\[
+ g(u,x)=\zeta(1+u,x)-\frac1u
+       =\sum_{m\ge0}\frac{(-1)^m}{m!}\gamma_m(x)u^m,
+ \qquad
+ b(u)=\zeta(1+u)-\frac1u,
+ \qquad
+ a(u)=-(1+u)\zeta(2+u).
+\]
+The removable singularities in $g$ and $b$ are always removed.
+In particular $g(0,x)=-\psi(x)$, $b(0)=\gamma$, and
+$a(0)=-\zeta(2)$.
+
+Initially in its absolutely convergent region, put
+\[
+ T(A,B,C)=\sum_{m,n\ge1}\frac1{m^A n^B(m+n)^C}.
+\]
+Its meromorphic continuation is understood in every later formula.
+The initial absolute-convergence domain is given by
+$\Re(A+C)>1$, $\Re(B+C)>1$, and $\Re(A+B+C)>2$.
+Write $K_2(s,t)=\int_0^1\zeta(s,x)\zeta(t,x)\,dx$ and
+$K_3(s_1,s_2,s_3)=\int_0^1\prod_{i=1}^3\zeta(s_i,x)\,dx$ in an
+initial convergence domain, then continue meromorphically.
+If $\lambda_i=1-s_i$, the classical triple kernel is
+\begin{align}
+ K_3(s_1,s_2,s_3)
+ &=\frac{2\Gamma(\lambda_1)\Gamma(\lambda_2)\Gamma(\lambda_3)}
+          {(2\pi)^{\lambda_1+\lambda_2+\lambda_3}}
+ \sum_{k=1}^3
+ \cos\frac{\pi(\lambda_i+\lambda_j-\lambda_k)}2\,
+ T(\lambda_i,\lambda_j,\lambda_k),             \tag{C1}\label{cub:C1}
+\end{align}
+where $i<j$ are the indices other than $k$.
+For $\Re\lambda_i>1$, the Fourier series
+\[
+ \zeta(1-\lambda,x)=\Gamma(\lambda)(2\pi)^{-\lambda}
+ \sum_{n\ne0}|n|^{-\lambda}
+       e^{-\pi i\lambda\operatorname{sgn}(n)/2}e^{2\pi inx}
+\]
+converges absolutely.  The zero-frequency condition in the product
+requires two positive frequencies and one negative, or its opposite.
+The two sign regions paired for a fixed negative position give the
+cosine in (C1). This proves (C1) in a nonempty open set; meromorphic
+continuation gives the stated identity. The same argument gives the pair kernel
+\[
+K_2(s,t)=\frac{2\Gamma(1-s)\Gamma(1-t)}{(2\pi)^{2-s-t}}
+\cos\frac{\pi(s-t)}2\,\zeta(2-s-t).
+\]
+
+\subsection{The complete cubic subtraction}
+
+For compactness write $K_{ij}=K_2(1+u_i,1+u_j)$,
+$K_{123}=K_3(1+u_1,1+u_2,1+u_3)$, and $U=u_1+u_2+u_3$.
+Define the meromorphic germ
+\[
+ I_3(\boldsymbol u)=K_{123}-\sum_{k=1}^3\frac{K_{ij}}{u_k}
+                    -\frac1{u_1u_2u_3}.        \tag{C2}\label{cub:C2}
+\]
+The mean of a single Hurwitz factor is zero in the initial domain, so
+this is precisely the meromorphic continuation of
+$\int_0^1\prod_i g(u_i,x)\,dx$.
+
+\begin{theorem}[Cubic holomorphic completion]
+The germ
+\[
+ F_3(\boldsymbol u)=I_3(\boldsymbol u)
+   +\sum_{k=1}^3\frac{a(u_k)}{u_i+u_j}
+   +\sum_{k=1}^3\frac{b(u_i)b(u_j)}{u_k}       \tag{C3}\label{cub:C3}
+\]
+is holomorphic in a neighborhood of $\boldsymbol u=0$. For all
+$m_1,m_2,m_3\ge0$,
+\[
+ \operatorname{FP}\int_0^1\prod_{i=1}^3\gamma_{m_i}(x)\,dx
+ =(-1)^{m_1+m_2+m_3}\prod_{i=1}^3m_i!\,
+   [u_1^{m_1}u_2^{m_2}u_3^{m_3}]F_3(\boldsymbol u). \tag{C4}\label{cub:C4}
+\]
+\end{theorem}
+
+\begin{proof}
+The shift relation gives
+\[
+ g(u,x)=x^{-1-u}+h(u,x),\qquad h(u,x)=g(u,1+x),
+ \qquad h(u,x)=b(u)+a(u)x+O(x^2).
+\]
+All these Taylor statements are uniform on small compact spectral
+neighborhoods.  Write $h_i=h(u_i,x)$.  The product of the three singular
+terms contributes $-1/(2+U)$ after meromorphic integration. A term with
+the two singular factors in positions $i,j$ and smooth factor $h_k$
+contributes
+\[
+ -\frac{b(u_k)}{1+u_i+u_j}-\frac{a(u_k)}{u_i+u_j}
+ +\int_0^1x^{-2-u_i-u_j}
+             \bigl(h_k-b(u_k)-a(u_k)x\bigr)\,dx.
+\]
+A term with just the singular factor in position $k$ contributes
+\[
+ -\frac{b(u_i)b(u_j)}{u_k}
+ +\int_0^1x^{-1-u_k}\bigl(h_i h_j-b(u_i)b(u_j)\bigr)\,dx.
+\]
+The remaining term is $\int_0^1h_1h_2h_3\,dx$.
+After (C3), all remaining integrals are normally convergent near zero:
+their endpoint majorants have the form
+$Cx^{-\eta}(1+|\log x|^M)$, with $\eta<1$, after any prescribed finite
+number of spectral derivatives.  This proves holomorphy.
+
+The deleted expressions are exactly the integrations of resonant
+monomials with exponent $-1$ at $\boldsymbol u=0$. Each coefficient of
+such a monomial is a multiple of $x^{-1}\log^j x$, whose unit-coordinate
+finite part is zero. The other integrated monomials have precisely the
+finite parts prescribed above. Coefficient extraction under the
+normally convergent remainder proves (C4).
+\end{proof}
+
+The mixed spectral derivatives in (C4) apply to the completed germ.
+Uncompleted individual Tornheim summands can have intersecting polar
+hyperplanes at the origin. In particular one must not read (C4) as a
+formula involving unspecified ordinary partial derivatives of
+$T$ at $(0,0,0)$.
+
+\subsection{Every argument derivative}
+
+The same proof gives a finite all-order extension. For
+$p_i\in\mathbb Z_{\ge0}$, let
+\begin{gather*}
+ c_p(u)=(-1)^p(1+u)_p,\qquad
+ h_i(u_i,x)=\partial_x^{p_i}g(u_i,1+x),\\
+ G_i=\partial_x^{p_i}g(u_i,x)
+     =c_{p_i}(u_i)x^{-p_i-1-u_i}+h_i(u_i,x).
+\end{gather*}
+Let $I_{\boldsymbol p}$ be the meromorphic product integral of the
+$G_i$. With $s_i=1+p_i+u_i$, it is explicitly
+\begin{align*}
+ I_{\boldsymbol p}={}&\left(\prod_{i=1}^3 c_{p_i}(u_i)\right)
+                         K_3(s_1,s_2,s_3)\\
+ &-\sum_{k=1}^3\frac{\delta_{p_k0}c_{p_i}(u_i)c_{p_j}(u_j)}{u_k}
+                         K_2(s_i,s_j)
+ -\frac{\prod_{i=1}^3\delta_{p_i0}}{u_1u_2u_3}.
+\end{align*}
+The single-Hurwitz integrals vanish in the initial convergence domain
+and hence identically after continuation.
+Then the holomorphic completion is
+\begin{align}
+ F_{\boldsymbol p}=I_{\boldsymbol p}
+ &+\sum_{k=1}^3\frac{c_{p_k}(u_k)}{u_k}
+       [x^{p_k}]\bigl(h_i(u_i,x)h_j(u_j,x)\bigr)\notag\\
+ &+\sum_{k=1}^3\frac{c_{p_i}(u_i)c_{p_j}(u_j)}{u_i+u_j}
+       [x^{p_i+p_j+1}]h_k(u_k,x).             \tag{C5}\label{cub:C5}
+\end{align}
+Its coefficients generate
+$\operatorname{FP}\int_0^1\prod_i\gamma_{m_i}^{(p_i)}(x)\,dx$ with
+the same factorial and sign in (C4). Indeed a subset $S$ of singular
+factors has exponent $-|S|-\sum_{i\in S}p_i-\sum_{i\in S}u_i$;
+the unique resonant smooth Taylor degree is
+$|S|+\sum_{i\in S}p_i-1$.  For a singleton or pair this gives precisely
+(C5). For all three factors the needed smooth degree is positive but
+there is no smooth factor, so no further resonant term occurs.
+To justify the normal convergence rather than merely identify the
+formal poles, subtract every smooth Taylor term up to that threshold.
+The integrated lower Taylor degrees have nonzero integer denominators
+at the origin, so they are holomorphic and retain their prescribed
+monomial finite parts. The only denominators vanishing at the origin
+are exactly those displayed in (C5). The remaining Taylor remainders
+are integrable uniformly on sufficiently small compact spectral
+neighborhoods, also after any fixed finite number of derivatives.
+Every smooth coefficient is a finite combination of Hurwitz jets,
+because
+\[
+ [x^\ell]h_i(u_i,x)
+ =\frac{c_{p_i+\ell}(u_i)}{\ell!}
+      \zeta(1+p_i+\ell+u_i)
+   -\frac{\delta_{p_i0}\delta_{\ell0}}{u_i}.
+\]
+The Pochhammer coefficient expansions are the usual finite harmonic
+polynomials. Thus (C5) is an explicit finite recipe for all cubic
+argument-derivative moments.
+
+\subsection{An independently defined diagonal Tornheim function}
+
+Let $\tau(s)=T(s,s,s)$ initially for $\Re s>2/3$, and then continue
+this one-variable function.  The diagonal restriction is essential:
+$T$ itself has no direction-independent value at the multivariate
+origin. For example, $T(s,s,0)=\zeta(s)^2$ tends to $1/4$, whereas
+the diagonal limit is $1/3$, as recovered in (C8) below.
+
+Here is a convergent formula defining the germ of $\tau$ near zero
+without using any Hurwitz product integral. Set
+$L_s(t)=\operatorname{Li}_s(e^{-t})$, $G(s)=\Gamma(1-s)$, and
+\begin{align*}
+ R_s(t)={}&L_s(t)^2-G(s)^2t^{2s-2}
+   -2G(s)\zeta(s)t^{s-1}
+   +2G(s)\zeta(s-1)t^s-\zeta(s)^2,\\
+ E(s)={}&\int_0^1t^{s-1}R_s(t)\,dt
+          +\int_1^\infty t^{s-1}L_s(t)^2\,dt.
+\end{align*}
+For sufficiently small $\delta>0$, $E$ is holomorphic when $|s|<\delta$.
+Indeed the Jonqui\`ere expansion \cite{DLMFPolylog}
+\[
+ L_s(t)=\Gamma(1-s)t^{s-1}
+        +\sum_{k=0}^\infty\frac{(-1)^k}{k!}\zeta(s-k)t^k,
+ \qquad |t|<2\pi,
+\]
+shows that the subtracted integrand is bounded by
+$C(t^{-2\delta}+t^{-\delta})(1+|\log t|^M)$ after any fixed number
+of spectral derivatives. The second integral converges exponentially.
+Direct Mellin integration first for $2/3<\Re s<1$ and then continuation
+gives the holomorphic formula
+\[
+ \tau(s)=\frac1{\Gamma(1+s)}\left\{
+ sE(s)+\frac{s\Gamma(1-s)^2}{3s-2}
+ +\frac{2s\Gamma(1-s)\zeta(s)}{2s-1}
+ -\Gamma(1-s)\zeta(s-1)+\zeta(s)^2\right\}. \tag{C6}\label{cub:C6}
+\]
+This is the $\theta=1$ local-subtraction form of the classical
+Crandall Mellin continuation. In particular $\tau'''(0)$ is an
+unambiguous, independently computable spectral constant.
+
+\subsection{The cubic digamma reduction}
+
+Put $\ell=\log(2\pi)$, and define
+\[
+ Z(t)=t\zeta(1+t),\quad
+ A_d(t)=\frac{\Gamma(1-t)^2}{\Gamma(1-2t)\cos(\pi t)},\quad
+ B(t)=\Gamma(1-t)^3(2\pi)^{3t}\cos(\pi t/2).
+\]
+The classical pair formula yields
+$K_2(1+t,1+t)=-A_d(t)Z(2t)/t^2$, while (C1) gives
+$K_3(1+t,1+t,1+t)=-6B(t)\tau(-t)/t^3$. Hence
+\[
+ F_3(t,t,t)=
+ \frac{-6B(t)\tau(-t)+3A_d(t)Z(2t)-1+3(Z(t)-1)^2}{t^3}
+ +\frac{3a(t)}{2t}.                           \tag{C7}\label{cub:C7}
+\]
+Since the left side is holomorphic, comparison of the three negative
+powers gives
+\[
+ \tau(0)=\frac13,\qquad
+ \tau'(0)=\ell,\qquad
+ \tau''(0)=3\ell^2-2\gamma^2-4\gamma_1+\zeta(2).\tag{C8}\label{cub:C8}
+\]
+These are recovered low-jet identities; the first two are well known,
+and Onodera's 2021 paper evaluates second derivatives at the origin.
+
+For completeness the needed expansions are
+\begin{align*}
+ Z(t)&=1+\gamma t-\gamma_1t^2+\tfrac12\gamma_2t^3+O(t^4),\\
+ A_d(t)&=1+2\zeta(2)t^2-2\zeta(3)t^3+O(t^4),\\
+ \log B(t)&=3(\gamma+\ell)t+\tfrac34\zeta(2)t^2
+                 +\zeta(3)t^3+O(t^4),\\
+ a'(0)&=-\zeta(2)-\zeta'(2).
+\end{align*}
+Taking the constant coefficient of (C7) and using
+$F_3(0,0,0)=-\operatorname{FP}\int_0^1\psi(x)^3\,dx$ proves
+\begin{align}
+ \operatorname{FP}\int_0^1\psi(x)^3\,dx={}&-\tau'''(0)
+ -9\gamma^3-18\gamma^2\ell-30\gamma\gamma_1
+ -36\ell\gamma_1-12\gamma_2+9\ell^3\notag\\
+ &+\frac32\gamma\zeta(2)+9\ell\zeta(2)
+ +\frac32\zeta(2)+8\zeta(3)+\frac32\zeta'(2). \tag{C9}\label{cub:C9}
+\end{align}
+An equivalent unsimplified coefficient certificate is
+\begin{align*}
+ F_3(0,0,0)={}&-6[t^3]B(t)\tau(-t)
+ +12\gamma_2+12\gamma\zeta(2)-6\zeta(3)-6\gamma\gamma_1\\
+ &-\tfrac32\bigl(\zeta(2)+\zeta'(2)\bigr).
+\end{align*}
+
+\subsection{Directional Laurent constants do not fix the coordinate finite part}
+
+Let $\alpha_1,\alpha_2,\alpha_3$ be fixed complex numbers with
+$\alpha_i\ne0$ and $\alpha_i+\alpha_j\ne0$. If $\operatorname{CT}$
+denotes the one-variable Laurent constant and
+$Q=\operatorname{FP}\int_0^1\gamma_0(x)^3\,dx$, then (C3) gives
+\begin{align}
+ Q={}&\operatorname{CT}_{t=0} I_3(\alpha_1t,\alpha_2t,\alpha_3t)
+ -\bigl(\zeta(2)+\zeta'(2)\bigr)
+       \sum_{k=1}^3\frac{\alpha_k}{\alpha_i+\alpha_j}\notag\\
+ &-\gamma\gamma_1\sum_{k=1}^3\frac{\alpha_i+\alpha_j}{\alpha_k}.
+                                                        \tag{C10}\label{cub:C10}
+\end{align}
+For the diagonal this correction is
+$-\frac32(\zeta(2)+\zeta'(2))-6\gamma\gamma_1$.
+This is a normalization warning, not an identified false claim in an
+inspected source. Removing only the negative Laurent powers after
+diagonal specialization would omit the finite coefficients of the
+resonant expressions. The full germ (C3) removes exactly those entire
+expressions and yields the fixed-coordinate finite part.
+
+\subsection{Independent numerical diagnostic}
+
+The script \texttt{verify\_cubic.py} computes the first four diagonal
+Tornheim derivatives from (C6), using the convergent Jonqui\`ere series
+on $(0,1)$ and an exponentially convergent integral on $(1,\infty)$.
+The independent digamma calculation integrates
+\[
+ \psi(x)^3+x^{-3}+3\gamma x^{-2}
+                -3\bigl(\zeta(2)-\gamma^2\bigr)x^{-1}
+\]
+ordinarily and then adds $1/2+3\gamma$. Near zero it evaluates the
+regular remainder by the convergent Taylor series for $\psi(1+x)$,
+avoiding cancellation of huge singular terms.
+At 35 working decimal digits and 50 Jonqui\`ere terms the values are
+\begin{align*}
+ \tau'''(0)&\approx86.657866601100073652903276858762183,\\
+ \operatorname{FP}\int_0^1\psi(x)^3\,dx
+ &\approx1.9662627343915343406643753384116314.
+\end{align*}
+The two independent expressions in (C9) differ by less than
+$4.1\times10^{-34}$. This is a floating-point diagnostic, not an
+interval enclosure or substitute for the proof above.
+

@@ -1,0 +1,990 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=26mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{microtype,booktabs,array,longtable}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr,enumitem,xurl}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage{bookmark}
+\hypersetup{pdftitle={Periodic Stieltjes Collisions: Exact Contact Terms and Gamma--Polylogarithm Primitives},pdfauthor={Research contribution prepared with ChatGPT for the ProveIt programme}}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newcommand{\T}{\mathbb T}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\D}{\mathrm D}
+\newcommand{\FP}{\operatorname{FP}}
+\newcommand{\Fp}{\operatorname{Fp}}
+\newcommand{\CT}{\operatorname{CT}}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\Rea}{\operatorname{Re}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\HH}{\mathsf H}
+\newcommand{\CZ}{\mathscr Z}
+\newcommand{\TG}{\mathcal T}
+\newcommand{\CJ}{\mathcal J}
+\newcommand{\CC}{\mathcal C}
+\newcommand{\BF}{\mathcal B}
+\newcommand{\JF}{\mathcal K}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\zj}[2]{\zeta^{[#1]}(#2)}
+\newcommand{\src}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\pin}{\texttt{dcd95baeb7c0e914b138bddef6829c5b1d52b726}}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=4pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Periodic Stieltjes Collisions}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\title{\textbf{Periodic Stieltjes Collisions}\\[6pt]
+\large Exact Contact Terms, Finite-Part Fubini Laws,\\
+and Gamma--Polylogarithm Primitives}
+\author{A research contribution for the ProveIt programme\\
+\small Prepared with ChatGPT; analytic proofs and reproducible checks supplied}
+\date{10 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The preceding coincident-point Stieltjes report determines the complete off-point collision singularity but leaves its periodic, delta-supported extension terms as a research question. We settle that specified question after fixing unit-coordinate Hadamard extensions at both endpoints. For arbitrary Stieltjes indices $m,n$ and argument-derivative orders $p,q$, the correlation of the two separately extended distributions differs from the Hadamard extension of the separated correlation by exactly one term, $\kappa_{mn}^{p,q}\delta^{(p+q)}$. No lower delta derivatives occur. An explicit two-variable gamma--harmonic generating function gives every coefficient; it contains no Stieltjes constants. At index zero the answer simplifies to
+\[
+\kappa_{00}^{p,q}=(-1)^p\left[2\zeta(2)
+ +(H_{p+q}-H_p)(H_{p+q}-H_q)-H_{p+q}^{(2)}\right].
+\]
+In particular the digamma correlation requires the atom $\pi^2\delta/3$.
+
+We prove the theorem by constructing holomorphic distribution families with full resonant subtractions, and comparing convolution with endpoint completion. Consequences include an exact finite-part Fubini correction, all-index Fourier moment identities, pole-free polylogarithm order-derivative formulas, and explicit Bernoulli corrections under every mean-zero antiderivative. A compatible primitive generating function yields ordinary log-Gamma correlations and a negative-integer zeta-jet evaluation of their covariance. Classical Hurwitz, gamma, and primitive identities are distinguished from the collision completion proved here. The package supplies 420 contact formulas, 760 exact finite assertions, and 40 independent floating-point diagnostics. These checks supplement, rather than replace, the all-index analytic proofs.
+\end{abstract}
+\vspace{3pt}
+\noindent\textbf{Keywords.} Generalized Stieltjes constants; periodic distributions; Hadamard finite parts; polygamma; harmonic numbers; polylogarithm order derivatives; log-Gamma covariance.
+\newpage
+{\fontsize{10}{11}\selectfont\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+
+\section{Research target, contribution, and scope}\label{pc:scope}
+The ProveIt programme relates polylogarithmic identities, Hurwitz spectral derivatives, generalized harmonic numbers, and gamma functions. Its canonical manuscript carefully separates analytic theorems, finite algebraic certificates, and numerical candidates \cite{pc:repo}. The present contribution follows that distinction.
+
+The immediate target is Section~11.1 of \emph{Coincident-Point Stieltjes Calculus} \cite{pc:coincident}. That report proves, for every $m,n,p,q\ge0$, an exact splitting
+\begin{equation}\label{pc:prior-split}
+J_{mn}^{p,q}(a)=a^{-p-q-1}\mathcal P_{mn}^{p,q}(\log a)+R_{mn}^{p,q}(a),\qquad 0<a<1,
+\end{equation}
+where the polynomial has degree at most $m+n+1$, the remainder is analytic through $a=0$, and its value there is the directly subtracted same-point moment. It explicitly does \emph{not} determine the terms supported at the collision in a periodic distributional extension. An off-point identity cannot, by itself, distinguish two extensions differing by derivatives of the Dirac mass.
+
+Theorem~\ref{pc:main} supplies the missing comparison. It specifies both extensions, computes their difference at all indices, and proves that this difference contains only the derivative $\delta^{(p+q)}$. The coefficient formula is finite at any prescribed indices and is not a recursive instruction to evaluate a divergent integral. Corollary~\ref{pc:poly-contact} reduces the entire polygamma subfamily to ordinary zeta and harmonic numbers.
+
+A second aim is to make the completion usable. Theorem~\ref{pc:fourier} gives exact trigonometric finite-part moments; Theorem~\ref{pc:polylog} packages them in polylogarithm order derivatives; Theorem~\ref{pc:primitive-correlation} gives ordinary correlations of every normalized Stieltjes primitive. The Bernoulli term in the latter formula is the antiderivative of the contact distribution, not an arbitrary integration constant.
+
+\subsection{What is and is not claimed}
+The classical Hurwitz Fourier formula, its product kernel, gamma reflection, Bernoulli Fourier series, and the Hurwitz method of constructing Stieltjes primitives are established inputs \cite{pc:EM,pc:hurwitz,pc:gamma,pc:bernoulli}. The separated correlation generators and the coincident finite constants are already in the inspected preceding report. They are recalled and justified to keep the normalization chain self-contained. The central addition is the explicit all-index comparison of \emph{two prescribed periodic extensions}. The gamma covariance formulas are derived consequences, not claims of first discovery in the literature.
+
+This work does not prove the repository's $S_6$ or revised $S_8$ arithmetic candidates. It also does not solve cubic same-point Stieltjes products. It addresses a different, precisely posed question in the continuation programme. No arithmetic independence, minimality of a period basis, independent peer review, or proof-assistant formalization is asserted.
+
+\subsection{Inspection record}
+During inspection, the observed \texttt{main} branch head was
+\begin{center}\small\pin.\end{center}
+The manuscript README, selected manuscript source, incoming directory listing, and the complete TeX of the preceding coincident report were read. The last of these was accessed as the user's Library copy, named \src{Coincident_Point_Stieltjes_Calculus.tex}. The corresponding named ZIP was present in the incoming listing, but a byte-for-byte comparison with that ZIP was not performed. Six incoming ZIPs were listed; their binary contents were not all retrieved or audited. In particular this article makes no claim to supersede the separate resonance-coordinate, endpoint, Dougall, or twisted-harmonic packages. Source and integration notes accompany the delivery.
+
+\section{Conventions and the two finite-part operations}\label{pc:conventions}
+All indices $m,n,p,q$ are nonnegative integers. We set
+\[
+r=p+q,\qquad N=m+n,\qquad w=u+v.
+\]
+The letters $u,v,t$ denote small complex spectral perturbations. Unless otherwise stated, real arguments lie in $(0,1)$ and logarithms of positive numbers are real. We distinguish spectral derivatives
+\[
+\zeta^{[j]}(s,a)=\partial_s^j\zeta(s,a)
+\]
+from argument derivatives $\gamma_m^{(p)}(a)=\D_a^p\gamma_m(a)$. An omitted second argument means argument $1$. Thus $\gamma=\gamma_0(1)$ is Euler's constant, and $\psi=\Gamma'/\Gamma$.
+
+The Stieltjes convention is
+\begin{equation}\label{pc:g}
+g(t,x)=\zeta(1+t,x)-\frac1t
+=\sum_{m\ge0}\frac{(-1)^m}{m!}\gamma_m(x)t^m,
+\end{equation}
+with the pole removed at $t=0$. In particular $\gamma_0(x)=-\psi(x)$. The basic shift and differentiation formulas give
+\begin{align}
+g(t,x)&=x^{-1-t}+g(t,1+x),\label{pc:shift}\\
+\D_x^p\zeta(s,x)&=(-1)^p(s)_p\zeta(s+p,x).\label{pc:hurwitz-derivative}
+\end{align}
+These standard identities are recorded in \cite{pc:hurwitz}; their local consequences will be used explicitly below.
+
+Write
+\begin{equation}\label{pc:P}
+P_j(t)=\frac{(1+t)_j}{j!}=\prod_{d=1}^j\left(1+\frac td\right),\qquad P_0(t)=1,
+\end{equation}
+and $H_j^{(k)}=\sum_{d=1}^j d^{-k}$, with $H_0^{(k)}=0$ and $H_j=H_j^{(1)}$. Then
+\begin{equation}\label{pc:logP}
+\log P_j(t)=\sum_{k\ge1}\frac{(-1)^{k+1}}kH_j^{(k)}t^k.
+\end{equation}
+Only a finite coefficient of this identity is ever required.
+
+\subsection{Unit-coordinate Hadamard distributions}
+We work on $\T=\mathbb R/\mathbb Z$. Test functions are smooth periodic functions $\varphi$. The constant distribution is denoted by $\one$, to distinguish it from the Dirac distribution $\delta$ at $0$. Our conventions are
+\[
+\langle\delta^{(j)},\varphi\rangle=(-1)^j\varphi^{(j)}(0),\qquad
+\widehat T(k)=\langle T,e^{-2\pi\ii kx}\rangle.
+\]
+Thus $\widehat\delta(k)=1$ and $\widehat{\D T}(k)=2\pi\ii k\widehat T(k)$. Reflection is $RT(x)=T(-x)$ in the distributional sense; hence
+\begin{equation}\label{pc:reflection}
+R\delta^{(j)}=(-1)^j\delta^{(j)},\qquad
+\D R=-R\D.
+\end{equation}
+Convolution on the compact circle is defined for any two distributions and multiplies Fourier coefficients. No pointwise product of two singular distributions will be used.
+
+\begin{definition}[Fixed endpoint finite part]\label{pc:fp-definition}
+If $f$ has near $0$ a finite nonintegrable Laurent--logarithm expansion and an integrable remainder, define
+\begin{equation}\label{pc:fp-pairing}
+\langle\Fp_x f,\varphi\rangle
+=\CT_{\epsilon\downarrow0}\int_\epsilon^1 f(x)\varphi(x)\dd x.
+\end{equation}
+The constant term deletes every divergent power of $\epsilon$ and every positive power of $\log\epsilon$. The coordinate is exactly $x$ and the scale is exactly $1$. For an integrand singular also at $1$, delete the two endpoint divergences independently, in the coordinates $a$ and $1-a$, and denote the resulting distribution by $\HH[f]$.
+\end{definition}
+For scalar monomials this convention gives
+\begin{equation}\label{pc:monomial}
+\FP\int_0^1x^e\log^j x\dd x=
+\begin{cases}
+(-1)^j j!/(e+1)^{j+1},&e\ne-1,\\
+0,&e=-1.
+\end{cases}
+\end{equation}
+Here $e$ is an integer and the formula includes the usual integral when $e\ge0$. For test functions, subtract their Taylor polynomial to reduce to the same rule. Independent cutoffs at the two endpoints prevent an unspecified relation between their scales from changing the result.
+
+Define the separately extended Stieltjes distributions
+\begin{equation}\label{pc:Tdef}
+T_{m,p}=\Fp_x\gamma_m^{(p)}(x).
+\end{equation}
+They exist because differentiating \eqref{pc:shift} produces one inverse power $x^{-p-1}$ times a polynomial in $\log x$, plus a function analytic at zero. Their canonical correlation is
+\begin{equation}\label{pc:Cdef}
+\CC_{mn}^{p,q}=(RT_{m,p})*T_{n,q}.
+\end{equation}
+For ordinary integrable functions this convention means $\int_0^1f(x)g(\{x+a\})\dd x$.
+
+The separated correlation in the preceding report is
+\begin{equation}\label{pc:Jdef}
+J_{mn}^{p,q}(a)=\FP\int_0^1
+\gamma_m^{(p)}(x)\gamma_n^{(q)}(\{x+a\})\dd x,
+\qquad 0<a<1.
+\end{equation}
+The singularities in $x$ are separated: use $x$ at $0+$ and $x-(1-a)$ at $(1-a)+$. The open question is the exact relation between \eqref{pc:Cdef} and the \emph{second} finite-part operation $\HH[J_{mn}^{p,q}]$, now performed in the shift $a$.
+
+\section{Holomorphic distribution families and full resonant subtraction}\label{pc:families}
+\subsection{The local lemma}
+The following elementary construction is the analytic reason that coefficient extraction is legitimate.
+
+\begin{lemma}[Full-numerator resonant subtraction]\label{pc:local-lemma}
+Fix $r\ge0$. The meromorphic continuation of the monomial distribution $x^{-r-1-t}$ from a left half-plane has, for $|t|$ small, the pairing
+\begin{align}
+M_r(t;\varphi)={}&\int_0^1x^{-r-1-t}
+\left(\varphi(x)-\sum_{j=0}^r\frac{\varphi^{(j)}(0)}{j!}x^j\right)\dd x\notag\\
+&+\sum_{j=0}^r\frac{\varphi^{(j)}(0)}{j!\,(j-r-t)}.\label{pc:local-mer}
+\end{align}
+If $c(t)$ is holomorphic, then
+\begin{equation}\label{pc:full-subtraction}
+c(t)M_r(t)+\frac{(-1)^r c(t)}{r!t}\delta^{(r)}
+\end{equation}
+is holomorphic near zero. Its Taylor coefficients are exactly the unit-coordinate Hadamard extensions of the Taylor coefficients of $c(t)x^{-r-1-t}$.
+\end{lemma}
+\begin{proof}
+Taylor's theorem bounds the bracket in the integral by $C x^{r+1}$, uniformly with respect to the relevant test-function seminorm. On $|\Rea t|\le\eta<1$, its integrand and each fixed spectral derivative are bounded by $C_Mx^{-\eta}(1+|\log x|^M)$. These bounds are integrable. The integral therefore defines a holomorphic distribution family, with differentiation under the integral valid at every finite order.
+
+For $j\ne r$, the rational term in \eqref{pc:local-mer} is holomorphic at zero and its Taylor coefficients agree with \eqref{pc:monomial}. The exceptional term is
+\[
+-\frac{c(t)\varphi^{(r)}(0)}{r!t}.
+\]
+Every coefficient of the corresponding integrand is a multiple of $x^{-1}\log^j x$, whose scalar finite part is zero. Thus one must remove this \emph{whole expression}. The added delta derivative in \eqref{pc:full-subtraction} does exactly that. Removing only $c(0)/t$ would leave unwanted finite terms from the derivatives of $c$. The finite-order estimates above also prove holomorphy in the distribution topology, not merely holomorphy after a formal manipulation of symbols.
+\end{proof}
+The lemma applies equally at the right endpoint after substituting $b=1-a$. Reflection then supplies the sign in \eqref{pc:reflection}. Adding a smooth parameter-dependent factor requires only a finite further Taylor subtraction.
+
+\subsection{The meromorphic periodic Hurwitz family}
+Let $\CZ(t)$ denote the meromorphic periodic distribution that agrees with $\zeta(1+t,x)$ in the ordinary integrable range $\Rea t<0$. The Hurwitz Fourier formula gives
+\begin{equation}\label{pc:Zfourier}
+\widehat{\CZ(t)}(0)=0,\qquad
+\widehat{\CZ(t)}(k)=\Gamma(-t)(2\pi\ii k)^t\quad(k\ne0),
+\end{equation}
+where
+\begin{equation}\label{pc:Lk}
+L_k=\log(2\pi|k|)+\frac{\pi\ii}{2}\sgn k,
+\qquad (2\pi\ii k)^t=e^{tL_k}.
+\end{equation}
+One may first use the absolutely convergent Fourier formula when $\Rea t<-1$, then continue. The coefficients in \eqref{pc:Zfourier} have locally uniform polynomial growth away from spectral poles, so they define a meromorphic distribution family. Alternatively, Lemma~\ref{pc:local-lemma} and the Hurwitz shift construct the same continuation directly. Agreement on the initial domain establishes equality of the two constructions.
+
+The zero coefficient can also be verified by integrating the Hurwitz antiderivative in the range $\Rea t<0$: the endpoint values of $\zeta(t,x)$ agree there. Near zero, the pointwise spectral residue is $\one$, whereas the endpoint monomial has residue $-\delta$. Consequently
+\begin{equation}\label{pc:residue}
+\Res_{t=0}\CZ(t)=\one-\delta.
+\end{equation}
+This distinction between a pointwise residue and a periodic distributional residue is essential.
+
+Define
+\begin{equation}\label{pc:Gdist}
+G(t)=\CZ(t)-\frac{\one-\delta}{t}.
+\end{equation}
+It is holomorphic near zero, has mean zero, and, by the full-subtraction lemma,
+\begin{equation}\label{pc:Gcoeff}
+G(t)=\sum_{m\ge0}\frac{(-1)^m}{m!}T_{m,0}t^m.
+\end{equation}
+In particular every $T_{m,0}$ has zero mean. This statement concerns its finite-part distribution, not the divergent ordinary integral of $\gamma_m$.
+
+\begin{proposition}[All argument derivatives in the fixed coordinate]\label{pc:Tp}
+The holomorphic generating family for \eqref{pc:Tdef} is
+\begin{equation}\label{pc:Tgen}
+\TG_p(t)=\D^p\CZ(t)-\frac{\delta_{p0}}t\one
++\frac{P_p(t)}t\delta^{(p)}
+=\sum_{m\ge0}\frac{(-1)^m}{m!}T_{m,p}t^m.
+\end{equation}
+Its mean is zero. For $k\ne0$,
+\begin{equation}\label{pc:Tfourier-gen}
+\widehat{\TG_p(t)}(k)=(2\pi\ii k)^p
+\left[\Gamma(-t)e^{tL_k}+\frac{P_p(t)}t\right].
+\end{equation}
+Moreover,
+\begin{equation}\label{pc:one-factor}
+T_{m,p}=\D^pT_{m,0}+d_{m,p}\delta^{(p)},\qquad
+d_{m,p}=(-1)^m m![t^{m+1}]P_p(t).
+\end{equation}
+In particular $d_{m,p}=0$ for $m\ge p$, and $d_{0,p}=H_p$.
+\end{proposition}
+\begin{proof}
+The singular summand of $\D_x^pg(t,x)$ is
+$(-1)^p(1+t)_p x^{-p-1-t}$. Lemma~\ref{pc:local-lemma} therefore prescribes precisely $P_p(t)\delta^{(p)}/t$. The remaining shifted Hurwitz term is holomorphic and smooth in $x$ near zero, with the pointwise pole removed when $p=0$. This proves the coefficient interpretation and holomorphy in \eqref{pc:Tgen}. Its mean is immediate from \eqref{pc:Zfourier}; when $p=0$, the two added means cancel, and when $p>0$ both are zero.
+
+Taking Fourier coefficients proves \eqref{pc:Tfourier-gen}. Subtracting $\D^pG(t)$ from \eqref{pc:Tgen} leaves $(P_p(t)-1)\delta^{(p)}/t$. Extracting a coefficient proves \eqref{pc:one-factor}. The degree of $P_p$ and its linear coefficient $H_p$ give the last statements.
+\end{proof}
+Thus the finite part of a classical derivative is not generally the derivative of the original finite-part distribution. For example, the discrepancy at Stieltjes index zero is $H_p\delta^{(p)}$. The finite coefficient identity
+\begin{equation}\label{pc:d-increment}
+d_{m,p+1}-d_{m,p}=\frac{(-1)^m m!}{p+1}[t^m]P_p(t)
+\end{equation}
+follows from $P_{p+1}(t)=P_p(t)(1+t/(p+1))$ and will be used as a replay check.
+
+\section{The separated kernel and its completion in the shift}\label{pc:separated}
+\subsection{Gamma factors and the classical shifted identity}
+Set
+\begin{align}
+E(u,v)&=\frac{\Gamma(1-u)\Gamma(1+u+v)}{\Gamma(1+v)},\label{pc:E}\\
+A(u,v)&=\frac{\Gamma(1-u)\Gamma(1-v)}{\Gamma(1-u-v)}
+\frac{\cos(\pi(u-v)/2)}{\cos(\pi(u+v)/2)}.\label{pc:A}
+\end{align}
+These functions are holomorphic in a sufficiently small polydisk. They satisfy
+\begin{equation}\label{pc:EA}
+E(0,v)=1,\qquad A(u,0)=A(0,v)=1,\qquad
+vE(u,v)+uE(v,u)=(u+v)A(u,v).
+\end{equation}
+For a direct proof of the last identity, factor out
+$F=\Gamma(1-u)\Gamma(1-v)\Gamma(1+u+v)$. Gamma reflection gives
+$vE=F\sin(\pi v)/\pi$ and $uE(v,u)=F\sin(\pi u)/\pi$.
+Their sum is $2F\sin(\pi(u+v)/2)\cos(\pi(u-v)/2)/\pi$, which is also $(u+v)A$.
+
+For $0<a<1$, the ordinary shifted Hurwitz kernel is
+\begin{equation}\label{pc:classicalC}
+C(s,t;a)=\int_0^1\zeta(s,x)\zeta(t,\{x+a\})\dd x,
+\qquad \Rea s,\Rea t<1.
+\end{equation}
+Because the singularities are separated, there is no additional condition on $\Rea(s+t)$ in this ordinary domain. It has the meromorphic expressions
+\begin{align}
+C(s,t;a)={}&B(1-s,s+t-1)\zeta(s+t-1,a)\notag\\
+&+B(1-t,s+t-1)\zeta(s+t-1,1-a),\label{pc:Cbeta}\\
+C(s,t;a)={}&\frac{\Gamma(1-s)\Gamma(1-t)}{(2\pi)^{2-s-t}}
+\bigg[e^{-\pi\ii(s-t)/2}\Li_{2-s-t}(e^{2\pi\ii a})\notag\\
+&\hspace{42mm}+e^{\pi\ii(s-t)/2}\Li_{2-s-t}(e^{-2\pi\ii a})\bigg].\label{pc:Cpoly}
+\end{align}
+Polylogarithms on the unit circle are the boundary values from the disk, with spectral continuation in their order. Conventions agree with \cite{pc:polylog}. These kernels underlie the preceding shifted and coincident reports \cite{pc:coincident,pc:shifted}; the unshifted Hurwitz product and its integral applications are classical \cite{pc:EM}.
+
+For completeness, in $\Rea s,\Rea t<0$ multiply the absolutely convergent Hurwitz Fourier expansions. The positive frequency of the correlation is
+\[
+\Gamma(1-s)\Gamma(1-t)(2\pi k)^{s+t-2}e^{-\pi\ii(s-t)/2}.
+\]
+The negative frequency has the opposite phase, proving \eqref{pc:Cpoly}. The Fourier coefficients of \eqref{pc:Cbeta} are the same by gamma reflection. The elementary sine identity needed for a positive frequency is
+\[
+\sin(\pi t)e^{\pi\ii(s+t)/2}+\sin(\pi s)e^{-\pi\ii(s+t)/2}
+=\sin(\pi(s+t))e^{-\pi\ii(s-t)/2}.
+\]
+The zero coefficients are zero. Finally, local domination at each of the two distinct singularities extends the equality to \eqref{pc:classicalC}; local Taylor subtraction then continues it meromorphically.
+
+\subsection{The holomorphic separated generators}
+For $r\ge1$ write
+\begin{equation}\label{pc:Wr}
+W_r(t,a)=(1+t)_r\zeta(1+r+t,a).
+\end{equation}
+The following functions are the full endpoint-completed kernels already implicit in the preceding report:
+\begin{align}
+\CJ_{pq}(u,v;a)={}&(-1)^q
+\frac{P_p(u)W_r(v,a)-E(u,v)W_r(w,a)}u\notag\\
+&+(-1)^p
+\frac{P_q(v)W_r(u,1-a)-E(v,u)W_r(w,1-a)}v,
+\quad r\ge1;\label{pc:Jpositive}\\
+\CJ_{00}(u,v;a)={}&
+\frac{g(v,a)-E(u,v)g(w,a)}u
++\frac{g(u,1-a)-E(v,u)g(w,1-a)}v\notag\\
+&+\frac{1-A(u,v)}{uv}.\label{pc:Jzero}
+\end{align}
+Every quotient in the first two lines has a removable axis singularity, and $(1-A)/(uv)$ is holomorphic. Their coefficient interpretation is
+\begin{equation}\label{pc:Jextract}
+J_{mn}^{p,q}(a)=(-1)^N m!n![u^mv^n]\CJ_{pq}(u,v;a).
+\end{equation}
+
+Here is the normalization derivation. Substitute $s=1+p+u$, $t=1+q+v$ into \eqref{pc:Cbeta} and multiply by $(-1)^{p+q}(1+u)_p(1+v)_q$. Gamma recurrence reduces its two beta factors to
+\[
+-\frac{(-1)^qE(u,v)}uW_r(w,a),\qquad
+-\frac{(-1)^pE(v,u)}vW_r(w,1-a).
+\]
+At $x=0$ the resonant Taylor coefficient of the smooth other factor has Taylor degree $p$; Lemma~\ref{pc:local-lemma} adds the full term
+$(-1)^qP_p(u)W_r(v,a)/u$. The second singularity similarly gives the other positive numerator in \eqref{pc:Jpositive}. When $r=0$, write every Hurwitz function as $g+1/t$ and retain the constant terms before simplifying. Identity \eqref{pc:EA} yields precisely $(1-A)/(uv)$ in \eqref{pc:Jzero}. Thus the formulas implement the \emph{specified coordinate} finite parts, not just residues of raw spectral kernels.
+
+\subsection{Completing in the shift variable}
+The periodic meromorphic version of $W_r(t,a)$ is
+\begin{equation}\label{pc:Wdist}
+\mathscr W_r(t)=(-1)^r\D^r\CZ(t).
+\end{equation}
+Its coordinate-completed family is
+\begin{equation}\label{pc:Wtilde}
+\widetilde W_r(t)=\mathscr W_r(t)+\frac{(-1)^rP_r(t)}t\delta^{(r)},\qquad r\ge1.
+\end{equation}
+It is holomorphic near zero by Lemma~\ref{pc:local-lemma}. At $r=0$ the corresponding completed $g$ family is $G(t)$ from \eqref{pc:Gdist}.
+
+Consequently the holomorphic family generating $\HH[J]$ is obtained by replacing $W_r(t,a)$ in \eqref{pc:Jpositive} by $\widetilde W_r(t)$, and $W_r(t,1-a)$ by $R\widetilde W_r(t)$. In \eqref{pc:Jzero}, replace $g(t,a)$ by $G(t)$ and $g(t,1-a)$ by $RG(t)$, leaving the constant distribution unchanged. Each completed numerator still vanishes on its appropriate spectral axis. Lemma~\ref{pc:local-lemma}, applied at both endpoints, proves that this construction gives exactly the coefficientwise definition in Section~\ref{pc:conventions}. It introduces no discretionary contact terms.
+
+\section{The all-index periodic collision theorem}\label{pc:main-section}
+\begin{theorem}[Exact contact coefficient at every index]\label{pc:main}
+For $m,n,p,q\ge0$, let $r=p+q$ and $N=m+n$. With the conventions above,
+\begin{equation}\label{pc:main-identity}
+\boxed{\quad
+\CC_{mn}^{p,q}=\HH[J_{mn}^{p,q}]+\kappa_{mn}^{p,q}\delta^{(r)}.
+\quad}
+\end{equation}
+There are no lower-order delta derivatives in this comparison. Define
+\begin{align}
+\BF_{pq}(u,v)={}&A(u,v)P_r(u+v)+P_p(u)P_q(v)\notag\\
+&-P_p(u)P_r(v)-P_q(v)P_r(u).\label{pc:B}
+\end{align}
+Then
+\begin{equation}\label{pc:kappa}
+\boxed{\quad
+\kappa_{mn}^{p,q}=(-1)^{p+N}m!n!
+[u^{m+1}v^{n+1}]\BF_{pq}(u,v).
+\quad}
+\end{equation}
+The function $\BF_{pq}$ vanishes on both axes. Hence the generating function
+\begin{equation}\label{pc:Kgen}
+\JF_{pq}(u,v)=\frac{(-1)^p\BF_{pq}(u,v)}{uv}
+\end{equation}
+is holomorphic near $(0,0)$.
+\end{theorem}
+
+\begin{proof}
+We compare two holomorphic distribution families before extracting any coefficient. Let $\CJ^{\mathrm{mer}}_{pq}$ denote \eqref{pc:Jpositive} with $W_r$ replaced by $\mathscr W_r$, or \eqref{pc:Jzero} with $g$ replaced by $\CZ-\one/t$. These uncompleted meromorphic families may have spectral poles; they will cancel in each completed expression.
+
+\emph{First comparison: completing the off-point function.}
+For $r\ge1$, substitute \eqref{pc:Wtilde} into the two quotients of \eqref{pc:Jpositive}. In the first quotient, the local delta coefficient has sign $(-1)^{q+r}=(-1)^p$. In the second, reflection changes $\delta^{(r)}$ by $(-1)^r$, canceling the sign $(-1)^r$ in \eqref{pc:Wtilde}. Thus the difference from $\CJ^{\mathrm{mer}}_{pq}$ is
+\begin{align}
+\frac{(-1)^p}{uv}\bigg[&P_p(u)P_r(v)+P_q(v)P_r(u)\notag\\
+&-\frac{vE(u,v)+uE(v,u)}{u+v}P_r(u+v)\bigg]\delta^{(r)}.\label{pc:completion-raw}
+\end{align}
+Using \eqref{pc:EA} gives
+\begin{align}
+\HH[\CJ_{pq}]=\CJ^{\mathrm{mer}}_{pq}
++\frac{(-1)^p}{uv}\big[&P_p(u)P_r(v)+P_q(v)P_r(u)\notag\\
+&-A(u,v)P_r(w)\big]\delta^{(r)}.\label{pc:Hmer}
+\end{align}
+For $r=0$, the replacement $g\mapsto G=g_{\mathrm{mer}}+\delta/t$ in \eqref{pc:Jzero} gives the same formula, with $P_0=1$. The constant $(1-A)\one/(uv)$ is not altered.
+
+\emph{Second comparison: convolution of the separately completed factors.}
+Expand $(R\TG_p(u))*\TG_q(v)$ using \eqref{pc:Tgen}. The raw Hurwitz convolution is \eqref{pc:Cbeta} with the required derivatives. The two cross terms involving one delta derivative are exactly the two positive numerators in \eqref{pc:Jpositive}. The delta--delta term is
+\[
+\frac{(-1)^pP_p(u)P_q(v)}{uv}\delta^{(r)}.
+\]
+When $r=0$, the constants subtracted from the factors give the additional constant already present in \eqref{pc:Jzero}; explicitly the means of $\CZ$ are zero, and
+\[
+\big(R(\CZ(u)-\one/u)\big)*(\CZ(v)-\one/v)
+=(R\CZ(u))*\CZ(v)+\one/(uv).
+\]
+Therefore in all cases
+\begin{equation}\label{pc:Cmer}
+(R\TG_p(u))*\TG_q(v)=\CJ^{\mathrm{mer}}_{pq}
++\frac{(-1)^pP_p(u)P_q(v)}{uv}\delta^{(r)}.
+\end{equation}
+Subtract \eqref{pc:Hmer} from \eqref{pc:Cmer}. The raw meromorphic family cancels, leaving \eqref{pc:Kgen} times $\delta^{(r)}$. Since $P_j(0)=1$ and $A$ equals one on both axes, \eqref{pc:B} vanishes on both axes and is divisible by $uv$ as a holomorphic germ. Extracting $(-1)^Nm!n![u^mv^n]$ proves \eqref{pc:main-identity}--\eqref{pc:kappa}.
+
+For clarity, the restriction of the convolution to $0<a<1$ really is \eqref{pc:Jdef}. On a compact subinterval of this open interval, partition the $x$-circle into neighborhoods of $0$, of $1-a$, and a region away from both. In either singular neighborhood only one factor is singular; the other is smooth and may be absorbed into the test function in Definition~\ref{pc:fp-definition}. The remaining region is an ordinary integral. This identifies the off-point restriction without multiplying overlapping singular distributions. The calculation above determines its extension at the only collision, $a=0$ in $\T$.
+
+Finally, the comparison involved only $\delta^{(r)}$ at every stage. The absence of lower delta derivatives is an exact conclusion of the completion algebra, not an inference from finitely many Fourier modes or a choice made after the fact.
+\end{proof}
+
+\begin{corollary}[Coefficient ring, reflection, and mean]\label{pc:ring}
+Each $\kappa_{mn}^{p,q}$ is an explicitly computable element of
+$\Q[\zeta(2),\ldots,\zeta(N+2)]$, with rational coefficients expressible through generalized harmonic numbers at the finite arguments $p,q,r$. In particular no ordinary or generalized Stieltjes constants occur. Reflection gives
+\begin{equation}\label{pc:kappa-reflect}
+\kappa_{mn}^{p,q}=(-1)^r\kappa_{nm}^{q,p}.
+\end{equation}
+Moreover,
+\begin{equation}\label{pc:mean}
+\langle\HH[J_{mn}^{p,q}],\one\rangle=
+\begin{cases}-\kappa_{mn}^{0,0},&r=0,\\0,&r>0.\end{cases}
+\end{equation}
+\end{corollary}
+\begin{proof}
+The gamma and cosine expansions give
+\begin{align}
+\log A(u,v)={}&\sum_{k\ge2}\frac{\zeta(k)}k\big(u^k+v^k-w^k\big)\notag\\
+&-\sum_{j\ge1}\frac{(1-2^{-2j})\zeta(2j)}j
+\big((u-v)^{2j}-w^{2j}\big),\label{pc:logA}\\
+\log E(u,v)={}&\sum_{k\ge2}\frac{\zeta(k)}k
+\big(u^k+(-1)^kw^k-(-1)^kv^k\big).\label{pc:logE}
+\end{align}
+They follow from the usual log-Gamma expansion \cite{pc:gamma} and the cosine product. Equation~\eqref{pc:kappa} needs total degree $N+2$ only; \eqref{pc:logP} supplies the harmonic coefficients. The symmetry of $A$ and $\BF_{pq}(u,v)=\BF_{qp}(v,u)$ give \eqref{pc:kappa-reflect}. Finally both separately completed factors have mean zero, so their convolution has mean zero. Pair \eqref{pc:main-identity} with $\one$.
+\end{proof}
+For $p=q=0$, the coefficient is formally homogeneous of zeta weight $N+2$, assigning weight $j$ to $\zeta(j)$. This is a statement about the generated expressions, not an independence assertion about numbers of different weights.
+
+\section{Polygamma specialization and explicit low-index identities}\label{pc:examples}
+\begin{corollary}[Closed polygamma contact law]\label{pc:poly-contact}
+For all $p,q\ge0$, with $r=p+q$,
+\begin{equation}\label{pc:poly-kappa}
+\boxed{\quad
+\kappa_{00}^{p,q}=(-1)^p\left[
+2\zeta(2)+(H_r-H_p)(H_r-H_q)-H_r^{(2)}
+\right].\quad}
+\end{equation}
+Because $\gamma_0^{(p)}=-\psi^{(p)}$, this is also the contact coefficient for the corresponding correlation of two polygamma functions.
+\end{corollary}
+\begin{proof}
+The expansions required through total degree two are
+\[
+A(u,v)=1+2\zeta(2)uv+O((|u|+|v|)^3),
+\]
+\[
+P_j(t)=1+H_jt+\tfrac12(H_j^2-H_j^{(2)})t^2+O(t^3).
+\]
+Hence the coefficient of $uv$ in $A P_r(w)$ is
+$2\zeta(2)+H_r^2-H_r^{(2)}$. The remaining three terms in \eqref{pc:B} contribute $H_pH_q-H_pH_r-H_qH_r$. Multiplying by $(-1)^p$ proves the formula, including $r=0$.
+\end{proof}
+For reference, the first derivative-order cases are
+\begin{center}
+\begin{tabular}{@{}ccl@{}}
+\toprule
+$p$ & $q$ & $\kappa_{00}^{p,q}$\\
+\midrule
+0&0&$2\zeta(2)$\\
+0&1&$2\zeta(2)-1$\\
+1&0&$1-2\zeta(2)$\\
+0&2&$2\zeta(2)-5/4$\\
+1&1&$1-2\zeta(2)$\\
+2&0&$2\zeta(2)-5/4$\\
+1&2&$13/12-2\zeta(2)$\\
+2&1&$2\zeta(2)-13/12$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Each coefficient multiplies $\delta^{(p+q)}$, not $\delta$ indiscriminately.
+
+At $p=q=0$, $\BF_{00}=A-1$. The first higher-index coefficients are
+\begin{align}
+\kappa_{00}^{0,0}&=2\zeta(2),&
+\kappa_{10}^{0,0}=\kappa_{01}^{0,0}&=\zeta(3),\label{pc:smallkappa}\\
+\kappa_{11}^{0,0}&=\tfrac72\zeta(4),&
+\kappa_{20}^{0,0}=\kappa_{02}^{0,0}&=\tfrac{11}2\zeta(4).\notag
+\end{align}
+These follow by expanding \eqref{pc:logA}, rather than by fitting numerical moments.
+
+\subsection{The base digamma identity}
+The preceding off-point identity is
+\begin{equation}\label{pc:J00}
+J_{00}^{0,0}(a)=\gamma_1(a)+\gamma_1(1-a)-2\zeta(2).
+\end{equation}
+Theorem~\ref{pc:main} completes it to
+\begin{equation}\label{pc:C00}
+\boxed{\quad
+(RT_{0,0})*T_{0,0}=T_{1,0}+RT_{1,0}
++2\zeta(2)(\delta-\one).
+\quad}
+\end{equation}
+The mass $2\zeta(2)=\pi^2/3$ cannot be discarded: the right-hand side without it has mean $-2\zeta(2)$, whereas the convolution has mean zero. Thus the constant test function alone detects an incomplete extension in this case.
+
+The identity can also be checked directly on every nonzero Fourier mode. Proposition~\ref{pc:Tp} gives
+\begin{align}
+\widehat T_{0,0}(k)&=-\gamma-L_k,\label{pc:T0mode}\\
+\widehat T_{1,0}(k)&=\frac{(\gamma+L_k)^2+\zeta(2)}2.\label{pc:T1mode}
+\end{align}
+The product of the two reflected coefficients of $T_{0,0}$ is
+$(\gamma+\log(2\pi|k|))^2+\pi^2/4$. The sum of the coefficients of $T_{1,0}$ and its reflection is the same expression minus $2\zeta(2)$. The missing constant Fourier coefficient across the nonzero modes is precisely that of $2\zeta(2)\delta$.
+
+\subsection{A mixed Stieltjes identity}
+Extracting the coefficient $u^1v^0$ from \eqref{pc:Jzero} gives
+\begin{align}
+J_{10}^{0,0}(a)={}&\tfrac12\gamma_2(a)+\gamma_2(1-a)
++\zeta(2)\big(\gamma_0(a)+\gamma_0(1-a)\big)-\zeta(3).\label{pc:J10}
+\end{align}
+Its global completion is
+\begin{align}
+\CC_{10}^{0,0}={}&\tfrac12T_{2,0}+RT_{2,0}
++\zeta(2)(T_{0,0}+RT_{0,0})+\zeta(3)(\delta-\one).\label{pc:C10}
+\end{align}
+This illustrates why the spectral indices and the argument derivatives should not be conflated: raising a Stieltjes index changes the zeta coefficient of the contact term, while raising an argument-derivative order also changes the order of its delta derivative.
+
+\subsection{Finite collision constants are different objects}
+At the base indices, the prior analytic remainder in \eqref{pc:prior-split} has value
+\[
+R_{00}^{0,0}(0)=\FP\int_0^1\psi(x)^2\dd x
+=2\gamma_1-2\zeta(2),
+\]
+as proved in \cite{pc:coincident}. The contact coefficient in \eqref{pc:C00} is instead $2\zeta(2)$. These quantities answer different questions: the first is a scalar obtained after removing a specified off-point singular function; the second is a distribution supported at the collision. Theorem~\ref{pc:main} does not alter the preceding finite-constant comparison, and it does not assign an ordinary point value to a distribution.
+
+\section{Finite-part Fubini, Fourier moments, and polylogarithms}\label{pc:fourier-section}
+\subsection{A precise finite-part Fubini correction}
+\begin{corollary}[The two prescribed operations differ locally]\label{pc:fubini}
+For every smooth periodic $\varphi$, let the independent tensor finite part be
+\[
+\FP_{x,y}\int_0^1\!\!\int_0^1
+\gamma_m^{(p)}(x)\gamma_n^{(q)}(y)\varphi(y-x)\dd x\dd y,
+\]
+meaning independent unit-coordinate Hadamard extensions in $x$ and $y$. Then
+\begin{align}
+&\FP_{x,y}\int_0^1\!\!\int_0^1
+\gamma_m^{(p)}(x)\gamma_n^{(q)}(y)\varphi(y-x)\dd x\dd y\notag\\
+&\qquad-\FP_{a=0,1}\int_0^1J_{mn}^{p,q}(a)\varphi(a)\dd a
+=(-1)^r\kappa_{mn}^{p,q}\varphi^{(r)}(0).\label{pc:fubini-formula}
+\end{align}
+\end{corollary}
+\begin{proof}
+The first expression is the pairing of $(RT_{m,p})*T_{n,q}$ with $\varphi$, by the definition of convolution and the change $a=y-x$ on the circle. The second is $\langle\HH[J],\varphi\rangle$. Apply Theorem~\ref{pc:main} and the convention for $\delta^{(r)}$.
+\end{proof}
+Independent endpoint subtractions in independent variables commute; the leftmost expression is a tensor product, not an unspecified iterated regularization. The nonzero correction arises on first changing to the collision variable and then choosing its separate Hadamard extension. This is not a failure of the usual Fubini theorem under its convergence hypotheses.
+
+\subsection{Pole-free polynomial Fourier coefficients}
+Define, for a complex variable $L$,
+\begin{equation}\label{pc:b}
+b_{m,p}(L)=(-1)^m m![t^{m+1}]
+\left(P_p(t)-\Gamma(1-t)e^{Lt}\right).
+\end{equation}
+It is a polynomial of degree $m+1$. The log-Gamma expansion makes it a finite expression in $L$, $\gamma$, finite harmonic numbers, and $\zeta(2),\ldots,\zeta(m+1)$. Since $\Gamma(-t)=-\Gamma(1-t)/t$, Proposition~\ref{pc:Tp} implies
+\begin{equation}\label{pc:Tmode}
+\widehat T_{m,p}(k)=(2\pi\ii k)^p b_{m,p}(L_k),\qquad k\ne0.
+\end{equation}
+The combination in \eqref{pc:b} avoids numerical subtraction of spectral poles.
+
+\begin{theorem}[All-index trigonometric finite-part moments]\label{pc:fourier}
+For $k\ne0$,
+\begin{align}
+\FP_{a=0,1}\int_0^1J_{mn}^{p,q}(a)e^{-2\pi\ii ka}\dd a
+=(2\pi\ii k)^r\left[
+(-1)^p b_{m,p}(L_{-k})b_{n,q}(L_k)-\kappa_{mn}^{p,q}
+\right].\label{pc:mode-identity}
+\end{align}
+For $k=0$, the value is $-\kappa_{mn}^{0,0}$ if $r=0$ and zero otherwise. Real and imaginary parts give the corresponding cosine and sine identities.
+\end{theorem}
+\begin{proof}
+Reflection replaces $k$ by $-k$. Multiplying \eqref{pc:Tmode} for the two factors gives
+\[
+\widehat{\CC_{mn}^{p,q}}(k)=(-1)^p(2\pi\ii k)^r
+b_{m,p}(L_{-k})b_{n,q}(L_k).
+\]
+Subtract the Fourier coefficient of the contact term in Theorem~\ref{pc:main}. The zero mode was evaluated in Corollary~\ref{pc:ring}.
+\end{proof}
+For example, writing $c_k=\gamma+\log(2\pi|k|)$, the digamma case is
+\begin{equation}\label{pc:base-mode}
+\FP_{a=0,1}\int_0^1
+\big[\gamma_1(a)+\gamma_1(1-a)-2\zeta(2)\big]e^{-2\pi\ii ka}\dd a
+=c_k^2-\frac{\pi^2}{12}\quad(k\ne0).
+\end{equation}
+The zero mode is $-\pi^2/3$, not the limit of the right side as a frequency tends to zero.
+
+\subsection{Polylogarithm order derivatives at nonpositive integers}
+Let $\ell=\log(2\pi)$ and define the polynomial
+\begin{equation}\label{pc:Qpoly}
+Q_{mn}^{p,q}(X)=(-1)^p
+b_{m,p}(X+\ell-\pi\ii/2)
+ b_{n,q}(X+\ell+\pi\ii/2).
+\end{equation}
+Its degree is $m+n+2$, independently of $p+q$. Let
+\[
+P_\rho(a)=1+2\sum_{k\ge1}\rho^k\cos(2\pi ka),\qquad 0<\rho<1,
+\]
+be the Poisson kernel on the circle, and set $\CC_\rho=\CC_{mn}^{p,q}*P_\rho$.
+
+\begin{theorem}[Abel-regularized polylogarithmic correlation]\label{pc:polylog}
+For $0<\rho<1$ and real $a$,
+\begin{equation}\label{pc:polylog-complete}
+\CC_\rho(a)=2\Rea\left\{
+(2\pi\ii)^r
+\left.Q_{mn}^{p,q}(-\partial_s)
+\Li_s(\rho e^{2\pi\ii a})\right|_{s=-r}
+\right\}.
+\end{equation}
+Furthermore,
+\begin{equation}\label{pc:poisson-contact}
+\CC_\rho=(\HH[J_{mn}^{p,q}])*P_\rho
++\kappa_{mn}^{p,q}\D^rP_\rho.
+\end{equation}
+As $\rho\uparrow1$, \eqref{pc:polylog-complete} converges to $\CC_{mn}^{p,q}$ in distributions and to $J_{mn}^{p,q}$ in $C^\infty$ on every compact subset of $(0,1)$.
+\end{theorem}
+\begin{proof}
+For $|z|<1$, the defining polylogarithm series and any fixed number of order derivatives converge absolutely and locally uniformly. Replacing $s$ by $-r$ supplies $k^r$, and $(-\partial_s)^j$ supplies $(\log k)^j$. Thus the positive-frequency coefficients in \eqref{pc:polylog-complete} are exactly those of \eqref{pc:Tmode} after correlation and multiplication by $\rho^k$. The distributions in question are real, so negative frequencies are obtained by complex conjugation. The zero mode is zero. This proves \eqref{pc:polylog-complete}. Equation~\eqref{pc:poisson-contact} is Theorem~\ref{pc:main} convolved with $P_\rho$.
+
+The Fourier coefficients have polynomial growth, so testing against a smooth function, whose Fourier coefficients decrease faster than any power, justifies dominated convergence as $\rho\uparrow1$. For local smooth convergence, choose a smooth cutoff equal to one on a neighborhood of a given compact set away from the collision. The cutoff part is a smooth function and its Poisson regularizations converge with every derivative. The complementary distribution is supported a positive distance away; the Poisson kernel and all its derivatives on that separated set tend uniformly to zero, with the finitely many additional derivatives required by its distribution order. This proves the local claim. In particular the contact term in \eqref{pc:poisson-contact} becomes invisible off the collision but remains present in the distributional limit.
+\end{proof}
+At Stieltjes index zero, $b_{0,p}(L)=H_p-\gamma-L$. With $c=\gamma+\ell$,
+\begin{align}
+Q_{00}^{p,q}(X)=(-1)^p\big[&(X+c-H_p)(X+c-H_q)+\pi^2/4\notag\\
+&+\tfrac{\pi\ii}{2}(H_q-H_p)\big].\label{pc:poly-Q}
+\end{align}
+Consequently every polygamma correlation, regardless of its argument-derivative orders, uses at most two order derivatives of $\Li_s$ at $s=-p-q$. Higher Stieltjes indices require at most $m+n+2$ order derivatives. These are exact formulas for the complete boundary-value combination, with its contact convention fixed; no individual divergent summand is assigned a finite value in isolation.
+
+\section{Mean-zero antiderivatives and Bernoulli contact corrections}\label{pc:antiderivatives}
+On mean-zero periodic distributions define $\D^{-h}$, $h\ge1$, by Fourier division by $(2\pi\ii k)^h$ for $k\ne0$, with zero Fourier coefficient at $k=0$. This uniquely fixes the integration constants at every stage.
+
+Bernoulli polynomials are normalized by $\zeta(1-h,a)=-B_h(a)/h$. Their Fourier series \cite{pc:bernoulli} gives
+\begin{equation}\label{pc:delta-primitive}
+\D^{-h}(\delta-\one)=-\frac{B_h(\{a\})}{h!},\qquad h\ge1,
+\end{equation}
+as periodic distributions. At $h=1$ the endpoint value of the sawtooth is immaterial for this identity.
+
+Set
+\begin{equation}\label{pc:H0}
+\HH_0[J_{mn}^{p,q}]=
+\begin{cases}\HH[J_{mn}^{0,0}]+\kappa_{mn}^{0,0}\one,&r=0,\\
+\HH[J_{mn}^{p,q}],&r>0.
+\end{cases}
+\end{equation}
+It has mean zero, and Theorem~\ref{pc:main} is equivalently
+\begin{equation}\label{pc:main-mean-zero}
+\CC_{mn}^{p,q}=\HH_0[J_{mn}^{p,q}]
++\kappa_{mn}^{p,q}\D^r(\delta-\one).
+\end{equation}
+Therefore every normalized antiderivative satisfies
+\begin{equation}\label{pc:primitive-contact}
+\D^{-h}\CC_{mn}^{p,q}-\D^{-h}\HH_0[J_{mn}^{p,q}]
+=\kappa_{mn}^{p,q}
+\begin{cases}
+\delta^{(r-h)},&h<r,\\
+\delta-\one,&h=r,\\
+-B_{h-r}(\{a\})/(h-r)!,&h>r.
+\end{cases}
+\end{equation}
+The middle case applies only when $r\ge1$. In particular, once the number of integrations exceeds the contact order, the correction becomes an explicit Bernoulli polynomial rather than disappearing.
+
+\subsection{The normalized Stieltjes primitive family}
+For $h\ge1$, define
+\begin{align}
+a_h(t)&=\frac{(-1)^h}{(1+t-h)_h}
+=-\frac1{(h-1)!t}\prod_{d=1}^{h-1}(1-t/d)^{-1},\label{pc:ah}\\
+\Phi_h(t,a)&=a_h(t)\zeta(1-h+t,a)-\frac{B_h(a)}{h!t}.\label{pc:Phi}
+\end{align}
+The apparent spectral pole at zero is removable. This primitive construction is already present in the preceding work \cite{pc:coincident,pc:shifted}. The following argument verifies its compatibility with the particular periodic distribution normalization used here.
+
+\begin{proposition}[Distributionally normalized primitive tower]\label{pc:primitive-tower}
+The family $\Phi_h(t)$ is holomorphic near $t=0$ as a locally integrable periodic function and as a distribution. It has zero mean and
+\begin{equation}\label{pc:PhiD}
+\D\Phi_1(t)=G(t),\qquad \D\Phi_h(t)=\Phi_{h-1}(t)\ (h\ge2),\qquad
+\Phi_h(t)=\D^{-h}G(t).
+\end{equation}
+Its coefficients $\Phi_{h,m}(a)=(-1)^m m![t^m]\Phi_h(t,a)$ satisfy
+\begin{equation}\label{pc:Phicoeff}
+\Phi_{h,m}(a)=\frac{(-1)^{m+1}m!}{(h-1)!}
+\sum_{j=0}^{m+1}h_{m+1-j}^{(h-1)}
+\frac{\zeta^{[j]}(1-h,a)}{j!},
+\end{equation}
+where
+\begin{equation}\label{pc:hcomplete}
+\sum_{j\ge0}h_j^{(h-1)}t^j
+=\prod_{d=1}^{h-1}(1-t/d)^{-1}
+=\exp\left(\sum_{j\ge1}\frac{H_{h-1}^{(j)}}j t^j\right).
+\end{equation}
+Every coefficient belongs to $L^2(0,1)$.
+\end{proposition}
+\begin{proof}
+Since $\zeta(1-h,a)=-B_h(a)/h$, the residue in \eqref{pc:Phi} cancels. The differentiated Hurwitz identity and $B_h'=hB_{h-1}$ give the pointwise differential tower; also $a_h(t)(h-1-t)=a_{h-1}(t)$ for $h\ge2$. The means of the Hurwitz and Bernoulli factors vanish in a small spectral neighborhood where the relevant integrals converge, and hence also after removable pole cancellation.
+
+There is one periodic boundary issue to check. For $h=1$ and $\Rea t<0$, the pointwise derivative is $g(t,a)$, and the difference between the right limit at zero and the left limit at one of $\Phi_1$ is $1/t$. Periodic differentiation therefore adds $\delta/t$, yielding $\CZ(t)-\one/t+\delta/t=G(t)$. Analytic continuation proves the identity near zero. For $h\ge2$ and $t$ sufficiently small, the Hurwitz endpoint values agree and $B_h(0)=B_h(1)$, so the periodic derivative has no added jump. This proves the full distributional tower and uniqueness by zero mean.
+
+Expand the finite product in \eqref{pc:ah}. Cancellation of its residue gives \eqref{pc:Phicoeff}. Near zero the coefficients have at worst powers of $\log a$ when $h=1$, and powers $a^{h-1}\log^j a$ plus smooth terms when $h>1$. These are square integrable. For parameter holomorphy, choose a sufficiently small polydisk, with $|\Rea t|<\eta<1/2$ for the first stage; the same power-log majorants are square integrable uniformly on its compact subsets.
+\end{proof}
+The first examples are
+\begin{align}
+\Phi_{1,0}(a)&=-\log\Gamma(a)+\tfrac12\log(2\pi),\label{pc:Phi10}\\
+\Phi_{1,1}(a)&=\tfrac12\zeta^{[2]}(0,a),\label{pc:Phi11}\\
+\Phi_{2,1}(a)&=\zeta(-1,a)+\zeta^{[1]}(-1,a)+\tfrac12\zeta^{[2]}(-1,a).\label{pc:Phi21}
+\end{align}
+The first uses Lerch's classical special value \cite{pc:hurwitz}. These formulas contain the normalization constants; they are not indefinite antiderivatives with omitted polynomials.
+
+\section{Ordinary primitive correlations and log-Gamma identities}\label{pc:ordinary}
+The contact computation also gives convergent integral identities. Define
+\begin{equation}\label{pc:K00}
+\JF(u,v)=\frac{A(u,v)-1}{uv}.
+\end{equation}
+In the undifferentiated case Theorem~\ref{pc:main} takes the useful generating form
+\begin{align}
+(RG(u))*G(v)={}&\frac{G(v)-E(u,v)G(w)}u
++\frac{RG(u)-E(v,u)RG(w)}v\notag\\
+&+\JF(u,v)(\delta-\one).\label{pc:global-generator}
+\end{align}
+All terms on the right are holomorphic after their displayed removable divisions.
+
+\begin{theorem}[Every normalized primitive correlation]\label{pc:primitive-correlation}
+Let $k,l\ge1$, $h=k+l$, and $0<a<1$. In a sufficiently small spectral neighborhood of $u=v=0$,
+\begin{align}
+&\int_0^1\Phi_k(u,x)\Phi_l(v,\{x+a\})\dd x\notag\\
+&=(-1)^k\bigg\{
+\frac{\Phi_h(v,a)-E(u,v)\Phi_h(w,a)}u\notag\\
+&\hspace{12mm}+(-1)^h
+\frac{\Phi_h(u,1-a)-E(v,u)\Phi_h(w,1-a)}v
+-\JF(u,v)\frac{B_h(a)}{h!}\bigg\}.\label{pc:primitive-kernel}
+\end{align}
+Both sides are holomorphic in $u,v$. Coefficient extraction generates all ordinary integrals
+\begin{equation}\label{pc:ordinary-coeff}
+\int_0^1\Phi_{k,m}(x)\Phi_{l,n}(\{x+a\})\dd x.
+\end{equation}
+The identity extends continuously to $a=0$ and $a=1$, interpreted by the corresponding limits.
+\end{theorem}
+\begin{proof}
+On the circle, differentiating a correlation in its first factor contributes a minus sign, whereas differentiating in its second contributes a plus sign. Equivalently, the Fourier identity in \eqref{pc:reflection} gives
+\[
+(RG(u))*G(v)=(-1)^k\D^{k+l}\big((R\Phi_k(u))*\Phi_l(v)\big).
+\]
+The latter correlation has mean zero. Applying $(-1)^k\D^{-h}$ to \eqref{pc:global-generator} and using
+$\D^{-h}RG=(-1)^hR\Phi_h$ and \eqref{pc:delta-primitive} proves \eqref{pc:primitive-kernel} as a distributional identity.
+
+The coefficients of both primitive families are square integrable by Proposition~\ref{pc:primitive-tower}. Their correlations are therefore ordinary integrals, and are continuous in the shift by continuity of translations in $L^2$. In a smaller parameter polydisk, the same square-integrable majorants permit differentiation in $u,v$ under the integral by Cauchy--Schwarz and dominated convergence. Thus the distributional identity agrees everywhere with its continuous representatives. This also proves coefficient extraction and the endpoint interpretation. Removability of the displayed quotients follows because the first numerator vanishes at $u=0$, using $E(0,v)=1$, and the second vanishes at $v=0$, using $E(0,u)=1$ in the reversed factor.
+\end{proof}
+The Bernoulli term is essential. Dropping it amounts to integrating an incomplete off-point extension and gives a different ordinary function, even though the missing term before integration was supported at just one point.
+
+\subsection{An explicit ordinary log-Gamma covariance}
+Put
+\begin{equation}\label{pc:Lgamma}
+L(x)=\log\Gamma(x)-\tfrac12\log(2\pi).
+\end{equation}
+This has zero mean. Taking $k=l=1$ and $m=n=0$ in Theorem~\ref{pc:primitive-correlation}, and using \eqref{pc:Phi21}, gives the following expression involving only negative-integer Hurwitz spectral derivatives.
+
+\begin{corollary}[Log-Gamma covariance in negative spectral coordinates]\label{pc:gamma-cov-theorem}
+For $0<a<1$,
+\begin{align}
+\int_0^1 L(x)L(\{x+a\})\dd x
+={}&(1+\zeta(2))B_2(a)
+-\zeta^{[1]}(-1,a)-\zeta^{[1]}(-1,1-a)\notag\\
+&-\tfrac12\left[\zeta^{[2]}(-1,a)+\zeta^{[2]}(-1,1-a)\right].\label{pc:gamma-cov}
+\end{align}
+In particular,
+\begin{equation}\label{pc:gamma-square-negative}
+\int_0^1L(x)^2\dd x
+=\frac{1+\zeta(2)}6-2\zeta'(-1)-\zeta''(-1).
+\end{equation}
+Primes on the Riemann zeta function in this formula mean spectral differentiation.
+\end{corollary}
+\begin{proof}
+In \eqref{pc:primitive-kernel}, the constant spectral coefficient of the first quotient is $-\partial_t\Phi_2(0,a)=\Phi_{2,1}(a)$, because the first derivatives of $E$ at $(0,0)$ vanish. The second quotient gives its reflection. The outer sign is $-1$, and the contact primitive contributes $+\zeta(2)B_2(a)$. Therefore the covariance equals
+\[
+-\Phi_{2,1}(a)-\Phi_{2,1}(1-a)+\zeta(2)B_2(a).
+\]
+Use \eqref{pc:Phi21}, $B_2(1-a)=B_2(a)$, and $\zeta(-1,a)=-B_2(a)/2$ to obtain \eqref{pc:gamma-cov}. For the limit at $a=0$, the extra shift term in $\zeta^{[j]}(-1,a)$ is $a(-\log a)^j$, which tends to zero for $j\le2$. Continuity of the covariance then proves \eqref{pc:gamma-square-negative}.
+\end{proof}
+For comparison, Kummer's Fourier coefficients give the familiar positive-integer spectral expression
+\begin{equation}\label{pc:gamma-square-positive}
+\int_0^1L(x)^2\dd x
+=\frac{\zeta''(2)-2c\zeta'(2)+(c^2+\pi^2/4)\zeta(2)}{2\pi^2},
+\qquad c=\gamma+\log(2\pi).
+\end{equation}
+Indeed the cosine coefficients of $L$ are $1/(2n)$ and its sine coefficients are $(c+\log n)/(\pi n)$; Parseval gives \eqref{pc:gamma-square-positive}. Equating \eqref{pc:gamma-square-negative} and \eqref{pc:gamma-square-positive} is an exact cross-spectral zeta-jet identity. The classical log-Gamma moment and Hurwitz integral method are credited to their antecedents \cite{pc:EM,pc:coincident}; the present derivation exposes their compatibility with the collision contact term.
+
+\subsection{A normalized primitive of the base correlation}
+One integration of \eqref{pc:C00} gives, on $0<a<1$,
+\begin{equation}\label{pc:first-primitive}
+\D^{-1}\CC_{00}^{0,0}(a)
+=\tfrac12\left[\zeta^{[2]}(0,a)-\zeta^{[2]}(0,1-a)\right]
+-2\zeta(2)B_1(a).
+\end{equation}
+Its periodic mean is zero. The linear Bernoulli term fixes the constant that an ordinary antiderivative of \eqref{pc:J00} alone would not determine. Further integrations are covered by \eqref{pc:primitive-contact} and \eqref{pc:primitive-kernel}, with no new divergent integration step.
+
+\section{Extension safeguards and proposed corrections}\label{pc:safeguards}
+No false theorem was identified in the inspected coincident report. It correctly separates the off-point expansion from the distributional extension question. The present result provides the missing theorem and makes several potentially misleading extension rules precise.
+
+\subsection{Do not promote an off-point formula unchanged}
+The assertion
+\[
+(RT_{0,0})*T_{0,0}\stackrel{\mathrm{wrong}}=T_{1,0}+RT_{1,0}-2\zeta(2)\one
+\]
+fails already on the constant test function. Its exact replacement is \eqref{pc:C00}. In general, use \eqref{pc:main-identity} with the coefficient \eqref{pc:kappa}, and specify the coordinates defining $\HH$. This displayed false equation is a deliberately rejected extension, not an assertion attributed to the existing manuscript.
+
+\subsection{Subtract the full resonance, not just its residue}
+For a resonant local coefficient $c(t)$, removing $c(0)/t$ leaves derivatives of $c$ in the finite Taylor coefficients. Lemma~\ref{pc:local-lemma} requires $c(t)/t$ instead. The factor $P_p(t)$ in \eqref{pc:Tgen} is the exact record of this distinction. Omitting it loses the single-factor correction $d_{m,p}$ and changes the correlation contact coefficient. At Stieltjes index zero this error is visible through $H_p$; at higher indices it is controlled by finite generalized-harmonic polynomials.
+
+\subsection{Keep classical and distributional differentiation distinct}
+Replacing $T_{m,p}$ by $\D^pT_{m,0}$ is legitimate only when the coefficient $d_{m,p}$ in \eqref{pc:one-factor} vanishes. Otherwise it changes the chosen extension. Classical differentiation on the open interval is unchanged; the correction lives entirely at the identified endpoint. The same distinction explains why mean-zero primitives require the Bernoulli terms above.
+
+\subsection{Do not conflate three different regularizations}
+A raw spectral Laurent coefficient, the unit-coordinate Hadamard finite part, and a canonical convolution distribution are different constructions. The first may retain analytic numerator terms from a resonance; the second is fixed by Definition~\ref{pc:fp-definition}; the third is fixed by independent factor extensions and convolution. This article proves the exact second-to-third conversion. It does not silently identify any of these with a limit of the divergent unregularized integral. The prior same-point scalar value and its analytic collision remainder remain valid within their stated convention.
+
+\section{Reproducible exact and numerical evidence}\label{pc:verification}
+The all-index assertions are proved in Sections~\ref{pc:families}--\ref{pc:ordinary}. The following finite checks are independent safeguards against algebraic, sign, and normalization mistakes. None is a proof-assistant certificate for the analytic theorem.
+
+\subsection{Exact coefficient engine}
+The script \src{code/exact_checks.py} uses sparse bivariate polynomials with exact rational coefficients and symbolic zeta values. Even zeta values are reduced to rational multiples of powers of a formal $\pi$ symbol; odd zeta values remain formal symbols. The logarithms of $A$ and $E$ are constructed separately from \eqref{pc:logA} and \eqref{pc:logE}. The script does not assume those symbols are arithmetically independent; it checks equality of the generated formal expressions.
+
+The recorded run uses internal total degree seven. It outputs all 420 contact coefficients with $p+q\le6$ and $m+n\le4$, and passes 760 exact assertions. They include the gamma relation \eqref{pc:EA}, divisibility on the axes, reflection, the closed polygamma formula, support and increments of the one-factor contacts, and the printed low-index targets. An additional independently organized computation uses the Fourier polynomials $b_{m,p}$ to verify the difference between canonical and endpoint-completed mode coefficients, rather than merely reusing \eqref{pc:kappa}. A corruption control rejects deletion of the base atom.
+
+The exact formulas are stored in \src{data/contact_coefficients.json}; the assertion receipt is \src{data/exact_checks.json}. The degree restrictions describe the finite replay only, not the scope of Theorem~\ref{pc:main}.
+
+\subsection{Independent finite-part quadratures}
+The script \src{code/numerical_checks.py} uses 60 decimal digits with mpmath. Its left-hand sides are constructed from locally subtracted off-point functions, not from the contact formula being tested. For example, the polygamma off-point function for $r\ge1$ is
+\begin{align}
+J_{00}^{p,q}(a)=r!\big\{&(-1)^q[(H_p-H_r)\zeta(r+1,a)-\zeta^{[1]}(r+1,a)]\notag\\
+&+(-1)^p[(H_q-H_r)\zeta(r+1,1-a)-\zeta^{[1]}(r+1,1-a)]\big\}.\label{pc:polygamma-offpoint}
+\end{align}
+This follows directly by constant coefficient extraction in \eqref{pc:Jpositive} and was already part of the prior coincident calculation. Its left singular summand is
+$(-1)^qr!a^{-r-1}(\log a+H_p-H_r)$; the right endpoint is treated analogously. The smooth shifted Hurwitz tails are Taylor-expanded about $3/2$ with 120 terms and integrated by quadrature. The singular monomials times $e^{-2\pi\ii ka}$ are integrated by their convergent exponential series with 260 terms, applying \eqref{pc:monomial} term by term. The resonant exponential index is deleted, exactly as required by the finite-part definition.
+
+The 40 completed diagnostics comprise
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Diagnostic family & Count\\
+\midrule
+Polygamma finite-part Fourier moments, nine $(p,q)$ pairs & 27\\
+Mixed Stieltjes $(m,n)=(1,0)$ Fourier moments & 4\\
+Nonzero spectral-parameter checks, including complex parameters & 4\\
+Ordinary log-Gamma covariance quadratures & 4\\
+Positive- versus negative-integer zeta-jet square formula & 1\\
+\midrule
+Total & 40\\
+\bottomrule
+\end{tabular}
+\end{center}
+All passed the recorded scaled tolerance $10^{-38}$. The largest recorded absolute error was less than $1.1\times10^{-51}$. Deleting the base atom produces a control discrepancy $3.2898681336964528729\ldots=\pi^2/3$. Results, values, tolerances, precision, and software versions are recorded in \src{data/numerical_checks.json}.
+
+These residuals include truncation and floating-point error. They are \emph{not} rigorous interval enclosures. The spectral-mode checks use independently integrated completed Hurwitz families; the ordinary covariance checks integrate log-Gamma functions directly. The analytic proof, rather than the numerical residual, establishes the unrestricted index and test-function assertions.
+
+\subsection{Build and replay}
+From the package root, with Python, the listed requirements, and a LaTeX installation providing \texttt{pdflatex}:
+\begin{verbatim}
+python -m pip install -r requirements.txt
+python code/exact_checks.py
+python code/numerical_checks.py
+python code/build.py
+python code/inspect_pdf.py
+\end{verbatim}
+The build uses a temporary directory and retains only the compiled PDF and a receipt. The inspection script checks page count and text extraction, and renders page images for review. Human/model visual review is separate from mathematical verification. Regeneration can change timing, version, or PDF metadata; byte-for-byte reproducibility of the PDF is not asserted. A SHA-256 manifest identifies the supplied files.
+
+\section{Further research questions and topics}\label{pc:further}
+\subsection{Cubic collision extensions and simultaneous subtractions}
+The corresponding bilinear extension is now determined in a fixed convention. For three factors, define the independent tensor finite part first, then compute the complete contact distributions on the pairwise collision diagonals and their intersections. The important step is an explicit multivariable analogue of \eqref{pc:B} that remains coherent where several resonances meet. A mere list of pairwise contact terms need not settle the simultaneous collision. Cubic Hurwitz integrals are related to Tornheim double sums in the classical literature \cite{pc:Tornheim}; the new task would be the fully specified endpoint and diagonal completion, not rediscovery of that relation.
+
+\subsection{Coordinate transport and compatibility with existing packages}
+The present theorem uses the coordinates $x$, $a$, and $1-a$ at scale one. Derive its transformation under a smooth local coordinate change, preserving the full spectral numerator in every resonant subtraction. For affine dilation, reconcile the resulting formula with the repository's existing dilation and resonance-coordinate material before claiming a new contribution. For genuinely nonlinear changes, determine exactly which lower delta derivatives appear and how their coefficients depend on the coordinate jet. The absence of lower derivatives proved here is specific to the stated comparison and does not assert invariance under arbitrary reparametrization.
+
+\subsection{Coherence of multiple integrations and restrictions}
+Equation~\eqref{pc:primitive-contact} fixes every mean-zero primitive on the circle. Investigate the precise boundary terms when these primitives are restricted to an interval with nonperiodic boundary conditions, or composed with covering maps before restriction. A useful result would be a commuting-diagram theorem with all boundary polynomials explicit, rather than a collection of indefinite antiderivatives. Unequal-grid and twisted correlations should be compared with the already incoming harmonic and dilation work.
+
+\subsection{Other spectral resonances and higher-order local models}
+At the positive-integer argument-derivative resonances considered here, a single singular homogeneity gives a single contact derivative. Extend the full-numerator lemma to a finite sum of independent spectral exponents and logarithmic multiplicities, and determine when simultaneous resonances admit a coordinate-independent normal form. Noninteger powers require a separately specified branch and extension convention. Such a theorem could organize endpoint completions of more general Lerch and multiple-polylogarithm kernels.
+
+\subsection{Ordinary gamma moments and arithmetic specializations}
+The primitive kernel \eqref{pc:primitive-kernel} gives explicit ordinary two-factor moments at rational shifts. Determine which finite combinations reduce to Dirichlet $L$-jets, Barnes multiple-gamma values, or lower-depth polylogarithms, with exact branches and normalization constants. The contact coefficient itself lies in a small zeta--harmonic ring, but this does not force the full ordinary moment to have the same arithmetic closure. Any proposed reduction should include an exact transformation or certificate, not only a small integer-relation residual.
+
+\subsection{A bridge to the unresolved fixed-weight candidates}
+The present result is a theorem about spectral families and endpoint extensions; the remaining $S_6$ and revised $S_8$ candidates are more restrictive arithmetic identities. Search for integral transformations that place their residual expressions in the completed correlation or primitive algebra. Such a bridge must preserve the exact contact term and branch conventions. This article provides no proof that such a bridge exists and does not promote those candidates to theorems.
+
+\subsection{Formalization of the analytic-to-algebraic boundary}
+A staged formalization could first encode the sparse gamma--harmonic coefficient algebra and Theorem~\ref{pc:main} conditional on the distributional spectral identities. The next stage should prove Lemma~\ref{pc:local-lemma}, uniform test-function estimates, and holomorphic coefficient extraction. The remaining stage is the Hurwitz Fourier identity and convolution comparison. This decomposition keeps finite algebra separate from the analytic assumptions that give it its integral meaning.
+
+\section*{Conclusion}
+\addcontentsline{toc}{section}{Conclusion}
+The specified periodic collision problem has a finite, all-index answer. Independently extending the two factors and convolving them is not the same operation as extending their separated correlation in the shift variable. Their difference is exactly $\kappa_{mn}^{p,q}\delta^{(p+q)}$, with the explicit coefficient \eqref{pc:kappa}; at polygamma index zero it reduces to \eqref{pc:poly-kappa}. Full resonant subtraction explains both the coefficient and the absence of lower contact derivatives. The same term becomes a Bernoulli polynomial under enough normalized integrations, and therefore contributes to ordinary log-Gamma and Hurwitz-jet correlations. This completes the posed extension comparison while retaining the distinction between proved analytic identities, finite computational checks, and unresolved arithmetic questions.
+
+\appendix
+\section{An explicit finite coefficient recipe}\label{pc:recipe}
+For prescribed $m,n,p,q$, set $d=m+n+2$. Truncate \eqref{pc:logA} to total degree $d$ and exponentiate as a finite power series to obtain $A$ through that degree. Construct the three finite products $P_p,P_q,P_{p+q}$ exactly. Form \eqref{pc:B}, retain the coefficient $u^{m+1}v^{n+1}$, and multiply by $(-1)^{p+m+n}m!n!$. Terms of higher total degree cannot contribute. No Hurwitz function or numerical Stieltjes constant is needed for this contact computation.
+
+For clarity, if $a_{ij}=[u^iv^j]A$ and $e_j^{(s)}=[t^j]P_s(t)$, the first term in \eqref{pc:B} has coefficient
+\begin{equation}\label{pc:finite-sum}
+[u^{m+1}v^{n+1}]A P_r(u+v)
+=\sum_{\alpha=0}^{m+1}\sum_{\beta=0}^{n+1}
+a_{m+1-\alpha,n+1-\beta}
+\binom{\alpha+\beta}{\alpha}e_{\alpha+\beta}^{(r)}.
+\end{equation}
+The other three coefficients are respectively
+$e_{m+1}^{(p)}e_{n+1}^{(q)}$,
+$-e_{m+1}^{(p)}e_{n+1}^{(r)}$,
+and $-e_{m+1}^{(r)}e_{n+1}^{(q)}$.
+The convention $e_j^{(s)}=0$ for $j>s$ makes this a uniformly terminating formula. Formula~\eqref{pc:logP} translates each $e_j^{(s)}$ into generalized harmonic numbers when that basis is preferred.
+
+\section{Proposed repository integration}\label{pc:integration}
+The proposed location is
+\begin{quote}\small
+\path{Analysis/Polylogarithms/docs/reports/}\\
+\path{stieltjes-correlation-calculus/continuations/}\\
+\path{periodic-collision-contacts/}.
+\end{quote}
+The package contains this article, editable source, the two replay scripts, exact coefficient data, numerical receipts, build and inspection scripts, and a focused integration note. No repository files were modified by this delivery.
+
+The editorial change proposed in the accompanying note is to mark the \emph{fixed unit-coordinate periodic extension comparison} from Section~11.1 of the coincident report as proved by Theorem~\ref{pc:main}, retaining that report's off-point splitting and same-point finite constants unchanged. The entry should not imply a solution of cubic products, arbitrary coordinate transports, or the fixed-weight $S_6/S_8$ questions. A short manuscript insert is supplied with distinct label and macro prefixes to reduce integration conflicts; it is not an automatically applied patch.
+
+\begin{thebibliography}{9}
+\small\setlength{\parskip}{0pt}\setlength{\itemsep}{4pt}
+\raggedright
+\interlinepenalty=10000
+\bibitem{pc:coincident}
+ProveIt research contribution prepared with ChatGPT,
+\emph{Coincident-Point Stieltjes Calculus: Exact Quadratic Closure, Polygamma Parity, and Polylogarithmic Collision Subtraction}, 10 October 2026.
+Complete Library TeX source inspected; in particular Sections 3, 5, 7, 9, and 11.1.
+Named incoming archive: \path{docs/incoming/ProveIt_Coincident_Stieltjes_2026-10-10.zip}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/docs/incoming}.
+
+\bibitem{pc:repo}
+ProveIt Contributors,
+\emph{Polylogarithms and their Arithmetic Bridges}, canonical manuscript README and selected source, October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/Polylogarithms/docs/manuscript}.
+Observed branch head during inspection: \pin.
+README blob: \texttt{e459f6e29843348942d00ca24abaffad40ba6ce9}.
+
+\bibitem{pc:shifted}
+ProveIt research report,
+\emph{Shifted Hurwitz-Zeta Correlations: Exact Stieltjes Closure, Polygamma Contact Terms, and Log-Gamma Antiderivatives}, 10 October 2026.
+\path{Analysis/Polylogarithms/docs/reports/}\\
+\path{stieltjes-correlation-calculus/continuations/shifted-hurwitz-jets/sections.tex}.
+Antecedent identified and formulas reproduced in the complete coincident source \cite{pc:coincident}; the present inspection does not claim a fresh full audit of that earlier report.
+
+\bibitem{pc:EM}
+O. R. Espinosa and V. H. Moll,
+\emph{On some definite integrals involving the Hurwitz zeta function},
+The Ramanujan Journal \textbf{6} (2002), 159--188.
+Preprint arXiv:math/0012078 (2000).
+\url{https://arxiv.org/abs/math/0012078}.
+
+\bibitem{pc:hurwitz}
+NIST Digital Library of Mathematical Functions,
+\S25.11, \emph{Hurwitz Zeta Function}.
+Shift, Fourier, derivative, Bernoulli, and gamma special-value conventions.
+\url{https://dlmf.nist.gov/25.11}. Accessed 10 October 2026.
+
+\bibitem{pc:gamma}
+NIST Digital Library of Mathematical Functions,
+\S5.7, \emph{Series Expansions of the Gamma Function}.
+\url{https://dlmf.nist.gov/5.7}. Accessed 10 October 2026.
+
+\bibitem{pc:polylog}
+NIST Digital Library of Mathematical Functions,
+\S25.12, \emph{Polylogarithms}.
+\url{https://dlmf.nist.gov/25.12}. Accessed 10 October 2026.
+
+\bibitem{pc:bernoulli}
+NIST Digital Library of Mathematical Functions,
+\S24.8, \emph{Series Expansions of Bernoulli and Euler Polynomials}; equation 24.8.3.
+\url{https://dlmf.nist.gov/24.8}. Accessed 10 October 2026.
+
+\bibitem{pc:Tornheim}
+O. R. Espinosa and V. H. Moll,
+\emph{The evaluation of Tornheim double sums. Part 1}, arXiv:math/0505647 (2005).
+\url{https://arxiv.org/abs/math/0505647}.
+Cited for the established connection between triple Hurwitz integrals and Tornheim sums, not for the contact theorem proved here.
+\end{thebibliography}
+\end{document}

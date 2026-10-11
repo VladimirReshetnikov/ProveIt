@@ -1,0 +1,287 @@
+% Integrable regular parts may be dropped in all local coordinate comparisons.
+% Requires amsmath, amssymb, amsthm.  Labels are prefixed invg:.
+% Suggested bibliography keys: IncomingExact, IncomingTransport, Latt2011.
+\section{Which logarithmic singularities have no coordinate defect?}
+\label{invg:sec}
+
+The nonlinear coordinate formulas in the two incoming reports give a
+finite algorithm for each specified singular germ.  The fifth research
+question in the Exact Identities report asks for an intrinsic
+classification of the germs whose defect vanishes under every coordinate
+tangent to the identity.  We answer that question, and more generally
+allow any prescribed order of tangency.  The necessary condition is as
+important as the sufficient one: logarithmic degrees from different pole
+orders cannot conceal a defect for every coordinate.
+
+The change-of-variables mechanism for logarithmic finite parts is
+classical; see, for example, L\"att's Theorem~2 in
+\cite{Latt2011}.  The theorem below is an exact invariant-subspace
+classification and a specialization to the Stieltjes hierarchy relative
+to the audited incoming material.  No general historical-priority claim
+is made.
+
+\subsection{Conventions and the inherited residue formula}
+
+Work locally on the positive side of the origin.  A logarithmic
+meromorphic germ has the unique singular expansion
+\begin{equation}\label{invg:germ}
+ h(x)=\sum_{q=1}^{R}\sum_{n=0}^{L}c_{q,n}x^{-q}\log^n x+h_{\rm reg}(x),
+\end{equation}
+where the omitted part is locally integrable and is a finite sum of
+analytic germs times nonnegative powers of $\log x$.  Coefficients may be
+real or complex.  Define $\operatorname{FP}_x h$ by taking the constant
+term of its cutoff integral against a smooth test function.  Positive
+powers of the cutoff logarithm and negative powers of the cutoff are
+removed.  Use scalar distribution pullback, so that ordinary functions
+pull back by composition.
+
+For an orientation-preserving analytic coordinate $f$, put
+\[
+ H_f(t)=f(t)/t,\qquad \lambda_f(t)=\log H_f(t),\qquad
+ C_f[h]=f^*(\operatorname{FP}_x h)-\operatorname{FP}_t(h\circ f).
+\]
+The residue law proved in the incoming reports is
+\begin{equation}\label{invg:residue}
+ \langle C_f[h],\phi\rangle
+ =\sum_{q,n}\frac{c_{q,n}}{n+1}
+    \operatorname*{Res}_{t=0}
+     f(t)^{-q}\lambda_f(t)^{n+1}\phi(t)\,dt.
+\end{equation}
+It is enough to keep the finite Taylor jet of the smooth test function
+inside the residue.  Integrable terms create no discrepancy.  Equivalently,
+for a single monomial,
+\begin{equation}\label{invg:monomial}
+ C_f[x^{-q}\log^n x]
+ =n!\sum_{j=0}^{q-1}\frac{(-1)^j}{j!}
+ [z^{n+1}t^{q-1-j}]H_f(t)^{z-q}\,\delta_0^{(j)}.
+\end{equation}
+This is the same coefficient law, because
+$[z^{n+1}]H_f^{z-q}=H_f^{-q}\lambda_f^{n+1}/(n+1)!$.
+
+For completeness, the analytic justification is short.  Continue
+$x_+^{z-q}$ after subtracting the test-function Taylor polynomial through
+degree $q-1$.  Only the term of degree $q-1$ has denominator $z$ near
+zero.  After pullback, its numerator depends on $z$ through $H_f^{z-q}$.
+The constant term of the cutoff coefficient omits the quantity
+$n![z^{n+1}]$ of that numerator, whereas the meromorphic coefficient
+retains it.  Every other Taylor denominator is nonzero at $z=0$; the
+remainder is normally integrable there.  This proves
+\eqref{invg:monomial}, including its sign and factorials.
+
+\subsection{The complete classification}
+
+For an integer $d\ge1$, write
+\[
+ \mathscr G_d=\{f:f(0)=0,\quad f(t)=t+O(t^{d+1})\}.
+\]
+These are germs with identity Taylor jet through degree $d$.
+
+\begin{theorem}[Classification by pole order and logarithmic degree]
+\label{invg:classification}
+For the germ \eqref{invg:germ} and an integer $d\ge1$, the following
+conditions are equivalent.
+\begin{enumerate}
+\item $C_f[h]=0$ for every $f\in\mathscr G_d$.
+\item $C_{f_a}[h]=0$ for every sufficiently small real $a$, where
+      $f_a(t)=t(1+a t^d)$.
+\item $c_{q,n}=0$ whenever $q>d(n+1)$.
+\end{enumerate}
+Equivalently, if $h=\sum_{n=0}^{L}a_n(x)\log^n x$, the pole order of
+$a_n$ is at most $d(n+1)$ for every $n$.  For $d=1$, the exact condition
+is $\operatorname{poleord}(a_n)\le n+1$.
+\end{theorem}
+
+\begin{proof}
+The first condition implies the second.  To prove that the third implies
+the first, note that $\lambda_f(t)=O(t^d)$ for $f\in\mathscr G_d$.
+The $q,n$ summand of the residue integrand in \eqref{invg:residue} has
+order at least $d(n+1)-q\ge0$.  It is analytic at zero, so its residue
+against any smooth test function is zero.
+
+It remains to prove necessity; this is not a consequence of estimating
+the order of one monomial alone.  For $f_a=t(1+a t^d)$,
+\eqref{invg:monomial} becomes
+\begin{equation}\label{invg:quadratic-family}
+ C_{f_a}[x^{-q}\log^n x]
+ =n!\sum_{k=1}^{\lfloor(q-1)/d\rfloor}
+ \frac{(-1)^{q-1-dk}a^k}{(q-1-dk)!}
+ [z^{n+1}]\binom{z-q}{k}\,\delta_0^{(q-1-dk)}.
+\end{equation}
+The term at $k=0$ vanishes because $n+1\ge1$.
+For a fixed power $a^k$ and derivative $\delta_0^{(j)}$, the pole order
+is uniquely determined by $q=dk+j+1$.  Therefore different pole orders
+cannot cancel this coefficient.
+
+Fix $q$ and let $K=\lfloor(q-1)/d\rfloor$.  The coefficient of
+$a^k\delta_0^{(q-1-dk)}$ vanishes for $k=1,\ldots,K$ only if
+\begin{equation}\label{invg:triangular}
+ \sum_{n=0}^{k-1}c_{q,n}n![z^{n+1}]\binom{z-q}{k}=0,
+ \qquad k=1,\ldots,K.
+\end{equation}
+This is triangular in $c_{q,0},\ldots,c_{q,K-1}$, and its diagonal
+coefficient at $c_{q,k-1}$ is
+\[
+ (k-1)![z^k]\binom{z-q}{k}=\frac1k\ne0.
+\]
+Induction on $k$ gives $c_{q,0}=\cdots=c_{q,K-1}=0$.
+Those indices are exactly the pairs satisfying $q>d(n+1)$.
+This proves the third condition and completes the equivalence.
+\end{proof}
+
+A useful consequence is that the least required tangency order can be
+read directly from the singular expansion:
+\begin{equation}\label{invg:least-tangency}
+ d_{\min}(h)=\max_{c_{q,n}\ne0}
+              \left\lceil\frac q{n+1}\right\rceil.
+\end{equation}
+For a germ with no singular term, every coordinate is harmless.  For a
+nonzero singular germ, \eqref{invg:least-tangency} is the least positive
+integer $d$ such that matching the identity jet through degree $d$
+removes every coordinate defect.
+
+\begin{corollary}[Exact dimension of the obstruction space]
+\label{invg:rank}
+Within pole order at most $R$ and logarithmic degree at most $L$, the
+codimension of the invariant subspace is
+\begin{equation}\label{invg:rank-formula}
+ \sum_{q=1}^{R}\min\!\left(L+1,\left\lfloor\frac{q-1}{d}\right\rfloor\right).
+\end{equation}
+The one-parameter family in \eqref{invg:quadratic-family}, with its
+polynomial dependence on $a$ retained, detects all these obstructions.
+\end{corollary}
+\begin{proof}
+Theorem~\ref{invg:classification} sets precisely the listed independent
+coordinates $c_{q,n}$ to zero.  Equation~\eqref{invg:triangular} proves
+that their obstruction functionals are independent.
+\end{proof}
+
+The reference to the whole parameter family matters: a single numerical
+choice of $a$ can combine coefficients belonging to different pole orders.
+The theorem uses an exact polynomial identity in $a$.
+
+\subsection{Sharp Stieltjes thresholds for any order of tangency}
+
+Use the usual convention
+$\gamma_n(x)=x^{-1}\log^n x+\gamma_n(1+x)$.  Let
+$T_{n,r}=\operatorname{FP}_x\gamma_n^{(r)}(x)$ be the finite part of
+the pointwise argument derivative.  This object is distinguished from
+$D^r(\operatorname{FP}_x\gamma_n)$, whose harmonic contact term was
+computed in the incoming reports.
+
+\begin{theorem}[Exact threshold for Stieltjes argument derivatives]
+\label{invg:stieltjes-threshold}
+For $r,n\ge0$ and $d\ge1$,
+\[
+ f^*T_{n,r}=\operatorname{FP}_t\bigl(\gamma_n^{(r)}\circ f\bigr)
+ \quad\text{for every }f\in\mathscr G_d
+\]
+holds if and only if
+\begin{equation}\label{invg:stieltjes-criterion}
+ d\ge r+1\qquad\text{or}\qquad
+ n\ge r+\left\lfloor\frac rd\right\rfloor.
+\end{equation}
+When $1\le d\le r$, set $K=\lfloor r/d\rfloor$, $e=r-dK$, and
+$n_*=r+K-1$.  The first excluded index has the exact defect
+\begin{equation}\label{invg:stieltjes-top}
+ C_{f_a}[\gamma_{n_*}^{(r)}]
+ =\frac{(-1)^e n_*!}{e!K!}a^K\delta_0^{(e)},
+ \qquad f_a(t)=t(1+a t^d).
+\end{equation}
+Thus every threshold in \eqref{invg:stieltjes-criterion} is attained.
+\end{theorem}
+
+\begin{proof}
+The singular part is
+\begin{equation}\label{invg:stieltjes-singular}
+ \gamma_n^{(r)}(x)
+ =(-1)^rr!x^{-r-1}
+ n![z^n]\left\{\prod_{j=1}^{r}\left(1-\frac zj\right)e^{z\log x}\right\}
+ +\gamma_n^{(r)}(1+x).
+\end{equation}
+Every elementary symmetric coefficient of
+$1,1/2,\ldots,1/r$ is nonzero.  Hence its smallest logarithmic degree is
+$\max(n-r,0)$, and the coefficient at that degree is nonzero.
+The classification theorem gives the exact condition
+\[
+ r+1\le d\bigl(\max(n-r,0)+1\bigr).
+\]
+If $d\ge r+1$ this holds for all $n$.  Otherwise it requires $n\ge r$
+and is equivalent to the second inequality in
+\eqref{invg:stieltjes-criterion}.
+
+At $n=n_*$, the smallest logarithmic degree is $K-1$, with coefficient
+$n_*!/(K-1)!$ in \eqref{invg:stieltjes-singular}.  Every higher
+logarithmic degree is invariant.  In
+\eqref{invg:quadratic-family}, only $k=K$ survives for this smallest
+degree, and its derivative index is $e$.  Its coefficient is
+$(-1)^ea^K/(e!K)$.  Multiplication by $n_*!/(K-1)!$ proves
+\eqref{invg:stieltjes-top}.
+\end{proof}
+
+For $d=1$ this recovers the incoming sharp threshold $n\ge2r$ and its
+coefficient $(2r-1)!a^r\delta_0/r!$.  It additionally gives, for example,
+\[
+ C_{t+a t^3}[\gamma_3^{(3)}]=-6a\delta_0',
+ \qquad
+ C_{t+a t^3}[\gamma_5^{(4)}]=60a^2\delta_0,
+\]
+while $\gamma_4^{(3)}$ and $\gamma_6^{(4)}$ have no defect under any
+coordinate $f(t)=t+O(t^3)$.
+
+\subsection{Consequences for coincident Stieltjes products}
+
+The invariant space is linear but is generally not closed under
+pointwise multiplication: $x^{-1}$ is invariant under every unit-tangent
+coordinate, whereas $x^{-2}$ is not.  The classification nevertheless
+provides a useful exact product criterion.
+
+\begin{corollary}[Products with at most one digamma factor]
+\label{invg:stieltjes-products}
+Let $m_1,\ldots,m_s$ be nonnegative integers, at most one of which is
+zero.  Then the specified pointwise-product finite part satisfies
+\begin{equation}\label{invg:stieltjes-products-formula}
+ f^*\operatorname{FP}_x\!\left(\prod_{j=1}^{s}\gamma_{m_j}(x)\right)
+ =\operatorname{FP}_t\!\left(\prod_{j=1}^{s}\gamma_{m_j}(f(t))\right)
+ \qquad (f\in\mathscr G_1).
+\end{equation}
+In particular, all powers $\operatorname{FP}_x\gamma_m(x)^s$ with
+$m\ge1$ have this invariance.
+\end{corollary}
+\begin{proof}
+Choose the singular term from a nonempty subset $S$ of the factors.
+Before expanding the remaining analytic factors, the resulting term is
+\[
+ x^{-|S|}\log^{\sum_{j\in S}m_j}x
+             \prod_{j\notin S}\gamma_{m_j}(1+x).
+\]
+Its logarithmic degree is at least $|S|-1$.  Taylor expansion of the
+analytic factor can only decrease the pole order.  Thus every resulting
+singular monomial satisfies $q\le n+1$, which is exactly the criterion
+of Theorem~\ref{invg:classification} for $d=1$.
+\end{proof}
+
+The restriction on the number of zero indices cannot be replaced by a
+large total Stieltjes index.  If $f(t)=t+a t^2+O(t^3)$ and
+$\gamma_m=\gamma_m(1)$, direct use of the same classification gives
+\begin{align}
+ C_f[\gamma_0^2]&=a\delta_0,\label{invg:product-counter1}\\
+ C_f[\gamma_0^2\gamma_1]&=
+             \left(a\gamma_1+\frac{a^2}{2}\right)\delta_0,
+             \label{invg:product-counter2}\\
+ C_f[\gamma_0^2\gamma_m]&=a\gamma_m\delta_0\qquad(m\ge2).
+             \label{invg:product-counter3}
+\end{align}
+Indeed, the mixed singular--singular--regular term in the last two
+products is $\gamma_m x^{-2}$.  The fully singular term is
+$x^{-3}\log^m x$: it contributes $a^2\delta_0/2$ when $m=1$ and
+nothing when $m\ge2$.  All other terms meet the invariant criterion.
+These are identities for a specified finite part of the ordinary
+product; they do not postulate a product of distributions.
+
+\paragraph{Verification.}
+The accompanying exact script compares the residue construction with
+\eqref{invg:quadratic-family}, computes the rank of the finite
+obstruction map, and checks the Stieltjes criterion and its sharp
+coefficient through several pole and tangency orders.  These are
+independent algebraic audits of signs and finite formulas.  The
+all-order conclusions follow from the proofs above.

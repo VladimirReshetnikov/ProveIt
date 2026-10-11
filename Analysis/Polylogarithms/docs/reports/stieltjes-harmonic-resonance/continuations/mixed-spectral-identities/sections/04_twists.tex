@@ -1,0 +1,425 @@
+\section{Unequal twists: an exact normal form and its finite reductions}
+\label{tw:sec}
+
+The incoming twisted-Stieltjes report asks for a normal form when two
+frequency shifts are genuinely different
+\cite[research question on unequal twists]{RepoTwisted}.
+An equal-twist Gamma quotient cannot by itself answer that question.
+We give three complementary answers: a convergent expansion in ordinary
+Lerch families, an all-index convolution formula with one bounded
+correction kernel, and a precise finite-reduction criterion for the
+underlying scalar functions. The last criterion concerns functional
+identities; it makes no inference about independence of sampled periods.
+
+\subsection{Fourier conventions and the entire family}
+
+Write $\T=\R/\Z$, $e_n(x)=e^{2\pi\ii nx}$, and
+$\widehat U(n)=\langle U,e_{-n}\rangle$. Let $\theta,\eta$ be real
+nonintegers, with $\theta\ne\eta$, and set
+\begin{align}
+ \lambda_{n,\theta}&=2\pi\ii(n+\theta),\\
+ L_{n,\theta}&=\log(2\pi|n+\theta|)
+                +\frac{\pi\ii}{2}\sgn(n+\theta).
+ \label{tw:log}
+\end{align}
+Powers of $\lambda_{n,\theta}$ use this logarithm. The normalized
+single-twist family and the mixed family are defined by
+\begin{align}
+ \widehat W_s^\theta(n)&=\lambda_{n,\theta}^{s-1},\label{tw:W}\\
+ \widehat{\mathcal K_{\alpha,\beta}^{\theta,\eta}}(n)
+   &=\lambda_{n,\theta}^{\alpha}\lambda_{n,\eta}^{\beta}.
+ \label{tw:K}
+\end{align}
+Both are entire with values in periodic distributions, jointly in all
+displayed spectral variables. Indeed their Fourier coefficients and every
+fixed number of order derivatives have polynomial growth, uniformly on
+compact spectral sets. Pairing with a smooth test function therefore gives
+a normally convergent series. In particular,
+\begin{equation}
+ \mathcal K_{\alpha,\beta}^{\theta,\eta}
+   =W_{1+\alpha}^{\theta}*W_{1+\beta}^{\eta}.
+ \label{tw:Kconv}
+\end{equation}
+For $\Re(\alpha+\beta)<-1$, the Fourier series itself is absolutely
+and uniformly convergent. The distributional definition supplies all
+other spectral orders without assigning an ordinary value to a singular
+endpoint.
+
+For $0<\theta<1$, the standard Lerch family gives, on $0<x<1$,
+\begin{equation}
+ W_s^\theta(x)=\frac{e^{-2\pi\ii\theta x}}{\Gamma(1-s)}
+       \Phi(e^{-2\pi\ii\theta},s,x).
+ \label{tw:lerch}
+\end{equation}
+This identity is understood through analytic continuation when necessary.
+It follows initially by unfolding the Fourier coefficient of
+$\sum_{m\ge0}e^{-(\varepsilon+2\pi\ii\theta)(m+x)}(m+x)^{-s}$
+and then letting $\varepsilon\downarrow0$. This is also the
+normalization established in the incoming report. The Lerch function,
+its relation $\Li_s(z)=z\Phi(z,s,1)$, and its analytic continuation
+are classical \cite{DLMFLerch}. Other real twists follow by integer
+modulation, $W_s^{\theta+k}=e_{-k}W_s^\theta$.
+
+\subsection{A convergent Lerch expansion for arbitrary orders}
+
+Put $d=\theta-\eta$ and $h=2\pi\ii d$. Choose a finite set
+$F\subset\Z$ such that, for some $\rho<1$,
+\begin{equation}
+ \left|\frac{d}{n+\eta}\right|\le\rho\qquad(n\notin F).
+ \label{tw:Fcondition}
+\end{equation}
+For example, all modes with $|n+\eta|\le2|d|$ may be put in $F$.
+Let $\Pi_FU=\sum_{n\in F}\widehat U(n)e_n$.
+
+\begin{theorem}[Normal convergence in single-twist Lerch coordinates]
+\label{tw:tailtheorem}
+For all $\alpha,\beta\in\C$,
+\begin{align}
+ \mathcal K_{\alpha,\beta}^{\theta,\eta}
+ ={}&\sum_{n\in F}
+        \lambda_{n,\theta}^{\alpha}\lambda_{n,\eta}^{\beta}e_n
+       \notag\\
+ &+\sum_{k=0}^{\infty}\binom\alpha k h^k
+       (I-\Pi_F)W_{1+\alpha+\beta-k}^{\eta}.
+ \label{tw:tailseries}
+\end{align}
+The series converges normally after pairing with any smooth test
+function, locally uniformly in $(\alpha,\beta)$. Every fixed order
+derivative in either spectral variable may be taken termwise. After
+finitely many initial terms are removed, it converges normally in any
+prescribed $C^q$ norm, locally on spectral parameter sets.
+\end{theorem}
+
+\begin{proof}
+For $n\notin F$, condition \eqref{tw:Fcondition} implies that
+$n+\theta$ and $n+\eta$ have the same sign. Therefore there is no
+branch correction in
+\[
+ L_{n,\theta}=L_{n,\eta}
+             +\log\left(1+\frac{d}{n+\eta}\right).
+\]
+The ordinary binomial theorem proves the equality of every Fourier
+coefficient in \eqref{tw:tailseries}. On a compact set of $\alpha$,
+$|\binom\alpha k|\le C(1+k)^M$ for suitable $C,M$. This elementary
+bound follows either from the finite product or by Cauchy's formula
+applied to $(1+z)^\alpha$ on a disc of radius between $\rho$ and
+$1$; the latter also gives a geometric bound sufficient here.
+Each summand is consequently bounded by a polynomial in $|n|$
+times a summable geometric sequence in $k$. The test-function Fourier
+coefficients absorb the polynomial. Cauchy's formula on a slightly
+larger compact spectral set justifies all order derivatives.
+
+For the $C^q$ assertion, take $k_0$ larger than
+$q+1+\sup\Re(\alpha+\beta)$. Factor
+$|\lambda_{n,\eta}|^{\Re(\alpha+\beta)-k_0}$ from the terms
+with $k\ge k_0$. The remaining ratios are at most a fixed geometric
+sequence, while the $q$ derivatives in $x$ still leave an absolutely
+summable series over $n$. This proves the stated normal convergence.
+\end{proof}
+
+The finitely many removed modes are essential when the twists lie in
+different integer intervals. Omitting them can change both the phase and
+the value of the result. The theorem gives a convergently evaluable
+normal form at every spectral order, including all Lerch order jets.
+
+\subsection{One bounded kernel controls every mixed Stieltjes jet}
+
+Let $P_\theta$ have Fourier coefficient
+$\gamma+L_{n,\theta}$, and define
+\begin{equation}
+ B_\theta(u)=\Gamma(1-u)W_{1+u}^{\theta}
+   =\delta_0+\sum_{m\ge0}\frac{(-1)^{m+1}}{m!}
+                         U_m^\theta u^{m+1}.
+ \label{tw:B}
+\end{equation}
+Thus $P_\theta=-U_0^\theta$. This agrees with the incoming
+finite-part Lerch normalization. Introduce the difference
+\begin{equation}
+ A_{\theta,\eta}=P_\theta-P_\eta,
+ \qquad\widehat A_{\theta,\eta}(n)=L_{n,\theta}-L_{n,\eta}.
+ \label{tw:A}
+\end{equation}
+
+\begin{lemma}[The difference is an ordinary bounded kernel]
+\label{tw:bounded}
+If $\theta,\eta$ belong to the same open interval between consecutive
+integers, then
+\begin{equation}
+ A_{\theta,\eta}(x)=2\pi\ii\int_\eta^\theta
+       \frac{e^{-2\pi\ii t x}}{1-e^{-2\pi\ii t}}\dd t,
+       \qquad 0<x<1.
+ \label{tw:Aintegral}
+\end{equation}
+This function extends smoothly to each closed side of the endpoint,
+is bounded, and has jump
+\begin{equation}
+ A_{\theta,\eta}(0+)-A_{\theta,\eta}(1-)
+                    =2\pi\ii(\theta-\eta).
+ \label{tw:Ajump}
+\end{equation}
+For arbitrary real noninteger endpoints, the same formula holds with
+the path indented below the intervening integers. Equivalently, for
+$\eta<\theta$, it is the Cauchy principal value of the real integral
+plus $\pi\ii\sum_{k\in\Z\cap(\eta,\theta)}e_{-k}(x)$.
+\end{lemma}
+
+\begin{proof}
+The Green kernel
+\begin{equation}
+ G_t(x)=\frac{e^{-2\pi\ii t x}}{1-e^{-2\pi\ii t}}
+ \label{tw:G}
+\end{equation}
+has Fourier coefficient $1/(2\pi\ii(n+t))$. Integrating that
+coefficient gives the logarithmic difference in \eqref{tw:A} if
+no zero is crossed. Smoothness in $x$ up to each side follows by
+differentiating the compact $t$-integral. Subtracting the endpoint
+values gives \eqref{tw:Ajump}.
+
+When $t$ crosses $-n$, continuation below the pole adds $+\pi\ii$
+to the logarithmic difference, precisely the principal-logarithm phase
+change from $-\pi/2$ to $+\pi/2$ in \eqref{tw:log}.
+The residue of $2\pi\ii G_t(x)$ at an integer $k$ is $e_{-k}(x)$.
+Subtracting those finitely many simple poles defines an ordinary bounded
+function plus a finite Fourier polynomial. Its Fourier coefficients
+are again exactly \eqref{tw:A}. Reversing orientation covers
+$\theta<\eta$.
+\end{proof}
+
+For $0<\theta,\eta<1$, an alternative useful expression is
+\begin{equation}
+ A_{\theta,\eta}(x)
+ =e^{-2\pi\ii\eta x}\Phi(e^{-2\pi\ii\eta},1,x)
+  -e^{-2\pi\ii\theta x}\Phi(e^{-2\pi\ii\theta},1,x).
+ \label{tw:ALerch}
+\end{equation}
+The two $1/x$ singularities cancel. If $\theta=p/q\in(0,1)$,
+the corresponding term reduces to ordinary rational-shift digammas:
+\begin{equation}
+ e^{-2\pi\ii px/q}\Phi(e^{-2\pi\ii p/q},1,x)
+ =-\frac{e^{-2\pi\ii px/q}}q
+      \sum_{j=0}^{q-1}e^{-2\pi\ii pj/q}
+                          \psi\left(\frac{x+j}{q}\right).
+ \label{tw:rational}
+\end{equation}
+To prove it, split the Lerch defining sum into residue classes:
+\[
+ \Phi(e^{-2\pi\ii p/q},s,x)
+   =q^{-s}\sum_{j=0}^{q-1}e^{-2\pi\ii pj/q}
+                          \zeta\left(s,\frac{x+j}{q}\right).
+\]
+Continue this identity to $s=1$. The Hurwitz poles cancel because the finite character sum is
+zero; $\gamma_0(a)=-\psi(a)$ gives the formula.
+
+Write $\exp_*(uA)=\delta_0+\sum_{r\ge1}u^r A^{*r}/r!$.
+Since $A$ is bounded and belongs to $L^1(\T)$, this exponential is
+entire with values in $\delta_0+L^1(\T)$, by the usual convolution
+norm estimate. Put
+\begin{equation}
+ C(u,v)=\frac{\Gamma(1-u)\Gamma(1-v)}{\Gamma(1-u-v)}.
+ \label{tw:C}
+\end{equation}
+
+\begin{theorem}[All-index unequal-twist formula]
+\label{tw:jets}
+As analytic germs of periodic distributions,
+\begin{equation}
+ B_\theta(u)*B_\eta(v)
+       =C(u,v)B_\eta(u+v)*\exp_*(uA_{\theta,\eta}).
+ \label{tw:mixedB}
+\end{equation}
+Consequently every mixed finite-part product is the finite coefficient
+formula
+\begin{equation}
+ U_m^\theta*U_n^\eta
+  =(-1)^{m+n}m!n!\,[u^{m+1}v^{n+1}]
+       C(u,v)B_\eta(u+v)*\exp_*(uA_{\theta,\eta}).
+ \label{tw:alljets}
+\end{equation}
+Only powers $A^{*r}$ with $0\le r\le m+1$ occur. The $r=0$
+part is the known equal-twist Gamma table; the other terms have Fourier
+coefficients tending to zero and introduce no new point-supported
+counterterm.
+\end{theorem}
+
+\begin{proof}
+At a Fourier mode, the right side of \eqref{tw:mixedB} is
+\[
+ \Gamma(1-u)\Gamma(1-v)
+      e^{(u+v)L_{n,\eta}}
+      e^{u(L_{n,\theta}-L_{n,\eta})},
+\]
+which is exactly the left side. This proves the analytic identity by
+normal convergence after testing. Taking the indicated coefficients
+proves \eqref{tw:alljets}. For $r\ge1$, the Fourier coefficient of
+$A^{*r}$ is $O(|n|^{-r})$, whereas a fixed spectral jet of
+$B_\eta$ grows only as a fixed polynomial in $\log|n|$. Thus their
+product tends to zero. A nonzero distribution supported at one point
+is a finite sum of derivatives of its Dirac mass and has polynomial
+Fourier coefficients; none can be added while preserving these
+coefficients. This statement refers to the displayed canonical
+decomposition, not to an arbitrary splitting of a distribution into
+summands.
+\end{proof}
+
+The first symmetric identity is particularly compact:
+\begin{equation}
+ \boxed{\quad
+ U_0^\theta*U_0^\eta
+   =U_1^\theta+U_1^\eta-\zeta(2)\delta_0
+                     -\frac12 A_{\theta,\eta}^{*2}.
+ \quad}
+ \label{tw:firstmixed}
+\end{equation}
+Indeed $2U_1^\theta=P_\theta^{*2}+\zeta(2)\delta_0$,
+and polarization gives the result. Here $A^{*2}$ is an ordinary
+continuous function, since its Fourier coefficients are $O(n^{-2})$.
+The new term is therefore an explicitly evaluable ordinary convolution
+of bounded Lerch differences, while the contact coefficient remains
+fixed. An equal-twist formula with the correction omitted is false:
+at mode $n$ it misses $\tfrac12(L_{n,\theta}-L_{n,\eta})^2$.
+
+\subsection{Finite reductions and their precise boundary}
+
+\begin{proposition}[Integer resolvent products]
+\label{tw:partial}
+For positive integers $p,q$, with $h=2\pi\ii(\theta-\eta)$,
+\begin{align}
+ \mathcal K_{-p,-q}^{\theta,\eta}
+ ={}&\sum_{j=1}^p
+  \frac{(-1)^q\binom{p+q-j-1}{p-j}}{h^{p+q-j}}
+                  W_{1-j}^\theta\notag\\
+ &+\sum_{j=1}^q
+  \frac{(-1)^{q-j}\binom{p+q-j-1}{q-j}}{h^{p+q-j}}
+                  W_{1-j}^\eta.
+ \label{tw:partialformula}
+\end{align}
+If one of $\alpha,\beta$ is a nonnegative integer, there is likewise
+a finite binomial reduction at the other twist. All integer pairs
+therefore reduce to finitely many single-twist families. In particular,
+\begin{equation}
+ G_\theta*G_\eta=\frac{G_\eta-G_\theta}{2\pi\ii(\theta-\eta)}.
+ \label{tw:resolvent}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Expand $(A-h)^{-q}$ at $A=0$ and $(B+h)^{-p}$ at $B=0$, with
+$A-B=h$. The displayed coefficients are exactly the principal parts
+of $1/(A^pB^q)$ at its two poles. Their difference from that rational
+function is an entire rational function vanishing at infinity and is
+therefore zero. Substitute $A=\lambda_{n,\theta}$ and
+$B=\lambda_{n,\eta}$. The polynomial cases follow by the finite
+binomial theorem. Equation \eqref{tw:resolvent} is $p=q=1$.
+\end{proof}
+
+For positive integer $j$, the terms in \eqref{tw:partialformula}
+are elementary on the interval:
+\begin{equation}
+ W_{1-j}^\theta(x)
+  =\frac{(-1)^{j-1}}{(j-1)!(2\pi\ii)^{j-1}}
+      \partial_\theta^{j-1}
+      \frac{e^{-2\pi\ii\theta x}}{1-e^{-2\pi\ii\theta}}.
+ \label{tw:elementary}
+\end{equation}
+The combined right side has its usual confluent limit
+$W_{1-p-q}^{\theta}$ as $\eta\to\theta$, although individual
+partial-fraction coefficients diverge. For example,
+\begin{align}
+ G_{1/4}*G_{3/4}(x)
+  &=\frac{\ii}{2\pi}
+    \left((1+\ii)e^{-3\pi\ii x/2}
+                   -(1-\ii)e^{-\pi\ii x/2}\right),\label{tw:quarters}\\
+ G_{1/2}^{*2}(x)&=e^{-\pi\ii x}
+                         \left(\frac{x}{2}-\frac14\right).
+ \label{tw:half}
+\end{align}
+
+\begin{theorem}[Finite scalar reduction criterion]
+\label{tw:classification}
+Fix distinct complex numbers $a,b$ and coherent branches on a simply
+connected domain avoiding $-a,-b$. Consider
+$f(z)=(z+a)^\alpha(z+b)^\beta$. It is a finite linear combination
+of single-centre powers and order jets
+\[
+ (z+a)^r\Log^k(z+a),\qquad (z+b)^t\Log^\ell(z+b),
+ \qquad k,\ell\in\N\cup\{0\},
+\]
+with arbitrary complex exponents and constant coefficients, if and only if
+\begin{equation}
+ \alpha\in\Z_{\ge0},\qquad\text{or}\qquad
+ \beta\in\Z_{\ge0},\qquad\text{or}\qquad
+ \alpha,\beta\in\Z.
+ \label{tw:criterion}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Sufficiency follows from the binomial theorem and rational partial
+fractions. For necessity, suppose first $\alpha\notin\Z$ and
+$\beta\notin\Z_{\ge0}$. Near $z=-a$, write $w=z+a$ and
+$c=b-a\ne0$. Then
+\[
+ f(z)=w^\alpha\sum_{j\ge0}\binom\beta j c^{\beta-j}w^j.
+\]
+All infinitely many coefficients are nonzero. Terms based at $-b$
+are holomorphic near $-a$. Apply analytic continuation once around
+$w=0$ and subtract the original expression. On the left this
+multiplies the displayed infinite series by
+$e^{2\pi\ii\alpha}-1\ne0$; on the proposed right it removes every
+term holomorphic there and leaves only finitely many powers times
+polynomials in $\Log w$. Let $E=w\,d/dw$. A nonzero polynomial $P(E)$ annihilates that
+finite expression: for each occurring $w^r\Log^k w$, include the
+factor $(E-r)^{k+1}$. Applied to the left, it gives a nonzero constant
+multiple of
+\[
+ w^\alpha\sum_{j\ge0}P(\alpha+j)
+                    \binom\beta j c^{\beta-j}w^j.
+\]
+Vanishing would force $P(\alpha+j)=0$ for every $j\ge0$, contrary
+to $P$ being a nonzero polynomial. This is a contradiction.
+
+Interchanging the two centres proves the same conclusion if
+$\beta\notin\Z$ and $\alpha\notin\Z_{\ge0}$. Unless
+\eqref{tw:criterion} holds, at least one of these two cases occurs.
+\end{proof}
+
+The qualification ``scalar'' matters. Equality on the discrete set of
+Fourier modes is weaker than equality of the underlying holomorphic
+functions; the theorem does not promote the former to the latter.
+It explains exactly when the elementary functional mechanism behind
+\eqref{tw:partialformula} can terminate. Arbitrary orders still have
+the normally convergent expansion \eqref{tw:tailseries}.
+
+\subsection{Argument derivatives and canonical primitives}
+
+Let $D_\theta=d/dx+2\pi\ii\theta$. Fourier multiplication gives
+the exact contiguous and differential laws
+\begin{align}
+ D_\theta\mathcal K_{\alpha,\beta}^{\theta,\eta}
+   &=\mathcal K_{\alpha+1,\beta}^{\theta,\eta},&
+ D_\eta\mathcal K_{\alpha,\beta}^{\theta,\eta}
+   &=\mathcal K_{\alpha,\beta+1}^{\theta,\eta},\label{tw:diff}\\
+ \mathcal K_{\alpha+1,\beta}^{\theta,\eta}
+  -\mathcal K_{\alpha,\beta+1}^{\theta,\eta}
+   &=h\mathcal K_{\alpha,\beta}^{\theta,\eta}.
+ \label{tw:contiguous}
+\end{align}
+Since neither twist is integral, $D_\theta$ and $D_\eta$ are
+invertible on periodic distributions. Their inverses lower the
+corresponding spectral exponent. These statements remain valid after
+any order derivatives in $\alpha,\beta$.
+
+For an ordinary integrable $f$, the unique periodic covariant primitive
+has the explicit form
+\begin{equation}
+ (D_\eta^{-1}f)(x)=e^{-2\pi\ii\eta x}
+ \left\{\int_0^x e^{2\pi\ii\eta t}f(t)\dd t
+   +\frac{e^{-2\pi\ii\eta}}{1-e^{-2\pi\ii\eta}}
+          \int_0^1e^{2\pi\ii\eta t}f(t)\dd t\right\}.
+ \label{tw:primitive}
+\end{equation}
+Differentiation proves $D_\eta U=f$, and the displayed constant is
+forced by $U(1)=U(0)$. This supplies ordinary quadratures for every
+bounded correction in \eqref{tw:alljets}, while the singular
+single-twist part retains its canonical distributional primitive.
+
