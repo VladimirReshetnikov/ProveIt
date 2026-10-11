@@ -1,0 +1,87 @@
+\section{Linear static contraction of weighted interval runs}
+\label{sec:weighted-sweep}
+
+The binary normal-surface operators depend on weighted interval-orbit
+transport. Its static contraction step removes intervals of points that
+have become singleton orbits, accumulates their weights in the histogram,
+and closes the deleted gaps. The preceding implementation formed a set
+of every run and gap endpoint and sorted that set at every contraction.
+Both input families are already ordered. The maintained implementation
+now merges them directly without collecting or sorting their boundaries.
+
+\begin{proposition}[Exact linear boundary sweep]
+For a canonical covering of $[0,N)$ by $R$ constant-weight runs and $G$
+ordered disjoint inclusive static gaps, contraction requires $O(R+G)$
+boundary steps and $O(R)$ output records. It emits exactly the old histogram
+increments, canonical surviving runs and emission counter, sharing surviving
+weight tuples. No represented point is enumerated.
+\end{proposition}
+\begin{proof}
+Maintain the current run position, the first gap whose right endpoint has
+not been passed, and the number $d$ of already deleted points. The next
+piece ends at the run boundary, at the next gap's left boundary if outside
+it, or just after that gap's right boundary if inside it. A deleted piece
+of length $\ell$ adds $\ell$ singleton orbits of its unchanged weight and
+increases $d$ by $\ell$. A surviving piece $[a,b)$ is sent to
+$[a-d,b-d)$ with the same weight. Each step passes a run boundary or one
+gap boundary; each gap pointer advances once. These are precisely the
+pieces induced by the former sorted boundary set. The same adjacent-equal
+coalescing restores the same canonical result and the same emission count.
+Removing gaps from one run cannot increase its number of surviving weight
+changes, so at most $R$ output runs remain.
+\end{proof}
+
+The bound is on boundary processing, not unit-cost manipulation of arbitrary
+integers or weight vectors. Endpoint arithmetic charges their binary lengths;
+histogram hashing, integer addition and adjacent-vector comparisons charge
+the vector dimension and coefficient sizes. Thus the former
+$O((R+G)\log(R+G+1))$ endpoint-sort work becomes linear while the existing
+weighted arithmetic and independent replay accounting remain in force.
+The independent checker retains its separate implementation. Certificate
+schemas and histogram semantics are unchanged, and cooperative cancellation
+is polled at every processed piece.
+
+Literal signed-vector deletion tests include 2,000 seeded finite systems,
+complete deletion, no deletion, coincident boundaries and separated runs
+coalescing after contraction. A 16,385-bit endpoint case checks binary
+processing without expansion; complete weighted-orbit tests use the existing
+pointwise oracle and independent checker. This is an improvement to a
+compressed hierarchy prerequisite. It does not supply core topology,
+ordered attachments or a bound on hierarchy depth, and it does not establish
+a general quasi-polynomial unknot recognition algorithm.
+
+\subsection{Controlled contraction and complete-query measurements}
+
+The initial maintained-suite checkpoint passes all 1,574 tests, with eight
+skips; the final port-encoding checkpoint passes 1,579 tests with the same
+eight skips. The existing pointwise weighted-orbit oracle and separate
+checker remain in use. The final independent decoder additionally passes
+all 21 focused prism tests and the complete source-face audit.
+
+The comparison loads the former contraction function directly from commit
+\code{5a5c0ed65}; the full revision and source hash are in the saved record.
+It changes only that function while retaining current discovery, source
+geometry and verifier.
+Every arm forces the same original vector port encoding. All complete
+output digests agree, including weight statistics and proof data.
+Five shuffled paired rounds follow one warmup round, with three repetitions
+per measured arm and an identical sorted-function control.
+
+Local cases include fresh histogram allocation and contraction, excluding
+prepared inputs and digest comparison. Complete query cases include source
+validation, clipping, orbit discovery, weighted transport, independent
+certificate replay and JSON serialization. Ratios are medians of the paired
+sorted/sweep ratios; values above one favour the sweep. The A/A column uses
+two identical sorted arms. It exposes measurement variability rather than
+being an additional algorithm.
+\input{tables/weighted_sweep.tex}
+
+Isolated contraction ratios range from 1.176 to 1.891. Complete query ratios
+range from 1.006 to 1.021, near their identical-control ratios of 0.993 to
+1.003. We therefore claim reduced local boundary cost, not a demonstrated
+complete-query speedup from this change alone. All outcomes and controls are
+retained. No universal elapsed-time speedup is inferred from the linear
+boundary bound, and these are not full-recognizer measurements. Reproduce with
+\code{benchmark\_weighted\_contraction.py --output FILE} from \code{fast/}.
+The source-pinned samples are retained in
+\code{data/weighted-sweep-benchmark.json}.

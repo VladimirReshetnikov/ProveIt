@@ -3923,7 +3923,288 @@ Neither is solved by grading (L.10) or by constants (L.10b).
   power. Rewrite the exponents syntactically first (`1+5 = 6`,
   `2^6 = 64`).
 
+### L.12 Joint vertex covers: Theorems 18.1, 18.2 and Corollary 18.7 in full (2026-10-11)
+
+**The obstruction of L.11, requirement 1, was the nest, not the covers.**
+`remainder_piece_on` (and its graded form) applies one *provider* per
+non-top vertex, each at the density the previous one left:
+`ρ_{i+1} = C_i(ρ_i)`. The `t`-degrees therefore multiply, and the log-degree
+of `ρ₁` is a sum over the vertices (`136·3^k` graded, `76·4^k` uniform).
+The providers come from covers (`MultiplyLinearWith`), and a cover works at
+a precision fixed in advance. So:
+1. every vertex `e` keeps its face cover of dimension `|S_e|`, lifted to the
+   ambient box by `vertex_multiplyLinearWith_of_face`, which is
+   *lossless in `t`* (count `max(Qb θ, 3^(k+1))`, exponent
+   `Eb θ / 16^(k+1-|S_e|)`) — this is L.11's requirement 2;
+2. all `2^k − 1` covers refine one partition of the full box, each at the
+   common precision `θ_e = θ₂/2^(k+1)`; the bad sets add up to at most
+   `θ₂/2`;
+3. one pigeonhole over the `Π_e q_e` tuples of maps picks one map per
+   vertex on a single cell.
+
+The remainder density is `coverRho1 = (θ₂/2)/Π_e max(Qb_{|S_e|}(θ_e), 3^(k+1))`,
+of `t`-degree `1 + Σ_e D_{|S_e|}`: the degrees **add**, so the log-degree is
+the *maximum* plus `k` bits for the count of vertices. No dimension-free
+cover degree is needed: with the tight class degree `68·2^l` the cost is
+`68·2^k + k`, which is already `O(2^k)`.
+
+**The modules** (light and kernel-checked unless marked otherwise):
+- `Proofs16JointCovers`: `JointCoverOn` (a partition into proper boxes of
+  width `≥ P.width^Et`, a good set of density `1 − s`, `≤ Qt` tuples of
+  maps per cell); `joint_cover_on` (covers compose by refining one partition
+  vertex by vertex, `MultiplyLinearWith.on_partition` + `boxFlatten`, with
+  `s = Σθ_e`, `Qt = ΠQb_e(θ_e)`, `Et = ΠEb_e(θ_e)`); `JointCoverOn.piece`
+  (one pigeonhole); `remainder_piece_of_vertex_covers`.
+- `Proofs16SinglePieceCoverGlobal` (`mk_cover_global.py`):
+  `single_piece_lift_global_cover`, with `coverPrec`, `coverCount`,
+  `coverRho1`, `coverExp` and `coverRemWidth = ⌈N^coverExp⌉` (no
+  threshold).
+- `Proofs18SinglePieceCoverInverse` (`mk_cover_inverse.py`): frequency box,
+  localization and inverse step; the graded families `(Cg, Wg)` and their
+  lift hypotheses disappear.
+- `Proofs18CoverModulus` (`mk_cover_modulus.py`): `GenParamsC`, `ranges`,
+  `Eloc_pos_le`, `modulus_conditions`.
+- `Proofs18CoverDensity` (hand-written): `vertex_uCount_le`, `prod_le_pw`,
+  `rho1_inv_leC` at `rhoDegC k μ₀ = max(68·2^k + μ₀ + 3, fixDeg k + 1) + k`,
+  `nestExp_inv_leC`, `yIn_boundsC`, `GenParamsC.inverse_step`.
+- `Proofs18CoverExponents` (`mk_cover_exponents.py`): `CHyp` (no bound on
+  `k`; the graded chain needed `k + 1 ≤ 2^68`), `Eloc_inv_leC`,
+  `MReq_le_expC`, `Tloc_le_expC`.
+- `Proofs18CoverDegrees` (`mk_cover_degrees.py` + closed forms): the steps
+  `polyEnvBound_stepC`, `envBound_stepC` and their inductions in every
+  dimension; `envStepC_le`, `envStepCT_le` (one step adds
+  `268·2^k + O(k³)`); **`polyGenMuC_le : polyGenMuC k ≤ 1000·2^k`** against
+  the Theorem 18.1 budget `2^(d+10) = 4096·2^k`, and
+  **`genMuC_le : genMuC k ≤ 2000·2^k`** against the Theorem 18.2 budget
+  `2^(L+9) = 8192·2^k`; `genMuC_ge` (`268·2^k ≤ genMuC k`, which gives the
+  stopping budget `4L + 20 ≤ 2^μ` at every length);
+  `theorem_18_1_of_profiles_cover` (every `d ≥ 4`),
+  `theorem_18_2_of_profiles_cover`, `corollary_18_7_of_profiles_cover`
+  (every `L ≥ 6`).
+- Bridge `Proofs18CoverExplicit` (heavy, stub-checked):
+  **`theorem_18_1_explicit : theorem_18_1`**,
+  **`theorem_18_2_explicit : theorem_18_2`**,
+  **`corollary_18_7_explicit : corollary_18_7`**, and through the corpus's
+  reductions `theorem_1_2_explicit : theorem_1_2`,
+  `theorem_1_3_explicit : theorem_1_3`. The faithful stub
+  (`mkstub_cover.py`: the port's definitions verbatim, both bridges
+  verbatim) prints the axioms `propext`, `Classical.choice`, `Quot.sound`
+  and exactly the corpus theorems `commonDiffPartitionBoundAt_of`,
+  `multilinearPartitionBoundAt_explicit`,
+  `section16RecurrenceProfileWith_explicit` (18.1) and
+  `section16RecurrenceProfileWith_explicit`, `theorem_18_2_le_six` (18.2,
+  18.7, 1.2, 1.3), each at its exact signature.
+
+An exact model of the envelope recursion predicted `μ_k/2^k → 536`
+(13% of the 18.1 budget, 7% of the 18.2 budget); the proved closed forms
+`1000·2^k` and `2000·2^k` are loose versions of it.
+
+**Technique notes.**
+- `omega` cannot see through a `def` like `rhoDegC`: a `_ge` lemma that
+  drops the `+ k` summand is too weak for a goal that needs it. Unfold the
+  definition and add the `le_max_left` fact.
+- `generalize 2 ^ k = x at *` after rewriting `2^(k+6) = 64·2^k` turns the
+  envelope inequalities into linear arithmetic that `omega` closes,
+  including the nested `max`es.
+- A lemma elaborated before its function argument is known (`prod_le_pw`
+  with an inline nonnegativity proof) can unify `f` with a wrong lambda;
+  state the goal first and `refine` into it.
+- The facade-only collision class struck again: `isBoxPartition_self` was
+  already in `Proofs16OscillationPartition`. Run
+  `scripts/check_gowers_duplicates.py` before publishing new modules.
+
+### L.13 Joint-cover arithmetic in every dimension (2026-10-11)
+
+`Proofs18FiniteCoverBudgets` proves the finite-product budget directly in Lean:
+if a family has at most `2^k` candidate counts, each at most `X^(2^m)`,
+their product is at most `X^(2^(m+k))`. The heterogeneous version uses the
+exact sum of the exponents. The inverse density of the final pigeonhole,
+`(theta/2/product counts)^(-1)`, is at most
+`X^(2^(max t (m+k)+2))` when `theta^(-1) <= X^(2^t)`.
+
+With the joint covers introduced in the incoming source, the proposed
+remainder log-degree is `coverRhoDeg k muD mu0 = mu0+muD+k+4`.
+The corresponding lower-degree parameter log-degree is
+`coverDensDeg = coverRhoDeg+2*muD+13`. Substituting the tight class degree
+`muD=68*2^k` and the standard base budget `mu0=2^(k+6)+2` gives exactly
+`268*2^k+k+19`, proved by `coverDensDeg_standard`.
+
+`Proofs18CoverEnvelopeArithmetic` proves that the candidate recursion
+
+    M(0) = 74
+    M(k+1) = max(268*2^(k+1)+(k+1)+33+4*(k+4)^2+M(k),
+                 40*(k+3)^3+1095)
+
+satisfies `M(k) <= 2048*2^k` for every natural `k`. It therefore fits both
+printed exponent comparisons:
+
+    M(k)+1 <= 2^(k+2+10)
+    M(k)+2*(k+4)+14 <= 2^(k+4+9).
+
+These are arithmetic facts about a candidate envelope, **not proofs of
+Theorem 18.1, Theorem 18.2, or Corollary 18.7**. The actual `coverRho1` and
+localization parameter must be bounded by these formulas; the remainder
+width, spectrum retiling, slice widths, and explicit modulus threshold must
+also be supplied to `single_piece_inverse_step_global_cover`. In particular,
+checking a recursion does not construct a large enough localization box.
+The numbered ledger remains 117 exact companions and three open statements.
+*(Superseded by L.12: the production inverse step is connected there, and
+the three statements are proved.)*
+
+The exact standard-parameter substitutions are now checked:
+`coverExpDeg_standard` gives `268*2^k+k+15` for the localization log-degree,
+and `envStepCover_standard` identifies the parameterized envelope step with
+`coverEnvelopeStep`. `coverEnvelope_ge` proves `k+42 <= M(k)`, and
+`coverEnvelope_stopping_budget` proves `4*(k+4)+20 <= 2^M(k)` for every `k`.
+This last inequality is needed by the interval stopping theorem; a fixed
+lower bound such as `M(k) >= 42` would not suffice for arbitrary lengths.
+
+Validation: all fourteen auxiliary theorems compile from their production source
+with Lean 4.32.0 and mathlib v4.32.0. A transitive axiom check allows only
+`propext`, `Classical.choice`, and `Quot.sound`; no faithful-stub environment
+is used for this check. The full facade dependency rebuild is in progress.
+
+
+### L.14 Sharper budgets for the same joint-cover recursion (2026-10-11)
+
+`Proofs18CoverSharperArithmetic` improves the arithmetic induction to
+
+    M(k) + 2*k + 22 <= 1024*2^k,  k >= 2.
+
+The additive step cost plus two is at most `512*2^k`. The localization
+threshold plus the linear stopping overhead is at most `1024*2^k` from
+`k=2` onwards. The base is checked exactly: `M(2)=3655`, so its weighted
+budget is `3681 <= 4096`. The successor step carries the overhead as part
+of the induction invariant; no asymptotic or finite-range evaluation is
+used to infer the all-dimension result.
+
+Consequently the same candidate envelope fits the stronger comparisons
+
+    M(k)+1 <= 2^(k+2+8),       k >= 2,
+    M(k)+2*(k+4)+14 <= 2^(k+4+6),  k >= 2.
+
+After the analytic connection in L.13 is proved, these would replace
+`d+10` by `d+8` in the inverse exponent for `d>=4`, and `L+9` by `L+6`
+in the progression and two-color thresholds for `L>=6`. They are proposed
+refinements of this proof's constants, not claims about the best bounds
+in the literature. The stronger mathematical conclusions are still
+unverified; the three numbered statements remain open at this checkpoint.
+
+Validation: all six sharper-budget theorems compile directly from the
+production source with Lean 4.32.0 and mathlib v4.32.0. The transitive
+axiom audit covers twenty public budget theorems and 43 total theorem
+declarations across the three arithmetic modules, permitting only
+`propext`, `Classical.choice`, and `Quot.sound`. Production verification of
+the analytic construction is running serially against the original
+Gowers proof modules, without a stub environment.
+
+
+### L.16 Production verification of the complete cover route (2026-10-11)
+
+Commit `199799ee2` on the formalization branch supplies the complete
+joint-cover envelope construction and the exact companions
+`theorem_18_1_explicit`, `theorem_18_2_explicit`, and
+`corollary_18_7_explicit`, with native headline reductions. It was integrated
+in `3d94a50b8`, preserving the checked arithmetic of L.13 and L.14.
+The author reports kernel checks for the light envelope modules and a
+check of the final bridge with substituted dependency interfaces. This
+workspace does not treat that bridge check as a production kernel audit.
+
+The serial 531-module dependency build passed from the actual source.
+Production verification is now running the exact-type and transitive axiom
+audit of all 120 numbered catalogue statements, followed by the stronger
+inverse, progression, and coloring bounds. The selected native headline
+reductions avoid importing the separate asymptotic density route merely
+for its earlier Theorem 1.3 companion. The audit still covers every
+numbered statement, including the existing repaired definitions.
+
+The source ledger now has 120 exact companion signatures. This is a
+source inventory, not a claim that the full production check has finished.
+The full goal remains open until the actual proof dependencies and the
+stronger bounds pass their kernel and axiom checks. The mathematical
+fidelity caveats for the existing catalogue remain in force.
+
+A namespace check found that the incoming `isBoxPartition_self` duplicated
+an existing public helper in `Proofs16OscillationPartition`. The helper was first made private. The latest upstream version instead
+inlines the same proof in the empty-family case, avoiding the duplicate
+declaration altogether. The duplicate-name check passes with zero duplicates.
+The port-scope check passes, and the provenance check against the pinned
+local upstream checkout verifies 4,134 original hashes and both Freiman
+extract proof bodies. These source checks do not replace Lean verification.
+
+### L.15 Sharper exponents: Theorem 18.1 at `d + 8`, Theorem 18.2 at `L + 6` (2026-10-11)
+
+The joint-cover envelopes of L.12 are a quarter of the printed budgets, so
+the same proofs give smaller tower constants. This connects the candidate
+budgets of L.13–L.14 to the production inverse step.
+
+- `Proofs18CoverSharper` (light, kernel-checked):
+  - `section18ExponentAt c` and `Theorem181AtSharp c k` (Theorem 18.1 with
+    `k + c` in place of `k + 10`), `szemerediThresholdAt c` and
+    `Theorem182AtSharp c k` (Theorem 18.2 with `k + c` in place of `k + 9`);
+    at the printed constants they are the catalogue statements
+    (`theorem181AtSharp_ten_iff`, `theorem182AtSharp_nine_iff`, both
+    `Iff.rfl`), and `Theorem181AtSharp.mono` weakens `c`;
+  - the exponent and threshold lemmas with the constant as a parameter
+    (`section18ExponentAt_le_of_inv_le`, `double_exp_le_szemerediThresholdAt`,
+    `theorem181AtSharp_of_polyEnvBound`, `theorem182AtSharp_of_envBound`);
+  - `cube_le_two_pow_sharp` (`(k+3)³ ≤ 32·2^k`) and
+    `genMuC_le_sharp` (`genMuC k ≤ 1000·2^k`);
+  - `theorem_18_1_sharper_of_profiles_cover`: `Theorem181AtSharp 8 d` for
+    every `d ≥ 4` (`polyGenMuC (d−2) + 1 ≤ 1024·2^(d−2) = 2^(d+8)`);
+  - `theorem_18_2_sharper_of_profiles_cover`: `Theorem182AtSharp 6 L` for
+    every `L ≥ 6` (`genMuC (L−4) + 2L + 14 ≤ 1024·2^(L−4) = 2^(L+6)`).
+- Bridge `Proofs18CoverSharperExplicit` (heavy; faithful stub
+  `mkstub_sharp.py`): `theorem_18_1_sharper_four_le` (axioms: the three
+  corpus theorems of L.12's Theorem 18.1) and `theorem_18_2_sharper_six_le`
+  (axiom: `section16RecurrenceProfileWith_explicit` only — no low-length
+  case is involved).
+
+Degrees below four and lengths below six keep the printed constants (their
+proofs are the corpus's). **The method stops here:** the exact envelope
+recursion grows like `536·2^k` (L.12's model), above `512·2^k`, so `d + 7`
+and `L + 5` would need a smaller per-step cost than `268·2^k`, i.e. a
+smaller class degree than `68·2^l` or a cheaper spectrum and slice stage.
+
+**L.15a (same day): one constant further, from the base budget.** The step
+cost `268·2^k` is `68·2^k` (vertex covers) + `μ₀` + `136·2^k` (two slice
+controls), and the standard `μ₀ = genMu0 k ≈ 64·2^k` comes from the loose
+`V ≤ 2^(2^(2^(k+6)))`. Every summand of `classV k` is at most
+`2^(2^(2^(k+4)))`, so `V ≤ 2^(2^(2^(k+4)+1))` (`classV_le_tight`) and
+`μ₀ = tightMu0 k = 2^(k+5) + 9` suffices. The step then costs
+`236·2^k + O(k²)` (`envStepC_le_tight`) and the envelopes grow like
+`472·2^k`. `Proofs18CoverTightBase` (light, kernel-checked):
+- `polyGenMuT_le` (`≤ 500·2^k`, `k ≥ 4`; degrees 4–5 by evaluation):
+  **Theorem 18.1 at every `d ≥ 4` with exponent `α^(2^(2^(d+7)))`**
+  (`theorem_18_1_d7_of_profiles_cover`);
+- `genMuT_le` (`≤ 505·2^k`, `k ≥ 7`): **Theorem 18.2 at every `L ≥ 11`
+  with `L + 5`** (`theorem_18_2_L5_of_profiles_cover`); for `L ≤ 10` the
+  cubic stopping term `40(k+2)³ + 1095` exceeds `2^(L+5)`.
+Bridge additions in `Proofs18CoverSharperExplicit`:
+`theorem_18_1_d7_four_le`, `theorem_18_2_L5_eleven_le` (same stub axioms).
+`d + 6` and `L + 4` would need a step cost below `128·2^k`, i.e. both the
+cover degree and the slice controls would have to shrink: the
+`68·2^l` class degree (L.10b fixed point `67·2^l`) alone already costs
+`3·68·2^k` per step.
+
+**L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
+parameterized threshold is the five-level two-colour tower with `k + c` on
+top (`szemerediThresholdAt_half`), so `Theorem182AtSharp.corollary_18_7`
+transfers both improvements: `corollary_18_7_sharper_six_le` (`L + 6`,
+every `L ≥ 6`) and `corollary_18_7_L5_eleven_le` (`L + 5`, every `L ≥ 11`);
+`Proofs18CoverColorings` (light) and the bridge
+`Proofs18CoverSharperExplicit` (stub axiom:
+`section16RecurrenceProfileWith_explicit` only).
+
 ## F. Routes
+
+**Status (2026-10-11, L.12).** All routes below are historical. Route 1
+succeeded: Theorem 16.2 and Corollary 16.11 in every dimension (route (II),
+split classes, L.6b–L.10b), then Theorems 18.1, 18.2 and Corollary 18.7 in
+every degree and length by the joint vertex covers of L.12, at the printed
+exponents and thresholds. The ledger has 120 exact companions and no open
+statement; the bridge proofs await the full kernel audit on the verification
+host.
 
 1. **Quantitative repair (research).**
    - Strengthen the induction hypothesis to polynomial graph counts, which

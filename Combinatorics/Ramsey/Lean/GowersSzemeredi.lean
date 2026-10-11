@@ -1115,6 +1115,21 @@ import GowersSzemeredi.Proofs18GradedDegrees
 import GowersSzemeredi.Proofs18GradedThresholds
 import GowersSzemeredi.Proofs18GradedLengths
 import GowersSzemeredi.Proofs18TightClasses
+import GowersSzemeredi.Proofs16JointCovers
+import GowersSzemeredi.Proofs16SinglePieceCoverGlobal
+import GowersSzemeredi.Proofs18SinglePieceCoverInverse
+import GowersSzemeredi.Proofs18CoverModulus
+import GowersSzemeredi.Proofs18CoverDensity
+import GowersSzemeredi.Proofs18CoverExponents
+import GowersSzemeredi.Proofs18CoverDegrees
+import GowersSzemeredi.Proofs18CoverExplicit
+import GowersSzemeredi.Proofs18FiniteCoverBudgets
+import GowersSzemeredi.Proofs18CoverEnvelopeArithmetic
+import GowersSzemeredi.Proofs18CoverSharperArithmetic
+import GowersSzemeredi.Proofs18CoverSharper
+import GowersSzemeredi.Proofs18CoverSharperExplicit
+import GowersSzemeredi.Proofs18CoverTightBase
+import GowersSzemeredi.Proofs18CoverColorings
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

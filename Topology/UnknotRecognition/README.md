@@ -84,7 +84,30 @@ The report PDFs inside `proposals/01` .. `09` are omitted by the same rule
 PDFs without a same-name source are always included: the preprint's figure
 PDFs in `docs/arXiv-2607.23350v1/`.
 
-## Current integration (7 October 2026)
+## Compressed geometry continuation (11 October 2026)
+
+The new [cut-boundary constructor](synthesis/cut_boundary.tex) supplies
+full binary polygon, edge and vertex families with oriented attachments and
+source-chamber carriers. It determines all boundary genera and each cut
+piece's boundary count and total genus. All 1,589 maintained tests pass with
+Regina and no skips; 1,755 explicit cuts agree and 110 saved proofs independently
+replay. The maintained article records the polynomial encoded-cost proof,
+complete-query gains, small-input regressions and a sphere-boundary nonball
+counterexample. Interior geometry and the general hierarchy bound remain open.
+
+Weighted static contraction now merges ordered boundaries in linear work.
+Core-facing prism ports use an exact three-coordinate additive bitset when
+there are at least two ports, with independent replay of current and legacy
+proofs. That checkpoint passed 1,579 tests with eight skips and 21 focused
+prism tests; all 5,289 supplied structures agreed with explicit
+source-face recovery. The maintained article contains the proofs, encoded
+bit-cost qualifications, controlled measurements and remaining hierarchy
+obligations in [`synthesis/weighted_sweep.tex`](synthesis/weighted_sweep.tex)
+and [`synthesis/prism_port_encoding.tex`](synthesis/prism_port_encoding.tex).
+These standalone operators do not change the full recognizer's general
+exponential guarantee; the quasi-polynomial goal remains open.
+
+## Integration checkpoint (7 October 2026)
 
 The maintained Python suite now passes 277 tests. The latest work adds
 twist-compressed homology with a quasi-polynomial bound for braid presentations

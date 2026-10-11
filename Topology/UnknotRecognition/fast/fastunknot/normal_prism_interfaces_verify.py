@@ -5,7 +5,7 @@ from .integer_codec import encoded_integer,certificate_equal
 from .weighted_orbit_verify import verify_weighted_orbit_certificate
 
 
-def _reference_interface_system(prepared,rows,check):
+def _reference_interface_system(prepared,rows,check,bitset=False):
     cells=[];chains=[];tips=[];quads=[];local=[];offset=0
     for t,row in enumerate(rows):
         check();q=sum(row[4:]);quads.append(next((j for j in range(3)if row[4+j]),None));chains.append(offset)
@@ -75,12 +75,14 @@ def _reference_interface_system(prepared,rows,check):
                     lo,end=max(a,c),min(b,d)
                     if lo<end:overlap.append((lo,end,sa,oa,sb,ob))
             for lo,end,sa,oa,sb,ob in sorted(overlap):piece(t,f,u,g,v,lo,end,sa,oa,sb,ob)
-    d=2+len(ports);weights=[]
+    d=3 if bitset else 2+len(ports);weights=[]
     def indicator(i):value=[0]*d;value[i]=1;return value
     if size:weights.append((0,size,indicator(0)))
     for lo,end in bands:check();weights.append((lo,end,indicator(1)))
     for port in ports:
-        check();p=port['prism_point'];weights.append((p,p+1,indicator(2+port['id'])))
+        check();p=port['prism_point']
+        value=[0,0,2**port['id']]if bitset else indicator(2+port['id'])
+        weights.append((p,p+1,value))
     return size,pairs,d,weights,dict(core_cells=cells,core_faces=contacts,ports=ports,prism_points=size)
 
 
@@ -94,7 +96,8 @@ def verify_normal_prism_interfaces(triangulation,coordinates,certificate,*,max_o
     check()
     if max_operations is not None and(type(max_operations)is not int or max_operations<0):raise ValueError('invalid max_operations')
     if(type(certificate)is not dict or set(certificate)!={'schema','input_sha256','structure','weighted_certificate'}
-            or certificate.get('schema')!='normal-prism-interfaces-v1'):return False
+            or certificate.get('schema')not in ('normal-prism-interfaces-v1','normal-prism-interfaces-v2')):return False
+    bitset=certificate['schema']=='normal-prism-interfaces-v2'
     prepared=_prepare(triangulation,check);analysed=_coordinates(prepared,coordinates,check)
     if certificate['input_sha256']!=_fingerprint(triangulation,analysed,check):return False
     proof=certificate['weighted_certificate']
@@ -102,15 +105,28 @@ def verify_normal_prism_interfaces(triangulation,coordinates,certificate,*,max_o
     trace=proof['orbit_proof']
     if type(trace.get('operations'))is not list:return False
     if max_operations is not None and len(trace['operations'])>max_operations:return False
-    size,pairs,d,weights,expected=_reference_interface_system(prepared,analysed['rows'],check)
+    size,pairs,d,weights,expected=_reference_interface_system(prepared,analysed['rows'],check,bitset)
     if len(expected['core_cells'])>6*len(analysed['rows'])or len(expected['ports'])>24*len(analysed['rows']):return False
     if not verify_weighted_orbit_certificate(size,pairs,weights,proof,dimension=d,check=check):return False
     attached=[];free=[];seen=[]
     for row in proof['histogram']:
         check();w=[encoded_integer(x)for x in row['weight']];copies=encoded_integer(row['orbits'])
-        if w[0]<1 or w[1]<0 or any(x not in (0,1)for x in w[2:]):return False
+        if w[0]<1 or w[1]<0:return False
+        if bitset:
+            mask=w[2]
+            if mask<0 or mask.bit_length()>len(expected['ports']):return False
+            # A separately materialized binary spelling avoids repeatedly
+            # shifting a P-bit integer through its zero digits. Its length is
+            # bounded by the source port count before conversion.
+            # Exact replay binds each digit to one independently owned port.
+            ports=[]
+            for index,digit in enumerate(format(mask,'b')[::-1]):
+                check()
+                if digit=='1':ports.append(index)
+        else:
+            if any(x not in (0,1)for x in w[2:]):return False
+            ports=[i for i,x in enumerate(w[2:])if x]
         profile=dict(prism_cells=w[0],face_bands=w[1],ribbon_euler_characteristic=w[0]-w[1])
-        ports=[i for i,x in enumerate(w[2:])if x]
         if ports:
             if copies!=1:return False
             seen.extend(ports);attached.append(dict(profile,ports=ports))

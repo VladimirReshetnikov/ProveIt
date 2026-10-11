@@ -1,0 +1,317 @@
+\section{Full cut-boundary cells and source-certified piece profiles}
+\label{sec:cut-boundary}
+
+The hierarchy must retain actual geometric attachments after a normal cut.
+The preceding chamber and prism operators locate face-connected pieces and
+their interface sets, but they do not reconstruct the boundary of the cut
+manifold. We now construct its complete two-dimensional cell structure in
+binary families, with cyclic polygon attachments, edge endpoints, both sides
+of normal intersection vertices and a carrier into the original cut chambers.
+The resulting operator determines all boundary genera and each cut piece's
+boundary count and total boundary genus without expanding normal sheets.
+
+This is the boundary of $M\setminus\operatorname{int}\nu(F)$ for the supplied
+normal surface $F$, including its one-sided components. It is not the base
+of the full interior parallelity bundle. The ambient source contract remains
+finite, compact, connected, orientable and with one torus boundary. No source
+coordinate is divided by a common factor: repeated surfaces change the cut
+manifold, not just the spelling of its input.
+
+\subsection{Two horizontal sides and the original cut boundary faces}
+
+Give each normal triangle and quadrilateral two local polygon copies. For a
+triangle near vertex $v$, side zero faces $v$ and side one faces away from it.
+For quad type $j$, side zero faces $A=\{0,j+1\}$ and side one faces its
+complement. These are local sides, not an assumed global coorientation.
+Number the two sides in contiguous blocks for each of the seven disc types.
+
+On a source face $f$, the arc stack near corner $v$ has length
+$a_v=t_v+q_{f,v}$. Its first $t_v$ arcs are triangles, followed by the
+applicable quad arcs. Triangle rank increases from $v$. Quad rank increases
+from $A$ and decreases from the other side. Consequently a face arc's rank
+maps to its horizontal polygon by at most two affine pieces of slope $+1$
+or $-1$. Each arc also has an inward and an outward side relative to its
+face corner; this specifies which local horizontal copy it meets.
+
+For a glued face, match equal arc ranks and equal corner sides through its
+vertex permutation. Intersect the two rank partitions and retain both local
+side maps. This includes self-gluings and the monodromy of one-sided surfaces.
+For a boundary face, retain its central region and three corner arms. Arc
+rank $r$ has inward region $r$, and outward region $r+1$, except that the
+last outward region is the centre. Glue these regions to their corresponding
+horizontal polygons.
+
+Finally glue the cut segments of each original boundary edge between its
+two incident boundary-face occurrences. If the edge has $w$ normal points,
+there are $w+1$ gap segments. The face sends its first corner stack to one
+arm, its middle gap to its centre, and its last stack to the other arm.
+Global edge orientation comes from the validated signed edge union, including
+loop edges. This partitions the gap ranks into three affine pieces on each
+face. These joins are essential: horizontal-side matching alone would leave
+the original boundary faces disconnected.
+
+\begin{proposition}[Exact compressed cut-boundary complex]
+The polygons and joins above are exactly the full boundary of the cut-open
+manifold. Each edge has two polygon incidences and each vertex link is a
+circle. Polygon attachments have constant-length cyclic recipes with affine
+rank parameters. The construction has $O(T)$ cell families and interval
+joins, with endpoint bit length $O(B+\log(T+1))$ for maximum coordinate bit
+length $B$. No sheet, edge point or polygon family is expanded.
+\end{proposition}
+\begin{proof}
+Inside each source tetrahedron the frontier of a normal regular neighbourhood
+has the two stated local copies of every normal disc. Across a glued face,
+each copy of an arc is attached to the copy on the same corner side; the
+matching equations identify exactly its rank. This reconstructs the entire
+horizontal frontier, with both local sides glued even when no consistent
+global side labelling exists.
+
+The remaining boundary comes from the source boundary faces cut along their
+normal arcs. Their centre and corner-arm regions are discs. An inward arc
+copy bounds its rank-$r$ region; an outward copy bounds the next region or
+the centre. The cut original edge gaps glue the two adjacent source faces.
+These are exactly the pieces and identifications in the boundary of
+$M\setminus\operatorname{int}\nu(F)$.
+
+At a normal intersection with a source edge there are two distinct cut
+vertices, indexed by the side of the globally oriented edge. Rank from a
+face corner maps to its edge point by a translation or reflection, and its
+corner side determines the cut-vertex side. Original boundary vertices
+remain unchanged. The validated manifold edge links and vertex links imply
+that the complete boundary neighbourhoods are discs. In particular, these
+are genuine boundary vertices, not a count inferred from prism 0/1-handles.
+
+Horizontal triangle and quad cycles have three and four arcs. A corner-arm
+region is triangular at rank zero and quadrilateral at positive rank. A
+central region has between three and six edges. Cyclic recipes retain their
+source face, corner, local side, oriented rank and the optional inner arc
+at positive rank. All edge endpoints are source-labelled affine maps;
+original gap endpoints split only at the first and last gap. Their cyclic
+ordering therefore describes full polygon attachments, including repeated
+vertices and self-identifications.
+
+An internal face contributes at most 18 horizontal joins, a boundary face
+at most 15 horizontal/original joins, and a boundary edge at most seven
+gap joins. There are at most $2T$ glued face pairs, $4T$ boundary faces
+and $6T$ boundary edges, giving at most $138T$ edge-family joins. There
+are at most $30T$ polygon families and $16T$ vertex families. Every cell
+count is bounded by a constant multiple of $T+D$, with
+$D\le7T2^B$. All processing uses these binary counts and constantly many
+events per source face or edge.
+\end{proof}
+
+The source orientation fixes opposite signed incidences on a shared edge.
+The producer uses the standard triangle and quad cycles; independent replay
+instead builds the crossing-edge polygon and orients it with integer midpoint
+cross products in the unit tetrahedron. This avoids a shared orientation-table
+assumption. Small literal cell audits check cyclic closure, signed incidences
+and connected vertex links independently of orbit discovery.
+
+\subsection{Owned vertices, edges and exact boundary genera}
+
+Each polygon receives one face weight. Assign each normal-arc edge copy to
+its canonical source horizontal polygon, and each original gap segment to
+its canonical boundary-face occurrence, with weight minus one. Assign the
+two cut vertices at a normal edge point through one canonical incident
+tetrahedron's crossing discs. Assign each original boundary vertex through
+one incident innermost arm or centre. Each cell is owned exactly once.
+
+Use three coordinates: Euler weight, horizontal-polygon count and
+original-polygon count. The latter two preserve source provenance and
+distinguish otherwise equal genus profiles. Weighted orbit sums over polygon
+adjacency give each connected boundary component's $V-E+F$, and group equal
+profiles with a binary multiplicity. The closed boundary is orientable, so
+\[
+                   g=1-\chi/2.
+\]
+An odd Euler value or a value greater than two is rejected.
+
+For a global conservation check let $D$ be the normal disc count, $A$ the
+normal arc count over canonical source faces, $W$ the total normal edge
+weight, and use subscripts $\partial$ for the original boundary. The cells
+have counts
+\[
+\begin{split}
+V'&=V_\partial+2W,\\
+E'&=E_\partial+W_\partial+2A,\\
+F'&=F_\partial+A_\partial+2D.
+\end{split}
+\]
+Every boundary normal arc has two ends, and every boundary edge point is
+incident to two such arcs; hence $A_\partial=W_\partial$.
+Because the original boundary is a torus, subtraction gives
+\[
+                   V'-E'+F'=2(W-A+D)=2\chi(F).
+\]
+This checks global mass but does not replace the per-component orbit proof.
+The independent checker computes horizontal Euler coefficients directly from
+canonical edge owners and face owners, instead of repeating the producer's
+individual edge contributions.
+
+\subsection{Boundary ownership inside cut pieces}
+
+Every horizontal polygon has a specific cut chamber on its local side.
+A triangle's inward copy meets its rank-$r$ triangle-arm chamber. Its
+outward copy meets the next arm chamber, except at the last triangle,
+where it meets the appropriate quad-chain endpoint or the centre. A quad's
+two sides meet chain chambers $r$ and $r+1$. The original boundary regions
+use the face/chamber maps of Section~\ref{sec:cut-complement}.
+
+These carriers are a partition of all boundary polygons into affine maps
+to cut chambers. There are at most $42T$ carrier intervals. Join the
+boundary polygon system to the existing chamber system through these maps.
+The joint orbits are exactly the connected pieces of the cut manifold:
+boundary joins lie within a genuine cut piece, and every polygon is attached
+to its actual chamber. No ownership arrow crosses the cutting surface.
+
+To count boundary components inside a cut piece, first obtain a compressed
+least transversal of the boundary polygon orbits. Its original-source
+intervals contain exactly one representative per boundary component.
+Give these representatives one additional marker coordinate. Joint weighted
+replay then obtains, for every cut piece, the boundary count $b$, boundary
+Euler sum $\chi_\partial$, its horizontal and original polygon counts and
+its number of source chambers. In particular
+\[
+              \sum_{i=1}^{b}g_i=b-\chi_\partial/2.
+\]
+This is a total genus, not an asserted distribution of individual genera
+inside a piece with several boundary components. The complete boundary
+cells and their carriers retain the underlying attaching data.
+
+\begin{proposition}[Polynomial binary boundary and ownership query]
+Full cut-boundary construction, its genus inventory and cut-piece boundary
+counts and total genera have polynomial bit complexity in $T$ and $B$.
+Independent verification additionally charges the supplied cell records
+and all supplied trace events. Neither operation enumerates a represented
+boundary component or a parallel surface copy.
+\end{proposition}
+\begin{proof}
+The boundary interval universe has
+$N_\partial=2D+F_\partial+A_\partial\le6D+4T$ points and at most $138T$
+joins. The chamber universe has $T+D$ points and at most $20T$ joins.
+Adding at most $42T$ carriers gives at most $200T$ joint joins and a universe
+of at most $7D+5T$ points. Their endpoint bit length is
+$O(B+\log(T+1))$.
+
+Boundary discovery uses the existing monotone Agol--Hass--Thurston trace
+and compressed least-transversal compiler. Weighted boundary replay reuses
+that authenticated trace. The joint system requires one further discovery.
+The fixed weight dimensions are three and five. Initial coefficients are
+bounded owned-cell counts; intermediate and final totals have polynomial
+binary lengths. The polynomial interval-orbit, weighted-transport and
+transversal bounds of the maintained operators apply, with their complete
+arithmetic and trace accounting\cite{aht-orbits}. Canonical family sorting
+and independent cell reconstruction retain polynomial source/bit cost.
+No multiplicity is used as a loop bound.
+\end{proof}
+
+\subsection{Source replay and the topology that remains}
+
+The API is \code{normal\_cut\_boundary}. Independent checking uses
+\code{verify\_normal\_cut\_boundary}. The schema is
+\code{normal-cut-boundary-v1}. It binds the actual source and unscaled
+coordinates, every face/edge/vertex family and oriented cycle, every chamber
+carrier, the boundary transversal and both weighted proofs. Rank-event
+reconstruction and midpoint orientation import no boundary producer.
+Signed hexadecimal transport supports large binary fields.
+
+Discovery caps share one allowance across boundary discovery and the joint
+query; weighted trace reuse does not start another discovery. Incomplete
+queries return no geometry, summary or certificate. The verifier's optional
+operation cap charges all three supplied traces, including the repeated
+boundary trace, and means unverified on exhaustion. Cooperative cancellation
+propagates through source construction, compilation and replay.
+
+Boundary spheres do not certify a ball. The retained solid-torus/RP$^3$
+connected-sum source, cut along its standard vertex disc number six, has
+one sphere boundary but first homology $\mathbb Z/2$. Regina's independent
+cut confirms it is not a ball. The new API therefore returns no ball or
+unknot verdict. Pattern essentiality and irreducibility would need their
+own applicable certificates.
+
+The constructor supplies actual boundary cells and their source carriers,
+not the full compressed three-dimensional interior or an admissible handle
+structure. It does not compute the interior parallelity base, collapse its
+handles, transport an arbitrary existing pattern, validate general later
+hierarchy-piece sources, or establish bounded hierarchy depth. Those remain
+obligations for the original quasi-polynomial recognition goal. Ordinary
+recognition is not yet changed.
+
+\subsection{Source geometry and independent cut evidence}
+
+The retained audit checks 1,755 finite cases: all 1,635 supplied pilot
+surfaces, 48 mixed source cases, 36 analytic examples and 36 relabellings.
+Every global genus inventory and cut-piece boundary count/total genus
+agrees with Regina's actual three-dimensional cut. Forty-five cases contain
+a piece with several boundary components. The literal cell audit checks
+340,202 signed edge incidences, closed polygon cycles and connected vertex
+links. The oracle uses \code{cutAlong} and each actual boundary component's
+Euler characteristic\cite{regina-cut-along,regina-boundary-components}.
+
+Ten large binary cases include parallel meridians, vertex links and odd/even
+M\"obius multiples. A 16,385-bit multiplicity retains twelve polygon families
+and 33 edge families in the one-tetrahedron meridian source, with 16 boundary
+discovery cycles and 20 joint cycles. These numbers describe that supplied
+family; the general bound remains polynomial in encoded source size.
+All 110 saved source proofs independently replay with discovery, forward
+transversal compilation, weighted producers and the cell producer disabled.
+The source/evidence manifest authenticates 677 hashes. All ten focused
+test methods pass, including mutations of endpoints, orientations, chamber
+carriers, representative intervals and topology summaries, and shared caps.
+The full maintained suite passes all 1,589 tests with Regina available and
+no skips; its complete log is retained in \code{data/cut-boundary-tests.txt}.
+
+The data are \code{data/cut-boundary-audit.json}. Reproduce the source audit
+from \code{fast/} with:
+\begin{quote}\small
+\code{python -B -m normal\_orbit\_research.cut\_boundary --output FILE}
+\end{quote}
+The oracle is optional and requires the project's Regina extra; the native
+constructor and independent checker use only the Python standard library.
+The retained run uses the Regina Python distribution 7.4.1, whose engine
+version string is 7.4, on Python 3.13.14.
+
+\subsection{Complete boundary-profile task measurements}
+
+The measured task returns the boundary genus inventory and each cut piece's
+boundary count and total genus. Each native call validates the source,
+constructs the complete compressed boundary cells, discovers and transports
+both orbit systems, independently replays its certificate and serializes
+its full result. The Regina arm converts the same source, constructs its
+explicit three-dimensional cut and obtains and serializes the common
+profiles. Its expanded triangulation is not serialized. These are complete
+measurements of the common census task; the additional geometric outputs
+and proof obligations differ.
+
+There are five shuffled paired rounds after one warmup, and an identical
+Regina control. All 105 measured samples and 21 warmup samples complete and
+return the same common-profile digest. Input preparation, cleanup of prior
+results, garbage collection and digest comparison occur outside the timers.
+Ratios are median paired Regina/native ratios, with values above one
+favouring native. The A/A column compares the two identical Regina arms.
+\input{tables/cut_boundary.tex}
+
+At 1,024 and 4,096 meridian copies the ratios are 3.610 and 15.599,
+with controls 0.957 and 0.963. The native medians are 15.216 and 15.235 ms;
+the latter represents the boundary cells and independently replayed proof
+for a cut with 4,096 sphere boundaries and 4,096 pieces. The small inputs
+show substantial native overhead: ratios at one and sixteen copies are
+0.048 and 0.070. The primitive 16-tetrahedron source also loses, at ratio
+0.414, with 304.516 ms native versus 125.832 ms Regina. All these regressions
+are retained. The binary representation avoids expansion in the multiplicity;
+it does not promise a universal wall-time improvement.
+
+Reproduce from \code{fast/} with:
+\begin{quote}\small
+\code{python -B benchmark\_cut\_boundary.py --output FILE}
+\end{quote}
+The records are \code{data/cut-boundary-benchmark.json}, including source
+hashes, completed outcomes, wire sizes and all controls. Publication review
+replays every saved source proof with producers disabled, authenticates both
+audit and timing evidence and checks the current article:
+\begin{quote}\small
+\code{python -B data/cut\_boundary\_review.py --publication}
+\end{quote}
+Run that review from \code{synthesis/}. These standalone cutting operators
+retain the original general recognition goal and its unresolved interior,
+parallelity, pattern and hierarchy complexity requirements.
