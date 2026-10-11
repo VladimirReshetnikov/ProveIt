@@ -1,5 +1,59 @@
 # Validation of the four-volume collective manuscript
 
+Current checkpoint, October 11, 2026. Authorship remains **ProveIt Contributors**.
+The four volumes have 129/127/208/84 pages (548 total); the retained combined
+edition has 510 pages. There are twelve chapters, thirteen scientific figures,
+136 bibliography entries and 94 historical question leads. Earlier theorem
+and equation labels remain stable. The broader research goal stays active.
+
+The fifteenth intake preserves six further reports, 220 original members,
+with 217 tracked and three ignored bare manifests recoverable from arrival
+history. All six imported ZIPs were retired in placement 2356a42ff4de, which
+was published with that exact SHA. Eleven ignored original log/build records
+were staged explicitly. No delivered evidence was overwritten or run in place;
+no checksum-manifest validation or line-ending work was performed. The census
+is now 90 archives, 3328 tracked original members, 33 ignored manifests and
+1333 textual provenance documents. Existing intake note names remain distinct
+from originals. A common dependency list is the sole older-history match.
+
+Every fifteenth-package full mathematical replay passes on a fresh isolated
+copy, including both multishift numerical precisions. This is finite exact and
+numerical evidence, separate from canonical analytic acceptance. Their common
+differential-polynomial convergence core is now reconciled in Chapter 8.
+The derivative ideal has zero frozen residue, an unsubtracted global pole
+expansion and holomorphic ordinary spectral coordinates. A half-integer-circle
+argument fixes the entire remainder. Complete normal-convergence and endpoint
+arguments give the fixed-coordinate finite part and complex anchored primitive.
+Scalar/derivative-ideal decomposition covers every fixed differential polynomial.
+No arbitrary moving coefficient or unstated regularization is included.
+
+Independent native Wolfram checks sixteen frozen residues, an excluded scalar
+control and three local-subtraction quadratures at 90 working digits, Taylor
+degree 105 and split 1/10. Two values follow from total-derivative endpoints;
+the trigamma-square value is separately derived from exact pole differences.
+All three residuals are below 1e-50, without interval-error claims. A separate
+incoming independent audit checks 128 mixed and ten scalar residues, 48 bilinear
+pairs and 96 direct pole identities; forty differential-calculus diagnostics
+at 90 working digits pass. Quotient normal forms, sixth/seventh coordinate
+families, tail-rank slices, cubic invariants, determinants, Gauss and multishift/
+Lerch branches retain independent analytic integration scopes despite replay.
+
+All four sources complete three coupled rounds and three isolated cold-build
+passes. Every PDF page passes static checks and all 40 external destinations
+are verified. All ten changed volume page bodies are reviewed at full size;
+538 match the preceding reviewed edition. The combined artifact inherits 502
+bodies, matches six freshly reviewed volume bodies, and has its remaining two
+contents pages reviewed at full size. Bounds checks exclude only centered
+footer numbers. No current contact sheet was opened. All 548/510 page bodies
+have explicit inherited or fresh review. The preceding all-power proofs,
+primary-source corrections and S6 exact/modular scopes remain as recorded.
+
+S6 and revised S8 remain conjectural. No period independence, global priority,
+proof-assistant formalization or remote CI is claimed. The following historical
+checkpoints describe their own artifacts and evidence boundaries.
+
+# Historical fourteenth-batch validation
+
 Current research checkpoint, October 11, 2026. The research goal remains
 active. All four PDFs and the combined edition retain **ProveIt Contributors**
 on the title pages and in metadata. The volumes have 129, 127, 205 and 84

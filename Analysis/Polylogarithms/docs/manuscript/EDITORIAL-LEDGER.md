@@ -685,3 +685,35 @@ F4 by the complete Cayley retraction. Nineteen pair nontrivially with the old
 separator and therefore lie outside the former bounded span plus ideal.
 The enlarged target search is ongoing; no S6 proof or nonmembership conclusion
 is claimed from modular output alone. Revised S8 remains conjectural.
+
+
+## Fifteenth intake: differential, harmonic-tail and multishift continuations
+
+Six packages preserve 220 original members (217 tracked, three ignored bare
+manifests recoverable in arrival history). They are placed in 2356a42ff4de
+and their ZIPs are retired in that same commit. Cumulative preservation is
+90 archives and 3328 tracked originals. All six full mathematical replays pass on isolated copies, including both
+multishift precisions. Analytic acceptance remains a separate boundary.
+
+| Group | Accepted core and pending scope |
+|---|---|
+| `bernoulli-tornheim-digamma` | Accept the common derivative-ideal unsubtracted expansion, residue cancellation, ordinary finite-part coordinates and anchored primitive after independent proof audit. Adds smaller-order 2/4/6 tail-prefix proofs, cubic Tornheim cancellation and digamma differential normal forms on the harmonic-resonance spine. Overlaps the differential and polygamma-tail deliveries; retain all proof routes for reconciliation. |
+| `cubic-tail-descent` | Preserved; canonical analytic integration pending. Continues the first mixed Dougall resonance and odd Hurwitz-tail families with cubic/quartic invariant descent. The canonical quadratic tail proof is prior material, not a new result of this delivery. |
+| `determinantal-harmonic-resonance` | Preserved; canonical analytic integration pending. Continues Gamma-ratio resonance with many-particle Gauss-Vandermonde determinants and depth-two generating functions. Distinguish the hard-cutoff constant from the spectral finite part and its residue derivative. |
+| `differential-polygamma-lerch-jets` | Accept the common derivative-ideal unsubtracted expansion, residue cancellation, ordinary finite-part coordinates and anchored primitive after independent proof audit. Continues the higher-digamma report with arbitrary differential polynomials, quotient normal forms, sixth/seventh moments and odd-lattice Lerch jets. Overlaps Bernoulli-Tornheim and tail reports; retained coordinates require exact reconciliation. |
+| `multishift-reflection` | Preserved; canonical analytic integration pending. Continues the continuous-depth Lerch report named independent-resolvent-shift and odd-lattice spectral-derivative questions. Cut completion, overlap and centered half residues require analytic audit. |
+| `polygamma-tail-identities` | Accept the common derivative-ideal unsubtracted expansion, residue cancellation, ordinary finite-part coordinates and anchored primitive after independent proof audit. Continues the canonical fifth report optimal-prefix conjecture for adjacent even orders, all quadratic Hurwitz products, derivative-containing polynomials and a complete sixth-moment coordinate. Overlaps the two differential deliveries; no S6 ladder proof is claimed. |
+
+The Chapter 8 extension accepts the analytic convergence core for arbitrary
+fixed differential polynomials by scalar/derivative-ideal decomposition. It
+does not automatically accept quotient dimensions, arithmetic coordinate
+reductions, general tail ranks, branch-completed reflections or period identities.
+The newer optimal-prefix slices still need independent uniform proof audit;
+the original conjecture remains historical evidence. No delivered source
+claim was retracted from an unread or unproved extension.
+
+Independent native replay passes sixteen frozen residues, one scalar control
+and three fixed-coordinate moment diagnostics. The complete incoming finite
+differential audit passes separately. Current inventory is 1333 textual
+provenance documents. The canonical volumes contain 129/127/208/84 pages,
+136 references, and 40 verified external destinations.

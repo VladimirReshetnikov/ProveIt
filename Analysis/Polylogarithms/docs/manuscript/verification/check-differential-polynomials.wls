@@ -1,0 +1,18 @@
+$MaxExtraPrecision=1000;
+ClearAll[x,L,u0,u1,u2,u3];wp=90;degree=105;delta=1/10;
+polys={u1,u2,u3,u0 u1,u0^2 u1,u0^3 u1,u1^2,u0 u1^2,u0^2 u1^2,u1^3,u1 u2,u0 u1 u2,u2^2,u0 u2^2,u0^2 u3,u1 u3};
+k=-Pi Cot[Pi x];rules={u0->L+k,u1->D[k,x],u2->D[k,{x,2}],u3->D[k,{x,3}]};
+exact=Table[TrueQ[FullSimplify[Residue[p/.rules,{x,0}]]===0],{p,polys}];
+control=TrueQ[FullSimplify[Residue[(L+k)^2,{x,0}]]===-2 L];
+tests={{u0 u1,Zeta[2]},{u0^2 u1,Zeta[3]-2 EulerGamma Zeta[2]},{u1^2,2 Zeta[3]+4 Derivative[1][Zeta][3]}};
+rows={};
+Do[p=tests[[i,1]];m=If[i==2,4,If[i==1,3,4]];expr=p/.{u0->PolyGamma[0,x],u1->PolyGamma[1,x]};
+ser=Normal[Series[expr,{x,0,degree}]];co=Table[Coefficient[Expand[ser x^m],x,j+m],{j,-m,degree}];
+pole=Sum[co[[j+m+1]]/(j+1),{j,-m,-2}];
+local=N[Sum[co[[j+m+1]]delta^(j+1)/(j+1),{j,0,degree}],wp];
+fun[t_?NumericQ]:=Evaluate[expr/.x->t]-Sum[N[co[[j+m+1]],wp] t^j,{j,-m,-1}];
+quad=NIntegrate[fun[t],{t,delta,3/10,3/5,1},WorkingPrecision->wp,AccuracyGoal->55,PrecisionGoal->55];
+v=N[pole,wp]+local+quad;err=Abs[v-N[tests[[i,2]],wp]];
+AppendTo[rows,<|"polynomial"->ToString[p,InputForm],"finite_part"->ToString[v,InputForm],"absolute_error"->ToString[err,InputForm],"passed"->TrueQ[err<10^-50]|>];Print["checked polynomial ",i," passed ",TrueQ[err<10^-50]],{i,3}];
+r=<|"engine"->$Version,"frozen_residue_checks"->Length[exact],"exact_results"->exact,"all_exact_passed"->And@@exact,"scalar_negative_control_detected"->control,"working_precision"->wp,"local_taylor_degree"->degree,"local_split"->ToString[delta,InputForm],"moment_diagnostics"->rows,"interval_certified"->False,"all_pass"->(And@@exact&&control&&And@@Lookup[rows,"passed"]),"scope"->"Sixteen finite frozen-residue checks and an excluded scalar control; three independent fixed-coordinate quadratures compared with two endpoint evaluations and an ordinary pole-coefficient identity. Working precision and truncated Taylor/quad agreement are diagnostics, not interval enclosures. General convergence is proved analytically in the manuscript."|>;
+Export[FileNameJoin[{DirectoryName[$InputFileName],"differential-polynomials-native.json"}],r,"RawJSON"];Print[<|"all_pass"->r["all_pass"]|>];Exit[If[TrueQ[r["all_pass"]],0,1]];

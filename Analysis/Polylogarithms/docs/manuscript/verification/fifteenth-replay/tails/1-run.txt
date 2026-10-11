@@ -1,0 +1,155 @@
+
+Running differential_normal_form.py
+2 u0**2
+boundary = 0
+3 u0**3
+boundary = -3*z2
+4 u0**4 - u1**2
+boundary = 12*g*z2 - 10*z3
+5 u0**5 - 5*u0*u1**2
+boundary = -30*g**2*z2 + 50*g*z3 + 25*z2**2 - 45*z4
+6 u0**6 - 15*u0**2*u1**2 + u2**2
+boundary = 60*g**3*z2 - 150*g**2*z3 - 150*g*z2**2 + 270*g*z4 + 210*z2*z3 - 242*z5
+7 u0**7 - 35*u0**3*u1**2 + 7*u0*u2**2
+boundary = -105*g**4*z2 + 350*g**3*z3 + 525*g**2*z2**2 - 945*g**2*z4 - 1470*g*z2*z3 + 1694*g*z5 - 210*z2**3 + 1127*z2*z4 + 469*z3**2 - 1596*z6
+8 u0**8 - 70*u0**4*u1**2 + 28*u0**2*u2**2 - 7*u1**4 - u3**2
+boundary = 168*g**5*z2 - 700*g**4*z3 - 1400*g**3*z2**2 + 2520*g**3*z4 + 5880*g**2*z2*z3 - 6776*g**2*z5 + 1680*g*z2**3 - 9016*g*z2*z4 - 3752*g*z3**2 + 12768*g*z6 - 3164*z2**2*z3 + 7840*z2*z5 + 6048*z3*z4 - 11824*z7
+
+Running mixed_sixth.py
+J = 2*g**2*z3 - 35*g*z4/3 + 31*z2*z3/3 - 19*z5/3
+Delta residue = 2*v*(2*g**2*v**2 - 4*g*h1*v**2 - 2*g*h2*v - 4*g*h3 - 2*g*v*z2 + 4*g*z3 + 2*h1**2*v**2 + 2*h1*h2*v + 4*h1*h3 + 2*h1*v*z2 - 4*h1*z3 + h2**2 - h2*v**2 + 2*h2*z2 - h3*v - 5*h4 - 2*v**4 - v**2*z2 + v*z3 + z2**2 - 5*z4)
+D(s) words:
+(1,) : 2*(4*g*z3 + z2**2 - 5*z4)
+(1, 1) : -8*z3
+(1, 1, 3) : 8
+(1, 2) : 4*z2
+(1, 2, 2) : 4
+(1, 3) : -8*g
+(1, 3, 1) : 8
+(2,) : -2*(2*g*z2 - z3)
+(2, 1) : 4*z2
+(2, 1, 2) : 4
+(2, 2) : -4*g
+(2, 2, 1) : 4
+(2, 3) : 2
+(3,) : -2*(-2*g**2 + z2)
+(3, 1) : -8*g
+(3, 1, 1) : 8
+(3, 2) : 2
+(5,) : -4
+
+Running verify_normal_form_sectors.py
+{
+  "maximum_weight": 16,
+  "square_coefficient_checks": 49,
+  "complete_sector_checks": 17,
+  "independent_reduction": true,
+  "production_comparison": true,
+  "shi_generator": "passed"
+}
+Adjacent-tail exact assertions: 127
+Mixed-coordinate exact audit: {'generic_poles_verified': 6, 'local_constant_verified': True, 'delta_residue_verified': True, 'word_tables_verified_formally': 2, 'exact_finite_harmonic_checks': 24, 'higher_pole_reduction_verified': True, 'exact_tail_ordering_checks': 54}
+
+Running verify_bicolored_parity.py
+{
+  "status": "all checks passed",
+  "working_decimal_digits": 50,
+  "exact_partial_fraction_polynomial_checks": 49,
+  "maximum_parity_absolute_error": "5.9360052368469e-50",
+  "original_family2_right_side_error": "3.3409558876152e-51"
+}
+
+Running verify_adjacent_tail_prefix.py
+{"output": "C:\\Users\\vresh\\AppData\\Local\\Temp\\polylog-fifteenth-tails-c5_cthvh\\package\\verification\\adjacent_tail_prefix.json", "status": "passed", "exact_assertions": 127, "numeric_diagnostics": 8}
+
+Running verify_derivative_polynomial_spectral.py
+{
+  "status": "passed",
+  "exact_principal_coefficients_checked": 9,
+  "mixed_residue_difference": "4*H1/n**3 + 2*H2/n**2 + 4*H3/n - 4*gamma/n**3 - 4*z3/n + 2*z2/n**2",
+  "mixed_frozen_residue_checked": true,
+  "sixth_coordinate_residue_and_tail_decomposition_checked": true,
+  "trigamma_square_finite_part": "1.611608834776641157476749037009756794027801410826013659",
+  "trigamma_square_spectral_value": "1.61160883477664115747674903700975679402780141082565775",
+  "absolute_difference": "3.5590896e-49",
+  "working_decimal_digits": 65,
+  "numerical_method": "independent quadrature after local Laurent subtraction"
+}
+
+Running verify_hurwitz_products.py
+{
+  "status": "passed",
+  "diagnostics": [
+    {
+      "k": 2,
+      "l": 2,
+      "coordinate_finite_part": "1.6116088347766411574767490370097567940278014108256577501969832579127737338820218",
+      "closed_form": "1.6116088347766411574767490370097567940278014108256577501969832579127737338820218",
+      "absolute_residual": "1.1260282227e-85",
+      "working_dps": 85,
+      "local_taylor_terms": 110
+    },
+    {
+      "k": 3,
+      "l": 3,
+      "coordinate_finite_part": "-6.915608919890034083354880600193624624620983609836994704957588529982251114510003",
+      "closed_form": "-6.915608919890034083354880600193624624620983609836994704957588529982251114510003",
+      "absolute_residual": "6.43444698684e-85",
+      "working_dps": 85,
+      "local_taylor_terms": 110
+    },
+    {
+      "k": 2,
+      "l": 3,
+      "coordinate_finite_part": "1.6234848505667072872740055448117518541621264278780903615244643231661809242804533",
+      "closed_form": "1.6234848505667072872740055448117518541621264278780903615244643231661809242804533",
+      "absolute_residual": "1.76947292138e-85",
+      "working_dps": 85,
+      "local_taylor_terms": 110
+    },
+    {
+      "k": 2,
+      "l": 4,
+      "coordinate_finite_part": "5.3016911166889360064574973911004391951187096862259383446211874719240364695308563",
+      "closed_form": "5.3016911166889360064574973911004391951187096862259383446211874719240364695308563",
+      "absolute_residual": "5.14755758947e-85",
+      "working_dps": 85,
+      "local_taylor_terms": 110
+    }
+  ],
+  "order_derivative_diagnostics": [
+    {
+      "k": 2,
+      "spectral_derivative_orders": [
+        0,
+        1
+      ],
+      "coordinate_finite_part": "5.6299656181292468947293496279243888148247867881967691545970732326045589998163888",
+      "closed_form": "5.6299656181292468947293496279243888148247867881967691545970732326045589998163888",
+      "absolute_residual": "1.28688939737e-85",
+      "working_dps": 85,
+      "local_taylor_terms": 115,
+      "method": "Independent local subtraction of power-log terms followed by smooth quadrature."
+    }
+  ],
+  "qualification": "Floating-point local-subtraction quadrature, not interval enclosure."
+}
+
+Running audit_mixed_sixth.py
+Exact local and finite harmonic checks passed.
+I = -2.7624942876172787044620825486096199210050040506794349898361274461502721606460323 quadrature check 6.2372459e-112
+Omega = -10.139865313210457474013040008351766651276274548494969035024016808247113287219588
+J = 7.3773710255931787695509574597421467302712704978155340451878893620968411265735561 series error 2.6682503e-100
+I-J-Omega = 1.75713601919e-99
+
+Running verify_sixth_moment.py
+lambda_1 = 0.072815845483676724860586375874901319
+lambda_2 = 0.53678702435841856750360788434881167
+lambda_3 = 0.69968749397823830723582240794185684
+lambda_4 = 0.47289301343423304831463495292802413
+lambda_5 = 0.49752077584804369353107221710319949
+Q6 = -64.9551120353833457521753509581857900203019783263529980086976
+identity residual = 9.89673242604e-88
+two-split difference = -4.02152936677e-87
+
+Requested verification suite completed.
