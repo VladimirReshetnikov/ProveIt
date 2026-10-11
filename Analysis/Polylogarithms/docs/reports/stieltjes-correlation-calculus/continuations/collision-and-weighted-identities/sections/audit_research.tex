@@ -1,0 +1,269 @@
+\section{Source audit, reproducibility, and further research}
+\label{xid:sec:audit}
+
+\subsection{Corrections and exact claim status}
+
+Two narrow issues remain in the pinned canonical
+\path{chapters/03-algebraic.tex}. Both had been flagged in an earlier
+continuation and are confirmed here; they are not presented as newly
+discovered mistakes. The proposed patch preserves the existing labels
+and the proved identities.
+
+\paragraph{The real logarithm in \texttt{cleo:eq:lintanh}.}
+The formula concerns real $|\lambda|<1$, with
+$\theta=\arcsin\lambda$. Its term
+$\theta\log\tan(\theta/2)$ must be
+\[
+ \theta\log\left|\tan\frac\theta2\right|,
+\]
+with continuous value zero at $\theta=0$, unless the parameter range is
+restricted to positive $\lambda$. For negative $\lambda$ the displayed
+logarithm otherwise introduces an imaginary term into a real integral.
+For example, at $\lambda=-1/2$ the spurious principal-logarithm term is
+$-i\pi^2/6$. The surrounding Clausen terms are unchanged. The real
+identity is checked by differentiation in $\theta$, giving
+$\theta/\sin\theta$ on both sides, and the zero value at the origin.
+
+\paragraph{The description of the unweighted diagonal.}
+The phrase ``the simplest non-elementary diagonal'' is replaced by
+``the $(1,1)$ diagonal has the Legendre--chi representation.'' The exact
+formula
+\[
+ \int_0^{\pi/2}\arctan^2(\sin x)\,dx
+       =\pi\chi_2(3-2\sqrt2)
+\]
+is retained. A representation alone does not prove minimality or
+nonreduction in a specified algebra of constants. This correction does
+not concern the different, weighted integral evaluated in
+\eqref{xid:wat:eq:K11}.
+
+\medskip
+\noindent The package contains a unified patch and its before/after
+hashes. The patch passed a dry-run application and was applied to a
+temporary copy, whose bytes matched the intended correction. The
+baseline itself was unchanged.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.29\textwidth}>{\raggedright\arraybackslash}p{0.64\textwidth}@{}}
+\toprule
+Source item & Status after this report\\
+\midrule
+\endfirsthead
+\toprule Source item & Status after this report\\\midrule
+\endhead
+\texttt{gauss:eq:S4-closed} & Already proved in the canonical
+\path{04-S4-proof.tex}; this report does not claim a new proof of its
+rational octahedral certificate.\\[3pt]
+\texttt{cycloquot:conj:S6} & The short $S_6$ identity remains
+conjectural. The existing incomplete-beta and reflection generators do
+not supply the missing odd-weight relation.\\[3pt]
+\texttt{s8new:conj:S8} & The current $S_8$ candidate remains
+conjectural. It is distinct from the rejected earlier vector recorded
+under \texttt{research:prop:S8-rejected}.\\[3pt]
+Higher golden vectors & The numerical $\Li_6$--$\Li_9$ candidates in
+\path{03-algebraic.tex} have not acquired proofs here.\\[3pt]
+Colliding unequal grids & Resolved for every pair of Stieltjes indices
+and argument orders by Section~\ref{xid:cld:section}, including the full
+subtraction polynomial and convergent collision matching.\\[3pt]
+Nonlinear local coordinates & Resolved for orientation-preserving
+analytic local diffeomorphisms by Section~\ref{xid:sec:nonlinear}, including
+the composition law and finite-jet dependence.\\[3pt]
+Three unequal frequencies & Resolved under pairwise grid separation
+by Section~\ref{xid:sec:triple-dilation}, including all argument and order
+coefficients. Colliding triples remain a separate problem.\\[3pt]
+Fully shifted height-one sums & An all-depth extension, with the
+depth-one literature credited. The inner shift must not be confused
+with the older outer-only shift or with simultaneous changes of all
+exponents.\\[3pt]
+Weighted arctangent family & Evaluated for all real parameters, with
+ordinary and Euler primitives and a direct inverse-hyperbolic companion.
+No global priority or minimality claim is made.\\
+\bottomrule
+\end{longtable}
+
+The separated-grid theorem in the incoming report is valid under its
+stated separation hypothesis. Extending its distributional product
+directly through collision would be an invalid use of that theorem,
+rather than an error in the separated statement. Similarly, omitting
+$\Delta_{m,r}(a)$ from the fully shifted harmonic formula would give an
+incorrect extension; the present report does not attribute that omitted
+correction to an existing source. These distinctions matter when the new
+sections are integrated.
+
+\subsection{What the computational artifacts establish}
+
+The analytic proofs establish the parameter-uniform identities. The
+computer checks target signs, scales, coordinate constants, finite
+coefficient extraction, and independent numerical evaluations. They do
+not infer identities from small residuals. All numerical results are
+ordinary floating-point audits; no result file is described as an
+interval certificate.
+
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.23\textwidth}>{\raggedright\arraybackslash}p{0.42\textwidth}>{\raggedright\arraybackslash}p{0.25\textwidth}@{}}
+\toprule
+Family & Independent audit & Observed residual\\
+\midrule
+Nonlinear coordinates & 213 exact rational-series checks, including
+cutoff constants and composition; 4 subtracted integrals at 70 digits
+& Absolute $<4.0\cdot10^{-36}$\\[4pt]
+Colliding products & 33 exact coefficient checks; 9 polygamma integrals
+at 44 digits and 2 Stieltjes derivative integrals at 36 digits
+& Scaled $<6.7\cdot10^{-45}$ and $<2.8\cdot10^{-31}$\\[4pt]
+Fully shifted sums & 72 checks at 75 digits, using Gamma-ratio
+Dirichlet tails and direct local differentiation
+& Absolute $<8.5\cdot10^{-52}$\\[4pt]
+Three frequencies & 2 exact rational Bernoulli integrals compared with
+12 weighted-kernel Mellin integrals at 60 digits
+& Absolute $<7.2\cdot10^{-66}$\\[4pt]
+Weighted primitives & 78 comparisons at 80 digits; symbolic checks of
+the mixed derivatives, primitive, and coefficient obstruction
+& Absolute $<1.3\cdot10^{-79}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+There are 167 numerical comparisons in total. The difference between
+working precision and observed residual is expected: some checks use
+finite Taylor or asymptotic tails, while others compare small exact
+values with direct quadrature. The results record the actual precision
+and method rather than a uniform advertised number of correct digits.
+For the harmonic continuation, two larger-tail repeats give residuals
+below $1.7\cdot10^{-64}$, which tests the identified truncation risk.
+
+The seven mathematical scripts are independent of the TeX build. They
+use Python, SymPy, and mpmath. A driver reruns them, writes their logs,
+and validates the result files. The exact collision generator also
+accepts $m,n,r,k$ as command-line arguments and prints the corresponding
+finite symbolic identity, with formal symbols for ordinary zeta
+derivatives. The package includes the source manifest, a claim ledger,
+integration instructions, the correction patch, and both modular and
+standalone TeX. No numerical relation search is needed to reproduce any
+proof in this report.
+
+\subsection{Proposed exact research problems}
+\label{xid:sec:further-research}
+
+The following questions concern identities and structural reductions.
+They are questions, not additional theorems. Each starts from a specific
+formula proved above.
+
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=*]
+\item \textbf{Mixed collisions of three unequal grids.}
+Remove pairwise separation in Theorem~\ref{xid:thm:triple-FP}. Classify
+pairwise collision points and triple collision points, write their
+complete local subtraction polynomials, and determine whether the
+regular constant in every simultaneous collision limit agrees with the
+merged ambient finite part. The two-grid result suggests a positive
+matching statement for suitably specified collision coordinates, but
+multiple rates can introduce distinct logarithmic terms and must be
+tracked explicitly.
+
+\item \textbf{An all-factor finite congruence formula.}
+For $\ell\ge4$ pairwise separated integer grids, generalize the six
+sign-cone proof to a finite collection of colored multiple Tornheim or
+Mordell--Tornheim kernels on the rank-$(\ell-1)$ lattice
+$\sum p_jn_j=0$. Determine a useful minimal finite character formula,
+then give every ambient-coordinate Stieltjes coefficient with complete
+local numerators. The challenge is an exact finite organization of the
+lattice, rather than existence of meromorphic continuation alone.
+
+\item \textbf{Which odd-order cancellations survive at more than two
+factors?}
+Corollary~\ref{xid:cld:diagonal-collapse} cancels an entire antisymmetric
+two-factor spectral kernel. Identify a permutation or character
+projection for three or more factors that removes the genuinely
+multiple spectral terms and leaves only local Stieltjes data. A useful
+first case has equal Stieltjes indices and one total argument derivative.
+
+\item \textbf{Nonlinear transport of merged products.}
+Theorem~\ref{xid:thm:coordinate-monomial} applies to the full singular
+expansion of a colliding product. Compose it with
+\eqref{xid:cld:common-subtraction} to obtain a single closed multivariate
+generator for every nonlinear pullback of every two-grid product.
+Determine sharp vanishing thresholds in the two Stieltjes indices.
+For a nonunit tangent, factor out the affine contribution before
+classifying the curvature terms.
+
+\item \textbf{A finite algebra for coordinate composition.}
+Express the coefficients of \eqref{xid:eq:C-generator} and
+\eqref{xid:eq:delta-pullback} in a consistently normalized Bell-polynomial
+basis and identify the resulting composition matrices. Which
+logarithmic singular germs have zero defect for every coordinate tangent
+to the identity? The theorem supplies a direct coefficient test, but a
+classification by singular order and logarithmic degree could expose
+additional exact cancellations.
+
+\item \textbf{Higher regular Laurent coefficients of the harmonic
+entire difference.}
+Evaluate $\partial_s^kD(-m,u;a)$ for $k\ge1$. Its value at $k=0$
+is a finite Stirling sum, whereas differentiation introduces logarithmic
+Mellin moments of the analytic Gauss block. Seek closed expressions in
+Gamma derivatives, generalized Stieltjes constants, and a precisely
+specified class of multiple polylogarithms. Do not assume the rational
+polynomial closure at $k=0$ persists for $k\ge1$.
+
+\item \textbf{Identify the Stirling polynomial system exactly.}
+Compare
+$\sum_j\left\{\begin{smallmatrix}m+1\\j\end{smallmatrix}\right\}
+(a-1)^{\underline j}/j^{r+1}$
+with poly-Bernoulli and related polynomial systems, including the
+falling-factorial convention and the shift by one. An exact generating
+function identification could yield addition, reflection, and
+differentiation identities for the complete harmonic correction.
+
+\item \textbf{Independent inner exponents.}
+Replace the inner exponent string $(1,\ldots,1)$ in $M_r$ by independent
+parameters, keeping the common shift. Determine the smallest generating
+kernel whose singular part still separates by a Gamma factor, and
+identify the extra entire corrections. This would connect the present
+height-one calculus to the incoming all-exponent nested jets without
+conflating their spectral directions.
+
+\item \textbf{Rational shifts and character projections.}
+Apply finite Dirichlet-character sums to the $a$-dependence of the
+Laurent formulas. Determine exact reductions of their Gamma-polygamma
+coefficients to Dirichlet $L$-values and their derivatives, and identify
+which character parities eliminate the polynomial Stirling correction.
+The finite correction should be summed before imposing parity.
+
+\item \textbf{A real addition law for higher Euler primitives.}
+The first weighted arctangent integral has the two-term formula
+\eqref{xid:wat:eq:main}; the higher Euler primitives currently have the
+finite depth-two expression \eqref{xid:wat:eq:Imclosed}. Determine which
+higher integration orders admit a comparable addition formula in
+$\alpha\pm\beta$, and which require irreducible two-variable functions.
+The known exact coefficient obstruction concerns one product variable
+only; it does not rule out these other organizations.
+
+\item \textbf{Relations among the algebraic endpoint values.}
+The weighted Cleo identity combines logarithms of the silver and golden
+units with $\chi_2$ and $\chi_3$ at explicit algebraic arguments. Seek
+functional-equation certificates for further reductions at these
+arguments. A target basis should be specified in advance, and failure
+of a finite relation search should not be interpreted as independence.
+
+\item \textbf{The short $S_6$ and current $S_8$ candidates.}
+Extend the convergent octahedral or lifted functional-equation mechanism
+that proved $S_4$ to weights seven and nine. The existing reflection
+projection cancels at the relevant odd total weights, so a successful
+proof needs an additional functional relation. A useful deliverable
+would be an exact rational row certificate with an independently
+checked analytic origin for every row. The frozen candidate vectors,
+not newly fitted alternatives, should remain the targets.
+
+\item \textbf{Formalization of the local finite-part lemmas.}
+Formalize the elementary Taylor-subtraction coefficient lemma first,
+including its exact test-function and coordinate conventions. It can
+then serve as a common foundation for nonlinear contacts and colliding
+products. The finite rational coefficient computations are suitable
+for checked algebraic certificates, while the analytic continuation
+and dominated-differentiation steps remain separate proof obligations.
+\end{enumerate}
+
+The most immediate continuations are Q1, Q4, and Q6: their inputs are
+explicitly available in this report, and each asks for an exact identity
+whose first unresolved term can be computed without a numerical basis
+guess. The $S_6$ and $S_8$ problems remain more structurally demanding;
+the present endpoint calculus supplies normalization discipline, not
+the missing weight-seven or weight-nine functional equation.

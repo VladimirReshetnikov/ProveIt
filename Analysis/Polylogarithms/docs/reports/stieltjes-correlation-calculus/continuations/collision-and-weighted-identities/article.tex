@@ -1,0 +1,94 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=22mm,headheight=14pt,headsep=8mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{booktabs,array,longtable,enumitem}
+\usepackage{microtype}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
+ urlcolor=MidnightBlue,pdftitle={Exact Identities for Polylogarithms, Harmonic Zeta Functions, and Stieltjes Finite Parts},
+ pdfauthor={Research continuation for the ProveIt project},pdfsubject={Exact identities and rigorous finite-part calculus}}
+\usepackage{bookmark}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\FP}{FP}
+\DeclareMathOperator{\CT}{CT}
+\setlist{topsep=4pt,itemsep=3pt,parsep=0pt}
+\setlength{\parskip}{2pt}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Exact special-function identities}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\title{\vspace{-7mm}\textbf{Exact Identities for Polylogarithms,\\
+Harmonic Zeta Functions, and\\Stieltjes Finite Parts}\\[4mm]
+\large Colliding grids, nonlinear coordinates, fully shifted sums,\\
+and trilogarithmic antiderivatives}
+\author{Research continuation prepared for Vladimir Reshetnikov\\
+\small The ProveIt project}
+\date{10 October 2026}
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+We continue the exact-identity program in the supplied ProveIt manuscript
+and its five current incoming polylogarithm reports. We obtain a
+holomorphic coefficient formula for every colliding unequal-dilation
+product of generalized Stieltjes functions and their argument derivatives,
+including a convergent collision expansion and an odd-order vanishing
+family. A finite Taylor-coefficient law determines every nonlinear
+coordinate correction, its composition rule, and its antiderivative
+endpoint constant. Three separated unequal frequencies reduce to a finite
+family of colored Tornheim kernels; complete local subtraction then gives
+all Stieltjes and argument derivatives. For fully shifted height-one
+harmonic sums, a Gamma-normalized difference is entire in the order, and
+all its nonpositive-integer values are finite Stirling transforms. This
+yields every Laurent principal part and finite part, with exact pole
+orders and Gamma antiderivatives. Finally, the weighted arctangent family
+left unevaluated in the canonical chapter is reduced to two values of one
+real trilogarithmic function, together with ordinary primitives and a
+double-polylogarithm integration ladder. Proofs distinguish coordinate
+finite parts from meromorphic coefficient extraction. The report records
+two pending source corrections, preserves the unresolved status of the
+short $S_6$ and current $S_8$ conjectures, and proposes precise next
+identity problems. Numerical and symbolic audits accompany, but do not
+replace, the proofs.
+\end{abstract}
+\vfill
+\noindent\textbf{Source baseline.} Repository commit
+\texttt{445f754610e1377939235794de84ed9075fc09f5}.\\
+\textbf{Status.} Analytic research manuscript with executable audits;
+no Lean formalization or exhaustive historical-priority claim.
+\clearpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+\input{sections/introduction}
+\input{sections/preliminaries}
+\input{sections/collision}
+\input{sections/nonlinear}
+\input{sections/triple_dilation}
+\input{sections/fully_shifted_height_one}
+\input{sections/weighted_arctangent}
+\input{sections/audit_research}
+\clearpage
+\input{references}
+\end{document}

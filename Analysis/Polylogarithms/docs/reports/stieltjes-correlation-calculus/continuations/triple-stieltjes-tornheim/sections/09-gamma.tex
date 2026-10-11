@@ -1,0 +1,162 @@
+\section{Rational Gamma reductions and explicit antiderivatives}\label{tsc:gamma}
+At Stieltjes index zero, the antisymmetric first Stieltjes constant has a
+finite Gamma reduction. We include a proof to make the all-depth evaluation
+self-contained.
+
+\begin{proposition}[Rational antisymmetric first Stieltjes value]\label{tsc:rational-D}
+For integers $0<p<q$, with $a=p/q$,
+\begin{align}\label{tsc:rational-D-eq}
+ \gamma_1(1-a)-\gamma_1(a)
+ ={}&\pi\cot(\pi a)\bigl(\gamma+\log(2\pi q)\bigr)\notag\\
+ &-2\pi\sum_{r=1}^{q-1}\sin(2\pi pr/q)\log\Gamma(r/q).
+\end{align}
+Coprimality of $p,q$ is not required.
+\end{proposition}
+\begin{proof}
+Write $z=e(a)$ and
+$P(u)=\Gamma(u)(2\pi)^{-u}$. Subtract the two Hurwitz Fourier expansions:
+\[
+ \zeta(1-u,1-a)-\zeta(1-u,a)
+      =2\ii P(u)\sin(\pi u/2)
+                    \bigl(\Li_u(z)-\Li_u(z^{-1})\bigr).
+\]
+Now $2\ii P(u)\sin(\pi u/2)=\pi\ii(1-Au+O(u^2))$.
+For real $u$, the difference of polylogarithms is $2\ii\Im\Li_u(z)$.
+Comparing coefficients of $u$ gives
+\[
+ \gamma_1(1-a)-\gamma_1(a)
+       =\pi A\cot(\pi a)-2\pi\Im\Li_0^{[1]}(z),
+\]
+since $\Im\Li_0(z)=\tfrac12\cot(\pi a)$.
+Differentiate \eqref{tsc:finite-DFT} at zero. The constant part of Lerch's
+formula vanishes in the finite sum, so
+\[
+ \Im\Li_0^{[1]}(z)=
+     \sum_{r=1}^{q-1}\sin(2\pi pr/q)\log\Gamma(r/q)
+                -\frac{\log q}{2}\cot(\pi a).
+\]
+Substitution proves \eqref{tsc:rational-D-eq}.
+\end{proof}
+This rational reflection formula is a consequence of classical Hurwitz
+Fourier and Gamma identities. Its use here is to finish a whole family of
+reflected product evaluations, rather than to claim a new isolated formula
+for $\gamma_1(p/q)$.
+
+\begin{theorem}[All-depth rational Gamma evaluation]\label{tsc:rational}
+Let $a,b_1,\ldots,b_N$ be pairwise distinct rational circle points. Choose
+$q$ with $d_j=\{b_j-a\}=p_j/q$, $0<p_j<q$. Then
+\begin{align}\label{tsc:all-depth-gamma}
+ &\FP\int_0^1 C_0(x-a)\prod_{j=1}^NK(x-b_j)\dd x\notag\\
+ &\quad=\sum_{j=1}^N A_j(\mathbf b)
+   \left\{K(d_j)\bigl(\gamma+\log(2\pi q)\bigr)
+      -2\pi\sum_{r=1}^{q-1}\sin(2\pi p_jr/q)\log\Gamma(r/q)
+      -\frac{\pi^2}{2}\right\}.
+\end{align}
+Thus this arbitrary-depth subclass has a finite expression in
+$\gamma,\pi$, logarithms, and log-Gamma values at rational arguments,
+with algebraic trigonometric coefficients.
+\end{theorem}
+\begin{proof}
+Insert \eqref{tsc:rational-D-eq} into $I_0(d)$ in
+\eqref{tsc:Iexamples}, then into Theorem~\ref{tsc:all-depth}.
+At rational angles, the trigonometric coefficients belong to cyclotomic
+number fields. No arithmetic independence statement is used.
+\end{proof}
+For even $N$, the final constants sum to zero by
+\eqref{tsc:cot-residue-sum}. For odd $N$, their sum is
+$-\pi^{N+1}\sin(N\pi/2)/2$. The parity effect checks the normalization.
+
+\subsection{A cubic identity with only interior principal values}
+\begin{theorem}[Quarter--half cubic digamma integral]\label{tsc:explicit-cubic}
+The following principal value exists and satisfies
+\begin{align}\label{tsc:explicit-cubic-eq}
+ \boxed{\displaystyle
+ \PV\int_0^1\psi(x)
+     \cot\!\bigl(\pi(x-\tfrac14)\bigr)
+     \cot\!\bigl(\pi(x-\tfrac12)\bigr)\dd x
+  =\gamma+4\log2+3\log\pi-4\log\Gamma(\tfrac14).}
+\end{align}
+The principal values are symmetric at $1/4$ and $1/2$. The singularity at
+zero is removable; the integrand tends to $-\pi$ there.
+\end{theorem}
+\begin{proof}
+Here $A_1=K(-1/4)=-\pi$ and $A_2=K(1/4)=\pi$. The partial fraction
+identity is
+\[
+ K(x-\tfrac14)K(x-\tfrac12)
+        =-\pi^2-\pi K(x-\tfrac14)+\pi K(x-\tfrac12).
+\]
+Since $C_0=-\psi$, Theorem~\ref{tsc:all-depth} shows that the left side of
+\eqref{tsc:explicit-cubic-eq} is
+\[
+ \frac{I_0(1/4)-I_0(1/2)}\pi
+      =\frac{\gamma_1(3/4)-\gamma_1(1/4)}\pi.
+\]
+At $p/q=1/4$, Proposition~\ref{tsc:rational-D} gives
+\[
+ \frac{\gamma_1(3/4)-\gamma_1(1/4)}\pi
+  =\gamma+\log(8\pi)-2\log\Gamma(1/4)+2\log\Gamma(3/4).
+\]
+Euler reflection, $\Gamma(1/4)\Gamma(3/4)=\pi\sqrt2$, reduces this to
+the claimed right side.
+
+Finally, $\psi(x)=-1/x+O(1)$,
+$\cot(\pi(x-1/2))=-\pi x+O(x^3)$, and
+$\cot(\pi(x-1/4))=-1+O(x)$. Their product tends to $-\pi$.
+Consequently the one-sided finite-part notation needed in the general
+theorem disappears in this specialization: only the two stated interior
+principal values remain.
+\end{proof}
+The common value is
+\[
+ 1.63190394589720479122328086909541565458453405168\ldots.
+\]
+The evaluation is proved by the preceding identities; the decimal is a
+separate quadrature check.
+
+\subsection{A log-Gamma cotangent transform}
+\begin{proposition}[An ordinary primitive of the reflected kernel]\label{tsc:Gcot}
+For $0<a<1$,
+\begin{align}\label{tsc:Gcot-eq}
+ \PV\int_0^1\log\Gamma(x)K(x-a)\dd x
+   =\frac{\zeta^{[2]}(0,a)+\zeta^{[2]}(0,1-a)}2
+        +\frac{\pi^2}{2}\left(a-\frac12\right).
+\end{align}
+The endpoint at zero is ordinarily integrable. In particular,
+\begin{equation}\label{tsc:Gtan}
+ \PV\int_0^1\log\Gamma(x)\tan(\pi x)\dd x
+    =\frac{\log2\log(2\pi)+\tfrac12\log^22}{\pi}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Let the left side of \eqref{tsc:Gcot-eq} be $L(a)$.
+By \eqref{tsc:Uone}, the periodic distributional derivative of
+$\log\Gamma(x)-\ell/2$ is $-C_0$. Differentiation of the separated
+pairing, followed by distributional integration by parts, gives
+$L'(a)=-I_0(a)$.
+Differentiating $\partial_x\zeta(s,x)=-s\zeta(s+1,x)$ at $s=0$, with
+the spectral pole already canceled, gives
+\[
+ \partial_x\zeta^{[2]}(0,x)=2\gamma_1(x).
+\]
+Hence the derivative of the proposed right side is
+$\gamma_1(a)-\gamma_1(1-a)+\pi^2/2=-I_0(a)$.
+Both sides have mean zero in $a$: this is the zero mean of $K$ on the
+left and of the Hurwitz jets at zero on the right. Their constant difference
+is therefore zero.
+
+At $a=1/2$, use $K(x-1/2)=-\pi\tan\pi x$ and
+$\zeta(s,1/2)=(2^s-1)\zeta(s)$. Twice differentiating at zero yields
+$\zeta^{[2]}(0,1/2)=-\log2\log(2\pi)-\tfrac12\log^22$, which proves
+\eqref{tsc:Gtan}.
+\end{proof}
+
+More generally, an explicit pointwise antiderivative of every $I_m(a)$ in
+\eqref{tsc:I-formula} is obtained by replacing $\gamma_n(a)$ with
+\[
+ Q_n(a)=\frac{(-1)^{n+1}}{n+1}\zeta^{[n+1]}(0,a),\qquad Q_n'(a)=\gamma_n(a),
+\]
+replacing $\gamma_n(1-a)$ with $-Q_n(1-a)$, and integrating the constant
+term linearly. This produces a finite Hurwitz-jet antiderivative at every
+Stieltjes index. A chosen base-point constant or a mean-zero periodic
+normalization must then be specified separately.

@@ -1,0 +1,485 @@
+% Insertion-ready research notes; uses standard amsmath/amsthm notation.
+% Derivation and numerical audit: 2026-10-10.
+% Do not advertise a new general parity principle: see the scope paragraph.
+
+\section{A two-shift Lerch reflection for inverse-color doubles}
+\label{gap:sec:main}\label{sec:gap}
+
+The manuscript already proves an all-weight reduction of
+$\operatorname{Li}_{a,b}(z,z^{-1})$ to one-direction double
+polylogarithms. Its explicit mixed parity formula treats $b=1$; the
+general parity component also follows by combining that reduction with
+the all-index one-direction parity theorem. Thus an extension from
+$b=1$ alone must not be advertised as a new reducibility principle.
+The established multiple-polylogarithm parity theory includes Panzer's
+general theorem and explicit depth-two formulas \cite{panzer}. More recently, Xu's
+2026 preprint \emph{Symmetry Results for Cyclotomic Multiple Hurwitz
+Zeta Values via Contour Integrals}, arXiv:2602.10391 \cite{xu}, proves broad
+shifted cyclotomic symmetry identities. Its index order is increasing,
+whereas the manuscript uses decreasing indices.
+
+The purpose of the following calculation is more specific: it gives a
+compact two-shift identity that is an ordinary holomorphic identity in
+the full disk of a continuous color variable. Its arbitrary-index
+version follows from a single first-order seed by parameter
+differentiation. It also gives complete reductions, rather than only
+paired reductions, on the complementary-shift diagonal. These are
+useful explicit additions to the manuscript. No claim of worldwide
+priority is made for the underlying symmetry.
+
+\subsection{Definitions and analytic domain}
+
+For integers $a,b\geq1$, define
+\begin{equation}\label{gap:eq:def}
+ \begin{aligned}
+ \mathcal M_{a,b}(z;u,v)
+ &=\sum_{n>m\geq0}
+   \frac{z^{n-m}}{(n+u)^a(m+v)^b}
+ =\sum_{h\geq1}z^h c_{a,b}(h;u,v),\\
+ c_{a,b}(h;u,v)&=\sum_{m\geq0}
+       \frac1{(m+h+u)^a(m+v)^b}.
+ \end{aligned}
+\end{equation}
+We initially work on
+\begin{equation}\label{gap:eq:domain}
+ |z|<1,\qquad 0<\operatorname{Re}u<1,
+ \qquad 0<\operatorname{Re}v<1.
+\end{equation}
+All powers are integer powers, so there is no denominator branch
+choice. The Lerch function is
+\[
+ \Phi(z,s,q)=\sum_{m\geq0}\frac{z^m}{(m+q)^s}
+ \quad (|z|<1,\ \operatorname{Re}q>0).
+\]
+Put
+\begin{equation}\label{gap:eq:C}
+ C_1(q)=\pi\cot\pi q,
+ \qquad
+ C_r(q)=\zeta(r,q)+(-1)^r\zeta(r,1-q)\quad(r\geq2).
+\end{equation}
+Equivalently,
+\begin{equation}\label{gap:eq:Cderivative}
+ C_r(q)=\frac{(-1)^{r-1}}{(r-1)!}
+          \frac{d^{r-1}}{dq^{r-1}}(\pi\cot\pi q).
+\end{equation}
+Thus every $C_r$ is elementary in trigonometric functions, and can
+equally be expressed through polygamma functions.
+
+The series in \eqref{gap:eq:def} converges absolutely and normally on
+compact subsets of \eqref{gap:eq:domain}. Indeed, uniformly on compact
+shift sets,
+\[
+ |c_{a,b}(h;u,v)|\leq
+ C\sum_{m\geq0}\frac1{(m+h+1)^a(m+1)^b}
+ =O\left(\frac{1+\log(h+1)}{(h+1)^a}\right).
+\]
+The same estimates hold after any fixed number of shift derivatives.
+In particular all parameter differentiations below are legitimate
+holomorphic differentiations, not formal manipulations of a divergent
+series.
+
+\subsection{The first-order seed}
+
+\begin{theorem}[Two-shift seed]\label{gap:thm:seed}
+On \eqref{gap:eq:domain},
+\begin{align}
+ &\mathcal M_{1,1}(z;u,v)
+   +\mathcal M_{1,1}(z;1-v,1-u)\notag\\
+ &\quad=z\Phi(z,1,u)\Phi(z,1,1-v)
+   +\bigl(C_1(v)-C_1(u)\bigr)
+       z\Phi(z,1,1+u-v).
+ \label{gap:eq:seed}
+\end{align}
+All apparent confluences at $u=v$ are removable; in fact no divided
+difference is needed in the displayed formula.
+\end{theorem}
+
+\begin{proof}
+Fix a positive integer $h$. The absolutely convergent bilateral sum
+\[
+ B_{1,1}(h;u,v)=\sum_{m\in\mathbb Z}
+       \frac1{(m+h+u)(m+v)}
+\]
+has three disjoint ranges. The range $m\geq0$ is $c_{1,1}(h;u,v)$.
+In the range $m\leq-h-1$, set $m=-h-1-\ell$; its contribution is
+$c_{1,1}(h;1-v,1-u)$. In the middle range $-h\leq m\leq-1$, write
+$m=-\ell-1$ and $j=h-1-\ell$. Its contribution is
+\[
+ -\sum_{j+\ell=h-1}\frac1{(j+u)(\ell+1-v)}.
+\]
+On the other hand, with $d=h+u-v$,
+\[
+ \frac1{(m+h+u)(m+v)}
+ =\frac1d\left(\frac1{m+v}-\frac1{m+h+u}\right).
+\]
+Symmetric summation gives
+$B_{1,1}(h;u,v)=(C_1(v)-C_1(u))/(h+u-v)$.
+The shift by the integer $h$ does not change a symmetric cotangent
+sum: the finitely shifted endpoint terms tend to zero. Multiply by
+$z^h$ and sum over $h\geq1$. The middle range is the coefficient
+convolution of the two Lerch series, and the bilateral term sums to
+the second term in \eqref{gap:eq:seed}. All resulting $h$-series
+converge absolutely for $|z|<1$.
+\end{proof}
+
+\subsection{Every pair of indices, in two equivalent forms}
+
+\begin{theorem}[Arbitrary-index reflection]\label{gap:thm:all}
+Let $a,b\geq1$ and $w=a+b$. Set $q=1+u-v$. Then
+\begin{align}
+ &\mathcal M_{a,b}(z;u,v)
+      +(-1)^w\mathcal M_{b,a}(z;1-v,1-u)\notag\\
+ &=z\Bigg[
+ (-1)^b\sum_{r=1}^{a}\binom{w-r-1}{b-1}
+       C_r(u)\Phi(z,w-r,q)\notag\\
+ &\hspace{17mm}
+ +\sum_{r=1}^{b}(-1)^{b-r}\binom{w-r-1}{a-1}
+       C_r(v)\Phi(z,w-r,q)\notag\\
+ &\hspace{17mm}
+ -(-1)^b\Phi(z,a,u)\Phi(z,b,1-v)\Bigg].
+ \label{gap:eq:all}
+\end{align}
+Equivalently, the right side is
+\begin{equation}\label{gap:eq:all-derivative}
+ \frac{(-1)^w}{(a-1)!(b-1)!}
+ \partial_u^{a-1}\partial_v^{b-1}
+ \left[
+ z\Phi(z,1,u)\Phi(z,1,1-v)
+ +(C_1(v)-C_1(u))z\Phi(z,1,1+u-v)
+ \right].
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For the derivative form, apply the stated mixed derivative to
+\eqref{gap:eq:seed}. On the first summand on its left, the derivative
+contributes the sign $(-1)^{a+b-2}=(-1)^w$ and the factorial factor.
+On the reflected summand both chain-rule signs cancel the signs
+from differentiating a reciprocal, and the two indices are exchanged.
+This gives \eqref{gap:eq:all-derivative} with the precise sign shown.
+
+For an independent coefficient proof of \eqref{gap:eq:all}, put
+$d=h+u-v$. The rational partial-fraction identity is
+\begin{align}
+ \frac1{(m+h+u)^a(m+v)^b}
+ ={}&(-1)^b\sum_{r=1}^{a}
+  \binom{w-r-1}{b-1}\frac1{d^{w-r}(m+h+u)^r}\notag\\
+ &+\sum_{r=1}^{b}(-1)^{b-r}
+  \binom{w-r-1}{a-1}\frac1{d^{w-r}(m+v)^r}.
+ \label{gap:eq:pf}
+\end{align}
+It follows either by expanding at its two poles or by subtracting
+the two sides, observing that the difference has no finite poles and
+vanishes at infinity. Since $\operatorname{Re}d>0$, no collision occurs
+in the domain under consideration.
+
+Sum over $m\in\mathbb Z$. For $r\geq2$, the sum of each reciprocal
+power is $C_r(u)$ or $C_r(v)$. The $r=1$ terms are evaluated by a
+common symmetric cutoff. Their principal parts at infinity cancel,
+because
+\[
+ \binom{w-2}{a-1}=\binom{w-2}{b-1}.
+\]
+The original bilateral sum is absolutely convergent, so this use of
+a common cutoff changes no value. Split it into the same three ranges
+as in the first-order proof. The negative range is now
+$(-1)^w c_{b,a}(h;1-v,1-u)$, and the middle range is
+\[
+ (-1)^b\sum_{j+\ell=h-1}
+      (j+u)^{-a}(\ell+1-v)^{-b}.
+\]
+Multiplication by $z^h$ and summation gives
+\eqref{gap:eq:all}.
+\end{proof}
+
+\subsection{Shift derivatives and normalized primitives}
+
+The whole family is closed under arbitrary shift derivatives:
+\begin{equation}\label{gap:eq:shift-jets}
+ \partial_u^r\partial_v^s\mathcal M_{a,b}(z;u,v)
+ =(-1)^{r+s}(a)_r(b)_s\mathcal M_{a+r,b+s}(z;u,v).
+\end{equation}
+Accordingly, for $a\geq2$ a primitive in $u$ is
+$-\mathcal M_{a-1,b}/(a-1)$, and for $b\geq2$ a primitive in $v$ is
+$-\mathcal M_{a,b-1}/(b-1)$. At the index-one boundary one should
+normalize the primitive before summing. For a path between $u_0$ and
+$u_1$ inside the right half-plane,
+\begin{equation}\label{gap:eq:log-primitive}
+ \int_{u_0}^{u_1}\mathcal M_{1,b}(z;u,v)\,du
+ =\sum_{n>m\geq0}\frac{z^{n-m}}{(m+v)^b}
+       \log\frac{n+u_1}{n+u_0}.
+\end{equation}
+Here the logarithm is the difference of the common analytic logarithms
+along the path. For $|z|<1$ the normalized series is absolutely
+convergent, including $b=1$, because the logarithmic difference is
+$O(n^{-1})$ on compact endpoint sets. The unnormalized series with
+$\log(n+u)$ alone need not converge when $b=1$.
+
+There is also a precise spectral-derivative interpretation. Define the
+termwise difference
+\[
+ \Delta\mathcal M_{s,b}
+ =\sum_{n>m\geq0}\frac{z^{n-m}}{(m+v)^b}
+       \bigl((n+u_1)^{-s}-(n+u_0)^{-s}\bigr).
+\]
+It is holomorphic near $s=0$, even when the two separate sums there
+are divergent, and the right side of \eqref{gap:eq:log-primitive} is
+$-\partial_s\Delta\mathcal M_{s,b}|_{s=0}$. This statement uses
+subtraction before continuation. It does not assert that the
+integer-index finite sum \eqref{gap:eq:all} can itself be
+differentiated in a noninteger exponent.
+
+\paragraph{Boundary values.}
+The identity extends to each $|z|=1$, $z\ne1$, as an ordinary
+convergent identity. To make this statement independent of an
+unspecified Abel prescription, note that on compact shift sets
+$c_{a,b}(h;u,v)\to0$ and
+\[
+ c_{a,b}(h+1;u,v)-c_{a,b}(h;u,v)
+ =O\left(\frac{1+\log(h+1)}{(h+1)^{a+1}}\right).
+\]
+The sum of these differences converges absolutely. Summation by
+parts therefore proves convergence uniformly on closed arcs that
+avoid $1$. The same argument applies to every Lerch term on the
+right, whose parameter has positive real part, and to fixed shift
+derivatives. Taking a radial limit of the disk identity proves the
+boundary identity in the ordinary gap-ordered series convention.
+
+It also agrees with the original outer-index order. Let $O_N$ be the
+sum in \eqref{gap:eq:def} restricted to $n\leq N$, and let
+$D_N=\sum_{h=1}^Nz^hc_{a,b}(h;u,v)$. Partial summation of the finite
+$h$-sum gives, uniformly for shifts in a compact subset of the strip,
+\[
+ |D_N-O_N|\leq\frac{C}{|1-z|}
+ \left(N^{-a}(1+\log(N+1))+\sum_{m>N}m^{-a-b}\right)
+ \longrightarrow0.
+\]
+For $m\leq N$, the omitted $h$-range starts past $N-m$, so its
+denominator $(m+h+u)^a$ is of size at least $N^a$; for $m>N$, the
+full finite $h$-sum is bounded by a constant times $m^{-a}$.
+These are exactly the two terms in the displayed bound. Thus no
+conditional rearrangement is hidden in the boundary statement.
+If $a,b\geq2$,
+all terms are also absolutely convergent at $z=1$, so that endpoint
+may then be included.
+
+\subsection{Complete reductions at complementary shifts}
+
+The reflection becomes a full evaluation when the two exponents
+agree and $v=1-u$.
+
+\begin{corollary}[Complementary diagonal]\label{gap:cor:diagonal}
+For $a\geq1$, $|z|<1$ and $0<\operatorname{Re}u<1$,
+\begin{align}
+ \mathcal M_{a,a}(z;u,1-u)
+ =(-1)^a z\Bigg[
+ &\sum_{r=1}^{a}\binom{2a-r-1}{a-1}
+        C_r(u)\Phi(z,2a-r,2u)\notag\\
+ &-\frac12\Phi(z,a,u)^2\Bigg].
+ \label{gap:eq:diagonal}
+\end{align}
+In particular,
+\begin{equation}\label{gap:eq:diagonal11}
+ \mathcal M_{1,1}(z;u,1-u)
+ =\frac z2\Phi(z,1,u)^2
+   -\pi\cot(\pi u)\,z\Phi(z,1,2u),
+\end{equation}
+and
+\begin{align}
+ \mathcal M_{2,2}(z;u,1-u)
+ =z\bigl[&2\pi\cot(\pi u)\Phi(z,3,2u)
+          +\pi^2\csc^2(\pi u)\Phi(z,2,2u)\notag\\
+          &-\tfrac12\Phi(z,2,u)^2\bigr].
+ \label{gap:eq:diagonal22}
+\end{align}
+\end{corollary}
+\begin{proof}
+The reflected double on the left of \eqref{gap:eq:all} equals the
+original one. On the right, use $C_r(1-u)=(-1)^rC_r(u)$ and divide
+by two.
+\end{proof}
+
+The $a=1$ identity also exposes the generalized-harmonic content.
+With
+\[
+ H_h(u)=\psi(h+u)-\psi(u)=\sum_{j=0}^{h-1}\frac1{j+u},
+\]
+partial fractions give
+\[
+ c_{1,1}(h;u,1-u)
+ =\frac{H_h(u)-\pi\cot\pi u}{h+2u-1}.
+\]
+Consequently \eqref{gap:eq:diagonal11} is equivalent to
+\begin{equation}\label{gap:eq:harmonic-convolution}
+ \sum_{h\geq1}\frac{z^h H_h(u)}{h+2u-1}
+       =\frac z2\Phi(z,1,u)^2.
+\end{equation}
+This last elementary convolution identity can be proved directly by
+partial fractions in the coefficient of $z^{h-1}$ in the square.
+That observation clarifies the strength of the claim: the result is
+an exact complete reduction, but the first-order instance already has
+an elementary coefficient explanation.
+
+\subsection{The half-shift diagonal in classical polylogarithms}
+
+Put
+\[
+ \chi_s(x)=\frac{\operatorname{Li}_s(x)-\operatorname{Li}_s(-x)}2.
+\]
+For $z=x^2$ with $|x|<1$,
+\[
+ \Phi(z,s,\tfrac12)=\frac{2^s}{x}\chi_s(x),\qquad
+ C_{2r}(\tfrac12)=2(2^{2r}-1)\zeta(2r),\qquad
+ C_{2r+1}(\tfrac12)=0.
+\]
+The dependence on the chosen square root cancels in all products.
+Equation \eqref{gap:eq:diagonal} gives the all-order identity
+\begin{align}
+ \mathcal M_{a,a}(z;\tfrac12,\tfrac12)
+ =(-1)^a\Bigg[
+ &2\sum_{r=1}^{\lfloor a/2\rfloor}
+   (2^{2r}-1)\binom{2a-2r-1}{a-1}\zeta(2r)
+                         \operatorname{Li}_{2a-2r}(z)\notag\\
+ &-2^{2a-1}\chi_a(\sqrt z)^2\Bigg].
+ \label{gap:eq:half-all}
+\end{align}
+The first four cases are
+\begin{align}
+ \mathcal M_{1,1}(z;\tfrac12,\tfrac12)
+   &=2\operatorname{artanh}^2\sqrt z,\label{gap:eq:half11}\\
+ \mathcal M_{2,2}(z;\tfrac12,\tfrac12)
+   &=\pi^2\operatorname{Li}_2(z)-8\chi_2(\sqrt z)^2,
+      \label{gap:eq:half22}\\
+ \mathcal M_{3,3}(z;\tfrac12,\tfrac12)
+   &=32\chi_3(\sqrt z)^2-3\pi^2\operatorname{Li}_4(z),
+      \label{gap:eq:half33}\\
+ \mathcal M_{4,4}(z;\tfrac12,\tfrac12)
+   &=10\pi^2\operatorname{Li}_6(z)
+       +\frac{\pi^4}{3}\operatorname{Li}_4(z)
+       -128\chi_4(\sqrt z)^2.
+      \label{gap:eq:half44}
+\end{align}
+Here each left side is a two-index series at a variable
+argument; the displayed equality is a reduction of that function.
+At individual special points there may be additional elementary
+stuffle explanations, which should be recorded rather than presented
+as new arithmetic phenomena.
+
+\subsection{A classical antiderivative and an exact alternating moment}
+
+At the half shift,
+\[
+ H_h(\tfrac12)=2H_{2h}-H_h.
+\]
+Hence \eqref{gap:eq:half11} says
+\begin{equation}\label{gap:eq:harmonic-half}
+ \sum_{h\geq1}\frac{(2H_{2h}-H_h)z^h}{h}
+     =2\operatorname{artanh}^2\sqrt z.
+\end{equation}
+Integrating once against $dz/z$ is a useful explicit antiderivative.
+For $0<z<1$ put \mbox{$x=(1-\sqrt z)/(1+\sqrt z)$}. Then
+\begin{align}
+ \sum_{h\geq1}\frac{(2H_{2h}-H_h)z^h}{h^2}
+ ={}&\frac72\zeta(3)
+   -\log^2x\log\frac{1+x}{1-x}\notag\\
+   &+4\log x\,\chi_2(x)-4\chi_3(x).
+ \label{gap:eq:primitive}
+\end{align}
+To prove it, write the left side as
+$4\int_0^{\sqrt z}\operatorname{artanh}^2t\,dt/t$ and substitute
+$x=(1-t)/(1+t)$. An antiderivative of
+$\log^2x((1-x)^{-1}+(1+x)^{-1})$ is
+\[
+ \log^2x\log\frac{1+x}{1-x}
+ -4\log x\,\chi_2(x)+4\chi_3(x).
+\]
+At $x=1$ its value is $4\chi_3(1)=7\zeta(3)/2$, fixing the constant.
+The real interval formulation avoids any hidden logarithm branches;
+continuation elsewhere is along the corresponding common path.
+
+At the alternating endpoint one obtains
+\begin{equation}\label{gap:eq:alternating-primitive}
+ \sum_{h\geq1}\frac{(-1)^h(2H_{2h}-H_h)}{h^2}
+       =\frac72\zeta(3)-2\pi G,
+ \qquad G=\beta(2).
+\end{equation}
+An entirely real proof follows from
+$-4\int_0^1\arctan^2t\,dt/t$; alternatively continue
+\eqref{gap:eq:primitive} to $z=-1$, where $x=-i$ and the imaginary
+$\pi^3$ terms cancel. The series is absolutely convergent.
+This is a checkable example in the existing Euler-sum vocabulary,
+not a claim that this classical type of special value is new.
+
+\subsection{Rational shifts and finite root-of-unity filters}
+
+For integers $1\leq p\leq q$, put $\omega=e^{2\pi i/q}$ and choose
+$x$ with $x^q=z$. The residue-class filter gives
+\begin{equation}\label{gap:eq:rational-filter}
+ \Phi(z,s,p/q)=q^{s-1}x^{-p}
+    \sum_{j=0}^{q-1}\omega^{-pj}
+                    \operatorname{Li}_s(\omega^j x).
+\end{equation}
+For integer $s\geq1$ this follows directly by expanding the
+polylogarithms and projecting onto exponents congruent to $p$ modulo
+$q$. For larger positive rational shifts, first use
+\[
+ \Phi(z,s,q_0+N)=z^{-N}
+ \left(\Phi(z,s,q_0)-\sum_{j=0}^{N-1}\frac{z^j}{(j+q_0)^s}\right).
+\]
+All apparent singularities at $z=0$ are removable. Thus rational
+instances of \eqref{gap:eq:all} and \eqref{gap:eq:diagonal} reduce to
+finite expressions involving ordinary polylogarithms at algebraically
+related arguments and elementary cotangent derivatives. No extra
+depth is introduced by evaluating the single Lerch functions.
+
+\subsection{An independent integral check and reproducibility}
+
+For $a,b\geq1$, $\operatorname{Re}u,\operatorname{Re}v>0$ and
+$|z|<1$,
+\begin{equation}\label{gap:eq:integral}
+ \mathcal M_{a,b}(z;u,v)
+ =\frac z{(a-1)!}\int_0^1
+       \frac{t^u(-\log t)^{a-1}\Phi(t,b,v)}{1-zt}\,dt.
+\end{equation}
+Insert the Mellin integral for $(n+u)^{-a}$ and sum the geometric
+series in $h=n-m$. This proves the formula by absolute convergence.
+At a fixed $|z|=1$, $z\ne1$, its denominator stays away from zero on
+$[0,1]$; the possible logarithmic singularity of $\Phi(t,1,v)$ at
+$t=1$ is integrable. The boundary formula follows by dominated
+convergence and the preceding summation-by-parts argument.
+
+The supplied script \texttt{check\_shifted\_gap.py} evaluates this
+integral after $t=e^{-y}$, using finite root-of-unity filters for
+rational inner shifts. It compares that independent quadrature with
+\eqref{gap:eq:all} for unequal shifts and complex colors, and checks
+the first three half-diagonal formulas. At 60 decimal working digits,
+the largest observed absolute residual among the four general
+reflection checks is $8.33\times10^{-60}$. These checks are numerical
+diagnostics, not rigorous error enclosures; the proofs are the
+bilateral splitting and partial-fraction arguments above.
+
+\subsection{Precise continuation questions}
+
+\begin{enumerate}
+\item Compare \eqref{gap:eq:all} term by term with the depth-two
+specialization of Xu's shifted cyclotomic symmetry formulas, recording
+the increasing/decreasing index conversion and color normalization.
+The existence of a broad earlier theorem should remain explicit.
+\item Determine which non-diagonal parameter specializations make the
+reflected double equal to, or otherwise independently reducible from,
+the original. Complementary shifts with equal exponents give the
+complete reduction proved here.
+\item Develop closed primitives of the complementary diagonal for
+$a\geq2$ in a specified classical or multiple-polylogarithm basis.
+The half-shift first-order primitive \eqref{gap:eq:primitive} supplies
+a nontrivial normalization check.
+\item Study noninteger spectral indices without differentiating the
+integer-index partial-fraction formula as though its summation range
+were analytic. Such an extension needs a separate contour or Mellin
+argument; the integer formula alone does not justify it.
+\item Continue in the shifts beyond the safe strip while tracking the
+finitely many terms crossed when a shifted lattice point passes zero.
+This should be a meromorphic identity with explicit finite
+corrections, not an unqualified replacement of ordinary sums by
+principal values.
+\end{enumerate}

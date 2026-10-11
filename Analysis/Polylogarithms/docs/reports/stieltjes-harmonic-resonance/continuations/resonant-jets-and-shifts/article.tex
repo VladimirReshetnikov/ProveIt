@@ -1,0 +1,96 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,xcolor,microtype,xurl,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!50!black]{hyperref}
+\usepackage{bookmark}
+\usepackage{needspace}
+\emergencystretch=3em
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Resonant jets and exact identities}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\FP}{FP}
+\DeclareMathOperator{\Log}{Log}
+\DeclareMathOperator{\Rea}{Re}
+\DeclareMathOperator{\artanh}{artanh}
+\DeclareMathOperator{\Sym}{Sym}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\cG}{\mathcal G}
+\newcommand{\cZ}{\mathcal Z}
+\newcommand{\cH}{\mathcal H}
+\newcommand{\cR}{\mathcal R}
+\newcommand{\laur}[1]{[\eps^{#1}]}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\newcommand{\poch}[2]{(#1)_{#2}}
+\title{Resonant Gamma Jets and Directional Zeta Identities\\[7pt]
+\large Discrete Stieltjes products, shifted polylogarithms,\\
+and local formulas for higher spectral derivatives}
+\author{ProveIt research continuation\\\small Prepared for Vladimir Reshetnikov}
+\date{10 October 2026}
+\hypersetup{pdftitle={Resonant Gamma Jets and Directional Zeta Identities},pdfauthor={ProveIt research continuation},pdfsubject={Polylogarithms, Gamma, Hurwitz zeta, generalized Stieltjes constants}}
+\begin{document}
+\maketitle
+\begin{abstract}
+We develop six compatible exact calculi beyond the current polylogarithm
+manuscript. A discrete product identity evaluates convergent sums containing
+arbitrarily many generalized Stieltjes functions, with an explicit finite
+remainder. A holomorphic remainder for the double Hurwitz zeta function
+separates its two intersecting polar divisors, yielding the complete
+dependence of its constant term on a transverse direction or a curved
+approach. Symmetrized nested sums admit an all-depth, all-index partition
+formula. The higher spectral derivatives of a renormalized reciprocal-Gamma
+product at every moving Gamma zero are then reduced to a finite Bell
+algorithm and a finite triangular family of ordinary antiderivatives.
+An independent shifted-gap identity gives complete reductions of
+complementary-shift double polylogarithms throughout the open argument
+disk. Finally, higher derivatives of polynomially weighted spectral zeta
+functions satisfy finite-difference identities with explicitly local right
+sides; a six-term second-derivative identity has a Vandermonde evaluation.
+It belongs to an alternating Vandermonde family with any number of factors,
+including exact identities for fifth and higher spectral derivatives.
+All stated identities are proved, with domains and normalizations. The
+classical symmetric-sum, parity, and multiplicative-anomaly mechanisms are
+credited explicitly. Numerical checks are reproducible diagnostics, not
+substitutes for proofs. The short Gaussian $S_6$ and $S_8$ evaluations and
+arithmetic minimality questions remain open.
+\end{abstract}
+\vspace{5pt}
+\noindent\textbf{Source baseline.} Repository revision
+\src{16c7e342d7a4a15f59911f322eb90b7f96c2a8b5}; the canonical manuscript and
+all five archives present in \src{docs/incoming} at that revision.
+\clearpage
+\tableofcontents
+\clearpage
+\input{sections/01-scope.tex}
+\input{sections/02-discrete-products.tex}
+\input{sections/03-directional-hurwitz.tex}
+\input{sections/04-symmetric-hurwitz.tex}
+\input{sections/05-gamma-roots.tex}
+\input{sections/06-shifted-polylogarithms.tex}
+\input{sections/07-spectral-products.tex}
+\input{sections/08-audit-research.tex}
+\input{references.tex}
+\end{document}

@@ -1,0 +1,117 @@
+\section{Independent computation formulas}\label{tsc:computation}
+\subsection{Direct three-digamma finite parts}
+Suppose $0\le a_1<a_2<a_3<1$, put $a_4=a_1+1$, and let
+$L_j=a_{j+1}-a_j$. On the interval beginning at $a_j$, use the coordinate
+$t=x-a_j$ and offsets $d_{j\ell}=\{a_j-a_\ell\}$, with $d_{jj}=0$.
+Set
+\[
+ c_j=\prod_{\ell\ne j}\gamma_0(d_{j\ell}).
+\]
+Then a directly integrable version of the canonical triple is
+\begin{equation}\label{tsc:direct-triple}
+ \calJ_{000}(\mathbf a)=\sum_{j=1}^3\left\{
+   \int_0^{L_j}\left[\prod_{\ell=1}^3\gamma_0(t+d_{j\ell})
+                              -\frac{c_j}{t}\right]\dd t
+                          +c_j\log L_j\right\}.
+\end{equation}
+No fractional part is applied inside a single interval: all the offsets
+stay in the appropriate left-limit branches until its upper endpoint.
+The removable value of the bracket at zero is
+\[
+ \gamma c_j+
+  \sum_{\ell\ne j}\gamma_0'(d_{j\ell})
+             \prod_{h\ne j,\ell}\gamma_0(d_{jh}).
+\]
+The three-digamma product is $-\calJ_{000}$. This quadrature uses no
+Tornheim function, Mellin continuation, or polylogarithm derivative, making
+it independent of the right side of \eqref{tsc:psi-integrals}.
+
+\subsection{Stable evaluation of the order-zero polylogarithm jet}
+For $\mu=-x+\ii\theta$ with $|\mu|<2\pi$, differentiating the classical
+Jonqui\`ere expansion \cite[Eq.~25.12.12]{tsc:dlmf-poly} gives
+\begin{equation}\label{tsc:Li-order-zero}
+ \Li_0^{[1]}(e^\mu)
+   =-\frac{\gamma+\Log(-\mu)}{\mu}
+       +\sum_{k\ge0}\frac{\zeta^{[1]}(-k)}{k!}\mu^k.
+\end{equation}
+The principal branch is used for $\Log(-\mu)$.
+For $0\le x\le1$ and $0<|\theta|\le\pi$, this convergent disk contains
+the entire evaluation region. The coefficients can be generated without
+spectral differencing of a polylogarithm:
+\begin{align}\label{tsc:negative-zeta-derivative}
+ \zeta^{[1]}(0)&=-\frac\ell2,\notag\\
+ \frac{\zeta^{[1]}(-k)}{k!}
+  &=\frac{(-1)^{k/2}\zeta(k+1)}{2(2\pi)^k},
+                                      &&k\ge2\text{ even},\notag\\
+ \frac{\zeta^{[1]}(-k)}{k!}
+  &=\frac{\zeta(-k)}{k!}
+       \left(\ell-\psi(k+1)
+                     -\frac{\zeta^{[1]}(k+1)}{\zeta(k+1)}\right),
+                                      &&k\ge1\text{ odd}.
+\end{align}
+These follow directly by differentiating the Riemann functional equation
+at its trivial zeros and at its negative odd arguments.
+For $x>1$, use instead the rapidly convergent defining series
+\begin{equation}\label{tsc:Li-log-series}
+ \Li_0^{[1]}(ze^{-x})=-\sum_{n\ge1}(ze^{-x})^n\log n.
+\end{equation}
+The checker precomputes the first series coefficients, switches to the
+second series after $x=1$, and inserts the analytic first derivative at
+the removable endpoint of the subtracted Mellin integrand. The degree and
+precision choices are numerical safeguards; no interval enclosure is
+claimed. Six root-of-unity endpoint evaluations are also checked against
+the independent finite Gamma formula \eqref{tsc:W-boundary}.
+
+\subsection{Explicit singularity subtraction for the cubic example}
+Let $f(x)$ be the integrand in \eqref{tsc:explicit-cubic-eq}, and put
+\[
+ r_1=-\frac{\psi(1/4)}\pi,\qquad r_2=\frac{\psi(1/2)}\pi,
+ \qquad g(x)=f(x)-\frac{r_1}{x-1/4}-\frac{r_2}{x-1/2}.
+\]
+Then
+\begin{equation}\label{tsc:cubic-numeric}
+ \PV\int_0^1 f(x)\dd x=\int_0^1g(x)\dd x+r_1\log3.
+\end{equation}
+The removable interior values used in the implementation are
+\begin{align*}
+ g(1/4)&=-\frac{\psi'(1/4)}\pi-2\psi(1/4)
+                         -\frac{r_2}{1/4-1/2},\\
+ g(1/2)&=\frac{\psi'(1/2)}\pi-2\psi(1/2)
+                         -\frac{r_1}{1/2-1/4},\\
+ g(0)&=-\pi+4r_1+2r_2.
+\end{align*}
+Thus the numerical check uses an ordinary integral with explicitly removed
+poles, rather than an extrapolated cutoff sequence.
+
+\subsection{Finite tails and an implementation safeguard}
+For the positive-integer Tornheim diagnostics, the Mellin integral is
+truncated at a finite $R$. For $r,s\ge0$ integral, unit colors, and
+$x\ge\log2$,
+\[
+ |\Li_r(ze^{-x})\Li_s(we^{-x})|\le4e^{-2x}.
+\]
+Consequently the omitted tail of \eqref{tsc:T-mellin}, for integer $t\ge1$,
+is at most $4\Gamma(t,2R)/(2^t\Gamma(t))$. This finite-tail implementation
+also avoids enormous-exponent complex logarithms that can arise when a
+black-box infinite-range quadrature samples astronomically large $x$.
+It is a safeguard in the newly written numerical checker, not a correction
+to an existing repository theorem.
+
+\subsection{Artifact map}
+The principal reproducibility files are
+\begin{center}
+\begin{tabular}{p{0.43\textwidth}p{0.49\textwidth}}
+\toprule
+File & Purpose\\\midrule
+\src{article.tex}, \src{sections/} & Modular complete proof text.\\
+\src{article_standalone.tex} & Flattened single-file LaTeX source.\\
+\src{article.pdf} & Compiled article.\\
+\src{code/verify_exact.py} & 621 exact assertions and coefficient-table generation.\\
+\src{code/calculus.py} & Subtracted quadratures and stable polylog jet utilities.\\
+\src{code/verify_numerical.py} & 56 numerical comparisons with explicit tolerances.\\
+\src{results/} & Executed JSON summaries and finite coefficient tables.\\
+\src{notes/} & Source snapshot, audit, proof dependencies, and integration note.\\
+\src{verification/} & Build and executed check logs.\\
+\src{SHA256SUMS} & Integrity manifest; not a mathematical certificate.\\\bottomrule
+\end{tabular}
+\end{center}

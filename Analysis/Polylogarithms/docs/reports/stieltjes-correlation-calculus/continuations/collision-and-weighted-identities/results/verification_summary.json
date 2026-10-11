@@ -1,0 +1,114 @@
+{
+  "status": "all gates passed",
+  "numerical_comparisons": 167,
+  "exact_nonlinear_checks": 213,
+  "exact_collision_checks": 33,
+  "exact_weighted_differential_checks": 4,
+  "exact_weighted_coefficient_obstruction": true,
+  "numerical_checks_are_certified_intervals": false,
+  "python": "3.12.14",
+  "mpmath": "1.3.0",
+  "sympy": "1.14.0",
+  "gates": [
+    {
+      "name": "nonlinear exact checks",
+      "passed": true,
+      "count": 213
+    },
+    {
+      "name": "nonlinear numerical checks",
+      "passed": true,
+      "count": 4,
+      "maximum_absolute_error": "3.914411792e-36"
+    },
+    {
+      "name": "collision exact checks",
+      "passed": true,
+      "count": 33
+    },
+    {
+      "name": "collision_validation.json",
+      "passed": true,
+      "count": 9,
+      "maximum_scaled_residual": "6.69589e-45"
+    },
+    {
+      "name": "stieltjes_collision_validation.json",
+      "passed": true,
+      "count": 2,
+      "maximum_scaled_residual": "2.72151e-31"
+    },
+    {
+      "name": "fully shifted harmonic checks",
+      "passed": true,
+      "count": 72,
+      "maximum_absolute_error": "8.4000154e-52"
+    },
+    {
+      "name": "triple frequency checks",
+      "passed": true,
+      "count": 2,
+      "maximum_absolute_error": "7.1216758e-66"
+    },
+    {
+      "name": "weighted primitive checks",
+      "passed": true,
+      "count": 78,
+      "maximum_absolute_error": "1.28286818981e-79"
+    },
+    {
+      "name": "weighted exact differential checks",
+      "passed": true,
+      "count": 4
+    },
+    {
+      "name": "exact one-product obstruction",
+      "passed": true
+    }
+  ],
+  "runs": [
+    {
+      "script": "verify_nonlinear.py",
+      "returncode": 0,
+      "elapsed_seconds": 6.496,
+      "log": "results/logs/verify_nonlinear.log"
+    },
+    {
+      "script": "exact_collision_coefficients.py",
+      "returncode": 0,
+      "elapsed_seconds": 3.227,
+      "log": "results/logs/exact_collision_coefficients.log"
+    },
+    {
+      "script": "verify_collision.py",
+      "returncode": 0,
+      "elapsed_seconds": 348.413,
+      "log": "results/logs/verify_collision.log"
+    },
+    {
+      "script": "verify_stieltjes_collision.py",
+      "returncode": 0,
+      "elapsed_seconds": 52.727,
+      "log": "results/logs/verify_stieltjes_collision.log"
+    },
+    {
+      "script": "verify_shifted_height_one.py",
+      "returncode": 0,
+      "elapsed_seconds": 7.519,
+      "log": "results/logs/verify_shifted_height_one.log"
+    },
+    {
+      "script": "verify_triple_frequency.py",
+      "returncode": 0,
+      "elapsed_seconds": 50.246,
+      "log": "results/logs/verify_triple_frequency.log"
+    },
+    {
+      "script": "verify_weighted_arctangent.py",
+      "returncode": 0,
+      "elapsed_seconds": 5.776,
+      "log": "results/logs/verify_weighted_arctangent.log"
+    }
+  ],
+  "elapsed_seconds": 348.624
+}

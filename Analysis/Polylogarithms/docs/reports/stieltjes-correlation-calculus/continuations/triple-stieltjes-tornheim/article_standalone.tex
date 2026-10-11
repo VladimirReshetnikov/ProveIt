@@ -1,0 +1,1670 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.95in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{microtype,booktabs,longtable,array,enumitem,xcolor,fancyhdr,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!50!black]{hyperref}
+\usepackage{bookmark}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Triple Stieltjes correlations}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\emergencystretch=2em
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\FP}{FP}
+\DeclareMathOperator{\PV}{PV}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\Log}{Log}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\TT}{\mathbb T}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\CC}{\mathbb C}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\ee}[1]{\mathrm e^{2\pi\ii #1}}
+\newcommand{\calB}{\mathcal B}
+\newcommand{\calJ}{\mathcal J}
+\newcommand{\calT}{\mathcal T}
+\newcommand{\calM}{\mathcal M}
+\newcommand{\Zjet}[2]{\zeta^{[#1]}(#2)}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\newcommand{\pin}{\texttt{8da6871fc2dd5762467320918ba23edd635bac4f}}
+\title{\textbf{Triple Stieltjes Correlations}\\[5pt]
+\large Colored Tornheim Jets, Harmonic Contact Terms,\\
+and Exact Gamma Reductions}
+\author{Research continuation prepared for Vladimir Reshetnikov\\
+\small ProveIt programme \quad\textbullet\quad Prepared with OpenAI ChatGPT}
+\date{10 October 2026}
+\hypersetup{pdftitle={Triple Stieltjes Correlations: Colored Tornheim Jets, Harmonic Contact Terms, and Exact Gamma Reductions},pdfauthor={Prepared for Vladimir Reshetnikov with OpenAI ChatGPT}}
+\begin{document}
+\maketitle
+\begin{abstract}
+The shifted Hurwitz-jet report in the ProveIt repository asks whether the
+canonical product of three separated Stieltjes singularities admits an
+all-index description by colored Tornheim or multiple Lerch jets. We give
+an affirmative answer: six colored Tornheim functions, each entire in its
+three spectral variables when its two colors are nontrivial, generate every
+such finite part. A second formula replaces their jets by three absolutely
+convergent logarithmic Mellin integrals of polylogarithm order derivatives,
+with an explicit endpoint constant at every index. This includes a fully
+specified formula for three digamma factors at arbitrary distinct real,
+and hence rational, shifts.
+
+The same kernel gives all three-factor mean-zero primitive products. Complete homogeneous
+harmonic numbers describe the primitives, while elementary harmonic numbers
+describe the precise contact correction between periodic differentiation
+and pointwise finite-part extension. A reflected subclass admits a stronger
+reduction: one Stieltjes function multiplied by arbitrarily many separated
+cotangent kernels reduces to finitely many single Stieltjes values. At
+index zero and rational shifts, these become finite log-Gamma evaluations.
+An explicit cubic principal value is
+$\gamma+4\log2+3\log\pi-4\log\Gamma(1/4)$.
+
+The proofs are analytic and algebraic. The accompanying implementation passes
+621 exact finite assertions and 56 numerical comparisons, including three
+independent evaluations of a genuinely singular three-digamma product.
+Floating-point checks are diagnostics, not interval certificates. Classical
+Fourier, partial-fraction, and Gamma identities are credited; global priority
+for the derived families is not asserted.
+\end{abstract}
+\vspace{5pt}
+\noindent\textbf{Claim boundary.} This article resolves the specified
+three-shift representation question. It does not prove the remaining
+$S_6$ or $S_8$ special-value conjectures, period independence, or minimal
+transcendental depth. No repository files were modified and no
+proof-assistant formalization is claimed.
+\clearpage
+\tableofcontents
+\clearpage
+% BEGIN sections/01-scope.tex
+\section{Research question, scope, and antecedents}\label{tsc:scope}
+The repository's continuation
+\src{stieltjes-correlation-calculus/continuations/shifted-hurwitz-jets/}
+ends with a concrete question about three distinct translations
+\cite{tsc:shj}. Its bilinear theory has only one surviving Fourier index;
+three factors impose one relation among three nonzero frequencies and leave
+a genuine double sum. The proposed target is an all-index coordinate class,
+not an unproved assertion that every resulting period reduces to one-variable
+Stieltjes constants.
+
+We resolve that target with two interchangeable representations. The first
+is a finite coefficient formula in six colored Tornheim functions
+(Theorems~\ref{tsc:master} and \ref{tsc:stieltjes-triple}). The second is an
+explicit convergent integral formula using only spectral derivatives of
+classical polylogarithms and a finite endpoint correction
+(Theorem~\ref{tsc:mellin-all}). Neither definition invokes an unspecified
+regularization, an integer-relation search, or a numerical limiting value.
+The entire continuation of each colored double sum is proved before any
+spectral coefficient is extracted.
+
+The reflected subclass behaves differently from the generic triple.
+Cotangent partial fractions force a finite reduction at every number of
+separated factors. Combining that algebra with a normalized Stieltjes
+transform gives Theorem~\ref{tsc:all-depth}, and rational shifts give
+Theorem~\ref{tsc:rational}. The distinction is substantive: the generic
+three-factor theorem supplies a colored depth-two representation; the
+reflected theorem supplies a finite single-function reduction. The latter
+does not imply the former has such a reduction.
+
+\subsection{What is inherited and what is developed here}
+The Hurwitz Fourier expansion, the shift relation, Lerch's formula at zero,
+and the polygamma reflection law are classical \cite{tsc:dlmf-zeta,tsc:dlmf-gamma}.
+Espinosa and Moll develop Hurwitz integral and primitive calculus
+\cite{tsc:em1,tsc:em2}. Zhao gives finite double-polylogarithm reductions of
+integer colored Tornheim sums \cite{tsc:zhao}. The unshifted cubic
+log-Gamma integral already has a Tornheim-derivative evaluation due to
+Bailey, D.~Borwein, and J.~M.~Borwein \cite{tsc:bbb}; the canonical ProveIt
+chapter explicitly credits it \cite{tsc:gamma-chapter}. We do not claim any
+of these results as discoveries of this article.
+
+The repository already has an entire periodic Hurwitz family, bilinear
+Stieltjes closure, contact corrections, and normalized primitive identities
+\cite{tsc:repo,tsc:shj}. We reprove the normalization needed below so that
+the trilinear statement is self-contained. The principal addition is the
+separated three-factor proof chain: entire colored continuation, the six
+frequency sectors, all-index extraction, convergent Mellin-jet coordinates,
+and the resulting primitive and contact laws. The all-depth reflected
+formula and its explicit evaluations are accompanying consequences, with
+no claim of global priority for their individual specializations.
+
+\subsection{Source snapshot and limits of the audit}
+The final observed repository head was
+\begin{center}\pin.\end{center}
+The key shifted-jet source was read at that revision and has blob identifier
+\src{990369336bdf2794aae3057c3231eed4ecadbef3}.
+Other selected manuscript reads and the incoming-archive inventory are
+recorded in \src{notes/source_snapshot.json}; not every earlier read was
+pinned to the final head. A Library search also recovered the same
+three-shift question and the abstract of the later nested-harmonic report.
+The seven incoming ZIP files were inventoried, not unpacked or analytically
+audited in full. This is a targeted continuation, not an audit of every
+archived claim.
+
+The current manuscript records a proof of $S_4$, while $S_6$ and the revised
+$S_8$ candidate remain conjectural \cite{tsc:repo}. The present argument does
+not change those statuses. It also does not turn a representation theorem
+into a proof that its coordinates are arithmetically independent.
+
+% END sections/01-scope
+
+% BEGIN sections/02-normalization.tex
+\section{Canonical endpoint normalization}\label{tsc:normalization}
+Write $\TT=\RR/\ZZ$ and $e(x)=\exp(2\pi\ii x)$. Fourier coefficients use
+\[
+ \widehat f(n)=\langle f,e(-nx)\rangle.
+\]
+For $n\ne0$ fix
+\begin{equation}\label{tsc:branch}
+ (2\pi\ii n)^{-u}=(2\pi|n|)^{-u}
+       \exp\!\left(-\frac{\pi\ii u}{2}\sgn n\right).
+\end{equation}
+All shifts below are real modulo one. Values assigned at isolated seam
+points do not affect ordinary integrals. Spectral derivatives are denoted
+$\zeta^{[j]}(s,x)=\partial_s^j\zeta(s,x)$ and
+$\Li_s^{[j]}(z)=\partial_s^j\Li_s(z)$. Parenthesized superscripts on
+$\gamma_m$ or $\psi$ denote derivatives in the spatial argument.
+
+We deliberately use the spectral coordinate $u=1-s$:
+\begin{equation}\label{tsc:stieltjes-convention}
+ \zeta(1-u,x)=-\frac1u+
+     \sum_{m\ge0}\frac{\gamma_m(x)}{m!}u^m,
+ \qquad \gamma_0(x)=-\psi(x).
+\end{equation}
+This changes no Stieltjes convention: it is the usual Laurent expansion
+at $s=1$ after substituting $s=1-u$. The shift relation gives
+\begin{equation}\label{tsc:gamma-local}
+ \gamma_m(x)=\frac{\log^m x}{x}+\gamma_m(1+x),\qquad x>0.
+\end{equation}
+
+\begin{definition}[Scale-one periodic Stieltjes extension]\label{tsc:Cdef}
+For a smooth periodic test function $\varphi$, define
+\begin{equation}\label{tsc:Cfp}
+ \langle C_m,\varphi\rangle=
+ \lim_{\varepsilon\downarrow0}\left\{
+   \int_{\varepsilon}^{1}\gamma_m(x)\varphi(x)\dd x
+    +\frac{\varphi(0)}{m+1}\log^{m+1}\varepsilon\right\}.
+\end{equation}
+The coordinate at the singularity is exactly $x$, without a rescaling or
+an additional subtraction length. Set $C_{m,a}(x)=C_m(x-a)$.
+\end{definition}
+Existence follows from \eqref{tsc:gamma-local}: after subtracting
+$\varphi(0)\log^m x/x$, the integrand is $O(1+|\log x|^m)$.
+
+\begin{lemma}[Entire normalized Hurwitz family]\label{tsc:entire-B}
+The Fourier prescription
+\begin{equation}\label{tsc:Bdef}
+ \calB_u(x)=\sum_{n\ne0}(2\pi\ii n)^{-u}e(nx)
+\end{equation}
+defines an entire distribution-valued function of $u\in\CC$, with mean
+zero and singular support contained in $0$. On $0<x<1$,
+\begin{equation}\label{tsc:Bhurwitz}
+ \calB_u(x)=\frac{\zeta(1-u,x)}{\Gamma(u)},
+\end{equation}
+with removable values interpreted analytically. Near $u=0$,
+\begin{equation}\label{tsc:Zlaurent}
+ \Gamma(u)\calB_u=\frac{\delta_0-1}{u}
+          +\sum_{m\ge0}\frac{C_m}{m!}u^m.
+\end{equation}
+In particular, $\calB_0=\delta_0-1$ and $\langle C_m,1\rangle=0$.
+\end{lemma}
+\begin{proof}
+On a compact set of spectral parameters, the coefficients in
+\eqref{tsc:Bdef}, and every spectral derivative of them, grow at most
+polynomially in $|n|$, with additional powers of $\log|n|$. The Fourier
+coefficients of a smooth test function decrease faster than every power.
+Their pairing is therefore normally convergent, including all spectral
+derivatives. This proves entire dependence in distributions.
+
+For $\Re u>1$, the classical Hurwitz Fourier expansion
+\cite[Eq.~25.11.9]{tsc:dlmf-zeta} gives \eqref{tsc:Bhurwitz}; both sides
+continue analytically away from the seam. The right side is smooth there
+and entire in $u$, since the pole of $\zeta(1-u,x)$ at zero is canceled by
+$1/\Gamma(u)$. This also proves the assertion about singular support.
+
+For the Laurent normalization, split a test-function integral near zero
+and use
+\[
+ \zeta(1-u,x)=x^{u-1}+\zeta(1-u,1+x).
+\]
+The first term has residue $\varphi(0)$ at $u=0$; the second has residue
+$-\int\varphi$. The regular coefficients of the first term are precisely
+the scale-one finite parts of $\log^m x/x$. The regular coefficients of
+the second are smooth. This proves \eqref{tsc:Zlaurent} and the stated
+normalization. Mean zero follows either from the Fourier prescription or
+by comparing Laurent coefficients of its zero Fourier coefficient.
+\end{proof}
+
+\subsection{Products at separated singularities}
+Let $a_1,a_2,a_3$ be pairwise distinct in $\TT$. Near $a_i$, the other two
+translated factors are smooth. A partition of unity therefore defines a
+unique product of these distributions: multiply the singular factor by the
+smooth factors on each such neighborhood and use ordinary multiplication
+elsewhere. The definition is independent of the partition. It also gives
+joint entire dependence for products of the $\calB_{u_i}$, because locally
+only one distribution is multiplied by smooth parameter-dependent factors.
+No assertion about products at a common singularity is needed.
+
+\begin{definition}[Separated triple finite part]\label{tsc:Jdef}
+For $\mathbf m=(m_1,m_2,m_3)\in\ZZ_{\ge0}^3$, put
+\begin{equation}\label{tsc:J}
+ \calJ_{\mathbf m}(\mathbf a)=
+  \left\langle\prod_{i=1}^3 C_{m_i,a_i},1\right\rangle
+  =\FP\int_0^1\prod_{i=1}^3
+       \gamma_{m_i}(\{x-a_i\})\dd x.
+\end{equation}
+At each seam $a_i$, omit the right-hand arc $0<t<\varepsilon_i$ and add
+\begin{equation}\label{tsc:triple-counterterm}
+ \frac{\log^{m_i+1}\varepsilon_i}{m_i+1}
+       \prod_{j\ne i}\gamma_{m_j}(\{a_i-a_j\}).
+\end{equation}
+The three cutoffs may tend to zero independently.
+\end{definition}
+The product of the two smooth factors differs from its seam value by
+$O(t)$, so the same local subtraction proof establishes existence. The
+one-sided nature of these counterterms must be distinguished from the
+symmetric principal values used later for cotangent poles.
+
+% END sections/02-normalization
+
+% BEGIN sections/03-tornheim.tex
+\section{Colored Tornheim functions and entire continuation}\label{tsc:tornheim}
+For an initially convergent double sum, write
+\begin{equation}\label{tsc:Tdef}
+ T(r,s,t;z,w)=\sum_{m,n\ge1}
+           \frac{z^m w^n}{m^r n^s(m+n)^t}.
+\end{equation}
+For example, $\Re r,\Re s,\Re t>1$ is more than sufficient for unit
+colors. The functions below are not defined by assigning a value to a
+divergent instance of this series. They are defined by its unique analytic
+continuation, constructed explicitly in the next theorem.
+
+\begin{theorem}[Nontrivial-color entireness]\label{tsc:T-entire}
+Fix $|z|=|w|=1$ with $z\ne1$ and $w\ne1$. Then
+$T(r,s,t;z,w)$ extends to a jointly entire function of $(r,s,t)\in\CC^3$.
+For $\Re t>0$ and arbitrary $r,s\in\CC$ it is given by
+\begin{equation}\label{tsc:T-mellin}
+ T(r,s,t;z,w)=\frac1{\Gamma(t)}
+   \int_0^\infty x^{t-1}\Li_r(ze^{-x})\Li_s(we^{-x})\dd x.
+\end{equation}
+The two colors may coincide. At every nonnegative integer $k$,
+\begin{equation}\label{tsc:T-negative}
+ T(r,s,-k;z,w)=\sum_{j=0}^k\binom{k}{j}
+                \Li_{r-j}(z)\Li_{s-k+j}(w).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Put $F(x)=\Li_r(ze^{-x})\Li_s(we^{-x})$. Because neither color is one,
+the arguments have neighborhoods avoiding the polylogarithm singularity
+at one. The standard analytic continuation of $\Li_r$ is entire in its
+order there \cite{tsc:dlmf-poly}. Thus $F$ is analytic in $x$ near zero,
+jointly with $r,s$. On compact sets of orders, the power series for large
+$x$ gives an exponentially decreasing bound for $F$ and its spectral
+derivatives. These facts prove convergence and holomorphy of
+\eqref{tsc:T-mellin} for $\Re t>0$. Expanding the two polylogarithms where
+absolute convergence permits and integrating $e^{-(m+n)x}$ identifies it
+with \eqref{tsc:Tdef} on a nonempty open set.
+
+The Taylor coefficients at the lower endpoint are
+\begin{equation}\label{tsc:Fcoeff}
+ f_k=[x^k]F(x)=\frac{(-1)^k}{k!}
+        \sum_{j=0}^k\binom{k}{j}
+                   \Li_{r-j}(z)\Li_{s-k+j}(w).
+\end{equation}
+For any positive integer $N$, the expression
+\begin{align}\label{tsc:T-subtracted}
+ \frac1{\Gamma(t)}\bigg\{&
+  \int_0^1 x^{t-1}\left(F(x)-\sum_{k=0}^{N-1}f_kx^k\right)\dd x
+  +\int_1^\infty x^{t-1}F(x)\dd x
+  +\sum_{k=0}^{N-1}\frac{f_k}{t+k}\bigg\}
+\end{align}
+is holomorphic for $\Re t>-N$ after removing the apparent singularities
+at $0,-1,\ldots,-N+1$. Local uniformity in $r,s,t$ follows from the Taylor
+remainder and exponential decay. The only poles of the braces are the
+listed simple ones, and the simple zeros of $1/\Gamma(t)$ cancel them.
+The expressions for different $N$ agree on overlaps, which proves joint
+entireness. At $t=-k$, the zero of $1/\Gamma(t)$ has leading coefficient
+$(-1)^k k!$; multiplication by the residue $f_k$ gives
+\eqref{tsc:T-negative}.
+\end{proof}
+
+\begin{remark}[Why the color assumption matters]
+At $z=1$ or $w=1$, the Taylor argument at $x=0$ changes: a polylogarithm
+can have a fractional-power or logarithmic local term. The theorem does
+not assert global entireness in that case. Later primitive formulas can
+allow color one near positive spectral integers because the original
+Tornheim series then converges absolutely. These are different reasons
+for analyticity, and they must not be conflated.
+\end{remark}
+
+\subsection{An explicit jet at the zero third order}
+For fixed nontrivial colors, define ordinary convergent logarithmic moments
+\begin{align}\label{tsc:Mmoments}
+ M_j(r,s;z,w)={}&\int_0^1\frac{\log^j x}{x}
+        \bigl(\Li_r(ze^{-x})\Li_s(we^{-x})-\Li_r(z)\Li_s(w)\bigr)\dd x\notag\\
+ &+\int_1^\infty\frac{\log^j x}{x}
+                    \Li_r(ze^{-x})\Li_s(we^{-x})\dd x.
+\end{align}
+Taking $N=1$ in \eqref{tsc:T-subtracted} yields, locally for $|t|<1$,
+\begin{equation}\label{tsc:T-zero-jet}
+ T(r,s,t;z,w)=\frac1{\Gamma(1+t)}
+  \left\{\Li_r(z)\Li_s(w)+
+               \sum_{j\ge0}\frac{M_j(r,s;z,w)}{j!}t^{j+1}\right\}.
+\end{equation}
+Every derivative in $r,s$ may be passed through the moments. In particular,
+\[
+ T(r,s,0;z,w)=\Li_r(z)\Li_s(w),\qquad
+ T_t(r,s,0;z,w)=\gamma\Li_r(z)\Li_s(w)+M_0(r,s;z,w).
+\]
+These formulas specify the third-order jets by convergent integrals rather
+than by a limiting procedure at a pole.
+
+\subsection{Classical double-polylogarithm and harmonic coordinates}
+Use the convention
+\[
+ \Li_{p,q}(z,w)=\sum_{N>n\ge1}\frac{z^Nw^n}{N^p n^q}
+\]
+where convergent, followed by analytic continuation when justified.
+Changing variables $N=m+n$ gives
+\begin{equation}\label{tsc:T-zero-first}
+ T(0,s,t;z,w)=\Li_{t,s}(z,w/z).
+\end{equation}
+For $z\ne w$, summing the finite geometric progression at fixed $m+n$
+also gives
+\begin{equation}\label{tsc:T00}
+ T(0,0,t;z,w)=\frac{w\Li_t(z)-z\Li_t(w)}{z-w}.
+\end{equation}
+For positive integers $r,s$, the standard partial-fraction reduction
+underlying Zhao's result \cite{tsc:zhao} is
+\begin{align}\label{tsc:integer-reduction}
+ T(r,s,t;z,w)={}&\sum_{j=1}^r\binom{r+s-j-1}{s-1}
+                     \Li_{t+r+s-j,j}(w,z/w)\notag\\
+ &+\sum_{j=1}^s\binom{r+s-j-1}{r-1}
+                     \Li_{t+r+s-j,j}(z,w/z).
+\end{align}
+For completeness, the rational identity being summed is
+\[
+ \frac1{m^r n^s}=
+  \sum_{j=1}^r\frac{\binom{r+s-j-1}{s-1}}{m^j(m+n)^{r+s-j}}
+ +\sum_{j=1}^s\frac{\binom{r+s-j-1}{r-1}}{n^j(m+n)^{r+s-j}}.
+\]
+It follows by repeated use of
+$1/(mn)=1/(m(m+n))+1/(n(m+n))$, or by comparing principal parts in
+$m$ for fixed $m+n$. Multiplying by $(m+n)^{-t}z^mw^n$ and summing proves
+\eqref{tsc:integer-reduction} first in an absolutely convergent domain.
+
+At unit arguments and in a convergence domain,
+\[
+ \Li_{p,q}(1,1)=\sum_{N\ge1}\frac{H_{N-1}^{(q)}}{N^p},
+ \qquad H_N^{(q)}=\sum_{j=1}^N j^{-q}.
+\]
+Thus the colored coordinate class includes generalized harmonic Euler sums.
+The integer reduction is a known identity, not a new theorem here.
+Moreover, differentiating it in the freely complex variable $t$ is
+legitimate; differentiating it in the discrete integers $r$ or $s$ is not
+licensed by the formula. The whole point of Theorem~\ref{tsc:T-entire}
+is to supply a genuine analytic family for those missing jets.
+
+% END sections/03-tornheim
+
+% BEGIN sections/04-triple.tex
+\section{The six-sector kernel and the triple coefficient theorem}\label{tsc:triple}
+Let $\mathbf s=(s_1,s_2,s_3)$ and let $\mathbf a=(a_1,a_2,a_3)$ have
+pairwise distinct entries modulo one. For each $k\in\{1,2,3\}$, let $i,j$
+be the other two indices in increasing order and put
+\begin{equation}\label{tsc:colors}
+ z_{ik}=e(a_k-a_i),\qquad z_{jk}=e(a_k-a_j).
+\end{equation}
+Define
+\begin{align}\label{tsc:kernel}
+ \calT(\mathbf s;\mathbf a)=\sum_{k=1}^3\bigg[&
+  e^{-\pi\ii(s_i+s_j-s_k)/2}
+       T(s_i,s_j,s_k;z_{ik},z_{jk})\notag\\
+ &+e^{\pi\ii(s_i+s_j-s_k)/2}
+       T(s_i,s_j,s_k;z_{ik}^{-1},z_{jk}^{-1})\bigg].
+\end{align}
+All six terms are entire in $\mathbf s$ by Theorem~\ref{tsc:T-entire}.
+For real spectral variables the terms in each bracket are conjugate, but
+\eqref{tsc:kernel} itself is the complex-analytic definition.
+
+\begin{theorem}[Six-sector product identity]\label{tsc:master}
+For all $\mathbf s\in\CC^3$,
+\begin{equation}\label{tsc:master-eq}
+ \left\langle\prod_{i=1}^3\calB_{s_i}(x-a_i),1\right\rangle
+       =(2\pi)^{-s_1-s_2-s_3}\calT(\mathbf s;\mathbf a).
+\end{equation}
+The left side is the separated distribution product. For $\Re s_i>0$
+it is an ordinary integral. In particular,
+\begin{equation}\label{tsc:T000-check}
+ \calT(0,0,0;\mathbf a)=2.
+\end{equation}
+\end{theorem}
+\begin{proof}
+First take $\Re s_i>1$, so all three Fourier series are absolutely
+convergent. Integration leaves exactly the triples of nonzero integers
+$(n_1,n_2,n_3)$ with $n_1+n_2+n_3=0$. Such a triple has either two
+positive entries and one negative entry, or the reverse. If $k$ is the
+negative singleton, write $n_i=m$, $n_j=n$, $n_k=-(m+n)$ with $m,n\ge1$.
+The Fourier powers contribute
+\[
+ (2\pi)^{-s_1-s_2-s_3}
+   e^{-\pi\ii(s_i+s_j-s_k)/2}
+          m^{-s_i}n^{-s_j}(m+n)^{-s_k}.
+\]
+The translation factors contribute
+$e(m(a_k-a_i)+n(a_k-a_j))=z_{ik}^m z_{jk}^n$.
+Reversing all three signs produces the other term in the bracket. The
+six disjoint sectors exhaust the Fourier constraint and give
+\eqref{tsc:master-eq}.
+
+Both sides are entire in all three variables. For the left side this was
+proved locally at separated singularities; for the right side it follows
+from the colored Mellin theorem. The identity theorem, applied successively
+to the three variables, extends the equality to all of $\CC^3$.
+For $\Re s_i>0$, the only singularity near $a_i$ is an integrable
+power $t^{s_i-1}$, so the stated ordinary-integral interpretation holds.
+Finally, separated delta functions have zero pairwise products, and
+\[
+ (\delta_{a_1}-1)(\delta_{a_2}-1)(\delta_{a_3}-1)
+    =\delta_{a_1}+\delta_{a_2}+\delta_{a_3}-1.
+\]
+Pairing with one gives \eqref{tsc:T000-check}.
+\end{proof}
+
+\subsection{All Stieltjes indices}
+Set
+\begin{equation}\label{tsc:E}
+ A=\gamma+\log(2\pi),\qquad
+ E(u)=\Gamma(1+u)(2\pi)^{-u}
+ =\exp\left(-Au+\sum_{k\ge2}\frac{(-1)^k\zeta(k)}k u^k\right).
+\end{equation}
+The power series is used near zero. Its coefficients are explicit Bell
+polynomials in $A,\zeta(2),\ldots$.
+
+\begin{theorem}[All-index triple Stieltjes closure]\label{tsc:stieltjes-triple}
+For every nonnegative triple $\mathbf m$ and every separated real shift
+triple $\mathbf a$,
+\begin{equation}\label{tsc:all-index}
+ \boxed{\displaystyle
+ \calJ_{\mathbf m}(\mathbf a)=
+  \left(\prod_{i=1}^3m_i!\right)
+  [u_1^{m_1+1}u_2^{m_2+1}u_3^{m_3+1}]
+       \left(\prod_{i=1}^3E(u_i)\right)\calT(\mathbf u;\mathbf a).}
+\end{equation}
+Every coefficient on the right is a finite combination of jets of the six
+entire colored Tornheim functions. No diagonal Laurent finite part or
+unspecified order of limits is present.
+\end{theorem}
+\begin{proof}
+Multiply \eqref{tsc:master-eq} by $\prod_i\Gamma(u_i)$ and use
+\eqref{tsc:Zlaurent}. The coefficient of
+$u_1^{m_1}u_2^{m_2}u_3^{m_3}$ on the left is
+$\calJ_{\mathbf m}/\prod_i m_i!$. Indeed, a residue factor in coordinate
+$i$ has exponent $-1$ in that coordinate and no dependence on $u_i$ in
+any other factor; it cannot contribute to a nonnegative exponent there.
+On the right, $\Gamma(u_i)=\Gamma(1+u_i)/u_i$. Moving the three simple
+coordinate denominators into the coefficient extraction gives
+\eqref{tsc:all-index}. This also proves directly that simultaneous or
+iterated coefficient extraction has the same meaning here.
+\end{proof}
+
+\subsection{The fully regularized three-digamma formula}
+Define $\mathscr D_A=\prod_{i=1}^3(\partial_{s_i}-A)$. Since each
+$\gamma_0=-\psi$, the first case of \eqref{tsc:all-index} is
+\begin{equation}\label{tsc:digamma-operator}
+ \FP\int_0^1\prod_{i=1}^3\psi(\{x-a_i\})\dd x
+       =-\left.\mathscr D_A\calT(\mathbf s;\mathbf a)\right|_{\mathbf s=0}.
+\end{equation}
+This is already a finite, fully normalized answer to the first concrete
+target in \cite{tsc:shj}. An equivalent three-term real form is useful.
+Put $\alpha=A+\pi\ii/2$. Then
+\begin{align}\label{tsc:digamma-three}
+ \FP\int_0^1\prod_{i=1}^3\psi(\{x-a_i\})\dd x
+ =-2\Re\sum_{k=1}^3
+ \left.(\partial_r-\alpha)(\partial_s-\alpha)
+       (\partial_t-\overline\alpha)
+       T(r,s,t;z_{ik},z_{jk})\right|_{r=s=t=0}.
+\end{align}
+Only derivatives of order at most one in each of the three spectral
+variables occur. The next section turns these derivatives into ordinary
+convergent integrals.
+
+\subsection{Translation and spectral lowering}
+The Fourier definition gives $\partial_x\calB_s=\calB_{s-1}$ as an
+entire distributional identity. Differentiating the separated product yields
+\begin{equation}\label{tsc:lowering}
+ \partial_{a_j}\calT(\mathbf s;\mathbf a)
+       =-2\pi\calT(\mathbf s-\mathbf e_j;\mathbf a),
+ \qquad
+ \sum_{j=1}^3\calT(\mathbf s-\mathbf e_j;\mathbf a)=0.
+\end{equation}
+The second equality also follows from simultaneous translation invariance.
+These are identities for the complete six-sector combination, not a license
+to discard sectors or their phases.
+
+% END sections/04-triple
+
+% BEGIN sections/05-mellin-jets.tex
+\section{Three convergent polylogarithmic integrals at every index}\label{tsc:polylog-moments}
+The coefficient formula has a particularly explicit integral counterpart.
+Let
+\begin{equation}\label{tsc:cdalpha}
+ \ell=\log(2\pi),\qquad c=\ell+\frac{\pi\ii}{2},\qquad
+ d=\ell-\frac{\pi\ii}{2},\qquad \alpha=\gamma+c.
+\end{equation}
+For a nontrivial unit color $z$ and $x\ge0$, define
+\begin{equation}\label{tsc:Vdef}
+ V_m(z,x)=m![u^{m+1}]\,
+      \Gamma(1+u)e^{-cu}\Li_u(ze^{-x}).
+\end{equation}
+This is a finite expression in ordinary polylogarithm order derivatives.
+If
+\[
+ E_+(u)=\Gamma(1+u)e^{-cu}=\sum_{j\ge0}e_j^+u^j,
+\]
+then
+\begin{equation}\label{tsc:Vfinite}
+ V_m(z,x)=m!\sum_{r=0}^{m+1}\frac{e_{m+1-r}^+}{r!}
+                         \Li_0^{[r]}(ze^{-x}),
+\end{equation}
+where
+\begin{equation}\label{tsc:e-recurrence}
+ e_0^+=1,\qquad
+ n e_n^+=-\alpha e_{n-1}^+
+          +\sum_{k=2}^n(-1)^k\zeta(k)e_{n-k}^+.
+\end{equation}
+For example, with $Z_r=\Li_0^{[r]}(ze^{-x})$,
+\begin{align}\label{tsc:Vexamples}
+ V_0&=Z_1-\alpha Z_0,\notag\\
+ V_1&=\frac{Z_2}{2}-\alpha Z_1+
+                  \frac{\alpha^2+\zeta(2)}2Z_0,\notag\\
+ V_2&=\frac{Z_3}{3}-\alpha Z_2+
+      (\alpha^2+\zeta(2))Z_1
+      -\frac{\alpha^3+3\alpha\zeta(2)+2\zeta(3)}3 Z_0.
+\end{align}
+In particular, $Z_0(q)=q/(1-q)$ is elementary.
+
+For $F$ analytic at zero and exponentially decreasing at infinity, put
+\begin{align}\label{tsc:Mfunctional}
+ \calM_{n,d}[F]={}&
+    \int_0^1\frac{F(x)-F(0)}x(\log x-d)^n\dd x
+   +\int_1^\infty\frac{F(x)}x(\log x-d)^n\dd x\notag\\
+ &+\frac{(-d)^{n+1}}{n+1}F(0).
+\end{align}
+Both displayed integrals are ordinary absolutely convergent integrals.
+The last term is essential; it is the contribution of the simple Mellin
+pole after multiplication by $e^{-du}$.
+
+\begin{theorem}[All-index convergent Mellin formula]\label{tsc:mellin-all}
+With the colors \eqref{tsc:colors} and the conventions above,
+\begin{equation}\label{tsc:M-all}
+ \boxed{\displaystyle
+ \calJ_{\mathbf m}(\mathbf a)=2\Re\sum_{k=1}^3
+ \calM_{m_k,d}\!\big[
+       V_{m_i}(z_{ik},\cdot)V_{m_j}(z_{jk},\cdot)\big].}
+\end{equation}
+Thus every separated triple Stieltjes finite part has a representation by
+three convergent logarithmic integrals and three explicit endpoint terms.
+Only finitely many polylogarithm order derivatives at order zero occur.
+\end{theorem}
+\begin{proof}
+Consider the positive-frequency sector with singleton $k$. Before Laurent
+coefficient extraction, multiply its Tornheim term by the three Gamma
+factors appearing in \eqref{tsc:Zlaurent}. Inserting
+\eqref{tsc:T-mellin} cancels the Gamma factor belonging to the singleton.
+The sector becomes the analytic continuation of
+\begin{equation}\label{tsc:sector-mellin}
+ \Gamma(u_i)e^{-cu_i}\Gamma(u_j)e^{-cu_j}e^{-du_k}
+ \int_0^\infty x^{u_k-1}
+           \Li_{u_i}(z_{ik}e^{-x})\Li_{u_j}(z_{jk}e^{-x})\dd x.
+\end{equation}
+Taking the nonnegative Laurent coefficients in $u_i,u_j$, with the
+factorials prescribed by \eqref{tsc:stieltjes-convention}, replaces the two
+polylogarithmic factors by $V_{m_i}$ and $V_{m_j}$.
+
+For the remaining variable $u=u_k$, write the Mellin integral as
+\[
+ \frac{F(0)}u+
+ \int_0^1x^{u-1}(F(x)-F(0))\dd x+
+ \int_1^\infty x^{u-1}F(x)\dd x.
+\]
+The coefficient $m_k![u^{m_k}]$ after multiplication by $e^{-du}$ is exactly
+\eqref{tsc:Mfunctional}. The nontrivial colors ensure $F(x)-F(0)=O(x)$;
+all of its spectral derivatives have the same property. At infinity they
+decay exponentially. These local bounds justify every finite spectral
+extraction under the subtracted integrals. Reversing the three Fourier
+signs conjugates this expression because the shifts and Stieltjes indices
+are real. Summing the three positive sectors and their conjugates proves
+\eqref{tsc:M-all}.
+\end{proof}
+
+\begin{corollary}[A convergent three-digamma formula]\label{tsc:psi-mellin}
+Put
+\[
+ W_z(x)=\left.\partial_s\Li_s(ze^{-x})\right|_{s=0}
+            -\left(A+\frac{\pi\ii}{2}\right)\frac{ze^{-x}}{1-ze^{-x}}.
+\]
+Then
+\begin{align}\label{tsc:psi-integrals}
+ \FP\int_0^1\prod_{i=1}^3\psi(\{x-a_i\})\dd x
+ =-2\Re\sum_{k=1}^3\bigg\{&
+  \int_0^1\frac{W_{z_{ik}}(x)W_{z_{jk}}(x)
+                 -W_{z_{ik}}(0)W_{z_{jk}}(0)}x\dd x\notag\\
+ &+\int_1^\infty\frac{W_{z_{ik}}(x)W_{z_{jk}}(x)}x\dd x
+   -dW_{z_{ik}}(0)W_{z_{jk}}(0)\bigg\}.
+\end{align}
+\end{corollary}
+All integrals on the right are ordinary convergent integrals. For example,
+at $(a_1,a_2,a_3)=(0,1/4,2/3)$ the common value is approximately
+\[
+ 30.589007126644942529054519724157914\ldots.
+\]
+This decimal is a diagnostic, not a claim of a reduction to a smaller
+constant basis. The accompanying code evaluates the left side by its
+three local endpoint subtractions and the right side by convergent
+polylogarithmic series; their residual at 40 working digits is below
+$3\cdot10^{-38}$.
+
+\subsection{Rational colors make the endpoint data finite}
+Let $z=e(p/q)\ne1$ with integers $0<p<q$. Splitting the polylogarithm
+series into residue classes gives the entire identity
+\begin{equation}\label{tsc:finite-DFT}
+ \Li_u(z)=q^{-u}\sum_{r=1}^q z^r\zeta(u,r/q).
+\end{equation}
+The apparent pole on the right cancels because $\sum_{r=1}^qz^r=0$.
+Lerch's formula $\zeta^{[1]}(0,x)=\log\Gamma(x)-\ell/2$ then gives
+\begin{equation}\label{tsc:W-boundary}
+ W_z(0)=\sum_{r=1}^qz^r\log\Gamma(r/q)
+       -(\alpha+\log q)\frac{z}{1-z}.
+\end{equation}
+More generally, substituting \eqref{tsc:finite-DFT} into \eqref{tsc:Vdef}
+gives every $V_m(z,0)$ as a finite combination of rational-argument
+Hurwitz jets at zero. Thus the endpoint terms in the rational-shift
+three-digamma formula are explicitly Gamma-valued, even when the remaining
+convergent integrals have not been reduced further.
+
+% END sections/05-mellin-jets
+
+% BEGIN sections/06-primitives.tex
+\section{Mean-zero primitives and harmonic coefficients}\label{tsc:primitives}
+For $r\ge1$, let $U_{m,r}$ be the unique mean-zero periodic distribution
+satisfying $\partial_x^r U_{m,r}=C_m$. Equivalently,
+\[
+ \widehat U_{m,r}(n)=(2\pi\ii n)^{-r}\widehat C_m(n),\quad n\ne0,
+ \qquad \widehat U_{m,r}(0)=0.
+\]
+These are represented by ordinary locally integrable functions. We give
+the exact normalization because a primitive fixed at a base point is not
+in general the same function.
+
+For $N\ge0$, define complete homogeneous harmonic coefficients by
+\begin{equation}\label{tsc:homogeneous}
+ \sum_{j\ge0}h_j^{(N)}v^j
+     =\prod_{k=1}^N(1-v/k)^{-1}
+     =\exp\left(\sum_{k\ge1}\frac{H_N^{(k)}}k v^k\right).
+\end{equation}
+Thus $h_0^{(N)}=1$, $h_1^{(N)}=H_N$,
+$h_2^{(N)}=(H_N^2+H_N^{(2)})/2$, and
+\[
+ h_3^{(N)}=\frac{H_N^3+3H_NH_N^{(2)}+2H_N^{(3)}}6.
+\]
+For $N=0$, all positive-index coefficients are zero.
+
+\begin{proposition}[Explicit normalized primitive]\label{tsc:primitive-formula}
+For $m\ge0$, $r\ge1$, and $0<x<1$,
+\begin{align}\label{tsc:Ucoef}
+ U_{m,r}(x)
+ &=m![u^{m+1}]\frac{\Gamma(1+u)}{\Gamma(r+u)}\zeta(1-r-u,x)\notag\\
+ &=\frac{(-1)^{m+1}m!}{(r-1)!}
+       \sum_{j=0}^{m+1}\frac{h_{m+1-j}^{(r-1)}}{j!}
+                   \zeta^{[j]}(1-r,x).
+\end{align}
+In particular,
+\begin{equation}\label{tsc:Uone}
+ U_{m,1}(x)=\frac{(-1)^{m+1}}{m+1}\zeta^{[m+1]}(0,x),
+ \qquad U_{0,1}(x)=\frac\ell2-\log\Gamma(x).
+\end{equation}
+\end{proposition}
+\begin{proof}
+The meromorphic family $\Gamma(u)\calB_{r+u}$ has Fourier coefficients
+$\Gamma(u)(2\pi\ii n)^{-r-u}$. Its coefficient $m![u^m]$ is therefore
+the stated mean-zero primitive. On the open interval, use
+\eqref{tsc:Bhurwitz} and move the factor $1/u$ to the coefficient index;
+this proves the first equality in \eqref{tsc:Ucoef}. Next,
+\[
+ \frac{\Gamma(1+u)}{\Gamma(r+u)}
+   =\frac1{(r-1)!}\prod_{k=1}^{r-1}(1+u/k)^{-1}
+   =\frac1{(r-1)!}\sum_{j\ge0}(-1)^jh_j^{(r-1)}u^j.
+\]
+Multiplication by the Taylor expansion of $\zeta(1-r-u,x)$ gives the second
+equality. The case $r=1$ and Lerch's formula give \eqref{tsc:Uone}.
+Mean zero and the distributional derivative relation follow from the Fourier
+construction; they are not extra constants to be chosen afterward.
+\end{proof}
+These one-function ladders belong to the classical Hurwitz primitive
+calculus and its repository developments \cite{tsc:em2,tsc:shj}. Their
+three-factor use is the next result.
+
+\begin{theorem}[All primitive triple identities]\label{tsc:primitive-triple}
+For $r_i\ge1$ and $m_i\ge0$,
+\begin{align}\label{tsc:Utriple}
+ \int_0^1\prod_{i=1}^3U_{m_i,r_i}(\{x-a_i\})\dd x
+ ={}&(2\pi)^{-r_1-r_2-r_3}\left(\prod_{i=1}^3m_i!\right)\notag\\
+ &\quad\cdot[\mathbf u^{\mathbf m+\mathbf1}]
+     \left(\prod_{i=1}^3E(u_i)\right)
+                         \calT(\mathbf r+\mathbf u;\mathbf a).
+\end{align}
+This is an ordinary convergent integral. It remains valid when some or all
+shifts coincide, with the right side evaluated in its locally convergent
+positive-order Tornheim representation.
+\end{theorem}
+\begin{proof}
+For separated shifts, apply \eqref{tsc:master-eq} to
+$\prod_i\Gamma(u_i)\calB_{r_i+u_i}$ and extract the three nonnegative
+Laurent coefficients, exactly as in Theorem~\ref{tsc:stieltjes-triple}.
+This gives \eqref{tsc:Utriple}.
+
+Near a seam, $U_{m,1}$ has at worst logarithmic growth of finite degree.
+For $r\ge2$ the possible singular term is a power $x^{r-1}$ multiplied
+by a logarithmic polynomial, and the function remains bounded. Every
+finite product in the theorem is therefore integrable, including at a
+common seam. On the double-sum side, a neighborhood of $r_i\ge1$ is an
+absolute-convergence domain even for trivial colors: logarithmic
+spectral derivatives are dominated by a slightly decreased positive power,
+and the worst central denominator is $mn(m+n)$. Summing first over
+$m+n=N$ gives $2H_{N-1}/N^2$. This proves local normal convergence for
+all the finitely many derivatives in question. Hence the separated formula
+passes to coincident shifts on both sides. This uses no continuation of a
+singular Stieltjes product to a collision.
+\end{proof}
+
+\begin{corollary}[Shifted centered log-Gamma cube]\label{tsc:loggamma-triple}
+Let $G(x)=\log\Gamma(x)-\ell/2$. Then
+\begin{equation}\label{tsc:Gtriple}
+ \int_0^1\prod_{i=1}^3G(\{x-a_i\})\dd x
+   =-\frac1{(2\pi)^3}
+       \left.\mathscr D_A\calT(\mathbf s;\mathbf a)\right|_{\mathbf s=(1,1,1)}.
+\end{equation}
+\end{corollary}
+At coincident shifts this is another representation of the known
+Bailey--Borwein--Borwein cubic log-Gamma evaluation, not a new evaluation
+of that old special case \cite{tsc:bbb,tsc:gamma-chapter}. Arbitrary shifted
+mixed-index and mixed-primitive versions follow directly from
+\eqref{tsc:Utriple} without another Fourier calculation.
+
+% END sections/06-primitives
+
+% BEGIN sections/07-contacts.tex
+\section{Spatial derivatives and exact harmonic contact terms}\label{tsc:contacts}
+The identity $\partial_x\calB_s=\calB_{s-1}$ is distributional. Passing
+from it to a pointwise polygamma product requires a local correction. This
+section gives that correction explicitly and does not alter the correct
+pointwise derivative tower already present in the repository.
+
+\subsection{Finite reductions at negative integral spectral orders}
+For $r\ge1$, $\calB_{-r}=\delta_0^{(r)}$. Applying this to the master
+identity gives a useful family of exact spectral resonances.
+\begin{proposition}\label{tsc:negative-resonance}
+For $r\ge1$ and any complex $s,t$,
+\begin{align}\label{tsc:negative-resonance-eq}
+ \calT(-r,s,t;\mathbf a)
+ ={}&(2\pi)^{s+t-r}(-1)^r
+   \sum_{j=0}^r\binom rj
+    \calB_{s-j}(a_1-a_2)\calB_{t-r+j}(a_1-a_3).
+\end{align}
+Here the functions on the right are evaluated away from their seam using
+\eqref{tsc:Bhurwitz}. At order zero, the missing constant mode changes
+the formula to
+\begin{align}\label{tsc:zero-resonance}
+ \calT(0,s,t;\mathbf a)={}&(2\pi)^{s+t}
+    \calB_s(a_1-a_2)\calB_t(a_1-a_3)\notag\\
+ &-e^{-\pi\ii(s-t)/2}\Li_{s+t}(e(a_3-a_2))\notag\\
+ &-e^{\pi\ii(s-t)/2}\Li_{s+t}(e(a_2-a_3)).
+\end{align}
+\end{proposition}
+\begin{proof}
+Pair $\delta_{a_1}^{(r)}$ with the product of the other two, smooth,
+factors. The sign $(-1)^r$ is the defining sign of a delta derivative,
+and the product rule with $\partial_x^j\calB_s=\calB_{s-j}$ gives
+\eqref{tsc:negative-resonance-eq}. For zero order use
+$\calB_0=\delta_0-1$, not $\delta_0$. The remaining bilinear mean is
+computed by its two opposite-frequency sectors and equals the two
+polylogarithm terms after multiplication by $(2\pi)^{s+t}$.
+\end{proof}
+The formulas reduce the complete six-sector expression on these spectral
+hyperplanes. They do not determine its transverse derivatives, which are
+precisely among the data needed for general Stieltjes triple products.
+
+\subsection{Elementary harmonic coefficients}
+Define $e_j^{(r)}$ by
+\begin{equation}\label{tsc:elementary}
+ \prod_{k=1}^r(1+v/k)=\sum_{j=0}^r e_j^{(r)}v^j,
+ \qquad e_j^{(r)}=0\quad(j>r).
+\end{equation}
+Thus $e_1^{(r)}=H_r$,
+$e_2^{(r)}=(H_r^2-H_r^{(2)})/2$, and
+$e_3^{(r)}=(H_r^3-3H_rH_r^{(2)}+2H_r^{(3)})/6$.
+Unlike the complete coefficients in the primitive ladder, these have finite
+support in $j$.
+
+Let $D_{m,r}$ denote the scale-one, one-sided Hadamard extension of the
+\emph{pointwise} function $\gamma_m^{(r)}(x)$ on $0<x<1$. At the right-hand
+seam, expand the test function through degree $r$, integrate all singular
+power-log terms, and delete the divergent terms in the cutoff. This
+specifies the extension without arbitrary delta terms. Put $D_{m,0}=C_m$.
+
+\begin{theorem}[Derivative--extension conversion]\label{tsc:contact-single}
+For $r\ge0$,
+\begin{equation}\label{tsc:single-contact}
+ \partial_x^r C_m=D_{m,r}+c_{m,r}\delta_0^{(r)},
+ \qquad c_{m,r}=(-1)^{m+1}m!e_{m+1}^{(r)}.
+\end{equation}
+In particular $c_{m,0}=0$, $c_{0,r}=-H_r$, and $c_{m,r}=0$ for $m\ge r$.
+\end{theorem}
+\begin{proof}
+In a local right-hand coordinate, the meromorphic distribution
+$x_+^{u-r-1}$ has residue
+$(-1)^r\delta_0^{(r)}/r!$ at $u=0$. Its regular Laurent coefficients
+are the scale-one finite parts of $x^{-r-1}\log^j x/j!$.
+Differentiating the singular term $x^{u-1}$ in
+$\zeta(1-u,x)$ gives
+\[
+ \partial_x^r x^{u-1}=(-1)^r r!P_r(u)x^{u-r-1},
+ \qquad P_r(u)=\prod_{k=1}^r(1-u/k).
+\]
+Hence the residue contribution after multiplication is
+$P_r(u)\delta_0^{(r)}/u$. The regular nonresidue terms give exactly the
+raw extensions $D_{m,r}$. Comparing with the $r$th derivative of
+\eqref{tsc:Zlaurent}, the additional coefficient is
+$m![u^{m+1}]P_r(u)=(-1)^{m+1}m!e_{m+1}^{(r)}$.
+The remaining smooth local terms introduce no contact distribution.
+For $r=0$ the assertion is immediate. This proves the formula.
+\end{proof}
+
+\begin{theorem}[Contact-complete derivative triple]\label{tsc:contact-triple}
+Let $r_i,m_i\ge0$, $R=r_1+r_2+r_3$, and retain distinct shifts. Then
+\begin{align}\label{tsc:contact-triple-eq}
+ &\FP\int_0^1\prod_{i=1}^3
+            \gamma_{m_i}^{(r_i)}(\{x-a_i\})\dd x\notag\\
+ &\quad=(2\pi)^R\left(\prod_{i=1}^3m_i!\right)
+    [\mathbf u^{\mathbf m+\mathbf1}]
+        \left(\prod_{i=1}^3E(u_i)\right)
+                       \calT(\mathbf u-\mathbf r;\mathbf a)\notag\\
+ &\qquad\quad-
+    \sum_{i=1}^3(-1)^{r_i}c_{m_i,r_i}
+       \left.\partial_x^{r_i}
+              \prod_{j\ne i}\gamma_{m_j}^{(r_j)}(\{x-a_j\})
+       \right|_{x=a_i}.
+\end{align}
+The local derivatives in the last line are ordinary derivatives of smooth
+functions at $a_i$. In particular, setting all $m_i=0$ gives identities for
+arbitrary products of three separated polygamma functions.
+\end{theorem}
+\begin{proof}
+By \eqref{tsc:single-contact}, each raw factor is
+$D_{m_i,r_i,a_i}=\partial_x^{r_i}C_{m_i,a_i}
+                 -c_{m_i,r_i}\delta_{a_i}^{(r_i)}$.
+In the product expansion, every term containing two delta-supported
+factors is zero because their supports are disjoint. A term containing
+one delta derivative pairs with the smooth remaining product, producing
+$(-1)^{r_i}$ times its ordinary $r_i$th derivative at $a_i$. These are
+exactly the terms in the final line of \eqref{tsc:contact-triple-eq}.
+
+The product of the three periodic derivatives is
+$(-1)^R\partial_{a_1}^{r_1}\partial_{a_2}^{r_2}\partial_{a_3}^{r_3}
+\calJ_{\mathbf m}$. Apply \eqref{tsc:lowering} to
+\eqref{tsc:all-index}. The factor $(-1)^R$ cancels the sign of
+$(-2\pi)^R$, giving the first line of the right-hand side.
+\end{proof}
+
+The correction is not optional. For instance,
+$\partial_x C_0=D_{0,1}-\delta_0'$. Omitting it already changes a triple
+with one spatial derivative by the derivative of the product of the two
+other endpoint values. The theorem explains the correction without
+claiming that the manuscript's pointwise formulas are wrong.
+
+For explicit simplification of endpoint derivatives, the classical
+Pochhammer identity yields, for $r\ge1$,
+\begin{equation}\label{tsc:pointwise-tower}
+ \gamma_n^{(r)}(x)=(-1)^{r+n}r!n!
+      \sum_{k=0}^{\min(r,n)}
+       e_k^{(r)}\frac{\zeta^{[n-k]}(r+1,x)}{(n-k)!}.
+\end{equation}
+Indeed, expand
+$\partial_x^r\zeta(1+v,x)=(-1)^r(1+v)_r\zeta(1+r+v,x)$ at zero.
+This derivation also fixes every factorial and sign in
+\eqref{tsc:pointwise-tower}.
+
+% END sections/07-contacts
+
+% BEGIN sections/08-reflection.tex
+\section{Reflected polygamma products at arbitrary depth}\label{tsc:reflected}
+The generic triple has a double-sum coordinate class. A special reflected
+subalgebra reduces much further. Its basic kernel is
+\begin{equation}\label{tsc:Kdef}
+ K(x)=\PV\,\pi\cot(\pi x)=C_0(x)-C_0(-x).
+\end{equation}
+Its zero Fourier coefficient is zero, and its other coefficients are
+$-\pi\ii\sgn n$. The reflection formula gives the pointwise identity
+$\psi(1-x)-\psi(x)=\pi\cot\pi x$. The two one-sided logarithmic
+counterterms cancel in the reflected difference, giving the symmetric
+principal value in \eqref{tsc:Kdef}.
+
+\subsection{An all-index Stieltjes--cotangent transform}
+For $0<a<1$, put
+\begin{equation}\label{tsc:Idef}
+ I_m(a)=\langle C_m(x)K(x-a),1\rangle.
+\end{equation}
+This means the one-sided finite part at zero and the symmetric principal
+value at $a$; these singularities are separated.
+
+\begin{proposition}[Spectral generating function]\label{tsc:Igen}
+Near $u=0$,
+\begin{align}\label{tsc:Igen-eq}
+ \sum_{m\ge0}\frac{I_m(a)}{m!}u^m
+  =\pi\csc(\pi u)\zeta(1-u,1-a)
+     -\pi\cot(\pi u)\zeta(1-u,a)+\frac{K(a)}u.
+\end{align}
+The singularity on the right is removable only after the terms are combined.
+\end{proposition}
+\begin{proof}
+For $\Re u>1$, Fourier pairing gives
+\begin{align*}
+ \langle\Gamma(u)\calB_u(x)K(x-a),1\rangle
+ =\frac{\pi\ii\Gamma(u)}{(2\pi)^u}
+   \left[e^{-\pi\ii u/2}\Li_u(e(a))
+               -e^{\pi\ii u/2}\Li_u(e(-a))\right].
+\end{align*}
+The two Hurwitz Fourier formulas at $a$ and $1-a$ transform this into
+the first two terms of \eqref{tsc:Igen-eq}. Analytic continuation in the
+separated product extends the identity to zero. The residue of
+\eqref{tsc:Zlaurent} paired with $K(x-a)$ is
+$K(-a)-\langle K,1\rangle=-K(a)$. Adding $K(a)/u$ removes precisely that
+residue and leaves the generating series for $I_m$.
+\end{proof}
+This is a bilinear kernel identity, compatible with the repository's
+existing closure machinery; it is used as an input to the all-depth
+reduction rather than advertised as a new bilinear principle.
+
+\begin{corollary}[Finite single-Stieltjes formula]\label{tsc:Iexplicit}
+For all $m\ge0$,
+\begin{align}\label{tsc:I-formula}
+ I_m(a)={}&\frac{\gamma_{m+1}(1-a)-\gamma_{m+1}(a)}{m+1}\notag\\
+ &+2m!\sum_{k=1}^{\lfloor(m+1)/2\rfloor}
+       \frac{\zeta(2k)}{(m-2k+1)!}
+       \left[(1-2^{1-2k})\gamma_{m-2k+1}(1-a)
+                       +\gamma_{m-2k+1}(a)\right]\notag\\
+ &-\mathbf1_{2\mid m}\,2m!(2-2^{-m-1})\zeta(m+2).
+\end{align}
+\end{corollary}
+\begin{proof}
+Insert \eqref{tsc:stieltjes-convention} into \eqref{tsc:Igen-eq} and use
+\[
+ \pi\csc(\pi u)=\frac1u+
+     2\sum_{k\ge1}(1-2^{1-2k})\zeta(2k)u^{2k-1},\qquad
+ \pi\cot(\pi u)=\frac1u-2\sum_{k\ge1}\zeta(2k)u^{2k-1}.
+\]
+The remaining pole cancels by
+$\gamma_0(1-a)-\gamma_0(a)=-K(a)$. The products with the spectral pole
+$-1/u$ contribute the last line of \eqref{tsc:I-formula}; retaining them
+is necessary even for $m=0$. Coefficient comparison proves the formula.
+\end{proof}
+In low degrees,
+\begin{align}\label{tsc:Iexamples}
+ I_0(a)&=\gamma_1(1-a)-\gamma_1(a)-\frac{\pi^2}{2},\notag\\
+ I_1(a)&=\frac{\gamma_2(1-a)-\gamma_2(a)}2
+           +\zeta(2)\bigl(\gamma_0(1-a)+2\gamma_0(a)\bigr),\notag\\
+ I_2(a)&=\frac{\gamma_3(1-a)-\gamma_3(a)}3
+       +2\zeta(2)\gamma_1(1-a)+4\zeta(2)\gamma_1(a)
+       -\frac{15}{2}\zeta(4).
+\end{align}
+For example, $I_0(1/2)=-\pi^2/2$ and
+$I_1(1/2)=\pi^2(\gamma+2\log2)/2$. The machine-readable table in
+\src{results/stieltjes_cotangent_coefficients.json} extends through $m=12$.
+
+\subsection{A partial-fraction identity at every number of factors}
+Let $b_1,\ldots,b_N$ be pairwise distinct on the circle and define
+\begin{equation}\label{tsc:Acot}
+ A_j(\mathbf b)=\prod_{\ell\ne j}K(b_j-b_\ell).
+\end{equation}
+Empty products equal one.
+\begin{lemma}[All-depth cotangent partial fractions]\label{tsc:cot-PF}
+As a symmetric finite-part distribution,
+\begin{equation}\label{tsc:cot-PF-eq}
+ \prod_{j=1}^N K(x-b_j)
+     =\pi^N\cos\frac{N\pi}{2}
+        +\sum_{j=1}^NA_j(\mathbf b)K(x-b_j).
+\end{equation}
+Moreover,
+\begin{equation}\label{tsc:cot-residue-sum}
+ \sum_{j=1}^NA_j(\mathbf b)=\pi^{N-1}\sin\frac{N\pi}{2}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Put $X=e(x)$ and $B_j=e(b_j)$. Then
+$K(x-b_j)=\pi\ii(X+B_j)/(X-B_j)$.
+The product is a rational function with only simple poles at $B_j$;
+subtracting $A_jK(x-b_j)$ removes its principal part at that pole.
+The difference has no finite pole and is bounded at infinity, hence is a
+constant. As $X\to0$ the kernels tend to $-\pi\ii$, and as $X\to\infty$
+they tend to $\pi\ii$. Adding and subtracting the two limiting equations
+gives the constant and the sum in \eqref{tsc:cot-PF-eq}--\eqref{tsc:cot-residue-sum}.
+Because the principal parts have matched at every real pole, the rational
+identity passes to the specified symmetric extensions without a delta
+correction.
+\end{proof}
+
+\begin{theorem}[Finite reduction at arbitrary reflected depth]\label{tsc:all-depth}
+Assume $a,b_1,\ldots,b_N$ are pairwise distinct modulo one. Then
+\begin{equation}\label{tsc:all-depth-eq}
+ \boxed{\displaystyle
+ \FP\int_0^1 C_m(x-a)\prod_{j=1}^NK(x-b_j)\dd x
+       =\sum_{j=1}^NA_j(\mathbf b)I_m(\{b_j-a\}).}
+\end{equation}
+In addition,
+\begin{equation}\label{tsc:cot-mean}
+ \PV\int_0^1\prod_{j=1}^NK(x-b_j)\dd x
+                 =\pi^N\cos\frac{N\pi}{2}.
+\end{equation}
+In \eqref{tsc:all-depth-eq}, $C_m$ denotes its prescribed extension, so the
+integrand away from its seam is the ordinary function $\gamma_m$.
+\end{theorem}
+\begin{proof}
+Multiply \eqref{tsc:cot-PF-eq} by $C_m(x-a)$ and pair with one. The
+constant term vanishes because $C_m$ has mean zero. Translate $x$ by $a$
+to identify each remaining pairing with $I_m(\{b_j-a\})$. Taking the
+mean without $C_m$ proves \eqref{tsc:cot-mean}.
+\end{proof}
+
+\subsection{Reflected polygamma derivatives}
+The balanced pointwise combination is
+\begin{equation}\label{tsc:reflected-poly}
+ K^{(r)}(x)=(-1)^r\psi^{(r)}(1-x)-\psi^{(r)}(x).
+\end{equation}
+Its symmetric extension is exactly the distributional derivative of $K$:
+differentiation of the symmetric principal part $1/x$ gives the symmetric
+Hadamard principal parts, without an additional delta term. Consequently,
+for arbitrary $r_j\ge0$ the integral obtained by replacing every
+$K(x-b_j)$ in \eqref{tsc:all-depth-eq} with $K^{(r_j)}(x-b_j)$ equals
+\begin{equation}\label{tsc:reflected-derivatives}
+ \prod_{j=1}^N(-\partial_{b_j})^{r_j}
+           \left(\sum_{j=1}^NA_j(\mathbf b)I_m(\{b_j-a\})\right).
+\end{equation}
+The equality follows by differentiating a product of separated distributions;
+it is not an unqualified interchange with an unregularized improper integral.
+Formula \eqref{tsc:I-formula}, the product rule, and
+\eqref{tsc:pointwise-tower} make the result finite in Hurwitz-zeta jets and
+trigonometric coefficients. This provides explicit identities for arbitrary
+numbers and orders of reflected polygamma factors.
+
+% END sections/08-reflection
+
+% BEGIN sections/09-gamma.tex
+\section{Rational Gamma reductions and explicit antiderivatives}\label{tsc:gamma}
+At Stieltjes index zero, the antisymmetric first Stieltjes constant has a
+finite Gamma reduction. We include a proof to make the all-depth evaluation
+self-contained.
+
+\begin{proposition}[Rational antisymmetric first Stieltjes value]\label{tsc:rational-D}
+For integers $0<p<q$, with $a=p/q$,
+\begin{align}\label{tsc:rational-D-eq}
+ \gamma_1(1-a)-\gamma_1(a)
+ ={}&\pi\cot(\pi a)\bigl(\gamma+\log(2\pi q)\bigr)\notag\\
+ &-2\pi\sum_{r=1}^{q-1}\sin(2\pi pr/q)\log\Gamma(r/q).
+\end{align}
+Coprimality of $p,q$ is not required.
+\end{proposition}
+\begin{proof}
+Write $z=e(a)$ and
+$P(u)=\Gamma(u)(2\pi)^{-u}$. Subtract the two Hurwitz Fourier expansions:
+\[
+ \zeta(1-u,1-a)-\zeta(1-u,a)
+      =2\ii P(u)\sin(\pi u/2)
+                    \bigl(\Li_u(z)-\Li_u(z^{-1})\bigr).
+\]
+Now $2\ii P(u)\sin(\pi u/2)=\pi\ii(1-Au+O(u^2))$.
+For real $u$, the difference of polylogarithms is $2\ii\Im\Li_u(z)$.
+Comparing coefficients of $u$ gives
+\[
+ \gamma_1(1-a)-\gamma_1(a)
+       =\pi A\cot(\pi a)-2\pi\Im\Li_0^{[1]}(z),
+\]
+since $\Im\Li_0(z)=\tfrac12\cot(\pi a)$.
+Differentiate \eqref{tsc:finite-DFT} at zero. The constant part of Lerch's
+formula vanishes in the finite sum, so
+\[
+ \Im\Li_0^{[1]}(z)=
+     \sum_{r=1}^{q-1}\sin(2\pi pr/q)\log\Gamma(r/q)
+                -\frac{\log q}{2}\cot(\pi a).
+\]
+Substitution proves \eqref{tsc:rational-D-eq}.
+\end{proof}
+This rational reflection formula is a consequence of classical Hurwitz
+Fourier and Gamma identities. Its use here is to finish a whole family of
+reflected product evaluations, rather than to claim a new isolated formula
+for $\gamma_1(p/q)$.
+
+\begin{theorem}[All-depth rational Gamma evaluation]\label{tsc:rational}
+Let $a,b_1,\ldots,b_N$ be pairwise distinct rational circle points. Choose
+$q$ with $d_j=\{b_j-a\}=p_j/q$, $0<p_j<q$. Then
+\begin{align}\label{tsc:all-depth-gamma}
+ &\FP\int_0^1 C_0(x-a)\prod_{j=1}^NK(x-b_j)\dd x\notag\\
+ &\quad=\sum_{j=1}^N A_j(\mathbf b)
+   \left\{K(d_j)\bigl(\gamma+\log(2\pi q)\bigr)
+      -2\pi\sum_{r=1}^{q-1}\sin(2\pi p_jr/q)\log\Gamma(r/q)
+      -\frac{\pi^2}{2}\right\}.
+\end{align}
+Thus this arbitrary-depth subclass has a finite expression in
+$\gamma,\pi$, logarithms, and log-Gamma values at rational arguments,
+with algebraic trigonometric coefficients.
+\end{theorem}
+\begin{proof}
+Insert \eqref{tsc:rational-D-eq} into $I_0(d)$ in
+\eqref{tsc:Iexamples}, then into Theorem~\ref{tsc:all-depth}.
+At rational angles, the trigonometric coefficients belong to cyclotomic
+number fields. No arithmetic independence statement is used.
+\end{proof}
+For even $N$, the final constants sum to zero by
+\eqref{tsc:cot-residue-sum}. For odd $N$, their sum is
+$-\pi^{N+1}\sin(N\pi/2)/2$. The parity effect checks the normalization.
+
+\subsection{A cubic identity with only interior principal values}
+\begin{theorem}[Quarter--half cubic digamma integral]\label{tsc:explicit-cubic}
+The following principal value exists and satisfies
+\begin{align}\label{tsc:explicit-cubic-eq}
+ \boxed{\displaystyle
+ \PV\int_0^1\psi(x)
+     \cot\!\bigl(\pi(x-\tfrac14)\bigr)
+     \cot\!\bigl(\pi(x-\tfrac12)\bigr)\dd x
+  =\gamma+4\log2+3\log\pi-4\log\Gamma(\tfrac14).}
+\end{align}
+The principal values are symmetric at $1/4$ and $1/2$. The singularity at
+zero is removable; the integrand tends to $-\pi$ there.
+\end{theorem}
+\begin{proof}
+Here $A_1=K(-1/4)=-\pi$ and $A_2=K(1/4)=\pi$. The partial fraction
+identity is
+\[
+ K(x-\tfrac14)K(x-\tfrac12)
+        =-\pi^2-\pi K(x-\tfrac14)+\pi K(x-\tfrac12).
+\]
+Since $C_0=-\psi$, Theorem~\ref{tsc:all-depth} shows that the left side of
+\eqref{tsc:explicit-cubic-eq} is
+\[
+ \frac{I_0(1/4)-I_0(1/2)}\pi
+      =\frac{\gamma_1(3/4)-\gamma_1(1/4)}\pi.
+\]
+At $p/q=1/4$, Proposition~\ref{tsc:rational-D} gives
+\[
+ \frac{\gamma_1(3/4)-\gamma_1(1/4)}\pi
+  =\gamma+\log(8\pi)-2\log\Gamma(1/4)+2\log\Gamma(3/4).
+\]
+Euler reflection, $\Gamma(1/4)\Gamma(3/4)=\pi\sqrt2$, reduces this to
+the claimed right side.
+
+Finally, $\psi(x)=-1/x+O(1)$,
+$\cot(\pi(x-1/2))=-\pi x+O(x^3)$, and
+$\cot(\pi(x-1/4))=-1+O(x)$. Their product tends to $-\pi$.
+Consequently the one-sided finite-part notation needed in the general
+theorem disappears in this specialization: only the two stated interior
+principal values remain.
+\end{proof}
+The common value is
+\[
+ 1.63190394589720479122328086909541565458453405168\ldots.
+\]
+The evaluation is proved by the preceding identities; the decimal is a
+separate quadrature check.
+
+\subsection{A log-Gamma cotangent transform}
+\begin{proposition}[An ordinary primitive of the reflected kernel]\label{tsc:Gcot}
+For $0<a<1$,
+\begin{align}\label{tsc:Gcot-eq}
+ \PV\int_0^1\log\Gamma(x)K(x-a)\dd x
+   =\frac{\zeta^{[2]}(0,a)+\zeta^{[2]}(0,1-a)}2
+        +\frac{\pi^2}{2}\left(a-\frac12\right).
+\end{align}
+The endpoint at zero is ordinarily integrable. In particular,
+\begin{equation}\label{tsc:Gtan}
+ \PV\int_0^1\log\Gamma(x)\tan(\pi x)\dd x
+    =\frac{\log2\log(2\pi)+\tfrac12\log^22}{\pi}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Let the left side of \eqref{tsc:Gcot-eq} be $L(a)$.
+By \eqref{tsc:Uone}, the periodic distributional derivative of
+$\log\Gamma(x)-\ell/2$ is $-C_0$. Differentiation of the separated
+pairing, followed by distributional integration by parts, gives
+$L'(a)=-I_0(a)$.
+Differentiating $\partial_x\zeta(s,x)=-s\zeta(s+1,x)$ at $s=0$, with
+the spectral pole already canceled, gives
+\[
+ \partial_x\zeta^{[2]}(0,x)=2\gamma_1(x).
+\]
+Hence the derivative of the proposed right side is
+$\gamma_1(a)-\gamma_1(1-a)+\pi^2/2=-I_0(a)$.
+Both sides have mean zero in $a$: this is the zero mean of $K$ on the
+left and of the Hurwitz jets at zero on the right. Their constant difference
+is therefore zero.
+
+At $a=1/2$, use $K(x-1/2)=-\pi\tan\pi x$ and
+$\zeta(s,1/2)=(2^s-1)\zeta(s)$. Twice differentiating at zero yields
+$\zeta^{[2]}(0,1/2)=-\log2\log(2\pi)-\tfrac12\log^22$, which proves
+\eqref{tsc:Gtan}.
+\end{proof}
+
+More generally, an explicit pointwise antiderivative of every $I_m(a)$ in
+\eqref{tsc:I-formula} is obtained by replacing $\gamma_n(a)$ with
+\[
+ Q_n(a)=\frac{(-1)^{n+1}}{n+1}\zeta^{[n+1]}(0,a),\qquad Q_n'(a)=\gamma_n(a),
+\]
+replacing $\gamma_n(1-a)$ with $-Q_n(1-a)$, and integrating the constant
+term linearly. This produces a finite Hurwitz-jet antiderivative at every
+Stieltjes index. A chosen base-point constant or a mean-zero periodic
+normalization must then be specified separately.
+
+% END sections/09-gamma
+
+% BEGIN sections/10-audit.tex
+\section{Audit findings, claim boundaries, and reproducibility}\label{tsc:audit}
+\subsection{A proposed update, not a fabricated erratum}
+The inspected shifted-jet report explicitly asks for the coordinate class
+of separated three-factor Stieltjes products. Theorems~\ref{tsc:stieltjes-triple}
+and \ref{tsc:mellin-all} answer that question affirmatively, and
+\eqref{tsc:digamma-operator} and \eqref{tsc:psi-integrals} supply its first
+three-digamma target. A suitable manuscript update is therefore to mark the
+\emph{representation question} resolved and replace it with the sharper
+questions about collisions and further period reductions in the next
+section.
+
+No false theorem was identified in the selected canonical passages read
+for this continuation. In particular, their pointwise derivative tower is
+correct, the existing cubic log-Gamma attribution is correct, and the
+current $S_4$ status must remain proved. The caveats below are mathematical
+integration safeguards, not claims that the repository currently contains
+all of the corresponding mistakes.
+
+\paragraph{Preserve the constant mode.}
+The normalized zero-order family is $\calB_0=\delta_0-1$. Replacing it by
+$\delta_0$ would give a false value for the triple kernel. The exact test
+$\calT(0,0,0)=2$ detects this normalization error.
+
+\paragraph{Preserve the endpoint constants.}
+In \eqref{tsc:I-formula}, the even-index zeta term comes from multiplying a
+spectral pole by a regular trigonometric coefficient. In
+\eqref{tsc:Mfunctional}, the finite constant comes from the Mellin pole
+$F(0)/u$. Omitting either term changes the identity; in the first case,
+$I_0(1/2)=-\pi^2/2$ is an immediate counterexample.
+
+\paragraph{Distinguish discrete and analytic order formulas.}
+The finite reduction \eqref{tsc:integer-reduction} has integer parameters
+$r,s$. It cannot simply be differentiated in those parameters. The entire
+colored family and its subtracted Mellin integrals provide the required
+analytic replacement. Values on isolated integer hyperplanes do not fix
+transverse spectral derivatives.
+
+\paragraph{Do not transport pointwise derivatives silently.}
+A derivative of a periodic finite-part extension and a raw finite part of
+the pointwise derivative differ by \eqref{tsc:single-contact}. The triple
+correction is \eqref{tsc:contact-triple-eq}. Conversely, symmetric derivatives
+of the reflected cotangent kernel have their own compatible convention.
+They should not be assigned the one-sided correction of an unreflected
+Stieltjes factor.
+
+\paragraph{Keep collision claims separate.}
+The generic Stieltjes product requires pairwise distinct shifts. Setting
+colors equal to one in the global entireness theorem is invalid. Ordinary
+primitive products can allow coincident shifts for the different,
+explicitly proved convergence reason in Theorem~\ref{tsc:primitive-triple}.
+
+\subsection{What the tests establish}
+The exact checker uses Gaussian rational arithmetic for fourth-root Fourier
+phases and SymPy exact arithmetic for polynomial and harmonic coefficients.
+Its 621 assertions comprise the following finite components.
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Exact component & Assertions\\\midrule
+Six-sector finite Fourier identities & 128\\
+Deliberately corrupted-formula rejection controls & 3\\
+Zero-order six-sector value $2$ & 60\\
+Integer Tornheim partial-fraction identities & 64\\
+Cotangent partial fractions and residue sums & 20\\
+Stieltjes--cotangent coefficients, $0\le m\le12$ & 13\\
+Complete homogeneous harmonic coefficients & 143\\
+Elementary harmonic coefficients & 91\\
+Normalized primitive derivative ladder & 99\\\midrule
+Total & 621\\\bottomrule
+\end{tabular}
+\end{center}
+These checks do not constitute a formal proof of distributional analytic
+continuation. That proof is the argument in the article. The test scope is
+recorded explicitly in \src{results/exact_checks.json}.
+
+The numerical suite makes 56 independent comparisons. It includes direct
+subtracted quadrature of $I_0$ and the log-Gamma transform, rational Gamma
+reductions, products with two through four cotangent factors, and a
+nonzero-parameter check of the Hurwitz generating identity. For three
+positive integral spectral triples, the six Mellin sectors are compared
+with exactly integrated Bernoulli polynomials. The rational targets are
+\begin{equation}\label{tsc:bernoulli-targets}
+ \frac8{10125},\qquad -\frac{11}{15360},\qquad
+ \frac{6119}{63026250};
+\end{equation}
+the associated orders and shifts are recorded in the JSON results.
+Finally, three singular digamma triples are evaluated both by local
+endpoint subtractions and by \eqref{tsc:psi-integrals}. The polylogarithm
+order derivatives in that check are computed from convergent series,
+not by infinitesimal black-box differentiation of a polylogarithm routine.
+
+The default environment used Python 3.13.5, SymPy 1.14.0, and mpmath 1.3.0.
+Most numerical checks use 50 decimal working digits; the more expensive
+Mellin and polylogarithmic triple checks use 40. Acceptance thresholds range
+from 31 to 40 relative decimal digits, depending on the test. None of these
+are certified interval calculations. High-index Stieltjes triples and the
+full derivative triple family are proved analytically here; they are not
+claimed to have been exhaustively numerically evaluated.
+
+\subsection{Reproduction and integration}
+From the package directory, run
+\begin{verbatim}
+python -m pip install -r requirements.txt
+python code/verify_exact.py
+python code/verify_numerical.py --dps 50
+python code/build_article.py
+\end{verbatim}
+The source is modular, with a flattened standalone TeX copy for convenience.
+The archive includes the compiled article, coefficient tables, executed
+check logs, source provenance, an additive integration note, and a SHA-256
+manifest. No network access is needed by the checking scripts after their
+dependencies are installed.
+
+A proposed report destination is
+\src{Analysis/Polylogarithms/docs/reports/stieltjes-correlation-calculus/continuations/triple-stieltjes-tornheim/}.
+All theorem labels and bibliography keys use the prefix \src{tsc:}.
+The integration note distinguishes a proposed status update from an applied
+patch. Archive preservation and successful replay should remain separate
+from mathematical acceptance into the canonical manuscript.
+
+% END sections/10-audit
+
+% BEGIN sections/11-further.tex
+\section{Further research questions}\label{tsc:further}
+\subsection{Joint triple collisions and normalization conversion}
+For two approaching seams, the separated three-factor formula develops a
+local singularity. When all three approach one another, two relative
+scales are available. Determine the full two-parameter local expansion,
+including the delta derivatives and finite constants needed to compare
+separated analytic continuation with a chosen same-point Hadamard product.
+A first concrete target is the case $(m_1,m_2,m_3)=(0,0,0)$ along
+$a_2-a_1=\lambda\varepsilon$, $a_3-a_1=\varepsilon$ with fixed
+$\lambda\notin\{0,1\}$. The dependence on $\lambda$ must be computed,
+not erased by an unproved path-independent finite-part prescription.
+
+\subsection{Transverse Tornheim jets and genuine arithmetic reductions}
+Proposition~\ref{tsc:negative-resonance} gives finite reductions on integral
+spectral hyperplanes, but the Stieltjes formula also uses derivatives
+transverse to them. Find additional functional identities that reduce
+specific transverse jets at rational colors. The question should be asked
+first at a fixed conductor and a fixed total spectral degree. A negative
+result must distinguish nonmembership in an explicitly generated formal
+relation space from independence of the resulting numerical periods.
+
+\subsection{Four unreflected factors and balanced frequency sectors}
+Four nonzero frequencies summing to zero have sectors of types $3+1$ and
+$2+2$. The latter are not a direct copy of the Tornheim double sum. Develop
+an explicit, jointly regularized coordinate family for these sectors and
+a counterpart of Theorem~\ref{tsc:mellin-all}. A useful first target is
+four digamma factors at four distinct rational shifts, with every endpoint
+constant and contact correction specified. The reflected finite-depth
+formula already proved here should serve as a stringent specialization
+check, not as evidence that the generic family has depth one.
+
+\subsection{Rational traces that create collisions}
+Integer dilation and conductor operations can turn previously distinct
+shifts into coincident shifts. Determine the exact trace identities for
+the three-factor kernel across that boundary. The existing bilinear
+conductor laws and the separated lowering law are useful inputs, but they
+do not by themselves determine the new collision counterterms.
+
+\subsection{Certified polylogarithmic jet evaluation}
+The present stable series evaluation avoids a known source of numerical
+fragility: differentiating a polylogarithm routine at an infinitesimal
+order increment. Replace its floating-point truncations with explicit
+complex interval enclosures, including a uniform Jonqui\`ere-series
+remainder for the unit-color region. Combine that with the subtracted
+Mellin integral to obtain rigorous numerical certificates for generic
+three-digamma values. This is an algorithmic refinement of proved
+identities, not a substitute for their analytic proof.
+
+\subsection{A precise bridge to the remaining fixed-weight candidates}
+The repository's $S_6$ and $S_8$ questions concern particular polylogarithmic
+period reductions. The present triple calculus does not automatically
+settle them. Search for an exact transformation that expresses a candidate's
+remaining obstruction in one of the rational-color transverse jets above,
+with all boundary terms retained. Such a bridge, together with a proved
+jet reduction, would be a meaningful route to a certificate. Numerical
+agreement or a shared use of polylogarithms is not such a bridge.
+
+\subsection{Formalization with analytic hypotheses exposed}
+A useful formal development would separate the polynomial-growth Fourier
+construction, the local meromorphic extension of $x_+^{u-r-1}$, the
+separated product lemma, and the finite coefficient algebra. The latter
+already has executable exact tests, but not proof-assistant certificates.
+The first analytic formal target can be
+\eqref{tsc:single-contact}; the trilinear master theorem can then be proved
+conditional on the ordinary absolutely convergent Fourier identity before
+formalizing the entire continuation.
+
+\section*{Conclusion}
+\addcontentsline{toc}{section}{Conclusion}
+Three separated Stieltjes singularities have an exact, all-index colored
+Tornheim description, and their Laurent coefficients have a convergent
+polylogarithmic Mellin representation with explicit endpoint constants.
+Mean-zero integration and contact-corrected differentiation extend that
+same kernel to Gamma and polygamma products. Reflection selects an
+arbitrary-depth subclass with finite single-Stieltjes, and at rational
+index-zero shifts finite Gamma, reductions. The resolved coordinate-class
+question is therefore a concrete advance within the inspected research
+programme, while collisions, transverse arithmetic reductions, and the
+remaining fixed-weight conjectures retain clearly stated open targets.
+
+% END sections/11-further
+
+\appendix
+% BEGIN sections/12-computation.tex
+\section{Independent computation formulas}\label{tsc:computation}
+\subsection{Direct three-digamma finite parts}
+Suppose $0\le a_1<a_2<a_3<1$, put $a_4=a_1+1$, and let
+$L_j=a_{j+1}-a_j$. On the interval beginning at $a_j$, use the coordinate
+$t=x-a_j$ and offsets $d_{j\ell}=\{a_j-a_\ell\}$, with $d_{jj}=0$.
+Set
+\[
+ c_j=\prod_{\ell\ne j}\gamma_0(d_{j\ell}).
+\]
+Then a directly integrable version of the canonical triple is
+\begin{equation}\label{tsc:direct-triple}
+ \calJ_{000}(\mathbf a)=\sum_{j=1}^3\left\{
+   \int_0^{L_j}\left[\prod_{\ell=1}^3\gamma_0(t+d_{j\ell})
+                              -\frac{c_j}{t}\right]\dd t
+                          +c_j\log L_j\right\}.
+\end{equation}
+No fractional part is applied inside a single interval: all the offsets
+stay in the appropriate left-limit branches until its upper endpoint.
+The removable value of the bracket at zero is
+\[
+ \gamma c_j+
+  \sum_{\ell\ne j}\gamma_0'(d_{j\ell})
+             \prod_{h\ne j,\ell}\gamma_0(d_{jh}).
+\]
+The three-digamma product is $-\calJ_{000}$. This quadrature uses no
+Tornheim function, Mellin continuation, or polylogarithm derivative, making
+it independent of the right side of \eqref{tsc:psi-integrals}.
+
+\subsection{Stable evaluation of the order-zero polylogarithm jet}
+For $\mu=-x+\ii\theta$ with $|\mu|<2\pi$, differentiating the classical
+Jonqui\`ere expansion \cite[Eq.~25.12.12]{tsc:dlmf-poly} gives
+\begin{equation}\label{tsc:Li-order-zero}
+ \Li_0^{[1]}(e^\mu)
+   =-\frac{\gamma+\Log(-\mu)}{\mu}
+       +\sum_{k\ge0}\frac{\zeta^{[1]}(-k)}{k!}\mu^k.
+\end{equation}
+The principal branch is used for $\Log(-\mu)$.
+For $0\le x\le1$ and $0<|\theta|\le\pi$, this convergent disk contains
+the entire evaluation region. The coefficients can be generated without
+spectral differencing of a polylogarithm:
+\begin{align}\label{tsc:negative-zeta-derivative}
+ \zeta^{[1]}(0)&=-\frac\ell2,\notag\\
+ \frac{\zeta^{[1]}(-k)}{k!}
+  &=\frac{(-1)^{k/2}\zeta(k+1)}{2(2\pi)^k},
+                                      &&k\ge2\text{ even},\notag\\
+ \frac{\zeta^{[1]}(-k)}{k!}
+  &=\frac{\zeta(-k)}{k!}
+       \left(\ell-\psi(k+1)
+                     -\frac{\zeta^{[1]}(k+1)}{\zeta(k+1)}\right),
+                                      &&k\ge1\text{ odd}.
+\end{align}
+These follow directly by differentiating the Riemann functional equation
+at its trivial zeros and at its negative odd arguments.
+For $x>1$, use instead the rapidly convergent defining series
+\begin{equation}\label{tsc:Li-log-series}
+ \Li_0^{[1]}(ze^{-x})=-\sum_{n\ge1}(ze^{-x})^n\log n.
+\end{equation}
+The checker precomputes the first series coefficients, switches to the
+second series after $x=1$, and inserts the analytic first derivative at
+the removable endpoint of the subtracted Mellin integrand. The degree and
+precision choices are numerical safeguards; no interval enclosure is
+claimed. Six root-of-unity endpoint evaluations are also checked against
+the independent finite Gamma formula \eqref{tsc:W-boundary}.
+
+\subsection{Explicit singularity subtraction for the cubic example}
+Let $f(x)$ be the integrand in \eqref{tsc:explicit-cubic-eq}, and put
+\[
+ r_1=-\frac{\psi(1/4)}\pi,\qquad r_2=\frac{\psi(1/2)}\pi,
+ \qquad g(x)=f(x)-\frac{r_1}{x-1/4}-\frac{r_2}{x-1/2}.
+\]
+Then
+\begin{equation}\label{tsc:cubic-numeric}
+ \PV\int_0^1 f(x)\dd x=\int_0^1g(x)\dd x+r_1\log3.
+\end{equation}
+The removable interior values used in the implementation are
+\begin{align*}
+ g(1/4)&=-\frac{\psi'(1/4)}\pi-2\psi(1/4)
+                         -\frac{r_2}{1/4-1/2},\\
+ g(1/2)&=\frac{\psi'(1/2)}\pi-2\psi(1/2)
+                         -\frac{r_1}{1/2-1/4},\\
+ g(0)&=-\pi+4r_1+2r_2.
+\end{align*}
+Thus the numerical check uses an ordinary integral with explicitly removed
+poles, rather than an extrapolated cutoff sequence.
+
+\subsection{Finite tails and an implementation safeguard}
+For the positive-integer Tornheim diagnostics, the Mellin integral is
+truncated at a finite $R$. For $r,s\ge0$ integral, unit colors, and
+$x\ge\log2$,
+\[
+ |\Li_r(ze^{-x})\Li_s(we^{-x})|\le4e^{-2x}.
+\]
+Consequently the omitted tail of \eqref{tsc:T-mellin}, for integer $t\ge1$,
+is at most $4\Gamma(t,2R)/(2^t\Gamma(t))$. This finite-tail implementation
+also avoids enormous-exponent complex logarithms that can arise when a
+black-box infinite-range quadrature samples astronomically large $x$.
+It is a safeguard in the newly written numerical checker, not a correction
+to an existing repository theorem.
+
+\subsection{Artifact map}
+The principal reproducibility files are
+\begin{center}
+\begin{tabular}{p{0.43\textwidth}p{0.49\textwidth}}
+\toprule
+File & Purpose\\\midrule
+\src{article.tex}, \src{sections/} & Modular complete proof text.\\
+\src{article_standalone.tex} & Flattened single-file LaTeX source.\\
+\src{article.pdf} & Compiled article.\\
+\src{code/verify_exact.py} & 621 exact assertions and coefficient-table generation.\\
+\src{code/calculus.py} & Subtracted quadratures and stable polylog jet utilities.\\
+\src{code/verify_numerical.py} & 56 numerical comparisons with explicit tolerances.\\
+\src{results/} & Executed JSON summaries and finite coefficient tables.\\
+\src{notes/} & Source snapshot, audit, proof dependencies, and integration note.\\
+\src{verification/} & Build and executed check logs.\\
+\src{SHA256SUMS} & Integrity manifest; not a mathematical certificate.\\\bottomrule
+\end{tabular}
+\end{center}
+
+% END sections/12-computation
+
+% BEGIN references.tex
+\begin{thebibliography}{10}
+\bibitem{tsc:repo}
+V.~Reshetnikov, \emph{ProveIt: Polylogarithms manuscript}, canonical README
+and selected integration material, inspected 10 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/Polylogarithms/docs/manuscript}.
+Individual source hashes and read scopes appear in the supplied snapshot.
+
+\bibitem{tsc:shj}
+\emph{Shifted Hurwitz jets}, ProveIt research continuation, sections on
+canonical finite parts, all-index closure, and further research questions.
+Inspected at commit \src{8da6871fc2dd5762467320918ba23edd635bac4f},
+blob \src{990369336bdf2794aae3057c3231eed4ecadbef3}.
+Repository path:
+\src{Analysis/Polylogarithms/docs/reports/stieltjes-correlation-calculus/continuations/shifted-hurwitz-jets/sections.tex}.
+
+\bibitem{tsc:gamma-chapter}
+\emph{Log-gamma moments: poles, late coefficients, and effective remainders},
+ProveIt canonical manuscript, inspected 10 October 2026.
+Repository path:
+\src{Analysis/Polylogarithms/docs/manuscript/chapters/07-loggamma-moments.tex}.
+
+\bibitem{tsc:dlmf-zeta}
+NIST Digital Library of Mathematical Functions,
+\S25.11, \emph{Hurwitz Zeta Function}; especially Eqs.~25.11.3,
+25.11.9, 25.11.13, 25.11.17, and 25.11.18.
+\url{https://dlmf.nist.gov/25.11}. Accessed 10 October 2026.
+
+\bibitem{tsc:dlmf-poly}
+NIST Digital Library of Mathematical Functions,
+\S25.12, \emph{Polylogarithms}; especially Eqs.~25.12.10 and 25.12.12.
+\url{https://dlmf.nist.gov/25.12}. Accessed 10 October 2026.
+
+\bibitem{tsc:dlmf-gamma}
+NIST Digital Library of Mathematical Functions,
+\S5.15, \emph{Polygamma Functions}.
+\url{https://dlmf.nist.gov/5.15}. Accessed 10 October 2026.
+
+\bibitem{tsc:em1}
+O.~R.~Espinosa and V.~H.~Moll,
+\emph{On some definite integrals involving the Hurwitz zeta function},
+arXiv:math/0012078 (2000).
+\url{https://arxiv.org/abs/math/0012078}.
+
+\bibitem{tsc:em2}
+O.~R.~Espinosa and V.~H.~Moll,
+\emph{On some integrals involving the Hurwitz zeta function: part 2},
+arXiv:math/0107082 (2001).
+\url{https://arxiv.org/abs/math/0107082}.
+
+\bibitem{tsc:zhao}
+J.~Zhao, \emph{A note on colored Tornheim's double series},
+arXiv:0907.5106 (2009).
+\url{https://arxiv.org/abs/0907.5106}.
+
+\bibitem{tsc:bbb}
+D.~H.~Bailey, D.~Borwein, and J.~M.~Borwein,
+\emph{On Eulerian log-gamma integrals and Tornheim--Witten zeta functions},
+The Ramanujan Journal \textbf{36} (2015), 43--68.
+\url{https://doi.org/10.1007/s11139-012-9427-1}.
+\end{thebibliography}
+
+% END references
+
+\end{document}

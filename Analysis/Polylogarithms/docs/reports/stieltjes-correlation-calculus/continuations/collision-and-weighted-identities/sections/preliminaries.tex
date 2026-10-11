@@ -1,0 +1,142 @@
+\section{Conventions and analytic preliminaries}
+\label{xid:sec:preliminaries}
+
+\subsection{Order derivatives, argument derivatives, and harmonic numbers}
+
+For $\Re a>0$, the Hurwitz zeta function is initially
+\[
+ \zeta(s,a)=\sum_{n=0}^{\infty}(n+a)^{-s},\qquad\Re s>1,
+\]
+with the principal logarithm, and then has its usual meromorphic
+continuation. We use
+\begin{equation}\label{xid:eq:Stieltjes-convention}
+ \zeta(s,a)=\frac1{s-1}
+  +\sum_{n\ge0}\frac{(-1)^n}{n!}\gamma_n(a)(s-1)^n,
+ \qquad \gamma_n=\gamma_n(1),\quad\gamma_0=\gamma.
+\end{equation}
+Thus the generator near $z=0$ is
+\begin{equation}\label{xid:eq:G-convention}
+ \mathscr G(z,a)=\zeta(1-z,a)+\frac1z
+       =\sum_{n\ge0}\gamma_n(a)\frac{z^n}{n!},
+ \qquad\gamma_0(a)=-\psi(a).
+\end{equation}
+A superscript on $\zeta$, as in $\zeta^{(j)}(s,a)$, means
+$\partial_s^j$; a superscript on $\gamma_n$ or $\psi$ means an
+argument derivative. The notation $D_y$ is used for a distributional
+derivative. These three operations must be distinguished.
+The standard identities used below are
+\begin{align}
+ \zeta(s,a)&=a^{-s}+\zeta(s,a+1),\label{xid:eq:Hurwitz-shift}\\
+ \partial_a^r\zeta(s,a)&=(-1)^r(s)_r\zeta(s+r,a),\label{xid:eq:Hurwitz-arg}\\
+ \psi^{(r)}(a)&=(-1)^{r+1}r!\zeta(r+1,a)\quad(r\ge1).
+ \label{xid:eq:psi-Hurwitz}
+\end{align}
+They fix the normalizations and agree with DLMF
+\cite{DLMFhurwitz,hsh:DLMFPolygamma}.
+
+For later coefficient algebra put
+\[
+ H_N^{(s)}(a)=\sum_{j=0}^{N-1}(a+j)^{-s}
+             =\zeta(s,a)-\zeta(s,N+a),
+ \qquad H_N^{(s)}=H_N^{(s)}(1).
+\]
+This finite sum is entire in $s$; every order derivative is obtained by
+inserting $(-\log(a+j))^k$. For integer $s\ge2$, it is also a difference
+of polygamma values by \eqref{xid:eq:psi-Hurwitz}. We set $H_0^{(s)}=0$.
+The elementary symmetric functions of $1,1/2,\ldots,1/r$ are finite
+polynomials in $H_r,H_r^{(2)},\ldots$ by Newton's identities.
+Coefficient extraction $[z^nt^j]$ always denotes the ordinary Taylor
+coefficient; factorials are printed explicitly.
+
+For example, \eqref{xid:eq:Hurwitz-arg} gives the useful classical bridge
+\begin{equation}\label{xid:eq:Stieltjes-arg-zeta}
+ \gamma_n^{(r)}(a)=(-1)^{n+r}r!
+ \sum_{h=0}^{\min(n,r)}\frac{n!}{(n-h)!}
+ e_h(1,1/2,\ldots,1/r)\,
+       \zeta^{(n-h)}(r+1,a),\qquad r\ge1.
+\end{equation}
+Indeed, take the coefficient of $z^n$ in
+$(-1)^r(1-z)_r\zeta(r+1-z,a)$. An ordinary primitive is
+\begin{equation}\label{xid:eq:ordinary-Stieltjes-primitive}
+ \int\gamma_n(a)\,da
+       =\frac{(-1)^{n+1}}{n+1}\zeta^{(n+1)}(0,a)+C.
+\end{equation}
+One proof takes coefficients in
+$\partial_a\zeta(-z,a)=z\zeta(1-z,a)$ after removing the constant
+spectral pole. At $n=0$ this agrees with $-\log\Gamma(a)+C$.
+These identities are baseline transformations, not claims of new
+results; the endpoint constants after nonlinear substitution require
+the additional analysis of Section~\ref{xid:sec:nonlinear}.
+
+\subsection{The coordinate finite part}
+
+Suppose a function has finitely many singular points and, to the right
+of each point, a finite sum of nonintegrable terms
+$t^{-q}(\log t)^n$ plus a locally integrable remainder. Integrate
+outside right intervals of lengths $\varepsilon_j$ and expand in these
+cutoffs. The symbol $\FP_x$ means the coefficient of
+$\prod_j\varepsilon_j^0(\log\varepsilon_j)^0$ in this expansion,
+with $t=x-x_j$ the original coordinate. Independent cutoffs are
+permitted. A common cutoff gives the same constant because the finitely
+many endpoint contributions add. No left cutoff is needed for a
+fractional-part Hurwitz singularity: its left limit is the regular
+branch at argument one.
+
+For distributions the same prescription is applied after pairing with
+a smooth test function and subtracting its Taylor polynomial. It is
+local and linear. Products in this report are finite parts of
+\emph{pointwise products} with explicitly subtracted local expansions.
+No undefined multiplication of colliding singular distributions is
+invoked. In contrast, a coefficient of a meromorphic family is a
+spectral operation; the two operations coincide only after the required
+complete local pole terms have been accounted for.
+
+The periodic Hurwitz distribution $Z(1-z)$ is defined by the ordinary
+locally integrable function for $\Re z>0$ and meromorphically continued
+by local Taylor subtraction. At an integer, in a signed local
+coordinate $y$, its decomposition is
+\[
+ Z(1-z)=y_+^{z-1}+\zeta(1-z,1+y).
+\]
+Consequently
+\begin{equation}\label{xid:eq:canonical-periodic}
+ Z(1-z)=\frac{\delta_0-1}{z}
+       +\sum_{n\ge0}G_n\frac{z^n}{n!},
+ \qquad G_n=\FP_y\gamma_n(\{y\}).
+\end{equation}
+Here $1$ means the constant periodic distribution. This construction
+also fixes the normalization of every $D_y^rG_n$ used below.
+
+\subsection{Fourier normalization and the two-frequency kernel}
+
+Write $e(t)=e^{2\pi it}$. For $\Re z>1$, the absolutely convergent
+Hurwitz Fourier series in our convention is
+\begin{equation}\label{xid:eq:Hurwitz-Fourier}
+ \zeta(1-z,x)=\frac{\Gamma(z)}{(2\pi)^z}
+ \sum_{n\ne0}\frac{e^{-i\pi z\operatorname{sgn}(n)/2}}{|n|^z}e(nx).
+\end{equation}
+For positive integers $p,q$ set $d=\gcd(p,q)$,
+$P=p/d$, $Q=q/d$, and $\tau=Qa-Pb$. Orthogonality leaves
+frequencies $Q\ell,-P\ell$ and therefore gives
+\begin{align}
+ C(z,w;p,q;a,b)
+ &: =\int_0^1\zeta(1-z,\{px+a\})
+                  \zeta(1-w,\{qx+b\})\,dx\notag\\
+ &=\frac{\Gamma(z)\Gamma(w)Q^{-z}P^{-w}}{(2\pi)^{z+w}}
+ \left\{e^{-i\pi(z-w)/2}\Li_{z+w}(e(\tau))
+       +e^{i\pi(z-w)/2}\Li_{z+w}(e(-\tau))\right\}.
+ \label{xid:eq:pair-spectral}
+\end{align}
+Initially $\Re z,\Re w>1$; subsequently the formula means
+meromorphic continuation. For $\tau\in\mathbb Z$ the two
+polylogarithms are $\zeta(z+w)$. The unit-frequency coincident case
+is the classical Espinosa--Moll product \cite[Theorem 3.1]{EspinosaMoll1}.
+The shifted and dilated versions in the incoming reports have this
+normalization. Formula~\eqref{xid:eq:pair-spectral} makes the pair kernels
+needed in Section~\ref{xid:sec:triple-dilation} explicit within this report.
+
+The Riemann and Hurwitz functional equations, Gamma reflection and
+multiplication, and polylogarithm order continuation are used in their
+standard forms \cite{DLMFhurwitz,wat:DLMF}. Each use of a singular
+parameter value below is licensed by a local continuation proof before
+its Taylor or Laurent coefficient is taken.

@@ -481,3 +481,20 @@ lualatex -interaction=nonstopmode <name>.tex; lualatex -interaction=nonstopmode 
 
 The numerical claims were produced with Wolfram Language 15, mpmath, PARI/GP and
 FLINT, through scripts that are not in this tree (see Provenance).
+
+## Additional reports received October 10, 2026
+
+Six new packages are preserved in the eleventh canonical intake. The original
+PDFs, mathematical sources, verification code, certificates and recorded
+evidence retain their delivery layout; the arrival ZIPs have been retired
+after placement and remain recoverable from Git history. The incoming README
+is retained.
+
+The correlation spine receives `coincident-stieltjes`,
+`collision-and-weighted-identities` and `triple-stieltjes-tornheim`.
+The harmonic-resonance spine receives `centered-dougall-resonance`,
+`resonance-coordinate-transport` and `resonant-jets-and-shifts`.
+Their new OVERVIEW notes record overlap, source pins and normalization guards.
+Independent replay and canonical proof acceptance are separate steps;
+placement alone does not change theorem status. All six suites are being
+replayed on isolated copies. The S6 and revised S8 conjectures remain open.

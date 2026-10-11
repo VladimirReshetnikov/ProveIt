@@ -1,0 +1,193 @@
+\section{An all-degree discrete Stieltjes product identity}\label{sec:discrete}
+
+The elementary shift law \eqref{eq:gshift} contains a useful exact
+nonlinear summation calculus. The obstacle is that a product of Stieltjes
+functions grows as a power of $\log x$. A single additional Stieltjes
+function cancels both its leading term and its first inverse-power term.
+This makes a telescoping identity into an ordinary convergent series.
+
+\begin{lemma}[The two terms needed for product cancellation]\label{lem:gasym}
+For each fixed integer $p\ge0$, as $x\to+\infty$,
+\begin{equation}\label{eq:gasym}
+ \gamma_p(x)=-\frac{\log^{p+1}x}{p+1}
+       +\frac{\log^p x}{2x}
+       +O\left(\frac{1+\log^p x}{x^2}\right).
+\end{equation}
+The expansion can be differentiated any fixed number of times in $x$,
+with the corresponding differentiated error estimate.
+\end{lemma}
+\begin{proof}
+Use Euler--Maclaurin for $\zeta(1+u,x)$, uniformly on a small circle
+about $u=0$:
+\[
+ \zeta(1+u,x)=\frac{x^{-u}}u+
+ \frac{x^{-1-u}}2+\frac{1+u}{12}x^{-2-u}
+ +O(x^{-4-\Rea u}).
+\]
+The Euler--Maclaurin remainder is holomorphic in $u$ there after the
+displayed pole is removed. Its integral form permits any fixed number
+of $u$ and $x$ derivatives: each $u$ derivative inserts a power of a
+logarithm, and each $x$ derivative increases the inverse-power decay.
+Coefficient extraction therefore gives \eqref{eq:gasym} with its
+displayed logarithmic error, and the same argument gives every fixed
+differentiated error estimate. This is a fixed-index use of the standard
+Hurwitz expansion, not an assertion uniform in growing $p$.
+\end{proof}
+
+Fix $r\ge2$ and integers $p_1,\ldots,p_r\ge0$. Put
+\begin{equation}\label{eq:product-K}
+ K=\sum_{i=1}^r(p_i+1),\qquad
+ A=\prod_{i=1}^r(p_i+1),\qquad c=\frac{(-1)^rK}{A},
+\end{equation}
+and define
+\begin{equation}\label{eq:product-F}
+ F_{\boldsymbol p}(x)=\prod_{i=1}^r\gamma_{p_i}(x)
+                      +c\gamma_{K-1}(x).
+\end{equation}
+The finite subset formula below is practical even when the indices
+$p_i$ are unequal.
+
+\begin{theorem}[Arbitrary products, one correction, exact remainder]
+\label{thm:discrete}
+For $a>0$, set $x_n=n+a$ and
+\begin{align}\label{eq:product-summand}
+ W_{\boldsymbol p}(x)
+ ={}&\sum_{\varnothing\ne I\subseteq\{1,\ldots,r\}}
+ (-1)^{|I|+1}\frac{\log^{\sum_{i\in I}p_i}x}{x^{|I|}}
+             \prod_{j\notin I}\gamma_{p_j}(x)
+       +c\frac{\log^{K-1}x}{x}.
+\end{align}
+Then the grouped summand is absolutely summable, and
+\begin{equation}\label{eq:allproduct}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}W_{\boldsymbol p}(n+a)
+ =\prod_{i=1}^r\gamma_{p_i}(a)+c\gamma_{K-1}(a).}
+\end{equation}
+For every integer $N\ge0$ one has the exact finite identity
+\begin{equation}\label{eq:product-tail}
+ \sum_{n=0}^{N-1}W_{\boldsymbol p}(n+a)
+ =F_{\boldsymbol p}(a)-F_{\boldsymbol p}(N+a).
+\end{equation}
+In particular the remaining infinite tail is precisely
+$F_{\boldsymbol p}(N+a)$.
+\end{theorem}
+\begin{proof}
+Write $h_i(x)=\log^{p_i}x/x$. The product expansion and
+\eqref{eq:gshift} give
+\[
+ \prod_i\gamma_{p_i}(x)-\prod_i\gamma_{p_i}(x+1)
+ =\sum_{\varnothing\ne I}(-1)^{|I|+1}
+         \prod_{i\in I}h_i(x)\prod_{j\notin I}\gamma_{p_j}(x).
+\]
+Adding $c$ times the shift law at index $K-1$ proves
+$W_{\boldsymbol p}(x)=F_{\boldsymbol p}(x)-F_{\boldsymbol p}(x+1)$,
+and therefore \eqref{eq:product-tail}.
+
+For completeness, the cancellation at infinity is stronger than merely
+removing a divergent logarithm. Lemma~\ref{lem:gasym} gives
+\[
+ \prod_i\gamma_{p_i}(x)
+ =\frac{(-1)^r}{A}\log^Kx
+  +\frac{(-1)^{r-1}K}{2A}\frac{\log^{K-1}x}{x}
+  +O\left(\frac{1+\log^{K-1}x}{x^2}\right).
+\]
+Both displayed terms cancel against $c\gamma_{K-1}(x)$. Thus
+$F_{\boldsymbol p}(x)=O((1+\log^{K-1}x)/x^2)$, and its derivative is
+$O((1+\log^{K-1}x)/x^3)$. Integrating the derivative from $x$ to $x+1$
+proves absolute summability of the grouped $W_{\boldsymbol p}$. Passing
+to the limit in the exact finite identity proves \eqref{eq:allproduct}.
+\end{proof}
+
+\begin{remark}[Grouping is part of the statement]
+The individual terms in \eqref{eq:product-summand} usually have divergent
+series. Equation~\eqref{eq:allproduct} is an ordinary convergent sum of
+the displayed grouped expression. It does not license replacing each
+separate divergent series by an independently chosen finite part.
+\end{remark}
+
+\subsection{A symmetric two-index summation formula}
+
+For $m,n\ge0$ define the absolutely convergent series
+\begin{equation}\label{eq:Sdef}
+ S_{m,n}(a)=\sum_{k=0}^{\infty}
+ \frac{\log^m(k+a)}{k+a}
+ \left\{\gamma_n(k+a)+\frac{\log^{n+1}(k+a)}{n+1}
+                  -\frac{\log^n(k+a)}{2(k+a)}\right\}.
+\end{equation}
+The braces are $O((1+\log^n(k+a))/(k+a)^2)$.
+
+\begin{corollary}[All-index Stieltjes summation]\label{cor:Stwo}
+For $a>0$ and $m,n\ge0$,
+\begin{equation}\label{eq:Stwo}
+ \boxed{\displaystyle S_{m,n}(a)+S_{n,m}(a)
+ =\gamma_m(a)\gamma_n(a)+
+ \left(\frac1{m+1}+\frac1{n+1}\right)\gamma_{m+n+1}(a).}
+\end{equation}
+In particular,
+\begin{equation}\label{eq:Ssquare}
+ S_{n,n}(a)=\frac{\gamma_n(a)^2}{2}
+                      +\frac{\gamma_{2n+1}(a)}{n+1}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+Apply Theorem~\ref{thm:discrete} with $r=2$, $p_1=m$, and $p_2=n$.
+The two copies of the last term in the braces of \eqref{eq:Sdef}
+combine into the equality-block correction
+$-\log^{m+n}x/x^2$ in \eqref{eq:product-summand}.
+\end{proof}
+
+The first cases already connect the three types of functions sought in
+the research programme:
+\begin{align}
+ \sum_{k=0}^{\infty}
+ \frac{\log(k+a)-\psi(k+a)-1/(2(k+a))}{k+a}
+ &=\frac{\psi(a)^2}{2}+\gamma_1(a),\label{eq:digamma-square}\\
+ \sum_{k=0}^{\infty}\frac{\log(k+a)}{k+a}
+ \left\{\gamma_1(k+a)+\frac{\log^2(k+a)}2
+           -\frac{\log(k+a)}{2(k+a)}\right\}
+ &=\frac{\gamma_1(a)^2+\gamma_3(a)}2.\label{eq:gamma1-square}
+\end{align}
+The first is a useful normalization check; the second has exactly the
+same proof, with no numerical relation search.
+
+\subsection{Cubic and higher polygamma identities}
+
+Taking every $p_i=0$ gives $K=r$, $A=1$, and
+\begin{equation}\label{eq:all-digamma}
+ \sum_{k=0}^{\infty}
+ \left\{(-\psi(x_k))^r-\left(-\psi(x_k)-\frac1{x_k}\right)^r
+                  +(-1)^rr\frac{\log^{r-1}x_k}{x_k}\right\}
+ =(-\psi(a))^r+(-1)^rr\gamma_{r-1}(a).
+\end{equation}
+For example,
+\begin{equation}\label{eq:cubic-digamma}
+ \sum_{k=0}^{\infty}\left\{
+ \frac{3\psi(x_k)^2-3\log^2x_k}{x_k}
+ +\frac{3\psi(x_k)}{x_k^2}+\frac1{x_k^3}\right\}
+ =-\psi(a)^3-3\gamma_2(a).
+\end{equation}
+At an integer $a=N$, the recurrence
+$\psi(N+k)=H_{N+k-1}-\gamma$ turns this into an exact harmonic-number
+sum; at rational $a$ it gives the corresponding shifted harmonic sum.
+
+Every identity in this section can be differentiated with respect to $a$
+on compact subintervals of $(0,\infty)$. Indeed the differentiated
+Euler--Maclaurin estimate gives locally uniform summability of all fixed
+derivative orders. For reference,
+\begin{equation}\label{eq:gamma-derivative}
+ \gamma_n'(a)=(-1)^{n+1}
+ \left\{\zeta^{(n)}(2,a)+n\zeta^{(n-1)}(2,a)\right\},
+\end{equation}
+where the second term is omitted for $n=0$. This follows by matching
+coefficients in \eqref{eq:zshiftder}. Thus the differentiated identities
+remain in an explicitly stated zeta--polygamma vocabulary.
+
+There is also an exact primitive statement. On every compact interval
+$[a,b]\subset(0,\infty)$,
+\begin{equation}
+ \sum_{n=0}^{\infty}\int_a^b W_{\boldsymbol p}(n+t)\dd t
+ =\int_a^b\left\{\prod_i\gamma_{p_i}(t)+c\gamma_{K-1}(t)\right\}\dd t.
+\end{equation}
+This follows by locally uniform convergence. It fixes the integration
+constant through a definite interval, instead of silently assigning a
+normalization to an indefinite primitive.

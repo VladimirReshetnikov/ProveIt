@@ -1,0 +1,169 @@
+\section{A hypergeometric primitive and finite polylogarithmic transport}
+\label{dp:section}
+
+\subsection{A coefficientwise regularized \texorpdfstring{${}_4F_3$}{4F3}}
+The centered prefactor has a useful consequence for antiderivatives.
+For the same parameter domain, set
+\begin{equation}\label{dp:Q}
+ q_n(u)=\frac{r_n(u)}{n+\eta},\qquad
+ Q_u(z)=\sum_{n=0}^{\infty}q_n(u)z^n,\qquad |z|<1.
+\end{equation}
+Generically this is the Gamma-normalized hypergeometric function
+\begin{align}
+ Q_u(z)={}&
+ \frac{\Gamma(a)\Gamma(b)\Gamma(c)\Gamma(d_0-u)}
+ {\Gamma(1+a-b)\Gamma(1+a-c)\Gamma(b+c+u)}\notag\\
+ &\times{}_4F_3\!\left(\begin{matrix}
+ a,b,c,d_0-u\\1+a-b,1+a-c,b+c+u
+ \end{matrix};z\right).
+ \label{dp:4F3}
+\end{align}
+At a nonpositive lower parameter, the product in \eqref{dp:4F3} is
+defined by the coefficient series \eqref{dp:Q}, or equivalently by
+regularizing the lower Gamma factors before evaluation. The ordinary
+${}_4F_3$ and its prefactor must not be separately evaluated as an
+undefined expression times zero. The definition \eqref{dp:Q} retains
+the zero summands and all their parameter derivatives.
+
+Let $\theta=z\,\mathrm d/\mathrm dz$ and use the Lerch transcendent
+\cite[Section 25.14]{dlmf-lerch}
+\[
+ \Phi(z,s,\eta)=\sum_{n=0}^{\infty}\frac{z^n}{(n+\eta)^s},
+ \qquad |z|<1.
+\]
+The subtracted generating function is
+\begin{equation}\label{dp:F}
+ F_{K,u}(z)=(\theta+\eta)Q_u(z)
+        -\sum_{j=0}^{K-1}C_j(u)\Phi(z,1+2u+2j,\eta).
+\end{equation}
+It is exactly the generating function of the brackets in
+\eqref{dg:RK}. For $-K<\Re u<d_0$, their absolute summability gives
+\begin{equation}\label{dp:endpoint}
+ \lim_{z\uparrow1}F_{K,u}(z)=R_K(u).
+\end{equation}
+The limit and every fixed spectral derivative are locally uniform on
+compact subsets of this strip. The identity follows from the
+summable majorant in Theorem~\ref{dg:master}, not merely from an
+unqualified appeal to boundary continuation.
+
+\subsection{An exact weighted primitive}
+\begin{theorem}[The ${}_5F_4$-to-${}_4F_3$ primitive]\label{dp:primitive}
+For $|z|<1$ on a fixed branch of $z^\eta$, the normalized radial
+primitive of \eqref{dp:F} is
+\begin{align}
+ \int_0^z t^{\eta-1}F_{K,u}(t)\dd t
+  =z^\eta\left\{Q_u(z)-\sum_{j=0}^{K-1}
+            C_j(u)\Phi(z,2+2u+2j,\eta)\right\}.
+ \label{dp:primitiveeq}
+\end{align}
+It vanishes at zero. Every fixed spectral derivative and every
+parameter derivative within the domain may be taken through this
+identity, including the dependence of the weight on $\eta=a/2$.
+\end{theorem}
+\begin{proof}
+The defining series converge normally for $|z|<1$ on compact parameter
+sets. Integrating the coefficient of $z^n$ uses
+\[
+ \int_0^z t^{n+\eta-1}\dd t=\frac{z^{n+\eta}}{n+\eta}.
+\]
+Thus the coefficient $r_n(u)=(n+\eta)q_n(u)$ loses its centered
+factor, while the order of every Lerch coefficient increases by one.
+This proves \eqref{dp:primitiveeq}. The condition $\eta>0$ makes
+the integrand locally integrable at zero and the displayed primitive
+zero there. On slightly enlarged compact parameter sets, additional
+logarithmic factors from differentiating $t^{\eta-1}$ are still
+integrable. Normal convergence and dominated integration therefore
+give the derivative assertions.
+\end{proof}
+
+More generally, division of coefficients by $(n+\eta)^\ell$ gives
+successive applications of the normalized inverse of $\theta+\eta$:
+\begin{align}
+ F_{K,u}^{\langle\ell\rangle}(z)
+ ={}&\sum_{n=0}^{\infty}
+       \frac{r_n(u)z^n}{(n+\eta)^\ell}\notag\\
+ &-\sum_{j=0}^{K-1}C_j(u)
+            \Phi(z,1+2u+2j+\ell,\eta),\qquad \ell\ge0,
+ \label{dp:ladder}\\
+ (\theta+\eta)F_{K,u}^{\langle\ell+1\rangle}
+ ={}&F_{K,u}^{\langle\ell\rangle}.
+ \label{dp:ladderrec}
+\end{align}
+Here $F_{K,u}^{\langle0\rangle}=F_{K,u}$ and the first step is the
+lower-order hypergeometric expression in \eqref{dp:primitiveeq}.
+All these identities are coefficientwise regular at moving lower
+Gamma zeros.
+
+\subsection{Rational shifts give a finite colored-polylogarithm formula}
+Let $q\ge1$, $1\le p\le q$, and $\eta=p/q$. Choose a local $q$th
+root $w=z^{1/q}$ and put $\omega=e^{2\pi i/q}$. Root-of-unity
+filtering gives
+\begin{equation}\label{dp:filter}
+ \boxed{z^{p/q}\Phi(z,s,p/q)
+       =q^{s-1}\sum_{\ell=0}^{q-1}
+                     \omega^{-p\ell}\Li_s(\omega^\ell w).}
+\end{equation}
+To prove it, expand $\Li_s(\omega^\ell w)$ for $|w|<1$ and use
+\[
+ \frac1q\sum_{\ell=0}^{q-1}\omega^{\ell(k-p)}
+ =\begin{cases}1,&k\equiv p\pmod q,\\0,&\text{otherwise}.
+   \end{cases}
+\]
+The surviving positive indices are $k=qn+p$, including $p=q$ with
+$n\ge0$, which yields \eqref{dp:filter}. The formula is entire in
+the spectral order $s$ for $|z|<1$.
+
+For $m\ge0$, write $\partial_s^m\Li_s$ for order derivatives, not
+argument derivatives. Differentiation of \eqref{dp:filter} gives
+\begin{align}
+ z^{p/q}\partial_s^m\Phi(z,s,p/q)
+ ={}&q^{s-1}\sum_{\ell=0}^{q-1}\omega^{-p\ell}
+ \sum_{h=0}^m\binom mh(\log q)^{m-h}
+              \partial_s^h\Li_s(\omega^\ell w).
+ \label{dp:filterjets}
+\end{align}
+Thus every rational-shift subtraction term and every spectral jet
+in \eqref{dp:primitiveeq} is a finite combination of classical
+polylogarithms and their order derivatives. At integer resonances the
+primitive orders are the even integers $2-2N+2j$; at the half-integer
+points they are the odd integers $1-2M+2j$. Nonpositive integer
+polylogarithms themselves reduce to rational functions by repeated
+application of $z\,\mathrm d/\mathrm dz$ to $z/(1-z)$, while their
+order derivatives retain additional information.
+
+For a larger rational shift $\eta=L+p/q$, $L\ge0$ integer,
+one must first apply the finite-head identity
+\begin{equation}\label{dp:shift}
+ z^\eta\Phi(z,s,\eta)
+ =z^{p/q}\Phi(z,s,p/q)
+       -\sum_{r=0}^{L-1}\frac{z^{r+p/q}}{(r+p/q)^s}.
+\end{equation}
+This follows by removing the first $L$ terms and is valid for every
+$s$. Differentiating it retains the corresponding finite logarithmic
+terms. Dropping this finite head would invalidate the claimed
+polylogarithmic reduction for $\eta>1$.
+
+For the quartic family $\eta=1/4$, the four colors are $1,i,-1,-i$:
+\begin{equation}\label{dp:quarterfilter}
+ z^{1/4}\Phi(z,s,1/4)=4^{s-1}
+ \{\Li_s(w)-i\Li_s(iw)-\Li_s(-w)+i\Li_s(-iw)\},
+ \quad w=z^{1/4}.
+\end{equation}
+Together with \eqref{dg:quarticshift} and
+\eqref{dp:primitiveeq}, this gives a finite Gaussian-colored
+polylogarithm description of the counterterms for every resonant
+quartic moment and all its harmonic derivatives. It does not furnish
+the missing exact relation certificates for the manuscript's
+conjectural $S_6$ or $S_8$ evaluations.
+
+\begin{remark}[Boundary values of the primitive]\label{dp:boundary}
+In the strip of Theorem~\ref{dg:master}, the bracketed coefficients
+in \eqref{dp:F} are absolutely summable. Dividing them by
+$n+\eta$ preserves this property. Therefore the primitive itself has
+a finite radial endpoint, obtainable from its one combined series.
+At a resonant parameter, however, some separate terms on the right of
+\eqref{dp:primitiveeq} can be singular at $z=1$. Their combined
+expression, or its normally convergent coefficient series, is the
+appropriate endpoint object. No separate assignment of values to
+divergent polylogarithmic pieces is implicit.
+\end{remark}

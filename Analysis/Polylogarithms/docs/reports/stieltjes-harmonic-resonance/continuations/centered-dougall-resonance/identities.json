@@ -1,0 +1,269 @@
+{
+  "schema_version": 1,
+  "source": "article.tex",
+  "title": "Centered Dougall Resonance",
+  "index_role": "Equation-level navigation for manuscript integration; not a proof-assistant certificate.",
+  "global_priority": "not_established",
+  "entries": [
+    {
+      "id": "dougall_sum",
+      "title": "Classical normalized Rogers-Dougall summation",
+      "equation_label": "dr:eq:dougall",
+      "proof_or_section_label": "dr:sec:family",
+      "domain": "kappa,b,c,d0>0; 0<Re(u)<d0",
+      "status": "proved_in_article_or_explicitly_credited_classical_input",
+      "provenance_class": "classical_input",
+      "latex_display": "\\begin{equation}\n \\sum_{n=0}^{\\infty}W_n(u)=G(u),\n \\qquad 0<\\Rea u<d_0.\n \\label{dr:eq:dougall}\n\\end{equation}"
+    },
+    {
+      "id": "coefficient_recursion",
+      "title": "Centered even-step Bernoulli coefficient recursion",
+      "equation_label": "dr:eq:recursion",
+      "proof_or_section_label": "dr:lem:parity",
+      "domain": "Formal coefficient identity; j>=1",
+      "status": "proved_in_article_or_explicitly_credited_classical_input",
+      "provenance_class": "proved_continuation",
+      "latex_display": "\\begin{equation}\n A_0=1,\\qquad A_j=\\frac1j\\sum_{r=1}^j r\\ell_r A_{j-r}.\n \\label{dr:eq:recursion}\n\\end{equation}"
+    },
+    {
+      "id": "normal_subtraction",
+      "title": "Ordinary normally convergent Gamma-Hurwitz subtraction",
+      "equation_label": "dr:eq:subtraction",
+      "proof_or_section_label": "dr:thm:subtraction",
+      "domain": "K>=1; -K<Re(u)<d0; fixed parameters satisfy the main domain",
+      "status": "proved_in_article_or_explicitly_credited_classical_input",
+      "provenance_class": "proved_continuation",
+      "latex_display": "\\begin{equation}\n \\Rcal_K(u)=G(u)-\\sum_{j=0}^{K-1}\n                      A_j(u)\\zeta(1+2u+2j,\\kappa).\n \\label{dr:eq:subtraction}\n\\end{equation}"
+    },
+    {
+      "id": "residue_coefficient",
+      "title": "Polar-counterterm coefficient rho_N (twice the Gamma-product residue)",
+      "equation_label": "dr:eq:rho",
+      "proof_or_section_label": "dr:thm:coefficient-law",
+      "domain": "N>=0 integer; fixed parameters satisfy the main domain",
+      "status": "proved_in_article_or_explicitly_credited_classical_input",
+      "provenance_class": "proved_continuation",
+      "latex_display": "\\begin{equation}\n \\rho_N=\\frac{(-1)^N}{N!}(d_0)_N(1-b)_N(1-c)_N.\n \\label{dr:eq:rho}\n\\end{equation}"
+    },
+    {
+      "id": "coefficient_differential_law",
+      "title": "Differential law responsible for all-resonance cancellation",
+      "equation_label": "dr:eq:law",
+      "proof_or_section_label": "dr:thm:coefficient-law",
+      "domain": "Polynomial identity; N>=0; D=partial_kappa+partial_b+partial_c",
+      "status": "proved_in_article_or_explicitly_credited_classical_input",
+      "provenance_class": "proved_continuation",
+      "latex_display": "\\begin{equation}\n (\\partial_u-D)A_N(u)=\n      \\sum_{r=1}^N\\frac{B_{2r}(\\kappa)}r A_{N-r}(u).\n \\label{dr:eq:law}\n\\end{equation}"
+    },
+    {
+      "id": "collapsed_integral_resonance",
+      "title": "Digamma collapse of the full minimal subtraction",
+      "equation_label": "dr:eq:collapse",
+      "proof_or_section_label": "dr:thm:collapse",
+      "domain": "N>=0 integer; kappa,b,c,d0>0, including reciprocal-Gamma zeros",
+      "status": "proved_in_article_or_explicitly_credited_classical_input",
+      "provenance_class": "proved_continuation",
+      "latex_display": "\\begin{align}\n \\Rcal_{N+1}(-N)=\\frac{\\rho_N}{2}\n \\bigl[\\psi(N+1)-\\psi(d_0+N)-\\psi(b)-\\psi(c)\n                  +2\\psi(\\kappa)\\bigr].\n \\label{dr:eq:collapse}\n\\end{align}"
+    },
+    {
+      "id": "zero_safe_all_jet_germ",
+      "title": "Holomorphic all-jet identity without division by rho_N",
+      "equation_label": "dr:eq:jet-generator",
+      "proof_or_section_label": "dr:thm:jets",
+      "domain": "Taylor germ t=0; N>=0; kappa,b,c,d0>0",
+      "status": "proved_in_article_or_explicitly_credited_classical_input",
+      "provenance_class": "proved_continuation",
+      "latex_display": "\\begin{align}\n \\Rcal_{N+1}(-N+t)={}&\\frac{Q_N(t)-a_N(t)}{2t}\n -a_N(t)\\sum_{k\\geq0}\\frac{(-2)^k}{k!}\\gamma_k(\\kappa)t^k\\notag\\\\\n &-\\sum_{j=0}^{N-1}a_j(t)\n              \\zeta(1-2(N-j)+2t,\\kappa).\n \\label{dr:eq:jet-generator}\n\\end{align}"
+    },
+    {
+      "id": "all_jet_coefficients",
+      "title": "Finite Stieltjes and negative-odd Hurwitz-zeta closure",
+      "equation_label": "dr:eq:all-jets",
+      "proof_or_section_label": "dr:thm:jets",
+      "domain": "N,m>=0 integer; ordinary Taylor coefficients, not derivatives",
+      "status": "proved_in_article_or_explicitly_credited_classical_input",
+      "provenance_class": "proved_continuation",
+      "latex_display": "\\begin{align}\n \\frac{\\Rcal_{N+1}^{(m)}(-N)}{m!}\n ={}&\\frac{q_{m+1}-a_{N,m+1}}2\n -\\sum_{r=0}^m a_{N,r}\n                 \\frac{(-2)^{m-r}\\gamma_{m-r}(\\kappa)}{(m-r)!}\n                 \\notag\\\\\n &-\\sum_{j=0}^{N-1}\\sum_{r=0}^m a_{j,r}\n    \\frac{2^{m-r}\\zeta^{(m-r)}(1-2(N-j),\\kappa)}{(m-r)!}.\n \\label{dr:eq:all-jets}\n\\end{align}"
+    },
+    {
+      "id": "zero_excess_bell",
+      "title": "All zero-excess spectral derivatives in Bell form",
+      "equation_label": "dr:eq:zero-jets",
+      "proof_or_section_label": "dr:sec:jets",
+      "domain": "m>=0 integer; kappa,b,c,d0>0",
+      "status": "proved_in_article_or_explicitly_credited_classical_input",
+      "provenance_class": "derived_specialization",
+      "latex_display": "\\begin{equation}\n \\Rcal_1^{(m)}(0)=\n \\frac{Y_{m+1}(h_1,\\ldots,h_{m+1})}{2(m+1)}\n                 -(-2)^m\\gamma_m(\\kappa).\n \\label{dr:eq:zero-jets}\n\\end{equation}"
+    },
+    {
+      "id": "half_integer_tower",
+      "title": "Interlaced regular tower at nonpositive even zeta arguments",
+      "equation_label": "dr:eq:half",
+      "proof_or_section_label": "dr:thm:half",
+      "domain": "N>=0; u=-N-1/2; kappa,b,c,d0>0",
+      "status": "proved_in_article_or_explicitly_credited_classical_input",
+      "provenance_class": "proved_continuation",
+      "latex_display": "\\begin{equation}\n \\Rcal_{N+1}(u_*)=G(u_*)+\n \\sum_{j=0}^N A_j(u_*)\n       \\frac{B_{2(N-j)+1}(\\kappa)}{2(N-j)+1}.\n \\label{dr:eq:half}\n\\end{equation}"
+    },
+    {
+      "id": "integer_symmetric_product",
+      "title": "Exact finite product at symmetric integer resonance",
+      "equation_label": "dr:eq:integer-product",
+      "proof_or_section_label": "dr:sec:half",
+      "domain": "kappa=b=c=1/2; N>=0; u=-N",
+      "status": "proved_in_article_or_explicitly_credited_classical_input",
+      "provenance_class": "derived_specialization",
+      "latex_display": "\\begin{align}\n W_n(-N)&=\\frac1x\\prod_{r=1}^N\\left(x^2-(r-\\tfrac12)^2\\right),\n        \\label{dr:eq:integer-product}\\\\\n W_n(-N-\\tfrac12)&=\\prod_{r=1}^N(x^2-r^2).\n        \\label{dr:eq:half-product}\n\\end{align}"
+    },
+    {
+      "id": "half_integer_symmetric_product",
+      "title": "Exact finite product at symmetric half-integer resonance",
+      "equation_label": "dr:eq:half-product",
+      "proof_or_section_label": "dr:sec:half",
+      "domain": "kappa=b=c=1/2; N>=0; u=-N-1/2",
+      "status": "proved_in_article_or_explicitly_credited_classical_input",
+      "provenance_class": "derived_specialization",
+      "latex_display": "\\begin{align}\n W_n(-N)&=\\frac1x\\prod_{r=1}^N\\left(x^2-(r-\\tfrac12)^2\\right),\n        \\label{dr:eq:integer-product}\\\\\n W_n(-N-\\tfrac12)&=\\prod_{r=1}^N(x^2-r^2).\n        \\label{dr:eq:half-product}\n\\end{align}"
+    },
+    {
+      "id": "integer_b_polynomial_locus",
+      "title": "Additional exact polynomial truncation locus",
+      "equation_label": "dr:eq:integer-b",
+      "proof_or_section_label": "dr:prop:integer-b",
+      "domain": "N>=1; b=m in {1,...,N}; main parameter domain",
+      "status": "proved_in_article_or_explicitly_credited_classical_input",
+      "provenance_class": "proved_continuation",
+      "latex_display": "\\begin{equation}\n W_n(-N)=x_n\n \\prod_{r=1}^{m-1}\\bigl(x_n^2-(\\kappa-r)^2\\bigr)\n \\prod_{r=1}^{N-m}\\bigl(x_n^2-(\\kappa-c+r)^2\\bigr).\n \\label{dr:eq:integer-b}\n\\end{equation}"
+    },
+    {
+      "id": "all_order_harmonic_identity",
+      "title": "Gamma-weighted generalized-harmonic identities",
+      "equation_label": "dr:eq:general-harmonic",
+      "proof_or_section_label": "dr:sec:harmonic",
+      "domain": "m>=0; main parameter domain; Bell convention as in article",
+      "status": "proved_in_article_or_explicitly_credited_classical_input",
+      "provenance_class": "derived_specialization",
+      "latex_display": "\\begin{align}\n &\\sum_{n=0}^{\\infty}\n \\left[W_n(0)Y_m(g_{n,1},\\ldots,g_{n,m})\n               -\\frac{(-2\\log x_n)^m}{x_n}\\right]\\notag\\\\\n &\\hspace{20mm}=\n \\frac{Y_{m+1}(h_1,\\ldots,h_{m+1})}{2(m+1)}\n                  -(-2)^m\\gamma_m(\\kappa).\n \\label{dr:eq:general-harmonic}\n\\end{align}"
+    },
+    {
+      "id": "harmonic_stieltjes_first",
+      "title": "First unweighted harmonic-Stieltjes identity",
+      "equation_label": "dr:eq:harmonic-one",
+      "proof_or_section_label": "dr:sec:harmonic",
+      "domain": "n>=0 sum, H_0=0; gamma_m=gamma_m(1)",
+      "status": "proved_in_article_or_explicitly_credited_classical_input",
+      "provenance_class": "derived_specialization",
+      "latex_display": "\\begin{equation}\n \\sum_{n=0}^{\\infty}\n \\frac{H_n-\\gamma-\\log(n+\\tfrac12)}{n+\\tfrac12}\n =\\frac{\\zeta(2)-\\gamma^2-2L^2-2\\gamma_1}{2}.\n \\label{dr:eq:harmonic-one}\n\\end{equation}"
+    },
+    {
+      "id": "harmonic_stieltjes_second",
+      "title": "Quadratic harmonic-Stieltjes identity",
+      "equation_label": "dr:eq:harmonic-two",
+      "proof_or_section_label": "dr:sec:harmonic",
+      "domain": "n>=0 sum, H_0=0; A=gamma+2*log(2)",
+      "status": "proved_in_article_or_explicitly_credited_classical_input",
+      "provenance_class": "derived_specialization",
+      "latex_display": "\\begin{equation}\n \\sum_{n=0}^{\\infty}\n \\frac{(H_n-\\gamma)^2-\\log^2(n+\\tfrac12)}{n+\\tfrac12}\n =\\frac{A^3}{3}-A\\zeta(2)+\\frac76\\zeta(3)-\\gamma_2(\\tfrac12).\n \\label{dr:eq:harmonic-two}\n\\end{equation}"
+    },
+    {
+      "id": "first_resonance_harmonic",
+      "title": "Harmonic identity with zeta'(-1) and revived initial term 1/6",
+      "equation_label": "dr:eq:first-resonance-harmonic",
+      "proof_or_section_label": "dr:cor:first-resonance",
+      "domain": "n>=1 in displayed sum; initial 1/6 is essential",
+      "status": "proved_in_article_or_explicitly_credited_classical_input",
+      "provenance_class": "derived_specialization",
+      "latex_display": "\\begin{align}\n &\\frac16+\\sum_{n=1}^{\\infty}\n \\left[\\frac{2n(n+1)}{n+\\tfrac12}\n       \\bigl(\\log(n+\\tfrac12)-H_n+\\gamma\\bigr)\n       +\\frac1{12(n+\\tfrac12)}\\right]\\notag\\\\\n &\\qquad=\\zeta'(-1)+\\frac{\\zeta(2)}4-\\frac{\\gamma^2}4\n        -\\frac{\\gamma_1}2-\\frac{L^2}2+\\frac\\gamma{12}+\\frac L4.\n \\label{dr:eq:first-resonance-harmonic}\n\\end{align}"
+    },
+    {
+      "id": "continuous_shift_harmonic",
+      "title": "Continuous-shift first harmonic identity",
+      "equation_label": "dr:eq:S1-general",
+      "proof_or_section_label": "dr:thm:Sp",
+      "domain": "a>0; S_1 defined by the ordinary bracketed convergent sum",
+      "status": "proved_in_article_or_explicitly_credited_classical_input",
+      "provenance_class": "derived_specialization",
+      "latex_display": "\\begin{equation}\n S_1(a)=\\frac{\\zeta(2,a)-\\psi(a)^2}{2}-\\gamma_1(a)-\\zeta(2).\n \\label{dr:eq:S1-general}\n\\end{equation}"
+    },
+    {
+      "id": "all_harmonic_euler_endpoints",
+      "title": "All higher harmonic endpoint values in single zeta derivatives and products",
+      "equation_label": "dr:eq:Sp-general",
+      "proof_or_section_label": "dr:thm:Sp",
+      "domain": "a>0; integer p>=2; empty finite sums are zero",
+      "status": "proved_in_article_or_explicitly_credited_classical_input",
+      "provenance_class": "derived_specialization",
+      "latex_display": "\\begin{align}\n S_p(a)={}&\\psi(a)\\zeta(p,a)+\\frac p2\\zeta(p+1,a)\n              +\\zeta'(p,a)\\notag\\\\\n &-\\frac12\\sum_{j=2}^{p-1}\\zeta(j,a)\\zeta(p+1-j,a).\n \\label{dr:eq:Sp-general}\n\\end{align}"
+    },
+    {
+      "id": "half_harmonic_euler_endpoints",
+      "title": "Riemann-zeta-only specialization of all positive primitive orders",
+      "equation_label": "dr:eq:Sp-half",
+      "proof_or_section_label": "dr:thm:Sp",
+      "domain": "integer p>=2; a=1/2; L=log(2)",
+      "status": "proved_in_article_or_explicitly_credited_classical_input",
+      "provenance_class": "derived_specialization",
+      "latex_display": "\\begin{align}\n S_p(\\tfrac12)={}&(2^p-1)\\zeta'(p)\n -\\bigl((2^p-1)\\gamma+(2^p-2)L\\bigr)\\zeta(p)\\notag\\\\\n &+\\frac p2(2^{p+1}-1)\\zeta(p+1)\\notag\\\\\n &-\\frac12\\sum_{j=2}^{p-1}(2^j-1)(2^{p+1-j}-1)\n                       \\zeta(j)\\zeta(p+1-j),\\qquad p\\geq2.\n \\label{dr:eq:Sp-half}\n\\end{align}"
+    },
+    {
+      "id": "endpoint_lifting",
+      "title": "Endpoint continuation with every spectral derivative",
+      "equation_label": "dr:eq:endpoint",
+      "proof_or_section_label": "dr:thm:endpoint",
+      "domain": "K>=1; -K<Re(u)<d0; m>=0; closed unit disk",
+      "status": "proved_in_article_or_explicitly_credited_classical_input",
+      "provenance_class": "proved_continuation",
+      "latex_display": "\\begin{equation}\n \\partial_u^m\\Rcal_K(u,1)=\\Rcal_K^{(m)}(u).\n \\label{dr:eq:endpoint}\n\\end{equation}"
+    },
+    {
+      "id": "polylog_root_filter",
+      "title": "Finite polylogarithm representation of rational-center counterterms",
+      "equation_label": "dr:eq:root-filter",
+      "proof_or_section_label": "dr:sec:polylog",
+      "domain": "1<=p<=q integer, kappa=p/q; initially 0<z<1, then consistent analytic continuation",
+      "status": "proved_in_article_or_explicitly_credited_classical_input",
+      "provenance_class": "classical_filter_applied",
+      "latex_display": "\\begin{equation}\n \\Phi(z,s,p/q)=q^{s-1}z^{-p/q}\n       \\sum_{\\ell=0}^{q-1}\\omega^{-p\\ell}\n                     \\Li_s(\\omega^\\ell z^{1/q}).\n \\label{dr:eq:root-filter}\n\\end{equation}"
+    },
+    {
+      "id": "polylog_root_filter_jets",
+      "title": "All spectral derivatives with required log(q) terms",
+      "equation_label": "dr:eq:root-jets",
+      "proof_or_section_label": "dr:sec:polylog",
+      "domain": "Root-filter domain; s=s0+2u; m>=0 integer",
+      "status": "proved_in_article_or_explicitly_credited_classical_input",
+      "provenance_class": "derived_specialization",
+      "latex_display": "\\begin{align}\n \\partial_u^m\\Phi(z,s,p/q)\n ={}&2^m q^{s-1}z^{-p/q}\\sum_{\\ell=0}^{q-1}\\omega^{-p\\ell}\n       (\\partial_s+\\log q)^m\n                   \\Li_s(\\omega^\\ell z^{1/q}).\n \\label{dr:eq:root-jets}\n\\end{align}"
+    },
+    {
+      "id": "all_first_jet_primitive_endpoints",
+      "title": "Every normalized Euler primitive of the first symmetric harmonic jet",
+      "equation_label": "dr:eq:all-primitive-endpoints",
+      "proof_or_section_label": "dr:sec:polylog",
+      "domain": "kappa=b=c=1/2; r>=0 integer; endpoint z=1",
+      "status": "proved_in_article_or_explicitly_credited_classical_input",
+      "provenance_class": "proved_continuation",
+      "latex_display": "\\begin{equation}\n -\\frac12\\left[J_{1/2}^{\\,r}\\partial_u\\Rcal_1(0,z)\\right]_{z=1}\n      =S_{r+1}(\\tfrac12),\\qquad r\\geq0.\n \\label{dr:eq:all-primitive-endpoints}\n\\end{equation}"
+    },
+    {
+      "id": "negative_polygamma_ladder",
+      "title": "Normalized Hurwitz-zeta primitive ladder",
+      "equation_label": "dr:eq:P-ladder",
+      "proof_or_section_label": "dr:sec:kappa-primitives",
+      "domain": "x>0; j>=1 in second relation; P_j as defined in article",
+      "status": "proved_in_article_or_explicitly_credited_classical_input",
+      "provenance_class": "classical_framework",
+      "latex_display": "\\begin{equation}\n \\Pcal_0'(x)=\\psi(x),\\qquad\n \\Pcal_j'(x)=\\Pcal_{j-1}(x)\\quad(j\\geq1).\n \\label{dr:eq:P-ladder}\n\\end{equation}"
+    },
+    {
+      "id": "all_center_parameter_primitives",
+      "title": "Finite center-parameter antiderivative at every integer resonance",
+      "equation_label": "dr:eq:all-kappa-primitives",
+      "proof_or_section_label": "dr:thm:primitive",
+      "domain": "b,c,N fixed; kappa varies with kappa,d0>0; additive constant arbitrary",
+      "status": "proved_in_article_or_explicitly_credited_classical_input",
+      "provenance_class": "proved_continuation",
+      "latex_display": "\\begin{equation}\n \\frac{B_N}{2}P_N^{\\rm poly}(\\kappa)\n   +\\Ical[p_N](\\kappa)-\\frac{C_N}{4}\\Ical[q_N](y).\n \\label{dr:eq:all-kappa-primitives}\n\\end{equation}"
+    }
+  ]
+}

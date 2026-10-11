@@ -1,0 +1,433 @@
+% Research fragment for the parent article. No standalone preamble.
+% Source antecedent: incoming Nested Harmonic Jets, article.tex,
+% proposition prop:zeroflow and Further research question 7.
+% Prefix mz: avoids conflicts with the source manuscript labels.
+
+\section{All spectral derivatives at the moving Gamma zeros}
+\label{mz:sec:zeros}\label{sec:roots}
+
+The incoming \emph{Nested Harmonic Jets} report \cite{nested} introduces a holomorphic
+spectral product, evaluates its first spectral derivative at each zero of
+its Gamma slice, and asks for an explicit construction at every derivative
+order. We give such a construction. Its coefficients have a finite
+triangular description by normalized Stieltjes antiderivatives. This solves
+the algorithmic part of that question; it gives a sufficient coordinate
+system rather than an arithmetic minimality theorem for constants.
+
+The Weierstrass Gamma product, Bell polynomials, Stirling numbers, and
+Mellin transforms used below are classical. The contribution here is their
+specific combination into the all-order zero evaluation, its finite
+Stieltjes primitive closure, and a harmonic-number coefficient algorithm.
+The elementary digamma integral appearing at second order is not claimed
+as a new evaluation in isolation.
+
+Fix $a>0$, put $x_n=n+a$, and adopt
+\[
+ \zeta(1+u,a)=\frac1u+
+       \sum_{r\ge0}\frac{(-1)^r\gamma_r(a)}{r!}u^r,
+ \qquad \gamma_r=\gamma_r(1),\qquad \gamma_0(a)=-\psi(a).
+\]
+Use the source product and its specified counterterm:
+\begin{align}
+ \mathcal G(s,z;a)
+ &=e^{z(\zeta(s,a)-1/(s-1))}
+       \prod_{n\ge0}(1+zx_n^{-s})e^{-zx_n^{-s}},
+       \qquad \Re s>\tfrac12,\label{mz:G}\\
+ F_R(z;a)&=\left.\partial_s^R\mathcal G(s,z;a)\right|_{s=1}.
+ \label{mz:F}
+\end{align}
+The pole-subtracted expression in \eqref{mz:G} is interpreted by its
+holomorphic extension at one. Local uniform convergence, together with the
+classical Gamma product, gives
+\[
+ \mathcal G(1,z;a)=\frac{\Gamma(a)}{\Gamma(a+z)}.
+\]
+We evaluate $F_R$ at the fixed argument $z=-a-m$. This is different from
+differentiating along the zero path $z=-(a+m)^s$, where the function is
+identically zero.
+
+\subsection{A finite primitive coordinate system}
+
+For $x\ge0$, integers $r\ge0$, and integers $k\ge2$, define
+\begin{align}
+ L_r(x)&=\sum_{n=1}^{\infty}
+   \frac{\log^r(n+x)-\log^r n}{n},\qquad L_0(x)=0,
+       \label{mz:L}\\
+ M_{r,k}(x)&=\sum_{n=1}^{\infty}
+          \frac{\log^r(n+x)}{n^k}.
+       \label{mz:M}
+\end{align}
+The convention for the zeroth power is one. The sums and their fixed
+derivatives converge locally uniformly: the summands of $L_r$, for $r>0$,
+are $O(\log^{r-1}n/n^2)$ on a compact $x$-interval, and those of $M_{r,k}$
+are $O(\log^r n/n^k)$. They also define holomorphic functions on
+$\mathbb C\setminus(-\infty,-1]$ using principal logarithms.
+
+Put
+\begin{equation}
+ T_r(x)=L_r(x)+\gamma_r-\gamma_r(1+x).
+ \label{mz:T}
+\end{equation}
+
+\begin{theorem}[Finite Stieltjes primitive closure]
+\label{mz:thm:primitive}
+For $r\ge1$ and $x>0$,
+\begin{align}
+ L_r'(x)&=\frac r{x}T_{r-1}(x),\qquad L_r(0)=0,
+      \label{mz:Lrec}\\
+ M_{r,k}'(x)
+ &=r\left\{\sum_{j=2}^{k}
+     \frac{(-1)^{k-j}}{x^{k-j+1}}M_{r-1,j}(x)
+       +\frac{(-1)^{k-1}}{x^k}T_{r-1}(x)\right\},
+      \label{mz:Mrec}\\
+ M_{r,k}(0)&=(-1)^r\zeta^{(r)}(k),
+       \qquad M_{0,k}(x)=\zeta(k).
+      \label{mz:Minitial}
+\end{align}
+The combined right sides have removable singularities at zero.
+Consequently, any finite rectangle of $L_r$ and $M_{r,k}$ can be
+constructed by finitely many ordinary integrations from zero, starting
+with ordinary zeta derivatives and the generalized Stieltjes functions.
+\end{theorem}
+
+\begin{proof}
+The defining limit for generalized Stieltjes constants gives
+\begin{align}
+ \sum_{n=1}^{\infty}\log^r(n+x)
+          \left(\frac1n-\frac1{n+x}\right)
+ &=L_r(x)+\gamma_r-\gamma_r(1+x)\notag\\
+ &=T_r(x).
+ \label{mz:Tsum}
+\end{align}
+To see the normalization explicitly, subtract the two cutoff sums for
+$\gamma_r$ and $\gamma_r(1+x)$. Their integral counterterms differ by
+$[\log^{r+1}(N+1+x)-\log^{r+1}(N+1)]/(r+1)$, which tends to zero.
+The remaining difference is absolutely convergent. Differentiating
+\eqref{mz:L} termwise and using
+$1/[n(n+x)]=x^{-1}(1/n-1/(n+x))$ proves \eqref{mz:Lrec}.
+
+For $k\ge2$, the elementary partial-fraction identity
+\begin{equation}
+ \frac1{n^k(n+x)}
+ =\sum_{j=2}^{k}\frac{(-1)^{k-j}}{x^{k-j+1}n^j}
+   +\frac{(-1)^{k-1}}{x^k}
+          \left(\frac1n-\frac1{n+x}\right)
+ \label{mz:partial}
+\end{equation}
+and termwise differentiation of \eqref{mz:M} prove \eqref{mz:Mrec}.
+At zero, differentiation of the absolutely convergent Dirichlet series
+for $\zeta(k)$ gives \eqref{mz:Minitial}. The original differentiated
+series are holomorphic near zero. Thus the combined rational expressions
+on the right of \eqref{mz:Lrec}--\eqref{mz:Mrec} have removable
+singularities there. Integrating those combined expressions proves the
+last assertion by induction on $r$.
+\end{proof}
+
+One must integrate the combined right side of \eqref{mz:Mrec}. Its
+individual displayed terms can have nonintegrable poles at zero, although
+their sum is regular.
+
+In particular, the first coordinate is the ordinary digamma primitive
+\begin{equation}
+ D(x):=L_1(x)
+ =\sum_{n\ge1}\frac{\log(1+x/n)}n
+ =\int_0^x\frac{\psi(1+t)+\gamma}{t}\,dt.
+ \label{mz:D}
+\end{equation}
+The integrand takes the limiting value $\zeta(2)$ at zero. Higher $L_r$
+are obtained from
+\[
+ L_r(x)=r\int_0^x
+       \frac{L_{r-1}(t)+\gamma_{r-1}-\gamma_{r-1}(1+t)}t\,dt.
+\]
+For example
+\begin{align}
+ L_2'(x)&=\frac2x\bigl(D(x)+\gamma_1-\gamma_1(1+x)\bigr),\\
+ M_{2,2}'(x)
+ &=\frac2xM_{1,2}(x)
+   -\frac2{x^2}\bigl(D(x)+\gamma_1-\gamma_1(1+x)\bigr).
+\end{align}
+
+\subsection{The zero-factor theorem}
+
+Let $\left\{\begin{smallmatrix}r\\k\end{smallmatrix}\right\}$ be a
+Stirling number of the second kind and set
+\begin{equation}
+ A_{r,k}=(k-1)!
+        \left\{\begin{matrix}r\\k\end{matrix}\right\}.
+ \label{mz:A}
+\end{equation}
+Let $B_j$ be the Bernoulli numbers with $B_1=-1/2$. Define the complete
+exponential Bell polynomials by
+\[
+ \exp\left(\sum_{j\ge1}c_j\frac{u^j}{j!}\right)
+       =\sum_{n\ge0}Y_n(c_1,\ldots,c_n)\frac{u^n}{n!}.
+\]
+
+\begin{theorem}[All fixed-argument spectral jets at a Gamma zero]
+\label{mz:thm:zero}
+Let $a>0$, $m\in\mathbb Z_{\ge0}$, and set
+\[
+ x=a+m,\qquad \ell=\log x,\qquad
+ h_0=x\Gamma(a)(-1)^m m!.
+\]
+For $r\ge1$ define the finite expression
+\begin{align}
+ b_r={}&(-1)^{r+1}\left\{
+      x\bigl(\gamma_r+L_r(x)\bigr)
+       +\sum_{k=2}^{r}A_{r,k}x^kM_{r,k}(x)\right.\notag\\
+ &\hspace{25mm}\left.
+       +\sum_{j=1}^{m}\log^r(x-j)
+            \sum_{k=1}^{r}A_{r,k}\left(-\frac xj\right)^k
+                        \right\},\label{mz:b}\\
+ c_r={}&b_r+\frac{B_r}{r}\ell^r.
+ \label{mz:c}
+\end{align}
+Empty sums vanish. Then, for every $R\ge1$,
+\begin{equation}
+ \boxed{F_R(-x;a)
+    =R h_0\ell\,Y_{R-1}(c_1,\ldots,c_{R-1}).}
+ \label{mz:allzero}
+\end{equation}
+At $x=1$, every $F_R(-1;1)$ is zero. For $x\ne1$, the formula requires
+only the $R-1$ logarithmic jets $b_1,\ldots,b_{R-1}$.
+\end{theorem}
+
+\begin{proof}
+Remove the unique vanishing factor:
+\[
+ \mathcal G(1+u,-x;a)=(1-e^{-\ell u})\mathcal H(1+u),
+\]
+where $\mathcal H$ is holomorphic and nonzero near one. At $s=1$, the
+Gamma slice has derivative $\Gamma(a)(-1)^m m!$ in $z$ at $-x$.
+The removed factor is $(z+x)/x$ on that slice, so $\mathcal H(1)=h_0$.
+Equivalently, for a cutoff $N>m$, the zero-removed value is
+\begin{equation}
+ \mathcal H_N(1)=h_0 (N+a)^x
+                      \frac{\Gamma(N-m)}{\Gamma(N+a)},
+ \label{mz:Hcut}
+\end{equation}
+which tends to $h_0$ by the Gamma ratio asymptotic.
+
+The source cutoff is
+\[
+ \mathcal G_N(s,-x;a)
+   =e^{xC_N(s;a)}\prod_{n<N}(1-xx_n^{-s}),\qquad
+ C_N(s;a)=\frac{1-(N+a)^{1-s}}{s-1}.
+\]
+Its derivatives satisfy
+$\partial_s^r C_N(1;a)=(-1)^r\log^{r+1}(N+a)/(r+1)$.
+For integer $r\ge1$,
+\begin{equation}
+ \left.\partial_s^r\log(1-xx_n^{-s})\right|_{s=1}
+       =(-1)^{r+1}\log^r x_n\,
+                         \operatorname{Li}_{1-r}(x/x_n).
+ \label{mz:LiDerivative}
+\end{equation}
+Only integer nonpositive polylogarithm orders occur here, hence these are
+rational functions; the formula is valid even for $n<m$, when the
+argument exceeds one. The rational identity
+\begin{equation}
+ \operatorname{Li}_{1-r}(q)
+       =\sum_{k=1}^{r}A_{r,k}\left(\frac q{1-q}\right)^k
+ \label{mz:LiStirling}
+\end{equation}
+follows either by applying $q\partial_q$ repeatedly to $q/(1-q)$ or
+from the Stirling recurrence. Thus
+\begin{align}
+ \left.\partial_s^r\log\mathcal H_N(s)\right|_{s=1}
+ =(-1)^r\left\{\frac{x}{r+1}\log^{r+1}(N+a)
+  -\sum_{\substack{0\le n<N\\n\ne m}}\log^r(n+a)
+          \sum_{k=1}^{r}\frac{A_{r,k}x^k}{(n-m)^k}\right\}.
+ \label{mz:bcut}
+\end{align}
+The $n<m$ terms become the finite $j$-sum in \eqref{mz:b}. Set $n=m+j$
+in the remaining terms. Since $A_{r,1}=1$,
+\[
+ \lim_{J\to\infty}\left\{
+   \sum_{j=1}^{J}\frac{\log^r(j+x)}j
+       -\frac{\log^{r+1}(J+1+x)}{r+1}\right\}
+       =\gamma_r+L_r(x).
+\]
+Indeed, subtract the analogous limit for $\gamma_r$; the change in its
+logarithmic counterterm tends to zero. The sums for $k\ge2$ converge to
+$M_{r,k}(x)$. Local uniform convergence of the zero-removed products
+justifies passage to their logarithmic derivatives, proving
+$b_r=\partial_s^r\log\mathcal H(1)$ and \eqref{mz:b}.
+
+For $\ell\ne0$, the Bernoulli generating function yields, near $u=0$,
+\begin{equation}
+ \log\frac{1-e^{-\ell u}}{\ell u}
+       =\sum_{r\ge1}\frac{B_r\ell^r}{r}\frac{u^r}{r!}.
+ \label{mz:Bernoulli}
+\end{equation}
+Consequently
+\[
+ \mathcal G(1+u,-x;a)
+       =h_0\ell u\exp\left(\sum_{r\ge1}c_r\frac{u^r}{r!}\right).
+\]
+Bell coefficient extraction proves \eqref{mz:allzero}. If $\ell=0$,
+the removed factor $1-e^{-\ell u}$ vanishes identically, proving the
+stated exceptional case without division by zero.
+\end{proof}
+
+The first three nontrivial rows are
+\begin{align}
+ F_1(-x;a)&=h_0\ell,\label{mz:F1}\\
+ F_2(-x;a)&=h_0(2\ell b_1-\ell^2),\label{mz:F2b}\\
+ F_3(-x;a)&=h_0\{3\ell(b_1^2+b_2)-3\ell^2b_1+\ell^3\}.
+ \label{mz:F3}
+\end{align}
+The first is the source's already proved zero-flow formula. The second has
+the explicit Gamma--Stieltjes--digamma-primitive evaluation
+\begin{equation}
+ \boxed{F_2(-x;a)=h_0\left[
+   2x\ell\left\{\gamma_1+D(x)
+           -\sum_{j=1}^{m}\frac{\log(x-j)}j\right\}-\ell^2\right].}
+ \label{mz:F2}
+\end{equation}
+For the next row,
+\begin{align}
+ b_2=-\biggl[&x(\gamma_2+L_2(x))+x^2M_{2,2}(x)\notag\\
+ &+\sum_{j=1}^{m}\log^2(x-j)
+                    \left(-\frac xj+\frac{x^2}{j^2}\right)\biggr].
+ \label{mz:b2}
+\end{align}
+
+For fixed $R\ge2$, Theorem~\ref{mz:thm:primitive} supplies a finite construction
+of all entries needed in \eqref{mz:allzero}. It uses ordinary Stieltjes
+constants only through $\gamma_{R-1}$, Stieltjes \emph{functions}
+$\gamma_j(1+t)$ only through $j=R-2$, and finitely many zeta derivatives
+$\zeta^{(r)}(k)$ with $0\le r\le R-1$ and $2\le k\le R-1$.
+For $R\ge2$, the highest ordinary Stieltjes constant occurs linearly,
+with coefficient
+\begin{equation}
+ [\gamma_{R-1}]F_R(-x;a)
+       =(-1)^R R x h_0\log x
+ \label{mz:highest}
+\end{equation}
+in this explicit coordinate formula. This is a statement about the
+displayed construction. It does not assert arithmetic independence of
+Stieltjes constants from zeta derivatives or their integrals.
+
+\subsection{Polylogarithmic Mellin realization}
+
+The coordinate system also has a direct polylogarithm interpretation. Set
+\begin{equation}
+ J_k(v,x)=\sum_{n=1}^{\infty}\frac1{n^k(n+x)^v}.
+ \label{mz:J}
+\end{equation}
+For $x\ge0$ and $\Re v>0$, termwise integration of the absolutely
+convergent polylogarithm series gives
+\begin{equation}
+ J_k(v,x)=\frac1{\Gamma(v)}\int_0^{\infty}
+     t^{v-1}e^{-xt}\operatorname{Li}_k(e^{-t})\,dt,
+       \qquad k\ge1.
+ \label{mz:Mellin}
+\end{equation}
+For $k\ge2$ its Dirichlet series is holomorphic near $v=0$, and
+\[
+ M_{r,k}(x)=(-1)^r\partial_v^rJ_k(0,x).
+\]
+For $k=1$, the difference
+\[
+ J_1(v,x)-\zeta(1+v)
+ =\sum_{n\ge1}\frac{(n+x)^{-v}-n^{-v}}n
+\]
+is holomorphic near zero because its summands are $O(n^{-2-\Re v})$
+there, uniformly on compact sets. It follows that
+\begin{equation}
+ J_1(v,x)=\frac1v+
+       \sum_{r\ge0}\frac{(-1)^r(\gamma_r+L_r(x))}{r!}v^r.
+ \label{mz:JLaurent}
+\end{equation}
+Thus the exact Gamma-zero derivatives are finite combinations of resonant
+Laurent coefficients and regular spectral derivatives of the elementary
+polylogarithmic Mellin transform \eqref{mz:Mellin}. This is a specific
+shifted Dirichlet series, not an identification of its Laurent coefficients
+with the ordinary Hurwitz Stieltjes constants.
+
+\subsection{Generalized harmonic numbers give every coefficient}
+
+Let $e_j(h)$ be defined by
+\begin{equation}
+ \prod_{n=1}^{h}(1+u/n)=\sum_{j=0}^{h}e_j(h)u^j,
+ \qquad e_0(h)=1.
+ \label{mz:e}
+\end{equation}
+These are polynomials in the generalized harmonic numbers
+$H_h^{(j)}=\sum_{n=1}^h n^{-j}$:
+\[
+ e_1(h)=H_h,\qquad
+ e_2(h)=\tfrac12\bigl(H_h^2-H_h^{(2)}\bigr),\qquad
+ \sum_j e_j(h)u^j
+  =\exp\left(\sum_{j\ge1}\frac{(-1)^{j-1}H_h^{(j)}}j u^j\right).
+\]
+For $r\ge1$, $h\ge1$, and $k\ge1$, put
+\begin{equation}
+ Q_{r,k,h}(q)
+   =\sum_{j=1}^{\min(r,h)}\frac{r!}{(r-j)!}
+           e_{j-1}(h-1)\zeta^{(r-j)}(k+h,q).
+ \label{mz:Q}
+\end{equation}
+
+\begin{theorem}[Harmonic--Hurwitz coefficient formulas]
+\label{mz:thm:coefficients}
+Let $r\ge1$, let $N\ge0$ be an integer, and let
+$x\in\mathbb C\setminus(-\infty,-1]$ satisfy $|x|<N+1$. Then
+\begin{align}
+ L_r(x)={}&\sum_{n=1}^{N}
+        \frac{\log^r(n+x)-\log^r n}{n}
+   +(-1)^r\sum_{h\ge1}\frac{(-x)^h}{h}Q_{r,1,h}(N+1),
+       \label{mz:Lseries}\\
+ M_{r,k}(x)={}&\sum_{n=1}^{N}\frac{\log^r(n+x)}{n^k}
+       +(-1)^r\zeta^{(r)}(k,N+1)\notag\\
+ &+(-1)^r\sum_{h\ge1}\frac{(-x)^h}{h}Q_{r,k,h}(N+1),
+       \qquad k\ge2.
+       \label{mz:Mseries}
+\end{align}
+The series converge normally on compact subsets of $|x|<N+1$.
+Every positive $x$ is covered after a finite cutoff. The only harmonic
+orders needed for a spectral derivative of order $r$ are at most $r-1$.
+\end{theorem}
+
+\begin{proof}
+Split \eqref{mz:J} at $N$ and use the binomial expansion in the tail:
+\[
+ \sum_{n>N}\frac1{n^k(n+x)^v}
+   =\sum_{h\ge0}\frac{(-1)^h(v)_h x^h}{h!}
+                                      \zeta(k+v+h,N+1).
+\]
+For $|x|<N+1$, the double series and its fixed $v$ derivatives converge
+normally on the appropriate local domain; the $h=0,k=1$ pole is treated
+separately. Since
+\[
+ \frac{(v)_h}{h!}=\frac vh
+       \prod_{j=1}^{h-1}(1+v/j)
+       =\frac1h\sum_{j=1}^{h}e_{j-1}(h-1)v^j,
+\]
+Leibniz differentiation at zero gives the coefficient
+$Q_{r,k,h}(N+1)/h$. Formula \eqref{mz:JLaurent} or the derivative
+description of $M_{r,k}$ then proves \eqref{mz:Lseries}--\eqref{mz:Mseries}.
+The finite harmonic expression follows from \eqref{mz:e}.
+\end{proof}
+
+For example, for $|x|<1$,
+\begin{align}
+ D(x)&=\sum_{h\ge1}\frac{(-1)^{h+1}x^h}{h}\zeta(h+1),\\
+ L_2(x)&=2\sum_{h\ge1}\frac{(-x)^h}{h}
+       \bigl\{\zeta'(h+1)+H_{h-1}\zeta(h+1)\bigr\},\\
+ M_{2,2}(x)&=\zeta''(2)+2\sum_{h\ge1}\frac{(-x)^h}{h}
+       \bigl\{\zeta'(h+2)+H_{h-1}\zeta(h+2)\bigr\}.
+\end{align}
+
+\paragraph{Precise remaining questions.}
+The finite coordinate construction is complete, but whether some of its
+nontrivial fixed-argument integrals reduce to a smaller field of special
+values remains open. The first test is $D(x)$ at a positive integer or a
+nonintegral rational point. No failure of a symbolic or numerical search
+would prove non-reducibility. A second target is a global description of
+the individual higher spectral jets as entire functions of $z$, with these
+Gamma-zero evaluations as interpolation data. A third target is the
+compatible construction for several simultaneously moving zero factors
+in multicolour spectral products.

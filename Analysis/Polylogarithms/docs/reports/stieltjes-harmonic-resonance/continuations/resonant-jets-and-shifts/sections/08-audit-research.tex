@@ -1,0 +1,263 @@
+\section{Audit, integration status, and further research}
+\label{sec:audit}
+
+\subsection{Precise disposition of the source questions}
+
+The source baseline matters because the manuscript has already absorbed
+many earlier conjectures and corrections. The audit below concerns the
+relevant canonical sections and the five incoming reports at the pinned
+revision; it is not a claim that every line of the collective manuscript
+has been independently re-proved.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.25\textwidth}>{\raggedright\arraybackslash}p{.43\textwidth}>{\raggedright\arraybackslash}p{.26\textwidth}@{}}
+\toprule Source target & Result of this continuation & Remaining scope\\\midrule
+\endhead
+Nested Harmonic Jets, question 7 &
+Theorem~\ref{mz:thm:zero} constructs every $F_R(-a-m;a)$.
+Theorems~\ref{mz:thm:primitive} and \ref{mz:thm:coefficients} make the
+coordinate construction finite and explicit. &
+The smallest arithmetic or differential-algebraic coordinate class is
+not proved.\\[5pt]
+Nested Harmonic Jets, question 4 &
+Theorems~\ref{thm:doublegerm}--\ref{thm:curved} give every transverse
+ordered depth-two finite part, including curvature and reparametrization.
+Theorem~\ref{thm:symcoeff} gives every fully symmetrized direction. &
+Individual ordered germs in higher depth and compatible renormalization
+remain separate problems.\\[5pt]
+Nested Harmonic Jets, question 3 &
+Independent perturbation directions have a complete finite coefficient
+algorithm after full labelled symmetrization. &
+This does not construct the general two-colour ordered product or every
+non-diagonal Bell model.\\[5pt]
+Canonical Gaussian $S_6$ and current $S_8$ candidates &
+Neither short arithmetic evaluation is proved here. The current
+source's conjectural labels must remain. &
+A relation outside the restricted fixed-weight product presentation is
+needed.\\[5pt]
+Inverse-colour parity &
+Section~\ref{sec:gap} supplies a two-shift disk formula, its derivative
+calculus, and complete complementary-diagonal reductions. &
+The underlying general parity and cyclotomic symmetry principles have
+prior proofs.\\[5pt]
+Polynomial spectral products &
+Section~\ref{sec:spectral} proves an all-order normalized-weight calculus
+and local identities, including higher poles. &
+The first-derivative multiplicative anomaly retains its classical
+attribution.\\
+\bottomrule
+\end{longtable}
+
+\paragraph{Why the Gaussian candidates have not been promoted.}
+The canonical manuscript contains an exact obstruction in its specified
+level-four product-row presentation: a separating functional vanishes on
+the Gaussian-supported rows but not on the mixed $S_{2m}$ coordinate
+\cite[\src{chapters/05-level4-rank.tex}]{repo}.
+The already proved $S_4$ identity uses a larger vocabulary, so this is
+a proof-system obstruction, not an arithmetic independence theorem.
+The present shifted-gap reflection belongs to the established parity
+mechanism; simply specializing it does not supply the missing
+weight-seven or weight-nine certificate. The source also distinguishes
+its current frozen $S_8$ vector from a previously rejected vector.
+Neither a tiny residual interval containing zero nor equivalence of two
+candidate baskets proves the vanishing of the residual.
+
+\subsection{A confirmed external indexing correction}
+
+There is one concrete typographical correction in the external material.
+In G\"urel \cite[Theorem 1.1, printed p.~2]{gurel}, arXiv version 2 of
+3 September 2025, the second exponential sum is indexed by $\ell$ but
+its denominator is printed as $k$. The original PDF, not only the HTML
+conversion, contains this index. The denominator should be $\ell$.
+
+Here is a direct derivation that fixes the correction. Under the
+regularizable-spectrum hypotheses of that theorem, write
+$R_\ell=\operatorname{Res}_{s=\ell}\zeta_\Lambda(s)$ and
+$C_\ell=\FP_{s=\ell}\zeta_\Lambda(s)$. Near $s=0$,
+\[
+ \frac{(s)_\ell}{\ell!}
+       =\frac{s}{\ell}+\frac{H_{\ell-1}s^2}{\ell}+O(s^3),
+ \qquad
+ \zeta_\Lambda(\ell+s)=\frac{R_\ell}{s}+C_\ell+O(s).
+\]
+The coefficient of $s$ in their product is
+$(C_\ell+H_{\ell-1}R_\ell)/\ell$. Expanding the shifted spectral
+series and negating its derivative therefore gives the corrected form
+\begin{equation}\label{eq:Gurel-correction}
+ D_\Lambda(z)=\exp\left\{-\zeta_\Lambda'(0)
+  -\sum_{\ell=1}^{M}
+     \frac{C_\ell+H_{\ell-1}R_\ell}{\ell}z^\ell\right\}
+                                                    \Delta_\Lambda(z),
+\end{equation}
+where $H_0=0$, and $M$ and the canonical product $\Delta_\Lambda$
+have the source's meaning. The convergent terms with $\ell>M$ form
+the logarithm of that canonical product. This is an indexing correction,
+not a refutation of the theorem.
+
+\subsection{Recommended clarifications for integration}
+
+No fresh substantive error was found in the relevant current repository
+proofs examined here. The following clarifications prevent errors when
+the new sections are integrated.
+
+\begin{enumerate}[leftmargin=*,itemsep=4pt]
+\item \textbf{Specify the regulator before a finite part.}
+Replace any informal reference to ``the finite part at $(1,1)$'' by an
+explicit path or subtraction convention. Equations
+\eqref{eq:direction-FP} and \eqref{eq:curved-FP} are concrete transition
+formulas between these choices.
+\item \textbf{Retain the labelled symmetry factor.}
+The fully symmetrized depth-$d$ value has $d!$ copies on the diagonal.
+The source's individual diagonal convention is recovered by dividing by
+$d!$, not by suppressing repeated permutations.
+\item \textbf{Distinguish fixed and moving Gamma arguments.}
+The value $F_R(-a-m;a)$ holds $z$ fixed while differentiating $s$.
+The path $z=-(a+m)^s$ gives zero identically. Their derivative constraints
+are compatible but are different statements.
+\item \textbf{Multiply through a pole before differentiating.}
+The spectral jet of order $r$ can require a coefficient of order $r+1$;
+with pole order $h+1$ it can require order $r+h+1$. Equations
+\eqref{sp:alljets} and \eqref{sp:loghomogeneous} show the missing terms
+that a premature truncation would discard.
+\item \textbf{Keep ordinary sums grouped and primitives normalized.}
+The terms of \eqref{eq:product-summand} are summed together.
+The combined right side of \eqref{mz:Mrec} is integrated together.
+The index-one primitive \eqref{gap:eq:log-primitive} subtracts a base
+point before summation. These are convergence statements in the
+theorems, not discretionary numerical conventions.
+\item \textbf{Preserve scope and attribution.}
+Do not relabel general parity, the symmetric-sum identity, or the first
+multiplicative anomaly as newly proved conjectures. Do not turn the
+finite coordinate ceiling into a minimality theorem. Keep the current
+$S_6$ and $S_8$ status unchanged unless a separate exact certificate is
+supplied.
+\end{enumerate}
+
+\subsection{Reproducible checks and their evidential role}
+
+The accompanying verification programs implement independent
+representations where practical. The Gamma-zero calculations compare
+the coordinate formula with Cauchy extraction from the original
+spectral product. The shifted-gap checks compare bilateral reductions
+with a Mellin integral. The anomaly checks use a finite initial segment
+and an independently expanded Hurwitz tail before Cauchy extraction.
+Exact polynomial checks test the finite combinatorial identities and
+normalizations. The complete execution parameters, counts, residuals,
+and package versions are retained in the machine-readable results.
+
+The main numerical checks include sixteen Gamma-zero evaluations
+through derivative order four, seven primitive-recursion checks,
+four general shifted-gap reflections and three half-diagonal cases,
+four first-derivative anomaly evaluations, and a six-term second-jet
+evaluation. Observed absolute residuals in these independently evaluated
+special-function checks are below $10^{-39}$; the recorded results give
+the individual values and precision. These are floating-point
+diagnostics, not rigorous interval certificates. Exact symbolic checks
+and the analytic proofs have separate roles.
+
+The package contains modular \LaTeX{} sources, the compiled article,
+verification code, recorded results, a source-provenance manifest,
+and integration notes with theorem labels. It uses no external files
+from the source repository to compile. The original source snapshot is
+identified by hashes rather than copied wholesale into the deliverable.
+
+\subsection{Further research questions with concrete first targets}
+\label{sec:questions}
+
+\begin{enumerate}[leftmargin=*,label=\textbf{Q\arabic*.},itemsep=8pt]
+\item \textbf{Ordered depth three, with independent exponents.}
+Construct an analogue of \eqref{eq:doublegerm} for
+$Z_3(1+u,1+v,1+w;a)$, displaying the intersecting polar divisors and
+a normally convergent holomorphic remainder. A first deliverable is
+an explicit constant term along every transverse ray, with its
+symmetrization checked against \eqref{eq:sym3}. The comparison should
+use the existing Laurent-expansion methods of \cite{mow}.
+
+\item \textbf{A compatible subtraction algebra.}
+Determine the local counterterms that convert the directional constants
+of Sections~\ref{sec:direction}--\ref{sec:symmetric} into a specified
+stuffle-preserving renormalization. The depth-two discrepancy
+$-\gamma_1(a)(c/d+d/c)$ is the first necessary compatibility test.
+Compare the result directly with \cite{guozhang}; path independence
+must be a proved property of the chosen prescription.
+
+\item \textbf{Tangential and nonlinear approaches to nested poles.}
+Theorem~\ref{thm:curved} handles transverse analytic curves. Classify
+curves tangent to $u=0$ or $u+v=0$ by their vanishing orders and give
+the exact number of curve coefficients required for a finite part.
+Curves lying identically in a polar divisor need an independently
+specified restriction or subtraction operation.
+
+\item \textbf{Smaller arithmetic classes for Gamma-zero coordinates.}
+For a specified positive rational $x$, decide whether $D(x)$ and the
+first higher coordinates $L_2(x),M_{2,2}(x)$ reduce to a stated field
+of Gamma, polygamma, zeta-derivative, Dirichlet-$L$-derivative, and
+algebraic-argument polylogarithm values. Fix the comparison field
+before searching. Proving irreducibility requires more than failure
+of symbolic simplification or an integer-relation search.
+
+\item \textbf{Several isolated zero factors.}
+Develop the counterpart of Theorem~\ref{mz:thm:zero} for a
+multicolour product in which two or more factors vanish at the same
+parameter. Determine how the multiplicity shifts the first nonzero
+normal derivative, and how mixed spectral derivatives are encoded
+by multivariate Bell polynomials. A two-colour periodic assignment
+is the first case connecting directly to the source's question 3.
+
+\item \textbf{The nonsymmetric Stieltjes sums.}
+Equation~\eqref{eq:Stwo} evaluates the symmetric combination
+$S_{m,n}+S_{n,m}$. Determine useful exact formulas for the difference
+$S_{m,n}-S_{n,m}$, beginning with $(m,n)=(0,1)$. Through
+\eqref{eq:Hcoeff}, this is exactly a question about the nonsymmetric
+regular double-Hurwitz jet. Identify which part reduces to ordinary
+Stieltjes constants and which part needs a new normalized integral.
+
+\item \textbf{Primitive bases for complementary-shift polylogarithms.}
+For $a\ge2$, integrate \eqref{gap:eq:diagonal} against $dz/z$ in a
+specified classical or multiple-polylogarithm basis. The half-shift
+formula \eqref{gap:eq:primitive} fixes the first normalization.
+At rational shifts, track the root-of-unity alphabet explicitly and
+separate variable-argument identities from isolated constant reductions.
+
+\item \textbf{Noninteger indices and global shift continuation.}
+Construct a contour or Mellin continuation of the two-shift reflection
+in noninteger exponents. An integer-index partial fraction with a
+finite summation range cannot be differentiated spectrally without
+such an extension. Separately continue the shifts beyond the safe
+strip, recording finite terms when lattice poles cross a contour.
+
+\Needspace{5\baselineskip}
+\item \textbf{Spectral interpolation and representation components.}
+Classify finite identities between order-$r$ jets sampled at rational
+normalized weights. Theorem~\ref{sp:thm:polynomial} turns this into
+finite polynomial interpolation with a known top-degree correction.
+Beyond alternating sums, determine which permutation-representation
+components kill every nonlocal term and yield factorizations in
+Vandermonde or Schur polynomials.
+
+\item \textbf{Arithmetic and nonpolynomial multiplicities.}
+Extend the all-order local calculus to quasi-polynomial or periodic
+weights by residue-class splitting, and then to spectra whose base
+zeta has several or higher-order poles. Section~\ref{sec:spectral}
+already settles the concrete polynomial times logarithmic class.
+For new classes, state the continuation and normal-convergence
+hypotheses that justify every extracted coefficient.
+
+\item \textbf{An exact certificate for $S_6$, then the current $S_8$.}
+Construct a weight-seven functional equation using a larger Cayley or
+iterated-integral vocabulary, reduce it to the frozen $S_6$ basket,
+and exhibit a finite symbolic certificate. The source's separating
+functional is a useful test that a genuinely additional relation has
+entered the proof. Only after that mechanism is understood should
+the weight-nine candidate be attacked by the same method. More
+digits alone do not resolve the structural obstruction.
+
+\item \textbf{Formal interfaces for finite identities and analytic limits.}
+Formalize the subset telescoping law, partition M\"obius inversion,
+Stirling rational-polylogarithm identity, Bell extraction, and tangent
+polarization as exact algebraic components. Then formalize normal
+convergence and Euler--Maclaurin remainder arguments as separate
+analytic lemmas. Interval implementations of the independent numerical
+checks would provide certified regression tests without being confused
+with the symbolic proofs.
+\end{enumerate}
+

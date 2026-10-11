@@ -1,0 +1,234 @@
+\section{Proof status, audit findings, and reproducible verification}
+\label{sec:audit}
+
+\subsection{What has been proved, and what is inherited}
+The distinction between a proved identity, a finite representation,
+and a numerical candidate is essential to this continuation. The
+following table records the status of its principal components.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.26\linewidth}
+>{\raggedright\arraybackslash}p{.19\linewidth}
+>{\raggedright\arraybackslash}p{.49\linewidth}@{}}
+\toprule
+Result & Status here & Precise scope\\
+\midrule
+\endhead
+Dougall summation and the zero-excess binomial constant &
+Classical input &
+Dougall supplies \eqref{dg:sum}; the constant
+\eqref{dg:quarticN0} is already in the Ramanujan--B\"uhring literature.\\
+\addlinespace
+Centered coefficients and every integer resonance &
+Proved continuation &
+Theorems~\ref{dg:master}, \ref{dg:closed}, and \ref{dg:alljets}
+hold in the stated positive parameter domain, including residue zeros.\\
+\addlinespace
+Harmonic moment identities and primitives &
+Proved specializations &
+All displayed sums are single convergent brackets. The primitive is
+coefficientwise regular at moving lower Gamma zeros.\\
+\addlinespace
+Nonlinear Stieltjes coordinate change &
+Proved continuation &
+Theorems~\ref{nc:universal}, \ref{nc:composition},
+\ref{nc:Stieltjes}, and \ref{nc:rigidity} supply all local coefficients
+and their sharp vanishing range.\\
+\addlinespace
+Three unequal integer frequencies &
+Proved continuation &
+Theorem~\ref{tr:finite-transport} applies to disjoint singular grids.
+Its finite reduction includes all prescribed coordinate terms.\\
+\addlinespace
+Weighted colored kernels and Gamma correlations &
+Proved consequences &
+Finite root filtering and \eqref{tc:Gamma-formula} give explicit
+identities; no minimal-basis or independence claim follows.\\
+\addlinespace
+Current Gaussian $S_6$ and $S_8$ evaluations &
+Remain conjectural &
+No exact functional certificate for either short evaluation is
+provided here. Their inherited numerical proximity is not equality.\\
+\bottomrule
+\end{longtable}
+
+The first three source questions identified in Section~\ref{sec:scope}
+are answered under explicit hypotheses. The broader collision problem,
+minimal arithmetic bases for spectral derivatives, and the Gaussian
+evaluation conjectures remain separate questions. The current manuscript
+already treats $S_4$ as proved; it must not be reset to conjectural status
+when material from older arrivals is integrated \cite{repo}.
+
+\subsection{A verified editorial correction already proposed upstream}
+The canonical integration chapter contains the wording
+\emph{Basis atoms must be $\Q$-independent} in its discussion of PSLQ
+\cite[chapters/07-integration.tex]{repo}. The incoming Gauss--Hurwitz
+report already objects to that wording \cite[Section 8]{incoming-gh}.
+That correction should be retained, with credit to the earlier report.
+An appropriate replacement is:
+\begin{quote}
+Known rational dependencies among the supplied constants should be
+removed or modeled explicitly. Otherwise PSLQ may return a pre-existing
+relation with zero target coefficient instead of an evaluation of the
+target.
+\end{quote}
+This expresses the practical requirement without imposing a prior proof
+of rational independence on a discovery algorithm. A relation among
+the supplied atoms is a valid output of an integer-relation procedure
+\cite{pslq};
+it simply may not evaluate the additional target. The change is
+editorial and logical, not a new counterexample to a theorem.
+
+\subsection{Normalization points exposed by the new proofs}
+No new false theorem was found in the particular incoming results used
+as premises. The following are precise implementation and integration
+requirements established by this article.
+
+\begin{enumerate}
+\item \textbf{Differentiate the deformation before deleting zeros.}
+Equation~\eqref{dg:revivalpi} gives an exact diagnostic:
+$r_0(-1)=0$ but its first spectral coefficient is $\pi^2/8$.
+The regularized Gamma product or the finite polynomial shift must be
+formed before taking a resonant derivative.
+
+\item \textbf{Specify the sum and its reference coordinate.}
+The subtraction in \eqref{dg:RK} uses $n+a/2$. Replacing this reference
+without the finite transport \eqref{dg:reference} changes the
+counterterms. In the correlation problem, the prescribed ambient
+finite part gives the nonzero scalar term in
+\eqref{tr:gamma-lift}; it cannot be replaced by a
+zero-mean pullback without its coordinate correction.
+
+\item \textbf{Distinguish a pointwise derivative from a distributional
+derivative.} The nonlinear coefficient for
+$T_{n,r}=\FP\gamma_n^{(r)}$ is $\alpha_{n,r}$, whereas that for
+$D^rG_n$ is $b_{n,r}$. Their difference is the exact contact term
+\eqref{nc:derivative-contact}. The derivative comparison uses the
+common smooth completion of $\gamma_n(1+x)$ across the endpoint.
+Extending that entire smooth remainder by zero would introduce
+additional step-function derivatives and define a different object.
+
+\item \textbf{Keep the transformed germ in composition.}
+The last term of \eqref{nc:cocycle} is
+$\mathfrak A_f[h\circ g]$. Leaving $h$ unchanged there would
+discard the logarithmic and principal-part coefficients generated
+by the first coordinate change.
+
+\item \textbf{Separate a negative-order value from its transverse
+derivative.} Equation~\eqref{tc:weighted-negative} may be
+differentiated in $A$ and $B$. A derivative in $C$ needs additional
+information, supplied for the ordinary kernel by
+\eqref{tc:normal-derivative}.
+
+\item \textbf{Do not silently merge singular grids.}
+The full unequal-frequency theorem assumes disjoint singular sets.
+At collisions, products have higher pole order and the spectral
+integral has a different convergence domain. The coordinate law for
+a specified coincident product in Corollary~\ref{nc:coincident}
+does not by itself identify the collision limit of separated
+finite parts.
+\end{enumerate}
+
+These requirements do not identify hypothetical source errors. They
+state which objects the present proofs evaluate and which tempting
+changes would evaluate something else.
+
+\subsection{Finite verification and its evidentiary role}
+The supplied Python programs use exact SymPy algebra and mpmath
+arithmetic. The recorded runs use SymPy~1.14.0 and mpmath~1.3.0.
+Their machine-readable results are supplied with the sources.
+
+\paragraph{Dougall and harmonic branch.}
+\src{code/verify_dougall.py} checks the coefficient differential
+law and residue polynomial exactly through coefficient index two,
+as well as the explicit quartic $C_1$. Its 19 numerical comparisons
+include generic resonances through $N=3$, first and second resonant
+jets, a zero-residue case, the revived finite head, quartic moments,
+squared-binomial moments and harmonic sums, and
+\eqref{dg:quarteridentity}. The run uses 75 decimal digits, the first
+120 summands, and a finite centered asymptotic tail through $C_{11}$.
+The largest observed absolute discrepancy is
+$3.76169\times10^{-36}$, below the configured $10^{-31}$ threshold.
+The asymptotic-tail calculation is a diagnostic approximation; it
+does not furnish a rigorous remainder enclosure.
+
+A separate unaccelerated check of \eqref{dg:quarticN1jet} gives
+partial-sum errors of about $9.41\times10^{-6}$ at 100 terms and
+$2.03\times10^{-10}$ at 30,000 terms against the right side
+\[
+-0.0147807743355189137009913877658542374\ldots.
+\]
+This checks the summand directly without reusing the tail completion.
+The exact proof remains Theorem~\ref{dg:alljets}.
+
+\paragraph{Nonlinear coordinate branch.}
+\src{code/verify_nonlinear.py} records 138 exact finite-algebra
+checks of the coefficient generator, cocycle polynomial,
+low-order formulas, and filtration. The independent implementation
+\src{code/independent_cutoff.py} constructs the inverse coordinate
+series, transforms the test function with its inverse Jacobian,
+integrates each singular monomial in the source coordinate, and
+extracts the constant after composing the primitive. Its actual-cutoff
+side does not use the proposed residue formula or the
+$\alpha_{n,r}$ generator.
+
+For
+\[
+ f(t)=q\left(t+\frac23t^2-\frac15t^3+\frac17t^4\right),
+ \qquad q=1,2,
+\]
+it checks 48 pairs of Stieltjes and derivative indices, through
+$r=3$ and $n=2r+2$, against 140 monomial test pairings.
+The $q=2$ comparisons retain exact polynomial expressions in
+$\log2$. Every pairing also agrees with the reusable
+coordinate-coefficient implementation. These tests independently
+verify signs, Jacobians, and scale terms in low degrees.
+
+\paragraph{Unequal-frequency branch.}
+\src{code/verify_transport.py} records four exact polynomial
+integrals and 13 numerical comparisons at 45 decimal digits.
+The numerical checks include pointwise Stieltjes multiplication,
+the nonzero ambient means, direct finite-part quadrature at
+$(p_1,p_2,p_3)=(1,2,3)$, permutation symmetry, the simplified
+twelfth-root lower term, and the six-region Fourier normalization.
+For the latter, at orders $(2,2,2)$ the Hurwitz factors are
+Bernoulli polynomials. Direct piecewise polynomial integration
+for the recorded shifts and frequencies gives exactly
+\[
+ -\frac{1879}{125411328}.
+\]
+A separate Mellin evaluation of the colored kernels agrees with it.
+The largest recorded scaled numerical discrepancy is about
+$1.46\times10^{-45}$.
+
+\paragraph{A numerical differentiation issue.}
+During verification, generic numerical differencing of
+$\zeta(s,1/4)$ at $s=0$ for the second order derivative lost
+accuracy in the selected backend. Native Hurwitz spectral
+derivatives, corroborated by Cauchy-circle differentiation, agreed
+with the independent harmonic sum. The supplied program therefore
+uses the native spectral derivative interface. This is a
+computational observation from the recorded run, not a correction
+to the analytic identity or a claim about every implementation.
+
+The exact all-index results are proved by finite asymptotic
+remainders, normal convergence, analytic coefficient extraction,
+residues, and finite root filtering. Finite symbolic tests and
+floating-point agreement provide separate implementation evidence.
+No numerical file in this package is labeled an interval certificate.
+
+\subsection{Proposed repository integration}
+The modular TeX sources use the label prefixes \src{dg:},
+\src{dp:}, \src{nc:}, \src{tr:}, and \src{tc:}. The source manifest
+pins the inspected baseline and records the incoming archive hashes.
+The companion \src{INTEGRATION_NOTES.md} gives a source-to-result
+crosswalk and proposed insertion points.
+
+A suitable integration order is: retain the incoming Gauss theorem,
+append the centered Dougall extension and harmonic jets; place the
+primitive beside the existing Lerch and integration material; extend
+the affine finite-part section with the nonlinear law; and append the
+three-frequency transport after the existing pair and translated
+triple formulas. Each insertion should preserve its explicit
+subtraction convention and proof status. The source reports remain
+provenance, while the shared lemmas need appear only once in the
+consolidated manuscript.

@@ -1,0 +1,115 @@
+\section{Canonical endpoint normalization}\label{tsc:normalization}
+Write $\TT=\RR/\ZZ$ and $e(x)=\exp(2\pi\ii x)$. Fourier coefficients use
+\[
+ \widehat f(n)=\langle f,e(-nx)\rangle.
+\]
+For $n\ne0$ fix
+\begin{equation}\label{tsc:branch}
+ (2\pi\ii n)^{-u}=(2\pi|n|)^{-u}
+       \exp\!\left(-\frac{\pi\ii u}{2}\sgn n\right).
+\end{equation}
+All shifts below are real modulo one. Values assigned at isolated seam
+points do not affect ordinary integrals. Spectral derivatives are denoted
+$\zeta^{[j]}(s,x)=\partial_s^j\zeta(s,x)$ and
+$\Li_s^{[j]}(z)=\partial_s^j\Li_s(z)$. Parenthesized superscripts on
+$\gamma_m$ or $\psi$ denote derivatives in the spatial argument.
+
+We deliberately use the spectral coordinate $u=1-s$:
+\begin{equation}\label{tsc:stieltjes-convention}
+ \zeta(1-u,x)=-\frac1u+
+     \sum_{m\ge0}\frac{\gamma_m(x)}{m!}u^m,
+ \qquad \gamma_0(x)=-\psi(x).
+\end{equation}
+This changes no Stieltjes convention: it is the usual Laurent expansion
+at $s=1$ after substituting $s=1-u$. The shift relation gives
+\begin{equation}\label{tsc:gamma-local}
+ \gamma_m(x)=\frac{\log^m x}{x}+\gamma_m(1+x),\qquad x>0.
+\end{equation}
+
+\begin{definition}[Scale-one periodic Stieltjes extension]\label{tsc:Cdef}
+For a smooth periodic test function $\varphi$, define
+\begin{equation}\label{tsc:Cfp}
+ \langle C_m,\varphi\rangle=
+ \lim_{\varepsilon\downarrow0}\left\{
+   \int_{\varepsilon}^{1}\gamma_m(x)\varphi(x)\dd x
+    +\frac{\varphi(0)}{m+1}\log^{m+1}\varepsilon\right\}.
+\end{equation}
+The coordinate at the singularity is exactly $x$, without a rescaling or
+an additional subtraction length. Set $C_{m,a}(x)=C_m(x-a)$.
+\end{definition}
+Existence follows from \eqref{tsc:gamma-local}: after subtracting
+$\varphi(0)\log^m x/x$, the integrand is $O(1+|\log x|^m)$.
+
+\begin{lemma}[Entire normalized Hurwitz family]\label{tsc:entire-B}
+The Fourier prescription
+\begin{equation}\label{tsc:Bdef}
+ \calB_u(x)=\sum_{n\ne0}(2\pi\ii n)^{-u}e(nx)
+\end{equation}
+defines an entire distribution-valued function of $u\in\CC$, with mean
+zero and singular support contained in $0$. On $0<x<1$,
+\begin{equation}\label{tsc:Bhurwitz}
+ \calB_u(x)=\frac{\zeta(1-u,x)}{\Gamma(u)},
+\end{equation}
+with removable values interpreted analytically. Near $u=0$,
+\begin{equation}\label{tsc:Zlaurent}
+ \Gamma(u)\calB_u=\frac{\delta_0-1}{u}
+          +\sum_{m\ge0}\frac{C_m}{m!}u^m.
+\end{equation}
+In particular, $\calB_0=\delta_0-1$ and $\langle C_m,1\rangle=0$.
+\end{lemma}
+\begin{proof}
+On a compact set of spectral parameters, the coefficients in
+\eqref{tsc:Bdef}, and every spectral derivative of them, grow at most
+polynomially in $|n|$, with additional powers of $\log|n|$. The Fourier
+coefficients of a smooth test function decrease faster than every power.
+Their pairing is therefore normally convergent, including all spectral
+derivatives. This proves entire dependence in distributions.
+
+For $\Re u>1$, the classical Hurwitz Fourier expansion
+\cite[Eq.~25.11.9]{tsc:dlmf-zeta} gives \eqref{tsc:Bhurwitz}; both sides
+continue analytically away from the seam. The right side is smooth there
+and entire in $u$, since the pole of $\zeta(1-u,x)$ at zero is canceled by
+$1/\Gamma(u)$. This also proves the assertion about singular support.
+
+For the Laurent normalization, split a test-function integral near zero
+and use
+\[
+ \zeta(1-u,x)=x^{u-1}+\zeta(1-u,1+x).
+\]
+The first term has residue $\varphi(0)$ at $u=0$; the second has residue
+$-\int\varphi$. The regular coefficients of the first term are precisely
+the scale-one finite parts of $\log^m x/x$. The regular coefficients of
+the second are smooth. This proves \eqref{tsc:Zlaurent} and the stated
+normalization. Mean zero follows either from the Fourier prescription or
+by comparing Laurent coefficients of its zero Fourier coefficient.
+\end{proof}
+
+\subsection{Products at separated singularities}
+Let $a_1,a_2,a_3$ be pairwise distinct in $\TT$. Near $a_i$, the other two
+translated factors are smooth. A partition of unity therefore defines a
+unique product of these distributions: multiply the singular factor by the
+smooth factors on each such neighborhood and use ordinary multiplication
+elsewhere. The definition is independent of the partition. It also gives
+joint entire dependence for products of the $\calB_{u_i}$, because locally
+only one distribution is multiplied by smooth parameter-dependent factors.
+No assertion about products at a common singularity is needed.
+
+\begin{definition}[Separated triple finite part]\label{tsc:Jdef}
+For $\mathbf m=(m_1,m_2,m_3)\in\ZZ_{\ge0}^3$, put
+\begin{equation}\label{tsc:J}
+ \calJ_{\mathbf m}(\mathbf a)=
+  \left\langle\prod_{i=1}^3 C_{m_i,a_i},1\right\rangle
+  =\FP\int_0^1\prod_{i=1}^3
+       \gamma_{m_i}(\{x-a_i\})\dd x.
+\end{equation}
+At each seam $a_i$, omit the right-hand arc $0<t<\varepsilon_i$ and add
+\begin{equation}\label{tsc:triple-counterterm}
+ \frac{\log^{m_i+1}\varepsilon_i}{m_i+1}
+       \prod_{j\ne i}\gamma_{m_j}(\{a_i-a_j\}).
+\end{equation}
+The three cutoffs may tend to zero independently.
+\end{definition}
+The product of the two smooth factors differs from its seam value by
+$O(t)$, so the same local subtraction proof establishes existence. The
+one-sided nature of these counterterms must be distinguished from the
+symmetric principal values used later for cotangent poles.
