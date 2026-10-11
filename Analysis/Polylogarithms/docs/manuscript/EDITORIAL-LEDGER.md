@@ -738,3 +738,32 @@ endpoint constants and two derived finite-part identities at 90 working digits.
 No quadrature interval certificate is claimed. Gamma-Appell transport,
 explicit sixth/seventh arithmetic coordinate families and broader incoming
 branches remain separate pending audits. S6 and revised S8 remain conjectural.
+
+
+## Gamma-Appell tail normalization and marked spectral coordinates
+
+Accept the all-degree scalar-normalization core of differential-polygamma-
+lerch-jets, reconciled with the Bernoulli-Tornheim and higher-digamma routes.
+The residue defect lies in the strict upper-tail ideal and has harmonic degree
+at most m-3. Its finite difference gives ordinary marked zeta derivatives,
+of depth at most m-3, with a specified holomorphic neighborhood. Only the
+highest height-one Laurent coefficient is retained. The previously proved
+positive Cauchy series cancels the reciprocal-Gamma coefficient, giving an
+entirely ordinary convergent formula at every degree. This is a representation
+and convergence theorem, not arithmetic independence or a minimal-depth claim.
+
+Normal-form Gamma convolution and inverse raw-moment recovery are now proved.
+Independent pole/tail/difference checks pass at degrees 2--9; four lower
+moment conversions and seven formal transport checks pass. Omitting the
+finite Stieltjes conversion is rejected. Even zeta relations are enforced;
+these constants are not treated as independent formal variables. Native
+Wolfram compares three direct finite parts with the independent Cauchy Mellin
+integral and proved J/D corrections at 110 working digits. Its omitted Mellin
+tail has a separate analytic bound; total quadrature error is not interval
+certified. The slow initial symbolic local expansion was replaced by a numeric
+Laurent expansion and a stable large-argument ArcTanh evaluation.
+
+The normalized scalar S_m is distinct from the Gaussian S6/S8 ladder candidates.
+Those remain conjectural. Detailed sixth/seventh arithmetic coordinate reductions
+and other branch-specific integrations remain pending. No report arrived in the
+inspected incoming state; the ninety-archive census and originals are preserved.

@@ -1,5 +1,53 @@
 # Validation of the four-volume collective manuscript
 
+Gamma-Appell checkpoint, October 11, 2026. Four volumes have 129/127/215/84
+pages (555 total); the combined edition has 517 pages. Authorship remains
+**ProveIt Contributors**. Earlier theorem/equation citations, twelve chapters,
+thirteen figures, 136 references and 94 historical question leads are retained.
+The research remains unfinished.
+
+Chapter 8 proves the all-degree Gamma-Appell normalization with a single
+height-one Laurent coefficient. Exact frozen-cotangent cancellation puts the
+residue defect in the upper-tail ideal; its degree and finite difference give
+a terminating compiler to ordinary admissible marked zeta derivatives, of
+depth at most m-3. Every marked coordinate and its neighborhood are specified.
+The positive Cauchy formula cancels the reciprocal-Gamma coefficient, yielding
+three ordinary convergent sums at every degree. Normal-form Gamma transport
+and inverse raw-moment recovery follow coefficientwise, with endpoint constants
+retained and no interchange of an infinite series with a divergent integral.
+
+The independent verifier checks pole/tail/difference structure at degrees
+2--9, enforcing exact even-zeta relations, four conversions to the canonical
+raw moments and seven normal-form transport identities. A missing Stieltjes
+term is deliberately rejected. These are finite implementation certificates;
+the manuscript proofs establish the all-degree statements.
+
+Native Wolfram 15.0.1 independently compares normalized moments at degrees
+2,3,4 with a positive Cauchy Mellin integral and their proved J/D corrections.
+All three residuals are below 1e-55 at 110 working digits, local Taylor degree
+105, split 1/10 and Mellin cutoff 160. The omitted Mellin tail is bounded by
+Gamma(m-1,160)/((m-2)!*(1-exp(-160))). A stable large-y ArcTanh series is
+used. Numerical quadrature and Taylor errors are not interval certified;
+that separate tail bound is not a total accuracy certificate.
+
+All four sources complete three converged coupled rounds and three isolated
+cold-build passes. Every page passes static checks and all 40 external PDF
+destinations are verified. Five changed Volume III bodies and two unmatched
+combined contents pages were reviewed at full size. The other 550 volume
+bodies and 511 combined bodies match the preceding reviewed release; all
+full rasters in I, II and IV are identical. Bounds checks exclude only centered
+footer numbers. No current contact sheet was opened. All 555/517 bodies have
+explicit inherited or fresh review.
+
+The incoming state is unchanged: 90 recoverable archives, 3328 tracked original
+members, 33 ignored manifests and 1333 textual provenance documents. No original
+evidence was regenerated in place. Gaussian S6/revised S8, detailed sixth/
+seventh scalar arithmetic reductions and the broader branch-specific audits
+remain separate unfinished work. No arithmetic independence, global priority,
+Lean formalization or remote CI is claimed. Historical checkpoints follow.
+
+# Historical integration-by-parts validation
+
 Integration-by-parts checkpoint, October 11, 2026. The four collective PDFs
 contain 129/127/211/84 pages (551 total), with a 513-page combined edition.
 Authorship remains **ProveIt Contributors**, with twelve chapters, thirteen

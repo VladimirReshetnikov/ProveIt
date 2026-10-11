@@ -657,3 +657,28 @@ Six changed Volume III bodies and two unmatched combined contents pages
 reviewed at full size; exact inherited body review covers the remainder.
 Gamma-Appell transport, explicit sixth/seventh arithmetic coordinates and
 broader report integrations remain pending. S6 and revised S8 stay open.
+
+
+## Gamma-Appell single-coordinate normalization checkpoint
+
+Incoming unchanged at initial inspection. Reconcile the all-degree normalized
+scalar moment formula, upper-tail defect, finite marked-word compiler and depth
+bound. Combine it with the canonical positive Cauchy formula to give ordinary
+convergent sums, and prove Gamma normal-form transport and raw-moment recovery.
+Four lower-degree conversions preserve the exact fifth Stieltjes term. Known
+even-zeta relations are essential to frozen-cotangent cancellation; a formal
+free-symbol calculation without them is not evidence against the identity.
+
+Independent exact degrees 2--9 and seven transport checks pass. Native Wolfram
+compares degrees 2/3/4 with independent positive Cauchy Mellin quadrature at
+110 working digits. Replace an expensive symbolic local series and cancellation-
+prone large-y expression by numeric Laurent coefficients and a stable ArcTanh
+series. The interrupted native run is not counted as a completed test. All
+three comparisons then pass; the analytic omitted Mellin tail bound is kept
+separate from unproved total quadrature/Taylor error.
+
+Four volumes compile and cold-build independently: 129/127/215/84 pages, total
+555; combined 517. All 40 external destinations verified. Five changed volume
+bodies and two unmatched combined contents pages reviewed at full size; exact
+inherited rasters cover the rest. Detailed sixth/seventh arithmetic reductions,
+other branch audits and Gaussian S6/revised S8 remain pending or conjectural.

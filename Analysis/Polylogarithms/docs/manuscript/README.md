@@ -7,7 +7,7 @@ organized as four volumes. Each has its own source and compiled PDF.
 |---|---|---|---:|
 | I | Polylogarithm identities, cyclotomic coordinates, algebraic ladders and Gaussian/Eisenstein reductions | [Polylogarithm Identities and Arithmetic Reductions](volumes/volume-1-polylogarithm-identities.pdf) | 129 |
 | II | Signed kernels, angular and all-depth zero geometry, exact computation and experimental discovery; literature appendix | [Signed Kernels, Zero Geometry and Experimental Discovery](volumes/volume-2-signed-kernels.pdf) | 127 |
-| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 211 |
+| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 215 |
 | IV | Gamma grids, CM lattice periods, class products and Herglotz arithmetic | [Gamma Grids, CM Periods and Herglotz Arithmetic](volumes/volume-4-cm-and-herglotz.pdf) | 84 |
 
 The volumes partition all twelve chapters and the literature appendix.
@@ -18,7 +18,7 @@ and the shared bibliography of 136 references. The scientific text is shared
 through chapter files and [preamble.tex](preamble.tex), avoiding duplicate
 copies of proofs. See [volume sources and build instructions](volumes/README.md).
 The [combined source](polylogarithms.tex) and its
-[513-page combined snapshot](polylogarithms.pdf) remain available.
+[517-page combined snapshot](polylogarithms.pdf) remain available.
 
 The [inventory](source-inventory.json) accounts for **1,333 textual source
 files**, including overlapping assembled articles, fragments and correction
@@ -80,14 +80,19 @@ residue, an unsubtracted normally convergent pole expansion, ordinary finite-
 part coordinates and anchored primitives. Scalar/derivative-ideal decomposition
 handles every fixed differential polynomial. Sixteen independent native
 residue checks and three 90-digit quadrature diagnostics pass. Explicit
-sixth/seventh coordinate reductions, Gamma-Appell transport,
+sixth/seventh coordinate reductions,
 unequal-tail ranks, determinants, cubic invariants and multishift/Lerch
 branches remain distinct pending analytic integrations. The formal integration-
 by-parts quotient and inverse-Gamma factor parity are now proved at every
 weight, retaining the explicit endpoint functional. Independent rational
 matrices check 506 monomial decompositions through weight fourteen; Bell and
 Lagrange constructions check degrees two through twelve. Two derived ordinary-
-coordinate finite-part identities pass separate native quadrature.
+coordinate finite-part identities pass separate native quadrature. The further
+Gamma-Appell bridge now leaves one height-one Laurent coordinate at every
+degree, converts it to the positive Cauchy series, and specifies the remaining
+ordinary marked-zeta derivatives by a finite compiler. Its normal-form
+transport and inverse conversion to raw moments are proved; detailed sixth/
+seventh arithmetic reductions remain pending.
 
 The preceding milestone proves the CM class-product formulas and the recorded
 genus ratios, develops a rational principal-point nonvanishing bound, and
