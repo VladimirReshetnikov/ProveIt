@@ -219,9 +219,13 @@ convergence and oddness extend the formula to $\lambda=\pm1$, with values
 $\pm2\Cl_2(\pi/2)$.
 The latter shows that the $\arctanh$ branch is \emph{not} a clean $2\chitwo(v_\lambda)$ mirror---that
 coincidence is special to $\arctan$. By $x\mapsto\frac\pi2-x$ the $\cos$ versions of all of these equal the
-$\sin$ versions. The weight-$3$ analogue $\int_0^{\pi/2}\arctan(p\sin x)\arctan(q\sin x)/\sin x\,dx$ does not factor by the same mechanism into a single $\chi_3$: its coefficient $\frac{4^N}{(2N+1)\binom{2N}{N}}$ couples the two
-summation indices only through $N=m+n$, so it does not factor through $\up\uq$ (numerically no clean
-$\chi_3$ relation appears up to height $10^8$).
+$\sin$ versions. The weighted analogue
+$\int_0^{\pi/2}\arctan(p\sin x)\arctan(q\sin x)/\sin x\,dx$
+has a different parameter structure. Theorem~\ref{xid:wat:thm:main}
+evaluates it by two real trilogarithmic kernels at the hyperbolic sum
+and difference. Proposition~\ref{xid:wat:prop:nonfactor} proves that no
+function of $\up\uq$ alone can represent this family near the origin,
+replacing the earlier bounded-search observation with an exact obstruction.
 
 \section{An alternate form, and minimality}\label{cleo:sec:minimal}
 \paragraph{Landen-mirror form.} Applying the $\chitwo$ Landen law
@@ -616,3 +620,5 @@ $\binom{3n}{n}$ via beta integrals; this is the reciprocal-binomial sibling of t
 ladder $\sum\binom{2n}{n}4^{-n}(2n{+}1)^{-p}$ studied in \code{harvested-central-binomial-arcsin.wl}.
 The verified identities are stored (with attribution) in
 \code{src/PolyLog/identities/harvested-dilogarithm-ladders-2506.10206.wl}.
+
+\input{chapters/03-weighted-arctangent}
