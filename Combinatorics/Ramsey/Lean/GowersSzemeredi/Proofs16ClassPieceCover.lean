@@ -116,9 +116,39 @@ theorem pieceFaceRel_fiber_le_one {N k : Nat} [NeZero N] (D : Finset (Point N (k
   simp only at ha2 hb2
   rw [ha2, hb2]
 
-/-- **The family cover of pieces over a uniform class.** -/
-theorem class_piece_family_cover {k : Nat} (hk : 1 ≤ k) {V : Real} (hV : 1 ≤ V)
-    {dC dE dT : Nat} (C : PowerUniformClass k V dC dE dT)
+/-! ### The cover over any uniform class -/
+
+/-- The remainder count of a family of `n` pieces, for general controls. -/
+def clsQr (Cnt : Real → Real → Nat → Real → Real) (k n : Nat) (thF gF : Real) : Real → Real :=
+  fun rho => ∏ _i : Fin (classVertexNum k + 1),
+    max (Cnt thF gF n (rho / ((classVertexNum k : Real) + 1))) ((3 ^ (k + 1) * n : Nat) : Real)
+
+/-- The remainder width exponent of a family of `n` pieces, for general controls. -/
+def clsEr (Exp : Real → Real → Nat → Real → Real) (k n : Nat) (thF gF : Real) : Real → Real :=
+  fun rho => ∏ _i : Fin (classVertexNum k + 1),
+    Exp thF gF n (rho / ((classVertexNum k : Real) + 1)) / 16
+
+/-- The slice count envelope at `r` samples, for general controls. -/
+def clsPb (Cnt : Real → Real → Nat → Real → Real) (n : Nat) (thF gF : Real) : Nat → Real → Real :=
+  fun r eps => Cnt thF gF (n * r) |eps|
+
+/-- The slice width-exponent envelope at `r` samples, for general controls. -/
+def clsEs (Exp : Real → Real → Nat → Real → Real) (n : Nat) (thF gF : Real) : Nat → Real → Real :=
+  fun r eps => Exp thF gF (n * r) |eps|
+
+/-- **The family cover of pieces over any uniform class.** The controls need
+counts `≥ 1`, width exponents in `(0, 1]`, and monotonicity in the family
+size. -/
+theorem class_piece_family_cover_gen {k : Nat} (hk : 1 ≤ k) {Thr : Real → Real → Real}
+    {Cnt Exp : Real → Real → Nat → Real → Real} (C : UniformClassWith k Thr Cnt Exp)
+    (hCnt : ∀ theta gamma n s, 0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 → 0 < s → s ≤ 1 →
+      1 ≤ Cnt theta gamma n s)
+    (hExp : ∀ theta gamma n s, 0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 → 0 < s → s ≤ 1 →
+      0 < Exp theta gamma n s ∧ Exp theta gamma n s ≤ 1)
+    (hCntMono : ∀ theta gamma s, 0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 → 0 ≤ s →
+      Monotone fun n => Cnt theta gamma n s)
+    (hExpAnti : ∀ theta gamma s, 0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 → 0 < s →
+      Antitone fun n => Exp theta gamma n s)
     {A Bq : Nat → Real} (hA : ∀ q, 0 < A q) (hB : ∀ q, 0 < Bq q)
     (hlemma6 : AbstractFamilyLemma166At k (section16PowerWidth A Bq))
     {N : Nat} [NeZero N] [Fact N.Prime] {zeta : Real} (hz : 0 < zeta) (hzHalf : zeta ≤ 1 / 2)
@@ -127,16 +157,14 @@ theorem class_piece_family_cover {k : Nat} (hk : 1 ≤ k) {V : Real} (hV : 1 ≤
     {n : Nat} {Gamma : Finset (Point N (k + 1) × ZMod N)}
     (P : Fin n → ClassPiece C Gamma zeta mass thS gS thF gF) :
     MultiplyLinearWith
-      (fun rho => max (famPieceGraphBound (classQr V dC k n thF gF) (classPb V dC n thF gF) n rho)
+      (fun rho => max (famPieceGraphBound (clsQr Cnt k n thF gF) (clsPb Cnt n thF gF) n rho)
         ((3 ^ (k + 1) * n : Nat) : Real))
       (fun rho => section16CappedWidthExponent
-        (pieceLineExponent Bq (classQb V dC n thS gS) (classEb V dE n thS gS)
-            (classEr V dE k n thF gF) rho *
-          famPieceSliceExponent (classQr V dC k n thF gF) (classEs V dE n thF gF) n rho / 4)
-        (section16RoundedPowerThreshold (pieceWidthScale A (classQb V dC n thS gS) zeta rho)
-          (pieceLineExponent Bq (classQb V dC n thS gS) (classEb V dE n thS gS)
-            (classEr V dE k n thF gF) rho)
-          (famPieceSliceExponent (classQr V dC k n thF gF) (classEs V dE n thF gF) n rho)))
+        (pieceLineExponent Bq (Cnt thS gS n) (Exp thS gS n) (clsEr Exp k n thF gF) rho *
+          famPieceSliceExponent (clsQr Cnt k n thF gF) (clsEs Exp n thF gF) n rho / 4)
+        (section16RoundedPowerThreshold (pieceWidthScale A (Cnt thS gS n) zeta rho)
+          (pieceLineExponent Bq (Cnt thS gS n) (Exp thS gS n) (clsEr Exp k n thF gF) rho)
+          (famPieceSliceExponent (clsQr Cnt k n thF gF) (clsEs Exp n thF gF) n rho)))
       (Finset.univ.biUnion fun c => partialGraph (P c).D (P c).phi) := by
   classical
   have hk0 : 0 < k := hk
@@ -146,15 +174,13 @@ theorem class_piece_family_cover {k : Nat} (hk : 1 ≤ k) {V : Real} (hV : 1 ≤
     ((otherVertices k).equivFinOfCardEq hnvc.symm).symm
   -- 1. the spectra
   set Gs0 := Finset.univ.biUnion fun c => pieceSpecRel (P c).H1 (P c).K with hGs0
-  have hML : MultiplyLinearWith (classQb V dC n thS gS) (classEb V dE n thS gS) Gs0 :=
+  have hML : MultiplyLinearWith (Cnt thS gS n) (Exp thS gS n) Gs0 :=
     C.cover thS gS htS htS1 hgS hgS1 N n _ fun c => (P c).spec_U
   have hQb : ∀ s, 0 < s → s ≤ 1 →
-      0 ≤ classQb V dC n thS gS s ∧ 0 < classEb V dE n thS gS s ∧ classEb V dE n thS gS s ≤ 1 := by
+      0 ≤ Cnt thS gS n s ∧ 0 < Exp thS gS n s ∧ Exp thS gS n s ≤ 1 := by
     intro s hs hs1
-    have h2 := uniformBase_two_le hV n htS htS1 hgS hgS1 hs hs1
-    refine ⟨by unfold classQb; positivity, by unfold classEb; positivity, ?_⟩
-    unfold classEb
-    exact inv_le_one_of_one_le₀ (one_le_pow₀ (by linarith))
+    exact ⟨le_trans zero_le_one (hCnt _ _ _ _ htS htS1 hgS hgS1 hs hs1),
+      hExp _ _ _ _ htS htS1 hgS hgS1 hs hs1⟩
   have hfreq : ∀ c, ∀ x ∈ (P c).H1, ∀ r ∈ (P c).K x, (x, r) ∈ Gs0 := by
     intro c x hx r hr
     refine Finset.mem_biUnion.mpr ⟨c, Finset.mem_univ _, ?_⟩
@@ -165,8 +191,7 @@ theorem class_piece_family_cover {k : Nat} (hk : 1 ≤ k) {V : Real} (hV : 1 ≤
     Finset.univ.biUnion fun c => pieceFaceRel (P c).D (P c).G (ev s).1
   let sgn : Fin (nv + 1) → ZMod N := fun s => -((-1 : ZMod N) ^ (k + boolWeight (ev s).1))
   let Gr := relSumFin nv fun s => relationScale (sgn s) (cylAt (vertexDrop (ev s).1) (face s))
-  have hfaceML : ∀ s, MultiplyLinearWith (fun rho => uniformBase V n thF gF rho ^ dC)
-      (fun rho => (uniformBase V n thF gF rho ^ dE)⁻¹) (face s) := fun s =>
+  have hfaceML : ∀ s, MultiplyLinearWith (Cnt thF gF n) (Exp thF gF n) (face s) := fun s =>
     C.cover thF gF htF htF1 hgF hgF1 N n _ fun c => (P c).face_U (ev s).1 (ev s).2
   have hfacefib : ∀ s (y : Point N k), ((face s).filter fun z => z.1 = y).card ≤ n := by
     intro s y
@@ -176,40 +201,39 @@ theorem class_piece_family_cover {k : Nat} (hk : 1 ≤ k) {V : Real} (hV : 1 ≤
         ≤ ∑ _c : Fin n, 1 := Finset.sum_le_sum fun c _ => pieceFaceRel_fiber_le_one _ _ _ y
       _ = n := by simp
   have hcylML : ∀ s, MultiplyLinearWith
-      (fun rho => max (uniformBase V n thF gF rho ^ dC) ((3 ^ (k + 1) * n : Nat) : Real))
-      (fun rho => (uniformBase V n thF gF rho ^ dE)⁻¹ / 16)
+      (fun rho => max (Cnt thF gF n rho) ((3 ^ (k + 1) * n : Nat) : Real))
+      (fun rho => Exp thF gF n rho / 16)
       (relationScale (sgn s) (cylAt (vertexDrop (ev s).1) (face s))) := by
     intro s
     refine MultiplyLinearWith.relationScale ?_ (sgn s)
     refine (hfaceML s).cylAt n (hfacefib s) ?_ ?_ hk0 _
     · intro t ht ht1
-      have := uniformBase_two_le hV n htF htF1 hgF hgF1 ht ht1
-      positivity
+      exact le_trans zero_le_one (hCnt _ _ _ _ htF htF1 hgF hgF1 ht ht1)
     · intro t ht ht1
-      have h2 := uniformBase_two_le hV n htF htF1 hgF hgF1 ht ht1
-      exact ⟨by positivity, inv_le_one_of_one_le₀ (one_le_pow₀ (by linarith))⟩
-  have hrem : MultiplyLinearWith (classQr V dC k n thF gF) (classEr V dE k n thF gF) Gr := by
+      exact hExp _ _ _ _ htF htF1 hgF hgF1 ht ht1
+  have hrem : MultiplyLinearWith (clsQr Cnt k n thF gF) (clsEr Exp k n thF gF) Gr := by
+    have hnv1 : (0 : Real) < (nv : Real) + 1 := by
+      have := Nat.cast_nonneg (α := Real) nv; linarith
     have h := MultiplyLinearWith.relSumFin nv (Gamma := fun s =>
       relationScale (sgn s) (cylAt (vertexDrop (ev s).1) (face s)))
-      (Q := fun _ rho => max (uniformBase V n thF gF rho ^ dC) ((3 ^ (k + 1) * n : Nat) : Real))
-      (E := fun _ rho => (uniformBase V n thF gF rho ^ dE)⁻¹ / 16) hcylML
+      (Q := fun _ rho => max (Cnt thF gF n rho) ((3 ^ (k + 1) * n : Nat) : Real))
+      (E := fun _ rho => Exp thF gF n rho / 16) hcylML
       (fun _ s _ _ => le_max_of_le_right (Nat.cast_nonneg _)) (by
-        intro _ s hs _
-        have : 0 ≤ uniformBase V n thF gF s := uniformBase_nonneg hV n htF hgF hs.le
-        positivity)
+        intro _ s hs hs1
+        exact div_nonneg (hExp _ _ _ _ htF htF1 hgF hgF1 hs hs1).1.le (by norm_num))
     exact h
-  have hEr : ∀ s, 0 < s → s ≤ 1 → 0 < classEr V dE k n thF gF s := by
+  have hEr : ∀ s, 0 < s → s ≤ 1 → 0 < clsEr Exp k n thF gF s := by
     intro s hs hs1
-    unfold classEr
+    unfold clsEr
     refine Finset.prod_pos fun i _ => ?_
-    have hn1 : (0 : Real) < (nv : Real) + 1 := by positivity
+    have hn1 : (0 : Real) < (nv : Real) + 1 := by
+      have := Nat.cast_nonneg (α := Real) nv; linarith
     have hs' : 0 < s / ((nv : Real) + 1) := div_pos hs hn1
     have hs1' : s / ((nv : Real) + 1) ≤ 1 := by
       rw [div_le_one hn1]
       have : (0 : Real) ≤ nv := Nat.cast_nonneg _
       linarith
-    have := uniformBase_two_le hV n htF htF1 hgF hgF1 hs' hs1'
-    positivity
+    exact div_pos (hExp _ _ _ _ htF htF1 hgF hgF1 hs' hs1').1 (by norm_num)
   have hid : ∀ c, ∀ z ∈ (P c).D,
       (P c).phi z = (-1 : ZMod N) ^ k * (P c).f (section16Init z) (section16Last z) +
         classRem (P c).G z := fun c => (P c).ident
@@ -239,22 +263,21 @@ theorem class_piece_family_cover {k : Nat} (hk : 1 ≤ k) {V : Real} (hV : 1 ≤
           (sample (finProdFinEquiv.symm j).1 (finProdFinEquiv.symm j).2))
   let Gs : (r : Nat) → (Fin n → Fin r → ZMod N) → Finset (Point N k × ZMod N) :=
     fun r sample => Finset.univ.biUnion (sliceG r sample)
-  have hslice : ∀ r sample, MultiplyLinearWith (classPb V dC n thF gF r)
-      (classEs V dE n thF gF r) (Gs r sample) := by
+  have hslice : ∀ r sample, MultiplyLinearWith (clsPb Cnt n thF gF r)
+      (clsEs Exp n thF gF r) (Gs r sample) := by
     intro r sample
     have h := C.cover thF gF htF htF1 hgF hgF1 N (n * r) (sliceG r sample)
       (fun j => (P _).slice_U _)
     refine h.weaken ?_ ?_ ?_
     · intro s hs _
-      unfold classPb
+      unfold clsPb
       rw [abs_of_pos hs]
     · intro s hs hs1
-      unfold classEs
+      unfold clsEs
       rw [abs_of_pos hs]
-      have := uniformBase_two_le hV (n * r) htF htF1 hgF hgF1 hs hs1
-      positivity
+      exact (hExp _ _ _ _ htF htF1 hgF hgF1 hs hs1).1
     · intro s hs _
-      unfold classEs
+      unfold clsEs
       rw [abs_of_pos hs]
   have hGs : ∀ r sample c h i, appendCoordinate h (sample c i) ∈ (P c).D →
       (h, (P c).phi (appendCoordinate h (sample c i))) ∈ Gs r sample := by
@@ -264,31 +287,63 @@ theorem class_piece_family_cover {k : Nat} (hk : 1 ≤ k) {V : Real} (hV : 1 ≤
     refine Finset.mem_image.mpr ⟨h, ?_, rfl⟩
     unfold section16FinalCoordinateSection
     exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hmem⟩
-  have hranges : Section16SliceProviderRanges (classPb V dC n thF gF) (classEs V dE n thF gF) := by
+  have hranges : Section16SliceProviderRanges (clsPb Cnt n thF gF) (clsEs Exp n thF gF) := by
     intro r eps _ he he1
-    have h2 := uniformBase_two_le hV (n * r) htF htF1 hgF hgF1 he he1
-    unfold classPb classEs
+    unfold clsPb clsEs
     rw [abs_of_pos he]
-    exact ⟨one_le_pow₀ (by linarith), by positivity,
-      inv_le_one_of_one_le₀ (one_le_pow₀ (by linarith))⟩
-  have hPb : ∀ eps, Monotone fun r => classPb V dC n thF gF r eps := by
+    exact ⟨hCnt _ _ _ _ htF htF1 hgF hgF1 he he1, hExp _ _ _ _ htF htF1 hgF hgF1 he he1⟩
+  have hPb : ∀ eps, Monotone fun r => clsPb Cnt n thF gF r eps := by
     intro eps r r' hrr
-    unfold classPb
-    exact pow_le_pow_left₀ (uniformBase_nonneg hV _ htF hgF (abs_nonneg _))
-      (uniformBase_mono_n hV htF hgF (abs_nonneg _) (Nat.mul_le_mul_left n hrr)) dC
-  have hEs : ∀ eps, 0 < eps → Antitone fun r => classEs V dE n thF gF r eps := by
+    unfold clsPb
+    exact hCntMono thF gF |eps| htF htF1 hgF hgF1 (abs_nonneg _) (Nat.mul_le_mul_left n hrr)
+  have hEs : ∀ eps, 0 < eps → Antitone fun r => clsEs Exp n thF gF r eps := by
     intro eps he r r' hrr
-    unfold classEs
-    rw [abs_of_pos he]
-    have h0 : 0 < uniformBase V (n * r) thF gF eps := by
-      unfold uniformBase
-      have : (0 : Real) < ((n * r : Nat) : Real) + 1 := by positivity
-      have hV0 : (0 : Real) < V := by linarith
-      positivity
-    exact inv_anti₀ (pow_pos h0 _) (pow_le_pow_left₀ h0.le
-      (uniformBase_mono_n hV htF hgF he.le (Nat.mul_le_mul_left n hrr)) dE)
+    unfold clsEs
+    exact hExpAnti thF gF |eps| htF htF1 hgF hgF1 (abs_pos.mpr he.ne') (Nat.mul_le_mul_left n hrr)
   have h := abstract_family_piece_cover_with hk hA hB hlemma6 hz hzHalf hQb hEr hML hrem hfreq
     (fun c => (P c).linear) (fun c => (P c).dom) hid hGr Gs hslice hGs hranges hPb hEs
   simpa only [Fintype.card_fin] using h
+
+/-- **The family cover of pieces over a uniform class with power controls.** -/
+theorem class_piece_family_cover {k : Nat} (hk : 1 ≤ k) {V : Real} (hV : 1 ≤ V)
+    {dC dE dT : Nat} (C : PowerUniformClass k V dC dE dT)
+    {A Bq : Nat → Real} (hA : ∀ q, 0 < A q) (hB : ∀ q, 0 < Bq q)
+    (hlemma6 : AbstractFamilyLemma166At k (section16PowerWidth A Bq))
+    {N : Nat} [NeZero N] [Fact N.Prime] {zeta : Real} (hz : 0 < zeta) (hzHalf : zeta ≤ 1 / 2)
+    {mass thS gS thF gF : Real} (htS : 0 < thS) (htS1 : thS ≤ 1) (hgS : 0 < gS) (hgS1 : gS ≤ 1)
+    (htF : 0 < thF) (htF1 : thF ≤ 1) (hgF : 0 < gF) (hgF1 : gF ≤ 1)
+    {n : Nat} {Gamma : Finset (Point N (k + 1) × ZMod N)}
+    (P : Fin n → ClassPiece C Gamma zeta mass thS gS thF gF) :
+    MultiplyLinearWith
+      (fun rho => max (famPieceGraphBound (classQr V dC k n thF gF) (classPb V dC n thF gF) n rho)
+        ((3 ^ (k + 1) * n : Nat) : Real))
+      (fun rho => section16CappedWidthExponent
+        (pieceLineExponent Bq (classQb V dC n thS gS) (classEb V dE n thS gS)
+            (classEr V dE k n thF gF) rho *
+          famPieceSliceExponent (classQr V dC k n thF gF) (classEs V dE n thF gF) n rho / 4)
+        (section16RoundedPowerThreshold (pieceWidthScale A (classQb V dC n thS gS) zeta rho)
+          (pieceLineExponent Bq (classQb V dC n thS gS) (classEb V dE n thS gS)
+            (classEr V dE k n thF gF) rho)
+          (famPieceSliceExponent (classQr V dC k n thF gF) (classEs V dE n thF gF) n rho)))
+      (Finset.univ.biUnion fun c => partialGraph (P c).D (P c).phi) := by
+  refine class_piece_family_cover_gen hk C ?_ ?_ ?_ ?_ hA hB hlemma6 hz hzHalf htS htS1 hgS hgS1
+    htF htF1 hgF hgF1 P
+  · intro theta gamma n s ht ht1 hg hg1 hs hs1
+    have h2 := uniformBase_two_le hV n ht ht1 hg hg1 hs hs1
+    exact one_le_pow₀ (by linarith)
+  · intro theta gamma n s ht ht1 hg hg1 hs hs1
+    have h2 := uniformBase_two_le hV n ht ht1 hg hg1 hs hs1
+    exact ⟨by positivity, inv_le_one_of_one_le₀ (one_le_pow₀ (by linarith))⟩
+  · intro theta gamma s ht _ hg _ hs n n' hnn
+    exact pow_le_pow_left₀ (uniformBase_nonneg hV _ ht hg hs)
+      (uniformBase_mono_n hV ht hg hs hnn) dC
+  · intro theta gamma s ht _ hg _ hs n n' hnn
+    have h0 : 0 < uniformBase V n theta gamma s := by
+      unfold uniformBase
+      have : (0 : Real) < (n : Real) + 1 := by positivity
+      have hV0 : (0 : Real) < V := by linarith
+      positivity
+    exact inv_anti₀ (pow_pos h0 _) (pow_le_pow_left₀ h0.le
+      (uniformBase_mono_n hV ht hg hs.le hnn) dE)
 
 end LeanProofs.GowersSzemeredi

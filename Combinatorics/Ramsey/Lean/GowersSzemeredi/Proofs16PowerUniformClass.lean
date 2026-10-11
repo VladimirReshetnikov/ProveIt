@@ -37,14 +37,16 @@ open BaseCase
 def uniformBase (V : Real) (n : Nat) (theta gamma rho : Real) : Real :=
   ((n : Real) + 1) * V * (2 / (gamma * theta * rho))
 
-/-- **A uniform class of `k`-dimensional relations with power controls.** -/
-structure PowerUniformClass (k : Nat) (V : Real) (dC dE dT : Nat) where
+/-- **A uniform class of `k`-dimensional relations**, with threshold `Thr θ γ`
+and family controls `Cnt θ γ n`, `Exp θ γ n` for `n` members. -/
+structure UniformClassWith (k : Nat) (Thr : Real → Real → Real)
+    (Cnt Exp : Real → Real → Nat → Real → Real) where
   U : (N : Nat) → [NeZero N] → Real → Real → Finset (Point N k × ZMod N) → Prop
   mono : ∀ (N : Nat) [NeZero N] (theta gamma : Real) (Gamma Gamma' : Finset (Point N k × ZMod N)),
     Gamma ⊆ Gamma' → U N theta gamma Gamma' → U N theta gamma Gamma
   empty : ∀ (N : Nat) [NeZero N] (theta gamma : Real), U N theta gamma ∅
   decomp : ∀ (theta gamma : Real), 0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 →
-    ∀ (N : Nat) [NeZero N] [Fact N.Prime], (V * (2 / (gamma * theta))) ^ dT ≤ (N : Real) →
+    ∀ (N : Nat) [NeZero N] [Fact N.Prime], Thr theta gamma ≤ (N : Real) →
     ∀ Gamma : Finset (Point N k × ZMod N),
       (Gamma.card : Real) ≤ gamma ^ (-(2 : Int)) * (N : Real) ^ k →
       RelationProductProperty gamma Gamma →
@@ -53,8 +55,14 @@ structure PowerUniformClass (k : Nat) (V : Real) (dC dE dT : Nat) where
   cover : ∀ (theta gamma : Real), 0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 →
     ∀ (N : Nat) [NeZero N] [Fact N.Prime] (n : Nat) (Gamma : Fin n → Finset (Point N k × ZMod N)),
       (∀ i, U N theta gamma (Gamma i)) →
-      MultiplyLinearWith (fun rho => uniformBase V n theta gamma rho ^ dC)
-        (fun rho => (uniformBase V n theta gamma rho ^ dE)⁻¹) (Finset.univ.biUnion Gamma)
+      MultiplyLinearWith (Cnt theta gamma n) (Exp theta gamma n) (Finset.univ.biUnion Gamma)
+
+/-- **A uniform class with power controls**: threshold `(V·2/(γθ))^dT`, count
+`w^dC` and width exponent `w^(-dE)` in the base `w = uniformBase V n θ γ ρ`. -/
+abbrev PowerUniformClass (k : Nat) (V : Real) (dC dE dT : Nat) :=
+  UniformClassWith k (fun theta gamma => (V * (2 / (gamma * theta))) ^ dT)
+    (fun theta gamma n rho => uniformBase V n theta gamma rho ^ dC)
+    (fun theta gamma n rho => (uniformBase V n theta gamma rho ^ dE)⁻¹)
 
 theorem uniformBase_facts {V : Real} (hV : 1 ≤ V) (n : Nat) {theta gamma rho : Real}
     (hg : 0 < gamma) (hg1 : gamma ≤ 1) (ht : 0 < theta) (ht1 : theta ≤ 1) (hr : 0 < rho)

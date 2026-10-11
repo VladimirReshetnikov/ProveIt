@@ -25,26 +25,26 @@ open scoped BigOperators
 namespace LeanProofs.GowersSzemeredi
 open BaseCase
 
-variable {k : Nat} {V : Real} {dC dE dT : Nat}
+variable {k : Nat} {Thr : Real → Real → Real} {Cnt Exp : Real → Real → Nat → Real → Real}
 
 /-! ### Operations on pieces -/
 
 /-- A piece of a sub-relation is a piece of the relation. -/
-def ClassPiece.widen (C : PowerUniformClass k V dC dE dT) {N : Nat} [NeZero N]
+def ClassPiece.widen (C : UniformClassWith k Thr Cnt Exp) {N : Nat} [NeZero N]
     {Gamma Gamma' : Finset (Point N (k + 1) × ZMod N)} {zeta mass thS gS thF gF : Real}
     (P : ClassPiece C Gamma' zeta mass thS gS thF gF) (hsub : Gamma' ⊆ Gamma) :
     ClassPiece C Gamma zeta mass thS gS thF gF :=
   { P with graph_sub := P.graph_sub.trans hsub }
 
 /-- Forget the mass bound. -/
-def ClassPiece.toMassZero (C : PowerUniformClass k V dC dE dT) {N : Nat} [NeZero N]
+def ClassPiece.toMassZero (C : UniformClassWith k Thr Cnt Exp) {N : Nat} [NeZero N]
     {Gamma : Finset (Point N (k + 1) × ZMod N)} {zeta mass thS gS thF gF : Real}
     (P : ClassPiece C Gamma zeta mass thS gS thF gF) :
     ClassPiece C Gamma zeta 0 thS gS thF gF :=
   { P with card_ge := by simp }
 
 /-- The empty piece. -/
-def ClassPiece.empty (C : PowerUniformClass k V dC dE dT) {N : Nat} [NeZero N]
+def ClassPiece.empty (C : UniformClassWith k Thr Cnt Exp) {N : Nat} [NeZero N]
     (Gamma : Finset (Point N (k + 1) × ZMod N)) (zeta thS gS thF gF : Real) :
     ClassPiece C Gamma zeta 0 thS gS thF gF where
   D := ∅
@@ -84,16 +84,24 @@ def classPieces (gamma theta : Real) (k : Nat) : Nat :=
   ⌊gamma ^ (-(2 : Int)) / classBudget theta gamma k⌋₊
 
 /-- The modulus threshold of the step. -/
+def classStepThr (Thr : Real → Real → Real) (theta gamma : Real) (k : Nat) : Real :=
+  max 3 (max (lemma156ExplicitThreshold k (theta / 2) gamma) (classPieceThr Thr theta gamma k))
+
+/-- The modulus threshold of the step, for power controls. -/
 def classStepThreshold (V : Real) (dT : Nat) (theta gamma : Real) (k : Nat) : Real :=
   max 3 (max (lemma156ExplicitThreshold k (theta / 2) gamma) (classPieceThreshold V dT theta gamma k))
 
+theorem classStepThreshold_eq (V : Real) (dT : Nat) (theta gamma : Real) (k : Nat) :
+    classStepThreshold V dT theta gamma k =
+      classStepThr (fun theta gamma => (V * (2 / (gamma * theta))) ^ dT) theta gamma k := rfl
+
 /-- The pieces of the next class: relative to the universal relation, mass `0`. -/
-abbrev StepPiece (C : PowerUniformClass k V dC dE dT) (N : Nat) [NeZero N] (theta gamma : Real) :=
+abbrev StepPiece (C : UniformClassWith k Thr Cnt Exp) (N : Nat) [NeZero N] (theta gamma : Real) :=
   ClassPiece C (Finset.univ : Finset (Point N (k + 1) × ZMod N)) (section16Zeta theta gamma k) 0
     (classBudget theta gamma k) (classDelta theta gamma k) (classBudget theta gamma k) gamma
 
 /-- The graph of a family of step pieces. -/
-def stepPieceGraphs (C : PowerUniformClass k V dC dE dT) {N : Nat} [NeZero N] {theta gamma : Real}
+def stepPieceGraphs (C : UniformClassWith k Thr Cnt Exp) {N : Nat} [NeZero N] {theta gamma : Real}
     {m : Nat} (P : Fin m → StepPiece C N theta gamma) : Finset (Point N (k + 1) × ZMod N) :=
   Finset.univ.biUnion fun c => partialGraph (P c).D (P c).phi
 
@@ -106,9 +114,9 @@ theorem thetaOne_half_eq (theta gamma : Real) (k : Nat) :
   ring
 
 /-- **Every dense sub-relation contains a piece.** -/
-theorem class_piece_of_subrelation (C : PowerUniformClass k V dC dE dT) (hk : 1 ≤ k)
+theorem class_piece_of_subrelation (C : UniformClassWith k Thr Cnt Exp) (hk : 1 ≤ k)
     {theta gamma : Real} (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1)
-    {N : Nat} [NeZero N] [Fact N.Prime] (hN : classStepThreshold V dT theta gamma k ≤ N)
+    {N : Nat} [NeZero N] [Fact N.Prime] (hN : classStepThr Thr theta gamma k ≤ N)
     {Gamma : Finset (Point N (k + 1) × ZMod N)} (hprod : RelationProductProperty gamma Gamma)
     (Delta : Finset (Point N (k + 1) × ZMod N)) (hDelta : Delta ⊆ Gamma)
     (hproj : theta * (N : Real) ^ (k + 1) ≤ (relationProjection Delta).card) :
@@ -128,7 +136,7 @@ theorem class_piece_of_subrelation (C : PowerUniformClass k V dC dE dT) (hk : 1 
   have hN3 : (3 : Real) ≤ N := (le_max_left _ _).trans hN
   have hNthr : lemma156ExplicitThreshold k (theta / 2) gamma ≤ N :=
     ((le_max_left _ _).trans (le_max_right _ _)).trans hN
-  have hNpiece : classPieceThreshold V dT theta gamma k ≤ N :=
+  have hNpiece : classPieceThr Thr theta gamma k ≤ N :=
     ((le_max_right _ _).trans (le_max_right _ _)).trans hN
   have hprime : N.Prime := Fact.out
   have hodd : Odd N := hprime.odd_of_ne_two (by
@@ -157,9 +165,9 @@ theorem class_piece_of_subrelation (C : PowerUniformClass k V dC dE dT) (hk : 1 
 /-! ### The greedy decomposition -/
 
 /-- **Off a good set, a product relation is covered by `classPieces γ θ k` pieces.** -/
-theorem class_step_decomp (C : PowerUniformClass k V dC dE dT) (hk : 1 ≤ k)
+theorem class_step_decomp (C : UniformClassWith k Thr Cnt Exp) (hk : 1 ≤ k)
     {theta gamma : Real} (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1)
-    {N : Nat} [NeZero N] [Fact N.Prime] (hN : classStepThreshold V dT theta gamma k ≤ N)
+    {N : Nat} [NeZero N] [Fact N.Prime] (hN : classStepThr Thr theta gamma k ≤ N)
     (Gamma : Finset (Point N (k + 1) × ZMod N))
     (hsize : (Gamma.card : Real) ≤ gamma ^ (-(2 : Int)) * (N : Real) ^ (k + 1))
     (hprod : RelationProductProperty gamma Gamma) :
@@ -211,8 +219,57 @@ theorem class_step_decomp (C : PowerUniformClass k V dC dE dT) (hk : 1 ≤ k)
 
 /-! ### The cover of the next class -/
 
+/-- **Any `n` relations covered by step pieces have one cover**, for any class. -/
+theorem class_step_cover_gen (C : UniformClassWith k Thr Cnt Exp) (hk : 1 ≤ k)
+    (hCnt : ∀ theta gamma n s, 0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 → 0 < s → s ≤ 1 →
+      1 ≤ Cnt theta gamma n s)
+    (hExp : ∀ theta gamma n s, 0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 → 0 < s → s ≤ 1 →
+      0 < Exp theta gamma n s ∧ Exp theta gamma n s ≤ 1)
+    (hCntMono : ∀ theta gamma s, 0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 → 0 ≤ s →
+      Monotone fun n => Cnt theta gamma n s)
+    (hExpAnti : ∀ theta gamma s, 0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 → 0 < s →
+      Antitone fun n => Exp theta gamma n s)
+    {A Bq : Nat → Real} (hA : ∀ q, 0 < A q) (hB : ∀ q, 0 < Bq q)
+    (hlemma6 : AbstractFamilyLemma166At k (section16PowerWidth A Bq))
+    {theta gamma : Real} (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1)
+    {N : Nat} [NeZero N] [Fact N.Prime] {n : Nat}
+    (Gamma : Fin n → Finset (Point N (k + 1) × ZMod N))
+    (P : Fin n → Fin (classPieces gamma theta k) → StepPiece C N theta gamma)
+    (hP : ∀ i, Gamma i ⊆ stepPieceGraphs C (P i)) :
+    let M := n * classPieces gamma theta k
+    let tS := classBudget theta gamma k
+    let gS := classDelta theta gamma k
+    MultiplyLinearWith
+      (fun rho => max (famPieceGraphBound (clsQr Cnt k M tS gamma) (clsPb Cnt M tS gamma) M rho)
+        ((3 ^ (k + 1) * M : Nat) : Real))
+      (fun rho => section16CappedWidthExponent
+        (pieceLineExponent Bq (Cnt tS gS M) (Exp tS gS M) (clsEr Exp k M tS gamma) rho *
+          famPieceSliceExponent (clsQr Cnt k M tS gamma) (clsEs Exp M tS gamma) M rho / 4)
+        (section16RoundedPowerThreshold
+          (pieceWidthScale A (Cnt tS gS M) (section16Zeta theta gamma k) rho)
+          (pieceLineExponent Bq (Cnt tS gS M) (Exp tS gS M) (clsEr Exp k M tS gamma) rho)
+          (famPieceSliceExponent (clsQr Cnt k M tS gamma) (clsEs Exp M tS gamma) M rho)))
+      (Finset.univ.biUnion Gamma) := by
+  intro M tS gS
+  classical
+  obtain ⟨htS, htS1⟩ := classBudget_pos_le k ht ht1 hg hg1
+  obtain ⟨-, -, hgS, hgS1⟩ := section16_theta_delta_bounds k ht ht1 hg hg1
+  obtain ⟨hz, hzHalf⟩ := section16Zeta_pos_le_half k ht ht1 hg hg1
+  let R : Fin M → StepPiece C N theta gamma := fun c =>
+    P (finProdFinEquiv.symm c).1 (finProdFinEquiv.symm c).2
+  have hfam := class_piece_family_cover_gen hk C hCnt hExp hCntMono hExpAnti hA hB hlemma6 hz
+    hzHalf htS htS1 hgS hgS1 htS htS1 hg hg1 R
+  refine MultiplyLinearWith.subset hfam ?_
+  intro z hz'
+  obtain ⟨i, -, hi⟩ := Finset.mem_biUnion.mp hz'
+  obtain ⟨c, -, hc⟩ := Finset.mem_biUnion.mp (hP i hi)
+  refine Finset.mem_biUnion.mpr ⟨finProdFinEquiv (i, c), Finset.mem_univ _, ?_⟩
+  simp only [R, Equiv.symm_apply_apply]
+  exact hc
+
 /-- **Any `n` relations covered by step pieces have one cover.** -/
-theorem class_step_cover (C : PowerUniformClass k V dC dE dT) (hk : 1 ≤ k) (hV : 1 ≤ V)
+theorem class_step_cover {V : Real} {dC dE dT : Nat} (C : PowerUniformClass k V dC dE dT)
+    (hk : 1 ≤ k) (hV : 1 ≤ V)
     {A Bq : Nat → Real} (hA : ∀ q, 0 < A q) (hB : ∀ q, 0 < Bq q)
     (hlemma6 : AbstractFamilyLemma166At k (section16PowerWidth A Bq))
     {theta gamma : Real} (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1)

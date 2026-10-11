@@ -112,7 +112,8 @@ def pieceFaceRel {N k : Nat} [NeZero N] (D : Finset (Point N (k + 1)))
 /-! ### The pieces -/
 
 /-- **A `(k+1)`-dimensional piece over a uniform class.** -/
-structure ClassPiece {k : Nat} {V : Real} {dC dE dT : Nat} (C : PowerUniformClass k V dC dE dT)
+structure ClassPiece {k : Nat} {Thr : Real → Real → Real} {Cnt Exp : Real → Real → Nat → Real → Real}
+    (C : UniformClassWith k Thr Cnt Exp)
     {N : Nat} [NeZero N] (Gamma : Finset (Point N (k + 1) × ZMod N))
     (zeta mass thS gS thF gF : Real) where
   D : Finset (Point N (k + 1))
@@ -145,9 +146,18 @@ def classDelta (theta gamma : Real) (k : Nat) : Real :=
   section16Delta (section16ThetaOne theta gamma k)
 
 /-- The class thresholds a piece needs: spectra at `(θ′, δ)`, faces and slices at `(θ′, γ)`. -/
+def classPieceThr (Thr : Real → Real → Real) (theta gamma : Real) (k : Nat) : Real :=
+  max (Thr (classBudget theta gamma k) (classDelta theta gamma k))
+    (Thr (classBudget theta gamma k) gamma)
+
+/-- The class thresholds of a piece, for power controls. -/
 def classPieceThreshold (V : Real) (dT : Nat) (theta gamma : Real) (k : Nat) : Real :=
   max ((V * (2 / (classDelta theta gamma k * classBudget theta gamma k))) ^ dT)
     ((V * (2 / (gamma * classBudget theta gamma k))) ^ dT)
+
+theorem classPieceThreshold_eq (V : Real) (dT : Nat) (theta gamma : Real) (k : Nat) :
+    classPieceThreshold V dT theta gamma k =
+      classPieceThr (fun theta gamma => (V * (2 / (gamma * theta))) ^ dT) theta gamma k := rfl
 
 theorem classBudget_pos_le {theta gamma : Real} (k : Nat) (ht : 0 < theta) (ht1 : theta ≤ 1)
     (hg : 0 < gamma) (hg1 : gamma ≤ 1) :
@@ -216,10 +226,10 @@ theorem card_dropAt_shift_bad_le {N k : Nat} [NeZero N] {theta : Real} (x0 : Poi
 /-! ### Slices -/
 
 /-- **Every section restricts to a class member on a dense subset.** -/
-theorem class_slice_decomposition {k : Nat} {V : Real} {dC dE dT : Nat}
-    (C : PowerUniformClass k V dC dE dT)
+theorem class_slice_decomposition {k : Nat} {Thr : Real → Real → Real}
+    {Cnt Exp : Real → Real → Nat → Real → Real} (C : UniformClassWith k Thr Cnt Exp)
     {theta gamma : Real} (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1)
-    {N : Nat} [NeZero N] [Fact N.Prime] (hN : (V * (2 / (gamma * theta))) ^ dT ≤ (N : Real))
+    {N : Nat} [NeZero N] [Fact N.Prime] (hN : Thr theta gamma ≤ (N : Real))
     (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N)
     (hprod : HasProductProperty B phi gamma) :
     ∃ Cs : ZMod N → Finset (Point N k),
@@ -298,10 +308,10 @@ theorem translatedVertex_eq_classFace {N k : Nat} (phi : Point N (k + 1) → ZMo
 
 /-- **One `(k+1)`-dimensional piece over a uniform class**, from Lemma 15.6's
 arrangements and the product property. -/
-theorem class_piece_data {k : Nat} {V : Real} {dC dE dT : Nat}
-    (C : PowerUniformClass k V dC dE dT)
+theorem class_piece_data {k : Nat} {Thr : Real → Real → Real}
+    {Cnt Exp : Real → Real → Nat → Real → Real} (C : UniformClassWith k Thr Cnt Exp)
     {theta gamma : Real} (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1)
-    {N : Nat} [NeZero N] [Fact N.Prime] (hN : classPieceThreshold V dT theta gamma k ≤ N)
+    {N : Nat} [NeZero N] [Fact N.Prime] (hN : classPieceThr Thr theta gamma k ≤ N)
     (Gamma : Finset (Point N (k + 1) × ZMod N))
     (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N)
     (hBG : partialGraph B phi ⊆ Gamma)
@@ -321,8 +331,8 @@ theorem class_piece_data {k : Nat} {V : Real} {dC dE dT : Nat}
   set δ := classDelta theta gamma k with hδdef
   have hδeq : section16Delta (section16ThetaOne theta gamma k) = δ := rfl
   rw [hδeq] at hδpos hδle
-  have hN1 : (V * (2 / (δ * θ'))) ^ dT ≤ (N : Real) := (le_max_left _ _).trans hN
-  have hN2 : (V * (2 / (gamma * θ'))) ^ dT ≤ (N : Real) := (le_max_right _ _).trans hN
+  have hN1 : Thr θ' δ ≤ (N : Real) := (le_max_left _ _).trans hN
+  have hN2 : Thr θ' gamma ≤ (N : Real) := (le_max_right _ _).trans hN
   -- 1. Lemmas 16.5 and 16.7
   obtain ⟨H, Y, phiPrime, hH, hcube, hselected, hselection⟩ :=
     section16_dense_induced_selection_of_arrangements (k := k) (Fact.out : N.Prime) theta gamma
