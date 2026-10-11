@@ -981,6 +981,22 @@ Proof. We can apply Lemma $5.10 q$ times, obtaining a sequence of finer and fine
 
 To end this section, we now give four simple lemmas, all of which are closely related to results that have already appeared in this paper (such as Lemma 2.3, Lemma 2.4 and Corollary 2.5). It will be convenient to have them stated explicitly.
 
+\emph{Editorial note on the formalization (2026-10-11).}
+Here ``proper'' requires an arithmetic progression of integer representatives,
+not merely a modular parametrization with distinct terms. For example,
+$6,0,1$ modulo $7$ has distinct terms, but its representative set
+$\{0,1,6\}$ is not an integer arithmetic progression. Lean proves this
+counterexample. The existing predicate \texttt{ModAP.IsProper} checks only
+distinctness; \texttt{ModAP.HasIntegerRepresentatives} records the stronger
+geometric condition. Thus carrier-preserving normalization alone does not
+prove the integer-representative conclusions of Lemmas 5.12--5.13.
+This is a distinction between the two formal predicates, not a
+counterexample to either lemma below.
+Lean now proves both lemmas with the stronger integer-representative
+conclusion and the displayed cell counts, for every nonzero modulus.
+Moreover, the refinement bound in Lemma 5.13 holds for a partition of any
+finite set $S\subseteq\mathbb Z_N$, with $N$ replaced by $|S|$ in the bound.
+
 Lemma 5.12. Let $Q \subset \mathbb{Z}_{N}$ be a mod- $N$ arithmetic progression of size $m$. Then $Q$ can be partitioned into at most $4 m^{1 / 2}$ proper arithmetic progressions.
 
 Proof. Let $Q=\{a, a+d, \ldots, a+(m-1) d\}$. By the pigeonhole principle we can find distinct integers $l_{1}$ and $l_{2}$ lying in the interval $\left[0, m^{1 / 2}\right]$ such that $\left|l_{1} d-l_{2} d\right| \leqslant m^{-1 / 2} N$ and hence $l$ lying in the interval $\left(0, m^{1 / 2}\right)$ such that $|l d| \leqslant m^{-1 / 2} N$. We can partition $Q$ into $l$ mod- $N$ arithmetic progressions $R_{1}, \ldots, R_{l}$ each of which has common difference $l d$ and length at least $m^{1 / 2}$. Each $R_{i}$ can be partitioned into mod- $N$ arithmetic progressions $S_{j}$ of common difference $l d$ and length between $m^{1 / 2}$ and $m$. Of these there can be at most $2 m^{1 / 2}$. Finally, each $S_{j}$ can be split into at most two parts, each of which is a proper arithmetic progression. \(\square\)

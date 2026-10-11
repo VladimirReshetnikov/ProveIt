@@ -184,7 +184,10 @@ The method stops at these constants. The envelope recursion grows like
 $472\cdot2^k$, and $c=6$ for Theorem~18.1 (or $c=4$ for Theorem~18.2) would
 need a step cost below $128\cdot2^k$, while the vertex covers and the two slice
 controls alone cost $204\cdot2^k$. For $L\le10$ the bound $L+5$ is blocked by
-the catalogue's Weyl threshold $2^{2^{40k^3}}$ in Section~5.
+the stopping term $40(k+2)^3+1095$, which comes from the catalogue's Weyl
+threshold $2^{2^{40k^3}}$ in Section~5. For $L\le8$ this term alone exceeds
+$2^{L+5}$; at $L=9,10$ the excess it leaves in the envelope at the first steps
+persists.
 
 \section{Formalization}\label{sec:lean}
 
@@ -209,17 +212,19 @@ sharper constants & \lean{Proofs18CoverSharper}, \lean{Proofs18CoverTightBase},\
 \end{tabular}
 \end{center}
 
-The light modules are kernel-checked; their only axioms are
-\lean{propext}, \lean{Classical.choice} and \lean{Quot.sound}. The explicit bridges
-depend, in addition, exactly on the corpus theorems
-\begin{itemize}
-\item \lean{commonDiffPartitionBoundAt\_of},
-\item \lean{multilinearPartitionBoundAt\_explicit},
-\item \lean{section16RecurrenceProfileWith\_explicit},
-\item \lean{theorem\_18\_2\_le\_six};
-\end{itemize}
-they were checked against faithful stubs carrying exactly these statements
-and await the full kernel audit. The research notes
+Every result above is kernel-checked. The production audit of 2026-10-11,
+\begin{center}\small
+\lean{check\_gowers.py GowersSzemeredi.CompletionAudit},
+\end{center}
+built 1,440 modules from source with Lean~4.32.0, checked the exact types of
+all 120 numbered catalogue statements and of the improved-bound theorems,
+and found only the axioms \lean{propext}, \lean{Classical.choice} and
+\lean{Quot.sound}. Its record is
+\begin{center}\small
+\lean{Research/GowersSzemeredi/verification/}\\
+\lean{2026-10-11-numbered-and-bounds.json}.
+\end{center}
+The research notes
 (\lean{SECTION16\_RESEARCH\_NOTES.md}, \S\S L.11--L.15b) record the development.
 
 \end{document}

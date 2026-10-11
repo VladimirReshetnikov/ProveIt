@@ -4161,10 +4161,11 @@ budgets of L.13–L.14 to the production inverse step.
   case is involved).
 
 Degrees below four and lengths below six keep the printed constants (their
-proofs are the corpus's). **The method stops here:** the exact envelope
+proofs are the corpus's). At the standard parameters the exact envelope
 recursion grows like `536·2^k` (L.12's model), above `512·2^k`, so `d + 7`
-and `L + 5` would need a smaller per-step cost than `268·2^k`, i.e. a
-smaller class degree than `68·2^l` or a cheaper spectrum and slice stage.
+and `L + 5` need a per-step cost below `256·2^k`. *(Audit correction: an
+earlier version said this needs a smaller class degree or a cheaper
+spectrum and slice stage. L.15a gets it from the base budget `μ₀` instead.)*
 
 **L.15a (same day): one constant further, from the base budget.** The step
 cost `268·2^k` is `68·2^k` (vertex covers) + `μ₀` + `136·2^k` (two slice
@@ -4178,8 +4179,15 @@ controls), and the standard `μ₀ = genMu0 k ≈ 64·2^k` comes from the loose
   **Theorem 18.1 at every `d ≥ 4` with exponent `α^(2^(2^(d+7)))`**
   (`theorem_18_1_d7_of_profiles_cover`);
 - `genMuT_le` (`≤ 505·2^k`, `k ≥ 7`): **Theorem 18.2 at every `L ≥ 11`
-  with `L + 5`** (`theorem_18_2_L5_of_profiles_cover`); for `L ≤ 10` the
-  cubic stopping term `40(k+2)³ + 1095` exceeds `2^(L+5)`.
+  with `L + 5`** (`theorem_18_2_L5_of_profiles_cover`). Below `L = 11`
+  the cubic stopping term `40(k+2)³ + 1095` (from the catalogue's Weyl
+  threshold `2^(2^(40k³))`) blocks `L + 5`. For `L ≤ 8` it exceeds
+  `2^(L+5)` by itself (`3655 > 2048`, `6095 > 4096`, `9735 > 8192`). At
+  `L = 9, 10` it does not (`14815 < 16384`, `21575 < 32768`), but the excess
+  it put into the envelope at the first steps persists: the model ratios
+  `(μ + 2L + 14)/2^(L+5)` are `1.10` and `1.02`, and `0.98` at `L = 11`.
+  *(Audit correction: an earlier version said the cubic term itself exceeds
+  `2^(L+5)` for every `L ≤ 10`.)*
 Bridge additions in `Proofs18CoverSharperExplicit`:
 `theorem_18_1_d7_four_le`, `theorem_18_2_L5_eleven_le` (same stub axioms).
 `d + 6` and `L + 4` would need a step cost below `128·2^k`, i.e. both the
@@ -4243,6 +4251,46 @@ Reproduce with:
 The verification result and input-source hashes are in
 `verification/2026-10-11-numbered-and-bounds.json` and its referenced manifest.
 These results supersede the pending production-check notices in L.13–L.16.
+
+## L.18 Integer-representative fidelity follow-up (2026-10-11)
+
+The new active goal includes the remaining fidelity obligations, beyond
+the corrected-catalogue completion of L.17. The current `ModAP.IsProper`
+predicate means that the parameterization has no repeated residues. It
+does not imply that the canonical integer representatives form an ordinary
+arithmetic progression. `Proofs05IntegerRepresentatives` kernel-proves
+the counterexample `6,0,1` modulo 7: its carrier has cardinality three,
+while its representative set `{0,1,6}` has no positive-step integer AP
+representation of length three.
+
+The module introduces `ModAP.HasIntegerRepresentatives`, requiring a
+positive-step `NatAP` of the same length, entirely in `[0,N)`, whose cast
+carrier equals the modular carrier. It proves that this implies the
+existing properness predicate and recovers that `NatAP` by taking
+`ZMod.val` of the carrier, over any nonzero modulus. It also proves the
+integer-representative conclusion for every ordinary progression whose
+unreduced terms lie below the modulus, without primality assumptions.
+
+The editorial note before Lemma 5.12 records this formalization issue.
+The previous catalogue proofs of Lemmas 5.12--5.13 normalize the modular
+orbit, proving only the weaker properness conclusion. The new
+`Proofs05IntegerRuns` constructs genuine integer progressions by splitting
+the increasing unreduced sequence at each quotient boundary. The new
+`Proofs05IntegerRefinement` proves both genuine geometric conclusions with
+the printed quantitative cell counts. Dirichlet approximation selects
+`1<=u<=floor(sqrt(m))` with centered step `e*floor(sqrt(m))<N`; residue-class
+partitioning and quotient runs give at most `4*floor(sqrt(m))` cells when
+`m>=4`. Singleton partitions handle the smaller and empty cases. The
+construction preserves all points and works over every nonzero modulus.
+
+The Cauchy--Schwarz assembly proves more generally that a progression
+partition of any finite residue set `S` has an integer-representative
+refinement with at most `4*sqrt(|S|*M)` cells. Empty cells and arbitrary
+initial modular parameterizations are allowed. Lemma 5.13 is its special
+case `S=univ`. The numbered catalogue now requires these stronger conclusions,
+and `Proofs05Progressions` uses their genuine proofs. A refreshed full native
+audit is running serially. No counterexample to the paper's
+Lemmas 5.12--5.13 is claimed; other fidelity obligations remain open.
 
 ## F. Routes
 
