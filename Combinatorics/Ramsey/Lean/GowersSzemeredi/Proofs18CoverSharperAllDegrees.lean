@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs18CoverSharperExplicit
 import GowersSzemeredi.Proofs18CoverSharperLowDegrees
 import GowersSzemeredi.Proofs18CoverSharperShortLengths
 import GowersSzemeredi.Proofs18CoverThresholdsSharp
+import GowersSzemeredi.Proofs18CoverVanDerWaerden
 
 /-! **Theorem 18.1 in every degree with exponent `α^(2^(2^(d+7)))`** (Notes L.15c).
 
@@ -75,5 +76,19 @@ theorem theorem_18_2_L5 (L : Nat) : Theorem182AtSharp 5 L := by
 /-- **Corollary 18.7 at every length with `L + 5` in place of `L + 9`.** -/
 theorem corollary_18_7_L5 (L : Nat) : Corollary187AtSharp 5 L :=
   (theorem_18_2_L5 L).corollary_18_7
+
+/-- **Van der Waerden numbers**: every `r`-colouring of `[1, N]` with `r ≥ 2`
+has a monochromatic `k`-term progression once
+`N ≥ 2^(2^(r^(2^(2^(k+5)))))` (Gowers prints `k + 9`). -/
+theorem van_der_waerden_L5 (k : Nat) {r : Nat} (hr : 2 ≤ r) (N : Nat)
+    (hN : szemerediThresholdAt 5 (1 / (r : Real)) k ≤ N) (color : Nat → Fin r) :
+    HasMonochromaticAP N r color k :=
+  (theorem_18_2_L5 k).van_der_waerden hr N hN color
+
+/-- Gowers's van der Waerden bound `W(k, r) ≤ 2^2^r^2^2^(k+9)`. -/
+theorem van_der_waerden_printed (k : Nat) {r : Nat} (hr : 2 ≤ r) (N : Nat)
+    (hN : szemerediThresholdAt 9 (1 / (r : Real)) k ≤ N) (color : Nat → Fin r) :
+    HasMonochromaticAP N r color k :=
+  ((theorem_18_2_L5 k).mono (by norm_num)).van_der_waerden hr N hN color
 
 end LeanProofs.GowersSzemeredi

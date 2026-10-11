@@ -176,9 +176,14 @@ envelopes grow like $472\cdot2^k<512\cdot2^k$.
 Theorem 18.1, exponent $\alpha^{2^{2^{d+c}}}$ & $c=10$ & $c=8$ ($d\ge4$) & $c=7$ (every $d$)\\
 Theorem 18.2, threshold with $L+c$ & $c=9$ & $c=6$ (every $L$) & $c=5$ (every $L$)\\
 Corollary 18.7, threshold with $L+c$ & $c=9$ & $c=6$ (every $L$) & $c=5$ (every $L$)\\
+$W(k,r)\le2^{2^{r^{2^{2^{k+c}}}}}$, $r\ge2$ & $c=9$ & --- & $c=5$\\
 \bottomrule
 \end{tabular}
 \end{center}
+
+The last row is Theorem~18.2 at density $\delta=1/r$: in an $r$-colouring of
+$[1,N]$ one colour class has at least $N/r$ elements. This gives Gowers's
+van der Waerden bound, sharpened from $k+9$ to $k+5$.
 
 The method stops at these constants. The envelope recursion grows like
 $472\cdot2^k$, and $c=6$ for Theorem~18.1 (or $c=4$ for Theorem~18.2) would
@@ -235,7 +240,8 @@ Theorems 18.1, 18.2, Cor.~18.7 & \lean{theorem\_18\_1\_explicit}, \lean{theorem\
 sharper constants & \lean{Proofs18CoverSharper}, \lean{Proofs18CoverTightBase},\\
 & \lean{Proofs18CoverColorings}, \lean{Proofs18CoverSharperExplicit},\\
 & \lean{Proofs18CoverSharperLowDegrees}, \lean{Proofs18CoverSharperShortLengths},\\
-& \lean{Proofs18CoverThresholdsSharp}, \lean{Proofs18CoverSharperAllDegrees}\\
+& \lean{Proofs18CoverThresholdsSharp}, \lean{Proofs18CoverVanDerWaerden},\\
+& \lean{Proofs18CoverSharperAllDegrees}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -256,6 +262,6 @@ audit's record is
 \lean{2026-10-11-numbered-and-bounds.json}.
 \end{center}
 The research notes
-(\lean{SECTION16\_RESEARCH\_NOTES.md}, \S\S L.11--L.15f) record the development.
+(\lean{SECTION16\_RESEARCH\_NOTES.md}, \S\S L.11--L.15g) record the development.
 
 \end{document}

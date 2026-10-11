@@ -47,6 +47,10 @@ example : LeanProofs.GowersSzemeredi.theorem_18_2 :=
   LeanProofs.GowersSzemeredi.theorem_18_2_L6_implies_printed
 example : LeanProofs.GowersSzemeredi.corollary_18_7 :=
   LeanProofs.GowersSzemeredi.corollary_18_7_L6_implies_printed
+example : ∀ (k r : Nat), 2 ≤ r → ∀ N : Nat,
+    LeanProofs.GowersSzemeredi.szemerediThresholdAt 5 (1 / (r : Real)) k ≤ N →
+      ∀ color : Nat → Fin r, LeanProofs.GowersSzemeredi.HasMonochromaticAP N r color k :=
+  fun k _ hr N hN color => LeanProofs.GowersSzemeredi.van_der_waerden_L5 k hr N hN color
 
 open Lean Elab Command in
 run_cmd do
@@ -59,7 +63,9 @@ run_cmd do
     ``LeanProofs.GowersSzemeredi.corollary_18_7_L6,
     ``LeanProofs.GowersSzemeredi.theorem_18_1_d7_implies_printed,
     ``LeanProofs.GowersSzemeredi.theorem_18_2_L6_implies_printed,
-    ``LeanProofs.GowersSzemeredi.corollary_18_7_L6_implies_printed
+    ``LeanProofs.GowersSzemeredi.corollary_18_7_L6_implies_printed,
+    ``LeanProofs.GowersSzemeredi.van_der_waerden_L5,
+    ``LeanProofs.GowersSzemeredi.van_der_waerden_printed
   ]
   for name in everyIndex do
     let info ← getConstInfo name
@@ -68,7 +74,7 @@ run_cmd do
     for axiomName in (← collectAxioms name) do
       unless allowed.contains axiomName do
         throwError "{name} depends on unapproved axiom {axiomName}"
-  logInfo "Checked the eight every-degree and every-length strengthenings; only approved axioms."
+  logInfo "Checked the eight every-degree and every-length strengthenings and the two van der Waerden bounds; only approved axioms."
 
 -- The refutation is checked separately; it is never counted as a proof
 -- of the original printed encoding or hidden among the 120 companions.

@@ -4260,7 +4260,19 @@ Even with joint slices and an idealized class degree near `34·2^k` (one
 change to Gowers's Section 16 counting, not to the bookkeeping. Unlike the
 cubic stopping term of L.15a–L.15e, this limit is not a loose estimate.
 
-A three-page mathematical write-up of L.12-L.15f is in
+**L.15g: van der Waerden numbers with `r` colours.** Corollary 18.7 is
+the two-colour case. For `r ≥ 2` colours one class of `[1, N]` has at least
+`N/r` elements (`exists_color_class_ge`), so Theorem 18.2 at `δ = 1/r`
+gives a monochromatic `k`-term progression once
+`N ≥ szemerediThresholdAt c (1/r) k = 2^(2^(r^(2^(2^(k+c)))))`
+(`Theorem182AtSharp.van_der_waerden`, `Proofs18CoverVanDerWaerden`, light).
+Hence `W(k, r) ≤ 2^(2^(r^(2^(2^(k+5)))))` (`van_der_waerden_L5`), and
+Gowers's printed `W(k, r) ≤ 2^2^r^2^2^(k+9)` (`van_der_waerden_printed`);
+bridge `Proofs18CoverSharperAllDegrees`, stub axiom
+`section16RecurrenceProfileWith_explicit` only, and both are checked by
+`CompletionAudit.lean`.
+
+A three-page mathematical write-up of L.12-L.15g is in
 `joint-vertex-covers/joint-vertex-covers.tex` (PDF beside it).
 
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
