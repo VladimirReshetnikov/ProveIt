@@ -1095,6 +1095,7 @@ import GowersSzemeredi.Proofs18GenericEnvelopeStep
 import GowersSzemeredi.Proofs18GenericSzemeredi
 import GowersSzemeredi.Proofs18GenericLengths
 import GowersSzemeredi.Proofs18GenericLengthsExplicit
+import GowersSzemeredi.Proofs13PolyRecurrence
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
