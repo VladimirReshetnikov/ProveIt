@@ -1429,3 +1429,27 @@ remain. Reproduce publication checks with
 They check 641 source pins, exact diagram verdicts, complete timing outcomes,
 all 124 retained endpoint proofs, both strict descents and the diagram proof
 with producers disabled during independent replay.
+
+[cover_oracle.tex](cover_oracle.tex) proves exact rooted cover completion
+and replaces default ambient indexing with visited-footprint existence
+queries. Witness covers do not restrict future continuations. Indexed caps
+retain their earlier meaning; incomplete oracle queries do not exclude a
+footprint. All 1,506 tests and 27 focused tests pass. All 83 marked source
+proofs match the frozen indexed sequence except witness choice and replay
+independently; both strict descents and thirteen diagram verdicts remain.
+Actual diagram moves increase from nine to 141 at the same checkpoint cap,
+without extra disc successes and with slower budgeted wall time. The optional
+stage remains off by default. Complete source ratios are 1.033 and 1.125.
+This retains the bounded FPT class and leaves the global closure hypothesis
+open. Records are `data/cover-oracle-*`, including the direct old-index probe.
+
+The current [PDF](report.pdf) has 592 pages. Section 149 starts on page 584;
+the assessment is section 150 on page 587. Rendered pages 584–589 pass visual
+review, including the full theory, timing tables, assessment continuation and
+references. All references resolve; only the four existing overflow warnings
+remain. Reproduce publication checks with
+`python -B data/cover_oracle_review.py --publication` from this directory.
+The review checks 643 runtime pins, exact source/diagram outcomes, all 83
+source endpoint proofs, both strict descents and the saved diagram witness
+with producers disabled. It also checks the supplemental old-index failure
+probe and completed-transition counts, without treating progress as success.

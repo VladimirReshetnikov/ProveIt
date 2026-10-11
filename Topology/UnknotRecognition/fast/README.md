@@ -3884,3 +3884,29 @@ the stage adds about 0.21–0.23 seconds to three otherwise submillisecond
 controls. It **defaults off**. The universal small-upward/terminal hypothesis
 and general quasi-polynomial recognition remain open. Reproduce with the
 `causal_research.native` audit, source-benchmark and diagram-benchmark modes.
+
+Shared Pachner cover search now asks exact covering existence on demand.
+A frame stores consumed original cells; a covering witness supports its
+certificate but does not restrict future moves. Connected admissible footprints
+are immediate witnesses. Disconnected footprints use duplicate-free rooted
+reverse search, with completed positive/negative caches and no approximate
+Steiner oracle. A capped or interrupted completion remains unknown.
+
+`cover_backend='auto'` uses this oracle unless `max_regions` requests the
+original complete-index cap. Explicit `indexed`/`oracle` backends remain
+available; `max_oracle_states` caps aggregate rooted completion states.
+Original geometric certificates and independent replay are unchanged.
+All 1,506 tests and 27 focused tests pass. Complete source endpoint proofs
+agree exactly with the frozen indexed release apart from the witness-cover
+field. All 83 source endpoints, both strict descents and thirteen complete
+diagram verdicts pass the fresh audit.
+
+Under the same diagram checkpoint cap, completed moves rise from nine to
+141, but no extra disc success appears. Budgeted wall-clock calls are slower
+because actual move construction is more expensive than index checks.
+The optional diagram stage stays off. Complete source descent ratios are
+1.033 and 1.125 over the indexed release; no general recognition gain or
+new asymptotic complexity class is claimed. Reproduce with
+`causal_research.cover_oracle` audit, source-benchmark and diagram-benchmark.
+The preceding `causal_research.native` byte-identity audit describes its
+frozen integration release; the current cover-oracle audit supersedes it.
