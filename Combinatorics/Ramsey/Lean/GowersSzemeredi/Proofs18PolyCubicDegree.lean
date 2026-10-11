@@ -18,7 +18,7 @@ Here the square comes from `section13_complete_square_extraction_poly`, at
 the density `δ = (α/2)^4207554485` of the corpus frequency graph
 (`fejerSquareAt_poly`). The resulting σ satisfies `σ⁻¹ ≤ (2/α)^(2^74)`:
 * the row exponent contributes `2^69`;
-* the two square factors contribute `2^42` and `2^44`;
+* the two square factors contribute `2^42` and `2^45`;
 * the local count exponent contributes `2^59`.
 
 `theorem_18_1_three_of_phase_partition` takes the phase partition as a

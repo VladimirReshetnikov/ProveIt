@@ -3690,7 +3690,7 @@ otherwise.
   gives `FunctionDiscrepancyBound 3` with `σ = phaseInverseExponent 3 (e·κ)`.
 - `Proofs18PolyCubicDegree`: `theorem_18_1_three_of_phase_partition`.
   - `σ⁻¹ ≤ (2/α)^(2^74)`: the row exponent contributes `2^69`, the two
-    square factors `2^42` and `2^44`, `κ` contributes `2^59`.
+    square factors `2^42` and `2^45`, `κ` contributes `2^59`.
   - `β⁻¹ ≤ (2/α)^(2^59)`, as in the corpus.
   - Both lie far inside the target `α^(2^8192)`
     (`section18Exponent_le_of_inv_le`).
@@ -3741,9 +3741,15 @@ Bridge `Proofs18PolyCubicDegreeExplicit`:
 - **`theorem_18_1_le_seven : d ≤ 7 → Theorem181At d`**. Degrees 0, 1 and
   2 are the corpus's.
 
-It is stub-checked faithfully. The axiom list is exactly the two heavy
-instantiations `commonDiffPartitionOne_explicit` and
-`section16RecurrenceProfileWith_explicit`.
+It is stub-checked faithfully (`mkstub_181.py`).
+- `MultilinearPartitionBoundAt` and `CommonDiffPartitionBoundAt` are copied
+  verbatim.
+- The whole bridge runs, including the elaboration of
+  `CommonDiffPartitionBoundAt 1` at `CommonDiffPartitionOne`.
+- The axiom list is exactly three corpus theorems at their exact
+  signatures: `commonDiffPartitionBoundAt_of`,
+  `multilinearPartitionBoundAt_explicit` and
+  `section16RecurrenceProfileWith_explicit`.
 
 Degree eight and beyond is the nest problem of L.7a and L.8. The same
 precision-free counts (the stackability gap) would carry Theorem 18.1 to
