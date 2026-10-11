@@ -2,7 +2,7 @@ import GowersSzemeredi.Proofs18GenericLengths
 import GowersSzemeredi.Proofs18GradedLengths
 import GowersSzemeredi.Proofs16AllDimensionsExplicit
 
-/-! **Theorem 18.2 and Corollary 18.7 at every length up to twelve.**
+/-! **Theorem 18.2 and Corollary 18.7 at every length up to thirteen.**
 
 This module is a bridge. `theorem_18_2_upto_ten_of_profiles` (light,
 kernel-checked locally) needs the recurrence profiles in every dimension at
@@ -17,9 +17,9 @@ The imports reach the port's Schmidt constants and the explicit profiles, so
 this module is checked on the full-verification host. Every step is an
 instantiation of a kernel-checked statement.
 
-Lengths eleven and twelve use the graded vertex providers
-(`theorem_18_2_upto_twelve_of_profiles`, Notes L.10): the nest cost drops
-from `Θ(4^k)` to `Θ(3^k)`. Length thirteen misses by 14%. -/
+Lengths eleven to thirteen use the graded vertex providers at the tight
+class degree (`theorem_18_2_upto_thirteen_of_profiles`, Notes L.10–L.10b): the
+nest cost drops from `Θ(4^k)` to `Θ(3^k)`. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -44,11 +44,11 @@ theorem theorem_18_2_le_ten {L : Nat} (hL : L ≤ 10) : Theorem182At L := by
 theorem corollary_18_7_le_ten {L : Nat} (hL : L ≤ 10) : Corollary187At L :=
   (theorem_18_2_le_ten hL).corollary_18_7
 
-/-- **Theorem 18.2 at every length up to twelve**, with graded vertex providers. -/
-theorem theorem_18_2_le_twelve {L : Nat} (hL : L ≤ 12) : Theorem182At L := by
+/-- **Theorem 18.2 at every length up to thirteen**, with graded vertex providers. -/
+theorem theorem_18_2_le_thirteen {L : Nat} (hL : L ≤ 13) : Theorem182At L := by
   rcases Nat.lt_or_ge L 6 with h | h
   · exact theorem_18_2_le_six (by omega)
-  · exact theorem_18_2_upto_twelve_of_profiles
+  · exact theorem_18_2_upto_thirteen_of_profiles
       (fun k => ⌈multiaffinePartitionK (k + 1) (2 ^ (k + 1))⌉₊)
       (fun k => (k + 1) * multiaffinePartitionP (k + 1) (2 ^ (k + 1)))
       (fun k => two_le_ceil_multiaffinePartitionK (k + 1) (2 ^ (k + 1)))
@@ -56,8 +56,16 @@ theorem theorem_18_2_le_twelve {L : Nat} (hL : L ≤ 12) : Theorem182At L := by
       (fun k _ => section16RecurrenceProfileWith_explicit k)
       (fun k => explicit_family_constants_le k) h hL
 
-/-- **Corollary 18.7 at every length up to twelve.** -/
+/-- **Corollary 18.7 at every length up to thirteen.** -/
+theorem corollary_18_7_le_thirteen {L : Nat} (hL : L ≤ 13) : Corollary187At L :=
+  (theorem_18_2_le_thirteen hL).corollary_18_7
+
+/-- Theorem 18.2 at every length up to twelve. -/
+theorem theorem_18_2_le_twelve {L : Nat} (hL : L ≤ 12) : Theorem182At L :=
+  theorem_18_2_le_thirteen (by omega)
+
+/-- Corollary 18.7 at every length up to twelve. -/
 theorem corollary_18_7_le_twelve {L : Nat} (hL : L ≤ 12) : Corollary187At L :=
-  (theorem_18_2_le_twelve hL).corollary_18_7
+  corollary_18_7_le_thirteen (by omega)
 
 end LeanProofs.GowersSzemeredi

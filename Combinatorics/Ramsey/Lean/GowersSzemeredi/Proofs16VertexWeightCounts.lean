@@ -5,7 +5,7 @@ import GowersSzemeredi.Proofs16SinglePieceGradedGlobal
 Vertex `e ∈ {0,1}^k` of the remainder lives on a face of dimension
 `|S_e| = |e| + 1` (`card_vertexDirections`). Graded providers cost
 `Σ_{e ≠ top} f(|S_e|)` instead of `(2^k − 1)·f(k)`. For the class degrees
-`f(l) = 76·2^l + 1` this is at most `152·3^k + 2^k`
+`f(l) = 68·2^l + 1` this is `136·3^k + 2^k − 136·2^k − 1`
 (`vertexFaceCounts_weighted_le`), because `Σ_e 2^|e| = 3^k`
 (`sum_two_pow_boolWeight`). -/
 set_option autoImplicit false
@@ -64,25 +64,38 @@ theorem sum_vertexBlock_eq (k : Nat) (g : (Fin k → Bool) → Nat) (F : Nat →
   unfold vertexBlock
   rw [Finset.filter_filter]
 
-/-- **The graded vertex count**: `Σ_j n_j·(76·2^j + 1) ≤ 152·3^k + 2^k`. -/
+/-- **The graded vertex count**, exactly:
+`Σ_j n_j·(68·2^j + 1) ≤ 136·3^k + 2^k − (136·2^k + 1)` (the top vertex is excluded). -/
 theorem vertexFaceCounts_weighted_le (k : Nat) :
-    ∑ j ∈ Finset.range (k + 1), vertexFaceCounts k j * (76 * 2 ^ j + 1) ≤
-      152 * 3 ^ k + 2 ^ k := by
+    ∑ j ∈ Finset.range (k + 1), vertexFaceCounts k j * (68 * 2 ^ j + 1) ≤
+      136 * 3 ^ k + 2 ^ k - (136 * 2 ^ k + 1) := by
   classical
   have hsum := sum_vertexBlock_eq k (fun e => (section16VertexDirections e).card)
-    (fun j => 76 * 2 ^ j + 1) (k + 1) (fun e he => section16VertexDirections_card_lt he)
+    (fun j => 68 * 2 ^ j + 1) (k + 1) (fun e he => section16VertexDirections_card_lt he)
   unfold vertexFaceCounts
   rw [hsum]
-  calc ∑ e ∈ Finset.univ.filter (fun e : Fin k → Bool => e ≠ fun _ => true),
-        (76 * 2 ^ (section16VertexDirections e).card + 1)
-      ≤ ∑ e : Fin k → Bool, (76 * 2 ^ (section16VertexDirections e).card + 1) :=
-        Finset.sum_le_sum_of_subset (Finset.filter_subset _ _)
-    _ = ∑ e : Fin k → Bool, (152 * 2 ^ boolWeight e + 1) := by
-        refine Finset.sum_congr rfl fun e _ => ?_
-        rw [card_vertexDirections, pow_succ]
-        ring
-    _ = 152 * 3 ^ k + 2 ^ k := by
-        rw [Finset.sum_add_distrib, ← Finset.mul_sum, sum_two_pow_boolWeight]
-        simp
+  set f : (Fin k → Bool) → Nat := fun e => 68 * 2 ^ (section16VertexDirections e).card + 1 with hf
+  have hf' : ∀ e, f e = 136 * 2 ^ boolWeight e + 1 := by
+    intro e
+    rw [hf]
+    dsimp only
+    rw [card_vertexDirections, pow_succ]
+    ring
+  have htotal : ∑ e : Fin k → Bool, f e = 136 * 3 ^ k + 2 ^ k := by
+    rw [Finset.sum_congr rfl fun e _ => hf' e, Finset.sum_add_distrib, ← Finset.mul_sum,
+      sum_two_pow_boolWeight]
+    simp
+  have htop : f (fun _ => true) = 136 * 2 ^ k + 1 := by
+    rw [hf' (fun _ => true), boolWeight_eq_card]
+    simp
+  have hsplit := Finset.sum_filter_add_sum_filter_not Finset.univ
+    (fun e : Fin k → Bool => e ≠ fun _ => true) f
+  have hnot : (Finset.univ.filter fun e : Fin k → Bool => ¬ e ≠ fun _ => true) =
+      {fun _ => true} := by
+    ext e
+    simp
+  rw [hnot, Finset.sum_singleton, htop, htotal] at hsplit
+  show ∑ e ∈ Finset.univ.filter (fun e : Fin k → Bool => e ≠ fun _ => true), f e ≤ _
+  omega
 
 end LeanProofs.GowersSzemeredi

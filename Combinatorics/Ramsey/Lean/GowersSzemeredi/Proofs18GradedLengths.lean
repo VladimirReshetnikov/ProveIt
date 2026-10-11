@@ -2,15 +2,15 @@ import GowersSzemeredi.Proofs18GradedThresholds
 import GowersSzemeredi.Proofs18GradedDegrees
 import GowersSzemeredi.Proofs18GenericLengths
 
-/-! **Theorem 18.2 and Corollary 18.7 at every length up to twelve**, with
+/-! **Theorem 18.2 and Corollary 18.7 at every length up to thirteen**, with
 graded vertex providers (Notes L.10, G7).
 
 `envBound_stepG` is `envBound_step` for the graded parameters, at the
 envelope `envStepGT k μ₀ μK μ`, which is `envStep` with `densDegG` and
-`threshDegG` (graded nest cost `152·3^k + 2^k`). `genMuG` runs the steps
+`threshDegG` (graded nest cost `136·3^k + 2^k − 136·2^k − 1`). `genMuG` runs the steps
 in dimensions `2, …, k` from the Fejér cubic base `envBound_three`. No phase
 partition is needed here: `EnvBound` allows an exponential `σ`. Evaluation
-(`genMuG_fits`) shows lengths `6, …, 12` fit `2^(L+9)`; the uniform steps
+(`genMuG_fits`) shows lengths `6, …, 13` fit `2^(L+9)`; the uniform steps
 stopped at ten. -/
 set_option autoImplicit false
 noncomputable section
@@ -23,13 +23,13 @@ def envStepGT (k μ0 μK μ : Nat) : Nat :=
 
 /-- **The graded single-piece step, with envelopes.** -/
 theorem envBound_stepG (P : GenParamsG) {μV μK μ : Nat} (H : P.GHyp μV μK) (hk : 1 ≤ P.k)
-    (hcov : ∀ l, 1 ≤ l → l ≤ P.k → PolyCoverAt l (uCount P.V (uDeg l)) (uExp P.V (uDeg l)))
+    (hcov : ∀ l, 1 ≤ l → l ≤ P.k → PolyCoverAt l (uCount P.V (uDeg68 l)) (uExp P.V (uDeg68 l)))
     (hrec : Section16RecurrenceProfileWith P.k (familyRecThr P.k P.K P.p) (familyRecExp P.k P.p))
     (hlow : EnvBound (P.k + 1) μ) : EnvBound (P.k + 2) (envStepGT P.k P.μ0 μK μ) := by
   intro alpha ha ha2
   have hX := two_div_ge_two ha ha2
   -- everything that mentions `P.k`, before naming it
-  obtain ⟨he0, he8, hei, hy0, hyle, hyi⟩ := P.yIn_boundsG ha ha2 H.hV H.hVμ H.hμ0 H.hk0 H.hk76
+  obtain ⟨he0, he8, hei, hy0, hyle, hyi⟩ := P.yIn_boundsG ha ha2 H.hV H.hVμ H.hμ0 H.hk0 H.hk68
   have hy2 : P.yIn alpha ≤ 1 / 2 := hyle.trans ha2
   obtain ⟨β, σ, T, hB, b0, b1, s0, s16, bi, si, Ti⟩ := hlow _ hy0 hy2
   have hstep := P.inverse_step H.hV H.hK H.hp hk hcov hrec ha ha2
@@ -125,32 +125,32 @@ theorem envBound_allG (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k) (hp : ∀ k
     (hrec : ∀ k, 1 ≤ k →
       Section16RecurrenceProfileWith k (familyRecThr k (Kc k) (pc k)) (familyRecExp k (pc k)))
     (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 5)))) :
-    ∀ k, 2 ≤ k → k + 1 ≤ 2 ^ 76 → EnvBound (k + 2) (genMuG k) := by
+    ∀ k, 2 ≤ k → k + 1 ≤ 2 ^ 68 → EnvBound (k + 2) (genMuG k) := by
   have hlem : ∀ k, 1 ≤ k → AbstractFamilyLemma166At k
       (section16PowerWidth (familyWidthPrefactor (Kc k)) (familyWidthDivisor k (pc k))) :=
     fun k hk => abstractFamilyLemma166At_of k (hK k) (hp k) (hrec k hk)
   have hK1 : ∀ k, 1 ≤ Kc k := fun k => le_trans (by norm_num) (hK k)
-  have hstep : ∀ k, 2 ≤ k → k + 1 ≤ 2 ^ 76 → ∀ μ, EnvBound (k + 1) μ →
+  have hstep : ∀ k, 2 ≤ k → k + 1 ≤ 2 ^ 68 → ∀ μ, EnvBound (k + 1) μ →
       EnvBound (k + 2) (envStepGT k (genMu0 k) (genMuK k) μ) := by
-    intro k hk hk76 μ hlow
+    intro k hk hk68 μ hlow
     obtain ⟨hV, hVμ, hμ0, -, -, hk0, hKk, hKμ, hpk, hpμ⟩ := stdHyp_of_profiles Kc pc hK hp hconst hk
     let P : GenParamsG := ⟨classV Kc pc k, k, Kc k, pc k, genMu0 k⟩
-    have H : P.GHyp (genMuV k) (genMuK k) := ⟨hV, hVμ, hμ0, hk0, hk76, hKk, hKμ, hpk, hpμ⟩
+    have H : P.GHyp (genMuV k) (genMuK k) := ⟨hV, hVμ, hμ0, hk0, hk68, hKk, hKμ, hpk, hpμ⟩
     have hcov : ∀ l, 1 ≤ l → l ≤ P.k →
-        PolyCoverAt l (uCount P.V (uDeg l)) (uExp P.V (uDeg l)) := by
+        PolyCoverAt l (uCount P.V (uDeg68 l)) (uExp P.V (uDeg68 l)) := by
       intro l hl1 hlk
-      have hcl := uniformCovers_of_classes Kc pc hK1 hp hlem l l hl1 le_rfl
+      have hcl := polyCoverAt_class68 Kc pc hK1 hp hlem hl1
       exact hcl.uniform_mono (one_le_classV Kc pc l) (classV_mono Kc pc hlk) le_rfl
     exact envBound_stepG P H (by show 1 ≤ k; omega) hcov (hrec k (by omega)) hlow
   intro k hk
   induction k, hk using Nat.le_induction with
-  | base => intro hk76; exact hstep 2 le_rfl hk76 62 envBound_three
+  | base => intro hk68; exact hstep 2 le_rfl hk68 62 envBound_three
   | succ k hk ih =>
-    intro hk76
+    intro hk68
     rw [genMuG_succ (by omega)]
-    exact hstep (k + 1) (by omega) hk76 (genMuG k) (ih (by omega))
+    exact hstep (k + 1) (by omega) hk68 (genMuG k) (ih (by omega))
 
-/-- The graded envelopes at `L = 6, …, 12` fit the printed threshold. -/
+/-- The graded envelopes at `L = 6, …, 13` fit the printed threshold. -/
 theorem genMuG_fits :
     (42 ≤ genMuG 2 ∧ genMuG 2 + 2 * 6 + 14 ≤ 2 ^ (6 + 9)) ∧
     (42 ≤ genMuG 3 ∧ genMuG 3 + 2 * 7 + 14 ≤ 2 ^ (7 + 9)) ∧
@@ -158,16 +158,17 @@ theorem genMuG_fits :
     (42 ≤ genMuG 5 ∧ genMuG 5 + 2 * 9 + 14 ≤ 2 ^ (9 + 9)) ∧
     (42 ≤ genMuG 6 ∧ genMuG 6 + 2 * 10 + 14 ≤ 2 ^ (10 + 9)) ∧
     (42 ≤ genMuG 7 ∧ genMuG 7 + 2 * 11 + 14 ≤ 2 ^ (11 + 9)) ∧
-    (42 ≤ genMuG 8 ∧ genMuG 8 + 2 * 12 + 14 ≤ 2 ^ (12 + 9)) := by
+    (42 ≤ genMuG 8 ∧ genMuG 8 + 2 * 12 + 14 ≤ 2 ^ (12 + 9)) ∧
+    (42 ≤ genMuG 9 ∧ genMuG 9 + 2 * 13 + 14 ≤ 2 ^ (13 + 9)) := by
   decide
 
-/-- **Theorem 18.2 at every length `6 ≤ L ≤ 12`**, from the recurrence profiles. -/
-theorem theorem_18_2_upto_twelve_of_profiles (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k)
+/-- **Theorem 18.2 at every length `6 ≤ L ≤ 13`**, from the recurrence profiles. -/
+theorem theorem_18_2_upto_thirteen_of_profiles (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k)
     (hp : ∀ k, 0 < pc k)
     (hrec : ∀ k, 1 ≤ k →
       Section16RecurrenceProfileWith k (familyRecThr k (Kc k) (pc k)) (familyRecExp k (pc k)))
     (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 5))))
-    {L : Nat} (hL6 : 6 ≤ L) (hL12 : L ≤ 12) : Theorem182At L := by
+    {L : Nat} (hL6 : 6 ≤ L) (hL13 : L ≤ 13) : Theorem182At L := by
   have henv := envBound_allG Kc pc hK hp hrec hconst (L - 4) (by omega) (by omega)
   rw [show L - 4 + 2 = L - 2 by omega] at henv
   have hfit := genMuG_fits
@@ -186,16 +187,18 @@ theorem theorem_18_2_upto_twelve_of_profiles (Kc pc : Nat → Nat) (hK : ∀ k, 
       hfit.2.2.2.2.1.2
   · exact theorem182At_of_envBound (by norm_num) henv hfit.2.2.2.2.2.1.1
       (h42 _ hfit.2.2.2.2.2.1.1) hfit.2.2.2.2.2.1.2
-  · exact theorem182At_of_envBound (by norm_num) henv hfit.2.2.2.2.2.2.1
-      (h42 _ hfit.2.2.2.2.2.2.1) hfit.2.2.2.2.2.2.2
+  · exact theorem182At_of_envBound (by norm_num) henv hfit.2.2.2.2.2.2.1.1
+      (h42 _ hfit.2.2.2.2.2.2.1.1) hfit.2.2.2.2.2.2.1.2
+  · exact theorem182At_of_envBound (by norm_num) henv hfit.2.2.2.2.2.2.2.1
+      (h42 _ hfit.2.2.2.2.2.2.2.1) hfit.2.2.2.2.2.2.2.2
 
-/-- **Corollary 18.7 at every length `6 ≤ L ≤ 12`**, from the recurrence profiles. -/
-theorem corollary_18_7_upto_twelve_of_profiles (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k)
+/-- **Corollary 18.7 at every length `6 ≤ L ≤ 13`**, from the recurrence profiles. -/
+theorem corollary_18_7_upto_thirteen_of_profiles (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k)
     (hp : ∀ k, 0 < pc k)
     (hrec : ∀ k, 1 ≤ k →
       Section16RecurrenceProfileWith k (familyRecThr k (Kc k) (pc k)) (familyRecExp k (pc k)))
     (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 5))))
-    {L : Nat} (hL6 : 6 ≤ L) (hL12 : L ≤ 12) : Corollary187At L :=
-  (theorem_18_2_upto_twelve_of_profiles Kc pc hK hp hrec hconst hL6 hL12).corollary_18_7
+    {L : Nat} (hL6 : 6 ≤ L) (hL13 : L ≤ 13) : Corollary187At L :=
+  (theorem_18_2_upto_thirteen_of_profiles Kc pc hK hp hrec hconst hL6 hL13).corollary_18_7
 
 end LeanProofs.GowersSzemeredi

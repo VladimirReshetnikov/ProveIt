@@ -1,11 +1,12 @@
 import GowersSzemeredi.Proofs18GenericModulus
 import GowersSzemeredi.Proofs18SinglePieceGradedInverse
+import GowersSzemeredi.Proofs18TightClasses
 
 /-! The scale conditions of the graded single-piece step (Notes L.10, G4a).
 
 `GenParams.modulus_conditions` with the uniform lift density replaced by the
 face-dimension family. The cover in face dimension `l` has degree
-`Dg l = uDeg l`, and its standard lift exponents are
+`Dg l = uDeg68 l`, and its standard lift exponents are
 `ag l = Dg l·2^μ₀ + 1 + k(Dg l + 1 + k)` and `bg l = Dg l + 1 + k`.
 * `gradedNestExp`, `gradedNestThr` and `gradedNest_facts`: the nested width
   over the grade blocks, by `WidthPowerLB.comp` once per block (each block is
@@ -79,16 +80,16 @@ namespace GenParamsG
 variable (P : GenParamsG) (alpha : Real)
 
 /-- The `X`-exponent of the lift density in face dimension `l`. -/
-def ag (l : Nat) : Nat := uDeg l * 2 ^ P.μ0 + 1 + P.k * (uDeg l + 1 + P.k)
+def ag (l : Nat) : Nat := uDeg68 l * 2 ^ P.μ0 + 1 + P.k * (uDeg68 l + 1 + P.k)
 /-- The `t`-exponent of the lift density in face dimension `l`. -/
-def bg (l : Nat) : Nat := uDeg l + 1 + P.k
+def bg (l : Nat) : Nat := uDeg68 l + 1 + P.k
 /-- The budget `globalBudget α (α/2) k`. -/
 def B : Real := globalBudget alpha (alpha / 2) P.k
 /-- The width exponent of the base cover in face dimension `l`. -/
-def Ewg (l : Nat) : Real → Real := uExp P.V (uDeg l) (alpha / 2) (P.B alpha)
+def Ewg (l : Nat) : Real → Real := uExp P.V (uDeg68 l) (alpha / 2) (P.B alpha)
 /-- The base slice density in face dimension `l`. -/
 def baseCg (l : Nat) : Real → Real :=
-  fun s => s / 2 / uCount P.V (uDeg l) (alpha / 2) (P.B alpha) (s / 2)
+  fun s => s / 2 / uCount P.V (uDeg68 l) (alpha / 2) (P.B alpha) (s / 2)
 /-- The lift density in face dimension `l`. -/
 def Cg (l : Nat) : Real → Real := genC (2 / alpha) (P.ag l) (P.bg l) (P.baseCg alpha l) P.k
 /-- The lift width in face dimension `l`. -/
@@ -100,7 +101,7 @@ def Rho1 : Real := gradedNestC (fun l => P.Cg alpha l) (vertexFaceCounts P.k) (P
 /-- `δ(θ₁)`. -/
 def Delta : Real := section16Delta (section16ThetaOne alpha (alpha / 2) P.k)
 /-- The exponent of the spectrum-scale cover. -/
-def Em : Real := uExp P.V (uDeg P.k) (P.Delta alpha) (P.B alpha) (P.Rho1 alpha / 2 / 2)
+def Em : Real := uExp P.V (uDeg68 P.k) (P.Delta alpha) (P.B alpha) (P.Rho1 alpha / 2 / 2)
 /-- The exponent of the nested width. -/
 def NestExp : Real :=
   gradedNestExp (fun l => P.Ewg alpha l) P.k (fun l => P.Cg alpha l) (vertexFaceCounts P.k)
@@ -115,7 +116,7 @@ def MExp : Real := P.NestExp alpha * (P.Em alpha / 2)
 def MThr : Real := max (P.NestThr alpha) (64 ^ (1 / P.NestExp alpha))
 /-- The worst spectrum count. -/
 def QM : Nat :=
-  ⌊singlePieceGlobalQmaxG (fun l => uCount P.V (uDeg l)) (fun l => P.Cg alpha l) alpha (alpha / 2)
+  ⌊singlePieceGlobalQmaxG (fun l => uCount P.V (uDeg68 l)) (fun l => P.Cg alpha l) alpha (alpha / 2)
     P.k⌋₊
 /-- The exponent of `m` in the spectrum cell width. -/
 def Bexp : Real := familyRecExp P.k P.p (P.QM alpha) / 2
@@ -127,11 +128,11 @@ def Rho : Real := spectrumPieceRho (fun t => t / 2) (P.Rho1 alpha)
 def ThS : Real := singlePieceTheta (P.Rho alpha) 1
 /-- The slice control. -/
 def CS : Real :=
-  singlePieceGlobalC (fun l => uCount P.V (uDeg l)) alpha (alpha / 2) P.k (P.ThS alpha)
+  singlePieceGlobalC (fun l => uCount P.V (uDeg68 l)) alpha (alpha / 2) P.k (P.ThS alpha)
 /-- The first slice exponent. -/
-def Eth : Real := uExp P.V (uDeg P.k) (alpha / 2) (P.B alpha) (P.ThS alpha / 2)
+def Eth : Real := uExp P.V (uDeg68 P.k) (alpha / 2) (P.B alpha) (P.ThS alpha / 2)
 /-- The second slice exponent. -/
-def Ec : Real := uExp P.V (uDeg P.k) (alpha / 2) (P.B alpha) (P.CS alpha / 2)
+def Ec : Real := uExp P.V (uDeg68 P.k) (alpha / 2) (P.B alpha) (P.CS alpha / 2)
 /-- The exponent of the final width in `N`. -/
 def F : Real := P.MExp alpha * (P.Bexp alpha * (P.Eth alpha * P.Ec alpha) / 2)
 /-- The localization exponent. -/
@@ -181,7 +182,7 @@ theorem ranges (hV : 1 ≤ P.V) (hp : 0 < P.p) {alpha : Real} (ha : 0 < alpha)
   have hT2 : 0 < P.T2 alpha ∧ P.T2 alpha ≤ 1 := by
     unfold T2 globalTheta2; exact ⟨by positivity, by linarith⟩
   have hEw : ∀ l s, 0 < s → s ≤ 1 → 0 < P.Ewg alpha l s ∧ P.Ewg alpha l s ≤ 1 :=
-    fun l s hs hs1 => uExp_pos hV (uDeg l) hg hg1 hB.1 hB.2 hs hs1
+    fun l s hs hs1 => uExp_pos hV (uDeg68 l) hg hg1 hB.1 hB.2 hs hs1
   have hC : ∀ l u, 0 < u → u ≤ 1 → 0 < P.Cg alpha l u ∧ P.Cg alpha l u ≤ 1 :=
     fun l => genC_pos_le hX (P.ag l) (P.bg l) (P.baseCg alpha l) P.k
   have hR1 : 0 < P.Rho1 alpha ∧ P.Rho1 alpha ≤ 1 :=
@@ -200,20 +201,20 @@ theorem ranges (hV : 1 ≤ P.V) (hp : 0 < P.p) {alpha : Real} (ha : 0 < alpha)
     norm_num
     linarith
   have hCS : 0 < P.CS alpha ∧ P.CS alpha ≤ 1 := by
-    have hq := uCount_pos hV (uDeg P.k) hg hg1 hB.1 hB.2 (half_pos hS.1) (by linarith [hS.2])
-    have hq0 : 0 < uCount P.V (uDeg P.k) (alpha / 2) (P.B alpha) (P.ThS alpha / 2) :=
+    have hq := uCount_pos hV (uDeg68 P.k) hg hg1 hB.1 hB.2 (half_pos hS.1) (by linarith [hS.2])
+    have hq0 : 0 < uCount P.V (uDeg68 P.k) (alpha / 2) (P.B alpha) (P.ThS alpha / 2) :=
       lt_of_lt_of_le zero_lt_one hq
     have hs0 := hS.1
     have hs1 := hS.2
-    show 0 < P.ThS alpha / 2 / uCount P.V (uDeg P.k) (alpha / 2) (P.B alpha) (P.ThS alpha / 2) ∧
-      P.ThS alpha / 2 / uCount P.V (uDeg P.k) (alpha / 2) (P.B alpha) (P.ThS alpha / 2) ≤ 1
+    show 0 < P.ThS alpha / 2 / uCount P.V (uDeg68 P.k) (alpha / 2) (P.B alpha) (P.ThS alpha / 2) ∧
+      P.ThS alpha / 2 / uCount P.V (uDeg68 P.k) (alpha / 2) (P.B alpha) (P.ThS alpha / 2) ≤ 1
     exact ⟨div_pos (half_pos hs0) hq0, (div_le_one hq0).mpr (by linarith)⟩
   have hEm : 0 < P.Em alpha ∧ P.Em alpha ≤ 1 :=
-    uExp_pos hV (uDeg P.k) hd0 hd1 hB.1 hB.2 (by have := hR1.1; positivity) (by linarith [hR1.2])
+    uExp_pos hV (uDeg68 P.k) hd0 hd1 hB.1 hB.2 (by have := hR1.1; positivity) (by linarith [hR1.2])
   have hEth : 0 < P.Eth alpha ∧ P.Eth alpha ≤ 1 :=
-    uExp_pos hV (uDeg P.k) hg hg1 hB.1 hB.2 (half_pos hS.1) (by linarith [hS.2])
+    uExp_pos hV (uDeg68 P.k) hg hg1 hB.1 hB.2 (half_pos hS.1) (by linarith [hS.2])
   have hEc : 0 < P.Ec alpha ∧ P.Ec alpha ≤ 1 :=
-    uExp_pos hV (uDeg P.k) hg hg1 hB.1 hB.2 (half_pos hCS.1) (by linarith [hCS.2])
+    uExp_pos hV (uDeg68 P.k) hg hg1 hB.1 hB.2 (half_pos hCS.1) (by linarith [hCS.2])
   obtain ⟨n0, n1, nt, -⟩ := gradedNest_facts hEw P.k hC (vertexFaceCounts P.k) (P.k + 1) (P.T2 alpha) hT2.1 hT2.2
   have hBx : 0 < P.Bexp alpha ∧ P.Bexp alpha ≤ 1 := by
     have h0 := familyRecExp_pos P.k P.p (P.QM alpha) hp
@@ -257,7 +258,7 @@ theorem Eloc_pos_le (hV : 1 ≤ P.V) (hp : 0 < P.p) {alpha : Real} (ha : 0 < alp
 theorem modulus_conditions (hV : 1 ≤ P.V) (hK : 2 ≤ P.K) (hp : 0 < P.p) {alpha : Real}
     (ha : 0 < alpha) (haHalf : alpha ≤ 1 / 2)
     (N : Nat) [NeZero N] [Fact N.Prime] (hN : P.Tloc alpha ≤ N) :
-    SinglePieceModulusConditionsG (fun l => uCount P.V (uDeg l)) (fun l => uExp P.V (uDeg l))
+    SinglePieceModulusConditionsG (fun l => uCount P.V (uDeg68 l)) (fun l => uExp P.V (uDeg68 l))
       (fun l => P.Cg alpha l) (fun l => P.Wg alpha l) alpha P.k (familyRecExp P.k P.p) (familyRecThr P.k P.K P.p)
       (P.Eloc alpha) N := by
   classical
@@ -301,22 +302,22 @@ theorem modulus_conditions (hV : 1 ≤ P.V) (hK : 2 ≤ P.K) (hp : 0 < P.p) {alp
     exact h
   have hNW4 : (4 : Real) ≤ NW :=
     (le_rpow_of_rpow_inv_le haN (by norm_num) hN4).trans hNWpow
-  obtain ⟨m, hm⟩ : ∃ m : Nat, coverWidth (uExp P.V (uDeg P.k) (P.Delta alpha) (P.B alpha))
+  obtain ⟨m, hm⟩ : ∃ m : Nat, coverWidth (uExp P.V (uDeg68 P.k) (P.Delta alpha) (P.B alpha))
       (singlePieceGlobalRho1G (fun l => P.Cg alpha l) alpha (alpha / 2) P.k / 2)
       ⌈(NW : Real) / 8⌉₊ = m := ⟨_, rfl⟩
   have hmpow : (N : Real) ^ P.MExp alpha ≤ m := by
-    have hcov := coverWidth_div8_powerLB (uExp P.V (uDeg P.k) (P.Delta alpha) (P.B alpha))
+    have hcov := coverWidth_div8_powerLB (uExp P.V (uDeg68 P.k) (P.Delta alpha) (P.B alpha))
       (P.Rho1 alpha / 2) hEm
     have hcomp := WidthPowerLB.comp hnest hcov haN (by positivity) hNT (by norm_num)
     have h := hcomp N hNM
-    have hm' : coverWidth (uExp P.V (uDeg P.k) (P.Delta alpha) (P.B alpha)) (P.Rho1 alpha / 2)
+    have hm' : coverWidth (uExp P.V (uDeg68 P.k) (P.Delta alpha) (P.B alpha)) (P.Rho1 alpha / 2)
         ⌈((gradedNestW (fun l => P.Cg alpha l) (fun l => P.Wg alpha l) (vertexFaceCounts P.k) (P.k + 1)
           (P.T2 alpha) N : Nat) : Real) / 8⌉₊ = m := by
       have hNW' : gradedNestW (fun l => P.Cg alpha l) (fun l => P.Wg alpha l) (vertexFaceCounts P.k) (P.k + 1) (P.T2 alpha) N =
           NW := hNW
       rw [hNW']; exact hm
     have h' : (N : Real) ^ P.MExp alpha ≤
-        (coverWidth (uExp P.V (uDeg P.k) (P.Delta alpha) (P.B alpha)) (P.Rho1 alpha / 2)
+        (coverWidth (uExp P.V (uDeg68 P.k) (P.Delta alpha) (P.B alpha)) (P.Rho1 alpha / 2)
           ⌈((gradedNestW (fun l => P.Cg alpha l) (fun l => P.Wg alpha l) (vertexFaceCounts P.k) (P.k + 1)
             (P.T2 alpha) N : Nat) : Real) / 8⌉₊ : Real) := h
     rw [hm'] at h'
@@ -340,16 +341,16 @@ theorem modulus_conditions (hV : 1 ≤ P.V) (hK : 2 ≤ P.K) (hp : 0 < P.p) {alp
   have hρ1eq : singlePieceGlobalRho1G (fun l => P.Cg alpha l) alpha (alpha / 2) P.k = P.Rho1 alpha := rfl
   have hthSeq : singlePieceTheta (spectrumPieceRho (fun t => t / 2) (P.Rho1 alpha)) 1 =
       P.ThS alpha := rfl
-  have hcSeq : singlePieceGlobalC (fun l => uCount P.V (uDeg l)) alpha (alpha / 2) P.k (P.ThS alpha) =
+  have hcSeq : singlePieceGlobalC (fun l => uCount P.V (uDeg68 l)) alpha (alpha / 2) P.k (P.ThS alpha) =
       P.CS alpha := rfl
   have hBudeq : globalBudget alpha (alpha / 2) P.k = P.B alpha := rfl
   have hZeq : section16Zeta alpha (alpha / 2) P.k = P.Zeta alpha := rfl
   have hDeq : section16Delta (section16ThetaOne alpha (alpha / 2) P.k) = P.Delta alpha := rfl
   have hFin : ∀ q : Nat,
-      (q : Real) ≤ singlePieceGlobalQmaxG (fun l => uCount P.V (uDeg l)) (fun l => P.Cg alpha l) alpha (alpha / 2) P.k →
+      (q : Real) ≤ singlePieceGlobalQmaxG (fun l => uCount P.V (uDeg68 l)) (fun l => P.Cg alpha l) alpha (alpha / 2) P.k →
       (N : Real) ^ P.F alpha ≤
-        coverWidth (uExp P.V (uDeg P.k) (alpha / 2) (P.B alpha)) (P.CS alpha)
-          (coverWidth (uExp P.V (uDeg P.k) (alpha / 2) (P.B alpha)) (P.ThS alpha)
+        coverWidth (uExp P.V (uDeg68 P.k) (alpha / 2) (P.B alpha)) (P.CS alpha)
+          (coverWidth (uExp P.V (uDeg68 P.k) (alpha / 2) (P.B alpha)) (P.ThS alpha)
             ⌈spectrumCellWidth (P.Zeta alpha) m (familyRecExp P.k P.p q) / 8⌉₊) ∧
       2 * P.Bexp alpha ≤ familyRecExp P.k P.p q := by
     intro q hq
@@ -384,13 +385,13 @@ theorem modulus_conditions (hV : 1 ≤ P.V) (hK : 2 ≤ P.K) (hp : 0 < P.p) {alp
     rw [hLdef]
     have hLge : (m : Real) ^ (P.Bexp alpha / 2) ≤ L := by
       rw [← hLdef]; exact hSCW.trans (Nat.le_ceil _)
-    have hin := coverWidth_powerLB (uExp P.V (uDeg P.k) (alpha / 2) (P.B alpha)) (P.ThS alpha)
+    have hin := coverWidth_powerLB (uExp P.V (uDeg68 P.k) (alpha / 2) (P.B alpha)) (P.ThS alpha)
       hEth.le L (by positivity)
     obtain ⟨X, hXdef⟩ : ∃ X : Nat,
-        coverWidth (uExp P.V (uDeg P.k) (alpha / 2) (P.B alpha)) (P.ThS alpha) L = X := ⟨_, rfl⟩
+        coverWidth (uExp P.V (uDeg68 P.k) (alpha / 2) (P.B alpha)) (P.ThS alpha) L = X := ⟨_, rfl⟩
     rw [hXdef] at hin
     rw [hXdef]
-    have hout := coverWidth_powerLB (uExp P.V (uDeg P.k) (alpha / 2) (P.B alpha)) (P.CS alpha)
+    have hout := coverWidth_powerLB (uExp P.V (uDeg68 P.k) (alpha / 2) (P.B alpha)) (P.CS alpha)
       hEc.le X (by positivity)
     refine le_trans ?_ hout
     have hstep1 : ((m : Real) ^ (P.Bexp alpha / 2)) ^ P.Eth alpha ≤ (L : Real) ^ P.Eth alpha :=

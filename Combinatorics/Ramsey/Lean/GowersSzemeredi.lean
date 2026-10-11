@@ -1114,6 +1114,7 @@ import GowersSzemeredi.Proofs18GradedExponents
 import GowersSzemeredi.Proofs18GradedDegrees
 import GowersSzemeredi.Proofs18GradedThresholds
 import GowersSzemeredi.Proofs18GradedLengths
+import GowersSzemeredi.Proofs18TightClasses
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

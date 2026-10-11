@@ -101,12 +101,12 @@ theorem MReq_le_expG {μV μK : Nat} (H : GHyp P μV μK) (ha : 0 < alpha) (ha2 
   have hX := two_div_ge_two ha ha2
   have hX1 : (1 : Real) ≤ 2 / alpha := by linarith
   obtain ⟨-, hQM, hBx⟩ := P.spectrum_exps_inv_leG H ha ha2
-  have hri := P.rho1_inv_leG ha ha2 H.hk0 H.hk76
+  have hri := P.rho1_inv_leG ha ha2 H.hk0 H.hk68
   set k := P.k with hkdef
   set E := expDegG k P.μ0 μK with hEdef
   set Z := 2 ^ (k + 6) + 1 with hZdef
   have hZ2 : 2 ≤ Z := by rw [hZdef]; have := Nat.one_le_two_pow (n := k + 6); omega
-  have hρE : rhoDegG k P.μ0 + 76 * 2 ^ k + k + 7 ≤ E := by
+  have hρE : rhoDegG k P.μ0 + 68 * 2 ^ k + k + 7 ≤ E := by
     rw [hEdef]; unfold expDegG; exact (le_max_left _ _).trans (le_max_right _ _)
   have hKE : μK + 2 ≤ E := by
     rw [hEdef]; unfold expDegG; exact (le_max_right _ _).trans (le_max_right _ _)
@@ -188,13 +188,13 @@ theorem Tloc_le_expG {μV μK : Nat} (H : GHyp P μV μK) (hk : 1 ≤ P.k) (ha :
   have hNE := P.nestExp_inv_leG H ha ha2
   obtain ⟨-, -, -, -, -, -, -, ⟨hEm0, -⟩, -, -, ⟨hN0, -, -⟩, -, -, hEw, hC⟩ :=
     P.ranges H.hV H.hp ha ha2
-  have hri := P.rho1_inv_leG ha ha2 H.hk0 H.hk76
+  have hri := P.rho1_inv_leG ha ha2 H.hk0 H.hk68
   obtain ⟨hR1, hR⟩ := P.MReq_le_expG H ha ha2
   have hL := lemma156_gen_le hk ha ha2
   set k := P.k with hkdef
   set E := expDegG k P.μ0 μK with hEdef
   set T := threshDegG k P.μ0 μK with hTdef
-  set μD := 76 * 2 ^ k with hμDdef
+  set μD := 68 * 2 ^ k with hμDdef
   have hET : E + 4 ≤ T := by rw [hTdef]; unfold threshDegG; exact le_max_left _ _
   have hZT : 2 ^ (k + 6) + 5 ≤ T := by rw [hTdef]; unfold threshDegG; exact le_max_right _ _
   have hρE : rhoDegG k P.μ0 + μD + k + 7 ≤ E := by
@@ -213,12 +213,12 @@ theorem Tloc_le_expG {μV μK : Nat} (H : GHyp P μV μK) (hk : 1 ≤ P.k) (ha :
     positivity
   -- the nested width threshold
   obtain ⟨ht0, ht1, -⟩ := T2_gen_bounds k ha ha2
-  have hb1 : ∀ l, 1 ≤ P.bg l := fun l => by show 1 ≤ uDeg l + 1 + P.k; omega
+  have hb1 : ∀ l, 1 ≤ P.bg l := fun l => by show 1 ≤ uDeg68 l + 1 + P.k; omega
   obtain ⟨hr0, -⟩ : 0 < P.Rho1 alpha ∧ P.Rho1 alpha ≤ 1 := gradedNestC_pos_le hC _ _ _ ht0 ht1
   have hdec : ∀ j r t, 0 < t → t ≤ 1 → nestC (fun _ => P.Cg alpha j) r t ≤ t := by
     intro j r t h0 h1
     exact nestC_genC_anti hX1 (hb1 j) (P.baseCg alpha j) P.k h0 h1 0 r (Nat.zero_le _)
-  have hDk : ∀ j, j ≤ k → uDeg j ≤ 2 ^ μD := fun j hj =>
+  have hDk : ∀ j, j ≤ k → uDeg68 j ≤ 2 ^ μD := fun j hj =>
     Nat.pow_le_pow_right (by norm_num)
       (Nat.mul_le_mul_left _ (Nat.pow_le_pow_right (by norm_num) hj))
   have hlevW : ∀ j i, j < k + 1 → i < vertexFaceCounts k j →
@@ -233,7 +233,7 @@ theorem Tloc_le_expG {μV μK : Nat} (H : GHyp P μV μK) (hk : 1 ≤ P.k) (ha :
         (P.T2 alpha) :=
       gradedNestC_anti hC hdec _ ht0 ht1 (j + 1) (k + 1) (by omega)
     have hui := (inv_anti₀ hr0 (hu2.trans hu1)).trans hri
-    have hl := GenParams.lw_level_inv_le (D := uDeg j) ha ha2 H.hV H.hVμ H.hμ0 (hDk j (by omega))
+    have hl := GenParams.lw_level_inv_le (D := uDeg68 j) ha ha2 H.hV H.hVμ H.hμ0 (hDk j (by omega))
       u0 u1 hui hρ2 (by omega)
     obtain ⟨hl0, -⟩ := lwE_pos_le (hEw j) k u0 u1
     refine genWThr_le_exp hX hl0 hl ?_

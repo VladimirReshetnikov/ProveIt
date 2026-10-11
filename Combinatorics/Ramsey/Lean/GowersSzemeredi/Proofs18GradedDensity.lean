@@ -6,13 +6,13 @@ import GowersSzemeredi.Proofs16VertexWeightCounts
 
 * `GenParamsG.inverse_step`: `single_piece_inverse_step_global_graded` for
   the graded parameters. The covers come from the face-dimension classes, at
-  degree `uDeg l` in face dimension `l`.
+  degree `uDeg68 l` in face dimension `l`.
 * `gradedNestC_genC`: the graded nest of `genC` blocks is `X^(−A)·t^B`,
   with `B = Π_j b_j^(n_j)` and `A ≤ (Σ_j a_j)·B`.
 * `rho1_inv_leG`: `ρ₁⁻¹ ≤ X^(2^rhoDegG)`, where
-  `rhoDegG k μ₀ = max(76·2^k + μ₀ + 2, fixDeg k) + k + 1 + 152·3^k + 2^k`.
-  The uniform `rhoDeg` has `(76·2^k + 1)(2^k − 1)` in place of
-  `152·3^k + 2^k`.
+  `rhoDegG k μ₀ = max(68·2^k + μ₀ + 2, fixDeg k) + k + 1 + 136·3^k + 2^k − 136·2^k − 1`.
+  The uniform `rhoDeg` (at the looser class degree `uDeg = 2^(76·2^k)`)
+  has `(76·2^k + 1)(2^k − 1)` in place of `136·3^k + 2^k − 136·2^k − 1`.
 * `yIn_boundsG`: the input parameter of the lower-degree bound. -/
 set_option autoImplicit false
 noncomputable section
@@ -92,14 +92,14 @@ namespace GenParamsG
 variable (P : GenParamsG) (alpha : Real)
 
 /-- The localization parameter `η` of the graded step. -/
-def eta : Real := singlePieceEtaG (fun l => uCount P.V (uDeg l)) (fun l => P.Cg alpha l) alpha P.k
+def eta : Real := singlePieceEtaG (fun l => uCount P.V (uDeg68 l)) (fun l => P.Cg alpha l) alpha P.k
 
 /-- The parameter of the lower-degree bound. -/
 def yIn : Real := (P.eta alpha / 2) / (2 * (P.k + 1 + 2 : Nat) : Real) ^ (P.k + 1 + 2)
 
 /-- **The graded single-piece inverse step in dimension `k`.** -/
 theorem inverse_step (hV : 1 ≤ P.V) (hK : 2 ≤ P.K) (hp : 0 < P.p) (hk : 1 ≤ P.k)
-    (hcov : ∀ l, 1 ≤ l → l ≤ P.k → PolyCoverAt l (uCount P.V (uDeg l)) (uExp P.V (uDeg l)))
+    (hcov : ∀ l, 1 ≤ l → l ≤ P.k → PolyCoverAt l (uCount P.V (uDeg68 l)) (uExp P.V (uDeg68 l)))
     (hrec : Section16RecurrenceProfileWith P.k (familyRecThr P.k P.K P.p) (familyRecExp P.k P.p))
     {alpha : Real} (ha : 0 < alpha) (haHalf : alpha ≤ 1 / 2)
     (hlift : ∀ l, 1 ≤ l → l ≤ P.k → ∀ t,
@@ -120,37 +120,37 @@ theorem inverse_step (hV : 1 ≤ P.V) (hK : 2 ≤ P.K) (hp : 0 < P.p) (hk : 1 �
   have hretile : ∀ q, Section16RetiledLinearityBound P.k q (familyRecExp P.k P.p q)
       (familyRecThr P.k P.K P.p q) :=
     fun q => (hrec.retiled_family (fun q => familyRecThr_pos (by omega) q) q).single
-  refine single_piece_inverse_step_global_graded (Qb := fun l => uCount P.V (uDeg l))
-    (Eb := fun l => uExp P.V (uDeg l)) (Cg := fun l => P.Cg alpha l)
+  refine single_piece_inverse_step_global_graded (Qb := fun l => uCount P.V (uDeg68 l))
+    (Eb := fun l => uExp P.V (uDeg68 l)) (Cg := fun l => P.Cg alpha l)
     (Wg := fun l => P.Wg alpha l) hk ha haHalf hcov
-    (fun l g t s _ _ => one_le_uCount P.V (uDeg l) g t s)
-    (fun l g t s _ _ => (uExp_pos_le P.V (uDeg l) g t s).1)
+    (fun l g t s _ _ => one_le_uCount P.V (uDeg68 l) g t s)
+    (fun l g t s _ _ => (uExp_pos_le P.V (uDeg68 l) g t s).1)
     hC (fun l => genW_mono (hEw l) P.k) ?_ ?_ (familyRecExp P.k P.p) (familyRecThr P.k P.K P.p)
     hretile he0 he hbound hb hs hs16 (fun N _ _ hN => P.modulus_conditions hV hK hp ha haHalf N hN)
   · intro l hl1 hlk t
     exact hlift l hl1 hlk t
   · intro l _ _ t L
-    exact genW_le (hEw l) (uExp_mono_rho hV (uDeg l) hg hg1 hB0 hB1) (P.k + 1 - l) (by omega) t L
+    exact genW_le (hEw l) (uExp_mono_rho hV (uDeg68 l) hg hg1 hB0 hB1) (P.k + 1 - l) (by omega) t L
 
 variable {alpha}
 
 /-- **The graded lift inequality.** In face dimension `l` the lift density is
-the uniform one at `D = uDeg l`. -/
+the uniform one at `D = uDeg68 l`. -/
 theorem lift_le {μV : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) (hV : 1 ≤ P.V)
     (hVμ : P.V ≤ 2 ^ (2 ^ μV)) (hμ0 : max μV (fixDeg P.k) + 2 ≤ P.μ0) :
     ∀ l, 1 ≤ l → l ≤ P.k → ∀ t,
       P.Cg alpha l t ≤ (liftLastC^[P.k + 1 - l] (P.baseCg alpha l)) t := by
   intro l hl1 hlk t
-  exact GenParams.std_lift (V := P.V) (D := uDeg l) (k := P.k) (K := P.K) (p := P.p) ha ha2 hV hVμ
+  exact GenParams.std_lift (V := P.V) (D := uDeg68 l) (k := P.k) (K := P.K) (p := P.p) ha ha2 hV hVμ
     hμ0 (P.k + 1 - l) (by omega) (by show P.k + 1 - l ≤ P.k; omega) t
 
 /-- The log-degree of the graded `ρ₁`. -/
 def rhoDegG (k μ0 : Nat) : Nat :=
-  max (76 * 2 ^ k + μ0 + 2) (fixDeg k) + k + 1 + (152 * 3 ^ k + 2 ^ k)
+  max (68 * 2 ^ k + μ0 + 2) (fixDeg k) + k + 1 + (136 * 3 ^ k + 2 ^ k - (136 * 2 ^ k + 1))
 
 /-- **The graded nested density**: `ρ₁⁻¹ ≤ X^(2^rhoDegG)`. -/
 theorem rho1_inv_leG (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) (hk0 : P.k ≤ 2 ^ P.μ0)
-    (hk76 : P.k + 1 ≤ 2 ^ 76) :
+    (hk68 : P.k + 1 ≤ 2 ^ 68) :
     (P.Rho1 alpha)⁻¹ ≤ (2 / alpha) ^ (2 ^ rhoDegG P.k P.μ0) := by
   have hX := two_div_ge_two ha ha2
   have hX1 : (1 : Real) ≤ 2 / alpha := by linarith
@@ -158,16 +158,16 @@ theorem rho1_inv_leG (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) (hk0 : P.k ≤ 2 ^
   set k := P.k with hkdef
   set n := vertexFaceCounts k with hndef
   -- the per-face exponents
-  have hD : ∀ j, uDeg j ≤ 2 ^ (76 * 2 ^ j) := fun j => le_rfl
-  have hkD : ∀ j, k + 1 ≤ uDeg j := by
+  have hD : ∀ j, uDeg68 j ≤ 2 ^ (68 * 2 ^ j) := fun j => le_rfl
+  have hkD : ∀ j, k + 1 ≤ uDeg68 j := by
     intro j
-    refine hk76.trans (Nat.pow_le_pow_right (by norm_num) ?_)
+    refine hk68.trans (Nat.pow_le_pow_right (by norm_num) ?_)
     have : 1 ≤ 2 ^ j := Nat.one_le_two_pow
     omega
-  have hab : ∀ j, P.ag j ≤ 2 ^ (76 * 2 ^ j + P.μ0 + 2) ∧ P.bg j ≤ 2 ^ (76 * 2 ^ j + 1) :=
+  have hab : ∀ j, P.ag j ≤ 2 ^ (68 * 2 ^ j + P.μ0 + 2) ∧ P.bg j ≤ 2 ^ (68 * 2 ^ j + 1) :=
     fun j => GenParams.std_exp_le (hD j) (hkD j) hk0
   have hb2 : ∀ j, 2 ≤ P.bg j := by
-    intro j; show 2 ≤ uDeg j + 1 + k; have := hkD j; omega
+    intro j; show 2 ≤ uDeg68 j + 1 + k; have := hkD j; omega
   -- the closed form
   have hnest := gradedNestC_genC hX1 P.ag P.bg (P.baseCg alpha) k n (k + 1) _ ht0 ht1
   have hR : P.Rho1 alpha = ((2 / alpha) ^ gradedA P.ag P.bg n (k + 1))⁻¹ *
@@ -177,7 +177,7 @@ theorem rho1_inv_leG (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) (hk0 : P.k ≤ 2 ^
   set B := gradedB P.bg n (k + 1)
   have hT := pow_le_pow_left₀ (inv_pos.mpr ht0).le hti B
   rw [← pow_mul] at hT
-  set M := max (76 * 2 ^ k + P.μ0 + 2) (fixDeg k)
+  set M := max (68 * 2 ^ k + P.μ0 + 2) (fixDeg k)
   -- `A + 2^fix·B ≤ 2^(M+k+1)·B`
   have hA := gradedA_le P.ag P.bg n hb2 (k + 1)
   have hsum : ∑ j ∈ Finset.range (k + 1), P.ag j ≤ (k + 1) * 2 ^ M := by
@@ -185,7 +185,7 @@ theorem rho1_inv_leG (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) (hk0 : P.k ≤ 2 ^
           refine Finset.sum_le_sum fun j hj => (hab j).1.trans (Nat.pow_le_pow_right (by norm_num) ?_)
           have hjk : j ≤ k := Nat.lt_succ_iff.mp (Finset.mem_range.mp hj)
           have h2 : 2 ^ j ≤ 2 ^ k := Nat.pow_le_pow_right (by norm_num) hjk
-          have := le_max_left (76 * 2 ^ k + P.μ0 + 2) (fixDeg k)
+          have := le_max_left (68 * 2 ^ k + P.μ0 + 2) (fixDeg k)
           omega
       _ = (k + 1) * 2 ^ M := by rw [Finset.sum_const, Finset.card_range, smul_eq_mul]
   have hfix : 2 ^ fixDeg k ≤ 2 ^ M := Nat.pow_le_pow_right (by norm_num) (le_max_right _ _)
@@ -197,9 +197,9 @@ theorem rho1_inv_leG (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) (hk0 : P.k ≤ 2 ^
       rw [show M + k + 1 = (k + 1) + M by ring, pow_add]
       exact Nat.mul_le_mul_right _ hk2
     nlinarith only [h1, h2, h3]
-  -- `B ≤ 2^(152·3^k + 2^k)`
-  have hB := gradedB_le P.bg n (fun j => 76 * 2 ^ j + 1) (fun j => (hab j).2) (k + 1)
-  have hBw : B ≤ 2 ^ (152 * 3 ^ k + 2 ^ k) :=
+  -- `B ≤ 2^(136·3^k + 2^k − 136·2^k − 1)`
+  have hB := gradedB_le P.bg n (fun j => 68 * 2 ^ j + 1) (fun j => (hab j).2) (k + 1)
+  have hBw : B ≤ 2 ^ (136 * 3 ^ k + 2 ^ k - (136 * 2 ^ k + 1)) :=
     hB.trans (Nat.pow_le_pow_right (by norm_num) (vertexFaceCounts_weighted_le k))
   calc (2 / alpha) ^ A * (globalTheta2 alpha (alpha / 2) k)⁻¹ ^ B
       ≤ (2 / alpha) ^ A * (2 / alpha) ^ (2 ^ fixDeg k * B) :=
@@ -208,38 +208,38 @@ theorem rho1_inv_leG (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) (hk0 : P.k ≤ 2 ^
     _ ≤ (2 / alpha) ^ (2 ^ rhoDegG k P.μ0) := by
         apply pow_le_pow_right₀ hX1
         refine hexp1.trans ?_
-        calc 2 ^ (M + k + 1) * B ≤ 2 ^ (M + k + 1) * 2 ^ (152 * 3 ^ k + 2 ^ k) :=
+        calc 2 ^ (M + k + 1) * B ≤ 2 ^ (M + k + 1) * 2 ^ (136 * 3 ^ k + 2 ^ k - (136 * 2 ^ k + 1)) :=
               Nat.mul_le_mul_left _ hBw
           _ = 2 ^ rhoDegG k P.μ0 := by unfold rhoDegG; rw [← pow_add]
 
 /-- The log-degree of the graded input parameter `yIn`. -/
-def densDegG (k μ0 : Nat) : Nat := rhoDegG k μ0 + 2 * (76 * 2 ^ k) + 13
+def densDegG (k μ0 : Nat) : Nat := rhoDegG k μ0 + 2 * (68 * 2 ^ k) + 13
 
 /-- **The input parameter of the lower-degree bound**, graded. -/
 theorem yIn_boundsG {μV : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2)
     (hV : 1 ≤ P.V) (hVμ : P.V ≤ 2 ^ (2 ^ μV)) (hμ0 : max μV (fixDeg P.k) + 2 ≤ P.μ0)
-    (hk0 : P.k ≤ 2 ^ P.μ0) (hk76 : P.k + 1 ≤ 2 ^ 76) :
+    (hk0 : P.k ≤ 2 ^ P.μ0) (hk68 : P.k + 1 ≤ 2 ^ 68) :
     0 < P.eta alpha ∧ P.eta alpha ≤ alpha / 8 ∧
-      (P.eta alpha)⁻¹ ≤ (2 / alpha) ^ (2 ^ (rhoDegG P.k P.μ0 + 2 * (76 * 2 ^ P.k) + 12)) ∧
+      (P.eta alpha)⁻¹ ≤ (2 / alpha) ^ (2 ^ (rhoDegG P.k P.μ0 + 2 * (68 * 2 ^ P.k) + 12)) ∧
       0 < P.yIn alpha ∧ P.yIn alpha ≤ alpha ∧
       (P.yIn alpha)⁻¹ ≤ (2 / alpha) ^ (2 ^ densDegG P.k P.μ0) := by
   have hX := two_div_ge_two ha ha2
   have hX1 : (1 : Real) ≤ 2 / alpha := by linarith
-  have hri := P.rho1_inv_leG ha ha2 hk0 hk76
+  have hri := P.rho1_inv_leG ha ha2 hk0 hk68
   set k := P.k with hkdef
-  set μD := 76 * 2 ^ k with hμDdef
+  set μD := 68 * 2 ^ k with hμDdef
   have hρ1 : μD + P.μ0 + 3 ≤ rhoDegG k P.μ0 := by
-    unfold rhoDegG; have := le_max_left (76 * 2 ^ k + P.μ0 + 2) (fixDeg k); omega
+    unfold rhoDegG; have := le_max_left (68 * 2 ^ k + P.μ0 + 2) (fixDeg k); omega
   have hρ2 : fixDeg k + 1 ≤ rhoDegG k P.μ0 := by
-    unfold rhoDegG; have := le_max_right (76 * 2 ^ k + P.μ0 + 2) (fixDeg k); omega
-  have hbase := GenParams.baseC_recipPowerLB (D := uDeg k) (K := P.K) (p := P.p) ha ha2 hV hVμ hμ0
-  have hD : uDeg k ≤ 2 ^ μD := le_rfl
-  have ha0 : uDeg k * 2 ^ P.μ0 + 1 ≤ 2 ^ (μD + P.μ0 + 1) := by
-    have h1 : uDeg k * 2 ^ P.μ0 ≤ 2 ^ μD * 2 ^ P.μ0 := Nat.mul_le_mul_right _ hD
+    unfold rhoDegG; have := le_max_right (68 * 2 ^ k + P.μ0 + 2) (fixDeg k); omega
+  have hbase := GenParams.baseC_recipPowerLB (D := uDeg68 k) (K := P.K) (p := P.p) ha ha2 hV hVμ hμ0
+  have hD : uDeg68 k ≤ 2 ^ μD := le_rfl
+  have ha0 : uDeg68 k * 2 ^ P.μ0 + 1 ≤ 2 ^ (μD + P.μ0 + 1) := by
+    have h1 : uDeg68 k * 2 ^ P.μ0 ≤ 2 ^ μD * 2 ^ P.μ0 := Nat.mul_le_mul_right _ hD
     have h2 : 2 ^ (μD + P.μ0 + 1) = 2 * (2 ^ μD * 2 ^ P.μ0) := by rw [pow_add, pow_add]; ring
     have h3 : 1 ≤ 2 ^ μD * 2 ^ P.μ0 := Nat.one_le_iff_ne_zero.mpr (by positivity)
     omega
-  have hb0 : uDeg k + 1 ≤ 2 ^ (μD + 1) := by
+  have hb0 : uDeg68 k + 1 ≤ 2 ^ (μD + 1) := by
     have : 2 ^ (μD + 1) = 2 * 2 ^ μD := by rw [pow_succ]; ring
     have := Nat.one_le_two_pow (n := μD)
     omega
