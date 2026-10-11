@@ -1080,6 +1080,7 @@ import GowersSzemeredi.Proofs16ClassStepDegrees
 import GowersSzemeredi.Proofs16AllDimensions
 import GowersSzemeredi.Proofs16WeylBudgetGrowth
 import GowersSzemeredi.Proofs16AllDimensionsExplicit
+import GowersSzemeredi.Proofs16SplitUniformClass
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
