@@ -1059,6 +1059,7 @@ import GowersSzemeredi.Proofs16WithSum
 import GowersSzemeredi.Proofs16UniformCoverTwoBounds
 import GowersSzemeredi.Proofs16ThreeSlices
 import GowersSzemeredi.Proofs16ThreeCylinders
+import GowersSzemeredi.Proofs16PolyFamilyThree
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
