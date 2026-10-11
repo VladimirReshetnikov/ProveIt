@@ -1,0 +1,162 @@
+\section{Scope, conventions, and the precise advances}
+\label{sec:scope}
+
+The aim is to turn several questions already present in the ProveIt
+research stream into exact theorems. The most direct antecedents are
+the mixed spectral report, the independent-order Hurwitz report, and
+the raw harmonic-power section of the exact resonant report
+\cite{RepoMixed,RepoIndependent,RepoExactResonant}. These sources
+already contain substantial analytic continuation, Gamma normalization,
+and finite-part machinery. We use it with explicit attribution, supply
+self-contained proofs of the identities needed here, and resolve
+specific questions about singularities, spans, and collision constants.
+
+The literature background is classical: Gamma and polygamma
+recurrences, Hurwitz-zeta continuation, Dougall's summation, and
+polylogarithmic Mellin transforms
+\cite{DLMFPolygamma,DLMFHurwitz,DLMFDougall,DLMFPolylog}.
+The Arakawa--Kaneko functions are established objects
+\cite{ArakawaKaneko,KanekoTsumura}. Our claims of an advance are
+relative to the inspected ProveIt material. We do not claim that every
+special-value consequence is absent from the wider literature.
+
+\subsection{What is established}
+
+\begin{longtable}{@{}p{0.20\textwidth}p{0.36\textwidth}p{0.38\textwidth}@{}}
+\toprule
+Problem & Antecedent & Result of this continuation\\
+\midrule
+\endhead
+Shift singularities & A depth-dependent continuation half-plane;
+the broader relative ordered Hurwitz character and its transport.
+& Exact local amplitudes, boundary constants, sharp Taylor radii,
+normalized primitives, and the finite-to-infinite functional rank
+transition; Section~\ref{hsh:section}.\\[6pt]
+Polygamma moments & A two-parameter Dougall identity and the request
+to separate moments at weights six and eight.
+& The full mixed-Bell rank in every weight, exact elimination
+matrices, the three-dimensional summation image, and its full kernel;
+Section~\ref{sec:bell}.\\[6pt]
+Centered harmonic powers & Regularity of $F_p(-2r,1/2)$ and a
+multiple-zeta expression obtained by finite word calculations.
+& A triangular generator for every $r$ and all $p$, and one finite
+Euler-sum space independent of $r$ at fixed $p$;
+Section~\ref{hpnew:section}.\\[6pt]
+Geometric collisions & Fixed-rate triple digamma formulas and
+questions about nested rates and higher argument derivatives.
+& An exact all-factor polygamma correction with jointly holomorphic
+remainder, oriented harmonic hierarchy laws, and explicit derivative
+examples; Section~\ref{hc:section}.\\
+\bottomrule
+\end{longtable}
+
+The harmonic generator answers the all-power minus-two target and
+gives every further even moment by finitely many triangular steps.
+It is not a single closed two-variable expression in both the power
+and the moment order. A companion result proves regularity for
+polynomials in odd generalized harmonic orders and evaluates each
+single odd-order family in a fixed finite space of even zeta values.
+The collision theorem treats Stieltjes index
+zero with arbitrary argument derivatives. Positive Stieltjes indices,
+which introduce logarithmic local singularities, remain a separate
+extension. The Bell rank concerns the stated formal polynomial rows;
+it does not decide arithmetic independence of special values.
+These distinctions delimit what has actually been proved.
+
+\subsection{Functions and derivative conventions}
+
+We use the ordinary Gamma function, $\psi=\Gamma'/\Gamma$, and
+$\psi^{(q)}=\partial_a^q\psi$. The generalized harmonic numbers are
+\[
+ H_n^{(q)}(a)=\sum_{j=0}^{n-1}(a+j)^{-q},\qquad
+ H_n^{(q)}=H_n^{(q)}(1),\qquad H_n=H_n^{(1)}.
+\]
+For an integer $q\ge1$ they satisfy
+\begin{equation}\label{scope:harmonic-polygamma}
+ H_n^{(q)}(a)=\frac{(-1)^{q-1}}{(q-1)!}
+       \bigl\{\psi^{(q-1)}(a+n)-\psi^{(q-1)}(a)\bigr\}.
+\end{equation}
+The same formulas extend in $a$ away from their poles, with branches
+specified when nonintegral powers occur. Relation
+\eqref{scope:harmonic-polygamma} follows by telescoping the polygamma
+recurrence \cite{DLMFPolygamma}.
+
+For $\Re s>1$ and $a>0$,
+$\zeta(s,a)=\sum_{n\ge0}(n+a)^{-s}$, and
+$\zeta(s)=\zeta(s,1)$. Generalized Stieltjes constants have the
+fixed convention
+\begin{equation}\label{scope:Stieltjes}
+ \zeta(1+v,a)=\frac1v+
+       \sum_{j\ge0}\frac{(-1)^j}{j!}\gamma_j(a)v^j,
+ \qquad \gamma_0(a)=-\psi(a),\qquad\gamma_j=\gamma_j(1).
+\end{equation}
+Thus $\gamma_j^{(q)}(a)$ always denotes an argument derivative,
+whereas $\partial_s^k\zeta(s,a)$ is a spectral derivative.
+The index $j$ in $\gamma_j$ is discrete and is never differentiated.
+Similarly, a formula known at integer spectral labels $s=-m$ cannot
+be differentiated with respect to $m$ to infer a spectral derivative.
+
+Our multiple-polylogarithm convention is
+\[
+ \Li_{k_1,\ldots,k_d}(z)=
+ \sum_{n_1>\cdots>n_d\ge1}
+       \frac{z^{n_1}}{n_1^{k_1}\cdots n_d^{k_d}}.
+\]
+For admissible indices, its value at $z=1$ is
+$\zeta(k_1,\ldots,k_d)$; weight means $k_1+\cdots+k_d$.
+The one-index case is the ordinary polylogarithm
+\cite{DLMFPolylog}. The Lerch transcendent is initially
+\[
+ \Phi(z,s,a)=\sum_{n\ge0}\frac{z^n}{(n+a)^s},\qquad |z|<1,
+\]
+with analytic continuation where required
+\cite{DLMFLerch}. In particular $z\Phi(z,s,1)=\Li_s(z)$.
+
+\subsection{Three different meanings of a displayed infinite expression}
+
+Most sums in Section~\ref{sec:bell}, including the tail-square
+identity, converge absolutely in the ordinary sense. They need no
+regularization. In contrast,
+\[
+ F_p(-2r,1/2)
+\]
+means the value of the meromorphic continuation of
+$\sum_{n\ge0}H_n^p(n+1/2)^{-s}$ at the regular point $s=-2r$.
+For $p\ge1$ this is not the sum of an ordinarily convergent numerical
+series after direct substitution of $s=-2r$.
+
+For a function with a local Laurent--log expansion, $\CT_z$ extracts
+the coefficient of $z^0(\log z)^0$. A Hadamard finite-part integral
+is the constant term in its cutoff expansion with the cutoff coordinate
+held fixed. At distinct interior seams we use independent ambient
+coordinates $x-x_i$ and take their joint constant term before a
+collision parameter tends to zero. The subsequent $\CT_\epsilon$
+in Section~\ref{hc:section} is a second operation, on the resulting
+function of the geometric shifts. Changing either coordinate can
+change this constant. The exact correction formulas record that
+dependence.
+
+Branches are also part of the statements. A principal shift
+continuation, a continuation around a negative integer, and a real
+collision path need not have the same analytic germ. All local powers
+are written using an explicitly chosen logarithm. Fixed-endpoint
+primitives are normalized to vanish at their stated base point, so
+an integration constant cannot absorb a resonance discrepancy.
+
+\subsection{Proof strategy and verification}
+
+Each family is handled by first retaining a full analytic parameter
+family, then making the desired specialization. Finite transport
+isolates a shift singularity; a Gamma quotient generates the Bell
+moments; an exponent parameter linearizes raw harmonic powers; and
+partial fractions isolate the singular collision pieces. Normal
+convergence or a holomorphic remainder is proved before extracting
+coefficients. This order of operations is essential at resonances.
+
+Exact symbolic checks replay coefficient identities and rational
+linear algebra. Independent numerical evaluations start from different
+representations and diagnose signs, constants, branches, and omitted
+terms. They supplement the proofs. The numerical tails and quadratures
+are not interval certificates, and their small residuals are not used
+to justify an infinite identity. Section~\ref{sec:audit} records the
+actual checks and the boundaries of the source audit.

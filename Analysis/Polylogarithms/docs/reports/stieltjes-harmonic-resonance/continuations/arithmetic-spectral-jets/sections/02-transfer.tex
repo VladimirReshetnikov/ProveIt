@@ -1,0 +1,142 @@
+\section{A transfer theorem for general discrete spectra}
+\label{asj:sec:transfer}
+
+\subsection{Hypotheses and a convergent expansion}
+Let $(\lambda_\nu)$ be a positive discrete spectrum, counted with multiplicity,
+with positive minimum $\lambda_*$ and only finitely many indices below each
+fixed bound. Let $c_\nu\in\C$. Assume
+\begin{equation}\label{asj:eq:base}
+ \D(s)=\sum_\nu c_\nu\lambda_\nu^{-s}
+\end{equation}
+converges absolutely for $\Rea s>\sigma_a$, for some finite $\sigma_a$, and
+extends meromorphically to $\C$. The weights need not be positive. This is a
+hypothesis on $\D$, not a claimed property of every arithmetic sequence.
+
+Let
+\[
+ P(x)=\sum_{k=0}^{d}p_kx^k,
+ \qquad a_j> -\lambda_*,\quad 1\le j\le m,
+ \qquad U=\sum_{j=1}^m u_j.
+\]
+Initially in $\Rea U>\sigma_a+d$, define
+\begin{equation}\label{asj:eq:Zdef}
+ \calZ_P(\boldsymbol u;\boldsymbol a)
+ =\sum_\nu c_\nu P(\lambda_\nu)
+                   \prod_{j=1}^m(\lambda_\nu+a_j)^{-u_j}.
+\end{equation}
+The finite shifts do not change the absolute convergence condition at infinity.
+Introduce the germs
+\begin{align}
+ L_j(z)&=\log(1+a_jz),&
+ L_{\boldsymbol u}(z)&=\sum_j u_j L_j(z),\label{asj:eq:Ldef}\\
+ C_\ell(\boldsymbol u)&=[z^\ell]e^{-L_{\boldsymbol u}(z)}.
+ \label{asj:eq:Cdef}
+\end{align}
+Their coefficients are explicit polynomials:
+\begin{equation}\label{asj:eq:Cpoch}
+ C_\ell(\boldsymbol u)=
+ \sum_{q_1+\cdots+q_m=\ell}
+    \prod_{j=1}^m\frac{(-a_j)^{q_j}(u_j)_{q_j}}{q_j!}.
+\end{equation}
+In particular, $C_0=1$, $C_\ell(0)=0$ for $\ell>0$, and
+$\deg C_\ell\le\ell$.
+
+Choose a finite head $E$ consisting of all indices with $\lambda_\nu\le R$,
+where $R>\max_j|a_j|$, and put
+\[
+ \D_E(s)=\D(s)-\sum_{\nu\in E}c_\nu\lambda_\nu^{-s}.
+\]
+The finite subtraction is entire and leaves all principal parts unchanged.
+If the spectrum is finite, the desired conclusions hold with no poles and
+no infinite tail; hence suppose the tail is nonempty. Its minimum is denoted
+by $M$, so $M>\max|a_j|$.
+
+\begin{lemma}[Normally convergent tail expansion]\label{asj:thm:tail}
+The meromorphic continuation of \eqref{asj:eq:Zdef} is
+\begin{equation}\label{asj:eq:tail}
+ \calZ_P(\boldsymbol u)=
+ \calZ_{P,E}(\boldsymbol u)
+ +\sum_{k=0}^d p_k\sum_{\ell\ge0}
+          C_\ell(\boldsymbol u)\D_E(U+\ell-k),
+\end{equation}
+where $\calZ_{P,E}$ is the finite original head. On compact subsets away
+from the displayed polar divisors, the tail converges normally, as do
+all fixed mixed derivatives in $\boldsymbol u$.
+\end{lemma}
+\begin{proof}
+Select $\rho$ with $M^{-1}<\rho<(\max|a_j|)^{-1}$, interpreting the upper
+endpoint as infinity when every shift is zero. Cauchy's coefficient estimate
+on $|z|=\rho$ gives
+\[
+ |C_\ell(\boldsymbol u)|\le C_K\rho^{-\ell}
+\]
+uniformly on every compact exponent set $K$. In a sufficiently far right
+half-plane, the absolutely convergent series for $\D_E$ gives, for bounded $v$,
+\[
+ |\D_E(\ell+v)|\le C M^{-\ell}.
+\]
+Indeed fix $A>\sigma_a$ and majorize each term by
+$|c_\nu|\lambda_\nu^{-A}M^{-\ell+A-\Rea v}$ for large $\ell$.
+The resulting geometric factor is $(M\rho)^{-\ell}<1$.
+Fixed derivatives of $\D_E$ add powers of $\log\lambda_\nu$; choosing a
+slightly larger absolute-convergence exponent absorbs them. Derivatives of
+$C_\ell$ are controlled by Cauchy estimates on a larger compact exponent set.
+
+Expanding every shifted factor by its binomial series proves
+\eqref{asj:eq:tail} in the initial convergence region, where these estimates
+justify interchanging the sums. The normally convergent right side then
+supplies the meromorphic continuation. Only finitely many small $\ell$
+can contribute a pole on a fixed compact exponent set, because the other
+arguments lie in an absolute-convergence half-plane.
+\end{proof}
+
+\subsection{The complete local polar numerator}
+Let $\mathcal P$ be the set of integer poles $p$ of $\D$ with $p\ge-d$.
+It is finite: there are no poles to the right of an absolute-convergence
+half-plane. Write the principal part at each such pole as
+\begin{equation}\label{asj:eq:principal}
+ \D(p+s)=\sum_{h=1}^{H_p}\frac{\kappa_{p,h}}{s^h}
+                      +\text{a holomorphic function of }s.
+\end{equation}
+The highest coefficient $\kappa_{p,H_p}$ is nonzero. Define
+\begin{equation}\label{asj:eq:Rdef}
+ \calR_p(\boldsymbol u)=
+       \sum_{\substack{0\le k\le d\\k+p\ge0}}p_k C_{k+p}(\boldsymbol u).
+\end{equation}
+A pole with $\calR_p=0$ contributes nothing. Noninteger poles do not pass
+through the origin of exponent space.
+
+\begin{theorem}[Finite-principal-part transfer]\label{asj:thm:transfer}
+In a neighborhood of $\boldsymbol u=0$, the exact germ is
+\begin{equation}\label{asj:eq:germ}
+ \boxed{\displaystyle
+ \calZ_P(\boldsymbol u)
+  =\calH_P(\boldsymbol u)
+       +\sum_{p\in\mathcal P}\sum_{h=1}^{H_p}
+            \frac{\kappa_{p,h}\calR_p(\boldsymbol u)}{U^h},}
+\end{equation}
+where $\calH_P$ is holomorphic. The numerator $\calR_p$ is a polynomial
+of degree at most $d+p$. If $p>0$ then $\calR_p(0)=0$.
+Neither the principal coefficients nor the numerators depend on the
+finite head used in Lemma~\ref{asj:thm:tail}.
+\end{theorem}
+\begin{proof}
+A term $\D_E(U+\ell-k)$ has a pole through $U=0$ precisely when
+$p=\ell-k$ is an integer pole of $\D$. For a fixed such $p$, its
+coefficient is $\sum_k p_k C_{k+p}=\calR_p$. Subtract the finitely many
+principal parts \eqref{asj:eq:principal} from these terms. The remaining
+small-$\ell$ terms are holomorphic near the origin, and the large-$\ell$
+tail is holomorphic there by Lemma~\ref{asj:thm:tail}. Choose the neighborhood
+small enough to avoid every other pole of the finitely many remaining
+small-$\ell$ factors. This proves \eqref{asj:eq:germ}.
+The degree and constant-term assertions follow from \eqref{asj:eq:Cpoch}.
+Finally, altering a finite head changes $\D_E$ by an entire function,
+which cannot change any principal coefficient. Formula \eqref{asj:eq:Rdef}
+uses only $P$ and the shifts.
+\end{proof}
+
+A zero numerator at $\boldsymbol u=0$ does not imply a holomorphic ray
+restriction when $H_p>1$. It removes at most one order of the pole without
+additional cancellation. Conversely, if $\D$ has no relevant integer poles,
+then $\calZ_P$ is jointly holomorphic at the origin even if $\D$ has poles
+elsewhere. These are local statements at the specified spectral point.

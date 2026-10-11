@@ -1,0 +1,24 @@
+INDEPENDENT MATHEMATICAL REVIEW OF THE COTANGENT RESOLVENT SECTION
+
+Reviewed file:
+output/ProveIt_Harmonic_Parity_and_Resolvent_Identities_2026-10-11/sections/03_resolvent.tex
+Review conducted independently by the harmonic-parity research agent.
+
+Conclusion: no incorrect mathematical sign, factor, convergence claim, or primitive normalization was found in the reviewed section. The review is focused on this section and is not a formal verification certificate.
+
+Specific checks:
+1. The all-index Stieltjes resolvent formula was rederived from the Fourier expansion of the elementary rational kernel. Its full contact polynomial is E_p(s), not merely its value or residue at zero. For p=0 the correction arises from the constant Hurwitz pole and kernel mean; for p>=1 it arises from the moving endpoint exponent.
+2. The continuous-order ordinary integral has locally integrable behavior x^(-Re(v)) times at most one logarithm, so the stated half-plane Re(v)<1 is correct. The right side has an entire continuation in v, which is correctly distinguished from ordinary integration outside this half-plane.
+3. The positive-integer anomaly was independently checked locally. With U(v)=1/Gamma(-v), v=p+delta, U(v)=u1 delta+u2 delta^2+..., u1=(-1)^(p+1)p!, u2=-u1(gamma-H_p), the resonant continued integral contributes r_p(-u2-gamma*u1)=(-1)^p p! H_p r_p. Its specialized x^(-1) term has coordinate finite part zero. This gives the precise anomaly and the corrections +1 at p=1 and -3z at p=2.
+4. The Riccati identity and both integration-by-parts recurrences have the correct signs. The pointwise boundary contribution is (-1)^p p! r_(p+1)(z).
+5. Repeated z derivatives give the stated factorials, and the ordinary convergence condition r>p is correct. Partial fractions give the complete rational class bounded at infinity with no real pole. The constant-kernel finite-part Stieltjes moment vanishes as stated.
+6. The balanced Gamma primitives have the Espinosa-Moll normalization, the stated derivative ladder, and the correct log-Gamma additive constant. The Barnes-G identity and the sign of the log-Gamma resolvent formula are correct.
+7. Both real-part examples at z=ib were checked directly. The first additionally agrees with digamma reflection. The b=3pi reduction of the second is correct.
+8. The lower-half-plane Fourier phase, the positive sign of the Cauchy jump, and the boundary Cayley parameters exp(-2pi i x_u) above and exp(2pi i x_u) below are correct.
+
+Corrections communicated to the root editor:
+- A TeX delimiter typo in the M_(1,p) display: backslash-bigl followed by an unescaped opening brace needed a literal delimiter backslash-brace.
+- Clarify "bounded rational function" as "rational function bounded at infinity" (or bounded on the real axis). This concerns precision of the stated function class, not a failed formula.
+
+Independent numerical audit supplied separately:
+Nine endpoint Laurent-subtraction plus quadrature checks at m=0, p=1,2,3 and z=i*pi, 1+2i, -1/2+3i agreed with the all-index law at 100 decimal digits. Largest observed discrepancy: 5.257982519e-97. See resolvent_contact_checks.json and verify_resolvent_contact.py. These are floating-point diagnostics, not interval enclosures or proofs.

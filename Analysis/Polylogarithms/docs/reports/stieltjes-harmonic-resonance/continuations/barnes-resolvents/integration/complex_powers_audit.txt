@@ -1,0 +1,86 @@
+Independent audit of sections/04_complex_powers.tex
+
+Outcome: no formula, sign, branch, zero-mode, or normalization error found.
+The theorem's positive-real-part restriction on pointwise x-finite parts
+must be retained. This audit read the analytic argument and verification
+source/results; it did not rerun the author's numerical suite.
+
+1. Branch normalization
+For epsilon=+1, arg(A)=pi-arg(a), arg(sigma)=-pi/2, and
+arg(1-q)=pi/2-arg(a). Thus
+Log(A)+Log(sigma)-Log(1-q)=0, not 2*pi*i.
+The lower-half-plane calculation is its conjugate. This verifies that
+A^lambda(1-w)^lambda(1-q*w)^(-lambda)/x^lambda tends to 1 at x=0.
+At x=1 the phase is exp(epsilon*pi*i*lambda), as required by the specified
+continuous logarithm of K-z. No hidden branch factor is missing.
+
+2. Mellin continuation
+The finite local subtraction at t=0 gives denominators u+lambda+j and
+the isolated term -1/u. It is not necessary that the full Taylor series
+converge all the way to the splitting point t=1: only the finite local
+remainder estimate near zero is used. On compact q-subsets of the unit
+disk the local coefficients and the remainder are holomorphic uniformly.
+Division by Gamma(u) gives L_lambda(0,q)=-1 and L_lambda(-N,q)=0 on the
+nonintersecting meromorphic restrictions stated in the theorem.
+The restriction-first qualification is essential and is present.
+
+3. Fourier generator and constant mode
+The negative Fourier coefficient of zeta(1-s,x) relative to
+w=exp(2*epsilon*pi*i*x) is Gamma(s)*sigma^(-s)*n^(-s).
+Argument differentiation multiplies this by (sigma*n)^p. Hence the factor
+Gamma(s)*sigma^(p-s)*L_lambda(s-p,q) is correct.
+h_0(lambda,q)=1. The integral of the differentiated Hurwitz function is
+zero in the initial Fourier region, so no term from h_0 belongs in this
+formula. The ordinary mean of R_z^lambda is A^lambda, and the p=0
+Stieltjes completion +A^lambda/s restores exactly the missing Hurwitz
+pole. Thus the constant mode is handled correctly throughout.
+Gamma(s)/Gamma(s-p)=A_p(s), with A_p(s)=product_{k=1}^p(s-k), exactly as used.
+
+4. Positive resonances
+Near (s,lambda)=(0,r), 1<=r<=p, the only crossing divisor is
+s+lambda-r=0 and its complete amplitude is
+A_p(s)*D_{p-r}(lambda,z). Deleting the full amplitude divided by s,
+not merely its residue at s=0, is required to recover the fixed-x finite
+part at lambda=r. The displayed formula does this correctly.
+Expanding 1/(s+delta) and then extracting the constant coefficient in
+delta gives exactly the sign, factorial and derivative order in Delta.
+The example (m,p,r)=(0,2,1) gives Delta=2*z, and at z=i*pi the two quoted
+constants differ by 2*pi*i, with the signs correct.
+
+Proof clarification incorporated in the delivered article: before claiming the remaining integral is
+holomorphic, subtract a sufficiently long full local Taylor jet, then
+isolate the resonant member. Subtracting only that member leaves more
+singular nonresonant monomials when r<p-1. Their meromorphic integrals are
+holomorphic near the specified point, so this is a wording/completeness
+issue and changes no formula.
+
+5. q=0 Gamma and harmonic specialization
+The beta identity for sum (-lambda)_n/(n!*(n+t)) gives the stated
+Gamma quotient after t=-v. Its logarithm is sum H_lambda^(r)*v^r/r.
+Therefore the minus sign and 1/N! in the Bell formula are correct.
+This is meromorphic in lambda, including removable cancellations between
+individual generalized-harmonic poles.
+
+6. All exponent jets
+The disk exponent is F(w)=Li_1(qw)-Li_1(w). The iterated-integral shuffle
+identity gives F(w)^d/d! as the sum over words in {1,q}, with the signs
+stated in the text. Multiplication of the w^n coefficient by n^(-u)
+raises the first index by u and leaves the others at one. Thus the factor
+d!, first index u+1, signs and color ratios are all correct.
+For decreasing indices, the color factor telescopes to
+product a_j^(n_j-n_{j+1}), with n_{d+1}=0. Its absolute value is at most
+one, so convergence follows by domination by the uncolored series with
+first real index Re(u)+1>1. This also justifies q->0: every word containing
+q vanishes, leaving (-1)^d*d!*zeta(u+1,{1}^{d-1}).
+Terminology: for complex noninteger u the first index is noninteger, so
+this is a generalized multiple-polylogarithm Dirichlet series. It is a
+classical colored iterated-integral MPL when u is a positive integer.
+The delivered article states this terminology distinction explicitly.
+
+7. Negative-exponent boundary
+The text correctly proves pointwise x-finite-part conversion only for
+Re(lambda)>0. Do not broaden that claim in the abstract. Negative integer
+crossings have two-endpoint phase anomalies. For example the continued
+mean A^lambda at lambda=-1 is -z-epsilon*pi*i, while the symmetric
+x-finite part of int_0^1 (K(x)-z) dx is -z. This is not a counterexample
+to the stated theorem, only to an overbroad summary of its scope.

@@ -1,0 +1,489 @@
+\section{Complex powers of a cotangent resolvent}
+\label{power:sec}
+
+The rational resolvent theorem in the incoming harmonic-parity report
+leaves open its extension to complex powers (Question R4).  The
+complex-power sine transform in the higher-reflection report treats a
+different, reflection-symmetric weight.  We now give a one-sided
+complex-power transform at every nonreal resolvent parameter, an ordinary
+Euler integral involving a single classical polylogarithm, and a completed
+germ at every integral power.  The latter includes a removable but
+nonzero endpoint correction when the integral power is negative.
+Classical Hurwitz Fourier analysis and beta integrals supply the analytic
+tools \cite{DLMF,EspinosaMoll}; the formulas and their
+normalizations below are proved directly.
+
+\subsection{A branch fixed by the interval}
+
+For $z\in\mathbb C\setminus\mathbb R$, put
+\begin{equation}\label{power:coordinates}
+ \epsilon=\operatorname{sgn}\Im z,\quad
+ a=z+\epsilon\pi i,\quad q=\frac{z-\epsilon\pi i}{a},\quad
+ \sigma=-2\epsilon\pi i,\quad C=-\frac1a=\frac{1-q}{\sigma}.
+\end{equation}
+Thus $|q|<1$.  Throughout,
+\[
+ \Log\sigma=\log(2\pi)-\epsilon\pi i/2,
+ \qquad \Log C=\Log(1-q)-\Log\sigma.
+\]
+Both $\Log C$ and $\Log(1-q)$ in these equations are principal
+logarithms.  Write
+\begin{equation}\label{power:R}
+ K(x)=\pi\cot(\pi x),\quad R_z(x)=\frac1{K(x)-z},\quad
+ w=e^{2\epsilon\pi ix}.
+\end{equation}
+Direct algebra gives
+\begin{equation}\label{power:factor}
+ R_z(x)=C\frac{1-w}{1-qw}.
+\end{equation}
+The continuous logarithm of $R_z(x)$ on $0<x<1$ is fixed by
+$\Log R_z(x)-\log x\to0$ at zero.  Its imaginary part lies between
+$0$ and $\epsilon\pi$, and it approaches $\epsilon\pi$ at one.
+In particular,
+\begin{equation}\label{power:branches}
+ R_z(x)^\lambda=\exp(\lambda\Log R_z(x)),\qquad
+ R_z(1-y)^\lambda=e^{\epsilon\pi i\lambda}y^\lambda
+                       V_z(-y)^\lambda,
+ \quad V_z(x)=\frac{R_z(x)}x.
+\end{equation}
+Here $V_z$ is analytic near zero and $V_z(0)=1$.  Powers of $V_z$
+use the analytic logarithm vanishing at zero.  These prescriptions also
+specify all logarithmic derivatives in $\lambda$.
+
+\subsection{A beta mixture of ordinary polylogarithms}
+
+Define coefficients and their Dirichlet transform by
+\begin{align}
+ \left(\frac{1-w}{1-qw}\right)^\lambda
+   &=\sum_{n\ge0}d_n(\lambda,q)w^n,\quad d_0=1,
+       \label{power:dn}\\
+ d_n(\lambda,q)&=\sum_{j=0}^n
+       \frac{(-\lambda)_j(\lambda)_{n-j}}{j!(n-j)!}q^{n-j},
+       \label{power:dnfinite}\\
+ \mathcal L_\lambda(\nu,q)&=\sum_{n\ge1}
+                               \frac{d_n(\lambda,q)}{n^\nu}.
+       \label{power:L}
+\end{align}
+The last series is initially normally convergent for
+$\Re(\nu+\lambda)>0$, on compact parameter sets away from the boundary
+of $|q|<1$.  At integral $\lambda$ it can have a larger convergence
+domain; our continuation will not rely on such exceptional improvements.
+The notation in \eqref{power:L} is a transform of the explicit
+coefficients \eqref{power:dnfinite}, not a claim that an unevaluated
+integral has been reduced to familiar constants.
+
+\begin{theorem}[The Euler--polylogarithm formula]\label{power:eulerthm}
+For $-1<\Re\lambda<1$, $|q|<1$, and initially $\Re\nu>1$,
+\begin{equation}\label{power:euler}
+ \boxed{\displaystyle
+ \mathcal L_\lambda(\nu,q)=
+ -\frac{\sin\pi\lambda}{\pi}(1-q)
+ \int_0^1 y^{-\lambda}(1-y)^\lambda
+       \frac{\Li_\nu(q+(1-q)y)}{q+(1-q)y}\,\dd y.}
+\end{equation}
+The quotient $\Li_\nu(t)/t$ has value $1$ at $t=0$.  Thus the
+formula remains valid when the segment from $q$ to $1$ passes through
+zero.  Within the same $\lambda$ strip the formula also holds on
+$\Re(\nu+\lambda)>0$ by analytic continuation of the convergent
+integrals.  All fixed parameter derivatives commute with these integrals
+on compact subsets of their convergence domains.
+\end{theorem}
+
+\begin{proof}
+We first prove the coefficient identity
+\begin{equation}\label{power:beta-coeff}
+ d_n(\lambda,q)=-\frac{\sin\pi\lambda}{\pi}(1-q)
+ \int_0^1y^{-\lambda}(1-y)^\lambda
+                 (q+(1-q)y)^{n-1}\,\dd y,\qquad n\ge1.
+\end{equation}
+For $0<q<1$, deform the Cauchy coefficient contour for
+$((1-w)/(1-qw))^\lambda$ onto $1<w<1/q$.  The difference of its
+upper and lower boundary values is
+$-2i\sin(\pi\lambda)((w-1)/(1-qw))^\lambda$.
+The endpoint integrals exist precisely in the stated strip.  The
+integral at infinity vanishes for $n\ge1$.  Substituting $t=1/w$
+and then $t=q+(1-q)y$ proves \eqref{power:beta-coeff}.
+Alternatively, its right side can be expanded as a finite beta sum
+and checked against \eqref{power:dnfinite}.  Both sides are
+polynomials in $q$, so the identity holds for all complex $q$.
+
+For $\Re\nu>1$ we may sum \eqref{power:beta-coeff} after multiplying
+by $n^{-\nu}$.  The segment lies in the closed unit disk and only
+its last endpoint can meet the unit circle.  The absolutely convergent
+polylogarithm series, together with the integrable beta weight, provides
+domination.  This yields \eqref{power:euler}.  Near $y=1$ the possible
+singular part of $\Li_\nu(q+(1-q)y)$ has order
+$(1-y)^{\nu-1}$, with the usual logarithmic limits at integral
+orders \cite[Eq.~25.12.12]{DLMF}.  The conditions
+$\Re\lambda>-1$ and $\Re(\nu+\lambda)>0$ therefore give the
+asserted extension and the same domination after any fixed number of
+derivatives.  Near $y=0$, $\Re\lambda<1$ suffices, including $q=0$.
+\end{proof}
+
+There is a useful independent Mellin representation:
+\begin{equation}\label{power:mellinL}
+ \mathcal L_\lambda(\nu,q)=\frac1{\Gamma(\nu)}
+ \int_0^\infty t^{\nu-1}
+ \left\{\left(\frac{1-e^{-t}}{1-qe^{-t}}\right)^\lambda-1\right\}
+ \,\dd t,
+\end{equation}
+initially for $\Re\nu>\max(0,-\Re\lambda)$.
+At zero, the expression in braces is $t^\lambda$ times an analytic
+function minus $1$; at infinity it decreases exponentially.
+Finite Taylor subtraction in \eqref{power:mellinL} proves joint
+meromorphic continuation in $(\nu,\lambda)$.  Its only possible
+moving polar hyperplanes are
+$\nu+\lambda=-j$ for $j\in\mathbb Z_{\ge0}$; some disappear
+through zeros of $1/\Gamma(\nu)$ or of their coefficients.
+This supplies a continuation independently of the Euler integral's
+restricted $\lambda$ strip.
+
+\subsection{The Hurwitz transform and an ordinary log-Gamma integral}
+
+\begin{theorem}[Complex-power Hurwitz transform]\label{power:hurwitzthm}
+For $p\in\mathbb Z_{\ge0}$, $\Re\lambda>-1$, and
+$\Re(u+\lambda)>p$, away from the Hurwitz pole when $p=0$,
+\begin{equation}\label{power:hurwitz}
+ \boxed{\displaystyle
+ \int_0^1\partial_x^p\zeta(1-u,x)R_z(x)^\lambda\,\dd x
+ =C^\lambda\Gamma(u)\sigma^{p-u}
+                    \mathcal L_\lambda(u-p,q).}
+\end{equation}
+The identity then continues meromorphically in its parameters.  Also,
+for every $\Re\lambda>-1$,
+\begin{equation}\label{power:mean}
+ \int_0^1R_z(x)^\lambda\,\dd x=C^\lambda.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For $\Re u>p+1$, the Hurwitz Fourier series and its first $p$
+argument derivatives are absolutely convergent.  The nonzero Fourier
+pairings are
+\[
+ \int_0^1\partial_x^p\zeta(1-u,x)e^{2\epsilon\pi inx}\,\dd x
+     =\Gamma(u)\sigma^{p-u}n^{p-u},\qquad n\ge1,
+\]
+and the zero mode vanishes.  Multiply by the Abel-regularized expansion
+\eqref{power:dn} and then let the Abel radius tend to one.
+For $\Re\lambda>-1$ its boundary values are uniformly integrable:
+near either endpoint they are bounded by a constant times
+$x^{\min(\Re\lambda,0)}$ or $(1-x)^{\min(\Re\lambda,0)}$.
+This proves the formula in an initial open region.  The Dirichlet
+series is normally convergent under $\Re(u+\lambda)>p$.
+The original integral has the same sufficient local conditions, since
+its only nonsmooth Hurwitz term at zero is
+$\prod_{j=1}^p(u-j)x^{u-p-1}$.  Holomorphic continuation within
+that domain proves \eqref{power:hurwitz}.  The constant Fourier
+coefficient of the Abel kernel is $C^\lambda$; the same integrable
+limit proves \eqref{power:mean}.
+\end{proof}
+
+\begin{corollary}[An ordinary Gamma moment]\label{power:gamma}
+For $\Re\lambda>-1$,
+\begin{align}\label{power:gammaformula}
+ \int_0^1\log\Gamma(x)R_z(x)^\lambda\,\dd x
+ =C^\lambda\left\{\frac{\log(2\pi)}2
+ +\frac{(\gamma+\Log\sigma)\mathcal L_\lambda(1,q)
+       -\partial_\nu\mathcal L_\lambda(1,q)}{\sigma}\right\}.
+\end{align}
+\end{corollary}
+\begin{proof}
+Differentiate \eqref{power:hurwitz} with $p=0$ at $u=1$ and use
+$\zeta'(0,x)=\log\Gamma(x)-\tfrac12\log(2\pi)$ and
+$\Gamma'(1)=-\gamma$ \cite{DLMF}.
+The logarithmic endpoint singularity is integrable under the stated
+condition, so this is an ordinary integral and an ordinary derivative.
+\end{proof}
+
+Thus, in the strip of Theorem~\ref{power:eulerthm}, the Gamma moment
+is an explicit combination of two integrals of $\Li_1$ and its first
+order derivative against an elementary beta weight.  At $q=0$, its
+first transform is $\mathcal L_\lambda(1,0)=-\psi(1+\lambda)-\gamma$.
+Section~\ref{moment:sec} gives the stronger finite Gamma generating
+formula for all polynomial moments.
+
+\subsection{Completion at every integral power}
+
+Let
+\begin{equation}\label{power:stieltjes}
+ g(u,x)=\zeta(1-u,x)+\frac1u
+     =\sum_{m\ge0}\gamma_m(x)\frac{u^m}{m!},\qquad
+ A_p(u)=\prod_{j=1}^p(u-j),\quad A_0=1.
+\end{equation}
+Define finite local coefficients
+\begin{align}
+ v_j(\lambda;z)&=[x^j]V_z(x)^\lambda,\label{power:vj}\\
+ h_p(u,x)&=\partial_x^p\left\{\zeta(1-u,1+x)+\frac1u\right\},
+        \label{power:hp}\\
+ b_j(u,\lambda;z)&=[x^j]h_p(u,x)V_z(x)^\lambda.
+        \label{power:bj}
+\end{align}
+The function $h_p$ is holomorphic near $(u,x)=(0,0)$.  Its coefficients
+are explicit: the coefficient of $x^j$ is
+\begin{equation}\label{power:hcoeff}
+ \frac{(-1)^{p+j}(1-u)_{p+j}}{j!}\zeta(1-u+p+j)
+ \quad(p+j>0),
+\end{equation}
+and is $\zeta(1-u)+1/u$ when $p=j=0$.
+The first coefficients of $V_z$ are
+\[
+ V_z(x)=1+zx+(z^2+\pi^2/3)x^2
+                   +(z^3+2\pi^2z/3)x^3+O(x^4).
+\]
+All fixed Taylor jets of $v_j$ and $b_j$ required for coefficient
+extraction are therefore finite polynomials in $z$, the expansion
+parameters, zeta values or their derivatives, and Stieltjes
+coefficients.  No new global integral enters them.
+
+For an integer $L$, set $\lambda=L+v$ and
+\begin{align}
+ \mathcal T_p(u,\lambda;z)
+   &=C^\lambda\Gamma(u)\sigma^{p-u}
+                    \mathcal L_\lambda(u-p,q)
+         +\mathbf1_{p=0}\frac{C^\lambda}{u},\label{power:T}\\
+ \mathcal H_{p,L}(u,v;z)
+   &=\mathcal T_p(u,L+v;z)
+      -\mathbf1_{L\le p}
+        \frac{A_p(u)v_{p-L}(L+v;z)}{u+v}\notag\\
+   &\quad-\mathbf1_{L\le-1}
+       \frac{\{1+(-1)^{-L-1}e^{\epsilon\pi i(L+v)}\}
+                    b_{-L-1}(u,L+v;z)}{v}.
+       \label{power:H}
+\end{align}
+A term with a false indicator is omitted completely.  In the last
+line the quotient is read by its removable analytic extension.
+
+\begin{theorem}[Joint Stieltjes and power completion]\label{power:completion}
+For each $p\ge0$, $L\in\mathbb Z$, and $z\notin\mathbb R$,
+$\mathcal H_{p,L}$ is holomorphic near $(u,v)=(0,0)$.
+For all integers $m,k\ge0$,
+\begin{equation}\label{power:allmoments}
+ \boxed{\displaystyle
+ \FP\int_0^1\gamma_m^{(p)}(x)R_z(x)^L
+                    (\Log R_z(x))^k\,\dd x
+       =m!k![u^mv^k]\mathcal H_{p,L}(u,v;z).}
+\end{equation}
+The finite part is taken in the fixed coordinates $x$ and $1-x$.
+All coefficient extractions and all $z$ derivatives are locally
+holomorphic on each open half-plane.
+\end{theorem}
+
+\begin{proof}
+The exact local splitting is
+\[
+ \partial_x^p g(u,x)=A_p(u)x^{u-p-1}+h_p(u,x).
+\]
+At zero, multiplication by $R_z(x)^\lambda=x^\lambda V_z(x)^\lambda$
+produces the two families
+\[
+ A_p(u)v_j(\lambda;z)x^{u+\lambda-p-1+j},\qquad
+ b_j(u,\lambda;z)x^{\lambda+j}.
+\]
+After setting $\lambda=L+v$, their integration denominators pass
+through zero only for $j=p-L\ge0$ and $j=-L-1\ge0$, respectively.
+They give the second line of \eqref{power:H} and the first endpoint's
+contribution to its third line.
+
+At the other endpoint put $y=1-x$.  The smooth Hurwitz factor is
+exactly $h_p(u,-y)$ and \eqref{power:branches} applies.  Its
+coefficient of $y^j$ is
+$e^{\epsilon\pi i\lambda}(-1)^jb_j(u,\lambda;z)$.
+This supplies precisely the remaining term in the braces in
+\eqref{power:H}.  Their sum vanishes on $v=0$, since
+$(-1)^{-L-1}e^{\epsilon\pi iL}=-1$.  Nevertheless its quotient by
+$v$ must be subtracted with the complete numerator.
+
+To make the argument analytic, choose a small endpoint interval and
+subtract finitely many of the displayed monomials, enough to leave
+a uniformly integrable remainder throughout a small parameter
+polydisk.  The middle interval is holomorphic.  Nonresonant local
+denominators are bounded away from zero.  For a resonant monomial
+with exponent $\alpha-1$, the difference between its meromorphic
+integral and the generating function of its coordinate finite parts
+is its full amplitude divided by $\alpha$, because
+\[
+ \frac{\delta^\alpha}{\alpha}
+ =\frac1\alpha+\frac{\delta^\alpha-1}{\alpha}.
+\]
+The second summand is entire in $\alpha$ and its derivatives give
+the constants of the corresponding logarithmic integrals.  This
+also shows that the arbitrary splitting point cancels out.  Finally,
+the global Hurwitz pole contributes $-C^\lambda/u$ only for $p=0$,
+and \eqref{power:T} has already removed it by \eqref{power:mean}.
+The remaining germ is holomorphic and its coefficients are exactly
+\eqref{power:allmoments}.  The same normally convergent construction
+is uniform on compact subsets of either $z$ half-plane.
+\end{proof}
+
+Away from integral powers there is no resonant exponent at $u=0$.
+Consequently, for $\lambda\notin\mathbb Z$, the same local subtraction
+proof gives the simpler identity
+\begin{equation}\label{power:noninteger}
+ \FP\int_0^1\gamma_m^{(p)}(x)R_z(x)^\lambda
+             (\Log R_z(x))^k\,\dd x
+ =m![u^m]\partial_\lambda^k\mathcal T_p(u,\lambda;z).
+\end{equation}
+Here the finite part means the constant term in the generalized
+power--logarithm endpoint expansion.  For nonintegral $\lambda$,
+none of its subtracted endpoint powers has exponent zero after
+integration, so differentiation and this finite part commute locally
+in $\lambda$.  At integral powers the full completion
+\eqref{power:H}, rather than a limit of \eqref{power:noninteger},
+specifies the coordinate finite part.
+
+\paragraph{The correction at negative powers is not zero.}
+Although the last quotient in \eqref{power:H} is removable, its
+value at $v=0$ is
+\begin{equation}\label{power:smoothcontact}
+ -\epsilon\pi i\,b_{-L-1}(u,L;z),\qquad L\le-1.
+\end{equation}
+Removing only pole residues would miss it.  It records the different
+endpoint phases of $R_z^\lambda$ before $\lambda$ is specialized to
+an integer.  At a fixed negative integer the integrand itself is a
+polynomial in $K(x)-z$, so the resulting finite parts must have the
+corresponding polynomial dependence on $z$.  Formula
+\eqref{power:smoothcontact} is necessary for that compatibility.
+
+The same issue already appears without a Hurwitz factor.  For $M\ge1$,
+\begin{equation}\label{power:negative-mean}
+ \FP\int_0^1(K(x)-z)^M\,\dd x
+ =\frac{(-z+i\pi)^M+(-z-i\pi)^M}{2},
+\end{equation}
+whereas the continued mean in \eqref{power:mean} is
+$C^{-M}=(-z-\epsilon i\pi)^M$.  Reflection gives zero for odd
+cotangent powers, and integration of their derivative recurrence gives
+$\FP\int_0^1K^{2j}\,\dd x=(-\pi^2)^j$, proving
+\eqref{power:negative-mean}.  The difference is exactly
+$\epsilon\pi i\,[x^{M-1}]V_z(x)^{-M}$, as the two-endpoint
+completion predicts.  This is an elementary check at every negative
+integral power.
+An independent all-$M$ residue proof is given in
+Appendix~\ref{contact:verification}.
+
+\begin{example}[Two normalization checks]\label{power:canaries}
+For $L=0$ and $k=0$, the theorem gives
+$\FP\int_0^1\gamma_m^{(p)}(x)\,\dd x=0$.
+For $L=-1$, $p=m=k=0$, it gives
+\begin{equation}\label{power:cotcheck}
+ \FP\int_0^1\gamma_0(x)(\pi\cot\pi x-z)\,\dd x
+        =-\frac{\pi^2}{2}.
+\end{equation}
+Indeed $\mathcal L_{-1}(u,q)=(1-q)\zeta(u)$,
+$v_1(-1;z)=-z$, and $b_0=\zeta(1-u)+1/u$.
+At $v=0$, \eqref{power:H} reduces, by the zeta functional equation, to
+\[
+ 2\pi\Gamma(u)(2\pi)^{-u}\sin(\pi u/2)\zeta(u),
+\]
+whose value at zero is $-\pi^2/2$.  The same value follows directly
+from digamma reflection and $\FP\int_0^1K(x)^2\,\dd x=-\pi^2$.
+For $L=1$ and $p=1$, the moving term is $(u-1)/(u+v)$; at
+$z=i\pi$ it recovers
+\[
+ \FP\int_0^1\frac{\psi'(x)}{\pi\cot\pi x-i\pi}\,\dd x
+       =1-\gamma-\log(2\pi)+i\pi/2,
+\]
+including the inherited resolvent theorem's harmonic correction.
+\end{example}
+
+\subsection{An explicit logarithmic resolvent identity}
+
+At first order in $\lambda$ there is no need to retain the transform
+$\mathcal L$: differentiating \eqref{power:dn} at zero gives
+\begin{equation}\label{power:firstlambda}
+ \left.\partial_\lambda\mathcal L_\lambda(u,q)\right|_{\lambda=0}
+       =\Li_{1+u}(q)-\zeta(1+u).
+\end{equation}
+
+\begin{corollary}[All Stieltjes indices with one logarithm]
+\label{power:logcor}
+The expression in braces below is holomorphic at $u=0$, and
+\begin{equation}\label{power:alllog}
+ \boxed{\displaystyle
+ \FP\int_0^1\gamma_m(x)\Log R_z(x)\,\dd x
+ =m![u^m]\left\{
+ \Gamma(u)\sigma^{-u}\bigl(\Li_{1+u}(q)-\zeta(1+u)\bigr)
+       +\frac{\Log C}{u}+\frac1{u^2}\right\}.}
+\end{equation}
+In particular, if a superscript $[1]$ denotes differentiation of the
+polylogarithm with respect to its order, then
+\begin{align}\label{power:logexplicit}
+ \FP\int_0^1\gamma_0(x)\Log R_z(x)\,\dd x
+  ={}&\gamma_1+\frac{\gamma^2}{2}-\frac{\zeta(2)}2
+              -\frac{(\Log\sigma)^2}{2}\notag\\
+    &+\Li_1^{[1]}(q)
+               +(\gamma+\Log\sigma)\Log(1-q).
+\end{align}
+\end{corollary}
+\begin{proof}
+Differentiate \eqref{power:H} at $v=0$ with $p=L=0$, using
+\eqref{power:firstlambda}.  The derivative of $-1/(u+v)$ is
+$1/u^2$.  Expansion of
+\[
+ \Gamma(u)\sigma^{-u}
+ =\frac1u\exp\left(-Au+\sum_{j\ge2}\frac{(-1)^j\zeta(j)}j u^j\right),
+ \qquad A=\gamma+\Log\sigma,
+\]
+and $\zeta(1+u)=u^{-1}+\gamma-\gamma_1u+O(u^2)$ proves
+\eqref{power:logexplicit}.  The coefficient of $u^{-1}$ cancels
+because $\Li_1(q)=-\Log(1-q)$ and
+$\Log C=\Log(1-q)-\Log\sigma$.
+\end{proof}
+
+At $z=\epsilon i\pi$, the polylogarithm terms disappear and the
+identity becomes the compact evaluation
+\begin{equation}\label{power:logspecial}
+ \FP\int_0^1\gamma_0(x)
+       \left\{\log\frac{\sin\pi x}{\pi}+\epsilon\pi ix\right\}\,\dd x
+ =\gamma_1+\frac{\gamma^2}{2}+\frac{\pi^2}{24}
+       -\frac{\log^2(2\pi)}2+\frac{\epsilon\pi i\log(2\pi)}2.
+\end{equation}
+The imaginary part is also an ordinary consequence of Raabe's
+log-Gamma integral.  The constant real part supplies a useful
+independent check of the branch and finite-part conventions.
+The $q=0$ specialization is compatible with the prior sine-power
+completion; the arbitrary nonreal $z$ identity is the new extension.
+
+\subsection{Exact derivatives and normalized primitives in the resolvent parameter}
+
+Denote the left side of \eqref{power:allmoments} by
+$M_{m,p;L,k}(z)$.  Coefficientwise differentiation in $z$ is legitimate
+by Theorem~\ref{power:completion}.  Since
+$\partial_z\Log R_z=R_z$, we obtain the exact ladder
+\begin{equation}\label{power:zladder}
+ \frac{\dd}{\dd z}M_{m,p;L,k}(z)
+    =L\,M_{m,p;L+1,k}(z)+k\,M_{m,p;L+1,k-1}(z),
+\end{equation}
+with the last term omitted for $k=0$.  This differentiates the actual
+fixed-coordinate moments, rather than an uncompleted spectral limit.
+
+For $L\ne1$ define
+\begin{equation}\label{power:primitive}
+ P_{m,p;L,k}(z)=
+ \sum_{j=0}^k\frac{(-1)^jk!}{(k-j)!(L-1)^{j+1}}
+                         M_{m,p;L-1,k-j}(z).
+\end{equation}
+For $L=1$ put $P_{m,p;1,k}=M_{m,p;0,k+1}/(k+1)$.
+Equation \eqref{power:zladder} telescopes to $P'=M$.
+Consequently
+\begin{equation}\label{power:normalizedprimitive}
+ \int_{z_0}^{z}M_{m,p;L,k}(\xi)\,\dd\xi
+       =P_{m,p;L,k}(z)-P_{m,p;L,k}(z_0)
+\end{equation}
+for any path within the same open half-plane.  This fixes every additive
+constant explicitly.  In particular \eqref{power:logexplicit} is an
+explicit primitive of the ordinary $\gamma_0$ resolvent integral.
+
+\paragraph{An exact boundary counterexample to naive substitution.}
+The meromorphic transform is not, at every exceptional point, the
+pointwise integral of the specialized integrand.  At $p=2$, $u=1$,
+$\lambda=1$, the latter is zero because
+$\partial_x^2\zeta(0,x)=0$.  Continuing \eqref{power:hurwitz} along
+$\lambda=1$ first gives $-1$.  Indeed
+$\mathcal L_1(u-2,q)=(q-1)\Li_{u-2}(q)/q$, with its removable
+$q=0$ interpretation, gives $-1$ at $u=1$ by elementary algebra.
+The sufficient convergence domain has $\Re(u+\lambda)>p$ and
+excludes this boundary.  Locally the discrepancy is the limit of
+$(u-1)(u-2)/(u-1)=u-2$.  This example identifies a concrete
+normalization error in an uncompleted extension; it is not an allegation
+that the inspected incoming resolvent theorem makes that error.

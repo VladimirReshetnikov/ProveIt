@@ -1,0 +1,408 @@
+\section{Every centered moment of two even harmonic tails}
+\label{tail:section}
+
+The latest harmonic-parity report asks for exact centered moments of
+\((\zeta(2i)-H_n^{(2i)})(\zeta(2j)-H_n^{(2j)})\), beginning with
+\((i,j)=(1,2)\). Its all-degree evaluation covers only the trigamma
+square. The following results answer the question for every pair of
+even orders and every nonpositive even spectral argument. They also
+give a convergent generating function in classical polylogarithms.
+Products of four or more tails, and products with additional powers
+of \(H_n\), are outside the theorem.
+
+\subsection{Definitions, continuation, and an ordinary convergent sum}
+
+Throughout this section, \(p,q\ge2\) are even integers, \(W=p+q\), and
+\[
+ A_p(n)=\zeta(p)-H_n^{(p)}=\zeta(p,n+1)
+       =\frac{\psi^{(p-1)}(n+1)}{(p-1)!},
+ \qquad x_n=n+\tfrac12.
+\]
+The last equality uses that \(p\) is even. Define
+\begin{equation}\label{tail:D}
+ D_{p,q}(s)=\sum_{n=0}^{\infty}\frac{A_p(n)A_q(n)}{x_n^s},
+ \qquad \Re s>3-p-q.
+\end{equation}
+The defining series converges normally in this half-plane. A value
+outside it always refers to meromorphic continuation unless it is
+written as an explicitly subtracted convergent sum.
+
+Set
+\begin{equation}\label{tail:asymptotic-coefficients}
+ c_{p,j}=\frac1{p-1}\binom{p+2j-2}{p-2}B_{2j}(1/2),
+ \qquad
+ k_{p,q,\ell}=\sum_{j=0}^{\ell}c_{p,j}c_{q,\ell-j}.
+\end{equation}
+Thus \(c_{p,0}=1/(p-1)\). The standard Hurwitz-zeta expansion gives
+\begin{equation}\label{tail:centered-expansion}
+ A_p(n)\sim\sum_{j\ge0}c_{p,j}x_n^{1-p-2j},
+ \qquad
+ A_p(n)A_q(n)\sim\sum_{\ell\ge0}
+                  k_{p,q,\ell}x_n^{2-W-2\ell}.
+\end{equation}
+Every exponent in the product is even. The expansions and their
+fixed-order remainder estimates follow either from the classical
+Hurwitz formulas or directly from the Laplace integral used below
+\cite{DLMF}.
+
+\begin{proposition}[Continuation and ordinary summation]
+\label{tail:ordinary}
+The function \(D_{p,q}\) continues meromorphically to the plane. Its
+only possible poles are simple and lie at
+\[
+ 3-p-q,\ 1-p-q,\ -1-p-q,\ldots.
+\]
+In particular it is regular at every \(s=-2r\), \(r\ge0\).
+Let
+\[
+ K_r=\max\{0,r-W/2+2\}.
+\]
+Then
+\begin{equation}\label{tail:ordinary-formula}
+ D_{p,q}(-2r)=\sum_{n=0}^{\infty}
+ \left\{x_n^{2r}A_p(n)A_q(n)
+       -\sum_{\ell=0}^{K_r-1}
+         k_{p,q,\ell}x_n^{2r+2-W-2\ell}\right\}.
+\end{equation}
+An empty inner sum is zero. Every bracket is \(O(n^{-2})\) or
+smaller, so the right side is an ordinary absolutely convergent sum.
+\end{proposition}
+
+\begin{proof}
+Subtract any fixed number of terms from the product expansion in
+\eqref{tail:centered-expansion}. The remainder series extends to a
+larger left half-plane; the removed terms sum to
+\(k_{p,q,\ell}\zeta(s+W-2+2\ell,1/2)\). Increasing the number of
+subtractions proves the continuation and pole list. At \(s=-2r\),
+the nondecaying terms are exactly those with \(0\le\ell<K_r\).
+Their continued sums vanish, because
+\(\zeta(-2m,1/2)=0\) for every integer \(m\ge0\). The remaining
+sum converges absolutely and gives \eqref{tail:ordinary-formula}.
+\end{proof}
+
+The half-shift is essential to this argument: it makes both the
+asymptotic powers and the polynomial subtraction compatible with the
+trivial zeros of the same Hurwitz zeta function.
+
+\subsection{A finite formula at every moment order}
+
+Our double-zeta convention is
+\[
+ \zeta(a,b)=\sum_{\ell>k\ge1}\ell^{-a}k^{-b},
+ \qquad a\ge2,\quad b\ge1.
+\]
+Only convergent double zeta values occur in the formulas below.
+For a positive odd integer \(d\), define the ordered contribution
+\begin{equation}\label{tail:ordered-block}
+ U_{p,q}(d)=
+ \begin{cases}
+ \displaystyle
+ \zeta(p,q-d)+\frac12\zeta(W-d),&d<q,\\[6pt]
+ \displaystyle
+ \sum_{h=1}^{\min\{(d-q+1)/2,\,p/2-1\}}
+ \frac{\binom{d-q+1}{2h}}{d-q+1}
+ B_{d-q+1-2h}\zeta(p-2h),&d>q.
+ \end{cases}
+\end{equation}
+The two cases exhaust the possibilities since \(q\) is even.
+The upper limit in the second line is an integer; the sum may be
+empty. Define also the rational contribution
+\begin{equation}\label{tail:rational-block}
+ R_{p,q}(d)=
+ \begin{cases}
+ 0,&d<W-1,\\[3pt]
+ \displaystyle
+ -\frac{B_{d-W+1}}2
+ \left\{\frac1p\binom{d-q}{p-1}
+          +\frac1q\binom{d-p}{q-1}\right\},&d\ge W-1,
+ \end{cases}
+\end{equation}
+and
+\begin{equation}\label{tail:block}
+ C_{p,q}(d)=U_{p,q}(d)+U_{q,p}(d)+R_{p,q}(d).
+\end{equation}
+These expressions use only finite sums of explicitly specified
+Bernoulli numbers and ordinary or double zeta values.
+
+\begin{theorem}[All even orders and all centered moments]
+\label{tail:all-moments}
+For even \(p,q\ge2\) and every integer \(r\ge0\),
+\begin{equation}\label{tail:moment-formula}
+ \boxed{
+ D_{p,q}(-2r)=
+ \sum_{j=0}^{r}\frac{\binom{2r}{2j}}{2j+1}
+ B_{2r-2j}(1/2)\,C_{p,q}(2j+1).}
+\end{equation}
+In particular this formula evaluates the ordinary sums in
+\eqref{tail:ordinary-formula}.
+\end{theorem}
+
+\begin{proof}
+Write \(\operatorname{CT}_N\) for the coefficient of
+\(N^0(\log N)^0\) in an asymptotic expansion at positive infinity.
+This coefficient will only be taken after exact finite summation.
+Let
+\begin{equation}\label{tail:S}
+ S_r(k)=\sum_{n=0}^{k-1}(n+1/2)^{2r}
+       =\frac{B_{2r+1}(k+1/2)}{2r+1}
+       =\sum_{j=0}^{r}
+         \frac{\binom{2r}{2j}}{2j+1}
+         B_{2r-2j}(1/2)k^{2j+1}.
+\end{equation}
+This is an odd polynomial in \(k\), with zero constant coefficient.
+Consequently every polynomial partial sum of a subtracted even power
+in \eqref{tail:ordinary-formula} has zero constant coefficient in
+\(N\). It follows that
+\begin{equation}\label{tail:CT-moment}
+ D_{p,q}(-2r)=\operatorname{CT}_N
+              \sum_{n=0}^{N-1}x_n^{2r}A_p(n)A_q(n).
+\end{equation}
+
+The identity \(A_p(k-1)=A_p(k)+k^{-p}\) yields finite summation by
+parts:
+\begin{align}\label{tail:finite-summation}
+ \sum_{n=0}^{N-1}x_n^{2r}A_p(n)A_q(n)
+ ={}&S_r(N)A_p(N)A_q(N)\notag\\
+ &+\sum_{k=1}^{N}S_r(k)
+  \left\{\frac{A_p(k)}{k^q}+\frac{A_q(k)}{k^p}
+                     +\frac1{k^{p+q}}\right\}.
+\end{align}
+For a positive odd \(d\), the coefficient block to evaluate is
+\begin{equation}\label{tail:E}
+ E_{p,q,d}(N)=N^dA_p(N)A_q(N)
+ +\sum_{k=1}^{N}k^{d-q}A_p(k)
+ +\sum_{k=1}^{N}k^{d-p}A_q(k)
+ +\sum_{k=1}^{N}k^{d-W}.
+\end{equation}
+We prove that its constant coefficient is \(C_{p,q}(d)\).
+
+First suppose \(d<q\). The corresponding tail sum converges, and
+its limit is exactly
+\begin{equation}\label{tail:negative-power}
+ \sum_{k\ge1}k^{d-q}A_p(k)=\zeta(p,q-d).
+\end{equation}
+No continued or divergent double sum is used. If \(m=d-q\ge1\),
+then \(m\) is odd. Put
+\[
+ F_m(N)=\sum_{k=1}^{N}k^m
+       =\frac{B_{m+1}(N+1)-B_{m+1}}{m+1}.
+\]
+Interchanging a finite sum gives the exact identity
+\begin{equation}\label{tail:Faulhaber-change}
+ \sum_{k=1}^{N}k^mA_p(k)
+ =A_p(N)F_m(N)
+   +\sum_{\ell=1}^{N}\frac{F_m(\ell-1)}{\ell^p}.
+\end{equation}
+Since
+\[
+ F_m(\ell-1)=\frac1{m+1}
+    \sum_{a=1}^{m+1}\binom{m+1}{a}B_{m+1-a}\ell^a,
+\]
+the constant term of the last sum is obtained directly from finite
+power sums. Exponents \(a-p\ge0\) give zero constant; exponent
+\(-1\) gives \(\gamma\); smaller exponents give \(\zeta(p-a)\).
+Because \(m\) is odd, the nonzero Bernoulli coefficients have
+\(a\) even, except for the half-leading term \(a=m\), whose
+coefficient is \(-1/2\). Thus the even values contribute
+\begin{equation}\label{tail:even-zeta-block}
+ \sum_{h=1}^{\min\{(m+1)/2,p/2-1\}}
+ \frac{\binom{m+1}{2h}}{m+1}B_{m+1-2h}\zeta(p-2h).
+\end{equation}
+If \(d<W-1\), the half-leading term contributes
+\(-\zeta(W-d)/2\). At \(d=W-1\), it instead contributes
+\(-\gamma/2\). If \(d>W-1\), it contributes zero.
+
+The final power sum in \eqref{tail:E} contributes
+\(\zeta(W-d)\) for \(d<W-1\), \(\gamma\) for \(d=W-1\), and
+zero for \(d>W-1\). Combining it with the two half-leading terms
+has a useful consequence. Each ordered block with \(d<q\) retains
+one half of \(\zeta(W-d)\), while every block with \(d>q\)
+retains none. At \(d=W-1\), the two terms \(-\gamma/2\) cancel
+the final \(+\gamma\) exactly. Equations
+\eqref{tail:negative-power} and \eqref{tail:even-zeta-block}
+therefore give precisely \(U_{p,q}(d)+U_{q,p}(d)\).
+
+It remains to compute the rational boundary contributions. The
+uncentered expansion is
+\begin{equation}\label{tail:uncentered}
+ A_p(N)\sim\frac{N^{1-p}}{p-1}-\frac12N^{-p}
+ +\sum_{j\ge1}\frac1{p-1}
+       \binom{p+2j-2}{p-2}B_{2j}N^{1-p-2j}.
+\end{equation}
+For any odd integer \(k\), define the inverse-power coefficient by
+\[
+ u_p(k)=
+ \begin{cases}
+ 0,&k<p-1,\\[2pt]
+ \displaystyle\frac1{p-1}\binom{k-1}{p-2}B_{k-p+1},&k\ge p-1.
+ \end{cases}
+\]
+The only nonzero even inverse-power coefficient in
+\eqref{tail:uncentered} is \(-1/2\), at exponent \(p\).
+In the Faulhaber polynomial \(F_m(N)\), all powers are even
+except for its half-leading term \(N^m/2\). Pairing the possible
+exponents therefore gives, for odd \(m\ge1\),
+\begin{equation}\label{tail:single-boundary}
+ \operatorname{CT}_N\{A_p(N)F_m(N)\}
+       =\frac{p-m}{2p}\,u_p(m).
+\end{equation}
+Indeed the two potential contributions are
+\(u_p(m)/2\) and
+\(-\binom{m+1}{p}B_{m+1-p}/(2(m+1))\); the latter equals
+\(-m u_p(m)/(2p)\). If \(m<p-1\), both are zero.
+
+The odd coefficient of the product in the first term of
+\eqref{tail:E} is
+\[
+ \operatorname{CT}_N\{N^dA_p(N)A_q(N)\}
+      =-\frac12\{u_p(d-q)+u_q(d-p)\},
+\]
+where a term below its support is zero. Adding this to the two
+contributions \eqref{tail:single-boundary} gives
+\[
+ -\frac{d-q}{2p}u_p(d-q)
+ -\frac{d-p}{2q}u_q(d-p).
+\]
+It vanishes for \(d<W-1\). Otherwise, the binomial identity
+\[
+ \frac{d-q}{p-1}\binom{d-q-1}{p-2}
+          =\binom{d-q}{p-1}
+\]
+reduces it to \(R_{p,q}(d)\) in \eqref{tail:rational-block}.
+We have proved \(\operatorname{CT}_NE_{p,q,d}(N)=C_{p,q}(d)\).
+Combining \eqref{tail:S}, \eqref{tail:CT-moment}, and
+\eqref{tail:finite-summation} proves the theorem.
+\end{proof}
+
+\subsection{Reduction to a fixed set of ordinary zeta coordinates}
+
+There is no unresolved depth-two constant in the preceding theorem.
+Every double zeta appearing in \eqref{tail:ordered-block} has even
+outer order, odd inner order, and odd total weight. The classical
+odd-weight reduction proved by Borwein, Borwein, and Girgensohn
+\cite{BBG} gives the following explicit elimination. For even
+\(a\ge2\), odd \(b\ge3\), and \(w=a+b\),
+\begin{align}\label{tail:Euler-reduction}
+ \zeta(a,b)={}&\frac12\left\{\binom wa-1\right\}\zeta(w)
+              +\zeta(a)\zeta(b)\notag\\
+ &-\sum_{k=1}^{(w-3)/2}
+ \left\{\binom{w-2k-1}{b-1}+\binom{w-2k-1}{a-1}\right\}
+                 \zeta(2k)\zeta(w-2k).
+\end{align}
+For the boundary case \(b=1\), Euler's formula is
+\begin{equation}\label{tail:Euler-boundary}
+ \zeta(a,1)=\frac a2\zeta(a+1)
+            -\sum_{k=1}^{a/2-1}\zeta(2k)\zeta(a+1-2k).
+\end{equation}
+All zeta arguments on the right are at least two. These are classical
+inputs, not novelty claims of this article.
+
+\begin{corollary}[A moment-independent coordinate space]
+\label{tail:fixed-space}
+Let \(M=\max\{p,q\}\). Every value \(D_{p,q}(-2r)\), for
+arbitrary \(r\ge0\), lies in the same rational span
+\begin{equation}\label{tail:fixed-space-formula}
+ \operatorname{span}_{\mathbb Q}
+ \left(\{1\}\cup
+       \{\zeta(2h):1\le h\le M/2-1\}\cup
+       \{C_{p,q}(d):1\le d<M,\ d\text{ odd}\}\right).
+\end{equation}
+This is a spanning set of \(M\) specified numbers, each explicitly
+reducible to ordinary zeta values and their pairwise products.
+It is not a claim that those numbers are linearly independent.
+\end{corollary}
+
+\begin{proof}
+For every odd \(d>M\), both ordered blocks in
+\eqref{tail:ordered-block} contain only even zeta values of argument
+at most \(M-2\), and the remaining block is rational. The odd
+integers \(d<M\) give the finite list in
+\eqref{tail:fixed-space-formula}. The moment formula proves the
+inclusion, while \eqref{tail:Euler-reduction} and
+\eqref{tail:Euler-boundary} give the stated ordinary-zeta reduction.
+\end{proof}
+
+This finiteness is uniform in the moment order. Increasing \(r\)
+changes only rational Bernoulli coefficients; it introduces no new
+arithmetic constants.
+
+\subsection{The first mixed pair: a complete \texorpdfstring{$(2,4)$}{(2,4)} evaluation}
+
+For \((p,q)=(2,4)\), write \(D_r=D_{2,4}(-2r)\). In this case
+the entire block sequence has the short form
+\begin{align}\label{tail:24-blocks}
+ C_{2,4}(1)&=\frac{15}{2}\zeta(5)-3\zeta(2)\zeta(3),\notag\\
+ C_{2,4}(3)&=\frac32\zeta(3)+\frac12\zeta(2),\notag\\
+ C_{2,4}(2j+1)&=\frac{2j-1}{2}B_{2j-2}\zeta(2)
+  -\frac{(2j-3)(2j^2-3j+7)}{24}B_{2j-4},\qquad j\ge2.
+\end{align}
+For example, the first line follows from
+\(\zeta(2,3)=9\zeta(5)/2-2\zeta(2)\zeta(3)\) and
+\(\zeta(4,1)=2\zeta(5)-\zeta(2)\zeta(3)\). Thus the arithmetic
+space in this case can be written especially economically as
+\begin{equation}\label{tail:24-space}
+ \operatorname{span}_{\mathbb Q}
+ \{1,\zeta(2),\zeta(3),5\zeta(5)-2\zeta(2)\zeta(3)\}.
+\end{equation}
+
+The first four values are
+\begin{align}\label{tail:24-values}
+ D_0={}&\frac{15}{2}\zeta(5)-3\zeta(2)\zeta(3),\notag\\
+ D_1={}&-\frac58\zeta(5)+\frac14\zeta(2)\zeta(3)
+                    +\frac12\zeta(3)+\frac16\zeta(2),\notag\\
+ D_2={}&\frac7{32}\zeta(5)-\frac7{80}\zeta(2)\zeta(3)
+              -\frac14\zeta(3)-\frac1{30}\zeta(2)-\frac3{40},\notag\\
+ D_3={}&-\frac{155}{896}\zeta(5)+\frac{31}{448}\zeta(2)\zeta(3)
+              +\frac7{32}\zeta(3)-\frac1{672}\zeta(2)+\frac{31}{672}.
+\end{align}
+The first two sums converge without subtraction. The next two yield
+the polygamma identities
+\begin{align}\label{tail:24-polygamma-sums}
+ \sum_{n=0}^{\infty}
+ \left\{\frac{x_n^4}{6}\psi'(n+1)\psi'''(n+1)-\frac13\right\}
+       &=D_2,\notag\\
+ \sum_{n=0}^{\infty}
+ \left\{\frac{x_n^6}{6}\psi'(n+1)\psi'''(n+1)
+                   -\frac{x_n^2}{3}+\frac7{36}\right\}
+       &=D_3.
+\end{align}
+The signs and normalizations of both subtractions follow directly
+from \(k_{2,4,0}=1/3\) and \(k_{2,4,1}=-7/36\).
+
+There is also an exact finite-generation statement. The inverse
+Bernoulli transform is
+\begin{equation}\label{tail:inverse-transform}
+ C_{p,q}(2j+1)=\sum_{r=0}^{j}
+          \binom{2j+1}{2r}2^{-2(j-r)}D_{p,q}(-2r).
+\end{equation}
+It follows by multiplying the generating function in the next
+section by \(2\sinh(t/2)/t\), or directly by the Bernoulli
+generating identity. Put \(C_j=C_{2,4}(2j+1)\). Then
+\[
+ C_2=\frac14\zeta(2)-\frac38,
+ \qquad C_3=-\frac1{12}\zeta(2)-\frac13,
+\]
+so
+\[
+ 1=-\frac8{11}(C_2+3C_3),\qquad
+ \zeta(2)=\frac{32C_2-36C_3}{11},\qquad
+ \zeta(3)=\frac23C_1-\frac{32}{33}C_2+\frac{12}{11}C_3.
+\]
+Consequently \emph{every} \(D_r\) is an explicit rational linear
+combination of \(D_0,D_1,D_2,D_3\). This is an exact generation
+statement, independent of any conjectured arithmetic independence.
+Two useful eliminations are
+\begin{align}\label{tail:24-eliminations}
+ 7D_0+412D_1+2000D_2+1344D_3&=-88,\notag\\
+ 23D_0+524D_1-2480D_2-4032D_3&=176\zeta(2).
+\end{align}
+For instance the first is the single absolutely convergent identity
+\begin{equation}\label{tail:rational-polygamma}
+ \sum_{n=0}^{\infty}
+ \left\{
+ (1344x_n^6+2000x_n^4+412x_n^2+7)
+       \frac{\psi'(n+1)\psi'''(n+1)}6
+       -448x_n^2-\frac{1216}{3}
+ \right\}=-88.
+\end{equation}
+

@@ -1,0 +1,423 @@
+\section{A completed complex-power sine transform}
+\label{sec:beta}
+
+Put
+\begin{equation}\label{beta:weight}
+ \ell(x)=\log\frac{\sin\pi x}{\pi},\qquad L=\log(2\pi),\qquad
+ W_\lambda(x)=e^{2\lambda\ell(x)}.
+\end{equation}
+The normalization by $\pi$ makes the leading endpoint coefficient equal
+to one. It is useful both for coordinate finite parts and for keeping
+the later crossing subtraction unambiguous. Define
+\begin{equation}\label{beta:A}
+ A(s,\lambda)=\int_0^1\zeta(s,x)W_\lambda(x)\dd x,
+ \qquad
+ C_0(\lambda)=\frac{\Gamma(1+2\lambda)}
+ {\Gamma(1+\lambda)^2(2\pi)^{2\lambda}}.
+\end{equation}
+An initial domain sufficient for everything in the first theorem is
+$\Re\lambda>-1/2$, $\Re s<0$. All subsequent values of $A$ mean its
+meromorphic continuation.
+
+\subsection{Fourier coefficients and a polylogarithmic Euler integral}
+
+\begin{theorem}[The complex-power transform]\label{beta:transform}
+For $\Re\lambda>-1/2$ the Fourier coefficients of $W_\lambda$ are
+\begin{equation}\label{beta:cn}
+ c_n(\lambda)=\int_0^1W_\lambda(x)e^{-2\pi inx}\dd x
+ =\frac{(-1)^n\Gamma(1+2\lambda)}
+ {(2\pi)^{2\lambda}\Gamma(1+\lambda+n)\Gamma(1+\lambda-n)}.
+\end{equation}
+They satisfy $c_{-n}=c_n$, $c_0=C_0$, and, for $n\geq1$,
+\begin{equation}\label{beta:pochhammer}
+ c_n(\lambda)=C_0(\lambda)\frac{(-\lambda)_n}{(1+\lambda)_n}.
+\end{equation}
+Consequently,
+\begin{equation}\label{beta:dirichlet}
+ A(s,\lambda)=B(s)\sum_{n=1}^{\infty}c_n(\lambda)n^{s-1},\qquad
+ B(s)=2\Gamma(1-s)(2\pi)^{s-1}\sin\frac{\pi s}{2}.
+\end{equation}
+In the strip $-1/2<\Re\lambda<0$, $\Re s<0$, a second representation is
+\begin{align}\label{beta:euler}
+ A(s,\lambda)
+ &=-\frac{2}{\pi}\Gamma(1-s)(2\pi)^{s-1-2\lambda}
+      \sin\frac{\pi s}{2}\sin(\pi\lambda)\notag\\
+ &\hspace{2em}\times
+ \int_0^1t^{-\lambda-1}(1-t)^{2\lambda}\Li_{1-s}(t)\dd t.
+\end{align}
+Both formulas continue meromorphically wherever their two sides are
+defined by continuation.
+\end{theorem}
+
+\begin{proof}
+Reflection about $1/2$ kills the sine coefficient. If
+$I_n=\int_0^\pi\sin^{2\lambda}t\cos(2nt)\dd t$, integration of
+$\frac{\mathrm d}{\mathrm dt}
+ [\sin^{2\lambda+1}t\cos((2n+1)t)]$ gives
+\[
+ (\lambda-n)I_n+(\lambda+n+1)I_{n+1}=0.
+\]
+The boundary term vanishes for $\Re\lambda>-1/2$.
+The beta integral gives
+$I_0=\sqrt\pi\,\Gamma(\lambda+1/2)/\Gamma(\lambda+1)$.
+The recurrence and duplication formula prove
+\eqref{beta:cn}--\eqref{beta:pochhammer}. The apparent exceptions at
+integer parameters are read by continuity.
+
+The Hurwitz Fourier expansion for $\Re s<0$ is absolutely convergent.
+Its sine terms integrate to zero and its cosine terms give
+\eqref{beta:dirichlet}; see also \cite[\S25.11]{DLMFHurwitz}.
+The decay $c_n=O(n^{-1-2\Re\lambda})$ shows that the resulting
+Dirichlet series itself converges absolutely for
+$\Re s<1+2\Re\lambda$, away from exceptional parameters interpreted
+by continuity. Lastly, Gamma reflection gives
+\[
+ c_n(\lambda)=-\frac{\sin\pi\lambda}{\pi(2\pi)^{2\lambda}}
+ \int_0^1t^{n-\lambda-1}(1-t)^{2\lambda}\dd t.
+\]
+Absolute convergence in the stated strip permits summation under the
+integral, producing \eqref{beta:euler}.
+\end{proof}
+
+These Fourier and beta mechanisms are classical. In particular,
+Espinosa and Moll treat Hurwitz transforms of trigonometric powers
+and the first log-sine transform \cite[\S\S5,13]{EspinosaMoll}.
+The purpose of Theorem~\ref{beta:transform} here is to supply a common
+generator whose \emph{completed germ at the joint resonance} can be
+specified at every Stieltjes and argument-derivative order.
+
+For an integer $m\geq1$ the Fourier expansion terminates:
+\begin{equation}\label{beta:integer}
+ A(s,m)=\frac{B(s)}{(2\pi)^{2m}}
+ \sum_{n=1}^m(-1)^n\binom{2m}{m+n}n^{s-1}.
+\end{equation}
+For example, comparison of the constant term at $s=1$ gives the
+ordinary convergent identity
+\begin{equation}\label{beta:psiinteger}
+ \int_0^1\psi(x)W_m(x)\dd x
+ =-C_0(m)(\gamma+L)
+ +\frac{2}{(2\pi)^{2m}}
+   \sum_{n=1}^m(-1)^n\binom{2m}{m+n}\log n.
+\end{equation}
+Higher Laurent coefficients give the analogous all-index Stieltjes
+moments as finite Gamma and logarithmic expressions.
+
+\subsection{The complete crossing polar term}
+
+Let $P_p(u)=(1+u)_p$, with $P_0=1$, and define the entire-in-$\lambda$
+Taylor coefficients
+\begin{align}\label{beta:d}
+ d_j(\lambda)
+ &=[x^{2j}]\left(\frac{\sin\pi x}{\pi x}\right)^{2\lambda}\notag\\
+ &=[z^j]\exp\left(-2\lambda
+                 \sum_{r=1}^{\infty}\frac{\zeta(2r)}r z^r\right).
+\end{align}
+Thus $d_0=1$, $d_1=-2\lambda\zeta(2)$, and
+$d_2=-\lambda\zeta(4)+2\lambda^2\zeta(2)^2$.
+
+\begin{theorem}[All logarithmic Stieltjes moments]\label{beta:completion}
+For every integer $p\geq0$ the expression
+\begin{align}\label{beta:Hp}
+ \mathcal H_p(u,\lambda)
+ ={}&(-1)^pP_p(u)A(1+p+u,\lambda)
+       -\ind_{p=0}\frac{C_0(\lambda)}u\notag\\
+ &-\ind_{2\mid p}
+       \frac{(-1)^pP_p(u)d_{p/2}(\lambda)}{2\lambda-u}
+\end{align}
+extends holomorphically to a neighborhood of $(u,\lambda)=(0,0)$.
+For all integers $m,k\geq0$,
+\begin{equation}\label{beta:allmoments}
+ \boxed{\displaystyle
+ \FP\int_0^1\gamma_m^{(p)}(x)\ell(x)^k\dd x
+  =\frac{(-1)^m m!k!}{2^k}
+      [u^m\lambda^k]\mathcal H_p(u,\lambda).}
+\end{equation}
+The finite part is exactly the unit-coordinate convention
+\eqref{scope:FP}.
+\end{theorem}
+
+\begin{proof}
+The Hurwitz shift equation gives, near $x=0$,
+\begin{equation}\label{beta:local}
+ \partial_x^p\left(\zeta(1+u,x)-\frac1u\right)
+ =(-1)^pP_p(u)x^{-1-p-u}+h_p(u,x),
+\end{equation}
+where $h_p$ is holomorphic jointly near $(u,x)=(0,0)$.
+For $p=0$ the subtraction $1/u$ is retained inside $h_0$;
+for $p>0$ its derivative is zero. Moreover
+\[
+ W_\lambda(x)=x^{2\lambda}\sum_{j\geq0}d_j(\lambda)x^{2j}.
+\]
+Integration of the singular product from zero to a fixed
+$\delta\in(0,1)$ produces the denominators
+$2\lambda-u+2j-p$. Only $j=p/2$ can vanish at the origin, and it
+occurs only when $p$ is even. Its full numerator is the one displayed
+in \eqref{beta:Hp}. Subtracting finitely many endpoint terms makes
+the remaining integral locally normally convergent; all the other
+denominators are bounded away from zero. The endpoint $x=1$ has only
+the integrable analytic family $(1-x)^{2\lambda}$ times analytic
+functions and creates no divisor through $(0,0)$. The pole $1/u$ of
+the original Hurwitz function contributes $C_0(\lambda)/u$ only
+when $p=0$. This proves joint holomorphy.
+
+For completeness, the local resonant integral is
+$N(u,\lambda)\delta^{2\lambda-u}/(2\lambda-u)$. After subtracting
+the entire quotient $N(u,\lambda)/(2\lambda-u)$, its Taylor
+coefficients are those of
+$N(u,\lambda)(\delta^{2\lambda-u}-1)/(2\lambda-u)$.
+These are precisely the constants left by integrating the corresponding
+powers of $\log x$ in the coordinate $x$. All nonresonant terms have
+the same property by ordinary analytic continuation of
+$(\delta^a-\epsilon^a)/a$. Thus Taylor coefficients commute with the
+specified finite part after the full subtraction. Applying
+\eqref{scope:stieltjes} and
+$W_\lambda=\sum_k2^k\ell^k\lambda^k/k!$ proves
+\eqref{beta:allmoments}.
+\end{proof}
+
+\begin{corollary}\label{beta:zero}
+For every $m,p\geq0$,
+\[
+ \FP\int_0^1\gamma_m^{(p)}(x)\dd x=0.
+\]
+\end{corollary}
+\begin{proof}
+The meromorphic identity $A(s,0)=0$ follows from
+\eqref{beta:dirichlet}, since all nonzero Fourier coefficients
+vanish. Also $d_j(0)=0$ for $j>0$. In \eqref{beta:Hp} the two
+remaining terms for $p=0$ cancel along $\lambda=0$; for $p>0$ each
+term vanishes there. Hence $\mathcal H_p(u,0)=0$ as a holomorphic
+germ.
+\end{proof}
+
+\begin{remark}[A removable limit need not equal a coordinate finite part]
+\label{beta:anomaly}
+For an even integer $p\geq2$, meromorphic continuation from a
+convergence domain gives
+\begin{equation}\label{beta:anomalyformula}
+ \lim_{\lambda\to0}
+ \left(\int_0^1\psi^{(p)}(x)W_\lambda(x)\dd x\right)_{\mathrm{cont}}
+ =2(p-1)!\zeta(p),
+ \qquad
+ \FP\int_0^1\psi^{(p)}(x)\dd x=0.
+\end{equation}
+Indeed $d_{p/2}'(0)=-4\zeta(p)/p$, and the unsubtracted crossing
+quotient along $u=0$ is
+$-p!d_{p/2}(\lambda)/(2\lambda)$ for the polygamma integral.
+This gives the first value, while Corollary~\ref{beta:zero} gives the
+second. For $p=2$ the discrepancy is $2\zeta(2)$. The correction is
+to remove the \emph{full analytic numerator}, including terms that
+vanish at the crossing. This is a normalization warning about a
+tempting extension, not a claim that the incoming completed-germ
+theorems make this error.
+\end{remark}
+
+\subsection{Cotangent powers and normalized antiderivatives}
+
+Let $K(x)=\pi\cot\pi x$. The identity
+$K^2=W_{\lambda-1}/W_\lambda-\pi^2$ implies
+\begin{equation}\label{beta:evencot}
+ \int_0^1\zeta(s,x)K(x)^{2h}W_\lambda(x)\dd x
+ =\sum_{j=0}^h\binom hj(-\pi^2)^{h-j}A(s,\lambda-j).
+\end{equation}
+Since $W_\mu'=2\mu K W_\mu$ and
+$\partial_x\zeta(s,x)=-s\zeta(s+1,x)$, integration by parts in
+an endpoint-convergent domain gives
+\begin{equation}\label{beta:oddcot}
+ \int_0^1\zeta(s,x)K(x)^{2h+1}W_\lambda(x)\dd x
+ =\sum_{j=0}^h\binom hj(-\pi^2)^{h-j}
+   \frac{s}{2(\lambda-j)}A(s+1,\lambda-j).
+\end{equation}
+These are meromorphic identities. A zero denominator on the right
+requires continuation and, for a coordinate finite part, the same
+local completion as above. The polynomial cotangent closure already
+proved in \cite{RepoExact} is therefore embedded in a complex-power
+family rather than claimed afresh.
+
+The symmetric Gamma primitive is particularly simple:
+\begin{proposition}\label{beta:gammaprimitive}
+For $\Re\lambda>-1/2$,
+\begin{equation}\label{beta:gamma}
+ \int_0^1\log\Gamma(x)W_\lambda(x)\dd x=-\frac14C_0'(\lambda).
+\end{equation}
+Consequently every $k\geq0$ satisfies the ordinarily convergent identity
+\begin{equation}\label{beta:gammalogs}
+ \int_0^1\log\Gamma(x)\ell(x)^k\dd x
+ =-\frac{C_0^{(k+1)}(0)}{2^{k+2}}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Gamma reflection gives
+$\log\Gamma(x)+\log\Gamma(1-x)=-\ell(x)$. Multiply by the symmetric
+weight and integrate. The right side is $-C_0'(\lambda)/2$, while
+the left side is twice the desired integral. Differentiation is
+justified by endpoint domination on compact subsets of the stated
+half-plane.
+\end{proof}
+
+For arbitrary Stieltjes index, the normalized antiderivative generator
+is
+\begin{equation}\label{beta:primitivegenerator}
+ \mathcal P(u,x)=-\frac{\zeta(u,x)-\zeta(u,1)+x-1}{u}.
+\end{equation}
+Its apparent singularity at $u=0$ is removable because
+$\zeta(0,x)=1/2-x$. The Hurwitz derivative identity proves
+\begin{equation}\label{beta:primitivecoeff}
+ \partial_x\mathcal P(u,x)=\zeta(1+u,x)-\frac1u,
+ \qquad
+ \int_1^x\gamma_m(t)\dd t=(-1)^m m![u^m]\mathcal P(u,x).
+\end{equation}
+In particular $\mathcal P(0,x)=-\log\Gamma(x)$ by Lerch's formula.
+The normalization at $x=1$ fixes the integration constant before any
+reflection or finite-part operation. Iterating ordinary integration
+of this holomorphic generator gives normalized higher primitives.
+
+\subsection{Harmonic jets of the weight}
+
+\begin{proposition}\label{beta:harmonicjets}
+For every integer $n\geq1$ the germ of its Fourier coefficient is
+\begin{align}\label{beta:jet}
+ c_n(\lambda)=-\frac\lambda n\exp\bigg(&-2L\lambda
+ +\sum_{j\geq2}\frac{(-1)^j(2^j-2)\zeta(j)}j\lambda^j\notag\\
+ &-\sum_{j\geq1}
+ \frac{H_{n-1}^{(j)}+(-1)^{j+1}H_n^{(j)}}j\lambda^j\bigg).
+\end{align}
+Thus every logarithmic sine moment is generated by finite polynomials
+in generalized harmonic numbers and ordinary zeta constants.
+\end{proposition}
+\begin{proof}
+Factor \eqref{beta:pochhammer} as
+\[
+ c_n=-\frac\lambda n C_0(\lambda)
+  \frac{\prod_{j=1}^{n-1}(1-\lambda/j)}
+       {\prod_{j=1}^{n}(1+\lambda/j)}.
+\]
+Expanding the logarithm of each finite product and using the Taylor
+series of $\log\Gamma(1+\lambda)$ gives \eqref{beta:jet}.
+Each fixed coefficient requires only finitely many terms. Initially
+the differentiated Dirichlet series converges normally in a smaller
+half-plane; its extension is then supplied by
+Theorem~\ref{beta:completion}.
+\end{proof}
+
+The first two terms illustrate the inclusive harmonic convention:
+\begin{equation}\label{beta:firstjets}
+ c_n(\lambda)=-\frac\lambda n+\lambda^2
+ \left(\frac{2(L+H_n)}n-\frac1{n^2}\right)+O(\lambda^3).
+\end{equation}
+More explicitly, if $J_k(s)=\int_0^1\zeta(s,x)\ell(x)^k\dd x$,
+then in its initial domain
+\begin{equation}\label{beta:belltransform}
+ J_k(s)=\frac{k!}{2^k}B(s)
+ \sum_{n\geq1}[\lambda^k]c_n(\lambda)n^{s-1}.
+\end{equation}
+This is a finite Bell-polynomial construction at each fixed $k$, not
+an assertion that all resulting harmonic constants have already been
+reduced to ordinary ones.
+
+\subsection{The first two logarithmic moments and an exact cancellation}
+
+For $k=1$, the classical transform becomes
+\begin{align}\label{beta:J1}
+ J_1(s)&=-\Gamma(1-s)(2\pi)^{s-1}
+                \sin\frac{\pi s}{2}\zeta(2-s)\notag\\
+ &=\frac{\pi\cot(\pi(s-1)/2)}{s-1}\zeta(s-1).
+\end{align}
+The second expression follows from the Riemann functional equation.
+The completed germ is
+\begin{equation}\label{beta:J1completion}
+ J_1(1+u)+\frac1{u^2}+\frac L u.
+\end{equation}
+Its $u^m$ coefficient, multiplied by $(-1)^m m!$, is
+$\FP\int\gamma_m\ell$. In particular,
+\begin{equation}\label{beta:firstmoment}
+ \FP\int_0^1\gamma_0(x)\ell(x)\dd x
+ =\zeta''(0)+\frac{\zeta(2)}2.
+\end{equation}
+This also cross-checks the log-Gamma--cotangent specialization in
+\cite{RepoExact}; neither \eqref{beta:J1} nor that specialization is
+claimed to be new.
+
+Write the \emph{inclusive} harmonic zeta function as
+\begin{equation}\label{beta:Hzeta}
+ \zeta_H(v)=\sum_{n\geq1}\frac{H_n}{n^v}
+ =\frac1{(v-1)^2}+\frac\gamma{v-1}
+  +\sum_{j\geq0}\frac{(-1)^j\gamma_H(j)}{j!}(v-1)^j.
+\end{equation}
+Here $\gamma_H(0)=(\gamma^2+\zeta(2))/2$; this normalization and
+its Laurent theory are established in \cite{Kargin,Can}.
+
+\begin{theorem}[The sine-square bridge]\label{beta:secondmoment}
+One has
+\begin{equation}\label{beta:J2}
+ J_2(s)=B(s)\left\{L\zeta(2-s)+\zeta_H(2-s)
+                       -\frac12\zeta(3-s)\right\}.
+\end{equation}
+Its completion at $s=1+u$ is
+\begin{equation}\label{beta:J2completion}
+ J_2(1+u)+\frac2{u^3}-\frac{L^2+\zeta(2)/2}{u}.
+\end{equation}
+In particular,
+\begin{align}\label{beta:P2}
+ \FP\int_0^1\psi(x)\ell(x)^2\dd x
+ ={}&2\gamma_H(1)+\zeta'(2)+2L\gamma_1
+    +\frac{\gamma^3}3+\gamma^2L\notag\\
+   &-\frac{2L^3}3+\frac{2\zeta(3)}3.
+\end{align}
+Combining this with the already proved cubic harmonic bridge yields
+the ordinary-constant identity
+\begin{align}\label{beta:cancellation}
+ \boxed{\begin{aligned}
+ \FP\int_0^1\bigl\{\psi(x)^3-3\psi(x)\ell(x)^2\bigr\}\dd x
+ ={}&3\zeta(2)+3\zeta'(2)-6(\gamma+L)\gamma_1\\
+   &-\gamma^3-3\gamma^2L+2L^3-2\zeta(3).
+ \end{aligned}}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Equation \eqref{beta:J2} is the second coefficient of
+\eqref{beta:firstjets} in \eqref{beta:belltransform}.
+The polar terms of \eqref{beta:J2completion} also follow directly
+by taking the second $\lambda$ coefficient of
+$C_0(\lambda)/u+1/(2\lambda-u)$ in
+Theorem~\ref{beta:completion}. To make the constant calculation
+explicit, set $a=\gamma+L$. Then
+\[
+ B(1+u)=-\frac2u
+ \exp\left(au-\frac{\zeta(2)}4u^2+\frac{\zeta(3)}3u^3+O(u^4)\right),
+\]
+and the braces in \eqref{beta:J2} equal
+\[
+ \frac1{u^2}-\frac a u+L\gamma+\frac{\gamma^2}2
+  +u\left(L\gamma_1+\gamma_H(1)+\frac{\zeta'(2)}2\right)+O(u^2).
+\]
+Multiplication gives the negative of \eqref{beta:P2}, because
+$\gamma_0=-\psi$.
+
+The incoming cubic report \cite{RepoCubic} proves, in precisely this
+coordinate convention,
+\begin{equation}\label{beta:inheritedcube}
+ \FP\int_0^1\psi(x)^3\dd x
+ =3\zeta(2)+6\gamma_H(1)+6\zeta'(2)-6\gamma\gamma_1.
+\end{equation}
+Subtracting three times \eqref{beta:P2} cancels $\gamma_H(1)$
+identically and gives \eqref{beta:cancellation}. This use of the cubic
+bridge is explicit: we prove the new cancellation, not a new proof
+claim for the inherited bridge.
+\end{proof}
+
+The individual quantities are, for orientation,
+\begin{align*}
+ \FP\int_0^1\psi(x)^3\dd x
+   &=1.9662627343915343406643753384116314\ldots,\\
+ \FP\int_0^1\psi(x)\ell(x)^2\dd x
+   &=-3.0645068706816349567044046185265270\ldots.
+\end{align*}
+Their combination in \eqref{beta:cancellation} is
+$11.1597833464364392107775891939912123\ldots$.
+These decimals come from independent endpoint-subtracted quadratures
+and harmonic-tail evaluation in the supplied check script. They are
+diagnostics; the coefficient identities and the inherited theorem are
+the proof. No reduction of $\gamma_H(1)$ itself to ordinary constants
+is inferred from its disappearance in this particular combination.

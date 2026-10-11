@@ -1,0 +1,200 @@
+{
+  "title": "Quartic Digamma Bridges, Harmonic Tail Moments, and Complex Resolvent Powers",
+  "date_utc": "2026-10-11",
+  "source_revision": "7bd45777a8a127e5dc69aff8887ca36a79a3059d",
+  "novelty_scope": "New relative to the inspected ProveIt corpus; no exhaustive global priority claim.",
+  "proof_scope": "Written analytic proofs, independently reviewed; no formal proof-assistant certificate.",
+  "claims": [
+    {
+      "id": "Q4-BRIDGE",
+      "status": "proved",
+      "title": "Quartic digamma finite part and strict depth-three harmonic coefficient",
+      "labels": [
+        "q4:main",
+        "q4:bridge",
+        "q4:arithmetic",
+        "q4:single-coordinate"
+      ],
+      "domain": "Coordinate finite part on (0,1), with the endpoint coordinate x fixed.",
+      "source_question": "Cubic Harmonic Q6, explicitly requested k=4 case",
+      "dependencies": [
+        "Digamma recurrence/reflection and asymptotics",
+        "Classical convergent Euler sums",
+        "Inherited cubic bridge for the depth-two cancellation only"
+      ],
+      "limitation": "No all-k reduction, ordinary-constant evaluation of theta, or arithmetic independence claim.",
+      "verification": "verification/verify_quartic_bridge.py"
+    },
+    {
+      "id": "Q4-PRIMITIVE",
+      "status": "proved",
+      "title": "Normally convergent normalized primitive and all argument derivatives",
+      "labels": [
+        "q4:ML",
+        "q4:primitive",
+        "q4:derivatives"
+      ],
+      "domain": "Primitive on Re(z)>0; derivative hierarchy away from nonpositive integer poles.",
+      "normalization": "Primitive has constant coefficient zero at its singular origin.",
+      "verification": "verification/verify_quartic_bridge.py"
+    },
+    {
+      "id": "TAIL-ALL",
+      "status": "proved",
+      "title": "Every centered nonpositive even moment of two even harmonic tails",
+      "labels": [
+        "tail:ordinary",
+        "tail:all-moments"
+      ],
+      "domain": "Even p,q>=2 and every integer r>=0.",
+      "source_question": "Harmonic Parity R1, pure two-tail family",
+      "dependencies": [
+        "Exact finite Faulhaber summation",
+        "Centered Hurwitz asymptotics and trivial zeros"
+      ],
+      "limitation": "Does not include extra H_n factors, odd harmonic factors, four tails, or spectral derivatives.",
+      "verification": "verification/verify_mixed_tails.py"
+    },
+    {
+      "id": "TAIL-SPACE",
+      "status": "proved",
+      "title": "Fixed ordinary-zeta spanning set independent of moment order",
+      "labels": [
+        "tail:fixed-space",
+        "tail:Euler-reduction"
+      ],
+      "domain": "Each fixed even pair p,q>=2.",
+      "dependencies": [
+        "Borwein–Borwein–Girgensohn odd-weight double-zeta reduction"
+      ],
+      "limitation": "At most max(p,q) specified coordinates; no arithmetic independence claim.",
+      "verification": "verification/verify_mixed_tails.py"
+    },
+    {
+      "id": "TAIL-24",
+      "status": "proved",
+      "title": "All (2,4) moments generated rationally by the first four",
+      "labels": [
+        "tail:24-blocks",
+        "tail:24-eliminations",
+        "tail:rational-polygamma"
+      ],
+      "domain": "All centered even moments for p=2,q=4.",
+      "consequence": "An explicitly subtracted ordinary convergent polygamma series equals -88.",
+      "verification": "verification/verify_mixed_tails.py"
+    },
+    {
+      "id": "TAIL-EGF",
+      "status": "proved",
+      "title": "Analytic all-pair generator and finite classical-polylogarithm expression",
+      "labels": [
+        "tail:generator",
+        "tail:24-Li-body"
+      ],
+      "domain": "Holomorphic EGF for |t|<2*pi; displayed Li_k(e^-t) formula first for real 0<t<2*pi.",
+      "normalization": "Integral form fixes holomorphic continuation at t=0.",
+      "limitation": "The full EGF retains the elementary factor t/(2*sinh(t/2)).",
+      "verification": "verification/verify_mixed_tails.py"
+    },
+    {
+      "id": "POWER-EULER",
+      "status": "proved",
+      "title": "Beta mixture of ordinary polylogarithms and complex-power Hurwitz transform",
+      "labels": [
+        "power:eulerthm",
+        "power:hurwitzthm",
+        "power:gamma"
+      ],
+      "domain": "Euler mixture: -1<Re(lambda)<1, |q|<1, Re(nu+lambda)>0. Ordinary Hurwitz integral: Re(lambda)>-1, Re(u+lambda)>p, excluding the Hurwitz pole when p=0.",
+      "source_question": "Harmonic Parity R4",
+      "normalization": "Continuous Log R from log x at zero; nonreal z selects a half-plane.",
+      "limitation": "Spectral meromorphic continuation is distinct from exceptional pointwise specialization.",
+      "verification": "verification/check_moments.py"
+    },
+    {
+      "id": "POWER-COMPLETION",
+      "status": "proved",
+      "title": "Full joint Stieltjes completion at every integer power",
+      "labels": [
+        "power:completion",
+        "power:noninteger",
+        "power:smoothcontact"
+      ],
+      "domain": "p,m,k>=0, every integer L, nonreal z; separate noninteger-lambda formula.",
+      "source_question": "Harmonic Parity R4",
+      "normalization": "Fixed endpoint coordinates x and 1-x; both full moving amplitudes retained.",
+      "limitation": "Negative-power removable quotient has a nonzero finite value and must not be omitted.",
+      "verification": "verification/check_contacts.py"
+    },
+    {
+      "id": "POWER-LOG",
+      "status": "proved",
+      "title": "All Stieltjes indices with one resolvent logarithm",
+      "labels": [
+        "power:logcor",
+        "power:logexplicit",
+        "power:logspecial"
+      ],
+      "domain": "m>=0, nonreal z.",
+      "dependencies": [
+        "First lambda derivative of the explicit Fourier coefficients",
+        "Completed joint germ"
+      ],
+      "verification": "verification/check_moments.py"
+    },
+    {
+      "id": "POWER-PRIMITIVES",
+      "status": "proved",
+      "title": "All logarithmic parameter derivatives and normalized primitives",
+      "labels": [
+        "power:zladder",
+        "power:normalizedprimitive"
+      ],
+      "domain": "Within either fixed open half-plane, arbitrary nonnegative m,p,k and integral L.",
+      "normalization": "Difference at a specified base point z0 in the same half-plane.",
+      "verification": "verification/check_contacts.py"
+    },
+    {
+      "id": "MOMENT-GAUSS",
+      "status": "proved",
+      "title": "Every ordinary exponential and Bernoulli moment",
+      "labels": [
+        "moment:thm:exponential",
+        "moment:cor:first",
+        "moment:thm:bernoulli"
+      ],
+      "domain": "Nonreal z, Re(lambda)>-1; exponential parameter t arbitrary complex.",
+      "dependencies": [
+        "Classical regularized Gauss beta integral",
+        "Gamma reflection"
+      ],
+      "normalization": "Regularized Gauss series used at third-parameter resonances.",
+      "verification": "verification/check_moments.py"
+    },
+    {
+      "id": "CONTACT-RESIDUE",
+      "status": "proved",
+      "title": "Independent all-integer residue proof of the negative-power contact",
+      "labels": [
+        "contact:residue",
+        "contact:identity"
+      ],
+      "domain": "Every positive integer M; either half-plane sign.",
+      "verification": "verification/check_contacts.py"
+    }
+  ],
+  "open_status": {
+    "Gaussian_S6": "open",
+    "revised_Gaussian_S8": "open",
+    "all_powers_k_ge_5": "open",
+    "ordinary_constant_reduction_of_theta": "open",
+    "embellished_harmonic_R1_products": "open",
+    "first_spectral_tail_derivatives": "open"
+  },
+  "verification_totals": {
+    "exact_positive_checks": 183,
+    "deliberate_corruptions_rejected": 21,
+    "interval_arithmetic": false,
+    "full_packaged_replay": "PASS"
+  }
+}

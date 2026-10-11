@@ -1,0 +1,156 @@
+\section{All-index Stieltjes identities and Gamma specializations}
+\label{clc:sec:stieltjes}
+
+\subsection{Ordinary products of normalized order jets}
+Define the normalized order jets
+\begin{equation}\label{clc:eq:Ljet}
+ \mathscr L_{q,n}^{A}(x)=
+       \left.\partial_s^n h_{q,A,s}(x)\right|_{s=0}.
+\end{equation}
+The normalization $q^{-s}$ is part of this definition; its derivatives
+contribute powers of $-\log q$. For a multi-index
+$\boldsymbol n=(n_1,\ldots,n_r)$, $M=\sum_jn_j$, Theorem
+\ref{clc:thm:addition} gives the ordinary product law
+\begin{equation}\label{clc:eq:jet-product}
+ \int_{\R^{r-1}}\prod_{j=1}^r\mathscr L_{q_j,n_j}^{A}(x_j)
+                  \dd\boldsymbol x
+ =\CC_{\bq,A}^{[M]}(0;0),\qquad x_r=-\sum_{j<r}x_j.
+\end{equation}
+It is absolutely convergent. In particular, even at unequal scales the
+answer depends on the distribution of order derivatives only through
+their total $M$. It is not a Hermitian product, so no positivity of
+these Stieltjes expressions is implied.
+
+Here are the exact rules that turn every central closure into Stieltjes
+and zeta derivatives:
+\begin{align}
+ \EE_a^{[h]}(0)&=
+ \begin{cases}1,&h=0,\\(-1)^{h-1}h\gamma_{h-1}(a),&h\ge1,
+ \end{cases}\label{clc:eq:Ejet}\\
+ \EE_a^{[h]}(v)&=v\zeta^{[h]}(v+1,a)
+                +h\zeta^{[h-1]}(v+1,a)\quad(v\ne0).
+ \label{clc:eq:Ejet-nonzero}
+\end{align}
+The second term in \eqref{clc:eq:Ejet-nonzero} is absent when $h=0$.
+The first identity is just the Laurent convention
+\eqref{clc:eq:stieltjes-convention} multiplied by $v$.
+
+For example, when $\sigma=1$ an explicit all-index coefficient formula
+for the right side of \eqref{clc:eq:jet-product} is
+\begin{align}
+ M![z^M]Q^{-z}\biggl\{&-\sum_\rho a_{\rho,1}
+         [\zeta(z,b_\rho)-\zeta(z,b_*)]\notag\\
+ &+\sum_\rho\sum_{k=2}^{d_\rho}
+ \frac{(-1)^ka_{\rho,k}}{(k-1)!Q^{k-1}}
+      (z)_{k-2}\EE_{b_\rho}(z+k-2)\biggr\}.
+ \label{clc:eq:alljet-coeff}
+\end{align}
+This is finite coefficient extraction from explicitly given analytic
+germs. The only Stieltjes constants in it arise from
+\eqref{clc:eq:Ejet}; the other terms involve ordinary zeta order
+derivatives at zero or positive integers. For $\sigma=-1$, use instead
+\begin{equation}\label{clc:eq:alljet-eta}
+ M![z^M]Q^{-z}\sum_\rho\sum_{k=1}^{d_\rho}
+ \frac{(-1)^ka_{\rho,k}}{(k-1)!Q^{k-1}}
+             (z)_{k-1}\eta(z+k-1,b_\rho).
+\end{equation}
+These formulas, together with finite product differentiation, are
+explicit at every index; they do not require a recurrence fitted to
+low-order data.
+
+\subsection{Generalized harmonic coefficients}
+For $j\ge1$ the exact local identity
+\begin{equation}\label{clc:eq:poch-harmonic}
+ (z)_j=(j-1)!z\exp\left(
+       \sum_{h=1}^\infty\frac{(-1)^{h-1}}h H_{j-1}^{(h)}z^h\right)
+\end{equation}
+follows by taking the logarithm of
+$\prod_{k=1}^{j-1}(1+z/k)$. Consequently, for $1\le l\le j$,
+\begin{equation}\label{clc:eq:poch-Bell}
+ \left.\partial_z^l(z)_j\right|_{z=0}
+ =l(j-1)!\mathcal B_{l-1}
+ \bigl(H_{j-1},-H_{j-1}^{(2)},2!H_{j-1}^{(3)},\ldots\bigr).
+\end{equation}
+Derivatives of order greater than $j$ vanish because $(z)_j$ is a
+polynomial. Equations \eqref{clc:eq:alljet-coeff}--\eqref{clc:eq:poch-Bell}
+therefore express every jet by finite generalized-harmonic polynomials,
+zeta derivatives, and Stieltjes constants. At other integer resonances,
+the finite polynomial should be shifted and expanded directly; dividing
+by a vanishing Pochhammer factor is unnecessary and unsafe.
+
+\subsection{A short all-index formula for two scales}
+Put $b_r=(A+r)/m$ and $b_m=1+A/m$. Define
+$e_0(b)=1$ and $e_h(b)=(-1)^{h-1}h\gamma_{h-1}(b)$ for $h\ge1$.
+For odd $m$, Theorem~\ref{clc:thm:pair} gives
+\begin{equation}\label{clc:eq:odd-pair-jet}
+ \boxed{\displaystyle
+ D_m^{[M]}(0;A)=\frac1m\sum_{h=0}^M\binom Mh(-\log m)^{M-h}
+ \left[\pi\sum_{r=1}^{m-1}c_r^{(m)}\zeta^{[h]}(0,b_r)
+                       +e_h(b_m)\right].}
+\end{equation}
+For even $m$, the corresponding formula is
+\begin{equation}\label{clc:eq:even-pair-jet}
+ \boxed{\displaystyle
+ D_m^{[M]}(0;A)=\frac1m\sum_{h=0}^M\binom Mh(-\log m)^{M-h}
+ \left[\pi\sum_{r=1}^{m-1}c_r^{(m)}\eta^{[h]}(0,b_r)
+               -h\eta^{[h-1]}(1,b_m)\right],}
+\end{equation}
+where the last term is zero when $h=0$. These identities follow from
+the ordinary product rule applied to
+$D_m(W;A)=m^{-W-1}[\cdots]$ in \eqref{clc:eq:pair}; all differentiated
+integrals are justified by the weighted lemma.
+
+The apparently separate eta jets at one are themselves finite
+Stieltjes differences:
+\begin{equation}\label{clc:eq:eta-Stieltjes}
+ \eta^{[h]}(1,b)=\frac12\sum_{j=0}^h\binom hj(-\log2)^{h-j}(-1)^j
+ \left[\gamma_j\left(\frac b2\right)
+       -\gamma_j\left(\frac{b+1}2\right)\right].
+\end{equation}
+Indeed the two Hurwitz poles in \eqref{clc:eq:eta} cancel before
+multiplication by $2^{-v}$; expansion at $v=1$ then gives the formula.
+For $h=0$ it agrees with
+\begin{equation}\label{clc:eq:eta-one}
+ \eta(1,b)=\frac12\left[\psi\left(\frac{b+1}2\right)
+                              -\psi\left(\frac b2\right)\right].
+\end{equation}
+This check fixes the sign of every Stieltjes difference.
+
+\subsection{Quarter-Gamma and third-Gamma product identities}
+The classical identity
+$\zeta^{[1]}(0,b)=\log\Gamma(b)-\tfrac12\log(2\pi)$
+\cite{DLMF25} gives
+\begin{equation}\label{clc:eq:eta-zerojet}
+ \eta^{[1]}(0,b)=\log\Gamma(b/2)-\log\Gamma((b+1)/2)
+                              -\frac12\log2.
+\end{equation}
+Here and below the logarithm of Gamma is the holomorphic one on the
+right half-plane, real on the positive axis.
+At $A=0$, two explicit consequences are
+\begin{align}
+ D_2^{[1]}(0;0)
+ &=\frac\pi2\log\frac{\Gamma(1/4)}{\Gamma(3/4)}
+                  -\frac{\pi+1}{2}\log2,\label{clc:eq:quarter}\\
+ D_3^{[1]}(0;0)
+ &=\frac{2\pi}{3\sqrt3}\log\frac{\Gamma(1/3)}{\Gamma(2/3)}
+   -\frac{2\pi\log3}{9\sqrt3}+\frac{\gamma-\log3}{3}.
+ \label{clc:eq:third}
+\end{align}
+By \eqref{clc:eq:jet-product}, the first value is, for example,
+\[
+ \int_\R\mathscr L_{1,1}^{0}(x)\mathscr L_{2,0}^{0}(-x)\dd x
+ =\int_\R\mathscr L_{1,0}^{0}(x)\mathscr L_{2,1}^{0}(-x)\dd x.
+\]
+The derivative inside the second integral includes the scale
+normalization, so this does not contradict \eqref{clc:eq:swap}.
+
+One order higher, \eqref{clc:eq:pair3} in normalized form gives
+\begin{equation}\label{clc:eq:third2}
+ D_3^{[2]}(0;0)=\frac{2\pi}{3\sqrt3}L^{[2]}(0,\chi_{-3})
+       +\frac{(\log3)^2-2\gamma\log3-2\gamma_1}{3}.
+\end{equation}
+Thus an ordinary product of first order jets, with two different scales,
+contains a Dirichlet $L$-derivative and the first Stieltjes constant in
+one exact formula. General $A$ in \eqref{clc:eq:odd-pair-jet} and
+\eqref{clc:eq:even-pair-jet} replaces these by generalized Stieltjes
+constants and shifted Gamma values.

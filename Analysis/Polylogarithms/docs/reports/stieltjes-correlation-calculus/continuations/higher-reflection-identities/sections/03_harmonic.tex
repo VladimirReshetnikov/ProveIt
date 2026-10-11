@@ -1,0 +1,360 @@
+\section{A complete criterion for centered harmonic pole cancellation}
+\label{hc:section}
+
+Question~11 of the incoming Exact Resonant Identities report \cite{RepoExact} asks which
+polynomials in generalized harmonic numbers have no principal part at
+any nonpositive even spectral integer when the outer shift is $1/2$.
+The criterion below is finite and necessary as well as sufficient.
+The necessity is the substantive point: parity of the individual
+asymptotic expansions alone supplies only one implication.
+
+For a fixed $R\ge1$, write
+\[
+ H_n^{(r)}=\sum_{k=1}^n k^{-r},\qquad H_n^{(1)}=H_n,
+ \qquad
+ D_P(s)=\sum_{n=0}^{\infty}
+ \frac{P(H_n^{(1)},\ldots,H_n^{(R)})}{(n+1/2)^s},
+ \quad P\in\mathbb C[X_1,\ldots,X_R].
+\]
+The defining series is absolutely convergent for $\Re s>1$.
+As usual $H_0^{(r)}=0$, so the finite $n=0$ term is retained.
+Define an involution $\iota$ on the polynomial ring by
+\begin{equation}\label{hc:involution}
+ \iota(X_{2k})=2\zeta(2k)-X_{2k},\qquad
+ \iota(X_{2k+1})=X_{2k+1},\qquad \iota(X_1)=X_1.
+\end{equation}
+Only variables whose indices are at most $R$ are used.
+
+\begin{theorem}[Necessary and sufficient centered cancellation]
+\label{hc:main}
+The function $D_P$ has a meromorphic continuation to $\mathbb C$.
+It is holomorphic at every point $s=0,-2,-4,\ldots$ if and only if
+\begin{equation}\label{hc:criterion}
+                         \iota(P)=P.
+\end{equation}
+Equivalently, put $Y_{2k}=X_{2k}-\zeta(2k)$. After expressing $P$ in
+the variables $X_1,X_3,X_5,\ldots$ and $Y_2,Y_4,Y_6,\ldots$, every
+monomial that occurs must have even total degree in the $Y$ variables.
+The invariant algebra is therefore
+\begin{equation}\label{hc:invariant-ring}
+ \mathbb C\bigl[X_1,X_3,X_5,\ldots,
+        Y_{2i}Y_{2j}\ (1\le i\le j\le\lfloor R/2\rfloor)\bigr].
+\end{equation}
+This is a generating description, not a claim that the displayed
+quadratic generators are algebraically independent.
+\end{theorem}
+
+For example, every polynomial in odd-order harmonic numbers has the
+cancellation, as does every product of an even number of even-order
+tails. Thus the numerators
+\[
+ H_n^{(3)},\qquad
+ H_n^2H_n^{(5)},\qquad
+ (H_n^{(2)}-\zeta(2))^2,\qquad
+ (H_n^{(2)}-\zeta(2))(H_n^{(4)}-\zeta(4))
+\]
+all satisfy the criterion. The two even-order factors need not be equal.
+The raw numerator $(H_n^{(2)})^2$ fails: its simple-pole coefficient
+at $s=0$ is $-2\zeta(2)$.
+
+\subsection{Bernoulli coefficients and the principal parts}
+
+Use $x=n+1/2$, $z=x^{-1}$, and the formal symbol $\mathcal L=\log x$. Define
+\begin{align}
+ h_1(z,\mathcal L)&=\mathcal L+\gamma-
+           \sum_{k\ge1}\frac{B_{2k}(1/2)}{2k}z^{2k},\label{hc:h1}\\
+ h_r(z)&=\zeta(r)-\frac{z^{r-1}}{r-1}
+  -\sum_{k\ge1}\frac{B_{2k}(1/2)}{(2k)!}(r)_{2k-1}
+                         z^{r+2k-1},\qquad r\ge2.\label{hc:hr}
+\end{align}
+These are formal asymptotic series; no convergence of the infinite
+Bernoulli expansions is asserted. Each finite truncation is the
+usual shifted polygamma or Hurwitz-zeta asymptotic expansion \cite{DLMFGamma,DLMFHurwitz}, with
+a remainder sufficient for termwise Dirichlet subtraction.
+Expand
+\begin{equation}\label{hc:A}
+ P(h_1,h_2,\ldots,h_R)=\sum_{j\ge0}A_j(\mathcal L)z^j,
+             \qquad A_j\in\mathbb C[\mathcal L].
+\end{equation}
+Every fixed $A_j$ is a finite calculation. The degree in $\mathcal L$ is
+bounded by $\deg_{X_1}P$.
+
+\begin{proposition}[All principal coefficients]
+\label{hc:principal}
+At $s=1-j$, $j\ge0$, the entire Laurent principal part of $D_P$ is
+\begin{equation}\label{hc:principal-formula}
+ \sum_{\ell\ge0}
+ \frac{\ell!\,[\mathcal L^\ell]A_j(\mathcal L)}{(s+j-1)^{\ell+1}}.
+\end{equation}
+Consequently $D_P$ is regular at all nonpositive even integers
+exactly when $A_{2m+1}=0$ for every $m\ge0$.
+\end{proposition}
+\begin{proof}
+Subtract finitely many terms of \eqref{hc:A} from the defining
+series. Each subtracted term sums to
+$(-1)^\ell\partial_s^\ell\zeta(s+j,1/2)$ times its coefficient.
+The finite asymptotic remainder gives a normally convergent series
+in a successively larger left half-plane. These formulas agree on
+overlaps and continue $D_P$ meromorphically. The only principal
+coefficient of $(-1)^\ell\partial_s^\ell\zeta(s+j,1/2)$ is
+$\ell!/(s+j-1)^{\ell+1}$, proving the claim. Distinct logarithmic
+degrees give distinct Laurent powers, so none is lost by merely
+checking the residue.
+\end{proof}
+
+Here are the first three finite Bernoulli tests. Let $\partial_r$
+denote polynomial differentiation with respect to $X_r$, omitting
+indices larger than $R$, and define commuting operators
+\begin{align*}
+ A&=-\partial_2,&
+ B&=\frac{\partial_1}{24}-\frac{\partial_3}{2},&
+ C&=\frac{\partial_2}{12}-\frac{\partial_4}{3},\\
+ D&=-\frac{7\partial_1}{960}+\frac{\partial_3}{8}
+                    -\frac{\partial_5}{4},&
+ E&=-\frac{7\partial_2}{240}+\frac{\partial_4}{6}
+                    -\frac{\partial_6}{5}.
+\end{align*}
+Evaluate the following expressions at
+$\mathbf b(\mathcal L)=(\mathcal L+\gamma,\zeta(2),\ldots,\zeta(R))$:
+\begin{align}
+ A_1(\mathcal L)&=(AP)(\mathbf b(\mathcal L)),\notag\\
+ A_3(\mathcal L)&=\left((C+AB+A^3/6)P\right)(\mathbf b(\mathcal L)),\label{hc:first-tests}\\
+ A_5(\mathcal L)&=\left((E+AD+BC+(A^2C+AB^2)/2
+                   +A^3B/6+A^5/120)P\right)(\mathbf b(\mathcal L)).\notag
+\end{align}
+They follow by expanding the finite translation operator
+$\exp(zA+z^2B+z^3C+z^4D+z^5E+\cdots)$.
+For example,
+\[
+ A_3=\left(\frac{P_2}{12}-\frac{P_4}{3}
+   -\frac{P_{12}}{24}+\frac{P_{23}}2-\frac{P_{222}}6\right)(\mathbf b(\mathcal L)).
+\]
+The rational-coefficient polynomial
+$P=X_2^3-\tfrac{15}{2}X_2X_4$ satisfies $A_1=0$, because
+$\zeta(4)=2\zeta(2)^2/5$, but
+$A_3=\tfrac52\zeta(2)-1\ne0$. Thus its Dirichlet series is regular
+at zero and has a simple pole at $-2$. More generally
+$P=X_{2M+2}-\zeta(2M+2)$ passes all earlier tests and first has a
+pole at $s=-2M$, with residue $-1/(2M+1)$. Finite lists of tested
+spectral centers cannot replace the polynomial criterion when $R$
+is unrestricted.
+
+\subsection{Why the parity criterion is necessary}
+
+The following elementary difference-algebra lemma is the relevant
+form of the classical additive-difference mechanism behind
+H\"older's theorem; compare the general theory in \cite{HardouinSinger}. It is proved here, so the formal-series application
+does not rely on a converse assertion about analytic asymptotic
+expansions.
+
+\begin{lemma}[A polynomial relation forces rational telescoping]
+\label{hc:additive}
+Let $K=\mathbb C(x)$ with $\sigma x=x+1$, and let $E$ be a field
+extension carrying an extension of $\sigma$. Suppose
+$f_1,\ldots,f_d\in E$ satisfy $\sigma f_i=f_i+a_i$, $a_i\in K$.
+If the $f_i$ are algebraically dependent over $K$, then there exist
+constants $c_i\in\mathbb C$, not all zero, and $b\in K$ such that
+\begin{equation}\label{hc:telescoping}
+                       \sum_i c_i a_i=\sigma b-b.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Choose a nonzero polynomial relation $Q(\mathbf f)=0$ of least
+total degree $d_0$. Among such relations choose one with the fewest
+nonzero monomials of degree $d_0$, and divide by one of its leading
+coefficients. That coefficient is now one. The polynomial
+\[
+              \sigma Q(\mathbf X+\mathbf a)-Q(\mathbf X)
+\]
+also vanishes at $\mathbf f$. Its chosen leading monomial cancels,
+and no new degree-$d_0$ monomial is created. Minimality first of
+degree and then of leading support forces this difference to be
+the zero polynomial. If $Q_{d_0}$ is the highest homogeneous part,
+then $\sigma Q_{d_0}=Q_{d_0}$. Every rational periodic coefficient
+is constant, so $Q_{d_0}\in\mathbb C[\mathbf X]$.
+Comparison in degree $d_0-1$ gives
+\[
+ \sigma Q_{d_0-1}-Q_{d_0-1}
+              =-\sum_i a_i\,\partial_i Q_{d_0}.
+\]
+At least one coefficient of the gradient on the right is a
+nonzero vector in $\mathbb C^d$, since $d_0\ge1$ and the
+characteristic is zero. Taking that monomial coefficient and
+reversing the sign of the rational coefficient on the left proves
+\eqref{hc:telescoping}.
+\end{proof}
+
+\begin{lemma}[Independence of the formal centered harmonic series]
+\label{hc:independence}
+For every finite $R$, the formal series $h_1,\ldots,h_R$ in
+\eqref{hc:h1}--\eqref{hc:hr} are algebraically independent over
+$\mathbb C(x)$, where $x=z^{-1}$ and $\mathcal L$ is a formal logarithm.
+\end{lemma}
+\begin{proof}
+Work in $E=\mathbb C((z))(\mathcal L)$. Extend translation by
+\[
+ \sigma z=\frac{z}{1+z},\qquad
+ \sigma \mathcal L=\mathcal L+\log(1+z),
+\]
+and use the derivation $\mathcal D z=-z^2$, $\mathcal D \mathcal L=z$.
+These operations commute. Put $f=h_1-\gamma$.
+The Bernoulli expansion and the digamma recurrence give the formal
+identity
+\[
+ \sigma f-f=\frac1{x+1/2},\qquad
+ \sigma\mathcal D^j f-\mathcal D^j f
+       =\frac{(-1)^j j!}{(x+1/2)^{j+1}}\quad(j\ge0).
+\]
+It can equally be checked coefficientwise from the Bernoulli
+generating function. A nonzero constant linear combination of the
+right sides has exactly one finite pole, at $-1/2$.
+
+No nonzero rational difference $b(x+1)-b(x)$ has just one finite
+pole. Indeed partition the finite poles of $b$ into classes modulo
+$\mathbb Z$. In any nonempty class, the extreme poles of $b$ give
+two distinct, uncanceled extreme poles of its difference. If $b$
+has no finite poles, it is polynomial and its difference is
+polynomial. Lemma~\ref{hc:additive} therefore proves algebraic
+independence of $f,\mathcal Df,\ldots,\mathcal D^{R-1}f$.
+Finally
+\[
+ h_1=f+\gamma,\qquad
+ h_r=\zeta(r)-\frac{(-1)^r}{(r-1)!}\mathcal D^{r-1}f\quad(r\ge2)
+\]
+is an invertible affine change of these variables.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{hc:main}]
+Let $\tau$ act on formal expansions by $z\mapsto-z$, $\mathcal L\mapsto \mathcal L$.
+Equations \eqref{hc:h1}--\eqref{hc:hr} show
+$\tau h_r=\iota(h_r)$: the even harmonic tails change sign and
+the odd harmonic variables do not. By
+Proposition~\ref{hc:principal}, absence of every nonpositive even
+principal part is equivalent to
+$\tau P(\mathbf h)=P(\mathbf h)$, hence to
+$(\iota P-P)(\mathbf h)=0$. Lemma~\ref{hc:independence} makes
+this equivalent to the polynomial identity $\iota P=P$.
+In centered variables $Y_{2k}$ the involution changes all signs
+simultaneously. Its fixed monomials have even total $Y$-degree,
+and each such monomial factors into quadratic pairs. This proves
+\eqref{hc:invariant-ring}.
+\end{proof}
+
+\begin{corollary}[Algebraic coefficients]
+\label{hc:algebraic}
+If $P$ has algebraic-number coefficients, the criterion holds if
+and only if $P$ is independent of every even-index variable.
+\end{corollary}
+\begin{proof}
+Write $\zeta(2k)=c_k\pi^{2k}$ with nonzero $c_k\in\mathbb Q$.
+Since $\pi^2$ is transcendental, invariance of a polynomial over
+$\overline{\mathbb Q}$ under \eqref{hc:involution} implies its
+invariance under the polynomial reflection
+$X_{2k}\mapsto2c_kT^k-X_{2k}$ for every indeterminate $T$.
+Composing two such reflections gives invariance under translations
+by $2(c_kT^k-c_kU^k)_k$. Differentiating in $T$ and then setting
+$T=U$ yields
+\[
+             \sum_k k c_k U^{k-1}\partial_{2k}P=0.
+\]
+Distinct powers of $U$ force each $\partial_{2k}P$ to vanish.
+The converse follows directly from Theorem~\ref{hc:main}.
+\end{proof}
+
+This corollary uses only the established transcendence of $\pi$.
+The main theorem makes no assertion about algebraic independence
+of evaluated zeta or Stieltjes constants.
+
+\subsection{All centered even moments of a trigamma square}
+
+The invariant numerator $(H_n^{(2)}-\zeta(2))^2$ admits a particularly
+short all-degree value formula. Put
+\[
+ T_n=\zeta(2,n+1)=\psi'(n+1),\qquad
+ V_M=D_{(X_2-\zeta(2))^2}(-2M),\quad M\ge0.
+\]
+Every point in this definition is regular by Theorem~\ref{hc:main}.
+
+\begin{theorem}[Finite Bernoulli formula for all even moments]
+\label{hc:trigamma}
+For every $M\ge0$,
+\begin{align}\label{hc:all-moments}
+ V_M={}&3B_{2M}(1/2)\zeta(3)\notag\\
+ &-\frac1{2(2M+1)}\sum_{\ell=1}^{M}
+ \binom{2M+1}{2M-2\ell}B_{2M-2\ell}(1/2)
+                     (2\ell-1)B_{2\ell-2}.
+\end{align}
+The sum is empty at $M=0$. In particular all these values belong
+to $\mathbb Q+\mathbb Q\zeta(3)$.
+\end{theorem}
+\begin{proof}
+The polynomial partial sum is
+\[
+ S_M(k)=\sum_{n=0}^{k-1}(n+1/2)^{2M}
+ =\frac{B_{2M+1}(k+1/2)}{2M+1}
+ =\sum_{\ell=0}^M s_{M,\ell} k^{2\ell+1},
+\]
+where
+$s_{M,\ell}=\binom{2M+1}{2M-2\ell}B_{2M-2\ell}(1/2)/(2M+1)$.
+Since $T_{k-1}-T_k=k^{-2}$, finite summation by parts gives
+\[
+ \sum_{n=0}^{N-1}(n+1/2)^{2M}T_n^2
+ =\sum_{\ell=0}^M s_{M,\ell}E_{2\ell+1}(N),
+\]
+with
+\[
+ E_q(N)=N^qT_N^2+2\sum_{k=1}^N k^{q-2}T_{k-1}
+                                -\sum_{k=1}^N k^{q-4}.
+\]
+At $q=1$ the limit is $3\zeta(3)$: the classical Euler sum \cite{Can}
+$\sum_{k\ge1}H_k/k^2=2\zeta(3)$ implies
+$\sum_{k\ge1}T_{k-1}/k=2\zeta(3)$, by interchanging a positive
+double sum. The remaining diagonal term is $\zeta(3)$.
+
+For odd $q\ge3$, let $P_{q-2}(N)=\sum_{k=1}^N k^{q-2}$.
+Interchanging a finite sum gives
+\[
+ \sum_{k=1}^N k^{q-2}T_{k-1}
+   =\sum_{j=1}^N\frac{P_{q-2}(j)}{j^2}
+                                +P_{q-2}(N)T_N.
+\]
+In Faulhaber's polynomial the half-leading term cancels
+$\sum k^{q-4}$ from $E_q$. All other finite power sums are
+polynomials in $N$ with zero constant coefficient. Hence the
+constant term of the expansion of $E_q(N)$ at infinity is the
+constant of $N^qT_N^2+2P_{q-2}(N)T_N$.
+Use
+\[
+ T_N=N^{-1}-\tfrac12N^{-2}
+                   +\sum_{j\ge1}B_{2j}N^{-2j-1}.
+\]
+Only finitely many terms are needed. The first product contributes
+$-B_{q-3}$ and the second contributes
+$B_{q-3}-(q-2)B_{q-3}/2$. Their sum is
+$-(q-2)B_{q-3}/2$.
+
+It remains to identify this cutoff constant with the stated
+spectral value. The centered expansion of $T_n^2$ contains only
+even powers of $(n+1/2)^{-1}$. Subtract from
+$(n+1/2)^{2M}T_n^2$ all its nondecaying even powers. The residual
+is $O(n^{-2})$ and is ordinarily summable. Each subtracted power
+has spectral value $\zeta(-2j,1/2)=0$, and its finite partial sum
+is an odd polynomial in $N$ with zero constant. Thus the residual
+sum, the cutoff constant in $N$, and $V_M$ coincide. Combining
+the coefficients $s_{M,\ell}$ proves \eqref{hc:all-moments}.
+\end{proof}
+
+The first four identities can be written as ordinary convergent
+bracketed series, with $x_n=n+1/2$:
+\begin{align}
+ \sum_{n\ge0}T_n^2&=3\zeta(3),\notag\\
+ \sum_{n\ge0}\{x_n^2T_n^2-1\}
+        &=-\frac16-\frac14\zeta(3),\notag\\
+ \sum_{n\ge0}\{x_n^4T_n^2-x_n^2+\tfrac16\}
+        &=\frac1{30}+\frac7{80}\zeta(3),\label{hc:moment-examples}\\
+ \sum_{n\ge0}\{x_n^6T_n^2-x_n^4+\tfrac16x_n^2-\tfrac{47}{720}\}
+        &=\frac1{672}-\frac{31}{448}\zeta(3).\notag
+\end{align}
+Each bracket is $O(n^{-2})$. These statements do not assign an
+ordinary sum to any of the divergent unbracketed expressions.
+

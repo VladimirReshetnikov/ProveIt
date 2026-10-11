@@ -1,0 +1,217 @@
+\section{A connected double-Hurwitz master formula}\label{bmh:sec:master}
+
+\subsection{Removing the leading-index-one divergences}
+Define the pole-cancelled Hurwitz difference
+\begin{equation}\label{bmh:eq:D}
+ D_k(q)=\begin{cases}
+ \zeta(k;q)-\zeta(k),&k\ge2,\\
+ \psi(1)-\psi(q),&k=1.
+ \end{cases}
+\end{equation}
+The second line is the value at $s=1$ of
+$D_s(q)=\zeta(s;q)-\zeta(s)$; the two simple poles have the same residue.
+
+\begin{definition}[Connected coordinates]\label{bmh:def:connected}
+For positive integers $A,B$ and $\Rea q>0$, put
+\begin{align}
+ \bmhC_{A,B}(q)
+ &=\zeta(A,B)-Z_q(A,B)+\zeta(A;q)D_B(q),
+ && A\ge2,\ B\ge1,\label{bmh:eq:Cbulk}\\
+ \bmhC_{1,B}(q)
+ &=Z_q(B,1)-\zeta(B,1)+D_{B+1}(q)-D_1(q)\zeta(B),
+ && B\ge2,\label{bmh:eq:Cedge}\\
+ \bmhC_{1,1}(q)&=\frac12\bigl(D_1(q)^2+D_2(q)\bigr).
+ \label{bmh:eq:Ccorner}
+\end{align}
+Only convergent double-zeta coordinates appear in these formulas.
+\end{definition}
+
+\begin{lemma}[Connected stuffle, shift, and harmonic values]
+\label{bmh:lem:Cidentities}
+The functions in Definition~\ref{bmh:def:connected} are holomorphic for
+$\Rea q>0$ and satisfy
+\begin{align}
+ \bmhC_{A,B}(q)+\bmhC_{B,A}(q)
+ &=D_A(q)D_B(q)+D_{A+B}(q),\label{bmh:eq:Cstuffle}\\
+ \bmhC_{A,B}(q+1)-\bmhC_{A,B}(q)
+ &=-q^{-A}D_B(q).\label{bmh:eq:Cshift}
+\end{align}
+In particular $\bmhC_{A,B}(1)=\bmhC_{A,B}(2)=0$. For every integer $L\ge1$,
+\begin{equation}\label{bmh:eq:Charmonic}
+ \bmhC_{A,B}(L)=\sum_{1\le k<j\le L-1}\frac1{j^A k^B}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Holomorphy follows from normal convergence and~\eqref{bmh:eq:D}.
+For $A,B\ge2$, use the absolutely convergent stuffle identity
+\[
+ \zeta(A;q)\zeta(B;q)
+ =Z_q(A,B)+Z_q(B,A)+\zeta(A+B;q)
+\]
+at $q$ and at one. This gives~\eqref{bmh:eq:Cstuffle}. At the edges it
+follows directly from~\eqref{bmh:eq:Cedge}; at the corner it is the
+definition.
+
+For $A\ge2$ we have
+\[
+ Z_{q+1}(A,B)=Z_q(A,B)-q^{-B}\bigl(\zeta(A;q)-q^{-A}\bigr),
+ \qquad D_B(q+1)=D_B(q)-q^{-B}.
+\]
+Substitute these and $\zeta(A,q+1)=\zeta(A;q)-q^{-A}$ into
+\eqref{bmh:eq:Cbulk}. Every term cancels except $-q^{-A}D_B(q)$.
+For $A=1,B\ge2$, apply the same shifts to~\eqref{bmh:eq:Cedge};
+for $A=B=1$ expand the square in~\eqref{bmh:eq:Ccorner}.
+This proves~\eqref{bmh:eq:Cshift} in every case. Since $D_B(1)=0$,
+the values at one and two vanish. Finally
+$D_B(j)=-H_{j-1}^{(B)}$, also for $B=1$. Iterating the shift gives
+\eqref{bmh:eq:Charmonic}.
+\end{proof}
+
+\subsection{The finite transform}
+For $W=m+n$ define
+\begin{align}
+ \bmhK_{m,n}(q)={}&
+ \sum_{k=0}^{m-1}\binom{W-2-k}{n-1}
+       \bmhC_{W-1-k,k+1}(q)\notag\\
+ &+\sum_{k=0}^{n-1}\binom{W-2-k}{m-1}
+       \bmhC_{W-1-k,k+1}(q).
+ \label{bmh:eq:K}
+\end{align}
+There are $m+n$ displayed terms, with coincident coordinates combinable.
+
+\begin{theorem}[Bilinear Mellin--Hurwitz transform]
+\label{bmh:thm:master}
+For positive integers $m,n$ and $-2<\Rea a<1$, the ordinary integral
+$M_1(a;m,n)$ satisfies
+\begin{equation}\label{bmh:eq:master}
+ \boxed{\displaystyle
+ M_1(a;m,n)=\frac{\pi}{\sin\pi a}\,\bmhK_{m,n}(1-a).}
+\end{equation}
+At $a=0,-1$ the right side is interpreted by its removable value.
+Every fixed derivative with respect to $a$ gives the corresponding
+ordinary logarithmic moment. The formula requires no divergent value
+$\zeta(1,B)$ or $Z_q(1,B)$.
+\end{theorem}
+
+\subsection{Proof by a Fermi integral and two cones}
+For positive integer $m$,
+\begin{equation}\label{bmh:eq:Fermi}
+ \Li_m(-x)=-\frac{x}{\Gamma(m)}\int_0^\infty
+             \frac{u^{m-1}}{e^u+x}\dd u.
+\end{equation}
+For real $0<a<1$, the product of the two negative signs is positive,
+and Tonelli's theorem gives a double integral whose inner kernel is
+\[
+ I_a(c,d)=\int_0^\infty
+       \frac{x^{a+1}}{(1+x)(x+c)(x+d)}\dd x,
+ \qquad c=e^u,\ d=e^v.
+\]
+For distinct $1,c,d$, partial fractions give
+\begin{equation}\label{bmh:eq:resolvent}
+ I_a(c,d)=\frac\pi{\sin\pi a}
+ \sum_{\rho\in\{1,c,d\}}
+       \frac{\rho^{a+1}}{\prod_{\sigma\ne\rho}(\rho-\sigma)}.
+\end{equation}
+One first integrates the separate partial fractions in
+$-2<\Rea a<-1$, where each is integrable, and then continues to the
+full strip $-2<\Rea a<1$. The original three-denominator integral is
+holomorphic there. Coincident $c,d,1$ are handled by continuity; this is
+a divided difference, not a genuine pole at a collision.
+
+Split the $(u,v)$ quadrant into $u>v$ and $v>u$. On the first cone set
+$u=v+t$, $\xi=e^{-v}$, $\eta=e^{-t}$, and $q=1-a$. The bracket in
+\eqref{bmh:eq:resolvent} becomes
+\begin{equation}\label{bmh:eq:cone-kernel}
+ \mathscr B_a(v,t)=
+ \frac{\xi^2\eta}{(1-\xi\eta)(1-\xi)}
+ +\frac{(\xi\eta)^q}{(1-\xi\eta)(1-\eta)}
+ -\frac{\xi^q\eta}{(1-\xi)(1-\eta)}.
+\end{equation}
+The identity follows by substituting $c=(\xi\eta)^{-1}$ and
+$d=\xi^{-1}$ into the three rational coefficients in
+\eqref{bmh:eq:resolvent}.
+
+We require its two-variable Mellin moments. For $\Rea A,\Rea B>1$,
+expand the three geometric kernels and integrate separately. The result is
+\begin{align}
+ \frac1{\Gamma(A)\Gamma(B)}\int_0^\infty\!\int_0^\infty
+ v^{A-1}t^{B-1}\mathscr B_a(v,t)\dd v\dd t
+ &=\zeta(A,B)+Z_q(B,A)+\zeta(A+B;q)\notag\\
+ &\quad-\zeta(A;q)\zeta(B)
+ =\bmhC_{A,B}(q).
+ \label{bmh:eq:cone-moment}
+\end{align}
+For example, the first geometric expansion has frequencies
+$(j+k+2,j+1)$, with the first strictly greater than the second, and
+therefore produces $\zeta(A,B)$. The second has frequencies
+$(q+j,q+j+k)$ and produces a weakly ordered double sum. Its diagonal is
+$\zeta(A+B;q)$. The third factorizes. The last equality is precisely the
+stuffle cancellation.
+
+It remains to justify the boundary cases $A=1$ or $B=1$, rather than
+subtract divergent series informally. For fixed real $0<a<1$,
+$\mathscr B_a$ is bounded near the origin: it is
+$(\sin\pi a/\pi)I_a(e^{v+t},e^v)$, and the integral is smooth when its
+three poles coalesce off the integration path. At infinity it decays
+exponentially in $v+t$. Indeed, replacing $1+x$ by $x$ gives the upper
+bound
+\[
+ I_a(e^{v+t},e^v)\le
+ \frac\pi{\sin\pi a}\,e^{-(1-a)v}
+       \frac{e^{at}-1}{e^t-1}.
+\]
+Thus the combined integral in~\eqref{bmh:eq:cone-moment} is holomorphic
+for $\Rea A,\Rea B>0$.
+
+For $A>1$, the limit $B\to1$ on the right is
+\eqref{bmh:eq:Cbulk}, because the common residue has cancelled in
+$D_B$. Using~\eqref{bmh:eq:Cstuffle} gives the limit $A\to1,B>1$ as
+\eqref{bmh:eq:Cedge}. On the diagonal $A=B\to1$,
+\eqref{bmh:eq:Cstuffle} gives~\eqref{bmh:eq:Ccorner}. Holomorphy of the
+combined integral proves that these are its genuine boundary values.
+This argument explicitly distinguishes cancellation in the integrand
+from nonexistent separate integrals at the leading-one coordinates.
+
+Finally expand
+\[
+ (v+t)^{m-1}v^{n-1}
+ =\sum_{k=0}^{m-1}\binom{m-1}{k}
+       v^{W-2-k}t^k.
+\]
+After the Gamma normalizations in~\eqref{bmh:eq:Fermi} and
+\eqref{bmh:eq:cone-moment}, the coefficient is
+\[
+ \frac{\binom{m-1}{k}\Gamma(W-1-k)\Gamma(k+1)}
+      {\Gamma(m)\Gamma(n)}
+ =\binom{W-2-k}{n-1}.
+\]
+The other cone interchanges $m,n$. This proves~\eqref{bmh:eq:master}
+for real $0<a<1$. Both sides are holomorphic, apart from the displayed
+cosecant poles, on $-2<\Rea a<1$; the identity theorem extends the result.
+The original integral proves removability at $0,-1$, also visible from
+$\bmhC(1)=\bmhC(2)=0$. Proposition~\ref{bmh:prop:strip} justifies all fixed
+logarithmic derivatives and completes the proof.
+
+\begin{example}[The logarithm-squared case]\label{bmh:ex:11master}
+For $m=n=1$ the master is especially transparent:
+\begin{equation}\label{bmh:eq:11master}
+ M_1(a;1,1)=\pi\csc(\pi a)
+ \left((\psi(1)-\psi(1-a))^2+\zeta(2;1-a)-\zeta(2)\right).
+\end{equation}
+This also follows by differentiating the beta integral twice with respect
+to its denominator exponent. It is a normalization check, not a claim of
+priority for a classical beta derivative.
+\end{example}
+
+\begin{remark}[Derivatives away from resonance]
+Every $q$-derivative of the double coordinates is finite:
+\begin{equation}\label{bmh:eq:Zq-derivative}
+ \frac{\dd^r}{\dd q^r}Z_q(A,B)=(-1)^r
+ \sum_{j=0}^r\binom rj(A)_j(B)_{r-j}
+       Z_q(A+j,B+r-j).
+\end{equation}
+Together with the derivative ladder for $D_k$ and the cosecant factor,
+this gives explicit finite formulas for all logarithmic moments at
+noninteger $a$. At a resonance one should instead use the cancelled
+Taylor formulas in the next section.
+\end{remark}

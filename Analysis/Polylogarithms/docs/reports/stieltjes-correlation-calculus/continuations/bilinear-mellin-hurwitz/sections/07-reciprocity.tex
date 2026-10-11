@@ -1,0 +1,149 @@
+\section{Inversion reciprocity and central parity reductions}
+\label{bmh:sec:reciprocity}
+
+\subsection{The exact inversion polynomial}
+For $n\ge1$ put
+\begin{equation}\label{bmh:eq:Pn}
+ P_n(y)=-\frac{y^n}{n!}
+ -2\sum_{k=1}^{\lfloor n/2\rfloor}
+ (1-2^{1-2k})\zeta(2k)\frac{y^{n-2k}}{(n-2k)!}.
+\end{equation}
+Thus $P_1=-y$, $P_2=-y^2/2-\zeta(2)$, and
+$P_3=-y^3/6-\zeta(2)y$.
+
+\begin{lemma}[Integer-order inversion]\label{bmh:lem:inversion}
+For real $y$,
+\begin{equation}\label{bmh:eq:inversion}
+ \Li_n(-e^y)+(-1)^n\Li_n(-e^{-y})=P_n(y).
+\end{equation}
+Also $P_n'=P_{n-1}$ for $n\ge2$ and
+$P_n(-y)=(-1)^nP_n(y)$.
+\end{lemma}
+\begin{proof}
+The order-one statement is
+$-\log(1+e^y)+\log(1+e^{-y})=-y$.
+Differentiating the left side at order $n$ gives the left side at
+order $n-1$. The same is true of the displayed polynomial.
+At $y=0$, the value is zero for odd $n$, and is
+$2\Li_n(-1)=-2(1-2^{1-n})\zeta(n)$ for even $n$.
+These constants determine the induction. The last parity assertion is
+visible term by term. This is the classical integer inversion identity;
+the proof fixes the branch and normalization needed below.
+\end{proof}
+
+Let
+\begin{equation}\label{bmh:eq:JandBeta}
+ J_N(a,s)=\int_0^\infty\frac{x^{a-1}\Li_s(-x)}{(1+x)^N}\dd x,
+ \qquad B_N(a)=B(a,N-a).
+\end{equation}
+If $P$ is a polynomial, $P(\partial_a)$ denotes its constant-coefficient
+differential operator.
+
+\begin{theorem}[Bilinear reciprocity]\label{bmh:thm:reciprocity}
+For $0<\Rea a<N$,
+\begin{align}
+ M_N(a;m,n)-(-1)^W M_N(N-a;m,n)
+ ={}&P_m(\partial_a)J_N(a,n)
+    +P_n(\partial_a)J_N(a,m)\notag\\
+ &-(P_mP_n)(\partial_a)B_N(a).
+ \label{bmh:eq:reciprocity}
+\end{align}
+Every fixed logarithmic derivative is valid in the same strip.
+\end{theorem}
+\begin{proof}
+Set $L_j(x)=\Li_j(-x)$. Inversion gives
+$L_j(1/x)=(-1)^j(P_j(\log x)-L_j(x))$.
+Multiply the two formulas to obtain
+\[
+ L_m(x)L_n(x)-(-1)^W L_m(1/x)L_n(1/x)
+ =P_m(\log x)L_n(x)+P_n(\log x)L_m(x)-P_m(\log x)P_n(\log x).
+\]
+Integrate with the Mellin kernel. In the second bilinear term, $x\mapsto
+1/x$ changes $a$ into $N-a$. All separated terms converge for
+$0<\Rea a<N$; in particular the purely polynomial term is an ordinary
+beta logarithmic moment. This proves~\eqref{bmh:eq:reciprocity}.
+\end{proof}
+
+\begin{theorem}[Complete odd-parity central moments]
+\label{bmh:thm:central}
+If $W+h$ is odd, then
+\begin{align}
+ &\int_0^\infty\frac{x^{N/2-1}\log^h x\,
+                    \Li_m(-x)\Li_n(-x)}{(1+x)^N}\dd x\notag\\
+ &\quad=\frac12\left.\partial_a^h
+ \left\{P_m(\partial_a)J_N(a,n)+P_n(\partial_a)J_N(a,m)
+ -(P_mP_n)(\partial_a)B_N(a)\right\}\right|_{a=N/2}.
+ \label{bmh:eq:central}
+\end{align}
+For every integer $N$, the right side is a finite expression in rational
+numbers, $\pi$, $\log2$, and ordinary positive-integer zeta values.
+When $W+h$ is even, reciprocity yields a relation among the one-factor
+terms but does not determine the central bilinear moment.
+\end{theorem}
+\begin{proof}
+The $h$th derivative of the left side of~\eqref{bmh:eq:reciprocity} at
+$a=N/2$ is $(1-(-1)^{W+h})$ times the desired integral. This is two
+exactly in the stated parity sector.
+
+To establish the expression class, use the existing finite one-factor
+formula~\cite{MLD}
+\begin{equation}\label{bmh:eq:priorJN}
+ J_N(a,s)=(-1)^N\pi\csc(\pi a)
+       \sum_{j=0}^{N-1}q_{N,j}(a)
+              \{\zeta(s-j;N-a)-\zeta(s-j)\},
+\end{equation}
+where
+\[
+ \sum_jq_{N,j}(a)X^j=
+   \frac1{(N-1)!}\prod_{r=1}^{N-1}(X+a-r).
+\]
+It is interpreted as a combined holomorphic germ at integer $a$ and at
+spectral zeta poles. If $N$ is odd, $N/2$ is a half-integer. The shift
+identity and
+$\zeta(k;1/2)=(2^k-1)\zeta(k)$ reduce all regular Hurwitz values;
+at $k=1$ the cancelled difference is a digamma difference and contributes
+$\log2$ and rational numbers. Nonpositive integer values are Bernoulli
+polynomials. The $a$ derivatives shift Hurwitz orders upward, with
+removable products retained before evaluation. If $N$ is even, the
+integer one-factor resonance and its logarithmic moments reduce to
+\eqref{bmh:eq:one-base} through the finite kernel recurrence. Finally
+$B_N$ is a Gamma quotient with integer or half-integer parameters, whose
+logarithmic derivatives are the corresponding polygamma values. These
+reduce by the same shift and half-argument formulas. This proves the
+finite expression claim without a divergent termwise substitution.
+\end{proof}
+
+\subsection{Explicit central evaluations}
+At $N=1$, the first two examples are
+\begin{align}
+ \int_0^\infty\frac{\Li_1(-x)\Li_2(-x)}{\sqrt{x}(1+x)}\dd x
+ &=\frac{21}{2}\pi\zeta(3)+\frac23\pi^3\log2,
+ \label{bmh:eq:central12}\\
+ \int_0^\infty\frac{\log x\,\log^2(1+x)}{\sqrt{x}(1+x)}\dd x
+ &=14\pi\zeta(3)+2\pi^3\log2.
+ \label{bmh:eq:central11log}
+\end{align}
+Further exact instances are
+\begin{align}
+ \int_0^\infty\frac{\Li_2(-x)\Li_3(-x)}{\sqrt{x}(1+x)}\dd x
+ &=155\pi\zeta(5)+\frac{20}{3}\pi^3\zeta(3),
+ \label{bmh:eq:central23}\\
+ \int_0^\infty\frac{\log x\,\Li_2(-x)^2}{\sqrt{x}(1+x)}\dd x
+ &=372\pi\zeta(5)+\frac{70}{3}\pi^3\zeta(3).
+ \label{bmh:eq:central22log}
+\end{align}
+For direct reproduction of all $N=1$ cases, set $a=1/2+u$. The needed
+one-factor Taylor series are
+\begin{align}
+ J_1(1/2+u,s)&=\pi\sec(\pi u)\biggl[
+ (2-2^s)\zeta(s)
+ -\sum_{k\ge1}\frac{(s)_k}{k!}(2^{s+k}-1)\zeta(s+k)u^k
+ \biggr],\quad s\ge2,\label{bmh:eq:central-J}\\
+ J_1(1/2+u,1)&=\pi\sec(\pi u)\biggl[
+ -2\log2-\sum_{k\ge1}(2^{k+1}-1)\zeta(k+1)u^k
+ \biggr].\label{bmh:eq:central-J1}
+\end{align}
+Only finitely many coefficients are required in any fixed instance of
+\eqref{bmh:eq:central}. The supplied exact evaluator constructs these
+coefficients, rather than differentiating an expression containing
+$\zeta(1)$.

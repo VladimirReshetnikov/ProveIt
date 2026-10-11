@@ -1,0 +1,147 @@
+\section{Multiplicative Hurwitz lattices and all Stieltjes layers}
+\label{asj:sec:hurwitz}
+
+\subsection{An unconditional higher-pole family}
+Fix $h\ge1$ and $b_1,\ldots,b_h>0$. Let
+\begin{equation}\label{asj:eq:lattice}
+ \lambda_{\boldsymbol n}=\prod_{j=1}^h(n_j+b_j),
+ \qquad \boldsymbol n\in\N_0^h,
+ \qquad \lambda_* =\prod_jb_j.
+\end{equation}
+This spectrum is discrete with finite heads. Multiplying absolutely
+convergent series gives
+\begin{equation}\label{asj:eq:Dhurwitz}
+ \D(s)=\sum_{\boldsymbol n}\lambda_{\boldsymbol n}^{-s}
+              =\prod_{j=1}^h\zeta(s,b_j),\qquad \Rea s>1.
+\end{equation}
+Thus there is just one pole, at $s=1$, of order exactly $h$, and its
+leading coefficient is one. When all $b_j=1$, collecting equal integer
+products gives
+\[
+ \D(s)=\sum_{N\ge1}\frac{d_h(N)}{N^s}=\zeta(s)^h,
+ \qquad d_h(N)=\#\{(n_1,\ldots,n_h)\in\N^h:n_1\cdots n_h=N\}.
+\]
+These are nonpolynomial arithmetic multiplicities. In particular,
+$d_2(N)$ is the ordinary number-of-divisors function.
+
+Write
+\begin{equation}\label{asj:eq:dcoeff}
+ \D(1+s)=\sum_{v=-h}^{\infty}d_v s^v.
+\end{equation}
+The notation $d_v$ here is a Laurent coefficient, distinguished from the
+arithmetic function $d_h(N)$ by its argument. Define
+\[
+ A_j(s)=1+\sum_{n\ge0}\frac{(-1)^n\gamma_n(b_j)}{n!}s^{n+1}.
+\]
+Then the exact finite recipe is
+\begin{equation}\label{asj:eq:drecipe}
+ d_v=[s^{v+h}]\prod_{j=1}^h A_j(s).
+\end{equation}
+For any fixed $v$ this uses only finitely many Stieltjes constants. In
+particular,
+\begin{align}
+ d_{-h}&=1,\notag\\
+ d_{-(h-1)}&=\sum_j\gamma_0(b_j),\label{asj:eq:dleading}\\
+ d_{-(h-2)}&=\sum_{i<j}\gamma_0(b_i)\gamma_0(b_j)
+                   -\sum_j\gamma_1(b_j).\notag
+\end{align}
+For two parameters $b,c$, the first regular coefficients are
+\begin{align}
+ d_0&=\gamma_0(b)\gamma_0(c)-\gamma_1(b)-\gamma_1(c),\label{asj:eq:d0}\\
+ d_1&=\frac{\gamma_2(b)+\gamma_2(c)}2
+             -\gamma_0(b)\gamma_1(c)-\gamma_1(b)\gamma_0(c),\label{asj:eq:d1}\\
+ d_2&=-\frac{\gamma_3(b)+\gamma_3(c)}6
+      +\frac{\gamma_0(b)\gamma_2(c)+\gamma_2(b)\gamma_0(c)}2
+      +\gamma_1(b)\gamma_1(c).\label{asj:eq:d2}
+\end{align}
+These follow by multiplying \eqref{asj:eq:stieltjes}; no regularized product
+of divergent constants is involved.
+
+\subsection{Every local term, not only the highest pole}
+For the lattice \eqref{asj:eq:lattice}, Theorem~\ref{asj:thm:transfer} becomes
+\begin{equation}\label{asj:eq:Hurwitzgerm}
+ \calZ_P(\boldsymbol u)
+  =\calH_P(\boldsymbol u)
+     +\calR_1(\boldsymbol u)\sum_{j=1}^h\frac{d_{-j}}{U^j},
+ \qquad \calR_1=\sum_{k=0}^d p_k C_{k+1}.
+\end{equation}
+Consequently the pole coefficients are independent of the auxiliary
+finite head but depend nontrivially on the Hurwitz parameters. The
+coefficient $d_{-h}=1$ makes the very highest difference independent of
+those parameters:
+\begin{equation}\label{asj:eq:Hurwitztop}
+ \Delta_{\boldsymbol v_1}\cdots\Delta_{\boldsymbol v_{r+h}}
+ \calJ_r
+ =(-1)^{r+h}r![x^{-1}]P(x)\prod_iV_{\boldsymbol v_i}(x).
+\end{equation}
+If $P$ has degree less than $r+h-1$, this particular difference vanishes.
+If $P$ has degree exactly $r+h-1$ with leading coefficient $p$, it equals
+\begin{equation}\label{asj:eq:Hurwitzsharp}
+ (-1)^{r+h}r!p\prod_{i=1}^{r+h}\left(\sum_jv_{ij}a_j\right).
+\end{equation}
+Thus the degree bound is attained whenever this product is nonzero.
+Lower differences generally retain the Stieltjes coefficients in
+\eqref{asj:eq:dleading}; replacing the whole principal part by its leading
+term would give incorrect lower-order formulas.
+
+\subsection{A normally convergent expression for the individual jets}
+Put
+\[
+ A_{t,\ell}(\boldsymbol\alpha)
+   =[z^\ell]\left(\sum_j\alpha_j\log(1+a_jz)\right)^t,
+ \quad A_{0,0}=1,\quad A_{0,\ell}=0\ (\ell>0).
+\]
+The following formula makes the nonlocal coordinates explicit as well.
+
+\begin{theorem}[All individual Hurwitz-product jets]\label{asj:thm:alljets}
+Suppose $\max_j|a_j|<\lambda_*$. For every $r\ge0$,
+\begin{align}\label{asj:eq:alljets}
+ \calJ_r(\boldsymbol\alpha)
+ =\sum_{k=0}^d p_k\Bigg\{&\D^{(r)}(-k)
+  +\sum_{\substack{\ell\ge1\\\ell\ne k+1}}\sum_{t=1}^r
+    (-1)^t\binom rt A_{t,\ell}\D^{(r-t)}(\ell-k)\notag\\
+ &+r!\sum_{t=1}^{r+h}\frac{(-1)^t}{t!}
+                       A_{t,k+1}d_{r-t}\Bigg\}.
+\end{align}
+Every infinite sum converges normally on smaller compact shift and
+exponent sets. For arbitrary allowed real shifts, the same construction
+uses a finite original head and its entire subtraction from $\D$.
+\end{theorem}
+\begin{proof}
+For the stated small shifts, take an empty head in \eqref{asj:eq:tail} and
+expand
+\[
+ C_\ell(s\boldsymbol\alpha)
+     =\sum_{t\ge0}\frac{(-1)^t}{t!}A_{t,\ell}s^t.
+\]
+At $\ell=0$, the contribution is $\D^{(r)}(-k)$. At nonresonant
+$\ell\ge1$, multiply by the Taylor series of $\D(s+\ell-k)$.
+At the unique resonant value $\ell=k+1$, multiply instead by
+\eqref{asj:eq:dcoeff}. The coefficient of $s^r$ receives terms through
+$t=r+h$, exactly as displayed. Lemma~\ref{asj:thm:tail} justifies every
+coefficient extraction and proves the finite-head extension.
+\end{proof}
+
+The last sum is finite, but its upper endpoint is essential. Truncating
+$C_{k+1}(s\boldsymbol\alpha)$ at degree $r$ before multiplying by the
+pole loses all terms responsible for the local identities.
+
+\subsection{A direct obstruction to using ordinary derivatives}
+For one shifted factor and $P=1$, write
+\[
+ F_a(s)=\sum_{\boldsymbol n}(\lambda_{\boldsymbol n}+a)^{-s}.
+\]
+Since $C_1(s)=-as$, the only polar contribution at zero is
+\begin{equation}\label{asj:eq:Fpolar}
+ \operatorname{pp}_{s=0}F_a(s)
+       =-a\sum_{j=2}^h d_{-j}s^{1-j}.
+\end{equation}
+For $h=2$, in particular,
+\begin{equation}\label{asj:eq:doublepole-example}
+ \Res_{s=0}F_a(s)=-a,\qquad
+ [s^0]F_a(s)=\D(0)-a\{\gamma_0(b)+\gamma_0(c)\}.
+\end{equation}
+Thus $F_a'(0)$ does not exist for $a\ne0$. This is a proved warning
+against an overextension of the ordinary determinant convention, not
+an error attributed to the earlier report, which already distinguished
+Laurent coefficients for logarithmic multiplicities.

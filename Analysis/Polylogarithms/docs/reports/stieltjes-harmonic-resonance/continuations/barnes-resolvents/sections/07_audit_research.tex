@@ -1,0 +1,268 @@
+\section{Source audit, verification, and further research}
+\label{bhr:sec:audit}
+
+\subsection{A precise correction to a published Barnes identity}
+
+The inspection of the Barnes Fourier source revealed a pointwise
+algebraic error in equation (7) of the inspected arXiv version of
+Mez\H{o}'s paper \cite{bhr:Mezo}. That equation identifies
+$\log^2G(x)$ with
+\[
+ \frac14\left\{
+   \log^2\bigl(G(x)G(1-x)\bigr)
+   +\log^2\bigl(G(x)/G(1-x)\bigr)\right\}.
+\]
+On $(0,1)$ both Barnes values are positive. Put
+$a=\log G(x)$ and $b=\log G(1-x)$. The displayed expression
+is $(a^2+b^2)/2$, not $a^2$. Thus the corrected pointwise identity is
+\begin{equation}\label{bhr:eq:Mezo-correction}
+ \boxed{\displaystyle
+ \frac{\log^2G(x)+\log^2G(1-x)}2
+ =\frac14\left\{
+   \log^2\bigl(G(x)G(1-x)\bigr)
+   +\log^2\bigl(G(x)/G(1-x)\bigr)\right\}.}
+\end{equation}
+Alternatively, to keep the original left side one must add
+\[
+ \frac12\log\bigl(G(x)G(1-x)\bigr)
+           \log\bigl(G(x)/G(1-x)\bigr)
+\]
+to the original right side.
+
+This is an exact objection, not a small numerical discrepancy.
+From $G(1+x)=\Gamma(x)G(x)$ and $G(1)=1$ one gets
+$G(x)=x(1+O(x))$ as $x\downarrow0$, while
+$\log G(1-x)=O(x)$. Therefore the original left side has leading
+term $\log^2x$, whereas its stated right side has leading term
+$\tfrac12\log^2x$.
+
+The distinction has a narrow consequence. After integration over
+$(0,1)$, reflection makes
+$\int\log^2G(1-x)=\int\log^2G(x)$, and the added product
+is odd under $x\mapsto1-x$. The integrated equality used next in
+that paper is valid. We therefore propose correcting the pointwise
+line or placing its equality after integration; we do not infer
+that its subsequent integrated theorem is false. The source version
+and location are recorded in \src{integration/CORRECTIONS.md}.
+
+\subsection{What the repository audit does and does not establish}
+
+The source inventory contains 81 manuscript chapter files and all
+11 incoming archives present at the pinned commit. The detailed
+mathematical review concentrates on the conjecture status records,
+the cotangent-resolvent programme, the harmonic power bridges, and
+the cyclic Tornheim remainder. The inventory is not a claim that
+every theorem in all these documents has received a fresh proof audit.
+
+The following distinctions are necessary for correct integration.
+\begin{enumerate}[leftmargin=*,itemsep=5pt]
+ \item The classical Barnes/Hurwitz conversion, the log-$G$ Fourier
+ coefficients, balanced negapolygamma primitives, beta-integral
+ binomial identities, and symmetric Tornheim desingularization keep
+ their existing attribution. The new contribution is the proved
+ resolvent and coefficient reduction with the stated normalization.
+ \item The earlier report already contains the quartic directional
+ Tornheim reconstruction and the formal cyclic dimension count.
+ Section~\ref{bhr:fcy:section} supplies the requested explicit convergent
+ integral, and then the fifth-order formula using that analytic
+ coordinate; it does not relabel the earlier formal result as new.
+ \item The quartic digamma moment in
+ Section~\ref{bhr:quartic-harmonic:sec} is a different question from
+ the quartic directional Tornheim layer. Its depth-three coefficient
+ $\beta_1$ is strict, as specified in
+ \eqref{bhr:quartic-harmonic:beta}. An inclusive harmonic coefficient
+ cannot be substituted without its diagonal correction.
+ \item At a resonance, a Laurent constant in the spectral or kernel
+ exponent is not automatically the finite part in the original
+ integration coordinate. Equations~\eqref{bhr:eq:weighted-contact}
+ and \eqref{bhr:cxp:eq:lambdaCT} explicitly perform the conversion.
+ \item The current $S_6$ and revised $S_8$ coefficient vectors remain
+ conjectural. The pre-existing rejection of the old frozen $S_8$
+ vector must retain its separate label and status. No present
+ decimal evaluation changes any of these statuses.
+\end{enumerate}
+
+Within the inspected repository material we found no additional
+mathematical error that is established by the present analysis.
+The pointwise Barnes correction above is to the cited external
+source. The attached claim ledger distinguishes proved identities,
+classical ingredients, numerical diagnostics, and open questions.
+The package consists of research documents and reproducible
+calculations, not machine-checked ProveIt proof objects.
+
+\subsection{Independent checks and reproducibility}
+
+Four independent lines of calculation accompany the proofs.
+The Barnes checks evaluate the depth-two derivative from its own
+double series and evaluate the Fourier sum $\sum q^nT_n$ separately.
+The same code compares the complete transform with direct
+$\log G$ quadrature in both half-planes, and checks the removable
+$q=0$ real component. The polynomial Hurwitz checks compare the
+subtracted double series and its spectral derivative with direct
+Hurwitz quadrature, including a weighted Stieltjes coefficient.
+
+The complex-power checks compare its Mellin generator with the
+original integral at nonintegral complex parameters, and independently
+test its Gamma closure and a noncommuting finite-part example.
+The quartic checks use three routes: local digamma subtraction,
+the convergent harmonic series with a zeta-derivative tail, and
+the independent Mellin coefficients $\eta,\beta_1$.
+The cyclic fifth checks compare the new ordinary-integral coordinate
+with an independently evaluated continuation of three asymmetric
+cycles. The pre-existing evaluator used in that comparison is
+preserved with its provenance.
+
+Finite exact algebra checks cover the multiple-Gamma coefficient
+polynomials and normalization, quartic principal parts and their
+finite summation identity, the elementary Tornheim correction,
+and the symbolic fifth-order polynomial. These calculations are
+useful for detecting signs, factorials, and omitted constants.
+The analytic assertions---normal convergence, uniqueness of an
+entire remainder, branches, continuation, and the permitted
+coefficient interchanges---are proved in the text.
+
+All numerical records are explicitly non-interval diagnostics.
+Their working precision and truncations are recorded. Several
+independent values agreeing to many digits cannot certify an
+integer relation or a finite closed form. Scripts, dependency
+versions, replay commands, numerical records, and a file-hash
+manifest are included so that integration can preserve both the
+theorem and its actual verification status.
+
+\subsection{Further research questions}
+
+The next problems are formulated as exact identities or reductions
+in specified function classes. The first four build most directly
+on the new formulas.
+
+\begin{enumerate}[label=\textbf{F\arabic*.},leftmargin=*,itemsep=9pt]
+ \item \textbf{Products of individual Barnes logarithms.}
+ Determine the minimal explicit nested-series class for
+ \[
+  \int_0^1 W(x)\log\Gamma_r(x)\log\Gamma_t(x)R_z(x)\,dx.
+ \]
+ The polynomial Hurwitz decomposition reduces this to a bilinear
+ weighted transform. The real question is whether its lattice
+ splitting closes at depth three, with all diagonal corrections
+ explicit, and which reflection combinations reduce the depth.
+
+ \item \textbf{A second representation of $\mathcal D(q)$.}
+ Find a Gamma, Barnes, or iterated-integral expression for
+ \eqref{bhr:eq:Dq} that is independent of its defining depth-two sum.
+ A useful target is an exact differential or functional equation
+ under $q\mapsto q/(q-1)$, with a specified branch domain and
+ initial value. Establish whether it reduces to ordinary
+ polylogarithms and their order derivatives; do not infer such a
+ reduction from a successful numerical fit at isolated points.
+
+ \item \textbf{All higher digamma powers.}
+ Starting from the principal parts of $\psi(z)^5$, derive the
+ exact finite difference of its residue polynomial. Determine
+ which height-one depth-four Laurent coefficients and which
+ additional harmonic numerators survive summation by parts.
+ A satisfactory result must state a finite family of retained
+ coefficients and fix the entire remainder and every finite-part
+ constant, as was done for the fourth power here.
+
+ \item \textbf{Shifted quartic harmonic bridges.}
+ For $a>0$, derive a common-shift analogue of
+ \eqref{bhr:quartic-harmonic:main-eq}, using prefixes
+ $\sum_{k=0}^{n-1}(k+a)^{-r}$ and the corresponding outer
+ denominator. Track simultaneously the origin of the integration
+ coordinate, the lower summation endpoint, and generalized
+ Stieltjes constants $\gamma_j(a)$. Merely shifting the outer
+ denominator leaves a different problem.
+
+ \item \textbf{Nonpositive kernel resonances.}
+ Extend the pointwise finite-part comparison of
+ Theorem~\ref{bhr:cxp:thm:contacts} to $\Re\lambda\le0$,
+ keeping contributions from both endpoints. There is already a
+ concrete additional phase at $\lambda=-1$. The continued mean
+ of the kernel is $A^\lambda$, so its value there is
+ $-z-\epsilon\pi i$, whereas
+ \[
+  \FP_x\int_0^1 R_z(x)^{-1}\,dx
+   =\FP_x\int_0^1(K(x)-z)\,dx=-z.
+ \]
+ The last equality follows by integrating $K=(\log\sin\pi x)'$
+ on the symmetric cutoff interval. Thus the positive-resonance
+ rule cannot simply be copied to negative powers.
+
+ \item \textbf{Rational kernel exponents.}
+ For a fixed nonintegral rational $\lambda$, determine whether
+ $\mathcal L_\lambda(u,q)$ admits a finite representation in a
+ specified hypergeometric or multiple-polylogarithm class at
+ integral $u$. Its Gamma specialization at $q=0$ and its exact
+ exponent jets are constraints on any proposed reduction. The
+ unrestricted complex-$\lambda$ Dirichlet series is presently
+ retained as an explicit coordinate.
+
+ \item \textbf{The arithmetic of $\beta_1$.}
+ Decide whether the normalized integral in
+ \eqref{bhr:quartic-harmonic:beta-mellin} reduces to a specified
+ algebra generated by ordinary zeta derivatives, Stieltjes
+ constants, and Gamma or Barnes values at rational arguments.
+ The proved identity for $Q_4+4\gamma Q_3$ gives an exact
+ equivalence with a digamma finite-part evaluation, not an
+ arithmetic independence statement. A new reduction must add
+ information beyond that equivalence.
+
+ \item \textbf{Higher symmetric Tornheim coefficients.}
+ Use \eqref{bhr:fcy:Jintegral} to extract the three homogeneous cubic
+ coefficients of $J_3$, including their elementary corrections.
+ They control the cyclic sixth-derivative layer. Determine which
+ reflection or differential identities reduce the formal
+ three-coordinate count. For the present quadratic layer, seek
+ a second exact representation of $\chi$ that could lead to a
+ finite evaluation of $\chi$ or $\Omega_5$.
+
+ \item \textbf{Commensurable Barnes periods.}
+ Extend the individual resolvent theorem from unit periods to
+ positive rationally commensurable periods. Multiplicity
+ sequences should split into finitely many polynomial
+ residue-class pieces, suggesting shifted Hurwitz and root-of-unity
+ polylogarithm transforms. Prove that reduction with the exact
+ normalization; arbitrary incommensurable periods are a separate
+ problem and need not remain at finite depth two.
+
+ \item \textbf{Rational shifts and cyclotomic colors.}
+ Combine the polynomial weight with a rational Hurwitz shift,
+ or with a finite Fourier character. Determine the exact
+ colored analogue of $\mathcal O_{\alpha,\beta}(q)$ and its
+ residue cancellation. An effective theorem should specify
+ cumulative color products and convergence, since individual
+ arguments of modulus greater than one need not obstruct the
+ coupled nested sum.
+
+ \item \textbf{Exact certificates for the current $S_6$ and $S_8$.}
+ Keep each current candidate vector fixed. Try to express its
+ difference from the claimed integral in a finite basis of
+ iterated integrals or a rigorously defined cyclotomic quotient,
+ and reduce that expression by proved shuffle, stuffle,
+ distribution, and path relations. The deliverable should be
+ an exact certificate, or an exact obstruction to the specified
+ reduction, rather than additional matching digits. The
+ already-rejected old $S_8$ vector is not the current target.
+
+ \item \textbf{Formal finite-part and convergence infrastructure.}
+ Formalize a reusable theorem that subtracts a parameter-dependent
+ endpoint jet, integrates its monomials, and compares coefficient
+ extraction with the original-coordinate finite part. Pair it
+ with normal-convergence lemmas for a geometric outer index and
+ a subtracted power-law inner index. These two modules would
+ support most identities here without treating each moving pole
+ as a separate ad hoc calculation.
+\end{enumerate}
+
+\subsection{Integration guide}
+
+The suggested integration order is the polynomial transform,
+the individual Barnes theorem, the complex-power generator,
+the quartic harmonic bridge, and finally the transverse Tornheim
+generator. The first two share their new analytic input;
+the remaining branches have their own local subtraction proofs.
+All manuscript labels in the deliverable use a common prefix.
+The standalone source and the modular source compile the same
+article. No external PDFs are bundled: the bibliography links to
+the primary sources, while the provenance records identify the
+exact repository snapshot and the reused numerical evaluator.

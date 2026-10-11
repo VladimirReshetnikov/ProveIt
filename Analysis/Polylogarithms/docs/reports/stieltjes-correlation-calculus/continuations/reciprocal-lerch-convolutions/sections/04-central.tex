@@ -1,0 +1,185 @@
+\section{Central-factorial kernels and finite zeta reductions}
+\label{rlc:sec:central}
+
+\subsection{The logistic convolution polynomial}
+Define monic polynomials
+\begin{align}
+ p_{2m}(X)&=X\prod_{j=1}^{m-1}\bigl(X^2+4j^2\pi^2\bigr),
+          &&m\ge1,\label{rlc:eq:peven}\\
+ p_{2m+1}(X)&=\prod_{j=1}^{m}\bigl(X^2+(2j-1)^2\pi^2\bigr),
+          &&m\ge0.\label{rlc:eq:podd}
+\end{align}
+Thus $p_1=1$, $p_2=X$, and
+\begin{equation}\label{rlc:eq:precurrence}
+ p_{r+2}(X)=(X^2+r^2\pi^2)p_r(X).
+\end{equation}
+These are central-factorial product polynomials after an imaginary
+rescaling of their variable. Their degree is $r-1$ and their parity
+is $(-1)^{r-1}$.
+
+\begin{lemma}[All-depth elementary kernel]\label{rlc:lem:logistic}
+For every $r\ge1$ and real $\mu$,
+\begin{equation}\label{rlc:eq:logistic}
+ f_0^{*r}(\mu)=
+ \frac{p_r(\mu)}{(r-1)!\,[1-(-1)^r e^{-\mu}]}.
+\end{equation}
+At even depth the quotient at $\mu=0$ is filled in by continuity.
+\end{lemma}
+\begin{proof}
+At depth one this is $f_0$. At depth two the substitution $y=e^x$
+gives $f_0*f_0(\mu)=\mu/(1-e^{-\mu})$, including its limit $1$.
+Let $g(p)=\pi\csc(\pi p)$. Direct differentiation gives
+\[
+ \frac{\dd^2}{\dd p^2}g(p)^r
+  =r(r+1)g(p)^{r+2}-r^2\pi^2g(p)^r.
+\]
+Multiplication by $\mu^2$ corresponds to two derivatives of the
+bilateral transform. Transform uniqueness therefore implies
+\[
+ f_0^{*(r+2)}(\mu)=
+ \frac{\mu^2+r^2\pi^2}{r(r+1)}f_0^{*r}(\mu).
+\]
+The two initial cases and \eqref{rlc:eq:precurrence} prove the result.
+All transforms used here lie in the common strip $0<\Rea p<1$;
+polynomial multiplication is justified by the neighboring-strip
+estimates from Lemma~\ref{rlc:lem:weighted}.
+\end{proof}
+
+\subsection{A finite formula away from the central point}
+Put $\epsilon_r=(-1)^r$.
+\begin{theorem}[Finite Lerch closure]\label{rlc:thm:lerch}
+For $\mu<0$, $\Rea a>0$, and $W\in\C$,
+\begin{equation}\label{rlc:eq:lerchclosure}
+ \boxed{\displaystyle
+ \CC_{r,a}(W;\mu)=
+ \frac{-\epsilon_r e^\mu}{(r-1)!}
+ \sum_{j=0}^{r-1}\frac{(-1)^j p_r^{(j)}(\mu)}{j!}
+ (W)_j\Phi(\epsilon_r e^\mu,W+j,a).}
+\end{equation}
+The combined expression continues to all real $\mu$. At even depth and
+$\mu>0$, the continuation of the \emph{whole sum} is independent of
+whether the Lerch cut is approached from above or below.
+\end{theorem}
+\begin{proof}
+For $\Rea W>0$, insert \eqref{rlc:eq:logistic} into
+\eqref{rlc:eq:basefractional}. When $\mu<0$, expand the denominator as
+\[
+ \frac1{1-\epsilon_r e^{u-\mu}}
+ =-\epsilon_r e^{\mu-u}
+       \sum_{n=0}^\infty\epsilon_r^n e^{n(\mu-u)}.
+\]
+Expand $p_r(\mu-u)$ by its finite Taylor formula. The remaining
+integrals are
+$\Gamma(W+j)(n+a)^{-W-j}/\Gamma(W)$, yielding
+\eqref{rlc:eq:lerchclosure}. Absolute convergence justifies the steps.
+Both sides are entire in $W$ for fixed $\mu<0$.
+
+The left side is holomorphic for $|\Ima\mu|<r\pi$. At even depth,
+the discontinuity of the Lerch integral at $z=e^\mu>1$ is, up to a
+common nonzero sign convention,
+$2\pi i e^{-a\mu}\mu^{W+j-1}/\Gamma(W+j)$.
+After multiplication by $(W)_j$ and the other factors, the jump of the
+sum is proportional to
+\[
+ \sum_{j=0}^{r-1}\frac{(-1)^j p_r^{(j)}(\mu)\mu^j}{j!}
+ =p_r(0)=0.
+\]
+This calculation is initially made away from Gamma poles and then
+continued in $W$. Thus the two real boundary values agree and coincide
+with the ordinary convolution. At $\mu=0$ use the entire convolution,
+or the central formula below. At odd depth the argument
+$-e^\mu$ does not cross the positive Lerch cut.
+\end{proof}
+
+At depth two and $a=1$, the formula becomes
+\begin{equation}\label{rlc:eq:fugacity2}
+ \int_0^\infty\Li_s(-y)\Li_t(-e^\mu/y)\frac{\dd y}{y}
+ =W\Li_{W+1}(e^\mu)-\mu\Li_W(e^\mu).
+\end{equation}
+This is a branch-cancelled combination, not a license to discard the
+imaginary parts of its terms separately. Its limit at $\mu=0$ is
+$\E_1(W)$.
+
+\subsection{Pole-free central formulas}
+Define the entire alternating Hurwitz function
+\begin{equation}\label{rlc:eq:eta}
+ \eta(v,a)=\Phi(-1,v,a)
+ =2^{-v}\left[\zeta\left(v,\frac a2\right)
+                -\zeta\left(v,\frac{a+1}2\right)\right].
+\end{equation}
+The two residues at $v=1$ cancel. In particular
+$\eta(0,a)=1/2$ and
+$\eta(1,a)=\tfrac12[\psi((a+1)/2)-\psi(a/2)]$.
+Write
+\[
+ p_{2m}(X)=\sum_{k=0}^{m-1}A_{m,k}X^{2k+1},\qquad
+ p_{2m+1}(X)=\sum_{k=0}^{m}B_{m,k}X^{2k}.
+\]
+The coefficients are explicitly the elementary symmetric functions
+of the squared even or odd multiples of $\pi$ in
+\eqref{rlc:eq:peven}--\eqref{rlc:eq:podd}.
+
+\begin{theorem}[Central finite closure]\label{rlc:thm:central}
+For $\Rea a>0$ and every $W\in\C$,
+\begin{align}
+ \CC_{2m,a}(W;0)
+ &=\frac1{(2m-1)!}\sum_{k=0}^{m-1}
+       A_{m,k}(W)_{2k}\E_a(W+2k),\label{rlc:eq:evencentral}\\
+ \CC_{2m+1,a}(W;0)
+ &=\frac1{(2m)!}\sum_{k=0}^{m}
+       B_{m,k}(W)_{2k}\eta(W+2k,a).\label{rlc:eq:oddcentral}
+\end{align}
+Every summand in these formulas is entire in $W$.
+\end{theorem}
+\begin{proof}
+For $\Rea W>0$, \eqref{rlc:eq:basefractional} at zero uses
+$p_{2m}(u)/(e^u-1)$ in even depth and $p_{2m+1}(u)/(e^u+1)$
+in odd depth. The ordinary Mellin integrals are
+$(W)_j\zeta(W+j,a)$ or $(W)_j\eta(W+j,a)$.
+In even depth $j=2k+1$, so
+\[
+ (W)_{2k+1}\zeta(W+2k+1,a)
+     =(W)_{2k}\E_a(W+2k).
+\]
+This supplies the pole-free form. Entire continuation proves both
+identities at all remaining orders.
+\end{proof}
+
+The first cases, useful for checking every normalization, are
+\begin{align}
+ \CC_{2,a}(W;0)&=\E_a(W),\label{rlc:eq:C2}\\
+ \CC_{3,a}(W;0)&=\tfrac12\{(W)_2\eta(W+2,a)+\pi^2\eta(W,a)\},
+ \label{rlc:eq:C3}\\
+ \CC_{4,a}(W;0)&=\tfrac16\{(W)_2\E_a(W+2)+4\pi^2\E_a(W)\},
+ \label{rlc:eq:C4}\\
+ \CC_{5,a}(W;0)&=\tfrac1{24}\{(W)_4\eta(W+4,a)
+                +10\pi^2(W)_2\eta(W+2,a)+9\pi^4\eta(W,a)\},
+ \label{rlc:eq:C5}\\
+ \CC_{6,a}(W;0)&=\tfrac1{120}\{(W)_4\E_a(W+4)
+                +20\pi^2(W)_2\E_a(W+2)+64\pi^4\E_a(W)\}.
+ \label{rlc:eq:C6}
+\end{align}
+An equivalent differential-operator form is
+\begin{equation}\label{rlc:eq:shiftoperator}
+ \CC_{r,a}(W;0)=\frac1{(r-1)!}
+ \begin{cases}
+ p_r(-\partial_a)\zeta(W,a),&r\text{ even},\\
+ p_r(-\partial_a)\eta(W,a),&r\text{ odd}.
+ \end{cases}
+\end{equation}
+The even polynomial has no constant term, so it annihilates the
+$a$-independent zeta residue.
+
+\subsection{Negative-order resonance is not zero substitution}
+At $W=-2$, \eqref{rlc:eq:C4} gives
+\begin{equation}\label{rlc:eq:resonance}
+ \boxed{\displaystyle
+ \CC_{4,a}(-2;0)=\frac13+\frac{2\pi^2}{3}B_2(a),
+ \qquad B_2(a)=a^2-a+\frac16.}
+\end{equation}
+Indeed $(-2)_2\E_a(0)/6=1/3$, while
+$\E_a(-2)=-2\zeta(-1,a)=B_2(a)$.
+The uncombined expression $(W)_3\zeta(W+3,a)$ has a vanishing
+Pochhammer factor next to a pole at $W=-2$. Setting the first factor to
+zero loses the $1/3$. This is a concrete integration safeguard, not an
+assertion that the inspected repository already printed that error.

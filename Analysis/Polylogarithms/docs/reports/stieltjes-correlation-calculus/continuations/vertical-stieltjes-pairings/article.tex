@@ -1,0 +1,118 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=26mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage{microtype,booktabs,array,longtable}
+\usepackage{enumitem,fancyhdr,xurl}
+\usepackage[hidelinks]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{pdftitle={Vertical-Line Hurwitz Pairings and Exact Stieltjes--Gamma Calculus},pdfauthor={ProveIt research continuation},pdfsubject={Exact identities, rational vertical dilations, compensated Stieltjes functions, and Gamma primitives}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Vertical-line Hurwitz pairings}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{question}{Research question}
+\numberwithin{equation}{section}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Rea}{\operatorname{Re}}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\CT}{\operatorname{CT}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\bpair}[2]{\mathcal V\!\left[#1,#2\right]}
+\newcommand{\coeff}[2]{\left[#1\right]#2}
+\newcommand{\sourcepath}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\pkg}{\texttt{ProveIt\_Vertical\_Stieltjes\_Pairings\_2026-10-10}}
+\allowdisplaybreaks[2]
+\setlength{\emergencystretch}{2em}
+\setlist[enumerate]{leftmargin=*,itemsep=4pt,topsep=5pt}
+\setcounter{tocdepth}{1}
+\title{\vspace{-12mm}\textbf{Vertical-Line Hurwitz Pairings\\and Exact Stieltjes--Gamma Calculus}\\[3mm]
+\large Rational dilations, Bernoulli compensation,\\polylogarithm identities, and normalized primitives}
+\author{Research continuation for Vladimir Reshetnikov's ProveIt project}
+\date{10 October 2026 \quad\textbullet\quad Version 1.0}
+\begin{document}
+\maketitle
+\begin{abstract}
+We study ordinary, absolutely convergent bilinear integrals in which the
+\emph{argument} of a Hurwitz zeta function moves along a vertical line.
+Subtracting its spatial principal term produces a Laplace kernel whose
+products close in a finite alphabet of Hurwitz zeta functions. Differentiation
+at the spectral pole yields an arbitrary-index pairing formula for the
+compensated Stieltjes functions
+$\gamma_m(z)+\log^{m+1}z/(m+1)$. A finite Bernoulli-subtraction calculus extends
+this closure to negative spectral orders and to normalized antiderivatives
+of the Stirling remainder. Rationally related vertical scales admit a finite
+residue-grid reduction; we give an explicit all-order coefficient formula,
+not merely a meromorphic prescription. Additional identities couple these
+families to finite generalized harmonic sums, polygamma functions, Lerch
+transcendents, and polylogarithm order derivatives. Three illustrative
+specializations evaluate a compensated digamma norm, a Stirling-remainder
+norm, and a two-scale pairing containing $\log\Gamma(1/4)$.
+All general identities are proved by Laplace--Plancherel, finite kernel
+algebra, and holomorphic continuation. Reproducible symbolic and numerical
+checks are separated from those proofs. A concrete nonreal-argument failure
+of the installed mpmath 1.3.0 Stieltjes routine is documented and avoided by
+an independent Cauchy-coefficient calculation. No claim of an exhaustive
+literature audit, proof-assistant verification, or resolution of the
+repository's $S_6$ and revised $S_8$ conjectures is made.
+\end{abstract}
+\tableofcontents
+\clearpage
+\input{sections/01-context}
+\input{sections/02-laplace}
+\input{sections/03-stieltjes}
+\input{sections/04-harmonic-lerch}
+\input{sections/05-compensation}
+\input{sections/06-dilations}
+\input{sections/07-audit-questions}
+\clearpage
+\begin{thebibliography}{99}
+\bibitem{repo}
+V. Reshetnikov, \emph{ProveIt}, public research repository, canonical
+polylogarithm manuscript and incoming-report directory. Inspected source
+paths and blob identifiers are recorded in \texttt{SOURCE\_AUDIT.md}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+\bibitem{dlmf-zeta}
+NIST Digital Library of Mathematical Functions, \S25.11, \emph{Hurwitz Zeta
+Function}, especially the integral representation, special values,
+and parameter-differentiation formulas.
+\url{https://dlmf.nist.gov/25.11}.
+\bibitem{dlmf-gamma}
+NIST Digital Library of Mathematical Functions, \S5.9, \emph{Integral
+Representations}, including Binet's formula and digamma integrals.
+\url{https://dlmf.nist.gov/5.9}.
+\bibitem{dlmf-lerch}
+NIST Digital Library of Mathematical Functions, \S25.14, \emph{Lerch's
+Transcendent}.
+\url{https://dlmf.nist.gov/25.14}.
+\bibitem{shpot2016}
+M. A. Shpot, M. P. Chaudhary, and R. B. Paris,
+\emph{Integrals of products of Hurwitz zeta functions and the Casimir effect
+in $\phi^4$ field theories}, arXiv:1603.00722 (2016).
+\url{https://arxiv.org/abs/1603.00722}.
+\bibitem{shpot-paris}
+M. A. Shpot and R. B. Paris,
+\emph{Integrals of products of Hurwitz zeta functions via Feynman
+parametrization and two double sums of Riemann zeta functions},
+arXiv:1609.05658 (2016).
+\url{https://arxiv.org/abs/1609.05658}.
+\bibitem{mpmath13}
+The mpmath developers, \emph{mpmath}, version 1.3.0,
+\texttt{mpmath/functions/zeta.py}, function \texttt{stieltjes}.
+Version-specific source inspected for the nonreal-argument diagnostic.
+\url{https://github.com/mpmath/mpmath/blob/1.3.0/mpmath/functions/zeta.py}.
+\end{thebibliography}
+\end{document}

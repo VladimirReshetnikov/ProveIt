@@ -1,0 +1,1728 @@
+{
+  "description": "Harmonic shift germs, boundary constants, and rank jump",
+  "evidence": "Exact rational checks and independent floating-point diagnostics; no interval claims",
+  "versions": {
+    "mpmath": "1.3.0",
+    "sympy": "1.14.0"
+  },
+  "settings": {
+    "working_digits": 110,
+    "Xi_integral_digits": 65,
+    "direct_terms": 1200,
+    "Newton_terms": 180,
+    "Cauchy_nodes": 28,
+    "Cauchy_radius": "0.025"
+  },
+  "truncation_note": "The defining sums, Newton series, and discrete Cauchy extraction have separate truncation errors. A doubled defining cutoff is included. Numerical thresholds are diagnostics, not rigorous bounds.",
+  "exact_checks": [
+    {
+      "name": "local-factor",
+      "N": 0,
+      "passed": true
+    },
+    {
+      "name": "tail-residue",
+      "N": 0,
+      "passed": true
+    },
+    {
+      "name": "local-factor",
+      "N": 1,
+      "passed": true
+    },
+    {
+      "name": "tail-residue",
+      "N": 1,
+      "passed": true
+    },
+    {
+      "name": "local-factor",
+      "N": 2,
+      "passed": true
+    },
+    {
+      "name": "tail-residue",
+      "N": 2,
+      "passed": true
+    },
+    {
+      "name": "local-factor",
+      "N": 3,
+      "passed": true
+    },
+    {
+      "name": "tail-residue",
+      "N": 3,
+      "passed": true
+    },
+    {
+      "name": "local-factor",
+      "N": 4,
+      "passed": true
+    },
+    {
+      "name": "tail-residue",
+      "N": 4,
+      "passed": true
+    },
+    {
+      "name": "local-factor",
+      "N": 5,
+      "passed": true
+    },
+    {
+      "name": "tail-residue",
+      "N": 5,
+      "passed": true
+    },
+    {
+      "name": "local-factor",
+      "N": 6,
+      "passed": true
+    },
+    {
+      "name": "tail-residue",
+      "N": 6,
+      "passed": true
+    },
+    {
+      "name": "depth-recurrence",
+      "m": 0,
+      "r": 0,
+      "passed": true
+    },
+    {
+      "name": "depth-recurrence",
+      "m": 0,
+      "r": 1,
+      "passed": true
+    },
+    {
+      "name": "depth-recurrence",
+      "m": 0,
+      "r": 2,
+      "passed": true
+    },
+    {
+      "name": "depth-recurrence",
+      "m": 0,
+      "r": 3,
+      "passed": true
+    },
+    {
+      "name": "depth-recurrence",
+      "m": 0,
+      "r": 4,
+      "passed": true
+    },
+    {
+      "name": "depth-rank",
+      "m": 0,
+      "determinant": "-1",
+      "passed": true
+    },
+    {
+      "name": "depth-recurrence",
+      "m": 1,
+      "r": 0,
+      "passed": true
+    },
+    {
+      "name": "depth-recurrence",
+      "m": 1,
+      "r": 1,
+      "passed": true
+    },
+    {
+      "name": "depth-recurrence",
+      "m": 1,
+      "r": 2,
+      "passed": true
+    },
+    {
+      "name": "depth-recurrence",
+      "m": 1,
+      "r": 3,
+      "passed": true
+    },
+    {
+      "name": "depth-recurrence",
+      "m": 1,
+      "r": 4,
+      "passed": true
+    },
+    {
+      "name": "depth-rank",
+      "m": 1,
+      "determinant": "1/4",
+      "passed": true
+    },
+    {
+      "name": "depth-recurrence",
+      "m": 2,
+      "r": 0,
+      "passed": true
+    },
+    {
+      "name": "depth-recurrence",
+      "m": 2,
+      "r": 1,
+      "passed": true
+    },
+    {
+      "name": "depth-recurrence",
+      "m": 2,
+      "r": 2,
+      "passed": true
+    },
+    {
+      "name": "depth-recurrence",
+      "m": 2,
+      "r": 3,
+      "passed": true
+    },
+    {
+      "name": "depth-recurrence",
+      "m": 2,
+      "r": 4,
+      "passed": true
+    },
+    {
+      "name": "depth-rank",
+      "m": 2,
+      "determinant": "-1/108",
+      "passed": true
+    },
+    {
+      "name": "depth-recurrence",
+      "m": 3,
+      "r": 0,
+      "passed": true
+    },
+    {
+      "name": "depth-recurrence",
+      "m": 3,
+      "r": 1,
+      "passed": true
+    },
+    {
+      "name": "depth-recurrence",
+      "m": 3,
+      "r": 2,
+      "passed": true
+    },
+    {
+      "name": "depth-recurrence",
+      "m": 3,
+      "r": 3,
+      "passed": true
+    },
+    {
+      "name": "depth-recurrence",
+      "m": 3,
+      "r": 4,
+      "passed": true
+    },
+    {
+      "name": "depth-rank",
+      "m": 3,
+      "determinant": "1/27648",
+      "passed": true
+    },
+    {
+      "name": "depth-recurrence",
+      "m": 4,
+      "r": 0,
+      "passed": true
+    },
+    {
+      "name": "depth-recurrence",
+      "m": 4,
+      "r": 1,
+      "passed": true
+    },
+    {
+      "name": "depth-recurrence",
+      "m": 4,
+      "r": 2,
+      "passed": true
+    },
+    {
+      "name": "depth-recurrence",
+      "m": 4,
+      "r": 3,
+      "passed": true
+    },
+    {
+      "name": "depth-recurrence",
+      "m": 4,
+      "r": 4,
+      "passed": true
+    },
+    {
+      "name": "depth-rank",
+      "m": 4,
+      "determinant": "-1/86400000",
+      "passed": true
+    },
+    {
+      "name": "depth-recurrence",
+      "m": 5,
+      "r": 0,
+      "passed": true
+    },
+    {
+      "name": "depth-recurrence",
+      "m": 5,
+      "r": 1,
+      "passed": true
+    },
+    {
+      "name": "depth-recurrence",
+      "m": 5,
+      "r": 2,
+      "passed": true
+    },
+    {
+      "name": "depth-recurrence",
+      "m": 5,
+      "r": 3,
+      "passed": true
+    },
+    {
+      "name": "depth-recurrence",
+      "m": 5,
+      "r": 4,
+      "passed": true
+    },
+    {
+      "name": "depth-rank",
+      "m": 5,
+      "determinant": "1/4031078400000",
+      "passed": true
+    },
+    {
+      "name": "coordinate-finite-part",
+      "r": 1,
+      "p": 0,
+      "passed": true
+    },
+    {
+      "name": "coordinate-finite-part",
+      "r": 1,
+      "p": 1,
+      "passed": true
+    },
+    {
+      "name": "coordinate-finite-part",
+      "r": 1,
+      "p": 2,
+      "passed": true
+    },
+    {
+      "name": "coordinate-finite-part",
+      "r": 1,
+      "p": 3,
+      "passed": true
+    },
+    {
+      "name": "coordinate-finite-part",
+      "r": 1,
+      "p": 4,
+      "passed": true
+    },
+    {
+      "name": "coordinate-finite-part",
+      "r": 1,
+      "p": 5,
+      "passed": true
+    },
+    {
+      "name": "coordinate-finite-part",
+      "r": 1,
+      "p": 6,
+      "passed": true
+    },
+    {
+      "name": "coordinate-finite-part",
+      "r": 2,
+      "p": 0,
+      "passed": true
+    },
+    {
+      "name": "coordinate-finite-part",
+      "r": 2,
+      "p": 1,
+      "passed": true
+    },
+    {
+      "name": "coordinate-finite-part",
+      "r": 2,
+      "p": 2,
+      "passed": true
+    },
+    {
+      "name": "coordinate-finite-part",
+      "r": 2,
+      "p": 3,
+      "passed": true
+    },
+    {
+      "name": "coordinate-finite-part",
+      "r": 2,
+      "p": 4,
+      "passed": true
+    },
+    {
+      "name": "coordinate-finite-part",
+      "r": 2,
+      "p": 5,
+      "passed": true
+    },
+    {
+      "name": "coordinate-finite-part",
+      "r": 2,
+      "p": 6,
+      "passed": true
+    },
+    {
+      "name": "coordinate-finite-part",
+      "r": 3,
+      "p": 0,
+      "passed": true
+    },
+    {
+      "name": "coordinate-finite-part",
+      "r": 3,
+      "p": 1,
+      "passed": true
+    },
+    {
+      "name": "coordinate-finite-part",
+      "r": 3,
+      "p": 2,
+      "passed": true
+    },
+    {
+      "name": "coordinate-finite-part",
+      "r": 3,
+      "p": 3,
+      "passed": true
+    },
+    {
+      "name": "coordinate-finite-part",
+      "r": 3,
+      "p": 4,
+      "passed": true
+    },
+    {
+      "name": "coordinate-finite-part",
+      "r": 3,
+      "p": 5,
+      "passed": true
+    },
+    {
+      "name": "coordinate-finite-part",
+      "r": 3,
+      "p": 6,
+      "passed": true
+    },
+    {
+      "name": "coordinate-finite-part",
+      "r": 4,
+      "p": 0,
+      "passed": true
+    },
+    {
+      "name": "coordinate-finite-part",
+      "r": 4,
+      "p": 1,
+      "passed": true
+    },
+    {
+      "name": "coordinate-finite-part",
+      "r": 4,
+      "p": 2,
+      "passed": true
+    },
+    {
+      "name": "coordinate-finite-part",
+      "r": 4,
+      "p": 3,
+      "passed": true
+    },
+    {
+      "name": "coordinate-finite-part",
+      "r": 4,
+      "p": 4,
+      "passed": true
+    },
+    {
+      "name": "coordinate-finite-part",
+      "r": 4,
+      "p": 5,
+      "passed": true
+    },
+    {
+      "name": "coordinate-finite-part",
+      "r": 4,
+      "p": 6,
+      "passed": true
+    },
+    {
+      "name": "coordinate-finite-part",
+      "r": 5,
+      "p": 0,
+      "passed": true
+    },
+    {
+      "name": "coordinate-finite-part",
+      "r": 5,
+      "p": 1,
+      "passed": true
+    },
+    {
+      "name": "coordinate-finite-part",
+      "r": 5,
+      "p": 2,
+      "passed": true
+    },
+    {
+      "name": "coordinate-finite-part",
+      "r": 5,
+      "p": 3,
+      "passed": true
+    },
+    {
+      "name": "coordinate-finite-part",
+      "r": 5,
+      "p": 4,
+      "passed": true
+    },
+    {
+      "name": "coordinate-finite-part",
+      "r": 5,
+      "p": 5,
+      "passed": true
+    },
+    {
+      "name": "coordinate-finite-part",
+      "r": 5,
+      "p": 6,
+      "passed": true
+    }
+  ],
+  "numerical_checks": [
+    {
+      "name": "defining-sum-versus-Newton",
+      "inputs": {
+        "r": 0,
+        "k": 0,
+        "s": {
+          "real": "12.25",
+          "imag": "0.35"
+        },
+        "a": {
+          "real": "15.2",
+          "imag": "0.1"
+        }
+      },
+      "left": {
+        "real": "-1.00020065036514814085329516797513806470021",
+        "imag": "0.0000498758847078215644189844776705800210858196"
+      },
+      "right": {
+        "real": "-1.0002006503651481408532605607418669429664",
+        "imag": "0.0000498758847078215644243144656196363130866397"
+      },
+      "absolute_residual": "3.50152733278e-23",
+      "scaled_residual": "1.75058803724e-23",
+      "tolerance": "0.00000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "defining-sum-versus-Newton",
+      "inputs": {
+        "r": 0,
+        "k": 1,
+        "s": {
+          "real": "12.25",
+          "imag": "0.35"
+        },
+        "a": {
+          "real": "15.2",
+          "imag": "0.1"
+        }
+      },
+      "left": {
+        "real": "0.000139645904570829183509985801739818759673983",
+        "imag": "-0.0000348039875948221408694827645673259115086288"
+      },
+      "right": {
+        "real": "0.000139645904570829183510578078907224230958235",
+        "imag": "-0.0000348039875948221408695086886854243962902677"
+      },
+      "absolute_residual": "5.92844248457e-25",
+      "scaled_residual": "5.92758939971e-25",
+      "tolerance": "0.00000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "defining-sum-versus-Newton",
+      "inputs": {
+        "r": 0,
+        "k": 2,
+        "s": {
+          "real": "12.25",
+          "imag": "0.35"
+        },
+        "a": {
+          "real": "15.2",
+          "imag": "0.1"
+        }
+      },
+      "left": {
+        "real": "-0.000097425365024162037668714367653374845317639",
+        "imag": "0.0000243846642027009983686493695239749181896379"
+      },
+      "right": {
+        "real": "-0.0000974253650241620376690369519251383510627354",
+        "imag": "0.0000243846642027009983686555529527367988089651"
+      },
+      "absolute_residual": "3.22643529581e-25",
+      "scaled_residual": "3.22611129538e-25",
+      "tolerance": "0.00000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "defining-sum-versus-Newton",
+      "inputs": {
+        "r": 1,
+        "k": 0,
+        "s": {
+          "real": "12.25",
+          "imag": "0.35"
+        },
+        "a": {
+          "real": "15.2",
+          "imag": "0.1"
+        }
+      },
+      "left": {
+        "real": "3.26573310665112382342578415093528850475779",
+        "imag": "0.00668866524608440812921065131035453248590236"
+      },
+      "right": {
+        "real": "3.26573310665112382342578397137757728119643",
+        "imag": "0.00668866524608440812921062357416373471315216"
+      },
+      "absolute_residual": "1.81687280622e-25",
+      "scaled_residual": "4.25922073271e-26",
+      "tolerance": "0.00000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "defining-sum-versus-Newton",
+      "inputs": {
+        "r": 1,
+        "k": 1,
+        "s": {
+          "real": "12.25",
+          "imag": "0.35"
+        },
+        "a": {
+          "real": "15.2",
+          "imag": "0.1"
+        }
+      },
+      "left": {
+        "real": "-0.000315797780672107010046599786539053395250396",
+        "imag": "0.0000775707849093278778021352927295923418282119"
+      },
+      "right": {
+        "real": "-0.000315797780672107010046602850028929350458867",
+        "imag": "0.0000775707849093278778021354256257246884277798"
+      },
+      "absolute_residual": "3.0663710803e-27",
+      "scaled_residual": "3.06537426571e-27",
+      "tolerance": "0.00000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "defining-sum-versus-Newton",
+      "inputs": {
+        "r": 1,
+        "k": 2,
+        "s": {
+          "real": "12.25",
+          "imag": "0.35"
+        },
+        "a": {
+          "real": "15.2",
+          "imag": "0.1"
+        }
+      },
+      "left": {
+        "real": "0.000219994181074191275204962619625408315921573",
+        "imag": "-0.0000542154140251478477562210137641728036959087"
+      },
+      "right": {
+        "real": "0.000219994181074191275204964289194553484638227",
+        "imag": "-0.000054215414025147847756221045214449341344793"
+      },
+      "absolute_residual": "1.669865339e-27",
+      "scaled_residual": "1.66948707305e-27",
+      "tolerance": "0.00000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "defining-sum-versus-Newton",
+      "inputs": {
+        "r": 2,
+        "k": 0,
+        "s": {
+          "real": "12.25",
+          "imag": "0.35"
+        },
+        "a": {
+          "real": "15.2",
+          "imag": "0.1"
+        }
+      },
+      "left": {
+        "real": "-6.12004013737050303988174423824763823666314",
+        "imag": "-0.0222964171281862424226611107025147716948412"
+      },
+      "right": {
+        "real": "-6.12004013737050303988174423731223490470765",
+        "imag": "-0.0222964171281862424226611105576480102640014"
+      },
+      "absolute_residual": "9.46554685161e-28",
+      "scaled_residual": "1.32941565989e-28",
+      "tolerance": "0.00000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "defining-sum-versus-Newton",
+      "inputs": {
+        "r": 2,
+        "k": 1,
+        "s": {
+          "real": "12.25",
+          "imag": "0.35"
+        },
+        "a": {
+          "real": "15.2",
+          "imag": "0.1"
+        }
+      },
+      "left": {
+        "real": "0.000397370734569103022363373662199954116142664",
+        "imag": "-0.0000964390378688906159654490166140664173794058"
+      },
+      "right": {
+        "real": "0.000397370734569103022363373678115764315818166",
+        "imag": "-0.00009643903786889061596544901729908443286229"
+      },
+      "absolute_residual": "1.59305449999e-29",
+      "scaled_residual": "1.59240335695e-29",
+      "tolerance": "0.00000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "defining-sum-versus-Newton",
+      "inputs": {
+        "r": 2,
+        "k": 2,
+        "s": {
+          "real": "12.25",
+          "imag": "0.35"
+        },
+        "a": {
+          "real": "15.2",
+          "imag": "0.1"
+        }
+      },
+      "left": {
+        "real": "-0.000276499439386686935286609661762131940576037",
+        "imag": "0.0000672734049220174058142688675215952122985303"
+      },
+      "right": {
+        "real": "-0.000276499439386686935286609670440692352712654",
+        "imag": "0.0000672734049220174058142688676826326818184651"
+      },
+      "absolute_residual": "8.68005437159e-30",
+      "scaled_residual": "8.67758502832e-30",
+      "tolerance": "0.00000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "defining-sum-versus-Newton",
+      "inputs": {
+        "r": 3,
+        "k": 0,
+        "s": {
+          "real": "12.25",
+          "imag": "0.35"
+        },
+        "a": {
+          "real": "15.2",
+          "imag": "0.1"
+        }
+      },
+      "left": {
+        "real": "8.77736474760140437374355180058917366887944",
+        "imag": "0.0422498313160003261460227513910657234732304"
+      },
+      "right": {
+        "real": "8.77736474760140437374355180058428325293152",
+        "imag": "0.0422498313160003261460227513903066000691955"
+      },
+      "absolute_residual": "4.94898337907e-30",
+      "scaled_residual": "5.06162144724e-31",
+      "tolerance": "0.00000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "defining-sum-versus-Newton",
+      "inputs": {
+        "r": 3,
+        "k": 1,
+        "s": {
+          "real": "12.25",
+          "imag": "0.35"
+        },
+        "a": {
+          "real": "15.2",
+          "imag": "0.1"
+        }
+      },
+      "left": {
+        "real": "-0.000369588026624386548948357171008644932568512",
+        "imag": "0.0000888123465344521857409776588252289373284251"
+      },
+      "right": {
+        "real": "-0.000369588026624386548948357171091674605484891",
+        "imag": "0.000088812346534452185740977658828761208219842"
+      },
+      "absolute_residual": "8.3104774365e-32",
+      "scaled_residual": "8.30731974851e-32",
+      "tolerance": "0.00000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "defining-sum-versus-Newton",
+      "inputs": {
+        "r": 3,
+        "k": 2,
+        "s": {
+          "real": "12.25",
+          "imag": "0.35"
+        },
+        "a": {
+          "real": "15.2",
+          "imag": "0.1"
+        }
+      },
+      "left": {
+        "real": "0.000256933195140933800406603092941491272109922",
+        "imag": "-0.0000618597615542830769509539207663007488540173"
+      },
+      "right": {
+        "real": "0.000256933195140933800406603092986917761709472",
+        "imag": "-0.0000618597615542830769509539207670197028642007"
+      },
+      "absolute_residual": "4.54321785985e-32",
+      "scaled_residual": "4.54201751799e-32",
+      "tolerance": "0.00000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "negative-shift-finite-transport",
+      "inputs": {
+        "N": 0,
+        "r": 0,
+        "k": 0,
+        "z": {
+          "real": "0.27",
+          "imag": "0.19"
+        }
+      },
+      "left": {
+        "real": "650193.895811638306079676524215053794842302",
+        "imag": "-726449.793470679332573653062113526233718521"
+      },
+      "right": {
+        "real": "650193.895811638306079676524215053794842302",
+        "imag": "-726449.793470679332573653062113526233718521"
+      },
+      "absolute_residual": "1.90045172187e-38",
+      "scaled_residual": "1.94932648593e-44",
+      "tolerance": "0.0000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "negative-shift-finite-transport",
+      "inputs": {
+        "N": 0,
+        "r": 0,
+        "k": 1,
+        "z": {
+          "real": "0.27",
+          "imag": "0.19"
+        }
+      },
+      "left": {
+        "real": "275084.080218788326355325959828224545504506",
+        "imag": "-1203758.58067448049346180493008650434643317"
+      },
+      "right": {
+        "real": "275084.080218788326355325959828224545504506",
+        "imag": "-1203758.58067448049346180493008650434643317"
+      },
+      "absolute_residual": "1.34747763114e-37",
+      "scaled_residual": "1.09125981294e-43",
+      "tolerance": "0.0000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "negative-shift-finite-transport",
+      "inputs": {
+        "N": 0,
+        "r": 1,
+        "k": 0,
+        "z": {
+          "real": "0.27",
+          "imag": "0.19"
+        }
+      },
+      "left": {
+        "real": "-2.20277931254335891793496043086951599993497",
+        "imag": "1.87630789644631510555932953024612751360083"
+      },
+      "right": {
+        "real": "-2.20277931254335891793496043086951600010436",
+        "imag": "1.87630789644631510555932953024612751351704"
+      },
+      "absolute_residual": "1.88975944153e-37",
+      "scaled_residual": "4.85353469281e-38",
+      "tolerance": "0.0000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "negative-shift-finite-transport",
+      "inputs": {
+        "N": 0,
+        "r": 1,
+        "k": 1,
+        "z": {
+          "real": "0.27",
+          "imag": "0.19"
+        }
+      },
+      "left": {
+        "real": "0.0177958440588846435130191639177010619913703",
+        "imag": "0.0394590976031185190885893006089431577674223"
+      },
+      "right": {
+        "real": "0.0177958440588846435130191639177010631923459",
+        "imag": "0.0394590976031185190885893006089431583615438"
+      },
+      "absolute_residual": "1.33989648166e-36",
+      "scaled_residual": "1.28430360187e-36",
+      "tolerance": "0.0000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "negative-shift-finite-transport",
+      "inputs": {
+        "N": 1,
+        "r": 0,
+        "k": 0,
+        "z": {
+          "real": "0.27",
+          "imag": "0.19"
+        }
+      },
+      "left": {
+        "real": "650127.985260702974157339136334855547002225",
+        "imag": "-726393.237597334400917872119605117744324426"
+      },
+      "right": {
+        "real": "650127.985260702974157339136334855547002225",
+        "imag": "-726393.237597334400917872119605117744324426"
+      },
+      "absolute_residual": "3.82040705577e-38",
+      "scaled_residual": "3.91900426445e-44",
+      "tolerance": "0.0000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "negative-shift-finite-transport",
+      "inputs": {
+        "N": 1,
+        "r": 0,
+        "k": 1,
+        "z": {
+          "real": "0.27",
+          "imag": "0.19"
+        }
+      },
+      "left": {
+        "real": "275228.772563792813964578863721040230266632",
+        "imag": "-1203552.35380674457705471377946672058166072"
+      },
+      "right": {
+        "real": "275228.772563792813964578863721040230266633",
+        "imag": "-1203552.35380674457705471377946672058166072"
+      },
+      "absolute_residual": "2.70862388492e-37",
+      "scaled_residual": "2.1938891156e-43",
+      "tolerance": "0.0000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "negative-shift-finite-transport",
+      "inputs": {
+        "N": 1,
+        "r": 1,
+        "k": 0,
+        "z": {
+          "real": "0.27",
+          "imag": "0.19"
+        }
+      },
+      "left": {
+        "real": "-1076745.62053313510333634841734805697609139",
+        "imag": "714890.29287974993423009360105538952485244"
+      },
+      "right": {
+        "real": "-1076745.62053313510333634841734805697609139",
+        "imag": "714890.29287974993423009360105538952485244"
+      },
+      "absolute_residual": "3.35078635996e-37",
+      "scaled_residual": "2.5925656248e-43",
+      "tolerance": "0.0000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "negative-shift-finite-transport",
+      "inputs": {
+        "N": 1,
+        "r": 1,
+        "k": 1,
+        "z": {
+          "real": "0.27",
+          "imag": "0.19"
+        }
+      },
+      "left": {
+        "real": "-754877.853711830408597133090480027196605779",
+        "imag": "1452509.33410022410262573467135869517704572"
+      },
+      "right": {
+        "real": "-754877.853711830408597133090480027196605777",
+        "imag": "1452509.33410022410262573467135869517704572"
+      },
+      "absolute_residual": "2.37566831488e-36",
+      "scaled_residual": "1.45127132902e-42",
+      "tolerance": "0.0000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "negative-shift-finite-transport",
+      "inputs": {
+        "N": 1,
+        "r": 2,
+        "k": 0,
+        "z": {
+          "real": "0.27",
+          "imag": "0.19"
+        }
+      },
+      "left": {
+        "real": "4.5022294155689210091722245134935143934362",
+        "imag": "-2.02138048113336984256014947234400344137184"
+      },
+      "right": {
+        "real": "4.50222941556892100917222451349351439215945",
+        "imag": "-2.02138048113336984256014947234400344161374"
+      },
+      "absolute_residual": "1.29946311721e-36",
+      "scaled_residual": "2.18942318824e-37",
+      "tolerance": "0.0000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "negative-shift-finite-transport",
+      "inputs": {
+        "N": 1,
+        "r": 2,
+        "k": 1,
+        "z": {
+          "real": "0.27",
+          "imag": "0.19"
+        }
+      },
+      "left": {
+        "real": "-0.00953222856513294142890733469585120768169143",
+        "imag": "-0.0567505153157629426050697841958589363514996"
+      },
+      "right": {
+        "real": "-0.00953222856513294142890733469585119862972182",
+        "imag": "-0.0567505153157629426050697841958589346362797"
+      },
+      "absolute_residual": "9.2130414567e-36",
+      "scaled_residual": "8.71172112392e-36",
+      "tolerance": "0.0000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "negative-shift-finite-transport",
+      "inputs": {
+        "N": 2,
+        "r": 0,
+        "k": 0,
+        "z": {
+          "real": "0.27",
+          "imag": "0.19"
+        }
+      },
+      "left": {
+        "real": "650127.988309055977506719356260637067460763",
+        "imag": "-726393.236447605732527652886772968132331652"
+      },
+      "right": {
+        "real": "650127.988309055977506719356260637067460763",
+        "imag": "-726393.236447605732527652886772968132331652"
+      },
+      "absolute_residual": "5.7600826404e-38",
+      "scaled_residual": "5.90873906224e-44",
+      "tolerance": "0.0000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "negative-shift-finite-transport",
+      "inputs": {
+        "N": 2,
+        "r": 0,
+        "k": 1,
+        "z": {
+          "real": "0.27",
+          "imag": "0.19"
+        }
+      },
+      "left": {
+        "real": "275228.774360863234668507132494327965933153",
+        "imag": "-1203552.3636870575282869390648460846397703"
+      },
+      "right": {
+        "real": "275228.774360863234668507132494327965933153",
+        "imag": "-1203552.3636870575282869390648460846397703"
+      },
+      "absolute_residual": "4.08358894251e-37",
+      "scaled_residual": "3.30756193601e-43",
+      "tolerance": "0.0000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "negative-shift-finite-transport",
+      "inputs": {
+        "N": 2,
+        "r": 1,
+        "k": 0,
+        "z": {
+          "real": "0.27",
+          "imag": "0.19"
+        }
+      },
+      "left": {
+        "real": "-1493627.80265413532831706562057825587597105",
+        "imag": "1088986.0287146310661211547865995397869029"
+      },
+      "right": {
+        "real": "-1493627.80265413532831706562057825587597105",
+        "imag": "1088986.0287146310661211547865995397869029"
+      },
+      "absolute_residual": "4.74529301179e-37",
+      "scaled_residual": "2.56715501195e-43",
+      "tolerance": "0.0000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "negative-shift-finite-transport",
+      "inputs": {
+        "N": 2,
+        "r": 1,
+        "k": 1,
+        "z": {
+          "real": "0.27",
+          "imag": "0.19"
+        }
+      },
+      "left": {
+        "real": "-987568.749637430619161384345790716040738104",
+        "imag": "2122648.68877125331479192313434001870379461"
+      },
+      "right": {
+        "real": "-987568.749637430619161384345790716040738101",
+        "imag": "2122648.68877125331479192313434001870379461"
+      },
+      "absolute_residual": "3.36415767431e-36",
+      "scaled_residual": "1.43697446038e-42",
+      "tolerance": "0.0000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "negative-shift-finite-transport",
+      "inputs": {
+        "N": 2,
+        "r": 2,
+        "k": 0,
+        "z": {
+          "real": "0.27",
+          "imag": "0.19"
+        }
+      },
+      "left": {
+        "real": "659825.921565657304238143720330377665967373",
+        "imag": "-340767.468320286916329286512123619934804813"
+      },
+      "right": {
+        "real": "659825.921565657304238143720330377665967372",
+        "imag": "-340767.468320286916329286512123619934804814"
+      },
+      "absolute_residual": "1.6854727071e-36",
+      "scaled_residual": "2.26961007094e-42",
+      "tolerance": "0.0000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "negative-shift-finite-transport",
+      "inputs": {
+        "N": 2,
+        "r": 2,
+        "k": 1,
+        "z": {
+          "real": "0.27",
+          "imag": "0.19"
+        }
+      },
+      "left": {
+        "real": "522256.66276902900712586670383898393530319",
+        "imag": "-782243.1586944373758187582849177001710765"
+      },
+      "right": {
+        "real": "522256.662769029007125866703838983935303202",
+        "imag": "-782243.158694437375818758284917700171076498"
+      },
+      "absolute_residual": "1.19490956339e-35",
+      "scaled_residual": "1.27041984162e-41",
+      "tolerance": "0.0000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "negative-shift-finite-transport",
+      "inputs": {
+        "N": 2,
+        "r": 3,
+        "k": 0,
+        "z": {
+          "real": "0.27",
+          "imag": "0.19"
+        }
+      },
+      "left": {
+        "real": "-5.00585565467788947957478576128407008556618",
+        "imag": "1.20932519262664442450463744994122915432688"
+      },
+      "right": {
+        "real": "-5.00585565467788947957478576128407008899449",
+        "imag": "1.20932519262664442450463744994122915475993"
+      },
+      "absolute_residual": "3.45555084479e-36",
+      "scaled_residual": "5.61890975054e-37",
+      "tolerance": "0.0000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "negative-shift-finite-transport",
+      "inputs": {
+        "N": 2,
+        "r": 3,
+        "k": 1,
+        "z": {
+          "real": "0.27",
+          "imag": "0.19"
+        }
+      },
+      "left": {
+        "real": "0.00164114622034523546807571137854025349956802",
+        "imag": "0.0332274350540360176694155606804066891752698"
+      },
+      "right": {
+        "real": "0.00164114622034523546807571137854027780450438",
+        "imag": "0.0332274350540360176694155606804066861057414"
+      },
+      "absolute_residual": "2.44979986159e-35",
+      "scaled_residual": "2.37092410191e-35",
+      "tolerance": "0.0000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "Cauchy-boundary-versus-Xi-integral",
+      "inputs": {
+        "r": 1,
+        "k": 0,
+        "s": {
+          "real": "12.25",
+          "imag": "0.35"
+        },
+        "nodes": 28,
+        "radius": "0.025"
+      },
+      "left": {
+        "real": "-12.2512348487814332193634583585255693474607",
+        "imag": "-0.349730704586452596007523163574594985292072"
+      },
+      "right": {
+        "real": "-12.2512348487814332193634583585255693533191",
+        "imag": "-0.349730704586452596007523163574594988063114"
+      },
+      "absolute_residual": "6.48070318642e-36",
+      "scaled_residual": "4.88879969569e-37",
+      "tolerance": "0.000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "Cauchy-boundary-versus-Xi-integral",
+      "inputs": {
+        "r": 1,
+        "k": 1,
+        "s": {
+          "real": "12.25",
+          "imag": "0.35"
+        },
+        "nodes": 28,
+        "radius": "0.025"
+      },
+      "left": {
+        "real": "-0.999241856251930809927215884264084834118829",
+        "imag": "-0.000162686528905604437078103233994929426725351"
+      },
+      "right": {
+        "real": "-0.99924185625193080992721588426408483987843",
+        "imag": "-0.000162686528905604437078103233994931533805464"
+      },
+      "absolute_residual": "6.13292640841e-36",
+      "scaled_residual": "3.06762603464e-36",
+      "tolerance": "0.000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "Cauchy-boundary-versus-Xi-integral",
+      "inputs": {
+        "r": 2,
+        "k": 0,
+        "s": {
+          "real": "12.25",
+          "imag": "0.35"
+        },
+        "nodes": 28,
+        "radius": "0.025"
+      },
+      "left": {
+        "real": "20.0206777107556494200234842271584794318426",
+        "imag": "0.524834396873687101797007503447370299070287"
+      },
+      "right": {
+        "real": "20.0206777107556494200234842271584794356635",
+        "imag": "0.524834396873687101797007503447370300679715"
+      },
+      "absolute_residual": "4.14601269922e-36",
+      "scaled_residual": "1.9717045382e-37",
+      "tolerance": "0.000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "Cauchy-boundary-versus-Xi-integral",
+      "inputs": {
+        "r": 2,
+        "k": 1,
+        "s": {
+          "real": "12.25",
+          "imag": "0.35"
+        },
+        "nodes": 28,
+        "radius": "0.025"
+      },
+      "left": {
+        "real": "1.49953417348160247850088443080477068306311",
+        "imag": "0.000102534353888309534456436967161661248069295"
+      },
+      "right": {
+        "real": "1.4995341734816024785008844308047706926669",
+        "imag": "0.00010253435388830953445643696716166688214233"
+      },
+      "absolute_residual": "1.11344263005e-35",
+      "scaled_residual": "4.45460054239e-36",
+      "tolerance": "0.000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "Cauchy-boundary-versus-Xi-integral",
+      "inputs": {
+        "r": 3,
+        "k": 0,
+        "s": {
+          "real": "12.25",
+          "imag": "0.35"
+        },
+        "nodes": 28,
+        "radius": "0.025"
+      },
+      "left": {
+        "real": "-16.4668856226284512204194748103410817928307",
+        "imag": "-0.350188709348912375640005787174452906490868"
+      },
+      "right": {
+        "real": "-16.4668856226284512204194748103410817950332",
+        "imag": "-0.350188709348912375640005787174452907580979"
+      },
+      "absolute_residual": "2.45747129291e-36",
+      "scaled_residual": "1.40663174423e-37",
+      "tolerance": "0.000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "Cauchy-boundary-versus-Xi-integral",
+      "inputs": {
+        "r": 3,
+        "k": 1,
+        "s": {
+          "real": "12.25",
+          "imag": "0.35"
+        },
+        "nodes": 28,
+        "radius": "0.025"
+      },
+      "left": {
+        "real": "-1.00053173724101751269250199346894347207225",
+        "imag": "0.000111067753356840871200680459395580849394573"
+      },
+      "right": {
+        "real": "-1.00053173724101751269250199346894347339552",
+        "imag": "0.000111067753356840871200680459395580658949749"
+      },
+      "absolute_residual": "1.33690832925e-36",
+      "scaled_residual": "6.68276488815e-37",
+      "tolerance": "0.000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "polynomial-order-boundary-jets",
+      "inputs": {
+        "m": 0,
+        "k": 0,
+        "nodes": 28,
+        "radius": "0.025"
+      },
+      "left": {
+        "real": "-1.0",
+        "imag": "-8.36318837060011552208285525394438025028019e-110"
+      },
+      "right": {
+        "real": "-1.0",
+        "imag": "0.0"
+      },
+      "absolute_residual": "1.38777878078e-45",
+      "scaled_residual": "6.93889390391e-46",
+      "tolerance": "0.000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "polynomial-order-boundary-jets",
+      "inputs": {
+        "m": 0,
+        "k": 1,
+        "nodes": 28,
+        "radius": "0.025"
+      },
+      "left": {
+        "real": "-0.577215664901532860606512112010131621961683",
+        "imag": "-7.43517471013462448969736853095760701912285e-109"
+      },
+      "right": {
+        "real": "-0.577215664901532860606512090082402431042159",
+        "imag": "0.0"
+      },
+      "absolute_residual": "2.19277291909e-26",
+      "scaled_residual": "1.39028096657e-26",
+      "tolerance": "0.000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "polynomial-order-boundary-jets",
+      "inputs": {
+        "m": 0,
+        "k": 2,
+        "nodes": 28,
+        "radius": "0.025"
+      },
+      "left": {
+        "real": "-0.145631690967353449721172851631055251881009",
+        "imag": "1.61223841454582988006349971191645174284608e-108"
+      },
+      "right": {
+        "real": "-0.145631690967353449721172751749802638275473",
+        "imag": "0.0"
+      },
+      "absolute_residual": "9.98812526136e-26",
+      "scaled_residual": "8.71844358018e-26",
+      "tolerance": "0.000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "polynomial-order-boundary-jets",
+      "inputs": {
+        "m": 1,
+        "k": 0,
+        "nodes": 28,
+        "radius": "0.025"
+      },
+      "left": {
+        "real": "-0.5",
+        "imag": "-1.21659795090297887426552950718115267677956e-109"
+      },
+      "right": {
+        "real": "-0.5",
+        "imag": "0.0"
+      },
+      "absolute_residual": "1.38777878078e-45",
+      "scaled_residual": "9.25185853854e-46",
+      "tolerance": "0.000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "polynomial-order-boundary-jets",
+      "inputs": {
+        "m": 1,
+        "k": 1,
+        "nodes": 28,
+        "radius": "0.025"
+      },
+      "left": {
+        "real": "-0.418938533204672741780329732322526370530766",
+        "imag": "3.04208469494043934254331265125965671026917e-109"
+      },
+      "right": {
+        "real": "-0.418938533204672741780329736405617639861397",
+        "imag": "0.0"
+      },
+      "absolute_residual": "4.08309126933e-27",
+      "scaled_residual": "2.87756740252e-27",
+      "tolerance": "0.000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "polynomial-order-boundary-jets",
+      "inputs": {
+        "m": 1,
+        "k": 2,
+        "nodes": 28,
+        "radius": "0.025"
+      },
+      "left": {
+        "real": "-0.168479389499239367649440543799115574241307",
+        "imag": "3.89336195815424234602163741546419549251869e-108"
+      },
+      "right": {
+        "real": "-0.1684793894992393676494405539187251584762",
+        "imag": "0.0"
+      },
+      "absolute_residual": "1.01196095842e-26",
+      "scaled_residual": "8.6604947209e-27",
+      "tolerance": "0.000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "polynomial-order-boundary-jets",
+      "inputs": {
+        "m": 2,
+        "k": 0,
+        "nodes": 28,
+        "radius": "0.025"
+      },
+      "left": {
+        "real": "-0.166666666666666666666666666666666666666667",
+        "imag": "7.29936512791874066315629591113336972200829e-109"
+      },
+      "right": {
+        "real": "-0.166666666666666666666666666666666666666667",
+        "imag": "0.0"
+      },
+      "absolute_residual": "1.38777878078e-45",
+      "scaled_residual": "1.18952466924e-45",
+      "tolerance": "0.000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "polynomial-order-boundary-jets",
+      "inputs": {
+        "m": 2,
+        "k": 1,
+        "nodes": 28,
+        "radius": "0.025"
+      },
+      "left": {
+        "real": "-0.247508954067568525094505988729968391651596",
+        "imag": "-6.04030157281124515139217844287669364144021e-114"
+      },
+      "right": {
+        "real": "-0.247508954067568525094505987152227952194739",
+        "imag": "0.0"
+      },
+      "absolute_residual": "1.57774043946e-27",
+      "scaled_residual": "1.26471271754e-27",
+      "tolerance": "0.000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "polynomial-order-boundary-jets",
+      "inputs": {
+        "m": 2,
+        "k": 2,
+        "nodes": 28,
+        "radius": "0.025"
+      },
+      "left": {
+        "real": "-0.169566560818298920154348267133779107057562",
+        "imag": "-5.83949580773007501137290270898254729020021e-108"
+      },
+      "right": {
+        "real": "-0.16956656081829892015434826491337895819071",
+        "imag": "0.0"
+      },
+      "absolute_residual": "2.22040014887e-27",
+      "scaled_residual": "1.89848121796e-27",
+      "tolerance": "0.000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "monodromy-single-mode",
+      "inputs": {
+        "s": {
+          "real": "0.7",
+          "imag": "0.2"
+        },
+        "a": {
+          "real": "0.4",
+          "imag": "0.17"
+        }
+      },
+      "left": {
+        "real": "-0.0203772048832848770628094000816300751701332",
+        "imag": "7.29902136104602779385654530374902558015974"
+      },
+      "right": {
+        "real": "-0.0203772048832848770628094000816300751701332",
+        "imag": "7.29902136104602779385654530374902558015974"
+      },
+      "absolute_residual": "9.31742061855e-111",
+      "scaled_residual": "1.12270932663e-111",
+      "tolerance": "1.0e-90",
+      "passed": true
+    },
+    {
+      "name": "doubled-defining-cutoff",
+      "inputs": {
+        "r": 0,
+        "k": 0,
+        "original_terms": 1200,
+        "new_terms": 2400
+      },
+      "left": {
+        "real": "-1.00020065036514814085329516797513806470021",
+        "imag": "0.0000498758847078215644189844776705800210858196"
+      },
+      "right": {
+        "real": "-1.0002006503651481408532951679751380645029",
+        "imag": "0.0000498758847078215644189844776705801756518454"
+      },
+      "absolute_residual": "2.50646056531e-37",
+      "scaled_residual": "1.25310456393e-37",
+      "tolerance": "0.00000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "doubled-defining-cutoff",
+      "inputs": {
+        "r": 0,
+        "k": 1,
+        "original_terms": 1200,
+        "new_terms": 2400
+      },
+      "left": {
+        "real": "0.000139645904570829183509985801739818759673983",
+        "imag": "-0.0000348039875948221408694827645673259115086288"
+      },
+      "right": {
+        "real": "0.000139645904570829183509985801739817359525225",
+        "imag": "-0.000034803987594822140869482764567327008338704"
+      },
+      "absolute_residual": "1.77860978234e-36",
+      "scaled_residual": "1.77835384579e-36",
+      "tolerance": "0.00000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "doubled-defining-cutoff",
+      "inputs": {
+        "r": 1,
+        "k": 0,
+        "original_terms": 1200,
+        "new_terms": 2400
+      },
+      "left": {
+        "real": "3.26573310665112382342578415093528850475779",
+        "imag": "0.00668866524608440812921065131035453248590236"
+      },
+      "right": {
+        "real": "3.26573310665112382342578415093528850562851",
+        "imag": "0.00668866524608440812921065131035453316584343"
+      },
+      "absolute_residual": "1.10475479209e-36",
+      "scaled_residual": "2.58983154954e-37",
+      "tolerance": "0.00000000000000000000000001",
+      "passed": true
+    },
+    {
+      "name": "doubled-defining-cutoff",
+      "inputs": {
+        "r": 1,
+        "k": 1,
+        "original_terms": 1200,
+        "new_terms": 2400
+      },
+      "left": {
+        "real": "-0.000315797780672107010046599786539053395250396",
+        "imag": "0.0000775707849093278778021352927295923418282119"
+      },
+      "right": {
+        "real": "-0.000315797780672107010046599786539059573939352",
+        "imag": "0.0000775707849093278778021352927295875168448427"
+      },
+      "absolute_residual": "7.83942993639e-36",
+      "scaled_residual": "7.8368814979e-36",
+      "tolerance": "0.00000000000000000000000001",
+      "passed": true
+    }
+  ],
+  "summary": {
+    "exact_count": 85,
+    "numeric_count": 50,
+    "all_passed": true,
+    "max_scaled_numeric_residual": "1.75058803724e-23",
+    "elapsed_seconds": 28.85
+  }
+}

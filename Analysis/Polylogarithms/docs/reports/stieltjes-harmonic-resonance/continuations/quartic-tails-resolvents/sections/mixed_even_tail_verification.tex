@@ -1,0 +1,135 @@
+\section{Verification of the mixed-tail identities}
+\label{tail:verification-section}
+
+The script \texttt{verification/verify\_mixed\_tails.py} records
+finite exact checks and a numerical route independent of the moment
+formula. Its numerical tail approximation has an explicit analytic
+remainder estimate. Ordinary multiprecision arithmetic is used, so
+the recorded floating-point computations are not asserted to be
+interval certificates. The identities are established by the
+proofs above.
+
+\subsection{A proved truncation envelope}
+
+For real \(x>0\), put
+\[
+ T_p(x)=\zeta(p,x+1/2),\qquad
+ Q_{p,K}(x)=\sum_{j=0}^{K}c_{p,j}x^{1-p-2j},\qquad
+ R_{p,K}=\frac{2(p+2K)!}{(p-1)!(2\pi)^{2K+2}}.
+\]
+Then
+\begin{equation}\label{tail:individual-bound}
+ 0<T_p(x)\le\frac{x^{1-p}}{p-1},\qquad
+ |T_p(x)-Q_{p,K}(x)|\le R_{p,K}x^{-p-2K-1}.
+\end{equation}
+Here and below the bound is needed only to substantiate numerical
+verification, not as the research objective.
+
+To prove it, let \(g(u)=u/(2\sinh(u/2))\). The standard
+hyperbolic-cosecant partial fractions \cite[Eq.~4.36.5]{DLMF}
+give
+\[
+ g(u)=1+2\sum_{m=1}^{\infty}
+             (-1)^m\frac{u^2}{u^2+(2\pi m)^2}.
+\]
+Expanding each rational summand through degree \(2K\), and using
+the alternating-series estimate on the remainder, gives for real
+\(u>0\)
+\[
+ \left|g(u)-\sum_{j=0}^{K}
+        \frac{B_{2j}(1/2)}{(2j)!}u^{2j}\right|
+ \le\frac{2u^{2K+2}}{(2\pi)^{2K+2}}.
+\]
+The identity
+\[
+ T_p(x)=\frac1{(p-1)!}\int_0^{\infty}
+             u^{p-2}e^{-xu}g(u)\,\dd u
+\]
+now proves both parts of \eqref{tail:individual-bound}; the
+positivity bound uses \(0<g(u)\le1\).
+
+Fix \(N\ge1\), put \(a=N+1/2\), and choose \(K\ge K_r\).
+Define
+\[
+ M_{p,K}(a)=\sum_{j=0}^{K}|c_{p,j}|a^{-2j},\qquad
+ k_{p,q,\ell}^{[K]}
+   =\sum_{\substack{0\le j\le K\\0\le\ell-j\le K}}
+                         c_{p,j}c_{q,\ell-j}.
+\]
+The finite computational expression is
+\begin{align}\label{tail:finite-evaluation}
+ V_{p,q,r}^{N,K}={}&
+ \sum_{n=0}^{N-1}\left\{x_n^{2r}A_p(n)A_q(n)
+     -\sum_{\ell=0}^{K_r-1}
+            k_{p,q,\ell}x_n^{2r+2-W-2\ell}\right\}\notag\\
+ &+\sum_{\ell=K_r}^{2K}
+       k_{p,q,\ell}^{[K]}\zeta(W-2+2\ell-2r,a).
+\end{align}
+All the Hurwitz-zeta orders in the last sum are at least two.
+Provided \(W+2K-2r>1\), its error satisfies
+\begin{align}\label{tail:evaluation-envelope}
+ |D_{p,q}(-2r)-V_{p,q,r}^{N,K}|
+ \le{}&\left\{\frac{R_{p,K}}{q-1}
+                   +M_{p,K}(a)R_{q,K}\right\}
+                     \zeta(W+2K-2r,a).
+\end{align}
+One may take the smaller bound obtained by interchanging \(p,q\).
+Indeed, \eqref{tail:individual-bound} gives
+\[
+ |T_pT_q-Q_{p,K}Q_{q,K}|
+ \le\left\{\frac{R_{p,K}}{q-1}
+                   +M_{p,K}(a)R_{q,K}\right\}x^{-W-2K}
+ \quad(x\ge a).
+\]
+Multiplication by \(x^{2r}\), summation over the omitted tail,
+and expansion of the finite product prove
+\eqref{tail:evaluation-envelope}.
+
+\subsection{Recorded checks}
+
+The script uses \(110\) decimal working digits, \(N=64\), and
+\(K=30\). It checks \(r=0,1,2,3,5,6\) for each of
+\[
+ (p,q)=(2,2),(2,4),(4,4),(2,6),(4,6),(6,6).
+\]
+These include the first regularized values and several higher
+regularized values, not only ordinary unsubtracted sums.
+Every one of the \(36\) observed discrepancies is below its
+analytic truncation envelope. Selected results are
+\begin{center}
+\begin{tabular}{cccll}
+\hline
+\(p\)&\(q\)&\(r\)&Absolute discrepancy&Truncation envelope\\
+\hline
+2&4&2&\(1.4110\,10^{-73}\)&\(1.4471\,10^{-73}\)\\
+2&4&3&\(5.9899\,10^{-70}\)&\(6.1431\,10^{-70}\)\\
+2&4&6&\(4.6138\,10^{-59}\)&\(4.7314\,10^{-59}\)\\
+4&4&6&\(7.2161\,10^{-63}\)&\(7.4014\,10^{-63}\)\\
+4&6&6&\(1.8213\,10^{-64}\)&\(1.8709\,10^{-64}\)\\
+6&6&6&\(5.1274\,10^{-68}\)&\(5.2690\,10^{-68}\)\\
+\hline
+\end{tabular}
+\end{center}
+
+The exact checks independently expand the finite uncentered tail
+products and Faulhaber polynomials and extract their constant
+coefficients for six pairs and eleven odd block orders. They also
+verify the short \((2,4)\) block formula through \(j=12\) and
+recover the previously proved trigamma-square formula through
+\(r=12\). The two eliminations in
+\eqref{tail:24-eliminations} are checked by exact rational algebra.
+
+Finally, direct quadrature of the generator is compared with its
+first \(41\) Taylor terms for the three cases
+\[
+ (p,q,t)=(2,4,0.7),\quad (2,4,1.3),\quad (4,6,0.8).
+\]
+Their respective differences are approximately
+\(1.1\,10^{-78}\), \(1.2\,10^{-56}\), and
+\(2.6\,10^{-76}\), consistent with the omitted convergent Taylor
+tail. For both \((2,4)\) checks, direct integral evaluation and
+the explicit \(\operatorname{Li}_2\)--\(\operatorname{Li}_6\)
+formula agree to better than \(10^{-109}\). Complete numerical
+values, software versions, formulas, and truncation envelopes are
+recorded in \texttt{verification/mixed\_tail\_results.json}.
+

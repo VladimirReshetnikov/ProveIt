@@ -1,0 +1,416 @@
+\section{The complete quartic directional layer of Tornheim zeta}
+\label{qt:sec}
+
+This section answers the explicit quartic-layer question in the incoming
+\emph{Cubic Tornheim Derivatives and Harmonic Stieltjes Constants},
+Section 7, Question 4 \cite{RepoCubic}, and the corresponding question in
+\emph{Independent Orders and Exact Reductions}, Section 7 \cite{RepoIndependent}.
+The incoming work already proves the cubic ray formula and evaluates its
+diagonal coordinate in a convergent harmonic series. Those results are
+not new here. The present extension classifies the next homogeneous layer,
+gives convergent representatives for every coordinate, and obtains exact
+quartic cancellation identities.
+
+Put
+\[
+ L=\log(2\pi),\qquad d_j=\zeta^{(j)}(0),\qquad
+ e_j=\zeta^{(j)}(-1),\qquad Z_j=\zeta(j),\qquad g=\gamma.
+\]
+Spectral derivatives are denoted by parentheses on zeta, whereas
+subscripts on a multivariable analytic function mean partial derivatives.
+The classical Mellin continuation \cite{BorweinDilcher} of
+\[
+ T(A,B,C)=\sum_{m,n\geq1}m^{-A}n^{-B}(m+n)^{-C}
+\]
+has the following local form, already established in the incoming
+independent-order report \cite{RepoIndependent}:
+\begin{equation}\label{qt:polar}
+ T(A,B,C)=\zeta(A)\zeta(B)
+ -\frac{C\zeta(B-1)}{A+C}
+ -\frac{C\zeta(A-1)}{B+C}+C R(A,B,C),
+\end{equation}
+where $R$ is holomorphic near the origin and symmetric in $A,B$.
+The two indicated polar quotients must be restricted before evaluating
+at the origin. Thus for $(a+c)(b+c)\ne0$ the function
+$W_{a,b,c}(t)=T(at,bt,ct)$ is holomorphic near zero, although $T$ is not
+jointly holomorphic there.
+
+\subsection{Six cubic coefficients and three exact constraints}
+
+All derivatives in the next display are evaluated at $(0,0,0)$:
+\[
+ \alpha=R_{AAA},\quad \beta=R_{AAB},\quad
+ \delta=R_{AAC},\quad \varepsilon=R_{ABC},\quad
+ \varphi=R_{ACC},\quad \chi=R_{CCC}.
+\]
+Symmetry gives the corresponding derivatives with $A,B$ interchanged.
+These six quantities describe the cubic homogeneous part of $R$.
+
+\begin{proposition}\label{qt:constraints}
+One has
+\begin{equation}\label{qt:constraints-eq}
+ \chi=\frac{e_4-d_4}{4},\qquad
+ \delta=\frac{d_2^2-d_4}{4},\qquad
+ \alpha+3\varphi=-\frac{Ld_3}{2}-d_4.
+\end{equation}
+If $\Omega_4=W_{1,1,1}^{(4)}(0)$, then
+\begin{equation}\label{qt:diagonal}
+ \boxed{\Omega_4=24(\beta+\varepsilon)-8Ld_3+12d_2^2-16d_4.}
+\end{equation}
+\end{proposition}
+\begin{proof}
+The exact axis $T(0,0,C)=\zeta(C-1)-\zeta(C)$ gives
+\[
+ C R(0,0,C)=\zeta(C-1)-\zeta(C)-\frac5{12}.
+\]
+Its coefficient of $C^4$ proves the first assertion.
+The Euler stuffle identity on the plane $B=0$ gives
+\begin{align}\label{qt:stuffle}
+ C R(A,0,C)+A R(C,0,A)
+ ={}&\zeta(A)\zeta(C)-\zeta(A+C)
+ +\tfrac12\bigl(\zeta(A)+\zeta(C)\bigr)\notag\\
+ &+\zeta(-1)+\zeta(A-1)+\zeta(C-1).
+\end{align}
+The coefficient of $A^2C^2$ is $\delta$ on the left and
+$(d_2^2-d_4)/4$ on the right. The coefficient of $A^3C$ is
+$\alpha/6+\varphi/2$ on the left and
+$d_1d_3/6-d_4/6$ on the right. Since $d_1=-L/2$, this proves
+the remaining two constraints.
+
+On the diagonal, \eqref{qt:polar} becomes
+$W_{1,1,1}(t)=\zeta(t)^2-\zeta(t-1)+tR(t,t,t)$.
+Its fourth derivative is
+\[
+ -d_4-4Ld_3+6d_2^2-e_4
+ +8\alpha+24\beta+24\delta+24\varepsilon+24\varphi+4\chi.
+\]
+Substituting \eqref{qt:constraints-eq} proves \eqref{qt:diagonal}.
+\end{proof}
+
+The three constraints have rank three in the six-dimensional space of
+formal cubic jets symmetric in $A,B$. Thus that formal reconstruction
+problem has exactly three free coordinates. This dimension statement
+does not imply arithmetic independence of the evaluated constants.
+
+\subsection{An explicit formula for every fourth ray derivative}
+
+\begin{theorem}\label{qt:main}
+For $a,b,c\in\mathbb C$ with $(a+c)(b+c)\ne0$,
+\begin{align}\label{qt:all-rays}
+ W_{a,b,c}^{(4)}(0)={}&abc^2\Omega_4
+ +4c(a+b)(a^2-ab+b^2-c^2)\alpha\notag\\
+ &+12abc(a+b-2c)\beta\notag\\
+ &-2\bigl[ab(a^2+b^2)-4abc^2+c^3(a+b)\bigr]Ld_3\notag\\
+ &+3\bigl[2a^2b^2+c^2(a^2+b^2-4ab)\bigr]d_2^2\notag\\
+ &+\bigl[-\tfrac12(a^4+b^4)-3c^2(a^2+b^2)
+              +16abc^2-4c^3(a+b)-c^4\bigr]d_4\notag\\
+ &+\left[c^4-\frac{cb^4}{a+c}-\frac{ca^4}{b+c}\right]e_4.
+\end{align}
+The coordinates $\alpha,\beta,\Omega_4$ have the convergent
+Gamma and polylogarithmic representations below; no unspecified partial
+derivative is required to evaluate the formula.
+\end{theorem}
+\begin{proof}
+Expanding the holomorphic restriction of \eqref{qt:polar} gives
+\begin{align*}
+ W_{a,b,c}^{(4)}(0)={}&-\tfrac12(a^4+b^4)d_4
+ -2ab(a^2+b^2)Ld_3+6a^2b^2d_2^2\\
+ &-c\left(\frac{b^4}{a+c}+\frac{a^4}{b+c}\right)e_4
+ +4c\alpha(a^3+b^3)+12c\beta ab(a+b)\\
+ &+12c^2\delta(a^2+b^2)+24abc^2\varepsilon
+ +12c^3\varphi(a+b)+4c^4\chi.
+\end{align*}
+Eliminate $\delta,\varphi,\chi$ using \eqref{qt:constraints-eq},
+then eliminate $\varepsilon$ with \eqref{qt:diagonal}. Factoring the
+$\alpha$ coefficient proves the claimed formula.
+\end{proof}
+
+For instance,
+\begin{align}
+ W_{1,1,2}^{(4)}(0)={}&4\Omega_4-48\alpha-48\beta-4Ld_3
+                      -18d_2^2-41d_4+\tfrac{44}{3}e_4,
+ \label{qt:112}\\
+ W_{1,2,2}^{(4)}(0)={}&8\Omega_4-24\alpha-48\beta-4Ld_3
+                      -12d_2^2-\tfrac{105}{2}d_4+\tfrac{29}{6}e_4.
+ \label{qt:122}
+\end{align}
+The three positive anchor rays $(1,1,1),(1,1,2),(1,2,2)$ recover
+all three formal coordinates: the determinant of their coefficient
+matrix in $(\Omega_4,\alpha,\beta)$ is $1152$.
+
+\subsection{Convergent representatives: a Gamma moment and two kernels}
+
+The incoming boundary-jet hierarchy \cite{RepoIndependent} already gives, with
+\[
+ \rho(n)=\log\Gamma(n+1)-(n+\tfrac12)\log n+n-\frac L2-\frac1{12n},
+\]
+the identity
+\begin{equation}\label{qt:alpha}
+ \alpha=-\sum_{n\ge1}\rho(n)\log^3n-e_4-\tfrac12d_4-e_3-\frac{\gamma_3}{12}.
+\end{equation}
+The series converges absolutely because $\rho(n)=O(n^{-3})$.
+Its use as a quartic coordinate is new here; the all-order boundary
+identity itself is credited to the incoming report.
+
+For the other two coordinates, define for $x>0$
+\[
+ f_j(x)=\left.\partial_s^j\operatorname{Li}_s(e^{-x})\right|_{s=0},
+ \qquad
+ p_1(x)=\frac{g+\log x}{x},\quad
+ p_2(x)=\frac{(g+\log x)^2+Z_2}{x}.
+\]
+Put
+\begin{align*}
+ S_{21}(x)&=p_2(x)p_1(x)+p_2(x)d_1+p_1(x)d_2
+                  -x\bigl(p_2(x)e_1+p_1(x)e_2\bigr)+d_2d_1,\\
+ S_{11}(x)&=p_1(x)^2+2p_1(x)d_1-2xp_1(x)e_1+d_1^2.
+\end{align*}
+The ordinary convergent integrals are
+\begin{align}\label{qt:J21}
+ J_{21}={}&\int_0^1\frac{f_2(x)f_1(x)-S_{21}(x)}x\,dx
+                  +\int_1^\infty\frac{f_2(x)f_1(x)}x\,dx,\\
+ K_{11}={}&\int_0^1\frac{\log x+g}{x}
+                    \bigl(f_1(x)^2-S_{11}(x)\bigr)\,dx
+                  +\int_1^\infty\frac{\log x+g}{x}f_1(x)^2\,dx.
+ \label{qt:K11}
+\end{align}
+Set $\mu_2=g^2+Z_2$ and $\mu_3=g^3+3gZ_2+2Z_3$, and define
+\begin{align}\label{qt:constants}
+ E_{21}={}&gd_1d_2-(\mu_2+2g+2)d_1-(g+1)d_2
+                -\frac{\mu_3e_1}{3}-\frac{\mu_2e_2}{2}\notag\\
+ &-\frac38-\frac{3g}{4}-\frac{\mu_2}{4}
+                -\frac{g^2}{2}-\frac{g\mu_2}{2},\\
+ E_{111}={}&-\frac{g^3}{2}-\frac{3g^2}{4}-\frac{3g}{4}-\frac38
+               -2(g^2+2g+2)d_1\notag\\
+ &+\frac{g^2-Z_2}{2}d_1^2-\frac{2(g^3-Z_3)}{3}e_1.
+\end{align}
+
+\begin{proposition}\label{qt:integrals}
+The integral and constant formulas give
+\begin{equation}\label{qt:beta-epsilon}
+ \boxed{\beta=J_{21}+E_{21},\qquad
+        \varepsilon=K_{11}+E_{111}.}
+\end{equation}
+Together with \eqref{qt:diagonal}, these evaluate $\Omega_4$ using
+two ordinary, absolutely convergent one-dimensional integrals.
+\end{proposition}
+\begin{proof}
+For parameters near zero put $G(C)=1/\Gamma(1+C)$ and
+\begin{align*}
+ S(A,B;x)={}&\Gamma(1-A)\Gamma(1-B)x^{A+B-2}
+ +\Gamma(1-A)\zeta(B)x^{A-1}
+ +\Gamma(1-B)\zeta(A)x^{B-1}\\
+ &-\Gamma(1-A)\zeta(B-1)x^A
+ -\Gamma(1-B)\zeta(A-1)x^B+\zeta(A)\zeta(B),\\
+ I(A,B,C)={}&\int_0^1x^{C-1}
+  \bigl(\operatorname{Li}_A(e^{-x})\operatorname{Li}_B(e^{-x})-S(A,B;x)\bigr)dx\\
+ &+\int_1^\infty x^{C-1}
+                    \operatorname{Li}_A(e^{-x})\operatorname{Li}_B(e^{-x})dx,\\
+ X(A,B,C)={}&\frac{\Gamma(1-A)\Gamma(1-B)}{A+B+C-2}
+  +\frac{\Gamma(1-A)\zeta(B)}{A+C-1}
+  +\frac{\Gamma(1-B)\zeta(A)}{B+C-1}.
+\end{align*}
+Jonqui\`ere's expansion at zero \cite[Eq.~25.12.12]{DLMFPolylog} shows that the subtracted integrand
+and each fixed parameter derivative are dominated by an integrable
+power times a polynomial in $|\log x|$ on a sufficiently small common
+polydisc. The tail is exponentially decreasing. Thus $I$ is holomorphic.
+Integrating the six subtractions explicitly in the classical Mellin
+representation, then using \eqref{qt:polar}, gives
+\begin{align}\label{qt:R-integral}
+ R(A,B,C)={}&G(C)\bigl(I(A,B,C)+X(A,B,C)\bigr)
+            +\frac{G(C)-1}{C}\zeta(A)\zeta(B)\notag\\
+ &-\frac{\Gamma(1-A)G(C)-1}{A+C}\zeta(B-1)
+  -\frac{\Gamma(1-B)G(C)-1}{B+C}\zeta(A-1).
+\end{align}
+Every displayed quotient is removable at the origin. For example,
+$\Gamma(1-A)G(-A)=1$ proves divisibility by $A+C$.
+
+The derivative $I_{AAB}(0)$ is exactly $J_{21}$, since differentiating
+the six subtractions gives $S_{21}$. Likewise
+$I_{ABC}(0)+gI_{AB}(0)=K_{11}$, since $G'(0)=g$ and the mixed
+subtraction is $S_{11}$. The remaining derivatives in
+\eqref{qt:R-integral} are finite Gamma and zeta algebra. In particular,
+\[
+ \left.\partial_A\partial_C
+       \frac{\Gamma(1-A)G(C)-1}{A+C}\right|_0
+       =\frac{g^3-Z_3}{3}.
+\]
+For $C=0$, the derivatives of
+$(\Gamma(1-A)-1)/A$ of orders $1,2$ are $\mu_2/2,\mu_3/3$.
+These evaluations and the elementary denominators in $X$ give exactly
+$E_{21}$ and $E_{111}$.
+
+Finally $f_2f_1-S_{21}=O(x(1+|\log x|^2))$ and
+$f_1^2-S_{11}=O(x(1+|\log x|))$ near zero. Their displayed
+integrals therefore converge absolutely in the ordinary sense.
+\end{proof}
+
+\subsection{Exact cancellation families}
+
+\begin{corollary}[Cyclic quartic reduction]\label{qt:cyclic}
+Suppose all pairwise sums of $a,b,c$ are nonzero, and let
+$s_1=a+b+c$, $s_2=ab+bc+ca$, $s_3=abc$. Then
+\begin{align}\label{qt:cyclic-eq}
+ \sum_{\mathrm{cyc}} W_{a,b,c}^{(4)}(0)={}&s_1s_3\Omega_4
+ +(-4s_1^2s_2+8s_2^2+12s_1s_3)Ld_3\notag\\
+ &+(12s_2^2-36s_1s_3)d_2^2\notag\\
+ &+(-2s_1^4+4s_1^2s_2-2s_2^2+24s_1s_3)d_4.
+\end{align}
+Both off-diagonal coordinates and $e_4$ cancel identically.
+\end{corollary}
+\begin{proof}
+The $\alpha$ coefficient is
+$4\sum_{\rm cyc}c(a^3+b^3)-4\sum_{\rm cyc}c^3(a+b)=0$.
+The $\beta$ coefficient is $12abc\sum_{\rm cyc}(a+b-2c)=0$.
+For the $e_4$ coefficient, the terms with denominator $a+c$
+combine to $-b^4$ and cancel the sum of fourth powers. The remaining
+symmetric polynomials yield \eqref{qt:cyclic-eq}.
+\end{proof}
+
+There is also a useful one-parameter source of completely evaluated
+differences. On the additive plane $c=a+b$, the nonclassical part of
+\eqref{qt:all-rays} is
+\[
+ ab(a+b)^2(\Omega_4-12\alpha-12\beta).
+\]
+Any two admissible rays on this plane therefore have a weighted
+difference involving only ordinary zeta derivatives. A small example is
+\begin{equation}\label{qt:short-difference}
+ \boxed{W_{1,2,3}^{(4)}(0)-\frac92 W_{1,1,2}^{(4)}(0)
+ =-20Ld_3+24d_2^2-76d_4+\frac{12}{5}e_4.}
+\end{equation}
+This is an evaluated identity with no undetermined Tornheim coordinate.
+
+For a single ray with $abc\ne0$, the two displayed off-diagonal
+coefficients vanish simultaneously if and only if $a=b=c$.
+Indeed the $\beta$ coefficient forces $a+b=2c$; substituting this
+into the $\alpha$ coefficient gives a nonzero multiple of
+$(a-b)^2$. Thus the nontrivial cubic cancellation conic from the
+incoming report does not persist as a conic at the fourth layer.
+This assertion concerns the stated formal-coordinate elimination.
+An additional arithmetic relation among the constants could enlarge
+the family of values reducible in a chosen constant algebra.
+
+\subsection{All-order jet structure and the limit of cyclic diagonal reduction}
+
+The quartic formula is the last layer at which the axis and Euler
+stuffle constraints force a cyclic sum to depend on only one diagonal
+coordinate. The following exact polynomial statement explains why.
+
+Fix an integer $n\ge3$. Subtract two possible degree-$n$ homogeneous
+jets of \eqref{qt:polar} whose axis and Euler boundary restrictions
+agree. Their difference is a homogeneous polynomial $U(A,B,C)$
+of degree $n$ satisfying
+\begin{equation}\label{qt:residual-conditions}
+ U(A,B,C)=U(B,A,C),\qquad C\mid U,\qquad
+ U(A,0,C)+U(C,0,A)=0.
+\end{equation}
+These are conditions on a formal reconstruction space, not additional
+functional equations asserted for arbitrary perturbations of $T$.
+
+\begin{theorem}[Normal form of the residual jet]\label{qt:all-order-space}
+Every polynomial satisfying \eqref{qt:residual-conditions} has a unique
+representation
+\begin{equation}\label{qt:residual-form}
+ U=C\bigl[A(A-C)V(A,C)+B(B-C)V(B,C)\bigr]+ABC\,Q(A,B,C),
+\end{equation}
+where $V$ is a symmetric two-variable homogeneous polynomial of degree
+$n-3$, and $Q$ is homogeneous of degree $n-3$ and symmetric in $A,B$.
+Consequently this residual space has dimension
+\begin{equation}\label{qt:jet-dimension}
+ D_n=\left\lfloor\frac{n^2-1}{4}\right\rfloor.
+\end{equation}
+For $n=1,2$ the corresponding residual space is zero.
+\end{theorem}
+\begin{proof}
+The boundary polynomial $F(A,C)=U(A,0,C)$ is antisymmetric in $A,C$.
+It is divisible by $C$, hence by $A$ as well, and antisymmetry also
+implies divisibility by $A-C$. Therefore
+$F(A,C)=AC(A-C)V(A,C)$, where $V$ is symmetric and has degree
+$n-3$. This uniquely determines $V$. Subtract the first term of
+\eqref{qt:residual-form} from $U$. The difference vanishes on both
+$A=0$ and $B=0$, by symmetry, and remains divisible by $C$.
+Hence it is uniquely $ABCQ$, with the required symmetry.
+Conversely the displayed normal form satisfies all three conditions.
+
+The symmetric two-variable polynomials of degree $n-3$ have dimension
+$\lfloor(n-1)/2\rfloor$. Polynomials in three variables of that degree
+which are symmetric in the first two have dimension
+$\lfloor(n-1)^2/4\rfloor$, by counting the exponent pairs of $A,B$.
+Their sum is \eqref{qt:jet-dimension}. If $n<3$, the two divisibility
+arguments force $U=0$ directly.
+\end{proof}
+
+\begin{corollary}[Cyclic residual dimension]\label{qt:cyclic-dimension}
+The cyclic symmetrization of the residual space is precisely
+\[
+ \left\{ABC\,S(A,B,C): S\text{ is symmetric in all three variables
+ and homogeneous of degree }n-3\right\}.
+\]
+Its dimension is
+\begin{equation}\label{qt:cyclic-count}
+ p_{\le3}(n-3)=\left\lfloor\frac{n^2+3}{12}\right\rfloor,
+\end{equation}
+where $p_{\le3}(m)$ is the number of partitions of $m$ into at most
+three parts. In particular this dimension is one at orders three and
+four, and is two at order five.
+\end{corollary}
+\begin{proof}
+The terms involving $V$ in \eqref{qt:residual-form} cancel in pairs
+under cyclic summation, because $V(A,C)=V(C,A)$. The remaining sum is
+$ABC\sum_{\rm cyc}Q(A,B,C)$. Since $Q$ is symmetric in its first
+two variables, this sum is fully symmetric. Conversely any symmetric
+$S$ occurs by taking $Q=S/3$ and $V=0$. Symmetric homogeneous
+polynomials of degree $m$ have basis $s_1^i s_2^j s_3^k$ with
+$i+2j+3k=m$. Counting these triples, or expanding
+$(1-t)^{-1}(1-t^2)^{-1}(1-t^3)^{-1}$, gives
+$p_{\le3}(m)=\lfloor(m^2+6m+12)/12\rfloor$, proving
+\eqref{qt:cyclic-count}.
+\end{proof}
+
+Evaluation on the diagonal is a nonzero linear functional on this
+cyclic residual space. It therefore determines the whole space when
+the dimension is one, explaining the complete cyclic formulas at
+orders three and four. The following explicit fifth-order polynomial
+shows what fails next:
+\begin{equation}\label{qt:fifth-obstruction}
+ U_5(A,B,C)=ABC\bigl[(A+B+C)^2-3(AB+BC+CA)\bigr].
+\end{equation}
+It satisfies the boundary conditions, vanishes on the entire diagonal,
+and has nonzero cyclic sum $3U_5$. Consequently the axis, symmetry,
+Euler stuffle, and diagonal data alone cannot force a fifth-order
+cyclic formula involving just the diagonal fifth derivative and
+ordinary zeta jets. This is a precise limitation of those input
+identities; other functional equations may provide additional
+constraints.
+
+\subsection{Verification and remaining arithmetic questions}
+
+The companion implementation \texttt{check\_quartic.py} checks
+the full rational-function identity, cyclic elimination, diagonal and
+Euler-diagonal cases, and both elementary integral correction terms.
+It evaluates $\alpha$ with a finite Stirling expansion and computes
+$J_{21},K_{11}$ by an integrated Jonqui\`ere series on $(0,1)$ plus
+exponentially convergent series on $(1,\infty)$. A separate evaluator
+computes the fourth ray derivative by a fifteen-node symmetric
+difference of the original Mellin continuation. These routes give
+\begin{align*}
+ \alpha&=13.1294216474884019236329146797203\ldots,\\
+ \beta&=6.90381599352243710775587231649323\ldots,\\
+ \varepsilon&=4.68913245627221585695112599939183\ldots,\\
+ \Omega_4&=798.777376093189588968747119645501\ldots.
+\end{align*}
+At 55 decimal digits of working precision, four independently evaluated
+rays $(1,1,1)$, $(1,0,2)$, $(1,2,2)$, and $(1,-2,3)$ had absolute discrepancies
+below $8.2\cdot10^{-34}$. These decimal checks use mpmath and are not
+interval certificates; the exact identities rest on the proofs above.
+
+The result completes the quartic finite-coordinate problem posed in the
+incoming reports. It does not provide a finite expression for
+$\Omega_4,\alpha,\beta$ in a smaller algebra of ordinary constants.
+Natural next questions are: relate the two new integral coordinates to
+higher harmonic Stieltjes coefficients; identify the dimension and
+canonical anchor directions at every order; obtain general cyclic
+elimination laws; and formalize the finite jet algebra separately from
+the Mellin continuation and normal-convergence lemmas.
+

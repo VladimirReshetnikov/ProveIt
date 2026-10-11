@@ -1,0 +1,399 @@
+\section{The exact space of mixed polygamma moments}
+\label{sec:bell}
+
+The mixed-spectral report asks which individual polygamma moments can
+be separated from its two-parameter Gamma identity, with explicit first
+targets at total orders six and eight \cite{RepoMixed}. This section
+answers that question for the stated family at every weight. There are
+two different dimensions to compute: the dimension of its formal
+polynomial rows, and the dimension of the functions obtained after
+summation. The former grows with the weight; the latter is exactly three
+from weight six onward. Their difference produces an infinite family of
+identically vanishing, absolutely convergent polygamma sums.
+
+\subsection{Normalization and the underlying Gamma identity}
+
+For $\Re a>0$, set $x_n=n+a/2$, $A=a-1$, and
+\begin{equation}
+ L_k(n;a)=(-1)^k\psi^{(k-1)}(n+a)-\psi^{(k-1)}(n+1),
+ \qquad k\ge2.
+ \label{bell:lambda}
+\end{equation}
+These are ordinary functions, and all products below are algebraic
+products, without complex conjugation. Write
+\begin{align}
+ Q_n(p,q;a)
+ &=\frac{\Gamma(n+a)\Gamma(n+1+p)\Gamma(n+1+q)
+              \Gamma(n+a-p-q)}
+ {\Gamma(n+1)\Gamma(n+a-p)\Gamma(n+a-q)
+              \Gamma(n+1+p+q)},\label{bell:Q}\\
+ b_a(p,q)
+ &=\psi(a/2)+\tfrac12\{\psi(2)-\psi(1+p)-\psi(1+q)
+                                      -\psi(a-p-q)\}.
+ \label{bell:b}
+\end{align}
+
+\begin{lemma}[The double-zero Gamma sum: antecedent]
+\label{bell:antecedent}
+For sufficiently small $p,q$, locally uniformly with $\Re a>0$,
+\begin{equation}
+ \sum_{n\ge0}\left\{x_n(Q_n(p,q;a)-1)
+             +\frac{(A-p-q)pq}{x_n}\right\}
+             =-(A-p-q)pq\,b_a(p,q).
+ \label{bell:master}
+\end{equation}
+Every fixed parameter derivative can be taken in the displayed bracket.
+\end{lemma}
+
+\begin{proof}
+This is the double-zero identity proved in \cite{RepoMixed}. We give
+the residue calculation to fix its normalization. In the Rogers--Dougall
+${}_5F_4(1)$ sum \cite[16.4.9]{DLMFDougall}, set
+$b=1+p$, $c=1+q$, and $d_0=a-1-p-q$. Introduce the excess parameter $v$;
+the centered summand and its sum are
+\begin{align*}
+ r_n(v)&=x_n\frac{\Gamma(n+a)\Gamma(n+b)\Gamma(n+c)
+                           \Gamma(n+d_0-v)}
+ {\Gamma(n+1)\Gamma(n+1+a-b)\Gamma(n+1+a-c)
+                           \Gamma(n+b+c+v)},\\
+ G(v)&=\frac{\Gamma(b)\Gamma(c)\Gamma(d_0-v)\Gamma(v)}
+ {2\Gamma(d_0)\Gamma(b+v)\Gamma(c+v)}.
+\end{align*}
+The centered Stirling expansion \cite{DLMFGammaAsymptotic} is
+$r_n(v)=x_n^{-1-2v}(1+C_1(v)x_n^{-2}+O(x_n^{-4}))$.
+If $\eta=a/2$ and
+\[
+ (\alpha_1,\alpha_2,\alpha_3,\alpha_4)
+ =(\eta,1+p-\eta,1+q-\eta,\eta-1-p-q-v),
+\]
+then $C_1(v)=-\tfrac13\sum_i B_3(\alpha_i)$.
+Subtract the first two centered terms. Normal convergence continues
+the resulting sum from $\Re v>0$ to a neighborhood of $v=-1$.
+At that point $r_n(-1)=x_nQ_n$ and
+\[
+ \rho=C_1(-1)=-d_0pq,\qquad
+ C_1'(-1)=B_2(\eta-p-q),\qquad
+ \zeta(-1,\eta)=-\tfrac12B_2(\eta).
+\]
+The finite part of $G(v)$ is
+\[
+ \frac\rho2\{\psi(2)-\psi(a-p-q)-\psi(p)-\psi(q)\}.
+\]
+The polar Hurwitz counterterm contributes
+$C_1'(-1)/2-\rho\psi(\eta)$. Finally,
+\[
+ \frac12C_1'(-1)+\zeta(-1,\eta)
+                  =-\frac12d_0(p+q).
+\]
+Using $\psi(p)=\psi(1+p)-1/p$ and its $q$ counterpart cancels
+these last terms and gives \eqref{bell:master}.
+The calculation first applies for $a>1$ and generic small $p,q$.
+The bracket is uniformly $O(n^{-3})$ on compact parameter sets, and its
+Gamma arguments avoid poles in a neighborhood of every $(a,0,0)$
+with $\Re a>0$. Analytic continuation therefore gives the asserted
+domain. Cauchy's formula on a slightly larger parameter polydisc
+justifies every fixed derivative and includes the loci $p=0$ or $q=0$.
+\end{proof}
+
+Let $L_2,L_3,\ldots$ temporarily be independent indeterminates of
+weights $2,3,\ldots$. Define
+\begin{equation}
+ \mathcal B_{r,s}
+ =r!s![p^rq^s]\exp\left(
+  \sum_{k\ge2}\frac{L_k}{k!}\{(p+q)^k-p^k-q^k\}\right),
+ \qquad r,s\ge1.
+ \label{bell:definition}
+\end{equation}
+Only finitely many coefficients enter each polynomial. Taylor expansion
+of the logarithm of \eqref{bell:Q} gives
+\[
+ \log Q_n(p,q;a)
+ =\sum_{i,j\ge1}L_{i+j}(n;a)\frac{p^iq^j}{i!j!}.
+\]
+Thus \eqref{bell:definition} specializes to the mixed derivative of
+$Q_n$ at the origin. We retain the distinction between an indeterminate
+$L_k$ and its specialization \eqref{bell:lambda} whenever dimensions
+are at issue.
+
+\subsection{Formal rank at every weight}
+
+Let $\mathcal P_w$ be the rational vector space spanned by all monomials
+of weight $w$ in $L_2,L_3,\ldots$. Let $p(w)$ be the ordinary integer
+partition number, with $p(0)=1$. Its dimension is
+$p(w)-p(w-1)$, since these are exactly the partitions without a part one.
+Set
+\[
+ \mathcal V_w=\Span_{\Q}\{\mathcal B_{r,w-r}:1\le r\le\lfloor w/2\rfloor\}.
+\]
+The symmetry exchanging the two Gamma parameters has already been
+included: $\mathcal B_{r,s}=\mathcal B_{s,r}$. The elementary linear
+row is already present, since $\mathcal B_{1,w-1}=L_w$.
+
+\begin{theorem}[Complete formal rank and finite membership test]
+\label{bell:rank}
+For every integer $w\ge2$,
+\begin{equation}
+ \dim_{\Q}\mathcal V_w=\lfloor w/2\rfloor,\qquad
+ \operatorname{codim}_{\mathcal P_w}\mathcal V_w
+       =p(w)-p(w-1)-\lfloor w/2\rfloor.
+ \label{bell:rankformula}
+\end{equation}
+For a monomial $L_\lambda=\prod_{k\ge2}L_k^{\nu_k}$,
+$\sum k\nu_k=w$, its coefficient in row $r$ is exactly
+\begin{equation}
+ M_w(r,\lambda)
+ =\frac{r!(w-r)!}{\prod_k\nu_k!(k!)^{\nu_k}}
+ [t^r]\prod_{k\ge2}\{(1+t)^k-1-t^k\}^{\nu_k}.
+ \label{bell:matrixformula}
+\end{equation}
+Consequently rational row reduction of this explicit finite matrix
+decides membership in the stated moment space at any prescribed weight.
+\end{theorem}
+
+\begin{proof}
+Expanding the exponential in \eqref{bell:definition}, and then setting
+$q=1$, proves \eqref{bell:matrixformula}. A monomial with $\ell$ factors
+requires at least $\ell$ powers of both $p$ and $q$, because every
+term in the exponent is divisible by $pq$. Hence a row with first
+index $r$ contains no monomial with more than $r$ factors.
+
+For $1\le j\le\lfloor w/2\rfloor$, select the monomial
+\[
+ U_j=L_2^{j-1}L_{w-2j+2}.
+\]
+It has exactly $j$ factors, including when it is $L_2^j$. The
+coefficient of $U_j$ vanishes in every row $r<j$. In row $r=j$ it is
+strictly positive: choose the linear term of each factor
+$(1+t)^k-1-t^k$, whose coefficients are positive. The square minor
+formed by these columns is triangular with nonzero diagonal. The
+rows are therefore independent. There are exactly $\lfloor w/2\rfloor$
+of them, which proves both dimension formulas and the membership claim.
+\end{proof}
+
+\begin{remark}[The scope of the obstruction]
+Nonmembership in $\mathcal V_w$ means that these particular Gamma
+derivative rows and their parameter-exchange symmetry do not isolate
+the desired polynomial. It does not imply that its sum lacks a closed
+form, nor that evaluated special values are arithmetically independent.
+Differentiating in $a$, shifting summation indices, or using a different
+hypergeometric identity can supply additional relations outside this space.
+\end{remark}
+
+\subsection{The requested order-six and order-eight elimination matrices}
+
+At $w=6$ order the columns as
+$(L_6,L_2L_4,L_3^2,L_2^3)$ and the rows as $(1,5),(2,4),(3,3)$.
+Then
+\begin{equation}
+ M_6=\begin{pmatrix}1&0&0&0\\1&8&6&0\\1&9&9&6\end{pmatrix},\qquad
+ E_6=\begin{pmatrix}1&0&0\\-1/6&1/2&-1/3\\1/18&-1/2&4/9\end{pmatrix},
+ \label{bell:sixmatrix}
+\end{equation}
+and exact multiplication gives
+\begin{equation}
+ E_6M_6=\begin{pmatrix}1&0&0&0\\0&1&0&-2\\0&0&1&8/3\end{pmatrix}.
+ \label{bell:sixrref}
+\end{equation}
+Thus the combinations $L_2L_4-2L_2^3$ and
+$L_3^2+\tfrac83L_2^3$ are evaluated by the family. None of the three
+nonlinear monomials is individually in its row space. The column vector
+$(0,2,-8/3,1)^T$ annihilates every row and has a nonzero entry in
+each nonlinear position, giving a short exact certificate of this assertion.
+
+At $w=8$, take the columns
+\[
+ (L_8,L_2L_6,L_3L_5,L_4^2,L_2^2L_4,L_2L_3^2,L_2^4)
+\]
+and the rows $(1,7),(2,6),(3,5),(4,4)$. The matrix is
+\begin{equation}
+ M_8=\begin{pmatrix}
+ 1&0&0&0&0&0&0\\
+ 1&12&30&20&0&0&0\\
+ 1&15&45&30&60&90&0\\
+ 1&16&48&34&72&144&24
+ \end{pmatrix}.
+ \label{bell:eightmatrix}
+\end{equation}
+An explicit elimination matrix and its result are
+\begin{align}
+ E_8&=\begin{pmatrix}
+ 1&0&0&0\\-1/6&1/2&-1/3&0\\
+ 1/90&-1/6&22/45&-1/3\\1/30&0&-8/15&1/2
+ \end{pmatrix},\notag\\
+ E_8M_8&=\begin{pmatrix}
+ 1&0&0&0&0&0&0\\
+ 0&1&0&0&-20&-30&0\\
+ 0&0&1&0&16/3&-4&-8\\
+ 0&0&0&1&4&24&12
+ \end{pmatrix}.
+ \label{bell:eightrref}
+\end{align}
+The three free columns give the following basis of the annihilator:
+\begin{equation}
+ \begin{pmatrix}0\\20\\-16/3\\-4\\1\\0\\0\end{pmatrix},\qquad
+ \begin{pmatrix}0\\30\\4\\-24\\0\\1\\0\end{pmatrix},\qquad
+ \begin{pmatrix}0\\0\\8\\-12\\0\\0\\1\end{pmatrix}.
+ \label{bell:eightann}
+\end{equation}
+Every nonlinear column has a nonzero coordinate in at least one of
+these annihilators. Therefore $L_8$ is the only individual monomial
+in this weight that the specified row space isolates. Equations
+\eqref{bell:sixmatrix}--\eqref{bell:eightann} answer the requested finite
+elimination problem with exact rational certificates.
+
+\subsection{Summation reduces the image to three functions}
+
+For $w\ge6$, write
+\begin{equation}
+ T_w(a)=(a-1)\psi^{(w-2)}(a)+(w-2)\psi^{(w-3)}(a),
+ \qquad \epsilon_w=(-1)^w,
+ \label{bell:T}
+\end{equation}
+and let $S_r(a)$ denote
+$\sum_{n\ge0}x_n\mathcal B_{r,w-r}(n;a)$.
+No subtraction is needed at these weights. More generally, every
+monomial of weight $w\ge4$ has an absolutely convergent weighted sum:
+the polygamma series gives
+$L_{2j}=O(n^{-2j})$ and $L_{2j+1}=O(n^{-2j})$, locally uniformly in
+$a$. The smallest resulting decay exponent is at least four, before
+multiplication by $x_n$.
+
+\begin{theorem}[Exact summation image and all its zero rows]
+\label{bell:image}
+For $w\ge6$ the moment functions are
+\begin{align}
+ S_1(a)&=\frac{w-1}{2}\left\{
+ \epsilon_wT_w(a)+(a-1)\psi^{(w-2)}(1)
+                  -(w-2)\psi^{(w-3)}(1)\right\},\label{bell:S1}\\
+ S_2(a)&=\epsilon_w(w-2)T_w(a)-(w-2)\psi^{(w-3)}(1),\label{bell:S2}\\
+ S_r(a)&=\frac{\epsilon_wr(w-r)}2T_w(a),
+ \qquad 3\le r\le\lfloor w/2\rfloor.\label{bell:Sr}
+\end{align}
+The linear map from $\mathcal V_w\otimes_{\Q}\C$ to holomorphic
+functions of $a$ obtained by weighted summation has rank exactly three.
+Its kernel has dimension $\lfloor w/2\rfloor-3$, and a rational basis is
+\begin{equation}
+ \frac{\mathcal B_{r,w-r}}{r(w-r)}
+       -\frac{\mathcal B_{3,w-3}}{3(w-3)},
+ \qquad 4\le r\le\lfloor w/2\rfloor.
+ \label{bell:kernelbasis}
+\end{equation}
+Every one of these polynomials has identically zero weighted sum for
+$\Re a>0$.
+\end{theorem}
+
+\begin{proof}
+Put $b_{i,j}=\partial_p^i\partial_q^jb_a(0,0)$. For $i+j=k\ge1$,
+\[
+ b_{i,j}=-\tfrac12\left\{
+ \mathbf1_{j=0}\psi^{(i)}(1)+\mathbf1_{i=0}\psi^{(j)}(1)
+                     +(-1)^k\psi^{(k)}(a)\right\}.
+\]
+Differentiating \eqref{bell:master} gives
+\[
+ S_r(a)=-r(w-r)\{A b_{r-1,w-r-1}
+ -(r-1)b_{r-2,w-r-1}-(w-r-1)b_{r-1,w-r-2}\}.
+\]
+Terms with a negative $b$-index are omitted; their prefactors are zero.
+The counterterm has total degree only three, and therefore contributes
+nothing here. The cases $r=1$, $r=2$, and $r\ge3$ are precisely
+\eqref{bell:S1}--\eqref{bell:Sr}.
+
+To prove exact rank, not merely an upper bound, let $a$ tend to positive
+infinity. The standard polygamma asymptotic yields
+\[
+ T_w(a)=\epsilon_w(w-4)!a^{-(w-3)}+O(a^{-(w-2)}).
+\]
+The first row has a nonzero linear term, the second has a nonzero
+constant limit, and the third is a nonzero function tending to zero.
+In any constant linear relation, these three successive behaviors force
+the coefficients of $S_1$, $S_2$, and $S_3$ to vanish. The image rank is
+exactly three. The displayed kernel rows are independent in the formal
+basis of Theorem~\ref{bell:rank}; their number equals the nullity, so
+they form the entire kernel. This proves the claim over $\C$ and hence
+also its rational version.
+\end{proof}
+
+For example, the two evaluable order-six combinations in
+\eqref{bell:sixrref} give
+\begin{align}
+ \sum_{n\ge0}x_n(L_2L_4-2L_2^3)
+ &=\frac{T_6(a)}{12}+10(a-1)\zeta(5)-2\zeta(4),\label{bell:sixidentity1}\\
+ \sum_{n\ge0}x_n\left(L_3^2+\frac83L_2^3\right)
+ &=\frac{5T_6(a)}{36}-\frac{10(a-1)}3\zeta(5)
+                                    +\frac{26}3\zeta(4).
+ \label{bell:sixidentity2}
+\end{align}
+Here and below every $L_k$ in a summand means $L_k(n;a)$.
+
+\begin{corollary}[A quartic polygamma identity]
+\label{bell:quartic}
+For $\Re a>0$,
+\begin{equation}
+ \sum_{n\ge0}x_n\left\{
+ L_8-30L_4^2-120L_2^2L_4-720L_2L_3^2-360L_2^4\right\}=0.
+ \label{bell:quarticzero}
+\end{equation}
+Equivalently,
+\begin{align}
+ &\sum_{n\ge0}x_n\{L_4^2+4L_2^2L_4+24L_2L_3^2+12L_2^4\}\notag\\
+ &\qquad=\frac7{60}\left\{T_8(a)+(a-1)\psi^{(6)}(1)
+                                         -6\psi^{(5)}(1)\right\}.
+ \label{bell:quarticvalue}
+\end{align}
+\end{corollary}
+
+\begin{proof}
+The polynomial in \eqref{bell:quarticzero} is exactly
+$16\mathcal B_{3,5}-15\mathcal B_{4,4}$, by \eqref{bell:eightmatrix}.
+Its sum is zero by \eqref{bell:Sr}. Move the linear term to the other
+side and apply \eqref{bell:S1}. All the individual sums converge,
+so this rearrangement needs no regularized interpretation.
+\end{proof}
+
+\subsection{A harmonic-tail and multiple-polylogarithm consequence}
+
+For $k\ge1$, define the centered cubic tail
+\[
+ C_3(k)=2\{\zeta(3)-H_{k-1}^{(3)}\}-k^{-3}
+       =k^{-3}+2\sum_{j>k}j^{-3}.
+\]
+The next identity is a consequence of the order-eight null row, rather
+than an independently asserted new evaluation in the classical Euler-sum
+literature.
+
+\begin{corollary}[A reciprocal-weight cubic-tail square]
+\label{bell:harmonic}
+One has the ordinary convergent identities
+\begin{align}
+ \sum_{k=1}^{\infty}\frac{C_3(k)^2}{k}&=2\zeta(7),\label{bell:tailsquare}\\
+ \Li_{3,4}(1)+2\Li_{3,3,1}(1)+\Li_{6,1}(1)&=\frac14\zeta(7).
+ \label{bell:mzv}
+\end{align}
+The multiple polylogarithms use strictly decreasing positive indices.
+\end{corollary}
+
+\begin{proof}
+At $a=2$, set $k=n+1$. The polygamma functional equation gives
+\[
+ x_n=k,\quad L_2=-k^{-2},\quad L_4=-6k^{-4},\quad
+ L_8=-5040k^{-8},\quad L_3=2C_3(k).
+\]
+Substituting in \eqref{bell:quarticzero} yields
+$-5760\zeta(7)+2880\sum_k C_3(k)^2/k=0$, proving
+\eqref{bell:tailsquare}. Since all terms in the defining tail are
+positive, expansion and rearrangement are justified by monotone
+convergence (or directly by absolute convergence). In decreasing-index
+notation that expansion is
+\[
+ \sum_k\frac{C_3(k)^2}{k}
+ =\zeta(7)+4\zeta(3,4)+8\zeta(3,3,1)+4\zeta(6,1).
+\]
+Combining the two expressions proves \eqref{bell:mzv}.
+\end{proof}
+
+The rank theorem explains both the usefulness and the limitations of
+the two-parameter family. It supplies many exact nonlinear combinations
+and an increasing number of zero-sum relations, while the explicit
+annihilators at weights six and eight explain why an individual
+unseparated moment still requires additional information.

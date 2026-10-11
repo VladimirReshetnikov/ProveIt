@@ -1,0 +1,72 @@
+% Optional audit subsection; all labels/citations have hp: prefix.
+\subsection{A sign correction and its full logarithmic extension}
+\label{hp:sec:tin-audit}
+
+For this comparison use the unshifted raw-power harmonic zeta function
+\[
+ \mathcal H_p(s)=\sum_{n\ge1}\frac{H_n^p}{n^s},\qquad p\ge0,
+ \quad \mathcal H_0(s)=\zeta(s),
+\]
+and define its regular Laurent coefficients by
+\begin{equation}\label{hp:eq:tin-convention}
+ \mathcal H_p(1+u)=\operatorname{PP}_{u=0}\mathcal H_p(1+u)
+       +\sum_{j\ge0}\frac{(-1)^j}{j!}
+                         \widetilde\gamma_{p,j}u^j.
+\end{equation}
+Thus $\widetilde\gamma_{0,j}=\gamma_j$, the ordinary Stieltjes
+constant, and $\widetilde\gamma_{p,j}$ corresponds to Tin's
+${}_p\widetilde\gamma_j$ in equation (14) of
+\cite{hp:Tin2025}.
+
+\begin{proposition}[Convergent identities for every logarithmic moment]
+\label{hp:prop:tin-all-log}
+For all integers $p,j\ge0$,
+\begin{equation}\label{hp:eq:tin-all-log}
+ \boxed{\quad
+ \sum_{n\ge1}\frac{H_n^p(H_n-\log n-\gamma)\log^j n}{n}
+   =\widetilde\gamma_{p+1,j}
+        -\widetilde\gamma_{p,j+1}
+        -\gamma\widetilde\gamma_{p,j}.\quad}
+\end{equation}
+The series is an ordinary absolutely convergent series.
+\end{proposition}
+\begin{proof}
+Since $H_n-\log n-\gamma=1/(2n)+O(n^{-2})$, the Dirichlet
+series with numerator $H_n^p(H_n-\log n-\gamma)$ and every fixed
+logarithmic derivative converge normally in $\Re s>0$. In $\Re s>1$
+its sum equals
+\[
+ \mathcal H_{p+1}(s)+\mathcal H_p'(s)-\gamma\mathcal H_p(s),
+\]
+so every principal part cancels at $s=1$. Comparing the coefficient
+of $u^j$ in \eqref{hp:eq:tin-convention}, and then multiplying by
+$(-1)^j j!$, proves \eqref{hp:eq:tin-all-log}.
+\end{proof}
+
+With the convention \eqref{hp:eq:tin-convention}, the first term on
+the right of equation (22) of version 1 of \cite{hp:Tin2025},
+printed page 5, must be
+$-{}_p\widetilde\gamma_1$, in place of the printed
+$+{}_p\widetilde\gamma_1$. This corrects that sign; no other term
+of that equation is being audited here. The correction agrees with
+the paper's own $p=1$ equation (11). Indeed,
+\[
+ \widetilde\gamma_{1,0}=\frac{\gamma^2+\zeta(2)}2,
+ \qquad
+ \widetilde\gamma_{2,0}=\frac{\gamma^3+5\zeta(3)}3
+\]
+give the two illustrative cases
+\begin{align}
+ \sum_{n\ge1}\frac{H_n-\log n-\gamma}{n}
+   &=\frac{\zeta(2)-\gamma^2}{2}-\gamma_1,
+       \label{hp:eq:tin-pzero}\\
+ \sum_{n\ge1}\frac{H_n(H_n-\log n-\gamma)}{n}
+   &=\frac53\zeta(3)-\frac\gamma2\zeta(2)
+       -\frac{\gamma^3}{6}-\widetilde\gamma_{1,1}.
+       \label{hp:eq:tin-pone}
+\end{align}
+The two displayed regular constants follow directly from
+$\sum_{n\le N}H_n/n=(H_N^2+H_N^{(2)})/2$ and
+$\sum_{n\le N}H_n^2/n=H_N^3/3+
+\sum_{n\le N}H_n/n^2-H_N^{(3)}/3$, together with
+$\sum_{n\ge1}H_n/n^2=2\zeta(3)$.

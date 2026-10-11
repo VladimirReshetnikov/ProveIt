@@ -1,0 +1,496 @@
+\section{An entire normalization for all independent harmonic exponents}
+\label{eht:sec}
+
+The independent-inner-exponent question in the incoming exact-identities
+report connects directly to an established interpolant of truncated
+multiple zeta functions.  We identify that interpolant exactly, give a
+self-contained residue proof of its entire continuation, and develop a
+relative version with two endpoints.  The resulting endpoint, Gamma, and
+Stieltjes identities give an analytic replacement for the one-parameter
+Gamma normalization when the inner exponents move independently.
+
+The result does not assert a reduction of every ordered coefficient to
+ordinary zeta values.  In particular the nonsymmetric harmonic Stieltjes
+coordinate from the incoming ordered-resonance article remains visible.
+The analytic continuation and residue structure of multiple Hurwitz zeta
+functions, and the quasi-shuffle algebra, are classical
+\cite{eht:MehtaViswanadham,eht:Hoffman}.  The one-endpoint entire
+interpolation and its stuffle law are due to Ihara, Nakamura, and Yamamoto,
+with earlier overlapping interpolation work credited in their paper
+\cite{eht:INY}.  The relative ordered quotient, residue calculation, and
+explicit consequences below organize this known construction for the
+repository's present questions.  No literature-wide priority claim is made.
+
+\subsection{Definitions and the finite formula}
+
+For $\Re a>0$ and a word $w=(s_1,\ldots,s_r)$, let
+\begin{equation}\label{eht:Z}
+ Z_a(w)=\sum_{n_1>\cdots>n_r\ge0}
+              \prod_{j=1}^r(n_j+a)^{-s_j},\qquad Z_a(\varnothing)=1.
+\end{equation}
+Use principal powers.  The series is initially normally convergent when
+$\Re(s_1+\cdots+s_j)>j$ for every $j$.  Its meromorphic continuation is
+understood below.  The deliberately smaller domain $\Re s_j>1$ for every
+$j$ suffices for all initial product manipulations.
+
+For $\Re a,\Re b>0$, define recursively
+\begin{align}
+ \mathcal H_{a,b}(\varnothing)&=1,\notag\\
+ \mathcal H_{a,b}(s_1,\ldots,s_r)
+ &=Z_b(s_1,\ldots,s_r)
+   -\sum_{j=1}^rZ_a(s_1,\ldots,s_j)
+                    \mathcal H_{a,b}(s_{j+1},\ldots,s_r).
+ \label{eht:rec}
+\end{align}
+The sum includes the final term $Z_a(s_1,\ldots,s_r)$.  Equivalently,
+\begin{equation}\label{eht:finite}
+ \mathcal H_{a,b}(w)=
+ \sum_{q=0}^r(-1)^q
+ \sum_{0=i_0<i_1<\cdots<i_q\le r}
+ \left\{\prod_{\nu=1}^q
+   Z_a(s_{i_{\nu-1}+1},\ldots,s_{i_\nu})\right\}
+ Z_b(s_{i_q+1},\ldots,s_r).
+\end{equation}
+For $q=0$ the summand means $Z_b(w)$.  There are exactly $2^r$ terms,
+counting repetitions before simplification.  Thus the definition requires
+no limiting choice, ray, or finite-part prescription.
+
+The first two cases are
+\begin{align}
+ h_{a,b}(s):=\mathcal H_{a,b}(s)
+   &=\zeta(s,b)-\zeta(s,a),\label{eht:h}\\
+ \mathcal H_{a,b}(s,t)
+   &=Z_b(s,t)-Z_a(s,t)-\zeta(s,a)
+                         \{\zeta(t,b)-\zeta(t,a)\}.
+ \label{eht:depthtwo}
+\end{align}
+The second line already shows why subtracting just $Z_a-Z_b$ fails:
+its residue at $s=1$ is generally nonzero.
+
+There is also a shorter form in terms of the weakly ordered Hurwitz
+function $Z_a^\star$, whose inequalities in \eqref{eht:Z} are all weak:
+\begin{equation}\label{eht:star}
+ \mathcal H_{a,b}(w)=\sum_{j=0}^r(-1)^j
+       Z_a^\star(s_j,\ldots,s_1)Z_b(s_{j+1},\ldots,s_r).
+\end{equation}
+The empty prefix has value one.  The inverse of the strict ordered series
+has coefficient $(-1)^jZ_a^\star(s_j,\ldots,s_1)$: expand each inverse
+one-index factor, then reverse the weak order.  This proves
+\eqref{eht:star} in an absolute-convergence domain and hence meromorphically.
+Proposition 2.1 of \cite{eht:INY} therefore gives the exact identification
+\begin{equation}\label{eht:INY}
+                 \mathcal H_{a,1}(w)=\Psi(w;a-1).
+\end{equation}
+Their Corollary 4.2 already proves that this is entire in all indices;
+the proof below provides a different route through explicit prefix
+residues and treats the relative endpoints together.
+
+\begin{theorem}[Entire relative harmonic interpolation]\label{eht:main}
+For every depth $r$, the expression \eqref{eht:finite} extends to an
+entire function of $(s_1,\ldots,s_r)\in\mathbb C^r$.  It is jointly
+holomorphic with $a,b$ on the right half-plane.  Every fixed mixed spectral
+derivative is consequently an ordinary derivative of one entire function,
+including where several polar hyperplanes of its separate summands meet.
+
+If $N\ge0$ is an integer and $a=b+N$, then
+\begin{equation}\label{eht:interval}
+ \boxed{\mathcal H_{b+N,b}(s_1,\ldots,s_r)=
+  \sum_{N>n_1>\cdots>n_r\ge0}
+              \prod_{j=1}^r(n_j+b)^{-s_j}.}
+\end{equation}
+In particular $\mathcal H_{M,1}$ is the strict finite multiple harmonic
+sum with largest index at most $M-1$.
+\end{theorem}
+
+\subsection{A shift-independent prefix-residue lemma}
+
+Write $S_j=s_1+\cdots+s_j$.  Introduce the rational-polynomial functions
+\begin{equation}\label{eht:beta}
+ \beta_0(z)=\frac1{z-1},\qquad
+ \beta_1(z)=-\frac12,\qquad
+ \beta_{2q}(z)=\frac{B_{2q}}{(2q)!}(z)_{2q-1}\quad(q\ge1),
+ \qquad \beta_{2q+1}(z)=0\quad(q\ge1).
+\end{equation}
+Here the $B_{2q}$ are Bernoulli numbers, with $B_1=-1/2$.
+
+\begin{lemma}[Prefix residue factorization]\label{eht:residue}
+The possible polar divisors of $Z_a(s_1,\ldots,s_r)$ are among
+\[
+ s_1=1,\qquad S_k=k-m\quad(2\le k\le r,\ m\in\mathbb Z_{\ge0}).
+\]
+At a generic point of each divisor the pole is at most simple.  In the
+normal coordinate $S_k-k+m$, its residue is
+\begin{equation}\label{eht:resfactor}
+ C_{k,m}(s_1,\ldots,s_k)Z_a(s_{k+1},\ldots,s_r),
+\end{equation}
+where $C_{1,0}=1$ and, for $k\ge2$,
+\begin{equation}\label{eht:C}
+ C_{k,m}=
+ \sum_{\substack{e_1+\cdots+e_{k-1}=m\\e_i\ge0}}
+ \prod_{i=1}^{k-1}
+ \beta_{e_i}\left(S_i-(i-1)+\sum_{j<i}e_j\right),
+ \qquad\text{restricted to }S_k=k-m.
+\end{equation}
+The coefficient is independent of $a$.  A vanishing $C_{k,m}$ simply means
+that the indicated possible divisor is absent.
+\end{lemma}
+
+\begin{proof}
+Sum first over $n_1$, put $x=n_2+a$, and use a finite
+Euler--Maclaurin expansion
+\begin{equation}\label{eht:EM}
+ \zeta(z,x+1)=\frac{x^{1-z}}{z-1}-\frac12x^{-z}
+    +\sum_{q=1}^Q\frac{B_{2q}}{(2q)!}(z)_{2q-1}x^{-z-2q+1}
+    +R_Q(z,x).
+\end{equation}
+On any prescribed compact set of $z$, sufficiently large $Q$ makes the
+remainder holomorphic there, with a uniform estimate
+$R_Q(z,n+a)=O((n+1)^{1-\Re z-2Q})$ on compact right-half-plane sets of
+$a$.  The same is true after fixed parameter derivatives, with logarithmic
+factors.  This follows directly from the integral remainder with a bounded
+periodic Bernoulli function.  In the remaining $r-1$ sums the number and
+size of the inner terms have at most polynomial growth in $n_2$ on a
+compact set of all exponents.  Taking $Q$ larger therefore makes the
+remainder normally summable on that compact.
+
+Each explicit term in \eqref{eht:EM} replaces the first two exponents by
+$s_1+s_2-1+e$, with coefficient $\beta_e(s_1)$.  Repeat this step in the
+lower-depth functions.  This proves meromorphic continuation by induction
+and shows that every possible polar equation is a prefix equation of the
+displayed form.  The pole at $s_1=1$ has residue
+$Z_a(s_2,\ldots,s_r)$.
+
+To reach a pole involving exactly the first $k$ indices, merge those
+indices in $k-1$ steps.  Before step $i$ the current leading exponent is
+$S_i-(i-1)+e_1+\cdots+e_{i-1}$.  After all merges, the final Hurwitz pole
+has normal coordinate
+$S_k-k+e_1+\cdots+e_{k-1}$.  The paths producing $S_k=k-m$ are exactly
+the finite set in \eqref{eht:C}.  The remaining indices form the factor
+$Z_a(s_{k+1},\ldots,s_r)$.  All coefficients in this procedure are
+independent of the common shift.
+
+The only denominators in the merging coefficients arise from proper
+prefix hyperplanes.  Away from intersections, the final pole is simple.
+Since $Q$ can be chosen arbitrarily large on a prescribed compact, the
+holomorphic remainders cannot add further local poles.  This proves the
+lemma, including its joint parameter assertion.
+\end{proof}
+
+For example,
+\[
+ C_{2,0}=\frac1{s_1-1},\qquad C_{2,1}=-\frac12,
+ \qquad C_{2,2}=\frac{s_1}{12},\qquad C_{2,3}=0,
+ \qquad C_{3,0}=\frac1{(s_1-1)(s_1+s_2-2)}.
+\]
+These are residues in a sum-of-indices coordinate; replacing that
+coordinate by a scaled parameter rescales the residue.
+
+\begin{proof}[Proof of Theorem~\ref{eht:main}]
+Induct on the depth.  At depth one the common residue of the two Hurwitz
+functions cancels.  Suppose all lower-depth $\mathcal H_{a,b}$ are entire.
+Equation~\eqref{eht:rec} shows that the only remaining possible poles are
+global prefix hyperplanes of the full word.  Fix one involving the first
+$k$ indices and work away from all other hyperplanes.  The terms with
+$j<k$ in \eqref{eht:rec} have no pole there.  By
+Lemma~\ref{eht:residue}, the residue of the rest is
+\[
+ C_{k,m}\left\{
+ Z_b(s_{k+1},\ldots,s_r)
+ -\sum_{j=k}^rZ_a(s_{k+1},\ldots,s_j)
+                  \mathcal H_{a,b}(s_{j+1},\ldots,s_r)
+ \right\}=0.
+\]
+The bracket is exactly the lower-depth convolution identity
+\eqref{eht:rec}, including the empty-prefix term at $j=k$.
+Thus every generic polar hypersurface is removable.  The locally finite
+union of their intersections has complex codimension at least two.
+Hartogs extension removes these remaining intersections; equivalently,
+one can cancel each linear factor in a local meromorphic denominator.
+This proves joint entire continuation in the exponents.  The same proof
+with $a,b$ in compact right-half-plane sets gives joint holomorphy.
+
+For the interpolation assertion, take $\Re s_j>1$.  Split the strictly
+ordered indices for $Z_b(w)$ at $N$: a uniquely determined initial block
+lies in $n\ge N$, and the remaining block lies in $n<N$.  Hence
+\[
+ Z_b(w)=\sum_{j=0}^rZ_{b+N}(s_1,\ldots,s_j)
+   \sum_{N>n_{j+1}>\cdots>n_r\ge0}
+                    \prod_{\nu=j+1}^r(n_\nu+b)^{-s_\nu}.
+\]
+The triangular recursion identifies the finite sums with
+$\mathcal H_{b+N,b}$.  Both sides are entire in all exponents, so the
+identity extends to $\mathbb C^r$.
+\end{proof}
+
+\subsection{Composition, the stuffle product, and endpoint singularities}
+
+For bookkeeping, attach a noncommuting letter $[s]$ to each exponent and
+form the coefficientwise series
+\[
+ F_a=1+\sum_{r\ge1}\sum_{s_1,\ldots,s_r}
+             Z_a(s_1,\ldots,s_r)[s_1]\cdots[s_r].
+\]
+This notation requires only a finite generating alphabet and its additive
+closure at any application; it is not a sum over an uncountable set.
+Concatenation of words gives
+\begin{equation}\label{eht:quotient}
+ \mathcal H_{a,b}=F_a^{-1}F_b.
+\end{equation}
+
+\begin{corollary}[Exact composition and shifts]\label{eht:transport}
+With products interpreted by deconcatenation,
+\begin{equation}\label{eht:cocycle}
+ \boxed{\mathcal H_{a,b}(w)=
+ \sum_{j=0}^r\mathcal H_{a,c}(s_1,\ldots,s_j)
+                  \mathcal H_{c,b}(s_{j+1},\ldots,s_r).}
+\end{equation}
+Moreover
+\begin{align}
+ \mathcal H_{a+1,b}(w)
+   &=\mathcal H_{a,b}(w)+a^{-s_1}
+                              \mathcal H_{a,b}(s_2,\ldots,s_r),
+       \label{eht:upper-shift}\\
+ \mathcal H_{a,b}(w)
+   &=\mathcal H_{a,b+1}(w)+b^{-s_r}
+                              \mathcal H_{a,b+1}(s_1,\ldots,s_{r-1}).
+       \label{eht:lower-shift}
+\end{align}
+All of these identities hold for arbitrary complex exponents.
+\end{corollary}
+
+\begin{proof}
+The composition formula is
+$F_a^{-1}F_cF_c^{-1}F_b=F_a^{-1}F_b$.
+Splitting off the smallest index gives
+$F_a=F_{a+1}E(a)$, where $E(a)=1+\sum_s a^{-s}[s]$.
+Thus $\mathcal H_{a+1,b}=E(a)\mathcal H_{a,b}$ and
+$\mathcal H_{a,b}=\mathcal H_{a,b+1}E(b)$.  Taking coefficients proves
+the two shift formulas.
+\end{proof}
+
+The usual strict stuffle identity also holds without exclusions:
+\begin{equation}\label{eht:stuffle-two}
+ h_{a,b}(s)h_{a,b}(t)=
+ \mathcal H_{a,b}(s,t)+\mathcal H_{a,b}(t,s)+h_{a,b}(s+t).
+\end{equation}
+More generally $\mathcal H_{a,b}$ is a character of the quasi-shuffle
+algebra whose merged-letter operation is $[s]\circ[t]=[s+t]$.  Indeed $Z_a$ and
+$Z_b$ are characters in the initial domain by splitting equality and
+inequality cases in a product of sums.  This remains true meromorphically.
+Characters into a commutative algebra are closed under convolution and
+convolution inversion in the connected quasi-shuffle Hopf algebra
+\cite{eht:Hoffman}; \eqref{eht:quotient} therefore gives the assertion.
+Its coefficients are entire by Theorem~\ref{eht:main}.
+
+Inverting the first shift formula gives the useful finite identity
+\begin{equation}\label{eht:inverse-shift}
+ \boxed{\mathcal H_{a,b}(s_1,\ldots,s_r)=
+  \sum_{j=0}^r(-1)^j a^{-S_j}
+                  \mathcal H_{a+1,b}(s_{j+1},\ldots,s_r),}
+ \qquad S_0=0.
+\end{equation}
+It continues the upper endpoint to the principal slit plane
+$\mathbb C\setminus(-\infty,0]$, by shifting it finitely many times into
+the right half-plane.  Near $a=0$ the right side is a finite sum of
+$a^{-S_j}$ times functions holomorphic in $a$.  Taylor expansion of those
+functions gives a \emph{convergent} local expansion.  Thus the exact
+branch exponents are prefix sums, and every fixed spectral derivative
+adds only finitely many powers of $\log a$.
+
+Continuation near $a=-N$, on a specified local branch, follows from
+\[
+ \mathcal H_{a,b}=E(a)^{-1}E(a+1)^{-1}\cdots E(a+N)^{-1}
+                         \mathcal H_{a+N+1,b}.
+\]
+At fixed depth this is finite coefficient algebra.  Only the factor
+$E(a+N)^{-1}$ is locally singular, so the branch exponents are sums over
+consecutive subwords.  No essential singularity is introduced.  The
+lower endpoint has the simpler local form \eqref{eht:lower-shift}: near
+$b=0$ it has one possible singular factor $b^{-s_r}$.
+
+\subsection{Gamma closure of the symmetric integer-index sector}
+
+The symmetric-sum theorem for a stuffle character gives
+\begin{equation}\label{eht:symmetric}
+ \sum_{\sigma\in S_r}\mathcal H_{a,b}(s_{\sigma(1)},\ldots,s_{\sigma(r)})
+ =\sum_{\pi}(-1)^{r-|\pi|}
+       \prod_{B\in\pi}(|B|-1)!\,
+       \prod_{B\in\pi}h_{a,b}\left(\sum_{j\in B}s_j\right),
+\end{equation}
+where $\pi$ runs over set partitions of $\{1,\ldots,r\}$.
+This is the classical symmetric-sum mechanism applied to the entire
+character.  Repeated labels are counted with their permutation
+multiplicities; no independence of zeta values is assumed.
+
+In particular, as a convergent germ at $u=0$,
+\begin{equation}\label{eht:ones-Gamma}
+ \boxed{\sum_{r\ge0}\mathcal H_{a,b}(\{1\}^r)u^r
+       =\frac{\Gamma(a+u)\Gamma(b)}{\Gamma(a)\Gamma(b+u)}.}
+\end{equation}
+Its first coefficients, with $h_j=h_{a,b}(j)$, are
+\[
+ \mathcal H_{a,b}(1,1)=\frac{h_1^2-h_2}{2},\qquad
+ \mathcal H_{a,b}(1,1,1)=\frac{h_1^3-3h_1h_2+2h_3}{6},
+ \qquad h_1=\psi(a)-\psi(b).
+\]
+
+There is a simultaneous finite Gamma formula for every finite alphabet
+of positive integer exponents.  Let $p_1,\ldots,p_d\ge1$, let
+$M=\max_jp_j$, and let $\rho_1,\ldots,\rho_M$ be the roots, with
+multiplicity, of
+\[
+ x^M+\sum_{j=1}^du_jx^{M-p_j}.
+\]
+Then
+\begin{equation}\label{eht:alphabet-Gamma}
+ \boxed{\sum_{r\ge0}\sum_{j_1,\ldots,j_r=1}^d
+  \mathcal H_{a,b}(p_{j_1},\ldots,p_{j_r})u_{j_1}\cdots u_{j_r}
+  =\prod_{\ell=1}^M
+       \frac{\Gamma(a-\rho_\ell)\Gamma(b)}
+            {\Gamma(a)\Gamma(b-\rho_\ell)}.}
+\end{equation}
+The right side is symmetric in the roots and therefore a holomorphic
+germ in the $u_j$, even at colliding roots.  It evaluates sums over
+permutations of the prescribed indices; it does not identify individual
+ordered words with each other.
+
+To prove \eqref{eht:alphabet-Gamma}, abelianize the quasi-shuffle series.
+Its logarithm is the formal difference of
+$\sum_n\log(1+\sum_ju_j(n+b)^{-p_j})$ and the corresponding $a$ series.
+This statement first follows when all independent indices have real part
+greater than one; the symmetric-sum identity and the entire differences
+$h_{a,b}$ continue it to the integer alphabet.  Each coefficient of the
+difference converges, including the linear exponent-one coefficient.
+Factoring the polynomial gives the logarithm
+\[
+ -\sum_{m\ge1}\frac{h_{a,b}(m)}m
+                     \sum_{\ell=1}^M\rho_\ell^m.
+\]
+The Taylor expansion of
+$\log\Gamma(a-\rho)-\log\Gamma(a)
+ -\log\Gamma(b-\rho)+\log\Gamma(b)$ is exactly this expression.
+This proves the identity and also supplies a branch-independent
+coefficient algorithm.
+
+\subsection{Independent logarithmic jets and the ordering coordinate}
+
+Put $\gamma_m(x)$ for the generalized Stieltjes constants in
+\[
+ \zeta(1+u,x)=\frac1u+
+       \sum_{m\ge0}\frac{(-1)^m\gamma_m(x)}{m!}u^m.
+\]
+Then
+\begin{equation}\label{eht:h-jets}
+ h_{a,b}^{(m)}(1)=(-1)^m\{\gamma_m(b)-\gamma_m(a)\}.
+\end{equation}
+Differentiating \eqref{eht:stuffle-two} on the diagonal gives the exact
+first-jet identity
+\begin{align}\label{eht:sum-jets}
+ (\partial_1+\partial_2)\mathcal H_{a,b}(1,1)
+  ={}&\{\psi(a)-\psi(b)\}\{\gamma_1(a)-\gamma_1(b)\}\notag\\
+    &-\zeta'(2,b)+\zeta'(2,a).
+\end{align}
+
+The incoming ordered-resonance paper uses the coefficient $\eta(a)$ in
+\[
+ Z_a(1+u,1)=u^{-2}+\gamma_0(a)u^{-1}
+       +\frac{\gamma_0(a)^2-\zeta(2,a)}2+\eta(a)u+O(u^2).
+\]
+Substitution in \eqref{eht:depthtwo} now gives
+\begin{align}
+ \partial_1\mathcal H_{a,b}(1,1)
+   &=\eta(b)-\eta(a)+\gamma_1(a)\{\psi(a)-\psi(b)\},
+       \label{eht:first-eta}\\
+ \partial_2\mathcal H_{a,b}(1,1)
+   &=\eta(a)-\eta(b)-\gamma_1(b)\{\psi(a)-\psi(b)\}
+                     -\zeta'(2,b)+\zeta'(2,a).
+       \label{eht:second-eta}
+\end{align}
+These formulas explain the scope of the cancellation theorem precisely.
+It removes the moving poles and makes the separate logarithmic
+decorations well defined; it does not remove the nonsymmetric arithmetic
+coordinate $\eta$.
+
+\subsection{Finite reductions with a nonpositive inner exponent}
+
+One independent-index subfamily does have complete depth-one closure.
+For $m\ge0$ and arbitrary complex $s$,
+\begin{equation}\label{eht:negative-inner}
+ \boxed{\mathcal H_{a,b}(s,-m)=\frac1{m+1}
+ \left\{\sum_{j=0}^{m+1}\binom{m+1}{j}B_{m+1-j}\,
+                       h_{a,b}(s-j)
+          -B_{m+1}(b)h_{a,b}(s)\right\}.}
+\end{equation}
+All apparent singular values in the separate Hurwitz functions are
+removable within the $h$ differences.  In particular,
+\begin{align}
+ \mathcal H_{a,b}(s,0)&=h_{a,b}(s-1)-b\,h_{a,b}(s),
+        \label{eht:zero-inner}\\
+ \mathcal H_{a,b}(0,s)&=(a-1)h_{a,b}(s)-h_{a,b}(s-1),\notag\\
+ \mathcal H_{a,b}(s,-1)&=\frac12\{h_{a,b}(s-2)-h_{a,b}(s-1)
+                                -b(b-1)h_{a,b}(s)\}.\notag
+\end{align}
+
+For a direct proof, first take $\Re s>m+2$ and use the ordinary finite
+power-sum identity
+\[
+ \sum_{k=0}^{n-1}(k+a)^m
+       =\frac{B_{m+1}(n+a)-B_{m+1}(a)}{m+1}
+\]
+in $Z_a(s,-m)$.  Expand $B_{m+1}(n+a)$ in powers of $n+a$.
+Insert the resulting finite Hurwitz formula, and its $b$ version, into
+\eqref{eht:depthtwo}.  Since
+$h_{a,b}(-m)=\{B_{m+1}(a)-B_{m+1}(b)\}/(m+1)$, the terms involving
+$B_{m+1}(a)$ cancel.  This yields \eqref{eht:negative-inner}.  Entire
+continuation gives every $s$.  The second formula in the displayed list
+also follows from the stuffle identity.
+
+As explicit Gamma--Stieltjes specializations at $b=1$,
+\begin{align}
+ \mathcal H_{a,1}(1,0)&=a-1-\psi(a)-\gamma,\notag\\
+ \partial_1\mathcal H_{a,1}(1,0)
+   &=-\log\Gamma(a)-\gamma_1(a)+\gamma_1,\label{eht:Gamma-Stieltjes}\\
+ \partial_2\mathcal H_{a,1}(0,1)
+   &=(a-1)\{\gamma_1(a)-\gamma_1\}+\log\Gamma(a).\notag
+\end{align}
+The derivatives are taken before the indicated index specialization.
+The identity $h_{a,1}'(0)=-\log\Gamma(a)$ fixes the normalization.
+
+These reductions also have normalized antiderivatives.  For a path in
+the right half-plane from $b$ to $a$, define
+\begin{equation}\label{eht:primitive}
+ P_{a,b}(s)=\int_b^a h_{x,b}(s)\,dx
+    =(a-b)\zeta(s,b)
+     +\frac{\zeta(s-1,a)-\zeta(s-1,b)}{s-1}.
+\end{equation}
+The combined right side is entire in $s$.  At $s=1$ it equals
+\[
+ P_{a,b}(1)=\log\Gamma(a)-\log\Gamma(b)-(a-b)\psi(b).
+\]
+Replacing each $h_{a,b}(s-j)$ in \eqref{eht:negative-inner} by
+$P_{a,b}(s-j)$ gives the uniquely normalized integral
+$\int_b^a\mathcal H_{x,b}(s,-m)\,dx$.  Every spectral derivative
+commutes with this identity.  Thus this independent-index family has a
+finite calculus in Hurwitz-zeta derivatives, Gamma functions, and
+generalized Stieltjes constants, with its additive constant fixed.
+
+\subsection{Polylogarithmic dictionary}
+
+For $|z|<1$, the interpolation theorem gives
+\begin{equation}\label{eht:polylog}
+ \sum_{N\ge0}\mathcal H_{N+1,1}(s_1,\ldots,s_r)z^N
+  =\frac{\operatorname{Li}_{s_1,\ldots,s_r}(z)}{1-z},
+\end{equation}
+where the strict multiple polylogarithm has numerator $z^{n_1}$.
+This is an ordinary normally convergent identity, locally in all
+independent exponents.  Each spectral derivative inserts the expected
+logarithmic factors in the harmonic sums, and the normalized Euler
+primitive of the numerator raises its first index by one.  These
+classical correspondences now attach to an entire interpolation in the
+finite harmonic endpoint.
+
+This correspondence also explains the compatibility with the positive-word
+shuffle calculus in Section~\ref{mixed:section}: finite harmonic endpoint
+coefficients and nested polylogarithmic words encode the same strict
+ordering. The independent-order kernel and nonsymmetric-jet problems
+are collected in Section~\ref{research:section}.

@@ -1,0 +1,99 @@
+\section{Finite closure of every mixed logarithmic moment}
+\label{clc:sec:moments}
+
+The total-order theorem concerns the unweighted convolution. Polynomial
+weights in the logarithmic variables still have finite closure, even
+though they distinguish the independent orders.
+For a multi-index $\boldsymbol\ell=(\ell_1,\ldots,\ell_r)$ of
+nonnegative integers, put $L=\sum_j\ell_j$ and define
+\begin{equation}\label{clc:eq:M}
+ \mathcal M_{\boldsymbol\ell}(\bs;A;\mu)=
+ \int_{\R^{r-1}}\prod_{j=1}^r
+      x_j^{\ell_j}h_{q_j,A,s_j}(x_j)\dd\boldsymbol x,
+ \qquad x_r=\mu-\sum_{j<r}x_j.
+\end{equation}
+The measure denotes the first $r-1$ variables as before.
+
+\begin{theorem}[A terminating mixed-moment algorithm]
+\label{clc:thm:moments}
+Let the scales be commensurate and $\Rea A>-q_*$. Then
+\eqref{clc:eq:M} is absolutely convergent and entire in all orders.
+For $0\le D\le L$, form the meromorphic trigonometric function
+\begin{equation}\label{clc:eq:GD}
+ G_D(p;\bs)=
+ \sum_{\substack{0\le d_j\le\ell_j\\\sum_jd_j=D}}
+ \prod_{j=1}^r
+ \binom{\ell_j}{d_j}(s_j)_{d_j}
+ (-\partial_p)^{\ell_j-d_j}g_{q_j}(p).
+\end{equation}
+Compute the finite Laurent table of each $G_D$ on the same period $Q$.
+Apply formula \eqref{clc:eq:finite}, or its pole-free central version,
+to that table with order $W+D$. Summing the answers over $D$ gives
+exactly $\mathcal M_{\boldsymbol\ell}$.
+The pole set remains $\PP$, and no pole order exceeds $r+L-D$.
+Every fixed mixed order derivative of this finite formula is valid.
+\end{theorem}
+\begin{proof}
+Multiplication by $x^{\ell_j}$ corresponds to
+$(-\partial_p)^{\ell_j}$ on the bilateral transform. Lemma
+\ref{clc:lem:weighted} justifies these operations and the integrals.
+The Leibniz rule gives
+\[
+ (-\partial_p)^{\ell_j}[g_{q_j}(p)(p+A)^{-s_j}]
+ =\sum_{d=0}^{\ell_j}\binom{\ell_j}{d}(s_j)_d
+   (-\partial_p)^{\ell_j-d}g_{q_j}(p)(p+A)^{-s_j-d}.
+\]
+Multiplying and grouping by $D$ yields
+$\sum_DG_D(p;\bs)(p+A)^{-W-D}$.
+Every derivative of a cosecant has the same signed period as the
+cosecant, so $G_D(p+Q;\bs)=\sigma G_D(p;\bs)$.
+Differentiation creates no new poles and increases pole orders by at
+most the number of derivatives. The total is at most $r+L-D$.
+All these functions retain exponential vertical decay.
+
+The residue proof of Lemma~\ref{clc:lem:kernel} and Theorem
+\ref{clc:thm:finite} uses precisely these properties, not a special
+factorization into undifferentiated cosecants. Thus it applies to each
+$G_D$. In the periodic case the simple residues still sum to zero by
+the period rectangle. The same pole-removal and branch-jump proofs
+therefore remain valid. The resulting expression is a finite sum of
+entire functions of the orders with polynomial coefficient factors.
+The weighted holomorphy proves that it also equals every differentiated
+ordinary integral claimed in the statement.
+\end{proof}
+
+\subsection{A convenient differential-polynomial implementation}
+For a single scale set $\kappa_q=(\pi/q)^2$ and define
+\begin{align}
+ R_0(s;T,U;\kappa)&=1,\notag\\
+ R_{\ell+1}&=(T+sU)R_\ell
+       +(\kappa+T^2)\partial_TR_\ell+U^2\partial_UR_\ell.
+ \label{clc:eq:Rrec}
+\end{align}
+With $T=(\pi/q)\cot(\pi p/q)$ and $U=(p+A)^{-1}$ one has
+\begin{equation}\label{clc:eq:Ridentity}
+ (-\partial_p)^\ell[g_q(p)(p+A)^{-s}]
+ =g_q(p)(p+A)^{-s}R_\ell(s;T,U;\kappa_q).
+\end{equation}
+Indeed $g_q'=-Tg_q$, $T'=-(\kappa_q+T^2)$ and $U'=-U^2$;
+the product rule proves the recurrence. The first cases are
+\begin{align*}
+ R_1&=T+sU,\\
+ R_2&=2T^2+2sTU+(s)_2U^2+\kappa,\\
+ R_3&=6T^3+6sT^2U+3(s)_2TU^2+(s)_3U^3
+                  +5\kappa T+3s\kappa U.
+\end{align*}
+Different scales have different $T$ and $\kappa$ values. Setting every
+$\kappa$ to $\pi^2$ would silently revert to equal scales.
+Formula \eqref{clc:eq:GD} avoids that error and provides an unambiguous
+finite normal form before pole extraction.
+
+There are also exact consistency constraints. At every $\mu$,
+\begin{equation}\label{clc:eq:moment-sum}
+ \sum_{j=1}^r\mathcal M_{\boldsymbol e_j}(\bs;A;\mu)
+       =\mu\CC_{\bq,A}(W;\mu).
+\end{equation}
+This follows directly from $\sum_jx_j=\mu$ in the ordinary integral.
+Unlike the equal-scale first-moment formulas, the individual terms need
+not be a fixed $1/r$ share. The identity is a check on their sum, not a
+claim that scale asymmetry disappears.

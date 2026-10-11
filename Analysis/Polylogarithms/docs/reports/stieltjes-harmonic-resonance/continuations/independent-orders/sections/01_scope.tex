@@ -1,0 +1,134 @@
+\section{Research scope, status, and conventions}
+\label{scope:section}
+
+\subsection{The source state and the questions answered}
+
+The source snapshot is the public ProveIt repository at commit
+\begin{center}
+\texttt{5a790187c8e186e41e2b990b4941cb7a1a3c7b6b},
+\end{center}
+inspected on 11 October 2026 (UTC). The two requested directories are
+\src{Analysis/Polylogarithms/docs/manuscript} and \src{docs/incoming}
+\cite{RepoMain,RepoIncoming}. All eleven incoming archives in that
+snapshot were inventoried and extracted. The mathematical review
+concentrated on the relevant harmonic, directional-zeta, mixed-spectral,
+and Gaussian-certificate sections; this is not a claim to have
+independently verified every page of the multi-volume manuscript.
+
+The latest incoming reports already contain substantial results.
+The diagonal cubic digamma finite part is reduced to a third diagonal
+Tornheim derivative, all quadratic Tornheim directions are known, the
+all-nonpositive inner-order sector has a finite rational reduction,
+and common-shift harmonic Laurent formulas and Newton interpolations
+are available. Repeating those theorems would not address the next
+questions. Table~\ref{scope:map} records the precise continuations here.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}L{0.28\textwidth}L{0.43\textwidth}L{0.22\textwidth}@{}}
+\toprule
+Source question & Answer in this article & Status \\
+\midrule
+Independent harmonic exponents (Exact Identities, Question 8)
+& Entire ordered normalization, explicit relative endpoints and
+  spectral consequences; Section~\ref{eht:sec}
+& Analytic-normalization component answered; full question remains open \\
+\addlinespace
+All asymmetric cubic Tornheim rays (directional report, Question 2)
+& Formula for every admissible direction in two specified scalar
+  coordinates; Section~\ref{tr3:section}
+& Proved reduction; no independence or ordinary-constant closure claimed \\
+\addlinespace
+Mixed inner signs at arbitrary depth (directional report, Question 11)
+& Finite algorithm retaining a free outer order and repeated colors;
+  Section~\ref{mixed:section}
+& Proved; exact compiler supplied \\
+\addlinespace
+Scalar identities from integer Fourier samples (mixed-spectral report)
+& Uniqueness on logarithmically dense samples and complete multicentre
+  criterion; Section~\ref{sampling:section}
+& Proved in the stated finite power--logarithm class \\
+\addlinespace
+Short Gaussian $S_6$ and revised $S_8$
+& Search scope and unchanged conjectural status;
+  Section~\ref{audit:section}
+& Unresolved \\
+\bottomrule
+\end{tabular}
+\caption{Contribution map. ``Proved'' refers to the stated theorem,
+not to a claim of literature-wide priority.}\label{scope:map}
+\end{table}
+
+The literature reconciliation is substantive. The one-endpoint
+entire interpolant is precisely the function constructed by Ihara,
+Nakamura, and Yamamoto \cite{eht:INY}; agreement is established by
+their finite reversed-star formula, not by guessing from integer
+values. Its identification supplies the independent-order entire
+normalization requested in one component of Question 8 of the
+exact-identities report \cite{RepoExact}. That question also asks for
+a smallest generating kernel with a Gamma-separated singular part;
+neither minimality nor that additional factorization is established
+here. The additional calculations
+are presented as exact consequences and useful research organization.
+The mixed-order and Tornheim theorems are advances relative to the
+specified source snapshot. The literature search was targeted and
+does not establish an absolute priority claim for every formula.
+
+\subsection{What a reduction means}
+
+A reduction is stated relative to a specified output class. A finite
+sum of multiple polylogarithms with a free complex first index is an
+exact and useful answer even when it does not collapse to ordinary
+Gamma and zeta values. Likewise, expressing all cubic directions in
+$\Omega$ and $\kappa$ is a theorem about a finite spanning collection;
+it is not a theorem that these coordinates are irreducible or
+arithmetically independent. In the harmonic sector, the separate
+order jets retain the nonsymmetric coordinate $\eta(a)$ from the
+ordered-resonance report \cite{RepoOrdered}.
+
+These distinctions prevent three common overstatements: treating a
+new name for an integral as its evaluation, treating a finite
+normal form as a minimal basis, and treating equality at special
+integer parameters as permission to differentiate in a transverse
+parameter. Every differentiation below is performed on an identity
+valid in a neighborhood in the variable being differentiated.
+
+\subsection{Conventions needed throughout}
+
+The superscript $\zeta^{(j)}(s,a)$ denotes differentiation in the
+first, spectral variable. The generalized Stieltjes constants are
+fixed by
+\begin{equation}\label{scope:Stieltjes}
+ \zeta(1+u,a)=\frac1u+
+       \sum_{j\ge0}\frac{(-1)^j\gamma_j(a)}{j!}u^j,
+ \qquad \gamma_0(a)=-\psi(a).
+\end{equation}
+Write $\gamma_j=\gamma_j(1)$ and $\gamma=\gamma_0$.
+For a finite upper bound, the strict harmonic convention is
+\[
+ H_N(s_1,\ldots,s_r)
+   =\sum_{N\ge n_1>\cdots>n_r\ge1}
+                          n_1^{-s_1}\cdots n_r^{-s_r},
+ \qquad H_N^{(s)}=H_N(s).
+\]
+The empty word has value one. The local Hurwitz notation in
+Section~\ref{eht:sec} starts its shifted summation at zero, and its
+finite-interval formula specifies the conversion explicitly.
+Bernoulli numbers use $B_1=-1/2$ and
+$te^{xt}/(e^t-1)=\sum_{n\ge0}B_n(x)t^n/n!$.
+
+The notation $\CT_{C=c}$ always means the Laurent constant in the
+displayed affine coordinate $C-c$. It does not mean substitution of
+individual singular summands. A derivative of a restricted Tornheim
+ray means that the ray is formed first and its resulting one-variable
+meromorphic germ is then continued and differentiated. Coherent
+principal branches are used initially in right half-planes; any
+extension to other domains is along specified analytic continuation.
+Normalized primitives include their lower endpoint or their value at
+the origin, so their additive constants are fixed.
+
+All unrestricted statements are proved analytically or by exact finite
+algebra in the article. The accompanying computations test conventions,
+coefficients, and independent evaluation routes. Floating-point
+agreement is reported as a diagnostic, never as a proof or as an
+interval-certified error bound.

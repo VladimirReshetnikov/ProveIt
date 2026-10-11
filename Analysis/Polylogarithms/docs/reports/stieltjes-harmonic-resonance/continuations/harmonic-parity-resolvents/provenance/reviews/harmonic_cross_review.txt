@@ -1,0 +1,95 @@
+INDEPENDENT MATHEMATICAL REVIEW
+
+Reviewed file:
+  /workspace/scratch/945e2d93a641/work/agent_harmonic/harmonic_module.tex
+
+Reviewer: source_audit agent, independent of the harmonic derivation.
+
+Conclusion: No mathematical flaw was found in the reviewed statements or
+proofs. No displayed formula needs correction. The following specific
+issues were checked.
+
+1. Fixed-index elimination at arbitrary endpoints.
+
+The strict-gap rule uses B_1(0) = -1/2 and B_1(1) = +1/2 correctly.
+At m = 0 it gives
+  H(0,s) = (a-1) h(s) - h(s-1),
+  H(s,0) = h(s-1) - b h(s),
+  H(s,0,t) = H(s-1,t) - H(s,t-1) - H(s,t).
+These agree with direct finite strict-gap counts.
+
+The passage to arbitrary a,b is algebraic in the meromorphic ordered
+Hurwitz functions, followed by the existing entire H continuation. It
+does not rely on an invalid identity-theorem argument from a=b+N.
+
+An equivalent independent proof is the following insertion lemma.
+For P0(y)=B_q(y)/q and P1(y)=B_q(y+1)/q, a formal series with endpoints
+(U,V) has insertion value equal to the P0-shift of the left neighbor
+(or U times the suffix if the left word is empty), minus the P1-shift
+of the right neighbor (or V times the prefix if the right word is
+empty). Under concatenation of endpoint pairs (U,V) and (V,W), cuts
+on the two sides of the distinguished inserted letter produce the
+extra terms +V F(L)G(R) and -V F(L)G(R); these cancel. The remaining
+cuts regroup into the same insertion property with endpoints (U,W).
+Inversion swaps endpoints. Since Z_c has endpoints (0,P0(c)),
+Z_a^{-1}Z_b has endpoints (P0(a),P0(b)), exactly as stated.
+
+2. Finite normal form.
+
+Deleting an index -m consumes budget m+1; a neighbor shift transfers
+part of that budget, while an endpoint factor contributes polynomial
+degree at most the consumed budget. This proves the stated total
+degree bound.
+
+The uniqueness proof first establishes the analytic reduction, and
+only then uses finite exponential independence and polynomial
+Zariski density to compare universal coefficient polynomials. This
+is valid. The integer configurations are dense for polynomial
+identities despite their strict inequalities.
+
+The (-1,s,-1) example was checked by direct expansion:
+  (A-y^2-y)(y^2-y-B)
+   = -y^4 + (A+B+1)y^2 + (B-A)y - AB.
+The missing y^3 coefficient and every sign in its derivative at s=2
+are correct.
+
+3. Lerch generator.
+
+For Re a,Re b>0 and |t|<2 pi, K(x-t) has no nonremovable singularity
+on x>=0. A nonzero lattice pole would force t=x-2 pi i k and hence
+|t|>=2 pi; y=0 is removable. Exponential upper-endpoint decay and
+the local Taylor subtractions are uniform on compact parameter
+sets. Multiplication by 1/Gamma(s) cancels all resulting Mellin poles,
+proving the claimed joint holomorphy and entire spectral dependence.
+
+The identity d_t L(s;t)=L(s-1;t) can independently be proved by
+integration by parts first in Re s>1; the boundary term vanishes,
+and entire continuation finishes the proof. The Lerch series yields
+the same derivative directly when Re t<0.
+
+The zero-block prefactors and logarithmic signs are correct. At s=0,
+their right side simplifies exactly to
+  ((1+u)^(a-b) - (1+v)^(a-b))/(u-v),
+whose coefficient is binom(a-b,p+q+1), as required for a word
+consisting of p+q+1 zeros. The stated |u|,|v|<1/2 domain gives
+|log(1+v)-log(1+u)|<2 log 2<2 pi.
+
+4. Endpoint primitives and Stieltjes moments.
+
+Repeated integration by parts gives all positive signs in the finite
+formula Pfinite. At s=1+z the denominator expansion is
+  1/(z(z-1)...(z-j)) = (-1)^j/(j! z) sum_n c_(j,n) z^n.
+Together with the stated Stieltjes convention, this gives the exact
+overall factor (-1)^(m+1) m! in Stieltjesfinite.
+
+The d=0 primitive was independently recovered by integrating Hurwitz
+zeta directly; the d=1,m=0 case agrees with integration of -digamma
+using log Gamma and the derivative of zeta'(-1,x). All endpoint
+constants are retained.
+
+Minor optional wording suggested to the author:
+  In Pfinite, use "initially away from singularities of individual
+  displayed terms", instead of referring only to denominator values,
+  since separate Hurwitz numerator terms can reach their pole at 1.
+  The combined expression has exactly the asserted removable
+  continuation, already established by its defining integral.

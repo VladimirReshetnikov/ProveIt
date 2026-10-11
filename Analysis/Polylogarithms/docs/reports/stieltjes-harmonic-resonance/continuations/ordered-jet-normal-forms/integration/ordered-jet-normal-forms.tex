@@ -1,0 +1,110 @@
+% ProveIt integration fragment. No new macros or bibliography keys are required.
+% Uses theorem/proof environments, amsmath, and amsfonts (or equivalent math fonts).
+% Full proofs: accompanying report, manuscript/article.tex, Sections 2--11.
+% All labels are namespaced with ojnf:.
+\section{Ordered harmonic jets: orientation normal forms and Gamma primitives}
+\label{ojnf:sec:normal-forms}
+
+For a word of letters $(k,m)$, $k\ge1$, $m\ge0$, let
+$\mathcal R_a(w)$ denote the constant coefficient in the polynomial
+asymptotic, in $\log(N+a)$, of its decreasing-index finite sum with
+letter function $x^{-k}\log^m x$. Write $Z_m=(1,m)$ and $X=Z_0$.
+The finite quasi-shuffle merge is $(k,m)\circ(\ell,n)=(k+\ell,m+n)$.
+The regularization preserves this product, and its one-letter values are
+\[
+ \ell_{k,m}(a)=\mathcal R_a((k,m))=
+ \begin{cases}\gamma_m(a),&k=1,\\(-1)^m\zeta^{(m)}(k,a),&k\ge2.\end{cases}
+\]
+Derivatives on $\zeta$ in this section are spectral derivatives.
+
+\begin{theorem}[Formal orientation count]\label{ojnf:thm:rank}
+Let $\mathcal S$ be the single-letter subalgebra of the universal rational
+quasi-shuffle algebra. Let $V_{j,r}$ be spanned by words
+$Z_{m_1}\cdots Z_{m_j}$ with $\sum m_i=r$.
+Then $V_{j,r}\cap\mathcal S$ is exactly the span of permutation-orbit sums,
+and
+\[
+ \dim_{\mathbb Q}\frac{V_{j,r}}{V_{j,r}\cap\mathcal S}
+ =\binom{j+r-1}{r}-p_{\le j}(r).
+\]
+For all the regular coefficients entering a transverse depth-$d$ finite
+part, the total quotient dimension is $2^{d-1}-p(d)$.
+\end{theorem}
+\begin{proof}
+A single-letter product of first weight $j$ has length at most $j$;
+its length-$j$ part is a shuffle orbit sum of first-exponent-one letters.
+Conversely the partition-lattice symmetric-sum formula puts every orbit
+sum in $\mathcal S$. Count weak compositions and their permutation
+orbits. Across all $j+r=d$, the raw words are compositions of $d$ and
+the orbit classes are partitions of $d$.
+\end{proof}
+
+This is a rational linear quotient statement, not arithmetic independence,
+transcendence degree, or a module rank after scalar extension. At depth four,
+the quotient is the direct sum of a standard $S_3$ component and a sign
+$S_2$ component on their respective word layers. A basis is
+\begin{align*}
+ D&=\mathcal R_a(Z_1XX)-\mathcal R_a(XXZ_1),\\
+ \Theta&=\mathcal R_a(Z_1XX)-2\mathcal R_a(XZ_1X)+\mathcal R_a(XXZ_1),\\
+ \Omega_2&=\mathcal R_a(XZ_2)-\mathcal R_a(Z_2X).
+\end{align*}
+The full report gives the complete quartic finite part, and reconstructs
+these three coordinates from the positive rays $(1,1,1,2)$, $(1,1,2,3)$,
+$(1,2,3,4)$ using a rational matrix of determinant $-1/144$.
+It also proves that an individual transverse ray is single-letter-closed
+in the stipulated formal algebra exactly when its inner slopes are equal.
+
+\begin{theorem}[All-index Stieltjes commutators]\label{ojnf:thm:commutators}
+For $p,q\ge0$, set
+$\mathcal C_{p,q}(a)=\mathcal R_a(Z_pZ_q)-\mathcal R_a(Z_qZ_p)$ and
+$\kappa_{p,q}=1/(q+1)-1/(p+1)$. For $a>0$,
+\[
+ \mathcal C_{p,q}(a)=\kappa_{p,q}\gamma_{p+q+1}(a)+
+ \sum_{\nu\ge0}\frac{\log^q x\,\gamma_p(x)-\log^p x\,\gamma_q(x)
+                -\kappa_{p,q}\log^{p+q+1}x}{x},\quad x=\nu+a.
+\]
+The series is ordinarily absolutely convergent. It has an ordinary Mellin
+representation in Lerch functions, or polylogarithm order derivatives at
+$a=1$, with kernel $(e^t-1)^{-1}-t^{-1}$.
+\end{theorem}
+\begin{proof}
+Use the depth-two outer-tail decomposition with
+$B(u,x)=\zeta(1+u,x+1)-x^{-u}/u$. Its divided difference contributes
+exactly $\kappa_{p,q}\gamma_{p+q+1}(a)$. Antisymmetric Taylor extraction
+in the normally convergent tail gives the series. The leading nonsummable
+terms and the terms of order $x^{-2}$ cancel; the summand begins with
+$(q-p)\log^{p+q-1}x/(12x^3)$ for $p\ne q$.
+\end{proof}
+
+\begin{theorem}[Gamma-weighted Stieltjes primitives]\label{ojnf:thm:Gamma}
+For $q\ge1$, put
+\[
+ D_q(a)=\mathcal R_a(Z_qXX)-\mathcal R_a(XXZ_q),\qquad
+ H_m(a)=\sum_{\nu\ge0}\frac{\log^m(\nu+a)}{(\nu+a)^2}
+                       \sum_{\mu=0}^{\nu-1}\frac1{\mu+a}.
+\]
+Then
+\[
+ \Gamma(a)\frac{d}{da}\left(\frac{\mathcal C_{0,q}(a)}{\Gamma(a)}\right)
+ =q\{\gamma_0(a)\ell_{2,q-1}(a)-\ell_{3,q-1}(a)-2H_{q-1}(a)\}-2D_q(a).
+\]
+Consequently the ordinary integral satisfies
+\[
+ \int_1^2\frac{q\{\gamma_0(a)\ell_{2,q-1}(a)-\ell_{3,q-1}(a)
+                         -2H_{q-1}(a)\}-2D_q(a)}{\Gamma(a)}\,da
+ =\gamma_q(1).
+\]
+\end{theorem}
+\begin{proof}
+Parameter differentiation is the word derivation
+$(k,m)\mapsto-k(k+1,m)+m(k+1,m-1)$. Apply it to the commutator and
+use three finite stuffle rows to eliminate the merged-letter terms.
+The integrating factor follows from $\gamma_0=-\psi$.
+Finally $\Gamma(1)=\Gamma(2)=1$ and the exact word shift gives
+$\mathcal C_{0,q}(2)-\mathcal C_{0,q}(1)=\gamma_q(1)$.
+\end{proof}
+
+The formal depth-four organization target is therefore resolved in the
+specified law vocabulary. Reduction of the resulting ordered values to a
+smaller arithmetic constant algebra remains a separate question. No
+numerical-independence or proof-assistant claim is attached to these results.

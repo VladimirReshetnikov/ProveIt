@@ -1,0 +1,596 @@
+\section{Exact shift singularities of the entire harmonic difference}
+\label{hsh:section}
+
+The Newton expansion in the mixed-spectral report \cite{RepoMixed}
+proves holomorphy of its depth-$r$ entire difference on $\Re a>-r$,
+and asks for the actual singularity at $a=-r$.  We determine every
+negative-integral shift germ, the exact Taylor radius, and the finite
+regular term at the first singularity.  The proof uses a finite shift
+identity and a cancellation at $a=1$.  Finite transport is a classical
+special-function method.  The independent-orders report
+\cite{RepoIndependent} supplies a broader entire ordered interpolation
+of which this remainder is an exact specialization, identified below.
+The contribution here is the explicit singular amplitudes and their
+boundary, Taylor-radius, and functional-rank consequences; we do not
+assert priority for the underlying transport method.
+
+\subsection{Definitions and the finite shift identity}
+
+For $\Re a>0$, define, initially for $\Re s>1+\Re u$,
+\begin{align}
+ F_a(s,u)&=\sum_{n\geq0}\frac{(a+u)_n}{(a)_n(n+a)^s},
+ &K_a(u)&=\frac{\Gamma(a)\Gamma(1+u)}{\Gamma(a+u)},\label{hsh:definitions}\\
+ D(s,u;a)&=F_a(s,u)-K_a(u)F_1(s,u),
+ &D_r(s;a)&=[u^r]D(s,u;a).\label{hsh:difference}
+\end{align}
+Here $(x)_n=x(x+1)\cdots(x+n-1)$ is a rising factorial.  Every
+statement in $u$ can be read on a fixed disk $|u|<\rho<1$.
+The sources \cite{RepoExact,RepoMixed} prove that $D$ is entire in
+$s$, and that its coefficients are jointly holomorphic for
+$s\in\mathbb C$, $\Re a>-r$.  In particular,
+\begin{equation}\label{hsh:basezero}
+ D(s,u;1)=0,\qquad D_0(s;a)=\zeta(s,a)-\zeta(s).
+\end{equation}
+The pole of the last difference at $s=1$ is removable.
+
+Put
+\begin{equation}\label{hsh:P}
+ P_n(a,u)=\frac{(a+u)_n}{(a)_n}
+       =\sum_{j=0}^n e_j(n;a)u^j,
+ \qquad
+ e_j(n;a)=\sum_{0\leq\nu_1<\cdots<\nu_j<n}
+                  \prod_{i=1}^j\frac1{a+\nu_i}.
+\end{equation}
+The empty product is one and $e_j(n;a)=0$ for $j>n$.
+
+\paragraph{Exact identification with the ordered endpoint interpolation.}
+Let $\mathcal H_{b,a}(w)$ denote the relative character in
+\cite{RepoIndependent}, normalized by the deconcatenation identity
+$Z_a(w)=\sum_{w=vw'}Z_b(v)\mathcal H_{b,a}(w')$ for the
+strict ordered Hurwitz sums.  Its Gamma formula for words of ones is
+$\mathcal H_{1,a}(\{1\}^j)=[u^j]K_a(u)$.  Applying the defining
+recursion to $(s,\{1\}^r)$ therefore gives the exact identification
+\begin{equation}\label{hsh:relativecharacter}
+          D_r(s;a)=\mathcal H_{1,a}(s,\{1\}^r).
+\end{equation}
+Indeed $Z_a(s,\{1\}^r)=\sum_{n\geq0}e_r(n;a)(n+a)^{-s}$,
+and the other deconcatenation terms are exactly the coefficients
+of $K_a(u)F_1(s,u)$ in \eqref{hsh:difference}.  This first proves
+the identity in a convergence domain, then everywhere by the entire
+spectral continuations.  Proposition~\ref{hsh:transport} is accordingly
+also a specialization of that source's endpoint transport.
+
+\begin{proposition}[Exact finite transport]\label{hsh:transport}
+For every integer $L\geq1$,
+\begin{equation}\label{hsh:finite}
+ D(s,u;a)=\sum_{n=0}^{L-1}P_n(a,u)(a+n)^{-s}
+                       +P_L(a,u)D(s,u;a+L).
+\end{equation}
+Consequently
+\begin{align}
+ D(s,u;a)&=a^{-s}+\frac{a+u}{a}D(s,u;a+1),
+                                                     \label{hsh:one}\\
+ D_r(s;a)&=\mathbf1_{r=0}a^{-s}+D_r(s;a+1)
+                      +\mathbf1_{r\geq1}\frac{D_{r-1}(s;a+1)}a,
+                                                     \label{hsh:depthshift}\\
+ D_r(s;a)&=\sum_{n=r}^{L-1}e_r(n;a)(a+n)^{-s}
+          +\sum_{j=0}^{\min(r,L)}e_j(L;a)D_{r-j}(s;a+L).
+                                                     \label{hsh:depthfinite}
+\end{align}
+The finite sum in the last formula is empty when $L\leq r$.
+These identities hold wherever the powers and continuations on both
+sides use the same branches.
+\end{proposition}
+
+\begin{proof}
+Separating the $n=0$ summand gives
+$F_a=a^{-s}+(a+u)F_{a+1}/a$.  The Gamma functional equation gives
+$K_a=(a+u)K_{a+1}/a$.  Subtraction proves
+\eqref{hsh:one} in the initial common half-plane.  Both sides are
+entire in $s$, so that identity continues to every $s$.  Iterating it
+gives \eqref{hsh:finite}; coefficient extraction gives the other
+formulas.  All operations are finite after the initial identity, so
+they create no interchange of a divergent sum and a derivative.
+\end{proof}
+
+\subsection{Every negative-integral shift germ}
+
+For $N\geq0$, put $a=-N+z$ and define
+\begin{equation}\label{hsh:C}
+ C_N(z,u)=P_N(-N+z,u)
+          =\prod_{j=1}^{N}\left(1+\frac{u}{z-j}\right),
+ \qquad c_{N,r}(z)=[u^r]C_N(z,u).
+\end{equation}
+Thus $C_0=1$ and $c_{N,r}=0$ if $r>N$.  Near $z=0$ choose
+a branch of $\log z$.  For the other powers in
+\eqref{hsh:finite}, choose logarithms of $z-h$, $1\leq h\leq N$,
+holomorphic on a small disk around zero.  Their values at zero may be
+$\log h+\mathrm i\pi$ or $\log h-\mathrm i\pi$ for the two lateral
+continuations.
+
+\begin{theorem}[Exact local decomposition]\label{hsh:germ}
+On these specified branches,
+\begin{equation}\label{hsh:local}
+ D(s,u;-N+z)=C_N(z,u)z^{-s}+H_N(s,u;z),
+\end{equation}
+where $H_N$ is jointly holomorphic in $s$, $u$, and $z$ near
+every point $(s_0,0,0)$.  An explicit formula is
+\begin{align}
+ H_N(s,u;z)={}&
+ \sum_{n=0}^{N-1}P_n(-N+z,u)(z-N+n)^{-s}\notag\\
+ &+\left(1+\frac uz\right)C_N(z,u)D(s,u;1+z).
+                                                     \label{hsh:H}
+\end{align}
+The apparent pole in the second line is removable.  For every
+$r,k\geq0$,
+\begin{equation}\label{hsh:localjets}
+ \partial_s^kD_r(s;-N+z)
+   =c_{N,r}(z)z^{-s}(-\log z)^k
+                         +\partial_s^kH_{N,r}(s;z),
+ \qquad H_{N,r}=[u^r]H_N.
+\end{equation}
+For $r\leq N$ the leading coefficient is nonzero:
+\begin{equation}\label{hsh:leading}
+ c_{N,r}(0)=(-1)^r e_r\left(1,\frac12,\ldots,\frac1N\right).
+\end{equation}
+For $r>N$ the entire singular amplitude vanishes identically.
+\end{theorem}
+
+\begin{proof}
+Use \eqref{hsh:finite} with $L=N+1$.  Its $n=N$ term is exactly
+$C_N(z,u)z^{-s}$, and the other terms give \eqref{hsh:H} because
+$P_{N+1}(-N+z,u)=(1+u/z)C_N(z,u)$.
+Every factor of $P_n$, $n\leq N$, is holomorphic in $z$ near
+zero.  The chosen logarithms make all powers with $n<N$
+holomorphic there as well.  By \eqref{hsh:basezero},
+$D(s,u;1+z)=z\,\widetilde D(s,u;z)$ with $\widetilde D$
+jointly holomorphic.  This cancels the sole $1/z$ factor in the
+last line.  This also proves local normality on compact spectral
+sets, so all the stated derivatives can be taken.  Finally,
+$C_N(0,u)=\prod_{j=1}^{N}(1-u/j)$, which proves
+\eqref{hsh:leading}; its elementary symmetric coefficients are
+strictly positive before the displayed sign.
+\end{proof}
+
+\begin{corollary}[Principal continuation]\label{hsh:principal}
+For each $r\geq0$, $D_r(s;a)$ has a jointly holomorphic principal
+continuation to
+\begin{equation}\label{hsh:slit}
+       (s,a)\in\mathbb C\times
+                         \bigl(\mathbb C\setminus(-\infty,-r]\bigr).
+\end{equation}
+It is holomorphic across $a=0,-1,\ldots,-(r-1)$.  On the
+specified lateral branches, every $a=-N$ with $N\geq r$ has
+the germ \eqref{hsh:localjets}.
+\end{corollary}
+
+\begin{proof}
+On any compact set in the slit plane, choose $L$ so large that
+$\Re(a+L)>0$.  In \eqref{hsh:depthfinite}, the only powers that
+remain have $n\geq r$, hence their arguments avoid the principal
+logarithm cut.  The tail is defined in the original half-plane.
+The rational coefficients have only possible poles at negative
+integers.  Those in the slit domain have $N<r$, and
+Theorem~\ref{hsh:germ} proves their removability.  The formulas
+agree on overlaps by finite transport and coincide with the
+original function on a common open set.  They therefore give
+the claimed jointly holomorphic continuation.
+\end{proof}
+
+\paragraph{A distinction between principal continuation and all sheets.}
+The early removable points cannot simply be deleted from the
+puncture set for every sheet.  A positive circuit around $a=-N$
+changes the chosen germ by
+\begin{equation}\label{hsh:monodromy}
+ \Delta_N D_r(s;a)=
+ (\exp(-2\pi\mathrm i s)-1)e_r(N;a)(a+N)^{-s}.
+\end{equation}
+This follows by changing only $\log(a+N)$ in a finite transport
+formula with $L>N$.  The rational coefficient $e_r(N;a)$ may have
+poles at earlier shifts.  For instance, a circuit around $-1$
+changes $D_1(s;a)$ by
+\[
+       (\exp(-2\pi\mathrm i s)-1)\frac{(a+1)^{-s}}a.
+\]
+Although the principal $D_1$ is regular at $a=0$, this continued
+branch has a pole there for generic $s$.  At $s=-m$, differentiating
+once in $s$ gives the change $-2\pi\mathrm i(a+1)^m/a$.
+Thus the same issue occurs for spectral derivatives at the polynomial
+orders.  Formula \eqref{hsh:slit} is a statement about the principal
+branch.  Arbitrary multivalued continuation can safely be made along
+paths avoiding all of $0,-1,-2,\ldots$; it need not preserve the
+removability of every preimage of an earlier shift.  This is a
+continuation qualification, not a counterexample to the source's
+half-plane theorem.
+
+\subsection{The first boundary and Arakawa--Kaneko values}
+
+For $j\geq1$, write
+\begin{equation}\label{hsh:Xi}
+ \Xi_j(s)=\frac1{\Gamma(s)}\int_0^\infty
+   \frac{t^{s-1}}{e^t-1}\operatorname{Li}_j(1-e^{-t})\,dt,
+ \qquad \Re s>0.
+\end{equation}
+These are the classical Arakawa--Kaneko functions, continued entirely
+in $s$ by Taylor subtraction at zero
+\cite{ArakawaKaneko,KanekoTsumura}.  In the descending convention,
+the multiple version $\Xi(j,\{1\}^{p-1};s)$ is obtained by replacing
+the polylogarithm in \eqref{hsh:Xi} by
+$\operatorname{Li}_{j,1,\ldots,1}$.
+The mixed-spectral report proves the exact shift-jet identity
+\begin{equation}\label{hsh:AKjet}
+ \left.\partial_a^pD_q(s;a)\right|_{a=1}
+      =(-1)^{q+p}p!\,\Xi(q+1,\{1\}^{p-1};s),\qquad p\geq1.
+\end{equation}
+In particular $\Xi_1(s)=s\zeta(s+1)$, with its removable value
+at $s=0$ understood.  This follows directly from
+$\operatorname{Li}_1(1-e^{-t})=t$.
+
+For a fixed positive depth $r$, set
+\begin{align}
+ E_h^{(r)}&=e_h\left(1,\frac12,\ldots,\frac1r\right),
+ \qquad\prod_{j=1}^r\left(1-\frac zj\right)^{-1}
+       =\sum_{n\geq0}h_n^{(r)}z^n,\label{hsh:eh}\\
+ c_r(z)&=c_{r,r}(z)=\frac1{\prod_{j=1}^r(z-j)}
+       =\frac{(-1)^r}{r!}\prod_{j=1}^r\left(1-\frac zj\right)^{-1},\notag\\
+ B_r(s)&=(-1)^r\sum_{h=0}^{r-1}E_h^{(r)}\Xi_{r-h}(s).
+                                                       \label{hsh:B}
+\end{align}
+The $h_n^{(r)}$ are complete homogeneous symmetric polynomials.
+
+\begin{theorem}[Exact first-boundary normalization]\label{hsh:boundary}
+For $r\geq1$,
+\begin{equation}\label{hsh:boundaryidentity}
+ \boxed{\displaystyle
+ \lim_{z\to0}\left\{D_r(s;-r+z)-c_r(z)z^{-s}\right\}=B_r(s).}
+\end{equation}
+The expression inside braces extends holomorphically through $z=0$.
+Convergence is locally uniform in $s$, and arbitrary fixed spectral
+derivatives can be applied to the identity.  In particular,
+\begin{align}
+ B_1(s)&=-s\zeta(s+1),\notag\\
+ B_2(s)&=\Xi_2(s)+\tfrac32s\zeta(s+1),\notag\\
+ B_3(s)&=-\Xi_3(s)-\tfrac{11}{6}\Xi_2(s)-s\zeta(s+1).
+                                                       \label{hsh:examples}
+\end{align}
+Every Taylor coefficient of the holomorphic remainder in
+\eqref{hsh:boundaryidentity} is a finite combination of the multiple
+functions in \eqref{hsh:AKjet}, with rational coefficients.
+\end{theorem}
+
+\begin{proof}
+Take $N=r$ in \eqref{hsh:H} and extract $u^r$.  The finite terms
+with $n<r$ vanish because $P_n$ has degree $n$.  Thus the remainder
+is exactly
+\begin{equation}\label{hsh:firstH}
+ H_{r,r}(s;z)=[u^r]\left(1+\frac uz\right)
+                          C_r(z,u)D(s,u;1+z).
+\end{equation}
+At $z=0$, the term without $u/z$ vanishes.  The remaining term is
+$[u^r]uC_r(0,u)\partial_aD(s,u;1)$.
+Now $C_r(0,u)=\sum_{h=0}^r(-1)^hE_h^{(r)}u^h$, while
+\eqref{hsh:AKjet} at $p=1$ gives
+$\partial_aD(s,u;1)=\sum_{q\geq0}(-1)^{q+1}\Xi_{q+1}(s)u^q$.
+Their finite coefficient product is precisely $B_r$.
+The holomorphy assertion is already contained in
+Theorem~\ref{hsh:germ}.  For higher Taylor coefficients, expand
+$C_r(z,u)$ rationally at $z=0$ and use
+\[
+ D(s,u;1+z)=\sum_{p\geq1}\sum_{q\geq0}
+       (-1)^{p+q}\Xi(q+1,\{1\}^{p-1};s)u^qz^p.
+\]
+At a fixed power of $z$ in \eqref{hsh:firstH}, only finitely many
+$p,q$ occur.  This also proves the final assertion with its
+normalization specified.
+\end{proof}
+
+The same calculation gives every regular boundary constant.  With
+$E_h^{(N)}=e_h(1,1/2,\ldots,1/N)$ and $E_0^{(0)}=1$,
+\begin{equation}\label{hsh:allregular}
+ \begin{split}
+ H_{N,r}(s;0)={}&\sum_{n=0}^{N-1}e_r(n;-N)(n-N)^{-s}\\
+ &+(-1)^r\sum_{h=0}^{\min(N,r-1)}E_h^{(N)}\Xi_{r-h}(s).
+ \end{split}
+\end{equation}
+The second sum is empty for $r=0$.  This follows by evaluating the
+first line of \eqref{hsh:H} at zero and extracting the coefficient
+of $u^r$ from $uC_N(0,u)\partial_aD(s,u;1)$ in its second line.
+The finite powers retain their specified lateral logarithms.  If
+$r>N$, the first sum is empty and the singular amplitude vanishes;
+the formula recovers the source's previously proved negative-shift
+values.  If $r=N\geq1$, it is \eqref{hsh:boundaryidentity}.
+
+\paragraph{The regular boundary term and a coordinate finite part.}
+The subtraction in \eqref{hsh:boundaryidentity} retains the full
+analytic amplitude $c_r(z)$; it is not the same operation as discarding
+only the divergent terms of a Laurent expansion.  For $p\geq0$,
+take the finite part along the positive real coordinate $z$ to mean
+the coefficient of $z^0(\log z)^0$ in the power--logarithm expansion.
+Then
+\begin{equation}\label{hsh:FP}
+ \boxed{\displaystyle
+ \FP_{z=0}D_r(p;-r+z)=B_r(p)+\frac{(-1)^r}{r!}h_p^{(r)}.}
+\end{equation}
+Indeed the constant contributed by $c_r(z)z^{-p}$ is
+$[z^p]c_r(z)$.  On the other hand, for every $k\geq1$,
+\begin{equation}\label{hsh:FPjets}
+ \FP_{z=0}\left.\partial_s^kD_r(s;-r+z)\right|_{s=p}
+                       =B_r^{(k)}(p),\qquad p\geq0,
+\end{equation}
+because its singular amplitude has the factor $(-\log z)^k$.
+These formulas concern a fixed coordinate and a defined constant
+coefficient, so there is no implicit conversion between two
+regularization prescriptions.
+
+For $m\geq1$ and $k\geq0$, there is an ordinary lateral limit,
+\begin{equation}\label{hsh:negativeboundary}
+ \lim_{z\to0}\left.\partial_s^kD_r(s;-r+z)\right|_{s=-m}
+                      =B_r^{(k)}(-m),
+\end{equation}
+provided $\arg z$ stays in a bounded interval on the chosen branch.
+The reason is $z^m(\log z)^k\to0$; no finite part is needed.
+For positive $k$, this continuous extension is not
+holomorphic, as the next subsection proves.
+
+\paragraph{Explicit Stieltjes and Gamma boundary identities at depth one.}
+Use the convention
+$\zeta(1+s)=s^{-1}+\sum_{j\geq0}(-1)^j\gamma_js^j/j!$.
+Then \cite{DLMFHurwitz}
+\begin{equation}\label{hsh:Stieltjes}
+ B_1(0)=-1,\qquad
+ B_1^{(k)}(0)=(-1)^k k\gamma_{k-1}\quad(k\geq1).
+\end{equation}
+Consequently, for example,
+\begin{align}
+ \lim_{z\to0}\{D_1(0;-1+z)-(z-1)^{-1}\}&=-1,\notag\\
+ \lim_{z\to0}\{\partial_sD_1(0;-1+z)
+                          +(z-1)^{-1}\log z\}&=-\gamma,\notag\\
+ \lim_{z\to0}\{\partial_s^2D_1(0;-1+z)
+                          -(z-1)^{-1}(\log z)^2\}&=2\gamma_1.
+                                                       \label{hsh:stieltjeslimits}
+\end{align}
+At the negative orders, for $m\geq1$,
+\begin{equation}\label{hsh:zetaexplicit}
+ B_1^{(k)}(-m)=m\zeta^{(k)}(1-m)
+                         -k\zeta^{(k-1)}(1-m),
+\end{equation}
+where the last term is omitted for $k=0$.  In particular,
+\[
+ B_1'(-1)=\frac12-\frac12\log(2\pi),\qquad
+ B_1'(-2)=\frac1{12}+2\zeta'(-1).
+\]
+The first evaluation uses the classical Lerch normalization of
+$\zeta'(0)$ \cite{DLMFHurwitz}.  These constants occur here as
+boundary values of a continued harmonic family, with the complete
+singular amplitude specified.
+
+\subsection{Normalized Lerch and polylogarithmic primitives}
+\label{hsh:primitives}
+
+The exact singular amplitude also gives a finite antiderivative formula.
+This is an application of standard partial fractions and Lerch calculus
+\cite{DLMFLerch}, with the normalization needed at resonant spectral
+orders made explicit.  Fix a logarithm on a slit punctured unit disk
+and a base point $z_0$ in that disk.  For $1\leq j\leq r$, put
+\begin{align}
+ A_{r,j}&=\frac{(-1)^{r-j}}{(j-1)!(r-j)!},
+ &c_r(z)&=\sum_{j=1}^{r}\frac{A_{r,j}}{z-j},
+                                                    \label{hsh:primitivePF}\\
+ P_j(s;z,z_0)&=-\frac1j\left\{
+ z^{1-s}\Phi(z/j,1,1-s)
+       -z_0^{1-s}\Phi(z_0/j,1,1-s)\right\}.
+                                                    \label{hsh:Lerchprimitive}
+\end{align}
+Here $\Phi(w,1,v)=\sum_{n\geq0}w^n/(n+v)$ for $|w|<1$,
+continued meromorphically in $v$.
+
+\begin{proposition}[Entire normalized spectral primitive]
+\label{hsh:primitive}
+The difference $P_j$ extends to an entire function of $s$, including
+the apparent resonances $s=1,2,\ldots$, and
+\begin{equation}\label{hsh:primitivederivative}
+ P_j(s;z_0,z_0)=0,\qquad
+ \frac{\partial}{\partial z}P_j(s;z,z_0)=\frac{z^{-s}}{z-j}.
+\end{equation}
+Consequently a normalized primitive of the complete first-boundary germ is
+\begin{equation}\label{hsh:fullprimitive}
+ \sum_{j=1}^{r}A_{r,j}P_j(s;z,z_0)
+                   +\int_{z_0}^{z}H_{r,r}(s;t)\,\mathrm dt.
+\end{equation}
+The remainder in this formula is holomorphic on the unit disk.
+Every fixed spectral derivative can be taken in the formula.
+At $s=0$, all the differentiated singular primitives are finite
+ordinary-polylogarithm expressions: define
+\begin{equation}\label{hsh:polylogprimitive}
+ J_{j,k}(z)=-k!\sum_{h=0}^{k}\frac{(-\log z)^h}{h!}
+                          \operatorname{Li}_{k+1-h}(z/j).
+\end{equation}
+Then
+\begin{equation}\label{hsh:polylogprimitivejet}
+ \left.\partial_s^kP_j(s;z,z_0)\right|_{s=0}
+                         =J_{j,k}(z)-J_{j,k}(z_0),
+ \qquad J_{j,k}'(z)=\frac{(-\log z)^k}{z-j}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The residues of $c_r$ at its distinct simple poles give
+\eqref{hsh:primitivePF}.  Expanding the Lerch functions gives the
+normally convergent, already normalized series
+\begin{equation}\label{hsh:primitiveentire}
+ P_j(s;z,z_0)=
+ -\sum_{m\geq1}\frac{z^{m-s}-z_0^{m-s}}{j^m(m-s)}.
+\end{equation}
+For a term with $s=m$, interpret the quotient as
+$\log z-\log z_0$.  Each term is entire in $s$.  On compact
+spectral sets and compact subsets of the slit punctured disk, its tail
+is bounded by a geometric series times $1/m$.  Hence the sum and all
+fixed spectral derivatives are locally normal.  Equivalently, each
+unnormalized Lerch primitive in \eqref{hsh:Lerchprimitive} has residue
+$j^{-p}$ at $s=p\geq1$, independent of its endpoint; the difference
+cancels that residue.  Differentiating \eqref{hsh:primitiveentire}
+in $z$ proves \eqref{hsh:primitivederivative}.  Formula
+\eqref{hsh:firstH} shows that $H_{r,r}$ is holomorphic for $|z|<1$,
+with its sole apparent pole at zero removed.  Thus its integral is
+well defined independently of the path in that disk, and
+\eqref{hsh:fullprimitive} follows.  Finally, differentiating
+$z^{-s}/(m-s)$ at $s=0$ and summing the resulting powers $m^{-q}$
+gives \eqref{hsh:polylogprimitive}; termwise differentiation, or the
+usual polylogarithm derivative rule, proves
+\eqref{hsh:polylogprimitivejet}.
+\end{proof}
+
+In particular,
+\[
+ J_{j,0}(z)=\log(1-z/j),\qquad
+ J_{j,1}(z)=-\operatorname{Li}_2(z/j)
+                        -\log z\log(1-z/j).
+\]
+The sign in the second formula is fixed by
+$J_{j,1}'(z)=-\log z/(z-j)$.  The base-point subtraction supplies
+the additive constant before continuation or spectral differentiation;
+separate unnormalized Lerch terms should not be evaluated at their
+resonant parameter poles.
+
+\subsection{Exact Taylor radii and the rank jump at integral orders}
+
+\begin{theorem}[Exact shift Taylor radius]\label{hsh:radius}
+Fix a real center $a_*>-r$ and a spectral order $s_0$.
+The Taylor series in $a-a_*$ of $D_r(s_0;a)$ has radius
+\[
+ \begin{cases}
+ a_*+r,&s_0\notin\{0,-1,-2,\ldots\},\\
+ \infty,&s_0\in\{0,-1,-2,\ldots\}.
+ \end{cases}
+\]
+For every $k\geq1$ and every $s_0\in\mathbb C$, the Taylor
+series of $\partial_s^kD_r(s_0;a)$ has radius exactly $a_*+r$.
+In particular, at the center $a_*=1$, the lower bound $r+1$
+in \cite{RepoMixed} is exact outside the polynomial cases, and is
+exact for every positive spectral derivative even at those cases.
+\end{theorem}
+
+\begin{proof}
+The disk $|a-a_*|<a_*+r$ lies in the domain
+\eqref{hsh:slit}, so holomorphy gives the lower bound, uniformly
+on compact spectral sets.  At $a=-r$, the singular amplitude is
+$c_r(z)z^{-s_0}(-\log z)^k$, with $c_r(0)=(-1)^r/r!\ne0$;
+for $r=0$ the same statement has $c_0=1$.
+When $k=0$ and $s_0$ is not a nonpositive integer, $z^{-s_0}$
+has either a pole or nontrivial branching.  It therefore cannot
+extend holomorphically to zero.  For $k\geq1$, its logarithmic
+factor prevents holomorphic extension for every $s_0$.  More
+explicitly, one circuit sends the germ to
+$e^{-2\pi\mathrm i s_0}z^{-s_0}(-\log z-2\pi\mathrm i)^k$.
+If $s_0$ is nonintegral, the exponential factor is nontrivial;
+if $s_0$ is integral, the nonconstant logarithmic polynomial is
+not translation invariant.  Positive integral $s_0$ at $k=0$
+instead gives a pole.  The holomorphic remainder cannot cancel
+any of these obstructions.  Hence the Taylor disk cannot be
+larger.  At $s_0=-m$, the finite Stirling formula below proves
+that $D_r(-m;a)$ is a polynomial and has infinite radius.
+\end{proof}
+
+\begin{corollary}[Functional independence of spectral jets]
+\label{hsh:independence}
+If $s_0\notin\{0,-1,-2,\ldots\}$, every finite family
+\[
+ \{\partial_s^kD_r(s_0;a):0\leq r\leq R,\ 0\leq k\leq K\}
+\]
+is linearly independent over $\mathbb C$, even modulo entire
+functions of $a$.  If $s_0=-m$ with $m\geq0$, the same assertion
+holds for the subfamily $1\leq k\leq K$.
+This is independence of functions of the shift, not arithmetic
+independence of any special values.
+\end{corollary}
+
+\begin{proof}
+Suppose a finite linear combination equals an entire function,
+and let $r$ be the smallest depth with a nonzero coefficient.
+Every larger-depth term is holomorphic at $a=-r$ on the principal
+continuation.  The singular germ of the depth-$r$ terms is
+$c_r(z)z^{-s_0}P(-\log z)$ for a nonzero polynomial $P$.
+The monodromy argument from Theorem~\ref{hsh:radius} shows that
+this cannot be holomorphic, except possibly when $s_0$ is a
+nonpositive integer and $P$ is constant.  That exception is
+excluded by the stated subfamily.  Thus all coefficients at
+this depth vanish, a contradiction.  Induction gives the claim.
+\end{proof}
+
+Let $\left\{\begin{smallmatrix}n\\j\end{smallmatrix}\right\}$
+denote a Stirling number of the second kind and let
+$(a-1)^{\underline j}=(a-1)\cdots(a-j)$.
+The known finite formula \cite{RepoExact,RepoMixed} is
+\begin{equation}\label{hsh:finiteStirling}
+ D_r(-m;a)=\sum_{j=1}^{m+1}
+ \left\{\begin{matrix}m+1\\j\end{matrix}\right\}
+           (a-1)^{\underline j}\left(-\frac1j\right)^{r+1}.
+\end{equation}
+
+\begin{proposition}[Exact finite rank and minimal depth recurrence]
+\label{hsh:rank}
+For $m\geq0$, the functions $\{D_r(-m;a):r\geq0\}$ span
+exactly the $(m+1)$-dimensional space of polynomials of degree
+at most $m+1$ vanishing at $a=1$.  The first $m+1$ depths form
+a basis.  If $E$ shifts depth, $ED_r=D_{r+1}$, then
+\begin{equation}\label{hsh:recurrence}
+ \boxed{\displaystyle
+       \prod_{j=1}^{m+1}\left(E+\frac1j\right)D_r(-m;a)=0,
+       \qquad r\geq0.}
+\end{equation}
+Its order $m+1$ is minimal among nonzero constant-coefficient
+depth recurrences valid as identities in $a$.
+For any fixed $k\geq1$, the family
+$\{\partial_s^kD_r(-m;a):r\geq0\}$ is infinite dimensional and
+satisfies no nonzero constant-coefficient depth recurrence.
+The latter statement also holds at nonexceptional $s_0$ with $k=0$.
+\end{proposition}
+
+\begin{proof}
+The polynomials
+$\left\{\begin{smallmatrix}m+1\\j\end{smallmatrix}\right\}
+(a-1)^{\underline j}$, $1\leq j\leq m+1$, have distinct degrees,
+nonzero leading coefficients, and vanish at one.  They form a basis
+of the stated space.  The coefficient matrix for depths $0,\ldots,m$
+in \eqref{hsh:finiteStirling} has entries $\lambda_j^{r+1}$,
+where $\lambda_j=-1/j$.  Its determinant is a nonzero product
+of the $\lambda_j$ and a Vandermonde determinant.  This proves
+the rank and basis assertions.  Each component in
+\eqref{hsh:finiteStirling} is annihilated by $E-\lambda_j$,
+which proves \eqref{hsh:recurrence}.  Conversely, independence
+of those polynomial components forces an annihilating polynomial
+$Q$ to vanish at every $\lambda_j$.  Its degree is therefore
+at least $m+1$.  Finally any recurrence for a positive spectral
+derivative would give a finite constant linear relation among
+distinct depths, contradicting Corollary~\ref{hsh:independence}.
+\end{proof}
+
+For example, at $s=0$ one has
+$D_r(0;a)=(-1)^{r+1}(a-1)$ and $(E+1)D_r=0$.
+At $s=-1$ the minimal recurrence is
+$D_{r+2}+\tfrac32D_{r+1}+\tfrac12D_r=0$.
+A single spectral differentiation removes these finite-rank
+relations.  This failure is detected by exact logarithmic germs,
+without any numerical independence assumption.
+
+\subsection{Audit and reproducibility}
+
+The source's holomorphy domain and Taylor lower bound were correct;
+the new statements determine their actual boundary behavior.  The
+regular boundary term $B_r$ and the coordinate finite part in
+\eqref{hsh:FP} must retain their different definitions.  Likewise,
+principal-sheet removability must not be promoted to removability on
+all sheets: \eqref{hsh:monodromy} supplies an explicit obstruction.
+
+The accompanying program \src{code/verify_shift_germs.py} checks the
+finite recurrence and residue algebra exactly with rational arithmetic,
+compares the Newton series with the independently convergent defining
+harmonic sums at complex parameters, checks finite transport at negative
+shifts, and compares Cauchy-extracted boundary constants with
+Arakawa--Kaneko integrals and ordinary zeta derivatives.  The numerical
+checks are finite-precision diagnostics with separately recorded
+truncations; they are not interval certificates or replacements for
+the normal-convergence and continuation arguments above.
+The short companion \src{code/verify_shift_primitives.py} checks the
+partial-fraction amplitudes and the polylogarithmic primitive derivatives
+with exact symbolic arithmetic.

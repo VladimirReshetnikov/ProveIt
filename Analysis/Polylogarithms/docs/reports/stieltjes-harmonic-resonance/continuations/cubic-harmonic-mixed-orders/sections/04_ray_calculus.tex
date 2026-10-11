@@ -1,0 +1,321 @@
+\section{The complete cubic directional layer of Tornheim zeta}
+\label{sec:rays}
+
+Define the uncolored Mordell--Tornheim function in its absolute
+convergence region by
+\begin{equation}\label{ray:T}
+ \T(A,B,C)=\sum_{m,n\ge1}\frac1{m^A n^B(m+n)^C}.
+\end{equation}
+For instance, sufficiently large positive real parts suffice.
+Its meromorphic continuation is symmetric in $A,B$, but is not
+jointly holomorphic at the origin. We form a restriction away from
+its polar hyperplanes before taking a one-variable limit.
+
+Let
+\[
+ W_{a,b,c}(t)=\T(at,bt,ct),\qquad
+ \Omega_3=\left.\frac{\mathrm d^3}{\mathrm dt^3}\T(t,t,t)\right|_{t=0}.
+\]
+The two admissibility conditions are
+\begin{equation}\label{ray:admissible}
+ (a+c)(b+c)\ne0.
+\end{equation}
+They allow complex and unequal slopes, including negative slopes.
+
+\subsection{Statement of the formula}
+
+Put
+\begin{align}
+ \sigma&=a+b+c,\notag\\
+ \mathcal B&=\frac{c(c^2+ab-a^2-b^2)}{(a+c)(b+c)},\label{ray:B}\\
+ \Delta&=a^2+b^2-c(a+b),\notag\\
+ J_3&=W_{1,0,2}'''(0),\notag\\
+ \kappa&=J_3+\frac{35}{2}\zeta'''(0)
+                 +6L\zeta''(0)-9\zeta'''(-1).\label{ray:kappa}
+\end{align}
+The constant $J_3$ is a fixed Euler double-zeta directional derivative:
+$\T(t,0,2t)=Z_2(2t,t;1)$. An independent convergent integral for
+$\kappa$ is given below.
+
+\begin{theorem}[All admissible cubic directions]\label{thm:cubic-rays}
+Under \eqref{ray:admissible}, $W_{a,b,c}$ is holomorphic at zero and
+\begin{align}
+ W_{a,b,c}'''(0)={}&abc\,\Omega_3-\frac{c\Delta}{2}\kappa\notag\\
+ &+\left(8abc-\frac{(a+c)^3+(b+c)^3}{2}\right)\zeta'''(0)\notag\\
+ &-\frac32\bigl((a+b)(ab+c^2)-4abc\bigr)L\zeta''(0)
+       +\sigma^2\mathcal B\,\zeta'''(-1).
+ \label{ray:main}
+\end{align}
+Thus every third directional derivative belongs to the span of
+$\Omega_3,\kappa,\zeta'''(0),L\zeta''(0),\zeta'''(-1)$ over
+the field of rational functions of the slopes. By the cubic bridge,
+$\Omega_3$ can be replaced by $\eta(1)$ and explicit ordinary zeta
+and Stieltjes data.
+\end{theorem}
+
+Every coefficient is homogeneous of degree three. This agrees with
+$W_{ra,rb,rc}(t)=W_{a,b,c}(rt)$. The formula contains no surviving
+Euler-constant or Gamma-expansion coefficients in addition to those
+already packaged into $\Omega_3$ and $\kappa$.
+
+\subsection{A holomorphic remainder with exactly two visible polar divisors}
+
+For $x>0$ set $F(A,B;x)=\Li_A(e^{-x})\Li_B(e^{-x})$.
+Jonqui\`ere's formula gives, locally uniformly for $A$ near zero,
+\begin{equation}\label{ray:Jonquiere}
+ \Li_A(e^{-x})=\Gamma(1-A)x^{A-1}
+       +\sum_{j\ge0}\zeta(A-j)\frac{(-x)^j}{j!},\qquad 0<x<2\pi.
+\end{equation}
+Subtract the six local terms
+\begin{align}
+ S(A,B;x)={}&\Gamma(1-A)\Gamma(1-B)x^{A+B-2}
+ +\Gamma(1-A)\zeta(B)x^{A-1}\notag\\
+ &+\Gamma(1-B)\zeta(A)x^{B-1}
+ -\Gamma(1-A)\zeta(B-1)x^A\notag\\
+ &-\Gamma(1-B)\zeta(A-1)x^B+\zeta(A)\zeta(B).
+ \label{ray:S}
+\end{align}
+Define
+\begin{align}
+ H(A,B,C)={}&\int_0^1x^{C-1}\bigl(F(A,B;x)-S(A,B;x)\bigr)\dd x
+       +\int_1^\infty x^{C-1}F(A,B;x)\dd x\notag\\
+ &+\frac{\Gamma(1-A)\Gamma(1-B)}{A+B+C-2}
+ +\frac{\Gamma(1-A)\zeta(B)}{A+C-1}
+ +\frac{\Gamma(1-B)\zeta(A)}{B+C-1}.
+ \label{ray:H}
+\end{align}
+All denominators on the last line are nonzero near the origin.
+On a sufficiently small closed parameter polydisc, the first integrand
+and every fixed parameter derivative are bounded at zero by
+$x^{-\delta}(1+|\log x|^N)$ for a $\delta<1$; the second integral
+has exponential decay. Thus $H$ is jointly holomorphic and symmetric
+in $A,B$. Termwise integration and meromorphic continuation yield
+\begin{equation}\label{ray:decomposition}
+ \begin{split}
+ \T(A,B,C)=\frac1{\Gamma(1+C)}\biggl\{&\zeta(A)\zeta(B)
+ -\frac{C\Gamma(1-A)\zeta(B-1)}{A+C}\\
+ &-\frac{C\Gamma(1-B)\zeta(A-1)}{B+C}
+ +CH(A,B,C)\biggr\}.
+ \end{split}
+\end{equation}
+This also proves removability on every admissible ray. The six-term
+subtraction and the decomposition are retained from the incoming
+coincident report \cite{IncomingCoincident}; the cubic determination
+below is the additional step.
+
+\subsection{Exact slices determine the constant and linear remainder}
+
+Two elementary restrictions provide all the lower coefficients:
+\begin{align}
+ \T(0,0,t)&=\zeta(t-1)-\zeta(t),\label{ray:axis}\\
+ \T(t,0,t)&=\frac{\zeta(t)^2-\zeta(2t)}2.\label{ray:symmetric-slice}
+\end{align}
+For the first, count positive pairs with $m+n=k$. For the second,
+use $\T(A,0,C)=Z_2(C,A;1)$ and the exact stuffle product
+\begin{equation}\label{ray:stuffle-slice}
+ \T(A,0,C)+\T(C,0,A)=\zeta(A)\zeta(C)-\zeta(A+C).
+\end{equation}
+Both identities are first proved in domains of absolute convergence
+and then extended meromorphically. A fixed $C=0$ substitution alone
+would not determine the normal derivative of $CH$; this is why
+\eqref{ray:symmetric-slice} supplies real additional information.
+
+Write
+\begin{align}
+ H(A,B,C)={}&h_0+h_A(A+B)+h_C\,C\notag\\
+ &+h_{20}(A^2+B^2)+h_{11}AB+h_{10c}(A+B)C+h_{02}C^2
+ +O\bigl((|A|+|B|+|C|)^3\bigr).
+ \label{ray:H-Taylor}
+\end{align}
+Here $h_C$ denotes the coefficient of the linear term in $C$;
+$h_{02}$ is its quadratic coefficient. Direct comparison in
+\eqref{ray:axis}--\eqref{ray:symmetric-slice} gives
+\begin{align}
+ h_0={}&\zeta'(-1)+\frac L2-\frac{5\gamma}{12},\label{ray:h0}\\
+ h_C={}&\frac{\zeta''(-1)-\zeta''(0)}2
+       -\gamma\left(\zeta'(-1)+\frac L2\right)
+       +\frac5{24}(\gamma^2+\zeta(2)),\label{ray:hC}\\
+ h_A={}&\frac{L^2}{8}-\frac{\zeta''(0)}2+
+       \gamma\zeta'(-1)-\frac{\gamma L}{4}
+       -\frac{\gamma^2+\zeta(2)}{24}.
+ \label{ray:hA}
+\end{align}
+For example, the axis gives
+$\Gamma(1+t)(\zeta(t-1)-\zeta(t))=5/12+tH(0,0,t)$,
+which proves the first two lines. On the symmetric slice the
+coefficient of $t^2$ then gives the third line.
+
+Substitution now proves the complete lower layer
+\begin{align}
+ W(0)&=\frac14+\frac{c}{12(a+c)}+\frac{c}{12(b+c)},\notag\\
+ W'(0)&=\frac{a+b+2c}{4}L+\mathcal B\zeta'(-1),\notag\\
+ W''(0)&=\frac{2ab+c(a+b)}4L^2
+ -\frac{a^2+b^2+2c(a+b)+2c^2}{2}\zeta''(0)
+ +\sigma\mathcal B\zeta''(-1).
+ \label{ray:lower}
+\end{align}
+These agree with the earlier report. In particular,
+ $\omega(0)=1/3$, $\omega'(0)=L$, and
+$\omega''(0)=L^2-4\zeta''(0)$ follow here without using the
+unknown cubic moment.
+
+\subsection{Proof of the cubic formula}
+
+At quadratic degree, the symmetric slice fixes
+$h_{20}+h_{10c}$, not the two terms separately. This distinction is
+the main structural point. The axis fixes $h_{02}$; the diagonal
+then fixes $h_{11}$, leaving exactly one more coefficient, determined
+by $J_3$.
+
+Here are explicit finite coefficient formulas which also make the
+algebra completely reproducible. Set $V=h_{20}+h_{10c}$ and define
+the cubic Taylor polynomials
+\begin{align*}
+ O(t)&=\frac13+Lt+\frac{L^2-4\zeta''(0)}2t^2
+                         +\frac{\Omega_3}{6}t^3,\\
+ D(t)&=\frac7{18}+\left(\frac54L+\zeta'(-1)\right)t
+       +\left(\frac{L^2}{4}-\frac{13}{4}\zeta''(0)
+                               +\frac32\zeta''(-1)\right)t^2
+       +\frac{J_3}{6}t^3.
+\end{align*}
+Comparison on the four slices gives
+\begin{align}
+ h_{02}&=[t^3]\Gamma(1+t)(\zeta(t-1)-\zeta(t)),\notag\\
+ V+h_{02}&=[t^3]\left\{
+ \frac{\Gamma(1+t)}2(\zeta(t)^2-\zeta(2t))
+ +\frac{\zeta(t)}2-\frac{\Gamma(1-t)}{24}+\zeta(t-1)\right\},\notag\\
+ h_{11}+2V+h_{02}&=[t^3]\left\{
+ \Gamma(1+t)O(t)-\zeta(t)^2+\Gamma(1-t)\zeta(t-1)\right\},\notag\\
+ -2h_{20}+4V+8h_{02}&=[t^3]\left\{
+ \Gamma(1+2t)D(t)+\frac{\zeta(t)}2
+                      -\frac{\Gamma(1-t)}{18}+\zeta(t-1)\right\}.
+ \label{ray:finite-system}
+\end{align}
+The coefficient system is triangular with nonzero diagonal. Thus
+it determines all four quadratic coefficients for any assigned
+$\Omega_3,J_3$.
+
+Use
+\[
+ \Gamma(1\pm t)=1\mp\gamma t+
+ \frac{\gamma^2+\zeta(2)}2t^2
+ \mp\frac{\gamma^3+3\gamma\zeta(2)+2\zeta(3)}6t^3+O(t^4)
+\]
+and the ordinary Taylor expansions of $\zeta$ at $0$ and $-1$.
+Substitute \eqref{ray:finite-system} into
+\eqref{ray:decomposition}. The coefficients of $\Omega_3$ and
+$J_3$ are respectively $abc$ and $-c\Delta/2$.
+The remaining nonzero coefficients are
+\begin{align*}
+ [\zeta'''(0)]\colon\;&8abc-\frac{(a+c)^3+(b+c)^3}{2}
+                                      -\frac{35}{4}c\Delta,\\
+ [L\zeta''(0)]\colon\;&-\frac32\bigl((a+b)(ab+c^2)-4abc\bigr)
+                                      -3c\Delta,\\
+ [\zeta'''(-1)]\colon\;&\sigma^2\mathcal B+\frac92c\Delta.
+\end{align*}
+All coefficients involving $\gamma,\zeta(2),\zeta(3)$ or
+$\zeta'(-1),\zeta''(-1)$ cancel. Absorbing the three multiples
+of $c\Delta$ into \eqref{ray:kappa} proves
+Theorem~\ref{thm:cubic-rays}. This is a finite algebraic proof;
+the delivered symbolic certificate independently verifies the exact
+rational identity with all constants treated as formal symbols.
+
+\subsection{An independent convergent integral for the second coordinate}
+
+Define
+\begin{align}
+ Q_2(x)&=\left.\partial_s^2\Li_s(e^{-x})\right|_{s=0}
+               =\sum_{n\ge1}(\log n)^2e^{-nx},\notag\\
+ P(x)&=(\log x+\gamma)^2+\zeta(2),\notag\\
+ S_2(x)&=\left(x^{-2}-\frac1{2x}+\frac1{12}\right)P(x)
+             +\zeta''(0)\left(x^{-1}-\frac12\right)-\zeta''(-1),\notag\\
+ I_2&=\int_0^1\left(\frac{Q_2(x)}{e^x-1}-S_2(x)\right)\frac{\dd x}{x}
+       +\int_1^\infty\frac{Q_2(x)}{x(e^x-1)}\dd x.
+ \label{ray:I2}
+\end{align}
+Both integrals converge ordinarily: the first integrand is
+$O(1+\log^2x)$; the second is $O(e^{-3x}/x)$.
+
+\begin{proposition}[Mellin coordinate]\label{prop:kappa-integral}
+The quadratic coefficient $h_{20}$ satisfies
+\begin{equation}\label{ray:h20-integral}
+ h_{20}=\frac\gamma4+\frac38-\frac{\zeta''(0)}2+\frac{I_2}{2},
+\end{equation}
+and
+\begin{align}
+ \kappa={}&-12h_{20}-\frac{\gamma^3}{6}
+       -\frac{\gamma\zeta(2)}2+3\gamma\zeta''(0)
+       +6\gamma\zeta''(-1)-\frac{\zeta(3)}3
+       -3\zeta'''(0)-2\zeta'''(-1).
+ \label{ray:kappa-h20}
+\end{align}
+\end{proposition}
+\begin{proof}
+Differentiate \eqref{ray:H} twice in $A$ at $(0,0,0)$.
+The product derivative is $Q_2(x)/(e^x-1)$, and the derivative of
+the six subtractions is $S_2(x)$. Differentiation under the subtracted
+integrals follows from the local bounds used above. The rational
+last line of \eqref{ray:H}, on $B=C=0$, is
+\[
+ \Gamma(1-A)\left(\frac1{A-2}-\frac1{2(A-1)}\right)-\zeta(A).
+\]
+Its coefficient of $A^2$ is
+$\gamma/4+3/8-\zeta''(0)/2$, proving
+\eqref{ray:h20-integral}. Expanding the last line of
+\eqref{ray:finite-system} and using \eqref{ray:kappa} gives
+\eqref{ray:kappa-h20}.
+\end{proof}
+
+The independent integral evaluation gives
+\begin{align*}
+ I_2&=-0.2860481161626797704387366252971602\ldots,\\
+ \kappa&=-3.0226121641572464811701683702659737\ldots.
+\end{align*}
+These displayed digits are numerical diagnostics, not an arithmetic
+characterization. The definition \eqref{ray:I2} supplies such a
+characterization without referring back to an unknown generic ray.
+
+\subsection{Coordinate cancellation and exact examples}
+
+In the formal coordinate system of Theorem~\ref{thm:cubic-rays},
+the $\kappa$ term disappears exactly when
+\begin{equation}\label{ray:conic}
+ c\bigl(a^2+b^2-c(a+b)\bigr)=0.
+\end{equation}
+For positive $a,b$, the choice
+$c=(a^2+b^2)/(a+b)$ gives a continuum of asymmetric directions with
+only the harmonic coordinate $\eta(1)$ remaining. For fixed real
+$c$, the nontrivial locus can equivalently be written
+$(a-c/2)^2+(b-c/2)^2=c^2/2$.
+
+The $\Omega_3$ term disappears when $abc=0$. With $c\ne0$, both
+displayed nonclassical coefficients vanish only on the axis
+$(0,0,c)$ and the rays $(c,0,c)$ or $(0,c,c)$. With $c=0$,
+admissibility requires $ab\ne0$ and the restriction equals
+$\zeta(at)\zeta(bt)$. These are coefficient-elimination statements,
+not assertions that other numerical cancellations are impossible.
+
+Some explicit specializations are
+\begin{align}
+ W_{1,2,3}'''(0)={}&6\Omega_3+6\kappa
+       -\frac{93}{2}\zeta'''(0)-\frac{27}{2}L\zeta''(0)
+       +\frac{162}{5}\zeta'''(-1),\label{ray:123}\\
+ W_{2,3,1}'''(0)={}&6\Omega_3-4\kappa
+       +\frac52\zeta'''(0)-\frac{33}{2}L\zeta''(0)
+       -18\zeta'''(-1),\label{ray:231}\\
+ W_{1,1,2}'''(0)={}&2\Omega_3+2\kappa
+       -11\zeta'''(0)-3L\zeta''(0)+\frac{32}{3}\zeta'''(-1),\notag\\
+ W_{0,0,1}'''(0)={}&\zeta'''(-1)-\zeta'''(0),\notag\\
+ W_{1,0,1}'''(0)={}&-\frac92\zeta'''(0)-\frac32L\zeta''(0).
+\end{align}
+The last two also follow directly from the exact slices.
+
+\begin{remark}[Why two coordinates are sufficient, and what this does not prove]
+Modulo the already determined constant and linear coefficients of
+$H$, the axis and symmetric slice leave two formal quadratic degrees
+of freedom. The diagonal and $(1,0,2)$ slices fix them separately.
+Their contributions to generic cubic rays are independent polynomials
+$abc$ and $c\Delta$. This proves uniqueness in the specified formal
+reconstruction problem. It does not prove that $\eta(1)$ and $\kappa$
+are independent over any arithmetic constant field.
+\end{remark}

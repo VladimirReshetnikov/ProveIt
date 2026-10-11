@@ -1,0 +1,170 @@
+\section{Source corrections, verification, and exact claim status}
+\label{audit:section}
+
+\subsection{Corrections and qualifications for integration}
+
+\paragraph{The independent-order interpolant needs its established attribution.}
+Any integration of Section~\ref{eht:sec} should cite Ihara, Nakamura,
+and Yamamoto for the one-endpoint interpolant, its entire spectral
+continuation, and its harmonic product law \cite{eht:INY}.
+Equation~\eqref{eht:INY} identifies the functions exactly. This is a
+literature reconciliation that supplies part of an open repository
+question, not a newly discovered one-endpoint theorem. The smallest
+Gamma-separating kernel requested in the full question remains open.
+The Gamma formulas in Section~\ref{eht:sec} evaluate symmetric word
+combinations; they do not evaluate each ordering separately.
+
+\paragraph{Scalar-only qualifications can now be strengthened.}
+The mixed-spectral source carefully restricts its finite two-centre
+criterion to a scalar functional identity and asks about sampled
+Fourier coefficients \cite{RepoMixed}. Theorem~\ref{sampling:unique}
+supplies exactly the missing implication in its finite power--logarithm
+class. Thus that qualification may now be replaced by
+Theorem~\ref{sampling:centres} and Corollary~\ref{sampling:twisted}.
+This corrects an incomplete research status, rather than a false
+existing theorem. No conclusion about individual period independence
+should be appended.
+
+\paragraph{Local polylogarithm estimates in a specifically inspected preprint.}
+In arXiv:2510.10093v1, equation (2.3) prints a maximum where the local
+growth estimate requires a minimum, and equation (2.7) includes $s=1$
+in an $O(1)$ case \cite{tr3:SS}. The elementary counterexamples are
+\[
+ \Li_0(e^{-y})=\frac1{e^y-1}\sim y^{-1},\qquad
+ \Li_1(e^{-y})=-\log(1-e^{-y})=-\log y+O(y).
+\]
+For fixed $r\notin\Z_{>0}$ the corrected first estimate is
+\[
+ \Li_r(e^{-y})=O\bigl(y^{\min(0,\Re r-1)}\bigr),\qquad y\downarrow0.
+\]
+For the second, use $O(1+|\log y|)$ at $s=1$; the bounded case
+holds for $\Re s\ge1$, $s\ne1$. These statements follow directly
+from the convergent local formulas \eqref{mixed:positiveexpansion}
+and Jonqui\`ere's expansion.
+The subsequent ``any $\epsilon>0$'' in equation (2.8) should be a
+sufficiently small positive exponent. For example, its hypotheses
+permit any
+\[
+ 0<\epsilon<\Re t+\min(0,\Re s-1),
+\]
+which also absorbs the logarithm when $s=1$.
+These changes repair the local convergence justification. They do not
+by themselves refute the paper's continuation identities. The finding
+is about this inspected preprint version; the journal version has not
+been asserted to contain the same printing errors.
+
+\paragraph{Already reported corrections should not be relabeled as new.}
+The directional-zeta package already records the author-PDF corrections
+$H_0=0$, the positive-integer logarithm coefficient in the
+Borwein--Dilcher local expansion, and the local-series restriction
+on the splitting point \cite{RepoDirectional}. The present article
+uses the corrected integer Jonqui\`ere formula. It carries those
+corrections forward by reference instead of claiming a second discovery.
+
+\paragraph{Spectral restriction, finite parts, and color confluence.}
+The Tornheim origin is not a joint regular point. Keep the polar
+quotients in \eqref{tr3:model} until a direction has been specified.
+The cubic theorem excludes $a+c=0$ and $b+c=0$; it must not be
+evaluated on either polar hyperplane by cancelling a numerical zero.
+The mixed-order theorem keeps the outer order $C$ free, so its
+$C$-derivatives are valid. It keeps the inner integers fixed, so their
+transverse derivatives are not supplied. At a resonant color take
+the meromorphic germ before its Laurent coefficients. Apparent
+denominators in a nonconfluent partial-fraction expression are handled
+by the repeated-pole Taylor formula or by the Bernoulli branch of the
+elimination rule, not by substituting $q=1$ in \eqref{mixed:geometric}.
+
+\subsection{The Gaussian conjectures and the bounded unsuccessful search}
+
+At the pinned revision, the relevant canonical labels are
+\src{cycloquot:conj:S6} and \src{s8new:conj:S8} \cite{RepoMain}.
+The earlier rejected $S_8$ candidate is a different statement; it
+must not be confused with the revised candidate. The already proved
+$S_4$ identity retains its proved status. Nothing in this article
+proves or refutes the current $S_6$ or $S_8$ candidates.
+
+A bounded exploratory $S_6$ calculation was attempted with the frozen
+primitive weight-seven target. It generated 51,244 distinct imaginary
+double-shuffle rows for factor-weight splits $(1,6)$, $(2,5)$, and
+$(3,4)$, including the common single-divergence cancellation, and two
+convergent Cayley rows. The system uses 24,514 imaginary word
+coordinates. Elimination modulo $2,147,483,647$ was interrupted before
+the relation system was exhausted: the last checkpoint had 8,500
+pivots, 29,853,917 stored entries, and 393 remaining target terms.
+
+Those numbers report an unfinished computation, not a rank theorem.
+No row-membership certificate, no nonmembership result, and no
+separating functional for that enlarged system was obtained. The
+generator, letter conventions, target, and termination record are
+included under \src{exploratory/s6}. Large matrices and compiled
+executables are omitted because the generator reproduces them.
+A future successful modular search would still require rational
+reconstruction and independent exact replay before proving the
+conjecture. A future negative conclusion would have to specify an
+exhausted relation space and certify its separating functional.
+
+\subsection{Reproducible verification and what it establishes}
+
+The archive contains a single runner, \src{code/verify_all.py}, and
+separate scripts for the three computational tracks. Exact checks
+use integers, rational numbers, or exact algebraic expressions.
+The mixed-order checker evaluates original weighted coefficients by
+direct convolution and compares them with finite nested sums from
+the output; it does not reuse the shuffle or elimination code to
+construct its reference values.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}L{0.23\textwidth}L{0.46\textwidth}L{0.24\textwidth}@{}}
+\toprule
+Track & Independent checks & Recorded outcome \\
+\midrule
+Hurwitz interval functions
+& Finite strict sums, ordered quotient, reversed-star form, residue
+  samples, Bernoulli reduction, and a corrupted-sign control
+& 743 exact assertions; 340 words included \\
+\addlinespace
+Hurwitz analytic diagnostics
+& Euler--Maclaurin continuation, singular-intersection Cauchy
+  extraction, shifts, composition, Gamma products, and quadrature
+& 24 diagnostics at 65 digits; largest residual about
+  $3.03\cdot10^{-31}$ \\
+\addlinespace
+Cubic Tornheim directions
+& Symbolic quadratic constraints and cancellation identities;
+  independent subtracted Mellin evaluations on three rays
+& Exact checks pass; largest numerical discrepancy about
+  $2.27\cdot10^{-38}$ at 65 digits \\
+\addlinespace
+Mixed-order compiler
+& Original coefficient convolution against output nested sums,
+  including repeated colors, depth four, and weighted roots
+& 192 exact coefficients in 13 varied cases \\
+\addlinespace
+Explicit triple specializations
+& Independent elementary kernel expansions, Laurent coefficients,
+  Bernoulli leading poles, Euler primitive, and convergent Mellin integral
+& 24 exact assertions; $C=4$ residual about $3.89\cdot10^{-61}$
+  at 60 digits \\
+\bottomrule
+\end{tabular}
+\caption{Verification scope. Decimal residuals are diagnostics, not
+interval-certified accuracy claims.}\label{audit:checks}
+\end{table}
+
+The mathematical proofs establish arbitrary depth, arbitrary allowed
+directions, and meromorphic continuation. No finite collection of
+coefficient checks establishes those generalities by itself. The
+compiler is a transparent implementation of the finite proof;
+its algebraic simplifier is not claimed to have optimal complexity.
+Inputs with floating-point colors or uncertified color domains are
+rejected rather than silently treated as exact numbers.
+
+The package also records the source commit, hashes of the incoming
+archives and consulted source files, the individual result ledgers,
+and the PDF build and visual inspection. The modular TeX sections
+have distinct label prefixes \src{eht:}, \src{tr3:}, \src{mixed:},
+and \src{sampling:}. Integration notes describe dependencies and
+conjecture statuses. The standalone TeX is generated from those
+modular sources so that the PDF can be rebuilt without the ProveIt
+repository or a network connection.

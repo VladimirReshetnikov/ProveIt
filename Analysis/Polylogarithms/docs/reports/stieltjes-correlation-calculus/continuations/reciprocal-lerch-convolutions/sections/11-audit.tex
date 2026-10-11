@@ -1,0 +1,140 @@
+\section{Audit findings, verification, and integration status}
+\label{rlc:sec:audit}
+
+\subsection{Mathematical status and source overlap}
+No new false equation was identified in the sampled canonical claims or
+the incoming results used as context. Accordingly this delivery does
+not manufacture an erratum. It contributes the proved reciprocal
+identities above and records the exact normalization errors that would
+arise from certain invalid simplifications.
+
+The incoming bilinear article's same-direction integer-order master
+\cite{BMH} and the present all-complex-order reciprocal master are
+complementary. The former's arbitrary-order same-direction and
+minimal-depth questions are not solved merely by replacing its kernel
+with ours. The unequal-twist article \cite{UTJ} already establishes
+substantial periodic mixed-jet results; our elementary rigidity and
+partial-fraction arguments should be understood as their ordinary
+real-line counterparts, not as a new general monodromy theorem.
+The nonlinear-transport article \cite{NST} concerns coordinate-dependent
+finite parts, whereas no finite-part transport is used in the present
+convergent convolution family.
+
+\begin{center}
+\begin{tabular}{@{}p{0.54\textwidth}p{0.39\textwidth}@{}}
+\toprule
+Claim & Status in this delivery\\
+\midrule
+Reciprocal all-depth, all-complex-order closure & Proved, with weighted
+holomorphy and finite formulas.\\[3pt]
+Every mixed logarithmic moment & Proved by a terminating polynomial
+recurrence; two-factor closed form supplied.\\[3pt]
+Stieltjes products, harmonic lattice collapses, and anchored primitives
+& Proved exact identities.\\[3pt]
+Pure order-addition rigidity for unequal shifts & Proved within the
+specified functional family.\\[3pt]
+Canonical Gaussian $S_4$ & Already proved in the source; unchanged.\\[3pt]
+Canonical Gaussian $S_6$ and revised $S_8$ & Not proved or disproved here.\\[3pt]
+Historical priority for every displayed identity & Not claimed.\\[3pt]
+Proof-assistant or interval certification & Not supplied.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Concrete safeguards and corrected intermediate work}
+The following distinctions are necessary for a correct integration.
+
+\paragraph{Retain entire resonance products.}
+Use $\E_a(v)$ and the even-depth form
+\eqref{rlc:eq:evencentral}, rather than evaluating a vanishing
+Pochhammer symbol separately from a zeta pole. Formula
+\eqref{rlc:eq:resonance} loses $1/3$ under that invalid operation.
+
+\paragraph{Retain the first-moment factor.}
+The correct first moment is $(s-t)\E_a(s+t+1)/2$.
+An intermediate calculation during this work omitted the $1/2$.
+The independent transform argument and the tilted-series coefficient
+both detect the error. It has been corrected in the final formulas and
+is retained as a deliberately failing negative control in the code.
+This was an error in intermediate work, not an error attributed to the
+repository.
+
+\paragraph{Do not differentiate an integer-only theorem in its integer index.}
+The unequal-shift partial fraction formula holds for specified positive
+integer orders. Its finite number of terms does not itself extend
+holomorphically when those integers are replaced by independent complex
+orders. Use \eqref{rlc:eq:unequaltransform} or the appropriate Dirichlet
+mixture for that operation. In contrast, the common-shift moment formula
+\eqref{rlc:eq:momentclosed} is genuinely entire in its independent orders.
+
+\paragraph{Keep branch-cancelled sums combined.}
+At even depth and positive $\mu$, the individual Lerch terms in
+\eqref{rlc:eq:lerchclosure} lie on a cut. Their jump cancels because
+$p_r(0)=0$. A separated branch assignment that ignores that calculation
+is not justified. At $0<\Rea a\le1/2$, use an admissible nonsymmetric
+vertical line rather than the Gamma-weighted line $p=1/2+it$.
+
+\paragraph{Keep remainders and derivative types distinct.}
+The product in \eqref{rlc:eq:remainderidentity} is integrable even when
+its separately expanded pieces are not. Also, $\partial_s\Li_s$,
+$\partial_y\Li_s$, and $\Ima\Li_s$ are different operations.
+The analytic Gaussian odd part \eqref{rlc:eq:Adef} is required at
+complex order.
+
+\subsection{Executed computational checks}
+\input{data/verification_summary}
+The delivered script \src{code/verify.py} executed \ExactCount\ exact
+symbolic assertions, \NumericCount\ floating-point diagnostics at
+\WorkingDigits\ working decimal digits, and \NegativeCount\ negative
+controls. The exact checks use rational polynomial algebra, with
+$P=\pi^2$ treated as a formal variable. The numerical diagnostics use
+independent contour and real-integral evaluations, not fitted integer
+relations.
+
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Exact assertion family & Count\\
+\midrule
+Central products, parity, and cosecant differential equation &36\\
+Two-factor pole-cancellation and reciprocity polynomials &32\\
+Weighted-transform differential polynomials &9\\
+Stirling versus Bell--harmonic derivatives &136\\
+Unequal-shift partial fraction examples &4\\
+Negative-order residue term &1\\
+First-moment conservation &11\\
+Independent all-depth versus two-factor moment reductions &25\\
+Consecutive-shift complete-harmonic coefficients &80\\
+Explicit triple and quadruple lattice values &2\\
+\midrule
+Total exact assertions &336\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The numerical families include complex and negative orders at depths
+one through eight; shifts below $1/2$ on nonsymmetric contours;
+direct convolutions of elementary logistic kernels; direct reciprocal
+polylogarithm moments, including a noninteger-order example; nonzero
+fugacity on both sides of the apparent positive cut; Stieltjes and
+log-Gamma integrals; the two unequal-shift lattice examples; and the
+arctangent and first harmonic-remainder integrals.
+
+\textbf{Evidentiary limit.} These are floating-point diagnostics, not
+rigorous enclosures. Working precision is not an asserted error bound.
+The harmonic-remainder quadrature uses a finite logarithmic cutoff,
+which is recorded in the script. The analytic proofs, not the small
+residuals, establish the infinite and continuum assertions. The complete
+machine-readable results, thresholds, package versions, and generated
+coefficient tables are included in \src{data/}.
+
+\subsection{Integration recommendation}
+The package is additive. A natural home beneath the Mellin report is
+\begin{center}\small
+\src{continuations/reciprocal-lerch-convolutions/}
+\end{center}
+or a dedicated report path chosen by the maintainer.
+All theorem and equation labels have the prefix \src{rlc:}.
+The integration note contains a short proposed manuscript insertion,
+a theorem index, the source pin, and explicit conjecture-status wording.
+Neither the repository nor the user's persistent Library was changed.

@@ -1,0 +1,285 @@
+\section{Exact ordinary moments of continuous resolvent powers}
+\label{moment:sec}
+
+The continuous-power transform has a useful specialization that remains
+an ordinary convergent integral throughout its stated domain. It gives
+every polynomial moment from a regularized Gauss function, and at the
+two distinguished imaginary parameters the answer becomes a Gamma
+quotient. Generalized harmonic numbers then organize all Bernoulli
+moments at once.
+
+For $z\in\mathbb C\setminus\mathbb R$, retain
+\[
+ \varepsilon=\operatorname{sgn}\operatorname{Im}z,\qquad
+ C=-\frac1{z+\varepsilon\pi i},\qquad
+ q=\frac{z-\varepsilon\pi i}{z+\varepsilon\pi i},\qquad
+ \sigma=-2\varepsilon\pi i.
+\]
+Thus $|q|<1$. On $0<x<1$ put
+\[
+ R_z(x)=\frac1{\pi\cot(\pi x)-z},\qquad
+ R_z(x)^\lambda=\exp\bigl(\lambda\operatorname{Log}R_z(x)\bigr),
+\]
+where the principal logarithm is continuous along the interval. Its
+argument runs from $0$ to $\varepsilon\pi$. Powers of $C$ use its
+principal logarithm as well. In particular,
+\[
+ R_z(x)^\lambda=C^\lambda
+ \left(\frac{1-e^{-\sigma x}}{1-qe^{-\sigma x}}\right)^\lambda,
+\]
+where the power in parentheses is the radial boundary value of the
+holomorphic power that equals one at the origin of the disk.
+
+We use Olver's regularized Gauss function
+\begin{equation}\label{moment:eq:regularized}
+ \mathbf F(a,b;c;q)=
+ \sum_{n=0}^\infty
+ \frac{(a)_n(b)_n}{\Gamma(c+n)n!}q^n.
+\end{equation}
+When $c$ is not a nonpositive integer, this equals
+${}_2F_1(a,b;c;q)/\Gamma(c)$. The series definition is essential at
+apparent parameter resonances.
+
+\begin{theorem}[Exponential moment generator]
+\label{moment:thm:exponential}
+For $\operatorname{Re}\lambda>-1$ and every $t\in\mathbb C$, set
+$\xi=t/\sigma$. Then
+\begin{equation}\label{moment:eq:exponential}
+ \boxed{\displaystyle
+ \int_0^1 e^{tx}R_z(x)^\lambda\,dx
+ =C^\lambda e^{t/2}
+   \frac{\Gamma(1+\lambda)}{\Gamma(1+\xi)}
+   \mathbf F(\lambda,-\xi;1+\lambda-\xi;q).}
+\end{equation}
+Both sides are entire functions of $t$. They are holomorphic in
+$\lambda$ throughout the half-plane $\operatorname{Re}\lambda>-1$.
+\end{theorem}
+
+\begin{proof}
+The endpoint expansions are
+\[
+ R_z(x)=x(1+O(x)),\qquad
+ R_z(1-x)=-x(1+O(x)).
+\]
+The prescribed branches therefore bound the integrand, uniformly on
+compact parameter sets, by an integrable constant times
+$[x(1-x)]^{\alpha}$, with $\alpha>-1$. Parameter derivatives add
+only powers of endpoint logarithms. This proves convergence and the
+stated parameter holomorphy for the integral.
+
+Write
+\[
+ f(w)=\left(\frac{1-w}{1-qw}\right)^\lambda
+      =\sum_{n\ge0}d_nw^n,
+ \qquad d_0=1.
+\]
+First suppose $\operatorname{Re}\lambda>0$ and
+$\operatorname{Re}\xi<0$. The coefficients are absolutely summable:
+the coefficients of $(1-w)^\lambda$ are
+$O(n^{-1-\operatorname{Re}\lambda})$, with the terminating cases
+understood separately, while $(1-qw)^{-\lambda}$ has geometrically
+decaying coefficients. Consequently termwise integration gives
+\[
+ C^{-\lambda}\int_0^1e^{tx}R_z(x)^\lambda\,dx
+ =(e^t-1)\sum_{n\ge0}\frac{d_n}{t-\sigma n}
+ =-\frac{e^t-1}{\sigma}\int_0^1
+        u^{-\xi-1}(1-u)^\lambda(1-qu)^{-\lambda}\,du.
+\]
+Euler's integral for the regularized Gauss function
+\cite[15.6.1]{DLMF} evaluates the last expression as
+\[
+ \frac{e^t-1}{t}
+ \Gamma(1-\xi)\Gamma(1+\lambda)
+ \mathbf F(\lambda,-\xi;1+\lambda-\xi;q).
+\]
+The Gamma reflection formula and $\sigma=-2\varepsilon\pi i$ give
+\[
+ \frac{e^t-1}{t}\Gamma(1-\xi)
+       =\frac{e^{t/2}}{\Gamma(1+\xi)}.
+\]
+This proves \eqref{moment:eq:exponential} on the initial open domain.
+
+For $|q|<1$, the series \eqref{moment:eq:regularized} converges
+normally on compact subsets of its parameters and is entire in its
+three parameters. The right side of \eqref{moment:eq:exponential}
+is therefore entire in $t$ and holomorphic for
+$\operatorname{Re}\lambda>-1$. The identity theorem first extends
+in $t$ and then in $\lambda$, proving the full statement. In
+particular, no exclusion of $1+\lambda-\xi=0,-1,-2,\ldots$ is
+necessary in the regularized notation.
+\end{proof}
+
+The ingredients in this proof are classical Beta and Gauss identities.
+The contribution here is their branch-consistent specialization to the
+continuous-power resolvent and its exact moment consequences.
+
+\begin{corollary}[Means and logarithmic moments]
+\label{moment:cor:mean}
+For $\operatorname{Re}\lambda>-1$ and $k\ge0$,
+\begin{equation}\label{moment:eq:meanlogs}
+ \int_0^1 R_z(x)^\lambda
+       \bigl(\operatorname{Log}R_z(x)\bigr)^k\,dx
+       =C^\lambda(\operatorname{Log}C)^k.
+\end{equation}
+In particular, $\int_0^1R_z(x)^\lambda\,dx=C^\lambda$ and
+$\int_0^1(\operatorname{Log}R_z(x))^k\,dx=(\operatorname{Log}C)^k$.
+\end{corollary}
+\begin{proof}
+Put $t=0$ in \eqref{moment:eq:exponential}, using
+$\mathbf F(\lambda,0;1+\lambda;q)=1/\Gamma(1+\lambda)$.
+Differentiate $k$ times in $\lambda$. The endpoint majorants in the
+proof of the theorem justify each differentiation under the integral.
+\end{proof}
+
+\subsection{The Bernoulli generator and its Gamma specialization}
+
+Let $B_m(x)$ be the Bernoulli polynomials with
+$B_1(x)=x-1/2$. Multiplication of
+\eqref{moment:eq:exponential} by $t/(e^t-1)$ gives the exact generator
+\begin{align}\label{moment:eq:bernoulli-general}
+ \sum_{m\ge0}\frac{t^m}{m!}
+   \int_0^1 B_m(x)R_z(x)^\lambda\,dx
+ ={}&C^\lambda\Gamma(1-t/\sigma)\Gamma(1+\lambda)\notag\\
+ &\quad\times
+ \mathbf F(\lambda,-t/\sigma;1+\lambda-t/\sigma;q),
+ \qquad |t|<2\pi.
+\end{align}
+The Bernoulli series converges uniformly in $x\in[0,1]$ on every
+smaller $t$-disk. The same integrable endpoint majorant justifies the
+interchange with the integral. Thus coefficient extraction is an
+ordinary-integral identity, including when $\lambda=-1/2$.
+
+\begin{corollary}[A digamma--Lerch first moment]
+\label{moment:cor:first}
+For $\operatorname{Re}\lambda>-1$,
+\begin{align}\label{moment:eq:first}
+ \int_0^1\left(x-\frac12\right)R_z(x)^\lambda\,dx
+ =\frac{C^\lambda}{\sigma}\bigl[&\psi(1+\lambda)+\gamma
+    +q\Phi(q,1,1+\lambda)\notag\\
+    &+\operatorname{Log}(1-q)\bigr],
+\end{align}
+where $\Phi(q,1,a)=\sum_{n\ge0}q^n/(n+a)$.
+\end{corollary}
+\begin{proof}
+With $f(w)$ as above, its nonconstant Fourier coefficients give
+\[
+ C^{-\lambda}\int_0^1\left(x-\frac12\right)R_z(x)^\lambda dx
+       =-\frac1\sigma\int_0^1\frac{f(v)-1}{v}\,dv.
+\]
+This follows first for $\operatorname{Re}\lambda>0$ by absolute
+summation and then for $\operatorname{Re}\lambda>-1$ by holomorphy.
+For $0<q<1$, substitute $u=(1-v)/(1-qv)$ in the last integral:
+\[
+ \int_0^1\frac{f(v)-1}{v}\,dv
+ =\int_0^1(u^\lambda-1)
+       \left(\frac1{1-u}-\frac q{1-qu}\right)du
+ =-\psi(1+\lambda)-\gamma-q\Phi(q,1,1+\lambda)
+      -\log(1-q).
+\]
+The first equality extends to $|q|<1$ by holomorphy. Substitution
+proves \eqref{moment:eq:first} with the principal logarithm.
+\end{proof}
+
+Define complex generalized harmonic numbers on
+$\operatorname{Re}\lambda>-1$ by
+\begin{equation}\label{moment:eq:harmonics}
+ H_\lambda^{(1)}=\psi(1+\lambda)+\gamma,
+ \qquad
+ H_\lambda^{(j)}=\zeta(j)-\zeta(j,1+\lambda)\quad(j\ge2).
+\end{equation}
+For nonnegative integers $\lambda=N$ these are the usual finite
+harmonic numbers. Define $h_m(\lambda)$ by
+\begin{equation}\label{moment:eq:hgenerator}
+ \sum_{m\ge0}h_m(\lambda)u^m
+ =\frac{\Gamma(1-u)\Gamma(1+\lambda)}
+        {\Gamma(1+\lambda-u)}
+ =\exp\left(\sum_{j\ge1}\frac{H_\lambda^{(j)}}j u^j\right)
+ \qquad (|u|<\min\{1,|1+\lambda|\}).
+\end{equation}
+The Taylor series of the Gamma quotient itself is holomorphic for
+$|u|<1$. The smaller disk in the exponential representation accounts
+for possible zeros of that quotient when $\lambda$ has negative real
+part; its logarithmic series must not be continued through such a zero.
+Equivalently,
+\begin{equation}\label{moment:eq:hrecurrence}
+ h_0=1,\qquad
+ h_m=\frac1m\sum_{j=1}^m H_\lambda^{(j)}h_{m-j}\quad(m\ge1).
+\end{equation}
+These are complete homogeneous polynomials in the generalized
+harmonic coordinates; for example,
+\[
+ h_1=H_\lambda^{(1)},\quad
+ h_2=\frac{(H_\lambda^{(1)})^2+H_\lambda^{(2)}}2,\quad
+ h_3=\frac{(H_\lambda^{(1)})^3+
+        3H_\lambda^{(1)}H_\lambda^{(2)}+2H_\lambda^{(3)}}6.
+\]
+
+\begin{theorem}[Every Bernoulli moment at the imaginary base points]
+\label{moment:thm:bernoulli}
+For $z=\varepsilon\pi i$, $\operatorname{Re}\lambda>-1$, and
+every integer $m\ge0$,
+\begin{equation}\label{moment:eq:allmoments}
+ \boxed{\displaystyle
+ \int_0^1 B_m(x)
+  \left(\frac{\sin(\pi x)}\pi e^{\varepsilon\pi i x}\right)^\lambda dx
+ =m!\left(\frac{\varepsilon i}{2\pi}\right)^\lambda
+       (-2\varepsilon\pi i)^{-m}h_m(\lambda).}
+\end{equation}
+The power on the left means
+$\exp\{\lambda[\log(\sin(\pi x)/\pi)+\varepsilon\pi i x]\}$.
+\end{theorem}
+\begin{proof}
+At these points $q=0$ and $C=\varepsilon i/(2\pi)$, while
+$R_{\varepsilon\pi i}(x)=\sin(\pi x)e^{\varepsilon\pi i x}/\pi$.
+Equation \eqref{moment:eq:bernoulli-general} therefore reduces to
+$C^\lambda$ times the Gamma quotient
+\eqref{moment:eq:hgenerator} at $u=t/\sigma$. Comparing coefficients
+proves the formula. The logarithmic Taylor expansion of that quotient
+gives \eqref{moment:eq:hgenerator} from
+\eqref{moment:eq:harmonics}; logarithmic differentiation then gives
+\eqref{moment:eq:hrecurrence}.
+\end{proof}
+
+At the negative half power,
+\[
+ H_{-1/2}^{(1)}=-2\log2,\qquad
+ H_{-1/2}^{(j)}=-(2^j-2)\zeta(j)\quad(j\ge2).
+\]
+The first two nonconstant moments are consequently
+\begin{align}\label{moment:eq:halfexamples}
+ \int_0^1\left(x-\frac12\right)
+  \sqrt{\frac\pi{\sin(\pi x)}}e^{-\varepsilon\pi i x/2}\,dx
+ &=-\frac{1+\varepsilon i}{\sqrt\pi}\log2,\notag\\
+ \int_0^1\left(x^2-x+\frac16\right)
+  \sqrt{\frac\pi{\sin(\pi x)}}e^{-\varepsilon\pi i x/2}\,dx
+ &=\sqrt\pi(1-\varepsilon i)
+     \left(\frac1{12}-\frac{\log^22}{\pi^2}\right).
+\end{align}
+Both endpoints have only inverse-square-root singularities, so these
+are absolutely convergent ordinary integrals. For example the second
+identity also yields the entirely real evaluation
+\begin{equation}\label{moment:eq:realhalf}
+ \int_0^1\left(x^2-x+\frac16\right)
+ \frac{\cos(\pi x/2)}{\sqrt{\sin(\pi x)}}\,dx
+ =\frac1{12}-\frac{\log^22}{\pi^2}.
+\end{equation}
+At the positive half power,
+$H_{1/2}^{(1)}=2-2\log2$ and
+$H_{1/2}^{(j)}=2^j-(2^j-2)\zeta(j)$ for $j\ge2$.
+Thus every moment at either half power belongs to an explicitly
+specified algebra of zeta values, $\log2$, $\pi$, and the displayed
+square-root prefactor. Further $\lambda$-derivatives of
+\eqref{moment:eq:allmoments} give all corresponding moments with
+arbitrary powers of $\operatorname{Log}R_{\varepsilon\pi i}$.
+
+\paragraph{Verification.}
+The independent script \texttt{check\_moments.py} compares the
+Gamma--Gauss generator against direct real-interval quadrature in both
+half-planes, including nonintegral powers with negative real part and
+powers with real part greater than one. It also compares four Bernoulli
+moments with \eqref{moment:eq:allmoments}, reconstructs the first nine
+Fourier coefficients by two exact symbolic formulas, and rejects a
+changed coefficient. Its separate spectral and finite-part checks audit
+the conventions used in the surrounding continuous-power transform.
+These numerical comparisons are diagnostics, not interval certificates
+or steps in the proofs above.

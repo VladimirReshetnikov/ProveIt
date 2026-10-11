@@ -1,0 +1,134 @@
+\section{Anchored antiderivatives and a finite derivative--primitive algebra}
+\label{rlc:sec:primitives}
+
+\subsection{The covariant fugacity ladder}
+The transform immediately relates changing total order to integrating
+or differentiating the logarithmic product argument.
+
+\begin{theorem}[Covariant primitives and shift derivatives]
+\label{rlc:thm:ladder}
+For $\Rea a>0$, $W\in\C$, and real $\mu$,
+\begin{align}
+ (\partial_\mu+a-1)\CC_{r,a}(W;\mu)
+      &=\CC_{r,a}(W-1;\mu),\label{rlc:eq:muladder}\\
+ \CC_{r,a}(W+1;\mu)
+      &=e^{-(a-1)\mu}\int_{-\infty}^{\mu}
+              e^{(a-1)v}\CC_{r,a}(W;v)\dd v,
+        \label{rlc:eq:muprimitive}\\
+ \partial_a^n\CC_{r,a}(W;\mu)
+      &=(-1)^n(W)_n\CC_{r,a}(W+n;\mu),\qquad n\ge0.
+       \label{rlc:eq:aderivative}
+\end{align}
+The primitive in \eqref{rlc:eq:muprimitive} is fixed by the condition
+$e^{(a-1)\mu}\CC_{r,a}(W+1;\mu)\to0$ as $\mu\to-\infty$.
+All identities can be differentiated in $W$.
+\end{theorem}
+\begin{proof}
+In \eqref{rlc:eq:barnes}, $\partial_\mu+a-1$ multiplies the integrand
+by $p+a-1$, proving \eqref{rlc:eq:muladder}. Differentiating the power
+$(p+a-1)^{-W}$ in $a$ gives \eqref{rlc:eq:aderivative}.
+The contour bound for real negative $\mu$ is $O(e^{c\mu})$ on compact
+order sets. Since $c+\Rea a-1>0$, multiplication by
+$e^{(a-1)\mu}$ tends to zero at $-\infty$ and the integral in
+\eqref{rlc:eq:muprimitive} converges. Integrating
+\eqref{rlc:eq:muladder} at order $W+1$ proves the anchored formula.
+The same bounds with logarithmic factors justify all order derivatives.
+\end{proof}
+
+At $a=1$, this is an ordinary primitive ladder in $\mu$, or an Euler
+primitive ladder in $q=e^\mu$ with measure $\dd q/q$. Raising $W$ by
+any positive integer supplies repeated primitives with all constants
+fixed. At other shifts the integrating factor is indispensable.
+
+Let $D_a=\partial_\mu+a-1$ and let $J_a$ denote the anchored integral
+operator on the right of \eqref{rlc:eq:muprimitive}. On the linear span
+of the convolution profiles and their order derivatives,
+\begin{equation}\label{rlc:eq:commutators}
+ [\partial_a,D_a]=1,\qquad
+ [\partial_a,J_a]=-J_a^2.
+\end{equation}
+The first identity is immediate. For the second, differentiation of the
+integrating factor gives
+\[
+ (\partial_aJ_a-J_a\partial_a)h(\mu)
+   =-\int_{-\infty}^{\mu}(\mu-v)e^{-(a-1)(\mu-v)}h(v)\dd v
+   =-J_a^2h(\mu).
+\]
+Absolute convergence justifies the repeated integral. Thus a derivative
+in the shift does not commute with a covariant primitive; the correction
+is an explicitly normalized second primitive.
+
+Combining \eqref{rlc:eq:aderivative} with order differentiation gives
+\begin{equation}\label{rlc:eq:jetderivative}
+ \partial_a^n\partial_W^M\CC_{r,a}(W;\mu)
+ =(-1)^n\sum_{h=0}^{\min(M,n)}\binom Mh
+       \partial_W^h(W)_n\,
+       \partial_W^{M-h}\CC_{r,a}(W+n;\mu).
+\end{equation}
+The coefficients at $W=0$ are precisely the finite harmonic
+polynomials in \eqref{rlc:eq:Bellharmonic}. Equations
+\eqref{rlc:eq:commutators}--\eqref{rlc:eq:jetderivative}, together with
+the reciprocal harmonic product in \eqref{rlc:eq:completeharmonic},
+provide a concrete compatible derivative--primitive algebra in this
+family. This addresses a specified instance of the compatibility
+question in the Mellin continuation \cite{MLD}, not an assertion that
+every harmonic calculus in the repository has thereby been unified.
+
+\subsection{Anchored integration in the Hurwitz shift}
+For $\Rea a,\Rea b>0$, integration can be taken along any path in the
+right half-plane. A pole-free fundamental identity is
+\begin{equation}\label{rlc:eq:Eprimitive}
+ \int_a^b\E_c(W)\dd c=\zeta(W,a)-\zeta(W,b).
+\end{equation}
+It follows from $\partial_c\zeta(W,c)=-W\zeta(W+1,c)$.
+The right side is entire in $W$, since the residues at $W=1$ cancel.
+The central even-depth analogue is
+\begin{equation}\label{rlc:eq:evenprimitive}
+ \int_a^b\CC_{2m,c}(W;0)\dd c
+ =\frac1{(2m-1)!}\sum_{k=0}^{m-1}A_{m,k}(W)_{2k}
+      [\zeta(W+2k,a)-\zeta(W+2k,b)].
+\end{equation}
+Every bracket is taken as an entire combined difference before
+specialization.
+
+At odd depth, put $\Delta\eta(v)=\eta(v,a)-\eta(v,b)$. Then
+\begin{align}
+ \int_a^b\CC_{2m+1,c}(W;0)\dd c
+ =\frac1{(2m)!}\biggl[&B_{m,0}\frac{\Delta\eta(W-1)}{W-1}\notag\\
+ &+\sum_{k=1}^{m}B_{m,k}(W)_{2k-1}
+                          \Delta\eta(W+2k-1)\biggr].
+ \label{rlc:eq:oddprimitive}
+\end{align}
+The first quotient is removable at $W=1$, because $\eta(0,a)=\eta(0,b)$.
+Its value there is $\eta^{[1]}(0,a)-\eta^{[1]}(0,b)$.
+These two formulas follow by differentiating their right sides and using
+the anchor $b=a$; they therefore specify the integration constants as
+well as the derivatives.
+
+\subsection{Stieltjes antiderivatives and Gamma normalization}
+Taking order derivatives of \eqref{rlc:eq:Eprimitive} at zero gives
+\begin{equation}\label{rlc:eq:gammaprimitive}
+ \int_a^b\gamma_0(c)\dd c=\log\Gamma(a)-\log\Gamma(b),
+\end{equation}
+and, for every $n\ge0$,
+\begin{equation}\label{rlc:eq:stieltjesprimitive}
+ \boxed{\displaystyle
+ \int_a^b\gamma_n(c)\dd c
+ =\frac{(-1)^n}{n+1}
+       [\zeta^{[n+1]}(0,a)-\zeta^{[n+1]}(0,b)].}
+\end{equation}
+Equivalently an indefinite primitive is
+$(-1)^{n+1}\zeta^{[n+1]}(0,a)/(n+1)$ plus a constant.
+These are the classical Hurwitz order-derivative primitives, now attached
+to the ordinary product identities of Theorem~\ref{rlc:thm:stieltjes}.
+We do not count the familiar $n=0$ log-Gamma formula as a new result.
+
+The odd-depth removable primitive also has a finite Gamma value:
+\[
+ \eta^{[1]}(0,a)=\log\Gamma(a/2)-\log\Gamma((a+1)/2)
+                         -\tfrac12\log2.
+\]
+This follows from \eqref{rlc:eq:eta} and the classical value
+$\zeta^{[1]}(0,a)$. In particular, the only potentially singular
+coefficient in \eqref{rlc:eq:oddprimitive} is resolved explicitly by
+Gamma differences rather than an unspecified integration constant.

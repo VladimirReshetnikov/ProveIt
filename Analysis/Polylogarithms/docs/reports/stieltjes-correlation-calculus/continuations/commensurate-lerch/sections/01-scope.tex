@@ -1,0 +1,102 @@
+\section{Research target and the new exact families}
+\label{clc:sec:scope}
+
+The ProveIt manuscript already contains a substantial theory of
+polylogarithmic identities, generalized harmonic sums, Hurwitz order
+jets, Stieltjes distributions, and Gamma correlations \cite{Repo}.
+The preceding \emph{Reciprocal Lerch Convolutions} report establishes
+entire-order addition, finite central-factorial formulas, and all
+logarithmic moments for equal logarithmic scales \cite{RLC}. Its proposed
+research questions explicitly ask for commensurate dilations and for a
+normally convergent unequal-shift expansion with independent order jets.
+These are our principal targets. Re-proving an equal-scale identity is not
+counted as a new result.
+
+The central distinction is between a spectral order and a logarithmic
+scale. If the argument $y$ is replaced by $y^q$, the bilateral transform
+changes its cosecant period and also introduces a factor $q^s$. That
+factor cannot be ignored. Once it is removed, the new periods can be
+combined into a finite pole lattice exactly when their ratios are rational.
+A separate expansion handles unequal affine centers without pretending
+that a finite integer-order partial fraction identity can be differentiated
+in its integer index.
+
+\subsection{Two accessible consequences}
+For arbitrary complex $s,t$, write $W=s+t$. One result proved below is
+\begin{equation}\label{clc:eq:intro-beta}
+ \boxed{\displaystyle
+ \int_0^\infty \Li_s(-y)\Li_t(-y^{-2})\frac{\dd y}{y}
+ =2^{t-1}\pi\beta(W)-2^{-s-1}W\eta(W+1).}
+\end{equation}
+Here $\beta$ is the Dirichlet beta function and $\eta$ the Dirichlet eta
+function. Both sides are entire in the two orders, and the integral is
+ordinary and absolutely convergent. In particular, with
+$G=\beta(2)$ denoting Catalan's constant,
+\begin{equation}\label{clc:eq:intro-log}
+ \int_0^\infty \log(1+y)\log(1+y^{-2})\frac{\dd y}{y}
+ =\pi G-\frac38\zeta(3).
+\end{equation}
+The two orders in \eqref{clc:eq:intro-beta} do not enter symmetrically.
+The normalization restoring pure order addition is multiplication of the
+integral by $2^{-t}$.
+
+A different consequence does not require rationally related scales.
+For any positive real $q_1,q_2,q_3$,
+\begin{equation}\label{clc:eq:intro-cubic}
+ \boxed{\displaystyle
+ \int_{\R^2}
+ \frac{1}{1+e^{-q_1x}}\,
+ \frac{1}{1+e^{-q_2y}}\,
+ \frac{1}{1+e^{q_3(x+y)}}\dd x\dd y
+ =\frac{\pi^2}{12}\left(q_1^{-2}+q_2^{-2}+q_3^{-2}\right).}
+\end{equation}
+This is one case of an all-depth negative-integer parity theorem. It
+illustrates that the absence of a common pole lattice does not rule out
+exceptional exact central evaluations.
+
+\subsection{Conventions}
+We use the standard Hurwitz and Lerch functions \cite{DLMF25}:
+\[
+ \zeta(v,a)=\sum_{n=0}^\infty(n+a)^{-v},\qquad
+ \Phi(z,v,a)=\sum_{n=0}^\infty\frac{z^n}{(n+a)^v},
+\]
+initially in their convergence domains and then by analytic continuation.
+Throughout, $\Rea a>0$ unless another domain is explicitly stated; the
+powers use the logarithm on the right half-plane. The rising factorial is
+$(v)_j=v(v+1)\cdots(v+j-1)$, with $(v)_0=1$. A superscript $[h]$ means
+an order derivative. A superscript $(h)$ on $\psi$ means an ordinary
+argument derivative of the digamma function.
+
+Our generalized Stieltjes convention is
+\begin{equation}\label{clc:eq:stieltjes-convention}
+ \zeta(1+v,a)=\frac1v+
+ \sum_{n=0}^\infty\frac{(-1)^n}{n!}\gamma_n(a)v^n,
+ \qquad \gamma_0(a)=-\psi(a).
+\end{equation}
+We repeatedly use the entire functions
+\begin{align}
+ \EE_a(v)&=v\zeta(v+1,a),&\EE_a(0)&=1,\label{clc:eq:E}\\
+ \eta(v,a)&=\Phi(-1,v,a)
+ =2^{-v}\left[\zeta\left(v,\frac a2\right)
+                  -\zeta\left(v,\frac{a+1}2\right)\right].
+ \label{clc:eq:eta}
+\end{align}
+In particular $\eta(v)=\eta(v,1)$, while
+$\beta(v)=4^{-v}[\zeta(v,1/4)-\zeta(v,3/4)]$.
+The singularities in these formulas are filled in before differentiation.
+
+\subsection{Relationship to classical methods and remaining conjectures}
+Euler's beta integral, Gamma reflection, convolution, pole summation,
+and Bell-polynomial differentiation are classical tools; the use of real
+convolution for Fermi--Dirac-type integrals is explicitly represented in
+Selvaggi and Selvaggi \cite{SS}. We do not claim to have invented these
+methods. The contribution here is the all-complex-order commensurate-scale
+closure, its precise hypotheses, pole-free normalization, and the derived
+families of identities and independent-center continuations.
+
+The inspected canonical README records $S_4$ as proved and $S_6$ and the
+revised $S_8$ candidate as conjectural. Those statuses are unchanged here.
+A small residual is not an equality proof. The two research questions we
+answer are the analytic continuation problems just described, not those
+specific arithmetic reduction conjectures. Complete literature priority
+for every special value has not been established.

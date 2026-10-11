@@ -1,0 +1,89 @@
+PROPOSED INTEGRATION INTO PROVEIT
+Source pin: 5a790187c8e186e41e2b990b4941cb7a1a3c7b6b
+
+The article is an additive research continuation. Preserve the source
+reports as historical documents. Do not promote S6 or revised S8.
+
+SECTION MAP
+
+sections/02_hurwitz.tex — prefix eht:
+  Link from Exact Identities Question 8 and the common-shift harmonic
+  sections. Credit Ihara–Nakamura–Yamamoto (2025), Proposition 2.1 and
+  Corollary 4.2. The exact identity is H_(a,1)(s)=Psi(s;a-1).
+  Status: analytic-normalization component supplied; the full requested
+  smallest Gamma-separated generating kernel is still open.
+  Preserve the nonsymmetric ordering coordinate eta and the difference
+  between spectral entireness and endpoint branching.
+
+sections/03_tornheim.tex — prefix tr3:
+  Continue the Coincident Stieltjes and Directional Zeta report's
+  quadratic ray theorem and Question 2. The cleaner polar remainder R
+  is explicitly derived from its Gamma-containing remainder H, so the
+  two conventions must not be silently identified.
+  Status: all admissible cubic ray derivatives reduced to Omega, kappa,
+  and displayed ordinary zeta data. No minimality or independence claim.
+  Retain (a+c)(b+c) != 0 and the instruction to restrict before taking
+  the value or derivative at the origin.
+
+sections/04_mixed.tex — prefixes mixed: and mxex:
+  Answers Question 11 of the directional-zeta report at arbitrary depth
+  and with positive integer weights. The fixed input inner orders can
+  have either sign; the output keeps C as a free complex variable.
+  Root filtering, repeated-pole extraction, and the q=1 Bernoulli branch
+  are essential parts of the theorem. Cumulative colors, rather than
+  individual relative colors, control the nested alphabet and convergence.
+  The depth-one DFT/Gamma/Stieltjes identities are classical boundary
+  formulas, not claims to evaluate every positive-depth output.
+  Includes normalized Euler primitives and exact Laurent constants.
+
+sections/05_sampling.tex — prefix sampling:
+  Answers Question 7 under “Further questions with concrete first targets”
+  in the Mixed Spectral report. The scalar criterion now applies to all
+  integer Fourier modes within the stated finite power–logarithm class.
+  The result extends to any number of distinct centres. Keep the
+  logarithmic-mesh hypothesis in the uniqueness theorem and the coherent
+  branch convention in the Fourier corollary.
+
+sections/06_audit.tex and sections/07_research.tex
+  Source corrections, verification scope, unresolved conjecture ledger,
+  and fourteen explicit further research questions. The external estimate
+  corrections refer only to arXiv:2510.10093v1, equations (2.3), (2.7),
+  and the quantifier in (2.8); they are not asserted for an uninspected
+  journal version. The earlier Borwein–Dilcher author-PDF corrections
+  are already recorded by the directional report and are carried forward
+  with that attribution.
+
+TEX INTEGRATION
+
+The modular files use the packages and macros in preamble.tex. Reuse
+existing manuscript theorem environments rather than importing a second
+preamble verbatim. Check local macro names C, R, N, Z, Q, Li, Log, CT, FP,
+Mcal, Tcal, Hp, dd, src and the L column type against the host preamble.
+All substantive equation/theorem labels are prefixed to simplify merging.
+Merge the bibliography entries into the host bibliography and map the
+RepoDirectional and tr3:incoming aliases to the same source if desired.
+
+For a standalone incoming artifact, copy this ZIP unchanged and add a
+README entry using the following proposed status text:
+
+  Independent Orders and Exact Reductions (2026-10-11): identifies the
+  established entire independent-order harmonic interpolant with INY
+  attribution; proves relative endpoint formulas; reduces all admissible
+  cubic Tornheim directions to two explicit scalar coordinates; proves
+  the arbitrary-depth mixed-integer-order compiler and resonant local
+  Laurent formulas; proves sampled Fourier rigidity for finite
+  power–logarithm families. S6 and revised S8 remain conjectural.
+
+VERIFICATION AND REBUILD
+
+Run code/verify_all.py and code/build.py from a clean extracted copy.
+No repository files or network access are needed. The first generates
+new diagnostic records; the second generates the standalone TeX and PDF.
+Those regenerated timestamps or numeric timing fields will naturally
+differ from the delivered SHA256SUMS. Verify the manifest before rerunning
+tools if checking the delivered artifact's byte identity.
+
+The unfinished S6 finite-field program is research scaffolding. Do not
+include it as a proof verifier or a repository acceptance gate. Any
+future certificate must identify its rational row combination and be
+replayed independently.

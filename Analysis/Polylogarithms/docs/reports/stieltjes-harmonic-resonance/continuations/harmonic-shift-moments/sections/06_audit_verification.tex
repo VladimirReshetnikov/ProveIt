@@ -1,0 +1,209 @@
+\section{Source audit, proposed qualifications, and verification}
+\label{sec:audit}
+
+\subsection{A fixed source record}
+
+The main source baseline is the ProveIt commit whose full identifier is
+\begin{center}
+\small\src{921b58f1099568bfefa28a556470e4b29e94eb3b}.
+\end{center}
+It contains the manuscript directory supplied for this task and four
+incoming archives dated 10--11 October 2026: the bilinear
+Mellin--Hurwitz, cubic harmonic mixed-order, exact resonant, and
+independent-order reports \cite{RepoMain,RepoBilinear,RepoCubic,
+RepoExactResonant,RepoIndependent}. The earlier mixed spectral report,
+which states several questions answered here, was inspected at the
+historical revision
+\begin{center}
+\small\src{5a790187c8e186e41e2b990b4941cb7a1a3c7b6b}.
+\end{center}
+Its archived source is cited separately as \cite{RepoMixed}; earlier
+exact identities used in the shift calculation are \cite{RepoExact}.
+This distinction matters because an incoming archive can be integrated
+and removed from a later incoming directory without invalidating its
+historical role.
+
+The audit covered the definitions, proofs, status statements, and
+questions directly used in this continuation, together with the current
+Gaussian conjecture labels. It did not certify every line of the entire
+multi-volume manuscript. No new false theorem was identified in the
+selected source material. The qualifications below state how the new
+results must be recorded; they are not allegations that the source
+already contains each invalid inference.
+
+\subsection{Status changes justified by the proofs}
+
+\paragraph{The shift-boundary question is answered.}
+The mixed spectral report asks for the actual germ at $a=-r$ and the
+exception at nonpositive spectral orders. Theorems~\ref{hsh:germ},
+\ref{hsh:boundary}, \ref{hsh:radius}, and \ref{hsh:rank} answer it.
+The existing half-plane theorem remains correct, but a status summary
+can now give the exact first singularity and exact Taylor radius.
+Transport itself should be attributed to the broader relative ordered
+Hurwitz character: the exact identification is
+\eqref{hsh:relativecharacter}. Treating the present family as unrelated
+to that source would duplicate an established construction.
+
+\paragraph{The weight-six and weight-eight separation question is answered
+within its specified family.}
+Equations~\eqref{bell:sixrref} and \eqref{bell:eightrref} give the
+requested rational elimination. Theorem~\ref{bell:rank} supplies the
+general rank, while Theorem~\ref{bell:image} determines the full
+summation kernel. The individual nonlinear coordinate moments at
+weights six and eight lie outside this formal mixed-Bell span.
+This does not rule out evaluating them using another parameter family,
+an argument derivative, or an independent functional identity.
+
+\paragraph{The compact harmonic-power target has a constructive solution.}
+Theorem~\ref{hpnew:generator} and
+Corollary~\ref{hpnew:threerows} answer the complete minus-two sequence
+requested in Question~10 of \cite{RepoExactResonant}; they also give
+every further centered even moment. Theorem~\ref{hpnew:uniformspan}
+adds the stronger conclusion that one finite Euler-sum span works for
+all moment orders at a fixed power. A closed bivariate expression and
+minimal arithmetic coordinates remain open.
+Corollary~\ref{hpnew:oddorders} supplies a sufficient generalized-harmonic
+parity class toward Question~11 and a finite formula for every single
+positive odd harmonic order; it does not finish the requested necessity
+classification.
+
+\paragraph{Nested collision constants are now explicit in the polygamma
+sector.}
+The exact formula of Theorem~\ref{hc:main} supplies a jointly
+holomorphic remainder for any number of factors and any nonnegative
+argument-derivative orders. Theorem~\ref{hc:hierarchy} answers the
+named nested triple paths and all their monomial-rate analogues.
+The extension to positive Stieltjes indices and a theorem about
+composition of renormalized merging operations are still separate
+questions. They should not be marked solved by the present result.
+
+\subsection{Qualifications that prevent incorrect extensions}
+
+\paragraph{Principal continuation is a statement about a branch.}
+The principal family is holomorphic on the slit plane in
+\eqref{hsh:slit}. Earlier removable shifts need not remain removable
+on every sheet. A loop around $a=-1$ changes $D_1$ by
+\[
+ \bigl(e^{-2\pi\ii s}-1\bigr)\frac{(a+1)^{-s}}a.
+\]
+The added term generally has a pole at $a=0$. A claim of unrestricted
+removability on the universal continuation would therefore need
+correction. The source's valid half-plane result makes no such claim.
+
+\paragraph{Polynomial values do not imply polynomial spectral derivatives.}
+The finite Stirling formula at $s=-m$ has rank $m+1$ in depth.
+Differentiating the analytic family introduces
+$z^m(-\log z)^k$ at the first boundary. For every $k\ge1$ it has
+finite shift Taylor radius and supplies independent depth functions.
+It cannot be obtained by differentiating a formula whose label $m$
+has only been specified at integers. Similarly, the first spectral
+derivative of the raw harmonic-power family retains a global Mellin
+remainder that is absent from its regular value.
+
+\paragraph{A removable restriction need not be a jointly removable germ.}
+The auxiliary $G_m$ in Section~\ref{hpnew:section} obeys $G_m(0)=0$,
+whereas separately specializing the uncentered family at exponent zero
+gives $\zeta(-m)$. The explicit term in
+Remark~\ref{hpnew:orderwarning} proves the discrepancy. Its polar
+hyperplane is not removable merely because its numerator vanishes at
+one point. In contrast, the centered family has no polar hyperplane
+through $(-2r,0)$, so the claimed coefficient extraction is valid.
+
+\paragraph{A collision constant depends on the full primitive.}
+The terms of order $p\ge2$ in \eqref{hc:counter} are rational
+primitive terms, in addition to logarithms. They are essential:
+the derivative example \eqref{hc:middle-derivative} would be wrong
+without them. Even a curved binary gap $\epsilon+b\epsilon^2$
+changes the raw constant by $b$, as
+\eqref{hc:binary-curved} shows. Normalizing only a leading pole or
+only a fixed-rate approximation does not determine the required
+constant along a nested path.
+
+\paragraph{Formal independence and arithmetic independence are distinct.}
+The Bell rank treats the $L_k$ as independent indeterminates, and the
+shift rank treats analytic functions of $a$ over the constants.
+The Euler sums in $\mathcal E_{p-1}$ form a proved spanning list.
+None of these assertions gives a lower bound for the arithmetic
+dimension of their numerical values. The exact matrices are suitable
+certificates for the specified algebraic problem and no larger one.
+
+\paragraph{The retained Gaussian conjectures remain conjectures.}
+The pinned manuscript labels the current $S_6$ candidate
+\src{cycloquot:conj:S6} in
+\src{chapters/04-cyclotomic-quotients.tex}, and the revised $S_8$
+candidate \src{s8new:conj:S8} in
+\src{chapters/04-S8-candidate.tex} \cite{RepoMain}.
+This article proves neither numerical period identity. The rejected
+older $S_8$ vector is already distinguished in the current source.
+No new integer-relation fit or conjectural coefficient vector is
+offered here. The remaining task is a new exact functional relation
+with its analytic endpoint evaluation.
+
+\subsection{Reproducible exact checks and independent diagnostics}
+
+Every primary analytic result has a proof in the preceding sections.
+The following additional checks are included as readable Python source
+and JSON results. They require only Python, SymPy, and mpmath.
+The driver \src{code/run_all.py} runs the checks in a fixed order.
+
+\begin{longtable}{@{}p{0.24\textwidth}p{0.69\textwidth}@{}}
+\toprule
+Family & Recorded verification\\
+\midrule
+\endhead
+Shift germs & 85 exact core checks and 50 numerical comparisons:
+Newton versus defining sums, finite transport, Cauchy-extracted
+boundary constants, spectral jets, and a doubled cutoff.
+The primitive supplement adds 12 exact derivative and partial-fraction
+checks.\\[5pt]
+Mixed Bell moments & Independent coefficient constructions and ranks
+for weights $2$ through $18$; exact elimination and annihilators at
+weights $6,8$; the quartic zero row; and a deliberately corrupted
+coefficient that is correctly rejected. Nineteen mixed rows at five
+real or complex parameter choices are checked numerically, plus the
+independent harmonic tail-square identity.\\[5pt]
+Harmonic powers & Seven exact rational generator residuals;
+26 Bernoulli identities through moment order $r=12$;
+15 centered values at powers $1$--$5$ and moment orders $0$--$2$;
+and six full exponent-generator comparisons at two exponent values.
+The centered computations use two truncation lengths.\\[5pt]
+Generalized harmonics & Nine exact centered Faulhaber identities and
+six independent values for harmonic orders $q=3,5$ at moment orders
+$r=0,1,2$, also using two subtraction truncations.\\[5pt]
+Collisions & 132 exact oriented hierarchy assertions for
+$1\le q<p\le12$, exact quartic coefficients and rate differences,
+and the derivative constant. Independent local-subtraction quadrature
+is used for 12 digamma configurations and two polygamma configurations.
+The corrected remainder tends to the merged value as predicted.\\
+\bottomrule
+\end{longtable}
+
+The largest scaled residual in the core shift comparisons is about
+$1.76\cdot10^{-23}$ and is controlled by the chosen Newton cutoff.
+The Bell mixed-row comparisons are within
+$2.70\cdot10^{-65}$ in the recorded scaled metric; the tail-square
+comparison has absolute residual below $8.30\cdot10^{-75}$.
+For the 15 centered harmonic-power values, the largest absolute
+discrepancy is below $6.49\cdot10^{-45}$; the independent truncations
+differ by at most $1.29\cdot10^{-32}$. These are recorded diagnostic
+values, not rigorous error estimates. The precision, truncation
+parameters, and individual residuals are retained in the result files.
+
+The collision diagnostics test the exact correction
+$\mathcal C-\mathcal A$ against its proved holomorphic limit.
+They do not assert that this difference equals its limit at a nonzero
+shift: the remaining Taylor terms are expected. This makes their
+numerical interpretation different from the residual of an exact
+finite-parameter Bell identity.
+
+\subsection{Integration order}
+
+The source sections can be integrated independently, retaining their
+label prefixes \src{hsh:}, \src{bell:}, \src{hpnew:}, and \src{hc:}.
+First reconcile the relative-character identification, then add the
+shift singularities and primitives; the Bell and harmonic-power
+sections can follow their existing antecedents; finally insert the
+collision theorem before the nested-rate examples. The plain-text
+integration note records exact source dependencies and suggested
+status replacements. The complete standalone TeX and its compiled PDF
+are included, alongside the modular source and verification programs.

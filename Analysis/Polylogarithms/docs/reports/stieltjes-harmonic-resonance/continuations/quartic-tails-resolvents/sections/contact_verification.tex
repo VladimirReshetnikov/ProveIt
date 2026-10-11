@@ -1,0 +1,43 @@
+\subsection{Exact contact and antiderivative checks}
+\label{contact:verification}
+
+The fixed-coordinate correction at a negative integral power has an
+elementary residue interpretation.  For $M\ge1$,
+\begin{equation}\label{contact:residue}
+ [x^{M-1}]\{x(K(x)-z)\}^M
+ =\operatorname*{Res}_{x=0}(K(x)-z)^M\,\dd x
+ =\frac{(-z+i\pi)^M-(-z-i\pi)^M}{2i\pi}.
+\end{equation}
+Indeed, the local coordinate $v=1/K(x)=\tan(\pi x)/\pi$ satisfies
+$\dd x=\dd v/(1+\pi^2v^2)$ and has derivative $1$ at zero.  Thus
+the residue is the coefficient of $v^{-1}$ in
+$(v^{-1}-z)^M/(1+\pi^2v^2)$, namely
+\[
+ \sum_{j=0}^{\lfloor(M-1)/2\rfloor}
+   \binom{M}{2j+1}(-z)^{M-2j-1}(-\pi^2)^j.
+\]
+The binomial theorem gives the final expression in
+\eqref{contact:residue}.  Consequently the difference between the
+coordinate finite-part mean and its continued spectral value is
+\begin{equation}\label{contact:identity}
+ \frac{(-z+i\pi)^M+(-z-i\pi)^M}{2}
+       -(-z-\epsilon i\pi)^M
+ =\epsilon\pi i\,[x^{M-1}]\{x(K(x)-z)\}^M.
+\end{equation}
+This proves the contact identity for every $M$, independently of the
+general completion theorem.
+
+The accompanying \texttt{check\_contacts.py} constructs the cotangent
+Taylor jet from Bernoulli numbers and independently checks it against
+the sine and cosine jets.  It then verifies \eqref{contact:identity}
+exactly for $M=1,\ldots,10$ and both signs of $\epsilon$, with $z$
+and $\pi$ left symbolic.  Omitting the endpoint phase produces a
+nonzero polynomial residual in all twenty cases.  In addition, the
+script verifies the primitive's telescoping coefficients for
+$k=0,\ldots,5$ with symbolic $L\ne1$, checks the $L=1$ branch, and
+reproduces the boundary example $p=2$, $u=\lambda=1$: the specialized
+ordinary integrand is zero, the continued spectral value is $-1$,
+and the local endpoint term has limit $-1$.  All thirty-six exact
+checks and all twenty deliberate corruption controls pass.  These
+finite checks complement the all-index proofs; they do not replace
+them.

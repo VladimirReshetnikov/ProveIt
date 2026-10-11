@@ -1,0 +1,546 @@
+{
+  "schema_version": "1.0",
+  "package": "ProveIt_Harmonic_Parity_and_Resolvent_Identities_2026-10-11",
+  "created_at_utc": "2026-10-11T01:19:37Z",
+  "baseline_commit": "c2cb285b64273e4cb2c8d7a03c68a4a99ac812d4",
+  "authorship": "AI-assisted analytic contribution for ProveIt; repository ownership is not an authorship assignment.",
+  "proof_standard": {
+    "analytic_and_algebraic_proofs": true,
+    "finite_exact_symbolic_checks": true,
+    "formal_proof_assistant_verification": false,
+    "numerical_diagnostics_are_proofs": false
+  },
+  "novelty_scope": "Contribution classes are relative to the pinned inspected source state, not global priority claims.",
+  "claims": [
+    {
+      "id": "GHP-01",
+      "title": "Finite Bernoulli formula for every harmonic principal part",
+      "section_file": "sections/02_harmonic_parity.tex",
+      "labels": [
+        "ghp:prop:principal",
+        "ghp:eq:principal"
+      ],
+      "proof_status": "proved_analytic_or_algebraic",
+      "contribution_class": "explicit_extension_of_classical_method",
+      "statement_summary": "For a polynomial in generalized harmonic numbers, finite shifted Bernoulli substitution gives every complete principal part at s=1-j.",
+      "inputs": [
+        "Classical Gamma/polygamma asymptotics and Hurwitz-zeta continuation"
+      ],
+      "formal_proof_assistant_checked": false,
+      "scope_and_limitations": "The finite-part extraction mechanism is classical and extends the source harmonic framework; no new continuation principle is claimed."
+    },
+    {
+      "id": "GHP-02",
+      "title": "Injectivity of the centered formal harmonic substitution",
+      "section_file": "sections/02_harmonic_parity.tex",
+      "labels": [
+        "ghp:lem:injective"
+      ],
+      "proof_status": "proved_analytic_or_algebraic",
+      "contribution_class": "new_deduction_relative_to_baseline",
+      "statement_summary": "The formal substitution of centered harmonic asymptotic series is injective over the complex polynomial ring.",
+      "inputs": [
+        "Adamczewski-Dreyfus-Hardouin Theorem 1.2, formal S_infinity case",
+        "Rational shift-pole obstruction"
+      ],
+      "formal_proof_assistant_checked": false,
+      "scope_and_limitations": "Uses differential algebraic independence of formal series, not arithmetic independence of special numerical constants."
+    },
+    {
+      "id": "GHP-03",
+      "title": "Necessary and sufficient centered parity criterion",
+      "section_file": "sections/02_harmonic_parity.tex",
+      "labels": [
+        "ghp:thm:classification",
+        "ghp:eq:invariant-ring"
+      ],
+      "proof_status": "proved_analytic_or_algebraic",
+      "contribution_class": "new_deduction_relative_to_baseline",
+      "statement_summary": "Regularity at every nonpositive even spectral integer is equivalent to invariance under simultaneous sign reversal of all even-order harmonic tails.",
+      "inputs": [
+        "GHP-01",
+        "GHP-02"
+      ],
+      "formal_proof_assistant_checked": false,
+      "scope_and_limitations": "For polynomial numerators with complex coefficients and centered outer shift 1/2; paired ring generators need not be algebraically free.",
+      "source_question": "Exact Resonant Identities, Q11: answered for the stated polynomial family."
+    },
+    {
+      "id": "GHP-04",
+      "title": "Complementary pole lattices and nonentireness",
+      "section_file": "sections/02_harmonic_parity.tex",
+      "labels": [
+        "ghp:cor:split"
+      ],
+      "proof_status": "proved_analytic_or_algebraic",
+      "contribution_class": "new_corollary_relative_to_baseline",
+      "statement_summary": "Invariant and anti-invariant numerator parts have complementary possible pole lattices; a nonzero polynomial numerator cannot produce an entire centered Dirichlet function.",
+      "inputs": [
+        "GHP-01",
+        "GHP-02",
+        "GHP-03"
+      ],
+      "formal_proof_assistant_checked": false
+    },
+    {
+      "id": "GHP-05",
+      "title": "All centered trigamma-square even moments",
+      "section_file": "sections/02_harmonic_parity.tex",
+      "labels": [
+        "ghp:thm:square",
+        "ghp:eq:all-square",
+        "ghp:eq:convergent-square"
+      ],
+      "proof_status": "proved_analytic_or_algebraic",
+      "contribution_class": "new_family_relative_to_baseline",
+      "statement_summary": "Every value at a nonpositive even order is an explicit finite Bernoulli convolution in Q+Q*zeta(3), and equals an ordinary absolutely convergent subtracted sum.",
+      "inputs": [
+        "Finite summation by parts",
+        "Bernoulli power sums",
+        "Classical Euler sum zeta(2,1)=zeta(3)"
+      ],
+      "formal_proof_assistant_checked": false,
+      "scope_and_limitations": "The r=0 value 3*zeta(3) is classical. This single-tail centered family is distinct from the source Dougall-derived weighted squares of shifted trigamma differences."
+    },
+    {
+      "id": "GHP-06",
+      "title": "Convergent classical-polylogarithm generator for the moments",
+      "section_file": "sections/02_harmonic_parity.tex",
+      "labels": [
+        "ghp:thm:generator",
+        "ghp:eq:integral-generator",
+        "ghp:eq:polylog-generator"
+      ],
+      "proof_status": "proved_analytic_or_algebraic",
+      "contribution_class": "new_family_relative_to_baseline",
+      "statement_summary": "The complete even-moment sequence has an even holomorphic exponential generator for |t|<2*pi, with an exact Li_2/Li_3/Li_4 representation.",
+      "inputs": [
+        "GHP-05",
+        "Classical Bernoulli generating functions"
+      ],
+      "formal_proof_assistant_checked": false,
+      "scope_and_limitations": "The displayed classical-polylogarithm branch is first specified for positive real t; the integral formula fixes its holomorphic continuation."
+    },
+    {
+      "id": "RES-01",
+      "title": "Completed all-index cotangent-Stieltjes resolvent",
+      "section_file": "sections/03_resolvent.tex",
+      "labels": [
+        "res:main",
+        "res:master",
+        "res:completion"
+      ],
+      "proof_status": "proved_analytic_or_algebraic",
+      "contribution_class": "new_family_relative_to_baseline",
+      "statement_summary": "Every Stieltjes index and argument derivative has a finite normalized-polylogarithm order-derivative formula, including the full endpoint polynomial E_p(s).",
+      "inputs": [
+        "Classical Hurwitz Fourier formula",
+        "Existing endpoint finite-part calculus"
+      ],
+      "formal_proof_assistant_checked": false,
+      "scope_and_limitations": "Nonreal resolvent parameter; finite parts are in the original endpoint coordinate x. The correction is part of the formula.",
+      "source_question": "Exact Resonant Identities, Q8: rational sector addressed; arbitrary nonpolynomial families remain open."
+    },
+    {
+      "id": "RES-02",
+      "title": "Repeated resolvents and bounded rational closure",
+      "section_file": "sections/03_resolvent.tex",
+      "labels": [
+        "res:repeated",
+        "res:repeatedformula"
+      ],
+      "proof_status": "proved_analytic_or_algebraic",
+      "contribution_class": "new_corollary_relative_to_baseline",
+      "statement_summary": "Parameter differentiation gives every repeated pole; partial fractions give every rational function of cotangent bounded at infinity and with no real pole.",
+      "inputs": [
+        "RES-01"
+      ],
+      "formal_proof_assistant_checked": false,
+      "scope_and_limitations": "Ordinary convergence when the repeated-pole order exceeds the argument-derivative order. No closure claim for arbitrary complex powers."
+    },
+    {
+      "id": "RES-03",
+      "title": "Continuous-order transform and exact finite-part conversion",
+      "section_file": "sections/03_resolvent.tex",
+      "labels": [
+        "res:continuous",
+        "res:continuousformula",
+        "res:anomaly"
+      ],
+      "proof_status": "proved_analytic_or_algebraic",
+      "contribution_class": "new_family_relative_to_baseline",
+      "statement_summary": "The established Espinosa-Moll generalized polygamma has an entire-order resolvent transform; specialization to nonnegative integers differs from pointwise finite parts by an explicit harmonic endpoint polynomial.",
+      "inputs": [
+        "Classical Espinosa-Moll generalized polygamma",
+        "RES-01"
+      ],
+      "formal_proof_assistant_checked": false,
+      "scope_and_limitations": "The ordinary integral initially requires Re(v)<1; its explicit transform is entire in v. The special-function definition itself is classical."
+    },
+    {
+      "id": "RES-04",
+      "title": "Compatible continuous and pointwise derivative recurrences",
+      "section_file": "sections/03_resolvent.tex",
+      "labels": [
+        "res:continuous-recurrence",
+        "res:pointwise-recurrence"
+      ],
+      "proof_status": "proved_analytic_or_algebraic",
+      "contribution_class": "new_corollary_relative_to_baseline",
+      "statement_summary": "The continuous transform and pointwise finite-part hierarchy satisfy explicit Riccati-based recurrences, with the latter retaining its endpoint term.",
+      "inputs": [
+        "RES-01",
+        "RES-03",
+        "Riccati identity for the resolvent"
+      ],
+      "formal_proof_assistant_checked": false
+    },
+    {
+      "id": "RES-05",
+      "title": "Balanced Gamma primitive resolvents at every level",
+      "section_file": "sections/03_resolvent.tex",
+      "labels": [
+        "res:balancedcor",
+        "res:balancedmoment",
+        "res:loggammamoment"
+      ],
+      "proof_status": "proved_analytic_or_algebraic",
+      "contribution_class": "new_family_relative_to_baseline",
+      "statement_summary": "Every classically normalized balanced negapolygamma primitive has an ordinary convergent resolvent integral in normalized polylogarithms and order derivatives.",
+      "inputs": [
+        "RES-03",
+        "Classical Espinosa-Moll balanced primitives",
+        "Classical Vardi Barnes identity"
+      ],
+      "formal_proof_assistant_checked": false,
+      "scope_and_limitations": "Balanced primitive normalizations and Barnes identities are inherited/classical. No evaluation of every unbalanced Barnes-G product is asserted.",
+      "source_question": "Exact Resonant Identities, Q9: the specified rational-kernel balanced family is answered."
+    },
+    {
+      "id": "RES-06",
+      "title": "Boundary jump and recovery of Stieltjes functions",
+      "section_file": "sections/03_resolvent.tex",
+      "labels": [
+        "res:jump"
+      ],
+      "proof_status": "proved_analytic_or_algebraic",
+      "contribution_class": "classical_consistency_and_inversion",
+      "statement_summary": "Cauchy boundary values recover the Stieltjes density and classical Hurwitz-polylogarithm connection.",
+      "inputs": [
+        "Classical Cauchy jump formula",
+        "RES-01"
+      ],
+      "formal_proof_assistant_checked": false,
+      "scope_and_limitations": "Included as an exact inversion and phase check, not as a new Hurwitz functional equation."
+    },
+    {
+      "id": "HARM-01",
+      "title": "Nonpositive-index deletion at any position",
+      "section_file": "sections/04_harmonic_reduction.tex",
+      "labels": [
+        "harm:local",
+        "harm:interior",
+        "harm:top",
+        "harm:bottom",
+        "harm:singleton"
+      ],
+      "proof_status": "proved_analytic_or_algebraic",
+      "contribution_class": "new_extension_relative_to_baseline",
+      "statement_summary": "Every fixed nonpositive index can be eliminated at any depth and position using finite Bernoulli shifts, for arbitrary right-half-plane endpoints and all remaining spectral indices.",
+      "inputs": [
+        "Classical Faulhaber formula",
+        "Inherited entire relative harmonic interpolant",
+        "Direct deconcatenation cancellation"
+      ],
+      "formal_proof_assistant_checked": false,
+      "scope_and_limitations": "Only remaining free indices may be differentiated; transverse derivatives of a fixed eliminated index are not licensed."
+    },
+    {
+      "id": "HARM-02",
+      "title": "Canonical gap-polynomial normal form",
+      "section_file": "sections/04_harmonic_reduction.tex",
+      "labels": [
+        "harm:normalform",
+        "harm:normalform-eq",
+        "harm:gaps"
+      ],
+      "proof_status": "proved_analytic_or_algebraic",
+      "contribution_class": "new_extension_relative_to_baseline",
+      "statement_summary": "A word with fixed nonpositive indices has a finite polynomial-coefficient reduction to the surviving free orders; all deletion orders give the same universal coefficient polynomials with an explicit degree budget.",
+      "inputs": [
+        "HARM-01",
+        "Polynomial uniqueness on a Zariski-dense finite-interval lattice"
+      ],
+      "formal_proof_assistant_checked": false,
+      "scope_and_limitations": "Uniqueness is for the specified universal polynomial normal form, not minimal arithmetic depth or analytic interpolation from integer endpoints."
+    },
+    {
+      "id": "HARM-03",
+      "title": "Analytic Lerch generator for every zero decoration",
+      "section_file": "sections/04_harmonic_reduction.tex",
+      "labels": [
+        "harm:Lerch",
+        "harm:LerchMellin",
+        "harm:zerogenerator",
+        "harm:diagonalzero",
+        "harm:Lerchprimitive"
+      ],
+      "proof_status": "proved_analytic_or_algebraic",
+      "contribution_class": "new_family_relative_to_baseline",
+      "statement_summary": "All zero blocks around one free order sum to a convergent bivariate generating function through a single entire-order endpoint Lerch difference.",
+      "inputs": [
+        "HARM-02",
+        "Classical Lerch and Mellin identities"
+      ],
+      "formal_proof_assistant_checked": false,
+      "scope_and_limitations": "Holomorphic for |t|<2*pi and entire in the free order; a sufficient bivariate domain is |u|,|v|<1/2. No minimal multivariate-free-order kernel is claimed."
+    },
+    {
+      "id": "HARM-04",
+      "title": "One-free-order Gamma, polygamma, and Stieltjes consequences",
+      "section_file": "sections/04_harmonic_reduction.tex",
+      "labels": [
+        "harm:onefree",
+        "harm:jets",
+        "harm:exampleone",
+        "harm:examplejet"
+      ],
+      "proof_status": "proved_analytic_or_algebraic",
+      "contribution_class": "new_applications_of_inherited_specializations",
+      "statement_summary": "Every one-free-order word and its free-order derivatives reduce finitely to Hurwitz differences, including explicit Gamma and Stieltjes resonant values.",
+      "inputs": [
+        "HARM-01",
+        "HARM-02",
+        "Classical Hurwitz specializations"
+      ],
+      "formal_proof_assistant_checked": false
+    },
+    {
+      "id": "HARM-05",
+      "title": "Normalized polynomial endpoint primitives and Stieltjes moments",
+      "section_file": "sections/04_harmonic_reduction.tex",
+      "labels": [
+        "harm:Pfinite",
+        "harm:Stieltjesmoments",
+        "harm:Stieltjesfinite",
+        "harm:d0",
+        "harm:d1"
+      ],
+      "proof_status": "proved_analytic_or_algebraic",
+      "contribution_class": "normalized_restatement_and_endpoint_extension",
+      "statement_summary": "A fully indexed arbitrary-endpoint version of established polynomial Hurwitz integration and Stieltjes coefficient extraction, with the additive normalization fixed.",
+      "inputs": [
+        "Espinosa-Moll, On Some Integrals Involving the Hurwitz Zeta Function: Part 2, Theorem 2.1 and Example 2.2",
+        "Canonical 07-integration.tex, stieltjes:sec:moments, stieltjes:thm:transform, stieltjes:thm:moment"
+      ],
+      "formal_proof_assistant_checked": false,
+      "scope_and_limitations": "Not a new integration principle; the existing canonical and classical attribution must be preserved."
+    },
+    {
+      "id": "QTR-01",
+      "title": "Elementary polar normalization and source restrictions",
+      "section_file": "sections/05_tornheim.tex",
+      "labels": [
+        "qtr:polar",
+        "qtr:axis",
+        "qtr:Euler"
+      ],
+      "proof_status": "proved_analytic_or_algebraic",
+      "contribution_class": "inherited_restatement",
+      "statement_summary": "The holomorphic remainder R, its exact C-axis, and Euler-plane relation are reproduced to state the new higher-order results consistently.",
+      "inputs": [
+        "Independent Orders and Exact Reductions, Section 3"
+      ],
+      "formal_proof_assistant_checked": false,
+      "scope_and_limitations": "These analytic identities and the existing cubic classification are not claimed as new here."
+    },
+    {
+      "id": "QTR-02",
+      "title": "Every quartic Tornheim direction in three coordinates",
+      "section_file": "sections/05_tornheim.tex",
+      "labels": [
+        "qtr:constraints",
+        "qtr:quartic",
+        "qtr:quarticformula"
+      ],
+      "proof_status": "proved_analytic_or_algebraic",
+      "contribution_class": "new_extension_relative_to_baseline",
+      "statement_summary": "All admissible fourth directional derivatives reduce to the diagonal fourth derivative Lambda, a Gamma-series coordinate U, a mixed polylogarithmic coordinate Xi, and ordinary zeta derivatives.",
+      "inputs": [
+        "QTR-01",
+        "Degree-three coefficient extraction"
+      ],
+      "formal_proof_assistant_checked": false,
+      "scope_and_limitations": "Requires (a+c)(b+c) nonzero. Three is a coordinate count in the named formal relation space, not arithmetic independence.",
+      "source_question": "Independent Orders Section 7 Question 2 and Cubic Harmonic research problem 4: quartic directional layer answered."
+    },
+    {
+      "id": "QTR-03",
+      "title": "Explicit convergent mixed coordinate",
+      "section_file": "sections/05_tornheim.tex",
+      "labels": [
+        "qtr:Xiprop",
+        "qtr:Xi",
+        "qtr:boundarymixed"
+      ],
+      "proof_status": "proved_analytic_or_algebraic",
+      "contribution_class": "new_convergent_representation_relative_to_baseline",
+      "statement_summary": "Xi=R_AAB(0) is represented by an ordinary absolutely convergent integral of polylogarithmic order derivatives plus a fully explicit elementary correction.",
+      "inputs": [
+        "QTR-01",
+        "Classical Jonquiere expansion"
+      ],
+      "formal_proof_assistant_checked": false,
+      "scope_and_limitations": "This fixes a convergent representative; it does not evaluate Xi in a prescribed finite standard-constant algebra."
+    },
+    {
+      "id": "QTR-04",
+      "title": "The Gamma coordinate used by quartic rays",
+      "section_file": "sections/05_tornheim.tex",
+      "labels": [
+        "qtr:U"
+      ],
+      "proof_status": "proved_analytic_or_algebraic",
+      "contribution_class": "inherited_specialization",
+      "statement_summary": "U=R_AAA(0) is the j=3 specialization of the source boundary-jet theorem involving a convergent logarithmic Gamma remainder series.",
+      "inputs": [
+        "Independent Orders, boundary-germ and boundary-jet theorem"
+      ],
+      "formal_proof_assistant_checked": false,
+      "scope_and_limitations": "The Gamma moment specialization is explicitly inherited, not a separate new identity claim."
+    },
+    {
+      "id": "QTR-05",
+      "title": "Quartic cyclic elimination",
+      "section_file": "sections/05_tornheim.tex",
+      "labels": [
+        "qtr:cyclicquartic",
+        "qtr:example"
+      ],
+      "proof_status": "proved_analytic_or_algebraic",
+      "contribution_class": "new_corollary_relative_to_baseline",
+      "statement_summary": "Every admissible cyclic quartic combination removes both additional coordinates and all fourth zeta derivatives at -1, leaving one diagonal coordinate and explicit zeta derivatives at 0.",
+      "inputs": [
+        "QTR-02"
+      ],
+      "formal_proof_assistant_checked": false,
+      "scope_and_limitations": "Individual cyclic restrictions require all pairwise sums of the directions to be nonzero."
+    },
+    {
+      "id": "QTR-06",
+      "title": "Exact homogeneous kernel and formal dimensions",
+      "section_file": "sections/05_tornheim.tex",
+      "labels": [
+        "qtr:kernel",
+        "qtr:kernelform",
+        "qtr:dimension"
+      ],
+      "proof_status": "proved_analytic_or_algebraic",
+      "contribution_class": "new_formal_relation_space_classification",
+      "statement_summary": "Under the named symmetry, C-axis and Euler-plane relations, every degree-d freedom has a unique S,Q polynomial form, with dimension floor(d/2)+floor(d^2/4).",
+      "inputs": [
+        "QTR-01",
+        "Polynomial divisibility and exact finite-dimensional algebra"
+      ],
+      "formal_proof_assistant_checked": false,
+      "scope_and_limitations": "Does not impose every known or possible Tornheim functional relation and does not prove numerical period independence.",
+      "source_question": "Independent Orders higher directional and cancellation questions: formal quotient component answered."
+    },
+    {
+      "id": "QTR-07",
+      "title": "All-order cyclic image, factorization, and fifth-order obstruction",
+      "section_file": "sections/05_tornheim.tex",
+      "labels": [
+        "qtr:cyclicimage",
+        "qtr:factorization",
+        "qtr:J",
+        "qtr:allcyclic"
+      ],
+      "proof_status": "proved_analytic_or_algebraic",
+      "contribution_class": "new_formal_relation_space_classification",
+      "statement_summary": "The cyclic freedom is ABC times all symmetric degree-(d-2) polynomials; its derivative-order-n dimension is floor((n^2+3)/12). An explicit fifth-order deformation is invisible on the diagonal.",
+      "inputs": [
+        "QTR-06",
+        "Holomorphic cyclic cancellation and coordinate-plane divisibility"
+      ],
+      "formal_proof_assistant_checked": false,
+      "scope_and_limitations": "The fifth-order obstruction concerns inference from the named relations and diagonal data, not an impossibility theorem for additional analytic relations."
+    }
+  ],
+  "existing_statuses_to_preserve": [
+    {
+      "id": "STATUS-S4",
+      "status": "proved_in_baseline_unchanged",
+      "canonical_labels": [
+        "s4proof:thm:s4",
+        "gaussian:thm:S4",
+        "gaussian:conj:S4"
+      ],
+      "canonical_file": "Analysis/Polylogarithms/docs/manuscript/chapters/04-S4-proof.tex",
+      "instruction": "Preserve the proved status and existing compatibility labels, including the historical alias containing conj."
+    },
+    {
+      "id": "STATUS-S6",
+      "status": "conjectural_unchanged",
+      "canonical_labels": [
+        "cycloquot:conj:S6",
+        "cycloquot:eq:S6"
+      ],
+      "canonical_file": "Analysis/Polylogarithms/docs/manuscript/chapters/04-cyclotomic-quotients.tex",
+      "instruction": "This package neither proves nor refutes the current S6 numerical period identity."
+    },
+    {
+      "id": "STATUS-S8-REVISED",
+      "status": "conjectural_unchanged",
+      "canonical_labels": [
+        "s8new:conj:S8",
+        "s8new:eq:formula"
+      ],
+      "canonical_file": "Analysis/Polylogarithms/docs/manuscript/chapters/04-S8-candidate.tex",
+      "instruction": "Keep the revised S8 candidate distinct from the earlier rejected coefficient vector; this package proves neither truth nor falsity."
+    },
+    {
+      "id": "STATUS-S8-OLD",
+      "status": "rejected_in_baseline_unchanged",
+      "canonical_labels": [
+        "research:prop:S8-rejected"
+      ],
+      "canonical_file": "Analysis/Polylogarithms/docs/manuscript/chapters/10-discovery.tex",
+      "instruction": "Preserve the earlier exact rejection. Do not transfer it to the revised candidate."
+    },
+    {
+      "id": "STATUS-S6-SEARCH",
+      "status": "formal_obstruction_scope_unchanged",
+      "source_archive": "ProveIt_Exact_Resonant_Identities_2026-10-11.zip",
+      "instruction": "The inherited complete Cayley-ideal obstruction retains its fixed extra relation family. The interrupted larger modular search is not a rank or nonmembership theorem. Neither is a period nonvanishing theorem."
+    }
+  ],
+  "open_boundaries": [
+    "No evaluation of Lambda or Xi in a prescribed finite standard-constant algebra.",
+    "No arithmetic independence of Tornheim, harmonic, or Stieltjes coordinates.",
+    "No universal closure theorem for arbitrary nonrational cotangent kernels.",
+    "No general minimal generating kernel with several independent free harmonic orders.",
+    "No transverse differentiation of a fixed eliminated nonpositive index.",
+    "No proof or refutation of S6 or revised S8."
+  ],
+  "label_validation": {
+    "validated_at_utc": "2026-10-11T01:23:51Z",
+    "all_claim_labels_found_in_delivered_section_modules": true,
+    "all_preserved_status_labels_found_in_pinned_canonical_sources": true,
+    "claim_count": 24,
+    "referenced_claim_label_count": 67,
+    "section_files": [
+      "sections/02_harmonic_parity.tex",
+      "sections/03_resolvent.tex",
+      "sections/04_harmonic_reduction.tex",
+      "sections/05_tornheim.tex"
+    ]
+  },
+  "independent_reviews": [
+    "provenance/reviews/harmonic_cross_review.txt",
+    "provenance/reviews/harmonic_parity_cross_review.txt",
+    "provenance/reviews/resolvent_independent_review.txt"
+  ],
+  "source_snapshot": "provenance/SOURCE_SNAPSHOT.json",
+  "verification_records": "provenance/VERIFICATION_RECORDS.json"
+}

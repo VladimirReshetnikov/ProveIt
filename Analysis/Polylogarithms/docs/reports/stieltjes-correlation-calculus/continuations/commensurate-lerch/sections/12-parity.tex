@@ -1,0 +1,100 @@
+\section{Universal parity identities beyond commensurate scales}
+\label{clc:sec:parity}
+
+At negative integer total orders the resolvent power becomes a
+polynomial. A local residue at zero then yields exact identities
+without a common period. Put
+\begin{equation}\label{clc:eq:Bq}
+ B_{\bq}(z)=z^rG_{\bq}(z)
+       =\prod_{j=1}^r\frac{\pi z/q_j}{\sin(\pi z/q_j)}.
+\end{equation}
+This is an even analytic function near zero with $B_{\bq}(0)=1$.
+
+\begin{theorem}[Reflection-residue parity law]
+\label{clc:thm:parity}
+Let $q_j>0$ be arbitrary and let $N\ge0$ be an integer. Then
+\begin{align}
+ &\CC_{\bq,A}(-N;0)-(-1)^{r+N}\CC_{\bq,-A}(-N;0)\notag\\
+ &\hspace{18mm}=[z^{r-1}](z+A)^N B_{\bq}(z).
+ \label{clc:eq:parity}
+\end{align}
+The two ordinary integrals are covered simultaneously when
+$|\Rea A|<q_*$. At these integer orders each side is a polynomial in
+$A$, so the identity also gives their polynomial continuation to all $A$.
+In particular, if $r+N$ is odd,
+\begin{equation}\label{clc:eq:parity-central}
+ \boxed{\displaystyle
+ \CC_{\bq,0}(-N;0)=\frac12[z^{r-N-1}]B_{\bq}(z).}
+\end{equation}
+A coefficient with negative index is zero.
+\end{theorem}
+\begin{proof}
+At $W=-N$, the contour integrand is
+$G_{\bq}(p)(p+A)^N$. Choose $0<c<q_*$. At integer order the expression
+is a polynomial in $A$, so the contour can be considered independently
+of any branch of a resolvent power. Move the vertical contour from $c$
+to $-c$. The only pole crossed is zero; horizontal edges vanish by
+exponential decay. If $I_c(A)$ denotes the integral on $\Rea p=c$,
+\[
+ I_c(A)-I_{-c}(A)=\Res_{p=0}G_{\bq}(p)(p+A)^N.
+\]
+Since $G_{\bq}(-p)=(-1)^rG_{\bq}(p)$, changing variable $p\mapsto-p$
+in the second vertical integral gives
+$I_{-c}(A)=(-1)^{r+N}I_c(-A)$.
+The residue on the right is exactly
+$[z^{r-1}](z+A)^NB_{\bq}(z)$. On the common ordinary-integral domain,
+$I_c(\pm A)=\CC_{\bq,\pm A}(-N;0)$, proving
+\eqref{clc:eq:parity}; the polynomial continuation follows at once.
+At $A=0$ and $r+N$ odd, the left side is twice the desired value,
+giving \eqref{clc:eq:parity-central}.
+\end{proof}
+
+\subsection{Odd-depth logistic integrals}
+For $r=2h+1$ and $N=0$, the theorem gives
+\begin{equation}\label{clc:eq:odd-depth}
+ K_{\bq}(0)=\frac12[z^{2h}]
+                   \prod_{j=1}^{2h+1}\frac{\pi z/q_j}{\sin(\pi z/q_j)}.
+\end{equation}
+Every such value is a homogeneous polynomial in the inverse squared
+scales with rational coefficients times $\pi^{2h}$.
+To see both the rationality and the exact construction, use
+\[
+ \frac{u}{\sin u}=1+\frac{u^2}{6}+\frac{7u^4}{360}+\cdots,
+\]
+whose coefficients are rational by formal division of the sine series.
+The first two nontrivial cases are
+\begin{align}
+ K_{(q_1,q_2,q_3)}(0)
+   &=\frac{\pi^2}{12}\sum_{j=1}^3q_j^{-2},
+ \label{clc:eq:universal3}\\
+ K_{(q_1,\ldots,q_5)}(0)
+   &=\frac{\pi^4}{720}
+       \left(7\sum_{j=1}^5q_j^{-4}
+               +10\sum_{i<j}q_i^{-2}q_j^{-2}\right).
+ \label{clc:eq:universal5}
+\end{align}
+Equation \eqref{clc:eq:universal3} is the ordinary double integral
+\eqref{clc:eq:intro-cubic}. For $(q_1,q_2,q_3)=(1,\sqrt2,\sqrt3)$,
+for instance, its value is $11\pi^2/72$, despite the absence of a
+common scale period. For $(1,2,3)$ it recovers $49\pi^2/432$ from the
+explicit Laurent table.
+
+More generally,
+\begin{equation}\label{clc:eq:negative-examples}
+ \CC_{(q_1,q_2),0}(-1;0)=\frac12,\qquad
+ \CC_{(q_1,q_2,q_3),0}(-2;0)=\frac12.
+\end{equation}
+If $r+N$ is odd and $N>r-1$, the value is exactly zero.
+Such identities involve negative-order Lerch or polylogarithmic
+profiles, which can change sign, and so do not contradict positivity
+of the zero-order logistic convolution.
+
+At nonzero $A$, equation \eqref{clc:eq:parity} supplies a finite
+reflection identity instead of an evaluation of each side separately.
+For example, at $r=2$, $N=2$ the residue is $2A$, so
+\[
+ \CC_{(q_1,q_2),A}(-2;0)-\CC_{(q_1,q_2),-A}(-2;0)=2A.
+\]
+This exact reflection is independent of the two scales. The theorem
+makes no assertion that the complementary-parity central values have
+a comparable universal polynomial form.

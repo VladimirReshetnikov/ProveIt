@@ -1,0 +1,98 @@
+SOURCE AUDIT AND DISTINCT CONTRIBUTION
+
+Pinned repository: c2cb285b64273e4cb2c8d7a03c68a4a99ac812d4.
+The 15, 11, and 18 TeX sources inspected from Independent Orders,
+Cubic Harmonic Mixed Orders, and Exact Resonant Identities respectively
+were compared byte-for-byte against the corresponding ZIPs at the pinned
+repository checkout. Every compared source agreed.
+
+1. Gaussian conjectures.
+
+The canonical labels cycloquot:conj:S6 and s8new:conj:S8 remain
+conjectural. The earlier rejected S8 vector is a different vector.
+No new numerical search or functional proof of either candidate was
+attempted in this contribution.
+
+Independent Orders' modular S6 search was interrupted before exhausting
+the matrix. It establishes neither row membership nor nonmembership.
+The stronger Exact Resonant report proves nonmembership in the complete
+Cayley ideal plus its particular enumerated extra row family. That does
+not cover arbitrary new double-shuffle, distribution, or functional
+relations and is not a period nonvanishing theorem.
+
+2. Existing correction claims.
+
+No false theorem was found in the selected incoming Tornheim claims.
+The incoming corrections to Tin's equation (22), the local polylog
+estimates of arXiv:2510.10093v1, and the rejected older S8 vector were
+already reported. They must not be advertised as new discoveries in
+the present article.
+
+3. Precisely answered questions.
+
+Independent Orders, Section 7, Question 2: quartic and higher directional
+layers. Cubic Harmonic Mixed Orders, Section 7, research problem 4:
+complete quartic directional layer.
+
+The new theorem gives every quartic derivative in the three coordinates
+Lambda = d^4/dt^4 T(t,t,t)|0,
+U = R_AAA(0), Xi = R_AAB(0),
+where the elementary polar normalization R is inherited from Independent
+Orders. U is a j=3 specialization of an existing convergent Gamma moment
+formula. Xi receives a new explicit absolutely convergent subtracted
+polylogarithmic integral. All other quartic coefficients are ordinary
+zeta derivatives at 0 and -1.
+
+Independent Orders, Section 7, Question 3: systematic cancellation.
+The cubic cyclic cancellation extends to quartic:
+
+  sum_cyclic W_(1,2,3)^(4)(0) - 36 Lambda
+    = -184 log(2 pi) zeta'''(0)
+      + 156 zeta''(0)^2 - 386 zeta''''(0).
+
+At every remainder degree d >= 2 the homogeneous kernel of the named
+symmetry, C-axis, and Euler-plane constraints is precisely
+
+  A(A-C) S(A,C) + B(B-C) S(B,C) + AB Q(A,B,C),
+
+with S symmetric homogeneous degree d-2 and Q homogeneous degree d-2
+symmetric in A,B. Its dimension is floor(d/2)+floor(d^2/4).
+The cyclic image is ABC times fully symmetric degree d-2 polynomials,
+with dimension floor(((d+1)^2+3)/12). An explicit deformation at d=4
+shows that diagonal fifth-derivative data cannot determine all cyclic
+fifth derivatives using these relations alone.
+
+4. Scope.
+
+All dimensions refer exactly to the specified formal relation space.
+No arithmetic independence of Lambda, U, Xi, or any existing coordinates
+is asserted. No global priority claim is made. The all-order theorem
+does not impose every possible Tornheim functional relation.
+
+5. Files and verification.
+
+quartic_tornheim.tex: self-contained article section, qtr-prefixed labels.
+quartic_references.tex: bibliography entries needed by the section.
+check_quartic_tornheim.py: exact polynomial and constraint-matrix checks;
+                          optional independent Mellin diagnostics.
+check_quartic_tornheim.json: completed results.
+
+At 70 digits, K=68 integrated Jonquiere terms, N=165 upper-endpoint
+incomplete-Gamma cutoff, and a 16-node finite-difference formula with
+step 0.000015, asymmetric ray discrepancies were:
+
+  (1,2,3):  3.739835213e-37
+  (2,3,1):  2.075573689e-38
+  (1,-2,3): 2.871059279e-39
+
+The first attempted step 0.00015 gave an approximately 3.74e-25
+discrepancy in the first ray due to finite-difference truncation; reducing
+the step tenfold reduced that discrepancy by the predicted 10^12 scale.
+Only the completed tighter-step run is stored as the final result.
+Floating-point diagnostics are not interval certificates.
+
+6. Useful inspected web source.
+
+https://dlmf.nist.gov/25.12, equation 25.12.12 is the primary source for
+the local Jonquiere expansion. Search service reference turn13view0.
+The parent must open this URL itself if using a chat citation from it.

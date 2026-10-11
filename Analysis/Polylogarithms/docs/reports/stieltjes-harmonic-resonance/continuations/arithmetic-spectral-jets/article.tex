@@ -1,0 +1,97 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=26mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{booktabs,longtable,array,enumitem,xcolor,xurl,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!40!black,citecolor=blue!40!black,urlcolor=blue!40!black]{hyperref}
+\usepackage{bookmark,needspace}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}\newtheorem{example}[theorem]{Example}
+\newcommand{\C}{\mathbb C}\newcommand{\N}{\mathbb N}\newcommand{\Z}{\mathbb Z}
+\newcommand{\D}{\mathscr D}\newcommand{\calH}{\mathcal H}\newcommand{\calR}{\mathcal R}
+\newcommand{\calJ}{\mathcal J}\newcommand{\calZ}{\mathcal Z}
+\newcommand{\dd}{\,\mathrm d}\newcommand{\Rea}{\operatorname{Re}}
+\DeclareMathOperator{\Li}{Li}\DeclareMathOperator{\FP}{FP}\DeclareMathOperator{\Res}{Res}
+\newcommand{\coeff}[2]{[#1]#2}
+\newcommand{\pin}{\texttt{3fdd6cc447fac0731801588723109ec3b2e21cec}}
+\setlength{\parskip}{4pt}\setlength{\parindent}{15pt}\setlength{\emergencystretch}{3em}
+\allowdisplaybreaks[2]
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Arithmetic spectral jets}\fancyhead[R]{\small ProveIt continuation}
+\fancyfoot[C]{\thepage}\renewcommand{\headrulewidth}{.3pt}
+\hypersetup{pdftitle={Arithmetic Spectral Jets: Stieltjes Residues, Gamma Reciprocity, and Polylogarithmic Untwisting},pdfauthor={Research continuation prepared for Vladimir Reshetnikov},pdfsubject={Exact identities for arithmetic multiplicities and higher-pole spectral finite parts}}
+\begin{document}
+\begin{titlepage}
+\centering
+{\small PROVEIT / ANALYSIS / POLYLOGARITHMS\par}
+\vspace{18mm}
+{\LARGE\bfseries Arithmetic Spectral Jets\par}
+\vspace{6mm}
+{\Large Stieltjes residues, Gamma reciprocity,\par
+and polylogarithmic untwisting\par}
+\vspace{13mm}
+{\large Research continuation prepared for Vladimir Reshetnikov\par}
+\vspace{3mm}
+{\small Mathematical derivations and computational checks assisted by ChatGPT\par}
+\vspace{5mm}
+{10 October 2026\par}
+\vspace{10mm}
+\begin{abstract}
+\noindent
+The all-order local calculus for polynomial spectral multiplicities extends to arithmetic
+weights, but ordinary derivatives at the origin generally cease to exist. We prove a
+finite-pole transfer theorem that expresses every normalized Laurent jet as a polynomial
+in the factor exponents. Its terms beyond the ordinary Taylor degree are determined
+entirely by the principal parts of the base Dirichlet series. This answers the explicitly
+posed arithmetic-multiplicity extension for quasi-polynomial weights and for products
+of Hurwitz zeta functions, including divisor multiplicities and several distinct poles.
+
+For multiplicative Hurwitz lattices, all local coefficients are finite polynomials in
+generalized Stieltjes constants. Alternation gives exact algebraic identities between
+Laurent jets: a six-term first-jet identity for double-divisor multiplicities equals a
+Vandermonde divided by nine. A convergent centered Gamma series is symmetric in two
+independent Hurwitz parameters; its derivatives and anchored primitive yield reciprocal
+polygamma and negative-zeta-derivative identities. Generalized harmonic numbers describe
+every higher single-shift jet. Polylogarithmic twists lower the pole order, and a finite,
+explicit Gamma--Stieltjes compensation restores commutation of Abel untwisting with
+Laurent coefficient extraction, at every order and for every polynomial multiplicity.
+
+All theorem statements have ordinary analytic or algebraic proofs. Exact finite
+regression tests and independent high-precision diagnostics are supplied separately.
+The first multiplicative anomaly and the classical special-function ingredients retain
+their attribution. No claim of worldwide priority, arithmetic independence, or
+proof-assistant formalization is made.
+\end{abstract}
+\vfill
+\begin{minipage}{.94\textwidth}\small\raggedright
+\textbf{Source anchor.} Targeted repository inspection is pinned to\
+\pin.\par
+\textbf{Scope.} The report addresses question Q10 in the existing
+\emph{Resonant Gamma Jets and Directional Zeta Identities} continuation. It does not settle the Gaussian
+$S_6$ conjecture or the distinct current $S_8$ conjecture.
+\end{minipage}
+\end{titlepage}
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+\input{sections/01-scope}
+\input{sections/02-transfer}
+\input{sections/03-local}
+\input{sections/04-arithmetic}
+\input{sections/05-hurwitz}
+\input{sections/06-alternants}
+\input{sections/07-gamma}
+\input{sections/08-harmonic}
+\input{sections/09-twists}
+\input{sections/10-audit}
+\clearpage
+\input{references}
+\end{document}

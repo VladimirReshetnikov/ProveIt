@@ -1,0 +1,158 @@
+\section{Source audit, corrections of interpretation, and integration}
+\label{audit:section}
+
+\subsection{What the audit establishes}
+
+The targeted review found no false theorem in the selected incoming
+Tornheim statements or in the harmonic continuation used here. It
+did find an attribution overlap that matters for presenting this
+contribution: the canonical manuscript already gives the polynomial
+Hurwitz transform and the complete-homogeneous coefficient mechanism
+for all Stieltjes moments. The precise locations are
+\src{chapters/07-integration.tex},
+\src{stieltjes:sec:moments},
+\src{stieltjes:thm:transform}, and
+\src{stieltjes:thm:moment} \cite{source:manuscript}.
+Accordingly, Corollary~\ref{harm:Stieltjesmoments} is classified as a
+fully indexed arbitrary-endpoint restatement and extension, useful
+for the new harmonic reduction, rather than a new general principle.
+
+The formal difference-equation input, the Espinosa--Moll generalized
+polygamma, and the classical Barnes identity are also credited
+explicitly. Likewise, the boundary Gamma representation for $U$ in
+\eqref{qtr:U} is an existing theorem specialized to the derivative
+order needed here. These distinctions prevent an exact consequence
+from being counted twice as a separate research discovery.
+
+The reviewed source files were taken from the fixed commit stated in
+Section~\ref{scope:section}. As an additional provenance check, the
+44 inspected TeX files from the three newest incoming reports were
+compared byte-for-byte with the corresponding ZIP contents in that
+checkout; every comparison agreed. The packaged manifest records
+the nine archive names, their Git blob identifiers, and SHA-256
+hashes. An integration based on a later repository revision should
+reconcile later changes explicitly.
+
+\subsection{Current conjectures must retain their current labels}
+
+The canonical conjectures
+\src{cycloquot:conj:S6} and \src{s8new:conj:S8}
+remain conjectural. The previously rejected $S_8$ coefficient vector
+is a different candidate from the revised one. A rejection of the
+former is not a rejection of the latter, and a numerical residual
+for either candidate is not an analytic proof.
+
+Two different computational statements in the incoming collection
+also need to remain separate. The enlarged modular search reported
+in \emph{Independent Orders} was interrupted before exhausting its
+matrix; that record alone establishes neither membership nor
+nonmembership. The later \emph{Exact Resonant Identities} report
+establishes an exact obstruction for the complete Cayley ideal
+together with its specifically enumerated additional row family.
+That is a valid statement about the stated relation space. It does
+not exclude additional distribution, double-shuffle, or functional
+relations, and it is not a nonvanishing theorem for the actual
+period \cite{qtr:Independent,ghp:ExactResonant}.
+
+The analogous qualification is essential for the present
+Theorem~\ref{qtr:kernel}: the formal dimension is proved under
+symmetry, the $C$-axis identity, and the Euler-plane identity.
+Its exactness within that system does not imply arithmetic
+independence, nor does it claim to have imposed every possible
+Tornheim functional equation.
+
+The earlier source corrections concerning Tin's equation (22),
+local polylogarithm estimates, and the rejected old $S_8$ vector
+were already reported before this contribution. They are not
+advertised here as newly discovered errors.
+
+\subsection{Specific normalization rules supported by the new proofs}
+
+The following are concrete instructions for using the formulas.
+They also identify the corrections required if one extends the
+existing calculus by a naive parameter substitution.
+
+\paragraph{Retain the entire resonant amplitude.}
+For the resolvent family the local term is
+$r_p(z)A_p(s)x^{s-1}$, with
+$A_p(s)=\prod_{j=1}^p(s-j)$. Its continued integral is
+$r_pA_p(s)/s$. Subtracting only its residue at zero leaves
+incorrect regular coefficients. The correct expression is
+\eqref{res:completion}, with the entire polynomial amplitude
+retained. At $p=1$, failure to do so misses the explicit constant
+$1$ in \eqref{res:explicitcheck}. This is a proved correction
+to that tempting extension, not an allegation that the pinned
+source already contains the incorrect resolvent formula.
+
+\paragraph{Keep the endpoint coordinate.}
+All endpoint finite parts in the article use $x$, with the
+cutoff specified in Section~\ref{res:section}. A nonlinear
+endpoint substitution can change the finite constant of a
+logarithmic divergence. The resolvent's spectral answer is
+converted back to this stated coordinate before coefficient
+extraction. Cauchy boundary values in \eqref{res:jump} are
+asserted for the ordinary $p=0$ integral; no unproved transport
+of divergent higher-derivative finite parts is implicit.
+
+\paragraph{Do not differentiate a fixed index as though it were free.}
+The deletion theorem is proved on the hyperplane where a
+specified index equals $-m$. It permits every derivative in
+the remaining independent free indices, because it is an
+entire identity in those indices. It does not determine the
+normal derivative transverse to the eliminated-index
+hyperplane. That additional information is a separate research
+problem.
+
+\paragraph{Keep both Bernoulli endpoint conventions.}
+The strict-gap deletion rule uses $B_1(0)=-1/2$ and
+$B_1(1)=1/2$. Identifying them incorrectly deletes the last
+term in
+\[
+ \mathcal H(s,0,t)=\mathcal H(s-1,t)
+                 -\mathcal H(s,t-1)-\mathcal H(s,t).
+\]
+The verification suite deliberately corrupts that sign and
+confirms that an independent finite nested sum detects it.
+
+\paragraph{Restrict individual Tornheim rays before specialization.}
+The individual fourth derivative in \eqref{qtr:quarticformula}
+requires $(a+c)(b+c)\ne0$. A sum of cyclic germs can extend
+across planes where individual terms are singular. The
+holomorphic cyclic identity \eqref{qtr:J} has that extension;
+its representation as a sum of individually restricted
+derivatives is used only when every pairwise direction sum
+is nonzero.
+
+\paragraph{Specify what is centered and what is simultaneous.}
+The involution in Theorem~\ref{ghp:thm:classification} changes
+all even harmonic tails simultaneously. It does not require
+each tail to occur to an even power separately. For example
+$(\zeta(2)-H_n^{(2)})(\zeta(4)-H_n^{(4)})$ qualifies.
+Conversely, a raw even-order harmonic number does not qualify:
+$H_n^{(2)}$ produces the pole $-1/s$ at $s=0$.
+This prevents two opposite misreadings of the classification.
+
+\subsection{Proposed integration into the research collection}
+
+The material separates naturally into four independently
+readable additions: the centered generalized-harmonic
+classification and sums; rational cotangent transforms and
+balanced primitives; arbitrary-depth harmonic deletion and
+the Lerch generator; and quartic and higher Tornheim jets.
+Each has distinct label prefixes in the supplied TeX.
+
+The incoming source questions can be annotated with the exact
+answers in Table~\ref{scope:table}. Q11 receives a complete
+classification. Q8 receives the stated rational sector.
+Q9 receives the balanced primitive ladder for these kernels,
+while a closed formula for every unbalanced Barnes product
+is still open. The quartic directional question receives a
+full normal form, and the all-order question receives an
+exact answer for its specified formal relation system.
+
+No existing conjecture should be promoted to a theorem
+unless it is exactly one of these proved statements.
+The package includes a claim ledger, proposed placement
+notes, source hashes, and separate exact and numerical
+verification records so that this distinction can survive
+later merging and renumbering.

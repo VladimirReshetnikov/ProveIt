@@ -1,0 +1,562 @@
+% Independent research contribution for the parent article.
+% Required packages: amsmath,amssymb,amsthm; ordinary theorem environments.
+% All labels and bibliography keys have qtr: prefix.
+\section{The complete quartic Tornheim layer and the formal jets at every order}
+\label{qtr:section}
+
+The incoming \emph{Independent Orders and Exact Reductions} report
+reduces every cubic directional derivative of the Tornheim function to
+two scalar coordinates and asks for its quartic layer
+\cite{qtr:Independent}. We determine that layer explicitly. Three
+coordinates suffice: the diagonal fourth derivative, one convergent
+logarithmic Gamma moment, and one absolutely convergent integral of
+ordinary polylogarithmic order derivatives. We also determine the exact
+dimension of the homogeneous jet space allowed by the source's symmetry,
+axis, and Euler-plane identities. These are statements about a
+specified formal relation space, not about arithmetic independence of
+the constants.
+
+\subsection{The analytic normalization and its exact restrictions}
+
+Write
+\[
+ T(A,B,C)=\sum_{m,n\ge1}m^{-A}n^{-B}(m+n)^{-C},\qquad
+ L=\log(2\pi),\quad z_j=\zeta^{(j)}(0),\quad
+ y_j=\zeta^{(j)}(-1).
+\]
+The series is initially used only in its domain of absolute
+convergence; elsewhere \(T\) denotes its meromorphic continuation.
+The origin is not a joint regular point. For a direction
+\((a,b,c)\) satisfying \((a+c)(b+c)\ne0\), put
+\[
+ W_{a,b,c}(t)=T(at,bt,ct),
+\]
+where the restriction is formed before continuation to \(t=0\).
+
+The source constructs the unique symmetric holomorphic germ
+\(R(A,B,C)=R(B,A,C)\) such that
+\begin{equation}\label{qtr:polar}
+ T(A,B,C)=\zeta(A)\zeta(B)
+ -\frac{C\zeta(B-1)}{A+C}
+ -\frac{C\zeta(A-1)}{B+C}+C R(A,B,C).
+\end{equation}
+For completeness, Jonqui\`ere's expansion \cite[25.12.12]{DLMF}
+gives this by subtracting the following six local terms from the
+Mellin kernel:
+\begin{align}
+ \mathcal S(A,B;x)={}&
+ \Gamma(1-A)\Gamma(1-B)x^{A+B-2}
+ +\Gamma(1-A)\zeta(B)x^{A-1}
+ +\Gamma(1-B)\zeta(A)x^{B-1}\notag\\
+ &-\Gamma(1-A)\zeta(B-1)x^A
+ -\Gamma(1-B)\zeta(A-1)x^B+\zeta(A)\zeta(B).
+ \label{qtr:S}
+\end{align}
+The subtracted remainder and every fixed parameter derivative are
+normally integrable after multiplication by \(x^{C-1}\) in a
+sufficiently small common polydisc. Before removing the Gamma
+factors the polar terms contain
+\(\Gamma(1-A)/\Gamma(1+C)\). Their difference from \(1\) is
+divisible by \(A+C\), since it vanishes when \(C=-A\).
+This proves that the difference between the resulting polar model
+and \eqref{qtr:polar}, divided by \(C\), is holomorphic.
+
+We will use precisely two functional restrictions of this germ:
+\begin{align}
+ C R(0,0,C)&=\zeta(C-1)-\zeta(C)-\frac5{12},
+ \label{qtr:axis}\\
+ C R(A,0,C)+A R(C,0,A)
+ &=\zeta(A)\zeta(C)-\zeta(A+C)
+ +\frac{\zeta(A)+\zeta(C)}2\notag\\
+ &\quad+\zeta(-1)+\zeta(A-1)+\zeta(C-1).
+ \label{qtr:Euler}
+\end{align}
+The first follows by counting pairs with prescribed sum.
+The second follows from the Euler stuffle formula for
+\(T(A,0,C)+T(C,0,A)\). Both are holomorphic identities near the
+origin. They were proved in the incoming report; their use here
+does not constitute a new proof of the cubic theorem.
+
+\subsection{All quartic directions in three explicit coordinates}
+
+All partial derivatives of \(R\) below are taken at the origin.
+Set
+\[
+ \Lambda=W_{1,1,1}^{(4)}(0),\qquad
+ U=R_{AAA},\qquad \Xi=R_{AAB}.
+\]
+The notation \(\Xi\) distinguishes this new coordinate from the
+several unrelated uses of \(\kappa\) in the source articles.
+
+\begin{lemma}[The degree-three remainder constraints]
+\label{qtr:constraints}
+Write
+\begin{align*}
+ u&=R_{AAA}=R_{BBB},& v&=R_{AAB}=R_{ABB},&
+ w&=R_{AAC}=R_{BBC},\\
+ x&=R_{ABC},& y&=R_{ACC}=R_{BCC},& z&=R_{CCC}.
+\end{align*}
+Then
+\begin{align}
+ z&=\frac{y_4-z_4}{4},&
+ w&=\frac{z_2^2-z_4}{4},&
+ u+3y&=-\frac L2z_3-z_4,\label{qtr:jetconstraints}\\
+ v+x&=\frac{\Lambda+8Lz_3-12z_2^2+16z_4}{24}.
+ \label{qtr:diagonalconstraint}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+The coefficient of \(C^4\) in \eqref{qtr:axis} is \(z/6\),
+and its right-hand side is \((y_4-z_4)/24\). In
+\eqref{qtr:Euler}, the coefficients of \(A^2C^2\) and
+\(A^3C\) are respectively \(w\) and \(u/6+y/2\).
+The corresponding right-hand coefficients are
+\((z_2^2-z_4)/4\) and
+\((z_1z_3-z_4)/6\), where \(z_1=-L/2\).
+This proves \eqref{qtr:jetconstraints}.
+
+On the diagonal, \eqref{qtr:polar} becomes
+\[
+ T(t,t,t)=\zeta(t)^2-\zeta(t-1)+tR(t,t,t).
+\]
+Its fourth derivative is
+\[
+ \Lambda=-z_4-4Lz_3+6z_2^2-y_4
+             +8u+24v+24w+24x+24y+4z.
+\]
+Substituting \eqref{qtr:jetconstraints} leaves
+\(\Lambda=-8Lz_3+12z_2^2-16z_4+24(v+x)\),
+as required.
+\end{proof}
+
+\begin{theorem}[Every quartic Tornheim ray]\label{qtr:quartic}
+For \((a+c)(b+c)\ne0\), the restricted function \(W_{a,b,c}\)
+is holomorphic at zero and
+\begin{align}
+ W_{a,b,c}^{(4)}(0)={}&
+ abc^2\Lambda
+ +4c\bigl(a^3+b^3-c^2(a+b)\bigr)U
+ +12abc(a+b-2c)\Xi\notag\\
+ &-2\bigl(ab(a^2+b^2-4c^2)+c^3(a+b)\bigr)Lz_3\notag\\
+ &+3\bigl(2a^2b^2+c^2(a^2+b^2-4ab)\bigr)z_2^2\notag\\
+ &+\left(-\frac{a^4+b^4}{2}+16abc^2
+        -3c^2(a^2+b^2)-4c^3(a+b)-c^4\right)z_4\notag\\
+ &+\left(c^4-\frac{cb^4}{a+c}-\frac{ca^4}{b+c}\right)y_4.
+ \label{qtr:quarticformula}
+\end{align}
+The scalar \(U\) is given by the convergent Gamma series
+\eqref{qtr:U}; \(\Xi\) is given by the convergent integral
+\eqref{qtr:Xi}. No unevaluated partial derivative of \(T\)
+appears in these two coordinates.
+\end{theorem}
+
+\begin{proof}
+On an admissible ray the two rational polar terms in
+\eqref{qtr:polar} become constant multiples of holomorphic
+one-variable zeta functions, proving the asserted holomorphy.
+The degree-three homogeneous part of \(R\) is
+\[
+ \frac{u}{6}(A^3+B^3)+\frac{v}{2}AB(A+B)
+ +\frac{w}{2}C(A^2+B^2)+xABC
+ +\frac{y}{2}C^2(A+B)+\frac{z}{6}C^3.
+\]
+Therefore the fourth derivative of \eqref{qtr:polar} is
+\begin{align*}
+ &-\frac{a^4+b^4}{2}z_4
+ -2ab(a^2+b^2)Lz_3+6a^2b^2z_2^2
+ -c\left(\frac{b^4}{a+c}+\frac{a^4}{b+c}\right)y_4\\
+ &\qquad+4c\left(u(a^3+b^3)+3vab(a+b)
+ +3wc(a^2+b^2)+6xabc+3yc^2(a+b)+zc^3\right).
+\end{align*}
+Put \(u=U,v=\Xi\) and substitute
+\eqref{qtr:jetconstraints}--\eqref{qtr:diagonalconstraint}.
+Collecting the five ordinary zeta combinations and the three
+retained coordinates gives \eqref{qtr:quarticformula}.
+\end{proof}
+
+\paragraph{A quartic cyclic identity with no additional coordinates.}
+Let \(a+b,a+c,b+c\) all be nonzero and set
+\(e_1=a+b+c\), \(e_2=ab+bc+ca\), \(e_3=abc\).
+Then
+\begin{align}
+ \sum_{\mathrm{cyc}}W_{a,b,c}^{(4)}(0)
+ ={}&e_1e_3\Lambda
+ +(-4e_1^2e_2+8e_2^2+12e_1e_3)Lz_3\notag\\
+ &+(12e_2^2-36e_1e_3)z_2^2\notag\\
+ &+(-2e_1^4+4e_1^2e_2-2e_2^2+24e_1e_3)z_4.
+ \label{qtr:cyclicquartic}
+\end{align}
+Indeed, the cyclic coefficients of \(U\) and \(\Xi\) in
+\eqref{qtr:quarticformula} vanish identically. Pairing the two
+terms with each denominator cancels every \(y_4\) term.
+The remaining polynomial coefficients give the displayed formula.
+For example,
+\begin{equation}\label{qtr:example}
+ W_{1,2,3}^{(4)}(0)+W_{2,3,1}^{(4)}(0)
+ +W_{3,1,2}^{(4)}(0)-36\Lambda
+ =-184Lz_3+156z_2^2-386z_4.
+\end{equation}
+The Euler diagonal supplies an independent elementary check:
+\[
+ W_{1,0,1}^{(4)}(0)
+ =-2Lz_3+3z_2^2-\frac{17}{2}z_4,
+\]
+which follows directly from
+\(T(t,0,t)=(\zeta(t)^2-\zeta(2t))/2\).
+
+More generally, the exact coordinate map
+\[
+ (a,b,c)\longmapsto
+ \bigl(abc^2,\;
+ 4c(a^3+b^3-c^2(a+b)),\;
+ 12abc(a+b-2c)\bigr)
+\]
+gives a sufficient algebraic criterion for finite linear
+combinations of quartic rays to reduce entirely to the ordinary
+zeta derivatives displayed in \eqref{qtr:quarticformula}.
+This criterion is exact in the stated three-coordinate normal
+form. Additional arithmetic relations among the coordinates
+could yield further reductions.
+
+\subsection{Convergent representatives for the two additional coordinates}
+
+Define the Stirling remainder
+\[
+ \rho(n)=\log\Gamma(n+1)-\left(n+\frac12\right)\log n+n
+                 -\frac L2-\frac1{12n}.
+\]
+The source's boundary-germ theorem states, for every \(j\ge0\),
+\[
+ \partial_A^jR(0,0,0)
+ =(-1)^j\sum_{n\ge1}(\log n)^j\rho(n)
+ -y_{j+1}-\frac12z_{j+1}-y_j
+ +\frac{(-1)^j\gamma_j}{12}.
+\]
+Consequently the coordinate needed here is
+\begin{equation}\label{qtr:U}
+ U=-\sum_{n\ge1}(\log n)^3\rho(n)
+                  -y_4-\frac12z_4-y_3-\frac{\gamma_3}{12}.
+\end{equation}
+This is a specialization of an existing result, not a separate
+novel Gamma-moment identity. Absolute convergence follows from
+\(\rho(n)=O(n^{-3})\).
+
+For the genuinely mixed coordinate let
+\[
+ f_j(x)=\left.\partial_s^j\operatorname{Li}_s(e^{-x})\right|_{s=0},
+ \qquad h(x)=\log x+\gamma,\qquad j=1,2.
+\]
+For fixed \(x>0\), the defining series are absolutely convergent:
+\[
+ f_1(x)=-\sum_{n\ge1}(\log n)e^{-nx},\qquad
+ f_2(x)=\sum_{n\ge1}(\log n)^2e^{-nx}.
+\]
+Put
+\begin{align}
+ P(x)={}&\frac{h(x)^3+\zeta(2)h(x)}{x^2}
+ +\frac{z_1(h(x)^2+\zeta(2))+z_2h(x)}{x}\notag\\
+ &-y_1(h(x)^2+\zeta(2))-y_2h(x)+z_1z_2,
+ \label{qtr:P}
+\end{align}
+and define the ordinary absolutely convergent integral
+\begin{equation}\label{qtr:I}
+ I=\int_0^1\frac{f_2(x)f_1(x)-P(x)}{x}\,dx
+                  +\int_1^\infty\frac{f_2(x)f_1(x)}{x}\,dx.
+\end{equation}
+
+\begin{proposition}[Explicit mixed polylogarithmic moment]
+\label{qtr:Xiprop}
+Let \(g=\gamma\), \(h_2=\zeta(2)\), \(h_3=\zeta(3)\), and set
+\begin{align}
+ E={}&-\frac{g^3+gh_2}{2}
+       -\frac{3g^2+h_2}{4}-\frac{3g}{4}-\frac38\notag\\
+ &-(g^2+h_2+2g+2)z_1-(g+1)z_2+gz_1z_2\notag\\
+ &-\frac{g^3+3gh_2+2h_3}{3}y_1
+       -\frac{g^2+h_2}{2}y_2.
+ \label{qtr:E}
+\end{align}
+Then
+\begin{equation}\label{qtr:Xi}
+ \Xi=I+E.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Define the normally convergent subtracted Mellin integral
+\[
+ I(A,B)=\int_0^1
+ \frac{\operatorname{Li}_A(e^{-x})\operatorname{Li}_B(e^{-x})
+                    -\mathcal S(A,B;x)}{x}\,dx
+ +\int_1^\infty
+ \frac{\operatorname{Li}_A(e^{-x})\operatorname{Li}_B(e^{-x})}{x}\,dx.
+\]
+The \(C=0\) specialization of the proof of \eqref{qtr:polar} gives
+the holomorphic identity
+\begin{align}
+ R(A,B,0)={}&I(A,B)
+ +\frac{\Gamma(1-A)\Gamma(1-B)}{A+B-2}
+ +\frac{\Gamma(1-A)\zeta(B)}{A-1}
+ +\frac{\Gamma(1-B)\zeta(A)}{B-1}\notag\\
+ &+\gamma\zeta(A)\zeta(B)
+ -\frac{\Gamma(1-A)-1}{A}\zeta(B-1)
+ -\frac{\Gamma(1-B)-1}{B}\zeta(A-1).
+ \label{qtr:boundarymixed}
+\end{align}
+Both apparent quotients at \(A=0\) or \(B=0\) are removable.
+Differentiating \(\mathcal S\) twice in \(A\) and once in \(B\)
+at zero produces precisely \(P(x)\). Thus
+\(I_{AAB}(0,0)=I\).
+
+To see convergence directly, write the order-differentiated
+Jonqui\`ere expansion as
+\[
+ f_j(x)=\frac{g_j(x)}{x}
+       +\sum_{k\ge0}\frac{(-1)^k\zeta^{(j)}(-k)}{k!}x^k,
+ \qquad
+ g_1=h,\quad g_2=h^2+\zeta(2).
+\]
+The subtraction \(P\) removes the singular product, both
+cross terms with \(k=0,1\), and the constant analytic product.
+The remaining numerator is
+\(O(x(1+|\log x|^2))\) at zero. At infinity
+\(f_1f_2=O(e^{-4x})\). This proves ordinary absolute convergence;
+normal convergence in a parameter polydisc justifies the
+differentiation used above.
+
+Finally,
+\[
+ \Gamma(1-t)=1+gt+\frac{g^2+h_2}{2}t^2
+               +\frac{g^3+3gh_2+2h_3}{6}t^3+O(t^4).
+\]
+Applying \(\partial_A^2\partial_B\) to the six elementary
+terms after \(I(A,B)\) in \eqref{qtr:boundarymixed}, using this
+Taylor expansion, gives exactly \(E\). This proves
+\eqref{qtr:Xi}.
+\end{proof}
+
+The representation \eqref{qtr:Xi} fixes the coordinate using only
+ordinary polylogarithms, their order derivatives, Gamma constants,
+and ordinary zeta derivatives. It is not an asserted reduction
+of \(\Xi\) to a finite algebra of standard constants.
+The splitting point \(1\) in \eqref{qtr:I} is part of the formula;
+changing it requires changing the explicitly integrated
+subtractions.
+
+\subsection{The formal relation space at arbitrary degree}
+
+Here a \emph{formal degree-\(d\) freedom} means the difference of
+two homogeneous degree-\(d\) jets satisfying symmetry in \(A,B\),
+the same degree of \eqref{qtr:axis}, and the same degree of
+\eqref{qtr:Euler}. No other functional relation is imposed.
+
+\begin{theorem}[Exact homogeneous kernel]\label{qtr:kernel}
+For \(d\ge2\), every formal degree-\(d\) freedom has a unique
+representation
+\begin{equation}\label{qtr:kernelform}
+ \Delta R_d(A,B,C)=
+ A(A-C)S(A,C)+B(B-C)S(B,C)+ABQ(A,B,C),
+\end{equation}
+where \(S\) is a homogeneous symmetric polynomial of degree
+\(d-2\) in two variables and \(Q\) is a homogeneous polynomial of
+degree \(d-2\), symmetric in \(A,B\). Therefore the dimension of
+this formal freedom is
+\begin{equation}\label{qtr:dimension}
+ \dim\mathcal K_d
+ =\left\lfloor\frac d2\right\rfloor
+     +\left\lfloor\frac{d^2}{4}\right\rfloor.
+\end{equation}
+At degrees \(0\) and \(1\) the freedom is zero.
+\end{theorem}
+
+\begin{proof}
+Put \(D(A,C)=\Delta R_d(A,0,C)\). The axis condition gives
+\(D(0,C)=0\), so \(D=A V(A,C)\). The homogeneous Euler
+condition becomes
+\[
+ AC\bigl(V(A,C)+V(C,A)\bigr)=0.
+\]
+Hence \(V\) is antisymmetric in \(A,C\), and
+\(V(A,C)=(A-C)S(A,C)\), where \(S\) is symmetric.
+This proves the asserted boundary value.
+
+Subtract the first two terms of \eqref{qtr:kernelform} from
+\(\Delta R_d\). The difference is still symmetric in \(A,B\)
+and vanishes when \(A=0\) or \(B=0\). It is therefore divisible
+by \(AB\); its quotient is the required symmetric polynomial
+\(Q\). This construction determines \(S\) from the boundary
+and then determines \(Q\), proving uniqueness. Conversely, a
+direct substitution shows that every expression
+\eqref{qtr:kernelform} satisfies all three homogeneous
+conditions.
+
+The space of symmetric polynomials of degree \(d-2\) in two
+variables has dimension \(\lfloor d/2\rfloor\). The space
+of degree-\(d-2\) polynomials in three variables symmetric
+in the first two has dimension
+\[
+ \sum_{k=0}^{d-2}
+ \left(\left\lfloor\frac{d-2-k}{2}\right\rfloor+1\right)
+ =\left\lfloor\frac{d^2}{4}\right\rfloor.
+\]
+For \(d=0,1\), the divisibility argument forces \(S\) and \(Q\)
+to vanish.
+\end{proof}
+
+The Tornheim derivative of order \(n\) uses degree \(d=n-1\)
+of \(R\). Thus the first formal dimensions, for derivative
+orders \(n=1,\ldots,8\), are
+\[
+ 0,\quad0,\quad2,\quad3,\quad6,\quad8,\quad12,\quad15.
+\]
+In particular the quartic three-coordinate count is exact under
+these stated relations. This count does not say that three
+arithmetically independent periods are necessary.
+
+\begin{corollary}[All-order cyclic cancellation and its exact image]
+\label{qtr:cyclicimage}
+For \(d\ge2\), the image of the homogeneous freedom under
+\[
+ \Delta R_d\longmapsto
+ c\Delta R_d(a,b,c)+a\Delta R_d(b,c,a)
+                         +b\Delta R_d(c,a,b)
+\]
+is exactly \(abc\) times the space of symmetric homogeneous
+polynomials of degree \(d-2\) in \(a,b,c\). Consequently its
+dimension is
+\[
+ p_{\le3}(d-2)=
+ \left\lfloor\frac{(d+1)^2+3}{12}\right\rfloor.
+\]
+Equivalently, at derivative order \(n\ge3\), cyclic
+symmetrization leaves exactly
+\(\lfloor(n^2+3)/12\rfloor\) formal coordinates.
+\end{corollary}
+
+\begin{proof}
+The terms involving \(S\) in \eqref{qtr:kernelform} cancel
+pairwise because \(S(a,c)=S(c,a)\). The remaining expression is
+\[
+ abc\bigl(Q(a,b,c)+Q(b,c,a)+Q(c,a,b)\bigr).
+\]
+The parenthesis is fully symmetric. Every symmetric
+homogeneous polynomial \(P\) occurs by choosing \(Q=P/3\),
+so the map is onto. A basis of the symmetric space is
+\(e_1^i e_2^j e_3^k\) with \(i+2j+3k=d-2\).
+Counting these triples gives the stated dimension.
+\end{proof}
+
+\paragraph{Why the diagonal ceases to determine cyclic fifth derivatives.}
+The preceding dimensions equal one at derivative orders three
+and four, which explains why the source's cubic cyclic formula
+and \eqref{qtr:cyclicquartic} each need just the corresponding
+diagonal derivative. At order five the dimension is two.
+This is not merely a count: the allowed deformation
+\[
+ \Delta R_4(A,B,C)=\frac{AB}{3}
+ \bigl((A+B+C)^2-3(AB+BC+CA)\bigr)
+\]
+vanishes on the diagonal and preserves the axis and Euler
+relations, but changes the cyclic fifth derivative by
+\[
+ 5!\,abc\bigl((a+b+c)^2-3(ab+bc+ca)\bigr).
+\]
+Therefore the diagonal fifth derivative together with the
+named relations cannot determine every cyclic fifth ray.
+Additional analytic information is needed.
+
+\subsection{An exact symmetric generating germ}
+
+The preceding cyclic statement can be expressed without
+choosing coordinates for each degree.
+
+\begin{proposition}[Cyclic factorization]\label{qtr:factorization}
+There is a unique symmetric holomorphic germ \(J(A,B,C)\)
+near the origin such that
+\begin{align}
+ \sum_{\mathrm{cyc}}T(A,B,C)
+ ={}&2\bigl(\zeta(A)\zeta(B)+\zeta(B)\zeta(C)
+                              +\zeta(C)\zeta(A)\bigr)\notag\\
+ &-\zeta(A+B)-\zeta(B+C)-\zeta(C+A)\notag\\
+ &+2\bigl(\zeta(A)+\zeta(B)+\zeta(C)\bigr)+1
+ +ABC J(A,B,C).
+ \label{qtr:J}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+In the cyclic sum of \eqref{qtr:polar}, the two terms with
+denominator \(A+C\) combine to \(-\zeta(B-1)\), and likewise
+for the other two denominators. Thus the cyclic sum is
+holomorphic and symmetric near the origin.
+On \(B=0\), the Euler relation gives
+\[
+ T(A,0,C)+T(0,C,A)+T(C,A,0)
+                   =2\zeta(A)\zeta(C)-\zeta(A+C).
+\]
+The explicit zeta expression in \eqref{qtr:J} has exactly the
+same restriction. By symmetry, their difference vanishes on
+all three coordinate planes. The convergent Taylor series is
+therefore divisible by \(ABC\). Its quotient is holomorphic
+and symmetric, and uniqueness is immediate.
+\end{proof}
+
+Let \(J_k\) denote the homogeneous degree-\(k\) Taylor
+polynomial of \(J\). For every \(n\ge3\) and every direction
+whose pairwise sums are nonzero, differentiating the restricted
+identity gives the all-order formula
+\begin{align}
+ \sum_{\mathrm{cyc}}W_{a,b,c}^{(n)}(0)
+ ={}&2\sum_{\{u,v\}\in\{\{a,b\},\{b,c\},\{c,a\}\}}
+       \sum_{j=1}^{n-1}\binom nj u^jv^{n-j}z_jz_{n-j}\notag\\
+ &-\bigl((a+b)^n+(b+c)^n+(c+a)^n\bigr)z_n
+ +n!\,abc\,J_{n-3}(a,b,c).
+ \label{qtr:allcyclic}
+\end{align}
+The inner sum is symmetric in \(u,v\), so the unordered-pair
+notation is unambiguous. All derivatives at \(-1\) and all
+boundary Gamma coordinates have disappeared. At the first
+two orders of \(J\),
+\[
+ J_0=\frac{\Omega}{2}+3Lz_2+4z_3,\qquad
+ J_1(A,B,C)=\frac{A+B+C}{24}
+                  (\Lambda+8Lz_3-12z_2^2+16z_4),
+\]
+where \(\Omega=W_{1,1,1}'''(0)\) is the incoming cubic
+diagonal coordinate. Thus \eqref{qtr:allcyclic} recovers the
+source's cubic identity and proves
+\eqref{qtr:cyclicquartic}.
+
+\subsection{Verification, scope, and the next exact questions}
+
+The accompanying \texttt{check\_quartic\_tornheim.py} verifies
+\eqref{qtr:quarticformula}, \eqref{qtr:cyclicquartic},
+the Euler specialization, and the elementary correction \(E\)
+by exact symbolic arithmetic. It independently constructs the
+homogeneous constraint matrices for degrees \(0\) through \(10\),
+computes their exact ranks and cyclic images, and checks them
+against the proved dimension formulas.
+An optional numerical mode evaluates the new coordinates
+through integrated Jonqui\`ere series and a Stirling-subtracted
+Gamma sum, and compares asymmetric fourth derivatives with
+an independent Mellin evaluation of \(T\). Numerical
+discrepancies are diagnostics, not interval certificates.
+
+The results answer the quartic directional-layer question and
+the formal homogeneous-dimension part of the all-order
+question in \cite{qtr:Independent}. They do not evaluate
+\(\Lambda\), \(\Xi\), or the earlier cubic coordinates in
+a finite standard-constant algebra, and they do not settle
+\(S_6\) or the revised \(S_8\).
+The Mellin and Jonqui\`ere ingredients are classical
+\cite{DLMF}; the quartic and formal kernel results are
+developments relative to the inspected repository snapshot.
+A global priority claim is not made.
+
+The next concrete problems are to identify a useful
+independent analytic relation for the symmetric degree-two
+germ \(J_2\); to construct an economical Gamma or Barnes
+representation for \(\Xi\); and to compare additional
+Tornheim functional relations with the kernel
+\eqref{qtr:kernelform}. Any improved coordinate count should
+specify exactly which extra relations are used.

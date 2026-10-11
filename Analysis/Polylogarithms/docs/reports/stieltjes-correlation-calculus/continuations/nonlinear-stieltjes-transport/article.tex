@@ -1,0 +1,863 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[a4paper,margin=26mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage{xcolor,hyperref,fancyhdr}
+\definecolor{linkblue}{RGB}{25,64,102}
+\hypersetup{colorlinks=true,linkcolor=linkblue,citecolor=linkblue,urlcolor=linkblue,pdftitle={Nonlinear Stieltjes Transport},pdfauthor={Prepared for Vladimir Reshetnikov with OpenAI assistance}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Nonlinear Stieltjes transport}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\FP}{FP}
+\DeclareMathOperator{\CT}{CT}
+\DeclareMathOperator{\Res}{Res}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\D}{\mathrm D}
+\newcommand{\Ac}{\mathcal A}
+\newcommand{\Tc}{\mathcal T}
+\newcommand{\Pc}{\mathcal P}
+\newcommand{\LiJ}[2]{\Li_{#1}^{[#2]}}
+\newcommand{\pin}{\texttt{74206207617254448a1992dc76cd6dd84987ff59}}
+\allowdisplaybreaks[2]
+\setlength{\parskip}{4pt}
+\setlist{itemsep=3pt,topsep=4pt}
+\title{\textbf{Nonlinear Stieltjes Transport}\\[5pt]
+\large Finite-part cocycles, harmonic contact terms,\\
+M\"obius averages, and exact polylogarithmic identities}
+\author{Research continuation prepared for Vladimir Reshetnikov\\
+\small ProveIt special-function programme \quad\textbullet\quad Prepared with OpenAI assistance}
+\date{10 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+A coordinate-dependent finite part cannot in general be transported by keeping only the derivative of the coordinate map at the singular point. We give an explicit finite-jet formula for the complete discrepancy, including every lower derivative of the delta distribution. For the singularity $x^{-k}\log^n x$, the discrepancy is one coefficient of
+$\phi'(y)(y/\phi(y))^k\log^{n+1}(\phi(y)/y)$.
+Specializing to every generalized Stieltjes function and every argument derivative gives a terminating harmonic-polynomial calculus. The transport obeys an exact composition law. For a coordinate tangent to the identity, the discrepancy vanishes at Stieltjes index $m\ge2p$ for argument-derivative order $p$; the cutoff is sharp as a statement uniform over such coordinates.
+
+A nonlinear circle map defined by $\tan(\pi\chi_\lambda(y))=\lambda\tan(\pi y)$ converts uniform averages into Poisson averages. We evaluate all its Stieltjes finite parts in finitely many polylogarithm order derivatives, Gamma coefficients and local harmonic corrections. Odd argument-derivative orders have no scalar coordinate correction. Their polygamma subfamily reduces to rational functions of $(1-\lambda)/(1+\lambda)$. Explicit ordinary convergent identities include digamma, trigamma and first-Stieltjes-derivative integrals, as well as
+$\int_0^1\log\Gamma(\chi_\lambda(y))\dd y=\tfrac12\log(\pi(\lambda+1)/\lambda)$.
+Mean-zero antiderivatives give a companion hierarchy at positive polylogarithmic orders.
+
+The general dependence of finite parts on a regularization is classical. The contribution is the explicit all-index specialization, its nonlinear identities, and a resolution of the local-coordinate transport question in the inspected incoming material. Proofs, independent exact cutoff checks and numerical quadratures are supplied. No global priority, numerical independence, or proof-assistant verification is claimed.
+\end{abstract}
+\vspace{3pt}
+\noindent\textbf{Scope.} This article resolves a specified transport question; it does not solve the remaining Gaussian $S_6$ reduction or the full simultaneous multivariable collision problem. No repository files were modified.
+\clearpage
+\setcounter{tocdepth}{1}
+\tableofcontents
+\clearpage
+
+\section{Research target, provenance, and the priority boundary}
+\label{sec:scope}
+The ProveIt manuscript organizes polylogarithms, harmonic sums, Gamma functions and Hurwitz-zeta jets into a common exact-identity programme \cite{repo}. The recent report \emph{Periodic Stieltjes Collisions} proves a fixed-coordinate collision comparison and explicitly asks what happens under a genuinely nonlinear local coordinate change: which lower delta derivatives appear, and how do their coefficients depend on the coordinate jet? Its absence-of-lower-derivatives statement is expressly restricted to its original comparison \cite{collisions}. That is the question addressed here.
+
+There are two complementary answers. Theorem~\ref{thm:universal} gives a local transport law for an arbitrary finite logarithmic singular expansion. Theorem~\ref{thm:stieltjes} specializes it to all Stieltjes indices and derivative orders, with a finite harmonic coefficient formula. Theorem~\ref{thm:circle} then combines the local law with Fourier analysis to produce complete exact averages under a nonlinear circle map. The latter is not merely a formal change of variables in a divergent integral: its correction is specified and computed.
+
+\subsection{What is classical and what is being established}
+Hadamard finite parts, analytic continuation of power distributions, and residue descriptions of regularization dependence are classical. Estrada and Kanwal compare regularization, pseudofunctions and finite parts \cite{EK}. Felder and Kazhdan give general regularization-change formulas, including manifolds with boundary; their Theorems 2.7 and 6.1 are particularly relevant \cite{FK}. The logarithmic one-dimensional formula below is an explicit specialization and spectral differentiation of that general mechanism, not a claim that finite-part anomalies have newly been discovered.
+
+The Hurwitz shift, its Fourier expansion, the Gamma reflection and Taylor formulas, and the elementary Poisson expansion are likewise classical \cite{DLMFH,DLMFG,DLMFL}. The fixed-coordinate Stieltjes derivative anomaly used in Section~\ref{sec:fourier} is already proved in the inspected incoming report. We restate and prove the needed form to make the new transport and average formulas self-contained.
+
+What the present article adds to the inspected sources is a complete coefficient-level answer to their nonlinear-coordinate question, an exact composition and vanishing analysis, a local closure formula for products, and a coherent family of nonlinear Stieltjes and polygamma averages. Some particularly simple specializations, including the log-Gamma average, follow immediately from classical reflection and Poisson integration. They are included for their usefulness and independent checks, not as unsupported claims of priority.
+
+\subsection{Pinned sources and audit limits}
+The repository revision observed for this continuation is
+\begin{center}\small\pin.\end{center}
+The main driver, discovery chapter, part of the integration chapter and the incoming directory inventory were read. For the two directly relevant incoming reports, their Library archives were materialized and compared with the Git blob hashes in the repository listing. The comparisons are byte-for-byte, not filename comparisons. The relevant mathematical source in \emph{Periodic Stieltjes Collisions}, including its extension definition, spectral construction, single-factor derivative law and nonlinear-coordinate question, was read in full local context.
+
+The two matched archives and their provenance are recorded in \texttt{SOURCE\_AUDIT.md}. The entire rapidly changing manuscript and every incoming archive were \emph{not} exhaustively audited. In particular this article does not claim to supersede the separate affine-resonance, Dougall, endpoint, twisted-harmonic or Tornheim reports. An integration note and a standalone insert accompany the article.
+
+\section{Conventions and a precise finite-part operation}
+\label{sec:conventions}
+For $x>0$ the generalized Stieltjes constants are fixed by
+\begin{equation}\label{eq:stieltjes-convention}
+\zeta(1+u,x)=\frac1u+\sum_{m=0}^{\infty}\frac{(-1)^m}{m!}\gamma_m(x)u^m.
+\end{equation}
+Thus $\gamma_0(x)=-\psi(x)$, where $\psi=\Gamma'/\Gamma$.
+The superscript in $\gamma_m^{(p)}$ differentiates $x$ exactly $p$ times. By contrast, $\zeta^{(j)}(s,x)$ and
+\begin{equation}\label{eq:Li-jet}
+\LiJ{s}{j}(z)=\frac{\partial^j}{\partial s^j}\Li_s(z)
+\end{equation}
+differentiate the spectral variable. For $|z|<1$,
+\begin{equation}\label{eq:Li-series}
+\LiJ{s}{j}(z)=\sum_{n=1}^{\infty}\frac{z^n(-\log n)^j}{n^s}.
+\end{equation}
+The series and every finite spectral derivative converge locally uniformly there. In particular all polylogarithms in the main real-parameter examples are evaluated strictly inside the unit disk.
+
+\begin{definition}[Unit-coordinate finite part]\label{def:FP}
+Suppose $f$ is smooth on $(0,1]$ and has, near $0+$, a finite singular expansion in terms $x^{-k}\log^n x$, with $k\ge1$, $n\ge0$, plus a locally integrable remainder. For a smooth test function $h$ on $[0,1]$, define
+\begin{equation}\label{eq:FP-definition}
+\langle\FP_x(f(x)\dd x),h\rangle
+=\CT_{\eps\downarrow0}\int_\eps^1 f(x)h(x)\dd x.
+\end{equation}
+The constant term retains neither divergent powers of $\eps$ nor positive powers of $\log\eps$. The scale in the logarithm is one, and the cutoff coordinate is exactly $x$.
+\end{definition}
+Terms of the form $x^a\log^n x$ with $a>-1$ belong to the integrable remainder. A smooth partition of unity may be used when more than one endpoint is singular; each endpoint is assigned its own specified coordinate. Our primary one-factor functions are singular only at $0+$.
+
+For later use, elementary integration gives
+\begin{equation}\label{eq:monomial-FP}
+\FP\int_0^1 x^{-k}\log^n x\dd x=
+\begin{cases}
+0,&k=1,\\[2pt]
+-\dfrac{n!}{(k-1)^{n+1}},&k\ge2.
+\end{cases}
+\end{equation}
+These signs are important: for example the finite part of $\int_0^1x^{-2}\dd x$ is $-1$, not zero.
+
+We use densities when transporting distributions. If $\phi:[0,1]\to[0,1]$ is a smooth increasing diffeomorphism fixing the endpoints, put
+\begin{equation}\label{eq:density-pullback}
+\langle\phi^*T,h\rangle=\langle T,h\circ\phi^{-1}\rangle.
+\end{equation}
+For an ordinary density, this convention gives
+$\phi^*(f(x)\dd x)=\phi'(y)f(\phi(y))\dd y$.
+Write
+\begin{equation}\label{eq:rL}
+\lambda=\phi'(0)>0,\qquad r(y)=\frac{\phi(y)}y,\qquad L(y)=\log r(y).
+\end{equation}
+The value at zero is interpreted by smooth continuation. The coefficient symbol $[y^j]$ means the Taylor coefficient, namely the $j$th derivative at zero divided by $j!$. Analyticity of $\phi$ is not required for any fixed finite coefficient formula.
+
+\section{An explicit nonlinear transport theorem}
+\label{sec:transport}
+\begin{theorem}[All logarithmic powers and all contact derivatives]\label{thm:universal}
+For integers $k\ge1$, $n\ge0$, let
+\begin{equation}
+\Ac_\phi^{k,n}
+=\phi^*\FP_x(x^{-k}\log^n x\dd x)
+-\FP_y\bigl(\phi'(y)\phi(y)^{-k}\log^n\phi(y)\dd y\bigr).
+\end{equation}
+Then for every smooth test function $h$,
+\begin{equation}\label{eq:universal-action}
+\boxed{\displaystyle
+\langle\Ac_\phi^{k,n},h\rangle
+=\frac1{n+1}[y^{k-1}]\,
+\phi'(y)r(y)^{-k}L(y)^{n+1}h(y).}
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:universal-deltas}
+\Ac_\phi^{k,n}
+=\frac1{n+1}\sum_{j=0}^{k-1}\frac{(-1)^j}{j!}
+[y^{k-1-j}]\bigl(\phi'r^{-k}L^{n+1}\bigr)\,\delta^{(j)}.
+\end{equation}
+Thus only the finite coordinate jet through order $k$ is needed. The formula extends by linearity to every finite logarithmic singular expansion; locally integrable terms contribute no discrepancy.
+\end{theorem}
+
+\begin{proof}
+For a test function $h$, the meromorphic power family has the local construction
+\begin{align}\label{eq:meromorphic-power}
+\langle X_k(u),h\rangle={}&
+\int_0^1y^{-k-u}\left(h(y)-\sum_{j=0}^{k-1}\frac{h^{(j)}(0)}{j!}y^j\right)\dd y
++\sum_{j=0}^{k-1}\frac{h^{(j)}(0)}{j!(j-k+1-u)}.
+\end{align}
+Near $u=0$ the subtracted integrand and its first $M$ spectral derivatives are dominated by $C_My^{-\eta}(1+|\log y|^M)$ on $|\Re u|\le\eta<1$. Hence it is a holomorphic distribution family after subtraction of its one explicit pole. If
+$R_k(h)=h^{(k-1)}(0)/(k-1)!$, its expansion is
+\begin{equation}\label{eq:meromorphic-expansion}
+X_k(u)=-\frac{R_k}{u}
++\sum_{n=0}^{\infty}\frac{(-u)^n}{n!}\FP_y(y^{-k}\log^n y\dd y).
+\end{equation}
+This follows either by differentiating \eqref{eq:meromorphic-power} or directly from \eqref{eq:monomial-FP}, now applied after multiplying by the test function.
+
+Change variables before continuing, in a half-plane where the power is integrable. The pullback of $x^{-k-u}\dd x$ is
+\[
+y^{-k-u}A(u,y)\dd y,\qquad
+A(u,y)=\phi'(y)r(y)^{-k}e^{-uL(y)}.
+\]
+The identity continues meromorphically. Equality of residues identifies the pullback of the original residue with $R_k(A(0,\cdot)h)$. In the coefficient of $u^n$, the regular part of \eqref{eq:meromorphic-expansion} supplies exactly
+$(-1)^n/n!$ times the coordinate finite part of
+$\phi'\phi^{-k}\log^n\phi$.
+There is one additional coefficient from the full analytic numerator multiplying the pole:
+\[
+-\frac1uR_k(A(u,\cdot)h).
+\]
+Its coefficient of $u^n$, multiplied by $(-1)^nn!$, equals
+\[
+(-1)^{n+1}n!R_k\left(\frac{(-L)^{n+1}}{(n+1)!}\phi'r^{-k}h\right)
+=\frac1{n+1}R_k(\phi'r^{-k}L^{n+1}h).
+\]
+This is \eqref{eq:universal-action}. Expanding $h$ and using
+$\langle\delta^{(j)},h\rangle=(-1)^jh^{(j)}(0)$ proves \eqref{eq:universal-deltas}.
+For the general singular expansion, subtract finitely many terms. Ordinary change of variables applies to the integrable remainder, so its discrepancy is zero. The domination above justifies every fixed spectral derivative and coefficient extraction.
+\end{proof}
+
+\subsection{A second derivation from cutoff primitives}
+There is a useful independent way to check all signs in the theorem. Expand
+$h(\phi^{-1}(x))$ into its Taylor polynomial. For a term $x^{a-1}\log^n x$ with $a\ne0$, an elementary primitive is
+\begin{equation}\label{eq:elementary-primitive}
+x^a\sum_{\ell=0}^{n}
+\frac{(-1)^\ell n!}{(n-\ell)!a^{\ell+1}}\log^{n-\ell}x.
+\end{equation}
+For $a=0$, use $\log^{n+1}x/(n+1)$. The original cutoff is $x=\eps$, while the new cutoff is $x=\phi(\eps)$. Their finite-part difference is the constant term of the resulting primitive at $\phi(\eps)$. Only finitely many Taylor coefficients of the inverse map and primitive can contribute. This gives the same result as \eqref{eq:universal-action}, without using Fourier analysis or any Stieltjes identity. The exact verification code implements this second method separately.
+
+\subsection{The cocycle and independent tensor products}
+For a density $f\dd x$ in the stated class, abbreviate its discrepancy by
+\begin{equation}\label{eq:A-general}
+\Ac_\phi(f\dd x)=\phi^*\FP_x(f\dd x)-\FP_y(\phi^*(f\dd x)).
+\end{equation}
+\begin{proposition}[Composition law]\label{prop:cocycle}
+For endpoint-preserving increasing diffeomorphisms $\phi,\psi$,
+\begin{equation}\label{eq:cocycle}
+\Ac_{\phi\circ\psi}(f\dd x)
+=\psi^*\Ac_\phi(f\dd x)+\Ac_\psi\bigl(\phi^*(f\dd x)\bigr).
+\end{equation}
+In the second term, the complete transformed singular expansion is used. The same rule holds with an additional smooth density factor absorbed into $f$.
+\end{proposition}
+\begin{proof}
+Use $(\phi\circ\psi)^*=\psi^*\phi^*$ in \eqref{eq:A-general}, add and subtract
+$\psi^*\FP_y(\phi^*(f\dd x))$, and group the two differences. Each term is defined because a smooth diffeomorphism preserves the class of finite logarithmic singular expansions modulo an integrable remainder.
+\end{proof}
+
+For independent variables $x_1,\ldots,x_d$, the tensor product of the one-variable finite parts is well-defined. After separate changes $x_i=\phi_i(y_i)$, substitute
+$\phi_i^*\FP f_i=\FP(\phi_i^*f_i)+\Ac_{\phi_i}(f_i)$ in every factor and expand over the $2^d$ subsets. This determines all terms on intersections of the independent coordinate faces. It does \emph{not} authorize an undefined restriction to a collision diagonal, nor prove an arbitrary coincident pointwise-product theorem. The independent tensor construction and a diagonal restriction are different operations.
+
+
+\subsection{Transporting a fixed-coordinate collision comparison}
+The preceding result can be applied directly to the form of comparison proved in the incoming collision report. This requires transporting both its off-point density and its already present contact term.
+
+\begin{proposition}[Complete transport of an existing contact law]\label{prop:collision-transport}
+Suppose a periodic distribution satisfies a fixed-coordinate identity
+\begin{equation}\label{eq:input-contact}
+K=\FP_x(f(x)\dd x)+\kappa\delta^{(d)},\qquad d\ge0,
+\end{equation}
+where $f$ has finite logarithmic singular expansions at the identified endpoints. Let $\phi$ be a smooth increasing circle diffeomorphism fixing that point, represented by an endpoint-preserving lift on $[0,1]$. Then
+\begin{equation}\label{eq:transported-contact}
+\phi^*K=\FP_y(\phi'f(\phi)\dd y)
++\Ac_\phi^{\mathrm{both}}(f\dd x)+\kappa\,\Delta_{d,\phi},
+\end{equation}
+where both endpoint contributions in $\Ac_\phi^{\mathrm{both}}$ are computed by Theorem~\ref{thm:universal}. The transported contact derivative is
+\begin{align}\label{eq:delta-transport}
+\Delta_{0,\phi}&=\delta,\\
+\Delta_{d,\phi}
+&=\sum_{j=1}^{d}(-1)^{d+j}\frac{(d-1)!}{(j-1)!}
+[y^{d-j}]\left(\frac y{\phi(y)}\right)^d\delta^{(j)}
+\qquad(d\ge1).\notag
+\end{align}
+For the right endpoint use the local map
+$\phi_-(t)=1-\phi(1-t)$, then reflect the resulting contact distribution back to the circle; this multiplies the coefficient of $\delta^{(j)}$ by $(-1)^j$.
+\end{proposition}
+\begin{proof}
+Pull back \eqref{eq:input-contact}, and apply the universal theorem independently to the two endpoint singular heads. Integrable remainders transport ordinarily. This gives \eqref{eq:transported-contact} with $\Delta_{d,\phi}=\phi^*\delta^{(d)}$.
+Write $\tau=\phi^{-1}$. Directly from the density convention,
+\[
+\langle\phi^*\delta^{(d)},h\rangle
+=(-1)^dd![x^d]h(\tau(x)).
+\]
+For $d\ge1$, the coefficient of $\delta^{(j)}$ is therefore
+$(-1)^{d+j}d![x^d]\tau(x)^j/j!$.
+The finite-jet Lagrange inversion identity gives
+$[x^d]\tau(x)^j=(j/d)[y^{d-j}](y/\phi(y))^d$ for $1\le j\le d$, proving \eqref{eq:delta-transport}. This inversion identity also follows by changing variables in the formal residue of $\tau(x)^j x^{-d-1}\dd x$ and integrating by parts. The $j=0$ coefficient is zero when $d>0$, and the case $d=0$ is immediate. Reflection gives the stated right-endpoint sign.
+\end{proof}
+
+In particular, if $\phi(y)=\lambda y+ay^2+O(y^3)$,
+\[
+\Delta_{1,\phi}=\lambda^{-1}\delta',\qquad
+\Delta_{2,\phi}=\lambda^{-2}\delta''+2a\lambda^{-3}\delta'.
+\]
+Together, \eqref{eq:universal-deltas} and \eqref{eq:delta-transport} specify every lower contact coefficient in the transported comparison. The known coefficient $\kappa$ from the incoming theorem is retained unchanged as the scalar multiplying the explicitly transported distribution. The resulting object is the pullback of that canonical correlation. It is \emph{not} asserted to equal the convolution of two separately pulled-back factors: nonlinear diffeomorphisms do not in general preserve the translation operation defining circular convolution.
+
+\section{Stieltjes functions and finite harmonic polynomials}
+\label{sec:stieltjes}
+Put
+\begin{equation}\label{eq:Pp}
+P_p(u)=\prod_{j=1}^{p}\left(1+\frac uj\right)
+=\sum_{j=0}^{p}e_{p,j}u^j,\qquad P_0(u)=1.
+\end{equation}
+We set $e_{p,j}=0$ outside $0\le j\le p$. The coefficients are rational elementary symmetric functions of $1,1/2,\ldots,1/p$.
+If $H_p^{(r)}=\sum_{j=1}^pj^{-r}$, then
+\begin{equation}\label{eq:harmonic-log}
+\log P_p(u)=\sum_{r\ge1}\frac{(-1)^{r-1}}rH_p^{(r)}u^r.
+\end{equation}
+Consequently every fixed coefficient is also a complete Bell polynomial in generalized harmonic numbers. In particular
+$e_{p,1}=H_p$,
+$e_{p,2}=(H_p^2-H_p^{(2)})/2$, and $e_{p,p}=1/p!$.
+
+\begin{lemma}[The complete one-factor singularity]\label{lem:singular}
+For $m,p\ge0$,
+\begin{equation}\label{eq:stieltjes-singular}
+\gamma_m^{(p)}(x)=
+(-1)^pp!\sum_{j=0}^{\min(m,p)}
+\frac{(-1)^jm!e_{p,j}}{(m-j)!}
+\frac{\log^{m-j}x}{x^{p+1}}
++\gamma_m^{(p)}(1+x).
+\end{equation}
+The last term is analytic at $x=0$.
+\end{lemma}
+\begin{proof}
+The Hurwitz shift $\zeta(s,x)=x^{-s}+\zeta(s,1+x)$ gives
+$\gamma_m(x)=x^{-1}\log^m x+\gamma_m(1+x)$.
+Equivalently, differentiate $x^{-1-u}$ $p$ times to obtain
+$(-1)^p(1+u)_px^{-p-1-u}=(-1)^pp!P_p(u)x^{-p-1-u}$,
+then extract $(-1)^mm![u^m]$. This is exactly \eqref{eq:stieltjes-singular}.
+\end{proof}
+
+Define the finite polynomial
+\begin{align}\label{eq:T-polynomial}
+\Tc_{m,p}(L)
+&=m!\sum_{j=0}^{\min(m,p)}
+\frac{(-1)^je_{p,j}}{(m-j+1)!}L^{m-j+1}\\
+&=m![u^{m+1}]P_p(-u)(e^{uL}-1).\notag
+\end{align}
+The subtracted $1$ matters: it removes the constant-in-$L$ contribution when $m+1\le p$. For example
+\begin{equation}\label{eq:T-first}
+\Tc_{0,p}(L)=L,\qquad
+\Tc_{1,p}(L)=\frac{L^2}{2}-H_pL.
+\end{equation}
+
+\begin{theorem}[All-index nonlinear Stieltjes transport]\label{thm:stieltjes}
+With the conventions of Section~\ref{sec:conventions},
+\begin{equation}\label{eq:stieltjes-transport}
+\boxed{\displaystyle
+\big\langle\Ac_\phi(\gamma_m^{(p)}\dd x),h\big\rangle
+=(-1)^pp![y^p] \phi'(y)r(y)^{-p-1}
+\Tc_{m,p}(L(y))h(y).}
+\end{equation}
+The coefficient of the highest possible derivative $\delta^{(p)}$ is
+\begin{equation}\label{eq:highest-delta}
+\lambda^{-p}\Tc_{m,p}(\log\lambda).
+\end{equation}
+Every lower contact coefficient is determined by the coordinate derivatives through order $p+1$, generalized harmonic numbers at $p$, and $\log\lambda$.
+\end{theorem}
+\begin{proof}
+Apply Theorem~\ref{thm:universal} to each term in \eqref{eq:stieltjes-singular}. Its factor $1/(m-j+1)$ turns $(m-j)!$ into $(m-j+1)!$, giving exactly \eqref{eq:T-polynomial}. The analytic remainder has no anomaly. In the coefficient of $h^{(p)}(0)$, only the constant coefficient of $\phi'r^{-p-1}\Tc$ contributes. It is $\lambda^{-p}\Tc_{m,p}(\log\lambda)$ after converting the test derivative to $\delta^{(p)}$. All other coefficients are finite Taylor coefficients of the explicitly displayed expression.
+\end{proof}
+
+\subsection{A sharp disappearance law for tangent coordinates}
+\begin{corollary}[High Stieltjes indices become coordinate-invariant]\label{cor:vanishing}
+Suppose $\phi'(0)=1$. For $p\ge1$,
+\begin{equation}\label{eq:vanishing}
+\Ac_\phi(\gamma_m^{(p)}\dd x)=0\qquad(m\ge2p).
+\end{equation}
+If $\phi(y)=y+ay^2+O(y^3)$, the last potentially nonzero index is
+\begin{equation}\label{eq:sharp-vanishing}
+\Ac_\phi(\gamma_{2p-1}^{(p)}\dd x)
+=\frac{(2p-1)!}{p!}a^p\delta.
+\end{equation}
+Thus $2p$ is the sharp cutoff uniform over coordinates tangent to the identity. For $p=0$ every Stieltjes index has zero discrepancy under such a coordinate.
+\end{corollary}
+\begin{proof}
+Here $L(y)=O(y)$. The smallest power of $L$ in \eqref{eq:T-polynomial} is
+$m-\min(m,p)+1$. If $m\ge2p$, it is at least $p+1$, so no coefficient of $y^p$ survives, even after multiplication by $h$. At $m=2p-1$, only $j=p$ can contribute to that coefficient; use $e_{p,p}=1/p!$ and $L(y)=ay+O(y^2)$ to obtain \eqref{eq:sharp-vanishing}. At $p=0$, the entire discrepancy is its constant coefficient, proportional to a positive power of $L(0)=0$.
+\end{proof}
+More generally, if $\phi(y)=y+O(y^{r+1})$, a sufficient vanishing condition is
+$r(m-\min(m,p)+1)>p$. This is a finite-order statement: no asymptotic estimate in $m$ is needed.
+
+\subsection{The first lower-contact terms}
+For $\phi(y)=y+ay^2+by^3+O(y^4)$, Theorem~\ref{thm:stieltjes} gives
+\begin{align}\label{eq:first-contacts}
+\Ac_\phi(\gamma_0'\dd x)&=-a\delta,\\
+\Ac_\phi(\gamma_0''\dd x)&=-2a\delta'+(2b-3a^2)\delta,\notag\\
+\Ac_\phi(\psi'\dd x)&=a\delta.\notag
+\end{align}
+These equations are not consequences of the slope alone: the slope is one in every case. They provide an explicit rejection of a coordinate-invariant extension of the fixed-coordinate no-lower-contact assertion. They do not contradict the correctly scoped assertion in the incoming report.
+
+\section{Local products and a rational M\"obius example}
+\label{sec:products}
+\subsection{Finite local closure for products}
+A finite product of Stieltjes functions and their argument derivatives has a finite logarithmic singular expansion modulo an integrable remainder. Theorem~\ref{thm:universal} therefore computes its coordinate discrepancy by a terminating procedure. This procedure does not require evaluating the global finite-part product integral.
+
+The Taylor data of the analytic remainders are also explicit. For $q\ge1$,
+\begin{equation}\label{eq:shifted-Taylor}
+\gamma_m^{(q)}(1)
+=(-1)^{m+q}\left.\frac{\partial^m}{\partial u^m}
+\bigl((1+u)_q\zeta(q+1+u)\bigr)\right|_{u=0}.
+\end{equation}
+For $q=0$ the values are the ordinary Stieltjes constants $\gamma_m$. Thus the local correction for a specified finite product lies in the ring generated by finitely many ordinary Stieltjes constants, positive-integer zeta derivatives, generalized harmonic numbers and coordinate-jet coefficients, with $\log\lambda$ adjoined. This is a local closure statement, not a reduction of every global Euler or Tornheim sum to that ring.
+
+For example,
+\[
+\gamma_0(x)=x^{-1}+\gamma-\zeta(2)x+\zeta(3)x^2+O(x^3).
+\]
+For the tangent coordinate in \eqref{eq:first-contacts}, linear application of the monomial law gives
+\begin{align}\label{eq:products-explicit}
+\Ac_\phi(\gamma_0^2\dd x)&=a\delta,\\
+\Ac_\phi(\gamma_0^3\dd x)&=-a\delta'
++\left(b-\frac32a^2+3\gamma a\right)\delta.\notag
+\end{align}
+Indeed the relevant singular heads are
+$x^{-2}+2\gamma x^{-1}$ and
+$x^{-3}+3\gamma x^{-2}+(3\gamma^2-3\zeta(2))x^{-1}$.
+The $x^{-1}$ terms have zero discrepancy for a tangent coordinate. This explains, rather than guesses, the disappearance of the $\zeta(2)$ term in the cubic correction.
+
+\subsection{Exact scalar values for an interval M\"obius map}
+Let
+\begin{equation}\label{eq:interval-mobius}
+\phi_\lambda(y)=\frac{\lambda y}{1+cy},\qquad c=\lambda-1,\qquad\lambda>0.
+\end{equation}
+It is an increasing diffeomorphism of $[0,1]$. Its logarithmic ratio is
+$\log\lambda-\log(1+cy)$, and
+$\phi_\lambda' r^{-p-1}=\lambda^{-p}(1+cy)^{p-1}$.
+
+The unit-coordinate Stieltjes distributions have mean zero:
+\begin{equation}\label{eq:mean-zero}
+\FP\int_0^1\gamma_m^{(p)}(x)\dd x=0\qquad(m,p\ge0).
+\end{equation}
+A spectral proof is supplied in Section~\ref{sec:fourier}. Combining this with Theorem~\ref{thm:stieltjes} yields the following explicit family.
+
+\begin{proposition}[Gamma-free harmonic values]\label{prop:interval-mobius}
+For $p\ge1$,
+\begin{align}\label{eq:interval-values}
+&\FP\int_0^1\frac{\lambda}{(1+cy)^2}
+\gamma_m^{(p)}\left(\frac{\lambda y}{1+cy}\right)\dd y\\
+&\hspace{6mm}=(-1)^p(p-1)!\left(\frac c\lambda\right)^p
+m![u^m]\,e^{u\log\lambda}P_p(-u)P_{p-1}(-u).\notag
+\end{align}
+For $p=0$, the value is $-(\log\lambda)^{m+1}/(m+1)$.
+\end{proposition}
+\begin{proof}
+The desired value is the negative of the scalar contact action on $1$. In its coefficient formula put $z=cy$ and use
+\[
+[z^p](1+z)^{p-1-u}=\binom{p-1-u}{p}
+=-\frac upP_{p-1}(-u).
+\]
+The subtracted $1$ in \eqref{eq:T-polynomial} contributes nothing to $[z^p](1+z)^{p-1}$. Extracting $u^{m+1}$ proves \eqref{eq:interval-values}. The case $p=0$ is the constant coefficient in the same transport formula. When $c=0$, both sides vanish, without division by $c$ being required in the final expression.
+\end{proof}
+This family isolates the nonlinear finite-part mechanism from the Fourier mechanism introduced next. Its right side is an elementary polynomial in $\log\lambda$, with finite harmonic coefficients.
+
+\section{Canonical periodic Stieltjes distributions and Poisson moments}
+\label{sec:fourier}
+Let
+\begin{equation}\label{eq:Hmp}
+H_{m,p}=\FP_x(\gamma_m^{(p)}(x)\dd x)
+\end{equation}
+act on smooth periodic test functions. Periodic derivatives are denoted by $\D$. The Fourier convention is $\widehat T(n)=\langle T,e^{-2\pi\ii nx}\rangle$.
+
+\subsection{The fixed-coordinate harmonic correction}
+\begin{lemma}[A prior fixed-coordinate identity, with proof]\label{lem:periodic}
+The meromorphic periodic distribution $Z(u)$ that agrees with $\zeta(1+u,x)$ in its integrable range has
+\begin{equation}\label{eq:Zfourier}
+\widehat Z(u;0)=0,\qquad
+\widehat Z(u;n)=\Gamma(-u)(2\pi\ii n)^u\quad(n\ne0).
+\end{equation}
+Its residue at $u=0$ is $1-\delta$. Moreover
+\begin{align}\label{eq:periodic-generator}
+\D^pZ(u)-\frac{\delta_{p0}}u\,1+\frac{P_p(u)}u\delta^{(p)}
+&=\sum_{m\ge0}\frac{(-1)^m}{m!}H_{m,p}u^m,\\
+H_{m,p}&=\D^pH_{m,0}+(-1)^mm!e_{p,m+1}\delta^{(p)}.\label{eq:fixed-derivative}
+\end{align}
+Every $H_{m,p}$ has mean zero.
+\end{lemma}
+\begin{proof}
+The classical Hurwitz Fourier formula gives \eqref{eq:Zfourier} first in a range of absolute Fourier convergence, then by meromorphic continuation \cite{DLMFH}. The nonzero coefficients of its residue are $-1$ and its zero coefficient is zero, so the residue is $1-\delta$.
+
+The singular term of the pointwise $p$th derivative is
+$(-1)^pp!P_p(u)x^{-p-1-u}$.
+The local construction \eqref{eq:meromorphic-power} shows that its whole resonant numerator must be removed to produce the coordinate finite parts of its coefficients. This adds $P_p(u)\delta^{(p)}/u$. The pointwise pole additionally requires subtracting $1/u$ when $p=0$. The remaining shifted Hurwitz term is analytic near the endpoint after that subtraction. Thus \eqref{eq:periodic-generator} has the stated coordinate coefficients. Subtract its $p=0$ version differentiated $p$ times to obtain \eqref{eq:fixed-derivative}.
+
+All Fourier zero modes in the completed family vanish: for $p=0$ the means of the two correction terms cancel, while for $p>0$ both derivatives have zero mean. This proves \eqref{eq:mean-zero}. This lemma is the single-factor law already established in \cite{collisions}; it is included to fix the exact normalization used here.
+\end{proof}
+
+\subsection{All-index Poisson evaluations}
+For real $-1<q<1$, define
+\begin{equation}\label{eq:Poisson}
+\Pi_q(x)=\frac{1-q^2}{1-2q\cos(2\pi x)+q^2}
+=1+2\sum_{n\ge1}q^n\cos(2\pi nx).
+\end{equation}
+Its Fourier series and all derivatives converge uniformly. Put
+\begin{align}\label{eq:Fp}
+F_p(u;q)&=2(2\pi)^p\Gamma(1-u)(2\pi)^u
+\cos\left(\frac{\pi(p+u)}2\right)\Li_{-p-u}(q),\\
+\mathcal G_p(u;q)&=\frac{F_p(u;q)-P_p(u)F_p(0;q)}u.\label{eq:Gp}
+\end{align}
+The apparent singularity in $\mathcal G_p$ is removable.
+
+\begin{theorem}[Finite polylogarithmic form of every Poisson moment]\label{thm:poisson}
+For all $m,p\ge0$,
+\begin{align}\label{eq:Poisson-moment}
+M_{m,p}(q)&:=\FP\int_0^1\gamma_m^{(p)}(x)\Pi_q(x)\dd x\\
+&=(-1)^{m+1}\left.\frac{\partial^m}{\partial u^m}\mathcal G_p(u;q)\right|_{u=0}\notag\\
+&=(-1)^{m+1}m![u^{m+1}]
+\bigl(F_p(u;q)-P_p(u)F_p(0;q)\bigr).\notag
+\end{align}
+This is a finite expression in polylogarithm order derivatives through order $m+1$, finite harmonic numbers, $\gamma+\log(2\pi)$ and ordinary zeta values.
+\end{theorem}
+\begin{proof}
+Pair \eqref{eq:periodic-generator} with \eqref{eq:Poisson}. The zero mode is zero. Pairing positive and negative frequencies of $\D^pZ(u)$ gives
+\[
+2(2\pi)^p\Gamma(-u)(2\pi)^u
+\cos\left(\frac{\pi(p+u)}2\right)\Li_{-p-u}(q)
+=-\frac{F_p(u;q)}u.
+\]
+For $p>0$, the delta derivative paired with $\Pi_q$ is $F_p(0;q)$. When $p=0$, the subtraction of the constant mode changes $\Pi_q(0)$ into $\Pi_q(0)-1=2\Li_0(q)=F_0(0;q)$. Thus the full completed pairing is $-\mathcal G_p(u;q)$ in every case. Coefficient extraction gives \eqref{eq:Poisson-moment}.
+
+The exponentially decaying Fourier weights dominate the polynomial and logarithmic frequency growth of every fixed spectral jet, so all pairings and derivatives are justified. Finally
+\begin{equation}\label{eq:Gamma-Taylor}
+\log\bigl(\Gamma(1-u)(2\pi)^u\bigr)
+=(\gamma+\log(2\pi))u+\sum_{r\ge2}\frac{\zeta(r)}r u^r
+\end{equation}
+for $|u|<1$. Only coefficients through degree $m+1$ are needed. Expanding the cosine and \eqref{eq:Li-series} proves the finite closure assertion.
+\end{proof}
+
+Write $A=\gamma+\log(2\pi)$. Some useful low-index forms are
+\begin{align}\label{eq:Poisson-low}
+M_{0,0}(q)&=2\LiJ{0}{1}(q)-2A\Li_0(q),\\
+M_{1,0}(q)&=\LiJ{0}{2}(q)-2A\LiJ{0}{1}(q)
++\left(A^2-\frac{\zeta(2)}2\right)\Li_0(q),\notag\\
+M_{1,1}(q)&=2\pi^2\bigl(\LiJ{-1}{1}(q)-A\Li_{-1}(q)\bigr).\notag
+\end{align}
+At Stieltjes index zero, there is a complete parity split:
+\begin{align}\label{eq:Poisson-parity}
+M_{0,2j+1}(q)&=(-1)^j\pi(2\pi)^{2j+1}\Li_{-2j-1}(q),\\
+M_{0,2j}(q)&=2(2\pi)^{2j}(-1)^j
+\bigl(\LiJ{-2j}{1}(q)-(A-H_{2j})\Li_{-2j}(q)\bigr).\notag
+\end{align}
+These follow directly by differentiating \eqref{eq:Fp}. The term $H_{2j}$ records the full polynomial subtraction in \eqref{eq:Gp}. Removing only the value $F_p(0;q)$ would generally produce the wrong finite part.
+
+\section{A nonlinear circle map and its complete Stieltjes averages}
+\label{sec:circle}
+For $\lambda>0$, define the increasing lift of a circle map by
+\begin{equation}\label{eq:chi}
+\chi_\lambda(y)=
+\begin{cases}
+\pi^{-1}\arctan(\lambda\tan\pi y),&0\le y<\tfrac12,\\
+\tfrac12,&y=\tfrac12,\\
+1+\pi^{-1}\arctan(\lambda\tan\pi y),&\tfrac12<y\le1.
+\end{cases}
+\end{equation}
+The displayed branch is part of the definition. Using the principal arctangent without the $1$ on the second half would not give a map from $[0,1]$ to itself.
+
+\begin{lemma}[Group, symmetry and inverse density]\label{lem:chi}
+The map is smooth, increasing, fixes $0,1$, and satisfies
+\begin{align}\label{eq:chi-laws}
+\chi_\lambda\circ\chi_\mu&=\chi_{\lambda\mu},&
+\chi_\lambda(1-y)&=1-\chi_\lambda(y),\\
+(\chi_\lambda^{-1})'(x)&=\Pi_q(x),&
+q&=\frac{1-\lambda}{1+\lambda}.\notag
+\end{align}
+Near zero,
+\begin{align}\label{eq:chi-jet}
+\chi_\lambda(y)={}&\lambda y
++\frac{\pi^2}{3}(\lambda-\lambda^3)y^3\\
+&+\frac{\pi^4}{15}(2\lambda-5\lambda^3+3\lambda^5)y^5+O(y^7).\notag
+\end{align}
+In fact its local series is odd, so $R_\lambda(y):=\chi_\lambda(y)/y$ is even.
+\end{lemma}
+\begin{proof}
+Composition and reflection follow from the tangent identity together with continuity and monotonicity of the chosen lift. Differentiating gives
+$\chi_\lambda'(y)=\lambda/(\cos^2\pi y+\lambda^2\sin^2\pi y)$,
+which also proves smoothness at $1/2$. Replacing $\lambda$ by $1/\lambda$ proves the inverse-density formula after substituting $q=(1-\lambda)/(1+\lambda)$. The Taylor coefficients follow by composing the Taylor series for tangent and arctangent. Their oddness also follows from the local odd branch at zero.
+\end{proof}
+
+\begin{theorem}[All nonlinear Stieltjes averages]\label{thm:circle}
+For $m,p\ge0$, let
+\begin{equation}\label{eq:J-def}
+J_{m,p}(\lambda)=\FP_y\int_0^1\gamma_m^{(p)}(\chi_\lambda(y))\dd y.
+\end{equation}
+With $q=(1-\lambda)/(1+\lambda)$,
+\begin{align}\label{eq:J-main}
+\boxed{J_{m,p}(\lambda)=M_{m,p}(q)-C_{m,p}(\lambda),}\\
+C_{m,p}(\lambda)
+=(-1)^pp![y^p]R_\lambda(y)^{-p-1}
+\Tc_{m,p}(\log R_\lambda(y)).\label{eq:C-main}
+\end{align}
+The first term is given explicitly by Theorem~\ref{thm:poisson}. The second requires only the finite odd Taylor jet \eqref{eq:chi-jet} through degree $p+1$. In particular
+\begin{align}\label{eq:C-parity}
+C_{m,2j+1}(\lambda)&=0,\\
+C_{m,0}(\lambda)&=\frac{(\log\lambda)^{m+1}}{\lambda(m+1)}.\notag
+\end{align}
+At $p=2$, writing $\ell=\log\lambda$ and $b=\pi^2(1-\lambda^2)/3$,
+\begin{equation}\label{eq:C2}
+C_{m,2}(\lambda)=2\lambda^{-3}b
+\bigl(\Tc_{m,2}'(\ell)-3\Tc_{m,2}(\ell)\bigr).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Apply \eqref{eq:stieltjes-transport} to $\phi=\chi_\lambda$ and the smooth test function $h=1/\chi_\lambda'$. Its pullback pairing in the original variable is
+\[
+\left\langle H_{m,p},\frac1{\chi_\lambda'(\chi_\lambda^{-1}(x))}\right\rangle
+=\langle H_{m,p},\Pi_q\rangle=M_{m,p}(q).
+\]
+The coordinate finite part in the new variable is exactly $J_{m,p}$. Multiplication by $h$ cancels the factor $\chi_\lambda'$ in the contact coefficient, giving \eqref{eq:C-main}. Evenness of $R_\lambda$ and $\log R_\lambda$ proves the odd-$p$ zero. Taking the constant coefficient gives the $p=0$ formula. Finally
+$R_\lambda(y)=\lambda(1+by^2+O(y^4))$;
+expand its negative cube and the polynomial $\Tc$ to second order to obtain \eqref{eq:C2}. All finite parts exist by the singular expansion and the positive endpoint slope.
+\end{proof}
+
+\subsection{Odd derivative orders and rational polygamma values}
+\begin{corollary}[An entire odd-order hierarchy]\label{cor:odd}
+For $j,m\ge0$,
+\begin{align}\label{eq:odd-all}
+J_{m,2j+1}(\lambda)
+={}&(-1)^{m+j}\pi(2\pi)^{2j+1}\\
+&\quad\times\left.\frac{\partial^m}{\partial u^m}
+\left(\frac{(2\pi)^u\Li_{-2j-1-u}(q)}{\Gamma(1+u)\cos(\pi u/2)}\right)\right|_{u=0}.\notag
+\end{align}
+In particular
+\begin{equation}\label{eq:odd-polygamma}
+\boxed{\displaystyle
+\FP\int_0^1\psi^{(2j+1)}(\chi_\lambda(y))\dd y
+=(-1)^{j+1}\pi(2\pi)^{2j+1}\Li_{-2j-1}(q).}
+\end{equation}
+Every value in \eqref{eq:odd-polygamma} is a rational function of $q$ times the displayed power of $\pi$.
+\end{corollary}
+\begin{proof}
+For odd $p$, both $F_p(0;q)$ and $C_{m,p}$ vanish. Rewrite the spectral pairing using
+\[
+\Gamma(-u)\sin(\pi u/2)
+=-\frac{\pi}{2\Gamma(1+u)\cos(\pi u/2)},
+\]
+which is Gamma reflection. The signs of
+$\cos(\pi(2j+1+u)/2)=(-1)^{j+1}\sin(\pi u/2)$
+give \eqref{eq:odd-all}. Since $\gamma_0^{(p)}=-\psi^{(p)}$, setting $m=0$ proves \eqref{eq:odd-polygamma}. Finally
+$\Li_0(q)=q/(1-q)$ and $(q\partial_q)\Li_{-r}(q)=\Li_{-r-1}(q)$ prove rationality at every negative integer without an independence assumption.
+\end{proof}
+The same odd-parity argument does \emph{not} eliminate the order derivatives in \eqref{eq:odd-all} at positive Stieltjes index. The resulting formulas specify their exact coefficients; they do not assert their reduction to elementary numbers.
+
+\section{Ordinary convergent identities and explicit special cases}
+\label{sec:ordinary}
+Finite parts can be converted into ordinary integrals by subtracting the complete nonintegrable local head. This is preferable when comparing with direct numerical quadrature. In the next formulas the displayed differences are integrable at zero; the functions are regular at every other point of the integration interval.
+
+\begin{corollary}[Digamma and trigamma averages]\label{cor:ordinary}
+For every $\lambda>0$, with $q=(1-\lambda)/(1+\lambda)$,
+\begin{align}\label{eq:digamma-ordinary}
+&\int_0^1\left[\psi(\chi_\lambda(y))+\frac1{\lambda y}\right]\dd y\\
+&\qquad=-2\LiJ{0}{1}(q)
++\frac{(1-\lambda)(\gamma+\log(2\pi))+\log\lambda}{\lambda},\notag\\[3pt]
+&\int_0^1\left[\psi'(\chi_\lambda(y))-\frac1{\lambda^2y^2}\right]\dd y
+=\frac1{\lambda^2}+\frac{\pi^2(\lambda^2-1)}{2\lambda^2}.\label{eq:trigamma-ordinary}
+\end{align}
+There is also the ordinary first-Stieltjes formula
+\begin{align}\label{eq:gamma1-ordinary}
+&\int_0^1\left[\gamma_1(\chi_\lambda(y))-
+\frac{\log(\lambda y)}{\lambda y}\right]\dd y\\
+&\qquad=\LiJ{0}{2}(q)-2A\LiJ{0}{1}(q)
++\left(A^2-\frac{\zeta(2)}2\right)\Li_0(q)
+-\frac{(\log\lambda)^2}{2\lambda},\notag
+\end{align}
+where $A=\gamma+\log(2\pi)$.
+\end{corollary}
+\begin{proof}
+The singular expansions of the three composed functions start with
+$-1/(\lambda y)$, $1/(\lambda^2y^2)$ and
+$\log(\lambda y)/(\lambda y)$ respectively. The next possible coordinate corrections are integrable because $\chi_\lambda(y)=\lambda y+O(y^3)$.
+Use \eqref{eq:Poisson-low}, \eqref{eq:C-parity} and $\gamma_0=-\psi$. For \eqref{eq:trigamma-ordinary}, use
+$\Li_{-1}(q)=q/(1-q)^2=(1-\lambda^2)/(4\lambda^2)$
+and add back the finite part of the subtracted $1/(\lambda^2y^2)$, which is $-1/\lambda^2$. The logarithmic simple-pole terms in the other two formulas have finite part zero by \eqref{eq:monomial-FP}. This establishes all constants as well as convergence.
+\end{proof}
+
+\subsection{A compact set of identities at $\lambda=2$}
+Let $\chi=\chi_2$ and retain the order-derivative notation \eqref{eq:Li-jet}. Since $q=-1/3$, the first two identities are
+\begin{align}\label{eq:lambda2-digamma}
+\int_0^1\left[\psi(\chi(y))+\frac1{2y}\right]\dd y
+&=-2\LiJ{0}{1}(-1/3)-\frac{\gamma+\log\pi}{2},\\
+\int_0^1\left[\psi'(\chi(y))-\frac1{4y^2}\right]\dd y
+&=\frac14+\frac{3\pi^2}{8}.\label{eq:lambda2-trigamma}
+\end{align}
+The first Stieltjes derivative gives
+\begin{align}\label{eq:lambda2-stieltjes}
+&\int_0^1\left[\gamma_1'(\chi(y))-
+\frac{1-\log(2y)}{4y^2}\right]\dd y\\
+&\qquad=2\pi^2\LiJ{-1}{1}(-1/3)
++\frac{3\pi^2}{8}(\gamma+\log(2\pi))-\frac{\log2}{4}.\notag
+\end{align}
+Here the finite part of the subtracted head is $\log2/4$, rather than zero. This is the source of the last term.
+
+An even-derivative example retains a nonzero nonlinear contact. In this case $b=-\pi^2$ and
+$C_{0,2}(2)=-\pi^2(1-3\log2)/4$.
+The complete ordinary identity is
+\begin{align}\label{eq:lambda2-even}
+&\int_0^1\left[\psi''(\chi(y))+\frac1{4y^3}
++\frac{3\pi^2}{4y}\right]\dd y\\
+&\qquad=8\pi^2\LiJ{-2}{1}(-1/3)
++\frac{3\pi^2}{4}(\gamma+\log(4\pi))
+-\frac{11\pi^2}{8}-\frac18.\notag
+\end{align}
+To verify the conversion, use
+$\psi''(\chi(y))=-1/(4y^3)-3\pi^2/(4y)+O(1)$.
+The finite part of this singular head is $1/8$; subtracting it from the full finite part gives the ordinary integral. Equations \eqref{eq:lambda2-stieltjes} and \eqref{eq:lambda2-even} follow from Theorem~\ref{thm:circle} and are separately checked by direct coordinate-subtracted quadrature in the supplied code.
+
+\subsection{A finite all-order ordinary-integral prescription}
+For arbitrary $(m,p)$, expand the right side of \eqref{eq:stieltjes-singular} after $x=\chi_\lambda(y)$ and keep precisely those terms $y^{-k}\log^n y$ with $k\ge1$. Call their sum $S_{m,p,\lambda}(y)$. Then
+\begin{equation}\label{eq:ordinary-general}
+\int_0^1\bigl(\gamma_m^{(p)}(\chi_\lambda(y))-S_{m,p,\lambda}(y)\bigr)\dd y
+=J_{m,p}(\lambda)-\FP\int_0^1S_{m,p,\lambda}(y)\dd y.
+\end{equation}
+Every term on the right is finite and explicit by \eqref{eq:monomial-FP}, \eqref{eq:J-main} and \eqref{eq:C-main}. The left is an ordinary absolutely convergent integral. Thus the all-index theorem is not restricted to distribution notation; it supplies convergent identities at every prescribed pair of indices.
+
+\section{Normalized antiderivatives and the Gamma bridge}
+\label{sec:primitives}
+A periodic derivative has a kernel of constants. To define genuine antiderivatives, we use the unique mean-zero periodic primitive at every step. This convention is not the zero-based iterated log-Gamma convention used elsewhere in the manuscript; the two should not be silently identified.
+
+For $k\ge1$, put
+\begin{equation}\label{eq:ak}
+a_k(u)=(-1)^k(1+u-k)_k
+=-u(k-1)!P_{k-1}(-u).
+\end{equation}
+For a Laurent series, $[u^m]$ denotes its usual coefficient, including any pole in the series before extraction.
+
+\begin{theorem}[A full mean-zero primitive hierarchy]\label{thm:primitive}
+For $m\ge0$, $k\ge1$, define on $0<x<1$
+\begin{equation}\label{eq:primitive-family}
+\Pc_{m,k}(x)=(-1)^mm![u^m]
+\frac{\zeta(1-k+u,x)}{a_k(u)}.
+\end{equation}
+This is an integrable function, defines a mean-zero periodic distribution, and satisfies
+\begin{equation}\label{eq:primitive-law}
+\D^k\Pc_{m,k}=H_{m,0}.
+\end{equation}
+It is the unique mean-zero $k$-fold periodic primitive. Its nonlinear average is the ordinary integral
+\begin{align}\label{eq:primitive-average}
+&\int_0^1\Pc_{m,k}(\chi_\lambda(y))\dd y\\
+&\quad=(-1)^mm![u^m]
+\left\{2\Gamma(-u)(2\pi)^{u-k}
+\cos\left(\frac{\pi(u-k)}2\right)\Li_{k-u}(q)\right\}.\notag
+\end{align}
+No coordinate contact term is required in this formula.
+\end{theorem}
+\begin{proof}
+The classical parameter derivative formula
+$\partial_x^k\zeta(s,x)=(-1)^k(s)_k\zeta(s+k,x)$
+explains the denominator $a_k$ pointwise. To retain periodic endpoint terms, use Fourier coefficients instead. For $n\ne0$,
+\[
+\frac{\Gamma(k-u)(2\pi\ii n)^{u-k}}{a_k(u)}
+=\Gamma(-u)(2\pi\ii n)^{u-k}.
+\]
+The zero Fourier coefficient is zero. Differentiating $k$ times gives the coefficients of $Z(u)$; its coefficient of $u^m$ is $(-1)^mH_{m,0}/m!$, since the removed pole has no nonnegative coefficient. This proves \eqref{eq:primitive-law} and the mean-zero property. Uniqueness follows because a periodic distribution killed by $\D^k$ has only a zero Fourier mode.
+
+Integrability can also be checked directly. The Hurwitz shift separates $x^{k-1-u}$ from a function analytic near $x=0$. Every fixed coefficient of its quotient by $a_k(u)$ is a linear combination of $x^{k-1}\log^j x$ and analytic terms. These are integrable for $k\ge1$; the same remains true after composition with a positive-slope diffeomorphism. The ordinary change of variables therefore introduces no finite-part discrepancy. Pair the Fourier coefficients with $\Pi_q$ and combine the positive and negative modes to obtain \eqref{eq:primitive-average}. On a small circle in the $u$-plane avoiding zero, local integrable bounds and exponential Fourier decay justify Cauchy coefficient extraction under the integral. This also covers the cases where the displayed spectral expression retains a simple pole.
+\end{proof}
+
+The lowest members are particularly transparent:
+\begin{align}\label{eq:primitive-examples}
+\Pc_{m,1}(x)&=\frac{(-1)^{m+1}}{m+1}\zeta^{(m+1)}(0,x),\\
+\Pc_{0,k}(x)&=-\frac{\zeta'(1-k,x)+H_{k-1}\zeta(1-k,x)}{(k-1)!},\notag\\
+\Pc_{0,1}(x)&=-\log\Gamma(x)+\frac12\log(2\pi).\notag
+\end{align}
+The last identity is Lerch's formula for $\zeta'(0,x)$ \cite{DLMFH}. On any closed subinterval of $(0,1)$ these functions also satisfy the corresponding ordinary antiderivative identities. Their periodic normalization fixes the otherwise arbitrary polynomial terms in higher primitives.
+
+\begin{corollary}[An ordinary log-Gamma average]\label{cor:loggamma}
+For every $\lambda>0$,
+\begin{equation}\label{eq:loggamma-average}
+\boxed{\displaystyle
+\int_0^1\log\Gamma(\chi_\lambda(y))\dd y
+=\frac12\log\left(\frac{\pi(\lambda+1)}\lambda\right).}
+\end{equation}
+In particular the value at $\lambda=2$ is $\tfrac12\log(3\pi/2)$.
+\end{corollary}
+\begin{proof}
+Set $(m,k)=(0,1)$ in \eqref{eq:primitive-average}. The constant coefficient of its spectral factor is $-\tfrac12\Li_1(q)$, so \eqref{eq:primitive-examples} gives
+$\tfrac12\log(2\pi)+\tfrac12\Li_1(q)
+=\tfrac12\log(2\pi)-\tfrac12\log(1-q)$,
+which is \eqref{eq:loggamma-average}.
+
+There is an independent elementary proof. Reflection and the symmetry of $\chi_\lambda$ give
+\[
+2\int_0^1\log\Gamma(\chi_\lambda(y))\dd y
+=\log\pi-\int_0^1\log\sin(\pi\chi_\lambda(y))\dd y.
+\]
+Change variables to the Poisson density. The integrable Fourier series
+$-\log(2\sin\pi x)=\sum_{n\ge1}\cos(2\pi nx)/n$
+may be paired with the smooth kernel by Abel approximation. The result is
+$\int\Pi_q(x)\log\sin\pi x\dd x=-\log2+\log(1-q)$.
+This proves the same formula and fixes its real branch without any spectral regularization.
+\end{proof}
+
+Finally, within $|q|<1$ the polylogarithmic primitives themselves satisfy
+\begin{equation}\label{eq:Euler-primitives}
+q\frac{\dd}{\dd q}\LiJ{s}{j}(q)=\LiJ{s-1}{j}(q),\qquad
+\int_0^q\frac{\LiJ{s}{j}(t)}t\dd t=\LiJ{s+1}{j}(q).
+\end{equation}
+The integral is normalized to zero at $q=0$. Termwise integration of \eqref{eq:Li-series} proves the formulas and provides a second exact antiderivative operation for the finite expressions in this article.
+
+\section{Correction safeguards and what has not been proved}
+\label{sec:audit}
+\subsection{The slope is not the whole coordinate}
+Take
+$\phi(y)=y+ay^2(1-y)$ with sufficiently small real $a\ne0$.
+It fixes both endpoints, has positive derivative, and satisfies $\phi'(0)=1$.
+Equation \eqref{eq:first-contacts} gives
+$\Ac_\phi(\psi'\dd x)=a\delta\ne0$.
+Therefore a proposed rule that uses only the slope and sets this discrepancy to zero is false. The incoming report explicitly limits its no-lower-derivatives result to fixed coordinates, so this is a safeguard against an invalid extrapolation, \emph{not an erratum to that proved result}.
+
+\subsection{Full resonant numerators must remain intact}
+The correct Poisson subtraction is $P_p(u)F_p(0;q)$, not merely $F_p(0;q)$. At index zero the missing term would be $H_pF_p(0;q)$, and higher indices use the elementary harmonic coefficients $e_{p,m+1}$. Equations \eqref{eq:periodic-generator} and \eqref{eq:Gp} retain the full numerator. The local transport proof similarly keeps $A(u,y)$ until the coefficient after the pole has been extracted. A vanishing residue component is not a license to discard its derivatives.
+
+\subsection{Branches, densities and ordinary functions are different data}
+The continuous branch in \eqref{eq:chi} is necessary. Equally, the density pullback contains $\phi'$, whereas the nonlinear average in \eqref{eq:J-def} does not. The latter uses the test factor $1/\phi'$ in its transport proof. Dropping that distinction changes the contact coefficient and the nonlocal integral. The interval M\"obius formula in Section~\ref{sec:products} is a density average; the circle formula is an unweighted average of a composed function.
+
+\subsection{Status of unrelated special-value questions}
+The inspected discovery chapter already proves $S_4$ and rejects one explicitly frozen $S_8$ relation by an exact signed residual. That rejection concerns the frozen vector, not every conceivable identity in the same weight or basket. The remaining $S_6$ reduction is not established here. Nor does finite local closure prove arithmetic independence, global reduction of arbitrary higher-depth periods, or existence of a diagonal restriction of a general product of distributions. The article contains ordinary analytic and algebraic proofs, not a proof-assistant formalization.
+
+\section{Reproducible verification and integration artifacts}
+\label{sec:verification}
+The mathematical proofs do not depend on numerical residuals. The supplied code has two intentionally separate verification routes.
+
+\subsection{Exact algebra, with an independent cutoff route}
+The exact suite uses rational arithmetic and symbolic polynomials. It checks the universal formula against the constant term of the elementary primitive \eqref{eq:elementary-primitive}, after an independently computed inverse-coordinate series. It also checks the cocycle by expanding the entire pulled-back singular density, checks the Stieltjes singularity against ordinary symbolic differentiation, verifies the harmonic products and compact contact formula, tests the tangent-coordinate disappearance and its sharp last index, replays the interval M\"obius coefficient reduction, and checks every delta-pullback coefficient through derivative order six by comparing inverse-coordinate jets with the Lagrange formula. A deliberately incorrect slope-only rule is rejected.
+
+The delivered run contains \textbf{504 passing exact assertions}. The tested cutoff grid covers $1\le k\le5$, $0\le n\le3$, all test monomials through degree $k-1$, and three distinct rational coordinate jets, one with symbolic logarithm of its nonunit slope. The cocycle grid uses $1\le k\le5$, $0\le n\le2$ and all corresponding test monomials. Harmonic and Stieltjes derivative checks extend through $p=6$. These finite assertions test the implementation; the all-index claims rest on the proofs.
+
+\subsection{Direct numerical quadratures}
+The numerical suite compares coordinate-subtracted ordinary quadratures against the independently constructed spectral formulas. The nonlinear parameters are $\lambda=1/2,3/2,2,3$; the Stieltjes/derivative pairs are
+$(m,p)=(0,0),(0,1),(0,2),(0,3),(1,1),(2,1)$.
+For positive Stieltjes indices, the regular shifted derivative is evaluated through derivatives of a convergent Hurwitz-zeta value at a positive integer, not through the average formula. Polylogarithm order derivatives on the other side are evaluated from their defining power series.
+
+Working precision is 70 decimal digits. To avoid catastrophic subtraction extremely close to zero, the direct integrand uses a degree-42 local Taylor expansion only below $y=10^{-3}$, and the exact special functions elsewhere. The polylogarithm series uses 800 terms. These are explicitly recorded finite numerical choices, not rigorous tail certificates. The comparison tolerance is $10^{-43}$ after scaling by the larger of one and the two compared magnitudes. The suite includes separate log-Gamma quadratures, the ordinary trigamma formulas, the displayed $\lambda=2$ identities, and Poisson-kernel derivative controls. The complete machine-readable record states the individual values and residuals.
+
+\input{data/validation_summary.tex}
+
+\subsection{Reproduction and package contents}
+With Python and a LaTeX installation providing \texttt{pdflatex}, run from the package root:
+\begin{verbatim}
+python -m pip install -r requirements.txt
+python code/exact_checks.py
+python code/numerical_checks.py
+python code/build.py
+\end{verbatim}
+The build runs in a temporary directory and retains the PDF and a build receipt. The package includes the article source, a standalone manuscript insert, source-audit and proposed-placement notes, both verification programs, a reusable finite-jet module, JSON evidence and SHA-256 checksums. There are no external data dependencies in the verification scripts.
+
+PDF rendering and visual review are documented separately from mathematical verification. A regenerated PDF may differ in metadata and byte representation; bit-identical rebuilding is not claimed. The archive is intended for subsequent repository integration by the user and does not change the live repository.
+
+\section{Further research questions and topics}
+\label{sec:questions}
+\subsection{Simultaneous nonlinear collision coordinates}
+The local one-variable transformation and the independent tensor expansion are explicit. A stronger problem is to transform a genuinely multivariable finite part near intersecting collision diagonals and compare different orders of restriction. The contact terms on pairwise diagonals need not determine the terms on their intersections. The next concrete target is a three-factor Stieltjes kernel with a specified multivariable regulator, an exact coordinate-change formula, and a proof of compatibility under two different collision orders. This is not supplied by merely multiplying the scalar formulas in this article.
+
+\subsection{Classifying coordinate-invariant combinations}
+Corollary~\ref{cor:vanishing} gives a sharp uniform cutoff for a single Stieltjes derivative under tangent coordinates. Classify finite linear combinations and products whose entire discrepancy vanishes for every coordinate tangent to the identity, or for every coordinate with a prescribed first $r$ derivatives. Theorem~\ref{thm:universal} turns this into explicit polynomial conditions on the singular coefficients. A useful deliverable would be a graded basis through a stated maximum pole and logarithm degree, followed by an all-degree structural theorem.
+
+\subsection{Transport versus normalized integration}
+The mean-zero primitive is canonical on the circle, while an interval primitive depends on boundary conditions. Determine the complete commutator between nonlinear transport and the mean-zero primitive operator, then express its interval restriction using explicit boundary polynomials and ordinary Hurwitz jets. The present cocycle and primitive formulas provide both sides of the proposed comparison, but a full operator identity with arbitrary nonperiodic test data remains to be written.
+
+\subsection{Mixed shifts and unequal nonlinear maps}
+Study ordinary or finite-part correlations
+$\gamma_m^{(p)}(\chi_\lambda(y)+a)\gamma_n^{(q)}(\chi_\mu(y)+b)$
+with an explicitly prescribed domain and endpoints. Equal maps lead to a single Poisson density; unequal maps no longer do. Separate the local correction problem, which remains finite, from the global evaluation problem, which may require Lerch, multiple-polylogarithm or Tornheim coordinates. Rational shifts and one parameter equal to one form a concrete first test family.
+
+\subsection{Elementary reductions and polylogarithmic order derivatives}
+The odd polygamma averages in \eqref{eq:odd-polygamma} are rational in $q$ up to powers of $\pi$. Positive Stieltjes indices introduce spectral derivatives of negative-order polylogarithms. Determine which explicitly specified linear combinations cancel those derivatives. A successful answer should give an exact transformation or coefficient certificate. Failure to find a relation numerically is not an obstruction theorem, and the present finite closure statement does not establish that the remaining coordinates are independent.
+
+\subsection{Complex parameters and degeneration}
+Analytically continue the circle-map averages in $\lambda$ with complete branch and contour specifications, and compare limits as $q$ approaches the unit circle with the repository's root-of-unity and resonance calculus. Limits $\lambda\downarrow0$ or $\lambda\to\infty$ are not obtained by blindly substituting $q=\pm1$ into the interior-disk proofs. Exact subtraction constants and the order of limits must be preserved. Rational-root-of-unity boundary values may connect the present families with finite character decompositions.
+
+\subsection{A focused formalization and the Gaussian bridge}
+The sparse coefficient operations, composition law, harmonic singularity and tangent-coordinate cutoff are natural exact formalization targets. The analytic interface is the Taylor-subtracted distribution family and its compact-normal dependence on a spectral variable. Separately, connecting these identities to the remaining Gaussian $S_6$ relation requires an explicit integral or iterated-word transformation into a stated part of the present calculus. The availability of an all-index Stieltjes formula alone does not furnish that transformation.
+
+\section*{Conclusion}
+\addcontentsline{toc}{section}{Conclusion}
+A nonlinear change of coordinate affects a finite part through a finite, computable boundary jet. For logarithmic Stieltjes singularities, the full answer is one coefficient of a harmonic polynomial, not an unspecified normalization constant. This resolves the one-dimensional nonlinear transport question posed in the inspected incoming report and shows exactly when lower contact derivatives appear or disappear.
+
+Combining that local law with a circle M\"obius map produces ordinary convergent identities and all-index finite-part formulas in polylogarithm order derivatives. The odd derivative orders, the even contact correction, and the mean-zero primitive hierarchy are different parts of the same calculation. Retaining those distinctions gives exact formulas with fixed branches and constants, while keeping the remaining multivariable collision and restricted period-reduction questions genuinely separate.
+
+\clearpage
+\begin{thebibliography}{99}
+\bibitem{repo} ProveIt Contributors, \emph{Polylogarithms and their Arithmetic Bridges}, manuscript and incoming research materials, revision \pin, inspected 10 October 2026 (Pacific time). Repository: \url{https://github.com/VladimirReshetnikov/ProveIt}. Exact source paths and read scope are in \texttt{SOURCE\_AUDIT.md}.
+\bibitem{collisions} \emph{Periodic Stieltjes Collisions: Exact Contact Terms, Finite-Part Fubini Laws, and Gamma--Polylogarithm Primitives}, research continuation prepared for Vladimir Reshetnikov, 10 October 2026. Incoming archive \texttt{ProveIt\_Periodic\_Collision\_Contacts\_2026-10-10.zip}. Relevant sections: unit-coordinate extensions, all argument derivatives, and further question ``Coordinate transport and compatibility with existing packages.''
+\bibitem{contacts} \emph{Periodic Stieltjes Contact Calculus}, research continuation prepared for Vladimir Reshetnikov, 10 October 2026. Incoming archive \texttt{ProveIt\_Periodic\_Stieltjes\_Contact\_2026-10-10.zip}. The original archive is preserved separately; byte-level provenance is recorded in the audit.
+\bibitem{EK} R. Estrada and R. P. Kanwal, ``Regularization, pseudofunction, and Hadamard finite part,'' \emph{Journal of Mathematical Analysis and Applications} \textbf{141} (1989), 195--207. DOI: \href{https://doi.org/10.1016/0022-247X(89)90216-3}{10.1016/0022-247X(89)90216-3}. Publication metadata verified through the Louisiana State University repository.
+\bibitem{FK} G. Felder and D. Kazhdan, \emph{Regularization of divergent integrals}, arXiv:1611.05057v1 (2016), especially Theorems 2.7 and 6.1. \url{https://arxiv.org/html/1611.05057v1}.
+\bibitem{DLMFH} NIST Digital Library of Mathematical Functions, \S25.11, \emph{Hurwitz Zeta Function}: shift, Fourier, parameter-derivative and Gamma-value identities. \url{https://dlmf.nist.gov/25.11}. Accessed 10 October 2026 (Pacific time).
+\bibitem{DLMFL} NIST Digital Library of Mathematical Functions, \S25.12, \emph{Polylogarithms}. \url{https://dlmf.nist.gov/25.12}. Accessed 10 October 2026 (Pacific time).
+\bibitem{DLMFG} NIST Digital Library of Mathematical Functions, \S5.5 and \S5.7, \emph{Functional Relations} and \emph{Series Expansions} for the Gamma function. \url{https://dlmf.nist.gov/5.5}; \url{https://dlmf.nist.gov/5.7}. Accessed 10 October 2026 (Pacific time).
+\end{thebibliography}
+\end{document}

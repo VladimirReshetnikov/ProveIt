@@ -1,0 +1,667 @@
+\section{A finite reduction for arbitrary mixed integer inner orders}
+\label{mixed:section}
+
+The directional-zeta report reduces two integer inner orders and the
+arbitrary-depth sector in which every inner order is nonpositive. Its
+Question 11 asks for a finite nested-polylogarithm reduction at arbitrary
+depth with both signs present, while the outer order stays complex
+\cite{RepoDirectional}. We solve that formulation. The construction uses
+root filtering, shuffle products, rational partial fractions, and finite
+geometric power sums. Each stage is explicit and accommodates repeated
+colors. The analytic continuation and the directions in which one may
+differentiate are part of the statement.
+
+The shuffle algebra and rational manipulation of hyperlogarithms are
+classical and have powerful general implementations \cite{Panzer}.
+Here the desired output is a finite expression with one free complex
+order, positive remaining indices, a controlled depth, and the fixed
+cumulative root alphabet. The construction and its proof are given in
+full, so their correctness does not depend on an external symbolic
+integration package.
+
+\subsection{Statement, alphabet, and convergence}
+
+For integers $a_j$, positive integers $p_j$, and nonzero colors
+$|X_j|\le1$, put
+\begin{equation}\label{mixed:Z}
+ Z(C)=\sum_{m_1,\ldots,m_d\ge1}
+       \frac{\prod_{j=1}^d X_j^{m_j}m_j^{-a_j}}
+            {(p_1m_1+\cdots+p_dm_d)^C}.
+\end{equation}
+If all colors have modulus less than one, this series is entire in
+$C$. For unit colors it initially converges absolutely when, for example,
+\[
+              \Re C>d+\sum_j\max(0,-a_j).
+\]
+This sufficient half-plane follows by grouping according to the
+denominator and using at most $O(n^{d-1})$ tuples of total weight $n$.
+Its size is not the research claim.
+
+We use the nested convention
+\begin{equation}\label{mixed:Li}
+ \Li_{s_1,\ldots,s_r}(z_1,\ldots,z_r)
+  =\sum_{n_1>\cdots>n_r\ge1}
+            \frac{z_1^{n_1}\cdots z_r^{n_r}}
+                 {n_1^{s_1}\cdots n_r^{s_r}}.
+\end{equation}
+The \emph{cumulative colors} are $\xi_j=z_1\cdots z_j$.
+The relative colors $z_j$ need not have modulus at most one.
+If $\max_j|\xi_j|<1$, the series is locally normally convergent in
+all its orders: writing $n_j-n_{j+1}$ as positive increments, with
+$n_{r+1}=0$, bounds the color product by $\rho^{n_1}$ for some
+$\rho<1$. Polynomial growth from the denominators is then harmless.
+
+\begin{theorem}[Finite mixed-order normal form]\label{mixed:main}
+Let $P=\#\{j:a_j>0\}$ and
+\[
+                \mathcal A=\bigcup_{j=1}^d\{\alpha:\alpha^{p_j}=X_j\}.
+\]
+The function \eqref{mixed:Z} is a finite linear combination of terms
+\begin{equation}\label{mixed:output}
+          \Li_{C+v,k_2,\ldots,k_r}(z_1,\ldots,z_r),
+ \qquad v\in\Z,\quad k_2,\ldots,k_r\in\Z_{>0},
+\end{equation}
+whose cumulative colors all belong to $\mathcal A$. The coefficients
+are obtained by finite rational operations in the colors and roots,
+rational Bernoulli numbers, and integral shuffle multiplicities.
+One may choose
+\begin{equation}\label{mixed:depth}
+ r\le\begin{cases}
+ d,&P=d,\\
+ P+1,&0<P<d,\\
+ 1,&P=0.
+ \end{cases}
+\end{equation}
+If all $X_j$ are roots of unity of orders dividing $q_j$, every
+cumulative color has order dividing $\lcm_j(p_jq_j)$.
+
+The identity initially holds in the region of absolute convergence
+and holds meromorphically for every $C$. If every $X_j\ne1$, both
+$Z$ and every final term are entire in $C$. Every fixed derivative
+in $C$ is obtained by taking the corresponding derivative with respect
+to the first index
+of the multiple polylogarithms in \eqref{mixed:output}.
+The fixed integral orders $a_j$ are not free differentiation variables
+in this formula.
+\end{theorem}
+
+The depth in \eqref{mixed:depth} is a bound for this construction;
+it is not a minimal-depth or period-independence assertion. In particular,
+one nonpositive factor can substantially shorten a high-depth input
+when only a few of the remaining indices are positive.
+
+\subsection{Step 1: remove weights and shuffle the positive factors}
+
+Let the coefficient transform be
+\[
+ \Mcal_C\left[\sum_{n\ge0}f_nt^n\right]
+             =\sum_{n\ge1}\frac{f_n}{n^C}.
+\]
+The constant term is omitted. The generator of \eqref{mixed:Z} is
+\begin{equation}\label{mixed:generator}
+ K(t)=\prod_j\Li_{a_j}(X_jt^{p_j}),\qquad Z(C)=\Mcal_C K.
+\end{equation}
+Root filtering gives, for every integer $a$,
+\begin{equation}\label{mixed:roots}
+            \Li_a(Xt^p)=p^{a-1}\sum_{\alpha^p=X}\Li_a(\alpha t).
+\end{equation}
+Indeed the sum of $n$th powers of the roots is zero unless $p$ divides
+$n$, and is then $pX^{n/p}$. This also checks the factor $p^{a-1}$.
+Expanding the product reduces the proof to unit weights and colors
+in $\mathcal A$.
+
+For a nonzero letter $\alpha$, use the one-forms
+$\omega_0=dt/t$ and $\omega_\alpha=\alpha\,dt/(1-\alpha t)$,
+and define iterated integrals recursively by integrating the leftmost
+letter against the remaining word. The word
+$0^{a-1}\alpha$ represents $\Li_a(\alpha t)$ for $a>0$.
+Partitioning the product of the integration simplices by the order
+of their coordinates proves the shuffle product, with multiplicities.
+Thus the $P$ positive factors give finitely many words with exactly
+$P$ nonzero letters. A word with zero-block indices $k_1,\ldots,k_P$
+and successive nonzero letters $\beta_1,\ldots,\beta_P$ represents
+\begin{equation}\label{mixed:word}
+ \Li_{k_1,\ldots,k_P}
+       (\beta_1t,\beta_2/\beta_1,\ldots,\beta_P/\beta_{P-1}).
+\end{equation}
+All the $k_i$ are positive. This identification follows either by
+expanding the forms geometrically in the recursive integrals, or by
+differentiating and fixing the value at $t=0$. Its cumulative colors
+are exactly the word letters, all in $\mathcal A$.
+
+The nonpositive factors form a rational function $R(t)$, since
+\[
+ \Li_{-M}(z)=(z\,d/dz)^M\frac{z}{1-z}\qquad(M\ge0).
+\]
+Each factor is bounded at infinity, so there is no positive-degree
+polynomial part in the partial-fraction decomposition
+\begin{equation}\label{mixed:R}
+ R(t)=c_\infty+\sum_{\alpha\in\mathcal A}\sum_{h=1}^{M_\alpha}
+                         \frac{c_{\alpha,h}}{(1-\alpha t)^h}.
+\end{equation}
+An upper bound for $M_\alpha$ is the sum of $1-a_j$ over the
+nonpositive factors with color $\alpha$. Even if a numerator cancels
+some poles, the valid coefficient formula remains
+\begin{equation}\label{mixed:partialcoeff}
+ c_{\alpha,h}=[u^{M_\alpha-h}]
+                 u^{M_\alpha}R((1-u)/\alpha).
+\end{equation}
+This finite Taylor extraction handles repeated colors directly.
+
+\subsection{Step 2: a rational prefactor with one free spectral order}
+
+For a nested polylogarithm $H$ as in \eqref{mixed:word}, write its
+relative colors as $\beta_1,\ldots,\beta_r$ for this subsection.
+Clearly
+\[
+ \Mcal_C\Li_{k_1,\ldots,k_r}(\beta_1t,\beta_2,\ldots,\beta_r)
+   =\Li_{C+k_1,k_2,\ldots,k_r}(\beta_1,\ldots,\beta_r).
+\]
+Define the rational numbers $b_{h,k}$ by
+\begin{equation}\label{mixed:b}
+ \binom{v+h-1}{h-1}=
+       \prod_{\nu=1}^{h-1}(1+v/\nu)
+       =\sum_{k=0}^{h-1}b_{h,k}v^k.
+\end{equation}
+Their connection to generalized harmonic numbers is explicit:
+\[
+ \prod_{\nu=1}^{h-1}(1+v/\nu)
+   =\exp\left(\sum_{j\ge1}
+          \frac{(-1)^{j+1}H_{h-1}^{(j)}}{j}v^j\right).
+\]
+
+\begin{lemma}[Rational-prefactor transform]\label{mixed:prefactor}
+For $h\ge1$ and $H=\Li_{k_1,\ldots,k_r}
+(\beta_1t,\beta_2,\ldots,\beta_r)$,
+\begin{align}\label{mixed:prefactorformula}
+ \Mcal_C\bigl[(1-\alpha t)^{-h}H\bigr]
+ ={}&\Li_{C+k_1,k_2,\ldots,k_r}(\beta_1,\ldots,\beta_r)\notag\\
+ &+\sum_{k=0}^{h-1}\sum_{j=0}^k
+ b_{h,k}(-1)^j\binom kj\,
+ \Li_{C-k+j,k_1-j,k_2,\ldots,k_r}
+       (\alpha,\beta_1/\alpha,\beta_2,\ldots,\beta_r).
+\end{align}
+The first inner index $k_1-j$ is permitted to be nonpositive at this
+intermediate step.
+\end{lemma}
+\begin{proof}
+Convolution of coefficients gives a sum over $n\ge m\ge1$ with
+factor $\alpha^{n-m}\binom{n-m+h-1}{h-1}$. The diagonal $n=m$
+is the first term because the binomial coefficient equals one there.
+For $n>m$, expand \eqref{mixed:b} and
+$(n-m)^k=\sum_{j=0}^k(-1)^j\binom kj n^{k-j}m^j$.
+The new outer color is $\alpha$ and the next is $\beta_1/\alpha$,
+which proves the formula by direct reindexing.
+\end{proof}
+
+If $P=0$, no $H$ is present. The same binomial coefficient gives
+directly
+\begin{equation}\label{mixed:rationalonly}
+ Z(C)=\sum_{\alpha,h}\sum_{k=0}^{h-1}
+                    c_{\alpha,h}b_{h,k}\Li_{C-k}(\alpha),
+\end{equation}
+the depth-one theorem already proved in the source. Thus the new
+construction agrees exactly with that existing sector.
+
+\subsection{Step 3: eliminate every nonpositive inner slot}
+
+\begin{lemma}[Finite elimination, including confluent colors]
+\label{mixed:eliminate}
+Suppose an inner index in \eqref{mixed:Li}, at position $j\ge2$,
+equals $-M$ with $M\ge0$. Put $U=n_{j-1}$ and $L=n_{j+1}$;
+for the final position set $L=0$. If $q=z_j\ne1$, define
+\[
+ R_h(q)=(q\,d/dq)^h\frac1{1-q}.
+\]
+Then
+\begin{equation}\label{mixed:geometric}
+ \sum_{n=L+1}^{U-1}q^n n^M
+ =\sum_{h=0}^M\binom Mh R_h(q)
+       \left\{q^{L+1}(L+1)^{M-h}-q^U U^{M-h}\right\}.
+\end{equation}
+At $q=1$ the exact replacement is
+\begin{equation}\label{mixed:Bernoulli}
+ \sum_{n=L+1}^{U-1}n^M
+       =\frac{B_{M+1}(U)-B_{M+1}(L+1)}{M+1}.
+\end{equation}
+In either case the resulting multiple polylogarithms have one less
+index. The cumulative alphabet does not enlarge.
+\end{lemma}
+\begin{proof}
+Apply $(q\,d/dq)^M$ to the finite geometric sum
+$(q^{L+1}-q^U)/(1-q)$ and use the product rule. This proves
+\eqref{mixed:geometric}; the Bernoulli difference identity proves
+\eqref{mixed:Bernoulli}.
+
+Expand the powers of $L+1$ into powers of $L$. An upper-end term
+multiplies the preceding color by $q$ and subtracts a nonnegative
+integer from its order; a lower-end term does the same to the following
+color and order. At the last position the lower-end term is a constant.
+In every case the $j$th summation disappears. In cumulative colors,
+the upper-end operation deletes the old $(j-1)$st cumulative letter,
+and the lower-end operation deletes the old $j$th letter. When $q=1$
+those two letters coincide. Hence no new cumulative color is introduced.
+\end{proof}
+
+If a neighboring positive index becomes nonpositive, repeat the rule.
+Depth decreases at every repetition, so the algorithm terminates.
+The first index can become any $C+$integer and is never eliminated.
+This explains both the precise output class and the depth bound.
+
+\begin{proof}[Completion of Theorem~\ref{mixed:main}]
+Apply \eqref{mixed:roots}, the finite shuffle expansion, partial
+fractions, Lemma~\ref{mixed:prefactor}, and
+Lemma~\ref{mixed:eliminate}. The positive-only case has depth $d$;
+a rational prefactor initially adds at most one index to depth $P$;
+all subsequent eliminations decrease depth. The rational-only case is
+\eqref{mixed:rationalonly}. Alphabet preservation and the root-order
+statement follow at each stage. The proof so far uses locally normally
+convergent series for interior cumulative colors, and absolute
+convergence at unit colors in a sufficiently far right half-plane.
+
+For analytic continuation use
+\begin{equation}\label{mixed:Mellin}
+ Z(C)=\frac1{\Gamma(C)}\int_0^\infty
+                   t^{C-1}\prod_j\Li_{a_j}(X_je^{-p_jt})\dd t.
+\end{equation}
+It follows by termwise Laplace integration in a common convergent
+half-plane. If no $X_j=1$, its kernel is analytic at zero and
+exponentially decreasing at infinity. Subtracting an arbitrarily long
+Taylor polynomial near zero gives meromorphic terms $1/(C+n)$,
+whose poles are canceled by $1/\Gamma(C)$. This proves entire
+continuation. The same argument applies to every output term: choose
+an integral positive first index as its base Mellin kernel, and note
+that its iterated-integral word has no singular letter at $t=1$.
+Every cumulative letter lies in $\mathcal A$, which contains no $1$
+when no original $X_j=1$. Its first-order continuation is therefore
+entire. If some original $X_j=1$, the convergent power--logarithm
+expansions below continue the product kernel meromorphically. Each
+nested output term has the same type of continuation: a positive-index
+iterated word has a convergent local power--logarithm expansion at
+$t=1$. This follows recursively from its defining integrals, since
+the only singular endpoint form is $\dd t/(1-t)$ and integrating a
+convergent power series times a finite power of $\log(1-t)$ preserves
+that class. Apply the same Mellin subtraction to a positive first-index
+base word to continue its first order. The identity theorem extends
+the finite reduction, and differentiation in the
+free variable $C$ is legitimate.
+\end{proof}
+
+Radial continuation in the coefficient variable means $K(t)\mapsto
+K(\rho t)$; in the original variables this is
+$X_j\mapsto\rho^{p_j}X_j$, not a common damping of all original
+colors. At resonant colors the resulting Abel limit need not be an
+ordinary finite value outside the convergence domain. All formulas
+there mean the stated meromorphic continuation, with Laurent
+coefficients taken afterward.
+
+\subsection{Local Laurent coefficients at every nonpositive outer order}
+
+Let $P_1=\#\{j:a_j>0,\ X_j=1\}$. The integer limits of
+Jonqui\`ere's expansion \cite[Eq. 25.12.12]{DLMFPolylog} give
+\begin{align}\label{mixed:positiveexpansion}
+ \Li_k(e^{-pt})
+ ={}&\frac{(-pt)^{k-1}}{(k-1)!}
+          \bigl(H_{k-1}-\log p-\log t\bigr)\notag\\
+ &+\sum_{n\ge0,\ n\ne k-1}\zeta(k-n)\frac{(-pt)^n}{n!},
+       \qquad k\ge1,\\
+ \Li_{-M}(e^{-pt})
+ ={}&\frac{M!}{(pt)^{M+1}}
+          +\sum_{n\ge0}\zeta(-M-n)\frac{(-pt)^n}{n!},
+       \qquad M\ge0.\label{mixed:negativeexpansion}
+\end{align}
+Here $H_0=0$. For $X\ne1$ the ordinary Taylor expansion is
+\begin{equation}\label{mixed:colorexpansion}
+ \Li_a(Xe^{-pt})=
+       \sum_{n\ge0}\frac{(-p)^n}{n!}\Li_{a-n}(X)t^n.
+\end{equation}
+Products yield a convergent local power--logarithm expansion
+\begin{equation}\label{mixed:local}
+ \prod_j\Li_{a_j}(X_je^{-p_jt})
+       =\sum_{n\ge n_0}\sum_{r=0}^{P_1}
+                                  \kappa_{n,r}t^n(\log t)^r.
+\end{equation}
+At any prescribed $n$, its coefficients require only finitely many
+terms of \eqref{mixed:positiveexpansion}--\eqref{mixed:colorexpansion}.
+
+\begin{theorem}[Pole structure and finite local Laurent constants]
+\label{mixed:localtheorem}
+Set $g(C)=1/\Gamma(C)$. Near $C=-n$, the complete polar contribution
+to $Z(C)$ is
+\begin{equation}\label{mixed:localmodel}
+        g(C)\sum_{r=0}^{P_1}
+              \frac{(-1)^r r!\kappa_{n,r}}{(C+n)^{r+1}}.
+\end{equation}
+The difference from \eqref{mixed:localmodel} is $g(C)$ times a
+holomorphic function. For $n\ge0$, in particular,
+\begin{equation}\label{mixed:finitepart}
+ \boxed{\displaystyle
+ \CT_{C=-n} Z(C)=
+     \sum_{r=0}^{P_1}\frac{(-1)^r r!}{(r+1)!}
+                           \kappa_{n,r}g^{(r+1)}(-n).}
+\end{equation}
+Possible poles at nonpositive integers have order at most $P_1$;
+possible poles at positive integers have order at most $P_1+1$.
+There are no other possible poles. Missing local coefficients mean zero.
+\end{theorem}
+\begin{proof}
+Taylor--logarithm subtraction in \eqref{mixed:Mellin} reduces the
+local terms to
+\[
+ \int_0^1t^{C+n-1}(\log t)^r\dd t
+                  =\frac{(-1)^r r!}{(C+n)^{r+1}}.
+\]
+Arbitrarily high subtraction makes the remainder holomorphic on any
+prescribed compact set. At $C=-n$ with $n\ge0$, $g$ has a simple
+zero. Thus its product with the holomorphic remainder has zero
+constant coefficient, and the constant of each displayed local term
+is exactly \eqref{mixed:finitepart}. The pole assertions follow from
+the same zero and from the fact that the powers $n$ are integers.
+\end{proof}
+
+Formula \eqref{mixed:finitepart} does not determine all higher
+regular coefficients. For example, the constant coefficient of
+$Z'(C)$ generally receives the first coefficient of $g(C)$ times
+the global holomorphic remainder. This is the same obstruction that
+prevents differentiating an isolated negative-integer value identity
+transversely. The finite mixed-order formula, which keeps $C$ free,
+does determine such derivatives in its stated multiple-polylogarithm
+class.
+
+Reciprocal-Gamma derivatives in \eqref{mixed:finitepart} are finite
+polynomials in $\gamma$, zeta values, and harmonic numbers. Indeed
+\begin{equation}\label{mixed:reciprocalgamma}
+ \frac1{\Gamma(-n+u)}=
+       (-1)^n n!\,u\prod_{j=1}^n(1-u/j)
+       \exp\left(\gamma u+
+             \sum_{k\ge2}\frac{(-1)^{k+1}\zeta(k)}k u^k\right).
+\end{equation}
+Only degree $r+1$ is needed for a local logarithm of degree $r$.
+
+\subsection{Explicit triple identities and a resonant Laurent expansion}
+
+Define
+\begin{equation}\label{mixed:F}
+ F(C;z)=\sum_{m,n,k\ge1}\frac{m\,z^{m+n+k}}{nk(m+n+k)^C}.
+\end{equation}
+For $|z|<1$ it is entire in $C$; at $z=1$ the following original
+series converges absolutely for $\Re C>2$. Its finite reduction is
+\begin{align}\label{mixed:Fidentity}
+ F(C;z)={}&2\Li_{C-1,1,1}(z,1,1)
+          -2\Li_{C-1,1}(z,1)+2\Li_{C,1}(z,1)\notag\\
+         &+2\Li_{C-1}(z)-2\Li_C(z).
+\end{align}
+An independent elementary proof groups by $N=m+n+k$:
+\[
+ \sum_{m+n+k=N}\frac m{nk}
+ =2N H_{N-1}(1,1)-2(N-1)H_{N-1}+2(N-1).
+\]
+Here $H_N(1,1)=\sum_{N\ge j>k\ge1}(jk)^{-1}$.
+The formula follows by first putting $v=n+k$, summing
+$1/(n(v-n))=2H_{v-1}/v$, and using
+$\sum_{v=1}^{N-1}H_{v-1}=(N-1)(H_{N-1}-1)$.
+Thus this example tests the general construction independently of
+the shuffle implementation.
+
+The coefficient generator is
+$\Li_{-1}(z)\Li_1(z)^2$. Consequently
+\begin{align}\label{mixed:Fvalues}
+ F(0;-1)&=-\frac{\log^2 2}{4},&
+ F(-1;-1)&=-\frac{\log2}{4},\notag\\
+ F(-2;-1)&=\frac{\log^2 2-\log2-1}{8},&
+ F(1;-1)&=\frac{\log^2 2}{2}+\log2-1.
+\end{align}
+The first three follow by applying $(z\,d/dz)^{-C}$ to the rational
+times logarithm generator at the nonpositive integers. For the last,
+direct integration gives the stronger functional identity
+\begin{equation}\label{mixed:Fprimitive}
+ F(1;z)=\int_0^z\frac{\Li_1(u)^2}{(1-u)^2}\dd u
+       =\frac{\Li_1(z)^2-2\Li_1(z)+2}{1-z}-2.
+\end{equation}
+More generally $z\,\partial_z F(C;z)=F(C-1;z)$ and the primitive
+of $F(C;z)/z$ vanishing at zero is $F(C+1;z)$. Every fixed
+$C$-derivative obeys the same identities.
+
+At $z=1$, the kernel in \eqref{mixed:Mellin} is
+\[
+ \Li_{-1}(e^{-t})\Li_1(e^{-t})^2
+ =\frac{\log^2t}{t^2}-\frac{\log t}{t}
+    -\frac{\log^2t}{12}+\frac{\log t}{12}+\frac14
+       +O\bigl(t(1+|\log t|^2)\bigr).
+\]
+Using \eqref{mixed:localmodel} and \eqref{mixed:reciprocalgamma}
+therefore proves the exact Laurent expansion
+\begin{equation}\label{mixed:Flaurent}
+ \boxed{\displaystyle
+ F(C;1)=-\frac1{6C^2}-\frac{2\gamma+1}{12C}
+       +\frac14-\frac{\gamma^2+\gamma}{12}
+                +\frac{\zeta(2)}{12}+O(C).}
+\end{equation}
+This example has a genuine double pole at a nonpositive outer order.
+The finite part is a short Gamma--zeta polynomial, while the whole
+function is the depth-three expression \eqref{mixed:Fidentity}.
+
+A second example exercises two different nonpositive-slot eliminations:
+\begin{align}\label{mixed:squareexample}
+ \sum_{m,n,k\ge1}\frac{k^2z^{m+n+k}}{mn(m+n+k)^C}
+ ={}&2\Li_{C-2,1,1}(z,1,1)
+       -3\Li_{C-2,1}(z,1)+3\Li_{C-1,1}(z,1)\notag\\
+ &+\frac72\Li_{C-2}(z)-\frac92\Li_{C-1}(z)+\Li_C(z).
+\end{align}
+Its generator is $\Li_{-2}(z)\Li_1(z)^2$. At $z=1$ its finite
+value at $C=0$ is $-1/12$. At $C=-1+u$ its Laurent expansion is
+\begin{equation}\label{mixed:squareLaurent}
+ \frac1{60u^2}+\frac{\gamma/60-13/720}{u}
+   +\frac{\gamma^2}{120}-\frac{13\gamma}{720}
+    -\frac{\pi^2}{720}-\frac1{480}+O(u).
+\end{equation}
+For verification, the $t^1$ coefficient of the local kernel is
+$-\log^2t/120-\log t/720+1/288$; insertion into
+\eqref{mixed:localmodel} at $C=-1$ gives
+\eqref{mixed:squareLaurent} directly.
+
+\subsection{A convergent evaluation and exact pole classification}
+
+Write $U(C;z)$ for the left side of \eqref{mixed:squareexample}.
+At $z=1$ its defining series converges absolutely for $\Re C>3$.
+Grouping by $N=m+n+k$ gives the additional finite harmonic identity
+\begin{align}\label{mixed:Ucoeff}
+ \sum_{m+n+k=N}\frac{k^2}{mn}
+ ={}&N^2\bigl(H_{N-1}^2-H_{N-1}^{(2)}\bigr)
+        -3N(N-1)H_{N-1}\notag\\
+ &+\frac{7N^2-9N+2}{2}.
+\end{align}
+This follows by taking the outer coefficient in
+\eqref{mixed:squareexample}, including the vanishing cases $N=1,2$.
+The following ordinary value uses only classical height-one multiple
+zeta identities, whose beta-integral proof is included to fix the
+normalization.
+
+\begin{corollary}[A convergent zeta evaluation]
+\label{mxex:weight-four}
+\begin{equation}
+ \boxed{\displaystyle
+ \sum_{m,n,k\geq1}\frac{k^2}{mn(m+n+k)^4}
+   =\frac{\pi^4}{24}+\frac{7\pi^2}{12}
+      -\frac{15}{2}\zeta(3).}
+ \label{mxex:convergent-value}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Set $C=4,z=1$ in \eqref{mixed:squareexample}, and use
+\[
+ \zeta(2,1,1)=\zeta(4),\qquad
+ \zeta(2,1)=\zeta(3),\qquad
+ \zeta(3,1)=\frac14\zeta(4).
+\]
+For a self-contained verification of these three classical relations,
+consider the classical Aomoto--Drinfel'd height-one generating identity,
+recorded in Kaneko and Ohno~\cite[Eq.~(5)]{mxex:KanekoOhno2010}:
+\begin{equation}\label{mxex:height-one}
+ \sum_{r,s\geq1}\zeta(r+1,\{1\}^{s-1})x^ry^s
+   =1-\frac{\Gamma(1-x)\Gamma(1-y)}{\Gamma(1-x-y)}.
+\end{equation}
+Indeed the shuffle identity gives
+$(-\log(1-t))^s/s!=\operatorname{Li}_{1,\ldots,1}(t,1,\ldots,1)$,
+with $s$ indices.  Expand this absolutely convergent power series and
+use
+$\int_0^1t^{n-1}(-\log t)^{r-1}\,dt=(r-1)!/n^r$.
+Termwise integration is justified by nonnegative summands and gives
+\[
+ \zeta(r+1,\{1\}^{s-1})
+ =\frac1{(r-1)!s!}\int_0^1
+   \frac{(-\log t)^{r-1}(-\log(1-t))^s}{t}\,dt.
+\]
+Summing on a sufficiently small bidisc turns the right side into
+\[
+ x\int_0^1t^{-x-1}\bigl((1-t)^{-y}-1\bigr)\,dt
+ =1+x\frac{\Gamma(-x)\Gamma(1-y)}{\Gamma(1-x-y)}.
+\]
+The beta evaluation is first justified for $\Re x<0$ and then by
+analytic continuation near zero.  The functional equation of Gamma
+gives \eqref{mxex:height-one}.  Finally
+\[
+ \log\frac{\Gamma(1-x)\Gamma(1-y)}{\Gamma(1-x-y)}
+ =\sum_{j\geq2}\frac{\zeta(j)}j
+   \bigl(x^j+y^j-(x+y)^j\bigr).
+\]
+Its $xy^2$, $xy^3$, and $x^2y^2$ coefficients give the three displayed
+identities; in the last case use $\zeta(2)^2=5\zeta(4)/2$.
+Formula \eqref{mixed:squareexample} now gives
+$15\zeta(4)/4+7\zeta(2)/2-15\zeta(3)/2$, which is
+\eqref{mxex:convergent-value}.
+\end{proof}
+
+\subsection{The full pole pattern at the resonant color}
+
+Write $U(C)=U(C;1)$ and let $B_j$ denote the Bernoulli numbers with
+$B_1=-1/2$.  For $\Re C>3$,
+\begin{equation}\label{mxex:mellin}
+ U(C)=\frac1{\Gamma(C)}\int_0^\infty t^{C-1}K(t)\,dt,
+ \qquad
+ K(t)=\operatorname{Li}_1(e^{-t})^2
+                  \operatorname{Li}_{-2}(e^{-t}).
+\end{equation}
+The integral follows directly from the Gamma integral for the denominator;
+absolute convergence follows from the coefficient bound $O(N^2(1+\log N)^2)$.
+
+\begin{proposition}[Actual spectral poles]
+\label{mxex:poles}
+The meromorphic function $U$ has a triple pole at $C=3$, double poles
+at $C=2,1$ and at every negative odd integer, and simple poles at
+every negative even integer.  These are all its poles.  The point
+$C=0$ is regular and
+\begin{equation}\label{mxex:zero-value}
+ U(0)=-\frac1{12}.
+\end{equation}
+For every integer $m\geq1$,
+\begin{equation}\label{mxex:even-residue}
+ \operatorname*{Res}_{C=-2m}U(C)
+       =\frac{m}{m+1}B_{2m+2}.
+\end{equation}
+For every integer $m\geq0$, the coefficient of the leading double
+pole at $C=-(2m+1)$ is
+\begin{equation}\label{mxex:odd-leading}
+ [(C+2m+1)^{-2}]\,U(C)
+       =-\frac{B_{2m+4}}{m+2}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The convergent local expansions for $0<t<2\pi$ are
+\begin{align*}
+ \operatorname{Li}_1(e^{-t})&=-\log t+a(t),&
+ a(t)&=\frac t2-\sum_{r\geq1}
+             \frac{B_{2r}}{2r(2r)!}t^{2r},\\
+ \operatorname{Li}_{-2}(e^{-t})&=b(t),&
+ b(t)&=\frac2{t^3}+\sum_{r\geq1}
+             \frac{B_{2r+2}}{(2r+2)(2r-1)!}t^{2r-1}.
+\end{align*}
+The second expansion follows by differentiating
+$(e^t-1)^{-1}$ twice.  The first follows by integrating its negative
+and fixing the constant from
+$\operatorname{Li}_1(e^{-t})+\log t\to0$.
+Thus
+\[
+ K(t)=b(t)(\log t)^2-2a(t)b(t)\log t+a(t)^2b(t).
+\]
+Mellin subtraction shows that a coefficient
+$\kappa_{n,r}t^n(\log t)^r$ contributes the singular model
+\[
+ \frac1{\Gamma(C)}
+ \frac{(-1)^r r!\kappa_{n,r}}{(C+n)^{r+1}}.
+\]
+All other contributions are holomorphic locally, after a sufficiently
+long Taylor--logarithm subtraction.  There are no additional poles
+because the tail of the integral decays exponentially.
+
+At the first four powers,
+\begin{equation}\label{mxex:local-first}
+ K(t)=\frac{2\log^2t}{t^3}
+       -\frac{2\log t}{t^2}
+       +\frac{\log t/6+1/2}{t}
+       -\frac1{12}+O(t\log^2t).
+\end{equation}
+The three positive poles therefore have orders three, two, and two,
+with nonzero leading coefficients $2$, $2$, and $-1/6$, respectively.
+The zero of $1/\Gamma(C)$ at $C=0$ cancels the simple local Mellin
+pole there; its derivative at zero is one, proving
+\eqref{mxex:zero-value}.
+
+For a positive even $n$, $b(t)$ has no $t^n$ term.  Since the only
+odd power in $a(t)$ is $t/2$, the coefficient of $t^n\log t$ in
+$K$ is $-b_{n-1}$, where
+\[
+ b_{n-1}=\frac{B_{n+2}}{(n+2)(n-1)!}.
+\]
+Using $(1/\Gamma)'(-n)=(-1)^n n!$ gives residue
+$n!b_{n-1}=nB_{n+2}/(n+2)$, which is
+\eqref{mxex:even-residue}.  For positive odd $n$, the coefficient
+of $t^n\log^2t$ is
+$b_n=B_{n+3}/((n+3)n!)$.  The same reciprocal-Gamma zero gives
+leading double-pole coefficient $-2n!b_n$, proving
+\eqref{mxex:odd-leading}.  The even-index Bernoulli numbers appearing
+here are nonzero, so these are actual poles, of exactly the stated
+orders.
+\end{proof}
+
+
+At the next nonpositive even order one also obtains
+\begin{equation}\label{mixed:Uminus2}
+ \CT_{C=-2}U(C)=\frac{19}{720}-\frac{\gamma}{60}.
+\end{equation}
+Indeed $[t^2]K(t)=\log(t)/120+1/1440$, and
+$1/\Gamma(-2+u)=2u+(2\gamma-3)u^2+O(u^3)$.
+Multiplication by its local Mellin model gives
+$2/1440-(2\gamma-3)/120$, proving the displayed constant.
+This is a Laurent constant of the continuation, not a value of the
+positive-term defining series at $C=-2$.
+
+\subsection{The depth-one boundary: Gamma, polygamma, and Stieltjes data}
+
+When the normal form reaches depth one at a $q$th root of unity
+$\alpha$, finite residue-class summation gives
+\begin{equation}\label{mixed:DFT}
+ \Li_s(\alpha)=q^{-s}\sum_{j=1}^q\alpha^j\zeta(s,j/q).
+\end{equation}
+For $s\ne1$ its $k$th order derivative is
+\begin{equation}\label{mixed:DFTjets}
+ q^{-s}\sum_{j=1}^q\alpha^j
+  \sum_{\ell=0}^k\binom k\ell(-\log q)^{k-\ell}
+                         \zeta^{(\ell)}(s,j/q).
+\end{equation}
+For nontrivial $\alpha$ the common pole at $s=1$ cancels first,
+so the finite formula there is
+\begin{equation}\label{mixed:DFTStieltjes}
+ \Li_1^{[k]}(\alpha)=\frac1q\sum_{j=1}^q\alpha^j
+  \sum_{\ell=0}^k\binom k\ell(-\log q)^{k-\ell}
+                         (-1)^\ell\gamma_\ell(j/q).
+\end{equation}
+These classical identities, already used in the source, fix the
+normalization of the depth-one output. Lerch's identity
+$\zeta'(0,a)=\log\Gamma(a)-\tfrac12\log(2\pi)$ and
+$\psi^{(r)}(a)=(-1)^{r+1}r!\zeta(r+1,a)$, $r\ge1$, give the corresponding
+Gamma and polygamma expressions \cite{DLMFHurwitz}. The new theorem
+does not erase the positive-depth order derivatives left by its
+normal form; further reductions require additional identities.

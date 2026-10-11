@@ -1,0 +1,210 @@
+\section{Further exact research questions}
+\label{research:section}
+
+The results above change the starting point of the next investigation.
+The all-zero-block generator and the single marked transverse derivative
+need no further conjectural existence statement. The unresolved issues
+concern additional factors, several marked positions, arithmetic
+reduction, and analytic continuation beyond the domains proved here.
+The questions below specify an object to compute and a criterion for
+progress. They are proposals, not assertions that the suggested
+reductions hold.
+
+\subsection{Higher products and logarithmic moments}
+
+\paragraph{Q1. Four and more even-order tails.}
+For an even number $2d\geq4$ of even orders $a_j\geq2$, consider
+\[
+ F_{\boldsymbol a}(s)=\sum_{n\geq0}(n+1/2)^{-s}
+                         \prod_{j=1}^{2d}\zeta(a_j,n+1).
+\]
+The centered expansion has exponents
+$2d-\sum_j a_j-2k$, so the same subtraction argument makes all even
+spectral integers regular. The open arithmetic problem is to evaluate
+every $F_{\boldsymbol a}(-2M)$ in an explicit finite list of
+multiple-zeta coordinates whose size is independent of $M$.
+The first useful case is $(a_1,a_2,a_3,a_4)=(2,2,2,4)$.
+Finite summation by parts and ordering the surviving indices give a
+concrete route, but the two-factor Euler reduction does not by itself
+remove every higher-depth coordinate. A satisfactory theorem should
+give the finite coordinate map first and prove every subsequent
+reduction. For an odd number of even tails, possible poles occur at
+even spectral integers; that problem additionally requires a specified
+Laurent finite part and is a different extension.
+
+\paragraph{Q2. Which logarithmic remainders cancel?}
+Corollary~\ref{mt:spectralderivatives} gives a convergent exact formula
+for every $F_{a,b}^{(r)}(-2M)$, including its finite Hurwitz correction.
+The remaining question is whether there are nontrivial, explicitly
+specified rational linear combinations of these derivatives whose
+logarithmic remainder sums cancel or reduce to endpoint data.
+Begin with $r=1$, $(a,b)=(2,4)$ and $(2,2)$, and retain the
+$-\log2/6$ term in \eqref{mt:derivative-example}.
+One should seek an identity at the level of the summands or a
+parameter-dependent kernel; an integer relation among a few decimal
+values would only suggest a target. Independent differentiation of a
+tail order, such as $\partial_a F_{a,b}$ before specializing $a$,
+is another problem because it differentiates both the Hurwitz tail and
+its asymptotic coefficients.
+
+\Needspace{5\baselineskip}
+\paragraph{Q3. A smallest proved span for each pair of orders.}
+Corollary~\ref{mt:closure} supplies at most $\max(a,b)$ coordinates for
+the entire sequence. Determine all reductions of that list obtainable
+from stated algebraic identities, and give an algorithm producing a
+smaller \emph{proved} spanning list. There are two distinct questions:
+the rank of explicit rational coefficient vectors in a chosen formal
+zeta-product alphabet, and arithmetic independence of the resulting
+numbers. Only the first is a finite linear-algebra computation without
+additional period theorems. A uniform description for $(2,2q)$ would
+be a useful initial result.
+
+\subsection{Several moving positions and primitive calculus}
+
+\paragraph{Q4. Two independently marked positions.}
+Construct a jointly continued gap formula for
+\[
+ \left.\partial_u^r\partial_v^q
+       \HH_{a,b}(s,u,v,t)\right|_{u=-m,\,v=-n},
+ \qquad m,n\geq0,\quad r,q\geq1,
+\]
+and identify a finite family of decorated lower-depth objects that
+remains sufficient after arbitrary unmarked nonpositive deletions.
+The adjacent case $m=n=0$, $r=q=1$ has a precise finite-gap guide.
+For two surviving positive real lattice values $y>z$ in a finite
+unit-lattice interval, put
+\[
+ P_r(y,z)=\ell_{0,r}(z+1)-\ell_{0,r}(y).
+\]
+The elementary symmetric-polynomial identity gives
+\[
+ \sum_{y>i>j>z}\log i\,\log j
+                 =\frac12\bigl(P_1(y,z)^2-P_2(y,z)\bigr).
+\]
+Here $P_1$ is the negative sum of the gap logarithms and $P_2$ is
+their squared-logarithm sum. This finite identity suggests the shape
+of a Gamma--Stieltjes formula. A theorem at arbitrary endpoints must
+still identify its decorated continuation with the prescribed
+relative quotient. The separate-position and unequal-center cases
+may require more than products of single-gap primitives.
+
+\paragraph{Q5. Ordered versus symmetrized transverse data.}
+Equation~\eqref{tr:insertionderivative} evaluates the sum of the three
+possible insertion positions using depth-two data. Determine an exact
+decomposition of several marked derivatives into their symmetrized
+part and the remaining ordered part. At two marked positions,
+stuffle products provide explicit relations but do not identify all
+ordered differences. A useful result would describe a finite basis
+of these ordered differences modulo the stated stuffle and deletion
+relations, with the endpoint normalization retained throughout.
+
+\paragraph{Q6. Endpoint differentiation and normalized antiderivatives.}
+Combine the transverse calculus with differentiation in $a$ and $b$.
+The identities
+\[
+ \partial_x\zeta(u,x)=-u\zeta(u+1,x),\qquad
+ \mathcal B_m'(x)=\mathcal B_{m-1}(x)
+\]
+suggest a closed transport system connecting moving harmonic orders,
+polygamma factors, and the balanced primitive ladder. Determine that
+system for a depth-three word with one marked position, then integrate
+it between specified endpoint values. The target is a formula whose
+Gamma or Barnes constants are fixed by the same relative quotient,
+rather than by separately chosen indefinite integrals. At $r\geq2$,
+the analogous system involves generalized Stieltjes primitives and
+should state their additive normalization explicitly.
+
+\subsection{Rational shifts and continuation of the generators}
+
+\paragraph{Q7. Common rational shifts and colored tails.}
+For rational $c>1/2$, replace the moment family by
+\[
+ \sum_{n\geq0}(n+c-1/2)^{-s}
+                 \zeta(a,n+c)\zeta(b,n+c).
+\]
+Its centered parity remains available, but the removed polynomial
+terms now have continued values $\zeta(-2j,c-1/2)$, which generally
+do not vanish. Establish the exact analogue of the finite Bernoulli
+formula with all these counterterms. Then determine the appropriate
+colored or cyclotomic multiple-zeta reduction for rational $c$.
+Unequal shifts in the two tails should be treated separately, since
+they no longer share the same centered expansion. Any differentiation
+of rational multiplication formulas must keep the conductor powers
+and their logarithmic derivatives.
+
+\paragraph{Q8. Rational endpoint Gamma--Stieltjes identities.}
+Specialize the finite endpoint formula
+\eqref{tr:negativeformula} to $a,b\in\Q_{>0}$ and apply Hurwitz
+distribution and character projections. For example,
+\[
+ \sum_{j=1}^{q}\zeta(s,j/q)=q^s\zeta(s)
+\]
+gives a completely specified hierarchy after differentiation at
+$s=-m$. Determine which linear combinations of transverse weighted
+tails reduce to derivatives of Dirichlet $L$-functions and logarithms
+of Gamma or Barnes values, and which still require ordered coordinates.
+The equality of the finite endpoint expressions provides an exact
+starting point; no conjectural independence of Stieltjes constants is
+needed for this transport step.
+
+\paragraph{Q9. Singular hyperplanes beyond the common twist tube.}
+Theorem~\ref{zbg:entire} proves joint holomorphy on $\Omega_k$.
+The kernel identifies the only remaining candidate singular
+hyperplanes as nonzero exponential periods of consecutive sums.
+Determine their residues or local branching, first at depth two,
+including further cancellations at specific nonzero periods.
+For integral $a-b$, the function $z^{a-b}$ is single valued near
+every nonzero node, so all finite node collisions are removable;
+for $a-b=N\geq0$ the finite exponential sum gives the same conclusion.
+For nonintegral endpoint differences,
+a precise local continuation theorem would explain which parts of
+the unit decoration polydisc can be enlarged and on which sheets.
+It should treat the complete relative expression, since separately
+continued Lerch summands can conceal cancellations.
+
+\paragraph{Q10. Functional identities for the all-moment generator.}
+The ODE and polylogarithmic representation in
+Theorem~\ref{mt:generator} reduce each fixed pair of orders to
+finitely many anchored primitives. Seek recurrences linking different
+pairs $(a,b)$, reflection or continuation identities in $t$, and exact
+special values at nonzero arguments where the polylogarithms have a
+useful algebraic argument. The common radius $2\pi$ also makes the
+nearest singularities at $\pm2\pi i$ accessible. Their local
+expansions may give exact coefficient relations or full asymptotic
+expansions of the moment sequence. Estimates alone are a secondary
+goal here; the primary target is a new identity between the generators.
+
+\Needspace{10\baselineskip}
+\subsection{Integration with the existing conjectural program}
+
+\paragraph{Q11. An analytic bridge to the Gaussian $S_6$ and $S_8$ candidates.}
+The source manuscript distinguishes its formal Cayley or period
+coordinates from proved evaluations. The new generators should be
+compared with the existing Gaussian kernels only through an explicit
+analytic transformation: a convergent integral identity, a justified
+parameter deformation, or a proved functional equation. Determine
+whether such a transformation sends a specific conjectural remainder
+to a Gamma--Stieltjes gap or a mixed-tail coordinate evaluated here.
+Until that bridge is proved, the present exact results supply neither
+a proof nor a refutation of the $S_6$ or revised $S_8$ formulas.
+
+\paragraph{Q12. Formalization of the exact algebra before the analytic layer.}
+The divided-difference product identity, finite endpoint composition,
+strict-gap binomial coefficients, Bernoulli deletion, and finite
+summation-by-parts formulas are suitable first formalization targets.
+Their statements should use exact rational or symbolic arithmetic and
+retain the boundary terms. The analytic layer then needs explicitly
+stated normalized-Mellin continuation, local normal convergence,
+and Hurwitz asymptotics. The accompanying programs are reproducible
+checks of finite instances; they do not replace those quantified
+theorems. A useful integration milestone is a mechanically checked
+finite algebraic core with the analytic lemmas listed as precise
+dependencies.
+
+\medskip
+For an efficient next investigation, the most concrete starting points
+are the four-tail example in Q1, the adjacent two-marked gap in Q4,
+and the rational-shift extension in Q7. Each starts from a finite
+identity or a convergent kernel already available here. They also test
+three different potential obstructions: higher arithmetic depth,
+nonlinear ordered primitives, and nonvanishing endpoint counterterms.

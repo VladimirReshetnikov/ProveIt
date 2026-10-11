@@ -1,0 +1,209 @@
+\section{Audit findings, corrections, and verification status}
+\label{sec:audit}
+
+\subsection{Scope of the source review}
+The inspected canonical convolution foundation in \cite{repo} works with
+the mean-zero periodic family having nonzero Fourier coefficients
+$(2\pi\ii k)^{-\alpha}$. Its contact and finite-part conventions belong
+to that geometry. They have not been transferred silently to the real
+vertical line. In the present setting, the elementary term subtracted from
+$\zeta(s,z)$ is $z^{1-s}/(s-1)$, and the analytic mechanism is a Laplace
+kernel on $(0,\infty)$.
+
+No new false theorem was established in the canonical source portions
+actually inspected. It would therefore be inappropriate to issue a
+blanket erratum against the existing manuscript. The practical correction
+found during this continuation concerns the complex-argument numerical
+backend described next. We also isolate three normalization mistakes
+that would invalidate an attempted extension of the earlier calculus:
+\begin{enumerate}
+\item Subtracting only the spectral pole $1/(s-1)$ does not remove spatial
+      growth. At $s=1$ it leaves $\gamma_0(z)=-\psi(z)$; the squared
+      vertical norm diverges because $\psi(a+\ii y)$ has logarithmic
+      growth. Adding $\log z$ produces the convergent $G_0$ pairing.
+\item The zero $\mathcal R_d(-n,z)=0$ does not imply that its spectral
+      derivative vanishes. The pole of $\Gamma(s)$ turns that derivative
+      into the nonzero value in \eqref{eq:Rd-zero}. The Stirling norm
+      illustrates the corresponding zero-times-pole cancellation in
+      the paired expression.
+\item Replacing analytic $\log\Gamma(z)$ by the principal logarithm of
+      $\Gamma(z)$ changes its branch by discontinuous multiples of
+      $2\pi\ii$. It destroys the Laplace representation and need not
+      preserve any vertical norm in this paper.
+\end{enumerate}
+These are explicit scope guards, not allegations that the inspected
+canonical chapters made these mistakes.
+
+\subsection{A reproduced mpmath 1.3.0 nonreal-argument failure}
+\label{sec:software-audit}
+During the independent numerical replay, the installed
+\texttt{mpmath 1.3.0} function \texttt{stieltjes(0,z)} failed the exact
+calibration identity $\gamma_0(z)=-\psi(z)$ at $z=0.8+0.6\ii$.
+At 60 decimal digits of working precision it returned approximately
+\[
+ 0.4662545368664062120-0.9931920114430890458\ii,
+\]
+whereas $-\psi(z)$ is approximately
+\[
+ 0.4278547847547755586-1.0184230001203705136\ii.
+\]
+The absolute discrepancy was approximately
+$0.04594718437366742995$, not a last-digit effect.
+The version-tagged source \cite{mpmath13} takes a real part inside its
+integrand. That real-parameter formula is not a valid analytic continuation
+in a nonreal argument.
+
+The repair used here is explicit. Complex Stieltjes values are checked by
+the holomorphic paired Hermite formula \eqref{eq:complex-Hermite} and by
+Cauchy coefficients of the entire function $u\mapsto Z_{1+u}(z)$.
+Positive-real arguments in \eqref{eq:k-coefficients} may still use the
+installed Stieltjes routine; an independent positive-real control was
+included. The code does not claim this finding is new, that later mpmath
+versions share it, or that any particular canonical repository result
+was affected. A corpus-wide search for such unsafe nonreal calls would
+be a separate audit task.
+
+For the Cauchy check, with $0<\rho<1$ and integer $N>m$, the approximation
+used is
+\begin{equation}\label{eq:Cauchy-diagnostic}
+ G_m(z)\approx\frac{(-1)^m m!}{N\rho^m}
+   \sum_{k=0}^{N-1}Z_{1+\rho\omega_k}(z)\omega_k^{-m},
+ \qquad \omega_k=e^{2\pi\ii k/N}.
+\end{equation}
+The actual replay used $\rho=1/8$ and $N=96$ at 60-digit precision for
+orders zero through two. This is a trapezoidal discretization of Cauchy's
+coefficient formula, not a certified error enclosure. Its agreement with
+the independent Laplace and Hermite evaluations is recorded separately
+from the analytic proof.
+
+\subsection{What the verification establishes}
+The supplied exact checks contain \textbf{538 passing assertions}:
+7 kernel-valuation certificates, 36 compensated spectral-zero identities,
+210 equal-scale residue cancellations, 234 rational-scale residue
+cancellations, 49 finite-lattice polynomial identities, and 2
+Stirling-polynomial reductions. They use exact rational arithmetic and
+symbolic Bernoulli polynomials. These finite checks would detect many
+sign, indexing, or scale errors, but the proofs above, not the finite
+range of tests, establish the all-order assertions.
+
+The numerical replay contains \textbf{76 passing comparisons} at
+\textbf{60 decimal digits of working precision}, using acceptance
+criterion
+\[
+ \frac{|\text{left}-\text{right}|}{\max(1,|\text{left}|,|\text{right}|)}
+      <10^{-35}.
+\]
+The largest recorded scaled discrepancy was approximately
+$2.04\times10^{-53}$, in a basic spectral moment with $w=0.8$, $A=1$.
+The test set includes direct vertical-line quadrature, independent
+Laplace moments, mixed Stieltjes jets, complex Cauchy coefficients,
+polygamma integrals, rational scales, negative-order compensated
+moments, removable integer values, primitive derivatives, Lerch
+confluence, root-of-unity Gamma reductions, and finite harmonic sums.
+Four of these comparisons form the separate complex-safe replay; its
+negative control reproduces the dependency limitation just discussed.
+
+These are unvalidated floating-point comparisons, not interval proofs.
+For direct vertical integrals, the implementation switches to the
+standard asymptotic expansions of $G_0$ and $\Omega$ beyond $|z|=60$
+to avoid catastrophic subtraction at very large quadrature nodes.
+The resulting quadrature remains a diagnostic. No Lean or other
+proof-assistant formalization is supplied.
+
+\subsection{Reproduction and proposed integration}
+The ZIP contains the modular article sources, a standalone TeX source,
+the compiled PDF, exact and numerical scripts, machine-readable results,
+a version-specific negative-control record, source audit, proof-status
+ledger, build instructions, and checksums. The core commands are
+\begin{verbatim}
+python verification/exact_checks.py
+python verification/numerical_checks.py core
+python verification/numerical_checks.py extensions
+python verification/complex_safe_replay.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+
+A suitable integration is a new chapter or research note on
+\emph{vertical-line Hurwitz pairings}, placed near the existing integration
+and log-Gamma material, not merged into the periodic contact-term chapter
+as if its integrals had the same meaning. Suggested labels and dependencies
+are in \texttt{INTEGRATION\_NOTES.md}. The incoming ZIP should be retained
+unchanged as a provenance artifact, consistent with the repository's
+incoming-report policy. No repository write was performed in preparing
+this package.
+
+\section{Further research questions}
+\label{sec:questions}
+
+The proved results suggest the following concrete extensions. These are
+questions, not additional theorems claimed by the present paper.
+
+\begin{question}[Irrational-scale closure and its precise obstruction]
+For $p/q\notin\mathbb Q$, classify when
+$\int_0^\infty x^{w-1}e^{-Bx}h_d(qx)h_e(px)\dd x$ admits a finite
+representation by terms of the form
+$\Gamma(w+j)\lambda^{-w}\zeta(w+j,C)$ and elementary Gamma--power terms,
+with parameters independent of $w$. The allowed coefficient field and
+allowed scales must be fixed before asserting a non-reduction theorem.
+The Laplace identity is already available; what is missing is a rigorous
+classification of the corresponding exponential-kernel algebra.
+\end{question}
+
+\begin{question}[Joint color coalescence and Bernoulli compensation]
+Develop a compensation hierarchy for
+$(1-\xi e^{-x})^{-1}$ that remains uniform as $\xi\to1$ and produces
+well-defined mixed color/spectral jets. Can its exact transition terms
+be written in the same finite Hurwitz alphabet as
+\eqref{eq:rational-coeff}? A formula should specify the order of color
+coalescence and spectral differentiation rather than rely on formal
+substitution into a singular divided difference.
+\end{question}
+
+\begin{question}[Higher products and multiple-zeta closure]
+For three or more factors with both vertical orientations, Plancherel
+produces convolution constraints rather than a single diagonal product.
+Determine the smallest class of multiple Hurwitz or Tornheim-type
+functions closed under the resulting compensated integrals, and identify
+integer resonances where that class collapses to ordinary Hurwitz order
+jets. The two-factor result here provides exact normalization tests for
+such a theory.
+\end{question}
+
+\begin{question}[Minimal arithmetic bases for rational scales]
+The $pq$-point grid is explicit but not always minimal. Use Gamma
+multiplication, reflection, and finite character decompositions to find
+minimal provable spanning sets for
+$I_{m,n}^{p,q}(a,b)$ at rational $a,b$. The quarter-Gamma formula
+\eqref{eq:headline-quarter} is the first simple instance. Any assertion
+of a basis must distinguish a proved spanning statement from unproved
+linear independence of its constants.
+\end{question}
+
+\begin{question}[Exact reductions of remaining integral conjectures]
+Determine which still-conjectural polylogarithm integrals in the broader
+repository can be transformed into the finite-subtraction kernel algebra
+of this paper. A successful reduction would need an explicit transform
+identity and branch/convergence proof. No such reduction of $S_6$ or the
+revised $S_8$ candidate is supplied here, and numerical agreement alone
+would not constitute one.
+\end{question}
+
+\begin{question}[Certified complex jets and formalization]
+Replace the floating-point Cauchy replay with an interval-certified
+complex-zeta coefficient engine, including explicit contour truncation
+and rounding errors. In parallel, formalize the bilinear
+Laplace--Plancherel lemma, compact-parameter domination, and finite kernel
+identity. These three components would turn the present proof ledger
+into a reusable formal route to arbitrary-depth and rational-scale
+Stieltjes identities.
+\end{question}
+
+\paragraph{Conclusion.}
+The central mathematical outcome is finite exact closure for a genuinely
+different integration geometry from the existing periodic theory. Spatial
+compensation gives all Stieltjes indices; deeper Bernoulli compensation
+gives Gamma remainders and normalized primitives; commensurate vertical
+scales give finite arithmetic grids; and colored kernels give explicit
+polylogarithm order identities. The difficult bookkeeping points---joint
+parameter holomorphy, removable poles, slope logarithms, and complex
+branches---are part of the proofs, not delegated to a numerical fit.

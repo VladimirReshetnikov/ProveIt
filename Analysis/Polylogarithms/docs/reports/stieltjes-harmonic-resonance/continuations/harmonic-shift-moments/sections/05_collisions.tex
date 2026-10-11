@@ -1,0 +1,500 @@
+\section{An exact geometric collision formula and harmonic hierarchy laws}
+\label{hc:section}
+
+The incoming mixed-spectral report already determines the collision of
+three undifferentiated Stieltjes factors at shifts $(0,a\epsilon,b\epsilon)$
+for fixed $0<a<b$. It also supplies the complete spectral subtraction
+at a fixed, arbitrarily multiple collision \cite{RepoMixed}. These are
+substantial antecedents. A moving configuration such as
+$(0,\epsilon,\epsilon+\epsilon^2)$ is a different question: inserting
+$\epsilon$-dependent rates in a fixed-rate error estimate is not justified
+without uniform control. This section proves an exact formula before
+any rate specialization. It permits arbitrarily many polygamma factors,
+arbitrary argument-derivative orders, and analytic collision arcs with
+several different vanishing orders. Its correction is a finite expression
+in polygamma values, derivatives, rational functions, and logarithms.
+The corrected remainder is holomorphic in all the shifts.
+
+\subsection{The coordinate convention and the local telescoping identity}
+
+Write
+\[
+ f_r(z)=-\psi^{(r)}(z),\qquad
+ n_i=r_i+1,\qquad \kappa_i=(-1)^{r_i}r_i!,\qquad
+ h_i(z)=f_{r_i}(1+z).
+\]
+Thus $f_0=\gamma_0$ and $f_r=\gamma_0^{(r)}$; this section concerns
+Stieltjes index zero with arbitrary argument derivatives. In particular,
+no claim about all positive Stieltjes indices is hidden in the notation.
+The polygamma recurrence \cite{DLMFPolygamma} gives the exact local formula
+\begin{equation}\label{hc:one-sided}
+ f_{r_i}(\{x\})=h_i(x)+
+       \kappa_i\mathbf1_{x>0}x^{-n_i},\qquad 0<|x|<\delta<1.
+\end{equation}
+The functions $h_i$ are holomorphic for $|x|<1$.
+
+For real shifts $a_1<\cdots<a_d$ sufficiently close to zero, define
+\begin{equation}\label{hc:Cdef}
+ \mathcal C_{\boldsymbol r}(\boldsymbol a)
+ =\FP_x\int_0^1\prod_{i=1}^d f_{r_i}(\{x+a_i\})\,\dd x,
+ \qquad
+ Q_{\boldsymbol r}=\FP_x\int_0^1\prod_{i=1}^d f_{r_i}(x)\,\dd x.
+\end{equation}
+At the seam $x=-a_i$ on the circle, the cutoff coordinate is exactly
+$x+a_i$, taken positive, and the deleted right interval has ambient
+length $\eta_i$. The finite part is the coefficient independent of all
+$\eta_i$ and $\log\eta_i$. The cutoffs may be taken independently.
+These are pointwise products away from finitely many distinct seams;
+there is no multiplication of distributions with overlapping singular
+supports. The merged quantity uses the same ambient coordinate $x$.
+
+Put, for $1\le m\le d$,
+\begin{equation}\label{hc:Km}
+ K_m(z,\boldsymbol a)=
+ \frac{\kappa_m}{(z+a_m)^{n_m}}
+ \prod_{k<m}h_k(z+a_k)
+ \prod_{k>m}f_{r_k}(z+a_k).
+\end{equation}
+In a fixed neighborhood of the merged seam one has
+\begin{equation}\label{hc:telescope}
+ \prod_{i=1}^d f_{r_i}(\{x+a_i\})
+ =\prod_{i=1}^d h_i(x+a_i)
+      +\sum_{m=1}^d\mathbf1_{x>-a_m}K_m(x,\boldsymbol a).
+\end{equation}
+Indeed, expand the product according to the first factor for which the
+singular part in \eqref{hc:one-sided} is selected. If this first index is
+$m$ and $x>-a_m$, then $x>-a_k$ for every $k>m$, so all the subsequent
+factors may be replaced by their meromorphic germs $f_{r_k}(x+a_k)$.
+This telescoping form replaces a sum over $2^d$ subsets by $d$ terms.
+
+For $m<i$ and $1\le p\le n_i$, let $B_{mi,p}(\boldsymbol a)$ be the
+coefficient of $(z+a_i)^{-p}$ in the principal part of $K_m$ at $-a_i$.
+It is explicitly
+\begin{align}
+ B_{mi,p}(\boldsymbol a)
+ =\frac{\kappa_i}{(n_i-p)!}
+ \left.\partial_z^{\,n_i-p}\left\{
+ \frac{\kappa_m}{(z+a_m)^{n_m}}
+ \prod_{k<m}h_k(z+a_k)
+ \prod_{\substack{k>m\\k\ne i}}f_{r_k}(z+a_k)
+ \right\}\right|_{z=-a_i}.
+ \label{hc:B}
+\end{align}
+Only finitely many derivatives are required. All arguments after
+this substitution are differences of shifts.
+
+\subsection{Exact subtraction, with a jointly holomorphic remainder}
+
+\begin{theorem}[Geometric collision formula]\label{hc:main}
+With the convention of \eqref{hc:Cdef}, set
+\begin{equation}\label{hc:counter}
+ \mathcal A_{\boldsymbol r}(\boldsymbol a)=
+ \sum_{m<i}\left\{
+ -B_{mi,1}(\boldsymbol a)\log(a_i-a_m)
+ +\sum_{p=2}^{n_i}
+  \frac{B_{mi,p}(\boldsymbol a)}{(p-1)(a_i-a_m)^{p-1}}
+ \right\}.
+\end{equation}
+There is a function $\mathcal R_{\boldsymbol r}$ holomorphic in all
+$a_i$ on a complex neighborhood of $\boldsymbol a=0$ such that, in
+the stated real ordering chamber,
+\begin{equation}\label{hc:exact}
+ \boxed{\quad
+ \mathcal C_{\boldsymbol r}(\boldsymbol a)
+ =\mathcal A_{\boldsymbol r}(\boldsymbol a)
+       +\mathcal R_{\boldsymbol r}(\boldsymbol a),\qquad
+ \mathcal R_{\boldsymbol r}(\boldsymbol0)=Q_{\boldsymbol r}.
+ \quad}
+\end{equation}
+The theorem applies to every number of factors and every tuple of
+nonnegative derivative orders. It supplies the complete collision
+correction, including its finite terms, rather than just its leading
+divergences.
+\end{theorem}
+
+\begin{proof}
+Choose a fixed small $\delta>0$ and represent the circle near its seam
+by $x\in(-\delta,\delta)$. The integral outside this neighborhood and
+the integral of the all-$h_i$ term in \eqref{hc:telescope} are
+holomorphic in the shifts. Consider one $K_m$ term, integrated from
+$-a_m$ to $\delta$ with its right endpoint cutoff at $-a_m$.
+
+It is important not to take the limits of its individual principal-part
+coefficients, which can diverge when poles coalesce. Define
+\[
+ D_m(z,\boldsymbol a)=\prod_{i=m}^d(z+a_i)^{n_i},\qquad
+ H_m(z,\boldsymbol a)=D_m(z,\boldsymbol a)K_m(z,\boldsymbol a).
+\]
+The numerator is jointly holomorphic: explicitly it is
+\[
+ H_m=\kappa_m\prod_{k<m}h_k(z+a_k)
+       \prod_{k>m}\bigl\{\kappa_k+(z+a_k)^{n_k}h_k(z+a_k)\bigr\}.
+\]
+For distinct shifts, write the polar decomposition
+\[
+ K_m(z,\boldsymbol a)
+   =\sum_{i\ge m}\sum_{p=1}^{n_i}
+          \frac{B_{mi,p}(\boldsymbol a)}{(z+a_i)^p}
+       +W_m(z,\boldsymbol a),
+\]
+where the notation $B_{mm,p}$ is used here only for the analogous
+principal coefficients at the starting point.
+The remainder extends jointly holomorphically as all the shifts merge.
+For example, on a fixed circle $|w|=\rho>\delta$ inside the domain of
+all $H_m$, with the shifts sufficiently small, the residue theorem gives
+\begin{equation}\label{hc:Hermite}
+ W_m(z,\boldsymbol a)=\frac1{2\pi\ii}
+ \int_{|w|=\rho}\frac{H_m(w,\boldsymbol a)}
+  {D_m(w,\boldsymbol a)(w-z)}\,\dd w,\qquad |z|<\rho.
+\end{equation}
+The denominator stays away from zero on this contour, proving the
+claimed joint holomorphy. This is the analytic cancellation usually
+encoded by confluent Hermite divided differences.
+
+A primitive of the polar part is
+\[
+ U_m(z,\boldsymbol a)=
+ \sum_{i\ge m} B_{mi,1}\log(z+a_i)
+ -\sum_{i\ge m}\sum_{p=2}^{n_i}
+       \frac{B_{mi,p}}{p-1}(z+a_i)^{1-p}.
+\]
+At the upper point $z=\delta$ its apparent collision poles cancel.
+To see this without a coefficientwise limit, choose a second, smaller
+circle $|w|=\rho_0<\delta$ enclosing all $-a_i$. Then
+\begin{equation}\label{hc:upper}
+ U_m(\delta,\boldsymbol a)=\frac1{2\pi\ii}
+  \int_{|w|=\rho_0}K_m(w,\boldsymbol a)
+                         \log(\delta-w)\,\dd w.
+\end{equation}
+The logarithm is holomorphic inside this smaller circle. The displayed
+integral is jointly holomorphic in the shifts. For $p\ge2$, the derivative
+of the logarithm in the residue calculation is
+$-(p-2)!/(\delta+a_i)^{p-1}$, giving exactly the sign in $U_m$.
+
+At the lower point $z=-a_m+\eta$, the terms belonging to $i=m$ contain
+only $\log\eta$ and negative powers of $\eta$; their cutoff constant
+is zero. For $i>m$, ordinary substitution at $\eta=0$ is legitimate.
+Subtracting these lower primitive values gives precisely the $m$th
+summand in \eqref{hc:counter}. Consequently the remainder of the local
+integral is
+\[
+ U_m(\delta,\boldsymbol a)
+       +\int_{-a_m}^{\delta}W_m(z,\boldsymbol a)\,\dd z,
+\]
+which is jointly holomorphic, by \eqref{hc:Hermite} and
+\eqref{hc:upper}. At zero shifts it is exactly the ambient finite part
+of $K_m(z,\boldsymbol0)$ on $(0,\delta)$: all merged lower polar
+primitive terms again have zero cutoff constant. Finally sum over $m$
+and add the holomorphic all-regular and exterior integrals. The
+zero-shift form of \eqref{hc:telescope} identifies their total with
+$Q_{\boldsymbol r}$. This proves \eqref{hc:exact}.
+\end{proof}
+
+\begin{corollary}[Analytic collision arcs]\label{hc:arcs}
+Let $a_i(\epsilon)$ be real analytic, vanish at zero, and be pairwise
+distinct for sufficiently small $\epsilon>0$, with a fixed ordering
+there. Then the complete expansion of
+$\mathcal C_{\boldsymbol r}(\boldsymbol a(\epsilon))$ has the form
+\[
+ U(\epsilon)+V(\epsilon)\log\epsilon,
+\]
+where $U$ and $V$ are convergent Laurent germs with finite principal
+parts. Its coefficient independent of $\epsilon$ and $\log\epsilon$ is
+\begin{equation}\label{hc:arc-constant}
+ \CT_{\epsilon}\mathcal C_{\boldsymbol r}(\boldsymbol a(\epsilon))
+ =Q_{\boldsymbol r}
+       +\CT_{\epsilon}\mathcal A_{\boldsymbol r}(\boldsymbol a(\epsilon)).
+\end{equation}
+Every term of the second constant is explicitly determined by finitely
+many jets of the arcs and of the polygamma functions at $1$.
+\end{corollary}
+
+\begin{proof}
+Each positive gap is
+$a_i-a_m=b_{im}\epsilon^{\nu_{im}}(1+O(\epsilon))$, with
+$b_{im}>0$ and positive integer $\nu_{im}$. Its logarithm is
+$\nu_{im}\log\epsilon+\log b_{im}$ plus a convergent Taylor series.
+Formula \eqref{hc:B} is meromorphic after composition with these arcs:
+all possible poles come from a finite number of powers of nonzero
+analytic gaps. Thus \eqref{hc:counter} has the stated form and its
+constant needs only finitely many coefficients. The holomorphic
+remainder contributes exactly its value at zero. No higher powers
+of $\log\epsilon$ arise in this polygamma case.
+\end{proof}
+
+\subsection{A short formula at Stieltjes index zero}
+
+Let $f=f_0=-\psi$ and $h(z)=f(1+z)$. If every $r_i=0$, all poles in
+\eqref{hc:Km} are simple and \eqref{hc:counter} collapses to
+\begin{equation}\label{hc:short}
+ \boxed{\quad
+ \mathcal A_{\boldsymbol0}(\boldsymbol a)=
+ \sum_{m<i}\frac{\log(a_i-a_m)}{a_i-a_m}
+   \prod_{k<m}h(a_k-a_i)
+   \prod_{\substack{k>m\\k\ne i}}f(a_k-a_i).
+ \quad}
+\end{equation}
+The negative arguments here are values of the meromorphic digamma
+germ, not fractional parts. They are defined because the small gaps
+are nonzero. Formula \eqref{hc:short} has only $d(d-1)/2$ summands.
+
+For three factors at shifts $(0,a,b)$ it reads
+\begin{equation}\label{hc:triple-exact}
+ \mathcal A_3(0,a,b)=
+ \frac{\log a}{a}f(b-a)
+ +\frac{\log b}{b}f(a-b)
+ +\frac{\log(b-a)}{b-a}h(-b).
+\end{equation}
+This exact identity is the key to the hierarchical limits below. For
+fixed $a=\alpha\epsilon$, $b=\beta\epsilon$, expanding
+\begin{equation}\label{hc:hseries}
+ h(z)=\gamma+\sum_{k\ge1}(-1)^k\zeta(k+1)z^k
+\end{equation}
+recovers every displayed term through order $\epsilon^0$ in the
+incoming fixed-rate triple theorem \cite{RepoMixed}. In particular,
+for $(0,\epsilon,2\epsilon)$ the finite discrepancy is
+$\zeta(2)\log2/2$, as already established there. The addition in
+\eqref{hc:triple-exact} is the exact correction at arbitrary small
+$a,b$, with a jointly holomorphic remainder, so rates may now coalesce.
+
+Even a binary collision illustrates why the parameter matters. For
+$d=2$, \eqref{hc:short} is $\log(a_2-a_1)/(a_2-a_1)$. Thus
+\begin{equation}\label{hc:binary-curved}
+ \CT_{\epsilon}\mathcal C_{0,0}(0,\epsilon+b\epsilon^2)
+     =Q_{0,0}+b,
+\end{equation}
+because
+$\log(\epsilon+b\epsilon^2)/(\epsilon+b\epsilon^2)
+ =\epsilon^{-1}\log\epsilon-b\log\epsilon+b+O(\epsilon|\log\epsilon|)$.
+This does not change the preceding binary theorem in its stated shift
+coordinate. It records the effect of choosing a nonlinear collision arc.
+
+\subsection{Two different hierarchies and their harmonic constants}
+
+Set $Q_3=Q_{0,0,0}$, and write $H_n=\sum_{j=1}^n1/j$ for $n\ge1$.
+In the formulas below a term containing $H_{u/v}$ is included only
+when $v$ divides $u$; no value at a nonintegral index is needed.
+
+\begin{theorem}[Oriented harmonic hierarchy laws]\label{hc:hierarchy}
+Let $p>q\ge1$ be integers and $v=p-q$. The left nested collision obeys
+\begin{equation}\label{hc:left}
+ \boxed{\quad
+ \CT_{\epsilon}\mathcal C_{0,0,0}(0,\epsilon^p,\epsilon^q)
+   =Q_3-\mathbf1_{v\mid q}\,\gamma H_{q/v}.
+ \quad}
+\end{equation}
+The right nested collision has the different value
+\begin{equation}
+ \boxed{\begin{aligned}
+ \CT_{\epsilon}\mathcal C_{0,0,0}
+           (0,\epsilon^q,\epsilon^q+\epsilon^p)
+ =Q_3
+ &+\mathbf1_{v\mid p+q}(-1)^{(p+q)/v}H_{(p+q)/v}
+ \\[-2pt]
+ &+\mathbf1_{v\mid q}\,\gamma(-1)^{q/v+1}H_{q/v}.
+ \end{aligned}}\label{hc:right}
+\end{equation}
+In particular,
+\begin{align}
+ \CT_{\epsilon}\mathcal C_{0,0,0}(0,\epsilon^2,\epsilon)
+     &=Q_3-\gamma,\label{hc:left-example}\\
+ \CT_{\epsilon}\mathcal C_{0,0,0}(0,\epsilon,\epsilon+\epsilon^2)
+     &=Q_3+\gamma-\frac{11}{6},\label{hc:right-example}\\
+ \CT_{\epsilon}\mathcal C_{0,0,0}(0,\epsilon,\epsilon+\epsilon^3)
+     &=Q_3+\frac32.\label{hc:right-second}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+The two elementary, convergent generating functions needed are
+\begin{equation}\label{hc:harmonic-generators}
+ \frac{\log(1-z)}{1-z}=-\sum_{n\ge1}H_nz^n,
+ \qquad
+ \frac{\log(1+z)}{1+z}=\sum_{n\ge1}(-1)^{n+1}H_nz^n.
+\end{equation}
+The first follows by multiplying
+$-\log(1-z)=\sum_{j\ge1}z^j/j$ by the geometric series; the second
+is obtained by replacing $z$ with $-z$.
+
+For the left nested configuration, substitute
+$a=\epsilon^p$, $b=\epsilon^q$ into \eqref{hc:triple-exact}.
+The first two logarithms are respectively $p\log\epsilon$ and
+$q\log\epsilon$. They therefore make no contribution to the
+log-free constant, regardless of the poles of their other factors.
+The only possible contribution is
+\[
+ \epsilon^{-q}\frac{\log(1-\epsilon^v)}{1-\epsilon^v}
+                       h(-\epsilon^q)
+ =-\sum_{n\ge1}H_n\epsilon^{nv-q}
+       \left\{\gamma+\sum_{k\ge1}\zeta(k+1)\epsilon^{qk}\right\}.
+\]
+For $k\ge1$, the exponent $nv-q+qk$ is strictly positive. The constant
+comes solely from $k=0$ and $nv=q$, proving \eqref{hc:left} after
+\eqref{hc:arc-constant} is used.
+
+For the right nested configuration, put
+$a=\epsilon^q$, $b=\epsilon^q+\epsilon^p$. Now the first and third
+logarithms in \eqref{hc:triple-exact} are pure multiples of
+$\log\epsilon$. The log-free part of the second term is
+\begin{align*}
+ &\frac{\log(1+\epsilon^v)}{1+\epsilon^v}
+          \epsilon^{-q}f(-\epsilon^p)\\
+ &\qquad=\left\{\sum_{n\ge1}(-1)^{n+1}H_n\epsilon^{nv}\right\}
+       \left\{-\epsilon^{-p-q}+\gamma\epsilon^{-q}
+                +\sum_{k\ge1}\zeta(k+1)\epsilon^{pk-q}\right\}.
+\end{align*}
+All terms in the last sum have positive exponents. The pole term
+contributes only if $nv=p+q$, with coefficient $(-1)^nH_n$; the
+constant regular term contributes only if $nv=q$, with coefficient
+$\gamma(-1)^{n+1}H_n$. This proves \eqref{hc:right}. The examples use
+$H_1=1$, $H_2=3/2$, and $H_3=11/6$.
+\end{proof}
+
+These two arrangements are not interchangeable. The original periodic
+Stieltjes germ has a one-sided singularity, and reflection is not a
+symmetry of its regular part. For example, subtracting
+\eqref{hc:left-example} from \eqref{hc:right-example} eliminates the
+unevaluated merged moment and gives the exact difference
+$2\gamma-11/6$. The fixed-rate error estimate in the preceding work
+alone would not establish either formula.
+
+\subsection{A quartic example and an evaluated polygamma constant}
+
+For linear rates $a_i=c_i\epsilon$, $c_1<\cdots<c_d$, define the
+finite Laurent coefficient
+\begin{equation}\label{hc:alpha}
+ \alpha_{mi}(\boldsymbol c)=\frac1{c_i-c_m}
+ [\epsilon^1]\left\{
+   \prod_{k<m}h((c_k-c_i)\epsilon)
+   \prod_{\substack{k>m\\k\ne i}}f((c_k-c_i)\epsilon)
+ \right\}.
+\end{equation}
+Then the constant-order part of the complete counterterm is
+\begin{equation}\label{hc:linear-constant}
+ [\epsilon^0]\mathcal A_{\boldsymbol0}(\epsilon\boldsymbol c)
+ =\sum_{m<i}\alpha_{mi}(\boldsymbol c)
+               \{\log\epsilon+\log(c_i-c_m)\}.
+\end{equation}
+In particular, its log-free constant is the finite sum with
+$\log(c_i-c_m)$. It requires only \eqref{hc:hseries} through degree
+$d-2$. For rational rates every coefficient is a rational polynomial
+in $\gamma,\zeta(2),\ldots,\zeta(d-1)$; its formal weight is $d-1$
+when $\gamma$ has weight one and $\zeta(k)$ has weight $k$.
+Indeed, a coefficient multiplying $z^j$ in either germ has weight
+$j+1$, including the pole coefficient at $j=-1$; there are $d-2$
+germ factors and their exponents sum to one in \eqref{hc:alpha}.
+This is a statement about the produced expressions, not an assertion
+of arithmetic independence.
+
+For the quartic rates $(0,1,2,3)$ the six coefficients are
+\begin{center}
+\begin{tabular}{ccl}
+\hline
+$(m,i)$ & $c_i-c_m$ & $\alpha_{mi}$\\
+\hline
+$(1,2)$ & $1$ & $-3\gamma\zeta(2)+\tfrac92\zeta(3)$\\
+$(1,3)$ & $2$ & $0$\\
+$(1,4)$ & $3$ & $\gamma\zeta(2)-\tfrac32\zeta(3)$\\
+$(2,3)$ & $1$ & $\gamma\zeta(2)+4\zeta(3)$\\
+$(2,4)$ & $2$ & $2\gamma\zeta(2)-\tfrac92\zeta(3)$\\
+$(3,4)$ & $1$ & $5\gamma\zeta(2)$\\
+\hline
+\end{tabular}
+\end{center}
+Consequently, with $Q_4=Q_{0,0,0,0}$,
+\begin{align}
+ \CT_{\epsilon}\mathcal C_{0,0,0,0}(0,\epsilon,2\epsilon,3\epsilon)
+ =Q_4
+ &+\gamma\zeta(2)(2\log2+\log3)\notag\\
+ &-\frac32\zeta(3)(3\log2+\log3).
+ \label{hc:quartic}
+\end{align}
+The coefficient of $\epsilon^0\log\epsilon$ is
+$6\gamma\zeta(2)+5\zeta(3)/2$. A rate difference removes $Q_4$:
+\begin{align}
+ &\CT_{\epsilon}\mathcal C_{0,0,0,0}(0,\epsilon,2\epsilon,4\epsilon)
+ -\CT_{\epsilon}\mathcal C_{0,0,0,0}(0,\epsilon,2\epsilon,3\epsilon)
+ \notag\\
+ &\qquad=\gamma\zeta(2)\left(\frac72\log2+\log3\right)
+       -\frac{\zeta(3)}6(\log2+7\log3).
+ \label{hc:quartic-difference}
+\end{align}
+
+Repeated poles add the rational primitive terms in
+\eqref{hc:counter}; retaining only its logarithmic terms would give
+an incorrect finite constant. For example,
+\begin{equation}\label{hc:middle-derivative}
+ \boxed{\quad
+ \CT_{\epsilon}\FP_x\int_0^1
+   \gamma_0(x)\gamma_0'(\{x+\epsilon\})
+                         \gamma_0(\{x+2\epsilon\})\,\dd x
+ =2\gamma\zeta(2)-\zeta(3)\log2.
+ \quad}
+\end{equation}
+To check every term, for $\boldsymbol r=(0,1,0)$ and rates $(0,1,2)$,
+the three pairs in \eqref{hc:counter} have constant-order contributions
+\[
+ (m,i)=(1,2):\ -3\zeta(3)\log\epsilon+\zeta(3),\qquad
+ (1,3):\ -\zeta(3)(\log\epsilon+\log2),\qquad
+ (2,3):\ 4\zeta(3)\log\epsilon.
+\]
+The nonlogarithmic $\zeta(3)$ in the first pair comes from its double
+pole. Hence the finite discrepancy from the merged moment is
+$\zeta(3)(1-\log2)$. The merged value follows directly from the
+fundamental theorem of calculus before taking the cutoff constant:
+\[
+ Q_{0,1,0}=\frac13\left\{\gamma^3-
+                 \CT_{x\downarrow0}\gamma_0(x)^3\right\}
+          =2\gamma\zeta(2)-\zeta(3),
+\]
+since the constant coefficient of
+$(x^{-1}+\gamma-\zeta(2)x+\zeta(3)x^2+\cdots)^3$ is
+$\gamma^3-6\gamma\zeta(2)+3\zeta(3)$. Adding the discrepancy proves
+\eqref{hc:middle-derivative} without an unevaluated global moment.
+
+\subsection{Verification and scope of the result}
+
+The supplied \src{code/verify\_collisions.py} checks both harmonic
+hierarchy laws by exact coefficient extraction for every
+$1\le q<p\le12$ and verifies the quartic expressions. Its numerical
+calculation independently integrates the original periodic digamma
+products, using local Taylor subtraction at each separated seam. The
+merged moments are obtained from a local Laurent expansion and ordinary
+quadrature away from zero. The collision formula itself is not used
+in either quadrature. At 70-digit working precision, selected residuals
+$\mathcal C-\mathcal A-Q$ are
+\begin{center}
+\begin{tabular}{lrr}
+\hline
+Configuration & $\epsilon=10^{-2}$ & $\epsilon=10^{-3}$\\
+\hline
+$(0,\epsilon,2\epsilon,3\epsilon)$
+ & $-1.468167310\cdot10^{-1}$ & $-1.501685165\cdot10^{-2}$\\
+$(0,\epsilon^2,\epsilon)$
+ & $-1.288859769\cdot10^{-2}$ & $-1.210723679\cdot10^{-3}$\\
+$(0,\epsilon^3,\epsilon^2)$
+ & $-1.202913331\cdot10^{-4}$ & $-1.202065558\cdot10^{-6}$\\
+$(0,\epsilon,\epsilon+\epsilon^2)$
+ & $-1.268176013\cdot10^{-2}$ & $-1.208676388\cdot10^{-3}$\\
+\hline
+\end{tabular}
+\end{center}
+These residuals are consistent with a holomorphic remainder, whose
+first change is of the order of the largest shift. They are not claimed
+to be interval certificates. A separate repeated-pole quadrature in
+\src{code/verify\_polygamma\_collisions.py} checks
+\eqref{hc:middle-derivative} using second-order local subtraction;
+the corresponding residuals are approximately $0.02934754$ and
+$0.00224172$. Exact coefficient generation for that example and
+additional derivative placements is supplied in
+\src{code/derive\_polygamma\_collisions.py}.
+
+The proof of unrestricted multiplicity, argument-derivative order, and
+analytic collision rates is the telescoping and contour argument above.
+The numerical evidence checks its implementation on specified cases.
+The prior fixed-rate triple discrepancy and fixed-collision spectral
+completion remain credited to \cite{RepoMixed}. Positive Stieltjes
+indices introduce logarithmic singular germs rather than meromorphic
+ones; a corresponding exact geometric formula would require an
+additional argument and is not asserted here. The unresolved extension
+is precisely formulated in the research agenda.
