@@ -4007,6 +4007,40 @@ declarations across the three arithmetic modules, permitting only
 the analytic construction is running serially against the original
 Gowers proof modules, without a stub environment.
 
+
+### L.15 Production verification of the complete cover route (2026-10-11)
+
+Commit `199799ee2` on the formalization branch supplies the complete
+joint-cover envelope construction and the exact companions
+`theorem_18_1_explicit`, `theorem_18_2_explicit`, and
+`corollary_18_7_explicit`, with native headline reductions. It was integrated
+in `3d94a50b8`, preserving the checked arithmetic of L.13 and L.14.
+The author reports kernel checks for the light envelope modules and a
+check of the final bridge with substituted dependency interfaces. This
+workspace does not treat that bridge check as a production kernel audit.
+
+The serial 531-module dependency build passed from the actual source.
+Production verification is now running the exact-type and transitive axiom
+audit of all 120 numbered catalogue statements, followed by the stronger
+inverse, progression, and coloring bounds. The selected native headline
+reductions avoid importing the separate asymptotic density route merely
+for its earlier Theorem 1.3 companion. The audit still covers every
+numbered statement, including the existing repaired definitions.
+
+The source ledger now has 120 exact companion signatures. This is a
+source inventory, not a claim that the full production check has finished.
+The full goal remains open until the actual proof dependencies and the
+stronger bounds pass their kernel and axiom checks. The mathematical
+fidelity caveats for the existing catalogue remain in force.
+
+A namespace check found that the incoming `isBoxPartition_self` duplicated
+an existing public helper in `Proofs16OscillationPartition`. The helper in
+`Proofs16JointCovers` is now private; its proof and use in the empty-family
+case are unchanged. The duplicate-name check passes with zero duplicates.
+The port-scope check passes, and the provenance check against the pinned
+local upstream checkout verifies 4,134 original hashes and both Freiman
+extract proof bodies. These source checks do not replace Lean verification.
+
 ## F. Routes
 
 1. **Quantitative repair (research).**

@@ -42,7 +42,7 @@ def JointCoverOn {N d : Nat} [NeZero N] {ι : Type*} (E : Finset ι)
         ∃ i, ∀ e ∈ E, f e x = mu j i e x
 
 /-- The trivial partition of a box. -/
-theorem isBoxPartition_self {N d : Nat} [NeZero N] (P : Box N d) :
+private theorem isBoxPartition_self {N d : Nat} [NeZero N] (P : Box N d) :
     IsBoxPartition (fun _ : Fin 1 => P) P := by
   refine ⟨fun x => ⟨fun h => ⟨0, h⟩, fun ⟨_, h⟩ => h⟩, fun i j hij => ?_⟩
   simp [Subsingleton.elim i j] at hij
