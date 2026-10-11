@@ -1029,6 +1029,7 @@ import GowersSzemeredi.Proofs16WithCoordinateLifts
 import GowersSzemeredi.Proofs16Lemma9WithRemainder
 import GowersSzemeredi.Proofs16PolynomialLemma9WithRemainder
 import GowersSzemeredi.Proofs16PieceCoverWithRemainder
+import GowersSzemeredi.Proofs16VertexWithCovers
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
