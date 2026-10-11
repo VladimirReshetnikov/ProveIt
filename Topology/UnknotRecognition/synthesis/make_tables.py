@@ -1771,3 +1771,7 @@ if os.path.exists('data/pachner-epochs-benchmark.json'):
 if os.path.exists('data/epoch-gauge-benchmark.json'):
     import runpy
     runpy.run_path('data/epoch_gauge_tables.py')
+
+if os.path.exists('data/transport-annulus-benchmark.json'):
+    import runpy
+    runpy.run_path('data/transport_annulus_tables.py')

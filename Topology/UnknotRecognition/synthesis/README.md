@@ -1497,3 +1497,28 @@ They check 650 runtime pins, all complete/capped outcomes and all three
 original-source disc proofs with epoch, gauge optimization, move/search and
 source producers disabled during replay. The actual three gauge records
 and 35-step target chain are checked explicitly.
+
+[transport_annulus.tex](transport_annulus.tex) authenticates the retained
+primitive annulus capping theorem on a source-replayed endpoint. It
+requires independent connectivity, primitive period and minimum-span
+arithmetic, and preserves original-input geometry/transport authority.
+The optimized-positive case now returns an annulus certificate rather
+than reaching the disc-only work cap. All 1,529 tests and 36 focused tests
+pass; fresh Regina confirms one annulus and three retained disc witnesses.
+The optional feature remains off, and other negative controls still use
+complete fallback. Failed endpoint-window, repeated-shelling and edge-first
+pilots are preserved under `data/endpoint-negative-pilots.json`. Current
+source audits and timings are `data/transport-annulus-*`.
+
+The current [PDF](report.pdf) has 603 pages. Section 152 starts on page 594;
+the assessment is section 153 on page 598. Rendered pages 594–600 pass visual
+review, including the full capping proof, source-chain authentication, both
+timing tables, assessment continuation and references. All references resolve;
+only the four existing overflow warnings remain. Reproduce publication checks
+with `python -B data/transport_annulus_review.py --publication` from this directory.
+They check 652 runtime pins, all six actual diagram outcomes, four complete
+original-source proofs with producers disabled, the passing test records and
+the retained negative pilots. The comparison includes all preparation and replay;
+the old optimized-positive native query is capped, rather than an exhausted
+search family. The full optional-call ratio is 62.726 on this one input;
+ordinary recognition without the optional stage remains faster here.
