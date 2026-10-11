@@ -1047,6 +1047,7 @@ import GowersSzemeredi.Proofs18LengthSixRoute
 import GowersSzemeredi.Proofs18WidthPowerBounds
 import GowersSzemeredi.Proofs18LengthSixScale
 import GowersSzemeredi.Proofs18LengthSixCounts
+import GowersSzemeredi.Proofs18LengthSixDensity
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
