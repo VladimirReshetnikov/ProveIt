@@ -4188,6 +4188,9 @@ controls), and the standard `μ₀ = genMu0 k ≈ 64·2^k` comes from the loose
   `(μ + 2L + 14)/2^(L+5)` are `1.10` and `1.02`, and `0.98` at `L = 11`.
   *(Audit correction: an earlier version said the cubic term itself exceeds
   `2^(L+5)` for every `L ≤ 10`.)*
+  *(Superseded by L.15e: the cubic term is an artifact of bounding pure
+  constants at the `X`-power level; at the exponential level `L + 5` holds
+  in every length.)*
 Bridge additions in `Proofs18CoverSharperExplicit`:
 `theorem_18_1_d7_four_le`, `theorem_18_2_L5_eleven_le` (same stub axioms).
 `d + 6` and `L + 4` would need a step cost below `128·2^k`, i.e. both the
@@ -4221,7 +4224,26 @@ was checked against the existing oleans (`build_trust.py`): the concurrent
 `Section05` edit for Lemmas 5.12–5.13 made every module stale by
 timestamp, and the full rebuild belongs to the production audit.
 
-A three-page mathematical write-up of L.12-L.15d is in
+**L.15e: the phase-refinement threshold at the exponential level; `L + 5`
+in every length.** The cubic stopping term `40(k+2)³ + 1095` came from
+`inv_thr_le`, which bounds `phaseInverseConstant ≤ X^(2^Q)` and charges two
+pure constants at the `X`-power level: `section5LocalRefinementConstant d 1
+≤ 2^(2^(40d³+2))` and `boundaryRefinementConstant (1/16) ≤ 2^(2^1083)`. The
+threshold is only needed below `exp(exp(X^(2^μ)))`, and a constant tower
+`2^(2^m)` is at most `exp(X^(2^j))` once `m ≤ 2^j` (`two_tower_le_ex`,
+from `2^n ≤ e^n`). So `inv_thr_le_ex` has `k + 16` in place of the cubic,
+the length envelope loses that branch (`envStepCTx`), and at the tight base
+budget `genMuX k ≤ 500·2^k` (`k ≥ 4`; lengths 6, 7 by evaluation). With the
+short lengths at `c = 5` this gives **Theorem 18.2 and Corollary 18.7 with
+`L + 5` in every length** (`theorem_18_2_L5`, `corollary_18_7_L5`;
+`Proofs18CoverThresholdsSharp`, light; bridge in
+`Proofs18CoverSharperAllDegrees`, stub axiom
+`section16RecurrenceProfileWith_explicit` only).
+*(Audit correction: L.15a and the write-up attributed the `L ≤ 10` gap to
+the Section 5 Weyl threshold and called closing it research. It was a
+loose estimate.)*
+
+A three-page mathematical write-up of L.12-L.15e is in
 `joint-vertex-covers/joint-vertex-covers.tex` (PDF beside it).
 
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the

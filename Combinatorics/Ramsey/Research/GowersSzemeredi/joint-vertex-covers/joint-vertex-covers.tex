@@ -174,8 +174,8 @@ envelopes grow like $472\cdot2^k<512\cdot2^k$.
 & printed & standard base & tight base\\
 \midrule
 Theorem 18.1, exponent $\alpha^{2^{2^{d+c}}}$ & $c=10$ & $c=8$ ($d\ge4$) & $c=7$ (every $d$)\\
-Theorem 18.2, threshold with $L+c$ & $c=9$ & $c=6$ (every $L$) & $c=5$ ($L\ge11$)\\
-Corollary 18.7, threshold with $L+c$ & $c=9$ & $c=6$ (every $L$) & $c=5$ ($L\ge11$)\\
+Theorem 18.2, threshold with $L+c$ & $c=9$ & $c=6$ (every $L$) & $c=5$ (every $L$)\\
+Corollary 18.7, threshold with $L+c$ & $c=9$ & $c=6$ (every $L$) & $c=5$ (every $L$)\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -183,11 +183,16 @@ Corollary 18.7, threshold with $L+c$ & $c=9$ & $c=6$ (every $L$) & $c=5$ ($L\ge1
 The method stops at these constants. The envelope recursion grows like
 $472\cdot2^k$, and $c=6$ for Theorem~18.1 (or $c=4$ for Theorem~18.2) would
 need a step cost below $128\cdot2^k$, while the vertex covers and the two slice
-controls alone cost $204\cdot2^k$. For $L\le10$ the bound $L+5$ is blocked by
-the stopping term $40(k+2)^3+1095$, which comes from the catalogue's Weyl
-threshold $2^{2^{40k^3}}$ in Section~5. For $L\le8$ this term alone exceeds
-$2^{L+5}$; at $L=9,10$ the excess it leaves in the envelope at the first steps
-persists.
+controls alone cost $204\cdot2^k$.
+
+For Theorem~18.2 at $c=5$ one more point matters. The modulus threshold of
+the inverse step contains two pure constants, the Section~5 refinement
+constant $\le2^{2^{40d^3+2}}$ and a boundary constant $\le2^{2^{1083}}$. A
+cruder bound charges them at the level of powers of $X$, which puts a cubic
+term $40(k+2)^3$ into the envelope and blocks $L+5$ for $L\le10$. The
+threshold is only needed below $\exp(\exp(X^{2^\mu}))$, and
+$2^{2^m}\le\exp(X^{2^j})$ as soon as $m\le2^j$. At that level the
+constants cost only $k+16$, and $L+5$ holds in every length.
 
 \section{Formalization}\label{sec:lean}
 
@@ -209,7 +214,7 @@ Theorems 18.1, 18.2, Cor.~18.7 & \lean{theorem\_18\_1\_explicit}, \lean{theorem\
 sharper constants & \lean{Proofs18CoverSharper}, \lean{Proofs18CoverTightBase},\\
 & \lean{Proofs18CoverColorings}, \lean{Proofs18CoverSharperExplicit},\\
 & \lean{Proofs18CoverSharperLowDegrees}, \lean{Proofs18CoverSharperShortLengths},\\
-& \lean{Proofs18CoverSharperAllDegrees}\\
+& \lean{Proofs18CoverThresholdsSharp}, \lean{Proofs18CoverSharperAllDegrees}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -222,7 +227,7 @@ built 1,440 modules from source with Lean~4.32.0, checked the exact types of
 all 120 numbered catalogue statements and of the improved-bound theorems,
 and found only the axioms \lean{propext}, \lean{Classical.choice} and
 \lean{Quot.sound}. The extensions to every degree ($c=7$) and to every
-length ($c=6$) postdate that audit and are so far checked against faithful
+length ($c=6$ and $c=5$) postdate that audit and are so far checked against faithful
 stubs. The
 audit's record is
 \begin{center}\small
@@ -230,6 +235,6 @@ audit's record is
 \lean{2026-10-11-numbered-and-bounds.json}.
 \end{center}
 The research notes
-(\lean{SECTION16\_RESEARCH\_NOTES.md}, \S\S L.11--L.15d) record the development.
+(\lean{SECTION16\_RESEARCH\_NOTES.md}, \S\S L.11--L.15e) record the development.
 
 \end{document}
