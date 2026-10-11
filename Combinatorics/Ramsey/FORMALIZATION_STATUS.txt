@@ -1,8 +1,8 @@
 Gowers Szemeredi formalization checkpoint — 2026-10-11
 
 Scope
-  The goal remains open. No improvement to the general all-length Szemeredi
-  bound is claimed. Smaller four- and five-term thresholds are proved below.
+  The goal remains open. The stronger global bounds still await the complete
+  local production check. Smaller four- and five-term thresholds are proved below.
   New joint-cover arithmetic (2026-10-11): twenty auxiliary theorems in
   Proofs18FiniteCoverBudgets, Proofs18CoverEnvelopeArithmetic, and
   Proofs18CoverSharperArithmetic are checked
@@ -41,6 +41,50 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
   Counts in the historical checkpoint sections below describe those earlier
   checkpoints; the current catalogue count is stated here and in the ledger.
+
+Sharper exponents for Theorems 18.1 and 18.2 — 2026-10-11 (notes L.15)
+  The joint-cover envelopes are a quarter of the printed budgets, so:
+  - theorem_18_1_sharper_four_le: Theorem 18.1 at every degree d >= 4 with
+    exponent alpha^(2^(2^(d+8))) instead of the printed d+10;
+  - theorem_18_2_sharper_six_le: Theorem 18.2 at every length L >= 6 with
+    threshold 2^(2^(delta^-1^(2^(2^(L+6))))) instead of the printed L+9.
+  Light module Proofs18CoverSharper (kernel-checked); bridge
+  Proofs18CoverSharperExplicit (faithful stub mkstub_sharp.py, the same
+  corpus axioms as the printed versions). d+7 and L+5 are out of reach at
+  the standard base budget (envelope ~536*2^k > 512*2^k). With the tight
+  class-base bound classV_le_tight (Proofs18CoverTightBase, notes L.15a):
+  theorem_18_1_d7_four_le (Theorem 18.1 at d+7, every d >= 4) and
+  theorem_18_2_L5_eleven_le (Theorem 18.2 at L+5, every L >= 11), same stub
+  axioms. All are restricted to the stated degrees and lengths and are not
+  catalogue statements; the printed catalogue statements are unchanged.
+
+Theorem 18.1, Theorem 18.2 and Corollary 18.7 in full — 2026-10-11
+(research notes L.12)
+  The single-piece step's remainder now comes from jointly composed vertex
+  covers (Proofs16JointCovers): every non-top vertex keeps its face cover,
+  lifted losslessly to the ambient box, all covers refine one partition at
+  the common precision theta_2/2^(k+1), and a single pigeonhole picks one
+  map per vertex. The t-degrees of the vertex controls add instead of
+  multiplying, so the per-step envelope cost is 268*2^k + O(k^3) instead of
+  Theta(3^k), with no bound on the dimension.
+  - Light, kernel-checked: Proofs16JointCovers, Proofs16SinglePieceCoverGlobal,
+    Proofs18SinglePieceCoverInverse, Proofs18CoverModulus,
+    Proofs18CoverDensity, Proofs18CoverExponents, Proofs18CoverDegrees.
+    polyGenMuC_le (envelope <= 1000*2^k, budget 4096*2^k) and genMuC_le
+    (<= 2000*2^k, budget 8192*2^k) give theorem_18_1_of_profiles_cover at
+    every degree d >= 4 and theorem_18_2_of_profiles_cover,
+    corollary_18_7_of_profiles_cover at every length L >= 6.
+  - Bridge Proofs18CoverExplicit, faithful stub mkstub_cover.py (both
+    bridges verbatim): axioms propext, Classical.choice, Quot.sound and
+    exactly commonDiffPartitionBoundAt_of,
+    multilinearPartitionBoundAt_explicit,
+    section16RecurrenceProfileWith_explicit and theorem_18_2_le_six, at their
+    exact signatures.
+  The joint-cover arithmetic of Proofs18FiniteCoverBudgets and
+  Proofs18CoverEnvelopeArithmetic (notes L.13, a parallel session) checks a
+  candidate recursion of the same shape; the connection to the production
+  inverse step it called for is the content of Proofs18CoverDensity through
+  Proofs18CoverExplicit.
 
 Theorem 16.2 in every dimension; Theorems 18.1, 18.2 and Corollary 18.7 at
 bounded degree and length — 2026-10-11 (research notes L.6b–L.10b)
