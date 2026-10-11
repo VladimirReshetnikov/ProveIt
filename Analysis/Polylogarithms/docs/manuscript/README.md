@@ -5,20 +5,20 @@ organized as four volumes. Each has its own source and compiled PDF.
 
 | Volume | Material | PDF | Pages |
 |---|---|---|---:|
-| I | Polylogarithm identities, cyclotomic coordinates, algebraic ladders and Gaussian/Eisenstein reductions | [Polylogarithm Identities and Arithmetic Reductions](volumes/volume-1-polylogarithm-identities.pdf) | 129 |
-| II | Signed kernels, angular and all-depth zero geometry, exact computation and experimental discovery; literature appendix | [Signed Kernels, Zero Geometry and Experimental Discovery](volumes/volume-2-signed-kernels.pdf) | 128 |
-| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 218 |
-| IV | Gamma grids, CM lattice periods, class products and Herglotz arithmetic | [Gamma Grids, CM Periods and Herglotz Arithmetic](volumes/volume-4-cm-and-herglotz.pdf) | 84 |
+| I | Polylogarithm identities, cyclotomic coordinates, algebraic ladders and Gaussian/Eisenstein reductions | [Polylogarithm Identities and Arithmetic Reductions](volumes/volume-1-polylogarithm-identities.pdf) | 130 |
+| II | Signed kernels, angular and all-depth zero geometry, exact computation and experimental discovery; literature appendix | [Signed Kernels, Zero Geometry and Experimental Discovery](volumes/volume-2-signed-kernels.pdf) | 129 |
+| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 224 |
+| IV | Gamma grids, CM lattice periods, class products and Herglotz arithmetic | [Gamma Grids, CM Periods and Herglotz Arithmetic](volumes/volume-4-cm-and-herglotz.pdf) | 85 |
 
 The volumes partition all twelve chapters and the literature appendix.
 Chapter, theorem and equation numbering is retained so research-report
 citations stay stable. Cross-volume references link to their exact PDF
 destinations; keep the four PDFs together. Each volume has its own contents
-and the shared bibliography of 136 references. The scientific text is shared
+and the shared bibliography of 137 references. The scientific text is shared
 through chapter files and [preamble.tex](preamble.tex), avoiding duplicate
 copies of proofs. See [volume sources and build instructions](volumes/README.md).
 The [combined source](polylogarithms.tex) and its
-[521-page combined snapshot](polylogarithms.pdf) remain available.
+[527-page combined snapshot](polylogarithms.pdf) remain available.
 
 The [inventory](source-inventory.json) accounts for **1,408 textual source
 files**, including overlapping assembled articles, fragments and correction
@@ -310,3 +310,34 @@ The joint 9395-by-8786 native matrix has rank 4942 modulo 2147483647 and
 does not close the target. This is a completed finite-field diagnostic,
 separate from the proved X-family kernel theorem and the open period identity.
 Convergent length-split 2+5 and 3+4 products are a next research direction.
+
+
+Section 8.44 now extends the common-interval beta mixture across integer
+twists at every positive integer total order. A fixed affine finite part
+gives a finite Fourier correction; balanced order jets have explicit
+logarithmic coefficients, with rank c-1 and kernel given by zero sums in
+each occupied twist chamber. Centered logarithmic moments of every order
+q >= r+s reduce to finite even-zeta combinations. In particular,
+
+```text
+integral(0,1) log(t/(1-t))^(2k)/(1-2t)^2 dt = 2 (2k)! zeta(2k), k >= 1.
+```
+
+These are ordinary absolutely convergent integrals. Independent exact
+density, jet, chamber and binomial-multiplicity audits pass, alongside
+separate complex finite-part and Mellin quadrature diagnostics. The later
+logarithmic Mellin finite parts and Stieltjes primitive families retain
+their pending audit scope.
+
+The two convergent S6 length splits 2+5 and 3+4 now have complete exact
+input covers of 3604 rows each. Lossless sparse records retain all 39634508
+projected coefficient pairs, with an independently checked input set and
+coordinate bounds. The joint input matrix has 16603 rows and 8786 columns;
+its native finite-field target search remains separate from the accepted
+proofs and from any rational period certificate.
+
+
+The completed 16603-row native search has rank 4985 modulo 2147483647,
+43 more than the preceding first-letter experiment, and does not close the
+target. This is a finite-field diagnostic. It establishes neither rational
+nonmembership nor a period counterexample; Gaussian S6/revised S8 stay open.
