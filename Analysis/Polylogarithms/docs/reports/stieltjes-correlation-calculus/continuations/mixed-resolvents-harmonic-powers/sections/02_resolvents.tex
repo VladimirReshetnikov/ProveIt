@@ -1,0 +1,557 @@
+\section{Products of resolvents with independent complex powers}
+\label{mr:section}
+
+Question 10 of the incoming \emph{Quartic Tails and Complex Resolvents}
+report asks for products of several nonreal cotangent resolvents, including
+parameters in opposite half-planes \cite{repo:quartic}. We answer its
+analytic and transformation parts for any finite number of factors.
+The answer has two distinct features: every Fourier coefficient has a
+geometrically convergent Gamma-series representation, and the complete
+endpoint subtraction depends on a signed sum of exponents as well as on
+their total. The latter dependence produces genuine extra poles when both
+half-planes occur.
+
+\subsection{Branches and notation}
+
+Let $z_1,\ldots,z_d\in\C\setminus\R$ and
+$\boldsymbol\lambda=(\lambda_1,\ldots,\lambda_d)\in\C^d$. Repeated
+values of the $z_j$ are allowed. Define
+\begin{align}
+ K(x)&=\pi\cot(\pi x),& R_z(x)&=(K(x)-z)^{-1},\notag\\
+ \epsilon_j&=\sgn\Im z_j,&
+ q_j&=\frac{z_j-\epsilon_j\pi\ii}{z_j+\epsilon_j\pi\ii},&
+ C_j&=-\frac1{z_j+\epsilon_j\pi\ii},\label{mr:diskdata}\\
+ a&=\sum_{\epsilon_j=1}\lambda_j,&
+ b&=\sum_{\epsilon_j=-1}\lambda_j,&
+ \Lambda&=a+b,\qquad E=a-b.\notag
+\end{align}
+In particular $|q_j|<1$. In every occurrence of $C_j^{\lambda_j}$ use
+\[
+ \Log C_j=\Log(1-q_j)-\log(2\pi)+\epsilon_j\pi\ii/2,
+\]
+where $\Log(1-q_j)$ is holomorphic on the disk and vanishes at $q_j=0$.
+The continuous logarithm of $R_z$ on $(0,1)$
+is fixed by $\Log R_z(x)-\log x\to0$ as $x\downarrow0$. For
+$\epsilon=\sgn\Im z$, its imaginary part lies between $0$ and
+$\epsilon\pi$. Powers in
+\begin{equation}\label{mr:kernel}
+ P_{\boldsymbol\lambda}(x)
+       =\prod_{j=1}^d R_{z_j}(x)^{\lambda_j}
+\end{equation}
+use these logarithms. Put
+\[
+ B(\boldsymbol\lambda,\mathbf q)
+       =\prod_j(1-q_j)^{\lambda_j},
+ \qquad
+ V(x;\boldsymbol\lambda)
+       =\prod_j\bigl(\pi x\cot\pi x-z_jx\bigr)^{-\lambda_j}.
+\]
+The powers defining $B$ use the holomorphic logarithms on $|q_j|<1$.
+The powers defining $V$ use their analytic logarithms at $x=0$, where
+$V(0)=1$. Direct algebra gives both the global expression
+\begin{align}
+ P_{\boldsymbol\lambda}(x)
+  ={}&\pi^{-\Lambda}B\,\sin^{\Lambda}(\pi x)e^{\pi\ii E x}
+       \prod_{\epsilon_j=1}(1-q_je^{2\pi\ii x})^{-\lambda_j}
+       \prod_{\epsilon_j=-1}(1-q_je^{-2\pi\ii x})^{-\lambda_j},
+       \label{mr:sinefactor}
+\end{align}
+and the two endpoint expansions
+\begin{equation}\label{mr:endpoints}
+ P_{\boldsymbol\lambda}(x)=x^\Lambda V(x;\boldsymbol\lambda),\qquad
+ P_{\boldsymbol\lambda}(1-y)
+       =e^{\pi\ii E}y^\Lambda V(-y;\boldsymbol\lambda).
+\end{equation}
+The leading coefficient at zero is exactly one. This normalization
+will fix every contact term below.
+
+\subsection{An explicit Gamma series for the full Fourier spectrum}
+
+Define the exponentially decreasing coefficient sequences
+\begin{equation}\label{mr:UV}
+ U_n=[w^n]\prod_{\epsilon_j=1}(1-q_jw)^{-\lambda_j},\qquad
+ W_n=[w^n]\prod_{\epsilon_j=-1}(1-q_jw)^{-\lambda_j}.
+\end{equation}
+An empty product has coefficient $1$ at $n=0$ and $0$ otherwise.
+Every coefficient is a finite sum; for example
+\[
+ U_n=\sum_{\substack{(n_j)\ge0\\\sum_{\epsilon_j=1}n_j=n}}
+          \prod_{\epsilon_j=1}\frac{(\lambda_j)_{n_j}q_j^{n_j}}{n_j!}.
+\]
+For $k\in\Z$ set
+\begin{equation}\label{mr:Gk}
+ G_k(a,b)=
+ \frac{e^{\pi\ii(a-b)/2}(-1)^k\Gamma(1+a+b)}
+ {(2\pi)^{a+b}\Gamma(1+a-k)\Gamma(1+b+k)}.
+\end{equation}
+Reciprocal Gamma factors are read as entire functions. Restrictions
+through an intersection of a numerator pole and a reciprocal-Gamma zero
+are made as meromorphic restrictions, never as an informal $0\cdot\infty$.
+
+\begin{theorem}[Fourier coefficients of any finite product]
+\label{mr:fourier}
+For $\Re\Lambda>-1$, the ordinary Fourier coefficients of
+\eqref{mr:kernel} are
+\begin{equation}\label{mr:ck}
+ c_k(\boldsymbol\lambda,\mathbf z)
+   :=\int_0^1P_{\boldsymbol\lambda}(x)e^{-2\pi\ii kx}\dd x
+   =B\sum_{n,m\ge0}U_nW_mG_{k-n+m}(a,b).
+\end{equation}
+The double series converges normally, geometrically in the two summation
+indices on compact subsets of $|q_j|<1$, away from its possible parameter
+poles. It supplies a joint meromorphic continuation with possible poles
+only on $\Lambda=-1,-2,\ldots$. Its mean is $c_0$.
+
+If every $z_j$ is in the same half-plane, then
+\begin{equation}\label{mr:samemean}
+                         c_0=\prod_jC_j^{\lambda_j}.
+\end{equation}
+For mixed half-planes, \eqref{mr:ck} gives an explicit two-sided
+spectrum and \eqref{mr:samemean} generally fails.
+\end{theorem}
+
+\begin{proof}
+The classical Fourier beta integral \cite[Eq.~5.12.6]{dlmf:beta} reads
+\[
+ \int_0^1\sin^\Lambda(\pi x)e^{\pi\ii\nu x}\dd x
+  =\frac{e^{\pi\ii\nu/2}\Gamma(1+\Lambda)}
+         {2^\Lambda\Gamma(1+(\Lambda+\nu)/2)
+                         \Gamma(1+(\Lambda-\nu)/2)},\qquad
+ \Re\Lambda>-1.
+\]
+Substitution $\nu=a-b-2k$ gives $G_k$. Expanding only the analytic
+factors in \eqref{mr:sinefactor}, whose series converge uniformly on
+the circle, and integrating against the integrable endpoint factor
+proves \eqref{mr:ck}.
+
+Choose a radius $\rho>1$ with $\rho\max_j|q_j|<1$. Cauchy's
+estimate bounds $U_n,W_n$ by compact-set constants times $\rho^{-n}$
+and $\rho^{-m}$. Gamma reflection and the Gamma-ratio asymptotic show
+that $G_k$ has at most polynomial growth in the integer $k$, uniformly
+on compact parameter sets avoiding $\Lambda=-1,-2,\ldots$.
+Consequently the series and all fixed parameter derivatives converge
+normally there. Formula \eqref{mr:Gk} proves the stated meromorphy.
+
+In a common half-plane put $w=e^{2\epsilon\pi\ii x}$. The kernel is
+\[
+ \left(\prod_jC_j^{\lambda_j}\right)
+       (1-w)^\Lambda\prod_j(1-q_jw)^{-\lambda_j}.
+\]
+Its holomorphic disk function has constant coefficient $\prod C_j^{\lambda_j}$.
+Abel limits are integrable when $\Re\Lambda>-1$, by the combined
+endpoint exponent, and give \eqref{mr:samemean}. This argument uses
+the total exponent, not separate inequalities on individual exponents.
+\end{proof}
+
+\begin{remark}[A finite hypergeometric specialization]
+With one factor at $z_+=\pi\ii$ of exponent $a$ and one lower-half-plane
+factor of exponent $b$ and disk coordinate $r$, \eqref{mr:ck} gives
+\begin{equation}\label{mr:gaussmean}
+ c_0=(1-r)^bG_0(a,b)\,
+       {}_2F_1\left(\begin{matrix}-a,b\\1+b\end{matrix};r\right).
+\end{equation}
+This follows from $G_m/G_0=(-a)_m/(1+b)_m$ in the initial
+nonexceptional domain. At exceptional parameters the full expression is
+continued as a unit. Thus even one opposite orientation changes the
+constant-mode formula from a product of constants to a hypergeometric
+function. Formula \eqref{mr:ck}, rather than a name for a new function,
+specifies the general answer by elementary finite coefficients and Gamma
+values.
+\end{remark}
+
+\subsection{Hurwitz, Stieltjes, and log-Gamma transforms}
+
+Let $p\ge0$ be an integer and put
+\[
+ A_p(s)=\prod_{j=1}^p(s-j),\quad A_0(s)=1,\qquad
+ \sigma_+=-2\pi\ii,\quad \sigma_-=2\pi\ii,
+ \quad \Log\sigma_\pm=\log(2\pi)\mp\pi\ii/2.
+\]
+Define, initially in an absolute-convergence region,
+\begin{equation}\label{mr:Dirichlet}
+ D_+(u)=\sum_{n\ge1}\frac{c_n}{n^u},\qquad
+ D_-(u)=\sum_{n\ge1}\frac{c_{-n}}{n^u}.
+\end{equation}
+The definitions retain all coefficients, including their normalization $B$.
+
+\begin{theorem}[The joint spectral identity]
+\label{mr:hurwitz}
+In the ordinary-integral domain
+\[
+ \Re\Lambda>-1,\qquad \Re(s+\Lambda)>p,
+\]
+away from the Hurwitz pole for $p=0$, analytic continuation from an
+absolutely convergent Fourier region gives
+\begin{align}
+ J_p(s,\boldsymbol\lambda)
+ &:=\int_0^1\partial_x^p\zeta(1-s,x)P_{\boldsymbol\lambda}(x)\dd x\notag\\
+ &=\Gamma(s)\left\{\sigma_+^{p-s}D_+(s-p)
+                      +\sigma_-^{p-s}D_-(s-p)\right\}.
+       \label{mr:Hurwitz}
+\end{align}
+The completed Stieltjes generator is
+\begin{equation}\label{mr:T}
+ T_p(s,\boldsymbol\lambda)=J_p(s,\boldsymbol\lambda)
+                                  +\mathbf1_{p=0}\frac{c_0}{s}.
+\end{equation}
+It is jointly meromorphic. Its only possible polar hypersurfaces are
+\begin{equation}\label{mr:poles}
+       s+\Lambda=p-j\quad(j\ge0),\qquad
+       \Lambda=-1-j\quad(j\ge0).
+\end{equation}
+For $\Re\Lambda>p$,
+\begin{equation}\label{mr:ordinaryStieltjes}
+ \int_0^1\gamma_m^{(p)}(x)P_{\boldsymbol\lambda}(x)\dd x
+                  =m![s^m]T_p(s,\boldsymbol\lambda).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+In an initial region $\Re s>p+1$, $\Re\Lambda>-1$, Fourier pairing
+with the classical Hurwitz expansion \cite[Eq.~25.11.9]{dlmf:hurwitz}
+gives zero for the constant mode and
+\[
+ \int_0^1\partial_x^p\zeta(1-s,x)e^{\pm2\pi\ii nx}\dd x
+       =\Gamma(s)\sigma_\pm^{p-s}n^{p-s}.
+\]
+Here the differentiated Hurwitz series converges absolutely and
+uniformly, and $P_{\boldsymbol\lambda}$ belongs to $L^1(0,1)$.
+Thus termwise integration is justified directly by its uniform bound;
+no regularity assertion for the endpoint values of $P$ is required.
+This proves \eqref{mr:Hurwitz} in that region.
+
+Use the exact holomorphic splitting
+\begin{equation}\label{mr:split}
+ \partial_x^p\left(\zeta(1-s,x)+\frac1s\right)
+      =A_p(s)x^{s-p-1}+h_p(s,x),\qquad
+ h_p(s,x)=\partial_x^p\left(\zeta(1-s,1+x)+\frac1s\right).
+\end{equation}
+It proves normal integrability on the stated ordinary domain and gives
+analytic continuation of the Fourier identity to that domain. At the
+two endpoints, the monomial exponents are respectively
+$s+\Lambda-p-1+j$ and $\Lambda+j$. Subtracting any required finite
+number of such monomials leaves a normally convergent integral.
+Their integration denominators give exactly \eqref{mr:poles}.
+The pole of the uncompleted Hurwitz factor is $-c_0/s$ for $p=0$;
+\eqref{mr:T} removes it before Stieltjes coefficient extraction.
+The convention
+$\zeta(1-s,x)+s^{-1}=\sum_{m\ge0}\gamma_m(x)s^m/m!$
+then gives \eqref{mr:ordinaryStieltjes}.
+\end{proof}
+
+The apparent coordinate poles of separate Dirichlet or Gamma factors
+in \eqref{mr:Hurwitz} may cancel. Equation \eqref{mr:poles} concerns
+the complete function, as proved by its endpoint integrals.
+
+\begin{corollary}[An ordinary log-Gamma identity]
+\label{mr:loggamma}
+For $\Re\Lambda>-1$,
+\begin{align}
+ \int_0^1\log\Gamma(x)P_{\boldsymbol\lambda}(x)\dd x
+ ={}&\frac{\log(2\pi)}2c_0\notag\\
+ &+\sum_{\epsilon\in\{+,-\}}
+     \frac{(\gamma+\Log\sigma_\epsilon)D_\epsilon(1)
+                                     -D_\epsilon'(1)}{\sigma_\epsilon}.
+       \label{mr:logGamma}
+\end{align}
+The prime differentiates the Dirichlet order. This is an ordinary
+integral; its logarithmic endpoint is integrable under the stated
+condition. The formula follows by differentiating \eqref{mr:Hurwitz}
+at $s=1$ and using
+$\zeta'(0,x)=\log\Gamma(x)-\tfrac12\log(2\pi)$.
+\end{corollary}
+
+For a concrete ordinary evaluation, take the special points
+$z_\pm=\pm\pi\ii$ with exponents $2,1$. Their Fourier coefficients are
+$\ii(-1,3,-3,1)/(8\pi^3)$ at modes $-1,0,1,2$, respectively.
+Consequently \eqref{mr:logGamma} reduces to
+\begin{align}
+ &\int_0^1\log\Gamma(x)\,
+           \frac{\sin^3(\pi x)}{\pi^3}e^{\pi\ii x}\dd x\notag\\
+ &\qquad=
+ \frac{3\{\gamma+\log(2\pi)\}-\log2}{32\pi^4}
+       +\frac{\ii\{12\log(2\pi)-7\}}{64\pi^3}.
+       \label{mr:loggammaexample}
+\end{align}
+
+\subsection{The full completion at each total-exponent resonance}
+
+The preceding polar arrangement is completed explicitly as follows.
+Set
+\begin{equation}\label{mr:vandb}
+ v_j(\boldsymbol\lambda)=[x^j]V(x;\boldsymbol\lambda),\qquad
+ b_j(s,\boldsymbol\lambda)=[x^j]h_p(s,x)V(x;\boldsymbol\lambda).
+\end{equation}
+These are finite, effectively computable expressions. For instance
+\[
+ v_0=1,\qquad v_1=\sum_j\lambda_jz_j,\qquad
+ v_2=\frac12\left(\sum_j\lambda_jz_j\right)^2
+       +\frac12\sum_j\lambda_jz_j^2+\frac{\pi^2}3\Lambda.
+\]
+For $p+j>0$, the coefficient of $x^j$ in $h_p$ is
+\[
+ \frac{(-1)^{p+j}(1-s)_{p+j}}{j!}\zeta(1-s+p+j),
+\]
+and at $p=j=0$ it is $\zeta(1-s)+1/s$. Thus all required local
+derivatives use only ordinary zeta derivatives and Stieltjes constants.
+
+Fix $\boldsymbol\lambda^0$ with
+$L=\sum_j\lambda_j^0\in\Z$, write
+$\boldsymbol\lambda=\boldsymbol\lambda^0+\boldsymbol\eta$ and
+$\delta=\sum_j\eta_j$. Define
+\begin{align}
+ H_{p,\boldsymbol\lambda^0}(s,\boldsymbol\eta)
+ ={}&T_p(s,\boldsymbol\lambda^0+\boldsymbol\eta)
+ -\mathbf1_{L\le p}\frac{A_p(s)v_{p-L}(\boldsymbol\lambda^0+\boldsymbol\eta)}
+                                  {s+\delta}\notag\\
+ &-\mathbf1_{L\le-1}
+ \frac{\left\{1+(-1)^{-L-1}e^{\pi\ii E(\boldsymbol\lambda^0+\boldsymbol\eta)}\right\}
+       b_{-L-1}(s,\boldsymbol\lambda^0+\boldsymbol\eta)}{\delta}.
+       \label{mr:H}
+\end{align}
+False-indicator terms are omitted, not evaluated.
+
+\begin{theorem}[All Stieltjes, argument, and exponent derivatives]
+\label{mr:completion}
+The function \eqref{mr:H} is holomorphic near $(s,\boldsymbol\eta)=(0,0)$.
+For $m\ge0$ and a multi-index $\mathbf k\ge0$,
+\begin{align}
+ &\FP_x\int_0^1\gamma_m^{(p)}(x)
+       \prod_j R_{z_j}(x)^{\lambda_j^0}
+                       (\Log R_{z_j}(x))^{k_j}\dd x\notag\\
+ &\hspace{20mm}=m!\left(\prod_j k_j!\right)
+                    [s^m\boldsymbol\eta^{\mathbf k}]
+                             H_{p,\boldsymbol\lambda^0}(s,\boldsymbol\eta).
+       \label{mr:alljets}
+\end{align}
+The finite part uses the original endpoint coordinates $x$ and $1-x$.
+The individual exponents $\lambda_j^0$ need not be integers; only
+their total is integral in this statement. If the total is not integral,
+the corresponding local germ of $T_p$ itself gives all the finite parts.
+\end{theorem}
+
+\begin{proof}
+At zero, \eqref{mr:split} and \eqref{mr:endpoints} give the exact
+families
+\[
+ A_p(s)v_j(\boldsymbol\lambda)x^{s+\Lambda-p-1+j},\qquad
+ b_j(s,\boldsymbol\lambda)x^{\Lambda+j}.
+\]
+At the other endpoint the smooth Hurwitz factor is $h_p(s,-y)$.
+Its product with the kernel has coefficient
+$e^{\pi\ii E}(-1)^jb_j(s,\boldsymbol\lambda)$ at $y^{\Lambda+j}$.
+The only exponents whose integrated denominators vanish at the base
+point are $j=p-L$ and $j=-L-1$. Their complete amplitudes give the
+two subtraction terms in \eqref{mr:H}.
+
+For rigor, choose a fixed small endpoint interval $[0,\rho]$, and
+subtract sufficiently many of the displayed monomials that the remainders
+and their fixed derivatives are integrable uniformly on a parameter
+polydisk. Every nonresonant integrated monomial is holomorphic there.
+For each resonant exponent $\alpha-1$ use
+\[
+ \frac{\rho^\alpha}{\alpha}
+             =\frac1\alpha+\frac{\rho^\alpha-1}{\alpha}.
+\]
+The second term is entire; its Taylor coefficients are exactly the
+constant terms of the logarithmic cutoff integrals. Subtracting the
+first term with its full parameter-dependent amplitude therefore makes
+the remainder holomorphic and proves \eqref{mr:alljets}. Contributions
+depending on the artificial splitting point cancel between the local
+and remaining integrals. The same argument proves the nonintegral case,
+where no denominator is resonant at the base point.
+\end{proof}
+
+\begin{corollary}[Why opposite half-planes produce an extra pole]
+\label{mr:phasepole}
+On the hyperplane $\Lambda=-M$, $M\ge1$, the regular-endpoint
+residue in \eqref{mr:H} is
+\begin{equation}\label{mr:mixedresidue}
+       (1-e^{-2\pi\ii b})\,b_{M-1}(s,\boldsymbol\lambda).
+\end{equation}
+If all factors lie in the same half-plane this vanishes identically on
+the hyperplane, so its quotient is removable. With both orientations
+present it is generically nonzero. Its vanishing at an isolated integral
+parameter vector does not make that multivariable quotient removable.
+\end{corollary}
+\begin{proof}
+On $\Lambda=-M$, $E=\Lambda-2b=-M-2b$, and hence
+$1+(-1)^{M-1}e^{\pi\ii E}=1-e^{-2\pi\ii b}$.
+In a single orientation $b=0$ or $b=\Lambda$. With two orientations,
+$b$ varies independently along the hyperplane. The local coefficient
+$b_{M-1}$ may introduce further cancellations; generic nonvanishing
+already occurs for $M=1$ and the constant test function.
+\end{proof}
+
+\subsection{An exactly computable mixed example}
+
+For $z_+=\pi\ii$, $z_-=-\pi\ii$, write their exponents as
+$\alpha,\beta$. The kernel and ordinary mean simplify to
+\begin{align}
+ P_{\alpha,\beta}(x)
+   &=\left(\frac{\sin\pi x}{\pi}\right)^{\alpha+\beta}
+                           e^{\pi\ii(\alpha-\beta)x},\label{mr:specialkernel}\\
+ M(\alpha,\beta)
+   &=\frac{e^{\pi\ii(\alpha-\beta)/2}\Gamma(1+\alpha+\beta)}
+      {(2\pi)^{\alpha+\beta}\Gamma(1+\alpha)\Gamma(1+\beta)}.
+       \label{mr:specialmean}
+\end{align}
+For any $c,d\in\C$ with $c+d\ne0$, continuation along
+$\alpha=-1+ct$, $\beta=dt$ yields
+\begin{equation}\label{mr:pathlimit}
+           \lim_{t\to0}M(-1+ct,dt)=-2\pi\ii\frac{c}{c+d}.
+\end{equation}
+The fixed-coordinate finite part of the specialized integrand is instead
+\begin{equation}\label{mr:fixedmean}
+       \FP_x\int_0^1(K(x)-\pi\ii)\dd x=-\pi\ii.
+\end{equation}
+The exact correction is the full regular-endpoint quotient
+\[
+ \frac{1+e^{\pi\ii(\alpha-\beta)}}{1+\alpha+\beta}.
+\]
+Its limit on the same ray is $-\pi\ii(c-d)/(c+d)$; subtracting it
+from \eqref{mr:pathlimit} gives \eqref{mr:fixedmean} for every ray.
+Thus the rays $(c,d)=(1,0),(1,1),(0,1)$ yield continued limits
+$-2\pi\ii,-\pi\ii,0$, respectively, for the same specialized
+function. This is an exact counterexample to an uncompleted independent
+exponent limit, not an error in the earlier single-resolvent theorem.
+
+At a general negative-total hyperplane $\alpha+\beta=-M$, the
+coefficient entering the mean residue is explicitly
+\begin{equation}\label{mr:residuepoly}
+ [x^{M-1}]V(x;\alpha,-M-\alpha)
+          =(2\pi\ii)^{M-1}\binom{\alpha+M-1}{M-1}.
+\end{equation}
+Indeed this coefficient is the residue at zero of
+$e^{\pi\ii(2\alpha+M)x}(\pi/\sin\pi x)^M\dd x$; putting
+$w=e^{2\pi\ii x}$ converts it to
+$(2\pi\ii)^{M-1}\Res_{w=1}w^{\alpha+M-1}(w-1)^{-M}\dd w$.
+Consequently the residue of \eqref{mr:specialmean} is
+\[
+ (1-e^{2\pi\ii\alpha})(2\pi\ii)^{M-1}
+                              \binom{\alpha+M-1}{M-1}.
+\]
+For example, at $\alpha=\beta=-1/2$ it is $2$, and direct
+integration of $\pi\csc\pi x$ gives
+\begin{equation}\label{mr:cscfp}
+               \FP_x\int_0^1\pi\csc(\pi x)\dd x
+                             =2\log(2/\pi).
+\end{equation}
+
+The dependence on the path can survive even when every transverse
+linear path gives the expected zero. At $(-1,-1)$ write
+\[
+ \alpha=-1+(T+D)/2,\qquad \beta=-1+(T-D)/2.
+\]
+On the curved path $T=cD^2$ with $c\ne0$, the Gamma quotient
+\eqref{mr:specialmean} has limit $\pi^2/c$. Indeed its leading terms
+are $\pi^2D^2/T-\pi^2T$. The specialized kernel is
+$\pi^2\csc^2\pi x$, whose coordinate finite part is zero.
+Its full contact is
+$(1-e^{\pi\ii D})\pi\ii D/T$, with the same curved-path limit.
+The completed value is again independent of the path.
+
+\begin{corollary}[A finite-part logarithmic family in ordinary constants]
+\label{mr:negativeLog}
+Let $R_\pm=R_{\pm\pi\ii}$ and put
+\begin{align}
+ Q(a,b)&=e^{-(a+b)\log(2\pi)+\pi\ii(a-b)/2}
+              \frac{\Gamma(1+a+b)}{\Gamma(1+a)\Gamma(1+b)},\notag\\
+ H(a,b)&=\frac{-2\pi\ii aQ(a,b)-1+e^{\pi\ii(a-b)}}{a+b}.
+       \label{mr:negativeLoggerm}
+\end{align}
+This quotient is holomorphic at $(0,0)$. For integers $r,s\ge0$,
+\begin{equation}\label{mr:negativeLogmoment}
+ \FP_x\int_0^1(K-\pi\ii)(\Log R_+)^r(\Log R_-)^s\dd x
+                      =r!s![a^rb^s]H(a,b).
+\end{equation}
+Every such value is a finite polynomial in $\pi\ii$, $\log(2\pi)$,
+and ordinary zeta values. In particular,
+\begin{align}
+ \FP_x\int_0^1(K-\pi\ii)\Log R_+\dd x
+       &=\frac{\pi^2}{2}+2\pi\ii\log(2\pi),\notag\\
+ \FP_x\int_0^1(K-\pi\ii)(\Log R_-)^s\dd x
+       &=\frac{(-\pi\ii)^{s+1}}{s+1}.
+       \label{mr:negativeLogexamples}
+\end{align}
+\end{corollary}
+
+\begin{proof}
+At $\alpha=-1+a,\beta=b$, \eqref{mr:specialmean} equals
+$-2\pi\ii aQ(a,b)/(a+b)$. Subtracting the complete paired endpoint
+term gives \eqref{mr:negativeLoggerm}.
+On $b=-a$, reflection gives
+$Q(a,-a)=e^{\pi\ii a}\sin(\pi a)/(\pi a)$, so the numerator vanishes
+identically. Analytic division and the endpoint proof above justify
+all coefficients. The Gamma expansion proves the stated constant class.
+For an independent check of the second identity,
+$(\Log R_-)'=K-\pi\ii$. The endpoint logarithms are
+$\log\eta+o(1)$ and $\log\eta-\pi\ii+o(1)$; the constant term of
+their $(s+1)$st-power difference is $(-\pi\ii)^{s+1}$.
+\end{proof}
+
+\subsection{All polynomial moments and parameter derivatives}
+
+The same beta formula gives an ordinary exponential moment at the
+special points:
+\begin{equation}\label{mr:expmean}
+ \int_0^1e^{tx}P_{\alpha,\beta}(x)\dd x
+ =\frac{e^{\pi\ii(\alpha-\beta)/2+t/2}\Gamma(1+\alpha+\beta)}
+ {(2\pi)^{\alpha+\beta}
+   \Gamma(1+\alpha+t/(2\pi\ii))
+   \Gamma(1+\beta-t/(2\pi\ii))}.
+\end{equation}
+It is valid for $\Re(\alpha+\beta)>-1$ and every complex $t$.
+Away from zeros of its value at $t=0$, its logarithmic derivatives are
+\begin{align}
+ \kappa_1&=\frac12+\frac{\psi(1+\beta)-\psi(1+\alpha)}{2\pi\ii},\notag\\
+ \kappa_r&=-\frac{\psi^{(r-1)}(1+\alpha)
+                    +(-1)^r\psi^{(r-1)}(1+\beta)}{(2\pi\ii)^r},
+                    \qquad r\ge2.\label{mr:cumulants}
+\end{align}
+Thus its $n$th moment is $M(\alpha,\beta)Y_n(\kappa_1,\ldots,\kappa_n)$,
+where $Y_n$ is the complete exponential Bell polynomial. At Gamma zeros,
+differentiate the full reciprocal-Gamma formula \eqref{mr:expmean};
+the factored Bell expression is only its meromorphic rewriting.
+All mixed exponent derivatives follow by ordinary parameter
+differentiation in this domain, and by \eqref{mr:H} at resonances.
+
+At nonnegative integer $\alpha=m,\beta=n$, these formulas give finite
+generalized-harmonic expressions at every moment order. Explicitly,
+\[
+ M(m,n)=
+ \frac{e^{\pi\ii(m-n)/2}}{(2\pi)^{m+n}}\binom{m+n}{m},
+ \qquad
+ \kappa_1=\frac12+\frac{H_n-H_m}{2\pi\ii},
+\]
+and for $r\ge2$,
+\[
+ \kappa_r=
+ \frac{(-1)^{r+1}(r-1)!}{(2\pi\ii)^r}
+ \left\{\zeta(r)-H_m^{(r)}
+                 +(-1)^r\bigl(\zeta(r)-H_n^{(r)}\bigr)\right\}.
+\]
+Substitution into the Bell polynomial is a finite identity involving
+only harmonic numbers, zeta values, and the stated prefactor.
+
+Finally, for any fixed-coordinate moment $\mathcal M$ in
+\eqref{mr:alljets}, differentiation in a resolvent parameter gives
+\[
+ \partial_{z_j}\mathcal M(\boldsymbol\lambda,\mathbf k)
+ =\lambda_j\mathcal M(\boldsymbol\lambda+\mathbf e_j,\mathbf k)
+   +k_j\mathcal M(\boldsymbol\lambda+\mathbf e_j,\mathbf k-\mathbf e_j).
+\]
+The usual finite integration-by-parts formula in powers of $\Log R_{z_j}$
+therefore supplies a normalized primitive in each $z_j$. For example,
+with the other factors fixed and $\lambda_j\ne1$, a primitive at
+$k_j=k$ is
+\[
+ \sum_{h=0}^k\frac{(-1)^hk!}{(k-h)!(\lambda_j-1)^{h+1}}
+      \mathcal M(\boldsymbol\lambda-\mathbf e_j,
+                         \mathbf k-h\mathbf e_j).
+\]
+When $\lambda_j=1$ it is the same moment with exponent $0$, logarithmic
+degree $k+1$, divided by $k+1$. Subtract its value at a chosen base point
+in the same half-plane to fix the additive constant. The proof is
+coefficientwise differentiation of the completed integrals; no
+uncompleted singular restriction is used.

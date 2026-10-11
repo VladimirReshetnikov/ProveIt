@@ -1,0 +1,227 @@
+\subsection{One logarithmic index: an explicit dilogarithm kernel}
+\label{gcx:one-log}
+
+At total Stieltjes index one, the universal counterterms require only
+ordinary dilogarithms.  Define, for $a,b\ge0$,
+\[
+ U(b,a)=\FP\int_0^\infty\frac{\log(y+a)}{y+b}\,\dd y.
+\]
+The lower finite part is used only when necessary, and the upper
+subtraction is $\tfrac12\log^2R$.  The following exact table fixes every
+branch by real positive arguments:
+\begin{equation}\label{gcx:U-table}
+\begin{array}{c|l}
+ \text{condition}& U(b,a)\\ \hline
+ a=b=0&0\\[2pt]
+ b=0<a&\zeta(2)+\tfrac12\log^2a\\[2pt]
+ a=0<b&-\zeta(2)-\tfrac12\log^2b\\[2pt]
+ a=b>0&-\tfrac12\log^2a\\[2pt]
+ a>b>0&\tfrac12\log^2(a-b)+\zeta(2)
+       -\log(a-b)\log b+\Li_2\!\left(-\frac b{a-b}\right)\\[2pt]
+ b>a>0&-\tfrac12\log^2(b-a)-\zeta(2)
+       -\log a\log\!\left(\frac b{b-a}\right)
+       -\Li_2\!\left(-\frac a{b-a}\right).
+\end{array}
+\end{equation}
+The corresponding index-zero kernel is
+\[
+ V(b)=\FP\int_0^\infty\frac{\dd y}{y+b}
+       =-\log b\quad(b>0),\qquad V(0)=0.
+\]
+
+\begin{proof}
+If $a>b$, put $d=a-b$.  A primitive is
+\[
+ \log d\log(y+b)-\Li_2\!\left(-\frac{y+b}{d}\right).
+\]
+If $b>a$, put $d=b-a$.  A primitive is
+\[
+ \log(y+a)\log\!\left(1+\frac{y+a}{d}\right)
+       +\Li_2\!\left(-\frac{y+a}{d}\right).
+\]
+Differentiation verifies both formulas on the real interval of
+integration.  Evaluate their lower constant terms and use
+\[
+ \Li_2(-t)+\Li_2(-1/t)=-\zeta(2)-\tfrac12\log^2t,
+ \qquad t>0,
+\]
+with the correct normalization $-\zeta(2)=-\pi^2/6$, to take the upper
+constant.  The identity follows itself by differentiation and evaluation
+at $t=1$, where $\Li_2(-1)=-\zeta(2)/2$.  Direct logarithmic primitives
+handle $a=b$ and the endpoints $a=0$ or $b=0$.
+\end{proof}
+
+As a normalization check, the two-factor case with shifts $(0,a)$ gives
+\[
+ T_{(1,0)}(0,a)=\frac{\tfrac12\log^2a+\zeta(2)}a,\qquad
+ T_{(0,1)}(0,a)=\frac{\log^2a+\zeta(2)}a.
+\]
+These are precisely the asymmetric binary collision polynomials already
+proved in the manuscript.  Their unequal leading coefficients are
+retained by the general construction.
+
+\subsection{Three new mixed cubic collision constants}
+\label{gcx:cubic}
+
+For $0<\epsilon<1/4$ and $j=0,1,2$, set
+\begin{equation}\label{gcx:Cj}
+ C_j(\epsilon)=\FP\int_{\R/\Z}
+  \gamma_1(\{x+j\epsilon\})
+  \prod_{\substack{0\le k\le2\\ k\ne j}}
+       \gamma_0(\{x+k\epsilon\})\,\dd x,
+ \qquad
+ Q=\FP\int_0^1\gamma_1(x)\gamma_0(x)^2\,\dd x.
+\end{equation}
+The same global constant $Q$ occurs in all three limits, because their
+merged products agree pointwise before regularization.  Put
+\[
+ h(x)=\gamma_0(1+x),\qquad k(x)=\gamma_1(1+x),\qquad
+ L=\log\epsilon,\quad \ell=\log2,\quad
+ B(X)=\zeta(2)+\tfrac12X^2.
+\]
+Define
+\begin{align}
+ A_0(L)&=\tfrac14L^2-\tfrac12\ell L
+                    +\tfrac12\zeta(2)-\tfrac14\ell^2,\notag\\
+ A_1(L)&=\tfrac12L^2-\tfrac12\ell L+\tfrac14\zeta(2),
+ \qquad A_2(L)=\tfrac12L^2.
+ \label{gcx:Aj}
+\end{align}
+
+\begin{proposition}[Exact local counterterms for the three placements]
+\label{gcx:three-T}
+The counterterms of Definition~\ref{gcx:counterterm-definition} are
+\begin{align}
+ T_0(\epsilon)={}&\frac{A_0(L)}{\epsilon^2}
+  +\frac{h(\epsilon)}\epsilon B(L)
+  +\frac{h(-\epsilon)}{2\epsilon}B(L+\ell)
+  +\frac{k(-2\epsilon)}\epsilon L,\label{gcx:T0}\\
+ T_1(\epsilon)={}&\frac{A_1(L)}{\epsilon^2}
+  +\frac{h(2\epsilon)}\epsilon B(L)
+  +\frac{h(\epsilon)}{2\epsilon}L^2
+  +\frac{k(-\epsilon)}{2\epsilon}(L+\ell)
+  +\frac{h(-2\epsilon)}\epsilon B(L),\label{gcx:T1}\\
+ T_2(\epsilon)={}&\frac{A_2(L)}{\epsilon^2}
+  +\frac{k(\epsilon)}\epsilon L
+  +\frac{h(\epsilon)}{2\epsilon}B(L+\ell)
+  +\frac{h(-\epsilon)}{4\epsilon}(L+\ell)^2\notag\\
+ &+\frac{h(-\epsilon)}\epsilon B(L)
+  +\frac{h(-2\epsilon)}{2\epsilon}L^2.
+ \label{gcx:T2}
+\end{align}
+In particular $C_j(\epsilon)-T_j(\epsilon)\to Q$ for each placement.
+\end{proposition}
+
+\begin{proof}
+Only subsets of two and three poles contribute.  For the three-pole
+subset the principal numerator is $1$, and
+\[
+ \frac1{x(x+\epsilon)(x+2\epsilon)}
+ =\frac1{2\epsilon^2x}-\frac1{\epsilon^2(x+\epsilon)}
+          +\frac1{2\epsilon^2(x+2\epsilon)}.
+\]
+Insert respectively $\log x$, $\log(x+\epsilon)$ and
+$\log(x+2\epsilon)$, and apply \eqref{gcx:U-table}.  The answers are
+$A_j(L)/\epsilon^2$.
+
+For a pair of poles at shifts $a<b$, with omitted analytic tail $q$,
+the principal part is
+\[
+ \frac{q(-a)}{(b-a)(x+a)}
+    -\frac{q(-b)}{(b-a)(x+b)}.
+\]
+When the omitted index is one, use $V$; otherwise use $U$ with the
+logarithm at the indicated pole.  The three pair subsets give exactly
+the remaining terms of \eqref{gcx:T0}--\eqref{gcx:T2}.  Singleton
+contributions vanish as already proved.  The limit is
+Theorem~\ref{gcx:main}.
+\end{proof}
+
+For an expression having a power--log expansion through order zero,
+$\CT_{\epsilon\downarrow0}$ denotes the coefficient of
+$\epsilon^0(\log\epsilon)^0$.  It discards negative powers of $\epsilon$
+and nonconstant powers of $\log\epsilon$, including the latter at power
+$\epsilon^0$.
+
+\begin{corollary}[The mixed finite anomalies]\label{gcx:CT-values}
+With $\beta=\zeta(2)+\zeta'(2)$,
+\begin{align}
+ \CT_{\epsilon\downarrow0}C_0(\epsilon)
+      &=Q-\tfrac12\zeta(2)^2+\tfrac14\zeta(2)\log^22,
+ \label{gcx:CT0}\\
+ \CT_{\epsilon\downarrow0}C_1(\epsilon)
+      &=Q-\tfrac12\bigl(\zeta(2)+\zeta'(2)\bigr)\log2,
+ \label{gcx:CT1}\\
+ \CT_{\epsilon\downarrow0}C_2(\epsilon)
+      &=Q+\tfrac12\zeta(2)^2.
+ \label{gcx:CT2}
+\end{align}
+Consequently the global mixed constant cancels in the exact identity
+\begin{equation}\label{gcx:CT-difference}
+ \CT_{\epsilon\downarrow0}\bigl(C_2(\epsilon)-C_0(\epsilon)\bigr)
+       =\zeta(2)^2-\tfrac14\zeta(2)\log^22.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The necessary analytic expansions are
+\[
+ h(x)=\gamma-\zeta(2)x+O(x^2),\qquad
+ k(x)=\gamma_1+\beta x+O(x^2).
+\]
+Here $\beta=k'(0)$ follows from \eqref{gcx:tail-derivative}; the derivative
+of the Pochhammer factor contributes the term $\zeta(2)$.
+Substitute into \eqref{gcx:T0}--\eqref{gcx:T2}.  Every omitted term is
+$O(\epsilon(1+|\log\epsilon|)^2)=o(1)$, whereas
+$C_j-T_j=Q+o(1)$.  Taking the constant coefficients proves all three
+formulas.
+\end{proof}
+
+The first placement, with every divergent and finite logarithmic term
+shown, is
+\begin{align}
+ C_0(\epsilon)={}&\frac1{\epsilon^2}
+  \left\{\frac{L^2}{4}-\frac{\ell L}{2}
+                  +\frac{\zeta(2)}2-\frac{\ell^2}{4}\right\}\notag\\
+ &+\frac1\epsilon\left\{
+       \frac{3\gamma L^2}{4}
+       +\left(\frac{\gamma\ell}{2}+\gamma_1\right)L
+       +\frac{3\gamma\zeta(2)}2+\frac{\gamma\ell^2}{4}\right\}\notag\\
+ &-\frac{\zeta(2)L^2}{4}
+       +\left(\frac{\zeta(2)\ell}{2}-2\beta\right)L
+       +Q-\frac{\zeta(2)^2}{2}
+                +\frac{\zeta(2)\ell^2}{4}+o(1).
+ \label{gcx:C0-expansion}
+\end{align}
+The finite constants in \eqref{gcx:CT0}--\eqref{gcx:CT2} depend on which
+factor carries the logarithmic Stieltjes singularity.  Retaining only
+the leading inverse-power divergence would therefore miss the exact
+answers.
+
+\subsection{An ordinary integral for the remaining merged constant}
+
+The constant $Q$ in \eqref{gcx:Cj} is not left without an independent
+ordinary-integral definition.  Local Laurent subtraction gives
+\begin{align}
+ Q={}&-\frac14-2\gamma-\gamma_1\notag\\
+ &+\int_0^1\Biggl\{
+ \frac{2\bigl(h(x)-\gamma+\zeta(2)x\bigr)\log x}{x^2}
+ +\frac{\bigl(h(x)^2-\gamma^2\bigr)\log x}{x}\notag\\
+ &\hspace{17mm}+\frac{k(x)-\gamma_1-\beta x}{x^2}
+ +\frac{2\bigl(h(x)k(x)-\gamma\gamma_1\bigr)}x
+ +h(x)^2k(x)\Biggr\}\,\dd x.
+ \label{gcx:Q-ordinary}
+\end{align}
+Each numerator has the stated vanishing order, so the integral is
+absolutely convergent.  To verify the constant, expand
+$(\log x/x+k(x))(1/x+h(x))^2$.  The pure singular terms have finite
+integrals
+\[
+ \FP\int_0^1x^{-3}\log x\,\dd x=-\frac14,\quad
+ \FP\int_0^1x^{-2}\log x\,\dd x=-1,\quad
+ \FP\int_0^1x^{-2}\,\dd x=-1,
+\]
+while the $x^{-1}$ and $x^{-1}\log x$ terms have zero finite integral.
+This proves \eqref{gcx:Q-ordinary}.  It supplies independent numerical
+access to the global constant without converting the proof of the
+collision identities into a numerical fit.

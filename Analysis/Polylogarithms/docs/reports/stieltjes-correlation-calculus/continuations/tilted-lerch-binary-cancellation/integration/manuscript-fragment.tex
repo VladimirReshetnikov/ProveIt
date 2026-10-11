@@ -1,0 +1,49 @@
+% Optional additive fragment. Required: amsmath, amssymb, theorem/proof environments.
+% Its labels do not collide with the standalone article's tlbc: prefix.
+\subsection{Tilted reciprocal identities and a binary cancellation theorem}
+\label{tiltbin:sec:summary}
+Write $F_{a,s}(y)=y\Phi(-y,s,a)$ for $y>0$ and $\operatorname{Re}a>0$.
+The tilted Lerch continuation \cite{tlbc:report} gives the following ordinary
+absolutely convergent integral for every $s,t\in\mathbb C$:
+\begin{equation}\label{tiltbin:eq:pair}
+ \int_0^\infty y^\delta F_{a+\delta,s}(y)F_{a,t}(1/y)\frac{dy}{y}
+ =\frac{\pi}{\sin(\pi\delta)}
+       \{\zeta(s+t,a)-\zeta(s+t,a+\delta)\},
+\end{equation}
+where $|\operatorname{Re}\delta|<1$, $\operatorname{Re}a>0$, and
+$\operatorname{Re}(a+\delta)>0$. The difference is formed before the pole
+at $s+t=1$ or the tilt collision $\delta=0$ is removed. Its total-order
+jets yield generalized Stieltjes differences; its order-zero derivative
+yields a Gamma ratio. The full report proves an arbitrary-depth finite
+matched-shift master and a normally convergent independent-shift expansion.
+
+For the arithmetic consequence, let $N_1,\ldots,N_r$ be distinct
+nonnegative integers and put
+\[
+ c_j=\prod_{k\ne j}(N_k-N_j)^{-1},\qquad
+ S=\sum_jc_j(-1)^{N_j}.
+\]
+If both parities occur, form
+$E(x)=\prod_{N_j\text{ even}}(x-N_j)$ and
+$O(x)=\prod_{N_j\text{ odd}}(x-N_j)$, with degrees $e,o$.
+Let $U=E^{-1}\bmod O$, normalized by $\deg U<o$.
+Then
+\begin{equation}\label{tiltbin:eq:binary}
+ S=2(-1)^r[x^{o-1}]U,
+ \qquad S/2\equiv\binom{r-2}{o-1}\pmod{2\mathbb Z_{(2)}}.
+\end{equation}
+Here $\mathbb Z_{(2)}$ consists of rational numbers with odd denominator.
+Consequently, at $r=2^h+1$ with $h\ge1$, $S=0$ if and only if all shifts
+have the same parity. In contrast, for every $k\ge2$ the mixed-parity set
+\[
+ (0,1,2,2k,2k+1,2k+3,2k+4)
+\]
+has $S=0$. Its inverse polynomial is
+$U(x)=(2x-6k-5)/(3(2k-1)(2k+1)(2k+3))$, so the conclusion follows
+from a symbolic degree drop. The associated depth-seven logarithmic
+remainder convolutions therefore reduce to rational polynomials in
+$\pi^2$.
+
+These identities do not resolve the short Gaussian $S_6$ reduction or
+the revised $S_8$ candidate. The mixed-parity family extends the earlier
+sufficient equal-parity condition; it does not contradict that condition.

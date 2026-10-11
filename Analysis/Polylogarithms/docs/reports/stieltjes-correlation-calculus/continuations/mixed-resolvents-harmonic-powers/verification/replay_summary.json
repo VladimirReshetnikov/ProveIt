@@ -1,0 +1,84 @@
+{
+  "status": "passed",
+  "scope": "exact and numerical",
+  "python": "3.12.14",
+  "jobs": [
+    {
+      "script": "harmonic_power_reduce.py",
+      "arguments": [
+        "5",
+        "--output",
+        "power5.json"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.546,
+      "log": "harmonic_power_reduce.replay.log"
+    },
+    {
+      "script": "verify_harmonic_powers.py",
+      "arguments": [
+        "--output",
+        "exact_checks.json"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 1.282,
+      "log": "verify_harmonic_powers.replay.log"
+    },
+    {
+      "script": "check_mixed_orientation.py",
+      "arguments": [],
+      "returncode": 0,
+      "elapsed_seconds": 2.051,
+      "log": "check_mixed_orientation.replay.log"
+    },
+    {
+      "script": "verify_multiple_resolvents.py",
+      "arguments": [
+        "--output",
+        "multiple_resolvents.json"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 3.726,
+      "log": "verify_multiple_resolvents.replay.log"
+    },
+    {
+      "script": "check_mixed_log.py",
+      "arguments": [],
+      "returncode": 0,
+      "elapsed_seconds": 1.254,
+      "log": "check_mixed_log.replay.log"
+    },
+    {
+      "script": "verify_special_mixed_log.py",
+      "arguments": [],
+      "returncode": 0,
+      "elapsed_seconds": 1.243,
+      "log": "verify_special_mixed_log.replay.log"
+    },
+    {
+      "script": "verify_collision_kernels.py",
+      "arguments": [],
+      "returncode": 0,
+      "elapsed_seconds": 0.48,
+      "log": "verify_collision_kernels.replay.log"
+    },
+    {
+      "script": "verify_fifth_numeric.py",
+      "arguments": [
+        "--output",
+        "numeric_fifth.json"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 3.467,
+      "log": "verify_fifth_numeric.replay.log"
+    },
+    {
+      "script": "verify_higher_collision.py",
+      "arguments": [],
+      "returncode": 0,
+      "elapsed_seconds": 35.43,
+      "log": "verify_higher_collision.replay.log"
+    }
+  ],
+  "evidence_boundary": "Analytic proofs are in the article. Numerical checks use no interval arithmetic."
+}

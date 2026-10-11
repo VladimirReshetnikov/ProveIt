@@ -1,0 +1,390 @@
+% Standalone research fragment for the parent article; no preamble.
+% Source: incoming Quartic_Tails_and_Complex_Resolvents, sections/mixed_even_tails.tex
+% and sections/mixed_even_tail_generators.tex, source commit
+% b7667ae40a2957eed9a53d8559d53a3ee20dd1c1.
+\section{Finite reconstruction of every two-tail moment}
+\label{tr:section}
+
+The two-tail report proves a finite formula and a fixed coordinate space
+for every centered moment, but asks whether a uniformly specified finite
+prefix of the moments generates that space. We answer this question with
+an explicit bound and a rational reconstruction matrix. For equal tail
+orders the first $q$ moments suffice, with an exact determinant. For
+unequal orders the bound below is deliberately not asserted to be optimal.
+All ranks in this section are ranks of matrices over $\mathbb Q$; the
+argument makes no assertion of arithmetic independence of zeta values.
+
+The exact target is Question~8, ``Finite generation by initial moments'',
+in \emph{Quartic Digamma Bridges, Harmonic Tail Moments, and Complex Resolvent Powers}. Its source theorem is
+``All even orders and all centered moments'', with source label
+\texttt{tail:all-moments}; the inverse transform has source label
+\texttt{tail:inverse-transform}. The archive's Git blob is recorded
+in the provenance manifest; it was inspected at the repository
+commit printed on the title page.
+The source formulas are reproduced below to fix every normalization;
+the new argument begins with the finite-prefix theorem.
+
+Let $2\le p\le q$ be even, $b=q/2$, and
+\[
+ A_p(n)=\zeta(p)-H_n^{(p)},\qquad
+ D_r=D_{p,q}(-2r),\qquad
+ D_{p,q}(s)=\sum_{n\ge0}A_p(n)A_q(n)(n+1/2)^{-s}.
+\]
+Outside its initial convergence half-plane, $D_{p,q}$ denotes its
+meromorphic continuation. Every displayed $D_r$ is regular. The source
+two-tail theorem gives blocks $C_j=C_{p,q}(2j+1)$ as follows. Put $W=p+q$
+and use the decreasing-index convention
+\[
+ \zeta(a,b)=\sum_{n>k\ge1}n^{-a}k^{-b},\qquad a\ge2,\quad b\ge1.
+\]
+For a positive odd integer $d$, let
+\begin{align}
+ U_{p,q}(d)&=
+ \begin{cases}
+ \zeta(p,q-d)+\frac12\zeta(W-d),&d<q,\\[4pt]
+ \displaystyle\sum_{h=1}^{\min\{(d-q+1)/2,p/2-1\}}
+ \frac{\binom{d-q+1}{2h}}{d-q+1}B_{d-q+1-2h}\zeta(p-2h),&d>q,
+ \end{cases}\label{tr:U}\\
+ R_{p,q}(d)&=
+ \begin{cases}
+ 0,&d<W-1,\\[3pt]
+ \displaystyle-\frac{B_{d-W+1}}2
+ \left\{\frac1p\binom{d-q}{p-1}+\frac1q\binom{d-p}{q-1}\right\},
+ &d\ge W-1,
+ \end{cases}\label{tr:R}\\
+ C_j&=U_{p,q}(2j+1)+U_{q,p}(2j+1)+R_{p,q}(2j+1).
+ \label{tr:Cdefinition}
+\end{align}
+Every sum is finite; the two alternatives in \eqref{tr:U} exhaust the
+possibilities because $q$ is even. These blocks satisfy
+\begin{align}
+ D_r&=\sum_{j=0}^r T_{rj}C_j,
+ &T_{rj}&=\frac{\binom{2r}{2j}}{2j+1}B_{2r-2j}(1/2),
+ \label{tr:forward}\\
+ C_j&=\sum_{r=0}^j B_{jr}D_r,
+ &B_{jr}&=\binom{2j+1}{2r}2^{-2(j-r)}.
+ \label{tr:backward}
+\end{align}
+The $B$ notation here denotes this finite matrix only when it has two
+indices; $B_n(x)$ and $B_n$ are Bernoulli polynomials and numbers.
+
+\paragraph{Why the inherited finite formula applies.}
+For completeness, its finite-sum mechanism is short. The centered
+Hurwitz expansion of $A_p(n)$ contains only the powers
+$(n+1/2)^{1-p-2h}$. Hence $A_pA_q$ contains only even inverse powers;
+asymptotic subtraction proves regularity of $D_{p,q}$ at $-2r$.
+All removed nonnegative even powers have continued sum zero, since
+$\zeta(-2h,1/2)=0$. Let $\operatorname{CT}_N$ mean the constant
+coefficient at positive infinity and put
+\[
+ S_r(N)=\sum_{n=0}^{N-1}(n+1/2)^{2r}
+       =\sum_{j=0}^r T_{rj}N^{2j+1}.
+\]
+This odd polynomial has no constant term. Finite summation by parts,
+using $A_p(k-1)=A_p(k)+k^{-p}$, gives
+\[
+ D_r=\sum_{j=0}^rT_{rj}\operatorname{CT}_N E_{p,q,2j+1}(N),
+\]
+where
+\[
+ E_{p,q,d}(N)=N^dA_p(N)A_q(N)
+ +\sum_{k=1}^N k^{d-q}A_p(k)
+ +\sum_{k=1}^N k^{d-p}A_q(k)
+ +\sum_{k=1}^N k^{d-W}.
+\]
+If $d<q$, the first ordered sum converges to $\zeta(p,q-d)$.
+If $d>q$, write $m=d-q$ and
+$F_m(N)=(B_{m+1}(N+1)-B_{m+1})/(m+1)$. The exact identity
+\[
+ \sum_{k=1}^Nk^mA_p(k)
+ =A_p(N)F_m(N)+\sum_{\ell=1}^N\frac{F_m(\ell-1)}{\ell^p}
+\]
+reduces its constant term to the Bernoulli sum in \eqref{tr:U}.
+The half-leading Faulhaber terms leave precisely one half of
+$\zeta(W-d)$ for each convergent ordered block. At $d=W-1$ their
+two $-\gamma/2$ constants cancel the final power sum's $+\gamma$.
+The remaining three boundary products give exactly \eqref{tr:R},
+by the uncentered Hurwitz expansion. This proves
+$\operatorname{CT}_NE_{p,q,d}=C_{p,q}(d)$ and explains the fixed
+finite-part normalization in \eqref{tr:forward}. Finally the ordinary
+Bernoulli generating identity proves \eqref{tr:backward}. These are
+inherited identities; no new priority is claimed for their derivation.
+
+The source coordinate list is
+\begin{equation}\label{tr:coordinates}
+ C_0,\ldots,C_{b-1},\quad Z_0,\ldots,Z_{b-1},
+ \qquad Z_k=\zeta(2k),\quad Z_0=-\frac12.
+\end{equation}
+It has $q$ specified entries. Using $Z_0$ instead of $1$ is an invertible
+rational change of coordinates. For $j\ge b$ the source block formula
+is equivalently
+\begin{equation}\label{tr:A}
+ C_j=\sum_{k=0}^{b-1}a_{jk}Z_k,
+\end{equation}
+where, with $d=2j+1$ and $e=d-p-q+2k+1$,
+\begin{equation}\label{tr:Aentries}
+ a_{jk}=
+ \begin{cases}
+ B_e\left\{
+ \displaystyle\frac{\binom{d-q+1}{p-2k}}{d-q+1}
+ +\displaystyle\frac{\binom{d-p+1}{q-2k}}{d-p+1}
+ \right\},& e\ge0,\\[5pt]
+ 0,&e<0.
+ \end{cases}
+\end{equation}
+In this formula a binomial term is omitted unless its lower index is at
+least $2$ and no greater than its upper index. This qualification matters:
+including a spurious lower index $0$ changes the formula. The rational
+block is exactly the $k=0$ term, since $Z_0=-1/2$ and
+$\binom{u}{v}/u=\binom{u-1}{v-1}/v$.
+
+\begin{theorem}[A prescribed finite prefix]\label{tr:main}
+If $p<q$, put
+\begin{equation}\label{tr:N}
+ N=\frac{q(q-p)}2+\frac q2+p-1.
+\end{equation}
+The matrix
+\[
+ M=(a_{jk})_{b\le j\le N,\ 0\le k<b}
+\]
+has column rank $b$ over $\mathbb Q$. Consequently
+\begin{equation}\label{tr:span}
+ \operatorname{span}_{\mathbb Q}\{D_0,D_1,\ldots\}
+ =\operatorname{span}_{\mathbb Q}\{D_0,\ldots,D_N\}
+ =\operatorname{span}_{\mathbb Q}
+     \{C_0,\ldots,C_{b-1},Z_0,\ldots,Z_{b-1}\}.
+\end{equation}
+These are equalities of spans of actual numbers, regardless of any
+linear dependence among those numbers. The coefficient system on the
+$q$ formal labels in \eqref{tr:coordinates} has rank exactly $q$.
+For $p=q$, all conclusions hold with $N=q-1$.
+\end{theorem}
+
+The pair-dependent bound is at most $q(q-1)/2+1$, so the first
+$q(q-1)/2+2$ moments always suffice. The sharper diagonal assertion is
+proved separately below. The existence theorem answers the source
+finite-prefix question; it does not establish that the first $q$ moments
+always suffice when $p<q$.
+
+\subsection{A differential description of the coefficient columns}
+
+Write $h(t)=\coth(t/2)$ and $m=q-p$. The source generator, or a direct
+termwise beta integration of the Bernoulli series, gives column functions
+\begin{equation}\label{tr:column}
+ \begin{split}
+ f_k(t)={}&
+ \frac{1}{2(p-2k)!(q-1)!}
+       \int_0^t u^{p-2k}(t-u)^{q-1}h(u)\,du\\
+ &+\frac{1}{2(q-2k)!(p-1)!}
+       \int_0^t u^{q-2k}(t-u)^{p-1}h(u)\,du.
+ \end{split}
+\end{equation}
+The first summand is omitted if $p-2k<2$. Both integrands otherwise
+have a removable endpoint singularity. Their Taylor series converge
+for $|t|<2\pi$. The coefficient of $t^{2j+1}/(2j+1)!$ in $f_k$ is
+$a_{jk}$ for every $j\ge b$; lower coefficients will not be used.
+This follows from $h(u)=2\sum_{n\ge0}B_{2n}u^{2n-1}/(2n)!$ and
+Euler's beta integral.
+
+For a vector $v=(v_0,\ldots,v_{b-1})$ over $\mathbb C$, put
+\[
+ f_v=\sum_{k=0}^{b-1}v_kf_k,
+ \qquad Q(t)=\sum_{k=0}^{b-1}v_k\frac{t^{q-2k}}{(q-2k)!}.
+\]
+Thus $Q$ is an arbitrary even polynomial of degree at most $q$ with
+$Q(0)=0$. Differentiating the convolution integrals $q$ times gives
+\begin{equation}\label{tr:operator}
+ 2f_v^{(q)}(t)
+ =\left(Q^{(m)}(t)-Q^{(m)}(0)\right)h(t)
+       +(Q(t)h(t))^{(m)}
+ =:\mathcal L_Q(t).
+\end{equation}
+The subtraction $Q^{(m)}(0)$ enforces the omitted zero lower index in
+\eqref{tr:Aentries}. Each side is an odd function holomorphic at zero.
+
+\begin{lemma}[A finite jet forces the polynomial to vanish]
+\label{tr:zerobound}
+Suppose $m=q-p>0$ and
+\[
+ \operatorname{ord}_{t=0}\mathcal L_Q\ge2N+3-q
+\]
+with $N$ as in \eqref{tr:N}. Then $Q=0$.
+\end{lemma}
+
+\begin{proof}
+Set $y=e^t$. For $r\ge1$, direct differentiation shows that
+$h^{(r)}(t)$ has the form $P_r(y)/(y-1)^{r+1}$, where $P_r$ is a
+polynomial of degree at most $r$, divisible by $y$. Indeed it is true
+for $h'=-2y/(y-1)^2$, and application of $y\,d/dy$ preserves the
+asserted form. Also $h=(y+1)/(y-1)$.
+
+It follows by the product rule that
+\[
+ E(t)=(e^t-1)^{m+1}\mathcal L_Q(t)
+     =\sum_{\nu=0}^{m+1}P_\nu^*(t)e^{\nu t}
+\]
+is an entire exponential polynomial. For $\nu=0$ and $\nu=m+1$,
+$\deg P_\nu^*\le p$; for $1\le\nu\le m$, the degrees are at most
+$q$. To verify the endpoint degree statement, all terms involving
+$h^{(r)}$ with $r\ge1$ have an $e^t$ factor and have exponential
+degree at most $m$, after the denominator is cleared. Only the
+$h$ term reaches exponent $0$ or $m+1$, and its polynomial factor
+is $2Q^{(m)}-Q^{(m)}(0)$, of degree at most $p$.
+
+Therefore $E$ is annihilated by the monic constant-coefficient
+differential operator
+\begin{equation}\label{tr:ode}
+ \mathcal P(\partial_t)=
+ \partial_t^{p+1}
+ \left(\prod_{\nu=1}^{m}(\partial_t-\nu)^{q+1}\right)
+ (\partial_t-(m+1))^{p+1}.
+\end{equation}
+Its order is
+$H=2(p+1)+m(q+1)$. A holomorphic solution of this equation whose
+first $H$ Taylor coefficients vanish is identically zero: the monic
+equation recursively expresses each higher derivative in the previous
+$H$ derivatives. On the other hand, the hypothesis gives
+\[
+ \operatorname{ord}_0E\ge(2N+3-q)+(m+1)
+    =2N+4-p=H.
+\]
+Hence $E=0$ and $\mathcal L_Q=0$ meromorphically.
+
+At every nonzero $\tau=2\pi i\ell$, $h(t)$ has residue $2$.
+Since the even integer $m$ is at least $2$, the pole of order $m+1$
+in $(Qh)^{(m)}$ has coefficient $2m!Q(\tau)$. The other term of
+$\mathcal L_Q$ has at most a simple pole. Thus $Q(\tau)=0$ for all
+nonzero integers $\ell$. A polynomial with infinitely many zeros is
+zero. This proves the lemma.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{tr:main} for unequal orders]
+If $Mv=0$, the odd Taylor coefficients of $f_v$ at degrees
+$q+1,q+3,\ldots,2N+1$ vanish. Differentiation $q$ times kills every
+lower coefficient; the next possible degree is $2N+3-q$.
+Equation~\eqref{tr:operator} and Lemma~\ref{tr:zerobound} give $Q=0$,
+hence $v=0$. The matrix has rank $b$ already over $\mathbb C$, and
+therefore over $\mathbb Q$.
+
+Its finite left inverse recovers all $Z_k$ from $C_b,\ldots,C_N$.
+Equations~\eqref{tr:forward}--\eqref{tr:backward} recover these blocks
+and the initial $C_0,\ldots,C_{b-1}$ from $D_0,\ldots,D_N$.
+All later blocks are given by \eqref{tr:A}; this proves all the span
+equalities. The early $b$ coefficient rows are the identity on the
+$C_0,\ldots,C_{b-1}$ labels, and the later rows have rank $b$ on
+the remaining labels. Thus the full formal rank is $2b=q$.
+\end{proof}
+
+\subsection{An explicit rational reconstruction matrix}
+
+The preceding proof is effective without a search for a nonsingular
+minor. Define
+\begin{equation}\label{tr:leftinverse}
+ L=(M^{\mathsf T}M)^{-1}M^{\mathsf T}
+   =\frac{\operatorname{adj}(M^{\mathsf T}M)M^{\mathsf T}}
+          {\det(M^{\mathsf T}M)}.
+\end{equation}
+Every entry is an explicitly specified rational number obtained from
+the finite Bernoulli formula. The denominator is nonzero because $M$
+has full column rank; equivalently its real Gram matrix is positive
+definite. If $V=(C_b,\ldots,C_N)^{\mathsf T}$, then
+\begin{equation}\label{tr:reconstruct}
+ (Z_0,\ldots,Z_{b-1})^{\mathsf T}=LV.
+\end{equation}
+Together with \eqref{tr:backward}, this is an explicit rational formula
+in the required prefix of actual moments. For any desired later $D_r$,
+insert \eqref{tr:reconstruct} into \eqref{tr:A} and then
+\eqref{tr:forward}. This is a terminating exact algorithm, including
+when the actual coordinate values satisfy unknown rational relations.
+
+One can also extract exactly $q$ specified moments from this bounded
+prefix. Form their formal coefficient rows $W_r\in\mathbb Q^q$ by
+\[
+ (W_r)_j=T_{rj}\quad(0\le j<b),\qquad
+ (W_r)_{b+k}=\sum_{j=b}^r T_{rj}a_{jk}\quad(0\le k<b),
+\]
+where a term with $j>r$ is zero. Scan $r=0,1,\ldots,N$, retaining a
+row exactly when it increases rational rank. The theorem proves that
+this deterministic finite procedure retains $q$ rows, with indices
+$r_1<\cdots<r_q\le N$. If $A_*$ is the matrix of those rows, then
+\[
+ D_r=W_rA_*^{-1}(D_{r_1},\ldots,D_{r_q})^{\mathsf T}
+\]
+for every $r\ge0$. This is an explicit basis-selection algorithm for
+the formal system, not a claim that its $q$ actual numbers form an
+arithmetically independent set.
+
+\subsection{Equal orders: an exact determinant and a shorter prefix}
+
+If $p=q=2b$, take the square late matrix with $b\le j\le2b-1$.
+Write $j=b+t$ with $0\le t<b$. Formula~\eqref{tr:Aentries} is zero
+whenever $t+k<b-1$, and on the antidiagonal $t+k=b-1$ it equals
+$1/(t+1)$. Therefore
+\begin{equation}\label{tr:diagonal-det}
+ \det M=\frac{(-1)^{b(b-1)/2}}{b!}\ne0.
+\end{equation}
+This proves the asserted $N=q-1$. It also gives a particularly simple
+reconstruction, for $t=0,\ldots,b-1$:
+\begin{equation}\label{tr:diagonal-recursion}
+ Z_{b-1-t}=(t+1)\left(
+ C_{b+t}-\sum_{k=b-t}^{b-1}a_{b+t,k}Z_k\right).
+\end{equation}
+The sum is empty at $t=0$. In the coordinate ordering
+\eqref{tr:coordinates}, the determinant of the complete first-$q$
+moment matrix is
+\begin{equation}\label{tr:complete-det}
+ \frac{(-1)^{b(b-1)/2}}{b!\,(2q-1)!!}.
+\end{equation}
+Here the extra denominator is the product of the diagonal entries
+$1/(2r+1)$ of the forward Bernoulli transform.
+
+\subsection{A new concrete mixed example: orders two and six}
+
+For $(p,q)=(2,6)$, the general theorem supplies a longer guaranteed
+prefix, but direct exact elimination proves that the first six moments
+already suffice. The last three block rows are
+\[
+ \begin{pmatrix}C_3\\C_4\\C_5\end{pmatrix}
+ =\begin{pmatrix}
+  2/3&5/12&-1/12\\
+  5/6&-7/24&1/12\\
+  -47/60&1/2&-3/20
+ \end{pmatrix}
+ \begin{pmatrix}-1/2\\\zeta(2)\\\zeta(4)\end{pmatrix},
+\]
+whose determinant is $61/5760$. Its inverse is
+\begin{equation}\label{tr:26inverse}
+ \frac1{61}
+ \begin{pmatrix}
+ 12&120&60\\344&-952&-720\\1084&-3800&-3120
+ \end{pmatrix}.
+\end{equation}
+For example, the rational row becomes the exact identity
+\begin{equation}\label{tr:26rational}
+ 61D_0+8204D_1+116000D_2+370048D_3
+      +303360D_4+56320D_5=-\frac{7808}{3}.
+\end{equation}
+It has the ordinary absolutely convergent interpretation
+\begin{equation}\label{tr:26ordinary}
+ \begin{split}
+ \sum_{n\ge0}\bigg\{&P(x_n)A_2(n)A_6(n)
+   -11264x_n^4-\frac{136960}{3}x_n^2-\frac{88064}{5}\bigg\}
+   =-\frac{7808}{3},\\
+ P(x)={}&61+8204x^2+116000x^4+370048x^6
+                +303360x^8+56320x^{10},\qquad x_n=n+\frac12.
+ \end{split}
+\end{equation}
+Indeed $A_2(n)A_6(n)=\frac15x_n^{-6}
+-\frac4{15}x_n^{-8}+\frac{87}{200}x_n^{-10}+O(x_n^{-12})$,
+so the displayed bracket is $O(n^{-2})$. Also
+$A_2(n)A_6(n)=\psi'(n+1)\psi^{(5)}(n+1)/120$, giving a
+polygamma identity with exactly the same normalization.
+
+\paragraph{What is still open.}
+The first-$q$ square coefficient matrix is nonsingular in every
+unequal pair checked by exact rational arithmetic through $q=24$.
+This is finite evidence, not a proof for all $p,q$. The general
+theorem gives an explicit finite prefix and an exact rational inverse
+without assuming that stronger assertion. It also leaves untouched
+the arithmetic dimension of the actual number space: formal rank $q$
+is compatible with unknown rational relations among its zeta coordinates.

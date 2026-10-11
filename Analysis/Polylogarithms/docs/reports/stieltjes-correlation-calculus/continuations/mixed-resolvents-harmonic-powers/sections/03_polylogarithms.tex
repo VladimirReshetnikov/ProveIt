@@ -1,0 +1,328 @@
+\section{Mixed logarithmic moments in finite polylogarithmic depth}
+\label{ml:section}
+
+The general complex-power transform retains an explicit Dirichlet
+coordinate. Its first mixed exponent derivative admits a substantially
+smaller expression: two opposite logarithmic resolvents require only
+depth-two polylogarithms, at every Stieltjes index and every argument
+derivative. This section proves that reduction with its full finite-part
+normalization.
+
+\subsection{Two and three ordinary logarithmic moments}
+
+Take $z$ in the upper half-plane and $w$ in the lower half-plane. Set
+\[
+ q=\frac{z-\pi\ii}{z+\pi\ii},\qquad
+ r=\frac{w+\pi\ii}{w-\pi\ii},\qquad
+ c_z=\Log\left(-\frac1{z+\pi\ii}\right),\quad
+ c_w=\Log\left(-\frac1{w-\pi\ii}\right),
+\]
+with the branches fixed in Section~\ref{mr:section}. Define
+\[
+ L_z(x)=\Log R_z(x)-c_z,\qquad
+ L_w(x)=\Log R_w(x)-c_w.
+\]
+Their $L^2$-convergent Fourier expansions are
+\begin{equation}\label{ml:Fourierlog}
+ L_z(x)=\sum_{n\ge1}\frac{q^n-1}{n}e^{2\pi\ii nx},\qquad
+ L_w(x)=\sum_{n\ge1}\frac{r^n-1}{n}e^{-2\pi\ii nx}.
+\end{equation}
+In particular their means vanish.
+
+\begin{proposition}[A dilogarithmic covariance]
+\label{ml:dilog}
+The ordinary integral is
+\begin{equation}\label{ml:dilogeq}
+ \int_0^1L_z(x)L_w(x)\dd x
+       =\Li_2(qr)-\Li_2(q)-\Li_2(r)+\zeta(2)=:\mathcal D(q,r).
+\end{equation}
+Equivalently, the uncentered integral is $c_zc_w+\mathcal D(q,r)$.
+For two parameters in the same half-plane, the centered integral is zero.
+\end{proposition}
+\begin{proof}
+Pair the two $L^2$ Fourier series. Their constant product coefficient
+is $\sum_{n\ge1}(q^n-1)(r^n-1)/n^2$, which is absolutely
+convergent and sums to \eqref{ml:dilogeq}. Two equally oriented
+series have no zero product mode. The logarithmic endpoint bounds
+also verify ordinary integrability directly.
+\end{proof}
+
+We use the decreasing-index convention
+\begin{equation}\label{ml:MPL}
+ \Li_{s_1,\ldots,s_d}(u_1,\ldots,u_d)
+ =\sum_{n_1>\cdots>n_d\ge1}
+       \frac{u_1^{n_1}\cdots u_d^{n_d}}
+            {n_1^{s_1}\cdots n_d^{s_d}}.
+\end{equation}
+Individual colors may have modulus greater than one; the actual coupled
+summands, or equivalently their cumulative products, determine
+convergence. Continuous limiting values are used when a displayed
+quotient of colors is $0/0$.
+
+For two upper-half-plane parameters with disk coordinates $q_1,q_2$
+and one lower-half-plane parameter with coordinate $r$, let
+$\nu_q(q)=1$, $\nu_q(1)=-1$. Then
+\begin{align}
+ &\int_0^1L_{z_1}(x)L_{z_2}(x)L_w(x)\dd x\notag\\
+ &\quad=\sum_{a\in\{q_1,1\}}
+        \sum_{b\in\{q_2,1\}}
+        \sum_{c\in\{r,1\}}
+        \nu_{q_1}(a)\nu_{q_2}(b)\nu_r(c)\notag\\
+ &\hspace{24mm}\times
+       \left\{\Li_{2,1}(ac,b/a)+\Li_{2,1}(bc,a/b)\right\}.
+       \label{ml:triple}
+\end{align}
+This follows from the absolutely convergent elementary identity
+\[
+ \sum_{n,m\ge1}\frac{x^ny^m}{nm(n+m)}
+     =\Li_{2,1}(x,y/x)+\Li_{2,1}(y,x/y),
+\]
+using $1/(nm(n+m))=1/((n+m)^2n)+1/((n+m)^2m)$.
+The two cumulative colors are $ac,bc$, both of modulus at most one.
+At three zero disk coordinates the value is $-2\zeta(3)$.
+Formula \eqref{ml:triple} is thus a finite weight-three identity with
+the branch and color conventions explicit.
+
+\subsection{A depth-two transform with an arbitrary spectral order}
+
+For $\Re u>0$, define
+\begin{equation}\label{ml:Tu}
+ \mathcal T_u(x,y)
+       =\Li_{u+1}(x)\Li_1(xy)
+                              -\Li_{1,u+1}(xy,1/y).
+\end{equation}
+For $x=y=1$ replace the right side, whose separate terms diverge, by
+the explicitly convergent value
+\begin{equation}\label{ml:T11}
+       \mathcal T_u(1,1)=\zeta(u+1,1)+\zeta(u+2).
+\end{equation}
+Here $\zeta(s,t)=\sum_{n>m\ge1}n^{-s}m^{-t}$ is strict. At zero
+colors the limit is used; in particular $\mathcal T_u(0,y)=
+\mathcal T_u(x,0)=0$. Set
+\begin{equation}\label{ml:Pu}
+ \mathcal P_u(q,r)=\mathcal T_u(q,r)-\mathcal T_u(q,1)
+                              -\mathcal T_u(1,r)+\mathcal T_u(1,1).
+\end{equation}
+
+\begin{lemma}[The two Fourier Dirichlet series]
+\label{ml:coefficient}
+If $f(x)=L_z(x)L_w(x)$, then
+\begin{equation}\label{ml:Dirichlet}
+ \sum_{k\ge1}\frac{\widehat f(k)}{k^u}=\mathcal P_u(q,r),\qquad
+ \sum_{k\ge1}\frac{\widehat f(-k)}{k^u}=\mathcal P_u(r,q),
+                          \qquad\Re u>0.
+\end{equation}
+All sums in this assertion converge absolutely.
+\end{lemma}
+
+\begin{proof}
+The positive coefficient of the product is
+\[
+ \widehat f(k)=\sum_{m\ge1}
+          \frac{(q^{m+k}-1)(r^m-1)}{m(m+k)},\qquad k\ge1.
+\]
+The four expanded sums are bounded by a constant multiple of
+$\sum_{k\ge1}H_k/k^{\Re u+1}$, which converges for $\Re u>0$.
+For $|x|,|y|\le1$ in the required cases,
+\begin{align*}
+ \sum_{k,m\ge1}\frac{x^{k+m}y^m}{k^um(k+m)}
+ &=\sum_{k,m\ge1}\frac{x^k(xy)^m}{k^{u+1}m}
+       -\sum_{n>k\ge1}\frac{(xy)^ny^{-k}}{nk^{u+1}}\\
+ &=\mathcal T_u(x,y).
+\end{align*}
+The first equality uses
+$1/(m(m+k))=k^{-1}(m^{-1}-(m+k)^{-1})$.
+At $(x,y)=(1,1)$ the unseparated sum is
+$\sum H_k/k^{u+1}=\zeta(u+1,1)+\zeta(u+2)$.
+Expansion of the four numerator terms gives the first formula in
+\eqref{ml:Dirichlet}; exchanging $q,r$ gives the second.
+\end{proof}
+
+The expressions in \eqref{ml:Tu} are finite combinations of depth at
+most two. When $u$ is not integral, \eqref{ml:MPL} is an explicit
+multiple Dirichlet sum with a complex order; spectral differentiation
+inserts logarithms of its integer indices. Meromorphic continuation is
+always taken for the complete combination, not for a divergent product
+at $(x,y)=(1,1)$.
+
+\subsection{All Stieltjes indices and all argument derivatives}
+
+Write the local analytic logarithms
+\[
+ \ell_z(x)=-\Log(\pi x\cot\pi x-zx),\qquad
+ \ell_w(x)=-\Log(\pi x\cot\pi x-wx),
+\]
+so that $L_z(x)=\log x-c_z+\ell_z(x)$ and similarly for $w$.
+Define the finite coefficients $t_{p,h}$ by
+\begin{equation}\label{ml:localt}
+ [x^p]\{(X-c_z+\ell_z(x))(X-c_w+\ell_w(x))\}
+                            =\sum_{h=0}^2t_{p,h}X^h.
+\end{equation}
+For example,
+\begin{align*}
+ (t_{0,2},t_{0,1},t_{0,0})&=(1,-c_z-c_w,c_zc_w),\\
+ (t_{1,2},t_{1,1},t_{1,0})&=(0,z+w,-c_zw-c_wz).
+\end{align*}
+For $p\ge1$, $t_{p,2}=0$. Taylor expansion of the cotangent computes
+every required coefficient exactly.
+
+\begin{theorem}[Finite depth-two Stieltjes identity]
+\label{ml:allStieltjes}
+For $p\ge0$ the expression
+\begin{align}
+ \mathcal E_p(s;q,r)={}&\Gamma(s)
+       \left\{\sigma_+^{p-s}\mathcal P_{s-p}(q,r)
+                  +\sigma_-^{p-s}\mathcal P_{s-p}(r,q)\right\}
+        +\mathbf1_{p=0}\frac{\mathcal D(q,r)}s\notag\\
+ &\quad-A_p(s)\sum_{h=0}^2\frac{(-1)^hh!\,t_{p,h}}{s^{h+1}}
+       \label{ml:E}
+\end{align}
+is holomorphic at $s=0$. For every $m\ge0$,
+\begin{equation}\label{ml:allindex}
+ \boxed{\displaystyle
+ \FP_x\int_0^1\gamma_m^{(p)}(x)L_z(x)L_w(x)\dd x
+                      =m![s^m]\mathcal E_p(s;q,r).}
+\end{equation}
+In particular the order-$m$ answer uses only finitely many order
+derivatives of the depth-two functions in \eqref{ml:Tu}--\eqref{ml:Pu},
+ordinary zeta functions, Gamma functions, logarithms, and the explicitly
+finite local coefficients \eqref{ml:localt}.
+\end{theorem}
+
+\begin{proof}
+For $\Re s>p+1$, pairing with the uniformly convergent Hurwitz Fourier
+series and applying Lemma~\ref{ml:coefficient} gives the first line of
+\eqref{ml:E}, before its last subtraction, as the integral of
+$\partial_x^p(\zeta(1-s,x)+1/s)L_zL_w$. Its mean contribution is
+exactly $\mathbf1_{p=0}\mathcal D/s$ by Proposition~\ref{ml:dilog}.
+
+At zero, use \eqref{mr:split}. The smooth part times $L_zL_w$ is
+locally integrable. Among the terms multiplying $A_p(s)x^{s-p-1}$,
+only the coefficient $x^p$ has a resonant integration exponent.
+By \eqref{ml:localt}, its integrated amplitude is
+\[
+ A_p(s)\sum_{h=0}^2t_{p,h}
+                 \int_0^1x^{s-1}\log^hx\dd x
+     =A_p(s)\sum_{h=0}^2\frac{(-1)^hh!t_{p,h}}{s^{h+1}}.
+\]
+At $x=1$ the Hurwitz factor is smooth and the logarithmic kernel is
+integrable, so there is no second resonant term. The finite-subtraction
+proof of Theorem~\ref{mr:completion} now applies verbatim to these
+power-log monomials: removing their full amplitudes gives a holomorphic
+germ whose coefficients are the fixed-coordinate finite parts.
+This proves both assertions, including analytic continuation of the
+complete depth-two expression wherever it is needed near $s=0$.
+\end{proof}
+
+For $p=0$ the subtraction is particularly transparent:
+\begin{align}
+ \mathcal E_0(s;q,r)={}&\Gamma(s)
+   \left\{(-2\pi\ii)^{-s}\mathcal P_s(q,r)
+                        +(2\pi\ii)^{-s}\mathcal P_s(r,q)\right\}
+     +\frac{\mathcal D(q,r)}s\notag\\
+ &\hspace{5mm}-\frac2{s^3}-\frac{c_z+c_w}{s^2}-\frac{c_zc_w}s.
+       \label{ml:pzero}
+\end{align}
+Keeping only the leading cubic pole would lose two prescribed endpoint
+constants. For $p>0$, keeping only pole residues would additionally lose
+the regular coefficients contributed by the polynomial $A_p(s)$.
+
+\subsection{A special-point identity involving a harmonic Laurent coefficient}
+
+Let $L=\log(2\pi)$ and define $\eta$ by the strict expansion
+\begin{equation}\label{ml:eta}
+ \zeta(1+s,1)=\frac1{s^2}+\frac\gamma s
+       +\frac{\gamma^2-\zeta(2)}2+\eta s+O(s^2).
+\end{equation}
+This is the same coefficient used in the cubic and quartic incoming
+reports \cite{repo:cubic,repo:barnes}. At $q=r=0$,
+$\mathcal P_s(0,0)=\zeta(1+s,1)+\zeta(2+s)$ and
+$\mathcal D(0,0)=\zeta(2)$. The kernel is real:
+\[
+ L_{\pi\ii}(x)L_{-\pi\ii}(x)
+      =\log^2(2\sin\pi x)+\pi^2(x-\tfrac12)^2.
+\]
+Expanding \eqref{ml:pzero} gives the exact identity
+\begin{align}
+ &\FP_x\int_0^1\gamma_0(x)
+       \left\{\log^2(2\sin\pi x)+\pi^2(x-\tfrac12)^2\right\}\dd x
+       \notag\\
+ &\quad=2\eta+2\zeta'(2)-\frac{\gamma^3+L^3}{3}
+                -\gamma\zeta(2)-\frac L2\zeta(2)-\frac23\zeta(3).
+       \label{ml:specialStieltjes}
+\end{align}
+For completeness, put $A=\gamma+L$. The first four coefficients of
+$\Gamma(s)(2\pi)^{-s}\cos(\pi s/2)$ are
+\[
+ \frac1s-A+\left(\frac{A^2}{2}-\frac{\zeta(2)}4\right)s
+    +\left(-\frac{A^3}{6}+\frac{A\zeta(2)}4-\frac{\zeta(3)}3\right)s^2.
+\]
+Multiplication by \eqref{ml:eta} plus $\zeta(2+s)$ proves
+\eqref{ml:specialStieltjes}. This calculation also provides a direct
+connection with the harmonic-jet power identities developed below.
+It does not claim an ordinary-constant evaluation of $\eta$.
+
+\subsection{A generating identity for every mixed logarithmic moment}
+
+At the special resolvent points, the Gamma mean \eqref{mr:specialmean}
+gives a compact all-order ordinary identity. For
+$F_+=L_{\pi\ii}$ and $F_-=L_{-\pi\ii}$,
+\begin{equation}\label{ml:jointcumulants}
+ \int_0^1e^{aF_+(x)+bF_-(x)}\dd x
+       =\frac{\Gamma(1+a+b)}{\Gamma(1+a)\Gamma(1+b)}.
+\end{equation}
+Initially $\Re(a+b)>-1$; in particular it is analytic at $(0,0)$.
+Taking its logarithm gives
+\begin{equation}\label{ml:logjoint}
+ \sum_{n\ge2}\frac{(-1)^n\zeta(n)}n
+                     \left((a+b)^n-a^n-b^n\right).
+\end{equation}
+This power series is used locally, for example when
+$|a|,|b|,|a+b|<1$.
+Consequently every mixed cumulant with $p,q\ge1$ is
+\begin{equation}\label{ml:cumulant}
+              (-1)^{p+q}(p+q-1)!\zeta(p+q),
+\end{equation}
+and the pure centered cumulants vanish. Exponentiating
+\eqref{ml:logjoint} is a finite coefficient algorithm for every moment.
+For example,
+\begin{align}
+ \int F_+F_-&=\zeta(2),&
+ \int F_+^2F_-&=-2\zeta(3),\notag\\
+ \int F_+^2F_-^2&=11\zeta(4),&
+ \int F_+^3F_-^2&=-24\zeta(5)-12\zeta(2)\zeta(3).
+       \label{ml:momentexamples}
+\end{align}
+All integrals in \eqref{ml:momentexamples} are ordinary integrals over
+$(0,1)$. This is a beta/Gamma specialization, with the classical Gamma
+expansion retaining its attribution \cite{dlmf:gamma}; its role here is
+to evaluate the two-orientation logarithmic moment family exactly.
+
+\subsection{Derivatives and primitives in two resolvent parameters}
+
+Since $\partial_zc_z=C_z$, differentiation gives
+$\partial_zL_z=R_z-C_z$. Thus \eqref{ml:allindex} also supplies a
+two-parameter primitive for moments of centered resolvents. For the
+uncentered version put
+\[
+ S_{m,p}(z)=\FP_x\int_0^1\gamma_m^{(p)}(x)\Log R_z(x)\dd x,
+\]
+whose single-logarithm formula is already proved in
+\cite[complex-power section]{repo:quartic}. Because
+$\FP\int_0^1\gamma_m^{(p)}=0$, the uncentered mixed-logarithm moment is
+\begin{equation}\label{ml:uncentered}
+ \mathcal U_{m,p}(z,w)=m![s^m]\mathcal E_p(s;q,r)
+                                      +c_zS_{m,p}(w)+c_wS_{m,p}(z).
+\end{equation}
+It satisfies the exact differential identity
+\begin{equation}\label{ml:doubleprimitive}
+ \partial_z\partial_w\mathcal U_{m,p}(z,w)
+       =\FP_x\int_0^1\gamma_m^{(p)}(x)R_z(x)R_w(x)\dd x.
+\end{equation}
+Integrating over a rectangle in the product of the two half-planes
+therefore yields the alternating four evaluations of
+$\mathcal U_{m,p}$ at its corners, which fixes all integration constants.
+Partial fractions give the additional consistency check
+$R_zR_w=(R_z-R_w)/(z-w)$. The differential identity is valid for
+the completed coordinate finite parts and does not presume that separate
+uncompleted spectral limits can be multiplied.

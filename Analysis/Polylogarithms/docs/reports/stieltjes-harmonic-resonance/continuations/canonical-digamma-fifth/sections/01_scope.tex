@@ -1,0 +1,129 @@
+\section{Scope, exact targets, and conventions}
+\label{sec:scope}
+
+The starting point is the manuscript directory and the incoming archive
+directory of the ProveIt repository, inspected at the commit printed on
+the title page \cite{Repo}. A repository-relative claim of progress is
+different from a claim of priority in the mathematical literature.
+This article makes the former precise. Classical Gamma quotients,
+harmonic Bell polynomials, height-one coefficient series, and
+low-weight multiple-zeta reductions are explicitly attributed. The
+proofs developed here organize these tools into a fifth-power bridge
+and a finite moment reconstruction theorem. The bounded literature
+review is not a proof that no equivalent formulation exists elsewhere.
+
+Two especially relevant incoming reports are \emph{Quartic Tails and
+Complex Resolvents} and \emph{Barnes Resolvents and Higher Harmonic Identities}
+\cite{Quartic,Barnes}. They already establish the quartic digamma bridge,
+the all-depth reciprocal-Gamma singular Laurent coefficients, and finite
+formulas for two-even-tail moments. Their stated further questions,
+rather than results already proved in their bodies, determine our targets.
+
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.22\textwidth}>{\raggedright\arraybackslash}p{.69\textwidth}@{}}
+\toprule
+Source target & Result and precise boundary \\
+\midrule
+Quartic report, Q1: fifth digamma power &
+Theorem~\ref{q5:main} gives the complete fifth-power finite part, its
+mixed coordinate, and all endpoint constants. \\[5pt]
+Quartic report, Q2: canonical polynomial &
+The scalar residue normalization is proved for every degree, uniquely
+up to an additive constant. An exact differential normalization is also
+proved. The stronger claim that scalar polynomials remove every
+lower-depth arithmetic coordinate remains open. \\[5pt]
+Quartic report, Q8: initial-moment generation &
+Theorem~\ref{tr:main} proves an explicit finite-prefix bound and rational
+reconstruction. For equal orders the first $q$ moments suffice. The
+same first-$q$ assertion for all unequal orders remains open. \\[5pt]
+Manuscript $S_6$, revised $S_8$ &
+No proof is asserted here. Existing numerical residual certificates
+retain their original evidentiary status. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Harmonic and spectral notation}
+
+Put $H_n^{(r)}=\sum_{k=1}^n k^{-r}$ and $H_n=H_n^{(1)}$, with every
+empty sum zero. For strict indices, use
+\begin{align}
+ H_n(s_1,\ldots,s_d)&=
+ \sum_{n\ge k_1>\cdots>k_d\ge1}k_1^{-s_1}\cdots k_d^{-s_d},\\
+ Z_d(s_1,\ldots,s_d)&=
+ \sum_{k_1>\cdots>k_d\ge1}k_1^{-s_1}\cdots k_d^{-s_d}
+ \label{eq:strictzeta}
+\end{align}
+in their convergence regions, followed by analytic continuation where
+specified. The elementary harmonic polynomials are
+\begin{equation}\label{eq:edef}
+ e_j(n)=H_n(\{1\}^j),\qquad e_0(n)=1,
+ \qquad \sum_{j\ge0}e_j(n)t^j=\prod_{k=1}^n\left(1+\frac tk\right).
+\end{equation}
+They must be distinguished from the complete, weakly ordered harmonic
+sums, whose generator has factors $(1-t/k)^{-1}$.
+
+The ordinary Stieltjes convention is
+\begin{equation}\label{eq:stieltjes}
+ \zeta(1+u)=\frac1u+
+ \sum_{j\ge0}\frac{(-1)^j\gamma_j}{j!}u^j,
+ \qquad \gamma=\gamma_0.
+\end{equation}
+At depth $d$, define literal regular Laurent coefficients by
+\begin{equation}\label{eq:lambdadef}
+ \lambda_{d,j}=[u^j]Z_d(1+u,\{1\}^{d-1}),\qquad
+ \lambda_d=\lambda_{d,1}.
+\end{equation}
+The coefficient brackets impose neither a factorial nor an alternating
+sign. In particular
+\[
+ \lambda_1=-\gamma_1,\qquad
+ \lambda_2=\eta,\quad\lambda_3=\theta,\quad\lambda_4=\xi.
+\]
+The ordered germ has a pole of order $d$, not a simple pole for $d>1$.
+It is therefore unsafe to identify it with a Hurwitz-zeta germ merely
+by calling both sets of coefficients generalized Stieltjes constants.
+
+We use the reciprocal-Gamma coefficients
+\begin{equation}\label{eq:cdef}
+ \frac1{\Gamma(1+t)}=\sum_{j\ge0}c_jt^j,
+ \quad c_0=1,\quad c_1=\gamma,\quad
+ c_2=\frac{\gamma^2-\zeta(2)}2,\quad
+ c_3=\frac{\gamma^3-3\gamma\zeta(2)+2\zeta(3)}6.
+\end{equation}
+They are obtained recursively by differentiating the standard
+log-Gamma expansion \cite{DLMF}:
+\begin{equation}\label{eq:crecurrence}
+ n c_n=\gamma c_{n-1}
+       +\sum_{r=2}^n(-1)^{r+1}\zeta(r)c_{n-r}.
+\end{equation}
+
+\subsection{A finite part is a specified constant coefficient}
+
+For a function meromorphic at zero and smooth on $(0,1]$, throughout
+this article
+\begin{equation}\label{eq:fpdef}
+ \FP\int_0^1f(x)\,dx
+ =\CT_{\varepsilon\downarrow0}\int_\varepsilon^1f(x)\,dx.
+\end{equation}
+The expansion uses powers of the coordinate $\varepsilon$ itself and
+$\log\varepsilon$. There is no silently changed cutoff, rescaled
+coordinate, or substituted spectral regularization. If
+$f(x)=\sum_{k=-M}^{\infty}a_kx^k$ near zero, this definition can be
+computed without divergent numerical cancellation as
+\begin{equation}\label{eq:fpsubtraction}
+ \int_0^1\left(f(x)-\sum_{k=-M}^{-1}a_kx^k\right)dx
+       +\sum_{k=-M}^{-2}\frac{a_k}{k+1}.
+\end{equation}
+The contribution from $a_{-1}/x$ is zero. For a meromorphic $F$,
+\begin{equation}\label{eq:fpderivative}
+ \FP\int_0^1F'(x)\,dx=F(1)-[x^0]F(x).
+\end{equation}
+This rule follows directly by differentiating the Laurent series; it
+will account for every endpoint term in the fifth-power calculation.
+
+All ordinary integrals below are identified as such. All matrix ranks
+in the moment reconstruction are formal rational ranks. Neither
+finite-part calculations nor rational elimination require unproved
+arithmetic independence of zeta or Stieltjes constants.

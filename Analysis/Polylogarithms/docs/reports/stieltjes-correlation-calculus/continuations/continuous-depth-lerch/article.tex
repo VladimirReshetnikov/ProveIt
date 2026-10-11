@@ -1,0 +1,1651 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.95in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array}
+\usepackage{mathrsfs}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Continuous-depth Lerch calculus}
+\fancyhead[R]{\small ProveIt continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{15pt}
+\setlist{itemsep=3pt,topsep=5pt}
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\C}{\mathbb C}\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}\newcommand{\Q}{\mathbb Q}
+\newcommand{\Rea}{\operatorname{Re}}\newcommand{\Ima}{\operatorname{Im}}
+\newcommand{\Li}{\operatorname{Li}}\newcommand{\dd}{\,\mathrm d}
+\newcommand{\F}{\mathcal F}\newcommand{\E}{\mathcal E}
+\newcommand{\B}{\mathcal B}\newcommand{\PP}{\mathcal P}
+\newcommand{\stir}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\newcommand{\pin}{\src{b7667ae40a2957eed9a53d8559d53a3ee20dd1c1}}
+\newcommand{\zjet}[2]{\zeta^{[#1]}(#2)}
+\hypersetup{pdftitle={Continuous-Depth Lerch Calculus},pdfauthor={Research continuation prepared for Vladimir Reshetnikov},pdfsubject={Gamma kernels, exact harmonic identities, Stieltjes convolutions and anchored primitives}}
+\title{\textbf{Continuous-Depth Lerch Calculus}\\[5pt]
+\large Gamma kernels, all-order harmonic identities,\\
+Stieltjes convolutions, and anchored primitives}
+\author{Research continuation prepared for Vladimir Reshetnikov's ProveIt programme\\
+\small Mathematical derivations and computational checks with OpenAI assistance}
+\date{10 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The reciprocal-Lerch continuation asks for a noninteger-depth interpretation
+of the multiplier $(\pi\csc\pi p)^\rho(p+a-1)^{-s}$. We answer this question
+on $\Rea\rho>0$ by an explicit Gamma-product kernel and a jointly holomorphic
+calculus that is entire in the spectral order. Convolution adds both depth
+and spectral order. Consequently, an integer \emph{total} depth retains
+finite Hurwitz--Lerch closure even when none of the individual depths is
+an integer. A polynomial recurrence evaluates every logarithmic moment,
+and a local-monodromy argument specifies exactly one finite integer-depth
+representation class that cannot contain a noninteger-depth kernel.
+
+The centered kernel has a Fourier--Mellin reflection formula involving a
+Pochhammer-weighted alternating Hurwitz series. Its odd values yield an
+all-order Gamma-quotient generating identity for absolutely convergent
+alternating harmonic sums. Every coefficient is a finite homogeneous
+polynomial in ordinary zeta values. Explicit quadratic and cubic harmonic
+identities, and a continuous Gamma-weighted odd-polylogarithm family, are
+proved. Independent spectral and depth differentiation gives ordinary
+Stieltjes-product identities and polygamma-weighted Gamma convolutions;
+all shift-primitive orders are obtained with removable resonances explicit.
+
+The Gamma transform and its normalized Meixner semigroup are classical,
+not discoveries claimed here. The contribution is their rigorous connection
+to the stated ProveIt question and the resulting identity calculus. The
+article contains proofs, reproducible finite algebra checks, floating-point
+diagnostics, an audit of the inspected source scope, and further research
+questions. It does not settle the separate Gaussian $S_6$ or $S_8$ candidates.
+\end{abstract}
+\vspace{5pt}
+\noindent\textbf{Source anchor.} Current repository reading is pinned to \pin.
+The earlier \emph{Reciprocal Lerch Convolutions} report was read in its
+accessible Library TEX copy, including its precise noninteger-depth
+question. No repository or persistent Library files were modified.
+\clearpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+
+\section{Research target, conventions, and contribution}
+\label{cdl:sec:scope}
+
+The canonical ProveIt manuscript already develops an extensive system of
+polylogarithmic identities, harmonic sums, Hurwitz order derivatives,
+Stieltjes distributions, and Gamma correlations \cite{Repo}. A preceding
+report, \emph{Reciprocal Lerch Convolutions} \cite{RLC}, proves entire-order
+addition at every \emph{integer} multiplicative depth. Its Section 12,
+question 10, asks for a real kernel and exact special-function expression
+at noninteger depth, together with a precisely delimited explanation of
+integer-depth finite closure. This is the problem addressed here.
+
+The answer is not obtained by differentiating an integer-index formula.
+We first construct a holomorphic depth parameter from the classical
+Gamma transform. Only then do we differentiate, convolve, and specialize.
+This order of operations is essential, especially at negative spectral
+orders and at collisions with zeta poles.
+
+\subsection{The principal formulas}
+For $\Rea\rho>0$ and real $x$, define
+\begin{equation}\label{cdl:eq:K}
+ K_\rho(x)=\frac{(2\pi)^{\rho-2}e^{x/2}}{\Gamma(\rho)}
+ \Gamma\left(\frac\rho2+\frac{ix}{2\pi}\right)
+ \Gamma\left(\frac\rho2-\frac{ix}{2\pi}\right).
+\end{equation}
+If $\rho$ is real and positive, the Gamma product is a squared modulus.
+For complex $\rho$ it is a product, not a squared modulus. For
+$\Rea a>0$, its spectral extension is
+\begin{equation}\label{cdl:eq:Fintro}
+ \F_{\rho,a}(s;x)=\frac1{2\pi i}
+ \int_{c-i\infty}^{c+i\infty}e^{px}
+ \left(\frac\pi{\sin\pi p}\right)^\rho(p+a-1)^{-s}\dd p,
+ \qquad \max(0,1-\Rea a)<c<1.
+\end{equation}
+The central addition law is
+\begin{equation}\label{cdl:eq:addintro}
+ \F_{\rho,a}(s;\cdot)*\F_{\sigma,a}(t;\cdot)
+ =\F_{\rho+\sigma,a}(s+t;\cdot),
+ \qquad \Rea\rho,\Rea\sigma,\Rea a>0,
+\end{equation}
+with ordinary absolutely convergent convolutions at real arguments.
+At depth one,
+\begin{equation}\label{cdl:eq:Lerchintro}
+ \F_{1,a}(s;x)=e^x\Phi(-e^x,s,a),\qquad
+ \F_{1,1}(s;x)=-\Li_s(-e^x).
+\end{equation}
+At total depth two the earlier central formula remains
+\begin{equation}\label{cdl:eq:E}
+ \F_{2,a}(s;0)=\E_a(s),\qquad
+ \E_a(s)=s\zeta(s+1,a),\qquad \E_a(0)=1.
+\end{equation}
+Thus \eqref{cdl:eq:addintro} supplies continuous-depth factorizations of
+an entire Hurwitz family that previously arose from integer-depth factors.
+
+A separate outcome, proved in Section~\ref{cdl:sec:harmonic}, is the
+coefficient identity
+\begin{equation}\label{cdl:eq:harmonicintro}
+ \begin{split}
+ &\sum_{k=1}^\infty\frac{(-1)^{k-1}}{k^{2m}}
+ \prod_{j=1}^k\left(1+\frac\epsilon j\right)
+ \left(1+\frac\epsilon{2k}\right)^{-2m-1}\\
+ &\hspace{15mm}=\frac12[z^{2m}]
+ \frac{\Gamma(1+\epsilon/2+z)\Gamma(1+\epsilon/2-z)}
+      {\Gamma(1+\epsilon)},\qquad m\ge1,\quad |\epsilon|<\tfrac12.
+ \end{split}
+\end{equation}
+Every derivative at $\epsilon=0$ is an absolutely convergent harmonic
+identity; the right side reduces by a terminating coefficient calculation.
+
+\subsection{Notation and analytic branches}
+The ordinary Lerch series is
+$\Phi(z,s,a)=\sum_{n\ge0}z^n(n+a)^{-s}$ in its initial domain.
+We use its usual continuation and the right-half-plane logarithm of
+$n+a$ when $\Rea a>0$ \cite{DLMFLerch,DLMFZeta}.
+The generalized Stieltjes constants are normalized by
+\begin{equation}\label{cdl:eq:stieltjes}
+ \zeta(1+w,a)=\frac1w+
+ \sum_{j=0}^\infty\frac{(-1)^j\gamma_j(a)}{j!}w^j,
+ \qquad \gamma_0(a)=-\psi(a).
+\end{equation}
+We write $\zeta^{[j]}(s,a)=\partial_s^j\zeta(s,a)$ to distinguish
+spectral differentiation from differentiation in $a$. The rising factorial
+is $(s)_n=s(s+1)\cdots(s+n-1)$, with $(s)_0=1$.
+The complete exponential Bell polynomials are fixed by
+\begin{equation}\label{cdl:eq:Bell}
+ \exp\left(\sum_{j\ge1}d_j\frac{u^j}{j!}\right)
+ =\sum_{q\ge0}\B_q(d_1,\ldots,d_q)\frac{u^q}{q!}.
+\end{equation}
+For example $\B_2=d_1^2+d_2$ and
+$\B_3=d_1^3+3d_1d_2+d_3$.
+
+Throughout $g(p)=\pi/\sin\pi p$. On $0<\Rea p<1$ its real part is
+positive, because the real part of $\sin\pi p$ is positive. Consequently
+$g(p)^\rho=\exp(\rho\log g(p))$ has an unambiguous holomorphic logarithm,
+chosen real on $0<p<1$. The logarithm of $p+a-1$ in
+\eqref{cdl:eq:Fintro} is the right-half-plane logarithm.
+
+\subsection{What is classical, and what is established here}
+The Fourier transform behind \eqref{cdl:eq:K} is Ramanujan's classical
+Gamma-product formula; a modern proof and complex-parameter statement
+are given by Chakrabarti and Srinivasan \cite{CS}. After centering and
+normalization, $K_\rho$ is the classical symmetric Meixner semigroup
+\cite{Schoutens}. The elementary beta and Gamma identities used below
+are also classical \cite{DLMFBeta,DLMFGamma}.
+
+We claim a rigorous continuation of the specified source question, not
+historical priority for these inputs. The main additions relative to the
+inspected reciprocal report are the continuous-depth/spectral family,
+its complete finite moment calculus, continuous-split Stieltjes identities,
+the harmonic coefficient master, and the explicit representation-class
+obstruction. Some low-weight harmonic specializations recover familiar
+Euler sums. No assertion that every printed special case is previously
+unpublished is required by, or inferred from, the proofs.
+
+\section{The Gamma kernel and its holomorphic semigroup}
+\label{cdl:sec:kernel}
+
+\begin{lemma}[Beta Fourier identity]\label{cdl:lem:beta}
+For $\Rea\rho>0$ and real $v$,
+\begin{equation}\label{cdl:eq:betaFT}
+ \frac{\Gamma(\rho/2+iv)\Gamma(\rho/2-iv)}{\Gamma(\rho)}
+ =\int_\R e^{ivy}\bigl(2\cosh(y/2)\bigr)^{-\rho}\dd y.
+\end{equation}
+Both sides are holomorphic in $\rho$ on this half-plane.
+\end{lemma}
+\begin{proof}
+Euler's beta integral on $(0,\infty)$ gives the left side as
+$\int_0^\infty t^{\rho/2+iv-1}(1+t)^{-\rho}\dd t$.
+Set $t=e^y$ and use
+$e^{\rho y/2}(1+e^y)^{-\rho}=(2\cosh(y/2))^{-\rho}$.
+On compact subsets of $\Rea\rho>0$, any fixed parameter derivative is
+bounded by a polynomial in $|y|$ times an exponentially decreasing
+function. This proves convergence and holomorphy.
+\end{proof}
+
+\begin{theorem}[Continuous-depth transform]\label{cdl:thm:kernel}
+For $\Rea\rho>0$ and $0<\Rea p<1$,
+\begin{equation}\label{cdl:eq:Ktransform}
+ \int_\R e^{-px}K_\rho(x)\dd x=g(p)^\rho.
+\end{equation}
+For every real $c\in(0,1)$ the function $e^{-cx}K_\rho(x)$ belongs to the
+Schwartz space and depends holomorphically on $\rho$ in its Schwartz
+seminorms. In particular,
+\begin{equation}\label{cdl:eq:Ksemi}
+ \int_\R K_\rho(y)K_\sigma(x-y)\dd y=K_{\rho+\sigma}(x)
+\end{equation}
+is an ordinary absolutely convergent identity for real $x$ and positive
+real parts of $\rho,\sigma$.
+\end{theorem}
+\begin{proof}
+Fourier inversion in \eqref{cdl:eq:betaFT}, with the change of scale
+$x=2\pi v$, gives
+\[
+ e^{-x/2}K_\rho(x)=\frac1{2\pi}
+ \int_\R e^{itx}\left(\frac\pi{\cosh\pi t}\right)^\rho\dd t.
+\]
+The Gamma product and the hyperbolic kernel are integrable and smooth;
+Gamma asymptotics justify the ordinary inversion. This is precisely
+\eqref{cdl:eq:Ktransform} on $\Rea p=1/2$. The same asymptotics show
+that $K_\rho(x)$ is bounded by a fixed polynomial in $1+|x|$ as
+$x\to+\infty$, and by such a polynomial times $e^x$ as
+$x\to-\infty$, locally uniformly in $\rho$. Argument and depth
+derivatives obey analogous bounds, with possible logarithmic factors.
+Multiplication by $e^{-cx}$ therefore gives all Schwartz estimates.
+Holomorphy and the identity theorem extend the transform throughout
+$0<\Rea p<1$.
+
+For the convolution put $k_\rho(y)=e^{-cy}K_\rho(y)$. Its absolute
+integral is bounded by
+$e^{cx}\|k_\rho\|_1\|k_\sigma\|_\infty$.
+The product of their Fourier transforms is
+$g(c+it)^{\rho+\sigma}$, because the same logarithm was used in both
+factors. Fourier inversion proves \eqref{cdl:eq:Ksemi} pointwise.
+\end{proof}
+
+The endpoint normalizations are
+\begin{equation}\label{cdl:eq:seeds}
+ K_1(x)=\frac1{1+e^{-x}},\qquad
+ K_2(x)=\frac{x}{1-e^{-x}},\qquad K_2(0)=1.
+\end{equation}
+They follow from Gamma reflection and recurrence. Define
+$b_\rho(x)=e^{-x/2}K_\rho(x)$. For real $\rho>0$, the density
+$b_\rho(x)/\pi^\rho$ is positive, has integral one, and has characteristic
+function $\operatorname{sech}(\pi t)^\rho$. In Schoutens's notation it is
+$\operatorname{Meixner}(2\pi,0,\rho/2,0)$ \cite{Schoutens}.
+This identifies a classical semigroup; the weighted uncentered convention
+is what makes it fit the Lerch profiles.
+
+\begin{remark}[Complex argument strip]
+The Gamma formula is holomorphic for
+$|\Ima x|<\pi\Rea\rho$. Its first boundary poles occur at
+$x=\pm i\pi\rho$, and further poles at $x=\pm i\pi(\rho+2n)$.
+Thus this symmetric horizontal strip cannot be enlarged for the base
+kernel. The pole description concerns the argument $x$, whereas the
+monodromy obstruction of Section~\ref{cdl:sec:obstruction} concerns the
+transform variable $p$; these are different assertions.
+\end{remark}
+
+\section{Entire spectral orders and two-parameter addition}
+\label{cdl:sec:spectral}
+
+\begin{theorem}[Entire spectral family]\label{cdl:thm:spectral}
+Let $\Rea\rho>0$ and $\Rea a>0$. Formula
+\eqref{cdl:eq:Fintro} defines an entire function of $s\in\C$, independent
+of the permitted choice of $c$. It is locally jointly holomorphic in
+$\rho,a,s$, and holomorphic in $x$ on $|\Ima x|<\pi\Rea\rho$.
+For real $x$ and every permitted $c$, the map
+$(\rho,a,s)\mapsto e^{-cx}\F_{\rho,a}(s;x)$ is locally holomorphic into
+Schwartz space. All fixed polynomial moments and all fixed mixed
+parameter derivatives are therefore integrable and bounded.
+
+If $\Rea s>0$, then
+\begin{equation}\label{cdl:eq:fractional}
+ \F_{\rho,a}(s;x)=\frac1{\Gamma(s)}\int_0^\infty
+ u^{s-1}e^{-(a-1)u}K_\rho(x-u)\dd u.
+\end{equation}
+On the entire spectral plane,
+\begin{equation}\label{cdl:eq:ladder}
+ (\partial_x+a-1)\F_{\rho,a}(s;x)=\F_{\rho,a}(s-1;x).
+\end{equation}
+\end{theorem}
+\begin{proof}
+On a vertical line in the permitted strip, $g(c+it)^\rho$ decays as
+$e^{-\pi\Rea\rho|t|}$ times a locally bounded factor. The argument of
+$g$ is bounded, and $(c+it+a-1)^{-s}$ grows at most polynomially on
+compact parameter sets. Derivatives in $s$ insert powers of
+$-\log(c+it+a-1)$; derivatives in $\rho$ insert powers of
+$\log g(c+it)$, which have at most linear growth. Derivatives in $a$
+and $t$ preserve exponential decay up to polynomial factors. Consequently
+the multiplier is a holomorphic Schwartz family. Fourier inversion,
+continuous on Schwartz space, proves the norm assertions, as well as
+pointwise holomorphy. The factor $e^{itx}$ gives the stated argument strip.
+
+Cauchy's theorem on rectangles between two allowed vertical lines proves
+independence of $c$: the horizontal integrals tend to zero by the same
+exponential estimate, and no pole or branch boundary lies between them.
+For $\Rea s>0$, the Fourier transform of the weighted right side of
+\eqref{cdl:eq:fractional} is the product of \eqref{cdl:eq:Ktransform}
+and the elementary Laplace integral $(p+a-1)^{-s}$. Fubini is justified
+by $c+\Rea a-1>0$, the weighted kernel estimate, and the integrability
+of $u^{\Rea s-1}$ at zero. Transform uniqueness gives the identity.
+Finally, multiplying the contour integrand by $p+a-1$ proves
+\eqref{cdl:eq:ladder} for all $s$ directly.
+\end{proof}
+
+\begin{corollary}[Lerch recovery and negative orders]\label{cdl:cor:recovery}
+The identifications \eqref{cdl:eq:Lerchintro} hold for all complex $s$.
+Moreover, for every nonnegative integer $N$,
+\begin{equation}\label{cdl:eq:negative}
+ \F_{\rho,a}(0;x)=K_\rho(x),\qquad
+ \F_{\rho,a}(-N;x)=(\partial_x+a-1)^N K_\rho(x).
+\end{equation}
+\end{corollary}
+\begin{proof}
+At $\rho=1$, insert the first seed in \eqref{cdl:eq:fractional} and
+compare with the Euler integral for $e^x\Phi(-e^x,s,a)$.
+Both functions are entire in $s$, so equality extends from $\Rea s>0$.
+The polylogarithm specialization is the defining Lerch relation.
+The negative-order formulas follow from the contour at $s=0$ and the ladder.
+\end{proof}
+
+In particular, one must not insert $s=-N$ into the improper integral
+\eqref{cdl:eq:fractional} and set $1/\Gamma(-N)=0$.
+The integral representation has left its convergence domain; the true
+value is the generally nonzero differential expression
+\eqref{cdl:eq:negative}.
+
+\begin{theorem}[Simultaneous addition and differentiated products]
+\label{cdl:thm:addition}
+Let $\Rea a>0$, $\Rea\rho_j>0$, $s_j\in\C$, and $x\in\R$.
+For any finite number $r\ge2$ of factors,
+\begin{equation}\label{cdl:eq:addition}
+ \int_{\R^{r-1}}\prod_{j=1}^r\F_{\rho_j,a}(s_j;x_j)
+ \dd x_1\cdots\dd x_{r-1}
+ =\F_{R,a}(W;x),
+ \quad R=\sum_j\rho_j,\quad W=\sum_js_j,
+\end{equation}
+where $x_r=x-\sum_{j<r}x_j$. The integral converges absolutely.
+Every fixed mixed depth derivative and spectral derivative passes through
+it. A derivative of total depth degree $q$ and total spectral degree $M$
+is $\partial_R^q\partial_W^M\F_{R,a}(W;x)$.
+\end{theorem}
+\begin{proof}
+Choose one common permitted $c$. The product of the exponential weights
+on the hyperplane is $e^{-cx}$, a constant. The absolute integral is at
+most $e^{cx}$ times the product of $r-1$ weighted $L^1$ norms and one
+weighted $L^\infty$ norm. Theorem~\ref{cdl:thm:spectral} gives locally
+uniform versions of these estimates after all the stated derivatives.
+Multiplication of the Fourier transforms yields
+$g(p)^R(p+a-1)^{-W}$. Fourier inversion proves the identity.
+The norm holomorphy proves the derivative statements, not merely formal
+differentiation of the multipliers.
+\end{proof}
+
+The number of factors remains an integer, but their \emph{depth
+parameters} need not. This distinction is the resolution of the source
+question. No fractional-dimensional integration domain is introduced.
+The entire function on the right continues the result to its full
+argument strip, even when a particular complex-argument integral on the
+left would have a smaller common strip.
+
+\section{Finite depth shifts and generalized harmonic coefficients}
+\label{cdl:sec:shifts}
+
+\begin{theorem}[A continuous two-step recurrence]\label{cdl:thm:shift}
+For $\Rea\rho>0$,
+\begin{equation}\label{cdl:eq:Kshift}
+ \rho(\rho+1)K_{\rho+2}(x)=(x^2+\pi^2\rho^2)K_\rho(x).
+\end{equation}
+For $\Rea a>0$ and every complex $s$,
+\begin{equation}\label{cdl:eq:Fshift}
+ \begin{split}
+ \rho(\rho+1)\F_{\rho+2,a}(s;x)
+ ={}&(x^2+\pi^2\rho^2)\F_{\rho,a}(s;x)\\
+ &-2xs\F_{\rho,a}(s+1;x)
+   +s(s+1)\F_{\rho,a}(s+2;x).
+ \end{split}
+\end{equation}
+More generally, put
+\begin{equation}\label{cdl:eq:shiftpoly}
+ Q_n(\rho,X)=\frac{\prod_{j=0}^{n-1}(X^2+\pi^2(\rho+2j)^2)}{(\rho)_{2n}}.
+\end{equation}
+Then
+\begin{equation}\label{cdl:eq:allshifts}
+ \F_{\rho+2n,a}(s;x)=
+ \sum_{k=0}^{2n}\frac{(-1)^k\partial_X^kQ_n(\rho,x)}{k!}
+ (s)_k\F_{\rho,a}(s+k;x).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Gamma recurrence in the two numerator factors of \eqref{cdl:eq:K}
+multiplies their product by
+$(\rho/2+ix/(2\pi))(\rho/2-ix/(2\pi))$.
+The prefactor changes by $4\pi^2/[\rho(\rho+1)]$, proving
+\eqref{cdl:eq:Kshift}. Iteration gives
+$K_{\rho+2n}(x)=Q_n(\rho,x)K_\rho(x)$.
+For $\Rea s>0$, substitute this identity at $x-u$ in
+\eqref{cdl:eq:fractional}. Expand the polynomial by its finite Taylor
+formula. Its $u^k$ term changes $1/\Gamma(s)$ to
+$\Gamma(s+k)/\Gamma(s)=(s)_k$ in the remaining integral.
+This proves \eqref{cdl:eq:allshifts}, with the displayed two-step case.
+Entire continuation in $s$ finishes the proof. Apparent zeros of a
+Pochhammer factor are interpreted in the complete entire expression.
+\end{proof}
+
+The finite coefficient family has a useful harmonic description.
+For $N\ge0$ and away from denominator poles, write
+\[
+ H_N^{(j)}(z)=\sum_{\ell=0}^{N-1}(z+\ell)^{-j}.
+\]
+The factorization
+\begin{equation}\label{cdl:eq:PochhammerQ}
+ Q_n(\rho,X)=\frac{(4\pi^2)^n
+ (\rho/2+iX/(2\pi))_n(\rho/2-iX/(2\pi))_n}{(\rho)_{2n}}
+\end{equation}
+yields
+\begin{equation}\label{cdl:eq:Qjets}
+ \begin{split}
+ \partial_\rho^j\log Q_n(\rho,X)
+ ={}&(-1)^{j-1}(j-1)!\biggl[
+ 2^{-j}H_n^{(j)}\left(\frac\rho2+\frac{iX}{2\pi}\right)\\
+ &\quad+2^{-j}H_n^{(j)}\left(\frac\rho2-\frac{iX}{2\pi}\right)
+       -H_{2n}^{(j)}(\rho)\biggr].
+ \end{split}
+\end{equation}
+Bell polynomials therefore express every depth derivative of $Q_n$ as
+finite generalized-harmonic combinations. If parameters are continued
+to a zero of $Q_n$, one differentiates the product
+\eqref{cdl:eq:shiftpoly} rather than dividing by it; the logarithmic
+formula is only an auxiliary representation away from such zeros.
+
+\subsection{Recovery of the integer finite basis}
+For integers $m\ge1$, define
+\begin{align}
+ p_{2m}(X)&=X\prod_{j=1}^{m-1}(X^2+4j^2\pi^2),\label{cdl:eq:pEven}\\
+ p_{2m+1}(X)&=\prod_{j=1}^{m}(X^2+(2j-1)^2\pi^2).
+ \label{cdl:eq:pOdd}
+\end{align}
+The seeds \eqref{cdl:eq:seeds} and the recurrence imply the existing
+integer-depth formula
+\begin{equation}\label{cdl:eq:integerK}
+ K_r(x)=\frac{p_r(x)}{(r-1)!\{1-(-1)^r e^{-x}\}}.
+\end{equation}
+At even depth and $x=0$, take the continuous value.
+This is the central-factorial family in \cite{RLC}; its recovery is a
+normalization check rather than a new claim.
+
+If
+$p_{2m}(X)=\sum_k A_{m,k}X^{2k+1}$ and
+$p_{2m+1}(X)=\sum_k B_{m,k}X^{2k}$, then
+\begin{align}
+ \F_{2m,a}(s;0)&=\frac1{(2m-1)!}\sum_{k=0}^{m-1}
+ A_{m,k}(s)_{2k}\E_a(s+2k),\label{cdl:eq:evenbasis}\\
+ \F_{2m+1,a}(s;0)&=\frac1{(2m)!}\sum_{k=0}^{m}
+ B_{m,k}(s)_{2k}\eta(s+2k,a),\label{cdl:eq:oddbasis}
+\end{align}
+where
+\begin{equation}\label{cdl:eq:eta}
+ \eta(s,a)=\Phi(-1,s,a)
+ =2^{-s}\left\{\zeta(s,a/2)-\zeta(s,(a+1)/2)\right\}
+\end{equation}
+is entire in $s$. To verify these formulas directly, insert
+\eqref{cdl:eq:integerK} in the positive-order integral at zero and
+expand $(e^u\mp1)^{-1}$. In even depth the factor
+$(s)_{2k+1}\zeta(s+2k+1,a)$ is best written
+$(s)_{2k}\E_a(s+2k)$; this displays its removable pole before
+continuation. In particular,
+\begin{equation}\label{cdl:eq:C4}
+ \F_{4,a}(s;0)=\frac{s(s+1)\E_a(s+2)+4\pi^2\E_a(s)}6.
+\end{equation}
+The same reasoning away from zero gives finite ordinary Lerch values.
+For $x<0$, an explicit form is
+\begin{equation}\label{cdl:eq:finiteLerch}
+ \F_{r,a}(s;x)=\frac{-\varepsilon_r e^x}{(r-1)!}
+ \sum_{j=0}^{r-1}\frac{(-1)^jp_r^{(j)}(x)}{j!}
+ (s)_j\Phi(\varepsilon_r e^x,s+j,a),\qquad
+ \varepsilon_r=(-1)^r.
+\end{equation}
+Other real arguments are reached by continuing the \emph{whole}
+combination. At even depth the individual Lerch terms can cross a cut;
+this does not authorize independent changes of their branches.
+
+\section{Centered reflection and exact Gamma--polylogarithm values}
+\label{cdl:sec:reflection}
+
+\subsection{A Pochhammer-weighted alternating Hurwitz family}
+For $\Rea\rho>0$, initially $\Rea s>\Rea\rho$, define
+\begin{equation}\label{cdl:eq:Zseries}
+ Z_\rho(s)=\sum_{n=0}^\infty
+ \frac{(-1)^n(\rho)_n}{n!(n+\rho/2)^s}.
+\end{equation}
+This is a one-parameter Pochhammer-weighted Hurwitz--Lerch series, not
+an ordinary Lerch function for a general $\rho$. We define it explicitly
+to avoid dependence on competing generalized-Lerch notation.
+
+\begin{proposition}[Entire continuation and negative values]
+\label{cdl:prop:Z}
+The function $Z_\rho$ extends to an entire function of $s$. On
+$\Rea s>0$ it has the ordinary integral
+\begin{equation}\label{cdl:eq:ZMellin}
+ Z_\rho(s)=\frac1{\Gamma(s)}\int_0^\infty
+ t^{s-1}\bigl(2\cosh(t/2)\bigr)^{-\rho}\dd t.
+\end{equation}
+Writing $f_\rho(t)=(2\cosh(t/2))^{-\rho}$, one has
+\begin{equation}\label{cdl:eq:Znegative}
+ Z_\rho(-N)=(-1)^N f_\rho^{(N)}(0),\qquad N=0,1,2,\ldots.
+\end{equation}
+In particular $Z_\rho(0)=2^{-\rho}$ and
+$Z_\rho(-2j-1)=0$ for every $j\ge0$.
+\end{proposition}
+\begin{proof}
+Expand $e^{-\rho t/2}(1+e^{-t})^{-\rho}$ by its binomial series.
+In the absolute-convergence region $\Rea s>\Rea\rho$, Fubini follows
+from $(\rho)_n/n!=O(n^{\Rea\rho-1})$ on compact parameter sets and
+from the Laplace integral with $n+\rho/2$ in the right half-plane.
+This proves agreement of \eqref{cdl:eq:Zseries} and
+\eqref{cdl:eq:ZMellin}. The latter converges on $\Rea s>0$.
+
+For any chosen $N$, subtract the Taylor polynomial of $f_\rho(t)$ at
+zero inside the integral over $(0,1)$ and integrate the polynomial
+terms separately. The resulting Mellin transform is meromorphic to
+$\Rea s>-N-1$, with simple poles at $s=-j$ of residue
+$f_\rho^{(j)}(0)/j!$. Multiplication by $1/\Gamma(s)$ cancels all these
+poles, since its zero at $-j$ has derivative $(-1)^j j!$.
+This gives \eqref{cdl:eq:Znegative} and entire continuation. The kernel
+is even at zero, so all its odd derivatives vanish. The same subtracted
+integrals, locally uniform in $\rho$, establish joint holomorphy.
+\end{proof}
+
+For later comparison,
+\begin{equation}\label{cdl:eq:Zspecial}
+ Z_1(s)=2^s\beta(s),\qquad Z_2(s)=\eta(s-1),
+\end{equation}
+where $\beta$ is Dirichlet's beta function and
+$\eta(s)=(1-2^{1-s})\zeta(s)$ is the entire eta function.
+These equalities follow from the series in an absolute domain and then
+from analytic continuation.
+
+\begin{theorem}[Centered Fourier--Mellin reflection]
+\label{cdl:thm:reflection}
+For $\Rea\rho>0$ and every complex $w$,
+\begin{equation}\label{cdl:eq:reflection}
+ \F_{\rho,1/2}(w;0)=
+ 2(2\pi)^{\rho+w-2}\Gamma(1-w)
+ \cos\left(\frac{\pi w}2\right)Z_\rho(1-w),
+\end{equation}
+where all apparent singularities of the right side are removable.
+Equivalently, as an identity of meromorphic functions,
+\begin{equation}\label{cdl:eq:completed}
+ \Gamma(w)\sin\left(\frac{\pi w}2\right)\F_{\rho,1/2}(w;0)
+ =\pi(2\pi)^{\rho+w-2}Z_\rho(1-w).
+\end{equation}
+\end{theorem}
+\begin{proof}
+First suppose $0<\Rea w<1$. At $a=1/2$, the fractional representation is
+\[\F_{\rho,1/2}(w;0)=\frac1{\Gamma(w)}\int_0^\infty x^{w-1}b_\rho(x)\dd x.\]
+The Fourier convention is $\widehat f(v)=\int_\R e^{ivt}f(t)\dd t$.
+By \eqref{cdl:eq:betaFT},
+\[b_\rho(x)=(2\pi)^{\rho-2}\widehat f_\rho(x/(2\pi)).\]
+We need the Mellin transform of this Fourier transform.
+
+Insert a factor $e^{-\delta v}$, $\delta>0$, in
+$\int_0^\infty v^{w-1}\widehat f_\rho(v)\dd v$.
+Fubini is then absolute. The inner cosine integral is
+\[
+ \int_0^\infty v^{w-1}e^{-\delta v}\cos(vt)\dd v
+ =\frac{\Gamma(w)}2\bigl((\delta-it)^{-w}+(\delta+it)^{-w}\bigr).
+\]
+It is bounded in modulus by a constant times $t^{-\Rea w}$ for $t>0$,
+uniformly as $\delta\downarrow0$. This is integrable against
+$f_\rho(t)$ in our strip. Dominated convergence therefore gives
+\[
+ \int_0^\infty v^{w-1}\widehat f_\rho(v)\dd v
+ =2\Gamma(w)\cos(\pi w/2)
+   \int_0^\infty t^{-w}f_\rho(t)\dd t.
+\]
+On the left the regulator may be removed because the Gamma product
+has exponential decay. Rescaling and using \eqref{cdl:eq:ZMellin}
+proves \eqref{cdl:eq:reflection}. Both sides have meromorphic
+continuations in $w$, while the left side is entire; uniqueness proves
+the global identity and removability. Euler reflection for Gamma gives
+\eqref{cdl:eq:completed}.
+\end{proof}
+
+The removability can be seen concretely. For $m\ge1$,
+\begin{equation}\label{cdl:eq:evenreflection}
+ \F_{\rho,1/2}(2m;0)=
+ \frac{2(-1)^{m+1}(2\pi)^{\rho+2m-2}}{(2m-1)!}
+ Z_\rho^{[1]}(1-2m).
+\end{equation}
+At $w=2m+1$, $m\ge0$, the zero of the cosine cancels the Gamma pole,
+giving
+\begin{equation}\label{cdl:eq:oddreflection}
+ \F_{\rho,1/2}(2m+1;0)=
+ \frac{(-1)^m\pi(2\pi)^{\rho+2m-1}}{(2m)!}Z_\rho(-2m).
+\end{equation}
+For example, at $\rho=2,w=2$ this becomes the standard relation
+between $\zeta'(-2)$ and $\zeta(3)$, with the half-shift factor intact.
+These formulas also explain why substituting a trivial zero before
+combining a pole gives a wrong answer.
+
+\subsection{Two odd-order evaluation families}
+\begin{theorem}[Odd values and Gamma coefficients]\label{cdl:thm:oddZ}
+For every $m\ge0$ and $\Rea\rho>0$,
+\begin{align}
+ Z_\rho(2m+1)
+ &=\frac1{2\Gamma(\rho)}[z^{2m}]
+   \Gamma(\rho/2+z)\Gamma(\rho/2-z)\label{cdl:eq:oddZ}\\
+ &=\frac{\Gamma(\rho/2)^2}{2\Gamma(\rho)}[z^{2m}]
+ \exp\left(\sum_{j\ge1}\frac{\zeta(2j,\rho/2)}jz^{2j}\right).
+ \label{cdl:eq:oddZexp}
+\end{align}
+Thus all these values lie in the Gamma-prefactor times the polynomial
+ring generated by the finitely many Hurwitz values
+$\zeta(2,\rho/2),\ldots,\zeta(2m,\rho/2)$.
+\end{theorem}
+\begin{proof}
+The beta integral gives, for $|\Rea z|<\Rea\rho/2$,
+\[
+ \int_0^\infty\cosh(zt)f_\rho(t)\dd t
+ =\frac{\Gamma(\rho/2+z)\Gamma(\rho/2-z)}{2\Gamma(\rho)}.
+\]
+The coefficient of $z^{2m}$ on the left is precisely
+\eqref{cdl:eq:ZMellin} at $s=2m+1$. The logarithmic Taylor expansion
+of the Gamma product, using
+$\psi^{(2j-1)}(h)=(2j-1)!\zeta(2j,h)$, gives
+\eqref{cdl:eq:oddZexp}.
+\end{proof}
+
+The first three values are the prefactor in \eqref{cdl:eq:oddZexp}
+times $1$, $\zeta(2,\rho/2)$, and
+$\tfrac12(\zeta(2,\rho/2)^2+\zeta(4,\rho/2))$.
+Where the original series \eqref{cdl:eq:Zseries} is not convergent,
+these are values of its proved continuation, not assertions about a
+divergent ordinary sum.
+
+Define the finite polynomials
+\begin{equation}\label{cdl:eq:Emompoly}
+ U_m(\rho)=[z^{2m}]\sec(z)^\rho.
+\end{equation}
+They are polynomials in $\rho$ with rational coefficients. For example,
+\begin{equation}\label{cdl:eq:Umexamples}
+ U_0=1,\quad U_1=\frac\rho2,\quad
+ U_2=\frac{\rho(3\rho+2)}{24},\quad
+ U_3=\frac{\rho(15\rho^2+30\rho+16)}{720}.
+\end{equation}
+The negative-value formula in Proposition~\ref{cdl:prop:Z}, inserted
+in \eqref{cdl:eq:oddreflection}, proves
+\begin{equation}\label{cdl:eq:oddF}
+ \boxed{\displaystyle
+ \F_{\rho,1/2}(2m+1;0)=\frac{\pi^{\rho+2m}}2U_m(\rho).}
+\end{equation}
+Indeed,
+$f_\rho(t)=2^{-\rho}\operatorname{sech}(t/2)^\rho$, whose $t^{2m}$
+coefficient is $2^{-\rho-2m}(-1)^mU_m(\rho)$.
+This second family is polynomial in depth, apart from its explicit
+power of $\pi$; it is distinct from the Hurwitz-polygamma coefficients
+in \eqref{cdl:eq:oddZexp}.
+
+\begin{corollary}[A continuous Gamma-weighted polylogarithm identity]
+\label{cdl:cor:polylog}
+Let $\Rea\rho>0$ and $m\ge0$. Put
+$G_\rho(x)=\Gamma(\rho/2+ix/(2\pi))\Gamma(\rho/2-ix/(2\pi))$.
+Then the ordinary integral
+\begin{equation}\label{cdl:eq:polylogGamma}
+ \begin{split}
+ &\int_\R G_\rho(x)
+ \frac{\Li_{2m+1}(ie^{-x/2})-\Li_{2m+1}(-ie^{-x/2})}{i}\dd x\\
+ &\hspace{15mm}=
+ \frac{\Gamma(\rho)\pi^{2m+3}}{2^{\rho+2m-1}}U_m(\rho+1)
+ \end{split}
+\end{equation}
+is absolutely convergent, with the usual principal polylogarithms.
+\end{corollary}
+\begin{proof}
+Separating the odd terms of the polylogarithm series gives
+\[
+ \F_{1,1/2}(s;x)=\frac{2^{s-1}e^{x/2}}i
+ \{\Li_s(ie^{x/2})-\Li_s(-ie^{x/2})\}.
+\]
+It holds first for $x<0$, then along the real axis by continuation;
+no argument crosses the positive polylogarithm cut. Convolve this
+profile with $K_\rho$ at zero. Theorem~\ref{cdl:thm:addition}
+gives $\F_{\rho+1,1/2}(2m+1;0)$, evaluated by
+\eqref{cdl:eq:oddF}. Substituting the Gamma prefactor and collecting
+powers of $2$ and $\pi$ yields \eqref{cdl:eq:polylogGamma}.
+Absolute convergence is already part of the convolution theorem.
+\end{proof}
+
+For $m=0$ the polylogarithm odd part is
+$2\arctan(e^{-x/2})$. This base case also follows by the evenness of
+$G_\rho$ and the identity
+$\arctan(e^u)+\arctan(e^{-u})=\pi/2$.
+For $m=1$ the right side of \eqref{cdl:eq:polylogGamma} is
+$\Gamma(\rho)(\rho+1)\pi^5/2^{\rho+2}$.
+Differentiation in $\rho$, justified by the kernel estimates, generates
+polygamma-weighted versions of every member of this family.
+
+\section{An all-order alternating harmonic master}
+\label{cdl:sec:harmonic}
+
+Write $H_k^{(j)}=\sum_{\ell=1}^k\ell^{-j}$ and $H_k=H_k^{(1)}$.
+The next theorem converts the centered continuous-depth calculation
+into an ordinary absolutely convergent Euler-sum family.
+
+\begin{theorem}[Gamma-quotient harmonic generating function]
+\label{cdl:thm:harmonicmaster}
+For every integer $m\ge1$ and $|\epsilon|<1/2$, identity
+\eqref{cdl:eq:harmonicintro} holds. Its series is locally normally
+convergent in $\epsilon$, and every derivative can be taken termwise.
+If
+\begin{equation}\label{cdl:eq:dj}
+ d_j(k,m)=(-1)^{j-1}(j-1)!
+ \left(H_k^{(j)}-\frac{2m+1}{2^jk^j}\right),
+\end{equation}
+then, for every $q\ge0$,
+\begin{equation}\label{cdl:eq:mastercoeff}
+ \begin{split}
+ &\sum_{k=1}^\infty\frac{(-1)^{k-1}}{k^{2m}}
+ \B_q\bigl(d_1(k,m),\ldots,d_q(k,m)\bigr)\\
+ &\quad=\frac{q!}{2}[\epsilon^qz^{2m}]
+ \exp\left(\sum_{\ell\ge2}\frac{(-1)^\ell\zeta(\ell)}\ell
+ \left\{(\epsilon/2+z)^\ell+(\epsilon/2-z)^\ell-\epsilon^\ell\right\}\right).
+ \end{split}
+\end{equation}
+Only terms with $\ell\le2m+q$ are needed on the right. Its value is
+a homogeneous polynomial in zeta values of total weight $2m+q$.
+\end{theorem}
+\begin{proof}
+Set $\rho=2+\epsilon$ in \eqref{cdl:eq:Zseries}, put $k=n+1$, and
+multiply by $1+\epsilon$. The elementary equality
+\[
+ (1+\epsilon)\frac{(2+\epsilon)_{k-1}}{(k-1)!}
+ =k\prod_{j=1}^k(1+\epsilon/j)
+\]
+shows that the left side of \eqref{cdl:eq:harmonicintro} is
+$(1+\epsilon)Z_{2+\epsilon}(2m+1)$. Theorem~\ref{cdl:thm:oddZ}
+and $\Gamma(2+\epsilon)=(1+\epsilon)\Gamma(1+\epsilon)$ prove
+its stated Gamma quotient.
+
+On any compact disk $|\epsilon|\le\delta<1/2$, the finite product is
+bounded by $C k^{\Rea\epsilon}$, uniformly, by its Gamma-quotient
+expression. The other factor is uniformly bounded. Hence the series
+is dominated by $Ck^{-2m+\delta}$, a summable sequence. Derivatives
+insert at most fixed powers of $\log k$, so they remain normally
+convergent. This also proves absolute convergence of every coefficient
+identity without relying on alternation.
+
+The logarithm of the $k$th parameter factor has $j$th derivative at
+zero equal to \eqref{cdl:eq:dj}. Its $q$th derivative is therefore
+$\B_q(d_1,\ldots,d_q)$ by \eqref{cdl:eq:Bell}.
+For the Gamma quotient use the convergent expansion
+\[
+ \log\Gamma(1+u)=-\gamma u+
+ \sum_{\ell\ge2}\frac{(-1)^\ell\zeta(\ell)}\ell u^\ell.
+\]
+The Euler-constant terms cancel because
+$(\epsilon/2+z)+(\epsilon/2-z)-\epsilon=0$.
+This proves \eqref{cdl:eq:mastercoeff}. Each displayed term has total
+degree $\ell$ in $\epsilon,z$ and zeta weight $\ell$. Exponentiation
+and extraction of degree $q+2m$ prove finiteness and homogeneity.
+No independence assertion concerning zeta values is used.
+\end{proof}
+
+\subsection{Explicit low-order identities}
+At $m=1,q=1$ the shifted sum is $-\zeta(3)/2$. After moving the
+$k^{-3}$ term, one recovers
+\begin{equation}\label{cdl:eq:classicharmonic}
+ \sum_{k=1}^\infty\frac{(-1)^{k-1}H_k}{k^2}=\frac58\zeta(3).
+\end{equation}
+At $m=2,q=1$ the same operation gives
+\begin{equation}\label{cdl:eq:weight5}
+ \sum_{k=1}^\infty\frac{(-1)^{k-1}H_k}{k^4}
+ =\frac{59}{32}\zeta(5)-\frac12\zeta(2)\zeta(3).
+\end{equation}
+These low-weight recoveries are useful checks, not priority claims.
+The next two formulas keep the harmonic combinations naturally produced
+by the generating function:
+\begin{equation}\label{cdl:eq:harmonicquadratic}
+ \boxed{\displaystyle
+ \sum_{k=1}^\infty\frac{(-1)^{k-1}}{k^2}
+ \left(H_k^2-H_k^{(2)}-\frac{3H_k}{k}+\frac3{k^2}\right)
+ =\frac18\zeta(4).}
+\end{equation}
+\begin{equation}\label{cdl:eq:harmoniccubic}
+ \boxed{\begin{aligned}
+ &\sum_{k=1}^\infty\frac{(-1)^{k-1}}{k^2}
+ \biggl[H_k^3-3H_kH_k^{(2)}+2H_k^{(3)}
+ -\frac9{2k}\{H_k^2-H_k^{(2)}\}\\[-2pt]
+ &\hspace{42mm}+\frac{9H_k}{k^2}-\frac{15}{2k^3}\biggr]
+ =\frac32\{\zeta(2)\zeta(3)-\zeta(5)\}.
+ \end{aligned}}
+\end{equation}
+To make the coefficient calculation transparent, the $z^2$ coefficient
+on the right of \eqref{cdl:eq:harmonicintro} is
+\begin{equation}\label{cdl:eq:z2master}
+ \frac12\frac{\Gamma(1+\epsilon/2)^2}{\Gamma(1+\epsilon)}
+ \zeta(2,1+\epsilon/2).
+\end{equation}
+Here
+\begin{align*}
+ \log\frac{\Gamma(1+\epsilon/2)^2}{\Gamma(1+\epsilon)}
+ &=-\frac{\zeta(2)}4\epsilon^2+
+    \frac{\zeta(3)}4\epsilon^3+O(\epsilon^4),\\
+ \zeta(2,1+\epsilon/2)
+ &=\zeta(2)-\zeta(3)\epsilon+
+   \frac34\zeta(4)\epsilon^2-\frac12\zeta(5)\epsilon^3+O(\epsilon^4).
+\end{align*}
+Multiplying and taking derivatives of order two and three gives
+\eqref{cdl:eq:harmonicquadratic} and \eqref{cdl:eq:harmoniccubic};
+use $\zeta(2)^2=5\zeta(4)/2$ in the quadratic case.
+The left sides follow by expanding $\B_2$ and $\B_3$ with
+\eqref{cdl:eq:dj}, fixing every sign and denominator explicitly.
+
+\subsection{A terminating symbolic implementation}
+To compute a desired pair $(m,q)$, truncate the exponent in
+\eqref{cdl:eq:mastercoeff} at total degree $2m+q$, retaining only
+$\epsilon$-degree at most $q$ and $z$-degree at most $2m$.
+If $L_{ij}$ is the coefficient of $\epsilon^iz^j$ in that exponent
+and $A_{uv}$ the corresponding coefficient of its exponential, then
+\begin{equation}\label{cdl:eq:coeffrecurrence}
+ A_{00}=1,\qquad
+ A_{uv}=\frac1{u+v}\sum_{\substack{i\le u,\ j\le v\\i+j>0}}
+ (i+j)L_{ij}A_{u-i,v-j}.
+\end{equation}
+Thus the answer is $q!A_{q,2m}/2$ using exact rational arithmetic
+and formal symbols for the zeta values. The supplied code compares
+this bivariate recurrence with a separate computation from
+\eqref{cdl:eq:oddZexp}, expanding the Hurwitz values in $\epsilon$.
+It generates all $1\le m\le4$, $0\le q\le6$ cases.
+
+This gives a family of exact combinations at arbitrarily large harmonic
+degree. It does not claim that an arbitrary individual alternating Euler
+sum reduces to ordinary zeta products, nor does it permit differentiation
+in the discrete integer $m$. Independent spectral derivatives require
+the entire family constructed earlier, not differentiation of a finite
+integer-index formula.
+
+\section{Every logarithmic moment by a finite recurrence}
+\label{cdl:sec:moments}
+
+The variable $x=\log y$ converts powers of $x$ into logarithmic moments
+in the multiplicative variable. The purpose of this section is a finite
+algorithm valid at arbitrary complex spectral orders and continuous
+depths, not just isolated low moments.
+
+Put $A=p+a-1$, $v=\pi\cot\pi p$, and $h=A^{-1}$.
+Define polynomials in $v,h$, with parameters $\rho,s,\pi^2$, by
+\begin{equation}\label{cdl:eq:momentrec}
+ \PP_0=1,\qquad
+ \PP_{k+1}=(\rho v+sh)\PP_k+
+ (v^2+\pi^2)\partial_v\PP_k+h^2\partial_h\PP_k.
+\end{equation}
+The first two are
+\begin{align}
+ \PP_1&=\rho v+sh,\label{cdl:eq:P1}\\
+ \PP_2&=\rho(\rho+1)v^2+\rho\pi^2+
+            2\rho s vh+s(s+1)h^2.\label{cdl:eq:P2}
+\end{align}
+
+\begin{theorem}[Complete finite moment reduction]\label{cdl:thm:moments}
+Under the assumptions of Theorem~\ref{cdl:thm:addition}, every integral
+obtained by inserting $\prod_jx_j^{k_j}$ in \eqref{cdl:eq:addition}
+is a finite linear combination of
+\begin{equation}\label{cdl:eq:momentbasis}
+ \F_{R+2\ell,a}(W+d;x),\qquad \ell,d\ge0,
+\end{equation}
+with polynomial coefficients in $x,\pi^2,s_j,\rho_j$ and rational
+factors whose denominators are products of $R+2\ell$.
+The recurrence \eqref{cdl:eq:momentrec}, multiplication of the resulting
+polynomials, and the reduction rules below give a terminating algorithm.
+The depth shifts can then be removed by \eqref{cdl:eq:allshifts}, leaving
+only finitely many spectral shifts at depth $R$.
+\end{theorem}
+\begin{proof}
+Differentiating a bilateral transform gives
+\[
+ (-\partial_p)^k\{g(p)^\rho A^{-s}\}
+ =g(p)^\rho A^{-s}\PP_k(v,h;\rho,s).
+\]
+Indeed, $-\partial_p v=v^2+\pi^2$, $-\partial_p h=h^2$, and
+$-\partial_p\log(g^\rho A^{-s})=\rho v+sh$; these yield exactly
+\eqref{cdl:eq:momentrec}. Weighted Schwartz bounds justify all transform
+derivatives. Multiplication of the factor transforms now leaves
+$g^R A^{-W}\prod_j\PP_{k_j}(v,h;\rho_j,s_j)$.
+
+Use $v^2=g^2-\pi^2$. A monomial $v^{2q}h^k$ expands into a finite sum
+of $g^{2\ell}A^{-k}$ and hence contributes
+$\F_{R+2\ell,a}(W+k;x)$. For an odd power of $v$, use the contour
+integration-by-parts identity
+\begin{equation}\label{cdl:eq:oddreduction}
+ \frac1{2\pi i}\int e^{px}v\,g(p)^D A^{-Z}\dd p
+ =\frac{x}{D}\F_{D,a}(Z;x)-\frac ZD\F_{D,a}(Z+1;x).
+\end{equation}
+To prove it, integrate the derivative of $e^{px}g(p)^D A^{-Z}$.
+The boundary terms vanish exponentially; the derivative equals
+$e^{px}g^DA^{-Z}(x-Dv-Z/A)$. Since $\Rea D>0$, its denominator
+$D$ is nonzero. This removes the final odd $v$ factor. The algorithm
+terminates because the original moment polynomial has finite degree.
+Theorem~\ref{cdl:thm:shift} gives the last reduction.
+\end{proof}
+
+At integer total $R$, equations \eqref{cdl:eq:evenbasis},
+\eqref{cdl:eq:oddbasis}, and \eqref{cdl:eq:finiteLerch} reduce the result
+further to finite ordinary Hurwitz--Lerch families. This conclusion does
+not require any individual $\rho_j$ to be integral. Independent spectral
+differentiation of the finite formula is legitimate because the orders
+were never restricted to integers.
+
+\subsection{The first moment and the complete second moment at total two}
+For two factors let $R=\rho+\sigma$ and $W=s+t$. The first moment is
+\begin{equation}\label{cdl:eq:firstgeneral}
+ \begin{split}
+ \int_\R y\F_{\rho,a}(s;y)\F_{\sigma,a}(t;x-y)\dd y
+ ={}&\frac{\rho x}{R}\F_{R,a}(W;x)\\
+ &+\frac{\sigma s-\rho t}{R}\F_{R,a}(W+1;x).
+ \end{split}
+\end{equation}
+This follows from \eqref{cdl:eq:P1} and \eqref{cdl:eq:oddreduction}.
+Adding the formula with the two factors exchanged gives $x$ times the
+unweighted convolution, as required by $y+(x-y)=x$.
+
+For the next formulas set $\sigma=2-\rho$, $0<\Rea\rho<2$, and
+\begin{equation}\label{cdl:eq:Mdef}
+ M_k(s,t)=\int_\R x^k\F_{\rho,a}(s;x)
+                     \F_{\sigma,a}(t;-x)\dd x.
+\end{equation}
+Then
+\begin{align}
+ M_0(s,t)&=\E_a(W),\label{cdl:eq:M0}\\
+ M_1(s,t)&=\frac{\sigma s-\rho t}{2}\E_a(W+1),\label{cdl:eq:M1}\\
+ M_2(s,t)&=\frac{\pi^2\rho\sigma}{3}\E_a(W)
+                  +T_{\rho,\sigma}(s,t)\E_a(W+2),\label{cdl:eq:M2}\\
+ T_{\rho,\sigma}(s,t)&=
+ \frac{\sigma(\sigma+1)s(s+1)+\rho(\rho+1)t(t+1)-2\rho\sigma st}{6}.
+ \label{cdl:eq:T}
+\end{align}
+For clarity, \eqref{cdl:eq:P2} may first be written
+$\rho(\rho+1)g^2-\rho^2\pi^2+2\rho s vh+s(s+1)h^2$.
+Its inverse transform is
+\[
+ \rho(\rho+1)\F_{4,a}(W;0)-\rho^2\pi^2\E_a(W)
+ -\rho s(W+1)\E_a(W+2)+s(s+1)\E_a(W+2).
+\]
+Substitution of \eqref{cdl:eq:C4}, followed by $\sigma=2-\rho$,
+gives \eqref{cdl:eq:M2}. This derivation fixes the asymmetric order
+coefficients without guessing from a symmetric special case.
+At $s=t=0$ it yields the Gamma-bridge moment
+\begin{equation}\label{cdl:eq:variance}
+ \int_\R x^2K_\rho(x)K_{2-\rho}(-x)\dd x
+ =\frac{\pi^2\rho(2-\rho)}3.
+\end{equation}
+
+\section{Continuous-split Stieltjes identities}
+\label{cdl:sec:stieltjes}
+
+Define spectral jets of the continuous-depth profile by
+\begin{equation}\label{cdl:eq:Jdef}
+ J_{\rho,m}^a(x)=
+ \left.\partial_s^m\F_{\rho,a}(s;x)\right|_{s=0},\qquad m\ge0.
+\end{equation}
+These are spectral derivatives, not derivatives of the argument or the
+depth. At depth one they are the order derivatives of the Lerch profiles,
+and at $a=1$ of ordinary polylogarithms.
+
+\begin{theorem}[Ordinary continuous-split Stieltjes product]
+\label{cdl:thm:stieltjes}
+Let $\sigma=2-\rho$, $0<\Rea\rho<2$, and $\Rea a>0$.
+For $m,n\ge0$, with $M=m+n$,
+\begin{equation}\label{cdl:eq:Jpair}
+ \int_\R J_{\rho,m}^a(x)J_{\sigma,n}^a(-x)\dd x
+ =\begin{cases}
+ 1,&M=0,\\
+ (-1)^{M-1}M\gamma_{M-1}(a),&M\ge1.
+ \end{cases}
+\end{equation}
+All these integrals converge absolutely. At every fixed integer total
+depth $R>2$, analogous products are finite combinations of Hurwitz
+spectral derivatives and Stieltjes constants obtained from
+\eqref{cdl:eq:evenbasis}--\eqref{cdl:eq:oddbasis}.
+\end{theorem}
+\begin{proof}
+Differentiate \eqref{cdl:eq:M0} independently $m$ times in $s$ and $n$
+times in $t$. Theorem~\ref{cdl:thm:addition} justifies passing all
+derivatives through the ordinary integral. The Laurent normalization
+\eqref{cdl:eq:stieltjes} gives
+\begin{equation}\label{cdl:eq:Ejets}
+ \E_a^{[M]}(0)=
+ \begin{cases}1,&M=0,\\(-1)^{M-1}M\gamma_{M-1}(a),&M\ge1.
+ \end{cases}
+\end{equation}
+For larger integer total depth, differentiate the finite entire central
+formulas instead. Their coefficients are finite Pochhammer polynomials;
+at zero their derivatives can be written using unsigned Stirling numbers
+or finite generalized harmonic sums. No numerical relation search is used.
+\end{proof}
+
+The $\rho=\sigma=1$ case is already proved in \cite{RLC}. The extension
+here is that any continuous split of total depth two gives the same
+Stieltjes values. These are not Hermitian inner products; no positivity
+of a Stieltjes constant is implied by the displayed products.
+
+\begin{corollary}[All first and second logarithmic Stieltjes moments]
+\label{cdl:cor:Jmoments}
+With the same assumptions and $M\ge1$,
+\begin{equation}\label{cdl:eq:Jfirst}
+ \int_\R xJ_{\rho,m}^a(x)J_{\sigma,n}^a(-x)\dd x
+ =\frac{\sigma m-\rho n}{2}\E_a^{[M-1]}(1).
+\end{equation}
+For all $m,n\ge0$,
+\begin{equation}\label{cdl:eq:Jsecond}
+ \begin{split}
+ &\int_\R x^2J_{\rho,m}^a(x)J_{\sigma,n}^a(-x)\dd x\\
+ &\quad=\frac{\pi^2\rho\sigma}{3}\E_a^{[M]}(0)
+ +\frac{\sigma(\sigma+1)m+\rho(\rho+1)n}{6}\E_a^{[M-1]}(2)\\
+ &\qquad+\frac{\sigma(\sigma+1)m(m-1)+\rho(\rho+1)n(n-1)-2\rho\sigma mn}{6}
+    \E_a^{[M-2]}(2).
+ \end{split}
+\end{equation}
+Terms with negative derivative index are omitted; their polynomial
+coefficients vanish identically in the relevant cases.
+\end{corollary}
+\begin{proof}
+Apply the independent derivatives to \eqref{cdl:eq:M1} and
+\eqref{cdl:eq:M2}. The coefficient in \eqref{cdl:eq:M1} has degree one;
+the coefficient $T$ has degree two, so only the three displayed product
+rule terms can occur. The weighted Schwartz estimates prove all required
+interchanges. At $M=0$ the first moment is zero and the second moment
+is \eqref{cdl:eq:variance}.
+\end{proof}
+
+A representative mixed identity, valid for every such continuous split, is
+\begin{equation}\label{cdl:eq:J11}
+ \begin{split}
+ \int_\R x^2J_{\rho,1}^a(x)J_{\sigma,1}^a(-x)\dd x
+ ={}&-\frac{2\pi^2\rho\sigma}{3}\gamma_1(a)
+ +(1-\rho\sigma)\zeta(3,a)\\
+ &+\left(2-\frac{2\rho\sigma}{3}\right)\zeta^{[1]}(3,a).
+ \end{split}
+\end{equation}
+For $\rho=\sigma=1$, the $\zeta(3,a)$ term vanishes, recovering the
+previous $4\zeta^{[1]}(3,a)/3-2\pi^2\gamma_1(a)/3$ formula.
+The extra zeta term is necessary away from the symmetric split.
+
+\subsection{Subtracted ordinary integrals for the spectral jets}
+The spectral jets also have a real-integral construction independent of
+inserting logarithms in the Fourier contour. Put
+\[
+ Q(u)=e^{-(a-1)u}K_\rho(x-u),\qquad q_0=K_\rho(x).
+\]
+For $\Rea s>-1$,
+\begin{equation}\label{cdl:eq:subtracted}
+ \F_{\rho,a}(s;x)=q_0+
+ \frac1{\Gamma(s)}\int_0^\infty
+ u^{s-1}\{Q(u)-q_0e^{-u}\}\dd u.
+\end{equation}
+The braces are $O(u)$ at zero and decrease exponentially at infinity.
+The equality follows on $\Rea s>0$ by adding the elementary Gamma
+integral and then extends to the displayed half-plane. Hence, with
+\[
+ I_j=\int_0^\infty\frac{Q(u)-q_0e^{-u}}u\log^j u\dd u,
+\]
+one obtains the ordinary convergent formulas
+\begin{equation}\label{cdl:eq:Jsubtracted}
+ J_{\rho,1}^a(x)=I_0,\qquad
+ J_{\rho,2}^a(x)=2I_1+2\gamma I_0.
+\end{equation}
+More generally, if $1/\Gamma(s)=\sum_{r\ge1}c_rs^r$, then for $M\ge1$
+\begin{equation}\label{cdl:eq:Jallsubtracted}
+ J_{\rho,M}^a(x)=M!\sum_{j=0}^{M-1}\frac{c_{M-j}}{j!}I_j.
+\end{equation}
+This fixes the normalization of all zero-order jets without a finite-part
+interpretation. To continue a Mellin representation farther left, one
+subtracts sufficiently many Taylor terms; the entire contour formula
+already supplies that continuation globally.
+
+\section{Depth derivatives and polygamma-weighted Gamma identities}
+\label{cdl:sec:depthjets}
+
+The new depth variable is genuinely holomorphic and can now be
+differentiated. For $j\ge1$ define
+\begin{equation}\label{cdl:eq:Aj}
+ \begin{split}
+ A_j(\rho,x)={}&\mathbf1_{j=1}\log(2\pi)-\psi^{(j-1)}(\rho)\\
+ &+2^{-j}\left\{
+ \psi^{(j-1)}\left(\frac\rho2+\frac{ix}{2\pi}\right)+
+ \psi^{(j-1)}\left(\frac\rho2-\frac{ix}{2\pi}\right)\right\}.
+ \end{split}
+\end{equation}
+Logarithmic differentiation of \eqref{cdl:eq:K} gives
+\begin{equation}\label{cdl:eq:Kdepthjets}
+ \partial_\rho^qK_\rho(x)
+ =K_\rho(x)\B_q(A_1(\rho,x),\ldots,A_q(\rho,x)).
+\end{equation}
+For real $x$ and $\Rea\rho>0$, all Gamma arguments are in the right
+half-plane, so these derivatives are holomorphic and have the weighted
+integrability already proved.
+
+\begin{theorem}[Depth-jet convolution identities]\label{cdl:thm:depthjets}
+For $u,v\ge0$, $R=\rho+\sigma$, and the usual positive real parts,
+\begin{equation}\label{cdl:eq:depthproduct}
+ \begin{split}
+ &\int_\R K_\rho(y)K_\sigma(x-y)
+ \B_u(A_1(\rho,y),\ldots,A_u(\rho,y))\\
+ &\hspace{18mm}\cdot\B_v(A_1(\sigma,x-y),\ldots,A_v(\sigma,x-y))\dd y\\
+ &\quad=K_R(x)\B_{u+v}(A_1(R,x),\ldots,A_{u+v}(R,x)).
+ \end{split}
+\end{equation}
+For any fixed $R$ with a permitted split, every balanced derivative
+satisfies, for $q\ge1$,
+\begin{equation}\label{cdl:eq:balanced}
+ \sum_{j=0}^q(-1)^{q-j}\binom qj
+ \int_\R\partial_\rho^jK_\rho(y)
+          \partial_\sigma^{q-j}K_\sigma(x-y)\dd y=0.
+\end{equation}
+The same balanced identity holds for spectral profiles at arbitrary
+orders, and after any fixed spectral derivatives, as long as the total
+spectral order is fixed during the balanced depth differentiation.
+\end{theorem}
+\begin{proof}
+Differentiate the ordinary semigroup \eqref{cdl:eq:Ksemi} independently
+in its two depths and substitute \eqref{cdl:eq:Kdepthjets}.
+For \eqref{cdl:eq:balanced}, set $\sigma=R-\rho$ first and differentiate
+$q$ times. The right side is then independent of $\rho$; the alternating
+binomial coefficients are the product rule with
+$\partial_\rho\sigma=-1$. Theorem~\ref{cdl:thm:addition} proves the
+profile and spectral-jet versions with the same justification.
+\end{proof}
+
+At total depth two and $x=0$,
+\[
+ K_2(0)=1,\quad A_1(2,0)=\log(2\pi)-1,\quad
+ A_2(2,0)=1-\frac{\pi^2}{12}.
+\]
+Thus the $u=1,v=0$ case can be simplified to the exact digamma average
+\begin{equation}\label{cdl:eq:digammaaverage}
+ \begin{split}
+ &\frac12\int_\R K_\rho(x)K_{2-\rho}(-x)
+ \left\{\psi\left(\frac\rho2+\frac{ix}{2\pi}\right)
+       +\psi\left(\frac\rho2-\frac{ix}{2\pi}\right)\right\}\dd x\\
+ &\hspace{25mm}=\psi(\rho)-1.
+ \end{split}
+\end{equation}
+At total depth one, the useful anchors are
+$K_1(0)=1/2$, $A_1(1,0)=\log(\pi/2)$, and
+$A_2(1,0)=\pi^2/12$.
+
+An unbalanced depth derivative at total depth two generally involves
+$\partial_R\F_{R,a}(s;x)|_{R=2}$, not a derivative of $\E_a(s)$ with
+respect to a nonexistent depth parameter. The distinction matters:
+Section~\ref{cdl:sec:obstruction} shows why logarithmic depth multipliers
+cannot simply be declared part of the old finite meromorphic basis.
+
+\section{Shift derivatives and all anchored primitive orders}
+\label{cdl:sec:primitives}
+
+\begin{theorem}[Shift calculus and removable primitive resonances]
+\label{cdl:thm:primitives}
+For every integer $k\ge0$,
+\begin{equation}\label{cdl:eq:aderivative}
+ \partial_a^k\F_{\rho,a}(s;x)=(-1)^k(s)_k\F_{\rho,a}(s+k;x).
+\end{equation}
+Fix a base point $b$ in the right half-plane. For $r\ge1$, let
+$\mathcal J_b^r$ be the $r$-fold ordinary primitive in $a$, with all
+first $r$ initial data zero at $a=b$. Then
+\begin{equation}\label{cdl:eq:aprimitive}
+ \begin{split}
+ \mathcal J_b^r\F_{\rho,a}(s;x)
+ =\frac{(-1)^r}{(s-r)_r}\biggl[&\F_{\rho,a}(s-r;x)\\
+ &-\sum_{k=0}^{r-1}\frac{(-1)^k(s-r)_k(a-b)^k}{k!}
+             \F_{\rho,b}(s-r+k;x)\biggr].
+ \end{split}
+\end{equation}
+All apparent singularities at $s=1,\ldots,r$ are removable. The formula
+is entire in $s$ after those values are filled in.
+\end{theorem}
+\begin{proof}
+Differentiating $(p+a-1)^{-s}$ under the exponentially convergent
+contour proves \eqref{cdl:eq:aderivative}. Away from the displayed
+resonances, an $r$th antiderivative is
+$(-1)^r\F_{\rho,a}(s-r;x)/(s-r)_r$.
+Subtract its Taylor polynomial of degree $r-1$ at $b$ using
+\eqref{cdl:eq:aderivative}; this is exactly \eqref{cdl:eq:aprimitive}.
+It has the required derivative and the required initial conditions.
+
+The actual anchored primitive also has the finite-path integral
+\[
+ \frac1{(r-1)!}\int_b^a(a-u)^{r-1}\F_{\rho,u}(s;x)\dd u,
+\]
+where the segment stays in the right half-plane. It is entire in $s$,
+so equality away from a finite set proves removability there. Equivalently,
+at $s\in\{1,\ldots,r\}$ the negative-order expression
+\eqref{cdl:eq:negative} is a polynomial in $a$ of degree at most $r-1$;
+its Taylor remainder in the numerator vanishes. The finite-path formula
+is the normalization, not an unspecified additive constant.
+\end{proof}
+
+For $r=1$ the formula reads
+\begin{equation}\label{cdl:eq:firstaprimitive}
+ \int_b^a\F_{\rho,u}(s;x)\dd u
+ =\frac{\F_{\rho,b}(s-1;x)-\F_{\rho,a}(s-1;x)}{s-1}.
+\end{equation}
+At $s=1$ take the spectral derivative of the numerator; assigning zero
+to each of its two equal zeroth-order terms before dividing is invalid.
+
+There is also an all-order primitive in the argument after the explicit
+covariant weight is inserted. Let
+$G_s(x)=e^{(a-1)x}\F_{\rho,a}(s;x)$. The ladder gives
+$G_{s+1}'=G_s$. Therefore
+\begin{equation}\label{cdl:eq:xprimitive}
+ \mathcal J_{x_0}^r G_s(x)=G_{s+r}(x)
+ -\sum_{j=0}^{r-1}\frac{(x-x_0)^j}{j!}G_{s+r-j}(x_0).
+\end{equation}
+For $a=1$ this is an ordinary unweighted argument primitive of
+$\F_{\rho,1}$, including the standard polylogarithm ladder at depth one.
+For other $a$, the weight is part of the statement and must not be omitted.
+
+\subsection{Gamma primitives of the Stieltjes product family}
+At total depth two, Hurwitz differentiation gives
+\begin{equation}\label{cdl:eq:Eprimitive}
+ \int_b^a\E_u(s)\dd u=\zeta(s,b)-\zeta(s,a).
+\end{equation}
+Both sides are entire in $s$; the two residues at $s=1$ cancel.
+At $s=0$ this is $a-b$. Differentiating at $s=0$, and using
+$\zeta^{[1]}(0,a)=\log\Gamma(a)-\tfrac12\log(2\pi)$, gives
+\begin{equation}\label{cdl:eq:gammaprimitive}
+ \int_b^a\gamma_0(u)\dd u=\log\Gamma(b)-\log\Gamma(a).
+\end{equation}
+The logarithm of Gamma is the analytic branch on the right half-plane.
+Combining with Theorem~\ref{cdl:thm:stieltjes}, for $m+n=1$,
+\begin{equation}\label{cdl:eq:tripleprimitive}
+ \int_b^a\int_\R J_{\rho,m}^u(x)J_{2-\rho,n}^u(-x)\dd x\dd u
+ =\log\Gamma(b)-\log\Gamma(a).
+\end{equation}
+Uniform weighted bounds on the compact segment justify the interchange.
+For arbitrary $M=m+n\ge1$, the same procedure gives
+\begin{equation}\label{cdl:eq:allprimitivejets}
+ \int_b^a\int_\R J_{\rho,m}^u(x)J_{2-\rho,n}^u(-x)\dd x\dd u
+ =\zeta^{[M]}(0,b)-\zeta^{[M]}(0,a).
+\end{equation}
+
+For completeness, every derivative in the Stieltjes parameter has a
+finite spectral-zeta expression. If $k,M\ge1$, then
+\begin{equation}\label{cdl:eq:stieltjesaderivatives}
+ \begin{split}
+ (-1)^{M-1}M\,\partial_a^k\gamma_{M-1}(a)
+ =(-1)^k\sum_{j=1}^{\min(M,k+1)}
+ \frac{M!}{(M-j)!}\stir{k+1}{j}\zeta^{[M-j]}(k+1,a).
+ \end{split}
+\end{equation}
+Indeed, $\partial_a^k\E_a(s)=(-1)^k(s)_{k+1}\zeta(s+k+1,a)$.
+Expand $(s)_{k+1}=\sum_j\stir{k+1}{j}s^j$ and differentiate at zero.
+This is a classical Hurwitz-calculus consequence included to make the
+derivative--primitive closure explicit; it is not advertised as a new
+formula for the Stieltjes constants themselves.
+
+\section{A precise obstruction to finite integer-depth reduction}
+\label{cdl:sec:obstruction}
+
+It is useful to state the obstruction in a form that can actually be
+proved. A statement that ``no finite special-function expression exists''
+without specifying the allowed class would be unjustified.
+
+\begin{definition}[Local integer-depth transform class]
+\label{cdl:def:class}
+Fix a punctured neighborhood of $p=1$. Let $\mathscr A$ be the class
+obtained by finite sums, products, and $p$-derivatives from multipliers
+\[
+ g(p)^r(p+a_j-1)^{-u_j},\qquad r\in\N,\quad \Rea a_j>0,\quad u_j\in\C,
+\]
+allowing multiplication by single-valued meromorphic coefficients near
+$p=1$ and any fixed spectral derivatives in the $u_j$. Every logarithm
+of $p+a_j-1$ is chosen on the full sufficiently small disk, where its
+argument is nonzero. Thus every member of $\mathscr A$ is single-valued
+meromorphic near $p=1$.
+\end{definition}
+
+This class contains the transform operations used for finite integer-depth
+spectral shifts, polynomial argument moments, and their order derivatives.
+It is intentionally not the class of every possible special function.
+
+\begin{theorem}[Monodromy obstruction]\label{cdl:thm:obstruction}
+Let $\Rea a>0$ and $s\in\C$. If $\Rea\rho>0$ and $\rho\notin\N$, then
+\begin{equation}\label{cdl:eq:obstructed}
+ g(p)^\rho(p+a-1)^{-s}\notin\mathscr A.
+\end{equation}
+At an integer $r\ge1$, every positive depth derivative
+\begin{equation}\label{cdl:eq:depthobstruction}
+ g(p)^r(p+a-1)^{-s}(\log g(p))^q,\qquad q\ge1,
+\end{equation}
+also lies outside this local meromorphic class.
+\end{theorem}
+\begin{proof}
+Near $p=1$, the function $g$ has a simple pole and a nonvanishing
+holomorphic leading factor. Continuing its logarithm once around a
+positively oriented small loop changes $\log g$ by $-2\pi i$.
+The factor $(p+a-1)^{-s}$ is holomorphic and nonzero on that disk,
+because $a\ne0$. Hence the multiplier in \eqref{cdl:eq:obstructed}
+acquires the monodromy factor $e^{-2\pi i\rho}$, which is nontrivial
+precisely when $\rho$ is not an integer. This contradicts the
+single-valuedness of every member of $\mathscr A$.
+
+For \eqref{cdl:eq:depthobstruction}, the nonzero meromorphic factor
+$g^r(p+a-1)^{-s}$ is unchanged, but $(\log g)^q$ changes to
+$(\log g-2\pi i)^q$. Their difference is a nonzero polynomial in
+$\log g$ of degree $q-1$, so it cannot vanish identically.
+An equality on the original transform strip would force equality of
+these analytic continuations by uniqueness; the local contradiction
+therefore excludes such an equality there as well.
+\end{proof}
+
+This proves why the finite recurrence reduces integer depths to the two
+elementary seeds, while a noninteger residue class of depths retains
+its own Gamma kernel. The finite shifts
+$\rho,\rho+2,\ldots,\rho+2n$ still reduce to one continuous-depth seed
+by Theorem~\ref{cdl:thm:shift}. There is no contradiction between that
+finite reduction and the obstruction to changing a noninteger seed
+into the old integer-depth class.
+
+The theorem is about identities of transform families. It proves neither
+arithmetic independence of isolated central values nor the impossibility
+of representations in larger classes with nontrivial monodromy. In
+particular it does not obstruct the exact odd-order values of
+Section~\ref{cdl:sec:reflection}, or a finite closure after several
+noninteger depths sum to an integer.
+
+\section{Source audit, verification, and integration status}
+\label{cdl:sec:audit}
+
+\subsection{Precisely what was inspected}
+Current repository inspection was pinned to \pin. It covered the
+canonical manuscript README, the full chapter
+\src{chapters/05-logistic-resolvent-identities.tex}, directory/tree
+metadata for the manuscript and incoming area, and the relevant visible
+intake rules in \src{docs/incoming/README.md}. The substantial prior
+mathematical reading was of the accessible Library TEX copy of
+\emph{Reciprocal Lerch Convolutions}: its transform and entire-order
+proofs, integer-depth central-factorial formulas, Stieltjes and harmonic
+coefficient sections, and the noninteger-depth research question.
+That older report cites its own source pin
+\src{0c740647c48baec7f0b4192723e977d69917dd52}; the two pins must not
+be conflated. Introductory snippets of the later commensurate-Lerch
+report were sufficient to avoid claiming its scale/unequal-center agenda
+as the present target, but its full proofs were not audited here.
+
+The binary incoming ZIP packages were listed, not read in full. The
+Library source is not asserted to be byte-identical to any currently
+listed archive. This is a targeted research continuation, not an audit
+of every chapter, every incoming report, or every existing conjecture.
+
+\subsection{Corrections and safeguards}
+\textbf{No incorrect source formula was established in the inspected
+proof sections.} Accordingly this package does not label an unverified
+suspicion as an erratum. It does identify several necessary safeguards
+for extending those results:
+
+\begin{enumerate}[label=(\alph*)]
+\item A squared-modulus Gamma formula is not holomorphic in complex depth.
+Use the product \eqref{cdl:eq:K}, which agrees with the squared modulus
+only for real positive depth.
+\item Negative spectral orders require \eqref{cdl:eq:negative}, not
+substitution into a divergent positive-order Mellin integral.
+The value $\F_{2,a}(0;0)=1$ is the simplest normalization test.
+\item Pole--zero combinations in \eqref{cdl:eq:reflection}, the finite
+Hurwitz basis, and the anchored primitive formula must be combined
+before a resonant parameter is substituted.
+\item Integer-depth finite formulas cannot be differentiated in their
+integer label. Depth differentiation is justified here only after
+constructing the holomorphic Gamma family. The resulting logarithmic
+multipliers generally leave the old meromorphic class.
+\item ``Finite closure'' must name its function class. Theorem
+\ref{cdl:thm:obstruction} supplies such a class and explicitly excludes
+any inference about independence of isolated constants.
+\item The symmetric split $\rho=\sigma=1$ hides the additional
+$(1-\rho\sigma)\zeta(3,a)$ term in \eqref{cdl:eq:J11}. Keeping it is
+necessary when extending the earlier moment identity to unequal depths.
+\end{enumerate}
+
+The reference chapter's beta-density generating parameter and the present
+reciprocal-convolution depth are different constructions. Their common
+use of beta integrals is not evidence that a conjecture in one geometry
+has been proved in the other. In particular the Gaussian $S_6$ and $S_8$
+status is unchanged by this work.
+
+\subsection{Executed checks and their evidentiary meaning}
+The package includes executable exact and numerical verification, with
+machine-readable results. The exact program performs 241 finite
+assertions and three negative controls. The principal families are
+summarized below.
+\begin{center}
+\begin{tabular}{@{}p{0.79\linewidth}r@{}}
+\toprule
+Exact algebra family & Checks\\\midrule
+Two independent Gamma-coefficient recurrences and homogeneous weights &56\\
+Finite products versus Bell--harmonic derivatives &108\\
+Depth-shift product normalizations and recurrences &13\\
+Transform moment recurrence, Bell comparison, and leading coefficients &27\\
+First/second moment coefficient identities and explicit harmonic examples &5\\
+Shifted generalized-harmonic sums &32\\\midrule
+Total exact assertions &241\\\bottomrule
+\end{tabular}
+\end{center}
+The coefficient table covers $1\le m\le4$ and $0\le q\le6$.
+Formal zeta symbols are used in a polynomial ring for exact algebra;
+this does not assume their actual arithmetic independence.
+
+The numerical suite executed 88 diagnostics at 50 working decimal digits:
+38 kernel, transform, and moment tests; 28 centered, reflection, harmonic,
+and polylogarithm tests; and 22 Stieltjes, depth-jet, and primitive tests. Every test used the
+scaled residual $|L-R|/(1+|R|)$ with acceptance threshold $10^{-30}$;
+the largest observed scaled residual was approximately $3.54\times10^{-47}$.
+The tested cases include complex noninteger depths, arbitrary complex
+orders, negative spectral orders, shifts below $1/2$ requiring a
+nonsymmetric contour, direct Gamma convolutions, the full harmonic
+parameter identity, and a genuine Gamma-weighted trilogarithm integral.
+The subtracted Mellin jet calculation is independent of contour logarithm
+insertion. Alternating sums use mpmath's convergence acceleration;
+they are not finite tail enclosures.
+
+\textbf{Working precision and small residuals are not rigorous error
+bounds.} These diagnostics can expose mistakes but do not prove the
+infinite-parameter identities. The analytic proofs establish those
+identities. No interval certification, proof-assistant kernel check,
+independent refereeing, or exhaustive literature-priority verification
+is claimed. The receipts record the actual package versions and each
+individual comparison.
+
+\subsection{Additive integration recommendation}
+This is an addition answering question 10 of the reciprocal-Lerch report,
+not a replacement for the canonical manuscript. A natural relative
+placement beneath that continuation is
+\src{continuations/continuous-depth-lerch/}; the maintainer should select
+the actual destination on the Mellin--Stieltjes spine in accordance with
+the intake README. This proposed path is not asserted to exist already.
+All theorem and equation labels in this article use the prefix
+\src{cdl:}. The accompanying integration note maps the proved statements,
+classical recoveries, and remaining questions. No repository or persistent
+Library mutation was performed.
+
+\section{Further research questions and concrete next targets}
+\label{cdl:sec:research}
+
+The following questions extend the exact-identity programme rather than
+asking for better inequalities. The distinction between a proved formula
+and an open proposed extension is maintained in every item.
+
+\begin{enumerate}[label=Q\arabic*.]
+\item \textbf{Depth zero and negative depth.}
+Continue the normalized semigroup through $\rho=0$ as distributions,
+identify the delta contribution, and derive the explicit residue/contact
+terms needed for negative real parts of $\rho$. The positive-half-plane
+kernel alone does not justify dropping Gamma poles that cross an
+argument contour. The left-half-plane Gamma-transform work in
+\cite{CS} supplies a classical comparison, not an automatic answer for
+the coupled resolvent.
+
+\item \textbf{Rational base-depth harmonic masters.}
+Replace $2+\epsilon$ in Theorem~\ref{cdl:thm:harmonicmaster} by
+$2a+\epsilon$ with rational $a>0$. Derive the corresponding shifted
+harmonic Bell combinations and classify the residue-class combinations
+whose Gamma coefficients reduce to ordinary zeta products, rather than
+general cyclotomic constants. Every proposed reduction should be an
+identity of the full generating functions.
+
+\item \textbf{Even polylogarithm orders under Gamma weights.}
+The odd family \eqref{cdl:eq:polylogGamma} is explicit because of the
+polynomials $U_m$. Determine an equally useful exact description for
+even orders. The reflected values $Z_\rho^{[1]}(1-2m)$ in
+\eqref{cdl:eq:evenreflection} identify the missing spectral data; they
+must not be confused with the known trivial zeros themselves.
+
+\item \textbf{Independent resolvent shifts in the centered reflection.}
+For a product $g(p)^R\prod_j(p+a_j-1)^{-s_j}$, construct a centered
+reflection identity that retains all independent spectral jets and
+states the branch geometry at shift collisions. Existing unequal-center
+expansions should be used as input rather than re-labeled as new;
+the specific target is an exact reflected function and its collision law.
+
+\item \textbf{Unbalanced depth jets at integer total depth.}
+Find a canonical enlarged basis containing
+$g(p)^R(\log g(p))^q(p+a-1)^{-s}$ and derive its special-value identities.
+Theorem~\ref{cdl:thm:obstruction} rules out only the old local meromorphic
+class. A logarithmically extended Lerch family may have useful finite
+recurrences even though it is outside that class.
+
+\item \textbf{A multivariate tilt generating function.}
+The finite moment recurrence determines every Taylor coefficient of
+convolutions with factors $e^{\lambda_jx_j}$. Obtain a compact analytic
+function of all $\lambda_j$, with explicit confluence and branch rules.
+It must reproduce \eqref{cdl:eq:firstgeneral} and \eqref{cdl:eq:M2}
+without losing the asymmetric order terms.
+
+\item \textbf{Products of polylogarithms under one Gamma weight.}
+Evaluate integrals containing several independent polylogarithms in the
+same variable against $G_\rho(x)$. Their transform geometry is not the
+simple reciprocal convolution treated here. Determine which balanced
+odd-part combinations admit Gamma-quotient generating functions, and
+which require multiple Hurwitz--Lerch functions.
+
+\item \textbf{Spectral derivatives on the odd evaluation lattice.}
+Formula \eqref{cdl:eq:oddF} evaluates the entire function at odd integers
+but does not determine its order derivatives there. Use the reflection
+formula and ordinary contour derivatives to derive those derivatives,
+including their Gamma, Stieltjes, and $Z_\rho$-jet terms. Differentiating
+an identity known only for discrete $m$ is not a valid shortcut.
+
+\item \textbf{Canonical reduction of continuous moment polynomials.}
+The moment algorithm terminates, but its output is not a unique normal
+form. Determine the exact module of relations among shifted
+$\F_{R,a}(W+d;x)$ induced by the depth recurrence and covariant ladder.
+A canonical symbolic reduction should be proved without assuming
+independence of special values.
+
+\item \textbf{A genuine connection to the Gaussian harmonic candidates.}
+Investigate whether the Gamma-weighted odd-polylogarithm family can
+produce the missing mixed-color functional relations relevant to the
+canonical $S_6$ and $S_8$ problems. Any claimed advance must exhibit the
+new convergent relation or certificate explicitly. The continuous-depth
+semigroup by itself does not supply such a relation.
+
+\item \textbf{Formalization and literature reconciliation.}
+Formalize the polynomial recurrences, Bell coefficients, moment
+reductions, and primitive Taylor remainders as a finite algebra layer.
+Isolate weighted Schwartz holomorphy, Fourier inversion, and Mellin
+subtraction as separate analytic obligations. Independently compare the
+precise harmonic master and its coefficient families with the classical
+Euler-sum and generalized-Lerch literature before assigning priority
+labels to individual identities.
+\end{enumerate}
+
+\section*{Conclusion}
+\addcontentsline{toc}{section}{Conclusion}
+The specified noninteger-depth question has an explicit positive-half-plane
+answer: a Gamma kernel with a holomorphic entire-order resolvent extension.
+Depth and spectral order add independently. Integer \emph{total} depths
+retain finite zeta closure, all polynomial moments admit a terminating
+calculus, and continuous splits give ordinary Stieltjes products.
+The centered reflection exposes two exact odd-order families: one with
+Gamma--Hurwitz coefficients and one polynomial in depth. Their combination
+produces an all-order harmonic generating identity and a continuous
+Gamma-weighted polylogarithm evaluation family. The finite-closure
+obstruction is local and precisely stated, while the unresolved boundary,
+multishift, and spectral-jet extensions remain explicit research targets.
+
+\appendix
+\section{Selected exact harmonic coefficient values}
+\label{cdl:app:coeffs}
+Let $S_{m,q}$ denote the left side of \eqref{cdl:eq:mastercoeff}. The
+following entries are generated by the exact program. Powers of $\pi$
+here are simply the conventional simplifications of even zeta values;
+the complete formal-zeta table is retained in the JSON artifact.
+\begin{center}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{@{}rrl@{}}
+\toprule
+$m$ & $q$ & $S_{m,q}$\\\midrule
+% BEGIN GENERATED HARMONIC TABLE
+1 & 0 & $\frac{\pi^{2}}{12}$ \\
+1 & 1 & $- \frac{\zeta\left(3\right)}{2}$ \\
+1 & 2 & $\frac{\pi^{4}}{720}$ \\
+1 & 3 & $- \frac{3 \zeta\left(5\right)}{2} + \frac{\pi^{2} \zeta\left(3\right)}{4}$ \\
+1 & 4 & $- 3 \zeta^{2}\left(3\right) - \frac{67 \pi^{6}}{20160}$ \\
+2 & 0 & $\frac{7 \pi^{4}}{720}$ \\
+2 & 1 & $- \frac{\pi^{2} \zeta\left(3\right)}{12} - \frac{\zeta\left(5\right)}{2}$ \\
+2 & 2 & $\frac{\zeta^{2}\left(3\right)}{2} + \frac{23 \pi^{6}}{12096}$ \\
+2 & 3 & $- \frac{15 \zeta\left(7\right)}{4} - \frac{\pi^{2} \zeta\left(5\right)}{8} + \frac{\pi^{4} \zeta\left(3\right)}{96}$ \\
+2 & 4 & $- \frac{3 \pi^{2} \zeta^{2}\left(3\right)}{4} + 3 \zeta\left(3\right) \zeta\left(5\right) + \frac{43 \pi^{8}}{57600}$ \\
+% END GENERATED HARMONIC TABLE
+\bottomrule
+\end{tabular}
+\end{center}
+The table is not the proof of the infinite family. Theorem
+\ref{cdl:thm:harmonicmaster} supplies that proof for arbitrary $m,q$.
+
+\begin{thebibliography}{99}
+\addcontentsline{toc}{section}{References}
+\bibitem{Repo}
+V. Reshetnikov, \emph{ProveIt: canonical polylogarithm manuscript},
+repository snapshot \pin. Inspected source paths include
+\src{Analysis/Polylogarithms/docs/manuscript/README.md} and
+\src{Analysis/Polylogarithms/docs/manuscript/chapters/05-logistic-resolvent-identities.tex}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{RLC}
+\emph{Reciprocal Lerch Convolutions}, research continuation prepared for the
+ProveIt programme, 10 October 2026. Accessible Library TEX source
+\src{ProveIt_Reciprocal_Lerch_Convolutions_2026-10-10.tex}, especially
+Sections 2--4, 6, and Section 12, question 10. The report's own repository
+source pin is \src{0c740647c48baec7f0b4192723e977d69917dd52}.
+
+\bibitem{CS}
+D. Chakrabarti and G. K. Srinivasan, \emph{On a remarkable formula of
+Ramanujan}, 2012, arXiv:1206.5122. Theorem 1.1 gives the Gamma-product
+Fourier transform for complex parameters in the right half-plane.
+\url{https://arxiv.org/abs/1206.5122}.
+
+\bibitem{Schoutens}
+W. Schoutens, \emph{The Meixner Process: Theory and Applications in
+Finance}, EURANDOM Report 2002-004, 12 February 2002, Section 2,
+printed pp. 5--6, for the Gamma density and its convolution parameter.
+\url{https://www.eurandom.tue.nl/reports/2002/004-report.pdf}.
+
+\bibitem{DLMFBeta}
+NIST Digital Library of Mathematical Functions,
+Section 5.12, \emph{Beta Function}, Euler beta integrals.
+\url{https://dlmf.nist.gov/5.12}.
+
+\bibitem{DLMFGamma}
+NIST Digital Library of Mathematical Functions,
+Sections 5.7 and 5.15, \emph{Series Expansions} and
+\emph{Polygamma Functions}.
+\url{https://dlmf.nist.gov/5.7}; \url{https://dlmf.nist.gov/5.15}.
+
+\bibitem{DLMFLerch}
+NIST Digital Library of Mathematical Functions,
+Section 25.14, \emph{Lerch's Transcendent}.
+\url{https://dlmf.nist.gov/25.14}.
+
+\bibitem{DLMFZeta}
+NIST Digital Library of Mathematical Functions,
+Section 25.11, \emph{Hurwitz Zeta Function}, including parameter
+recurrence, derivatives, and the log-Gamma special value.
+\url{https://dlmf.nist.gov/25.11}.
+\end{thebibliography}
+\end{document}

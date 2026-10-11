@@ -1,0 +1,94 @@
+\section{Verification, provenance, and integration}
+\label{sec:reproducibility}
+
+The accompanying archive is an editable research package. It contains
+this article in modular and single-file \LaTeX, the compiled PDF,
+the exact calculation scripts, numerical evaluators, their recorded
+JSON outputs, a build script, a checksum manifest, and proposed
+repository integration notes. The scripts require Python, SymPy, and
+mpmath; no network access or private data is needed to replay them.
+
+\subsection{What the calculations verify}
+
+The fifth-power exact replay checks 87 identities using finite harmonic
+quasi-shuffle algebra. They include all principal coefficients, the
+constant Laurent coefficients at zero, both finite residue-sum
+identities, their asymptotic constants, the nonlogarithmic sums,
+the spectral substitution, and every endpoint entry used in the
+integration by parts. These are symbolic finite identities for
+arbitrary cutoff $N$, together with explicitly stated classical
+multiple-zeta reductions; the computation does not infer the
+identities by sampling $N$.
+
+The tail reconstruction replay checks 1,582 exact assertions. These
+include the forward and inverse Bernoulli transforms, the agreement
+of the compact coefficient matrix with the inherited finite formula,
+the diagonal determinant, the displayed rational inverse, the
+orders-$(2,6)$ identity, and finite instances of the
+exponential-polynomial degree counts. It also verifies the first-$q$
+square matrix for all 78 even pairs $2\le p\le q\le24$. Those
+finite checks support the stronger conjecture but are not its proof.
+The all-pairs finite-prefix theorem rests on the differential and
+pole argument in Section~\ref{tr:section}.
+
+The independent Gamma-normalizer replay checks 202 exact assertions
+through degree eight and integer pole labels zero through eight,
+including the removable values and the first nonzero residues.
+Separate ordinary-integral computations for $m=2,\ldots,7$ use
+analytic Gamma coefficients on $[0,1]$ and the completed logarithmic
+Mellin kernel on $(0,\infty)$. The largest recorded absolute
+discrepancy is below $7.403\cdot10^{-58}$ at 70 working decimal
+digits. A local Taylor switch is changed independently to test
+cancellation handling. The scalar normalization has its own 94-check finite polynomial
+replay, including the inverse-Gamma finite-part convolution through
+degree ten. Together the four exact suites verify 1,965 assertions.
+
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.29\textwidth}>{\raggedright\arraybackslash}p{.29\textwidth}>{\raggedright\arraybackslash}p{.31\textwidth}@{}}
+\toprule
+Independent comparison & Finest recorded absolute discrepancy & Type \\
+\midrule
+Fifth-power finite part & $<3.83\cdot10^{-48}$ & Taylor-subtracted
+quadrature versus harmonic arithmetic with asymptotic tail \\[4pt]
+Mixed integral $I$ & $<1.02\cdot10^{-48}$ & The same two independent
+analytic representations \\[4pt]
+Orders-$(2,6)$ rational sum & $<2.40\cdot10^{-62}$ & Hurwitz-tail
+sum with separately derived centered tail \\[4pt]
+Gamma ordinary integrals & $<7.403\cdot10^{-58}$ & Bell/Gamma
+coefficients versus completed Mellin kernel \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+All entries in this table are floating-point diagnostics. They are
+not interval certificates and are not presented as proofs. In
+particular, the Gamma evaluator records a bound for its omitted
+analytic kernel tail, but that bound does not enclose quadrature,
+local Taylor truncation, or rounding error. The mathematical
+conclusions follow from the analytic and exact algebraic arguments
+in the text.
+
+\subsection{Source and editorial controls}
+
+The provenance manifest records the inspected repository commit,
+the source archive and relevant member hashes, and the external
+primary references. The main manuscript was checked for prior
+results before the new targets were selected. The audit does not
+purport to certify every page of the repository. In particular,
+the already proved Choi harmonic conjectures and the proved $S_4$
+identity are not rediscovered here, and $S_6$ and the revised $S_8$
+remain explicitly open.
+
+The integration notes propose where to place the new sections and
+how to update the three source questions. They also provide the
+precise Stieltjes sign translation, so an importer can retain the
+literal-coefficient notation consistently. No repository file has
+been silently altered, and the package is intended for review and
+integration through the project's normal process.
+
+The broader literature also contains harmonic-zeta Stieltjes
+families with different indexing conventions; see, for example,
+Karg\i n--Dil--Cenkci--Can \cite{Kargin}. All uses of such constants
+in future extensions should name the defining germ and its
+factorial and sign convention explicitly, as done here.

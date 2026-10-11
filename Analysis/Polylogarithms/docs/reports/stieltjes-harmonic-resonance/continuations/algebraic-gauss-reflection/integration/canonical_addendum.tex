@@ -1,0 +1,152 @@
+% Proposed insertion; not an automatic canonical-status update.
+% Requires amsmath, amssymb, amsthm and theorem/proof/corollary environments.
+\providecommand{\agrcAddStirling}[2]{\left\{\begin{matrix}#1\\#2\end{matrix}\right\}}
+\section{Algebraic Gauss tails and centered harmonic reflection}
+\label{agrc-add:section}
+
+Define Bernoulli-coefficient polynomials by
+\begin{align*}
+ D_j(a,b,s;c)&=\frac{(-1)^{j+1}}{j(j+1)}
+ \bigl(B_{j+1}(a-c)+B_{j+1}(b-c)\bigr)\\
+ &\quad-\frac{(-1)^{j+1}}{j(j+1)}\bigl(B_{j+1}(a+b+s-c)+B_{j+1}(1-c)\bigr),\\
+ \sum_{m\geq0}A_m(a,b,s;c)t^m
+   &=\exp\left(\sum_{j\geq1}D_j(a,b,s;c)t^j\right).
+\end{align*}
+For every fixed coefficient these are finite polynomial definitions.
+
+\begin{theorem}[Finite residue proof and full resonant tail]
+\label{agrc-add:tail}
+For all integers $r,k\geq0$,
+\[
+ A_{r+k}(a,b,-r;c)=\frac{(-1)^r}{r!}(1-a)_r(1-b)_r Q_{r,k}(a,b;c),
+\]
+where the finite polynomial is
+\[
+ Q_{r,k}(a,b;c)=\sum_{\ell=0}^k\binom{k}{\ell}c^{k-\ell}
+       \sum_{j=0}^{\ell}(-1)^j\agrcAddStirling{\ell}{j}
+                         \frac{(a)_j(b)_j}{(r+1)_j}.
+\]
+Its exponential generating function is
+$\exp(ct)\,{}_2F_1(a,b;r+1;1-\exp t)$ near zero, and
+$\partial_cQ_{r,k}=kQ_{r,k-1}$.
+\end{theorem}
+\begin{proof}
+At $s=-r$ the total degree of $A_r$ in $a,b$ is at most $2r$.
+For $b=B\in\{1,\ldots,r\}$, Bernoulli finite differences give
+\[
+ \sum_{m\geq0}A_m(a,B,-r;c)t^m
+  =\prod_{h=1}^{r-B}(1+(a-c-h)t)
+        \prod_{h=1}^{B-1}(1+(h-c)t).
+\]
+This polynomial has degree at most $r-1$. Symmetry supplies the roots
+$a=1,\ldots,r$ also; hence $(1-a)_r(1-b)_r$ divides $A_r$.
+The leading degree $2r$ comes only from $D_1^r/r!$, whose leading part
+is $(-ab)^r/r!$. Thus $A_r=(-1)^r(1-a)_r(1-b)_r/r!$.
+This argument for the residue is purely finite algebra; $r=0$ is immediate.
+
+For the tail, take $c=0$ and the formal Gamma-ratio Laurent expansion
+$\mathcal W(x)=x^{r-1}\sum_j A_jx^{-j}$. The Gamma recurrence gives
+\[
+ (x+1)(x+a+b-r)\mathcal W(x+1)=(x+a)(x+b)\mathcal W(x).
+\]
+The coefficients in this formal expansion are exactly those defined
+above, by the finite log-Gamma expansion in Bernoulli polynomials.
+Remove its polynomial part and send $x^{-k-1}$ to $t^k/k!$.
+If $T(t)=\sum_{k\geq0}A_{r+k}t^k/k!$, the resulting equation is
+\[
+ (1-e^t)T''+[a+b-r-1-(a+b)e^t]T'-ab e^tT=0.
+\]
+Multiplication by $x$ becomes differentiation, while the unit shift
+becomes multiplication by $e^{-t}$; discarded polynomial parts remain
+polynomial, so no tail terms are lost. Substituting $z=1-e^t$ gives
+Gauss's equation with parameters $(a,b;r+1)$. Its unique formal solution
+with constant coefficient $A_r$ is
+$A_r\,{}_2F_1(a,b;r+1;z)$. Coefficient uniqueness divides only by
+$(j+1)(r+1+j)$, which never vanishes.
+
+Finally, Bernoulli differentiation gives
+$\partial_c A_m=(s+m)A_{m-1}$. On the tail this transports its
+exponential generating function by $e^{ct}$. Expanding
+$(e^t-1)^j=j!\sum_{\ell\geq j}\agrcAddStirling{\ell}{j}t^\ell/\ell!$
+yields the stated finite formula.
+\end{proof}
+
+Now put
+\[
+ Z_r(s,a)=\sum_{n\geq0}\frac{[u^r]\prod_{j=1}^n(1+u/j)}{(n+a)^s},
+ \qquad
+ \mathcal B(s,u;a)=\sum_{n\geq0}\frac{(1+u)_n}{n!(n+a)^s},
+\]
+initially for $\Re a>0$, $\Re s>1$ and $u$ sufficiently small.
+The equality $Z_r=[u^r]\mathcal B$ holds in a common convergence domain.
+
+\begin{theorem}[Moving reflection and common centered zeros]
+\label{agrc-add:reflection}
+For $0<\Re a<1$, the plus family
+$\mathcal B(s,u;a)+\mathcal B(s,u;1+u-a)$ is jointly holomorphic and
+zero at $(s,u)=(-2m,u)$ for $m\geq0$ and $u$ sufficiently small.
+The minus family has the corresponding property at $s=-2m-1$.
+In particular,
+\[
+ C_r(s)=\sum_{k=0}^r\frac{(-1)^k(s)_k}{2^k k!}
+                          Z_{r-k}(s+k,1/2)
+\]
+is holomorphic and zero at $s=0,-2,-4,\ldots$ for every $r\geq0$.
+\end{theorem}
+\begin{proof}
+The Mellin kernel is $e^{-at}(1-e^{-t})^{-1-u}$.
+Write its normalized heat factor as
+\[
+ e^{-at}\left(\frac{t}{1-e^{-t}}\right)^{1+u}
+      =\sum_{j\geq0}c_j(u,a)t^j.
+\]
+Its reflection is $c_j(u,1+u-a)=(-1)^jc_j(u,a)$.
+Uniform subtraction of $K$ heat terms gives moving denominators
+$s-1-u+j$, with a jointly holomorphic remainder in
+$\Re(s-u)>1-K$. The plus combination removes odd $j$, so it removes
+the only possible pole near $s=-2m,u=0$. The minus combination removes
+the corresponding even $j$ at $s=-2m-1$. Multiplication by the vanishing
+reciprocal Gamma proves the joint holomorphy and zeros. The uniform
+remainder follows by integrating an $O(t^K)$ Taylor remainder near zero
+and an exponentially decaying kernel at infinity.
+
+The centered shift $(1+u)/2$ has even normalized heat factor
+$(t/(2\sinh(t/2)))^{1+u}$ and therefore the same even-integer zeros.
+Taylor expansion of the moving shift gives the displayed finite formula;
+joint holomorphy allows extraction of every coefficient at its zero.
+\end{proof}
+
+\begin{corollary}[Convergent harmonic evaluation at every depth]
+\label{agrc-add:Gamma}
+For $|u|<1$,
+\[
+ \sum_{r\geq0}C_r(2)u^r
+ =\frac{\pi\tan(\pi u/2)}{u}
+       \frac{\Gamma((1+u)/2)\Gamma(1-u)}{\Gamma((1-u)/2)}.
+\]
+Its removable value at zero is $\pi^2/2$. Equivalently,
+$C_r(2)=\pi^2h_r/2$, where $h_0=1$ and
+\[
+ rh_r=\sum_{j=1}^r\kappa_jh_{r-j},\quad
+ \kappa_1=-2\log2,\quad
+ \kappa_j=\begin{cases}
+ (3-2^{2-j})\zeta(j),&j\geq2\text{ even},\\
+ (2^{1-j}-1)\zeta(j),&j\geq3\text{ odd}.
+ \end{cases}
+\]
+\end{corollary}
+\begin{proof}
+For $\Re u<0$, $\mathcal B(1,u;a)=B(a,-u)$, and differentiation gives
+$\mathcal B(2,u;a)=-B(a,-u)[\psi(a)-\psi(a-u)]$.
+At $a=(1+u)/2$, digamma reflection reduces the bracket to
+$\pi\tan(\pi u/2)$. Normal convergence extends the identity to $|u|<1$.
+Log-Gamma expansion at $1$ and $1/2$, together with the Taylor expansion
+of $\log(\tan(\pi u/2)/(\pi u/2))$, gives the stated cumulants.
+\end{proof}
+
+The fixed-shift negative Laurent theorem and the analytic Gauss residue
+identity remain credited to their existing sources. The new algebraic
+proof answers the separate finite-proof question. At singular points,
+all reflection identities refer to the continued complete combination,
+not separately evaluated divergent summands. Neither S6 nor S8 is
+resolved by this insertion.

@@ -1,0 +1,152 @@
+\section{Verification, reproducibility, and the evidence boundary}
+\label{verification:section}
+
+\subsection{Exact calculations and independent numerical methods}
+
+Every main assertion above is supported by an analytic proof or a finite
+algebraic derivation. The code checks sensitive coefficients and supplies
+independent numerical comparisons. Normal convergence, meromorphic
+continuation, and the hierarchy-uniform collision limit are proved in
+the article; they are not inferred from numerical agreement.
+
+The harmonic compiler retains exact rational and symbolic coefficients.
+Its sixty finite checks include the principal-part polynomial, the
+printed fifth finite harmonic identity, the moving-order finite
+lattices through degree six, and the separate regularization constants.
+The classical convergent multiple-zeta identities used in the reduction
+are stated explicitly in \eqref{hp:MZVtable}; they are mathematical
+inputs, not theorems established by numerical testing.
+
+The two fifth-power evaluators use different analytic representations.
+One integrates the convergent local Taylor series of $(x\psi(x))^5$
+on $(0,1/8)$ and uses ordinary quadrature on the remainder.
+The other sums \eqref{hp:fifthseries}, using a finite polygamma
+asymptotic tail represented by Hurwitz-zeta order derivatives.
+At 70 working decimal digits their observed difference is
+$3.3937772261\cdot10^{-49}$. Thus the recorded agreement is at the
+48-decimal-place level; a 70-digit working precision is not itself
+a 70-digit accuracy certificate.
+
+The opposite-orientation tests verify the residue polynomial exactly
+for $M=1,\ldots,9$, and the first logarithmic contact coefficients
+symbolically. Direct beta quadrature at complex exponents has observed
+residual $7.37\cdot10^{-83}$ at 80 working digits. Four transverse
+rays and three curved paths recover their distinct uncompleted limits
+and the common completed value.
+
+The general Fourier convolution is also tested at three distinct
+nonzero disk coordinates, with two upper orientations and one lower
+orientation. The exponents are complex, one has negative real part,
+and the total has real part $1.60$. At 80 working digits, the five modes
+$k=-2,-1,0,1,2$, computed on the rectangle $0\le n,m\le160$, differ
+from direct cotangent-resolvent quadratures by at most
+$2.20\cdot10^{-80}$. A shorter rectangle through 120 gives observed
+changes below $5.7\cdot10^{-63}$.
+At exponents $(2,1)$ and zero disk coordinates the spectrum is finite.
+The exponential moment is checked at four complex values, including
+a reciprocal-Gamma zero, and the log-Gamma formula
+\eqref{mr:loggammaexample} has observed residual below
+$9.3\cdot10^{-84}$.
+
+For the mixed-log transform, direct quadrature of the Bernoulli
+polynomial $\zeta(-1,x)$ against the logarithmic product is compared
+with separately evaluated multiple-polylogarithmic sums at three disk
+coordinate pairs. One pair is complex and one is $(0,0)$.
+The largest observed spectral residual is
+$6.60\cdot10^{-82}$, and the mean comparisons are below
+$6.4\cdot10^{-81}$ at 80 working digits.
+
+There is also a direct singular-integral check of
+\eqref{ml:specialStieltjes}. The left side uses coordinate subtraction
+of its actual endpoint polynomial. Independently, $\eta$ is evaluated
+by a subtracted positive-real Mellin integral. Both methods give
+\[
+ -6.1973961294626328099297651968714197451620285651100755907475\ldots.
+\]
+The observed residual rounds to zero at the 80-digit working precision;
+the code checks a tolerance of $10^{-70}$. This is an observed
+floating-point agreement, not an interval enclosure.
+
+\subsection{Independent geometric-collision checks}
+
+The script \src{verify_collision_kernels.py} compares all cases of the
+dilogarithm table with independently subtracted ordinary integrals,
+using 70 working decimal digits. Its eight comparisons have maximum
+observed absolute residual $1.82\cdot10^{-71}$.
+It also checks the three all-pole coefficients and the three finite
+anomalies by exact symbolic algebra, treating
+$\zeta(2),\zeta'(2),\gamma,\gamma_1,\log2$ as independent symbols.
+Each symbolic residual is exactly zero.
+
+The separate script \src{verify_higher_collision.py} evaluates the
+circle integrals by subtracting their actual local singularities at
+each of the three points. It does not use the proposed $T_j$ formulas
+to define those integrals. It evaluates the directly merged ordinary
+representative \eqref{gcx:Q-ordinary} independently, obtaining
+\[
+ Q=-2.87039237858604022876331895417289849797325401866\ldots.
+\]
+At five gaps from $0.03$ down to $0.0003$, the quantities $C_j-T_j-Q$
+approach zero for every placement. Selected values are
+\[
+\begin{array}{c|rrr}
+ \epsilon&j=0&j=1&j=2\\ \hline
+ 0.03&-0.0828460&0.184968&0.608974\\
+ 0.003&-0.00940356&0.0289980&0.0833617\\
+ 0.0003&-0.000951212&0.00376258&0.0107961
+\end{array}
+\]
+These are finite-separation remainders, not equality errors expected
+to vanish at each positive gap. The working precision is 65 decimal
+digits. A convergent Hurwitz Taylor evaluator for $\gamma_1(1+x)$
+was separately compared with the generalized Stieltjes function at
+four points, with observed residual below $9\cdot10^{-67}$.
+
+The numerical paths above illustrate the limit and check the explicit
+formulas. Uniformity for arbitrarily hierarchical gaps follows from
+the fixed-contour and dominated-convergence proof, not from sampling
+a finite collection of geometric paths.
+
+\subsection{Companion files and replay}
+
+The ZIP includes the complete modular \LaTeX{} source, a flattened
+standalone source, the compiled PDF, scripts and raw JSON records,
+source hashes, and a claim-by-claim integration ledger.
+The article can be built without the ProveIt checkout or network access.
+The Python calculations require Python 3, SymPy, and mpmath; the recorded
+environment uses Python 3.12.14, SymPy 1.14.0, and mpmath 1.3.0.
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.40\textwidth}
+                  >{\raggedright\arraybackslash}p{0.52\textwidth}}
+\toprule
+File in \src{verification/} & Purpose\\
+\midrule
+\endhead
+\src{harmonic_power_reduce.py} &
+General exact finite harmonic compiler; accepts a power on the command line.\\[4pt]
+\src{verify_harmonic_powers.py} &
+Sixty exact finite identities and normal-form comparisons.\\[4pt]
+\src{verify_fifth_numeric.py} &
+Independent Taylor/quadrature and polygamma-series evaluations of $Q_5$.\\[4pt]
+\src{check_mixed_orientation.py} &
+Exact residue and logarithmic coefficients; beta and path diagnostics.\\[4pt]
+\src{verify_multiple_resolvents.py} &
+Three-parameter complex-power Gamma convolution against direct Fourier
+quadrature, plus exponential and log-Gamma moment checks.\\[4pt]
+\src{check_mixed_log.py} &
+Ordinary mixed-log spectral transform and dilogarithmic mean.\\[4pt]
+\src{verify_special_mixed_log.py} &
+Independent Mellin and coordinate finite-part check of
+\eqref{ml:specialStieltjes}.\\[4pt]
+\src{verify_collision_kernels.py} &
+Dilogarithm-kernel quadratures and exact cubic anomaly calculations.\\[4pt]
+\src{verify_higher_collision.py} &
+Direct singularity-subtracted circle quadratures and the merged constant.\\
+\bottomrule
+\end{longtable}
+
+The top-level \src{run_checks.py} explains and runs the replay sequence;
+the verification README distinguishes exact checks, observed numerical
+residuals, and finite-separation remainders. The build scripts retain
+the same article content in modular and standalone forms.
+

@@ -1,0 +1,290 @@
+\section{Polylogarithmic counterterms for higher Stieltjes collisions}
+\label{gcx:section}
+
+The geometric collision theorem at Stieltjes index zero in the incoming
+\emph{Higher Reflection Identities and Resonant Zeta Calculus}\cite{repo:reflection} leaves two explicit gaps: logarithmic
+Stieltjes singularities, and weighted collision formulas.  The theorem below
+covers both, together with arbitrary ordinary argument derivatives.  The
+counterterm is finite and explicitly reducible to iterated polylogarithms.
+The proof also explains why no comparison between different shrinking gaps
+is needed.  It does not evaluate the global merged cubic constant, and it
+does not assert associativity of a different, successively chosen
+subtraction prescription.
+
+\subsection{Local singular polynomials and the finite-part convention}
+
+Normalize generalized Stieltjes functions by
+\[
+ \zeta(1+u,a)=\frac1u+
+       \sum_{m\ge0}\frac{(-1)^m}{m!}\gamma_m(a)u^m.
+\]
+For $m,r\ge0$, put
+\begin{align}
+ f_{m,r}(x)&=\gamma_m^{(r)}(\{x\}),\qquad
+ h_{m,r}(z)=\gamma_m^{(r)}(1+z),\label{gcx:fg}\\
+ d_r&=r+1,\qquad
+ L_{m,r}(X)=\prod_{j=1}^{r}(\partial_X-j)X^m.
+ \label{gcx:sing-polynomial}
+\end{align}
+The empty product is the identity.  Thus $L_{m,0}(X)=X^m$ and
+$L_{0,r}(X)=(-1)^r r!$.  The exact one-sided local decomposition is
+\begin{equation}\label{gcx:local}
+ f_{m,r}(x)=\boldsymbol 1_{x>0}\,
+              x^{-r-1}L_{m,r}(\log x)+h_{m,r}(x),
+ \qquad -1<x<1,\quad x\ne0.
+\end{equation}
+Derivatives in this formula are ordinary derivatives on the open
+intervals.  They are not derivatives of already extended periodic
+distributions.
+
+For completeness, the singular polynomial has the harmonic form
+\begin{equation}\label{gcx:harmonic-poly}
+ L_{m,r}(X)=(-1)^r r!
+ \sum_{j=0}^{\min(m,r)}(-1)^j\binom mj j!
+ e_j\left(1,\frac12,\ldots,\frac1r\right)X^{m-j},
+\end{equation}
+where $e_j$ is an elementary symmetric polynomial and $e_0=1$.
+Indeed,
+\[
+ L_{m,r}(X)=(-1)^r m![z^m](1-z)_r e^{zX}.
+\]
+All analytic tails in \eqref{gcx:local} are holomorphic near zero.  Their
+Taylor coefficients require only ordinary Stieltjes constants and zeta
+jets: for $k\ge1$,
+\begin{equation}\label{gcx:tail-derivative}
+ \gamma_m^{(k)}(1)=(-1)^{m+k}m![u^m](1+u)_k\zeta(k+1+u).
+\end{equation}
+This follows by differentiating the Hurwitz identity
+$\partial_a^k\zeta(s,a)=(-1)^k(s)_k\zeta(s+k,a)$.
+
+Fix a periodic smooth weight $w$ which is real analytic in a neighborhood
+of $0$; $w=1$ and $w(x)=e^{2\pi i n x}$ are allowed.  Fix indices
+$(m_i,r_i)$, $1\le i\le d$.  For distinct sufficiently small real shifts
+$s_i$, define
+\begin{equation}\label{gcx:CQ}
+ C_{\boldsymbol m,\boldsymbol r}^{w}(\boldsymbol s)
+ =\FP\int_{\R/\Z} w(x)\prod_{i=1}^d f_{m_i,r_i}(x+s_i)\,\dd x,
+ \qquad
+ Q_{\boldsymbol m,\boldsymbol r}^{w}
+ =\FP\int_0^1w(x)\prod_{i=1}^d\gamma_{m_i}^{(r_i)}(x)\,\dd x.
+\end{equation}
+At each singular point $a$, the finite part removes $(a,a+\eta)$ and
+retains the constant term in the ambient coordinate $\eta$.  Distinct
+points use independent cutoffs.  The same convention is used at the
+merged endpoint.  In particular, no cutoff is divided by a shrinking
+separation.
+
+\subsection{A finite Hermite construction}
+
+For a nonempty subset $S\subseteq\{1,\ldots,d\}$, write
+\begin{align}
+ d_i&=r_i+1,\quad N_S=\sum_{i\in S}d_i,\quad
+ b_S=\min_{i\in S}s_i,\notag\\
+ q_S(x;\boldsymbol s)&=w(x)\prod_{j\notin S}h_{m_j,r_j}(x+s_j),
+ \qquad
+ D_S(x;\boldsymbol s)=\prod_{i\in S}(x+s_i)^{d_i},
+ \label{gcx:qD}\\
+ \Lambda_S(x;\boldsymbol s)&=
+              \prod_{i\in S}L_{m_i,r_i}(\log(x+s_i)),
+ \qquad x>-b_S.
+ \label{gcx:Lambda}
+\end{align}
+The polynomial $D_S(x;\boldsymbol s)$ is monic of degree $N_S$.  Let $P_S(x;\boldsymbol s)$ be the unique polynomial of degree
+less than $N_S$ that agrees with $q_S$ at $x=-s_i$ through derivative
+order $d_i-1$, for every $i\in S$.
+
+\begin{definition}[Canonical logarithmic collision counterterm]
+\label{gcx:counterterm-definition}
+For $|S|\ge2$, define
+\begin{equation}\label{gcx:T}
+ T_S(\boldsymbol s)=\FP_{R\to\infty}\FP_{\eta\downarrow0}
+ \int_{-b_S+\eta}^{R}
+       \frac{P_S(x;\boldsymbol s)}{D_S(x;\boldsymbol s)}
+                  \Lambda_S(x;\boldsymbol s)\,\dd x,
+ \qquad
+ T(\boldsymbol s)=\sum_{|S|\ge2}T_S(\boldsymbol s).
+\end{equation}
+The lower finite part is taken first, with the ambient displacement
+$\eta$.  At infinity, discard the nonconstant polynomial in $\log R$
+and retain its constant term.  These are two separate endpoint
+operations, not a diagonal spectral regularization.
+\end{definition}
+
+The upper operation in \eqref{gcx:T} is explicit.  Put
+\[
+ p_S(\boldsymbol s)=[x^{N_S-1}]P_S(x;\boldsymbol s),\qquad
+ \lambda_S(X)=\prod_{i\in S}L_{m_i,r_i}(X),\qquad
+ \Psi_S(X)=\int_0^X\lambda_S(t)\,\dd t.
+\]
+The only divergent upper term is
+$p_S(\boldsymbol s)\Psi_S(\log R)$.  The difference between its derivative
+and the integrand is $O(R^{-2}(1+\log R)^{\sum_{i\in S}m_i})$.
+For a singleton $S$, the same definition gives zero, since translation
+to its sole endpoint leaves a sum of pure monomials
+$x^{-k}(\log x)^j$, $k\ge1$, whose two-endpoint finite parts vanish.
+
+\begin{theorem}[All indices, all ordinary derivatives, and analytic weights]
+\label{gcx:main}
+For the convention \eqref{gcx:CQ}, the counterterm \eqref{gcx:T} satisfies
+\begin{equation}\label{gcx:limit}
+ C_{\boldsymbol m,\boldsymbol r}^{w}(\boldsymbol s)
+       -T(\boldsymbol s)
+       \longrightarrow Q_{\boldsymbol m,\boldsymbol r}^{w}
+ \qquad (\boldsymbol s\longrightarrow0)
+\end{equation}
+through distinct real shifts.  The convergence imposes no lower bound on
+ratios of the gaps.  In particular, it holds for arbitrary hierarchical
+collisions and for paths whose relative gaps vanish faster than every
+power of their overall size.
+
+Every $T_S$ is a finite combination of rational functions of the gaps,
+values and derivatives of $w$ and the analytic Stieltjes tails at the
+shifted nodes, and generalized polylogarithms of weight at most
+$1+\sum_{i\in S}m_i$.  All logarithms in its defining real integral have
+positive arguments.  If every $m_i=0$, the formula is exactly the
+previous rational--logarithmic collision counterterm, including its
+ordinary-derivative extension.
+\end{theorem}
+
+\begin{proof}[Proof of the collision limit]
+Choose $\delta>0$ so small that $w$ and all required tails are holomorphic
+on $|z|<3\delta$, and restrict $|s_i|<\delta/8$.  Use the circle coordinate
+$(-\delta,1-\delta)$ and separate the local interval
+$(-\delta,\delta)$.  The outside integral is continuous in the shifts
+(and analytic when the outside weight is analytic).  The local product
+expands by the subset $S$ of factors contributing their singular terms in
+\eqref{gcx:local}.  The empty subset is analytic.  The nonempty subset is
+\begin{equation}\label{gcx:local-subset}
+ \FP\int_{-b_S}^{\delta}
+        \frac{q_S(x;\boldsymbol s)}{D_S(x;\boldsymbol s)}
+                  \Lambda_S(x;\boldsymbol s)\,\dd x.
+\end{equation}
+Only the endpoint $-b_S$ is singular in this integral: all other nodes
+$-s_i$ of the subset lie to its left.
+
+Both $P_S$ and the divided remainder
+\[
+ A_S(x;\boldsymbol s)=\frac{q_S(x;\boldsymbol s)-P_S(x;\boldsymbol s)}
+                           {D_S(x;\boldsymbol s)}
+\]
+extend holomorphically through coalescing nodes.  This assertion is not
+based on individually singular Lagrange coefficients.  It follows from
+the fixed-contour formulas
+\begin{align}
+ P_S(x;\boldsymbol s)&=\frac1{2\pi i}\oint_{|z|=2\delta}
+ \frac{q_S(z;\boldsymbol s)}{D_S(z;\boldsymbol s)}
+ \frac{D_S(z;\boldsymbol s)-D_S(x;\boldsymbol s)}{z-x}\,\dd z,
+ \label{gcx:Hermite-contour}\\
+ A_S(x;\boldsymbol s)&=\frac1{2\pi i}\oint_{|z|=2\delta}
+ \frac{q_S(z;\boldsymbol s)}{D_S(z;\boldsymbol s)(z-x)}\,\dd z,
+ \qquad |x|<\delta.
+ \label{gcx:remainder-contour}
+\end{align}
+These also give a uniform bound for $A_S$ on the local integration
+interval after decreasing $\delta$ or the shift neighborhood slightly.
+
+The finite-part tail of the principal part has the convergent form
+\begin{align}
+ B_S(\boldsymbol s):={}&\FP\int_\delta^\infty
+      \frac{P_S(x;\boldsymbol s)}{D_S(x;\boldsymbol s)}
+                  \Lambda_S(x;\boldsymbol s)\,\dd x\notag\\
+ ={}&-p_S(\boldsymbol s)\Psi_S(\log\delta)
+ +\int_\delta^\infty\left\{
+      \frac{P_S(x;\boldsymbol s)}{D_S(x;\boldsymbol s)}
+                    \Lambda_S(x;\boldsymbol s)
+       -\frac{p_S(\boldsymbol s)}x\lambda_S(\log x)\right\}\,\dd x.
+ \label{gcx:tail}
+\end{align}
+For $x\ge\delta$ use the holomorphic branches of $\Log(x+s_i)$ which are
+real at real shifts.  The integrand and its fixed parameter derivatives
+are locally uniformly $O(x^{-2}(1+\log x)^M)$, with
+$M=\sum_{i\in S}m_i$.  Consequently $B_S$ is holomorphic near the full
+diagonal.
+
+Subtracting $T_S$ from \eqref{gcx:local-subset} leaves exactly
+\begin{equation}\label{gcx:after-subtraction}
+ \int_{-b_S}^{\delta}A_S(x;\boldsymbol s)
+                \Lambda_S(x;\boldsymbol s)\,\dd x-B_S(\boldsymbol s).
+\end{equation}
+The rational denominators have disappeared from the remaining local
+integral.  To prove the required uniformity, set $y=x+b_S$ and
+$a_i=s_i-b_S\ge0$.  Its integrand becomes
+\[
+ A_S(y-b_S;\boldsymbol s)
+       \prod_{i\in S}L_{m_i,r_i}(\log(y+a_i)).
+\]
+For $\delta$ small, all $y+a_i$ in this integral are less than $1$.
+Because $y+a_i\ge y$, its absolute value is bounded by
+$K(1+|\log y|)^M$, independently of every gap ratio.  This is integrable
+at $y=0$.  On $y\ge\epsilon>0$ the convergence is uniform as all shifts
+vanish; the integral over $0<y<\epsilon$ is uniformly small as
+$\epsilon\downarrow0$.  Hence \eqref{gcx:after-subtraction} tends to
+\[
+ \int_0^\delta A_S(x;0)\lambda_S(\log x)\,\dd x-B_S(0).
+\]
+Here $P_S(x;0)$ is the Taylor polynomial of $q_S(x;0)$ through degree
+$N_S-1$.  The two-endpoint finite part of each monomial
+$x^{j-N_S}(\log x)^k$, $j<N_S$, is zero, so
+\[
+ -B_S(0)=\FP\int_0^\delta
+          P_S(x;0)x^{-N_S}\lambda_S(\log x)\,\dd x.
+\]
+Thus the limit is precisely the directly merged finite part of the
+subset contribution.  Summing the finitely many subsets and the outside
+integral proves \eqref{gcx:limit}.  The proof did not fix an ordering
+chamber; there are only finitely many choices for the minimum, and the
+same dominating function applies to all of them.
+\end{proof}
+
+\begin{proof}[Proof of finite polylogarithmic reduction]
+For distinct nodes, the rational principal part is
+\begin{equation}\label{gcx:partial-fractions}
+ \frac{P_S(x;\boldsymbol s)}{D_S(x;\boldsymbol s)}
+  =\sum_{i\in S}\sum_{k=1}^{d_i}
+       \frac{b_{S,i,k}(\boldsymbol s)}{(x+s_i)^k},
+\end{equation}
+where
+\begin{equation}\label{gcx:b-coefficient}
+ b_{S,i,k}=\frac1{(d_i-k)!}
+ \left.\partial_x^{d_i-k}
+ \frac{q_S(x;\boldsymbol s)}
+      {\prod_{j\in S\setminus\{i\}}(x+s_j)^{d_j}}
+ \right|_{x=-s_i}.
+\end{equation}
+These are finite expressions in the stated tail and weight data.
+Translate to $y=x+b_S$.  All letters $-a_i$, where
+$a_i=s_i-b_S\ge0$, lie on the nonpositive real axis.  For $a>0$,
+\[
+ \log(y+a)=\log a+G(-a;y),\qquad
+ G(-a;y)=\int_0^y\frac{\dd t}{t+a},
+\]
+while $G(0;y)=\log y$ uses its usual tangential normalization.
+The standard iterated-integral shuffle rule \cite{goncharov} expands each logarithmic product into words of
+length at most $M$.  A simple pole in \eqref{gcx:partial-fractions}
+prepends one letter and therefore gives weight at most $M+1$.
+
+For a pole of order $k\ge2$, integration by parts gives a boundary term
+of logarithmic degree at most $M$ and rational integrals of logarithmic
+degree at most $M-1$.  Repeat after partial fractions; induction on $M$
+terminates, even if a repeated pole is transferred to another letter.
+This proves the same weight bound.  Lower and upper finite parts are the
+constant terms of the resulting iterated integrals at $0$ and $\infty$;
+the real integral in \eqref{gcx:T} fixes their branches without crossing
+any interior letter.
+
+When all $m_i=0$, every logarithmic polynomial is constant.  The upper
+primitive has zero constant term, and evaluation at the lower endpoint
+gives precisely the sums of logarithms and reciprocal powers in the
+index-zero repeated-pole formula.  This proves exact compatibility with
+the previous convention.
+\end{proof}
+
+\begin{remark}[What regularity has been proved]\label{gcx:regularity}
+The result asserts continuity after the full subtraction at arbitrary
+Stieltjes indices.  The residual logarithmic integral need not be
+analytic in the separations.  When all $m_i=0$, its integrand is analytic
+and the lower endpoint is an analytic coordinate on each ordering
+chamber; then the earlier stronger analytic-extension statement is
+recovered.  No differentiability of the higher-index remainder is used
+to manufacture contact terms.
+\end{remark}

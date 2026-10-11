@@ -1,0 +1,164 @@
+\section{Source audit and precise corrections}
+\label{powers:sec:audit}
+
+\subsection{Scope of the repository audit}
+
+The source baseline is ProveIt commit
+\texttt{b7667ae40a2957eed9a53d8559d53a3ee20dd1c1}, including the
+current manuscript and the incoming archives inspected for this
+continuation \cite{Repo}. The review concentrated on the polynomially
+weighted resolvent, the multiple-Gamma normalization, continuous
+resolvent powers, collision finite parts, and the quartic
+power-to-harmonic bridge \cite{Quartic,Barnes}. No new false theorem
+was identified in the selected repository statements used here.
+This is a targeted mathematical audit, not a certification of every
+chapter of the complete manuscript. The two corrections below concern
+precisely identified external sources.
+
+The finite-part convention remains the original unit coordinate:
+\(\FP\int_0^1 f(x)\,\dd x\) retains the constant coefficient of
+\(\int_\epsilon^1 f(x)\,\dd x\) after its explicit local power and
+logarithmic terms are separated. It is not an unspecified analytic
+regularization. Likewise, a constant coefficient in a spectral Laurent
+series or in a polynomial asymptotic expansion in \(\log N\) is a
+different operation until a comparison theorem proves equality. In the
+present argument the normalized contour formula and finite summation
+by parts provide that comparison. Matching principal parts alone would
+leave an undetermined entire remainder and would not prove the moment
+identity.
+
+\subsection{A reversed pair of integrals in a Tornheim source}
+
+The author-hosted version of Bailey and Borwein's
+\emph{Computation and theory of Mordell--Tornheim--Witten sums II},
+dated 5 May 2014, contains a sign reversal in equation~(110), on printed
+page~24 \cite{BB2014}. Its preceding equation~(109) is correct. The
+correction is recorded specifically for this inspected dated version;
+no claim is made here about an independently uninspected final
+typesetting.
+
+For \(\Re a>0\), put
+\begin{align}
+ A(a)&=\frac1{\Gamma(a+1)}\int_0^1
+       \frac{(-\log u)^a[-\log(1-u)]}{1-u}\,\dd u,
+       \label{powers:audit:A}\\
+ B(a)&=\int_0^1\Li_a(u)
+                  \frac{-\log(1-u)}u\,\dd u.
+       \label{powers:audit:B}
+\end{align}
+The power of \(-\log u>0\) uses its real logarithm. Both integrals
+converge absolutely and depend holomorphically on \(a\) in this
+half-plane.
+
+\begin{proposition}[Corrected integral identity]
+\label{powers:audit:BB-correction}
+For \(\Re a>0\),
+\begin{equation}
+ \boxed{\displaystyle
+ \zeta(a+2)=B(a)-A(a).}
+ \label{powers:audit:correct-order}
+\end{equation}
+Equation~(110) of the specified source prints \(A(a)-B(a)\).
+\end{proposition}
+
+\begin{proof}
+Write \(H_m=\sum_{j=1}^m j^{-1}\) and
+\(T(a,1,1)=\sum_{m,n\ge1}m^{-a}n^{-1}(m+n)^{-1}\).
+For each positive integer \(m\), the exact finite calculation
+\[
+ \sum_{n=1}^N\frac1{n(m+n)}
+ =\frac{H_N+H_m-H_{N+m}}m
+\]
+gives \(\sum_{n\ge1}1/[n(m+n)]=H_m/m\). Therefore
+\begin{equation}
+ T(a,1,1)=\sum_{m\ge1}\frac{H_m}{m^{a+1}}
+         =\zeta(a+1,1)+\zeta(a+2),
+ \label{powers:audit:direct-T}
+\end{equation}
+where \(\zeta(s,1)=\sum_{m\ge1}H_{m-1}m^{-s}\).
+These series converge absolutely when \(\Re a>0\).
+Expanding the polylogarithm and logarithm in
+\eqref{powers:audit:B} gives \(B(a)=T(a,1,1)\), while
+\[
+ \frac{-\log(1-u)}{1-u}=\sum_{n\ge1}H_nu^n,
+ \qquad
+ \int_0^1u^n(-\log u)^a\,\dd u
+       =\frac{\Gamma(a+1)}{(n+1)^{a+1}}
+\]
+give \(A(a)=\zeta(a+1,1)\). Absolute convergence justifies all
+interchanges, proving \eqref{powers:audit:correct-order}.
+\end{proof}
+
+There is an exact elementary counterexample to the printed sign.
+At \(a=1\), substitution followed by the geometric series gives
+\[
+ A(1)=\int_0^1\frac{\log v\log(1-v)}v\,\dd v=\zeta(3),
+ \qquad
+ B(1)=\int_0^1\frac{\log^2v}{1-v}\,\dd v=2\zeta(3).
+\]
+Thus its printed right side is \(-\zeta(3)\), whereas its left
+side is \(\zeta(3)>0\). This corrects the integral line; it does
+not invalidate equation~(109) or the spectral derivative identities
+obtained from that correct equation. The proof above also establishes
+the whole half-plane identity directly, without a Carlson-theorem
+argument.
+
+\subsection{A distinction between multiple and ordinary zeta reductions}
+
+On printed page~205 of \emph{Nonlinear Euler sums}, Mez\H{o}
+states that it is not known whether all the nonlinear sums under
+discussion can be expressed as multiple zeta values \cite{Mezo2014}.
+For convergent products of positive-integer generalized harmonic
+numbers, this target class is too broad: a finite multiple-zeta
+reduction follows directly from ordering their summation indices.
+
+To make the correction precise, use the strict finite sums
+\[
+ H_n(b_1,\ldots,b_\ell)
+ =\sum_{n\ge j_1>\cdots>j_\ell\ge1}
+       j_1^{-b_1}\cdots j_\ell^{-b_\ell}.
+\]
+For positive integers \(a_1,\ldots,a_d\), expand
+\(\prod_{i=1}^d H_n^{(a_i)}\) by the ordered blocks of equal
+indices. Every ordered set partition
+\((B_1,\ldots,B_\ell)\) of \(\{1,\ldots,d\}\) contributes
+\(H_n(b_1,\ldots,b_\ell)\), with
+\(b_j=\sum_{i\in B_j}a_i\). This is the finite stuffle product.
+For \(q\ge2\), each resulting term satisfies
+\begin{equation}
+ \sum_{n\ge1}\frac{H_n(b_1,\ldots,b_\ell)}{n^q}
+ =\zeta(q,b_1,\ldots,b_\ell)
+       +\zeta(q+b_1,b_2,\ldots,b_\ell).
+ \label{powers:audit:finite-stuffle}
+\end{equation}
+The two terms distinguish \(n>j_1\) and \(n=j_1\).
+All sums are absolutely convergent; hence this is a finite exact
+reduction for every such nonlinear Euler sum.
+
+For example,
+\begin{align}
+ \sum_{n\ge1}\frac{H_n^2}{n^2}
+ &=2\zeta(2,1,1)+2\zeta(3,1)+\zeta(2,2)+\zeta(4)
+   =\frac{17}{4}\zeta(4).
+ \label{powers:audit:example}
+\end{align}
+The first equality already demonstrates the required finite
+multiple-zeta reduction; the last equality uses the familiar
+weight-four evaluations. A precise replacement for the source's
+wording should identify a smaller target, such as ordinary zeta
+values and their products, or a specified class of linear Euler
+sums. Formula~\eqref{powers:audit:finite-stuffle} does not establish
+either stronger reduction in general. It is a classical algebraic
+mechanism, not a new arithmetic-independence result.
+
+\subsection{Unchanged conjecture status}
+
+The fifth-power identity and the algorithm for arbitrary integer
+powers establish the finite harmonic spectral formulas stated in
+this article. They do not prove that every retained spectral
+derivative reduces to ordinary constants. A nonzero coordinate in a
+specified formal presentation also does not establish arithmetic
+independence of its numerical value. The current Gaussian
+\(S_6\) and revised \(S_8\) identities in the pinned manuscript
+remain conjectures \cite{Repo}; none of the arguments here changes
+their status.

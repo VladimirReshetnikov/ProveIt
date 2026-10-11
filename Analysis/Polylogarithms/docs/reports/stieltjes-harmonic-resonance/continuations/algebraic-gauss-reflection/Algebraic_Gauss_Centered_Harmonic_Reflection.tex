@@ -1,0 +1,1561 @@
+% Single-file source, flattened from the modular article sources.
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm,mathrsfs}
+\usepackage{booktabs,array,longtable}
+\usepackage{microtype}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{xurl}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,
+ pdftitle={Algebraic Gauss Residues and Centered Harmonic Reflection},
+ pdfauthor={Research continuation prepared for the ProveIt project}}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Algebraic residues and harmonic reflection}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\usepackage{enumitem}
+\setlist{itemsep=3pt,topsep=5pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Bcal}{\mathcal B}
+\newcommand{\Ccal}{\mathcal C}
+\newcommand{\Dcal}{\mathcal D}
+\newcommand{\FP}{\operatorname{FP}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\e}{\mathrm e}
+\newcommand{\stirling}[2]{\left\{\begin{matrix}#1\\#2\end{matrix}\right\}}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\coeff}[2]{[#1^{#2}]}
+\newcommand{\sourcecommit}{\texttt{dd78c6c9079e1e4a32600d8f9400667b4de8bd54}}
+\allowdisplaybreaks[2]
+\begin{document}
+\begin{titlepage}
+\vspace*{0.35in}
+{\small\scshape ProveIt / Analysis / Polylogarithms\par}
+\vspace{0.5in}
+{\huge\bfseries Algebraic Gauss Residues\par}
+\vspace{0.12in}
+{\huge\bfseries and Centered Harmonic Reflection\par}
+\vspace{0.35in}
+{\Large Finite Stirling formulas, all-depth trivial zeros,\par
+Gamma generating functions, and Stieltjes identities\par}
+\vspace{0.5in}
+{\large Research continuation prepared for the ProveIt project\par}
+\vspace{0.15in}
+{10 October 2026\par}
+\vspace{0.55in}
+\begin{abstract}
+An explicit research question in the repository asks for a finite algebraic
+proof of a Bernoulli-coefficient identity previously obtained from residues
+of Gauss summation. We give such a proof, using integer-root interpolation
+and a degree argument. We then evaluate the entire resonant coefficient
+tail: its normalized exponential generating function is
+$\e^{ct}{}_2F_1(a,b;r+1;1-\e^t)$, and every coefficient has a finite
+Stirling-number formula. The coefficients form an Appell family in the
+comparison shift.
+
+A second development uses the moving reflection $a\mapsto1+u-a$ in the
+complex-order Barnes--Hurwitz family. Its centered harmonic derivatives
+have a common holomorphic zero at every nonpositive even integer. We prove
+that the centering is uniquely forced by the corresponding all-depth
+condition; for affine shifts, only the first two depths are needed.
+An exact Gamma quotient evaluates an infinite family of convergent
+harmonic sums at outer exponent two, with an explicit zeta-cumulant
+formula at every depth. We also give shifted, all-order logarithmic
+polygamma sums involving generalized Stieltjes constants and Hurwitz
+zeta derivatives, ordinary antiderivatives, and an unequal-frequency
+multivariate reflection theorem.
+
+The existing fixed-shift Laurent theorem is acknowledged as prior work,
+not relabeled as a new result. A version-specific Stieltjes indexing
+error in a cited preprint is corrected. All-index claims are proved analytically
+or algebraically. The accompanying 436 exact checks and 30 numerical
+comparisons are separate regression evidence. Global priority is not
+asserted, and neither S6 nor S8 is proved here.
+\end{abstract}
+\vfill
+\noindent\small Inspected scientific baseline: \sourcecommit.\\
+The report and code are self-contained; a proposed integration map and
+source-audit notes accompany the article.
+\end{titlepage}
+\begingroup
+\fontsize{9}{10.4}\selectfont
+\tableofcontents
+\endgroup
+\clearpage
+\section{Scope, provenance, and principal conclusions}
+\label{agrc:scope}
+
+The repository's polylogarithm programme already includes a substantial
+calculus of Hurwitz jets, harmonic Dirichlet series, Gamma quotients,
+Stieltjes constants, and regularized correlations. Its current reading
+artifact distinguishes accepted scientific material from queued incoming
+reports \cite{repo-manuscript}. That distinction is retained here.
+
+The most specific problem addressed is the request in the
+\emph{Stieltjes--harmonic identities} research agenda for a direct finite
+Bernoulli-polynomial proof of the Gauss residue identity
+\cite{repo-agenda,repo-gauss}. The identity was already proved there
+analytically; the open task was an independent algebraic explanation.
+Theorem~\ref{agrc:residue} supplies that explanation. More importantly,
+Theorem~\ref{agrc:tail} evaluates every coefficient after the residue,
+not only the residue itself. This is the main algebraic extension.
+
+The harmonic part starts from a different preserved report, whose
+all-depth, outer-shifted Laurent theorem already determines the principal
+and constant terms at nonpositive integers \cite{repo-laurent}. We use
+that theorem as established background and give a short independent
+local argument where needed. The extension developed here is the
+\emph{moving} reflection and centering: the shift varies with the
+harmonic-order parameter before coefficients are extracted. This
+produces common holomorphic zeros of all depths, an elementary
+uniqueness theorem, a Gamma generating function for convergent sums,
+and an unequal-frequency multivariate version.
+
+The generating Barnes--Hurwitz family itself is classical. Young's
+height-one generating theorem \cite{Young2024} is a direct antecedent;
+related Laurent and harmonic-zeta work includes
+\cite{Young2023,Can2024}. Standard Bernoulli and Hurwitz conventions are
+those in \cite{DLMF24,DLMF25}. We do not infer global originality from
+failure to locate an identical formula. The new statements are presented
+as proved continuations relative to the inspected textual sources, with
+an explicit overlap map in the accompanying audit.
+
+\subsection{What is proved, and what is not}
+
+The article establishes the following interconnected conclusions.
+\begin{enumerate}[label=\arabic*.]
+\item An elementary residue proof and a finite formula for the full
+resonant Gauss tail, including shift transport and mixed parameter jets.
+\item A moving-reflection theorem, common all-depth trivial zeros,
+and uniqueness of the centered affine shift.
+\item An every-depth zeta-cumulant evaluation of convergent harmonic sums;
+a compatible centered Stieltjes normalization; and all-order shifted
+polygamma--logarithm identities with ordinary antiderivatives.
+\item A reflection theorem for any finite number of positive, unequal
+frequencies and independent harmonic-depth parameters.
+\end{enumerate}
+No claim is made that individual colored polylogarithms reduce to depth
+one, that all higher harmonic Stieltjes coefficients have finite Gamma
+reductions, or that S6 or S8 vanishes. The incoming directory was inspected
+as a queue; its binary archives were not all unpacked and audited in this
+run. This is not a completeness claim about that queue.
+
+\section{Conventions and the harmonic Barnes family}
+\label{agrc:preliminaries}
+
+For $n,r\geq0$, put
+\begin{equation}\label{agrc:elementary}
+ E_{n,r}=[u^r]\prod_{j=1}^{n}\left(1+\frac uj\right),
+ \qquad E_{n,0}=1.
+\end{equation}
+An empty product is one. Thus
+\begin{align}
+ E_{n,1}&=H_n,\notag\\
+ E_{n,2}&=\frac{H_n^2-H_n^{(2)}}2,\notag\\
+ E_{n,3}&=\frac{H_n^3-3H_nH_n^{(2)}+2H_n^{(3)}}6,
+ \qquad H_n^{(j)}=\sum_{k=1}^n k^{-j}.\label{agrc:elementary-examples}
+\end{align}
+With $\Re a>0$, define
+\begin{equation}\label{agrc:BZ}
+ \Bcal(s,u;a)=\sum_{n=0}^{\infty}
+       \frac{(1+u)_n}{n!(n+a)^s},
+ \qquad Z_r(s,a)=[u^r]\Bcal(s,u;a).
+\end{equation}
+The series for $Z_r$ converges normally for $\Re s>1$; the bivariate
+series converges normally on compact subsets of, for example,
+$|u|<\delta$, $\Re s>1+\delta$, $\Re a>0$.
+All powers of $n+a$ use the principal logarithm. At $a=1$,
+$Z_r(s,1)=\zeta(s,\{1\}^r)$ in the convention with the largest index first.
+
+\begin{lemma}[Mellin representation and uniform subtraction]
+\label{agrc:mellin}
+In the common convergence domain,
+\begin{equation}\label{agrc:mellin-eq}
+ \Gamma(s)\Bcal(s,u;a)
+ =\int_0^\infty t^{s-1}\e^{-at}(1-\e^{-t})^{-1-u}\dd t.
+\end{equation}
+Define the analytic heat coefficients at $t=0$ by
+\begin{equation}\label{agrc:heat}
+ \phi(t,u,a)=\e^{-at}\left(\frac{t}{1-\e^{-t}}\right)^{1+u}
+       =\sum_{j\geq0}c_j(u,a)t^j.
+\end{equation}
+For every $K\geq1$,
+\begin{equation}\label{agrc:subtraction}
+ \Gamma(s)\Bcal(s,u;a)
+  =\sum_{j=0}^{K-1}\frac{c_j(u,a)}{s-1-u+j}+J_K(s,u;a),
+\end{equation}
+where $J_K$ is jointly holomorphic for $\Re(s-u)>1-K$, locally in
+$\Re a>0$. Increasing $K$ continues the same meromorphic family.
+\end{lemma}
+\begin{proof}
+The binomial series is
+$\sum_{n\geq0}(1+u)_n\e^{-nt}/n!=(1-\e^{-t})^{-1-u}$.
+Termwise integration is justified by absolute convergence and the
+Laplace integral for $(n+a)^{-s}$. Split the integral at $t=1$.
+On $(0,1)$, subtract the first $K$ terms of \eqref{agrc:heat}; the
+remainder is $O(t^K)$ uniformly on compact parameter sets.
+The remaining small-$t$ integrand is bounded by a constant times
+$t^{\Re(s-u)-2+K}$. Parameter derivatives add only fixed powers of
+$\log t$ and preserve integrability on smaller compact subsets.
+At infinity the positive real part of $a$ gives exponential decay,
+also after differentiation. Integrating the subtracted monomials gives
+\eqref{agrc:subtraction}. The formulas agree in the original half-plane,
+so their continuations are compatible.
+\end{proof}
+
+The heat coefficients are rational polynomials in $u,a$. A convenient
+exact recursion follows from
+\begin{equation}\label{agrc:heat-log}
+ \log\phi(t,u,a)=\left(\frac{1+u}{2}-a\right)t
+ -(1+u)\sum_{k\geq1}\frac{B_{2k}}{2k(2k)!}t^{2k}.
+\end{equation}
+This is an analytic germ, not an asymptotic series. The Bernoulli
+numbers use $B_1=-1/2$.
+
+We will also use the standard Laurent convention
+\begin{equation}\label{agrc:Stieltjes}
+ \zeta(1+\varepsilon,a)=\varepsilon^{-1}
+ +\sum_{j\geq0}\frac{(-1)^j\gamma_j(a)}{j!}\varepsilon^j,
+ \qquad \gamma_0(a)=-\psi(a).
+\end{equation}
+A finite part always denotes a Laurent coefficient of a specified
+meromorphic function; it is not an ordinary sum of a divergent series.
+
+\section{A finite algebraic proof of the Gauss residue identity}
+\label{agrc:gauss-residue-section}
+
+The coefficients in this section are different from the heat coefficients
+$c_j$ above. For indeterminates $a,b,s,c$, define
+\begin{align}
+ D_j(a,b,s;c)=\frac{(-1)^{j+1}}{j(j+1)}
+ \bigl(&B_{j+1}(a-c)+B_{j+1}(b-c)\notag\\
+       &-B_{j+1}(a+b+s-c)-B_{j+1}(1-c)\bigr),\label{agrc:D}\\
+ \sum_{m\geq0}A_m(a,b,s;c)t^m
+ &=\exp\left(\sum_{j\geq1}D_j(a,b,s;c)t^j\right).
+ \label{agrc:A}
+\end{align}
+The last identity is formal. In particular,
+\begin{equation}\label{agrc:A-rec}
+ A_0=1,\qquad mA_m=\sum_{j=1}^m jD_j A_{m-j}.
+\end{equation}
+For every fixed $m$, this is a finite polynomial definition over $\Q$.
+
+\begin{lemma}[Exact comparison-shift transport]
+\label{agrc:transport}
+For $m\geq1$,
+\begin{equation}\label{agrc:transport-derivative}
+ \partial_c A_m(a,b,s;c)=(s+m)A_{m-1}(a,b,s;c).
+\end{equation}
+Consequently, for an arbitrary shift $h$,
+\begin{equation}\label{agrc:transport-finite}
+ A_m(a,b,s;c+h)=\sum_{j=0}^{m}
+        \binom{s+m}{j}h^j A_{m-j}(a,b,s;c).
+\end{equation}
+The binomial coefficient here is its polynomial meaning.
+\end{lemma}
+\begin{proof}
+The Bernoulli derivative formula gives
+$\partial_cD_1=s+1$ and
+$\partial_cD_j=(j-1)D_{j-1}$ for $j\geq2$.
+Writing the formal series in \eqref{agrc:A} as $G(t)$ gives
+$\partial_cG=(s+1)tG+t^2\partial_tG$. Coefficient comparison proves
+\eqref{agrc:transport-derivative}. Iterating that derivative and applying
+the finite Taylor formula proves \eqref{agrc:transport-finite}.
+\end{proof}
+
+At $s=-r$, the coefficient $A_r$ is already seen to be independent of $c$.
+The following argument determines it without Gamma functions, infinite
+sums, or meromorphic residues.
+
+\begin{theorem}[Algebraic Gauss residue identity]
+\label{agrc:residue}
+For every integer $r\geq0$ and all complex $a,b,c$,
+\begin{equation}\label{agrc:residue-formula}
+ \boxed{\displaystyle
+ A_r(a,b,-r;c)=\frac{(-1)^r}{r!}(1-a)_r(1-b)_r.}
+\end{equation}
+\end{theorem}
+\begin{proof}
+The case $r=0$ is immediate. Suppose $r\geq1$. Each $D_j$ at $s=-r$
+has total degree at most $j+1$ in $a,b$, with coefficients in $\Q[c]$.
+Every product contributing to $A_r$ therefore has degree at most $2r$.
+
+Fix an integer $B$ with $1\leq B\leq r$ and put $b=B$.
+The finite-difference identity
+$B_{j+1}(x+M)-B_{j+1}(x)=(j+1)\sum_{h=0}^{M-1}(x+h)^j$
+gives
+\begin{equation}\label{agrc:D-root}
+ D_j(a,B,-r;c)=\frac{(-1)^{j+1}}j
+ \left(\sum_{h=1}^{r-B}(a-c-h)^j+
+       \sum_{h=1}^{B-1}(h-c)^j\right).
+\end{equation}
+Exponentiating the formal logarithms yields the finite product
+\begin{equation}\label{agrc:collapse}
+ \sum_{m\geq0}A_m(a,B,-r;c)t^m
+ =\prod_{h=1}^{r-B}(1+(a-c-h)t)
+       \prod_{h=1}^{B-1}(1+(h-c)t).
+\end{equation}
+Its degree is at most $r-1$. Hence $A_r(a,B,-r;c)=0$.
+Symmetry in $a,b$ supplies the roots $a=1,\ldots,r$ as well.
+Thus $(1-a)_r(1-b)_r$ divides $A_r$ in $\Q[c,a,b]$.
+The degree bound makes the quotient a polynomial in $c$ alone.
+
+Only $D_1^r/r!$ can contribute total degree $2r$: using any $D_j$ with
+$j\geq2$ makes the degree strictly smaller. The degree-two homogeneous
+part of $D_1(a,b,-r;c)$ in $a,b$ is $-ab$. Therefore the coefficient
+of $a^rb^r$ in $A_r$ is $(-1)^r/r!$. The coefficient of $a^rb^r$ in
+$(1-a)_r(1-b)_r$ is one. This determines the quotient and proves the
+identity, including its independence of $c$.
+\end{proof}
+
+\begin{remark}
+The residue identity in \cite{repo-gauss} was already an analytic theorem.
+The proof above resolves the separate finite-algebraic proof request in
+\cite{repo-agenda}. The following section goes beyond that request by
+finding every coefficient in the resonant tail.
+\end{remark}
+
+\section{The entire resonant tail: Stirling formulas and an Appell family}
+\label{agrc:tail-section}
+
+Let $\stirling{\ell}{j}$ be a Stirling number of the second kind, with
+$\stirling00=1$. Define the finite polynomial
+\begin{equation}\label{agrc:Q-definition}
+ Q_{r,k}(a,b;c)=\sum_{\ell=0}^k\binom{k}{\ell}c^{k-\ell}
+       \sum_{j=0}^{\ell}(-1)^j\stirling{\ell}{j}
+                 \frac{(a)_j(b)_j}{(r+1)_j}.
+\end{equation}
+Because $r+1$ is a positive integer, there is no singular denominator.
+
+\begin{theorem}[Finite formula for every resonant coefficient]
+\label{agrc:tail}
+For all integers $r,k\geq0$,
+\begin{equation}\label{agrc:tail-formula}
+ \boxed{\displaystyle
+ A_{r+k}(a,b,-r;c)=
+ \frac{(-1)^r}{r!}(1-a)_r(1-b)_r Q_{r,k}(a,b;c).}
+\end{equation}
+Equivalently, the normalized tail has the convergent local exponential
+ generating function
+\begin{equation}\label{agrc:tail-hypergeometric}
+ \sum_{k\geq0}Q_{r,k}(a,b;c)\frac{t^k}{k!}
+       =\e^{ct}\,{}_2F_1(a,b;r+1;1-\e^t).
+\end{equation}
+It satisfies
+\begin{equation}\label{agrc:Appell}
+ \partial_c Q_{r,k}=kQ_{r,k-1},\qquad
+ Q_{r,k}(c+h)=\sum_{j=0}^k\binom{k}{j}h^jQ_{r,k-j}(c).
+\end{equation}
+\end{theorem}
+\begin{proof}
+First take $c=0$. The finite Gamma-ratio asymptotic expansion used in
+\cite{repo-gauss}, or its formal Bernoulli derivation, identifies
+\begin{equation}\label{agrc:formalW}
+ \mathscr W(x)=x^{r-1}\sum_{j\geq0}A_j(a,b,-r;0)x^{-j}
+\end{equation}
+as the formal Laurent expansion of
+$\Gamma(x+a)\Gamma(x+b)/[\Gamma(x+1)\Gamma(x+a+b-r)]$.
+For parameters in a right half-plane this follows from the usual finite
+log-Gamma expansion; each coefficient identity then extends polynomially
+to all $a,b$. The Gamma recurrence consequently gives the formal identity
+\begin{equation}\label{agrc:W-recurrence}
+ (x+1)(x+a+b-r)\mathscr W(x+1)
+       =(x+a)(x+b)\mathscr W(x).
+\end{equation}
+Only this formal recurrence is used in the rest of the proof.
+
+Discard the polynomial part of $\mathscr W$ and send
+$x^{-k-1}$ to $t^k/k!$. Write the resulting formal power series as
+\begin{equation}\label{agrc:T-borel}
+ T(t)=\sum_{k\geq0}A_{r+k}(a,b,-r;0)\frac{t^k}{k!}.
+\end{equation}
+Multiplication by $x$ becomes $\partial_t$ after polynomial parts are
+discarded; replacing $x$ by $x+1$ becomes multiplication by $\e^{-t}$.
+These statements follow directly on each monomial $x^{-k-1}$.
+Polynomial terms remain polynomial under both operations, so their
+omission does not affect the transformed identity. With $D=\partial_t$,
+\eqref{agrc:W-recurrence} becomes
+\[
+ (D+1)(D+a+b-r)(\e^{-t}T)=(D+a)(D+b)T.
+\]
+After simplification,
+\begin{equation}\label{agrc:T-ODE}
+ (1-\e^t)T''+
+       (a+b-r-1-(a+b)\e^t)T'-ab\e^tT=0.
+\end{equation}
+Set $z=1-\e^t$. For $T(t)=F(z)$ this is Gauss's equation
+\begin{equation}\label{agrc:Gauss-ODE}
+ z(1-z)F''+[r+1-(a+b+1)z]F'-abF=0.
+\end{equation}
+The unique formal solution with constant term $F(0)$ is
+$F(0){}_2F_1(a,b;r+1;z)$: comparison of successive coefficients divides
+only by $(j+1)(r+1+j)$, which is nonzero. Theorem~\ref{agrc:residue}
+determines $F(0)=A_r$. This proves \eqref{agrc:tail-hypergeometric}
+at $c=0$, with the residue prefactor restored.
+
+At $s=-r$ and $m=r+k$, \eqref{agrc:transport-finite} has
+$\binom{s+m}{j}=\binom{k}{j}$, which vanishes for $j>k$.
+Thus comparison-shift transport multiplies the exponential generating
+function of the tail by $\e^{ct}$.
+Finally,
+$(\e^t-1)^j=j!\sum_{\ell\geq j}\stirling{\ell}{j}t^\ell/\ell!$
+converts the hypergeometric series into \eqref{agrc:Q-definition}.
+This proves every assertion. Local convergence follows, for example,
+in a sufficiently small disc where $|1-\e^t|<1$.
+\end{proof}
+
+This is an exponential generating function for the normalized tail,
+not a claim of convergence of the original inverse-power expansion
+\eqref{agrc:formalW}. The latter remains a formal asymptotic series.
+The explicit polynomials begin with
+\begin{align}
+ Q_{r,0}&=1,\notag\\
+ Q_{r,1}&=c-\frac{ab}{r+1},\notag\\
+ Q_{r,2}&=c^2-\frac{2ab}{r+1}c
+      +\frac{ab(ab+a+b-r-1)}{(r+1)(r+2)}.
+ \label{agrc:Q-examples}
+\end{align}
+For $r=1$ this gives
+\[
+ A_2(a,b,-1;c)=-(1-a)(1-b)\left(c-\frac{ab}{2}\right).
+\]
+Unlike a recursive Bernoulli construction, \eqref{agrc:Q-definition}
+has a finite triangular formula whose summation ranges are immediately
+visible. It also gives the ordinary polynomial primitives
+$\int Q_{r,k}(c)\dd c=Q_{r,k+1}(c)/(k+1)+\mathrm{constant}$.
+
+\subsection{Integer-root collapse and nonsingular parameter jets}
+
+Equation~\eqref{agrc:collapse} proves more than the vanishing of $A_r$:
+if one upper parameter lies in $\{1,\ldots,r\}$, every $A_m$ with
+$m\geq r$ vanishes at $s=-r$. The tail formula exhibits the full common
+factor responsible for this collapse.
+
+Write $P_r(a)=(1-a)_r$. At an integer $A\in\{1,\ldots,r\}$, the
+following analytic germ avoids logarithmic differentiation through a
+zero:
+\begin{align}
+ P_r(A+x)={}&(-1)^A(A-1)!(r-A)!\,x\notag\\
+ &\times\exp\left[-\sum_{j\geq1}
+  \frac{H_{r-A}^{(j)}+(-1)^jH_{A-1}^{(j)}}j x^j\right].
+ \label{agrc:root-jets}
+\end{align}
+To prove it, isolate the factor $-x$ in $\prod_{k=1}^r(k-A-x)$;
+the other factors are finite products of $1+x/j$ and $1-x/j$.
+Thus all mixed jets of \eqref{agrc:tail-formula} at integer roots are
+finite harmonic polynomials. For the residue itself,
+\begin{equation}\label{agrc:double-root}
+ \left.\partial_a\partial_b A_r(a,b,-r;c)\right|_{a=A,b=B}
+ =\frac{(-1)^{r+A+B}}{r!}
+ (A-1)!(r-A)!(B-1)!(r-B)!.
+\end{equation}
+No singular polygamma value is involved.
+
+The normal, or $s$-direction, jets are different. For example,
+\begin{equation}\label{agrc:normal-transport}
+ \left.\partial_c\partial_s^\ell A_r\right|_{s=-r}
+ =\left.\ell\,\partial_s^{\ell-1}A_{r-1}\right|_{s=-r}
+ \qquad(\ell\geq1).
+\end{equation}
+Therefore comparison-shift independence of $A_r$ on the resonant
+hyperplane does \emph{not} imply independence of its normal derivatives.
+The distinction matters in Stieltjes coefficient extraction.
+
+\section{Stieltjes jets and an all-order shifted logarithmic identity}
+\label{agrc:Stieltjes-sums}
+
+\subsection{How the tail enters resonant Gauss summation}
+
+For $\Re a,\Re b,\Re c>0$, set
+\[
+ W_n(a,b;s)=\frac{\Gamma(n+a)\Gamma(n+b)}
+                 {\Gamma(n+a+b+s)\Gamma(n+1)}.
+\]
+The reciprocal Gamma in the denominator is understood as an entire
+function. The normally convergent, successively subtracted series
+\begin{equation}\label{agrc:Gauss-subtracted}
+ \mathcal F^{[M]}(s)=\sum_{n\geq0}
+ \left[W_n(a,b;s)-\sum_{j=0}^M A_j(a,b,s;c)(n+c)^{-1-s-j}\right]
+\end{equation}
+is holomorphic for $\Re s>-M-1$. Its exact value is
+\begin{equation}\label{agrc:Gauss-closed}
+ \mathcal F^{[M]}(s)=
+ \frac{\Gamma(a)\Gamma(b)\Gamma(s)}{\Gamma(a+s)\Gamma(b+s)}
+       -\sum_{j=0}^M A_j(a,b,s;c)\zeta(1+s+j,c).
+\end{equation}
+This is the existing uniform subtraction theorem of \cite{repo-gauss}.
+For clarity, its justification is finite-order, locally uniform
+log-Gamma asymptotics followed by Gauss summation in $\Re s>0$ and
+analytic continuation. The summand in \eqref{agrc:Gauss-subtracted}
+is $O(n^{-M-2-\Re s})$ uniformly on compact parameter sets.
+
+Here is the precise coefficient rule, useful for applying the new tail
+formula without losing a Stieltjes term. Fix $r\leq M$, and write
+\begin{align*}
+ A_j(a,b,-r+\varepsilon;c)&=\sum_{\ell\geq0}a_{j,\ell}\varepsilon^\ell,\\
+ R(\varepsilon)&=\varepsilon
+ \frac{\Gamma(a)\Gamma(b)\Gamma(-r+\varepsilon)}
+      {\Gamma(a-r+\varepsilon)\Gamma(b-r+\varepsilon)}
+       =\sum_{\ell\geq0}R_\ell\varepsilon^\ell.
+\end{align*}
+The germ $R$ is analytic, including at zeros of either reciprocal Gamma.
+For $k\geq0$, direct Laurent multiplication gives
+\begin{align}
+ [\varepsilon^k]\mathcal F^{[M]}(-r+\varepsilon)
+ ={}&R_{k+1}-a_{r,k+1}
+ -\sum_{\ell=0}^k a_{r,\ell}
+           \frac{(-1)^{k-\ell}\gamma_{k-\ell}(c)}{(k-\ell)!}\notag\\
+ &-\sum_{\substack{0\leq j\leq M\\j\ne r}}\sum_{\ell=0}^k
+   a_{j,\ell}\frac{\zeta^{(k-\ell)}(1-r+j,c)}{(k-\ell)!}.
+ \label{agrc:Gauss-jets}
+\end{align}
+The superscript on $\zeta$ denotes spectral differentiation.
+Theorem~\ref{agrc:tail} now gives every $a_{r+j,0}$ by a finite Stirling
+sum. The coefficients $a_{r+j,\ell}$ for $\ell>0$ still require normal
+parameter differentiation; replacing them by tangential derivatives of
+the resonant formula would be incorrect.
+
+\subsection{A shifted Beta--Stieltjes generating theorem}
+
+The following especially simple specialization gives ordinary convergent
+identities at every logarithmic order. Define
+\begin{equation}\label{agrc:Pell}
+ P_\ell(x)=[\varepsilon^\ell]\frac{\Gamma(x)}{\Gamma(x+\varepsilon)}
+ =\frac1{\ell!}Y_\ell\bigl(-\psi(x),-\psi'(x),\ldots,
+                                      -\psi^{(\ell-1)}(x)\bigr),
+\end{equation}
+where $Y_\ell$ is the complete exponential Bell polynomial and $P_0=1$.
+Equivalently, the first equality defines the polynomials without Bell
+notation. Set $b_{-1}(x)=1$, $b_j(x)=(-1)^j\gamma_j(x)/j!$ for $j\geq0$,
+and $b_j(x)=0$ for $j<-1$.
+
+\begin{theorem}[All shifted logarithmic polygamma sums]
+\label{agrc:beta-stieltjes}
+For $\Re x>0$, the series
+\begin{align}
+ \Dcal_x(\varepsilon)=\sum_{n\geq0}\bigg[
+ &\frac{\Gamma(n+x)}{\Gamma(n+x+\varepsilon)}
+ -(n+x)^{-\varepsilon}\notag\\
+ &-\frac{\varepsilon(1-\varepsilon)}2(n+x)^{-1-\varepsilon}\bigg]
+ \label{agrc:Dx}
+\end{align}
+is normally convergent for $\Re\varepsilon>-1$. It equals the
+holomorphic completion of
+\begin{equation}\label{agrc:Dx-closed}
+ \boxed{\displaystyle
+ \Dcal_x(\varepsilon)=
+ \frac{\Gamma(x)}{(\varepsilon-1)\Gamma(x+\varepsilon-1)}
+ -\zeta(\varepsilon,x)
+ -\frac{\varepsilon(1-\varepsilon)}2\zeta(1+\varepsilon,x).}
+\end{equation}
+For every integer $\ell\geq1$, its coefficient identity is
+\begin{align}
+ &\sum_{n\geq0}\bigg[P_\ell(n+x)
+ -\frac{(-\log(n+x))^\ell}{\ell!}\notag\\
+ &\qquad-\frac1{2(n+x)}\left\{
+       \frac{(-\log(n+x))^{\ell-1}}{(\ell-1)!}
+       -\mathbf1_{\ell\geq2}
+          \frac{(-\log(n+x))^{\ell-2}}{(\ell-2)!}\right\}\bigg]\notag\\
+ &=P_\ell(x)-x\sum_{j=0}^{\ell}P_j(x)
+    -\frac{\zeta^{(\ell)}(0,x)}{\ell!}
+    -\frac12 b_{\ell-1}(x)+\frac12 b_{\ell-2}(x).
+ \label{agrc:all-log-sums}
+\end{align}
+The grouped series in this formula is absolutely convergent.
+\end{theorem}
+\begin{proof}
+The uniform two-term Gamma-ratio expansion is
+\[
+ \frac{\Gamma(y)}{\Gamma(y+\varepsilon)}
+ =y^{-\varepsilon}\left(1+
+         \frac{\varepsilon(1-\varepsilon)}{2y}+O(y^{-2})\right),
+ \qquad y=n+x\longrightarrow\infty.
+\]
+Uniformity on compact parameter sets proves normal convergence of
+\eqref{agrc:Dx}; all fixed parameter derivatives remain normally
+convergent. In $\Re\varepsilon>1$, the beta integral gives
+\begin{align*}
+ \sum_{n\geq0}\frac{\Gamma(n+x)}{\Gamma(n+x+\varepsilon)}
+ &=\frac1{\Gamma(\varepsilon)}\int_0^1
+        t^{x-1}(1-t)^{\varepsilon-1}\sum_{n\geq0}t^n\dd t\\
+ &=\frac{\Gamma(x)}{(\varepsilon-1)\Gamma(x+\varepsilon-1)}.
+\end{align*}
+The two comparison series sum to the displayed Hurwitz terms. Analytic
+continuation proves \eqref{agrc:Dx-closed} on the larger half-plane,
+including the removable singularities at $\varepsilon=0,1$.
+
+For coefficient extraction, the Gamma recurrence rewrites the first
+term of \eqref{agrc:Dx-closed} as
+\[
+ \left(1-\frac{x}{1-\varepsilon}\right)
+          \frac{\Gamma(x)}{\Gamma(x+\varepsilon)}.
+\]
+Its coefficient of $\varepsilon^\ell$ is
+$P_\ell(x)-x\sum_{j=0}^{\ell}P_j(x)$. Multiplication by
+$\varepsilon(1-\varepsilon)/2$ in the Hurwitz Laurent expansion gives
+$(b_{\ell-1}-b_{\ell-2})/2$. The remaining terms are ordinary Taylor
+coefficients. On the series side, every grouped coefficient is
+$O(n^{-2}(1+\log^\ell n))$ on compact $x$-sets; hence extraction commutes
+with summation and proves \eqref{agrc:all-log-sums}.
+\end{proof}
+
+These formulas are consequences of a classical beta summation and
+precise subtraction, not claims of new transcendental constants.
+Their usefulness is an explicit, all-order normalization connecting
+nonlinear harmonic polynomials to Stieltjes data and spectral derivatives.
+
+\subsection{Two explicit identities}
+
+Using $\zeta'(0,x)=\log\Gamma(x)-\tfrac12\log(2\pi)$, the first order is
+\begin{align}
+ &\sum_{n\geq0}\left[\log(n+x)-\psi(n+x)-\frac1{2(n+x)}\right]\notag\\
+ &\quad=\left(x-\frac12\right)\psi(x)-\log\Gamma(x)-x
+                         +\frac12+\frac12\log(2\pi).
+ \label{agrc:first-log}
+\end{align}
+The second order is
+\begin{align}
+ &\sum_{n\geq0}\left[\psi(n+x)^2-\psi'(n+x)-\log^2(n+x)
+                       +\frac{1+\log(n+x)}{n+x}\right]\notag\\
+ &\quad=(1-x)\bigl(\psi(x)^2-\psi'(x)\bigr)
+     +(2x-1)\psi(x)-2x+\gamma_1(x)-\zeta''(0,x).
+ \label{agrc:second-log}
+\end{align}
+At $x=1$, these become
+\begin{align}
+ \sum_{k\geq1}\left[\log k-H_{k-1}+\gamma-\frac1{2k}\right]
+ &=\frac{\log(2\pi)-1-\gamma}{2},\label{agrc:first-at-one}\\
+ \sum_{k\geq1}\left[(H_{k-1}-\gamma)^2+H_{k-1}^{(2)}-\zeta(2)
+            -\log^2 k+\frac{1+\log k}{k}\right]
+ &=-2-\gamma+\gamma_1-\zeta''(0).
+ \label{agrc:second-at-one}
+\end{align}
+The grouping is essential. These are not identities obtained by
+separately summing their generally divergent components.
+
+\section{Moving reflection, common zeros, and unique centering}
+\label{agrc:reflection-section}
+
+The local identity underlying the reflection theorem is
+\begin{equation}\label{agrc:heat-reflection}
+ c_j(u,1+u-a)=(-1)^jc_j(u,a).
+\end{equation}
+Indeed,
+$\phi(t,u,1+u-a)=\phi(-t,u,a)$ as analytic germs. One can also see it
+immediately from \eqref{agrc:heat-log}. The term $u$ in the reflected
+shift cannot be dropped.
+
+\begin{theorem}[Moving-reflection zeros at every depth]
+\label{agrc:moving-reflection}
+Let $0<\Re a<1$ and take $u$ in a sufficiently small neighbourhood of
+zero. Define
+\[
+ \mathcal R_\pm(s,u;a)=\Bcal(s,u;a)\pm\Bcal(s,u;1+u-a).
+\]
+For every $m\geq0$, $\mathcal R_+$ is jointly holomorphic near
+$(s,u)=(-2m,0)$ and
+\begin{equation}\label{agrc:Rplus-zero}
+ \mathcal R_+(-2m,u;a)=0.
+\end{equation}
+Similarly, $\mathcal R_-$ is jointly holomorphic near
+$(-2m-1,0)$ and vanishes at $s=-2m-1$.
+Its depth coefficients are the explicit finite combinations
+\begin{equation}\label{agrc:Rcoeff}
+ [u^r]\mathcal R_\pm(s,u;a)=
+ Z_r(s,a)\pm\sum_{k=0}^r\frac{(-1)^k(s)_k}{k!}
+                                  Z_{r-k}(s+k,1-a).
+\end{equation}
+Every coefficient inherits the stated holomorphic zero.
+\end{theorem}
+\begin{proof}
+Apply Lemma~\ref{agrc:mellin} to both factors with the reflected shift
+inserted before coefficient extraction. By \eqref{agrc:heat-reflection},
+the plus combination has only even heat indices $j$, while the minus
+combination has only odd indices. Near $s=-2m,u=0$, the only potentially
+vanishing denominator in \eqref{agrc:subtraction} has $j=2m+1$; its
+coefficient in the plus combination is identically zero in $u$.
+Thus $\Gamma(s)\mathcal R_+$ is jointly holomorphic there. The reciprocal
+Gamma has a zero at $s=-2m$, proving the holomorphy and the zero of
+$\mathcal R_+$ itself. The minus case uses the excluded even index
+$j=2m+2$ in exactly the same argument.
+
+For the coefficient formula, Taylor-expand the shift:
+$\partial_a^k\Bcal(s,u;a)=(-1)^k(s)_k\Bcal(s+k,u;a)$
+in the ordinary convergence half-plane. Taking coefficients gives
+\eqref{agrc:Rcoeff}; meromorphic continuation extends the identity.
+Joint holomorphy at the indicated points permits coefficient extraction
+there and transfers the zero to every depth.
+\end{proof}
+
+\subsection{The centered family}
+
+Put
+\begin{equation}\label{agrc:center-family}
+ \Ccal(s,u)=\Bcal\left(s,u;\frac{1+u}{2}\right),
+ \qquad C_r(s)=[u^r]\Ccal(s,u).
+\end{equation}
+Its Mellin kernel is particularly simple:
+\begin{equation}\label{agrc:center-Mellin}
+ \Gamma(s)\Ccal(s,u)=\int_0^\infty
+               t^{s-1}\bigl(2\sinh(t/2)\bigr)^{-1-u}\dd t.
+\end{equation}
+The heat factor
+$(t/(2\sinh(t/2)))^{1+u}$ is even.
+
+\begin{corollary}[Centered all-depth trivial zeros]
+\label{agrc:center-zeros}
+For all integers $r,m\geq0$, the meromorphic combination
+\begin{equation}\label{agrc:center-coeff}
+ \boxed{\displaystyle
+ C_r(s)=\sum_{k=0}^r\frac{(-1)^k(s)_k}{2^k k!}
+                               Z_{r-k}(s+k,1/2)}
+\end{equation}
+is holomorphic at $s=-2m$ and satisfies
+\begin{equation}\label{agrc:center-zero}
+ \boxed{C_r(-2m)=0.}
+\end{equation}
+\end{corollary}
+\begin{proof}
+The even heat factor gives the same missing-pole argument as
+Theorem~\ref{agrc:moving-reflection}. Taylor expansion of the shift by
+$u/2$ gives \eqref{agrc:center-coeff}.
+\end{proof}
+
+The identity is about the continued \emph{combination}. Individual terms
+on its right can have poles, and they must not be evaluated separately
+at a singular point. At depth zero it reduces to the classical identity
+$C_0(s)=\zeta(s,1/2)=(2^s-1)\zeta(s)$ and its even zeros.
+At depth one,
+\begin{equation}\label{agrc:C1}
+ C_1(s)=Z_1(s,1/2)-\frac{s}{2}\zeta(s+1,1/2).
+\end{equation}
+Consequently $Z_1(0,1/2)=1/2$, and for $m\geq1$,
+\begin{equation}\label{agrc:Z1-negative-even}
+ Z_1(-2m,1/2)=-m\zeta(1-2m,1/2)=\frac{B_{2m}(1/2)}2.
+\end{equation}
+Here the individual $Z_1$ values are holomorphic.
+
+At depth two and $m\geq1$, expansion of \eqref{agrc:center-coeff} gives
+\begin{align}
+ \Res_{s=-2m}Z_2(s,1/2)&=-m\zeta(1-2m,1/2),\label{agrc:Z2-residue}\\
+ \FP_{s=-2m}Z_2(s,1/2)
+ &=-m\FP_{s=1-2m}Z_1(s,1/2)
+                         +\tfrac12\zeta(1-2m,1/2).
+ \label{agrc:Z2-fp}
+\end{align}
+The last $\tfrac12\zeta$ term comes from the first-order variation of
+$-s/2$ multiplying a pole. The remaining Hurwitz term is zero because
+$\zeta(2-2m,1/2)=0$. For example,
+\begin{equation}\label{agrc:Z2-example}
+ Z_2(-2+\varepsilon,1/2)
+      =-\frac1{24\varepsilon}+\frac{1-2\gamma}{48}+O(\varepsilon).
+\end{equation}
+The local coefficient rule of \cite{repo-laurent}, reproduced briefly in
+Section~\ref{agrc:audit-section}, supplies these individual Laurent data.
+
+\subsection{Why the center is forced}
+
+\begin{theorem}[Unique centering; two-depth rigidity for affine shifts]
+\label{agrc:unique-center}
+Let $a(u)$ be analytic near zero with $\Re a(0)>0$.
+Every coefficient of $\Bcal(s,u;a(u))$ in $u$ is holomorphic and zero at
+$s=0$ if and only if
+\begin{equation}\label{agrc:unique-shift}
+ a(u)=\frac{1+u}{2}
+\end{equation}
+as an analytic germ. In the affine class $a(u)=a_0+\lambda u$, it is
+enough to require that the depth-zero and depth-one coefficients be
+holomorphic and zero at $s=0$.
+\end{theorem}
+\begin{proof}
+The resonant heat coefficient at $s=0$ is
+$q(u)=c_1(u,a(u))=(1+u)/2-a(u)$. Lemma~\ref{agrc:mellin} gives
+\[
+ \Bcal(s,u;a(u))=\frac1{\Gamma(s)}\left(\frac{q(u)}{s-u}+Q(s,u)\right),
+\]
+with $Q$ jointly holomorphic near $(0,0)$. Since
+$1/\Gamma(s)=s+O(s^2)$, the $Q$ term is $O(s)$ after any fixed depth
+extraction. Suppose the first nonzero coefficient of $q$ is $q_j u^j$.
+The depth-$j$ coefficient of the displayed singular term then has
+constant term $q_j$ at $s=0$, contradicting the hypothesis. Thus $q=0$.
+The converse is Corollary~\ref{agrc:center-zeros}.
+
+For an affine shift,
+$q(u)=1/2-a_0+(1/2-\lambda)u$. The depth-zero condition forces
+$a_0=1/2$; the depth-one condition then forces $\lambda=1/2$.
+All higher even zeros follow automatically.
+\end{proof}
+
+This is a finite rigidity phenomenon: in the affine class, two local
+conditions select a family with infinitely many zero identities at
+all harmonic depths.
+
+\section{An all-depth Gamma evaluation of ordinary harmonic sums}
+\label{agrc:ordinary-sums}
+
+Let $L=\log2$, and introduce the centered Gamma quotient
+\begin{equation}\label{agrc:Fc}
+ F_c(u)=\frac{\Gamma((1+u)/2)\Gamma(1-u)}{\Gamma((1-u)/2)}.
+\end{equation}
+The subscript denotes ``centered'', not the comparison shift of the
+Gauss coefficients.
+
+\begin{theorem}[Centered weight-two Gamma generating function]
+\label{agrc:Gamma-center}
+For $|u|<1$, with the removable value at $u=0$ understood,
+\begin{equation}\label{agrc:Gamma-center-eq}
+ \boxed{\displaystyle
+ \Ccal(2,u)=\frac{\pi\tan(\pi u/2)}{u}\,F_c(u).}
+\end{equation}
+Equivalently,
+\begin{equation}\label{agrc:cumulant-gen}
+ \Ccal(2,u)=\frac{\pi^2}{2}
+       \exp\left(\sum_{j\geq1}\frac{\kappa_j}{j}u^j\right),
+\end{equation}
+where
+\begin{equation}\label{agrc:kappa}
+ \kappa_1=-2L,\qquad
+ \kappa_j=
+ \begin{cases}
+ (3-2^{2-j})\zeta(j),&j\geq2\text{ even},\\
+ (2^{1-j}-1)\zeta(j),&j\geq3\text{ odd}.
+ \end{cases}
+\end{equation}
+If $h_0=1$ and $rh_r=\sum_{j=1}^r\kappa_jh_{r-j}$, then
+$C_r(2)=\pi^2h_r/2$ for every $r\geq0$.
+\end{theorem}
+\begin{proof}
+For $\Re u<0$, beta integration at $s=1$ gives
+$\Bcal(1,u;a)=B(a,-u)$. Differentiating in $a$ gives
+\[
+ \Bcal(2,u;a)=-B(a,-u)\bigl(\psi(a)-\psi(a-u)\bigr).
+\]
+At $a=(1+u)/2$, one has $a-u=1-a$, and the digamma reflection formula
+implies
+$\psi(a)-\psi(1-a)=-\pi\cot(\pi a)=\pi\tan(\pi u/2)$.
+Also $B(a,-u)=-F_c(u)/u$. This proves
+\eqref{agrc:Gamma-center-eq} initially in a left half-disc. Both sides
+are analytic in $|u|<1$ after removing the value at zero: on the series
+side the summands are $O(n^{-2+\Re u})$, locally uniformly, and the
+moving shift retains positive real part. Analytic continuation proves
+the stated domain.
+
+Taylor expansion of the three log-Gamma factors gives
+\begin{equation}\label{agrc:Fc-log}
+ \log F_c(u)=-2Lu+
+ \sum_{\substack{j\geq2\\j\text{ even}}}\frac{\zeta(j)}j u^j
+ +\sum_{\substack{j\geq3\\j\text{ odd}}}
+          \frac{(2^{1-j}-1)\zeta(j)}j u^j.
+\end{equation}
+Here the odd Taylor coefficients at $1/2$ use
+$\psi^{(j-1)}(1/2)=(-1)^j(j-1)!(2^j-1)\zeta(j)$ for $j\geq2$;
+the linear term uses $\psi(1/2)=-\gamma-2L$.
+The sine product, or its Taylor series, yields
+\[
+ \log\frac{\tan(\pi u/2)}{\pi u/2}
+ =\sum_{k\geq1}\frac{(1-2^{1-2k})\zeta(2k)}k u^{2k}.
+\]
+Adding this to \eqref{agrc:Fc-log} gives \eqref{agrc:kappa}.
+Coefficient extraction from the exponential gives the finite recursion.
+\end{proof}
+
+\subsection{Explicit generalized harmonic identities}
+
+The coefficient of $(1+u/(2n+1))^{-2}$ gives the following ordinary
+series interpretation of every $h_r$:
+\begin{equation}\label{agrc:harmonic-all-depth}
+ \boxed{\displaystyle
+ \sum_{n\geq0}\frac1{(2n+1)^2}
+    \sum_{j=0}^r\frac{(-1)^j(j+1)E_{n,r-j}}{(2n+1)^j}
+       =\frac{\pi^2}{8}h_r.}
+\end{equation}
+The $n=0$ terms are included. The bound
+$E_{n,r}=O_r((1+\log(n+1))^r)$ proves absolute convergence for each
+fixed depth. This is a family of identities, not an assertion that an
+arbitrary nonlinear harmonic numerator has the same reduction.
+
+The first coefficients are
+\begin{align}
+ h_0&=1,&h_1&=-2L,\notag\\
+ h_2&=2L^2+\zeta(2),&
+ h_3&=-\frac43L^3-2L\zeta(2)-\frac14\zeta(3),\notag\\
+ h_4&=\frac23L^4+2L^2\zeta(2)+\frac12L\zeta(3)
+                       +\frac12\zeta(2)^2+\frac{11}{16}\zeta(4).
+ \label{agrc:h-examples}
+\end{align}
+For example, writing $q_n=2n+1$,
+\begin{align}
+ \sum_{n\geq0}\frac{H_n-2/q_n}{q_n^2}
+   &=-\frac{\pi^2}{4}L,\label{agrc:h-linear}\\
+ \sum_{n\geq0}\frac{H_n^2-H_n^{(2)}-4H_n/q_n+6/q_n^2}{q_n^2}
+   &=\frac{\pi^2}{4}\bigl(2L^2+\zeta(2)\bigr),
+ \label{agrc:h-quadratic}\\
+ \sum_{n\geq0}\frac{E_{n,3}-2E_{n,2}/q_n+3H_n/q_n^2-4/q_n^3}{q_n^2}
+   &=\frac{\pi^2}{8}\left(-\frac43L^3-2L\zeta(2)-\frac14\zeta(3)\right).
+ \label{agrc:h-cubic}
+\end{align}
+The complete recurrence, rather than only these small cases, is the
+content of \eqref{agrc:harmonic-all-depth}. The data file
+\texttt{exact\_tables.json} supplies coefficients through depth eight.
+
+There is a second, independent integral interpretation:
+\begin{equation}\label{agrc:log-sinh-moments}
+ \frac1{r!}\int_0^\infty
+ \frac{t\,[-\log(2\sinh(t/2))]^r}{2\sinh(t/2)}\dd t
+     =\frac{\pi^2}{2}h_r.
+\end{equation}
+At zero the integrand is $O(1+|\log t|^r)$; at infinity it decays
+exponentially times a polynomial. Thus this is an ordinary integral.
+Differentiation of \eqref{agrc:center-Mellin} at $s=2$ is justified
+by these majorants. These moments can change sign; no positivity claim
+is being used.
+
+\subsection{All positive outer exponents}
+
+Let
+\[
+ F(a,u)=\frac{\Gamma(a)\Gamma(1-u)}{\Gamma(a-u)},
+ \qquad \Ccal(s,u;x)=\Bcal\left(s,u;\frac{1+u}{2}+x\right).
+\]
+For every integer $p\geq2$ and $|\Re x|<1/2$, one obtains
+\begin{equation}\label{agrc:positive-all-p}
+ [u^r]\Ccal(p,u;x)=
+ \frac{(-1)^p}{(p-1)!}[u^{r+1}]
+  \left.\partial_a^{p-1}F(a,u)\right|_{a=(1+u)/2+x}.
+\end{equation}
+Indeed,
+$\Bcal(p,u;a)=(-1)^{p-1}\partial_a^{p-1}B(a,-u)/(p-1)!$;
+substitute $B(a,-u)=-F(a,u)/u$ and extract the coefficient.
+The beta identity first holds for $\Re u<0$ and then extends through
+zero after differentiation in $a$. Uniform convergence of the differentiated
+series for $|u|$ small supplies the same conclusion directly.
+
+For $x=0$ every coefficient in \eqref{agrc:positive-all-p} is a finite
+polynomial in $L$ and zeta values at positive integers. Formula
+\eqref{agrc:Gamma-center-eq} is the particularly simple reflection
+collapse at $p=2$; the other exponents retain finite polygamma/Bell
+expressions. This general positive-integer beta mechanism is classical
+and overlaps the fixed-shift theory in \cite{repo-laurent}.
+
+\section{Centered Stieltjes constants and polylogarithmic coordinates}
+\label{agrc:center-Stieltjes-section}
+
+Write
+\begin{equation}\label{agrc:Gf}
+ G(u)=\frac1{\Gamma(1+u)}=\sum_{j\geq0}g_ju^j,
+ \qquad F_c(u)=\sum_{j\geq0}f_ju^j.
+\end{equation}
+Thus $g_0=1$, $g_1=\gamma$, and
+$g_2=(\gamma^2-\zeta(2))/2$.
+
+\begin{theorem}[Centered principal part and finite part]
+\label{agrc:center-Stieltjes}
+For every $r\geq0$, as $\varepsilon\to0$,
+\begin{equation}\label{agrc:center-Stieltjes-formula}
+ \boxed{\displaystyle
+ C_r(1+\varepsilon)=
+ \sum_{j=0}^r\frac{g_j}{\varepsilon^{r+1-j}}
+                +g_{r+1}-f_{r+1}+O(\varepsilon).}
+\end{equation}
+In particular, the finite part is an explicit polynomial in
+$\gamma,L,\zeta(2),\ldots,\zeta(r+1)$.
+\end{theorem}
+\begin{proof}
+The only moving pole near $(s,u)=(1,0)$ has residue
+$1/\Gamma(1+u)=G(u)$, because the leading heat coefficient is one.
+Consequently
+\[
+ \Ccal(s,u)=\frac{G(u)}{s-1-u}+Q(s,u)
+\]
+with $Q$ jointly holomorphic. This follows from
+Lemma~\ref{agrc:mellin}, replacing the numerator $1/\Gamma(s)$ by
+$1/\Gamma(1+u)$; their difference divided by $s-1-u$ is holomorphic.
+For $\Re u<0$, beta integration gives
+$\Ccal(1,u)=-F_c(u)/u$, and therefore
+$Q(1,u)=(G(u)-F_c(u))/u$. Both sides extend through $u=0$.
+Expanding the simple moving pole for $|u|<|\varepsilon|$ and then
+continuing the coefficient functions proves
+\eqref{agrc:center-Stieltjes-formula}.
+\end{proof}
+
+For the first three depths,
+\begin{align}
+ \FP_{s=1}C_0(s)&=\gamma+2L,\notag\\
+ \FP_{s=1}C_1(s)&=\frac{\gamma^2}{2}-\zeta(2)-2L^2,\notag\\
+ \FP_{s=1}C_2(s)&=g_3+\frac43L^3+L\zeta(2)+\frac14\zeta(3).
+ \label{agrc:center-FP-examples}
+\end{align}
+These are finite parts of the centered family, not the same constants
+as those for a fixed outer shift $1/2$ at positive harmonic depth.
+
+\subsection{Every higher Laurent coefficient: exact transport, not false closure}
+
+Define fixed-shift harmonic Stieltjes coefficients by
+\begin{equation}\label{agrc:harmonic-Stieltjes}
+ Z_r(1+\varepsilon,a)=
+ \sum_{j=0}^r g_j\varepsilon^{-r-1+j}
+ +\sum_{\ell\geq0}\frac{(-1)^\ell\gamma_{r,\ell}(a)}{\ell!}
+                                             \varepsilon^\ell.
+\end{equation}
+Define $\widetilde\gamma_{r,\ell}$ in the same way for $C_r$.
+At depth zero these are the usual $\gamma_\ell(1/2)$.
+For $e_j(k)=[v^j]\prod_{h=1}^k(1+v/h)$, expansion of
+\eqref{agrc:center-coeff} gives the exact finite transport law
+\begin{align}
+ \widetilde\gamma_{r,\ell}
+ ={}&\gamma_{r,\ell}(1/2)
+ +(-1)^\ell\ell!\sum_{k=1}^r\frac{(-1)^k}{2^k}
+       \sum_{j=0}^{\ell}e_j(k)
+     \frac{\partial_s^{\ell-j}Z_{r-k}(k+1,1/2)}{(\ell-j)!}.
+ \label{agrc:Stieltjes-transport}
+\end{align}
+Here $e_j(k)=0$ for $j>k$. To prove the formula, observe that
+$(1+\varepsilon)_k/k!=\sum_j e_j(k)\varepsilon^j$ and that every
+$Z_{r-k}(k+1+\varepsilon,1/2)$ with $k\geq1$ is holomorphic.
+The principal part is unchanged, and ordinary Taylor multiplication
+proves the identity.
+
+For $\ell=0$, all terms reduce by beta differentiation and reproduce
+Theorem~\ref{agrc:center-Stieltjes}. For $\ell>0$, genuine spectral
+derivatives remain. Neither centering nor the common zeros justify
+discarding them. This is precisely the separation between local finite
+parts and higher harmonic Stieltjes data required in the source theory.
+
+The ordinary depth-zero constants satisfy the familiar half-shift law
+\begin{equation}\label{agrc:half-Stieltjes}
+ \gamma_\ell(1/2)=\gamma_\ell
+ +\frac{2(-1)^\ell L^{\ell+1}}{\ell+1}
+ +2\sum_{j=0}^{\ell-1}\binom{\ell}{j}
+                       (-1)^{\ell+j}L^{\ell-j}\gamma_j.
+\end{equation}
+This follows directly by expanding
+$\zeta(s,1/2)=(2^s-1)\zeta(s)$ at $s=1$.
+
+\subsection{Exact polylogarithmic coordinates at rational shifts}
+
+For $x=p/q$, $1\leq p\leq q$, and $\omega=\e^{2\pi i/q}$,
+finite character filtering gives
+\begin{equation}\label{agrc:Hurwitz-Li}
+ \zeta(s,p/q)=q^{s-1}\sum_{j=0}^{q-1}\omega^{-pj}\Li_s(\omega^j).
+\end{equation}
+It is first proved by absolutely convergent series in $\Re s>1$ and
+then continued meromorphically. In the $j=0$ term, $\Li_s(1)$ means
+$\zeta(s)$; the other root-of-unity values use their radial continuation.
+At $s=0$ there is no pole, and every spectral derivative has the finite
+formula
+\begin{align}
+ \zeta^{(\ell)}(0,p/q)
+  =\frac1q\sum_{j=0}^{q-1}\omega^{-pj}
+       \sum_{h=0}^{\ell}\binom{\ell}{h}(\log q)^{\ell-h}
+       \left.\partial_s^h\Li_s(\omega^j)\right|_{s=0}.
+ \label{agrc:Li-order-jets}
+\end{align}
+Together with the standard polygamma--Hurwitz relation
+$\psi^{(m)}(x)=(-1)^{m+1}m!\zeta(m+1,x)$ for $m\geq1$,
+this converts Theorem~\ref{agrc:beta-stieltjes} at positive rational
+shifts into exact identities among harmonic-polygamma sums, generalized
+Stieltjes constants, and order derivatives of finitely many polylogarithms.
+Integer translation handles rational shifts outside $(0,1]$.
+
+The Mellin kernel itself also has a multiple-polylogarithm interpretation:
+\begin{equation}\label{agrc:Li-all-ones}
+ \sum_{n\geq0}E_{n,r}z^n
+  =\frac{[-\log(1-z)]^r}{r!(1-z)}
+  =\frac{\dd}{\dd z}\Li_{\{1\}^{r+1}}(z),\qquad |z|<1.
+\end{equation}
+Thus the harmonic identities arise from Mellin transforms of actual
+polylogarithmic derivatives, rather than from an analogy of notation.
+Equation~\eqref{agrc:Hurwitz-Li} evaluates a prescribed finite average;
+it does not imply reduction of its individual higher-depth analogues.
+
+\section{Ordinary antiderivatives and Gamma reflection integrals}
+\label{agrc:primitives}
+
+\subsection{A log-Gamma and Hurwitz primitive}
+
+Let $S_1(x)$ denote the ordinary sum in \eqref{agrc:first-log}, for real
+$x>0$. An explicit antiderivative is
+\begin{equation}\label{agrc:S1-primitive}
+ \boxed{\displaystyle
+ \int S_1(x)\dd x=
+ \left(x-\frac12\right)\log\Gamma(x)-2\zeta'(-1,x)
+ +\frac{x^2-x}{2}-\frac{x}{2}\log(2\pi)+\mathrm{constant}.}
+\end{equation}
+Indeed, differentiating the Hurwitz shift identity in the spectral
+variable gives
+\[
+ \partial_x\zeta'(-1,x)=-\zeta(0,x)+\zeta'(0,x)
+ =x-\tfrac12+\log\Gamma(x)-\tfrac12\log(2\pi).
+\]
+Direct differentiation of \eqref{agrc:S1-primitive} therefore gives
+\eqref{agrc:first-log}. Normal convergence of the grouped series locally
+in $x>0$ also permits ordinary integration term by term over a compact
+interval. The formula is not a finite-part integral.
+
+\subsection{Moving-centered reflection primitives at every depth}
+
+For $c_u=(1+u)/2$, let
+\[
+ \Ccal_\pm(s,u;x)=\Bcal(s,u;c_u+x)\pm\Bcal(s,u;c_u-x).
+\]
+In the initial convergence domain, differentiation gives
+\begin{equation}\label{agrc:parity-derivatives}
+ \partial_x\Ccal_\pm(s,u;x)=-s\Ccal_\mp(s+1,u;x).
+\end{equation}
+It extends meromorphically and, for $s\ne1$, supplies the primitive
+$-\Ccal_\mp(s-1,u;x)/(s-1)$. At $s=1$ this expression must be continued
+with its pole terms; there is no license to substitute into an
+indeterminate quotient.
+
+At $s=2$ the anchored primitives are ordinary integrals. For real
+$|x|<1/2$ and $u$ sufficiently small,
+\begin{align}
+ \int_0^x\Ccal_+(2,u;v)\dd v
+   &=B(c_u-x,-u)-B(c_u+x,-u),\label{agrc:primitive-plus}\\
+ \int_0^x\Ccal_-(2,u;v)\dd v
+   &=2B(c_u,-u)-B(c_u+x,-u)-B(c_u-x,-u).
+ \label{agrc:primitive-minus}
+\end{align}
+The apparent beta poles at $u=0$ cancel. These identities follow by
+integrating $\Bcal(2,u;a)=-\partial_a B(a,-u)$ first for $\Re u<0$;
+normal convergence in a neighbourhood of $u=0$ proves their extension.
+All depth coefficients give finite Gamma/polygamma primitives.
+For example, the depth-zero plus identity reduces to
+\begin{equation}\label{agrc:trigamma-primitive}
+ \int_0^x\bigl[\psi'(1/2+v)+\psi'(1/2-v)\bigr]\dd v
+       =\pi\tan(\pi x).
+\end{equation}
+
+There is also a useful fixed-$a$ presentation of the moving endpoint:
+\begin{align}
+ \int_a^{1+u-a}\Bcal(2,u;x)\dd x
+ &=B(a,-u)-B(1+u-a,-u)\notag\\
+ &=\frac{\Gamma(a)\Gamma(-u)}{\Gamma(a-u)}
+       \left(1-\frac{\sin\pi a}{\sin\pi(a-u)}\right).
+ \label{agrc:moving-endpoint}
+\end{align}
+The ratio of the beta terms follows from Gamma reflection. For real
+$0<a<1$ and small real $u$, the oriented integral is ordinary; the
+complex-parameter statement is its analytic germ. At $u=0$ the right
+side has a removable value $\pi\cot(\pi a)$. Higher coefficients include
+the moving-endpoint contributions automatically.
+
+\section{Several unequal frequencies and independent harmonic depths}
+\label{agrc:multifrequency}
+
+The parity mechanism is not restricted to one summation variable or a
+single harmonic-depth parameter. Fix $d\geq1$ and positive real
+frequencies $\omega_1,\ldots,\omega_d$. Put
+\[
+ \alpha_i=1+u_i,\qquad U=\sum_i u_i,
+ \qquad a(\bm u)=\frac12\sum_i\alpha_i\omega_i.
+\]
+Define, initially in an absolute-convergence domain,
+\begin{equation}\label{agrc:multi-B}
+ \Bcal_{\bm\omega}(s,\bm u)=
+ \sum_{n_1,\ldots,n_d\geq0}
+ \frac{\prod_{i=1}^d(1+u_i)_{n_i}/n_i!}
+      {\left(a(\bm u)+\sum_i\omega_i n_i\right)^s}.
+\end{equation}
+For instance, $\Re s>d+\sum_i|u_i|$ and all $u_i$ sufficiently small
+provide a common domain. The denominator then has positive real part.
+
+\begin{theorem}[Unequal-frequency all-depth reflection zeros]
+\label{agrc:multi-zero}
+Let $m\geq0$ be an integer with $d+m$ odd. The family
+\eqref{agrc:multi-B} is jointly holomorphic near $(s,\bm u)=(-m,\bm0)$,
+and
+\begin{equation}\label{agrc:multi-zero-eq}
+ \Bcal_{\bm\omega}(-m,\bm u)=0.
+\end{equation}
+Therefore every multi-depth coefficient $[\bm u^{\bm r}]$ has a
+holomorphic zero there. No rational dependence among the frequencies
+is required.
+\end{theorem}
+\begin{proof}
+The product of binomial series yields
+\begin{equation}\label{agrc:multi-Mellin}
+ \Gamma(s)\Bcal_{\bm\omega}(s,\bm u)
+ =\int_0^\infty t^{s-1}
+             \prod_{i=1}^d\bigl(2\sinh(\omega_i t/2)\bigr)^{-1-u_i}
+                                                      \dd t.
+\end{equation}
+Near zero, the kernel is
+\[
+ t^{-d-U}\prod_i\omega_i^{-1-u_i}
+  \prod_i\left(\frac{\omega_i t}{2\sinh(\omega_i t/2)}\right)^{1+u_i}.
+\]
+The last product is an even analytic function of $t$, jointly analytic
+in $\bm u$. Uniform Mellin subtraction therefore has possible moving
+poles only at $s=d+U-2j$. At $s=-m,\bm u=0$, a pole would require
+$2j=d+m$, excluded by the parity assumption. Choosing a sufficiently
+large subtraction order proves joint holomorphy of the Mellin side
+near the specified point. Multiplication by $1/\Gamma(s)$ then gives
+the zero. Uniform local holomorphy permits every multi-depth extraction.
+\end{proof}
+
+For $d=1$ the protected points are $0,-2,-4,\ldots$; for $d=2$ they
+are $-1,-3,-5,\ldots$. This is a statement about the family and all its
+order derivatives, not just about a fixed integer-order Barnes zeta.
+
+To display the harmonic content explicitly, let
+$a_0=\frac12\sum_i\omega_i$ and, for a multi-index $\bm r$, define
+\[
+ Z_{\bm r}^{\bm\omega}(s)=
+ \sum_{\bm n\geq0}\frac{\prod_i E_{n_i,r_i}}
+                         {(a_0+\sum_i\omega_i n_i)^s}.
+\]
+Taylor expansion of the moving center gives the finite exact formula
+\begin{equation}\label{agrc:multi-coeff}
+ [\bm u^{\bm r}]\Bcal_{\bm\omega}(s,\bm u)
+ =\sum_{\bm k\leq\bm r}(-1)^{|\bm k|}(s)_{|\bm k|}
+       \prod_i\frac{(\omega_i/2)^{k_i}}{k_i!}
+          Z_{\bm r-\bm k}^{\bm\omega}(s+|\bm k|).
+\end{equation}
+Theorem~\ref{agrc:multi-zero} gives all-order cancellation identities
+for these combinations. At a singular specialization, the complete
+combination is continued before its value is taken.
+
+If the center is instead displaced by a fixed $x$, reflection
+$x\mapsto-x$ again separates the even and odd heat coefficients.
+The plus combination has the parity class of Theorem~\ref{agrc:multi-zero};
+the minus combination has the opposite class of nonpositive integers.
+This follows by multiplying the even heat factor by $2\cosh(xt)$ or
+$-2\sinh(xt)$, respectively.
+
+The result does not say that all unequal-frequency coefficients reduce
+to ordinary zeta constants. For noncommensurate frequencies, the
+underlying Barnes-type periods remain distinct coordinates. The exact
+zero statement is independent of such a reduction problem.
+
+\section{Audit, necessary corrections to extensions, and verification}
+\label{agrc:audit-section}
+
+\subsection{The fixed-shift negative Laurent theorem is prior work}
+
+The preserved source \cite{repo-laurent} already proves the following
+local rule (its outer-shift notation differs by one). With our heat
+coefficients and $m\geq0$, put
+\[
+ \frac{c_{m+1}(u,a)}{\Gamma(u-m)}
+       =\sum_{j\geq1}\lambda_{m,j}(a)u^j.
+\]
+Then
+\begin{equation}\label{agrc:prior-Laurent}
+ Z_r(-m+\varepsilon,a)
+ =\sum_{h=0}^r\lambda_{m,r+1-h}(a)\varepsilon^{-h}
+        +O(\varepsilon).
+\end{equation}
+A short explanation is worth retaining: near $s=-m$, only the heat
+coefficient $c_{m+1}$ has a moving denominator $\varepsilon-u$.
+All other terms are holomorphic and, after multiplication by
+$1/\Gamma(-m+\varepsilon)$, are $O(\varepsilon)$ at every fixed depth.
+Multiplying the remaining numerator by the reciprocal Gamma series
+produces exactly \eqref{agrc:prior-Laurent}.
+
+This is not a new result of the present continuation. It is included
+to normalize examples and to make the additional moving-reflection
+condition transparent. The analytic remainder starts at
+$O(\varepsilon)$, so it can and generally does affect positive spectral
+ derivatives. In particular, at depth zero these include
+$\zeta'(-m,a)$, and at $m=0$ they already include $\log\Gamma(a)$.
+
+\subsection{A version-specific indexing correction in a cited preprint}
+
+The unnumbered Stieltjes-limit display at the bottom of page 1 of
+\cite{Can2024}, specifically arXiv version 1, starts its sum at $n=1$
+while using the Hurwitz normalization with $n=0$. The PDF page was
+checked directly. For real $a>0$, the corrected formula is
+\begin{equation}\label{agrc:corrected-Stieltjes-limit}
+ \gamma_m(a)=\lim_{N\to\infty}\left(
+ \sum_{n=0}^{N}\frac{\log^m(n+a)}{n+a}
+                  -\frac{\log^{m+1}(N+a)}{m+1}\right).
+\end{equation}
+If the lower index $n=1$ is retained, the missing term
+$\log^m(a)/a$ must be added. Indeed,
+$\zeta(s,a+1)=\zeta(s,a)-a^{-s}$ gives
+\[
+ \gamma_m(a+1)=\gamma_m(a)-\frac{\log^m a}{a}.
+\]
+The printed $n=1$ limit is $\gamma_m(a+1)$, not $\gamma_m(a)$.
+Already at $m=0,a=1$, it becomes
+$\lim_{N\to\infty}(H_{N+1}-1-\log(N+1))=\gamma-1$.
+This identifies a specific off-by-one error; it is not an objection to
+that paper's other results, and no claim is made about later revisions.
+The convention \eqref{agrc:Stieltjes} and all identities in this report
+use the corrected normalization.
+
+\subsection{Three invalid extensions, with exact corrections}
+
+No contradiction to the cited Gauss subtraction or fixed-shift Laurent
+theorems was found in the targeted audit. The following are explicit
+corrections to tempting extensions, not allegations that those sources
+made the errors.
+
+\paragraph{Frozen reflection is not moving reflection.}
+Replacing $1+u-a$ by $1-a$ leaves the first heat coefficient sum equal
+to $u$. As a concrete consequence,
+\begin{equation}\label{agrc:frozen-counterexample}
+ Z_1(s,a)+Z_1(s,1-a)=1+O(s)\qquad(s\to0),
+\end{equation}
+for $0<\Re a<1$. The sum is holomorphic but is not zero. Its poles
+cancel because their leading heat coefficients are opposite; its
+constant terms sum to one. The extra shift-derivative term in
+\eqref{agrc:Rcoeff} is exactly what removes this defect.
+
+\paragraph{Normal jets are not determined by a resonant restriction.}
+For $a=b=1$ and $s=-1+\varepsilon$, the exact polynomial is
+\begin{equation}\label{agrc:normal-counterexample}
+ A_1(1,1,-1+\varepsilon;c)
+          =(c-\tfrac12)\varepsilon-\tfrac12\varepsilon^2.
+\end{equation}
+Although its resonant value is zero and independent of $c$, its first
+normal derivative is $c-1/2$. Formula~\eqref{agrc:Gauss-jets} therefore
+needs actual normal derivatives; the restriction
+\eqref{agrc:residue-formula} cannot replace them.
+
+\paragraph{Finite-part extraction does not commute with multiplication
+by a varying coefficient without residue terms.}
+For a Laurent series $V(\varepsilon)$,
+$\FP(\varepsilon V)=\Res V$, not zero in general.
+Equation~\eqref{agrc:Z2-fp} displays the resulting correction explicitly.
+Similarly, omitting the second subtraction in \eqref{agrc:Dx} destroys
+the normal convergence needed for its all-order derivative formulas.
+
+\subsection{Reproducible checks and their limits}
+
+The supplied verifier uses two independent coefficient constructions:
+Bernoulli recursions for $A_j$ and finite Stirling sums for $Q_{r,k}$.
+The exact run contains 436 identities: 16 fully symbolic resonant-tail
+checks, 189 higher-order rational checks, 5 comparison-shift identities,
+25 Appell identities, 154 finite-product collapse checks, 13 moving
+reflection checks, 10 centered parity checks, 15 unequal-frequency
+parity checks, and 9 Gamma-cumulant checks. Four negative controls reject
+specified corruptions of a tail sign, a reflection shift, a center slope,
+and a Stieltjes sign.
+
+The numerical run uses 65 decimal digits and makes 30 comparisons.
+These include ordinary Mellin integrals versus the Gamma quotient,
+log-sinh moments versus the independent cumulant recursion,
+subtracted Gamma-ratio sums versus \eqref{agrc:Dx-closed}, direct
+Hurwitz differentiation of \eqref{agrc:S1-primitive}, and Cauchy
+coefficient extraction for the second Stieltjes jet. The largest
+reported normalized discrepancy is approximately $1.99\times10^{-51}$.
+The Gamma-ratio series accelerator uses finite asymptotic tails; these
+floating-point diagnostics are \emph{not} rigorous interval enclosures.
+
+The finite tests do not prove the arbitrary-index theorems. Those are
+proved in the preceding sections. Conversely, a passing finite test
+should not promote a different pending source claim to proved status.
+There is no proof-assistant formalization in this package.
+
+\section{Further research questions and concrete next targets}
+\label{agrc:future}
+
+\subsection{Normal spectral jets of the resonant tail}
+Theorem~\ref{agrc:tail} gives a closed finite formula for the full tail
+on $s=-r$. Find a similarly explicit representation of
+$\partial_s^\ell A_{r+k}|_{s=-r}$ for arbitrary $\ell$. A useful first
+result would be a hypergeometric inhomogeneous differential equation
+for the Borel transforms at $\ell=1,2$, together with normalized initial
+data. Equation~\eqref{agrc:normal-transport} is a necessary compatibility
+condition. A solution would make the Stieltjes identities
+\eqref{agrc:Gauss-jets} substantially more explicit beyond their
+constant coefficient.
+
+\subsection{Derivatives at the protected common zeros}
+The common zero $C_r(-2m)=0$ is local and exact. Its derivative generally
+retains the analytic Mellin remainder. Determine which finite combinations
+of $C_r'(-2m)$ eliminate that remainder, and identify the natural
+coordinates for the first surviving cases, beginning with $C_1'(0)$
+and $C_1'(-2)$. The target is an additional identity, not a numerical
+claim that a selected constant basis is complete.
+
+\subsection{Colored moving reflection and the Gaussian targets}
+Replace the kernel by products involving $1-\xi\e^{-t}$ for roots of
+unity $\xi$. Derive the exact reflected colors, branches, and local
+normalization before extracting harmonic derivatives. A concrete goal
+is a functional identity whose Gaussian specialization supplies relations
+outside the already insufficient restricted S6 presentation. Neither a
+small numerical residual nor the present uncolored centering theorem
+settles S6 or S8. Their exact frozen coefficient vectors must be retained
+when testing any new relation.
+
+\subsection{Commensurate versus noncommensurate frequencies}
+For positive rationally related $\omega_i$, determine how much of
+\eqref{agrc:multi-coeff} reduces by finite character filters and
+partial fractions. Compare this with genuinely irrational frequency
+ratios. The common-zero theorem is uniform in that distinction, but
+closed evaluations of its derivatives need not be. A first concrete
+case is two frequencies in ratio $1:2$ at multi-depth $(1,1)$.
+
+\subsection{All-order reduction of the shifted logarithmic family}
+Theorem~\ref{agrc:beta-stieltjes} expresses every logarithmic order in
+Gamma/polygamma, generalized Stieltjes, and Hurwitz spectral coordinates.
+At rational shifts, determine additional identities among the order
+ derivatives of polylogarithms in \eqref{agrc:Li-order-jets}. Such a
+reduction should be specified in a fixed finite coordinate space and
+proved; it should not be inferred from an unsuccessful relation search.
+
+\subsection{Connection identities for the Borel hypergeometric germ}
+The function $\e^{ct}{}_2F_1(a,b;r+1;1-\e^t)$ supplies an explicit analytic
+germ for every resonant tail. Determine useful connection identities
+between this germ, the original Gamma ratio, and logarithmic expansions
+of Gauss's function at its singular endpoint. The objective is exact
+functional continuation and coefficient transport, not merely estimates
+for optimal truncation.
+
+\subsection{Formalization and integration}
+The finite proof of Theorem~\ref{agrc:residue} is a natural first formal
+ target: it needs Bernoulli finite differences, polynomial divisibility,
+a degree bound, and one leading coefficient. The tail theorem then adds
+formal Laurent transforms and uniqueness for a power-series differential
+equation. For the analytic side, reusable lemmas for normally convergent
+parameter families, Mellin subtraction, and meromorphic coefficient
+extraction would support all-depth statements without separate proofs
+for every tabulated case.
+
+\appendix
+\section{Algorithms and normalization checks}
+\label{agrc:algorithms}
+
+\subsection{Finite construction of every resonant coefficient}
+
+For fixed integers $r,k\geq0$, \eqref{agrc:tail-formula} can be evaluated
+without generating any $A_j$ of index below $r$:
+first form $P_r(a)P_r(b)$; then compute the Stirling triangle through row
+$k$; finally evaluate the two finite sums in \eqref{agrc:Q-definition}.
+The construction uses only rational arithmetic when $a,b,c$ are rational.
+At a root of either Pochhammer factor, use the polynomial formula
+ directly, not division by the factor. Differentiation at those roots
+uses \eqref{agrc:root-jets} or direct polynomial differentiation.
+
+For an independent implementation, construct $D_1,\ldots,D_{r+k}$ from
+Bernoulli polynomials and use \eqref{agrc:A-rec}. Equality of these two
+independent constructions is the main exact regression test.
+The formulas for $Q_{r,1}$ and $Q_{r,2}$ in
+\eqref{agrc:Q-examples} are useful low-order normalization checks.
+
+\subsection{Gamma coefficient recursions}
+
+If $F(u)=\exp(\sum_{j\geq1}\eta_j u^j/j)=\sum f_ru^r$, then
+\begin{equation}\label{agrc:general-coeff-rec}
+ f_0=1,\qquad rf_r=\sum_{j=1}^r\eta_j f_{r-j}.
+\end{equation}
+For the centered Gamma quotient $F_c$, use
+\[
+ \eta_1=-2L,\qquad
+ \eta_j=\begin{cases}
+ \zeta(j),&j\text{ even},\\
+ (2^{1-j}-1)\zeta(j),&j\geq3\text{ odd}.
+ \end{cases}
+\]
+For $G(u)=1/\Gamma(1+u)$, use
+$\eta_1=\gamma$ and $\eta_j=(-1)^{j+1}\zeta(j)$ for $j\geq2$.
+For $C_r(2)/(\pi^2/2)$, use \eqref{agrc:kappa}.
+These three recursions must not be conflated: their even zeta
+coefficients differ.
+
+\subsection{Notation crosswalk for repository integration}
+
+Our $Z_r(s,a)$ is the family denoted $E_r(s;a-1)$ in
+\cite{repo-laurent}. Its heat coefficient $b_j(u,a-1)$ is our
+$c_j(u,a)$. Our $A_j(a,b,s;c)$ agrees with the Gauss coefficient in
+\cite{repo-gauss}, and is unrelated to that source's generalized harmonic
+functions with a similar letter. The centered coefficient $C_r(s)$ is
+new notation local to this report; it must not be identified with the
+fixed-shift Gamma polynomial sometimes denoted $C_r(a)$ elsewhere in
+the manuscript. All theorem and equation labels in this article use
+the prefix \texttt{agrc:}.
+
+\section{Source and artifact boundaries}
+
+The source audit pins the relevant repository content by commit and blob
+identifiers in the file \path{audit/source_manifest.json}. It records the exact
+research question addressed and distinguishes the prior negative-Laurent
+ theorem from the moving-reflection extension. Only inspected textual
+sources are used as repository evidence; there is no claim to have
+replayed every incoming ZIP.
+
+The archive contains the standalone article, its shared TeX body, a
+verification script, exact tables, exact and numerical run records,
+an integration guide, and a build script. The article can be rebuilt
+with a standard LaTeX installation; the verification suite uses SymPy
+and mpmath. Generated log and auxiliary files are not mathematical
+certificates. A checksum manifest records the delivered artifacts.
+
+\begin{thebibliography}{99}
+\addcontentsline{toc}{section}{References}
+\bibitem{repo-manuscript}
+ProveIt Contributors, \emph{Polylogarithms and their Arithmetic Bridges},
+canonical manuscript README and editorial status, inspected at commit
+\sourcecommit, path
+\path{Analysis/Polylogarithms/docs/manuscript/README.md}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{repo-agenda}
+ProveIt research report, \emph{Stieltjes--harmonic identities},
+\texttt{sections/further\_research.tex}, especially ``Negative-balance
+identities and other summation theorems.'' Preserved under
+\path{Analysis/Polylogarithms/docs/reports/stieltjes-harmonic-resonance/}
+\path{continuations/stieltjes-harmonic-identities/}, inspected commit
+as above; blob \texttt{1051d5c4348e9b697712468e9c6b0c0f4d6373db}.
+
+\bibitem{repo-gauss}
+ProveIt research report, \emph{Stieltjes--harmonic identities},
+\texttt{sections/gauss\_stieltjes.tex}, in the same report directory,
+including the successive-subtraction theorem and
+\texttt{gs:residue-rigidity}; blob
+\texttt{d97de05522a0963d7f54b2d0782211f1c5288d39}.
+
+\bibitem{repo-laurent}
+ProveIt research report, \emph{Twisted harmonic Laurent continuation},
+\texttt{sections/04\_harmonic\_laurent.tex}, preserved under
+\path{Analysis/Polylogarithms/docs/reports/stieltjes-correlation-calculus/}
+\path{continuations/twisted-harmonic-laurent/}, inspected commit as above;
+blob \texttt{fab94a7e395e9b0fda1b73b9a8576a24ff1e71cf}.
+
+\bibitem{Young2024}
+P. T. Young, \emph{Series of Height One Multiple Zeta Functions},
+Integers \textbf{24} (2024), A43, 14 pp.
+DOI: 10.5281/zenodo.11221606.
+\url{https://math.colgate.edu/~integers/y43/y43.pdf}.
+
+\bibitem{Young2023}
+P. T. Young, \emph{Global series for height 1 multiple zeta functions},
+European Journal of Mathematics \textbf{9} (2023), Article 99.
+Bibliographic comparison as cited in Young's 2024 article.
+
+\bibitem{Can2024}
+M. Can, L. Karg\i n, M. Cenkci, and A. Dil,
+\emph{On certain harmonic zeta functions}, arXiv:2403.07123 (2024),
+version 1 inspected.
+\url{https://arxiv.org/html/2403.07123v1}.
+
+\bibitem{DLMF24}
+NIST Digital Library of Mathematical Functions,
+Chapter 24, \S24.16, \emph{Generalizations of Bernoulli and Euler polynomials}.
+\url{https://dlmf.nist.gov/24.16}.
+
+\bibitem{DLMF25}
+NIST Digital Library of Mathematical Functions,
+Chapter 25, \S25.11, \emph{Hurwitz Zeta Function}.
+\url{https://dlmf.nist.gov/25.11}.
+\end{thebibliography}
+
+\end{document}

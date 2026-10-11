@@ -1,0 +1,177 @@
+\section{Polylogarithmic kernels, derivatives, and normalized primitives}
+\label{sec:calculus}
+
+The residue normalization has useful consequences beyond one finite
+part. It gives convergent antiderivatives, strict multiple-zeta Taylor
+coefficients, and explicit polylogarithmic kernels. These are exact
+identities of functions on stated domains. The Gamma and polylogarithm
+ingredients are classical; the point here is that the same normalization
+works for the ordinary integral, the poles, and all subsequent
+differentiations.
+
+\subsection{A primitive with a fixed additive constant}
+
+\begin{theorem}[The normalized Gamma-polygamma primitive]
+\label{thm:Cprimitive}
+Let $m\ge2$ and $\Omega_m=\C\setminus(-\infty,-(m-1)]$.
+With the principal logarithm, put
+\begin{equation}\label{eq:Cprimitive}
+ \mathfrak P_m(z)=-m!\zeta(m)z
+  -m!\sum_{n\ge m-1}e_{m-1}(n)
+       \left\{\Log\left(1+\frac zn\right)-\frac zn\right\}.
+\end{equation}
+Then $\mathfrak P_m$ is holomorphic on $\Omega_m$,
+$\mathfrak P_m(0)=0$, and $\mathfrak P_m'=\CM_m$. In particular
+\begin{equation}\label{eq:primitive_atone}
+ \mathfrak P_m(1)=m!(c_m-\lambda_{m-1}).
+\end{equation}
+For any real $-(m-1)<a<b$, the ordinary integral of $\CM_m$ is
+$\mathfrak P_m(b)-\mathfrak P_m(a)$.
+\end{theorem}
+\begin{proof}
+On every fixed compact set the bracket in \eqref{eq:Cprimitive} is
+$O(n^{-2})$, uniformly in $z$. The logarithm is holomorphic on the
+stated slit because the first nonzero residue occurs at $n=m-1$.
+The normal convergence and the same bound for the differentiated
+bracket justify termwise differentiation, giving \eqref{eq:CML}.
+Every term vanishes at zero. Theorem~\ref{thm:Cintegral} gives the
+value at one.
+\end{proof}
+
+\subsection{The all-ones polylogarithm as a kernel}
+
+The harmonic generating identity is
+\begin{equation}\label{eq:harmonic_polylog_kernel}
+ \sum_{n\ge1}e_d(n)y^n
+    =\frac{\Li_{\{1\}^d}(y)}{1-y}
+    =\frac{(-\log(1-y))^d}{d!(1-y)},\qquad |y|<1.
+\end{equation}
+The factor $(1-y)^{-1}$ records the inclusive upper cutoff $n$.
+Omitting it changes the harmonic convention and the resulting poles.
+
+\begin{corollary}[Polylogarithmic integral and primitive kernels]
+\label{cor:Cpolylog}
+For $m\ge2$ and $\re z>-(m-1)$,
+\begin{align}
+ \CM_m(z)={}&-m!\zeta(m)
+  +m!\int_0^1(1-y^z)
+       \frac{\Li_{\{1\}^{m-1}}(y)}{y(1-y)}\,dy,
+ \label{eq:Cpolylog}\\
+ \mathfrak P_m(z)={}&-m!\zeta(m)z
+  +m!\int_0^1\left\{z-\frac{y^z-1}{\log y}\right\}
+       \frac{\Li_{\{1\}^{m-1}}(y)}{y(1-y)}\,dy.
+ \label{eq:Ppolylog}
+\end{align}
+Here $y^z=e^{z\log y}$ uses the real logarithm for $0<y<1$.
+Both integrals are ordinary absolutely convergent integrals.
+\end{corollary}
+\begin{proof}
+Insert $(n+z)^{-1}-n^{-1}=\int_0^1y^{n-1}(y^z-1)\,dy$
+into \eqref{eq:CML} and use \eqref{eq:harmonic_polylog_kernel}.
+Near zero the polylogarithm is $O(y^{m-1})$, giving precisely
+the half-plane in the statement. Near one, $1-y^z=O(1-y)$;
+the remaining logarithmic power is integrable. These estimates are
+uniform on compact parameter sets and justify summation and
+differentiation. Integrating with respect to $z$ from zero gives
+the second formula and its normalization.
+\end{proof}
+
+\subsection{All derivatives and the exact Taylor radius}
+
+\begin{corollary}[Derivative Euler sums]\label{cor:Cderivatives}
+For every $m\ge2$ and integer $r\ge1$,
+\begin{equation}\label{eq:Cderivatives}
+ \CM_m^{(r)}(z)=(-1)^{r+1}m!r!
+       \sum_{n\ge m-1}\frac{e_{m-1}(n)}{(n+z)^{r+1}}.
+\end{equation}
+The series converges normally away from the actual poles. At zero,
+\begin{equation}\label{eq:Cderivative_zero}
+ \CM_m^{(r)}(0)=(-1)^{r+1}m!r!
+  \left\{Z_m(r+1,\{1\}^{m-1})
+       +Z_{m-1}(r+2,\{1\}^{m-2})\right\}.
+\end{equation}
+Equivalently, the Taylor series is
+\begin{equation}\label{eq:Ctaylor}
+ \CM_m(z)=-m!\zeta(m)
+  +m!\sum_{r\ge1}(-1)^{r+1}
+  \left\{Z_m(r+1,\{1\}^{m-1})
+       +Z_{m-1}(r+2,\{1\}^{m-2})\right\}z^r.
+\end{equation}
+Its radius of convergence is exactly $m-1$.
+\end{corollary}
+\begin{proof}
+Differentiate the normally convergent partial fractions. The bound
+$e_{m-1}(n)=O((1+\log n)^{m-1})$ is sufficient for every
+$r\ge1$. The exact finite identity
+$e_d(n)=e_d(n-1)+e_{d-1}(n-1)/n$ separates the inclusive
+cutoff into two strict sums, proving \eqref{eq:Cderivative_zero}.
+The Taylor coefficients follow by division by $r!$. Finally the
+origin is removable and the nearest actual singularity is the
+simple pole at $-(m-1)$, whose residue is nonzero by
+Theorem~\ref{thm:Cpoles}; this proves the exact radius.
+\end{proof}
+
+For example $\CM_2'(0)=4\zeta(3)$ and
+$\CM_3'(0)=15\zeta(4)/2$. These recover the same coefficients
+by differentiating the Bell-polygamma expressions. More generally,
+every derivative at zero becomes a convergent multiple-zeta value,
+whereas integration over one unit interval produces a regular
+Laurent coefficient. This provides a direct functional connection
+between the two types of constants.
+
+On $\re z>-(m-1)$ the derivative also has the kernel
+\begin{equation}\label{eq:Cderivative_kernel}
+ \CM_m^{(r)}(z)=(-1)^{r+1}m!
+  \int_0^1y^z(-\log y)^r
+       \frac{\Li_{\{1\}^{m-1}}(y)}{y(1-y)}\,dy.
+\end{equation}
+The powers of $\log y$ therefore represent spatial differentiation,
+while the logarithmic Mellin powers in \eqref{eq:alllaurent}
+represent spectral differentiation.
+
+The Gamma recurrence also supplies the exact discrete relation
+\begin{equation}\label{eq:Cshift}
+ \CM_m(x+1)-\CM_m(x)=\frac m x\CM_{m-1}(x+1),\qquad m\ge1.
+\end{equation}
+It follows by taking coefficients in
+$G(x+1,t)=xG(x,t)/(x-t)$. The identity holds meromorphically;
+removable values at exceptional points are obtained by continuation.
+At positive integers it is the classical complete-harmonic recurrence.
+
+\subsection{Antiderivatives in the spectral parameter}
+
+The normalized germ $\Lambda_d$ from Corollary~\ref{cor:allcoefficients}
+has a convergent primitive as well. On $\re u>-1$, define
+\begin{equation}\label{eq:spectral_primitive}
+ \mathfrak S_d(u)=\frac1{d!}\int_0^\infty\frac{V_d(v)}v
+   \frac{(u\log v-1)v^u+1}{(\log v)^2}\,dv.
+\end{equation}
+At $v=1$ the quotient is assigned its limiting value $u^2/2$.
+The same estimates as in Proposition~\ref{prop:mellin} justify
+parameter differentiation and give
+\begin{equation}\label{eq:spectral_primitive_derivative}
+ \mathfrak S_d(0)=0,\qquad \mathfrak S_d'(u)=\Lambda_d(u).
+\end{equation}
+Indeed the quotient equals $\int_0^u wv^w\,dw$ on any path in the
+half-plane. This identity integrates the completed spectral germ,
+so its pole subtraction and integration constant are explicit.
+
+For comparison, the ordinary Hurwitz Stieltjes constants are defined
+by $\zeta(1+u,a)=u^{-1}+\sum(-1)^j\gamma_j(a)u^j/j!$,
+with $\re a>0$. Their classical parameter calculus follows at once
+from $\partial_a\zeta(s,a)=-s\zeta(s+1,a)$ \cite{DLMF}:
+\begin{align}
+ \partial_a\gamma_0(a)&=-\zeta(2,a),\\
+ \partial_a\gamma_j(a)&=(-1)^{j+1}
+     \{\partial_s^j\zeta(2,a)+j\partial_s^{j-1}\zeta(2,a)\},
+       \qquad j\ge1,\label{eq:hurwitz_derivative}\\
+ \int\gamma_j(a)\,da
+     &=\frac{(-1)^{j+1}}{j+1}
+                       \partial_s^{j+1}\zeta(0,a)+\text{constant}.
+ \label{eq:hurwitz_primitive}
+\end{align}
+For the last identity expand
+$\partial_a\zeta(u,a)=-u\zeta(1+u,a)$ at $u=0$.
+These familiar formulas provide a sign and factorial control when
+translating between ordinary Hurwitz constants and the strict-depth
+constants used in the new finite-part identities.

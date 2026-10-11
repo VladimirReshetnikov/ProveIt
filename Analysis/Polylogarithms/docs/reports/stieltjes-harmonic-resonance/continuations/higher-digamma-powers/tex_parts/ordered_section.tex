@@ -1,0 +1,432 @@
+\section{Ordered depth generators and exact cancellations}
+\label{sec:ordered}
+
+The preceding spectral derivatives retain information about the order of
+the summation indices.  A complementary question is whether selected
+combinations over \emph{all depths} admit finite evaluations.  We give
+such evaluations while keeping one tagged exponent arbitrary.  The
+resulting formulas connect ordered harmonic sums to ordinary Hurwitz-zeta
+derivatives, generalized Stieltjes constants, and $\log\Gamma$.
+
+The entire interpolation used here is established: its one-endpoint
+form is the interpolant of Ihara, Nakamura, and Yamamoto
+\cite{INY}, and its relative formulation already appears in the
+incoming independent-order report.  Gamma formulas for depth-generating
+series have substantial antecedents, including Young's work
+\cite{Young}.  The purpose of this section is to derive a common
+two-marker formula, prove its convergence and continuation, and extract
+explicit cancellations useful for the present research program.
+
+\subsection{Relative ordered harmonic sums}
+
+For $c>0$ and a word $w=(s_1,\ldots,s_d)$, write
+\[
+ Z_c(w)=\sum_{n_1>\cdots>n_d\ge0}
+              \prod_{j=1}^d(n_j+c)^{-s_j},
+ \qquad Z_c(\varnothing)=1.
+\]
+All initial manipulations can be made in the smaller absolute-convergence
+domain $\Re s_j>1$.  Let $F_c$ be the formal word series with these
+coefficients and constant coefficient one.  Products concatenate words:
+the coefficient of $w$ in $FG$ is $\sum_{w=uv}F(u)G(v)$.  Define
+\begin{equation}\label{ord:relative}
+             \Hrel_{a,b}=F_a^{-1}F_b,\qquad
+             h_{a,b}(s)=\zeta(s,b)-\zeta(s,a).
+\end{equation}
+This specifies every coefficient by a finite algebraic expression.  For
+example,
+\[
+ \Hrel_{a,b}(s)=h_{a,b}(s),\qquad
+ \Hrel_{a,b}(s,t)=Z_b(s,t)-Z_a(s,t)-\zeta(s,a)h_{a,b}(t).
+\]
+The identity $\Hrel_{a,1}(w)=\Psi(w;a-1)$ identifies the one-endpoint
+coefficients with \cite[Proposition~2.1]{INY}; their joint entireness in
+the spectral indices is \cite[Corollary~4.2]{INY}.  It also proves the
+relative assertion without a new regularization prescription, because
+\[
+                 \Hrel_{a,b}=\Hrel_{a,1}\Hrel_{b,1}^{-1}
+\]
+and each coefficient of the inverse is a finite polynomial in the
+coefficients of $\Hrel_{b,1}$.  We always use these entire spectral continuations.
+When $a=b+N$, $N\in\mathbb Z_{\ge0}$, cancellation of the ordered products
+gives
+\begin{equation}\label{ord:finite}
+ \Hrel_{b+N,b}(s_1,\ldots,s_d)
+   =\sum_{N>n_1>\cdots>n_d\ge0}
+             \prod_{j=1}^d(n_j+b)^{-s_j}.
+\end{equation}
+Thus this is an interpolation of strict finite harmonic sums, with the
+largest index on the left.  Write $1^p$ for a block of $p$ copies of $1$,
+including the empty block when $p=0$.
+
+\subsection{A two-marker theorem}
+
+\begin{theorem}[One tagged exponent and two depth markers]\label{ord:two}
+Let $a,b>0$, and put $\rho=\min(a,b)$.  The series
+\begin{equation}\label{ord:Gdef}
+ \mathscr G_s^{a,b}(x,y)
+   =\sum_{p,q\ge0}x^py^q\Hrel_{a,b}(1^p,s,1^q)
+\end{equation}
+converges normally on compact subsets of
+$\mathbb C_s\times\{|x|<\rho,\ |y|<\rho\}$.  Define, initially when
+$\Re(s+x-y)>1$,
+\begin{equation}\label{ord:kernel}
+ S_s(c;x,y)=
+   \sum_{n\ge0}(n+c)^{1-s}
+       \frac{\Gamma(n+c+y)}{\Gamma(n+c+1+x)}.
+\end{equation}
+Then
+\begin{equation}\label{ord:twoformula}
+ \boxed{\;
+ \mathscr G_s^{a,b}(x,y)
+ =\frac{\Gamma(a+x)\Gamma(b)}
+        {\Gamma(a)\Gamma(b+y)}
+       \bigl(S_s(b;x,y)-S_s(a;x,y)\bigr).
+ \;}
+\end{equation}
+The difference on the right has an entire continuation in $s$, joint
+with the marking variables in the stated bidisc.  The completed formula
+also has a meromorphic continuation in $x,y$.  On $y=0$ the larger domain
+$|x|<a$, with arbitrary $b>0$, is a domain of normal convergence of the
+one-marker series.  All spectral derivatives may be taken term by term
+on these domains.
+\end{theorem}
+
+\begin{proof}
+For the finite interval \eqref{ord:finite}, choosing the index $n+b$ of
+the tagged exponent and then the subsets above and below it gives
+\begin{align}
+ \mathscr G_s^{b+N,b}(x,y)
+ &=\sum_{n=0}^{N-1}(n+b)^{-s}
+       \prod_{k=n+1}^{N-1}\left(1+\frac{x}{k+b}\right)
+       \prod_{k=0}^{n-1}\left(1+\frac{y}{k+b}\right) \notag\\
+ &=\frac{\Gamma(b+N+x)\Gamma(b)}
+          {\Gamma(b+N)\Gamma(b+y)}
+    \sum_{n=0}^{N-1}(n+b)^{1-s}
+          \frac{\Gamma(n+b+y)}{\Gamma(n+b+1+x)}.
+ \label{ord:finitegamma}
+\end{align}
+Removable Gamma specializations are interpreted through the finite
+product in the first line.
+
+Agreement on these finite intervals alone would not justify arbitrary
+endpoints.  For that step use triangular matrices
+\[
+ E_c(n)=
+ \begin{pmatrix}
+  1+x/(n+c)&(n+c)^{-s}\\
+  0&1+y/(n+c)
+ \end{pmatrix},
+ \qquad P_{c,M}=E_c(M-1)\cdots E_c(0).
+\]
+Their upper-right entry records exactly one tagged letter, with $x$
+counting the letters before it and $y$ those after it.  Consequently
+the upper-right entry of $P_{a,M}^{-1}P_{b,M}$ records the corresponding
+relative coefficients.
+
+To pass rigorously to exponent $1$, first replace every background
+factor $(n+c)^{-1}$ by $(n+c)^{-\tau}$, with real $\tau>1$.
+The infinite products then give the coefficients
+$\Hrel_{a,b}(\tau^p,s,\tau^q)$ in an absolute-convergence region.
+Fix $0<\delta<\rho/2$ and $|x|,|y|<\delta$.  For $\tau\ge1$
+sufficiently close to $1$, the logarithms of the diagonal
+\emph{quotient} products have differences $O(n^{-\tau-1})$.
+After division by the first diagonal entry, each off-diagonal summand
+is bounded by
+$C(n+1)^{-\Re s+2\delta}$, locally uniformly in the parameters.
+Indeed its product factors have logarithmic absolute value at most
+$(|x|+|y|)\log(n+1)+O(1)$.
+Thus the products and off-diagonal sums converge uniformly for
+$\Re s>1+2\delta$ as $\tau\downarrow1$.  Cauchy coefficient extraction
+commutes with this limit.  Entireness of the relative coefficients
+therefore identifies its coefficients with
+$\Hrel_{a,b}(1^p,s,1^q)$.
+
+For completeness, the first and second diagonal entries of $P_{c,M}$
+are $A_c(M,x)$ and $A_c(M,y)$, where
+\[
+ A_c(M,z)=
+   \frac{\Gamma(M+c+z)\Gamma(c)}
+        {\Gamma(M+c)\Gamma(c+z)}.
+\]
+Its upper-right entry is
+\[
+ \frac{\Gamma(M+c+x)\Gamma(c)}
+      {\Gamma(M+c)\Gamma(c+y)}
+ \sum_{n=0}^{M-1}(n+c)^{1-s}
+       \frac{\Gamma(n+c+y)}{\Gamma(n+c+1+x)}.
+\]
+Inserting these expressions in the inverse of a triangular matrix and
+using $\Gamma(M+c+z)/\Gamma(M+c)\sim M^z$ proves
+\eqref{ord:twoformula} on the initial region just specified.
+
+It remains to justify the claimed continuation and the convergence
+of its Taylor series.  The Gamma-ratio expansion
+\cite[\S5.11(iii)]{DLMF} is locally uniform in the markers:
+\[
+ \frac{\Gamma(t+y)}{\Gamma(t+1+x)}
+  =t^{y-x-1}
+    \left(\sum_{j=0}^{J-1}c_j(x,y)t^{-j}+O(t^{-J})\right),
+ \qquad c_0=1.
+\]
+The coefficients do not depend on the endpoint; for instance,
+$c_1=(y-x-1)(y+x)/2$.  Let $r_J(t)$ be the remainder after multiplying
+this expansion by $t^{1-s}$.  Subtraction of the same asymptotic terms
+at both endpoints yields
+\begin{align}
+ S_s(b;x,y)-S_s(a;x,y)
+  ={}&\sum_{j=0}^{J-1}c_j(x,y)h_{a,b}(s+x-y+j)\notag\\
+    &+\sum_{n\ge0}\bigl(r_J(n+b)-r_J(n+a)\bigr).
+ \label{ord:subtract}
+\end{align}
+The remainder series is normally convergent whenever
+$\Re(s+x-y)+J>1$.  Each $h_{a,b}$ is entire: the two simple Hurwitz-zeta
+poles have the same residue and cancel.  Increasing $J$ therefore
+continues the difference to every $s$, jointly holomorphically on
+compact subsets of the stated bidisc.  The finitely many small-$n$
+terms present no singularity there.
+
+This continuation has Taylor coefficients in $x,y$ that are entire in
+$s$.  They agree with those in \eqref{ord:Gdef} on the initial
+half-plane, hence agree everywhere.  The Taylor series of a holomorphic
+function on a bidisc converges normally on its compact subsets, proving
+the series assertion.  The same subtraction, away from the discrete
+Gamma-pole sets, gives meromorphic continuation in the markers.
+Finally, at $y=0$ the kernel
+$\Gamma(t)/\Gamma(t+1+x)$ is entire in $x$.  The only possible marking
+poles of the completed expression then come from $\Gamma(a+x)$.
+This proves holomorphy and Taylor convergence for $|x|<a$.
+\end{proof}
+
+\subsection{Integer gaps and ordinary zeta derivatives}
+
+The gamma quotient in \eqref{ord:kernel} becomes a polynomial when
+the markers have a suitable integer difference.  To state every such
+case uniformly, define $c_{m,k}(x)$ by
+\[
+          (t+x+1)_m=\sum_{k=0}^m c_{m,k}(x)t^k,
+ \qquad m\in\mathbb Z_{\ge0},
+\]
+where $(v)_m=v(v+1)\cdots(v+m-1)$ and $(v)_0=1$.
+
+\begin{corollary}[Finite reduction at an integer marker gap]
+\label{ord:gap}
+For every complex $s$,
+\begin{equation}\label{ord:gapformula}
+ \mathscr G_s^{a,b}(x,x+m+1)=
+ \frac{\Gamma(a+x)\Gamma(b)}
+      {\Gamma(a)\Gamma(b+x+m+1)}
+       \sum_{k=0}^m c_{m,k}(x)h_{a,b}(s-1-k).
+\end{equation}
+This is an ordinary convergent depth sum when the markers belong to the
+convergence domain of Theorem~\ref{ord:two}; elsewhere it is an identity
+of the specified meromorphic continuations.
+In particular, for an integer $m\ge1$, $a>m$, and $b>0$,
+\begin{equation}\label{ord:negative}
+ \boxed{\;
+ \sum_{p\ge0}(-m)^p\Hrel_{a,b}(1^p,s)
+ =\frac{\Gamma(a-m)}{\Gamma(a)}
+    \sum_{k=0}^{m-1}(-1)^{m-1-k}
+           \genfrac{[}{]}{0pt}{}{m}{k+1}h_{a,b}(s-1-k).
+ \;}
+\end{equation}
+Here $\genfrac{[}{]}{0pt}{}{m}{j}$ is an unsigned Stirling number of the
+first kind.  The series in \eqref{ord:negative} converges normally
+locally in $s$.
+\end{corollary}
+
+\begin{proof}
+On $y=x+m+1$ the kernel quotient is exactly $(t+x+1)_m$.
+Equation \eqref{ord:gapformula} follows first where the defining
+Dirichlet series converge, and then everywhere by
+\eqref{ord:subtract}.  For \eqref{ord:negative}, set $x=-m$, $y=0$
+and use
+\[
+ \frac{\Gamma(t)}{\Gamma(t+1-m)}
+   =\prod_{j=1}^{m-1}(t-j)
+   =\sum_{k=0}^{m-1}(-1)^{m-1-k}
+                      \genfrac{[}{]}{0pt}{}{m}{k+1}t^k.
+\]
+The condition $a>m$ places this specialization strictly inside the
+one-marker Taylor disc.
+\end{proof}
+
+The first two reductions, including their normal-convergence conditions,
+are particularly simple:
+\begin{align}
+ \sum_{p\ge0}(-1)^p\Hrel_{a,b}(1^p,s)
+    &=\frac{h_{a,b}(s-1)}{a-1}, && a>1, \label{ord:mone}\\
+ \sum_{p\ge0}(-2)^p\Hrel_{a,b}(1^p,s)
+    &=\frac{h_{a,b}(s-2)-h_{a,b}(s-1)}
+            {(a-2)(a-1)}, && a>2. \label{ord:mtwo}
+\end{align}
+All their spectral derivatives are finite combinations of ordinary
+Hurwitz-zeta derivatives.  At a canceled pole they become Stieltjes
+differences.  More explicitly, use the convention
+\[
+ \zeta(1+u,c)=\frac1u+
+       \sum_{k\ge0}\frac{(-1)^k}{k!}\gamma_k(c)u^k.
+\]
+Differentiating \eqref{ord:mone} at $s=2$ gives, for $a>1$, $b>0$,
+\begin{equation}\label{ord:stieltjes}
+ \boxed{\;
+ \sum_{p\ge0}(-1)^p
+    \left.\frac{\partial^k}{\partial s^k}
+          \Hrel_{a,b}(1^p,s)\right|_{s=2}
+  =\frac{(-1)^k\bigl(\gamma_k(b)-\gamma_k(a)\bigr)}{a-1}.
+ \;}
+\end{equation}
+For $k=0$ this is $(\psi(a)-\psi(b))/(a-1)$.
+At the adjacent point $s=1$, the classical relation
+$\zeta'(0,c)=\log\Gamma(c)-\tfrac12\log(2\pi)$
+\cite[\S25.11]{DLMF} instead yields
+\begin{equation}\label{ord:gamma}
+ \boxed{\;
+ \sum_{p\ge0}(-1)^p
+    \left.\frac{\partial}{\partial s}
+          \Hrel_{a,b}(1^p,s)\right|_{s=1}
+       =\frac{\log\Gamma(b)-\log\Gamma(a)}{a-1}.
+ \;}
+\end{equation}
+For $a=N+1$, $b=1$, $N\ge1$, the sum is finite and its value is
+$-\log(N!)/N$.  These statements evaluate ordered combinations over
+depth.  They do not remove the nonsymmetric spectral information in
+each separate fixed-depth coefficient.
+
+\subsection{A finite-interval formula with several tagged exponents}
+
+\begin{corollary}[A finite staircase of markers]\label{ord:staircase}
+Let $a=b+N$, $b>0$, $N\in\mathbb Z_{\ge0}$, and let $r\ge1$ with
+$a>r$.  For arbitrary complex $s_1,\ldots,s_r$,
+\begin{equation}\label{ord:stairformula}
+ \begin{split}
+ &\sum_{k_0,\ldots,k_{r-1}\ge0}
+       \left(\prod_{j=0}^{r-1}(j-r)^{k_j}\right)
+       \Hrel_{a,b}(1^{k_0},s_1,1^{k_1},s_2,\ldots,
+                                  1^{k_{r-1}},s_r)\\
+ &\hspace{35mm}
+       =\frac{\Gamma(a-r)}{\Gamma(a)}
+                    \Hrel_{a,b}(s_1-1,\ldots,s_r-1).
+ \end{split}
+\end{equation}
+The displayed sum is finite: all terms of depth greater than $N$ vanish.
+\end{corollary}
+
+\begin{proof}
+Introduce independent markers $x_0,\ldots,x_r$ for the blocks of ones
+before, between, and after the tagged exponents.  The finite-product
+calculation in \eqref{ord:finitegamma}, now made at each selected
+tagged index $t_j=n_j+b$, gives their joint generator as
+\[
+ \frac{\Gamma(a+x_0)\Gamma(b)}
+      {\Gamma(a)\Gamma(b+x_r)}
+ \sum_{N>n_1>\cdots>n_r\ge0}
+       \prod_{j=1}^r
+           t_j^{1-s_j}
+           \frac{\Gamma(t_j+x_j)}
+                {\Gamma(t_j+1+x_{j-1})}.
+\]
+Set $x_j=j-r$.  Every quotient inside the sum becomes one, the last
+marker is zero, and the prefactor becomes $\Gamma(a-r)/\Gamma(a)$.
+The calculation may first be made with $b>r$, so that no intermediate
+Gamma factor is singular.  Both sides are real analytic on the
+connected interval $b>\max(0,r-N)$, so the identity extends throughout
+that interval.  Equivalently one may use the finite products to fill
+all removable intermediate specializations.
+\end{proof}
+
+For example, with the same finite-interval hypothesis and $a>2$,
+\[
+ \sum_{p,q\ge0}(-2)^p(-1)^q
+          \Hrel_{a,b}(1^p,s,1^q,t)
+       =\frac{\Hrel_{a,b}(s-1,t-1)}{(a-1)(a-2)}.
+\]
+At $s=t=2$ its value is
+\[
+ \frac{(\psi(a)-\psi(b))^2-\zeta(2,b)+\zeta(2,a)}
+           {2(a-1)(a-2)}.
+\]
+Corollary~\ref{ord:staircase} is asserted for finite intervals only.
+An extension to independent endpoints with several unbounded depth
+markers would require its own convergence argument.
+
+\subsection{A polylogarithmic companion}
+
+Use the one-variable multiple polylogarithm convention
+\[
+ \Li_{s_1,\ldots,s_d}(z)
+    =\sum_{n_1>\cdots>n_d\ge1}
+        \frac{z^{n_1}}{n_1^{s_1}\cdots n_d^{s_d}},
+ \qquad |z|<1.
+\]
+This convention places the argument on the largest index, as in the
+ordered harmonic sums above.
+
+\begin{proposition}[A depth generator and finite-depth evaluations]
+\label{ord:polylog}
+For $|z|<1$ and arbitrary $s,u\in\mathbb C$, the series
+\[
+                  \mathscr F_s(z;u)
+                    =\sum_{p\ge0}u^p\Li_{1^p,s}(z)
+\]
+converges normally on compact subsets of these variables and satisfies
+\begin{equation}\label{ord:polygen}
+ \boxed{\;
+ \mathscr F_s(z;u)
+   =(1-z)^{-u}
+           \int_0^z\frac{(1-t)^u\Li_{s-1}(t)}{t}\,\dd t.
+ \;}
+\end{equation}
+The branch of $\log(1-z)$ vanishes at zero.  In particular,
+\begin{align}
+ \sum_{p\ge0}(-1)^p\Li_{1^p,s}(z)
+   &=(1-z)\bigl(\Li_s(z)+\Li_{1,s-1}(z)\bigr),
+       \label{ord:polyone}\\
+ \sum_{p\ge0}(-2)^p\Li_{1^p,s}(z)
+   &=(1-z)^2\bigl(\Li_s(z)+\Li_{1,s-1}(z)
+                                  -\Li_{1,s-2}(z)\bigr)\notag\\
+   &\hspace{8mm}+z(1-z)\Li_{s-1}(z).
+       \label{ord:polytwo}
+\end{align}
+More generally every negative integer $u=-m$ admits a finite expression
+using ordinary polylogarithms and $\Li_{1,s-j}(z)$ with rational
+coefficients in $z$.  All spectral derivatives of these identities
+are valid on the same disc.
+\end{proposition}
+
+\begin{proof}
+For $|u|\le R$ and $s$ in a fixed compact set, the absolute sum of the
+coefficients attached to $z^n$ is bounded by
+$n^C\prod_{k=1}^n(1+R/k)=O(n^{C+R})$ for a suitable $C$.
+Indeed one may first choose the tagged index and then independently
+choose the larger background indices.  Summation against $|z|^n$
+proves normal convergence, including in $u$ and $s$.
+
+Differentiation of the defining series gives
+\[
+ \frac{\partial\mathscr F_s}{\partial z}
+    =\frac{\Li_{s-1}(z)}z+\frac{u}{1-z}\mathscr F_s(z;u),
+ \qquad \mathscr F_s(0;u)=0.
+\]
+Multiplication by the integrating factor $(1-z)^u$ proves
+\eqref{ord:polygen}.  At $u=-m$ use
+\[
+ \frac1{t(1-t)^m}=\frac1t+\sum_{j=1}^m\frac1{(1-t)^j}.
+\]
+Thus the integral is $\Li_s(z)+\sum_{j=1}^m I_j(s-1,z)$, where
+$I_j(v,z)=\int_0^z\Li_v(t)(1-t)^{-j}\,\dd t$.
+Here $I_1(v,z)=\Li_{1,v}(z)$, and integration by parts gives the finite
+recursion, for $j\ge2$,
+\[
+ I_j(v,z)=\frac{\Li_v(z)}{(j-1)(1-z)^{j-1}}
+       -\frac{\Li_v(z)+\sum_{k=1}^{j-1}I_k(v-1,z)}{j-1}.
+\]
+This proves the general finite-depth assertion and, at $m=1,2$,
+the two displayed formulas.  Normal convergence permits all derivatives
+in the tagged exponent.
+\end{proof}
+
+These polylogarithmic formulas, like \eqref{ord:negative}, reduce a
+specified depth-generating combination.  They give exact primitives
+and spectral derivatives with controlled depth, while leaving open
+the separate reduction problems for individual ordered coefficients.
