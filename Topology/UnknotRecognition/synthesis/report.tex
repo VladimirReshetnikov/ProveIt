@@ -779,6 +779,7 @@ No general quasi-polynomial recognition bound is proved.
 \input{prism_interfaces.tex}
 \input{weighted_sweep.tex}
 \input{prism_port_encoding.tex}
+\input{cut_boundary.tex}
 
 \section{Assessment and recommendations}
 
@@ -903,6 +904,12 @@ then encodes unique source port ownership in three weighted coordinates,
 with independent replay of both certificate versions. These are exact
 compressed-operator improvements; the full core and hierarchy obligations
 remain in place.
+Section~\ref{sec:cut-boundary} then constructs the full cut boundary in
+binary polygon, edge and vertex families, including oriented attaching
+cycles and carriers into cut chambers. It computes all boundary genera and
+each cut piece's boundary count and total genus, with independent source-cell
+reconstruction and trace replay. Three-dimensional interior geometry,
+parallelity collapse and the hierarchy complexity proof are still required.
 
 \paragraph{Obstacles that remain.}
 The six items of Section \ref{sec:missing} remain obligations for a general
@@ -929,6 +936,10 @@ decision fallback; order width alone does not settle it.
 implementation, as several of their reports suggest.
 
 \begin{thebibliography}{99}
+\bibitem{regina-boundary-components}
+Regina project, \emph{Boundary component API},
+\code{BoundaryComponent::eulerChar} and component ownership,
+\url{https://regina-normal.github.io/engine-docs/classregina_1_1detail_1_1BoundaryComponentBase.html}.
 \bibitem{fine-wilf-orbits} Nathan J. Fine and Herbert S. Wilf,
 \emph{Uniqueness theorems for periodic functions}, Proc. Amer. Math. Soc.
 16 (1965), 109--114. \url{https://doi.org/10.1090/S0002-9939-1965-0174934-9}.
