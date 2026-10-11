@@ -1061,6 +1061,7 @@ import GowersSzemeredi.Proofs16ThreeSlices
 import GowersSzemeredi.Proofs16ThreeCylinders
 import GowersSzemeredi.Proofs16PolyFamilyThree
 import GowersSzemeredi.Proofs16ProductTranslate
+import GowersSzemeredi.Proofs16PolyPieceThreeInputs
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
