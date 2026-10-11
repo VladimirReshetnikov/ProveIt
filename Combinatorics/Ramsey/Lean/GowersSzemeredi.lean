@@ -1096,6 +1096,10 @@ import GowersSzemeredi.Proofs18GenericSzemeredi
 import GowersSzemeredi.Proofs18GenericLengths
 import GowersSzemeredi.Proofs18GenericLengthsExplicit
 import GowersSzemeredi.Proofs13PolyRecurrence
+import GowersSzemeredi.Proofs13PolyStage136
+import GowersSzemeredi.Proofs13PolyRowExponent
+import GowersSzemeredi.Proofs13PolySquareExtraction
+import GowersSzemeredi.Proofs18FejerCubicAt
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
