@@ -1,46 +1,38 @@
 Gowers Szemeredi formalization checkpoint — 2026-10-11
 
 Scope
-  The goal remains open. The stronger global bounds still await the complete
-  local production check. Smaller four- and five-term thresholds are proved below.
-  New joint-cover arithmetic (2026-10-11): twenty auxiliary theorems in
-  Proofs18FiniteCoverBudgets, Proofs18CoverEnvelopeArithmetic, and
-  Proofs18CoverSharperArithmetic are checked
-  directly by Lean 4.32.0. Their candidate recursion fits the printed
-  exponent comparisons and stopping inequalities at every degree and length.
-  Exact standard-parameter substitutions are checked as well. Connecting the actual
-  localization width and modulus threshold to this recursion is implemented
-  in the integrated cover route and awaits full production verification.
-  The sharper recursion also satisfies M(k)+2*k+22 <= 1024*2^k for k>=2.
-  Its candidate comparisons permit d+8 in the inverse exponent (d>=4),
-  and L+6 in the progression threshold (L>=6). These stronger mathematical
-  bounds still await verification of the analytic inverse construction.
-  The source catalogue contains all 120 unique numbered theorem, lemma,
-  proposition, and corollary headings in sz-thm-gowers-proof.tex.
-  The source ledger regenerated on 2026-10-11 (scripts/gowers_status.py)
-  now records 120 exact companion signatures and no missing companions.
-  The full Section 18 companions from 199799ee2 were integrated in 3d94a50b8.
-  Their light envelope modules were kernel-checked by that branch, but their
-  explicit bridge was checked with substituted dependency interfaces.
-  This workspace is now checking the production sources and an exact-type
-  axiom audit of one companion for each of the 120 numbered statements.
-  The 531-module dependency build passed locally. The full numbered audit
-  and the stronger-bound audit are still running; signature coverage alone
-  does not establish completion of the goal.
-  The two Section 16 companions and the three Section 18 companions still
-  need the complete local production check. The 115 earlier companions
-  were kernel-checked at the 2026-10-09 checkpoint. This includes the repaired
-  Lemma 16.10, whose explicit cover conclusion is weaker than the printed
-  unit-parameter claim. It must not be counted as a proof of that printed
-  claim. The earlier completed audit included both the repaired companion
-  and the preserved printed encoding counterexample.
-  The JSON ledger records every statement, its TeX heading lines, its Lean
-  definition, and related results. Conditional implications, restricted cases,
-  and counterexamples are not counted as proofs of the full statement.
-  Matching headings does not establish mathematical fidelity: several source
-  statements and shared definitions have documented repairs or unresolved gaps.
-  Counts in the historical checkpoint sections below describe those earlier
-  checkpoints; the current catalogue count is stated here and in the ledger.
+  The existing corrected catalogue is now kernel-checked locally. All 120
+  numbered statement definitions have exact companion proofs, with no
+  substituted dependency interfaces. The complete serial production check
+  passed over 1,440 modules with Lean 4.32.0 and mathlib v4.32.0.
+  NumberedAudit checks each selected theorem's exact statement type and its
+  complete transitive axiom set. CompletionAudit checks the six explicit
+  improved-bound results and three strict comparison theorems as well.
+  Only propext, Classical.choice and Quot.sound are permitted.
+
+  The printed offsets are improved to d+7 in the inverse exponent for d>=4,
+  L+6 in the progression and two-color thresholds for L>=6, and L+5 for
+  L>=11. The stronger mathematical conclusions and their real explicit
+  recurrence/phase-partition dependencies have passed the local check.
+  No improvement over other quantitative Szemeredi proofs is claimed.
+
+  This is a check of the existing catalogue and its documented repairs,
+  not a proof of every literal printed claim. In particular, Lemma 16.10's
+  corrected explicit-cover statement is proved; the original formalized
+  unit-parameter claim is separately refuted by a kernel-checked theorem.
+  Its negation is never counted among the 120 positive companion proofs.
+  On 2026-10-11 the user explicitly accepted the documented correction
+  for Lemma 16.10. The requested formalization is complete under that
+  accepted scope, with the native proof and axiom checks above.
+  Other previously documented source/encoding fidelity caveats remain.
+
+  Reproduce the production and axiom checks with:
+    python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.CompletionAudit
+  The exact input hashes and verification results are recorded in
+    Research/GowersSzemeredi/verification/2026-10-11-numbered-and-bounds.json
+  The source ledger records every numbered definition, TeX heading lines,
+  exact companions and related results. Historical checkpoint counts below
+  refer to their respective earlier states.
 
 Sharper exponents for Theorems 18.1 and 18.2 — 2026-10-11 (notes L.15)
   The joint-cover envelopes are a quarter of the printed budgets, so:
@@ -48,14 +40,13 @@ Sharper exponents for Theorems 18.1 and 18.2 — 2026-10-11 (notes L.15)
     exponent alpha^(2^(2^(d+8))) instead of the printed d+10;
   - theorem_18_2_sharper_six_le: Theorem 18.2 at every length L >= 6 with
     threshold 2^(2^(delta^-1^(2^(2^(L+6))))) instead of the printed L+9.
-  Light module Proofs18CoverSharper (kernel-checked); bridge
-  Proofs18CoverSharperExplicit (faithful stub mkstub_sharp.py, the same
-  corpus axioms as the printed versions). d+7 and L+5 are out of reach at
+  Both the light module Proofs18CoverSharper and the explicit bridge
+  Proofs18CoverSharperExplicit pass the local production and axiom check. d+7 and L+5 are out of reach at
   the standard base budget (envelope ~536*2^k > 512*2^k). With the tight
   class-base bound classV_le_tight (Proofs18CoverTightBase, notes L.15a):
   theorem_18_1_d7_four_le (Theorem 18.1 at d+7, every d >= 4) and
-  theorem_18_2_L5_eleven_le (Theorem 18.2 at L+5, every L >= 11), same stub
-  axioms. Corollary 18.7 follows at the same thresholds
+  theorem_18_2_L5_eleven_le (Theorem 18.2 at L+5, every L >= 11), with actual
+  dependencies checked locally. Corollary 18.7 follows at the same thresholds
   (corollary_18_7_sharper_six_le, corollary_18_7_L5_eleven_le;
   Proofs18CoverColorings, notes L.15b). All are restricted to the stated
   degrees and lengths and are not
