@@ -4243,7 +4243,24 @@ short lengths at `c = 5` this gives **Theorem 18.2 and Corollary 18.7 with
 the Section 5 Weyl threshold and called closing it research. It was a
 loose estimate.)*
 
-A three-page mathematical write-up of L.12-L.15e is in
+**L.15f: why `d + 6` and `L + 4` stay out of reach (analysis).** Both need a
+step cost below `128·2^k` (the envelope is about twice the step cost, and
+the budgets are `2^(k+8) = 256·2^k`). The present step costs `236·2^k`:
+- `68·2^k` for the vertex covers: the class degree `D_l = 2^(68·2^l)`
+  (L.10b), whose recursion pays Gowers's Section 16 exponent
+  `θ₁ = (θγ/2)^(2^(2^(k+5)))`, about `32·2^k`, once per dimension;
+- `μ₀ ≈ 32·2^k`, the same `θ₁` through `fixDeg k = 2^(k+5) + 7`;
+- `2·68·2^k` for the two slice applications `c(c(θ))`. These are nested
+  like the vertex providers before L.12; composed jointly they would cost
+  about `68·2^k`, which lowers the envelope from `472·2^k` to about
+  `336·2^k` but changes no headline constant.
+Even with joint slices and an idealized class degree near `34·2^k` (one
+`θ₁` per dimension), the step would cost about `34 + 32 + 68 = 134 > 128`
+(times `2^k`). Below that the printed `θ₁` itself has to change, which is a
+change to Gowers's Section 16 counting, not to the bookkeeping. Unlike the
+cubic stopping term of L.15a–L.15e, this limit is not a loose estimate.
+
+A three-page mathematical write-up of L.12-L.15f is in
 `joint-vertex-covers/joint-vertex-covers.tex` (PDF beside it).
 
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
