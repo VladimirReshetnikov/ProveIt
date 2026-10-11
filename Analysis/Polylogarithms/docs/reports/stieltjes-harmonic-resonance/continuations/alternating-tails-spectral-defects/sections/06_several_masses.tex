@@ -1,0 +1,235 @@
+\section{Several quadratic factors: the complete second derivative and confluence}
+\label{mm:section}
+
+The seventh further-research question in \cite{QSpec} asks for the
+second derivative of a spectrum with several masses and its coincident
+limit.  The even-polynomial setting of that report admits a complete
+answer.  In contrast to the first derivative, a logarithmic cross term
+remains; every coefficient of its coincident-mass expansion nevertheless
+has a finite polygamma and Bernoulli evaluation.
+
+\subsection{A finite definition for the weighted logarithmic kernel}
+
+Fix $a>0$ and $P(v)=\sum_{d=0}^{D}p_dv^d$.  For $B,C>0$ set
+\begin{equation}\label{mm:eq:beta}
+ \beta_k(B,C)=(-1)^k\sum_{j=1}^{k-1}
+        \frac{(B^j-C^j)(B^{k-j}-C^{k-j})}{j(k-j)},\qquad k\ge2.
+\end{equation}
+These are the coefficients in
+\[
+ \log^2\frac{1+Bz}{1+Cz}=\sum_{k\ge2}\beta_k(B,C)z^k.
+\]
+They are symmetric in $B,C$ and vanish when $B=C$.  Define the
+following specific compensated kernel, with $x_n=n+a$:
+\begin{align}
+ K_{P,a}(B,C)
+ &=\sum_{n\ge0}P(x_n^2)
+    \left\{\log^2\frac{x_n^2+B}{x_n^2+C}
+                 -\sum_{k=2}^{D}\frac{\beta_k(B,C)}{x_n^{2k}}\right\}
+    \notag\\
+ &\quad+\sum_{d=0}^{D}\sum_{k=2}^{D}
+              p_d\beta_k(B,C)\zeta(2k-2d,a).
+              \label{mm:eq:K}
+\end{align}
+All inner sums are empty when $D<2$.  The infinite sum has
+$O(x_n^{-2})$ tails and is ordinary and locally normally convergent.
+The finite counterterms have no pole: their Hurwitz orders are even,
+hence never one.  For $P=1$ or $P(v)=v$, the unmodified logarithmic
+sum already converges absolutely.
+
+\begin{theorem}[All even weights and any number of masses]
+\label{mm:thm:second}
+For $q\ge1$ and $\mathbf B=(B_1,\ldots,B_q)$ with each $B_j>0$,
+let
+\begin{align}
+ \mathcal Z_{P,\mathbf B}(s;a)
+ &=\sum_{n\ge0}P(x_n^2)\prod_{j=1}^{q}(x_n^2+B_j)^{-s},
+ \label{mm:eq:product}\\
+ Z_{P,j}(s;a)&=\sum_{n\ge0}P(x_n^2)(x_n^2+B_j)^{-s}.
+ \label{mm:eq:individual}
+\end{align}
+Their continuations are holomorphic at zero, and
+\begin{equation}\label{mm:eq:second}
+ \boxed{\displaystyle
+ \mathcal Z_{P,\mathbf B}''(0;a)
+ =q\sum_{j=1}^{q}Z_{P,j}''(0;a)
+             -\sum_{1\le i<j\le q}K_{P,a}(B_i,B_j).}
+\end{equation}
+Repeated masses are allowed.  Each coincident pair contributes zero.
+\end{theorem}
+\begin{proof}
+Compare the product spectrum with
+$q^{-1}\sum_jZ_{P,j}(qs;a)$.  At each lattice point write
+$L_j=\log(x^2+B_j)$.  The constant and first-order coefficients of
+\[
+ \frac1q\sum_j e^{-qsL_j}-e^{-s\sum_jL_j}
+\]
+vanish.  Its second derivative at zero is the elementary variance
+identity
+\begin{equation}\label{mm:eq:variance}
+ q\sum_jL_j^2-\left(\sum_jL_j\right)^2
+                =\sum_{i<j}(L_i-L_j)^2.
+\end{equation}
+To justify this calculation after continuation, factor out $x^{-2qs}$
+and expand the remaining factors at infinity.  Only even powers of
+$x^{-1}$ occur, including after multiplication by $P(x^2)$.  A pole
+at $s=0$ would require a resulting $x^{-1}$ term; there is none.
+Subtract finitely many asymptotic terms to leave a normally summable
+remainder.  The constant and linear coefficients of each difference
+term vanish before the Hurwitz factors are differentiated.  Hence its
+second derivative is exactly the finite-subtraction continuation of
+\eqref{mm:eq:variance}.  The latter is
+\eqref{mm:eq:K} for each pair, proving \eqref{mm:eq:second}.
+The same finite-subtraction argument proves holomorphy at zero for
+the original spectra.  Repeated parameters follow either directly
+or from local normal convergence.
+\end{proof}
+
+For two unweighted factors, this reads
+\[
+ \mathcal Z_{1,(B,C)}''(0;a)
+ =2Z_{1,B}''(0;a)+2Z_{1,C}''(0;a)
+       -\sum_{n\ge0}\log^2\frac{x_n^2+B}{x_n^2+C}.
+\]
+At $B=C$ it reduces to $4Z_{1,B}''(0;a)$, exactly as required by
+$\mathcal Z_{1,(B,B)}(s;a)=Z_{1,B}(2s;a)$.
+
+\subsection{An explicit digamma kernel determines the whole correction}
+
+The elementary quadratic resolvent is
+\begin{equation}\label{mm:eq:R}
+ R_a(B)=\sum_{n\ge0}\frac1{x_n^2+B}
+       =\frac{\psi(a+i\sqrt B)-\psi(a-i\sqrt B)}{2i\sqrt B}.
+\end{equation}
+For a polynomial weight define its finite continuation
+\begin{equation}\label{mm:eq:RP}
+ R_{P,a}(B)=P(-B)R_a(B)
+    +\sum_{j=1}^{D}p_j\sum_{\ell=0}^{j-1}
+                      (-B)^\ell\zeta(-2(j-1-\ell),a).
+\end{equation}
+It is the continued value $Z_{P,B}(1;a)$.  Formula
+\eqref{mm:eq:RP} follows from polynomial division of
+$x^{2j}/(x^2+B)$ and the Hurwitz values at nonpositive even integers.
+Those values are Bernoulli polynomials:
+$\zeta(-m,a)=-B_{m+1}(a)/(m+1)$ \cite{DLMFZeta}.
+
+\begin{theorem}[A normalized double primitive of a digamma divided difference]
+\label{mm:thm:integral}
+For every $P$ and positive $B,C$,
+\begin{equation}\label{mm:eq:double-integral}
+ \boxed{\displaystyle
+ K_{P,a}(B,C)=\int_C^B\!\int_C^B
+              \frac{R_{P,a}(u)-R_{P,a}(v)}{v-u}\,du\,dv.}
+\end{equation}
+The integrand at $u=v$ is $-R_{P,a}'(u)$.  In particular,
+\begin{equation}\label{mm:eq:mixed-derivative}
+ \partial_B\partial_CK_{P,a}(B,C)
+       =-2\frac{R_{P,a}(B)-R_{P,a}(C)}{C-B}.
+\end{equation}
+The kernel and both of its first partial derivatives vanish on the
+diagonal $B=C$.
+\end{theorem}
+\begin{proof}
+At an ordinary lattice point,
+\[
+ \log^2\frac{x^2+B}{x^2+C}
+   =\int_C^B\!\int_C^B\frac{du\,dv}{(x^2+u)(x^2+v)}.
+\]
+The rational kernel splits as
+\[
+ \frac1{(x^2+u)(x^2+v)}
+   =\frac{(x^2+u)^{-1}-(x^2+v)^{-1}}{v-u}.
+\]
+For an arbitrary polynomial weight, perform the same finite
+subtractions as in \eqref{mm:eq:K}.  Uniformity on the compact mass
+interval permits both integrals to pass through the ordinary remainder;
+the finitely many polynomial terms integrate directly.  The resulting
+continued rational sum is the divided difference of
+\eqref{mm:eq:RP}, proving \eqref{mm:eq:double-integral}.
+The diagonal value is removable by differentiation.  Differentiating
+the original logarithmic kernel and its finite subtractions gives
+\eqref{mm:eq:mixed-derivative}.  The diagonal normalizations follow
+from the square or from the double integral.
+\end{proof}
+
+\subsection{Every coincident-mass coefficient is finite}
+
+Write $Z_{P}(m;B,a)$ for the continued value of
+$\sum_nP(x_n^2)(x_n^2+B)^{-m}$.  It is regular at every positive
+integer $m$, since possible spectral poles for an even polynomial
+weight occur at half-integers.
+
+\begin{theorem}[The full confluent expansion]
+\label{mm:thm:confluence}
+For $|h|<a^2+B$,
+\begin{equation}\label{mm:eq:confluence}
+ \boxed{\displaystyle
+ K_{P,a}(B,B+h)=2\sum_{m\ge2}
+       \frac{(-1)^mH_{m-1}}m\,h^m Z_{P}(m;B,a).}
+\end{equation}
+Every coefficient has the finite evaluation
+\begin{equation}\label{mm:eq:coefficient-resolvent}
+ Z_{P}(m;B,a)=\frac{(-1)^{m-1}}{(m-1)!}
+                            \partial_B^{m-1}R_{P,a}(B).
+\end{equation}
+Consequently no new unspecified constants are introduced in this
+coincident-mass expansion: the coefficients belong to the finite
+algebra generated by polygamma values at $a\pm i\sqrt B$,
+Bernoulli-polynomial values, and rational functions of $B$.
+\end{theorem}
+\begin{proof}
+Use the ordinary Taylor identity, with the logarithm that vanishes at zero,
+\[
+ \log^2(1+z)=2\sum_{m\ge2}\frac{(-1)^mH_{m-1}}m z^m,
+ \qquad |z|<1.
+\]
+The nearest possible zero of $x_n^2+B+h$ occurs at
+$h=-(a^2+B)$.  On every smaller disk the finite-subtracted logarithmic
+sum is holomorphic and the same subtractions justify coefficient
+extraction.  More explicitly, separate the finitely many indices
+$m\le D$, which use continued values, from $m\ge D+1$,
+whose weighted sums converge ordinarily and normally on the smaller
+disk.  A coefficient is precisely the continued weighted
+resolvent $Z_P(m;B,a)$, which proves \eqref{mm:eq:confluence}.
+Finally, differentiate the identity
+$\partial_B Z_P(s;B,a)=-sZ_P(s+1;B,a)$, first in its convergence
+region and then by continuation, starting at $s=1$.  No integer-order
+pole is crossed.  This gives \eqref{mm:eq:coefficient-resolvent} and
+the asserted finite special-function description.
+\end{proof}
+
+Equivalently, polynomial Taylor expansion about $-B$ gives
+\[
+ Z_P(m;B,a)=\sum_{\ell=0}^{D}\frac{P^{(\ell)}(-B)}{\ell!}
+                          Z_1(m-\ell;B,a).
+\]
+For $j\ge0$ the required nonpositive-order values are simply
+\[
+ Z_1(-j;B,a)=\sum_{\ell=0}^{j}\binom j\ell
+                              B^{j-\ell}\zeta(-2\ell,a),
+\]
+and the positive orders are derivatives of \eqref{mm:eq:R}.
+This second formula is convenient for exact symbolic implementation.
+
+For instance, when $P=1$,
+\[
+ K_{1,a}(B,B+h)
+ =h^2Z_1(2;B,a)-h^3Z_1(3;B,a)
+       +\frac{11}{12}h^4Z_1(4;B,a)+O(h^5).
+\]
+At $a=1/2$, $B=b^2$, the first coefficient is elementary:
+\begin{equation}\label{mm:eq:half-explicit}
+ Z_1(2;b^2,1/2)
+ =\frac{\pi\tanh(\pi b)}{4b^3}
+                     -\frac{\pi^2\operatorname{sech}^2(\pi b)}{4b^2}.
+\end{equation}
+It follows by differentiating
+$R_{1/2}(b^2)=\pi\tanh(\pi b)/(2b)$.
+The corresponding bilateral results follow by adding the formulas
+at $a$ and $1-a$, for $0<a<1$.  In that sum all nonpositive even
+Hurwitz values cancel by Bernoulli reflection, leaving an even shorter
+weighted resolvent.  The higher spectral derivatives at a generic
+noncoincident mass remain described by the exact logarithmic kernels;
+no unproved finite polylogarithm reduction is inferred from the finite
+confluent coefficients.
+

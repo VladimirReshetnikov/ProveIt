@@ -1,0 +1,88 @@
+\section{Noninteger weights and the joint geometry of resonance}
+\label{hqj:sec:rho}
+
+For a complex parameter $\rho$, use $x^\rho=e^{\rho\log x}$ on the
+positive spectrum. Let $\mathcal D(s,\rho)$ be the common-scale
+linear-minus-quadratic difference with that weight. The meromorphic
+continuation is most transparently written as
+\begin{equation}\label{hqj:eq:rho-master}
+\mathcal D(s,\rho)=\sum_{j\ge1}(-1)^jb^{2j}
+C_j(s)\zeta(2s+2j-\rho,a),\qquad b<a.
+\end{equation}
+The same finite head as before globalizes this expression. In
+particular, normal convergence is locally uniform in both $s$ and
+$\rho$ away from the explicit polar divisors. The relevant positive
+odd resonances are $\rho_0=2J-1$, $J\ge1$.
+
+\begin{theorem}[Joint meromorphic normal form and finite-part conversion]
+\label{hqj:thm:rho}
+Near $(s,\rho)=(0,2J-1)$, with $\eta=\rho-(2J-1)$,
+\begin{equation}\label{hqj:eq:rho-local}
+\mathcal D(s,\rho)=
+\frac{(-1)^Jb^{2J}C_J(s)}{2s-\eta}+G_J(s,\eta),
+\end{equation}
+where $G_J$ is jointly holomorphic and $G_J(s,\eta)=O(s^2)$.
+For a nonresonant fixed $\rho$, define
+$\Delta_r(\rho)=\partial_s^r\mathcal D(0,\rho)$.
+Then $\Delta_1(\rho)=0$. At a resonant weight the fixed-$\rho$ derivative
+instead satisfies
+\begin{equation}\label{hqj:eq:rho-fp}
+\boxed{\Delta_r(2J-1)
+=\FP_{\rho=2J-1}\Delta_r(\rho)
++\frac{r!}{2}(-1)^Jb^{2J}c_{J,r+1}.}
+\end{equation}
+Here the finite part uses $\eta=\rho-(2J-1)$, and the off-resonance jets
+are continued meromorphically in that variable. The extra finite term is
+zero for $r\ge2J$.
+
+Along a non-tangent ray $\eta=\kappa s$, $\kappa\ne2$, the first
+coefficient is
+\begin{equation}\label{hqj:eq:rho-ray}
+\left.\frac{\dd}{\dd s}\mathcal D(s,2J-1+\kappa s)\right|_{s=0}
+=\frac{(-1)^Jb^{2J}c_{J,2}}{2-\kappa}.
+\end{equation}
+The ray $\kappa=2$ lies on the polar divisor and requires subtraction
+before restriction.
+\end{theorem}
+\begin{proof}
+In \eqref{hqj:eq:rho-master}, exactly the $j=J$ term has a nearby
+Hurwitz pole. Subtract $1/(2s-\eta)$ from that Hurwitz factor.
+The remainder is jointly holomorphic. All other factors are locally
+holomorphic, and normal convergence on a finite-head tail permits the
+recombination. Every term, including the finite head, starts at $s^2$,
+so $G_J=O(s^2)$. This proves \eqref{hqj:eq:rho-local} globally in the
+positive mass, after the head procedure.
+
+At $\eta\ne0$, the coefficient of $s^r$ in
+$C_J(s)/(2s-\eta)$ is
+\[
+-\sum_{k=2}^r\frac{2^{r-k}c_{J,k}}{\eta^{r-k+1}}.
+\]
+It has no constant Laurent coefficient in $\eta$. At $\eta=0$, however,
+the same meromorphic germ restricted before differentiation is
+$C_J(s)/(2s)$, whose coefficient of $s^r$ is $c_{J,r+1}/2$.
+The holomorphic remainder gives the same constant term in both orders
+of operations. Multiplication by $r!(-1)^Jb^{2J}$ yields
+\eqref{hqj:eq:rho-fp}. Since $\deg C_J=2J$, the last assertion about
+vanishing of the local conversion follows. Restricting the normal form
+to $\eta=\kappa s$ proves \eqref{hqj:eq:rho-ray}.
+\end{proof}
+
+\begin{remark}[Why a naive interpolation fails]
+For nonresonant weights the first defect is zero, whereas at positive
+odd weights it equals the nonzero local coefficient in
+\eqref{hqj:eq:first-defect}. This is not a contradiction to analytic
+continuation. Differentiation on different slices of a jointly
+\emph{meromorphic} germ does not give a single jointly holomorphic
+family across its intersecting divisor. At $\rho=-1$, the individual
+spectra can themselves have poles at $s=0$ from their leading term;
+that leading term cancels in $\mathcal D$. At that exceptional weight
+we discuss derivatives of the common difference, not derivatives of
+undefined individual values.
+\end{remark}
+
+The theorem resolves the resonant correction requested for $x^\rho$.
+It also identifies exactly which local term is lost if the weight finite
+part is taken before the spectral derivative. It does not assert
+holomorphicity on the polar line or exchange two singular limits
+without a subtraction convention.

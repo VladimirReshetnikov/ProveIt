@@ -1,0 +1,203 @@
+\section{An all-particle single-zeta determinant identity}
+\label{sec:spectral}
+
+\subsection{Weights and convergence}
+Define
+\begin{equation}\label{eq:weight}
+ w_n(s,a)=\frac{\Delta^d(n+a)^{-s}}{d!}
+ =\frac1{d!}\sum_{j=0}^{d}(-1)^j\binom dj(n+a+j)^{-s}.
+\end{equation}
+For each $n$, this is entire in $s$ and holomorphic for $\Rea a>0$.
+Its finite-difference form, rather than a generic Gamma ratio, is the
+essential feature.
+
+\begin{lemma}[Decay, positivity, and normal convergence]\label{lem:decay}
+Uniformly on compact subsets of $\C\times\{\Rea a>0\}$,
+\begin{equation}\label{eq:weight-asymp}
+ w_n(s,a)=c_d(s)(n+a)^{-s-d}
+          +O\bigl((n+1)^{-\Rea s-d-1}\bigr),
+ \qquad c_d(s)=\frac{(s)_d}{d!}.
+\end{equation}
+For $s,a>0$, $w_n(s,a)>0$. The partition function
+\begin{equation}\label{eq:partition}
+ \Z_r(s,a)=\sum_{0\le n_1<\cdots<n_r}
+       \Delta(\bm n)^2\prod_{i=1}^r w_{n_i}(s,a)
+\end{equation}
+converges absolutely and locally normally for $\Rea s>1$, $\Rea a>0$.
+All fixed finite mixed derivatives may be taken termwise there.
+\end{lemma}
+\begin{proof}
+Repeated use of the fundamental theorem of calculus gives
+\[
+ \Delta^d f(x)=\int_{[0,1]^d}f^{(d)}(x+t_1+\cdots+t_d)
+       \dd t_1\cdots\dd t_d.
+\]
+Since $d$ is even, $f^{(d)}(x)=(s)_d x^{-s-d}$ for $f(x)=x^{-s}$.
+Expanding the shifted power to first order proves
+\eqref{eq:weight-asymp}, uniformly on the indicated compact sets, including
+at zeros of $(s)_d$.
+For $\Rea s>0$ the Laplace representation is
+\begin{equation}\label{eq:laplace}
+ w_n(s,a)=\frac1{d!\Gamma(s)}
+ \int_0^\infty t^{s-1}e^{-(n+a)t}(1-e^{-t})^d\dd t.
+\end{equation}
+It proves strict positivity for positive real parameters.
+
+For ordered nonnegative indices,
+$|\Delta(\bm n)|^2\le\prod_i(n_i+1)^{2(i-1)}$.
+After dropping the ordering, a majorant for \eqref{eq:partition} is
+therefore a product of convergent one-dimensional series: its least
+rapidly decaying factor has exponent $-\Rea s$.
+Local normal convergence follows for $\Rea s>1$. Differentiation is
+justified on slightly larger compact neighborhoods by the same argument,
+or by the corresponding logarithmic factors and Cauchy estimates.
+\end{proof}
+
+\subsection{The finite endpoint matrix}
+For $0\le k\le d$, set
+\begin{equation}\label{eq:E}
+ E_k(s,a)=-\frac1{d!}\sum_{j=1}^{d}(-1)^j\binom dj
+       \sum_{\ell=0}^{j-1}(\ell-j)^k(\ell+a)^{-s}.
+\end{equation}
+Define
+\begin{equation}\label{eq:UV}
+ E(s,a)=(E_{i+j}(s,a))_{0\le i,j<r},\qquad
+ U_r(s,a)=\det E(s,a),\qquad
+ V_r(s,a)=\det(E_{i+j}(s,a))_{0\le i,j<r-1}.
+\end{equation}
+These are finite expressions, entire in $s$. Their coefficients involve
+only finitely many powers $(a+\ell)^{-s}$; no infinite special-function
+coordinate is hidden in $U_r$ or $V_r$.
+
+\begin{lemma}[Moment cancellation]\label{lem:moments}
+For $\Rea s>1$ and $0\le k\le d$,
+\begin{equation}\label{eq:moment}
+ \mu_k(s,a):=\sum_{n\ge0}n^k w_n(s,a)
+       =E_k(s,a)+\mathbf1_{k=d}\zeta(s,a).
+\end{equation}
+More generally, for every integer $N\ge0$ and every $s\in\C$,
+\begin{align}
+ \sum_{n=0}^Nn^k w_n(s,a)
+ ={}&E_k(s,a)+\mathbf1_{k=d}\sum_{n=0}^N(n+a)^{-s}
+       +R_{k,N}(s,a),\label{eq:finite-moment}\\
+ R_{k,N}(s,a)
+ ={}&\frac1{d!}\sum_{j=1}^d(-1)^j\binom dj
+       \sum_{\ell=N+1}^{N+j}(\ell-j)^k(\ell+a)^{-s}.
+       \label{eq:upper-boundary}
+\end{align}
+Here $0^0=1$ in a zeroth moment.
+\end{lemma}
+\begin{proof}
+The polynomial finite-difference identities are
+\begin{equation}\label{eq:annihilator}
+ \sum_{j=0}^d(-1)^j\binom dj(x-j)^k
+ =\begin{cases}0,&k<d,\\ d!,&k=d.\end{cases}
+\end{equation}
+Insert \eqref{eq:weight}, shift $\ell=n+j$, and use
+\[
+ \sum_{\ell=j}^{N+j}F(\ell)
+ =\sum_{\ell=0}^{N}F(\ell)
+  -\sum_{\ell=0}^{j-1}F(\ell)
+  +\sum_{\ell=N+1}^{N+j}F(\ell).
+\]
+This finite identity remains valid when the subtracted and added ranges
+overlap. It proves \eqref{eq:finite-moment} for all $s$.
+
+For the infinite identity, first take $\Rea s>d+1$, so all separately
+shifted series converge. Equation~\eqref{eq:annihilator} leaves only
+$\zeta(s,a)$ at $k=d$ and the finite lower boundary \eqref{eq:E}.
+Both sides of \eqref{eq:moment} are holomorphic on $\Rea s>1$ by
+Lemma~\ref{lem:decay}, so the identity theorem proves the full stated
+domain. This step avoids an illicit splitting into divergent series.
+\end{proof}
+
+\begin{theorem}[Single-zeta closure at every particle number]\label{thm:single}
+For $r\ge2$, $\Rea a>0$, and $\Rea s>1$,
+\begin{equation}\label{eq:single}
+ \boxed{\displaystyle\Z_r(s,a)=U_r(s,a)+V_r(s,a)\zeta(s,a).}
+\end{equation}
+Consequently \eqref{eq:partition} has a meromorphic continuation to the
+whole $s$-plane with at most a simple pole at $s=1$. Its residue is
+$V_r(1,a)$. For $\Rea a>0$ this residue is nonzero and equals
+\begin{equation}\label{eq:residue-product}
+ V_r(1,a)=\prod_{j=0}^{r-2}
+ \frac{j!\,\Gamma(a+j)\Gamma(j+1)\Gamma(r-j)}
+ {\Gamma(2r-1-j)\Gamma(a+2r-2-j)}.
+\end{equation}
+For positive real $a$, it is strictly positive.
+\end{theorem}
+\begin{proof}
+Finite Cauchy--Binet applied to the monomial evaluation matrix gives
+\[
+ \sum_{0\le n_1<\cdots<n_r\le N}\Delta(\bm n)^2\prod_i w_{n_i}
+   =\det\left(\sum_{n=0}^N n^{i+j}w_n\right)_{0\le i,j<r}.
+\]
+Pass to the limit using normal convergence and
+Lemma~\ref{lem:moments}. The limiting matrix is
+\[
+ E(s,a)+\zeta(s,a)\ee\ee^{\mathsf T},\qquad
+ \ee=(0,\ldots,0,1)^{\mathsf T}.
+\]
+The determinant is affine in its bottom-right entry, with coefficient
+$V_r$. This proves \eqref{eq:single}. The standard meromorphic
+continuation of Hurwitz zeta gives the continuation statement
+\cite{dlmf:hurwitz}.
+
+At $s=1$, $w_n(1,a)=\Gamma(n+a)/\Gamma(n+a+d+1)$.
+The matrix defining $V_r$ is the moment matrix of an $(r-1)$-particle
+positive ensemble for $a>0$; its series converges, since its highest
+moment has degree $d-2$. Thus $V_r(1,a)>0$. The product evaluation is
+a specialization of the Gauss--Vandermonde calculation in the source
+report \cite{repo:dhr}; Appendix~\ref{app:product} gives the finite
+factorial-determinant derivation with the present normalization. The product
+has neither zeros nor poles for $\Rea a>0$, proving nonvanishing there.
+\end{proof}
+
+\subsection{An explicit two-particle identity}
+For $r=2$, put $A=a^{-s}$ and $B=(a+1)^{-s}$. Directly from
+\eqref{eq:E},
+\[
+ E_0=\frac{A-B}{2},\qquad E_1=\frac B2,\qquad
+ E_2=-A-\frac B2.
+\]
+Therefore
+\begin{equation}\label{eq:r2}
+ \boxed{\displaystyle
+ \Z_2(s,a)=\frac{a^{-s}-(a+1)^{-s}}2\zeta(s,a)
+       -\frac{a^{-2s}}2+\frac{[a(a+1)]^{-s}}4.}
+\end{equation}
+This identity holds initially for $\Rea s>1$ and gives the continuation
+elsewhere. At $a=1$ and integer $m\ge2$,
+\begin{equation}\label{eq:r2-integer}
+ \Z_2(m,1)=\frac{1-2^{-m}}2\zeta(m)-\frac12+2^{-m-2}.
+\end{equation}
+For example,
+\[
+ \Z_2(2,1)=\frac{\pi^2-7}{16},\qquad
+ \Z_2(3,1)=\frac{14\zeta(3)-15}{32}.
+\]
+The three-particle specializations include
+\begin{align}
+ \Z_3(2,1)&=\frac{928\zeta(2)-1325}{5971968},\label{eq:r3m2}\\
+ \Z_3(3,1)&=\frac{333120\zeta(3)-390083}{2579890176}.
+ \label{eq:r3m3}
+\end{align}
+These are exact determinant evaluations, not fitted numerical relations.
+
+\subsection{A specialization anomaly that must not be suppressed}
+\label{sec:anomaly}
+At $s=0$, every weight in \eqref{eq:weight} vanishes, whereas
+\eqref{eq:r2} gives
+\begin{equation}\label{eq:anomaly}
+ \Z_2^{\mathrm{cont}}(0,a)=-\frac14.
+\end{equation}
+Similarly, the pointwise weights at $s=-1$ vanish for $r=2$, but
+\[
+ \Z_2^{\mathrm{cont}}(-1,a)=\frac1{24}.
+\]
+There is no contradiction. A series that is identically zero at an isolated
+parameter need not converge normally in a neighborhood of that parameter.
+The continuation is defined from the open half-plane $\Rea s>1$.
+Consequently, statements outside that half-plane refer to this continuation,
+not automatically to a newly specialized pointwise series. This distinction
+will also be retained when discussing finite parts and primitives.

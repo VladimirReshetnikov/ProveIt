@@ -1,0 +1,144 @@
+\section{Harmonic normalization and all anchored mass antiderivatives}
+\label{hqj:sec:mass}
+
+Let $u=b^2$ and put $J_{m,r}(a,u)=E^{(r)}(-m;a,\sqrt u)$, including
+$J_{m,0}=0$. In the absolute-convergence half-plane and hence by
+continuation,
+\begin{equation}\label{hqj:eq:E-mass}
+\partial_uE(s;a,\sqrt u)=-sE(s+1;a,\sqrt u).
+\end{equation}
+Differentiating $r$ times at $s=-m$ gives, for $m\ge1$,
+\begin{equation}\label{hqj:eq:raw-transport}
+\partial_uJ_{m,r}=mJ_{m-1,r}-rJ_{m-1,r-1}.
+\end{equation}
+The lower-jet term cannot be dropped. At the second order it is
+$-2L_{m-1}$, which explains why the unnormalized second jets are not an
+Appell-type mass family.
+
+\begin{theorem}[Gamma-normalized all-order mass transport]
+\label{hqj:thm:Appell}
+For $m\ge0$ define the holomorphic spectral germ
+\begin{equation}\label{hqj:eq:normalized-germ}
+\mathfrak A_m(\varepsilon;a,u)
+=\frac{m!\Gamma(1-\varepsilon)}{\Gamma(m+1-\varepsilon)}
+E(-m+\varepsilon;a,\sqrt u)
+=\frac{E(-m+\varepsilon;a,\sqrt u)}
+{\prod_{k=1}^m(1-\varepsilon/k)}.
+\end{equation}
+Then
+\begin{equation}\label{hqj:eq:Appell-germ}
+\partial_u\mathfrak A_m=m\mathfrak A_{m-1}\quad(m\ge1).
+\end{equation}
+Consequently the coefficients
+$\mathfrak A_{m,r}=\partial_\varepsilon^r\mathfrak A_m(0;a,u)$ obey
+$\partial_u\mathfrak A_{m,r}=m\mathfrak A_{m-1,r}$ for every $r\ge1$.
+Their complete harmonic expression is
+\begin{equation}\label{hqj:eq:Appell-Bell}
+\mathfrak A_{m,r}
+=\sum_{j=0}^{r-1}\binom rj
+Y_j\bigl(H_m,1!H_m^{(2)},\ldots,(j-1)!H_m^{(j)}\bigr)
+J_{m,r-j}.
+\end{equation}
+For every $m\ge1$ and $u\ge0$,
+\begin{align}
+\mathfrak A_{m,r}(a,u)
+={}&\sum_{j=0}^{m-1}\binom mj u^j\mathfrak A_{m-j,r}(a,0)
+\notag\\
+&+m\int_0^u(u-v)^{m-1}\mathfrak A_{0,r}(a,v)\dd v.
+\label{hqj:eq:all-primitives}
+\end{align}
+All integration constants are fixed by
+\begin{equation}\label{hqj:eq:massless-jets}
+J_{m,r}(a,0)=2^r\bigl\{\zeta^{(r)}(-2m,a)
++\zeta^{(r)}(-2m,1-a)\bigr\}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Use \eqref{hqj:eq:E-mass} at $s=-m+\varepsilon$. Multiplication by the
+Gamma factor in \eqref{hqj:eq:normalized-germ} cancels $m-\varepsilon$:
+\[
+\frac{m-\varepsilon}{\prod_{k=1}^m(1-\varepsilon/k)}
+=\frac{m}{\prod_{k=1}^{m-1}(1-\varepsilon/k)}.
+\]
+This proves \eqref{hqj:eq:Appell-germ} as an identity of holomorphic
+germs, and coefficient differentiation preserves it.
+
+The multiplier has the convergent germ expansion
+\[
+\prod_{k=1}^m(1-\varepsilon/k)^{-1}
+=\exp\left(\sum_{\ell\ge1}\frac{H_m^{(\ell)}}\ell
+\varepsilon^\ell\right).
+\]
+The Bell definition \eqref{hqj:eq:bell}, followed by the product rule,
+gives \eqref{hqj:eq:Appell-Bell}; its last $j=r$ term vanishes because
+$J_{m,0}=0$.
+
+The lattice gap $\min(a,1-a)>0$ makes the continued spectrum holomorphic
+in $u$ near zero. One may verify this directly by the normally
+convergent binomial expansion \eqref{hqj:eq:Ebinomial}, after any
+needed finite spectral subtractions. At $u=0$, the spectrum is
+$\zeta(2s,a)+\zeta(2s,1-a)$, proving
+\eqref{hqj:eq:massless-jets}. Repeated integration of the Appell
+relation from zero, with these initial values, gives
+\eqref{hqj:eq:all-primitives}; the integral coefficient is
+$m!/(m-1)!=m$. Continuation along $u\ge0$ encounters no zero of any
+quadratic eigenvalue, so the identity holds for every positive mass.
+\end{proof}
+
+The first three normalized orders are
+\begin{align}
+\mathfrak A_{m,1}&=L_m,\notag\\
+\mathfrak A_{m,2}&=M_m+2H_mL_m,\label{hqj:eq:normalized-low}\\
+\mathfrak A_{m,3}&=J_{m,3}+3H_mM_m
++3\bigl(H_m^2+H_m^{(2)}\bigr)L_m.\notag
+\end{align}
+Here and below $L_m,M_m$ are evaluated at $(a,\sqrt u)$ when used as
+functions of $u$. The first-jet finite expression needed with
+\eqref{hqj:eq:second-all} is
+\begin{equation}\label{hqj:eq:Lm}
+L_m(a,b)=L_m^{(0)}(b)+2(-1)^m m!
+\sum_{j=0}^m\frac{(m+j)!b^{m-j}}{j!(m-j)!4^j\pi^{m+j}}
+\Rea\Li_{m+j+1}(e^{-2\pi b+2\pi ia}).
+\end{equation}
+It follows directly from \eqref{hqj:eq:Poisson} and the finite
+half-integer formula, and agrees with the predecessor.
+
+\subsection{Explicit second-order primitives}
+Since $\mathfrak A_{0,2}=M_0$, the $r=2$ case gives
+\begin{align}
+&m\int_0^{b^2}(b^2-v)^{m-1}M_0(a,\sqrt v)\dd v\notag\\
+&\quad=M_m(a,b)+2H_mL_m(a,b)
+-\sum_{j=0}^{m-1}\binom mj b^{2j}
+\bigl(M_{m-j}(a,0)+2H_{m-j}L_{m-j}(a,0)\bigr).
+\label{hqj:eq:Mprimitive}
+\end{align}
+Every term on the right now has an explicit expression from
+Theorem~\ref{hqj:thm:second} and \eqref{hqj:eq:Lm}, together with the
+fixed Hurwitz boundary jets. Thus \eqref{hqj:eq:Mprimitive} evaluates
+an infinite family of logarithmic polylogarithm integrals without
+leaving its integration constants undetermined.
+
+The massless constants can also be written in polylogarithmic order
+coordinates. Let
+\[
+\mathcal C_p(a)=\tfrac12\bigl(\Li_p(e^{2\pi ia})+
+\Li_p(e^{-2\pi ia})\bigr),
+\]
+continued in $p$ with the radial convention. For real $p$ this is the
+real part, but the symmetric expression preserves holomorphy for
+complex $p$. The reflected Hurwitz formula \cite{hurwitz} gives
+\begin{equation}\label{hqj:eq:massless-functional}
+E(s;a,0)=\frac{4\Gamma(1-2s)}{(2\pi)^{1-2s}}
+\sin(\pi s)\mathcal C_{1-2s}(a)
+\end{equation}
+near the nonpositive integers. With
+$k_m=2(-1)^m(2m)!/(2\pi)^{2m}$, differentiation yields
+\begin{align}
+L_m(a,0)&=k_m\mathcal C_{2m+1}(a),\notag\\
+M_m(a,0)&=4k_m\left\{
+(\log(2\pi)+\gamma-H_{2m})\mathcal C_{2m+1}(a)
+-\mathcal C_{2m+1}^{[1]}(a)\right\}.
+\label{hqj:eq:massless-second}
+\end{align}
+At $m=0$, the first line is $-\log(4\sin^2\pi a)$.
+No nonexistent ordinary value of $\Li_1(1)$ is used, since $0<a<1$.

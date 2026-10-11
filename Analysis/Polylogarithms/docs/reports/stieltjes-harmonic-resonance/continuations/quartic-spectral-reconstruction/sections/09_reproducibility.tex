@@ -1,0 +1,140 @@
+\section{Reproduction, certificates, and evidence boundaries}
+\label{sec:reproduce}
+
+The package contains the modular article source, a standalone combined
+\TeX{} source, the compiled PDF, exact coefficient data, the inherited
+order-eight certificate with provenance, and independent Python
+verification programs.  All mathematical verification programs operate
+without a network connection.  They require Python 3, SymPy, and mpmath;
+the article builds with a standard modern \LaTeX{} installation.
+
+\subsection{What the finite certificates establish}
+
+The order-eight verifier reconstructs the source four-dimensional
+matrix from finite differences, clears denominators, and checks its
+determinant by the defining 24 permutation products.  It replays
+3,852 exact polynomial coefficient comparisons in the inherited
+certificate.  The new leading Hankel factor is checked both by
+coefficient extraction and by its triangular structural factor.
+The constants $K$, $V$, and $C$, the exact factorial comparison at
+$b=512$, and all 31 remaining indices are evaluated exactly.  The
+finite indices are checked by both rational Bernoulli numbers and a
+separate recurrence modulo $2^{32}$.
+
+The all-$b$ conclusion does not follow from a finite sampling rule.
+It follows from the analytic domination proof, the inherited
+congruence reduction, and the exhaustive finite residual set.  The
+general fixed-order theorem uses its constructive factorial comparison
+to prove termination; the example thresholds do not stand in for
+that termination argument.
+
+Ten additional exact normalization comparisons use $a=1,\ldots,5$
+and $b=2a,2a+1$.  They independently compare the original matrix,
+its shifted Hankel block, the finite Pad\'e sums, and the retained
+weighted-Bernoulli matrix.  The separate threshold script computes
+every coefficient norm used in the table in
+Section~\ref{ert:section} by exact arithmetic.
+
+The artifact \src{order8_identity_b17_k0.json} specifies all integer
+coefficients of the ordinary convergent extraction identity for
+$(p,q)=(8,34)$.  Its generator verifies the coordinate cancellation
+against the original matrix, so the example does not depend on
+transcribing a long printed coefficient list.
+
+The quartic verifier reconstructs the finite-cutoff coordinates through
+Faulhaber's formula, independently of the closed $D_j$ expression.
+A separate exact shuffle, stuffle, and duality calculation reduces
+the multiple zeta values through weight seven.  The replay checks
+25 quartic coordinates, 20 centered moments, 24 boundary identities,
+24 generator coefficients, the six-coordinate determinant, and the
+two coefficient identities behind the rational extraction.
+
+The bilateral spectral verifier compares rational Pochhammer
+coefficients with coefficients constructed directly from powers of
+elementary logarithmic series.  It checks 798 exact rational
+identities, including several numbers of masses.  The one-sided
+verifier adds 142 exact symbolic identities, including the general
+Hurwitz Laurent product, the additional local pole term, both
+dilogarithm derivatives, the primitive normalization, and the
+conjugate-linear coefficients.
+
+The columns of the first six quartic rows correspond, in order, to
+$Q_7$, $Q_5$, $\zeta(2)$, $\zeta(3)$, $\zeta(4)$, and $1$:
+\[
+\begingroup\renewcommand{\arraystretch}{1.6}
+\begin{pmatrix}
+1&0&0&0&0&0\\
+-\frac1{12}&\frac13&0&6&-\frac{17}{6}&0\\
+\frac7{240}&-\frac16&-\frac1{10}&-\frac32&\frac{17}{30}&-\frac1{10}\\
+-\frac{31}{1344}&\frac7{48}&\frac1{168}&\frac{13}{20}&\frac{17}{672}&\frac{11}{280}\\
+\frac{127}{3840}&-\frac{31}{144}&\frac{299}{2160}&-\frac{2551}{5040}&-\frac{289}{540}&-\frac{17}{840}\\
+-\frac{2555}{33792}&\frac{127}{256}&-\frac{3667}{6336}&\frac{45929}{67200}&\frac{497267}{253440}&\frac{1187}{277200}
+\end{pmatrix}
+\endgroup
+\]
+Their exact determinant is $7361/49896000$.
+
+\subsection{Independent numerical diagnostics}
+
+The numerical work tests different representations, with every working
+precision and cutoff stored in its JSON record.  The quartic checks
+use 120 decimal working digits and two finite-head/centered-Hurwitz-tail
+choices, $(N,J)=(120,36)$ and $(240,54)$.  For $0\le r\le8$, the
+largest residual from the second choice is below
+$3.6\times10^{-90}$.
+
+The bilateral calculations use 75 decimal working digits.  The
+spectral continuations and logarithmic tails are constructed separately;
+the elementary resolvent quadrature and confluent expression provide
+additional comparisons.  In particular, at $a=1/2$ and masses $4,1$,
+\[
+ S_1=4.25062684984826912051041637407031330017\ldots,
+\]
+whereas at $P(v)=v^2$,
+\[
+ S_{v^2}=-66.37570183951562430903381244813937818\ldots.
+\]
+These values illustrate that the subtraction and the polynomial weight
+are part of the identity; the sign of the unweighted logarithmic square
+is not a sign rule for every subtracted weighted sum.
+
+The one-sided diagnostics use 85 decimal working digits and 22 strict
+comparisons, with tolerance $10^{-60}$.  Individual spectral families
+use 11 head terms and 72 tail coefficients; the elementary logarithmic
+sums use 12 head terms and 64 coefficients.  The largest recorded
+strict difference is below $2\times10^{-71}$.  The choices include
+$(a,B,C)=(1/3,9,0)$, for which $B/a^2=81$; thus the implementation
+does not depend on an invalid global small-mass expansion.  Both
+orientations of the anchored primitive are compared with a separate
+Gamma quadrature.  Two further large-$x$ checks test its asymptotic
+normalization.
+
+None of these decimal diagnostics is an interval certificate or a proof
+of an identity.  They test the independently derived formulas and
+their implementation.  The proofs of meromorphic continuation,
+normal convergence, and all-index cancellation are in the article.
+No proof-assistant formalization is supplied.
+
+\subsection{Entry points and integration}
+
+Run \src{python verification/run_all.py} to execute the default
+mathematical suites in isolated subprocesses.  The exact order-eight
+source replay is included in that default.  The scripts also run
+individually in their respective directories.  The recorded receipts
+identify their actual runtime versions and completion status.
+
+Build the article with
+\src{latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex}.
+Alternatively compile \src{article_singlefile.tex} twice with
+pdf\LaTeX{}.  The combined source embeds every section and bibliography
+and has no external mathematical-input dependency.
+
+The integration notes specify the source claims to update, the theorem
+boundaries to retain, and suggested manuscript destinations.  Historical
+incoming reports need not be overwritten: the new proof can be added
+as a continuation with explicit cross-references.  The machine-readable
+\src{CLAIM_STATUS.json} separates new proved claims, inherited inputs,
+editorial corrections, and unresolved questions.  The final
+\src{SHA256SUMS} covers all distributed source, code, data, and PDF
+files other than that manifest itself.  Rebuilding may alter PDF
+metadata; a new build should receive its own rendered review.

@@ -1,0 +1,97 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=25mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{booktabs,longtable,array,enumitem,microtype,xcolor,xurl}
+\usepackage{fancyhdr}
+\definecolor{inkblue}{RGB}{26,57,89}
+\usepackage[colorlinks=true,linkcolor=inkblue,citecolor=inkblue,urlcolor=inkblue]{hyperref}
+\usepackage{bookmark}
+\emergencystretch=3em
+\allowdisplaybreaks[1]
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\sech}{sech}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\newcommand{\sourcepin}{\texttt{73f18ef013d5b74eafc883efb2c15210642df12a}}
+\newcommand{\shortpin}{\texttt{73f18ef}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Harmonic tails and spectral Stieltjes calculus}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\title{\textbf{Harmonic-Tail Reconstruction,\\
+Quartic Trigamma Moments,\\and Spectral Stieltjes Calculus}\\[8pt]
+\large Exact continuations of the ProveIt polylogarithm programme}
+\author{Research continuation prepared for Vladimir Reshetnikov}
+\date{11 October 2026}
+\hypersetup{pdftitle={Harmonic-Tail Reconstruction, Quartic Trigamma Moments, and Spectral Stieltjes Calculus},pdfauthor={Research continuation prepared for Vladimir Reshetnikov},pdfsubject={Exact identities, harmonic reconstruction, polylogarithms and spectral Stieltjes derivatives}}
+\begin{document}
+\maketitle
+\begin{abstract}
+We continue several specific problems in the ProveIt manuscript and its
+incoming reports.  First, we complete optimal-prefix reconstruction for
+every unequal even pair with smaller tail order eight.  A structural
+factorization identifies the highest Bernoulli-degree determinant with a
+strictly positive zeta moment determinant; an exact finite certificate
+closes the residue class left open in the preceding report.  The same
+factorization proves effective eventual reconstruction for every fixed
+smaller even order, reducing each fixed-order conjecture to finitely many
+explicit rational matrices.
+
+Second, we evaluate every regular centered quartic trigamma moment after
+prescribed polynomial subtraction.  The values lie in six specified
+formal coordinates, and a finite Bernoulli transform, an anchored analytic
+generator, and a finite polylogarithm construction of depth at most three
+are given.  Hoffman's classical unweighted quartic evaluation supplies
+one starting constant and is explicitly credited.
+
+Third, we evaluate the second spectral factorization defect for any
+number of quadratic masses by ordinary logarithmic sums and an elementary
+one-dimensional resolvent integral, including every confluent coefficient.
+Finite formulas at all higher spectral derivatives retain the otherwise
+lost Hurwitz jets.  A one-sided counterpart identifies all generalized
+Stieltjes corrections, treats the source's conjugate-linear factorization
+problem, and gives an anchored dilogarithm--Gamma primitive.
+We also correct a research-status overlap concerning the already
+established entire multiple-harmonic interpolant.  Proofs, exact finite
+certificates, independent numerical diagnostics, provenance, and a
+concrete further-research agenda accompany the article.
+\end{abstract}
+\begin{center}
+\small Source snapshot: \sourcepin.\\
+All claims of continuation are relative to this inspected snapshot;
+the article is a research draft with explicit proofs and replay artifacts.
+\end{center}
+\clearpage
+\begingroup\small
+\tableofcontents
+\endgroup
+\clearpage
+\input{sections/01_scope}
+\input{sections/02_rank_eight}
+\input{sections/03_eventual_rank}
+\input{sections/04_quartic}
+\input{sections/05_bilateral}
+\input{sections/04_stieltjes_jets}
+\input{sections/07_audit}
+\input{sections/08_research}
+\appendix
+\input{sections/09_reproducibility}
+\input{references}
+\end{document}

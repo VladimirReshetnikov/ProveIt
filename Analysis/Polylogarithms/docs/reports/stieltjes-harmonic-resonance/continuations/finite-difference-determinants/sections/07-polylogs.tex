@@ -1,0 +1,241 @@
+\section{Rank-controlled polylogarithmic generators}
+\label{sec:polylogs}
+
+\subsection{What the harmonic rank does and does not imply}
+For the rational weight of Section~\ref{sec:classification}, define
+\[
+ S_{r,N}(R)=\sum_{0\le n_1<\cdots<n_r\le N}
+             \Delta(\bm n)^2\prod_iR(n_i)=\det M_N.
+\]
+No infinite-sum convergence is needed for this finite identity.
+By Proposition~\ref{prop:pencil}, $S_{r,N}$ is a polynomial in
+shifted harmonic symbols with rational functions of $N$ as coefficients.
+
+\begin{proposition}[Rank bounds harmonic degree]\label{prop:degree}
+If the pencil $\mathscr C(\bm X)$ has generic rank $\rho$, then
+\begin{equation}\label{eq:degree-bound}
+ \deg_{\bm X}\det(D_N+\mathscr C(\bm X))\le\rho.
+\end{equation}
+In particular, a rank-one pencil makes $S_{r,N}$ affine in all the
+harmonic symbols, even with repeated poles and arbitrarily many particles.
+A zero pencil makes $S_{r,N}$ rational in $N$.
+\end{proposition}
+\begin{proof}
+Over $K(N,\bm X)$ a rank-$\rho$ matrix is a product of an $r\times\rho$
+and a $\rho\times r$ matrix. The determinant
+$\det(D_N+t\mathscr C(\bm X))$ therefore has degree at most $\rho$
+in $t$, by multilinearity or by the vanishing of minors of order
+larger than $\rho$. The coefficient of $t^k$ is exactly the
+homogeneous degree-$k$ part in $\bm X$. This proves the assertion
+without any assumption that $D_N$ is invertible.
+\end{proof}
+
+The degree can be strictly smaller than $\rho$ because of additional
+cancellations involving $D_N$. Neither $\rho$ nor the polynomial degree
+proves minimal depth of evaluated periods. These are finite structural
+upper bounds.
+
+\subsection{A constructive depth bound on rational grids}
+For positive integers $p_1,\ldots,p_\ell$, our multiple-polylogarithm
+convention is
+\begin{equation}\label{eq:MPL}
+ \Li_{p_1,\ldots,p_\ell}(z_1,\ldots,z_\ell)
+ =\sum_{n_1>\cdots>n_\ell\ge1}
+   \frac{z_1^{n_1}\cdots z_\ell^{n_\ell}}
+        {n_1^{p_1}\cdots n_\ell^{p_\ell}}.
+\end{equation}
+Its depth is $\ell$. In the disk, all identities below use the
+common power-series germ; rational Laurent prefactors have removable
+singularities only after the full expression is assembled.
+
+\begin{theorem}[Harmonic rank controls cutoff-generator depth]
+\label{thm:depth}
+Assume every $a_\nu$ is positive rational, and choose a common denominator
+$D$ for the pole locations. If the harmonic pencil has rank $\rho$, then
+\begin{equation}\label{eq:generator-general}
+ G_R(z)=\sum_{N\ge0}S_{r,N}(R)z^{N+1},\qquad |z|<1,
+\end{equation}
+can be expressed by finitely many cyclotomic multiple polylogarithms
+of level dividing $D$ and depth at most $\rho+1$, rational functions
+of $z^{1/D}$, and Euler derivatives of such expressions.
+Every positive Euler primitive, normalized to vanish at $z=0$, obeys
+the same depth bound.
+
+For integer-grid poles, no fractional power or root-of-unity filter
+is needed. In particular, the rank-one families in
+Theorems~\ref{thm:classification}--\ref{thm:critical} have depth at
+most two. A zero pencil has depth at most one.
+\end{theorem}
+\begin{proof}
+Proposition~\ref{prop:degree} reduces each coefficient to a finite sum
+of terms
+\begin{equation}\label{eq:coefficient-type}
+ Q(N)\prod_{j=1}^{\ell}H_N^{(q_j)}(a_{\nu_j}),\qquad \ell\le\rho,
+\end{equation}
+where $Q$ is rational and has rational-grid poles. All such sequences
+have at most polynomial-logarithmic growth, so their generating series
+converge normally in the disk.
+
+First consider integral shifts. Expand the product of finite harmonic
+sums by partitioning the index set according to equality and strict
+ordering. This is the finite quasi-shuffle argument; it yields nested
+sums of depth at most $\ell$. At an equal index, different shifted
+rational factors are reduced by ordinary partial fractions. Integer
+shifts of a cutoff can be removed by subtracting a finite boundary strip.
+Removing one such strip either changes a rational coefficient or reduces
+the number of nested free indices; it cannot increase depth.
+
+Next decompose $Q(N)$ into a polynomial and partial fractions. For an
+unshifted denominator, the outer summation adds at most one strict
+index to the nested harmonic sum. Its diagonal contribution has smaller
+depth. For example,
+\begin{align}
+ \sum_{M\ge1}\frac{z^M H_M^{(q)}}{M^p}
+    &=\Li_{p,q}(z,1)+\Li_{p+q}(z),\label{eq:basic-nesting}\\
+ \sum_{M\ge1}z^M H_M^{(q)}&=\frac{\Li_q(z)}{1-z}.
+ \label{eq:basic-harmonic-gf}
+\end{align}
+Shifting an outer denominator replaces $M$ by $M+j$, followed by the
+same finite boundary-strip procedure. Polynomial factors in $M$ are
+implemented by the Euler operator $z\partial_z$. These operations
+prove the bound $\ell+1$ on an integer grid.
+
+For rational shifts write $a=A/D$ after moving the representative
+into $0<a\le1$ and accounting for finitely many initial terms.
+Then
+\[
+ H_N^{(q)}(A/D)=D^q
+    \sum_{\substack{1\le m\le DN+A\\m\equiv A\ (D)}}m^{-q}.
+\]
+Resolve a congruence by the exact filter
+\[
+ \mathbf1_{m\equiv A\ (D)}
+     =\frac1D\sum_{j=0}^{D-1}\omega^{j(m-A)},
+ \qquad \omega=e^{2\pi i/D}.
+\]
+After rescaling indices, strict inequalities between the original
+integer indices differ from strict inequalities between the new
+residue-class indices only on equal-block diagonals. Those diagonals
+are reduced by partial fractions and have fewer free indices. Induction
+on their number reduces to strictly nested sums of the form
+\eqref{eq:MPL}, with roots of unity in the arguments and $z^{1/D}$
+in the outer argument. Depth does not increase. This also explains
+why different residue classes can be handled together.
+
+Finally, a positive Euler primitive divides the coefficient of
+$z^{N+1}$ by a positive power of $N+1$. It changes only the rational
+factor $Q(N)$ in \eqref{eq:coefficient-type}, leaving the maximum
+number of harmonic factors unchanged. The same reduction applies.
+\end{proof}
+
+This is a representation theorem, not an irreducibility theorem. It
+also does not assert that every endpoint reduces to ordinary zeta values
+and their products. Repeated poles introduce inner indices larger than
+one, for which the endpoint reduction problem is different from the
+simple-pole family in the earlier report.
+
+\subsection{An explicit repeated-pole \texorpdfstring{$\Li_{2,2}$}{Li(2,2)} identity}
+Take $r=2$, $a=1$, $s=2$, and write
+\[
+ S_N=\Z_{2,N}(2,1),\qquad M=N+1.
+\]
+The weight has repeated poles,
+\[
+ w_n(2,1)=\frac12\left\{\frac1{(n+1)^2}
+                    -\frac2{(n+2)^2}+\frac1{(n+3)^2}\right\}.
+\]
+A finite calculation from \eqref{eq:finite-moment} gives
+\begin{equation}\label{eq:cutoff-PQ}
+ S_{M-1}=P(M)+Q(M)H_M^{(2)},\qquad M\ge1,
+\end{equation}
+where
+\begin{align}
+ P(M)={}&-\frac7{16}-\frac3{4(M+2)}+\frac7{4(M+2)^2}
+                   +\frac7{8(M+1)^2}-\frac1{2(M+1)^4},\label{eq:Pexplicit}\\
+ Q(M)={}&\frac38-\frac1{2(M+1)^2}+\frac1{2(M+2)^2}.
+ \label{eq:Qexplicit}
+\end{align}
+For example, $M=1$ gives zero, as required because there are not yet
+two distinct indices.
+
+\begin{theorem}[Closed repeated-pole cutoff generator]\label{thm:explicitGF}
+For $|z|<1$,
+\begin{align}
+ \sum_{M\ge1}S_{M-1}z^M
+ ={}&\frac{1-z}{2z^2}\Li_{2,2}(z,1)
+  +\frac{10-7z}{8z^2(1-z)}\Li_2(z)
+  +\frac{4z-7}{4z^2}\Li_1(z)\notag\\
+ &-\frac{\Li_4(z)}{2z}+\frac1{2z}-\frac7{16(1-z)}.
+ \label{eq:explicitGF}
+\end{align}
+The apparent singularity at $z=0$ is removable, and the resulting
+function begins at order $z^2$.
+\end{theorem}
+\begin{proof}
+For completeness, the three finite moments, with $H=H_M^{(2)}$, are
+\begin{align*}
+ \mu_{0,M-1}&=\frac{M(3M^3+18M^2+39M+28)}{8(M+1)^2(M+2)^2},\\
+ \mu_{1,M-1}&=\frac{M(M-1)(M^2+7M+8)}{8(M+1)^2(M+2)^2},\\
+ \mu_{2,M-1}&=H-
+  \frac{9M^4+70M^3+133M^2+76M}{8(M+1)^2(M+2)^2}.
+\end{align*}
+The determinant $\mu_0\mu_2-\mu_1^2$ gives
+\eqref{eq:cutoff-PQ}--\eqref{eq:Qexplicit} by rational arithmetic.
+
+The shifted harmonic sums needed to sum that expression are
+\begin{align*}
+ \sum_{M\ge1}\frac{z^M H_M^{(2)}}{(M+1)^2}
+     &=z^{-1}\Li_{2,2}(z,1),\\
+ \sum_{M\ge1}\frac{z^M H_M^{(2)}}{(M+2)^2}
+     &=z^{-2}\left\{\Li_{2,2}(z,1)
+          -(1+z)\Li_2(z)-2(1-z)\Li_1(z)+3z\right\}.
+\end{align*}
+To verify the second line, put $L=M+2$ and remove the missing term
+from $H_{L-1}^{(2)}$. The remaining rational factor is reduced using
+\[
+ \frac1{L^2(L-1)^2}
+ =\frac1{L^2}+\frac1{(L-1)^2}+\frac2L-\frac2{L-1}.
+\]
+The plain shifted sums are
+\[
+ \sum_{M\ge1}\frac{z^M}{(M+j)^p}
+  =z^{-j}\left\{\Li_p(z)-\sum_{\ell=1}^{j}\frac{z^\ell}{\ell^p}\right\}.
+\]
+Insert these identities and \eqref{eq:basic-harmonic-gf} into
+\eqref{eq:cutoff-PQ}. Collecting terms proves \eqref{eq:explicitGF}.
+All steps are absolutely convergent in the disk. The original series
+proves removability and its initial vanishing; no separate branch
+assignments at the apparent poles are made.
+\end{proof}
+
+As $z\uparrow1$, Abel's theorem and the convergent sequence $S_N$ give
+\begin{equation}\label{eq:AbelGF}
+ \lim_{z\uparrow1}(1-z)\sum_{M\ge1}S_{M-1}z^M
+     =\frac38\zeta(2)-\frac7{16}=\frac{\pi^2-7}{16}.
+\end{equation}
+This independently visible endpoint agrees with
+\eqref{eq:concrete-harmonic}. The depth-two coordinate in the cutoff
+generator disappears from this particular Abel limit because its
+coefficient has an additional factor $1-z$. This is an exact cancellation,
+not a general theorem of depth-two endpoint reducibility.
+
+\subsection{Constructing new examples without a search}
+Choose any proper rational seed $F$ with poles on positive rational
+translated grids and set $R=\Delta^{2r-2}F/(2r-2)!$.
+Lemma~\ref{lem:corner-divisibility} proves that its cutoff partition has
+an affine harmonic expression and hence a depth-two generator at most.
+This works for seeds with several pole orders and several residue classes.
+If the seed is itself a first difference, the harmonic pencil vanishes
+and the generator has depth at most one.
+
+For example, any seed of the form
+\[
+ F(x)=\frac{u}{x+1/3}+\frac{v}{(x+1/2)^2}
+                         +\frac{w}{(x+2/3)^3}
+\]
+produces an all-particle rank-at-most-one family on level six. The corner
+entries are $u,v,w$ in their respective harmonic coordinates by
+\eqref{eq:lambda-seed}. When $u\ne0$, the decay is nonzero critical
+and Theorem~\ref{thm:critical} applies. The theorem supplies a finite
+construction and a complete rank certificate; it does not require a
+numerical integer-relation search.

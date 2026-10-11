@@ -1,0 +1,82 @@
+\section{Research target, conventions, and logical scope}
+\label{hqj:sec:scope}
+
+The preceding report \emph{Quadratic-Spectrum Stieltjes Identities}
+\cite{predecessor} proves a first-derivative factorization formula for
+polynomially weighted quadratic spectra. It classifies the weights whose
+local correction vanishes identically in the mass, and obtains finite
+polylogarithmic formulas at all nonpositive integer spectral points.
+Its final research agenda asks for higher spectral derivatives,
+higher-jet factorization defects, noninteger-weight resonances, and the
+second derivative of a product with distinct masses. Those questions,
+rather than another first-derivative rederivation, are the starting point
+of this article.
+
+The canonical manuscript already contains a large system of
+Hurwitz--Stieltjes and Gamma identities \cite{repo}. Its source inventory
+and incoming collection are too extensive for a claim that every
+preserved result was audited here. The contribution below is an explicit,
+proved continuation of the inspected predecessor. Some ingredients are
+classical: the Hurwitz Laurent expansion, Gamma and polygamma identities,
+Poisson summation for a quadratic spectrum, half-integer Bessel formulas,
+and the first-derivative multiplicative-anomaly mechanism
+\cite{hurwitz,gamma,polygamma,bessel,order,dowker}. We do not claim
+historical priority for those ingredients or for every specialization of
+the resulting identities.
+
+\subsection{Four questions and their answers}
+The predecessor's question on higher-jet defects is answered by
+Theorems~\ref{hqj:thm:local} and~\ref{hqj:thm:compiler}, with a complete
+vanishing classification in Theorem~\ref{hqj:thm:rigidity}. Its question
+on noninteger polynomial degree receives a joint meromorphic answer and
+an exact finite-part conversion in Theorem~\ref{hqj:thm:rho}.
+
+The higher-negative-integer question is answered constructively at the
+\emph{second} derivative by Theorem~\ref{hqj:thm:second}. This specifies
+an adequate explicit function algebra, but does not show it is the
+smallest possible one. The two-mass second-derivative and collision
+question is answered for every polynomial weight in
+Theorems~\ref{hqj:thm:product}--\ref{hqj:thm:collision}. Higher spectral
+orders have a complete factorization-defect calculus and mass-transport
+law here, not a claim of a finite Fourier reduction at every order.
+
+\subsection{Notation and branches}
+Throughout the one-sided statements, $a,b>0$ and $x_n=n+a$, $n\ge0$.
+A polynomial $W(x)=\sum_{d=0}^{D}w_dx^d$ may have complex coefficients.
+For bilateral statements, $0<a<1$ and the lattice is $x=n+a$, $n\in\Z$.
+The positive squared masses are denoted $u=b^2$ and $v=c^2$.
+
+All logarithms of positive numbers are real. On the right half-plane
+we use the principal analytic logarithm, so for $x>0$
+\[
+\log(x^2+b^2)=\log(x+ib)+\log(x-ib).
+\]
+A logarithm of a quotient in a complex-shift identity means the
+\emph{difference} of the specified logarithms; we do not silently change
+branches by combining them. Parameter continuation is always from these
+domains. The exponential arguments of polylogarithms in the massive
+formulas lie strictly inside the unit disk.
+
+We write $\zeta^{(r)}(s,a)=\partial_s^r\zeta(s,a)$ for order derivatives,
+not derivatives in $a$, and use the standard Stieltjes convention
+\begin{equation}\label{hqj:eq:stieltjes}
+\zeta(1+t,a)=\frac1t+\sum_{r\ge0}\frac{(-1)^r\gamma_r(a)}{r!}t^r,
+\qquad \gamma_0(a)=-\psi(a).
+\end{equation}
+The generalized harmonic numbers are
+\[
+H_m^{(r)}=\sum_{k=1}^m k^{-r},\qquad H_m=H_m^{(1)},\qquad H_0^{(r)}=0.
+\]
+The complete exponential Bell polynomials $Y_r$ are defined by
+\begin{equation}\label{hqj:eq:bell}
+\exp\left(\sum_{j\ge1}\kappa_j\frac{t^j}{j!}\right)
+=\sum_{r\ge0}Y_r(\kappa_1,\ldots,\kappa_r)\frac{t^r}{r!}.
+\end{equation}
+A superscript $[1]$ on $\Li_p$ means $\partial_p\Li_p$, whereas
+$\psi^{(j)}$ denotes the ordinary $j$th derivative of digamma.
+
+The notation $[x^{-1}]$ extracts the coefficient in the expansion at
+positive infinity. A finite part is never an unspecified summation
+method: the regularizing coordinate and the subtraction are displayed.
+All new numerical comparisons are floating-point diagnostics. The
+proofs, not those comparisons, establish the all-index statements.

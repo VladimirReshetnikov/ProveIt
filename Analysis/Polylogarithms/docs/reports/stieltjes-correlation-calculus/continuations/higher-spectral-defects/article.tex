@@ -1,0 +1,1521 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Higher spectral defects}\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Rea}{Re}
+\DeclareMathOperator{\Ima}{Im}
+\DeclareMathOperator{\Log}{Log}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\CC}{\mathcal C}
+\newcommand{\KK}{\mathcal K}
+\newcommand{\PP}{\mathcal P}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\newcommand{\pin}{\src{5a5c0ed6573d25fcabf93653d72449f76df2df79}}
+\title{\textbf{Beta Polarization of Higher Spectral Defects}\\[7pt]
+\large All-order Stieltjes counterterms, Gamma integrals,\\
+polylogarithmic second jets, and confluent quadratic masses}
+\author{Research continuation prepared for Vladimir Reshetnikov\\
+\small ProveIt / Analysis / Polylogarithms\\
+\small Mathematical derivations and computational checks with OpenAI assistance}
+\date{11 October 2026}
+\hypersetup{pdftitle={Beta Polarization of Higher Spectral Defects},pdfauthor={Research continuation prepared for Vladimir Reshetnikov},pdfsubject={Exact Hurwitz, Gamma, harmonic, Stieltjes and polylogarithmic identities}}
+\begin{document}
+\maketitle
+\begin{abstract}
+We resolve the explicit higher-defect and two-mass second-derivative
+questions posed in the quadratic-spectrum continuation of the ProveIt
+programme. An endpoint-subtracted Euler beta integral gives every
+spectral defect of order $r$ as a finite combination of ordinary
+logarithmically weighted integrals of linear Hurwitz-zeta derivatives of
+orders at most $r-1$. A separate, normally convergent coefficient formula
+makes all resonant generalized Stieltjes terms explicit, with coefficients
+in generalized harmonic numbers.
+
+At second order the nonlocal part is a Gamma--Hurwitz chord integral and
+the correction is a finite odd-weight polynomial. In contrast to the
+first-derivative parity theorem, no nonzero polynomial weight annihilates
+the second defect for every mass. The scalar case gives convergent
+arctangent-square, log-Gamma, harmonic-zeta, and polygamma identities.
+For every nonpositive integral spectral argument, the bilateral second
+jet is expressed by finitely many complex-shift Hurwitz second derivatives
+and one ordinary integral of an explicit finite polylogarithm expression.
+
+For any number of quadratic factors with an even polynomial weight, the
+second jet has a pairwise covariance formula. Each covariance is a
+squared-mass beta chord of the already evaluated first jet; thus it has
+finite Gamma or polylogarithmic integrands. Its full confluent expansion
+has coefficients $2(-1)^kH_{k-1}Z_W(k)/k$, with finite polygamma reductions.
+All parameter primitives are anchored explicitly. The article includes
+proofs, executable exact checks, numerical diagnostics, an integration
+fragment, and a scoped provenance audit. The beta identity and
+first-derivative anomaly mechanism are classical inputs, not priority
+claims; minimal-function-algebra questions remain separate.
+\end{abstract}
+\medskip
+\noindent\textbf{Status.} Ordinary analytic proofs with reproducible
+finite checks; not proof-assistant formalized or independently peer reviewed.
+No repository files were modified.
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{The research question and the contribution}\label{hsd:sec:scope}
+The canonical ProveIt manuscript distinguishes exact analytic identities,
+relations in a specified formal presentation, and numerical residuals
+\cite{hsd:repo}. This distinction is particularly important for
+zeta-regularized logarithms: a pointwise logarithmic identity need not
+survive spectral continuation without a correction.
+
+The immediate predecessor, \emph{Quadratic-Spectrum Stieltjes Identities}
+\cite{hsd:predecessor}, proves a first-derivative factorization formula and
+asks in its Section~7.6 for three further developments. Question~2 asks
+for an explicit separation of the nonlocal and residue parts of higher
+factorization defects. Question~7 asks for the second derivative of a
+product of two quadratic spectra, including its coincident-mass limit,
+without an unspecified subtraction of divergent sums. Question~1 asks
+for useful function coordinates for higher derivatives at negative
+integers, and separately whether a smaller finite function algebra suffices.
+
+Theorems~\ref{hsd:thm:beta-jets} and \ref{hsd:thm:stieltjes}
+give all-order formulas for the first problem.
+Theorems~\ref{hsd:thm:gamma-second} and \ref{hsd:thm:nonvanishing}
+give a particularly explicit second-order answer and its exact universal
+vanishing classification. Theorems~\ref{hsd:thm:masses} and
+\ref{hsd:thm:collision} solve the two-mass representation and confluence
+problem, and also handle arbitrarily many masses.
+Theorem~\ref{hsd:thm:negative-second} supplies a finite-integrand
+representation at every negative integer. It does \emph{not} prove that
+the remaining ordinary integral is irreducible to a smaller algebra.
+
+The main mechanism is order lowering. The subtracted beta kernel has a
+simple zero in the spectral parameter at zero. Consequently an $r$th
+defect needs linear Hurwitz derivatives only through order $r-1$ inside
+the integral. At order two these are first Hurwitz derivatives, including
+$\log\Gamma$. An independent inverse-power expansion identifies exactly
+where generalized Stieltjes constants replace ordinary zeta values.
+
+\subsection{Classical inputs and the priority boundary}
+Euler's beta integral, its two-denominator parameterization, Gamma
+products, Hurwitz continuation and differentiation, and elementary
+polylogarithm relations are classical \cite{hsd:beta,hsd:gamma,hsd:hurwitz,hsd:polylog}.
+The multiplicative anomaly for first derivatives of spectral zeta
+functions is also an established subject; Dowker explicitly treats
+products of linear and second-order factors \cite{hsd:dowker}.
+The predecessor's finite first-jet polylogarithm formulas are retained
+with attribution, not relabeled as new results.
+
+The contribution here is the precise endpoint-subtracted all-jet
+calculus, its harmonic/Stieltjes coefficient implementation, the second
+universal-vanishing theorem, and the explicit confluent and primitive
+consequences. No comprehensive historical-priority or arithmetic
+independence claim is made. Neither the Gaussian $S_6$ nor the revised
+$S_8$ special-value problem is solved by this article.
+
+\subsection{Source identity and scope of inspection}
+The predecessor's single-file TeX was read in full for the relevant
+sections and materialized for comparison. Its SHA-256 is
+\begin{center}\small
+\src{4185cc4aa2299c8f417ca376b3ddc4af3fab58752d4cd93f70c2afad661f95aa}.
+\end{center}
+This agrees exactly with the repository's sixteenth-intake manifest at
+\pin. The recorded path is
+\begin{quote}\small
+\src{Analysis/Polylogarithms/docs/reports/stieltjes-correlation-calculus/continuations/quadratic-spectrum-stieltjes/article_singlefile.tex}.
+\end{quote}
+Thus the mathematical target is a byte-identified repository report,
+not a conjecture inferred from a filename. The canonical preface,
+differentiation and research-status sections, incoming catalogue, and
+relevant intake metadata were also inspected. This was a targeted audit,
+not an exhaustive reading of all incoming reports or the entire repository.
+Detailed source records are included in \src{notes/SOURCE_AUDIT.md}.
+
+\section{Analytic normalization and an endpoint-subtracted beta master}
+\label{hsd:sec:beta}
+Fix $a>0$, write $x_n=n+a$, and let
+\begin{equation}\label{hsd:eq:W}
+ W(x)=\sum_{d=0}^D w_dx^d\in\C[x].
+\end{equation}
+Coefficients outside this range are zero. All spectral superscripts
+$(r)$ below differentiate the spectral variable, not the shift.
+On the right half-plane, $\Log$ and $\log\Gamma$ mean their holomorphic
+branches that are real on the positive axis. In particular,
+$\log\Gamma(z)$ is not formed by taking the principal logarithm of a
+numerically evaluated $\Gamma(z)$.
+
+For $\Rea(a+z)>0$, define initially for $\Rea s>D+1$
+\begin{equation}\label{hsd:eq:F}
+ F_{a,W}(s;z)=\sum_{n\ge0}W(x_n)(x_n+z)^{-s}.
+\end{equation}
+A finite binomial expansion gives its continuation:
+\begin{equation}\label{hsd:eq:Ffinite}
+ F_{a,W}(s;z)=\sum_{d=0}^D w_d\sum_{h=0}^d
+ \binom dh(-z)^{d-h}\zeta(s-h,a+z).
+\end{equation}
+It is holomorphic at $s=0$, locally uniformly in $z$ in the stated domain.
+Put
+\begin{equation}\label{hsd:eq:phi}
+ \Phi_{a,W}(z)=F_{a,W}'(0;z),\qquad
+ A_W(z)=\sum_{d=0}^D\frac{(-1)^{d+1}w_dz^{d+1}}{d+1}.
+\end{equation}
+For $W=1$ the classical Lerch formula gives
+$\Phi_{a,1}(z)=\log\Gamma(a+z)-\tfrac12\log(2\pi)$.
+
+For endpoints $u,v$ with $\Rea(a+u),\Rea(a+v)>0$, define
+\begin{equation}\label{hsd:eq:Zuv}
+ Z_{a,W}^{u,v}(s)=\sum_{n\ge0}W(x_n)
+ \exp\{-s(\Log(x_n+u)+\Log(x_n+v))\}.
+\end{equation}
+The definition uses the \emph{sum} of the two specified logarithms.
+Its initial convergence domain is $2\Rea s>D+1$.
+Set
+\begin{align}
+ G_{a,W}(s;u,v)&=\tfrac12\{F_{a,W}(2s;u)+F_{a,W}(2s;v)\}
+                    -Z_{a,W}^{u,v}(s),\label{hsd:eq:G}\\
+ \Delta_r(a,W;u,v)&=G_{a,W}^{(r)}(0;u,v).\label{hsd:eq:Delta}
+\end{align}
+For $u=ib,v=-ib$, write $Z_W(s;a,b)$ and $\Delta_r(W;a,b)$.
+Then $Z_W(s;a,b)=\sum W(x_n)(x_n^2+b^2)^{-s}$, and
+\begin{equation}\label{hsd:eq:Delta-conjugate}
+ \Delta_r(W;a,b)=2^{r-1}\bigl(F_{a,W}^{(r)}(0;ib)
+ +F_{a,W}^{(r)}(0;-ib)\bigr)-Z_W^{(r)}(0;a,b).
+\end{equation}
+
+For an analytic function $f$ on a neighborhood of the segment $[u,v]$,
+define the symmetric endpoint subtraction
+\begin{equation}\label{hsd:eq:C}
+ \CC_t f(u,v)=f(u)+f(v)-f((1-t)u+tv)-f(tu+(1-t)v).
+\end{equation}
+This vanishes to first order at each endpoint of $0\le t\le1$.
+More precisely,
+\begin{equation}\label{hsd:eq:C-limit}
+ \lim_{t\to0,1}\frac{\CC_t f(u,v)}{t(1-t)}
+ =(v-u)\bigl(f'(v)-f'(u)\bigr).
+\end{equation}
+The limit also holds at $u=v$, where both sides are zero.
+
+\begin{lemma}[The zero jet is a local polynomial]\label{hsd:lem:zero}
+For all admissible $a,z,W$,
+\begin{equation}\label{hsd:eq:Fzero}
+ F_{a,W}(0;z)=\sum_{d=0}^D w_d\zeta(-d,a)+A_W(z).
+\end{equation}
+In particular, $\CC_tF_{a,W}(0;\cdot)=\CC_t A_W$ is independent of $a$.
+\end{lemma}
+\begin{proof}
+For $|z|<a$, expand the summand binomially and continue:
+\begin{equation}\label{hsd:eq:Fbinomial}
+ F_{a,W}(s;z)=\sum_{d=0}^D w_d\sum_{k\ge0}
+ \frac{(-1)^k(s)_kz^k}{k!}\zeta(s+k-d,a).
+\end{equation}
+The $k=0$ term gives $\zeta(-d,a)$. Every $k\ge1$ term has a factor
+$s$ and vanishes at zero except $k=d+1$, where the simple Hurwitz pole
+cancels it. Since $(s)_k/k!=s/k+O(s^2)$, that surviving term is
+$(-1)^kz^k/k$. The series and its pole-subtracted terms converge locally
+normally for $|z|<a$; the ratio $|z|/a<1$ dominates the polynomial
+coefficient growth. This proves the formula locally. Both sides are
+holomorphic on $\Rea(a+z)>0$, so analytic continuation proves it there.
+\end{proof}
+
+\begin{theorem}[Subtracted beta master]\label{hsd:thm:beta}
+The function $Z_{a,W}^{u,v}$ has a continuation holomorphic at zero.
+As an identity of germs at $s=0$,
+\begin{equation}\label{hsd:eq:beta-master}
+ G_{a,W}(s;u,v)=\frac{s}{4}B_*(s)
+ \int_0^1\frac{[t(1-t)]^s}{t(1-t)}
+       \CC_t F_{a,W}(2s;\cdot)(u,v)\dd t,
+\end{equation}
+where
+\begin{equation}\label{hsd:eq:Bstar}
+ B_*(s)=\frac{\Gamma(1+2s)}{\Gamma(1+s)^2}.
+\end{equation}
+The integral in \eqref{hsd:eq:beta-master} is an ordinary convergent
+integral near zero, jointly holomorphic in $s,u,v$ in their stated local
+domains. Every fixed spectral derivative may be passed under it.
+\end{theorem}
+\begin{proof}
+For $\Rea s>(D+1)/2$ use the classical two-denominator beta identity,
+which follows from Euler's beta integral or two Gamma integrals:
+\[
+ A^{-s}B^{-s}=\frac{\Gamma(2s)}{\Gamma(s)^2}
+ \int_0^1\frac{t^{s-1}(1-t)^{s-1}}{((1-t)A+tB)^{2s}}\dd t.
+\]
+It holds for $\Rea A,\Rea B>0$ with the prescribed logarithms.
+The absolute convergence of the $n$-sum is uniform in $t$, apart from
+the integrable beta weight. Sum it with
+$A=x_n+u$, $B=x_n+v$, and average the result under $t\mapsto1-t$.
+Since the beta weight integrates to $\Gamma(s)^2/\Gamma(2s)$, subtracting
+the endpoint average produces
+\[
+ G(s)=\frac{\Gamma(2s)}{2\Gamma(s)^2}
+       \int_0^1t^{s-1}(1-t)^{s-1}\CC_tF(2s;\cdot)\dd t.
+\]
+The prefactor equals $sB_*(s)/4$.
+
+For a small closed disk about $s=0$, the finite formula
+\eqref{hsd:eq:Ffinite} is holomorphic, uniformly on the compact endpoint
+segments under consideration. Taylor expansion in $t$ gives
+$\CC_tF(2s;\cdot)=O(t)$ at zero and $O(1-t)$ at one, uniformly on that
+disk. Each fixed $s$-derivative adds only a fixed power of
+$|\log(t(1-t))|$. Thus the integral and all such derivatives are
+absolutely convergent and locally dominated whenever $\Rea s>-1$
+in this small disk. This proves holomorphy and differentiation under the
+integral.
+
+The right side continues meromorphically from the initial half-plane,
+with the isolated positive spectral poles of the finite Hurwitz expression
+bypassed. It is holomorphic at zero. Defining $Z$ by
+\eqref{hsd:eq:G} there proves both its continuation and the identity.
+The argument is locally uniform in $u,v$ and covers coincident endpoints.
+\end{proof}
+
+\subsection{All defects as finite lower-jet integrals}
+Write
+\begin{equation}\label{hsd:eq:beta-coeffs}
+ B_*(s)=\sum_{m\ge0}\beta_ms^m
+ =\exp\left(\sum_{n\ge2}
+     \frac{(-1)^n(2^n-2)\zeta(n)}{n}s^n\right).
+\end{equation}
+Hence $\beta_0=1$, $\beta_1=0$, $\beta_2=\zeta(2)$,
+$\beta_3=-2\zeta(3)$, and
+$\beta_4=\tfrac72\zeta(4)+\tfrac12\zeta(2)^2$.
+An exact finite recurrence is
+\begin{equation}\label{hsd:eq:beta-rec}
+ m\beta_m=\sum_{n=2}^m(-1)^n(2^n-2)\zeta(n)\beta_{m-n}.
+\end{equation}
+Put $\lambda(t)=\log(t(1-t))$ and
+\begin{equation}\label{hsd:eq:I}
+ I_{j,p}(a,W;u,v)=\int_0^1\frac{\lambda(t)^p}{t(1-t)}
+ \CC_t\bigl(F_{a,W}^{(j)}(0;\cdot)\bigr)(u,v)\dd t.
+\end{equation}
+No finite-part convention is involved in this integral.
+
+\begin{theorem}[All-order lower-jet reduction]\label{hsd:thm:beta-jets}
+For every integer $r\ge1$ and every admissible endpoint pair,
+\begin{equation}\label{hsd:eq:all-beta}
+ \boxed{\displaystyle
+ \Delta_r(a,W;u,v)=\frac{r!}{4}
+ \sum_{m+j+p=r-1}\frac{2^j\beta_m}{j!p!}I_{j,p}(a,W;u,v).}
+\end{equation}
+All sums are finite. The maximal spectral derivative inside an integral
+is $r-1$. Every $j=0$ term is an explicit polynomial in $u,v$ independent
+of $a$.
+\end{theorem}
+\begin{proof}
+Expand $B_*(s)$, $\exp(s\lambda(t))$ and
+$F(2s;z)=\sum_{j\ge0}2^js^jF^{(j)}(0;z)/j!$ in
+\eqref{hsd:eq:beta-master}. The domination established in
+Theorem~\ref{hsd:thm:beta} justifies extraction of each coefficient under
+the integral. The outer factor $s/4$ gives exactly the constraint
+$m+j+p=r-1$. Lemma~\ref{hsd:lem:zero} identifies the local terms.
+\end{proof}
+
+The first four rows, suppressing common arguments, are
+\begin{align}
+ \Delta_1&=\tfrac14 I_{0,0},\label{hsd:eq:beta-row1}\\
+ \Delta_2&=I_{1,0}+\tfrac12I_{0,1},\label{hsd:eq:beta-row2}\\
+ \Delta_3&=3I_{2,0}+3I_{1,1}+\tfrac34I_{0,2}
+                         +\tfrac32\zeta(2)I_{0,0},\label{hsd:eq:beta-row3}\\
+ \Delta_4&=8I_{3,0}+12I_{2,1}+6I_{1,2}+I_{0,3}
+       +12\zeta(2)I_{1,0}+6\zeta(2)I_{0,1}
+       -12\zeta(3)I_{0,0}.\label{hsd:eq:beta-row4}
+\end{align}
+At conjugate endpoints and for even $W$, the polynomial $A_W$ is odd,
+so $\CC_tA_W(ib,-ib)=0$ identically. All $I_{0,p}$ then vanish.
+This removes the local polynomial terms but does not remove the
+positive-$j$ integrals. That distinction is the reason the
+first-derivative parity theorem does not extend unchanged to higher jets.
+
+\section{A global harmonic--Stieltjes coefficient formula}
+\label{hsd:sec:stieltjes}
+The beta master is finite in the number of function coordinates at every
+order. A different representation is useful for exact coefficients and
+for evaluating resonances without subtracting two large meromorphic terms.
+Use the convention
+\begin{equation}\label{hsd:eq:Stieltjes}
+ \zeta(1+\varepsilon,X)=\frac1\varepsilon+
+ \sum_{n\ge0}\frac{(-1)^n\gamma_n(X)}{n!}\varepsilon^n,
+ \qquad \gamma_0(X)=-\psi(X).
+\end{equation}
+Let
+\begin{equation}\label{hsd:eq:oddH}
+ O_k^{(p)}=\sum_{j=0}^{k-1}\frac1{(2j+1)^p}
+ =H_{2k}^{(p)}-2^{-p}H_k^{(p)},\qquad O_k=O_k^{(1)}.
+\end{equation}
+The coefficient polynomial controlling the conjugate defect is
+\begin{align}
+ D_k(s)&=\frac{(2s)_{2k}}{(2k)!}-\frac{(s)_k}{k!}
+       =\sum_{\ell\ge2}d_{k,\ell}s^\ell\label{hsd:eq:D}\\
+ &=\frac{s}{k}\prod_{j=1}^{k-1}\left(1+\frac{s}{j}\right)
+ \left\{\prod_{j=0}^{k-1}\left(1+\frac{2s}{2j+1}\right)-1\right\}.
+ \label{hsd:eq:Dprod}
+\end{align}
+The second equality follows from duplication of the rising factorial.
+It exhibits the double zero without cancellation in floating-point
+arithmetic. In particular,
+\begin{align}
+ d_{k,2}&=\frac{2O_k}{k},\label{hsd:eq:d2}\\
+ d_{k,3}&=\frac2k\bigl(O_kH_{k-1}+O_k^2-O_k^{(2)}\bigr).
+ \label{hsd:eq:d3}
+\end{align}
+Every higher coefficient is a finite polynomial in generalized harmonic
+numbers. One can either multiply the finite products in
+\eqref{hsd:eq:Dprod}, or use
+\[
+ \log\prod_{j=1}^{k-1}(1+s/j)
+ =\sum_{p\ge1}\frac{(-1)^{p-1}}pH_{k-1}^{(p)}s^p,
+ \qquad
+ \log\prod_{j=0}^{k-1}(1+2s/(2j+1))
+ =\sum_{p\ge1}\frac{(-1)^{p-1}2^p}pO_k^{(p)}s^p.
+\]
+Only finitely many coefficients are needed for a prescribed jet.
+
+For $r\ge1$ define the elementary finite-head term
+\begin{equation}\label{hsd:eq:qr}
+ q_r(x,b)=2^{r-1}\{(-\Log(x+ib))^r+(-\Log(x-ib))^r\}
+                   -(-\log(x^2+b^2))^r.
+\end{equation}
+Thus $q_1=0$ and
+\begin{equation}\label{hsd:eq:q2}
+ q_2(x,b)=\bigl(\Log(x+ib)-\Log(x-ib)\bigr)^2
+        =-4\arctan^2(b/x).
+\end{equation}
+
+\begin{theorem}[Every resonant coefficient, with a global finite head]
+\label{hsd:thm:stieltjes}
+Let $a,b>0$, $r\ge1$, and choose any integer $N\ge0$ such that
+$X=a+N>b$. For an integer $\tau$ put
+\begin{equation}\label{hsd:eq:Tnonres}
+ T_{r,k}(\tau;X)=r!\sum_{\ell=2}^{r}
+ \frac{2^{r-\ell}d_{k,\ell}}{(r-\ell)!}
+             \zeta^{(r-\ell)}(\tau,X),\qquad \tau\ne1,
+\end{equation}
+and at the resonance set
+\begin{equation}\label{hsd:eq:Tres}
+ T_{r,k}(1;X)=r!\left\{\frac{d_{k,r+1}}2+
+ \sum_{\ell=2}^{r}\frac{(-2)^{r-\ell}d_{k,\ell}}{(r-\ell)!}
+                         \gamma_{r-\ell}(X)\right\}.
+\end{equation}
+Empty sums are zero. Then
+\begin{equation}\label{hsd:eq:Stieltjes-master}
+ \boxed{\displaystyle
+ \Delta_r(W;a,b)=\sum_{n=0}^{N-1}W(a+n)q_r(a+n,b)
+ +\sum_{d=0}^D w_d\sum_{k\ge1}(-1)^kb^{2k}
+                         T_{r,k}(2k-d;X).}
+\end{equation}
+The double sum is absolutely and locally normally convergent. It is
+independent of the permissible cutoff $N$. The largest Stieltjes index
+which can occur is $r-2$.
+\end{theorem}
+\begin{proof}
+On the tail $x\ge X>b$, expand $\tfrac12\{(x+ib)^{-2s}+
+(x-ib)^{-2s}\}$ and $(x^2+b^2)^{-s}$ in powers of $b/x$.
+Odd powers cancel in the first expression. Subtracting gives
+\begin{align}\label{hsd:eq:Gtail}
+ G(s;ib,-ib)={}&\sum_{n<N}\tfrac12 W(x_n)
+ \{(x_n+ib)^{-2s}+(x_n-ib)^{-2s}-2(x_n^2+b^2)^{-s}\}\notag\\
+ &+\sum_{d=0}^D\sum_{k\ge1} w_d(-1)^kb^{2k}
+                         D_k(s)\zeta(2s+2k-d,X),
+\end{align}
+where $0\le d\le D$ and $k\ge1$.
+For $k$ sufficiently large, the Hurwitz argument has large positive
+real part. Uniformly for $s$ on a fixed small circle,
+$\zeta(2s+2k-d,X)$ is bounded by a constant times
+$X^{-2k+d-2\Rea s}$, up to a harmless polynomial factor. The rising
+factorial ratios grow only polynomially in $k$ on such a circle.
+Therefore $(b/X)^{2k}$ dominates the tail normally. A fixed number of
+spectral or shift derivatives introduces at most polynomial and
+logarithmic factors. The finitely many possible Hurwitz poles are
+handled individually.
+
+If $2k-d\ne1$, Taylor multiplication gives
+\eqref{hsd:eq:Tnonres}. At $2k-d=1$, insert
+\eqref{hsd:eq:Stieltjes} with $\varepsilon=2s$. Because $D_k$ starts
+at $s^2$, the product is holomorphic; its $r$th derivative is exactly
+\eqref{hsd:eq:Tres}. The finite head differentiates to $Wq_r$.
+This proves the formula and all convergence assertions. Different
+cutoffs give the same continued function before differentiation, proving
+cutoff independence.
+\end{proof}
+
+For clarity, the first three resonant rows are
+\begin{align}
+ T_{1,k}(1;X)&=\tfrac12d_{k,2},\label{hsd:eq:res1}\\
+ T_{2,k}(1;X)&=d_{k,3}+2d_{k,2}\gamma_0(X),\label{hsd:eq:res2}\\
+ T_{3,k}(1;X)&=3d_{k,4}+6d_{k,3}\gamma_0(X)
+                         -12d_{k,2}\gamma_1(X).\label{hsd:eq:res3}
+\end{align}
+The term $d_{k,r+1}/2$ is easily lost by truncating $D_k$ at order $r$
+before multiplying by the pole. Such a truncation gives an incorrect
+jet even though $D_k(0)=D_k'(0)=0$.
+
+At $r=1$, only $d=2k-1$ contributes, and
+\eqref{hsd:eq:Stieltjes-master} recovers the predecessor's identity
+\begin{equation}\label{hsd:eq:first-anomaly}
+ \Delta_1(W;a,b)=\sum_{k\ge1}
+             \frac{(-1)^kw_{2k-1}b^{2k}}k O_k.
+\end{equation}
+This is inherited, not a new first-order theorem. At higher orders,
+the same finite resonance set remains, but infinitely many nonresonant
+coordinates survive. The resonant Stieltjes values in
+\eqref{hsd:eq:Tres} should not be confused with the shift-independent
+polynomial part of the beta-integral formula: the two formulas organize
+the same continued expression in different bases.
+
+\section{The exact second defect and its vanishing classification}
+\label{hsd:sec:gamma}
+Define the Gamma--Hurwitz polarization
+\begin{equation}\label{hsd:eq:K}
+ \KK_{a,W}(u,v)=\int_0^1\frac{\CC_t\Phi_{a,W}(u,v)}{t(1-t)}\dd t.
+\end{equation}
+For a fixed polynomial weight it is one ordinary integral of the finite
+Hurwitz expression \eqref{hsd:eq:Ffinite}. For $W=1$ it involves only
+$\log\Gamma$. Its integrand has removable endpoints by
+\eqref{hsd:eq:C-limit}; it is jointly holomorphic and vanishes when $u=v$.
+
+\begin{theorem}[Gamma integral plus an explicit odd-weight polynomial]
+\label{hsd:thm:gamma-second}
+For every polynomial $W$ and every $a,b>0$,
+\begin{equation}\label{hsd:eq:second-main}
+ \boxed{\displaystyle
+ \Delta_2(W;a,b)=\KK_{a,W}(ib,-ib)-C_W(b),\qquad
+ C_W(b)=\sum_{k\ge1}\frac{2(-1)^kw_{2k-1}b^{2k}}k
+                         \bigl(O_k^2+O_k^{(2)}\bigr).}
+\end{equation}
+The correction is finite and independent of $a$. In particular,
+\begin{equation}\label{hsd:eq:quadratic-second-finite}
+ Z_W''(0;a,b)=2\{F_{a,W}''(0;ib)+F_{a,W}''(0;-ib)\}
+                      -\KK_{a,W}(ib,-ib)+C_W(b).
+\end{equation}
+There is no undefined regularized sum on the right side.
+\end{theorem}
+\begin{proof}
+The second beta row gives
+$\Delta_2=\KK+\tfrac12 I_{0,1}$. For conjugate endpoints,
+Lemma~\ref{hsd:lem:zero} gives
+\[
+ \CC_tA_W(ib,-ib)=\sum_{k\ge1}
+       \frac{(-1)^kw_{2k-1}b^{2k}}k\bigl(1-(1-2t)^{2k}\bigr).
+\]
+We evaluate the logarithmic moment, including its normalization.
+Put
+\[
+ P_k(s)=\prod_{j=0}^{k-1}\left(1+\frac{2s}{2j+1}\right),\qquad
+ J_k(s)=\int_0^1[t(1-t)]^{s-1}\bigl(1-(1-2t)^{2k}\bigr)\dd t.
+\]
+By $y=1-2t$ and Euler's beta integral,
+\begin{equation}\label{hsd:eq:Jk}
+ J_k(s)=\frac{2}{sB_*(s)}\bigl(1-P_k(s)^{-1}\bigr).
+\end{equation}
+This is first obtained for $\Rea s>0$ and is holomorphic at zero;
+its defining subtracted integral is locally integrable for $\Rea s>-1$.
+Since
+\[
+ P_k(s)^{-1}=1-2O_ks+2\bigl(O_k^2+O_k^{(2)}\bigr)s^2+O(s^3),
+ \qquad B_*(s)=1+O(s^2),
+\]
+we have $J_k(0)=4O_k$ and
+$J_k'(0)=-4(O_k^2+O_k^{(2)})$. Thus
+$\tfrac12I_{0,1}=-C_W(b)$. The second formula follows directly from the
+definition of $\Delta_2$.
+\end{proof}
+
+The first correction terms in $\Delta_2-\KK$ are
+\begin{equation}\label{hsd:eq:local-examples}
+ 4w_1b^2-\frac{26}{9}w_3b^4+\frac{1576}{675}w_5b^6
+                         -\frac{21946}{11025}w_7b^8+\cdots.
+\end{equation}
+For real weights, an equivalent real integral is
+\begin{equation}\label{hsd:eq:Kreal}
+ \KK_{a,W}(ib,-ib)=8\int_0^1
+ \frac{\Rea\Phi_{a,W}(ib)-\Rea\Phi_{a,W}(ibt)}{1-t^2}\dd t.
+\end{equation}
+For complex weights, use \eqref{hsd:eq:K} rather than pulling coefficients
+through a real-part operation.
+
+\subsection{An independent coefficient derivation}
+A useful consistency check on the beta proof is the Taylor expansion
+\begin{equation}\label{hsd:eq:PhiTaylor}
+ \Phi_{a,W}(z)=\Phi_{a,W}(0)+\sum_{j\ge1}\frac{(-1)^jz^j}{j}
+ \left\{\sum_{d=0}^D w_d\widehat\zeta(j-d,a)+w_{j-1}H_{j-1}\right\},
+ \quad |z|<a,
+\end{equation}
+where $\widehat\zeta(1,a)=\gamma_0(a)$ and
+$\widehat\zeta(s,a)=\zeta(s,a)$ at the other displayed integer arguments.
+To prove it, differentiate \eqref{hsd:eq:Fbinomial}; the resonant term
+uses $(s)_j/j!=s(1+H_{j-1}s+O(s^2))/j$.
+The harmonic addend is essential.
+
+For conjugate endpoints, direct polynomial integration gives
+\[
+ \int_0^1\frac{\CC_t(z^{2k})(ib,-ib)}{t(1-t)}\dd t
+                    =8(-1)^kO_kb^{2k},
+ \qquad \CC_t(z^{2k+1})(ib,-ib)=0.
+\]
+Inserting \eqref{hsd:eq:PhiTaylor} into $\KK$ and using
+$H_{2k-1}=O_k+\tfrac12H_{k-1}$ reproduces exactly
+\eqref{hsd:eq:second-main} from the second Stieltjes row.
+This explains why an uncorrected termwise ``sum of logarithm squares''
+can differ from $\KK$ for an odd polynomial weight.
+
+\begin{theorem}[Universal vanishing at second order]\label{hsd:thm:nonvanishing}
+Fix $a>0$ and $W\in\C[x]$. Then
+\begin{equation}\label{hsd:eq:zero-classification}
+ \Delta_2(W;a,b)=0\ \text{for every }b>0
+ \quad\Longleftrightarrow\quad W=0.
+\end{equation}
+In fact, for a nonzero $W$, all sufficiently high even Taylor
+coefficients in $b$ at zero are nonzero.
+\end{theorem}
+\begin{proof}
+For $0<b<a$ use \eqref{hsd:eq:Stieltjes-master} with $N=0$.
+When $2k>D+1$, there is no resonance, and the coefficient of $b^{2k}$ is
+\begin{equation}\label{hsd:eq:tailmoment}
+ \frac{4(-1)^kO_k}{k}\sum_{d=0}^D w_d\zeta(2k-d,a)
+ =\frac{4(-1)^kO_k}{k}\sum_{n\ge0}\frac{W(a+n)}{(a+n)^{2k}}.
+\end{equation}
+Suppose $W\ne0$, and let $n_0$ be the smallest nonnegative integer with
+$W(a+n_0)\ne0$. It exists because a nonzero polynomial has finitely many
+roots. Put $x_0=a+n_0$. Multiplying the last sum by $x_0^{2k}$ gives
+\[
+ W(x_0)+\sum_{n>n_0}W(a+n)\left(\frac{x_0}{a+n}\right)^{2k}
+                         \longrightarrow W(x_0)\ne0.
+\]
+To justify the limit for complex coefficients as well, fix $k_0$ with
+$2k_0>D+1$. The absolute values for $k\ge k_0$ are dominated by a
+convergent polynomially weighted Dirichlet series. Dominated convergence
+then applies. Thus the coefficients in \eqref{hsd:eq:tailmoment} are
+nonzero for every sufficiently large $k$, contradicting an identically
+zero analytic function. The converse is immediate.
+\end{proof}
+
+This theorem concerns an identity valid for all masses, not zeros at one
+chosen mass. It also does not assert positivity for arbitrary weights:
+continued polynomially weighted sums can have either sign. The exact
+contrast is that even $W$ annihilates \emph{every first defect}, whereas
+only $W=0$ annihilates \emph{every second defect}.
+
+\section{Ordinary Gamma, polygamma, and harmonic identities}
+\label{hsd:sec:ordinary}
+The scalar specialization needs no regularization at all. It provides
+both concrete identities and a direct way to see the nonlocal term.
+
+\begin{proposition}[A convergent logarithm-square polarization]
+\label{hsd:prop:ordinaryK}
+For $a>0$ and $\Rea(a+u),\Rea(a+v)>0$,
+\begin{equation}\label{hsd:eq:ordinaryK}
+ \KK_{a,1}(u,v)=\sum_{n\ge0}
+       \bigl(\Log(n+a+u)-\Log(n+a+v)\bigr)^2.
+\end{equation}
+The series is absolutely and locally normally convergent. The square is
+an ordinary complex square, not an absolute square. Its mixed derivative is
+\begin{equation}\label{hsd:eq:Kdigamma}
+ \partial_u\partial_v\KK_{a,1}(u,v)
+ =-2\frac{\psi(a+v)-\psi(a+u)}{v-u},
+\end{equation}
+with diagonal value $-2\psi'(a+u)$.
+\end{proposition}
+\begin{proof}
+For fixed nonzero $A,B$ in the right half-plane, the scalar beta formula
+of Theorem~\ref{hsd:thm:beta}, without any sum, gives on taking second
+jets
+\[
+ \int_0^1\frac{\CC_t(-\Log(x+z))(u,v)}{t(1-t)}\dd t
+       =\bigl(\Log(x+u)-\Log(x+v)\bigr)^2.
+\]
+Equivalently this follows by two elementary differentiations in $u,v$
+and evaluation on the diagonal. In the Weierstrass expansion of
+$\log\Gamma(a+z)$, the affine terms in $z$ are annihilated by $\CC_t$.
+The remaining tail is $O((n+a)^{-2})$, uniformly on compact endpoint
+sets, including after the displayed endpoint subtraction. Thus the
+scalar identity may be summed under the integral, proving
+\eqref{hsd:eq:ordinaryK}. Differentiating the normally convergent series
+and using the convergent digamma difference proves
+\eqref{hsd:eq:Kdigamma}. The limit at the diagonal follows by continuity.
+\end{proof}
+
+The collision expansion of this Gamma identity is particularly simple.
+For admissible endpoints and $|\delta|<|a+u|$,
+\begin{align}
+ \KK_{a,1}(u,u+\delta)
+ &=\sum_{k\ge2}\frac{2(-1)^kH_{k-1}}k\delta^k\zeta(k,a+u)
+ \label{hsd:eq:scalar-collision-zeta}\\
+ &=2\sum_{k\ge2}\frac{H_{k-1}}{k!}\delta^k\psi^{(k-1)}(a+u).
+ \label{hsd:eq:scalar-collision-psi}
+\end{align}
+Indeed,
+$\log^2(1+z)=\sum_{k\ge2}2(-1)^kH_{k-1}z^k/k$ for $|z|<1$.
+The endpoint hypothesis fixes the logarithm; since $\Rea(a+u)>0$,
+$|n+a+u|\ge|a+u|$, which justifies normal summation of this series.
+The first terms are
+\[
+ \delta^2\zeta(2,a+u)-\delta^3\zeta(3,a+u)
+                     +\frac{11}{12}\delta^4\zeta(4,a+u)+O(\delta^5).
+\]
+
+For $a,b>0$, put $S_a(b)=\sum_{n\ge0}\arctan^2(b/(n+a))$.
+\begin{corollary}[Arctangent--Gamma identities]
+\label{hsd:cor:atan}
+The following identities hold:
+\begin{align}
+ \Delta_2(1;a,b)&=-4S_a(b),\label{hsd:eq:scalar-defect}\\
+ S_a(b)&=2b\int_0^b
+ \frac{\Rea\log\Gamma(a+iy)-\Rea\log\Gamma(a+ib)}{b^2-y^2}\dd y,
+ \label{hsd:eq:atan-gamma}\\
+ S_a(b)&=\sum_{k\ge1}\frac{(-1)^{k-1}O_k}{k}
+                         b^{2k}\zeta(2k,a),\qquad 0<b<a.
+ \label{hsd:eq:atan-harmonic}
+\end{align}
+For arbitrary $b$, the global version of the last formula is obtained by
+adding $\sum_{n<N}\arctan^2(b/(a+n))$ and replacing $a$ by $a+N>b$
+in its zeta tail.
+\end{corollary}
+\begin{proof}
+Apply \eqref{hsd:eq:ordinaryK} to $u=ib,v=-ib$, use
+\eqref{hsd:eq:q2}, and then use \eqref{hsd:eq:Kreal} with $y=bt$.
+The last identity follows either by the Taylor series of $\arctan^2$
+or by \eqref{hsd:eq:Stieltjes-master} for $W=1,r=2$.
+\end{proof}
+
+In particular the constant weight, which has zero first defect, has a
+strictly negative second defect at every positive mass. This is an exact
+counterexample to an unqualified extension of the first-order parity law.
+The predecessor already warned against that extension; this corollary
+supplies the explicit obstruction rather than correcting a false claim
+in that report.
+
+At an integral shift $a=N+1$, the same identities become identities in
+ordinary harmonic tails, since
+\[
+ \zeta(2k,N+1)=\zeta(2k)-H_N^{(2k)}.
+\]
+For example, on $0<b<N+1$,
+\begin{align}
+ &2b\int_0^b\frac{\Rea\log\Gamma(N+1+iy)
+              -\Rea\log\Gamma(N+1+ib)}{b^2-y^2}\dd y\notag\\
+ &\quad=\sum_{k\ge1}\frac{(-1)^{k-1}}k
+  \left(H_{2k}-\frac12H_k\right)b^{2k}
+                     \bigl(\zeta(2k)-H_N^{(2k)}\bigr).
+ \label{hsd:eq:explicit-tail-Gamma}
+\end{align}
+This is an equality of ordinary convergent quantities with every
+coefficient explicit.
+
+\subsection{Reflection produces polylogarithms of order one}
+For $0<a<1$, Gamma reflection gives
+\[
+ \Rea\log\Gamma(a+iy)+\Rea\log\Gamma(1-a+iy)
+  =\log(2\pi)-\tfrac12\log\bigl(2(\cosh(2\pi y)-\cos(2\pi a))\bigr).
+\]
+Consequently, with $z_t=\exp(2\pi ia-2\pi bt)$,
+\begin{equation}\label{hsd:eq:reflected-atan}
+ S_a(b)+S_{1-a}(b)=2\pi b\log2+
+ 2\Rea\int_0^1\frac{\Li_1(z_t)-\Li_1(z_1)}{1-t^2}\dd t.
+\end{equation}
+To verify the constant, write the logarithm as
+$2\pi bt-2\Rea\Li_1(z_t)$ and use
+$\int_0^1(1-t)/(1-t^2)\dd t=\log2$.
+The integral is ordinary and has a removable endpoint at one.
+At $a=1/2$, this yields
+\begin{equation}\label{hsd:eq:half-atan}
+ S_{1/2}(b)=\pi b\log2+
+ \int_0^1\frac{\Li_1(-e^{-2\pi bt})-\Li_1(-e^{-2\pi b})}{1-t^2}\dd t.
+\end{equation}
+Taking $a\downarrow0$ in \eqref{hsd:eq:reflected-atan} gives
+\begin{equation}\label{hsd:eq:integer-atan}
+ S_1(b)=-\frac{\pi^2}{8}+\pi b\log2+
+ \int_0^1\frac{\Li_1(e^{-2\pi bt})-\Li_1(e^{-2\pi b})}{1-t^2}\dd t.
+\end{equation}
+Here the logarithmic singularity at $t=0$ is integrable. On the series
+side $S_a(b)\to\pi^2/4+S_1(b)$, which accounts for the otherwise easily
+missed term $-\pi^2/8$.
+
+\section{Second jets at every nonpositive integer: finite polylogarithmic integrands}
+\label{hsd:sec:negative}
+Let $0<a<1$, $b>0$ and
+\begin{equation}\label{hsd:eq:E}
+ E(s;a,b)=\sum_{n\in\mathbb Z}\bigl((n+a)^2+b^2\bigr)^{-s}
+         =Z_1(s;a,b)+Z_1(s;1-a,b).
+\end{equation}
+Put $L_m(a,b)=E'(-m;a,b)$ and $M_m(a,b)=E''(-m;a,b)$.
+The first-jet formula of the predecessor \cite{hsd:predecessor} is
+\begin{align}
+ L_m(a,b)={}&-\frac{2^{2m+1}(m!)^2\pi}{(2m+1)!}b^{2m+1}\notag\\
+ &+2(-1)^m m!\sum_{j=0}^m
+ \frac{(m+j)!b^{m-j}}{j!(m-j)!4^j\pi^{m+j}}
+             \Rea\Li_{m+j+1}(e^{-2\pi b+2\pi ia}).
+ \label{hsd:eq:Lfinite}
+\end{align}
+In particular,
+\begin{align}
+ L_0(a,b)&=-\log\bigl(2(\cosh(2\pi b)-\cos(2\pi a))\bigr),
+ \label{hsd:eq:L0}\\
+ L_1(a,b)&=-\frac{4\pi b^3}{3}-\frac{2b}{\pi}\Rea\Li_2(z)
+                              -\frac1{\pi^2}\Rea\Li_3(z).
+ \label{hsd:eq:L1}
+\end{align}
+These inherited formulas can be obtained from Poisson summation and the
+finite half-integer $K$-Bessel polynomial. They also satisfy
+$\partial_{b^2}L_m=mL_{m-1}$, with the zero-mass values fixed by the
+Hurwitz functional equation. The new second-jet theorem below uses their
+\emph{finite explicit right sides}, not an unevaluated first-jet symbol.
+
+\begin{theorem}[All negative-point second jets]\label{hsd:thm:negative-second}
+For every $m\ge0$, $0<a<1$ and $b>0$, define
+\begin{equation}\label{hsd:eq:Rintegrand}
+ R_m(t;a,b)=\sum_{\ell=0}^m\binom m\ell
+       \bigl(b^2(1-t^2)\bigr)^{m-\ell}L_\ell(a,bt).
+\end{equation}
+Then
+\begin{align}
+ M_m(a,b)={}&4\Rea\sum_{\alpha\in\{a,1-a\}}\sum_{j=0}^m
+ \binom mj(-2ib)^{m-j}\zeta''(-m-j,\alpha+ib)\notag\\
+ &-4\int_0^1\frac{L_m(a,b)-R_m(t;a,b)}{1-t^2}\dd t.
+ \label{hsd:eq:Mfinite}
+\end{align}
+The integrand is explicit in finitely many ordinary polylogarithms via
+\eqref{hsd:eq:Lfinite}; the endpoint at $t=1$ is removable and the
+endpoint at $t=0$ is regular. No Bessel-order derivative or unspecified
+finite part occurs.
+\end{theorem}
+\begin{proof}
+Apply Theorem~\ref{hsd:thm:gamma-second} at each of the two shifts with
+the fixed even polynomial $W_b(x)=(x^2+b^2)^m$. Holding this polynomial
+fixed while differentiating the spectral variable gives
+$Z_{W_b}''(0;\alpha,b)=Z_1''(-m;\alpha,b)$ and $C_{W_b}=0$.
+If $y=x+ib$, then
+\[
+ (x^2+b^2)^m=y^m(y-2ib)^m
+ =\sum_{j=0}^m\binom mj(-2ib)^{m-j}y^{m+j}.
+\]
+Therefore the linear endpoint contribution is exactly the finite sum in
+\eqref{hsd:eq:Mfinite}.
+
+For an arbitrary fixed even polynomial $W$, the first defect vanishes,
+so
+\[
+ T_W(a,y):=Z_W'(0;a,y)+Z_W'(0;1-a,y)
+ =2\Rea\{\Phi_{a,W}(iy)+\Phi_{1-a,W}(iy)\}.
+\]
+Equation~\eqref{hsd:eq:Kreal} consequently gives
+\begin{equation}\label{hsd:eq:bilatK}
+ \KK_{a,W}(ib,-ib)+\KK_{1-a,W}(ib,-ib)
+ =4\int_0^1\frac{T_W(a,b)-T_W(a,bt)}{1-t^2}\dd t.
+\end{equation}
+For $W=W_b$, expand instead around the intermediate mass $bt$:
+\[
+ (x^2+b^2)^m=\sum_{\ell=0}^m\binom m\ell
+      \bigl(b^2(1-t^2)\bigr)^{m-\ell}(x^2+b^2t^2)^\ell.
+\]
+This proves $T_{W_b}(a,bt)=R_m(t;a,b)$ and
+$T_{W_b}(a,b)=L_m(a,b)$, hence \eqref{hsd:eq:Mfinite}.
+
+At $t=1$, $R_m(1)=L_m$ and all functions are differentiable, so the
+quotient has a finite limit. At zero the bilateral lattice has a positive
+gap because $0<a<1$; its continued jets are analytic in $b^2$ near zero.
+Equivalently, the polylogarithms at $e^{2\pi ia}\ne1$ in
+\eqref{hsd:eq:Lfinite} have regular limits. This proves the endpoint claims.
+\end{proof}
+
+For $m=0$ this is the transparent formula
+\begin{align}
+ E''(0;a,b)={}&4\Rea\{\zeta''(0,a+ib)+\zeta''(0,1-a+ib)\}
+                         +4S_a(b)+4S_{1-a}(b)\notag\\
+ ={}&4\Rea\{\zeta''(0,a+ib)+\zeta''(0,1-a+ib)\}
+ +8\pi b\log2\notag\\
+ &+8\Rea\int_0^1\frac{\Li_1(e^{2\pi ia-2\pi bt})
+                      -\Li_1(e^{2\pi ia-2\pi b})}{1-t^2}\dd t.
+ \label{hsd:eq:M0explicit}
+\end{align}
+This is a representation theorem, not a nonreducibility theorem. In
+particular, retaining an ordinary polylogarithmic integral is not evidence
+that no further finite reduction exists.
+
+\subsection{A normalized all-jet mass-antiderivative ladder}
+The second jets themselves satisfy an inhomogeneous relation:
+\begin{equation}\label{hsd:eq:M-inhomogeneous}
+ \partial_{\mu}M_m(a,\sqrt\mu)
+       =mM_{m-1}(a,\sqrt\mu)-2L_{m-1}(a,\sqrt\mu),\qquad m\ge1.
+\end{equation}
+Harmonic normalization removes the inhomogeneous term. In fact the same
+normalization works at every spectral order.
+
+Let $h_{m,q}$ be the complete homogeneous polynomial in
+$1,1/2,\ldots,1/m$, defined by
+\begin{equation}\label{hsd:eq:completeH}
+ \sum_{q\ge0}h_{m,q}t^q=\prod_{j=1}^m(1-t/j)^{-1}
+ =\exp\left(\sum_{p\ge1}\frac{H_m^{(p)}}p t^p\right).
+\end{equation}
+For $m=0$ the product is one. Define, for $r\ge1$,
+\begin{equation}\label{hsd:eq:normalizedjet}
+ \mathcal A_{m,r}(a,\mu)=
+ \left.\partial_t^r\left\{\frac{m!}{(1-t)_m}
+                        E(t-m;a,\sqrt\mu)\right\}\right|_{t=0}.
+\end{equation}
+
+\begin{theorem}[Every normalized jet is an Appell-type mass ladder]
+\label{hsd:thm:Appell}
+For $0<a<1$, $\mu\ge0$, $m\ge1$ and $r\ge1$,
+\begin{align}
+ \mathcal A_{m,r}(a,\mu)&=r!\sum_{j=1}^r
+                 \frac{h_{m,r-j}}{j!}E^{(j)}(-m;a,\sqrt\mu),
+                 \label{hsd:eq:A-explicit}\\
+ \partial_\mu\mathcal A_{m,r}(a,\mu)&=m\mathcal A_{m-1,r}(a,\mu).
+                 \label{hsd:eq:A-ladder}
+\end{align}
+Consequently every anchored mass primitive is explicit:
+\begin{align}
+ \mathcal A_{m,r}(a,\mu)={}&\sum_{j=0}^{m-1}\binom mj\mu^j
+                                  \mathcal A_{m-j,r}(a,0)\notag\\
+ &+m\int_0^\mu(\mu-u)^{m-1}E^{(r)}(0;a,\sqrt u)\dd u.
+ \label{hsd:eq:A-primitive}
+\end{align}
+The boundary constants are finite Hurwitz jets because
+\begin{equation}\label{hsd:eq:masszerojets}
+ E^{(j)}(-m;a,0)=2^j\{\zeta^{(j)}(-2m,a)+\zeta^{(j)}(-2m,1-a)\}.
+\end{equation}
+In particular,
+$\mathcal A_{m,1}=L_m$ and
+$\mathcal A_{m,2}=M_m+2H_mL_m$.
+\end{theorem}
+\begin{proof}
+The parameter identity $\partial_\mu E(s)=-sE(s+1)$ holds first in
+absolute convergence and then by continuation. Therefore, as germs in $t$,
+\[
+ \partial_\mu\left\{\frac{m!}{(1-t)_m}E(t-m)\right\}
+ =m\frac{(m-1)!}{(1-t)_{m-1}}E(t-(m-1)).
+\]
+Differentiate in $t$ to obtain \eqref{hsd:eq:A-ladder}.
+The identities $E(-m)=0$ follow from the binomial continuation and
+$\zeta(-2h,a)+\zeta(-2h,1-a)=0$, the latter being Bernoulli reflection.
+Expanding the prefactor by \eqref{hsd:eq:completeH} now gives
+\eqref{hsd:eq:A-explicit}. The positive lattice gap permits continuation
+and parameter differentiation through $\mu=0$; at zero the identity
+$E(s;a,0)=\zeta(2s,a)+\zeta(2s,1-a)$ proves
+\eqref{hsd:eq:masszerojets}. Repeated integration of the ladder, with
+these boundary data, gives \eqref{hsd:eq:A-primitive}.
+\end{proof}
+
+Combining \eqref{hsd:eq:A-primitive} at $r=2$ with
+Theorem~\ref{hsd:thm:negative-second} evaluates every polynomially weighted
+mass integral of $E''(0)$ by explicit endpoints and a single finite
+polylogarithmic-integrand coordinate. No integration constants are
+chosen after the fact.
+
+\section{Several quadratic factors and the complete confluent expansion}
+\label{hsd:sec:masses}
+Throughout this section $W(x)=P(x^2)$ is even; its coefficients may be
+complex. For $b_1,\ldots,b_r>0$ define
+\begin{equation}\label{hsd:eq:manyZ}
+ Z_{W;\mathbf b}(s;a)=\sum_{n\ge0}W(x_n)
+                  \prod_{j=1}^r(x_n^2+b_j^2)^{-s}.
+\end{equation}
+The same notation with a superscript $\mathrm{bil}$ denotes the sum over
+the full lattice, equivalently the sum of the one-sided functions at
+$a$ and $1-a$, when $0<a<1$.
+
+For $\mu>0$ put
+\begin{equation}\label{hsd:eq:Tmu}
+ \mathcal T_{a,W}(\mu)=Z_W'(0;a,\sqrt\mu)
+        =\Phi_{a,W}(i\sqrt\mu)+\Phi_{a,W}(-i\sqrt\mu).
+\end{equation}
+The last equality is the inherited first-defect parity formula.
+On the bilateral lattice it is the following finite polylogarithmic
+expression:
+\begin{equation}\label{hsd:eq:Tbil}
+ \mathcal T_{a,W}^{\mathrm{bil}}(\mu)
+       =\sum_{\ell=0}^{\deg P}\frac{P^{(\ell)}(-\mu)}{\ell!}
+                                  L_\ell(a,\sqrt\mu).
+\end{equation}
+Thus the next definition uses already evaluated first jets only.
+
+\begin{definition}[Mass covariance]\label{hsd:def:V}
+For $\mu=b^2$, $\nu=c^2$, define
+\begin{equation}\label{hsd:eq:Vmass}
+ V_{a,W}(b,c)=\int_0^1
+ \frac{\mathcal T_{a,W}(\mu)+\mathcal T_{a,W}(\nu)
+ -\mathcal T_{a,W}((1-t)\mu+t\nu)
+ -\mathcal T_{a,W}(t\mu+(1-t)\nu)}{t(1-t)}\dd t.
+\end{equation}
+Use $\mathcal T^{\mathrm{bil}}$ for $V^{\mathrm{bil}}$.
+The name denotes this explicitly defined analytic function; it does not
+imply a probability interpretation for arbitrary polynomial weights.
+\end{definition}
+
+The integrand has removable endpoints and is identically zero when
+$b=c$. The formula is analytic in $\mu,\nu$ on a neighborhood of every
+positive real rectangle, including the diagonal.
+
+\begin{theorem}[All second jets are pairwise mass covariances]
+\label{hsd:thm:masses}
+For every even polynomial $W$, every $a>0$, and all positive masses,
+\begin{equation}\label{hsd:eq:many-second}
+ \boxed{\displaystyle
+ Z_{W;\mathbf b}''(0;a)=r\sum_{j=1}^r Z_W''(0;a,b_j)
+                    -\sum_{1\le i<j\le r}V_{a,W}(b_i,b_j).}
+\end{equation}
+In particular,
+\begin{equation}\label{hsd:eq:two-second}
+ Z_{W;b,c}''(0;a)=2Z_W''(0;a,b)+2Z_W''(0;a,c)-V_{a,W}(b,c).
+\end{equation}
+Every term is explicit by Theorem~\ref{hsd:thm:gamma-second} and
+\eqref{hsd:eq:Vmass}. The bilateral statements follow by reflection and
+have finite polylogarithmic covariance integrands via
+\eqref{hsd:eq:Tbil}. Repeated masses are allowed; in particular
+$Z_{W;b,b}''(0;a)=4Z_W''(0;a,b)$.
+\end{theorem}
+\begin{proof}
+We first prove the two-factor statement directly from a beta integral,
+without a formal manipulation of divergent logarithmic sums. Euler's
+identity gives
+\[
+ Z_{W;b,c}(s;a)=\frac{\Gamma(2s)}{\Gamma(s)^2}
+ \int_0^1t^{s-1}(1-t)^{s-1}
+ Z_W\bigl(2s;a,\sqrt{(1-t)\mu+t\nu}\bigr)\dd t
+\]
+in its initial convergence half-plane. Subtract its endpoint average
+as in Theorem~\ref{hsd:thm:beta}. For even $W$,
+\begin{equation}\label{hsd:eq:quadraticzero}
+ Z_W(0;a,b)=\sum_{d\ \mathrm{even}}w_d\zeta(-d,a)
+\end{equation}
+is independent of $b$: in the inverse-power expansion every nonconstant
+Pochhammer coefficient vanishes at zero, and $2k-d$ cannot equal one.
+Thus the subtracted zero jet is identically zero. The second beta row
+contains only the first-jet chord, exactly \eqref{hsd:eq:Vmass}.
+This proves \eqref{hsd:eq:two-second}, including continuation and endpoint
+regularity.
+
+For completeness, a common coefficient argument justifies the extension
+to all $r$. Choose a tail $x\ge X>\max b_j$ and expand each product as
+\[
+ x^{-2rs}\sum_{k\ge0}c_k(s)x^{-2k}.
+\]
+After multiplication by an even polynomial $W$, continuation replaces
+each power by $\zeta(2rs+2k-d,X)$. None of these Hurwitz terms has a pole
+at $s=0$, since $2k-d$ is even. Therefore taking two spectral derivatives
+is equivalent to applying the same linear coefficient rule
+\[
+ x^e(\log x)^q\longmapsto(-1)^q\zeta^{(q)}(-e,X),
+ \qquad e\ \hbox{even},
+\]
+to the pointwise second-derivative expansion. This rule is independent
+of the initial scale $2r$; that scale is already accounted for by the
+powers of $\log x$. The expansions converge normally after the finite
+head, as in Theorem~\ref{hsd:thm:stieltjes}.
+
+Apply this common linear rule to the elementary identity
+\[
+ \left(\sum_{j=1}^r A_j\right)^2
+   =r\sum_{j=1}^r A_j^2-\sum_{i<j}(A_i-A_j)^2,
+ \qquad A_j=\log(x^2+b_j^2).
+\]
+The two-factor case has already identified the image of
+$(A_i-A_j)^2$ as $V_{a,W}(b_i,b_j)$. The finite head satisfies the same
+pointwise identity. This proves \eqref{hsd:eq:many-second} without
+assuming linearity across a hidden pole. Reflection proves the bilateral
+case. The coincident statement follows either from $V(b,b)=0$ or from
+$Z_{W;b,b}(s)=Z_W(2s;b)$.
+\end{proof}
+
+\subsection{An independent Gamma polarization of the covariance}
+There is a second useful expression for the same function:
+\begin{align}
+ V_{a,W}(b,c)={}&\sum_{\epsilon,\eta\in\{1,-1\}}
+                  \KK_{a,W}(\epsilon ib,\eta ic)\notag\\
+               &-\KK_{a,W}(ib,-ib)-\KK_{a,W}(ic,-ic).
+ \label{hsd:eq:V-Gamma}
+\end{align}
+To prove it, first use a tail with both masses small relative to $x$.
+The algebraic combination of logarithm squares on the right is
+$\log^2((x^2+b^2)/(x^2+c^2))$. In the expansion
+\eqref{hsd:eq:PhiTaylor}, the extra harmonic term at degree $k$ is
+proportional to $w_{k-1}$. The combined logarithm-square expression has
+only even inverse powers, whereas even $W$ can contribute to
+$w_{k-1}$ only for odd $k$. Hence all such harmonic corrections cancel.
+The common coefficient argument in the preceding proof identifies the
+remaining expression with $V$. Analytic continuation in positive masses
+proves the global identity. Formula~\eqref{hsd:eq:V-Gamma} is not needed
+to define $V$ and is valuable as an independent evaluation route.
+
+When $\deg W\le2$, the covariance is the ordinary convergent series
+\begin{equation}\label{hsd:eq:Vordinary}
+ V_{a,W}(b,c)=\sum_{n\ge0}W(x_n)
+                   \log^2\left(\frac{x_n^2+b^2}{x_n^2+c^2}\right),
+ \qquad W\ \hbox{even},\quad\deg W\le2.
+\end{equation}
+Indeed, the logarithm square is $O(x^{-4})$. For higher polynomial
+degree the unmodified series generally diverges, and
+\eqref{hsd:eq:Vmass}, not that divergent series, is the assertion.
+
+For the unweighted bilateral lattice, define
+$D(a,y)=2(\cosh(2\pi y)-\cos(2\pi a))$. The following ordinary identity
+is an explicit elementary-integrand specialization:
+\begin{align}
+ &\sum_{n\in\mathbb Z}
+  \log^2\left(\frac{(n+a)^2+b^2}{(n+a)^2+c^2}\right)\notag\\
+ &\quad=\int_0^1\frac1{t(1-t)}
+ \log\left(\frac{D(a,\sqrt{(1-t)b^2+tc^2})
+                  D(a,\sqrt{tb^2+(1-t)c^2})}{D(a,b)D(a,c)}\right)\dd t.
+ \label{hsd:eq:V-elementary}
+\end{align}
+All quantities are positive inside the logarithms, so no branch convention
+is implicit.
+
+\subsection{Every confluent coefficient is a finite polygamma expression}
+\begin{theorem}[Complete coincident-mass expansion]\label{hsd:thm:collision}
+Let $a,b>0$ and $W$ be even. For $h$ sufficiently small, more precisely
+$|h|<a^2+b^2$ in the one-sided analytic squared-mass continuation,
+\begin{equation}\label{hsd:eq:Vcollision}
+ \boxed{\displaystyle
+ V_{a,W}(b,\sqrt{b^2+h})=
+ \sum_{k\ge2}\frac{2(-1)^kH_{k-1}}k\,h^k Z_W(k;a,b).}
+\end{equation}
+The left side denotes analytic continuation in $h$ of its positive-mass
+germ. The square-root notation creates no singularity at $h=-b^2$,
+because the spectrum is even in the mass. The series is locally normally
+convergent. On the bilateral lattice, replace the radius by $\min(a,1-a)^2+b^2$ and use the bilateral zeta.
+All displayed positive-integer values are holomorphic continued values,
+and each has a finite polygamma--Bernoulli evaluation. The first terms are
+\begin{equation}\label{hsd:eq:Vfirstterms}
+ h^2Z_W(2;a,b)-h^3Z_W(3;a,b)+\frac{11}{12}h^4Z_W(4;a,b)+O(h^5).
+\end{equation}
+\end{theorem}
+\begin{proof}
+The even-weight continuation has no positive-integer spectral poles:
+its possible poles are at half-integers, as is immediate from the
+inverse-power expansion. Repeated mass differentiation of the first
+jet therefore gives
+\begin{equation}\label{hsd:eq:Tderivs}
+ \mathcal T_{a,W}^{(k)}(\mu)=(-1)^k(k-1)!Z_W(k;a,\sqrt\mu),
+ \qquad k\ge1.
+\end{equation}
+Expand the ordinary analytic function $\mathcal T$ in
+\eqref{hsd:eq:Vmass} about $\mu=b^2$. The coefficient of $h^k$ is
+\[
+ \frac{\mathcal T^{(k)}(\mu)}{k!}
+ \int_0^1\frac{1-t^k-(1-t)^k}{t(1-t)}\dd t
+       =\frac{2H_{k-1}}{k!}\mathcal T^{(k)}(\mu).
+\]
+The elementary integral follows by finite geometric summation. This
+proves the coefficients. The nearest zero of $x_n^2+\mu+h$ is at
+$h=-a^2-b^2$; the finite-head continuation is analytic in the open disk
+bounded by that point. The Taylor expansion and the endpoint subtraction
+are locally uniform on smaller disks, proving normal convergence.
+The bilateral radius follows from the smallest lattice gap.
+\end{proof}
+
+Here is the promised finite evaluation of the coefficients. For $k\ge1$,
+\begin{align}
+ Z_1(1;a,b)&=\frac{\psi(a+ib)-\psi(a-ib)}{2ib},\label{hsd:eq:resolvent}\\
+ Z_1(k;a,b)&=\frac{(-1)^{k-1}}{(k-1)!}
+   \left(\frac{\partial}{\partial\mu}\right)^{k-1}
+   \frac{\psi(a+i\sqrt\mu)-\psi(a-i\sqrt\mu)}{2i\sqrt\mu}\bigg|_{\mu=b^2}.
+   \label{hsd:eq:positivepoly}
+\end{align}
+Only finitely many ordinary polygamma derivatives occur. For $m\ge0$,
+\begin{equation}\label{hsd:eq:nonpositivepoly}
+ Z_1(-m;a,b)=\sum_{j=0}^m\binom mj b^{2(m-j)}\zeta(-2j,a),
+\end{equation}
+whose Hurwitz values are Bernoulli polynomials. Expanding the weight
+around $-b^2$ gives, for every positive integer $k$,
+\begin{equation}\label{hsd:eq:weightedresolvent}
+ Z_W(k;a,b)=\sum_{\ell=0}^{\deg P}\frac{P^{(\ell)}(-b^2)}{\ell!}
+                                        Z_1(k-\ell;a,b).
+\end{equation}
+Equations~\eqref{hsd:eq:positivepoly} and
+\eqref{hsd:eq:nonpositivepoly} cover all terms. No confluent denominator
+needs to be evaluated by subtracting nearby masses.
+
+A related mixed derivative identity is
+\begin{equation}\label{hsd:eq:mixedmass}
+ \partial_\mu\partial_\nu Z_{W;\sqrt\mu,\sqrt\nu}''(0;a)
+   =2\frac{Z_W(1;a,\sqrt\mu)-Z_W(1;a,\sqrt\nu)}{\nu-\mu},
+\end{equation}
+with diagonal value $2Z_W(2;a,\sqrt\mu)$. To prove it, differentiate the
+initial spectral series twice in the masses, obtaining a factor $s^2$,
+and then take the second spectral derivative. Rational partial fractions
+give the right side. The same even-power pole exclusion used above
+justifies this continuation. Thus both the covariance and its mass
+Hessian have completely specified, regular diagonal limits.
+
+\section{Anchored shift primitives of every spectral order}
+\label{hsd:sec:primitives}
+The preceding representations also admit a uniform antiderivative
+calculus in the Hurwitz shift $a$. This is separate from the mass ladder:
+the two parameters should not be interchanged informally.
+
+For integers $R\ge1$, $h,j\ge0$, define
+\begin{equation}\label{hsd:eq:Pgeneral}
+ \PP_{R,h}^{[j]}(a)=(-1)^R
+ \left.\partial_s^j\left(\frac{\zeta(s-R,a)}{(s-R)_R}\right)\right|_{s=-h}.
+\end{equation}
+The denominator has no zero at $s=-h$; all its factors are strictly
+negative integers there. Thus the formula is a finite combination of
+negative-integer Hurwitz derivatives and generalized harmonic numbers,
+with no resonance prescription needed. Its basic property is
+\begin{equation}\label{hsd:eq:Pderivative}
+ \partial_a^R\PP_{R,h}^{[j]}(a)=\zeta^{(j)}(-h,a).
+\end{equation}
+For the Gamma case $j=1$, this reads explicitly
+\begin{equation}\label{hsd:eq:Pexplicit}
+ \PP_{R,h}^{[1]}(a)=\frac{h!}{(h+R)!}
+ \left\{\zeta'(-h-R,a)+(H_{h+R}-H_h)\zeta(-h-R,a)\right\}.
+\end{equation}
+For example, $\partial_a\{\zeta'(-1,a)+\zeta(-1,a)\}=\zeta'(0,a)$.
+The elementary $\tfrac12\log(2\pi)$ can be added when a primitive of
+$\log\Gamma(a)$ rather than $\zeta'(0,a)$ is desired.
+
+To fix all constants, let $a_0>0$ and write
+\begin{equation}\label{hsd:eq:anchorop}
+ \mathfrak A_{a_0,R}Q(a)=Q(a)-\sum_{q=0}^{R-1}
+                    \frac{(a-a_0)^q}{q!}Q^{(q)}(a_0).
+\end{equation}
+This is the unique $R$th primitive of $Q^{(R)}$ whose derivatives of
+orders $0,\ldots,R-1$ vanish at $a_0$.
+
+\begin{theorem}[All anchored shift primitives of the defect]
+\label{hsd:thm:shiftprimitive}
+For fixed admissible endpoints $u,v$ and polynomial $W$, every
+$\Delta_r(a,W;u,v)$ has an explicitly anchored $R$th primitive on any
+positive $a$-interval where the endpoint segments remain admissible.
+In Theorem~\ref{hsd:thm:beta-jets}, replace each finite endpoint function
+\begin{equation}\label{hsd:eq:Fjfinite}
+ F_{a,W}^{(j)}(0;z)=\sum_{d=0}^D w_d\sum_{h=0}^d
+                 \binom dh(-z)^{d-h}\zeta^{(j)}(-h,a+z)
+\end{equation}
+by
+\begin{equation}\label{hsd:eq:anchoredF}
+ \mathfrak A_{a_0,R}\left[
+ \sum_{d=0}^D w_d\sum_{h=0}^d\binom dh(-z)^{d-h}
+                            \PP_{R,h}^{[j]}(a+z)\right].
+\end{equation}
+Keep the beta coefficients and logarithmic weights unchanged. The
+result is the required anchored primitive, still a finite sum of
+ordinary convergent integrals.
+\end{theorem}
+\begin{proof}
+The classical parameter identity
+$\partial_a^R\zeta(s-R,a)=(-1)^R(s-R)_R\zeta(s,a)$
+proves \eqref{hsd:eq:Pderivative} by differentiation in $s$.
+Differentiating the reciprocal finite product at $s=-h$ gives
+\eqref{hsd:eq:Pexplicit}. The operator
+\eqref{hsd:eq:anchorop} imposes the stated initial conditions without
+changing the $R$th derivative. The endpoint subtraction commutes with
+this operation because it is linear and the endpoints are fixed.
+On compact admissible $a$-intervals the endpoint estimates in
+Theorem~\ref{hsd:thm:beta} are uniform, including the fixed logarithmic
+weights. Therefore the $R$ shift derivatives may pass under every
+integral. The resulting $R$th derivative is precisely
+\eqref{hsd:eq:all-beta}, and all lower derivatives at the anchor vanish.
+\end{proof}
+
+In the conjugate second-order case there is a shorter equivalent formula.
+Construct $\Phi_{a,W}^{\langle R\rangle}(z)$ by replacing the first jets
+in \eqref{hsd:eq:phi} with the anchored version of
+\eqref{hsd:eq:Pexplicit}. Then
+\begin{equation}\label{hsd:eq:anchoredDelta2}
+ \int_{a_0}^{a}\frac{(a-x)^{R-1}}{(R-1)!}\Delta_2(W;x,b)\dd x
+ =\int_0^1\frac{\CC_t\Phi_{a,W}^{\langle R\rangle}(ib,-ib)}{t(1-t)}\dd t
+                 -C_W(b)\frac{(a-a_0)^R}{R!}.
+\end{equation}
+The formula also holds for $a<a_0$ with oriented integration.
+It explicitly retains the primitive of the local polynomial, which must
+not be dropped merely because that polynomial is independent of $a$.
+
+\subsection{Parameter differentiation and generalized Stieltjes functions}
+The coefficient formula \eqref{hsd:eq:Stieltjes-master} is locally normal
+in $a,b$ after a sufficiently large fixed head is selected on a compact
+parameter set. It can therefore be differentiated in either parameter
+any prescribed finite number of times. At resonant coordinates use
+\eqref{hsd:eq:Stieltjes} as a whole germ, rather than differentiating a
+singular isolated zeta term. In particular,
+\[
+ \partial_a\zeta(s,a)=-s\zeta(s+1,a)
+\]
+converts the resulting derivatives into polygamma and Stieltjes/Hurwitz
+jets with explicit finite product coefficients. At an integer shift,
+$\zeta(k,a)$ is the corresponding generalized harmonic tail for $k\ge2$.
+Thus the finite beta representation and the harmonic/Stieltjes series
+remain equal after all these legitimate differentiations and after the
+anchored integrations just proved.
+
+\section{Verification, correction guards, and integration status}
+\label{hsd:sec:audit}
+\subsection{What was actually checked}
+The mathematical theorems above are established by their analytic proofs.
+The accompanying computations check finite algebra and implementations;
+none is substituted for an all-parameter proof.
+
+The exact suite passed \textbf{432 assertions} over rational polynomial
+algebra and formal Stieltjes coefficients. Its groups are:
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Finite algebra checked & Assertions\\
+\midrule
+Double-zero and duplication polynomials &60\\
+Harmonic coefficients and Gamma corrections &60\\
+Local beta moments through the required logarithmic order &32\\
+Confluent log-square coefficients and beta moments &62\\
+Shift-primitive normalization &128\\
+All-jet mass-germ normalization &48\\
+Explicit Stieltjes pole-jet extraction &42\\
+\midrule
+Total &432\\
+\bottomrule
+\end{tabular}
+\end{center}
+The tests include $D_k$ through $k=20$, the two local beta moments through
+$k=16$, the confluent coefficient identity through $k=32$, anchored
+primitive coefficients for $1\le R\le8$ and $0\le h\le7$, and the mass
+germ identity through $m=24$. The complete finite assertions are recorded
+in \src{results/exact_results.json}.
+
+The numerical suite completed \textbf{87 comparisons at 35 decimal-digit
+working precision}. The acceptance threshold was $10^{-23}$ for
+$|\mathrm{lhs}-\mathrm{rhs}|/\max(1,|\mathrm{lhs}|,|\mathrm{rhs}|)$.
+The largest recorded scaled residual was approximately
+$9.18\times10^{-35}$. This is a residual, not an error bound.
+The checks cover all of the following mechanisms: independent direct
+Pochhammer and double-zero defect jets through spectral order four;
+odd and even Gamma corrections; cutoff changes and masses outside the
+unshifted Taylor disk; ordinary logarithm and arctangent sums; reflected
+polylogarithmic integrals including a logarithmic endpoint; second jets
+at four nonpositive spectral points and two shift/mass pairs; two distinct
+Gamma/mass covariance representations; independently expanded two-factor
+spectra; repeated masses; finite polygamma confluence; shift primitives;
+and logarithmically weighted beta jets.
+
+Some comparisons share the same underlying numerical Hurwitz-zeta
+implementation. They must not be advertised as entirely independent
+special-function libraries. The ordinary sums, Gamma products,
+polylogarithmic integrands and spectral expansions nevertheless provide
+different algebraic and analytic evaluation routes. No interval
+enclosures, certified infinite tails, or proof-assistant verification
+are included. Execution was completed in staged invocations; the final
+JSON contains every accepted comparison, not an extrapolated count.
+
+\subsection{Corrections versus safeguards}
+No false theorem was identified in the inspected predecessor's
+first-derivative statements. In particular it explicitly cautions that
+higher derivatives do not automatically factorize. The following are
+therefore proposed \emph{integration safeguards}, not accusations that
+the predecessor made those errors.
+
+\paragraph{Do not extend first-order parity to the full second jet.}
+Even weights remove $C_W$ and the $I_{0,p}$ terms, but not $\KK$.
+The exact counterexample is $\Delta_2(1;a,b)=-4S_a(b)<0$ for $b>0$.
+Theorem~\ref{hsd:thm:nonvanishing} gives the full universal criterion.
+
+\paragraph{Retain one extra coefficient before a pole multiplication.}
+The resonant $r$th derivative needs $d_{k,r+1}$, not only $d_{k,r}$.
+Equation~\eqref{hsd:eq:Tres} is the exact replacement rule. This is also
+why generalized Stieltjes coefficients and ordinary zeta derivatives
+must not be mixed without tracking the spectral scale two.
+
+\paragraph{Do not silently remove the Gamma correction for odd weights.}
+For $W=x$ the second defect is
+$\Delta_2(x;a,b)=\KK_{a,x}(ib,-ib)+4b^2$.
+Omitting the $4b^2$ term is an explicitly false identity.
+
+\paragraph{Normalize the second mass ladder.}
+The pure ladder belongs to $M_m+2H_mL_m$, not to $M_m$ alone.
+At all orders the correct object is the germ
+$m!E(t-m)/(1-t)_m$. The primitive constants are those in
+\eqref{hsd:eq:masszerojets}, not arbitrary polynomials.
+
+\paragraph{Distinguish continuation from an ordinary sum.}
+The covariance series in \eqref{hsd:eq:Vordinary} is ordinary for even
+weights of degree at most two. At higher degree use the ordinary
+\emph{integral} definition \eqref{hsd:eq:Vmass}; the original logarithmic
+series is generally divergent. Similarly, a small-mass series is not
+globally valid without its finite head.
+
+\paragraph{Preserve the branch and endpoint subtractions.}
+Use analytic $\log\Gamma$, retain the paired numerator under the
+integral, and evaluate the diagonal by its confluent formula. Integrating
+its four separated divergent endpoint terms is not equivalent to the
+subtracted beta integral.
+
+\subsection{Suggested repository integration}
+A suitable new report destination is
+\begin{quote}\small
+\src{Analysis/Polylogarithms/docs/reports/stieltjes-correlation-calculus/continuations/higher-spectral-defects/}.
+\end{quote}
+The package includes a compact theorem fragment with the prefix
+\src{hsd:}, source hashes, a machine-readable claim ledger, and an
+editorial status note. The predecessor's Section~7.6 Questions~2 and~7
+can be cross-referenced to the explicit representation theorems here.
+Question~1 can record the new finite-integrand representation while
+retaining its minimum-function-algebra component as open. The classical
+first-derivative results should keep their original attribution. No
+Gaussian special-value status or numerical independence status should
+be changed. No remote commit, overwrite, or repository modification
+was performed in producing this package.
+
+\section{Further research questions and concrete next targets}
+\label{hsd:sec:future}
+\paragraph{1. Finite closure of the negative-point second integrals.}
+Determine special parameter families for which the integral in
+\eqref{hsd:eq:Mfinite} reduces to a finite collection of polylogarithms,
+polylogarithm order derivatives, and explicit logarithms. A useful first
+target is the half-shift $a=1/2$ at $m=0,1$. A failure in one prescribed
+symbolic calculus is not a proof of analytic nonreducibility.
+
+\paragraph{2. A finite polylogarithmic dictionary for every higher jet.}
+Theorem~\ref{hsd:thm:beta-jets} lowers the inner Hurwitz order by one.
+Can reflection and Fourier continuation turn those lower jets into a
+uniform finite set of logarithmically weighted polylogarithm-order
+integrals at every $r$? The goal should include the exact endpoint
+constants and not merely a formal interchange of a Fourier series with
+a singular beta weight.
+
+\paragraph{3. Higher-order multi-mass connected terms.}
+The pairwise formula \eqref{hsd:eq:many-second} relies on a quadratic
+variance identity. At third and higher order, identify the appropriate
+three-point and higher endpoint subtractions in a Dirichlet-simplex
+parameterization. Determine which terms genuinely require more than
+pairwise covariances and how their coincident limits encode products of
+harmonic coefficients and higher resolvents.
+
+\paragraph{4. Multi-mass formulas for arbitrary odd polynomial weights.}
+For odd weights the zero quadratic jet depends polynomially on the mass,
+so the local term in the mass beta formula need not vanish. Compute its
+all-order residue polynomial and the corresponding corrected multi-mass
+covariance formula. The all-order linear-factor beta master and the
+explicit $J_k$ moments provide exact interpolation constraints.
+
+\paragraph{5. Arithmetic and colored weights.}
+Replace the polynomial weight by a polynomial times a periodic sequence.
+Separate its mean, which controls the arithmetic Hurwitz pole, from the
+nontrivial character components. Seek a small-denominator Gamma/Dirichlet
+$L$ dictionary for the resulting beta polarizations and their Stieltjes
+jets, while keeping analytic evaluation separate from claims of period
+independence.
+
+\paragraph{6. Joint lattice-gap and mass degeneration.}
+The formulas are regular for $0<a<1$ and positive mass, but the corner
+$(a,b)=(0,0)$ has a collapsing lattice point. Construct a two-parameter
+subtracted germ that separates that point explicitly. Determine which
+normalized mixed jets have path-independent limits and which retain
+specified logarithmic path terms.
+
+\paragraph{7. Nonintegral polynomial degree.}
+For weights $x^\rho$, the finite shifted-Hurwitz expression
+\eqref{hsd:eq:Ffinite} is no longer available. Develop an analytic
+replacement that interpolates the odd-degree residue corrections as
+$\rho$ crosses integers. A correct interpolation must reproduce both
+$\Delta_1$ and $C_W$ at all polynomial weights, rather than assuming the
+second correction is a continuation of first-order parity.
+
+\paragraph{8. Formalization and validated evaluation.}
+The beta subtraction, polynomial pole extraction, harmonic recurrences,
+and normalized primitive identities have clean finite algebraic layers.
+Formalize those first, then the normal-convergence and differentiation
+lemmas. Independently, equip the ordinary beta/Gamma integrals and
+finite-head tails with interval error control. Such a validated evaluator
+would strengthen the supplied diagnostics without changing the logical
+role of the analytic proofs.
+
+\section*{Conclusion}
+\addcontentsline{toc}{section}{Conclusion}
+The second spectral derivative is not governed by the first-derivative
+parity law. Its nonlocal part is nevertheless explicit: a Gamma--Hurwitz
+polarization, with a finite harmonic correction for odd weights.
+Endpoint-subtracted beta parameterization extends this mechanism to
+every spectral order and lowers the inner order by one. The independent
+harmonic--Stieltjes series supplies every resonant coefficient and a
+globally valid finite-head implementation.
+
+The same construction controls several quadratic masses, gives regular
+confluent polygamma expansions, and converts the predecessor's finite
+first-jet polylogarithms into explicit second-jet integrands. Harmonic
+normalization then produces an all-jet mass-antiderivative ladder, while
+negative Hurwitz derivatives fix every shift-primitive constant.
+These are exact representation and structural theorems. The remaining
+questions concern further finite closure, arithmetic specialization,
+higher connected terms, and formal or interval certification, not
+unreported conjectural steps in the identities proved here.
+
+\clearpage
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{hsd:repo}
+V. Reshetnikov and ProveIt contributors,
+\emph{ProveIt: Polylogarithms manuscript}, canonical preface,
+differentiation chapter, research-status chapter, and incoming-report
+catalogue, inspected 11 October 2026. Repository checkpoint
+\pin. \url{https://github.com/VladimirReshetnikov/ProveIt}.
+The source audit distinguishes preliminary main-branch reads from the
+byte-identified predecessor below.
+
+\bibitem{hsd:predecessor}
+\emph{Quadratic-Spectrum Stieltjes Identities: Complete reflected jets,
+harmonic counterterms, finite polylogarithmic reductions, and a polynomial
+parity criterion}, ProveIt research continuation, 10 October 2026.
+Especially Sections~5--7 and Section~7.6 Questions~1, 2, and~7.
+Byte-identified single-file source at
+\src{Analysis/Polylogarithms/docs/reports/stieltjes-correlation-calculus/continuations/quadratic-spectrum-stieltjes/article_singlefile.tex},
+repository checkpoint \pin. SHA-256 recorded in Section~\ref{hsd:sec:scope}.
+The predecessor's own source anchor is
+\src{446dca9bd65c20e409d1d2561d4ffad408103e2a}.
+
+\bibitem{hsd:intake}
+ProveIt, \emph{Sixteenth incoming-archive manifest},
+\src{Analysis/Polylogarithms/docs/manuscript/verification/sixteenth-incoming-archives.json},
+checkpoint \pin. Consulted for the predecessor's path, byte length, and
+SHA-256; not as a substitute for reading its mathematical text.
+
+\bibitem{hsd:beta}
+NIST Digital Library of Mathematical Functions, \S5.12,
+\emph{Beta function}, especially Euler's integral and Eq.~5.12.4.
+\url{https://dlmf.nist.gov/5.12}. Consulted 11 October 2026.
+The two-denominator parameterization used here is a direct specialization.
+
+\bibitem{hsd:gamma}
+NIST Digital Library of Mathematical Functions, \S5.8,
+\emph{Infinite products}; \S5.5, \emph{Functional relations}; and \S5.15,
+\emph{Polygamma functions}.
+\url{https://dlmf.nist.gov/5.8}; \url{https://dlmf.nist.gov/5.5};
+\url{https://dlmf.nist.gov/5.15}.
+
+\bibitem{hsd:hurwitz}
+NIST Digital Library of Mathematical Functions, \S25.11,
+\emph{Hurwitz zeta function}: continuation, parameter derivatives,
+negative-integer values, and the derivative at zero.
+\url{https://dlmf.nist.gov/25.11}. Consulted 11 October 2026.
+
+\bibitem{hsd:polylog}
+NIST Digital Library of Mathematical Functions, \S25.12,
+\emph{Polylogarithms}.
+\url{https://dlmf.nist.gov/25.12}. Consulted 11 October 2026.
+
+\bibitem{hsd:dowker}
+J. S. Dowker, \emph{Calculation of the multiplicative anomaly},
+arXiv:1412.0549, 2014. \url{https://arxiv.org/abs/1412.0549}.
+Cited for the classical first-derivative anomaly setting and factorization
+scope. The endpoint-subtracted higher-jet identities above are proved
+with their own specified normalization.
+\end{thebibliography}
+\end{document}

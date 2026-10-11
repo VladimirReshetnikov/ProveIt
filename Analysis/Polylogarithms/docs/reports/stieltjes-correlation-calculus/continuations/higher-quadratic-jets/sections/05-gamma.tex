@@ -1,0 +1,138 @@
+\section{Logarithmic squares, Gamma integrals, and a dilogarithmic primitive}
+\label{hqj:sec:gamma}
+
+The simplest nonlocal defect has a useful independent calculus.
+Let $a>0$, and let $c,d\in\C$ satisfy
+$\Rea(a+c)>0$ and $\Rea(a+d)>0$. Put $h=c-d$ and
+\begin{equation}\label{hqj:eq:Sdef}
+\mathscr S(a;c,d)=\sum_{n\ge0}
+\bigl(\log(n+a+c)-\log(n+a+d)\bigr)^2.
+\end{equation}
+The summand is $O(n^{-2})$, uniformly on compact sets of these
+parameters, so this is an ordinary holomorphic sum. In particular
+$\mathscr S(a;ib,-ib)=\Delta_2(1;a,b)$.
+
+\begin{theorem}[A digamma logarithmic integral]\label{hqj:thm:gamma-square}
+On the domain above,
+\begin{equation}\label{hqj:eq:Sdigamma}
+\boxed{\mathscr S(a;c,d)=2h\int_0^1
+\psi(a+d+ht)\log\frac{t}{1-t}\dd t.}
+\end{equation}
+The integral is ordinary and convergent at both endpoints. Moreover,
+\begin{equation}\label{hqj:eq:Smixed}
+\partial_c\partial_d\mathscr S(a;c,d)
+=-2\frac{\psi(a+d)-\psi(a+c)}{d-c},
+\end{equation}
+with its removable value $-2\psi'(a+c)$ when $c=d$.
+Every derivative in $a$ is obtained by replacing $\psi$ by the
+corresponding polygamma in \eqref{hqj:eq:Sdigamma}.
+\end{theorem}
+\begin{proof}
+For each $n$, integrate the resolvent along the segment from $d$ to $c$:
+\[
+\log(n+a+c)-\log(n+a+d)
+=h\int_0^1\frac{\dd t}{n+a+d+ht}.
+\]
+The entire segment lies in the right half-plane after adding $a$.
+Compact uniform resolvent estimates justify squaring, summing, and
+interchanging the two parameter integrals. The standard digamma
+difference identity gives
+\[
+\sum_{n\ge0}\frac1{(n+A)(n+B)}
+=\frac{\psi(B)-\psi(A)}{B-A}.
+\]
+Thus $\mathscr S$ equals
+\[
+h\int_0^1\int_0^1
+\frac{f(v)-f(t)}{v-t}\dd v\dd t,
+\qquad f(t)=\psi(a+d+ht).
+\]
+The divided difference has a removable diagonal and is continuous.
+For a continuously differentiable $f$, symmetric exclusion of a thin
+diagonal strip gives
+\[
+\int_0^1\int_0^1\frac{f(v)-f(t)}{v-t}\dd v\dd t
+=2\int_0^1f(t)\log\frac{t}{1-t}\dd t.
+\]
+This follows by interchanging the two terms on the symmetric truncated
+domain and then integrating $1/(t-v)$; the endpoint logarithms are
+integrable and the omitted divided-difference strip tends to zero.
+This proves \eqref{hqj:eq:Sdigamma}, including complex parameters.
+
+Differentiating the normally convergent sum in $c,d$ gives
+$-2\sum((n+a+c)(n+a+d))^{-1}$, which is
+\eqref{hqj:eq:Smixed}. Differentiation under the integral for a fixed
+number of $a$ derivatives is justified by the same right-half-plane
+compactness and integrable endpoint logarithms.
+\end{proof}
+
+\subsection{An anchored primitive with explicit dilogarithms}
+For the next representation assume real $c>d$ and $a+d>0$, and set $h=c-d>0$.
+For $y>0$ define
+\begin{equation}\label{hqj:eq:fprimitive}
+f_h(y)=y\log^2(1+h/y)-2h\Li_2\!\left(\frac{h}{y+h}\right).
+\end{equation}
+Direct differentiation, using the ordinary dilogarithm derivative,
+gives
+\begin{equation}\label{hqj:eq:fderivative}
+f_h'(y)=\log^2(1+h/y),\qquad
+f_h(y)=-\frac{h^2}{y}+O(y^{-2})\quad(y\longrightarrow\infty).
+\end{equation}
+The counterterm in the next theorem is therefore necessary.
+
+\begin{theorem}[Dilogarithmic and Gamma representations of the primitive]
+\label{hqj:thm:primitive}
+The series
+\begin{equation}\label{hqj:eq:Pprimitive}
+\mathscr P(a;c,d)=h^2\psi(a+d)+
+\sum_{n\ge0}\left\{f_h(n+a+d)+\frac{h^2}{n+a+d}\right\}
+\end{equation}
+is normally convergent for real $a+d>0$ on compact subintervals, and
+\begin{equation}\label{hqj:eq:Pderivative}
+\frac{\dd}{\dd a}\mathscr P(a;c,d)=\mathscr S(a;c,d).
+\end{equation}
+For $a_0+d,a_1+d>0$,
+\begin{align}
+\mathscr P(a_1;c,d)-\mathscr P(a_0;c,d)
+={}&2h\int_0^1
+\log\frac{\Gamma(a_1+d+ht)}{\Gamma(a_0+d+ht)}
+\log\frac{t}{1-t}\dd t.
+\label{hqj:eq:gamma-dilog}
+\end{align}
+Thus \eqref{hqj:eq:gamma-dilog} is an exact identity between an ordinary
+log-Gamma integral and an explicitly convergent dilogarithmic sum.
+\end{theorem}
+\begin{proof}
+The asymptotic formula in \eqref{hqj:eq:fderivative} leaves an
+$O(n^{-2})$ remainder in \eqref{hqj:eq:Pprimitive}, and differentiating
+that remainder gives $O(n^{-3})$ on compact sets. Its derivative is
+\[
+h^2\psi'(a+d)+\sum_{n\ge0}
+\left\{\log^2(1+h/(n+a+d))-\frac{h^2}{(n+a+d)^2}\right\}.
+\]
+Since $\psi'(z)=\sum_{n\ge0}(n+z)^{-2}$, the rational terms cancel
+and give \eqref{hqj:eq:Pderivative}. Integrate
+\eqref{hqj:eq:Sdigamma} between $a_0$ and $a_1$. Fubini is valid on the
+compact $a$ interval, and the primitive of $\psi$ is the real
+$\log\Gamma$. This gives \eqref{hqj:eq:gamma-dilog} with the displayed
+anchoring, not an unspecified additive constant.
+\end{proof}
+
+For $|h|<a+d$, the same family has an independent harmonic expansion
+\begin{equation}\label{hqj:eq:S-harmonic}
+\mathscr S(a;d+h,d)=
+2\sum_{r\ge2}\frac{(-1)^rH_{r-1}}r h^r\zeta(r,a+d).
+\end{equation}
+This follows from
+$\log^2(1+z)=2\sum_{r\ge2}(-1)^rH_{r-1}z^r/r$.
+Its anchored $a$ primitive uses
+\[
+\int_{a_0}^{a_1}\zeta(r,a+d)\dd a
+=\begin{cases}
+\psi(a_1+d)-\psi(a_0+d),&r=2,\\
+\dfrac{\zeta(r-1,a_0+d)-\zeta(r-1,a_1+d)}{r-1},&r>2.
+\end{cases}
+\]
+This gives another exact bridge between the Gamma integral,
+harmonic coefficients, and Hurwitz values, and supplies an independent
+numerical route used in the accompanying tests.

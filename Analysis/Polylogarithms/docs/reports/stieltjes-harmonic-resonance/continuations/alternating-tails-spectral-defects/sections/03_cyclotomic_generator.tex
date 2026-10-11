@@ -1,0 +1,404 @@
+\section{A finite cyclotomic generator for products of rational tails}
+\label{cyc:sec}
+
+The incoming Shifts and Twists report \cite{HTST} asks for an analogue of its two-parameter
+alternating identity at higher roots of unity.  There is a precise answer
+for one conjugation sector, valid at every conductor.  The answer below
+uses only elementary trigonometric functions and finitely many digamma
+values.  Its coefficient form is consistent with the classical
+depth-two parity theorem for colored multiple polylogarithms
+\cite{PanzerParity}.  We give an independent bilateral-sum proof, including
+the limiting conventions at the trivial color.  No reduction of the
+opposite conjugation sector is asserted.
+
+\subsection{The finite functions}
+
+If $\omega$ is a root of unity, define, initially for $|t|<1$,
+\begin{equation}\label{cyc:F}
+ F_\omega(t)=\begin{cases}
+ -\psi(1-t)-\gamma,&\omega=1,\\[2pt]
+ -\dfrac1N\displaystyle\sum_{j=1}^N\omega^j
+                  \psi\bigl((j-t)/N\bigr),
+       &\omega^N=1,\quad\omega\ne1.
+ \end{cases}
+\end{equation}
+The value is independent of the chosen multiple $N$ of the conductor.
+For $\omega\ne1$ it is the ordinary convergent series
+$\sum_{k\ge1}\omega^k/(k-t)$; residue-class grouping and the digamma
+difference series prove \eqref{cyc:F}.  Its Taylor series is
+\[
+ F_\omega(t)=\sum_{j\ge1}\operatorname{Li}_j(\omega)t^{j-1}.
+\]
+For the trivial color the coefficient of $t^0$ in this last notation is
+set to zero; all coefficients of positive degree are their ordinary
+zeta values.  This convention does not assign a value to a divergent
+harmonic series.
+
+Write $\omega=e^{2\pi i\theta}$ with $0<\theta<1$ for a nontrivial
+color and put
+\begin{equation}\label{cyc:B}
+ B_\omega(t)=\begin{cases}
+ \pi t\cot(\pi t),&\omega=1,\\[2pt]
+ \dfrac{\pi t e^{i\pi(2\theta-1)t}}{\sin(\pi t)},&\omega\ne1.
+ \end{cases}
+\end{equation}
+These functions have value $1$ at zero.  They obey
+\begin{equation}\label{cyc:BF}
+ B_\omega(t)=1-tF_\omega(t)+tF_{\omega^{-1}}(-t).
+\end{equation}
+For example $B_{-1}(t)=\pi t/\sin(\pi t)$.
+The coefficients $b_j(\omega)=[t^j]B_\omega(t)$ are explicit:
+\[
+ b_j(\omega)=\frac{(2\pi i)^j}{j!}B_j(\theta)\quad(\omega\ne1),
+ \qquad b_0(1)=1,\quad b_1(1)=0,
+ \quad b_j(1)=-2\zeta(j)\ (j\ge2\hbox{ even}),
+\]
+and $b_j(1)=0$ for odd $j\ge3$.  The $B_j(\theta)$ here are ordinary
+Bernoulli polynomials, whereas $B_\omega(t)$ denotes their scaled
+generating function.  Formula \eqref{cyc:BF} also proves that for $j\ge1$
+\[
+ b_j(\omega)=-\operatorname{Li}_j(\omega)
+                    -(-1)^j\operatorname{Li}_j(\omega^{-1}),
+\]
+with the stated convention at $\omega=1$, $j=1$.
+
+Define the following finite expression:
+\begin{align}\label{cyc:C}
+ C_{a,b}(X,Y)={}&
+ \frac{B_{ab}(X)F_b(Y-X)-B_a(X)F_b(Y)}X\notag\\
+ &-\frac{B_{ab}(Y)F_{a^{-1}}(Y-X)-F_{a^{-1}}(-X)}Y.
+\end{align}
+Each numerator has the indicated factor, so $X=0$ and $Y=0$ are
+removable for this expression near the origin.  We use the finite
+four-point operation
+\begin{equation}\label{cyc:Q}
+ Q_{a,b}(x,y)=\frac{
+ C_{a,b}(x,y)+C_{a,b}(x,-y)
+ -C_{a,b}(-x,y)-C_{a,b}(-x,-y)}{4x}.
+\end{equation}
+Finally set
+\begin{equation}\label{cyc:J}
+ J_\omega(t)=\frac{B_\omega(t)-B_\omega(-t)}{2t}
+ =\begin{cases}
+ 0,&\omega=1,\\[2pt]
+ \displaystyle i\pi\frac{\sin(\pi(2\theta-1)t)}{\sin(\pi t)},
+       &\omega\ne1.
+ \end{cases}
+\end{equation}
+The function $J_\omega$ is even.  Thus
+$[J_\omega(x)-J_\omega(y)]/(x^2-y^2)$ has its usual derivative
+interpretation when $y=\pm x$.
+
+\subsection{All colors and an arbitrary outer character}
+
+For roots of unity $a,b,c$ write
+\begin{align}
+ E_n^a(x)&=\sum_{k>n}\frac{a^k}{k^2-x^2},\notag\\
+ R_{a,b;c}(x,y)&=\sum_{n\ge0}c^n\{c(n+1)-n\}
+                                      E_n^a(x)E_n^b(y).
+ \label{cyc:R}
+\end{align}
+The normalization of the weight makes its partial sum exactly
+$c^m m$.  In particular $R_{a,b;-1}=-\mathcal K_{a,b}$ for the
+alternating weight $\mathcal K_{a,b}=\sum(-1)^n(2n+1)E_n^aE_n^b$.
+
+\begin{theorem}[Cyclotomic rational-tail generator]\label{cyc:master}
+Let $a,b,c$ be arbitrary roots of unity and put $d=abc$.  Initially
+assume $|x|+|y|<1$ and $xy\ne0$.  Then
+\begin{align}\label{cyc:mastereq}
+ &R_{a,b;c}(x,y)+R_{a^{-1},b^{-1};c^{-1}}(x,y)\notag\\
+ &\qquad=Q_{a,bc}(x,y)+Q_{b,ac}(y,x)
+                 +\frac{J_d(x)-J_d(y)}{x^2-y^2}.
+\end{align}
+Both sides extend meromorphically to $\mathbb C^2$.  All poles away
+from $x\in\mathbb Z\setminus\{0\}$ or
+$y\in\mathbb Z\setminus\{0\}$ are removable in the combined
+right side.  The series is absolutely locally normally convergent
+unless $a=b=1$ and $c\ne1$.  In that exceptional case it converges
+ordinarily and locally uniformly; subtracting the summand at
+$(x,y)=(0,0)$ makes the remaining series absolutely locally normally
+convergent.  When $x,y$ are real, the left side of
+\eqref{cyc:mastereq} is $2\Re R_{a,b;c}(x,y)$.
+\end{theorem}
+
+In particular this is a conductor-four generator, with quarter-shift
+digamma expressions furnished by \eqref{cyc:F}.  It also works for
+odd conductors, because the outer color $c$ is arbitrary.  The appearance
+of a conjugate pair is essential: the theorem proves a depth reduction
+for the real sector at odd total weight, and does not prove such a
+reduction for each complex summand separately.
+
+For nonzero rational $x,y$ with $x,y,x+y,x-y\notin\mathbb Z$,
+Gauss's rational digamma formula \cite[Eq.~(5.4.19)]{DLMFGamma}
+makes the answer a finite explicit
+combination of $\pi$, $\pi^2$, and $\pi\log\alpha$ for positive
+algebraic $\alpha$, with algebraic coefficients.  The same assertion
+holds on $x=y\ne0$ when $2x\notin\mathbb Z$.  To see the stated
+coefficient class, $F_\omega$ at a rational argument is an algebraic
+linear combination of $1$, $\pi$, and such logarithms: its Euler
+constant cancels in \eqref{cyc:F}.  Every $B_\omega$ value at a
+nonzero rational argument is $\pi$ times an algebraic number.
+The apparently unmultiplied term $F_{a^{-1}}(-X)/Y$ in
+\eqref{cyc:C} is odd in $Y$ and disappears in \eqref{cyc:Q}.
+The remaining $J$ quotient is elementary, also at its diagonal
+limit.  This statement concerns the displayed nonsingular rational
+parameters; the axes can introduce higher polylogarithmic constants,
+as the $\zeta(3)$ limits below demonstrate.
+
+\subsection{A bilateral proof with finite cutoff control}
+
+For nontrivial unit colors $a,b$, introduce the ordinary generating
+series
+\[
+ Z_{a,b}(X,Y)=\sum_{k>m\ge1}\frac{a^k b^m}{(k-X)(m-Y)}.
+\]
+Summation by parts in $k$ proves locally uniform convergence: the inner
+partial sums grow at most logarithmically and their successive
+increments are $O(1/k)$.  We claim
+\begin{equation}\label{cyc:bilateral-generator}
+ Z_{a,b}(X,Y)-Z_{a^{-1},b^{-1}}(-X,-Y)
+ =C_{a,b}(X,Y)-\frac{F_{ab}(X)-F_{ab}(Y)}{X-Y}.
+\end{equation}
+The last quotient is removable at $X=Y$.
+
+To prove it, sum first over the full integer lattice in
+\[
+ S=\sum_{m\ge1}b^m\sum_{k\in\mathbb Z}
+       \frac{(ab)^k}{(k-X)(k+m-Y)}.
+\]
+For each fixed $m$ the inner series is absolutely convergent.  The
+bilateral partial-fraction formula is
+\[
+ \operatorname{PV}\sum_{k\in\mathbb Z}\frac{\omega^k}{k-t}
+                  =-\frac{B_\omega(t)}t.
+\]
+It follows either from \eqref{cyc:BF} or from the elementary
+Fourier series of the shifted resolvent.  The symmetric principal
+value at $\omega=1$ is exactly the cotangent in \eqref{cyc:B}.
+Partial fractions therefore give
+\begin{equation}\label{cyc:S-eval}
+ S=-\frac{B_{ab}(X)}X F_b(Y-X)
+                  +\frac{B_{ab}(Y)}YF_{a^{-1}}(Y-X).
+\end{equation}
+Now put $l=k+m$.  The positive, negative, mixed, and two zero-index
+parts of the region $l>k$ give respectively
+\begin{align*}
+ S={}&Z_{b,a}(Y,X)+Z_{a^{-1},b^{-1}}(-X,-Y)
+       -F_{a^{-1}}(-X)F_b(Y)\\
+    &-F_b(Y)/X+F_{a^{-1}}(-X)/Y.
+\end{align*}
+This rearrangement has a direct cutoff justification.  Keep
+$1\le m\le M$ before separating regions.  In each same-sign region,
+the omitted strip is bounded after summation by parts by a constant
+times
+\[
+ \sum_{k\ge1}\frac1{k(k+M)}=O(\log M/M).
+\]
+In the mixed region the difference between the triangular cutoff
+$u+v\le M$ and the product of the two ordinary sums is
+$O(\log M/M)$ as well: for $u<M$ use the nontrivial-color tail
+$O((M-u)^{-1})$, and for $u\ge M$ use the nontrivial-color tail in
+$u$.  The two zero-index tails are $O(1/M)$.  These estimates are
+uniform on compact parameter sets avoiding poles.  Thus all the
+displayed limiting rearrangements are valid.
+
+The elementary product decomposition is
+\[
+ Z_{b,a}(Y,X)=F_a(X)F_b(Y)-Z_{a,b}(X,Y)
+                    -\frac{F_{ab}(X)-F_{ab}(Y)}{X-Y}.
+\]
+Use this identity, \eqref{cyc:BF}, and \eqref{cyc:S-eval} to obtain
+\eqref{cyc:bilateral-generator}.
+
+Here are explicit conventions for the boundary colors.  For $r\ge2$,
+$s\ge1$, let $w=r+s$ and write $L_j(\omega)=\operatorname{Li}_j(\omega)$.
+Coefficient extraction in \eqref{cyc:bilateral-generator} gives
+\begin{align}\label{cyc:finite-parity}
+ &Z(r,s;a,b)-(-1)^w Z(r,s;a^{-1},b^{-1})\notag\\
+ ={}&(-1)^s\sum_{j=s}^{w}(-1)^j
+          \binom{j-1}{s-1}L_j(b)b_{w-j}(ab)-L_w(ab)\notag\\
+ &+(-1)^r\sum_{j=r}^{w}\binom{j-1}{r-1}
+               L_j(a^{-1})b_{w-j}(ab)-L_s(b)b_r(a),
+\end{align}
+where
+$Z(r,s;a,b)=\sum_{k>m\ge1}a^k b^m/(k^r m^s)$.
+Every double series here is absolutely convergent.  If $b=1$, $s=1$,
+the first summand with $j=1$ cancels the last term before any value
+is assigned to $L_1(1)$.  If $ab=1$, the coefficient of $b_1(ab)$
+vanishes, since $b=a^{-1}$ and
+$\binom{w-2}{s-1}=\binom{w-2}{r-1}$ with opposite signs.
+There is no other $L_1(1)$ term because $r\ge2$.  Consequently the
+finite formula, and its normally convergent even-$r$, odd-$s$
+generator, extend to every root-of-unity color with exactly
+\eqref{cyc:F}--\eqref{cyc:B}.  One may also obtain this extension
+by taking colors to $1$ on the unit circle; the only discarded
+terms have $r=1$, which the projection in \eqref{cyc:Q} annihilates.
+
+We now prove the tail theorem.  A finite outer cutoff, followed by
+the telescoping identity
+\[
+ \sum_{n=0}^{m-1}c^n\{c(n+1)-n\}=c^m m,
+\]
+gives
+\begin{equation}\label{cyc:ordered-tail}
+ R_{a,b;c}(x,y)=D_{a,bc}(x,y)+D_{b,ac}(y,x)+H_{abc}(x,y),
+\end{equation}
+where
+\begin{align*}
+ D_{u,v}(x,y)&=\sum_{k>m\ge1}
+   \frac{u^k v^m m}{(k^2-x^2)(m^2-y^2)},\\
+ H_d(x,y)&=\frac{O_d(x)-O_d(y)}{x^2-y^2},\qquad
+ O_d(t)=\frac{F_d(t)+F_d(-t)}2.
+\end{align*}
+The double sums are absolutely convergent, dominated by a constant
+times $\sum_{k>m}k^{-2}m^{-1}$.  The omitted cutoff boundary is
+$O(M^{-1})$, even when both tails are untwisted.  Applying the
+four-point operation to \eqref{cyc:bilateral-generator} gives
+\[
+ D_{u,v}+D_{u^{-1},v^{-1}}=Q_{u,v}-H_{uv}.
+\]
+Add \eqref{cyc:ordered-tail} to its inverse-color version.  The two
+copies of $-H_d$, together with the two diagonal terms, leave
+$H_{d^{-1}}-H_d$.  Formula \eqref{cyc:BF} says
+$O_{d^{-1}}-O_d=J_d$, proving \eqref{cyc:mastereq}.
+
+For completeness, locally uniformly away from the coordinate poles,
+\[
+ E_n^1(x)=O(n^{-1}),\qquad E_n^a(x)=O(n^{-2})\quad(a\ne1),
+ \qquad E_n^a(x)-E_n^a(0)=O(n^{-3}).
+\]
+These imply every asserted absolute convergence statement.  If
+$a=b=1$ and $c\ne1$, the scalar summand at zero is
+$c^n\{(c-1)/n+O(n^{-2})\}$ for $n\ge1$, which is ordinarily
+convergent; the parameter difference is $O(n^{-3})$.  The case
+$c=1$ has weight $1$ and is absolutely convergent even for $a=b=1$.
+Near a coordinate pole only finitely many tail terms are singular.
+Normal convergence and the meromorphic identity theorem therefore
+give the claimed continuation and all oblique removability.
+
+\subsection{Higher polynomial weights and their precise parity sector}
+
+For $p,q\ge2$, $1\le h<\min(p,q)$, put
+\[
+ T_p^a(n)=\sum_{k>n}\frac{a^k}{k^p},\qquad
+ M_{p,q,h}(a,b;c)=\sum_{n\ge0}c^n
+       \{c(n+1)^h-n^h\}T_p^a(n)T_q^b(n).
+\]
+Exactly the same cutoff proof gives the ordinary identity
+\begin{equation}\label{cyc:allweights}
+ M_{p,q,h}(a,b;c)=Z(p,q-h;a,bc)+Z(q,p-h;b,ac)
+                         +L_{p+q-h}(abc).
+\end{equation}
+The only possibly conditional case is $p=q=2$, $h=1$,
+$a=b=1$, $c\ne1$; when $c=1$ the weight has one lower degree.
+Let $w=p+q-h$.  Formula \eqref{cyc:finite-parity} now explicitly
+reduces
+\[
+ M_{p,q,h}(a,b;c)-(-1)^w
+ M_{p,q,h}(a^{-1},b^{-1};c^{-1})
+\]
+to finitely many single colored polylogarithm values and Bernoulli
+coefficients.  For real parameters this is the real sector if $w$
+is odd and the imaginary sector if $w$ is even.  Thus the parity
+qualification is fully explicit at every conductor and every
+admissible weight.
+
+\subsection{Two conductor-four diagonal identities}
+
+Write
+\[
+ O_-(x)=-\log2+O_+(x/2)-O_+(x),\qquad
+ O_+(x)=-\frac{\psi(1+x)+\psi(1-x)+2\gamma}{2}.
+\]
+For real $x$ away from nonzero integers, define
+\[
+ D(x)=\Re\sum_{n\ge0}(-1)^n(2n+1)E_n^i(x)^2,\qquad
+ V(x)=\sum_{n\ge0}(-1)^n(2n+1)|E_n^i(x)|^2.
+\]
+Both are ordinary absolutely convergent sums.  The all-color theorem
+gives the compact evaluations
+\begin{align}
+ D(x)&=\frac{\pi}{2x\sin(\pi x)}
+   \{\cos(\pi x/2)O_-(x/2)-\cos(\pi x)O_-(x)\},
+ \label{cyc:Ddiag}\\
+ V(x)&=\frac{\pi}{2x\sin(\pi x)}
+   \{\cos(\pi x/2)O_-(x/2)-O_-(x)\}.
+ \label{cyc:Vdiag}
+\end{align}
+One verification of the simplification is to use
+\[
+ O_i(t)+O_{-i}(t)=O_-(t/2),\quad
+ \frac{B_i(t)+B_i(-t)}2
+       =\frac{\pi t\cos(\pi t/2)}{\sin(\pi t)},
+ \quad B_1(t)=\pi t\cot(\pi t)
+\]
+in \eqref{cyc:C}--\eqref{cyc:Q}.  At $a=b=i$ the product color in
+the ordered sum is $1$, while at $a=i,b=-i$ it is $-1$;
+in either case $J$ vanishes.  The terms at $F_{\pm i}(0)$ cancel
+in the conjugate sum.  This gives \eqref{cyc:Ddiag} and
+\eqref{cyc:Vdiag} directly, without a limiting singular quotient.
+
+In particular, subtracting these two formulas proves the especially
+short sine-tail square
+\begin{equation}\label{cyc:sinesquare}
+ \boxed{\displaystyle
+ \sum_{n\ge0}(-1)^n(2n+1)
+  \left(\sum_{k>n}\frac{\sin(\pi k/2)}{k^2-x^2}\right)^2
+       =-\frac{\pi}{4x}\tan(\pi x/2)O_-(x).}
+\end{equation}
+The algebraic-square version extends meromorphically to complex $x$;
+no complex conjugation is inserted there.  Its removable value at
+zero is $\pi^2\log2/8$.  Two rational values are
+\begin{align}
+ \sum_{n\ge0}(-1)^n(2n+1)
+  \left(\sum_{k>n}\frac{\sin(\pi k/2)}{k^2-1/4}\right)^2
+       &=\frac\pi2,\label{cyc:sinehalf}\\
+ \sum_{n\ge0}(-1)^n(2n+1)
+  \left(\sum_{k>n}\frac{\sin(\pi k/2)}{k^2-1/16}\right)^2
+       &=\pi(\sqrt2-1)
+                 \{2-\sqrt2\log(1+\sqrt2)\}.
+ \label{cyc:sinequarter}
+\end{align}
+Here $O_-(1/2)=-1$ and
+$O_-(1/4)=\sqrt2\log(1+\sqrt2)-2$, by the rational digamma
+formula.  The same substitution gives
+\[
+ D(1/2)=\pi\{\log(1+\sqrt2)-\sqrt2\},\qquad
+ V(1/2)=\pi\{1+\log(1+\sqrt2)-\sqrt2\}.
+\]
+The coefficient limits are
+\[
+ D(0)=\frac9{32}\zeta(3)-\frac{3\pi^2\log2}{16},\qquad
+ V(0)=\frac9{32}\zeta(3)+\frac{\pi^2\log2}{16}.
+\]
+For the cosine tails, the corresponding square has value
+$9\zeta(3)/32-\pi^2\log2/16$ at zero.  These are evaluations
+of an ordinary alternating outer sum, so a negative value of the
+cosine square causes no positivity issue.
+
+\subsection{An anchored quarter-color Gamma primitive}
+
+Let $S(x)$ denote the holomorphic function in
+\eqref{cyc:sinesquare} on $|x|<1$.  Then
+\begin{equation}\label{cyc:gamma-primitive}
+ \boxed{\displaystyle
+ \int_0^u x\cot(\pi x/2)S(x)\,dx
+  =\frac\pi8\log\!\left(
+  \frac{\Gamma(1+u/2)\Gamma((1-u)/2)}
+       {\Gamma(1-u/2)\Gamma((1+u)/2)}\right),\qquad |u|<1.}
+\end{equation}
+The integrand has a removable singularity at zero.  The logarithm
+is its holomorphic branch equal to zero at $u=0$, and the path can
+be any path in the unit disk.  Indeed \eqref{cyc:sinesquare} makes
+the integrand $-\pi O_-(x)/4$.  Integrating the displayed digamma
+formula for $O_-$ and then applying Gamma duplication yields
+\eqref{cyc:gamma-primitive}; the two sides vanish at zero.
+Absolute local normal convergence permits integration term by term
+in the defining sum for $S$.  A concrete endpoint is
+\[
+ \int_0^{1/2}x\cot(\pi x/2)S(x)\,dx
+       =\frac\pi4\log\frac{\Gamma(1/4)}{2\Gamma(3/4)}.
+\]
+This primitive is a direct conductor-four continuation of the
+earlier alternating diagonal Gamma primitive, with its additive
+constant fixed explicitly.

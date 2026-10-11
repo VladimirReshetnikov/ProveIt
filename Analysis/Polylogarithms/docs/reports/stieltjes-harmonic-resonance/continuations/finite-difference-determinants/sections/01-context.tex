@@ -1,0 +1,102 @@
+\section{The continuation problem and the precise scope}
+\label{sec:context}
+
+\subsection{What is already available}
+The canonical manuscript connects nested sums, Gamma identities, Hurwitz
+zeta jets, and generalized Stieltjes constants. Its preface carefully
+separates ordinary mathematical proofs, exact finite algebra, and numerical
+evidence \cite{repo:main}. That distinction is particularly relevant here:
+a formal rank statement about coefficient matrices does not assert
+arithmetic independence of the associated special values.
+
+The preserved \emph{Determinantal Harmonic Resonance} report evaluates a
+Gauss--Vandermonde partition function and treats its first logarithmic
+resonance. For critical rational weights with simple poles on a common
+integer grid, its finite moment matrix contains harmonic dependence in
+only one entry. This gives depth-two cutoff generators even when the
+number of summation variables is arbitrary \cite{repo:dhr}. Its further
+research section asks for a classification with repeated poles, a rank-based
+depth theorem, and extensions to several residue classes. Those are the
+specific source questions addressed in this article.
+
+Some nearby questions have already moved beyond that report. The current
+incoming archive \emph{Polygamma Reconstruction and Resonance} records a
+solution of the next two-particle resonance and of higher spatial Mellin
+coefficient questions. The current \emph{Harmonic Tails, Shifts and Twists}
+archive records the gap-four tail-rank family and further shifted identities
+\cite{repo:incoming}. We do not claim those results again. Our principal
+spectral deformation is a finite difference of an independently variable
+power; it is not the same deformation as a moving denominator parameter
+in the earlier Gauss ensemble.
+
+\subsection{The three main advances}
+The algebraic classification in Theorems~\ref{thm:classification}
+and~\ref{thm:critical} is a necessary and sufficient test, not merely a
+construction of examples. At nonzero critical decay, it identifies exactly
+when repeated-pole harmonic data remain rank one. Its finite-difference
+interpretation explains why arbitrarily high pole multiplicities need not
+increase the depth of a cutoff generator.
+
+The spectral identity in Theorem~\ref{thm:single} evaluates a new explicit
+family for every particle number and every complex order in its convergence
+domain. The polarized version, Theorem~\ref{thm:polarized}, permits independent
+orders and independent shifts. Despite this freedom, only single Hurwitz
+zeta functions appear: no product of two such functions is needed.
+
+The normal subtraction in Theorem~\ref{thm:subtraction} supplies ordinary
+convergent series for every associated Stieltjes jet. Its pole-cancelling
+factor is explicit. The hard-cutoff constant and spectral finite part are
+then compared in Corollary~\ref{cor:cutoff}; their difference is not discarded.
+
+\subsection{Classical ingredients and novelty qualification}
+Finite differences, Cauchy--Binet, Gamma differentiation, and the Hurwitz
+shift formula are classical. Rational summability and discrete residues
+have an extensive theory, including the work of Chen--Singer and
+Arreche--Sitaula \cite{chen-singer,arreche-sitaula}. We do not present the
+basic discrete-residue criterion as new. Our use of repeated differences
+is tied to a prescribed finite Hankel matrix and its critical decay:
+this gives the explicit harmonic-pencil classification and the special-value
+identities developed below.
+
+The new statements are research contributions relative to the inspected
+repository material. The source inspection and literature checks do not
+establish global historical priority. Nor do they establish that the
+resulting polylogarithmic representations have minimal arithmetic depth.
+The text makes no claim of proof-assistant formalization.
+
+\subsection{Conventions}
+We fix an integer $r\ge2$ and write
+\begin{equation}\label{eq:d}
+ d=2r-2,\qquad \Delta f(x)=f(x+1)-f(x).
+\end{equation}
+Thus $d$ is even. A sum over $n_1<\cdots<n_r$ is ordered; it has no
+additional factor $r!$. Put
+\[
+ \Delta(\bm n)=\prod_{1\le i<j\le r}(n_j-n_i).
+\]
+The repeated use of $\Delta$ for a finite-difference operator and a
+Vandermonde is distinguished by its argument.
+
+Throughout the spectral sections, $\Rea a>0$ and
+$(n+a)^{-s}=\exp(-s\log(n+a))$ uses the principal logarithm. All
+parameter derivatives are derivatives of functions on open complex
+domains, never derivatives inferred from a formula known only at integer
+orders. We write
+\[
+ (s)_k=s(s+1)\cdots(s+k-1),\qquad
+ H_N^{(q)}=\sum_{j=1}^N j^{-q},\qquad H_0^{(q)}=0.
+\]
+The generalized Stieltjes convention is
+\begin{equation}\label{eq:stieltjes}
+ \zeta(1+u,a)=\frac1u+
+ \sum_{m\ge0}\frac{(-1)^m}{m!}\gamma_m(a)u^m.
+\end{equation}
+In particular $\gamma_0(a)=-\psi(a)$ and $\gamma_0(1)=\gamma$.
+A superscript on $\zeta$ differentiates its first variable unless an
+argument derivative is explicitly indicated. We use the standard Hurwitz
+and Gamma identities with these conventions \cite{dlmf:hurwitz,dlmf:gamma}.
+
+A matrix pencil is a matrix whose entries are linear forms in independent
+formal variables. Its rank means rank over the rational-function field in
+those variables. This is not the rank of a matrix obtained by treating
+numerical harmonic values as independent numbers.
