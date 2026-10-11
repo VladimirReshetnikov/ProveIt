@@ -1,3 +1,65 @@
+# Crossed twists, balanced jets and ordinary logarithmic moments
+
+October 11, 2026. The four independently compiling collective volumes have
+130/129/224/85 pages (568 total), with a 527-page combined edition and
+137 references. Authorship remains **ProveIt Contributors**; all earlier
+chapter, theorem and equation numbers, thirteen figures and 94 literature
+leads are preserved. Section 8.44 adds four proved theorems.
+
+The affine Dirichlet crossing theorem explicitly proves smoothness of the
+complex pushforward density near zero, holomorphic parameter dependence
+and the two principal boundary limits. Their average is the finite part;
+their difference supplies its delta derivative in the intermediate affine
+coordinate. Modewise comparison gives a finite Fourier correction for
+arbitrary real nonintegral twists at positive integer total order. The
+common-interval theorem is preserved. Balanced jets have a closed formula
+at every order and an exact chamberwise kernel of dimension d-c and rank
+c-1. Every centered logarithmic moment q >= r+s is an ordinary integral
+and reduces to a finite combination of even zeta values. Later logarithmic
+Mellin finite parts and Stieltjes primitives remain pending.
+
+The independent checker imports no delivered code. It verifies twelve
+symbolic affine density polynomials, 26 jet coefficients, 378 exact cut
+matrices and 128 binomial-multiplicity reductions. Two omitted-correction
+controls are rejected. Independent 90-digit diagnostics compare twelve
+real/complex affine finite parts at Taylor orders 80 and 90, 33 principal
+logarithm mode products, and nine ordinary Mellin integrals. They are
+numerical diagnostics, not interval certificates. Python optimization is
+zero in the audit environment, so assertions are enabled.
+
+Every volume completes three converged coupled rounds and three isolated
+cold passes. Every static page check and all 40 external destinations pass.
+Seventeen changed volume bodies and two unmatched combined contents pages
+are reviewed at full size. Exact scientific-body rasters retain review for
+551 volume and 516 combined bodies; nine changed combined bodies match the
+freshly reviewed volumes. Only centered footer page numbers are excluded,
+with all other bounds audited. No current contact sheet was opened. A
+stranded final contents entry in Volume III was fixed at the normal font
+size before final compilation and review.
+
+The S6 experiments complete all convergent length-split 2+5 and 3+4 inputs
+at weight seven, depth sum five and odd conjugation parity: 3604 each.
+Lossless compact files retain every input word and all 39634508 projected
+coefficient pairs. An independent letter-profile count and exact input-set
+comparison check completeness and reject omission; compact coordinate
+ordering, bounds and logical byte streams also pass. The full 16603-by-8786
+integer matrix retains every depth-five coordinate, at common denominator
+5760. Its finite-field search is a separate experiment, not rational target
+membership or a period certificate. Gaussian S6/revised S8 remain open.
+
+The completed native search has rank 4985 modulo 2147483647, adding 43
+dimensions to the preceding first-letter experiment. The target remains
+outside that modular span. This is not rational nonmembership or a period
+counterexample. Its reported residual count is partial, since elimination
+stops at the first missing pivot; no canonical residual is claimed.
+
+Accepted provenance remains at 96 archives, 3502 tracked originals,
+36 ignored recoverable bare manifests and 1408 textual provenance sources.
+No original delivery was edited or regenerated in place. Historical
+checkpoints below retain their original dated scope. Five new related ZIPs
+arrived in da2792fc9c during this audit; they are queued for the next intake
+and are not counted as imported or analytically accepted in this checkpoint.
+
 # Sixth/seventh moments and complete first-letter kernel validation
 
 October 11, 2026. The four collective volumes compile to 129/128/218/84

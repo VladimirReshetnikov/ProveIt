@@ -724,3 +724,49 @@ The joint 9395-by-8786 native matrix has rank 4942 modulo 2147483647 and
 does not close the target. This is a completed finite-field diagnostic,
 separate from the proved X-family kernel theorem and the open period identity.
 Convergent length-split 2+5 and 3+4 products are a next research direction.
+
+
+## Beta crossing, ordinary logarithmic moments and complete split inputs
+
+No new relevant incoming or main-branch report at initial inspection.
+Audit and accept the beta-crossing core after its preserved full replay.
+Prove complex affine pushforward smoothness and boundary limits, the finite
+crossed-mode correction, all balanced jets and chamber rank. Retain the
+common-interval hypothesis of the earlier theorem and exhibit exact
+counterexamples to an uncorrected extension or integer-only differentiation.
+Use the centered generator to evaluate every ordinary logarithmic moment
+q >= r+s in even zeta values; an independent ordinary Mellin multiplicity
+route supplies a separate coefficient and quadrature audit. Later finite
+Mellin parts and primitive families remain pending.
+
+Independent density/jets/chambers/multiplicities and real/complex diagnostics
+pass. A checker Boolean conversion was repaired and the full audit replayed.
+Append the material without renumbering old theorems/equations. Rebuild the
+four volumes and combined manuscript, inspect every changed page and fix
+the one orphaned contents entry in III before final coupled and cold builds.
+Final page counts are 130/129/224/85 (568 total), combined 527; bibliography
+137, thirteen figures and 94 historical leads. All 40 destinations pass.
+
+The independent S6 experiment completes both 3604-input convergent length
+splits. Retain its raw JSON records unchanged in scratch and losslessly
+encode all 39634508 coefficient pairs for publication. A separate checker
+imports no delivered code and proves full input-set equality, using an
+independent letter-profile polynomial count; a missing-input control fails.
+Every sparse coordinate, bound and logical byte stream is checked. The
+full 16603-by-8786 integer matrix is exported without dropping top sectors.
+
+After both terminal PASS files were serialized, the raw row generator was
+still releasing a very large symbolic cache. Stop only that completed own
+process after checking its command and both records, preserving every output;
+do not treat its cleanup exit code as a mathematical suite pass. The
+canonical reproducer now streams rows and closes all handles before bypassing
+costly cache destruction at CLI shutdown. The lossless packer and independent
+data audit subsequently complete normally. Its native finite-field target
+search remains a separate diagnostic, with rational reconstruction and exact
+residuals required for any rational membership claim.
+
+
+The completed 16603-row native search has rank 4985 modulo 2147483647,
+43 more than the preceding first-letter experiment, and does not close the
+target. This is a finite-field diagnostic. It establishes neither rational
+nonmembership nor a period counterexample; Gaussian S6/revised S8 stay open.

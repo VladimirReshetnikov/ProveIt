@@ -781,7 +781,7 @@ delivered-layout convention. No checksum-manifest verification was performed.
 
 | Group | Reconciliation and acceptance boundary |
 |---|---|
-| `beta-crossing` | Continues the common-interval mixed-twist theorem with crossed-mode corrections, balanced order jets and logistic Mellin identities. The existing theorem is explicitly acknowledged as correct in its stated interval. Full finite replay passes; canonical analytic integration remains pending. |
+| `beta-crossing` | Accept Section 8.44: affine crossing finite parts, the arbitrary-twist integer-total mixture, all balanced jets and chamber rank, and ordinary centered logarithmic moments with finite even-zeta reductions. The existing common-interval theorem remains correct. Full supplied replay and independent exact/numerical audits pass. Later logarithmic Mellin finite parts and Stieltjes primitive families retain separate analytic integration scopes. |
 | `harmonic-tail-gamma` | Continues optimal-tail-prefix and differential Gamma questions: gap-four rank, universal telescopers, low-derivative variational sectors and the next determinant resonance. Overlaps the shifts/twists and reconstruction deliveries, so retain every proof route for reconciliation. Full finite replay passes; canonical analytic integration remains pending. |
 | `harmonic-tails-shifts-twists` | Continues the named optimal-prefix conjecture with an independent gap-four proof, shifted Bernoulli transforms and alternating identities. The earlier common Gamma/differential foundations are now canonical; retained-alphabet reductions remain distinct from mere spectral evaluations. Full finite replay passes; canonical analytic integration remains pending. |
 | `polygamma-reconstruction-resonance` | Continues reconstruction and higher Gamma resonance with all order-two inverse rows, a qualified order-eight family, cubic trigamma moments and next two-particle resonance. Current scope is stronger than the inspected old snapshot; no unrestricted optimal-prefix or Gaussian ladder proof is claimed. Full finite replay passes; canonical analytic integration remains pending. |
@@ -819,3 +819,35 @@ The joint 9395-by-8786 native matrix has rank 4942 modulo 2147483647 and
 does not close the target. This is a completed finite-field diagnostic,
 separate from the proved X-family kernel theorem and the open period identity.
 Convergent length-split 2+5 and 3+4 products are a next research direction.
+
+
+### Accepted crossed-twist and centered-logarithm core
+
+The beta-crossing continuation is now reconciled through an affine
+Dirichlet pushforward and two principal boundary values. Smoothness at
+an interior crossing, complex-parameter holomorphy and the fixed cutoff
+normalization are explicit. The correction is a finite Fourier polynomial,
+not a spatial delta distribution. Exact half-twist and first-jet residuals
+reject an uncorrected extension and differentiating only an integer tuple.
+The chamber kernel is proved at every depth; it makes no claim of arithmetic
+independence. Every ordinary centered moment q >= r+s reduces to even zeta
+values. The remainder of the delivery is still a distinct pending branch.
+
+Independent tests import no delivered code: density polynomials through
+degree 12, 26 jet coefficients, 378 chamber cuts and 128 multiplicity
+reductions pass. Twelve real/complex affine finite parts, 33 principal-log
+phase cases and nine ordinary Mellin integrals pass at 90 working digits.
+Numerical diagnostics are not interval certificates.
+
+Both S6 convergent product length splits have 3604 complete input rows.
+The independent profile polynomial and exact input-set comparison reject
+a missing row. Every one of 39634508 projected coefficient pairs survives
+lossless sparse encoding and full-coordinate matrix export. The matrix
+has 16603 by 8786 entries; rational target membership is not inferred from
+its separate native finite-field search.
+
+
+The completed 16603-row native search has rank 4985 modulo 2147483647,
+43 more than the preceding first-letter experiment, and does not close the
+target. This is a finite-field diagnostic. It establishes neither rational
+nonmembership nor a period counterexample; Gaussian S6/revised S8 stay open.
