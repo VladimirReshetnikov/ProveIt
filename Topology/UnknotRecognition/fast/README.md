@@ -4122,3 +4122,35 @@ PYTHONPATH=. python -B -m normal_orbit_research.prismatic_inventory benchmark --
 
 The full coordinate proof, output-size bound and remaining core problem are in
 [prismatic_inventory.tex](../synthesis/prismatic_inventory.tex).
+
+### Source-labelled prism face regions inside cut cores
+
+`fastunknot.normal_prism_interfaces.normal_prism_face_regions` removes the
+exceptional local chambers, retains prism face identifications and records
+exact source tetrahedron/face/corner/rank locations for core-facing ports.
+Weighted singleton port indicators recover their region partition without
+expansion. Independent replay is
+`fastunknot.normal_prism_interfaces_verify.verify_normal_prism_interfaces`.
+The source still uses the finite orientable one-torus contract.
+
+The structure contains at most `6*T` exceptional cells and `24*T` face ports,
+core/core face contacts, attached port groups and binary repeated unattached
+profiles. Cell and band counts give a **0/1-handle ribbon Euler value**, not
+the Euler value or genus of the full parallelity base. Edge/vertex handles,
+ordered boundary curves and full bundle/core geometry remain missing. This
+operator is not called by recognition and gives no knot verdict.
+
+All 1,571 tests and 31 focused tests pass. Exact structures match explicit
+recovery on 5,289 cuts. The primitive 16-tetrahedron meridian has one old core
+and no whole prismatic pieces, but three attached face regions at thirty
+source-labelled ports. At 4,096 copies on four tetrahedra the complete query
+ratio to expansion is about 64.8; the small four-tetrahedron case is slower.
+Reproduce from this directory:
+
+```sh
+PYTHONPATH=. python -B -m normal_orbit_research.prism_interfaces audit --output ../synthesis/data/prism-interfaces-audit.json
+PYTHONPATH=. python -B -m normal_orbit_research.prism_interfaces benchmark --rounds 5 --output ../synthesis/data/prism-interfaces-benchmark.json
+```
+
+See [prism_interfaces.tex](../synthesis/prism_interfaces.tex) for geometric
+clipping, source ownership, the port bound and the missing topology.

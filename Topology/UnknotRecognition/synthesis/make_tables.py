@@ -1791,3 +1791,7 @@ if os.path.exists('data/cut-products-benchmark.json'):
 if os.path.exists('data/prismatic-inventory-benchmark.json'):
     import runpy
     runpy.run_path('data/prismatic_inventory_tables.py')
+
+if os.path.exists('data/prism-interfaces-benchmark.json'):
+    import runpy
+    runpy.run_path('data/prism_interfaces_tables.py')
