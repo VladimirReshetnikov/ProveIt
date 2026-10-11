@@ -7,6 +7,10 @@
 \usepackage{bookmark}
 \emergencystretch=3em
 \setcounter{tocdepth}{1}
+% Two-digit chapter and section numbers need room before the contents title.
+\makeatletter
+\renewcommand*{\l@section}{\@dottedtocline{1}{1.5em}{3.2em}}
+\makeatother
 \numberwithin{equation}{chapter}
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}[chapter]

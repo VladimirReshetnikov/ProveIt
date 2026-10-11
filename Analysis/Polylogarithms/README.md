@@ -1,23 +1,32 @@
 # Polylogarithms
 
-The canonical reading artifact is the collective manuscript
-[Polylogarithms and their Arithmetic Bridges](docs/manuscript/polylogarithms.pdf),
-with [editable LaTeX source](docs/manuscript/polylogarithms.tex) and an
-[editorial ledger](docs/manuscript/EDITORIAL-LEDGER.md). Authored by
-**ProveIt Contributors**, it has **379 pages, twelve chapters, thirteen figures
-and 99 references**. Its development links rigorous proofs, exact finite
-certificates and experiments. The preceding CM milestone proves class products,
-genus ratios, all-weight quadratic degree in three discriminants, norm laws
-and a dense cluster-set theorem. The S2/S4 proofs, all-weight distribution
-rank theorem and Stieltjes zero counts through index seven are retained.
-S6 and the distinct new S8 candidate remain conjectural despite certified
-proximity. The inventory covers **439 textual provenance files**; **26
-incoming archives / 1,043 members** are byte-preserved; imported ZIPs are retired from the drop zone and remain recoverable from their arrival commits. Their replay suites
-pass. Integral basis, reflection torsion and modular/jet proofs are now integrated,
-with a new separable multivariable product law and 210 independent raw-matrix
-checks. The real-order core now includes all-parameter slit-plane and angular proofs, a rigorously enclosed Gaussian maximum and strict envelope log-concavity, and a sharp universal Euler bound supplied by a separate kernel contraction. The rational budget 57/50 applies at every positive real-order pair; the smaller critical/subcritical constant remains sharp on its triangle. Bessel, full Cayley, uniform, Lerch and Herglotz proof integration remains ongoing and explicitly tracked. The [validation record](docs/manuscript/VALIDATION.md)
-separates proofs, finite certificates, numerical diagnostics, build and
-rendered review. Original articles and reports remain historical evidence.
+The canonical reading artifact is the collective four-volume manuscript,
+[Polylogarithms and their Arithmetic Bridges](docs/manuscript/README.md),
+authored by **ProveIt Contributors**. The volumes have **129, 125, 189 and
+84 pages**, each compiling independently; the retained
+[combined edition](docs/manuscript/polylogarithms.pdf) has **489 pages**.
+They share twelve chapters, thirteen figures and 130 references. The
+[editorial ledger](docs/manuscript/EDITORIAL-LEDGER.md) separates accepted
+proofs from pending analytic claims, and the
+[validation record](docs/manuscript/VALIDATION.md) distinguishes proofs,
+finite certificates, numerical diagnostics, PDF builds and visual review.
+
+The inventory covers **1181 textual provenance documents**. **78 incoming
+archives / 2922 original tracked members** are preserved; imported ZIPs are
+retired in their placement commits and recoverable from arrival history.
+The latest eighteen deliveries retain their own PDFs, sources, code and
+receipts. Intake notes use a separate filename, preserving delivered
+OVERVIEW files. Original articles and reports remain historical evidence.
+
+The latest accepted additions prove all centered trigamma-square moments,
+their ordinary subtracted sums and a classical-polylogarithm generator.
+An independently replayed full-Cayley ideal certificate excludes the S6
+target from the complete ideal plus a specified bounded relation span;
+S6 and revised S8 remain conjectural. The preceding periodic contact,
+mixed Gamma, weighted arctangent, S2/S4, distribution, CM and zero-geometry
+proofs remain canonical. Other incoming branches retain explicit pending
+proof-audit scopes. The older placement descriptions below record status
+at their dates and are superseded by this current ledger where stated.
 
 Special values and functional equations of polylogarithms and their relatives:
 - multiple polylogarithms and multiple zeta values at roots of unity;
@@ -517,3 +526,20 @@ adds a weighted trigamma-square target. Full isolated-copy replay is in
 progress, and analytic acceptance remains a separate step. The cubic
 Tornheim reduction, external errata and ordered higher-depth claims have
 explicit audit boundaries. S6 and revised S8 remain open.
+
+## Thirteenth continuation placement and accepted cores, October 11, 2026
+
+Eighteen packages were placed in 02ccebd04d on the harmonic-resonance and
+Stieltjes-correlation spines, with 661 preserved originals, 649 tracked
+members and all imported ZIPs retired. The thematic decisions and individual
+pins are in the canonical thirteenth archive registry and the separate
+INTAKE-RECONCILIATION notes. Existing ignore rules decide manifest staging;
+no checksum-manifest verification or line-ending work was performed.
+
+The exact-resonant continuation's full-Cayley formal obstruction and the
+harmonic-parity continuation's centered trigamma-square moments and generator
+are now reconciled into Chapters 12 and 8. The selected complete-Cayley exact
+suite and the full five-script harmonic-parity/resolvent suite pass freshly
+on copies. Preserve the narrower analytic acceptance scopes: other report
+branches and the remaining sixteen deliveries await their own audits. No
+external-paper erratum or arithmetic-independence claim is adopted here.
