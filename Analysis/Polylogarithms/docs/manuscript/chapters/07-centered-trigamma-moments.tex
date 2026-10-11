@@ -1,0 +1,252 @@
+\section{All centered trigamma-square moments and a polylogarithmic generator}
+\label{ghp:square:sec}
+
+The invariant numerator $(\zeta(2)-H_n^{(2)})^2$ provides an explicit
+family beyond raw powers of $H_n$. Define
+\begin{equation}\label{ghp:def:square}
+ A_n=\zeta(2)-H_n^{(2)}=\psi'(n+1),\qquad
+ \mathcal T(s)=\sum_{n=0}^{\infty}\frac{A_n^2}{(n+1/2)^s}.
+\end{equation}
+The harmonic parity continuation \cite{ghp:report} gives an ordinary finite-sum route to these moments, independent of its broader difference-equation classification. The defining series already converges for $\Re s>-1$. Its centered asymptotic expansion contains only even inverse powers.
+Subtracting finitely many terms continues the Dirichlet series normally
+to successively larger half-planes, with possible poles only at odd
+integers $1-2k$. Hence it is regular at every nonpositive even integer. All its values
+there reduce to a rational number plus a rational multiple of
+$\zeta(3)$.
+
+\begin{theorem}[Every nonpositive even trigamma-square value]
+\label{ghp:thm:square}
+For every integer $r\geq0$,
+\begin{align}\label{ghp:eq:all-square}
+ \mathcal T(-2r)={}&3B_{2r}(1/2)\zeta(3)\notag\\
+ &-\frac12\sum_{j=1}^{r}\binom{2r}{2j}
+   \frac{2j-1}{2j+1}B_{2r-2j}(1/2)B_{2j-2}.
+\end{align}
+The Bernoulli number convention is $B_1=-1/2$, and the sum is empty
+when $r=0$.
+\end{theorem}
+
+For example,
+\begin{align}\label{ghp:eq:square-table}
+ \mathcal T(0)&=3\zeta(3),\notag\\
+ \mathcal T(-2)&=-\frac14\zeta(3)-\frac16,\notag\\
+ \mathcal T(-4)&=\frac7{80}\zeta(3)+\frac1{30},\notag\\
+ \mathcal T(-6)&=-\frac{31}{448}\zeta(3)+\frac1{672},\notag\\
+ \mathcal T(-8)&=\frac{127}{1280}\zeta(3)-\frac{17}{540}.
+\end{align}
+The first value is the classical Euler sum. The theorem supplies a
+single finite formula for all subsequent centered moments.
+
+\subsection{Equivalent identities of absolutely convergent ordinary sums}
+
+Let
+\begin{equation}\label{ghp:def:ck}
+ c_k=\sum_{i=0}^{k-1}B_{2i}(1/2)B_{2k-2-2i}(1/2),\qquad k\geq1.
+\end{equation}
+Thus $c_1=1$, $c_2=-1/6$, $c_3=47/720$, and
+$c_4=-257/5040$. The shifted Stirling expansion gives $A_n\sim\sum_{i\ge0} B_{2i}(1/2)(n+1/2)^{-2i-1}$. Squaring this expansion gives
+$A_n^2\sim\sum_{k\geq1}c_k(n+1/2)^{-2k}$.
+For every $r\geq0$ the exact ordinary convergent identity is
+\begin{equation}\label{ghp:eq:convergent-square}
+ \sum_{n=0}^{\infty}\left\{(n+1/2)^{2r}\psi'(n+1)^2
+       -\sum_{k=1}^r c_k(n+1/2)^{2r-2k}\right\}
+       =\mathcal T(-2r),
+\end{equation}
+where the right side is explicitly \eqref{ghp:eq:all-square}. The
+summands after subtraction are $O(n^{-2})$.
+
+For instance,
+\[
+ \sum_{n=0}^{\infty}\left((n+1/2)^2\psi'(n+1)^2-1\right)
+       =-\frac14\zeta(3)-\frac16,
+\]
+and
+\[
+ \sum_{n=0}^{\infty}\left((n+1/2)^4\psi'(n+1)^2
+                         -(n+1/2)^2+\frac16\right)
+       =\frac7{80}\zeta(3)+\frac1{30}.
+\]
+These statements need no prescription for summing a divergent series.
+To prove \eqref{ghp:eq:convergent-square}, subtract the displayed
+asymptotic terms in the half-plane of convergence and continue. Their
+Dirichlet sums at $s=-2r$ are
+$c_k\zeta(2k-2r,1/2)=0$, since
+$\zeta(-2m,1/2)=0$ for $m\geq0$.
+
+\subsection{Proof of the Bernoulli formula by finite summation}
+
+For a sequence admitting an expansion in powers of $N$ and $\log N$,
+write $\operatorname{CT}_N$ for its coefficient of $N^0(\log N)^0$.
+Only finite exact identities followed by known asymptotic expansions
+will be used here. Put
+\begin{equation}\label{ghp:def:S}
+ S_r(k)=\sum_{n=0}^{k-1}(n+1/2)^{2r}
+  =\frac{B_{2r+1}(k+1/2)}{2r+1}
+  =\sum_{j=0}^r b_{r,j}k^{2j+1},
+\end{equation}
+where
+\begin{equation}\label{ghp:def:b}
+ b_{r,j}=\frac{\binom{2r}{2j}}{2j+1}B_{2r-2j}(1/2).
+\end{equation}
+The Bernoulli polynomial $B_{2r+1}(1/2)$ is zero, so this is an odd
+polynomial in $k$ and has zero constant term.
+
+\begin{proof}[Proof of Theorem~\ref{ghp:thm:square}]
+First, \eqref{ghp:eq:convergent-square} and \eqref{ghp:def:S} show that
+\begin{equation}\label{ghp:eq:ct-reduction}
+ \mathcal T(-2r)=\operatorname{CT}_N
+       \sum_{n=0}^{N-1}(n+1/2)^{2r}A_n^2.
+\end{equation}
+Indeed every subtracted even power has partial sum with zero constant
+term in $N$, and the convergent remainder tends to the stated value.
+
+The identity $A_{k-1}=A_k+k^{-2}$ gives finite summation by parts:
+\begin{align}\label{ghp:eq:partial-sum}
+ \sum_{n=0}^{N-1}(n+1/2)^{2r}A_n^2
+ ={}&\sum_{k=1}^N S_r(k)
+          \left(\frac{2A_k}{k^2}+\frac1{k^4}\right)
+       +S_r(N)A_N^2.
+\end{align}
+The coefficient $b_{r,0}$ of $k$ contributes
+\[
+ \operatorname{CT}_N
+ \left(2\sum_{k=1}^N\frac{A_k}{k}+H_N^{(3)}+NA_N^2\right)
+ =3\zeta(3).
+\]
+Here $\sum_{k\geq1}A_k/k=\zeta(2,1)=\zeta(3)$ is the classical
+Euler identity and $NA_N^2\to0$. For completeness, the Euler identity
+follows from
+\[
+ \zeta(2,1)=\frac12\int_0^1\frac{\log^2(1-t)}t\,dt
+ =\frac12\int_0^\infty\frac{u^2}{e^u-1}\,du=\zeta(3).
+\]
+
+For $j\geq1$, it remains to compute the constant of
+\begin{equation}\label{ghp:def:Ej}
+ E_j(N)=2\sum_{k=1}^Nk^{2j-1}A_k
+        +\sum_{k=1}^Nk^{2j-3}+N^{2j+1}A_N^2.
+\end{equation}
+Let
+\[
+ F_j(N)=\sum_{k=1}^Nk^{2j-1}
+       =\frac{B_{2j}(N+1)-B_{2j}}{2j}.
+\]
+Changing the order in a finite sum gives
+\begin{equation}\label{ghp:eq:finite-change-order}
+ \sum_{k=1}^Nk^{2j-1}A_k
+  =A_NF_j(N)+\sum_{\ell=1}^N\frac{F_j(\ell-1)}{\ell^2}.
+\end{equation}
+For $j\geq2$, the second summand is a sum of polynomial powers of
+$\ell$ and has zero constant term as a polynomial in $N$;
+$B_{2j-1}=0$ removes a possible $1/\ell$ term. The other power sum in
+\eqref{ghp:def:Ej} also has zero constant. For $j=1$ the second sum in
+\eqref{ghp:eq:finite-change-order} equals $(N-H_N)/2$; its harmonic
+term cancels exactly against $\sum k^{-1}$ in \eqref{ghp:def:Ej}.
+In all cases,
+\begin{equation}\label{ghp:eq:Ej-CT}
+ \operatorname{CT}_NE_j(N)
+   =2\operatorname{CT}_N(A_NF_j(N))
+          +\operatorname{CT}_N(N^{2j+1}A_N^2).
+\end{equation}
+
+Now use the uncentered tail expansion
+\[
+ A_N=\frac1N-\frac1{2N^2}
+                  +\sum_{k\geq1}\frac{B_{2k}}{N^{2k+1}}.
+\]
+The finite coefficient calculation gives
+\begin{equation}\label{ghp:eq:two-constants}
+ \operatorname{CT}_N(A_NF_j(N))
+      =\frac{3-2j}{4}B_{2j-2},\qquad
+ \operatorname{CT}_N(N^{2j+1}A_N^2)=-B_{2j-2}.
+\end{equation}
+To check the first identity, the coefficient of $N^\ell$ in $F_j$
+is $\binom{2j}{\ell}B_{2j-\ell}(1)/(2j)$. Only $\ell=2$ and
+$\ell=2j-1$ can pair with nonzero inverse coefficients of $A_N$
+when $j\geq2$; their contributions are
+$-(2j-1)B_{2j-2}/4$ and $B_{2j-2}/2$. The case $j=1$ is the direct
+product with $F_1(N)=(N^2+N)/2$ and gives $1/4$.
+For the second identity, an odd inverse exponent in $A_N^2$ arises
+only by multiplying $-1/(2N^2)$ by the appropriate odd inverse power;
+this gives $-B_{2j-2}$, also at $j=1$.
+
+Combining \eqref{ghp:eq:Ej-CT} and \eqref{ghp:eq:two-constants} yields
+\[
+ \operatorname{CT}_NE_j(N)=-\frac{2j-1}{2}B_{2j-2}.
+\]
+Multiplication by $b_{r,j}$, followed by the $j=0$ contribution,
+proves \eqref{ghp:eq:all-square}.
+\end{proof}
+
+\subsection{A convergent generator involving classical polylogarithms}
+
+The complete sequence has an analytic exponential generating function.
+Let
+\[
+ \mathcal G(t)=\sum_{r=0}^{\infty}
+               \mathcal T(-2r)\frac{t^{2r}}{(2r)!}.
+\]
+
+\begin{theorem}[Polylogarithmic moment generator]\label{ghp:thm:generator}
+The series $\mathcal G$ converges for $|t|<2\pi$ and equals
+\begin{equation}\label{ghp:eq:integral-generator}
+ \mathcal G(t)=\frac{t}{2\sinh(t/2)}
+   \left[3\zeta(3)-\frac1{4t}
+       \int_0^t(t-u)u^2\coth(u/2)\,du\right].
+\end{equation}
+The singularities at zero in this expression are removable. For
+real $0<t<2\pi$, an equivalent formula in classical polylogarithms is
+\begin{align}\label{ghp:eq:polylog-generator}
+ \mathcal G(t)=\frac{t}{2\sinh(t/2)}\bigg[
+ 2\zeta(3)-\frac{t^3}{48}
+ -\frac t2\operatorname{Li}_2(e^{-t})
+ -2\operatorname{Li}_3(e^{-t})
+ +\frac{3\bigl(\zeta(4)-\operatorname{Li}_4(e^{-t})\bigr)}t
+ \bigg].
+\end{align}
+Its continuation specified by \eqref{ghp:eq:integral-generator} is
+holomorphic and even throughout $|t|<2\pi$.
+\end{theorem}
+
+\begin{proof}
+The Bernoulli generating functions give
+\[
+ \frac{t}{2\sinh(t/2)}
+     =\sum_{r\geq0}B_{2r}(1/2)\frac{t^{2r}}{(2r)!},
+ \qquad
+ \frac u2\coth(u/2)
+     =\sum_{k\geq0}B_{2k}\frac{u^{2k}}{(2k)!}.
+\]
+Both converge in the disk of radius $2\pi$. Integrating the second
+series twice gives
+\[
+ \frac1{2t}\int_0^t(t-u)u^2\coth(u/2)\,du
+  =\sum_{j\geq1}\frac{2j-1}{2j+1}B_{2j-2}
+                  \frac{t^{2j}}{(2j)!}.
+\]
+Thus \eqref{ghp:eq:integral-generator} is exactly the binomial
+convolution in \eqref{ghp:eq:all-square}. This proves convergence,
+analyticity and the integral formula. In particular all apparent odd
+or logarithmic terms in any branch representation must cancel.
+
+For positive $t$, expand $(e^u-1)^{-1}$ in its convergent positive
+exponential series. Direct integration, justified for the integrable
+factor $(t-u)u^2$, gives
+\begin{align*}
+ \int_0^t\frac{(t-u)u^2}{e^u-1}\,du
+  ={}&2t\zeta(3)-6\zeta(4)
+      +t^2\operatorname{Li}_2(e^{-t})\\
+     &+4t\operatorname{Li}_3(e^{-t})
+      +6\operatorname{Li}_4(e^{-t}).
+\end{align*}
+Finally $\coth(u/2)=1+2/(e^u-1)$ and
+$\int_0^t(t-u)u^2\,du=t^4/12$ give
+\eqref{ghp:eq:polylog-generator}.
+\end{proof}
+
+
+The finite-sum proof uses no transcendence assumption and no formal
+difference Galois theorem. The subtractions in the ordinary sums are part
+of each identity; without them the higher moments would diverge. The
+broader reflection-invariant numerator classification, resolvent transforms
+and independently marked higher-tail moments retain separate audit scopes.

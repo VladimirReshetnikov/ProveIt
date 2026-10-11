@@ -1,3 +1,41 @@
+# October 11: centered moments and complete-Cayley research milestone
+
+Eighteen queued deliveries were placed and published in 02ccebd04d. Preserve
+661 originals, including 649 tracked members; retire the imported ZIPs with
+placement, retaining arrival recovery records. Full-history repeat checks
+find four shared dependency blobs and two reused mathematical modules, with
+no repeated manuscript or package. Intake notes use a separate filename;
+an original OVERVIEW collision was corrected before commitment. Original
+ignored build receipts and logs are preserved explicitly. Cumulative census:
+78 archives, 2922 tracked originals and 1181 textual provenance documents.
+
+Chapter 8 now proves every centered trigamma-square moment, its ordinary
+polynomial-subtracted series and a Li2/Li3/Li4 exponential generator. Finite
+summation and Bernoulli algebra supply the proof independently of the broader
+formal differential-transcendence criterion. The full five-script report
+replay passes on a temporary copy, including its slow diagnostics. Native
+Wolfram passes 29 exact checks, a corruption control and seven independent
+series/quadrature diagnostics with refinement.
+
+Chapter 12 proves the full convergent Cayley shuffle ideal obstruction plus
+the specified inherited bounded row span. Fresh exact replay checks 5131 rows,
+2546 ideal-intersection basis differences, 780 Eulerian/cut formulas and 2150
+shuffle products. A separate rational audit binds every printed target
+coefficient and the decimal pairing. This narrows the S6 proof search without
+settling the numerical identity or proving a universal depth-five requirement.
+
+The final five PDFs keep ProveIt Contributors authorship. Volumes have
+129/125/189/84 pages, and the combined edition has 489. Contents-number spacing
+was corrected after visual review. Three coupled build rounds, independent
+three-pass builds, all-page bounds/reference checks, 38 PDF link destinations,
+exact prior-body comparisons and fresh full-size review are recorded separately.
+The other sixteen deliveries and remaining branches retain pending analytic
+and full-replay scopes. External-paper errata still need primary-source audits.
+All selected research processes are terminal; the broader research goal stays
+open, with future arrivals handled by the watcher.
+
+Earlier entries below retain their historical artifact and process scopes.
+
 # October 10-11: periodic contacts and mixed Gamma identity milestone
 
 The four volumes remain the primary publication: 128, 119, 184 and 83 pages;

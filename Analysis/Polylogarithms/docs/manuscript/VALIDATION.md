@@ -1,93 +1,80 @@
 # Validation of the four-volume collective manuscript
 
-Current research checkpoint, October 10-11, 2026. The research goal remains
-open. All four PDFs and the retained combined PDF are authored by
+Current research checkpoint, October 11, 2026. The research goal remains
+open. All four PDFs and the retained combined edition are authored by
 **ProveIt Contributors**, on their title pages and in their metadata.
 
-The volumes contain 128, 119, 184 and 83 pages (514 total). The combined
-snapshot has 479 pages. They share twelve mathematical chapters, thirteen
-scientific figures, 124 references and the literature appendix's 94
-historical question leads. Old numbered results retain their citations;
-new numbered sections are appended. The 894-document source inventory maps
-accepted proofs, corrections and pending analytic integration. Sixty
-archives preserve 2273 tracked original members; the latest five ZIPs were
-retired in placement commit cd0d94dfc8 and published via 921b58f109. Originals
-and fresh replay receipts are separate. Seventeen further committed arrivals
-await intake; they are not counted as imported or accepted.
+The volumes contain 129, 125, 189 and 84 pages (527 total); the combined
+edition has 489 pages. They share twelve chapters, thirteen scientific
+figures, 130 references and the appendix's 94 historical question leads.
+Old numbered results retain their citations; two new proof modules append
+results to Chapters 8 and 12. The contents number column is wider, fixing
+crowding for two-digit section numbers throughout the five PDFs.
 
-Chapter 9 proves the complete all-index periodic contact comparison in the
-specified unit-coordinate finite-part convention. It includes the zero
-mode, the unique derivative of order p+q, zeta parity and split stabilization,
-ordinary vanishing-weight integrals, weighted positive-integer Hurwitz jets,
-Abel-limit polylogarithm contacts and Bernoulli primitives. The existing
-argument-derivative anomaly is reused. The independent tables agree in all
-315 overlapping formulas, with two corruption controls. Their full suites
-pass 760 and 940 finite exact checks and 40 and 69 numerical diagnostics.
-The directional report independently passes 189 Fourier-mode diagnostics,
-21 reflection identities, seven displayed coefficients and three zero modes.
-These finite checks test conventions; the written proof establishes the
-all-index identity and completeness of the contact correction.
+The inventory accounts for 1181 textual provenance documents. Seventy-eight
+archives preserve 2922 tracked original members. The newest eighteen ZIPs
+were retired in placement commit 02ccebd04d after preserving 661 originals,
+with 649 tracked members and twelve ignored manifests recoverable from
+arrival history. The cumulative ignored-manifest count is twenty-five.
+Original sources, PDFs, code and receipts are never regenerated in place.
+A delivery already contained OVERVIEW.md; the intake note collision was
+caught before commitment, the original was restored from the untouched
+extraction, and separate INTAKE-RECONCILIATION.md files preserve the notes.
+Original ignored log/build receipts were explicitly staged. Further arrivals
+remain separate from the imported census.
 
-Chapter 8 proves the first mixed resonance directly from Rogers-Dougall,
-centered Stirling asymptotics and two Bernoulli polynomial cancellations.
-The locally normally convergent Gamma germ permits every fixed mixed
-parameter derivative, with explicit finite Bell coefficient tables. It
-proves the weighted trigamma square and two half-integer harmonic squares.
-Experiments then suggest the all-orders quadratic zeta-tail family, proved
-independently by positive double sums, partial fractions and stuffle.
-Centered tail squares are reduced for every integer s>=3; the s=3 value is
-3 zeta(4)-zeta(5). The independent finite audit passes 31 rational partial
-fractions, 31 sparse Euler/stuffle reductions, two Bernoulli identities and
-one corruption control. Ten 70-digit series diagnostics pass, including
-nine tail refinements and one centered square. The first machine-float
-finite-head attempt is preserved with its failure scope.
+Chapter 8 proves all centered even moments of the trigamma square by finite
+summation by parts and Bernoulli constant-term extraction. Explicit polynomial
+subtraction yields ordinary absolutely convergent sums, with every value in
+Q+Q*zeta(3). An analytic generator in Li2, Li3 and Li4 follows from Bernoulli
+convolution and a convergent elementary integral. This proof does not require
+the report's broader difference-equation classification. The isolated full
+five-script harmonic-parity/resolvent suite passes, including seven moment
+values at 110 working digits with two cutoffs and three generator comparisons,
+and slow direct Stieltjes and complex-order diagnostics. Its resolvent branch
+passes 55 exact assertions and 28 diagnostics at 55 working digits. Successful
+replay does not canonically accept every branch of the report.
 
-Native Wolfram verification separates exact algebra, Fourier quadrature and
-positive double-Laplace quadrature. The latter independently tests four
-trigamma-square values at 65 working digits using 64/96-node Gauss rules,
-including an irrational shift, with a proved exponential truncation bound.
-A difficult adaptive attempt is preserved without a completed success claim;
-endpoint splitting and refined fixed rules improve conditioning. Floating
-agreement and node refinement do not provide interval accuracy certificates.
-The native exact/Fourier suite passes all 17 exact identities and ten
-60-digit Fourier/integral diagnostics, with a phase-tail bound below 1e-80.
-Its first symbolic phase evaluation exhausted the extra-precision budget;
-the failed precision receipt is retained. Explicit 100-digit evaluation
-of the finite phase sums and a larger precision budget give a full pass.
+Independent native Wolfram replay passes 29 exact Bernoulli/printed-value
+checks, one corruption control and seven 85-digit diagnostics: four ordinary
+subtracted series with head/tail refinement and three generator quadratures.
+Series heads are 120/160 and asymptotic tail orders 24/30. These are numerical
+diagnostics, not rigorous interval remainder or quadrature error certificates.
 
-All five incoming full mathematical suites pass on isolated copies. The
-ordered suite has 72 exact checks and independent Laurent/cubic diagnostics;
-the mixed suite also checks harmonic Newton data, unequal twists and collision
-asymptotics. Successful replay does not imply canonical acceptance of those
-additional analytic claims. The cubic digamma finite part stops at a named
-Tornheim derivative; no depth-one reduction is proved. The exact S6 target
-audit checks 192 restricted rows and normalization but explicitly leaves
-full rational relation membership uncomputed. Proposed external author-PDF
-errata await primary-source inspection. S6 and revised S8 remain conjectural.
+Chapter 12 proves the full-Cayley formal obstruction for the specified S6
+search. The all-weight depth-preserving projector identifies the complete
+ideal intersection, making a finite certificate sufficient. Fresh exact
+replay regenerates all 5131 inherited rows, checks every one of 2546 basis
+differences (2300 nonzero), audits 780 independent Eulerian/cut formulas and
+2150 shuffle products, and verifies the nonzero integer target pairing.
+An independent rational audit binds all seven printed target coefficients,
+the beta(7) conversion and the displayed decimal decomposition to that
+certificate, rejecting a corrupted coefficient. The result excludes the full
+ideal plus the stated bounded relation span; it neither disproves S6 nor
+establishes a universal need for depth five. Revised S8 remains open.
 
-The four-volume builder completes three coupled rounds with identical
-reference states. Each independent cold build also completes three passes
-without companion auxiliary files. Static inspection checks every page and
-all 38 external PDF destinations. Volume III is freshly reviewed in all
-twelve contact sheets and all 22 unmatched page bodies at full size. The other
-three volumes inherit review for 327 identical full page rasters, and their
-three changed bibliography pages are freshly reviewed. This covers all 514
-pages; it does not claim all 34 current contact sheets were opened.
+The four-volume build completes three coupled rounds with converged shared
+references. Each final source also passes three independent cold-compilation
+passes, with matching page text and PDF links. Static inspections cover every
+page and all 38 external destinations. All 28 unmatched volume page bodies
+are reviewed at full size, along with two final contact sheets. The other
+499 scientific bodies exactly match the preceding reviewed release. This
+covers all 527 pages without claiming all 35 current contact sheets were opened.
 
-The combined PDF inherits 457 exactly matching scientific page bodies from
-the preceding reviewed artifact. Twenty changed bodies exactly match freshly
-reviewed Volume III pages; its two changed contents pages are reviewed at
-full size. Only centered footer page numbers are excluded by the comparison,
-with bounds checks retaining scientific text, images and drawings. All 479
-page bodies are covered. Artifact hashes and structured receipts are in
-`verification/`; the receipt verifier checks their agreement and retained
-archive members separately from the mathematical proofs and visual review.
+The combined edition inherits 469 exactly matching scientific page bodies.
+Fourteen changed bodies exactly match freshly reviewed volume pages; its six
+remaining changed bodies are reviewed at full size. Only centered footer
+numbers are excluded by these comparisons, with bounds checks retaining all
+scientific text, images and drawings. All 489 bodies are covered.
 
-The prior Chapter 3 weighted identities remain verified by seven native
-exact checks, seventeen quadrature diagnostics and a separate 78-check
-weighted delivery replay. No proof-assistant formalization, remote CI,
-global priority or period independence is claimed. The following notes are
-historical checkpoints, with their own earlier page counts and evidence.
+The prior periodic contacts, mixed Gamma and weighted arctangent identities
+retain their recorded exact/diagnostic and analytic scopes. Other deliveries'
+ordered, cubic, all-resonance, vertical and reciprocal claims remain active
+proof-audit targets. Proposed external-paper errata are not adopted without
+primary-source checks. No proof-assistant formalization, remote CI, global
+priority or numerical period independence is claimed. Structured receipts
+in verification/ record artifact agreement separately from proofs and review.
+The notes below are historical checkpoints with their own earlier artifacts.
 
 # Historical validation of the unified manuscript
 
