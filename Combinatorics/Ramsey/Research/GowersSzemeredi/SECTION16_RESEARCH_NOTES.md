@@ -3927,7 +3927,7 @@ Neither is solved by grading (L.10) or by constants (L.10b).
 ### L.13 Joint-cover arithmetic in every dimension (2026-10-11)
 
 `Proofs18FiniteCoverBudgets` proves the finite-product budget directly in Lean:
-if a family has at most `2^k` candidates counts, each at most `X^(2^m)`,
+if a family has at most `2^k` candidate counts, each at most `X^(2^m)`,
 their product is at most `X^(2^(m+k))`. The heterogeneous version uses the
 exact sum of the exponents. The inverse density of the final pigeonhole,
 `(theta/2/product counts)^(-1)`, is at most
@@ -3960,7 +3960,15 @@ also be supplied to `single_piece_inverse_step_global_cover`. In particular,
 checking a recursion does not construct a large enough localization box.
 The numbered ledger remains 117 exact companions and three open statements.
 
-Validation: all ten auxiliary theorems compile from their production source
+The exact standard-parameter substitutions are now checked:
+`coverExpDeg_standard` gives `268*2^k+k+15` for the localization log-degree,
+and `envStepCover_standard` identifies the parameterized envelope step with
+`coverEnvelopeStep`. `coverEnvelope_ge` proves `k+42 <= M(k)`, and
+`coverEnvelope_stopping_budget` proves `4*(k+4)+20 <= 2^M(k)` for every `k`.
+This last inequality is needed by the interval stopping theorem; a fixed
+lower bound such as `M(k) >= 42` would not suffice for arbitrary lengths.
+
+Validation: all fourteen auxiliary theorems compile from their production source
 with Lean 4.32.0 and mathlib v4.32.0. A transitive axiom check allows only
 `propext`, `Classical.choice`, and `Quot.sound`; no faithful-stub environment
 is used for this check. The full facade dependency rebuild is in progress.
