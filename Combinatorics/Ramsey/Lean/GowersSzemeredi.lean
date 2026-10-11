@@ -1050,6 +1050,7 @@ import GowersSzemeredi.Proofs18LengthSixCounts
 import GowersSzemeredi.Proofs18LengthSixDensity
 import GowersSzemeredi.Proofs18LengthSixExponents
 import GowersSzemeredi.Proofs18LengthSixParameters
+import GowersSzemeredi.Proofs18LengthSixThresholds
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
