@@ -1,0 +1,246 @@
+\section{Harmonic coefficients, global tails, and parameter primitives}
+\label{qspec:sec:harmonic}
+
+\subsection{The ordinary and half-shifted harmonic dictionaries}
+For $\alpha>0$ define
+\begin{equation}\label{qspec:eq:shifted-harmonics}
+h_{k,r}^{(\alpha)}=\sum_{j=0}^{k-1}(j+\alpha)^{-r},\qquad
+ d_{k,r}^{(\alpha)}=(-1)^{r-1}(r-1)!h_{k,r}^{(\alpha)}.
+\end{equation}
+The two cases needed in the present problem are
+\begin{equation}\label{qspec:eq:harmonic-dictionaries}
+h_{k,r}^{(1)}=H_k^{(r)},\qquad
+h_{k,r}^{(1/2)}=2^r H_{2k}^{(r)}-H_k^{(r)}.
+\end{equation}
+These follow just by separating even and odd integers. Logarithmic
+differentiation of a finite Pochhammer product gives the exact finite law
+\begin{equation}\label{qspec:eq:pochhammer-jet}
+\left.\partial_\epsilon^j(\alpha+\epsilon)_k\right|_0
+=(\alpha)_k\Bcal_j\bigl(d_{k,1}^{(\alpha)},\ldots,d_{k,j}^{(\alpha)}\bigr).
+\end{equation}
+In particular, the first four factors after dividing by $(\alpha)_k$ are
+\[
+1,\qquad h_{k,1},\qquad h_{k,1}^2-h_{k,2},\qquad
+h_{k,1}^3-3h_{k,1}h_{k,2}+2h_{k,3}.
+\]
+The signs are those of a rising Pochhammer product, not its reciprocal.
+
+\begin{theorem}[All-index harmonic Hurwitz counterterms]
+\label{qspec:thm:harmonic}
+Let $\eta\in\{+1,-1\}$ and put $\alpha_{+1}=1/2$, $\alpha_{-1}=1$.
+If $0<b<\min(a,1-a)$, then
+\begin{align}
+D_m^\eta(a,b)={}&\sum_{k\ge1}
+ \frac{(-1)^k(\alpha_\eta)_k b^{2k}}{k!}
+ \sum_{j=0}^m\binom mj 2^{m-j}\Bcal_j(d_k^{(\alpha_\eta)})\notag\\
+&\quad\times\left\{\zeta^{(m-j)}(2k+1,a)
+       +\eta\zeta^{(m-j)}(2k+1,1-a)\right\}.
+\label{qspec:eq:harmonic-counterterms}
+\end{align}
+This is an absolutely and locally uniformly convergent identity, including
+all fixed-order parameter derivatives. For the even channel,
+$(1/2)_k/k!=\binom{2k}{k}/4^k$; for the odd channel $(1)_k/k!=1$.
+\end{theorem}
+\begin{proof}
+The common local factor in the counterterm germs is
+\[
+x^{-1-2\epsilon}\left((1+b^2/x^2)^{-\alpha_\eta-\epsilon}-1\right)
+=\sum_{k\ge1}\frac{(-1)^k(\alpha_\eta+\epsilon)_k b^{2k}}{k!}
+ x^{-2k-1-2\epsilon}.
+\]
+The binomial expansion converges uniformly with a geometric ratio strictly
+less than one for $x=x_n,y_n$ and the stated parameter range. Summing in
+$n$ gives the two Hurwitz terms. Local uniform convergence also follows
+directly by bounding each Hurwitz tail with its leading geometric scale;
+polynomial factors in $k$ and $\log k$, introduced by differentiation,
+are harmless on a smaller compact set. The product rule, the chain factor
+$2^{m-j}$, and \eqref{qspec:eq:pochhammer-jet} yield
+\eqref{qspec:eq:harmonic-counterterms}.
+\end{proof}
+
+\subsection{Finite-head continuation for arbitrary positive mass}
+The small-mass hypothesis in Theorem~\ref{qspec:thm:harmonic} is essential
+for that particular unshifted power series. It is not a restriction on
+the Stieltjes identities.
+
+\begin{theorem}[An ordinary convergent finite-head formula]
+\label{qspec:thm:head}
+Choose any integer $M\ge0$ such that
+\begin{equation}\label{qspec:eq:head-condition}
+b<\min(M+a,M+1-a).
+\end{equation}
+Let $D_{m,<M}^\eta$ be the sum of the first $M$ summands in
+\eqref{qspec:eq:Dplus} or~\eqref{qspec:eq:Dminus}. Then
+\begin{align}
+D_m^\eta(a,b)={}&D_{m,<M}^\eta(a,b)
++\sum_{k\ge1}\frac{(-1)^k(\alpha_\eta)_k b^{2k}}{k!}
+\sum_{j=0}^m\binom mj2^{m-j}\Bcal_j(d_k^{(\alpha_\eta)})\notag\\
+&\quad\times\left\{\zeta^{(m-j)}(2k+1,M+a)
++\eta\zeta^{(m-j)}(2k+1,M+1-a)\right\}.
+\label{qspec:eq:finite-head}
+\end{align}
+For every $a,b$ in \eqref{qspec:eq:domain}, such an $M$ exists, and the
+formula converges normally in a neighborhood of those parameters.
+\end{theorem}
+\begin{proof}
+Remove the finite head before performing the binomial expansion. In the
+remaining sum the smallest positive arguments are $M+a$ and $M+1-a$,
+so \eqref{qspec:eq:head-condition} is exactly the required geometric
+condition. The proof of Theorem~\ref{qspec:thm:harmonic} then applies to
+each tail independently. Increasing $M$ only transfers exact summands
+between the head and the tails; it changes neither the function nor any
+of its jets.
+\end{proof}
+
+There is an important bookkeeping point: the second tail argument is
+$M+1-a$, \emph{not} $1-(M+a)$. Reflection describes the original two
+one-sided spectra; it does not reverse the direction of the index shift.
+For an implementation one can choose $M$ with
+$\min(M+a,M+1-a)\ge2b$. Then both power-series ratios are at most $1/4$.
+This choice is used by the supplied numerical code; the mathematical
+identity does not depend on this particular convenience.
+
+For example, the even zeroth counterterm is
+\[
+D_0^+(a,b)=\sum_{k\ge1}(-1)^k\frac{\binom{2k}{k}}{4^k}b^{2k}
+\bigl(\zeta(2k+1,a)+\zeta(2k+1,1-a)\bigr)
+\]
+inside the small-mass disk. Its first spectral derivative inserts
+\[
+\bigl(2H_{2k}-H_k\bigr)
+\bigl(\zeta(2k+1,a)+\zeta(2k+1,1-a)\bigr)
++2\bigl(\zeta'(2k+1,a)+\zeta'(2k+1,1-a)\bigr).
+\]
+Replacing the two Hurwitz arguments by their shifted tail arguments and
+adding the finite head makes both identities valid for every $b>0$.
+
+\subsection{Every fixed parameter derivative}
+The classical identity
+$\partial_a^p\zeta(s,a)=(-1)^p(s)_p\zeta(s+p,a)$ \cite{hurwitz}
+produces a second finite harmonic dictionary.
+
+\begin{proposition}\label{qspec:prop:parameter-derivatives}
+For $p\ge1$ and $m\ge0$, put
+$d_{p,r}=(-1)^{r-1}(r-1)!H_p^{(r)}$. Then
+\begin{equation}\label{qspec:eq:stieltjes-derivative}
+\gamma_m^{(p)}(a)=(-1)^{m+p}p!
+\sum_{j=0}^m\binom mj\Bcal_j(d_p)
+\zeta^{(m-j)}(p+1,a).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Differentiate the Laurent expansion
+\eqref{qspec:eq:stieltjes-convention} in $a$. Its pole is independent of
+$a$ and disappears. Expand $(1+u)_p$ by
+\eqref{qspec:eq:pochhammer-jet} with $\alpha=1$, multiply by
+$\zeta(p+1+u,a)$, and compare the coefficient of $u^m$.
+\end{proof}
+For $m=0$ this gives $\gamma_0^{(p)}(a)=(-1)^pp!\zeta(p+1,a)$,
+consistent with $\gamma_0=-\psi$. Parameter differentiations of the
+master identity therefore produce exact harmonic identities involving
+positive-order polygamma and spectral Hurwitz derivatives, without
+introducing a new class of constants.
+
+\subsection{First and repeated anchored parameter primitives}
+A convenient first primitive is
+\begin{equation}\label{qspec:eq:Pprimitive}
+P_m(a)=\frac{(-1)^{m+1}}{m+1}\zeta^{(m+1)}(0,a),
+\qquad P_m'(a)=\gamma_m(a).
+\end{equation}
+Indeed, differentiating $\partial_a\zeta(u,a)=-u\zeta(1+u,a)$
+$m+1$ times in $u$ gives this identity. At $m=0$ it is
+$P_0=-\log\Gamma+\tfrac12\log(2\pi)$, the usual Lerch relation.
+Consequently the primitives of the two reflection channels anchored at
+$a=1/2$ are
+\begin{align}
+\int_{1/2}^a G_m^+(t)\dd t&=P_m(a)-P_m(1-a),\label{qspec:eq:plus-primitive}\\
+\int_{1/2}^a G_m^-(t)\dd t&=P_m(a)+P_m(1-a)-2P_m(1/2).
+\label{qspec:eq:minus-primitive}
+\end{align}
+All integrals of the counterterm series over such compact intervals can
+be performed termwise by normal convergence.
+
+For completeness, every higher anchored primitive also has a finite
+Hurwitz-jet description. Let
+\[
+(T_{r-1,a_0}f)(a)=\sum_{j=0}^{r-1}\frac{(a-a_0)^j}{j!}f^{(j)}(a_0),
+\qquad r\ge1,\quad a,a_0>0,
+\]
+and define, initially for $u\ne0$ near zero,
+\begin{equation}\label{qspec:eq:anchored-germ}
+\mathcal I_r(u;a,a_0)=
+\frac{(1-T_{r-1,a_0})\zeta(1+u-r,a)}{(-u)_r}
+-\frac{(a-a_0)^r}{r!u}.
+\end{equation}
+Here the Taylor operator acts on the parameter $a$, not on $u$.
+
+\begin{proposition}[All anchored primitive orders]
+\label{qspec:prop:all-primitives}
+The apparent pole in \eqref{qspec:eq:anchored-germ} is removable. For
+$m\ge0$,
+\begin{equation}\label{qspec:eq:all-primitives}
+\frac1{(r-1)!}\int_{a_0}^a(a-t)^{r-1}\gamma_m(t)\dd t
+=(-1)^m\left.\partial_u^m\mathcal I_r(u;a,a_0)\right|_{u=0}.
+\end{equation}
+The oriented integral convention also covers $a<a_0$.
+\end{proposition}
+\begin{proof}
+The numerator at $u=0$ is the Taylor remainder of
+$\zeta(1-r,a)=-B_r(a)/r$, a degree-$r$ polynomial with leading
+coefficient $-1/r$. Its value is $-(a-a_0)^r/r$.
+As $(-u)_r=-(r-1)!u+O(u^2)$, the residue of the quotient is exactly
+the term explicitly subtracted in \eqref{qspec:eq:anchored-germ}.
+The remainder is holomorphic in $u$.
+
+Further,
+\[
+\partial_a^r\zeta(1+u-r,a)=(-u)_r\zeta(1+u,a).
+\]
+Taking $r$ parameter derivatives of \eqref{qspec:eq:anchored-germ}
+therefore yields $\zeta(1+u,a)-1/u$. All its first $r$ anchored
+initial values, through derivative $r-1$, vanish. Uniqueness of the
+anchored repeated primitive and the Laurent expansion prove
+\eqref{qspec:eq:all-primitives}.
+\end{proof}
+This is a classical Hurwitz-jet integration mechanism written in a
+pole-cancelled form. Coefficient extraction requires only finitely many
+Hurwitz spectral derivatives and Pochhammer coefficients at each fixed
+$m,r$.
+
+\subsection{An explicit log-Gamma ratio identity}
+A zeroth-order primitive of the even master produces a particularly
+simple ordinary sum. Define
+\begin{equation}\label{qspec:eq:A}
+A(a,b)=\sum_{n\ge0}\left\{
+\arsinh\frac{n+a}{b}-\arsinh\frac{n+1-a}{b}
+-\log\frac{n+a}{n+1-a}\right\}.
+\end{equation}
+The local primitive
+$\arsinh(x/b)-\log x=\log(2/b)+O(x^{-2})$ proves convergence of this
+paired expression and its needed parameter derivatives.
+
+\begin{corollary}\label{qspec:cor:gamma-ratio}
+For $0<a<1$, $b>0$,
+\begin{align}
+\log\frac{\Gamma(1-a)}{\Gamma(a)}={}&
+2(a-\tfrac12)\log(2/b)-A(a,b)\notag\\
+&+\frac2\pi\sum_{n\ge1}\frac{\sin(2\pi na)}nK_0(2\pi bn).
+\label{qspec:eq:gamma-ratio}
+\end{align}
+If $M$ satisfies \eqref{qspec:eq:head-condition}, the tail of $A$ is
+\begin{equation}\label{qspec:eq:A-tail}
+A_{\ge M}(a,b)=\sum_{k\ge1}
+\frac{(-1)^{k+1}(1/2)_k b^{2k}}{2k\,k!}
+\bigl(\zeta(2k,M+a)-\zeta(2k,M+1-a)\bigr).
+\end{equation}
+\end{corollary}
+\begin{proof}
+Integrate \eqref{qspec:eq:master-plus} at $m=0$ from $1/2$ to $a$.
+The left side is \eqref{qspec:eq:plus-primitive} at $m=0$.
+The pole term integrates to $2(a-1/2)\log(2/b)$; the cosine terms
+integrate to the sine series. Differentiating \eqref{qspec:eq:A} in $a$
+gives $D_0^+(a,b)$, and $A(1/2,b)=0$. This proves
+\eqref{qspec:eq:gamma-ratio}. Finally integrate the binomial expansion
+of $Q_b(x)^{-1/2}-x^{-1}$ in $x$ and subtract its two tail values.
+The coefficients are precisely those in \eqref{qspec:eq:A-tail}.
+\end{proof}

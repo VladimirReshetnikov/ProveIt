@@ -1,0 +1,96 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=0.88in,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{microtype,booktabs,longtable,array,enumitem,fancyhdr}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{xurl}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,
+ pdftitle={Quadratic-Spectrum Stieltjes Identities},pdfauthor={Prepared for Vladimir Reshetnikov with OpenAI assistance}}
+\urlstyle{tt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\Rea}{\operatorname{Re}}
+\newcommand{\Ima}{\operatorname{Im}}
+\newcommand{\arsinh}{\operatorname{arsinh}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Bcal}{\mathcal B}
+\newcommand{\Hcal}{\mathcal H}
+\newcommand{\qfile}[1]{\nolinkurl{#1}}
+\newcommand{\qpin}{\nolinkurl{446dca9bd65c20e409d1d2561d4ffad408103e2a}}
+\setlist[enumerate]{itemsep=4pt,topsep=5pt}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Quadratic-spectrum Stieltjes identities}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\title{\textbf{Quadratic-Spectrum Stieltjes Identities}\\[7pt]
+\large Complete reflected jets, harmonic counterterms,\\
+finite polylogarithmic reductions, and a polynomial parity criterion}
+\author{Prepared for Vladimir Reshetnikov's ProveIt programme\\
+\small Mathematical derivations and computational audit with OpenAI assistance}
+\date{10 October 2026}
+\begin{document}
+\maketitle
+\thispagestyle{plain}
+\begin{abstract}
+We develop a quadratic-spectrum continuation of the ProveIt programme in
+Hurwitz zeta, generalized Stieltjes constants, harmonic sums, and polylogarithmic
+integration. A positive mass parameter separates the pole of a bilateral
+quadratic zeta function from an exponentially convergent Fourier--Bessel
+part. An odd companion supplies the missing reflection channel. Their
+spectral derivatives give, for every nonnegative index, exact formulas for
+both $\gamma_m(a)+\gamma_m(1-a)$ and $\gamma_m(a)-\gamma_m(1-a)$, and hence
+for each individual generalized Stieltjes constant. The formulas hold for
+every positive mass, not just inside a small-mass power-series disk.
+
+The counterterms have explicit complete-Bell-polynomial coefficients in
+ordinary and half-shifted generalized harmonic numbers. A finite-head
+identity gives their global convergent implementation. Bessel order
+integrals turn both reflected families into damped polylogarithm order
+integrals; parameter primitives connect them to Hurwitz derivatives at
+zero and to a convergent log-Gamma ratio formula.
+
+For polynomially weighted one-sided spectra we prove an exact conjugate
+factorization defect and classify its universal vanishing: it is zero for
+every positive mass precisely for even polynomial weights. This yields
+finite identities between complex-shift Hurwitz derivatives and
+polylogarithms at every nonpositive integer spectral point. Those values
+form an exact mass-antiderivative ladder. We also give positive-integer
+polygamma reductions and an ordinary Gamma-product integral evaluated by
+a dilogarithm.
+
+The classical Poisson, Bessel, Gamma, and multiplicative-anomaly ingredients
+retain their attribution. The contribution is a proved, explicit synthesis
+and its specialized identities, not a claim of global priority. The
+article includes exact algebra regressions, independent numerical
+diagnostics, a scoped source audit, and further research questions.
+\end{abstract}
+\medskip
+\noindent\textbf{Source pin.} Repository reading is anchored at \qpin.
+No repository files were modified. The incoming archive catalogue was read;
+the six archive interiors were not inspected in this session.
+\clearpage
+\begingroup\small\tableofcontents\endgroup
+\clearpage
+\input{sections/01-context}
+\input{sections/02-transform}
+\input{sections/03-stieltjes}
+\input{sections/04-harmonic-primitives}
+\input{sections/05-anomaly}
+\input{sections/06-polylogarithms}
+\input{sections/07-audit-research}
+\input{references}
+\end{document}

@@ -1,0 +1,97 @@
+\section{Research target, source boundary, and conventions}
+\label{sec:scope}
+
+\subsection{What is continued here}
+
+The source for this investigation is the ProveIt manuscript and its six
+current incoming reports at commit
+\begin{center}\small\repoSHA.\end{center}
+The source was inspected on 11 October 2026. The canonical manuscript
+already develops polylogarithmic identities, harmonic generating
+functions, Gamma correlations, and several finite-part calculi
+\cite{repo}. The incoming Bernoulli--Tornheim--digamma report proves
+optimal-prefix rank for the unequal even tail-order pairs $(2,q)$,
+$(4,q)$, and $(6,q)$, and asks for every reconstruction row in closed
+form \cite[research question R2]{incoming-bernoulli}. The first rational
+row is already known. This paper supplies the full inverse for $(2,q)$
+and turns it into a family of evaluated ordinary series.
+
+The six incoming archives were also inspected to distinguish new work
+from statements already supplied there. In particular, the general
+ordered-partition expansion of a product of tails, the symmetric cubic
+descent, the finite differential-polynomial integration-by-parts
+algorithm, and the first Gauss-determinant resonance are prior parts of
+this programme \cite{incoming-cubic,incoming-differential,
+incoming-determinantal,incoming-tail,incoming-multishift}.
+They are not relabelled as new discoveries in this article.
+
+The word ``new'' below refers to the advancement beyond these inspected
+sources. A search of the relevant primary literature was used to identify
+classical ingredients; it does not establish global historical priority.
+The Bernoulli Hankel and orthogonal-polynomial background is classical
+\cite{dilcher-jiu,dlmf-op}. We provide the particular algebraic proofs
+needed here because the exceptional zeroth Bernoulli moment and the
+tail matrix's omitted binomial terms affect the answer.
+
+\subsection{Three different meanings of an evaluation}
+
+We distinguish an ordinary convergent sum, a meromorphically continued
+value, and a constant term of a specified cutoff. Where two of them
+coincide, that coincidence is proved. In the centered two-tail problem,
+the identities $\zeta(-2j,\tfrac12)=0$ make the requisite polynomial
+subtractions have zero continued sum. That special cancellation does
+not hold after an arbitrary change of centering.
+
+The numerical checks in the accompanying files are diagnostics, not
+interval certificates. An identity in a polynomial ring over $\Q$ is
+checked exactly. A theorem about an infinite family or a continuum of
+parameters is justified by the written proof. No result in the paper
+uses a failed integer-relation search as an independence argument.
+
+\subsection{Notation}
+
+The Gamma function is $\Gamma$, the digamma function is
+$\psi=\Gamma'/\Gamma$, and $\psi^{(m)}$ is its $m$th derivative.
+For $p>1$ and $n\geq0$, write
+\begin{equation}\label{eq:tails}
+ H_n^{(p)}=\sum_{j=1}^n j^{-p},\qquad
+ A_p(n)=\zeta(p)-H_n^{(p)}=\zeta(p,n+1),\qquad
+ x_n=n+\tfrac12.
+\end{equation}
+For integer $p\geq2$,
+\begin{equation}\label{eq:tail-polygamma}
+ A_p(n)=\frac{(-1)^p}{(p-1)!}\psi^{(p-1)}(n+1).
+\end{equation}
+The Hurwitz-zeta and polygamma conventions agree with
+\cite{dlmf-hurwitz,dlmf-polygamma}.
+For $a>0$, the generalized Stieltjes constants are normalized by
+\begin{equation}\label{eq:stieltjes-convention}
+ \zeta(1+u,a)=\frac1u+
+   \sum_{j=0}^{\infty}\frac{(-1)^j}{j!}\gamma_j(a)u^j.
+\end{equation}
+Thus $\gamma_0(a)=-\psi(a)$ and $\gamma_j=\gamma_j(1)$.
+
+The Bernoulli convention is
+\begin{equation}\label{eq:bernoulli-convention}
+ \frac{te^{xt}}{e^t-1}=\sum_{j=0}^{\infty}B_j(x)\frac{t^j}{j!},
+ \qquad B_j=B_j(0),\qquad B_1=-\tfrac12.
+\end{equation}
+The notation $(a)_j$ means a rising factorial. A falling factorial is
+$a^{\underline j}=a(a-1)\cdots(a-j+1)$. Empty products are one.
+
+For $|z|<1$, our depth-two polylogarithm is
+\begin{equation}\label{eq:depth-two-convention}
+ \Li_{p,q}(z)=\sum_{n>m\geq1}\frac{z^n}{n^p m^q}.
+\end{equation}
+The color belongs to the larger index. This convention matters in the
+generating-function identities. At convergent endpoints we write
+$\zeta_{\mathrm{MZ}}(p,q)=\sum_{n>m\geq1}n^{-p}m^{-q}$ for a
+multiple zeta value; this differs from the Hurwitz function $\zeta(s,a)$.
+The spectral double series $Z(s,t)$ in Section~\ref{mellin:section}
+uses the same strict ordering on its stated convergence domain.
+Auxiliary coefficients such as $C_j$ and $R_j$ are defined locally in
+each family and do not identify constants from different sections.
+All functions on the open unit disc are
+defined by their series; real boundary limits are taken with $z\uparrow1$.
+Complex powers of positive real numbers use the real logarithm. Additional
+complex-parameter domains are stated locally where they are used.

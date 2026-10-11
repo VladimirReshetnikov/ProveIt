@@ -1,0 +1,216 @@
+\section{Complete Stieltjes reflection through a positive mass}
+\label{qspec:sec:stieltjes}
+
+Define the following ordinary, absolutely convergent sums:
+\begin{align}
+D_m^+(a,b)=\sum_{n\ge0}\biggl\{&
+\frac{(-\log Q_b(x_n))^m}{\sqrt{Q_b(x_n)}}
+-\frac{(-2\log x_n)^m}{x_n}\notag\\[-2pt]
+&+\frac{(-\log Q_b(y_n))^m}{\sqrt{Q_b(y_n)}}
+-\frac{(-2\log y_n)^m}{y_n}\biggr\},\label{qspec:eq:Dplus}\\
+D_m^-(a,b)=\sum_{n\ge0}\biggl\{&
+\frac{x_n(-\log Q_b(x_n))^m}{Q_b(x_n)}
+-\frac{(-2\log x_n)^m}{x_n}\notag\\[-2pt]
+&-\frac{y_n(-\log Q_b(y_n))^m}{Q_b(y_n)}
++\frac{(-2\log y_n)^m}{y_n}\biggr\}.
+\label{qspec:eq:Dminus}
+\end{align}
+The cancellation takes place separately at $x_n$ and $y_n$; no pairing of
+two divergent sums is being used to define these differences.
+
+\begin{theorem}[All-index, both-parity Stieltjes identity]
+\label{qspec:thm:master}
+For every $m\ge0$, $0<a<1$, and $b>0$,
+\begin{align}
+(-2)^mG_m^+(a)&=C_m(b)+B_m^+(a,b)-D_m^+(a,b),\label{qspec:eq:master-plus}\\
+(-2)^mG_m^-(a)&=B_m^-(a,b)-D_m^-(a,b).\label{qspec:eq:master-minus}
+\end{align}
+In particular each individual Stieltjes constant is given by
+\begin{equation}\label{qspec:eq:individual}
+\gamma_m(a)=\frac{C_m+B_m^++B_m^--D_m^+-D_m^-}{2(-2)^m}.
+\end{equation}
+These identities may be differentiated any fixed number of times in $a$
+and $b$ on compact subsets of \eqref{qspec:eq:domain}.
+\end{theorem}
+\begin{proof}
+For $|\Rea\epsilon|<1/4$ put
+\begin{align*}
+D_+(\epsilon)&=\sum_{n\ge0}\left\{
+Q_b(x_n)^{-1/2-\epsilon}-x_n^{-1-2\epsilon}
++Q_b(y_n)^{-1/2-\epsilon}-y_n^{-1-2\epsilon}\right\},\\
+D_-(\epsilon)&=\sum_{n\ge0}\left\{
+x_nQ_b(x_n)^{-1-\epsilon}-x_n^{-1-2\epsilon}
+-y_nQ_b(y_n)^{-1-\epsilon}+y_n^{-1-2\epsilon}\right\}.
+\end{align*}
+Writing $Q_b(x)=x^2(1+b^2/x^2)$ shows that each local difference
+is $O(x^{-3+2|\Rea\epsilon|})$, uniformly on compact sets of the
+parameters and of $\epsilon$. Differentiation in $\epsilon$ introduces
+at most fixed powers of $\log x$. The resulting series converge normally;
+the same reasoning applies after finitely many $a,b$ derivatives.
+Their $m$th derivatives at zero are exactly
+\eqref{qspec:eq:Dplus} and~\eqref{qspec:eq:Dminus}.
+
+In the initially convergent region, and hence as local meromorphic germs,
+\begin{align}
+E(\tfrac12+\epsilon)&=
+\zeta(1+2\epsilon,a)+\zeta(1+2\epsilon,1-a)+D_+(\epsilon),\label{qspec:eq:even-subtraction}\\
+Y(1+\epsilon)&=
+\zeta(1+2\epsilon,a)-\zeta(1+2\epsilon,1-a)+D_-(\epsilon).
+\label{qspec:eq:odd-subtraction}
+\end{align}
+Each individual Hurwitz term has residue $1/(2\epsilon)$, so the even
+sum has residue $1/\epsilon$ and the odd difference has none. Equation
+\eqref{qspec:eq:stieltjes-convention} gives the $m$th regular derivative
+as $(-2)^mG_m^\pm$. Substitute \eqref{qspec:eq:germ-identities}, remove
+the one explicit pole, and compare derivatives. This proves both
+identities and their differentiated versions. Adding them proves
+\eqref{qspec:eq:individual}.
+\end{proof}
+
+\subsection{All coefficients of the pole term}
+The zero-mode coefficients have a particularly short finite description.
+Set
+\begin{equation}\label{qspec:eq:ell}
+\ell_1=2\log(2/b),\qquad
+\ell_r=(-1)^r(r-1)!(2-2^r)\zeta(r)\quad(r\ge2).
+\end{equation}
+\begin{proposition}\label{qspec:prop:pole-bell}
+For every $m\ge0$,
+\begin{equation}\label{qspec:eq:Cbell}
+C_m(b)=\frac{\Bcal_{m+1}(\ell_1,\ldots,\ell_{m+1})}{m+1}.
+\end{equation}
+Writing $L=\log(2/b)$, the first three are
+\begin{equation}\label{qspec:eq:Cexamples}
+C_0=2L,\qquad C_1=2L^2-\zeta(2),\qquad
+C_2=\frac83L^3-\frac{2\pi^2}{3}L+4\zeta(3).
+\end{equation}
+\end{proposition}
+\begin{proof}
+The function $\epsilon C(\epsilon;b)$ is analytic and equals one at zero.
+Its logarithm is
+\[
+\log\Gamma(1+\epsilon)-\log\Gamma(1/2+\epsilon)
++\tfrac12\log\pi-2\epsilon\log b.
+\]
+The classical polygamma values at $1$ and $1/2$ \cite{gamma} give precisely
+\eqref{qspec:eq:ell} as its successive derivatives at zero. Expand its
+exponential by \eqref{qspec:eq:bell}, divide by $\epsilon$, remove the
+pole, and multiply the coefficient of $\epsilon^m$ by $m!$. The resulting
+factor is $m!/(m+1)!=1/(m+1)$, proving the proposition.
+\end{proof}
+
+\subsection{Explicit Fourier--Bessel spectral jets}
+For $n\ge1$ set
+\begin{align}
+v_1(n)&=\gamma+\log(4\pi n/b),&
+v_r&=(-1)^{r+1}(r-1)!(2^r-1)\zeta(r)\quad(r\ge2),\label{qspec:eq:vjets}\\
+w_1(n)&=\gamma+\log(\pi n/b),&
+w_r&=(-1)^{r+1}(r-1)!\zeta(r)\quad(r\ge2).\label{qspec:eq:wjets}
+\end{align}
+Define $K^{\langle r\rangle}_\nu(u)=\partial_\nu^rK_\nu(u)$.
+Differentiating the holomorphic factors in
+\eqref{qspec:eq:Bplusgerm}--\eqref{qspec:eq:Bminusgerm} gives
+\begin{align}
+B_m^+={}&4\sum_{n\ge1}\cos(2\pi na)
+ \sum_{r=0}^{\lfloor m/2\rfloor}\binom{m}{2r}
+ \Bcal_{m-2r}(v(n))K^{\langle2r\rangle}_0(2\pi bn),\label{qspec:eq:Bplusjets}\\
+B_m^-={}&4\pi\sqrt b\sum_{n\ge1}\sqrt n\sin(2\pi na)
+ \sum_{r=0}^m\binom mr\Bcal_{m-r}(w(n))
+ K^{\langle r\rangle}_{-1/2}(2\pi bn).
+\label{qspec:eq:Bminusjets}
+\end{align}
+Here $\Bcal_j(v(n))$ means that only the first $j$ entries are used.
+Equation~\eqref{qspec:eq:K-cosh} shows that $K_\nu=K_{-\nu}$, so all
+odd order derivatives at zero vanish. No corresponding deletion is valid
+at $\nu=-1/2$. This explains the different inner sums.
+
+For example,
+\[
+B_0^+=4\sum_{n\ge1}\cos(2\pi na)K_0(2\pi bn),\qquad
+B_1^+=4\sum_{n\ge1}\cos(2\pi na)
+\bigl(\gamma+\log(4\pi n/b)\bigr)K_0(2\pi bn).
+\]
+Thus \eqref{qspec:eq:master-plus} at $m=1$ is the explicit identity
+\begin{align}
+-2G_1^+(a)={}&2\log^2(2/b)-\zeta(2)-D_1^+(a,b)\notag\\
+&+4\sum_{n\ge1}\cos(2\pi na)
+\bigl(\gamma+\log(4\pi n/b)\bigr)K_0(2\pi bn).
+\label{qspec:eq:first-stieltjes-example}
+\end{align}
+It involves no Bessel order derivative. Higher $m$ introduce them only
+at the even orders displayed in \eqref{qspec:eq:Bplusjets}.
+
+\subsection{Damped polylogarithm integral formulas}
+Put
+\begin{equation}\label{qspec:eq:zt}
+z_t^\pm=\exp(-2\pi b\cosh t\pm2\pi ia),\qquad
+\mathcal C_\sigma(t)=\frac{\Li_\sigma(z_t^+)+\Li_\sigma(z_t^-)}2,
+\quad
+\mathcal S_\sigma(t)=\frac{\Li_\sigma(z_t^+)-\Li_\sigma(z_t^-)}{2i}.
+\end{equation}
+For real $\sigma$, these are respectively the real and imaginary parts of
+$\Li_\sigma(z_t^+)$. For complex $\sigma$, the symmetric formulas in
+\eqref{qspec:eq:zt}, not a real-part operation, preserve holomorphy.
+
+\begin{theorem}[Polylogarithm order integrals for both reflected channels]
+\label{qspec:thm:polylog-integrals}
+The entire germs $B_\pm$ satisfy
+\begin{align}
+B_+(\epsilon;a,b)&=
+\frac{4\pi^{1/2+\epsilon}b^{-\epsilon}}{\Gamma(1/2+\epsilon)}
+\int_0^\infty\cosh(\epsilon t)\mathcal C_{-\epsilon}(t)\dd t,
+\label{qspec:eq:polylogplus}\\
+B_-(\epsilon;a,b)&=
+\frac{4\pi^{1+\epsilon}b^{1/2-\epsilon}}{\Gamma(1+\epsilon)}
+\int_0^\infty\cosh((\epsilon-\tfrac12)t)
+\mathcal S_{-\epsilon-1/2}(t)\dd t.
+\label{qspec:eq:polylogminus}
+\end{align}
+Every spectral derivative in Theorem~\ref{qspec:thm:master} can therefore
+be represented by differentiating an ordinary absolutely convergent
+polylogarithm integral.
+\end{theorem}
+\begin{proof}
+Insert \eqref{qspec:eq:K-cosh} in the Bessel series. The polylogarithm
+series \cite{polylog} gives
+\[
+\mathcal C_{-\epsilon}(t)=\sum_{n\ge1}n^\epsilon
+ e^{-2\pi bn\cosh t}\cos(2\pi na),
+\]
+with the analogous sine formula containing $n^{\epsilon+1/2}$.
+For $\epsilon$ in a compact set, the terms and their derivatives have
+majorants of the form
+\[
+C n^A(1+\log n)^M(1+t)^M e^{At}e^{-2\pi b_0n\cosh t},
+\qquad b\ge b_0>0.
+\]
+Summing in $n$ and integrating in $t$ gives a finite quantity. The decay
+in $t$ is stronger than any exponential. Fubini's theorem and holomorphic
+parameter differentiation therefore justify the interchange and all
+claimed spectral derivatives.
+\end{proof}
+
+\subsection{Zeroth-order reflection and an exact mass-transfer law}
+Since $K_{1/2}(u)=\sqrt{\pi/(2u)}e^{-u}$,
+\begin{equation}\label{qspec:eq:odd-zero}
+B_0^-(a,b)=2\pi\sum_{n\ge1}e^{-2\pi bn}\sin(2\pi na)
+=\frac{\pi\sin(2\pi a)}{\cosh(2\pi b)-\cos(2\pi a)}.
+\end{equation}
+The odd master identity recovers the classical digamma reflection law:
+\begin{equation}\label{qspec:eq:zero-reflection}
+\pi\cot(\pi a)=
+\frac{\pi\sin(2\pi a)}{\cosh(2\pi b)-\cos(2\pi a)}-D_0^-(a,b).
+\end{equation}
+At $a=1/2$ every odd term is exactly zero, a structural check rather
+than a near-zero numerical test.
+
+Because the left sides of the master identities are independent of $b$,
+we also obtain, for arbitrary $b,c>0$,
+\begin{align}
+D_m^+(a,b)-D_m^+(a,c)&=C_m(b)-C_m(c)+B_m^+(a,b)-B_m^+(a,c),\label{qspec:eq:transferplus}\\
+D_m^-(a,b)-D_m^-(a,c)&=B_m^-(a,b)-B_m^-(a,c).
+\label{qspec:eq:transferminus}
+\end{align}
+These are exact identities between two deformations with the Stieltjes
+constant eliminated. They generate harmonic/polylogarithm identities
+without retaining an unevaluated Stieltjes symbol.

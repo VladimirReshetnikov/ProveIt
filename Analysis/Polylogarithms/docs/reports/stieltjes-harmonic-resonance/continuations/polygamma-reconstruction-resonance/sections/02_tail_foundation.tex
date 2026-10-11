@@ -1,0 +1,169 @@
+\section{The exact tail matrix and its regularization}
+\label{sec:tail-foundation}
+
+Fix an integer $b\geq2$. Consider the Dirichlet series
+\begin{equation}\label{eq:Db}
+ D_b(s)=\sum_{n=0}^{\infty}A_2(n)A_{2b}(n)x_n^{-s},
+ \qquad \Rea s>1-2b.
+\end{equation}
+Its centered moments are denoted by $D_{b,r}=D_b(-2r)$, $r\geq0$.
+At a point outside the displayed convergence half-plane, this notation
+means meromorphic continuation, not the original divergent series.
+
+\subsection{Why every even moment is regular}
+
+Define rational numbers
+\begin{equation}\label{eq:tail-coefficients}
+ t_{p,0}=\frac1{p-1},\qquad
+ t_{p,j}=\frac{B_{2j}(1/2)(p)_{2j-1}}{(2j)!}\quad(j\geq1),
+ \qquad
+ a_{b,j}=\sum_{i=0}^j t_{2,i}t_{2b,j-i}.
+\end{equation}
+Euler--Maclaurin summation in the midpoint coordinate gives, to any fixed
+order and with its usual power remainder,
+\begin{align}
+ A_p(n)&\sim\sum_{j\geq0}t_{p,j}x_n^{1-p-2j},
+ \label{eq:tail-expansion}\\
+ A_2(n)A_{2b}(n)&\sim\sum_{j\geq0}a_{b,j}x_n^{-2b-2j}.
+ \label{eq:tail-product-expansion}
+\end{align}
+Only even corrections occur, since $B_{2j+1}(1/2)=0$.
+The first two product coefficients are
+\begin{equation}\label{eq:first-tail-coeff}
+ a_{b,0}=\frac1{2b-1},\qquad
+ a_{b,1}=-\frac{2b^2-b+1}{12(2b-1)}.
+\end{equation}
+
+\begin{proposition}[Ordinary subtraction at every even moment]
+\label{prop:ordinary-subtraction}
+The only possible poles of $D_b(s)$ are at
+$s=1-2b-2j$, $j\geq0$. In particular every $D_{b,r}$ is regular.
+For an even polynomial $W(x)=\sum_r w_rx^{2r}$, put
+\begin{equation}\label{eq:subtraction-polynomial}
+ R_{b,W}(x)=
+ \sum_r w_r\sum_{j=0}^{r-b}a_{b,j}x^{2r-2b-2j},
+\end{equation}
+where an inner sum with negative upper limit is zero. Then
+\begin{equation}\label{eq:ordinary-subtraction}
+ \sum_{n=0}^{\infty}
+  \{W(x_n)A_2(n)A_{2b}(n)-R_{b,W}(x_n)\}
+ =\sum_r w_rD_{b,r}.
+\end{equation}
+The left side is an ordinary absolutely convergent series.
+\end{proposition}
+\begin{proof}
+Subtract the first $J$ terms in \eqref{eq:tail-product-expansion} from
+\eqref{eq:Db} and add back
+$\sum_{j<J}a_{b,j}\zeta(s+2b+2j,\tfrac12)$.
+The subtracted series converges normally in successively larger left
+half-planes as $J$ increases. This gives the continuation and the list
+of possible poles. None is an even integer.
+
+Apply the same subtraction to each monomial of $W$. After removing
+\eqref{eq:subtraction-polynomial}, the summand is $O(x_n^{-2})$.
+The added-back values are all $\zeta(-2\ell,\tfrac12)$, $\ell\geq0$,
+and each is zero because
+$\zeta(s,\tfrac12)=(2^s-1)\zeta(s)$.
+The evaluation of the meromorphic continuation is therefore exactly
+the displayed ordinary sum. The finite number of monomials permits
+termwise addition without an interchange issue.
+\end{proof}
+
+\subsection{The inherited Bernoulli coordinate transform}
+
+Define transformed coordinates by
+\begin{equation}\label{eq:C-from-D}
+ C_j=\sum_{r=0}^j\binom{2j+1}{2r}2^{-2(j-r)}D_{b,r}.
+\end{equation}
+The inverse transform is
+\begin{equation}\label{eq:D-from-C}
+ D_{b,r}=\sum_{j=0}^r
+   \frac{\binom{2r}{2j}}{2j+1}B_{2r-2j}(1/2)C_j.
+\end{equation}
+Both identities follow from the generating function
+\eqref{eq:bernoulli-convention}. Indeed the exact prefix polynomial is
+\begin{equation}\label{eq:prefix-polynomial}
+ \sum_{n=0}^{N-1}(n+\tfrac12)^{2r}
+ =\sum_{j=0}^r\frac{\binom{2r}{2j}}{2j+1}
+       B_{2r-2j}(1/2)N^{2j+1}.
+\end{equation}
+
+The late coordinates $C_j$, $j\geq b$, close on ordinary even zeta
+values. The following is the precise inherited reduction, in the
+normalization used by the new inverse theorem
+\cite[Sections 2--3]{incoming-bernoulli}.
+
+\begin{proposition}[Late-coordinate formula]
+\label{prop:late-coordinates}
+Put $\mu_j=B_{2j}/(2j)!$ and $Z_k=\zeta(2k)$, including
+$Z_0=-\tfrac12$. For $j\geq b$,
+\begin{equation}\label{eq:late-coordinates}
+ C_j=\sum_{k=0}^{b-1}
+ \left\{\frac{(2j-1)!}{(2b-2k)!}\mu_{j-b+k}
+ +\mathbf1_{k=0}\frac{2j-2b+1}{2}B_{2j-2b}\right\}Z_k.
+\end{equation}
+Consequently, if $\mathbf C=(C_b,\ldots,C_{2b-1})^{\mathsf T}$ and
+$\mathbf Z=(Z_0,\ldots,Z_{b-1})^{\mathsf T}$, then
+\begin{equation}\label{eq:M-system}
+ \mathbf C=M_b\mathbf Z,
+ \qquad
+ (M_b)_{tk}=\frac{(2b+2t-1)!}{(2b-2k)!}\mu_{t+k}
+       +\mathbf1_{k=0}\frac{2t+1}{2}B_{2t}.
+\end{equation}
+\end{proposition}
+
+We recall the finite argument to make the boundary convention explicit.
+For every odd integer $d>0$, summation by parts uses the exact prefix
+expression
+\begin{align}\label{eq:E-d}
+ E_d(N)={}&N^dA_2(N)A_{2b}(N)
+ +\sum_{k=1}^N k^{d-2b}A_2(k)
+ +\sum_{k=1}^N k^{d-2}A_{2b}(k)
+ +\sum_{k=1}^N k^{d-2b-2}.
+\end{align}
+It equals the moment sum whose prefix polynomial is $N^d$.
+For a nonnegative power $m$, the finite identity
+\begin{equation}\label{eq:faulhaber-tail}
+ \sum_{k=1}^N k^m A_p(k)
+ =A_p(N)F_m(N)+\sum_{\ell=1}^N\frac{F_m(\ell-1)}{\ell^p},
+ \quad F_m(N)=\frac{B_{m+1}(N+1)-B_{m+1}(1)}{m+1},
+\end{equation}
+is obtained by reversing the finite sums, with the infinite part
+$A_p(N)$ left intact. Substituting it into \eqref{eq:E-d}, expanding
+the finite Bernoulli polynomials, and extracting the constant term
+gives, for $d=2j+1\geq2b+1$, the two coefficients
+\[
+ B_{2j-2b+2k}
+ \left\{
+ \frac{\binom{2j-2b+2}{2-2k}}{2j-2b+2}
+ +\frac{\binom{2j}{2b-2k}}{2j}\right\}.
+\]
+Here a binomial summand is omitted unless its lower index is at
+least two and at most its upper index. The first term consequently
+occurs only at $k=0$. Cancelling the factorials gives
+\eqref{eq:late-coordinates}. At the transition $j=b$, the two
+$-\gamma/2$ terms arising from the tail sums cancel the $+\gamma$
+from the final harmonic sum in \eqref{eq:E-d}. This is why there is
+no extra Euler constant in the zeroth column. This finite computation
+is also the source proof of the proposition; it precedes the new
+reconstruction problem.
+
+The binomial omission rule is essential. Adding a lower-index-zero
+term would change $M_b$. The matrix in \eqref{eq:M-system}, including
+its exceptional zeroth column, is the one inverted below.
+
+\subsection{Formal coordinates and the optimal prefix}
+
+The source regards
+\begin{equation}\label{eq:formal-list}
+ C_0,\ldots,C_{b-1},\quad Z_0,\ldots,Z_{b-1}
+\end{equation}
+as $2b$ formal labels. The Bernoulli transform from $D_{b,0},\ldots,
+D_{b,2b-1}$ is triangular, with the late block $M_b$. Thus
+nonsingularity of $M_b$ gives full rank of this prefix.
+It does not imply that the evaluated numbers in
+\eqref{eq:formal-list} are arithmetically independent. In fact ordinary
+even zeta values are rational multiples of powers of $\pi$.
+Our inverse theorem solves a completely specified rational linear
+problem on these formal labels and then evaluates the resulting
+identities analytically.

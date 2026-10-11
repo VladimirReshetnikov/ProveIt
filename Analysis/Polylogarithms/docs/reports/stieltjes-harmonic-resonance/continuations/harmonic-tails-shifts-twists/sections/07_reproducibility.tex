@@ -1,0 +1,111 @@
+\section{Reproducibility, proof status, and integration}
+\label{sec:reproducibility}
+
+\subsection{Proofs and computational checks have different roles}
+
+The infinite-family conclusions are proved in the article. The sign
+comparison in Theorem~\ref{eg:two-minors}, the finite Bernoulli
+primitive in Theorem~\ref{sh:primitive}, and the normally convergent
+coefficient argument in Theorem~\ref{alt:thm:master} are the respective
+all-order arguments. The programs reproduce exact finite instances,
+check normalizations by different representations, and provide
+numerical diagnostics for analytic specializations. No integer-relation
+search is used in any of the supplied verifiers.
+
+\begin{center}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.34\textwidth}>{\raggedright\arraybackslash}p{0.18\textwidth}>{\raggedright\arraybackslash}p{0.4\textwidth}@{}}
+\toprule
+Verification & Scope & What is compared \\
+\midrule
+Gap-four determinants & $3\le b\le18$ &
+Original Bernoulli matrix, recurrence determinant, and product formula \\
+Generated minors & 1,946 minors &
+Exact signs for gaps $2c$, $c=2,\ldots,6$ \\
+Finite telescopers & $(4,8),(8,12)$ &
+Rational-function differences and the complete constant-term limit \\
+Shifted discrete primitives & 168 triples &
+Generic-variable identities, $2\le p\le q\le8$, $q\le d\le q+5$ \\
+Shifted transforms & $21+21$ checks &
+Inverse Bernoulli polynomials and independent finite rational endpoints \\
+Shift derivatives & 23 coefficients &
+The closed convolution for derivative orders $2,\ldots,24$ \\
+Alternating master & 144 coefficients &
+Every even $p,q\ge2$, $p+q\le18$, for all four sign pairs \\
+Formal endpoint cancellation & 256 checks &
+Cancellation of the single formal $\zeta(1)$ symbol \\
+Analytic diagnostics & $36+16$ checks &
+Independent shifted asymptotics and signed digamma-tail sums \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The gap-four program also verifies the row and column scalings
+against direct cotangent coefficient extraction, checks the highest
+polynomial coefficient, and reproduces the higher-gap sign obstruction.
+The alternating program expands the meromorphic right side as a
+Laurent polynomial in two variables, verifies cancellation of axial
+negative powers and odd powers, and checks the diagonal convolution.
+The shifted program treats the relevant Hurwitz values as formal
+symbols obeying their exact recurrence, so its discrete-primitive
+checks are symbolic identities in the shift, not tests at one shift.
+
+The shifted diagnostics use 85 decimal digits and the alternating
+diagnostics use 55. Each comparison has a $10^{-45}$ acceptance
+threshold. The observed residuals are below $7.1\times10^{-65}$ and
+$6.6\times10^{-55}$, respectively, in the recorded run. These numbers
+are numerical consistency measurements, not certified error
+enclosures. The proofs, including their convergence arguments, do not
+depend on treating those measurements as exact zeros.
+
+\subsection{Contents of the accompanying archive}
+
+The archive includes a standalone TeX source and its compiled PDF,
+the modular source used for editing, all three independent verification
+programs, their complete JSON results, and a reproducibility record.
+The source manifest fixes the repository revision, paths, byte sizes,
+Git blob identifiers, and local SHA-256 checksums for the acquired
+inputs. The proof-status record distinguishes new theorems,
+inherited ingredients, finite computational checks, and unresolved
+questions. No large predecessor PDF or redundant copy of the
+repository is required to rebuild this article.
+
+For verification from the archive directory, the three commands are
+\begin{quote}\small\ttfamily
+python3 verification/verify\_gap\_four.py\\
+\hspace*{1em}--output results/gap\_four\_exact\_results.json\\[4pt]
+python3 verification/verify\_shifted\_tails.py\\
+\hspace*{1em}--output results/shifted\_tail\_results.json\\[4pt]
+python3 verification/verify\_alternating\_master.py --numeric\\
+\hspace*{1em}--output results/alternating\_verification.json
+\end{quote}
+Each indented continuation belongs to the preceding shell command.
+The plain-text README contains directly copyable single-line commands.
+Python, SymPy, and mpmath are sufficient for these checks. The exact
+dependency versions used are recorded in the package. Rebuilding the
+document requires a LaTeX installation with the packages declared in
+its preamble; the provided build program assembles the standalone
+source and runs \texttt{latexmk}.
+
+\subsection{Suggested integration points}
+
+The gap-four theorem belongs beside the optimal-prefix conjecture and
+the existing adjacent-order and fixed-smaller-order proofs. Preserve
+the matrix convention in \eqref{eg:entries}, especially the omission
+of a binomial coefficient with lower index zero. Record the newly
+settled family as $q-p=4$ and leave Q1's remaining range open.
+
+The Hurwitz-shift transform can follow the centered-tail foundation.
+Keep \eqref{sh:Dhat} and \eqref{sh:ordinarycorrection} close to the
+transform itself, because they are part of its value normalization.
+The all-jet theorem belongs with the spectral-subtraction and Lerch
+jet material; its derivatives act on the weight exponent.
+
+The signed master, Gamma primitive, and colored polylogarithmic
+primitive form a self-contained continuation of the tail generating
+functions. Retain the explicit convergence distinction for the
+positive-positive entry. Finally, update the sixth mixed-moment
+research item using Proposition~\ref{audit:sixth}; retain the
+smaller-collection reduction problem as Q10.
+
+These integration suggestions are supplied as reviewable material.
+The repository itself was not modified during this research.

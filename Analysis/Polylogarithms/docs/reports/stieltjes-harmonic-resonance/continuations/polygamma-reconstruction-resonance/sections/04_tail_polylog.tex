@@ -1,0 +1,203 @@
+\section{Evaluated ordinary series and polylogarithmic boundary identities}
+\label{sec:filters}
+
+\subsection{A polynomial for each prescribed even zeta value}
+
+For $0\leq k<b$, define the odd polynomial and its centered difference
+\begin{align}
+ S_{b,k}(y)&=\sum_{t=0}^{b-1}\mathcal R_{b;k,t}y^{2b+2t+1},
+ \label{eq:S-filter}\\
+ W_{b,k}(x)&=S_{b,k}(x+\tfrac12)-S_{b,k}(x-\tfrac12),
+ &R_{b,k}(x)&=R_{b,W_{b,k}}(x).
+ \label{eq:W-filter}
+\end{align}
+Here $R_{b,W}$ is the explicit asymptotic polynomial in
+\eqref{eq:subtraction-polynomial}. Thus $W_{b,k}$ is an even rational
+polynomial of degree at most $4b-2$, and $R_{b,k}$ is even of degree
+at most $2b-2$.
+
+\begin{theorem}[All even-zeta extraction series]
+\label{thm:extraction-series}
+For every $b\geq2$ and every $0\leq k<b$,
+\begin{equation}\label{eq:extraction-series}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}
+  \left\{W_{b,k}(x_n)
+    \bigl(\zeta(2)-H_n^{(2)}\bigr)
+    \bigl(\zeta(2b)-H_n^{(2b)}\bigr)-R_{b,k}(x_n)\right\}
+ =\zeta(2k).}
+\end{equation}
+The summand is $O(n^{-2})$, and the sum is ordinary and absolutely
+convergent. Equivalently, its tail product may be replaced by
+\begin{equation}\label{eq:extraction-polygamma}
+ \frac{\psi'(n+1)\psi^{(2b-1)}(n+1)}{(2b-1)!}.
+\end{equation}
+Every coefficient in \eqref{eq:extraction-series} has the finite formula
+\eqref{eq:all-rows}; the theorem is constructive at arbitrary order.
+\end{theorem}
+\begin{proof}
+For an odd monomial,
+\[
+ (x+\tfrac12)^{2j+1}-(x-\tfrac12)^{2j+1}
+ =\sum_{r=0}^j\binom{2j+1}{2r}2^{-2(j-r)}x^{2r}.
+\]
+Consequently the continued moment associated with $W_{b,k}$ is
+$\sum_t\mathcal R_{b;k,t}C_{b+t}=\zeta(2k)$ by
+\eqref{eq:C-from-D} and \cref{thm:all-rows}. Apply
+\cref{prop:ordinary-subtraction} to turn that continued value into
+the ordinary sum in \eqref{eq:extraction-series}. The polygamma
+form follows from \eqref{eq:tail-polygamma}.
+\end{proof}
+
+\begin{proposition}[Uniqueness on the optimal formal prefix]
+\label{prop:filter-unique}
+Among even polynomials of degree at most $4b-2$, $W_{b,k}$ is the
+unique one whose moment has formal coordinate vector $Z_k$ in
+\eqref{eq:formal-list}.
+\end{proposition}
+\begin{proof}
+The centered difference maps odd polynomials of degree at most
+$4b-1$ bijectively onto even polynomials of degree at most $4b-2$:
+in the monomial bases its matrix is triangular with nonzero diagonal.
+Write the preimage of a candidate polynomial as
+$\sum_{j=0}^{2b-1}s_jy^{2j+1}$. Its formal moment is
+$\sum_js_jC_j$. The first $b$ labels in \eqref{eq:formal-list}
+force $s_0=\cdots=s_{b-1}=0$. The remaining row must solve
+$sM_b=e_k^{\mathsf T}$, whose unique solution is the row
+\eqref{eq:all-rows}. This is a formal uniqueness statement; accidental
+relations between evaluated constants are not excluded.
+\end{proof}
+
+\subsection{A compact trigamma--third-polygamma evaluation}
+
+The row $k=1$ for $b=2$ gives a relatively short new member of the
+family. With $x_n=n+\tfrac12$, put
+\[
+ P(x)=4032x^6+2480x^4-524x^2-23.
+\]
+Then
+\begin{equation}\label{eq:explicit-zeta2-tail}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}
+ \left\{64(63x_n^2+2)-3P(x_n)A_2(n)A_4(n)\right\}
+ =528\zeta(2)=88\pi^2.}
+\end{equation}
+Both large terms in braces must be combined before summation. Each
+separate sum diverges. Their combination is absolutely convergent.
+
+Using $t_n=2n+1$ gives the equivalent integral-coefficient
+polygamma identity
+\begin{equation}\label{eq:explicit-zeta2-polygamma}
+ \boxed{\begin{aligned}
+ \sum_{n=0}^{\infty}\Bigl\{
+ &32(63t_n^2+8)\\
+ &-(63t_n^6+155t_n^4-131t_n^2-23)
+          \psi'(n+1)\psi'''(n+1)\Bigr\}=176\pi^2.
+ \end{aligned}}
+\end{equation}
+This is proved by the exact row identity, not by recognizing a decimal
+value. Numerically, \eqref{eq:explicit-zeta2-tail} evaluates to
+\[
+ 868.525187295863558457435207989101299907605548\ldots,
+\]
+as does $88\pi^2$.
+
+For a direct coefficient check, the inverse row from
+\eqref{eq:b2inverse} is $(32,-36)/11$ and
+\[
+ S_{2,1}(y)=\frac{32y^5-36y^7}{11}.
+\]
+Its centered difference is $-3P(x)/528$. The nonnegative-power
+part of its product with the two tails is
+$-64(63x^2+2)/528$, giving
+\eqref{eq:explicit-zeta2-tail} immediately. This short calculation
+also fixes the sign of the subtraction.
+
+\subsection{An evaluation at the next tail order}
+
+To illustrate recovery of a coordinate beyond $\zeta(2)$, let
+\begin{align*}
+ P_3(t)={}&2145t^{10}+40725t^8+162302t^6\\
+          &+146110t^4+22161t^2+61,\\
+ Q_3(t)={}&137280t^4+1874240t^2+1263872.
+\end{align*}
+The row $k=2$ for $b=3$ yields
+\begin{equation}\label{eq:explicit-zeta4}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}
+  \{Q_3(t_n)-5P_3(t_n)A_2(n)A_6(n)\}
+ =19520\zeta(4).}
+\end{equation}
+Once again the combined summand is $O(n^{-2})$. The product is
+$\psi'(n+1)\psi^{(5)}(n+1)/120$.
+The supplied coefficient tables include all rows for $2\leq b\leq6$;
+the generation code implements the theorem for any $b\geq2$.
+Those tables are examples of an all-order formula, not the evidence
+on which its all-order validity rests.
+
+\subsection{Finite polylogarithmic generators}
+
+Let $\theta=z\,d/dz$. For integers $p,q\geq2$, the ordinary
+generating function of the tail product is
+\begin{equation}\label{eq:Gpq}
+ G_{p,q}(z)=\sum_{n=0}^{\infty}A_p(n)A_q(n)z^n
+ =\frac{N_{p,q}(z)}{1-z},\qquad |z|<1,
+\end{equation}
+where
+\begin{align}\label{eq:Npq}
+ N_{p,q}(z)={}&\zeta(p)\zeta(q)-\zeta(q)\Li_p(z)
+             -\zeta(p)\Li_q(z)\notag\\
+ &+\Li_{p,q}(z)+\Li_{q,p}(z)+\Li_{p+q}(z).
+\end{align}
+This is the tail-product bridge already present in
+\cite{incoming-tail}. A short direct proof is useful: multiply the
+series by $1-z$, use
+$A_p(n-1)=A_p(n)+n^{-p}$, and then use
+\[
+ \sum_{n\geq1}\frac{z^nH_n^{(q)}}{n^p}
+   =\Li_{p,q}(z)+\Li_{p+q}(z).
+\]
+All series are absolutely convergent in the open disc, which justifies
+each rearrangement.
+
+\begin{theorem}[Evaluated polylogarithmic boundary operators]
+\label{thm:polylog-filter}
+For every $b\geq2$ and $0\leq k<b$, define
+\begin{equation}\label{eq:Phi-filter}
+ \Phi_{b,k}(z)=
+ W_{b,k}(\theta+\tfrac12)\frac{N_{2,2b}(z)}{1-z}
+ -R_{b,k}(\theta+\tfrac12)\frac1{1-z}.
+\end{equation}
+This is a finite differential expression in ordinary and depth-two
+polylogarithms, holomorphic for $|z|<1$. It extends continuously to
+the closed unit disc, and
+\begin{equation}\label{eq:Phi-boundary}
+ \boxed{\Phi_{b,k}(1)=\zeta(2k).}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Termwise differentiation of normally convergent power series gives
+\[
+ \Phi_{b,k}(z)=\sum_{n=0}^{\infty}
+ \{W_{b,k}(x_n)A_2(n)A_{2b}(n)-R_{b,k}(x_n)\}z^n.
+\]
+The coefficients belong to $\ell^1$ by
+\cref{thm:extraction-series}. The Weierstrass test gives uniform
+convergence on $|z|\leq1$, and the boundary value is exactly
+\eqref{eq:extraction-series}. Individual differentiated terms in
+\eqref{eq:Phi-filter} can diverge at $z=1$; the combined expression
+has the proved continuous extension.
+\end{proof}
+
+For example, \eqref{eq:explicit-zeta2-tail} has the finite functional
+form
+\begin{equation}\label{eq:explicit-boundary-operator}
+ \lim_{z\uparrow1}
+ \left\{64\bigl(63(\theta+\tfrac12)^2+2\bigr)\frac1{1-z}
+       -3P(\theta+\tfrac12)\frac{N_{2,4}(z)}{1-z}\right\}
+ =88\pi^2.
+\end{equation}
+The theorem evaluates a prescribed cancellation of boundary jets.
+It does not claim a reduction of arbitrary depth-two polylogarithms
+to depth one. The exact operator and the correct boundary constant
+are both part of the identity.

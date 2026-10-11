@@ -1,0 +1,347 @@
+% Additive research section.  No source manuscript has been modified.
+% Requires amsmath, amssymb, amsthm; theorem, proposition, corollary,
+% remark environments.  Citation keys are left to the integrating article.
+\section{All spectral coefficients from ordinary logarithmic Mellin moments}
+\label{mellin:section}
+
+The incoming \emph{Differential Polygamma and Lerch Jets} report
+\cite[Section~9]{incoming-differential} asks for
+spatial functionals selecting higher coefficients of its residue Dirichlet
+germ, with the exact logarithmic normalization and endpoint constants.
+The construction below answers that question at every order.  The
+Mittag--Leffler expansion and the scalar residue filter are inherited
+inputs; the shift-difference Mellin transform, its ordinary subtractions,
+and the higher-coefficient formulas are the continuation proved here.
+This is a claim of progress relative to the inspected material, not a
+historical priority claim for all specializations of Mellin calculus.
+
+\subsection{The data and the spatial normalization}
+
+Let $P$ be a polynomial in finitely many variables $u_0,u_1,\ldots$ and
+write
+\[
+ f_P(x)=P(\psi(x),\psi'(x),\ldots),\qquad
+ \phi_P(Y)=P(Y,0,0,\ldots).
+\]
+Let its principal part at $-n$ be
+\[
+ \sum_{j=1}^{M}\frac{p_j(n)}{(x+n)^j},\qquad
+ \Delta p_j(n)=p_j(n)-p_j(n-1),\qquad
+ P_0(x)=\sum_{j=1}^{M}p_j(0)x^{-j}.
+\]
+Zero coefficients may be included.  These finite Laurent coefficients
+are the harmonic polynomials supplied by the incoming report.  In
+particular, $p_j(n)=O((1+\log n)^d)$ and
+$\Delta p_j(n)=O((1+\log n)^d/n)$ for some fixed $d$.
+Define
+\begin{align}
+ F_P(x)&=f_P(x)-f_P(x+1)-P_0(x),\label{mellin:F}\\
+ c_P(L)&=\phi_P'(L)+p_1(0)=\sum_{r=0}^{R}c_rL^r,\label{mellin:c}\\
+ h_P(x)&=F_P(x)+\mathbf 1_{[1,\infty)}(x)\frac{c_P(\log x)}x.
+ \label{mellin:h}
+\end{align}
+The cutoff is exactly $1$, the same scale as the finite-part integral
+on $[0,1]$.  A value assigned to the step function at $1$ has no effect.
+
+\begin{theorem}[Ordinary Mellin realization of every residue coefficient]
+\label{mellin:main}
+The function $F_P$ extends analytically through $x=0$, and
+\[
+ h_P(x)=O((1+\log x)^d/x^2)\quad(x\longrightarrow\infty).
+\]
+Consequently
+\begin{equation}\label{mellin:A}
+ A_P(u)=\int_0^\infty x^{-u}h_P(x)\,dx
+\end{equation}
+is holomorphic in $-1<\operatorname{Re}u<1$.  Its derivatives there
+are ordinary absolutely convergent integrals.  Put
+\begin{equation}\label{mellin:B}
+ \mathcal B_P(u)=\frac{\sin\pi u}{\pi}
+ \left(A_P(u)-\sum_{r=0}^{R}\frac{c_r r!}{u^{r+1}}\right).
+\end{equation}
+This is a meromorphic germ at zero.  If
+\[
+ D_j(v)=\sum_{n\ge1}\frac{\Delta p_j(n)}{n^v},\qquad D_P=D_1,
+\]
+then the exact meromorphic identity is
+\begin{equation}\label{mellin:bridge}
+ \boxed{\mathcal B_P(u)=D_P(u)+
+ \sum_{j=2}^{M}\frac{(u)_{j-1}}{(j-1)!}D_j(u+j-1).}
+\end{equation}
+Every series in the sum over $j\ge2$ is normally convergent on
+$\operatorname{Re}u>-1$.  In the original strip
+$0<\operatorname{Re}u<1$ one may equivalently write
+\begin{equation}\label{mellin:unsubtracted}
+ \mathcal B_P(u)=\frac{\sin\pi u}{\pi}
+                  \int_0^\infty x^{-u}F_P(x)\,dx.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Subtract the normalized Mittag--Leffler formula for $f_P(x+1)$ from
+that for $f_P(x)$.  The constants cancel.  Reindexing a finite cutoff
+and passing to its limit gives
+\begin{equation}\label{mellin:partialfractions}
+ F_P(x)=\sum_{n\ge1}\sum_{j=1}^{M}
+               \frac{\Delta p_j(n)}{(x+n)^j}.
+\end{equation}
+Indeed the uncancelled last term is a principal part evaluated at
+$x+N+1$, and tends to zero as
+$O((1+\log N)^d/N)$.  The new series is normally convergent on
+compact sets away from the negative integers.  In particular it is
+analytic at zero.  This also follows directly from
+$f_P-P_0$ and $f_P(x+1)$ being analytic there.
+
+On the positive real axis, the usual differentiated digamma asymptotics
+give
+\[
+ f_P'(x)=\frac{\phi_P'(\log x)}x
+           +O((1+\log x)^d/x^2).
+\]
+Every monomial containing a positive polygamma derivative contributes
+only to the error.  Integrating this estimate from $x$ to $x+1$, and
+using $P_0(x)=p_1(0)/x+O(x^{-2})$, proves
+\[
+ F_P(x)=-\frac{c_P(\log x)}x
+              +O((1+\log x)^d/x^2).
+\]
+Thus the subtraction in \eqref{mellin:h} proves all assertions about
+$A_P$, including differentiation under the integral sign.
+
+For $0<\operatorname{Re}u<1$ absolute convergence permits insertion
+of \eqref{mellin:partialfractions}.  The elementary beta integral is
+\[
+ \int_0^\infty\frac{x^{-u}}{(x+n)^j}\,dx
+ =n^{1-u-j}\frac{\Gamma(1-u)\Gamma(j-1+u)}{\Gamma(j)}.
+\]
+Its multiplication by $\sin(\pi u)/\pi$ is
+$n^{1-u-j}(u)_{j-1}/(j-1)!$, including $j=1$.
+The coefficient bound above makes the resulting sum absolutely
+convergent.  Also
+\[
+ \int_1^\infty x^{-u-1}(\log x)^r\,dx=\frac{r!}{u^{r+1}}.
+\]
+These two computations prove \eqref{mellin:bridge} and
+\eqref{mellin:unsubtracted} in the strip.  The $j\ge2$ series
+converge locally normally for $\operatorname{Re}u>-1$; the scalar
+residue filter continues $D_P$ meromorphically there.  Uniqueness of
+continuation proves the germ identity.  No integral at a divergent
+endpoint has been differentiated without its stated subtraction.
+\end{proof}
+
+\subsection{An explicit coefficient formula at every order}
+
+For $m,r\ge0$ define the finite polynomial
+\begin{equation}\label{mellin:E}
+ E_{m,r}(L)=[u^r]e^{-Lu}\prod_{k=1}^{m}(1+u/k).
+\end{equation}
+Here an empty product is one.  The first three are
+\[
+ E_{m,0}=1,\qquad E_{m,1}=H_m-L,\qquad
+ E_{m,2}=\frac{(H_m-L)^2-H_m^{(2)}}2.
+\]
+Thus these are finite harmonic polynomials, or equivalently Bell
+polynomials with cumulants $H_m-L$ and
+$(-1)^{k-1}(k-1)!H_m^{(k)}$ for $k\ge2$.
+
+Write $\mu_k(P)=\int_0^\infty h_P(x)(\log x)^k\,dx$.
+For $q\ge0$ put
+\begin{align}
+ B_q(P)={}&
+ \sum_{\substack{k\ge0\\2k+1\le q}}
+ \frac{(-1)^{k+q-2k-1}\pi^{2k}}
+ {(2k+1)!(q-2k-1)!}\,\mu_{q-2k-1}(P)\notag\\
+ &-\sum_{\substack{0\le r\le R\\q+r\ {
+m even}}}
+ c_r r!\frac{(-1)^{(q+r)/2}\pi^{q+r}}{(q+r+1)!}.
+ \label{mellin:Bq}
+\end{align}
+The first sum is empty for $q=0$.  It is often clearer computationally
+to take the coefficient directly in \eqref{mellin:B}; formula
+\eqref{mellin:Bq} specifies every sign and factorial.
+
+\begin{corollary}[Higher coefficients and the complete Stieltjes term]
+\label{mellin:coefficients}
+For every integer $q\ge1$,
+\begin{equation}\label{mellin:Dq}
+ \boxed{[u^q]D_P(u)=B_q(P)-
+ \sum_{j=2}^{M}\sum_{n\ge1}
+ \frac{\Delta p_j(n)}{(j-1)n^{j-1}}
+ E_{j-2,q-1}(\log n).}
+\end{equation}
+The double sum is finite in $j$ and absolutely convergent in $n$.
+If the inherited scalar residue polynomial is
+\[
+ R_P(L)=-\frac{\phi_P(L+i\pi)-\phi_P(L-i\pi)}{2i\pi},
+ \qquad R_P'(L)=\sum_{r=0}^{S}a_rL^r,
+\]
+put
+$\delta_n=\Delta p_1(n)-R_P'(\log n)/n$.
+For every $q\ge0$ its entire ordinary-series counterpart is
+\begin{equation}\label{mellin:stieltjes}
+ \boxed{[u^q]D_P(u)=\frac{(-1)^q}{q!}
+ \left(\sum_{r=0}^{S}a_r\gamma_{q+r}
+                  +\sum_{n\ge1}\delta_n(\log n)^q\right).}
+\end{equation}
+The second series converges absolutely.  In particular, the same
+scalar projection controls \emph{all} Stieltjes corrections.  If
+$\phi_P=0$, every displayed $\gamma_{q+r}$ term vanishes.
+\end{corollary}
+
+\begin{proof}
+Expanding $A_P$ in \eqref{mellin:B} gives \eqref{mellin:Bq}.
+For $j\ge2$,
+\[
+ \frac{(u)_{j-1}}{(j-1)!}n^{-u}
+ =\frac{u}{j-1}e^{-u\log n}\prod_{k=1}^{j-2}(1+u/k).
+\]
+Taking the coefficient of $u^q$ in the normally convergent identity
+\eqref{mellin:bridge} proves \eqref{mellin:Dq}.  The logarithmic
+factor grows by only a fixed power, so the convergence assertion
+persists at every $q$.
+
+The scalar filter gives
+$\delta_n=O((1+\log n)^d/n^2)$ and
+\[
+ D_P(u)=\sum_r a_r(-1)^r\zeta^{(r)}(1+u)
+                         +\sum_{n\ge1}\delta_nn^{-u}.
+\]
+With the convention
+$\zeta(1+u)=u^{-1}+\sum_{m\ge0}(-1)^m\gamma_m u^m/m!$,
+the coefficient of $u^q$ in
+$(-1)^r\zeta^{(r)}(1+u)$ is
+$(-1)^q\gamma_{q+r}/q!$.  This proves \eqref{mellin:stieltjes}.
+\end{proof}
+
+For $q=1$, the last sum in \eqref{mellin:Dq} is exactly the inherited
+higher-pole correction
+\[
+ J_P=\sum_{j=2}^{M}\sum_{n\ge1}
+              \frac{\Delta p_j(n)}{(j-1)n^{j-1}}.
+\]
+Hence $[u]\mathcal B_P=J_P+[u]D_P$, and the prior finite-part theorem
+is recovered with its original endpoint constant:
+\[
+ \operatorname{FP}\int_0^1f_P(x)\,dx
+       =C_P+[u]\mathcal B_P(u),\qquad
+ C_P=\frac1{2\pi}\int_{-\pi}^{\pi}\phi_P(i\theta)\,d\theta.
+\]
+This is a normalization check, not a new proof of that antecedent.
+
+\begin{corollary}[The first new logarithmic spatial functional]
+\label{mellin:mixedq2}
+If $P$ is mixed, meaning $\phi_P=0$, then
+\begin{equation}\label{mellin:q2}
+ \boxed{[u^2]D_P(u)=
+ -\int_0^\infty h_P(x)\log x\,dx+\frac{\pi^2p_1(0)}6
+ -\sum_{j=2}^{M}\sum_{n\ge1}
+ \frac{\Delta p_j(n)(H_{j-2}-\log n)}{(j-1)n^{j-1}}.}
+\end{equation}
+All integrals and series are ordinary and absolutely convergent.
+\end{corollary}
+
+The local coefficient $p_1(0)$ is essential even in the mixed case.
+It is the correction from $\sin(\pi u)/(\pi u)$, and its coefficient
+is invisible at first order.  Thus disappearance of the Stieltjes
+terms does not permit omission of this second-order endpoint term.
+
+\subsection{Concrete polygamma and nonlinear examples}
+
+For $P=u_1^2$ one has
+\[
+ p_4(n)=1,\quad p_2(n)=2(H_n^{(2)}+\zeta(2)),\quad
+ p_1(n)=4(H_n^{(3)}-\zeta(3)).
+\]
+All omitted principal-part coefficients vanish.  Therefore
+\begin{equation}\label{mellin:trigammasquare}
+ \mathcal B_{u_1^2}(u)=(4+2u)\zeta(u+3).
+\end{equation}
+Let $Q(x)=\psi'(1+x)$.  An ordinary all-order generating formula is
+obtained from \eqref{mellin:B} using
+\[
+ h_{u_1^2}(x)=
+ \begin{cases}
+ 2\{Q(x)-\zeta(2)+2\zeta(3)x\}/x^2,&0<x<1,\\
+ 2\{Q(x)-\zeta(2)\}/x^2,&x>1.
+ \end{cases}
+\]
+Its quadratic coefficient yields the explicit identity
+\begin{equation}\label{mellin:trigamma-log}
+ \boxed{\begin{aligned}
+ &\int_0^1\frac{\psi'(1+x)-\zeta(2)+2\zeta(3)x}{x^2}\log x\,dx\\
+ &\quad+\int_1^\infty\frac{\psi'(1+x)-\zeta(2)}{x^2}\log x\,dx\\
+ &\qquad=-\zeta''(3)-\zeta'(3)-\frac{\pi^2\zeta(3)}3.
+ \end{aligned}}
+\end{equation}
+Primes on $\zeta$ denote derivatives in the spectral order.  The
+linear polygamma example provides a particularly simple independent
+check of the endpoint term in \eqref{mellin:q2}.
+
+For an example retaining a nonlinear spatial integrand, take $P=u_1^3$.
+Write $Z(s,t)=\sum_{n>m\ge1}n^{-s}m^{-t}$ in its convergent region.
+Finite Laurent extraction gives
+\begin{align*}
+ p_6&=1,&p_5&=0,&p_4&=3c_2,&p_3&=6c_3,\\
+ p_2&=9c_4+3c_2^2,&p_1&=12c_5+12c_2c_3,
+ \qquad c_r=H_n^{(r)}+(-1)^r\zeta(r).
+\end{align*}
+Inserting their exact differences into \eqref{mellin:bridge} proves
+the finite depth-two identity
+\begin{equation}\label{mellin:trigammacube}
+ \boxed{\begin{aligned}
+ \mathcal B_{u_1^3}(u)={}&
+ \frac{u^3+9u^2+32u+48}{2}\,\zeta(u+5)\\
+ &+6(u+2)\{Z(u+3,2)+\zeta(2)\zeta(u+3)\}\\
+ &+12\{Z(u+2,3)-\zeta(3)\zeta(u+2)\}.
+ \end{aligned}}
+\end{equation}
+All $Z$ functions in a neighborhood of zero are ordinary absolutely
+convergent strict series.  Arbitrary higher order derivatives may be
+taken there; no identity restricted to integer arguments is being
+differentiated.
+
+For clarity, put $K=\zeta(5)+\zeta(2)\zeta(3)$ and
+\begin{align*}
+ U(x)={}&\frac{3Q(x)}{x^4}+\frac{3Q(x)^2}{x^2}
+ -\frac{3\zeta(2)}{x^4}+\frac{6\zeta(3)}{x^3}
+ -\frac{9\zeta(4)+3\zeta(2)^2}{x^2}.
+\end{align*}
+The ordinary function for \eqref{mellin:A} is
+\[
+ h_{u_1^3}(x)=U(x)+\frac{12K}{x}\mathbf1_{(0,1)}(x).
+\]
+The displayed cancellations make it bounded at zero; for numerical
+work its convergent Taylor series avoids loss of digits there.
+With $\partial_1$ denoting a genuine first-order spectral derivative,
+the second coefficient of \eqref{mellin:trigammacube} is
+\begin{align}
+ B_2(u_1^3)={}&12\zeta''(5)+16\zeta'(5)+\tfrac92\zeta(5)
+ +6(\partial_1^2+\partial_1)Z(3,2)\notag\\
+ &+6\zeta(2)\{\zeta''(3)+\zeta'(3)\}
+ +6\partial_1^2 Z(2,3)-6\zeta(3)\zeta''(2).
+ \label{mellin:cube-B2}
+\end{align}
+It follows that the following nonlinear logarithmic integral has a
+finite, convergent depth-two evaluation:
+\begin{equation}\label{mellin:cube-log}
+ \boxed{\int_0^\infty h_{u_1^3}(x)\log x\,dx
+                  =-B_2(u_1^3)-2\pi^2K.}
+\end{equation}
+This evaluates the logarithmic spatial functional in a specified
+spectral family.  It makes no claim that the retained derivatives
+of $Z$ are arithmetically irreducible.
+
+\subsection{What this settles and what remains}
+
+The higher-spectral-coefficient question is resolved for every
+differential polynomial: the spatial kernel, the scale, all endpoint
+terms, the higher-pole corrections, and every Stieltjes coefficient are
+explicit.  The inherited convergent-word compiler applies to the
+coefficients in \eqref{mellin:Dq}: it only acquires powers of
+$\log n$, hence higher derivatives in the existing spectral arguments.
+Thus these formulas introduce no additional kind of multiple-zeta
+coordinate.  They do not settle relations between the resulting
+evaluated coordinates.  A separate next problem is to extend the
+construction to independent shifts, where the pole lattices no longer
+align under the unit difference, and to characterize which linear
+combinations eliminate all higher-depth spectral derivatives.

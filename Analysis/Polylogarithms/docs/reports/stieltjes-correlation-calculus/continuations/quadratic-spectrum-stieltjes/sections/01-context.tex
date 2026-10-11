@@ -1,0 +1,102 @@
+\section{Research target and precise scope}\label{qspec:sec:context}
+
+The canonical manuscript organizes polylogarithms, Gamma products, Hurwitz
+spectral derivatives, and generalized Stieltjes constants within one exact
+calculus \cite{repo}. Its current research chapter explicitly distinguishes
+an analytic identity from a relation in a formal presentation and from a
+small numerical residual. We retain that distinction. In particular, the
+Gaussian $S_6$ identity is not proved here, and the rejection of one frozen
+$S_8$ vector is not interpreted as rejection of every identity in its
+comparison space.
+
+The present continuation uses a different exact mechanism: introduce a
+positive parameter $b$ into $x^2+b^2$, evaluate the resulting bilateral
+spectrum in two ways, and then remove the deformation by a convergent
+difference. The even spectrum sees the sum of reflected Hurwitz functions.
+A first-moment spectrum sees their difference. Neither channel alone
+recovers an individual Stieltjes constant, but together they do.
+
+\subsection{The results and their logical dependence}
+Theorem~\ref{qspec:thm:master} is the complete reflected Stieltjes identity.
+Theorem~\ref{qspec:thm:polylog-integrals} replaces its Fourier--Bessel terms
+by ordinary integrals of damped polylogarithms. The harmonic coefficient
+formula and finite-head identity in Theorems~\ref{qspec:thm:harmonic}
+and~\ref{qspec:thm:head} make all spectral derivatives explicit and avoid
+an invalid extension of a binomial series outside its convergence disk.
+
+The second main result, Theorem~\ref{qspec:thm:anomaly}, gives a complete
+polynomial-weight parity criterion for the conjugate factorization defect.
+It is independent of the Stieltjes master identity. Combining it with the
+classical half-integer Bessel polynomials gives
+Theorem~\ref{qspec:thm:finite}, a finite complex-Hurwitz/polylogarithm identity
+at every negative integer. Theorem~\ref{qspec:thm:mass-ladder} identifies the
+same family as repeated mass antiderivatives of a logarithm.
+
+An illustrative member is obtained by setting
+$z=\exp(-2\pi b+2\pi ia)$:
+\begin{align}
+&2\Rea\bigl\{\zeta'(-2,a+ib)+\zeta'(-2,1-a+ib)\notag\\[-2pt]
+&\hspace{35mm}-2ib\bigl(\zeta'(-1,a+ib)+\zeta'(-1,1-a+ib)\bigr)\bigr\}\notag\\
+&\qquad=-\frac{4\pi b^3}{3}
+-\frac{2b}{\pi}\Rea\Li_2(z)-\frac1{\pi^2}\Rea\Li_3(z).
+\label{qspec:eq:opening-example}
+\end{align}
+It holds for every $0<a<1$ and $b>0$. There is no unreported tail on the
+right. Its proof is part of the all-index theorem, not an integer-relation
+search.
+
+\subsection{Attribution and what is not asserted}
+The Gaussian Poisson identity, Mellin transforms, half-integer Bessel
+functions, Hurwitz parameter differentiation, and Gamma reflection are
+classical \cite{theta,bessel,halfK,hurwitz,gamma}. The first-derivative
+multiplicative anomaly is also a classical subject; Dowker treats products
+of linear factors and polynomial degeneracies \cite{dowker}. The repository
+already has an arithmetic spectral-jet continuation that separates local
+residue defects from nonlocal values \cite{arithmetic}. Accordingly, we do
+not advertise the existence of the anomaly, Poisson continuation, or
+negative-polygamma primitives as discoveries.
+
+What is established here is an explicit two-channel Stieltjes construction,
+its global harmonic implementation, a conjugate-pair polynomial parity
+classification, and the resulting finite identities and primitive ladders.
+These statements are derived in full below. Their absence from the portions
+inspected is not an exhaustive literature or repository priority check.
+No transcendence, numerical period independence, or proof-assistant
+formalization is claimed.
+
+\subsection{Conventions and analytic domains}\label{qspec:sec:conventions}
+Unless stated otherwise,
+\begin{equation}\label{qspec:eq:domain}
+0<a<1,\qquad b>0,\qquad Q_b(x)=x^2+b^2,
+\qquad x_n=n+a,\quad y_n=n+1-a.
+\end{equation}
+A one-sided formula needs only $a>0$. The variable $s$ is a spectral order;
+$\zeta^{(r)}(s,a)$ and $\zeta'(s,a)$ differentiate that order, not $a$.
+We use
+\begin{equation}\label{qspec:eq:stieltjes-convention}
+\zeta(1+u,a)=\frac1u+
+\sum_{m=0}^{\infty}\frac{(-1)^m}{m!}\gamma_m(a)u^m,
+\qquad G_m^\pm(a)=\gamma_m(a)\pm\gamma_m(1-a).
+\end{equation}
+In particular $\gamma_0(a)=-\psi(a)$. Superscripts on $\gamma_m^{(p)}$
+will mean parameter derivatives.
+
+All powers of positive $Q_b(x)$ use the real logarithm. For complex shifts
+$a\pm ib$ we use the principal logarithm, and the branch of $\log\Gamma$
+holomorphic on the right half-plane and real on its positive axis. Thus
+$\log(x+ib)+\log(x-ib)=\log Q_b(x)$ for $x>0$, with no branch correction.
+The damped polylogarithms have arguments strictly inside the unit disk,
+where their defining series is entire in the order. Unit-circle limits
+are stated separately.
+
+The complete exponential Bell polynomials are defined by
+\begin{equation}\label{qspec:eq:bell}
+\exp\left(\sum_{r\ge1}v_r\frac{t^r}{r!}\right)
+=\sum_{m\ge0}\Bcal_m(v_1,\ldots,v_m)\frac{t^m}{m!}.
+\end{equation}
+The convention $\Bcal_0=1$ and the recurrence
+\begin{equation}\label{qspec:eq:bell-recurrence}
+\Bcal_m=\sum_{r=1}^m\binom{m-1}{r-1}v_r\Bcal_{m-r}
+\end{equation}
+make every finite coefficient used below directly reproducible. We write
+$H_k^{(r)}=\sum_{j=1}^k j^{-r}$ and $H_0^{(r)}=0$.

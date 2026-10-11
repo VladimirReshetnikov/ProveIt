@@ -1,0 +1,480 @@
+% Standalone mathematical notes for integration by the parent agent.
+% Source question: incoming DHR, sections/09-research.tex, first subsection.
+\section{The next two-particle resonance: all overlap terms and its cutoff constant}
+\label{res:sec:resonance}\label{res:section}
+
+The incoming \emph{Determinantal Harmonic Resonance} report
+\cite[Section 9, first proposed target]{DHR} proves the
+first resonance and explicitly proposes the two-particle next resonance
+as its initial higher-resonance target.  We resolve that target here.
+The input Gauss summation and the determinant identity are classical;
+the contribution relative to that report is a normally convergent
+subtraction at the next resonance, including the product overlap, an
+explicit hard-cutoff constant, and its exact comparison with the
+spectral Laurent constant.  No historical priority claim is intended.
+
+Let $\Re a,\Re c>0$, and put
+\[
+ b_0=a+c+1,\qquad
+ w_n(u)=\frac{\Gamma(n+a)\Gamma(n+c)}
+ {\Gamma(n+b_0+u)\Gamma(n+1)},\qquad n\geq0.
+\]
+The two-particle series
+\[
+ Z(u)=\sum_{0\leq m<n}(n-m)^2w_m(u)w_n(u)
+\]
+initially converges for $\Re u>1$.  The next resonance is $u=0$.
+Use the abbreviations
+\begin{align*}
+ t&=ac+a+c, & A&=\frac1{ac}, & h&=\frac{t}{ac}=1+\frac1a+\frac1c,\\
+ L(u)&=\frac{\Gamma(a+1)\Gamma(c+1)\Gamma(1+u)}
+ {\Gamma(a+1+u)\Gamma(c+1+u)}, &
+ A(u)&=\frac{L(u)}{ac},\\
+ B&=\psi(1)-\psi(a+1)-\psi(c+1), &
+ T&=\psi'(1)-\psi'(a+1)-\psi'(c+1).
+\end{align*}
+Thus $L(0)=1$, $L'(0)=B$, and $L''(0)=B^2+T$.
+For an independent anchor $\Re\alpha>0$, define
+\[
+ \kappa_\alpha(u)=-t+
+       \left(\alpha-a-c-\tfrac12\right)u-\tfrac12u^2.
+\]
+Powers of $n+\alpha$ use the analytic logarithm on the right
+half-plane, real on the positive real axis. For $x>0$, write
+$x^{-u}=\exp(-u\log x)$ with the real logarithm.
+
+\begin{theorem}[Normally convergent higher-resonance subtraction]
+\label{res:thm:normal}
+For $\Re u>-1$, the following three sums converge locally normally,
+jointly in $a,c,u,\alpha$ on the stated right-half-plane domains:
+\begin{align}
+ A(u)&=\sum_{n\geq0}w_n(u),\label{res:eq:A}\\
+ B_\alpha(u)&=\sum_{n\geq0}
+    \left[nw_n(u)-(n+\alpha)^{-1-u}\right],\label{res:eq:B}\\
+ D_\alpha(u)&=\sum_{n\geq0}\left[n^2w_n(u)
+    -(n+\alpha)^{-u}
+    -\kappa_\alpha(u)(n+\alpha)^{-1-u}\right].\label{res:eq:D}
+\end{align}
+Every fixed mixed parameter derivative may be taken termwise.  They
+have the exact representations
+\begin{align}
+ B_\alpha(u)&=\frac{L(u)}u-\zeta(1+u,\alpha),\label{res:eq:Bexact}\\
+ D_\alpha(u)&=\frac{L(u)(u+t)}{u(u-1)}
+    -\zeta(u,\alpha)
+    -\kappa_\alpha(u)\zeta(1+u,\alpha).\label{res:eq:Dexact}
+\end{align}
+Every apparent singularity of these expressions in $\Re u>-1$ is
+removable.  The meromorphic continuation of the two-particle sum is
+\begin{align}
+ Z(u)={}&A(u)\left[\zeta(u,\alpha)
+       +\kappa_\alpha(u)\zeta(1+u,\alpha)+D_\alpha(u)\right]
+       -\left[\zeta(1+u,\alpha)+B_\alpha(u)\right]^2\notag\\
+ ={}&-\frac{L(u)^2(1+u/a)(1+u/c)}{u^2(1-u)}.
+ \label{res:eq:Z}
+\end{align}
+In particular, the square of the subtracted harmonic moment is an
+essential overlap term.
+\end{theorem}
+
+\begin{proof}
+The uniform Gamma-ratio expansion on compact parameter sets
+\cite[Section 5.11(iii)]{DLMF} gives
+\[
+ w_n(u)=n^{-2-u}\left[1+\frac{\beta(u)}n+O(n^{-2})\right],\qquad
+ \beta(u)=-t-(a+c+\tfrac12)u-\tfrac12u^2.
+\]
+When $n$ is replaced by $n+\alpha$ in the leading power of $n^2w_n$,
+the next coefficient becomes $\beta(u)+\alpha u=\kappa_\alpha(u)$.
+Consequently each summand in \eqref{res:eq:B} and \eqref{res:eq:D}
+is $O(n^{-2-\Re u})$, locally uniformly; the same estimate without
+subtraction applies to \eqref{res:eq:A}.  On a compact subset of
+$\Re u>-1$ these estimates have a summable common majorant.
+Cauchy's integral formula on slightly larger compact neighborhoods
+then gives the assertion for all fixed mixed derivatives.  In
+particular, differentiating at $u=0$ is justified before any
+meromorphic expression is evaluated.
+
+For the region in which the relevant ordinary moments converge,
+Gauss summation \cite[Equation 15.4.20]{DLMF} yields
+\begin{align*}
+ \sum_{n\geq0}w_n(u)&=A(u),\\
+ \sum_{n\geq0}nw_n(u)&=\frac{L(u)}u,\\
+ \sum_{n\geq0}n(n-1)w_n(u)
+    &=\frac{(a+1)(c+1)L(u)}{u(u-1)}.
+\end{align*}
+These formulas follow either by shifting the index in the defining
+${}_2F_1$ series, or by differentiating it once and twice in its
+argument before setting that argument to one.  Adding the last two
+moments gives $L(u)(u+t)/(u(u-1))$.  Subtracting the two Hurwitz model
+series proves \eqref{res:eq:Bexact} and \eqref{res:eq:Dexact} first on
+nonempty open convergence domains and then by analytic continuation.
+The proved holomorphy of the left sides proves removability at both
+$u=0$ and $u=1$ wherever they occur in the displayed right sides.
+
+Finite Cauchy--Binet gives
+$\sum_{0\leq m<n\leq N}(n-m)^2w_mw_n=M_{0,N}M_{2,N}-M_{1,N}^2$.
+Pass to the limit for $\Re u>1$ and insert the preceding moment
+formulas.  The numerator simplifies using
+$u(u+t)-ac(u-1)=(u+a)(u+c)$, proving \eqref{res:eq:Z}.
+
+There is also a fully summable two-index remainder, rather than only
+a formal determinant of continued quantities.  Write $b_n(u)$ and
+$d_n(u)$ for the summands in \eqref{res:eq:B} and \eqref{res:eq:D}.
+Then
+\[
+ A(u)D_\alpha(u)-B_\alpha(u)^2
+ =\sum_{m,n\geq0}\left[w_m(u)d_n(u)-b_m(u)b_n(u)\right]
+\]
+is absolutely and locally normally convergent, by the product of
+the three $\ell^1$ majorants just proved.  The remaining terms in
+\eqref{res:eq:Z} are the explicitly displayed model sums and their
+cross terms.  Thus the complete subtraction, including overlaps,
+has a normally convergent realization independent of expanding
+the Gamma product.
+\end{proof}
+
+\begin{theorem}[Hard cutoff and spectral finite part]
+\label{res:thm:cutoff}
+Let
+\[
+ S_N=\sum_{0\leq m<n\leq N}(n-m)^2w_m(0)w_n(0),\qquad x=N+1.
+\]
+As $N\to\infty$, locally uniformly for $\Re a,\Re c>0$,
+\begin{equation}
+ \boxed{S_N=A x-(\log x+B)^2-h(\log x+B)-2-A
+             +O\left(\frac{\log^2(x+1)}x\right).}
+ \label{res:eq:cutoff}
+\end{equation}
+The Laurent expansion of the spectral continuation is
+\begin{equation}
+ Z(u)=-\frac1{u^2}-\frac{2B+h}u
+       -\left[2B^2+T+2hB+h+A\right]+O(u).
+ \label{res:eq:Laurent}
+\end{equation}
+If $C_{\rm cut}$ denotes the constant after subtraction of
+$Ax-\log^2x-(2B+h)\log x$, and $C_{\rm sp}$ the Laurent constant,
+then
+\begin{align}
+ C_{\rm cut}&=-B^2-hB-2-A,\label{res:eq:Ccut}\\
+ C_{\rm sp}&=2C_{\rm cut}+4+A-h-T.\label{res:eq:compare}
+\end{align}
+This uses the stated unnormalized spectral deformation $w_n(u)$;
+neither constant is being assigned to an unspecified regulator.
+\end{theorem}
+
+\begin{proof}
+Use the anchor $\alpha=1$ in Theorem~\ref{res:thm:normal}.
+The expansion of $L(u)/u$ at zero gives
+$B_1(0)=B-\gamma$.  Since $\zeta(0)=-1/2$ and
+$\kappa_1'(0)=1/2-a-c$, the constant term in
+\eqref{res:eq:Dexact} gives
+\[
+ D_1(0)=-t(B-\gamma)-ac-1.
+\]
+Consequently the three finite moments satisfy
+\begin{align*}
+ M_{0,N}&=A-\frac1x+O(x^{-2}),\\
+ M_{1,N}&=\log x+B+O(x^{-1}),\\
+ M_{2,N}&=x-t\log x-tB-ac-1+O(x^{-1}).
+\end{align*}
+The first formula follows by summing the $n^{-2}$ Gamma-ratio
+tail; the other two follow from the proved summable residuals and
+$H_x=\log x+\gamma+O(x^{-1})$.  Multiplication in the cutoff
+determinant gives \eqref{res:eq:cutoff}.  In particular, the product
+of the $-1/x$ correction in $M_{0,N}$ with the $x$ divergence in
+$M_{2,N}$ contributes $-1$ to the constant.  Omitting it would give
+an incorrect finite part.
+
+Finally $L(u)^2=1+2Bu+(2B^2+T)u^2+O(u^3)$ and
+\[
+ \frac{(1+u/a)(1+u/c)}{1-u}
+   =1+hu+(h+A)u^2+O(u^3).
+\]
+Insert these into \eqref{res:eq:Z}; this proves
+\eqref{res:eq:Laurent} and the comparison formula.
+\end{proof}
+
+\paragraph{Dependence on the spectral normalization.}
+Multiplying each particle's weight by a holomorphic function
+$\lambda(u)$ with $\lambda(0)=1$ leaves the hard cutoff at zero
+unchanged.  Write $\lambda_j=\lambda^{(j)}(0)$.  Since the total
+spectral sum is multiplied by $\lambda(u)^2$, its residue and
+constant become, respectively,
+\[
+ -(2B+h)-2\lambda_1,\qquad
+ C_{\rm sp}-2\lambda_1(2B+h)-\lambda_1^2-\lambda_2.
+\]
+Thus the second derivative of the normalization enters at this
+double pole.  These expressions follow by multiplying the two
+Taylor--Laurent series; they explain exactly why the first-resonance
+rule, which has only one amplitude derivative, cannot be copied
+unchanged to the present resonance.
+
+\paragraph{A convergent renormalized sum.}
+Let $K_N=S_N-S_{N-1}$, $S_{-1}=0$, and $d=B-\gamma$.
+The following is an ordinary absolutely convergent identity:
+\begin{equation}
+ \sum_{m\geq1}\left[
+ K_{m-1}-A+\frac{2H_m+2d+h}{m}-\frac1{m^2}\right]
+   =-d^2-hd-2-A.\label{res:eq:mass-sum}
+\end{equation}
+Indeed the largest-index formula
+$K_N=w_N(0)[N^2M_{0,N-1}-2NM_{1,N-1}+M_{2,N-1}]$
+and one further Gamma-ratio term give a remainder
+$O(\log(m+1)/m^2)$ in the displayed summand.  Its partial sum is
+exactly $S_{m-1}-Am+H_m^2+(2d+h)H_m$, and
+\eqref{res:eq:cutoff} gives the limit.  The $m=1$ term is included;
+the two-particle mass there is zero.
+
+\subsection{Uniform spectral deformation and every cutoff jet}
+The previous calculation extends to a uniform formula which retains
+the two different escape powers.  In particular, derivatives at the
+resonance can be computed without differentiating a nonuniform
+asymptotic assertion.
+
+\begin{theorem}[Uniform near-resonance expansion]
+\label{res:thm:uniform}
+Let $0<\delta<1/3$, $x=N+1$, and
+$S_N(u)=\sum_{0\leq m<n\leq N}(n-m)^2w_m(u)w_n(u)$.
+Uniformly for $|u|\leq\delta$ and for $a,c$ on compact subsets of
+their right half-planes,
+\begin{align}
+ S_N(u)={}&Z(u)+\frac{A(u)x^{1-u}}{1-u}\notag\\
+ &+x^{-u}\left[\frac{2L(u)}{u^2}
+              -\frac{A(u)\beta(u)}u-\frac{A(u)}2\right]
+       -\frac{x^{-2u}}{u^2(1-u^2)}
+       +O\left(x^{-1+2\delta}\log^2(x+1)\right),
+ \label{res:eq:uniform}
+\end{align}
+where $\beta(u)=-t-(a+c+1/2)u-u^2/2$.
+The full displayed expression has a removable singularity at $u=0$.
+The error is holomorphic in $u$ near this closed disk; every fixed
+derivative at $u=0$ tends to zero as $N\to\infty$.
+\end{theorem}
+\begin{proof}
+The uniform Gamma-ratio expansion from
+Theorem~\ref{res:thm:normal} and the first two Euler--Maclaurin
+terms for the corresponding Hurwitz tails
+\cite[Equation 25.11.43]{DLMF} give
+\begin{align*}
+ M_{0,N}(u)&=A(u)-\frac{x^{-1-u}}{1+u}
+                   +O(x^{-2+\delta}),\\
+ M_{1,N}(u)&=\frac{L(u)-x^{-u}}u+O(x^{-1+\delta}),\\
+ M_{2,N}(u)&=\frac{L(u)(u+t)}{u(u-1)}
+       +\frac{x^{1-u}}{1-u}
+       -x^{-u}\left[\frac12+\frac{\beta(u)}u\right]
+       +O(x^{-1+\delta}).
+\end{align*}
+For a direct justification of the analytic tails, subtract
+$n^{-1-u}$ from $nw_n(u)$ and subtract
+$n^{-u}+\beta(u)n^{-1-u}$ from $n^2w_n(u)$ before summing from
+$n=x$ to infinity.  The residuals are uniformly summable for
+$\Re u>-1$.  Apply the ordinary Hurwitz tail expansion to the
+model powers, first in their convergence regions and then by
+analytic continuation.  This proves both the error bounds and
+their uniform removability at $u=0$.
+
+The apparent quotients involving $u^{-1}$ in the second and third
+lines, after their pole cancellations, are
+$O(x^\delta\log(x+1))$.  On multiplying the finite moment
+determinant, the tail of $M_{0,N}$ times the leading divergence of
+$M_{2,N}$ contributes
+$-x^{-2u}/((1+u)(1-u))$.  All other terms involving a remainder
+or this tail are $O(x^{-1+2\delta}\log^2(x+1))$.
+Combine this contribution with the $-x^{-2u}/u^2$ from the square
+of $M_{1,N}$; their sum is the last term in
+\eqref{res:eq:uniform}.  The other terms simplify to the first
+three displayed terms by \eqref{res:eq:Z}.
+Finally, use Cauchy's estimate on a circle of radius $\delta$
+around zero to transfer the tending-to-zero error to every fixed
+derivative.  For clarity, the possible negative Laurent powers in
+the full model cancel as follows: their $u^{-2}$ coefficients are
+$-1+2-1=0$, and their $u^{-1}$ coefficients are
+$-(2B+h)+(2B+h-2\log x)+2\log x=0$.
+All other potential poles of the model lie outside $|u|<1$.
+Thus the difference between the finite cutoff and the model is
+holomorphic throughout $|u|<1$, as required for Cauchy's estimate.
+\end{proof}
+
+In particular, for each integer $q\geq0$ there are explicit
+polynomials $P_q,Q_q$ of degrees at most $q,q+2$ such that
+\begin{equation}
+ \left.\partial_u^q S_N(u)\right|_{u=0}
+       =xP_q(\log x)+Q_q(\log x)+o(1).
+ \label{res:eq:all-cutoff-jets}
+\end{equation}
+They are obtained by taking $q!$ times the coefficient of $u^q$
+in \eqref{res:eq:uniform}; only finitely many Gamma derivatives
+are needed at each $q$.  The highest coefficient of the second
+polynomial is universal:
+\begin{equation}
+ [y^{q+2}]Q_q(y)
+   =\frac{(-1)^q(2-2^{q+2})}{(q+1)(q+2)}.
+ \label{res:eq:universal-log}
+\end{equation}
+Indeed the only contributions of this degree come from
+$2e^{-uy}/u^2-e^{-2uy}/u^2$.  This formula includes the
+$-\log^2x$ at $q=0$ and the $+\log^3x$ at $q=1$.
+The scale $x^{-2u}$ is essential even when only the finite
+part of the undeformed cutoff is wanted.
+
+\subsection{Generalized Stieltjes jets of the subtracted moments}
+The normally convergent formula has an auxiliary Hurwitz anchor,
+which supplies genuine generalized Stieltjes identities.  This is
+a consequence of the subtraction theorem, not a claim that merely
+differentiating Gauss summation is new.
+
+Let $Y_q$ be the exponential complete Bell polynomial, with $Y_0=1$,
+and set
+\[
+ \ell_j=\psi^{(j-1)}(1)-\psi^{(j-1)}(a+1)
+                    -\psi^{(j-1)}(c+1),\qquad j\geq1.
+\]
+For $q\geq0$, write
+\[
+ W_q(n)=w_n(0)Y_q\bigl(-\psi(n+b_0),-\psi'(n+b_0),
+                         \ldots,-\psi^{(q-1)}(n+b_0)\bigr).
+\]
+The interpretation is $W_0(n)=w_n(0)$.  Then
+\begin{equation}
+ \boxed{\sum_{n\geq0}\left[
+ nW_q(n)-\frac{(-\log(n+\alpha))^q}{n+\alpha}\right]
+ =\frac{Y_{q+1}(\ell_1,\ldots,\ell_{q+1})}{q+1}
+       -(-1)^q\gamma_q(\alpha).}\label{res:eq:Stieltjes}
+\end{equation}
+All logarithms have the right-half-plane branch.  This is ordinary
+absolute convergence, including every fixed mixed derivative in
+$a,c,\alpha$.  For example,
+\begin{align*}
+ \sum_{n\geq0}\left[nw_n(0)-\frac1{n+\alpha}\right]
+   &=B+\psi(\alpha),\\
+ \sum_{n\geq0}\left[-nw_n(0)\psi(n+b_0)
+                 +\frac{\log(n+\alpha)}{n+\alpha}\right]
+   &=\tfrac12(B^2+T)+\gamma_1(\alpha).
+\end{align*}
+These follow from \eqref{res:eq:Bexact} and the defining expansion
+$\zeta(1+u,\alpha)=u^{-1}+\sum_{q\geq0}(-1)^q\gamma_q(\alpha)u^q/q!$.
+For the second subtracted moment one may use the similarly explicit
+coefficient formula
+\begin{align}
+ \frac{D_\alpha^{(q)}(0)}{q!}
+ ={}&-t p_{q+1}-(t+1)\sum_{j=0}^q p_j
+     -\frac{\partial_s^q\zeta(0,\alpha)}{q!}\notag\\
+ &-\kappa_{q+1}
+     -\sum_{j=0}^{\min(2,q)}\kappa_j
+                    \frac{(-1)^{q-j}\gamma_{q-j}(\alpha)}{(q-j)!},
+ \label{res:eq:Djets}
+\end{align}
+where $p_j=Y_j(\ell_1,\ldots,\ell_j)/j!$,
+$\kappa_0=-t$, $\kappa_1=\alpha-a-c-1/2$,
+$\kappa_2=-1/2$, and $\kappa_j=0$ for $j>2$.
+The left side is obtained by differentiating the summands of
+\eqref{res:eq:D}; thus \eqref{res:eq:Djets} is a finite compiler
+for convergent Gamma/polygamma sums in generalized Stieltjes
+constants and ordinary spectral Hurwitz-zeta derivatives.
+
+\subsection{A rational specialization and its complete polylogarithm generator}
+At $a=c=1$, the weight is $w_n(0)=1/((n+1)(n+2))$.
+With $x=N+1$ the elementary finite moments are
+\[
+ M_{0,N}=\frac{x}{x+1},\quad
+ M_{1,N}=H_x+\frac2{x+1}-2,\quad
+ M_{2,N}=x-3H_x-\frac4{x+1}+4.
+\]
+Their determinant simplifies to
+\begin{equation}
+ \boxed{S_N=x-H_x^2+H_x-1-\frac{H_x-1}{x+1},\qquad
+ K_N=1-\frac{H_x}{x}-\frac{H_x-1}{x+1}.}\label{res:eq:rational}
+\end{equation}
+Thus the cutoff has harmonic degree two, but its largest-index
+generator has depth two.  The finite difference removes the constant
+coefficient of $H_x^2$; a formal harmonic-degree bound at the cutoff
+level need not be sharp for the generator.
+
+For $|z|<1$, summation of \eqref{res:eq:rational} gives
+\begin{equation}
+ \boxed{\sum_{0\leq m<n}
+   \frac{(n-m)^2z^{n+1}}{(m+1)(m+2)(n+1)(n+2)}
+ =\frac{z}{1-z}-1-\operatorname{Li}_2(z)
+  -\frac{1+z}{2z}\log^2(1-z)-\frac{\log(1-z)}z.}
+ \label{res:eq:G}
+\end{equation}
+The singularities at $z=0$ cancel, and its first term is $z^2/12$.
+To check the summation, use
+\[
+ \sum_{m\geq1}\frac{H_mz^m}{m}
+   =\operatorname{Li}_2(z)+\tfrac12\log^2(1-z),\qquad
+ \sum_{m\geq1}\frac{H_mz^m}{m+1}
+   =\frac{\log^2(1-z)}{2z}.
+\]
+Both follow by integrating the elementary generating function
+$\sum H_mz^m=-\log(1-z)/(1-z)$.
+In particular,
+\begin{equation}
+ \sum_{0\leq m<n}\frac{(n-m)^2\,2^{-n-1}}
+ {(m+1)(m+2)(n+1)(n+2)}
+ =2\log2-\log^22-\frac{\pi^2}{12}.\label{res:eq:half}
+\end{equation}
+
+For any integer $q\geq2$, let
+\[
+ J_q=\sum_{0\leq m<n}\frac{(n-m)^2}
+ {(m+1)(m+2)(n+1)^{q+1}(n+2)}.
+\]
+It converges absolutely since $K_N\to1$.  We use the strict convention
+$\zeta(j,1)=\sum_{m>k\geq1}m^{-j}k^{-1}$.  Put
+$E_j=\zeta(j,1)+\zeta(j+1)$ for $j\geq2$,
+$R_1=\zeta(2)-1$, and
+$R_q=E_q-\zeta(q)-R_{q-1}$ for $q\geq2$.  Then
+\begin{equation}
+ J_q=\zeta(q)-E_{q+1}-R_q.\label{res:eq:Jall}
+\end{equation}
+Writing $G(z)$ for \eqref{res:eq:G} and $\Theta=z\,d/dz$, the
+corresponding anchored primitives on $|z|<1$ are
+\[
+ \Theta^{-q}G(z)=\sum_{m\geq1}\frac{K_{m-1}z^m}{m^q}
+  =\frac1{(q-1)!}\int_0^z\log^{q-1}(z/t)G(t)\frac{dt}{t}
+       \quad(q\geq1),
+\]
+initially on a positive real segment and then by the analytic power
+series.  Their endpoints at one are $J_q$ for $q\geq2$.
+Indeed $R_q=\sum_{m\geq1}(H_m-1)/(m^q(m+1))$, and partial
+fractions prove its displayed recurrence; the initial value follows
+by telescoping.  Euler's classical reduction of $\zeta(j,1)$,
+proved in the incoming report \cite[Section 6]{DHR}, gives
+a terminating formula using only ordinary zeta values and products
+of two such values, with weight at most $q+2$.
+Explicitly, for $j\ge2$ that reduction is
+\[
+ \zeta(j,1)=\frac j2\zeta(j+1)
+       -\frac12\sum_{r=1}^{j-2}\zeta(j-r)\zeta(r+1),
+\]
+with the empty sum interpreted as zero. Hence
+\eqref{res:eq:Jall} is a finite ordinary-zeta evaluation at every
+integer $q\ge2$.
+The first two evaluations are
+\begin{align}
+ \boxed{J_2=3\zeta(2)-2\zeta(3)-\tfrac54\zeta(4)-1,}
+ \label{res:eq:J2}\\
+ J_3=1-2\zeta(2)+4\zeta(3)-\tfrac54\zeta(4)
+                         -3\zeta(5)+\zeta(2)\zeta(3).
+ \label{res:eq:J3}
+\end{align}
+The primitive $q=1$ diverges logarithmically and is deliberately
+excluded from this endpoint statement.
+
+\paragraph{Next questions.}
+The next unsolved step after this result is an arbitrary-rank
+subtraction at $b-a-c=2r-3$, where a two-by-two divergent moment
+block interacts with a nontrivial lower determinant.  A second
+target is the full family at $b-a-c=2r-2-M$: separate power and
+logarithmic counterterms before comparing their cutoff constants
+with spectral Laurent coefficients.  The example above also asks
+for a depth invariant which respects finite differencing, rather
+than only the degree of a formal cutoff polynomial.
+
+% Primary reference URLs checked by this agent:
+% https://dlmf.nist.gov/15.4.E20  (Gauss summation)
+% https://dlmf.nist.gov/5.11.E13  (Gamma-ratio asymptotics)
+% https://dlmf.nist.gov/25.11.E43 (Hurwitz asymptotics)
+% The standalone report should cite these and the pinned incoming DHR report.

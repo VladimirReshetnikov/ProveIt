@@ -1,0 +1,1015 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,longtable,enumitem,xcolor}
+\usepackage[unicode,colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Same-direction polylogarithm products}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parskip}{4pt}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Rea}{Re}
+\DeclareMathOperator{\B}{B}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\CC}{\mathcal C}
+\newcommand{\DD}{\mathcal D}
+\newcommand{\EE}{\mathcal E}
+\newcommand{\MM}{\mathcal M}
+\newcommand{\JJ}{\mathcal J}
+\newcommand{\HH}{\mathcal H}
+\newcommand{\one}{\{1\}}
+\newcommand{\src}[1]{\texttt{\small\detokenize{#1}}}
+\title{Same-Direction Polylogarithm Products\\[3pt]
+\large Entire connected Hurwitz coordinates, complex-order Mellin formulas,\\
+logarithmic depth cancellation, and Stieltjes--Gamma identities}
+\author{Research contribution prepared for the ProveIt project}
+\date{October 10, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We continue the repository's same-direction Mellin problem, rather than replacing it by the already developed reciprocal geometry. Three complementary formulas treat two independent complex polylogarithm orders: a globally entire double Barnes representation, a normally convergent beta--Newton series, and a one-dimensional Barnes representation in connected double-Hurwitz coordinates that specializes exactly to the existing positive-integer master. The connected coordinates themselves extend to entire functions of both indices; their shift and stuffle laws survive without finite-part choices. Their zero-index boundary yields ordinary convergent logarithmic integrals for every generalized Stieltjes constant, together with explicit Gamma and Hurwitz-zeta primitives.
+
+A separate coalescing-residue generator treats every logarithmic weight. Its coefficient formula reduces the weight-$r$ moment of one arbitrary-order polylogarithm to finitely many multiple zeta functions of depth at most $r+1$: the apparent depth-$r+2$ terms cancel identically. An explicit polynomial algorithm also gives finite Hurwitz closure whenever one order is nonpositive and the beta kernel has integral parameters. Full proofs, 824 exact finite assertions, 32 independent numerical diagnostics, formula-generation data, and integration notes are supplied. The numerical checks are not interval certificates. The representation question is answered in the stated domains; generic finite closure, arithmetic independence, and the canonical Gaussian $S_6$ and revised $S_8$ identities are not claimed.
+\end{abstract}
+\newpage
+\tableofcontents
+\newpage
+
+\section{Research target, provenance, and status}\label{sec:scope}
+The source report \emph{Reciprocal Lerch Convolutions} asks, in its eighth further-research question, for a spectral representation of the same-direction product that is holomorphic in both orders and specializes to the preceding finite double-Hurwitz master \cite{RLC,BMH}. This is a precise continuation target. We answer that representation question, while keeping it separate from the stronger question of finite closure for arbitrary noninteger orders.
+
+Our principal integral is
+\begin{equation}\label{eq:main-integral}
+ \MM_N(\beta;s,t;z,w)
+ =\int_0^\infty\frac{x^{\beta-1}F_s(zx)F_t(wx)}{(1+x)^N}\dd x,
+ \qquad F_s(x)=-\Li_s(-x).
+\end{equation}
+Unless stated otherwise, $z,w>0$, $\Rea N>0$, and
+\begin{equation}\label{eq:universal-strip}
+ -2<\Rea\beta<\Rea N.
+\end{equation}
+The orders $s,t$ range independently over $\C$. Powers of positive real numbers use the real logarithm. All real integrals appearing as final identities are ordinary absolutely convergent integrals. Normalized Mellin continuations used in proofs are explicitly distinguished from their original integral domains.
+
+\subsection{What is inherited and what is extended}
+The positive-integer connected double-Hurwitz formula and its finite two-cone expansion are inherited from \cite{BMH}; they are reproduced as a compatibility theorem, not counted as a fresh proof of an unresolved conjecture. The extensions established here are the entire two-index connected family, the complex-order same-direction representations, the beta--Newton derivative calculus, the all-logarithmic coefficient/depth theorem, and their stated specializations.
+
+The mechanisms are classical: the Fermi integral, Euler's beta integral, normalized Mellin continuation, Barnes contours, finite differences, and Gamma products. Standard conventions are taken from the DLMF \cite{DLMFbeta,DLMFzeta,DLMFpoly,DLMFlerch}. Euler transformations and logarithmic Euler-sum integrals have a substantial literature \cite{Sondow,Coffey,Tiered}. Entire desingularizations of multiple zeta functions are also established objects \cite{FKMT}. Our connected family is the explicit difference family defined below; no identification with a different desingularization convention is assumed. In particular, $\CC_{A,B}(1)=0$ for every $A,B$, so it is not being presented as a replacement definition of the usual multiple zeta value.
+
+The contribution is relative to the concrete inspected research question. We do not claim an exhaustive literature-priority determination for every special case.
+
+\subsection{Source scope}
+The key source files were read through the connected GitHub reader. The finite master and the research-question file were pinned at commit
+\begin{center}\src{92f8c8e749e87e7e22779a0d2a12f9f21b2d5583}.\end{center}
+The canonical README and the incoming-directory listing were also read; their returned blob identifiers and the exact scope of inspection are recorded in \src{SOURCE_AUDIT.md}. Six archives were listed in the incoming directory, but their compressed contents were not inspected. Their filenames alone are not used as mathematical evidence. Consequently this is not a claim to have audited the entire manuscript or every pending arrival.
+
+The inspected canonical README says that $S_4$ is already proved, whereas the short $S_6$ identity and the revised $S_8$ candidate remain conjectural. None of the results below changes those statuses. No repository files were modified remotely.
+
+\section{An entire connected double-Hurwitz family}\label{sec:connected}
+For $\Rea q>0$, set
+\begin{equation}\label{eq:D}
+ \DD_u(q)=\zeta(u,q)-\zeta(u).
+\end{equation}
+The poles at $u=1$ cancel, so $\DD_u(q)$ is entire in $u$, with
+\begin{equation}\label{eq:D-special}
+ \DD_1(q)=-\psi(q)-\gamma,\qquad \DD_0(q)=1-q.
+\end{equation}
+Here $\psi=\Gamma'/\Gamma$, $\gamma=\gamma_0(1)$, and the Stieltjes convention is
+\begin{equation}\label{eq:stieltjes}
+ \zeta(1+u,q)=\frac1u+\sum_{n=0}^\infty\frac{(-1)^n}{n!}\gamma_n(q)u^n.
+\end{equation}
+For initially absolutely convergent indices, write
+\[
+ Z_q(A,B)=\sum_{n>m\ge0}(n+q)^{-A}(m+q)^{-B},\qquad
+ \zeta(A,B)=Z_1(A,B).
+\]
+The source's connected expression is
+\begin{equation}\label{eq:C-zeta}
+ \CC_{A,B}(q)=\zeta(A,B)-Z_q(A,B)+\zeta(A,q)\DD_B(q).
+\end{equation}
+The point of the following theorem is not to assign separate finite parts to the terms in \eqref{eq:C-zeta}. It is to continue their \emph{combined} analytic function.
+
+\begin{theorem}[Entire connected coordinates]\label{thm:entire-C}
+For every $\Rea q>0$, \eqref{eq:C-zeta} extends uniquely to an entire function of $(A,B)\in\C^2$, jointly holomorphic with $q$ on that half-plane. Define, for $v,t>0$,
+\begin{align}\label{eq:kernel}
+ K_q(v,t)={}&\frac{e^{-2v-t}}{(1-e^{-v-t})(1-e^{-v})}
+ +\frac{e^{-q(v+t)}}{(1-e^{-v-t})(1-e^{-t})}
+ -\frac{e^{-qv-t}}{(1-e^{-v})(1-e^{-t})}.
+\end{align}
+For $\Rea A,\Rea B>0$,
+\begin{equation}\label{eq:C-Mellin}
+ \CC_{A,B}(q)=\frac1{\Gamma(A)\Gamma(B)}
+ \int_0^\infty\!\int_0^\infty v^{A-1}t^{B-1}K_q(v,t)\dd v\dd t.
+\end{equation}
+For nonnegative integers $r,\ell$ large enough that $\Rea(A+r),\Rea(B+\ell)>0$, the entire continuation is the ordinary integral
+\begin{equation}\label{eq:C-continuation}
+ \CC_{A,B}(q)=\frac{(-1)^{r+\ell}}{\Gamma(A+r)\Gamma(B+\ell)}
+ \int_0^\infty\!\int_0^\infty v^{A+r-1}t^{B+\ell-1}
+ \partial_v^r\partial_t^\ell K_q(v,t)\dd v\dd t.
+\end{equation}
+At nonpositive integer indices,
+\begin{equation}\label{eq:C-corner}
+ \CC_{-r,-\ell}(q)=(-1)^{r+\ell}
+ \partial_v^r\partial_t^\ell K_q(0,0).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Put $f_q(y)=y^{2-q}$. A direct simplification shows that $K_q(v,t)$ is the second divided difference of $f_q$ at the nodes $1,e^v,e^{v+t}$. A divided difference of an analytic function is analytic when nodes coalesce: this follows, for example, by expanding $f_q$ about a common node, or by its Cauchy-integral formula. Thus the apparent singularities at $v=0$, $t=0$, and their intersection in \eqref{eq:kernel} are removable jointly. The resulting function is real analytic on a neighborhood of every point of the closed quadrant.
+
+Every fixed $v,t$ derivative decays exponentially as $v+t\to\infty$, uniformly for $q$ in compact subsets of $\Rea q>0$. To check this without separating a singular boundary term, divide the quadrant into a bounded square, the region where both variables exceed one, and the two remaining strips. In the middle region all geometric denominators are bounded away from zero and every numerator has positive exponential decay. In a strip adjacent to an axis, first fill in the removable singularity by its Taylor expansion in the small variable; the coefficients are combinations of exponentially decaying functions of the large variable. The same argument applies to every fixed derivative. Local analyticity deals with the bounded square.
+
+For $\Rea A,\Rea B>1$, geometric expansion of the three terms of \eqref{eq:kernel} and termwise Mellin integration give
+\[
+ \zeta(A,B)+Z_q(B,A)+\zeta(A+B,q)-\zeta(A,q)\zeta(B).
+\]
+The absolutely convergent stuffle identity converts this to \eqref{eq:C-zeta}. Joint smoothness at the axes and exponential decay prove \eqref{eq:C-Mellin} throughout $\Rea A,\Rea B>0$.
+
+For a smooth exponentially decreasing one-variable function $g$, integration by parts gives
+\[
+ \frac1{\Gamma(A)}\int_0^\infty v^{A-1}g(v)\dd v
+ =-\frac1{\Gamma(A+1)}\int_0^\infty v^A g'(v)\dd v
+ \quad(\Rea A>0).
+\]
+Apply this repeatedly in each variable. The resulting formulas agree on their overlaps and cover all of $\C^2$, proving \eqref{eq:C-continuation} and entireness. The reciprocal Gamma factors have zeros, not poles. The same dominated-convergence argument proves joint holomorphy in $q$. Evaluating the normalized Mellin continuation at a nonpositive integer extracts the corresponding derivative at zero, with sign $(-1)^r$ in each variable. This proves \eqref{eq:C-corner}.
+\end{proof}
+
+\begin{theorem}[Global algebraic laws]\label{thm:C-laws}
+For all $A,B\in\C$ and $\Rea q>0$,
+\begin{align}
+ \CC_{A,B}(q)+\CC_{B,A}(q)
+ &=\DD_A(q)\DD_B(q)+\DD_{A+B}(q),\label{eq:C-stuffle}\\
+ \CC_{A,B}(q+1)-\CC_{A,B}(q)
+ &=-q^{-A}\DD_B(q).\label{eq:C-shift}
+\end{align}
+For every positive integer $L$,
+\begin{equation}\label{eq:C-integer}
+ \CC_{A,B}(L)=\sum_{1\le k<j\le L-1}j^{-A}k^{-B}.
+\end{equation}
+In particular $\CC_{A,B}(1)=\CC_{A,B}(2)=0$, while $\CC_{A,B}(3)=2^{-A}$.
+\end{theorem}
+\begin{proof}
+The source proves the laws for positive integer indices. Here they can be proved first for arbitrary $\Rea A,\Rea B>1$: use the absolutely convergent stuffle product and the shifts of the Hurwitz and double-Hurwitz sums in \eqref{eq:C-zeta}. Both sides are then entire in $(A,B)$ by \cref{thm:entire-C}, so the identities extend to all indices. The divided difference vanishes at $q=1,2$ because $f_q$ then has degree at most one. Iteration of \eqref{eq:C-shift}, using $\DD_B(j)=-\sum_{k=1}^{j-1}k^{-B}$, gives \eqref{eq:C-integer} for all complex indices.
+\end{proof}
+
+\subsection{A finite boundary calculus}
+Let
+\begin{equation}\label{eq:Faulhaber}
+ P_m(X)=\frac{B_{m+1}(X)-B_{m+1}(1)}{m+1}
+       =\sum_{k=0}^{m+1}p_{m,k}X^k,
+\end{equation}
+where $B_n(X)$ are Bernoulli polynomials. The use of $B_1(1)$, not $B_1(0)$, matters when $m=0$: $P_0(X)=X-1$.
+
+\begin{proposition}[Nonpositive-index reduction]\label{prop:C-negative}
+For every integer $m\ge0$ and all $A\in\C$,
+\begin{equation}\label{eq:C-negative}
+ \CC_{A,-m}(q)=-\sum_{k=0}^{m+1}p_{m,k}\DD_{A-k}(q).
+\end{equation}
+Consequently
+\begin{align}
+ \CC_{A,0}(q)&=\DD_A(q)-\DD_{A-1}(q),\label{eq:C-A0}\\
+ \CC_{0,B}(q)&=\DD_{B-1}(q)+(1-q)\DD_B(q),\label{eq:C-0B}\\
+ \CC_{A,-1}(q)&=\tfrac12\bigl(\DD_{A-1}(q)-\DD_{A-2}(q)\bigr),\label{eq:C-Am1}\\
+ \CC_{0,0}(q)&=\tfrac12(q-1)(q-2).
+\end{align}
+\end{proposition}
+\begin{proof}
+For $\Rea A>m+2$, the inner finite sum in $Z_q(A,-m)$ is
+\[
+ \sum_{j=0}^{n-1}(j+q)^m
+ =\frac{B_{m+1}(n+q)-B_{m+1}(q)}{m+1}.
+\]
+Substitute this into \eqref{eq:C-zeta}, and use
+$\DD_{-m}(q)=-[B_{m+1}(q)-B_{m+1}(1)]/(m+1)$. The terms involving $B_{m+1}(q)$ cancel and leave \eqref{eq:C-negative}. Entire continuation in $A$ completes the proof. The zero-first-index formula follows from \eqref{eq:C-stuffle} and $\DD_0(q)=1-q$.
+\end{proof}
+
+\section{The complex-order same-direction representation}\label{sec:Barnes}
+Write $g(p)=\pi/\sin(\pi p)$. Vertical contours are oriented upward.
+
+\begin{lemma}[Single-profile transform]\label{lem:profile}
+For $x>0$, all $s\in\C$, and $0<c<1$,
+\begin{equation}\label{eq:profile-Barnes}
+ F_s(x)=\frac1{2\pi\ii}\int_{c-\ii\infty}^{c+\ii\infty}
+ g(p)p^{-s}x^p\dd p.
+\end{equation}
+The right-half-plane logarithm defines $p^{-s}$. The integral is absolutely and locally uniformly convergent in $s$.
+\end{lemma}
+\begin{proof}
+For $\Rea s>0$, the Fermi integral gives
+\[
+ F_s(e^y)=\frac1{\Gamma(s)}\int_0^\infty
+ \frac{u^{s-1}}{1+e^{u-y}}\dd u.
+\]
+Its bilateral Laplace transform in $y$ is $g(p)p^{-s}$ for $0<\Rea p<1$. Indeed the logistic factor has transform $g(p)$ and translation by $u$ contributes $e^{-pu}$. Beta integration and then Gamma integration justify the calculation. Fourier inversion gives \eqref{eq:profile-Barnes} in that half-plane of orders. The exponential decay of $g(c+\ii y)$ proves local uniform convergence for all orders, so the identity extends entirely in $s$.
+\end{proof}
+
+\begin{theorem}[Two-order Barnes master]\label{thm:double-Barnes}
+Under \eqref{eq:universal-strip}, choose $0<c_1,c_2<1$ with
+\begin{equation}\label{eq:contour-choice}
+ 0<\Rea\beta+c_1+c_2<\Rea N.
+\end{equation}
+Then, for every $s,t\in\C$,
+\begin{align}\label{eq:double-Barnes}
+ \MM_N(\beta;s,t;z,w)
+ =\frac1{(2\pi\ii)^2}\int_{(c_1)}\!\int_{(c_2)}
+ &g(p)g(r)p^{-s}r^{-t}z^pw^r\\[-6pt]
+ &\hspace{-25mm}\times\B(\beta+p+r,N-\beta-p-r)\dd r\dd p.\notag
+\end{align}
+The double contour integral is absolutely convergent and jointly entire in $(s,t)$. Arbitrary fixed order derivatives and $\beta$ derivatives may be taken under both the ordinary integral and the contour integrals.
+\end{theorem}
+\begin{proof}
+The contour choices exist precisely because the interval $(0,2)$ for $c_1+c_2$ intersects $(-\Rea\beta,\Rea N-\Rea\beta)$ under the stated assumptions. Insert \eqref{eq:profile-Barnes} twice. Taking absolute values before the $x$ integration gives a finite beta integral by \eqref{eq:contour-choice}; the two cosecant factors dominate every fixed power introduced by $p^{-s},r^{-t}$ or their order derivatives. Fubini's theorem then gives \eqref{eq:double-Barnes}.
+
+For completeness, the ordinary integral is entire in the orders. Uniformly on compact order sets, $F_s(x)=O(x)$ at zero by its power series. At infinity, \eqref{eq:profile-Barnes} with any sufficiently small positive contour real part gives $F_s(x)=O(x^\varepsilon)$ for every fixed $\varepsilon>0$. The same statements hold for fixed order derivatives. These estimates and \eqref{eq:universal-strip} provide an integrable dominating function. Powers of $\log x$ are absorbed by a slightly smaller strip. Thus all the asserted derivatives are legitimate ordinary moments.
+\end{proof}
+
+The word ``entire'' concerns the spectral orders. It does not erase the parameter strip. This universal strip is sharp for a family containing all orders: at $s=t=0$ and $z=w=1$,
+\begin{equation}\label{eq:beta-control}
+ \MM_N(\beta;0,0;1,1)=\B(\beta+2,N-\beta),
+\end{equation}
+and the ordinary integral diverges at either boundary of the strip.
+
+\begin{proposition}[Denominator raising]\label{prop:raising}
+On the common ordinary-convergence domain,
+\begin{align}\label{eq:raising}
+ \MM_{N+1}(\beta;s,t;z,w)
+ ={}&\frac{N-\beta}{N}\MM_N(\beta;s,t;z,w)\\
+ &-\frac{\MM_N(\beta;s-1,t;z,w)+\MM_N(\beta;s,t-1;z,w)}{N}.\notag
+\end{align}
+\end{proposition}
+\begin{proof}
+Integrate the derivative of $x^\beta F_s(zx)F_t(wx)/(1+x)^N$. Both boundary terms vanish under \eqref{eq:universal-strip}. Use $x\partial_xF_s(zx)=F_{s-1}(zx)$ and $x/(1+x)=1-1/(1+x)$.
+\end{proof}
+
+\subsection{A one-dimensional connected spectral formula}
+The following formula makes the relationship to the finite double-Hurwitz master explicit. Let $W=s+t$. Initially assume $0<\Rea s,\Rea t<1$, and choose $c$ satisfying
+\begin{equation}\label{eq:cone-contour}
+ \Rea s-1<c<\min(0,\Rea W-1).
+\end{equation}
+Define
+\begin{align}\label{eq:G-cone}
+ G(s,t;q)=\frac1{\Gamma(s)\Gamma(t)\Gamma(1-s)}\frac1{2\pi\ii}
+ \int_{(c)}&\Gamma(-z)\Gamma(1-s+z)\\[-5pt]
+ &\hspace{-31mm}\times\Gamma(W-1-z)\Gamma(1+z)
+ \CC_{W-1-z,1+z}(q)\dd z.\notag
+\end{align}
+A separate admissible contour is used for $G(t,s;q)$.
+
+\begin{theorem}[Connected complex-order continuation]\label{thm:connected-spectral}
+For initially $0<\Rea\beta<1$ and $0<\Rea s,\Rea t<1$,
+\begin{equation}\label{eq:connected-master}
+ \MM_1(\beta;s,t;1,1)=\pi\csc(\pi\beta)
+ \bigl(G(s,t;1-\beta)+G(t,s;1-\beta)\bigr).
+\end{equation}
+The right side has a unique continuation that is entire in $(s,t)$ and agrees with \cref{thm:double-Barnes} throughout $-2<\Rea\beta<1$. At positive integers $s=m,t=n$, it becomes exactly
+\begin{align}\label{eq:integer-master}
+ \MM_1(\beta;m,n;1,1)=\pi\csc(\pi\beta)
+ \Bigg[&\sum_{k=0}^{m-1}\binom{m+n-2-k}{n-1}
+ \CC_{m+n-1-k,k+1}(1-\beta)\\
+ &+\sum_{k=0}^{n-1}\binom{m+n-2-k}{m-1}
+ \CC_{m+n-1-k,k+1}(1-\beta)\Bigg].\notag
+\end{align}
+The values at $\beta=0,-1$ are removable values of the \emph{whole} expression.
+\end{theorem}
+\begin{proof}
+The two Fermi integrals reduce the inner $x$ integral to the second divided difference of $y^{\beta+1}$ at $1,e^u,e^v$, multiplied by $\pi\csc(\pi\beta)$. This is the resolvent calculation in the source master. On $u>v$, put $u=v+t$; the divided difference is $K_{1-\beta}(v,t)$.
+
+Use the Barnes binomial identity
+\[
+ (v+t)^{s-1}=\frac1{\Gamma(1-s)}\frac1{2\pi\ii}
+ \int_{(c)}\Gamma(-z)\Gamma(1-s+z)v^{s-1-z}t^z\dd z.
+\]
+The inequalities \eqref{eq:cone-contour} ensure positive real parts for both Mellin indices $W-1-z$ and $1+z$. The remaining double Mellin integral is precisely \eqref{eq:C-Mellin}, yielding \eqref{eq:G-cone}. The other cone interchanges $s,t$.
+
+The interchange is absolute. In fact $\Gamma(W-1-z)\Gamma(1+z)\CC_{W-1-z,1+z}(q)$, viewed through \eqref{eq:C-Mellin}, is bounded along the chosen line by the corresponding absolute Mellin integral. The other two Gamma factors decay exponentially in the contour height. This proves the initial identity. Its unique entire continuation in the orders is supplied by \cref{thm:double-Barnes}; no fixed contour is asserted to remain admissible during arbitrary continuation.
+
+At $s=m\in\N$, replace the binomial Barnes identity by the actual polynomial expansion of $(v+t)^{m-1}$. Its $k$th term gives the Gamma-normalized coefficient
+\[
+ \frac{\binom{m-1}{k}\Gamma(m+n-1-k)\Gamma(k+1)}{\Gamma(m)\Gamma(n)}
+ =\binom{m+n-2-k}{n-1}.
+\]
+This proves \eqref{eq:integer-master} and its exact compatibility with the source formula. Finally \cref{thm:C-laws} gives the required zeros at $q=1,2$; the ordinary integral fixes their removable values.
+\end{proof}
+
+Thus the finite formula is a genuine specialization of a holomorphic two-order construction, not a finite sum with an integer upper limit informally replaced by a complex number. The theorem answers the stated spectral-representation question. It does not say that the generic contour integral can be replaced by finitely many double-zeta coordinates.
+
+\section{A normally convergent beta--Newton calculus}\label{sec:Newton}
+The contour master is particularly flexible for unequal positive scales. At equal scales there is a complementary series with only beta functions and finite differences as coefficients. Besides giving an entire-order representation, it exposes generalized harmonic numbers directly.
+
+\begin{definition}[Euler--Newton coefficients]
+For $n\ge1$ and $s\in\C$, define
+\begin{equation}\label{eq:A-def}
+ A_n(s)=\sum_{k=1}^n(-1)^{k+1}\binom{n-1}{k-1}k^{-s}.
+\end{equation}
+Each coefficient is an entire function of $s$. A superscript $[j]$ on a function of an order denotes its $j$th order derivative.
+\end{definition}
+
+\begin{lemma}[Coefficient transform and normal bounds]\label{lem:Newton}
+For $|u|<1$,
+\begin{equation}\label{eq:Euler-transform}
+ F_s\!\left(\frac{u}{1-u}\right)=\sum_{n=1}^\infty A_n(s)u^n.
+\end{equation}
+For every compact set of orders and every fixed $j\ge0$, there are constants $C,M$ such that
+\begin{equation}\label{eq:A-bound}
+ |A_n^{[j]}(s)|\le \frac{C(1+\log n)^M}{n}\qquad(n\ge1).
+\end{equation}
+The constants may depend on the compact set and on $j$.
+\end{lemma}
+\begin{proof}
+Expanding $(u/(1-u))^k$ and collecting coefficients first in a small disk gives \eqref{eq:Euler-transform}; this is the classical Euler transformation. The function on the left is analytic for $|u|<1$, since $-u/(1-u)$ does not meet the polylogarithm's cut there.
+
+For $\Rea s>0$, the finite binomial sum and Gamma integration give
+\begin{equation}\label{eq:A-Mellin}
+ A_n(s)=\frac1{\Gamma(s)}\int_0^\infty t^{s-1}e^{-t}(1-e^{-t})^{n-1}\dd t.
+\end{equation}
+For a fixed $n$, the integral is holomorphic on $\Rea s>1-n$ and so the same formula holds there by continuation. Thus, on any compact set of orders, it holds as an ordinary integral for all sufficiently large $n$, including all fixed order derivatives.
+
+Here are details of a bound sufficient for normal convergence. On $0<t<1$, allocate half of the power $(1-e^{-t})^{n-1}$ to the bound $t^{(n-1)/2}$ and half to $(1-e^{-1})^{(n-1)/2}$. Integration of the resulting powers of $t$ and $|\log t|$ is exponentially small in $n$. On $1\le t\le2\log n$, all the powers of $t$ and $\log t$ introduced by a compact set of orders and its fixed derivatives are bounded by a power of $1+\log n$. The remaining density has integral at most
+\[
+ \int_0^\infty e^{-t}(1-e^{-t})^{n-1}\dd t=\frac1n.
+\]
+On $t>2\log n$, the exponential tail gives an even smaller bound of the same form. The reciprocal Gamma function and its fixed derivatives are bounded on compact sets. Finitely many smaller $n$ are absorbed into $C$. This proves \eqref{eq:A-bound} and the locally normal convergence in \eqref{eq:Euler-transform}.
+\end{proof}
+
+\begin{theorem}[Entire beta--Newton master]\label{thm:Newton-master}
+Under \eqref{eq:universal-strip},
+\begin{equation}\label{eq:Newton-master}
+ \boxed{\displaystyle
+ \MM_N(\beta;s,t;1,1)=
+ \sum_{m,n\ge1}A_m(s)A_n(t)\B(\beta+m+n,N-\beta).}
+\end{equation}
+The series converges absolutely and locally normally in all its parameters on the stated domain. Every fixed mixed order derivative and every fixed $\beta$ derivative may be taken term by term.
+\end{theorem}
+\begin{proof}
+Set $u=x/(1+x)$. The measure becomes
+\[
+ \frac{x^{\beta-1}}{(1+x)^N}\dd x
+ =u^{\beta-1}(1-u)^{N-\beta-1}\dd u.
+\]
+Insert \eqref{eq:Euler-transform} twice and integrate each monomial. To justify the interchange, group the absolute values by $L=m+n$. On compact parameter sets, the beta factor is $O(L^{-\delta})$ for some $\delta>0$ because $\Rea(N-\beta)>0$. By \eqref{eq:A-bound}, the coefficient convolution is bounded by
+\[
+ \sum_{m=1}^{L-1}\frac{C(1+\log L)^{2M}}{m(L-m)}
+ =O\!\left(\frac{(1+\log L)^{2M+1}}L\right).
+\]
+The resulting sum over $L$ converges. The same bound with larger logarithmic powers handles any fixed order derivatives. Differentiating the beta integral in $\beta$ inserts powers of $\log(u/(1-u))$; slightly shrinking the compact parameter strip dominates these as well. This proves every asserted interchange.
+\end{proof}
+
+For explicit logarithmic moments, derivatives of the beta factor in \eqref{eq:Newton-master} can be written with complete exponential Bell polynomials. Its $j$th logarithmic derivative with respect to $\beta$ is
+\begin{equation}\label{eq:beta-jets}
+ \psi^{(j-1)}(\beta+m+n)+(-1)^j\psi^{(j-1)}(N-\beta),\qquad j\ge1.
+\end{equation}
+The denominator argument $N+m+n$ is independent of $\beta$. Formula \eqref{eq:beta-jets}, combined with \eqref{eq:A-def}, supplies an explicit Gamma/polygamma algorithm for every mixed order and logarithmic moment, with convergence already proved rather than inferred from numerical cancellation.
+
+\subsection{Positive integral orders and harmonic-star coefficients}
+We use inclusive upper indices in
+\[
+ H_n^{(r)}=\sum_{k=1}^n k^{-r},\qquad
+ H_n^\star(\{1\}^{d})=
+ \sum_{n\ge k_1\ge\cdots\ge k_d\ge1}(k_1\cdots k_d)^{-1},
+ \qquad H_n^\star(\varnothing)=1.
+\]
+
+\begin{proposition}[Harmonic and polynomial specializations]\label{prop:A-special}
+For every positive integer $m$,
+\begin{equation}\label{eq:A-harmonic}
+ A_n(m)=\frac1nH_n^\star(\{1\}^{m-1}).
+\end{equation}
+For nonnegative integers $m$, the function
+\begin{equation}\label{eq:negative-P}
+ F_{-m}\!\left(\frac{u}{1-u}\right)=Q_m(u)
+\end{equation}
+is a polynomial determined by
+\begin{equation}\label{eq:negative-recurrence}
+ Q_0(u)=u,\qquad Q_{m+1}(u)=u(1-u)Q_m'(u).
+\end{equation}
+Its degree is $m+1$, so $A_n(-m)=0$ whenever $n>m+1$.
+\end{proposition}
+\begin{proof}
+For $|h|<1$, summing \eqref{eq:A-def} over $m$ gives
+\[
+ \sum_{m\ge1}A_n(m)h^{m-1}
+ =\B(1-h,n)=\frac1n\prod_{k=1}^n\left(1-\frac hk\right)^{-1}.
+\]
+The coefficients of the product are exactly the complete homogeneous, or harmonic-star, sums in \eqref{eq:A-harmonic}. The negative-order recurrence follows from $x\partial_xF_s(x)=F_{s-1}(x)$ and $x\partial_x=u(1-u)\partial_u$. It starts with $F_0(x)=x/(1+x)$, proving \eqref{eq:negative-P}.
+\end{proof}
+
+For example,
+\[
+ A_n(1)=\frac1n,\qquad A_n(2)=\frac{H_n}{n},\qquad
+ A_n(3)=\frac{H_n^2+H_n^{(2)}}{2n}.
+\]
+Consequently \eqref{eq:Newton-master} yields the exact harmonic identity
+\begin{equation}\label{eq:harmonic-beta}
+ \MM_N(\beta;m,n;1,1)=
+ \sum_{j,k\ge1}\frac{H_j^\star(\{1\}^{m-1})H_k^\star(\{1\}^{n-1})}{jk}
+ \B(\beta+j+k,N-\beta),
+\end{equation}
+with arbitrary positive integral $m,n$ and all admissible beta parameters. The entire-order master is stronger than these individual harmonic cases, but the harmonic form can be preferable for exact summation.
+
+\section{Finite Hurwitz closure with a nonpositive order}\label{sec:negative}
+The arbitrary-order problem does not require a blanket finite-closure conjecture. There is a substantial sector where an explicit finite closure can be proved directly.
+
+For $\Rea a>0$, define the Lerch profile
+\begin{equation}\label{eq:Lerch-profile}
+ F_{a,s}(x)=x\Phi(-x,s,a),\qquad F_{1,s}(x)=F_s(x),
+\end{equation}
+and the entire function
+\begin{equation}\label{eq:E}
+ \EE_a(v)=v\zeta(v+1,a),\qquad \EE_a(0)=1.
+\end{equation}
+The value at zero is the cancelled residue, not zero. The profile has the transform
+\begin{equation}\label{eq:Lerch-Barnes}
+ F_{a,s}(x)=\frac1{2\pi\ii}\int_{(c)}g(p)(p+a-1)^{-s}x^p\dd p,
+ \quad \max(0,1-\Rea a)<c<1.
+\end{equation}
+The logarithm is taken in the right half-plane of $p+a-1$. To prove \eqref{eq:Lerch-Barnes}, insert the extra factor $e^{-(a-1)t}$ in the Fermi integral used for \cref{lem:profile}; the same beta and Gamma calculation applies. Exponential contour decay gives entire continuation in $s$.
+
+\begin{theorem}[Finite polynomial--Hurwitz algorithm]\label{thm:negative-closure}
+Let $N\ge1$ and $m\ge0$ be integers, let $b$ be an integer with $-1\le b\le N-1$, and let $\Rea a>0$. Write
+\[
+ Q_m(u)=\sum_{j=1}^{m+1}q_{m,j}u^j
+\]
+for the polynomial in \eqref{eq:negative-recurrence}. Define
+\begin{equation}\label{eq:H-polynomial}
+ H_{N,b,m}(p)=\sum_{j=1}^{m+1}
+ q_{m,j}\frac{(p)_{b+j}(1-p)_{N-b-1}}{(N+j-1)!},
+\end{equation}
+where $(y)_k$ is the rising factorial and $(y)_0=1$. Expand the shifted polynomial as
+\[
+ H_{N,b,m}(y+1-a)=\sum_{\ell\ge0}h_\ell(a)y^\ell.
+\]
+Then, for every $s\in\C$,
+\begin{equation}\label{eq:negative-master}
+ \boxed{\displaystyle
+ \int_0^\infty\frac{x^{b-1}F_{-m}(x)F_{a,s}(x)}{(1+x)^N}\dd x
+ =\sum_{\ell\ge0}h_\ell(a)\EE_a(s-\ell).}
+\end{equation}
+The sum is finite, and the integral is ordinary and entire in $s$.
+\end{theorem}
+\begin{proof}
+The integer restrictions make both rising-factorial indices in \eqref{eq:H-polynomial} nonnegative. They also ensure convergence of the original integral: its behavior at zero is $O(x^{b+1})$, while at infinity the transform \eqref{eq:Lerch-Barnes} gives a subpower bound times $x^{\max(0,1-\Rea a)}$. Since $b\le N-1$, an integrable majorant exists uniformly on compact order sets.
+
+Insert \eqref{eq:Lerch-Barnes} and integrate each monomial of $Q_m(x/(1+x))$. The beta integral is
+\[
+ \B(b+j+p,N-b-p)
+ =g(p)\frac{(p)_{b+j}(1-p)_{N-b-1}}{\Gamma(N+j)}.
+\]
+Thus the left side of \eqref{eq:negative-master} equals
+\begin{equation}\label{eq:negative-contour}
+ \frac1{2\pi\ii}\int_{(c)}g(p)^2H_{N,b,m}(p)(p+a-1)^{-s}\dd p.
+\end{equation}
+For sufficiently large $\Rea s$, move the contour to the right across the positive integers. Horizontal edges vanish because the cosecant square decays exponentially; on half-integer right edges, its product with the polynomial and the order power tends to zero for sufficiently large $\Rea s$. The closure is clockwise. At $p=k\ge1$, the square $g(p)^2$ has principal part $(p-k)^{-2}$ and no simple-pole term. Hence the contribution is minus the derivative of $H(p)(p+a-1)^{-s}$ there. In the shifted polynomial coordinates this is
+\[
+ \sum_\ell h_\ell(a)(s-\ell)(k+a-1)^{-s+\ell-1}.
+\]
+Summing over $k$ gives \eqref{eq:negative-master}. Finally the original integral and the finite sum of entire functions \eqref{eq:E} are entire in $s$, so the identity holds for every order. This also fixes all resonant values without a directional limiting convention.
+\end{proof}
+
+\begin{example}[Two simple polynomial closures]
+At $a=1,N=2,b=1$, the first two polynomials are
+\[
+ H_{2,1,0}(p)=\frac{p^2+p}{2},\qquad
+ H_{2,1,1}(p)=\frac{p-p^3}{6}.
+\]
+Therefore, writing $\EE=\EE_1$,
+\begin{align}
+ \int_0^\infty\frac{F_0(x)F_s(x)}{(1+x)^2}\dd x
+ &=\frac{\EE(s-1)+\EE(s-2)}2,\label{eq:negative-ex0}\\
+ \int_0^\infty\frac{F_{-1}(x)F_s(x)}{(1+x)^2}\dd x
+ &=\frac{\EE(s-1)-\EE(s-3)}6.\label{eq:negative-ex1}
+\end{align}
+Both identities hold for all complex $s$, including their apparent zeta resonances.
+\end{example}
+
+\subsection{Argument derivatives, Stieltjes values, and anchored primitives}
+Let $I(a;s)$ denote the left side of \eqref{eq:negative-master} with its other parameters fixed. The Lerch shift derivative yields
+\begin{equation}\label{eq:argument-ladder}
+ \partial_a^r I(a;s)=(-1)^r(s)_rI(a;s+r),\qquad r\ge0.
+\end{equation}
+This follows initially from the defining Lerch series or Fermi integral and then from normal convergence. Thus the polynomial algorithm contains every fixed argument derivative as well. An anchored primitive is
+\begin{equation}\label{eq:argument-primitive}
+ \int_{a_0}^a I(c;s)\dd c
+ =\frac{I(a_0;s-1)-I(a;s-1)}{s-1},\qquad s\ne1.
+\end{equation}
+The path lies in $\Rea c>0$. At $s=1$, the quotient is filled by its derivative in $s$; the numerator vanishes because $F_{a,0}(x)=x/(1+x)$ is independent of $a$. This gives an anchored holomorphic primitive, not an unspecified integration constant.
+
+The especially useful base family is
+\begin{equation}\label{eq:J-base}
+ J_a(s):=\int_0^\infty\frac{F_{a,s}(x)}{(1+x)^2}\dd x
+ =\EE_a(s-1)+(1-a)\EE_a(s).
+\end{equation}
+It is obtained from $N=1,b=0,m=0$, for which $H(p)=p$. In uncancelled notation, interpreted as a whole,
+\[
+ J_a(s)=(s-1)\zeta(s,a)+(1-a)s\zeta(s+1,a).
+\]
+In particular $J_a(0)=1/2$, and
+\begin{align}
+ J_a(1)&=1+(1-a)\psi'(a),\label{eq:J1}\\
+ \int_1^a J_c(1)\dd c
+ &=a-1+(1-a)\psi(a)+\log\Gamma(a).\label{eq:J1-primitive}
+\end{align}
+The branch of $\log\Gamma$ on the right half-plane is fixed by $\log\Gamma(1)=0$.
+
+Differentiating the entire cancellation \eqref{eq:E} gives
+\[
+ \EE_a^{[r]}(0)=r(-1)^{r-1}\gamma_{r-1}(a)\quad(r\ge1).
+\]
+Consequently, for all $n\ge0$,
+\begin{equation}\label{eq:J-Stieltjes}
+ \begin{split}
+ J_a^{[n+1]}(1)={}&(n+1)(-1)^n\gamma_n(a)\\
+ &+(1-a)\left(\zeta^{[n+1]}(2,a)+(n+1)\zeta^{[n]}(2,a)\right).
+ \end{split}
+\end{equation}
+The left side is an ordinary integral of an order derivative of the Lerch profile. At $a=1$, the second line disappears, giving a direct all-index Stieltjes specialization. These conclusions rely on the filled value $\EE_a(0)=1$ throughout.
+
+\section{Coalescing Gamma residues and all logarithmic weights}\label{sec:logmoments}
+Define
+\begin{equation}\label{eq:J-lambda}
+ \JJ_a(s,\lambda)=\int_0^\infty
+ \frac{F_{a,s}(x)}{(1+x)^{2-\lambda}}\dd x,
+ \qquad \Rea\lambda<\min(1,\Rea a).
+\end{equation}
+It is entire in $s$. Its $r$th derivative with respect to $\lambda$ at zero is the ordinary moment with the factor $\log^r(1+x)$. The profile bound following \eqref{eq:Lerch-Barnes} proves these assertions uniformly on compact parameter sets.
+
+\begin{theorem}[The coalescing-residue generator]\label{thm:Gamma-generator}
+Fix $\Rea a>0$ and put $\eta=\min(1/4,\Rea a/4)$. For $0<|\lambda|<\eta$ and initially $\Rea s>3$,
+\begin{equation}\label{eq:Gamma-generator}
+ \begin{split}
+ \JJ_a(s,\lambda)=\frac{\pi}{\sin(\pi\lambda)\Gamma(2-\lambda)}
+ \sum_{k=1}^\infty\Bigg[&
+ \frac{\Gamma(k+1-\lambda)}{\Gamma(k)}(k+a-1-\lambda)^{-s}\\
+ &-\frac{\Gamma(k+1)}{\Gamma(k+\lambda)}(k+a-1)^{-s}\Bigg].
+ \end{split}
+\end{equation}
+The apparent singularity at $\lambda=0$ is removable after the two terms are combined, and its value is \eqref{eq:J-base}. The original integral supplies the unique entire continuation in $s$.
+\end{theorem}
+\begin{proof}
+Insert \eqref{eq:Lerch-Barnes} into \eqref{eq:J-lambda}. Choose an admissible contour also satisfying $c<1-\Rea\lambda$. The resulting Barnes integral is
+\begin{equation}\label{eq:J-single-Barnes}
+ \frac1{2\pi\ii}\int_{(c)}
+ g(p)(p+a-1)^{-s}\B(1+p,1-\lambda-p)\dd p.
+\end{equation}
+Its two right-hand pole families are $p=k$ and $p=k-\lambda$, $k\ge1$. They are distinct in the punctured disk. Reflection of the Gamma factor shows that, away from these poles, the non-order part has polynomial size $O(|p|^{1-\Rea\lambda})$ multiplied by two exponentially decreasing cosecant factors in vertical directions. Thus for $\Rea s>3$ the clockwise right closure is justified, using right edges separated uniformly from the two pole families.
+
+The residues at $p=k$ contribute
+\[
+ -\frac{\pi}{\sin(\pi\lambda)\Gamma(2-\lambda)}
+ \frac{\Gamma(k+1)}{\Gamma(k+\lambda)}(k+a-1)^{-s},
+\]
+and those at $p=k-\lambda$ contribute the positive first term in \eqref{eq:Gamma-generator}. This proves the formula. Each separate series converges absolutely in the initial domain. Locally uniformly near zero, their difference vanishes at $\lambda=0$ and its derivative series converges; hence division by $\sin(\pi\lambda)$ is removable. Alternatively, the original holomorphic integral already proves removability. Differentiating the paired summand at zero gives
+\[
+ \frac{k}{(k+a-1)^s}\left(\frac{s}{k+a-1}-\frac1k\right),
+\]
+whose sum is exactly \eqref{eq:J-base}. Entire continuation in $s$ then follows from \eqref{eq:J-lambda}.
+\end{proof}
+
+\subsection{A finite multiple-zeta coefficient formula}
+For $a=1$, the Gamma factors in \eqref{eq:Gamma-generator} admit a useful exact finite-product form:
+\begin{equation}\label{eq:Gamma-products}
+ \begin{split}
+ \JJ_1(s,\lambda)=\frac1{\lambda(1-\lambda)}\sum_{k=1}^\infty k^{1-s}
+ \Bigg[&R(\lambda)\left(1-\frac\lambda k\right)^{1-s}
+       \prod_{j=1}^{k-1}\left(1-\frac\lambda j\right)\\
+       &-\prod_{j=1}^{k-1}\left(1+\frac\lambda j\right)^{-1}\Bigg],
+ \end{split}
+\end{equation}
+where
+\begin{equation}\label{eq:R-even}
+ R(\lambda)=\Gamma(1+\lambda)\Gamma(1-\lambda)
+ =\frac{\pi\lambda}{\sin(\pi\lambda)}
+ =\sum_{v\ge0}c_v\lambda^{2v},
+\end{equation}
+with $c_0=1$ and $c_v=2(1-2^{1-2v})\zeta(2v)$ for $v\ge1$.
+The factor $R(\lambda)$ is indispensable. Omitting it would lose even-zeta contributions beginning at the second Taylor coefficient.
+
+For a nonnegative integer $m$, let $\operatorname{Comp}(m)$ be the set of ordered compositions of $m$ into positive parts, with $\operatorname{Comp}(0)=\{\varnothing\}$. We use strict multiple zeta functions
+\[
+ \zeta(u,\alpha_1,\ldots,\alpha_d)
+ =\sum_{k>n_1>\cdots>n_d\ge1}
+ k^{-u}n_1^{-\alpha_1}\cdots n_d^{-\alpha_d},
+\]
+and $\zeta(u,\varnothing)=\zeta(u)$. Define, for $m\ge1$ and $\Rea s>2$,
+\begin{equation}\label{eq:T-def}
+ \begin{split}
+ \mathcal T_m(s)={}&
+ \sum_{\substack{v,j,d\ge0\\2v+j+d=m}}
+ c_v\frac{(-1)^d(s-1)_j}{j!}\,
+ \zeta(s+j-1,\{1\}^{d})\\
+ &-(-1)^m\sum_{\alpha\in\operatorname{Comp}(m)}\zeta(s-1,\alpha).
+ \end{split}
+\end{equation}
+All the multiple sums in this definition converge absolutely in the stated half-plane.
+
+\begin{theorem}[All logarithmic moments and depth cancellation]\label{thm:depth}
+For each integer $r\ge0$ and initially $\Rea s>2$,
+\begin{equation}\label{eq:all-log}
+ \boxed{\displaystyle
+ I_r(s):=\int_0^\infty\frac{F_s(x)\log^r(1+x)}{(1+x)^2}\dd x
+ =r!\sum_{m=1}^{r+1}\mathcal T_m(s).}
+\end{equation}
+After cancelling identical terms in \eqref{eq:T-def}, every multiple zeta function on the right has depth at most $r+1$, not $r+2$. The whole right side continues entirely in $s$ and equals the ordinary integral for every $s\in\C$. This is a finite functional reduction and a depth upper bound, not a claim that the depth is arithmetically minimal.
+\end{theorem}
+\begin{proof}
+The strict and weak harmonic generating functions are
+\begin{align*}
+ \prod_{j=1}^{k-1}(1-\lambda/j)
+ &=\sum_{d=0}^{k-1}(-\lambda)^dH_{k-1}(\{1\}^d),\\
+ \prod_{j=1}^{k-1}(1+\lambda/j)^{-1}
+ &=\sum_{m\ge0}(-\lambda)^mH_{k-1}^\star(\{1\}^m).
+\end{align*}
+Grouping equal adjacent indices gives the exact finite identity
+\[
+ H_{k-1}^\star(\{1\}^m)=
+ \sum_{\alpha\in\operatorname{Comp}(m)}H_{k-1}(\alpha).
+\]
+Expand also $(1-\lambda/k)^{1-s}$ by its binomial series and $R(\lambda)$ by \eqref{eq:R-even}. The constant coefficient of the bracket in \eqref{eq:Gamma-products} is zero. Its coefficient of $\lambda^m$, summed against $k^{1-s}$, is precisely $\mathcal T_m(s)$. These coefficient sums are absolute for $\Rea s>2$: every fixed coefficient is bounded by $k^{1-\Rea s}$ times a fixed power of $\log k$ and a bounded sum of inverse powers of $k$. On a sufficiently small $\lambda$ disk depending on a compact subset of that half-plane, the product series are uniformly dominated. Thus coefficient extraction and summation commute. Dividing by $\lambda(1-\lambda)$ gives \eqref{eq:all-log}.
+
+For the depth assertion, the only term of depth $m+1$ in the first line of \eqref{eq:T-def} has $v=j=0,d=m$ and equals $(-1)^m\zeta(s-1,\{1\}^m)$. In the second line, exactly the all-ones composition contributes this same function with the opposite coefficient. They cancel. Every other term has depth at most $m$, so the largest remaining depth in \eqref{eq:all-log} is at most $r+1$.
+
+Finally \eqref{eq:J-lambda} proves that $I_r(s)$ is entire. It is therefore the entire continuation of the finite expression initially obtained for $\Rea s>2$. This does not authorize substituting $s=1$ or $s=2$ into divergent individual multiple-zeta terms. At such a point one continues their complete combination, or uses the ordinary integral or \cref{thm:Newton-master}.
+\end{proof}
+
+The first three coefficient functions, with the cancellation already performed, are
+\begin{align}
+ \mathcal T_1(s)={}&(s-1)\zeta(s),\label{eq:T1}\\
+ \mathcal T_2(s)={}&\frac{s(s-1)}2\zeta(s+1)-(s-1)\zeta(s,1)
+       +\zeta(2)\zeta(s-1)-\zeta(s-1,2),\label{eq:T2}\\
+ \mathcal T_3(s)={}&\frac{(s-1)s(s+1)}6\zeta(s+2)
+ -\frac{s(s-1)}2\zeta(s+1,1)+(s-1)\zeta(s,1,1)\notag\\
+ &+\zeta(2)\bigl((s-1)\zeta(s)-\zeta(s-1,1)\bigr)
+ +\zeta(s-1,3)\notag\\
+ &+\zeta(s-1,1,2)+\zeta(s-1,2,1).\label{eq:T3}
+\end{align}
+Thus $I_0=\mathcal T_1$, $I_1=\mathcal T_1+\mathcal T_2$, and $I_2=2(\mathcal T_1+\mathcal T_2+\mathcal T_3)$. The supplied exact generator records analogous reduced expressions through $r=8$; the theorem is not restricted to those checked cases.
+
+\subsection{Every dilogarithm logarithmic moment}
+\begin{corollary}[A trigamma generator]\label{cor:dilog-all}
+For $\Rea\lambda<1$,
+\begin{equation}\label{eq:dilog-generator}
+ \JJ_1(2,\lambda)=\frac{\psi'(1-\lambda)}{1-\lambda}.
+\end{equation}
+Consequently, for every integer $r\ge0$,
+\begin{equation}\label{eq:dilog-all}
+ \boxed{\displaystyle
+ \int_0^\infty\frac{-\Li_2(-x)\log^r(1+x)}{(1+x)^2}\dd x
+ =r!\sum_{j=0}^r(j+1)\zeta(j+2).}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Put $u=x/(1+x)$ and $L=-\log(1-u)$. The classical dilogarithm transformation \cite{DLMFpoly} gives
+\[
+ F_2\!\left(\frac{u}{1-u}\right)=\Li_2(u)+\frac12L^2.
+\]
+Integration by parts, followed by the standard trigamma series, gives
+\[
+ \int_0^1(1-u)^{-\lambda}\Li_2(u)\dd u
+ =\frac{\psi'(2-\lambda)}{1-\lambda}.
+\]
+Indeed, use the antiderivative $-(1-u)^{1-\lambda}/(1-\lambda)$ of the weight. Both boundary terms vanish, and the remaining integral is
+\[
+ \frac1{1-\lambda}\int_0^1\frac{(1-u)^{1-\lambda}[-\log(1-u)]}{u}\dd u
+ =\frac1{1-\lambda}\sum_{n\ge0}\frac1{(n+2-\lambda)^2}.
+\] The other contribution is
+\[
+ \frac12\int_0^1(1-u)^{-\lambda}L^2\dd u=\frac1{(1-\lambda)^3}.
+\]
+The recurrence $\psi'(1-\lambda)=\psi'(2-\lambda)+(1-\lambda)^{-2}$ proves \eqref{eq:dilog-generator}. Finally
+$\psi'(1-\lambda)=\sum_{j\ge0}(j+1)\zeta(j+2)\lambda^j$ near zero. Coefficient extraction proves \eqref{eq:dilog-all}.
+\end{proof}
+
+\begin{remark}
+The trigamma generator is a classical-method specialization, not a claim of priority for an isolated elementary beta derivative. It is useful here because it independently checks all logarithmic coefficients, including the resonant order $s=2$ where individual terms of \eqref{eq:T-def} need not converge.
+\end{remark}
+
+\subsection{Exact low-weight checks with independent reductions}
+The preceding framework includes
+\begin{align}
+ \int_0^\infty\frac{\log^2(1+x)}{(1+x)^2}\dd x&=2,\label{eq:ex-log2}\\
+ \int_0^\infty\frac{-\Li_2(-x)\log(1+x)}{(1+x)^2}\dd x
+ &=\zeta(2)+2\zeta(3),\label{eq:ex-diloglog}\\
+ \int_0^\infty\frac{\Li_2(-x)^2}{(1+x)^2}\dd x
+ &=\frac{17}{2}\zeta(4),\label{eq:ex-dilogsquare}\\
+ \int_0^\infty\frac{-\Li_3(-x)\log(1+x)}{(1+x)^2}\dd x
+ &=2\zeta(3)+\frac{17}{4}\zeta(4).\label{eq:ex-triloglog}
+\end{align}
+Here is a direct derivation of the two less immediate evaluations, avoiding integer-relation inference. In the variable $u$, write $D=\Li_2(u)$ and $L=-\log(1-u)$, so $F_2=D+L^2/2$. Integration by parts and \eqref{eq:dilog-all} at $r=1$ give
+\[
+ \int_0^1D^2\dd u=\zeta(2)^2-2\zeta(2)-4\zeta(3)+6.
+\]
+The case $r=2$ of \eqref{eq:dilog-all}, with $\int_0^1L^4\dd u=24$, gives
+\[
+ \int_0^1DL^2\dd u=2\zeta(2)+4\zeta(3)+6\zeta(4)-12.
+\]
+Adding these and $\frac14\int L^4=6$ yields
+$\int F_2^2=\zeta(2)^2+6\zeta(4)=17\zeta(4)/2$.
+
+For the last identity, an anchored antiderivative of $L$ is $-(1-u)(L+1)$. Since $\partial_u F_3=F_2/[u(1-u)]$, integration by parts gives
+\[
+ \int_0^1F_3 L\dd u=\int_0^1\frac{(L+1)F_2}{u}\dd u.
+\]
+The contribution with $L$ equals $\frac12\int_0^1F_2^2\dd u$: use $\partial_uF_2=L/[u(1-u)]$ and integrate $(1-u)\partial_u(F_2^2)/2$. The contribution without $L$ is $2\zeta(3)$, since
+$\int_0^1D/u=\zeta(3)$ and $\int_0^1L^2/u=2\zeta(3)$. This proves \eqref{eq:ex-triloglog}. These small-weight values are also useful sign and normalization controls for the more general theorems.
+
+\section{Ordinary Stieltjes--Gamma kernels and primitives}\label{sec:Stieltjes}
+The zero-index edge of the entire connected family gives a particularly economical bridge to generalized Stieltjes constants. The cancellation is in a smooth integrand, so no endpoint finite part is needed.
+
+For $\Rea q>0$ and $v>0$, define
+\begin{equation}\label{eq:W}
+ W_q(v)=\frac{e^{-2v}+(1-q)e^{-qv}-(2-q)e^{-(q+1)v}}{(1-e^{-v})^2}.
+\end{equation}
+At zero, fill in
+\begin{equation}\label{eq:W-zero}
+ W_q(0)=\frac{(q-1)(q-2)}2.
+\end{equation}
+The function is smooth there and decreases exponentially at infinity. Directly, it is $K_q(v,0)$ from \eqref{eq:kernel}. Thus \eqref{eq:C-A0} gives the ordinary Mellin identity
+\begin{equation}\label{eq:W-Mellin}
+ \frac1{\Gamma(A)}\int_0^\infty v^{A-1}W_q(v)\dd v
+ =\DD_A(q)-\DD_{A-1}(q),\qquad \Rea A>0.
+\end{equation}
+Its normalized Mellin continuation is entire in $A$.
+
+Let $\mathfrak B_n$ denote the complete exponential Bell polynomial, defined by
+\[
+ \exp\!\left(\sum_{j\ge1}b_j\frac{u^j}{j!}\right)
+ =\sum_{n\ge0}\mathfrak B_n(b_1,\ldots,b_n)\frac{u^n}{n!},
+ \qquad \mathfrak B_0=1.
+\]
+Set
+\begin{equation}\label{eq:Bell-args}
+ b_1(v)=\log v+\gamma,\qquad
+ b_j(v)=(-1)^{j+1}(j-1)!\zeta(j)\quad(j\ge2).
+\end{equation}
+The generating function is $v^u/\Gamma(1+u)$.
+
+\begin{theorem}[All-index ordinary Stieltjes moments]\label{thm:W-Stieltjes}
+For every integer $n\ge0$ and $\Rea q>0$,
+\begin{equation}\label{eq:W-Stieltjes}
+ \begin{split}
+ M_n(q)&:=\int_0^\infty W_q(v)\mathfrak B_n(b_1(v),\ldots,b_n(v))\dd v\\
+ &=(-1)^n\bigl(\gamma_n(q)-\gamma_n\bigr)
+   -\bigl(\zeta^{[n]}(0,q)-\zeta^{[n]}(0)\bigr).
+ \end{split}
+\end{equation}
+All these integrals converge absolutely. In particular,
+\begin{align}
+ \int_0^\infty W_q(v)\dd v
+ &=q-1-\psi(q)-\gamma,\label{eq:W0}\\
+ \int_0^\infty(\log v+\gamma)W_q(v)\dd v
+ &=\gamma_1-\gamma_1(q)-\log\Gamma(q),\label{eq:W1}\\
+ \int_0^\infty\bigl((\log v+\gamma)^2-\zeta(2)\bigr)W_q(v)\dd v
+ &=\gamma_2(q)-\gamma_2-\zeta^{[2]}(0,q)+\zeta^{[2]}(0).
+ \label{eq:W2}
+\end{align}
+At $q=3$, these normalize to $M_n(3)=(-\log2)^n/2$.
+\end{theorem}
+\begin{proof}
+Differentiate \eqref{eq:W-Mellin} $n$ times at $A=1$. The derivative of $v^{A-1}/\Gamma(A)$ is exactly the Bell polynomial in \eqref{eq:Bell-args}. The smooth value at zero and the exponential decay of $W_q$ allow every fixed power of $\log v$ under the integral. On the right, \eqref{eq:stieltjes} gives
+\[
+ \left.\partial_A^n\DD_A(q)\right|_{A=1}
+ =(-1)^n(\gamma_n(q)-\gamma_n).
+\]
+The other term is the zeta derivative at zero. This proves \eqref{eq:W-Stieltjes}. The special cases use $\gamma_0(q)=-\psi(q)$ and the classical Lerch formula
+$\zeta^{[1]}(0,q)-\zeta^{[1]}(0)=\log\Gamma(q)$ \cite{DLMFzeta}.
+For $q=3$, direct simplification gives $W_3(v)=e^{-2v}$; hence the Mellin transform in \eqref{eq:W-Mellin} is $2^{-A}$ and the stated normalization follows.
+\end{proof}
+
+Although the generalized Stieltjes constants are defined by a Laurent expansion, \eqref{eq:W-Stieltjes} does not integrate a Laurent singularity. The pole was cancelled before differentiation, and the final kernels are bounded at their ordinary endpoint.
+
+\subsection{All anchored primitives}
+Write
+\[
+ \DD_\sigma^{[j]}(q)=
+ \left.\partial_u^j\bigl(\zeta(u,q)-\zeta(u)\bigr)\right|_{u=\sigma}.
+\]
+This notation applies at $\sigma=1$ to the entire cancelled function.
+
+\begin{theorem}[Explicit primitives of every Stieltjes moment]\label{thm:W-primitives}
+For $n\ge0$ and a path from $1$ to $q$ in $\Rea q>0$,
+\begin{equation}\label{eq:W-primitive-all}
+ \begin{split}
+ \int_1^q M_n(a)\dd a={}&
+ -\frac{\DD_0^{[n+1]}(q)}{n+1}
+ -n!\sum_{j=0}^n\frac{\DD_{-1}^{[j]}(q)}{j!}\\
+ &+(q-1)\left(\zeta^{[n]}(0)-(-1)^n\gamma_n\right).
+ \end{split}
+\end{equation}
+The right side vanishes at $q=1$. In particular,
+\begin{equation}\label{eq:W-Gamma-primitive}
+ \int_1^q\bigl(a-1-\psi(a)-\gamma\bigr)\dd a
+ =\frac{(q-1)^2}{2}-\log\Gamma(q)-\gamma(q-1).
+\end{equation}
+\end{theorem}
+\begin{proof}
+The Hurwitz argument derivative, integrated from $1$ to $q$, gives
+\begin{equation}\label{eq:Hurwitz-primitive}
+ \int_1^q\DD_u(a)\dd a
+ =\frac{\DD_{u-1}(q)}{1-u}-(q-1)\zeta(u).
+\end{equation}
+This is initially read away from $u=1$; the whole right side is filled at that point, consistently with the entire left side. Comparing Laurent coefficients of the uncancelled Hurwitz integral at $u=1$ yields
+\begin{equation}\label{eq:Stieltjes-primitive}
+ \int_1^q\gamma_n(a)\dd a
+ =\frac{(-1)^{n+1}}{n+1}\DD_0^{[n+1]}(q).
+\end{equation}
+For completeness, integrate $\zeta(1+u,a)=-u^{-1}\partial_a\zeta(u,a)$ and expand. The term $\DD_0(q)=1-q$ supplies the pole $(q-1)/u$; the next coefficients give exactly \eqref{eq:Stieltjes-primitive}.
+
+Differentiating \eqref{eq:Hurwitz-primitive} $n$ times at $u=0$ gives
+\[
+ \int_1^q\DD_0^{[n]}(a)\dd a
+ =n!\sum_{j=0}^n\frac{\DD_{-1}^{[j]}(q)}{j!}
+  -(q-1)\zeta^{[n]}(0).
+\]
+Combine this with \eqref{eq:Stieltjes-primitive} and \eqref{eq:W-Stieltjes}. Holomorphy on the simply connected right half-plane makes the result independent of the chosen path. The $n=0$ specialization uses $\DD_0^{[1]}(q)=\log\Gamma(q)$ and $\DD_{-1}(q)=-q(q-1)/2$, proving \eqref{eq:W-Gamma-primitive}.
+\end{proof}
+
+\subsection{Rational shifts and polylogarithm order derivatives}
+The classical root-of-unity filter connects these kernels back to polylogarithms. Let $q=p/Q$, with $1\le p\le Q$, and put $\omega=e^{2\pi\ii/Q}$ and
+\[
+ U_{p,Q}(s)=\sum_{r=1}^{Q-1}\omega^{-pr}\Li_s(\omega^r).
+\]
+Each nontrivial-root term is entire in $s$. Starting with absolutely convergent series and filtering the congruence class of the summation index gives
+\begin{equation}\label{eq:root-filter}
+ \zeta(s,p/Q)=Q^{s-1}\bigl(\zeta(s)+U_{p,Q}(s)\bigr).
+\end{equation}
+For $L=\log Q$, the exact generating identities are therefore
+\begin{align}
+ \DD_{1+u}(p/Q)
+ &=e^{Lu}\bigl(\zeta(1+u)+U_{p,Q}(1+u)\bigr)-\zeta(1+u),
+ \label{eq:rational-one}\\
+ \DD_u(p/Q)
+ &=Q^{-1}e^{Lu}\bigl(\zeta(u)+U_{p,Q}(u)\bigr)-\zeta(u).
+ \label{eq:rational-zero}
+\end{align}
+The first line has a removable pole at zero. These formulas, differentiated at $u=0$, express every moment \eqref{eq:W-Stieltjes} at rational $q$ using finitely many polylogarithm order derivatives at roots of unity, ordinary zeta derivatives, and powers of $\log Q$.
+
+For an explicit coefficient version, $n\ge0$ gives
+\begin{equation}\label{eq:gamma-rational}
+ \begin{split}
+ (-1)^n\bigl(\gamma_n(p/Q)-\gamma_n\bigr)
+ ={}&\frac{L^{n+1}}{n+1}
+ +\sum_{j=0}^{n-1}\binom njL^{n-j}(-1)^j\gamma_j\\
+ &+\sum_{j=0}^n\binom njL^{n-j}U_{p,Q}^{[j]}(1),
+ \end{split}
+\end{equation}
+where the first sum is empty at $n=0$. The zeta-derivative term at zero is
+\begin{equation}\label{eq:zeta-rational-zero}
+ \DD_0^{[n]}(p/Q)=\frac1Q\sum_{j=0}^n\binom njL^{n-j}
+ \bigl(\zeta^{[j]}(0)+U_{p,Q}^{[j]}(0)\bigr)-\zeta^{[n]}(0).
+\end{equation}
+No arithmetic independence is assumed in these finite identities. They are consequences of the exact filter, not numerical fits.
+
+\section{Audit findings, corrections, and boundaries}\label{sec:audit}
+\subsection{What the source comparison establishes}
+The inspected finite master in \cite{BMH} is compatible with the present proof. We did not find a counterexample to that theorem, and do not manufacture an erratum simply because its scope was narrower. Its connected coordinates, boundary cancellations, and integer cone coefficients agree with \cref{thm:entire-C,thm:connected-spectral}. The substantive update is an extension: the separately stated arbitrary-order representation question in \cite{RLC} now has the constructions \eqref{eq:double-Barnes}, \eqref{eq:connected-master}, and \eqref{eq:Newton-master}.
+
+The appropriate status change is therefore: \emph{the same-direction complex-order representation, with recovery of the existing integer master, is proved in the stated positive-scale and convergence domains}. It is not appropriate to replace that sentence by ``all same-direction closure questions are solved.'' In particular, no finite basis of classical polylogarithms or double zeta functions is established for generic noninteger orders and arbitrary scales.
+
+\subsection{Specific safeguards for integration}
+The following are mathematically consequential corrections to tempting but invalid extrapolations. Except where explicitly inherited, they are safeguards for the new integration, not accusations that the inspected source prints each error.
+
+\paragraph{Finite upper limits cannot be complexified.}
+The summation limit $m-1$ in \eqref{eq:integer-master} comes from a polynomial. Replacing $m$ by a complex variable does not define a holomorphic theorem. The Barnes or beta--Newton representation is the replacement, and its analytic-continuation domain must accompany it.
+
+\paragraph{Resonant values retain their cancelled residues.}
+The factor $v\zeta(v+1,a)$ is $1$ at $v=0$. Setting it to zero breaks, for example, \eqref{eq:negative-ex0} at $s=1$. The exact suite includes a deliberately corrupted resonance rule and rejects it. Similarly, $\beta=0,-1$ in the integer master are removable values of the complete expression; one does not independently evaluate a cosecant pole and a zero coordinate.
+
+\paragraph{The two Gamma pole families must be paired.}
+Equation \eqref{eq:Gamma-generator} is a difference of residues at $k$ and $k-\lambda$. They coalesce as $\lambda\to0$. The finite product factor $R(\lambda)$ survives this pairing. Omitting its $\lambda^2$ coefficient $\zeta(2)$ changes the logarithmic moments; a separate corruption control detects this error.
+
+\paragraph{Star sums use the stated upper index.}
+The Newton coefficients contain $H_n^\star$, whereas the Gamma-product expansion contains $H_{k-1}^\star$. Interchanging these conventions introduces a diagonal term. The exact checks compute the relevant products independently rather than silently identifying the two conventions.
+
+\paragraph{Entire combinations do not make their summands entire.}
+The connected coordinate and the all-logarithmic combination are entire in their stated order variables. Their decompositions into individual multiple-zeta terms may have poles. The ordinary kernel, the beta--Newton series, or a continued complete combination fixes the value. Arbitrary separate finite parts are neither needed nor licensed.
+
+\paragraph{The depth statement is an upper bound.}
+The explicit all-ones cancellation removes depth $r+2$ terms and leaves at most $r+1$. It does not prove that the surviving terms are linearly independent, nor that further shuffle or special-value identities cannot lower the depth.
+
+\subsection{Scope not covered}
+The six currently listed incoming archives were not opened. This limits the overlap audit, although the precise source question and its preceding finite master were read. The paper does not review all claims in the four-volume canonical manuscript. No claim is made to settle the Gaussian $S_6$ or revised $S_8$ identities, no arithmetic nonreduction is inferred from unsuccessful searches, and no proof-assistant formalization is supplied. These limits are recorded so that the package can be integrated without accidentally promoting unrelated conjectures.
+
+\section{Reproducibility and evidence}\label{sec:checks}
+The delivered Python code is independent of a network connection. It separates exact finite algebra from numerical diagnostics and from the analytic proofs in this article. All tests described in this section were executed for the delivered receipts.
+
+\subsection{Exact finite assertions}
+The file \src{code/verify_exact.py} uses SymPy exact arithmetic. It records the following counts in \src{results/exact_checks.json}.
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Family & Assertions\\
+\midrule
+Connected-coordinate symmetry &36\\
+Connected-coordinate shift &36\\
+Integer-shift interpolation &180\\
+Direct rational kernel comparisons &8\\
+Negative-order Newton coefficients &117\\
+Positive-order harmonic coefficients &50\\
+Finite negative-sector beta closure &350\\
+All-logarithmic depth cancellation &9\\
+Local Gamma-collision coefficients &36\\
+Rejected deliberately corrupted formulas &2\\
+\midrule
+Total &824\\
+\bottomrule
+\end{tabular}
+\end{center}
+The polynomial closure is checked against an independent rational beta integration of the product of two negative-order profile polynomials. The connected kernel is checked directly as a rational function at integer shifts. The Gamma coefficients are checked from finite products before their infinite sum is recognized as a multiple zeta function. The generated coefficient file \src{results/moment_reductions.json} records reduced expressions for $0\le r\le8$.
+
+These finite assertions do not prove normal convergence or contour deformation. Those obligations are handled explicitly in \cref{sec:connected,sec:Barnes,sec:Newton,sec:negative,sec:logmoments}.
+
+\subsection{Numerical diagnostics}
+The four numerical parts supply 32 comparisons:
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Part & Checks & Largest recorded relative error\\
+\midrule
+Ordinary Stieltjes kernels and Gamma primitive &15&$8.33\cdot10^{-41}$\\
+Dilogarithm moments and low-weight integrals &9&$1.51\cdot10^{-34}$\\
+Coalescing residues versus Barnes/trigamma &5&$1.05\cdot10^{-14}$\\
+Double Barnes versus ordinary/beta integrals &3&$1.92\cdot10^{-11}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The displayed errors are rounded upward from the JSON receipts. The first parts use mpmath high-precision quadrature. The unequal-scale double Barnes diagnostic uses an independent NumPy/SciPy grid, so its error scale is not the same as that of the high-precision one-dimensional tests. It includes genuinely complex independent orders and unequal positive scales. The per-test tolerances and values are recorded in the corresponding \src{results/numeric_*.json} files.
+
+These numbers are diagnostics, not rigorous enclosures: no interval arithmetic or certified quadrature error estimate is asserted. They are intended to detect sign, normalization, branch, and transcription errors. The analytic results do not depend on an empirical claim of zero residual.
+
+\subsection{Commands and artifact integrity}
+From the package root, run
+\begin{verbatim}
+python code/verify_exact.py
+python code/verify_numeric.py --part all
+python build.py
+\end{verbatim}
+The numerical parts may instead be run separately with \src{--part kernels}, \src{--part moments}, \src{--part spectral}, and \src{--part residues}. The build script uses three serial LaTeX passes and writes intermediate files into a local build directory. The delivered PDF was rendered and inspected; the receipt states the renderer and page count. Hashes in \src{SHA256SUMS} identify the delivered bytes, not a theorem-proving certificate or a promise of byte-identical LaTeX output on another installation.
+
+\section{Further research questions and topics}\label{sec:research}
+The following questions continue the proved formulas, with exact identities and structural classifications as the main goals.
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=2.8em,itemsep=7pt]
+\item \textbf{Finite closure at genuinely noninteger orders.}
+Specify a target class before seeking a classification: finite combinations of connected double-Hurwitz functions with affine order shifts, for example. Determine which parameter loci permit reduction of the Barnes integral to that class. The existence of \eqref{eq:double-Barnes} alone neither proves nor disproves finite closure.
+
+\item \textbf{Higher-depth connected families.}
+Construct the analogue of $K_q$ from higher divided differences and ordered cones. Determine the exact entire family, its shift and stuffle identities, and the boundary reductions when several indices are nonpositive. The depth-two polynomial interpolation is a required consistency check, not evidence sufficient by itself for the higher theorem.
+
+\item \textbf{Further depth cancellations.}
+Theorem~\ref{thm:depth} removes the unique highest-depth all-ones term. Determine the complete functional relations among the remaining coefficients under shuffle and stuffle identities. Separate a symbolic functional depth reduction from arithmetic independence of special values.
+
+\item \textbf{Shifted logarithmic coefficient algebras.}
+For general $a$, expand \eqref{eq:Gamma-generator} into an explicit finite basis of shifted nested zeta functions at every logarithmic order. Identify a canonical basis that remains regular when the order passes through a pole of one component.
+
+\item \textbf{Complex scales and contour contacts.}
+Continue $z,w$ away from the positive real axis in \eqref{eq:double-Barnes}. State precisely the sectors in which absolute contour convergence persists, and compute the residue or branch contributions when a scale crosses a polylogarithm cut. Positive-scale formulas should not be exported across a cut without those corrections.
+
+\item \textbf{Order derivatives at the dilogarithm resonance.}
+The exact identity $\JJ_1(2,\lambda)=\psi'(1-\lambda)/(1-\lambda)$ fixes the value at $s=2$, not its transverse derivative in $s$. Seek a finite expression for $\partial_s\JJ_1(s,\lambda)|_{s=2}$ or its logarithmic coefficients, keeping the independent-order derivative distinct from differentiating an identity valid only at one order.
+
+\item \textbf{Primitive algebras and Barnes Gamma functions.}
+Repeated primitives of \eqref{eq:W-primitive-all} lead to Hurwitz order derivatives at successive negative integers. Determine the most natural normalized multiple-Gamma basis, including all constants at an anchor and all commutation relations with order differentiation.
+
+\item \textbf{Comparison with other desingularizations.}
+Relate the explicit entire difference $\CC_{A,B}(q)$ to the desingularized multiple-zeta families of \cite{FKMT}, if a precise transformation exists. Matching a few Bernoulli values is insufficient; a comparison should identify the full functional normalization and preserve the vanishing at $q=1,2$.
+
+\item \textbf{Stable exact-to-numerical evaluation.}
+The finite alternating sum \eqref{eq:A-def} can suffer catastrophic cancellation. Develop stable algorithms based on \eqref{eq:A-Mellin}, harmonic recurrences, or contour methods, and combine them with certified truncation estimates for the beta--Newton master. The present floating-point diagnostics do not supply such certification.
+
+\item \textbf{Formalization and source reconciliation.}
+Formalize the finite polynomial recurrences, Gamma-product coefficient algebra, and depth cancellation independently of the analytic part. Then isolate normalized Mellin continuation and contour inversion as reusable analysis lemmas. Before asserting priority, compare the precise statements with the six uninspected arrivals and with the existing logarithmic-integral literature.
+\end{enumerate}
+
+\section*{Conclusion}
+\addcontentsline{toc}{section}{Conclusion}
+The same-direction problem admits a rigorous complex-order theory without changing its geometry. The entire connected family supplies the analytic continuation missing from an integer-only reading of the cone formula; the double Barnes integral treats unequal positive scales; and the beta--Newton expansion gives an independent, normally convergent harmonic calculus. The coalescing Gamma residues then produce a finite all-logarithmic multiple-zeta formula with an explicit one-level depth cancellation. At the connected boundary, the same cancellations become ordinary Stieltjes--Gamma integrals and fully anchored primitives. These results answer the specified representation question and add several exact identity families, while preserving the distinction between proven functional reductions, classical special cases, finite checks, and remaining arithmetic questions.
+
+\clearpage
+\begin{thebibliography}{20}
+\bibitem{BMH} ProveIt contributors, \emph{Bilinear Mellin--Hurwitz}, section ``A connected double-Hurwitz master formula,'' repository source at commit \src{92f8c8e749e87e7e22779a0d2a12f9f21b2d5583}. Exact file path and blob identifier are recorded in \src{SOURCE_AUDIT.md}. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/92f8c8e749e87e7e22779a0d2a12f9f21b2d5583/Analysis/Polylogarithms/docs/reports/stieltjes-correlation-calculus/continuations/bilinear-mellin-hurwitz/sections/03-master.tex}{Pinned source}.
+\bibitem{RLC} ProveIt contributors, \emph{Reciprocal Lerch Convolutions}, scope section and further-research question 8, repository source; research-question file pinned at the same commit as \cite{BMH}. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/92f8c8e749e87e7e22779a0d2a12f9f21b2d5583/Analysis/Polylogarithms/docs/reports/stieltjes-correlation-calculus/continuations/reciprocal-lerch-convolutions/sections/12-research.tex}{Pinned research questions}.
+\bibitem{DLMFbeta} NIST Digital Library of Mathematical Functions, \S5.12, ``Beta Function.'' \url{https://dlmf.nist.gov/5.12}.
+\bibitem{DLMFzeta} NIST Digital Library of Mathematical Functions, \S25.11, ``Hurwitz Zeta Function.'' \url{https://dlmf.nist.gov/25.11}.
+\bibitem{DLMFpoly} NIST Digital Library of Mathematical Functions, \S25.12, ``Polylogarithms,'' including the dilogarithm transformation and the Fermi--Dirac integral representation. \url{https://dlmf.nist.gov/25.12}.
+\bibitem{DLMFlerch} NIST Digital Library of Mathematical Functions, \S25.14, ``Lerch's Transcendent.'' \url{https://dlmf.nist.gov/25.14}.
+\bibitem{Sondow} J. Sondow, ``A faster product for pi and a new integral for $\log(\pi/2)$,'' \emph{American Mathematical Monthly} \textbf{112} (2005), 729--734. \url{https://arxiv.org/abs/math/0401406}.
+\bibitem{Coffey} M. W. Coffey, ``Some definite logarithmic integrals from Euler sums, and other integration results,'' 2010. \url{https://arxiv.org/abs/1001.1366}.
+\bibitem{Tiered} M. E. Hoffman and M. Kuba, ``Logarithmic integrals, zeta values, and tiered binomial coefficients,'' preprint, 2019; revised 2020. \url{https://arxiv.org/abs/1906.08347}.
+\bibitem{FKMT} H. Furusho, Y. Komori, K. Matsumoto, and H. Tsumura, ``Desingularization of complex multiple zeta-functions,'' 2015. \url{https://arxiv.org/abs/1508.06920}.
+\end{thebibliography}
+\end{document}

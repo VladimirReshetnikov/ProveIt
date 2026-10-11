@@ -1,0 +1,290 @@
+\section{Source reconciliation and a further research programme}
+\label{sec:audit}
+
+\subsection{What the audit establishes}
+
+The source claims used in the proofs were checked against the pinned
+revision, including the finite-cutoff conventions and the exact matrices.
+The audit establishes one stale research-status statement and a precise
+centering reconciliation. It did not establish an additional false theorem
+in the inspected parts of the six incoming reports. This conclusion is
+limited to those parts: acquiring the full source inventory does not
+constitute checking every proof in the collective manuscript.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.26\textwidth}>{\raggedright\arraybackslash}p{0.38\textwidth}>{\raggedright\arraybackslash}p{0.28\textwidth}@{}}
+\toprule
+Source & Material checked for this continuation & Result \\
+\midrule
+\endfirsthead
+\toprule
+Source & Material checked for this continuation & Result \\
+\midrule
+\endhead
+Canonical fifth-moment report \cite{Canonical} &
+Tail blocks, inverse transform, diagonal rank, and the first-$q$ conjecture &
+Normalization retained; gap four advances its conjecture \\
+Differential polygamma and Lerch jets \cite{Differential} &
+Adjacent-order proof and fixed-gap recurrence &
+Recurrence and determinant signs retained \\
+Bernoulli--Tornheim--digamma \cite{Bernoulli} &
+Fixed smaller orders $2,4,6$; shifted-Hankel reduction; tail foundation;
+Tornheim subtraction; differential and research sections &
+No additional false formula found; R8 status needs reconciliation \\
+Polygamma tail identities \cite{Polygamma} &
+Moment rank and reconstruction; spectral polynomial formulas; sixth
+mixed moment &
+Supplies the already available spectral coordinates used below \\
+Cubic tail descent \cite{Cubic} &
+Cubic Gamma product and the master identity with its subtraction &
+No error established in the inspected product and limit arguments \\
+Determinantal harmonic resonance \cite{Resonance} &
+First resonance and the cutoff-to-spectral transfer law &
+The amplitude-derivative correction remains necessary \\
+Multishift reflection \cite{Multishift} &
+Entire-order transform and full horizontal-cut reflection &
+No error established in the inspected holomorphy and jump conventions \\
+\bottomrule
+\end{longtable}
+
+The accompanying source-audit record identifies the exact section files
+and equation labels. The preserved Canonical report is already under
+\path{Analysis/Polylogarithms/docs/reports/stieltjes-harmonic-resonance/continuations/canonical-digamma-fifth/};
+it is not one of the six current incoming archives. The earlier extracted
+tail-rank source used during this work was checked against that preserved
+file and has the identical Git blob.
+
+\subsection{A sixth mixed moment whose spectral evaluation already exists}
+\label{sh:audit-sixth}
+
+Research item R8 of the Bernoulli--Tornheim--digamma report asks for a
+harmonic-spectral evaluation of
+\[
+ \widetilde M_6=\FP\int_0^1(\psi(x)+\gamma)^2\psi'(x)^2\,dx.
+\]
+Here and throughout this subsection, $\FP\int_0^1f(x)\,dx$ means the
+coefficient of $\varepsilon^0(\log\varepsilon)^0$ in
+$\int_\varepsilon^1f(x)\,dx$ as $\varepsilon\downarrow0$, in the
+original coordinate $x$. The operation is linear on the Laurent-log
+expansions used here. The existence question is already answered by
+the Polygamma Tail Identities report \cite{Polygamma}. Its equation
+\texttt{sixth:I} evaluates the uncentered mixed integral; equations
+\texttt{spectral:exampleDP} and
+\texttt{spectral:digamma\_trigammasquare} evaluate the lower mixed term.
+The differing centering can be reconciled explicitly.
+
+Define, in decreasing-index convention,
+\begin{align}\label{audit:DP}
+ D_P(s)={}&-4\zeta(3,s+1)-4\zeta(s+4)
+          +2\zeta(s+2,2)+2\zeta(2)\zeta(s+2)\notag\\
+         &+4\zeta(s+3,1)-4\gamma\zeta(s+3),\qquad \Re s>-1.
+\end{align}
+All the displayed series are holomorphic in this half-plane. To specify
+the other inherited coordinate without leaving an unnamed integral,
+put, for $n\ge0$,
+\begin{align*}
+ b_n&=H_n-\gamma,&c_n&=H_n^{(2)}+\zeta(2),&
+ d_n&=H_n^{(3)}-\zeta(3),\\
+ e_n&=H_n^{(4)}+\zeta(4),&f_n&=H_n^{(5)}-\zeta(5),
+\end{align*}
+and
+\begin{align}
+ r_n={}&4b_n^2d_n+2b_nc_n^2-6c_nd_n-10b_ne_n+6f_n,
+       \label{audit:residue}\\
+ \Omega_5={}&-\sum_{n\ge1}(r_n-r_{n-1})\log n
+           =\sum_{n\ge1}r_n\log(1+1/n).\label{audit:Omega}
+\end{align}
+These are ordinary absolutely convergent series. For example, the
+harmonic-tail expansions and $8\zeta(2)^2=20\zeta(4)$ give
+$r_n=O(\log(n+1)/n+\log^2(n+1)/n^2)$ and
+$r_n-r_{n-1}=O(\log(n+1)/n^2)$; summation by parts has a vanishing
+boundary term. These definitions agree exactly with the source's
+\texttt{sixth:D} and \texttt{sixth:omega-series}.
+
+\begin{proposition}[Reconciliation of the centered sixth coordinate]
+\label{audit:sixth}
+The inherited spectral evaluations imply
+\begin{equation}\label{sh:centered-sixth-reconciliation}
+ \boxed{\widetilde M_6
+   =\Omega_5+2\gamma D_P'(0)+4\gamma^2\zeta'(3)
+      +\frac{31}{3}\zeta(2)\zeta(3)-\frac{19}{3}\zeta(5).}
+\end{equation}
+\end{proposition}
+\begin{proof}
+The three source evaluations in the same finite-part convention are
+\begin{align*}
+ \FP\int_0^1\psi^2\psi'^2\,dx
+ &=\Omega_5+2\gamma^2\zeta(3)-\frac{35}{3}\gamma\zeta(4)
+       +\frac{31}{3}\zeta(2)\zeta(3)-\frac{19}{3}\zeta(5),\\
+ \FP\int_0^1\psi\psi'^2\,dx
+ &=\frac{35}{6}\zeta(4)-2\gamma\zeta(3)+D_P'(0),\\
+ \FP\int_0^1\psi'^2\,dx
+ &=2\zeta(3)+4\zeta'(3).
+\end{align*}
+Expand $(\psi+\gamma)^2\psi'^2$ and use linearity. The coefficients
+of $\gamma\zeta(4)$ and $\gamma^2\zeta(3)$ cancel exactly, leaving
+\eqref{sh:centered-sixth-reconciliation}. In the Canonical fifth-moment
+notation one also has $D_P(s)=2J(s+1)$, by the stuffle product; hence
+$D_P'(0)=2J'(1)$.
+\end{proof}
+
+The proposed correction to R8 is therefore: determine whether the
+specified combination in \eqref{sh:centered-sixth-reconciliation}
+reduces to a smaller, explicitly stated collection of constants, such
+as selected ordinary zeta derivatives and prescribed height-one
+spectral data. Existence of a harmonic-spectral representation should
+be marked resolved. This reconciliation does not prove a reduction
+to that smaller collection, and it is not an arithmetic-independence
+statement about $\Omega_5$.
+
+\subsection{Conventions that must survive integration}
+
+Three distinctions materially affect the values of the formulas.
+First, the original centered lattice has
+$\zeta(-2j,1/2)=0$, whereas a shifted lattice generally does not.
+Theorems~\ref{sh:transform} and \ref{sh:jets} give the two required
+corrections explicitly. Second, equality of zero-order continued and
+ordinary values does not imply equality after spectral differentiation:
+the nonzero $\zeta^{(j)}(-k,\alpha)$ terms must be retained. Third,
+$\mathcal K_{+,+}$ and its $(2,2)$ coefficient have an ordinary
+conditional interpretation; their original series must not be
+described as absolutely convergent. The other sign pairings are
+absolutely convergent.
+
+These are normalization requirements for using the new results, not
+claims that the inspected predecessors made all three mistakes.
+The separately unresolved Gaussian $S_6$ and revised $S_8$ candidates
+remain conjectural in this continuation. A proved reduction for a
+different tail family supplies no missing identity for those values.
+
+\subsection{Further research questions with concrete targets}
+\label{sec:questions}
+
+The following questions concern exact evaluations, structure, or proof
+certificates. The numerical evidence accompanying the sources can help
+choose cases, but each proposed endpoint is an identity or a rigorous
+nonvanishing theorem.
+
+\begin{enumerate}[label=\textbf{Q\arabic*.},ref=Q\arabic*,itemsep=10pt]
+\item \textbf{Complete the optimal-prefix conjecture beyond gap four.}
+For even $8\le p<q$ with $q-p\ge6$, prove or refute
+$\det M_{p,q}\ne0$. The first unproved fixed-gap family is
+$(p,q)=(2b-6,2b)$ with $b\ge7$. Its boundary determinant has size
+three. The explicit sign change already seen between $b=6$ and $b=7$
+rules out a proof based on one fixed sign for this family. A useful
+target is an exact expression whose factors prove nonvanishing while
+allowing the determinant's sign to vary. Comparing the size-$c$
+fixed-gap determinant with the size-$p/2$ complementary determinant
+in the shifted-Hankel approach may reduce different parameter ranges.
+
+\item \textbf{Classify higher minors of the fundamental recurrence.}
+Theorem~\ref{eg:two-minors} is uniform in the gap and the two chosen
+columns. Determine which larger minors vanish or change sign, and
+whether a recurrence for their exterior products separates those two
+possibilities. The one-negative-index induction in the present proof
+does not directly extend to several sign changes. A successful
+replacement should explain the recorded third-order sign reversal,
+not impose a positivity property contradicted by it.
+
+\item \textbf{Determine the exact formal rank after a Hurwitz shift.}
+Section~\ref{sh:section} gives at most $q+2$ coordinates over
+$\Q(v)$. Is that list generically minimal, and how many initial
+even moments reconstruct it? Describe every exceptional shift in a
+stated real or complex domain, including the known degeneration at
+$v=1$. This is a question about rational coefficient matrices; it
+does not require independence of the specialized Hurwitz values.
+The Bernoulli-polynomial endpoint and the highest single-Hurwitz
+column should be kept throughout any determinant computation.
+
+\item \textbf{Allow different shifts in the two factors.}
+Replace the product by
+$\zeta(p,n+v)\zeta(q,n+w)$. Integer values of $v-w$ can be
+related by finite tail corrections. For general rational differences,
+determine an explicit finite normal form and the necessary depth-two
+shifted coordinates. The first test is whether a discrete primitive
+analogous to Theorem~\ref{sh:primitive} closes in single Hurwitz
+values and endpoint products, and exactly which shift differences
+permit that closure.
+
+\item \textbf{Combine tail-order derivatives with the weight jets.}
+Theorem~\ref{sh:jets} differentiates the factor $x_n^{-s}$.
+Derivatives in $p$ or $q$ instead create logarithmic harmonic tails.
+Construct the mixed Taylor-Laurent expansion in all three variables,
+including motion of the polar hyperplanes and coincidences of
+resonances. The target is a finite expression in specified derivatives
+of single and multiple Hurwitz functions and generalized Stieltjes
+constants, with the scale and amplitude corrections visible at every
+order. This would extend the source's Lerch and Tornheim jet machinery
+to the shifted product setting.
+
+\item \textbf{Replace signs by higher roots of unity.}
+For a fixed conductor $N$, study the analogues of
+$\mathcal K_{\alpha,\beta}$ with $N$th roots of unity as colors
+and a corresponding outer character. State explicitly which
+conjugation and weight-parity sectors reduce in depth. The level-two
+parity formula used here cannot simply be reused unchanged. A
+concrete objective is a conductor-four generator expressed through
+digamma at quarter shifts and a specified collection of cyclotomic
+polylogarithms. Such a result would give an exact bridge toward the
+Gaussian setting without assuming the outstanding Gaussian identities.
+
+\item \textbf{Find compact normal forms for differentiated resolvents.}
+Parameter differentiation of Theorem~\ref{alt:thm:master} already
+gives sums of products of arbitrary repeated rational resolvents.
+Can their right sides be organized by finite Bell-polynomial formulas
+that display the removable singularities before specialization?
+At rational parameters, seek explicit formulas in algebraic
+coefficients, logarithms, and Dirichlet $L$-values arising from
+polygamma at rational arguments. A separate useful target is a direct
+contour or hypergeometric proof of the diagonal square and its Gamma
+primitive, independent of the general parity theorem.
+
+\item \textbf{Sum the higher odd weights into one generating identity.}
+The finite reductions in \eqref{alt:eq:weighted-tail} handle every
+admissible odd polynomial weight. Introduce a third variable for
+that degree and determine a compact generating function, or an
+explicit differential operator on $O_\pm$. The admissible degree
+condition must be built into the formulation: extending it crosses
+new convergence thresholds and requires additional subtractions.
+An exact endpoint prescription is part of the desired identity.
+
+\item \textbf{Extend the discrete primitive to higher products.}
+For three or more Hurwitz tails, finite differences introduce products
+of fewer tails. Determine which polynomial weights allow this
+hierarchy to terminate in single Hurwitz values, and which force
+genuine multiple-Hurwitz coordinates. Hoffman's higher-product
+decomposition \cite{Hoffman} supplies the ordered-sum framework.
+A useful initial problem is a complete classification for three
+equal even orders and weights of degree below the first resonance.
+
+\item \textbf{Reduce the reconciled sixth spectral coordinate.}
+Choose a target collection first, then test whether
+$\Omega_5+2\gamma D_P'(0)+4\gamma^2\zeta'(3)$ belongs to its
+rational span. Candidate collections can include specified ordinary
+zeta derivatives and the height-one slopes already defined by the
+Gamma bridge. The source gives convergent series and a finite
+multiple-zeta derivative representation for the current coordinate;
+the missing step is a proved functional reduction among those
+representations. Numeric relation searches alone cannot decide it.
+
+\item \textbf{Connect the colored primitive to endpoint periods.}
+Proposition~\ref{alt:prop:GF} fixes both an analytic function and its
+additive constant in the disk. Continue it to selected boundary
+points using a stated path, compute its endpoint limits, and compare
+the resulting depth-three polylogarithms under shuffle and stuffle
+relations. Determine which combinations admit a Gamma or polygamma
+description like the diagonal primitive. At a branch point, the
+desired result should include the full finite-part or limiting rule.
+
+\item \textbf{Produce exact certificates for the remaining numerical candidates.}
+For the Gaussian $S_6$ and revised $S_8$ conjectures, isolate a finite
+algebraic, contour, or hypergeometric identity whose specialization
+would prove the claimed value. Separate the convergence argument
+from the period reduction, and state the intermediate functions with
+fixed branches. The finite telescoper in \eqref{eg:V-difference}
+illustrates the desired form of a checkable certificate for a sum;
+the Gaussian questions need their own certificates.
+\end{enumerate}
+
+The immediate priorities are Q1, Q3, and Q6. They extend the three
+proved mechanisms of this article while preserving an exact target
+and a clear test for what would constitute a solution.

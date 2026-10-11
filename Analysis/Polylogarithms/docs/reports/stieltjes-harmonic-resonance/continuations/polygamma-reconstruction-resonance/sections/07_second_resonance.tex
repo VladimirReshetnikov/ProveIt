@@ -1,0 +1,552 @@
+% Standalone section. Requires amsmath, amssymb, amsthm and hyperref.
+% The parent article should provide theorem, proposition, corollary, remark.
+% Bibliography keys: dhr20261010, dlmfgauss, dlmfgammaratio, dlmfhurwitz, dlmfpolylog.
+\section{The next two-particle resonance: overlap subtraction and exact constants}
+\label{sec:second-resonance}
+
+The determinantal harmonic-resonance report explicitly proposed the next
+two-particle resonance as the first test of a higher-pole subtraction
+\cite[Section~9]{incoming-determinantal}. We resolve that target for arbitrary positive
+shape parameters, and by joint holomorphy for their right half-planes.
+The result consists of an explicit normally convergent subtraction, its
+complete spectral derivative calculus, and a finite-cutoff constant proved
+independently from an exact discrete Pearson identity. These statements
+are proved here; no claim of exhaustive literature novelty is made.
+
+\subsection{Definitions and a finite identity}
+Let $\Re a,\Re c>0$ and put
+\begin{align}
+ w_n(u)&=\frac{\Gamma(n+a)\Gamma(n+c)}
+ {\Gamma(n+a+c+1+u)\Gamma(n+1)},\label{sr:eq:weight}\\
+ S_N(u)&=\sum_{0\le m<n\le N}(n-m)^2w_m(u)w_n(u),\qquad
+ K_n(u)=\sum_{0\le m<n}(n-m)^2w_m(u)w_n(u).
+ \label{sr:eq:cutoff}
+\end{align}
+Thus $S_N=\sum_{n=0}^N K_n$ and $K_0=0$. There is no factor $2!$.
+Use the abbreviations
+\begin{gather}
+ \mu=\frac1{ac},\qquad h=\frac1a+\frac1c,\qquad q=1+h,
+ \qquad s=ac+a+c,\label{sr:eq:abbreviations}\\
+ \rho=\psi(1)-\psi(a+1)-\psi(c+1),\qquad
+ \tau=\psi'(1)-\psi'(a+1)-\psi'(c+1),\qquad r_2=\rho^2+\tau.
+ \label{sr:eq:rho}
+\end{gather}
+The letter $q$ in this section is a scalar abbreviation, not a
+cyclotomic level or an integration order.
+
+\begin{proposition}[Exact Pearson reduction]\label{sr:prop:pearson}
+Write $M_j(N,u)=\sum_{n=0}^N n^jw_n(u)$ and
+$t_n(u)=n(n+a+c+u)w_n(u)$. For every $N\ge0$,
+\begin{align}
+ acM_0(N,u)-uM_1(N,u)&=t_{N+1}(u),\label{sr:eq:pearson0}\\
+ (1-u)M_2(N,u)+(s+u)M_1(N,u)&=Nt_{N+1}(u).
+ \label{sr:eq:pearson1}
+\end{align}
+Consequently, at $u=0$,
+\begin{align}
+ acM_0(N,0)&=(N+1)(N+1+a+c)w_{N+1}(0),\label{sr:eq:M0exact}\\
+ S_N(0)&=acN M_0(N,0)^2-sM_0(N,0)M_1(N,0)-M_1(N,0)^2.
+ \label{sr:eq:finite-det}
+\end{align}
+\end{proposition}
+\begin{proof}
+The exact weight ratio is
+\[
+ \frac{w_{n+1}(u)}{w_n(u)}
+ =\frac{(n+a)(n+c)}{(n+a+c+1+u)(n+1)}.
+\]
+It gives
+\[
+ t_{n+1}-t_n=(ac-un)w_n,
+ \qquad
+ (n+1)t_{n+1}-nt_n=((1-u)n^2+sn+ac)w_n.
+\]
+Sum these identities, use $t_0=0$, and eliminate $acM_0$ to obtain
+\eqref{sr:eq:pearson0}--\eqref{sr:eq:pearson1}. The elementary identity
+$S_N=M_0M_2-M_1^2$ follows by expanding $(n-m)^2$ and pairing the two
+strict orderings. Substitution at zero proves \eqref{sr:eq:finite-det}.
+\end{proof}
+
+\subsection{The Gamma product and its two different singular scales}
+Define holomorphic germs
+\begin{align}
+ R(u)&=\frac{\Gamma(a+1)\Gamma(c+1)\Gamma(1+u)}
+ {\Gamma(a+1+u)\Gamma(c+1+u)},& A(u)&=\mu R(u),\label{sr:eq:R}\\
+ \beta(u)&=-s-(a+c+\tfrac12)u-\tfrac12u^2,
+ &V(u)&=\frac1{1-u^2},\label{sr:eq:beta}\\
+ P(u)&=(1+hu+\mu u^2)R(u)^2,
+ &T(u;\alpha)&=A(u)(\beta(u)+\alpha u).
+ \label{sr:eq:PT}
+\end{align}
+In particular $R(0)=1$, $R'(0)=\rho$, and $R''(0)=r_2$.
+For $\Re u>1$, the partition converges absolutely, and Gauss summation
+\cite[15.4.20]{dlmfgauss} gives
+\begin{equation}\label{sr:eq:partition-product}
+ \mathcal Z(u):=\sum_{n\ge0}K_n(u)
+ =\frac{P(u)}{u^2(u-1)}.
+\end{equation}
+For completeness, its three moment sums in this domain are
+\[
+ M_0(\infty,u)=\mu R(u),\qquad
+ M_1(\infty,u)=\frac{R(u)}u,\qquad
+ M_2(\infty,u)=\frac{R(u)(s+u)}{u(u-1)}.
+\]
+Their determinant is \eqref{sr:eq:partition-product}. Thus the product
+needs only ordinary Gauss summation, not an assumed higher-dimensional
+Selberg formula.
+
+Fix $\Re\alpha>0$ and write $y=n+\alpha$, with the logarithm on the
+right half-plane. Define the \emph{single grouped counterterm}
+\begin{align}
+ Q_n(u;\alpha)={}&A(u)y^{-u}+T(u;\alpha)y^{-1-u}\notag\\
+ &+\frac2u\left\{V(u)y^{-1-2u}-R(u)y^{-1-u}\right\}.
+ \label{sr:eq:Q}
+\end{align}
+The last line is holomorphic at $u=0$ because its numerator vanishes
+there. The exponent $1+2u$ is essential: it accounts for the region in
+which the inner summation index also becomes large. Replacing it by
+$1+u$ loses the logarithmic overlap term.
+
+\begin{theorem}[Normally convergent second-resonance germ]
+\label{sr:thm:germ}
+For $\Re a,\Re c,\Re\alpha>0$, the series
+\begin{equation}\label{sr:eq:D}
+ \mathcal D(u;\alpha)=\sum_{n\ge0}\{K_n(u)-Q_n(u;\alpha)\}
+\end{equation}
+converges absolutely and locally normally for $u$ in a neighborhood of
+zero. It is jointly holomorphic in these parameters, and every fixed
+mixed parameter derivative can be taken termwise. Its exact value is
+\begin{align}
+ \mathcal D(u;\alpha)={}&\frac{P(u)}{u^2(u-1)}-A(u)\zeta(u,\alpha)
+ -T(u;\alpha)\zeta(1+u,\alpha)\notag\\
+ &+\frac{2R(u)}u\zeta(1+u,\alpha)
+ -\frac{2V(u)}u\zeta(1+2u,\alpha).
+ \label{sr:eq:master}
+\end{align}
+All apparent poles at $u=0$ cancel in this complete expression.
+\end{theorem}
+\begin{proof}
+Work on compact shape-parameter sets and choose $0<\delta<1/4$.
+The locally uniform Gamma-ratio expansion \cite[5.11.13]{dlmfgammaratio}
+is
+\begin{equation}\label{sr:eq:w-asymptotic}
+ w_n(u)=n^{-2-u}\left(1+\frac{\beta(u)}n+O(n^{-2})\right),
+ \qquad |u|\le\delta.
+\end{equation}
+Gauss summation gives $\sum_{m\ge0}w_m(u)=A(u)$ already in
+$\Re u>-1$. Hence, uniformly on the chosen compact sets,
+\begin{equation}\label{sr:eq:lower-M0}
+ \sum_{m<n}w_m(u)=A(u)-\frac{n^{-1-u}}{1+u}+O(n^{-2+\delta}).
+\end{equation}
+For the first moment, the series
+$\sum_{m\ge1}\{mw_m(u)-m^{-1-u}\}$ converges locally normally for
+$\Re u>-1$. On $\Re u>0$ its value is $R(u)/u-\zeta(1+u)$, so that
+identity continues through zero. Its tail, together with the leading
+Hurwitz-zeta tail, gives the \emph{holomorphic} estimate
+\begin{equation}\label{sr:eq:lower-M1}
+ \sum_{m<n}mw_m(u)=\frac{R(u)-n^{-u}}u+O(n^{-1+\delta}).
+\end{equation}
+The quotient has its removable value at zero. Finally, summing
+$m^2w_m(u)=m^{-u}+O(m^{-1+\delta})$ gives
+\begin{equation}\label{sr:eq:lower-M2}
+ \sum_{m<n}m^2w_m(u)=\frac{n^{1-u}}{1-u}
+ +O(n^\delta\log(n+1)).
+\end{equation}
+Insert these estimates in
+\[
+ K_n=w_n\left(n^2\sum_{m<n}w_m-2n\sum_{m<n}mw_m
+                         +\sum_{m<n}m^2w_m\right).
+\]
+The coefficient of $n^{-1-2u}$ is
+\[
+ -\frac1{1+u}+\frac2u+\frac1{1-u}
+ =\frac{2}{u(1-u^2)}.
+\]
+The resulting paired expression is holomorphic at zero, and
+\[
+ K_n=A(u)n^{-u}+A(u)\beta(u)n^{-1-u}
+ +\frac2u\{V(u)n^{-1-2u}-R(u)n^{-1-u}\}
+ +O(n^{-2+2\delta}\log(n+1)).
+\]
+Changing $n$ to $y=n+\alpha$ in the leading scale adds
+$\alpha uA(u)y^{-1-u}$; the remaining changes are summable uniformly.
+This proves \eqref{sr:eq:D}, since the displayed error is summable.
+Cauchy's integral formula on slightly larger compact parameter sets
+proves the assertions for every fixed derivative.
+
+To identify the sum, the same estimates hold on compact subsets of
+$-\delta<\Re u<1+\delta$, excluding $u=1$. In particular,
+\eqref{sr:eq:lower-M2} still holds there: summing $m^{-u}$ gives
+$n^{1-u}/(1-u)$ plus a locally bounded constant and
+$O(n^\delta)$, while the partial-sum estimate for
+$m^2w_m-m^{-u}$ is $O(n^\delta\log(n+1))$. Constants are uniform
+on compact sets avoiding $u=1$. Thus the subtracted remainder remains
+summable throughout this strip. Both complete expressions are
+holomorphic on its connected punctured domain, including their
+removable values at zero.
+On $1<\Re u<1+\delta$ all original sums and counterterms converge
+separately, and their difference is \eqref{sr:eq:master} by
+\eqref{sr:eq:partition-product}. The identity theorem gives the
+formula near zero. Its removability there was established by the
+normally convergent left side, independently of formal Laurent algebra.
+\end{proof}
+
+\subsection{Exact hard-cutoff constant and spectral comparison}
+Set
+\begin{equation}\label{sr:eq:lambda-C}
+ \lambda=-q-2\rho,\qquad C=-\rho^2-q\rho-2.
+\end{equation}
+\begin{theorem}[Closed constant at the next resonance]
+\label{sr:thm:constant}
+As $N\to\infty$,
+\begin{equation}\label{sr:eq:cutoff-asymptotic}
+ \boxed{\displaystyle
+ S_N(0)=\mu N-\log^2N+\lambda\log N+C+o(1).}
+\end{equation}
+The error is $O(\log N/N)$ for fixed shape parameters, locally uniformly
+on their right half-planes. The spectral Laurent expansion is instead
+\begin{equation}\label{sr:eq:spectral-laurent}
+ \mathcal Z(u)=-\frac1{u^2}+\frac\lambda u+F+O(u),\qquad
+ F=-\mu-q-2q\rho-2\rho^2-\tau.
+\end{equation}
+Thus the exact correction between the two constants is
+\begin{equation}\label{sr:eq:finitepart-correction}
+ F-C=-\mu-q+2-q\rho-\rho^2-\tau.
+\end{equation}
+\end{theorem}
+\begin{proof}
+At zero, \eqref{sr:eq:lower-M0}--\eqref{sr:eq:lower-M1} give
+\[
+ M_0(N,0)=\mu-\frac1N+O(N^{-2}),\qquad
+ M_1(N,0)=\log N+\rho+O(N^{-1}).
+\]
+Substituting them in the exact finite identity
+\eqref{sr:eq:finite-det} gives
+\[
+ acNM_0^2=\mu N-2+O(N^{-1}),\quad
+ sM_0M_1=q(\log N+\rho)+O(\log N/N),
+\]
+and the asserted cutoff formula follows. This proof does not identify
+a spectral finite part with a cutoff constant. Separately expanding
+$R(u)=1+\rho u+(\rho^2+\tau)u^2/2+O(u^3)$ in
+\eqref{sr:eq:partition-product} proves \eqref{sr:eq:spectral-laurent}
+and \eqref{sr:eq:finitepart-correction}.
+\end{proof}
+
+With the Stieltjes convention
+\[
+ \zeta(1+u,\alpha)=\frac1u+
+ \sum_{k\ge0}\frac{(-1)^k}{k!}\gamma_k(\alpha)u^k,
+ \qquad \gamma_0(\alpha)=-\psi(\alpha),
+\]
+the constant term of Theorem~\ref{sr:thm:germ} is the ordinary
+single-bracket identity
+\begin{equation}\label{sr:eq:D0}
+ \boxed{\displaystyle
+ \sum_{n\ge0}\left\{K_n(0)-\mu-
+ \frac{\lambda-2\log(n+\alpha)}{n+\alpha}\right\}
+ =C-\mu-\lambda\gamma_0(\alpha)+2\gamma_1(\alpha).}
+\end{equation}
+Its agreement with \eqref{sr:eq:cutoff-asymptotic} also follows by
+summing the elementary counterterms before taking the limit. The
+coefficient $2\gamma_1$ comes from the doubled exponent $2u$.
+
+\subsection{Every derivative and an explicit first row}
+Write $R_j=R^{(j)}(0)$, $T_j=\partial_u^jT(0;\alpha)$ and
+$V_j=V^{(j)}(0)$, so $V_j=j!$ for even $j$ and $V_j=0$ for odd $j$.
+Let
+\begin{equation}\label{sr:eq:N-germ}
+ \mathcal N(u)=\frac{P(u)}{u-1}+2R(u)-V(u)-uT(u;\alpha).
+\end{equation}
+Direct substitution gives $\mathcal N(0)=\mathcal N'(0)=0$.
+Thus $\mathcal N(u)/u^2$ is an explicitly given holomorphic
+Gamma/polygamma germ, not an additional unspecified constant.
+
+\begin{corollary}[Finite formula for every spectral row]
+\label{sr:cor:alljets}
+For every $k\ge0$, put $D_k(\alpha)=\partial_u^k\mathcal D(0;\alpha)$.
+Then
+\begin{align}
+ D_k(\alpha)={}&
+ \frac{\mathcal N^{(k+2)}(0)}{(k+1)(k+2)}
+ -\mu\sum_{j=0}^k\binom kj R_j\zeta^{(k-j)}(0,\alpha)\notag\\
+ &-\sum_{j=0}^k\binom kj T_j(-1)^{k-j}\gamma_{k-j}(\alpha)\notag\\
+ &+\frac2{k+1}\sum_{j=0}^{k+1}\binom{k+1}j
+ \bigl(R_j-2^{k+1-j}V_j\bigr)(-1)^{k+1-j}
+ \gamma_{k+1-j}(\alpha).
+ \label{sr:eq:alljets}
+\end{align}
+Here $\zeta^{(j)}$ denotes differentiation in the order variable.
+The normally convergent left side is
+$\sum_{n\ge0}\{K_n^{(k)}(0)-Q_n^{(k)}(0;\alpha)\}$. If
+$L_n=\log(n+\alpha)$, every counterterm is the finite polynomial
+\begin{align}
+ Q_n^{(k)}(0;\alpha)={}&\mu\sum_{j=0}^k\binom kjR_j(-L_n)^{k-j}
+ +\frac1{n+\alpha}\sum_{j=0}^k\binom kjT_j(-L_n)^{k-j}\notag\\
+ &+\frac2{(k+1)(n+\alpha)}
+ \sum_{j=0}^{k+1}\binom{k+1}j
+ \left\{V_j(-2L_n)^{k+1-j}-R_j(-L_n)^{k+1-j}\right\}.
+ \label{sr:eq:counterterm-jets}
+\end{align}
+\end{corollary}
+\begin{proof}
+Put $J(u;\alpha)=\zeta(1+u,\alpha)-1/u$. Rearranging
+\eqref{sr:eq:master} gives the manifestly regular expression
+\[
+ \mathcal D=\frac{\mathcal N(u)}{u^2}-\mu R(u)\zeta(u,\alpha)
+ -T(u;\alpha)J(u;\alpha)
+ +\frac2u\{R(u)J(u;\alpha)-V(u)J(2u;\alpha)\}.
+\]
+Apply the product rule. Division of a germ vanishing to order $m$
+converts its $(k+m)$th derivative to its $k$th derivative divided by
+$(k+1)\cdots(k+m)$; this gives the two denominators in
+\eqref{sr:eq:alljets}. The same argument applied to \eqref{sr:eq:Q}
+gives \eqref{sr:eq:counterterm-jets}. Normal convergence was already
+proved in Theorem~\ref{sr:thm:germ}.
+\end{proof}
+
+All coefficients in this formula are finite polygamma polynomials.
+For example, the complete exponential Bell polynomials give
+\[
+ R_j=\operatorname{Bell}_j(\ell_1,\ldots,\ell_j),\quad
+ \ell_j=\psi^{(j-1)}(1)-\psi^{(j-1)}(a+1)-\psi^{(j-1)}(c+1).
+\]
+The other coefficients follow by multiplication by the explicit
+polynomials and rational functions in \eqref{sr:eq:beta}--\eqref{sr:eq:PT}.
+In fact the apparently required derivative $R_{k+2}$ always cancels.
+To see this without coefficient cancellation, put
+$W(u)=(R(u)-1)/u$ and $d=\mu(\alpha-a-c-\tfrac12)$. Then
+\begin{equation}\label{sr:eq:lower-order-G}
+ \frac{\mathcal N(u)}{u^2}=-W(u)^2-V(u)
+ +R(u)\left\{\frac{(q+\mu u)W(u)+q+\mu}{u-1}
+                    -d+\frac\mu2u\right\}.
+\end{equation}
+Its $k$th derivative uses only $R_0,\ldots,R_{k+1}$.
+Thus the $k$th identity needs shape polygammas only through order $k$,
+while its Stieltjes constants run through order $k+1$.
+The summand itself has the equally explicit expression
+\begin{equation}\label{sr:eq:K-bell}
+ K_n^{(k)}(0)=\sum_{m<n}(n-m)^2w_m(0)w_n(0)
+ \operatorname{Bell}_k(x_1(m,n),\ldots,x_k(m,n)),
+\end{equation}
+where
+\[
+ x_j(m,n)=-\psi^{(j-1)}(m+a+c+1)-\psi^{(j-1)}(n+a+c+1).
+\]
+At positive integer parameters these are ordinary generalized harmonic
+numbers and zeta constants; at arbitrary shifts they are their
+polygamma continuations.
+
+The first derivative can be printed without Bell notation. Define
+\begin{align}
+ B(\alpha)&=r_2+q\rho+q-3+\mu(\tfrac12-\alpha),\label{sr:eq:B}\\
+ C_1&=-\rho r_2-q\rho^2-\frac q2r_2
+ -(2\mu+q+1)\rho-q-\frac\mu2.
+ \label{sr:eq:C1}
+\end{align}
+Then
+\begin{align}
+ Q_n'(0;\alpha)&=\mu(\rho-L_n)
+ +\frac{3L_n^2-\lambda L_n-B(\alpha)}{n+\alpha},
+ \label{sr:eq:Q1}\\
+ D_1(\alpha)&=C_1-\mu\zeta'(0,\alpha)
+ +B(\alpha)\gamma_0(\alpha)+\lambda\gamma_1(\alpha)
+ -3\gamma_2(\alpha).
+ \label{sr:eq:D1}
+\end{align}
+Here $K_n'(0)$ is minus the defining double summand multiplied by
+$\psi(m+a+c+1)+\psi(n+a+c+1)$. The term
+$\zeta'(0,\alpha)=\log\Gamma(\alpha)-\tfrac12\log(2\pi)$
+is classical \cite[25.11.18]{dlmf-hurwitz}. Thus this row is an explicit
+ordinary convergent identity connecting a polygamma-weighted double
+sum, log-Gamma, and the first three generalized Stieltjes constants.
+
+For comparison, the corresponding unsubtracted finite cutoff has
+the full first-derivative expansion
+\begin{align}
+ S_N'(0)={}&-\mu N\log N+\mu(\rho+1)N+\log^3N
+ -\frac\lambda2\log^2N\notag\\
+ &-(r_2+q\rho+q-3+\mu)\log N+C_1+\mu\rho+o(1).
+ \label{sr:eq:cutoff-derivative}
+\end{align}
+Indeed take $\alpha=1$ in \eqref{sr:eq:Q1}, sum through $N$,
+use $\sum_{j=1}^{N+1}\log j=\log\Gamma(N+2)$ and the defining
+Stieltjes limits, and apply Stirling's formula. The constants
+$\gamma_0,\gamma_1,\gamma_2$ cancel against \eqref{sr:eq:D1}; the
+$\log(2\pi)$ terms cancel as well.
+
+\subsection{A uniform bridge from spectral germs to finite cutoffs}
+For any fixed finite derivative order, one can obtain the full cutoff
+expansion without making new interchanges. If $Y=N+1+\alpha$, the
+normally convergent tail in Theorem~\ref{sr:thm:germ} gives
+\begin{align}
+ S_N(u)={}&\mathcal Z(u)-A(u)\zeta(u,Y)
+ -\left\{T(u;\alpha)-\frac{2R(u)}u\right\}\zeta(1+u,Y)\notag\\
+ &-\frac{2V(u)}u\zeta(1+2u,Y)
+ +O(N^{-1+2\delta}\log(N+1)).
+ \label{sr:eq:uniform-cutoff}
+\end{align}
+The complete expression has removable poles at zero. The error is
+locally uniform for $|u|\le\delta<1/4$, after shrinking a surrounding
+disk if needed for derivatives. Thus every fixed Taylor coefficient
+may be extracted, with a remainder tending to zero. The standard
+large-$Y$ Hurwitz expansion then generates every $N\log^jN$ term,
+every logarithmic counterterm, and its constant. The overlap exponent
+$2u$ controls the higher logarithmic powers.
+
+\subsection{Shift differentiation and an anchored primitive}
+The subtraction point is auxiliary; it does not move the original
+particle grid. Nevertheless \eqref{sr:eq:D0} has the exact laws
+\begin{align}
+ D_0(\alpha+1)-D_0(\alpha)
+ &=\frac{\lambda-2\log\alpha}{\alpha},\label{sr:eq:alpha-shift}\\
+ \frac{d}{d\alpha}D_0(\alpha)
+ &=(\lambda+2)\zeta(2,\alpha)+2\zeta'(2,\alpha).
+ \label{sr:eq:alpha-derivative}
+\end{align}
+These follow from the Hurwitz shift and derivative identities
+\cite[25.11.3 and 25.11.17]{dlmf-hurwitz}. For any anchor with
+$\Re\alpha_0>0$, a fixed-constant primitive is
+\begin{align}
+ \int_{\alpha_0}^{\alpha}D_0(t)\,dt
+ ={}&(C-\mu)(\alpha-\alpha_0)
+ +\lambda\log\frac{\Gamma(\alpha)}{\Gamma(\alpha_0)}\notag\\
+ &+\zeta''(0,\alpha)-\zeta''(0,\alpha_0).
+ \label{sr:eq:primitive}
+\end{align}
+The logarithm is the analytic log-Gamma on the right half-plane.
+To verify the last term, differentiate
+$\partial_\alpha\zeta(u,\alpha)=-u\zeta(1+u,\alpha)$ twice in
+$u$ at zero; the result is
+$\partial_\alpha\zeta''(0,\alpha)=2\gamma_1(\alpha)$.
+This also explains why an anchored primitive involves the second
+order derivative of Hurwitz zeta rather than an unspecified new constant.
+
+\subsection{Two normalization checks and a rational specialization}
+If every weight is multiplied by an arbitrary holomorphic $L(u)$
+with $L(0)=1$, then $K_n$, $Q_n$, $\mathcal D$, and $\mathcal Z$
+are all multiplied by $L(u)^2$. Therefore the cutoff at $u=0$ and
+its constant $C$ are unchanged. Writing $l_1=L'(0)$ and
+$l_2=L''(0)$, the spectral finite part becomes
+\begin{equation}\label{sr:eq:normalization}
+ \widetilde F=F+2l_1\lambda-l_1^2-l_2,
+\end{equation}
+whereas $\widetilde D_1=D_1+2l_1D_0$. These identities explicitly
+track both amplitude derivatives relevant to a double pole.
+
+At $a=c=1$ the weight is $w_n(0)=1/((n+1)(n+2))$ and
+\[
+ \mu=1,\quad \rho=\gamma-2,\quad \lambda=1-2\gamma,
+ \quad C=\gamma-\gamma^2.
+\]
+An exact largest-index formula, obtained from the finite moments, is
+\begin{equation}\label{sr:eq:rational-K}
+ K_{v-1}(0)=1+\frac1{v+1}-\frac{H_v}{v}-\frac{H_v}{v+1},
+ \qquad v\ge1.
+\end{equation}
+Its first value is zero, as required by the empty inner sum. Thus
+\begin{equation}\label{sr:eq:integer-cutoff}
+ \sum_{0\le m<n\le N}\frac{(n-m)^2}{(m+1)(m+2)(n+1)(n+2)}
+ =N-\log^2N+(1-2\gamma)\log N+\gamma-\gamma^2+o(1).
+\end{equation}
+For the unnormalized weights the spectral finite part is
+$F=\zeta(2)-2+2\gamma-2\gamma^2$. With the different normalization
+$L(u)=\Gamma(1+u)$, the entire spectral product simplifies to
+\[
+ L(u)^2\mathcal Z(u)=\frac1{u^2(u-1)(1+u)^2},
+\]
+whose finite part is $-2$. Both have exactly the same finite-cutoff
+constant $\gamma-\gamma^2$. This is a concrete second-order check
+of \eqref{sr:eq:normalization}.
+
+The specialization of \eqref{sr:eq:D0} at $a=c=\alpha=1$ yields
+\[
+ \sum_{v\ge1}\left\{
+ \frac1{v+1}-\frac{H_v}{v}-\frac{H_v}{v+1}
+ -\frac{1-2\gamma-2\log v}{v}\right\}
+ =\gamma^2-1+2\gamma_1.
+\]
+This scalar specialization reduces to a classical harmonic--Stieltjes
+relation; its novelty is not asserted. The general-shape theorem, the
+uniform overlap subtraction, and the all-order cutoff comparison are
+the substantive continuation of the proposed resonance problem.
+
+\subsection{A functional polylogarithm identity and convergent endpoints}
+The rational specialization has an exact disk identity as well as a
+cutoff expansion. Define, for $|z|<1$,
+\[
+ \mathcal G(z)=\sum_{0\le m<n}
+ \frac{(n-m)^2z^{n+1}}{(m+1)(m+2)(n+1)(n+2)}.
+\]
+The finite formula \eqref{sr:eq:rational-K} gives
+\begin{equation}\label{sr:eq:G-polylog}
+ \boxed{\displaystyle
+ \mathcal G(z)=\frac z{1-z}-1-\frac{\log(1-z)}z
+ -\operatorname{Li}_2(z)-\frac12\left(1+\frac1z\right)\log^2(1-z).}
+\end{equation}
+All apparent singularities at zero are removable. The first term is
+$z^2/12$, corresponding to the configuration $(m,n)=(0,1)$.
+To prove the formula, sum the four terms of
+\eqref{sr:eq:rational-K}; the two harmonic transforms follow by
+integrating $\sum_{v\ge1}H_vz^v=-\log(1-z)/(1-z)$ once, either with
+$dz$ or $dz/z$. Thus this is a functional certificate before any
+special-value substitution.
+
+At $z=1/2$, the classical dilogarithm reflection identity
+\cite[25.12.6]{dlmfpolylog} gives
+\begin{equation}\label{sr:eq:half-polylog}
+ \sum_{0\le m<n}\frac{(n-m)^2 2^{-(n+1)}}
+ {(m+1)(m+2)(n+1)(n+2)}
+ =2\log2-\log^22-\frac{\pi^2}{12}.
+\end{equation}
+For $p\ge2$, the ordinary convergent endpoint
+\[
+ J_p=\sum_{0\le m<n}\frac{(n-m)^2}
+ {(m+1)(m+2)(n+1)(n+2)(n+1)^p}
+\]
+has a finite all-$p$ reduction. To distinguish multiple zeta values
+from Hurwitz zeta, write
+$\zeta_{\mathrm{MZ}}(j,1)=\sum_{v>m\ge1}v^{-j}m^{-1}$.
+Set $E_j=\zeta_{\mathrm{MZ}}(j,1)+\zeta(j+1)$ for
+$j\ge2$; Euler's height-one formula reduces every $E_j$ to products
+of at most two ordinary zeta values \cite[Section~6]{incoming-determinantal}.
+Then
+\begin{equation}\label{sr:eq:allp-endpoint}
+ J_p=\zeta(p)-E_{p+1}
+ +\sum_{j=2}^{p}(-1)^{p-j}\bigl(\zeta(j)-E_j\bigr)
+ +(-1)^{p-1}(1-\zeta(2)).
+\end{equation}
+Indeed partial fractions give
+\begin{align*}
+ \sum_{v\ge1}\frac1{v^p(v+1)}
+ &=\sum_{j=2}^p(-1)^{p-j}\zeta(j)+(-1)^{p-1},\\
+ \sum_{v\ge1}\frac{H_v}{v^p(v+1)}
+ &=\sum_{j=2}^p(-1)^{p-j}E_j+(-1)^{p-1}\zeta(2);
+\end{align*}
+substitute them in \eqref{sr:eq:rational-K}. In particular,
+\begin{align}
+ J_2&=3\zeta(2)-2\zeta(3)-\tfrac54\zeta(4)-1,\label{sr:eq:J2}\\
+ J_3&=1-2\zeta(2)+4\zeta(3)-\tfrac54\zeta(4)
+       +\zeta(2)\zeta(3)-3\zeta(5).
+ \label{sr:eq:J3}
+\end{align}
+The primitive of order one has a simple explicitly subtracted endpoint:
+\begin{equation}\label{sr:eq:subtracted-J1}
+ \sum_{v\ge1}\frac{K_{v-1}(0)-1}{v}
+ =1-\zeta(2)-2\zeta(3).
+\end{equation}
+Its convergence follows from $K_{v-1}(0)-1=O(\log v/v)$.
+
+\subsection{What this resolves, and what remains}
+The next $r=2$ resonance requested in the earlier report is resolved:
+two moment divergences require three asymptotic counterterm scales,
+the overlap term is explicit, normal convergence is proved, and the
+cutoff/spectral constants are compared including normalization changes.
+The result does not establish a general higher-resonance theorem at
+arbitrary particle number. Natural next problems are to identify the
+escape strata at $r\ge3$, formulate an inclusion--exclusion subtraction
+for simultaneous escape, and discover finite Pearson or contiguous
+relations that reduce the number of independent divergent moments.
+Another precise question is whether the order saving proved in
+\eqref{sr:eq:lower-order-G} survives at higher particle number, where
+several nontrivial residue amplitudes replace the single $R(u)$.

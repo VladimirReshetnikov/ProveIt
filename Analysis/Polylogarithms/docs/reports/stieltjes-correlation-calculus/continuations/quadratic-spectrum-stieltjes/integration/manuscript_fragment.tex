@@ -1,0 +1,86 @@
+% Additive insertion draft; requires amsmath, amssymb, amsthm and theorem environment.
+% Add bibliography_entry.tex to the containing bibliography.
+% Complete definitions and proofs of the Stieltjes channels are in the report.
+\section{Quadratic spectra, complete reflection, and finite polylogarithm jets}
+\label{qspec:frag:section}
+
+A positive quadratic deformation supplies two complementary Stieltjes
+channels. For $0<a<1$, $b>0$, the bilateral series
+\[
+ E(s;a,b)=\sum_{n\in\mathbb Z}((n+a)^2+b^2)^{-s},\qquad
+ Y(s;a,b)=\sum_{n\in\mathbb Z}(n+a)((n+a)^2+b^2)^{-s}
+\]
+are initially defined by absolute convergence. Continue them from those
+half-planes. At $s=1/2+\epsilon$, subtract
+$\zeta(1+2\epsilon,a)+\zeta(1+2\epsilon,1-a)$ from $E$; at
+$s=1+\epsilon$, subtract the corresponding difference from $Y$.
+Each subtracted series is normally convergent near zero, since its local
+summands are $O(n^{-3+2|\operatorname{Re}\epsilon|})$.
+The Fourier--Bessel transforms therefore give every
+$\gamma_m(a)+\gamma_m(1-a)$ and $\gamma_m(a)-\gamma_m(1-a)$.
+The complete report \cite{qspec:report} gives their polylogarithmic order
+integrals, all harmonic coefficients, and a finite-head formula valid for
+every positive $b$. The unshifted binomial version alone requires
+$b<\min(a,1-a)$.
+
+\begin{theorem}[Conjugate-factor polynomial parity]
+\label{qspec:frag:parity}
+Let $a,b>0$ and $W(x)=\sum_d w_dx^d$ be a polynomial. Define the
+continued weighted spectra $Z_W(s)=\sum_{n\ge0}W(n+a)((n+a)^2+b^2)^{-s}$
+and $F_{W,\pm}(s)=\sum_{n\ge0}W(n+a)(n+a\pm ib)^{-s}$, using principal
+logarithms. They are holomorphic at zero, and
+\[
+ F_{W,+}'(0)+F_{W,-}'(0)-Z_W'(0)
+ =\sum_{k\ge1}w_{2k-1}\frac{(-1)^kb^{2k}}k
+ \left(H_{2k}-\frac12H_k\right).
+\]
+This defect vanishes for every positive $b$ if and only if $W$ is even.
+\end{theorem}
+\begin{proof}
+After factoring out $(n+a)^{-2s}$, compare the quadratic spectrum to
+$\tfrac12(F_{W,+}(2s)+F_{W,-}(2s))$. The summand difference begins with
+$-s^2(\ell_+-\ell_-)^2/2$, where
+$\ell_\pm=\log(1\pm ib/x)$ and $x=n+a$. Only the $x^{-1}$ coefficient
+meets a Hurwitz pole $1/(2s)$. Thus the defect is
+$\tfrac14[x^{-1}]W(x)(\ell_+-\ell_-)^2$. Squaring the odd-power
+logarithm series gives the displayed harmonic coefficient. All those
+coefficients are nonzero; distinct powers of $b$ prove the criterion.
+A finite head makes the expansion valid for arbitrary $b$. This is an
+explicit specialization of the classical local-anomaly mechanism.
+\end{proof}
+
+\begin{theorem}[Finite complex-Hurwitz and polylogarithm identity]
+\label{qspec:frag:finite}
+For $m\ge0$, $0<a<1$, $b>0$, put $z=e^{-2\pi b+2\pi ia}$ and
+$L_m(a,b)=\partial_sE(s;a,b)|_{s=-m}$. Then
+\begin{align*}
+L_m(a,b)
+={}&2\operatorname{Re}\sum_{j=0}^m\binom mj(-2ib)^{m-j}
+\bigl(\zeta'(-m-j,a+ib)+\zeta'(-m-j,1-a+ib)\bigr)\\
+={}&-\frac{2^{2m+1}(m!)^2\pi}{(2m+1)!}b^{2m+1}
++2(-1)^mm!\sum_{j=0}^m
+\frac{(m+j)!b^{m-j}}{j!(m-j)!4^j\pi^{m+j}}
+\operatorname{Re}\operatorname{Li}_{m+j+1}(z).
+\end{align*}
+Furthermore,
+\[
+\partial_{b^2}L_m=mL_{m-1}\quad(m\ge1),\qquad
+\left(\partial_a^2+\partial_b^2-\frac{2m}{b}\partial_b\right)L_m=0.
+\]
+\end{theorem}
+\begin{proof}
+The first equality uses the even weight $((n+a)^2+b^2)^m$, for which
+the preceding defect vanishes, followed by its finite expansion around
+$n+a+ib$. For the second, use the classical Poisson--Bessel formula
+for $E(s)$. At $s=-m$, the reciprocal Gamma function has a simple zero
+with derivative $(-1)^mm!$. The remaining Bessel factor is half-integral
+and has a finite exponential polynomial, giving the stated polylogarithms.
+The mass derivative follows from $\partial_{b^2}E(s)=-sE(s+1)$ and
+$E(-m)=0$. The differential equation follows by differentiating
+$(\partial_a^2+\partial_b^2+(2s/b)\partial_b)E(s)=0$ at $s=-m$.
+\end{proof}
+
+These results concern exact analytic identities. The report includes
+computational checks but makes no claim to prove the separate Gaussian
+$S_6$ candidate, numerical period independence, or a first-derivative
+factorization law for arbitrary higher spectral jets.

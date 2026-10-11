@@ -1,0 +1,204 @@
+\section{Exact Gamma moments and their endpoint terms}
+\label{mom:section}
+
+The coefficient theorem has an immediate analytic use, but it is
+essential to keep the complete normal form and its primitive.
+We give the inherited scalar bridge with its normalization, then an
+explicit ninth-weight identity containing the first cube term.
+The bridge itself is already proved in \cite[Section 4]{PTI}.
+
+\subsection{Height-one Laurent coefficients as ordinary integrals}
+
+Define rational zeta polynomials $c_j$ and height-one Laurent
+coefficients $\lambda_d$ by
+\begin{equation}\label{mom:clambda}
+ \frac1{\Gamma(1+u)}=\sum_{j\ge0}c_ju^j,\qquad
+ \lambda_d=[u^1]\zeta(1+u,\{1\}^{d-1}),\qquad d\ge1.
+\end{equation}
+The coefficient on the right is a Laurent coefficient: for $d>1$
+the pole at zero has order $d$. In particular
+$c_0=1$, $c_1=\gamma$, and $\lambda_1=-\gamma_1$.
+For $v>0$ put
+\[
+ L(v)=-\log(1-e^{-v}),\qquad
+ V_d(v)=L(v)^d-\boldsymbol1_{(0,1)}(v)(-\log v)^d.
+\]
+Then the normalization can be stated without an unevaluated finite
+part:
+\begin{equation}\label{mom:lambdaintegral}
+ \boxed{\displaystyle
+ \lambda_d=c_{d+1}+\frac1{d!}
+                    \int_0^\infty\frac{V_d(v)}v\dd v.}
+\end{equation}
+The integral is ordinary and absolutely convergent. At zero its
+integrand is $O((1+|\log v|)^{d-1})$; at infinity it decays
+exponentially up to the factor $1/v$.
+
+Here is a direct derivation. With $H_{n-1}(\{1\}^{d-1})$ denoting
+the strict unit-index multiple harmonic sum, its generating function
+is
+\[
+ \sum_{n\ge1}H_{n-1}(\{1\}^{d-1})e^{-nv}
+ =-\frac1{d!}\frac{d}{dv}L(v)^d.
+\]
+This follows by differentiating the power series for $L(v)^d$,
+or inductively from strict summation. Mellin integration and
+integration by parts, initially for $\re u>0$, give
+\begin{align}\label{mom:heightmellin}
+ \zeta(1+u,\{1\}^{d-1})
+ &=\frac1{d!\Gamma(u)}\int_0^\infty v^{u-1}L(v)^d\dd v\notag\\
+ &=\frac1{\Gamma(1+u)u^d}
+   +\frac{u}{d!\Gamma(1+u)}
+          \int_0^\infty v^{u-1}V_d(v)\dd v.
+\end{align}
+The last integral is holomorphic for $u$ in a neighborhood of zero.
+Extracting $[u^1]$ proves \eqref{mom:lambdaintegral} and fixes its sign.
+
+\subsection{The scalar inverse-Gamma evaluation}
+
+Let $\Acal_m$ be the differential polynomials of
+\eqref{var:hierarchy}. For $m\ge2$ set
+\[
+ \mathcal L_m=\FP\int_0^1\Acal_m(x)\dd x,
+ \qquad K_{2r}=\frac{(-1)^r\pi^{2r}}{2r+1},\quad K_{2r+1}=0.
+\]
+The inherited all-order scalar formula is
+\begin{equation}\label{mom:scalar}
+ \boxed{\displaystyle
+ \mathcal L_m=K_m-m!\sum_{d=1}^{m-1}
+                (-1)^{m-1-d}c_{m-1-d}\lambda_d.}
+\end{equation}
+We recall why no coordinate constant is suppressed. Put
+\[
+ \mathcal C_m(x)=m![t^m]
+                  \frac{\Gamma(1-t)\Gamma(x)}{\Gamma(x-t)}.
+\]
+For $m\ge2$, $\mathcal C_m$ extends continuously to $[0,1]$.
+Indeed the residue of the displayed quotient at $x=0$ is exactly
+$-t$, with no higher powers of $t$. Euler's beta integral applied to
+$F(x,t)=\Gamma(1+t)\Gamma(x)/\Gamma(x+t)$ yields
+\begin{align}\label{mom:Phi}
+ \int_0^1\{F(x,t)-1+t(\psi(x)+\gamma)\}\dd x
+ =t\int_0^\infty
+ \frac{(1-e^{-v})^t-1
+       -\boldsymbol1_{(0,1)}(v)(v^t-1)}v\dd v.
+\end{align}
+For clarity, the subtraction follows by integrating in $x$ first
+when $\re t>0$. The resulting expression is
+\[
+ t\int_0^\infty
+ \left\{\frac{(1-e^{-v})^t-1}{v}
+             +\frac{e^{-v}}{1-e^{-v}}\right\}\dd v-1.
+\]
+At lower cutoff $\delta$, the second integral is
+$-\log(1-e^{-\delta})$, while
+$\int_\delta^1(v^t-1)\dd v/v=(1-\delta^t)/t+\log\delta$.
+Their limits prove \eqref{mom:Phi}. Its subtracted integrand also
+justifies holomorphic continuation and coefficient extraction near
+$t=0$.
+
+Replacing $t$ by $-t$ and using \eqref{mom:lambdaintegral} now gives
+\[
+ \int_0^1\mathcal C_m(x)\dd x
+ =-m\int_0^\infty\frac{V_{m-1}(v)}v\dd v
+ =m!(c_m-\lambda_{m-1}),\qquad m\ge2.
+\]
+The constant and linear coefficientwise finite parts of the normalized
+quotient are $1$ and $\gamma$, since
+$\mathcal C_1=\psi+\gamma$ and $\FP\int_0^1\psi(x)\dd x=0$.
+Thus its complete coefficientwise integral is
+\[
+ \frac1{\Gamma(1+t)}-\sum_{d\ge1}\lambda_dt^{d+1}.
+\]
+Multiplication by $1/\Gamma(1-t)$ and the reflection identity
+$1/(\Gamma(1+t)\Gamma(1-t))=\sin(\pi t)/(\pi t)$ prove
+\eqref{mom:scalar}. All uses of an infinite generating series here
+are coefficientwise identities justified by the displayed local
+subtractions.
+
+\subsection{The complete differential identity and a cube-sector moment}
+
+Write $P_m=\NN(\Acal_m)$ and $H_m=\HH(\Acal_m)$. With
+\begin{equation}\label{mom:Delta}
+ \Delta H=H(\psi(1),\psi'(1),\ldots)
+        -[x^0]H(\psi(x),\psi'(x),\ldots),
+\end{equation}
+the exact transfer is
+\begin{equation}\label{mom:transfer}
+ \boxed{\displaystyle
+ \FP\int_0^1P_m(\psi,\psi',\ldots)\dd x
+ =K_m-m!\sum_{d=1}^{m-1}(-1)^{m-1-d}c_{m-1-d}\lambda_d
+       -\Delta H_m.}
+\end{equation}
+This follows from $\Acal_m=P_m+DH_m$ and
+\eqref{scope:boundary}. The endpoint is finite algebra: the standard
+local series \cite[Section 5.7]{DLMF} is
+\[
+ \psi(x)=-x^{-1}-\gamma+
+             \sum_{j\ge1}(-1)^{j+1}\zeta(j+1)x^j.
+\]
+For a monomial $M=\prod u_r^{a_r}$ of weight
+$w=\sum(r+1)a_r$, multiply its substitutions by $x^w$ and take
+the coefficient of $x^w$. Only the first $w+1$ coefficients of each
+normalized series $x^{r+1}\psi^{(r)}(x)$ can contribute. This gives
+a terminating algorithm in $\Q[\gamma,\zeta(2),\ldots,\zeta(w)]$.
+
+For example, the full ninth-weight normal polynomial is
+\begin{equation}\label{mom:P9}
+ P_9=u_0^9-126u_0^5u_1^2+84u_0^3u_2^2
+       -63u_0u_1^4-9u_0u_3^2+10u_2^3.
+\end{equation}
+The coefficient $10$ is the first cube term from
+Corollary~\ref{var:squarecube}. For a fully explicit endpoint write
+$Z_j=\zeta(j)$ and define
+\begin{align}\label{mom:B9}
+ B_9={}&-252\gamma^6Z_2+1260\gamma^5Z_3
+          +\gamma^4(3150Z_2^2-5670Z_4)\notag\\
+ &+\gamma^3(-17640Z_2Z_3+20328Z_5)\notag\\
+ &+\gamma^2(-7560Z_2^3+40572Z_2Z_4+16884Z_3^2-57456Z_6)\notag\\
+ &+\gamma(28476Z_2^2Z_3-70560Z_2Z_5-54432Z_3Z_4+106416Z_7)\notag\\
+ &+1932Z_2^4-22050Z_2^2Z_4-18648Z_2Z_3^2+63036Z_2Z_6\notag\\
+ &+47376Z_3Z_5+21942Z_4^2-99624Z_8.
+\end{align}
+Then $B_9=\Delta H_9$, and the concrete identity is
+\begin{align}\label{mom:ninthidentity}
+ \FP\int_0^1\bigl\{&\psi^9-126\psi^5(\psi')^2
+   +84\psi^3(\psi'')^2-63\psi(\psi')^4
+   -9\psi(\psi''')^2+10(\psi'')^3\bigr\}\dd x\notag\\
+ &=-9!\sum_{d=1}^8(-1)^{8-d}c_{8-d}\lambda_d-B_9.
+\end{align}
+All functions inside the integral have argument $x$.
+The formula specifies an evaluated combination of mixed moments;
+it is not a claim that each term separately reduces to ordinary zeta
+values. If desired, every $\lambda_d$ on its right can be replaced
+by the convergent integral \eqref{mom:lambdaintegral}.
+
+For comparison, the next full normal polynomial is
+\begin{align}\label{mom:P10}
+ P_{10}={}&u_0^{10}-210u_0^6u_1^2+210u_0^4u_2^2
+       -315u_0^2u_1^4-45u_0^2u_3^2\notag\\
+       &+100u_0u_2^3+90u_1^2u_2^2+u_4^2.
+\end{align}
+The companion exact data file gives $P_m,H_m$ through weight $14$,
+both endpoint polynomials at weights $9,10$, and the polynomial
+numerators $p_b$ of Theorem~\ref{var:rational} through $b=10$.
+The verification program checks the complete differential equality
+$\Acal_m=P_m+DH_m$ through weight $24$, not only the retained
+three-variable sector.
+
+\subsection{Anchored primitives and higher derivative sectors}
+
+For any real $x,x_0>0$, the same identity gives the ordinary anchored
+primitive relation
+\begin{equation}\label{mom:anchored}
+ \int_{x_0}^x P_m(\psi(t),\psi'(t),\ldots)\dd t
+ =\int_{x_0}^x\Acal_m(t)\dd t-H_m(\psi(x),\psi'(x),\ldots)
+                           +H_m(\psi(x_0),\psi'(x_0),\ldots).
+\end{equation}
+It states exactly how the primitive changes under normal reduction;
+it does not postulate an elementary antiderivative for $\Acal_m$.
+Section~\ref{res:section} gives a separate polylogarithmic family
+whose repeated Euler primitives and convergent endpoints are explicit.
+For additional differential sectors, Lemma~\ref{var:finitejet} applies
+without change with $d=3,4,\ldots$. The resulting equations involve
+more variables but retain all variational endpoint information.

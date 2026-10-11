@@ -1,0 +1,1618 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=0.88in,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{microtype,booktabs,longtable,array,enumitem,fancyhdr}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{xurl}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,
+ pdftitle={Quadratic-Spectrum Stieltjes Identities},pdfauthor={Prepared for Vladimir Reshetnikov with OpenAI assistance}}
+\urlstyle{tt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\Rea}{\operatorname{Re}}
+\newcommand{\Ima}{\operatorname{Im}}
+\newcommand{\arsinh}{\operatorname{arsinh}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Bcal}{\mathcal B}
+\newcommand{\Hcal}{\mathcal H}
+\newcommand{\qfile}[1]{\nolinkurl{#1}}
+\newcommand{\qpin}{\nolinkurl{446dca9bd65c20e409d1d2561d4ffad408103e2a}}
+\setlist[enumerate]{itemsep=4pt,topsep=5pt}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Quadratic-spectrum Stieltjes identities}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\title{\textbf{Quadratic-Spectrum Stieltjes Identities}\\[7pt]
+\large Complete reflected jets, harmonic counterterms,\\
+finite polylogarithmic reductions, and a polynomial parity criterion}
+\author{Prepared for Vladimir Reshetnikov's ProveIt programme\\
+\small Mathematical derivations and computational audit with OpenAI assistance}
+\date{10 October 2026}
+\begin{document}
+\maketitle
+\thispagestyle{plain}
+\begin{abstract}
+We develop a quadratic-spectrum continuation of the ProveIt programme in
+Hurwitz zeta, generalized Stieltjes constants, harmonic sums, and polylogarithmic
+integration. A positive mass parameter separates the pole of a bilateral
+quadratic zeta function from an exponentially convergent Fourier--Bessel
+part. An odd companion supplies the missing reflection channel. Their
+spectral derivatives give, for every nonnegative index, exact formulas for
+both $\gamma_m(a)+\gamma_m(1-a)$ and $\gamma_m(a)-\gamma_m(1-a)$, and hence
+for each individual generalized Stieltjes constant. The formulas hold for
+every positive mass, not just inside a small-mass power-series disk.
+
+The counterterms have explicit complete-Bell-polynomial coefficients in
+ordinary and half-shifted generalized harmonic numbers. A finite-head
+identity gives their global convergent implementation. Bessel order
+integrals turn both reflected families into damped polylogarithm order
+integrals; parameter primitives connect them to Hurwitz derivatives at
+zero and to a convergent log-Gamma ratio formula.
+
+For polynomially weighted one-sided spectra we prove an exact conjugate
+factorization defect and classify its universal vanishing: it is zero for
+every positive mass precisely for even polynomial weights. This yields
+finite identities between complex-shift Hurwitz derivatives and
+polylogarithms at every nonpositive integer spectral point. Those values
+form an exact mass-antiderivative ladder. We also give positive-integer
+polygamma reductions and an ordinary Gamma-product integral evaluated by
+a dilogarithm.
+
+The classical Poisson, Bessel, Gamma, and multiplicative-anomaly ingredients
+retain their attribution. The contribution is a proved, explicit synthesis
+and its specialized identities, not a claim of global priority. The
+article includes exact algebra regressions, independent numerical
+diagnostics, a scoped source audit, and further research questions.
+\end{abstract}
+\medskip
+\noindent\textbf{Source pin.} Repository reading is anchored at \qpin.
+No repository files were modified. The incoming archive catalogue was read;
+the six archive interiors were not inspected in this session.
+\clearpage
+\begingroup\small\tableofcontents\endgroup
+\clearpage
+% BEGIN sections/01-context
+\section{Research target and precise scope}\label{qspec:sec:context}
+
+The canonical manuscript organizes polylogarithms, Gamma products, Hurwitz
+spectral derivatives, and generalized Stieltjes constants within one exact
+calculus \cite{repo}. Its current research chapter explicitly distinguishes
+an analytic identity from a relation in a formal presentation and from a
+small numerical residual. We retain that distinction. In particular, the
+Gaussian $S_6$ identity is not proved here, and the rejection of one frozen
+$S_8$ vector is not interpreted as rejection of every identity in its
+comparison space.
+
+The present continuation uses a different exact mechanism: introduce a
+positive parameter $b$ into $x^2+b^2$, evaluate the resulting bilateral
+spectrum in two ways, and then remove the deformation by a convergent
+difference. The even spectrum sees the sum of reflected Hurwitz functions.
+A first-moment spectrum sees their difference. Neither channel alone
+recovers an individual Stieltjes constant, but together they do.
+
+\subsection{The results and their logical dependence}
+Theorem~\ref{qspec:thm:master} is the complete reflected Stieltjes identity.
+Theorem~\ref{qspec:thm:polylog-integrals} replaces its Fourier--Bessel terms
+by ordinary integrals of damped polylogarithms. The harmonic coefficient
+formula and finite-head identity in Theorems~\ref{qspec:thm:harmonic}
+and~\ref{qspec:thm:head} make all spectral derivatives explicit and avoid
+an invalid extension of a binomial series outside its convergence disk.
+
+The second main result, Theorem~\ref{qspec:thm:anomaly}, gives a complete
+polynomial-weight parity criterion for the conjugate factorization defect.
+It is independent of the Stieltjes master identity. Combining it with the
+classical half-integer Bessel polynomials gives
+Theorem~\ref{qspec:thm:finite}, a finite complex-Hurwitz/polylogarithm identity
+at every negative integer. Theorem~\ref{qspec:thm:mass-ladder} identifies the
+same family as repeated mass antiderivatives of a logarithm.
+
+An illustrative member is obtained by setting
+$z=\exp(-2\pi b+2\pi ia)$:
+\begin{align}
+&2\Rea\bigl\{\zeta'(-2,a+ib)+\zeta'(-2,1-a+ib)\notag\\[-2pt]
+&\hspace{35mm}-2ib\bigl(\zeta'(-1,a+ib)+\zeta'(-1,1-a+ib)\bigr)\bigr\}\notag\\
+&\qquad=-\frac{4\pi b^3}{3}
+-\frac{2b}{\pi}\Rea\Li_2(z)-\frac1{\pi^2}\Rea\Li_3(z).
+\label{qspec:eq:opening-example}
+\end{align}
+It holds for every $0<a<1$ and $b>0$. There is no unreported tail on the
+right. Its proof is part of the all-index theorem, not an integer-relation
+search.
+
+\subsection{Attribution and what is not asserted}
+The Gaussian Poisson identity, Mellin transforms, half-integer Bessel
+functions, Hurwitz parameter differentiation, and Gamma reflection are
+classical \cite{theta,bessel,halfK,hurwitz,gamma}. The first-derivative
+multiplicative anomaly is also a classical subject; Dowker treats products
+of linear factors and polynomial degeneracies \cite{dowker}. The repository
+already has an arithmetic spectral-jet continuation that separates local
+residue defects from nonlocal values \cite{arithmetic}. Accordingly, we do
+not advertise the existence of the anomaly, Poisson continuation, or
+negative-polygamma primitives as discoveries.
+
+What is established here is an explicit two-channel Stieltjes construction,
+its global harmonic implementation, a conjugate-pair polynomial parity
+classification, and the resulting finite identities and primitive ladders.
+These statements are derived in full below. Their absence from the portions
+inspected is not an exhaustive literature or repository priority check.
+No transcendence, numerical period independence, or proof-assistant
+formalization is claimed.
+
+\subsection{Conventions and analytic domains}\label{qspec:sec:conventions}
+Unless stated otherwise,
+\begin{equation}\label{qspec:eq:domain}
+0<a<1,\qquad b>0,\qquad Q_b(x)=x^2+b^2,
+\qquad x_n=n+a,\quad y_n=n+1-a.
+\end{equation}
+A one-sided formula needs only $a>0$. The variable $s$ is a spectral order;
+$\zeta^{(r)}(s,a)$ and $\zeta'(s,a)$ differentiate that order, not $a$.
+We use
+\begin{equation}\label{qspec:eq:stieltjes-convention}
+\zeta(1+u,a)=\frac1u+
+\sum_{m=0}^{\infty}\frac{(-1)^m}{m!}\gamma_m(a)u^m,
+\qquad G_m^\pm(a)=\gamma_m(a)\pm\gamma_m(1-a).
+\end{equation}
+In particular $\gamma_0(a)=-\psi(a)$. Superscripts on $\gamma_m^{(p)}$
+will mean parameter derivatives.
+
+All powers of positive $Q_b(x)$ use the real logarithm. For complex shifts
+$a\pm ib$ we use the principal logarithm, and the branch of $\log\Gamma$
+holomorphic on the right half-plane and real on its positive axis. Thus
+$\log(x+ib)+\log(x-ib)=\log Q_b(x)$ for $x>0$, with no branch correction.
+The damped polylogarithms have arguments strictly inside the unit disk,
+where their defining series is entire in the order. Unit-circle limits
+are stated separately.
+
+The complete exponential Bell polynomials are defined by
+\begin{equation}\label{qspec:eq:bell}
+\exp\left(\sum_{r\ge1}v_r\frac{t^r}{r!}\right)
+=\sum_{m\ge0}\Bcal_m(v_1,\ldots,v_m)\frac{t^m}{m!}.
+\end{equation}
+The convention $\Bcal_0=1$ and the recurrence
+\begin{equation}\label{qspec:eq:bell-recurrence}
+\Bcal_m=\sum_{r=1}^m\binom{m-1}{r-1}v_r\Bcal_{m-r}
+\end{equation}
+make every finite coefficient used below directly reproducible. We write
+$H_k^{(r)}=\sum_{j=1}^k j^{-r}$ and $H_0^{(r)}=0$.
+
+% END sections/01-context
+
+% BEGIN sections/02-transform
+\section{Even and odd quadratic spectra}\label{qspec:sec:transform}
+
+Define the absolutely convergent series
+\begin{align}
+E(s;a,b)&=\sum_{n\in\Z}\bigl((n+a)^2+b^2\bigr)^{-s},
+&&\Rea s>\tfrac12,\label{qspec:eq:E}\\
+Y(s;a,b)&=\sum_{n\in\Z}(n+a)\bigl((n+a)^2+b^2\bigr)^{-s},
+&&\Rea s>1.\label{qspec:eq:Y}
+\end{align}
+Their reflected positive-index forms are
+\[
+E(s)=\sum_{n\ge0}\bigl(Q_b(x_n)^{-s}+Q_b(y_n)^{-s}\bigr),
+\qquad
+Y(s)=\sum_{n\ge0}\bigl(x_nQ_b(x_n)^{-s}-y_nQ_b(y_n)^{-s}\bigr).
+\]
+Continuation of the initially absolutely convergent functions, rather than
+an unannounced summation prescription for divergent series, is used throughout.
+
+\begin{proposition}[Classical Poisson--Bessel continuation in both channels]
+\label{qspec:prop:poisson}
+The meromorphic continuation of $E$ is
+\begin{align}
+E(s;a,b)={}&\frac{\sqrt\pi\,\Gamma(s-\tfrac12)}{\Gamma(s)}b^{1-2s}\notag\\
+&+\frac{4\pi^s b^{1/2-s}}{\Gamma(s)}
+\sum_{n\ge1}n^{s-1/2}\cos(2\pi na)K_{s-1/2}(2\pi bn).
+\label{qspec:eq:poisson}
+\end{align}
+Its only poles are simple, at $s=\tfrac12-j$, $j\ge0$, with
+\begin{equation}\label{qspec:eq:residues}
+\operatorname*{Res}_{s=1/2-j} E(s;a,b)
+=\frac1{4^j}\binom{2j}{j}b^{2j}.
+\end{equation}
+It vanishes at every nonpositive integer. The odd companion is entire and
+has the expression
+\begin{equation}\label{qspec:eq:odd-poisson}
+Y(s;a,b)=\frac{4\pi^s b^{3/2-s}}{\Gamma(s)}
+\sum_{n\ge1}n^{s-1/2}\sin(2\pi na)K_{s-3/2}(2\pi bn).
+\end{equation}
+All displayed Fourier series and all their spectral derivatives converge
+locally uniformly for $s\in\C$, $b>0$, and real $a$.
+\end{proposition}
+\begin{proof}
+Mellin integration in the absolute-convergence half-plane gives
+\[
+\Gamma(s)E(s;a,b)
+=\int_0^\infty t^{s-1}e^{-b^2t}
+\sum_{n\in\Z}e^{-t(n+a)^2}\dd t.
+\]
+Apply the Gaussian Poisson identity
+\[
+\sum_{n\in\Z}e^{-t(n+a)^2}
+=\sqrt{\pi/t}\sum_{k\in\Z}e^{-\pi^2k^2/t}e^{2\pi ika}.
+\]
+This identity follows from the Fourier transform of a Gaussian, or from
+the classical theta transformation \cite{theta}. The zero Fourier mode
+is $\sqrt\pi\Gamma(s-\tfrac12)b^{1-2s}$. For $k\ne0$, use the
+Bessel integral \cite{bessel}
+\[
+\int_0^\infty t^{s-3/2}e^{-b^2t-\pi^2k^2/t}\dd t
+=2(\pi|k|/b)^{s-1/2}K_{s-1/2}(2\pi b|k|).
+\]
+Combining the two signs of $k$ proves \eqref{qspec:eq:poisson}.
+Interchange of the nonzero modes and the integral is justified by the
+same integrals with absolute values; their resulting Bessel series has
+exponential decay.
+
+For explicit normal convergence, use
+\begin{equation}\label{qspec:eq:K-cosh}
+K_\nu(u)=\int_0^\infty e^{-u\cosh t}\cosh(\nu t)\dd t,
+\qquad u>0.
+\end{equation}
+On a compact set of $\nu$ the integrand, and any fixed number of order
+derivatives, are bounded by $e^{-u\cosh t}e^{A t}(1+t)^M$ for fixed
+$A,M$. For $u\ge u_0>0$ the factor $e^{-u\cosh t}$ supplies an
+exponential factor in $u$ and an integrable majorant in $t$. Multiplying
+by any fixed power of $n$ or $\log n$ does not destroy convergence when
+$u=2\pi bn$ and $b$ stays bounded away from zero. Parameter derivatives
+in $a$ introduce only powers of $n$ and have the same property.
+
+The nonzero-mode part is therefore entire in $s$. The poles and residues
+come only from $\Gamma(s-\tfrac12)$; the half-integer Gamma values give
+\eqref{qspec:eq:residues}. At $s=0,-1,-2,\ldots$ the bracket before
+multiplication by $1/\Gamma(s)$ is regular, so $E(s)=0$.
+
+Initially for $\Rea s>\tfrac32$, termwise differentiation gives
+\begin{equation}\label{qspec:eq:odd-differentiation}
+Y(s;a,b)=-\frac1{2(s-1)}\partial_a E(s-1;a,b).
+\end{equation}
+The zero-mode term in \eqref{qspec:eq:poisson} is independent of $a$.
+Differentiate its remaining series and use
+$(s-1)\Gamma(s-1)=\Gamma(s)$ to obtain
+\eqref{qspec:eq:odd-poisson}. Normal convergence proves that this expression
+is entire. The apparent singularity in \eqref{qspec:eq:odd-differentiation}
+at $s=1$ is removable, not a missing residue.
+\end{proof}
+
+\subsection{The two local spectral germs}
+For $\epsilon$ near zero define
+\begin{align}
+C(\epsilon;b)&=\frac{\sqrt\pi\,\Gamma(\epsilon)b^{-2\epsilon}}
+                         {\Gamma(1/2+\epsilon)},\label{qspec:eq:Cgerm}\\
+B_+(\epsilon;a,b)&=
+\frac{4\pi^{1/2+\epsilon}b^{-\epsilon}}{\Gamma(1/2+\epsilon)}
+\sum_{n\ge1}n^\epsilon\cos(2\pi na)K_\epsilon(2\pi bn),\label{qspec:eq:Bplusgerm}\\
+B_-(\epsilon;a,b)&=
+\frac{4\pi^{1+\epsilon}b^{1/2-\epsilon}}{\Gamma(1+\epsilon)}
+\sum_{n\ge1}n^{1/2+\epsilon}\sin(2\pi na)
+ K_{\epsilon-1/2}(2\pi bn).\label{qspec:eq:Bminusgerm}
+\end{align}
+Then
+\begin{equation}\label{qspec:eq:germ-identities}
+E(\tfrac12+\epsilon)=C(\epsilon;b)+B_+(\epsilon;a,b),
+\qquad Y(1+\epsilon)=B_-(\epsilon;a,b).
+\end{equation}
+The only pole of these germs is the unit-residue pole of $C$ at zero.
+Define their regular jets by
+\begin{equation}\label{qspec:eq:jet-definitions}
+C_m(b)=m![\epsilon^m]\bigl(C(\epsilon;b)-\epsilon^{-1}\bigr),
+\qquad B_m^\pm(a,b)=\left.\partial_\epsilon^m B_\pm(\epsilon;a,b)\right|_{0}.
+\end{equation}
+The spectral shifts $1/2+\epsilon$ and $1+\epsilon$ differ deliberately:
+the first-moment factor in $Y$ is what aligns both massless powers with
+$x^{-1-2\epsilon}$.
+
+% END sections/02-transform
+
+% BEGIN sections/03-stieltjes
+\section{Complete Stieltjes reflection through a positive mass}
+\label{qspec:sec:stieltjes}
+
+Define the following ordinary, absolutely convergent sums:
+\begin{align}
+D_m^+(a,b)=\sum_{n\ge0}\biggl\{&
+\frac{(-\log Q_b(x_n))^m}{\sqrt{Q_b(x_n)}}
+-\frac{(-2\log x_n)^m}{x_n}\notag\\[-2pt]
+&+\frac{(-\log Q_b(y_n))^m}{\sqrt{Q_b(y_n)}}
+-\frac{(-2\log y_n)^m}{y_n}\biggr\},\label{qspec:eq:Dplus}\\
+D_m^-(a,b)=\sum_{n\ge0}\biggl\{&
+\frac{x_n(-\log Q_b(x_n))^m}{Q_b(x_n)}
+-\frac{(-2\log x_n)^m}{x_n}\notag\\[-2pt]
+&-\frac{y_n(-\log Q_b(y_n))^m}{Q_b(y_n)}
++\frac{(-2\log y_n)^m}{y_n}\biggr\}.
+\label{qspec:eq:Dminus}
+\end{align}
+The cancellation takes place separately at $x_n$ and $y_n$; no pairing of
+two divergent sums is being used to define these differences.
+
+\begin{theorem}[All-index, both-parity Stieltjes identity]
+\label{qspec:thm:master}
+For every $m\ge0$, $0<a<1$, and $b>0$,
+\begin{align}
+(-2)^mG_m^+(a)&=C_m(b)+B_m^+(a,b)-D_m^+(a,b),\label{qspec:eq:master-plus}\\
+(-2)^mG_m^-(a)&=B_m^-(a,b)-D_m^-(a,b).\label{qspec:eq:master-minus}
+\end{align}
+In particular each individual Stieltjes constant is given by
+\begin{equation}\label{qspec:eq:individual}
+\gamma_m(a)=\frac{C_m+B_m^++B_m^--D_m^+-D_m^-}{2(-2)^m}.
+\end{equation}
+These identities may be differentiated any fixed number of times in $a$
+and $b$ on compact subsets of \eqref{qspec:eq:domain}.
+\end{theorem}
+\begin{proof}
+For $|\Rea\epsilon|<1/4$ put
+\begin{align*}
+D_+(\epsilon)&=\sum_{n\ge0}\left\{
+Q_b(x_n)^{-1/2-\epsilon}-x_n^{-1-2\epsilon}
++Q_b(y_n)^{-1/2-\epsilon}-y_n^{-1-2\epsilon}\right\},\\
+D_-(\epsilon)&=\sum_{n\ge0}\left\{
+x_nQ_b(x_n)^{-1-\epsilon}-x_n^{-1-2\epsilon}
+-y_nQ_b(y_n)^{-1-\epsilon}+y_n^{-1-2\epsilon}\right\}.
+\end{align*}
+Writing $Q_b(x)=x^2(1+b^2/x^2)$ shows that each local difference
+is $O(x^{-3+2|\Rea\epsilon|})$, uniformly on compact sets of the
+parameters and of $\epsilon$. Differentiation in $\epsilon$ introduces
+at most fixed powers of $\log x$. The resulting series converge normally;
+the same reasoning applies after finitely many $a,b$ derivatives.
+Their $m$th derivatives at zero are exactly
+\eqref{qspec:eq:Dplus} and~\eqref{qspec:eq:Dminus}.
+
+In the initially convergent region, and hence as local meromorphic germs,
+\begin{align}
+E(\tfrac12+\epsilon)&=
+\zeta(1+2\epsilon,a)+\zeta(1+2\epsilon,1-a)+D_+(\epsilon),\label{qspec:eq:even-subtraction}\\
+Y(1+\epsilon)&=
+\zeta(1+2\epsilon,a)-\zeta(1+2\epsilon,1-a)+D_-(\epsilon).
+\label{qspec:eq:odd-subtraction}
+\end{align}
+Each individual Hurwitz term has residue $1/(2\epsilon)$, so the even
+sum has residue $1/\epsilon$ and the odd difference has none. Equation
+\eqref{qspec:eq:stieltjes-convention} gives the $m$th regular derivative
+as $(-2)^mG_m^\pm$. Substitute \eqref{qspec:eq:germ-identities}, remove
+the one explicit pole, and compare derivatives. This proves both
+identities and their differentiated versions. Adding them proves
+\eqref{qspec:eq:individual}.
+\end{proof}
+
+\subsection{All coefficients of the pole term}
+The zero-mode coefficients have a particularly short finite description.
+Set
+\begin{equation}\label{qspec:eq:ell}
+\ell_1=2\log(2/b),\qquad
+\ell_r=(-1)^r(r-1)!(2-2^r)\zeta(r)\quad(r\ge2).
+\end{equation}
+\begin{proposition}\label{qspec:prop:pole-bell}
+For every $m\ge0$,
+\begin{equation}\label{qspec:eq:Cbell}
+C_m(b)=\frac{\Bcal_{m+1}(\ell_1,\ldots,\ell_{m+1})}{m+1}.
+\end{equation}
+Writing $L=\log(2/b)$, the first three are
+\begin{equation}\label{qspec:eq:Cexamples}
+C_0=2L,\qquad C_1=2L^2-\zeta(2),\qquad
+C_2=\frac83L^3-\frac{2\pi^2}{3}L+4\zeta(3).
+\end{equation}
+\end{proposition}
+\begin{proof}
+The function $\epsilon C(\epsilon;b)$ is analytic and equals one at zero.
+Its logarithm is
+\[
+\log\Gamma(1+\epsilon)-\log\Gamma(1/2+\epsilon)
++\tfrac12\log\pi-2\epsilon\log b.
+\]
+The classical polygamma values at $1$ and $1/2$ \cite{gamma} give precisely
+\eqref{qspec:eq:ell} as its successive derivatives at zero. Expand its
+exponential by \eqref{qspec:eq:bell}, divide by $\epsilon$, remove the
+pole, and multiply the coefficient of $\epsilon^m$ by $m!$. The resulting
+factor is $m!/(m+1)!=1/(m+1)$, proving the proposition.
+\end{proof}
+
+\subsection{Explicit Fourier--Bessel spectral jets}
+For $n\ge1$ set
+\begin{align}
+v_1(n)&=\gamma+\log(4\pi n/b),&
+v_r&=(-1)^{r+1}(r-1)!(2^r-1)\zeta(r)\quad(r\ge2),\label{qspec:eq:vjets}\\
+w_1(n)&=\gamma+\log(\pi n/b),&
+w_r&=(-1)^{r+1}(r-1)!\zeta(r)\quad(r\ge2).\label{qspec:eq:wjets}
+\end{align}
+Define $K^{\langle r\rangle}_\nu(u)=\partial_\nu^rK_\nu(u)$.
+Differentiating the holomorphic factors in
+\eqref{qspec:eq:Bplusgerm}--\eqref{qspec:eq:Bminusgerm} gives
+\begin{align}
+B_m^+={}&4\sum_{n\ge1}\cos(2\pi na)
+ \sum_{r=0}^{\lfloor m/2\rfloor}\binom{m}{2r}
+ \Bcal_{m-2r}(v(n))K^{\langle2r\rangle}_0(2\pi bn),\label{qspec:eq:Bplusjets}\\
+B_m^-={}&4\pi\sqrt b\sum_{n\ge1}\sqrt n\sin(2\pi na)
+ \sum_{r=0}^m\binom mr\Bcal_{m-r}(w(n))
+ K^{\langle r\rangle}_{-1/2}(2\pi bn).
+\label{qspec:eq:Bminusjets}
+\end{align}
+Here $\Bcal_j(v(n))$ means that only the first $j$ entries are used.
+Equation~\eqref{qspec:eq:K-cosh} shows that $K_\nu=K_{-\nu}$, so all
+odd order derivatives at zero vanish. No corresponding deletion is valid
+at $\nu=-1/2$. This explains the different inner sums.
+
+For example,
+\[
+B_0^+=4\sum_{n\ge1}\cos(2\pi na)K_0(2\pi bn),\qquad
+B_1^+=4\sum_{n\ge1}\cos(2\pi na)
+\bigl(\gamma+\log(4\pi n/b)\bigr)K_0(2\pi bn).
+\]
+Thus \eqref{qspec:eq:master-plus} at $m=1$ is the explicit identity
+\begin{align}
+-2G_1^+(a)={}&2\log^2(2/b)-\zeta(2)-D_1^+(a,b)\notag\\
+&+4\sum_{n\ge1}\cos(2\pi na)
+\bigl(\gamma+\log(4\pi n/b)\bigr)K_0(2\pi bn).
+\label{qspec:eq:first-stieltjes-example}
+\end{align}
+It involves no Bessel order derivative. Higher $m$ introduce them only
+at the even orders displayed in \eqref{qspec:eq:Bplusjets}.
+
+\subsection{Damped polylogarithm integral formulas}
+Put
+\begin{equation}\label{qspec:eq:zt}
+z_t^\pm=\exp(-2\pi b\cosh t\pm2\pi ia),\qquad
+\mathcal C_\sigma(t)=\frac{\Li_\sigma(z_t^+)+\Li_\sigma(z_t^-)}2,
+\quad
+\mathcal S_\sigma(t)=\frac{\Li_\sigma(z_t^+)-\Li_\sigma(z_t^-)}{2i}.
+\end{equation}
+For real $\sigma$, these are respectively the real and imaginary parts of
+$\Li_\sigma(z_t^+)$. For complex $\sigma$, the symmetric formulas in
+\eqref{qspec:eq:zt}, not a real-part operation, preserve holomorphy.
+
+\begin{theorem}[Polylogarithm order integrals for both reflected channels]
+\label{qspec:thm:polylog-integrals}
+The entire germs $B_\pm$ satisfy
+\begin{align}
+B_+(\epsilon;a,b)&=
+\frac{4\pi^{1/2+\epsilon}b^{-\epsilon}}{\Gamma(1/2+\epsilon)}
+\int_0^\infty\cosh(\epsilon t)\mathcal C_{-\epsilon}(t)\dd t,
+\label{qspec:eq:polylogplus}\\
+B_-(\epsilon;a,b)&=
+\frac{4\pi^{1+\epsilon}b^{1/2-\epsilon}}{\Gamma(1+\epsilon)}
+\int_0^\infty\cosh((\epsilon-\tfrac12)t)
+\mathcal S_{-\epsilon-1/2}(t)\dd t.
+\label{qspec:eq:polylogminus}
+\end{align}
+Every spectral derivative in Theorem~\ref{qspec:thm:master} can therefore
+be represented by differentiating an ordinary absolutely convergent
+polylogarithm integral.
+\end{theorem}
+\begin{proof}
+Insert \eqref{qspec:eq:K-cosh} in the Bessel series. The polylogarithm
+series \cite{polylog} gives
+\[
+\mathcal C_{-\epsilon}(t)=\sum_{n\ge1}n^\epsilon
+ e^{-2\pi bn\cosh t}\cos(2\pi na),
+\]
+with the analogous sine formula containing $n^{\epsilon+1/2}$.
+For $\epsilon$ in a compact set, the terms and their derivatives have
+majorants of the form
+\[
+C n^A(1+\log n)^M(1+t)^M e^{At}e^{-2\pi b_0n\cosh t},
+\qquad b\ge b_0>0.
+\]
+Summing in $n$ and integrating in $t$ gives a finite quantity. The decay
+in $t$ is stronger than any exponential. Fubini's theorem and holomorphic
+parameter differentiation therefore justify the interchange and all
+claimed spectral derivatives.
+\end{proof}
+
+\subsection{Zeroth-order reflection and an exact mass-transfer law}
+Since $K_{1/2}(u)=\sqrt{\pi/(2u)}e^{-u}$,
+\begin{equation}\label{qspec:eq:odd-zero}
+B_0^-(a,b)=2\pi\sum_{n\ge1}e^{-2\pi bn}\sin(2\pi na)
+=\frac{\pi\sin(2\pi a)}{\cosh(2\pi b)-\cos(2\pi a)}.
+\end{equation}
+The odd master identity recovers the classical digamma reflection law:
+\begin{equation}\label{qspec:eq:zero-reflection}
+\pi\cot(\pi a)=
+\frac{\pi\sin(2\pi a)}{\cosh(2\pi b)-\cos(2\pi a)}-D_0^-(a,b).
+\end{equation}
+At $a=1/2$ every odd term is exactly zero, a structural check rather
+than a near-zero numerical test.
+
+Because the left sides of the master identities are independent of $b$,
+we also obtain, for arbitrary $b,c>0$,
+\begin{align}
+D_m^+(a,b)-D_m^+(a,c)&=C_m(b)-C_m(c)+B_m^+(a,b)-B_m^+(a,c),\label{qspec:eq:transferplus}\\
+D_m^-(a,b)-D_m^-(a,c)&=B_m^-(a,b)-B_m^-(a,c).
+\label{qspec:eq:transferminus}
+\end{align}
+These are exact identities between two deformations with the Stieltjes
+constant eliminated. They generate harmonic/polylogarithm identities
+without retaining an unevaluated Stieltjes symbol.
+
+% END sections/03-stieltjes
+
+% BEGIN sections/04-harmonic-primitives
+\section{Harmonic coefficients, global tails, and parameter primitives}
+\label{qspec:sec:harmonic}
+
+\subsection{The ordinary and half-shifted harmonic dictionaries}
+For $\alpha>0$ define
+\begin{equation}\label{qspec:eq:shifted-harmonics}
+h_{k,r}^{(\alpha)}=\sum_{j=0}^{k-1}(j+\alpha)^{-r},\qquad
+ d_{k,r}^{(\alpha)}=(-1)^{r-1}(r-1)!h_{k,r}^{(\alpha)}.
+\end{equation}
+The two cases needed in the present problem are
+\begin{equation}\label{qspec:eq:harmonic-dictionaries}
+h_{k,r}^{(1)}=H_k^{(r)},\qquad
+h_{k,r}^{(1/2)}=2^r H_{2k}^{(r)}-H_k^{(r)}.
+\end{equation}
+These follow just by separating even and odd integers. Logarithmic
+differentiation of a finite Pochhammer product gives the exact finite law
+\begin{equation}\label{qspec:eq:pochhammer-jet}
+\left.\partial_\epsilon^j(\alpha+\epsilon)_k\right|_0
+=(\alpha)_k\Bcal_j\bigl(d_{k,1}^{(\alpha)},\ldots,d_{k,j}^{(\alpha)}\bigr).
+\end{equation}
+In particular, the first four factors after dividing by $(\alpha)_k$ are
+\[
+1,\qquad h_{k,1},\qquad h_{k,1}^2-h_{k,2},\qquad
+h_{k,1}^3-3h_{k,1}h_{k,2}+2h_{k,3}.
+\]
+The signs are those of a rising Pochhammer product, not its reciprocal.
+
+\begin{theorem}[All-index harmonic Hurwitz counterterms]
+\label{qspec:thm:harmonic}
+Let $\eta\in\{+1,-1\}$ and put $\alpha_{+1}=1/2$, $\alpha_{-1}=1$.
+If $0<b<\min(a,1-a)$, then
+\begin{align}
+D_m^\eta(a,b)={}&\sum_{k\ge1}
+ \frac{(-1)^k(\alpha_\eta)_k b^{2k}}{k!}
+ \sum_{j=0}^m\binom mj 2^{m-j}\Bcal_j(d_k^{(\alpha_\eta)})\notag\\
+&\quad\times\left\{\zeta^{(m-j)}(2k+1,a)
+       +\eta\zeta^{(m-j)}(2k+1,1-a)\right\}.
+\label{qspec:eq:harmonic-counterterms}
+\end{align}
+This is an absolutely and locally uniformly convergent identity, including
+all fixed-order parameter derivatives. For the even channel,
+$(1/2)_k/k!=\binom{2k}{k}/4^k$; for the odd channel $(1)_k/k!=1$.
+\end{theorem}
+\begin{proof}
+The common local factor in the counterterm germs is
+\[
+x^{-1-2\epsilon}\left((1+b^2/x^2)^{-\alpha_\eta-\epsilon}-1\right)
+=\sum_{k\ge1}\frac{(-1)^k(\alpha_\eta+\epsilon)_k b^{2k}}{k!}
+ x^{-2k-1-2\epsilon}.
+\]
+The binomial expansion converges uniformly with a geometric ratio strictly
+less than one for $x=x_n,y_n$ and the stated parameter range. Summing in
+$n$ gives the two Hurwitz terms. Local uniform convergence also follows
+directly by bounding each Hurwitz tail with its leading geometric scale;
+polynomial factors in $k$ and $\log k$, introduced by differentiation,
+are harmless on a smaller compact set. The product rule, the chain factor
+$2^{m-j}$, and \eqref{qspec:eq:pochhammer-jet} yield
+\eqref{qspec:eq:harmonic-counterterms}.
+\end{proof}
+
+\subsection{Finite-head continuation for arbitrary positive mass}
+The small-mass hypothesis in Theorem~\ref{qspec:thm:harmonic} is essential
+for that particular unshifted power series. It is not a restriction on
+the Stieltjes identities.
+
+\begin{theorem}[An ordinary convergent finite-head formula]
+\label{qspec:thm:head}
+Choose any integer $M\ge0$ such that
+\begin{equation}\label{qspec:eq:head-condition}
+b<\min(M+a,M+1-a).
+\end{equation}
+Let $D_{m,<M}^\eta$ be the sum of the first $M$ summands in
+\eqref{qspec:eq:Dplus} or~\eqref{qspec:eq:Dminus}. Then
+\begin{align}
+D_m^\eta(a,b)={}&D_{m,<M}^\eta(a,b)
++\sum_{k\ge1}\frac{(-1)^k(\alpha_\eta)_k b^{2k}}{k!}
+\sum_{j=0}^m\binom mj2^{m-j}\Bcal_j(d_k^{(\alpha_\eta)})\notag\\
+&\quad\times\left\{\zeta^{(m-j)}(2k+1,M+a)
++\eta\zeta^{(m-j)}(2k+1,M+1-a)\right\}.
+\label{qspec:eq:finite-head}
+\end{align}
+For every $a,b$ in \eqref{qspec:eq:domain}, such an $M$ exists, and the
+formula converges normally in a neighborhood of those parameters.
+\end{theorem}
+\begin{proof}
+Remove the finite head before performing the binomial expansion. In the
+remaining sum the smallest positive arguments are $M+a$ and $M+1-a$,
+so \eqref{qspec:eq:head-condition} is exactly the required geometric
+condition. The proof of Theorem~\ref{qspec:thm:harmonic} then applies to
+each tail independently. Increasing $M$ only transfers exact summands
+between the head and the tails; it changes neither the function nor any
+of its jets.
+\end{proof}
+
+There is an important bookkeeping point: the second tail argument is
+$M+1-a$, \emph{not} $1-(M+a)$. Reflection describes the original two
+one-sided spectra; it does not reverse the direction of the index shift.
+For an implementation one can choose $M$ with
+$\min(M+a,M+1-a)\ge2b$. Then both power-series ratios are at most $1/4$.
+This choice is used by the supplied numerical code; the mathematical
+identity does not depend on this particular convenience.
+
+For example, the even zeroth counterterm is
+\[
+D_0^+(a,b)=\sum_{k\ge1}(-1)^k\frac{\binom{2k}{k}}{4^k}b^{2k}
+\bigl(\zeta(2k+1,a)+\zeta(2k+1,1-a)\bigr)
+\]
+inside the small-mass disk. Its first spectral derivative inserts
+\[
+\bigl(2H_{2k}-H_k\bigr)
+\bigl(\zeta(2k+1,a)+\zeta(2k+1,1-a)\bigr)
++2\bigl(\zeta'(2k+1,a)+\zeta'(2k+1,1-a)\bigr).
+\]
+Replacing the two Hurwitz arguments by their shifted tail arguments and
+adding the finite head makes both identities valid for every $b>0$.
+
+\subsection{Every fixed parameter derivative}
+The classical identity
+$\partial_a^p\zeta(s,a)=(-1)^p(s)_p\zeta(s+p,a)$ \cite{hurwitz}
+produces a second finite harmonic dictionary.
+
+\begin{proposition}\label{qspec:prop:parameter-derivatives}
+For $p\ge1$ and $m\ge0$, put
+$d_{p,r}=(-1)^{r-1}(r-1)!H_p^{(r)}$. Then
+\begin{equation}\label{qspec:eq:stieltjes-derivative}
+\gamma_m^{(p)}(a)=(-1)^{m+p}p!
+\sum_{j=0}^m\binom mj\Bcal_j(d_p)
+\zeta^{(m-j)}(p+1,a).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Differentiate the Laurent expansion
+\eqref{qspec:eq:stieltjes-convention} in $a$. Its pole is independent of
+$a$ and disappears. Expand $(1+u)_p$ by
+\eqref{qspec:eq:pochhammer-jet} with $\alpha=1$, multiply by
+$\zeta(p+1+u,a)$, and compare the coefficient of $u^m$.
+\end{proof}
+For $m=0$ this gives $\gamma_0^{(p)}(a)=(-1)^pp!\zeta(p+1,a)$,
+consistent with $\gamma_0=-\psi$. Parameter differentiations of the
+master identity therefore produce exact harmonic identities involving
+positive-order polygamma and spectral Hurwitz derivatives, without
+introducing a new class of constants.
+
+\subsection{First and repeated anchored parameter primitives}
+A convenient first primitive is
+\begin{equation}\label{qspec:eq:Pprimitive}
+P_m(a)=\frac{(-1)^{m+1}}{m+1}\zeta^{(m+1)}(0,a),
+\qquad P_m'(a)=\gamma_m(a).
+\end{equation}
+Indeed, differentiating $\partial_a\zeta(u,a)=-u\zeta(1+u,a)$
+$m+1$ times in $u$ gives this identity. At $m=0$ it is
+$P_0=-\log\Gamma+\tfrac12\log(2\pi)$, the usual Lerch relation.
+Consequently the primitives of the two reflection channels anchored at
+$a=1/2$ are
+\begin{align}
+\int_{1/2}^a G_m^+(t)\dd t&=P_m(a)-P_m(1-a),\label{qspec:eq:plus-primitive}\\
+\int_{1/2}^a G_m^-(t)\dd t&=P_m(a)+P_m(1-a)-2P_m(1/2).
+\label{qspec:eq:minus-primitive}
+\end{align}
+All integrals of the counterterm series over such compact intervals can
+be performed termwise by normal convergence.
+
+For completeness, every higher anchored primitive also has a finite
+Hurwitz-jet description. Let
+\[
+(T_{r-1,a_0}f)(a)=\sum_{j=0}^{r-1}\frac{(a-a_0)^j}{j!}f^{(j)}(a_0),
+\qquad r\ge1,\quad a,a_0>0,
+\]
+and define, initially for $u\ne0$ near zero,
+\begin{equation}\label{qspec:eq:anchored-germ}
+\mathcal I_r(u;a,a_0)=
+\frac{(1-T_{r-1,a_0})\zeta(1+u-r,a)}{(-u)_r}
+-\frac{(a-a_0)^r}{r!u}.
+\end{equation}
+Here the Taylor operator acts on the parameter $a$, not on $u$.
+
+\begin{proposition}[All anchored primitive orders]
+\label{qspec:prop:all-primitives}
+The apparent pole in \eqref{qspec:eq:anchored-germ} is removable. For
+$m\ge0$,
+\begin{equation}\label{qspec:eq:all-primitives}
+\frac1{(r-1)!}\int_{a_0}^a(a-t)^{r-1}\gamma_m(t)\dd t
+=(-1)^m\left.\partial_u^m\mathcal I_r(u;a,a_0)\right|_{u=0}.
+\end{equation}
+The oriented integral convention also covers $a<a_0$.
+\end{proposition}
+\begin{proof}
+The numerator at $u=0$ is the Taylor remainder of
+$\zeta(1-r,a)=-B_r(a)/r$, a degree-$r$ polynomial with leading
+coefficient $-1/r$. Its value is $-(a-a_0)^r/r$.
+As $(-u)_r=-(r-1)!u+O(u^2)$, the residue of the quotient is exactly
+the term explicitly subtracted in \eqref{qspec:eq:anchored-germ}.
+The remainder is holomorphic in $u$.
+
+Further,
+\[
+\partial_a^r\zeta(1+u-r,a)=(-u)_r\zeta(1+u,a).
+\]
+Taking $r$ parameter derivatives of \eqref{qspec:eq:anchored-germ}
+therefore yields $\zeta(1+u,a)-1/u$. All its first $r$ anchored
+initial values, through derivative $r-1$, vanish. Uniqueness of the
+anchored repeated primitive and the Laurent expansion prove
+\eqref{qspec:eq:all-primitives}.
+\end{proof}
+This is a classical Hurwitz-jet integration mechanism written in a
+pole-cancelled form. Coefficient extraction requires only finitely many
+Hurwitz spectral derivatives and Pochhammer coefficients at each fixed
+$m,r$.
+
+\subsection{An explicit log-Gamma ratio identity}
+A zeroth-order primitive of the even master produces a particularly
+simple ordinary sum. Define
+\begin{equation}\label{qspec:eq:A}
+A(a,b)=\sum_{n\ge0}\left\{
+\arsinh\frac{n+a}{b}-\arsinh\frac{n+1-a}{b}
+-\log\frac{n+a}{n+1-a}\right\}.
+\end{equation}
+The local primitive
+$\arsinh(x/b)-\log x=\log(2/b)+O(x^{-2})$ proves convergence of this
+paired expression and its needed parameter derivatives.
+
+\begin{corollary}\label{qspec:cor:gamma-ratio}
+For $0<a<1$, $b>0$,
+\begin{align}
+\log\frac{\Gamma(1-a)}{\Gamma(a)}={}&
+2(a-\tfrac12)\log(2/b)-A(a,b)\notag\\
+&+\frac2\pi\sum_{n\ge1}\frac{\sin(2\pi na)}nK_0(2\pi bn).
+\label{qspec:eq:gamma-ratio}
+\end{align}
+If $M$ satisfies \eqref{qspec:eq:head-condition}, the tail of $A$ is
+\begin{equation}\label{qspec:eq:A-tail}
+A_{\ge M}(a,b)=\sum_{k\ge1}
+\frac{(-1)^{k+1}(1/2)_k b^{2k}}{2k\,k!}
+\bigl(\zeta(2k,M+a)-\zeta(2k,M+1-a)\bigr).
+\end{equation}
+\end{corollary}
+\begin{proof}
+Integrate \eqref{qspec:eq:master-plus} at $m=0$ from $1/2$ to $a$.
+The left side is \eqref{qspec:eq:plus-primitive} at $m=0$.
+The pole term integrates to $2(a-1/2)\log(2/b)$; the cosine terms
+integrate to the sine series. Differentiating \eqref{qspec:eq:A} in $a$
+gives $D_0^+(a,b)$, and $A(1/2,b)=0$. This proves
+\eqref{qspec:eq:gamma-ratio}. Finally integrate the binomial expansion
+of $Q_b(x)^{-1/2}-x^{-1}$ in $x$ and subtract its two tail values.
+The coefficients are precisely those in \eqref{qspec:eq:A-tail}.
+\end{proof}
+
+% END sections/04-harmonic-primitives
+
+% BEGIN sections/05-anomaly
+\section{Conjugate factorization and an exact polynomial parity criterion}
+\label{qspec:sec:anomaly}
+
+Although $\log(x^2+b^2)=\log(x+ib)+\log(x-ib)$ for $x>0$, one cannot
+split arbitrary zeta-regularized weighted sums of these logarithms without
+checking the continuation. This section computes the correction rather
+than assuming it vanishes.
+
+For $a,b>0$ and a polynomial $W(x)=\sum_{d=0}^D w_dx^d\in\C[x]$, define
+\begin{align}
+Z_W(s;a,b)&=\sum_{n\ge0}W(n+a)Q_b(n+a)^{-s},\label{qspec:eq:weighted-quadratic}\\
+F_{W,\pm}(s;a,b)&=\sum_{n\ge0}W(n+a)(n+a\pm ib)^{-s}.
+\label{qspec:eq:weighted-linear}
+\end{align}
+Their initial absolute-convergence conditions are respectively
+$\Rea s>(D+1)/2$ and $\Rea s>D+1$. We always mean their meromorphic
+continuations when evaluating at zero. The sign convention for the
+factorization defect is
+\begin{equation}\label{qspec:eq:delta-definition}
+\delta_W(a,b)=F_{W,+}'(0;a,b)+F_{W,-}'(0;a,b)-Z_W'(0;a,b).
+\end{equation}
+It is a convention for spectral derivatives; changing to logarithms of
+regularized determinants changes the associated sign convention.
+
+\begin{theorem}[Harmonic residue formula and universal vanishing criterion]
+\label{qspec:thm:anomaly}
+All three continued functions in
+\eqref{qspec:eq:weighted-quadratic}--\eqref{qspec:eq:weighted-linear} are
+holomorphic at zero. The defect is independent of $a$ and equals
+\begin{align}
+\delta_W(a,b)
+&=\frac14[x^{-1}]W(x)
+\left(\log(1+ib/x)-\log(1-ib/x)\right)^2\label{qspec:eq:anomaly-residue}\\
+&=\sum_{k\ge1}w_{2k-1}\frac{(-1)^k b^{2k}}{k}
+\left(H_{2k}-\frac12H_k\right).
+\label{qspec:eq:anomaly-harmonic}
+\end{align}
+The last sum is finite. For a fixed polynomial $W$, the identity
+$\delta_W(a,b)=0$ for every $b>0$ holds if and only if $W$ is even.
+\end{theorem}
+\begin{proof}
+We first take $b<a$. Put $\ell_\pm(x)=\log(1\pm ib/x)$ and
+$L=\ell_++\ell_-$. In a common initial half-plane, factor out $x^{-2s}$
+and compare $Z_W(s)$ with
+$\tfrac12(F_{W,+}(2s)+F_{W,-}(2s))$. The remaining difference is
+\begin{equation}\label{qspec:eq:local-defect}
+e^{-sL}-\tfrac12\bigl(e^{-2s\ell_+}+e^{-2s\ell_-}\bigr)
+=-\frac{s^2}{2}(\ell_+-\ell_-)^2+O(s^3).
+\end{equation}
+Both the constant and first powers of $s$ cancel identically as formal
+power series in $x^{-1}$.
+
+To justify the continuation and the coefficient comparison, expand each
+factor in powers of $x^{-1}$ and sum $x=n+a$. A monomial $w_dx^d$
+paired with the coefficient of $x^{-j}$ contributes
+$w_d\zeta(2s+j-d,a)$. For $s$ near zero, only $j=d+1$ has a pole,
+and it is
+\begin{equation}\label{qspec:eq:hurwitz-local-pole}
+\zeta(1+2s,a)=\frac1{2s}+\gamma_0(a)+O(s).
+\end{equation}
+Every original positive-degree coefficient in the exponential expansion
+vanishes at least to order one at $s=0$, so this possible pole is
+cancelled. The degree-zero term is a finite combination of $\zeta(-d,a)$,
+which is regular. The remaining infinite coefficient sum converges
+normally near zero because $b/a<1$. This proves holomorphy of the
+original functions at zero, not just holomorphy of their difference.
+
+In the difference \eqref{qspec:eq:local-defect}, all regular Hurwitz
+terms start at $s^2$ and have zero first derivative at zero. Multiplying
+the pole in \eqref{qspec:eq:hurwitz-local-pole} by the quadratic term
+in \eqref{qspec:eq:local-defect} gives
+\[
+Z_W'(0)-F_{W,+}'(0)-F_{W,-}'(0)
+=-\tfrac14[x^{-1}]W(x)(\ell_+-\ell_-)^2.
+\]
+The finite part $\gamma_0(a)$ contributes only from order $s^2$ onward;
+this explains both the sign and the independence from $a$.
+
+For arbitrary $b>0$, remove a finite head with $M+a>b$ before expanding.
+At each of the finitely many head terms, the first derivatives cancel
+because the ordinary logarithms add with the stated branches. The tail
+calculation is identical, and the residue in
+\eqref{qspec:eq:hurwitz-local-pole} is still one in its spectral variable.
+This proves \eqref{qspec:eq:anomaly-residue} globally.
+
+For the coefficient formula, write
+\[
+\ell_+-\ell_-=2\sum_{r\ge0}\frac{(ib)^{2r+1}}{(2r+1)x^{2r+1}}.
+\]
+The coefficient of $x^{-2k}$ in one quarter of its square is
+\[
+(-1)^kb^{2k}\sum_{r=0}^{k-1}
+\frac1{(2r+1)(2k-2r-1)}
+=\frac{(-1)^kb^{2k}}k\sum_{r=0}^{k-1}\frac1{2r+1}.
+\]
+The last sum is $H_{2k}-H_k/2$. It is nonzero for every $k\ge1$.
+Only odd monomials $x^{2k-1}$ can contribute to $[x^{-1}]$.
+Finally the distinct powers $b^{2k}$ are linearly independent as
+polynomials in $b$, proving the universal vanishing criterion.
+\end{proof}
+
+\begin{remark}[A fixed mass is different from all masses]
+At a single prescribed value of $b$, different odd terms can cancel.
+For example $W(x)=x^3+\tfrac23b_0^2x$ has zero defect at $b=b_0$
+but is not even. Thus the theorem characterizes vanishing identically
+in the mass, not an erroneous pointwise equivalence.
+\end{remark}
+
+The first defect values, with the convention
+\eqref{qspec:eq:delta-definition}, are
+\begin{equation}\label{qspec:eq:anomaly-examples}
+\delta_1=0,\qquad \delta_x=-b^2,\qquad
+\delta_{x^2}=0,\qquad \delta_{x^3}=\frac23b^4,\qquad
+\delta_{x^5}=-\frac{23}{45}b^6.
+\end{equation}
+They are useful negative controls: deleting the anomaly from an odd-weight
+calculation gives an explicitly false formula, not merely an uncertified
+one.
+
+\subsection{Finite corrected formulas for any polynomial weight}
+Expand $W$ about either conjugate root by writing
+\begin{equation}\label{qspec:eq:shifted-weight-coeffs}
+W(y\mp ib)=\sum_{r=0}^D c_r^\pm(b)y^r.
+\end{equation}
+The linear-factor series are finite sums of shifted Hurwitz functions,
+so Theorem~\ref{qspec:thm:anomaly} immediately gives
+\begin{equation}\label{qspec:eq:general-weighted-hurwitz}
+Z_W'(0;a,b)=
+\sum_{r=0}^D\left(c_r^+(b)\zeta'(-r,a+ib)
++c_r^-(b)\zeta'(-r,a-ib)\right)-\delta_W(a,b).
+\end{equation}
+For real coefficients, the two finite sums are conjugates. Thus every
+polynomially weighted quadratic logarithmic sum in this class has a
+finite Hurwitz-derivative evaluation, with the exact harmonic correction
+already displayed. This is a concrete specialization of the classical
+local-anomaly principle, not an assumption of multiplicativity.
+
+\subsection{Anomaly-free factorization at every negative integer}
+Let
+\begin{equation}\label{qspec:eq:one-sided}
+Z_a(s;b)=\sum_{n\ge0}Q_b(n+a)^{-s}
+\end{equation}
+initially for $\Rea s>1/2$. The weight $W(x)=Q_b(x)^m$ is even for every
+integer $m\ge0$, so the defect vanishes.
+
+\begin{corollary}\label{qspec:cor:negative-hurwitz}
+For $a,b>0$ and $m\ge0$,
+\begin{equation}\label{qspec:eq:negative-hurwitz}
+Z_a'(-m;b)=2\Rea\sum_{j=0}^m
+\binom mj(-2ib)^{m-j}\zeta'(-m-j,a+ib).
+\end{equation}
+\end{corollary}
+\begin{proof}
+For this weight $Z_W(s)=Z_a(s-m;b)$. With $y=x+ib$,
+\[
+Q_b(x)^m=y^m(y-2ib)^m
+=\sum_{j=0}^m\binom mj(-2ib)^{m-j}y^{m+j}.
+\]
+Insert this finite expansion into
+\eqref{qspec:eq:general-weighted-hurwitz}; the defect is zero and the
+second conjugate factor gives the real-part formula.
+\end{proof}
+No claim is made that an arbitrary higher spectral derivative factorizes
+in this way. The proof uses the first-derivative cancellation and the
+special even polynomial weight. At higher spectral orders, logarithmic
+cross terms require their own calculation.
+
+% END sections/05-anomaly
+
+% BEGIN sections/06-polylogarithms
+\section{Finite polylogarithmic reductions and mass antiderivatives}
+\label{qspec:sec:finite}
+
+\subsection{All nonpositive integer spectral points}
+Put
+\begin{equation}\label{qspec:eq:Lm}
+L_m(a,b)=\left.\partial_s E(s;a,b)\right|_{s=-m},\qquad
+z=\exp(-2\pi b+2\pi ia),\qquad m\ge0.
+\end{equation}
+The half-integer Bessel expression is the finite polynomial
+\begin{equation}\label{qspec:eq:half-integer-K}
+K_{m+1/2}(u)=\sqrt{\frac\pi{2u}}e^{-u}
+\sum_{j=0}^m\frac{(m+j)!}{j!(m-j)!(2u)^j}.
+\end{equation}
+Its $m=0$ case and the three-term order recurrence prove it by induction;
+it is also the classical half-integer formula \cite{halfK}.
+
+\begin{theorem}[Finite Hurwitz--polylogarithm identities at every negative point]
+\label{qspec:thm:finite}
+For $0<a<1$, $b>0$, and every $m\ge0$,
+\begin{align}
+L_m(a,b)={}&2\Rea\sum_{j=0}^m\binom mj(-2ib)^{m-j}
+\bigl\{\zeta'(-m-j,a+ib)+\zeta'(-m-j,1-a+ib)\bigr\}\label{qspec:eq:L-Hurwitz}\\
+={}&-\frac{2^{2m+1}(m!)^2\pi}{(2m+1)!}b^{2m+1}\notag\\
+&+2(-1)^mm!\sum_{j=0}^m
+\frac{(m+j)!b^{m-j}}{j!(m-j)!4^j\pi^{m+j}}
+\Rea\Li_{m+j+1}(z).
+\label{qspec:eq:L-polylog}
+\end{align}
+In particular, the equality of the two right sides is a finite special-function
+identity; $L_m$ is not needed as an additional unevaluated coordinate.
+\end{theorem}
+\begin{proof}
+The reflected decomposition of $E$ is
+$E(s;a,b)=Z_a(s;b)+Z_{1-a}(s;b)$. Apply
+Corollary~\ref{qspec:cor:negative-hurwitz} to the two terms to obtain
+\eqref{qspec:eq:L-Hurwitz}.
+
+For the independent evaluation, write the Poisson expression as
+$E(s)=H(s)/\Gamma(s)$, where $H$ is holomorphic at $s=-m$. The zero
+of the reciprocal Gamma function is simple and
+\[
+(1/\Gamma)'(-m)=(-1)^mm!.
+\]
+Consequently $E'(-m)=(-1)^mm!H(-m)$: derivatives of the Bessel order
+and of the other factors in $H$ do not appear in this first jet. The
+zero Fourier mode becomes
+\[
+(-1)^mm!\sqrt\pi\Gamma(-m-\tfrac12)b^{2m+1}
+=-\frac{2^{2m+1}(m!)^2\pi}{(2m+1)!}b^{2m+1}.
+\]
+For the nonzero modes use $K_{-m-1/2}=K_{m+1/2}$ and
+\eqref{qspec:eq:half-integer-K}. The square-root prefactor reduces to
+$1/(2\sqrt{bn})$. The remaining $n$ powers are
+$n^{-m-j-1}$, so their cosine sums are exactly
+$\Rea\Li_{m+j+1}(z)$. Collecting the powers of $b$, $4$, and $\pi$
+gives \eqref{qspec:eq:L-polylog}.
+\end{proof}
+
+The first four values, writing $\Rea\Li_j=\Rea\Li_j(z)$, are
+\begin{align}
+L_0={}&-\log\bigl(2(\cosh(2\pi b)-\cos(2\pi a))\bigr),\label{qspec:eq:L0}\\
+L_1={}&-\frac{4\pi b^3}{3}-\frac{2b}{\pi}\Rea\Li_2
+                       -\frac1{\pi^2}\Rea\Li_3,\label{qspec:eq:L1}\\
+L_2={}&-\frac{16\pi b^5}{15}+\frac{4b^2}{\pi^2}\Rea\Li_3
+              +\frac{6b}{\pi^3}\Rea\Li_4+\frac3{\pi^4}\Rea\Li_5,\label{qspec:eq:L2}\\
+L_3={}&-\frac{32\pi b^7}{35}-\frac{12b^3}{\pi^3}\Rea\Li_4
+              -\frac{36b^2}{\pi^4}\Rea\Li_5\notag\\
+     &\hspace{19mm}-\frac{45b}{\pi^5}\Rea\Li_6
+              -\frac{45}{2\pi^6}\Rea\Li_7.
+\label{qspec:eq:L3}
+\end{align}
+For $m=0$, $\Li_1(z)=-\log(1-z)$ reduces the finite formula to
+\eqref{qspec:eq:L0}. For $m=1$, the Hurwitz side is exactly
+\eqref{qspec:eq:opening-example}.
+
+\subsection{An exact Appell-type ladder in the squared mass}
+Here the term ``Appell-type'' means the displayed derivative relation,
+not an assertion that these functions are polynomials.
+
+\begin{theorem}[Mass differentiation and every anchored mass primitive]
+\label{qspec:thm:mass-ladder}
+With $u=b^2$,
+\begin{equation}\label{qspec:eq:mass-derivative}
+\partial_u L_m(a,\sqrt u)=mL_{m-1}(a,\sqrt u)\quad(m\ge1),
+\qquad
+\partial_u L_0(a,\sqrt u)=-E(1;a,\sqrt u).
+\end{equation}
+The continuous zero-mass values are
+\begin{align}
+L_0(a,0)&=-\log(4\sin^2\pi a),\label{qspec:eq:massless0}\\
+L_m(a,0)&=\frac{2(-1)^m(2m)!}{(2\pi)^{2m}}
+\Rea\Li_{2m+1}(e^{2\pi ia})\quad(m\ge1).
+\label{qspec:eq:masslessm}
+\end{align}
+For every $m\ge1$,
+\begin{align}
+L_m(a,b)={}&\sum_{j=0}^{m-1}\binom mj b^{2j}L_{m-j}(a,0)\notag\\
+&+m\int_0^{b^2}(b^2-u)^{m-1}L_0(a,\sqrt u)\dd u.
+\label{qspec:eq:mass-primitives}
+\end{align}
+Thus the finite polylogarithm formulas evaluate every integral on the
+right side exactly.
+\end{theorem}
+\begin{proof}
+Initially in an absolute-convergence half-plane,
+$\partial_u E(s)=-sE(s+1)$. Continue meromorphically and differentiate
+in $s$:
+\[
+\partial_u E'(s)=-E(s+1)-sE'(s+1).
+\]
+At $s=-m$, $m\ge1$, the first term is zero because
+$E(1-m)=0$. This proves the first relation. At $s=0$ it gives the
+second relation.
+
+For fixed $a\in(0,1)$ there is a nonzero gap between the lattice and
+zero. The binomial continuation, after finitely many Hurwitz
+subtractions if needed, is analytic in $u$ near zero. Alternatively,
+take the limit in the explicit finite formula: for $m\ge1$ only its
+$j=m$ term survives, while the absolutely convergent polylogarithms
+have continuous radial limits. This proves
+\eqref{qspec:eq:masslessm}; \eqref{qspec:eq:massless0} follows directly
+from \eqref{qspec:eq:L0}. Repeated integration of
+\eqref{qspec:eq:mass-derivative}, with these initial values, gives
+\eqref{qspec:eq:mass-primitives}. The coefficient of its integral is
+$m!/(m-1)!=m$.
+\end{proof}
+
+For example, a non-elementary logarithmic integral is evaluated by
+\begin{align}
+&-\int_0^{b^2}\log\bigl(2(\cosh(2\pi\sqrt u)-\cos(2\pi a))\bigr)\dd u\notag\\
+&\qquad=-\frac{4\pi b^3}{3}-\frac{2b}{\pi}\Rea\Li_2(z)
+-\frac1{\pi^2}\Rea\Li_3(z)
++\frac1{\pi^2}\Rea\Li_3(e^{2\pi ia}).
+\label{qspec:eq:log-mass-integral}
+\end{align}
+The higher-weight analogues follow by inserting $m=2,3,\ldots$ in
+\eqref{qspec:eq:mass-primitives}. Their constants are fixed by the
+zero-mass boundary values, not left as undetermined integration terms.
+
+The same ladder provides an independent algebraic check of the finite
+coefficients. Since $\partial_b\Li_j(z)=-2\pi\Li_{j-1}(z)$,
+substitution of \eqref{qspec:eq:L-polylog} into
+$\partial_bL_m=2bmL_{m-1}$ leaves a finite identity of rational
+coefficients and powers of $b,\pi$. The delivered exact suite checks
+these cancellations through $m=10$; the theorem itself holds for all
+$m$ by the analytic proof.
+
+\subsection{A differential equation in the shift and mass}
+The same finite family is closed under a second differential relation.
+\begin{proposition}\label{qspec:prop:PDE}
+For every $m\ge0$,
+\begin{equation}\label{qspec:eq:PDE}
+\left(\partial_a^2+\partial_b^2-\frac{2m}{b}\partial_b\right)L_m(a,b)=0.
+\end{equation}
+Equivalently, with $u=b^2$,
+\[
+\bigl(\partial_a^2+4u\partial_u^2+(2-4m)\partial_u\bigr)
+L_m(a,\sqrt u)=0.
+\]
+For $m\ge2$ this becomes the finite adjacent-weight identity
+\begin{equation}\label{qspec:eq:PDE-adjacent}
+\partial_a^2L_m=2m(2m-1)L_{m-1}-4m(m-1)b^2L_{m-2}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Direct differentiation of one radial summand gives
+\[
+(\partial_a^2+\partial_b^2)E(s)=4s^2E(s+1),
+\qquad \partial_bE(s)=-2sbE(s+1).
+\]
+Hence $(\partial_a^2+\partial_b^2+(2s/b)\partial_b)E(s)=0$
+by continuation from absolute convergence. Differentiate in $s$ at
+$s=-m$. The extra term $(2/b)\partial_bE(-m)$ is zero, because
+$E(-m)$ vanishes identically as a function of the parameters. This
+proves \eqref{qspec:eq:PDE}. The mass ladder yields
+\eqref{qspec:eq:PDE-adjacent} for $m\ge2$.
+\end{proof}
+For $m=0$ the logarithm in \eqref{qspec:eq:L0} is harmonic on the open
+strip $b>0$. The higher weights satisfy its explicit weighted version,
+rather than an unrelated differential equation at each polylogarithm order.
+
+\subsection{Products of several quadratic factors}
+The parity mechanism extends beyond a single conjugate pair. The following
+finite reduction uses no multivariable special functions at the first
+spectral derivative.
+
+\begin{theorem}[Several masses with an arbitrary even polynomial weight]
+\label{qspec:thm:several-masses}
+Let $P$ be a polynomial of degree at most $D$, let $r\ge1$, and let
+$b_1,\ldots,b_r>0$. Define, initially in its absolute-convergence
+half-plane,
+\begin{equation}\label{qspec:eq:several-masses}
+\mathcal Z_{P,\mathbf b}(s;a)=
+\sum_{n\in\Z}P((n+a)^2)
+\prod_{j=1}^r\bigl((n+a)^2+b_j^2\bigr)^{-s}.
+\end{equation}
+Its continuation is holomorphic at zero, and
+\begin{equation}\label{qspec:eq:several-masses-finite}
+\mathcal Z_{P,\mathbf b}'(0;a)
+=\sum_{j=1}^r\sum_{\ell=0}^D
+\frac{P^{(\ell)}(-b_j^2)}{\ell!}L_\ell(a,b_j).
+\end{equation}
+Combining this formula with \eqref{qspec:eq:L-polylog} gives a finite
+polylogarithm reduction for every such spectrum, including repeated masses.
+\end{theorem}
+\begin{proof}
+First work on a positive tail $x=n+a$ with all $b_j<x$. After factoring
+out $x^{-2rs}$, the remaining factor is
+\[
+\exp\left(-s\sum_{j=1}^r\log(1+b_j^2/x^2)\right).
+\]
+It has only even powers of $x^{-1}$. Multiplication by $P(x^2)$ still
+leaves only even powers of $x$. A possible Hurwitz pole at $s=0$
+would require the resulting power to be $x^{-1}$, which is impossible.
+Thus there are no resonant pole terms at zero in this common-scale
+expansion.
+
+Compare the product spectrum with $r^{-1}$ times the sum of the
+individual weighted spectra evaluated at $rs$. Their constant and
+linear terms in $s$ agree identically before summation; the remaining
+coefficients are $O(s^2)$. Since there is no pole at zero, their first
+derivatives agree after continuation as well. Remove a finite head
+to justify the expansion for arbitrary masses. The ordinary head
+logarithms add, so it contributes no discrepancy. The same argument
+applies to the negative lattice tail, where evenness changes its
+weight to $P(y_n^2)$ without a sign.
+
+Finally the polynomial Taylor identity
+\[
+P(x^2)=\sum_{\ell=0}^D\frac{P^{(\ell)}(-b_j^2)}{\ell!}
+ (x^2+b_j^2)^\ell
+\]
+expresses the $j$th individual weighted derivative as the inner finite
+sum in \eqref{qspec:eq:several-masses-finite}. This proves the formula.
+\end{proof}
+
+For instance, $P(v)=v+c$ and two masses give
+\[
+\mathcal Z_{P,(b_1,b_2)}'(0;a)
+=\sum_{j=1}^2\bigl(L_1(a,b_j)+(c-b_j^2)L_0(a,b_j)\bigr).
+\]
+Each summand has only elementary logarithms, $\Li_2$, and $\Li_3$.
+The theorem is restricted to the first spectral derivative. Products
+of logarithms in higher derivatives are not removed by this argument.
+
+\subsection{Positive-integer resolvents: polygamma and rational polylogs}
+At positive integers the same half-integer Bessel polynomial produces
+polylogarithms of nonpositive order.
+
+\begin{proposition}\label{qspec:prop:positive}
+For $N\ge1$,
+\begin{align}
+E(N;a,b)={}&\frac{\sqrt\pi\Gamma(N-1/2)}{\Gamma(N)}b^{1-2N}\notag\\
+&+\frac{2\pi^N b^{-N}}{\Gamma(N)}
+\sum_{j=0}^{N-1}\frac{(N-1+j)!}
+ {j!(N-1-j)!(4\pi b)^j}\Rea\Li_{j+1-N}(z).
+\label{qspec:eq:positive-polylog}
+\end{align}
+An independent finite polygamma expression is
+\begin{equation}\label{qspec:eq:positive-polygamma}
+E(N;a,b)=2\Rea\sum_{r=1}^N A_{N,r}(b)
+\bigl(\Xi_r(a+ib)+\Xi_r(1-a+ib)\bigr),
+\end{equation}
+where
+\begin{align}
+A_{N,r}(b)&=(-1)^{N-r}\binom{2N-r-1}{N-r}(-2ib)^{-(2N-r)},\label{qspec:eq:Ar}\\
+\Xi_1(c)&=-\psi(c),\qquad
+\Xi_r(c)=\frac{(-1)^r}{(r-1)!}\psi^{(r-1)}(c)\quad(r\ge2).
+\label{qspec:eq:Xi}
+\end{align}
+\end{proposition}
+\begin{proof}
+Insert \eqref{qspec:eq:half-integer-K}, with $m=N-1$, into
+\eqref{qspec:eq:poisson}. The remaining powers of $n$ give
+\eqref{qspec:eq:positive-polylog}.
+
+For the other formula, expand the rational function at $x=-ib$:
+\[
+\frac1{(x^2+b^2)^N}
+=\sum_{r=1}^N\left\{\frac{A_{N,r}(b)}{(x+ib)^r}
++\frac{\overline{A_{N,r}(b)}}{(x-ib)^r}\right\}.
+\]
+The coefficient follows by expanding $(y-2ib)^{-N}$ at $y=x+ib=0$.
+For $r\ge2$ summation gives $\zeta(r,c)=\Xi_r(c)$. The $r=1$
+terms must be paired before summation: their coefficients add to zero,
+and a common finite cutoff gives finite part $-\psi(c)$. No separate
+value for a divergent harmonic series is assigned. Sum over $x_n$
+and $y_n$ to obtain \eqref{qspec:eq:positive-polygamma}.
+\end{proof}
+For $N=1$ these formulas reduce to the classical resolvent
+\begin{equation}\label{qspec:eq:resolvent}
+E(1;a,b)=\frac\pi b
+\frac{\sinh(2\pi b)}{\cosh(2\pi b)-\cos(2\pi a)}.
+\end{equation}
+For larger $N$, all polylogs in
+\eqref{qspec:eq:positive-polylog} are rational functions of $z$, obtained
+by repeatedly applying $z\partial_z$ to $z/(1-z)$.
+
+\subsection{Gamma products and every mass primitive of their logarithm}
+Define the real quantity
+\begin{equation}\label{qspec:eq:Rgamma}
+R(a,b)=\log\frac{\Gamma(a)^2\Gamma(1-a)^2}
+ {\Gamma(a+ib)\Gamma(a-ib)\Gamma(1-a+ib)\Gamma(1-a-ib)}.
+\end{equation}
+All conjugate products in the denominator are positive real numbers.
+
+\begin{proposition}[A Gamma-product dilogarithm integral]
+\label{qspec:prop:gamma-integrals}
+The classical product and reflection identities give
+\begin{equation}\label{qspec:eq:Rhyperbolic}
+R(a,b)=\log\frac{\cosh(2\pi b)-\cos(2\pi a)}{1-\cos(2\pi a)}.
+\end{equation}
+In particular, with $z_0=e^{2\pi ia}$,
+\begin{equation}\label{qspec:eq:gamma-Li2}
+\int_0^b R(a,t)\dd t
+=\pi b^2-b\log(4\sin^2\pi a)
++\frac1\pi\Rea\bigl(\Li_2(z)-\Li_2(z_0)\bigr).
+\end{equation}
+More generally, for every $r\ge1$,
+\begin{align}
+&\frac1{(r-1)!}\int_0^b(b-t)^{r-1}R(a,t)\dd t\notag\\
+&\quad=\frac{2\pi b^{r+1}}{(r+1)!}
+-\frac{b^r}{r!}\log(4\sin^2\pi a)\notag\\
+&\qquad\ -2\Rea\left\{\frac1{(-2\pi)^r}
+\left(\Li_{r+1}(z)-\sum_{j=0}^{r-1}\frac{(-2\pi b)^j}{j!}
+\Li_{r+1-j}(z_0)\right)\right\}.
+\label{qspec:eq:gamma-all-primitives}
+\end{align}
+\end{proposition}
+\begin{proof}
+The Gamma product, with its conjugate linear terms cancelling, gives
+\[
+\sum_{n\ge0}\log\left(1+\frac{b^2}{(n+a)^2}\right)
+=2\log\Gamma(a)-\log\Gamma(a+ib)-\log\Gamma(a-ib).
+\]
+Add the formula at $1-a$ and use Gamma reflection \cite{gamma}; equivalently
+compare \eqref{qspec:eq:L0} at $b$ and at zero. The result is
+\eqref{qspec:eq:Rhyperbolic}. With the logarithmic branches already fixed,
+it can be written
+\[
+R(a,b)=2\pi b-\log(4\sin^2\pi a)-2\Rea\Li_1(e^{-2\pi b}z_0).
+\]
+One integration using $\partial_b\Li_2(z)=-2\pi\Li_1(z)$ proves
+\eqref{qspec:eq:gamma-Li2}. For repeated integration, an $r$th primitive
+of $\Li_1(z)$ is $(-2\pi)^{-r}\Li_{r+1}(z)$. Subtract its Taylor
+polynomial through order $r-1$ at zero to enforce all anchored initial
+conditions. This gives \eqref{qspec:eq:gamma-all-primitives}. Unit-circle
+values appearing in that Taylor polynomial have order at least two and
+are absolutely convergent.
+\end{proof}
+
+% END sections/06-polylogarithms
+
+% BEGIN sections/07-audit-research
+\section{Source audit, verification, and further research}
+\label{qspec:sec:audit}
+
+\subsection{What was inspected}
+The repository anchor is \qpin. Its commit timestamp is
+11 October 2026 at 05:06:38 UTC, which is 10 October 2026 in the user's
+America/Los\_Angeles time zone. The local date in this delivery is therefore
+10 October 2026.
+
+The source reading included the manuscript's main file and preface, its
+research-status chapter, the beginning and central conventions of the
+integration chapter, the displayed $S_6$ target and formal-obstruction
+framework in the full-Cayley continuation, the arithmetic spectral-jets
+section on periodic weights and poles, and the all-rational formal
+classification section of the Herglotz report. The intake README and
+incoming directory catalogue were also read \cite{repo,arithmetic,classification,intake}.
+This was a targeted reading, not a full audit of every included manuscript
+chapter, report, proof prerequisite, or source program.
+
+Six incoming archive names were visible at the pin: the Bernoulli--Tornheim--
+digamma, cubic-tail-descent, determinantal-harmonic-resonance,
+differential-polygamma-and-Lerch-jets, multishift-reflection, and
+polygamma-tail-identities packages. Only their catalogue metadata was
+inspected; their interiors were not read. Accordingly, no theorem,
+conjecture, omission, or error is attributed here to any of those archive
+interiors. The machine-readable provenance file and source-audit note
+preserve this distinction.
+
+\subsection{A concrete editorial synchronization correction}
+The inspected research chapter still describes the general rational
+$J(p/q)$ symbol classification as a further question. At the same pin,
+the report \qfile{herglotz-rational-classification} already contains a
+section entitled ``Complete formal classification at rational arguments''
+with a theorem and its argument \cite{classification}.
+
+Its statement concerns coprime positive $p,q$. In mixed parity, with
+$e$ the even entry and $o$ the odd entry, formal rational-dilogarithmic
+reducibility and formal logarithmic reducibility are equivalent to
+\begin{equation}\label{qspec:eq:existing-J-status}
+e^2\equiv\pm1\pmod o,\qquad o^2\equiv1\pmod{2e}.
+\end{equation}
+When both entries are odd, the stated rational-dilogarithmic cases have
+$p,q\in\{1,3,5\}$, and the only logarithmic case is $p=q=1$.
+This classification belongs to the existing report; it is not a result
+of the present article. Its prerequisite symbol-theoretic lemmas were
+not all re-audited here.
+
+The proposed correction is therefore editorial: replace the stale open
+classification question by a pointer to that existing theorem, subject
+to the repository's normal integration review, while retaining the
+separate tasks of constructing short explicit evaluations and understanding
+numerical period relations. Failure of a formal reduction criterion is
+not numerical transcendence or period independence. The delivered
+\qfile{integration/editorial_update.md} contains precise replacement wording.
+
+No new counterexample to an analytic formula in the inspected source
+material was established in this session. The following mathematical
+safeguards concern the present derivations; they are not allegations
+about unread reports.
+
+\subsection{Five distinctions required for a correct implementation}
+\begin{enumerate}
+\item \textbf{The doubled spectral variable.} The pole of
+$\zeta(1+2\epsilon,a)$ is $1/(2\epsilon)$, and its $m$th regular
+jet is $(-2)^m\gamma_m(a)$. Omitting the factor two breaks both
+reflection channels and the anomaly residue calculation.
+\item \textbf{A finite part is not a Taylor coefficient before pole removal.}
+The coefficient $C_m$ is
+$\Bcal_{m+1}(\ell)/(m+1)$, not $\Bcal_m(\ell)$. The extra index comes
+from dividing the analytic function $\epsilon C(\epsilon)$ by
+$\epsilon$.
+\item \textbf{The binomial radius is real.} Formula
+\eqref{qspec:eq:harmonic-counterterms} cannot simply be evaluated outside
+$b<\min(a,1-a)$. The finite-head formula supplies the exact replacement.
+Both tail shifts increase by $M$.
+\item \textbf{Complex-order holomorphy is not a real-part operation.}
+The combinations in \eqref{qspec:eq:zt} are needed before differentiating
+in a complex spectral order. At real orders they may then be evaluated
+as real and imaginary parts.
+\item \textbf{Pointwise logarithms do not automatically factor continued sums.}
+The odd-weight examples \eqref{qspec:eq:anomaly-examples} are explicit
+counterexamples to unchecked multiplicativity. Evenness guarantees
+universal vanishing for this conjugate-pair polynomial problem; a
+fortuitous zero at one mass does not imply evenness.
+\end{enumerate}
+
+\subsection{Executed verification and its evidentiary meaning}
+The supplied code was copied to a separate working directory before the
+recorded runs. The results are included in
+\qfile{data/exact_results.json} and \qfile{data/numeric_results.json}.
+The exact suite ran with SymPy 1.14.0. The numerical suite ran with
+mpmath 1.3.0 at 45 working decimal digits.
+
+\begin{center}
+\begin{tabular}{@{}p{0.65\linewidth}r@{}}
+\toprule
+Exact finite regression family & Assertions\\
+\midrule
+Pochhammer jets and Bell polynomials & 140\\
+Ordinary/half-shifted harmonic conversion & 120\\
+Anomaly coefficients, their nonvanishing, and parity zeros & 36\\
+Rational partial fractions & 6\\
+Half-integer Bessel recurrence & 12\\
+Mass-primitive coefficient recurrence & 85\\
+Shift/mass differential equation & 88\\
+Heat-residue normalization & 13\\
+Anchored primitive pole cancellation & 8\\
+Several-mass polynomial change of basis & 9\\
+\midrule
+Total & 517\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The numerical suite passed 82 independent comparisons. Eighteen test the
+two Stieltjes channels through order three, including masses outside the
+unshifted binomial disk. Twenty-four compare negative-point derivatives
+using the differentiated Hurwitz series, finite complex-Hurwitz formula,
+and finite polylogarithm formula. Sixteen test even and odd polynomial
+anomalies; ten compare positive-integer polygamma and polylogarithm
+expressions. The remaining fourteen test general Poisson continuation,
+Gamma ratios and integrals, parameter primitives, both polylogarithm
+integrals, and the several-mass theorem, including repeated masses.
+
+The largest recorded scaled residual was
+$4.618\times10^{-44}$, where the scale is
+$\max(1,|\mathrm{lhs}|,|\mathrm{rhs}|)$. The acceptance threshold was
+$10^{-33}$. These are \emph{floating-point diagnostics}, not rigorous
+interval enclosures, tail certificates, or proofs of equality. The
+truncation choices are conservative numerical choices, not a delivered
+validated error estimator. The exact finite suite proves its particular
+algebraic assertions, not the analytic continuation or all-index theorems.
+Those depend on the ordinary proofs given in the article.
+
+\subsection{Integration recommendation and claim boundaries}
+A suitable destination is a new report under
+\qfile{Analysis/Polylogarithms/docs/reports/quadratic-spectrum-stieltjes/}.
+The compact integration fragment uses prefixed labels and can be adapted
+into the Hurwitz--Stieltjes and integration chapters after normal editorial
+review. No automatic patch, remote commit, overwrite of existing research,
+or change of conjecture status is included.
+
+The key claims to preserve are: all-index exact identities in both
+reflection channels; all-positive-mass convergence through a finite head;
+a universal, not pointwise, parity characterization; finite first-derivative
+reductions, not arbitrary higher-derivative factorization; and explicitly
+anchored primitives. The classical inputs and the new derivations should
+remain distinguishable in the merged text.
+
+\subsection{Further research questions and concrete next targets}
+\begin{enumerate}
+\item \textbf{Higher spectral jets at negative integers.}
+For $r\ge2$, determine the smallest explicitly stated function algebra
+containing $\partial_s^rE(-m;a,b)$. The reciprocal-Gamma zero leaves
+Bessel order derivatives of order at most $r-1$. Can the second jet be
+reduced to a finite family of polylogarithm order derivatives plus
+explicit logarithmic terms, or is an additional integral coordinate
+required? A failure of a chosen formal calculus must be distinguished
+from numerical nonreducibility.
+
+\item \textbf{Higher-jet factorization defects.}
+For a fixed polynomial $W$, study
+\[
+\Delta_r(W)=2^{r-1}\bigl(F_{W,+}^{(r)}(0)+F_{W,-}^{(r)}(0)\bigr)
+-Z_W^{(r)}(0).
+\]
+At $r=1$ Theorem~\ref{qspec:thm:anomaly} gives an exact local polynomial.
+At $r=2$ mixed logarithms introduce a genuinely nonlocal part. Separate
+that part from the residue polynomial and determine what parity still
+forces to vanish. This is an extension problem, not an assumption that
+the first-derivative criterion persists unchanged.
+
+\item \textbf{Noninteger polynomial degree.}
+Replace $W(x)$ by $x^\rho$ on the positive spectrum. Determine the exact
+continuation as $\rho$ crosses the resonant odd integers and formulate a
+parameter-dependent correction that specializes to
+\eqref{qspec:eq:anomaly-harmonic}. The finite polynomial residue in this
+article provides a set of exact interpolation constraints.
+
+\item \textbf{Arithmetic projection of both Stieltjes channels.}
+At $a=p/q$, apply finite character projectors to the master identities
+and their mass-transfer laws. Which combinations admit a shorter
+Gamma/Dirichlet-$L$ jet description, and which retain genuinely useful
+damped polylogarithm integrals? The first useful target is a complete
+small-denominator dictionary with the even and odd character components
+kept separate.
+
+\item \textbf{Exact removal of the auxiliary mass.}
+The identities are independent of $b$ after their counterterms are
+combined. Develop an exact coefficient calculus for the cancellations
+as $b\downarrow0$, rather than simply taking a numerically unstable
+limit of separate terms. Comparing the resulting coefficients at two
+masses may generate new harmonic sums involving Hurwitz order derivatives.
+
+\item \textbf{Mixed shift and mass primitives.}
+Combine \eqref{qspec:eq:all-primitives},
+\eqref{qspec:eq:mass-primitives}, and \eqref{qspec:eq:PDE} to classify
+which rectangular integrals in $(a,b^2)$ have finite polylogarithm and
+Hurwitz-jet endpoints. Anchoring every primitive should be part of the
+statement, not a later adjustment by unspecified polynomials.
+
+\item \textbf{Several factors beyond the first spectral derivative.}
+Theorem~\ref{qspec:thm:several-masses} has a finite answer even with
+repeated masses. Determine the second derivative for two masses and
+its confluent limit as they coincide. The target is an exact formula
+for the logarithmic cross term, with no subtraction of divergent sums
+left implicit.
+
+\item \textbf{Formalization and validated evaluation.}
+The Bell recurrences, harmonic coefficient identity, rational partial
+fractions, and finite mass/PDE reductions are suitable finite targets
+for a proof assistant. Separately, an interval implementation of the
+Bessel order integrals and finite-head remainder would turn the present
+floating-point diagnostics into validated evaluations. Neither has
+been supplied here.
+\end{enumerate}
+
+\section*{Conclusion}
+\addcontentsline{toc}{section}{Conclusion}
+The positive quadratic deformation does more than provide another series
+for a Stieltjes constant. Its even and odd spectra form a complete
+reflection pair, its harmonic counterterms admit a globally valid
+finite-head formulation, and its negative spectral zeros collapse first
+derivatives to finite polylogarithm expressions. Polynomial parity
+explains exactly when conjugate factorization is legitimate. The same
+finite family supports anchored mass primitives, a shift/mass differential
+equation, and products of several quadratic factors. These are exact
+structural identities with ordinary proofs; the supplied computations
+check their implementation without replacing those proofs.
+
+% END sections/07-audit-research
+
+% BEGIN references
+\begin{thebibliography}{99}
+\bibitem{repo}
+V. Reshetnikov, \emph{ProveIt: Polylogarithms manuscript}, source snapshot
+\qpin. In particular the main manuscript, integration chapter,
+research-status chapter, and full-Cayley obstruction continuation.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/446dca9bd65c20e409d1d2561d4ffad408103e2a/Analysis/Polylogarithms/docs/manuscript}.
+
+\bibitem{arithmetic}
+\emph{Arithmetic spectral jets}, ProveIt research continuation,
+section ``Periodic weights and several distinct arithmetic poles'', same pin.
+\qfile{Analysis/Polylogarithms/docs/reports/stieltjes-harmonic-resonance/continuations/arithmetic-spectral-jets/sections/04-arithmetic.tex}.
+The inspected section credits the classical simple-pole anomaly mechanism.
+
+\bibitem{classification}
+\emph{Herglotz rational classification}, ProveIt research report,
+section ``Complete formal classification at rational arguments'', same pin.
+\qfile{Analysis/Polylogarithms/docs/reports/herglotz-rational-classification/sections/04-classification.tex}.
+This is the source of the editorial status correction, not a new
+classification claimed in this article.
+
+\bibitem{intake}
+ProveIt, \emph{Incoming reports}, intake instructions and archive catalogue,
+same pin. \qfile{docs/incoming/README.md} and \qfile{docs/incoming/}.
+Only archive metadata, not archive interiors, was inspected.
+
+\bibitem{hurwitz}
+NIST Digital Library of Mathematical Functions, \S25.11,
+\emph{Hurwitz zeta function}.
+\url{https://dlmf.nist.gov/25.11}. Consulted 10 October 2026.
+
+\bibitem{polylog}
+NIST Digital Library of Mathematical Functions, \S25.12,
+\emph{Polylogarithms}.
+\url{https://dlmf.nist.gov/25.12}. Consulted 10 October 2026.
+
+\bibitem{bessel}
+NIST Digital Library of Mathematical Functions, \S10.32,
+\emph{Integral representations of modified Bessel functions}, especially
+(10.32.9) and (10.32.10).
+\url{https://dlmf.nist.gov/10.32}. Consulted 10 October 2026.
+
+\bibitem{halfK}
+NIST Digital Library of Mathematical Functions, \S10.39,
+\emph{Relations to other functions}, especially the half-integer base case;
+the higher finite formula used here is also derived by recurrence.
+\url{https://dlmf.nist.gov/10.39}. Consulted 10 October 2026.
+
+\bibitem{theta}
+NIST Digital Library of Mathematical Functions, \S20.7,
+\emph{Theta-function identities and transformations}.
+\url{https://dlmf.nist.gov/20.7}. Consulted 10 October 2026.
+
+\bibitem{gamma}
+NIST Digital Library of Mathematical Functions, \S5.5,
+\emph{Functional relations}, and \S5.15, \emph{Polygamma functions}.
+\url{https://dlmf.nist.gov/5.5}; \url{https://dlmf.nist.gov/5.15}.
+Consulted 10 October 2026.
+
+\bibitem{dowker}
+J. S. Dowker, \emph{Calculation of the multiplicative anomaly},
+arXiv:1412.0549, 2014; corrected version 3, 24 September 2023.
+\url{https://arxiv.org/abs/1412.0549}.
+Cited for the classical subject and scope; the precise defect and sign
+convention used in this article are proved independently.
+\end{thebibliography}
+
+% END references
+
+\end{document}

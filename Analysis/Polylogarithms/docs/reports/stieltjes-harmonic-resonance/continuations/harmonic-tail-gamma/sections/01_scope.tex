@@ -1,0 +1,129 @@
+\section{Research scope, conventions, and dependencies}
+\label{sec:scope}
+
+The repository has a substantial body of overlapping reports. A useful
+continuation must first fix its comparison point. We use the commit on
+the title page, whose last change added six new research bundles.
+The canonical manuscript already incorporates many older results;
+the six new bundles contain additional theorems that must also be
+credited before identifying an open question. The baseline and its
+mathematical status are recorded in \cite{Repo,Incoming} and in the
+individual reports \cite{BTD,CTD,DHR,DPL,MR,PTI}.
+
+\subsection{What is continued here}
+
+The optimal-prefix question concerns the centered moments of two
+ordinary zeta tails. The incoming reports prove the diagonal case,
+the adjacent even-order case $p=q-2$, and the families with smaller
+order $2,4,$ or $6$; they leave a general unequal-order determinant
+unresolved \cite{BTD,DPL,PTI}. Section~\ref{gap:section} proves the
+entire next gap $q-p=4$. Thus its first pair outside those earlier
+small-order families is $(p,q)=(8,12)$. Section~\ref{tel:section}
+then turns late-coordinate relations into explicit telescopers for
+all even pairs, whether or not their optimal-prefix determinant is
+known to be nonzero.
+
+The inverse-Gamma normal form and the full digamma--trigamma sector
+are inherited from \cite{DPL,PTI}. The explicit request in
+\cite[research questions 4--5]{PTI} asks for the next mixed sector,
+including arbitrary powers of the first two derivative variables.
+Section~\ref{var:section} gives an exact recurrence for the entire
+sector with largest derivative index at most two. It also proves
+closed formulas for all terms containing exactly two or exactly three
+copies of $\psi''$. This is a coefficient theorem in a differential
+polynomial algebra; its integration consequences retain every endpoint
+term.
+
+The rank-two higher-resonance problem is stated explicitly in
+\cite[Section 9]{DHR}. Section~\ref{res:section} treats that target,
+including the logarithmic square in the hard cutoff and its difference
+from the spectral Laurent constant. The logarithmically weighted
+finite-part problem in \cite{DPL} is treated in
+Section~\ref{log:section}. These are analytic continuations with
+specified counterterms, so their normalization is part of each theorem.
+
+\subsection{Ordinary tails, strict sums, and spectral derivatives}
+
+For $s>1$ and $n\ge0$, put
+\begin{equation}\label{scope:tails}
+ H_n^{(s)}=\sum_{k=1}^n\frac1{k^s},\qquad
+ A_s(n)=\zeta(s)-H_n^{(s)}=\zeta(s,n+1).
+\end{equation}
+For integer $s\ge2$ this gives
+\[
+ A_s(n)=\frac{(-1)^s}{(s-1)!}\psi^{(s-1)}(n+1).
+\]
+The even orders used in the tail sections therefore have positive
+polygamma normalization. These are standard Hurwitz identities
+\cite[Sections 5.15 and 25.11]{DLMF}.
+
+A multiple zeta value uses strictly decreasing indices:
+\[
+ \zeta(s_1,\ldots,s_d)=
+ \sum_{n_1>\cdots>n_d\ge1}
+       n_1^{-s_1}\cdots n_d^{-s_d}
+\]
+where the series converges, with meromorphic continuation when needed.
+A prime on a function of a spectral variable denotes differentiation
+in that variable. In particular it never denotes differentiation of a
+formula known only at integer index values.
+
+We use generalized Stieltjes constants with the convention
+\begin{equation}\label{scope:stieltjes}
+ \zeta(1+u,a)=\frac1u+
+       \sum_{j\ge0}\frac{(-1)^j}{j!}\gamma_j(a)u^j,
+ \qquad a>0,
+\end{equation}
+and $\gamma_j=\gamma_j(1)$. Thus $\gamma_0(a)=-\psi(a)$.
+
+\subsection{Two precise meanings of finite part}
+
+For a function with a finite Laurent-logarithmic singular expansion at
+zero, its original-coordinate integral finite part is
+\begin{equation}\label{scope:fp}
+ \FP\int_0^1f(x)\dd x
+ =\CT_{\varepsilon\downarrow0}
+             \int_\varepsilon^1f(x)\dd x.
+\end{equation}
+The symbol $\CT$ selects the constant multiplying
+$\varepsilon^0(\log\varepsilon)^0$. The coordinate is $x$ itself.
+For a polynomial $H$ in digamma derivatives this convention implies
+\begin{equation}\label{scope:boundary}
+ \FP\int_0^1\frac{d}{dx}H(\psi(x),\psi'(x),\ldots)\dd x
+ =H(\psi(1),\psi'(1),\ldots)
+   -[x^0]H(\psi(x),\psi'(x),\ldots).
+\end{equation}
+This follows directly by taking the constant in the endpoint difference.
+A change of coordinate must be evaluated separately.
+
+The centered tail moment is a different, explicitly specified object:
+\begin{equation}\label{scope:centered}
+ D_{p,q}(s)=\sum_{n\ge0}
+       A_p(n)A_q(n)(n+\tfrac12)^{-s},
+ \qquad \re s>3-p-q.
+\end{equation}
+We continue it meromorphically and write
+$D_r=D_{p,q}(-2r)$. For positive even $p,q$, the centered asymptotic
+expansion has only even powers; the possible poles are at odd
+integers, so all these values are regular. Equivalently, subtract
+from $(n+\tfrac12)^{2r}A_p(n)A_q(n)$ its polynomial part in
+$n+\tfrac12$. The resulting summand is $O(n^{-2})$, and its ordinary
+sum equals $D_r$ because
+$\zeta(-2j,\tfrac12)=0$ for $j\ge0$. Section~\ref{tel:section}
+proves this relation with the finite-cutoff constants made explicit.
+
+\subsection{Status and reproducibility}
+
+The proofs below establish their all-order claims algebraically or
+analytically. Exact rational verification files check the matrix
+conjugacies, polynomial certificates, normal forms, and displayed
+specializations. Independent numerical computations compare different
+analytic representations. They are diagnostics, not interval proofs,
+unless a check is explicitly described as rational arithmetic.
+
+No assertion of arithmetic independence follows from a formal-rank
+statement. In particular, the symbols used as late zeta coordinates
+are treated as formal basis labels even though their numerical values
+have known multiplicative relations. Likewise, the new recurrence for
+Gamma coefficients does not prove that the corresponding mixed moments
+form a minimal numerical constant basis.

@@ -1,0 +1,351 @@
+\section{Finite polylogarithmic reductions and mass antiderivatives}
+\label{qspec:sec:finite}
+
+\subsection{All nonpositive integer spectral points}
+Put
+\begin{equation}\label{qspec:eq:Lm}
+L_m(a,b)=\left.\partial_s E(s;a,b)\right|_{s=-m},\qquad
+z=\exp(-2\pi b+2\pi ia),\qquad m\ge0.
+\end{equation}
+The half-integer Bessel expression is the finite polynomial
+\begin{equation}\label{qspec:eq:half-integer-K}
+K_{m+1/2}(u)=\sqrt{\frac\pi{2u}}e^{-u}
+\sum_{j=0}^m\frac{(m+j)!}{j!(m-j)!(2u)^j}.
+\end{equation}
+Its $m=0$ case and the three-term order recurrence prove it by induction;
+it is also the classical half-integer formula \cite{halfK}.
+
+\begin{theorem}[Finite Hurwitz--polylogarithm identities at every negative point]
+\label{qspec:thm:finite}
+For $0<a<1$, $b>0$, and every $m\ge0$,
+\begin{align}
+L_m(a,b)={}&2\Rea\sum_{j=0}^m\binom mj(-2ib)^{m-j}
+\bigl\{\zeta'(-m-j,a+ib)+\zeta'(-m-j,1-a+ib)\bigr\}\label{qspec:eq:L-Hurwitz}\\
+={}&-\frac{2^{2m+1}(m!)^2\pi}{(2m+1)!}b^{2m+1}\notag\\
+&+2(-1)^mm!\sum_{j=0}^m
+\frac{(m+j)!b^{m-j}}{j!(m-j)!4^j\pi^{m+j}}
+\Rea\Li_{m+j+1}(z).
+\label{qspec:eq:L-polylog}
+\end{align}
+In particular, the equality of the two right sides is a finite special-function
+identity; $L_m$ is not needed as an additional unevaluated coordinate.
+\end{theorem}
+\begin{proof}
+The reflected decomposition of $E$ is
+$E(s;a,b)=Z_a(s;b)+Z_{1-a}(s;b)$. Apply
+Corollary~\ref{qspec:cor:negative-hurwitz} to the two terms to obtain
+\eqref{qspec:eq:L-Hurwitz}.
+
+For the independent evaluation, write the Poisson expression as
+$E(s)=H(s)/\Gamma(s)$, where $H$ is holomorphic at $s=-m$. The zero
+of the reciprocal Gamma function is simple and
+\[
+(1/\Gamma)'(-m)=(-1)^mm!.
+\]
+Consequently $E'(-m)=(-1)^mm!H(-m)$: derivatives of the Bessel order
+and of the other factors in $H$ do not appear in this first jet. The
+zero Fourier mode becomes
+\[
+(-1)^mm!\sqrt\pi\Gamma(-m-\tfrac12)b^{2m+1}
+=-\frac{2^{2m+1}(m!)^2\pi}{(2m+1)!}b^{2m+1}.
+\]
+For the nonzero modes use $K_{-m-1/2}=K_{m+1/2}$ and
+\eqref{qspec:eq:half-integer-K}. The square-root prefactor reduces to
+$1/(2\sqrt{bn})$. The remaining $n$ powers are
+$n^{-m-j-1}$, so their cosine sums are exactly
+$\Rea\Li_{m+j+1}(z)$. Collecting the powers of $b$, $4$, and $\pi$
+gives \eqref{qspec:eq:L-polylog}.
+\end{proof}
+
+The first four values, writing $\Rea\Li_j=\Rea\Li_j(z)$, are
+\begin{align}
+L_0={}&-\log\bigl(2(\cosh(2\pi b)-\cos(2\pi a))\bigr),\label{qspec:eq:L0}\\
+L_1={}&-\frac{4\pi b^3}{3}-\frac{2b}{\pi}\Rea\Li_2
+                       -\frac1{\pi^2}\Rea\Li_3,\label{qspec:eq:L1}\\
+L_2={}&-\frac{16\pi b^5}{15}+\frac{4b^2}{\pi^2}\Rea\Li_3
+              +\frac{6b}{\pi^3}\Rea\Li_4+\frac3{\pi^4}\Rea\Li_5,\label{qspec:eq:L2}\\
+L_3={}&-\frac{32\pi b^7}{35}-\frac{12b^3}{\pi^3}\Rea\Li_4
+              -\frac{36b^2}{\pi^4}\Rea\Li_5\notag\\
+     &\hspace{19mm}-\frac{45b}{\pi^5}\Rea\Li_6
+              -\frac{45}{2\pi^6}\Rea\Li_7.
+\label{qspec:eq:L3}
+\end{align}
+For $m=0$, $\Li_1(z)=-\log(1-z)$ reduces the finite formula to
+\eqref{qspec:eq:L0}. For $m=1$, the Hurwitz side is exactly
+\eqref{qspec:eq:opening-example}.
+
+\subsection{An exact Appell-type ladder in the squared mass}
+Here the term ``Appell-type'' means the displayed derivative relation,
+not an assertion that these functions are polynomials.
+
+\begin{theorem}[Mass differentiation and every anchored mass primitive]
+\label{qspec:thm:mass-ladder}
+With $u=b^2$,
+\begin{equation}\label{qspec:eq:mass-derivative}
+\partial_u L_m(a,\sqrt u)=mL_{m-1}(a,\sqrt u)\quad(m\ge1),
+\qquad
+\partial_u L_0(a,\sqrt u)=-E(1;a,\sqrt u).
+\end{equation}
+The continuous zero-mass values are
+\begin{align}
+L_0(a,0)&=-\log(4\sin^2\pi a),\label{qspec:eq:massless0}\\
+L_m(a,0)&=\frac{2(-1)^m(2m)!}{(2\pi)^{2m}}
+\Rea\Li_{2m+1}(e^{2\pi ia})\quad(m\ge1).
+\label{qspec:eq:masslessm}
+\end{align}
+For every $m\ge1$,
+\begin{align}
+L_m(a,b)={}&\sum_{j=0}^{m-1}\binom mj b^{2j}L_{m-j}(a,0)\notag\\
+&+m\int_0^{b^2}(b^2-u)^{m-1}L_0(a,\sqrt u)\dd u.
+\label{qspec:eq:mass-primitives}
+\end{align}
+Thus the finite polylogarithm formulas evaluate every integral on the
+right side exactly.
+\end{theorem}
+\begin{proof}
+Initially in an absolute-convergence half-plane,
+$\partial_u E(s)=-sE(s+1)$. Continue meromorphically and differentiate
+in $s$:
+\[
+\partial_u E'(s)=-E(s+1)-sE'(s+1).
+\]
+At $s=-m$, $m\ge1$, the first term is zero because
+$E(1-m)=0$. This proves the first relation. At $s=0$ it gives the
+second relation.
+
+For fixed $a\in(0,1)$ there is a nonzero gap between the lattice and
+zero. The binomial continuation, after finitely many Hurwitz
+subtractions if needed, is analytic in $u$ near zero. Alternatively,
+take the limit in the explicit finite formula: for $m\ge1$ only its
+$j=m$ term survives, while the absolutely convergent polylogarithms
+have continuous radial limits. This proves
+\eqref{qspec:eq:masslessm}; \eqref{qspec:eq:massless0} follows directly
+from \eqref{qspec:eq:L0}. Repeated integration of
+\eqref{qspec:eq:mass-derivative}, with these initial values, gives
+\eqref{qspec:eq:mass-primitives}. The coefficient of its integral is
+$m!/(m-1)!=m$.
+\end{proof}
+
+For example, a non-elementary logarithmic integral is evaluated by
+\begin{align}
+&-\int_0^{b^2}\log\bigl(2(\cosh(2\pi\sqrt u)-\cos(2\pi a))\bigr)\dd u\notag\\
+&\qquad=-\frac{4\pi b^3}{3}-\frac{2b}{\pi}\Rea\Li_2(z)
+-\frac1{\pi^2}\Rea\Li_3(z)
++\frac1{\pi^2}\Rea\Li_3(e^{2\pi ia}).
+\label{qspec:eq:log-mass-integral}
+\end{align}
+The higher-weight analogues follow by inserting $m=2,3,\ldots$ in
+\eqref{qspec:eq:mass-primitives}. Their constants are fixed by the
+zero-mass boundary values, not left as undetermined integration terms.
+
+The same ladder provides an independent algebraic check of the finite
+coefficients. Since $\partial_b\Li_j(z)=-2\pi\Li_{j-1}(z)$,
+substitution of \eqref{qspec:eq:L-polylog} into
+$\partial_bL_m=2bmL_{m-1}$ leaves a finite identity of rational
+coefficients and powers of $b,\pi$. The delivered exact suite checks
+these cancellations through $m=10$; the theorem itself holds for all
+$m$ by the analytic proof.
+
+\subsection{A differential equation in the shift and mass}
+The same finite family is closed under a second differential relation.
+\begin{proposition}\label{qspec:prop:PDE}
+For every $m\ge0$,
+\begin{equation}\label{qspec:eq:PDE}
+\left(\partial_a^2+\partial_b^2-\frac{2m}{b}\partial_b\right)L_m(a,b)=0.
+\end{equation}
+Equivalently, with $u=b^2$,
+\[
+\bigl(\partial_a^2+4u\partial_u^2+(2-4m)\partial_u\bigr)
+L_m(a,\sqrt u)=0.
+\]
+For $m\ge2$ this becomes the finite adjacent-weight identity
+\begin{equation}\label{qspec:eq:PDE-adjacent}
+\partial_a^2L_m=2m(2m-1)L_{m-1}-4m(m-1)b^2L_{m-2}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Direct differentiation of one radial summand gives
+\[
+(\partial_a^2+\partial_b^2)E(s)=4s^2E(s+1),
+\qquad \partial_bE(s)=-2sbE(s+1).
+\]
+Hence $(\partial_a^2+\partial_b^2+(2s/b)\partial_b)E(s)=0$
+by continuation from absolute convergence. Differentiate in $s$ at
+$s=-m$. The extra term $(2/b)\partial_bE(-m)$ is zero, because
+$E(-m)$ vanishes identically as a function of the parameters. This
+proves \eqref{qspec:eq:PDE}. The mass ladder yields
+\eqref{qspec:eq:PDE-adjacent} for $m\ge2$.
+\end{proof}
+For $m=0$ the logarithm in \eqref{qspec:eq:L0} is harmonic on the open
+strip $b>0$. The higher weights satisfy its explicit weighted version,
+rather than an unrelated differential equation at each polylogarithm order.
+
+\subsection{Products of several quadratic factors}
+The parity mechanism extends beyond a single conjugate pair. The following
+finite reduction uses no multivariable special functions at the first
+spectral derivative.
+
+\begin{theorem}[Several masses with an arbitrary even polynomial weight]
+\label{qspec:thm:several-masses}
+Let $P$ be a polynomial of degree at most $D$, let $r\ge1$, and let
+$b_1,\ldots,b_r>0$. Define, initially in its absolute-convergence
+half-plane,
+\begin{equation}\label{qspec:eq:several-masses}
+\mathcal Z_{P,\mathbf b}(s;a)=
+\sum_{n\in\Z}P((n+a)^2)
+\prod_{j=1}^r\bigl((n+a)^2+b_j^2\bigr)^{-s}.
+\end{equation}
+Its continuation is holomorphic at zero, and
+\begin{equation}\label{qspec:eq:several-masses-finite}
+\mathcal Z_{P,\mathbf b}'(0;a)
+=\sum_{j=1}^r\sum_{\ell=0}^D
+\frac{P^{(\ell)}(-b_j^2)}{\ell!}L_\ell(a,b_j).
+\end{equation}
+Combining this formula with \eqref{qspec:eq:L-polylog} gives a finite
+polylogarithm reduction for every such spectrum, including repeated masses.
+\end{theorem}
+\begin{proof}
+First work on a positive tail $x=n+a$ with all $b_j<x$. After factoring
+out $x^{-2rs}$, the remaining factor is
+\[
+\exp\left(-s\sum_{j=1}^r\log(1+b_j^2/x^2)\right).
+\]
+It has only even powers of $x^{-1}$. Multiplication by $P(x^2)$ still
+leaves only even powers of $x$. A possible Hurwitz pole at $s=0$
+would require the resulting power to be $x^{-1}$, which is impossible.
+Thus there are no resonant pole terms at zero in this common-scale
+expansion.
+
+Compare the product spectrum with $r^{-1}$ times the sum of the
+individual weighted spectra evaluated at $rs$. Their constant and
+linear terms in $s$ agree identically before summation; the remaining
+coefficients are $O(s^2)$. Since there is no pole at zero, their first
+derivatives agree after continuation as well. Remove a finite head
+to justify the expansion for arbitrary masses. The ordinary head
+logarithms add, so it contributes no discrepancy. The same argument
+applies to the negative lattice tail, where evenness changes its
+weight to $P(y_n^2)$ without a sign.
+
+Finally the polynomial Taylor identity
+\[
+P(x^2)=\sum_{\ell=0}^D\frac{P^{(\ell)}(-b_j^2)}{\ell!}
+ (x^2+b_j^2)^\ell
+\]
+expresses the $j$th individual weighted derivative as the inner finite
+sum in \eqref{qspec:eq:several-masses-finite}. This proves the formula.
+\end{proof}
+
+For instance, $P(v)=v+c$ and two masses give
+\[
+\mathcal Z_{P,(b_1,b_2)}'(0;a)
+=\sum_{j=1}^2\bigl(L_1(a,b_j)+(c-b_j^2)L_0(a,b_j)\bigr).
+\]
+Each summand has only elementary logarithms, $\Li_2$, and $\Li_3$.
+The theorem is restricted to the first spectral derivative. Products
+of logarithms in higher derivatives are not removed by this argument.
+
+\subsection{Positive-integer resolvents: polygamma and rational polylogs}
+At positive integers the same half-integer Bessel polynomial produces
+polylogarithms of nonpositive order.
+
+\begin{proposition}\label{qspec:prop:positive}
+For $N\ge1$,
+\begin{align}
+E(N;a,b)={}&\frac{\sqrt\pi\Gamma(N-1/2)}{\Gamma(N)}b^{1-2N}\notag\\
+&+\frac{2\pi^N b^{-N}}{\Gamma(N)}
+\sum_{j=0}^{N-1}\frac{(N-1+j)!}
+ {j!(N-1-j)!(4\pi b)^j}\Rea\Li_{j+1-N}(z).
+\label{qspec:eq:positive-polylog}
+\end{align}
+An independent finite polygamma expression is
+\begin{equation}\label{qspec:eq:positive-polygamma}
+E(N;a,b)=2\Rea\sum_{r=1}^N A_{N,r}(b)
+\bigl(\Xi_r(a+ib)+\Xi_r(1-a+ib)\bigr),
+\end{equation}
+where
+\begin{align}
+A_{N,r}(b)&=(-1)^{N-r}\binom{2N-r-1}{N-r}(-2ib)^{-(2N-r)},\label{qspec:eq:Ar}\\
+\Xi_1(c)&=-\psi(c),\qquad
+\Xi_r(c)=\frac{(-1)^r}{(r-1)!}\psi^{(r-1)}(c)\quad(r\ge2).
+\label{qspec:eq:Xi}
+\end{align}
+\end{proposition}
+\begin{proof}
+Insert \eqref{qspec:eq:half-integer-K}, with $m=N-1$, into
+\eqref{qspec:eq:poisson}. The remaining powers of $n$ give
+\eqref{qspec:eq:positive-polylog}.
+
+For the other formula, expand the rational function at $x=-ib$:
+\[
+\frac1{(x^2+b^2)^N}
+=\sum_{r=1}^N\left\{\frac{A_{N,r}(b)}{(x+ib)^r}
++\frac{\overline{A_{N,r}(b)}}{(x-ib)^r}\right\}.
+\]
+The coefficient follows by expanding $(y-2ib)^{-N}$ at $y=x+ib=0$.
+For $r\ge2$ summation gives $\zeta(r,c)=\Xi_r(c)$. The $r=1$
+terms must be paired before summation: their coefficients add to zero,
+and a common finite cutoff gives finite part $-\psi(c)$. No separate
+value for a divergent harmonic series is assigned. Sum over $x_n$
+and $y_n$ to obtain \eqref{qspec:eq:positive-polygamma}.
+\end{proof}
+For $N=1$ these formulas reduce to the classical resolvent
+\begin{equation}\label{qspec:eq:resolvent}
+E(1;a,b)=\frac\pi b
+\frac{\sinh(2\pi b)}{\cosh(2\pi b)-\cos(2\pi a)}.
+\end{equation}
+For larger $N$, all polylogs in
+\eqref{qspec:eq:positive-polylog} are rational functions of $z$, obtained
+by repeatedly applying $z\partial_z$ to $z/(1-z)$.
+
+\subsection{Gamma products and every mass primitive of their logarithm}
+Define the real quantity
+\begin{equation}\label{qspec:eq:Rgamma}
+R(a,b)=\log\frac{\Gamma(a)^2\Gamma(1-a)^2}
+ {\Gamma(a+ib)\Gamma(a-ib)\Gamma(1-a+ib)\Gamma(1-a-ib)}.
+\end{equation}
+All conjugate products in the denominator are positive real numbers.
+
+\begin{proposition}[A Gamma-product dilogarithm integral]
+\label{qspec:prop:gamma-integrals}
+The classical product and reflection identities give
+\begin{equation}\label{qspec:eq:Rhyperbolic}
+R(a,b)=\log\frac{\cosh(2\pi b)-\cos(2\pi a)}{1-\cos(2\pi a)}.
+\end{equation}
+In particular, with $z_0=e^{2\pi ia}$,
+\begin{equation}\label{qspec:eq:gamma-Li2}
+\int_0^b R(a,t)\dd t
+=\pi b^2-b\log(4\sin^2\pi a)
++\frac1\pi\Rea\bigl(\Li_2(z)-\Li_2(z_0)\bigr).
+\end{equation}
+More generally, for every $r\ge1$,
+\begin{align}
+&\frac1{(r-1)!}\int_0^b(b-t)^{r-1}R(a,t)\dd t\notag\\
+&\quad=\frac{2\pi b^{r+1}}{(r+1)!}
+-\frac{b^r}{r!}\log(4\sin^2\pi a)\notag\\
+&\qquad\ -2\Rea\left\{\frac1{(-2\pi)^r}
+\left(\Li_{r+1}(z)-\sum_{j=0}^{r-1}\frac{(-2\pi b)^j}{j!}
+\Li_{r+1-j}(z_0)\right)\right\}.
+\label{qspec:eq:gamma-all-primitives}
+\end{align}
+\end{proposition}
+\begin{proof}
+The Gamma product, with its conjugate linear terms cancelling, gives
+\[
+\sum_{n\ge0}\log\left(1+\frac{b^2}{(n+a)^2}\right)
+=2\log\Gamma(a)-\log\Gamma(a+ib)-\log\Gamma(a-ib).
+\]
+Add the formula at $1-a$ and use Gamma reflection \cite{gamma}; equivalently
+compare \eqref{qspec:eq:L0} at $b$ and at zero. The result is
+\eqref{qspec:eq:Rhyperbolic}. With the logarithmic branches already fixed,
+it can be written
+\[
+R(a,b)=2\pi b-\log(4\sin^2\pi a)-2\Rea\Li_1(e^{-2\pi b}z_0).
+\]
+One integration using $\partial_b\Li_2(z)=-2\pi\Li_1(z)$ proves
+\eqref{qspec:eq:gamma-Li2}. For repeated integration, an $r$th primitive
+of $\Li_1(z)$ is $(-2\pi)^{-r}\Li_{r+1}(z)$. Subtract its Taylor
+polynomial through order $r-1$ at zero to enforce all anchored initial
+conditions. This gives \eqref{qspec:eq:gamma-all-primitives}. Unit-circle
+values appearing in that Taylor polynomial have order at least two and
+are absolutely convergent.
+\end{proof}

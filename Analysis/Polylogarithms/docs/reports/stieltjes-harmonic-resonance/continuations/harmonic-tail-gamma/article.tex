@@ -1,0 +1,126 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{booktabs,longtable,array,enumitem,xcolor,microtype,xurl}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!42!black,citecolor=blue!42!black,urlcolor=blue!50!black]{hyperref}
+\usepackage{bookmark}
+\definecolor{ink}{RGB}{27,49,73}
+\definecolor{accent}{RGB}{38,81,115}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\sffamily Harmonic tails and Gamma identities}
+\fancyhead[R]{\small\sffamily ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{3em}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newcommand{\Q}{\mathbb Q}\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}\newcommand{\Z}{\mathbb Z}
+\newcommand{\dd}{\,\mathrm d}\newcommand{\iu}{\mathrm i}
+\newcommand{\NN}{\mathcal N}\newcommand{\HH}{\mathcal H}
+\newcommand{\Acal}{\mathcal A}\newcommand{\cA}{\mathcal A}
+\newcommand{\cI}{\mathcal I}
+\DeclareMathOperator{\Li}{Li}\DeclareMathOperator{\FP}{FP}
+\DeclareMathOperator{\CT}{CT}\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\rank}{rank}\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\Shi}{Shi}\DeclareMathOperator{\wt}{wt}
+\DeclareMathOperator{\sgn}{sgn}
+\newcommand{\re}{\operatorname{Re}}\newcommand{\im}{\operatorname{Im}}
+\newcommand{\fall}[2]{#1^{\underline{#2}}}
+\newcommand{\sourcecommit}{446dca9bd65c20e409d1d2561d4ffad408103e2a}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\hypersetup{pdftitle={Exact Harmonic-Tail Reconstruction and Variational Gamma Identities},pdfauthor={Research draft prepared with ChatGPT for Vladimir Reshetnikov},pdfsubject={Polylogarithms, harmonic tails, Gamma differential polynomials, zeta and Stieltjes identities}}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{1.0cm}
+{\sffamily\color{accent}\Large PROVEIT RESEARCH CONTINUATION\par}
+\vspace{1cm}
+{\color{ink}\LARGE\bfseries Exact Harmonic-Tail Reconstruction\par}
+\vspace{0.3cm}
+{\color{ink}\LARGE\bfseries and Variational Gamma Identities\par}
+\vspace{0.75cm}
+{\large Gap-four determinants, polynomial telescopers,\par
+higher resonances, polylogarithms, and Stieltjes coefficients\par}
+\vspace{0.9cm}
+{\large Prepared for Vladimir Reshetnikov\par}
+\vspace{0.2cm}
+{Research draft prepared with ChatGPT\par}
+\vspace{0.25cm}
+{11 October 2026\par}
+\vspace{0.8cm}
+\begin{minipage}{0.91\textwidth}
+\small
+\textbf{Repository baseline.} The analysis uses the exact ProveIt revision
+\src{446dca9bd65c20e409d1d2561d4ffad408103e2a},
+including the manuscript and all six archives then present in
+\src{docs/incoming}. The accompanying source manifest records paths,
+Git blob identifiers and SHA-256 hashes.
+
+\medskip
+\textbf{Scope of the claims.} The report proves the gap-four subfamily of
+the optimal moment-prefix conjecture and derives additional exact
+identities. The arbitrary unequal-order conjecture and the short
+Gaussian $S_6$ and current $S_8$ evaluations remain open. Formal ranks
+refer to explicitly chosen coefficient spaces. Numerical diagnostics
+are reported separately from proofs. Historical novelty beyond the
+inspected sources is not asserted.
+\end{minipage}
+\vfill
+{\small\sffamily Full proofs \enspace / \enspace exact rational certificates
+\enspace / \enspace reproducible numerical checks\par}
+\end{titlepage}
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+
+\begin{abstract}
+This continuation develops four related methods for exact identities.
+First, a fourth-order Bernoulli operator proves that the first $q$
+centered harmonic-tail moments have full formal rank for every even pair
+$p=q-4\ge2$. The remaining boundary determinant is controlled by a
+strict ratio-monotonicity argument, not by extrapolating finite ranks.
+Second, every finite late-moment combination for arbitrary positive even
+orders admits an explicit polynomial-tail telescoping certificate.
+Its negative even Laurent coefficients are exactly the zeta coordinates;
+cancellation of the positive zeta coordinates gives a rational
+evaluation. Third, the Euler variational derivative yields an exact
+three-variable equation for the complete $\psi,\psi',\psi''$ sector of
+the inverse-Gamma hierarchy. We solve the square and cube sectors in
+closed form and give rational coefficient formulas at every order.
+Fourth, the next rank-two Gamma-weight resonance is evaluated with all
+cutoff and spectral counterterms retained, producing polylogarithmic
+generating functions and convergent zeta evaluations. A final Mellin
+calculation relates higher spectral derivatives to explicitly subtracted
+logarithmic spatial integrals and Stieltjes coefficients. The report
+specifies the inherited results, the new proof scopes, integration
+recommendations, and further research targets.
+\end{abstract}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+\input{sections/01_scope}
+\input{sections/02_gap_four}
+\input{sections/03_telescopers}
+\input{sections/04_gamma_sectors}
+\input{sections/05_gamma_moments}
+\input{sections/06_resonance}
+\input{sections/07_logarithmic}
+\input{sections/08_audit_research}
+\input{references}
+\end{document}

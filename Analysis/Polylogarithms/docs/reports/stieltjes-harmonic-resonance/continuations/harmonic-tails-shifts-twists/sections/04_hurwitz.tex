@@ -1,0 +1,457 @@
+% Contribution: Hurwitz-shifted tail moments and exact discrete primitives.
+% Required bibliography keys: DLMF, DLMFBernoulli.
+% All statements below were derived independently in the current continuation.
+% Historical priority over the full literature is not asserted.
+\section{Hurwitz-shifted tails: Bernoulli primitives and exact corrections}
+\label{sh:section}
+
+The centered-tail results in the inspected reports use the lattice
+$n+1/2$ and the tails $\zeta(p,n+1)$.  Their ordinary subtraction rule
+uses the special vanishing $\zeta(-2j,1/2)=0$.  A shift changes both
+the lower endpoint of the finite summation and the continued sums of
+the subtracted polynomials.  The following formulas retain both changes.
+They answer the exact-reduction part of the proposed Hurwitz-shifted
+extension; they do not assert a new determinant nonvanishing theorem.
+
+The ingredients are the classical Hurwitz recurrence, the Bernoulli
+difference law, and Euler--Maclaurin continuation
+\cite{DLMF,DLMFBernoulli}.  The particular discrete
+primitive, shifted block formulas, and normalized identities are proved
+below without a numerical relation search.
+
+\subsection{An explicit discrete primitive at every sufficiently large degree}
+
+For an integer $s$, use the pole-free convention
+\[
+ \mathcal Z_s(v)=
+ \begin{cases}
+  \zeta(s,v),&s\ne1,\\
+  -\psi(v),&s=1.
+ \end{cases}
+\]
+Thus $\mathcal Z_s(v)-\mathcal Z_s(v+1)=v^{-s}$ at every
+integer $s$, including $s=1$.  For integers $s\ge2$ and $m\ge0$,
+define the finite expression
+\begin{equation}\label{sh:L}
+ \mathcal L_{s,m}(v)=\frac1{m+1}
+    \sum_{\substack{0\le h\le m+1\\h\text{ even}}}
+       \binom{m+1}{h}B_h\,
+       \mathcal Z_{s-m-1+h}(v)
+       -\frac{B_{m+1}(v)}{m+1}\zeta(s,v).
+\end{equation}
+All nonpositive integer Hurwitz values in this formula are Bernoulli
+polynomials.  In particular the formula is finite even when $m$ is large.
+
+\begin{theorem}[Bernoulli discrete primitive]\label{sh:primitive}
+Let $p,q\ge2$ be integers, let $d\ge\max(p,q)$ be an integer,
+and let $v>0$.  Put
+\begin{align}
+ \mathcal C_d^{p,q}(v)
+   &=\mathcal L_{p,d-q}(v)+\mathcal L_{q,d-p}(v),\label{sh:Chigh}\\
+ \mathcal K_d^{p,q}(v)
+   &=\mathcal C_d^{p,q}(v)
+       -(v-1)^d\zeta(p,v)\zeta(q,v).\label{sh:K}
+\end{align}
+Then
+\begin{equation}\label{sh:antidifference}
+ \boxed{\mathcal K_d^{p,q}(v)-\mathcal K_d^{p,q}(v+1)
+  =\{v^d-(v-1)^d\}\zeta(p,v)\zeta(q,v).}
+\end{equation}
+Consequently, for every integer $N\ge1$,
+\begin{equation}\label{sh:finitetelescoping}
+ \sum_{n=0}^{N-1}
+ \{(n+v)^d-(n+v-1)^d\}\zeta(p,n+v)\zeta(q,n+v)
+ =\mathcal K_d^{p,q}(v)-\mathcal K_d^{p,q}(v+N).
+\end{equation}
+If also $d<p+q-2$, the infinite series is ordinary and absolutely
+convergent, and its value is $\mathcal K_d^{p,q}(v)$.
+\end{theorem}
+
+\begin{proof}
+Write $R_m(v)=B_{m+1}(v)/(m+1)$.  The Bernoulli difference law is
+$R_m(v+1)-R_m(v)=v^m$.  Because $B_1=-1/2$ and all higher odd
+Bernoulli numbers vanish,
+\[
+ \frac1{m+1}\sum_{h\text{ even}}
+       \binom{m+1}{h}B_hv^{m+1-h}
+ =R_m(v)+\frac12v^m.
+\]
+Use these two identities together with the Hurwitz recurrence in
+\eqref{sh:L}.  The result is exactly
+\begin{equation}\label{sh:Ldifference}
+ \mathcal L_{s,m}(v)-\mathcal L_{s,m}(v+1)
+   =v^m\zeta(s,v)-\frac12v^{m-s}.
+\end{equation}
+Thus $\mathcal C_d(v)-\mathcal C_d(v+1)$ equals
+\[
+ v^{d-q}\zeta(p,v)+v^{d-p}\zeta(q,v)-v^{d-p-q}
+ =v^d\{\zeta(p,v)\zeta(q,v)
+              -\zeta(p,v+1)\zeta(q,v+1)\}.
+\]
+Subtracting the difference of $(v-1)^d\zeta(p,v)\zeta(q,v)$
+gives \eqref{sh:antidifference}; summing gives
+\eqref{sh:finitetelescoping}.  In the stated convergent range,
+the summand is $O(n^{d+1-p-q})$.  Direct use of the Hurwitz
+asymptotic expansion in \eqref{sh:K} gives
+$\mathcal K_d^{p,q}(v)=O(v^{d+2-p-q})$, hence a zero limit at
+infinity.  Alternatively this last bound follows term by term in
+\eqref{sh:L}, since all its Hurwitz orders are then at least two.
+\end{proof}
+
+The convention at $s=1$ in \eqref{sh:L} is essential.  Inserting
+$\zeta(1,v)$ into the displayed finite expression would make a valid
+discrete primitive appear divergent.  Its correct coordinate is
+$\mathcal Z_1(v)=\gamma_0(v)=-\psi(v)$.
+
+\subsection{Every even centered moment, with its lower endpoint}
+
+Assume now that $2\le p\le q$ are even and $v>1/2$.  Put
+\[
+ \alpha=v-\frac12,\qquad a=v-1,\qquad x_n=n+\alpha,
+ \qquad A_p(n;v)=\zeta(p,n+v),
+\]
+and let
+\begin{equation}\label{sh:D}
+ D_{p,q}(s;v)=\sum_{n\ge0}
+           A_p(n;v)A_q(n;v)x_n^{-s},
+ \qquad \Re s>3-p-q.
+\end{equation}
+Its meromorphic continuation is understood outside this half-plane.
+For $r\ge0$ set $D_r(v)=D_{p,q}(-2r;v)$ and
+\begin{equation}\label{sh:Dhat}
+ \widehat D_r(v)=D_r(v)
+       -\zeta(-2r,\alpha)\zeta(p,v)\zeta(q,v).
+\end{equation}
+For $u\ge2$, $w\ge1$, use the convergent strict double Hurwitz value
+\[
+ Z_v(u,w)=\sum_{\ell>k\ge0}
+                  (\ell+v)^{-u}(k+v)^{-w}.
+\]
+
+\begin{theorem}[Complete shifted Bernoulli transform]\label{sh:transform}
+Every $D_r(v)$ is regular.  Define $\mathcal C_d(v)$ for positive
+odd $d$ by the following three formulas:
+\begin{align}
+ \mathcal C_d(v)
+ &=Z_v(p,q-d)+Z_v(q,p-d)+\zeta(p+q-d,v),
+ &&d<p,\label{sh:Clow}\\
+ \mathcal C_d(v)
+ &=Z_v(p,q-d)+\frac12\zeta(p+q-d,v)
+                         +\mathcal L_{q,d-p}(v),
+ &&p<d<q,\label{sh:Cmiddle}\\
+ \mathcal C_d(v)
+ &=\mathcal L_{p,d-q}(v)+\mathcal L_{q,d-p}(v),
+ &&d>q.\label{sh:Cupper}
+\end{align}
+The middle range is empty when $p=q$.  Since $p,q$ are even and
+$d$ is odd, these three ranges cover all required indices.  Then
+\begin{align}
+ \widehat D_r(v)
+ &=\sum_{j=0}^r
+    \frac{\binom{2r}{2j}}{2j+1}
+       B_{2r-2j}(1/2)\,\mathcal C_{2j+1}(v),
+       \label{sh:forward}\\
+ \mathcal C_{2j+1}(v)
+ &=\sum_{r=0}^j\binom{2j+1}{2r}
+                         2^{-2(j-r)}\widehat D_r(v).
+       \label{sh:inverse}
+\end{align}
+At $v=1$ the correction in \eqref{sh:Dhat} vanishes.  For a
+general shift it is a specified Bernoulli polynomial multiplied by
+the initial product of tails.
+\end{theorem}
+
+\begin{proof}
+The centered expansion is
+\begin{equation}\label{sh:centeredasymptotic}
+ \zeta(p,x+1/2)\sim x^{1-p}
+ \left\{\frac1{p-1}+\sum_{h\ge1}
+   \frac{B_{2h}(1/2)(p)_{2h-1}}{(2h)!}x^{-2h}\right\}.
+\end{equation}
+Consequently the only possible poles of \eqref{sh:D} are at
+$s=3-p-q-2h$, all of them odd integers.  Finite subtraction of
+\eqref{sh:centeredasymptotic} proves regularity at every $-2r$.
+
+Let $Q_r(y)=B_{2r+1}(y+1/2)/(2r+1)$.  It is odd, and
+\[
+ \sum_{n=0}^{N-1}x_n^{2r}=Q_r(N+a)-Q_r(a),\qquad
+ Q_r(a)=-\zeta(-2r,\alpha).
+\]
+Finite summation by parts with
+$F(t)=\zeta(p,t)\zeta(q,t)$ therefore expresses the partial
+moment as
+\begin{equation}\label{sh:finiteEtransform}
+ \sum_{j=0}^r
+   \frac{\binom{2r}{2j}}{2j+1}B_{2r-2j}(1/2)
+        E_{2j+1}(N;v)-Q_r(a)F(v),
+\end{equation}
+where, with $y=N+v-1$,
+\begin{align*}
+ E_d(N;v)={}&y^dF(y+1)
+  +\sum_{k=0}^{N-1}(k+v)^{d-p}\zeta(q,k+v+1)\\
+ &+\sum_{k=0}^{N-1}(k+v)^{d-q}\zeta(p,k+v+1)
+  +\sum_{k=0}^{N-1}(k+v)^{d-p-q}.
+\end{align*}
+All equalities so far are finite identities.
+
+Take constant terms as $y\to\infty$.  The continued value of the
+partial moment equals its constant term in this coordinate: every
+nonnegative asymptotic monomial is an even power of $x$, and
+$\zeta(-2h,N+\alpha)=\zeta(-2h,y+1/2)$ is an odd polynomial in
+$y$, hence contributes zero constant term at the upper endpoint.
+
+For $d<p$ every sum in $E_d$ converges and the boundary tends to
+zero, giving \eqref{sh:Clow}.  For $p<d<q$, apply the finite
+Faulhaber identity
+\begin{align*}
+ \sum_{k=0}^{N-1}(k+v)^m\zeta(s,k+v+1)
+ ={}&\frac{B_{m+1}(y+1)-B_{m+1}(v)}{m+1}\zeta(s,y+1)\\
+ &+\frac1{m+1}\sum_{k=0}^{N-1}
+      \frac{B_{m+1}(k+v)-B_{m+1}(v)}{(k+v)^s}
+\end{align*}
+to its one nonnegative power.  Here $m=d-p$ is odd and
+$m<q-1$, so no endpoint term remains.  Its $B_1=-1/2$ term
+combines with the final sum in $E_d$ to give
+$\tfrac12\zeta(p+q-d,v)$; the other terms are precisely
+\eqref{sh:Cmiddle}.
+
+For $d>q$, Theorem~\ref{sh:primitive} gives the exact identity
+$E_d(N;v)=\mathcal C_d(v)-\mathcal K_d(y+1)$.
+For completeness the last endpoint has zero constant term.
+Write $c_{s,j}=[y^{-j}]\zeta(s,y+1)$.  For even $s$, every
+exponent in this expansion is odd except the term
+$-\tfrac12y^{-s}$.  Since $m$ is odd, direct constant-term
+extraction in \eqref{sh:L} gives
+\[
+ \operatorname{CT}_y\mathcal L_{s,m}(y+1)
+ =-\frac12c_{s,m}.
+\]
+Indeed the constant from the first finite sum cancels the
+even-power part of $B_{m+1}(y+1)\zeta(s,y+1)/(m+1)$; its
+remaining contribution is $c_{s,m}/2$, from
+$B_1(1)=1/2$.  On the other hand
+\[
+ \operatorname{CT}_y\{y^dF(y+1)\}
+ =-\frac12\{c_{p,d-q}+c_{q,d-p}\}.
+\]
+Subtracting proves $\operatorname{CT}_y\mathcal K_d(y+1)=0$.
+This also covers $d=p+q-1$, where individual harmonic logarithms
+in finite Faulhaber sums cancel only after all terms are combined.
+Thus \eqref{sh:Cupper} holds at every required high index.
+
+Taking constant terms in \eqref{sh:finiteEtransform} proves
+\eqref{sh:forward}.  Finally the Bernoulli polynomial identity
+\[
+ y^{2j+1}=\sum_{r=0}^j
+       \binom{2j+1}{2r}2^{-2(j-r)}Q_r(y)
+\]
+inverts the finite transform and gives \eqref{sh:inverse}.
+\end{proof}
+
+For $d>q$, every order in \eqref{sh:Cupper} is even and no larger
+than $q$.  Orders below zero are Bernoulli polynomials.  It follows
+that, over $\mathbb Q(v)$, all even moments lie in the span of
+\[
+ \mathcal C_1(v),\mathcal C_3(v),\ldots,\mathcal C_{q-1}(v),
+ \quad 1,\zeta(2,v),\zeta(4,v),\ldots,\zeta(q,v),
+ \quad\zeta(p,v)\zeta(q,v).
+\]
+This is a list of $q+2$ specified coordinates, not an assertion of
+independence.  At $v=1$ the initial-product correction vanishes and
+the highest single-zeta column cancels, recovering the smaller
+unshifted coordinate system.  At rational $v$, all displayed
+coefficients and all negative even Hurwitz values are rational.
+
+\subsection{Ordinary sums and every Stieltjes correction}
+
+The following statement also covers odd tail orders and odd polynomial
+weights.  Its derivatives are in the Dirichlet weight $x_n^{-s}$,
+not in the spectral orders $p,q$ of the two tails.
+
+\begin{theorem}[Exact subtraction and all weight jets]\label{sh:jets}
+Let $p,q\ge2$ be integers, $v>1/2$, $P$ a polynomial, and
+\[
+ f_n=P(x_n)\zeta(p,n+v)\zeta(q,n+v).
+\]
+Let $R(X)=\sum_{k\ge0}r_kX^k$ be the nonnegative-power part of
+its asymptotic expansion in $x_n$, and let $\rho$ be the coefficient
+of $x_n^{-1}$.  These are finite coefficient calculations from
+\eqref{sh:centeredasymptotic}.  Set
+$u_n=f_n-R(x_n)-\rho/x_n$.  Then $u_n=O(x_n^{-2})$ and
+\begin{equation}\label{sh:jetmaster}
+ \sum_{n\ge0}f_nx_n^{-s}
+ =\sum_{n\ge0}u_nx_n^{-s}
+       +\sum_{k\ge0}r_k\zeta(s-k,\alpha)
+       +\rho\zeta(1+s,\alpha)
+\end{equation}
+is a meromorphic identity near $s=0$, with residue $\rho$.  For
+every $j\ge0$,
+\begin{align}\label{sh:alljets}
+ [s^j]\left(\sum_{n\ge0}f_nx_n^{-s}-\frac\rho s\right)
+ ={}&\frac{(-1)^j}{j!}\sum_{n\ge0}u_n\log^j x_n
+     +\frac1{j!}\sum_{k\ge0}r_k\zeta^{(j)}(-k,\alpha)\notag\\
+ &+\frac{(-1)^j\rho}{j!}\gamma_j(\alpha).
+\end{align}
+All sums on the right are ordinary and absolutely convergent.
+In particular, when $p,q$ and $P$ are even, $\rho=0$ and
+\begin{equation}\label{sh:ordinarycorrection}
+ \boxed{\sum_{n\ge0}\{f_n-R(x_n)\}
+   =\sum_r[X^{2r}]P(X)\,D_r(v)
+                       -\sum_{k\ge0}r_k\zeta(-k,\alpha).}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Subtract the finitely many indicated terms in an initial right
+half-plane of absolute convergence.  The remainder series is normally
+convergent for $\Re s>-1$, as are all its fixed $s$ derivatives
+on compact subsets.  This proves \eqref{sh:jetmaster} by unique
+meromorphic continuation.  Expand the ordinary Hurwitz terms and
+\[
+ \zeta(1+s,\alpha)=\frac1s+
+       \sum_{j\ge0}\frac{(-1)^j}{j!}\gamma_j(\alpha)s^j.
+\]
+Coefficient comparison gives \eqref{sh:alljets}.  The even case has
+only even powers of $x_n$, so no $x_n^{-1}$ term occurs.  Its
+constant coefficient is \eqref{sh:ordinarycorrection}.
+\end{proof}
+
+The polynomial correction in \eqref{sh:ordinarycorrection} vanishes
+on the original lattice $\alpha=1/2$.  It must generally be retained
+after a shift.  For example at $\alpha=1$, a subtracted constant
+$c$ contributes $-c\zeta(0,1)=c/2$, even though all higher
+negative even zeta values vanish there.
+
+\subsection{Explicit trigamma identities and derivative families}
+
+Let $T(v)=\psi'(v)=\zeta(2,v)$.  Formula \eqref{sh:Chigh} with
+$p=q=2$, $d=3$ gives
+\[
+ \mathcal C_3(v)=\frac12-v+v(1-v)T(v),\qquad
+ \mathcal K_3(v)=\frac12-v+v(1-v)T(v)-(v-1)^3T(v)^2.
+\]
+The summand has constant asymptotic part $3$.  Applying
+\eqref{sh:ordinarycorrection} yields the ordinary identity
+\begin{equation}\label{sh:trigammasquare}
+ \boxed{\begin{aligned}
+ &\sum_{n\ge0}\left[
+    \left\{3(n+v-\tfrac12)^2+\tfrac14\right\}
+                     \psi'(n+v)^2-3\right]\\
+ &\qquad=2v-\frac52+v(1-v)\psi'(v)
+                         -(v-1)^3\psi'(v)^2.
+ \end{aligned}}
+\end{equation}
+Initially $v>1/2$; normal convergence extends this identity to every
+real $v>0$, and indeed to $\Re v>0$.  Two exact specializations are
+\begin{align}
+ \sum_{n\ge0}\left[
+       (3n^2+3n+1)(\zeta(2)-H_n^{(2)})^2-3\right]
+       &=-\frac12,\label{sh:unshiftedsquare}\\
+ \sum_{n\ge0}\left[
+       \{3(n+1)^2+\tfrac14\}\zeta(2,n+\tfrac32)^2-3\right]
+       &=\frac32+\frac{\pi^2}{8}-\frac{\pi^4}{32}.
+       \label{sh:halflatticesquare}
+\end{align}
+The second follows from $\zeta(2,3/2)=\pi^2/2-4$.
+
+All parameter derivatives are again ordinary convergent identities.
+For example, with $x_n=n+v-1/2$,
+\begin{align}\label{sh:squarederivative}
+ &\sum_{n\ge0}\left[
+  6x_n\psi'(n+v)^2
+  +2(3x_n^2+\tfrac14)\psi'(n+v)\psi''(n+v)\right]\notag\\
+ &\quad=2+(1-2v)\psi'(v)+v(1-v)\psi''(v)
+      -3(v-1)^2\psi'(v)^2
+      -2(v-1)^3\psi'(v)\psi''(v).
+\end{align}
+At $v=1$ this evaluates the displayed mixed polygamma sum to
+$2-\zeta(2)$.  More generally, the $m$th derivative of the summand
+in \eqref{sh:trigammasquare}, for $m\ge1$, is the explicit finite
+Leibniz sum
+\[
+ \sum_{j=0}^{\min(m,2)}\binom mj P^{(j)}(x_n)
+    \sum_{k=0}^{m-j}\binom{m-j}{k}
+       \psi^{(k+1)}(n+v)\psi^{(m-j-k+1)}(n+v),
+ \qquad P(X)=3X^2+\tfrac14.
+\]
+Its ordinary sum is the corresponding derivative of the right side
+of \eqref{sh:trigammasquare}.  Normal convergence follows either
+by differentiated Euler--Maclaurin remainders or by Cauchy estimates
+on compact subsets of $\Re v>0$.
+
+\begin{corollary}[Every derivative at the integral lattice]\label{sh:allderivatives}
+Put $P_0(z)=3z^2-3z+1$ and, for $k\ge1$, define the ordinary sum
+\[
+ S_k=\frac1{k!}\sum_{n\ge0}
+     \left.\frac{d^k}{dz^k}\{P_0(z)\psi'(z)^2\}
+                                  \right|_{z=n+1}.
+\]
+Then $S_1=2-\zeta(2)$, and for every $k\ge2$,
+\begin{equation}\label{sh:derivativeclosed}
+ \boxed{S_k=(-1)^k\left\{
+      k\zeta(k+1)-(k-1)\zeta(k)
+      +\sum_{a=2}^{k-1}(a-1)(k-a)
+                     \zeta(a)\zeta(k+1-a)\right\}.}
+\end{equation}
+The last sum is empty for $k=2$.  This gives finite evaluations of
+an infinite family of mixed polygamma sums in ordinary zeta values
+and products of two such values.
+\end{corollary}
+
+\begin{proof}
+Write $h=v-1$ and $T=\psi'(1+h)$.  The right side of
+\eqref{sh:trigammasquare} becomes
+\[
+ -\frac12+2h-(h+h^2)T-h^3T^2,
+ \qquad
+ T=\sum_{j\ge0}(-1)^j(j+1)\zeta(j+2)h^j,
+ \quad |h|<1.
+\]
+The coefficient of $h$ is $2-\zeta(2)$.  For $k\ge2$, the
+coefficients from the two linear terms in $T$ are
+$(-1)^k\{k\zeta(k+1)-(k-1)\zeta(k)\}$; the coefficient
+from $-h^3T^2$ is the finite convolution in
+\eqref{sh:derivativeclosed}.  Normal convergence, proved above,
+identifies these coefficients with the stated sums.
+\end{proof}
+
+There is also a simple resonant example.  Taking $p=q=d=2$ in
+Theorem~\ref{sh:primitive} gives
+\[
+ \mathcal K_2(v)=-2\psi(v)+(1-2v)T(v)-(v-1)^2T(v)^2.
+\]
+Here the summand has leading term $2/x_n$, and
+$\mathcal K_2(v+N)=-2\log N-3+o(1)$.  Comparing this expansion
+with the finite harmonic sum proves
+\begin{equation}\label{sh:resonantordinary}
+ \boxed{\begin{aligned}
+ &\sum_{n\ge0}\left[
+     (2n+2v-1)\psi'(n+v)^2-\frac2{n+v-1/2}\right]\\
+ &\quad=3-2\psi(v)+2\psi(v-\tfrac12)
+                 +(1-2v)\psi'(v)-(v-1)^2\psi'(v)^2,
+ \qquad v>\tfrac12.
+ \end{aligned}}
+\end{equation}
+Its Dirichlet finite part is instead
+\begin{equation}\label{sh:resonantFP}
+ \operatorname{FP}_{s=0}
+   \sum_{n\ge0}(2n+2v-1)\psi'(n+v)^2x_n^{-s}
+ =3-2\psi(v)+(1-2v)\psi'(v)-(v-1)^2\psi'(v)^2.
+\end{equation}
+The difference is exactly $2\gamma_0(v-1/2)$ as prescribed by
+Theorem~\ref{sh:jets}.  In particular the ordinary sum in
+\eqref{sh:resonantordinary} at $v=1$ is
+$3-4\log2-\zeta(2)$, whereas its continued finite part is
+$3+2\gamma-\zeta(2)$.
+
+For a convergent higher-order example requiring no subtraction,
+$p=q=4$, $d=5$ gives
+\begin{equation}\label{sh:fourthsquare}
+ \sum_{n\ge0}\{(n+v)^5-(n+v-1)^5\}\zeta(4,n+v)^2
+ =\zeta(2,v)+v(1-v)\zeta(4,v)
+                   -(v-1)^5\zeta(4,v)^2,
+ \qquad v>0.
+\end{equation}
+These formulas are exact finite reductions in single Hurwitz values
+and endpoint products.  They do not require treating a nonzero formal
+rank or a small numerical residual as an arithmetic independence claim.
