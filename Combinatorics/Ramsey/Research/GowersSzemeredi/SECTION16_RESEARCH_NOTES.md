@@ -3535,6 +3535,33 @@ when the degree-`d` bound has `β⁻¹ ≤ X^(2^μ)`, `σ⁻¹ ≤ exp(X^(2^μ))
 These match the L.7a estimate. Length eleven fails by the nest factor
 `(μD+1)(2^k−1)` alone.
 
+### L.7c Theorem 18.1: the obstruction is Lemma 13.5's iterated square roots (2026-10-11)
+
+`theorem_18_1` at degree `k` needs both the cell-size exponent `σ` and the
+discrepancy `β` to be at least `α^(2^(2^(k+10)))`, polynomial in `α`. The
+envelopes of L.7b make `β` polynomial, but `σ⁻¹ ≤ exp(X^(2^μ))`. The
+exponential enters once, at the degree-three base, and is inherited by every
+step.
+
+- *Where.* `fejerCubicLocalizationExponent = (1/2)^((2/α)^(2^53))` is a lower
+  bound for `section13SquareExponent`, whose factor is `2^(−13·section13Q)`.
+  It comes from `IsStage135Data` (**Lemma 13.5**). Given a progression `P` and
+  `q` affine forms `h ↦ a_i h + b_i`, the lemma finds a sub-progression `Q`
+  with `|Q| ≥ |P|^(2^(−12q))/2` on which every phase `(a_i h + b_i)·step` is
+  small. The phases are *quadratic* in the step. The proof takes one square
+  root per form. Here `q ≤ section13QBound ≈ 2^(2^20)·α^(−2^21)`.
+- *What would fix it.* A simultaneous small-fractional-parts theorem for `q`
+  quadratic phases with exponent *polynomial* in `1/q`, of Schmidt type.
+  Then `σ` would be polynomial in `α`.
+  - The vendored openai/math Schmidt layer (`PolynomialIntervalPowerBound`,
+    `schmidtRecurrenceExponent e = 15(e+1)+23`) iterates its exponent once
+    per polynomial. It is exponential in the number of forms (base 15
+    instead of `2^12`), so it does not help.
+- *Even then.* Degree `d` needs `genMu (d−2) ≤ 2^(d+10)`. That holds for
+  `d ≤ 7` (`116 869 ≤ 2^17`) and fails at `d = 8` (`440 367 > 2^18`). With a
+  polynomial Lemma 13.5, the single-piece route would therefore give
+  Theorem 18.1 in degrees `3 … 7`, not every degree.
+
 **Technique notes.**
 - Large proofs over `GenParams.std …` terms with `set` time out in whnf.
   Split them into lemmas over plain reals and compose by `rfl`.
