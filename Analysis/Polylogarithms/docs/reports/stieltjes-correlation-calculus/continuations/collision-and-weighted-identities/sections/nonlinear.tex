@@ -1,0 +1,327 @@
+\section{Nonlinear endpoint coordinates: a finite exact law}
+\label{xid:sec:nonlinear}
+
+The two recent dilation reports explicitly ask for the replacement of
+their affine coordinate $pt$ by $pt+q_2t^2+q_3t^3+\cdots$
+\cite{IncomingMellin,IncomingIdentities}.  This section answers that
+question for every Stieltjes index and every argument derivative.  The
+answer is local: a singularity at any other point is treated after
+translation.  All finite parts use a right-hand cutoff in the indicated
+coordinate.  Two-sided symmetric prescriptions are different objects.
+
+Let $f$ be a real analytic local diffeomorphism with
+\begin{equation}\label{xid:eq:f-germ}
+ f(0)=0,\qquad f'(0)=p>0,\qquad
+ H_f(t)=\frac{f(t)}t=p+q_2t+q_3t^2+\cdots.
+\end{equation}
+Choose a sufficiently small neighborhood so that $H_f$ is positive on
+the real axis.  The power $H_f(t)^z$ uses the analytic logarithm whose
+value at zero is $\log p$.  For a distribution $T$ the scalar pullback is
+\begin{equation}\label{xid:eq:pullback-definition}
+ \langle f^*T,\varphi\rangle
+ =\left\langle T,
+ \frac{\varphi(f^{-1}(y))}{f'(f^{-1}(y))}\right\rangle.
+\end{equation}
+Thus $f^*T=T\circ f$ for ordinary functions.  The Jacobian in this
+definition is essential.
+
+\subsection{A general coefficient lemma}
+
+Write $\delta^{(j)}$ for the $j$th distributional derivative at zero,
+so that $\langle\delta^{(j)},\varphi\rangle=(-1)^j\varphi^{(j)}(0)$.
+For integers $q\ge1$ and $n\ge0$ set
+\[
+ U_{q,n}=\FP_y\bigl[\mathbf1_{y>0}y^{-q}\log^n y\bigr].
+\]
+Only the germ at zero matters; a smooth cutoff may be inserted away
+from zero in every formula below.
+
+\begin{theorem}[Coordinate defect for a logarithmic pole]
+\label{xid:thm:coordinate-monomial}
+One has
+\begin{equation}\label{xid:eq:coordinate-monomial}
+ f^*U_{q,n}
+ =\FP_t\bigl[\mathbf1_{t>0}f(t)^{-q}\log^n f(t)\bigr]
+       +\mathcal C_f(q,n),
+\end{equation}
+where the complete correction is the finite distribution
+\begin{equation}\label{xid:eq:C-generator}
+ \mathcal C_f(q,n)
+ =n!\sum_{j=0}^{q-1}\frac{(-1)^j}{j!}
+   [z^{n+1}t^{q-1-j}]H_f(t)^{z-q}\,\delta^{(j)}.
+\end{equation}
+It depends only on $f'(0),\ldots,f^{(q)}(0)$.
+\end{theorem}
+
+\begin{proof}
+Begin with the locally integrable meromorphic family
+$y_+^{z-q}$ for $\Re z>q-1$.  Pairing its pullback with a test function
+gives
+\[
+ \int_0^h t^{z-q}H_f(t)^{z-q}\varphi(t)\,dt.
+\]
+Subtract the Taylor polynomial in $t$ through degree $q-1$ from the
+holomorphic factor $H_f(t)^{z-q}\varphi(t)$.  The remainder is locally
+normally integrable for $\Re z>-1$.  A Taylor term of degree $a$ has
+integral
+\[
+ g_a(z)\frac{h^{z-q+a+1}}{z-q+a+1}.
+\]
+Near $z=0$, only $a=q-1$ has a pole.  The other Taylor terms have
+nonzero denominators at zero, and taking their spectral coefficients
+commutes with the coordinate finite part.  For the exceptional term,
+the cutoff expression is
+\[
+ g_{q-1}(z)\frac{h^z-\varepsilon^z}{z}.
+\]
+The constant term in $\varepsilon$ of its coefficient of $z^n$ is the
+regular coefficient of $g_{q-1}(z)h^z/z$, less
+$[z^{n+1}]g_{q-1}(z)$.  In the original $y$ coordinate that last
+correction is zero, because its Taylor coefficient is independent of
+$z$.  Therefore the difference after pullback is
+\[
+ n![z^{n+1}t^{q-1}]H_f(t)^{z-q}\varphi(t).
+\]
+Expanding the test function and using the convention for
+$\delta^{(j)}$ proves \eqref{xid:eq:C-generator}.  Its largest required
+power of $t$ is $q-1$, proving the finite dependence assertion.
+\end{proof}
+
+Every function with a finite expansion in negative integer powers and
+nonnegative logarithmic powers is covered by linearity.  Terms
+$t^a\log^b t$ with $a\ge0$ are locally integrable and create no defect.
+Consequently the theorem also applies to products of singular germs
+after their ordinary local expansion has been performed; it does not
+require a multiplication of distributions.
+
+\begin{corollary}[A sharp disappearance threshold]
+\label{xid:cor:monomial-threshold}
+If $f'(0)=1$, then $\mathcal C_f(q,n)=0$ for $n\ge q-1$.
+For $q\ge2$, writing $f(t)=t+a t^2+O(t^3)$, one has
+\begin{equation}\label{xid:eq:monomial-top}
+ \mathcal C_f(q,q-2)=\frac{a^{q-1}}{q-1}\,\delta.
+\end{equation}
+Thus the threshold is attained when $a\ne0$.
+\end{corollary}
+
+\begin{proof}
+When $H_f(0)=1$, $[t^k]H_f(t)^{z-q}$ is a polynomial in $z$ of degree
+at most $k$.  This follows by expanding
+$\exp((z-q)\log H_f(t))$, since $\log H_f(t)=O(t)$.
+In \eqref{xid:eq:C-generator}, $k\le q-1$, so its coefficient of
+$z^{n+1}$ vanishes for $n\ge q-1$.  At $n=q-2$, only $j=0$ can
+survive; the leading coefficient of $[t^{q-1}]H_f(t)^{z-q}$ is
+$a^{q-1}/(q-1)!$.  Multiplication by $(q-2)!$ proves the formula.
+\end{proof}
+
+\subsection{Composition is an exact cocycle}
+
+For any logarithmic singular germ $u$ define
+\[
+ C_f(u)=f^*(\FP u)-\FP(u\circ f).
+\]
+Theorem~\ref{xid:thm:coordinate-monomial} computes this distribution from the
+finite singular expansion of $u$.  The expansion of $u\circ f$ is
+again of the same kind, up to locally integrable terms.
+
+\begin{theorem}[Composition and explicit delta pullback]
+\label{xid:thm:cocycle}
+For orientation-preserving analytic local coordinates $f,g$,
+\begin{equation}\label{xid:eq:cocycle}
+ C_{f\circ g}(u)=g^*C_f(u)+C_g(u\circ f).
+\end{equation}
+The delta derivatives in this formula can be computed without series
+reversion:
+\begin{equation}\label{xid:eq:delta-pullback}
+ f^*\delta^{(r)}
+ =\sum_{j=0}^r\frac{(-1)^{r-j}r!}{j!}
+     [t^{r-j}]H_f(t)^{-r-1}\,\delta^{(j)}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Pullbacks satisfy $(f\circ g)^*=g^*f^*$.  Insert and subtract
+$g^*\FP(u\circ f)$ in the definition of $C_{f\circ g}$; this gives
+\eqref{xid:eq:cocycle} exactly.  For \eqref{xid:eq:delta-pullback}, take the
+residue at $z=0$ in the proof of Theorem~\ref{xid:thm:coordinate-monomial}
+with $q=r+1$.  The residue of $y_+^{z-r-1}$ is
+$(-1)^r\delta^{(r)}/r!$.  The residue after pullback pairs with
+$\varphi$ as $[t^r]H_f(t)^{-r-1}\varphi(t)$.
+Expanding $\varphi$ gives the displayed formula.
+\end{proof}
+
+This proves the composition requirement in the source question, rather
+than merely checking it for low-degree maps.  The accompanying exact
+code also compares both sides using independently composed rational
+Taylor series.
+
+\subsection{Every Stieltjes index and every argument derivative}
+
+Let $G_n$ be the canonical periodic finite part of $\gamma_n$ in the
+unit coordinate.  Its local meromorphic generator is
+\begin{equation}\label{xid:eq:periodic-G-local}
+ Z(1-z)=\frac{\delta_0-1}{z}
+          +\sum_{n\ge0}G_n\frac{z^n}{n!}.
+\end{equation}
+Indeed, locally across the endpoint,
+$\zeta(1-z,\{y\})=y_+^{z-1}+\zeta(1-z,1+y)$.
+The second term is smooth in $y$ and has only the constant spectral
+pole $-1/z$.  Set
+\begin{equation}\label{xid:eq:Er}
+ E_r(z)=\prod_{h=1}^r(1-z/h),\qquad E_0(z)=1.
+\end{equation}
+
+\begin{theorem}[Nonlinear Stieltjes contact law]
+\label{xid:thm:stieltjes-nonlinear}
+For all $n,r\ge0$, as local distributions,
+\begin{equation}\label{xid:eq:stieltjes-nonlinear}
+ f^*(D_y^rG_n)
+ =\FP_t\bigl[\gamma_n^{(r)}(\{f(t)\})\bigr]
+       +A_{n,r}(f),
+\end{equation}
+where
+\begin{equation}\label{xid:eq:A-generator}
+ A_{n,r}(f)=n!r!\sum_{j=0}^r\frac{(-1)^{r+j}}{j!}
+ [z^{n+1}t^{r-j}]
+ E_r(z)H_f(t)^{z-r-1}\,\delta^{(j)}.
+\end{equation}
+The correction depends only on the $(r+1)$-jet of $f$.
+\end{theorem}
+
+\begin{proof}
+The singular part of $D_y^r Z(1-z)$ is
+$(-1)^r(1-z)_r y_+^{z-r-1}$.  After pullback, pair it with a test
+function and repeat the Taylor subtraction proof above.  Only its
+degree-$r$ Taylor coefficient creates a pole at $z=0$; the correction
+is
+\[
+ n![z^{n+1}t^r](-1)^r(1-z)_r
+                  H_f(t)^{z-r-1}\varphi(t).
+\]
+Since $(1-z)_r=r!E_r(z)$, this is \eqref{xid:eq:A-generator}.
+The smooth local Hurwitz term commutes with coefficient extraction
+and contributes no contact distribution.  The largest Taylor order
+needed is $r$, which proves the jet assertion.
+\end{proof}
+
+For an affine germ $f(t)=pt$, only the term $j=r$ remains, and
+\begin{equation}\label{xid:eq:A-affine}
+ A_{n,r}(pt)=p^{-r-1}b_{n,r}(\log p)\delta^{(r)},\qquad
+ b_{n,r}(L)=n![z^{n+1}]e^{Lz}E_r(z).
+\end{equation}
+After multiplication by $p^r$, this is precisely the earlier
+ambient-derivative dilation law.  In particular,
+\[
+ b_{0,r}(L)=L-H_r,\qquad
+ b_{1,r}(L)=\frac{L^2}{2}-H_rL+
+                    \frac{H_r^2-H_r^{(2)}}2.
+\]
+The coefficient algebra is therefore an explicit extension of the
+source's harmonic contact polynomial, with the same normalization.
+
+For $f(t)=pt+q_2t^2+O(t^3)$ and $L=\log p$, the first two argument
+orders take the particularly small form
+\begin{align}
+ A_{n,0}(f)&=\frac{L^{n+1}}{(n+1)p}\delta,\label{xid:eq:A0}\\
+ A_{n,1}(f)&=\frac{n!}{p^2}[z^{n+1}](1-z)e^{Lz}\delta'
+ +\frac{n!q_2}{p^3}[z^{n+1}](2-3z+z^2)e^{Lz}\delta.
+ \label{xid:eq:A1}
+\end{align}
+Curvature creates an actual lower-order contact term; replacing $f$
+by its tangent line loses it.
+
+\begin{corollary}[Sharp unit-tangent Stieltjes threshold]
+\label{xid:cor:stieltjes-threshold}
+Suppose $f(t)=t+a t^2+O(t^3)$ and $r\ge1$.  Then
+\begin{equation}\label{xid:eq:stieltjes-threshold}
+ A_{n,r}(f)=0\quad(n\ge2r),\qquad
+ A_{2r-1,r}(f)=\frac{(2r-1)!}{r!}a^r\delta.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The degree in $z$ of
+$[t^{r-j}]E_r(z)H_f(t)^{z-r-1}$ is at most $2r-j$.
+This proves the vanishing assertion.  At $n=2r-1$ only $j=0$
+survives.  The leading coefficients are $(-1)^r/r!$ for $E_r$
+and $a^r/r!$ for $[t^r]H_f^{z-r-1}$.  Substitute them into
+\eqref{xid:eq:A-generator} to obtain the second formula.
+\end{proof}
+
+For $f(t)=t+a t^2+b t^3+O(t^4)$ some exact coefficients are
+\begin{align}
+ A_{0,1}&=-\delta'-3a\delta,& A_{1,1}&=a\delta,\notag\\
+ A_{0,2}&=-\tfrac32\delta''-11a\delta'
+                       +(11b-25a^2)\delta,&
+ A_{3,2}&=3a^2\delta.\label{xid:eq:A-table}
+\end{align}
+Together with \eqref{xid:eq:stieltjes-threshold}, these examples show why
+the earlier zero contact terms at unit affine scale cannot simply be
+transported through a nonlinear coordinate.
+
+\subsection{Exact antiderivatives and their endpoint constants}
+
+There is a useful scalar consequence which does not require any
+distribution notation.  Suppose $f$ is increasing on $[0,b]$,
+$f(0)=0$, $f'(0)>0$, and $B=f(b)>0$.  Assume that the Taylor germ at
+zero is as above.  For $r\ge1$ define
+\begin{equation}\label{xid:eq:primitive-E}
+ \mathcal E_{n,r}(f)=\gamma_n^{(r-1)}(1)
+ +(-1)^{r-1}n![z^nt^r](1-z)_{r-1}H_f(t)^{z-r}.
+\end{equation}
+
+\begin{theorem}[Finite-part primitive endpoint identity]
+\label{xid:thm:nonlinear-primitive}
+For every $n\ge0$ and $r\ge1$,
+\begin{equation}\label{xid:eq:nonlinear-primitive}
+ \FP_t\int_0^b f'(t)\gamma_n^{(r)}(f(t))\,dt
+       =\gamma_n^{(r-1)}(B)-\mathcal E_{n,r}(f).
+\end{equation}
+For argument order zero the exact change-of-coordinate identity is
+\begin{equation}\label{xid:eq:primitive-order0}
+ \FP_t\int_0^b f'(t)\gamma_n(f(t))\,dt
+ =\FP_y\int_0^B\gamma_n(y)\,dy
+       -\frac{\log^{n+1}p}{n+1}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+At a positive cutoff, the fundamental theorem of calculus gives
+$\gamma_n^{(r-1)}(B)-\gamma_n^{(r-1)}(f(\varepsilon))$.
+Use
+\[
+ \gamma_n(y)=y^{-1}\log^n y+\gamma_n(1+y)
+\]
+and differentiate $r-1$ times.  The smooth term has constant
+$\gamma_n^{(r-1)}(1)$.  Write its singular term as the coefficient
+of $z^n/n!$ in
+$(-1)^{r-1}(1-z)_{r-1}t^{z-r}H_f(t)^{z-r}$.
+The constant term in $t$ comes only from the Taylor term of degree
+$r$, with no power of $\log t$ retained.  This is exactly
+\eqref{xid:eq:primitive-E}.  For $r=0$, substitution gives a lower
+endpoint primitive $\log^{n+1}f(\varepsilon)/(n+1)$, whose constant
+term is $\log^{n+1}p/(n+1)$.  All smooth endpoint contributions agree
+in the two coordinates, proving \eqref{xid:eq:primitive-order0}.
+\end{proof}
+
+For example, put $f(t)=t+c t^2$ on an interval where it is increasing.
+Then $B=b+cb^2$ and the formulas give
+\begin{align}
+ \FP\int_0^b(1+2ct)\psi'(t+ct^2)\,dt
+    &=\psi(B)+\gamma-c,\label{xid:eq:psi-prime-curvature}\\
+ \FP\int_0^b(1+2ct)\psi''(t+ct^2)\,dt
+    &=\psi'(B)-\zeta(2)-3c^2,\label{xid:eq:psi-double-curvature}\\
+ \FP\int_0^b(1+2ct)\gamma_1'(t+ct^2)\,dt
+    &=\gamma_1(B)-\gamma_1(1)-c.\label{xid:eq:gamma1-curvature}
+\end{align}
+These are exact antiderivative identities with explicit curvature
+constants.  In particular, a formal substitution which silently
+equates the $t$ and $f(t)$ finite parts gives an incorrect constant.
+
+The zero-order Hurwitz primitive on the right of
+\eqref{xid:eq:primitive-order0} can be written, if desired, by integrating
+$\zeta(1-z,y)$ as $\zeta(-z,y)/z$ and taking its regular spectral
+coefficients.  At $n=0$, $\gamma_0=-\psi$ gives the familiar
+logarithmic Gamma primitive.  The new ingredient above is the exact
+endpoint transformation, not the classical Hurwitz primitive itself
+\cite{EspinosaMoll2}.

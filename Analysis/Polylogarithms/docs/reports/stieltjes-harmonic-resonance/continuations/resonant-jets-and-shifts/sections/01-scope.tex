@@ -1,0 +1,106 @@
+\section{Scope, provenance, and conventions}\label{sec:scope}
+
+The immediate source is the collective manuscript \emph{Polylogarithms and
+their Arithmetic Bridges}, together with the five incoming archives in the
+pinned revision \cite{repo,nested,gauss,mellin,stharm,translation}. The
+manuscript already contains a substantial theory of periodic Stieltjes
+correlations, distributional derivatives, dilation contacts, and
+log-Gamma convolutions. Repeating those results would not answer the
+request for a research continuation. Here the focus is on discrete
+translation, independent spectral directions, moving zeros, and
+nonperiodic shifted sums.
+
+The incoming \emph{Nested Harmonic Jets} report asks, among other things,
+for non-diagonal spectral directions, path-dependent multiple Laurent
+finite parts, and an explicit algorithm for higher spectral values at
+moving Gamma zeros. We answer the algorithmic part of the last question,
+give a complete transverse-path calculation at depth two, and give every
+Laurent coefficient of the fully symmetrized family at arbitrary depth.
+The unsymmetrized higher-depth problem and minimality of the resulting
+constant classes are not settled by these results.
+
+\subsection{What is established here}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.24\textwidth}>{\raggedright\arraybackslash}p{.49\textwidth}>{\raggedright\arraybackslash}p{.21\textwidth}@{}}
+\toprule Topic & Exact conclusion & Location\\\midrule
+\endhead
+Discrete Stieltjes products & One explicit correction term evaluates the
+grouped sum for every number of factors and all Laurent indices; the
+finite-cutoff remainder is exact. & Section~\ref{sec:discrete}\\[4pt]
+Intersecting nested poles & A holomorphic two-variable remainder, all its
+Taylor coefficients, straight-direction finite parts, and the cubic-jet
+correction for curved paths. & Section~\ref{sec:direction}\\[4pt]
+Symmetrized mixed jets & A finite partition formula for every Laurent
+coefficient in every depth, including an explicit depth-three constant
+term. & Section~\ref{sec:symmetric}\\[4pt]
+Moving Gamma zeros & A Bell-polynomial formula for every derivative, a
+closed second derivative, and a finite antiderivative construction for
+all necessary coordinates. & Section~\ref{sec:roots}\\[4pt]
+Shifted double polylogarithms & A disk identity in two independent shifts;
+complete reductions at complementary shifts, including rational-shift
+specializations. & Section~\ref{sec:gap}\\[4pt]
+Higher spectral products & Polynomiality in normalized exponents, local
+finite differences, alternating Vandermonde evaluations for any number
+of factors, and logarithmic multiplicities. & Section~\ref{sec:spectral}\\
+\bottomrule
+\end{longtable}
+
+These are proved extensions developed for this continuation. This wording
+does not assert historical priority for every displayed specialization.
+The symmetric-sum theorem is classical \cite{hoffman}; Laurent expansions
+of multiple zeta functions have an established literature
+\cite{mow,guozhang}; broad shifted cyclotomic symmetry is treated in
+\cite{rui,xu}; and first-derivative multiplicative anomalies are classical
+in substance \cite{dowker,gurel,mizuno}. The contributions should be
+assessed as explicit formulas, proofs, normalizations, and extensions of
+the repository's available results, with those antecedents retained.
+
+\subsection{Basic notation}
+
+For $a>0$, let
+\begin{equation}\label{eq:stieltjes}
+ \zeta(1+u,a)=\frac1u+
+ \sum_{j=0}^{\infty}\frac{(-1)^j}{j!}\gamma_j(a)u^j,
+ \qquad g_a(u)=\zeta(1+u,a)-\frac1u.
+\end{equation}
+The function $g_a$ is entire in $u$. Thus $\gamma_0(a)=-\psi(a)$,
+where $\psi=\Gamma'/\Gamma$, and $\gamma_j=\gamma_j(1)$.
+Spectral derivatives of Hurwitz zeta are written $\zeta^{(r)}(s,a)$;
+derivatives of $\gamma_j(a)$ refer to $a$. The standard shift and
+differentiation identities are \cite[\S25.11]{dlmf}
+\begin{align}
+ \gamma_j(a+1)&=\gamma_j(a)-\frac{\log^j a}{a},\label{eq:gshift}\\
+ \partial_a\zeta(s,a)&=-s\zeta(s+1,a),\label{eq:zshiftder}\\
+ \psi^{(k)}(a)&=(-1)^{k+1}k!\zeta(k+1,a)\quad(k\ge1).
+\end{align}
+All logarithms of positive real numbers are real. When a complex argument
+is introduced, its branch is specified locally. No unspecified principal
+logarithm of a Gamma quotient is used.
+
+For a meromorphic one-variable germ $f(\eps)$,
+\begin{equation}
+ \FP_{\eps=0}f=\laur0f.
+\end{equation}
+The coefficient depends on the parameter $\eps$. A function of several
+variables need not have a path-independent finite part. Nor is the
+constant Laurent coefficient automatically an algebra homomorphism.
+We retain every regulator until after multiplication or composition.
+
+The exponential Bell polynomials $Y_r$ are defined by
+\begin{equation}\label{eq:bell}
+ \exp\left(\sum_{j\ge1}x_j\frac{t^j}{j!}\right)
+ =\sum_{r\ge0}Y_r(x_1,\ldots,x_r)\frac{t^r}{r!}.
+\end{equation}
+In particular $Y_0=1$, $Y_1=x_1$, $Y_2=x_1^2+x_2$, and
+$Y_3=x_1^3+3x_1x_2+x_3$. Generalized harmonic numbers are
+$H_N^{(j)}=\sum_{k=1}^N k^{-j}$, with $H_0^{(j)}=0$.
+
+\subsection{What the verification does and does not establish}
+
+The proofs below give the analytic statements. The accompanying programs
+check independently constructed finite coefficients, special-function
+values, quadrature formulas, and the signs and scale factors in the
+spectral identities. Exact symbolic assertions are separated from
+floating-point diagnostics. The package makes no claim of proof-assistant
+formalization or interval certification. In particular, a small residual
+does not establish the short $S_6$ or $S_8$ evaluations.

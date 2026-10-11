@@ -1,0 +1,168 @@
+% Additive manuscript section. Dependencies: amsmath, amssymb, amsthm;
+% proposition and proof environments. Bibliography items supplied separately.
+\section{Centered Rogers--Dougall resonance}
+\label{dr-core:section}
+
+Fix $\kappa,b,c>0$ with $d_0=1+2\kappa-b-c>0$, and write $x_n=n+\kappa$.
+For complex $u$ with $\operatorname{Re}u<d_0$, put
+\begin{align}
+ W_n(u)={}&x_n\frac{\Gamma(n+2\kappa)\Gamma(n+b)}
+ {\Gamma(n+1)\Gamma(n+1+2\kappa-b)}
+ \frac{\Gamma(n+c)\Gamma(n+d_0-u)}
+ {\Gamma(n+1+2\kappa-c)\Gamma(n+b+c+u)},
+ \label{dr-core:weight}\\
+ P(u)={}&\frac{\Gamma(b)\Gamma(c)\Gamma(d_0-u)}
+ {\Gamma(d_0)\Gamma(b+u)\Gamma(c+u)}.
+ \label{dr-core:P}
+\end{align}
+Denominator Gamma factors always mean entire reciprocal-Gamma factors.
+The classical Rogers--Dougall sum gives
+$\sum_{n\geq0}W_n(u)=\Gamma(u)P(u)/2$ for $0<\operatorname{Re}u<d_0$
+\cite{dougall-resonance:DLMF16}. Its hypergeometric excess is $2u$.
+
+Set $r=(\kappa,b-\kappa,c-\kappa,1+\kappa-b-c-u)$ and define
+\begin{align}
+ \ell_j(u)&=-\frac{\sum_{i=1}^4B_{2j+1}(r_i)}{j(2j+1)},\qquad j\geq1,
+ \notag\\
+ A_0(u)&=1,\qquad
+ A_j(u)=\frac1j\sum_{h=1}^j h\ell_h(u)A_{j-h}(u).
+ \label{dr-core:A}
+\end{align}
+The centered Gamma form is
+$W_n(u)=x_n\prod_{i=1}^4\Gamma(x_n+r_i)/\Gamma(x_n+1-r_i)$.
+Bernoulli reflection and the shifted Stirling expansion imply
+\begin{equation}
+ W_n(u)=x_n^{-1-2u}\left(\sum_{j=0}^{K-1}A_j(u)x_n^{-2j}
+                                    +O(x_n^{-2K})\right).
+ \label{dr-core:asymptotic}
+\end{equation}
+Only even inverse-power corrections occur. The remainder is locally
+uniform in the parameters; fixed spectral derivatives introduce only
+powers of $\log x_n$ \cite{dougall-resonance:DLMF5}.
+
+\begin{proposition}[An ordinary convergent subtraction]
+\label{dr-core:subtraction}
+For $K\geq1$ and $-K<\operatorname{Re}u<d_0$,
+\begin{align}
+ \mathcal R_K(u)
+ &:={\sum_{n=0}^{\infty}}
+ \left[W_n(u)-\sum_{j=0}^{K-1}A_j(u)x_n^{-1-2u-2j}\right]\notag\\
+ &=\frac12\Gamma(u)P(u)-\sum_{j=0}^{K-1}
+                              A_j(u)\zeta(1+2u+2j,\kappa).
+ \label{dr-core:R}
+\end{align}
+The bracketed series and every fixed spectral derivative converge normally
+in that strip. Apparent poles on the right side are removable.
+\end{proposition}
+\begin{proof}
+Equation~\eqref{dr-core:asymptotic} gives a summable compact-uniform
+majorant $O(n^{-1-\epsilon}(1+\log^m n))$ for each fixed derivative.
+On $0<\operatorname{Re}u<d_0$, sum the components separately by classical
+Dougall summation. The identity theorem then gives \eqref{dr-core:R}
+on the full strip, with removability supplied by its holomorphic left side.
+\end{proof}
+
+\begin{proposition}[Residue polynomial and complete collapse]
+\label{dr-core:collapse}
+Let $N\geq0$ and
+\begin{equation}
+ \rho_N=\frac{(-1)^N}{N!}(d_0)_N(1-b)_N(1-c)_N.
+ \label{dr-core:rho}
+\end{equation}
+Then $A_N(-N)=\rho_N$, and
+\begin{equation}
+ \mathcal R_{N+1}(-N)=\frac{\rho_N}{2}
+ [\psi(N+1)-\psi(d_0+N)-\psi(b)-\psi(c)+2\psi(\kappa)].
+ \label{dr-core:value}
+\end{equation}
+All displayed digamma arguments are positive. In particular, the formula
+also applies when $\rho_N=0$.
+\end{proposition}
+\begin{proof}
+Compare residues in \eqref{dr-core:R}. The Gamma term has residue
+$\rho_N/2$ at $u=-N$, and the only polar counterterm is $j=N$, with
+residue $A_N(-N)/2$. This proves the polynomial identity $A_N(-N)=\rho_N$.
+
+The essential coefficient law is
+\begin{equation}
+ (\partial_u-D)A_N(u)=\sum_{h=1}^N\frac{B_{2h}(\kappa)}hA_{N-h}(u),
+ \qquad D=\partial_\kappa+\partial_b+\partial_c.
+ \label{dr-core:law}
+\end{equation}
+Indeed, $Dd_0=0$ and $E=\partial_u-D$ acts on the four $r_i$ by
+$Er_1=-1$ and $Er_2=Er_3=Er_4=0$. Hence
+$E\ell_h=B_{2h}(\kappa)/h$. Apply $E$ to the formal generating function
+$\sum A_jy^j=\exp(\sum\ell_jy^j)$ and extract $y^N$.
+
+For generic $b,c$, the constant term of $\Gamma(-N+t)P(-N+t)/2$ is
+\[
+ \frac{\rho_N}{2}
+ [\psi(N+1)-\psi(d_0+N)-\psi(b-N)-\psi(c-N)].
+\]
+The $j=N$ counterterm has constant term
+$A_N'(-N)/2-\rho_N\psi(\kappa)$, while the lower counterterms sum to
+$-\sum_{h=1}^N B_{2h}(\kappa)A_{N-h}(-N)/(2h)$.
+Equation~\eqref{dr-core:law} cancels all of the latter terms, leaving
+$-D\rho_N/2$ in place of the coefficient derivative. Finally,
+\[
+ D\rho_N=\rho_N\sum_{h=1}^N\bigl((b-h)^{-1}+(c-h)^{-1}\bigr).
+\]
+The digamma shift relation proves \eqref{dr-core:value}. Continuity of
+the normally convergent series and of the final positive-argument formula
+proves the exceptional cases as well.
+\end{proof}
+
+The full spectral germ retains reciprocal-Gamma zeros. Define
+\begin{equation}
+ Q_N(t)=\frac{(-1)^N}{N!}\Gamma(1+t)
+             \prod_{h=1}^N(1-t/h)^{-1}P(-N+t).
+ \label{dr-core:Q}
+\end{equation}
+It is analytic at zero, $Q_N(0)=\rho_N$, and
+$\Gamma(-N+t)P(-N+t)/2=Q_N(t)/(2t)$.
+With $a_j(t)=A_j(-N+t)$ and
+$\zeta(1+v,\kappa)=v^{-1}+\sum_{m\geq0}(-1)^m\gamma_m(\kappa)v^m/m!$,
+\begin{equation}
+\begin{split}
+ \mathcal R_{N+1}(-N+t)={}&\frac{Q_N(t)-a_N(t)}{2t}
+ -a_N(t)\sum_{m\geq0}\frac{(-2)^m\gamma_m(\kappa)}{m!}t^m\\
+ &-\sum_{j=0}^{N-1}a_j(t)\zeta(1-2(N-j)+2t,\kappa).
+\end{split}
+\label{dr-core:jet}
+\end{equation}
+This is a holomorphic identity and therefore proves every Taylor
+coefficient formula. Only negative odd Hurwitz spectral arguments occur
+outside the Stieltjes part. To evaluate at a zero of a reciprocal Gamma
+factor, use
+\[
+ \frac1{\Gamma(w+t)}=
+ \frac{\prod_{h=0}^{L-1}(w+h+t)}{\Gamma(w+L+t)},\qquad w+L>0,
+\]
+before expanding. A vanished summand is not necessarily a vanished jet.
+
+At the interlaced point $u_*=-N-1/2$, ordinary substitution instead gives
+\begin{equation}
+ \mathcal R_{N+1}(u_*)=\frac12\Gamma(u_*)P(u_*)+
+ \sum_{j=0}^N A_j(u_*)\frac{B_{2(N-j)+1}(\kappa)}{2(N-j)+1}.
+ \label{dr-core:half}
+\end{equation}
+Its spectral jets involve $0,-2,\ldots,-2N$, with no Stieltjes pole.
+These conclusions follow from the classical Bernoulli special values of
+Hurwitz zeta \cite{dougall-resonance:DLMF25} and \eqref{dr-core:R}.
+
+For $|z|<1$, replace each counterterm by
+$A_j(u)\Phi(z,1+2u+2j,\kappa)$ and $W_n(u)$ by $W_n(u)z^n$.
+The same bracketed convergence theorem extends all fixed spectral jets
+continuously to $z=1$. If $\kappa=p/q$, $1\leq p\leq q$, then
+\[
+ \Phi(z,s,p/q)=q^{s-1}z^{-p/q}\sum_{\ell=0}^{q-1}
+       e^{-2\pi i p\ell/q}\operatorname{Li}_s(e^{2\pi i\ell/q}z^{1/q}),
+\]
+initially for $0<z<1$. This gives exact polylogarithmic subtraction
+identities. At the endpoint, take the limit of the complete bracket,
+not of separately divergent pieces.
+
+The classical Dougall sum is the input, not a new claim. The centered
+coefficient law and the explicit resonance/jet calculus are the continuation
+presented here. The larger article supplies detailed harmonic and primitive
+specializations, antecedent discussion, and reproducible diagnostics.

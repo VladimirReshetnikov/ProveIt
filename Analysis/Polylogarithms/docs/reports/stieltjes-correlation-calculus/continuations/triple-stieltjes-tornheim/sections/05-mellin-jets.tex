@@ -1,0 +1,137 @@
+\section{Three convergent polylogarithmic integrals at every index}\label{tsc:polylog-moments}
+The coefficient formula has a particularly explicit integral counterpart.
+Let
+\begin{equation}\label{tsc:cdalpha}
+ \ell=\log(2\pi),\qquad c=\ell+\frac{\pi\ii}{2},\qquad
+ d=\ell-\frac{\pi\ii}{2},\qquad \alpha=\gamma+c.
+\end{equation}
+For a nontrivial unit color $z$ and $x\ge0$, define
+\begin{equation}\label{tsc:Vdef}
+ V_m(z,x)=m![u^{m+1}]\,
+      \Gamma(1+u)e^{-cu}\Li_u(ze^{-x}).
+\end{equation}
+This is a finite expression in ordinary polylogarithm order derivatives.
+If
+\[
+ E_+(u)=\Gamma(1+u)e^{-cu}=\sum_{j\ge0}e_j^+u^j,
+\]
+then
+\begin{equation}\label{tsc:Vfinite}
+ V_m(z,x)=m!\sum_{r=0}^{m+1}\frac{e_{m+1-r}^+}{r!}
+                         \Li_0^{[r]}(ze^{-x}),
+\end{equation}
+where
+\begin{equation}\label{tsc:e-recurrence}
+ e_0^+=1,\qquad
+ n e_n^+=-\alpha e_{n-1}^+
+          +\sum_{k=2}^n(-1)^k\zeta(k)e_{n-k}^+.
+\end{equation}
+For example, with $Z_r=\Li_0^{[r]}(ze^{-x})$,
+\begin{align}\label{tsc:Vexamples}
+ V_0&=Z_1-\alpha Z_0,\notag\\
+ V_1&=\frac{Z_2}{2}-\alpha Z_1+
+                  \frac{\alpha^2+\zeta(2)}2Z_0,\notag\\
+ V_2&=\frac{Z_3}{3}-\alpha Z_2+
+      (\alpha^2+\zeta(2))Z_1
+      -\frac{\alpha^3+3\alpha\zeta(2)+2\zeta(3)}3 Z_0.
+\end{align}
+In particular, $Z_0(q)=q/(1-q)$ is elementary.
+
+For $F$ analytic at zero and exponentially decreasing at infinity, put
+\begin{align}\label{tsc:Mfunctional}
+ \calM_{n,d}[F]={}&
+    \int_0^1\frac{F(x)-F(0)}x(\log x-d)^n\dd x
+   +\int_1^\infty\frac{F(x)}x(\log x-d)^n\dd x\notag\\
+ &+\frac{(-d)^{n+1}}{n+1}F(0).
+\end{align}
+Both displayed integrals are ordinary absolutely convergent integrals.
+The last term is essential; it is the contribution of the simple Mellin
+pole after multiplication by $e^{-du}$.
+
+\begin{theorem}[All-index convergent Mellin formula]\label{tsc:mellin-all}
+With the colors \eqref{tsc:colors} and the conventions above,
+\begin{equation}\label{tsc:M-all}
+ \boxed{\displaystyle
+ \calJ_{\mathbf m}(\mathbf a)=2\Re\sum_{k=1}^3
+ \calM_{m_k,d}\!\big[
+       V_{m_i}(z_{ik},\cdot)V_{m_j}(z_{jk},\cdot)\big].}
+\end{equation}
+Thus every separated triple Stieltjes finite part has a representation by
+three convergent logarithmic integrals and three explicit endpoint terms.
+Only finitely many polylogarithm order derivatives at order zero occur.
+\end{theorem}
+\begin{proof}
+Consider the positive-frequency sector with singleton $k$. Before Laurent
+coefficient extraction, multiply its Tornheim term by the three Gamma
+factors appearing in \eqref{tsc:Zlaurent}. Inserting
+\eqref{tsc:T-mellin} cancels the Gamma factor belonging to the singleton.
+The sector becomes the analytic continuation of
+\begin{equation}\label{tsc:sector-mellin}
+ \Gamma(u_i)e^{-cu_i}\Gamma(u_j)e^{-cu_j}e^{-du_k}
+ \int_0^\infty x^{u_k-1}
+           \Li_{u_i}(z_{ik}e^{-x})\Li_{u_j}(z_{jk}e^{-x})\dd x.
+\end{equation}
+Taking the nonnegative Laurent coefficients in $u_i,u_j$, with the
+factorials prescribed by \eqref{tsc:stieltjes-convention}, replaces the two
+polylogarithmic factors by $V_{m_i}$ and $V_{m_j}$.
+
+For the remaining variable $u=u_k$, write the Mellin integral as
+\[
+ \frac{F(0)}u+
+ \int_0^1x^{u-1}(F(x)-F(0))\dd x+
+ \int_1^\infty x^{u-1}F(x)\dd x.
+\]
+The coefficient $m_k![u^{m_k}]$ after multiplication by $e^{-du}$ is exactly
+\eqref{tsc:Mfunctional}. The nontrivial colors ensure $F(x)-F(0)=O(x)$;
+all of its spectral derivatives have the same property. At infinity they
+decay exponentially. These local bounds justify every finite spectral
+extraction under the subtracted integrals. Reversing the three Fourier
+signs conjugates this expression because the shifts and Stieltjes indices
+are real. Summing the three positive sectors and their conjugates proves
+\eqref{tsc:M-all}.
+\end{proof}
+
+\begin{corollary}[A convergent three-digamma formula]\label{tsc:psi-mellin}
+Put
+\[
+ W_z(x)=\left.\partial_s\Li_s(ze^{-x})\right|_{s=0}
+            -\left(A+\frac{\pi\ii}{2}\right)\frac{ze^{-x}}{1-ze^{-x}}.
+\]
+Then
+\begin{align}\label{tsc:psi-integrals}
+ \FP\int_0^1\prod_{i=1}^3\psi(\{x-a_i\})\dd x
+ =-2\Re\sum_{k=1}^3\bigg\{&
+  \int_0^1\frac{W_{z_{ik}}(x)W_{z_{jk}}(x)
+                 -W_{z_{ik}}(0)W_{z_{jk}}(0)}x\dd x\notag\\
+ &+\int_1^\infty\frac{W_{z_{ik}}(x)W_{z_{jk}}(x)}x\dd x
+   -dW_{z_{ik}}(0)W_{z_{jk}}(0)\bigg\}.
+\end{align}
+\end{corollary}
+All integrals on the right are ordinary convergent integrals. For example,
+at $(a_1,a_2,a_3)=(0,1/4,2/3)$ the common value is approximately
+\[
+ 30.589007126644942529054519724157914\ldots.
+\]
+This decimal is a diagnostic, not a claim of a reduction to a smaller
+constant basis. The accompanying code evaluates the left side by its
+three local endpoint subtractions and the right side by convergent
+polylogarithmic series; their residual at 40 working digits is below
+$3\cdot10^{-38}$.
+
+\subsection{Rational colors make the endpoint data finite}
+Let $z=e(p/q)\ne1$ with integers $0<p<q$. Splitting the polylogarithm
+series into residue classes gives the entire identity
+\begin{equation}\label{tsc:finite-DFT}
+ \Li_u(z)=q^{-u}\sum_{r=1}^q z^r\zeta(u,r/q).
+\end{equation}
+The apparent pole on the right cancels because $\sum_{r=1}^qz^r=0$.
+Lerch's formula $\zeta^{[1]}(0,x)=\log\Gamma(x)-\ell/2$ then gives
+\begin{equation}\label{tsc:W-boundary}
+ W_z(0)=\sum_{r=1}^qz^r\log\Gamma(r/q)
+       -(\alpha+\log q)\frac{z}{1-z}.
+\end{equation}
+More generally, substituting \eqref{tsc:finite-DFT} into \eqref{tsc:Vdef}
+gives every $V_m(z,0)$ as a finite combination of rational-argument
+Hurwitz jets at zero. Thus the endpoint terms in the rational-shift
+three-digamma formula are explicitly Gamma-valued, even when the remaining
+convergent integrals have not been reduced further.

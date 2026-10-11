@@ -1,0 +1,143 @@
+\section{Every directional Laurent coefficient of fully symmetrized depth}
+\label{sec:symmetric}
+
+At depth greater than two, resolving one ordered multiple-zeta germ
+requires additional information. Complete symmetrization nevertheless
+admits an exact answer at every depth and every Laurent order. The
+algebraic input is Hoffman's classical symmetric-sum principle
+\cite{hoffman}; the present use records independent perturbation
+directions and the resulting Stieltjes coefficients explicitly.
+
+For $a>0$ and $d\ge1$ set
+\[
+ Z_d(s_1,\ldots,s_d;a)
+   =\sum_{n_1>\cdots>n_d\ge0}\prod_{i=1}^d(n_i+a)^{-s_i},
+\]
+initially in its domain of absolute convergence. We sum over all
+\emph{labelled} permutations,
+\[
+ \Sym Z_d(\boldsymbol s;a)
+   =\sum_{\sigma\in S_d}Z_d(s_{\sigma(1)},\ldots,s_{\sigma(d)};a).
+\]
+Repeated exponent values still occur with their permutation
+multiplicity. Let $\Pi_d$ denote the set partitions of $\{1,\ldots,d\}$.
+
+\begin{proposition}[Classical partition identity]\label{prop:partition}
+As an identity of meromorphic functions,
+\begin{equation}\label{eq:partition}
+ \Sym Z_d(\boldsymbol s;a)
+ =\sum_{\pi\in\Pi_d}(-1)^{d-|\pi|}
+      \prod_{B\in\pi}\left[(|B|-1)!\,
+                \zeta\left(\sum_{i\in B}s_i,a\right)\right].
+\end{equation}
+\end{proposition}
+\begin{proof}
+First truncate all indices to $0\le n<N$. The symmetrized ordered
+sum is the sum over all labelled tuples with distinct indices.
+Inclusion--exclusion on equality patterns is M\"obius inversion in the
+partition lattice. Its coefficient for a block $B$ is
+$(-1)^{|B|-1}(|B|-1)!$. Each unrestricted equality block contributes
+$\sum_{n<N}(n+a)^{-\sum_{i\in B}s_i}$. This proves the finite identity.
+Letting $N\to\infty$ in the absolute-convergence region gives
+\eqref{eq:partition}; meromorphic continuation gives the asserted
+identity. Alternatively, the right side itself supplies the
+continuation of the symmetrized function used below.
+\end{proof}
+
+\begin{theorem}[All-depth, all-order directional coefficient algorithm]
+\label{thm:symcoeff}
+Let $c_1,\ldots,c_d\in\C\setminus\{0\}$ and put
+$s_i=1+c_i\eps$. For a block $B$, write $b=|B|$ and
+$c_B=\sum_{i\in B}c_i$. Define the coefficient array
+\begin{align}
+ A_{\{i\}}(-1)&=\frac1{c_i},&
+ A_{\{i\}}(k)&=\frac{(-1)^k\gamma_k(a)c_i^k}{k!}\quad(k\ge0),
+ \label{eq:singletoncoeff}\\
+ A_B(k)&=\frac{\zeta^{(k)}(b,a)c_B^k}{k!}\quad(k\ge0, b\ge2).
+ \label{eq:blockcoeff}
+\end{align}
+All other entries are zero. Then, for every integer $q\ge-d$,
+\begin{equation}\label{eq:symcoeff}
+ \boxed{
+ [\eps^q]\Sym Z_d(1+c_1\eps,\ldots,1+c_d\eps;a)
+ =\sum_{\pi\in\Pi_d}(-1)^{d-|\pi|}
+       \prod_{B\in\pi}(|B|-1)!
+       \sum_{\substack{(k_B)_{B\in\pi}\\\sum_Bk_B=q}}
+                     \prod_{B\in\pi}A_B(k_B).}
+\end{equation}
+For each fixed $d,q$ the displayed expression is finite. Vanishing
+block sums $c_B$ with $|B|\ge2$ cause no singularity. The constant
+coefficient uses only $\gamma_0(a),\ldots,\gamma_{d-1}(a)$ and
+finitely many derivatives $\zeta^{(j)}(b,a)$ at integers $2\le b\le d$.
+\end{theorem}
+\begin{proof}
+For a singleton, the zeta factor in \eqref{eq:partition} has exactly
+the Laurent coefficients \eqref{eq:singletoncoeff}. For a block of
+size at least two it is regular at $\eps=0$, with Taylor coefficients
+\eqref{eq:blockcoeff}. Multiplication proves \eqref{eq:symcoeff}.
+There are finitely many partitions, each index has lower bound $-1$
+or $0$, and their sum is prescribed; hence only finitely many tuples
+can contribute. For $q=0$, a singleton index is at most $d-1$,
+which proves the Stieltjes-index assertion.
+\end{proof}
+
+This is an explicit finite algorithm: enumerate set partitions,
+generate each block's coefficient list to the required degree, and
+multiply the short Laurent polynomials. No nested infinite sums or
+unspecified finite parts remain in the output.
+
+\subsection{Depth two and depth three in closed form}
+
+For depth two, the constant coefficient is
+\begin{equation}\label{eq:sym2}
+ \FP\Sym Z_2
+ =\gamma_0(a)^2-\zeta(2,a)
+        -\gamma_1(a)\left(\frac{c_1}{c_2}+\frac{c_2}{c_1}\right),
+\end{equation}
+in agreement with the sum of the two ordered values in
+\eqref{eq:direction-FP} whenever both ordered restrictions are
+transverse. Formula \eqref{eq:sym2} itself also applies when
+$c_1+c_2=0$: the polar divisor of each ordered summand has canceled
+in the symmetrized meromorphic germ before restriction.
+
+For depth three let $c_\Sigma=c_1+c_2+c_3$. Direct expansion gives
+\begin{align}\label{eq:sym3}
+ \FP\Sym Z_3={}&\gamma_0(a)^3
+   -\gamma_0(a)\gamma_1(a)\sum_{i\ne j}\frac{c_j}{c_i}
+   +\frac{\gamma_2(a)}2\sum_{i=1}^3
+                         \frac{c_i^2}{\prod_{j\ne i}c_j}\notag\\
+ &-3\gamma_0(a)\zeta(2,a)
+   -\zeta'(2,a)\sum_{i=1}^3\frac{c_\Sigma-c_i}{c_i}
+   +2\zeta(3,a).
+\end{align}
+At $c_1=c_2=c_3=1$ this becomes
+\begin{equation}\label{eq:sym3diagonal}
+ \gamma_0(a)^3-6\gamma_0(a)\gamma_1(a)+\frac32\gamma_2(a)
+ -3\gamma_0(a)\zeta(2,a)-6\zeta'(2,a)+2\zeta(3,a).
+\end{equation}
+The corresponding single diagonal depth-three finite part is one
+sixth of \eqref{eq:sym3diagonal}; the factor $3!$ is required by our
+labelled convention.
+
+\subsection{Why coefficient extraction is not automatically a renormalization}
+
+The Laurent constant of a product is generally different from the
+product of the Laurent constants. For example,
+\begin{equation}\label{eq:FPnonmult}
+ \FP_{\eps=0}\bigl\{\zeta(1+c\eps,a)\zeta(1+d\eps,a)\bigr\}
+ =\gamma_0(a)^2-\gamma_1(a)(c/d+d/c),
+\end{equation}
+whereas the product of the two individual constant coefficients is
+$\gamma_0(a)^2$. Therefore one cannot assert that a collection of
+directional finite parts preserves the stuffle algebra simply because
+the meromorphic functions satisfy stuffle identities. Algebra-preserving
+renormalizations require a compatible subtraction prescription; this is
+the subject of, for example, Guo and Zhang \cite{guozhang}.
+
+Theorems~\ref{thm:doublegerm} and \ref{thm:symcoeff} settle two precise
+parts of the incoming questions: every ordered depth-two transverse
+direction, and every fully symmetrized direction at arbitrary depth.
+They do not give each individual ordered germ at depth three and higher,
+nor do they identify a canonical renormalization independent of a chosen
+path and subtraction convention.
+

@@ -1,0 +1,317 @@
+\section{Complete Dougall jets and quartic harmonic identities}
+\label{dg:jetssection}
+
+\subsection{A holomorphic Gamma factor at the collision}
+Fix $N\ge0$. The factorization
+\begin{equation}\label{dg:EN}
+ E_N(t)=
+ \frac{\Gamma(b)\Gamma(c)\Gamma(d_0+N-t)\Gamma(1+t)}
+ {\Gamma(d_0)\Gamma(b+t)\Gamma(c+t)}
+ \prod_{r=1}^{N}\frac{(b+t-r)(c+t-r)}{t-r}
+\end{equation}
+follows from the Gamma functional equation and satisfies
+\begin{equation}\label{dg:ENidentity}
+ E_N(t)=2tG(-N+t),\qquad E_N(0)=\rho_N.
+\end{equation}
+Every denominator in the finite product is nonzero near $t=0$.
+Positive integer $b$ or $c$ may create numerator zeros; those zeros
+remain in the polynomial and are differentiated with it. Consequently
+\eqref{dg:EN} computes all Taylor coefficients without a singular
+Gamma quotient or a division by $\rho_N$.
+
+Put
+\begin{equation}\label{dg:jetcoeffs}
+ e_q=[t^q]E_N(t),\qquad c_{j,q}=[t^q]C_j(-N+t).
+\end{equation}
+The coefficients $c_{j,q}$ are finite polynomial data. The $e_q$ are
+obtained from Bell polynomials in Gamma logarithmic derivatives at
+positive arguments, followed by the finite product in \eqref{dg:EN}.
+
+\begin{theorem}[All resonant Stieltjes coefficients]\label{dg:alljets}
+For $K>N$ and $m\ge0$,
+\begin{align}
+ [t^m]R_K(-N+t)
+ ={}&\frac{e_{m+1}-c_{N,m+1}}2
+ -\sum_{h=0}^{m}c_{N,m-h}\frac{(-2)^h\gamma_h(\eta)}{h!}
+ \notag\\
+ &-\sum_{\substack{0\le j<K\\j\ne N}}\sum_{q=0}^{m}
+ c_{j,q}\frac{2^{m-q}\zeta^{(m-q)}(1-2N+2j,\eta)}{(m-q)!}.
+ \label{dg:alljetseq}
+\end{align}
+The left side equals the absolutely convergent ordinary series
+\begin{equation}\label{dg:jetseries}
+ \sum_{n=0}^{\infty}[t^m]\left\{r_n(-N+t)
+ -\sum_{j=0}^{K-1}C_j(-N+t)x_n^{2N-1-2j}e^{-2t\log x_n}\right\}.
+\end{equation}
+At $K=N+1$, the zeta derivatives in the last line of
+\eqref{dg:alljetseq} have only the negative odd arguments
+$1-2N,3-2N,\ldots,-1$.
+\end{theorem}
+\begin{proof}
+Normal convergence in Theorem~\ref{dg:master} permits coefficient
+extraction in its bracketed series. The Gamma term is $E_N(t)/(2t)$.
+The singular Hurwitz factor is
+\[
+ \zeta(1+2t,\eta)=\frac1{2t}
+          +\sum_{h\ge0}\frac{(-2)^h\gamma_h(\eta)}{h!}t^h.
+\]
+Multiplication by $C_N(-N+t)$ contributes
+$c_{N,m+1}/2$ and the first finite sum in \eqref{dg:alljetseq}.
+Every other Hurwitz factor is regular and expands by the ordinary
+Cauchy product, giving the second finite sum. The coefficient of
+$t^{-1}$ cancels by \eqref{dg:rhoidentity}. This establishes the
+formula without a limiting prescription at a pole.
+\end{proof}
+
+\begin{corollary}[Finite special-function closure]\label{dg:closure}
+At fixed $N,m$ and $K=N+1$, the resonant Taylor coefficient has a
+finite expression in Gamma and polygamma data at $b,c,d_0+N,1$,
+generalized Stieltjes constants $\gamma_h(\eta)$ with $0\le h\le m$,
+and spectral derivatives $\zeta^{(q)}(1-2r,\eta)$ with
+$1\le r\le N$ and $0\le q\le m$. Coefficients from finite Gamma
+shifts are polynomial or rational with nonsingular denominators.
+\end{corollary}
+This is a representation theorem. It asserts neither algebraic
+independence nor a minimal special-value basis. Negative-order
+Hurwitz derivatives can be changed to integrated-polygamma or
+Barnes-type normalizations, subject to the normalization conventions
+already emphasized in the incoming reports \cite{incoming-gh,incoming-sh}.
+
+At a half-integer point $u_0=-M-1/2$ there is no singular factor.
+Writing $\widehat c_{j,q}=[t^q]C_j(u_0+t)$, all its jets are simply
+\begin{align}
+ [t^m]R_{M+1}(u_0+t)
+ ={}&[t^m]G(u_0+t)\notag\\
+ &-\sum_{j=0}^{M}\sum_{q=0}^{m}\widehat c_{j,q}
+       \frac{2^{m-q}\zeta^{(m-q)}(-2M+2j,\eta)}{(m-q)!}.
+ \label{dg:halfjets}
+\end{align}
+Only nonpositive even spectral arguments occur; no generalized
+Stieltjes constant is required in this centered normalization.
+
+\subsection{An explicit Bell identity at zero excess}
+Define, for $k\ge1$,
+\begin{align}
+ L_k={}&(-1)^k\psi^{(k-1)}(d_0)+\psi^{(k-1)}(1)
+                    -\psi^{(k-1)}(b)-\psi^{(k-1)}(c),
+                    \label{dg:Lk}\\
+ T_k(n)={}&(-1)^k\psi^{(k-1)}(n+d_0)
+                    -\psi^{(k-1)}(n+b+c).
+                    \label{dg:Tk}
+\end{align}
+The $L_k$ are the logarithmic derivatives of $E_0(t)$, while $T_k(n)$
+are those of $r_n(t)$ at $t=0$. With the Bell normalization stated
+in Section~\ref{sec:scope}, Theorem~\ref{dg:alljets} gives
+\begin{align}
+ &\sum_{n=0}^{\infty}\left\{
+ r_n(0)Y_m(T_1(n),\ldots,T_m(n))
+              -\frac{(-2\log x_n)^m}{x_n}\right\}\notag\\
+ &\hspace{18mm}=
+ \boxed{\frac{Y_{m+1}(L_1,\ldots,L_{m+1})}{2(m+1)}
+              -(-2)^m\gamma_m(\eta).}\label{dg:Bellzero}
+\end{align}
+Here $Y_0=1$. The formula is for derivatives; the multiplication by
+$m!$ relative to \eqref{dg:alljetseq} explains its factor $1/(m+1)$.
+For instance,
+\begin{align}
+ \sum_{n\ge0}\left\{r_n(0)T_1(n)+\frac{2\log x_n}{x_n}\right\}
+ &=\frac{L_1^2+L_2}{4}+2\gamma_1(\eta),\label{dg:Bellone}\\
+ \sum_{n\ge0}\left\{r_n(0)(T_1(n)^2+T_2(n))
+                    -\frac{4\log^2x_n}{x_n}\right\}
+ &=\frac{L_1^3+3L_1L_2+L_3}{6}-4\gamma_2(\eta).
+ \label{dg:Belltwo}
+\end{align}
+The paired logarithmic counterterms are essential for convergence.
+
+\subsection{Finite polynomial shifts preserve every moving zero}
+There is a convenient exact identity at the summand level:
+\begin{equation}\label{dg:polynomialshift}
+ \boxed{r_n(-N+t)=r_n(t)
+             (n+d_0-t)_N(n+b+c-N+t)_N.}
+\end{equation}
+It follows from the Gamma functional equation. The base $r_n(t)$ has
+positive Gamma arguments at $t=0$; the finite polynomial contains
+every shifted reciprocal-Gamma zero. Thus all resonant summand jets
+are finite convolutions of its polynomial coefficients with the Bell
+coefficients in \eqref{dg:Tk}. This provides a direct implementation
+for all orders without singular harmonic expressions at small $n$.
+
+The distinction is substantive. A term that is zero after substituting
+$u=-N$ can have nonzero first and higher derivatives. Deleting such
+terms before constructing the deformation changes the value of the
+jet. The following family supplies a simple exact example.
+
+\subsection{Quartic central-binomial moments at all resonances}
+Set $a=b=c=d_0=1/2$ and put
+\begin{align}
+ x_n&=n+\tfrac14,\notag\\
+ w_n&=x_n\left[\frac{\Gamma(n+\tfrac12)}{\Gamma(n+1)}\right]^4
+      =\pi^2x_n\frac{\binom{2n}{n}^4}{256^n},
+                   \label{dg:wn}\\
+ P_N(X)&=\prod_{r=0}^{N-1}\{X-(r+\tfrac14)^2\}.
+                   \label{dg:PN}
+\end{align}
+The finite Gamma shift gives
+\begin{equation}\label{dg:quarticterm}
+ r_n(-N)=w_nP_N(x_n^2),\qquad
+ \rho_N=\frac{(-1)^N(\tfrac12)_N^3}{N!}.
+\end{equation}
+Using
+\[
+ \psi(\tfrac14)=-\gamma-3\log2-\frac\pi2,
+ \qquad
+ \psi(N+\tfrac12)=-\gamma-2\log2+2H_{2N}-H_N,
+\]
+Theorem~\ref{dg:closed} becomes the all-resonance identity
+\begin{align}
+ &\sum_{n=0}^{\infty}\left\{w_nP_N(x_n^2)
+            -\sum_{j=0}^{N}C_j(-N)x_n^{2N-1-2j}\right\}\notag\\
+ &\qquad=\boxed{\frac{(-1)^N(\tfrac12)_N^3}{N!}
+                  \left(H_N-H_{2N}-\frac\pi2\right).}
+                  \label{dg:quarticall}
+\end{align}
+All counterterms still follow from the finite recurrence
+\eqref{dg:hk}--\eqref{dg:recurrence}; for example,
+\begin{equation}\label{dg:quarticC1}
+ C_1(u)=\frac{u^3}{3}+\frac{u^2}{4}-\frac{u}{48}-\frac1{16}.
+\end{equation}
+They can also be built from one universal base sequence. If $\sigma_k$ denotes
+the elementary symmetric polynomial in
+$(1/4)^2,(5/4)^2,\ldots,(N-3/4)^2$, with $\sigma_0=1$, then
+\begin{equation}\label{dg:quarticcoefficienttransport}
+ C_j(-N)=\sum_{k=0}^{\min(j,N)}(-1)^k\sigma_k C_{j-k}(0).
+\end{equation}
+This follows by multiplying the polynomial $P_N(x_n^2)$ into the
+base expansion of $w_n$. Its first base coefficients are
+$C_0(0)=1$, $C_1(0)=-1/16$, $C_2(0)=3/256$, and
+$C_3(0)=-23/4096$. Thus successive moment subtractions do not require
+an independent asymptotic calculation.
+The first three cases are
+\begin{align}
+ \sum_{n\ge0}\left\{w_n-\frac1{x_n}\right\}
+       &=-\frac\pi2,\label{dg:quarticN0}\\
+ \sum_{n\ge0}\left\{n(n+\tfrac12)w_n-x_n+\frac1{8x_n}\right\}
+       &=\frac{\pi+1}{16},\label{dg:quarticN1}\\
+ \sum_{n\ge0}\left\{n(n-1)(n+\tfrac12)(n+\tfrac32)w_n
+      -x_n^3+\frac{27}{16}x_n-\frac{27}{128x_n}\right\}
+       &=-\frac{63+54\pi}{512}.\label{dg:quarticN2}
+\end{align}
+The zero-excess case \eqref{dg:quarticN0} is a recovered classical
+Ramanujan--Dougall constant, explicitly included in B\"uhring's
+partial-sum analysis \cite[Section 4, Corollaries 1--2]{buhring}.
+The uniform resonant mechanism and its complete jets are the
+continuation supplied here. The displayed higher examples are proved
+specializations, without a claim that each has no earlier appearance.
+
+\subsection{Generalized harmonic coefficients of every weight}
+For the same half-parameter family, write
+\[
+ g=\gamma+\log2,\qquad g_3=\gamma+3\log2.
+\]
+Then $T_1(n)=2(g-H_{2n})$, $L_1=2g_3$, and for $k\ge2$,
+\begin{align}
+ T_k(n)=(k-1)!\big\{&
+ (2^k-1-(-1)^k)\zeta(k)-2^kH_{2n}^{(k)}
+                  +(1+(-1)^k)H_n^{(k)}\big\},
+                    \label{dg:harmonicTk}\\
+ L_k=(k-1)!\big\{&(1-2(-1)^k)(2^k-1)+(-1)^k\big\}\zeta(k).
+                    \label{dg:harmonicLk}
+\end{align}
+These follow by substituting the standard half-integer polygamma
+values into \eqref{dg:Lk}--\eqref{dg:Tk}. In particular,
+$L_2=-2\zeta(2)$, $L_3=40\zeta(3)$, and $L_4=-84\zeta(4)$.
+Together with \eqref{dg:Bellzero}, they give an explicit all-weight
+family of generalized harmonic identities. Its first nonconstant
+member is
+\begin{equation}\label{dg:quarticharmonic1}
+ \boxed{\sum_{n\ge0}\left\{w_n(g-H_{2n})
+                         +\frac{\log x_n}{x_n}\right\}
+       =\frac{g_3^2}{2}-\frac{\zeta(2)}4+\gamma_1(\tfrac14).}
+\end{equation}
+
+At higher resonance, the stronger finite identity
+\begin{equation}\label{dg:quarticshift}
+ r_n(-N+t)=r_n(t)\prod_{r=0}^{N-1}
+                   \{x_n^2-(r+\tfrac14-t)^2\}
+\end{equation}
+supplies all harmonic summand coefficients by finite convolution.
+For $n<N$, put $k=N-n-1$. The first revived term is
+\begin{equation}\label{dg:quarticrevival}
+ [t]r_n(-N+t)=w_n(n+\tfrac12)_N n!(-1)^k k!.
+\end{equation}
+Indeed, the simple zero of $1/\Gamma(-k+t)$ has leading coefficient
+$(-1)^kk!t$; the other factors are regular. In particular,
+\begin{equation}\label{dg:revivalpi}
+ r_0(-1)=0,\qquad [t]r_0(-1+t)=\frac{\pi^2}{8}.
+\end{equation}
+
+For completeness, the full next-resonance first derivative can be
+written without any exceptional small index. For every $n\ge0$,
+\[
+ [t]r_n(-1+t)=w_n\{2n(n+\tfrac12)(g-H_{2n})+\tfrac12\}.
+\]
+Also
+\[
+ C_1(-1+t)=-\frac18+\frac{23}{48}t-\frac34t^2+\frac13t^3.
+\]
+Substituting these coefficients in \eqref{dg:alljetseq} yields
+\begin{align}
+ \sum_{n\ge0}\Bigg\{&
+ w_n\big[2n(n+\tfrac12)(g-H_{2n})+\tfrac12\big]
+ +2x_n\log x_n
+ -\frac{\tfrac14\log x_n+\tfrac{23}{48}}{x_n}\Bigg\}
+ \notag\\
+ ={}&-\frac{g_3^2}{8}+\frac{7g_3}{48}+\frac{\zeta(2)}{16}
+ -\frac1{16}-\frac{23\pi}{96}
+ -\frac{\gamma_1(\tfrac14)}4-2\zeta^{(1)}(-1,\tfrac14).
+ \label{dg:quarticN1jet}
+\end{align}
+One way to verify the constant directly is to use
+$E_1(t)=E_0(t)(t-1/2)^3/(1-t)$ in \eqref{dg:EN}, and
+\[
+ [t^2]E_1(t)=-\frac{L_1^2}{16}
+                +\frac{5L_1}{8}-\frac{L_2}{16}-\frac78.
+\]
+The formula combines a generalized harmonic summand, a Stieltjes
+constant, a negative-odd Hurwitz derivative, and the revived finite
+head. Deleting the $n=0$ summand after first substituting $u=-1$
+would change the first derivative by exactly $\pi^2/8$.
+
+\subsection{Squared-binomial harmonic jets and log-Gamma}
+The squared-binomial half-resonance family in
+\eqref{dg:binomialsquare} has an additional cancellation. At
+$a=b=c=1/2$,
+\begin{equation}\label{dg:halfdoublezero}
+ G(-\tfrac12+t)=\frac{\sqrt\pi}{2}
+       \frac{\Gamma(1-t)\Gamma(-\tfrac12+t)}{\Gamma(t)^2}
+       =-\pi t^2+O(t^3).
+\end{equation}
+Thus its constant and first Taylor coefficients vanish. Recall
+$v_n=\pi(n+1/4)\binom{2n}{n}^2/16^n$, $x_n=n+1/4$, and
+$g=\gamma+\log2$. The logarithmic derivatives of
+$r_n(-1/2+t)$ at $t=0$ are
+\[
+ 2(g-H_{2n}),\qquad
+ -2\zeta(2)+4H_{2n}^{(2)}-2H_n^{(2)}
+\]
+at orders one and two. Applying \eqref{dg:halfjets} with $M=0$,
+and using Lerch's identity for $\zeta^{(1)}(0,1/4)$
+\cite[Eq.~25.11.18]{dlmf-hurwitz}, gives
+\begin{equation}\label{dg:squaredharmonic1}
+ \boxed{\sum_{n\ge0}\{v_n(g-H_{2n})+\log x_n\}
+ =\frac12\log(2\pi)-\log\Gamma(\tfrac14).}
+\end{equation}
+The second derivative gives
+\begin{align}
+ \sum_{n\ge0}\Big\{v_n\big[(g-H_{2n})^2
+       -\tfrac12\zeta(2)+H_{2n}^{(2)}-\tfrac12H_n^{(2)}\big]
+                         -\log^2x_n\Big\}
+ =-\frac\pi2-\zeta^{(2)}(0,\tfrac14).
+ \label{dg:squaredharmonic2}
+\end{align}
+Both are single absolutely convergent bracketed sums. Equations
+\eqref{dg:halfjets} and \eqref{dg:halfdoublezero} similarly determine
+every higher harmonic jet. Here the pole-free half-resonance produces
+Hurwitz derivatives at zero, while the integer-resonance family
+\eqref{dg:Bellzero} produces generalized Stieltjes constants at the
+pole. The distinction follows from the exact centered spectrum.

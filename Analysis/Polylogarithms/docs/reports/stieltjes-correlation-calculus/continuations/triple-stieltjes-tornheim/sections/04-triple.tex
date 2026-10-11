@@ -1,0 +1,133 @@
+\section{The six-sector kernel and the triple coefficient theorem}\label{tsc:triple}
+Let $\mathbf s=(s_1,s_2,s_3)$ and let $\mathbf a=(a_1,a_2,a_3)$ have
+pairwise distinct entries modulo one. For each $k\in\{1,2,3\}$, let $i,j$
+be the other two indices in increasing order and put
+\begin{equation}\label{tsc:colors}
+ z_{ik}=e(a_k-a_i),\qquad z_{jk}=e(a_k-a_j).
+\end{equation}
+Define
+\begin{align}\label{tsc:kernel}
+ \calT(\mathbf s;\mathbf a)=\sum_{k=1}^3\bigg[&
+  e^{-\pi\ii(s_i+s_j-s_k)/2}
+       T(s_i,s_j,s_k;z_{ik},z_{jk})\notag\\
+ &+e^{\pi\ii(s_i+s_j-s_k)/2}
+       T(s_i,s_j,s_k;z_{ik}^{-1},z_{jk}^{-1})\bigg].
+\end{align}
+All six terms are entire in $\mathbf s$ by Theorem~\ref{tsc:T-entire}.
+For real spectral variables the terms in each bracket are conjugate, but
+\eqref{tsc:kernel} itself is the complex-analytic definition.
+
+\begin{theorem}[Six-sector product identity]\label{tsc:master}
+For all $\mathbf s\in\CC^3$,
+\begin{equation}\label{tsc:master-eq}
+ \left\langle\prod_{i=1}^3\calB_{s_i}(x-a_i),1\right\rangle
+       =(2\pi)^{-s_1-s_2-s_3}\calT(\mathbf s;\mathbf a).
+\end{equation}
+The left side is the separated distribution product. For $\Re s_i>0$
+it is an ordinary integral. In particular,
+\begin{equation}\label{tsc:T000-check}
+ \calT(0,0,0;\mathbf a)=2.
+\end{equation}
+\end{theorem}
+\begin{proof}
+First take $\Re s_i>1$, so all three Fourier series are absolutely
+convergent. Integration leaves exactly the triples of nonzero integers
+$(n_1,n_2,n_3)$ with $n_1+n_2+n_3=0$. Such a triple has either two
+positive entries and one negative entry, or the reverse. If $k$ is the
+negative singleton, write $n_i=m$, $n_j=n$, $n_k=-(m+n)$ with $m,n\ge1$.
+The Fourier powers contribute
+\[
+ (2\pi)^{-s_1-s_2-s_3}
+   e^{-\pi\ii(s_i+s_j-s_k)/2}
+          m^{-s_i}n^{-s_j}(m+n)^{-s_k}.
+\]
+The translation factors contribute
+$e(m(a_k-a_i)+n(a_k-a_j))=z_{ik}^m z_{jk}^n$.
+Reversing all three signs produces the other term in the bracket. The
+six disjoint sectors exhaust the Fourier constraint and give
+\eqref{tsc:master-eq}.
+
+Both sides are entire in all three variables. For the left side this was
+proved locally at separated singularities; for the right side it follows
+from the colored Mellin theorem. The identity theorem, applied successively
+to the three variables, extends the equality to all of $\CC^3$.
+For $\Re s_i>0$, the only singularity near $a_i$ is an integrable
+power $t^{s_i-1}$, so the stated ordinary-integral interpretation holds.
+Finally, separated delta functions have zero pairwise products, and
+\[
+ (\delta_{a_1}-1)(\delta_{a_2}-1)(\delta_{a_3}-1)
+    =\delta_{a_1}+\delta_{a_2}+\delta_{a_3}-1.
+\]
+Pairing with one gives \eqref{tsc:T000-check}.
+\end{proof}
+
+\subsection{All Stieltjes indices}
+Set
+\begin{equation}\label{tsc:E}
+ A=\gamma+\log(2\pi),\qquad
+ E(u)=\Gamma(1+u)(2\pi)^{-u}
+ =\exp\left(-Au+\sum_{k\ge2}\frac{(-1)^k\zeta(k)}k u^k\right).
+\end{equation}
+The power series is used near zero. Its coefficients are explicit Bell
+polynomials in $A,\zeta(2),\ldots$.
+
+\begin{theorem}[All-index triple Stieltjes closure]\label{tsc:stieltjes-triple}
+For every nonnegative triple $\mathbf m$ and every separated real shift
+triple $\mathbf a$,
+\begin{equation}\label{tsc:all-index}
+ \boxed{\displaystyle
+ \calJ_{\mathbf m}(\mathbf a)=
+  \left(\prod_{i=1}^3m_i!\right)
+  [u_1^{m_1+1}u_2^{m_2+1}u_3^{m_3+1}]
+       \left(\prod_{i=1}^3E(u_i)\right)\calT(\mathbf u;\mathbf a).}
+\end{equation}
+Every coefficient on the right is a finite combination of jets of the six
+entire colored Tornheim functions. No diagonal Laurent finite part or
+unspecified order of limits is present.
+\end{theorem}
+\begin{proof}
+Multiply \eqref{tsc:master-eq} by $\prod_i\Gamma(u_i)$ and use
+\eqref{tsc:Zlaurent}. The coefficient of
+$u_1^{m_1}u_2^{m_2}u_3^{m_3}$ on the left is
+$\calJ_{\mathbf m}/\prod_i m_i!$. Indeed, a residue factor in coordinate
+$i$ has exponent $-1$ in that coordinate and no dependence on $u_i$ in
+any other factor; it cannot contribute to a nonnegative exponent there.
+On the right, $\Gamma(u_i)=\Gamma(1+u_i)/u_i$. Moving the three simple
+coordinate denominators into the coefficient extraction gives
+\eqref{tsc:all-index}. This also proves directly that simultaneous or
+iterated coefficient extraction has the same meaning here.
+\end{proof}
+
+\subsection{The fully regularized three-digamma formula}
+Define $\mathscr D_A=\prod_{i=1}^3(\partial_{s_i}-A)$. Since each
+$\gamma_0=-\psi$, the first case of \eqref{tsc:all-index} is
+\begin{equation}\label{tsc:digamma-operator}
+ \FP\int_0^1\prod_{i=1}^3\psi(\{x-a_i\})\dd x
+       =-\left.\mathscr D_A\calT(\mathbf s;\mathbf a)\right|_{\mathbf s=0}.
+\end{equation}
+This is already a finite, fully normalized answer to the first concrete
+target in \cite{tsc:shj}. An equivalent three-term real form is useful.
+Put $\alpha=A+\pi\ii/2$. Then
+\begin{align}\label{tsc:digamma-three}
+ \FP\int_0^1\prod_{i=1}^3\psi(\{x-a_i\})\dd x
+ =-2\Re\sum_{k=1}^3
+ \left.(\partial_r-\alpha)(\partial_s-\alpha)
+       (\partial_t-\overline\alpha)
+       T(r,s,t;z_{ik},z_{jk})\right|_{r=s=t=0}.
+\end{align}
+Only derivatives of order at most one in each of the three spectral
+variables occur. The next section turns these derivatives into ordinary
+convergent integrals.
+
+\subsection{Translation and spectral lowering}
+The Fourier definition gives $\partial_x\calB_s=\calB_{s-1}$ as an
+entire distributional identity. Differentiating the separated product yields
+\begin{equation}\label{tsc:lowering}
+ \partial_{a_j}\calT(\mathbf s;\mathbf a)
+       =-2\pi\calT(\mathbf s-\mathbf e_j;\mathbf a),
+ \qquad
+ \sum_{j=1}^3\calT(\mathbf s-\mathbf e_j;\mathbf a)=0.
+\end{equation}
+The second equality also follows from simultaneous translation invariance.
+These are identities for the complete six-sector combination, not a license
+to discard sectors or their phases.

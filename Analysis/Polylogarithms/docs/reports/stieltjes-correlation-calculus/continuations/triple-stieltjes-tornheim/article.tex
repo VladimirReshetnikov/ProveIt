@@ -1,0 +1,104 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.95in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{microtype,booktabs,longtable,array,enumitem,xcolor,fancyhdr,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!50!black]{hyperref}
+\usepackage{bookmark}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Triple Stieltjes correlations}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\emergencystretch=2em
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\FP}{FP}
+\DeclareMathOperator{\PV}{PV}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\Log}{Log}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\TT}{\mathbb T}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\CC}{\mathbb C}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\ee}[1]{\mathrm e^{2\pi\ii #1}}
+\newcommand{\calB}{\mathcal B}
+\newcommand{\calJ}{\mathcal J}
+\newcommand{\calT}{\mathcal T}
+\newcommand{\calM}{\mathcal M}
+\newcommand{\Zjet}[2]{\zeta^{[#1]}(#2)}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\newcommand{\pin}{\texttt{8da6871fc2dd5762467320918ba23edd635bac4f}}
+\title{\textbf{Triple Stieltjes Correlations}\\[5pt]
+\large Colored Tornheim Jets, Harmonic Contact Terms,\\
+and Exact Gamma Reductions}
+\author{Research continuation prepared for Vladimir Reshetnikov\\
+\small ProveIt programme \quad\textbullet\quad Prepared with OpenAI ChatGPT}
+\date{10 October 2026}
+\hypersetup{pdftitle={Triple Stieltjes Correlations: Colored Tornheim Jets, Harmonic Contact Terms, and Exact Gamma Reductions},pdfauthor={Prepared for Vladimir Reshetnikov with OpenAI ChatGPT}}
+\begin{document}
+\maketitle
+\begin{abstract}
+The shifted Hurwitz-jet report in the ProveIt repository asks whether the
+canonical product of three separated Stieltjes singularities admits an
+all-index description by colored Tornheim or multiple Lerch jets. We give
+an affirmative answer: six colored Tornheim functions, each entire in its
+three spectral variables when its two colors are nontrivial, generate every
+such finite part. A second formula replaces their jets by three absolutely
+convergent logarithmic Mellin integrals of polylogarithm order derivatives,
+with an explicit endpoint constant at every index. This includes a fully
+specified formula for three digamma factors at arbitrary distinct real,
+and hence rational, shifts.
+
+The same kernel gives all three-factor mean-zero primitive products. Complete homogeneous
+harmonic numbers describe the primitives, while elementary harmonic numbers
+describe the precise contact correction between periodic differentiation
+and pointwise finite-part extension. A reflected subclass admits a stronger
+reduction: one Stieltjes function multiplied by arbitrarily many separated
+cotangent kernels reduces to finitely many single Stieltjes values. At
+index zero and rational shifts, these become finite log-Gamma evaluations.
+An explicit cubic principal value is
+$\gamma+4\log2+3\log\pi-4\log\Gamma(1/4)$.
+
+The proofs are analytic and algebraic. The accompanying implementation passes
+621 exact finite assertions and 56 numerical comparisons, including three
+independent evaluations of a genuinely singular three-digamma product.
+Floating-point checks are diagnostics, not interval certificates. Classical
+Fourier, partial-fraction, and Gamma identities are credited; global priority
+for the derived families is not asserted.
+\end{abstract}
+\vspace{5pt}
+\noindent\textbf{Claim boundary.} This article resolves the specified
+three-shift representation question. It does not prove the remaining
+$S_6$ or $S_8$ special-value conjectures, period independence, or minimal
+transcendental depth. No repository files were modified and no
+proof-assistant formalization is claimed.
+\clearpage
+\tableofcontents
+\clearpage
+\input{sections/01-scope}
+\input{sections/02-normalization}
+\input{sections/03-tornheim}
+\input{sections/04-triple}
+\input{sections/05-mellin-jets}
+\input{sections/06-primitives}
+\input{sections/07-contacts}
+\input{sections/08-reflection}
+\input{sections/09-gamma}
+\input{sections/10-audit}
+\input{sections/11-further}
+\appendix
+\input{sections/12-computation}
+\input{references}
+\end{document}

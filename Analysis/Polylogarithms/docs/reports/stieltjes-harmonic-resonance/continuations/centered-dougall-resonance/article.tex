@@ -1,0 +1,1551 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array,xcolor,xurl}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!40!black,citecolor=blue!40!black,urlcolor=blue!50!black]{hyperref}
+\usepackage{bookmark}
+\allowdisplaybreaks[2]
+\emergencystretch=2em
+\setlength{\parskip}{3pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Rea}{Re}
+\DeclareMathOperator{\Res}{Res}
+\newcommand{\Rcal}{\mathcal R}
+\newcommand{\Pcal}{\mathcal P}
+\newcommand{\Ical}{\mathfrak I}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newcommand{\pin}{\texttt{16c7e342d7a4a15f59911f322eb90b7f96c2a8b5}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Centered Dougall resonance}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\title{\textbf{Centered Dougall Resonance}\\[7pt]
+\large Exact Stieltjes Jets, Harmonic Identities,\\
+Polylogarithmic Subtraction, and Zeta Antiderivatives}
+\author{Prepared for Vladimir Reshetnikov's ProveIt programme\\
+\small Mathematical derivations and computational audit with OpenAI assistance}
+\date{10 October 2026}
+\hypersetup{pdftitle={Centered Dougall Resonance},pdfauthor={ProveIt research continuation with OpenAI assistance},pdfsubject={Exact identities for Rogers-Dougall sums, Hurwitz zeta and Stieltjes constants}}
+\begin{document}
+\maketitle
+\thispagestyle{plain}
+\begin{abstract}
+The incoming Gauss--Hurwitz article asks for a Dougall-type summation with an
+explicit residue polynomial and complete resonant spectral jets. We supply
+such a construction for the Rogers--Dougall ${}_5F_4(1)$ sum. Centering the
+summation variable at half the very-well-poised parameter removes every odd
+inverse-power correction. The spectral exponent is doubled, so integral
+and half-integral parameter values lead to two different zeta towers.
+
+At every nonpositive integer parameter, an ordinary, explicitly subtracted
+series collapses to one short digamma expression. Twice the Gamma-product
+residue is
+\[
+ \frac{(-1)^N}{N!}(d_0)_N(1-b)_N(1-c)_N.
+\]
+The decisive ingredient is a differential identity for the Bernoulli
+coefficient polynomials. It cancels all lower Hurwitz counterterms, rather
+than merely leaving a finite but lengthy expression. Every higher spectral
+jet has an explicit finite formula in Gamma/polygamma data, generalized
+Stieltjes constants, and Hurwitz-zeta derivatives at negative odd integers.
+The interlaced half-integer values instead involve nonpositive even
+integers and no Stieltjes pole.
+
+We derive all-order harmonic identities, including a first-resonance
+identity containing $\zeta'(-1)$, and a continuous-shift harmonic formula.
+Every Euler primitive of the first half-parameter harmonic jet has a closed
+zeta endpoint. A separate finite calculus gives antiderivatives of all
+collapsed resonance values in the centering parameter. The proofs are
+accompanied by 485 exact assertions and 293 numerical diagnostics at 70
+working decimal digits. Classical summation, parameter-differentiation,
+and negative-polygamma antecedents are credited explicitly; no global
+priority or proof-assistant formalization is claimed.
+\end{abstract}
+\clearpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+
+\section{Research target, provenance, and contribution}
+\label{dr:sec:scope}
+
+The canonical ProveIt manuscript connects polylogarithms, harmonic sums,
+Gamma functions, and Hurwitz-zeta jets. Its incoming article
+\emph{Gauss--Hurwitz Pole Cancellation} makes a concrete proposal in its
+Section~9, question~1: pass from Gauss summation to a fixed Dougall-type
+family whose resonance residues and complete jets can be made explicit
+\cite{incoming}. This article answers that specific proposal. It does not
+classify all generalized hypergeometric summations admitting such a
+calculus.
+
+The principal result is not a new version of Dougall's classical summation
+formula. It is the explicit centered subtraction and cancellation theorem
+below, together with its derivative and antiderivative consequences. There
+are three structural differences from the Gauss construction. The natural
+large-$n$ coordinate is $n+\kappa$; its inverse-power expansion has only even
+steps; and the exponent is $-1-2u$, not $-1-u$. Consequently the Stieltjes
+pole has residue $1/2$ as a function of $u$, while negative half-integer
+values of $u$ are regular points of the Gamma product.
+
+The central proof is short once its coefficient differential law is found.
+The surrounding analytic work is nevertheless necessary: the subtracted
+sum must converge normally, all parameter derivatives must be legitimate,
+and reciprocal-Gamma zeros must be preserved before differentiation. The
+article treats each of these points directly. Its conclusions are ordinary
+analytic identities, not deductions from small numerical residuals.
+
+\subsection{Classical inputs and the priority boundary}
+
+The Rogers--Dougall very-well-poised ${}_5F_4(1)$ identity is classical and is
+recorded as DLMF~16.4.9 \cite{dlmf-dougall}. Bernoulli expansions for Gamma
+ratios, Hurwitz-zeta continuation, and the Gamma--zeta derivative relation
+are also classical \cite{dlmf-gamma,dlmf-hurwitz}. B\"uhring's work treats the
+asymptotic behavior of generalized hypergeometric partial sums, including
+the constant-term setting relevant to resonance \cite{buhring}. Thus a
+finite-part viewpoint on divergent hypergeometric sums is not being
+introduced here.
+
+Parameter differentiation of hypergeometric identities is an established
+source of harmonic-number identities. In particular, Chu and Fu treat
+Dougall--Dixon formulas and harmonic identities \cite{chufu}; Nicholson
+gives another account of hypergeometric transformations with harmonic
+numbers \cite{nicholson}. The polynomial-weighted primitive construction
+used later belongs to the Hurwitz-zeta and negative-polygamma framework of
+Espinosa and Moll \cite{espinosa}, already present in the canonical
+integration chapter \cite{repo-integration}.
+
+The contribution supplied for integration is therefore specific: a
+parity-adapted coefficient system, its differential cancellation law, the
+all-integer collapsed formula, a degeneracy-safe all-jet identity, the
+interlaced even-argument tower, and their explicitly proved specializations.
+The limited literature inspection does not establish that each individual
+harmonic specialization is absent from earlier work.
+
+\subsection{Source scope and unresolved questions}
+
+The manuscript README and integration chapter were inspected, together
+with the incoming-directory listing and the correspondingly named Gauss--Hurwitz PDF
+in the Library. The latter's question on printed page~19 is the target
+addressed here. The last observed repository head was \pin. The source
+reads were observations of a changing branch, not an exhaustive audit of
+that entire commit. Individual file and archive identifiers are recorded
+in \file{notes/SOURCE_AUDIT.md}.
+
+The canonical README states that $S_4$ has an exact proof while $S_6$ and
+the revised $S_8$ candidate remain conjectural \cite{repo-readme}. Nothing
+in this article supplies their missing colored-polylogarithm certificates.
+No numerical independence claim, new repository commit, or pull request is
+made. The new results answer one expressly proposed research direction;
+they do not change unrelated conjecture statuses.
+
+\section{The normalized Rogers--Dougall family}
+\label{dr:sec:family}
+
+\subsection{Parameters, powers, and spectral derivatives}
+
+Throughout the main construction, fix real parameters
+\begin{equation}
+ \kappa>0,\qquad b>0,\qquad c>0,\qquad
+ d_0=1+2\kappa-b-c>0,
+ \qquad x_n=n+\kappa.
+ \label{dr:eq:domain}
+\end{equation}
+The variable $u$ is complex. Powers of $x_n$ use its real logarithm.
+A prime or a superscript on $\zeta(s,a)$ differentiates its first,
+\emph{spectral}, variable unless a parameter derivative is displayed.
+We use
+\begin{equation}
+ \zeta(1+v,a)=\frac1v+
+ \sum_{m=0}^{\infty}\frac{(-1)^m}{m!}\gamma_m(a)v^m,
+ \qquad \gamma_0(a)=-\psi(a).
+ \label{dr:eq:stieltjes}
+\end{equation}
+The ordinary Stieltjes constants are $\gamma_m=\gamma_m(1)$, with
+$\gamma_0=\gamma$ the Euler constant. The notation $(a)_N$ denotes the
+rising factorial, including $(a)_0=1$.
+
+Define the summand by
+\begin{align}
+ W_n(u)={}&x_n
+ \frac{\Gamma(n+2\kappa)\Gamma(n+b)}
+ {\Gamma(n+1)\Gamma(n+1+2\kappa-b)}
+ \frac{\Gamma(n+c)\Gamma(n+d_0-u)}
+ {\Gamma(n+1+2\kappa-c)\Gamma(n+b+c+u)}.
+ \label{dr:eq:weight}
+\end{align}
+Every reciprocal Gamma factor is interpreted as the entire function
+$1/\Gamma$. In particular, a summand is allowed to be zero. On
+$\Rea u<d_0$ all numerator Gamma arguments in \eqref{dr:eq:weight}
+have positive real part, so there are no numerator poles. The fixed
+denominator arguments are positive by \eqref{dr:eq:domain}.
+
+\subsection{The classical summation in the required normalization}
+
+Put
+\begin{equation}
+ P(u)=\frac{\Gamma(b)\Gamma(c)\Gamma(d_0-u)}
+ {\Gamma(d_0)\Gamma(b+u)\Gamma(c+u)},
+ \qquad G(u)=\frac12\Gamma(u)P(u).
+ \label{dr:eq:gamma-side}
+\end{equation}
+Then the Rogers--Dougall formula gives
+\begin{equation}
+ \sum_{n=0}^{\infty}W_n(u)=G(u),
+ \qquad 0<\Rea u<d_0.
+ \label{dr:eq:dougall}
+\end{equation}
+For clarity, its standard form is
+\begin{align}
+ &{}_5F_4\!\left(\begin{matrix}a,1+a/2,b,c,d\\
+ a/2,1+a-b,1+a-c,1+a-d\end{matrix};1\right)\notag\\
+ &\qquad=
+ \frac{\Gamma(1+a-b)\Gamma(1+a-c)\Gamma(1+a-d)
+       \Gamma(1+a-b-c-d)}
+ {\Gamma(1+a)\Gamma(1+a-b-c)\Gamma(1+a-b-d)
+       \Gamma(1+a-c-d)}.
+ \label{dr:eq:classical}
+\end{align}
+Here $\Rea(1+a-b-c-d)>0$ \cite{dlmf-dougall}. Substitute
+$a=2\kappa$ and $d=d_0-u$. The ratio
+$(1+a/2)_n/(a/2)_n=(n+\kappa)/\kappa$ produces the factor $x_n$.
+The normalization in \eqref{dr:eq:weight}, followed by
+$\Gamma(1+2\kappa)=2\kappa\Gamma(2\kappa)$, leaves exactly the factor
+$1/2$ in \eqref{dr:eq:gamma-side}.
+
+The sum of the lower hypergeometric parameters minus the sum of the upper
+ones is $2u$. Thus the usual hypergeometric excess is $2u$, even though the
+Gamma factor that detects the integral resonances is $\Gamma(u)$.
+This distinction controls every factor of two below.
+
+\section{Centered parity and normally convergent subtraction}
+\label{dr:sec:subtraction}
+
+\subsection{The coefficient polynomials}
+
+Set
+\begin{equation}
+ r_1=\kappa,\quad r_2=b-\kappa,\quad r_3=c-\kappa,
+ \quad r_4=1+\kappa-b-c-u.
+ \label{dr:eq:r}
+\end{equation}
+In the coordinate $x=x_n$ the summand becomes
+\begin{equation}
+ W_n(u)=x\prod_{i=1}^4
+           \frac{\Gamma(x+r_i)}{\Gamma(x+1-r_i)}.
+ \label{dr:eq:centered}
+\end{equation}
+Define polynomials $\ell_j$ and $A_j$ by
+\begin{align}
+ \ell_j(u)&=-\frac1{j(2j+1)}\sum_{i=1}^4B_{2j+1}(r_i),
+       &&j\geq1,\label{dr:eq:ell}\\
+ \sum_{j\geq0}A_j(u)y^j
+   &=\exp\!\left(\sum_{j\geq1}\ell_j(u)y^j\right).
+       \label{dr:eq:A}
+\end{align}
+The second identity is formal in $y$; convergence of the infinite
+asymptotic expansion is not asserted. Its finite recursion is
+\begin{equation}
+ A_0=1,\qquad A_j=\frac1j\sum_{r=1}^j r\ell_r A_{j-r}.
+ \label{dr:eq:recursion}
+\end{equation}
+For example,
+\begin{equation}
+ A_1=\ell_1,\qquad A_2=\ell_2+\frac{\ell_1^2}{2},\qquad
+ A_3=\ell_3+\ell_1\ell_2+\frac{\ell_1^3}{6}.
+ \label{dr:eq:first-A}
+\end{equation}
+These expressions are polynomials with rational coefficients in
+$\kappa,b,c,u$.
+
+\begin{lemma}[Even inverse-power expansion]
+\label{dr:lem:parity}
+For every fixed positive integer $K$,
+\begin{equation}
+ W_n(u)=x_n^{-1-2u}
+ \left(\sum_{j=0}^{K-1}A_j(u)x_n^{-2j}
+             +O(x_n^{-2K})\right).
+ \label{dr:eq:asymptotic}
+\end{equation}
+The remainder is locally uniform in the admissible parameters and in
+$u$ with $\Rea u<d_0$. After $m$ spectral derivatives, the error is
+$O(x_n^{-1-2\Rea u-2K}(1+\log^m x_n))$ on such compact sets.
+\end{lemma}
+
+\begin{proof}
+The classical logarithmic Gamma-ratio expansion is
+\begin{align*}
+ \log\frac{\Gamma(x+r)}{\Gamma(x+1-r)}
+ \sim{}&(2r-1)\log x\\
+ &+\sum_{k\geq1}\frac{(-1)^{k+1}
+          \bigl(B_{k+1}(r)-B_{k+1}(1-r)\bigr)}{k(k+1)x^k}.
+\end{align*}
+It follows from the shifted Stirling expansion, uniformly for $r$ in
+compact sets \cite{dlmf-gamma}. Since
+$B_m(1-r)=(-1)^mB_m(r)$, the coefficient is zero when $k$ is odd. For
+$k=2j$ it equals $-B_{2j+1}(r)/(j(2j+1))$.
+Furthermore $\sum_i r_i=1-u$, so the prefactor $x$ in
+\eqref{dr:eq:centered} gives total exponent
+$1+\sum_i(2r_i-1)=-1-2u$. Summation and formal exponentiation give
+\eqref{dr:eq:asymptotic} and \eqref{dr:eq:recursion}.
+
+For the derivative statement, first multiply the difference in
+\eqref{dr:eq:asymptotic} by $x_n^{1+2u}$. Its analytic remainder is
+$O(x_n^{-2K})$ uniformly in a slightly larger parameter neighborhood.
+Cauchy's estimates give the same order for its fixed spectral
+derivatives. Differentiating the removed factor $x_n^{-1-2u}$ then
+contributes only powers of $-2\log x_n$. The finitely many initial
+summands do not affect the argument.
+\end{proof}
+
+\begin{definition}[Specified subtraction]
+For $K\geq1$, define
+\begin{equation}
+ \Rcal_K(u)=\sum_{n=0}^{\infty}
+ \left[W_n(u)-\sum_{j=0}^{K-1}
+           A_j(u)x_n^{-1-2u-2j}\right].
+ \label{dr:eq:R-definition}
+\end{equation}
+The bracket is a single summand; its components need not be separately
+summable.
+\end{definition}
+
+\begin{theorem}[Holomorphic subtraction identity]
+\label{dr:thm:subtraction}
+The series \eqref{dr:eq:R-definition} converges absolutely and normally
+on
+\begin{equation}
+ -K<\Rea u<d_0.
+ \label{dr:eq:strip}
+\end{equation}
+Every fixed spectral derivative can be taken term by term. On that strip,
+with removable values understood,
+\begin{equation}
+ \Rcal_K(u)=G(u)-\sum_{j=0}^{K-1}
+                      A_j(u)\zeta(1+2u+2j,\kappa).
+ \label{dr:eq:subtraction}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+On a compact subset of \eqref{dr:eq:strip}, Lemma~\ref{dr:lem:parity}
+majorizes the bracket and each fixed derivative by a constant times
+$n^{-1-\epsilon}(1+\log^m n)$ for some $\epsilon>0$. This proves normal
+convergence and holomorphy. On the nonempty substrip $0<\Rea u<d_0$,
+all terms can be summed separately, and \eqref{dr:eq:dougall} gives
+\eqref{dr:eq:subtraction}. The identity theorem extends it throughout
+\eqref{dr:eq:strip}. Any poles on its displayed right side must be
+removable because the left side is holomorphic.
+\end{proof}
+
+This theorem constructs an ordinary convergent function, not an
+unspecified finite part. In particular, at $u=-N$ the minimal generic
+choice $K=N+1$ leaves summands of size $O(n^{-3})$, and its $m$th
+spectral derivative has summands $O(n^{-3}(1+\log^m n))$. The estimates
+serve only to justify the exact identities.
+
+\section{The residue polynomial and complete constant-term collapse}
+\label{dr:sec:collapse}
+
+\begin{theorem}[Explicit residue and coefficient differential law]
+\label{dr:thm:coefficient-law}
+Let $N\geq0$ and define
+\begin{equation}
+ \rho_N=\frac{(-1)^N}{N!}(d_0)_N(1-b)_N(1-c)_N.
+ \label{dr:eq:rho}
+\end{equation}
+Then
+\begin{equation}
+ A_N(-N)=\rho_N.
+ \label{dr:eq:residue}
+\end{equation}
+With $D=\partial_\kappa+\partial_b+\partial_c$, acting on the
+polynomials with $d_0=1+2\kappa-b-c$, one also has
+\begin{equation}
+ (\partial_u-D)A_N(u)=
+      \sum_{r=1}^N\frac{B_{2r}(\kappa)}r A_{N-r}(u).
+ \label{dr:eq:law}
+\end{equation}
+The sum is empty when $N=0$.
+\end{theorem}
+
+\begin{proof}
+The residue of $G(u)$ at $u=-N$ is $\rho_N/2$, since
+\[
+ \frac{\Gamma(b)}{\Gamma(b-N)}=(-1)^N(1-b)_N,
+ \qquad \frac{\Gamma(d_0+N)}{\Gamma(d_0)}=(d_0)_N.
+\]
+The Gamma quotient identities hold by polynomial continuation at zeros.
+In \eqref{dr:eq:subtraction} with $K=N+1$, only the $j=N$ zeta
+counterterm can have a pole there. Its residue as a function of $u$ is
+$A_N(-N)/2$. Holomorphy proves \eqref{dr:eq:residue}. Since both sides
+are polynomials in the fixed parameters, the identity is a polynomial
+identity, not merely a generic numerical equality.
+
+For the differential law observe that $D d_0=0$. The operator
+$E=\partial_u-D$ acts on the four variables in \eqref{dr:eq:r} by
+\[
+ Er_1=-1,\qquad Er_2=Er_3=Er_4=0.
+\]
+Using $B_j'=jB_{j-1}$ in \eqref{dr:eq:ell} gives
+$E\ell_r=B_{2r}(\kappa)/r$. Apply $E$ to the formal exponential
+\eqref{dr:eq:A}, multiply its two formal series, and compare the
+coefficient of $y^N$. This proves \eqref{dr:eq:law} at every order.
+\end{proof}
+
+\begin{theorem}[Collapsed value at every integral resonance]
+\label{dr:thm:collapse}
+For every integer $N\geq0$, under \eqref{dr:eq:domain},
+\begin{align}
+ \Rcal_{N+1}(-N)=\frac{\rho_N}{2}
+ \bigl[\psi(N+1)-\psi(d_0+N)-\psi(b)-\psi(c)
+                  +2\psi(\kappa)\bigr].
+ \label{dr:eq:collapse}
+\end{align}
+This formula remains valid when $b$ or $c$ belongs to $\{1,\ldots,N\}$;
+its right side is then zero, without any singular digamma factor.
+\end{theorem}
+
+\begin{proof}
+First assume $b-N$ and $c-N$ are not nonpositive integers. Near $u=-N$,
+write $u=-N+t$ and expand
+\begin{equation}
+ G(-N+t)=\frac{\rho_N}{2t}
+ +\frac{\rho_N}{2}
+ \bigl[\psi(N+1)-\psi(d_0+N)-\psi(b-N)-\psi(c-N)\bigr]
+ +O(t).
+ \label{dr:eq:G-constant}
+\end{equation}
+The polar counterterm has constant coefficient
+\[
+ A_N(-N+t)\zeta(1+2t,\kappa)
+ =\frac{\rho_N}{2t}+\frac12A_N'(-N)-\rho_N\psi(\kappa)+O(t).
+\]
+For the remaining terms, the Bernoulli special values give
+\[
+ \sum_{j=0}^{N-1}A_j(-N)\zeta(1-2(N-j),\kappa)
+ =-\frac12\sum_{r=1}^N\frac{B_{2r}(\kappa)}r A_{N-r}(-N).
+\]
+Substitute these three expressions into \eqref{dr:eq:subtraction}.
+Equation~\eqref{dr:eq:law} cancels the entire Bernoulli sum against
+$A_N'(-N)-D\rho_N$. The surviving value is the constant coefficient
+in \eqref{dr:eq:G-constant}, minus $D\rho_N/2$, plus
+$\rho_N\psi(\kappa)$.
+
+Since $D d_0=0$, logarithmic differentiation of the two remaining rising
+factorials gives
+\[
+ D\rho_N=\rho_N\sum_{r=1}^N
+           \left(\frac1{b-r}+\frac1{c-r}\right).
+\]
+Finally,
+$\psi(b)-\psi(b-N)=\sum_{r=1}^N(b-r)^{-1}$, and similarly for $c$.
+This proves \eqref{dr:eq:collapse} generically. Both the normally
+convergent left side and the final right side are continuous, indeed
+locally analytic, throughout \eqref{dr:eq:domain}. The final right side
+contains digamma functions only at positive arguments. Taking limits
+therefore proves the asserted degenerate cases as well.
+\end{proof}
+
+The zeroth resonance is particularly transparent:
+\begin{equation}
+ \sum_{n=0}^{\infty}\left[W_n(0)-\frac1{n+\kappa}\right]
+ =\psi(\kappa)-\frac12\bigl[\gamma+\psi(d_0)+\psi(b)+\psi(c)\bigr].
+ \label{dr:eq:Nzero}
+\end{equation}
+At higher resonances the raw subtracted expression contains several
+Bernoulli polynomials and derivatives of asymptotic coefficients.
+Theorem~\ref{dr:thm:collapse} says that all of them disappear from its
+final value. The differential law, rather than a finite check at selected
+$N$, explains this cancellation.
+
+\section{Every spectral jet, including reciprocal-Gamma zeros}
+\label{dr:sec:jets}
+
+\subsection{A holomorphic Gamma factor}
+
+For $N\geq0$ define the analytic germ
+\begin{equation}
+ Q_N(t)=\frac{(-1)^N}{N!}\Gamma(1+t)
+       \prod_{r=1}^N(1-t/r)^{-1}P(-N+t).
+ \label{dr:eq:Q}
+\end{equation}
+The empty product is one. The elementary Gamma recurrence gives
+\begin{equation}
+ G(-N+t)=\frac{Q_N(t)}{2t},\qquad Q_N(0)=\rho_N.
+ \label{dr:eq:Q-identity}
+\end{equation}
+The factors $1/\Gamma(b-N+t)$ and $1/\Gamma(c-N+t)$ in $P$ remain
+entire factors. Formula~\eqref{dr:eq:Q} therefore defines all jets even
+when $\rho_N=0$.
+
+Put $a_j(t)=A_j(-N+t)$. The subtraction theorem and
+\eqref{dr:eq:stieltjes} yield the following analytic identity of germs:
+\begin{align}
+ \Rcal_{N+1}(-N+t)={}&\frac{Q_N(t)-a_N(t)}{2t}
+ -a_N(t)\sum_{k\geq0}\frac{(-2)^k}{k!}\gamma_k(\kappa)t^k\notag\\
+ &-\sum_{j=0}^{N-1}a_j(t)
+              \zeta(1-2(N-j)+2t,\kappa).
+ \label{dr:eq:jet-generator}
+\end{align}
+The first quotient is holomorphic because its numerator vanishes at zero.
+There is no division by $\rho_N$.
+
+\begin{theorem}[Finite closure of all integral-resonance jets]
+\label{dr:thm:jets}
+Write $q_r=[t^r]Q_N(t)$ and $a_{j,r}=[t^r]A_j(-N+t)$.
+For every integer $m\geq0$,
+\begin{align}
+ \frac{\Rcal_{N+1}^{(m)}(-N)}{m!}
+ ={}&\frac{q_{m+1}-a_{N,m+1}}2
+ -\sum_{r=0}^m a_{N,r}
+                 \frac{(-2)^{m-r}\gamma_{m-r}(\kappa)}{(m-r)!}
+                 \notag\\
+ &-\sum_{j=0}^{N-1}\sum_{r=0}^m a_{j,r}
+    \frac{2^{m-r}\zeta^{(m-r)}(1-2(N-j),\kappa)}{(m-r)!}.
+ \label{dr:eq:all-jets}
+\end{align}
+Thus the zeta spectral arguments outside the Stieltjes part belong to
+$\{-1,-3,\ldots,1-2N\}$. Stieltjes orders are at most $m$, and the
+Gamma germ is required only through Taylor degree $m+1$.
+\end{theorem}
+
+\begin{proof}
+Take the coefficient of $t^m$ in \eqref{dr:eq:jet-generator}. All germs
+are holomorphic near zero, so ordinary Cauchy products apply. The
+termwise differentiated convergent series represents the same coefficient
+by Theorem~\ref{dr:thm:subtraction}. The finite formula remains valid at
+reciprocal-Gamma zeros because \eqref{dr:eq:Q} is their analytic Taylor
+expansion, not a logarithmic expansion divided by a zero value.
+\end{proof}
+
+\subsection{Bell-polynomial formulas away from zeros}
+
+We normalize complete exponential Bell polynomials by
+\begin{equation}
+ \exp\left(\sum_{r\geq1}h_r\frac{t^r}{r!}\right)
+       =\sum_{r\geq0}Y_r(h_1,\ldots,h_r)\frac{t^r}{r!},
+ \qquad Y_0=1.
+ \label{dr:eq:Bell}
+\end{equation}
+When $b-N$ and $c-N$ avoid nonpositive integers, the logarithmic
+coefficients of $Q_N$ are
+\begin{align}
+ h_{N,r}={}&\psi^{(r-1)}(1)+(r-1)!H_N^{(r)}
+ +(-1)^r\psi^{(r-1)}(d_0+N)\notag\\
+ &-\psi^{(r-1)}(b-N)-\psi^{(r-1)}(c-N),
+ \label{dr:eq:hN}
+\end{align}
+where $H_N^{(r)}=\sum_{j=1}^N j^{-r}$. Consequently
+\begin{equation}
+ q_r=\frac{\rho_N}{r!}Y_r(h_{N,1},\ldots,h_{N,r}).
+ \label{dr:eq:q-Bell}
+\end{equation}
+This convenient form is not the definition at a zero of $\rho_N$.
+The safe computational alternative is to shift every problematic
+reciprocal Gamma factor to a positive argument:
+\begin{equation}
+ \frac1{\Gamma(w+t)}=
+ \frac{\prod_{j=0}^{L-1}(w+j+t)}{\Gamma(w+L+t)},
+ \qquad w+L>0.
+ \label{dr:eq:rgamma-safe}
+\end{equation}
+Expand the polynomial numerator and the nonzero Gamma germ separately.
+The code implements precisely this operation.
+
+\subsection{The zero-excess family in closed Bell form}
+
+At $N=0$, $A_0=1$ and $Q_0(0)=1$. Set
+\begin{equation}
+ h_r=\psi^{(r-1)}(1)+(-1)^r\psi^{(r-1)}(d_0)
+      -\psi^{(r-1)}(b)-\psi^{(r-1)}(c).
+ \label{dr:eq:hzero}
+\end{equation}
+The general formula simplifies to
+\begin{equation}
+ \Rcal_1^{(m)}(0)=
+ \frac{Y_{m+1}(h_1,\ldots,h_{m+1})}{2(m+1)}
+                 -(-2)^m\gamma_m(\kappa).
+ \label{dr:eq:zero-jets}
+\end{equation}
+For instance,
+\begin{align}
+ \Rcal_1(0)&=h_1/2-\gamma_0(\kappa),\notag\\
+ \Rcal_1'(0)&=(h_1^2+h_2)/4+2\gamma_1(\kappa),\notag\\
+ \Rcal_1''(0)&=(h_1^3+3h_1h_2+h_3)/6-4\gamma_2(\kappa).
+ \label{dr:eq:first-jets}
+\end{align}
+No integer-relation search is involved in these identities.
+
+\section{Half-integral values and exact polynomial degeneracies}
+\label{dr:sec:half}
+
+\subsection{The interlaced even-argument tower}
+
+\begin{theorem}[Half-integral spectral values]
+\label{dr:thm:half}
+For $N\geq0$, put $u_*=-N-\tfrac12$. Then
+\begin{equation}
+ \Rcal_{N+1}(u_*)=G(u_*)+
+ \sum_{j=0}^N A_j(u_*)
+       \frac{B_{2(N-j)+1}(\kappa)}{2(N-j)+1}.
+ \label{dr:eq:half}
+\end{equation}
+Every fixed spectral derivative at $u_*$ is a finite expression in Gamma
+jets and Hurwitz-zeta derivatives at $0,-2,\ldots,-2N$; no Stieltjes
+Laurent coefficient is needed.
+\end{theorem}
+
+\begin{proof}
+At $u_*$ the counterterm spectral argument is $2(j-N)$, never one.
+Also $\Gamma(u_*)$ is finite. Substitute directly in
+\eqref{dr:eq:subtraction} and use
+$\zeta(-m,a)=-B_{m+1}(a)/(m+1)$. Ordinary differentiation of the same
+holomorphic identity gives the jet statement. Here the minimal subtraction
+has terms $O(n^{-2})$, and the derivatives have the corresponding
+logarithmic factors.
+\end{proof}
+
+The first case is
+\begin{equation}
+ \Rcal_1(-\tfrac12)=\kappa-\tfrac12-
+ \sqrt\pi\frac{\Gamma(b)\Gamma(c)\Gamma(d_0+\tfrac12)}
+ {\Gamma(d_0)\Gamma(b-\tfrac12)\Gamma(c-\tfrac12)}.
+ \label{dr:eq:first-half}
+\end{equation}
+The different parity of the two zeta towers is a consequence of centered
+very-well-poised symmetry, not a rule that applies to arbitrary Gamma
+ratios.
+
+\subsection{The symmetric half-parameter line}
+
+Take $\kappa=b=c=\tfrac12$, so $d_0=1$. The summand simplifies to
+\begin{equation}
+ W_n(u)=\frac{\Gamma(n+1-u)}{(n+\tfrac12)\Gamma(n+1+u)}.
+ \label{dr:eq:half-weight}
+\end{equation}
+At negative integer and negative half-integer parameters, the Gamma
+recurrence gives two exact finite products. Writing $x=n+\tfrac12$,
+\begin{align}
+ W_n(-N)&=\frac1x\prod_{r=1}^N\left(x^2-(r-\tfrac12)^2\right),
+        \label{dr:eq:integer-product}\\
+ W_n(-N-\tfrac12)&=\prod_{r=1}^N(x^2-r^2).
+        \label{dr:eq:half-product}
+\end{align}
+These include any initial zero summands, by reciprocal-Gamma continuation.
+Their asymptotic expansions terminate identically. In particular,
+\begin{equation}
+ \Rcal_{N+1}(-N)=\Rcal_{N+1}(-N-\tfrac12)=0
+ \quad\text{on this parameter line}.
+ \label{dr:eq:zero-remainders}
+\end{equation}
+For the integer case,
+\begin{equation}
+ A_j(-N)=(-1)^j e_j\bigl((\tfrac12)^2,(\tfrac32)^2,
+                         \ldots,(N-\tfrac12)^2\bigr),
+ \label{dr:eq:elementary-coeff}
+\end{equation}
+with $A_j(-N)=0$ for $j>N$. Its final coefficient is
+$\rho_N=(-1)^N(\tfrac12)_N^2$.
+
+\begin{proposition}[An additional exact polynomial locus]
+\label{dr:prop:integer-b}
+If $N\geq1$ and $b=m\in\{1,\ldots,N\}$, then, under
+\eqref{dr:eq:domain},
+\begin{equation}
+ W_n(-N)=x_n
+ \prod_{r=1}^{m-1}\bigl(x_n^2-(\kappa-r)^2\bigr)
+ \prod_{r=1}^{N-m}\bigl(x_n^2-(\kappa-c+r)^2\bigr).
+ \label{dr:eq:integer-b}
+\end{equation}
+Thus its centered expansion ends at $j=N-1$ and
+$\Rcal_{N+1}(-N)=0$ term by term. There is a symmetric assertion with
+$b$ and $c$ exchanged.
+\end{proposition}
+
+\begin{proof}
+In \eqref{dr:eq:weight}, combine the first pair of relevant Gamma
+quotients as
+\[
+ \frac{\Gamma(n+m)}{\Gamma(n+1)}
+ \frac{\Gamma(n+2\kappa)}{\Gamma(n+1+2\kappa-m)}
+ =\prod_{r=1}^{m-1}(n+r)(n+2\kappa-r).
+\]
+The other pair, with $q=N-m$, is
+\[
+ \frac{\Gamma(n+c)}{\Gamma(n+c-q)}
+ \frac{\Gamma(n+1+2\kappa-c+q)}{\Gamma(n+1+2\kappa-c)}
+ =\prod_{r=1}^{q}(n+c-r)(n+2\kappa-c+r).
+\]
+Center each pair at $x_n$. Polynomial continuation handles all zero
+reciprocal Gamma values. This proves \eqref{dr:eq:integer-b} and the
+remaining conclusions.
+\end{proof}
+
+A specialized polynomial identity cannot be differentiated in $u$ after
+$u$ has been fixed. The transverse spectral derivatives contain information
+lost by that specialization. The next section gives a concrete example.
+
+\section{Exact harmonic-number identities}
+\label{dr:sec:harmonic}
+
+\subsection{The general all-order harmonic form}
+
+For $r\geq1$, let
+\begin{equation}
+ g_{n,r}=(-1)^r\psi^{(r-1)}(n+d_0)
+                   -\psi^{(r-1)}(n+b+c).
+ \label{dr:eq:g}
+\end{equation}
+Differentiating the logarithm of \eqref{dr:eq:weight} at zero gives
+\begin{equation}
+ \left.\partial_u^mW_n(u)\right|_{u=0}
+   =W_n(0)Y_m(g_{n,1},\ldots,g_{n,m}).
+ \label{dr:eq:W-Bell}
+\end{equation}
+Hence \eqref{dr:eq:zero-jets} is the ordinary convergent identity
+\begin{align}
+ &\sum_{n=0}^{\infty}
+ \left[W_n(0)Y_m(g_{n,1},\ldots,g_{n,m})
+               -\frac{(-2\log x_n)^m}{x_n}\right]\notag\\
+ &\hspace{20mm}=
+ \frac{Y_{m+1}(h_1,\ldots,h_{m+1})}{2(m+1)}
+                  -(-2)^m\gamma_m(\kappa).
+ \label{dr:eq:general-harmonic}
+\end{align}
+The polygamma differences are generalized harmonic numbers. With
+$H_n^{(r)}(a)=\sum_{j=0}^{n-1}(j+a)^{-r}$,
+\begin{equation}
+ \psi^{(r-1)}(n+a)=\psi^{(r-1)}(a)
+                  +(-1)^{r-1}(r-1)!H_n^{(r)}(a).
+ \label{dr:eq:harmonic-conversion}
+\end{equation}
+Thus \eqref{dr:eq:general-harmonic} is an explicit all-order family of
+Gamma-weighted harmonic identities. The compact normal convergence proof
+already justifies every coefficient interchange.
+
+\subsection{A half-parameter family without Gamma weights}
+
+On the symmetric line of \eqref{dr:eq:half-weight}, $W_n(0)=1/x_n$.
+Put $L=\log2$ and $A=\gamma+2L$. The right-side Bell data become
+\begin{equation}
+ h_1=2A,\qquad
+ h_r=\begin{cases}
+ -2(2^r-2)(r-1)!\zeta(r),&r\geq2\text{ even},\\
+  2(2^r-1)(r-1)!\zeta(r),&r\geq3\text{ odd}.
+ \end{cases}
+ \label{dr:eq:half-h}
+\end{equation}
+The left-side data are
+\begin{equation}
+ g_{n,1}=-2(H_n-\gamma),\qquad
+ g_{n,r}=\begin{cases}
+ 0,&r\geq2\text{ even},\\
+ 2(r-1)!\bigl(\zeta(r)-H_n^{(r)}\bigr),&r\geq3\text{ odd}.
+ \end{cases}
+ \label{dr:eq:half-g}
+\end{equation}
+Here $H_n=\sum_{j=1}^n j^{-1}$ and $H_0=0$. Substitution in
+\eqref{dr:eq:general-harmonic} gives every order in ordinary harmonic
+numbers and zeta tails, with no Gamma weights remaining.
+
+At order one this yields
+\begin{equation}
+ \sum_{n=0}^{\infty}
+ \frac{H_n-\gamma-\log(n+\tfrac12)}{n+\tfrac12}
+ =\frac{\zeta(2)-\gamma^2-2L^2-2\gamma_1}{2}.
+ \label{dr:eq:harmonic-one}
+\end{equation}
+At order two it gives
+\begin{equation}
+ \sum_{n=0}^{\infty}
+ \frac{(H_n-\gamma)^2-\log^2(n+\tfrac12)}{n+\tfrac12}
+ =\frac{A^3}{3}-A\zeta(2)+\frac76\zeta(3)-\gamma_2(\tfrac12).
+ \label{dr:eq:harmonic-two}
+\end{equation}
+For reference, differentiation of
+$\zeta(s,\tfrac12)=(2^s-1)\zeta(s)$ at its Laurent pole gives
+\begin{align}
+ \gamma_1(\tfrac12)&=\gamma_1-2\gamma L-L^2,\notag\\
+ \gamma_2(\tfrac12)&=\gamma_2-4L\gamma_1+2\gamma L^2+\frac23L^3.
+ \label{dr:eq:half-stieltjes}
+\end{align}
+The first summands in \eqref{dr:eq:harmonic-one} are $O(n^{-3})$;
+those in \eqref{dr:eq:harmonic-two} are $O(n^{-3}\log n)$.
+
+\subsection{A first-resonance identity with a revived head}
+
+The same half-parameter family has
+\begin{equation}
+ A_1(u)=\frac{u(4u^2-1)}{12},\quad
+ A_1(-1)=-\frac14,\quad A_1'(-1)=\frac{11}{12},\quad
+ A_1''(-1)=-2.
+ \label{dr:eq:A1-half}
+\end{equation}
+For $n\geq1$,
+\begin{align}
+ W_n(-1)&=\frac{n(n+1)}{n+\tfrac12},\notag\\
+ W_n'(-1)&=\frac{n(n+1)}{n+\tfrac12}
+       \left[-2(H_n-\gamma)+\frac1{n(n+1)}\right].
+ \label{dr:eq:W1-half}
+\end{align}
+The initial term must be computed separately. In a local coordinate $t$,
+\begin{equation}
+ W_0(-1+t)=\frac{2\Gamma(2-t)}{\Gamma(t)}=2t+O(t^2).
+ \label{dr:eq:revived-head}
+\end{equation}
+Thus $W_0(-1)=0$ but $W_0'(-1)=2$. After subtracting the derivative
+of the two counterterms, the initial bracket is $1/6$.
+
+\begin{corollary}[An explicit $\zeta'(-1)$ harmonic identity]
+\label{dr:cor:first-resonance}
+One has
+\begin{align}
+ &\frac16+\sum_{n=1}^{\infty}
+ \left[\frac{2n(n+1)}{n+\tfrac12}
+       \bigl(\log(n+\tfrac12)-H_n+\gamma\bigr)
+       +\frac1{12(n+\tfrac12)}\right]\notag\\
+ &\qquad=\zeta'(-1)+\frac{\zeta(2)}4-\frac{\gamma^2}4
+        -\frac{\gamma_1}2-\frac{L^2}2+\frac\gamma{12}+\frac L4.
+ \label{dr:eq:first-resonance-harmonic}
+\end{align}
+\end{corollary}
+
+\begin{proof}
+The bracket is $\partial_u\Rcal_2(u)|_{u=-1}$ by
+\eqref{dr:eq:A1-half}--\eqref{dr:eq:revived-head}. For this specialization,
+\begin{equation}
+ Q_1(t)=-\frac{\pi\Gamma(1+t)\Gamma(1-t)}{\Gamma(-\tfrac12+t)^2}.
+ \label{dr:eq:Q1-half}
+\end{equation}
+Insert its Taylor coefficients and \eqref{dr:eq:A1-half} into
+\eqref{dr:eq:all-jets} with $N=m=1$. Direct simplification gives
+\[
+ -\frac{A^2}{4}+\frac A{12}+\frac{\zeta(2)}4
+ -\frac{\gamma_1(\tfrac12)}2-2\zeta'(-1,\tfrac12).
+\]
+Use \eqref{dr:eq:half-stieltjes} and
+$\zeta'(-1,\tfrac12)=-\zeta'(-1)/2-L/24$. This is precisely the
+right side of \eqref{dr:eq:first-resonance-harmonic}. Normal convergence
+of the differentiated subtraction proves ordinary convergence of the
+printed series.
+\end{proof}
+
+The values of the left sides of \eqref{dr:eq:harmonic-one},
+\eqref{dr:eq:harmonic-two}, and \eqref{dr:eq:first-resonance-harmonic}
+begin, respectively,
+\[
+ 0.24824090308572918127,\qquad
+ -0.27295567580201109333,\qquad
+ 0.18008740839086106049.
+\]
+These decimals are diagnostic illustrations of the proved formulas.
+
+\section{Continuous shifts and exact Euler-primitive endpoints}
+\label{dr:sec:harmonic-primitives}
+
+For $a>0$ and integer $p\geq1$, let
+\begin{equation}
+ S_p(a)=\sum_{n=0}^{\infty}
+       \frac{H_n-\gamma-\log(n+a)}{(n+a)^p}.
+ \label{dr:eq:Sp}
+\end{equation}
+The numerator is $O(n^{-1})$, locally uniformly in $a$, so these are
+ordinary absolutely convergent sums even at $p=1$.
+
+\begin{theorem}[A continuous-shift harmonic closure]
+\label{dr:thm:Sp}
+For every $a>0$,
+\begin{equation}
+ S_1(a)=\frac{\zeta(2,a)-\psi(a)^2}{2}-\gamma_1(a)-\zeta(2).
+ \label{dr:eq:S1-general}
+\end{equation}
+For every integer $p\geq2$,
+\begin{align}
+ S_p(a)={}&\psi(a)\zeta(p,a)+\frac p2\zeta(p+1,a)
+              +\zeta'(p,a)\notag\\
+ &-\frac12\sum_{j=2}^{p-1}\zeta(j,a)\zeta(p+1-j,a).
+ \label{dr:eq:Sp-general}
+\end{align}
+An empty sum is zero.
+\end{theorem}
+
+\begin{proof}
+Begin with a classical beta differentiation. The expansion at $v=0$ is
+\begin{equation}
+ B(a,v)=\frac1v-(\gamma+\psi(a))
+ +\frac v2\bigl((\gamma+\psi(a))^2+\zeta(2)-\psi'(a)\bigr)
+ +O(v^2).
+ \label{dr:eq:beta}
+\end{equation}
+For $v>0$, differentiation under Euler's beta integral gives
+$\partial_a\partial_vB(a,v)$. At $v=0$ this mixed derivative remains
+an ordinary convergent integral: its integrand is
+$t^{a-1}\log t\log(1-t)/(1-t)$, which is integrable at both endpoints.
+Using
+$\sum_{n\geq0}H_nt^n=-\log(1-t)/(1-t)$, it follows that
+\begin{equation}
+ \sum_{n\geq0}\frac{H_n}{(n+a)^2}
+       =(\psi(a)+\gamma)\psi'(a)-\frac12\psi''(a).
+ \label{dr:eq:Hp2}
+\end{equation}
+The integral interchange can also be justified by monotone convergence,
+since its expanded summands are nonnegative for $a>0$.
+
+Differentiate \eqref{dr:eq:Hp2} $p-2$ times in $a$, and multiply by
+$(-1)^{p-2}/(p-1)!$. The series derivatives converge normally on compact
+subintervals of $a>0$. Substituting
+$\psi^{(r)}(a)=(-1)^{r+1}r!\zeta(r+1,a)$ gives
+\begin{equation}
+ \sum_{n\geq0}\frac{H_n}{(n+a)^p}
+ = (\psi(a)+\gamma)\zeta(p,a)+\frac p2\zeta(p+1,a)
+ -\frac12\sum_{j=2}^{p-1}\zeta(j,a)\zeta(p+1-j,a).
+ \label{dr:eq:Hp}
+\end{equation}
+For the last sum, the Leibniz coefficient before symmetrization is
+$(p-j)/(p-1)$; the coefficient paired under $j\mapsto p+1-j$ adds to
+one. Subtract $\gamma\zeta(p,a)$ and use
+$\sum\log(n+a)/(n+a)^p=-\zeta'(p,a)$ to obtain
+\eqref{dr:eq:Sp-general}.
+
+To prove \eqref{dr:eq:S1-general}, termwise differentiation gives
+$S_1'(a)=-\zeta(2,a)-S_2(a)$. Differentiating
+\eqref{dr:eq:stieltjes} in $a$ and using
+$\partial_a\zeta(s,a)=-s\zeta(s+1,a)$ gives
+\begin{equation}
+ \gamma_1'(a)=\zeta(2,a)+\zeta'(2,a).
+ \label{dr:eq:gamma1-derivative}
+\end{equation}
+Consequently the derivative of
+$\tfrac12(\zeta(2,a)-\psi(a)^2)-\gamma_1(a)$ is also
+$-\zeta(2,a)-S_2(a)$. Their difference is constant on $a>0$.
+Evaluate it at $a=1/2$ using \eqref{dr:eq:harmonic-one} and
+\eqref{dr:eq:half-stieltjes}; the constant is $-\zeta(2)$.
+\end{proof}
+
+The beta-differentiation method and the underlying zeta identities are
+classical. Their role here is to evaluate an entire primitive family of
+the newly organized spectral identity, not to assert literature priority
+for \eqref{dr:eq:Hp}.
+
+At the half shift, \eqref{dr:eq:Sp-general} reduces entirely to Riemann
+zeta values and derivatives:
+\begin{align}
+ S_p(\tfrac12)={}&(2^p-1)\zeta'(p)
+ -\bigl((2^p-1)\gamma+(2^p-2)L\bigr)\zeta(p)\notag\\
+ &+\frac p2(2^{p+1}-1)\zeta(p+1)\notag\\
+ &-\frac12\sum_{j=2}^{p-1}(2^j-1)(2^{p+1-j}-1)
+                       \zeta(j)\zeta(p+1-j),\qquad p\geq2.
+ \label{dr:eq:Sp-half}
+\end{align}
+In particular,
+\begin{align}
+ S_2(\tfrac12)&=7\zeta(3)-(3\gamma+2L)\zeta(2)+3\zeta'(2),
+       \label{dr:eq:S2-half}\\
+ S_3(\tfrac12)&=\frac{45}{4}\zeta(4)
+                   -(7\gamma+6L)\zeta(3)+7\zeta'(3).
+       \label{dr:eq:S3-half}
+\end{align}
+Section~\ref{dr:sec:polylog} explains exactly why these are endpoint
+values of successive normalized Euler antiderivatives. Notice the change
+of coordinates: the unintegrated endpoint uses $\gamma_1$, but every
+positive primitive order in this particular first-jet family uses
+positive-integer zeta values and their first derivatives instead.
+
+\section{Polylogarithmic subtraction and normalized primitives}
+\label{dr:sec:polylog}
+
+\subsection{Generating functions with their endpoint values retained}
+
+For $|z|<1$ put
+\begin{equation}
+ F(u,z)=\sum_{n\geq0}W_n(u)z^n,
+ \qquad
+ \Phi(z,s,a)=\sum_{n\geq0}\frac{z^n}{(n+a)^s}.
+ \label{dr:eq:F-Phi}
+\end{equation}
+The latter is Lerch's transcendent \cite{dlmf-lerch}. Define
+\begin{equation}
+ \Rcal_K(u,z)=F(u,z)-\sum_{j=0}^{K-1}
+                    A_j(u)\Phi(z,1+2u+2j,\kappa).
+ \label{dr:eq:Rz}
+\end{equation}
+Equivalently, it is the generating series of the brackets in
+\eqref{dr:eq:R-definition}.
+
+\begin{theorem}[Endpoint and spectral-jet lifting]
+\label{dr:thm:endpoint}
+On compact subsets of $-K<\Rea u<d_0$, the bracketed series defining
+$\Rcal_K(u,z)$ and all its fixed spectral derivatives converge uniformly
+for $|z|\leq1$. Consequently
+\begin{equation}
+ \partial_u^m\Rcal_K(u,1)=\Rcal_K^{(m)}(u).
+ \label{dr:eq:endpoint}
+\end{equation}
+In particular, \eqref{dr:eq:collapse} and \eqref{dr:eq:all-jets} give
+exact endpoint values of the corresponding subtracted hypergeometric--Lerch
+identities.
+\end{theorem}
+
+\begin{proof}
+Use the summable majorants in Theorem~\ref{dr:thm:subtraction} and
+$|z^n|\leq1$. Uniform convergence gives continuity on the closed disk,
+and the same argument applies to every fixed spectral derivative. This
+is stronger than merely assigning an Abel value to a divergent series.
+The unsubtracted $F$ and the individual Lerch terms need not have finite
+endpoint values in this range.
+\end{proof}
+
+At generic parameters the hypergeometric form is
+\begin{equation}
+ F(u,z)=W_0(u)\,
+ {}_5F_4\!\left(\begin{matrix}
+ 2\kappa,1+\kappa,b,c,d_0-u\\
+ \kappa,1+2\kappa-b,1+2\kappa-c,b+c+u
+ \end{matrix};z\right).
+ \label{dr:eq:F-hyper}
+\end{equation}
+At a singular lower parameter this product can look like zero times an
+undefined hypergeometric expression. The coefficient definition
+\eqref{dr:eq:F-Phi}, with reciprocal-Gamma factors, is authoritative there.
+
+\subsection{Rational centering converts the counterterms to polylogarithms}
+
+Let $\kappa=p/q$, $1\leq p\leq q$, and
+$\omega=\exp(2\pi i/q)$. For $0<z<1$, the root-of-unity filter gives
+\begin{equation}
+ \Phi(z,s,p/q)=q^{s-1}z^{-p/q}
+       \sum_{\ell=0}^{q-1}\omega^{-p\ell}
+                     \Li_s(\omega^\ell z^{1/q}).
+ \label{dr:eq:root-filter}
+\end{equation}
+To prove it, expand each polylogarithm in its defining series. The finite
+Fourier sum is $q$ when its summation index is congruent to $p$ modulo
+$q$, and zero otherwise. The remaining terms are exactly those in
+\eqref{dr:eq:F-Phi}. Analytic continuation in the punctured disk, using a
+consistent root, gives the same single-valued analytic combination; the
+apparent singularity at $z=0$ cancels. Rational $\kappa>1$ is reduced by
+the finite shift formula
+\begin{equation}
+ \Phi(z,s,a+M)=z^{-M}\left(\Phi(z,s,a)
+                  -\sum_{n=0}^{M-1}\frac{z^n}{(n+a)^s}\right).
+ \label{dr:eq:lerch-shift}
+\end{equation}
+
+For spectral derivatives, differentiation of the factor $q^{s-1}$ must
+be retained. If $s=s_0+2u$, then
+\begin{align}
+ \partial_u^m\Phi(z,s,p/q)
+ ={}&2^m q^{s-1}z^{-p/q}\sum_{\ell=0}^{q-1}\omega^{-p\ell}
+       (\partial_s+\log q)^m
+                   \Li_s(\omega^\ell z^{1/q}).
+ \label{dr:eq:root-jets}
+\end{align}
+Thus every rational-center counterterm and every counterterm jet has an
+explicit finite polylogarithmic representation. This statement concerns
+the subtraction terms; it does not assert a general reduction of the
+remaining ${}_5F_4$ function to classical polylogarithms.
+
+\subsection{Euler derivatives and genuine normalized antiderivatives}
+
+Define
+\begin{equation}
+ \Theta_\kappa=z\frac{\mathrm d}{\mathrm dz}+\kappa,
+ \qquad
+ J_\kappa f(z)=z^{-\kappa}\int_0^z t^{\kappa-1}f(t)\dd t.
+ \label{dr:eq:Euler}
+\end{equation}
+For a power series $f(z)=\sum f_nz^n$, this is the analytic operator
+$J_\kappa f=\sum f_nz^n/(n+\kappa)$. It is the unique analytic inverse
+of $\Theta_\kappa$ at zero, and
+$\mathrm d(z^\kappa J_\kappa f)/\mathrm dz=z^{\kappa-1}f(z)$ is an
+ordinary antiderivative identity. For integers $r\geq1$,
+\begin{equation}
+ J_\kappa^r f(z)=\frac{z^{-\kappa}}{(r-1)!}
+     \int_0^z t^{\kappa-1}\bigl(\log(z/t)\bigr)^{r-1}f(t)\dd t.
+ \label{dr:eq:iterated-primitive}
+\end{equation}
+Initially one may integrate on $0<z<1$; the power-series definition fixes
+the analytic continuation without a branch ambiguity. It follows that
+\begin{equation}
+ \Theta_\kappa\Phi(z,s,\kappa)=\Phi(z,s-1,\kappa),
+ \qquad J_\kappa^r\Phi(z,s,\kappa)=\Phi(z,s+r,\kappa).
+ \label{dr:eq:Phi-primitive}
+\end{equation}
+Apply these operators coefficientwise to \eqref{dr:eq:Rz}. Spectral
+derivatives commute with $J_\kappa^r$ on compact parameter sets, and
+endpoint continuity for the bracketed primitives follows from absolute
+convergence. Euler differentiation inside the disk is unrestricted;
+any endpoint claim after differentiation additionally requires the
+resulting coefficient series to be summable.
+
+The first primitive of the generic hypergeometric side cancels the
+very-well-poised pair:
+\begin{align}
+ J_\kappa F(u,z)={}&\frac{W_0(u)}\kappa\,
+ {}_4F_3\!\left(\begin{matrix}2\kappa,b,c,d_0-u\\
+ 1+2\kappa-b,1+2\kappa-c,b+c+u\end{matrix};z\right).
+ \label{dr:eq:4F3}
+\end{align}
+Again the original coefficient series gives its value at exceptional
+lower parameters.
+
+For the first spectral jet on the symmetric half-parameter line,
+\begin{equation}
+ -\frac12\partial_u\Rcal_1(0,z)
+ =\sum_{n\geq0}\frac{H_n-\gamma-\log(n+\tfrac12)}{n+\tfrac12}z^n.
+ \label{dr:eq:first-jet-generating}
+\end{equation}
+Hence all its normalized Euler-primitive endpoints are explicitly known:
+\begin{equation}
+ -\frac12\left[J_{1/2}^{\,r}\partial_u\Rcal_1(0,z)\right]_{z=1}
+      =S_{r+1}(\tfrac12),\qquad r\geq0.
+ \label{dr:eq:all-primitive-endpoints}
+\end{equation}
+Equations~\eqref{dr:eq:harmonic-one} and \eqref{dr:eq:Sp-half}
+evaluate the entire family. This is a closed endpoint theorem for this
+specific first jet, not an assertion that arbitrary primitive orders of
+all higher Dougall jets have already been reduced.
+
+\section{Antiderivatives of all collapsed resonance values}
+\label{dr:sec:kappa-primitives}
+
+The centering parameter gives a different antiderivative problem.
+Here $b,c,N$ are fixed, while $\kappa$ varies within
+\eqref{dr:eq:domain}. Theorem~\ref{dr:thm:collapse} makes this problem
+finite because $\rho_N$ is a polynomial in $\kappa$.
+
+\subsection{A normalized Hurwitz-zeta ladder}
+
+For integers $j\geq0$ set
+\begin{equation}
+ \Pcal_j(x)=\frac{\zeta'(-j,x)+H_j\zeta(-j,x)}{j!},
+ \qquad H_0=0.
+ \label{dr:eq:Pj}
+\end{equation}
+Then
+\begin{equation}
+ \Pcal_0'(x)=\psi(x),\qquad
+ \Pcal_j'(x)=\Pcal_{j-1}(x)\quad(j\geq1).
+ \label{dr:eq:P-ladder}
+\end{equation}
+Indeed, Lerch's classical identity
+$\zeta'(0,x)=\log\Gamma(x)-\tfrac12\log(2\pi)$ proves the first
+relation. For the second, differentiate in the parameter to obtain
+\[
+ \partial_x\zeta'(-j,x)=j\zeta'(1-j,x)-\zeta(1-j,x),
+ \qquad \partial_x\zeta(-j,x)=j\zeta(1-j,x),
+\]
+and use $H_j-1/j=H_{j-1}$. These normalized negative-polygamma
+coordinates are classical in substance \cite{espinosa,dlmf-hurwitz}.
+
+For a polynomial $p$, define
+\begin{equation}
+ \Ical[p](x)=\sum_{j=0}^{\deg p}(-1)^jp^{(j)}(x)\Pcal_j(x),
+ \qquad \Ical[0]=0.
+ \label{dr:eq:I}
+\end{equation}
+Adjacent terms telescope under differentiation, giving
+\begin{equation}
+ \frac{\mathrm d}{\mathrm dx}\Ical[p](x)=p(x)\psi(x).
+ \label{dr:eq:I-derivative}
+\end{equation}
+This is a finite formula rather than an unevaluated repeated integral.
+
+\begin{theorem}[A finite primitive at every resonance]
+\label{dr:thm:primitive}
+Let
+\begin{align}
+ C_N&=\frac{(-1)^N}{N!}(1-b)_N(1-c)_N,
+ &p_N(\kappa)&=C_N(1+2\kappa-b-c)_N,\notag\\
+ y&=1+2\kappa-b-c+N,
+ &q_N(y)&=(y-N)_N,\notag\\
+ B_N&=\psi(N+1)-\psi(b)-\psi(c).
+ \label{dr:eq:primitive-data}
+\end{align}
+Choose any polynomial $P_N^{\rm poly}$ with derivative $p_N$.
+An antiderivative, in $\kappa$, of $\Rcal_{N+1}(-N)$ is
+\begin{equation}
+ \frac{B_N}{2}P_N^{\rm poly}(\kappa)
+   +\Ical[p_N](\kappa)-\frac{C_N}{4}\Ical[q_N](y).
+ \label{dr:eq:all-kappa-primitives}
+\end{equation}
+The special-function coordinates required are only
+$\zeta'(-j,\kappa)$, $\zeta'(-j,y)$ and Bernoulli polynomials,
+$0\leq j\leq N$, together with the displayed constant digamma values.
+\end{theorem}
+
+\begin{proof}
+Since $p_N(\kappa)=\rho_N=C_Nq_N(y)$ and $y'=2$, differentiating
+\eqref{dr:eq:all-kappa-primitives} by \eqref{dr:eq:I-derivative} gives
+\[
+ \frac{B_N}{2}\rho_N+\rho_N\psi(\kappa)
+                        -\frac{\rho_N}{2}\psi(y).
+\]
+This is exactly \eqref{dr:eq:collapse}. The Bernoulli assertion follows
+from $\zeta(-j,x)=-B_{j+1}(x)/(j+1)$. If $C_N=0$, the displayed expression is constant and the identity
+remains valid.
+\end{proof}
+
+At $N=0$, the formula reduces, up to a constant, to
+\begin{equation}
+ \log\Gamma(\kappa)-\frac14\log\Gamma(d_0)
+       -\frac\kappa2\bigl(\gamma+\psi(b)+\psi(c)\bigr).
+ \label{dr:eq:first-kappa-primitive}
+\end{equation}
+At $N=1$ only $\zeta'(0,\cdot)$ and $\zeta'(-1,\cdot)$ occur;
+at each subsequent resonance precisely one further level is sufficient.
+The theorem concerns zeroth spectral order at all resonances. Mixed
+$\kappa$-primitives of arbitrary spectral jets are a separate reduction
+problem, listed below.
+
+\section{Audit, safeguards, and reproducible evidence}
+\label{dr:sec:audit}
+
+\subsection{What is, and is not, an erratum}
+
+The inspected canonical statements already distinguish analytic proofs,
+exact finite checks, and numerical residuals. No additional specific
+mathematical error in those inspected statements was established by this
+investigation. In particular, the outgoing package does not relabel a
+classical identity as an error or silently change the status of an
+unresolved Gaussian candidate.
+
+There are, however, four essential corrections to a \emph{naive
+transplant} of the Gauss construction. They are integration safeguards,
+not accusations that the existing manuscript makes these mistakes.
+
+\paragraph{The doubled excess.}
+The counterterm is $\zeta(1+2u+2j,\kappa)$, with residue $1/2$ in
+$u$. Replacing it by $\zeta(1+u+j,\kappa)$ would destroy the pole
+cancellation and all derivative factors. The classical ${}_5F_4$ excess
+is $2u$.
+
+\paragraph{The centering and parity.}
+Only the coordinate $x=n+\kappa$ has the complementary pairs used in
+\eqref{dr:eq:centered}. An expansion in $n$ generally has odd inverse
+powers. Omitting them without making the centering change is invalid.
+
+\paragraph{Zeros are not zero jets.}
+Equation~\eqref{dr:eq:revived-head} gives a concrete counterexample to
+dropping a summand that vanishes at the expansion point. Its contribution
+to the first derivative is $2$, and its complete subtracted contribution
+is $1/6$. Likewise, the Bell formula \eqref{dr:eq:q-Bell} must not be
+used as zero times divergent polygammas. Formula~\eqref{dr:eq:rgamma-safe}
+is the replacement.
+
+\paragraph{An asymptotic tail is not an interval certificate.}
+The asymptotic coefficients are used in finite number in both the proof
+and the numerical checks. Extending the asymptotic series to infinitely
+many terms at fixed $n$ is not justified. Numerical agreement between
+finite asymptotic-tail evaluations does not constitute a rigorous error
+enclosure or establish arithmetic independence.
+
+\subsection{Exact finite verification}
+
+The delivered \file{code/verify_exact.py} completed \textbf{485 exact
+assertions}. They include Bernoulli reflection through degree~24; generic
+logarithmic differential identities through $j=6$; generic coefficient
+and residue identities through $N=3$; rational residue and cancellation
+checks at six parameter triples through $N=10$; and both symmetric
+finite-product coefficient laws through $N=12$, including three
+coefficients beyond the expected truncation at each level.
+
+Additional checks cover the printed $A_1$ and initial-head data,
+polynomial-weighted primitive telescoping, the factor-$1/2$ residue,
+an independent truncated-exponential coefficient calculation, and the
+product symmetrization in the Euler-primitive formula. All use exact
+rational or symbolic polynomial arithmetic. Their scope is finite
+regression verification; the all-order assertions are proved in the
+preceding sections, and are not proof-assistant formalizations.
+
+\subsection{Numerical diagnostics with independently constructed sides}
+
+The numerical suites completed \textbf{293 comparisons at 70 working
+decimal digits}. The central spectral tests use five parameter triples,
+$N=0,1,2,3$, and Taylor orders $0,1,2,3$. Two series-side evaluations use
+80 actual terms with coefficients through $A_{18}$ and 120 actual terms
+with coefficients through $A_{22}$. Both are compared to the finite
+Gamma--Stieltjes formula. The parameter triples include one and two
+simultaneous reciprocal-Gamma zeros.
+
+For a head length $M$, the series-side approximation is
+\begin{align}
+ &\sum_{n=0}^{M-1}\left[W_n(u)-\sum_{j<K}A_j(u)x_n^{-1-2u-2j}\right]
+ +\sum_{j=K}^{J}A_j(u)\zeta(1+2u+2j,M+\kappa).
+ \label{dr:eq:numeric-tail}
+\end{align}
+It uses the actual Gamma coefficient sequence, not the exact sum $G(u)$.
+Its Taylor coefficients are computed by ordinary truncated-series
+arithmetic. The three explicit harmonic series are also checked by a
+separate digamma/Bernoulli tail construction, rather than merely calling
+the same Dougall evaluator twice.
+
+Other tests compare interior generating functions with independent
+hypergeometric/Lerch evaluations; check rational root-of-unity filters
+with order derivatives; differentiate the finite $\kappa$-primitives;
+and evaluate the continuous-shift and half-parameter primitive endpoints.
+The largest recorded scaled discrepancy was
+\begin{equation}
+ 2.18454477481895\times10^{-48},\qquad
+ \text{scaled discrepancy}=\frac{|\text{left}-\text{right}|}
+                                    {\max(1,|\text{right}|)}.
+ \label{dr:eq:max-error}
+\end{equation}
+For the 120-term, $A_{22}$ central spectral run it was
+$1.54137402015147\times10^{-58}$. These are observations about the
+executed computations, not certified counts of correct digits. Full
+values, parameter choices, tolerances and versions are in
+\file{results/numerical_checks.json}.
+
+\subsection{Reproduction and delivery scope}
+
+The tested environment used Python~3.13.5, SymPy~1.14.0 and
+mpmath~1.3.0. From the extracted package directory, run
+\begin{verbatim}
+python -m pip install -r requirements.txt
+python code/verify_exact.py
+python code/verify_numeric.py --part 1
+python code/verify_numeric.py --part 2
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The numerical parts are separately executable to fit constrained tool
+runtimes; together they perform the same assertions as the default full
+run. The scripts regenerate their JSON reports. Reproduction changes
+runtime metadata, so it changes the corresponding file hashes. No
+network access is needed after installing the dependencies and TeX
+packages.
+
+The numerical implementation supports the real parameter domain tested
+here and uses arbitrary precision controlled by mpmath. The article's
+analytic continuation in $u$ is broader than the set of numerical samples.
+The source audit, integration notes, manuscript-ready core section, result
+files, and SHA-256 manifest accompany the TeX and compiled PDF.
+
+\section{Further research questions}
+\label{dr:sec:future}
+
+\paragraph{1. Classify cancellation operators beyond this family.}
+The operator $E=\partial_u-\partial_\kappa-\partial_b-\partial_c$
+acts on just one centered Gamma pair and produces a Hurwitz Bernoulli
+sequence. Determine necessary and sufficient conditions on a product of
+complementary Gamma pairs for an analogous parameter vector field to
+collapse all resonance constant terms. An exact classification of this
+mechanism would be stronger than cataloguing isolated summations.
+
+\paragraph{2. Compute multivariate resonant jets without path artifacts.}
+The germ $Q_N$ handles every reciprocal-Gamma zero along one spectral
+coordinate. Allow $b$ and $c$ to approach integral values simultaneously
+with $u+N\to0$, and formulate a multivariate coefficient identity before
+specializing any coordinate. The normally convergent subtracted series
+supplies a natural holomorphic target. Determine which alternative
+finite-part prescriptions agree with that target and which introduce
+path-dependent constants.
+
+\paragraph{3. Reduce higher harmonic-jet primitive endpoints.}
+Equation~\eqref{dr:eq:all-primitive-endpoints} evaluates all primitive
+orders for the first symmetric spectral jet. For the second and higher
+jets, determine a closed generating system for the products of harmonic
+numbers and odd zeta tails that arise. A useful first target is a finite
+formula for every primitive of \eqref{dr:eq:harmonic-two}, with explicit
+control of whether double zeta values or only products remain. Such a
+reduction is not an independence statement about the resulting constants.
+
+\paragraph{4. Integrate higher spectral jets in the center parameter.}
+Theorem~\ref{dr:thm:primitive} solves the zeroth-order problem at every
+$N$. Its higher-jet counterparts contain Stieltjes functions and
+polygamma products. Develop normalized primitives through $(N,m)=(3,2)$,
+then seek a finite all-order recursion. Keep additive constants and
+parameter-derivative conventions explicit.
+
+\paragraph{5. Compare local endpoint and centered counterterm bases.}
+At rational $\kappa$, the present counterterms are finite combinations of
+polylogarithms and their order derivatives. Construct their precise
+connection with local expansions in powers and logarithms of $1-z$,
+including constant terms at both integral and half-integral spectral
+values. This would sharpen the comparison with classical hypergeometric
+continuation and partial-sum formulas.
+
+\paragraph{6. Classify exact truncation loci.}
+The symmetric products \eqref{dr:eq:integer-product}--\eqref{dr:eq:half-product}
+and Proposition~\ref{dr:prop:integer-b} are explicit loci where the centered
+asymptotic expansion terminates. Determine all parameter loci for which
+$W_n(u)$ is a Laurent polynomial in $n+\kappa$. Then classify which
+transverse jets retain finite reductions and which produce nontrivial
+zeta derivative towers.
+
+\paragraph{7. Extract rational-level identities without nonreduction claims.}
+Specialize the residue and jet formulas at small rational centers and
+parameters, and convert the Hurwitz values into compatible cyclotomic or
+Dirichlet-character coordinates. The goal is a short explicit identity
+catalogue, with each coefficient obtained exactly. Failure of a smaller
+numerical basis to reproduce a value is not a proof that the omitted
+coordinates are necessary.
+
+\paragraph{8. Formalize the algebraic and analytic layers separately.}
+The formal exponential recursion and differential law are polynomial
+identities suitable for a proof assistant. Their analytic interface is the
+compact-normal convergence of the subtracted Gamma-ratio series.
+Formalizing both would establish a machine-checked chain from classical
+Dougall summation to the complete jet formulas. The present package
+provides regression data, not that formalization.
+
+\section{Conclusion}
+
+The explicit Dougall target proposed in the incoming research programme
+has a complete answer in the centered ${}_5F_4$ family studied here.
+Complementary Gamma pairs enforce even inverse-power corrections; their
+Bernoulli coefficients obey a differential law; that law removes all
+lower counterterms from every integral-resonance constant. The residue
+polynomial and full Taylor formula then organize Stieltjes constants,
+negative-odd Hurwitz derivatives, and reciprocal-Gamma degeneracies in one
+ordinary convergent calculus.
+
+The interlaced half-integer points explain a distinct nonpositive-even
+zeta tower. Harmonic specialization produces explicit identities with
+$\gamma_1$, $\gamma_2$ and $\zeta'(-1)$, while beta differentiation
+evaluates an entire family of Euler-primitive endpoints. Polynomial
+weighting and the normalized Hurwitz ladder give antiderivatives at every
+resonance in the center parameter. These are exact structural results;
+the computational files make their finite coefficient and implementation
+checks reproducible without changing their proof status.
+
+\appendix
+\section{Implementation details and coefficient conventions}
+\label{dr:app:implementation}
+
+The implementation stores ordinary Taylor coefficients. For arrays
+$a=(a_0,\ldots,a_m)$ and $b=(b_0,\ldots,b_m)$, multiplication is truncated
+convolution. If $\exp(L(t))=\sum e_jt^j$, then
+\begin{equation}
+ e_0=e^{L_0},\qquad
+ e_j=\frac1j\sum_{r=1}^j rL_re_{j-r}.
+ \label{dr:eq:expjet}
+\end{equation}
+This recursion is used both for Gamma germs and for the coefficient
+generating function, with their different indices kept separate.
+
+For $r_4=r_4(u_0)$ and $\ell\geq1$, the spectral Taylor coefficient
+of the logarithmic asymptotic coefficient is especially simple:
+\begin{equation}
+ [t^\ell]\ell_j(u_0+t)=
+ -\frac{(-1)^\ell}{j(2j+1)}
+ \binom{2j+1}{\ell}B_{2j+1-\ell}(r_4),
+ \quad 1\leq\ell\leq2j+1.
+ \label{dr:eq:ell-jet}
+\end{equation}
+It vanishes beyond that degree. Thus all $A_j$ jets can be generated by
+finite rational arithmetic at rational expansion points, without symbolic
+Gamma manipulation.
+
+For the harmonic checks, the independent expansion
+\begin{equation}
+ \psi(x+\tfrac12)-\log x
+       \sim-\sum_{j\geq1}\frac{B_{2j}(\tfrac12)}{2j x^{2j}}
+ \label{dr:eq:digamma-tail}
+\end{equation}
+is used at $x=n+1/2$. Squaring it together with the logarithmic cross term
+gives the second harmonic tail. More generally,
+\begin{equation}
+ \psi(n+1)-\log(n+a)
+ \sim\sum_{k\geq1}\frac{(-1)^{k+1}B_k(1-a)}{k(n+a)^k}.
+ \label{dr:eq:shifted-digamma-tail}
+\end{equation}
+These are finite asymptotic approximations in the diagnostics, never
+asserted to converge as infinite series at fixed $n$.
+
+The numerical code asks mpmath for spectral derivatives through its
+\texttt{zeta(..., derivative=r)} interface, rather than differentiating
+a special-value shortcut that may have a different numerical code path.
+The analytic formulas in the article remain the source of truth.
+The manifest covers the delivered files; neither a checksum nor a passing
+regression suite substitutes for review of the proofs.
+
+\begin{thebibliography}{99}
+\raggedright
+
+\bibitem{dlmf-dougall}
+NIST Digital Library of Mathematical Functions,
+\emph{Generalized Hypergeometric Functions: Argument Unity},
+\S16.4, especially Eq.~16.4.9 (Rogers--Dougall very-well-poised sum).
+\url{https://dlmf.nist.gov/16.4}. Accessed 10 October 2026.
+
+\bibitem{dlmf-gamma}
+NIST Digital Library of Mathematical Functions,
+\emph{Gamma Function: Asymptotic Expansions}, \S5.11.
+\url{https://dlmf.nist.gov/5.11}. Accessed 10 October 2026.
+
+\bibitem{dlmf-hurwitz}
+NIST Digital Library of Mathematical Functions,
+\emph{Hurwitz Zeta Function}, \S25.11.
+\url{https://dlmf.nist.gov/25.11}. Accessed 10 October 2026.
+
+\bibitem{dlmf-lerch}
+NIST Digital Library of Mathematical Functions,
+\emph{Lerch's Transcendent}, \S25.14.
+\url{https://dlmf.nist.gov/25.14}. Accessed 10 October 2026.
+
+\bibitem{buhring}
+W.~B\"uhring, \emph{Partial sums of hypergeometric series of unit argument},
+Proceedings of the American Mathematical Society \textbf{132} (2004),
+407--415. Preprint arXiv:math/0311126 (2003).
+\url{https://arxiv.org/abs/math/0311126}.
+
+\bibitem{chufu}
+W.~Chu and A.~M.~Fu, \emph{Dougall--Dixon formula and harmonic number
+identities}, The Ramanujan Journal \textbf{18} (2009), 11--31.
+DOI: \href{https://doi.org/10.1007/s11139-007-9044-6}{10.1007/s11139-007-9044-6}.
+
+\bibitem{nicholson}
+M.~Nicholson, \emph{Quadratic Transformations of Hypergeometric Function
+and Series with Harmonic Numbers}, arXiv:1801.02428v3 (2019).
+\url{https://arxiv.org/abs/1801.02428}.
+
+\bibitem{espinosa}
+O.~R.~Espinosa and V.~H.~Moll,
+\emph{On some integrals involving the Hurwitz zeta function: part~2},
+The Ramanujan Journal \textbf{6} (2002), 449--468.
+Preprint arXiv:math/0107082 (2001).
+\url{https://arxiv.org/abs/math/0107082}.
+
+\bibitem{incoming}
+ProveIt research continuation prepared with OpenAI assistance,
+\emph{Gauss--Hurwitz Pole Cancellation: Resonant gamma-ratio sums,
+harmonic identities, Stieltjes jets, and polylogarithmic endpoint
+subtraction}, 10 October 2026, 23-page PDF. In particular, Section~9,
+question~1, printed p.~19. Matching archive:
+\file{docs/incoming/ProveIt_Gauss_Hurwitz_2026-10-10.zip},
+Git blob \texttt{069b39cdc5a241c3e016f1780fd481dd3069d63a}.
+Repository: \url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{repo-readme}
+ProveIt contributors, \emph{Canonical polylogarithms manuscript README},
+canonical manuscript README. Inspected 10 October 2026;
+README blob \texttt{02774c39a68fff3792105aed3e2df11e3e604484}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/Polylogarithms/docs/manuscript}.
+
+\bibitem{repo-integration}
+ProveIt contributors, \emph{Zeta jets, Stieltjes antiderivatives and
+negative polygamma}, canonical source
+\file{Analysis/Polylogarithms/docs/manuscript/chapters/07-integration.tex}.
+Inspected 10 October 2026. Repository:
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\end{thebibliography}
+\end{document}

@@ -1,12 +1,12 @@
 """One exact search for the union of all bounded initial-footprint regions.
 
 The maintained region wrapper restarts the same Pachner search for every
-permitted cover.  This implementation indexes those covers once and shares
-every common event prefix.  A frame remembers the covers containing all
-original tetrahedra consumed so far.  Intersecting this set on each move is
-an exact admissibility test, including when the consumed subset itself is
-disconnected.  No digest, isomorphism heuristic, or approximate cover oracle
-is used.
+permitted cover. This implementation shares every common event prefix.
+The default backend asks exactly whether a permitted cover contains the
+consumed original footprint, completing disconnected footprints on demand.
+The indexed backend instead intersects the full cover incidence sets. Both
+represent the same existential language; neither an approximate oracle nor
+a selected witness cover constrains later continuations.
 
 The sleep route preserves the original commuting-trace reduction.  The
 cover constraint is hereditary and depends only on the consumed original
@@ -83,6 +83,7 @@ def _build_index(graph, maximum, components, max_regions, stats, check):
 def search_pachner_cover(triangulation, heights, *, max_region_size,
                          max_components=1, max_upward=0, method='sleep',
                          max_nodes=10000, max_regions=None, max_work=None,
+                         cover_backend='auto', max_oracle_states=None,
                          max_cycles=None, seek_disc=False,
                          collect_endpoints=False, endpoint=None,
                          check=lambda: None):
@@ -97,7 +98,10 @@ def search_pachner_cover(triangulation, heights, *, max_region_size,
     Certificates use the maintained pachner-cochain-endpoint-v1 schema.  The
     active_initial_tetrahedra field supplies a concrete admissible cover.
     COMPLETE_BOUNDED_COVER_FAMILY means exhaustion of precisely this family.
-    max_regions caps the complete index; partial indexing never means success.
+    cover_backend is auto, indexed, or oracle. Auto uses the exact on-demand
+    oracle unless max_regions explicitly requests a complete-index cap.
+    max_regions retains its indexed meaning; max_oracle_states limits total
+    completion states, and incomplete completion is inconclusive.
     Queued branches store parent+event and materialize a native move only when
     visited, so positive early stopping does not transport unused alternatives.
     max_nodes counts popped frames; max_work counts cooperative checkpoints,
@@ -108,8 +112,13 @@ def search_pachner_cover(triangulation, heights, *, max_region_size,
                         ('max_components', max_components), ('max_upward', max_upward)):
         _limit(name, value)
     for name, value in (('max_nodes', max_nodes), ('max_regions', max_regions),
-                        ('max_work', max_work), ('max_cycles', max_cycles)):
+                        ('max_work', max_work), ('max_cycles', max_cycles),
+                        ('max_oracle_states',max_oracle_states)):
         _limit(name, value, optional=True)
+    if cover_backend not in ('auto','indexed','oracle'):
+        raise ValueError('cover_backend must be auto, indexed or oracle')
+    if cover_backend=='oracle'and max_regions is not None:
+        raise ValueError('max_regions limits the indexed backend')
     if method not in ('sleep', 'naive'):
         raise ValueError('shared-cover method must be sleep or naive')
     if type(seek_disc) is not bool or type(collect_endpoints) is not bool:
@@ -123,7 +132,8 @@ def search_pachner_cover(triangulation, heights, *, max_region_size,
                  sleep_pruned=0, terminal_frames=0, disc_queries=0,
                  incomplete_disc_queries=0, maximum_upward=0,
                  maximum_downward=0, maximum_live_cells=0,
-                 maximum_consumed_initial=0, maximum_compatible_covers=0)
+                 maximum_consumed_initial=0, maximum_compatible_covers=0,
+                 oracle_queries=0,oracle_cache_hits=0,oracle_states=0)
     scope = dict(max_region_size=max_region_size, max_components=max_components,
                  max_upward=max_upward, method=method,
                  meaning='consumed original cells are contained in a permitted cover')
@@ -144,8 +154,15 @@ def search_pachner_cover(triangulation, heights, *, max_region_size,
         graph = tuple(tuple(sorted({entry['tetrahedron'] for entry in row
                                     if entry is not None and entry['tetrahedron'] != t}))
                       for t, row in enumerate(prepared['tetrahedra']))
-        index = _build_index(graph, max_region_size, max_components, max_regions,
-                             stats, budget.tick)
+        selected_backend=('indexed'if max_regions is not None else 'oracle')if cover_backend=='auto'else cover_backend
+        stats['cover_backend']=selected_backend
+        scope['cover_backend']=selected_backend
+        if selected_backend=='indexed':
+            index = _build_index(graph, max_region_size, max_components, max_regions,
+                                 stats, budget.tick)
+        else:
+            from .pachner_cover_oracle import _CoverOracle
+            index=_CoverOracle(graph,max_region_size,max_components,max_oracle_states)
         names = _Names(n)
         first = _State(deepcopy(triangulation), initial_heights, tuple(range(n)), 0, 0, ())
         # Parent/state, sleep, consumed originals, compatible covers, pending
@@ -165,7 +182,7 @@ def search_pachner_cover(triangulation, heights, *, max_region_size,
             stats['maximum_live_cells'] = max(stats['maximum_live_cells'], len(state.cells))
             stats['maximum_consumed_initial'] = max(stats['maximum_consumed_initial'],
                                                      len(consumed))
-            if compatible is not None:
+            if selected_backend=='indexed'and compatible is not None:
                 stats['maximum_compatible_covers'] = max(
                     stats['maximum_compatible_covers'], len(compatible))
             if (len(consumed) > max_region_size or state.upward > max_upward
@@ -238,7 +255,8 @@ def search_pachner_cover(triangulation, heights, *, max_region_size,
 @_shield_callback
 def find_pachner_descent(triangulation, heights, *, max_upward=0,
                          max_region_size=None, method='sleep', max_nodes=10000,
-                         max_regions=None, max_work=None, check=lambda: None):
+                         max_regions=None, max_work=None, cover_backend='auto',
+                         max_oracle_states=None,check=lambda: None):
     """Find a strictly smaller triangulation with at most max_upward 2--3 moves.
 
     With the default radius min(t, 3*max_upward+3), connected-cover exhaustion
@@ -264,6 +282,7 @@ def find_pachner_descent(triangulation, heights, *, max_upward=0,
         answer = search_pachner_cover(triangulation, heights,
             max_region_size=radius, max_components=1, max_upward=max_upward,
             method=method, max_nodes=max_nodes, max_regions=max_regions,
+            cover_backend=cover_backend,max_oracle_states=max_oracle_states,
             endpoint=smaller, check=budget.tick)
         answer['descent_scope'] = dict(max_upward=max_upward,
             sufficient_connected_radius=sufficient, searched_radius=radius,

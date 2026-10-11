@@ -1,0 +1,228 @@
+\section{Explicit polylogarithmic and Gamma correlation identities}
+\label{tc:section}
+
+The preceding transport theorem is an all-index result. This section
+makes several consequences explicit, including an ordinary convergent
+Gamma integral and a root-of-unity example whose lower terms reduce to
+classical Stieltjes constants and logarithms.
+
+\subsection{Finite arithmetic reduction of weighted Tornheim kernels}
+The weighted double kernel that appears in a direct Fourier treatment
+is itself a finite transform of \eqref{tr:Tdef}. Let $p,q\geq1$ be
+integers and define
+\begin{equation}\label{tc:weighted}
+ \mathcal T_{p,q}(A,B,C;X,Y)
+   =\sum_{m,n\geq1}\frac{X^mY^n}{m^An^B(pm+qn)^C}
+\end{equation}
+in an absolutely convergent region. Fix any roots $\xi^p=X$ and
+$\eta^q=Y$.
+
+\begin{proposition}[A finite root filter]\label{tc:root-filter}
+If $|X|=|Y|=1$ and $X,Y\ne1$, then
+\begin{align}\label{tc:weighted-reduction}
+ \mathcal T_{p,q}(A,B,C;X,Y)
+ =p^{A-1}q^{B-1}
+   \sum_{h=0}^{p-1}\sum_{k=0}^{q-1}
+     \mathcal T(A,B,C;\xi e(h/p),\eta e(k/q)).
+\end{align}
+The expression is independent of the chosen roots and is entire in
+$(A,B,C)$. In particular, for $N\geq0$,
+\begin{align}\label{tc:weighted-negative}
+ \mathcal T_{p,q}(A,B,-N;X,Y)
+ =\sum_{j=0}^N\binom Nj p^jq^{N-j}
+             \Li_{A-j}(X)\Li_{B-N+j}(Y).
+\end{align}
+All $A$- and $B$-derivatives of this last identity are valid.
+\end{proposition}
+\begin{proof}
+Substitute $M=pm$ and $N'=qn$ in \eqref{tc:weighted}. The indicator
+of $p\mid M$ is $p^{-1}\sum_he(hM/p)$, and similarly for $q\mid N'$.
+The factors $m^{-A}=p^AM^{-A}$ and $n^{-B}=q^B(N')^{-B}$ give
+\eqref{tc:weighted-reduction}. Changing a chosen root permutes the
+finite sum. No new color equals one because $X,Y\ne1$; hence
+Lemma~\ref{tr:T-entire} proves entire continuation. Expanding
+$(pm+qn)^N$ in the original convergent region proves
+\eqref{tc:weighted-negative}, and continuation gives the full claim.
+\end{proof}
+
+Finite congruence conditions on the two indices can be imposed by a
+further finite root filter. This explains why integral weights and
+congruence restrictions arising from the unequal-frequency lattice can
+be handled without introducing a new family of transcendental kernels.
+It does not assert that the finite list produced in this way has no
+further relations.
+
+The derivative in the \emph{third} order requires separate data.
+Differentiating an identity known only at $C=-N$ is not legitimate.
+An exact formula specifying that additional data follows from the
+same Mellin continuation. Put
+$f(t)=\Li_A(Xe^{-t})\Li_B(Ye^{-t})$ and $f_j=[t^j]f(t)$. Then
+\begin{align}\label{tc:normal-derivative}
+ \left.\partial_C\mathcal T(A,B,C;X,Y)\right|_{C=-N}
+ =(-1)^NN!\Bigg\{&
+  \int_0^1t^{-N-1}\left(f(t)-\sum_{j=0}^Nf_jt^j\right)\dd t
+  +\int_1^\infty t^{-N-1}f(t)\dd t\notag\\
+ &+\sum_{j=0}^{N-1}\frac{f_j}{j-N}
+        -\psi(N+1)f_N\Bigg\}.
+\end{align}
+Both integrals converge ordinarily. To prove this, use the Taylor
+subtraction in Lemma~\ref{tr:T-entire} and
+\[
+ \frac1{\Gamma(-N+v)}
+   =(-1)^NN!v\{1-\psi(N+1)v+O(v^2)\}.
+\]
+The pole $f_N/v$ supplies the last term in
+\eqref{tc:normal-derivative}. The formula displays exactly what remains
+after the negative-order value reduces to products of polylogarithms.
+It is an integral representation for the transverse derivative, not a
+claim that this derivative reduces to the value at $C=-N$.
+
+\subsection{An ordinary three-factor log-Gamma integral}
+Define the centered log-Gamma function and a constant by
+\begin{equation}\label{tc:centered-Gamma}
+ \Lambda(x)=\log\Gamma(x)-\tfrac12\log(2\pi)=\zeta'(0,x),
+ \qquad \kappa=\gamma+\log(2\pi).
+\end{equation}
+Its periodic version is integrable to every finite power near an
+endpoint. The identity below therefore requires no finite part.
+For a variable $A$ and an integer $p\geq1$, use the operators
+\begin{equation}\label{tc:Doperators}
+ D_{+,A}^{(p)}=\partial_A+\log p-\kappa-\frac{i\pi}{2},
+ \qquad
+ D_{-,A}^{(p)}=\partial_A+\log p-\kappa+\frac{i\pi}{2}.
+\end{equation}
+
+\begin{theorem}[Unequal-frequency centered Gamma correlation]
+\label{tc:Gamma-triple}
+For the disjoint grids \eqref{tr:grids},
+\begin{align}
+ &\int_0^1\prod_{j=1}^3\Lambda(\{p_jx+a_j\})\dd x
+  \notag\\
+ &\quad=-\frac1{4\pi^3}\Im
+   \sum_{h_1=0}^{p_1-1}\sum_{h_2=0}^{p_2-1}\sum_{h_3=0}^{p_3-1}
+   \sum_{k=1}^3
+   \left.
+       D_{+,A}^{(p_i)}D_{+,B}^{(p_j)}D_{-,C}^{(p_k)}
+       \mathcal T(A,B,C;X_k,Y_k)
+   \right|_{A=B=C=1}.
+   \label{tc:Gamma-formula}
+\end{align}
+Here $i<j$ are the other indices, and $X_k,Y_k$ are formed from the
+lifted triple $(b_{1,h_1},b_{2,h_2},b_{3,h_3})$ as in
+\eqref{tr:Sdef}. The imaginary part is taken only after specialization
+to these real spectral orders.
+\end{theorem}
+\begin{proof}
+Lerch's Gamma identity in \eqref{tc:centered-Gamma} gives
+\[
+ \int_0^1\prod_j\Lambda(\{p_jx+a_j\})\dd x
+  =-\left.\partial_{\lambda_1}\partial_{\lambda_2}
+               \partial_{\lambda_3}
+          K_{\boldsymbol p}(\boldsymbol\lambda;\boldsymbol a)
+           \right|_{\boldsymbol\lambda=(1,1,1)}.
+\]
+Differentiation under the integral is justified, near each separated
+endpoint, by a majorant of the form
+$t^{-\rho}(1+|\log t|^3)$ with a fixed $0<\rho<1$ in a sufficiently
+small neighborhood of that spectral point. Insert
+\eqref{tr:Kp} and \eqref{tr:unit-K}. At $\lambda=1$,
+\[
+ p^{\lambda-1}\Gamma(\lambda)(2\pi)^{-\lambda}=(2\pi)^{-1},
+ \qquad
+ \partial_\lambda\log\{p^{\lambda-1}\Gamma(\lambda)
+                  (2\pi)^{-\lambda}\}=\log p-\kappa.
+\]
+The phase in a region with two positive frequencies is $-i$ at this
+point. Its derivatives contribute $-i\pi/2$ in the two positive
+positions and $+i\pi/2$ in the negative one, giving the operators
+\eqref{tc:Doperators}. The opposite region is the complex conjugate
+after evaluating at real orders. Thus its pair contributes
+$2\Re(-iW)=2\Im W$. The common factor $(2\pi)^{-3}$ and the initial
+minus sign give \eqref{tc:Gamma-formula}.
+\end{proof}
+
+The formula is a finite Gamma--polylogarithm identity with ordinary
+integrals and entire spectral derivatives. The correlation of three
+uncentered $\log\Gamma$ factors follows by expanding
+$\log\Gamma=\Lambda+\tfrac12\log(2\pi)$. Since
+$\int_0^1\Lambda(\{px+a\})\dd x=0$, the only additional terms are
+the three ordinary centered bilinear correlations and
+$\tfrac18\log^3(2\pi)$. Those bilinear correlations already have
+single-polylogarithm order-derivative evaluations in the incoming
+dilation report \cite{incoming-sh}.
+
+\subsection{A twelfth-root digamma example with explicit lower terms}
+For pairwise distinct $b_1,b_2,b_3$ modulo one, let
+\[
+ \mathcal P(b_1,b_2,b_3)
+  =\FP_x\int_0^1\prod_{j=1}^3\psi(\{x+b_j\})\dd x.
+\]
+The unit-frequency formula \eqref{tr:triple-coeff} gives
+\begin{equation}\label{tc:unit-digamma}
+ \mathcal P(\boldsymbol b)
+  =-2\Re\sum_{k=1}^3
+    \left.
+      D_{+,A}^{(1)}D_{+,B}^{(1)}D_{-,C}^{(1)}
+        \mathcal T(A,B,C;X_k,Y_k)
+    \right|_{A=B=C=0}.
+\end{equation}
+This is the already established translated three-digamma coordinate
+formula; our example uses it after unequal-frequency transport.
+
+Choose
+\begin{equation}\label{tc:example-data}
+ (p_1,p_2,p_3)=(1,2,3),\qquad
+ (a_1,a_2,a_3)=(0,\tfrac13,\tfrac14).
+\end{equation}
+The lifted sets are
+\[
+ \mathcal B_1=\{0\},\quad
+ \mathcal B_2=\{\tfrac16,\tfrac23\},\quad
+ \mathcal B_3=\{\tfrac1{12},\tfrac5{12},\tfrac34\}.
+\]
+They are disjoint, and every color in \eqref{tc:unit-digamma} is a
+twelfth root of unity distinct from one. Theorem~\ref{tr:finite-transport},
+with $m_1=m_2=m_3=0$ and $\gamma_0=-\psi$, gives the exact identity
+\begin{align}
+ &\FP_x\int_0^1\psi(x)\psi(\{2x+\tfrac13\})
+                              \psi(\{3x+\tfrac14\})\dd x\notag\\
+ &\quad=\frac16\sum_{b\in\mathcal B_2}\sum_{c\in\mathcal B_3}
+                     \mathcal P(0,b,c)+\mathcal L,\label{tc:example}\\
+ \mathcal L
+ &:=\frac{\log2}{3}\sum_{c\in\mathcal B_3}J_{00}(c)
+       +\frac{\log3}{2}\sum_{b\in\mathcal B_2}J_{00}(b).
+       \label{tc:example-lower}
+\end{align}
+The last constant reduces completely. With $u=\log2$, $v=\log3$,
+and $\gamma_1=\gamma_1(1)$,
+\begin{align}\label{tc:lower-polynomial}
+ \mathcal L={}&2(\gamma_1-\zeta(2))(u+v)
+   -\gamma(6u^2+4uv+3v^2)\notag\\
+ &-7u^3-7u^2v-4uv^2-\tfrac32v^3.
+\end{align}
+To verify the reduction, Stieltjes multiplication gives
+\begin{align*}
+ \gamma_0(\tfrac14)+\gamma_0(\tfrac34)&=2\gamma+6\log2,\\
+ \gamma_1(\tfrac14)+\gamma_1(\tfrac34)
+      &=2\gamma_1-6\gamma\log2-7\log^22,\\
+ \gamma_0(\tfrac13)+\gamma_0(\tfrac23)&=2\gamma+3\log3,\\
+ \gamma_1(\tfrac13)+\gamma_1(\tfrac23)
+      &=2\gamma_1-3\gamma\log3-\tfrac32\log^23.
+\end{align*}
+Apply the same multiplication law to the two lifted grids in
+\eqref{tc:example-lower} and insert \eqref{tr:J00}. Collecting terms
+gives \eqref{tc:lower-polynomial}.
+
+Independent subtracted quadrature gives the following diagnostic values:
+\[
+ \FP_x\int_0^1\psi(x)\psi(\{2x+\tfrac13\})
+                \psi(\{3x+\tfrac14\})\dd x
+       \approx77.3418540125851504884052200711,
+\]
+\[
+ \mathcal L\approx-23.0290680355012727975296691002.
+\]
+These are numerical illustrations of the proved identities. Their
+normalization is the stated ambient finite part. In particular, removing
+the lower terms in \eqref{tc:example-lower} would change the value by
+the displayed nonzero constant.

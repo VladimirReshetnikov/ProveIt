@@ -1,0 +1,28 @@
+--- a/Analysis/Polylogarithms/docs/manuscript/chapters/03-algebraic.tex
++++ b/Analysis/Polylogarithms/docs/manuscript/chapters/03-algebraic.tex
+@@ -191,7 +191,7 @@
+   \int_0^{\pi/2}\!\arctan^2(\sqrt\phi\,\sin x)\,dx=\frac{\pi^3}{24}-\frac{3\pi}{4}\ln^2\phi,\quad
+   \int_0^{\pi/2}\!\arctan^2\!\bigl(2\phi^{3/2}\sin x\bigr)\,dx=\frac{\pi^3}{12}-\frac{3\pi}{4}\ln^2\phi.
+ \end{equation}
+-The simplest non-elementary diagonal is the $(1,1)$ case $\int_0^{\pi/2}\arctan^2(\sin x)\,dx=\pi\,\chitwo(3-2\sqrt2)$.
++The $(1,1)$ diagonal has the Legendre--chi representation $\int_0^{\pi/2}\arctan^2(\sin x)\,dx=\pi\,\chitwo(3-2\sqrt2)$.
+ 
+ \section{A sibling trichotomy}
+ The master formula has two siblings under the companion half-angle substitution
+@@ -205,11 +205,12 @@
+ \end{equation}
+ where $\Ti_2(z)=\Im\Li_2(\mathrm iz)=\int_0^z\frac{\arctan t}{t}\,dt$ is the inverse-tangent integral: like
+ pairs give the Legendre chi, the mixed pair gives the inverse-tangent integral. The linear shadows are
+-$\int_0^{\pi/2}\arctan(\lambda\sin x)\,dx=2\chitwo(u_\lambda)$ (Reshetnikov) and, with $\theta=\arcsin\lambda$,
++$\int_0^{\pi/2}\arctan(\lambda\sin x)\,dx=2\chitwo(u_\lambda)$ (Reshetnikov) and, for real $|\lambda|<1$ with $\theta=\arcsin\lambda$,
+ \begin{equation}\label{cleo:eq:lintanh}
+-  \int_0^{\pi/2}\arctanh(\lambda\sin x)\,dx=\theta\,\ln\tan\tfrac\theta2+2\Cl_2(\theta)-\tfrac12\Cl_2(2\theta),
+-\end{equation}
+-the latter showing that the $\arctanh$ branch is \emph{not} a clean $2\chitwo(v_\lambda)$ mirror---that
++  \int_0^{\pi/2}\arctanh(\lambda\sin x)\,dx=\theta\,\ln\left|\tan\tfrac\theta2\right|+2\Cl_2(\theta)-\tfrac12\Cl_2(2\theta),
++\end{equation}
++where $\theta\ln|\tan(\theta/2)|$ is assigned its continuous value zero at $\theta=0$.
++The latter formula shows that the $\arctanh$ branch is \emph{not} a clean $2\chitwo(v_\lambda)$ mirror---that
+ coincidence is special to $\arctan$. By $x\mapsto\frac\pi2-x$ the $\cos$ versions of all of these equal the
+ $\sin$ versions. The weight-$3$ analogue $\int_0^{\pi/2}\arctan(p\sin x)\arctan(q\sin x)/\sin x\,dx$ does not factor by the same mechanism into a single $\chi_3$: its coefficient $\frac{4^N}{(2N+1)\binom{2N}{N}}$ couples the two
+ summation indices only through $N=m+n$, so it does not factor through $\up\uq$ (numerically no clean

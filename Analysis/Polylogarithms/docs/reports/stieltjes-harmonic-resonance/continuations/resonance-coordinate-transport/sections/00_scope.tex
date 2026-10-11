@@ -1,0 +1,145 @@
+\maketitle
+\begin{abstract}
+We answer three explicit continuation questions in the current ProveIt
+polylogarithm programme. A centered form of Dougall's very-well-poised
+summation has only even inverse powers in its asymptotic expansion. Its
+Hurwitz-subtracted endpoint admits a closed formula at every nonpositive
+integer resonance, and every spectral derivative has a finite expression
+in Gamma derivatives, Hurwitz-zeta derivatives, and generalized Stieltjes
+constants. Reciprocal-Gamma zeros are handled before coefficient extraction.
+A quartic central-binomial specialization gives an all-resonance family
+with explicit harmonic constants; a weighted primitive reduces the
+hypergeometric order and transports the subtraction terms to colored
+polylogarithms.
+
+A second theorem gives the exact change of a one-sided Hadamard finite
+part under any analytic orientation-preserving local coordinate change.
+The correction is a finite residue, obeys a composition law, and specializes
+to all argument derivatives of all generalized Stieltjes functions.
+For a coordinate change tangent to the identity, the correction for
+$\gamma_n^{(r)}$ vanishes for $n\ge 2r$, and this threshold is sharp.
+Finally, a finite multiplication formula reduces three unequal integer
+frequencies to ordinary colored Tornheim kernels, with explicit lower
+Stieltjes terms accounting for the fixed endpoint coordinate. It also
+produces convergent log-Gamma correlations and negative-order reduction
+identities. Every new assertion is supplied with a proof and accompanied
+by reproducible finite algebra or independent numerical diagnostics.
+\end{abstract}
+
+\noindent\textbf{Status.} The contributions are relative to the inspected
+repository and incoming reports. Classical summations and product-integral
+methods are credited explicitly. Historical priority for every derived
+special case is not asserted. The current Gaussian $S_6$ and $S_8$
+identities remain conjectural.
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{Research scope, source baseline, and conventions}
+\label{sec:scope}
+
+\subsection{The questions addressed}
+The repository's consolidated manuscript and its incoming research reports
+already contain an extensive calculus of polylogarithms, harmonic sums,
+Hurwitz-zeta jets, and regularized Stieltjes products. A useful continuation
+must retain that accumulated proof status. The baseline used here is the
+commit
+\begin{center}\small\pin.\end{center}
+The two requested source locations are the manuscript under
+\src{Analysis/Polylogarithms/docs/manuscript} and the archives under
+\src{docs/incoming} \cite{repo}.
+
+The present work concentrates on three questions explicitly posed in the
+newest incoming material:
+\begin{enumerate}
+\item The Gauss--Hurwitz report asks for a fixed Dougall summation with a
+complete resonant coefficient law and finite Stieltjes closure
+\cite[Section 9, Question 1]{incoming-gh}.
+\item The Mellin--dilation and Stieltjes--harmonic reports ask for the exact
+nonlinear coordinate correction to finite parts, including compatibility
+with composition \cite{incoming-md,incoming-sh}.
+\item The Stieltjes--harmonic report asks for three unequal integer
+frequencies and a finite colored-kernel description with the local
+normalization included \cite[Further research: three unequal integer
+frequencies]{incoming-sh}.
+\end{enumerate}
+The answer to each is constructive. The first uses even Bernoulli
+coefficients and a Gamma-residue identity. The second uses a local residue
+that depends on a finite coordinate jet. The third uses a finite Hurwitz
+multiplication formula before taking any finite part. In the third case,
+integer weights do not require a new transcendental kernel: finitely many
+ordinary colored Tornheim kernels suffice.
+
+\subsection{Reading and audit boundaries}
+The manuscript directory, its editorial ledger, relevant depth,
+integration, differentiation, and discovery sections, and all five incoming
+archives were retrieved. The complete text of the four reports most
+directly connected to the new identities was examined, and the fifth
+report's scope and relevant source-status discussion were checked
+\cite{incoming-nhj,incoming-continuation}.
+The source manifest records paths and hashes; the five archive bytes were
+checked against their Git blob identifiers. This is a targeted proof
+audit, not a certification of every theorem in the 417-page source book.
+
+The inherited results used below are rederived when the proof is short:
+the six-sign-region Fourier formula, the elementary Stieltjes
+multiplication law, and the local residue mechanism. The longer
+independent proof of Dougall's summation is classical and cited
+\cite[Eq.~16.4.9]{dlmf-hyper}. The existing affine correction is recovered
+as a specialization, which checks the normalization without presenting
+that earlier theorem as a fresh discovery.
+
+\subsection{Classical antecedents}
+Gamma-ratio asymptotics and generalized hypergeometric endpoint summation
+are classical. B\"uhring's study of partial sums includes the zero-excess
+very-well-poised constant and a quartic-binomial specialization
+\cite[Section 4]{buhring}. In particular, the first quartic-binomial row
+below is a recovered classical identity. The extension proved here is
+the centered coefficient structure, the uniform nonpositive-integer
+resonance law, and its complete spectral coefficient calculus with a
+specified Hurwitz subtraction.
+
+Hurwitz product integrals and Tornheim sums were studied systematically
+by Espinosa and Moll \cite{em-hurwitz,em-tornheim}; colored Tornheim
+relations have a separate literature \cite{zhao}. The Fourier and
+multiplication formulas for Hurwitz zeta and the Gamma connection are
+standard \cite{dlmf-hurwitz}. Our unequal-frequency result is a finite
+transport theorem, with the fixed-coordinate terms written out. Its
+finite expression does not imply arithmetic independence or a minimal
+number of period coordinates.
+
+Analytic regularization and Hadamard finite parts also have classical
+antecedents. The local theorem below is proved directly so that its
+Jacobian convention, residue sign, and composition rule can all be
+checked without an unspecified regularization prescription. The
+specialized Stieltjes coefficient formula and sharp high-index
+invariance are the concrete additions needed by the source programme.
+
+\subsection{Conventions}
+All powers of positive real numbers use the real logarithm. The spectral
+and argument derivatives are distinguished by
+\begin{align}
+ \zeta(1+u,a)&=\frac1u+\sum_{n\ge0}\frac{(-1)^n}{n!}\gamma_n(a)u^n,
+ &\gamma_0(a)&=-\psi(a), \label{eq:laurent}\\
+ \zeta^{(k)}(s,a)&=\frac{\partial^k}{\partial s^k}\zeta(s,a),
+ &\gamma_n^{(r)}(a)&=\frac{\mathrm d^r}{\mathrm da^r}\gamma_n(a).
+\end{align}
+The same superscript on $\psi$ denotes an argument derivative. Generalized
+harmonic numbers are $H_N^{(j)}=\sum_{k=1}^Nk^{-j}$, with $H_0^{(j)}=0$;
+$H_N=H_N^{(1)}$. The rising factorial is $(x)_N$, and $[t^k]F$ denotes a
+Taylor coefficient, not a derivative. Bell polynomials are normalized by
+\[
+ \exp\!\left(\sum_{j\ge1}x_j\frac{t^j}{j!}\right)
+ =\sum_{k\ge0}Y_k(x_1,\ldots,x_k)\frac{t^k}{k!}.
+\]
+The symbol $e(x)$ means $\exp(2\pi i x)$ when introduced in the Fourier
+sections. On the circle, every finite part uses the right local
+coordinate at each singular point. The notation $\FP_x$ is reserved for
+that prescribed constant term; it does not denote an unnormalized
+analytic continuation.
+
+The proofs justify limiting operations analytically. Exact symbolic
+checks verify finite identities and their implementations. Numerical
+checks compare independent representations and detect sign, scale, and
+transcription errors. They are not interval certificates or substitutes
+for those proofs.

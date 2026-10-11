@@ -1,0 +1,335 @@
+\section{Centered Dougall subtraction and every integer resonance}
+\label{dg:section}
+
+\subsection{The summation family and its natural center}
+Fix positive real parameters $a,b,c$ such that
+\begin{equation}\label{dg:domain}
+ d_0=1+a-b-c>0,\qquad \eta=\frac a2,\qquad x_n=n+\eta.
+\end{equation}
+The restriction $d_0>0$ supplies a common domain of ordinary convergence
+from which all continuations below are proved. It still includes the
+quartic-binomial examples and all their nonpositive-integer resonances.
+For $\Re u<d_0$ define
+\begin{equation}\label{dg:rn}
+ r_n(u)=x_n\,
+ \frac{\Gamma(n+a)\Gamma(n+b)\Gamma(n+c)\Gamma(n+d_0-u)}
+ {\Gamma(n+1)\Gamma(n+1+a-b)\Gamma(n+1+a-c)
+  \Gamma(n+b+c+u)}.
+\end{equation}
+All reciprocal-Gamma factors are entire functions. In particular,
+$r_n$ is holomorphic when its last denominator argument passes through
+a nonpositive integer. No numerator Gamma pole lies in the stated
+half-plane.
+
+The Rogers--Dougall summation \cite[Eq.~16.4.9]{dlmf-hyper} gives
+\begin{equation}\label{dg:sum}
+ \sum_{n=0}^{\infty}r_n(u)=G(u):=
+ \frac{\Gamma(b)\Gamma(c)\Gamma(d_0-u)\Gamma(u)}
+ {2\Gamma(d_0)\Gamma(b+u)\Gamma(c+u)},
+ \qquad 0<\Re u<d_0.
+\end{equation}
+To check the normalization, the upper parameters of the usual
+${}_5F_4$ are $a,1+a/2,b,c,d_0-u$ and its lower parameters are
+$a/2,1+a-b,1+a-c,b+c+u$. The ratio
+$(1+a/2)_n/(a/2)_n$ is $(n+a/2)/(a/2)$, which accounts for the
+factor $1/2$ in \eqref{dg:sum}. The conventional hypergeometric excess
+is $2u$, whereas the Gamma factor in the sum is $\Gamma(u)$.
+Keeping that distinction is essential at every resonance.
+
+\subsection{Even inverse powers and finite coefficient data}
+Write
+\begin{equation}\label{dg:alpha}
+ (\alpha_1,\alpha_2,\alpha_3,\alpha_4)
+ =\left(\frac a2,b-\frac a2,c-\frac a2,d_0-u-\frac a2\right).
+\end{equation}
+At the center $x_n=n+a/2$, every denominator shift is the reflection
+$1-\alpha_i$ of its numerator shift:
+\[
+ r_n(u)=x_n\prod_{i=1}^4
+       \frac{\Gamma(x_n+\alpha_i)}{\Gamma(x_n+1-\alpha_i)}.
+\]
+For Bernoulli polynomials with $B_1(z)=z-1/2$, define
+\begin{align}
+ h_k(u)&=-\frac{1}{k(2k+1)}
+                \sum_{i=1}^4B_{2k+1}(\alpha_i),\qquad k\ge1,
+                  \label{dg:hk}\\
+ C_0(u)&=1,\qquad
+ jC_j(u)=\sum_{k=1}^j k h_k(u)C_{j-k}(u),\qquad j\ge1.
+                  \label{dg:recurrence}
+\end{align}
+These are polynomials with rational coefficients in $a,b,c,u$; each
+prescribed order requires only finitely many polynomial operations.
+
+\begin{lemma}[Centered finite expansion]\label{dg:asymptotic}
+For every $K\ge1$,
+\begin{equation}\label{dg:expansion}
+ r_n(u)=x_n^{-1-2u}
+ \left\{\sum_{j=0}^{K-1}C_j(u)x_n^{-2j}+O(x_n^{-2K})\right\}.
+\end{equation}
+The remainder is locally uniform in $\Re u<d_0$ and in the positive
+parameter domain \eqref{dg:domain}. Every fixed-order derivative has
+the corresponding differentiated expansion, with at most a fixed
+power of $\log x_n$.
+\end{lemma}
+\begin{proof}
+The finite Stirling--Bernoulli expansion for the logarithm of a Gamma
+ratio \cite[Section 5.11]{dlmf-gamma} contains the coefficient
+\[
+ \frac{(-1)^{k+1}}{k(k+1)}
+ \{B_{k+1}(\alpha_i)-B_{k+1}(1-\alpha_i)\}x_n^{-k}.
+\]
+Bernoulli reflection makes this zero for odd $k$. For $k=2\ell$ its
+sum over $i$ is $h_\ell(u)$. The leading power is $x_n^{-1-2u}$.
+Exponentiation gives \eqref{dg:expansion}, and differentiation of the
+formal exponential in the inverse-square variable gives
+\eqref{dg:recurrence}. This argument uses only a finite asymptotic
+expansion with its remainder; it does not sum a divergent asymptotic
+series. Uniformity follows from the uniform Stirling remainder on
+compact sets of shifts. To justify parameter derivatives, enlarge a
+given compact set slightly and apply Cauchy's formula to the remainder.
+The finitely many small indices are handled by the entire
+reciprocal-Gamma factors.
+\end{proof}
+
+\begin{theorem}[Centered Dougall--Hurwitz subtraction]\label{dg:master}
+For $K\ge1$, the series
+\begin{equation}\label{dg:RK}
+ R_K(u)=\sum_{n=0}^{\infty}\left\{r_n(u)-
+    \sum_{j=0}^{K-1}C_j(u)x_n^{-1-2u-2j}\right\}
+\end{equation}
+converges absolutely and locally normally on $-K<\Re u<d_0$ and satisfies
+\begin{equation}\label{dg:mastereq}
+ \boxed{R_K(u)=G(u)-
+       \sum_{j=0}^{K-1}C_j(u)\zeta(1+2u+2j,\eta).}
+\end{equation}
+All poles of the combined right side in this strip are removable.
+Every fixed spectral or parameter derivative can be taken in the
+single bracketed series \eqref{dg:RK}.
+\end{theorem}
+\begin{proof}
+On a compact subset where $\Re u\ge-K+\delta$, the bracket is
+$O(n^{-1-2\delta})$ by Lemma~\ref{dg:asymptotic}. Derivatives add only
+fixed logarithmic powers, so the same argument gives summable
+majorants. The Weierstrass theorem proves holomorphy and the derivative
+assertion. In $0<\Re u<d_0$, summation of the separate convergent
+series using \eqref{dg:sum} and the Hurwitz Dirichlet series gives
+\eqref{dg:mastereq}. The identity theorem extends it to the stated
+strip. Its left side proves removability of the combined poles.
+\end{proof}
+
+\begin{remark}[The evaluated object]\label{dg:ordinary}
+At $u=-N$, the two components in braces usually have divergent sums
+separately. Equation~\eqref{dg:mastereq} evaluates their one absolutely
+convergent difference. The reference $\eta=a/2$ and the number of
+subtractions are part of the definition. Increasing that number obeys
+the exact relation
+\[
+ R_{K+1}(u)=R_K(u)-C_K(u)\zeta(1+2u+2K,\eta),
+ \qquad -K<\Re u<d_0.
+\]
+\end{remark}
+
+\subsection{The coefficient differential law}
+The even coefficients have an exact parameter identity that considerably
+simplifies their resonant constant terms. Every derivative in the
+following operator respects $d_0=1+a-b-c$:
+\[
+ V=2\partial_a+\partial_b+\partial_c-\partial_u.
+\]
+
+\begin{lemma}[Centered coefficient transport]\label{dg:differential}
+For every $j\ge1$,
+\begin{equation}\label{dg:differentiallaw}
+ \boxed{VC_j(u)=2\sum_{k=1}^j
+                      \zeta(1-2k,\eta)C_{j-k}(u).}
+\end{equation}
+This is a polynomial identity, since
+$\zeta(1-2k,\eta)=-B_{2k}(\eta)/(2k)$.
+\end{lemma}
+\begin{proof}
+Temporarily regard $n$ as a continuous positive variable. Direct
+logarithmic differentiation of \eqref{dg:rn} gives
+\begin{equation}\label{dg:termtransport}
+ Vr_n(u)=\partial_n r_n(u)
+                 +\{\psi(n+a)+\psi(n+1)\}r_n(u).
+\end{equation}
+Here $Vx_n=\partial_nx_n=1$. The reflected digamma pair has expansion
+\[
+ \psi(x_n+\eta)+\psi(x_n+1-\eta)
+ \sim2\log x_n+2\sum_{k\ge1}\zeta(1-2k,\eta)x_n^{-2k}.
+\]
+This again follows from Bernoulli reflection in the differentiated
+Stirling formula. Since $Vu=-1$, the explicit exponent on the left
+contributes $2\log x_n$, which cancels the displayed logarithm.
+The derivatives of $x_n$ cancel between $V$ and $\partial_n$.
+Comparison of each inverse-square coefficient proves
+\eqref{dg:differentiallaw}. Uniqueness of finite asymptotic
+coefficients justifies this comparison.
+\end{proof}
+
+\subsection{An explicit residue polynomial and a short closed sum}
+For $N\ge0$ set
+\begin{equation}\label{dg:rho}
+ \rho_N=\frac{(-1)^N(d_0)_N(1-b)_N(1-c)_N}{N!}.
+\end{equation}
+
+\begin{proposition}[Two finite resonance identities]\label{dg:residues}
+For every $N\ge0$,
+\begin{align}
+ C_N(-N)&=\rho_N,\label{dg:rhoidentity}\\
+ \frac12C_N'(-N)+
+ \sum_{j=0}^{N-1}C_j(-N)\zeta(1-2N+2j,\eta)
+ &=\left(\partial_a+\tfrac12\partial_b+\tfrac12\partial_c\right)\rho_N.
+ \label{dg:Bernoulliidentity}
+\end{align}
+The sum is empty when $N=0$. The formulas hold also at all zeros of
+$\rho_N$.
+\end{proposition}
+\begin{proof}
+Use $K=N+1$ in Theorem~\ref{dg:master}. The only Hurwitz pole at
+$u=-N$ has index $j=N$ and residue $C_N(-N)/2$. The residue of
+$G(u)$ is $\rho_N/2$, using the Gamma residue and shift formulas.
+Since the bracketed sum is holomorphic, their residues agree. This
+proves \eqref{dg:rhoidentity} generically and then identically as a
+polynomial statement. Evaluate \eqref{dg:differentiallaw} at $u=-N$,
+use \eqref{dg:rhoidentity} for its parameter derivatives, and divide
+by two. This gives \eqref{dg:Bernoulliidentity}; the case $N=0$ is
+immediate from $C_0=\rho_0=1$.
+\end{proof}
+
+\begin{theorem}[Every nonpositive-integer resonance]\label{dg:closed}
+Under \eqref{dg:domain}, for every integer $N\ge0$,
+\begin{align}
+ &\sum_{n=0}^{\infty}\left\{r_n(-N)-
+             \sum_{j=0}^{N}C_j(-N)x_n^{2N-1-2j}\right\}\notag\\
+ &\qquad=\boxed{\rho_N\left[
+   \psi(\eta)+\frac{\psi(N+1)-\psi(b)-\psi(c)-\psi(d_0+N)}2
+                    \right].}\label{dg:closedeq}
+\end{align}
+The series is absolutely convergent, including at positive integer
+parameters where $\rho_N=0$.
+\end{theorem}
+\begin{proof}
+First suppose that the shifted Gamma arguments in the following
+Laurent expansion are regular. With $u=-N+t$,
+\[
+ G(-N+t)=\frac{\rho_N}{2t}
+ +\frac{\rho_N}{2}
+   \{\psi(N+1)-\psi(d_0+N)-\psi(b-N)-\psi(c-N)\}+O(t).
+\]
+The colliding Hurwitz term has constant coefficient
+$C_N'(-N)/2-\rho_N\psi(\eta)$. Consequently
+\eqref{dg:mastereq}, at $K=N+1$, gives the claimed value except for
+the finite expression on the left of \eqref{dg:Bernoulliidentity}.
+The operator $W=\partial_a+(\partial_b+\partial_c)/2$ fixes $d_0$, and
+\[
+ W\rho_N=\frac{\rho_N}{2}
+   \{\psi(b)-\psi(b-N)+\psi(c)-\psi(c-N)\}.
+\]
+Subtraction cancels both shifted digammas and proves
+\eqref{dg:closedeq}. Both the normally convergent sum and the final
+right side are locally holomorphic in the positive parameter domain.
+They therefore agree across zeros of $\rho_N$, without division by
+that polynomial at its zeros.
+\end{proof}
+
+At the resonant point write $d=d_0+N$. Then
+$a=b+c+d-1-N$ and
+\[
+ \rho_N=\frac{(1-b)_N(1-c)_N(1-d)_N}{N!},
+\]
+which displays the symmetry of the answer in $b,c,d$. Our proof and
+theorem retain $d_0>0$; no continuation into an unspecified larger
+parameter domain is needed.
+
+\subsection{Half-integer excess and parity cancellation}
+Negative odd values of the conventional excess $2u$ behave differently.
+At $u=-M-1/2$, the minimal centered expansion subtracts the nonnegative
+even powers $x_n^{2M},x_n^{2M-2},\ldots,1$. There is no $x_n^{-1}$
+coefficient to collide with a Hurwitz pole.
+
+\begin{corollary}[Negative odd hypergeometric excess]\label{dg:half}
+For every integer $M\ge0$,
+\begin{equation}\label{dg:halfeq}
+ R_{M+1}(-M-\tfrac12)
+ =G(-M-\tfrac12)-\sum_{j=0}^{M}
+       C_j(-M-\tfrac12)\zeta(-2M+2j,\eta).
+\end{equation}
+All terms on the right are individually regular. In particular,
+\begin{align}
+ \sum_{n=0}^{\infty}\{r_n(-\tfrac12)-1\}
+ =\frac{a-1}{2}
+ -\frac{\sqrt\pi\,\Gamma(b)\Gamma(c)\Gamma(d_0+\tfrac12)}
+ {\Gamma(d_0)\Gamma(b-\tfrac12)\Gamma(c-\tfrac12)}.
+ \label{dg:halfsimple}
+\end{align}
+\end{corollary}
+\begin{proof}
+Theorem~\ref{dg:master} applies with $K=M+1$ since
+$-M-1/2>-M-1$. Its Hurwitz arguments are exactly the nonpositive
+even integers in \eqref{dg:halfeq}. The case $M=0$ uses
+$\Gamma(-1/2)=-2\sqrt\pi$ and $\zeta(0,\eta)=1/2-\eta$.
+\end{proof}
+
+For example, $a=b=c=3/4$ and $d_0=1/4$ give
+\begin{equation}\label{dg:quarteridentity}
+ \boxed{\sum_{n=0}^{\infty}\left\{
+ (n+\tfrac38)\left[\frac{\Gamma(n+\tfrac34)}{\Gamma(n+1)}\right]^4-1
+ \right\}=-\frac18-\sqrt\pi
+     \left[\frac{\Gamma(\tfrac34)}{\Gamma(\tfrac14)}\right]^3.}
+\end{equation}
+
+A complementary specialization has a vanishing Gamma endpoint.
+For $a=b=c=1/2$ and $u=-1/2$, put
+\[
+ b_n=\pi\frac{\binom{2n}{n}^2}{16^n},\qquad
+ v_n=(n+\tfrac14)b_n.
+\]
+The two reciprocal-Gamma factors at zero give $G(-1/2)=0$, so
+\begin{equation}\label{dg:binomialsquare}
+ \sum_{n\ge0}(v_n-1)=-\frac14.
+\end{equation}
+There is also a direct check: the recurrence
+$(n+1)^2b_{n+1}=(n+1/2)^2b_n$ gives
+$\sum_{n=0}^{M-1}v_n=M^2b_M$. Stirling's formula yields
+$M^2b_M=M-1/4+O(M^{-1})$, proving \eqref{dg:binomialsquare}
+independently of endpoint continuation.
+
+At $u=-M-1/2$, the same parameters give
+\[
+ r_n(-M-\tfrac12)=v_n\prod_{r=0}^{M-1}
+           \{(n+\tfrac14)^2-(r+\tfrac34)^2\},\qquad
+ G(-M-\tfrac12)=0.
+\]
+Their minimally subtracted sums are rational numbers, because
+\eqref{dg:halfeq} involves rational polynomial coefficients and
+Hurwitz values at nonpositive integers and shift $1/4$. For example,
+with $x_n=n+1/4$,
+\begin{equation}\label{dg:binomialsquareN1}
+ \sum_{n\ge0}\left\{(x_n^2-\tfrac9{16})v_n-x_n^2+\tfrac{19}{32}\right\}
+ =\frac{21}{128}.
+\end{equation}
+The next section develops an integer-resonance family whose values
+belong to $\Q+\pi\Q$.
+
+Parity persists at an arbitrary reference shift $v>0$, although the
+individual odd coefficients then need not vanish. If
+\[
+ r_n(u)\sim(n+v)^{-1-2u}\sum_{j\ge0}A_j(u;v)(n+v)^{-j},
+\]
+the binomial theorem gives the exact finite transport formula
+\begin{equation}\label{dg:reference}
+ A_j(u;v)=\sum_{\ell=0}^{\lfloor j/2\rfloor}
+ C_\ell(u)\frac{(1+2u+2\ell)_{j-2\ell}}{(j-2\ell)!}
+                       (v-\eta)^{j-2\ell}.
+\end{equation}
+At the potentially colliding index it implies
+\begin{equation}\label{dg:parityresidue}
+ A_{2N}(-N;v)=\rho_N,\qquad
+ A_{2N+1}(-N-\tfrac12;v)=0.
+\end{equation}
+For the odd index every rising factorial in \eqref{dg:reference}
+contains a zero; for the even index only the term $\ell=N$ survives.
+Thus a generic all-powers subtraction scheme must exhibit the same
+residue cancellation. Derivatives of a coefficient vanishing at the
+resonant point need not vanish, a distinction used next.

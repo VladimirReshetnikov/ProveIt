@@ -1,0 +1,119 @@
+\section{Audit findings, claim boundaries, and reproducibility}\label{tsc:audit}
+\subsection{A proposed update, not a fabricated erratum}
+The inspected shifted-jet report explicitly asks for the coordinate class
+of separated three-factor Stieltjes products. Theorems~\ref{tsc:stieltjes-triple}
+and \ref{tsc:mellin-all} answer that question affirmatively, and
+\eqref{tsc:digamma-operator} and \eqref{tsc:psi-integrals} supply its first
+three-digamma target. A suitable manuscript update is therefore to mark the
+\emph{representation question} resolved and replace it with the sharper
+questions about collisions and further period reductions in the next
+section.
+
+No false theorem was identified in the selected canonical passages read
+for this continuation. In particular, their pointwise derivative tower is
+correct, the existing cubic log-Gamma attribution is correct, and the
+current $S_4$ status must remain proved. The caveats below are mathematical
+integration safeguards, not claims that the repository currently contains
+all of the corresponding mistakes.
+
+\paragraph{Preserve the constant mode.}
+The normalized zero-order family is $\calB_0=\delta_0-1$. Replacing it by
+$\delta_0$ would give a false value for the triple kernel. The exact test
+$\calT(0,0,0)=2$ detects this normalization error.
+
+\paragraph{Preserve the endpoint constants.}
+In \eqref{tsc:I-formula}, the even-index zeta term comes from multiplying a
+spectral pole by a regular trigonometric coefficient. In
+\eqref{tsc:Mfunctional}, the finite constant comes from the Mellin pole
+$F(0)/u$. Omitting either term changes the identity; in the first case,
+$I_0(1/2)=-\pi^2/2$ is an immediate counterexample.
+
+\paragraph{Distinguish discrete and analytic order formulas.}
+The finite reduction \eqref{tsc:integer-reduction} has integer parameters
+$r,s$. It cannot simply be differentiated in those parameters. The entire
+colored family and its subtracted Mellin integrals provide the required
+analytic replacement. Values on isolated integer hyperplanes do not fix
+transverse spectral derivatives.
+
+\paragraph{Do not transport pointwise derivatives silently.}
+A derivative of a periodic finite-part extension and a raw finite part of
+the pointwise derivative differ by \eqref{tsc:single-contact}. The triple
+correction is \eqref{tsc:contact-triple-eq}. Conversely, symmetric derivatives
+of the reflected cotangent kernel have their own compatible convention.
+They should not be assigned the one-sided correction of an unreflected
+Stieltjes factor.
+
+\paragraph{Keep collision claims separate.}
+The generic Stieltjes product requires pairwise distinct shifts. Setting
+colors equal to one in the global entireness theorem is invalid. Ordinary
+primitive products can allow coincident shifts for the different,
+explicitly proved convergence reason in Theorem~\ref{tsc:primitive-triple}.
+
+\subsection{What the tests establish}
+The exact checker uses Gaussian rational arithmetic for fourth-root Fourier
+phases and SymPy exact arithmetic for polynomial and harmonic coefficients.
+Its 621 assertions comprise the following finite components.
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Exact component & Assertions\\\midrule
+Six-sector finite Fourier identities & 128\\
+Deliberately corrupted-formula rejection controls & 3\\
+Zero-order six-sector value $2$ & 60\\
+Integer Tornheim partial-fraction identities & 64\\
+Cotangent partial fractions and residue sums & 20\\
+Stieltjes--cotangent coefficients, $0\le m\le12$ & 13\\
+Complete homogeneous harmonic coefficients & 143\\
+Elementary harmonic coefficients & 91\\
+Normalized primitive derivative ladder & 99\\\midrule
+Total & 621\\\bottomrule
+\end{tabular}
+\end{center}
+These checks do not constitute a formal proof of distributional analytic
+continuation. That proof is the argument in the article. The test scope is
+recorded explicitly in \src{results/exact_checks.json}.
+
+The numerical suite makes 56 independent comparisons. It includes direct
+subtracted quadrature of $I_0$ and the log-Gamma transform, rational Gamma
+reductions, products with two through four cotangent factors, and a
+nonzero-parameter check of the Hurwitz generating identity. For three
+positive integral spectral triples, the six Mellin sectors are compared
+with exactly integrated Bernoulli polynomials. The rational targets are
+\begin{equation}\label{tsc:bernoulli-targets}
+ \frac8{10125},\qquad -\frac{11}{15360},\qquad
+ \frac{6119}{63026250};
+\end{equation}
+the associated orders and shifts are recorded in the JSON results.
+Finally, three singular digamma triples are evaluated both by local
+endpoint subtractions and by \eqref{tsc:psi-integrals}. The polylogarithm
+order derivatives in that check are computed from convergent series,
+not by infinitesimal black-box differentiation of a polylogarithm routine.
+
+The default environment used Python 3.13.5, SymPy 1.14.0, and mpmath 1.3.0.
+Most numerical checks use 50 decimal working digits; the more expensive
+Mellin and polylogarithmic triple checks use 40. Acceptance thresholds range
+from 31 to 40 relative decimal digits, depending on the test. None of these
+are certified interval calculations. High-index Stieltjes triples and the
+full derivative triple family are proved analytically here; they are not
+claimed to have been exhaustively numerically evaluated.
+
+\subsection{Reproduction and integration}
+From the package directory, run
+\begin{verbatim}
+python -m pip install -r requirements.txt
+python code/verify_exact.py
+python code/verify_numerical.py --dps 50
+python code/build_article.py
+\end{verbatim}
+The source is modular, with a flattened standalone TeX copy for convenience.
+The archive includes the compiled article, coefficient tables, executed
+check logs, source provenance, an additive integration note, and a SHA-256
+manifest. No network access is needed by the checking scripts after their
+dependencies are installed.
+
+A proposed report destination is
+\src{Analysis/Polylogarithms/docs/reports/stieltjes-correlation-calculus/continuations/triple-stieltjes-tornheim/}.
+All theorem labels and bibliography keys use the prefix \src{tsc:}.
+The integration note distinguishes a proposed status update from an applied
+patch. Archive preservation and successful replay should remain separate
+from mathematical acceptance into the canonical manuscript.

@@ -1,0 +1,139 @@
+\section{Spatial derivatives and exact harmonic contact terms}\label{tsc:contacts}
+The identity $\partial_x\calB_s=\calB_{s-1}$ is distributional. Passing
+from it to a pointwise polygamma product requires a local correction. This
+section gives that correction explicitly and does not alter the correct
+pointwise derivative tower already present in the repository.
+
+\subsection{Finite reductions at negative integral spectral orders}
+For $r\ge1$, $\calB_{-r}=\delta_0^{(r)}$. Applying this to the master
+identity gives a useful family of exact spectral resonances.
+\begin{proposition}\label{tsc:negative-resonance}
+For $r\ge1$ and any complex $s,t$,
+\begin{align}\label{tsc:negative-resonance-eq}
+ \calT(-r,s,t;\mathbf a)
+ ={}&(2\pi)^{s+t-r}(-1)^r
+   \sum_{j=0}^r\binom rj
+    \calB_{s-j}(a_1-a_2)\calB_{t-r+j}(a_1-a_3).
+\end{align}
+Here the functions on the right are evaluated away from their seam using
+\eqref{tsc:Bhurwitz}. At order zero, the missing constant mode changes
+the formula to
+\begin{align}\label{tsc:zero-resonance}
+ \calT(0,s,t;\mathbf a)={}&(2\pi)^{s+t}
+    \calB_s(a_1-a_2)\calB_t(a_1-a_3)\notag\\
+ &-e^{-\pi\ii(s-t)/2}\Li_{s+t}(e(a_3-a_2))\notag\\
+ &-e^{\pi\ii(s-t)/2}\Li_{s+t}(e(a_2-a_3)).
+\end{align}
+\end{proposition}
+\begin{proof}
+Pair $\delta_{a_1}^{(r)}$ with the product of the other two, smooth,
+factors. The sign $(-1)^r$ is the defining sign of a delta derivative,
+and the product rule with $\partial_x^j\calB_s=\calB_{s-j}$ gives
+\eqref{tsc:negative-resonance-eq}. For zero order use
+$\calB_0=\delta_0-1$, not $\delta_0$. The remaining bilinear mean is
+computed by its two opposite-frequency sectors and equals the two
+polylogarithm terms after multiplication by $(2\pi)^{s+t}$.
+\end{proof}
+The formulas reduce the complete six-sector expression on these spectral
+hyperplanes. They do not determine its transverse derivatives, which are
+precisely among the data needed for general Stieltjes triple products.
+
+\subsection{Elementary harmonic coefficients}
+Define $e_j^{(r)}$ by
+\begin{equation}\label{tsc:elementary}
+ \prod_{k=1}^r(1+v/k)=\sum_{j=0}^r e_j^{(r)}v^j,
+ \qquad e_j^{(r)}=0\quad(j>r).
+\end{equation}
+Thus $e_1^{(r)}=H_r$,
+$e_2^{(r)}=(H_r^2-H_r^{(2)})/2$, and
+$e_3^{(r)}=(H_r^3-3H_rH_r^{(2)}+2H_r^{(3)})/6$.
+Unlike the complete coefficients in the primitive ladder, these have finite
+support in $j$.
+
+Let $D_{m,r}$ denote the scale-one, one-sided Hadamard extension of the
+\emph{pointwise} function $\gamma_m^{(r)}(x)$ on $0<x<1$. At the right-hand
+seam, expand the test function through degree $r$, integrate all singular
+power-log terms, and delete the divergent terms in the cutoff. This
+specifies the extension without arbitrary delta terms. Put $D_{m,0}=C_m$.
+
+\begin{theorem}[Derivative--extension conversion]\label{tsc:contact-single}
+For $r\ge0$,
+\begin{equation}\label{tsc:single-contact}
+ \partial_x^r C_m=D_{m,r}+c_{m,r}\delta_0^{(r)},
+ \qquad c_{m,r}=(-1)^{m+1}m!e_{m+1}^{(r)}.
+\end{equation}
+In particular $c_{m,0}=0$, $c_{0,r}=-H_r$, and $c_{m,r}=0$ for $m\ge r$.
+\end{theorem}
+\begin{proof}
+In a local right-hand coordinate, the meromorphic distribution
+$x_+^{u-r-1}$ has residue
+$(-1)^r\delta_0^{(r)}/r!$ at $u=0$. Its regular Laurent coefficients
+are the scale-one finite parts of $x^{-r-1}\log^j x/j!$.
+Differentiating the singular term $x^{u-1}$ in
+$\zeta(1-u,x)$ gives
+\[
+ \partial_x^r x^{u-1}=(-1)^r r!P_r(u)x^{u-r-1},
+ \qquad P_r(u)=\prod_{k=1}^r(1-u/k).
+\]
+Hence the residue contribution after multiplication is
+$P_r(u)\delta_0^{(r)}/u$. The regular nonresidue terms give exactly the
+raw extensions $D_{m,r}$. Comparing with the $r$th derivative of
+\eqref{tsc:Zlaurent}, the additional coefficient is
+$m![u^{m+1}]P_r(u)=(-1)^{m+1}m!e_{m+1}^{(r)}$.
+The remaining smooth local terms introduce no contact distribution.
+For $r=0$ the assertion is immediate. This proves the formula.
+\end{proof}
+
+\begin{theorem}[Contact-complete derivative triple]\label{tsc:contact-triple}
+Let $r_i,m_i\ge0$, $R=r_1+r_2+r_3$, and retain distinct shifts. Then
+\begin{align}\label{tsc:contact-triple-eq}
+ &\FP\int_0^1\prod_{i=1}^3
+            \gamma_{m_i}^{(r_i)}(\{x-a_i\})\dd x\notag\\
+ &\quad=(2\pi)^R\left(\prod_{i=1}^3m_i!\right)
+    [\mathbf u^{\mathbf m+\mathbf1}]
+        \left(\prod_{i=1}^3E(u_i)\right)
+                       \calT(\mathbf u-\mathbf r;\mathbf a)\notag\\
+ &\qquad\quad-
+    \sum_{i=1}^3(-1)^{r_i}c_{m_i,r_i}
+       \left.\partial_x^{r_i}
+              \prod_{j\ne i}\gamma_{m_j}^{(r_j)}(\{x-a_j\})
+       \right|_{x=a_i}.
+\end{align}
+The local derivatives in the last line are ordinary derivatives of smooth
+functions at $a_i$. In particular, setting all $m_i=0$ gives identities for
+arbitrary products of three separated polygamma functions.
+\end{theorem}
+\begin{proof}
+By \eqref{tsc:single-contact}, each raw factor is
+$D_{m_i,r_i,a_i}=\partial_x^{r_i}C_{m_i,a_i}
+                 -c_{m_i,r_i}\delta_{a_i}^{(r_i)}$.
+In the product expansion, every term containing two delta-supported
+factors is zero because their supports are disjoint. A term containing
+one delta derivative pairs with the smooth remaining product, producing
+$(-1)^{r_i}$ times its ordinary $r_i$th derivative at $a_i$. These are
+exactly the terms in the final line of \eqref{tsc:contact-triple-eq}.
+
+The product of the three periodic derivatives is
+$(-1)^R\partial_{a_1}^{r_1}\partial_{a_2}^{r_2}\partial_{a_3}^{r_3}
+\calJ_{\mathbf m}$. Apply \eqref{tsc:lowering} to
+\eqref{tsc:all-index}. The factor $(-1)^R$ cancels the sign of
+$(-2\pi)^R$, giving the first line of the right-hand side.
+\end{proof}
+
+The correction is not optional. For instance,
+$\partial_x C_0=D_{0,1}-\delta_0'$. Omitting it already changes a triple
+with one spatial derivative by the derivative of the product of the two
+other endpoint values. The theorem explains the correction without
+claiming that the manuscript's pointwise formulas are wrong.
+
+For explicit simplification of endpoint derivatives, the classical
+Pochhammer identity yields, for $r\ge1$,
+\begin{equation}\label{tsc:pointwise-tower}
+ \gamma_n^{(r)}(x)=(-1)^{r+n}r!n!
+      \sum_{k=0}^{\min(r,n)}
+       e_k^{(r)}\frac{\zeta^{[n-k]}(r+1,x)}{(n-k)!}.
+\end{equation}
+Indeed, expand
+$\partial_x^r\zeta(1+v,x)=(-1)^r(1+v)_r\zeta(1+r+v,x)$ at zero.
+This derivation also fixes every factorial and sign in
+\eqref{tsc:pointwise-tower}.

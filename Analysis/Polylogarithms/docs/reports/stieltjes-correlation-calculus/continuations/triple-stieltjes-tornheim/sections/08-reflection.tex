@@ -1,0 +1,158 @@
+\section{Reflected polygamma products at arbitrary depth}\label{tsc:reflected}
+The generic triple has a double-sum coordinate class. A special reflected
+subalgebra reduces much further. Its basic kernel is
+\begin{equation}\label{tsc:Kdef}
+ K(x)=\PV\,\pi\cot(\pi x)=C_0(x)-C_0(-x).
+\end{equation}
+Its zero Fourier coefficient is zero, and its other coefficients are
+$-\pi\ii\sgn n$. The reflection formula gives the pointwise identity
+$\psi(1-x)-\psi(x)=\pi\cot\pi x$. The two one-sided logarithmic
+counterterms cancel in the reflected difference, giving the symmetric
+principal value in \eqref{tsc:Kdef}.
+
+\subsection{An all-index Stieltjes--cotangent transform}
+For $0<a<1$, put
+\begin{equation}\label{tsc:Idef}
+ I_m(a)=\langle C_m(x)K(x-a),1\rangle.
+\end{equation}
+This means the one-sided finite part at zero and the symmetric principal
+value at $a$; these singularities are separated.
+
+\begin{proposition}[Spectral generating function]\label{tsc:Igen}
+Near $u=0$,
+\begin{align}\label{tsc:Igen-eq}
+ \sum_{m\ge0}\frac{I_m(a)}{m!}u^m
+  =\pi\csc(\pi u)\zeta(1-u,1-a)
+     -\pi\cot(\pi u)\zeta(1-u,a)+\frac{K(a)}u.
+\end{align}
+The singularity on the right is removable only after the terms are combined.
+\end{proposition}
+\begin{proof}
+For $\Re u>1$, Fourier pairing gives
+\begin{align*}
+ \langle\Gamma(u)\calB_u(x)K(x-a),1\rangle
+ =\frac{\pi\ii\Gamma(u)}{(2\pi)^u}
+   \left[e^{-\pi\ii u/2}\Li_u(e(a))
+               -e^{\pi\ii u/2}\Li_u(e(-a))\right].
+\end{align*}
+The two Hurwitz Fourier formulas at $a$ and $1-a$ transform this into
+the first two terms of \eqref{tsc:Igen-eq}. Analytic continuation in the
+separated product extends the identity to zero. The residue of
+\eqref{tsc:Zlaurent} paired with $K(x-a)$ is
+$K(-a)-\langle K,1\rangle=-K(a)$. Adding $K(a)/u$ removes precisely that
+residue and leaves the generating series for $I_m$.
+\end{proof}
+This is a bilinear kernel identity, compatible with the repository's
+existing closure machinery; it is used as an input to the all-depth
+reduction rather than advertised as a new bilinear principle.
+
+\begin{corollary}[Finite single-Stieltjes formula]\label{tsc:Iexplicit}
+For all $m\ge0$,
+\begin{align}\label{tsc:I-formula}
+ I_m(a)={}&\frac{\gamma_{m+1}(1-a)-\gamma_{m+1}(a)}{m+1}\notag\\
+ &+2m!\sum_{k=1}^{\lfloor(m+1)/2\rfloor}
+       \frac{\zeta(2k)}{(m-2k+1)!}
+       \left[(1-2^{1-2k})\gamma_{m-2k+1}(1-a)
+                       +\gamma_{m-2k+1}(a)\right]\notag\\
+ &-\mathbf1_{2\mid m}\,2m!(2-2^{-m-1})\zeta(m+2).
+\end{align}
+\end{corollary}
+\begin{proof}
+Insert \eqref{tsc:stieltjes-convention} into \eqref{tsc:Igen-eq} and use
+\[
+ \pi\csc(\pi u)=\frac1u+
+     2\sum_{k\ge1}(1-2^{1-2k})\zeta(2k)u^{2k-1},\qquad
+ \pi\cot(\pi u)=\frac1u-2\sum_{k\ge1}\zeta(2k)u^{2k-1}.
+\]
+The remaining pole cancels by
+$\gamma_0(1-a)-\gamma_0(a)=-K(a)$. The products with the spectral pole
+$-1/u$ contribute the last line of \eqref{tsc:I-formula}; retaining them
+is necessary even for $m=0$. Coefficient comparison proves the formula.
+\end{proof}
+In low degrees,
+\begin{align}\label{tsc:Iexamples}
+ I_0(a)&=\gamma_1(1-a)-\gamma_1(a)-\frac{\pi^2}{2},\notag\\
+ I_1(a)&=\frac{\gamma_2(1-a)-\gamma_2(a)}2
+           +\zeta(2)\bigl(\gamma_0(1-a)+2\gamma_0(a)\bigr),\notag\\
+ I_2(a)&=\frac{\gamma_3(1-a)-\gamma_3(a)}3
+       +2\zeta(2)\gamma_1(1-a)+4\zeta(2)\gamma_1(a)
+       -\frac{15}{2}\zeta(4).
+\end{align}
+For example, $I_0(1/2)=-\pi^2/2$ and
+$I_1(1/2)=\pi^2(\gamma+2\log2)/2$. The machine-readable table in
+\src{results/stieltjes_cotangent_coefficients.json} extends through $m=12$.
+
+\subsection{A partial-fraction identity at every number of factors}
+Let $b_1,\ldots,b_N$ be pairwise distinct on the circle and define
+\begin{equation}\label{tsc:Acot}
+ A_j(\mathbf b)=\prod_{\ell\ne j}K(b_j-b_\ell).
+\end{equation}
+Empty products equal one.
+\begin{lemma}[All-depth cotangent partial fractions]\label{tsc:cot-PF}
+As a symmetric finite-part distribution,
+\begin{equation}\label{tsc:cot-PF-eq}
+ \prod_{j=1}^N K(x-b_j)
+     =\pi^N\cos\frac{N\pi}{2}
+        +\sum_{j=1}^NA_j(\mathbf b)K(x-b_j).
+\end{equation}
+Moreover,
+\begin{equation}\label{tsc:cot-residue-sum}
+ \sum_{j=1}^NA_j(\mathbf b)=\pi^{N-1}\sin\frac{N\pi}{2}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Put $X=e(x)$ and $B_j=e(b_j)$. Then
+$K(x-b_j)=\pi\ii(X+B_j)/(X-B_j)$.
+The product is a rational function with only simple poles at $B_j$;
+subtracting $A_jK(x-b_j)$ removes its principal part at that pole.
+The difference has no finite pole and is bounded at infinity, hence is a
+constant. As $X\to0$ the kernels tend to $-\pi\ii$, and as $X\to\infty$
+they tend to $\pi\ii$. Adding and subtracting the two limiting equations
+gives the constant and the sum in \eqref{tsc:cot-PF-eq}--\eqref{tsc:cot-residue-sum}.
+Because the principal parts have matched at every real pole, the rational
+identity passes to the specified symmetric extensions without a delta
+correction.
+\end{proof}
+
+\begin{theorem}[Finite reduction at arbitrary reflected depth]\label{tsc:all-depth}
+Assume $a,b_1,\ldots,b_N$ are pairwise distinct modulo one. Then
+\begin{equation}\label{tsc:all-depth-eq}
+ \boxed{\displaystyle
+ \FP\int_0^1 C_m(x-a)\prod_{j=1}^NK(x-b_j)\dd x
+       =\sum_{j=1}^NA_j(\mathbf b)I_m(\{b_j-a\}).}
+\end{equation}
+In addition,
+\begin{equation}\label{tsc:cot-mean}
+ \PV\int_0^1\prod_{j=1}^NK(x-b_j)\dd x
+                 =\pi^N\cos\frac{N\pi}{2}.
+\end{equation}
+In \eqref{tsc:all-depth-eq}, $C_m$ denotes its prescribed extension, so the
+integrand away from its seam is the ordinary function $\gamma_m$.
+\end{theorem}
+\begin{proof}
+Multiply \eqref{tsc:cot-PF-eq} by $C_m(x-a)$ and pair with one. The
+constant term vanishes because $C_m$ has mean zero. Translate $x$ by $a$
+to identify each remaining pairing with $I_m(\{b_j-a\})$. Taking the
+mean without $C_m$ proves \eqref{tsc:cot-mean}.
+\end{proof}
+
+\subsection{Reflected polygamma derivatives}
+The balanced pointwise combination is
+\begin{equation}\label{tsc:reflected-poly}
+ K^{(r)}(x)=(-1)^r\psi^{(r)}(1-x)-\psi^{(r)}(x).
+\end{equation}
+Its symmetric extension is exactly the distributional derivative of $K$:
+differentiation of the symmetric principal part $1/x$ gives the symmetric
+Hadamard principal parts, without an additional delta term. Consequently,
+for arbitrary $r_j\ge0$ the integral obtained by replacing every
+$K(x-b_j)$ in \eqref{tsc:all-depth-eq} with $K^{(r_j)}(x-b_j)$ equals
+\begin{equation}\label{tsc:reflected-derivatives}
+ \prod_{j=1}^N(-\partial_{b_j})^{r_j}
+           \left(\sum_{j=1}^NA_j(\mathbf b)I_m(\{b_j-a\})\right).
+\end{equation}
+The equality follows by differentiating a product of separated distributions;
+it is not an unqualified interchange with an unregularized improper integral.
+Formula \eqref{tsc:I-formula}, the product rule, and
+\eqref{tsc:pointwise-tower} make the result finite in Hurwitz-zeta jets and
+trigonometric coefficients. This provides explicit identities for arbitrary
+numbers and orders of reflected polygamma factors.

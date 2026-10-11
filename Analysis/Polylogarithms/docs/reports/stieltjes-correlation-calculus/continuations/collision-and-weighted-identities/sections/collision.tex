@@ -1,0 +1,636 @@
+% Research contribution prepared independently for the root article.
+% Needs amsmath, amssymb, amsthm.  All labels have prefix cld:.
+% Suggested references: EspinosaMoll2002, DLMFhurwitz, IncomingMellinDilation,
+% IncomingStieltjesClosure.  Classical spectral kernels are credited inputs.
+
+\section{Colliding unequal dilations: a complete finite-part calculus}
+\label{xid:cld:section}
+
+The separated-grid theorem in the incoming Mellin--dilation report
+\cite{IncomingMellin}
+explicitly excludes $Pa\in\mathbb Z$.  At these shifts its partition of
+unity no longer defines a product of the two singular distributions.
+This section treats precisely that omitted case.  The construction is
+the constant term of the pointwise product in a fixed ambient coordinate;
+it neither assumes that a product of colliding distributions exists nor
+identifies a bare spectral Laurent coefficient with that constant term.
+
+Let $p,q$ be positive integers and put
+\[
+ d=\gcd(p,q),\qquad P=p/d,\qquad Q=q/d,\qquad
+ A=\log P,\quad B=\log Q,\quad
+ K=\log\operatorname{lcm}(p,q).
+\]
+For $m,n,r,k\ge0$, write $N=r+k$ and define
+\begin{equation}
+ J_{mn;r,k}^{p,q}
+ =\operatorname{FP}_x\int_0^1
+       \gamma_m^{(r)}(\{px\})\gamma_n^{(k)}(\{qx\})\,dx.
+ \label{xid:cld:def:J}
+\end{equation}
+The derivatives are in the special-function argument.  At every member
+of the union of the two singular grids, delete the right interval of
+ambient length $\epsilon$ and retain the constant term as
+$\epsilon\downarrow0$.  Equivalently, take separate constant terms in
+independent ambient cutoff variables at the finitely many points.
+
+Every colliding shift $a$ gives the same value as \eqref{xid:cld:def:J}.
+Indeed, $Pa=h\in\mathbb Z$, and a solution of
+$Qj\equiv-h\pmod P$ makes $x_0=j/p$ satisfy
+$px_0,qx_0+a\in\mathbb Z$.  Translation by $x_0$ carries the two
+fractional-part arguments to $px$ and $qx$ and preserves ambient lengths.
+Thus no collision cases are lost by writing the common shift as zero.
+
+\subsection{The complete local subtraction polynomial}
+
+Use the holomorphic Stieltjes generating function
+\[
+ \mathscr G(z,x)=\zeta(1-z,x)+\frac1z
+       =\sum_{m\ge0}\gamma_m(x)\frac{z^m}{m!},
+ \qquad
+ p_r(z)=\frac{(1-z)_r}{r!}
+       =\prod_{j=1}^r\left(1-\frac zj\right).
+\]
+For $r=0$ the empty product is one.  Set
+\begin{equation}
+ S_{m,r}(L)=m![z^m]\,p_r(z)e^{zL}
+ =\sum_{j=0}^{\min(m,r)}(-1)^j\frac{m!}{(m-j)!}
+     e_j(1,1/2,\ldots,1/r)L^{m-j}.
+ \label{xid:cld:S-polynomial}
+\end{equation}
+The Hurwitz shift identity gives the exact local decomposition
+\begin{equation}
+ \gamma_m^{(r)}(y)
+ =(-1)^r r!y^{-r-1}S_{m,r}(\log y)
+      +\gamma_m^{(r)}(1+y).
+ \label{xid:cld:local-decomposition}
+\end{equation}
+
+Here is an explicit subtraction rule that covers every grid configuration.
+At a point $b$ of the first grid put $t=x-b>0$ and
+\[
+ U_{p,m,r}(t)=(-1)^r r!p^{-r-1}t^{-r-1}
+                     S_{m,r}(\log p+\log t).
+\]
+If $b$ is not on the second grid, subtract
+\[
+ U_{p,m,r}(t)\sum_{j=0}^r
+       \frac{q^jt^j}{j!}\gamma_n^{(k+j)}(\{qb\}).
+\]
+At a point of the second grid only, use the analogous expression with
+the two factors exchanged.  At a common point subtract the sum of
+\begin{align}
+ &U_{p,m,r}(t)U_{q,n,k}(t),\\
+ &U_{p,m,r}(t)\sum_{j=0}^r
+       \frac{q^jt^j}{j!}\gamma_n^{(k+j)}(1),\\
+ &U_{q,n,k}(t)\sum_{j=0}^k
+       \frac{p^jt^j}{j!}\gamma_m^{(r+j)}(1).
+ \label{xid:cld:common-subtraction}
+\end{align}
+The first line has power $t^{-N-2}$ and a polynomial in $\log t$.
+The other lines contain the powers $t^{-r-1},\ldots,t^{-1}$ and
+$t^{-k-1},\ldots,t^{-1}$.  These are all nonintegrable terms.
+
+Taylor's theorem and \eqref{xid:cld:local-decomposition} show that the
+remaining integrand is $O(1+|\log t|^{m+n})$.  It is therefore integrable.
+Adding the elementary finite-part primitives of the subtracted terms
+proves existence of \eqref{xid:cld:def:J}.  For clarity, the primitive
+normalization is
+\[
+ \operatorname{FP}\int_0^\ell t^{-1}\log^j t\,dt
+      =\frac{\log^{j+1}\ell}{j+1},
+\]
+and, for $h\ge2$,
+\[
+ \operatorname{FP}\int_0^\ell t^{-h}\log^j t\,dt
+ =\left.\partial_\alpha^j
+       \frac{\ell^{\alpha-h+1}}{\alpha-h+1}\right|_{\alpha=0}.
+\]
+No finite local constant is omitted or added.
+
+\subsection{A holomorphic master kernel for every positive derivative order}
+
+For $M\ge1$ define
+\begin{align}
+ W_M(z)&=(1-z)_M\zeta(M+1-z),\\
+ R(z,w)&=\frac{\Gamma(1-z-w)\Gamma(1+z)}{\Gamma(1-w)},\\
+ V_M(z,w)&=R(z,w)W_M(z+w)
+ =\frac{\Gamma(M+1-z-w)\Gamma(1+z)}{\Gamma(1-w)}
+                  \zeta(M+1-z-w).
+ \label{xid:cld:VW}
+\end{align}
+In particular $V_M(0,w)=W_M(w)$.  All these functions are holomorphic
+in a sufficiently small polydisc about $(0,0)$.
+
+\begin{theorem}[Colliding-grid master theorem]
+\label{xid:cld:master}
+For $N=r+k\ge1$, the exponential generating function of the
+ambient-coordinate finite parts is
+\begin{align}
+ \mathscr J_{r,k}^{p,q}(z,w)
+ &: =\sum_{m,n\ge0}J_{mn;r,k}^{p,q}\frac{z^mw^n}{m!n!}\notag\\
+ &=Q^rP^k e^{-Bz-Aw}\left\{
+ (-1)^k\frac{V_N(z,w)-e^{Kz}p_r(z)W_N(w)}{z}\right.\notag\\
+ &\hspace{35mm}\left.
+ +(-1)^r\frac{V_N(w,z)-e^{Kw}p_k(w)W_N(z)}{w}
+                                      \right\}.
+ \label{xid:cld:master-equation}
+\end{align}
+Both displayed divided differences have removable denominators separately.
+Consequently \eqref{xid:cld:master-equation} is a finite coefficient algorithm
+for every $m,n,r,k,p,q$.
+\end{theorem}
+
+\begin{proof}
+First work where all derivatives of the Hurwitz factors have absolutely
+convergent Fourier series.  Orthogonality leaves the frequency indices
+$Q\ell$ and $-P\ell$.  The classical coincident Hurwitz product formula
+\cite[Theorem 3.1]{EspinosaMoll1}, or the same Fourier calculation followed
+by the Riemann functional equation, gives
+\begin{align}
+ \mathscr C_{r,k}^{p,q}(z,w)
+ &:=\int_0^1
+    \partial_y^r\zeta(1-z,\{px\})
+    \partial_y^k\zeta(1-w,\{qx\})\,dx\notag\\
+ &=Q^rP^ke^{-Bz-Aw}
+       \left\{(-1)^k\frac{V_N(z,w)}z
+                   +(-1)^r\frac{V_N(w,z)}w\right\}.
+ \label{xid:cld:spectral}
+\end{align}
+The integral notation on the left subsequently means meromorphic
+continuation.  One can verify the signs directly from
+$\partial_y^r\zeta(s,y)=(-1)^r(s)_r\zeta(s+r,y)$ and
+$(-1)^r(s)_r\Gamma(1-s-r)=\Gamma(1-s)$.
+
+The local subtraction above continues the integral and identifies its
+Taylor coefficients with fixed-coordinate finite parts.  We detail the
+terms that distinguish these coefficients from those of
+\eqref{xid:cld:spectral}.  At a first-grid point, the singular generating
+factor is
+\[
+ (-1)^r r!p^{-r-1}p_r(z)e^{z\log p}t^{z-r-1}.
+\]
+Only the Taylor coefficient of degree $r$ of the other factor creates a
+pole at $z=0$.  At a common point the other factor is its regular piece
+at argument $1$; at a noncommon point it is its ordinary value.  These
+arguments, over the first grid, form $d$ copies of
+$1/P,2/P,\ldots,1$.  Since $N\ge1$, their trace is
+\[
+ \frac1p\sum_{b\text{ in first grid}}
+      \partial_y^N\mathscr G(w,\eta_b)
+   =(-1)^N P^{N-w}W_N(w),
+ \qquad \eta_b=\begin{cases}\{qb\},&\{qb\}>0,\\1,&\{qb\}=0.
+                         \end{cases}
+\]
+This is precisely the Hurwitz multiplication formula differentiated
+$N$ times in the argument.
+
+The complete $t^{z-1}$ coefficient, summed over the first grid, is
+\[
+ c_z(z,w)=(-1)^kQ^rP^k e^{z\log p-Aw}p_r(z)W_N(w).
+\]
+The meromorphic integral of $c_z t^{z-1}$ on $(0,\ell)$ is
+$c_z\ell^z/z$.  The generating function of its coefficientwise
+ambient finite parts is instead $c_z(\ell^z-1)/z$.
+Thus the correction is the \emph{complete} quantity $-c_z(z,w)/z$,
+not merely its residue at $z=0$.  The second grid contributes
+\[
+ -\frac{c_w(z,w)}w,
+ \qquad
+ c_w(z,w)=(-1)^rQ^rP^k e^{w\log q-Bz}p_k(w)W_N(z).
+\]
+At common points the singular--singular term is proportional to
+$t^{z+w-N-2}$.  Its integral has denominator $z+w-N-1$, which is
+nonzero near the origin.  Its analytic integral already equals the
+generating function of its finite parts; there is no additional
+diagonal contact term at $(0,0)$.
+
+All remaining subtracted integrals converge locally uniformly on a
+small spectral polydisc.  Indeed the Taylor remainders gain enough
+powers of $t$, and their spectral derivatives introduce only powers
+of $\log t$.  They are holomorphic by dominated differentiation.
+Subtracting $c_z/z+c_w/w$ from \eqref{xid:cld:spectral} proves
+\eqref{xid:cld:master-equation}, since $\log p+B=\log q+A=K$.
+If one of $r,k$ is zero, replacing that spectral factor by
+$\mathscr G$ adds its scalar $1/z$ or $1/w$; the integral of the other,
+positive-order factor is zero by Fourier orthogonality and meromorphic
+continuation.  Hence no extra scalar term occurs when $N\ge1$.
+\end{proof}
+
+The proof isolates a useful fact: common points introduce a stronger
+power divergence, but the finite discrepancy between spectral and
+coordinate regularization is governed by the resonant $t^{-1}$ terms.
+The stronger merged term must be subtracted, yet its denominator has no
+spectral pole at the parameter values being differentiated.
+
+The comparison with rectangular spectral coefficient extraction is
+completely explicit.  Define
+\[
+ \kappa_{m,r}(L)=m![z^{m+1}]p_r(z)e^{Lz},\qquad
+ \omega_{n,N}(L)=n![w^n]e^{Lw}W_N(w),
+\]
+and let $\operatorname{LC}_{mn}\mathscr C$ denote
+$m!n![z^mw^n]$ in the rectangular Laurent expansion of
+\eqref{xid:cld:spectral}.  Then
+\begin{align}
+ J_{mn;r,k}^{p,q}-\operatorname{LC}_{mn}\mathscr C_{r,k}^{p,q}
+ =-Q^rP^k\{&(-1)^k\kappa_{m,r}(\log p)\omega_{n,N}(-A)\notag\\
+           &+(-1)^r\kappa_{n,k}(\log q)\omega_{m,N}(-B)\}.
+ \label{xid:cld:spectral-contact-difference}
+\end{align}
+This finite formula follows by extracting the two complete local
+corrections in the proof.  It specifies the difference between the two
+regularizations for every index, not only for the zero-index examples.
+
+\begin{corollary}[Finite closure in ordinary zeta derivatives]
+For $N\ge1$, every $J_{mn;r,k}^{p,q}$ is a finite linear combination of
+$\zeta^{(j)}(N+1)$, $0\le j\le m+n+1$.  Its coefficients lie in the
+$\mathbb Q$-algebra generated by $A,B,K$, the rational generalized
+harmonic numbers, and positive integer zeta values.  No unevaluated
+multiple sum is required.  Writing $M=m+n$, the coefficient of the
+highest derivative $\zeta^{(M+1)}(N+1)$ is
+\begin{equation}
+ (-1)^{M+1}N!Q^rP^k
+       \left(\frac{(-1)^k}{m+1}+\frac{(-1)^r}{n+1}\right).
+ \label{xid:cld:top-derivative}
+\end{equation}
+\end{corollary}
+\begin{proof}
+The finite products $p_r$ and $(1-z)_N$ have rational coefficients.
+Moreover
+\begin{equation}
+ \log R(z,w)=\sum_{j\ge2}\frac{\zeta(j)}j
+       \bigl((z+w)^j+(-1)^jz^j-w^j\bigr).
+ \label{xid:cld:logR}
+\end{equation}
+Only total degree at most $m+n+1$ can enter a coefficient of
+\eqref{xid:cld:master-equation}.  Taylor expansion of $\zeta(N+1-z-w)$
+therefore uses derivatives of order at most $m+n+1$.  The vanishing
+constant numerator makes division by $z$ or $w$ an exact shift of
+polynomial coefficients.  The highest derivative can arise only from
+the degree-$M+1$ term of $\zeta(N+1-z-w)$; the two binomial
+coefficients after division by $z$ and $w$ give
+\eqref{xid:cld:top-derivative}.  The contact products involve derivatives of
+order at most $n$ or $m$, respectively, and cannot alter this coefficient.
+\end{proof}
+
+There is a stronger cancellation for equal Stieltjes indices after the
+elementary logarithmic shifts forced by the reduced dilations.  Define
+\[
+ \gamma_{m,L}^{(r)}(x)=\sum_{j=0}^m\binom mj L^{m-j}
+                                      \gamma_j^{(r)}(x).
+\]
+Its generating function is $e^{Lz}\partial_x^r\mathscr G(z,x)$.
+
+\begin{corollary}[Odd-order diagonal collapse]
+\label{xid:cld:diagonal-collapse}
+If $r+k=N$ is odd, then for every $m\ge0$,
+\begin{align}
+ &\operatorname{FP}_x\int_0^1
+   \gamma_{m,B}^{(r)}(\{px\})\gamma_{m,A}^{(k)}(\{qx\})\,dx\notag\\
+ &\qquad=(-1)^kQ^rP^k
+       \bigl(\kappa_{m,k}(K)-\kappa_{m,r}(K)\bigr)\omega_{m,N}(0).
+ \label{xid:cld:diagonal-collapse-formula}
+\end{align}
+Thus only zeta derivatives of order at most $m$ remain, whereas a general
+pair with these indices can require order $2m+1$.  In particular,
+\begin{equation}
+ \operatorname{FP}\int_0^1\gamma_m^{(r)}(x)\gamma_m^{(k)}(x)\,dx=0,
+ \qquad r+k\ \text{odd},\quad m\ge\max(r,k).
+ \label{xid:cld:vanishing-family}
+\end{equation}
+For $r=0,k=1$ the unequal-dilation identity becomes, for $m\ge1$,
+\begin{align}
+ &\operatorname{FP}_x\int_0^1
+   \gamma_{m,B}(\{px\})\gamma_{m,A}'(\{qx\})\,dx\notag\\
+ &\qquad=P(-K)^m\bigl\{\zeta^{(m)}(2)+m\zeta^{(m-1)}(2)\bigr\}.
+ \label{xid:cld:diagonal-first-derivative}
+\end{align}
+Its $m=0$ value is $P\zeta(2)$.
+\end{corollary}
+\begin{proof}
+Multiplying \eqref{xid:cld:master-equation} by $e^{Bz+Aw}$ removes its
+external exponential.  Since $(-1)^r=-(-1)^k$, the two spectral terms
+$V_N(z,w)/z$ and $V_N(w,z)/w$ have opposite diagonal coefficients.
+Only the two explicit contact products remain, giving
+\eqref{xid:cld:diagonal-collapse-formula}.  For $p=q=1$, one has $K=0$;
+$\kappa_{m,r}(0)=0$ for $m\ge r$ because $p_r$ has degree $r$.
+This proves \eqref{xid:cld:vanishing-family}.  Finally $p_1(z)-p_0(z)=-z$
+gives $\kappa_{m,1}(K)-\kappa_{m,0}(K)=-K^m$, and
+\[
+ \omega_{m,1}(0)=(-1)^m
+      \{\zeta^{(m)}(2)+m\zeta^{(m-1)}(2)\},\qquad m\ge1.
+\]
+These two identities prove the last formula.
+\end{proof}
+
+\subsection{Polygamma identities and a regularization diagnostic}
+
+Since $\gamma_0=-\psi$, the zero-index specialization is particularly
+short.  Put $H_0=0$ and $H_j=\sum_{h=1}^j1/h$.
+
+\begin{corollary}[Every coincident polygamma product]
+For $N=r+k\ge1$,
+\begin{align}
+ &\operatorname{FP}_x\int_0^1
+      \psi^{(r)}(\{px\})\psi^{(k)}(\{qx\})\,dx\notag\\
+ &\quad=N!Q^rP^k\left\{
+ (-1)^{k+1}\bigl[\zeta'(N+1)+(H_N-H_r+K)\zeta(N+1)\bigr]\right.\notag\\
+ &\hspace{37mm}\left.
+ +(-1)^{r+1}\bigl[\zeta'(N+1)+(H_N-H_k+K)\zeta(N+1)\bigr]
+                         \right\}.
+ \label{xid:cld:polygamma}
+\end{align}
+In particular, for odd $N$,
+\begin{equation}
+ \operatorname{FP}_x\int_0^1
+      \psi^{(r)}(\{px\})\psi^{(k)}(\{qx\})\,dx
+ =(-1)^{k+1}N!Q^rP^k(H_k-H_r)\zeta(N+1).
+ \label{xid:cld:odd-parity}
+\end{equation}
+These odd-order values are rational multiples of $\pi^{N+1}$ and are
+unchanged by a common integer dilation of $p,q$.
+\end{corollary}
+\begin{proof}
+At the origin $W_N(0)=N!\zeta(N+1)$ and
+\[
+ \partial_z V_N(0,0)
+ =-N!\{\zeta'(N+1)+H_N\zeta(N+1)\},
+ \qquad p_r'(0)=-H_r.
+\]
+Take the two removable limits in \eqref{xid:cld:master-equation}.
+If $N$ is odd, $r,k$ have opposite parity, so the spectral derivatives
+and all scale terms cancel.  Euler's formula for even zeta values
+gives the stated rational multiples of $\pi^{N+1}$.
+\end{proof}
+
+For example,
+\begin{align}
+ \operatorname{FP}_x\int_0^1\psi(\{2x\})\psi'(\{3x\})\,dx
+      &=\frac{\pi^2}{3},\\
+ \operatorname{FP}_x\int_0^1\psi'(\{2x\})\psi'(\{3x\})\,dx
+      &=12\{2\zeta'(3)+(1+2\log6)\zeta(3)\},\\
+ \operatorname{FP}_x\int_0^1\psi''(\{2x\})\psi'(\{3x\})\,dx
+      &=-54\zeta(4)=-\frac{3\pi^4}{5}.
+ \label{xid:cld:examples}
+\end{align}
+
+The spectral continuation alone gives a different prescription.  Already
+for $p=q=1,r=0,k=1$, its rectangular Laurent constant is zero, while
+\[
+ \operatorname{FP}\int_0^1\psi(x)\psi'(x)\,dx=\zeta(2).
+\]
+This can be checked without special-function product theory:
+$\int_\epsilon^1\psi\psi'=\tfrac12(\psi(1)^2-\psi(\epsilon)^2)$,
+and $\psi(\epsilon)=-1/\epsilon-\gamma+\zeta(2)\epsilon+O(\epsilon^2)$.
+The constant is $\zeta(2)$.
+More generally, substituting $z=\alpha t,w=t$ into that bare spectral
+kernel gives constant
+$-(\zeta(2)+\zeta'(2))(\alpha-\alpha^{-1})$.
+Thus an unspecified one-parameter spectral finite part is not the
+ambient-coordinate operation.  The local corrections in
+\eqref{xid:cld:master-equation} remove this ambiguity before any coefficient
+is extracted.
+
+Two first-index identities illustrate the Stieltjes extension.  With
+the same $P,A,K$ as above,
+\begin{align}
+ J_{10;0,1}^{p,q}
+ &=P\left\{\frac{\zeta''(2)}2+K\zeta'(2)
+            +\left(\frac{K^2}2+\log p-1\right)\zeta(2)\right\},\\
+ J_{01;0,1}^{p,q}
+ &=P\left\{-\frac{\zeta''(2)}2-(K+1)\zeta'(2)
+            -\left(\frac{K^2}2+A\right)\zeta(2)\right\}.
+ \label{xid:cld:first-jets}
+\end{align}
+Their sum for $p=q=1$ is $-\zeta'(2)-\zeta(2)$, in agreement with
+the direct endpoint finite part of $(\gamma_1\gamma_0)'$.
+
+\subsection{The zero-derivative Stieltjes family}
+
+For $r=k=0$, the positive-order kernel must be supplemented by scalar
+spectral-pole terms.  It is clearer to give a holomorphic formula using
+the undilated coincident kernel, made explicit here:
+\[
+ \mathscr J_0(z,w)=\sum_{m,n\ge0}J_{mn;0,0}^{1,1}
+                         \frac{z^mw^n}{m!n!},
+ \qquad g(z)=\zeta(1-z)+\frac1z
+          =\sum_{m\ge0}\gamma_m\frac{z^m}{m!}.
+\]
+The classical coincident spectral kernel is
+\begin{equation}
+ \mathscr C_{0,0}^{1,1}(z,w)
+ =2\Gamma(z)\Gamma(w)(2\pi)^{-z-w}
+       \cos\!\left(\frac{\pi(z-w)}2\right)\zeta(z+w).
+ \label{xid:cld:N0-spectral}
+\end{equation}
+The same direct endpoint subtraction gives
+\begin{equation}
+ \mathscr J_0(z,w)=\mathscr C_{0,0}^{1,1}(z,w)+\frac1{zw}
+                             -\frac{g(w)}z-\frac{g(z)}w.
+ \label{xid:cld:J0-explicit}
+\end{equation}
+This grouped expression is holomorphic, as one can also see entirely
+algebraically.  Put
+\[
+ T(z,w)=\frac{wR(z,w)+zR(w,z)}{z+w}.
+\]
+The numerator vanishes at $w=-z$, because $R(z,-z)=R(-z,z)=1$.
+Thus $T$ is holomorphic, and $T(z,0)=T(0,w)=1$.  Applying the Riemann
+functional equation to \eqref{xid:cld:N0-spectral} gives
+\begin{equation}
+ \mathscr J_0(z,w)=
+ \frac{1-T(z,w)+(z+w)T(z,w)g(z+w)-wg(w)-zg(z)}{zw}.
+ \label{xid:cld:J0-removable}
+\end{equation}
+The numerator vanishes on both coordinate axes, so division by $zw$
+is removable.  This provides a self-contained finite coefficient rule
+for the undilated zero-derivative case, without a previously tabulated
+coefficient array.
+
+Write $L_p=\log p$ and $L_q=\log q$.  Direct local subtraction, exactly
+as in the master theorem, gives
+\begin{align}
+ \mathscr J_{0,0}^{p,q}(z,w)
+ ={}&e^{-Bz-Aw}\mathscr J_0(z,w)\notag\\
+ &+e^{-Aw}\frac{e^{-Bz}-e^{L_pz}}z\,g(w)
+  +e^{-Bz}\frac{e^{-Aw}-e^{L_qw}}w\,g(z)\notag\\
+ &+\frac{1-e^{-Bz-Aw}-e^{L_pz}+e^{L_pz-Aw}
+                       -e^{L_qw}+e^{L_qw-Bz}}{zw}.
+ \label{xid:cld:N0-kernel}
+\end{align}
+Every denominator on the right is removable; the last numerator vanishes
+on both coordinate axes.  Equivalently, the full separated-grid
+coefficient formula of the incoming report remains valid at collision
+after replacing $I_{ij}(\theta)$ by $J_{ij;0,0}^{1,1}$ and both single
+Stieltjes arguments $\theta,1-\theta$ by $1$.  This substitution is a
+conclusion of local subtraction, not evaluation of a divergent integrand
+at a singular shift.
+
+For completeness, the scalar correction behind
+\eqref{xid:cld:N0-kernel} is visible before extracting coefficients:
+\[
+ \mathscr J_{0,0}^{p,q}
+ =\mathscr C_{0,0}^{p,q}+\frac1{zw}
+  -\frac{e^{L_pz}}z\left(e^{-Aw}\zeta(1-w)+\frac1w\right)
+  -\frac{e^{L_qw}}w\left(e^{-Bz}\zeta(1-z)+\frac1z\right).
+\]
+The terms in parentheses are holomorphic by cancellation of the zeta
+pole.  The additional $1/(zw)$ comes from the two scalar terms used to
+define $\mathscr G$.  Expanding this identity and its undilated version
+proves \eqref{xid:cld:N0-kernel}.
+
+In particular,
+\begin{equation}
+ \operatorname{FP}_x\int_0^1\psi(\{px\})\psi(\{qx\})\,dx
+ =2\gamma_1-2\zeta(2)-2\gamma K-K^2+\log p\log q.
+ \label{xid:cld:digamma}
+\end{equation}
+Indeed, \eqref{xid:cld:logR} gives
+$T(z,w)=1+2\zeta(2)zw+O((|z|+|w|)^3)$, so
+\eqref{xid:cld:J0-removable} yields $J_{00;0,0}^{1,1}=2\gamma_1-2\zeta(2)$.
+This recovers the undilated coincident identity in the incoming report.
+The occurrence of $K$ in the colliding unequal case is forced by the
+ambient subtraction scale.
+
+\subsection{Exact matching with the noncollision expansion}
+
+Let
+\[
+ F_{mn;r,k}^{p,q}(\theta)=\FP_x\int_0^1
+ \gamma_m^{(r)}(\{px\})\gamma_n^{(k)}(\{qx+a\})\,dx,
+ \qquad \theta=\{Pa\}\in(0,1),
+\]
+denote the separated finite part. Its dependence on $a$ factors through
+$\theta$ by the finite covering formula, or by Fourier orthogonality.  The next theorem resolves the collision
+matching question, including every mixed derivative and Stieltjes index.
+Set
+\[
+ C_N(z,w)=\frac{\Gamma(N+1-z-w)\Gamma(1+z)}{\Gamma(1-w)}.
+\]
+Unlike $V_N$, this definition is also regular for $N=0$.
+
+\begin{theorem}[Convergent collision expansion]
+\label{xid:cld:collision-expansion}
+For $m,n,r,k\ge0$, define the explicit logarithmic polynomial
+\begin{align}
+ \mathcal P_{mn;r,k}^{p,q}(L)
+ ={}&(-1)^kQ^rP^k m!n![z^mw^n]\notag\\
+ &\quad e^{-Bz-Aw+wL}
+       \frac{C_N(z,w)e^{zL}-e^{Kz}p_r(z)(1-w)_N}{z}.
+ \label{xid:cld:collision-polynomial}
+\end{align}
+The quotient is holomorphic.  The polynomial has degree $m+n+1$ and
+leading coefficient
+\[
+ \frac{(-1)^kN!Q^rP^k}{m+1}.
+\]
+There is an exact expansion
+\begin{equation}
+ F_{mn;r,k}^{p,q}(\theta)
+ =\frac{\mathcal P_{mn;r,k}^{p,q}(\log\theta)}{\theta^{N+1}}
+       +J_{mn;r,k}^{p,q}+\sum_{j\ge1}h_j\theta^j,
+ \qquad 0<\theta<1,
+ \label{xid:cld:collision-expansion-equation}
+\end{equation}
+whose regular power series converges locally uniformly for $|\theta|<1$.
+Thus the regular constant at collision agrees exactly with the
+independently defined merged-grid finite part.
+\end{theorem}
+
+\begin{proof}
+The same Fourier and local-subtraction proof gives the separated kernel
+by replacing $V_N(z,w)$ with
+$C_N(z,w)\zeta(N+1-z-w,\theta)$ and $W_N(w)$ with
+$(1-w)_N\zeta(N+1-w,\theta)$ in the first divided difference, and
+by making the analogous replacements with $1-\theta$ in the second.
+When $N=0$, the additional pure scalar terms containing $1/(zw)$
+are independent of $\theta$ and remain unchanged; the Hurwitz terms
+inside the contact numerators take the same $\theta$ or $1-\theta$
+replacements. These statements follow directly from the scalar formula
+preceding \eqref{xid:cld:digamma}.
+
+Use the exact shift and Taylor identities
+\begin{align*}
+ \zeta(s,\theta)&=\theta^{-s}+\zeta(s,1+\theta),\\
+ \zeta(s,1+\theta)&=\sum_{j\ge0}\frac{(-1)^j(s)_j}{j!}
+                                      \zeta(s+j)\theta^j,\\
+ \zeta(s,1-\theta)&=\sum_{j\ge0}\frac{(s)_j}{j!}
+                                      \zeta(s+j)\theta^j.
+\end{align*}
+The first isolated power produces exactly
+\eqref{xid:cld:collision-polynomial}.  The $j=0$ regular terms give the
+colliding kernel proved above.  For $j\ge1$ there is no zeta pole near
+the spectral origin, and the coefficient-generating function is
+\begin{align}
+ \mathscr H_j(z,w)
+ ={}&\frac{Q^rP^ke^{-Bz-Aw}}{j!}
+   \left\{(-1)^{k+j}
+      \frac{V_{N+j}(z,w)-e^{Kz}p_r(z)W_{N+j}(w)}z\right.\notag\\
+ &\hspace{30mm}\left.
+    +(-1)^r
+      \frac{V_{N+j}(w,z)-e^{Kw}p_k(w)W_{N+j}(z)}w\right\}.
+ \label{xid:cld:regular-coefficients}
+\end{align}
+Here $h_j=m!n![z^mw^n]\mathscr H_j(z,w)$.
+After division by $j!$, the gamma factors and rising factorials grow
+at most polynomially in $j$ on a fixed sufficiently small spectral polydisc; their spectral
+derivatives introduce powers of $\log j$.  Thus $|\theta|^j$ gives
+locally uniform convergence for $|\theta|<1$, before and after any fixed
+coefficient extraction.  For $N=0$, the common $j=0$ spectral pole is
+removed in the complete kernel \eqref{xid:cld:N0-kernel}; it does not affect
+the convergent $j\ge1$ series.
+
+Finally the highest $L$-degree in
+\eqref{xid:cld:collision-polynomial} comes from
+$C_N(0,0)=N!$ and $e^{(z+w)L}/z$.  The second term in that numerator
+contains $L$ only through $e^{wL}$ and cannot contribute degree
+$m+n+1$.  Coefficient extraction gives the asserted leading coefficient.
+\end{proof}
+
+The lowest polynomial is already informative:
+\begin{equation}
+ \mathcal P_{00;r,k}^{p,q}(L)
+    =(-1)^kN!Q^rP^k(L-H_N+H_r-K).
+ \label{xid:cld:lowest-collision}
+\end{equation}
+For example,
+\[
+ \lim_{\theta\downarrow0}\left\{
+ \operatorname{FP}_x\int_0^1
+   \psi(\{2x\})\psi'(\{3x+a\})\,dx
+     +\frac{2(\log\theta-1-\log6)}{\theta^2}\right\}
+ =\frac{\pi^2}{3},\qquad \theta=\{2a\}.
+\]
+The finite term is therefore fixed by an exact convergent expansion,
+including the ambient scale and every local subtraction term.
+
+\subsection{Common dilation and an integration safeguard}
+
+For $N\ge1$ and a further positive integer $e$, put $D=\log e$.  The reduced pair
+$P,Q$ is unchanged and $K$ becomes $K+D$.  From the master kernel,
+\begin{align}
+ \mathscr J_{r,k}^{ep,eq}-\mathscr J_{r,k}^{p,q}
+ ={}&-Q^rP^ke^{-Bz-Aw}
+   \left\{(-1)^k p_r(z)W_N(w)e^{Kz}\frac{e^{Dz}-1}{z}\right.\notag\\
+ &\hspace{30mm}\left.
+        +(-1)^r p_k(w)W_N(z)e^{Kw}\frac{e^{Dw}-1}{w}\right\}.
+ \label{xid:cld:common-scale}
+\end{align}
+This is a finite polynomial in $D$ at every fixed pair of Stieltjes
+indices.  At zero index and odd $N$, the two terms cancel, explaining
+the exact scale independence in \eqref{xid:cld:odd-parity}.  At even $N$ the
+change is the negative of $D$ times the summed local $t^{-1}$ coefficient.
+
+The incoming separated-grid theorem is valid as stated and requires no
+retraction.  Its collision question can now be marked resolved by
+\eqref{xid:cld:master-equation}, \eqref{xid:cld:N0-kernel}, and
+\eqref{xid:cld:collision-expansion-equation}.  What must not be done during
+integration is to multiply the two grid-supported contact distributions
+at collision, or to keep only residues in the local spectral corrections.
+The pointwise product has the unambiguous ambient finite part proved
+here; its analytic representation requires the complete pole numerators.
+
+% Verification: verify_collision.py evaluates the local-subtraction integral
+% independently for nine polygamma cases; collision_validation.json records
+% the floating-point residuals.  These are consistency checks, not enclosures.
