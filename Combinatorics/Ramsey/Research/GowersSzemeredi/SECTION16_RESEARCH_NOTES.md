@@ -3416,6 +3416,67 @@ is essential: a bound by `(a+D)²` would double `log D` per dimension and
 bring back the `k·2^k` growth of L.6. The constant `75` is far below the
 `≈ 2^11` the printed threshold allows.
 
+### L.7a Correction: the nesting depth caps the single-piece route near length ten (2026-10-11)
+
+The feasibility estimate of L.7 left out one factor, and every length is
+**not** reachable through `single_piece_inverse_step_global` as built.
+
+**The missed factor.** `singlePieceGlobalRho1 = nestC (fun _ => C) (2^k − 1) θ₂`
+*composes* the lift density `C` with itself `2^k − 1` times, once per
+non-top vertex of the cube (L.1, `remainder_piece`). Composition multiplies
+degrees, so the degree of the result is the product of the degrees.
+- `hCle` forces `C t ≤ liftLastC^[k+1−l] (s ↦ s/2/Qb l (…) (s/2)) t` for every
+  `l ≤ k`. At `l = k` this is `≈ t²/Qb_k(t/4)`, so the `t`-degree of `C` is at
+  least `2 + b_k`, where `b_k` is the `ρ`-degree of the count `Qb_k`. At
+  `l = 1` it is at least `k + 1`, even though `Qb_1` does not depend on `ρ`.
+- For the classes, `Qb_k = (n+1)^a·W^D` with `W ∝ 1/ρ`, so `b_k = D_k`.
+- Hence `ρ₁⁻¹ ≥ θ₂^(−(2+D_k)^(2^k−1))`. The step adds about `2^k·log₂ D_k`
+  to `log₂ deg′`, not `log₂ D_k + 2^(k+5)`. With `log D_k = Θ(2^k)` this is
+  `Θ(4^k)`.
+
+**What still fits.** The X-degree `deg′` must satisfy
+`log₂ deg′ ≲ 2^(L+9)`. The step at dimension `k` serves length `L = k+4`.
+The table uses the split degrees `splitPair` from the recursion, starting
+at `log₂ D_2 = 132`, plus the length-six base of about `2^664`. Its
+columns are the step cost `(2^k+1)·log₂ D_k`, its running sum `Σ`, and the
+allowance `2^(L+9)`.
+
+| L | k | log₂ D_k | step | Σ | 2^(L+9) |
+|---|---|---|---|---|---|
+| 7 | 3 | 408 | 3.7·10³ | 4.3·10³ | 65 536 |
+| 8 | 4 | 952 | 1.6·10⁴ | 2.1·10⁴ | 131 072 |
+| 9 | 5 | 2 032 | 6.7·10⁴ | 8.8·10⁴ | 262 144 |
+| 10 | 6 | 4 184 | 2.7·10⁵ | 3.6·10⁵ | 524 288 |
+| 11 | 7 | 8 480 | 1.1·10⁶ | 1.5·10⁶ | 1 048 576 (fails) |
+
+So the route reaches lengths `7–10`, with a margin of about `1.5` at `10`
+and ample margins below. The power classes of L.6 stop earlier (about
+length eight).
+
+**Why no choice of classes reaches every length.** Even with `b_k = 0`, the
+`l = 1` lift gives `t`-degree `k + 1`. The steps then add
+`Σ 2^k·log₂(k+1) ≈ 2^(L−3)·log₂ L`, which exceeds `2^(L+9)` once
+`log₂ L > 2^12`. Every length therefore needs a *structural* change to the
+remainder step:
+- *Per-vertex controls* (vertex `e` uses only the cover of its own face
+  dimension `|S_e|`). The cost becomes `Σ_j C(k+1, j)·log D_j ≈ 3^k`. This
+  extends the reach to about length `16`, but not to every length.
+- *Gowers's cover sum* (Lemma 16.8) multiplies the count only by `rs`, so the
+  per-step cost is additive (`k + log s`). But `s` is `poly(1/α)`, which
+  turns the density into `exp(−poly)` (K.4). That is the printed defect
+  again.
+- What every length needs is a remainder step whose cost per vertex is
+  `O(1)` in log-degree. Either the vertex covers have bounded `ρ`-degree
+  uniformly in dimension, or the `2^k − 1` vertices are combined without
+  composing densities. Neither is available. This is a precise form of the
+  open problem of L.
+
+**Revised plan.** F3 and F4 now target `Theorem182At L` and
+`Corollary187At L` for `7 ≤ L ≤ 10`, not every `L`. They are stated
+symbolically in `k` with an explicit degree hypothesis, so that a better
+remainder step would extend them without rework. `theorem_18_2` and
+`corollary_18_7` for every length stay open.
+
 ## F. Routes
 
 1. **Quantitative repair (research).**
