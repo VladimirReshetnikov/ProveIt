@@ -2762,6 +2762,61 @@ is now a parameter, and the piece cover is polynomial when its inputs are.
    - The pieces' spectra, faces and slices are all dimension-one
      relations, which are stackable.
 
+**(B) done at the abstract level (2026-10-10): the simultaneous union.**
+All modules are kernel-checked and light (off the OAI closure).
+- `Proofs16FamilyRetiledLinearity`: the recurrence partition depends
+  only on the covering graphs. So one partition makes every member of a
+  family `(K c, G c, A c, f c)` linear.
+- `Proofs16FamilyLemma6`: Lemma 16.6 at all scales for a family, with
+  one relation `Γ` covering every member's spectrum. The width is the
+  single-piece polynomial width at the graph count of `Γ`.
+- `Proofs16FamilyAffineLift`: the Lemma 16.10 lift for a family. One
+  stacked slice cover serves every member. Per-member sampling runs at
+  loss `τ/|ι|`, so the sample size grows only by the factor `|ι|`. The
+  count is `|ι|·max(Pb, C(r,2)Pb²)`.
+- `Proofs16FamilyLemma9` and `Proofs16FamilyPieceCover` are the same for
+  Gowers's data. They are frame-limited: see below.
+- `Proofs16AbstractFamily`, `abstract_family_piece_cover_with`. For
+  abstract members `(H1, K, A, f, D, φ, rem)` with common relations `Γ`
+  (spectra), `Γr` (remainders) and `Gs` (stacked slices), the union
+  `⋃_c graph(D c, φ c)` is `MultiplyLinearWith` at every scale.
+  - The width exponent is the single-piece one.
+  - The count is `|ι|·max(Pb, C(S,2)Pb²)`, with
+    `S ≈ 24·Qr·|ι|/ρ`.
+  - `MultiplyLinearWith.union` would instead raise the exponent to the
+    power `|ι|` (H.2).
+
+*The frame lesson.* Gowers's piece structure lives in the frame
+`(h, x) ↦ (x₀ + h, x)`. Pieces with different `x₀` cannot share
+partitions in their own frames. In the original frame a piece has the
+frequency map `Δ(· − x₀)`. This is still covered by translated
+multilinear graphs, and translated Freiman families are Freiman. So the
+family layer must be stated over frame-free members.
+
+**Remaining for `PolyCoverAt 2` (B7), all assembly.**
+1. A relation cylinder lift. The remainders `φ_c(x₀_c, w_last)` of all
+   pieces form one cylinder over a dimension-one union of face Freiman
+   families. This needs a relation version of
+   `MultiplyLinearWith.lift_last`: synchronized retiling with the values
+   as the family index, then a coordinate swap.
+2. A cubic cover of a finite union of Freiman families, indexed by any
+   finite type.
+3. Per-piece data in the original frame. This is
+   `section16_poly_piece_two` with its Freiman families exposed
+   (spectrum, face, slices) instead of covers, and every ingredient
+   translated by `x₀`.
+4. The common relations for a finite family, then
+   `abstract_family_piece_cover_with`.
+5. The peeling loop, `section16_greedy_relation_decomposition`.
+   - Sub-relations keep the product property
+     (`RelationProductProperty.mono`).
+   - Lemma 15.6 (`lemma_15_6_of_density_lower_explicit`) gives the
+     arrangement conditions.
+   - The family is padded with empty pieces to the deterministic size
+     `⌊γ⁻²/mass⌋ + 1`, so the controls depend only on `(γ, θ, ρ)`.
+   - Below Lemma 15.6's threshold `N₀ = poly(1/γθ)`, the coarse relation
+     cover has count `3²·N < 9N₀`, which is still polynomial.
+
 ## F. Routes
 
 1. **Quantitative repair (research).**
