@@ -135,4 +135,69 @@ theorem integerRun_has_representatives {N : Nat} [NeZero N]
     · simp [NatAP.carrier]
     · simp [NatAP.carrier, hempty]
 
+/-- An injective modular arithmetic sequence can be partitioned exactly at
+wrap boundaries. All cells have genuine integer representatives and the
+same prescribed positive integer step. The explicit cell budget is the
+total number of quotient intervals reached by the unreduced sequence. -/
+theorem integerRun_partition {N : Nat} [NeZero N]
+    (a d L : Nat) (hd : 0 < d)
+    (hinj : Set.InjOn (fun i : Nat => ((a + i * d : Nat) : ZMod N))
+      (Finset.range L : Set Nat)) :
+    ∃ M : Nat, ∃ Q : Fin M → NatAP,
+      M = (a + (L - 1) * d) / N + 1 ∧
+      M * N ≤ a + (L - 1) * d + N ∧
+      IsPartition (fun j => ((Q j).toModAP N).carrier)
+        ((Finset.range L).image (fun i : Nat => ((a + i * d : Nat) : ZMod N))) ∧
+      (∀ j, (Q j).IsProper ∧ (Q j).step = d ∧
+        (Q j).carrier ⊆ Finset.range N ∧
+        ((Q j).toModAP N).HasIntegerRepresentatives) := by
+  classical
+  let M := (a + (L - 1) * d) / N + 1
+  choose Q hQ hstep hlen hsub himage using
+    fun q : Fin M => integerRun_has_representatives (N := N) a d L q.val hd
+  have hcarrier (q : Fin M) :
+      ((Q q).toModAP N).carrier =
+        (integerRunIndices N a d L q.val).image
+          (fun i : Nat => ((a + i * d : Nat) : ZMod N)) := by
+    rw [NatAP.toModAP_carrier, himage q]
+  refine ⟨M, Q, rfl, ?_, ?_, ?_⟩
+  · dsimp [M]
+    rw [Nat.add_mul, one_mul]
+    exact Nat.add_le_add_right (Nat.div_mul_le_self _ _) N
+  · constructor
+    · intro x
+      constructor
+      · rintro hx
+        obtain ⟨i, hi, rfl⟩ := Finset.mem_image.mp hx
+        have hiL := Finset.mem_range.mp hi
+        have hibound : i ≤ L - 1 := by omega
+        have hquot : (a + i * d) / N < M := by
+          have hle := Nat.div_le_div_right
+            (Nat.add_le_add_left (Nat.mul_le_mul_right d hibound) a) (c := N)
+          dsimp [M]
+          omega
+        refine ⟨⟨(a + i * d) / N, hquot⟩, ?_⟩
+        simp only [hcarrier]
+        exact Finset.mem_image.mpr ⟨i, mem_integerRunIndices.mpr ⟨hiL, rfl⟩, rfl⟩
+      · rintro ⟨q, hx⟩
+        simp only [hcarrier] at hx
+        obtain ⟨i, hi, rfl⟩ := Finset.mem_image.mp hx
+        exact Finset.mem_image.mpr
+          ⟨i, Finset.mem_range.mpr (mem_integerRunIndices.mp hi).1, rfl⟩
+    · intro q r hqr
+      rw [Finset.disjoint_left]
+      intro x hxq hxr
+      simp only [hcarrier] at hxq hxr
+      obtain ⟨i, hi, hix⟩ := Finset.mem_image.mp hxq
+      obtain ⟨j, hj, hjx⟩ := Finset.mem_image.mp hxr
+      obtain ⟨hiL, hiq⟩ := mem_integerRunIndices.mp hi
+      obtain ⟨hjL, hjr⟩ := mem_integerRunIndices.mp hj
+      have hij : i = j := hinj (Finset.mem_range.mpr hiL) (Finset.mem_range.mpr hjL)
+        (hix.trans hjx.symm)
+      have hqreq : q = r := Fin.ext (hiq.symm.trans (hij ▸ hjr))
+      exact bne_iff_ne.mp hqr hqreq
+  · intro q
+    exact ⟨hQ q, hstep q, hsub q,
+      (Q q).toModAP_hasIntegerRepresentatives (hQ q) (hsub q)⟩
+
 end LeanProofs.GowersSzemeredi
