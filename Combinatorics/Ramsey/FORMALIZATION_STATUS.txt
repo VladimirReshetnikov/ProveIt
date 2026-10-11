@@ -1,12 +1,17 @@
-Gowers Szemeredi formalization checkpoint — 2026-10-10
+Gowers Szemeredi formalization checkpoint — 2026-10-11
 
 Scope
   The goal remains open. No improvement to the general all-length Szemeredi
   bound is claimed. Smaller four- and five-term thresholds are proved below.
   The source catalogue contains all 120 unique numbered theorem, lemma,
   proposition, and corollary headings in sz-thm-gowers-proof.tex.
-  The current Lean catalogue has 115 kernel-checked exact companion proofs
-  and 5 open statements (coverage refreshed 2026-10-09). This includes the repaired Lemma 16.10, whose explicit
+  The ledger regenerated on 2026-10-11 (scripts/gowers_status.py) records
+  117 exact companions and 3 open statements: theorem_18_1, theorem_18_2 and
+  corollary_18_7. The two new exact companions, theorem_16_2_explicit and
+  corollary_16_11_explicit (Proofs16AllDimensionsExplicit), are bridge
+  proofs. They were checked locally against a faithful stub and await the
+  full kernel audit on the verification host. The 115 earlier companions
+  are kernel-checked (coverage refreshed 2026-10-09). This includes the repaired Lemma 16.10, whose explicit
   cover conclusion is weaker than the printed unit-parameter claim.
   It must not be counted as a proof of that printed claim. The full merged
   development, including the repaired companion and the preserved printed
@@ -18,6 +23,26 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
   Counts in the historical checkpoint sections below describe those earlier
   checkpoints; the current catalogue count is stated here and in the ledger.
+
+Theorem 16.2 in every dimension; Theorems 18.1, 18.2 and Corollary 18.7 at
+bounded degree and length — 2026-10-11 (research notes L.6b–L.10b)
+  theorem_16_2_explicit and corollary_16_11_explicit: Theorem 16.2 and
+  Corollary 16.11 in every dimension (8cba9de; route (II), split classes).
+  Restricted cases, which are not counted as proofs of the full statements:
+  - theorem_18_1_le_nine: Theorem 18.1 at every degree d ≤ 9, at the printed
+    exponent alpha^(2^(2^(d+10))). Degree three uses a Lemma 13.5 that is
+    polynomial in the number of forms, from the corpus common-difference
+    partition. Degrees four to nine use graded vertex providers and the
+    tight class degree.
+  - theorem_18_2_le_thirteen and corollary_18_7_le_thirteen: Theorem 18.2
+    and Corollary 18.7 at every length L ≤ 13, at the printed thresholds.
+  The light modules are kernel-checked locally (propext, Classical.choice,
+  Quot.sound). The bridges are checked against faithful stubs whose only
+  axioms are the exact statements of commonDiffPartitionBoundAt_of,
+  multilinearPartitionBoundAt_explicit,
+  section16RecurrenceProfileWith_explicit and theorem_18_2_le_six.
+  Larger degrees and lengths need a per-step envelope cost O(2^k). That is
+  the stackability gap of notes L.8; the graded route costs Theta(3^k).
 
 Dense coherent Proposition 9.3 — checkpoint 302, 2026-10-10
   Eight original modules add 20 named proofs. Pair support gives the
