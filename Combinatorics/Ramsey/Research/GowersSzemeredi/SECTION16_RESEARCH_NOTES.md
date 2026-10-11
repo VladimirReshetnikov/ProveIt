@@ -3973,6 +3973,40 @@ with Lean 4.32.0 and mathlib v4.32.0. A transitive axiom check allows only
 `propext`, `Classical.choice`, and `Quot.sound`; no faithful-stub environment
 is used for this check. The full facade dependency rebuild is in progress.
 
+
+### L.14 Sharper budgets for the same joint-cover recursion (2026-10-11)
+
+`Proofs18CoverSharperArithmetic` improves the arithmetic induction to
+
+    M(k) + 2*k + 22 <= 1024*2^k,  k >= 2.
+
+The additive step cost plus two is at most `512*2^k`. The localization
+threshold plus the linear stopping overhead is at most `1024*2^k` from
+`k=2` onwards. The base is checked exactly: `M(2)=3655`, so its weighted
+budget is `3681 <= 4096`. The successor step carries the overhead as part
+of the induction invariant; no asymptotic or finite-range evaluation is
+used to infer the all-dimension result.
+
+Consequently the same candidate envelope fits the stronger comparisons
+
+    M(k)+1 <= 2^(k+2+8),       k >= 2,
+    M(k)+2*(k+4)+14 <= 2^(k+4+6),  k >= 2.
+
+After the analytic connection in L.13 is proved, these would replace
+`d+10` by `d+8` in the inverse exponent for `d>=4`, and `L+9` by `L+6`
+in the progression and two-color thresholds for `L>=6`. They are proposed
+refinements of this proof's constants, not claims about the best bounds
+in the literature. The stronger mathematical conclusions are still
+unverified; the three numbered statements remain open at this checkpoint.
+
+Validation: all six sharper-budget theorems compile directly from the
+production source with Lean 4.32.0 and mathlib v4.32.0. The transitive
+axiom audit covers twenty public budget theorems and 43 total theorem
+declarations across the three arithmetic modules, permitting only
+`propext`, `Classical.choice`, and `Quot.sound`. Production verification of
+the analytic construction is running serially against the original
+Gowers proof modules, without a stub environment.
+
 ## F. Routes
 
 1. **Quantitative repair (research).**

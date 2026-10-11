@@ -1120,6 +1120,7 @@ import GowersSzemeredi.Proofs16SinglePieceCoverGlobal
 import GowersSzemeredi.Proofs18SinglePieceCoverInverse
 import GowersSzemeredi.Proofs18FiniteCoverBudgets
 import GowersSzemeredi.Proofs18CoverEnvelopeArithmetic
+import GowersSzemeredi.Proofs18CoverSharperArithmetic
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
