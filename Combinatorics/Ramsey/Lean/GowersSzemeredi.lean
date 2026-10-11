@@ -1087,6 +1087,10 @@ import GowersSzemeredi.Proofs18UniformCovers
 import GowersSzemeredi.Proofs18GenericLifts
 import GowersSzemeredi.Proofs18GenericModulus
 import GowersSzemeredi.Proofs18GenericStep
+import GowersSzemeredi.Proofs18GenericEnvelopeBase
+import GowersSzemeredi.Proofs18GenericDensity
+import GowersSzemeredi.Proofs18GenericExponents
+import GowersSzemeredi.Proofs18GenericThresholds
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
