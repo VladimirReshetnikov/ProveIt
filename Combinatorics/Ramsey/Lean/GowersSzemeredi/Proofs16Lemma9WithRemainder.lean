@@ -20,8 +20,10 @@ the polynomial recurrence, which builds the OpenAI Schmidt stack.
 `AllScalePolynomialLemma166At k C p` is definitionally the instance
 `W = section16PolynomialLinearityWidth · k C p`.
 * `AllScaleLemma166WidthAt`, `AllScaleLemma169WithAt`.
-* `allScaleLemma169WithAt_of`: Lemma 16.9 from Lemma 16.6 for any width
-  that transfers along cell refinements (`Section16WidthTransfer`).
+* `allScaleLemma169SubdomainAt_of`: Lemma 16.9 from Lemma 16.6 for any width
+  that transfers along cell refinements (`Section16WidthTransfer`), with the
+  remainder covered on any sub-domain `D ⊆ B₁` (`AllScaleLemma169SubdomainAt`);
+  `allScaleLemma169WithAt_of` is the case `D = B₁`.
 * `allScaleLemma169WithAt_printed`: the specialization to the printed
   remainder controls, in the form of `AllScalePolynomialLemma169At`. -/
 set_option autoImplicit false
@@ -102,15 +104,50 @@ def AllScaleLemma169WithAt (k : Nat) (W : Nat → Nat → Real → Real → Real
           (W m (Nat.floor (Qb (sigma / 2))) (Er (sigma / 2) * Eb (sigma / 2)) zeta)
           qGamma
 
-/-- The remainder-controlled Lemma 16.9 from the all-scale Lemma 16.6. -/
-theorem allScaleLemma169WithAt_of (k : Nat) {W : Nat → Nat → Real → Real → Real}
+/-- Lemma 16.9 at every scale, for the linearity width `W`, arbitrary
+remainder controls `(Qr, Er)`, and a remainder cover on any sub-domain
+`D ⊆ B₁`. The line cover then covers `φ₁` on `D`. Covers from `PolyCoverAt`
+exist only on good sets, so `D` is `B₁` minus a global deletion. -/
+def AllScaleLemma169SubdomainAt (k : Nat) (W : Nat → Nat → Real → Real → Real) : Prop :=
+  ∀ (N m : Nat) [NeZero N] [Fact N.Prime], 1 ≤ k →
+    ∀ (theta gamma sigma : Real),
+    0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 →
+    0 < sigma → sigma ≤ 1 →
+    ∀ (Qb Eb Qr Er : Real → Real), 0 ≤ Qb (sigma / 2) → 0 < Eb (sigma / 2) →
+      Eb (sigma / 2) ≤ 1 → 0 ≤ Er (sigma / 2) →
+    ∀ (B : Finset (Point N (k + 1)))
+      (phi : Point N (k + 1) → ZMod N)
+      (H Jbase H1 : Finset (Point N k))
+      (Y : (h : Point N k) → Finset (Section16CubeElement B h))
+      (phiPrime : Point N k → ZMod N → ZMod N) (x0 : Point N k),
+    let theta1 := section16ThetaOne theta gamma k
+    let delta := section16Delta theta1
+    let zeta := section16Zeta theta gamma k
+    let B1 := section16GoodDomain B H1 Y x0
+    H1 = H ∩ Jbase →
+    MultiplyLinearWith Qb Eb
+      (restrictRelation (section16SpectrumRelation B delta) Jbase) →
+    Section16InducedSelection B phi H Y
+      (fun h => section16LargeSpectrum B h delta) zeta phiPrime →
+    Section16PhiOneIdentity B1 phi x0 phiPrime →
+    ∀ D : Finset (Point N (k + 1)), D ⊆ B1 →
+    MultiplyLinearWith Qr Er (partialGraph D (section16PhiRemainder phi x0)) →
+    ∀ P : Box N (k + 1), P.IsProper → m ≤ P.width →
+      ∃ qGamma : Nat,
+        (qGamma : Real) ≤ Qr (sigma / 2) ∧
+        Section16LineCover P D (section16PhiOne phi x0) sigma
+          (W m (Nat.floor (Qb (sigma / 2))) (Er (sigma / 2) * Eb (sigma / 2)) zeta)
+          qGamma
+
+/-- The sub-domain Lemma 16.9 from the all-scale Lemma 16.6. -/
+theorem allScaleLemma169SubdomainAt_of (k : Nat) {W : Nat → Nat → Real → Real → Real}
     (hW : Section16WidthTransfer W)
-    (hlemma6 : AllScaleLemma166WidthAt k W) : AllScaleLemma169WithAt k W := by
-  unfold AllScaleLemma169WithAt
+    (hlemma6 : AllScaleLemma166WidthAt k W) : AllScaleLemma169SubdomainAt k W := by
+  unfold AllScaleLemma169SubdomainAt
   intro N m _ _ hk theta gamma sigma ht ht1 hg hg1 hs hs1 Qb Eb Qr Er hQ ha ha1 hEr
     B phi H Jbase H1 Y phiPrime x0
   dsimp only
-  intro hH1 hML hselection hidentity hrem P hP hmP
+  intro hH1 hML hselection hidentity D hD hrem P hP hmP
   classical
   let zeta := section16Zeta theta gamma k
   let B1 := section16GoodDomain B H1 Y x0
@@ -177,21 +214,34 @@ theorem allScaleLemma169WithAt_of (k : Nat) {W : Nat → Nat → Real → Real �
       have h := (Finset.mem_filter.mp hzU).2.1
       simpa only [section16Init_appendCoordinate] using h
     have hHsub : H1 ⊆ H := by rw [hH1]; exact Finset.inter_subset_left
-    have hdomain := section16GoodDomain_fibre_mem B H H1 Y x0 h x hHsub hzB
+    have hdomain := section16GoodDomain_fibre_mem B H H1 Y x0 h x hHsub (hD hzB)
     have hxJ : x ∈ (J j b).carrier := by
       have h := ((hSproduct j b).mem_snoc h x).mp (by simpa only [appendCoordinate_eq_snoc] using hzS)
       exact h.2
     have hphi := hellEq j b h ⟨hhG, hdomain.1, hhT⟩ x (Finset.mem_filter.mpr ⟨hxJ, hdomain.2⟩)
     have hgraph : (appendCoordinate h x, section16PhiRemainder phi x0 (appendCoordinate h x)) ∈
-        partialGraph B1 (section16PhiRemainder phi x0) :=
+        partialGraph D (section16PhiRemainder phi x0) :=
       Finset.mem_image.mpr ⟨appendCoordinate h x, hzB, rfl⟩
     obtain ⟨i, hi⟩ := hremCover j (appendCoordinate h x) hzR hzF _ hgraph
     refine ⟨i, ?_⟩
-    have hid := hidentity (appendCoordinate h x) hzB
+    have hid := hidentity (appendCoordinate h x) (hD hzB)
     simp only [section16PhiPrimeLift, section16Init_appendCoordinate, section16Last_appendCoordinate] at hid
     change _ = lines j b h i x
     dsimp only [lines]
     rw [hid, hphi, hi]
+
+/-- The remainder-controlled Lemma 16.9 from the all-scale Lemma 16.6. -/
+theorem allScaleLemma169WithAt_of (k : Nat) {W : Nat → Nat → Real → Real → Real}
+    (hW : Section16WidthTransfer W)
+    (hlemma6 : AllScaleLemma166WidthAt k W) : AllScaleLemma169WithAt k W := by
+  unfold AllScaleLemma169WithAt
+  intro N m _ _ hk theta gamma sigma ht ht1 hg hg1 hs hs1 Qb Eb Qr Er hQ ha ha1 hEr
+    B phi H Jbase H1 Y phiPrime x0
+  dsimp only
+  intro hH1 hML hselection hidentity hrem P hP hmP
+  exact allScaleLemma169SubdomainAt_of k hW hlemma6 N m hk theta gamma sigma ht ht1 hg hg1
+    hs hs1 Qb Eb Qr Er hQ ha ha1 hEr B phi H Jbase H1 Y phiPrime x0 hH1 hML hselection hidentity
+    _ Finset.Subset.rfl hrem P hP hmP
 
 /-- The specialization to Gowers's printed remainder controls
 `(multipleQ (θ/r) γ (k+1))^r` and `(multipleC (θ/r) γ (k+1))^r`, in the form

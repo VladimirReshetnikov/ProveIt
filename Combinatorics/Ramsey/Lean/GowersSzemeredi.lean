@@ -1028,6 +1028,7 @@ import GowersSzemeredi.Proofs18SinglePieceInverse
 import GowersSzemeredi.Proofs16WithCoordinateLifts
 import GowersSzemeredi.Proofs16Lemma9WithRemainder
 import GowersSzemeredi.Proofs16PolynomialLemma9WithRemainder
+import GowersSzemeredi.Proofs16PieceCoverWithRemainder
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
