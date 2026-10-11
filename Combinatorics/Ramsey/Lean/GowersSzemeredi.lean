@@ -1118,6 +1118,11 @@ import GowersSzemeredi.Proofs18TightClasses
 import GowersSzemeredi.Proofs16JointCovers
 import GowersSzemeredi.Proofs16SinglePieceCoverGlobal
 import GowersSzemeredi.Proofs18SinglePieceCoverInverse
+import GowersSzemeredi.Proofs18CoverModulus
+import GowersSzemeredi.Proofs18CoverDensity
+import GowersSzemeredi.Proofs18CoverExponents
+import GowersSzemeredi.Proofs18CoverDegrees
+import GowersSzemeredi.Proofs18CoverExplicit
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
