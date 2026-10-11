@@ -3624,6 +3624,22 @@ first open case is dimension two, where the slices' sheets must be linked
 without sampling `1/ρ` slices: work on boxes short in the last coordinate
 instead.
 
+*Caveat (same day, after an adversarial pass).* This lemma is the
+stackability problem of H.4 and L (slope relations) in another form, not an
+easier target.
+- In dimension one the precision is absorbed by **refining boxes**, so the
+  number of (box, map) classes grows like `poly(1/ρ)`.
+- Any construction that links classes across the last coordinate, whether
+  by sampling (route (II)) or through the slope relation (L), inherits that
+  count. The slope relation's fibres, and with them `γ′`, depend on `ρ`.
+- A precision-free count in dimension two therefore needs a linking that
+  does not see the refined classes, for example a *stackable* invariant
+  (H.4).
+
+So L.8 sharpens the target: the two artifacts above are removable, and
+what remains is exactly the stackability gap. It does not supply a new
+mechanism.
+
 **Technique notes.**
 - Large proofs over `GenParams.std …` terms with `set` time out in whnf.
   Split them into lemmas over plain reals and compose by `rfl`.
