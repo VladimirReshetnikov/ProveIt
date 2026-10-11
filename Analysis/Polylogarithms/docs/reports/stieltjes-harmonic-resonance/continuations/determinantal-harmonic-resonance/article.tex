@@ -1,0 +1,102 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{lmodern,microtype}
+\usepackage[T1]{fontenc}
+\usepackage{booktabs,array,longtable,enumitem}
+\usepackage{xcolor}
+\definecolor{ink}{HTML}{15344A}
+\usepackage[colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=ink,breaklinks=true]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Determinantal harmonic resonance}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.25em}
+\setlist{itemsep=0.3em,topsep=0.4em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\FP}{FP}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\Rea}{Re}
+\newcommand{\C}{\mathbb C}\newcommand{\Q}{\mathbb Q}\newcommand{\N}{\mathbb N}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\fall}[2]{#1^{\underline{#2}}}
+\newcommand{\diff}{\,\mathrm d}
+\newcommand{\ind}{\mathbf1}
+\newcommand{\repo}{\texttt{ProveIt}}
+\newcommand{\Bell}{\mathcal B}
+\hypersetup{pdftitle={Determinantal Harmonic Resonance},pdfauthor={OpenAI-assisted research draft for the ProveIt project},pdfsubject={Gauss--Vandermonde finite parts, Stieltjes jets, and depth-two polylogarithmic closure}}
+\begin{document}
+\begin{titlepage}
+\centering
+\vspace*{1.1cm}
+{\small\scshape Analysis / Polylogarithms\par}
+\vspace{1cm}
+{\huge\bfseries\color{ink} Determinantal Harmonic\\[0.2em] Resonance\par}
+\vspace{0.7cm}
+{\Large Gauss--Vandermonde finite parts,\\[0.25em] Stieltjes jets, and depth-two\\[0.25em] polylogarithmic closure\par}
+\vspace{1cm}
+{\large A research continuation for the ProveIt project\par}
+\vspace{0.25cm}
+{OpenAI-assisted mathematical research draft\par}
+{10 October 2026\par}
+\vspace{1cm}
+\begin{minipage}{0.91\textwidth}
+\small
+\textbf{Abstract.}
+We develop a determinantal extension of the Gamma--harmonic identity
+programme. A self-contained evaluation of a discrete Gauss--Vandermonde
+sum is used at its first logarithmic resonance. Separating the largest
+summation index produces a normally convergent subtraction, an explicit
+hard-cutoff constant, and all-order identities coupling many-variable
+harmonic sums to generalized Stieltjes constants. The same construction
+has exact Hurwitz-zeta derivatives and anchored log-Gamma primitives.
+
+For rational weights with simple poles on the negative integer grid,
+we prove that the finite moment matrix has harmonic dependence in only
+one entry. Consequently an arbitrary number of summation variables still
+admits a depth-two polylogarithmic generating function. Every positive
+Euler primitive at the endpoint reduces to ordinary zeta values and
+products of two zeta values. We give explicit two-, three-, and four-variable
+evaluations, an all-order mixed harmonic generating function, and a
+common-translate cyclotomic extension.
+
+The proofs, exact rational reducers, and diagnostic calculations are
+separate parts of the delivery. The replay contains 732 exact assertions
+and 85 numerical diagnostics at 100-digit working precision. The latter
+are not interval certificates. We do not assert global priority, resolve
+the manuscript's $S_6$ or $S_8$ conjectures, or confer canonical or
+proof-assistant status on this draft.
+\end{minipage}
+\vfill
+{\small Source anchor: \texttt{87c7db629552afbc2e803001526debe3430a31b0}\par}
+{\small Scope and integration qualifications are recorded in Section~\ref{dhr:sec:audit}.\par}
+\end{titlepage}
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+\input{sections/01-context.tex}
+\input{sections/02-determinant.tex}
+\input{sections/03-resonance.tex}
+\input{sections/04-stieltjes.tex}
+\input{sections/05-harmonics.tex}
+\input{sections/06-depth-two.tex}
+\input{sections/07-explicit.tex}
+\input{sections/08-audit.tex}
+\input{sections/09-research.tex}
+\appendix
+\input{sections/10-replay.tex}
+\input{references.tex}
+\end{document}

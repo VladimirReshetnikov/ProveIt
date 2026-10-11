@@ -1,0 +1,97 @@
+% Primary-source checks, with their exact version and coefficient scope.
+\section{Two Stieltjes index and coefficient corrections}
+\label{dgp:audit:section}
+These checks concern the identified displays in the inspected source PDFs.
+They also illustrate why the coefficient convention and the initial
+summation index must be fixed before comparing harmonic spectral identities.
+
+\subsection{The initial term in the Hurwitz--Stieltjes limit}
+\label{dgp:audit:Can}
+On printed page 1 of \emph{On certain harmonic zeta functions},
+arXiv:2403.07123v1, dated 11 March 2024 \cite{dgp:CanV1}, the Hurwitz
+series begins at $n=0$, but the following unnumbered Stieltjes-limit
+display begins at $n=1$. For real $a>0$ and integer $m\ge0$, the correct
+unit-coordinate limit is
+\begin{equation}\label{dgp:audit:correct-limit}
+ \gamma_m(a)=\lim_{N\to\infty}\left[
+   \sum_{n=0}^N\frac{\log^m(n+a)}{n+a}
+        -\frac{\log^{m+1}(N+a)}{m+1}\right].
+\end{equation}
+Equivalently, retain the lower index one and add $\log^m(a)/a$.
+\begin{proof}
+The standard sum--integral subtraction for the Laurent expansion of
+$\zeta(s,a)$ gives \eqref{dgp:audit:correct-limit}; changing the upper
+endpoint by one contributes $O((1+\log^m N)/N)$ and does not change
+the limit. The recurrence
+$\zeta(1+u,a+1)=\zeta(1+u,a)-a^{-1-u}$ gives, coefficient by coefficient,
+\[
+ \gamma_m(a+1)=\gamma_m(a)-\frac{\log^m a}{a}.
+\]
+The sum starting at one is the sum for $a+1$, hence its printed limit is
+$\gamma_m(a+1)$, not $\gamma_m(a)$.
+\end{proof}
+At $m=0,a=1$, the exact counterexample is
+\[
+ \lim_{N\to\infty}\{H_{N+1}-1-\log(N+1)\}=\gamma-1.
+\]
+At $a=1,m>0$ the omitted term vanishes; testing only those cases would
+miss the index defect. This correction is specifically to the inspected
+version-one introductory display.
+
+\subsection{The sign of the height-one linear coefficient}
+\label{dgp:audit:Young}
+Young's published \emph{Series of height one multiple zeta functions},
+\emph{Integers} 24 (2024), A43, printed page 12 \cite{dgp:Young}, describes
+the symbol in Corollary 3 as the linear coefficient. Its displayed
+integral expression instead gives the negative of the literal coefficient
+$L_d=[u]Z(1+u,1^{d-1})$ in our convention. The ordinary Stieltjes value in
+Example 5 is consistent with the conventional $\gamma_1=-L_1$.
+
+The sign can be checked at every depth without a decimal fit. For
+$0\le r\le1$ and $s>1$, define the classical Barnes series
+\[
+ \mathcal B_r(s)=\sum_{n\ge0}\frac{(r)_n}{n!}(n+1)^{-s}.
+\]
+At $r=0$ only the initial term remains. Put
+\[
+ U_d=\int_0^1(1-r)\mathcal B_r(d+2)\,\dd r,
+ \qquad V_d=\int_0^1\mathcal B_r(d+1)\,\dd r.
+\]
+The right side of the inspected Corollary 3 is $U_d-V_d-\alpha_{d+1}$.
+Using $(r)_{n+1}=(r+n)(r)_n$ and termwise integration gives
+\[
+ U_d-V_d=-\sum_{n\ge1}\frac{\rho_n}{n^{d+2}},
+\]
+where $\rho_n$ is defined in Proposition~\ref{dgp:powers:prop:Cauchy}.
+All relevant series converge absolutely because $(r)_n/n!\le1$ on
+$0\le r\le1$ and $d\ge1$. The proved Cauchy coefficient formula therefore
+shows exactly that
+\begin{equation}\label{dgp:audit:Young-sign}
+ U_d-V_d-\alpha_{d+1}=-L_d.
+\end{equation}
+Thus one may keep the displayed expression and describe the negative
+linear coefficient, or negate it when naming the literal $[u]$ coefficient.
+At depth one it gives $\gamma_1$, whereas the literal linear coefficient
+of $\zeta(1+u)$ is $-\gamma_1$. The depth-one discrepancy is nonzero rigorously: the exact rational
+certificate in \path{verification/digamma-coordinate-source-audit.json}
+gives
+\[
+ -\frac3{40}<\gamma_1<-\frac7{100}<0.
+\]
+Here is its analytic error budget. For $f(x)=\log(x)/x$ and $N=10$,
+one Euler--Maclaurin correction gives
+\[
+ \gamma_1=\sum_{n=1}^{N}\frac{\log n}{n}
+   -\frac{\log^2N}{2}-\frac{\log N}{2N}
+   +\frac{\log N-1}{12N^2}+E_N,
+ \qquad |E_N|\le\frac{\log N-1}{12N^2}.
+\]
+The bound follows from $|\widetilde B_2|/2!\le1/12$ and
+$f''(x)=(2\log x-3)/x^3\ge0$ for $x\ge10$; thus
+$\int_N^\infty|f''|=-f'(N)$. Each logarithm is enclosed rationally by
+128 terms of its atanh series, with the geometric positive-tail bound.
+The resulting endpoint comparisons are exact fractions, not floating
+sign tests. The separately replayed 100-digit Cauchy/Barnes diagnostic
+also confirms the sign; \eqref{dgp:audit:Young-sign} proves the
+all-depth coefficient identity. The correction concerns that coefficient description,
+with Example 5's ordinary Stieltjes formula retained.

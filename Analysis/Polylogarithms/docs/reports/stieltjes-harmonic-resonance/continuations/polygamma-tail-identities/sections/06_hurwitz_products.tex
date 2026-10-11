@@ -1,0 +1,339 @@
+% Independent verification note for the parent arithmetic reduction.
+\section[Hurwitz products, spectral jets, and Stieltjes derivative correlations]{Hurwitz products, spectral jets,\\and Stieltjes derivative correlations}
+\label{hprod:sec}
+
+For integers $k,l\ge2$, put $W=k+l$ and
+$C_{kl}=\binom{W-2}{k-1}$.  In the original coordinate $x$, define
+\[
+ I_{kl}=\operatorname{FP}_{\epsilon\downarrow0}
+ \int_\epsilon^1\zeta(k,x)\zeta(l,x)\,dx.
+\]
+Here the finite part retains the constant coefficient after all negative
+powers of $\epsilon$ and all logarithmic divergences are removed.
+Then
+\[
+ I_{kl}=
+ \begin{cases}
+ (-1)^kC_{kl}\bigl\{[2H_{W-2}-H_{k-1}-H_{l-1}]\zeta(W-1)
+                    +2\zeta'(W-1)\bigr\},&k\equiv l\pmod2,\\[3pt]
+ (-1)^kC_{kl}[H_{l-1}-H_{k-1}]\zeta(W-1),&k\not\equiv l\pmod2.
+ \end{cases}
+\]
+In particular
+\[
+ I_{22}=2\zeta(3)+4\zeta'(3),\qquad
+ I_{33}=-7\zeta(5)-12\zeta'(5),\qquad
+ I_{23}=\tfrac32\zeta(4),\qquad
+ I_{24}=\tfrac{16}{3}\zeta(5)+8\zeta'(5).
+\]
+For polygamma products one multiplies $I_{kl}$ by
+$(-1)^{k+l}(k-1)!(l-1)!$.
+
+\paragraph{Proof and normalization.}
+The classical product kernel \cite[Remark~1]{Shpot2016}, also recorded in \cite[Chapter~7]{SourceManuscript}, underlies the following proof.
+The classical Mikol\'as/Hurwitz product integral, already reproduced
+in the ProveIt manuscript's coincident-endpoint chapter, continues
+meromorphically as
+\begin{align*}
+ F(s,t)&=2\Gamma(1-s)\Gamma(1-t)(2\pi)^{s+t-2}
+ \cos\!\left(\frac{\pi(s-t)}2\right)\zeta(2-s-t)\\
+ &=\frac{\pi\Gamma(s+t-1)\zeta(s+t-1)}{\Gamma(s)\Gamma(t)}
+   \{\csc(\pi s)+\csc(\pi t)\}.
+\end{align*}
+The second expression follows from the Riemann functional equation and
+Gamma reflection.  To relate its Laurent coefficient to the coordinate
+finite part, write
+\[
+ \zeta(s,x)=x^{-s}+\sum_{j=0}^{J}c_j(s)x^j+O(x^{J+1}),
+ \qquad c_j(s)=\frac{(-1)^j(s)_j}{j!}\zeta(s+j),
+\]
+uniformly for $s$ in a small neighborhood of $k$, with $J$ sufficiently
+large.  There is an analogous expansion near $l$.  Uniformly subtract
+the resulting local terms before integrating.  Along
+$s=k+u,t=l+u$, the only local terms whose exponent crosses $-1$ are
+\[
+ c_{k-1}(l+u)x^{-1-u},\qquad
+ c_{l-1}(k+u)x^{-1-u}.
+\]
+Their analytic integrals are respectively
+$-c_{k-1}(l+u)/u$ and $-c_{l-1}(k+u)/u$, whereas their coordinate
+finite parts at $u=0$ are zero.  All other subtracted monomials have
+denominators nonzero at zero and commute with evaluation.  Therefore
+\[
+ I_{kl}=[u^0]F(k+u,l+u)
+       +c'_{k-1}(l)+c'_{l-1}(k).
+\]
+This is the precise local correction; extracting a spectral Laurent
+constant alone would give the wrong coordinate finite part.
+
+If $k,l$ have the same parity, let $\sigma=(-1)^k=(-1)^l$.
+Expansion of the cosecant representation gives
+\[
+ [u^0]F(k+u,l+u)
+ =2\sigma C_{kl}\{[2\psi(W-1)-\psi(k)-\psi(l)]\zeta(W-1)
+                   +2\zeta'(W-1)\}.
+\]
+The two coefficient derivatives have sum equal to the negative of one
+half of this expression.  If $k,l$ have opposite parity, the two
+cosecants cancel identically on the chosen line, so its Laurent
+constant is zero; the coefficient derivatives give
+$(-1)^kC_{kl}[\psi(l)-\psi(k)]\zeta(W-1)$.  Finally
+$\psi(n)=H_{n-1}-\gamma$ proves the displayed formulas.
+
+\subsection{All order derivatives from a holomorphic local generator}
+
+The coordinate correction extends to every independent order derivative.
+Continue to write
+$c_j(s)=(-1)^j(s)_j\zeta(s+j)/j!$, and define
+\begin{equation}\label{hprod:completed-generator}
+ \mathscr H_{kl}(s,t)=F(s,t)
+ +\frac{c_{k-1}(t)}{s-k}+\frac{c_{l-1}(s)}{t-l}.
+\end{equation}
+The singularities displayed separately in this expression are removable
+in their sum near $(k,l)$.
+
+\begin{theorem}[Every independent order jet]
+\label{hprod:all-jets}
+For every $k,l\ge2$, $\mathscr H_{kl}$ is holomorphic in a
+neighborhood of $(k,l)$.  For all nonnegative integers $a,b$,
+\begin{equation}\label{hprod:jet-fp}
+ \left.\partial_s^a\partial_t^b\mathscr H_{kl}(s,t)
+ \right|_{s=k,t=l}
+ =\operatorname{FP}\int_0^1
+ \left.\partial_s^a\zeta(s,x)\right|_{s=k}
+ \left.\partial_t^b\zeta(t,x)\right|_{t=l}\,dx.
+\end{equation}
+The finite part is taken in the same original coordinate $x$ for all
+orders.  Every jet on the left can be obtained by finite Taylor
+arithmetic in Gamma functions and the ordinary Riemann zeta function.
+\end{theorem}
+
+\begin{proof}
+Choose small neighborhoods of $k$ and $l$ avoiding the spectral pole at
+$1$, and subtract a sufficiently
+long Taylor polynomial of each $g_s(x)=\zeta(s,1+x)$ at $x=0$.
+The product consists of an integrable holomorphic remainder, the
+monomial $x^{-s-t}$, and finitely many cross monomials
+$c_j(t)x^{j-s}$ and $c_j(s)x^{j-t}$.  Near $(k,l)$, all
+denominators obtained by integrating these monomials are nonzero
+except $k-s$ in the first cross family and $l-t$ in the second.
+Those two integrals are exactly
+$-c_{k-1}(t)/(s-k)$ and $-c_{l-1}(s)/(t-l)$; adding them
+back proves holomorphy of \eqref{hprod:completed-generator}.
+
+Uniform remainder estimates permit every fixed number of parameter
+derivatives under the integrable remainder: the resulting bounds have
+the form $C x^{-\delta}(1+|\log x|^N)$ with $0<\delta<1$.
+For each nonresonant monomial the coordinate finite part and parameter
+differentiation agree, since its denominator is nonzero.  All derivatives
+of either removed resonant monomial, evaluated at $(k,l)$, are
+constant multiples of $x^{-1}\log^j x$.  Their integrals over
+$[\epsilon,1]$ have constant coefficient zero for every $j\ge0$.
+Thus they contribute zero to the fixed-coordinate finite part at every
+jet order, proving \eqref{hprod:jet-fp}.
+\end{proof}
+
+There is a useful version of \eqref{hprod:completed-generator} with
+its removable singularities already resolved.  Put
+\[
+ P(s,t)=\frac{\Gamma(s+t-1)}{\Gamma(s)\Gamma(t)}\zeta(s+t-1),
+ \quad E(u)=\frac{\pi u}{\sin(\pi u)},\quad
+ \sigma_k=(-1)^k,
+\]
+and write $s=k+u$, $t=l+v$.  Since
+$c_{k-1}(t)=-\sigma_kP(k,t)$, one obtains
+\begin{equation}\label{hprod:divided-differences}
+ \begin{split}
+ \mathscr H_{kl}(k+u,l+v)
+ ={}&\sigma_k\frac{P(k+u,l+v)E(u)-P(k,l+v)}u\\
+ &+\sigma_l\frac{P(k+u,l+v)E(v)-P(k+u,l)}v.
+ \end{split}
+\end{equation}
+Both displayed quotients are holomorphic divided differences.
+If
+\[
+ P(k+u,l+v)=\sum_{a,b\ge0}P_{ab}u^av^b,
+ \qquad E(u)=\sum_{r\ge0}e_{2r}u^{2r},
+\]
+then $e_0=1$, $e_2=\pi^2/6$, $e_4=7\pi^4/360$, and
+the jet in \eqref{hprod:jet-fp} is the finite expression
+\begin{equation}\label{hprod:finite-jet-algorithm}
+ a!b!\left\{
+ \sigma_k\sum_{r=0}^{\lfloor(a+1)/2\rfloor}e_{2r}P_{a+1-2r,b}
+ +\sigma_l\sum_{r=0}^{\lfloor(b+1)/2\rfloor}e_{2r}P_{a,b+1-2r}
+ \right\}.
+\end{equation}
+Only Gamma/zeta Taylor coefficients through total degree $a+b+1$
+are needed.  This gives an explicit terminating procedure rather than
+an instruction to evaluate a difference of poles numerically.
+
+\subsection{A first derivative identity with every correction}
+
+Let
+\[
+ A_k=H_{2k-2}-H_{k-1},\qquad
+ H_n^{(2)}=\sum_{j=1}^n\frac1{j^2}.
+\]
+The first diagonal order jet is
+\begin{equation}\label{hprod:first-order-jet}
+ \begin{split}
+ &\operatorname{FP}\int_0^1\zeta(k,x)
+     \left.\partial_s\zeta(s,x)\right|_{s=k}\,dx\\
+ &\quad=\frac{(-1)^k}{2}\binom{2k-2}{k-1}
+ \biggl\{
+ \left[3A_k^2+4\zeta(2)-3H_{2k-2}^{(2)}+H_{k-1}^{(2)}\right]
+        \zeta(2k-1)\\
+ &\hspace{46mm}+6A_k\zeta'(2k-1)+3\zeta''(2k-1)
+ \biggr\}.
+ \end{split}
+\end{equation}
+In particular,
+\begin{equation}\label{hprod:trigamma-order-jet}
+ \operatorname{FP}\int_0^1\zeta(2,x)
+     \left.\partial_s\zeta(s,x)\right|_{s=2}\,dx
+ =\bigl(4\zeta(2)-2\bigr)\zeta(3)
+   +3\zeta'(3)+3\zeta''(3).
+\end{equation}
+
+\begin{proof}
+Set
+\[
+ B(s)=\frac{\Gamma(2s-1)}{\Gamma(s)^2}\zeta(2s-1),\qquad
+ D(s)=\frac{\Gamma(s+k-1)}{\Gamma(s)\Gamma(k)}\zeta(s+k-1).
+\]
+Along the diagonal through $(k,k)$, the functional equation and
+\eqref{hprod:completed-generator} give
+\[
+ \mathscr H_{kk}(s,s)=2\pi\csc(\pi s)B(s)
+                   -\frac{2(-1)^kD(s)}{s-k}.
+\]
+Since $B(k)=D(k)$, the coefficient of $s-k$ is
+\[
+ (-1)^k\left\{B''(k)-D''(k)+\frac{\pi^2}{3}B(k)\right\}.
+\]
+Symmetry of $\mathscr H_{kk}$ makes the desired single order
+derivative one half of that coefficient.  Logarithmic differentiation
+of the two Gamma quotients yields
+\begin{align*}
+ \frac{B''(k)}{C_{kk}}
+ &=\left[4A_k^2+2\zeta(2)-4H_{2k-2}^{(2)}+2H_{k-1}^{(2)}\right]
+       \zeta(2k-1)\\
+ &\qquad+8A_k\zeta'(2k-1)+4\zeta''(2k-1),\\
+ \frac{D''(k)}{C_{kk}}
+ &=\left[A_k^2-H_{2k-2}^{(2)}+H_{k-1}^{(2)}\right]
+       \zeta(2k-1)
+       +2A_k\zeta'(2k-1)+\zeta''(2k-1).
+\end{align*}
+Subtraction and $\pi^2/3=2\zeta(2)$ prove
+\eqref{hprod:first-order-jet}; the $k=2$ specialization gives
+\eqref{hprod:trigamma-order-jet}.
+\end{proof}
+
+\subsection{Products of ordinary derivatives of generalized Stieltjes constants}
+
+The completed kernel also evaluates all quadratic products of positive
+ordinary derivative orders of generalized Stieltjes constants.  Use the
+standard convention
+\[
+ \zeta(1+u,x)=\frac1u+
+ \sum_{n=0}^{\infty}\frac{(-1)^n}{n!}\gamma_n(x)u^n.
+\]
+For integers $r\ge1$ and $0\le j\le r$, put
+\[
+ p_{r,j}=\left.\frac{d^j}{du^j}(1+u)_r\right|_{u=0},
+\]
+and define the constant-coefficient differential operator
+\begin{equation}\label{hprod:stieltjes-operator}
+ T_{n,r}^{(s)}=
+ \sum_{j=0}^{\min(n,r)}\binom nj p_{r,j}\partial_s^{n-j}.
+\end{equation}
+Its coefficients are explicit positive integers; in particular
+$p_{r,0}=r!$.  They may equally be computed from
+$p_{r,j}=j!\,[u^j](1+u)_r$.
+
+\begin{corollary}[Every quadratic derivative-Stieltjes finite part]
+\label{hprod:stieltjes-products}
+For all Stieltjes indices $m,n\ge0$ and positive ordinary derivative
+orders $r,t\ge1$,
+\begin{equation}\label{hprod:stieltjes-family}
+ \begin{split}
+ &\operatorname{FP}\int_0^1
+       \gamma_m^{(r)}(x)\gamma_n^{(t)}(x)\,dx\\
+ &\quad=(-1)^{m+n+r+t}
+ \left.T_{m,r}^{(s)}T_{n,t}^{(v)}
+       \mathscr H_{r+1,t+1}(s,v)\right|_{s=r+1,v=t+1}.
+ \end{split}
+\end{equation}
+The right side is evaluated by the finite algorithm
+\eqref{hprod:finite-jet-algorithm}.  Superscripts $(r)$ and $(t)$
+on $\gamma$ mean ordinary derivatives with respect to its argument
+$x$, not derivatives with respect to its Stieltjes index.
+\end{corollary}
+
+\begin{proof}
+For $r\ge1$, differentiation with respect to $x$ eliminates the
+spectral pole $1/u$.  The Hurwitz differentiation formula gives
+\[
+ \sum_{n=0}^{\infty}\frac{(-1)^n}{n!}
+       \gamma_n^{(r)}(x)u^n
+ =(-1)^r(1+u)_r\zeta(r+1+u,x).
+\]
+Taking the coefficient of $u^n$ and applying the product rule yields
+\begin{equation}\label{hprod:stieltjes-to-jets}
+ \gamma_n^{(r)}(x)=(-1)^{n+r}
+ \left.T_{n,r}^{(s)}\zeta(s,x)\right|_{s=r+1}.
+\end{equation}
+Multiply the two finite expressions
+\eqref{hprod:stieltjes-to-jets}, use linearity of the specified
+coordinate finite part, and apply Theorem~\ref{hprod:all-jets}
+term by term.  This proves \eqref{hprod:stieltjes-family}.
+\end{proof}
+
+For the first nontrivial mixed-index example,
+\[
+ \gamma_0'(x)=-\zeta(2,x),\qquad
+ \gamma_1'(x)=\zeta(2,x)+
+       \left.\partial_s\zeta(s,x)\right|_{s=2}.
+\]
+Combining $I_{22}$ with \eqref{hprod:trigamma-order-jet} gives
+\begin{equation}\label{hprod:stieltjes-first-example}
+ \boxed{\operatorname{FP}\int_0^1
+         \gamma_0'(x)\gamma_1'(x)\,dx
+ =-4\zeta(2)\zeta(3)-7\zeta'(3)-3\zeta''(3).}
+\end{equation}
+This family is a consequence of the completed classical product kernel
+and the standard Hurwitz derivative formula.  Its range here is
+explicitly $r,t\ge1$; undifferentiated Stieltjes factors require the
+separate completion at spectral order $1$ already developed in the
+source manuscript.  No broad historical priority claim is attached to
+the kernel or this coefficient-extraction method.
+
+\paragraph{Independent checks.}
+The local subtraction above also produces an ordinary integrable
+function.  For direct numerical evaluation, put
+$g_m(x)=\zeta(m,1+x)$ and
+$R_{m,r}(x)=g_m(x)-\sum_{j=0}^{r-1}c_j(m)x^j$.  Then
+\begin{align*}
+ I_{kl}={}&-\frac1{W-1}
+ +\sum_{j=0}^{k-2}\frac{c_j(l)}{j-k+1}
+ +\sum_{j=0}^{l-2}\frac{c_j(k)}{j-l+1}\\
+ &+\int_0^1\{g_k(x)g_l(x)+x^{-k}R_{l,k}(x)
+                                +x^{-l}R_{k,l}(x)\}\,dx.
+\end{align*}
+Both apparent singularities in the last integrand are removable.  This
+representation gives a numerical left side independent of the
+Mikol\'as identity.  For $k=l=2$ it gives
+$1.6116088347766411574767490370097567940\ldots$, and for
+$k=l=3$ it gives
+$-6.9156089198900340833548806001936246246\ldots$.
+
+\paragraph{Source scope.}
+The classical product integral should be credited to the source
+literature; see, for example, Shpot--Chaudhary--Paris,
+\emph{Integrals of products of Hurwitz zeta functions and the Casimir
+effect in $\phi^4$ field theories}, arXiv:1603.00722v2, Remark~1,
+and its cited Mikol\'as sources.  That paper's Theorem~2 concerns the
+different ordinary integral of $\zeta(k,1+x)^2$.  The finite-part
+identity here is an explicit integer-resonance consequence with its
+coordinate correction proved.  No claim of exhaustive historical
+novelty is made.

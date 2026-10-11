@@ -1,0 +1,121 @@
+\section{Canonical integration by parts with endpoint constants}
+\label{poly:normalform}
+
+Let $\mathcal A=\Q[u_0,u_1,u_2,\ldots]$ and
+\[
+ \cD=\sum_{r\ge0}u_{r+1}\frac{\partial}{\partial u_r},\qquad
+ \wt(u_r)=r+1.
+\]
+Each polynomial uses finitely many variables. The weight-$w$ subspace
+$\mathcal A_w$ has dimension $p(w)$, the partition number.
+Let $\mathcal B_w$ consist of $u_0^w$ and all weight-$w$ monomials
+whose highest positive-index variable occurs at least twice.
+For $w=0$ use $\mathcal B_0=\{1\}$.
+
+\begin{theorem}[A triangular normal form at every weight]
+\label{poly:IBP}
+For every $w\ge2$ there is a direct sum
+\begin{equation}\label{poly:directsum}
+ \mathcal A_w=\cD\mathcal A_{w-1}\oplus
+                      \operatorname{span}_{\Q}\mathcal B_w.
+\end{equation}
+Every $P\in\mathcal A_w$ therefore has a unique decomposition
+$P=\cD Q+N$ with $Q\in\mathcal A_{w-1}$ and $N$ in the displayed normal space. In particular
+\begin{equation}\label{poly:dimension}
+ |\mathcal B_w|=p(w)-p(w-1)\quad(w\ge2).
+\end{equation}
+The quotient has dimension one at weights zero and one, so its
+Hilbert series is
+\begin{equation}\label{poly:Hilbert}
+ t+\prod_{j\ge2}(1-t^j)^{-1}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Suppose a monomial has highest variable $u_r$, $r\ge1$, occurring
+exactly once. Write it as $u_r u_{r-1}^a V$, where $V$ involves
+only $u_0,\ldots,u_{r-2}$. Then
+\begin{equation}\label{poly:IBPstep}
+ u_r u_{r-1}^aV=
+ \cD\left(\frac{u_{r-1}^{a+1}V}{a+1}\right)
+ -\frac{u_{r-1}^{a+1}\cD V}{a+1}.
+\end{equation}
+Every monomial in the last term has strictly smaller highest index.
+Iterating therefore terminates and proves that the two spaces span.
+
+For directness, let $Q$ be a nonconstant polynomial with highest
+variable $u_m$. The highest-index terms of $\cD Q$ are
+$u_{m+1}\partial Q/\partial u_m$, all with their highest variable
+occurring once. They cannot occur in a polynomial in the normal space.
+Since the characteristic is zero, $\partial Q/\partial u_m\ne0$.
+This also proves that $\cD$ is injective on every positive-weight
+subspace. Taking dimensions proves \eqref{poly:dimension}.
+The weight-zero kernel consists of constants, which explains the extra
+$t$ in \eqref{poly:Hilbert}.
+\end{proof}
+
+\begin{center}
+\small
+\begin{tabular}{ccl}
+\toprule
+Weight & Dimension & A canonical basis, with $u_r=\psi^{(r)}$\\
+\midrule
+2&1&$u_0^2$\\
+3&1&$u_0^3$\\
+4&2&$u_0^4,\ u_1^2$\\
+5&2&$u_0^5,\ u_0u_1^2$\\
+6&4&$u_0^6,\ u_0^2u_1^2,\ u_1^3,\ u_2^2$\\
+7&4&$u_0^7,\ u_0^3u_1^2,\ u_0u_1^3,\ u_0u_2^2$\\
+8&7&$u_0^8,\ u_0^4u_1^2,\ u_0^2u_1^3,\ u_1^4,
+ u_0^2u_2^2,\ u_1u_2^2,\ u_3^2$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{The endpoint map is part of the theorem}
+
+For a polynomial $Q$, define
+\begin{equation}\label{poly:endpoint}
+ E(Q)=f_Q(1)-[x^0]f_Q(x).
+\end{equation}
+Both terms are finite polynomial calculations. The values at one are
+$\psi(1)=-\gamma$ and
+$\psi^{(r)}(1)=(-1)^{r+1}r!\zeta(r+1)$ for $r\ge1$.
+The constant at zero is obtained from \eqref{poly:localpsi} with $n=0$;
+it is not obtained merely by multiplying the individual constant terms.
+
+\begin{corollary}[Exact finite-part integration by parts]
+\label{poly:endpointcor}
+For the normal decomposition $P=\cD Q+N$,
+\begin{equation}\label{poly:IBPintegral}
+ \boxed{\cI(P)=E(Q)+\cI(N).}
+\end{equation}
+For a common shift $a$ with $\re a>0$, the corresponding ordinary
+identity is
+\begin{equation}\label{poly:IBPshift}
+ \int_0^1f_P(a+x)\dd x
+ =f_Q(a+1)-f_Q(a)+\int_0^1f_N(a+x)\dd x.
+\end{equation}
+\end{corollary}
+\begin{proof}
+On $[\varepsilon,1]$ the integral of $f_{\cD Q}$ is
+$f_Q(1)-f_Q(\varepsilon)$. Extracting its original-coordinate
+finite part retains precisely $f_Q(1)-[x^0]f_Q(x)$.
+The shifted identity is the ordinary fundamental theorem of calculus.
+\end{proof}
+
+For example, $\cD(u_0u_1)=u_1^2+u_0u_2$, but
+\begin{equation}\label{poly:boundaryexample}
+ E(u_0u_1)=-\zeta(3),\qquad
+ \cI(u_1^2)+\cI(u_0u_2)=-\zeta(3).
+\end{equation}
+Likewise $E(u_1u_2)=4\zeta(5)$. These agree with all five bilinear
+specializations above. Dropping total derivatives would lose these
+constants and give a false relation.
+
+The dimension theorem answers the stated formal classification problem
+before imposing arithmetic identities among zeta coordinates.
+Its numerical image may have smaller dimension. For instance the
+$u_2^2$ coordinate at weight six already has the elementary zeta-derivative
+evaluation \eqref{poly:square}. Neither the formal normal form nor a
+failure to find further numerical relations proves arithmetic independence.

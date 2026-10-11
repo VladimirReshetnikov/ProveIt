@@ -1,0 +1,135 @@
+\section{Centered harmonic moments and the exact Bernoulli transform}
+\label{sec:tail-foundation}
+
+We restate the precise inherited moment formulas needed for the new
+determinant. This also makes the continuation independent of a
+choice of numerical regularization. Fix an even $q=2b\ge4$ and put
+\[
+ A_s(n)=\zeta(s)-H_n^{(s)}=\zeta(s,n+1),\qquad x_n=n+\frac12,
+\]
+\begin{equation}\label{eq:tail-Dirichlet}
+ D_{2,q}(s)=\sum_{n\ge0} A_2(n)A_q(n)x_n^{-s},
+ \qquad \re s>1-q.
+\end{equation}
+The displayed half-plane is the domain of absolute convergence.
+For later $s$, the notation means its unique meromorphic continuation.
+We write $D_r=D_{2,q}(-2r)$ for $r\ge0$.
+
+\subsection{Regularity at every required moment}
+
+The centered Hurwitz expansion, obtained from Euler--Maclaurin, is
+\begin{equation}\label{eq:centered-hurwitz-foundation}
+ A_s(n)\sim x_n^{1-s}\left\{
+ \frac1{s-1}+\sum_{h\ge1}
+    \frac{B_{2h}(1/2)(s)_{2h-1}}{(2h)!}x_n^{-2h}\right\}.
+\end{equation}
+Here $s$ in $A_s$ is a fixed positive even integer, and
+$(s)_k$ is the rising factorial. The vanishing of all odd
+$B_{2h+1}(1/2)$ explains the parity of this expansion.
+Consequently $A_2(n)A_q(n)$ has only powers $x_n^{-q-2h}$.
+Subtracting finitely many of them from \eqref{eq:tail-Dirichlet}
+continues the function to any prescribed left half-plane. Its only
+possible poles occur at $s=1-q-2h$, which are negative odd integers.
+Every $D_r$ is therefore regular.
+
+This argument also proves a useful operational rule. If $P$ is an
+even polynomial and $R$ is the nonnegative-power part of the
+asymptotic series for $P(x_n)A_2(n)A_q(n)$, then
+\begin{equation}\label{eq:ordinary-fp-foundation}
+ \sum_{n\ge0}\{P(x_n)A_2(n)A_q(n)-R(x_n)\}
+ =\sum_r [X^{2r}]P(X)\,D_r.
+\end{equation}
+The left series is absolutely convergent. Each subtracted monomial
+has continued sum $\zeta(-2h,1/2)=0$; this follows either from
+$\zeta(s,1/2)=(2^s-1)\zeta(s)$ or from the odd Bernoulli polynomial
+at $1/2$. Thus the analytic continuation and the explicitly subtracted
+ordinary sum have exactly the same constant.
+
+\subsection{The fixed formal coordinate system}
+
+Write decreasing-index multiple zeta values as
+\[
+ \zeta(a,c)=\sum_{n>m\ge1}\frac1{n^a m^c},\qquad a\ge2,\ c\ge1.
+\]
+Define the initial blocks by
+\begin{align}
+ C_0={}&\zeta(2,q-1)+\zeta(q,1)+\zeta(q+1),
+ \label{eq:C0-foundation}\\
+ C_j={}&\zeta(2,q-2j-1)+\frac12\zeta(q+1-2j)
+   +\frac1{2j}\sum_{h=1}^{j}\binom{2j}{2h}
+                  B_{2j-2h}\zeta(q-2h),
+ \quad 1\le j<b.\label{eq:Cinitial-foundation}
+\end{align}
+For $j\ge b$, define $C_j=\sum_{k=0}^{b-1}a_{jk}Z_k$, where
+\begin{equation}\label{eq:coordinates-foundation}
+ Z_0=\zeta(0)=-\frac12,\qquad Z_k=\zeta(2k)\quad(1\le k<b),
+\end{equation}
+and, with $d=2j+1$, $e=d-q+2k-1$,
+\begin{equation}\label{eq:entries-foundation}
+ a_{jk}=B_e\left\{
+ \frac{\binom{d-q+1}{2-2k}}{d-q+1}
+ +\frac{\binom{d-1}{q-2k}}{d-1}\right\}.
+\end{equation}
+A binomial summand in this formula is omitted unless its lower
+index is at least $2$ and no greater than its upper index.
+In particular the first summand occurs only when $k=0$.
+This is part of the formula, not a convention that may be replaced
+by $\binom u0=1$.
+
+\begin{proposition}[Inherited two-tail transform]
+\label{prop:tail-transform}
+For every $r,j\ge0$,
+\begin{align}
+ D_r&=\sum_{j=0}^r
+       \frac{\binom{2r}{2j}}{2j+1}B_{2r-2j}(1/2)C_j,
+       \label{eq:forward-foundation}\\
+ C_j&=\sum_{r=0}^j
+       \binom{2j+1}{2r}2^{-2(j-r)}D_r.
+       \label{eq:inverse-foundation}
+\end{align}
+Hence all moments lie in the rational span of the $q$ specified
+formal labels
+\[
+ C_0,\ldots,C_{b-1},\qquad Z_0,\ldots,Z_{b-1}.
+\]
+\end{proposition}
+
+These are the $p=2$ cases of the already proved two-tail formulas
+reproduced in \cite[Section 7]{CanonicalFifth}. We give their finite
+mechanism to fix the cutoffs and constants. Put
+\[
+ S_r(N)=\sum_{n=0}^{N-1}(n+1/2)^{2r}
+       =\sum_{j=0}^r\frac{\binom{2r}{2j}}{2j+1}
+                        B_{2r-2j}(1/2)N^{2j+1}.
+\]
+This is an odd polynomial with zero constant term. The exact identity
+$A_s(k-1)=A_s(k)+k^{-s}$ and finite summation by parts express $D_r$
+as the same linear combination of constant terms of
+\begin{align}\label{eq:finite-E-foundation}
+ E_d(N)={}&N^dA_2(N)A_q(N)
+ +\sum_{k=1}^N k^{d-q}A_2(k)
+ +\sum_{k=1}^N k^{d-2}A_q(k)
+ +\sum_{k=1}^N k^{d-q-2}.
+\end{align}
+The sign of the first term and the inclusive tail cutoff both
+matter. When $d<q$, the first ordered sum tends to
+$\zeta(2,q-d)$. For a positive integer exponent $m$, the exact reduction
+\begin{equation}\label{eq:finite-Faulhaber-foundation}
+ \sum_{k=1}^N k^m A_s(k)
+ =A_s(N)F_m(N)+\sum_{\ell=1}^N\frac{F_m(\ell-1)}{\ell^s},
+ \quad F_m(N)=\frac{B_{m+1}(N+1)-B_{m+1}}{m+1},
+\end{equation}
+reduces all remaining sums to finite Bernoulli polynomials and
+ordinary power sums. Their constant terms are
+\eqref{eq:C0-foundation}--\eqref{eq:entries-foundation}; at the
+transition $d=q+1$ the two $-\gamma/2$ contributions cancel the
+$+\gamma$ from the final harmonic sum in
+\eqref{eq:finite-E-foundation}. The remaining boundary products give
+the $Z_0$ column. This is the inherited finite coefficient calculation,
+not an assumption of arithmetic independence. Finally the standard
+Bernoulli generating identity inverts the odd-polynomial transform,
+giving \eqref{eq:inverse-foundation}.
+
+The existing report proves that a longer specified moment prefix
+has full formal rank. The next section determines the exact first-$q$
+minor for every $p=2$, without any numerical nonvanishing assumption.

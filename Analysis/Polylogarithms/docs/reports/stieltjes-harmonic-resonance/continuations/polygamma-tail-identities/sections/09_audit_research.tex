@@ -1,0 +1,203 @@
+\section{Source audit, proposed corrections, and further research}
+\label{audit:sec}
+
+\subsection{What the audit establishes}
+
+The repository was inspected at the revision on the title page.
+All six incoming ZIPs were unpacked with a path-safety check; their
+inventories, claim/status files, and relevant sections were read.
+The accompanying \texttt{incoming\_audit\_summary.json} records the
+archive names, SHA-256 digests, already covered results, and open
+questions.  This was a targeted mathematical audit of the claims
+used here, not a line-by-line certification of every theorem in the
+large source corpus.
+
+The source claims used most directly are the exact even-tail
+Bernoulli coordinates, the first-$q$ conjecture, the Gamma-quotient
+ordinary integral, the fifth-moment baseline, and the recorded
+Family--2 example.  The tail coefficient/operator conversion was
+checked independently; the new proof includes the column reversal
+and the omitted lower-index-zero convention.  The Gamma bridge
+was reproved with its Laurent normalization before it was used in
+the sixth moment.  The Family--2 equation was compared to its
+original right-hand side, not merely to a numerically similar
+simplification.
+
+\textbf{No new false theorem in the inherited material was established
+by this audit.}  Some incoming reports already correct signs,
+Stieltjes indexing, or expressibility claims in external papers.
+Those corrections are identified as inherited in the audit record;
+they are not counted as new findings here.
+
+\subsection{Concrete proposed source changes}
+
+\begin{enumerate}
+\item \textbf{Upgrade the Family--2 status.}
+In the canonical \texttt{chapters/04-depth.tex}, the equation labeled
+\texttt{double:eq:fam2-example} can be marked proved.
+Retain its original identity for continuity, add
+\eqref{bip:eq:family2-short} as its simplified form, and cite the
+two exact component evaluations \eqref{bip:eq:12}--\eqref{bip:eq:21}.
+The discovery by integer relation remains a useful historical note,
+but it is no longer the justification for that equation.
+
+\item \textbf{Refine the optimal-prefix conjecture.}
+In the incoming canonical fifth-moment report, retain
+\texttt{conj:firstq} for general unequal even orders.
+Record $p=q-2$ as a theorem with determinant
+\eqref{adj:determinant}; retain $p=q$ as the already proved source
+case and general gaps $q-p\ge4$ as open.
+This is an infinite-family resolution, not a complete proof of the
+original conjecture.
+
+\item \textbf{Attach the sixth calculation to the higher-moment agenda.}
+The new result \eqref{sixth:Q6} completes a specific sixth-power
+calculation in explicit convergent zeta-derivative coordinates.
+Its remaining arithmetic question is the reduction of $\Omega_5$.
+The generic all-power algorithm and the fifth calculation were
+already present and should retain their earlier attribution.
+
+\item \textbf{Cite the exact antecedents for two reusable methods.}
+The functional-monomial direct sum should cite
+\cite[Proposition~4.10]{Guo2014}; the bicolored parity implementation
+should cite Nakamura and Panzer \cite{bip:Nakamura2012,bip:Panzer2017}.
+The latter paper's footnote~16 identifies a transposed product in
+Nakamura's printed equation (1.3).  Our proof does not import that
+formula without rederivation.  This is an attribution and formula-use
+clarification, not an assertion that the supplied manuscript copied
+the misprint.
+
+\item \textbf{Preserve the precise meanings of ``finite part'' and ``rank''.}
+When importing the new results, keep the original-coordinate
+definition \eqref{scope:finitepart}, the local correction in the
+Hurwitz product section, and the formal coefficient-space qualifiers.
+A raw Laurent constant of the spectral kernel generally differs
+from the coordinate integral; $\NN$ is not multiplicative; and a
+formal rank computation does not prove arithmetic independence.
+These are explicit integration requirements for this article, not
+newly alleged errors in every prior use of those terms.
+\end{enumerate}
+
+\subsection{Research questions with concrete mathematical targets}
+
+The following agenda separates exact next calculations from genuine
+structural questions.  An answer should supply a proof, a fully stated
+functional identity, or an exact algebraic certificate.  A large
+precision search or a numerical rank alone would not settle the
+corresponding question.
+
+\paragraph{1. The first unresolved even-tail gap.}
+Prove or disprove the optimal first-$q$ conjecture for
+$q=p+4$, uniformly in $p$.  The adjacent-order proof uses one free
+formal coefficient and a sign-definite scalar recurrence.  The next
+gap produces a larger initial-data space.  The concrete target is a
+nonzero determinant formula for the associated finite block, perhaps
+through a matrix recurrence whose relevant minors have a controlled
+sign.  This would test whether the adjacent argument extends or
+depends essentially on second order.
+
+\paragraph{2. A determinant formula for arbitrary unequal orders.}
+For $p=2a,q=2b$, seek a closed factorization or a finite positive
+coefficient formula for the late Bernoulli matrix determinant.
+Any proposed expression must retain the source's omitted binomial
+terms and the centered cutoff.  A proof should also give the inverse
+map, thereby producing ordinary harmonic-tail identities in addition
+to a rank statement.
+
+\paragraph{3. Arithmetic structure of the adjacent determinant sequence.}
+The rational numbers $c_n$ have both a Bernoulli recurrence and the
+central-binomial representation \eqref{adj:detgenerator}.
+Determine an exact denominator formula, a useful integer
+renormalization, or a finite convolution identity for this sequence.
+The target is an arithmetic identity or recurrence with transparent
+integrality, rather than an asymptotic estimate.
+
+\paragraph{4. The next full Gamma coefficient sector.}
+Find the generating function for all functional monomials containing
+$u_2^2$ and arbitrary powers of $u_0,u_1$, including any terms
+coupled to $u_2^3$ by factor-degree parity.
+The ideal argument used for the complete $u_0,u_1$ sector suggests
+working modulo a precisely stated higher-derivative monomial ideal.
+Its preservation by the normal projection must be proved from the
+reduction rule; stability under $D$ by itself is insufficient.
+
+\paragraph{5. Higher sectors and a global normal-form generating function.}
+The centered generator contains only even derivative indices before
+normal reduction.  Can that symmetry be turned into a closed
+multivariable generating function for $\NN(\A_m)$, beyond the
+square and digamma--trigamma sectors?  An exact coefficient-extraction
+formula indexed by partitions would be useful even without a short
+elementary expression.
+
+\paragraph{6. Arithmetic reduction of the mixed sixth coordinate.}
+Determine whether $\Omega_5$ can be expressed in a prescribed
+algebra generated by the height-one $\lambda_d$, ordinary zeta
+derivatives, and lower mixed coordinates already appearing in the
+fifth moment.  Appendix~\ref{tables:omega-convergent} supplies a
+finite list of absolutely convergent MZV germs of depth at most three.
+This makes the question precise enough for a symbolic functional
+relation search.  Failure of a finite search would not prove
+nonmembership or independence.
+
+\paragraph{7. Complex-order functional relations before differentiation.}
+The preceding question is about derivatives in zeta orders, not only
+values at integral orders.  A parity identity known only for integer
+indices cannot be differentiated in an index without an analytic
+extension.  Seek functional equations for the required complex-order
+germs, prove their continuation and local regularity, and only then
+differentiate.  This is a specific way to avoid an unjustified
+``differentiate the MZV reduction'' step.
+
+\paragraph{8. Minimal spectral depth of higher moments.}
+The normal-form and residue theorems give an upper bound on the
+depth needed for the derivative-containing remainder of $Q_m$.
+Determine when that bound is attained after all proven functional
+relations are used.  First complete explicit seventh- and eighth-weight
+coordinate tables, then look for uniform cancellations.
+Distinguish the dimension of differential-polynomial normal forms,
+the rank of their harmonic residue maps, and the dimension of their
+actual period values; these are different problems.
+
+\paragraph{9. Generalized Stieltjes products at the missing derivative edge.}
+The finite generator in \eqref{hprod:stieltjes-family} treats every
+pair of positive argument-derivative orders.  Extend its manifestly
+holomorphic coefficient form to cases with one or both derivative
+orders zero, and prove compatibility with the incoming
+Stieltjes-collision formulas.  The extra spectral poles at order one
+must be subtracted jointly; blindly setting an integer parameter to
+one in the positive-order formula does not establish this extension.
+
+\paragraph{10. Exact cyclotomic identities in the complementary parity sector.}
+The bicolored theorem computes real parts in odd weight and imaginary
+parts in even weight.  The Gaussian $S_6$ and revised $S_8$ questions
+are not resolved by that mechanism.  Seek a genuinely additional
+relation: a proven depth-three reduction, an integral symmetry, or a
+specialization of a functional equation with a larger argument set.
+The precise definitions and corrected candidates in the current
+source should be retained; already rejected coefficient lists should
+not be recycled as conjectures.
+
+\paragraph{11. Antiderivatives and a specified function class.}
+The spectral theorem provides normally convergent anchored primitives
+for every derivative-containing differential polynomial.
+Which of these primitives reduce to a specified finite class of
+Gamma, Barnes, polylogarithm, and zeta-order-derivative functions?
+A useful first target is the primitive of $\psi^2\psi'^2$.
+Any nonexistence claim must name the allowed class and prove an
+obstruction within it; an unspecified notion of ``closed form''
+does not define a mathematical problem.
+
+\paragraph{12. Exact proof certificates for repository integration.}
+Turn the polynomial reductions, low-weight shuffle identities, and
+finite Bernoulli matrix conjugacies into machine-readable exact
+certificates.  The current scripts already separate rational
+identities from numerical diagnostics.  A next stage could check
+those certificates with an independent implementation or a proof
+assistant, while leaving analytic continuation and contour estimates
+as explicit lemmas with their assumptions stated.
+
+The most immediate next proof target is the $q-p=4$ tail determinant.
+The most immediate next arithmetic target is the convergent
+depth-three expression for $\Omega_5$.  Both have precise finite
+input data in this article, and both would produce exact identities
+of direct use to the existing manuscript.

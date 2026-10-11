@@ -1,0 +1,117 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{mathrsfs}
+\usepackage{microtype}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{xurl}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,
+ urlcolor=blue!45!black,pdftitle={Exact Polylogarithm Parity, Harmonic-Tail Reconstruction, and Higher Polygamma Moments},
+ pdfauthor={Research continuation for the ProveIt project}}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{1.1em}
+\setlist{itemsep=3pt,topsep=5pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\FP}{FP}
+\DeclareMathOperator{\CT}{CT}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\Shi}{Shi}
+\DeclareMathOperator{\Log}{Log}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\wt}{wt}
+\newcommand{\re}{\operatorname{Re}}
+\newcommand{\im}{\operatorname{Im}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\C}{\mathbb C}
+\newcommand{\A}{\mathcal A}
+\newcommand{\NN}{\mathcal N}
+\newcommand{\HH}{\mathcal H}
+\newcommand{\zv}[1]{\zeta(#1)}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Exact identities for the ProveIt project}
+\fancyhead[R]{\small October 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+
+\title{\textbf{Exact Polylogarithm Parity, Harmonic-Tail Reconstruction,\\
+and Higher Polygamma Moments}\\[5pt]
+\large Conjecture proofs, canonical reductions, spectral derivatives,\\
+and a source-level research audit}
+\author{Research continuation prepared for Vladimir Reshetnikov\\
+and the ProveIt project}
+\date{11 October 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+This article continues the current ProveIt polylogarithm manuscript and
+the six incoming reports at the pinned source revision specified below.
+We prove the optimal consecutive-moment conjecture for every pair of
+adjacent even harmonic-tail orders, with an explicit nonzero rational
+determinant.  An elementary implementation of established bicolored
+parity proves the recorded Gaussian Family--2 identity and supplies an
+all-weight family of ordinary logarithmic integrals.  For the Gamma
+differential hierarchy we derive all polygamma-square coefficients and
+a closed generating function for its complete digamma--trigamma sector.
+A residue-cancellation theorem converts every differential polynomial
+containing a polygamma derivative into an absolutely convergent
+Mittag--Leffler expansion, a normalized antiderivative, and convergent
+harmonic-zeta derivative coordinates.  These tools give an explicit
+sixth digamma moment and constructive higher-weight formulas.
+We also evaluate all integer-order quadratic Hurwitz finite parts and
+their spectral jets, and thereby all products of positive argument
+derivatives of generalized Stieltjes constants, keeping the original
+endpoint coordinate fixed.
+Classical antecedents, inherited results, new proofs, unresolved
+arithmetic reductions, and reproducibility evidence are distinguished
+throughout.  The remaining research questions emphasize exact
+identities and proof mechanisms rather than bounds.
+\end{abstract}
+
+\vspace{3pt}
+\noindent\textbf{Source baseline.}
+\texttt{VladimirReshetnikov/ProveIt}.\\
+Commit \texttt{f7e35be357654198c1546fd40f363694c5bcc2cc}.
+The audit covers the supplied manuscript and all six incoming ZIP
+inventories, with focused proof checks described in Section~\ref{audit:sec}.
+The accompanying archive contains source, exact algorithms, completed
+verification records, and integration notes.  No conjectured
+transcendence or independence is used in a proof.
+
+\clearpage
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+\input{sections/01_scope.tex}
+\input{sections/02_polylogarithms.tex}
+\input{sections/03_harmonic_tails.tex}
+\input{sections/04_gamma_normal_form.tex}
+\input{sections/05_gamma_sectors.tex}
+\input{sections/06_hurwitz_products.tex}
+\input{sections/07_spectral_polynomials.tex}
+\input{sections/08_sixth_moment.tex}
+\input{sections/09_audit_research.tex}
+\appendix
+\input{sections/10_tables.tex}
+\input{sections/11_reproducibility.tex}
+\input{references.tex}
+\end{document}

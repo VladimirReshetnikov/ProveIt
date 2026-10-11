@@ -1,0 +1,108 @@
+% Optional additive insertion. Requires amsmath/amssymb and the report citation.
+% This is a theorem summary, not a replacement for the report's proofs.
+\section{Completed multishift reflection and resonant spectral jets}
+\label{mrc-add:sec}
+The report \cite{multishift-reflection-2026} continues the independent-shift
+centered-reflection and spectral-jet questions in the incoming continuous-depth
+Lerch work. Let $g(p)=\pi/\sin(\pi p)$, with its logarithm real on $(0,1)$.
+For $\operatorname{Re}R>0$ and $\operatorname{Re}a_j>0$, put
+\[
+ \mathcal M_R(\boldsymbol s;\boldsymbol a)
+ =\frac1{2\pi i}\int_{c-i\infty}^{c+i\infty}
+ g(p)^R\prod_j(p+a_j-1)^{-s_j}\,dp,
+ \quad \max(0,1-\min_j\operatorname{Re}a_j)<c<1.
+\]
+It is entire in every order and holomorphic in every right-half-plane shift.
+
+\paragraph{Completed reflection, real-shift display.}
+For real $a_j>0$, initially excluding $a_j=1/2$, the centered integral
+must be supplemented by
+\begin{align*}
+ \mathcal M_R={}&\frac1{2\pi}\int_{\mathbb R}
+ \left(\frac\pi{\cosh\pi t}\right)^R
+ \prod_j(a_j-1/2+it)^{-s_j}\,dt\\
+ &+\frac1\pi\int_{1/2}^{\max_j(1-a_j)}
+ g(x)^R\sin\left(\pi\sum_{x<1-a_j}s_j\right)
+       \prod_j|x+a_j-1|^{-s_j}\,dx.
+\end{align*}
+The second integral is zero when its upper endpoint is at most $1/2$.
+Split at all branch points. For a coincident block $B$ to the right of
+$1/2$, the initial ordinary domain is
+$\operatorname{Re}\sum_{j\in B}s_j<1$. The complete sum then continues
+entirely in all orders and holomorphically through every collision.
+The full report gives the corresponding horizontal-cut formula for arbitrary
+complex shifts; cut heights can merge without an ordering ambiguity.
+
+\paragraph{Mixed logarithmic overlap.}
+Put $\ell_j=\log|x+a_j-1|$ and $\chi_j=\mathbf1_{x<1-a_j}$.
+At total zero order, every spectral jet is an ordinary logarithmic integral.
+The degree-three cut polynomial, divided by $\pi$, is
+\[
+ \chi_1\ell_2\ell_3+\chi_2\ell_1\ell_3+\chi_3\ell_1\ell_2
+       -\pi^2\chi_1\chi_2\chi_3.
+\]
+The final overlap term cannot be omitted. At common shift and depth two,
+the completed degree-$Q$ moment is $-Q\gamma_{Q-1}(a)$, for $Q\ge1$.
+For two shifts $b=a+h$, $a>0$, $|h|<a$, the completed bilogarithmic
+moment has the normally convergent expression
+\[
+ \Lambda_{2,(1,1)}(a,b)
+ =-2\gamma_1(a)+\sum_{k\ge1}(-h)^k
+  \left(\zeta^{[1]}(k+1,a)+\frac{\zeta(k+1,a)}k\right).
+\]
+The general mixed-jet formula uses unsigned Stirling coefficients and
+one anchor Stieltjes constant plus positive-integer Hurwitz-zeta jets.
+
+\paragraph{Integer contacts and Hermite reflection.}
+For positive integer orders $n_j$, $N=\sum_jn_j$, and
+$0<\operatorname{Re}a_j<1$,
+\[
+ \mathcal M_R(\boldsymbol n;\boldsymbol a)
+ -(-1)^N\mathcal M_R(\boldsymbol n;\boldsymbol1-\boldsymbol a)
+ =\sum_p\operatorname*{Res}_{z=p}
+          \left(g(z)^R\prod_j(z+a_j-1)^{-n_j}\right).
+\]
+The residues are confluent Hermite divided differences. Centering an
+integer pole contributes half its residue, in addition to its symmetric
+Hadamard finite part. In particular
+$\mathcal M_R(1;1/2)=\pi^R/2$, not zero.
+
+\paragraph{All centered spectral jets.}
+The entire alternating family is the continuation of
+\[
+ Z_R(v)=\frac1{\Gamma(v)}\int_0^\infty
+          t^{v-1}(2\cosh(t/2))^{-R}\,dt.
+\]
+For $F_R(w)=\mathcal M_R(w;1/2)$, set $L=\log(2\pi)$ and
+$C^{\rm o}_{R,m}=(-1)^m\pi(2\pi)^{R+2m-1}/(2m)!$.
+The first odd spectral derivative is
+\[
+ F_R^{[1]}(2m+1)=C^{\rm o}_{R,m}
+ \left((L+\gamma-H_{2m})Z_R(-2m)-Z_R^{[1]}(-2m)\right).
+\]
+Every higher odd or even derivative has an explicit finite Bell formula
+in the report. The necessary $Z_R$ derivatives are retained; discrete
+odd-value formulas alone do not determine them.
+
+\paragraph{Gamma--polylogarithm consequence.}
+Writing
+$G_R(x)=\Gamma(R/2+ix/(2\pi))\Gamma(R/2-ix/(2\pi))$, one has the entire
+spectral identity
+\begin{align*}
+ &\int_{\mathbb R}G_R(x)
+ \frac{\operatorname{Li}_s(ie^{-x/2})-
+       \operatorname{Li}_s(-ie^{-x/2})}{i}\,dx\\
+ &\qquad=8\Gamma(R)\pi^{s+1}\Gamma(1-s)
+                      \cos(\pi s/2)Z_{R+1}(1-s),
+\end{align*}
+with removable resonances. All fixed order and depth derivatives pass
+under the ordinary integral. At $R=1$ the value simplifies to
+$4\pi s(2-2^{-s})\zeta(s+1)$, giving explicit Stieltjes-valued order jets.
+
+\paragraph{Status.}
+These are proved representation and branch-completion statements, not
+claims of arithmetic minimality or global historical priority. The classical
+Gamma transform, prior anchor expansion, and one-shift hyperbolic Stieltjes
+formula are credited inputs. The Gaussian $S_6$ and revised $S_8$ candidates
+remain unresolved. The supplied numerical comparisons are not interval
+certificates, and no proof-assistant formalization is asserted.

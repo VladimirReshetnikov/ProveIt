@@ -1,0 +1,546 @@
+% Self-contained research section for integration into the parent article.
+% Requires amsmath, amssymb, amsthm; standard theorem environments.
+% Source target: ProveIt_Canonical_Digamma_Fifth_Moment_2026-10-11,
+% sections/09_questions.tex, Conjecture conj:firstq; its inherited matrix
+% normalization is sections/07_tail_rank.tex, equations tr:Aentries,
+% tr:column and tr:operator. No source files have been modified.
+
+\section{Optimal initial moments for adjacent even tail orders}
+\label{ar:section}
+
+The incoming canonical-digamma report \cite{Fifth} conjectures that the first $q$
+centered moments of two unequal even harmonic tails have full formal
+rank $q$ (its Conjecture~\texttt{conj:firstq}). That report proves the
+claim when the two orders coincide and gives a larger sufficient prefix
+for every unequal pair. We prove the conjectured optimal prefix for the
+entire next family
+\[
+                 (p,q)=(2b-2,2b),\qquad b\ge2.
+\]
+The proof also gives an exact determinant with a strictly positive
+rational recurrence. Thus the nonvanishing is an all-order theorem,
+independent of numerical experiments. The conjecture for general larger
+gaps remains open here.
+
+\subsection{The inherited coordinates and the exact target}
+
+For even integers $2\le p\le q=2b$, put
+\[
+ A_p(n)=\zeta(p)-H_n^{(p)},\qquad
+ D_{p,q}(s)=\sum_{n\ge0}
+     A_p(n)A_q(n)(n+\tfrac12)^{-s},\qquad
+ D_r=D_{p,q}(-2r).
+\]
+The series initially defines $D_{p,q}$ for
+$\Re s>3-p-q$; the notation $D_r$ uses its meromorphic continuation.
+The centered asymptotic series for the product of the two tails contains
+only even powers, so every point $s=-2r$ is regular. This regularity and
+the following finite coordinate formulas are inherited from the two-tail
+calculus, not additional conclusions of the rank argument.
+
+The source supplies blocks $C_j$ with mutually inverse transforms
+\begin{align}
+ D_r&=\sum_{j=0}^r
+    \frac{\binom{2r}{2j}}{2j+1}B_{2r-2j}(\tfrac12)C_j,
+       \label{ar:forward}\\
+ C_j&=\sum_{r=0}^j
+       \binom{2j+1}{2r}2^{-2(j-r)}D_r.
+       \label{ar:backward}
+\end{align}
+Here $B_n(x)$ is the Bernoulli polynomial and $B_n=B_n(0)$, with
+$B_1=-1/2$. The first $b$ blocks $C_0,\ldots,C_{b-1}$ are kept as
+specified coordinate labels. All subsequent blocks have the form
+\begin{equation}\label{ar:block}
+ C_j=\sum_{k=0}^{b-1}a_{jk}Z_k,\qquad
+ Z_k=\zeta(2k),\quad Z_0=-\tfrac12,\qquad j\ge b.
+\end{equation}
+For $d=2j+1$ and $e=d-p-q+2k+1$, the exact rational coefficients are
+\begin{equation}\label{ar:entries}
+ a_{jk}=\begin{cases}
+ B_e\left\{
+ \displaystyle\frac{\binom{d-q+1}{p-2k}}{d-q+1}
+ +\displaystyle\frac{\binom{d-p+1}{q-2k}}{d-p+1}
+ \right\},&e\ge0,\\[6pt]
+ 0,&e<0.
+ \end{cases}
+\end{equation}
+A binomial summand is omitted unless its lower index is at least two
+and no larger than its upper index. In particular a putative lower
+index zero is omitted. This endpoint convention is essential to the
+proof and to the determinant.
+
+We consider the $b\times b$ late-block matrix
+\begin{equation}\label{ar:M}
+ M_{p,q}=(a_{b+r-1,k})_{1\le r\le b,\ 0\le k<b}.
+\end{equation}
+The $2b\times2b$ coefficient matrix of
+$D_0,\ldots,D_{2b-1}$ on the formal labels
+\[
+           C_0,\ldots,C_{b-1},Z_0,\ldots,Z_{b-1}
+\]
+is nonsingular exactly when $M_{p,q}$ is nonsingular. Indeed the
+corresponding block matrix for $C_0,\ldots,C_{2b-1}$ is
+$\operatorname{diag}(I_b,M_{p,q})$, and the transform
+\eqref{ar:forward} is triangular with nonzero diagonal
+$1/(2r+1)$. These are formal ranks over $\mathbb Q$; they imply
+generation statements for the actual values without asserting their
+arithmetic independence.
+
+\subsection{A positive recurrence and the determinant}
+
+Define positive rational numbers
+\begin{equation}\label{ar:alpha}
+ \alpha_n=\frac{2|B_{2n}|}{(2n)!}
+         =\frac{4\zeta(2n)}{(2\pi)^{2n}},\qquad n\ge1.
+\end{equation}
+The equality follows from Euler's evaluation of even zeta values and
+establishes positivity at every index. Define $\rho_1=1$ and, for $r\ge1$,
+\begin{equation}\label{ar:rho}
+ \rho_{r+1}=
+ \frac{1}{4(2r+1)^2}
+ \sum_{s=1}^r\alpha_{r+1-s}
+  \left\{2r(2r+1)
+       +\mathbf1_{s\ge2}\,2s(2s-1)\right\}\rho_s.
+\end{equation}
+Every coefficient in this recurrence is strictly positive. In particular
+$\rho_s>0$ for every $s$. The beginning is
+\[
+ \rho_1=1,\qquad \rho_2=\frac1{36},\qquad
+ \rho_3=\frac{11}{5400},\qquad
+ \rho_4=\frac{113}{705600},\qquad
+ \rho_5=\frac{2509}{190512000}.
+\]
+
+\begin{theorem}[The optimal prefix for adjacent even orders]
+\label{ar:main}
+For $q=2b\ge4$ and $p=q-2$, the matrix in \eqref{ar:M} has determinant
+\begin{equation}\label{ar:det}
+ \boxed{\displaystyle
+ \det M_{q-2,q}
+ =\frac{(-1)^{b(b-1)/2}}{b!}
+       \bigl((2b+1)!!\bigr)^2\rho_{b+1}\ne0.}
+\end{equation}
+Consequently the first $q$ moments $D_0,\ldots,D_{q-1}$ have full
+formal rank $q$, and
+\begin{equation}\label{ar:spans}
+ \operatorname{span}_{\mathbb Q}\{D_0,D_1,\ldots\}
+ =\operatorname{span}_{\mathbb Q}\{D_0,\ldots,D_{q-1}\}
+ =\operatorname{span}_{\mathbb Q}
+     \{C_0,\ldots,C_{b-1},Z_0,\ldots,Z_{b-1}\}.
+\end{equation}
+The complete first-$q$ moment matrix, in the displayed coordinate order,
+has determinant
+\begin{equation}\label{ar:complete}
+ \frac{(-1)^{b(b-1)/2}\bigl((2b+1)!!\bigr)^2\rho_{b+1}}
+      {b!\,(4b-1)!!}.
+\end{equation}
+No prefix of fewer than $q$ rows can have rank $q$ on these $q$ formal
+labels, so the prefix length is optimal in this specified formal system.
+\end{theorem}
+
+\subsection{Proof by rotation of the local differential equation}
+
+We reproduce the source's differential description so that the argument
+can be checked directly against \eqref{ar:entries}. Put $h(t)=\coth(t/2)$.
+For $0\le k<b$, define the analytic germs
+\begin{align}
+ f_k(t)={}&\frac{1}{2(p-2k)!(q-1)!}
+      \int_0^t u^{p-2k}(t-u)^{q-1}h(u)\,du\notag\\
+ &+\frac{1}{2(q-2k)!(p-1)!}
+      \int_0^t u^{q-2k}(t-u)^{p-1}h(u)\,du.
+ \label{ar:column}
+\end{align}
+The first summand is omitted when $p-2k<2$. All included integrands
+are regular at $u=0$. Their power series converge in $|t|<2\pi$.
+Expanding
+\[
+        h(u)=2\sum_{n\ge0}\frac{B_{2n}}{(2n)!}u^{2n-1}
+\]
+and integrating monomials shows that the coefficient of
+$t^{2j+1}/(2j+1)!$ in $f_k$ is precisely $a_{jk}$ for $j\ge b$.
+
+For $v=(v_0,\ldots,v_{b-1})$ set
+\[
+ f_v=\sum_{k=0}^{b-1}v_kf_k,
+ \qquad Q(t)=\sum_{k=0}^{b-1}v_k\frac{t^{q-2k}}{(q-2k)!}.
+\]
+When $p=q-2$, differentiating \eqref{ar:column} $q$ times gives
+\begin{equation}\label{ar:operator}
+ 2f_v^{(q)}(t)
+    =\bigl(Q''(t)-Q''(0)\bigr)h(t)+(Q(t)h(t))''
+    =:\mathcal L_Q(t).
+\end{equation}
+The subtracted constant removes exactly the omitted lower-index-zero
+term. Each side is an odd analytic germ at zero.
+
+Rotate $t=ix$, put
+\[
+ R(x)=Q(ix)=\sum_{s=1}^b r_sx^{2s},\qquad
+ r_s=\frac{(-1)^s}{(2s)!}v_{b-s},
+ \qquad c(x)=\cot(x/2).
+\]
+Because $h(ix)=-ic(x)$ and two differentiations contribute a factor
+$-1$, \eqref{ar:operator} gives
+\begin{equation}\label{ar:rotated}
+ \mathcal L_Q(ix)=i\bigl((R''-R''(0))c+(Rc)''\bigr).
+\end{equation}
+The benefit of this rotation is the one-sided coefficient expansion
+\begin{equation}\label{ar:cot}
+ c(x)=\frac2x-\sum_{n\ge1}\alpha_nx^{2n-1},\qquad |x|<2\pi,
+\end{equation}
+where every $\alpha_n$ is positive.
+
+Let $Y_r$ be the ordinary coefficient of $x^{2r-1}$ in the bracket
+on the right of \eqref{ar:rotated}. Write $r_{b+1}=0$ because $R$
+has degree at most $2b$. Direct differentiation of the monomials in
+\eqref{ar:cot} gives, for $1\le r\le b$,
+\begin{equation}\label{ar:coefficient}
+ Y_r=d_{r+1}r_{r+1}-\sum_{s=1}^r w_{rs}r_s,
+\end{equation}
+where
+\begin{equation}\label{ar:weights}
+ d_{r+1}=4(2r+1)^2,\qquad
+ w_{rs}=\alpha_{r+1-s}
+  \left\{2r(2r+1)+\mathbf1_{s\ge2}\,2s(2s-1)\right\}>0.
+\end{equation}
+For clarity, the coefficient supplied by $2/x$ and $r_sx^{2s}$,
+$s\ge2$, is
+\[
+ 2\{(2s)(2s-1)+(2s-1)(2s-2)\}r_s
+       =4(2s-1)^2r_s.
+\]
+For $s=1$, the first differentiation term is removed by $R''(0)$,
+while the second is the second derivative of a linear monomial and
+vanishes. This explains both the superdiagonal $d_{r+1}$ and the
+exceptional indicator in \eqref{ar:weights}.
+
+Suppose first that $M_{q-2,q}v=0$. The first $b$ odd coefficients
+of $\mathcal L_Q$ vanish, hence $Y_1=\cdots=Y_b=0$.
+The first $b-1$ equations in \eqref{ar:coefficient} force
+\[
+                   r_s=\rho_sr_1,\qquad 1\le s\le b.
+\]
+The last equation, using $r_{b+1}=0$, then gives
+\[
+           0=-\sum_{s=1}^bw_{bs}\rho_sr_1
+             =-d_{b+1}\rho_{b+1}r_1.
+\]
+All factors preceding $r_1$ are nonzero. Therefore $r_1=0$, then
+$R=Q=0$ and $v=0$. This already proves nonsingularity over
+$\mathbb C$, and therefore over $\mathbb Q$.
+
+To retain the exact determinant, let $H_b$ be the matrix of
+\eqref{ar:coefficient} from $(r_1,\ldots,r_b)$ to
+$(Y_1,\ldots,Y_b)$. Replace its first column basis vector by
+$(\rho_1,\ldots,\rho_b)^{\mathsf T}$, leaving the others fixed.
+The basis change has determinant one. Its first column image has
+only the final entry $-d_{b+1}\rho_{b+1}$. The first $b-1$ rows
+on columns $2,\ldots,b$ form a lower triangular matrix with diagonal
+$d_2,\ldots,d_b$. Expansion along the first column yields
+\begin{equation}\label{ar:Hdet}
+ \det H_b=(-1)^b\rho_{b+1}\prod_{s=2}^{b+1}d_s
+    =(-1)^b4^b\bigl((2b+1)!!\bigr)^2\rho_{b+1}.
+\end{equation}
+On the other hand, coefficient comparison in \eqref{ar:rotated}
+and \eqref{ar:operator} gives
+\begin{equation}\label{ar:scalings}
+ Y_r=\frac{2(-1)^{r-1}}{(2r-1)!}(M_{q-2,q}v)_r,
+ \qquad r_s=\frac{(-1)^s}{(2s)!}v_{b-s}.
+\end{equation}
+The reversal of the $b$ columns has determinant
+$(-1)^{b(b-1)/2}$. Combining the diagonal factors in
+\eqref{ar:scalings} gives
+\[
+ \det M_{q-2,q}
+     =\frac{(-1)^{b(b+1)/2}}{4^bb!}\det H_b.
+\]
+Substitute \eqref{ar:Hdet}; the resulting sign is
+$(-1)^{b(b-1)/2}$, proving \eqref{ar:det}.
+The block decomposition and triangular transform preceding the theorem
+prove \eqref{ar:spans} and \eqref{ar:complete}.
+
+\subsection{Explicit reconstruction without matrix inversion}
+
+The same positive recurrence supplies an exact reconstruction algorithm.
+Given $C_b,\ldots,C_{2b-1}$, define
+\[
+            Y_r=\frac{2(-1)^{r-1}}{(2r-1)!}C_{b+r-1},
+                       \qquad 1\le r\le b.
+\]
+Put $\eta_1=0$ and compute, for $1\le r<b$,
+\begin{equation}\label{ar:eta}
+       \eta_{r+1}=\frac{Y_r+\sum_{s=1}^rw_{rs}\eta_s}{d_{r+1}}.
+\end{equation}
+Then
+\begin{equation}\label{ar:reconstruct}
+ \begin{split}
+ r_1&=-\frac{Y_b+\sum_{s=1}^bw_{bs}\eta_s}
+                  {d_{b+1}\rho_{b+1}},\\
+ r_s&=\rho_sr_1+\eta_s\quad(1\le s\le b),\\
+ Z_k&=(-1)^{b-k}(2b-2k)!\,r_{b-k}\quad(0\le k<b).
+ \end{split}
+\end{equation}
+The equations follow by writing the solution of
+\eqref{ar:coefficient} as $r_s=\rho_sr_1+\eta_s$, then using
+the final row. The denominator in \eqref{ar:reconstruct} is strictly
+positive by the theorem. Equations \eqref{ar:backward} and
+\eqref{ar:reconstruct} express every $Z_k$ as an explicit rational
+linear combination of the first $q$ moments. Substitution into
+\eqref{ar:block} and \eqref{ar:forward} recovers every later moment.
+
+For illustration, the first five late-block determinants are
+\[
+ \begin{array}{c|ccccc}
+ (p,q)&(2,4)&(4,6)&(6,8)&(8,10)&(10,12)\\\hline
+ \det M_{p,q}&-11/48&-113/384&2509/5120&309713/307200&-7097067/2867200.
+ \end{array}
+\]
+Their nontrivial numerators now have an exact origin in the positive
+recurrence \eqref{ar:rho}. Finite rational checks verify these examples,
+the general determinant formula through the supplied test range, the
+rotation factors, and the reconstruction algorithm. The infinite proof
+is the coefficient argument above, not the finite check.
+
+\subsection{An infinite family of ordinary rational evaluations}
+
+The reconstruction has an arithmetic consequence at every adjacent pair,
+not just at the example printed below. Let $q=2b$, $p=q-2$, and denote
+the first row of $M_{p,q}^{-1}$ by $(\lambda_b,\ldots,\lambda_{q-1})$.
+These rational coefficients are explicitly computed by
+\eqref{ar:eta}--\eqref{ar:reconstruct}. Define
+\begin{equation}\label{ar:all-weights}
+ w_r=\sum_{j=\max\{b,r\}}^{q-1}
+     \lambda_j\binom{2j+1}{2r}2^{-2(j-r)},\qquad
+ P_b(x)=\sum_{r=0}^{q-1}w_rx^{2r}.
+\end{equation}
+Put
+\[
+ u_0=\frac1{(p-1)(q-1)},\qquad
+ u_1=-\frac1{24}\left(\frac q{p-1}+\frac p{q-1}\right).
+\]
+
+\begin{corollary}[Rational evaluations from every adjacent pair]
+\label{ar:all-rational}
+For every even $q\ge4$, with $p=q-2$ and $x_n=n+1/2$,
+\begin{equation}\label{ar:all-ordinary}
+ \begin{split}
+ \sum_{n=0}^{\infty}\bigg\{
+ &\frac{P_b(x_n)}{(p-1)!(q-1)!}
+       \psi^{(p-1)}(n+1)\psi^{(q-1)}(n+1)\\
+ &-u_0w_{q-1}x_n^2
+      -u_0w_{q-2}-u_1w_{q-1}\bigg\}=-\frac12.
+ \end{split}
+\end{equation}
+The series is absolutely convergent. Its polynomial has exact degree
+$2q-2$, since
+\begin{equation}\label{ar:top-weight}
+       w_{q-1}
+       =\frac{b(4b-1)\rho_b}{(2b+1)^2\rho_{b+1}}>0.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+By the defining inverse row, $\sum_{j=b}^{q-1}\lambda_jC_j=Z_0=-1/2$.
+The inverse Bernoulli transform \eqref{ar:backward} then gives
+$\sum_{r=0}^{q-1}w_rD_r=-1/2$.
+For centered $x=n+1/2$, the two leading terms of the tail product are
+\[
+                 A_p(n)A_q(n)=u_0x^{2-p-q}+u_1x^{-p-q}
+                                  +O(x^{-p-q-2}).
+\]
+Because $p+q=2q-2$, multiplication by $P_b$ leaves precisely the
+quadratic and constant terms subtracted in \eqref{ar:all-ordinary}.
+The remainder is $O(x^{-2})$. Both subtracted terms have continued
+centered sum zero, so the convergent series equals the specified moment
+combination. The polygamma normalization follows from the two even
+orders. Finally the coefficient of $C_{q-1}$ in the reconstruction
+of $Z_0$ is $b\rho_b/((2b+1)^2\rho_{b+1})$, as follows directly
+from the last row of \eqref{ar:reconstruct}. Multiplication by
+$\binom{2q-1}{2q-2}=2q-1=4b-1$ proves \eqref{ar:top-weight}.
+\end{proof}
+
+\subsection{A convergent rational polygamma identity at orders four and six}
+
+The first nontrivial new adjacent example after $(2,4)$ is $(4,6)$.
+In this case \eqref{ar:entries} and the exact reconstruction give
+\begin{equation}\label{ar:46matrix}
+ \begin{pmatrix}C_3\\C_4\\C_5\end{pmatrix}
+ =\begin{pmatrix}
+ 0&3/4&1/4\\5/12&2/3&-1/12\\1&-3/8&1/12
+ \end{pmatrix}
+ \begin{pmatrix}-1/2\\\zeta(2)\\\zeta(4)\end{pmatrix},
+\end{equation}
+and the inverse matrix is
+\[
+ \frac1{339}
+ \begin{pmatrix}-28&180&264\\136&288&-120\\948&-864&360\end{pmatrix}.
+\]
+The first row, followed by \eqref{ar:backward}, yields
+\begin{equation}\label{ar:46moment}
+ 67D_0+15516D_1+324320D_2+1434496D_3
+       +1601280D_4+371712D_5=-21696.
+\end{equation}
+This has an ordinary, absolutely convergent realization. Put
+\[
+ \begin{split}
+ P(x)={}&67+15516x^2+324320x^4+1434496x^6\\
+        &+1601280x^8+371712x^{10},\qquad x_n=n+\tfrac12.
+ \end{split}
+\]
+Then
+\begin{equation}\label{ar:46ordinary}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}\left\{
+  \frac{P(x_n)}{720}\psi^{(3)}(n+1)\psi^{(5)}(n+1)
+       -\frac{123904}{5}x_n^2-\frac{316928}{5}\right\}=-21696.}
+\end{equation}
+To check the subtraction and the meaning of this identity, the centered
+Hurwitz expansion gives
+\[
+ A_4(n)A_6(n)
+   =\frac1{15}x_n^{-8}-\frac7{60}x_n^{-10}+O(x_n^{-12}).
+\]
+Multiplication by $P$ leaves precisely the two nonnegative powers
+displayed in \eqref{ar:46ordinary}; the remaining bracket is
+$O(x_n^{-2})$. Their continued centered sums are zero because
+$\zeta(-2,1/2)=\zeta(0,1/2)=0$. Thus the absolutely convergent
+sum equals the meromorphically continued moment combination in
+\eqref{ar:46moment}. Finally
+$A_4(n)=\psi^{(3)}(n+1)/6$ and
+$A_6(n)=\psi^{(5)}(n+1)/120$, explaining the factor $720$.
+Every summand is an ordinary real number; no finite-part instruction
+remains in \eqref{ar:46ordinary}.
+
+There is also a finite telescoping proof of \eqref{ar:46ordinary}
+which is independent of the continued-moment formulas. Define
+\begin{align*}
+ K(N)&=-3584N^7+23040N^9+33792N^{11},\\
+ P_4(N)&=128N(N+1)
+       (44N^4+88N^3+67N^2+23N-14),\\
+ P_6(N)&=128N^3(N+1)^3(33N^2+33N-14),\\
+ R_0(N)&=-\frac{74624}{15}N^3+4928N^2-\frac{244288}{15}N.
+\end{align*}
+Put
+\[
+ \mathcal F(N)=K(N)A_4(N)A_6(N)
+      +P_4(N)A_4(N)+P_6(N)A_6(N)+R_0(N).
+\]
+The identities $A_p(N-1)=A_p(N)+N^{-p}$, together with direct
+polynomial multiplication, give
+\begin{equation}\label{ar:46telescoping}
+ \mathcal F(N)-\mathcal F(N-1)
+  =P(N-\tfrac12)A_4(N-1)A_6(N-1)
+      -\frac{123904}{5}(N-\tfrac12)^2-\frac{316928}{5}.
+\end{equation}
+This equality is a rational-function identity in $N$ and in two
+indeterminates replacing $A_4(N)$ and $A_6(N)$; no zeta relation is
+used to verify it. Since $\mathcal F(0)=0$, the partial sum of
+\eqref{ar:46ordinary} through $n=N-1$ is exactly $\mathcal F(N)$.
+The standard uncentered Hurwitz expansions
+\[
+ \begin{split}
+ A_4(N)&=\frac1{3N^3}-\frac1{2N^4}+\frac1{3N^5}+O(N^{-7}),\\
+ A_6(N)&=\frac1{5N^5}-\frac1{2N^6}+\frac1{2N^7}+O(N^{-9})
+ \end{split}
+\]
+give $\mathcal F(N)=-21696+O(N^{-1})$. All positive powers
+cancel; the constant contributions from $KA_4A_6$, $P_4A_4$, and
+$P_6A_6$ are respectively $-20224$, $-448$, and $-1024$.
+This proves the evaluation by an independent finite identity followed
+by an elementary asymptotic limit.
+
+\paragraph{Scope.}
+This proves the source conjecture for two infinite classes: the source's
+diagonal class and the new adjacent-order class. The phrase ``optimal
+prefix'' refers to the formal coordinate presentation; it does not
+prove that $q$ actual numerical constants are independent. For larger
+gaps the rotated equation has several free initial coefficients.
+Positivity of its scalar recurrence alone does not establish
+nonsingularity of the resulting multi-column boundary matrix. That
+remaining distinction is essential and prevents an unsupported
+extension of the present theorem to all unequal pairs.
+
+% Optional continuation after adjacent_tail_prefix.tex. All labels ar:.
+\subsection{A smaller boundary determinant for a fixed gap}
+\label{ar:general-gap}
+
+The rotation argument has a useful exact extension even though it does
+not settle the complete unequal-order conjecture. Write
+$q=2b$, $p=2(b-c)$, with $1\le c<b$, so the differential order in
+the source operator is $m=2c$. For integers $s\ge c+1$ put
+\[
+ A_s=\frac{(2s)!}{(2s-2c)!},\qquad
+ B_s=\frac{(2s-1)!}{(2s-2c-1)!},\qquad
+ d_s=2(A_s+B_s),
+\]
+and put $A_s=0$ for $1\le s\le c$. Define $c$ fundamental rational
+sequences by
+\begin{align}
+ R_{s,j}&=\delta_{sj},&&1\le s,j\le c,\notag\\
+ R_{s,j}&=\frac1{d_s}\sum_{u=1}^{s-1}
+       \alpha_{s-u}(B_s+A_u)R_{u,j},
+       &&s\ge c+1,\quad 1\le j\le c.
+       \label{ar:fundamental}
+\end{align}
+Every generated entry $R_{s,j}$ is strictly positive. The relevant
+boundary matrix has size $c$, independent of $b$:
+\[
+             F_{b,c}=(R_{b+i,j})_{1\le i,j\le c}.
+\]
+
+\begin{proposition}[Fixed-gap boundary reduction]\label{ar:gap-det}
+In the normalization \eqref{ar:M},
+\begin{equation}\label{ar:gap-factor}
+ \det M_{2(b-c),2b}
+  =\frac{(-1)^{b(b-1)/2}}{4^bb!}
+       \left(\prod_{s=c+1}^{b+c}d_s\right)\det F_{b,c}.
+\end{equation}
+In particular the optimal-prefix conjecture for a given gap $2c$
+is equivalent to $\det F_{b,c}\ne0$ for every integer $b>c$.
+When $c=1$, $R_{s,1}=\rho_s$ and this is
+Theorem~\ref{ar:main}.
+\end{proposition}
+
+\begin{proof}
+For $R(x)=Q(ix)=\sum r_sx^{2s}$, rotate the source operator to
+\[
+ \bigl(R^{(2c)}-R^{(2c)}(0)\bigr)\cot(x/2)
+        +(R\cot(x/2))^{(2c)}.
+\]
+The coefficient of $x^{2k-1}$, with $s=k+c$, is
+\begin{equation}\label{ar:general-coefficient}
+       d_sr_s-\sum_{u=1}^{s-1}\alpha_{s-u}(B_s+A_u)r_u.
+\end{equation}
+The pole $2/x$ gives $d_s$; every other cotangent coefficient has
+the negative sign in \eqref{ar:cot}. The constant derivative
+subtraction again makes $A_c=0$, and all lower derivatives already
+vanish. This proves the displayed coefficient formula.
+
+The first $b-c$ vanishing rows successively determine
+$r_{c+1},\ldots,r_b$ from $r_1,\ldots,r_c$ by
+\eqref{ar:fundamental}. The remaining $c$ rows, with
+$r_{b+1}=\cdots=r_{b+c}=0$, are equivalent to the vanishing of
+the boundary coordinates $F_{b,c}(r_1,\ldots,r_c)^{\mathsf T}$.
+For the determinant, the first elimination contributes
+$\prod_{s=c+1}^bd_s$. The remaining boundary block differs from
+$-\operatorname{diag}(d_{b+1},\ldots,d_{b+c})F_{b,c}$ by a
+unit lower triangular row transformation; its determinant is
+$(-1)^c\prod_{s=b+1}^{b+c}d_s\det F_{b,c}$.
+Moving the $c$ initial columns past the other $b-c$ columns contributes
+$(-1)^{c(b-c)}$.
+
+Finally, the rotation gives the row factor
+$2(-1)^{r-c}/(2r-1)!$ and the same reversed column factors
+$(-1)^s/(2s)!$ as before. The resulting conversion from the
+coefficient matrix in \eqref{ar:general-coefficient} to $M$ has
+factor $(-1)^{b(b-1)/2+bc}/(4^bb!)$. All additional signs multiply
+to $(-1)^{c(1-c)}=1$, proving \eqref{ar:gap-factor}.
+\end{proof}
+
+The positivity of all individual entries in \eqref{ar:fundamental}
+does not prove the determinant nonzero. There is not even a uniform
+positive determinant sign for every fixed gap: exact evaluation at
+$c=3$ gives $\det F_{6,3}<0$ and $\det F_{7,3}>0$. Both are nonzero.
+The remaining research question is therefore a genuine boundary
+determinant problem, rather than a direct extension of the one-dimensional
+positivity proof.

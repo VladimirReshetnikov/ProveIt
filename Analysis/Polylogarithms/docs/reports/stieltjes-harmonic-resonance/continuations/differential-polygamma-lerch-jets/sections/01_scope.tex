@@ -1,0 +1,99 @@
+\section{Research targets and conventions}
+\label{poly:scope}
+
+The newest incoming reports make the next exact questions unusually
+specific. The higher-digamma report asks for a calculus of arbitrary
+differential polynomials, for common shifted endpoints, and for explicit
+sixth and seventh moments \cite{Higher}. The canonical fifth-moment report
+asks which differential monomials survive integration by parts, with the
+finite endpoint value retained, and conjectures that an optimal initial
+set of harmonic-tail moments has full formal rank \cite{Fifth}.
+The continuous-depth report asks for spectral derivatives at its odd
+evaluation lattice \cite{Continuous}. These are the principal targets here.
+
+The normalized Mittag--Leffler expansion for scalar powers, the
+height-one Gamma integral, the centered Lerch reflection, and the original
+two-tail moment formulas are antecedents. We reproduce the parts needed
+to fix conventions and then prove their extensions. This distinction is
+important because the repository already contains several independently
+derived versions of related calculations \cite{Repo,Mixed,Tilted,Algebraic}.
+The present audit is targeted, not an audit of every analytic assertion in
+the collection.
+
+\begin{center}
+\small
+\begin{tabular}{p{0.27\textwidth}p{0.62\textwidth}}
+\toprule
+Source question & Result and remaining scope\\
+\midrule
+Differential-polynomial moments & A complete residue and finite-part
+theorem, with a finite reduction to convergent zeta coordinates for every
+mixed monomial.\\[4pt]
+Integration by parts at all weights & An explicit direct-sum normal form;
+its dimension is a formal algebraic dimension, not independence of
+the resulting numbers.\\[4pt]
+Higher scalar Gamma normalization & Only the highest height-one Laurent
+coordinate is singular; all remaining coordinates have convergent
+representatives. Arithmetic reduction of those coordinates remains a
+separate question.\\[4pt]
+Odd-lattice Lerch spectral jets & Every order and mixed depth derivative,
+with explicit local Gamma coefficients and convergent spectral evaluators.\\[4pt]
+Optimal initial tail moments & Proved for all neighboring even orders
+$p=q-2$. Arbitrary even gaps remain open.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Functions, finite parts, and spectral conventions}
+
+Write $\psi=\Gamma'/\Gamma$ and $\psi^{(r)}=\dd^r\psi/\dd x^r$,
+with $\psi^{(0)}=\psi$. Let
+\[
+ H_n^{(r)}=\sum_{k=1}^n k^{-r},\qquad H_n=H_n^{(1)},\qquad
+ A_r(n)=\zeta(r)-H_n^{(r)}\quad(r\ge2).
+\]
+The empty sum is zero. A strict word has the convention
+\[
+ H_n(w_1,\ldots,w_d)=
+ \sum_{n\ge k_1>\cdots>k_d\ge1}\prod_{j=1}^d k_j^{-w_j},
+ \qquad H_n(\varnothing)=1.
+\]
+For convergent arguments, $Z(s_1,\ldots,s_d)$ is the corresponding
+infinite strict multiple-zeta series. A derivative $\partial_j Z$
+means differentiation in its $j$th spectral argument; its summand contains
+$-\log k_j$. Classical definitions and normalizations of Gamma, Hurwitz
+zeta, and Lerch's transcendent are those of the DLMF
+\cite{DLMFGamma,DLMFZeta,DLMFLerch}.
+
+The Stieltjes convention is
+\begin{equation}\label{poly:stieltjes}
+ \zeta(1+s,a)=\frac1s+
+ \sum_{j\ge0}\frac{(-1)^j}{j!}\gamma_j(a)s^j,
+ \qquad \re a>0.
+\end{equation}
+We write $\gamma_j=\gamma_j(1)$ and $\gamma=\gamma_0$.
+The notation $[s]F(s)$ denotes a Laurent coefficient. It agrees with
+$F'(0)$ only when $F$ is holomorphic at zero.
+
+Suppose $f(x)=\sum_{j=1}^M p_jx^{-j}+O(1)$ near $0$. Our finite part is
+\begin{equation}\label{poly:fp}
+ \FP\int_0^1f(x)\dd x=
+ \lim_{\varepsilon\downarrow0}
+ \left\{\int_\varepsilon^1f(x)\dd x
+ -\sum_{j=2}^M\frac{p_j\varepsilon^{1-j}}{j-1}
+ +p_1\log\varepsilon\right\}.
+\end{equation}
+The coordinate is exactly $x$ and the upper endpoint exactly $1$.
+Every finite-part statement below uses this definition. Normalized
+primitives use principal logarithms on $\C\setminus(-\infty,0]$.
+
+For a polynomial $P\in\C[u_0,u_1,\ldots,u_R]$, set
+\begin{align*}
+ f_P(x)&=P(\psi(x),\psi'(x),\ldots,\psi^{(R)}(x)),&
+ \phi_P(Y)&=P(Y,0,\ldots,0),\\
+ \cI(P)&=\FP\int_0^1f_P(x)\dd x.
+\end{align*}
+We call $P$ mixed when $\phi_P=0$. This is a precise algebraic condition:
+each of its monomials contains at least one $u_r$ with $r\ge1$.
+The word does not assert that the associated numerical periods are
+independent. Give $u_r$ differential weight $r+1$.

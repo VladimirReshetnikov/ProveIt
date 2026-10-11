@@ -1,0 +1,415 @@
+% Standalone section contributed to the 2026-10-11 research continuation.
+% Required macros/environments: theorem, lemma, corollary, proposition, proof.
+% Citation keys: TC:BD, TC:Romik, TC:Onodera2014, TC:Onodera2021.
+\section{Third derivatives of Tornheim functions: exact cancellation}
+\label{tc:sec}
+
+Write
+\[
+ T(A,B,C)=\sum_{m,n\ge1}m^{-A}n^{-B}(m+n)^{-C},
+ \qquad W_{a,b,c}(t)=T(at,bt,ct).
+\]
+The sum is initially absolutely convergent when
+$\Re(A+C)>1$, $\Re(B+C)>1$, and $\Re(A+B+C)>2$.
+Thereafter $T$ denotes its meromorphic continuation.  The normalization
+contains no factor $2^t$ on the diagonal.  The origin is a crossing of
+polar hyperplanes, so a derivative of $W_{a,b,c}$ is a derivative of
+the specified one-variable restriction, not a partial derivative of
+$T$ at the origin.
+
+Borwein--Dilcher and Romik treat the diagonal and related first
+derivatives; Onodera's work treats functional relations and first and
+second derivative values in a broader Hurwitz setting
+\cite{TC:BD,TC:Romik,TC:Onodera2014,TC:Onodera2021}.
+The previous ProveIt continuation already supplies the entire
+quadratic directional formula and a reduction of the cubic digamma
+finite part to $W_{1,1,1}'''(0)$.  We do not repeat that reduction as a
+new evaluation.  The result here describes every third directional
+derivative with two specified constants, proves exactly when these
+two coordinates cancel formally, and gives identities in ordinary
+zeta derivatives alone.  This is a structural continuation of the
+inspected material; no historical priority over all possible
+specializations of earlier functional relations is asserted.
+
+Put
+\[
+ p=\zeta'(0)\zeta''(0),\qquad q=\zeta'''(0),\qquad
+ r=\zeta'''(-1),\qquad \Omega=W_{1,1,1}'''(0),
+\]
+and define
+\begin{align}
+ \Phi(a,b,c)&=c\{a^2+b^2-c(a+b)\},\label{tc:Phi}\\
+ \mathscr Q(a,b,c)
+ &=3(a+b)(ab+c^2)p
+   -\left\{\frac{a^3+b^3}{2}+3c^2(a+b)+c^3\right\}q\notag\\
+ &\quad+\left\{c^3-c\left(\frac{a^3}{b+c}
+                              +\frac{b^3}{a+c}\right)\right\}r.
+ \label{tc:Q}
+\end{align}
+All these functions are homogeneous of degree three on
+$\mathscr D=\{(a,b,c):(a+c)(b+c)\ne0\}$.
+
+\begin{theorem}[Complete third directional formula]
+\label{tc:main}
+There is a single direction-independent constant $\kappa$, defined
+explicitly in \eqref{tc:kappa-def} below, such that every
+$(a,b,c)\in\mathscr D$ has a holomorphic restriction at $t=0$ and
+\begin{equation}
+ \boxed{\displaystyle
+ W_{a,b,c}'''(0)
+   =abc\{\Omega-12p+8q\}
+      +\Phi(a,b,c)\kappa+\mathscr Q(a,b,c).}
+ \label{tc:third}
+\end{equation}
+Thus all third directional derivatives are in the span of two
+specified constants over the displayed ordinary-zeta algebra.
+The assertion is a spanning result.  It does not assert arithmetic
+independence of the two constants or their irreducibility to a
+smaller constant algebra.
+\end{theorem}
+
+\subsection{A holomorphic remainder with a fixed normalization}
+
+The pole term needed for the theorem is
+\begin{align}
+ \mathscr P(A,B,C)
+ ={}&-\frac{\Gamma(1-A)\zeta(B-1)}{\Gamma(C)(A+C)}
+     -\frac{\Gamma(1-B)\zeta(A-1)}{\Gamma(C)(B+C)}.
+ \label{tc:polar}
+\end{align}
+
+\begin{lemma}[Canonical local decomposition]
+\label{tc:local}
+There is a unique holomorphic germ $J(A,B,C)$, symmetric in $A,B$,
+such that
+\begin{equation}
+ T(A,B,C)=\zeta(A)\zeta(B)+\mathscr P(A,B,C)+C J(A,B,C).
+ \label{tc:decomposition}
+\end{equation}
+In particular
+\begin{equation}
+ \kappa=3J_{AA}(0,0,0)+\frac{\gamma^3}{12}
+       +\frac{\gamma\zeta(2)}4+\frac{\zeta(3)}6
+       -3\gamma\zeta''(-1)
+ \label{tc:kappa-def}
+\end{equation}
+is a well-defined constant.
+\end{lemma}
+
+\begin{proof}
+Use the classical Mellin representation
+\[
+ \Gamma(C)T(A,B,C)
+   =\int_0^\infty x^{C-1}
+       \operatorname{Li}_A(e^{-x})\operatorname{Li}_B(e^{-x})\,dx
+\]
+and Jonqui\`ere's locally normally convergent expansion
+\[
+ \operatorname{Li}_A(e^{-x})
+   =\Gamma(1-A)x^{A-1}
+     +\sum_{j\ge0}\frac{(-x)^j}{j!}\zeta(A-j),
+ \qquad 0<x<2\pi,
+\]
+with $A$ in a sufficiently small disc about zero.  Subtract from the
+product the six terms
+\begin{align*}
+ S(A,B;x)={}&\Gamma(1-A)\Gamma(1-B)x^{A+B-2}
+ +\Gamma(1-A)\zeta(B)x^{A-1}
+ +\Gamma(1-B)\zeta(A)x^{B-1}\\
+ &-\Gamma(1-A)\zeta(B-1)x^A
+ -\Gamma(1-B)\zeta(A-1)x^B+\zeta(A)\zeta(B).
+\end{align*}
+The remainder after multiplication by $x^{C-1}$ is normally
+integrable on $(0,1)$ near the spectral origin; fixed parameter
+derivatives add only powers of $\log x$.  The integral on
+$(1,\infty)$ is normally convergent by exponential decay.  Integrate
+the six subtracted terms explicitly.  The first three have
+denominators nonzero at the origin; the last three give
+$\zeta(A)\zeta(B)/C$ and the two polar terms in
+\eqref{tc:polar}.  Thus for a holomorphic symmetric germ $H$,
+\[
+ T=\mathscr P+\frac{\zeta(A)\zeta(B)+C H(A,B,C)}{\Gamma(1+C)}.
+\]
+Since $\Gamma(1)=1$, the difference
+$\zeta(A)\zeta(B)\{1/\Gamma(1+C)-1\}$ is divisible by $C$ as a
+holomorphic germ.  Dividing that difference by $C$ and adding
+$H/\Gamma(1+C)$ defines $J$.  Uniqueness follows first for $C\ne0$
+and then by holomorphy.  The initially convergent Mellin calculation
+and uniqueness of meromorphic continuation justify every equality.
+\end{proof}
+
+On a ray, the two pole terms become
+\[
+ -\frac{c}{a+c}\frac{\Gamma(1-at)}{\Gamma(1+ct)}\zeta(bt-1)
+ -\frac{c}{b+c}\frac{\Gamma(1-bt)}{\Gamma(1+ct)}\zeta(at-1).
+\]
+These are holomorphic at zero for $(a,b,c)\in\mathscr D$,
+including $c=0$, which proves the removability assertion in
+Theorem~\ref{tc:main}.
+
+\subsection{The two determined second derivatives of the remainder}
+
+All derivatives of $J$ in this subsection are at $(0,0,0)$.
+Let
+\[
+ U=J_{AA}=J_{BB},\quad V=J_{AB},\quad
+ X=J_{AC}=J_{BC},\quad Y=J_{CC},\quad M=U+2X.
+\]
+Two elementary restrictions determine $M$ and $Y$ exactly.
+Counting positive pairs with a prescribed sum gives
+\[
+ T(0,0,C)=\zeta(C-1)-\zeta(C).
+\]
+Consequently \eqref{tc:decomposition} yields
+\[
+ C J(0,0,C)=\zeta(C-1)-\zeta(C)
+                   -\frac{1}{6\Gamma(1+C)}-\frac14.
+\]
+Taking the coefficient of $C^3$ gives
+\begin{equation}
+ Y=\frac{r-q}{3}
+       -\frac{\gamma^3-3\gamma\zeta(2)+2\zeta(3)}{18}.
+ \label{tc:Y}
+\end{equation}
+
+For the other restriction, rearrangement of an absolutely convergent
+double sum, followed by continuation, proves the classical
+quasi-shuffle identity
+\begin{equation}
+ T(A,0,C)+T(C,0,A)=\zeta(A)\zeta(C)-\zeta(A+C).
+ \label{tc:stuffle}
+\end{equation}
+The polar terms in this sum have the holomorphic continuation
+\begin{align}
+ \mathscr P(A,0,C)+\mathscr P(C,0,A)
+ ={}&\frac{\Gamma(1-A)\Gamma(1-C)}{12}
+       \frac{\sin(\pi A)+\sin(\pi C)}{\pi(A+C)}\notag\\
+ &-\frac{\zeta(A-1)}{\Gamma(1+C)}
+  -\frac{\zeta(C-1)}{\Gamma(1+A)}.
+ \label{tc:polar-symmetric}
+\end{align}
+The quotient in the first line is entire locally, since
+$\sin(\pi A)+\sin(\pi C)
+=2\sin(\pi(A+C)/2)\cos(\pi(A-C)/2)$.
+The coefficient of $A^2C$ in $C J(A,0,C)+A J(C,0,A)$ is $M/2$.
+The corresponding coefficient in the first line of
+\eqref{tc:polar-symmetric} is
+$\gamma(\gamma^2+\zeta(2))/24$.  Coefficient comparison in
+\eqref{tc:stuffle} therefore gives
+\begin{equation}
+ M=p-q+\gamma\zeta''(-1)
+      +(\gamma^2-\zeta(2))\zeta'(-1)
+      -\frac{\gamma^3+\gamma\zeta(2)}{12}.
+ \label{tc:M}
+\end{equation}
+This calculation uses the symmetric two-variable identity before
+specialization; no ambiguous origin value of an individual term is
+introduced.
+
+\subsection{Proof of the complete cubic formula}
+
+Let $B(a,b,c)$ be the third derivative at zero of
+$\zeta(at)\zeta(bt)+\mathscr P(at,bt,ct)$.  Taylor expansion of
+the holomorphic remainder gives exactly
+\begin{align}
+ W_{a,b,c}'''(0)
+ &=B(a,b,c)+3c(a^2+b^2)U+6abcV
+                  +6c^2(a+b)X+3c^3Y\notag\\
+ &=B(a,b,c)+3\Phi(a,b,c)U+6abcV
+                  +3c^2(a+b)M+3c^3Y.
+ \label{tc:third-before}
+\end{align}
+For transparent coefficient checking put $z_j=\zeta^{(j)}(-1)$.
+The ordinary Gamma expansion gives
+\begin{align*}
+ B(a,b,c)={}&-\frac{a^3+b^3}{2}q+3ab(a+b)p
+       -c\left(\frac{b^3}{a+c}+\frac{a^3}{b+c}\right)r\\
+ &-3c\gamma(a^2+b^2)z_2
+       -3c\{\gamma^2(2ab+c(a+b))
+                         +\zeta(2)(2ab-c(a+b))\}z_1\\
+ &+\frac c{12}\Bigl[
+       \gamma^3\{(a+c)^2+(b+c)^2\}
+       +3\gamma\zeta(2)(a^2+b^2-2c^2)\\
+ &\hspace{38mm}+2\zeta(3)(a^2+b^2-c(a+b)+2c^2)\Bigr].
+\end{align*}
+For example this follows directly by differentiating
+\[
+ \log\frac{\Gamma(1-at)}{\Gamma(1+ct)}
+  =\gamma(a+c)t+\frac{\zeta(2)}2(a^2-c^2)t^2
+                    +\frac{\zeta(3)}3(a^3+c^3)t^3+O(t^4).
+\]
+Substitute \eqref{tc:Y} and \eqref{tc:M} into
+\eqref{tc:third-before}.  Collecting the coefficients of
+$\Phi$ and $abc$ gives
+\begin{equation}
+ W_{a,b,c}'''(0)
+ =\Phi(a,b,c)\kappa
+   +abc\{6V-6(\gamma^2+\zeta(2))\zeta'(-1)\}
+   +\mathscr Q(a,b,c).
+ \label{tc:third-two}
+\end{equation}
+The diagonal has $\Phi(1,1,1)=0$ and
+$\mathscr Q(1,1,1)=12p-8q$.  Hence its specialization identifies
+the expression in braces as $\Omega-12p+8q$, proving
+Theorem~\ref{tc:main}.
+
+An optional independent spectral description of the second constant is
+\begin{equation}
+ \kappa=-\frac12W_{1,0,2}'''(0)
+                +6p-\frac{41}{4}q+\frac72r.
+ \label{tc:kappa-Euler}
+\end{equation}
+Here $T(t,0,2t)=Z(2t,t)$ in the strict Euler double-zeta convention.
+Formula~\eqref{tc:kappa-Euler} is a bridge, not a claimed evaluation
+of that derivative by ordinary zeta constants.
+
+\subsection{All formal cancellations and an explicit exact identity}
+
+\begin{corollary}[Finite combinations cancelling both cubic coordinates]
+\label{tc:cancellation}
+Let $\{(a_j,b_j,c_j)\}_{j=1}^N\subset\mathscr D$ and
+$w_1,\ldots,w_N\in\mathbb C$.  If
+\begin{equation}
+ \sum_jw_j a_jb_jc_j=0,\qquad
+ \sum_jw_j\Phi(a_j,b_j,c_j)=0,
+ \label{tc:criterion}
+\end{equation}
+then
+\begin{equation}
+ \sum_jw_jW_{a_j,b_j,c_j}'''(0)
+       =\sum_jw_j\mathscr Q(a_j,b_j,c_j).
+ \label{tc:cancelled}
+\end{equation}
+Conditions~\eqref{tc:criterion} are necessary and sufficient for
+formal cancellation of the two coordinates in
+Theorem~\ref{tc:main}.  Necessity here concerns treating those
+coordinates as independent symbols; it is not an arithmetic
+independence theorem for their actual values.
+\end{corollary}
+
+The locus $\Phi=0$ supplies especially short two-term identities.
+For $c\ne0$ it is $a^2+b^2=c(a+b)$.  Its asymmetric positive
+integer point $(3,6,5)$ gives
+\begin{equation}
+ \boxed{\displaystyle
+ W_{3,6,5}'''(0)-90W_{1,1,1}'''(0)
+   =81p-\frac{403}{2}q-\frac{245}{11}r.}
+ \label{tc:two-ray-example}
+\end{equation}
+The coefficient $90=3\cdot6\cdot5$ cancels the diagonal
+coordinate, while $\Phi(3,6,5)=0$ cancels the other one.
+
+For a fixed triple $(a,b,c)$, let
+$\phi_c=\Phi(a,b,c)$, $\phi_a=\Phi(b,c,a)$,
+$\phi_b=\Phi(c,a,b)$.  A convenient family of weights for the three
+cyclic rays is
+\[
+ (w_c,w_a,w_b)=(\phi_a-\phi_b,\phi_b-\phi_c,\phi_c-\phi_a).
+\]
+Both conditions in \eqref{tc:criterion} hold identically.
+At $(a,b,c)=(1,2,3)$ these weights, divided by four, are $(1,4,-5)$.
+Thus we obtain the concrete ordinary-zeta identity
+\begin{equation}
+ \boxed{\begin{aligned}
+ &W_{1,2,3}'''(0)+4W_{2,3,1}'''(0)-5W_{3,1,2}'''(0)\\
+ &\qquad=99\zeta'(0)\zeta''(0)
+       +\frac{207}{2}\zeta'''(0)
+       +\frac{162}{5}\zeta'''(-1).
+ \end{aligned}}
+ \label{tc:example}
+\end{equation}
+Every ray in this example has positive coordinates, so no zero-order
+factor or restriction to a singular hyperplane is involved.
+Equation~\eqref{tc:example} proves a new explicit cancellation relative
+to the inspected ProveIt material; it does not evaluate $\Omega$.
+
+\subsection{The exact ambiguity of these local identities at every order}
+
+The appearance of two coordinates at third order has an algebraic
+explanation that extends to all orders.  This is a statement about
+what the preceding local restrictions determine, not about how many
+arithmetically independent constants the actual Tornheim function has.
+
+\begin{theorem}[Holomorphic ambiguity kernel]
+\label{tc:kernel}
+Suppose two meromorphic germs $T_1,T_2$ have the same polar part
+\eqref{tc:polar}, in the precise sense that $T_i-\mathscr P$ is
+holomorphic for $i=1,2$. Suppose both germs satisfy symmetry in their first two variables, have
+the restriction $T(A,B,0)=\zeta(A)\zeta(B)$ away from the polar set,
+and satisfy \eqref{tc:stuffle}.  Their difference has a unique form
+\begin{align}
+ \Delta T(A,B,C)={}&ABC\,S(A,B,C)\notag\\
+ &+AC(A-C)R(A,C)+BC(B-C)R(B,C),
+ \label{tc:kernel-form}
+\end{align}
+where $S$ is a holomorphic germ symmetric in $A,B$ and $R$ is a
+holomorphic germ symmetric in its two variables.  Conversely every
+expression in \eqref{tc:kernel-form} preserves these local identities.
+
+For homogeneous degree $d\ge3$, the formal ambiguity space has
+dimension
+\begin{equation}
+ \left\lfloor\frac{d^2-1}{4}\right\rfloor.
+ \label{tc:kernel-dimension}
+\end{equation}
+It vanishes in degrees zero, one and two.  Fixing the entire diagonal
+germ imposes $S(t,t,t)=0$, and reduces the degree-$d$ dimension by one.
+\end{theorem}
+
+\begin{proof}
+The common polar term cancels.  The common restriction at $C=0$
+then implies $\Delta T=C K(A,B,C)$ for a holomorphic germ $K$
+symmetric in $A,B$.  Put $u(A,C)=K(A,0,C)$.  The difference of
+\eqref{tc:stuffle} says
+\[
+ C u(A,C)+A u(C,A)=0.
+\]
+At $A=0$ this gives $u(0,C)=0$, so $u(A,C)=A v(A,C)$.
+After division by $AC$ the identity becomes
+$v(A,C)=-v(C,A)$.  An antisymmetric holomorphic germ vanishes on
+$A=C$ and is uniquely divisible by $A-C$; its quotient is symmetric.
+Thus $u(A,C)=A(A-C)R(A,C)$ for a unique symmetric germ $R$.
+The remainder
+\[
+ K(A,B,C)-u(A,C)-u(B,C)
+\]
+vanishes at both $A=0$ and $B=0$.  It is therefore uniquely divisible
+by $AB$, with a holomorphic quotient symmetric in $A,B$.  This
+quotient is $S$ and proves \eqref{tc:kernel-form}.  Direct substitution
+proves the converse and also uniqueness.
+
+In homogeneous degree $d$, $S$ and $R$ have degree $d-3$.
+Writing $m=d-3$, a symmetric polynomial in two selected variables
+and a third unrestricted variable has
+$\lfloor(m+2)^2/4\rfloor$ coefficients; a symmetric polynomial in
+two variables of total degree $m$ has $\lfloor m/2\rfloor+1$
+coefficients.  Their sum is $\lfloor(d^2-1)/4\rfloor$.
+On the diagonal the $R$ terms vanish and
+$\Delta T(t,t,t)=t^3S(t,t,t)$.  At each homogeneous degree evaluation
+of $S$ at $(1,1,1)$ is a nonzero linear functional, so it removes
+exactly one dimension.
+\end{proof}
+
+At $d=3$ the two free polynomials in \eqref{tc:kernel-form} are
+constants; the two direction functions are exactly $abc$ and
+$\Phi(a,b,c)$.  This proves that the cancellation criterion is the
+complete one obtainable from these local identities alone.  At
+degrees $4,5,6$ the corresponding formal dimensions are $3,6,8$.
+Additional functional relations may reduce the arithmetic data
+further; this theorem does not prejudge that question.
+
+\paragraph{Verification and next questions.}
+The accompanying exact symbolic calculation checks the coefficient
+collection, the three-ray identity, and the formal kernel dimensions
+independently by linear algebra.  A separate numerical script computes
+the ray restrictions from the convergent Jonqui\`ere--Mellin formula
+and an incomplete-Gamma tail.  Its floating-point residuals are
+diagnostics and are not used in the proofs.  At 50 working decimal
+digits, the independent comparison for \eqref{tc:example} gives
+an absolute residual below $6.3\times10^{-33}$; both sides are
+approximately $-451.3535195684862560644674145675405$.
+Concrete next questions
+are to identify additional functional relations constraining $R$,
+to compute the full fourth-order formula in a similarly normalized
+basis, and to determine whether the two actual cubic constants admit
+arithmetic relations beyond the formal cancellation proved here.

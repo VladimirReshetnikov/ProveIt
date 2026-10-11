@@ -1,0 +1,207 @@
+\section{A differential-polynomial finite-part calculus}
+\label{poly:calculus}
+
+\subsection{Finite local data and the global normalization}
+
+For $n\ge0$, put $b_n=H_n-\gamma$ and
+$c_{r,n}=H_n^{(r)}+(-1)^r\zeta(r)$ for $r\ge2$. The familiar
+Gamma recurrence and Taylor expansion give
+\begin{equation}\label{poly:localpsi}
+ v_n(\varepsilon):=\psi(-n+\varepsilon)
+ =-\varepsilon^{-1}+b_n+
+      \sum_{r\ge2}c_{r,n}\varepsilon^{r-1}.
+\end{equation}
+This series converges for $0<|\varepsilon|<1$; its differentiated
+series give all polygammas. Let $M$ be an upper bound for the differential
+weights of the monomials of $P$. Define
+\begin{equation}\label{poly:poles}
+ p_j(n)=[\varepsilon^{-j}]P(v_n,v_n',\ldots,v_n^{(R)}),\quad
+ P_n(z)=\sum_{j=1}^M\frac{p_j(n)}{(z+n)^j},\quad
+ \kappa_P=[\varepsilon^0]f_P(\varepsilon).
+\end{equation}
+All coefficients are finite polynomials in the stated harmonic numbers
+and zeta values. To find the coefficients through the constant term,
+one may truncate $v_n$ after $\varepsilon^{M-1}$ before differentiating.
+For a homogeneous monomial of weight $M$, the regular coefficient of
+harmonic order $r$ raises the exponent relative to its all-pole term
+by $r$; hence orders above $M$ cannot contribute. Linearity handles
+inhomogeneous polynomials.
+
+\begin{theorem}[Normalized differential-polynomial expansion]
+\label{poly:ML}
+Away from the nonpositive integers,
+\begin{equation}\label{poly:MLeq}
+ f_P(z)=P_0(z)+\kappa_P+
+              \sum_{n\ge1}\bigl(P_n(z)-P_n(0)\bigr).
+\end{equation}
+The series converges normally on compact subsets of its domain.
+The entire remainder is exactly the displayed constant.
+\end{theorem}
+
+\begin{proof}
+Each $p_j(n)$ grows at most as a fixed power of $1+\log(n+1)$:
+only $H_n$ is unbounded, whereas the higher harmonic numbers are bounded.
+On a fixed compact set,
+$(n+z)^{-j}-n^{-j}=O(n^{-j-1})$. This proves normal convergence.
+To determine the remainder, put $g(w)=f_P(w)-P_0(w)$ and integrate
+$zg(w)/(w(w-z))$ on $|w|=N+1/2$.
+
+The right-half-plane asymptotics give $\psi(w)=O(1+\log N)$ and
+bounded fixed positive derivatives. On the left use
+$\psi(w)=\psi(1-w)-\pi\cot(\pi w)$ and its derivatives.
+The cotangent and each fixed derivative are uniformly bounded on these
+circles. For $|\im w|\ge1$ this follows from their exponential
+representations; for $|\im w|<1$ the circles remain a fixed positive
+distance from the integers. Thus $g=O((1+\log N)^d)$ for some fixed
+$d$, and the contour integral tends to zero. The residues at $z$ and
+$0$ are $g(z)$ and $-\kappa_P$; a pole at $-n$ contributes
+$-P_n(z)+P_n(0)$. The residue theorem gives the assertion.
+\end{proof}
+
+\subsection{The scalar projection controls both boundary obstructions}
+
+Define polynomials in $L$ by
+\begin{align}
+ C_P(L)&=\frac1{2\pi}\int_{-\pi}^{\pi}\phi_P(L+\ii\theta)\dd\theta,
+ & C_P&=C_P(0),\label{poly:C}\\
+ R_P(L)&=-\frac{\phi_P(L+\ii\pi)-\phi_P(L-\ii\pi)}{2\ii\pi}.
+ \label{poly:R}
+\end{align}
+The integrals are integrals of polynomials, so these are finite algebraic
+formulas. If $\phi_P(Y)=\sum a_kY^k$, then
+\begin{equation}\label{poly:Cexplicit}
+ C_P=\sum_{m\ge0}a_{2m}\frac{(-1)^m\pi^{2m}}{2m+1}.
+\end{equation}
+
+\begin{theorem}[Scalar projection and residue cancellation]
+\label{poly:filter}
+For every fixed $P$, with $r_P(n)=p_1(n)$, there is an integer $d$ such that
+\begin{align}
+ \kappa_P-\sum_{n=1}^NP_n(0)&=C_P(\log N)+o(1),\label{poly:circle}\\
+ r_P(n)&=R_P(\log n)+O((1+\log n)^d/n),\label{poly:rasym}\\
+ r_P(n)-r_P(n-1)&=\frac{R_P'(\log n)}n
+                      +O((1+\log n)^d/n^2).\label{poly:deltarasym}
+\end{align}
+In particular, a mixed polynomial has $C_P=R_P=0$.
+\end{theorem}
+
+\begin{proof}
+The first identity follows by integrating $f_P(w)/w$ on the same
+circles. Away from an arc of angular length $O(\log N/N)$ around the
+negative real axis, reflection and the standard sectorial asymptotics
+give $\psi(w)=\Log w+O(1/N)$ and
+$\psi^{(r)}(w)=O(N^{-r})+O(N^{-2\pi})$ for fixed $r\ge1$.
+On the exceptional arc all fixed polygammas are bounded and the digamma
+is $O(\log N)$. Every mixed monomial consequently has angular average
+$o(1)$. The scalar terms have the stated logarithmic average. Replacing
+$\log(N+1/2)$ by $\log N$ changes the answer by $o(1)$.
+
+For the residue, take the constant-tail specialization of the local
+series: $b_n$ tends formally to $L$, and
+$c_{r,n}$ tends to $(1+(-1)^r)\zeta(r)$. The resulting series is
+$L+y$, where $y=-\pi\cot(\pi\varepsilon)$. Its derivatives satisfy
+\[
+ y'=y^2+\pi^2,
+ \qquad y^{(r)}=Q_r(y),\quad
+ Q_1(Y)=Y^2+\pi^2,\quad
+ Q_{r+1}(Y)=(Y^2+\pi^2)Q_r'(Y).
+\]
+Every $Q_r$ with $r\ge1$ is divisible by $Y^2+\pi^2$.
+Under the local change of variable $Y=y$, residue extraction is
+\begin{equation}\label{poly:reschange}
+ \Res_{\varepsilon=0}P(L+y,y',\ldots)
+ =-[Y^{-1}]
+ \frac{P(L+Y,Q_1(Y),Q_2(Y),\ldots)}{Y^2+\pi^2},
+\end{equation}
+where the coefficient is in the Laurent expansion at infinity.
+The minus sign follows from $y\sim-1/\varepsilon$.
+Every mixed term in the quotient is a polynomial and contributes zero.
+For the scalar term, polynomial division leaves a remainder $AY+B$,
+where
+$A=(\phi_P(L+\ii\pi)-\phi_P(L-\ii\pi))/(2\ii\pi)$.
+This proves the exact residue formula \eqref{poly:R}.
+
+Finally, the harmonic asymptotic expansions through their $1/n$ terms
+give $r_P(n)=R_P(\log n)+n^{-1}U(\log n)
++O((1+\log n)^d/n^2)$ for a polynomial $U$.
+Differencing these explicit terms gives \eqref{poly:deltarasym}.
+An unspecified $O(1/n)$ remainder is not being differentiated or
+differenced to claim a stronger error estimate.
+\end{proof}
+
+\subsection{The complete spectral formula}
+
+Write $\Delta p_j(n)=p_j(n)-p_j(n-1)$ and set
+\begin{equation}\label{poly:JD}
+ J_P=\sum_{n\ge1}\sum_{j=2}^M
+          \frac{\Delta p_j(n)}{(j-1)n^{j-1}},\qquad
+ D_P(s)=\sum_{n\ge1}\frac{\Delta p_1(n)}{n^s}\quad(\re s>0).
+\end{equation}
+The first sum is absolutely convergent. To see this directly, replace
+$H_n^{(r)}$ by $H_{n-1}^{(r)}+n^{-r}$ in the finite pole polynomial;
+each difference gains at least one factor $1/n$.
+
+\begin{theorem}[Every differential-polynomial finite part]
+\label{poly:bridge}
+The Dirichlet series $D_P$ continues meromorphically to $\re s>-1$,
+and
+\begin{equation}\label{poly:bridgeeq}
+ \boxed{\cI(P)=C_P+J_P+[s]D_P(s).}
+\end{equation}
+If $R_P'(L)=\sum a_jL^j$, an entirely ordinary-series form is
+\begin{equation}\label{poly:ordinary}
+ \cI(P)=C_P+J_P-\sum_j a_j\gamma_{j+1}
+ -\sum_{n\ge1}
+ \left\{\Delta p_1(n)-\frac{R_P'(\log n)}n\right\}\log n.
+\end{equation}
+The last series converges absolutely. If $\phi_P$ has degree $d\ge2$
+and leading coefficient $a$, then $D_P$ has a pole of exact order
+$d-1$ at zero, with leading term $-a\,d!s^{1-d}$. If
+$\deg\phi_P\le1$, including $\phi_P=0$, it is holomorphic there.
+\end{theorem}
+
+\begin{proof}
+The asymptotic in \eqref{poly:deltarasym} gives the normal decomposition
+\[
+ D_P(s)=\sum_j a_j(-1)^j\zeta^{(j)}(1+s)
+ +\sum_{n\ge1}
+ \left\{\Delta p_1(n)-R_P'(\log n)/n\right\}n^{-s}.
+\]
+Its second term is holomorphic on $\re s>-1$, including all derivatives
+on compact subsets. By \eqref{poly:stieltjes}, its linear coefficient
+is exactly the Stieltjes term and the last sum in
+\eqref{poly:ordinary}. The leading term of $R_P'$ is
+$-a d(d-1)L^{d-2}$, proving the pole classification.
+
+It remains to establish the finite-part normalization. Integrate
+\eqref{poly:MLeq}, first through a finite cutoff $N$. For $j\ge2$,
+finite summation by parts gives
+\[
+ \sum_{n=1}^Np_j(n)(n^{1-j}-(n+1)^{1-j})
+ =p_j(0)+\sum_{n=1}^N\frac{\Delta p_j(n)}{n^{j-1}}
+   -\frac{p_j(N)}{(N+1)^{j-1}}.
+\]
+The first term cancels exactly the finite part of the pole at zero;
+the last tends to zero. For simple poles the finite identity is
+\[
+ \sum_{n=1}^Np_1(n)\log(1+1/n)
+ =p_1(N)\log(N+1)-\sum_{n=1}^N\Delta p_1(n)\log n.
+\]
+The boundary $p_1(N)\log(N+1)$ has logarithmic polynomial
+$L R_P(L)$, with zero constant coefficient. The large-circle term
+has constant $C_P$. The Stieltjes limit
+$\sum_{n\le N}\log^j(n)/n
+=\log^{j+1}N/(j+1)+\gamma_j+o(1)$ shows that the constant term of
+the final logarithmic sum is $-[s]D_P(s)$. The subtracted series in
+\eqref{poly:MLeq} is uniformly convergent after the origin pole is
+removed, including on $[0,1]$, so this cutoff calculation computes the
+finite part \eqref{poly:fp}. This proves both formulas.
+\end{proof}
+
+For a mixed $P$ the result simplifies to the ordinary convergent identity
+\begin{equation}\label{poly:mixed}
+ \boxed{\cI(P)=J_P+D_P'(0)
+       =J_P-\sum_{n\ge1}\Delta p_1(n)\log n.}
+\end{equation}
+The disappearance of singular Laurent coordinates is thus a proved
+consequence of the local cotangent algebra, not a fitted cancellation.

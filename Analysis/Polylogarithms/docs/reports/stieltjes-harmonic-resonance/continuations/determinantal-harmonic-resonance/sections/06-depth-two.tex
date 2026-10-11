@@ -1,0 +1,336 @@
+\section{Rank-one harmonic dependence and depth-two closure}
+\label{dhr:sec:depth}
+
+\subsection{A theorem beyond consecutive factorial weights}
+The next result is algebraic and does not require the Gamma product.
+Let $w(x)\in\Q(x)$ have only simple poles, all at negative integers,
+and suppose
+\begin{equation}\label{dhr:eq:rational-weight-assumption}
+ w(n)=\lambda n^{-(2r-1)}+O(n^{-2r}),\qquad
+ \lambda\in\Q\setminus\{0\}.
+\end{equation}
+There is no positivity assumption. The pole locations need not be
+consecutive. Define
+\begin{equation}\label{dhr:eq:general-cutoff}
+ S_{w,N}=\sum_{0\leq n_1<\cdots<n_r\leq N}
+              \Delta(\bm n)^2\prod_iw(n_i),\qquad S_{w,-1}=0.
+\end{equation}
+
+\begin{theorem}[Rank-one harmonic dependence]\label{dhr:thm:rank-one}
+There exist rational functions $P_w(N),Q_w(N)\in\Q(N)$ such that
+for every integer $N\geq0$,
+\begin{equation}\label{dhr:eq:rank-one-cutoff}
+ \boxed{S_{w,N}=P_w(N)H_{N+1}+Q_w(N).}
+\end{equation}
+Both rational functions are bounded at infinity. At each finite pole,
+$P_w$ has order at most $r-1$ and $Q_w$ has order at most $r$.
+The possible poles are negative integers at most $-2$.
+For $r=1$, $P_w=\lambda$.
+\end{theorem}
+
+\begin{proof}
+For $0\leq k\leq2r-2$, partial fractions give
+\begin{equation}\label{dhr:eq:moment-residues}
+ n^kw(n)=\sum_{d\geq1}\frac{c_{k,d}}{n+d},\qquad
+ \sum_dc_{k,d}=\lambda\ind_{k=2r-2}.
+\end{equation}
+Only finitely many coefficients are nonzero. There is no polynomial
+part because $n^kw(n)$ is proper. The sum of residues is the coefficient
+of $n^{-1}$ at infinity, proving the second equality.
+
+Thus the finite moment $M_k(N)=\sum_{n=0}^Nn^kw(n)$ equals
+\begin{align}
+ M_k(N)&=R_k(N)+\lambda\ind_{k=2r-2}H_{N+1},\notag\\
+ R_k(N)&=\sum_dc_{k,d}\left\{
+       \sum_{\ell=2}^{d}\frac1{N+\ell}-H_{d-1}\right\}.
+ \label{dhr:eq:finite-moments}
+\end{align}
+Every $R_k$ is a bounded rational function with simple poles only
+at the indicated negative integers. Finite Cauchy--Binet gives
+\begin{equation}\label{dhr:eq:hankel-cutoff}
+ S_{w,N}=\det_{0\leq i,j<r}M_{i+j}(N).
+\end{equation}
+Among these entries, $i+j=2r-2$ occurs only at $i=j=r-1$.
+Therefore
+\begin{equation}\label{dhr:eq:rank-one-matrix}
+ (M_{i+j})_{i,j=0}^{r-1}
+ =(R_{i+j})_{i,j=0}^{r-1}
+       +\lambda H_{N+1}\bm e_{r-1}\bm e_{r-1}^{\mathsf T}.
+\end{equation}
+The determinant is affine in the harmonic number, with
+\begin{equation}\label{dhr:eq:PQ-det}
+ P_w=\lambda\det_{0\leq i,j<r-1}R_{i+j},\qquad
+ Q_w=\det_{0\leq i,j<r}R_{i+j}.
+\end{equation}
+The empty-determinant convention covers $r=1$. Products of $r-1$
+or $r$ simple-pole entries prove the pole-order bounds, and boundedness
+of every entry proves boundedness at infinity. This argument proves
+\eqref{dhr:eq:rank-one-cutoff} at every cutoff, including $N<r-1$
+where the determinant and configuration sum both vanish.
+\end{proof}
+
+\begin{remark}[The source of the depth collapse]
+A generic determinant whose entries are affine in $H_{N+1}$ has
+harmonic degree as large as $r$. That estimate is much too weak here.
+The decay condition \eqref{dhr:eq:rational-weight-assumption} forces
+the residue sum to vanish in every moment except the highest one.
+Consequently the harmonic matrix has rank one \emph{and a single
+nonzero entry}. This is the mechanism, not cancellation observed in
+a few low-rank examples.
+\end{remark}
+
+\subsection{An explicit partial-fraction transform}
+For later use put
+\[
+ T_{p,j}(z)=\sum_{m\geq1}\frac{z^m}{(m+j)^p},\qquad
+ U_{p,j}(z)=\sum_{m\geq1}\frac{z^mH_m}{(m+j)^p},
+ \qquad p\geq1,\ j\geq0.
+\]
+Shifting the summation index gives
+\begin{equation}\label{dhr:eq:T-transform}
+ T_{p,j}(z)=z^{-j}\left\{\Li_p(z)-
+                    \sum_{k=1}^j\frac{z^k}{k^p}\right\}.
+\end{equation}
+For the harmonic sums the precise shifted formula is
+\begin{align}
+ U_{p,0}(z)&=\Li_{p,1}(z,1)+\Li_{p+1}(z),
+ \label{dhr:eq:U-zero}\\
+ U_{p,j}(z)&=z^{-j}\bigg\{\Li_{p,1}(z,1)
+ -\sum_{k=1}^j\frac{z^kH_{k-1}}{k^p}
+ -\sum_{\ell=1}^{j-1}\sum_{k=j+1}^{\infty}
+             \frac{z^k}{k^p(k-\ell)}\bigg\},\quad j\geq1.
+ \label{dhr:eq:U-shift}
+\end{align}
+For \eqref{dhr:eq:U-shift}, write $k=m+j$ and use
+$H_m=H_{k-1}-\sum_{\ell=1}^{j-1}(k-\ell)^{-1}$.
+The finite correction is $H_{k-1}$, not $H_k$.
+Each last rational tail has a partial-fraction decomposition in
+$k$ and $k-\ell$, hence involves only ordinary polylogarithms and
+finite sums. Its starting index $j+1>\ell$ avoids the apparent pole.
+Equations \eqref{dhr:eq:T-transform}--\eqref{dhr:eq:U-shift} are
+explicit terminating reduction rules, not formal existence statements.
+
+\begin{theorem}[All-particle depth-two closure]\label{dhr:thm:closure}
+Under the assumptions of Theorem~\ref{dhr:thm:rank-one}, let
+$K_{w,N}=S_{w,N}-S_{w,N-1}$ and
+\begin{equation}\label{dhr:eq:general-generating}
+ \mathcal G_w(z)=\sum_{N\geq0}K_{w,N}z^{N+1},\qquad |z|<1.
+\end{equation}
+Then $\mathcal G_w$ belongs to the $\Q(z)$-linear span of
+\begin{equation}\label{dhr:eq:closure-space}
+ 1,\quad \Li_1(z),\ldots,\Li_r(z),\quad
+ \Li_{1,1}(z,1),\ldots,\Li_{r-1,1}(z,1).
+\end{equation}
+For $r=1$ the depth-two part of this list is empty. Thus the depth
+upper bound is two, independently of $r$, and the polylogarithmic
+weight upper bound is $r$.
+\end{theorem}
+
+\begin{proof}
+Set $m=N+1$. By \eqref{dhr:eq:rank-one-cutoff},
+\begin{align}
+ K_{w,N}={}&\{P_w(N)-P_w(N-1)\}H_{N+1}\notag\\
+          &+Q_w(N)-Q_w(N-1)+\frac{P_w(N-1)}{N+1}.
+ \label{dhr:eq:mass-difference}
+\end{align}
+The harmonic coefficient is a proper rational function of $m$,
+with poles only at nonpositive integers and pole orders at most $r-1$.
+It is zero for $r=1$. The nonharmonic coefficient is also proper,
+with pole orders at most $r$: division by $m$ can increase the
+order of $P_w(N-1)$ at zero only from at most $r-1$ to at most $r$.
+All other poles already have the stated bound. The expressions at
+$N=-1$ used in \eqref{dhr:eq:mass-difference} are well defined;
+\eqref{dhr:eq:finite-moments} gives the empty moments there.
+
+Decompose both coefficients into terms $(m+j)^{-p}$ with $j\geq0$.
+For the nonharmonic part apply \eqref{dhr:eq:T-transform}, which
+uses indices at most $r$. For the harmonic part apply
+\eqref{dhr:eq:U-zero} and \eqref{dhr:eq:U-shift}. The resulting depth-two
+index is at most $r-1$; any additional ordinary polylogarithm has
+index at most $r$. This proves \eqref{dhr:eq:closure-space}.
+All the series converge absolutely in the open disk, so the shifts
+and finite partial fractions are legitimate.
+\end{proof}
+
+The equivalent identity
+\begin{equation}\label{dhr:eq:Abel-cutoff}
+ \mathcal G_w(z)=(1-z)\sum_{N\geq0}S_{w,N}z^{N+1}
+\end{equation}
+connects the cutoff and Abel descriptions. It is useful for checking
+constants but is not needed to guess the depth bound.
+
+\subsection{Derivatives, Euler primitives, and endpoint zeta reduction}
+Let $\Theta=z\,d/dz$ and normalize $\Theta^{-1}$ by integration from
+zero with the kernel $dt/t$. Then
+\begin{equation}\label{dhr:eq:Euler-primitive}
+ \Theta^{-q}\mathcal G_w(z)=
+ \sum_{N\geq0}\frac{K_{w,N}}{(N+1)^q}z^{N+1},\qquad q\geq0.
+\end{equation}
+This also equals, for $q\geq1$,
+\begin{equation}\label{dhr:eq:Euler-integral}
+ \frac1{(q-1)!}\int_0^z\log^{q-1}(z/t)
+                       \mathcal G_w(t)\frac{\mathrm dt}{t},
+\end{equation}
+initially along $0<t<z<1$, then as the analytic primitive of the
+power series.
+
+\begin{corollary}[Primitive closure and ordinary endpoint evaluations]
+\label{dhr:cor:endpoint}
+For every $q\geq0$, the function \eqref{dhr:eq:Euler-primitive} has
+polylogarithmic depth at most two and weight at most $r+q$.
+For $q\geq1$ its endpoint
+\begin{equation}\label{dhr:eq:I-general}
+ I_{w,q}=\sum_{N\geq0}\frac{K_{w,N}}{(N+1)^q}
+\end{equation}
+is an ordinary absolutely convergent sum and lies in the rational
+linear span of
+\[
+ 1,\qquad \zeta(k),\qquad \zeta(a)\zeta(b),
+ \quad 2\leq k\leq r+q,\quad a,b\geq2,\quad a+b\leq r+q.
+\]
+No product of more than two zeta factors is needed for this endpoint
+family. Ordinary derivatives and anchored ordinary antiderivatives
+also retain depth at most two, although their rational prefactors
+and exponent shifts change.
+\end{corollary}
+
+\begin{proof}
+Divide the two proper rational coefficients in
+\eqref{dhr:eq:mass-difference} by $m^q$. Their maximum pole orders
+become at most $r-1+q$ in the harmonic part and $r+q$ in the other
+part. The preceding proof therefore gives the asserted weight and
+depth bounds.
+
+Bounded rational functions have expansions at infinity, so
+\eqref{dhr:eq:mass-difference} also gives
+$K_{w,N}=P_w(\infty)/(N+1)+O(\log(N+2)/(N+1)^2)$.
+This proves absolute convergence of \eqref{dhr:eq:I-general}.
+The configuration sum itself is absolutely convergent after inserting
+the maximum weight $(n_r+1)^{-q}$, by the same absolute
+largest-index estimate used in Section~\ref{dhr:sec:resonance}.
+
+The reduction rules give Laurent-polynomial, hence locally analytic
+near $z=1$, coefficients of the polylogarithms. Only $\Li_1(z)$
+and $\Li_{1,1}(z,1)=\tfrac12\log^2(1-z)$ diverge there. Convergence
+forces their coefficients to vanish at one: a nonzero quadratic
+logarithm cannot cancel a linear logarithm or a bounded term, and
+a nonzero linear logarithm cannot cancel bounded terms. Those
+vanishing-coefficient terms tend to zero. The other endpoint values
+are $\zeta(p)$ and $\zeta(p,1)$. Lemma~\ref{dhr:lem:Euler} below
+reduces the latter to the stated span.
+
+For the last assertion, power-series differentiation multiplies
+coefficients by affine factors in the index and shifts the exponent;
+ordinary integration divides by such factors and shifts it oppositely.
+A finite shift of $H_m$ changes it by a rational function. Polynomial
+parts in the index, when they arise, sum to rational functions or
+rational multiples of $\Li_1(z)$. Partial fractions of the remaining
+proper parts again use \eqref{dhr:eq:T-transform}--\eqref{dhr:eq:U-shift},
+with finite initial terms removed where needed. None of these operations
+requires a third nested index.
+\end{proof}
+
+\begin{lemma}[Euler's height-one reduction]\label{dhr:lem:Euler}
+For every integer $p\geq2$,
+\begin{equation}\label{dhr:eq:Euler-zeta}
+ \zeta(p,1)=\frac p2\zeta(p+1)
+ -\frac12\sum_{j=1}^{p-2}\zeta(p-j)\zeta(j+1).
+\end{equation}
+\end{lemma}
+\begin{proof}
+We include a beta-integral proof of this classical identity so the
+endpoint theorem has no unproved multiple-zeta reduction step.
+For $|x|<1$, expand Euler's beta integral \cite{dlmf:beta}:
+\begin{align*}
+ B(1-x,y)-B(1,y)
+ &=\int_0^1(t^{-x}-1)(1-t)^{y-1}\mathrm dt\\
+ &=-\gamma-\psi(1-x)\\
+ &\quad+\frac y2\big\{[\gamma+\psi(1-x)]^2
+                          +\zeta(2)-\psi'(1-x)\big\}+O(y^2).
+\end{align*}
+The $y$-derivative at zero can be taken under the integral: the
+factor $t^{-x}-1$ cancels its endpoint singularity at $t=1$.
+Using $\log(1-t)/(1-t)=-\sum_{n\geq1}H_nt^n$ gives this derivative
+as
+\[
+ -\sum_{n\geq1}H_n\left\{\frac1{n+1-x}-\frac1{n+1}\right\}
+ =-\sum_{p\geq2}\zeta(p,1)x^{p-1}.
+\]
+The interchanges hold first for real $0<x<1$ by absolute convergence,
+and then throughout the disk by holomorphy. Put
+$f(x)=-\psi(1-x)-\gamma=\sum_{k\geq2}\zeta(k)x^{k-1}$.
+Comparison with the beta expansion yields
+\[
+ \sum_{p\geq2}\zeta(p,1)x^{p-1}
+ =\tfrac12\{f'(x)-\zeta(2)-f(x)^2\}.
+\]
+Equating coefficients of $x^{p-1}$ proves
+\eqref{dhr:eq:Euler-zeta}.
+\end{proof}
+
+\subsection{A common translate and cyclotomic coordinates}
+The rank-one mechanism survives translation of the entire simple-pole
+grid. Define
+\[
+ H_n(a)=\sum_{j=0}^{n-1}\frac1{j+a},\qquad H_0(a)=0,\qquad a>0.
+\]
+Suppose all poles of $w(n)$ are simple and lie at $-a-d$ with
+integers $d\geq0$, and the critical decay
+\eqref{dhr:eq:rational-weight-assumption} holds. Use the monic moment
+basis $(n+a)^k$. For each pole,
+\[
+ \sum_{n=0}^N\frac1{n+a+d}
+ =H_{N+1}(a)+\sum_{\ell=1}^d\frac1{N+a+\ell}
+                 -\sum_{\ell=0}^{d-1}\frac1{a+\ell}.
+\]
+The sum of residues still vanishes except in the top moment.
+The proof of Theorem~\ref{dhr:thm:rank-one} therefore gives
+\begin{equation}\label{dhr:eq:translated-cutoff}
+ S_{w,N}=P_w(N,a)H_{N+1}(a)+Q_w(N,a),
+\end{equation}
+with the same pole-order bounds. For a rational weight depending
+rationally on $a$, the coefficients are rational in $N,a$.
+
+For rational $a=p/q\in(0,1]$ in lowest terms, put
+$\omega=e^{2\pi i/q}$. The exact root-of-unity filters are
+\begin{align}
+ \sum_{n\geq0}\frac{z^{n+a}}{(n+a)^s}
+ &=q^{s-1}\sum_{j=0}^{q-1}\omega^{-pj}
+                       \Li_s(\omega^jz^{1/q}),
+ \label{dhr:eq:single-filter}\\
+ \sum_{n\geq0}\frac{z^{n+a}H_n(a)}{(n+a)^s}
+ &=q^{s-1}\sum_{j,k=0}^{q-1}\omega^{-p(j+k)}
+             \Li_{s,1}(\omega^jz^{1/q},\omega^k).
+ \label{dhr:eq:double-filter}
+\end{align}
+These formulas hold for integers $s\geq1$ and $0<z<1$, and on any
+common continuation with a fixed $q$th-root branch. To prove them,
+write the top index as $qn+p$ and the inner index as $qm+p$.
+The powers of $q$ from the denominators are $q^s$ and $q^{s+1}$;
+the one and two residue filters divide by $q$ and $q^2$,
+respectively. The strict inner inequality is preserved.
+
+Finite index shifts and partial fractions, exactly as in
+\eqref{dhr:eq:U-shift}, now prove depth at most two in level-$q$
+colored polylogarithms for the generating function with exponent
+$z^{N+a}$. The same conclusion holds for primitives that divide
+its coefficients by $(N+a)^h$. No ordinary-zeta-only endpoint
+reduction is asserted for general level $q$.
+
+The shifted canonical weight $w(n)=1/(n+a)_{2r-1}$ is also covered
+by the Gamma product: take the parameters there to be $(a,c)=(a,1)$
+and $b_0=a+2r-1$. For $r=2$ its residue and cutoff constant are
+\begin{equation}\label{dhr:eq:translated-cutoff-constant}
+ A_0=\frac1{2a(a+1)},\qquad
+ C_a=\frac{-2-\psi(a+1)}{2a(a+1)}.
+\end{equation}
+For example, at $a=1/2$,
+\begin{equation}\label{dhr:eq:half-cutoff}
+ \lim_{N\to\infty}\left[
+ \sum_{0\leq m<n\leq N}
+ \frac{(n-m)^2}{(m+\tfrac12)_3(n+\tfrac12)_3}
+       -\frac23\log N\right]
+ =\frac23\{\gamma+2\log2-4\}.
+\end{equation}
+This gives a direct digamma/cyclotomic bridge without changing the
+finite-cutoff depth mechanism.

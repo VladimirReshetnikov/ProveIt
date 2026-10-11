@@ -1,0 +1,401 @@
+% Research fragment for the parent article.  Not a standalone document.
+% Authored against ProveIt f7e35be357654198c1546fd40f363694c5bcc2cc.
+% Source conjecture: incoming Canonical Digamma and Fifth Harmonic Bridge,
+% sections/09_questions.tex, Conjecture conj:firstq.
+% Source exact tail formulas: sections/07_tail_rank.tex, tr:Aentries,
+% tr:forward, tr:backward, tr:operator.
+
+\section{The optimal moment prefix for adjacent even tail orders}
+\label{adj:section}
+
+The incoming \emph{Canonical Digamma Polynomials and the Fifth Harmonic
+Bridge} proves that finitely many initial centered moments generate the
+full formal coordinate space of two even harmonic tails.  For equal
+orders it proves the optimal consecutive prefix.  Its
+Conjecture~\texttt{conj:firstq} asks for that optimal prefix for every
+unequal pair.  We prove the entire first off-diagonal family:
+\[
+ p=2b-2,\qquad q=2b,\qquad b\ge2.
+\]
+The proof also gives an exact determinant with a positive rational
+recurrence, and hence a family of ordinary convergent identities for
+products of higher polygammas.  The result concerns rational coefficient
+rank.  It does not assert arithmetic independence of the constants that
+those coefficients multiply.
+
+\subsection{The inherited exact coordinate system}
+
+Write
+\[
+ A_p(n)=\zeta(p)-H_n^{(p)}=\zeta(p,n+1),\qquad
+ x_n=n+\tfrac12,
+\]
+and let $D_r$ be the continued value at $s=-2r$ of
+\[
+ D_{p,q}(s)=\sum_{n=0}^{\infty}A_p(n)A_q(n)x_n^{-s}.
+\]
+For even $p,q$, these particular continued values are regular.  The
+source tail theorem supplies numbers $C_j$ satisfying the inverse
+Bernoulli transforms
+\begin{align}
+ D_r&=\sum_{j=0}^{r}
+ \frac{\binom{2r}{2j}}{2j+1}B_{2r-2j}(1/2)C_j,
+ \label{adj:forward}\\
+ C_j&=\sum_{r=0}^{j}\binom{2j+1}{2r}2^{-2(j-r)}D_r.
+ \label{adj:backward}
+\end{align}
+For $q=2b$ and $j\ge b$, they have the finite coordinate expansion
+\begin{equation}\label{adj:block}
+ C_j=\sum_{k=0}^{b-1}a_{jk}\zeta(2k),\qquad \zeta(0)=-\tfrac12,
+\end{equation}
+where, putting $d=2j+1$ and $e=d-p-q+2k+1$,
+\begin{equation}\label{adj:a}
+ a_{jk}=B_e\left\{
+ \frac{\binom{d-q+1}{p-2k}}{d-q+1}
+ +\frac{\binom{d-p+1}{q-2k}}{d-p+1}
+ \right\}\quad(e\ge0),
+\end{equation}
+and $a_{jk}=0$ if $e<0$.  Each binomial summand in
+\eqref{adj:a} is omitted unless its lower index is at least $2$ and
+no greater than its upper index.  In particular, a would-be lower
+index zero is \emph{not} retained.  These formulas are prior results
+of the inspected reports; the new argument is the nonvanishing theorem
+below.
+
+For reference, the finite mechanism behind the inherited formulas is
+summation by parts with
+\[
+ \sum_{n=0}^{N-1}x_n^{2r}
+ =\sum_{j=0}^{r}\frac{\binom{2r}{2j}}{2j+1}
+ B_{2r-2j}(1/2)N^{2j+1},
+ \qquad A_p(k-1)=A_p(k)+k^{-p}.
+\]
+The resulting ordered finite sums reduce by Faulhaber polynomials.
+Their constant coefficients give \eqref{adj:block}--\eqref{adj:a};
+all subtracted nonnegative even powers have continued sum zero because
+$\zeta(-2m,1/2)=0$.  Thus the conventions in
+\eqref{adj:forward} are tied to the original centered cutoff, rather
+than to an unspecified regularization.
+
+\subsection{A universal positive recurrence}
+
+Let
+\[
+ h(t)=\coth(t/2)=\sum_{k=0}^{\infty}h_k t^{2k-1},\qquad
+ h_k=\frac{2B_{2k}}{(2k)!},\qquad h_0=2.
+\]
+The ordinary Bernoulli sign formula gives
+\begin{equation}\label{adj:hsign}
+ h_k=(-1)^{k-1}\beta_k,\qquad
+ \beta_k=\frac{2|B_{2k}|}{(2k)!}
+ =\frac{4\zeta(2k)}{(2\pi)^{2k}}>0\quad(k\ge1).
+\end{equation}
+This is the $x=0$ case of the classical Bernoulli Fourier formula
+(DLMF~24.8.1).  Define rational numbers $c_n$ by
+\begin{align}
+ c_1&=1,\label{adj:c1}\\
+ c_n&=\frac{1}{4(2n-1)^2}
+ \sum_{r=1}^{n-1}\beta_{n-r}
+ \left\{2r(2r-1)+(2n-1)(2n-2)-2\mathbf1_{r=1}\right\}c_r
+ \quad(n\ge2).
+ \label{adj:positive-recurrence}
+\end{align}
+Every coefficient in this recurrence is strictly positive.  Indeed,
+for $r=1$ the expression in braces is $(2n-1)(2n-2)>0$, and for
+$r\ge2$ both its displayed summands are positive.  Therefore
+\begin{equation}\label{adj:cpositive}
+ c_n\in\mathbb Q_{>0}\quad(n\ge1).
+\end{equation}
+The first values are
+\[
+ c_1=1,\quad c_2=\frac1{36},\quad c_3=\frac{11}{5400},\quad
+ c_4=\frac{113}{705600},\quad
+ c_5=\frac{2509}{190512000},\quad
+ c_6=\frac{309713}{276623424000}.
+\]
+
+\begin{theorem}[Optimal prefix and exact determinant for adjacent orders]
+\label{adj:main}
+Let $b\ge2$, $p=2b-2$, and $q=2b$.  Define the square late-block
+matrix
+\[
+ M_b=(a_{b+r,k})_{0\le r,k<b}
+\]
+by \eqref{adj:a}.  Then
+\begin{equation}\label{adj:determinant}
+ \det M_b=
+ (-1)^{b(b-1)/2}\frac{((2b+1)!!)^2}{b!}\,c_{b+1}\ne0.
+\end{equation}
+Consequently $D_0,\ldots,D_{q-1}$ have full formal rank $q$ in
+the coordinate system
+\[
+ C_0,\ldots,C_{b-1},\quad\zeta(0),\zeta(2),\ldots,\zeta(2b-2).
+\]
+Every later $D_r$ is an explicit rational combination of these first
+$q$ moments.  In this coordinate ordering, the determinant of the
+complete first-$q$ moment matrix is
+\begin{equation}\label{adj:full-determinant}
+ (-1)^{b(b-1)/2}
+ \frac{((2b+1)!!)^2c_{b+1}}{b!(4b-1)!!}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For an even polynomial
+\[
+ Q(t)=\sum_{n=1}^{b}q_n t^{2n},
+\]
+introduce the operator
+\begin{equation}\label{adj:operator}
+ \mathcal L_Q(t)=\bigl(Q''(t)-Q''(0)\bigr)h(t)+(Q(t)h(t))''.
+\end{equation}
+It is an odd formal power series, and is holomorphic at zero when
+regarded analytically near zero.  The subtraction of $Q''(0)$ is
+essential: it is precisely the omitted lower-index-zero term in
+\eqref{adj:a}.
+
+Let $K_b$ be the matrix mapping $(q_1,\ldots,q_b)$ to the
+coefficients of $t,t^3,\ldots,t^{2b-1}$ in $\mathcal L_Q$.
+Direct coefficient extraction from \eqref{adj:a} gives
+\begin{equation}\label{adj:matrix-conjugacy}
+ K_b=\operatorname{diag}_{0\le r<b}\left(\frac2{(2r+1)!}\right)
+ M_b^{\mathrm{rev}}
+ \operatorname{diag}_{1\le n\le b}\bigl((2n)!\bigr),
+\end{equation}
+where $M_b^{\mathrm{rev}}$ reverses the column order.  This can
+also be read off from the inherited identity
+$2f^{(2b)}=\mathcal L_Q$ for the column generators, but no
+analytic continuation is needed for the coefficient calculation.
+More explicitly, with row $r=N-2$ and column $n$,
+\[
+ (K_b)_{N-2,n-1}
+ =h_{N-n}\{2n(2n-1)+(2N-1)(2N-2)-2\mathbf1_{n=1}\}
+\]
+when $n\le N$, and the entry is zero when $n>N$.
+
+Write $Q_*(t)=\sum_{n\ge1}q_n^*t^{2n}$ for the formal solution
+of $\mathcal L_{Q_*}=0$ normalized by $q_1^*=1$.  For $n\ge2$,
+the coefficient of $t^{2n-3}$ gives
+\begin{equation}\label{adj:q-recurrence}
+ 4(2n-1)^2q_n^*
+ +\sum_{r=1}^{n-1}h_{n-r}
+ \left\{2r(2r-1)+(2n-1)(2n-2)-2\mathbf1_{r=1}\right\}q_r^*=0.
+\end{equation}
+The nonzero coefficient of $q_n^*$ proves existence and uniqueness
+recursively.  Equations \eqref{adj:hsign} and
+\eqref{adj:positive-recurrence} show that
+\begin{equation}\label{adj:qsign}
+ q_n^*=(-1)^{n-1}c_n.
+\end{equation}
+In particular no coefficient vanishes.
+
+The matrix $K_b$ is upper Hessenberg.  Its row corresponding to
+$n=2,\ldots,b+1$ has the nonzero next-column entry
+$d_n=4(2n-1)^2$ whenever that column is present.  Successively
+using these entries to eliminate $q_2,\ldots,q_b$ shows
+\begin{equation}\label{adj:hessenberg-det}
+ \det K_b=(-1)^b q_{b+1}^*\prod_{n=2}^{b+1}d_n
+ =4^b((2b+1)!!)^2c_{b+1}.
+\end{equation}
+Here the last constraint is the one that would determine
+$q_{b+1}^*$ in the infinite formal solution; a polynomial has
+$q_{b+1}=0$.  One explicit determinant argument replaces the first
+column by itself plus $q_2^*,\ldots,q_b^*$ times the successive
+columns.  Its first $b-1$ entries become zero and its last entry
+is $-d_{b+1}q_{b+1}^*$.  Expanding along that column leaves a
+lower triangular minor with diagonal $d_2,\ldots,d_b$, proving
+\eqref{adj:hessenberg-det} with its stated sign.
+This also provides a determinant-free proof of
+injectivity: the first $b-1$ constraints force
+$q_n=q_1q_n^*$ through $n=b$, and the final one forces
+$q_1q_{b+1}^*=0$, hence $Q=0$.
+
+Taking determinants in \eqref{adj:matrix-conjugacy}, and using
+\[
+ \prod_{n=1}^{b}\frac{(2n-1)!}{(2n)!}=\frac1{2^bb!},
+\]
+proves \eqref{adj:determinant}.  The transform
+\eqref{adj:forward} is lower triangular with diagonal
+$1/(2r+1)$, and the first $b$ block rows are the identity on
+$C_0,\ldots,C_{b-1}$.  Its product of diagonal entries through
+$r=2b-1$ is $1/(4b-1)!!$.  This proves
+\eqref{adj:full-determinant} and the rank assertion.  Finally
+$M_b^{-1}$ reconstructs every even-zeta coordinate from
+$C_b,\ldots,C_{2b-1}$, while \eqref{adj:backward} obtains all
+these blocks from the first $2b$ moments.  Equations
+\eqref{adj:a} and \eqref{adj:forward} then reconstruct every
+later moment by finite rational arithmetic.
+\end{proof}
+
+\paragraph{A clarification about the range of the theorem.}
+The determinant formula proves the full infinite family $q-p=2$.
+The case $p=q$ was already proved in the incoming report.  General
+unequal gaps $q-p\ge4$ remain open here; the argument is not a
+proof of the complete source conjecture.  Its positivity mechanism
+uses a single free initial coefficient, which is specific to the
+second-order operator in \eqref{adj:operator}.
+Isolated larger-gap pairs, including $(p,q)=(2,6)$, were already
+treated in the source; the remaining question is the uniform assertion.
+
+\subsection{Ordinary convergent harmonic and polygamma identities}
+
+The inverse matrix produces explicit series identities without an
+unevaluated finite-part symbol.  For $0\le k<b$, define
+\begin{align}
+ w_{b,k,r}
+ &=\sum_{t=0}^{b-1}(M_b^{-1})_{kt}
+ \binom{2(b+t)+1}{2r}2^{-2(b+t-r)},
+ \label{adj:w}\\
+ P_{b,k}(x)&=\sum_{r=0}^{2b-1}w_{b,k,r}x^{2r},
+ \label{adj:P}
+\end{align}
+where a summand in \eqref{adj:w} is zero if $r>b+t$.  Put
+\begin{equation}\label{adj:alpha}
+ a_0=\frac1{(2b-3)(2b-1)},\qquad
+ a_1=-\frac{2b-2}{24(2b-1)}-\frac{2b}{24(2b-3)}.
+\end{equation}
+
+\begin{corollary}[All even-zeta coordinates from adjacent tails]
+\label{adj:ordinary}
+For every $b\ge2$ and $0\le k<b$,
+\begin{equation}\label{adj:ordinary-family}
+ \begin{split}
+ \sum_{n=0}^{\infty}\bigl\{&P_{b,k}(x_n)A_{2b-2}(n)A_{2b}(n)
+       -a_0w_{b,k,2b-1}x_n^2\\
+ &\hspace{12mm}-a_0w_{b,k,2b-2}-a_1w_{b,k,2b-1}\bigr\}
+ =\zeta(2k).
+ \end{split}
+\end{equation}
+The series is absolutely convergent.  Replacing the tail product by
+\begin{equation}\label{adj:polygamma}
+ A_{2b-2}(n)A_{2b}(n)
+ =\frac{\psi^{(2b-3)}(n+1)\psi^{(2b-1)}(n+1)}
+ {(2b-3)!(2b-1)!}
+\end{equation}
+gives the corresponding ordinary polygamma-product identity.
+\end{corollary}
+
+\begin{proof}
+By \eqref{adj:block}, inversion, and \eqref{adj:backward},
+$\sum_rw_{b,k,r}D_r=\zeta(2k)$.  The centered Hurwitz
+expansion gives
+\[
+ A_{2b-2}(n)A_{2b}(n)
+ =a_0x_n^{4-4b}+a_1x_n^{2-4b}+O(x_n^{-4b}).
+\]
+The largest possible degree in \eqref{adj:P} is $4b-2$.
+Thus the two displayed subtractions remove every nondecaying term,
+and the summand is $O(x_n^{-2})$.  Centered subtraction computes
+the same continued moment because the removed monomials have
+$\zeta(0,1/2)=\zeta(-2,1/2)=0$.  This proves the identity and
+absolute convergence.  Formula \eqref{adj:polygamma} is the
+standard Hurwitz-zeta expression for odd-order polygammas.
+\end{proof}
+
+\subsection{Two exact rational evaluations}
+
+For $(p,q)=(4,6)$, the late block matrix and its inverse are
+\begin{equation}\label{adj:46matrix}
+ M_3=\begin{pmatrix}
+ 0&3/4&1/4\\5/12&2/3&-1/12\\1&-3/8&1/12
+ \end{pmatrix},\qquad
+ M_3^{-1}=\frac1{339}
+ \begin{pmatrix}-28&180&264\\136&288&-120\\948&-864&360\end{pmatrix}.
+\end{equation}
+In particular $\det M_3=-113/384$.  Define
+\begin{equation}\label{adj:P46}
+ \begin{split}
+ P_{4,6}(x)={}&67+15516x^2+324320x^4+1434496x^6\\
+             &+1601280x^8+371712x^{10}.
+ \end{split}
+\end{equation}
+Then the first row of \eqref{adj:46matrix} after the inverse
+Bernoulli transform gives the ordinary identity
+\begin{equation}\label{adj:46rational}
+ \sum_{n=0}^{\infty}\left\{
+ P_{4,6}(x_n)A_4(n)A_6(n)
+ -\frac{123904}{5}x_n^2-\frac{316928}{5}
+ \right\}=-21696.
+\end{equation}
+The right side is $43392\zeta(0)$.  Thus every double-zeta
+coordinate and every positive even-zeta coordinate cancels
+exactly.
+
+For $(p,q)=(6,8)$, $\det M_4=2509/5120$.  Define
+\begin{equation}\label{adj:P68}
+ \begin{split}
+ P_{6,8}(x)={}&3705+880180x^2+32541904x^4+389667904x^6\\
+ &+1652632320x^8+2454887424x^{10}\\
+ &+1189933056x^{12}+138854400x^{14}.
+ \end{split}
+\end{equation}
+Its rational-coordinate identity is
+\begin{equation}\label{adj:68rational}
+ \sum_{n=0}^{\infty}\left\{
+ P_{6,8}(x_n)A_6(n)A_8(n)
+ -\frac{27770880}{7}x_n^2-\frac{98910208}{5}
+ \right\}=-7707648.
+\end{equation}
+The product in \eqref{adj:46rational} is
+$\psi^{(3)}(n+1)\psi^{(5)}(n+1)/720$; the product in
+\eqref{adj:68rational} is
+$\psi^{(5)}(n+1)\psi^{(7)}(n+1)/604800$.
+The coefficient files also contain the corresponding exact
+$\zeta(2),\zeta(4)$, and $\zeta(6)$ rows where applicable.
+
+\subsection{A hypergeometric expression for the determinant generator}
+
+The formal solution used in the proof has a separate exact expression.
+It is not needed for nonvanishing, but supplies a second coefficient
+algorithm.  Dividing \eqref{adj:operator} by $2h(t)$ gives
+\begin{equation}\label{adj:Qode}
+ Q_*''(t)-\operatorname{csch}(t)Q_*'(t)
+ +\frac{Q_*(t)}{4\sinh^2(t/2)}=1.
+\end{equation}
+Set $z=\tanh(t/2)$ and $Q_*(t)=4z^2F(z^2)$.  If
+$F(u)=\sum_{n\ge0}f_nu^n$, then
+\begin{equation}\label{adj:frecurrence}
+ f_0=1,\qquad (n+\tfrac12)^2f_n-n^2f_{n-1}=\tfrac14
+ \quad(n\ge1),
+\end{equation}
+and hence
+\begin{equation}\label{adj:fclosed}
+ f_n=\left(\frac{n!}{(3/2)_n}\right)^2
+ \sum_{k=0}^{n}\left(\frac{(1/2)_k}{k!}\right)^2.
+\end{equation}
+This follows by dividing \eqref{adj:frecurrence} by its homogeneous
+product and telescoping.  It is also a direct formal derivation of
+\eqref{adj:Qode}; the series converges near the origin, since the
+coefficients in \eqref{adj:fclosed} have at most polynomial growth.
+Consequently
+\begin{equation}\label{adj:detgenerator}
+ \sum_{n=1}^{\infty}(-1)^{n-1}c_nt^{2n}
+ =4\tanh^2(t/2)
+ \sum_{n=0}^{\infty}f_n\tanh^{2n}(t/2)
+\end{equation}
+as an analytic identity near zero.  The finite binomial-square sum
+in \eqref{adj:fclosed} connects the universal determinant
+coefficients to the classical complete-elliptic-integral
+hypergeometric series.  The present theorem uses this connection as
+an alternative exact representation, without claiming a new
+historical priority for that classical series.
+
+\subsection{Checks, source audit, and the remaining conjecture}
+
+The accompanying \texttt{verify\_adjacent\_tail\_prefix.py} compares
+the original Bernoulli-binomial matrix with an independent
+differential-operator construction, checks the determinant formula
+through $b=16$, and independently reconstructs the two displayed
+examples from the source $U/R$ block formulas, retaining formal
+double-zeta coordinates until their exact cancellation.  Its
+numerical option evaluates rational and nonrational rows by direct
+tail sums followed by an independently generated centered-Hurwitz
+tail.  Those residuals are diagnostics, not interval certificates
+or substitutes for the proofs above.
+
+No mathematical error in the inherited tail theorem is needed for
+this advance.  Two convention errors are explicitly excluded:
+omitting $Q''(0)h(t)$ changes the operator, and omitting the column
+reversal changes the determinant sign.  The source optimal-prefix
+conjecture should be updated to record the newly proved adjacent
+family, while retaining open status for general gaps at least four.

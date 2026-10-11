@@ -655,3 +655,33 @@ analytic acceptance of every delivered theorem.
 The two accepted cores extend Chapters 8 and 12 in their existing dependency
 order. Global priority, period independence and proof-assistant formalization
 are not asserted. External-paper errata remain pending primary-source audits.
+
+## Fourteenth intake: all-power finite parts and coefficient reconciliation
+
+Six packages were preserved in af4815fef0 and published via e82ddda729,
+with 194 originals, 189 tracked members and five ignored manifests
+recoverable in arrival history. All six complete mathematical replays pass
+on copies. Imported ZIPs were retired with placement. The cumulative census
+is 84 archives, 3111 tracked original members and 1251 textual provenance
+documents. Intakes retain their original layouts and notes.
+
+| Group | Accepted core and remaining scope |
+|---|---|
+| `algebraic-gauss-reflection` | Accept the inspected arXiv:2403.07123v1 initial-index correction from the primary PDF, with the correct Stieltjes recurrence and exact counterexample. The Gauss/Stirling, moving-reflection and centered-family extensions retain separate analytic integration scopes. |
+| `canonical-digamma-fifth` | Reconcile the independently derived fifth formula, its regular mixed derivative and the full Stieltjes coordinate conversion. Accept the inspected Young coefficient-description correction with an all-depth Cauchy proof and an exact depth-one sign certificate. Broader Gamma-Appell/differential normalization and tail-rank reconstructions retain separate analytic audits. |
+| `continuous-depth-lerch` | Preserved with full exact and all-group 50-digit numerical replay. Positive-complex-depth Meixner/Gamma semigroup, harmonic formulas and normalized primitive branches remain pending canonical proof reconciliation. |
+| `higher-digamma-powers` | Accept normalized Mittag-Leffler expansions, the complete boundary polynomial, every fixed positive-integer digamma finite part, the strict harmonic-word algorithm, complete fifth formula, normalized primitives and total-derivative polygamma identities. Ordered Gamma interpolation and proposed Bailey-Borwein/Mezo errata retain separate audits. |
+| `mixed-resolvents-harmonic-powers` | Reconcile its all-power/fifth harmonic compiler against the other two routes. All complex resolvent, higher collision, moving-amplitude and logarithmic-product branches retain separate analytic integration scopes despite full finite replay. |
+| `tilted-lerch-binary-cancellation` | Preserved with full exact replay and both 45-/60-digit numerical suites, retaining separate step outputs. Tilted/confluent Lerch closure, independent centers and infinite binary-cancellation families remain pending canonical proof integration. |
+
+The all-power core is organized in Chapter 8, with primary-source coefficient
+checks in Appendix A. The positive Cauchy representation is credited to
+existing literature; its elementary involution proof fixes the normalization.
+Formal fifth-polynomial cancellations depend on the retained coordinate ledger
+and do not establish arithmetic independence or universal scalar closure.
+
+A targeted S6 continuation adds 22 valid depth-five DS inputs, projected into
+F4 by the complete Cayley retraction. Nineteen pair nontrivially with the old
+separator and therefore lie outside the former bounded span plus ideal.
+The enlarged target search is ongoing; no S6 proof or nonmembership conclusion
+is claimed from modular output alone. Revised S8 remains conjectural.

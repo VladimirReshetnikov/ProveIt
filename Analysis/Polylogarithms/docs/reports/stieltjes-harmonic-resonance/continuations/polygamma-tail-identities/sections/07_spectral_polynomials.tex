@@ -1,0 +1,306 @@
+\section{Spectral coordinates for derivative-containing polynomials}
+\label{spectral:sec}
+
+The preceding normal forms reduce higher digamma moments to differential
+polynomials containing at least one positive derivative.  For this
+entire class, the following cancellation removes the convergence
+subtractions usually needed in a Mittag--Leffler expansion.  All finite
+parts in this section use the original coordinate $x$ at $x=0$.
+
+Put $\mathcal R=\Q[u_0,u_1,\ldots]$ and
+$\mathcal J=(u_1,u_2,\ldots)\subset\mathcal R$.  For $P\in\mathcal J$,
+write
+\[
+ f_P(z)=P\bigl(\psi(z),\psi'(z),\ldots\bigr),\qquad
+ f_P(-n+v)=\sum_{j=1}^{J}\frac{p_j(n)}{v^j}+O(1),
+ \qquad r(n)=p_1(n).
+\]
+Here $J$ is any common upper bound for the pole orders; zero coefficients
+are understood.  Let $\Delta a(n)=a(n)-a(n-1)$ for $n\geq1$.
+
+\begin{theorem}[Unsubtracted expansion and finite-part coordinates]
+\label{spectral:ML}
+For every $P\in\mathcal J$,
+\begin{equation}\label{spectral:MLseries}
+ \boxed{\displaystyle
+ f_P(z)=\sum_{n=0}^{\infty}\sum_{j=1}^{J}
+                    \frac{p_j(n)}{(z+n)^j}.}
+\end{equation}
+The series is absolutely and locally uniformly convergent away from
+$0,-1,-2,\ldots$.  For some fixed $A\geq0$, its coefficients satisfy
+\begin{align}
+ p_j(n)&=O\bigl(\log^A(n+2)\bigr),&
+ \Delta p_j(n)&=O\bigl(n^{-1}\log^A(n+2)\bigr),\label{spectral:pest}\\
+ r(n)&=O\bigl(n^{-1}\log^A(n+2)\bigr),&
+ \Delta r(n)&=O\bigl(n^{-2}\log^A(n+2)\bigr).
+ \label{spectral:rest}
+\end{align}
+Consequently the Dirichlet series
+\begin{equation}\label{spectral:DP}
+ D_P(s)=\sum_{n=1}^{\infty}\frac{\Delta r(n)}{n^s}
+\end{equation}
+is holomorphic for $\re s>-1$, and
+\begin{equation}\label{spectral:FP}
+ \boxed{\displaystyle
+ \FP\int_0^1 f_P(x)\dd x
+ =\sum_{n=1}^{\infty}\sum_{j=2}^{J}
+       \frac{\Delta p_j(n)}{(j-1)n^{j-1}}+D_P'(0).}
+\end{equation}
+Every series in \eqref{spectral:FP}, including
+$D_P'(0)=-\sum_{n\geq1}\Delta r(n)\log n$, converges absolutely.
+\end{theorem}
+
+\begin{proof}
+The reflection formula and polygamma asymptotic expansions used below
+are standard Gamma-function identities; see \cite[\S\S5.11,5.15]{DLMF}.
+Set
+\[
+ K(v)=-\pi\cot(\pi v),\qquad K'(v)=K(v)^2+\pi^2.
+\]
+For any real $L$, every $K^{(a)}$, $a\geq1$, is a polynomial in $K$
+divisible by $K^2+\pi^2$.  Since each monomial of $P$ contains a positive
+derivative, there is a polynomial $T_L$ such that
+\begin{equation}\label{spectral:frozen}
+ P\bigl(L+K(v),K'(v),K''(v),\ldots\bigr)
+       =\frac{\mathrm d}{\mathrm dv}T_L(K(v)).
+\end{equation}
+Indeed, divide the left side by $K^2+\pi^2$, integrate the resulting
+polynomial in $K$, and use the displayed differential equation for $K$.
+Thus the residue of \eqref{spectral:frozen} at $v=0$ is identically zero.
+
+Fix $0<\rho<1/2$.  At the pole $-n$, reflection gives
+\[
+ \psi(-n+v)=K(v)+\log n+\eta_n(v),\qquad
+ \eta_n(v)=\psi(n+1-v)-\log n.
+\]
+Extend the subscript to real $t\geq1$ in the rightmost formula.  Uniformly
+on $|v|\leq\rho$, any fixed finite collection of $v$ derivatives satisfies
+\[
+ \partial_v^a\eta_t(v)=O(t^{-1}),\qquad
+ \partial_t\partial_v^a\eta_t(v)=O(t^{-2})\quad(a\geq0).
+\]
+The first bound for $a=0$ includes the subtraction of $\log t$; the
+second includes its derivative.  Coefficient extraction on $|v|=\rho$
+therefore bounds every principal coefficient by a power of $\log t$,
+and its $t$ derivative by $O(t^{-1}\log^A(t+2))$.  For the residue,
+subtract \eqref{spectral:frozen} with $L=\log t$ before extracting the
+coefficient.  Its residue is zero, while the difference is
+$O(t^{-1}\log^A(t+2))$ and its $t$ derivative is
+$O(t^{-2}\log^A(t+2))$.  The mean value theorem on $[n-1,n]$ gives
+\eqref{spectral:pest}--\eqref{spectral:rest}; finitely many small $n$
+do not affect the estimates.
+
+For completeness, these local calculations leave no undetermined entire
+function in \eqref{spectral:MLseries}.  Use the circles
+$|w|=R_N=N+1/2$.  They stay at least $1/2$ from every integer.  In the
+right half-plane the usual asymptotics apply directly; in the left
+half-plane apply reflection to $1-w$.  On these circles one obtains
+\[
+ |\psi(w)|\leq C\log(R_N+2),\qquad
+ |\psi^{(a)}(w)|\leq C_a
+       \bigl(R_N^{-1}+e^{-c|\im w|}\bigr)\quad(a\geq1).
+\]
+The exponential term follows from the positive derivatives of cotangent;
+pole avoidance makes the estimate uniform also when $|\im w|$ is small.
+Hence
+\[
+ |f_P(w)|\leq C\log^A(R_N+2)
+                  \bigl(R_N^{-1}+e^{-c|\im w|}\bigr).
+\]
+For fixed $z$,
+\[
+ \oint_{|w|=R_N}\frac{f_P(w)}{w-z}\dd w
+     =O\!\left(\frac{\log^A(R_N+2)}{R_N}\right)\longrightarrow0,
+\]
+because $\int_0^{2\pi}e^{-cR_N|\sin\theta|}\dd\theta=O(R_N^{-1})$.
+The residue at $w=-n$ of the integrand is
+$-\sum_jp_j(n)/(z+n)^j$, and its residue at $w=z$ is $f_P(z)$.
+The residue theorem gives \eqref{spectral:MLseries}.  Its absolute normal
+convergence follows from \eqref{spectral:pest} and the extra factor
+$n^{-1}$ in the estimate for $r(n)$.
+
+Remove the finitely many principal terms at $0$.  The remaining series
+can be integrated uniformly on $[0,1]$.  For $j\geq2$, the pole at zero
+contributes $-p_j(0)/(j-1)$ to the finite part, and the other poles
+contribute
+\[
+ \sum_{n\geq1}\frac{p_j(n)}{j-1}
+                  \bigl(n^{1-j}-(n+1)^{1-j}\bigr).
+\]
+Summation by parts, with the vanishing boundary terms supplied by
+\eqref{spectral:pest}, gives the higher-pole sum in
+\eqref{spectral:FP}.  The simple pole at zero has finite part zero.
+The remaining simple-pole terms give
+\[
+ \sum_{n\geq1}r(n)\log\frac{n+1}{n}
+     =-\sum_{n\geq1}\Delta r(n)\log n=D_P'(0).
+\]
+Here the boundary term $r(N)\log(N+1)$ tends to zero.  The improved
+difference estimate proves the asserted holomorphy and all absolute
+convergence claims.
+\end{proof}
+
+\begin{corollary}[Anchored antiderivative]\label{spectral:primitive}
+Let $\Omega=\C\setminus(-\infty,0]$ and use the principal logarithm.
+For $z,z_0\in\Omega$, the function
+\begin{align}\label{spectral:primitiveformula}
+ F_P(z;z_0)={}&\sum_{n=0}^{\infty}r(n)
+       \bigl(\operatorname{Log}(z+n)-\operatorname{Log}(z_0+n)\bigr)
+       \notag\\
+ &+\sum_{n=0}^{\infty}\sum_{j=2}^{J}\frac{p_j(n)}{j-1}
+       \bigl((z_0+n)^{1-j}-(z+n)^{1-j}\bigr)
+\end{align}
+is locally normally convergent, satisfies $F_P(z_0;z_0)=0$, and has
+$\partial_zF_P(z;z_0)=f_P(z)$.  Its difference of logarithms must be
+retained for general complex anchors; it agrees with the principal
+logarithm of the ratio when $z_0$ is positive real.
+\end{corollary}
+
+\begin{proof}
+On a fixed compact subset of $\Omega\times\Omega$, the logarithm
+difference is $O(n^{-1})$, while the inverse-power difference in the
+$j$th term is $O(n^{-j})$.  The preceding coefficient bounds give normal
+convergence.  Termwise differentiation and
+\eqref{spectral:MLseries} finish the proof.
+\end{proof}
+
+\subsection{A finite conversion to convergent multiple-zeta coordinates}
+
+Use the descending-index convention
+\[
+ \zeta(s_1,\ldots,s_\ell)
+    =\sum_{n_1>\cdots>n_\ell\geq1}
+       n_1^{-s_1}\cdots n_\ell^{-s_\ell}.
+\]
+The depth is $\ell$.  Write $H_N(\alpha_1,\ldots,\alpha_\ell)$ for the
+same nested sum restricted to $N\geq n_1>\cdots>n_\ell\geq1$, and put
+$H_N(\varnothing)=1$.  A coordinate derivative differentiates one
+of the displayed arguments.  For the statements below, coefficients
+belong to $\Q[\gamma,\zeta(2),\zeta(3),\ldots]$; ordinary zeta factors
+in this coefficient ring are not counted as additional depth.
+
+\begin{theorem}[Constructive depth bound]\label{spectral:depth}
+Let $d\geq2$ be the largest number of factors in a monomial of $P$.
+Formula \eqref{spectral:FP} has a finite expression in convergent multiple
+zeta values and first derivatives in one coordinate of multiple-zeta germs,
+all of depth at most $d-1$.  Every germ can be chosen holomorphic for
+$\re s>-1$, with $s$ added to its first or second coordinate.
+The principal coefficients and this finite conversion
+are obtained by polynomial operations and finite stuffle products.
+If $d=1$, the finite part in \eqref{spectral:FP} is zero.
+\end{theorem}
+
+\begin{proof}
+Write $H_n^{(k)}=\sum_{a=1}^na^{-k}$, with $H_n=H_n^{(1)}$.
+The exact local series is
+\begin{equation}\label{spectral:localH}
+ \psi(-n+v)=-\frac1v+H_n-\gamma
+   +\sum_{k\geq1}
+       \bigl(H_n^{(k+1)}+(-1)^{k+1}\zeta(k+1)\bigr)v^k.
+\end{equation}
+Differentiate and multiply to compute the finitely many required
+$p_j(n)$.  Each term in a principal coefficient must use a singular
+factor, so $p_j(n)$ is a polynomial of harmonic degree at most $d-1$.
+Substitute $H_n^{(k)}=H_{n-1}^{(k)}+n^{-k}$ and subtract.  Thus
+\begin{equation}\label{spectral:differencepoly}
+ \Delta p_j(n)=\sum_{e\geq1}n^{-e}
+             S_{j,e}\bigl(H_{n-1},H_{n-1}^{(2)},\ldots\bigr),
+ \qquad \deg S_{j,e}\leq d-2,
+\end{equation}
+with only finitely many nonzero terms.  When $j\geq2$, the outer exponent
+in \eqref{spectral:FP} is $e+j-1\geq2$.  Finite stuffle multiplication
+therefore converts these terms to convergent multiple zeta values of
+depth at most $d-1$.  The same argument applies to the terms $e\geq2$
+in $D_P(s)$ and gives germs holomorphic for $\re s>-1$.
+
+The possible $e=1$ terms require the residue cancellation, not an
+unjustified separation into divergent multiple-zeta series.  Regard the
+residue as the finite polynomial $R(X_1,X_2,\ldots)$ obtained from
+\eqref{spectral:localH}.  Setting $X_k=\zeta(k)$ for $k\geq2$ turns that
+local series into $X_1-\gamma+K(v)$.  Equation
+\eqref{spectral:frozen} consequently gives the polynomial identity
+\[
+ R(X_1,\zeta(2),\zeta(3),\ldots)=0
+ \quad\hbox{for every }X_1.
+\]
+No algebraic independence of zeta values is being assumed here.
+The coefficient $S_{1,1}$ in \eqref{spectral:differencepoly} is
+$\partial_{X_1}R$.  It belongs to the ideal generated by
+$X_k-\zeta(k)$, $k\geq2$, and can be written as a sum of such factors
+times polynomials of degree at most $d-3$; when $d=2$ this coefficient
+vanishes.  On substitution each factor
+has the convergent upper-tail expansion
+\[
+ H_{n-1}^{(k)}-\zeta(k)=-\sum_{a\geq n}a^{-k},\qquad k\geq2.
+\]
+Expand the remaining polynomial by finite stuffle products.  Each term
+then uses a composition $\alpha$ of length at most $d-3$, and the exact
+conversion is
+\begin{equation}\label{spectral:tailconversion}
+ \boxed{\displaystyle
+ \sum_{n\geq1}\frac{(H_{n-1}^{(k)}-\zeta(k))H_{n-1}(\alpha)}{n^{1+s}}
+     =-\zeta(k,1+s,\alpha)-\zeta(k+1+s,\alpha),\quad k\geq2.}
+\end{equation}
+Indeed, separate the upper-tail index $a\geq n$ into $a>n$ and $a=n$.
+The largest resulting depth is $2+(d-3)=d-1$.  Every prefix sum of
+real parts exceeds its prefix length when $\re s>-1$, so both series
+on the right are absolutely convergent and holomorphic throughout that
+half-plane.  The spectral parameter occupies the second coordinate in
+the first series and the first coordinate in the second.  Differentiating
+at $s=0$ completes the conversion of $D_P'(0)$.
+
+If $d=1$, $P$ is a linear combination of positive derivatives of
+digamma.  All its principal coefficients are constant in $n$, so
+\eqref{spectral:FP} is zero.
+\end{proof}
+
+\begin{corollary}[Depth of the Gamma normal-form remainder]
+\label{spectral:Gammadepth}
+For $m\geq4$, write $\NN(\A_m)=u_0^m+R_m$.  The finite part of
+$R_m(\psi,\psi',\ldots)$ has a constructive expression in the preceding
+coordinates of depth at most $m-3$.
+\end{corollary}
+
+\begin{proof}
+Every monomial of $R_m$ contains a positive derivative.  Its factor
+degree has the same parity as $m$, and its weight is $m$; after removal
+of $u_0^m$ the factor degree is therefore at most $m-2$.  Apply
+Theorem~\ref{spectral:depth}.
+\end{proof}
+
+\subsection{Two explicit consistency checks}
+
+For $P=u_1^2$, the nonzero principal coefficients are
+\[
+ p_4(n)=1,\qquad p_2(n)=2\bigl(H_n^{(2)}+\zeta(2)\bigr),\qquad
+ r(n)=4\bigl(H_n^{(3)}-\zeta(3)\bigr).
+\]
+The general formula immediately yields
+\begin{equation}\label{spectral:trigammasquare}
+ \FP\int_0^1\psi'(x)^2\dd x
+       =2\zeta(3)+4\zeta'(3).
+\end{equation}
+This is also a useful numerical check because all subtractions at the
+origin are explicit.
+
+For $P=u_0u_1^2$, the residue difference is
+\[
+ \Delta r(n)=\frac{4(H_{n-1}^{(3)}-\zeta(3))}{n}
+       +\frac{2(H_{n-1}^{(2)}+\zeta(2))}{n^2}
+       +\frac{4(H_{n-1}-\gamma)}{n^3}.
+\]
+The upper-tail conversion gives the fully convergent expression
+\begin{align}\label{spectral:exampleDP}
+ D_P(s)={}&-4\zeta(3,s+1)-4\zeta(s+4)
+       +2\zeta(s+2,2)+2\zeta(2)\zeta(s+2)\notag\\
+       &+4\zeta(s+3,1)-4\gamma\zeta(s+3),\qquad \re s>-1.
+\end{align}
+In particular,
+\begin{equation}\label{spectral:digamma_trigammasquare}
+ \FP\int_0^1\psi(x)\psi'(x)^2\dd x
+       =\frac{35}{6}\zeta(4)-2\gamma\zeta(3)+D_P'(0).
+\end{equation}
+The term $\zeta(3,s+1)$ illustrates why the spectral derivative may
+move to an interior coordinate.  Separately writing
+$\zeta(s+1,3)-\zeta(3)\zeta(s+1)$ at $s=0$ would hide the cancellation
+that the upper-tail argument makes explicit.

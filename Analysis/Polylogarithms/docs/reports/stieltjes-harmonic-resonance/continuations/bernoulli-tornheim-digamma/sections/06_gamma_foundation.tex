@@ -1,0 +1,153 @@
+\section{Height-one Stieltjes coefficients and the inherited Gamma bridge}
+\label{sec:gamma-foundation}
+
+The sixth and seventh reductions use a height-one Laurent coefficient.
+We record its analytic definition and prove the inherited integral bridge
+in the exact convention needed here. These coefficient formulas are
+established in the incoming fifth-moment report and are related to the
+height-one series of Young \cite{CanonicalFifth,Young2024}; their inclusion
+does not constitute a new evaluation of generalized Stieltjes constants.
+
+For depth $d\ge1$, let
+\[
+ Z_d(s)=\zeta(s,\underbrace{1,\ldots,1}_{d-1})
+       =\sum_{n_1>\cdots>n_d\ge1}
+          \frac{1}{n_1^s n_2\cdots n_d},\qquad \re s>1.
+\]
+Define $c_j$ and $\lambda_{d,j}$ by
+\begin{align}
+ \frac1{\Gamma(1+u)}&=\sum_{j\ge0}c_ju^j,\label{eq:gamma-c-foundation}\\
+ Z_d(1+u)&=\sum_{j=0}^d c_ju^{j-d}
+                    +\sum_{j\ge1}\lambda_{d,j}u^j,
+ \qquad \lambda_d:=\lambda_{d,1}.
+ \label{eq:height-one-foundation}
+\end{align}
+The second expansion will follow from the next proposition. In particular,
+$\lambda_{1,j}=(-1)^j\gamma_j/j!$ and $\lambda_1=-\gamma_1$.
+The multiple coefficients $\lambda_{d,j}$ have a specified depth; they
+should not be identified with ordinary Hurwitz coefficients $\gamma_j(a)$
+without a further identity.
+
+For $v>0$, set
+\[
+ B(v)=-\log(1-e^{-v}),\qquad
+ V_d(v)=B(v)^d-\boldsymbol1_{(0,1)}(v)(-\log v)^d,
+\]
+and put
+\[
+ I_{d,r}=\int_0^\infty\frac{(\log v)^rV_d(v)}v\,dv
+ \quad(r\ge0).
+\]
+At zero, $V_d(v)=O(v(1+|\log v|^{d-1}))$; at infinity it
+decays exponentially. All these integrals converge absolutely.
+
+\begin{proposition}[Fixed Mellin normalization]
+\label{prop:height-one-foundation}
+For $d\ge1$, as a meromorphic identity in $\re u>-1$,
+\begin{equation}\label{eq:height-one-Mellin-foundation}
+ \Gamma(1+u)Z_d(1+u)
+ =u^{-d}+\frac{u}{d!}
+          \int_0^\infty v^{u-1}V_d(v)\,dv.
+\end{equation}
+Consequently the coefficients in \eqref{eq:height-one-foundation} satisfy
+\begin{equation}\label{eq:height-one-allcoeff-foundation}
+ \lambda_{d,j}=c_{d+j}
+       +\frac1{d!}\sum_{r=0}^{j-1}
+                     \frac{c_{j-1-r}}{r!}I_{d,r},\qquad j\ge1.
+\end{equation}
+If $\Lambda_d(u)=\Gamma(1+u)Z_d(1+u)-u^{-d}$, then
+$\Lambda_d^{(j)}(0)=jI_{d,j-1}/d!$ for $j\ge1$.
+\end{proposition}
+
+\begin{proof}
+The strict-index generating series with $d-1$ unit indices is
+$(-\log(1-y))^{d-1}/(d-1)!$. Termwise Mellin integration for
+$\re u>0$ therefore gives
+\[
+ \Gamma(1+u)Z_d(1+u)
+  =\frac1{(d-1)!}\int_0^\infty
+            \frac{v^u B(v)^{d-1}}{e^v-1}\,dv
+  =\frac{u}{d!}\int_0^\infty v^{u-1}B(v)^d\,dv.
+\]
+For the second equality integrate by parts, using
+$B'(v)=-(e^v-1)^{-1}$; both boundary terms vanish in this half-plane.
+Subtract the exact integral
+$\int_0^1v^{u-1}(-\log v)^d\,dv=d!/u^{d+1}$.
+The estimates above give holomorphy of the remaining integral for
+$\re u>-1$, locally uniformly with every spectral derivative.
+Expansion at zero and multiplication by \eqref{eq:gamma-c-foundation}
+prove all the coefficient identities.
+\end{proof}
+
+This calculation makes the Stieltjes content of the later formulas
+explicit: the spectral derivative data are ordinary convergent logarithmic
+Mellin integrals, with the subtraction at $v=1$ fixed in advance.
+
+Define the Gamma family
+\begin{equation}\label{eq:Cgamma-foundation}
+ G(x,t)=\frac{\Gamma(1-t)\Gamma(x)}{\Gamma(x-t)}
+       =\sum_{m\ge0}C_m(x)\frac{t^m}{m!}.
+\end{equation}
+At positive integer $x=n$, it is the familiar complete harmonic-star
+generator $\prod_{k=1}^{n-1}(1-t/k)^{-1}$; this classical connection
+is also discussed by Sesma \cite{Sesma}. At $x=0$, the residue of
+$G(x,t)$ is $-t$. Thus every $C_m$ with $m\ge2$ has a removable
+singularity there. Expansion of the constant term gives
+$C_m(0)=-m!\zeta(m)$, while $G(1,t)=1$ gives $C_m(1)=0$.
+
+\begin{proposition}[Inherited ordinary Gamma integral]
+\label{prop:Cgamma-integral-foundation}
+For every $m\ge2$,
+\begin{equation}\label{eq:Cgamma-integral-foundation}
+ \int_0^1C_m(x)\,dx=m!(c_m-\lambda_{m-1}).
+\end{equation}
+The integral is ordinary and the complete integrand is continuous on
+$[0,1]$.
+\end{proposition}
+
+\begin{proof}
+Use $F(x,t)=G(x,-t)$ and write $h_1(x)=\psi(x)+\gamma$. The function
+\[
+ \Psi(t)=\int_0^1\{F(x,t)-1+t h_1(x)\}\,dx
+\]
+is holomorphic near zero. Indeed the residues $t/x$ and $-t/x$
+cancel, leaving a jointly regular expression for $x\in[0,1]$ and
+$t$ in a sufficiently small closed disc. Hence
+\[
+ \Psi(t)=\sum_{m\ge2}\frac{(-1)^m t^m}{m!}
+                                  \int_0^1C_m(x)\,dx.
+\]
+For $\re t>0$, Euler's beta integral for $F$ and the ordinary
+digamma integral, combined before integration, yield
+\[
+ \Psi(t)=t\int_0^\infty
+   \left\{\frac{(1-e^{-v})^t-1}{v}
+                    +\frac{e^{-v}}{1-e^{-v}}\right\}\,dv-1.
+\]
+Fubini is justified for the combined integrand: at zero it is
+$O(v^{\re t-1}+1)$ after cancellation, and at infinity integration
+in $x$ leaves an exponentially decaying numerator divided by $v$.
+To put this in the fixed subtraction convention, integrate from a
+lower cutoff $\delta$, use
+$\int_\delta^\infty(e^v-1)^{-1}\,dv=-\log(1-e^{-\delta})$,
+and compare with $\int_\delta^1(v^t-1)\,dv/v$. Taking
+$\delta\downarrow0$ gives
+\begin{equation}\label{eq:gamma-Psi-foundation}
+ \Psi(t)=t\int_0^\infty
+ \frac{(1-e^{-v})^t-1
+       -\boldsymbol1_{(0,1)}(v)(v^t-1)}v\,dv.
+\end{equation}
+Near zero, $(1-e^{-v})^t-v^t=O(v^{\re t+1})$ uniformly on compact
+parameter sets; at infinity the numerator decays exponentially.
+Thus this equality continues holomorphically to a neighborhood of zero,
+and coefficients may be extracted under the integral. Its degree-$m$
+coefficient is $(-1)^{m-1}I_{m-1,0}/(m-1)!$.
+Comparing the two expressions for $\Psi$ gives
+$\int_0^1C_m=-mI_{m-1,0}$. Proposition~\ref{prop:height-one-foundation}
+then proves \eqref{eq:Cgamma-integral-foundation}.
+\end{proof}
+
+Individual terms in a differential expansion of $C_m$ can have divergent
+improper integrals even though $C_m$ itself is regular. The finite-part
+normal form in the next section is what permits those terms to be
+separated with their exact endpoint contributions retained.

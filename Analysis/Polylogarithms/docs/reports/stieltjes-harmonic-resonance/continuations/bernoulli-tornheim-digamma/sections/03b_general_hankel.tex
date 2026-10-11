@@ -1,0 +1,265 @@
+% Optional structural continuation; all formulas are exact.
+% Reuses the Padé polynomials pi_n, constants c_n and h_n from moment_rank.tex.
+\section{A fixed-size determinant for every pair of even orders}
+\label{sec:general-even-reduction}
+
+The preceding argument has a useful extension even where the final
+nonvanishing problem remains unsolved.  For $p=2a$, $q=2b$, with
+$1\leq a\leq b$, the optimal-prefix matrix is an explicitly scaled
+rank-$a$ perturbation of a shifted Bernoulli Hankel matrix.  The Hankel
+matrix is always nonsingular.  Moreover, the remaining determinant
+has size $a$, independently of $q$.
+
+For clarity, the general inherited moment notation is
+\[
+ D_{p,q}(s)=\sum_{n\ge0}A_p(n)A_q(n)(n+1/2)^{-s},
+ \qquad \re s>3-p-q,
+\]
+continued meromorphically thereafter, and $D_r=D_{p,q}(-2r)$.
+The same centered-parity argument proves regularity at these even
+arguments. The forward and inverse Bernoulli transforms
+\eqref{eq:forward-foundation}--\eqref{eq:inverse-foundation} remain valid,
+now with $C_j$ the constant term at $N\to\infty$ of
+\begin{align*}
+ &N^{2j+1}A_p(N)A_q(N)
+ +\sum_{k=1}^N k^{2j+1-q}A_p(k)\\
+ &\hspace{15mm}
+ +\sum_{k=1}^N k^{2j+1-p}A_q(k)
+ +\sum_{k=1}^N k^{2j+1-p-q}.
+\end{align*}
+For $j\ge b$ the inherited formula is
+$C_j=\sum_{k=0}^{b-1}a_{jk}Z_k$, with $Z_0=-1/2$ and
+$Z_k=\zeta(2k)$ for $k\ge1$. Here the coefficients depend on
+the indicated pair $(p,q)$. With $d=2j+1$ and
+$e=d-p-q+2k+1$, they are zero for $e<0$, and otherwise
+\begin{equation}\label{eq:general-source-entries}
+ a_{jk}=B_e\left\{
+ \frac{\binom{d-q+1}{p-2k}}{d-q+1}
+ +\frac{\binom{d-p+1}{q-2k}}{d-p+1}\right\}.
+\end{equation}
+Each summand is omitted unless its lower binomial index lies between
+$2$ and its upper index. These are the exact general formulas of
+\cite[Section 7]{CanonicalFifth}; the finite summation argument of
+Section~\ref{sec:tail-foundation} has the same form. In the formal
+coordinate order $C_0,\ldots,C_{b-1},Z_0,\ldots,Z_{b-1}$, the
+complete first-$q$ determinant is $\det M_{a,b}/(4b-1)!!$.
+The new theorems below evaluate or reduce the remaining square minor.
+
+Put
+\[
+ \mu_j=\begin{cases}B_{2j}/(2j)!,&j\geq0,\\0,&j<0,\end{cases}
+ \qquad H_{a,b}=(\mu_{t+k-a+1})_{0\leq t,k<b}.
+\]
+The convention $\mu_j=0$ for $j<0$ is part of this definition; it is
+not an analytic continuation of the formula for positive indices.
+
+\begin{lemma}[Factorization of the general source matrix]
+\label{lem:general-even-factor}
+Let $M_{a,b}=(a_{b+t,k})_{0\leq t,k<b}$, with the source's convention
+that a binomial summand is omitted when its lower index is less than
+$2$.  Define
+\begin{align*}
+ R_{tt}&=(2b+2t-2a+1)!,& E_{kk}&=\frac1{(2b-2k)!},\\
+ U_{tk}&=\mathbf1_{k<a}\,\mu_{t+k-a+1}
+ \frac{(2t+1)!(2b-2k)!}
+ {(2a-2k)!(2b+2t-2a+1)!}.
+\end{align*}
+Then
+\[
+ M_{a,b}=R(H_{a,b}+U)E,
+ \qquad \operatorname{rank}U=a.
+\]
+\end{lemma}
+
+\begin{proof}
+In the source entry formula put $j=b+t$ and
+$e=2(t+k-a+1)$.  When $e\geq0$, cancellation of the factorial in
+$B_e$ gives
+\[
+ a_{b+t,k}=\mu_{t+k-a+1}\left\{
+ \frac{(2b+2t-2a+1)!}{(2b-2k)!}
+ +\mathbf1_{k<a}\frac{(2t+1)!}{(2a-2k)!}\right\}.
+\]
+When $e<0$, both sides vanish by the stated convention.  This proves
+the factorization.  Only the first $a$ columns of $U$ are nonzero.
+Their first $a$ rows form an antitriangular matrix with nonzero
+antidiagonal, because $\mu_{t+k-a+1}=0$ for $t+k<a-1$ and
+$\mu_0=1$.  Thus its rank is exactly $a$.
+\end{proof}
+
+\begin{theorem}[Nonsingularity and inertia of all the shifted matrices]
+\label{thm:shifted-H-inertia}
+The real symmetric matrix $H_{a,b}$ is nonsingular for every
+$1\leq a\leq b$.  Its numbers of positive and negative eigenvalues
+are, respectively,
+\[
+ \begin{cases}
+ (b-h,h),&a=2h,\\
+ (h+1,b-h-1),&a=2h+1.
+ \end{cases}
+\]
+Consequently
+\[
+ \operatorname{sgn}\det H_{a,b}=
+ \begin{cases}(-1)^h,&a=2h,\\
+ (-1)^{b-h-1},&a=2h+1.
+ \end{cases}
+\]
+\end{theorem}
+
+\begin{proof}
+Euler's even-zeta evaluation gives
+\[
+ \mu_r=(-1)^{r-1}\,2\sum_{m\geq1}x_m^r,
+ \qquad r\geq1,\qquad x_m=(2\pi m)^{-2}.
+\]
+Conjugate $H_{a,b}$ by $\operatorname{diag}(1,-1,1,\ldots)$ and
+call the result $G$.  For $t+k\geq a$ its entries are
+$(-1)^a2\sum_{m\geq1}x_m^{t+k-a+1}$; on $t+k=a-1$ they are
+$(-1)^{a-1}$, and below that antidiagonal they are zero.
+Every moment matrix
+$\bigl(2\sum_m x_m^{i+j+s}\bigr)_{0\leq i,j<d}$ with $s\geq1$
+is positive definite: its quadratic form is
+$2\sum_m x_m^s P(x_m)^2$, and a nonzero polynomial cannot vanish
+at all the distinct positive points $x_m$.
+
+First let $a=2h$.  Partition after the first $h$ indices:
+\[
+ G=\begin{pmatrix}0&B\\B^{\mathsf T}&P\end{pmatrix}.
+\]
+Here $P$ is positive definite.  The first $h$ columns of $B$ form
+an antitriangular square matrix with antidiagonal $-1$, so $B$ has
+row rank $h$.  The Schur complement
+$-BP^{-1}B^{\mathsf T}$ is negative definite.  Congruence elimination
+therefore gives $b-h$ positive and $h$ negative eigenvalues.
+
+Now let $a=2h+1$ and partition after the first $h+1$ indices:
+\[
+ G=\begin{pmatrix}ee^{\mathsf T}&B\\
+ B^{\mathsf T}&-P\end{pmatrix},
+ \qquad e=(0,\ldots,0,1)^{\mathsf T}.
+\]
+The matrix $P$ is positive definite.  In the first $h$ rows of $B$,
+its first $h$ columns form an antitriangular matrix with
+antidiagonal $1$.  Hence
+$ee^{\mathsf T}+BP^{-1}B^{\mathsf T}$ is positive definite:
+if its quadratic form vanishes, first $e^{\mathsf T}v=0$ and then
+the indicated minor forces the remaining $h$ components of $v$ to
+vanish.  Congruence elimination gives $h+1$ positive and
+$b-h-1$ negative eigenvalues.  The case $a=b=1$ is simply
+$H_{1,1}=(1)$; empty blocks in the argument may otherwise be
+omitted.  Diagonal sign conjugation preserves inertia.
+\end{proof}
+
+There is a more explicit reduction than a matrix determinant lemma
+with an unevaluated $H_{a,b}^{-1}$.  Retain the monic polynomials
+$\pi_n$ and positive numbers $h_n,c_n$ constructed in the preceding
+Pad\'e calculation.  Write
+\[
+ \pi_n(x)=\sum_{t=0}^n p_{nt}x^t,
+ \qquad
+ p_{nt}=\frac{2(2n+2t+1)!(2n+1)!}
+ {(4n+2)!(2n-2t+1)!(2t)!}.
+\]
+For $0\leq i,k<a$ set $n_i=b-a+i$, and define the $a$-square matrix
+\begin{equation}\label{eq:general-small-A}
+ A_{ik}=\sum_{t=0}^{n_i}p_{n_i t}\mu_{t+k-a+1}
+ \left\{1+
+ \frac{(2t+1)!(2b-2k)!}
+ {(2a-2k)!(2b+2t-2a+1)!}\right\}.
+\end{equation}
+These are finite rational sums with explicitly specified coefficients.
+
+\begin{theorem}[Reduction to a determinant of size $a$]
+\label{thm:general-small-determinant}
+For $1\leq a\leq b$,
+\begin{equation}\label{eq:general-small-det}
+ \det M_{a,b}=
+ (-1)^{a(b-a)}
+ \frac{\prod_{t=0}^{b-1}(2b+2t-2a+1)!}
+      {\prod_{k=0}^{b-1}(2b-2k)!}
+ \left(\prod_{n=0}^{b-a-1}h_n\right)\det A.
+\end{equation}
+All displayed scalar factors are nonzero.  Thus the remaining
+optimal-prefix nonvanishing question is exactly $\det A\ne0$.
+This reduction by itself does not assert that nonvanishing.
+\end{theorem}
+
+\begin{proof}
+Let $\mathcal L_a(x^r)=\mu_{r-a+1}$ and recall
+$\mathcal N(x^r)=\mu_{r+1}$.  Then
+$\mathcal L_a(x^ag)=\mathcal N(g)$.  Replace row $n$ of
+$H_{a,b}+U$ by the linear combination whose coefficients are those
+of $\pi_n$, simultaneously for $0\leq n<b$.  This is a triangular
+row transformation with diagonal $1$.
+
+For a column $k\geq a$ the new entry is
+\[
+ \mathcal L_a(x^k\pi_n)=\mathcal N(x^{k-a}\pi_n).
+\]
+It vanishes when $k-a<n$, and equals $h_n$ when $k-a=n$.
+The last $a$ rows consequently vanish in the last $b-a$ columns,
+and their first $a$ columns are exactly $A$.  The first $b-a$ rows
+in the last $b-a$ columns form an upper triangular matrix with
+diagonal $h_0,\ldots,h_{b-a-1}$.  Moving the first $a$ columns past
+the other $b-a$ columns gives the sign $(-1)^{a(b-a)}$.
+Taking determinants and then restoring $R$ and $E$ proves the formula.
+\end{proof}
+
+For reference, the same reduction gives a fully explicit
+small determinant for the unperturbed Hankel matrix.  Put
+\[
+ f_\ell(n)=\frac1{(2\ell+1)!}
+ \prod_{r=0}^{2\ell-1}(2n-r)(2n+3+r),\qquad f_0(n)=1.
+\]
+Then
+\begin{equation}\label{eq:general-H-small-det}
+ \det H_{a,b}=(-1)^{a(b-a)}
+ \left(\prod_{n=0}^{b-a-1}h_n\right)
+ \left(\prod_{i=0}^{a-1}c_{n_i}\right)
+ \det\bigl(f_{a-1-k}(n_i)\bigr)_{0\leq i,k<a}.
+\end{equation}
+Indeed,
+\[
+ \mathcal L_a(x^k\pi_n)
+ =[z^{n+k-a+1}]F(z)q_n(z)
+ =[z^{n+k-a+1}]r_n(z)
+ =c_n f_{a-1-k}(n),
+\]
+where a negative coefficient index means zero.  The factorial
+coefficient formula for $r_n$ proves the last equality, including
+the zero when $n<a-1-k$.  In particular, the inertia theorem gives
+the exact sign statement
+\[
+ (-1)^{a(a-1)/2}
+ \det\bigl(f_{a-1-k}(b-a+i)\bigr)_{0\leq i,k<a}>0.
+\]
+
+\paragraph{A concrete route for the remaining even orders.}
+For each fixed $a$, the entries in \eqref{eq:general-small-A} can be
+reduced to finitely many nearby Bernoulli numbers by weighted
+binomial Bernoulli identities.  More explicitly, if
+$n=b-a+i$, $\ell=a-1-k$, and $N=2(n-\ell)+1\geq1$, the perturbation
+part of $A_{ik}$ is
+\[
+ \frac{2(2n+1)!(2b-2k)!}
+ {(4n+2)!(2a-2k)!N!}
+ \sum_{r=0}^{n-\ell}\binom N{2r}B_{2r}
+ (2r+2\ell+1)
+ (2n+2\ell+2r+1)^{\underline{2i}}.
+\]
+The underline denotes a falling factorial.  The polynomial weight
+has degree $2i+1\leq2a-1$.  Expressing it in the basis
+$(N-2r)^{\underline d}$ and using
+\[
+ \sum_{j=0}^N\binom Nj B_j(N-j)^{\underline d}
+   =N^{\underline d}B_{N-d}(1)
+\]
+therefore reduces it to Bernoulli numbers of orders at most $2a-1$
+below $N$, with the omitted $j=1$ term restored explicitly.
+When $n<\ell$ the perturbation entry is zero.  The small cases
+$N=1,3,\ldots,2i+1$ require retaining $B_1(1)=1/2$ and $B_0=1$;
+discarding them as generic odd-index zeros would be an error.
+This is a finite algebraic program for each $p$, followed by a
+genuine nonvanishing problem.  The sign theorem for $H_{a,b}$
+does not determine the sign or nonvanishing of its perturbation.

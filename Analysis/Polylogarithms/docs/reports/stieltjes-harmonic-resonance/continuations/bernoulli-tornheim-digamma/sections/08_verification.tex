@@ -1,0 +1,143 @@
+\section{Reproducibility and the limits of computation}
+\label{sec:verification}
+
+The accompanying package contains the complete typeset article, a single
+flattened \TeX\ source, the modular sources, eleven verification programs,
+their recorded JSON results, and an integration guide. The proofs in the
+article establish the uniform statements. The programs provide exact
+finite certificates and independent numerical diagnostics at explicitly
+specified orders.
+
+\subsection{Exact finite certificates}
+
+The order-two verifier constructs the matrix directly from the inherited
+binomial formula, without defining it by the proposed factorization.
+For every $b=2,\ldots,14$ it checks the determinant, the rank-one
+factorization, the Pad\'e inverse-row contraction, the rational extraction
+row, the shifted Hankel product, and the final factorial cancellation.
+It also checks the Pad\'e coefficient identities through the corresponding
+orders and reconstructs the ordinary-series examples at $b=2,3,4$.
+
+The order-four verifier checks the symbolic perturbation contractions,
+the resulting determinant polynomial, and its exact parity calculation.
+It also constructs the original source matrices for $b=3,\ldots,14$,
+including the exceptional smallest pair $(4,6)$. The general shifted-Hankel
+verifier checks all 45 pairs $1\le a\le b\le9$, comparing the source
+entries with the factorization, the determinant signs, the size-$a$
+reduction, and the weighted Bernoulli sums. The exact ranges supplement
+the uniform proofs of both new sections.
+
+The order-six program constructs the normalized $3\times3$ matrix with
+an indeterminate $b$. It proves the determinant normalization, constructs
+its numerator in the integer polynomial ring, and verifies the modulo-four
+specialization used in the nonvanishing proof. Direct matrices are also
+checked at $b=4,\ldots,12$, and the order-eight counterexample to the
+uniform valuation pattern is computed exactly. A separate short program
+checks the explicit $(4,6)$ ordinary tail identity. These computations
+are finite polynomial certificates, not interpolation from integer samples.
+
+The Tornheim symbolic verifier multiplies the Gamma and zeta Taylor
+series in exact rational arithmetic. It verifies both elementary
+restrictions on $J$, the full cubic direction formula, and both printed
+cancellation identities. A separate construction builds the linear
+restriction matrices for homogeneous polynomial germs through degree ten
+and checks the stated kernel dimensions. An additional independent script
+derives the three-ray cancellation directly from raw series and the two
+elementary constraints; it also detects a deliberately changed coefficient.
+
+The differential verifier checks every partition monomial at every
+weight through twelve. It verifies its exact decomposition into normal
+form and derivative, the zero normal form of every derivative column,
+the factor-degree counts, the adjoint concomitant, and the Gamma parity.
+It constructs the full degree-six and degree-seven polynomial identities,
+including the canonical endpoint constants. The Laurent principal part
+of the retained sixth mixed integral is checked symbolically as well.
+
+The checks over finite ranges confirm the formulas within those
+ranges. They do not by themselves prove the uniform statements.
+The identities certified with indeterminate $b$, including the
+integer-polynomial certificate in Section~\ref{rs:section}, are exact
+finite algebraic steps in the proofs. The uniform conclusions also
+use the Pad\'e coefficient argument, the Bernoulli congruences,
+holomorphic divisibility, and the terminating partition argument,
+as applicable. No external proof assistant was used to formalize
+the article's analytic proofs.
+
+\subsection{Independent numerical diagnostics}
+
+Table~\ref{tab:numerics} reports the main recorded comparisons. Every
+entry is floating-point evidence, not an interval enclosure. The numerical
+evaluators do not assume the identities they are checking.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Recorded numerical comparisons; residuals are diagnostic.}
+\label{tab:numerics}
+\begin{tabular}{@{}p{.33\textwidth}p{.36\textwidth}>{\raggedleft\arraybackslash}p{.24\textwidth}@{}}
+\toprule
+Identity & Independent evaluation & Absolute residual\\
+\midrule
+Ordinary $(2,4)$ tail sum & 100-digit tails; 100 initial terms and 24 asymptotic terms
+ & $9.93\cdot10^{-70}$\\[5pt]
+Ordinary $(2,6)$ tail sum & Same method, independently formed weight polynomial
+ & $3.20\cdot10^{-65}$\\[5pt]
+Ordinary $(2,8)$ tail sum & 100 digits; 120 initial terms and 32 asymptotic terms
+ & $3.28\cdot10^{-72}$\\[5pt]
+Three cubic Tornheim rays & Subtracted Mellin evaluation and odd-part extrapolation
+ & $6.30\cdot10^{-33}$\\[5pt]
+Canonical sixth digamma formula & Direct Laurent subtraction and separate height-one Mellin integral
+ & $5.63\cdot10^{-51}$\\[5pt]
+$(\psi')^2$ and $(\psi'')^2$ & Direct Laurent subtraction and ordinary quadrature
+ & $\begin{gathered}1.23\cdot10^{-90},\\1.77\cdot10^{-88}\end{gathered}$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+For the harmonic sums, the exact polynomial subtraction removes every
+nonnegative asymptotic power; the remaining inverse powers are summed
+by ordinary Hurwitz zeta values to accelerate a convergent series.
+For the independent $(2,8)$ check, increasing the precision and the
+tail parameters changed the residual from approximately
+$4.20\cdot10^{-52}$ to $3.28\cdot10^{-72}$.
+
+The Tornheim evaluator integrates the Jonqui\`ere expansion below $x=1$
+and sums an incomplete-Gamma tail above $x=1$. With 50-digit arithmetic,
+series index 48, tail index 110, and seven odd-part steps starting at
+$h=0.0008$, it gives
+\[
+ W_{1,2,3}'''(0)+4W_{2,3,1}'''(0)-5W_{3,1,2}'''(0)
+ \approx-451.3535195684862560644674145675405.
+\]
+The code does not use the proposed directional formula, fit $\Omega$
+or $\kappa$, or derive its values from the digamma moment.
+
+For the sixth identity, direct finite-part quadrature gives
+\begin{align*}
+ \FP\int_0^1P_6(\psi(x))\,dx
+  &\approx20.8226131542578224267340551051333,\\
+ \widetilde M_6
+  &\approx-3.40244508656918661747498017448045.
+\end{align*}
+The separate Mellin integral uses an explicit lower cutoff $10^{-60}$;
+the omitted piece is the limiting numerical effect in the displayed
+comparison. Its size was not promoted to a certified error bound. The
+formula itself follows from exact polynomial identities, exact endpoints,
+and the proved ordinary Gamma bridge.
+
+\subsection{Build and integration procedure}
+
+Run \src{python build.py} to regenerate the flattened source and PDF.
+The build uses \src{pdflatex} and resolves cross-references in repeated
+passes. Run \src{python verification/verify_all.py} for the exact
+certificates. The optional flag \src{--numerical} also runs the numerical
+diagnostics; the Mellin computation is the longest job.
+Required Python packages and the versions used are recorded in the
+package. The JSON files contain parameters and full recorded output,
+so a future replay can distinguish a change in arithmetic, a change in
+numerical settings, and a change in the mathematical claim.
+
+The integration guide maps each contribution to its source question and
+names the labels that may be imported into the manuscript. It proposes
+status edits without changing the pinned source checkout. The article is
+intended to be read and checked as a research continuation before those
+edits are adopted.

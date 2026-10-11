@@ -1,0 +1,93 @@
+\section{Context, scope, and conventions}
+\label{dhr:sec:context}
+
+\subsection{The continuation problem}
+The canonical \repo\ manuscript already has a substantial Gamma--harmonic
+and Hurwitz--Stieltjes calculus. In particular, the inspected mixed-Dougall
+chapter proves a normally convergent two-parameter Gamma germ, all its
+fixed mixed derivatives, a weighted trigamma square, and a quadratic
+zeta-tail family \cite{repo:readme,repo:dougall}. The manuscript also records
+an all-order Gauss proof of the corrected pure and mixed Choi harmonic
+families. Re-proving the one-variable coefficient engine would not by
+itself be a meaningful continuation.
+
+We instead ask what happens when a squared Vandermonde couples an arbitrary
+number of summation indices. There are two distinct questions. First,
+can the Gamma product still supply a correctly normalized Stieltjes
+subtraction when the sum ceases to converge? Second, does the increase
+in the number of indices force a comparable increase in polylogarithmic
+depth? We answer both for the first resonant determinantal family.
+
+The first answer requires attention to a distinction easily hidden by
+formal Laurent expansion: a spectral finite part is generally \emph{not}
+the constant term of a hard cutoff. The residue amplitude varies with
+the spectral parameter. Its derivative is precisely the discrepancy.
+The second answer is more economical than the number of variables
+suggests: for simple-pole rational weights at critical decay, only the
+bottom-right moment contains a harmonic number. This gives depth at most
+two at every particle number.
+
+\subsection{Main results and what they do not claim}
+Theorem~\ref{dhr:thm:gauss} evaluates the convergent discrete partition
+function by elementary determinant algebra and Gauss summation. Its
+classical ingredients are not presented as new. Theorems
+\ref{dhr:thm:resonance} and \ref{dhr:thm:jets} give the normally convergent
+resonance calculus and its all-order Stieltjes consequences. Theorems
+\ref{dhr:thm:rank-one} and \ref{dhr:thm:closure} give the finite-cutoff
+rank-one harmonic theorem and its all-particle depth-two consequence.
+The concrete formulas in Section~\ref{dhr:sec:explicit} are exact
+applications, not identities inferred from a numerical relation search.
+
+These are results proved in the present report. An exhaustive literature
+comparison has not established their global novelty. Nor do they prove
+a lower bound on the depth of any actual period. The manuscript explicitly
+distinguishes formal cyclotomic quotients from numerical period
+independence \cite{repo:quotients}; we retain that distinction. The short
+$S_6$ and $S_8$ identities remain outside the results proved here.
+
+\subsection{Notation and analytic conventions}
+For $k\geq0$, write $(x)_k=\Gamma(x+k)/\Gamma(x)$ for a rising
+factorial, and $\fall{x}{k}=x(x-1)\cdots(x-k+1)$ for a falling factorial.
+Empty products and empty determinants are one. We use
+\[
+ H_n^{(s)}=\sum_{j=1}^n j^{-s},\qquad H_n=H_n^{(1)},\qquad H_0^{(s)}=0.
+\]
+The gamma logarithmic derivative is $\psi=\Gamma'/\Gamma$. Our
+Stieltjes convention is
+\begin{equation}\label{dhr:eq:stieltjes-convention}
+ \zeta(1+u,\alpha)=\frac1u+
+ \sum_{k\geq0}\frac{(-1)^k}{k!}\gamma_k(\alpha)u^k,
+ \qquad \Rea\alpha>0.
+\end{equation}
+Thus $\gamma_0(\alpha)=-\psi(\alpha)$ and $\gamma_0(1)=\gamma$.
+Derivatives $\zeta^{(k)}(s,\alpha)$ are in the first, or order,
+variable unless specified otherwise. We use the standard branches of
+Gamma and Hurwitz zeta on the stated right half-planes
+\cite{dlmf:gamma,dlmf:hurwitz,dlmf:polygamma}.
+
+Within $|z|<1$, define
+\begin{equation}\label{dhr:eq:polylogs}
+ \Li_s(z)=\sum_{n\geq1}\frac{z^n}{n^s},\qquad
+ \Li_{p,1}(z,1)=\sum_{n>m\geq1}\frac{z^n}{n^pm}.
+\end{equation}
+The latter convention agrees with the two-argument convention
+$\Li_{p,1}(x,y)=\sum_{n>m\geq1}x^ny^m/(n^pm)$.
+In particular $\Li_{1,1}(z,1)=\tfrac12\log^2(1-z)$. All formulas
+initially in the disk use the logarithm analytic there and zero at
+$z=0$. Rational Laurent factors in $z$ in the displayed reductions
+have removable singularities after the full expression is assembled.
+Analytic continuation means continuation of this common germ, not an
+independent choice of branch for each summand.
+
+The complete exponential Bell polynomials are normalized by
+\begin{equation}\label{dhr:eq:bell}
+ \exp\left(\sum_{j\geq1}x_j\frac{t^j}{j!}\right)
+ =\sum_{k\geq0}\Bell_k(x_1,\ldots,x_k)\frac{t^k}{k!}.
+\end{equation}
+For example, $\Bell_1=x_1$, $\Bell_2=x_1^2+x_2$, and
+$\Bell_3=x_1^3+3x_1x_2+x_3$.
+
+Whenever a series of subtracted brackets is asserted to converge,
+the brackets are the summands. This does not license splitting the
+series into separately divergent components. All index and parameter
+derivatives in the results below are fixed finite orders.
