@@ -3810,9 +3810,38 @@ exactly. It gives no gain from constants alone, and with grading:
 | 8 | 203 134 | 444 179 | 262 144 |
 | 9 | 573 501 | 1 717 570 | 524 288 (fails by 9%) |
 
-**Next.** The same grading for Theorem 18.2 and Corollary 18.7 needs the
-threshold envelope too (`MReq_le_exp`, `Tloc_le_exp` and the nested-width
-threshold, graded). The model predicts lengths up to 12.
+**Theorem 18.2 and Corollary 18.7 up to length twelve (L.10a, same day).**
+- `Proofs18GradedThresholds`:
+  - `gradedNestExp_anti_blocks`;
+  - `gradedNestThr_le_exp`, whose bound `exp(X^(2^(max A B + 2)))` is
+    uniform in the number of blocks, because every root `^(1/e_J)` sees
+    `e_J ≥ e`;
+  - `threshDegG`, `MReq_le_expG` and `Tloc_le_expG`.
+- `Proofs18GradedLengths`:
+  - `envStepGT` and `envBound_stepG`;
+  - `genMuG`, from the Fejér cubic base `envBound_three`, so no phase
+    partition is needed;
+  - `envBound_allG` and `genMuG_fits` (by `decide`);
+  - `theorem_18_2_upto_twelve_of_profiles` and
+    `corollary_18_7_upto_twelve_of_profiles`.
+- The bridge `Proofs18GenericLengthsExplicit` gains
+  **`theorem_18_2_le_twelve`** and **`corollary_18_7_le_twelve`**. They are
+  stub-checked (`mkstub_182.py`) with the axioms
+  `section16RecurrenceProfileWith_explicit` and `theorem_18_2_le_six`.
+
+| length `L` | `genMuG (L−4)` | uniform `genMu` | `2^(L+9)` |
+|---|---|---|---|
+| 10 | 204 041 | 444 179 | 524 288 |
+| 11 | 574 408 | 1 717 570 (fails) | 1 048 576 |
+| 12 | 1 647 212 | 6 754 373 (fails) | 2 097 152 |
+| 13 | 4 789 661 (fails by 14%) | | 4 194 304 |
+
+**Where this leaves the route.** Grading changes the per-step cost from
+`Θ(4^k)` to `Θ(3^k)`, but the budget `2^(L+9)` (and `2^(d+10)` for 18.1)
+grows like `2^L`. Every length still needs the per-step cost to be
+`O(2^k)`, which is L.8's precision-free counts (the stackability gap).
+Tightening the class constant from 76 to about 68 (its fixed point is
+about 67) would add degree 9 and length 13, no more.
 
 **Technique notes.**
 - `set k := P.k` changes only the hypotheses present at that moment.

@@ -1112,6 +1112,8 @@ import GowersSzemeredi.Proofs16VertexWeightCounts
 import GowersSzemeredi.Proofs18GradedDensity
 import GowersSzemeredi.Proofs18GradedExponents
 import GowersSzemeredi.Proofs18GradedDegrees
+import GowersSzemeredi.Proofs18GradedThresholds
+import GowersSzemeredi.Proofs18GradedLengths
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
