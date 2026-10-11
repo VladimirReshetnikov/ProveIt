@@ -1083,6 +1083,10 @@ import GowersSzemeredi.Proofs16AllDimensionsExplicit
 import GowersSzemeredi.Proofs16SplitUniformClass
 import GowersSzemeredi.Proofs16SplitStepBounds
 import GowersSzemeredi.Proofs16SplitAllDimensions
+import GowersSzemeredi.Proofs18UniformCovers
+import GowersSzemeredi.Proofs18GenericLifts
+import GowersSzemeredi.Proofs18GenericModulus
+import GowersSzemeredi.Proofs18GenericStep
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
