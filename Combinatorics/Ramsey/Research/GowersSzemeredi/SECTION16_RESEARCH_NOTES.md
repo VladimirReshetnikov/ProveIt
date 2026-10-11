@@ -3477,6 +3477,73 @@ symbolically in `k` with an explicit degree hypothesis, so that a better
 remainder step would extend them without rework. `theorem_18_2` and
 `corollary_18_7` for every length stay open.
 
+### L.7b Theorem 18.2 and Corollary 18.7 at every length up to ten (2026-10-11)
+
+**Done.** `theorem_18_2_le_ten` and `corollary_18_7_le_ten`
+(Proofs18GenericLengthsExplicit, a bridge, stub-checked faithfully).
+The light statements are `theorem_18_2_upto_ten_of_profiles` and
+`corollary_18_7_upto_ten_of_profiles` (Proofs18GenericLengths). Their
+hypotheses are the same as those of `theorem_16_2_of_profiles_all`: the
+recurrence profiles in every dimension, with
+`Kc k + pc k ≤ 2^(2^(2^(k+5)))`.
+
+The route has five layers.
+
+*1. Uniform covers* (Proofs18UniformCovers). Every cover in dimension
+`l ≤ k` is weakened to one control,
+`uCount V D = max 1 ((4V/(γθρ))^D)`, at `V = classV`, `D = 2^(76·2^k)`.
+Dimension one comes from `polyCoverAt_one`; dimensions `2…k` come from the
+split classes.
+
+*2. The generic step* (GenericLifts, GenericModulus, GenericStep).
+- The lift density is `X^(−a)·t^b` on `(0,1]`, so its `r`-fold nest has a
+  closed form.
+- The lift width is `⌈L^ε⌉` above an explicit threshold.
+- `ls_modulus_conditions` is ported to dimension `k` and nest depth
+  `2^k − 1`.
+- `GenParams.inverse_step` is `single_piece_inverse_step_global` with every
+  input supplied.
+
+*3. Power-of-two envelopes* (GenericEnvelopeBase, Density, Exponents,
+Thresholds). Every parameter is bounded by `X^(2^μ)` or `exp(X^(2^μ))`, so
+log-degrees add. The constants are absorbed with `X ≥ 2` only, at the price
+of a few units of `μ`:
+- `yIn⁻¹ ≤ X^(2^densDeg)`;
+- `Eloc⁻¹ ≤ X^(2^(expDeg+3))`;
+- `Tloc ≤ exp(X^(2^threshDeg))`.
+
+*4. Envelopes in every degree* (GenericEnvelopeStep). `EnvBound d μ` holds
+when the degree-`d` bound has `β⁻¹ ≤ X^(2^μ)`, `σ⁻¹ ≤ exp(X^(2^μ))` and
+`T ≤ exp(exp(X^(2^μ)))`. Degree three holds at `μ = 62` (Fejér), and
+`envBound_step` gives `μ ↦ envStep k … μ`.
+
+*5. The comparison* (GenericSzemeredi). `EnvBound (L−2) μ` gives
+`Theorem182At L` once `μ + 2L + 14 ≤ 2^(L+9)`. The proof uses
+`2/α ≤ (δ⁻¹)^(2^(2L+4))` and the double-exponential closed threshold.
+
+**The numbers** (`genMu`, checked by `decide`):
+
+| L | `genMu (L−4)` | `2^(L+9)` |
+|---|---|---|
+| 6 | 3 655 | 32 768 |
+| 7 | 10 181 | 65 536 |
+| 8 | 32 831 | 131 072 |
+| 9 | 116 869 | 262 144 |
+| 10 | 440 367 | 524 288 |
+| 11 | 1 709 669 | 1 048 576 (fails) |
+
+These match the L.7a estimate. Length eleven fails by the nest factor
+`(μD+1)(2^k−1)` alone.
+
+**Technique notes.**
+- Large proofs over `GenParams.std …` terms with `set` time out in whnf.
+  Split them into lemmas over plain reals and compose by `rfl`.
+- `positivity` on `section5LocalRefinementConstant`, on
+  `polynomialPartitionConstant` and on `eta` unfolds them and times out.
+  Supply nonnegativity explicitly.
+- `omega` lifts `2^n` to an `Int` atom without a sign. Add
+  `Nat.one_le_two_pow` facts.
+
 ## F. Routes
 
 1. **Quantitative repair (research).**
