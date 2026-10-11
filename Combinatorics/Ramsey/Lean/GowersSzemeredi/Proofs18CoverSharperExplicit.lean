@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs18CoverExplicit
 import GowersSzemeredi.Proofs18CoverSharper
 import GowersSzemeredi.Proofs18CoverTightBase
+import GowersSzemeredi.Proofs18CoverColorings
 
 /-! **Sharper exponents for Theorems 18.1 and 18.2, from the explicit
 profiles** (Notes L.15).
@@ -11,7 +12,9 @@ profiles** (Notes L.15).
   threshold `2^(2^(δ⁻¹^(2^(2^(L+6)))))` (printed: `L + 9`);
 * with the tight base budget (`Proofs18CoverTightBase`):
   `theorem_18_1_d7_four_le` (exponent `α^(2^(2^(d+7)))`, every `d ≥ 4`) and
-  `theorem_18_2_L5_eleven_le` (`L + 5`, every `L ≥ 11`). -/
+  `theorem_18_2_L5_eleven_le` (`L + 5`, every `L ≥ 11`);
+* Corollary 18.7 at the same thresholds: `corollary_18_7_sharper_six_le`
+  and `corollary_18_7_L5_eleven_le`. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -57,5 +60,13 @@ theorem theorem_18_2_L5_eleven_le {L : Nat} (hL11 : 11 ≤ L) : Theorem182AtShar
     (fun k => Nat.mul_pos (Nat.succ_pos k) (multiaffinePartitionP_pos _ _))
     (fun k _ => section16RecurrenceProfileWith_explicit k)
     (fun k => explicit_family_constants_le k) hL11
+
+/-- **Corollary 18.7 at every length `L ≥ 6` with `L + 6` in place of `L + 9`.** -/
+theorem corollary_18_7_sharper_six_le {L : Nat} (hL6 : 6 ≤ L) : Corollary187AtSharp 6 L :=
+  (theorem_18_2_sharper_six_le hL6).corollary_18_7
+
+/-- **Corollary 18.7 at every length `L ≥ 11` with `L + 5` in place of `L + 9`.** -/
+theorem corollary_18_7_L5_eleven_le {L : Nat} (hL11 : 11 ≤ L) : Corollary187AtSharp 5 L :=
+  (theorem_18_2_L5_eleven_le hL11).corollary_18_7
 
 end LeanProofs.GowersSzemeredi

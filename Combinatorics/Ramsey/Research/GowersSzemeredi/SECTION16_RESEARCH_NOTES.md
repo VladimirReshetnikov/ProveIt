@@ -4153,6 +4153,15 @@ cover degree and the slice controls would have to shrink: the
 `68·2^l` class degree (L.10b fixed point `67·2^l`) alone already costs
 `3·68·2^k` per step.
 
+**L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
+parameterized threshold is the five-level two-colour tower with `k + c` on
+top (`szemerediThresholdAt_half`), so `Theorem182AtSharp.corollary_18_7`
+transfers both improvements: `corollary_18_7_sharper_six_le` (`L + 6`,
+every `L ≥ 6`) and `corollary_18_7_L5_eleven_le` (`L + 5`, every `L ≥ 11`);
+`Proofs18CoverColorings` (light) and the bridge
+`Proofs18CoverSharperExplicit` (stub axiom:
+`section16RecurrenceProfileWith_explicit` only).
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
