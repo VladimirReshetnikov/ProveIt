@@ -16,7 +16,7 @@ after main merges and a safely rejected push race. Their 174 members include
 in arrival history. Their ZIPs were retired with the placement commit.
 All five complete suites pass on copies. Cumulative preservation is sixty
 archives and 2273 tracked originals, with 894 textual provenance documents.
-Fourteen later committed reports remain in incoming for their own intake.
+Seventeen later committed reports remain in incoming for their own intake.
 
 Independent audits compare 315 common exact contact formulas and reject two
 corruptions. The tail audit checks 31 partial fractions, 31 sparse reductions,

@@ -46,7 +46,7 @@ sum(k>=1) k (2(zeta(3)-H_(k-1)^(3))-k^(-3))^2 = 3 zeta(4)-zeta(5).
 ```
 
 Volume I retains the weighted real arctangent Li3 family, its signed
-inverse-hyperbolic companion and the 7 zeta(3)/2 endpoint. Fourteen further
+inverse-hyperbolic companion and the 7 zeta(3)/2 endpoint. Seventeen further
 committed arrivals remain in the drop zone pending their own preservation
 and proof audits. Other incoming analytic claims retain the ledger's
 pending scope; S6 and S8 remain open.

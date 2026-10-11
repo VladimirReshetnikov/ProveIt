@@ -12,7 +12,7 @@ new numbered sections are appended. The 894-document source inventory maps
 accepted proofs, corrections and pending analytic integration. Sixty
 archives preserve 2273 tracked original members; the latest five ZIPs were
 retired in placement commit cd0d94dfc8 and published via 921b58f109. Originals
-and fresh replay receipts are separate. Fourteen further committed arrivals
+and fresh replay receipts are separate. Seventeen further committed arrivals
 await intake; they are not counted as imported or accepted.
 
 Chapter 9 proves the complete all-index periodic contact comparison in the

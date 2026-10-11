@@ -618,6 +618,6 @@ diagnostic is retained, and the corrected full replay passes.
 The periodic contact answers the prior specific open extension question
 only in the fixed unit coordinate. It does not equate arbitrary geometric
 collision limits with merged finite parts, nor prove independence of
-zeta coordinates. Fourteen more committed deliveries arrived during publication
+zeta coordinates. Seventeen more committed deliveries arrived during publication
 and await the next intake. S6, revised S8 and the broader research goal
 remain active.
