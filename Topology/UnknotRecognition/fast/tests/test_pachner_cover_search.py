@@ -92,7 +92,7 @@ class PachnerCoverTests(unittest.TestCase):
         raw, heights = fixture['triangulation'], fixture['heights']
         old = search_pachner_regions(raw, heights, max_region_size=3,
             max_nodes=None, seek_disc=False)
-        shared = search_pachner_cover(raw, heights, max_region_size=3, max_nodes=None)
+        shared = search_pachner_cover(raw, heights, max_region_size=3, max_nodes=None,cover_backend='indexed')
         self.assertEqual(shared['stats']['nodes'], 5)
         self.assertEqual(shared['stats']['unique_endpoints'], 5)
         self.assertEqual(shared['stats']['maximum_consumed_initial'], 3)
@@ -118,12 +118,12 @@ class PachnerCoverTests(unittest.TestCase):
             answer = search_pachner_cover(raw, heights, max_region_size=3, **options)
             self.assertEqual(answer['status'], 'INCONCLUSIVE')
             self.assertNotIn('certificate', answer)
-        whole = search_pachner_cover(raw, heights, max_region_size=3, max_nodes=None)
+        whole = search_pachner_cover(raw, heights, max_region_size=3, max_nodes=None,cover_backend='indexed')
         exact = whole['stats']['work']
         enough = search_pachner_cover(raw, heights, max_region_size=3,
-                                     max_nodes=None, max_work=exact)
+                                     max_nodes=None, max_work=exact,cover_backend='indexed')
         short = search_pachner_cover(raw, heights, max_region_size=3,
-                                    max_nodes=None, max_work=exact-1)
+                                    max_nodes=None, max_work=exact-1,cover_backend='indexed')
         self.assertEqual(enough['status'], 'COMPLETE_BOUNDED_COVER_FAMILY')
         self.assertEqual(short['status'], 'INCONCLUSIVE')
         region_cap = whole['stats']['regions_indexed']
