@@ -4098,6 +4098,40 @@ declarations across the three arithmetic modules, permitting only
 the analytic construction is running serially against the original
 Gowers proof modules, without a stub environment.
 
+### L.15 Sharper exponents: Theorem 18.1 at `d + 8`, Theorem 18.2 at `L + 6` (2026-10-11)
+
+The joint-cover envelopes of L.12 are a quarter of the printed budgets, so
+the same proofs give smaller tower constants. This connects the candidate
+budgets of L.13–L.14 to the production inverse step.
+
+- `Proofs18CoverSharper` (light, kernel-checked):
+  - `section18ExponentAt c` and `Theorem181AtSharp c k` (Theorem 18.1 with
+    `k + c` in place of `k + 10`), `szemerediThresholdAt c` and
+    `Theorem182AtSharp c k` (Theorem 18.2 with `k + c` in place of `k + 9`);
+    at the printed constants they are the catalogue statements
+    (`theorem181AtSharp_ten_iff`, `theorem182AtSharp_nine_iff`, both
+    `Iff.rfl`), and `Theorem181AtSharp.mono` weakens `c`;
+  - the exponent and threshold lemmas with the constant as a parameter
+    (`section18ExponentAt_le_of_inv_le`, `double_exp_le_szemerediThresholdAt`,
+    `theorem181AtSharp_of_polyEnvBound`, `theorem182AtSharp_of_envBound`);
+  - `cube_le_two_pow_sharp` (`(k+3)³ ≤ 32·2^k`) and
+    `genMuC_le_sharp` (`genMuC k ≤ 1000·2^k`);
+  - `theorem_18_1_sharper_of_profiles_cover`: `Theorem181AtSharp 8 d` for
+    every `d ≥ 4` (`polyGenMuC (d−2) + 1 ≤ 1024·2^(d−2) = 2^(d+8)`);
+  - `theorem_18_2_sharper_of_profiles_cover`: `Theorem182AtSharp 6 L` for
+    every `L ≥ 6` (`genMuC (L−4) + 2L + 14 ≤ 1024·2^(L−4) = 2^(L+6)`).
+- Bridge `Proofs18CoverSharperExplicit` (heavy; faithful stub
+  `mkstub_sharp.py`): `theorem_18_1_sharper_four_le` (axioms: the three
+  corpus theorems of L.12's Theorem 18.1) and `theorem_18_2_sharper_six_le`
+  (axiom: `section16RecurrenceProfileWith_explicit` only — no low-length
+  case is involved).
+
+Degrees below four and lengths below six keep the printed constants (their
+proofs are the corpus's). **The method stops here:** the exact envelope
+recursion grows like `536·2^k` (L.12's model), above `512·2^k`, so `d + 7`
+and `L + 5` would need a smaller per-step cost than `268·2^k`, i.e. a
+smaller class degree than `68·2^l` or a cheaper spectrum and slice stage.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
