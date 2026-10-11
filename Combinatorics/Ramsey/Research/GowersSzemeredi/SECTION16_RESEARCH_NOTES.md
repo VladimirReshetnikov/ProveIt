@@ -3304,6 +3304,62 @@ as they were at length six.
 so families of class pieces can be padded with empty pieces, as in
 dimension three.
 
+### L.6b Route (II) is complete: Theorem 16.2 and Corollary 16.11 in every dimension (2026-10-11)
+
+**Result.**
+- `theorem_16_2_explicit : theorem_16_2` and
+  `corollary_16_11_explicit : corollary_16_11` (Proofs16AllDimensionsExplicit).
+  The bridge is stub-checked faithfully: the port's Schmidt and partition
+  definitions are copied verbatim under their real names. The only extra
+  axiom is `section16RecurrenceProfileWith_explicit`, the kernel theorem the
+  length-six bridge already uses. Final verification is on the
+  full-verification host.
+- Everything else is light and kernel-checked locally, with axioms propext,
+  Classical.choice and Quot.sound.
+
+**The chain (stages E1–E6).**
+
+| Stage | Module | Content |
+|---|---|---|
+| E1 | Proofs16PowerUniformClass | `PowerUniformClass` (downward closed, contains ∅, per-relation decomposition, family cover with power controls in `uniformBase`); dimension two is a class |
+| E2 | Proofs16FaceLifts | `cylAt` lifts along any coordinate (`liftPerm`), `relSumFin` |
+| E3 | Proofs16CoordinateSelections, Proofs16ClassPieces | product property through coordinate maps; vertex faces as `k`-dimensional product functions; `ClassPiece` and `class_piece_data` |
+| E4 | Proofs16ClassPieceCover, Proofs16ClassStep | the family cover through `abstract_family_piece_cover_with`; greedy decomposition |
+| E5 | Proofs16ClassStepBounds, Proofs16ClassStepDegrees | parameters in every dimension; `powerUniformClass_succ` with explicit degrees |
+| E6 | Proofs16AllDimensions, Proofs16WeylBudgetGrowth, Proofs16AllDimensionsExplicit | induction, tower comparison, constants |
+
+**Three ideas made it work.**
+1. *Faces as cylinders.* Each remainder vertex `e ≠ 1` ignores a coordinate
+   `i` with `e i = false`. Read through `dropAt (castSucc i)`, it is a
+   `k`-dimensional product function: the product property passes through
+   coordinate maps, and ignored inputs have constant restrictions with full
+   additive energy. So the step uses the class in dimension `k` only, with no
+   strong induction over lower faces.
+2. *The printed slack.* The printed count is `c^(−M·r)` with
+   `r ≥ 2^(2^(2^(k+6)))`. Degrees up to that tower fit (L.6a), so crude
+   symbolic bounds suffice even though degrees square per dimension.
+3. *Constants via the Weyl budget.* With the invariant
+   `weylBudget j B ≤ 2^(weylBudgetLog j)·B^(weylBudgetDeg j)`, the Schmidt
+   constants are at most `2^(O(6^j))`. So the family-lemma constants satisfy
+   `Kc k + pc k ≤ 2^(2^(2^(k+5)))` with an enormous margin.
+
+**Lean traps of this stage.**
+- `positivity` unfolds `classVertexNum k` (a `Finset.card` over
+  `Fin k → Bool`) and diverges for symbolic `k`. Supply nonnegativity by
+  hand.
+- `omega` gives power atoms no nonnegativity (supply `Nat.zero_le`), and
+  renormalizes `6^(k+2)` as `6·6^(k+1)`, losing links. Use explicit `calc`.
+- A plain `str.replace` in a patch script can silently match nothing.
+  Always assert the count.
+
+**Still open in the catalogue.**
+- Theorem 18.1 at degree ≥ 3. The Section 13 localization loss is
+  exponential (L.6, side finding).
+- Theorem 18.2 and Corollary 18.7 at length ≥ 7. They need the
+  single-piece inverse theorem in every degree. Its input `PolyCoverAt` is
+  now available in every dimension (`PowerUniformClass.polyCoverAt` at
+  every `k`).
+
 ## F. Routes
 
 1. **Quantitative repair (research).**

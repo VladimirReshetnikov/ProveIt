@@ -1078,6 +1078,8 @@ import GowersSzemeredi.Proofs16ClassStep
 import GowersSzemeredi.Proofs16ClassStepBounds
 import GowersSzemeredi.Proofs16ClassStepDegrees
 import GowersSzemeredi.Proofs16AllDimensions
+import GowersSzemeredi.Proofs16WeylBudgetGrowth
+import GowersSzemeredi.Proofs16AllDimensionsExplicit
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
