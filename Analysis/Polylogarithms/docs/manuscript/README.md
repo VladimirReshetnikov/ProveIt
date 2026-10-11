@@ -7,37 +7,49 @@ organized as four volumes. Each has its own source and compiled PDF.
 |---|---|---|---:|
 | I | Polylogarithm identities, cyclotomic coordinates, algebraic ladders and Gaussian/Eisenstein reductions | [Polylogarithm Identities and Arithmetic Reductions](volumes/volume-1-polylogarithm-identities.pdf) | 128 |
 | II | Signed kernels, angular and all-depth zero geometry, exact computation and experimental discovery; literature appendix | [Signed Kernels, Zero Geometry and Experimental Discovery](volumes/volume-2-signed-kernels.pdf) | 119 |
-| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 168 |
+| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 184 |
 | IV | Gamma grids, CM lattice periods, class products and Herglotz arithmetic | [Gamma Grids, CM Periods and Herglotz Arithmetic](volumes/volume-4-cm-and-herglotz.pdf) | 83 |
 
 The volumes partition all twelve chapters and the literature appendix.
 Chapter, theorem and equation numbering is retained so research-report
 citations stay stable. Cross-volume references link to their exact PDF
 destinations; keep the four PDFs together. Each volume has its own contents
-and the shared bibliography of 120 references. The scientific text is shared
+and the shared bibliography of 124 references. The scientific text is shared
 through chapter files and [preamble.tex](preamble.tex), avoiding duplicate
 copies of proofs. See [volume sources and build instructions](volumes/README.md).
 The [combined source](polylogarithms.tex) and its
-[463-page combined snapshot](polylogarithms.pdf) remain available.
+[479-page combined snapshot](polylogarithms.pdf) remain available.
 
-The [inventory](source-inventory.json) accounts for **828 textual source
+The [inventory](source-inventory.json) accounts for **894 textual source
 files**, including overlapping assembled articles, fragments and correction
 registers. The [editorial ledger](EDITORIAL-LEDGER.md) maps their mathematical
-status and identifies pending research integration. Fifty-five incoming
-archives are preserved as **2,101 original tracked members**. All their isolated
+status and identifies pending research integration. Sixty incoming
+archives are preserved as **2,273 original tracked members**. All their isolated
 replay suites pass; preservation and successful finite replay do not imply
 that every new analytic theorem has already been integrated. The imported
 ZIPs have been retired from the drop zone under its intake procedure; the
 arrival commits and recovery paths remain recorded in
-`verification/*incoming-archives.json` and the retirement records. Eleven ignored
+`verification/*incoming-archives.json` and the retirement records. Thirteen ignored
 SHA256SUMS members remain recoverable in their recorded arrival archives; the
-existing ignore rules were followed without manifest verification. The latest six
+existing ignore rules were followed without manifest verification. The latest five
 packages extend the harmonic-resonance and Stieltjes-correlation spines.
-Volume I now proves their weighted real arctangent Li3 family, the signed
-inverse-hyperbolic companion and its 7 zeta(3)/2 endpoint. An exact local
-obstruction excludes any one-variable product factorization without a
-regularity assumption. The other incoming analytic claims retain the
-ledger's pending scope.
+Volume III now proves the all-index fixed-coordinate periodic contact law,
+its Bernoulli primitives and ordinary vanishing-weight Hurwitz identities.
+A self-contained first-resonance Rogers-Dougall proof gives all fixed mixed
+Gamma derivatives and a weighted trigamma-square evaluation. That experiment
+leads to an all-orders zeta-tail identity with an independent Euler partial-
+fraction proof. In particular,
+
+```text
+sum(n>=0) (2n+1) (zeta(3)-H_n^(3))^2 = 3 zeta(4)/2,
+sum(k>=1) k (2(zeta(3)-H_(k-1)^(3))-k^(-3))^2 = 3 zeta(4)-zeta(5).
+```
+
+Volume I retains the weighted real arctangent Li3 family, its signed
+inverse-hyperbolic companion and the 7 zeta(3)/2 endpoint. Seventeen further
+committed arrivals remain in the drop zone pending their own preservation
+and proof audits. Other incoming analytic claims retain the ledger's
+pending scope; S6 and S8 remain open.
 
 The preceding milestone proves the CM class-product formulas and the recorded
 genus ratios, develops a rational principal-point nonvanishing bound, and

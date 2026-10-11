@@ -573,7 +573,7 @@ The source inventory includes all newly placed textual provenance documents.
 
 | Group | Canonical acceptance and remaining audit |
 |---|---|
-| `coincident-stieltjes` | Preserved quadratic/derivative closure and off-point collision certificates; same-point coordinate finite parts and delta contacts require separate analytic reconciliation. |
+| `coincident-stieltjes` | Preserved quadratic/derivative closure and off-point collision certificates. The twelfth continuation below completes the periodic shift contact comparison; scalar same-point closure and cubic completion retain separate audit scopes. |
 | `centered-dougall-resonance` | Preserved centered Rogers-Dougall proof and zero-safe jets; canonical all-resonance integration remains pending. |
 | `collision-and-weighted-identities` | Accept Chapter 3 weighted real arctangent Li3 evaluation, signed inverse-hyperbolic companion and 7 zeta(3)/2 endpoint; full proofs and independent native exact/diagnostic checks. Strengthen the product obstruction to any one-variable function, since factorization forces analyticity. The logarithmic ordinary primitive, Euler ladder, collision, nonlinear and shifted/triple extensions retain separate pending audits. Earlier arctanh corrections are already canonical. |
 | `resonance-coordinate-transport` | Preserved an overlapping Dougall route and unequal-frequency transport/cocycle formulas; normalize against the correlation spine before integration. |
@@ -587,3 +587,37 @@ distributional contact completeness or numerical period independence.
 The S6 and revised S8 conjectures remain open. Five further arrivals were
 observed during publication and remain committed in docs/incoming for the
 next intake, without being counted in this batch.
+
+## Twelfth continuation: fixed-coordinate contacts and exact tail identities
+
+Five packages (174 originals, 172 tracked members, ten historical logs)
+were placed in cd0d94dfc8 and published via 921b58f109. All five full
+mathematical suites pass on isolated copies. The five ZIPs were retired
+after preservation; two ignored manifests remain in arrival history. The
+cumulative intake has 60 archives and 2273 tracked original members.
+
+| Group | Accepted material and remaining scope |
+|---|---|
+| `periodic-collision-contacts` | Accept the complete all-index comparison between convolution and the second shift-coordinate finite part, including the unique order-p+q contact, its zero mode, and its Bernoulli primitives. The derivative anomaly already appeared in canonical Chapter 9 and is reused. |
+| `periodic-stieltjes-contact` | Reconcile the independent contact generator, first-row zeta parity, derivative-split stabilization, finite logarithmic Fourier data, ordinary vanishing-weight integrals, all positive-integer weighted Hurwitz jets, and Abel-limit/polylogarithm contacts. The common part of its 441-row table and the independent 420-row table contains 315 exactly matching formulas. |
+| `mixed-spectral-identities` | Accept the complete first-resonance double-zero Gamma germ and all fixed mixed p,q orders, with a self-contained Rogers-Dougall/Stirling/Bernoulli proof. Accept the weighted trigamma square and its two half-integer harmonic evaluations. The broader all-resonance transport, Newton/Arakawa-Kaneko, unequal-twist and geometric triple-collision claims remain separate pending targets. |
+| `coincident-directional-zeta` | Preserve the cubic/all-factor completion, coordinate criteria, spectral/ray and two-exponent harmonic claims, with full fresh replay. The cubic result stops at a named Tornheim derivative, not a proved depth-one evaluation. The exact S6 target audit is not a proof of S6. Proposed author-PDF errata still need primary-source verification before canonical adoption. |
+| `ordered-hurwitz-resonances` | Preserve the ordered common-shift Laurent decomposition, repeated-slope closure, arbitrary-direction depth-three and curve-jet statements, with all five exact/numerical audits freshly replayed. Ordered and labelled-symmetrized germs remain distinct. Canonical proof integration is pending. |
+
+Collective further deductions give an all-orders quadratic zeta-tail
+identity and a centered-tail identity for every integer s>=3. Their
+independent proof uses Euler partial fractions, the stuffle product and
+Tonelli rearrangement; it does not assume the hypergeometric continuation.
+The s=3 centered square is 3 zeta(4)-zeta(5). Thirty-one exact partial
+fractions, thirty-one sparse coefficient reductions, two independent
+Bernoulli cancellations, a corruption control and ten 70-digit
+series diagnostics (nine with tail refinement, plus the centered square) check their implementation. A first attempt's ordinary
+Python reciprocal introduced a machine float; its failed finite-head
+diagnostic is retained, and the corrected full replay passes.
+
+The periodic contact answers the prior specific open extension question
+only in the fixed unit coordinate. It does not equate arbitrary geometric
+collision limits with merged finite parts, nor prove independence of
+zeta coordinates. Seventeen more committed deliveries arrived during publication
+and await the next intake. S6, revised S8 and the broader research goal
+remain active.
