@@ -1,31 +1,39 @@
 Gowers Szemeredi formalization checkpoint — 2026-10-11
 
 Scope
-  All 120 numbered catalogue statements now have exact companions. The
-  ledger regenerated on 2026-10-11 (scripts/gowers_status.py) records 120
-  exact companions and no open statement. No improvement to the general
-  all-length Szemeredi bound beyond the printed one is claimed; smaller four-
-  and five-term thresholds are proved below.
-  The three statements closed last, theorem_18_1, theorem_18_2 and
-  corollary_18_7 (theorem_18_1_explicit, theorem_18_2_explicit,
-  corollary_18_7_explicit in Proofs18CoverExplicit), and the earlier
-  theorem_16_2_explicit and corollary_16_11_explicit
-  (Proofs16AllDimensionsExplicit) are bridge proofs. They were checked
-  locally against faithful stubs and await the full kernel audit on the
-  verification host. Proofs18CoverExplicit also gives theorem_1_2_explicit
-  and theorem_1_3_explicit through the corpus reductions to Theorem 18.2.
-  The 115 earlier companions are kernel-checked (coverage refreshed
-  2026-10-09). This includes the repaired Lemma 16.10, whose explicit cover
-  conclusion is weaker than the printed unit-parameter claim. It must not be
-  counted as a proof of that printed claim. The full merged development,
-  including the repaired companion and the preserved printed encoding
-  counterexample, passes the axiom and catalogue audit.
-  A parallel session's arithmetic modules (Proofs18FiniteCoverBudgets,
-  Proofs18CoverEnvelopeArithmetic, Proofs18CoverSharperArithmetic; twenty
-  auxiliary theorems) check a candidate recursion of the same shape. Its
-  sharper form would permit d+8 in the inverse exponent (d>=4) and L+6 in
-  the progression threshold (L>=6); those stronger bounds are arithmetic
-  only and are not claimed until connected to the production inverse step.
+  The goal remains open. The stronger global bounds still await the complete
+  local production check. Smaller four- and five-term thresholds are proved below.
+  New joint-cover arithmetic (2026-10-11): twenty auxiliary theorems in
+  Proofs18FiniteCoverBudgets, Proofs18CoverEnvelopeArithmetic, and
+  Proofs18CoverSharperArithmetic are checked
+  directly by Lean 4.32.0. Their candidate recursion fits the printed
+  exponent comparisons and stopping inequalities at every degree and length.
+  Exact standard-parameter substitutions are checked as well. Connecting the actual
+  localization width and modulus threshold to this recursion is implemented
+  in the integrated cover route and awaits full production verification.
+  The sharper recursion also satisfies M(k)+2*k+22 <= 1024*2^k for k>=2.
+  Its candidate comparisons permit d+8 in the inverse exponent (d>=4),
+  and L+6 in the progression threshold (L>=6). These stronger mathematical
+  bounds still await verification of the analytic inverse construction.
+  The source catalogue contains all 120 unique numbered theorem, lemma,
+  proposition, and corollary headings in sz-thm-gowers-proof.tex.
+  The source ledger regenerated on 2026-10-11 (scripts/gowers_status.py)
+  now records 120 exact companion signatures and no missing companions.
+  The full Section 18 companions from 199799ee2 were integrated in 3d94a50b8.
+  Their light envelope modules were kernel-checked by that branch, but their
+  explicit bridge was checked with substituted dependency interfaces.
+  This workspace is now checking the production sources and an exact-type
+  axiom audit of one companion for each of the 120 numbered statements.
+  The 531-module dependency build passed locally. The full numbered audit
+  and the stronger-bound audit are still running; signature coverage alone
+  does not establish completion of the goal.
+  The two Section 16 companions and the three Section 18 companions still
+  need the complete local production check. The 115 earlier companions
+  were kernel-checked at the 2026-10-09 checkpoint. This includes the repaired
+  Lemma 16.10, whose explicit cover conclusion is weaker than the printed
+  unit-parameter claim. It must not be counted as a proof of that printed
+  claim. The earlier completed audit included both the repaired companion
+  and the preserved printed encoding counterexample.
   The JSON ledger records every statement, its TeX heading lines, its Lean
   definition, and related results. Conditional implications, restricted cases,
   and counterexamples are not counted as proofs of the full statement.

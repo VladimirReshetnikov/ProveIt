@@ -1,0 +1,183 @@
+\section{Full three-dimensional normal cuts in affine cell families}
+\label{sec:cut-cells}
+
+The boundary constructor in Section~\ref{sec:cut-boundary} retains the complete
+cut boundary and its chamber carriers. We now also retain the interior cells,
+giving a full raw-cut CW description with oriented attachments in all four
+dimensions. The representation uses binary affine families and includes the
+original source charts and unscaled normal coordinates for reconstruction
+of local three-ball prototypes. Describing the interior therefore does not
+require expansion of a large normal vector.
+
+The source remains a validated finite connected compact orientable
+triangulation with one torus boundary. The normal surface may be empty,
+disconnected, one-sided or a large multiple. The result describes
+$M'=M\setminus\operatorname{int}\nu(F)$, with its boundary marked as a
+subcomplex. It is a raw cut, without a parallelity collapse or an admissible
+bounded handle core.
+
+\subsection{All cell dimensions and their source charts}
+
+The zero-cells are all original source vertices and the two cut vertices
+at each normal intersection with a source edge. Normal vertices are boundary
+vertices; original vertices retain their original boundary status. The
+global edge orientation distinguishes the two cut sides, including loop edges.
+
+The one-cells are both copies of every normal arc on a canonical source face
+and all $w+1$ gap segments on every original edge of weight $w$. Interior
+source edges are included. Gap endpoints split only at ranks zero and $w$;
+an interior gap joins the upper copy of point $r-1$ to the lower copy of
+point $r$. A normal-arc copy has affine maps to its cut-vertex endpoints.
+
+The two-cells are both local copies of every normal disc and every region
+of every canonical source face cut along normal arcs. Canonical faces include
+one member of each glued pair and every original boundary face. Their centres
+and corner arms retain the earlier cyclic recipes: triangles, quadrilaterals
+and three-to-six-sided centres. Horizontal polygons and original boundary-face
+regions are exactly the boundary two-cells.
+
+The three-cells are all local chambers, with the established quad-chain and
+triangle-arm numbering. Each is a three-ball in its source tetrahedron.
+Chain ranks distinguish an empty-stack centre, the two quad endpoints and
+interior quad prisms. Triangle-arm ranks distinguish the tip and triangle
+prisms. The source row and rank determine the local prototype without
+listing its copies.
+
+Source charts are essential. Cellular boundary-matrix coefficients alone
+need not specify a three-cell's topological attaching map. Every chamber
+and incidence here also retains its source tetrahedron, local face or
+normal-disc side and ordered rank. The packet contains the source face
+permutations and normal vector, copied without aliasing mutable inputs.
+These identify the abstract local boundary flags before source quotients.
+The result is a reconstructible source cut, not merely a chain complex
+with matching Euler characteristic.
+
+\subsection{Oriented edge/polygon and polygon/chamber maps}
+
+A normal-arc edge is incident to a source horizontal polygon, a target
+horizontal polygon when the face is glued, and its adjacent original-face
+region. The latter has inward rank $r$ or outward rank $r+1$, with the last
+outward region replaced by the centre. Source and target triangle/quad
+transitions retain separate incidence intervals.
+
+A source-edge gap has an incidence for each occurrence on a canonical
+source face. Its first corner arm, centre gap and last corner arm use at
+most three affine pieces. Interior edge degree can be large. Keeping each
+occurrence's own partition avoids a product of degree and common-refinement
+size, preserving linear encoded storage.
+
+Horizontal polygons attach once to their actual chamber with positive
+outward incidence. Original boundary-face regions also attach once. An
+interior original-face region has two incidences: positive on the canonical
+owner and negative on its paired side. Their triangle/quad breakpoints
+are retained independently. Two occurrences on the same chamber can cancel
+as cellular coefficients; their source attaching data are still retained.
+
+The source orientation determines polygon cyclic directions. Independent
+replay uses the separate integer-midpoint polygon orientation model and
+direct source-rank events. Singleton maps have a canonical slope-one
+spelling; source side and permutation data remain separately recorded.
+
+\begin{proposition}[Faithful raw-cut cells]
+The four cell namespaces and attaching families describe exactly the CW
+structure induced on $M'$ by the source normal cut. The marked cells are its
+complete boundary subcomplex, and the signed cellular maps satisfy
+\[
+             \partial_1\partial_2=0,\qquad \partial_2\partial_3=0.
+\]
+All source self-identifications and local sides of one-sided surfaces remain.
+\end{proposition}
+\begin{proof}
+Compatible triangle stacks and one quad stack cut each source tetrahedron
+into the stated chain and arms of balls. Original faces cut into central
+and corner polygons, original edges into ordered gaps, and every normal
+disc, arc and edge point has two local frontier copies. These exhaust the
+actual cut cells.
+
+Normal matching and source permutations identify equal corner ranks and
+their local edge and vertex flags across glued faces. Horizontal copies
+meet the chamber on their stated local side. Each original-face region
+meets its source and paired chambers at that same face rank. Thus all actual
+attaching incidences, and only those incidences, are retained.
+
+Each polygon traces its disc boundary, so oriented endpoints cancel. Each
+local chamber has a sphere boundary, so its oriented polygon boundaries
+cancel. These cancellations survive source identifications, even when two
+occurrences identify on one chamber. Source charts retain the pre-quotient
+flags and determine the full attaching maps, beyond their possibly cancelled
+matrix entries. This proves both chain identities.
+
+Horizontal frontier cells and their normal-arc and cut-vertex cells lie
+on the new boundary. Original vertices, edge gaps and face regions lie
+on the boundary exactly when they lie on the original boundary. Their marked
+attachments reproduce Section~\ref{sec:cut-boundary}. Only local corner sides
+were used, so one-sided monodromy is preserved without a global coorientation.
+\end{proof}
+
+\subsection{Family size and exact Euler accounting}
+
+Let $V_M,E_M,F_M,T$ denote source cell counts, $D$ the normal disc count,
+$A$ the normal arc count on canonical faces and $W$ the total global
+edge weight. The cut has counts
+\[
+V'=V_M+2W,\quad E'=E_M+W+2A,\quad F'=F_M+A+2D,\quad C'=T+D.
+\]
+Hence $\chi(M')=\chi(M)+\chi(F)$, and its marked boundary has Euler
+characteristic $2\chi(M')$. These exact binary conservation checks accompany
+the source attaching-map proof; they do not replace it.
+
+\begin{proposition}[Linear encoded raw-cut description]
+Construction and independent source verification have polynomial bit
+complexity in the source tetrahedron count $T$ and maximum coordinate bit
+length $B$. The explicit integer/record accounting, including source charts,
+uses $O(T(B+\log(T+1)))$ bits. No represented cell or chamber is enumerated.
+\end{proposition}
+\begin{proof}
+There are at most $16T$ vertex, $30T$ edge, $26T$ polygon and $5T$ chamber
+families. Each normal-arc family has at most two source horizontal, two
+target horizontal and two original-region incidences, giving at most
+$144T$ records. Source-edge occurrences add at most $36T$ records.
+Gap endpoints use at most $18T$ pieces. Horizontal polygon/chamber maps
+use at most $14T$ records; canonical and paired original-face maps add
+at most $28T$ and $14T$, giving at most $56T$ in total. Cycles have bounded
+length, and source reconstruction uses $O(T)$ face records and $7T$ coordinates.
+
+All indices, counts and offsets have $O(B+\log(T+1))$ bits because
+$D\le7T2^B$, $A\le4D$ and $W\le4D$. Each local occurrence has constantly
+many rank events. Global sorting charges $O(T\log(T+1))$ record comparisons.
+Source manifold and normal matching checks retain their polynomial cost.
+Independent midpoint orientation uses fixed integer unit-tetrahedron
+coordinates, with no floating approximation.
+
+Separate incidence partitions avoid quadratic refinement at high-degree
+edges. Exact arithmetic, source reconstruction and comparison are polynomial
+in encoded size. The physical count $T+D$ is only a namespace endpoint,
+never a native loop bound. The expanded finite chain oracle is a separate,
+explicitly capped reference and is not an encoded-cost homology algorithm.
+\end{proof}
+
+\subsection{Source replay and the remaining hierarchy}
+
+The APIs are \code{normal\_cut\_cell\_complex} and
+\code{verify\_normal\_cut\_cell\_complex}. The schema is
+\code{normal-cut-cells-v1}. It binds the fingerprint, reconstruction charts,
+unscaled coordinates, every cell family, incidence sign, boundary flag,
+cyclic recipe and chamber map. Invalid source geometry raises the existing
+source error; malformed proofs return false. Cooperative cancellation
+propagates without a partial result. No orbit discovery is started.
+
+Literal finite checks build the three integral differentials and verify
+both zero compositions, cyclic polygon closure, boundary-subcomplex closure,
+opposite boundary-edge incidences and connected boundary vertex links.
+Independent ranks over $\mathbb F_2$ and $\mathbb F_3$ are compared with
+actual Regina cuts. The retained sphere-boundary nonball has Betti vectors
+$(1,1,1,0)$ over $\mathbb F_2$ and $(1,0,0,0)$ over $\mathbb F_3$, detecting
+its interior two-torsion. Homology alone still does not certify a ball.
+
+The first supplied cut now has full raw interior data. Physical cell counts
+can remain exponential in coordinate bits. General binary-cell homology,
+parallelity removal, a bounded admissible core, arbitrary pattern transport,
+general later-piece validation and the hierarchy depth bound are still
+required. Ordinary recognition is unchanged. This supplies concrete compressed
+cutting data for the original quasi-polynomial objective without claiming
+that objective complete.

@@ -23,7 +23,7 @@ archives=sum((read(V/name) for name in ['incoming-archives.json',
     'research-incoming-archives.json','third-incoming-archives.json',
     'fourth-incoming-archives.json','fifth-incoming-archives.json',
     'sixth-incoming-archives.json','seventh-incoming-archives.json',
-    'eighth-incoming-archives.json','ninth-incoming-archives.json','tenth-incoming-archives.json','eleventh-incoming-archives.json','twelfth-incoming-archives.json','thirteenth-incoming-archives.json','fourteenth-incoming-archives.json','fifteenth-incoming-archives.json']), [])
+    'eighth-incoming-archives.json','ninth-incoming-archives.json','tenth-incoming-archives.json','eleventh-incoming-archives.json','twelfth-incoming-archives.json','thirteenth-incoming-archives.json','fourteenth-incoming-archives.json','fifteenth-incoming-archives.json','sixteenth-incoming-archives.json']), [])
 for a in archives:
     archive=B.parents[3]/a['archive']
     blob=archive.read_bytes() if archive.is_file() else subprocess.check_output(['git','show',a['archive_git_revision']+':'+a['archive']],cwd=B.parents[3])
@@ -54,7 +54,8 @@ for p in sorted((B/'figures').rglob('*')):
 excluded={'source-sha256.json','dependency-sha256.json','receipt-integrity.json'}
 for p in sorted(V.rglob('*')):
     if not p.is_file() or any(s.startswith('.scratch') or s=='__pycache__' for s in p.parts):continue
-    if p.name in excluded or p.suffix not in {'.json','.tex'}:continue
-    dependencies[p.relative_to(B).as_posix()]={'sha256':digest(p,'lf-normalized'),'mode':'lf-normalized'}
+    if p.name in excluded or p.suffix not in {'.json','.tex','.gz'}:continue
+    mode='raw' if p.suffix=='.gz' else 'lf-normalized'
+    dependencies[p.relative_to(B).as_posix()]={'sha256':digest(p,mode),'mode':mode}
 save(V/'dependency-sha256.json',dict(sorted(dependencies.items())))
 print('Pinned',len(sources),'canonical sources and',len(dependencies),'dependencies.')

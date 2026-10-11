@@ -1,0 +1,27 @@
+$MaxExtraPrecision=1500;
+ClearAll[x,v,logn,hn,at,diff];wp=110;degree=105;split=1/10;cutoff=200;
+diff[6]=30*at[2]^2*v - 60*at[2]*hn*v^2 + 90*at[2]*v^3 - 120*at[2]*v*Zeta[2] - 120*at[3]*hn*v + 30*at[3]*v^2 + 150*at[4]*v + 60*hn^2*v^3 - 180*hn*v^4 + 120*hn*v^2*Zeta[2] + 228*v^5 - 120*v^3*Zeta[2];
+diff[7]=210*at[2]^2*hn*v - 105*at[2]^2*v^2 - 630*at[2]*at[3]*v - 210*at[2]*hn^2*v^2 + 630*at[2]*hn*v^3 - 840*at[2]*hn*v*Zeta[2] - 798*at[2]*v^4 + 210*at[2]*v^2*Zeta[2] - 420*at[3]*hn^2*v + 210*at[3]*hn*v^2 - 658*at[3]*v^3 + 840*at[3]*v*Zeta[2] + 1050*at[4]*hn*v - 63*at[4]*v^2 - 966*at[5]*v + 140*hn^3*v^3 - 630*hn^2*v^4 + 420*hn^2*v^2*Zeta[2] + 1596*hn*v^5 - 840*hn*v^3*Zeta[2] - 1750*v^6 + 966*v^4*Zeta[2] + 280*v^3*Zeta[3] + 252*v^2*Zeta[2]^2/5;
+zetaJet[k_,j_,head_]:=zetaJet[k,j,head]=N[Derivative[j,0][Zeta][k,head+1],wp];
+ordinaryCorrection[m_,head_,terms_]:=Module[{headPart,hModel,aModel,model,asym,tailPart},
+headPart=-Sum[N[(diff[m]/.{hn->HarmonicNumber[n-1],at[r_]:>Zeta[r,n+1],v->1/n}),wp] Log[N[n,wp]],{n,1,head}];
+hModel=logn+N[EulerGamma,wp]-v/2-Sum[N[BernoulliB[2 j]/(2 j),wp]v^(2 j),{j,1,Ceiling[terms/2]}];
+aModel[r_]:=v^(r-1)/(r-1)-v^r/2+Sum[N[BernoulliB[2 j]Pochhammer[r,2 j-1]/Factorial[2 j],wp]v^(r+2 j-1),{j,1,Ceiling[terms/2]}];
+model=N[diff[m]/.{hn->hModel,at[r_]:>aModel[r]},wp];asym=Normal[Series[model,{v,0,terms}]];
+tailPart=Sum[(-1)^j Coefficient[Coefficient[Expand[asym],v,k],logn,j]zetaJet[k,j+1,head],{k,2,terms},{j,0,m-4}];
+headPart+tailPart];
+bb={1,0};Do[AppendTo[bb,Sum[Zeta[r]bb[[j-r+1]],{r,2,j}]/j],{j,2,7}];
+rows={};
+Do[poly=Sum[Factorial[m]bb[[m-k+1]] (PolyGamma[0,x]+EulerGamma)^k/Factorial[k],{k,0,m}];
+localPsi=-1/x-EulerGamma+Sum[N[(-1)^r Zeta[r],wp]x^(r-1),{r,2,degree+m+1}];ser=Normal[Series[poly/.PolyGamma[0,x]->localPsi,{x,0,degree}]];co=Table[Coefficient[Expand[ser x^m],x,j+m],{j,-m,degree}];
+pole=Sum[co[[j+m+1]]/(j+1),{j,-m,-2}];local=N[Sum[co[[j+m+1]]split^(j+1)/(j+1),{j,0,degree}],wp];
+fun[q_?NumericQ]:=(poly/.x->q)-Sum[co[[j+m+1]]q^j,{j,-m,-1}];
+quad=NIntegrate[fun[q],{q,split,3/10,3/5,1},WorkingPrecision->wp,AccuracyGoal->65,PrecisionGoal->65];left=pole+local+quad;Print["direct moment ",m," complete"];
+height[q_?NumericQ]:=q^(m-2)If[q<=5,Log[-Exp[q]Log[1-Exp[-q]]],With[{u=Sum[Exp[-j q]/(j+1),{j,1,50}]},2 ArcTanh[u/(2+u)]]]/Factorial[m-2];
+cauchy=NIntegrate[height[q],{q,0,1/10,1,5,20,60,cutoff},WorkingPrecision->wp,AccuracyGoal->65,PrecisionGoal->65];
+d0=ordinaryCorrection[m,96,42];Print["correction ",m," initial complete"];
+d1=ordinaryCorrection[m,128,48];jval=N[If[m==6,245 Zeta[2]Zeta[3]+175 Zeta[5],3731 Zeta[3]^2/4+918631 Zeta[6]/240],wp];
+right=jval+d1-Factorial[m]cauchy;error=Abs[left-right];refinement=Abs[d1-d0];tail=N[Gamma[m-1,cutoff]/(Factorial[m-2](1-Exp[-cutoff])),wp];pass=TrueQ[error<10^-50&&refinement<10^-50&&Factorial[m]tail<10^-60];
+AppendTo[rows,<|"degree"->m,"direct_finite_part"->ToString[left,InputForm],"ordinary_reconstructed"->ToString[right,InputForm],"ordinary_correction"->ToString[d1,InputForm],"absolute_error"->ToString[error,InputForm],"correction_refinement"->ToString[refinement,InputForm],"analytic_Cauchy_Mellin_tail_bound"->ToString[tail,InputForm],"passed"->pass|>];Print["moment ",m," passed ",pass],{m,{6,7}}];
+record=<|"engine"->$Version,"working_precision"->wp,"local_taylor_degree"->degree,"local_split"->ToString[split,InputForm],"Cauchy_Mellin_cutoff"->cutoff,"head_and_tail_configurations"->{{96,42},{128,48}},"moments"->rows,"all_pass"->And@@Lookup[rows,"passed"],"interval_certified"->False,"scope"->"Independent native local-subtraction quadrature versus positive Cauchy Mellin integral and ordinary residue-defect sums with two head/tail configurations. Exact scalar and marked coefficients are certified separately. The Cauchy omitted integration tail has an analytic bound; quadrature and asymptotic/Taylor truncation remain diagnostics, not total interval certificates."|>;
+Export[FileNameJoin[{DirectoryName[$InputFileName],"appell-six-seven-native.json"}],record,"RawJSON"];Print[record["all_pass"]];Exit[If[TrueQ[record["all_pass"]],0,1]];
