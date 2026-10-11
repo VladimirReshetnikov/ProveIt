@@ -4199,6 +4199,49 @@ every `L ≥ 6`) and `corollary_18_7_L5_eleven_le` (`L + 5`, every `L ≥ 11`);
 `Proofs18CoverSharperExplicit` (stub axiom:
 `section16RecurrenceProfileWith_explicit` only).
 
+
+### L.17 Complete native catalogue and stronger-bound audit (2026-10-11)
+
+The serial production check now passes for all 1,440 modules in the
+`GowersSzemeredi.CompletionAudit` closure. `NumberedAudit` verifies a selected
+exact companion for each of the 120 numbered catalogue definitions. It
+requires the theorem's type to be exactly that definition, with its universe
+parameters preserved, and permits only `propext`, `Classical.choice`, and
+`Quot.sound` in the transitive axiom set. Native Theorems 1.2 and 1.3 are
+proved through the actual Theorem 18.2 companion. No substituted dependency
+interfaces or additional structural axioms are used in this check.
+
+The same production run checks the explicit improvements at d+7 for every
+degree d>=4, L+6 for every length L>=6, and L+5 for every length L>=11,
+including the two-color consequences. `Proofs18CoverSharperComparisons`
+proves strict improvement when the offsets decrease: the inverse exponent
+strictly increases for 0<alpha<=1/2, and the density and coloring thresholds
+strictly decrease. These compare with the source's constants; they make no
+claim about the best bounds from other Szemeredi proofs.
+
+The actual length-six bridge initially exceeded Lean's recursion depth when
+matching its dimension-one profile to concrete explicit constants. Explicit
+small Nat reductions using `simp only` with `Nat.reduceAdd` and
+`Nat.reducePow` align both profile instances and allow the entire production
+bridge to compile. Its statement and numerical thresholds are unchanged.
+The completed check was repeated after committing that source fix.
+
+The proof of the corrected Lemma 16.10 is among the positive catalogue
+companions. Its printed unit-parameter encoding is separately negated by
+`lemma_16_10_packaged_premises_counterexample`; CompletionAudit verifies that
+exact negation and its axiom dependencies independently. Thus the audit
+never presents a refuted printed claim as a proved positive statement.
+The existing catalogue-fidelity caveats remain; the user-facing correction
+clarification is separate from the now-completed kernel verification.
+
+Reproduce with:
+
+    python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.CompletionAudit
+
+The verification result and input-source hashes are in
+`verification/2026-10-11-numbered-and-bounds.json` and its referenced manifest.
+These results supersede the pending production-check notices in L.13–L.16.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
