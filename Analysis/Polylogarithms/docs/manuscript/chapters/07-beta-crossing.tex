@@ -1,0 +1,306 @@
+\section{Crossed twists, finite Fourier corrections and balanced order jets}
+\label{btc:section}
+The common-interval mixture in Section~\ref{mxtw:sec:main} keeps each
+frequency on a single complex ray. We now return to that spectral calculus
+and allow the intermediate twist to cross integers. At positive integer
+total order the missing term is a finite Fourier polynomial, determined by
+an affine finite part. This continuation of the beta-crossing
+report~\cite{btc:report} also supplies an analytic family for the balanced
+order derivatives that lead into Chapter~9. The earlier common-interval
+theorem retains its stated scope.
+
+For real nonintegral $\theta$, retain the principal-ray multiplier
+\[
+ \widehat K_\alpha^\theta(n)=
+ \exp\!\left[-\alpha\left(\log(2\pi|n+\theta|)
+                +\frac{\pi i}{2}\operatorname{sgn}(n+\theta)\right)\right].
+\]
+On compact order sets its coefficients and order derivatives have uniform
+polynomial growth. Thus $K_\alpha^\theta$ is an entire family of periodic
+distributions, and finite convolutions are defined by multiplying these
+coefficients.
+
+\subsection{The scalar finite part fixes the crossing normalization}
+Let $d\ge2$, $y_j\in\mathbb R\setminus\{0\}$,
+$\operatorname{Re}\alpha_j>0$ and $\sum_j\alpha_j=m\in\mathbb N_{>0}$.
+On $\Sigma_{d-1}=\{t_j\ge0:\sum t_j=1\}$, with
+$dt=dt_1\cdots dt_{d-1}$, put
+\[
+ \sigma=\sum_{y_j<0}\alpha_j,\qquad
+ Q=\prod_j|y_j|^{-\alpha_j},\qquad
+ d\mu(\mathbf t)=\frac{\Gamma(m)}{\prod_j\Gamma(\alpha_j)}
+                         \prod_jt_j^{\alpha_j-1}\,dt.
+\]
+The pushforward of this finite complex measure under the \emph{affine}
+coordinate $y=\sum t_jy_j$ will be denoted by $h$. It need not be positive.
+If both signs occur, $h$ has a smooth density near zero. To see this,
+group the negative and positive vertices, choose their internal Dirichlet
+coordinates, and let $v$ be the total negative mass. Its conditional law is
+\[
+ \frac{\Gamma(m)}{\Gamma(\sigma)\Gamma(m-\sigma)}
+                    v^{\sigma-1}(1-v)^{m-\sigma-1}\,dv.
+\]
+The internal weighted means satisfy $Y_-\le-c<0<c\le Y_+$ uniformly.
+Since $y=vY_-+(1-v)Y_+$, the inverse
+$v=(Y_+-y)/(Y_+-Y_-)$ stays away from both endpoints near zero.
+All fixed $y$ derivatives of its density are bounded by integrable
+internal Dirichlet weights. This proves smoothness and holomorphic
+parameter dependence on compact subsets of the indicated hyperplane.
+If all signs agree, the support stays away from zero.
+
+Use the finite-part distribution
+\[
+ \operatorname{Pf}y^{-m}
+ =\frac{(-1)^{m-1}}{(m-1)!}
+              \frac{d^{m-1}}{dy^{m-1}}\operatorname{PV}\frac1y.
+\]
+Pairing it with $h$ means local Taylor subtraction near zero and an
+ordinary measure integral elsewhere. The cutoff variable is exactly
+$y$; a nonlinear substitution without its local correction is not allowed.
+The boundary identity is
+\begin{equation}\label{btc:boundary}
+ (y-i0)^{-m}=\operatorname{Pf}y^{-m}
+       +\frac{i\pi(-1)^{m-1}}{(m-1)!}\delta^{(m-1)}(y).
+\end{equation}
+Indeed $\varepsilon/(y^2+\varepsilon^2)\to\pi\delta$ and
+$y/(y^2+\varepsilon^2)\to\operatorname{PV}(1/y)$; differentiation
+gives every $m$. Consequently its pairing adds
+$i\pi h^{(m-1)}(0)/(m-1)!$.
+
+\begin{theorem}[Dirichlet crossing finite part]\label{btc:scalar}
+In this normalization,
+\begin{align}
+ \operatorname{FP}\int h(y)y^{-m}\,dy&=\cos(\pi\sigma)Q,
+                                      \label{btc:scalar-fp}\\
+ h^{(m-1)}(0)&=\frac{(m-1)!}{\pi}\sin(\pi\sigma)Q.
+                                      \label{btc:scalar-density}
+\end{align}
+In a one-sign case the density derivative is zero, with $\sigma=0$ or $m$.
+\end{theorem}
+\begin{proof}
+For $\operatorname{Re}z_j>0$, multiply the Gamma integrals and substitute
+$u_j=rt_j$. Absolute convergence and the Jacobian $r^{d-1}$ give
+\[
+ \prod_jz_j^{-\alpha_j}=
+       \int_{\Sigma_{d-1}}\left(\sum_jt_jz_j\right)^{-m}d\mu.
+\]
+Put $z_j=\varepsilon+i y_j$ and cancel $i^{-m}$. As
+$\varepsilon\downarrow0$ the left side becomes $e^{i\pi\sigma}Q$;
+each negative vertex contributes $e^{i\pi\alpha_j}$. Smoothness at zero,
+\eqref{btc:boundary}, and dominated convergence away from zero justify the
+limit on the right. Taking $z_j=\varepsilon-i y_j$ similarly yields
+the other boundary value $e^{-i\pi\sigma}Q$. Averaging gives
+\eqref{btc:scalar-fp}; subtracting gives \eqref{btc:scalar-density}.
+The parameters may be complex: the two limits are not being treated as
+complex conjugates.
+\end{proof}
+
+For $A,B>0$, the two-vertex case is the explicit identity
+\begin{equation}\label{btc:two-scalar}
+ \frac{\Gamma(m)}{\Gamma(\alpha)\Gamma(\beta)}
+ \operatorname{FP}\int_0^1
+ \frac{t^{\alpha-1}(1-t)^{\beta-1}}{[B-(A+B)t]^m}\,dt
+       =\frac{\cos(\pi\alpha)}{A^\alpha B^\beta},
+ \qquad \alpha+\beta=m.
+\end{equation}
+Its crossing is $t=B/(A+B)$ and the omitted boundary term is
+$i\sin(\pi\alpha)/(A^\alpha B^\beta)$.
+
+\subsection{Only the crossed Fourier modes need correction}
+For real nonintegral twists $\theta_j$, define
+\[
+ \mathcal C=\{n\in\mathbb Z:
+       \min_j(n+\theta_j)<0<\max_j(n+\theta_j)\},\qquad
+ \sigma_n=\sum_{n+\theta_j<0}\alpha_j,\qquad
+ Q_n=\prod_j|n+\theta_j|^{-\alpha_j}.
+\]
+Let $\mathcal M_m$ be the simplex mixture whose $n$th coefficient is
+\[
+ (2\pi i)^{-m}\operatorname{FP}
+          \int_{\Sigma_{d-1}}\left(n+\sum_jt_j\theta_j\right)^{-m}d\mu.
+\]
+This defines the finite-part interpretation of the intermediate kernel
+$K_m^{\sum t_j\theta_j}$. Only finitely many coefficients cross zero.
+\begin{theorem}[Integer-total mixture across arbitrary twists]
+\label{btc:periodic}
+For $\operatorname{Re}\alpha_j>0$ and $\sum\alpha_j=m\in\mathbb N_{>0}$,
+\begin{equation}\label{btc:mixture}
+ K_{\alpha_1}^{\theta_1}*\cdots*K_{\alpha_d}^{\theta_d}
+ =\mathcal M_m+\frac{i}{(2\pi i)^m}
+      \sum_{n\in\mathcal C}\sin(\pi\sigma_n)Q_ne^{2\pi i n x}.
+\end{equation}
+Both terms are holomorphic on the indicated parameter hyperplane.
+The correction vanishes for a common open unit interval, and also for
+every positive-integer order tuple even when crossings occur.
+\end{theorem}
+\begin{proof}
+The product multiplier is $(2\pi i)^{-m}e^{i\pi\sigma_n}Q_n$,
+while Theorem~\ref{btc:scalar} gives the mixture coefficient
+$(2\pi i)^{-m}\cos(\pi\sigma_n)Q_n$. Their difference is
+\eqref{btc:mixture}. Off $\mathcal C$, $\sigma_n$ is $0$ or $m$.
+For large $|n|$, all shifted frequencies have one sign and are comparable
+to $|n|$. Coefficients are $O(|n|^{-m})$ uniformly on compact parameter
+sets; order derivatives add at most powers of $\log|n|$.
+Pairing with smooth test functions justifies all series and derivatives,
+and Fourier uniqueness proves equality. At $m\ge2$ the undifferentiated
+series is absolutely summable; distributions also cover $m=1$.
+\end{proof}
+The correction is a finite trigonometric polynomial in $x$. The delta
+derivative in \eqref{btc:boundary} belongs to the intermediate affine
+twist coordinate, not to the spatial variable $x$.
+
+For $a<b$ nonintegral and $\alpha+\beta=m$, the correction is
+\[
+ \frac{i\sin(\pi\alpha)}{(2\pi i)^m}
+ \sum_{\substack{k\in\mathbb Z\\a<k<b}}
+       \frac{e^{-2\pi i kx}}{(k-a)^\alpha(b-k)^\beta}.
+\]
+Repeated twists combine by adding their orders, directly from either the
+Dirichlet grouping or the Fourier multipliers.
+At $a=-1/2$, $b=1/2$, $\alpha=\beta=1/2$, one obtains
+\begin{equation}\label{btc:counterexample}
+ K_{1/2}^{-1/2}*K_{1/2}^{1/2}
+ =\frac1\pi\operatorname{PV}\int_0^1
+          \frac{K_1^{t-1/2}}{\sqrt{t(1-t)}}\,dt+\frac1\pi.
+\end{equation}
+The convolution has zero-mode coefficient $1/\pi$, while the uncorrected
+mixture has zero. This is an exact obstruction to extending the old
+mixture without the common-interval hypothesis.
+
+\subsection{Balanced derivatives and the exact chamber kernel}
+Fix positive integers $r_j$ with sum $m$, a direction $\mathbf v$ with
+$\sum v_j=0$, and $\alpha_j=r_j+uv_j$. For a crossed mode put
+\[
+ R_n=\sum_{n+\theta_j<0}r_j,\quad
+ V_n=\sum_{n+\theta_j<0}v_j,\quad
+ L_n=-\sum_jv_j\log|n+\theta_j|,\quad
+ Q_{n,0}=\prod_j|n+\theta_j|^{-r_j}.
+\]
+\begin{theorem}[All balanced correction jets]\label{btc:jets}
+The $q$th $u$ derivative of the correction at zero is
+\begin{equation}\label{btc:jet}
+ C_q(x)=\frac1{2(2\pi i)^m}\sum_{n\in\mathcal C}
+ (-1)^{R_n}Q_{n,0}e^{2\pi i n x}
+ \bigl[(L_n+i\pi V_n)^q-(L_n-i\pi V_n)^q\bigr].
+\end{equation}
+For several balanced directions, the bracket becomes the difference of
+the corresponding products of powers. If the twists occupy $c$ distinct
+open unit intervals with index groups $I_1,\ldots,I_c$, the map
+$\mathbf v\mapsto C_1$ has rank $c-1$ on the balanced tangent space.
+Its kernel has dimension $d-c$ and is exactly
+\begin{equation}\label{btc:chamber-kernel}
+ \left\{\mathbf v:\sum_{j\in I_h}v_j=0\text{ for every }h\right\}.
+\end{equation}
+These are precisely the directions in which every correction jet
+vanishes and the full correction is identically zero near $u=0$.
+\end{theorem}
+\begin{proof}
+At a crossed mode,
+\[
+ i\sin(\pi(R_n+uV_n))Q_{n,0}e^{uL_n}
+ =\frac{(-1)^{R_n}Q_{n,0}}2
+    \bigl[e^{u(L_n+i\pi V_n)}-e^{u(L_n-i\pi V_n)}\bigr].
+\]
+Differentiate this finite sum within the analytic family already proved.
+Distinct frequencies are linearly independent and $Q_{n,0}\ne0$, so
+$C_1=0$ exactly when every $V_n=0$. At $n=-k$ the negative group is
+$\{j:\theta_j<k\}$: as $k$ runs through the crossed integers these
+are precisely the proper prefixes of the occupied chambers, with possible
+repetitions across gaps. Their zero sums, together with balance, are
+equivalent to \eqref{btc:chamber-kernel}. Chamber sums map onto the
+$(c-1)$-dimensional zero-sum space, proving the rank. For a kernel
+direction each sine factor remains identically zero. The converse
+already follows from the first derivative.
+\end{proof}
+For the orders $(1+u,1-u)$ at twists $(-1/2,1/2)$, the zero-mode
+correction is $i\sin(\pi u)/\pi^2$. Its value at zero is zero but
+its first derivative is $i/\pi$. An identity restricted to integer
+orders therefore cannot be differentiated to omit this correction.
+
+For completeness, the simplex weight itself has an explicit derivative
+compiler. At the integer tuple put
+$B_0=\Gamma(m)\prod t_j^{r_j-1}/\prod\Gamma(r_j)$. Its $q$th balanced
+derivative is $B_0Y_q(\ell_1,\ldots,\ell_q)$, where $Y_q$ is the complete
+exponential Bell polynomial and
+\begin{align*}
+ \ell_1&=\sum_jv_j(\log t_j-H_{r_j-1}),\\
+ \ell_k&=(-1)^{k+1}(k-1)!\sum_jv_j^k
+                  (\zeta(k)-H_{r_j-1}^{(k)}),\qquad k\ge2.
+\end{align*}
+Differentiate the logarithm of the density, use the integer polygamma
+series, and exponentiate; the Euler constant cancels by balance.
+These are genuine order derivatives of an analytic family, with the
+same affine finite-part normalization. The chamber rank is a spectral
+rank and makes no arithmetic-independence claim about point values.
+
+\subsection{Ordinary centered logarithmic moments reduce to even zeta values}
+The same affine identity yields ordinary integrals, rather than only
+distributional corrections. For $A,B>0$ put
+\[
+ U(t)=\log\frac{At}{B(1-t)},\qquad D(t)=B-(A+B)t.
+\]
+Both vanish simply at $t_0=B/(A+B)$; the centered logarithm is essential.
+For positive integers $r,s$, write $m=r+s$ and
+\[
+ P_{r,s}(u)=\prod_{j=1}^{r-1}(j+u)\prod_{j=1}^{s-1}(j-u).
+\]
+\begin{theorem}[All centered logarithmic moments]\label{btc:moments}
+For $-r<\operatorname{Re}u<s$, the affine finite-part generator is
+\begin{equation}\label{btc:moment-generator}
+ \operatorname{FP}\int_0^1
+ \frac{t^{r-1}(1-t)^{s-1}e^{uU(t)}}{D(t)^m}\,dt
+ =\frac{(-1)^r\pi u\cot(\pi u)P_{r,s}(u)}
+              {(m-1)!A^rB^s}.
+\end{equation}
+The singularities inside this strip on the right are removable. For
+every integer $q\ge m$, the following integral is ordinary and absolutely
+convergent, and has the finite even-zeta evaluation
+\begin{equation}\label{btc:ordinary-moments}
+ \int_0^1\frac{t^{r-1}(1-t)^{s-1}U(t)^q}{D(t)^m}\,dt
+ =\frac{2(-1)^{r+1}q!}{(m-1)!A^rB^s}
+       \sum_{k=1}^{\lfloor q/2\rfloor}
+          \zeta(2k)[u^{q-2k}]P_{r,s}(u).
+\end{equation}
+In particular, for $k\ge1$,
+\begin{equation}\label{btc:even-logarithms}
+ \int_0^1\frac{\log^{2k}(t/(1-t))}{(1-2t)^2}\,dt
+                       =2(2k)!\zeta(2k).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Apply \eqref{btc:two-scalar} with $\alpha=r+u$ and $\beta=s-u$.
+The centering factor $(A/B)^u$ cancels the varying powers on the right.
+Gamma recurrence and reflection then give
+\[
+ \frac{\Gamma(r+u)\Gamma(s-u)\cos(\pi(r+u))}
+         {(m-1)!A^rB^s}
+ =\frac{(-1)^r\pi u\cot(\pi u)P_{r,s}(u)}{(m-1)!A^rB^s}.
+\]
+The original Gamma expression is holomorphic in the stated strip, so the
+apparent cotangent poles cancel. Taylor subtraction near $t_0$, and
+endpoint integrability uniformly on compact substrips, justify the order
+derivatives. At $q\ge m$, $U(t)^q/D(t)^m=O(|t-t_0|^{q-m})$;
+the derivative is an ordinary integral with integrable endpoint logarithms.
+The partial fractions of cotangent give the normally convergent expansion
+\[
+ \pi u\cot(\pi u)=1-2\sum_{k\ge1}\zeta(2k)u^{2k},\qquad |u|<1.
+\]
+Since $\deg P_{r,s}=m-2<q$, its initial polynomial contributes no
+$u^q$ coefficient. Coefficient extraction proves
+\eqref{btc:ordinary-moments}; $r=s=A=B=1$ gives
+\eqref{btc:even-logarithms}.
+\end{proof}
+There is also an ordinary Mellin route, independently useful for experiments.
+The substitution $v=|U(t)|$ on the two halves of the interval gives
+\[
+ \frac1{A^rB^s}\int_0^\infty
+ \frac{v^q\bigl((-1)^m e^{-sv}+(-1)^q e^{-rv}\bigr)}
+                         {(1-e^{-v})^m}\,dv.
+\]
+At $q\ge m$, both individual terms are integrable. Expanding
+$(1-e^{-v})^{-m}$ gives a binomially weighted convergent Hurwitz sum.
+Its polynomial multiplicities reduce it to ordinary zeta values, and
+the two halves cancel all odd-zeta terms. The independent verifier checks
+this finite coefficient reduction as well as direct Mellin quadrature.
+The later logarithmic Mellin finite parts and Stieltjes primitives in the
+delivery retain their separate audit scope.

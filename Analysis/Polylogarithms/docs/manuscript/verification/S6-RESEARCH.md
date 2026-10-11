@@ -81,3 +81,27 @@ of length splits 2+5 and 3+4 with total depth five and odd conjugation parity.
 All outside coordinates must again be retained; no higher-divergence
 regularization may be silently added. Independent research continues even
 when no incoming ZIP is present.
+
+
+## Complete convergent length splits 2+5 and 3+4
+
+All 3604 inputs in each split are now generated. The independent input
+auditor uses the profile polynomial (1+2t+tz)^2 (3t+tz)^2 (1+3t+tz)^3,
+with z^2=1; its depth-five odd coefficient is 3604. Every expected input
+pair occurs exactly once. Compact S6S1 files retain the seven input letters
+and all 39634508 projected coefficient pairs as exact integers divided by
+5760, with explicit coordinate ordering and logical hashes. Raw generated
+JSON remains unchanged in scratch. No depth-five coefficient is discarded.
+
+The joint matrix has 16603 rows and 8786 columns: the preceding 9395 rows
+plus these 7208 convergent products. The native finite-field search runs
+separately. Its result must be bound to this exact matrix and C++ source;
+field membership or nonmembership alone is not a rational period certificate.
+
+
+The completed native result is rank 4985 modulo 2147483647, target outside
+the modular span. This adds only 43 dimensions over the full first-letter
+search. Bind the receipt to matrix 83b0b0c6b580cfe66288dceca97751166368ed0ebb52ad9e7098592b37e9f42c
+and the unchanged C++ source. Do not infer rational nonmembership or period
+nonidentity. Next useful relation families include depth-five distribution
+or lifted lower-weight identities, or a distinct analytic functional equation.

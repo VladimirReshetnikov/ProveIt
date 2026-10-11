@@ -2,10 +2,10 @@
 
 The canonical reading artifact is the collective four-volume manuscript,
 [Polylogarithms and their Arithmetic Bridges](docs/manuscript/README.md),
-authored by **ProveIt Contributors**. The volumes have **129, 128, 218 and
-84 pages**, each compiling independently; the retained
-[combined edition](docs/manuscript/polylogarithms.pdf) has **521 pages**.
-They share twelve chapters, thirteen figures and 136 references. The
+authored by **ProveIt Contributors**. The volumes have **130, 129, 224 and
+85 pages**, each compiling independently; the retained
+[combined edition](docs/manuscript/polylogarithms.pdf) has **527 pages**.
+They share twelve chapters, thirteen figures and 137 references. The
 [editorial ledger](docs/manuscript/EDITORIAL-LEDGER.md) separates accepted
 proofs from pending analytic claims, and the
 [validation record](docs/manuscript/VALIDATION.md) distinguishes proofs,
@@ -17,6 +17,15 @@ retired in their placement commits and recoverable from arrival history.
 The latest eighteen deliveries, in three intakes, retain their own PDFs, sources, code and
 receipts. Intake notes use a separate filename, preserving delivered
 OVERVIEW files. Original articles and reports remain historical evidence.
+
+The crossed-twist extension now gives the exact finite Fourier correction
+at every positive integer total order, all balanced order jets and their
+chamber kernel. Its centered logarithmic moments of every order q >= r+s
+have finite even-zeta evaluations, proved from both the affine generator
+and ordinary Mellin multiplicities. Independent exact and numerical audits
+retain separate scopes. Later logarithmic Mellin finite parts and primitive
+families remain pending. The complete S6 convergent length-split inputs are
+also preserved and audited; their native search is a separate experiment.
 
 The latest accepted additions prove all positive-integer digamma-power finite
 parts and normalized primitives, reconcile the full fifth-power correction,
