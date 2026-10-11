@@ -1030,6 +1030,8 @@ import GowersSzemeredi.Proofs16Lemma9WithRemainder
 import GowersSzemeredi.Proofs16PolynomialLemma9WithRemainder
 import GowersSzemeredi.Proofs16PieceCoverWithRemainder
 import GowersSzemeredi.Proofs16VertexWithCovers
+import GowersSzemeredi.Proofs16PolyPieceTwoInputs
+import GowersSzemeredi.Proofs16PolyPieceTwo
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

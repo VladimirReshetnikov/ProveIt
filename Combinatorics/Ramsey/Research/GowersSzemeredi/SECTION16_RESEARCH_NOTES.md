@@ -2719,20 +2719,48 @@ is now a parameter, and the piece cover is polynomial when its inputs are.
     this machine. Its definitional step was tested on copies of the two
     width definitions.
 
-**Remaining for `PolyCoverAt 2`.**
-1. Instantiate at `k = 1`:
-   - the spectrum cover from `polyCoverAt_one` on
-     `restrictRelation (section16SpectrumRelation B δ) J`;
-   - the remainder from the face `{x₀} × ℤ_N`. For `k = 1` the remainder
-     is exactly `φ(x₀, x)`, a single vertex. It comes from
-     `PolyCoverAt.face_cover` and `lift_embedding`, with `D` = `B₁`
-     minus the face's deleted fibres;
-   - the slice provider from the Freiman families, which is already
-     polynomial.
+**Item 1 done (2026-10-10): one polynomial piece in dimension two.**
+- `section16_poly_piece_two` (`Proofs16PolyPieceTwo`) is kernel-checked.
+  Assume `(B, φ)` in dimension two satisfies Lemma 16.4's
+  arrangement-density and respect conditions and has the product property.
+  Then there are `x₀` and `D` with at least `5θ′N²` points
+  (`θ′ = θ₂/8`) on which `φ₁` is `MultiplyLinearWith` at every scale.
+  The only other input is Lemma 16.6 at a power width.
+- `section16_poly_piece_two_original` translates back: `φ` itself has the
+  same cover on a subset `D′ ⊆ B` of at least `5θ′N²` points.
+- All covers come from `polyCoverAt_one`, off three global deletions of
+  `θ′N²` points each:
+  - the spectrum relation, at `δ`, off `JΔ`;
+  - the remainder, the single vertex `φ(x₀, x)`
+    (`Proofs16VertexWithCovers`), off the face's good fibres;
+  - the slices, through Freiman families (`Proofs16PolyPieceTwoInputs`),
+    off `θ′N` points per slice.
+- The controls are explicit:
+  - counts `3q(δ,θ′)`, `max(3q(γ,θ′), 9)` and `3·max(1,r)·q(γ,θ′)`;
+  - exponents `cubicBaseExponent`;
+  - the piece count `pieceGraphBound`, polynomial in `1/ρ` and the two
+    family bounds;
+  - the width exponent at least
+    `e·a/(16 + 4 log(16A/ζ))` (`piece_cover_exponent_lower`).
 
-   The good sets must be chosen globally (the per-`x₀` fibre deletions
-   are paid for by averaging over `x₀`).
-2. (B): the simultaneous union over the pieces of one relation.
+  Here `q(δ,θ′)` is polynomial in `1/θγ` of Gowers's fixed degree, through
+  `δ = θ₁^O(1)` and `θ₁ = (θγ/4)^(2^64)`.
+
+**Remaining for `PolyCoverAt 2`.**
+1. **The extraction loop.** Repeatedly apply
+   `section16_poly_piece_two_original` to the not-yet-covered part of a
+   product relation. This is Theorem 16.2's iteration, with Lemma 15.6 in
+   place of the Lemma 16.4 dichotomy, as in step 6 of L.1.
+   - Each round removes `≥ 5θ′N²` points.
+   - So `O(γ⁻²/θ′)` rounds suffice, polynomially many.
+2. **(B), the simultaneous union** of the polynomially many piece covers.
+   This is the open core:
+   - `MultiplyLinearWith.union` is sequential, so its exponent is raised
+     to the number of pieces.
+   - The family-uniform route (L.3) runs one simultaneous recurrence over
+     all pieces' generators.
+   - The pieces' spectra, faces and slices are all dimension-one
+     relations, which are stackable.
 
 ## F. Routes
 
