@@ -1522,3 +1522,21 @@ the retained negative pilots. The comparison includes all preparation and replay
 the old optimized-positive native query is capped, rather than an exhausted
 search family. The full optional-call ratio is 62.726 on this one input;
 ordinary recognition without the optional stage remains faster here.
+
+[sector_integer_transport.tex](sector_integer_transport.tex) repairs exact
+binary serialization of sector ray counts, Euler values and nested positive
+support extraction. It includes the standard determinant proof of the
+primitive vertex-coordinate bound and separates ray-field size from ray
+count, component-proof size and full search cost. The source checker still
+rebuilds every expected geometric ray and retains independent component
+proofs. No new general recognition bound or speedup is claimed.
+
+The current [PDF](report.pdf) has 604 pages. Section 153 starts on page 598;
+the assessment is section 154 on page 600. Rendered pages 598–602 pass visual
+review, covering the full determinant proof, exact transport contract, real-source
+evidence, assessment continuation and references. All references resolve and
+only four pre-existing overflow warnings remain. Reproduce the retained-source
+audit with `python -B data/sector_integer_audit.py`; publication checks use
+`python -B data/sector_integer_review.py --publication` from this directory.
+The evidence retains 134 proof instances and 422 current core-runtime/test
+hashes, alongside the prior 652-source inventory comparison.

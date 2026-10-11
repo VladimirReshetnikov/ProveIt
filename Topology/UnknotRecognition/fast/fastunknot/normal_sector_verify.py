@@ -291,7 +291,7 @@ def verify_sector_exhaustion(triangulation, certificate, *, check=lambda: None):
             check()
             for i,value in enumerate(entry['quadrilaterals']):
                 check()
-                if value:present[i]=True
+                if encoded_integer(value):present[i]=True
         retained=[i for i,value in enumerate(present)if value]
         if not retained or len(retained)==len(working_support):return False
         reduced_support=[working_support[i]for i in retained]
@@ -320,14 +320,18 @@ def verify_sector_exhaustion(triangulation, certificate, *, check=lambda: None):
         if type(entry) is not dict or type(entry.get('quadrilaterals')) is not list:
             return False
         values = entry['quadrilaterals']
-        if any(type(x) is not int for x in values):
+        if len(values) != len(support):
             return False
-        q = tuple(values)
+        try:
+            q = tuple(encoded_integer(x) for x in values)
+            claimed_chi = encoded_integer(entry.get('euler_characteristic'))
+        except (ValueError, TypeError):
+            return False
         if q in seen or q not in expected:
             return False
         seen.add(q)
         rows, chi = expected[q]
-        if type(entry.get('euler_characteristic')) is not int or entry['euler_characteristic'] != chi:
+        if claimed_chi != chi:
             return False
         if chi > 0:
             positive = True

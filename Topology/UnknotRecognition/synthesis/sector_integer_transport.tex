@@ -1,0 +1,85 @@
+\section{Binary transport and bit bounds for sector transcripts}
+\label{sec:sector-integer-transport}
+
+The compressed hierarchy needs to operate on binary normal coordinates,
+not on an expanded list of normal discs. A local verifier must also accept
+its own exact serialization. The retained sector-exhaustion checker had a
+mismatch: its disc subproofs accepted signed hexadecimal integer fields,
+but its ray coordinates and Euler values required Python integers. Thus an
+otherwise valid serialized transcript could fail without any mathematical
+change. The nested Q-support reader also used the truth value of a field,
+rather than its integer value: a string representing zero is nonempty.
+
+The repair decodes only the ray-count and Euler fields with the existing
+strict integer codec. Integers and explicitly signed hexadecimal strings
+are accepted; booleans, floats, decimal strings and malformed encodings
+are rejected. Coordinates must still have the independently computed
+support width. Decoded rays are compared with the independently rebuilt
+complete ray set, with the same duplicate, Euler and component-proof
+checks. The already verified nested Q transcript is decoded before its
+positive support is extracted. Source identifiers, allowed type indices,
+phase and status remain subject to their existing schema checks.
+No producer, claimed complete enumeration or claimed count is trusted.
+
+\subsection{The size of primitive ray fields}
+
+The following determinant argument is the usual vertex-coordinate bound;
+we include it to make the implementation's bit accounting explicit.
+Lackenby and Yazdi recall the $2^{7t-1}$ bound and attribute it to Hass
+and Lagarias\cite[Section 2.7]{lackenby-yazdi-genus}.
+This is not a new knot-theory theorem.
+
+\begin{proposition}[Primitive sector ray size]
+For a source triangulation with $t$ tetrahedra, a primitive integral
+extreme ray of its standard matching cone restricted to an admissible
+support has every coordinate at most $2^{7t-1}$. Its complete coordinate
+vector therefore has $O(t^2)$ bits, and its Euler characteristic has
+$O(t+\log(t+1))$ bits. The ray-coordinate and Euler fields of a transcript
+with $R$ such rays have $O(Rt^2)$ bits.
+\end{proposition}
+\begin{proof}
+Each original source matching row equates one triangle and one
+quadrilateral contribution on the two sides of a face. Before cancellation
+it has two positive and two negative unit terms. The positive triangle and
+quadrilateral indices are distinct, as are the two negative indices.
+Identifications can cancel opposite terms but cannot combine equal-sign
+terms. Thus each row has Euclidean norm at most two. Deleting columns
+preserves this bound.
+
+Let the ray have $s$ positive coordinates, with $s\le7t$. The matching
+matrix restricted to those columns has rank $s-1$: otherwise its
+nonnegative cone contains a perturbation of the positive ray in another
+direction, contradicting extremality. Select $s-1$ independent rows.
+The vector of signed maximal minors spans their one-dimensional kernel.
+Hadamard's inequality bounds each minor by $2^{s-1}$. Dividing by their
+common divisor and choosing the nonnegative sign gives the primitive
+ray and preserves this bound. For $s=1$ the primitive entry is one.
+
+There are at most $7t\,2^{7t-1}$ normal discs in the resulting surface.
+Each has at most four sides and corners. Counting cells gives, for example,
+$|\chi|\le9\cdot7t\,2^{7t-1}$, sufficient for the stated digit bound.
+The vector has at most $7t$ entries, each with at most $7t$ binary digits;
+its quadrilateral subvector and Euler field satisfy the same accounting.
+\end{proof}
+
+The bound applies to primitive rays, not arbitrary multiples or arbitrary
+normal surfaces. The dense reference checker confirms a candidate's
+one-dimensional supported kernel and compares its primitive direction.
+The implementation never expands its represented normal discs. Signed
+hexadecimal transport uses a constant number of characters per four bits,
+so decoding these fields adds time linear in their encoded size to the
+existing exact arithmetic work. A maliciously changed 16,385-bit count
+must still fail the geometric ray equality; a large number is not evidence
+of a new ray.
+
+This is not a polynomial bound on the entire exhaustion certificate.
+The number $R$ of rays can be large; negative positive-Euler ray entries
+also carry independently replayed component proofs, whose size is accounted
+separately. The checker still reconstructs the reference ray set and can
+perform a large arrangement enumeration. Small binary coordinate fields
+alone bound neither search coverage nor hierarchy depth, source growth,
+restarts, or component-proof generation. In particular no general
+subexponential recognition bound follows from this repair.
+
+\subsection{Real-source replay evidence}
+\input{sector_integer_results.tex}
