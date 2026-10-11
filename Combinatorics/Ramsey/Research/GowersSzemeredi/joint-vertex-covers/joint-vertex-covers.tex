@@ -194,6 +194,27 @@ threshold is only needed below $\exp(\exp(X^{2^\mu}))$, and
 $2^{2^m}\le\exp(X^{2^j})$ as soon as $m\le2^j$. At that level the
 constants cost only $k+16$, and $L+5$ holds in every length.
 
+\section{Further questions}
+
+\begin{enumerate}
+\item \emph{Joint slices.} The single-piece step applies its slice control
+  twice in succession, $\theta\,c(c(\theta))$, and so pays $2\cdot68\cdot2^k$
+  in the step cost. Composing the two slice covers jointly, as in
+  Lemma~\ref{lem:joint}, should cost about $68\cdot2^k$. The envelope would
+  drop from about $472\cdot2^k$ to about $336\cdot2^k$. This changes none of
+  the constants in the table.
+\item \emph{The class degree.} The face covers have degree
+  $D_l=2^{68\cdot2^l}$, the fixed point of a class recursion that pays the
+  Section~16 exponent $\theta_1=(\theta\gamma/2)^{2^{2^{k+5}}}$ (about
+  $32\cdot2^k$ in the log-degree) once per dimension. Is there a class
+  construction with log-degree near one $\theta_1$ per dimension?
+\item \emph{The printed $\theta_1$.} Even with joint slices and such a class
+  degree, a step would cost about $134\cdot2^k$, above the $128\cdot2^k$ that
+  $c=6$ for Theorem~18.1 or $c=4$ for Theorem~18.2 would need. Can the
+  double-exponential exponent $2^{2^{k+5}}$ of $\theta_1$ in Lemmas 16.5 and
+  16.7 be lowered? Only that would move these constants further.
+\end{enumerate}
+
 \section{Formalization}\label{sec:lean}
 
 All statements are in the directory
@@ -235,6 +256,6 @@ audit's record is
 \lean{2026-10-11-numbered-and-bounds.json}.
 \end{center}
 The research notes
-(\lean{SECTION16\_RESEARCH\_NOTES.md}, \S\S L.11--L.15e) record the development.
+(\lean{SECTION16\_RESEARCH\_NOTES.md}, \S\S L.11--L.15f) record the development.
 
 \end{document}
