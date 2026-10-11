@@ -1,0 +1,227 @@
+
+\section{Explicit sixth and seventh normalized scalar moments}
+\label{hsm:section}
+
+The all-degree bridge in Section~\ref{gat:section} specifies a finite
+calculation at each weight.  We now carry it out at degrees six and
+seven, auditing the explicit reductions supplied by the
+\emph{Differential Polygamma and Lerch Identities} continuation in
+\cite{dpm:reports}.  Every retained mixed derivative is a convergent
+coordinate of the strict multiple zeta function.  We do not claim a
+further arithmetic elimination of those coordinates.
+
+For an admissible word $\mathbf w$, put
+$Z_{\mathbf w}=Z(\mathbf w)$ and
+$\Delta_{ij}Z_{\mathbf w}=(\partial_i-\partial_j)Z(\mathbf w)$.
+The partial derivatives belong to a genuinely free-order holomorphic
+function near the displayed indices.  They are not derivatives of
+integer-index duality relations.  Retain $\alpha_j,L_d,\mathsf P_m$
+and $\mathsf S_m$ exactly as defined in Section~\ref{gat:section}.
+
+\begin{theorem}[The sixth normalized moment]
+\label{hsm:sixth}
+The original-coordinate finite part is
+\begin{equation}\label{hsm:sixth-main}
+ \boxed{\mathsf S_6=720(\alpha_6-L_5)
+          +245\zeta(2)\zeta(3)+175\zeta(5)+\mathsf D_6,}
+\end{equation}
+where the complete convergent correction is
+\begin{align}\label{hsm:D6}
+ \mathsf D_6={}&120\zeta(2)\Delta_{12}Z_{2,1}
+       -60\Delta_{23}Z_{2,2,1}+120\Delta_{12}Z_{3,1,1}\notag\\
+ &-180\Delta_{12}Z_{4,1}-30\Delta_{12}Z_{2,3}
+       +138\zeta'(5)-60\zeta(2)\zeta'(3)+30\zeta(3)\zeta'(2).
+\end{align}
+\end{theorem}
+
+\begin{theorem}[The seventh normalized moment]
+\label{hsm:seventh}
+In the same normalization,
+\begin{equation}\label{hsm:seventh-main}
+ \boxed{\mathsf S_7=5040(\alpha_7-L_6)
+      +\frac{3731}{4}\zeta(3)^2+\frac{918631}{240}\zeta(6)+\mathsf D_7,}
+\end{equation}
+with
+\begin{align}\label{hsm:D7}
+ \mathsf D_7={}&840\zeta(2)\Delta_{12}Z_{2,1,1}
+       -840\zeta(2)\Delta_{12}Z_{3,1}+210\zeta(2)\partial_1Z_{2,2}\notag\\
+ &-420\Delta_{23}Z_{2,2,1,1}+630\Delta_{23}Z_{2,3,1}
+       +840\Delta_{12}Z_{3,1,1,1}\notag\\
+ &+420\Delta_{12}Z_{3,1,2}
+       +210(2\Delta_{13}+\Delta_{23})Z_{3,2,1}
+       +210\partial_1Z_{2,2,2}\notag\\
+ &+798\partial_1Z_{3,3}-1260\Delta_{12}Z_{4,1,1}
+       +168\Delta_{12}Z_{2,4}+1596\Delta_{12}Z_{5,1}\notag\\
+ &+\frac{651}{2}\zeta(4)\zeta'(2)+336\zeta(2)\zeta'(4)
+       -378\zeta(3)\zeta'(3)-504\zeta'(6).
+\end{align}
+\end{theorem}
+
+\subsection{Exact pole extraction and the marked-word ledger}
+
+Let $h=H_n$ and $A_r=\zeta(r)-H_n^{(r)}$, the strict upper tails.
+The definitions in Section~\ref{gat:section} give
+\begin{align}\label{hsm:delta6}
+ \delta_6={}&30A_2^2h-90A_2A_3-120\zeta(2)A_2h
+       -60A_3h^2+120\zeta(2)A_3+150A_4h-138A_5,\\
+ \delta_7={}&70A_2^3+105A_2^2h^2-315\zeta(2)A_2^2
+       -630A_2A_3h+588A_2A_4\notag\\
+ &-420\zeta(2)A_2h^2-126\zeta(4)A_2+259A_3^2
+       -140A_3h^3+840\zeta(2)A_3h-280\zeta(3)A_3\notag\\
+ &+525A_4h^2-651\zeta(2)A_4-966A_5h+833A_6.
+       \label{hsm:delta7}
+\end{align}
+These are finite polynomial identities from the convergent local
+series and the Gamma--Appell coefficient generator; even zeta
+relations are enforced.  Apply the exact difference rule
+\eqref{gat:difference}, then the upper/lower stuffle products and
+marked concatenation \eqref{gat:mark}.  The resulting unsimplified
+word coefficients are recorded independently in
+\path{verification/appell-six-seven-exact.json}.  There are thirteen
+nonzero marked coordinates at degree six and thirty-two at degree
+seven before the free-order reductions below.
+
+Only identities valid on open convergence domains are differentiated:
+\[
+ \zeta(a)\zeta(b)=Z(a,b)+Z(b,a)+\zeta(a+b),\qquad
+ Z(s,s,s)=\frac{\zeta(s)^3-3\zeta(s)\zeta(2s)+2\zeta(3s)}6.
+\]
+In particular,
+\begin{align*}
+ (\partial_1+\partial_2)Z_{2,2}
+       &=\zeta(2)\zeta'(2)-\zeta'(4),\\
+ (\partial_1+\partial_2)Z_{3,3}
+       &=\zeta(3)\zeta'(3)-\zeta'(6),\\
+ (\partial_1+\partial_2+\partial_3)Z_{2,2,2}
+       &=\frac34\zeta(4)\zeta'(2)-\zeta(2)\zeta'(4)+\zeta'(6).
+\end{align*}
+Differentiating the first identity in either argument also transfers
+the $(3,2)$ and $(4,2)$ coordinates into $(2,3)$ and $(2,4)$.
+Substitution in the generated word lists gives
+\eqref{hsm:D6}--\eqref{hsm:D7} exactly.  Every index word is
+admissible and every marked coordinate converges in a full neighborhood.
+
+\subsection{The ordinary constants have finite rational certificates}
+
+The independent higher-pole compiler gives
+\begin{align}\label{hsm:J6}
+ \mathsf J_6={}&75\zeta(2)\zeta(3)+60\zeta(2)Z_{2,1}
+       +360Z_{2,1,1,1}+60Z_{2,1,2}+60Z_{2,2,1}\notag\\
+ &-30Z_{2,3}-15Z_{3,2}-35Z_{4,1}-\frac52\zeta(5),\\
+ \mathsf J_7={}&511\zeta(2)\zeta(4)+630\zeta(3)Z_{2,1}
+       +420\zeta(2)Z_{2,1,1}+2520Z_{2,1,1,1,1}\notag\\
+ &+420(Z_{2,1,1,2}+Z_{2,1,2,1}+Z_{2,2,1,1})
+       -210(Z_{2,1,3}+Z_{2,3,1})-42Z_{2,4}\notag\\
+ &-42\zeta(3)^2-105\zeta(2)Z_{3,1}
+       -105(Z_{3,1,2}+Z_{3,2,1})-63Z_{3,3}\notag\\
+ &-245Z_{4,1,1}-77Z_{4,2}-\frac{35}{2}Z_{5,1}
+       +\frac{189}{10}\zeta(6).
+       \label{hsm:J7}
+\end{align}
+The coefficients $75$ and $511$ combine the like terms in the
+unreduced ledger; no new zeta relation is used in that combination.
+
+Here is a reproducible finite derivation of the ordinary reductions.
+At weight $w=5$ or $6$, enumerate every positive-index word of total
+weight $w$ whose first entry is at least two.  Encode an entry $k$
+as $0^{k-1}1$.  The series stuffle product, binary integral shuffle
+product, and reversal-complement duality give exact linear equations.
+Use all convergent products of weights $k+(w-k)$, with $k\ge2$
+and $w-k\ge2$, and the normalization $Z_w=\zeta(w)$.
+Add the shuffle-minus-stuffle relation of $(1)$ with every admissible
+weight-$(w-1)$ word.  Its nonadmissible terms cancel.
+
+The validity of this last step is specific to a single logarithmic
+divergence.  The classical comparison theorem
+\cite[Theorem~1, printed p.~310]{dgp:IKZ} relates the two polynomial
+regularizations by an operator whose exponential generating factor
+is $1+O(u^2)$.  It is therefore the identity on constants and linear
+polynomials in the common divergence parameter.  Each word here has
+at most one leading $1$, so the common linear product cancels with
+no extra quadratic regularization term.  Equating higher powers of
+the divergence parameter without that comparison would be invalid.
+For example this construction gives $Z_{2,1}=\zeta(3)$ from the
+single-divergence product of $(1)$ and $(2)$.
+
+The independently generated systems have $21$ rows and $8$ columns
+at weight five, and $49$ rows and $16$ columns at weight six.  Both
+have full column rank over $\mathbb Q$.  The receipt includes all
+rows, all right sides, a selected square minor and its inverse.
+Both inverse products and every unselected row residual are checked.
+The entire delivered weight-six matrix is independently regenerated.
+These are representations in specified ordinary constants, without
+an independence assertion about the evaluated constants themselves.
+
+At weight five put $c=\zeta(2)\zeta(3)$ and $d=\zeta(5)$.
+The required values are
+\[
+ Z_{2,1,1,1}=d,\quad
+ Z_{2,1,2}=Z_{2,3}=\tfrac92d-2c,\quad
+ Z_{2,2,1}=Z_{3,2}=3c-\tfrac{11}{2}d,\quad
+ Z_{4,1}=2d-c.
+\]
+At weight six put $a=\zeta(3)^2$ and $b=\zeta(6)$:
+\[
+\begin{array}{c|l}
+ Z_{2,1,1,1,1}&b\\
+ Z_{2,1,1,2}=Z_{2,4}&25b/12-a\\
+ Z_{2,1,2,1}=Z_{3,3}&(a-b)/2\\
+ Z_{2,2,1,1}=Z_{4,2}&a-4b/3\\
+ Z_{2,1,3}&a-13b/16\\
+ Z_{2,3,1}=Z_{3,1,2}&53b/24-3a/2\\
+ Z_{3,2,1}&3a-203b/48\\
+ Z_{4,1,1}&23b/16-a\\
+ Z_{5,1}&3b/4-a/2.
+\end{array}
+\]
+Together with the already established lower-weight values and
+$\zeta(2)\zeta(4)=7\zeta(6)/4$, substitution gives
+\[
+ \mathsf J_6=245\zeta(2)\zeta(3)+175\zeta(5),\qquad
+ \mathsf J_7=\frac{3731}{4}\zeta(3)^2+\frac{918631}{240}\zeta(6).
+\]
+
+\begin{proof}[Proof of Theorems~\ref{hsm:sixth} and \ref{hsm:seventh}]
+Use Theorem~\ref{gat:main} at $m=6,7$.  The local coefficient
+calculation gives \eqref{hsm:delta6}--\eqref{hsm:delta7}, whose finite
+differences and open-domain stuffle derivatives give the displayed
+mixed corrections.  The exact higher-pole calculation and the valid
+finite ordinary systems give \eqref{hsm:J6}--\eqref{hsm:J7} and their
+reductions.  All convergence and fixed-coordinate endpoint operations
+are already proved in the all-degree bridge.  This proves the two
+identities without extrapolating numerical values or differentiating
+integer-only duality.
+\end{proof}
+
+For explicit integrands put $U=\psi(x)+\gamma$.  Then
+\begin{align*}
+ \mathsf P_6(\psi)&=U^6+15\zeta(2)U^4+40\zeta(3)U^3
+       +\frac{405}{2}\zeta(4)U^2\\
+ &\quad +(120\zeta(2)\zeta(3)+144\zeta(5))U
+       +40\zeta(3)^2+\frac{2745}{8}\zeta(6),\\
+ \mathsf P_7(\psi)&=U^7+21\zeta(2)U^5+70\zeta(3)U^4
+       +\frac{945}{2}\zeta(4)U^3\\
+ &\quad +(420\zeta(2)\zeta(3)+504\zeta(5))U^2
+       +\left(280\zeta(3)^2+\frac{19215}{8}\zeta(6)\right)U\\
+ &\quad +945\zeta(3)\zeta(4)+504\zeta(2)\zeta(5)+720\zeta(7).
+\end{align*}
+Equation~\eqref{gat:inverse} now recovers the raw $Q_6,Q_7$ from
+these identities and the already evaluated lower moments.  It
+introduces no undefined higher moment or unspecified mixed constant.
+The remaining arithmetic question is reduction of the retained
+convergent directions to a chosen smaller alphabet.
+
+The positive Cauchy form replaces the first terms in the boxes by
+$-720\sum\rho_n/n^7$ and $-5040\sum\rho_n/n^8$ respectively.
+Independent native quadrature and residue-defect tail summation give
+approximately
+\[
+ \begin{aligned}
+ \mathsf S_6&=20.8226131542578224267340551051333\ldots,\\
+ \mathsf S_7&=123.619906884273853180167345465232\ldots.
+ \end{aligned}
+\]
+The numerical checks retain two different head/tail configurations and
+an independent positive Cauchy Mellin integral.  Their agreement is a
+diagnostic, not a total interval accuracy certificate.  These scalar
+moments do not settle the Gaussian $S_6$ or revised $S_8$ candidates.

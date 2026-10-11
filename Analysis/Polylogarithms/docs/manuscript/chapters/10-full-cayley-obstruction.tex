@@ -370,3 +370,89 @@ with $\lambda$, to test whether selected depth-five double-shuffle rows
 suffice, and to find a conceptual functional equation explaining the
 whole even-index family. These are exact proof-search questions, while
 $R_6=0$ itself remains the separate numerical-period conjecture.
+
+
+\subsection{Every comparison with one first letter \texorpdfstring{$X$}{X} at depth five}
+\label{fcd5:section}
+
+The formal obstruction above motivates higher-depth input relations.
+A complete finite experiment can be stronger than sampling more such
+inputs.  Let $\mathcal V$ be all admissible adapted words $v$ of
+length six and depth four with odd conjugation parity.  There are
+$1032$ such words.  With $X=C-B$, take the double-shuffle difference
+$DS(X,v)$, expand it in the adapted alphabet, and apply the proved
+full-Cayley retraction $\Pi$.  Each input is a linear combination of
+a convergent comparison with $B$ and a single-divergence comparison
+with $C$; its nonadmissible terms cancel.
+
+Write $F_5$ for the odd admissible weight-seven space of depth at
+most five, and $F_4$ for its bounded subspace.  Their dimensions are
+$8786$ and $2546$; the remaining $6240$ coordinates have depth
+exactly five.  Let
+\[
+ A:\mathbb Q^{\mathcal V}\longrightarrow F_5,\qquad
+ A(e_v)=\Pi DS(X,v),
+\]
+and let $p_5:F_5\to F_5/F_4$ retain every depth-five coordinate.
+
+\begin{theorem}[Exact completeness of the bounded contributions]
+\label{fcd5:kernel}
+The map $p_5A$ has rank $1008$ over $\mathbb Q$ and a
+$24$-dimensional kernel.  The $24$ exact source combinations already
+obtained from the earlier $190$ selected inputs form a basis of this
+complete kernel.  Consequently
+\[
+ \operatorname{im}A\cap F_4
+     =\operatorname{span}_{\mathbb Q}\{b_1,\ldots,b_{24}\},
+\]
+where the $b_j$ are those previously reconstructed bounded relations.
+For any relation space $\mathcal B\subset F_4$,
+\[
+ (\mathcal B+\operatorname{im}A)\cap F_4
+             =\mathcal B+\operatorname{span}_{\mathbb Q}\{b_1,\ldots,b_{24}\}.
+\]
+This equality does not assert independence of the $b_j$ after quotienting
+by $\mathcal B$, nor any arithmetic independence of periods.
+\end{theorem}
+
+\begin{proof}
+The compressed exact record retains all $1032$ projected rows, including
+every outside coordinate.  The independently audited certificate
+\path{verification/S6-full-depth-five-kernel-certificate.json}
+first matches all $190$ older rows to this complete record.  It then
+reconstructs each of the $24$ old rational source combinations using
+the full coefficients, verifying both the expected bounded result
+and cancellation of every depth-five coefficient.  Their last nonzero
+input indices are distinct, giving a triangular minor of the source
+combinations with nonzero diagonal.  They are therefore independent,
+and $\operatorname{rank}_{\mathbb Q}(p_5A)\le1032-24=1008$.
+
+For the converse, the certificate selects a $1008$-row, $1008$-column
+minor of the outside matrix and reconstructs it directly from the
+rational projected rows.  Clearing the common denominator $5760$
+gives an integer matrix whose determinant modulo $2147483647$ is
+\[
+ 221991308\ne0.
+\]
+An independent integer implementation verifies this determinant;
+each modular product and subtraction fits signed $64$-bit arithmetic,
+and no floating-point matrix operation is used.  Thus the rational
+minor is nonzero and the rank is at least $1008$.  Equality proves
+that the $24$ source combinations span the whole kernel.
+Finally $A(c)$ is bounded exactly when $p_5A(c)=0$, proving the first
+intersection identity.  Subtracting a bounded element of $\mathcal B$
+proves the second.
+\end{proof}
+
+The associated modular target search keeps all $8786$ coordinates.
+Its $6187$ rows consist of the $5131$ inherited relations, the $24$
+previous bounded relations and the complete $1032$ inputs.  Its rank
+is $2905$ modulo the stated prime and the target remains outside that
+modular span.  This last observation is a search diagnostic: the
+exact outside-rank certificate does not, by itself, certify the rational
+rank of the bounded relation space or rational nonmembership of the
+target.  It neither disproves the period identity nor proves a universal
+depth requirement.  The exact kernel result explains why further
+sampling within this same first-letter family supplies no additional
+bounded information; other comparison families and functional relations
+remain appropriate next targets.

@@ -1,0 +1,225 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\lean}[1]{\texttt{#1}}
+\newcommand{\Qb}{Q}
+\newcommand{\Eb}{E}
+
+\title{Joint vertex covers and the envelope of Gowers's inverse induction}
+\author{Formalization notes, Combinatorics/Ramsey (2026-10-11)}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+In Gowers's proof of Szemer\'edi's theorem, the structural step of Section~16
+(the single-piece lift) must produce one multilinear map that agrees with the
+\emph{remainder} $\varphi''$ on a dense piece of a box. The remainder is a
+signed sum over the $2^k-1$ non-top vertices of the cube $\{0,1\}^k$, and each
+vertex contributes a function that lives on a lower-dimensional face. If the
+vertices are handled one after another, each at the density left by the
+previous one, the degrees of the density losses multiply, and the resulting
+envelope grows like $3^k$ in the doubly-logarithmic scale. That outgrows the
+printed budgets $2^{d+10}$ (Theorem~18.1) and $2^{L+9}$ (Theorem~18.2) at
+degree $10$ and length $14$. We show that the vertex \emph{covers} can be
+composed at a precision fixed in advance, with a single pigeonhole at the end.
+The losses then add, the envelope grows like $2^k$, and Theorems~18.1, 18.2
+and Corollary~18.7 hold in every degree and length, at the printed constants
+and with some room to spare. Every statement below is formalized in Lean
+(module names are given in \S\ref{sec:lean}).
+\end{abstract}
+
+\section{Covers}
+
+Throughout, $N$ is prime, a \emph{box} is a product of arithmetic progressions
+in $\mathbb{Z}_N$ with a common difference, and $w(P)$ is the least side
+length of a box $P$. A map is \emph{multilinear} in the sense of the paper.
+
+\begin{definition}[Cover]
+Let $\Gamma\subseteq\mathbb{Z}_N^d\times\mathbb{Z}_N$ be a relation and
+$\Qb,\Eb\colon(0,1]\to\mathbb{R}$. We say $\Gamma$ is \emph{covered with controls
+$(\Qb,\Eb)$} if for every $\theta\in(0,1]$ and every proper box $P$ there are
+\begin{itemize}
+\item a partition of $P$ into proper boxes $Q_1,\dots,Q_M$ with
+  $w(Q_j)\ge w(P)^{\Eb(\theta)}$,
+\item a set $H\subseteq P$ with $|H|\ge(1-\theta)|P|$,
+\item for each $j$ at most $\Qb(\theta)$ multilinear maps
+  $\mu_{j,1},\dots,\mu_{j,q}$,
+\end{itemize}
+such that every $(x,y)\in\Gamma$ with $x\in Q_j\cap H$ satisfies
+$y=\mu_{j,i}(x)$ for some $i$.
+\end{definition}
+
+The precision $\theta$ is chosen by the user of the cover \emph{before} it is
+applied, and the loss $\theta|P|$ is additive. A \emph{provider}, by contrast,
+takes a set of density $t$ and returns a piece of density $c(t)$; composing
+providers composes the functions $c$.
+
+\section{Joint covers}
+
+\begin{lemma}[Joint cover]\label{lem:joint}
+Let $E$ be a finite index set, and for $e\in E$ let $f_e$ be a function on a
+domain $D_e\subseteq\mathbb{Z}_N^d$ whose graph is covered with controls
+$(\Qb_e,\Eb_e)$, with $\Qb_e,\Eb_e\ge0$. Fix precisions $\theta_e\in(0,1]$.
+Then every proper box $P$ has a partition into proper boxes $R_1,\dots,R_M$, a
+set $G\subseteq P$ and, for each $j$, at most $q\le\prod_e\Qb_e(\theta_e)$
+tuples $(\nu_{j,i,e})_{e\in E}$ of multilinear maps, such that
+\[
+  |G|\ge\Bigl(1-\sum_{e}\theta_e\Bigr)|P|,\qquad
+  w(R_j)\ge w(P)^{\prod_e\Eb_e(\theta_e)},
+\]
+and every $x\in R_j\cap G$ lying in all domains $D_e$ has an index $i$ with
+$f_e(x)=\nu_{j,i,e}(x)$ for all $e$.
+\end{lemma}
+
+\begin{proof}
+Induction on $E$. For $E=\emptyset$ take the trivial partition, $G=P$ and one
+empty tuple. For $E\cup\{a\}$, apply the induction hypothesis to $P$, obtaining
+cells $Q_j$, a good set $G$ and tuples $\nu_{j,i}$. Apply the cover of $f_a$ at
+precision $\theta_a$ to every cell $Q_j$; this gives sub-cells $R_{j,l}$, good
+sets whose union $G'$ satisfies $|G'|\ge(1-\theta_a)|P|$ (the cells partition
+$P$), and maps $\mu_{j,l,i'}$. Take the sub-cells $R_{j,l}$ as the new
+partition, the good set $G\cap G'$, of size at least
+$|G|+|G'|-|P|\ge(1-\sum_E\theta_e-\theta_a)|P|$, and the product tuples
+$(\nu_{j,i},\mu_{j,l,i'})$. The width bound follows from
+$w(R_{j,l})\ge w(Q_j)^{\Eb_a}\ge w(P)^{\Eb_a\prod_E\Eb_e}$.
+\end{proof}
+
+\begin{corollary}[One piece]\label{cor:piece}
+In the setting of Lemma~\ref{lem:joint}, put $s=\sum_e\theta_e$ and
+$Q=\prod_e\Qb_e(\theta_e)$. If $H\subseteq P$ lies in every domain $D_e$ and
+$|H|\ge\theta|P|$ with $\theta>s$, then some cell $R$ and some maps $\nu_e$
+satisfy
+\[
+  \bigl|\{x\in H\cap R: f_e(x)=\nu_e(x)\text{ for all }e\}\bigr|
+  \ge\frac{\theta-s}{Q}\,|R| .
+\]
+\end{corollary}
+
+\begin{proof}
+$|H\cap G|\ge(\theta-s)|P|$, so some cell $R$ has
+$|H\cap G\cap R|\ge(\theta-s)|R|$. Each of its points is covered by one of at
+most $Q$ tuples; the most popular tuple covers a $1/Q$ fraction.
+\end{proof}
+
+The only density loss is the single factor $1/Q$, and $Q$ is a product of
+counts evaluated at \emph{fixed} precisions. If $\Qb_e(\theta)\le(C/\theta)^{D_e}$,
+the density has degree $1+\sum_e D_e$ in $1/\theta$: the degrees add.
+
+\section{The remainder of the single-piece step}
+
+On the good domain of the step, the remainder is
+$\varphi''(x)=-\sum_{e\ne\mathbf 1}(-1)^{k+|e|}\varphi_e(x)$, where $\varphi_e$ is
+the translated cube vertex $e$, a pullback of $\varphi$ to the face spanned by
+the directions $S_e$, of dimension $|e|+1$. By induction on the dimension, the
+face carries a cover of degree $D_{|S_e|}$. It lifts to the ambient box without
+any loss in the precision: the count becomes $\max(\Qb,3^{k+1})$ and the
+exponent $\Eb/16^{k+1-|S_e|}$. Applying Corollary~\ref{cor:piece} with
+$\theta_e=\theta_2/2^{k+1}$ to the dense good set (density $\theta_2$) gives one
+map $M''=-\sum_e(-1)^{k+|e|}\nu_e$ on a piece of density
+\[
+  \rho_1=\frac{\theta_2/2}{\prod_{e\ne\mathbf 1}\max\bigl(\Qb_{|S_e|}(\theta_2/2^{k+1}),3^{k+1}\bigr)}
+\]
+and width at least $N^{\prod_e\Eb_e/16^{k+1-|S_e|}}$.
+
+\begin{remark}[Nesting versus joint covers]
+With the class degrees $D_l=2^{68\cdot2^l}$, nesting one provider per vertex
+gives $\log_2\deg\rho_1^{-1}\approx\sum_{e}68\cdot2^{|e|+1}=136\cdot3^k$. The
+joint cover gives $\log_2\bigl(1+\sum_eD_{|S_e|}\bigr)\le68\cdot2^k+k$.
+\end{remark}
+
+\section{The envelope}
+
+Write $X=2/\alpha$. The inverse induction carries bounds
+$\beta^{-1},\sigma^{-1}\le X^{2^{\mu}}$ from degree $d-1$ to degree $d$. With the
+joint-cover remainder, one step in dimension $k$ costs
+\[
+  \mu_{\mathrm{new}}=\mu+\underbrace{(68\cdot2^k+\mu_0+k+3)}_{\rho_1}
+  +2\cdot68\cdot2^k+O(k^2),
+\]
+where $\mu_0$ bounds the base budget of the cover controls. With the standard
+$\mu_0\approx64\cdot2^k$ one step costs $268\cdot2^k+O(k^2)$. Hence
+
+\begin{theorem}
+For every $k\ge1$ the Theorem~18.1 envelope satisfies $\mu_k\le1000\cdot2^k$,
+and the Theorem~18.2 envelope (which also carries thresholds) satisfies
+$\mu_k\le1000\cdot2^k$ as well. Both are well inside the printed budgets
+$2^{d+10}=4096\cdot2^{d-2}$ and $2^{L+9}=8192\cdot2^{L-4}$. Consequently
+Theorems~18.1 and 18.2 and Corollary~18.7 hold in every degree and length.
+\end{theorem}
+
+\section{Sharper constants}
+
+The same proofs give smaller tower constants. Moreover, the class base
+$V=1+\sum_{j<k}(K_j+p_j)$ satisfies $V\le2^{2^{2^{k+4}+1}}$, so the base budget
+$\mu_0=2^{k+5}+9$ suffices; one step then costs $236\cdot2^k+O(k^2)$ and the
+envelopes grow like $472\cdot2^k<512\cdot2^k$.
+
+\begin{center}\small
+\begin{tabular}{lccc}
+\toprule
+& printed & standard base & tight base\\
+\midrule
+Theorem 18.1, exponent $\alpha^{2^{2^{d+c}}}$ & $c=10$ & $c=8$ ($d\ge4$) & $c=7$ ($d\ge4$)\\
+Theorem 18.2, threshold with $L+c$ & $c=9$ & $c=6$ ($L\ge6$) & $c=5$ ($L\ge11$)\\
+Corollary 18.7, threshold with $L+c$ & $c=9$ & $c=6$ ($L\ge6$) & $c=5$ ($L\ge11$)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The method stops at these constants. The envelope recursion grows like
+$472\cdot2^k$, and $c=6$ for Theorem~18.1 (or $c=4$ for Theorem~18.2) would
+need a step cost below $128\cdot2^k$, while the vertex covers and the two slice
+controls alone cost $204\cdot2^k$. For $L\le10$ the bound $L+5$ is blocked by
+the catalogue's Weyl threshold $2^{2^{40k^3}}$ in Section~5.
+
+\section{Formalization}\label{sec:lean}
+
+All statements are in the directory
+\lean{Combinatorics/Ramsey/Lean/GowersSzemeredi}.
+
+\begin{center}\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.28\textwidth}>{\raggedright\arraybackslash}p{0.64\textwidth}}
+\toprule
+Statement & Lean\\
+\midrule
+Lemma~\ref{lem:joint}, Corollary~\ref{cor:piece} & \lean{joint\_cover\_on}, \lean{JointCoverOn.piece} (\lean{Proofs16JointCovers})\\
+the remainder piece & \lean{remainder\_piece\_of\_vertex\_covers}\\
+the single-piece step & \lean{single\_piece\_lift\_global\_cover} (\lean{Proofs16SinglePieceCoverGlobal})\\
+$\rho_1$ bound & \lean{rho1\_inv\_leC} (\lean{Proofs18CoverDensity})\\
+envelopes & \lean{polyGenMuC\_le}, \lean{genMuC\_le}, \lean{genMuC\_le\_sharp}\\
+Theorems 18.1, 18.2, Cor.~18.7 & \lean{theorem\_18\_1\_explicit}, \lean{theorem\_18\_2\_explicit},\\
+& \lean{corollary\_18\_7\_explicit} (\lean{Proofs18CoverExplicit})\\
+sharper constants & \lean{Proofs18CoverSharper}, \lean{Proofs18CoverTightBase},\\
+& \lean{Proofs18CoverColorings}, \lean{Proofs18CoverSharperExplicit}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The light modules are kernel-checked; their only axioms are
+\lean{propext}, \lean{Classical.choice} and \lean{Quot.sound}. The explicit bridges
+depend, in addition, exactly on the corpus theorems
+\begin{itemize}
+\item \lean{commonDiffPartitionBoundAt\_of},
+\item \lean{multilinearPartitionBoundAt\_explicit},
+\item \lean{section16RecurrenceProfileWith\_explicit},
+\item \lean{theorem\_18\_2\_le\_six};
+\end{itemize}
+they were checked against faithful stubs carrying exactly these statements
+and await the full kernel audit. The research notes
+(\lean{SECTION16\_RESEARCH\_NOTES.md}, \S\S L.11--L.15b) record the development.
+
+\end{document}

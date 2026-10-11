@@ -2,26 +2,26 @@
 
 The canonical reading artifact is the collective four-volume manuscript,
 [Polylogarithms and their Arithmetic Bridges](docs/manuscript/README.md),
-authored by **ProveIt Contributors**. The volumes have **129, 127, 215 and
+authored by **ProveIt Contributors**. The volumes have **129, 128, 218 and
 84 pages**, each compiling independently; the retained
-[combined edition](docs/manuscript/polylogarithms.pdf) has **517 pages**.
+[combined edition](docs/manuscript/polylogarithms.pdf) has **521 pages**.
 They share twelve chapters, thirteen figures and 136 references. The
 [editorial ledger](docs/manuscript/EDITORIAL-LEDGER.md) separates accepted
 proofs from pending analytic claims, and the
 [validation record](docs/manuscript/VALIDATION.md) distinguishes proofs,
 finite certificates, numerical diagnostics, PDF builds and visual review.
 
-The inventory covers **1333 textual provenance documents**. **90 incoming
-archives / 3328 original tracked members** are preserved; imported ZIPs are
+The inventory covers **1408 textual provenance documents**. **96 incoming
+archives / 3502 original tracked members** are preserved; imported ZIPs are
 retired in their placement commits and recoverable from arrival history.
-The latest twelve deliveries, in two intakes, retain their own PDFs, sources, code and
+The latest eighteen deliveries, in three intakes, retain their own PDFs, sources, code and
 receipts. Intake notes use a separate filename, preserving delivered
 OVERVIEW files. Original articles and reports remain historical evidence.
 
 The latest accepted additions prove all positive-integer digamma-power finite
 parts and normalized primitives, reconcile the full fifth-power correction,
 and give a positive Cauchy series for every height-one coefficient. Two
-version-specific source corrections carry exact proofs. All twelve newest
+version-specific source corrections carry exact proofs. All eighteen newest
 packages pass isolated mathematical replay; their broader branches retain
 separate analytic scopes. The differential-polynomial core now proves unsubtracted expansions and
 ordinary finite-part coordinates for every derivative-containing polynomial;
@@ -31,6 +31,13 @@ also proved, with exact endpoint constants and independent matrix certificates.
 The Gamma-Appell bridge now gives an all-degree single-height-one-coordinate
 formula, an ordinary positive-Cauchy-series form and finite marked-derivative
 corrections, with proved normal-form transport and raw-moment recovery.
+The sixth and seventh normalized scalar moments now have explicit proved
+marked multiple-zeta coordinates and exact ordinary correction constants,
+with independent native diagnostics. The complete 1032-input first-letter
+X depth-five family has exact top rank 1008 and a 24-dimensional kernel;
+its bounded contributions are exhausted by the previously constructed rows.
+The other letter families are being searched separately with every outside
+coordinate retained. Research continues even with an empty incoming queue.
 The preceding accepted additions prove all centered trigamma-square moments,
 their ordinary subtracted sums and a classical-polylogarithm generator.
 An independently replayed full-Cayley ideal certificate excludes the S6

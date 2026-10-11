@@ -767,3 +767,55 @@ The normalized scalar S_m is distinct from the Gaussian S6/S8 ladder candidates.
 Those remain conjectural. Detailed sixth/seventh arithmetic coordinate reductions
 and other branch-specific integrations remain pending. No report arrived in the
 inspected incoming state; the ninety-archive census and originals are preserved.
+
+
+## Sixteenth intake: reconstruction, crossings and spectral continuations
+
+Preserve 177 original members (174 tracked) from six deliveries, placed and
+published in 6d1e05eceb14. Retire their committed ZIPs in the same placement;
+retain the drop-zone README and Git recovery paths. All six full specified
+mathematical suites pass on isolated copies. Cumulative preservation is now
+96 archives and 3502 tracked originals; 36 ignored bare manifests remain in
+arrival history. Original README.txt names are retained under the Polylogarithms
+delivered-layout convention. No checksum-manifest verification was performed.
+
+| Group | Reconciliation and acceptance boundary |
+|---|---|
+| `beta-crossing` | Continues the common-interval mixed-twist theorem with crossed-mode corrections, balanced order jets and logistic Mellin identities. The existing theorem is explicitly acknowledged as correct in its stated interval. Full finite replay passes; canonical analytic integration remains pending. |
+| `harmonic-tail-gamma` | Continues optimal-tail-prefix and differential Gamma questions: gap-four rank, universal telescopers, low-derivative variational sectors and the next determinant resonance. Overlaps the shifts/twists and reconstruction deliveries, so retain every proof route for reconciliation. Full finite replay passes; canonical analytic integration remains pending. |
+| `harmonic-tails-shifts-twists` | Continues the named optimal-prefix conjecture with an independent gap-four proof, shifted Bernoulli transforms and alternating identities. The earlier common Gamma/differential foundations are now canonical; retained-alphabet reductions remain distinct from mere spectral evaluations. Full finite replay passes; canonical analytic integration remains pending. |
+| `polygamma-reconstruction-resonance` | Continues reconstruction and higher Gamma resonance with all order-two inverse rows, a qualified order-eight family, cubic trigamma moments and next two-particle resonance. Current scope is stronger than the inspected old snapshot; no unrestricted optimal-prefix or Gaussian ladder proof is claimed. Full finite replay passes; canonical analytic integration remains pending. |
+| `quadratic-spectrum-stieltjes` | Extends Stieltjes/Hurwitz correlation and reflected spectral calculus to quadratic factors, mass/shift derivatives and all negative-integer orders. Its proposed stale rational-Herglotz status change is already resolved by the current Chapter 11 classification, so it is not an outstanding gap. Full finite replay passes; canonical analytic integration remains pending. |
+| `same-direction-complex-orders` | Answers reciprocal-lerch-convolutions/sections/12-research.tex:67-72: the same-direction Mellin problem beyond integer orders, with connected entire double-Hurwitz coordinates and beta-Newton evaluation. Preserve positive scales and the separate generic finite-closure boundary. Full finite replay passes; canonical analytic integration remains pending. |
+
+The sixth/seventh normalized scalar moment reductions from the earlier
+differential-polygamma report are independently audited and now integrated,
+with complete ordinary and marked-word certificates. This does not resolve
+Gaussian S6/revised S8 or eliminate their retained arithmetic directions.
+Independent research continues even when the incoming queue is empty.
+
+
+### Accepted sixth/seventh scalar formulas and complete single-X kernel
+
+The differential-polygamma continuation's complete normalized sixth/seventh
+scalar formulas are now audited in Section 8.43. Ordinary reductions have
+independently regenerated full rational systems; marked reductions use only
+free-order identities on open convergence domains. Native comparisons are
+independent diagnostics. Further arithmetic elimination of those explicit
+convergent directions remains open, as do the other pending branches above.
+
+Independent research also completes every one of the 1032 single-X inputs
+at weight seven and depth five. The exact outside rank is 1008, with the
+24-dimensional kernel spanned by the previously reconstructed combinations.
+Theorem 12.4 proves that their bounded contributions are exhausted.
+This does not settle the Gaussian S6 period. The other first-letter families
+are retained for a separate joint target search and proof audit. Research
+continues independently even when the incoming queue is empty.
+
+
+The complete first-letter families X/Y/H/B contain 1032/1144/1032/1032
+inputs. All 4240 projected rows and every outside coordinate are preserved.
+The joint 9395-by-8786 native matrix has rank 4942 modulo 2147483647 and
+does not close the target. This is a completed finite-field diagnostic,
+separate from the proved X-family kernel theorem and the open period identity.
+Convergent length-split 2+5 and 3+4 products are a next research direction.

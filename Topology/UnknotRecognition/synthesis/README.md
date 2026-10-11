@@ -1696,3 +1696,41 @@ start on pages 616 and 617; assessment starts on page 619. Pages 616–621
 have been visually reviewed, including both proofs, both complete timing
 tables and the assessment update. All references resolve and only the four
 pre-existing overflow warnings remain.
+
+[cut_boundary.tex](cut_boundary.tex) now constructs the complete cut boundary
+as binary polygon, edge and vertex families, with cyclic oriented attachments
+and carriers into cut chambers. It obtains every boundary genus and each cut
+piece's boundary count and total genus in polynomial encoded cost. Both local
+normal sides and all original boundary gaps are retained; no normal
+multiplicity is divided out. Interior geometry, parallelity collapse and
+general hierarchy-piece validation remain open.
+
+All 1,589 maintained tests pass with Regina available and no skips. The
+source audit agrees with 1,755 explicit cuts, checks 340,202 signed incidences
+and connected vertex links, and contains 45 cases with several boundaries
+inside a piece. Ten large binary cases and 110 saved source proofs replay
+with all producers disabled. A retained sphere-boundary nonball with first
+homology Z/2 prevents an unsupported terminal conclusion. The engine reports
+Regina 7.4; the pinned Python distribution is 7.4.1.
+
+The complete common boundary-profile query has paired explicit/native ratio
+15.599 at 4,096 meridian copies, including native independent replay and full
+result serialization. The native path loses on small inputs and the primitive
+16-tetrahedron case; all outcomes and identical-code controls are retained.
+Regina constructs an explicit three-dimensional cut, while native constructs
+and serializes compressed boundary cells and its proof. These are shared
+profile-task measurements with different additional geometric outputs.
+
+Reproduce the current evidence review with
+`python -B data/cut_boundary_review.py --publication`, and regenerate its
+table with `python -B data/cut_boundary_tables.py`, from this directory.
+Older publication records retain their original source hashes and page
+numbers. The new cut-boundary review authenticates the current sources and
+the 110 source proofs; it preserves the unresolved general quasi-polynomial
+recognition target.
+
+The current [PDF](report.pdf) has 630 pages. Section 161 starts on page 619;
+assessment starts on page 624. Pages 619–626 have been visually reviewed,
+including the full cell and encoded-cost proofs, source ownership, nonball
+counterexample, complete timing table and assessment update. All references
+resolve and only the four pre-existing overflow warnings remain.

@@ -1,6 +1,22 @@
 # fastunknot 0.3.0: braid and structural certificates with optional shared backends
 
-The 11 October continuation contracts static weighted-orbit gaps with a
+`normal_cut_boundary.normal_cut_boundary(source, coordinates)` now returns
+the full cut boundary in binary polygon, edge and vertex families, with
+oriented attaching cycles and carriers into cut chambers. It computes every
+boundary genus and each cut piece's boundary count and total genus. Use
+`record_certificate=True` and independently check with
+`normal_cut_boundary_verify.verify_normal_cut_boundary`. The native path
+uses only the standard library; all 1,589 maintained tests pass with Regina
+available and no skips. The source audit matches 1,755 actual cuts and 110
+saved proofs replay with producers disabled, including a 16,385-bit case.
+Sphere boundaries remain separate from a ball certificate. Proofs, complete
+query gains and small-input regressions are in
+[`cut_boundary.tex`](../synthesis/cut_boundary.tex). The 4,096-copy boundary
+census improves by 15.599x against the measured explicit Regina cut task,
+including native source replay and serialization. Whole recognition remains
+exponential in its general guarantee.
+
+The earlier 11 October continuation contracts static weighted-orbit gaps with a
 linear boundary sweep and encodes unique source ports with exact additive
 bitsets. `normal_prism_face_regions(..., port_encoding='auto')` uses three
 weight coordinates when there are at least two ports; `vector` preserves the

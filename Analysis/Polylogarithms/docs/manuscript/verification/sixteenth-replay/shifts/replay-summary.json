@@ -1,0 +1,44 @@
+{
+  "part": "shifts",
+  "source_folder": "stieltjes-harmonic-resonance/continuations/harmonic-tails-shifts-twists",
+  "commands": [
+    {
+      "arguments": [
+        "verification/verify_gap_four.py",
+        "--output",
+        "results/gap_four_exact_results.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "arguments": [
+        "verification/verify_shifted_tails.py",
+        "--output",
+        "results/shifted_tail_results.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "arguments": [
+        "verification/verify_alternating_master.py",
+        "--numeric",
+        "--output",
+        "results/alternating_verification.json"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "fresh_result_files": [
+    "results/alternating_verification.json",
+    "results/gap_four_exact_results.json",
+    "results/shifted_tail_results.json"
+  ],
+  "source_code_sha256": {
+    "tools/build_article.py": "13a7b97a6f45529ffcbaeaa4d4d61993a5da6afdd15219905e23b932f67bb01c",
+    "verification/verify_alternating_master.py": "2b7d22be575f19dfd3b77839676ab15065d0ae4cddc8e7441c39667fba78b8db",
+    "verification/verify_gap_four.py": "54fb36e0addce1ea62f91d7ba1e23b6eecaad3d8f3f7fdbec64c4c78b0d99ce8",
+    "verification/verify_shifted_tails.py": "8f32d2838d0ee23dc7deace0220c7b5ba88191304e58264702903defe746f794"
+  },
+  "passed": true,
+  "scope": "Complete specified mathematical suites, freshly run on a copy. Earlier per-command JSON outputs are also retained under steps, including both tilted numerical precisions. Exact finite assertions, diagnostics and canonical analytic acceptance have separate scopes."
+}

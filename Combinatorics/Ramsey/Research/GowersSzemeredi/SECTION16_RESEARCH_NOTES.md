@@ -4187,6 +4187,9 @@ cover degree and the slice controls would have to shrink: the
 `68·2^l` class degree (L.10b fixed point `67·2^l`) alone already costs
 `3·68·2^k` per step.
 
+A three-page mathematical write-up of L.12-L.15b is in
+`joint-vertex-covers/joint-vertex-covers.tex` (PDF beside it).
+
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on
 top (`szemerediThresholdAt_half`), so `Theorem182AtSharp.corollary_18_7`

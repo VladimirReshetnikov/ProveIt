@@ -270,3 +270,48 @@ The oracle is optional and requires the project's Regina extra; the native
 constructor and independent checker use only the Python standard library.
 The retained run uses the Regina Python distribution 7.4.1, whose engine
 version string is 7.4, on Python 3.13.14.
+
+\subsection{Complete boundary-profile task measurements}
+
+The measured task returns the boundary genus inventory and each cut piece's
+boundary count and total genus. Each native call validates the source,
+constructs the complete compressed boundary cells, discovers and transports
+both orbit systems, independently replays its certificate and serializes
+its full result. The Regina arm converts the same source, constructs its
+explicit three-dimensional cut and obtains and serializes the common
+profiles. Its expanded triangulation is not serialized. These are complete
+measurements of the common census task; the additional geometric outputs
+and proof obligations differ.
+
+There are five shuffled paired rounds after one warmup, and an identical
+Regina control. All 105 measured samples and 21 warmup samples complete and
+return the same common-profile digest. Input preparation, cleanup of prior
+results, garbage collection and digest comparison occur outside the timers.
+Ratios are median paired Regina/native ratios, with values above one
+favouring native. The A/A column compares the two identical Regina arms.
+\input{tables/cut_boundary.tex}
+
+At 1,024 and 4,096 meridian copies the ratios are 3.610 and 15.599,
+with controls 0.957 and 0.963. The native medians are 15.216 and 15.235 ms;
+the latter represents the boundary cells and independently replayed proof
+for a cut with 4,096 sphere boundaries and 4,096 pieces. The small inputs
+show substantial native overhead: ratios at one and sixteen copies are
+0.048 and 0.070. The primitive 16-tetrahedron source also loses, at ratio
+0.414, with 304.516 ms native versus 125.832 ms Regina. All these regressions
+are retained. The binary representation avoids expansion in the multiplicity;
+it does not promise a universal wall-time improvement.
+
+Reproduce from \code{fast/} with:
+\begin{quote}\small
+\code{python -B benchmark\_cut\_boundary.py --output FILE}
+\end{quote}
+The records are \code{data/cut-boundary-benchmark.json}, including source
+hashes, completed outcomes, wire sizes and all controls. Publication review
+replays every saved source proof with producers disabled, authenticates both
+audit and timing evidence and checks the current article:
+\begin{quote}\small
+\code{python -B data/cut\_boundary\_review.py --publication}
+\end{quote}
+Run that review from \code{synthesis/}. These standalone cutting operators
+retain the original general recognition goal and its unresolved interior,
+parallelity, pattern and hierarchy complexity requirements.
