@@ -1,0 +1,35 @@
+{
+  "part": "quadratic",
+  "source_folder": "stieltjes-correlation-calculus/continuations/quadratic-spectrum-stieltjes",
+  "commands": [
+    {
+      "arguments": [
+        "code/verify_exact.py",
+        "--output",
+        "data/exact_replay.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "arguments": [
+        "code/verify_numeric.py",
+        "--dps",
+        "45",
+        "--output",
+        "data/numeric_replay.json"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "fresh_result_files": [
+    "data/exact_replay.json",
+    "data/numeric_replay.json"
+  ],
+  "source_code_sha256": {
+    "code/quadratic_spectrum.py": "6964803f34761f09d9035f74051ea680251319503f3b056d24538d5bf7c55b51",
+    "code/verify_exact.py": "19fe707448177c701df605360359f753daa3fccc67a56be5077502b9e0b68afc",
+    "code/verify_numeric.py": "c445d4e11de348975e340347a3f288736555e2bd663f160c2d2dffad67e64e5b"
+  },
+  "passed": true,
+  "scope": "Complete specified mathematical suites, freshly run on a copy. Earlier per-command JSON outputs are also retained under steps, including both tilted numerical precisions. Exact finite assertions, diagnostics and canonical analytic acceptance have separate scopes."
+}

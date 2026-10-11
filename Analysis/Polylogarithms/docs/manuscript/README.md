@@ -6,8 +6,8 @@ organized as four volumes. Each has its own source and compiled PDF.
 | Volume | Material | PDF | Pages |
 |---|---|---|---:|
 | I | Polylogarithm identities, cyclotomic coordinates, algebraic ladders and Gaussian/Eisenstein reductions | [Polylogarithm Identities and Arithmetic Reductions](volumes/volume-1-polylogarithm-identities.pdf) | 129 |
-| II | Signed kernels, angular and all-depth zero geometry, exact computation and experimental discovery; literature appendix | [Signed Kernels, Zero Geometry and Experimental Discovery](volumes/volume-2-signed-kernels.pdf) | 127 |
-| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 215 |
+| II | Signed kernels, angular and all-depth zero geometry, exact computation and experimental discovery; literature appendix | [Signed Kernels, Zero Geometry and Experimental Discovery](volumes/volume-2-signed-kernels.pdf) | 128 |
+| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 218 |
 | IV | Gamma grids, CM lattice periods, class products and Herglotz arithmetic | [Gamma Grids, CM Periods and Herglotz Arithmetic](volumes/volume-4-cm-and-herglotz.pdf) | 84 |
 
 The volumes partition all twelve chapters and the literature appendix.
@@ -18,22 +18,22 @@ and the shared bibliography of 136 references. The scientific text is shared
 through chapter files and [preamble.tex](preamble.tex), avoiding duplicate
 copies of proofs. See [volume sources and build instructions](volumes/README.md).
 The [combined source](polylogarithms.tex) and its
-[517-page combined snapshot](polylogarithms.pdf) remain available.
+[521-page combined snapshot](polylogarithms.pdf) remain available.
 
-The [inventory](source-inventory.json) accounts for **1,333 textual source
+The [inventory](source-inventory.json) accounts for **1,408 textual source
 files**, including overlapping assembled articles, fragments and correction
 registers. The [editorial ledger](EDITORIAL-LEDGER.md) maps their mathematical
-status and identifies pending research integration. Ninety incoming
-archives are preserved as **3,328 original tracked members**. The first sixty packages have full isolated replay passes. In the latest
+status and identifies pending research integration. Ninety-six incoming
+archives are preserved as **3,502 original tracked members**. The first sixty packages have full isolated replay passes. In the latest
 batch, the full harmonic-parity suite and selected complete-Cayley certificate
 pass; the other deliveries retain pending full-replay and analytic scopes.
 Preservation and finite replay do not imply that every theorem is integrated. The imported
 ZIPs have been retired from the drop zone under its intake procedure; the
 arrival commits and recovery paths remain recorded in
-`verification/*incoming-archives.json` and the retirement records. Thirty-three ignored
+`verification/*incoming-archives.json` and the retirement records. Thirty-six ignored
 SHA256SUMS members remain recoverable in their recorded arrival archives; the
-existing ignore rules were followed without manifest verification. The latest twelve packages, in two six-report intakes, extend the
-harmonic-resonance and Stieltjes-correlation spines. All twelve full mathematical
+existing ignore rules were followed without manifest verification. The latest eighteen packages, in three six-report intakes, extend the
+harmonic-resonance and Stieltjes-correlation spines. All eighteen full mathematical
 replays pass on isolated copies. Unaccepted branches retain explicit analytic
 proof-audit scopes in the ledger.
 Volume III now proves the all-index fixed-coordinate periodic contact law,
@@ -58,7 +58,19 @@ with the specified 5131-row bounded relation span, cannot close the S6
 search. The period equality remains conjectural. New exact higher-depth experiments
 produce 19 bounded-span escapes and a complete 24-row bounded intersection
 from 190 selected inputs. A modular search raises the enlarged rank to 1897
-without closing the target; no rational nonmembership is inferred. Further arrivals stay in
+without closing the target; no rational nonmembership is inferred. The complete
+1,032-input first-letter X family now has an exact top-sector rank of 1,008
+and kernel dimension 24. Its entire bounded contribution is already spanned
+by the previous 24 reconstructed relations. A separately reconstructed
+1,008-square minor and 24 exact kernel vectors prove completeness over the
+rationals. Searches with the other first letters retain all depth-five
+coordinates; their target membership remains a separate research question. The complete
+1,032-input first-letter X family now has an exact top-sector rank of 1,008
+and kernel dimension 24. Its entire bounded contribution is already spanned
+by the previous 24 reconstructed relations. A separately reconstructed
+1,008-square minor and 24 exact kernel vectors prove completeness over the
+rationals. Searches with the other first letters retain all depth-five
+coordinates; their target membership remains a separate research question. Further arrivals stay in
 the drop zone for their own intake. Other analytic claims retain the
 ledger's pending scopes. The contents number column has been widened so
 long chapter/section numbers remain separated from their titles.
@@ -278,3 +290,23 @@ endpoint and quarter-Gamma diagnostics. These numerical records are not
 interval certificates. The real arctanh formula now uses an absolute value
 in its logarithm; its derivative proof covers negative parameters and both
 endpoints. The unsupported non-elementarity description is removed.
+
+The sixth and seventh normalized scalar digamma moments now have complete
+formulas in height-one Laurent coefficients, ordinary zeta values and
+explicit admissible marked multiple-zeta derivatives. The ordinary correction
+constants reduce to 245 zeta(2) zeta(3) + 175 zeta(5), and
+3731 zeta(3)^2/4 + 918631 zeta(6)/240. Exact rational matrices, both inverse
+products, every unused row and deliberate corruption controls are checked.
+Only identities valid on open convergence domains are differentiated.
+Independent native Wolfram quadrature and two residue-tail refinements agree;
+their numerical error is not interval certified. These scalar moments are
+distinct from the still-conjectural Gaussian S6 and revised S8 identities.
+Research continues independently when the incoming queue is empty.
+
+
+The complete first-letter families X/Y/H/B contain 1032/1144/1032/1032
+inputs. All 4240 projected rows and every outside coordinate are preserved.
+The joint 9395-by-8786 native matrix has rank 4942 modulo 2147483647 and
+does not close the target. This is a completed finite-field diagnostic,
+separate from the proved X-family kernel theorem and the open period identity.
+Convergent length-split 2+5 and 3+4 products are a next research direction.
