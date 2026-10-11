@@ -1,0 +1,235 @@
+\section{Periodic finite parts and harmonic contact terms}
+\label{per:sec:main}
+
+We begin by consolidating the untwisted foundation already present in
+three archived ProveIt continuations
+\cite{RepoConvolutionAlgebra,RepoConvolutionCalculus,RepoShiftedJets}.
+The endpoint normalization is fixed by analytic continuation from the
+integrable Hurwitz family. Its spectral finite parts and argument
+derivatives differ by an explicit harmonic-number multiple of a Dirac
+mass derivative. This distinction will persist in the twisted extension.
+
+The normalized Hurwitz convolution is classical
+\cite[Remark 3.2]{per:Sun}; complex-power distributions provide related
+background \cite[Section 5]{per:GaySebbar}. Scalar meromorphic
+continuation after pairing with a smooth function is also covered by
+Kim's Hurwitz-transform theorem
+\cite[Theorem 1 and Corollary 2]{Kim2026}. The full proofs below establish
+the conventions used in the rest of this article and independently check
+the archived formulas; the untwisted Bell algebra and primitive tower are
+not new-to-repository claims.
+
+\subsection{Conventions and the meromorphic periodic family}
+
+Write $\mathbb T=\mathbb R/\mathbb Z$, use normalized Lebesgue measure,
+and put
+\[
+ \widehat U(n)=\langle U,e^{-2\pi i n x}\rangle,\qquad
+ D=\frac{d}{dx},\qquad \Delta=\delta_0-1.
+\]
+The Dirac mass has Fourier coefficient $1$ at every integer. Thus
+$\widehat\Delta(0)=0$ and $\widehat\Delta(n)=1$ for $n\ne0$.
+On the convolution algebra of distributions with zero mean, $\Delta$
+is the identity. Reflection is $\check U(x)=U(-x)$, so
+$\widehat{\check U}(n)=\widehat U(-n)$. Throughout,
+\begin{equation}\label{per:eq:L}
+ L_n=\log(2\pi |n|)+\frac{\pi i}{2}\operatorname{sgn}n,
+ \qquad n\ne0.
+\end{equation}
+Consequently $(2\pi i n)^z$ always means $\exp(zL_n)$.
+
+\begin{theorem}[The entire normalized family and all residues]
+\label{per:thm:family}
+There is an entire distribution-valued function $W_s$ characterized by
+\begin{equation}\label{per:eq:W}
+ \widehat W_s(0)=0,\qquad
+ \widehat W_s(n)=(2\pi i n)^{s-1}\quad(n\ne0).
+\end{equation}
+The family
+\begin{equation}\label{per:eq:Z}
+ Z_s=\Gamma(1-s)W_s
+\end{equation}
+is the unique meromorphic continuation, as a periodic distribution, of
+$x\mapsto\zeta(s,x)$ from $\operatorname{Re}s<1$. Its poles are simple
+and occur at every positive integer. Their residues are
+\begin{align}
+ \operatorname*{Res}_{s=1} Z_s&=1-\delta_0=-\Delta,
+ \label{per:eq:res1}\\
+ \operatorname*{Res}_{s=k+1} Z_s
+ &=\frac{(-1)^{k+1}}{k!}\delta_0^{(k)}\qquad(k\ge1).
+ \label{per:eq:resk}
+\end{align}
+For all complex $s,t$, the identities
+\begin{equation}\label{per:eq:group}
+ DW_s=W_{s+1},\qquad W_s*W_t=W_{s+t-1}
+\end{equation}
+hold. Equivalently, as meromorphic distribution identities,
+\begin{equation}\label{per:eq:meroconv}
+ DZ_s=-sZ_{s+1},\qquad
+ Z_s*Z_t=\frac{\Gamma(1-s)\Gamma(1-t)}{\Gamma(2-s-t)}Z_{s+t-1}.
+\end{equation}
+At intersections of polar divisors the second expression is interpreted
+by its equal Gamma-normalized expression, before coefficients are taken.
+\end{theorem}
+
+\begin{proof}
+On every compact set of $s$ the coefficients in \eqref{per:eq:W} have
+uniform polynomial growth in $|n|$. Every fixed order derivative in $s$
+adds only a power of $L_n$. Since the Fourier coefficients of a smooth
+test function decrease faster than every inverse power, the series
+\[
+ \langle W_s,\phi\rangle
+ =\sum_{n\ne0}(2\pi i n)^{s-1}\widehat\phi(-n)
+\]
+and all its fixed order derivatives converge normally on compact sets.
+This constructs the entire family. Hurwitz's classical Fourier formula
+\cite[\S25.11]{DLMFHurwitz} identifies \eqref{per:eq:Z} with $\zeta(s,x)$
+for $\operatorname{Re}s<0$. The relation
+$\zeta(s,x)=x^{-s}+\zeta(s,1+x)$ shows that the latter is holomorphic
+with values in $L^1(0,1)$ on $\operatorname{Re}s<1$, so the
+identification extends throughout that half-plane. The identity theorem
+for each test-function pairing gives uniqueness of the continuation.
+
+At $s=k+1+w$,
+\begin{equation}\label{per:eq:gammapole}
+ \Gamma(-k-w)=\frac{(-1)^{k+1}}{k!w}
+       +\frac{(-1)^k}{k!}(H_k-\gamma)+O(w),
+ \qquad H_0=0.
+\end{equation}
+The Fourier coefficients show that $W_1=\Delta$ and
+$W_{k+1}=D^k\Delta=\delta_0^{(k)}$ for $k\ge1$.
+This proves the residues and also shows that none of the listed poles
+is removable. Multiplication of Fourier coefficients proves
+\eqref{per:eq:group}. Convolution of two distributions on the compact
+group $\mathbb T$ is well defined. Normal convergence after pairing with
+a test function justifies the parameter identities jointly. Finally,
+$\Gamma(1-s)=-s\Gamma(-s)$ proves the derivative identity in
+\eqref{per:eq:meroconv}.
+\end{proof}
+
+The residue at $s=1$ has both a constant and a Dirac term. The constant
+is the ordinary Hurwitz pole seen on every open subinterval of $(0,1)$;
+the Dirac term comes from the nonintegrable endpoint $x^{-s}$. Omitting
+either term destroys the zero Fourier coefficient. The poles at
+$2,3,\ldots$ are entirely supported at the endpoint and are invisible
+in the pointwise meromorphic function of $s$ for a fixed $0<x<1$.
+
+\subsection{Cutoff definitions and the normalization at the endpoint}
+
+Define $T_n$ by the Laurent expansion
+\begin{equation}\label{per:eq:Tdef}
+ Z_{1+w}=-\frac{\Delta}{w}
+       +\sum_{n=0}^{\infty}\frac{(-1)^n}{n!}T_nw^n.
+\end{equation}
+Each $T_n$ agrees with $\gamma_n(x)$ on $0<x<1$. Define also
+\begin{equation}\label{per:eq:Pdef}
+ F_k=\operatorname{FP}_{s=k+1}Z_s,\qquad
+ P_k=(-1)^{k+1}k!F_k\quad(k\ge0),
+\end{equation}
+where $\operatorname{FP}$ denotes the constant Laurent coefficient.
+Thus $F_0=T_0$ and $P_0=-T_0$. For $k\ge1$, the usual
+$\psi^{(k)}(x)=(-1)^{k+1}k!\zeta(k+1,x)$ shows that $P_k$ agrees with
+the ordinary $k$th polygamma function away from $0$.
+
+\begin{proposition}[Equivalent Hadamard finite parts]
+\label{per:prop:cutoffs}
+For every smooth periodic test function $\phi$,
+\begin{equation}\label{per:eq:Tcutoff}
+ \langle T_n,\phi\rangle
+ =\lim_{\epsilon\downarrow0}\left\{
+   \int_\epsilon^1\gamma_n(x)\phi(x)\,dx
+    +\frac{\phi(0)}{n+1}\log^{n+1}\epsilon\right\}.
+\end{equation}
+For $k\ge1$,
+\begin{align}
+ \langle F_k,\phi\rangle
+ =\lim_{\epsilon\downarrow0}\biggl\{&
+   \int_\epsilon^1\zeta(k+1,x)\phi(x)\,dx
+   -\sum_{j=0}^{k-1}\frac{\phi^{(j)}(0)}{j!}
+                       \frac{\epsilon^{j-k}}{k-j}
+   +\frac{\phi^{(k)}(0)}{k!}\log\epsilon\biggr\}.
+ \label{per:eq:Fcutoff}
+\end{align}
+All these distributions have zero mean.
+\end{proposition}
+
+\begin{proof}
+Subtract a Taylor polynomial of the test function at $0$. For any
+$N\ge0$, the pairing of $Z_s$ has the continuation
+\begin{align}
+ \langle Z_s,\phi\rangle={}&
+ \int_0^1x^{-s}\left(\phi(x)-\sum_{j=0}^{N}
+                         \frac{\phi^{(j)}(0)}{j!}x^j\right)dx
+ +\sum_{j=0}^{N}\frac{\phi^{(j)}(0)}{j!(j+1-s)}\notag\\
+ &+\int_0^1\zeta(s,1+x)\phi(x)\,dx,
+ \label{per:eq:localcontinuation}
+\end{align}
+in $\operatorname{Re}s<N+2$, apart from the displayed and Hurwitz
+poles. Taking the constant coefficient at $s=k+1$, with $N=k$,
+proves \eqref{per:eq:Fcutoff} by elementary integration of the Taylor
+monomials. At $s=1+w$, use
+\[
+ \gamma_n(x)=\frac{\log^n x}{x}+\gamma_n(1+x).
+\]
+The coefficient in \eqref{per:eq:localcontinuation} is
+\[
+ \int_0^1\frac{\log^n x}{x}\bigl(\phi(x)-\phi(0)\bigr)dx
+ +\int_0^1\gamma_n(1+x)\phi(x)\,dx.
+\]
+This is precisely \eqref{per:eq:Tcutoff}. The zero-mean assertion
+follows from \eqref{per:eq:W} by taking Laurent coefficients.
+\end{proof}
+
+Zero mean alone does not specify a periodic extension of a singular
+function: derivatives of a Dirac mass have zero mean as well. Here the
+normalization is fixed by \eqref{per:eq:Z}, or equivalently by the
+cutoff formulas. This qualification is essential in using the word
+``canonical.''
+
+\subsection{The harmonic contact correction}
+
+\begin{theorem}[Spectral finite parts and compatible derivatives]
+\label{per:thm:contact}
+For $n\ne0$ and $k\ge0$,
+\begin{equation}\label{per:eq:Pfourier}
+ \widehat P_k(n)=(2\pi i n)^k\bigl(\gamma+L_n-H_k\bigr),
+ \qquad \widehat P_k(0)=0.
+\end{equation}
+Consequently,
+\begin{equation}\label{per:eq:anomaly}
+ DP_k=P_{k+1}+\frac{1}{k+1}\delta_0^{(k+1)}.
+\end{equation}
+If
+\[
+ g(x)=\log\Gamma(x)-\frac12\log(2\pi),\quad 0<x<1,
+\]
+is periodized as a locally integrable function, then $Dg=P_0$. The
+derivative-compatible extensions
+\begin{equation}\label{per:eq:Q}
+ Q_k=D^{k+1}g=D^kP_0
+\end{equation}
+satisfy $DQ_k=Q_{k+1}$ exactly, and
+\begin{equation}\label{per:eq:Qcorrection}
+ Q_k=P_k+H_k\delta_0^{(k)}\qquad(k\ge1),\qquad Q_0=P_0.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Expand $W_{k+1+w}=W_{k+1}+w\partial_sW_s|_{s=k+1}+O(w^2)$
+against \eqref{per:eq:gammapole}; after multiplication by
+$(-1)^{k+1}k!$, the finite Fourier coefficient is
+$(2\pi i n)^k(\gamma+L_n-H_k)$.
+Since $H_{k+1}-H_k=1/(k+1)$, differentiation of this coefficient gives
+\eqref{per:eq:anomaly}. Lerch's identity gives $g=\partial_sZ_s|_{s=0}$.
+Taking the first coefficient in $DZ_s=-sZ_{s+1}$ at $s=0$ gives
+$Dg=-T_0=P_0$; the coefficient at degree zero separately says
+$DZ_0=\Delta$. Finally the Fourier coefficient of $D^kP_0-P_k$ is
+$H_k(2\pi i n)^k$, which is \eqref{per:eq:Qcorrection}.
+\end{proof}
+
+For example, the extension given by the finite part of
+$\zeta(s,x)$ at $s=2$ yields a periodic trigamma $P_1$, whereas
+$D^2g=P_1+\delta_0'$. Both agree with $\psi'(x)$ on $(0,1)$.
+The discrepancy is supported precisely at the identified endpoints;
+it is not a failure of ordinary differentiation on the open interval.
+

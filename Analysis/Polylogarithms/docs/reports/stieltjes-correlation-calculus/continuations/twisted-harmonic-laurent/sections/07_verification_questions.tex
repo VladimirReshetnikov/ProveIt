@@ -1,0 +1,264 @@
+\section{Verification, integration, and further research}
+\label{future:sec}
+
+\subsection{What has been proved and what has been checked}
+
+The proofs in this article establish the identities. Their main
+analytic steps are normal convergence after pairing Fourier
+coefficients with a smooth test function, explicit Taylor subtraction
+at a singular endpoint, joint meromorphic continuation before taking
+parameter coefficients, and finite Gamma/Bernoulli coefficient
+algebra. None of the theorems is inferred from a numerical fit.
+
+The most delicate points were checked independently of their initial
+derivations. These include the constant Fourier mode, the signs of
+the covariant Dirac derivatives, the minus sign on the wrapped
+half-twist interval, the harmonic Mellin remainder at a Gamma zero,
+the depth-mixing reflection shift \(a+u\), and the terminal
+\(\mathcal A_{-1}=1/\Gamma(1+u)\) term in rational multiplication.
+The full mathematical review is supplied in
+\path{verification/independent_review.md}. This is an independent
+derivation within the present research workflow, not a claim of
+external peer review or proof-assistant formalization.
+
+The exact and numerical replays have different roles.
+Exact symbolic checks verify finite polynomial consequences of the
+stated generating identities. Numerical checks compare independent
+analytic representations, with endpoint cancellations removed before
+evaluation. They are floating-point diagnostics, not rigorous
+interval enclosures.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}p{0.29\textwidth}X@{}}
+\toprule
+Verification component & Recorded coverage\\
+\midrule
+Untwisted coefficient algebra &
+Six explicit Stieltjes products; reflected phase coefficients through
+degree eight for both signs; 128 polygamma product cases and
+30 repeated-primitive recurrences.\\[3pt]
+Harmonic exact algebra &
+167 checks: local kernels, Hurwitz--Bernoulli reductions, residue
+differentiation, reflection, primitives, multiplication for moduli
+two and three, and all displayed specializations.\\[3pt]
+Periodic quadrature &
+15 checks at 50 decimal digits, including finite-part test-function
+pairings and ordinary digamma/log-Gamma convolutions.\\[3pt]
+Harmonic Mellin continuation &
+Three regular-value checks and four Laurent cases at each of
+\(\varepsilon=10^{-4},10^{-5},10^{-6}\), using an independent scalar
+continued Mellin evaluator at 110 decimal digits.\\[3pt]
+Half-twist and source repair &
+Nine checks at 60 decimal digits: the convergent half-twist integral
+at three shifts, its quarter-Gamma evaluation, four branch-corrected
+arctanh integrals, and the exact spurious imaginary term.\\[3pt]
+Twisted spectral normalization &
+The separate twisted replay tests rational Lerch conversion,
+the retained zero mode, and the covariant contact coefficients.
+Its complete parameters and residuals are recorded with the script.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+For the harmonic continuation, the scalar integrand is
+\[
+ \frac{e^{-(a+1)t}}{1-e^{-t}}\,
+       \frac{[-\log(1-e^{-t})]^r}{r!}.
+\]
+The independent evaluator integrates its convergent local
+logarithmic series on \((0,1/2)\), after analytic continuation of the
+individual Mellin monomials, and performs direct quadrature on
+\((1/2,\infty)\). It does not evaluate through the
+\(\mathcal A_m\) coefficient theorem. Degrees 80 and 100 agreed to
+better than \(1.7\times10^{-92}\) in the recorded tests. After
+subtracting the asserted principal and constant terms, the remainder
+was \(O(\varepsilon)\) in every tested case. That agreement diagnoses
+the coefficient extraction; it does not certify a truncation bound
+for arbitrary inputs.
+
+The extra half-twist quadrature uses only digamma and polygamma
+functions on the integral side, and Hurwitz Stieltjes constants or
+\(\log\Gamma(1/4)\) on the comparison side. A Taylor quotient removes
+the cancellation at \(x=0\). Its largest recorded scaled residual,
+including the branch-audit checks, is below \(4\times10^{-61}\).
+Here a scaled residual means
+\[
+ \frac{|\hbox{computed left side}-\hbox{computed right side}|}
+      {1+|\hbox{computed right side}|}.
+\]
+A tiny residual is useful implementation evidence, not an equality proof.
+
+\subsection{Suggested repository integration}
+
+The package is designed for archival intake first and mathematical
+integration second. The supplied source correction patch applies
+against the pinned chapter bytes. The main article has modular
+sources and an equivalent standalone source, plus complete replay
+scripts and recorded results.
+
+The integration should preserve the following distinctions:
+\begin{enumerate}[leftmargin=1.6em]
+\item Cite the existing untwisted continuations instead of replacing
+      their provenance with the present rederivation.
+\item Add the nonintegral-twist section as a response to the archived
+      half-twist question, retaining its cutoff definition, covariant
+      derivative, unit \(\delta_0\), and reflection modulation.
+\item Add the shifted harmonic Laurent theorem together with its
+      precise outer-shift convention. Moving the inner harmonic
+      denominators as well defines a different family.
+\item Keep each finite-part identity attached to its domain and
+      normalization. An isolated ordinary formula does not determine
+      its endpoint distribution.
+\item Apply the two narrowly scoped source corrections separately
+      from accepting the new research statements.
+\end{enumerate}
+The machine-readable claim ledger records proved additions,
+consolidated antecedents, corrections, and unresolved targets.
+The proposed patch does not change the status of \(S_6\) or \(S_8\).
+
+\subsection{Further research questions}
+
+The following questions concern exact identities and reductions.
+They are proposals for further work, not claims supported merely by
+high-precision numerical evidence.
+
+\begin{question}[Products with genuinely different twists]
+\label{future:q:unequaltwists}
+For real nonintegral \(\theta,\eta\), with
+\(\theta-\eta\notin\mathbb Z\), determine a useful finite or
+convergently evaluable normal form for
+\[
+ \widehat{\mathcal K_{\alpha,\beta}^{\theta,\eta}}(n)
+ =(2\pi i(n+\theta))^\alpha
+  (2\pi i(n+\eta))^\beta .
+\]
+Which parameter configurations permit reduction to finitely many
+single-twist Lerch jets, and when is a genuinely two-shift
+special function necessary?
+\end{question}
+
+The equal-twist case is now solved by the Gamma quotient.
+The half-twist involution reverses frequencies within one twist;
+it does not solve the unequal-twist problem. A successful extension
+should retain its Laurent endpoint terms and rational-character
+coordinates, rather than only its nonsingular Fourier expression.
+
+\begin{question}[Regular Laurent coefficients beyond the finite part]
+\label{future:q:regularcoefficients}
+For \(j\geq1\), determine exact representations and reduction rules
+for
+\[
+ [\varepsilon^j]E_r(-m+\varepsilon;a).
+\]
+At rational \(a\), when can these coefficients be expressed using
+ordinary Hurwitz or Dirichlet-\(L\) derivatives, and when do new
+height-one or colored multiple-zeta derivatives remain?
+\end{question}
+
+The Gamma zero eliminates the analytic Mellin remainder through
+the constant coefficient, but not beyond it. Thus the polynomial
+theorem proved here gives the full singular and finite data without
+settling the next regular coefficient. The independent scalar
+Mellin representation supplies a rigorous starting point for
+such a study.
+
+\begin{question}[Lifting the reflection and multiplication laws]
+\label{future:q:lift}
+Find exact formulas for the analytic defects obtained when
+\eqref{harm:eq:FPreflection} and \eqref{harm:eq:multiplication}
+are lifted from Laurent coefficient polynomials to the full
+meromorphic family \(E_r(s;a)\).
+Can the defects be organized as convergent iterated integrals or
+colored polylogarithms with a natural depth filtration?
+\end{question}
+
+The finite polynomial identities are exact, not asymptotic.
+Nevertheless their proof uses only the local Mellin kernel. A
+global lift must also control the rest of the integral. Keeping
+that local/global separation explicit should prevent a false
+unmodified Hurwitz multiplication rule for the harmonic family.
+
+\begin{question}[Rational-twist arithmetic at singular orders]
+\label{future:q:characters}
+Combine the all-index twisted table with the manuscript's
+conductor-sensitive character conversion. Determine economical
+primitive-character formulas for the resulting rational-shift
+convolutions, including every conductor logarithm and endpoint
+term. Which combinations descend to a proper sub-conductor?
+\end{question}
+
+A finite coordinate algorithm is already available; the remaining
+problem is its exact arithmetic simplification. Reduction to a
+chosen spanning set is a meaningful target even when independence
+of the evaluated constants is unknown.
+
+\begin{question}[Translated cubic and higher log-Gamma products]
+\label{future:q:moments}
+With \(g(x)=\log\Gamma(x)-\tfrac12\log(2\pi)\), obtain exact reductions
+for the two-parameter ordinary product
+\[
+ C_3(a,b)=\int_0^1g(x)g(\{x+a\})g(\{x+b\})\,dx,
+ \qquad 0<a<b<1,
+\]
+and for higher moments beyond the known unshifted cubic formula.
+At rational \(a,b\), which colored multiple-zeta derivatives remain
+after exact character and symmetry reductions?
+\end{question}
+
+The unshifted cubic moment is already evaluated in the pinned chapters
+\path{07-loggamma-moments.tex} and \path{07-tornheim-evaluation.tex},
+and must not be proposed as an unsolved problem
+\cite{RepoManuscript}. The target here retains two distinct translation
+parameters. These are pointwise products, distinct from convolution
+powers: Fourier multiplication introduces several independent indices.
+A concrete starting family is the meromorphic continuation of
+\[
+ \mathcal T(s,t,u;z,w)=
+ \sum_{m,n\geq1}\frac{z^mw^n}{m^s n^t(m+n)^u},
+\]
+and its order derivatives at the integer triples arising from
+Kummer's Fourier coefficients, with phases fixed by \(a,b\).
+The research target is an explicit
+reduction theorem, not a numerical assertion that a selected
+constant basis is complete or independent.
+
+\begin{question}[Collision regularizations across different products]
+\label{future:q:collisions}
+When translated singularities collide, compare the finite part
+obtained from the meromorphic convolution family with finite parts
+obtained by coincident-point cutoff procedures. Determine the
+exact local counterterm relating these prescriptions, and which
+associativity or differentiation identities each preserves.
+\end{question}
+
+The distribution convolution itself is defined on the compact
+circle. Evaluating it at its singular point is a different
+operation and needs a separate prescription. The zero-mode
+degeneration theorem controls a twist resonance, not every
+possible collision regularization of pointwise products.
+
+\begin{question}[The remaining Gaussian candidates]
+\label{future:q:targets}
+Can the level-four iterated-integral and conductor-jet reductions
+in the manuscript be completed into an exact certificate for
+\texttt{cycloquot:conj:S6} or \texttt{s8new:conj:S8}?
+If a conjectured coefficient vector is false, can it be rejected
+with a certified error enclosure and replaced by a precisely
+stated new target?
+\end{question}
+
+The source already distinguishes these candidates from the proved
+\(S_2,S_4\) identities and the rejected earlier \(S_8\) vector.
+The present twist and harmonic identities should be used as
+additional transformations, without suggesting that their
+existence proves either outstanding relation.
+
+\paragraph{A practical formalization programme.}
+A useful accompanying project is to formalize the finite coefficient
+algebra separately from the analytic continuation lemmas. The exact
+Bell, Bernoulli, reflection, multiplication, and residue recurrences
+give compact symbolic certificates at any requested depth. The
+analytic layer should then discharge the local-uniform convergence,
+endpoint subtraction, and uniqueness hypotheses once, instead of
+replacing them by growing collections of numerical examples.
+

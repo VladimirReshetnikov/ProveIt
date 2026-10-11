@@ -1,0 +1,254 @@
+\subsection{Reflection and antiderivatives of the harmonic finite parts}
+\label{harm:subsec:symmetries}
+
+The shifted coefficient theorem also gives exact transformation laws
+that are not visible in an unshifted table. Put
+\[
+ C_{m,r}(a)=\operatorname{FP}_{s=-m}E_r(s;a)
+          =[u^{r+1}]\mathcal A_m(u,a),\qquad m,r\geq0,
+\]
+and set \(C_{m,r}=0\) for \(r<0\).
+Each \(C_{m,r}\) is a polynomial in \(a\), of degree at most \(m+1\).
+Thus the identities below hold as polynomial identities for all complex
+\(a\); they refer directly to the original shifted Dirichlet family
+where \(\Re a>-1\).
+
+\begin{theorem}[Reflection mixes harmonic depths]
+\label{harm:thm:reflection}
+For all \(m,r\geq0\),
+\begin{equation}\label{harm:eq:FPreflection}
+ C_{m,r}(-1-a)
+ =(-1)^{m+1}\sum_{j=0}^{r}
+          \frac{1}{j!}\frac{d^j}{da^j}C_{m,r-j}(a).
+\end{equation}
+Terms with \(j>m+1\) vanish. On the strip \(-1<\Re a<0\),
+both sides are finite parts of the original shifted families.
+Elsewhere the left side means the polynomial continuation of its
+finite-part coefficient.
+\end{theorem}
+
+\begin{proof}
+The defining local kernel can be written
+\[
+ \phi(t,u,a)=
+ e^{((u-1)/2-a)t}
+ \left(\frac{t}{2\sinh(t/2)}\right)^{1+u}.
+\]
+All powers here mean their Taylor germs at \(t=0\), where the
+parenthesized factor equals one. Its second factor is even in \(t\).
+Consequently
+\[
+ \phi(t,u,-1-a)=\phi(-t,u,a+u),\qquad
+ b_{m+1}(u,-1-a)=(-1)^{m+1}b_{m+1}(u,a+u).
+\]
+The Gamma denominator is independent of \(a\), so the same identity
+holds for \(\mathcal A_m\). Expanding its polynomial argument
+translation in powers of \(u\) and taking \([u^{r+1}]\) proves
+\eqref{harm:eq:FPreflection}. There is no constant coefficient of
+\(\mathcal A_m\), which is why the sum ends at \(j=r\).
+\end{proof}
+
+For \(r=0\), this is the familiar Bernoulli reflection
+\(\zeta(-m,-a)=(-1)^{m+1}\zeta(-m,a+1)\), interpreted as a polynomial
+identity. At positive depth the derivative terms are essential.
+For example,
+\[
+ C_{1,1}(-1-a)-C_{1,1}(a)
+ =C_{1,0}'(a)=-a-\frac12.
+\]
+Thus an ordinary Bernoulli parity rule at fixed depth would be false.
+
+\begin{theorem}[Complete finite-part antiderivative ladder]
+\label{harm:thm:FPprimitives}
+Let \(q\geq1\), and define \(h_j^{[m,q]}\) by
+\begin{equation}\label{harm:eq:primitiveh}
+ \prod_{\nu=1}^{q}
+       \left(1-\frac{u}{m+\nu}\right)^{-1}
+       =\sum_{j\geq0}h_j^{[m,q]}u^j.
+\end{equation}
+Then the polynomial
+\begin{equation}\label{harm:eq:FPprimitive}
+ F_{m,r}^{(q)}(a)=
+ \frac{1}{(m+1)_q}
+ \sum_{j=0}^{r}h_j^{[m,q]}C_{m+q,r-j}(a)
+\end{equation}
+satisfies
+\[
+ \frac{d^q}{da^q}F_{m,r}^{(q)}(a)=C_{m,r}(a).
+\]
+Here \((m+1)_q=(m+1)(m+2)\cdots(m+q)\).
+Every \(q\)-fold antiderivative differs from this one by a polynomial
+of degree less than \(q\).
+\end{theorem}
+
+\begin{proof}
+Differentiating the local kernel gives
+\(\partial_a b_k=-b_{k-1}\), hence
+\[
+ \partial_a\mathcal A_m=(m-u)\mathcal A_{m-1}.
+\]
+Iteration, in the direction of increasing \(m\), gives
+\[
+ \partial_a^q\mathcal A_{m+q}
+       =\prod_{\nu=1}^{q}(m+\nu-u)\,\mathcal A_m.
+\]
+Divide by this polynomial, which is invertible as a germ at \(u=0\),
+and extract \([u^{r+1}]\). Equation
+\eqref{harm:eq:primitiveh} gives exactly
+\eqref{harm:eq:FPprimitive}.
+\end{proof}
+
+The coefficients in this ladder are again generalized-harmonic
+Bell coefficients:
+\[
+ h_j^{[m,q]}=[u^j]\exp\left(
+   \sum_{k\geq1}\frac{H_{m+q}^{(k)}-H_m^{(k)}}{k}u^k
+                              \right).
+\]
+In particular,
+\begin{equation}\label{harm:eq:firstFPprimitive}
+ \int C_{m,r}(a)\,da
+ =\sum_{j=0}^{r}\frac{C_{m+1,r-j}(a)}{(m+1)^{j+1}}
+   +\text{constant}.
+\end{equation}
+The lower-depth terms are exactly the residue correction propagated
+through integration. To normalize a repeated integral at \(a_0\), use
+\[
+ F_{m,r}^{(q)}(a)
+ -\sum_{j=0}^{q-1}
+       \frac{(a-a_0)^j}{j!}
+       \left.\frac{d^j}{da^j}F_{m,r}^{(q)}(a)\right|_{a=a_0}.
+\]
+This polynomial and its first \(q-1\) derivatives vanish at \(a_0\);
+it is the \(q\)-fold integral with those initial conditions.
+
+\subsection{Rational multiplication with explicit depth corrections}
+\label{harm:subsec:multiplication}
+
+An ordinary Hurwitz multiplication identity does not survive unchanged
+when the outer denominator is shifted but the inner harmonic
+denominators are fixed. Its finite-part replacement is nevertheless a
+finite exact formula.
+
+For an integer \(q\geq2\), let
+\begin{equation}\label{harm:eq:dq}
+ \begin{split}
+ \Lambda_q(t)&=\log\left(
+       \frac{1-e^{-t}}{q(1-e^{-t/q})}\right),\\
+ d_n^{(q)}(u)&=[t^n]\exp\bigl(-u\Lambda_q(t)\bigr).
+ \end{split}
+\end{equation}
+The logarithm is its analytic germ with value zero at \(t=0\).
+Each \(d_n^{(q)}\) is a rational polynomial in \(u\) of degree at most
+\(n\), and \(d_n^{(q)}(0)=0\) for \(n>0\). Set
+\[
+ \mathcal A_{-1}(u,a)=\frac{1}{\Gamma(1+u)}
+                    =\sum_{j\geq0}c_j u^j.
+\]
+This auxiliary term is independent of \(a\); it is not the generating
+function of the finite parts at \(s=1\).
+
+\begin{theorem}[Multiplication law for the singular coefficient germ]
+\label{harm:thm:multiplication}
+For \(m\geq0\), put \(a_j=(a+1+j)/q-1\). Then
+\begin{equation}\label{harm:eq:multiplication}
+ \sum_{j=0}^{q-1}\mathcal A_m(u,a_j)
+ =\sum_{n=0}^{m+1}
+       q^{\,n-m}d_n^{(q)}(u)(u-m)_n
+                     \mathcal A_{m-n}(u,a).
+\end{equation}
+All factors are analytic germs at \(u=0\). Taking \([u^{r+1}]\)
+gives a finite multiplication formula for \(C_{m,r}\); taking lower
+powers gives the corresponding principal Laurent coefficients.
+\end{theorem}
+
+\begin{proof}
+Sum the defining local kernels at the indicated shifts:
+\[
+ \begin{split}
+ \sum_{j=0}^{q-1}\phi(t,u,a_j)
+ &=e^{-(a+1)t/q}
+       \frac{1-e^{-t}}{1-e^{-t/q}}
+       \left(\frac{t}{1-e^{-t}}\right)^{1+u}\\
+ &=q\,\phi(t/q,u,a)\exp\bigl(-u\Lambda_q(t)\bigr).
+ \end{split}
+\]
+Taking \([t^{m+1}]\) and dividing by \(\Gamma(u-m)\) gives
+\[
+ \sum_{j=0}^{q-1}\mathcal A_m(u,a_j)
+ =\sum_{n=0}^{m+1}q^{\,n-m}d_n^{(q)}(u)
+       \frac{b_{m+1-n}(u,a)}{\Gamma(u-m)}.
+\]
+The Gamma recurrence identifies the final quotient as
+\((u-m)_n\mathcal A_{m-n}\), including \(n=m+1\), since
+\(b_0=1\). This proves the identity without interchanging a
+singular specialization with an infinite sum.
+\end{proof}
+
+At depth zero the correction terms vanish, and the formula reduces to
+\[
+ \sum_{j=0}^{q-1}
+       \zeta\left(-m,\frac{a+1+j}{q}\right)
+       =q^{-m}\zeta(-m,a+1).
+\]
+For positive depth, the finite correction terms measure the failure of
+that unmodified rule.
+
+The first instance is especially simple:
+\begin{equation}\label{harm:eq:multiplicationzero}
+ \sum_{j=0}^{q-1}C_{0,r}(a_j)
+       =C_{0,r}(a)+\frac{q-1}{2}c_{r-1},
+ \qquad c_j=0\quad(j<0).
+\end{equation}
+Indeed \(d_1^{(q)}(u)=u(q-1)/(2q)\). For \(q=2,m=1\),
+\[
+ d_1^{(2)}(u)=\frac u4,\qquad
+ d_2^{(2)}(u)=\frac{u^2-u}{32},
+\]
+so
+\begin{equation}\label{harm:eq:duplicationgerm}
+ \mathcal A_1\left(u,\frac{a-1}{2}\right)
+ +\mathcal A_1\left(u,\frac a2\right)
+ =\frac12\mathcal A_1(u,a)
+   +\frac{u(u-1)}4\mathcal A_0(u,a)
+   +\frac{u^2(u-1)^2}{16\Gamma(1+u)}.
+\end{equation}
+For example, its depth-one constant term gives
+\[
+ C_{1,1}\left(\frac{a-1}{2}\right)
+ +C_{1,1}\left(\frac a2\right)
+ =\frac12C_{1,1}(a)+\frac a4+\frac3{16}.
+\]
+
+\subsection{Half-shift Laurent identities}
+
+The coefficient rule and its duplication law give concise values at the
+half shift. With \(a=-1/2\),
+\[
+ b_2(u,-1/2)=\frac{3u^2-u-1}{24},\qquad
+ b_3(u,-1/2)=\frac{u(u^2-u-1)}{48}.
+\]
+Combining these with \(1/\Gamma(u-m)\) yields
+\begin{align}
+ E_1(-1+\varepsilon;-1/2)
+  &=\frac{1}{24\varepsilon}+\frac{\gamma}{24}
+       +O(\varepsilon),\label{harm:eq:half11}\\
+ E_2(-1+\varepsilon;-1/2)
+  &=\frac{1}{24\varepsilon^2}
+      +\frac{\gamma}{24\varepsilon}
+      +\frac{\gamma^2-\zeta(2)-8}{48}
+       +O(\varepsilon),\label{harm:eq:half21}\\
+ E_1(-2+\varepsilon;-1/2)
+  &=-\frac1{24}+O(\varepsilon),\label{harm:eq:half12}\\
+ E_2(-2+\varepsilon;-1/2)
+  &=-\frac{1}{24\varepsilon}+\frac{1-2\gamma}{48}
+       +O(\varepsilon).\label{harm:eq:half22}
+\end{align}
+For example, \(E_1(s;-1/2)=\sum_{n\geq1}H_{n-1}(n-1/2)^{-s}\)
+in its convergent half-plane. The displayed values mean its
+meromorphic continuation, not convergent sums at negative \(s\).
+The drop in pole order at \(-2\) follows from the vanishing
+\(\zeta(-2,1/2)=0\); its next coefficient does not vanish.
+These formulas illustrate exact cancellation across depth, shift, and
+spectral order.
+

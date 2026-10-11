@@ -1,0 +1,1923 @@
+\documentclass[11pt,oneside]{article}
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm,mathrsfs}
+\usepackage{booktabs,longtable,array,enumitem,xurl,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage{bookmark}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{3em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\CT}{CT}
+\DeclareMathOperator{\FP}{FP}
+\DeclareMathOperator{\Rea}{Re}
+\DeclareMathOperator{\cont}{cont}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\uu}{\mathbf u}
+\newcommand{\mm}{\mathbf m}
+\newcommand{\ee}{\mathbf e}
+\newcommand{\CC}{\mathcal C}
+\newcommand{\KK}{\mathcal K}
+\newcommand{\Acal}{\mathcal A}
+\newcommand{\RR}{\mathcal R}
+\newcommand{\Gop}{\mathcal G}
+\newcommand{\Top}{\mathcal T}
+\newcommand{\spec}[2]{\zeta^{(#1)}(#2,a)}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Endpoint regularization of harmonic polylogarithms}
+\fancyhead[R]{\small ProveIt continuation}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setcounter{tocdepth}{2}
+\hypersetup{pdftitle={Endpoint Regularization of Logarithmic Harmonic Polylogarithms},pdfauthor={Research continuation prepared with OpenAI assistance}}
+
+\begin{document}
+\begin{titlepage}
+\thispagestyle{empty}
+\vspace*{16mm}
+\noindent\textsc{ProveIt / Analysis / Polylogarithms}\par
+\vspace{14mm}
+\noindent{\LARGE\bfseries Endpoint Regularization of\par
+Logarithmic Harmonic Polylogarithms\par}
+\vspace{7mm}
+\noindent{\Large Stieltjes coefficients, Gamma transfer,\par
+spectral finite parts, and exact antiderivatives\par}
+\vspace{14mm}
+\noindent Research continuation prepared for Vladimir Reshetnikov\par
+\noindent with OpenAI assistance\par
+\noindent 10 October 2026\par
+\vspace{12mm}
+\begin{abstract}
+We give an explicit coefficient calculus for the endpoint constants of
+symmetrized, logarithmically decorated harmonic polylogarithms on a common
+Hurwitz lattice. A normally convergent canonical product expresses the
+sharp-cutoff polynomials through generalized Stieltjes constants and spectral
+derivatives of Hurwitz zeta. A proved Laplace--Stieltjes transfer converts
+these polynomials to Abel endpoint polynomials by the finite operator
+$\Gamma(1+\partial_L)$. This yields formulas at every depth and every fixed
+logarithmic decoration, including a single-decoration family in which all
+positive-index Stieltjes constants cancel at the unshifted lattice. Explicit
+examples involve $\zeta'(2)$, $\zeta''(2)$, $\zeta'(3)$ and ordinary zeta products.
+We separately compute diagonal spectral finite parts and their ray-dependent
+correction terms: they are not the same regularization. A beta-weighted moment law evaluates the full unweighted family at every
+depth. Convergent repeated antiderivatives admit hypergeometric generators; at every positive integer
+shift a finite deletion formula reduces the entire unweighted hierarchy to
+the classical height-one Gamma quotient. Rational shifts give cyclotomic
+identities with an explicit logarithmic scale correction.
+
+The symmetric-sum principle, Gamma regularization, and the height-one Gamma
+identity are classical ingredients, not claimed discoveries. The contribution
+is the unified, normalization-explicit shifted and decorated calculus, its
+consequences, and its reproducible implementation. All stated universal
+identities have proofs; finite symbolic tests and numerical diagnostics are
+kept distinct from those proofs. No arithmetic independence, resolution of
+the repository's $S_6$ or $S_8$ conjectures, or proof-assistant formalization
+is claimed.
+\end{abstract}
+\vfill
+\noindent\small Repository snapshot:\par
+\noindent\src{fc4d3bf80534ad7c901d3b8c9e71baf2df0064ed}\par
+\noindent Complete source, validation scripts, recorded outputs and audit notes
+accompany this article.
+\end{titlepage}
+
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{Research question, scope, and relation to existing work}
+
+The polylogarithm programme in ProveIt connects harmonic sums with Gamma
+functions, Hurwitz-zeta jets, generalized Stieltjes constants and integration
+operators. Its canonical manuscript already distinguishes proved reductions
+from numerical candidates and, in particular, retains the conjectural status
+of $S_6$ and $S_8$~\cite{repo}. We continue a different exact-identity question:
+
+\begin{quote}
+For a fully symmetrized harmonic sum with prescribed powers of logarithms,
+can one compute the entire endpoint subtraction polynomial, and hence its
+constant term, at arbitrary depth and a common positive Hurwitz shift?
+How does the answer change when the regularization is changed?
+\end{quote}
+
+The answer is affirmative for the family defined below. The coefficients
+require only finitely many single-variable Hurwitz-zeta derivatives and
+Stieltjes constants. This is a statement about the explicitly symmetrized
+family, not a reduction theorem for every ordered multiple polylogarithm.
+The distinction is essential: symmetrization is the step that removes the
+unrestricted nested-order information.
+
+There are three layers of results. First, Theorems~\ref{thm:cutoff}
+and~\ref{thm:abel} give all-depth cutoff and Abel polynomials. Second,
+Theorem~\ref{thm:single-decoration} gives an exact generating function for one
+arbitrary logarithmic decoration and proves cancellation of positive-index
+Stieltjes constants at $a=1$ in every depth greater than one. Third,
+Theorems~\ref{thm:diagonal}, \ref{thm:beta-moments} and~\ref{thm:integer-primitives}
+give explicit regularization anomalies, all-depth beta moments and a
+convergent antiderivative hierarchy.
+The remaining results supply higher decorated examples, shift laws,
+differential recurrences and rational-lattice transport.
+
+\subsection{What is classical and what is developed here}
+
+The finite symmetric-sum identity is an elementary form of the symmetric
+multiple-zeta relations associated with Hoffman~\cite{Hoffman}; it can be
+proved without invoking multiple-zeta continuation. The comparison between
+harmonic and shuffle regularization is developed by Ihara, Kaneko and
+Zagier~\cite{IKZ}. Kaneko and Sakata give a particularly useful formulation in
+terms of cutoff and polylogarithmic asymptotic polynomials~\cite{KS}. Our
+cutoff variable is $\log N$, rather than $\log N+\gamma$. This choice accounts
+for the Euler-constant translation in the Gamma operator below.
+
+The height-one generating identity
+\[
+1-\frac{\Gamma(1-u)\Gamma(1-v)}{\Gamma(1-u-v)}
+=\sum_{p,d\ge1}\zeta(p+1,\{1\}^{d-1})v^p u^d
+\]
+is classical, following Aomoto and Drinfeld; see~\cite{Aomoto,Drinfeld,KS}.
+We give a beta-integral proof because its finite-shift extension requires
+careful normalization. We do not present the unshifted identity as new.
+Likewise, the Hurwitz-zeta and Gamma identities used in the proofs are
+standard~\cite{DLMF}.
+
+The present continuation develops these ingredients simultaneously for
+arbitrary finite logarithmic content and a common positive shift, states the
+complete subtraction polynomials, compares them with diagonal and general-ray
+spectral constants, and makes the single-decoration cancellation explicit.
+These formulas are proved here, but no claim of worldwide priority is made.
+The literature and repository review was targeted rather than exhaustive.
+
+\subsection{Repository review boundary}
+
+The inspected material consists of the canonical manuscript's README and
+main driver; selected portions of its harmonic-depth and integration
+chapters; the log-Gamma-moment development; the alternating-harmonic
+continuation README; and the incoming directory listing and intake
+instructions. The alternating-harmonic continuation already treats
+$[u^r]\prod_{j\le n}(1+u/j)$ through incomplete-beta reflection~\cite{repoalt}.
+Our subject is nonalternating endpoint regularization with independent
+logarithmic decorations, not a new proof of that reflection theorem.
+
+The five incoming ZIP filenames were visible, but their binary payloads were
+not inspected. Consequently this article does not certify nonoverlap with
+those unexamined payloads, nor does it audit all 417 pages of the canonical
+manuscript. The provenance and audit files specify this boundary. No original
+repository file has been changed.
+
+\section{Definitions and the one-variable input}
+\label{sec:definitions}
+
+Throughout, $a>0$ is real. Every logarithm of a lattice point $n+a$ is the
+real logarithm. We use the descending-index convention
+\begin{equation}\label{eq:mpl}
+\Li_{s_1,\ldots,s_d}(z_1,\ldots,z_d)
+=\sum_{k_1>\cdots>k_d\ge1}
+ \frac{z_1^{k_1}\cdots z_d^{k_d}}{k_1^{s_1}\cdots k_d^{s_d}}.
+\end{equation}
+The references using ascending indices must therefore be read with their
+indices reversed. When only $z_1=z$ is displayed, the other arguments are one.
+For $|z|<1$, the exponential damping in the largest index justifies every
+fixed spectral differentiation used here, locally uniformly in the orders.
+
+Write
+\begin{equation}\label{eq:stieltjes}
+\zeta(1+t,a)=\frac1t+
+ \sum_{r\ge0}\frac{(-1)^r\gamma_r(a)}{r!}t^r,
+\qquad \gamma_0(a)=-\psi(a),\qquad \gamma=\gamma_0(1).
+\end{equation}
+A prime on $\zeta$ always differentiates its first, spectral argument;
+$\partial_a$ will always be written explicitly. Define
+\begin{equation}\label{eq:harmonic}
+H_N^{(s)}(a)=\sum_{n=0}^{N-1}(n+a)^{-s},\qquad
+h_{r,N}(a)=\sum_{n=0}^{N-1}\frac{\log^r(n+a)}{n+a}.
+\end{equation}
+Thus $h_{r,N}=(-1)^r\partial_s^rH_N^{(s)}(a)|_{s=1}$.
+At $a=1$, $H_N^{(k)}(1)$ is the usual generalized harmonic number.
+We use the rising Pochhammer symbol $(a)_n=\Gamma(a+n)/\Gamma(a)$,
+with $(a)_0=1$.
+
+\begin{lemma}[Exact finite sums and cutoff constants]\label{lem:harmonic}
+For $r\ge0$ and $N\ge0$,
+\begin{equation}\label{eq:hgamma}
+h_{r,N}(a)=\gamma_r(a)-\gamma_r(N+a).
+\end{equation}
+As $N\to\infty$,
+\begin{equation}\label{eq:h-asymptotic}
+h_{r,N}(a)=\frac{\log^{r+1}(N+a)}{r+1}+\gamma_r(a)
+ +O_a\!\left(\frac{(1+\log N)^r}{N}\right).
+\end{equation}
+For integers $k\ge2$ and $R\ge0$,
+\begin{align}
+\sum_{n=0}^{N-1}\frac{\log^R(n+a)}{(n+a)^k}
+ &=(-1)^R\bigl(\zeta^{(R)}(k,a)-\zeta^{(R)}(k,N+a)\bigr),
+ \label{eq:higher-power}\\
+\sum_{n\ge0}\frac{\log^R(n+a)}{(n+a)^k}
+ &=(-1)^R\zeta^{(R)}(k,a).\label{eq:higher-limit}
+\end{align}
+All estimates are uniform when $a$ stays in a compact subinterval of $(0,\infty)$.
+\end{lemma}
+
+\begin{proof}
+Subtract the Laurent expansions in
+$\zeta(s,a)-\zeta(s,N+a)=H_N^{(s)}(a)$ and compare coefficients at $s=1$.
+The poles cancel and give~\eqref{eq:hgamma}, with the sign in
+\eqref{eq:stieltjes} unchanged.
+
+For the asymptotic, the first Euler summation formula gives, locally uniformly
+for $t$ near zero,
+\[
+\zeta(1+t,x)=\frac{x^{-t}}{t}+\frac12x^{-1-t}
+ +(1+t)\int_0^\infty \frac{\widetilde B_1(y)}{(x+y)^{2+t}}\dd y,
+\]
+where $\widetilde B_1(y)=1/2-\{y\}$; its values at integers are immaterial.
+Only boundedness is used. Differentiation of the
+integral $r$ times produces an error
+$O(x^{-1}(1+\log x)^r)$; this follows by putting $y=xv$ and integrating
+$(1+v)^{-2}$ times a fixed power of $\log(1+v)$. The constant term removed from
+$x^{-t}/t$ has coefficient
+$(-1)^{r+1}\log^{r+1}x/(r+1)!$. Comparison with~\eqref{eq:stieltjes} yields
+\[
+\gamma_r(x)=-\frac{\log^{r+1}x}{r+1}
+ +O(x^{-1}(1+\log x)^r).
+\]
+Together with~\eqref{eq:hgamma}, this proves~\eqref{eq:h-asymptotic}.
+The remaining identities follow from the absolutely convergent Hurwitz series
+and spectral differentiation. The tail is
+$O(N^{1-k}(1+\log N)^R)$ by an integral comparison. Uniformity in $a$ follows
+from the same estimates.
+\end{proof}
+
+For integer $k\ge2$ the undecorated version is also a polygamma identity:
+\begin{equation}\label{eq:polygamma-harmonic}
+H_N^{(k)}(a)=\frac{(-1)^k}{(k-1)!}
+ \bigl(\psi^{(k-1)}(a)-\psi^{(k-1)}(N+a)\bigr).
+\end{equation}
+This is one direct bridge between the generalized harmonic numbers and the
+polygamma functions in the construction.
+
+Fix an integer $R\ge0$. Put
+\[
+f_r(x)=\frac{\log^r x}{x},\quad
+W_{\uu}(x)=\sum_{r=0}^R u_r f_r(x),\quad
+V_{\uu}(L)=\sum_{r=0}^R\frac{u_r L^{r+1}}{r+1}.
+\]
+A \emph{content} is $\mm=(m_0,\ldots,m_R)\in\N_0^{R+1}$. Its depth,
+logarithmic degree and total degree are
+\begin{equation}\label{eq:degrees}
+d=|\mm|=\sum_r m_r,\qquad
+w(\mm)=\sum_r r m_r,\qquad
+D(\mm)=d+w(\mm)=\sum_r(r+1)m_r.
+\end{equation}
+Let $\uu^{\mm}=\prod_r u_r^{m_r}$ and define
+\begin{equation}\label{eq:finite-product}
+e_{\mm,N}(a)=[\uu^{\mm}]
+ \prod_{n=0}^{N-1}\bigl(1+W_{\uu}(n+a)\bigr).
+\end{equation}
+For $d>0$, this is a sum over strictly ordered lattice points and distinct
+words of logarithmic powers with content $\mm$. Repeated decorations do
+\emph{not} introduce an extra factorial. For example,
+\[
+e_{(1,1),N}(a)=\sum_{N>n>m\ge0}
+ \frac{\log(n+a)+\log(m+a)}{(n+a)(m+a)},
+\]
+whereas $e_{(0,2),N}$ has numerator $\log(n+a)\log(m+a)$, not twice that
+numerator.
+
+For $0<z<1$ define the corresponding Abel sum
+\begin{equation}\label{eq:E}
+E_{\mm}(z;a)=\sum_{n_1>\cdots>n_d\ge0}z^{n_1+a}
+ \sum_{\cont(r_1,\ldots,r_d)=\mm}\prod_{i=1}^d f_{r_i}(n_i+a).
+\end{equation}
+There is one summand for each distinct word of the indicated content. Define
+$E_{\mathbf0}=1$ separately. At $a=1$,
+\begin{equation}\label{eq:spectral-decorations}
+E_{\mm}(z;1)=(-1)^{w(\mm)}
+ \sum_{\cont(\mathbf r)=\mm}
+ \left.\partial_{s_1}^{r_1}\cdots\partial_{s_d}^{r_d}
+ \Li_{s_1,\ldots,s_d}(z,1,\ldots,1)\right|_{s_1=\cdots=s_d=1}.
+\end{equation}
+This places the entire coefficient calculus inside spectral derivatives of
+multiple polylogarithms, rather than merely formal harmonic notation.
+
+\section{The all-depth cutoff coefficient theorem}
+\label{sec:cutoff}
+
+Define a canonical product in the $R+1$ auxiliary variables:
+\begin{equation}\label{eq:Cproduct}
+\CC_a(\uu)=\exp\!\left(\sum_{r=0}^R\gamma_r(a)u_r\right)
+ \prod_{n\ge0}\bigl(1+W_{\uu}(n+a)\bigr)
+                    e^{-W_{\uu}(n+a)}.
+\end{equation}
+This is an ordinary entire function of finitely many complex variables. It
+must not be confused with the formal Gamma-moment series introduced later.
+
+\begin{theorem}[Cutoff polynomials and exact coefficient closure]
+\label{thm:cutoff}
+The product~\eqref{eq:Cproduct} converges normally on every compact subset of
+$\C^{R+1}$. Near $\uu=0$, its logarithm is
+\begin{align}
+\log\CC_a(\uu)
+={}&\sum_{r=0}^R\gamma_r(a)u_r\notag\\
+&+\sum_{k\ge2}\frac{(-1)^{k-1}}{k}
+ \sum_{r_1,\ldots,r_k=0}^R
+ (-1)^{r_1+\cdots+r_k}\zeta^{(r_1+\cdots+r_k)}(k,a)
+ u_{r_1}\cdots u_{r_k}.\label{eq:cumulants}
+\end{align}
+For every content $\mm$, set
+\begin{equation}\label{eq:P}
+P_{\mm,a}(L)=[\uu^{\mm}]\CC_a(\uu)e^{V_{\uu}(L)}.
+\end{equation}
+If $d>0$, this is a polynomial of degree exactly $D(\mm)$, with leading
+coefficient
+\[
+\frac{1}{\prod_{r=0}^R m_r!(r+1)^{m_r}}.
+\]
+Moreover,
+\begin{equation}\label{eq:cutoff-asymptotic}
+e_{\mm,N}(a)=P_{\mm,a}(\log(N+a))
+ +O_{a,\mm}\!\left(\frac{(1+\log N)^{D(\mm)}}{N}\right).
+\end{equation}
+In particular, the sharp-cutoff constant is
+\begin{equation}\label{eq:Cconstant}
+C_{\mm}(a):=P_{\mm,a}(0)=[\uu^{\mm}]\CC_a(\uu).
+\end{equation}
+Every coefficient of $P_{\mm,a}$ is a rational polynomial in the finitely many
+atoms $\gamma_r(a)$ and $\zeta^{(j)}(k,a)$, with $k\le d$ and $j\le w(\mm)$;
+only decorations present in $\mm$ supply Stieltjes atoms.
+\end{theorem}
+
+\begin{proof}
+On a compact set of auxiliary variables,
+$|W_{\uu}(n+a)|\le C(1+\log n)^R/n$ for all sufficiently large $n$.
+Consequently $\sum_n|W_{\uu}(n+a)|^2$ converges uniformly there. For the tail
+of the product, $\log(1+W)-W=O(|W|^2)$ uniformly; finitely many initial
+factors are entire. This proves normal convergence and entire dependence,
+including at zeros of individual factors. A sufficiently small polydisc
+around zero avoids all those zeros, so expanding its logarithm is legitimate.
+The power-sum identity~\eqref{eq:higher-limit} then proves
+\eqref{eq:cumulants}.
+
+For the asymptotic, take the logarithm of the \emph{finite} product as a formal
+power series and retain total degree at most $d$:
+\begin{equation}\label{eq:finite-log}
+\log\prod_{n<N}(1+W_{\uu}(n+a))
+=\sum_{k=1}^{d}\frac{(-1)^{k-1}}k
+  \sum_{n<N}W_{\uu}(n+a)^k
+  \pmod{\text{total degree}>d}.
+\end{equation}
+The $k=1$ coefficient is supplied by~\eqref{eq:h-asymptotic}; it equals
+$V_{\uu}(\log(N+a))+\sum_r\gamma_r(a)u_r$ plus the stated errors. For $k\ge2$
+the relevant finite power sum differs from its limit by
+$O(N^{1-k}(1+\log N)^{r_1+\cdots+r_k})$.
+
+Exponentiation and extraction of a fixed content use only finitely many
+products. The other factors in such a product have at most the remaining
+logarithmic degree. A singleton error contributes at most a constant times
+$N^{-1}(1+\log N)^{D-1}$; a block of size $k\ge2$ contributes at most
+$N^{1-k}(1+\log N)^{D-k}$. The weaker common error in
+\eqref{eq:cutoff-asymptotic} is therefore valid. This reasoning is entirely
+coefficientwise and does not assert uniform asymptotics for unrestricted
+auxiliary variables.
+
+The highest power of $L$ comes only from selecting all decorations in
+$e^{V_{\uu}(L)}$, with the constant term of $\CC_a$. This gives the displayed
+leading coefficient. The finite atom statement follows directly from
+\eqref{eq:cumulants}. The empty content gives $P_{\mathbf0,a}=1$ exactly.
+\end{proof}
+
+\subsection{First exact cutoff formulas}
+
+For compactness in examples, write $g_r=\gamma_r(a)$ and
+$Z_k^{[j]}=\zeta^{(j)}(k,a)$. With only $u_0$ present,
+\begin{align}
+C_{(1)}(a)&=g_0,\notag\\
+C_{(2)}(a)&=\frac{g_0^2-Z_2^{[0]}}2,\notag\\
+C_{(3)}(a)&=\frac{g_0^3-3g_0Z_2^{[0]}+2Z_3^{[0]}}6.
+\label{eq:C-first}
+\end{align}
+The mixed logarithmic coefficients begin with
+\begin{align}
+P_{(1,1),a}(L)
+ &=(L+g_0)\left(\frac{L^2}{2}+g_1\right)+Z_2^{[1]},
+ \label{eq:P11}\\
+P_{(0,2),a}(L)
+ &=\frac12\left(\frac{L^2}{2}+g_1\right)^2-\frac12 Z_2^{[2]}.
+ \label{eq:P02}
+\end{align}
+For instance, the plus sign before $Z_2^{[1]}$ in~\eqref{eq:P11} comes from
+subtracting the diagonal sum $\sum\log(n+a)/(n+a)^2=-\zeta'(2,a)$.
+This sign is easy to lose when a logarithmic insertion is identified with an
+unsigned spectral derivative.
+
+If one assigns formal degree $r+1$ to $g_r$, degree $k+j$ to $Z_k^{[j]}$,
+and degree one to $L$, every term in $P_{\mm,a}$ has degree $D(\mm)$.
+This is useful bookkeeping for an implementation. It is not a statement
+about a motivic weight filtration or arithmetic independence.
+
+\subsection{Why symmetrization matters}
+
+For labelled variables $x_{i,n}$, inclusion--exclusion on coincidences gives
+\begin{equation}\label{eq:partition}
+\sum_{\substack{n_1,\ldots,n_d\ge0\\n_i\ \mathrm{distinct}}}
+ \prod_{i=1}^d x_{i,n_i}
+=
+\sum_{\pi\in\Pi_d}\mu(\pi)
+ \prod_{B\in\pi}\left(\sum_{n\ge0}\prod_{i\in B}x_{i,n}\right),
+\end{equation}
+when the sums are finite or absolutely convergent. Here $\Pi_d$ is the set of
+set partitions and
+\[
+\mu(\pi)=\prod_{B\in\pi}(-1)^{|B|-1}(|B|-1)!.
+\]
+One proof is to fix an equality pattern of the indices. Its coefficient on
+the right is the sum of the partition-lattice M\"obius function below that
+pattern, hence is one for the discrete pattern and zero otherwise. An
+alternative elementary proof expands the finite logarithmic product in
+\eqref{eq:finite-log} and uses the exponential formula for set partitions.
+
+With $x_{i,n}=f_{r_i}(n+a)$, the labelled distinct-index sum is
+$\prod_r m_r!$ times the content coefficient. This accounts for the absence
+of any additional factorial in~\eqref{eq:finite-product}. An individual
+ordered word has no such general reduction. We never infer its reduction
+from that of the complete symmetrization.
+
+\section{Gamma transfer from cutoff to Abel endpoints}
+\label{sec:abel}
+
+Set $\epsilon=-\log z>0$ and $L=\log(1/\epsilon)$. There is no ambiguity in
+these real variables. The more customary $L_z=-\log(1-z)$ satisfies
+$L_z=L+O(\epsilon)$, so replacing one by the other changes a fixed polynomial
+by $o(1)$ as $z\uparrow1$.
+
+\begin{lemma}[Polynomial Laplace--Stieltjes transfer]\label{lem:laplace}
+Let $S(x)$ be a step function with locally finite variation, supported in
+$[a,\infty)$ for some $a>0$. Suppose that, as $x\to\infty$,
+\[
+S(x)=P(\log x)+O(x^{-1}(1+\log x)^D)
+\]
+for a polynomial $P$. Interpret the Stieltjes integral below as an improper
+integral if its total variation is not integrable. Then
+\begin{equation}\label{eq:laplace}
+\int_0^\infty e^{-\epsilon x}\dd S(x)
+=\sum_{j=0}^{\deg P}\frac{\Gamma^{(j)}(1)}{j!}P^{(j)}(L)
+ +O\!\left(\epsilon(1+L)^{D+1}\right),
+\end{equation}
+provided $D\ge\deg P$; an $o(1)$ remainder suffices without recording its rate.
+\end{lemma}
+
+\begin{proof}
+Integration by parts gives $\epsilon\int_0^\infty e^{-\epsilon x}S(x)\dd x$.
+The boundary terms vanish because $S=0$ near zero and grows at most
+polynomially in $\log x$. Replacing $S$ by $P(\log x)$ on a bounded interval
+costs $O(\epsilon)$, since powers of $\log x$ are integrable at zero. On
+$x\ge A>1$, the error is bounded by
+\[
+C\epsilon\int_A^\infty e^{-\epsilon x}
+ \frac{(1+\log x)^D}{x}\dd x
+=O(\epsilon(1+L)^{D+1}).
+\]
+Split this integral at $x=1/\epsilon$ to obtain the last estimate.
+For the main term put $t=\epsilon x$. The polynomial Taylor identity and the
+Gamma integral give
+\begin{align*}
+\int_0^\infty e^{-t}P(L+\log t)\dd t
+ &=\sum_{j=0}^{\deg P}\frac{P^{(j)}(L)}{j!}
+     \int_0^\infty e^{-t}\log^j t\dd t\\
+ &=\sum_{j=0}^{\deg P}\frac{\Gamma^{(j)}(1)}{j!}P^{(j)}(L).
+\end{align*}
+Only a finite sum is interchanged with the integral.
+\end{proof}
+
+\begin{theorem}[All-depth Abel endpoint polynomial]\label{thm:abel}
+For every content $\mm$, define
+\begin{equation}\label{eq:Q}
+Q_{\mm,a}(L)=\Gamma(1+\partial_L)P_{\mm,a}(L)
+:=\sum_{j=0}^{D(\mm)}\frac{\Gamma^{(j)}(1)}{j!}
+                         \partial_L^jP_{\mm,a}(L).
+\end{equation}
+Then, for $d>0$,
+\begin{equation}\label{eq:abel-asymptotic}
+E_{\mm}(e^{-\epsilon};a)=Q_{\mm,a}(L)
+ +O_{a,\mm}\bigl(\epsilon(1+L)^{D(\mm)+1}\bigr).
+\end{equation}
+The Abel endpoint constant is the ordinary limit after polynomial subtraction:
+\begin{equation}\label{eq:Abelconstant}
+A_{\mm}(a):=Q_{\mm,a}(0)
+=\lim_{z\uparrow1}\bigl(E_{\mm}(z;a)
+              -Q_{\mm,a}(-\log(1-z))+Q_{\mm,a}(0)\bigr).
+\end{equation}
+It belongs to the algebra of Theorem~\ref{thm:cutoff}, enlarged only by
+$\gamma$ and ordinary zeta values $\zeta(2),\ldots,\zeta(D(\mm))$.
+\end{theorem}
+
+\begin{proof}
+Let $S(x)$ sum the finite products over tuples whose largest lattice point is
+at most $x$. Its jumps are exactly the coefficients of the Abel series in
+\eqref{eq:E}. Between lattice points,
+$S(x)=e_{\mm,N(x)}(a)$ with $N(x)+a=x+O(1)$. Thus
+Theorem~\ref{thm:cutoff} gives the hypothesis of Lemma~\ref{lem:laplace}.
+Applying that lemma proves~\eqref{eq:abel-asymptotic}. Replacing $L$ by
+$-\log(1-z)$ changes only the vanishing error, proving the limit statement.
+Finally,
+\begin{equation}\label{eq:loggamma}
+\log\Gamma(1+u)=-\gamma u+
+ \sum_{k\ge2}\frac{(-1)^k\zeta(k)}{k}u^k
+\end{equation}
+shows that each $\Gamma^{(j)}(1)$ is a rational polynomial in the asserted
+ordinary constants. The empty content is again handled by definition.
+\end{proof}
+
+The first Gamma moments are
+\begin{align}
+\Gamma'(1)&=-\gamma,\notag\\
+\Gamma''(1)&=\gamma^2+\zeta(2),\notag\\
+\Gamma'''(1)&=-\gamma^3-3\gamma\zeta(2)-2\zeta(3),\notag\\
+\Gamma^{(4)}(1)&=\gamma^4+6\gamma^2\zeta(2)+3\zeta(2)^2
+                +8\gamma\zeta(3)+6\zeta(4).
+\label{eq:gamma-moments}
+\end{align}
+These formulas explain exactly which new ordinary constants an Abel endpoint
+can introduce. No new positive-index generalized Stieltjes constant is
+created by the transfer itself.
+
+\subsection{A formal master series, and a necessary convergence warning}
+
+Define, as a formal multivariate power series,
+\begin{equation}\label{eq:K}
+\KK(\uu)=\sum_{\mm\in\N_0^{R+1}}
+ \frac{\Gamma^{(D(\mm))}(1)}
+      {\prod_{r=0}^R m_r!(r+1)^{m_r}}\uu^{\mm}.
+\end{equation}
+Theorem~\ref{thm:abel} gives the compact master identity
+\begin{equation}\label{eq:master}
+\boxed{\displaystyle
+\sum_{\mm}A_{\mm}(a)\uu^{\mm}=\CC_a(\uu)\KK(\uu).}
+\end{equation}
+Indeed, the coefficient of $\uu^{\mm}$ in $e^{V_{\uu}(\log t)}$ integrates
+against $e^{-t}\dd t$ to the coefficient in~\eqref{eq:K}. For a fixed content
+this is a finite, valid integration of logarithmic moments.
+
+\begin{proposition}[The Gamma-moment master series need not converge]
+\label{prop:formal}
+When a $u_1$ variable is present, $\KK(0,u_1,0,\ldots)$ has radius of
+convergence zero. Consequently~\eqref{eq:master} is not, in general, an
+identity of analytic germs in all logarithmic-decoration variables.
+\end{proposition}
+
+\begin{proof}
+The coefficient of $u_1^m$ is $\Gamma^{(2m)}(1)/(2^m m!)$. All integrands in
+\[
+\Gamma^{(2m)}(1)=\int_0^\infty e^{-t}\log^{2m}t\dd t
+\ge e^{-1}\int_0^1\log^{2m}t\dd t=e^{-1}(2m)!
+\]
+are nonnegative. The $m$th roots of $(2m)!/(2^m m!)$ tend to infinity.
+This proves the assertion. In particular, the tempting expression
+$\int_0^\infty e^{-t}\exp(u_1\log^2t/2)\dd t$ diverges near $t=0$ for every
+real $u_1>0$.
+\end{proof}
+
+This warning does not affect any fixed coefficient, nor the analytic
+one-decoration generators below. It does prevent an invalid application of
+holomorphic parameter differentiation to the unrestricted master integral.
+The entire canonical product $\CC_a$ and the formal moment series $\KK$ have
+fundamentally different convergence properties.
+
+\subsection{A Gamma--polygamma differential recurrence}
+
+On polynomials in $L$, put $D_L=\partial_L$, $\Gop=\Gamma(1+D_L)$, and
+\begin{equation}\label{eq:Top}
+\Top=L+\psi(1+D_L)
+=L-\gamma+\sum_{k\ge1}(-1)^{k+1}\zeta(k+1)D_L^k.
+\end{equation}
+All operator series terminate on a fixed polynomial.
+
+\begin{proposition}[Closed recurrence for endpoint polynomials]
+\label{prop:operator}
+With a negative content interpreted as zero,
+\begin{equation}\label{eq:Q-recurrence}
+\partial_LQ_{\mm,a}(L)=\sum_{r=0}^R\Top^r Q_{\mm-\ee_r,a}(L).
+\end{equation}
+The powers of $\Top$ mean composition of the displayed operator, not ordinary
+commutative powers of its separate summands.
+\end{proposition}
+
+\begin{proof}
+The relation $[D_L,L]=1$ gives
+$\Gop L\Gop^{-1}=L+\psi(1+D_L)$. This follows first for a formal series
+$G(D_L)$ from $G(D_L)L=LG(D_L)+G'(D_L)$; the constant term of $G$ is one here,
+so its inverse exists on polynomials. Hence
+$\Gop L^r\Gop^{-1}=\Top^r$. Differentiating
+$\CC_a(\uu)e^{V_{\uu}(L)}$ gives
+$\partial_LP_{\mm,a}=\sum_r L^rP_{\mm-\ee_r,a}$. Conjugate this equality by
+$\Gop$, which commutes with $\partial_L$, to obtain~\eqref{eq:Q-recurrence}.
+\end{proof}
+
+\section{Gamma quotients, common shifts, and parameter differentiation}
+\label{sec:unweighted}
+
+When $u_0=u$ and the other auxiliary variables vanish, the canonical product
+collapses to an inverse Gamma quotient:
+\begin{equation}\label{eq:Cunweighted}
+\CC_a(u,0,\ldots)=\frac{\Gamma(a)}{\Gamma(a+u)}.
+\end{equation}
+To see this, compare the logarithms near zero. The linear coefficient is
+$-\psi(a)$, and the coefficient of $u^k$ for $k\ge2$ is
+$(-1)^{k-1}\zeta(k,a)/k$, in agreement with~\eqref{eq:cumulants}.
+Since both sides are entire functions of $u$, the local identity proves the
+formula everywhere.
+
+\begin{corollary}[Unweighted endpoint generator]\label{cor:unweighted}
+For the depth-$d$ content $(d)$,
+\begin{align}
+\sum_{d\ge0}P_{(d),a}(L)u^d
+ &=\frac{\Gamma(a)}{\Gamma(a+u)}e^{uL},\notag\\
+\sum_{d\ge0}Q_{(d),a}(L)u^d
+ &=\Acal_a(u)e^{uL},\qquad
+\Acal_a(u):=\frac{\Gamma(a)\Gamma(1+u)}{\Gamma(a+u)}.
+\label{eq:Aunweighted}
+\end{align}
+In particular, $A_{(d)}(a)=[u^d]\Acal_a(u)$. At $a=1$,
+\begin{equation}\label{eq:aone}
+Q_{(d),1}(L)=\frac{L^d}{d!},\qquad A_{(d)}(1)=0\quad(d\ge1).
+\end{equation}
+\end{corollary}
+
+These endpoint identities have an independent full-function check. Let
+$\mathcal E(z,u;a)=1+\sum_{d\ge1}u^dE_{(d)}(z;a)$.
+
+\begin{proposition}[An exact incomplete-beta generator]\label{prop:beta}
+For $a>0$, $0<z<1$, and $u$ near zero,
+\begin{align}
+\mathcal E(z,u;a)
+ &=1+\frac{u z^a}{a}\,{}_2F_1(1,a+u;a+1;z)\label{eq:Ehyper}\\
+ &=1+u(1-z)^{-u}B_z(a,u),\label{eq:Ebeta}
+\end{align}
+where $B_z(a,u)=\int_0^z t^{a-1}(1-t)^{u-1}\dd t$.
+As $z\uparrow1$, locally uniformly in a small complex disc about $u=0$,
+\begin{equation}\label{eq:beta-limit}
+\mathcal E(z,u;a)=\Acal_a(u)(1-z)^{-u}+O(1-z).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Condition on the largest index $n$. Its contribution to the generating
+function is
+\[
+\frac{u z^{n+a}}{n+a}
+ \prod_{j=0}^{n-1}\left(1+\frac{u}{a+j}\right)
+=\frac{u z^a}{a}\frac{(a+u)_n}{(a+1)_n}z^n.
+\]
+Since $(1)_n/n!=1$, summing gives~\eqref{eq:Ehyper}. Euler's
+hypergeometric transformation gives~\eqref{eq:Ebeta}; alternatively expand
+its integral into a binomial series. The incomplete integral is entire in
+$u$ for fixed $z<1$, so the identity is not limited to $\Rea u>0$.
+
+Initially for $\Rea u>0$, write
+$B_z(a,u)=B(a,u)-B_{1-z}(u,a)$. The complete beta term is
+$uB(a,u)=\Acal_a(u)$. Taylor expansion of $(1-t)^{a-1}$ in the complementary
+integral gives
+\[
+u(1-z)^{-u}B_{1-z}(u,a)=1+O(1-z).
+\]
+The coefficients in this last expansion extend holomorphically through
+$u=0$, since their only possible denominators are $u+j$ with $j\ge1$ after
+the constant term. This proves uniformity near zero and~\eqref{eq:beta-limit}.
+\end{proof}
+
+At the half shift,
+\begin{equation}\label{eq:half-log}
+\log\Acal_{1/2}(u)=2\log2\,u+
+ \sum_{k\ge2}\frac{(-1)^k(2-2^k)\zeta(k)}k u^k.
+\end{equation}
+Consequently
+\begin{align}
+A_{(1)}(1/2)&=2\log2,\notag\\
+A_{(2)}(1/2)&=2\log^22-\zeta(2),\notag\\
+A_{(3)}(1/2)&=\frac43\log^32-2\zeta(2)\log2+2\zeta(3).
+\label{eq:half-examples}
+\end{align}
+For a positive integer $M$,
+\begin{equation}\label{eq:integer-A}
+\Acal_M(u)=\prod_{j=1}^{M-1}\left(1+\frac uj\right)^{-1}.
+\end{equation}
+Its coefficient of $u^d$ is $(-1)^d$ times the degree-$d$ complete homogeneous
+symmetric function of the reciprocals of the positive integers smaller than
+$M$. Equivalently,
+\begin{equation}\label{eq:integer-bell}
+A_{(d)}(M)=\frac{(-1)^d}{d!}
+ Y_d\bigl(H_{M-1},1!H_{M-1}^{(2)},\ldots,(d-1)!H_{M-1}^{(d)}\bigr),
+\end{equation}
+where the complete exponential Bell polynomials satisfy
+\[
+Y_d(x_1,\ldots,x_d)=d![t^d]\exp\left(\sum_{j=1}^d\frac{x_jt^j}{j!}\right).
+\]
+Thus this specialization gives finite generalized-harmonic identities at
+all depths, not merely a collection of isolated low-order constants.
+
+\subsection{Exact shift and derivative laws}
+
+\begin{proposition}[Deletion of the first lattice point]\label{prop:shift}
+As entire functions, with removable quotients interpreted by cancellation,
+\begin{equation}\label{eq:Cshift}
+\CC_{a+1}(\uu)=\frac{\CC_a(\uu)}{1+W_{\uu}(a)}.
+\end{equation}
+The same law holds for the formal Abel-constant generator in
+\eqref{eq:master}. In coefficient form,
+\begin{equation}\label{eq:Ashift}
+A_{\mm}(a+1)+\sum_{r=0}^R f_r(a)A_{\mm-\ee_r}(a+1)=A_{\mm}(a).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The Hurwitz recurrence gives
+$\gamma_r(a+1)=\gamma_r(a)-f_r(a)$. Remove the $n=0$ factor from
+\eqref{eq:Cproduct}; its exponential compensation cancels this Stieltjes
+shift exactly. This proves~\eqref{eq:Cshift}. The formal factor $\KK$ is
+independent of $a$, so multiplication by it proves the Abel law. Extraction
+of a content gives~\eqref{eq:Ashift}.
+\end{proof}
+
+The elementary Hurwitz differential identity
+$\partial_a\zeta(s,a)=-s\zeta(s+1,a)$ yields
+\begin{equation}\label{eq:gamma-derivative}
+\boxed{\displaystyle
+\gamma_r'(a)=(-1)^{r+1}
+ \bigl(\zeta^{(r)}(2,a)+r\zeta^{(r-1)}(2,a)\bigr),}
+\end{equation}
+where the second term is omitted for $r=0$. This follows by comparing the
+coefficient of $t^r$ in $-(1+t)\zeta(2+t,a)$ and
+\eqref{eq:stieltjes}. In particular,
+\[
+\gamma_0'(a)=-\zeta(2,a),\qquad
+\gamma_1'(a)=\zeta'(2,a)+\zeta(2,a).
+\]
+Higher parameter derivatives use
+\begin{equation}\label{eq:hurwitz-derivative}
+\partial_a^q\zeta(s,a)=(-1)^q(s)_q\zeta(s+q,a).
+\end{equation}
+These identities differentiate every finite coefficient formula in this
+article, producing further exact polygamma and zeta-derivative identities.
+They do not confuse spectral differentiation with differentiation of the
+Hurwitz parameter. Normal convergence of the canonical product on a small
+complex neighborhood of a positive $a$ also justifies its parameter
+ differentiation directly.
+
+\section{One arbitrary logarithmic decoration at every depth}
+\label{sec:one-decoration}
+
+Let $\ell\ge1$. Write $P_{r;\ell,a}$, $Q_{r;\ell,a}$ and $A_{r;\ell}(a)$
+for the content with $m_0=r$, $m_\ell=1$, and all other entries zero.
+Here the total depth is $r+1$, not $r$. For instance,
+\[
+E_{r;\ell}(z;1)=\sum_{n_1>\cdots>n_{r+1}\ge1}
+ \frac{z^{n_1}}{n_1\cdots n_{r+1}}
+ \sum_{i=1}^{r+1}\log^\ell n_i.
+\]
+Define the analytic germ
+\begin{align}
+b_{a,\ell}(u)
+&=\gamma_\ell(a)+\sum_{j\ge1}(-1)^{j+\ell}
+                        \zeta^{(\ell)}(j+1,a)u^j\label{eq:bseries}\\
+&=\gamma_\ell(a)-u\sum_{n\ge0}
+ \frac{\log^\ell(n+a)}{(n+a)(n+a+u)}.
+\label{eq:bresolvent}
+\end{align}
+The series in~\eqref{eq:bseries} converges for $|u|<a$; the normally
+convergent resolvent sum gives its meromorphic continuation away from the
+indicated lattice poles.
+
+\begin{theorem}[Single-decoration identity and Stieltjes cancellation]
+\label{thm:single-decoration}
+For $u$ sufficiently close to zero,
+\begin{equation}\label{eq:single-full}
+\begin{split}
+\sum_{r\ge0}Q_{r;\ell,a}(L)u^r
+=\frac{\Gamma(a)}{\Gamma(a+u)}\biggl\{
+ &b_{a,\ell}(u)\Gamma(1+u)e^{uL}\\
+ &+\frac{1}{\ell+1}\partial_u^{\ell+1}
+                \bigl(\Gamma(1+u)e^{uL}\bigr)\biggr\}.
+\end{split}
+\end{equation}
+The derivative in braces acts only on its displayed Gamma--exponential
+factor. In particular,
+\begin{equation}\label{eq:single-constant}
+\boxed{\displaystyle
+\sum_{r\ge0}A_{r;\ell}(a)u^r
+=\Acal_a(u)\left(b_{a,\ell}(u)
+ +\frac{\Gamma^{(\ell+1)}(1+u)}{(\ell+1)\Gamma(1+u)}\right).}
+\end{equation}
+At $a=1$, for every $r\ge1$,
+\begin{equation}\label{eq:single-cancellation}
+\boxed{\displaystyle
+A_{r;\ell}(1)=(-1)^{r+\ell}\zeta^{(\ell)}(r+1)
+ +\frac1{\ell+1}[u^r]
+             \frac{\Gamma^{(\ell+1)}(1+u)}{\Gamma(1+u)}.}
+\end{equation}
+Thus no positive-index Stieltjes constant occurs in this exact expression.
+The depth-one exception is
+\begin{equation}\label{eq:depth-one-decoration}
+A_{0;\ell}(1)=\gamma_\ell+
+                    \frac{\Gamma^{(\ell+1)}(1)}{\ell+1}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Use $u$ for the undecorated variable and $v$ for the single $\ell$th logarithm.
+Differentiation of the logarithm of the canonical product at $v=0$ gives
+\begin{align*}
+\left.\partial_v\log\CC_a(u,v)\right|_{v=0}
+ &=\gamma_\ell(a)+\sum_{n\ge0}f_\ell(n+a)
+             \left(\frac1{1+u/(n+a)}-1\right)\\
+ &=b_{a,\ell}(u).
+\end{align*}
+This differentiation is justified by normal convergence of the compensated
+series. Expanding the resolvent proves~\eqref{eq:bseries}, including its sign.
+The coefficient of $v$ in the cutoff generating function is therefore
+\[
+\frac{\Gamma(a)}{\Gamma(a+u)}e^{uL}
+ \left(b_{a,\ell}(u)+\frac{L^{\ell+1}}{\ell+1}\right).
+\]
+Applying $\Gamma(1+\partial_L)$ and using
+$L^{\ell+1}e^{uL}=\partial_u^{\ell+1}e^{uL}$ proves~\eqref{eq:single-full}.
+The prefactor $\Gamma(a)/\Gamma(a+u)$ is not differentiated in this operation.
+The equality can be read coefficientwise; equivalently the Gamma integral
+is convergent for $u$ in a small disc, with only a fixed logarithmic power
+inserted. Setting $L=0$ proves~\eqref{eq:single-constant}.
+
+For $a=1$ the prefactor $\Acal_1(u)$ equals one exactly. The only
+positive-index Stieltjes atom in $b_{1,\ell}$ is its constant term
+$\gamma_\ell$. It cannot contribute to $[u^r]$ when $r\ge1$, giving
+\eqref{eq:single-cancellation}. The remaining Gamma quotient is the complete
+Bell polynomial
+\[
+\frac{\Gamma^{(\ell+1)}(1+u)}{\Gamma(1+u)}
+=Y_{\ell+1}\bigl(\psi(1+u),\psi'(1+u),\ldots,\psi^{(\ell)}(1+u)\bigr).
+\]
+The Taylor coefficients of these polygamma functions involve only $\gamma$
+and ordinary zeta values. This proves the asserted cancellation and the
+depth-one exception.
+\end{proof}
+
+The cancellation is an algebraic consequence of the Gamma quotient, not an
+assertion that any Stieltjes constant is independent of the surviving
+constants. It is also stronger than a finite numerical observation: both the
+depth $r+1$ and the logarithmic power $\ell$ are unrestricted.
+
+\subsection{The single-logarithm family in ordinary zeta notation}
+
+For $\ell=1$, equations~\eqref{eq:single-full}--\eqref{eq:single-constant}
+become
+\begin{align}
+\sum_{r\ge0}Q_{r;1,a}(L)u^r
+ &=\Acal_a(u)e^{uL}
+  \left(b_{a,1}(u)+\frac{(L+\psi(1+u))^2+\psi'(1+u)}2\right),
+  \label{eq:one-log-full}\\
+\sum_{r\ge0}A_{r;1}(a)u^r
+ &=\Acal_a(u)
+  \left(b_{a,1}(u)+\frac{\psi(1+u)^2+\psi'(1+u)}2\right).
+  \label{eq:one-log-constant}
+\end{align}
+
+\begin{corollary}[An explicit all-depth zeta-derivative identity]
+\label{cor:one-log}
+For every integer $r\ge1$,
+\begin{equation}\label{eq:one-log-explicit}
+\begin{split}
+A_{r;1}(1)=(-1)^r\biggl(&-\zeta'(r+1)+\gamma\zeta(r+1)
+ +\frac{r+1}{2}\zeta(r+2)\\
+ &+\frac12\sum_{j=1}^{r-1}\zeta(j+1)\zeta(r-j+1)\biggr).
+\end{split}
+\end{equation}
+The sum is empty for $r=1$.
+\end{corollary}
+
+\begin{proof}
+In a disc about zero,
+\[
+\psi(1+u)=-\gamma+\sum_{j\ge1}(-1)^{j+1}\zeta(j+1)u^j,
+\quad
+\psi'(1+u)=\sum_{j\ge0}(-1)^j(j+1)\zeta(j+2)u^j.
+\]
+Multiply the first series by itself, add the second, divide by two, and
+extract $[u^r]$. Add the coefficient
+$(-1)^{r+1}\zeta'(r+1)$ from $b_{1,1}$. The result is
+\eqref{eq:one-log-explicit}.
+\end{proof}
+
+The first three positive-depth-index constants are
+\begin{align}
+A_{1;1}(1)&=\zeta'(2)-\gamma\zeta(2)-\zeta(3),\label{eq:A11}\\
+A_{2;1}(1)&=-\zeta'(3)+\gamma\zeta(3)+\frac{11}{4}\zeta(4),\label{eq:A21}\\
+A_{3;1}(1)&=\zeta'(4)-\gamma\zeta(4)-2\zeta(5)-\zeta(2)\zeta(3).
+\label{eq:A31}
+\end{align}
+Here $\zeta(2)^2=5\zeta(4)/2$ was used in~\eqref{eq:A21}.
+
+For a completely explicit ordinary limit, put
+\[
+F(z)=\sum_{n>m\ge1}\frac{z^n(\log n+\log m)}{nm},
+\qquad L_z=-\log(1-z).
+\]
+Then Theorem~\ref{thm:single-decoration} gives
+\begin{equation}\label{eq:explicit-limit}
+\begin{split}
+\lim_{z\uparrow1}\biggl[
+F(z)-\frac{L_z^3}{2}+\gamma L_z^2
+-\left(\gamma_1+\frac{\gamma^2}{2}+\frac{3\zeta(2)}2\right)L_z
+\biggr]
+=\zeta'(2)-\gamma\zeta(2)-\zeta(3).
+\end{split}
+\end{equation}
+Since $F(z)=-(\partial_{s_1}+\partial_{s_2})
+\Li_{s_1,s_2}(z,1)|_{(1,1)}$, this is an exact endpoint identity for
+polylogarithmic order derivatives. The constant on the right is not obtained
+by assigning a value directly to the divergent series $F(1)$.
+
+For a higher logarithmic power, the same theorem yields
+\begin{equation}\label{eq:ell2}
+A_{1;2}(1)=-\zeta''(2)+\gamma^2\zeta(2)+2\gamma\zeta(3)
+                    +\frac92\zeta(4).
+\end{equation}
+The corresponding numerator is $\log^2 n+\log^2 m$, not
+$\log n\log m$. To verify~\eqref{eq:ell2} directly from the generating
+formula, differentiate
+$\Gamma'''/\Gamma=\psi^3+3\psi\psi'+\psi''$ once at zero, divide by three,
+and use~\eqref{eq:single-cancellation}. This produces
+$\gamma^2\zeta(2)+\zeta(2)^2+2\gamma\zeta(3)+2\zeta(4)$,
+which is the stated expression.
+
+\section{Two logarithmic insertions and higher content}
+\label{sec:two}
+
+The notation $A_{(r,2)}$ in this section means $r$ undecorated factors and
+\emph{two} factors carrying one logarithm each. It differs from
+$A_{r;2}$, which denotes one factor carrying a squared logarithm.
+Set $b_a=b_{a,1}$ and
+\begin{equation}\label{eq:M}
+M_a(u)=-\sum_{n\ge0}\frac{\log^2(n+a)}{(n+a+u)^2}
+=\sum_{j\ge0}(-1)^{j+1}(j+1)\zeta''(j+2,a)u^j.
+\end{equation}
+The first sum is normally convergent off its lattice poles, and the Taylor
+series is valid for $|u|<a$.
+
+\begin{proposition}[Two-logarithm constant generator]\label{prop:two}
+For $u$ near zero,
+\begin{equation}\label{eq:two-generator}
+\begin{split}
+\sum_{r\ge0}A_{(r,2)}(a)u^r
+=\Acal_a(u)\biggl[&\frac{b_a(u)^2+M_a(u)}2
+ +\frac{b_a(u)\Gamma''(1+u)}{2\Gamma(1+u)}\\
+ &+\frac{\Gamma^{(4)}(1+u)}{8\Gamma(1+u)}\biggr].
+\end{split}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The first and second derivatives of $\log\CC_a(u,v)$ at $v=0$ are
+$b_a(u)$ and $M_a(u)$. Hence the coefficient of $v^2$ in $\CC_a(u,v)$ is
+$\CC_a(u,0)(b_a^2+M_a)/2$. In the formal Gamma-moment factor, the
+coefficients of $v^0,v^1,v^2$ are respectively
+$\Gamma(1+u)$, $\Gamma''(1+u)/2$ and $\Gamma^{(4)}(1+u)/8$.
+Multiply these three finite coefficient expressions and use
+$\CC_a(u,0)\Gamma(1+u)=\Acal_a(u)$. This proves the identity without assuming
+analyticity in the full $v$ variable.
+\end{proof}
+
+In particular,
+\begin{equation}\label{eq:two-example}
+\begin{split}
+A_{(0,2)}(1)={}&\frac{\gamma_1^2-\zeta''(2)}2
+ +\frac{\gamma_1(\gamma^2+\zeta(2))}2\\
+ &+\frac{\gamma^4+6\gamma^2\zeta(2)+3\zeta(2)^2
+                  +8\gamma\zeta(3)+6\zeta(4)}8.
+\end{split}
+\end{equation}
+Unlike the single-decoration constants at depth greater than one, this
+expression retains $\gamma_1$. The comparison with~\eqref{eq:ell2} is useful:
+placing two logarithms on one index and placing them on two distinct indices
+are analytically different operations, even though their total logarithmic
+degree is the same.
+
+The master formula gives every higher content by a finite recurrence. If
+$\alpha\ne0$, $k=|\alpha|$, and $w=\sum_r r\alpha_r$, the coefficient of
+$\uu^\alpha$ in $\log\CC_a$ is
+\begin{equation}\label{eq:log-multi-coefficient}
+\lambda_\alpha=
+\begin{cases}
+\gamma_r(a),&\alpha=\ee_r,\\[2pt]
+\displaystyle
+\frac{(-1)^{k-1+w}(k-1)!}{\prod_r\alpha_r!}\,
+             \zeta^{(w)}(k,a),&k\ge2.
+\end{cases}
+\end{equation}
+For cutoff polynomials replace the singleton coefficient by
+$\gamma_r(a)+L^{r+1}/(r+1)$. If $F=\exp(\sum_{\alpha\ne0}
+\lambda_\alpha\uu^\alpha)=\sum_\mm f_\mm\uu^\mm$, then
+\begin{equation}\label{eq:euler-recurrence}
+|\mm|f_\mm=\sum_{0<\alpha\le\mm}|\alpha|\lambda_\alpha
+                                         f_{\mm-\alpha},
+\qquad f_{\mathbf0}=1.
+\end{equation}
+This is obtained by applying $\sum_r u_r\partial_{u_r}$ to $F$.
+It supplies an exact finite algorithm, with no symbolic infinite sums and no
+integer-relation search.
+
+\section{Diagonal spectral finite parts are a different operation}
+\label{sec:diagonal}
+
+For $\Rea s>1$ define
+\[
+Z_d(s;a)=\sum_{n_1>\cdots>n_d\ge0}\prod_{i=1}^d(n_i+a)^{-s},
+\qquad Z_0(s;a)=1.
+\]
+Newton's identity gives the coefficientwise meromorphic identity
+\begin{equation}\label{eq:diagonal-generator}
+\sum_{d\ge0}Z_d(s;a)u^d
+=\exp\!\left(\sum_{k\ge1}\frac{(-1)^{k-1}}k\zeta(ks,a)u^k\right).
+\end{equation}
+For any fixed $d$, only $k\le d$ is needed. Thus there is no need to define an
+infinite exponential on a punctured parameter domain in order to continue
+$Z_d$ near $s=1$.
+
+Define the diagonal spectral constant
+\begin{equation}\label{eq:Dd}
+D_d(a)=\CT_{t=0}Z_d(1+t;a).
+\end{equation}
+Here $\CT$ means the constant coefficient of a one-variable Laurent series.
+This is not, by definition, a cutoff or an Abel regularization.
+
+\begin{theorem}[Exact diagonal anomaly]\label{thm:diagonal}
+Let
+\begin{equation}\label{eq:Rdiag}
+\begin{split}
+\RR_a(u,t)=\exp\biggl\{&u\left(\zeta(1+t,a)-\frac1t\right)\\
+ &+\sum_{k\ge2}\frac{(-1)^{k-1}}k\zeta(k+kt,a)u^k\biggr\}.
+\end{split}
+\end{equation}
+The expression is understood as a power series in $u$ with coefficients
+holomorphic in $t$ near zero. Then
+\begin{equation}\label{eq:diagonal-exact}
+\boxed{\displaystyle
+D_d(a)=\sum_{j=0}^d\frac1{j!}
+               [u^{d-j}t^j]\RR_a(u,t).}
+\end{equation}
+The $j=0$ term is $C_{(d)}(a)$. The other terms give a finite explicit
+correction involving Stieltjes constants only through index $d-1$ and
+spectral derivatives of Hurwitz zeta at positive integers.
+\end{theorem}
+
+\begin{proof}
+Equation~\eqref{eq:diagonal-generator} gives
+$Z_d(1+t;a)=[u^d]e^{u/t}\RR_a(u,t)$. Expanding $e^{u/t}$ and taking the
+constant Laurent coefficient gives~\eqref{eq:diagonal-exact}. At $t=0$, the
+regular factor is exactly $\CC_a(u,0,\ldots)$, so the $j=0$ coefficient is the
+cutoff constant. A Stieltjes coefficient of order $j$ is accompanied by at
+least one $u$; hence the largest possible index in the extraction is $d-1$.
+Everything is a finite coefficient calculation once $d$ is fixed.
+\end{proof}
+
+For $g_r=\gamma_r(a)$ the first cases are
+\begin{align}
+D_1(a)&=g_0,\notag\\
+D_2(a)&=\frac{g_0^2-\zeta(2,a)}2-g_1,\label{eq:diag2}\\
+D_3(a)&=\frac{g_0^3-3g_0\zeta(2,a)+2\zeta(3,a)}6
+       -g_0g_1+\frac{g_2}{4}-\zeta'(2,a).
+\label{eq:diag3}
+\end{align}
+For example, $Z_2(s;a)=(\zeta(s,a)^2-\zeta(2s,a))/2$. The product of the
+pole $1/t$ with the linear coefficient $-g_1t$ contributes $-g_1$ to its
+constant term. This contribution is absent in a cutoff constant extracted
+before collapsing the spectral variables.
+
+At $a=1$, the three unweighted schemes already differ in depth two:
+\begin{equation}\label{eq:three-schemes}
+\begin{array}{c|c}
+\text{scheme and normalization}&\text{depth-two constant}\\ \hline
+\text{sharp cutoff, polynomial in }\log N
+  &(\gamma^2-\zeta(2))/2\\[2pt]
+\text{Abel endpoint, polynomial in }-\log(1-z)&0\\[2pt]
+\text{diagonal spectral Laurent constant}
+  &(\gamma^2-\zeta(2))/2-\gamma_1
+\end{array}
+\end{equation}
+These are different well-defined operations. In particular, the diagonal
+constant must not be called the standard stuffle-regularized value without
+an explicit change-of-regularization formula.
+
+\subsection{Independent variables and general rays}
+
+For absolutely convergent orders define the symmetrized shifted multiple
+zeta function
+\[
+\mathscr Z(\mathbf s;a)=\sum_{\sigma\in S_d}
+ \sum_{n_1>\cdots>n_d\ge0}
+ \prod_{i=1}^d(n_i+a)^{-s_{\sigma(i)}}.
+\]
+The partition identity~\eqref{eq:partition} gives its meromorphic continuation
+near $\mathbf s=\mathbf1$:
+\begin{equation}\label{eq:symmetric-zeta}
+\mathscr Z(\mathbf s;a)=\sum_{\pi\in\Pi_d}\mu(\pi)
+                         \prod_{B\in\pi}\zeta\!\left(\sum_{i\in B}s_i,a\right).
+\end{equation}
+Only singleton blocks have a pole near this point. If the variables
+$t_i=s_i-1$ remain independent, the multivariate constant coefficient of
+$\prod_i(-\partial_{s_i})^{r_i}\mathscr Z$ equals the cutoff constant of the
+labelled symmetric harmonic sum. This follows block by block: a singleton
+has constant $\gamma_{r_i}(a)$, while a nonsingleton block has constant
+$(-1)^{\sum_{i\in B}r_i}\zeta^{(\sum_{i\in B}r_i)}(|B|,a)$.
+Since the blocks have disjoint variables, there is no hidden cross-block
+Laurent contribution. Divide by $\prod_jm_j!$ to recover content normalization.
+
+The situation changes upon restricting to a ray $t_i=c_it$, where $c_i\ne0$.
+This restriction is made \emph{after} the independent spectral derivatives.
+For a singleton with decoration $r_i$,
+\begin{equation}\label{eq:singleton-ray}
+(-1)^{r_i}\zeta^{(r_i)}(1+c_it,a)
+=\frac{r_i!}{c_i^{r_i+1}t^{r_i+1}}
+ +\sum_{m\ge0}\frac{(-1)^m\gamma_{r_i+m}(a)c_i^m}{m!}t^m.
+\end{equation}
+For a block $B$ of size at least two, put
+$R_B=\sum_{i\in B}r_i$ and $c_B=\sum_{i\in B}c_i$.
+
+\begin{proposition}[Finite formula on an arbitrary nonsingular ray]
+\label{prop:ray}
+For a partition $\pi$, let $S(\pi)$ be its singleton indices and put
+$q_\pi=\sum_{i\in S(\pi)}(r_i+1)$. Define
+\[
+T_i(t)=\frac{r_i!}{c_i^{r_i+1}}
+ +t^{r_i+1}\sum_{m\ge0}
+       \frac{(-1)^m\gamma_{r_i+m}(a)c_i^m}{m!}t^m.
+\]
+The ray constant of the labelled differentiated symmetric sum is
+\begin{equation}\label{eq:ray}
+\sum_{\pi\in\Pi_d}\mu(\pi)[t^{q_\pi}]
+ \left\{\prod_{i\in S(\pi)}T_i(t)
+ \prod_{\substack{B\in\pi\\|B|\ge2}}
+       (-1)^{R_B}\zeta^{(R_B)}(|B|+c_Bt,a)\right\}.
+\end{equation}
+Only Taylor coefficients up to $q_\pi$ are required in each summand.
+\end{proposition}
+
+\begin{proof}
+In each term of~\eqref{eq:symmetric-zeta}, differentiation groups all
+spectral derivatives belonging to a block into the derivative of that block's
+single Hurwitz factor. Multiply each singleton expansion
+\eqref{eq:singleton-ray} by $t^{r_i+1}$. The whole partition contribution has
+then been multiplied by $t^{q_\pi}$. Its original Laurent constant is exactly
+the coefficient displayed in~\eqref{eq:ray}.
+\end{proof}
+
+For example, the unweighted symmetric double has ray constant
+\begin{equation}\label{eq:ray2}
+g_0^2-\zeta(2,a)-\gamma_1(a)
+                \left(\frac{c_1}{c_2}+\frac{c_2}{c_1}\right).
+\end{equation}
+Half of this at $c_1=c_2=1$ is~\eqref{eq:diag2}. Thus finite-part extraction
+and restriction to a spectral diagonal do not commute. This elementary
+counterexample is useful when moving an identity between a multivariate
+Hurwitz-jet calculation and a one-variable spectral specialization.
+
+\section{Exact antiderivatives and beta-weighted moment identities}
+\label{sec:primitives}
+
+This section gives convergent identities, with no endpoint finite-part
+assignment. Two different integration variables are useful. Integration
+against $\dd z/z$ raises the outer polylogarithmic index. Ordinary integration
+against $\dd z$, or beta weights in $1-z$, has a different and particularly
+simple all-depth structure.
+
+\subsection{A kernel representation in the endpoint logarithm}
+
+Put $L=-\log(1-z)$. Expanding~\eqref{eq:Ebeta} in $u$ and using
+$v=-\log(1-t)$ gives, for every $d\ge1$,
+\begin{equation}\label{eq:Lkernel}
+\boxed{\displaystyle
+E_{(d)}(z;a)=\frac1{(d-1)!}
+ \int_0^L(L-v)^{d-1}(1-e^{-v})^{a-1}\dd v.}
+\end{equation}
+This identity also has a direct proof: the coefficient of $u^d$ in
+$u(1-z)^{-u}B_z(a,u)$ is
+\[
+\frac1{(d-1)!}\int_0^z\frac{t^{a-1}}{1-t}
+ \left(\log\frac{1-t}{1-z}\right)^{d-1}\dd t,
+\]
+and the stated change of variables yields~\eqref{eq:Lkernel}. Every integral
+converges, since the kernel behaves as $v^{a-1}$ near zero.
+
+Consequently $E_{(d)}(1-e^{-L};a)$ is the $d$-fold zero-based ordinary
+antiderivative of $(1-e^{-L})^{a-1}$ in the $L$ variable. In particular,
+$\partial_LE_{(d)}=E_{(d-1)}$ for $d\ge2$, while
+$\partial_LE_{(1)}=(1-e^{-L})^{a-1}$. This is an exact full-function statement,
+not merely an endpoint asymptotic.
+
+\begin{theorem}[Beta-weighted all-depth moments]\label{thm:beta-moments}
+For $a,b>0$ and integers $d\ge1$,
+\begin{equation}\label{eq:beta-moment}
+\boxed{\displaystyle
+\int_0^1(1-z)^{b-1}E_{(d)}(z;a)\dd z
+=\frac{B(a,b)}{b^d}.}
+\end{equation}
+For any integer $k\ge0$, one may differentiate $k$ times in $b$:
+\begin{equation}\label{eq:log-beta-moment}
+\int_0^1(1-z)^{b-1}\log^k(1-z)E_{(d)}(z;a)\dd z
+=\frac{B(a,b)}{b^d}Y_k(\Delta_1,\ldots,\Delta_k),
+\end{equation}
+where $Y_0=1$ and
+\begin{equation}\label{eq:Delta}
+\Delta_j=\psi^{(j-1)}(b)-\psi^{(j-1)}(a+b)
+                  +\frac{(-1)^j d(j-1)!}{b^j},\qquad j\ge1.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+With $L=-\log(1-z)$ the left side of~\eqref{eq:beta-moment} is
+$\int_0^\infty e^{-bL}E_{(d)}(1-e^{-L};a)\dd L$.
+The integrand in~\eqref{eq:Lkernel} is nonnegative, so Tonelli's theorem
+allows the integration order to be changed. The inner Gamma integral is
+\[
+\frac1{(d-1)!}\int_v^\infty e^{-bL}(L-v)^{d-1}\dd L
+=\frac{e^{-bv}}{b^d}.
+\]
+The remaining integral, after $t=e^{-v}$, is
+$\int_0^1t^{b-1}(1-t)^{a-1}\dd t=B(a,b)$. This proves the moment formula.
+The integral and every fixed $b$ derivative converge uniformly for $b$ in a
+compact positive interval: the added factor is a power of $L$, while the
+Laplace damping remains exponential. Hence differentiation under the
+integral is valid. The logarithm of the right-hand side has $j$th derivative
+$\Delta_j$, so the complete Bell-polynomial derivative rule gives
+\eqref{eq:log-beta-moment}.
+\end{proof}
+
+Several particularly transparent identities follow:
+\begin{align}
+\int_0^1 E_{(d)}(z;a)\dd z&=\frac1a,\qquad d\ge1,\label{eq:moment-simple}\\
+\frac1{(q-1)!}\int_0^1(1-z)^{q-1}E_{(d)}(z;a)\dd z
+ &=\frac1{(a)_q q^d},\qquad q\in\N,\label{eq:qordinary}\\
+\int_0^1 z^{h-1}E_{(d)}(z;a)\dd z
+ &=\sum_{j=0}^{h-1}(-1)^j\binom{h-1}{j}
+                   \frac{B(a,j+1)}{(j+1)^d},\qquad h\in\N.
+\label{eq:positive-moments}
+\end{align}
+The last identity follows by expanding $z^{h-1}=(1-(1-z))^{h-1}$.
+It is a finite exact evaluation, not an asymptotic expansion. For example,
+\[
+\int_0^1zE_{(d)}(z;a)\dd z
+=\frac1a-\frac1{a(a+1)2^d}.
+\]
+A reflection specialization is especially simple. For $0<a<1$,
+\begin{equation}\label{eq:reflection-moment}
+\int_0^1(1-z)^{-a}E_{(d)}(z;a)\dd z
+=\frac{\pi}{\sin(\pi a)(1-a)^d}.
+\end{equation}
+For example, put $\ell_2=\log2$. At the half lattice,
+\begin{align}
+\int_0^1\frac{E_{(d)}(z;1/2)}{\sqrt{1-z}}\dd z
+ &=2^d\pi,\notag\\
+\int_0^1\frac{\log(1-z)E_{(d)}(z;1/2)}{\sqrt{1-z}}\dd z
+ &=-2^{d+1}\pi(d+\ell_2),\label{eq:half-moments}\\
+\int_0^1\frac{\log^2(1-z)E_{(d)}(z;1/2)}{\sqrt{1-z}}\dd z
+ &=2^d\pi\left(4(d+\ell_2)^2+4d+\frac{\pi^2}{3}\right).\notag
+\end{align}
+These follow from $B(1/2,1/2)=\pi$,
+$\psi(1/2)-\psi(1)=-2\log2$, and
+$\psi'(1/2)-\psi'(1)=\pi^2/3$. The family is uniform in the depth; the
+logarithms here decorate the integration weight, and should not be confused
+with spectral logarithms at the lattice indices.
+
+For positive integers $a=M$, $b=N$, formula~\eqref{eq:Delta} becomes
+\begin{equation}\label{eq:Delta-harmonic}
+\Delta_j=(-1)^j(j-1)!
+ \left(H_M^{(j)}(N)+\frac d{N^j}\right).
+\end{equation}
+Thus every logarithmic moment in~\eqref{eq:log-beta-moment} at such parameters
+is an explicit rational expression in finite generalized harmonic numbers,
+with a rational beta prefactor. The simple moment laws are special-function
+consequences of the kernel representation; no priority is claimed for their
+unshifted log-power specializations.
+
+\begin{corollary}[Gamma-weighted generalized harmonic sums]
+\label{cor:gamma-harmonic}
+For $a,b>0$ and $d\ge1$,
+\begin{equation}\label{eq:gamma-harmonic}
+\sum_{n\ge0}e_{(d-1),n}(a)
+          \frac{\Gamma(n+a)}{\Gamma(n+a+b+1)}
+=\frac{\Gamma(a)}{b^d\Gamma(a+b)}.
+\end{equation}
+In particular,
+\begin{align}
+\sum_{n\ge0}\frac{\Gamma(n+a)H_n^{(1)}(a)}{\Gamma(n+a+b+1)}
+ &=\frac{\Gamma(a)}{b^2\Gamma(a+b)},\notag\\
+\sum_{n\ge0}\frac{\Gamma(n+a)
+      \bigl((H_n^{(1)}(a))^2-H_n^{(2)}(a)\bigr)}{\Gamma(n+a+b+1)}
+ &=\frac{2\Gamma(a)}{b^3\Gamma(a+b)}.
+\label{eq:gamma-harmonic-examples}
+\end{align}
+\end{corollary}
+\begin{proof}
+Condition on the largest index in the beta moment. Tonelli's theorem gives
+\[
+\int_0^1(1-z)^{b-1}E_{(d)}(z;a)\dd z
+=\sum_{n\ge0}\frac{e_{(d-1),n}(a)}{n+a}B(n+a+1,b).
+\]
+Write each beta factor as a Gamma quotient, use
+Theorem~\ref{thm:beta-moments}, and cancel $\Gamma(b)$. The two displayed
+examples use $e_{(1),n}=H_n^{(1)}$ and
+$2e_{(2),n}=(H_n^{(1)})^2-H_n^{(2)}$.
+\end{proof}
+
+For an explicit half-lattice specialization, let
+$\mathrm{Cat}_n=\binom{2n}{n}/(n+1)$ be the Catalan numbers. Since
+\[
+\frac{\Gamma(n+1/2)}{\Gamma(n+2)}
+=\sqrt\pi\,\frac{\mathrm{Cat}_n}{4^n},\qquad
+H_n^{(j)}(1/2)=2^jH_{2n}^{(j)}-H_n^{(j)},
+\]
+we obtain the convergent harmonic identities
+\begin{align}
+\sum_{n\ge0}\frac{\mathrm{Cat}_n}{4^n}(2H_{2n}-H_n)&=4,\label{eq:catalan1}\\
+\sum_{n\ge0}\frac{\mathrm{Cat}_n}{4^n}
+ \bigl((2H_{2n}-H_n)^2-4H_{2n}^{(2)}+H_n^{(2)}\bigr)&=16.
+\label{eq:catalan2}
+\end{align}
+More generally, the corresponding sum of $e_{(d-1),n}(1/2)$ is $2^d$.
+These identities are beta/Gauss consequences of the unweighted generator,
+included to make the finite generalized-harmonic content explicit; no claim
+that the individual low-depth Catalan specializations are previously unknown
+is intended.
+
+\subsection{Ordinary zero-based primitives and integer-shift elementary forms}
+
+Define the $q$-fold ordinary primitive by
+\[
+I_{q,d}(z;a)=\frac1{(q-1)!}\int_0^z(z-t)^{q-1}E_{(d)}(t;a)\dd t,
+\qquad q\ge1.
+\]
+Termwise integration of~\eqref{eq:Ehyper} gives
+\begin{equation}\label{eq:ordinary-primitive-generator}
+\sum_{d\ge1}I_{q,d}(z;a)u^d
+=\frac{u\Gamma(a)z^{a+q}}{\Gamma(a+q+1)}
+          {}_2F_1(1,a+u;a+q+1;z).
+\end{equation}
+At $z=1$, Gauss summation reduces the right-hand side to
+$u/((a)_q(q-u))$, agreeing with~\eqref{eq:qordinary} coefficient by
+coefficient. Either the beta-moment proof or the convergent Gauss formula
+justifies this endpoint evaluation for $u$ near zero.
+
+At a positive integer shift the kernel in~\eqref{eq:Lkernel} is a finite
+exponential polynomial. Therefore the full nested harmonic function is
+elementary:
+\begin{equation}\label{eq:integer-elementary}
+\begin{split}
+E_{(d)}(z;M)=\frac{L^d}{d!}
++\sum_{j=1}^{M-1}\frac{(-1)^j\binom{M-1}{j}}{(-j)^d}
+ \left((1-z)^j-\sum_{k=0}^{d-1}\frac{(-jL)^k}{k!}\right),
+\quad L=-\log(1-z).
+\end{split}
+\end{equation}
+To prove this, expand
+$(1-e^{-v})^{M-1}=\sum_{j=0}^{M-1}(-1)^j\binom{M-1}{j}e^{-jv}$ in
+\eqref{eq:Lkernel} and integrate each exponential $d$ times with zero initial
+conditions. The $j=0$ term gives $L^d/d!$; the Taylor subtraction in the
+other terms enforces those initial conditions exactly.
+
+For $M=2$ the first two cases are
+\[
+E_{(1)}(z;2)=L-z,\qquad E_{(2)}(z;2)=\frac{L^2}{2}-L+z.
+\]
+Dropping the exponentially small $(1-z)^j$ terms in
+\eqref{eq:integer-elementary} gives precisely the endpoint polynomials
+from~\eqref{eq:integer-A}. Equating their constant coefficients also recovers
+the finite symmetric-function identity
+\[
+h_d(1,1/2,\ldots,1/(M-1))
+=\sum_{j=1}^{M-1}\frac{(-1)^{j-1}\binom{M-1}{j}}{j^d},
+\qquad M\ge2,
+\]
+where $h_d$ is the complete homogeneous symmetric function. This finite
+identity is another classical specialization, not an independence statement.
+
+\subsection{Logarithmic primitives raise the outer polylogarithmic index}
+
+Let $D_z=z\partial_z$. For a nonempty content and $p\ge1$, put
+\begin{equation}\label{eq:Jdef}
+J_{p,\mm}(z;a)=\frac1{(p-1)!}
+ \int_0^z\left(\log\frac zt\right)^{p-1}E_{\mm}(t;a)\frac{\dd t}{t}.
+\end{equation}
+Then $D_zJ_{p,\mm}=J_{p-1,\mm}$, where $J_{0,\mm}=E_{\mm}$, and all these
+primitives vanish at $z=0$. Termwise integration gives
+\begin{equation}\label{eq:Jseries}
+J_{p,\mm}(z;a)=\sum_{n_1>\cdots>n_d\ge0}
+ \frac{z^{n_1+a}}{(n_1+a)^p}
+ \sum_{\cont(\mathbf r)=\mm}\prod_i f_{r_i}(n_i+a).
+\end{equation}
+For $z=1$ this is absolutely convergent. To see this, sum the absolute inner
+factors first. If the outer decoration is $r$, the inner coefficient is
+$O((1+\log n)^{D-r-1})$ by elementary bounds on harmonic sums. The outer
+factor is therefore $O((1+\log n)^{D-1}/n^{p+1})$, a summable sequence.
+This also justifies the endpoint integral in~\eqref{eq:Jdef}.
+
+For unweighted content $(d)$, the full generating function is
+\begin{equation}\label{eq:Jhyper}
+\sum_{d\ge1}u^dJ_{p,(d)}(z;a)
+=\frac{u z^a}{a^{p+1}}
+ {}_{p+2}F_{p+1}\!\left(
+ \begin{matrix}1,a+u,\underbrace{a,\ldots,a}_{p}\\
+               \underbrace{a+1,\ldots,a+1}_{p+1}\end{matrix};z\right).
+\end{equation}
+Indeed, condition on the largest lattice point as in
+Proposition~\ref{prop:beta}, and multiply its coefficient by $(n+a)^{-p}$.
+The ratio $(a)_n/(a+1)_n=a/(a+n)$ supplies each extra denominator.
+At $z=1$ the hypergeometric excess is $p-u$, so the expression is convergent
+for $\Rea u<p$ in its usual parameter domain; a neighborhood of zero is enough
+for every coefficient identity used here.
+
+\subsection{All positive integer shifts: a finite Gamma deletion theorem}
+
+For $M,p,d\in\N$, abbreviate
+\[
+J_{p,d}(M)=J_{p,(d)}(1;M)
+=\sum_{n_1>\cdots>n_d\ge M}
+ \frac1{n_1^{p+1}n_2\cdots n_d},\qquad
+P_{M-1}(u)=\prod_{j=1}^{M-1}\left(1+\frac uj\right).
+\]
+
+\begin{theorem}[Integer-shift convergent antiderivative hierarchy]
+\label{thm:integer-primitives}
+As an identity of analytic germs at $(u,v)=(0,0)$,
+\begin{equation}\label{eq:integer-J}
+\boxed{\displaystyle
+\sum_{p,d\ge1}J_{p,d}(M)v^p u^d
+=\frac{1}{P_{M-1}(u)}
+ \left(1-\frac{\Gamma(1-u)\Gamma(1-v)}{\Gamma(1-u-v)}
+       -\sum_{n=1}^{M-1}\frac{(u)_n}{n!}\frac{v}{n-v}\right).}
+\end{equation}
+Every coefficient belongs to the $\Q$-algebra generated by ordinary zeta
+values. In particular,
+\begin{equation}\label{eq:first-J}
+\sum_{d\ge1}J_{1,d}(M)u^d
+=\frac{-\psi(1-u)-\gamma
+             -\sum_{n=1}^{M-1}(u)_n/(n!n)}{P_{M-1}(u)}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The generating coefficient conditioned on the largest integer $n\ge M$ is
+\[
+\sum_{d\ge1}\frac{u^d}{n^{p+1}}
+ e_{d-1}(1/M,\ldots,1/(n-1))
+=\frac1{P_{M-1}(u)}\frac{(u)_n}{n!\,n^p}.
+\]
+Thus summing $p$ gives the absolutely convergent series, locally near zero,
+\begin{equation}\label{eq:Jresolvent}
+\frac1{P_{M-1}(u)}\sum_{n\ge M}\frac{(u)_n}{n!}\frac{v}{n-v}.
+\end{equation}
+For example $|u|,|v|<1/4$ suffices: the summands decay as
+$O(n^{-2+\Rea u})$ uniformly on a smaller compact set.
+
+For $M=1$ use the binomial identity
+$\sum_{n\ge1}(u)_nt^n/n!=(1-t)^{-u}-1$. Initially take $\Rea v<0$,
+$\Rea u<1$. Integration gives
+\begin{align*}
+\sum_{n\ge1}\frac{(u)_n}{n!}\frac{v}{n-v}
+ &=v\int_0^1t^{-v-1}\bigl((1-t)^{-u}-1\bigr)\dd t\\
+ &=vB(-v,1-u)+1\\
+ &=1-\frac{\Gamma(1-u)\Gamma(1-v)}{\Gamma(1-u-v)}.
+\end{align*}
+Both sides continue holomorphically near $(0,0)$, so this proves the classical
+height-one Gamma identity there. Remove the finitely many terms $n<M$ in
+\eqref{eq:Jresolvent} to obtain~\eqref{eq:integer-J}. The Gamma logarithm
+\eqref{eq:loggamma} shows that its coefficients involve only ordinary zeta
+values and rational numbers; the finite sum and $P_{M-1}^{-1}$ add only
+rational coefficients. Finally extract the coefficient of $v$ to obtain
+\eqref{eq:first-J}.
+\end{proof}
+
+For $M=1$, equation~\eqref{eq:first-J} is the classical height-one identity
+$J_{1,d}(1)=\zeta(d+1)$. At $M=2$ it gives
+\begin{align}
+J_{1,1}(2)&=\zeta(2)-1,\notag\\
+J_{1,2}(2)&=\zeta(3)-\zeta(2)+1,\notag\\
+J_{1,3}(2)&=\zeta(4)-\zeta(3)+\zeta(2)-1.
+\label{eq:Jexamples}
+\end{align}
+The theorem covers all $p$ and $d$, not only this first-primitive line.
+It does not assert that the general rational-shift hypergeometric expression
+\eqref{eq:Jhyper}, or its logarithmically decorated analogues, reduces to the
+same single-zeta algebra.
+
+\section{Rational shifts and cyclotomic transport}
+\label{sec:cyclotomic}
+
+Let $a=h/q$ with $1\le h\le q$, and write $\omega=e^{2\pi i/q}$ and
+$w=z^{1/q}$ for $0<z<1$. Define the common-shift ordered polylogarithmic sum
+\[
+\mathcal F_{\mathbf s}(z;a)
+=\sum_{n_1>\cdots>n_d\ge0}z^{n_1+a}
+                       \prod_i(n_i+a)^{-s_i}.
+\]
+
+\begin{proposition}[Root-of-unity filter with its normalization]
+\label{prop:filter}
+For $|z|<1$ on a fixed root branch, and in particular on the positive real
+interval,
+\begin{equation}\label{eq:filter}
+\begin{split}
+\mathcal F_{\mathbf s}(z;h/q)
+=q^{s_1+\cdots+s_d-d}
+ \sum_{j_1,\ldots,j_d=0}^{q-1}\omega^{-h(j_1+\cdots+j_d)}
+ \Li_{\mathbf s}(w\omega^{j_1},\omega^{j_2},\ldots,\omega^{j_d}).
+\end{split}
+\end{equation}
+The identity may be spectrally differentiated to any fixed order. In doing
+so, the factor $q^{s_1+\cdots+s_d-d}$ must also be differentiated.
+\end{proposition}
+
+\begin{proof}
+Put $k_i=qn_i+h$. All $k_i$ are positive, strictly ordered and congruent to
+$h$ modulo $q$. The denominators contribute $q^{s_1+\cdots+s_d}$, and the
+outer exponential is $w^{k_1}$. Insert the exact filter
+\[
+\mathbf1_{k\equiv h\ (q)}=\frac1q\sum_{j=0}^{q-1}\omega^{j(k-h)}
+\]
+for each index and interchange the finite sums. This gives~\eqref{eq:filter}.
+Exponential damping makes the underlying sums and all fixed spectral
+derivatives locally normally convergent. Differentiation of the prefactor
+is necessary because $\log(n+a)=\log k-\log q$.
+\end{proof}
+
+At the unweighted orders $s_i=1$, the prefactor is one ($q^0$). For the logarithmic primitive with $s_1=p+1$ and the other
+orders one, it is $q^p$. The latter formula remains absolutely convergent at
+$z=1$ for $p\ge1$, even after fixed spectral differentiations. Thus the
+convergent antiderivative results provide exact finite combinations of
+cyclotomic multiple-polylogarithm values, without any finite-part ambiguity.
+The beta moments similarly translate to identities involving root-of-unity
+polylogarithms and the Gamma ratio $B(h/q,b)$.
+
+\subsection{The logarithmic scale changes under root extraction}
+
+A separate adjustment is needed at a divergent Abel endpoint. With
+$z=e^{-\epsilon}$ and $w=e^{-\epsilon/q}$, the logarithmic endpoint variables
+are
+\[
+L=\log(1/\epsilon),\qquad T=\log(q/\epsilon)=L+\log q.
+\]
+After spectral differentiation, let the \emph{complete filtered sum} on the
+right of~\eqref{eq:filter} represent $E_{\mm}(z;h/q)$. Its polynomial in $T$
+is therefore
+\begin{equation}\label{eq:scale}
+Q_{\mm,h/q}(T-\log q).
+\end{equation}
+The constant in the $T$ normalization is $Q_{\mm,h/q}(-\log q)$, whereas the
+constant in the original $L$ normalization is $Q_{\mm,h/q}(0)$. Their exact
+difference is
+\begin{equation}\label{eq:scale-difference}
+Q_{\mm,h/q}(-\log q)-Q_{\mm,h/q}(0)
+=\sum_{j=1}^{D(\mm)}\frac{(-\log q)^j}{j!}Q_{\mm,h/q}^{(j)}(0).
+\end{equation}
+This statement concerns the full finite trace and does not require a claim
+about independent asymptotic expansions of its individual colored summands.
+
+For the smallest example, $a=1/2$ gives
+\[
+E_{(1)}(z;1/2)=\Li_1(\sqrt z)-\Li_1(-\sqrt z)
+=\log\frac{1+\sqrt z}{1-\sqrt z}.
+\]
+Its constant relative to $-\log(1-z)$ is $2\log2$. Its constant relative to
+$-\log(1-\sqrt z)$ is only $\log2$. The difference is not an error in either
+polylogarithm identity; it is a change in the specified endpoint scale.
+A cyclotomic coefficient compiler must preserve this distinction.
+
+\section{Reproducible coefficient computations and validation}
+\label{sec:verification}
+
+The package implements the finite recurrence~\eqref{eq:euler-recurrence}, not
+an unbounded symbolic expansion. A requested content bounds every auxiliary
+variable separately. The cutoff polynomial is computed first; the finite
+Gamma differential operator then gives the Abel polynomial. The same
+constant is independently recomputed by convolution with~\eqref{eq:K}.
+
+The symbols in the implementation have the following meanings:
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Symbol & Meaning\\
+\midrule
+\texttt{g0}, \texttt{g1}, \ldots & $\gamma_0(a),\gamma_1(a),\ldots$\\
+\texttt{z2\_1}, \texttt{z3\_2}, \ldots
+ & $\zeta'(2,a),\zeta''(3,a),\ldots$\\
+\texttt{G} & Euler's constant $\gamma$\\
+\texttt{z2}, \texttt{z3}, \ldots & Ordinary zeta values\\
+\texttt{L} & The explicitly specified endpoint logarithm\\
+\bottomrule
+\end{tabular}
+\end{center}
+Treating these atoms as indeterminates is a device for exact polynomial
+verification. It does not assume that the corresponding numbers are
+algebraically or rationally independent.
+
+\subsection{Finite exact arithmetic}
+
+The exact suite compares direct finite products on rational alphabets with
+power-sum recurrences;
+checks the labelled set-partition formula; compares the two implementations
+of Gamma transfer; verifies the unweighted cancellation, single- and
+double-decoration generators, higher single decorations, and the
+Gamma-conjugated differential recurrence; compares Newton and partition
+formulas for diagonal constants; verifies half and integer shifts; checks
+finite deletion identities for primitives and integer-shift elementary
+endpoint polynomials; and checks root-of-unity filters by exact remainders
+modulo cyclotomic polynomials.
+
+The executed exact suite passed 2,600 assertions. Their grouping is recorded
+in \src{results/exact_checks.json} and summarized in the accompanying README. These are finite regression tests of
+the formulas and implementation. They do not replace the analytic proofs of
+normal convergence, asymptotic transfer, or interchange of infinite sums and
+integrals. No proof assistant was run.
+
+\subsection{Independent numerical checks}
+
+The executed numerical suite passed 158 comparisons at 60 decimal digits.
+The largest observed absolute residual was approximately
+$7.83\times10^{-55}$; full values and tolerances are retained in
+\src{results/numerical_checks.json}. It compares finite decorated
+harmonic products with Stieltjes differences and Hurwitz-zeta derivatives;
+direct geometric-convergent sums with the hypergeometric and incomplete-beta
+generators; numerical integrals with the convergent primitive and beta-moment
+formulas; numerical parameter derivatives of Stieltjes constants with
+\eqref{eq:gamma-derivative}; and Cauchy averages of Laurent functions with the
+diagonal constants. It also checks the integer-shift elementary functions
+against direct harmonic coefficients.
+
+These are ordinary floating-point computations, not interval enclosures.
+Reported residuals are observed residuals, not rigorous error bounds. In
+particular, a very small residual would not prove an identity that lacked
+its written proof. The exact suite and the numerical suite deliberately use
+different formulations where practical.
+
+\subsection{Direct endpoint diagnostics}
+
+A separate script sums the decorated Abel series directly and subtracts the
+\emph{entire} predicted polynomial. It uses $N=\lceil35/\epsilon\rceil$ terms,
+with $\epsilon=10^{-2},10^{-3},10^{-4},10^{-5}$, for two shifts and four
+contents. At the smallest $\epsilon$ each sum uses 3,500,000 terms.
+The following observed differences at $a=1$ illustrate why naive endpoint
+extrapolation can be misleading:
+\begin{center}
+\begin{tabular}{rcc}
+\toprule
+$\epsilon$ & $E_{(1,1)}-Q_{(1,1),1}$ & $E_{(1,2)}-Q_{(1,2),1}$\\
+\midrule
+$10^{-2}$ & $1.6344939\cdot10^{-1}$ & $1.7682030$\\
+$10^{-3}$ & $3.0587602\cdot10^{-2}$ & $7.0392944\cdot10^{-1}$\\
+$10^{-4}$ & $5.0120208\cdot10^{-3}$ & $2.0368075\cdot10^{-1}$\\
+$10^{-5}$ & $7.4952623\cdot10^{-4}$ & $4.7670923\cdot10^{-2}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Here $Q$ is evaluated at $L=\log(1/\epsilon)$. The displayed differences
+contain the analytic remainder, finite truncation, and floating-point
+roundoff; they are not certificates for any of those components separately.
+Even millions of terms do not by themselves reveal many digits of the
+constant in a higher logarithmic content. The coefficient formulas, rather
+than extrapolated decimal values, determine the exact answers.
+
+\section{Targeted corrections and integration guidance}
+\label{sec:audit}
+
+\subsection{A persistent independence wording issue}
+
+In the reviewed snapshot, the canonical integration chapter, at the paragraph
+labelled \src{integral:neg:psim2}, describes a dependent PSLQ input basket and
+then says: ``Basis atoms must be $\Q$-independent.'' The numerical diagnosis is
+useful, but the unrestricted requirement is misleading. Proving the needed
+independence is often a difficult open problem, and it is neither an input
+requirement for PSLQ nor an acceptable unstated assumption.
+
+A precise replacement is:
+\begin{quote}
+Remove known exact rational dependencies from the candidate list, or work
+with representatives modulo the explicitly proved relation system. A
+relation finder may otherwise return an already-known relation that does not
+involve the target. No unproved rational independence of the remaining
+constants is assumed, and failure to find a target relation proves neither
+independence nor nonreducibility.
+\end{quote}
+
+This is a correction to persistent wording, not a claim to have newly
+discovered the general PSLQ caveat. The manuscript's broader distinction
+between numerical evidence and proof is retained. A replacement paragraph
+is supplied as an editorial fragment, not as an automatically applied patch.
+
+\subsection{Regularization conventions that should be stated explicitly}
+
+For any new endpoint or spectral identity, specify the limiting parameter,
+the logarithmic variable, and the subtraction polynomial. The explicit
+counterexample~\eqref{eq:three-schemes} shows why the bare phrase ``finite
+part'' is insufficient when changing between cutoffs, Abel damping, and a
+spectral diagonal. The scale law~\eqref{eq:scale-difference} supplies a second
+necessary convention when transporting to roots of unity.
+
+These are proposed convention improvements and safeguards for integrating
+this continuation. We do \emph{not} assert that a particular unreviewed
+incoming manuscript committed either mistake. Similarly,
+Proposition~\ref{prop:formal} is a warning about this article's own generating
+series, not an allegation that the repository already treated it as
+holomorphic.
+
+\subsection{Recommended placement and status}
+
+A suitable self-contained report location is
+\begin{center}
+\src{Analysis/Polylogarithms/docs/reports/endpoint-regularization/}.
+\end{center}
+The harmonic-depth discussion can point to the decorated coefficient
+calculus, while the integration and differentiation chapters can point to
+the Gamma-transfer, Stieltjes-derivative and primitive results. The report
+can also be cross-linked to the existing alternating-harmonic continuation,
+but their normalizations and research questions should not be merged merely
+because both use elementary symmetric harmonic functions.
+
+The delivered files preserve a standalone article, proof status, runnable
+code and recorded outputs. The canonical manuscript should be edited only
+after independent mathematical review and comparison with the unexamined
+incoming payloads. This article proves the families stated here. It does not
+prove the repository's $S_6$ or $S_8$ candidates, settle period independence,
+or establish minimum depth for any individual numerical value.
+
+\section{Further research questions}
+\label{sec:questions}
+
+\subsection{Ordered rather than fully symmetrized logarithmic values}
+
+The first obstruction beyond our theorem is already visible in depth two:
+separate the endpoint constants with numerators $\log n$ and $\log m$ rather
+than their sum. The present results determine their symmetric combination
+but not their difference. Determine a functional or integral representation
+for that antisymmetric component, then identify an exact basis of special
+functions sufficient for its endpoint constant. This is a reduction question,
+not a conjecture of arithmetic independence.
+
+\subsection{Convergent spectral decorations of the primitive hierarchy}
+
+Theorem~\ref{thm:integer-primitives} settles the unweighted integer-shift
+family at all outer indices and depths. With a logarithmic insertion, the
+series remains absolutely convergent after one $\dd z/z$ integration, but
+the finite Gamma quotient no longer immediately evaluates the whole
+hierarchy. Determine which symmetrized insertions arise from derivatives of
+a finite-parameter Gamma or hypergeometric identity. The first target is the
+one-logarithm primitive at arbitrary depth, with the outer and inner
+spectral derivatives kept separate until the final symmetrization.
+
+\subsection{Mixed shifts and rational lattice relations}
+
+The common lattice is essential to the partition reduction. If each labelled
+slot has its own shift $a_i$, collision blocks involve products of distinct
+linear denominators rather than a single Hurwitz-zeta derivative. Partial
+fractions should give a finite extension for distinct shifts, with confluent
+limits producing polygamma derivatives. Establish a uniform formula that
+remains regular as shifts collide. For rational common shifts, use
+\eqref{eq:filter} and~\eqref{eq:scale-difference} to build explicit cyclotomic
+endpoint relations at small conductors without silently changing the finite
+part.
+
+\subsection{Which combinations eliminate positive-index Stieltjes atoms?}
+
+Theorem~\ref{thm:single-decoration} explains a complete cancellation for one
+logarithmic decoration at $a=1$. Two distinct logarithmic insertions retain
+$\gamma_1$ in~\eqref{eq:two-example}. For a fixed total logarithmic degree,
+classify rational combinations of content constants whose coefficient
+polynomials eliminate all positive-index Stieltjes symbols. This can first
+be solved in the explicitly stated formal atom ring. Any subsequent claim
+about the independence of numerical periods would require additional proof.
+
+\subsection{Ray dependence and compatible renormalizations}
+
+Formula~\eqref{eq:ray} reduces direction dependence to finitely many
+coefficients at each depth. Classify rays, or finite linear combinations of
+ray constants, that agree with independent-variable cutoff extraction
+through a prescribed depth. Depth two gives the explicit ratio
+$c_1/c_2+c_2/c_1$, so even the first compatibility equation is nontrivial.
+A useful target is a normalization satisfying both finite-lattice deletion
+and cyclotomic scale transport, with its comparison to Abel regularization
+proved rather than stipulated.
+
+\subsection{Analytic meaning of the formal Gamma-moment series}
+
+The zero-radius result for $\KK$ rules out a naive analytic master germ, but
+one-sided integrals can converge for suitable negative quadratic logarithmic
+parameters. Study sectorial or distributional realizations whose asymptotic
+coefficients are exactly~\eqref{eq:K}. Any such realization should preserve
+the already proved fixed-content identities and must specify its contour
+and parameter domain. No summability assertion is made here.
+
+\subsection{Exact moment transforms and formal verification}
+
+The beta-moment law diagonalizes the unweighted depth hierarchy under a
+Laplace transform in $-\log(1-z)$. Investigate whether analogous transforms
+exist for one or more spectral logarithmic decorations and whether they
+close under a finite polygamma differential system. Independently, the
+finite coefficient recurrence, the set-partition identity and the
+Gamma-conjugation rule are suitable first targets for Lean formalization.
+The analytic layer would then require formal proofs of the compensated
+product and the polynomial Laplace--Stieltjes transfer. The numerical suites
+in this package are not substitutes for those formal developments.
+
+\section*{Conclusion}
+\addcontentsline{toc}{section}{Conclusion}
+
+A single normally convergent harmonic product, followed by a finite Gamma
+operator, determines every cutoff and Abel polynomial in the stated
+symmetrized logarithmic family. The formulas expose precisely when
+positive-index Stieltjes constants survive and when they cancel. Diagonal
+spectral restriction introduces additional terms, and root extraction
+changes the endpoint scale; both effects have finite exact correction laws.
+On the convergent side, beta-weighted moments and ordinary primitives admit
+all-depth evaluations, while logarithmic primitives at integer shifts reduce
+to a Gamma quotient with an explicit finite deletion. These are proved
+identities with stated domains, not numerical reductions inferred from a
+small residual.
+
+\begin{thebibliography}{99}
+
+\bibitem{DLMF}
+NIST Digital Library of Mathematical Functions.
+Sections 5.7 (Gamma series), 5.12 (beta function), 15.4 (hypergeometric
+special values), 25.11 (Hurwitz zeta) and 25.14 (Lerch transcendent). Accessed 10 October 2026.
+\url{https://dlmf.nist.gov/5.7};
+\url{https://dlmf.nist.gov/5.12};
+\url{https://dlmf.nist.gov/15.4};
+\url{https://dlmf.nist.gov/25.11};
+\url{https://dlmf.nist.gov/25.14}.
+
+\bibitem{Hoffman}
+M.~E.~Hoffman, Multiple harmonic series,
+\emph{Pacific Journal of Mathematics} \textbf{152} (1992), 275--290.
+The symmetric-sum attribution is also discussed in~\cite{KS}.
+
+\bibitem{IKZ}
+K.~Ihara, M.~Kaneko and D.~Zagier,
+Derivation and double shuffle relations for multiple zeta values,
+\emph{Compositio Mathematica} \textbf{142} (2006), 307--338.
+Preprint record: \url{https://archive.mpim-bonn.mpg.de/id/eprint/725}.
+
+\bibitem{KS}
+M.~Kaneko and M.~Sakata, On multiple zeta values of extremal height,
+arXiv:1505.01014. Consulted version contains the height-one Gamma generating
+identity and the cutoff/shuffle regularization conventions.
+\url{https://arxiv.org/abs/1505.01014}.
+
+\bibitem{Aomoto}
+K.~Aomoto, Special values of hyperlogarithms and linear difference schemes,
+\emph{Illinois Journal of Mathematics} \textbf{34} (1990), 191--216.
+Bibliographic attribution and the relevant generating identity are recorded
+in~\cite{KS}.
+
+\bibitem{Drinfeld}
+V.~G.~Drinfeld, On quasitriangular quasi-Hopf algebras and a group closely
+connected with $\operatorname{Gal}(\overline{\Q}/\Q)$,
+\emph{Leningrad Mathematical Journal} \textbf{2} (1991), 829--860.
+See~\cite{KS} for the height-one generating-function attribution.
+
+\bibitem{repo}
+ProveIt repository, \emph{Canonical polylogarithms manuscript},
+with editorial records in
+\src{Analysis/Polylogarithms/docs/manuscript/}, ProveIt repository.
+Reviewed snapshot:
+\src{fc4d3bf80534ad7c901d3b8c9e71baf2df0064ed}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/fc4d3bf80534ad7c901d3b8c9e71baf2df0064ed/Analysis/Polylogarithms/docs/manuscript}.
+
+\bibitem{repoalt}
+ProveIt repository, \emph{Alternating harmonic polylogarithms},
+report README and collection under
+\src{Analysis/Polylogarithms/docs/reports/alternating-harmonic-polylogarithms/}.
+README inspected at the same repository snapshot as~\cite{repo}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/fc4d3bf80534ad7c901d3b8c9e71baf2df0064ed/Analysis/Polylogarithms/docs/reports/alternating-harmonic-polylogarithms}.
+
+\bibitem{intake}
+ProveIt repository, Incoming reports: intake and placement instructions,
+\src{docs/incoming/README.md}, same reviewed snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/fc4d3bf80534ad7c901d3b8c9e71baf2df0064ed/docs/incoming/README.md}.
+
+\end{thebibliography}
+\end{document}

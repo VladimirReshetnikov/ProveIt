@@ -1755,3 +1755,7 @@ if os.path.exists('data/feasible-span-benchmark.json'):
 if os.path.exists('data/matching-support-benchmark.json'):
     import runpy
     runpy.run_path('data/matching_support_tables.py')
+
+if os.path.exists('data/pachner-native-diagram-benchmark.json'):
+    import runpy
+    runpy.run_path('data/pachner_native_tables.py')
