@@ -82,18 +82,15 @@ How the gap in Gowers's proof was closed — summary (2026-10-11)
      degree and length, plus sharper constants (d+7, L+6, L+5 for L >= 11).
   Write-up: Research/GowersSzemeredi/joint-vertex-covers/joint-vertex-covers.pdf.
 
-Verification handoff (full kernel audit, 2026-10-11)
-  The local full-closure build was stopped (about 18 hours on this host);
-  the full kernel audit is left to the verification host. After building
-  GowersSzemeredi.Proofs18CoverExplicit and
-  GowersSzemeredi.Proofs18CoverSharperExplicit, elaborate
-  scripts/gowers_bridge_axioms.lean. Every listed theorem must depend only
-  on propext, Classical.choice and Quot.sound. The local faithful stubs
-  (mkstub_cover.py, mkstub_sharp.py) additionally showed exactly the corpus
-  theorems commonDiffPartitionBoundAt_of,
-  multilinearPartitionBoundAt_explicit,
-  section16RecurrenceProfileWith_explicit and theorem_18_2_le_six, which
-  are proved in the real build.
+Verification of the cover route (2026-10-11)
+  The local faithful stubs (mkstub_cover.py, mkstub_sharp.py) were
+  superseded the same day by the production CompletionAudit (see Scope):
+  1,440 modules built from the actual source, exact-type checks of all 120
+  numbered statements and of the improved-bound results, transitive axioms
+  propext, Classical.choice and Quot.sound only. A local full-closure build
+  started here (about 18 hours on this host) was stopped as redundant.
+  scripts/gowers_bridge_axioms.lean is a quick standalone #print axioms
+  check of the 13 bridge theorems for any later rebuild.
 
 Sharper exponents for Theorems 18.1 and 18.2 — 2026-10-11 (notes L.15)
   The joint-cover envelopes are a quarter of the printed budgets, so:

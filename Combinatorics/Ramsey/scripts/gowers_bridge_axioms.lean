@@ -1,6 +1,6 @@
--- Full-audit axiom check for the Gowers bridge proofs (see FORMALIZATION_STATUS.txt,
--- "Verification handoff"). Every theorem must depend only on propext,
--- Classical.choice and Quot.sound.
+-- Standalone axiom check for the Gowers bridge proofs (the production check is
+-- check_gowers.py GowersSzemeredi.CompletionAudit). Every theorem must depend only on
+-- propext, Classical.choice and Quot.sound.
 import GowersSzemeredi.Proofs18CoverExplicit
 import GowersSzemeredi.Proofs18CoverSharperExplicit
 
