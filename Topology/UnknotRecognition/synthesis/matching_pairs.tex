@@ -1,0 +1,112 @@
+\section{Two-row matching consequences before generic enumeration}
+\label{sec:matching-pairs}
+
+The sign preprocessor of Section~\ref{sec:matching-support} inspects individual
+RREF rows. A mixed-sign row may become useful after combination with another
+row. The actual-source pilot finds fifty additional reductions, including
+two sectors whose raw matching nullity is four. This continuation adds an
+exact two-row implication search before the expensive generic-Q phase.
+The independent source-equation checker and certificate schema are unchanged.
+
+\subsection{Find every one-sided consequence in a two-row span}
+
+Let $F$ be the already authenticated zero coordinates, and let $a,b$ be
+fixed rational matching consequences. For signs $s_a,s_b\in\{-1,1\}$,
+consider
+\[
+              w=s_a a+\lambda s_b b,\qquad\lambda\ge0.
+\]
+For each $j\notin F$, the inequality $w_j\ge0$ either supplies a rational
+lower or upper bound on $\lambda$, supplies no bound, or makes the interval
+empty. Intersecting these constraints and $[0,\infty)$ takes $O(k)$
+rational operations. A finite nonempty interval is sampled at its midpoint;
+an unbounded interval at its lower endpoint plus one. A singleton is
+sampled at its sole point. Only a strictly positive active coefficient
+produces a step. Every such coordinate is forced zero by the same
+nonnegative-sum argument as before.
+
+\begin{proposition}[Complete pair-span detection, sufficient global closure]
+For any fixed rational row family and authenticated zero set, the four
+signed interval tests detect a nonzero nonnegative active consequence in
+any two-row span whenever one exists. Repeated pair steps interleaved with
+single-row sign propagation preserve the full feasible matching cone and
+terminate after at most $k$ successful steps. For at most $k$ original rows,
+the closure costs $O(k^4)$ scalar inspections, with polynomial bit cost.
+It need not find every forced coordinate in the entire row space.
+\end{proposition}
+\begin{proof}
+Any combination with a nonzero first coefficient can be positively rescaled
+into one of the stated signed forms. A combination with only one nonzero
+coefficient is handled by sign propagation; row order and signs also cover
+this case. The active nonnegativity inequalities describe a closed interval.
+If it has positive length, each active coefficient is a nonnegative affine
+function throughout that interval. Such a function is zero at an interior
+point only if it is identically zero. Thus the midpoint or the selected
+interior point finds a positive coefficient whenever one is possible.
+The singleton case is checked directly.
+
+Every step uses an actual matching consequence and previously established
+zeros, so induction authenticates all newly forced coordinates. Each step
+adds at least one coordinate. A pair sweep has $O(k^2)$ pairs and four
+$O(k)$ interval tests per pair; at most $k+1$ sweeps occur. The intervening
+single-row sweeps have the same polynomial overall bound. Rows are never
+replaced by generated combinations: each interval uses the original fixed
+rational rows. Bound endpoints are ratios of their coefficients and sampling
+adds only constant-factor digit growth. This avoids iterative coefficient
+blow-up. Source provenance has the existing polynomial rational-elimination
+cost. Reinstating proved-zero coordinates gives the same full cone
+isomorphism as in Section~\ref{sec:matching-support}.
+\end{proof}
+
+For example, the preceding mixed rows $(1,0,-1,2)$ and $(0,1,2,-1)$ now
+force all four coordinates. But the three rows
+\[
+ (1,0,0,-2,1,1),\quad(0,1,0,1,-2,1),\quad(0,0,1,1,1,-2)
+\]
+produce no single or pair step. Their sum $(1,1,1,0,0,0)$ forces the first
+three coordinates zero, while $(0,0,0,1,1,1)$ remains feasible. Indeed each
+pair's active pivot columns require its two coefficients nonnegative;
+the two corresponding free columns require their ratio to be both at least
+two and at most one half. This counterexample concerns general row systems,
+not a claimed geometric realization. It prevents treating the pair fixed
+point as a complete maximal-support LP theorem.
+
+\subsection{Keep source authority and complete discovery intact}
+
+The cheap phase uses the existing kernel's canonical RREF equations and
+first performs the preceding single-row closure. When a pair creates new
+zeros, single-row propagation resumes before another pair sweep. Source
+provenance is still compiled only when a reduction exists. The actual source
+RREF must equal the recovered kernel equations, and replaying the same
+closure must give the same forced set.
+
+Each step records a rational combination of one or two RREF rows. Their
+source-equation coefficient vectors are combined exactly, coalesced and
+serialized as the ordinary sorted source-row combination. No new schema or
+pair claim is entrusted to the checker. It reconstructs each combination
+from the original matching equations, requires every triangle term to cancel,
+and checks its nonnegative active coefficients and exact newly forced set.
+The checker imports neither the pair search nor its interval calculations.
+
+The native automatic standard branch continues to run preprocessing only
+above matching nullity three. A successful reduction recompiles the original
+source with its retained allowed types, then uses the existing adaptive
+low-dimensional discovery or generic fallback. A completed negative
+certificate retains the original support and restores omitted coordinates
+as zeros. Removing its support annotation still permits full original-sector
+replay. Candidate caps and cancellation remain in force; an unfinished
+query is inconclusive.
+
+If the retained matching nullity is $r$, the same conditional geometry bound
+now uses the stronger polynomial preprocessor:
+\[
+ \operatorname{poly}(T+k+B)+\operatorname{poly}(T+B)(1+k')^{O(r)}.
+\]
+The quartic sign scan, source recompilation and provenance are charged;
+component queries and their proofs remain separate. No logarithmic bound
+on $r$ for arbitrary knot inputs or complete small family of sectors has
+been proved. More polynomial reductions can remove expensive raw-dimensional
+work on actual sources without supplying the missing global theorem.
+
+\subsection{Source pilot, independent replay and complete-query costs}
+\input{matching_pairs_results.tex}

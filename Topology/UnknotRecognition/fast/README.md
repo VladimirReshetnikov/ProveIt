@@ -3995,3 +3995,33 @@ producer-disabled replay, changed large binary values and cancellation.
 This fixes certificate compatibility for compressed arithmetic; it does not
 change the search policy or establish a new recognition complexity bound.
 See [the bit-size proof and replay evidence](../synthesis/sector_integer_transport.tex).
+
+### Two-row source matching implications
+
+High-nullity automatic standard discovery now considers exact signed two-row
+combinations after the existing one-row sign propagation. Rational interval
+bounds find nonnegative active consequences, and source-equation provenance
+uses the existing certificate schema and independent checker. The closure
+has polynomial `O(k^4)` scalar work with polynomial bit cost; combinations
+of three or more rows can still expose zeros that it misses. Complete fallback
+and the original support statement remain authoritative.
+
+The source pilot finds fifty extra reductions among 3,412 sectors on 48
+triangulations. Two raw-nullity-four sectors bypass generic Q screening,
+reach nullity-three adaptive discovery, and drop attempted candidates from
+63 to seven. Their complete native source-query paired ratios are about
+1.55 and 1.53, including preparation, proof replay and serialization.
+The existing-reduction control is at parity; the unreduced control has
+about five percent overhead in this sample. No full-recognition timing or
+new general complexity theorem follows. All 1,540 tests and 22 focused
+tests pass. The optional diagram geometry policy remains off.
+
+Reproduce the source evidence from this directory with:
+
+```sh
+PYTHONPATH=. python -B -m normal_orbit_research.matching_pairs audit --output ../synthesis/data/matching-pairs-audit.json
+PYTHONPATH=. python -B -m normal_orbit_research.matching_pairs benchmark --rounds 5 --output ../synthesis/data/matching-pairs-benchmark.json
+```
+
+The audit uses Regina for independent source-ray checks. See
+[the theory, counterexample and measurements](../synthesis/matching_pairs.tex).

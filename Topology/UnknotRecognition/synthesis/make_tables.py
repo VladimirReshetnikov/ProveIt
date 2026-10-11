@@ -1775,3 +1775,7 @@ if os.path.exists('data/epoch-gauge-benchmark.json'):
 if os.path.exists('data/transport-annulus-benchmark.json'):
     import runpy
     runpy.run_path('data/transport_annulus_tables.py')
+
+if os.path.exists('data/matching-pairs-benchmark.json'):
+    import runpy
+    runpy.run_path('data/matching_pairs_tables.py')
