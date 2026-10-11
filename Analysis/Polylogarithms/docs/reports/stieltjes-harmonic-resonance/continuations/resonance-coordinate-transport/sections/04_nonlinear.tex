@@ -1,0 +1,558 @@
+\section{Nonlinear coordinate changes of Stieltjes finite parts}
+\label{nc:section}
+
+The incoming Mellin--dilation and Stieltjes--harmonic reports explicitly
+ask for the replacement of a local affine coordinate $qt$ by
+$f(t)=qt+c_2t^2+\cdots$, including every Stieltjes index, every argument
+derivative, and a composition law \cite{incoming-md,incoming-sh}.
+The answer is a finite residue formula. Besides recovering their affine
+polynomial, it yields a sharp additional phenomenon: if $f'(0)=1$, the
+finite part of $\gamma_n^{(r)}$ transforms without a local correction
+whenever $n\geq2r$.
+
+The method below is direct analytic regularization. Its general
+finite-part principle is not presented as a claim of historical priority.
+The contribution to the stated source question is the complete formula,
+its specialization to the Stieltjes hierarchy, the exact composition law,
+and the sharp filtration of the surviving local terms.
+
+\subsection{A universal residue formula}
+
+All coordinates in this section are local real coordinates, with the
+singular approach from the right. Let
+\begin{equation}\label{nc:loggerm}
+ h(x)=\sum_{\ell=0}^{L}a_\ell(x)(\log x)^\ell,\qquad x>0,
+\end{equation}
+where the $a_\ell$ are meromorphic germs at zero, each with a finite pole
+order. Define $\FP_xh$ by the constant term of
+$\int_\eps h(x)\phi(x)\dd x$ as $\eps\downarrow0$, for a smooth
+compactly supported test function $\phi$. Every negative power of
+$\eps$ and every nonconstant power of $\log\eps$ is discarded.
+The positive-side germ can be extended by zero on the left; a fixed
+smooth completion can equally well be added. Such a completion changes
+neither the residue nor the coordinate correction.
+
+Let $f$ be a real-analytic local diffeomorphism with
+\begin{equation}\label{nc:coordinate}
+ f(0)=0,\qquad f'(0)=q>0,
+ \qquad \lambda_f(t)=\log\frac{f(t)}t.
+\end{equation}
+The last function is analytic at zero, with
+$\lambda_f(0)=\log q$. Pullback here means scalar distributional
+pullback:
+\begin{equation}\label{nc:pullback}
+ \langle f^*T,\phi\rangle
+ =\left\langle T,
+       (\phi\circ f^{-1})(f^{-1})'\right\rangle.
+\end{equation}
+In particular, the pullback of an ordinary function is its composition
+with $f$.
+
+\begin{theorem}[Nonlinear finite-part coordinate law]
+\label{nc:universal}
+For the germ \eqref{nc:loggerm}, define
+\begin{equation}\label{nc:residue-anomaly}
+ \left\langle\mathfrak A_f[h],\phi\right\rangle
+ =\sum_{\ell=0}^{L}\frac1{\ell+1}
+  \Res_{t=0}
+    a_\ell(f(t))\lambda_f(t)^{\ell+1}\phi(t)\dd t.
+\end{equation}
+Then
+\begin{equation}\label{nc:universal-law}
+ \boxed{\quad
+ f^*\FP_xh=\FP_t(h\circ f)+\mathfrak A_f[h].
+ \quad}
+\end{equation}
+If every $a_\ell$ has pole order at most $R$, the correction is a
+linear combination of
+$\delta_0,\delta_0',\ldots,\delta_0^{(R-1)}$; for $R=0$ it is zero.
+Every coefficient is determined by finite Taylor data. The residue
+notation for a smooth $\phi$ means its finite Taylor coefficient;
+holomorphic extension of the test function is unnecessary.
+\end{theorem}
+
+\begin{proof}
+It suffices to take $h(x)=a(x)\log^\ell x$. For $\Re z$ sufficiently
+large, the pairing of $x_+^za(x)$ with a test function is an ordinary
+integral. If $a(x)=x^{-R}A(x)$ with $A$ holomorphic, subtract the Taylor
+polynomial of $A(x)\phi(x)$ through degree $R-1$. The remainder is
+locally integrable for $z$ near zero, uniformly on a small closed disk.
+This constructs a meromorphic distribution with at most a simple pole
+at zero, and
+\begin{equation}\label{nc:regulator-fp}
+ \FP_x\bigl(a(x)\log^\ell x\bigr)
+       =\ell![z^\ell]\bigl(x_+^za(x)\bigr).
+\end{equation}
+Here the bracket is a Laurent coefficient. To check the normalization,
+the only exceptional Taylor monomial is $x^{z-1}$, whose continued
+integral to a fixed positive $h_0$ is $h_0^z/z$. Its coefficient
+$[z^\ell]$ is $\log^{\ell+1}h_0/(\ell+1)!$, precisely the constant
+remaining after subtracting the lower-endpoint logarithm. Every other
+Taylor monomial has a denominator nonzero at $z=0$.
+
+After pullback the regulated integrand is
+\[
+ t^z a(f(t))e^{z\lambda_f(t)}\phi(t).
+\]
+Its polar Taylor term at zero has numerator
+\begin{equation}\label{nc:Bregulator}
+ B(z)=\Res_{t=0}a(f(t))e^{z\lambda_f(t)}\phi(t)\dd t.
+\end{equation}
+Thus the exceptional contribution is $B(z)h_0^z/z$. On the other
+hand, the cutoff integral of the same term is
+$B(z)(h_0^z-\eps^z)/z$. In its coefficient $[z^\ell]$, the lower
+endpoint has constant term $[z^{\ell+1}]B(z)$: all its other terms
+are positive powers of $\log\eps$. Consequently the meromorphic
+coefficient exceeds the coefficientwise cutoff constant by
+\[
+ \ell![z^{\ell+1}]B(z)
+   =\frac1{\ell+1}\Res_{t=0}
+      a(f(t))\lambda_f(t)^{\ell+1}\phi(t)\dd t.
+\]
+Nonpolar Taylor terms have lower-endpoint powers different from zero
+and introduce no constant discrepancy. The subtracted remainder has
+uniform integrable majorants, so Cauchy's coefficient formula justifies
+the coefficient extraction there. This proves
+\eqref{nc:universal-law}.
+
+Finally, $a_\ell(f(t))$ has pole order at most $R$ and $\lambda_f$ is
+analytic. Only derivatives $\phi^{(j)}(0)$ with $j\leq R-1$ can occur
+in its residue. This proves both the support and finite-data claims.
+\end{proof}
+
+\subsection{Composition and the transformed singular germ}
+
+\begin{theorem}[Exact residue cocycle]
+\label{nc:composition}
+For two orientation-preserving analytic coordinate germs $f,g$,
+\begin{equation}\label{nc:cocycle}
+ \boxed{\quad
+ \mathfrak A_{g\circ f}[h]
+    =f^*\mathfrak A_g[h]+\mathfrak A_f[h\circ g].
+ \quad}
+\end{equation}
+The last term acts on the transformed germ $h\circ g$, which again has
+the form \eqref{nc:loggerm}. This dependence is part of the composition
+law.
+\end{theorem}
+
+\begin{proof}
+The assertion follows by applying Theorem~\ref{nc:universal} twice.
+There is also an explicit coefficient proof. For a single term
+$h(x)=a(x)\log^\ell x$, put
+$A=\lambda_f(t)$ and $B=\lambda_g(f(t))$. Then
+\[
+ \lambda_{g\circ f}=A+B,\qquad
+ h(g(y))=\sum_{k=0}^\ell\binom\ell k
+   a(g(y))\lambda_g(y)^{\ell-k}(\log y)^k.
+\]
+Residue substitution $y=f(t)$ in the pullback
+\eqref{nc:pullback} shows that $f^*\mathfrak A_g[h]$ contributes the
+factor $B^{\ell+1}/(\ell+1)$. The other term contributes
+\[
+ \sum_{k=0}^\ell\frac{\binom\ell k}{k+1}B^{\ell-k}A^{k+1}
+ =\frac{(A+B)^{\ell+1}-B^{\ell+1}}{\ell+1}.
+\]
+The sum is precisely \eqref{nc:residue-anomaly} for $g\circ f$.
+This finite polynomial identity proves composition with all scale and
+nonlinear terms retained.
+\end{proof}
+
+For later implementation, the same residue convention gives
+\begin{equation}\label{nc:delta-pullback}
+ \langle f^*\delta_0^{(r)},\phi\rangle
+   =(-1)^rr!\Res_{t=0}f(t)^{-r-1}\phi(t)\dd t.
+\end{equation}
+Indeed, substitution $x=f(t)$ changes the residue into the coefficient
+of $x^r$ in $(\phi\circ f^{-1})(f^{-1})'$, in agreement with the
+definition of $\delta_0^{(r)}$. Equations
+\eqref{nc:cocycle} and \eqref{nc:delta-pullback} provide an exact
+composition algorithm. A formula that retained $h$ unchanged in the
+last term of \eqref{nc:cocycle} would generally be incorrect.
+
+\subsection{Every Stieltjes index and argument derivative}
+
+The local singularity is fixed by the Hurwitz convention:
+\begin{equation}\label{nc:Stieltjes-local}
+ \gamma_n(x)=\frac{\log^n x}{x}+\gamma_n(1+x),
+ \qquad \gamma_0(x)=-\psi(x).
+\end{equation}
+The second term is analytic near zero. Set
+\begin{equation}\label{nc:Tr}
+ T_{n,r}=\FP_x\gamma_n^{(r)}(x),\qquad G_n=T_{n,0}.
+\end{equation}
+Locally these may be regarded as the periodic finite parts used in
+\cite{incoming-md,incoming-sh}; the smooth completion in
+\eqref{nc:Stieltjes-local} is then the same on both sides of the
+endpoint. Every comparison involving $D^rG_n$ below uses this common
+smooth periodic completion. In particular, the analytic remainder is
+smooth across zero and contributes no step-function derivatives.
+
+For $r\geq0$, let
+\begin{align}
+ \mathcal E_r(z)&=\prod_{j=1}^r(1-z/j),\qquad \mathcal E_0(z)=1,
+       \label{nc:Er}\\
+ b_{n,r}(L)&=n![z^{n+1}]e^{Lz}\mathcal E_r(z),\notag\\
+ \alpha_{n,r}(L)&=b_{n,r}(L)-b_{n,r}(0)
+       =n![z^{n+1}](e^{Lz}-1)\mathcal E_r(z).
+       \label{nc:alpha}
+\end{align}
+If $e_j(r)$ is the elementary symmetric polynomial of degree $j$ in
+$1,1/2,\ldots,1/r$, with $e_0(r)=1$ and $e_j(r)=0$ for $j>r$, then
+\begin{equation}\label{nc:alpha-finite}
+ \alpha_{n,r}(L)=n!\sum_{j=0}^{\min(r,n)}
+      \frac{(-1)^je_j(r)}{(n+1-j)!}L^{n+1-j}.
+\end{equation}
+The subtraction of $b_{n,r}(0)$ is necessary because $T_{n,r}$ in
+\eqref{nc:Tr} is the finite part of a pointwise derivative.
+
+\begin{theorem}[Nonlinear Stieltjes transport]
+\label{nc:Stieltjes}
+For every $n,r\geq0$,
+\begin{equation}\label{nc:Stieltjes-law}
+ f^*T_{n,r}=\FP_t\gamma_n^{(r)}(f(t))+\mathfrak A_{n,r}(f),
+\end{equation}
+where
+\begin{equation}\label{nc:Stieltjes-residue}
+ \langle\mathfrak A_{n,r}(f),\phi\rangle
+   =(-1)^rr!\Res_{t=0}
+     f(t)^{-r-1}\alpha_{n,r}(\lambda_f(t))\phi(t)\dd t.
+\end{equation}
+In particular,
+\begin{align}
+ \mathfrak A_{n,r}(f)&=\sum_{j=0}^r c_{n,r,j}(f)\delta_0^{(j)},
+       \label{nc:finite-delta}\\
+ c_{n,r,j}(f)&=\frac{(-1)^{r+j}r!}{j!}
+   [t^{r-j}]\left(\frac{f(t)}t\right)^{-r-1}
+       \alpha_{n,r}\!\left(\log\frac{f(t)}t\right).
+       \label{nc:coefficient}
+\end{align}
+The coordinate jet through degree $r+1$ suffices for every Stieltjes
+index $n$.
+\end{theorem}
+
+\begin{proof}
+Differentiate $x^{z-1}$ in its argument:
+\[
+ \partial_x^rx^{z-1}
+    =(-1)^rr!\mathcal E_r(z)x^{z-r-1}.
+\]
+Taking $n![z^n]$ gives the exact singular polynomial
+\begin{equation}\label{nc:singular-polynomial}
+ \partial_x^r\frac{\log^n x}{x}
+  =(-1)^rr!x^{-r-1}
+      \sum_{j=0}^{\min(r,n)}
+       \frac{(-1)^je_j(r)n!}{(n-j)!}\log^{n-j}x.
+\end{equation}
+Apply Theorem~\ref{nc:universal} term by term. Its factor
+$1/(n-j+1)$ converts the displayed polynomial into
+\eqref{nc:alpha-finite}, while the analytic remainder in
+\eqref{nc:Stieltjes-local} contributes no residue. Expanding the test
+function through degree $r$ yields \eqref{nc:coefficient}, since
+$\langle\delta_0^{(j)},\phi\rangle=(-1)^j\phi^{(j)}(0)$.
+The coefficient in that formula uses the expansion of $f(t)/t$ only
+through degree $r$, proving the last assertion.
+\end{proof}
+
+For comparison, distributional differentiation gives
+\begin{equation}\label{nc:derivative-contact}
+ D^rG_n=T_{n,r}+b_{n,r}(0)\delta_0^{(r)},\qquad
+ b_{n,r}(0)=(-1)^{n+1}n!e_{n+1}(r).
+\end{equation}
+This also follows by the regulator computation: at identity scale the
+polar numerator for $\partial_x^rx^{z-1}$ is
+$\mathcal E_r(z)\delta_0^{(r)}$. Thus
+\begin{align}
+ f^*D^rG_n&=\FP_t\gamma_n^{(r)}(f(t))+\mathfrak C_{n,r}(f),
+       \label{nc:distributional-law}\\
+ \langle\mathfrak C_{n,r}(f),\phi\rangle
+   &=(-1)^rr!\Res_{t=0}
+       f(t)^{-r-1}b_{n,r}(\lambda_f(t))\phi(t)\dd t.
+       \label{nc:Cresidue}
+\end{align}
+The finite coefficient formula for $\mathfrak C$ is
+\eqref{nc:coefficient} with $\alpha$ replaced by $b$.
+
+\begin{corollary}[Recovery of the affine contact polynomial]
+\label{nc:affine}
+At $f(t)=qt$, $q>0$,
+\begin{align}
+ \mathfrak A_{n,r}(qt)&=q^{-r-1}\alpha_{n,r}(\log q)
+                         \delta_0^{(r)},\label{nc:affine-A}\\
+ D_t^r f^*G_n
+   &=\FP_t\bigl(q^r\gamma_n^{(r)}(qt)\bigr)
+        +\frac{b_{n,r}(\log q)}q\delta_0^{(r)}.
+       \label{nc:affine-C}
+\end{align}
+The second identity is exactly the local form of the incoming
+integer-dilation theorem, including its normalization by $1/q$.
+\end{corollary}
+\begin{proof}
+The function $f(t)/t$ is constant. Only the $j=r$ term survives in
+\eqref{nc:coefficient}; also
+$D_t^rf^*G_n=q^rf^*D^rG_n$.
+\end{proof}
+
+\subsection{Explicit corrections through the second derivative}
+
+Write
+\begin{equation}\label{nc:f-expansion}
+ f(t)=qt(1+a t+b t^2+O(t^3)),\qquad L=\log q.
+\end{equation}
+Thus $a=f''(0)/(2q)$ and $b=f'''(0)/(6q)$. The first coefficient
+polynomials are
+\begin{align}
+ \alpha_{0,r}(L)&=L,\notag\\
+ \alpha_{1,r}(L)&=\frac{L^2}{2}-H_rL,\label{nc:first-alpha}\\
+ \alpha_{2,r}(L)&=\frac{L^3}{3}-H_rL^2
+                    +(H_r^2-H_r^{(2)})L.\notag
+\end{align}
+Here $H_0=H_0^{(2)}=0$. At $r=0$, the entire answer is
+\begin{equation}\label{nc:undifferentiated}
+ \mathfrak A_{n,0}(f)=\frac{L^{n+1}}{q(n+1)}\delta_0.
+\end{equation}
+Nonlinear coefficients first affect argument derivatives.
+
+For $r=1$ set $\alpha=\alpha_{n,1}(L)$; primes below differentiate
+this polynomial in $L$. Equation~\eqref{nc:coefficient} becomes
+\begin{equation}\label{nc:r1}
+ \mathfrak A_{n,1}(f)
+  =q^{-2}\left[\alpha\delta_0'
+                   +a(2\alpha-\alpha')\delta_0\right].
+\end{equation}
+For $r=2$, with $\alpha=\alpha_{n,2}(L)$, it gives
+\begin{align}\label{nc:r2}
+ \mathfrak A_{n,2}(f)=q^{-3}\bigl[&\alpha\delta_0''
+       +2a(3\alpha-\alpha')\delta_0'\notag\\
+       &+\{(12a^2-6b)\alpha+(2b-7a^2)\alpha'
+                                      +a^2\alpha''\}\delta_0\bigr].
+\end{align}
+To verify these formulas directly, use
+\[
+ \lambda_f=L+a t+(b-a^2/2)t^2+O(t^3),\qquad
+ (1+a t+b t^2)^{-3}
+      =1-3a t+(6a^2-3b)t^2+O(t^3).
+\]
+The same displays with $b_{n,r}$ in place of $\alpha_{n,r}$ give the
+correction $\mathfrak C_{n,r}$ for distributional derivatives.
+
+At unit tangent, these are particularly short:
+\begin{equation}\label{nc:r1unit}
+ \mathfrak A_{n,1}=
+ \begin{cases}
+  -a\delta_0,&n=0,\\
+  a\delta_0,&n=1,\\
+  0,&n\geq2,
+ \end{cases}
+\end{equation}
+and
+\begin{equation}\label{nc:r2unit}
+ \mathfrak A_{n,2}=
+ \begin{cases}
+  -2a\delta_0'+(2b-7a^2)\delta_0,&n=0,\\
+  3a\delta_0'+(-3b+\tfrac{23}{2}a^2)\delta_0,&n=1,\\
+  -2a\delta_0'+(2b-10a^2)\delta_0,&n=2,\\
+  3a^2\delta_0,&n=3,\\
+  0,&n\geq4.
+ \end{cases}
+\end{equation}
+These expressions retain curvature and the cubic coordinate coefficient
+even though the linear scale has disappeared.
+
+\begin{example}[A direct cutoff check of the curvature terms]
+\label{nc:direct-cutoff}
+Take $f(t)=t+a t^2+b t^3+O(t^4)$ and $\gamma_0''(x)$, whose singular
+part is $2x^{-3}$. Its inverse is
+$g(x)=x-a x^2+(2a^2-b)x^3+O(x^4)$. For a test function equal to one
+near zero, pullback uses the inverse Jacobian
+$g'(x)=1-2a x+(6a^2-3b)x^2+O(x^3)$.
+A primitive of the terms that can contribute a finite constant is
+\[
+ -x^{-2}+4a x^{-1}+(12a^2-6b)\log x.
+\]
+It has zero constant in the $x$ coordinate. After $x=f(\eps)$ its
+constant is $(2b-3a^2)-4a^2=2b-7a^2$, giving the $\delta_0$
+coefficient in \eqref{nc:r2unit}. For a test function equal to $t$,
+the inverse multiplier is $g(x)g'(x)=x-3a x^2+O(x^3)$; the relevant
+primitive is $-2/x-6a\log x$. Its composed constant is $2a$, which
+equals the action of $-2a\delta_0'$ on that test function.
+This calculation uses cutoff primitives directly and confirms both
+nonlinear signs without invoking the residue formula.
+\end{example}
+
+\subsection{Sharp invariance and the order of the local correction}
+
+\begin{theorem}[Sharp Stieltjes-index filtration]
+\label{nc:rigidity}
+Suppose $f'(0)=1$, put $a=f''(0)/2$, and let $r\geq1$. Then
+$\mathfrak A_{n,r}(f)$ is a linear combination of
+$\delta_0^{(j)}$ with
+\begin{equation}\label{nc:order-filtration}
+ 0\leq j\leq\min\{r-1,\,2r-n-1\}.
+\end{equation}
+An empty range means the zero distribution. In particular,
+\begin{equation}\label{nc:high-invariance}
+ \boxed{\quad
+ f^*\FP_x\gamma_n^{(r)}
+      =\FP_t\gamma_n^{(r)}(f(t))\qquad(n\geq2r).
+ \quad}
+\end{equation}
+For $r\leq n\leq2r-1$, let
+$d=n+1-r$ and $k=2r-n-1$. The coefficient of the highest possible
+derivative is
+\begin{equation}\label{nc:sharp-coefficient}
+ [\delta_0^{(k)}]\mathfrak A_{n,r}(f)
+        =\frac{(-1)^kn!}{d!\,k!}a^d.
+\end{equation}
+For $0\leq n\leq r$, the coefficient of $\delta_0^{(r-1)}$ is
+\begin{equation}\label{nc:lower-sharp}
+ [\delta_0^{(r-1)}]\mathfrak A_{n,r}(f)
+       =(-1)^{n+1}r\,n!e_n(r)a.
+\end{equation}
+The two formulas agree at $n=r$. If $a\ne0$, every stated upper
+order is attained. At the last nonzero index,
+\begin{equation}\label{nc:last-index}
+ \mathfrak A_{2r-1,r}(f)
+     =\frac{(2r-1)!}{r!}a^r\delta_0.
+\end{equation}
+For $r=0$, every correction vanishes at unit tangent by
+\eqref{nc:undifferentiated}.
+\end{theorem}
+
+\begin{proof}
+Now $\lambda_f(t)=a t+O(t^2)$. Formula~\eqref{nc:alpha-finite}
+shows that the smallest possible power of $L$ in $\alpha_{n,r}$ is
+$\max(1,n+1-r)$. Therefore the analytic factor multiplying
+$t^{-r-1}$ in \eqref{nc:Stieltjes-residue} vanishes to at least that
+order. Its residue against $\phi$ can use only derivatives of orders
+at most $r-\max(1,n+1-r)$, proving
+\eqref{nc:order-filtration} and \eqref{nc:high-invariance}.
+
+For $r\leq n\leq2r-1$ the lowest term is, using $e_r(r)=1/r!$,
+\[
+ \alpha_{n,r}(L)
+    =\frac{(-1)^rn!}{r!\,d!}L^d+O(L^{d+1}).
+\]
+To produce $\delta_0^{(k)}$ in \eqref{nc:coefficient}, only the
+coefficient of $t^{r-k}=t^d$ is required. It is the displayed
+coefficient times $a^d$; the constant term of $(f(t)/t)^{-r-1}$ is
+one. Substitution proves \eqref{nc:sharp-coefficient}. For $n\leq r$
+the linear coefficient of $\alpha_{n,r}$ is
+$(-1)^nn!e_n(r)$. Taking $j=r-1$ in the same formula proves
+\eqref{nc:lower-sharp}. All these elementary symmetric coefficients
+are nonzero in their indicated ranges. Equation~\eqref{nc:last-index}
+is the case $d=r,k=0$.
+\end{proof}
+
+\begin{remark}[Higher tangency gives stronger invariance]
+\label{nc:higher-tangency}
+If $f(t)=t+O(t^{d+1})$, then $\lambda_f=O(t^d)$. If $d>r$, every
+$\mathfrak A_{n,r}$ vanishes. If $1\leq d\leq r$, it suffices that
+\[
+ n\geq r+\lfloor r/d\rfloor.
+\]
+This threshold is sharp in general. For
+$f(t)=t+c t^{d+1}+O(t^{d+2})$, set
+$h=\lfloor r/d\rfloor$, $n=r+h-1$ and $k=r-dh$. The coefficient of
+$\delta_0^{(k)}$ is
+$(-1)^kn!c^h/(h!k!)$. This follows from the same lowest-power argument.
+\end{remark}
+
+\subsection{Polygamma functions, full derivatives, and pointwise products}
+
+For polygamma, the correction in
+\eqref{nc:Stieltjes-law} is $-\mathfrak A_{0,r}$ because
+$\gamma_0^{(r)}=-\psi^{(r)}$. For example, at
+$f(t)=t+a t^2+O(t^3)$,
+\begin{equation}\label{nc:trigamma}
+ f^*\FP_x\psi'(x)
+    =\FP_t\psi'(f(t))+a\delta_0.
+\end{equation}
+The undifferentiated function $\log\Gamma(x)$ is locally integrable;
+its logarithmic singularity has no negative-power coefficient in
+\eqref{nc:loggerm}. Its ordinary pullback therefore has no anomaly.
+
+A derivative in the argument of $\gamma_n$ differs from a full
+derivative of $\gamma_n(f(t))$. The latter is also finite and explicit.
+Let $B_{k,r}$ denote the partial exponential Bell polynomial in the
+ordinary Fa\`a di Bruno formula. For $k\geq1$,
+\begin{align}\label{nc:chain-rule}
+ D_t^kf^*G_n-&\FP_tD_t^k\bigl(\gamma_n(f(t))\bigr)\notag\\
+   &=\sum_{r=1}^k
+       B_{k,r}(f',f'',\ldots,f^{(k-r+1)})\,
+                         \mathfrak C_{n,r}(f).
+\end{align}
+Indeed, the distributional chain rule holds first for smooth functions
+and then by pullback and differentiation of distributions; it gives
+the displayed Bell sum with $f^*D^rG_n$. Finite parts commute with
+multiplication by a smooth function, directly from their test-function
+definition, so \eqref{nc:distributional-law} proves
+\eqref{nc:chain-rule}. To put the answer in constant delta coordinates,
+use the finite identity
+\begin{equation}\label{nc:delta-multiplier}
+ v\delta_0^{(j)}
+   =\sum_{\ell=0}^j(-1)^{j-\ell}\binom j\ell
+       v^{(j-\ell)}(0)\delta_0^{(\ell)}.
+\end{equation}
+Thus no indefinite distribution operation remains in the formula.
+
+The universal theorem also treats a pointwise product once its own
+finite part has been specified. This gives a small exact illustration
+relevant to collision normalizations.
+
+\begin{corollary}[Coordinate law for a coincident Stieltjes product]
+\label{nc:coincident}
+Let $h(x)=\gamma_m(x)\gamma_n(x)$, $M=m+n$, and use
+\eqref{nc:f-expansion}. Then
+\begin{align}\label{nc:product-anomaly}
+ \mathfrak A_f[h]={}&-\frac{L^{M+1}}{q^2(M+1)}\delta_0'\notag\\
+ &+\biggl[
+  \frac{a}{q^2}\left(L^M-\frac{2L^{M+1}}{M+1}\right)
+  +\frac{\gamma_n(1)L^{m+1}}{q(m+1)}
+  +\frac{\gamma_m(1)L^{n+1}}{q(n+1)}
+                  \biggr]\delta_0.
+\end{align}
+As usual $L^0=1$, also when $L=0$. At unit tangent the sole nonzero
+case is $m=n=0$, with correction $a\delta_0$.
+\end{corollary}
+\begin{proof}
+Equation~\eqref{nc:Stieltjes-local} gives the complete nonintegrable
+part
+\[
+ \frac{\log^{M}x}{x^2}
+ +\frac{\gamma_n(1+x)\log^m x+
+         \gamma_m(1+x)\log^n x}{x}.
+\]
+For the first term, expand $f^{-2}\lambda_f^{M+1}/(M+1)$ through
+the coefficient of $t^{-1}$. It gives the first line of
+\eqref{nc:product-anomaly} and its $a/q^2$ term. The two simple-pole
+terms require only the values $\gamma_n(1)$ and $\gamma_m(1)$,
+and yield the remaining terms. The analytic product remainder has no
+residue.
+\end{proof}
+
+This corollary compares coordinate choices for a specified finite part
+of an ordinary pointwise product. It does not identify that finite
+part with a collision limit of separated products, and it does not
+define multiplication of arbitrary distributions at common singular
+supports. It supplies explicit local normalization data for such a
+future comparison.
+
+\subsection{Exact algorithm and independent checks}
+
+For fixed $n,r$, the complete computation consists of four finite
+operations: form $\mathcal E_r$, extract $\alpha_{n,r}$, truncate
+$\log(f(t)/t)$ and $(f(t)/t)^{-r-1}$ through degree $r$, and read the
+coefficients in \eqref{nc:coefficient}. The coefficients are rational
+polynomials in the normalized coordinate derivatives and $\log q$,
+with the overall factor $q^{-r-1}$. Composition is checked by the
+binomial identity in Theorem~\ref{nc:composition}.
+
+The accompanying program \src{code/verify_nonlinear.py} performs exact
+rational symbolic checks of the coefficient generator, the scale-aware
+cocycle, the generic first- and second-derivative formulas, and the sharp
+filtration. It also compares the correction with an independent direct
+cutoff-primitive calculation for finite test jets. The record is
+\src{results/nonlinear_checks.json}. These finite tests check the
+implementation and normalization; the all-index analytic assertions
+are established by the proofs above.

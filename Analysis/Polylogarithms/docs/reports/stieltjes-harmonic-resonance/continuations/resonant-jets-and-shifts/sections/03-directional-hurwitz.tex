@@ -1,0 +1,210 @@
+\section{Directional and curved finite parts of double Hurwitz zeta}
+\label{sec:direction}
+
+The incoming report asks what changes when the exponent perturbations
+are independent, and whether its diagonal finite parts depend on the
+approach path. At depth two these questions have a particularly explicit
+answer. The meromorphic continuation itself belongs to the established
+multiple-zeta theory \cite{mow}. The result below identifies its full
+polar germ in the present normalization, then computes the resulting
+path dependence and all regular Taylor coefficients.
+
+For $a>0$ define
+\begin{equation}\label{eq:doublehurwitz}
+ T(s,t;a)=\sum_{n>m\ge0}(n+a)^{-s}(m+a)^{-t}.
+\end{equation}
+The defining series is absolutely convergent when
+$\Rea s>1$ and $\Rea(s+t)>2$. Its order convention is essential: the
+outer, larger index carries $s$. Put
+\[
+ g_a(u)=\zeta(1+u,a)-\frac1u
+       =\sum_{j\ge0}g_j(a)u^j,
+ \qquad g_j(a)=\frac{(-1)^j\gamma_j(a)}{j!}.
+\]
+
+\begin{theorem}[Exact polar germ at $(1,1)$]\label{thm:doublegerm}
+There is a function $H_a(u,v)$ holomorphic near $(0,0)$ such that
+\begin{equation}\label{eq:doublegerm}
+ \boxed{T(1+u,1+v;a)
+   =\frac1{u(u+v)}+\frac{g_a(v)}u+H_a(u,v).}
+\end{equation}
+It satisfies
+\begin{align}
+ H_a(u,v)+H_a(v,u)
+   &=g_a(u)g_a(v)-\zeta(2+u+v,a),\label{eq:Hsym}\\
+ H_a(0,0)&=C_a:=\frac{\gamma_0(a)^2-\zeta(2,a)}2.
+ \label{eq:H00}
+\end{align}
+Thus the two local polar divisors are $u=0$ and $u+v=0$; in particular
+there is no separate polar divisor $v=0$.
+\end{theorem}
+
+\begin{proof}
+Write $x=n+a$, and use the inner finite sum to obtain, first in the
+absolute-convergence domain,
+\[
+ T(1+u,1+v;a)=\zeta(1+u,a)\zeta(1+v,a)
+       -\sum_{n\ge0}x^{-1-u}\zeta(1+v,x).
+\]
+The pole-subtracted Euler--Maclaurin remainder
+\[
+ E(v,x)=\zeta(1+v,x)-\frac{x^{-v}}v-\frac12x^{-1-v}
+\]
+is holomorphic in $v$ near zero and is
+$O(x^{-2-\Rea v})$ uniformly on compact $v$-sets there. Hence
+\[
+ R_a(u,v)=\sum_{n\ge0}(n+a)^{-1-u}E(v,n+a)
+\]
+converges normally in a neighborhood of $(0,0)$, as do its fixed
+derivatives. We obtain
+\begin{equation}\label{eq:doubleEM}
+ T=\zeta(1+u,a)\zeta(1+v,a)
+   -\frac{\zeta(1+u+v,a)}v
+   -\frac12\zeta(2+u+v,a)-R_a(u,v).
+\end{equation}
+The apparent singularity at $v=0$ cancels. Substitution of
+$\zeta(1+u,a)=u^{-1}+g_a(u)$ gives \eqref{eq:doublegerm}, with
+\begin{equation}\label{eq:Hrepresentation}
+ H_a(u,v)=g_a(u)g_a(v)
+  +\frac{g_a(u)-g_a(u+v)}v
+  -\frac12\zeta(2+u+v,a)-R_a(u,v).
+\end{equation}
+The divided difference is holomorphic, since its numerator vanishes at
+$v=0$. Finally, the finite-sum stuffle identity continues to
+\[
+ T(s,t;a)+T(t,s;a)=\zeta(s,a)\zeta(t,a)-\zeta(s+t,a).
+\]
+Insert \eqref{eq:doublegerm} to get \eqref{eq:Hsym} and then
+\eqref{eq:H00}. All steps are identities of meromorphic germs, so no
+choice of a one-dimensional limiting path is hidden in the proof.
+\end{proof}
+
+\subsection{Straight directions and their exact discrepancy}
+
+Here $\FP_{\eps=0}$ means the coefficient of $\eps^0$ in the Laurent
+expansion after the specified substitution. It is not a joint value at
+$(u,v)=(0,0)$.
+
+\begin{corollary}[Every transverse straight direction]\label{cor:direction}
+Let $c,d\in\C$, with $c\ne0$ and $c+d\ne0$. Then
+\begin{align}\label{eq:direction-expansion}
+ T(1+c\eps,1+d\eps;a)
+  =\frac1{c(c+d)\eps^2}
+     +\frac{\gamma_0(a)}{c\eps}
+     +C_a-\frac dc\gamma_1(a)+O(\eps),
+\end{align}
+and in particular
+\begin{equation}\label{eq:direction-FP}
+ \boxed{\FP_{\eps=0}T(1+c\eps,1+d\eps;a)
+   =\frac{\gamma_0(a)^2-\zeta(2,a)}2-\frac dc\gamma_1(a).}
+\end{equation}
+The case $d=0$ is included. The difference between two admissible
+directions is exactly
+$-\gamma_1(a)(d/c-d'/c')$.
+\end{corollary}
+\begin{proof}
+Substitute in \eqref{eq:doublegerm}, expand $g_a(d\eps)$ through its
+linear term, and use \eqref{eq:H00}.
+\end{proof}
+
+For $c=d=1$, this agrees with the diagonal identity
+$T(s,s;a)=(\zeta(s,a)^2-\zeta(2s,a))/2$.
+For $d=0$, the finite part is $C_a$ instead. A curve contained in
+$u=0$ or $u+v=0$ cannot be evaluated by restriction of the displayed
+meromorphic function without an additional prescription. Curves tangent
+to those divisors can have higher pole orders and are outside the
+transversality statement.
+
+\subsection{Curvature and reparametrization also matter}
+
+The tangent direction alone does not determine the constant Laurent
+coefficient. The double pole reads the cubic jet of a curve.
+
+\begin{theorem}[Finite part along an analytic transverse curve]
+\label{thm:curved}
+Suppose
+\[
+ u=c_1\eps+c_2\eps^2+c_3\eps^3+O(\eps^4),\qquad
+ v=d_1\eps+d_2\eps^2+d_3\eps^3+O(\eps^4),
+\]
+where $c_1\ne0$ and $A:=c_1+d_1\ne0$. Set
+$B=c_2+d_2$ and $C=c_3+d_3$. Then
+\begin{align}\label{eq:curved-FP}
+ \FP_{\eps=0}T(1+u,1+v;a)
+ ={}&C_a-\gamma_1(a)\frac{d_1}{c_1}
+             -\gamma_0(a)\frac{c_2}{c_1^2}\notag\\
+ &+\frac1{c_1A}\left\{
+       \frac{c_2^2}{c_1^2}+\frac{B^2}{A^2}
+       +\frac{c_2B}{c_1A}-\frac{c_3}{c_1}-\frac CA
+                         \right\}.
+\end{align}
+\end{theorem}
+\begin{proof}
+The constant term of the holomorphic part is $C_a$. In $g_a(v)/u$,
+the constant terms are $-\gamma_0(a)c_2/c_1^2$ and
+$-\gamma_1(a)d_1/c_1$. Expanding both reciprocal factors in
+$1/[u(u+v)]$ to second order after factoring out $c_1A\eps^2$
+gives the braces. Terms of order four in the curve cannot contribute.
+\end{proof}
+
+For example, $u=\eps$, $v=\eps+\lambda\eps^2$ gives
+\begin{equation}\label{eq:curve-example}
+ \FP T(1+\eps,1+\eps+\lambda\eps^2;a)
+       =C_a-\gamma_1(a)+\frac{\lambda^2}{8}.
+\end{equation}
+Thus even curves with the same tangent as the diagonal have different
+finite parts. This is an explicit answer to the path-dependence question,
+not merely an assertion that multivariate regularization can be ambiguous.
+Even the same geometric diagonal, reparametrized by
+$u=v=\eps+\lambda\eps^2+\mu\eps^3$, has finite part
+\[
+ C_a-\gamma_1(a)-\lambda\gamma_0(a)+\frac{3\lambda^2-2\mu}{2}.
+\]
+This also follows directly from the exact diagonal stuffle identity,
+and independently checks the cubic-jet terms in \eqref{eq:curved-FP}.
+
+\subsection{All regular Taylor coefficients in Stieltjes coordinates}
+
+The convergent sums $S_{m,n}(a)$ from \eqref{eq:Sdef} give a direct
+coordinate system for the complete holomorphic remainder.
+
+\begin{theorem}[The complete two-variable regular jet]\label{thm:Hcoeff}
+Write $H_a(u,v)=\sum_{m,n\ge0}h_{m,n}(a)u^mv^n$. For all $m,n\ge0$,
+\begin{align}\label{eq:Hcoeff}
+ h_{m,n}(a)
+ ={}&\frac{(-1)^{m+n}}{m!n!}
+ \left\{\gamma_m(a)\gamma_n(a)
+          +\frac{\gamma_{m+n+1}(a)}{n+1}-S_{m,n}(a)\right\}\notag\\
+ &-\frac{\zeta^{(m+n)}(2,a)}{2m!n!}.
+\end{align}
+For a transverse straight direction, every regular coefficient is
+therefore explicit:
+\begin{equation}\label{eq:direction-all}
+ [\eps^q]T(1+c\eps,1+d\eps;a)
+ =\frac{(-1)^{q+1}\gamma_{q+1}(a)d^{q+1}}{c(q+1)!}
+       +\sum_{m+n=q}h_{m,n}(a)c^md^n,
+ \qquad q\ge0.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Normal convergence permits coefficient extraction in $R_a$. The
+coefficient of $v^n$ in $E(v,x)$ is
+\[
+ \frac{(-1)^n}{n!}\left\{
+ \gamma_n(x)+\frac{\log^{n+1}x}{n+1}-\frac{\log^n x}{2x}\right\}.
+\]
+Consequently $[u^mv^n]R_a=(-1)^{m+n}S_{m,n}/(m!n!)$.
+The coefficient of the divided difference in
+\eqref{eq:Hrepresentation} is
+$-\binom{m+n+1}{n+1}g_{m+n+1}(a)$. Combining these two observations
+with the coefficients of $g_a(u)g_a(v)$ and
+$\zeta(2+u+v,a)/2$ proves \eqref{eq:Hcoeff}. Substitution in
+\eqref{eq:doublegerm} proves \eqref{eq:direction-all}.
+\end{proof}
+
+Taking symmetric coefficients in \eqref{eq:Hsym} and using
+\eqref{eq:Hcoeff} recovers \eqref{eq:Stwo}. Thus the nonlinear
+Stieltjes summation law has two independent proofs: discrete telescoping
+and the meromorphic double-zeta stuffle identity. This compatibility is
+also an effective sign and normalization check.
+

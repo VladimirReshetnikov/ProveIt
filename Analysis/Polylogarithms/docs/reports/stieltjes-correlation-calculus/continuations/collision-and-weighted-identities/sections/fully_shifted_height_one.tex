@@ -1,0 +1,515 @@
+% Research section prepared by harmonic_jets agent.
+% Requires amsmath, amssymb, amsthm; theorem/corollary/proposition/remark envs.
+% Citation keys proposed in harmonic_sources.bib (or adapt to main bibliography).
+\section{Fully shifted height-one sums: an entire difference and exact Laurent data}
+\label{xid:hsh:sec:main}
+
+The inner and outer shifts of a nested harmonic sum are different pieces
+of data. The earlier shifted height-one families in this project move the
+outer denominator while retaining ordinary inner harmonic numbers. The
+newest nested-jet report instead gives all nested denominators a common
+variable exponent. Here every denominator has the same shift, while only
+the outer exponent varies. A Gauss connection formula shows that changing
+the common shift preserves a universal singular part, up to an explicit
+Gamma factor. The remaining function is entire in the spectral variable,
+and its values at every nonpositive integer are finite Stirling transforms.
+
+At depth one this family belongs to the harmonic Hurwitz-zeta literature
+of Karg\i n, Dil, Cenkci and Can \cite{hsh:Kargin2023}; the recent preprint
+of Kara \"Ozt\"urk and Can treats the two-parameter depth-one family and
+negative Laurent coefficients \cite{hsh:KaraCan2026}. The latter comparison
+is based on its retrieved abstract: its complete text was not available
+in this research environment. Thus the depth-one meromorphic continuation
+and negative-integer evaluation problem are not claimed as new. The
+all-depth entire difference, finite Stirling rule, and complete pole-order
+classification below were derived here and were not found in the
+inspected repository material; priority over all literature is not asserted.
+
+\subsection{The common-shift convention}
+
+Let $\Re a>0$. All powers of $n+a$ use the principal logarithm, and $u$
+will remain in a sufficiently small disc centered at zero. Set
+\begin{align}
+ e_r(n;a)&=[u^r]\prod_{j=0}^{n-1}\left(1+\frac{u}{j+a}\right),
+       &e_0(n;a)&=1,\label{xid:hsh:eq:er}\\
+ M_r(s;a)&=\sum_{n=0}^{\infty}\frac{e_r(n;a)}{(n+a)^s},
+       &&\Re s>1,\label{xid:hsh:eq:Mr}\\
+ F_a(s,u)&=\sum_{n=0}^{\infty}
+       \frac{(a+u)_n}{(a)_n(n+a)^s}
+       =\sum_{r\ge0}M_r(s;a)u^r.
+       \label{xid:hsh:eq:F}
+\end{align}
+The first product is empty when $n=0$. Equivalently,
+\[
+ M_r(s;a)=\sum_{n_0>n_1>\cdots>n_r\ge0}
+       \frac{1}{(n_0+a)^s(n_1+a)\cdots(n_r+a)}.
+\]
+Thus $M_0(s;a)=\zeta(s,a)$ and $M_r(s;1)=\zeta(s,\{1\}^r)$.
+If $H_n^{(k)}(a)=\sum_{j=0}^{n-1}(j+a)^{-k}$, then
+\[
+ e_1(n;a)=H_n^{(1)}(a),\qquad
+ e_2(n;a)=\frac{(H_n^{(1)}(a))^2-H_n^{(2)}(a)}2.
+\]
+The general $e_r$ is the corresponding elementary-symmetric Bell
+polynomial. Uniformly on compact $a$-sets,
+$e_r(n;a)=O((1+\log n)^r)$; hence every fixed-depth series converges
+normally for $\Re s>1$. The Gamma-ratio Dirichlet series in \eqref{xid:hsh:eq:F} converges normally
+when $\Re s>1+\Re u$, locally uniformly in its parameters. Interchange
+with its depth Taylor series is justified, for example, on
+$\Re s>1+|u|$; at each fixed $\Re s>1$ one may choose a sufficiently
+small disc in $u$. The direct-series estimate follows from
+\[
+ \frac{(a+u)_n}{(a)_n}
+ =\frac{\Gamma(a)}{\Gamma(a+u)}
+    \frac{\Gamma(n+a+u)}{\Gamma(n+a)}
+ =O(n^{\Re u}).
+\]
+Gamma-ratio asymptotics and their uniform sector versions are classical
+\cite{hsh:DLMFGamma}.
+
+Introduce
+\begin{align}
+ C_a(u)&=\frac{\Gamma(a)}{\Gamma(a+u)}
+        =\sum_{j\ge0}c_j(a)u^j,\label{xid:hsh:eq:Ca}\\
+ K_a(u)&=\Gamma(1+u)C_a(u)
+        =\sum_{j\ge0}k_j(a)u^j.\label{xid:hsh:eq:Ka}
+\end{align}
+The Gamma logarithm is analytic on the right half-plane, so
+\begin{equation}\label{xid:hsh:eq:Cexp}
+ C_a(u)=\exp\left(-\sum_{j\ge1}
+                \frac{\psi^{(j-1)}(a)}{j!}u^j\right).
+\end{equation}
+Consequently every coefficient is a finite polynomial in polygamma
+functions. In particular, with $P=\psi(a)$, $Q=\psi'(a)$, and
+$R=\psi''(a)$,
+\[
+ c_0=1,\quad c_1=-P,\quad c_2=\frac{P^2-Q}{2},\quad
+ c_3=\frac{-P^3+3PQ-R}{6}.
+\]
+The standard polygamma--Hurwitz identities can convert these coordinates
+to zeta values when useful \cite{hsh:DLMFPolygamma,DLMFhurwitz}.
+
+\subsection{The exact entire difference}
+
+\begin{theorem}[Universal singular part under a common shift]
+\label{xid:hsh:thm:entire}
+For $\Re a>0$ and $u$ in a sufficiently small disc centered at zero,
+\begin{equation}\label{xid:hsh:eq:D}
+ D(s,u;a):=F_a(s,u)-K_a(u)F_1(s,u)
+\end{equation}
+extends jointly holomorphically to all $s\in\mathbb C$, locally in $a,u$.
+Consequently, for every $r\ge0$,
+\begin{equation}\label{xid:hsh:eq:Dr}
+ D_r(s;a):=M_r(s;a)-\sum_{j=0}^rk_j(a)M_{r-j}(s;1)
+\end{equation}
+is entire in $s$.
+
+For every integer $m\ge0$, its complete depth-generating value is
+\begin{equation}\label{xid:hsh:eq:T}
+ \boxed{\quad D(-m,u;a)
+ =-\sum_{j=1}^{m+1}
+       {\left\{\begin{matrix}m+1\\j\end{matrix}\right\}}
+       \frac{(a-1)^{\underline j}}{u+j}.\quad}
+\end{equation}
+Here braces denote Stirling numbers of the second kind and
+$x^{\underline j}=x(x-1)\cdots(x-j+1)$.
+Equivalently,
+\begin{equation}\label{xid:hsh:eq:Delta}
+ \boxed{\quad
+ D_r(-m;a)=\Delta_{m,r}(a):=
+ (-1)^{r+1}\sum_{j=1}^{m+1}
+       {\left\{\begin{matrix}m+1\\j\end{matrix}\right\}}
+       \frac{(a-1)^{\underline j}}{j^{r+1}}.
+ \quad}
+\end{equation}
+Thus every value in \eqref{xid:hsh:eq:Delta} is a rational polynomial in $a$
+of degree at most $m+1$.
+\end{theorem}
+
+\begin{proof}
+In the common half-plane of convergence, the Mellin kernel of $F_a$ is
+\begin{equation}\label{xid:hsh:eq:Mellin}
+ \Gamma(s)F_a(s,u)=\int_0^{\infty}t^{s-1}G_a(t,u)\,dt,
+ \qquad G_a(t,u)=e^{-at}
+          {}_2F_1(1,a+u;a;e^{-t}).
+\end{equation}
+Termwise integration follows from absolute convergence. The Gauss
+connection formula at $z=1$ \cite{hsh:DLMFGauss} simplifies here to
+\begin{equation}\label{xid:hsh:eq:kernelconnection}
+ \begin{split}
+ G_a(t,u)&=K_a(u)\frac{e^{-t}}{(1-e^{-t})^{1+u}}+R_a(t,u),\\
+ R_a(t,u)&=-\frac{a-1}{1+u}e^{-at}
+       {}_2F_1(1,a+u;2+u;1-e^{-t}).
+ \end{split}
+\end{equation}
+Indeed its second local hypergeometric factor is
+${}_2F_1(a-1,-u;-u;1-z)=z^{1-a}$, and its two connection
+coefficients reduce to $K_a(u)$ and $-(a-1)/(1+u)$.
+The identity is first read for noninteger $u$, where the generic
+connection formula applies, and then continued through $u=0$.
+The simplified two terms are individually analytic in $u$ near zero.
+
+The function $R_a(t,u)$ is analytic in $t$ near zero, jointly in the
+other parameters. Both $G_a$ and the first term in
+\eqref{xid:hsh:eq:kernelconnection} decay exponentially as $t\to+\infty$,
+locally uniformly for $\Re a>0$. Thus the same holds for $R_a$.
+Write $R_a(t,u)=\sum_{j\ge0}r_j(a,u)t^j$. For any $L\ge1$,
+\[
+ \begin{split}
+ \Gamma(s)D(s,u;a)={}&\sum_{j=0}^{L-1}\frac{r_j(a,u)}{s+j}\\
+ &+\int_0^1t^{s-1}\left(R_a(t,u)-\sum_{j=0}^{L-1}r_j(a,u)t^j\right)dt
+  +\int_1^{\infty}t^{s-1}R_a(t,u)\,dt.
+ \end{split}
+\]
+The remainder integrals are jointly holomorphic for $\Re s>-L$.
+All their parameter derivatives have the same local integrability,
+possibly with fixed powers of $\log t$. Each displayed simple pole
+at $s=-j$ is canceled by the simple zero of $1/\Gamma(s)$ there.
+Increasing $L$ proves joint entireness in $s$ and gives
+\begin{equation}\label{xid:hsh:eq:Dlocal}
+ D(-m,u;a)=(-1)^m m!\,[t^m]R_a(t,u).
+\end{equation}
+For fixed $m$, the right side is a polynomial in $a$ of degree at most
+$m+1$: only the first $m+1$ terms of the local hypergeometric series
+can contribute, and the $j$-th term has a factor $(1-e^{-t})^j$.
+Its coefficients are rational functions of $u$, analytic near zero.
+
+It remains to identify this polynomial. For a positive integer $A$,
+shifting the index of the defining series gives the exact finite
+identity
+\[
+ D(s,u;A)=-K_A(u)\sum_{k=1}^{A-1}
+           \frac{(1+u)_{k-1}}{(k-1)!\,k^s}.
+\]
+At $s=-m$, use
+\[
+ k^m=\sum_{j=1}^{m+1}
+       {\left\{\begin{matrix}m+1\\j\end{matrix}\right\}}
+         (k-1)^{\underline{j-1}}.
+\]
+The finite binomial summation yields
+\[
+ K_A(u)\sum_{k=1}^{A-1}
+       \frac{(1+u)_{k-1}}{(k-1)!}
+              (k-1)^{\underline{j-1}}
+       =\frac{(A-1)^{\underline j}}{u+j}.
+\]
+For completeness, after putting $\ell=k-j$, the nonzero summands are
+$(1+u)_{j-1}(u+j)_\ell/\ell!$; their sum is
+$(1+u)_{j-1}(u+j+1)_{A-j-1}/(A-j-1)!$.
+Multiplication by $K_A=(A-1)!/(1+u)_{A-1}$ gives the stated quotient.
+When $A\le j$, both sides are zero. Therefore \eqref{xid:hsh:eq:T} holds
+at infinitely many positive integers $A$. Both sides are polynomials
+in $a$ of bounded degree, so they agree identically. Finally expand
+$(u+j)^{-1}=\sum_{r\ge0}(-1)^ru^r/j^{r+1}$ to obtain
+\eqref{xid:hsh:eq:Delta}.
+\end{proof}
+
+At $r=0$, the theorem reduces to the usual Bernoulli-polynomial
+identity for $\zeta(-m,a)-\zeta(-m)$. At positive depths it gives a
+finite rational interpolation of the entire difference after the
+Gamma mixing of depths. The theorem does not identify
+$M_r(-m;a)$ with a convergent series: the defining series diverges
+there, and the statement concerns its meromorphic continuation.
+
+\subsection{A bridge to independent inner and outer shifts}
+
+The same argument unifies the earlier outer-shift calculus with the
+common-shift family. Let $\Re a>0$, $\Re b>0$, and
+$\Re c>0$, where $c=1+b-a$. Define
+\[
+ F_{a,b}(s,u)=\sum_{n\ge0}\frac{(a+u)_n}{(a)_n(n+b)^s},
+ \qquad B_c(s,u)=\sum_{n\ge0}\frac{(1+u)_n}{n!(n+c)^s}.
+\]
+The function $B_c$ is precisely the previous generator with an outer
+shift only. At $a=1$, $F_{a,b}=B_b$; at $b=a$, $F_{a,b}=F_a$.
+
+\begin{corollary}[Two shifts and a finite binomial correction]
+\label{xid:hsh:cor:twoshifts}
+The difference
+\[
+ D_{a,b}(s,u)=F_{a,b}(s,u)-K_a(u)B_{1+b-a}(s,u)
+\]
+is entire in $s$, locally in its other parameters. For $m\ge0$,
+\begin{equation}\label{xid:hsh:eq:twoshifts}
+ D_{a,b}(-m,u)
+   =\sum_{v=0}^m\binom mv(b-a)^{m-v}D(-v,u;a).
+\end{equation}
+Every term on the right is the explicit finite Stirling sum in
+\eqref{xid:hsh:eq:T}. In depth $r$ the corresponding correction is
+\[
+ [u^r]D_{a,b}(-m,u)
+    =\sum_{v=0}^m\binom mv(b-a)^{m-v}\Delta_{v,r}(a).
+\]
+\end{corollary}
+\begin{proof}
+Multiplication of the Mellin kernel in \eqref{xid:hsh:eq:kernelconnection}
+by $e^{-(b-a)t}$ gives
+\[
+ e^{-bt}{}_2F_1(1,a+u;a;e^{-t})
+   =K_a(u)\frac{e^{-(1+b-a)t}}{(1-e^{-t})^{1+u}}
+         +e^{-(b-a)t}R_a(t,u).
+\]
+The last kernel is analytic at zero and decays exponentially at infinity
+under the stated hypotheses. The same Mellin subtraction proves
+entireness. Taking its $m$-th Taylor coefficient and applying
+\eqref{xid:hsh:eq:Dlocal} proves \eqref{xid:hsh:eq:twoshifts} by the ordinary
+binomial theorem.
+\end{proof}
+
+Thus no new singular function is required to separate arbitrary inner
+and outer shifts in this domain: the existing outer-shift generator
+carries the singular terms and a fully explicit polynomial correction
+accounts for the values of the entire remainder at nonpositive integers.
+The higher spectral derivatives of this remainder remain a separate
+identity problem.
+
+\subsection{The complete Laurent principal part and finite part}
+
+Define the rational polynomials $b_j(u)$ and $W_m(u)$ by
+\begin{align}
+ e^{-t}\left(\frac{t}{1-e^{-t}}\right)^{1+u}
+       &=\sum_{j\ge0}b_j(u)t^j,\label{xid:hsh:eq:b}\\
+ W_m(u)&=(u-m)_{m+1}b_{m+1}(u).
+       \label{xid:hsh:eq:W}
+\end{align}
+The logarithm of the parenthesized factor is the analytic germ at zero
+whose value there is zero. Each $W_m$ is a rational polynomial divisible
+by $u$. The first three are
+\begin{align}
+ W_0(u)&=\frac{u(u-1)}2,\label{xid:hsh:eq:W0}\\
+ W_1(u)&=\frac{u(u-1)(u-2)(3u-1)}{24},\\
+ W_2(u)&=\frac{u^2(u-1)^2(u-2)(u-3)}{48}.
+\end{align}
+
+\begin{theorem}[All depths, every nonpositive integer]
+\label{xid:hsh:thm:Laurent}
+Let $m,r\ge0$ and $\Re a>0$. Then
+\begin{equation}\label{xid:hsh:eq:Laurent}
+ \boxed{\quad
+ M_r(-m+\varepsilon;a)=
+ \sum_{h=0}^r
+     \frac{[u^{r+1-h}]\{C_a(u)W_m(u)\}}{\varepsilon^h}
+   +\Delta_{m,r}(a)+O(\varepsilon).
+ \quad}
+\end{equation}
+In particular,
+\begin{equation}\label{xid:hsh:eq:FP}
+ \operatorname{FP}_{s=-m}M_r(s;a)
+  =[u^{r+1}]\{C_a(u)W_m(u)\}+\Delta_{m,r}(a).
+\end{equation}
+The finite part belongs to
+$\mathbb Q[a,\psi(a),\psi'(a),\ldots,\psi^{(r-1)}(a)]$,
+where at $r=0$ the polygamma list is empty.
+\end{theorem}
+
+\begin{proof}
+For the universal unshifted kernel, Mellin subtraction gives, near
+$(s,u)=(-m,0)$,
+\[
+ F_1(-m+\varepsilon,u)
+ =\frac{b_{m+1}(u)}{\Gamma(-m+\varepsilon)(\varepsilon-u)}
+       +\frac{Q_m(\varepsilon,u)}{\Gamma(-m+\varepsilon)},
+\]
+where $Q_m$ is jointly holomorphic. The last term contributes only
+$O(\varepsilon)$ after taking any fixed coefficient in $u$.
+Expand $1/\Gamma(-m+\varepsilon)$ in powers of $\varepsilon$;
+its constant coefficient is zero. From the first term, the coefficient
+of $u^r\varepsilon^{-h}$, for $h\ge0$, is
+\[
+ [u^{r+1-h}]\frac{K_a(u)b_{m+1}(u)}{\Gamma(u-m)}
+   =[u^{r+1-h}]\{C_a(u)W_m(u)\}.
+\]
+The second equality is the Gamma recurrence. Finally add the entire
+function $D(s,u;a)$ and apply \eqref{xid:hsh:eq:Delta}. Since $W_m$ has
+no constant coefficient, at most the first $r$ derivatives of
+$\log\Gamma(a+u)$ can occur, giving the stated algebra.
+\end{proof}
+
+The polynomial correction in \eqref{xid:hsh:eq:FP} is essential. For instance,
+with $r=m=0$, omitting it gives $-1/2$, whereas the correct value is
+$\zeta(0,a)=1/2-a$. Thus the singular-coefficient rule for the earlier
+outer-shift family cannot be transferred to the fully shifted family
+without its analytic-kernel contribution. This is an extension guard,
+not a claim that the earlier report made this incorrect transfer.
+
+\begin{corollary}[Exact pole orders]
+\label{xid:hsh:cor:poles}
+At $s=1$, the order of the pole of $M_r$ is $r+1$.
+At $s=0$ and every negative odd integer $s=-m$, the order is exactly $r$
+for $r\ge1$, with leading coefficient $\zeta(-m)$.
+At a negative even integer $s=-m$, $m\ge2$, the order is exactly $r-1$
+for $r\ge2$, with leading coefficient
+\begin{equation}\label{xid:hsh:eq:evenleading}
+ \frac{m+1}{2m}B_m.
+\end{equation}
+At these negative even integers, $M_1$ is holomorphic.
+All the specified leading coefficients are independent of $a$.
+\end{corollary}
+
+\begin{proof}
+The assertion at one follows from the next theorem. From
+\eqref{xid:hsh:eq:b},
+\[
+ [u]W_m(u)=(-1)^m m!\,b_{m+1}(0)=\zeta(-m).
+\]
+This is nonzero for $m=0$ and for positive odd $m$. If $m\ge2$ is even,
+$b_{m+1}(0)=B_{m+1}/(m+1)!=0$. The two elementary expansions
+\[
+ \frac{t}{e^t-1}=1-\frac t2+
+       \sum_{q\ge1}\frac{B_{2q}}{(2q)!}t^{2q},\qquad
+ \log\frac{t}{1-e^{-t}}
+       =\frac t2-\sum_{q\ge1}
+          \frac{B_{2q}}{2q(2q)!}t^{2q}
+\]
+give
+\[
+ [t^{m+1}]\frac{t}{e^t-1}\log\frac{t}{1-e^{-t}}
+       =\frac{m+1}{2m}\frac{B_m}{m!}.
+\]
+Multiplication by the leading term $m!u$ of $(u-m)_{m+1}$ proves
+$[u^2]W_m=(m+1)B_m/(2m)$. This is nonzero, since every positive even
+Bernoulli number is nonzero \cite{hsh:DLMFBernoulli}. Thus the zero of
+$W_m$ at zero is exactly double in this case and simple in the preceding
+case. Since $C_a(0)=1$ and $D$ is entire, the pole orders and leading
+coefficients follow directly from \eqref{xid:hsh:eq:Laurent}.
+\end{proof}
+
+\subsection{The principal Stieltjes point}
+
+\begin{theorem}[Gamma coefficients at the principal pole]
+\label{xid:hsh:thm:one}
+For $r\ge0$,
+\begin{equation}\label{xid:hsh:eq:one}
+ M_r(1+\varepsilon;a)
+ =\sum_{j=0}^r\frac{c_j(a)}{\varepsilon^{r+1-j}}
+       +c_{r+1}(a)+O(\varepsilon).
+\end{equation}
+Also
+\begin{equation}\label{xid:hsh:eq:D1}
+ D(1,u;a)=\frac{K_a(u)-1}{u},\qquad D_r(1;a)=k_{r+1}(a).
+\end{equation}
+The apparent singularity on the right is removable.
+\end{theorem}
+
+\begin{proof}
+Let $p_n=(a+u)_n/(a)_n$. Its exact difference is
+$p_{n+1}-p_n=up_n/(n+a)$. For small $\Re u<0$, $p_n\to0$;
+therefore telescoping proves $F_a(1,u)=-1/u$.
+The leading kernel term in \eqref{xid:hsh:eq:kernelconnection} shows that
+\[
+ F_a(1+\varepsilon,u)=\frac{C_a(u)}{\varepsilon-u}
+                         +Q_a(\varepsilon,u)
+\]
+with $Q_a$ jointly holomorphic near zero. Evaluate at $\varepsilon=0$
+for $\Re u<0$ to obtain $Q_a(0,u)=(C_a(u)-1)/u$, and continue
+holomorphically through $u=0$. Coefficient extraction proves
+\eqref{xid:hsh:eq:one}. Applying the same telescoping value to the
+entire difference gives \eqref{xid:hsh:eq:D1}.
+\end{proof}
+
+At depth one, the commonly used inclusive harmonic Hurwitz function is
+\[
+ \zeta_H(s,a)=\sum_{n\ge0}\frac{\sum_{j=0}^{n}(j+a)^{-1}}{(n+a)^s}
+            =M_1(s;a)+\zeta(s+1,a).
+\]
+Thus \eqref{xid:hsh:eq:one} gives
+\[
+ \zeta_H(1+\varepsilon,a)
+ =\frac1{\varepsilon^2}-\frac{\psi(a)}{\varepsilon}
+       +\frac{\psi(a)^2+\psi'(a)}2+O(\varepsilon).
+\]
+The strict and inclusive conventions differ even at the finite part.
+The formula at all depths gives the Gamma-polygamma coefficients of the
+strict height-one family; higher regular Laurent coefficients are not
+claimed to reduce to this same finite algebra.
+
+\subsection{Explicit values and Gamma antiderivatives}
+
+Writing $P=\psi(a)$ and $Q=\psi'(a)$, the first examples are
+\begin{align}
+ M_1(\varepsilon;a)
+  &=-\frac1{2\varepsilon}+a-\frac12+\frac P2+O(\varepsilon),
+       \label{xid:hsh:eq:M10}\\
+ M_1(-1+\varepsilon;a)
+  &=-\frac1{12\varepsilon}
+       +\frac{a^2+a}{4}-\frac18+\frac P{12}+O(\varepsilon),\\
+ M_1(-2;a)&=\frac{8a^3+6a^2-2a-3}{72},
+       \label{xid:hsh:eq:M12}\\
+ M_2(\varepsilon;a)
+  &=-\frac1{2\varepsilon^2}+\frac{1+P}{2\varepsilon}
+       +1-a-\frac P2-\frac{P^2-Q}{4}+O(\varepsilon),\\
+ M_2(-1+\varepsilon;a)
+  &=-\frac1{12\varepsilon^2}
+       +\frac{3/8+P/12}{\varepsilon}
+       +\frac{-3a^2-15a+8-9P-P^2+Q}{24}
+       +O(\varepsilon).\label{xid:hsh:eq:M21}
+\end{align}
+At the half shift, put $L=\gamma+2\log2$, so
+$\psi(1/2)=-L$ and $\psi'(1/2)=\pi^2/2$. Then
+\begin{align}
+ M_1(-2;1/2)&=-\frac1{48},\\
+ M_2(-2+\varepsilon;1/2)
+       &=\frac1{8\varepsilon}+\frac L8-\frac{19}{288}
+                    +O(\varepsilon).
+\end{align}
+In the convergent half-plane, for example,
+$M_2(s;1/2)$ is one half the Dirichlet series whose numerator is
+$(\sum_{j<n}(j+1/2)^{-1})^2-\sum_{j<n}(j+1/2)^{-2}$.
+Its displayed pole and finite part follow without a numerical relation search.
+
+There is an exact antiderivative for every depth-one finite part. Put
+\[
+ P_m(a)=[u^2]W_m(u)+
+       \sum_{j=1}^{m+1}{\left\{\begin{matrix}m+1\\j\end{matrix}\right\}}
+                 \frac{(a-1)^{\underline j}}{j^2}\in\mathbb Q[a].
+\]
+Then
+\begin{equation}\label{xid:hsh:eq:depthonegeneral}
+ \operatorname{FP}_{s=-m}M_1(s;a)
+       =P_m(a)-\zeta(-m)\psi(a),
+\end{equation}
+and on the right half-plane
+\begin{equation}\label{xid:hsh:eq:primitive}
+ \int\operatorname{FP}_{s=-m}M_1(s;a)\,da
+       =\mathcal P_m(a)-\zeta(-m)\log\Gamma(a)+\text{constant},
+ \qquad \mathcal P_m'=P_m.
+\end{equation}
+For even $m\ge2$, the Gamma term vanishes and the value in
+\eqref{xid:hsh:eq:depthonegeneral} is itself a polynomial. For $m=0,1$,
+\begin{align*}
+ \int\operatorname{FP}_{s=0}M_1(s;a)\,da
+       &=\frac{a^2-a}{2}+\frac12\log\Gamma(a)+\text{constant},\\
+ \int\operatorname{FP}_{s=-1}M_1(s;a)\,da
+       &=\frac{a^3}{12}+\frac{a^2}{8}-\frac a8
+                      +\frac1{12}\log\Gamma(a)+\text{constant}.
+\end{align*}
+Higher derivatives in $a$ consequently give explicit polygamma formulas.
+This assertion is about finite Laurent coefficients; it does not replace
+a divergent defining series by termwise integration at a negative order.
+
+\subsection{Reproduction and further questions}
+
+The accompanying verification script performs $72$ floating-point checks
+at $75$ decimal working digits. Its maximum absolute residual is below
+$8.5\times10^{-52}$. Thirty checks compare \eqref{xid:hsh:eq:T} with an
+independent continuation of the original Gamma-ratio Dirichlet series,
+using its Bernoulli-polynomial asymptotic coefficients and Hurwitz-zeta
+tails. Two repeats with a larger cutoff and more tail terms have residuals
+below $1.7\times10^{-64}$. The remaining checks audit the Gauss connection,
+its mixed Taylor coefficients, and \eqref{xid:hsh:eq:D1}. These are
+floating-point checks, not interval certificates; the all-parameter
+proof is the analytic argument above.
+
+A constructive next step is to determine the higher regular Taylor
+coefficients of the entire difference $D_r(s;a)$ at $s=-m$. Unlike its
+value, its first derivative includes a genuine integral of the analytic
+kernel and need not be a rational polynomial. A second direction is to
+retain independent perturbations of the inner exponents: the finite-product
+model then requires more than one spectral direction, and the singular
+part need not be governed by a single Gamma quotient. A third direction is to compare the finite
+Stirling transforms in \eqref{xid:hsh:eq:Delta} with established
+poly-Bernoulli and generalized Bernoulli polynomial systems, with exact
+normalization matching before claiming an identification. Finally,
+character-weighted sums in the common shift may yield further finite
+cyclotomic reductions of the polygamma algebra in \eqref{xid:hsh:eq:FP}.

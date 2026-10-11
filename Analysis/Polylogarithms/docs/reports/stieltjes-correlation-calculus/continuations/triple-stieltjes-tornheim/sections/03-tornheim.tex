@@ -1,0 +1,136 @@
+\section{Colored Tornheim functions and entire continuation}\label{tsc:tornheim}
+For an initially convergent double sum, write
+\begin{equation}\label{tsc:Tdef}
+ T(r,s,t;z,w)=\sum_{m,n\ge1}
+           \frac{z^m w^n}{m^r n^s(m+n)^t}.
+\end{equation}
+For example, $\Re r,\Re s,\Re t>1$ is more than sufficient for unit
+colors. The functions below are not defined by assigning a value to a
+divergent instance of this series. They are defined by its unique analytic
+continuation, constructed explicitly in the next theorem.
+
+\begin{theorem}[Nontrivial-color entireness]\label{tsc:T-entire}
+Fix $|z|=|w|=1$ with $z\ne1$ and $w\ne1$. Then
+$T(r,s,t;z,w)$ extends to a jointly entire function of $(r,s,t)\in\CC^3$.
+For $\Re t>0$ and arbitrary $r,s\in\CC$ it is given by
+\begin{equation}\label{tsc:T-mellin}
+ T(r,s,t;z,w)=\frac1{\Gamma(t)}
+   \int_0^\infty x^{t-1}\Li_r(ze^{-x})\Li_s(we^{-x})\dd x.
+\end{equation}
+The two colors may coincide. At every nonnegative integer $k$,
+\begin{equation}\label{tsc:T-negative}
+ T(r,s,-k;z,w)=\sum_{j=0}^k\binom{k}{j}
+                \Li_{r-j}(z)\Li_{s-k+j}(w).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Put $F(x)=\Li_r(ze^{-x})\Li_s(we^{-x})$. Because neither color is one,
+the arguments have neighborhoods avoiding the polylogarithm singularity
+at one. The standard analytic continuation of $\Li_r$ is entire in its
+order there \cite{tsc:dlmf-poly}. Thus $F$ is analytic in $x$ near zero,
+jointly with $r,s$. On compact sets of orders, the power series for large
+$x$ gives an exponentially decreasing bound for $F$ and its spectral
+derivatives. These facts prove convergence and holomorphy of
+\eqref{tsc:T-mellin} for $\Re t>0$. Expanding the two polylogarithms where
+absolute convergence permits and integrating $e^{-(m+n)x}$ identifies it
+with \eqref{tsc:Tdef} on a nonempty open set.
+
+The Taylor coefficients at the lower endpoint are
+\begin{equation}\label{tsc:Fcoeff}
+ f_k=[x^k]F(x)=\frac{(-1)^k}{k!}
+        \sum_{j=0}^k\binom{k}{j}
+                   \Li_{r-j}(z)\Li_{s-k+j}(w).
+\end{equation}
+For any positive integer $N$, the expression
+\begin{align}\label{tsc:T-subtracted}
+ \frac1{\Gamma(t)}\bigg\{&
+  \int_0^1 x^{t-1}\left(F(x)-\sum_{k=0}^{N-1}f_kx^k\right)\dd x
+  +\int_1^\infty x^{t-1}F(x)\dd x
+  +\sum_{k=0}^{N-1}\frac{f_k}{t+k}\bigg\}
+\end{align}
+is holomorphic for $\Re t>-N$ after removing the apparent singularities
+at $0,-1,\ldots,-N+1$. Local uniformity in $r,s,t$ follows from the Taylor
+remainder and exponential decay. The only poles of the braces are the
+listed simple ones, and the simple zeros of $1/\Gamma(t)$ cancel them.
+The expressions for different $N$ agree on overlaps, which proves joint
+entireness. At $t=-k$, the zero of $1/\Gamma(t)$ has leading coefficient
+$(-1)^k k!$; multiplication by the residue $f_k$ gives
+\eqref{tsc:T-negative}.
+\end{proof}
+
+\begin{remark}[Why the color assumption matters]
+At $z=1$ or $w=1$, the Taylor argument at $x=0$ changes: a polylogarithm
+can have a fractional-power or logarithmic local term. The theorem does
+not assert global entireness in that case. Later primitive formulas can
+allow color one near positive spectral integers because the original
+Tornheim series then converges absolutely. These are different reasons
+for analyticity, and they must not be conflated.
+\end{remark}
+
+\subsection{An explicit jet at the zero third order}
+For fixed nontrivial colors, define ordinary convergent logarithmic moments
+\begin{align}\label{tsc:Mmoments}
+ M_j(r,s;z,w)={}&\int_0^1\frac{\log^j x}{x}
+        \bigl(\Li_r(ze^{-x})\Li_s(we^{-x})-\Li_r(z)\Li_s(w)\bigr)\dd x\notag\\
+ &+\int_1^\infty\frac{\log^j x}{x}
+                    \Li_r(ze^{-x})\Li_s(we^{-x})\dd x.
+\end{align}
+Taking $N=1$ in \eqref{tsc:T-subtracted} yields, locally for $|t|<1$,
+\begin{equation}\label{tsc:T-zero-jet}
+ T(r,s,t;z,w)=\frac1{\Gamma(1+t)}
+  \left\{\Li_r(z)\Li_s(w)+
+               \sum_{j\ge0}\frac{M_j(r,s;z,w)}{j!}t^{j+1}\right\}.
+\end{equation}
+Every derivative in $r,s$ may be passed through the moments. In particular,
+\[
+ T(r,s,0;z,w)=\Li_r(z)\Li_s(w),\qquad
+ T_t(r,s,0;z,w)=\gamma\Li_r(z)\Li_s(w)+M_0(r,s;z,w).
+\]
+These formulas specify the third-order jets by convergent integrals rather
+than by a limiting procedure at a pole.
+
+\subsection{Classical double-polylogarithm and harmonic coordinates}
+Use the convention
+\[
+ \Li_{p,q}(z,w)=\sum_{N>n\ge1}\frac{z^Nw^n}{N^p n^q}
+\]
+where convergent, followed by analytic continuation when justified.
+Changing variables $N=m+n$ gives
+\begin{equation}\label{tsc:T-zero-first}
+ T(0,s,t;z,w)=\Li_{t,s}(z,w/z).
+\end{equation}
+For $z\ne w$, summing the finite geometric progression at fixed $m+n$
+also gives
+\begin{equation}\label{tsc:T00}
+ T(0,0,t;z,w)=\frac{w\Li_t(z)-z\Li_t(w)}{z-w}.
+\end{equation}
+For positive integers $r,s$, the standard partial-fraction reduction
+underlying Zhao's result \cite{tsc:zhao} is
+\begin{align}\label{tsc:integer-reduction}
+ T(r,s,t;z,w)={}&\sum_{j=1}^r\binom{r+s-j-1}{s-1}
+                     \Li_{t+r+s-j,j}(w,z/w)\notag\\
+ &+\sum_{j=1}^s\binom{r+s-j-1}{r-1}
+                     \Li_{t+r+s-j,j}(z,w/z).
+\end{align}
+For completeness, the rational identity being summed is
+\[
+ \frac1{m^r n^s}=
+  \sum_{j=1}^r\frac{\binom{r+s-j-1}{s-1}}{m^j(m+n)^{r+s-j}}
+ +\sum_{j=1}^s\frac{\binom{r+s-j-1}{r-1}}{n^j(m+n)^{r+s-j}}.
+\]
+It follows by repeated use of
+$1/(mn)=1/(m(m+n))+1/(n(m+n))$, or by comparing principal parts in
+$m$ for fixed $m+n$. Multiplying by $(m+n)^{-t}z^mw^n$ and summing proves
+\eqref{tsc:integer-reduction} first in an absolutely convergent domain.
+
+At unit arguments and in a convergence domain,
+\[
+ \Li_{p,q}(1,1)=\sum_{N\ge1}\frac{H_{N-1}^{(q)}}{N^p},
+ \qquad H_N^{(q)}=\sum_{j=1}^N j^{-q}.
+\]
+Thus the colored coordinate class includes generalized harmonic Euler sums.
+The integer reduction is a known identity, not a new theorem here.
+Moreover, differentiating it in the freely complex variable $t$ is
+legitimate; differentiating it in the discrete integers $r$ or $s$ is not
+licensed by the formula. The whole point of Theorem~\ref{tsc:T-entire}
+is to supply a genuine analytic family for those missing jets.

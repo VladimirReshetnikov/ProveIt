@@ -1,0 +1,115 @@
+{
+  "schema": "triple-stieltjes-proof-dependencies-v1",
+  "proof_status": "Human-readable analytic and algebraic proofs; not formalized.",
+  "nodes": [
+    {
+      "label": "tsc:entire-B",
+      "result": "Entire normalized periodic Hurwitz family and scale-one Laurent normalization",
+      "dependencies": [
+        "Classical Hurwitz Fourier expansion",
+        "local Mellin continuation of x_+^(u-1)",
+        "rapid Fourier decay of smooth test functions"
+      ]
+    },
+    {
+      "label": "tsc:T-entire",
+      "result": "Joint entire continuation of nontrivially colored Tornheim functions",
+      "dependencies": [
+        "classical polylogarithm order analyticity off color one",
+        "Taylor-subtracted Mellin integral",
+        "reciprocal Gamma zeros"
+      ]
+    },
+    {
+      "label": "tsc:master",
+      "result": "Six-sector product identity",
+      "dependencies": [
+        "tsc:entire-B",
+        "tsc:T-entire",
+        "separated singular-support products",
+        "Fourier orthogonality"
+      ]
+    },
+    {
+      "label": "tsc:stieltjes-triple",
+      "result": "All-index canonical triple Stieltjes coefficient formula",
+      "dependencies": [
+        "tsc:master",
+        "tsc:entire-B",
+        "independent Laurent-coordinate extraction"
+      ]
+    },
+    {
+      "label": "tsc:mellin-all",
+      "result": "Three convergent Mellin-jet integrals at all indices",
+      "dependencies": [
+        "tsc:stieltjes-triple",
+        "Taylor-subtracted Mellin integral",
+        "Gamma cancellation and coefficient extraction"
+      ]
+    },
+    {
+      "label": "tsc:primitive-triple",
+      "result": "Ordinary normalized triple primitive products",
+      "dependencies": [
+        "tsc:master",
+        "Gamma recurrence",
+        "complete homogeneous harmonic generating function",
+        "endpoint logarithmic integrability"
+      ]
+    },
+    {
+      "label": "tsc:single-contact",
+      "result": "One-sided extension/derivative contact conversion",
+      "dependencies": [
+        "local Mellin residues",
+        "elementary harmonic product coefficients"
+      ]
+    },
+    {
+      "label": "tsc:contact-triple",
+      "result": "Contact-complete triple derivative formula",
+      "dependencies": [
+        "tsc:stieltjes-triple",
+        "tsc:single-contact",
+        "separated delta-support products",
+        "Fourier spectral lowering"
+      ]
+    },
+    {
+      "label": "tsc:all-depth",
+      "result": "Finite reflected product reduction at all cotangent depths",
+      "dependencies": [
+        "Stieltjes-cotangent spectral transform",
+        "cotangent rational partial fractions",
+        "specified local extensions"
+      ]
+    },
+    {
+      "label": "tsc:rational",
+      "result": "All-depth rational Gamma evaluations",
+      "dependencies": [
+        "tsc:all-depth",
+        "Hurwitz reflection Fourier formula",
+        "rational root-of-unity decomposition",
+        "Lerch formula at zero"
+      ]
+    },
+    {
+      "label": "tsc:explicit-cubic",
+      "result": "Quarter-half cubic digamma principal value",
+      "dependencies": [
+        "tsc:rational",
+        "Gamma reflection and half-point formulas",
+        "cotangent partial fractions"
+      ]
+    }
+  ],
+  "finite_checks": "results/exact_checks.json",
+  "numerical_diagnostics": "results/numerical_checks.json",
+  "non_implications": [
+    "Finite replay does not replace the analytic continuation proof.",
+    "Numerical agreement does not prove period independence.",
+    "Generic collisions and S6/S8 are not settled."
+  ]
+}

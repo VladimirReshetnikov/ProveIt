@@ -1,0 +1,116 @@
+\section{Scope, results, and proof status}
+\label{xid:sec:introduction}
+
+This report addresses exact identities and the analytic mechanisms that
+make them valid. The source is the unified manuscript at
+\texttt{Analysis/Polylogarithms/docs/manuscript}, together with the five
+polylogarithm archives present in \texttt{docs/incoming} at the commit
+printed on the title page \cite{ProveIt,IncomingGauss,IncomingMellin,
+IncomingNested,IncomingContinuation,IncomingIdentities}. All 85 retrieved
+file payloads were matched to their Git blob identifiers before the
+research comparison. The accompanying provenance manifest fixes precisely
+what was inspected; later changes to the repository are outside this
+comparison.
+
+Several questions in those reports concern the point where an exact
+formula is known in a regular domain but its endpoint extension has not
+yet been justified. Typical examples are a collision of two rational
+singularity grids, replacing an affine endpoint coordinate by a nonlinear
+one, and taking all argument derivatives of a three-factor integral.
+We resolve these questions under explicit hypotheses. Another direction
+is a fully shifted nested harmonic family, where changing every
+denominator produces an entire correction that the outer-shift theory
+does not contain. A final direction returns to the canonical weighted
+arctangent integral and gives its complete real evaluation.
+
+\subsection{The results at a glance}
+
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=*]
+\item \textbf{Every colliding two-grid Stieltjes product.}
+Theorem~\ref{xid:cld:master} gives a finite holomorphic generator for all
+Stieltjes indices, all argument derivative orders of positive total order,
+and all positive integer dilations. Section~\ref{xid:cld:section} also treats
+total order zero. The coefficients close in ordinary zeta derivatives,
+harmonic numbers, and logarithms. The regular constant in the convergent
+separated-shift collision expansion is exactly the independently defined
+colliding finite part. Corollary~\ref{xid:cld:diagonal-collapse} gives an
+additional all-index odd-order cancellation.
+
+\item \textbf{Every nonlinear endpoint correction.}
+Theorem~\ref{xid:thm:coordinate-monomial} gives the complete change of a
+logarithmic-pole finite part from a finite jet of the coordinate.
+Theorems~\ref{xid:thm:cocycle} and \ref{xid:thm:stieltjes-nonlinear} give its
+composition and Stieltjes forms. A sharp disappearance threshold holds
+for coordinates tangent to the identity, and
+Theorem~\ref{xid:thm:nonlinear-primitive} gives exact endpoint constants for
+ordinary primitives evaluated by a coordinate finite part.
+
+\item \textbf{Three unequal separated frequencies.}
+Theorem~\ref{xid:thm:triple-spectral} gives a finite sign-cone and character
+formula involving $2(p_1+p_2+p_3)$ weighted colored Tornheim kernels.
+Each weighted kernel is itself a finite sum of ordinary colored kernels.
+Theorem~\ref{xid:thm:triple-FP} performs complete ambient-coordinate
+subtraction for every Stieltjes index and argument derivative.
+
+\item \textbf{An entire difference for fully shifted harmonic sums.}
+Theorem~\ref{xid:hsh:thm:entire} isolates a universal Gamma-normalized
+singular part and evaluates the entire remainder at every nonpositive
+integer by a finite Stirling sum. Theorem~\ref{xid:hsh:thm:Laurent} gives
+the complete Laurent principal part and finite part at all depths.
+The pole order drops at negative even integers for a proved Bernoulli
+reason. A two-shift bridge and explicit Gamma antiderivatives follow.
+
+\item \textbf{Weighted arctangent and inverse-hyperbolic identities.}
+Theorem~\ref{xid:wat:thm:main} evaluates the canonical weighted family by a
+hyperbolic addition formula for one even trilogarithmic function.
+Theorem~\ref{xid:wat:thm:primitive} supplies a normalized ordinary primitive
+at every endpoint in $(0,\pi)$, with principal branches justified.
+Theorem~\ref{xid:wat:thm:ladder} gives every Euler integration order in
+depth-two polylogarithms. A trigonometric companion evaluates a weighted
+inverse-hyperbolic family, including its endpoint value.
+\end{enumerate}
+
+These are proved extensions relative to the inspected source material.
+They are not statements that every displayed identity is historically
+new. In particular, the Hurwitz Fourier product, Gamma multiplication,
+Gauss connection formula, and elementary logarithmic primitives are
+classical inputs \cite{EspinosaMoll1,EspinosaMoll2,DLMFhurwitz,
+hsh:DLMFGauss,wat:DavidH}. The depth-one harmonic Hurwitz-zeta literature
+already treats continuation and Laurent coefficients
+\cite{hsh:Kargin2023,hsh:KaraCan2026}; the limited access to the newest
+preprint is disclosed in Section~\ref{xid:hsh:sec:main}.
+
+\subsection{What the proofs have in common}
+
+A local term of the form $c(z)t^{z-1}$ explains much of the endpoint
+calculus. Its meromorphic integral over $(0,h)$ is $c(z)h^z/z$.
+The generating function of its coefficientwise, fixed-coordinate finite
+parts is instead
+\[
+ \frac{c(z)(h^z-1)}z.
+\]
+The difference is the complete expression $c(z)/z$. Retaining only its
+residue leaves incorrect regular coefficients whenever $c$ depends on
+$z$. Nonlinear coordinates, dilations, and Taylor coefficients of other
+factors all produce precisely this dependence. The local subtraction
+proofs below retain it before taking any coefficient.
+
+The fully shifted harmonic theorem uses the complementary mechanism.
+Its Gauss connection formula splits the Mellin kernel into a universal
+singular block and an analytic block. Division by $\Gamma(s)$ cancels
+the analytic block's simple Mellin poles. At $s=-m$ the resulting entire
+function is determined by one Taylor coefficient, which turns out to be
+a finite Stirling polynomial. Thus exact local data control both the
+distributional correction and the entire harmonic correction, although
+the two operations are analytically different.
+
+\subsection{Conjectures not settled by this report}
+
+The source's $S_4$ identity is already proved by its octahedral rational
+certificate. The short $S_6$ candidate and the current, replacement $S_8$
+candidate remain conjectures. The rejected earlier $S_8$ vector remains
+rejected. The numerically supported higher golden ladder vectors are
+also not proved here. The present exact results do not imply those
+reductions, and their numerical evidence has not been used as a proof.
+Section~\ref{xid:sec:audit} records exact source labels and the integration
+consequences.

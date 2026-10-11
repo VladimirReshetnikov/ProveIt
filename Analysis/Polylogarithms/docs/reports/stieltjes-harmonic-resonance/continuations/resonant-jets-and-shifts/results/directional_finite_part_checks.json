@@ -1,0 +1,40 @@
+{
+  "dps": 60,
+  "outer_cutoff": 36,
+  "Euler_Maclaurin_terms": 22,
+  "Cauchy_nodes": 64,
+  "Cauchy_radius": "0.02",
+  "cases": [
+    {
+      "case": "curved exact diagonal",
+      "a": "0.7",
+      "lambda": "3/5",
+      "mu": "-2/7",
+      "observed": "(-0.07239853836764752658207077966705161944378850461271498 + 1.040799305222275950519844712994725779238719675218615e-58j)",
+      "predicted": "-0.07239853836764752658207077966705161944378850461271498",
+      "absolute_error": "5.048741453886515991469562530132325562578217032539584e-58",
+      "evaluation": "exact diagonal stuffle; independent cubic reparametrization"
+    },
+    {
+      "case": "nonsymmetric mixed-sign direction",
+      "a": "0.7",
+      "c": "2",
+      "d": "-1",
+      "observed": "(-0.9261444179060688743386650631183778220733470136140076 + 2.332074975378462854752238004154101559161197000228257e-58j)",
+      "predicted": "-0.9261444179060688743386650631183778220733470136140076",
+      "absolute_error": "1.79124587888030590523135562345467909271518807668443e-54",
+      "evaluation": "finite outer sum and Euler--Maclaurin double-zeta continuation"
+    },
+    {
+      "case": "inner exponent exactly one",
+      "a": "1.3",
+      "c": "1",
+      "d": "0",
+      "observed": "(-0.5528139390605408013512450299809414152192459136847634 - 7.778769097326427133930080067225155300737815210901459e-60j)",
+      "predicted": "-0.5528139390605408013512450299809414152192459136847634",
+      "absolute_error": "8.453324506881733660053744604375978872109532155103687e-55",
+      "evaluation": "digamma finite outer sum and Euler--Maclaurin tail; no v denominator"
+    }
+  ],
+  "status": "Numerical diagnostics with truncated EM tails, not interval certificates."
+}

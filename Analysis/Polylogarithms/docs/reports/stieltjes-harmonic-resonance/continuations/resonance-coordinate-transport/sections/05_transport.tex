@@ -1,0 +1,367 @@
+\section{Three unequal frequencies with exact endpoint normalization}
+\label{tr:section}
+
+The incoming three-factor formula treats translated copies of the same
+periodic Hurwitz function. Its next question allows three distinct positive
+integer frequencies \cite{incoming-sh}. Solving the Fourier constraint
+directly produces weighted linear forms. A finite multiplication identity
+gives a shorter route: first replace each integer-frequency factor by
+finitely many unit-frequency translates. All local scales can then be
+accounted for before the product is formed.
+
+\subsection{Separated singular grids and a finite lifting identity}
+Fix $p_1,p_2,p_3\in\N_{>0}$ and $0\leq a_j<1$. Put
+\begin{equation}\label{tr:grids}
+ \mathcal B_j=\left\{b_{j,h}=\frac{a_j+h}{p_j}:
+                       0\leq h<p_j\right\}\subset[0,1).
+\end{equation}
+Assume the three sets $\mathcal B_j$ are pairwise disjoint. The singular
+points of the $j$th original factor are $x=-b$ modulo one, with
+$b\in\mathcal B_j$; hence this assumption is precisely disjointness of
+the singular grids. It is directly decidable for rational data. In a
+pairwise arithmetic form, if $d=\gcd(p_i,p_j)$, it says
+\[
+ (p_i/d)a_j-(p_j/d)a_i\notin\Z\qquad(i\ne j).
+\]
+The grid formulation will make the local geometry transparent.
+
+\begin{lemma}[Finite periodic multiplication]\label{tr:multiplication}
+For a positive integer $p$, $0\leq a<1$, and an argument away from the
+singular grid,
+\begin{equation}\label{tr:zeta-lift}
+ \zeta(s,\{px+a\})
+  =p^{-s}\sum_{h=0}^{p-1}
+      \zeta\!\left(s,\left\{x+\frac{a+h}{p}\right\}\right).
+\end{equation}
+Both sides agree as meromorphic functions of $s$. If $L=\log p$, then
+for every $m\geq0$,
+\begin{align}\label{tr:gamma-lift}
+ \gamma_m(\{px+a\})={}&\frac1p\sum_{h=0}^{p-1}
+      \sum_{\ell=0}^m\binom m\ell L^{m-\ell}
+      \gamma_\ell\!\left(\left\{x+\frac{a+h}{p}\right\}\right)
+       -\frac{L^{m+1}}{m+1}.
+\end{align}
+\end{lemma}
+\begin{proof}
+Write $y=\{px+a\}$. The $p$ numbers
+$\{x+(a+h)/p\}$, counted with multiplicity, are a permutation of
+$(y+k)/p$, $0\leq k<p$. Splitting the defining Hurwitz series into
+residue classes gives
+$\sum_k\zeta(s,(y+k)/p)=p^s\zeta(s,y)$ for $\Re s>1$.
+Meromorphic continuation proves \eqref{tr:zeta-lift}.
+
+Set $s=1-z$. The expansion
+$\zeta(1-z,y)=-1/z+\sum_{m\geq0}\gamma_m(y)z^m/m!$
+shows that the nonpolar part on the right of \eqref{tr:zeta-lift} is
+\[
+ \frac{e^{Lz}}p\sum_{h=0}^{p-1}
+       \sum_{\ell\geq0}\gamma_\ell(\{x+(a+h)/p\})\frac{z^\ell}{\ell!}
+       -\frac{e^{Lz}-1}{z}.
+\]
+Its $m$th derivative at zero is \eqref{tr:gamma-lift}. This derivation
+also fixes the sign and the absence of a factor $1/p$ in the last term.
+\end{proof}
+
+Let $G_m$ be the unit-coordinate periodic finite part of $\gamma_m$.
+It has mean zero. For completeness,
+\[
+ \gamma_m(x)=x^{-1}\log^m x+\gamma_m(1+x)
+\]
+has a singular term of finite-part integral zero on $(0,1)$. Also
+$\int_1^2\zeta(1-z,x)\dd x=-1/z$, by
+$\partial_x\zeta(-z,x)=z\zeta(1-z,x)$ and the Hurwitz shift relation.
+Its regular coefficients give $\int_1^2\gamma_m(x)\dd x=0$.
+Therefore $\langle G_m,1\rangle=0$.
+
+Taking the constant term of the pointwise identity
+\eqref{tr:gamma-lift} in the same ambient coordinate at every singular
+point gives an equality of distributions. Define
+\begin{align}
+ c_m(p)&=\frac{\log^{m+1}p}{m+1},\notag\\
+ W_{p,a;m}&=\frac1p\sum_{h=0}^{p-1}\sum_{\ell=0}^m
+       \binom m\ell(\log p)^{m-\ell}\,
+              G_\ell(x+(a+h)/p).
+       \label{tr:W}
+\end{align}
+Then
+\begin{equation}\label{tr:ambient-factor}
+ \FP_x\gamma_m(\{px+a\})=W_{p,a;m}-c_m(p).
+\end{equation}
+In particular,
+\begin{equation}\label{tr:mean}
+ \FP_x\int_0^1\gamma_m(\{px+a\})\dd x
+       =-\frac{\log^{m+1}p}{m+1}.
+\end{equation}
+This nonzero mean is a simple check on the endpoint scale. It would be
+missed by replacing a fixed-coordinate finite part by an uncorrected
+pullback of a mean-zero periodic distribution.
+
+\subsection{A complete all-index transport formula}
+For pairwise distinct unit-frequency shifts $b_1,b_2,b_3$, let
+\begin{equation}\label{tr:Idef}
+ I_{\boldsymbol\ell}(\boldsymbol b)
+   =\FP_x\int_0^1\prod_{j=1}^3
+              \gamma_{\ell_j}(\{x+b_j\})\dd x.
+\end{equation}
+For $0<c<1$, write
+\begin{equation}\label{tr:Jdef}
+ J_{uv}(c)=\FP_x\int_0^1
+           \gamma_u(x)\gamma_v(\{x+c\})\dd x.
+\end{equation}
+All finite parts use the right coordinate $x-x_0$ at each singularity.
+Different cutoffs may tend independently to zero. Since the singular
+supports are disjoint, their distribution products are defined by
+ordinary multiplication by smooth functions near each singularity;
+their integrals equal these finite parts.
+
+Fix $m_1,m_2,m_3\geq0$, and abbreviate
+\[
+ L_j=\log p_j,\quad c_j=\frac{L_j^{m_j+1}}{m_j+1},\quad
+ A_{j,\ell}=\frac1{p_j}\binom{m_j}{\ell}L_j^{m_j-\ell}.
+\]
+As usual, a zeroth power is one, also when $L_j=0$.
+
+\begin{theorem}[All-index unequal-frequency reduction]
+\label{tr:finite-transport}
+Under the disjoint-grid hypothesis, the ambient-coordinate finite part
+\[
+ I^{\boldsymbol p}_{\boldsymbol m}(\boldsymbol a)
+ =\FP_x\int_0^1\prod_{j=1}^3
+                 \gamma_{m_j}(\{p_jx+a_j\})\dd x
+\]
+has the finite expression
+\begin{align}
+ I^{\boldsymbol p}_{\boldsymbol m}(\boldsymbol a)
+ ={}&\sum_{h_1=0}^{p_1-1}\sum_{h_2=0}^{p_2-1}\sum_{h_3=0}^{p_3-1}
+       \sum_{\ell_1=0}^{m_1}\sum_{\ell_2=0}^{m_2}\sum_{\ell_3=0}^{m_3}
+       \left(\prod_{j=1}^3A_{j,\ell_j}\right)
+       I_{\boldsymbol\ell}(b_{1,h_1},b_{2,h_2},b_{3,h_3})
+       \notag\\
+ &-\sum_{k=1}^3c_k
+    \sum_{h_i=0}^{p_i-1}\sum_{h_j=0}^{p_j-1}
+    \sum_{u=0}^{m_i}\sum_{v=0}^{m_j}
+        A_{i,u}A_{j,v}
+        J_{uv}(\{b_{j,h_j}-b_{i,h_i}\})
+       -c_1c_2c_3 .\label{tr:finite-formula}
+\end{align}
+In the $k$th term of the second line, $i<j$ are the other two indices.
+Every pair argument lies in $(0,1)$, and every triple has distinct
+arguments. Thus no collision continuation is hidden in this formula.
+\end{theorem}
+\begin{proof}
+Apply \eqref{tr:ambient-factor} to each of the three factors. Since
+different grids have disjoint singular support, their product can be
+expanded distributively, with no undefined distribution product. The
+term containing three $W$ factors gives the first line of
+\eqref{tr:finite-formula}. The three terms containing two $W$ factors
+give its second line. The terms containing one $W$ factor integrate to
+zero because each $G_\ell$ has zero mean. The constant term is
+$-c_1c_2c_3$. This proves the formula. Equivalently, a partition of unity
+at the separated endpoints proves the same identity directly by linearity
+of the cutoff constant terms.
+\end{proof}
+
+This theorem resolves the stated unequal-frequency question at every
+Stieltjes index. It permits a redundant finite list of coordinates rather
+than claiming a minimal period basis. Integer frequencies are essential
+to the finite multiplication step. Colliding grids require a separately
+specified pointwise product finite part or joint regularization.
+
+\subsection{The bilinear terms are finite Stieltjes expressions}
+The pair terms in \eqref{tr:finite-formula} are already reduced in the
+incoming reports \cite{incoming-sh,incoming-md}. We record their complete
+coefficient formula so that the triple transport is constructive without
+an unspecified lower-order operation. Put
+\begin{align}
+ \mathcal G(z;c)&=\zeta(1-z,c)+1/z,
+ & U(z,w)&=\frac{\Gamma(1+z)\Gamma(1-z-w)}{\Gamma(1-w)},\notag\\
+ V(z,w)&=\frac{U(z,w)-1}{z(z+w)},
+ &r&=z+w.\label{tr:pair-generators}
+\end{align}
+Both $\mathcal G$ and $V$ are holomorphic at the indicated origin. For
+$V$, the numerator vanishes on $z=0$ and on $z=-w$; these are distinct
+linear factors. The formula is
+\begin{align}
+ \sum_{u,v\geq0}J_{uv}(c)\frac{z^uw^v}{u!v!}
+ ={}&\frac{\mathcal G(r;c)-\mathcal G(w;c)}z
+     +\frac{\mathcal G(r;1-c)-\mathcal G(z;1-c)}w\notag\\
+ &-V(z,w)-V(w,z)\notag\\
+ &+r\{V(z,w)\mathcal G(r;c)
+           +V(w,z)\mathcal G(r;1-c)\}.\label{tr:pair-closure}
+\end{align}
+Every apparent singularity is removable. In particular,
+\begin{equation}\label{tr:J00}
+ J_{00}(c)=\gamma_1(c)+\gamma_1(1-c)-2\zeta(2).
+\end{equation}
+
+Here is a short derivation. Fourier expansion and Gamma reflection give
+the meromorphic identity
+\begin{align*}
+ \int_0^1\zeta(1-z,x)\zeta(1-w,\{x+c\})\dd x
+ ={}&B(z,1-z-w)\zeta(1-z-w,c)\\
+ &+B(w,1-z-w)\zeta(1-z-w,1-c).
+\end{align*}
+It first holds in an absolutely convergent Fourier domain and extends
+to $\Re z,\Re w>0$ by endpoint integrability. Its Laurent decomposition
+at zero is
+\[
+ -\frac1{zw}+\frac{\mathcal G(w;c)}z
+      +\frac{\mathcal G(z;1-c)}w
+      +\sum_{u,v\geq0}J_{uv}(c)\frac{z^uw^v}{u!v!}.
+\]
+One obtains this decomposition by subtracting the singular Taylor term
+at each of the two disjoint endpoints. Substitute
+$B(z,1-r)=U(z,w)/z$ and $U=1+zrV$ in the beta expression and subtract
+the three displayed polar terms. The remainder is exactly
+\eqref{tr:pair-closure}.
+Finally,
+\[
+ U(z,w)=\exp\!\left(\sum_{k\geq2}\frac{\zeta(k)}k
+             \{(-1)^kz^k+(z+w)^k-w^k\}\right)
+\]
+shows that any requested pair coefficient uses only finitely many
+Stieltjes constants and polynomial combinations of positive integer
+zeta values. No infinite coefficient search is required.
+
+\subsection{Ordinary colored Tornheim kernels suffice}
+For $|X|=|Y|=1$, $X,Y\ne1$, define initially in an absolutely convergent
+region
+\begin{equation}\label{tr:Tdef}
+ \mathcal T(A,B,C;X,Y)
+     =\sum_{m,n\geq1}\frac{X^mY^n}{m^An^B(m+n)^C}.
+\end{equation}
+Its derivatives in $A,B,C$ are called spectral derivatives. They are
+not derivatives of the fixed colors.
+
+\begin{lemma}[Entire continuation and exact negative-order values]
+\label{tr:T-entire}
+The kernel \eqref{tr:Tdef} has a joint entire continuation in
+$(A,B,C)$. For $\Re C>0$ it is given by
+\begin{equation}\label{tr:T-mellin}
+ \mathcal T(A,B,C;X,Y)=\frac1{\Gamma(C)}
+   \int_0^\infty t^{C-1}\Li_A(Xe^{-t})\Li_B(Ye^{-t})\dd t.
+\end{equation}
+For every $N\geq0$,
+\begin{equation}\label{tr:T-negative}
+ \mathcal T(A,B,-N;X,Y)
+   =\sum_{j=0}^N\binom Nj\Li_{A-j}(X)\Li_{B-N+j}(Y).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The Gamma integral for $(m+n)^{-C}$ proves \eqref{tr:T-mellin} in a
+common absolutely convergent domain. Since $X,Y\ne1$, each
+polylogarithm is analytic in $t$ in a neighborhood of zero and entire
+in its order. Their product has a Taylor expansion
+$f(t)=\sum_{j=0}^Mf_jt^j+O_K(t^{M+1})$, uniformly on compact order
+sets. Split the integral at one, subtract this polynomial on $(0,1)$,
+and add $\sum_{j=0}^Mf_j/(C+j)$. The resulting expression extends to
+$\Re C>-M-1$ after multiplication by $1/\Gamma(C)$. The simple Gamma
+zeros cancel the apparent poles $C=0,-1,\ldots,-M$. The integral at
+infinity is locally normal because of exponential decay. Increasing
+$M$ proves joint entire continuation. At $C=-N$ the value is
+$(-1)^Nf^{(N)}(0)$; applying
+$\partial_t\Li_A(Xe^{-t})=-\Li_{A-1}(Xe^{-t})$ and Leibniz's rule
+gives \eqref{tr:T-negative}.
+\end{proof}
+
+For pairwise distinct $b_1,b_2,b_3$, let $i<j$ be the indices other
+than $k$ and put
+\[
+ X_k=e(b_i-b_k),\quad Y_k=e(b_j-b_k),\quad
+ \theta_k=\frac\pi2(\lambda_i+\lambda_j-\lambda_k),
+ \qquad e(t)=e^{2\pi it}.
+\]
+Define the finite sum
+\begin{align}\label{tr:Sdef}
+ S(\boldsymbol\lambda;\boldsymbol b)
+ =\sum_{k=1}^3\{&e^{-i\theta_k}
+      \mathcal T(\lambda_i,\lambda_j,\lambda_k;X_k,Y_k)\notag\\
+ &+e^{i\theta_k}
+      \mathcal T(\lambda_i,\lambda_j,\lambda_k;X_k^{-1},Y_k^{-1})\}.
+\end{align}
+The signs specify all six regions of the three-frequency hyperplane.
+The identity rederived next is the unit-frequency result already
+established in the incoming Stieltjes--harmonic report.
+
+\begin{proposition}[The unit-frequency spectral identity]
+\label{tr:unit-spectral}
+For $\Re\lambda_j>0$,
+\begin{equation}\label{tr:unit-K}
+ K_1(\boldsymbol\lambda;\boldsymbol b)
+ :=\int_0^1\prod_{j=1}^3\zeta(1-\lambda_j,\{x+b_j\})\dd x
+  =\frac{\prod_j\Gamma(\lambda_j)}{(2\pi)^{\sum_j\lambda_j}}
+       S(\boldsymbol\lambda;\boldsymbol b).
+\end{equation}
+Consequently
+\begin{align}\label{tr:triple-coeff}
+ I_{\boldsymbol\ell}(\boldsymbol b)
+ =\left(\prod_{j=1}^3\ell_j!\right)
+ [\lambda_1^{\ell_1+1}\lambda_2^{\ell_2+1}\lambda_3^{\ell_3+1}]
+ \left\{\prod_{j=1}^3\frac{\Gamma(1+\lambda_j)}{(2\pi)^{\lambda_j}}
+ S(\boldsymbol\lambda;\boldsymbol b)\right\}.
+\end{align}
+\end{proposition}
+\begin{proof}
+For $\Re\lambda_j>1$, the Fourier coefficients of each factor are
+\[
+ \widehat Z_{1-\lambda}(n)
+  =\frac{\Gamma(\lambda)}{(2\pi|n|)^\lambda}
+       e^{-i\pi\lambda\sgn(n)/2},\quad n\ne0,
+ \qquad \widehat Z_{1-\lambda}(0)=0.
+\]
+This is Hurwitz's classical Fourier formula
+\cite[Eq.~25.11.9]{dlmf-hurwitz}. Absolute convergence permits
+termwise integration. The surviving triples satisfy
+$n_1+n_2+n_3=0$, with every $n_j\ne0$. Either the unique negative
+index is $k$, giving $n_i=m,n_j=n,n_k=-m-n$, or all signs are
+reversed. Their denominators and phases are precisely
+\eqref{tr:Sdef}. Near each separated singular point, only one factor
+behaves like $t^{\lambda_j-1}$; the others are smooth. Local integrable
+majorants extend the identity to $\Re\lambda_j>0$.
+
+To extract the finite parts, split at disjoint neighborhoods of the
+three singularities. The singular factor is
+$t^{\lambda_k-1}+\zeta(1-\lambda_k,1+t)$. For a smooth multiplier
+$g$, the continued integral is
+\[
+ \frac{g(0)h^{\lambda_k}}{\lambda_k}
+ +\int_0^h t^{\lambda_k-1}(g(t)-g(0))\dd t.
+\]
+The second term is holomorphic near zero after clearing the at most
+simple poles in the other order variables. The Laurent coefficient
+$[\lambda_k^{\ell_k}]$ of the first term is the unit-coordinate
+finite part divided by $\ell_k!$. Taylor subtraction gives uniform
+remainders $O(\eps^{1-\rho})$ on a closed polydisk
+$|\lambda_j|\leq\rho<1$ after multiplication by
+$\lambda_1\lambda_2\lambda_3$. Cauchy's formula therefore justifies
+simultaneous coefficient extraction. Finally,
+$\lambda_j\Gamma(\lambda_j)=\Gamma(1+\lambda_j)$ converts
+\eqref{tr:unit-K} to \eqref{tr:triple-coeff}.
+\end{proof}
+
+Combining Theorem~\ref{tr:finite-transport},
+\eqref{tr:pair-closure}, and \eqref{tr:triple-coeff} is the promised
+finite formula in standard colored kernels. Its largest triple spectral
+derivative order is at most $m_1+m_2+m_3+3$.
+
+\begin{corollary}[Spectral transport before taking finite parts]
+\label{tr:spectral-lift}
+For $\Re\lambda_j>0$,
+\begin{align}\label{tr:Kp}
+ K_{\boldsymbol p}(\boldsymbol\lambda;\boldsymbol a)
+ &:=\int_0^1\prod_{j=1}^3
+           \zeta(1-\lambda_j,\{p_jx+a_j\})\dd x\notag\\
+ &=\left(\prod_{j=1}^3p_j^{\lambda_j-1}\right)
+   \sum_{h_1=0}^{p_1-1}\sum_{h_2=0}^{p_2-1}\sum_{h_3=0}^{p_3-1}
+       K_1(\boldsymbol\lambda;b_{1,h_1},b_{2,h_2},b_{3,h_3}).
+\end{align}
+Both sides have the same meromorphic continuation. The spectral
+coefficient at the Stieltjes pole must still be converted to the named
+ambient-coordinate finite part; \eqref{tr:finite-formula} performs
+that conversion explicitly.
+\end{corollary}
+\begin{proof}
+Multiply three instances of \eqref{tr:zeta-lift} with $s=1-\lambda_j$,
+then integrate. The sums are finite and every resulting triple is
+separated. Proposition~\ref{tr:unit-spectral} provides the continuation.
+\end{proof}

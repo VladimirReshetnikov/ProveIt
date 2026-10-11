@@ -1,0 +1,105 @@
+\section{Mean-zero primitives and harmonic coefficients}\label{tsc:primitives}
+For $r\ge1$, let $U_{m,r}$ be the unique mean-zero periodic distribution
+satisfying $\partial_x^r U_{m,r}=C_m$. Equivalently,
+\[
+ \widehat U_{m,r}(n)=(2\pi\ii n)^{-r}\widehat C_m(n),\quad n\ne0,
+ \qquad \widehat U_{m,r}(0)=0.
+\]
+These are represented by ordinary locally integrable functions. We give
+the exact normalization because a primitive fixed at a base point is not
+in general the same function.
+
+For $N\ge0$, define complete homogeneous harmonic coefficients by
+\begin{equation}\label{tsc:homogeneous}
+ \sum_{j\ge0}h_j^{(N)}v^j
+     =\prod_{k=1}^N(1-v/k)^{-1}
+     =\exp\left(\sum_{k\ge1}\frac{H_N^{(k)}}k v^k\right).
+\end{equation}
+Thus $h_0^{(N)}=1$, $h_1^{(N)}=H_N$,
+$h_2^{(N)}=(H_N^2+H_N^{(2)})/2$, and
+\[
+ h_3^{(N)}=\frac{H_N^3+3H_NH_N^{(2)}+2H_N^{(3)}}6.
+\]
+For $N=0$, all positive-index coefficients are zero.
+
+\begin{proposition}[Explicit normalized primitive]\label{tsc:primitive-formula}
+For $m\ge0$, $r\ge1$, and $0<x<1$,
+\begin{align}\label{tsc:Ucoef}
+ U_{m,r}(x)
+ &=m![u^{m+1}]\frac{\Gamma(1+u)}{\Gamma(r+u)}\zeta(1-r-u,x)\notag\\
+ &=\frac{(-1)^{m+1}m!}{(r-1)!}
+       \sum_{j=0}^{m+1}\frac{h_{m+1-j}^{(r-1)}}{j!}
+                   \zeta^{[j]}(1-r,x).
+\end{align}
+In particular,
+\begin{equation}\label{tsc:Uone}
+ U_{m,1}(x)=\frac{(-1)^{m+1}}{m+1}\zeta^{[m+1]}(0,x),
+ \qquad U_{0,1}(x)=\frac\ell2-\log\Gamma(x).
+\end{equation}
+\end{proposition}
+\begin{proof}
+The meromorphic family $\Gamma(u)\calB_{r+u}$ has Fourier coefficients
+$\Gamma(u)(2\pi\ii n)^{-r-u}$. Its coefficient $m![u^m]$ is therefore
+the stated mean-zero primitive. On the open interval, use
+\eqref{tsc:Bhurwitz} and move the factor $1/u$ to the coefficient index;
+this proves the first equality in \eqref{tsc:Ucoef}. Next,
+\[
+ \frac{\Gamma(1+u)}{\Gamma(r+u)}
+   =\frac1{(r-1)!}\prod_{k=1}^{r-1}(1+u/k)^{-1}
+   =\frac1{(r-1)!}\sum_{j\ge0}(-1)^jh_j^{(r-1)}u^j.
+\]
+Multiplication by the Taylor expansion of $\zeta(1-r-u,x)$ gives the second
+equality. The case $r=1$ and Lerch's formula give \eqref{tsc:Uone}.
+Mean zero and the distributional derivative relation follow from the Fourier
+construction; they are not extra constants to be chosen afterward.
+\end{proof}
+These one-function ladders belong to the classical Hurwitz primitive
+calculus and its repository developments \cite{tsc:em2,tsc:shj}. Their
+three-factor use is the next result.
+
+\begin{theorem}[All primitive triple identities]\label{tsc:primitive-triple}
+For $r_i\ge1$ and $m_i\ge0$,
+\begin{align}\label{tsc:Utriple}
+ \int_0^1\prod_{i=1}^3U_{m_i,r_i}(\{x-a_i\})\dd x
+ ={}&(2\pi)^{-r_1-r_2-r_3}\left(\prod_{i=1}^3m_i!\right)\notag\\
+ &\quad\cdot[\mathbf u^{\mathbf m+\mathbf1}]
+     \left(\prod_{i=1}^3E(u_i)\right)
+                         \calT(\mathbf r+\mathbf u;\mathbf a).
+\end{align}
+This is an ordinary convergent integral. It remains valid when some or all
+shifts coincide, with the right side evaluated in its locally convergent
+positive-order Tornheim representation.
+\end{theorem}
+\begin{proof}
+For separated shifts, apply \eqref{tsc:master-eq} to
+$\prod_i\Gamma(u_i)\calB_{r_i+u_i}$ and extract the three nonnegative
+Laurent coefficients, exactly as in Theorem~\ref{tsc:stieltjes-triple}.
+This gives \eqref{tsc:Utriple}.
+
+Near a seam, $U_{m,1}$ has at worst logarithmic growth of finite degree.
+For $r\ge2$ the possible singular term is a power $x^{r-1}$ multiplied
+by a logarithmic polynomial, and the function remains bounded. Every
+finite product in the theorem is therefore integrable, including at a
+common seam. On the double-sum side, a neighborhood of $r_i\ge1$ is an
+absolute-convergence domain even for trivial colors: logarithmic
+spectral derivatives are dominated by a slightly decreased positive power,
+and the worst central denominator is $mn(m+n)$. Summing first over
+$m+n=N$ gives $2H_{N-1}/N^2$. This proves local normal convergence for
+all the finitely many derivatives in question. Hence the separated formula
+passes to coincident shifts on both sides. This uses no continuation of a
+singular Stieltjes product to a collision.
+\end{proof}
+
+\begin{corollary}[Shifted centered log-Gamma cube]\label{tsc:loggamma-triple}
+Let $G(x)=\log\Gamma(x)-\ell/2$. Then
+\begin{equation}\label{tsc:Gtriple}
+ \int_0^1\prod_{i=1}^3G(\{x-a_i\})\dd x
+   =-\frac1{(2\pi)^3}
+       \left.\mathscr D_A\calT(\mathbf s;\mathbf a)\right|_{\mathbf s=(1,1,1)}.
+\end{equation}
+\end{corollary}
+At coincident shifts this is another representation of the known
+Bailey--Borwein--Borwein cubic log-Gamma evaluation, not a new evaluation
+of that old special case \cite{tsc:bbb,tsc:gamma-chapter}. Arbitrary shifted
+mixed-index and mixed-primitive versions follow directly from
+\eqref{tsc:Utriple} without another Fourier calculation.

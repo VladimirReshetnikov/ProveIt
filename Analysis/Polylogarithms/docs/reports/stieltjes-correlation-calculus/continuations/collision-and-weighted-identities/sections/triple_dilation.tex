@@ -1,0 +1,292 @@
+\section{Three unequal frequencies and all their regularized jets}
+\label{xid:sec:triple-dilation}
+
+The current incoming report treats three distinct translates and asks
+for three unequal integer frequencies \cite{IncomingIdentities}.
+Fourier orthogonality leaves a lattice of rank two in this problem.
+Finite congruence filters nevertheless give an explicit finite family
+of colored Tornheim kernels.  Local subtraction then converts the
+spectral identity into an all-index Stieltjes identity in the ambient
+coordinate.  The classical use of colored Tornheim sums and their
+polylogarithmic reductions is credited to the literature
+\cite{ZhaoColored}; the formulas here address the unequal-frequency
+and fixed-coordinate question from the supplied research.
+
+Let $p_1,p_2,p_3$ be positive integers and $a_1,a_2,a_3$ be real
+shifts, considered modulo one.  Write
+\[
+ S_i=\{x\in\mathbb R/\mathbb Z:p_i x+a_i\in\mathbb Z\},
+ \qquad e(t)=e^{2\pi i t}.
+\]
+Throughout this section assume that $S_1,S_2,S_3$ are pairwise
+disjoint.  Equivalently, for every $i\ne j$,
+\begin{equation}\label{xid:eq:triple-separation}
+ p_j a_i-p_i a_j\notin\gcd(p_i,p_j)\mathbb Z.
+\end{equation}
+At each grid point the cutoff is the right ambient coordinate
+$t=x-x_0$; the cutoffs at different grid points can tend to zero
+independently.
+
+\subsection{Weighted colored kernels and finite character filters}
+
+For positive integers $a,b$ and nontrivial unit complex numbers $X,Y$
+define initially in an absolutely convergent half-space
+\begin{equation}\label{xid:eq:weighted-T}
+ T_{a,b}(A,B,C;X,Y)
+ =\sum_{m,n\ge1}\frac{X^mY^n}{m^A n^B(am+bn)^C}.
+\end{equation}
+The positive real denominators use real logarithms.  For $\Re C>0$
+the entire continuation in $A,B$ is given by
+\begin{equation}\label{xid:eq:weighted-T-mellin}
+ T_{a,b}(A,B,C;X,Y)
+ =\frac1{\Gamma(C)}\int_0^\infty t^{C-1}
+        \Li_A(Xe^{-at})\Li_B(Ye^{-bt})\,dt.
+\end{equation}
+In fact this is jointly entire in all three orders after continuation.
+To prove the statement, subtract any finite Taylor polynomial at
+$t=0$ from the product of polylogarithms.  It is holomorphic there,
+locally uniformly in $A,B$, because $X,Y\ne1$.  The Taylor integrals
+have poles only at $C=0,-1,\ldots$, each canceled by $1/\Gamma(C)$.
+The integral over $[1,\infty)$ converges locally normally for all
+orders because its integrand decays exponentially.  Increasing the
+Taylor order proves entire continuation and licenses every fixed
+mixed order derivative.
+
+These weighted kernels introduce no extra class of functions beyond
+ordinary colored Tornheim kernels.  Choose any roots $\xi^a=X$ and
+$\eta^b=Y$.  Applying two finite root filters gives
+\begin{equation}\label{xid:eq:weighted-T-reduction}
+ T_{a,b}(A,B,C;X,Y)
+ =a^{A-1}b^{B-1}
+ \sum_{r=0}^{a-1}\sum_{s=0}^{b-1}
+ T_{1,1}(A,B,C;\xi e(r/a),\eta e(s/b)).
+\end{equation}
+Different choices of roots merely permute the summands.  None of
+these twists is one, since $X,Y\ne1$.  The proof first changes
+variables $u=am,v=bn$ in the absolutely convergent series, and then
+uses $a^{-1}\sum_r e(ru/a)=\mathbf1_{a\mid u}$ and its $b$ analogue.
+Analytic continuation proves the identity at all orders.
+
+For each $k\in\{1,2,3\}$ let $i<j$ be the remaining indices, and
+for $h=0,\ldots,p_k-1$ put
+\begin{align}
+ X_{ik,h}&=e\left(a_i-\frac{p_i a_k}{p_k}
+                              +\frac{hp_i}{p_k}\right),\notag\\
+ X_{jk,h}&=e\left(a_j-\frac{p_j a_k}{p_k}
+                              +\frac{hp_j}{p_k}\right),\label{xid:eq:triple-twists}\\
+ \vartheta_k&=\frac\pi2(\lambda_i+\lambda_j-\lambda_k).
+ \notag
+\end{align}
+Every twist in \eqref{xid:eq:triple-twists} is nontrivial.  Indeed,
+$X_{ik,h}=1$ for some integer $h$ is equivalent to
+$p_k a_i-p_i a_k\in\gcd(p_i,p_k)\mathbb Z$, which contradicts
+\eqref{xid:eq:triple-separation}.
+
+\begin{theorem}[Finite spectral formula for three unequal frequencies]
+\label{xid:thm:triple-spectral}
+For $\Re\lambda_i>0$,
+\begin{equation}\label{xid:eq:triple-K}
+ K(\boldsymbol\lambda;\boldsymbol p,\boldsymbol a)
+ =\int_0^1\prod_{i=1}^3
+       \zeta(1-\lambda_i,\{p_i x+a_i\})\,dx
+ =\frac{\prod_i\Gamma(\lambda_i)}{(2\pi)^{\sum_i\lambda_i}}
+       \mathcal S(\boldsymbol\lambda),
+\end{equation}
+where the finite sum is
+\begin{align}
+ \mathcal S(\boldsymbol\lambda)
+ =\sum_{k=1}^3p_k^{\lambda_k-1}\sum_{h=0}^{p_k-1}
+ \bigl\{&e^{-i\vartheta_k}
+ T_{p_i,p_j}(\lambda_i,\lambda_j,\lambda_k;
+                         X_{ik,h},X_{jk,h})\notag\\
+ &+e^{i\vartheta_k}
+ T_{p_i,p_j}(\lambda_i,\lambda_j,\lambda_k;
+                         X_{ik,h}^{-1},X_{jk,h}^{-1})\bigr\}.
+ \label{xid:eq:triple-cones}
+\end{align}
+The right side is a meromorphic continuation to all three order
+variables.  It has $2(p_1+p_2+p_3)$ weighted-kernel terms before
+symmetry or character simplifications.
+\end{theorem}
+
+\begin{proof}
+Start with $\Re\lambda_i>1$, where each Hurwitz Fourier series is
+absolutely convergent.  For a nonzero frequency $n$, its coefficient
+is
+\[
+ \frac{\Gamma(\lambda_i)}{(2\pi|n|)^{\lambda_i}}
+      e^{-i\pi\lambda_i\operatorname{sgn}(n)/2}.
+\]
+After dilation and translation, integration retains precisely
+$p_1n_1+p_2n_2+p_3n_3=0$, with all $n_i\ne0$.
+There are six disjoint sign cones.  In the cone with $n_i=m>0$,
+$n_j=n>0$ and $n_k<0$, one has
+\[
+ -n_k=\frac{p_i m+p_j n}{p_k}\in\mathbb N.
+\]
+The denominator contributes $p_k^{\lambda_k}$ and the phase of
+the Fourier coefficient is $e^{-i\vartheta_k}$.  Insert
+\[
+ \mathbf1_{p_k\mid p_i m+p_j n}
+   =\frac1{p_k}\sum_{h=0}^{p_k-1}
+                  e\left(\frac{h(p_i m+p_j n)}{p_k}\right).
+\]
+Combining this filter with the translation phases produces exactly
+the first term in braces in \eqref{xid:eq:triple-cones}, including the
+factor $p_k^{\lambda_k-1}$.  Reversing all frequency signs gives
+the second term, after reindexing the finite filter by $h\mapsto-h$.
+Each lattice point occurs once.
+
+The original integral is jointly holomorphic for $\Re\lambda_i>0$:
+near a grid point only one factor is singular, with a locally
+integrable majorant $t^{\sigma-1}$ on any compact parameter set.
+Order derivatives add only logarithmic powers.  Entire continuation
+of the colored kernels makes the right side holomorphic in this
+half-space as well.  The identity theorem proves the asserted
+extension, and the Gamma factors give the meromorphic continuation.
+\end{proof}
+
+There is also a longer formula directly in the known equal-frequency
+kernel.  The ordinary Hurwitz multiplication law gives
+\begin{equation}\label{xid:eq:covering-triple}
+ K(\boldsymbol\lambda;\boldsymbol p,\boldsymbol a)
+ =\prod_i p_i^{\lambda_i-1}
+ \sum_{h_1=0}^{p_1-1}\sum_{h_2=0}^{p_2-1}\sum_{h_3=0}^{p_3-1}
+ K\left(\boldsymbol\lambda;(1,1,1),
+        \left(\frac{a_i+h_i}{p_i}\right)_{i=1}^3\right).
+\end{equation}
+All three translated endpoints in every summand are distinct.  This
+provides an alternative finite reduction and confirms that the rank-two
+lattice does not require a new, unbounded family of kernels.
+
+\subsection{All Stieltjes and argument jets in the ambient coordinate}
+
+Set $\mathscr G(\lambda,y)=\zeta(1-\lambda,y)+1/\lambda$ as before,
+and define the pair kernels by
+\[
+ C_{ij}(\lambda_i,\lambda_j)
+ =\int_0^1\zeta(1-\lambda_i,\{p_ix+a_i\})
+                \zeta(1-\lambda_j,\{p_jx+a_j\})\,dx,
+\]
+with their ordinary separated-grid analytic continuation.
+They have the finite Gamma--polylogarithm expression
+\eqref{xid:eq:pair-spectral}. All shift derivatives below are taken within
+a local chamber of separated real shifts. Define
+\begin{equation}\label{xid:eq:triple-regular-spectral}
+ \mathcal L(\boldsymbol\lambda)
+ =K(\boldsymbol\lambda)+\sum_{\substack{\{i,j,k\}=\{1,2,3\}\\i<j}}
+       \frac{C_{ij}(\lambda_i,\lambda_j)}{\lambda_k}
+       +\frac1{\lambda_1\lambda_2\lambda_3}.
+\end{equation}
+In an ordinary convergent domain this is the integral of the product
+of the three $\mathscr G$ functions.  The terms with just one Hurwitz
+factor vanish because its integral over a period is zero.
+
+For $\boldsymbol r=(r_1,r_2,r_3)\in\mathbb N_0^3$ let
+$\partial_{\boldsymbol a}^{\boldsymbol r}=\prod_i\partial_{a_i}^{r_i}$.
+For $x_0\in S_i$ and $j\ne i$ put
+$\eta_{ij}(x_0)=\{p_jx_0+a_j\}\in(0,1)$.  Define the finite local
+numerator
+\begin{align}
+ B_i^{\boldsymbol r}(\boldsymbol\lambda)
+ ={}&(-1)^{r_i}(1-\lambda_i)_{r_i}
+          p_i^{\lambda_i-r_i-1}\notag\\
+ &\quad\cdot\sum_{x_0\in S_i}[t^{r_i}]
+   \prod_{j\ne i}\partial_y^{r_j}
+          \mathscr G(\lambda_j,\eta_{ij}(x_0)+p_jt).
+ \label{xid:eq:triple-local-B}
+\end{align}
+It is holomorphic near the spectral origin.  It uses a finite Taylor
+polynomial and values of Stieltjes functions and their argument
+derivatives at nonsingular points.
+
+\begin{theorem}[All-index triple finite-part identity]
+\label{xid:thm:triple-FP}
+The function
+\begin{equation}\label{xid:eq:triple-holomorphic-J}
+ \mathcal J_{\boldsymbol r}(\boldsymbol\lambda)
+ =\partial_{\boldsymbol a}^{\boldsymbol r}
+       \mathcal L(\boldsymbol\lambda)
+       -\sum_{i=1}^3\frac{B_i^{\boldsymbol r}(\boldsymbol\lambda)}{\lambda_i}
+\end{equation}
+is holomorphic in a sufficiently small neighborhood of the origin.
+For all $m_1,m_2,m_3\ge0$,
+\begin{align}
+ &\FP_x\int_0^1\prod_{i=1}^3
+       \gamma_{m_i}^{(r_i)}(\{p_ix+a_i\})\,dx\notag\\
+ &\qquad=\left(\prod_i m_i!\right)
+       [\lambda_1^{m_1}\lambda_2^{m_2}\lambda_3^{m_3}]
+          \mathcal J_{\boldsymbol r}(\boldsymbol\lambda).
+ \label{xid:eq:triple-FP-value}
+\end{align}
+Together with \eqref{xid:eq:triple-cones}, this is an explicit finite
+colored-Tornheim, Gamma, and local Stieltjes coefficient formula for
+every choice of the six indices.
+\end{theorem}
+
+\begin{proof}
+Begin with $\Re\lambda_i>r_i+1$. Argument differentiation and
+integration then commute, including at moving grid points: the singular
+pieces vanish to the required orders and the regular pieces match across
+each periodic endpoint, so the boundary terms cancel. Hence
+$\partial_{\boldsymbol a}^{\boldsymbol r}\mathcal L$ is the
+meromorphic integral of the product of the three argument-derivative
+generators.
+
+Near $x_0\in S_i$ the singular term of factor $i$ is
+\[
+ (-1)^{r_i}(1-\lambda_i)_{r_i}
+ p_i^{\lambda_i-r_i-1}t^{\lambda_i-r_i-1}.
+\]
+The other two factors are smooth there.  Subtract their Taylor
+polynomial through degree $r_i$.  The degree-$r_i$ term alone has
+denominator $\lambda_i$ near the origin; summed over $S_i$ its
+numerator is exactly \eqref{xid:eq:triple-local-B}.
+As in Theorem~\ref{xid:thm:coordinate-monomial}, its meromorphic integral
+over $(0,h)$ is $B_i h^{\lambda_i}/\lambda_i$, whereas the generating
+function of its coordinate finite parts is
+$B_i(h^{\lambda_i}-1)/\lambda_i$.  Their difference is the complete
+quantity $B_i/\lambda_i$.
+
+The lower Taylor degrees have denominators bounded away from zero
+on a small spectral polydisc.  The remainders are locally normally
+integrable there.  A partition of unity treats the finitely many
+disjoint singular points independently.  Subtracting all three
+complete numerators therefore leaves a holomorphic function whose
+Taylor coefficients are exactly the stated finite-part integrals.
+The factorials in \eqref{xid:eq:triple-FP-value} follow from the exponential
+Stieltjes generating convention.
+\end{proof}
+
+For zero argument derivatives the local term simplifies to
+\[
+ B_i^{\boldsymbol0}(\boldsymbol\lambda)
+ =p_i^{\lambda_i-1}\sum_{x_0\in S_i}
+             \prod_{j\ne i}\mathscr G(\lambda_j,\eta_{ij}(x_0)).
+\]
+Even here its full dependence on $\lambda_i$ must be retained; using
+only $B_i(0,\lambda_j,\lambda_k)$ omits the powers of $\log p_i$.
+Thus the character calculation and the ambient-coordinate theorem are
+separate necessary parts of the reduction.
+
+\subsection{Independent polynomial checks}
+
+At positive integer $\lambda_i$, the identity
+$\zeta(1-\lambda_i,y)=-B_{\lambda_i}(y)/\lambda_i$ makes
+\eqref{xid:eq:triple-K} a rational piecewise-polynomial integral whenever
+the shifts are rational.  This provides a check independent of Fourier
+or special-function quadrature.  For
+\[
+ (p_1,p_2,p_3)=(1,2,3),\qquad
+ (a_1,a_2,a_3)=(0,1/5,1/7),
+\]
+the exact integrations give
+\begin{align}
+ K(2,2,2)&=-\frac{49960598339}{1715322420000000},\notag\\
+ K(2,3,2)&=-\frac{1641301145317}{315190494675000000}.
+ \label{xid:eq:triple-rational-checks}
+\end{align}
+The supplied program compares these exact rational values with the
+independent filtered Mellin integrals \eqref{xid:eq:weighted-T-mellin}.
+The spectral check does not replace the local-subtraction proof for
+Stieltjes jets, which is given above.

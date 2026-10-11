@@ -1,0 +1,544 @@
+\section{Local identities for every derivative of a spectral product}
+\label{sec:spectral}
+
+There is a useful second application of the distinction between a
+multivariate germ and its one-dimensional restrictions. For polynomially
+weighted products of shifted linear factors, every fixed spectral
+derivative is a polynomial in the \emph{normalized factor exponents}.
+Its highest-degree component is local and explicitly computable. This
+produces finite identities between higher zeta derivatives even when the
+individual values do not have short closed forms.
+
+The first-derivative multiplicative anomaly is classical in substance;
+Dowker treats linear factors and polynomial multiplicities
+\cite{dowker}, and G\"urel gives general regularized-product formulas
+\cite{gurel}, extending the Lerch--Mizuno setting \cite{mizuno}.
+We retain that attribution. The all-order germ, the normalized-weight
+polynomial formulation, and its explicit finite-difference consequences
+are the proved extension developed here; the literature review does not
+establish a priority claim for them.
+
+\subsection{An exact multivariate meromorphic germ}
+
+Let $P$ be a nonzero polynomial of degree $D$, let
+$a_1,\ldots,a_m>0$, and initially define
+\begin{equation}\label{sp:def}
+ \cZ_P(\boldsymbol u;\boldsymbol a)
+  =\sum_{n\ge0}P(n)\prod_{j=1}^m(n+a_j)^{-u_j},
+ \qquad U=\sum_{j=1}^m u_j.
+\end{equation}
+Absolute convergence requires $\Rea U>D+1$; no separate positivity of
+the $u_j$ is needed. Choose $b>0$ such that
+$\max_j|a_j-b|<b$, for example $b=\max_j a_j$. Write
+\begin{align}
+ d_j&=a_j-b,& p_k&=\frac{P^{(k)}(-b)}{k!},&
+ P(n)&=\sum_{k=0}^D p_k(n+b)^k,\label{sp:base}\\
+ L_j(z)&=\log(1+d_jz),&
+ L_{\boldsymbol u}(z)&=\sum_j u_jL_j(z),&
+ C_\ell(\boldsymbol u)&=[z^\ell]e^{-L_{\boldsymbol u}(z)}.
+ \label{sp:C}
+\end{align}
+The logarithms are their analytic germs at $z=0$. Explicitly,
+\begin{equation}\label{sp:Cpoch}
+ C_\ell(\boldsymbol u)=
+ \sum_{q_1+\cdots+q_m=\ell}
+       \prod_{j=1}^m\frac{(-1)^{q_j}d_j^{q_j}(u_j)_{q_j}}{q_j!}.
+\end{equation}
+For $\ell\ge1$ this is a polynomial of degree at most $\ell$ and has
+zero constant term.
+
+\begin{theorem}[Finite polar numerator, normally convergent regular part]
+\label{sp:thm:germ}
+The continuation of \eqref{sp:def} is
+\begin{equation}\label{sp:continuation}
+ \cZ_P(\boldsymbol u;\boldsymbol a)
+   =\sum_{k=0}^D p_k\sum_{\ell\ge0}
+          C_\ell(\boldsymbol u)\zeta(U+\ell-k,b).
+\end{equation}
+Near $\boldsymbol u=0$ it has the exact form
+\begin{equation}\label{sp:germ}
+ \boxed{\cZ_P(\boldsymbol u;\boldsymbol a)
+             =\frac{\cR_P(\boldsymbol u)}U+\cH_P(\boldsymbol u),
+ \qquad \cR_P=\sum_{k=0}^D p_k C_{k+1}.}
+\end{equation}
+Here $\cR_P(0)=0$, $\deg\cR_P\le D+1$, and $\cH_P$ is holomorphic.
+An explicit regular part is
+\begin{align}\label{sp:H}
+ \cH_P(\boldsymbol u)=\sum_{k=0}^D p_k\Bigg\{&\zeta(U-k,b)
+   +\sum_{\substack{\ell\ge1\\\ell\ne k+1}}
+            C_\ell(\boldsymbol u)\zeta(U+\ell-k,b)\notag\\
+   &+C_{k+1}(\boldsymbol u)g_b(U)\Bigg\}.
+\end{align}
+Every infinite sum displayed here converges normally, with every fixed
+spectral derivative, away from its explicitly displayed poles.
+\end{theorem}
+
+\begin{proof}
+Expand $(n+a_j)^{-u_j}$ as $(n+b)^{-u_j}$ times the binomial series
+in $d_j/(n+b)$, then multiply the expansions. Choose a radius $\rho$
+with $1/b<\rho<1/\max|d_j|$; when all $d_j=0$, any $\rho>1/b$
+will do. On compact $\boldsymbol u$-sets the exponential in
+\eqref{sp:C} is bounded on $|z|=\rho$, so
+$|C_\ell(\boldsymbol u)|\le M\rho^{-\ell}$.
+For sufficiently large $\ell$, the Dirichlet series for
+$\zeta(U+\ell-k,b)$ and its fixed derivatives are bounded by a
+constant times $b^{-\ell}$, allowing harmless polynomial factors in
+$\ell$. Since $b\rho>1$, the resulting series converges geometrically.
+The same Cauchy argument on a slightly larger compact set handles
+$\boldsymbol u$ derivatives. This proves every interchange in the
+initial half-space and then proves \eqref{sp:continuation} by continuation.
+For $|U|<1/2$, the only Hurwitz poles occur when $\ell=k+1$.
+Subtracting exactly their $1/U$ terms gives \eqref{sp:germ} and
+\eqref{sp:H}.
+\end{proof}
+
+The germ need not be jointly holomorphic at zero: $\cR_P$ need not
+be divisible by $U$. Its restriction to every ray
+$\boldsymbol u=s\boldsymbol w$ with $W:=\sum_jw_j\ne0$ is nevertheless
+holomorphic at $s=0$, since $\cR_P(0)=0$. The auxiliary $b$ can change
+$\cR_P$ off $U=0$ by a multiple of $U$, absorbed into $\cH_P$.
+Its restriction to the polar hyperplane, and the tangent coefficient
+identities below, are intrinsic.
+
+\subsection{Polynomiality in normalized exponents and exact finite differences}
+
+For $\boldsymbol\alpha$ satisfying $\sum_j\alpha_j=1$, set
+\begin{equation}\label{sp:F}
+ \mathfrak F_r(\boldsymbol\alpha)
+   =\left.\frac{d^r}{ds^r}
+          \cZ_P(s\boldsymbol\alpha;\boldsymbol a)\right|_{s=0},
+ \qquad r\ge0.
+\end{equation}
+Complex normalized exponents are allowed by continuation. Write
+$\cH_{P,[q]}$ and $\cR_{P,[q]}$ for the homogeneous Taylor parts.
+
+\begin{theorem}[Every normalized spectral jet is a polynomial]
+\label{sp:thm:polynomial}
+One has
+\begin{align}
+ \mathfrak F_r(\boldsymbol\alpha)
+  &=r!\{\cH_{P,[r]}(\boldsymbol\alpha)
+                +\cR_{P,[r+1]}(\boldsymbol\alpha)\},\label{sp:homogeneous}\\
+ \cR_{P,[r+1]}(\boldsymbol\alpha)
+  &=\frac{(-1)^{r+1}}{(r+1)!}
+      \sum_{k=0}^D p_k[z^{k+1}]L_{\boldsymbol\alpha}(z)^{r+1}.
+ \label{sp:Rhomogeneous}
+\end{align}
+Thus $\mathfrak F_r$ is a polynomial of degree at most $r+1$ on the
+affine hyperplane $\sum\alpha_j=1$. Its component of degree $r+1$
+is entirely local and vanishes when $r>D$.
+\end{theorem}
+\begin{proof}
+Substitute $U=s$ in \eqref{sp:germ} and extract $s^r$.
+Homogeneous extraction in $e^{-L_{\boldsymbol\alpha}}$ gives
+\eqref{sp:Rhomogeneous}. The degree assertions follow immediately.
+\end{proof}
+
+For a function on the normalized hyperplane, put
+$\Delta_{\boldsymbol v}f(\boldsymbol\alpha)
+=f(\boldsymbol\alpha+\boldsymbol v)-f(\boldsymbol\alpha)$ when
+$\sum_jv_j=0$. The notation $[n^{-1}]f(n)$ means the coefficient
+of $n^{-1}$ in the Laurent expansion at large $n$; it is the negative
+of the complex-analytic residue at infinity when that residue applies.
+
+\begin{theorem}[Local polarization identity]\label{sp:thm:polarization}
+Let $\boldsymbol v_1,\ldots,\boldsymbol v_{r+1}$ be tangent vectors
+with $\sum_jv_{ij}=0$, and put
+$V_i(n)=\sum_jv_{ij}\log(n+a_j)$. Then
+\begin{align}\label{sp:finite-difference}
+ &\Delta_{\boldsymbol v_1}\cdots\Delta_{\boldsymbol v_{r+1}}
+       \mathfrak F_r(\boldsymbol\alpha)\notag\\
+ &\quad=D_{\boldsymbol v_1}\cdots D_{\boldsymbol v_{r+1}}
+       \mathfrak F_r(\boldsymbol\alpha)
+       =(-1)^{r+1}r!\,[n^{-1}]P(n)\prod_{i=1}^{r+1}V_i(n).
+\end{align}
+All mixed finite differences of order $r+2$ vanish. If $\deg P=r$
+and $p$ is its leading coefficient, the right side reduces to
+\begin{equation}\label{sp:leading}
+ (-1)^{r+1}r!p
+             \prod_{i=1}^{r+1}\left(\sum_jv_{ij}a_j\right).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The $r+1$ tangent differentiations kill $\cH_{P,[r]}$ and polarize
+$L_{\boldsymbol\alpha}^{r+1}$, supplying a factor $(r+1)!$ in
+\eqref{sp:Rhomogeneous}. Since $\sum_jv_{ij}=0$,
+\[
+ L_{\boldsymbol v_i}((n+b)^{-1})
+   =\sum_jv_{ij}\log(n+a_j)=V_i(n)=O(n^{-1}).
+\]
+The coefficient $\sum_k p_k[z^{k+1}]\prod_iL_{\boldsymbol v_i}(z)$
+is therefore $[n^{-1}]P(n)\prod_i V_i(n)$. Translation from $n+b$
+to $n$ preserves this coefficient. For a polynomial of degree at most
+$r+1$, its mixed difference of order $r+1$ equals its corresponding
+constant mixed derivative; for example integrate that derivative over
+the unit $(r+1)$-cube. This proves \eqref{sp:finite-difference}.
+Finally $V_i(n)=n^{-1}\sum_jv_{ij}a_j+O(n^{-2})$ proves
+\eqref{sp:leading}.
+\end{proof}
+
+Normalization cannot be omitted. For arbitrary $\boldsymbol w$ with
+$W\ne0$, define $Z_{\boldsymbol w}(s)=\cZ_P(s\boldsymbol w)$.
+Then
+\begin{equation}\label{sp:scaling}
+ Z_{\boldsymbol w}^{(r)}(0)
+       =W^r\mathfrak F_r(\boldsymbol w/W).
+\end{equation}
+The degree theorem concerns factor exponents; it is not a polynomiality
+assertion in the shifts $a_j$ themselves.
+
+\subsection{A full Hurwitz--Stieltjes formula for each jet}
+
+Put $A_{h,\ell}=[z^\ell]L_{\boldsymbol\alpha}(z)^h$, with
+$A_{0,0}=1$ and $A_{0,\ell}=0$ for $\ell>0$.
+
+\begin{corollary}[Normally convergent coefficient formula]\label{sp:cor:alljets}
+For every $r\ge0$,
+\begin{align}\label{sp:alljets}
+ \mathfrak F_r(\boldsymbol\alpha)
+ =\sum_{k=0}^Dp_k\Bigg\{&\zeta^{(r)}(-k,b)
+ +\sum_{\substack{\ell\ge1\\\ell\ne k+1}}\sum_{h=1}^r
+   (-1)^h\binom rh A_{h,\ell}\zeta^{(r-h)}(\ell-k,b)\notag\\
+ &+\frac{(-1)^{r+1}}{r+1}A_{r+1,k+1}
+   +(-1)^r\sum_{h=1}^r\binom rh A_{h,k+1}\gamma_{r-h}(b)
+                                      \Bigg\}.
+\end{align}
+Empty sums vanish. The generalized Stieltjes constants occur linearly,
+with indices at most $r-1$.
+\end{corollary}
+\begin{proof}
+Multiply the expansion of $e^{-sL_{\boldsymbol\alpha}(z)}$ by the
+Taylor expansion of each nonresonant Hurwitz factor in
+\eqref{sp:continuation}. For $\ell=k+1$, multiply it by
+$s^{-1}+\sum_q(-1)^q\gamma_q(b)s^q/q!$. The coefficient of $s^r$
+receives a contribution from the exponential coefficient of order
+$r+1$, which yields the third term in \eqref{sp:alljets}. Normal
+convergence was proved in Theorem~\ref{sp:thm:germ}.
+\end{proof}
+
+This additional order-$r+1$ coefficient must be retained before a
+spectral pole is canceled. Generalized harmonic numbers provide an
+alternative finite description of all binomial coefficients required:
+\begin{equation}\label{sp:harmonic}
+ \frac{(x)_q}{q!}
+ =\frac xq\exp\left(\sum_{j\ge1}
+                   \frac{(-1)^{j+1}H_{q-1}^{(j)}}j x^j\right),
+ \qquad q\ge1.
+\end{equation}
+This follows from $(x)_q/q!=(x/q)\prod_{j=1}^{q-1}(1+x/j)$.
+Use it in \eqref{sp:Cpoch} and truncate at the desired spectral order.
+Thus both the Stieltjes and generalized-harmonic content are explicit.
+
+\subsection{First derivative: the classical weighted anomaly and Gamma factors}
+
+Set
+\begin{equation}\label{sp:single}
+ \zeta_P(s,a)=\sum_{n\ge0}\frac{P(n)}{(n+a)^s}
+       =\sum_{k=0}^D\frac{P^{(k)}(-a)}{k!}\zeta(s-k,a),
+\end{equation}
+where continuation is understood, and define
+$\delta_{\boldsymbol w}=\sum_jw_j\zeta_P'(0,a_j)
+-Z_{\boldsymbol w}'(0)$. The first-derivative instance of the calculus
+recovers
+\begin{equation}\label{sp:anomaly}
+ \boxed{\delta_{\boldsymbol w}
+   =\frac1{2W}\sum_{i<j}w_iw_j[n^{-1}]P(n)
+                 \log^2\frac{n+a_i}{n+a_j}.}
+\end{equation}
+Indeed the nonlocal terms of $\mathfrak F_1$ are linear in the
+normalized weights and cancel against their interpolation at the
+vertices $\boldsymbol e_j$. The local difference is
+\[
+ \frac12\sum_kp_k[z^{k+1}]
+ \left\{\sum_j\alpha_jL_j^2-
+           \left(\sum_j\alpha_jL_j\right)^2\right\}
+ =\frac12\sum_{i<j}\alpha_i\alpha_j
+              \sum_kp_k[z^{k+1}](L_i-L_j)^2.
+\]
+Multiplication by $W$ gives \eqref{sp:anomaly}.
+
+The sign convention is fixed by the determinant identity
+\begin{equation}\label{sp:determinant}
+ e^{-Z_{\boldsymbol w}'(0)}
+   =e^{\delta_{\boldsymbol w}}
+                     \prod_j e^{-w_j\zeta_P'(0,a_j)}.
+\end{equation}
+For $P(n)=\sum_{d=0}^Dq_dn^d$, the finite coefficient in
+\eqref{sp:anomaly} is
+\begin{equation}\label{sp:pairpolynomial}
+ \sum_{d=1}^Dq_d(-1)^{d+1}
+   \sum_{\ell=1}^d
+   \frac{(a_i^\ell-a_j^\ell)
+         (a_i^{d+1-\ell}-a_j^{d+1-\ell})}{\ell(d+1-\ell)}.
+\end{equation}
+For $P=1$ it is zero; for $P=n,n^2,n^3$ it is, respectively,
+\begin{align*}
+ &(a_i-a_j)^2,\qquad -(a_i-a_j)^2(a_i+a_j),\\
+ &\frac{(a_i-a_j)^2(11a_i^2+14a_ia_j+11a_j^2)}{12}.
+\end{align*}
+For shifts $(1,2,3)$ and weights $(1,2,1)$, this gives
+$\delta=1$ for $P=n$ and $\delta=-4$ for $P=n^2$.
+
+With $G$ denoting the Barnes $G$ function normalized by $G(1)=1$,
+$G(a+1)=\Gamma(a)G(a)$, the Hurwitz--Barnes identity gives, when $P(n)=n$,
+\begin{equation}\label{sp:Barnes}
+ \zeta_P'(0,a)=\zeta'(-1)-\log G(a+1)+\frac a2\log(2\pi).
+\end{equation}
+For a direct normalization check, differentiate both sides using
+Hurwitz shift differentiation and the Barnes integral formula
+\cite[Eq.~5.17.4]{dlmf}. Both derivatives are
+$a-1/2-a\psi(a)$, and their values at $a=1$ agree. This proves the
+displayed relation on $(0,\infty)$.
+For two unit-weight factors the complete determinant is therefore
+\begin{equation}\label{sp:Barnesdet}
+ e^{-Z_{(1,1)}'(0)}
+ =\frac{e^{(a-b)^2/4-2\zeta'(-1)}G(a+1)G(b+1)}
+             {(2\pi)^{(a+b)/2}}.
+\end{equation}
+Here $a,b>0$ are the two shifts; $b$ in this last formula need not be
+the expansion base used earlier. All logarithms of $G$ are real on
+these positive arguments.
+
+\subsection{A six-term identity for second derivatives}
+
+\begin{theorem}[Quadratic-weight Vandermonde evaluation]
+\label{sp:thm:sixterm}
+Let $P$ be a monic quadratic polynomial and, for $a,b>0$, define
+\begin{equation}\label{sp:Tdef}
+ \mathfrak T_P(a,b)=\left.\frac{d^2}{ds^2}
+     \sum_{n\ge0}P(n)\bigl((n+a)^2(n+b)\bigr)^{-s}
+                                      \right|_{s=0},
+\end{equation}
+by meromorphic continuation of the initially convergent series. Then
+for every $a,b,c>0$,
+\begin{align}\label{sp:sixterm}
+ &\mathfrak T_P(a,b)+\mathfrak T_P(b,c)+\mathfrak T_P(c,a)
+ -\mathfrak T_P(b,a)-\mathfrak T_P(c,b)-\mathfrak T_P(a,c)\notag\\
+ &\hspace{30mm}=\frac23(a-b)(b-c)(c-a).
+\end{align}
+For a quadratic of leading coefficient $p$, multiply the right side
+by $p$. For degree at most one, the right side is zero.
+\end{theorem}
+
+\begin{proof}
+Use the three shifts $(a,b,c)$, take
+$\boldsymbol\alpha_0=(1,1,1)/3$, and take tangent vectors
+\[
+ \boldsymbol v_1=(1,-1,0)/3,\quad
+ \boldsymbol v_2=(0,1,-1)/3,\quad
+ \boldsymbol v_3=(-1,0,1)/3.
+\]
+Their sum is zero, so the empty and full subsets cancel in the
+third finite difference of $\mathfrak F_2$. Equation~\eqref{sp:leading}
+gives
+\[
+ \sum_{i=1}^3\{\mathfrak F_2(\boldsymbol\alpha_0+\boldsymbol v_i)
+      -\mathfrak F_2(\boldsymbol\alpha_0-\boldsymbol v_i)\}
+ =-\frac2{27}(a-b)(b-c)(c-a).
+\]
+Each argument is a permutation of $(2/3,1/3,0)$. By
+\eqref{sp:scaling} its value is the corresponding $\mathfrak T_P/9$.
+Reading the six arguments gives the negative of the left side of
+\eqref{sp:sixterm}, divided by nine. This proves the formula and its
+sign. The lower-degree assertions follow from the coefficient
+$[n^{-1}]$ in \eqref{sp:finite-difference}.
+\end{proof}
+
+For $(a,b,c)=(1,2,3)$ the value is $4/3$, independent of the lower
+two coefficients of $P$. This is a cancellation of all nonlocal
+second-derivative constants; applying only a first-derivative anomaly
+formula would not justify it.
+
+\subsection{An alternating Vandermonde identity with any number of factors}
+
+The six-term evaluation is the first nontrivial higher-derivative member
+of a general alternating family. Define
+\[
+ N=\binom m2,\qquad
+ \Delta(\boldsymbol x)=\prod_{1\le i<j\le m}(x_j-x_i),\qquad
+ K_m=\prod_{k=0}^{m-1}k!,
+\]
+and let $(\sigma\boldsymbol w)_j=w_{\sigma(j)}$.
+
+\begin{theorem}[General spectral alternant]\label{sp:thm:alternant}
+For $m\ge2$, shifts $a_j>0$, and weights with $W=\sum_jw_j\ne0$,
+\begin{align}\label{sp:alternant}
+ &\sum_{\sigma\in S_m}\operatorname{sgn}(\sigma)
+       Z_{\sigma\boldsymbol w}^{(N-1)}(0)\notag\\
+ &\quad=\frac{(-1)^N(N-1)!}{WK_m}\Delta(\boldsymbol w)
+     [n^{-1}]P(n)\prod_{i<j}\log\frac{n+a_j}{n+a_i}.
+\end{align}
+If $\deg P=N-1$ with leading coefficient $p$, this is the complete
+algebraic evaluation
+\begin{equation}\label{sp:alternant-leading}
+ \boxed{\sum_{\sigma\in S_m}\operatorname{sgn}(\sigma)
+       Z_{\sigma\boldsymbol w}^{(N-1)}(0)
+ =\frac{(-1)^N(N-1)!p}{WK_m}
+                 \Delta(\boldsymbol w)\Delta(\boldsymbol a).}
+\end{equation}
+For degree less than $N-1$, the alternating sum is zero.
+\end{theorem}
+
+\begin{proof}
+Every alternating polynomial in $m$ variables is divisible by their
+Vandermonde polynomial, of degree $N$. Therefore alternation kills
+the degree-at-most-$N-1$ term $\cH_{P,[N-1]}$ in
+\eqref{sp:homogeneous}. The elementary alternant identity is
+\begin{equation}\label{sp:elementary-alternant}
+ \sum_{\sigma\in S_m}\operatorname{sgn}(\sigma)
+       \left(\sum_j\alpha_{\sigma(j)}y_j\right)^N
+   =\frac{N!}{K_m}\Delta(\boldsymbol\alpha)\Delta(\boldsymbol y).
+\end{equation}
+To prove it, expand by the multinomial theorem. A monomial with
+repeated exponents disappears under alternation. The only distinct
+nonnegative exponent pattern of total degree $N$ is a permutation
+of $0,1,\ldots,m-1$. The surviving determinant in the $\alpha_j$
+and the corresponding determinant in the $y_j$ give the two
+Vandermondes, with the positive orientation shown in
+\eqref{sp:elementary-alternant} and multinomial factor $N!/K_m$.
+
+Apply this identity to $y_j=L_j(z)$ in
+\eqref{sp:Rhomogeneous}. The normalized alternating jet is
+\[
+ \frac{(-1)^N(N-1)!}{K_m}\Delta(\boldsymbol\alpha)
+           \sum_kp_k[z^{k+1}]\prod_{i<j}(L_j(z)-L_i(z)).
+\]
+At $z=(n+b)^{-1}$, every difference is
+$\log((n+a_j)/(n+a_i))$. The coefficient is therefore the one
+in \eqref{sp:alternant}. Use \eqref{sp:scaling} and
+$\Delta(\boldsymbol w/W)=W^{-N}\Delta(\boldsymbol w)$ to obtain
+the unnormalized factor $1/W$. Finally, the logarithmic product
+starts with $\Delta(\boldsymbol a)n^{-N}$, proving
+\eqref{sp:alternant-leading} and the lower-degree vanishing.
+\end{proof}
+
+For $m=3$ and $\boldsymbol w=(2,1,0)$, equation
+\eqref{sp:alternant-leading} is exactly \eqref{sp:sixterm}.
+For $m=4$, $N=6$ and $(N-1)!/K_m=10$: a signed sum of
+twenty-four fifth spectral derivatives equals
+$10p\Delta(\boldsymbol w)\Delta(\boldsymbol a)/W$.
+For example, with $\boldsymbol w=(3,2,1,0)$,
+$\boldsymbol a=(1,2,3,4)$ and any monic degree-five $P$, that
+sum is exactly $240$. No individual fifth derivative is evaluated
+to obtain this algebraic cancellation.
+
+\subsection{Shift derivatives, polygammas, and normalized primitives}
+
+The single-factor spectral derivative has the exact shift derivative
+\begin{equation}\label{sp:shiftderivative}
+ \frac{d}{da}\zeta_P'(0,a)
+  =-\FP_{s=1}\zeta_P(s,a)
+  =P(-a)\psi(a)
+      -\sum_{k=1}^D\frac{P^{(k)}(-a)}{k!}\zeta(1-k,a).
+\end{equation}
+To prove it, differentiate the convergent Dirichlet series to obtain
+$\partial_a\zeta_P(s,a)=-s\zeta_P(s+1,a)$. The latter zeta factor
+has residue $P(-a)$ at $s=0$. Multiplication by $s$ before
+differentiation shows that its finite part, rather than an undefined
+value at the pole, is required. Since
+$\zeta(1-k,a)=-B_k(a)/k$, the result is a polynomial times digamma
+plus a polynomial. Repeated differentiation gives explicit polygamma
+identities; integration over $[a_0,a_1]\subset(0,\infty)$ gives the
+normalized primitive $\zeta_P'(0,a_1)-\zeta_P'(0,a_0)$.
+
+Combining \eqref{sp:shiftderivative} with the finite anomaly polynomial
+gives all shift derivatives of the product determinant. For example,
+for $P=n$ and two unit weights,
+\[
+ \partial_a Z_{(1,1)}'(0)=\frac{a+b-1}2-a\psi(a).
+\]
+
+\subsection{Logarithmic multiplicities and higher-order poles}
+
+Fix the same expansion base $b$ as in \eqref{sp:base}, and for an
+integer $h\ge0$ consider the distinct spectrum
+\begin{equation}\label{sp:logdef}
+ \cZ_{P,h}(\boldsymbol u;\boldsymbol a;b)
+  =\sum_{n\ge0}P(n)\log^h(n+b)\prod_j(n+a_j)^{-u_j}.
+\end{equation}
+Changing this $b$ changes the logarithmic multiplicity itself.
+It must not be treated as a freely variable auxiliary base in this
+definition.
+
+\begin{theorem}[Higher-pole finite parts and their local identities]
+\label{sp:thm:log}
+Near zero,
+\begin{equation}\label{sp:loggerm}
+ \cZ_{P,h}(\boldsymbol u;\boldsymbol a;b)
+   =\frac{h!\cR_P(\boldsymbol u)}{U^{h+1}}
+                                +\cH_{P,h}(\boldsymbol u),
+\end{equation}
+where $\cH_{P,h}$ is holomorphic. For normalized $\boldsymbol\alpha$,
+define the Laurent jet
+\begin{equation}\label{sp:logjet}
+ \mathfrak J_{r,h}(\boldsymbol\alpha)
+  :=r![s^r]\cZ_{P,h}(s\boldsymbol\alpha;\boldsymbol a;b),
+ \qquad r\ge0.
+\end{equation}
+It is a polynomial of degree at most $q:=r+h+1$, and
+\begin{align}
+ \mathfrak J_{r,h}
+   &=r!\{\cH_{P,h,[r]}+h!\cR_{P,[r+h+1]}\},\label{sp:loghomogeneous}\\
+ \Delta_{\boldsymbol v_1}\cdots\Delta_{\boldsymbol v_q}
+       \mathfrak J_{r,h}(\boldsymbol\alpha)
+   &=h!(-1)^q r!\,[n^{-1}]P(n)\prod_{i=1}^q V_i(n)
+ \label{sp:logdifference}
+\end{align}
+for tangent vectors as before. All differences of order $q+1$ vanish.
+\end{theorem}
+
+\begin{proof}
+The proof of \eqref{sp:continuation} is unchanged, except that each
+Hurwitz factor is replaced by $(-1)^h\zeta^{(h)}$. At resonance,
+\[
+ (-1)^h\zeta^{(h)}(1+U,b)
+  =\frac{h!}{U^{h+1}}
+          +\sum_{j\ge0}\frac{(-1)^j\gamma_{j+h}(b)}{j!}U^j.
+\]
+Subtract the displayed pole to prove \eqref{sp:loggerm}. Normal
+convergence persists after these fixed derivatives. Taking $[s^r]$
+gives \eqref{sp:loghomogeneous}, and polarizing its degree-$q$ part
+as in Theorem~\ref{sp:thm:polarization} proves
+\eqref{sp:logdifference}.
+\end{proof}
+
+If $r+h>D$, the residue contribution in \eqref{sp:loghomogeneous}
+vanishes, sharpening the degree bound to $r$. In particular, if $h>D$,
+the constant finite part is independent of the factor shifts and
+normalized weights and equals
+$(-1)^h\sum_kp_k\zeta^{(h)}(-k,b)$, even though negative Laurent
+powers may remain.
+
+There is also a higher-pole version of Theorem~\ref{sp:thm:alternant}.
+Let $N=\binom m2$, $0\le h\le N-1$, and $r=N-h-1$. The identical
+alternant proof applied to \eqref{sp:loghomogeneous} gives
+\begin{align}\label{sp:logalternant}
+ &\sum_{\sigma\in S_m}\operatorname{sgn}(\sigma)\,
+      r![s^r]\cZ_{P,h}(s\sigma\boldsymbol w;\boldsymbol a;b)\notag\\
+ &\quad=\frac{h!(-1)^N r!}{W^{h+1}K_m}\Delta(\boldsymbol w)
+       [n^{-1}]P(n)\prod_{i<j}\log\frac{n+a_j}{n+a_i}.
+\end{align}
+For $\deg P=N-1$ the final coefficient is
+$p\Delta(\boldsymbol a)$. Thus the alternating algebraic evaluation
+persists for logarithmic multiplicities, with the pole order determining
+the required Laurent jet and the power of $W$.
+
+For $h>0$ the ray generally has a pole of order at most $h$.
+Consequently \eqref{sp:logjet} is a Laurent coefficient, not an
+ordinary derivative of the unmodified spectrum at zero. With
+$\mu=\sum_j\alpha_j(a_j-b)$, two concrete constant terms are
+\begin{align}
+ \FP_{s=0}\sum_{n\ge0}n\log(n+b)\prod_j(n+a_j)^{-\alpha_js}
+  &=-\zeta'(-1,b)+b\zeta'(0,b)+\frac{\mu^2}2,
+ \label{sp:logexample1}\\
+ \FP_{s=0}\sum_{n\ge0}n^2\log^2(n+b)\prod_j(n+a_j)^{-\alpha_js}
+  &=\zeta''(-2,b)-2b\zeta''(-1,b)+b^2\zeta''(0,b)
+       -\frac{\mu^3}3.
+ \label{sp:logexample2}
+\end{align}
+The positive-degree dependence of these finite parts is completely
+algebraic despite the higher spectral poles. These formulas resolve
+the concrete logarithmic-multiplicity extension of the local calculus;
+arbitrary nonpolynomial spectra require a separate continuation theorem.
+
