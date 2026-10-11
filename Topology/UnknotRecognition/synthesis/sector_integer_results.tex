@@ -1,0 +1,41 @@
+All 1,534 maintained tests pass in 293.776 seconds; the 24 focused tests
+pass in 2.474 seconds. Real-source regressions cover all three exhaustion
+statuses, equivalent signed hexadecimal values, mixed representations,
+nested Q support containing encoded zeros, and producer-disabled replay.
+Malformed numbers, altered large counts, duplicate rays, incorrect widths,
+changed Euler values and encoded metadata indices are rejected. Cancellation
+continues to propagate.
+
+The retained-source audit replays 134 saved exhaustion certificates:
+twelve generic-Q exclusions, 61 feasible-span proofs and 61 matching-support
+proofs. These are proof instances, not 134 distinct triangulations.
+Every literal certificate passes both the frozen preceding checker and the
+new checker. Every equivalent hexadecimal transcript fails the frozen
+checker and passes the new one; every signed-zero variant also passes the
+new checker. All discovery, kernel, ray and disc-count producers are disabled
+during replay. The existing dense geometric reconstruction and independent
+negative component proof checks remain active.
+
+For every retained proof the audit rejects an altered 8,193-bit Euler
+value and an altered 16,385-bit quadrilateral count after ordinary JSON
+transport. The latter uses the public binary codec, rather than changing
+Python's decimal conversion limit. These changed values are mutations,
+not valid high-coordinate geometric witnesses. The audit checks the
+primitive quadrilateral digit bound on all retained entries. It does not
+claim that this finite bank tests every large triangulation or measures a
+new asymptotic speedup.
+
+Runtime release \code{b361cd6cd} changes only the existing independent
+sector checker and adds five regression tests. The audit pins 422 current
+core-runtime/test sources and checks the preceding 652-source inventory: exactly
+the verifier changed among those existing sources. Discovery producers,
+recognition policy and disabled-stage behavior are unchanged.
+
+The reproduction driver is \code{data/sector\_integer\_audit.py}.
+
+The records are under \code{data/sector-integer-*}. The publication review checks exact
+source hashes, the passing test records and all 134 transport outcomes.
+The current \code{openai/math} head is still \code{fd4aeeb2ee}, checked
+against its remote during this continuation; no new result is inferred
+from that catalogue. The general quasi-polynomial search obligations remain
+open.

@@ -3978,3 +3978,20 @@ arithmetic, CLI routing and cap-safe complete fallback. The other sampled
 disc proofs and negative controls are preserved. All optional defaults
 remain off; the general quasi-polynomial recognition bound is still open.
 Reproduce the audit and configured-call timings with `causal_research.annulus`.
+
+### Exact sector transcripts through binary integer transport
+
+The independent sector-exhaustion checker now decodes its ray-count and Euler
+fields with the same strict signed hexadecimal codec used by the component
+proofs. Equivalent integer and hexadecimal values have identical mathematical
+meaning. Booleans, floats, decimal strings, malformed encodings, changed counts
+and incorrect support widths are rejected; allowed-type indices keep their
+existing strict schema. A verified nested Q transcript is decoded before its
+positive support is extracted, so a hexadecimal zero remains zero.
+
+All 1,534 maintained tests and 24 focused tests pass. Tests use actual source
+triangulations and cover all exhaustion statuses, nested support reductions,
+producer-disabled replay, changed large binary values and cancellation.
+This fixes certificate compatibility for compressed arithmetic; it does not
+change the search policy or establish a new recognition complexity bound.
+See [the bit-size proof and replay evidence](../synthesis/sector_integer_transport.tex).
