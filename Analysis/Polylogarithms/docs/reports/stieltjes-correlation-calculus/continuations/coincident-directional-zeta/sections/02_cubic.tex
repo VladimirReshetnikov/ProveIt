@@ -1,0 +1,348 @@
+\section{Coincident products: an explicit holomorphic completion}
+\label{cub:sec}
+
+The newest coincident-point report evaluates all quadratic Stieltjes
+moments and explicitly asks for the cubic case, beginning with
+$\FP\int_0^1\psi(x)^3\,dx$ \cite{IncomingCoincident}.
+At three factors the local subtraction has a new feature: a pair of
+singular factors and the linear term of the remaining factor together
+produce a logarithmic divergence.  We give its exact spectral
+counterterm.  The construction works at every derivative order and,
+locally, at every number of factors.
+
+\subsection{A finite local rule for any number of factors}
+
+Use the lowering spectral convention
+\begin{equation}\label{cub:generator}
+ g(\lambda,x)=\zeta(1-\lambda,x)+\frac1\lambda
+   =\sum_{m\ge0}\gamma_m(x)\frac{\lambda^m}{m!}.
+\end{equation}
+The pole at $\lambda=0$ is removable at each $x>0$.
+For $r\ge0$ put
+\[
+ c_r(\lambda)=(-1)^r(1-\lambda)_r,
+ \qquad h_r(\lambda,x)=\partial_x^r g(\lambda,1+x).
+\]
+The Hurwitz shift relation gives the exact splitting
+\begin{equation}\label{cub:local-split}
+ \partial_x^r g(\lambda,x)
+ =c_r(\lambda)x^{\lambda-r-1}+h_r(\lambda,x).
+\end{equation}
+Every $h_r$ is holomorphic jointly in $\lambda$ near zero and $x$ near
+zero.  Its required Taylor coefficients are explicit:
+\begin{equation}\label{cub:h-coefficients}
+ [x^k]h_r(\lambda,x)=
+ \begin{cases}
+ \zeta(1-\lambda)+1/\lambda,&r=k=0,\\[2pt]
+ c_{r+k}(\lambda)\zeta(1+r+k-\lambda)/k!,&r+k>0.
+ \end{cases}
+\end{equation}
+
+Let $d\ge2$ and $\boldsymbol r=(r_1,\ldots,r_d)$ be nonnegative
+integers.  For $\varnothing\ne S\subseteq\{1,\ldots,d\}$ write
+\[
+ \lambda_S=\sum_{i\in S}\lambda_i,
+ \qquad \nu_S=\sum_{i\in S}(r_i+1)-1,
+\]
+and define the finite numerator
+\begin{equation}\label{cub:subset-numerator}
+ A_S(\boldsymbol\lambda)=
+ \left(\prod_{i\in S}c_{r_i}(\lambda_i)\right)
+ [x^{\nu_S}]\prod_{j\notin S}h_{r_j}(\lambda_j,x).
+\end{equation}
+The empty smooth product is $1$.  In particular, $A_{\{1,\ldots,d\}}=0$
+because $\nu_{\{1,\ldots,d\}}\ge1$.
+Let $\mathcal L_{\boldsymbol r}$ denote the meromorphic continuation
+of the ordinary integral of $\prod_i\partial_x^{r_i}g(\lambda_i,x)$.
+It is initially defined, for example, with every
+$\Re\lambda_i>r_i+1$, away from the removable parameter expressions.
+
+\begin{theorem}[Subset completion in the unit coordinate]
+\label{cub:general-completion}
+The expression
+\begin{equation}\label{cub:completion}
+ \mathcal F_{\boldsymbol r}(\boldsymbol\lambda)
+ =\mathcal L_{\boldsymbol r}(\boldsymbol\lambda)
+   -\sum_{\varnothing\ne S\subsetneq\{1,\ldots,d\}}
+            \frac{A_S(\boldsymbol\lambda)}{\lambda_S}
+\end{equation}
+is holomorphic in a neighborhood of the spectral origin.  Its Taylor
+coefficients are exactly
+\begin{equation}\label{cub:all-moments}
+ \FP\int_0^1\prod_{i=1}^d\gamma_{m_i}^{(r_i)}(x)\,dx
+ =\left(\prod_i m_i!\right)
+ [\lambda_1^{m_1}\cdots\lambda_d^{m_d}]
+          \mathcal F_{\boldsymbol r}(\boldsymbol\lambda).
+\end{equation}
+Here $\FP$ is the constant term of the cutoff integral in the fixed
+coordinate $x$, with upper endpoint $1$ and no additional finite term.
+The complete numerators in \eqref{cub:completion} are subtracted;
+restricting a numerator to its polar hyperplane generally changes the
+finite answer.
+\end{theorem}
+
+\begin{proof}
+Fix $0<b<1$.  Expanding the exact product in
+\eqref{cub:local-split} gives one term for each singular subset $S$,
+namely
+\[
+ \left(\prod_{i\in S}c_{r_i}(\lambda_i)\right)
+ x^{\lambda_S-\nu_S-1}
+ \prod_{j\notin S}h_{r_j}(\lambda_j,x).
+\]
+For each nonempty $S$, subtract the Taylor polynomial of its smooth
+product through degree $\nu_S$.  The remainder is normally integrable
+on $(0,b)$ for all parameters in a sufficiently small common polydisc;
+fixed parameter derivatives only add powers of $\log x$.
+The Taylor monomial of degree $k$ has integral proportional to
+\[
+ \frac{b^{\lambda_S+k-\nu_S}}{\lambda_S+k-\nu_S}.
+\]
+Only $k=\nu_S$ has a denominator vanishing at the spectral origin.
+Its meromorphic integral is $A_S b^{\lambda_S}/\lambda_S$.
+The generating function of its coordinate finite parts is
+$A_S(b^{\lambda_S}-1)/\lambda_S$.  Their difference is precisely
+$A_S/\lambda_S$.  All other denominators are nonzero near the origin
+and their Taylor coefficients equal the corresponding cutoff constant
+terms.  The integral on $[b,1]$ is holomorphic and has the same
+coefficient-extraction property.  Summing the finitely many subsets
+proves both assertions.  Changing $b$ redistributes ordinary integrals
+and Taylor integrals equally on both sides, so the result does not
+depend on this auxiliary split.
+\end{proof}
+
+This theorem is a local completion rule, not a claim that an arbitrary
+depth integral reduces to single zeta values.  For three factors its
+global coordinates are the classical Tornheim function and ordinary
+zeta functions.  That explicit global formula comes next.
+
+\subsection{The cubic global kernel and all its argument derivatives}
+
+Define, initially in its domain of absolute convergence,
+\begin{equation}\label{cub:T-def}
+ T(A,B,C)=\sum_{m,n\ge1}\frac{1}{m^A n^B(m+n)^C}.
+\end{equation}
+We always use its meromorphic continuation, with the order of any
+restriction specified.  The classical Hurwitz--Tornheim connection is
+due to earlier work, including Espinosa and Moll \cite{EM2006}; the
+contribution here is its complete coordinate normalization at the
+coincident Stieltjes point.
+
+Put $\Lambda=\lambda_1+\lambda_2+\lambda_3$.  If $\{i,j,k\}$ is
+$\{1,2,3\}$, define
+\begin{align}
+ K_2(a,b)&=\frac{2\Gamma(a)\Gamma(b)}{(2\pi)^{a+b}}
+       \cos\frac{\pi(a-b)}2\,\zeta(a+b),\label{cub:K2}\\
+ K_3(\boldsymbol\lambda)
+ &=\frac{2\prod_i\Gamma(\lambda_i)}{(2\pi)^\Lambda}
+   \sum_{k=1}^3
+    \cos\frac{\pi(\lambda_i+\lambda_j-\lambda_k)}2
+       T(\lambda_i,\lambda_j,\lambda_k).
+       \label{cub:K3}
+\end{align}
+In \eqref{cub:K3}, the two indices other than $k$ may be taken in
+increasing order, since $T(A,B,C)=T(B,A,C)$.
+
+\begin{proposition}[Finite spectral expression]
+\label{cub:global}
+The kernels $K_2$ and $K_3$ are the meromorphic continuations of the
+integrals of two and three factors $\zeta(1-\lambda_i,x)$,
+respectively.  For $d=3$, the meromorphic integral in
+Theorem~\ref{cub:general-completion} is explicitly
+\begin{align}
+ \mathcal L_{\boldsymbol r}(\boldsymbol\lambda)
+ =\left(\prod_i c_{r_i}(\lambda_i)\right)
+ \bigg\{&K_3(\lambda_1-r_1,\lambda_2-r_2,\lambda_3-r_3)
+       \notag\\
+ &+\sum_{k:r_k=0}\frac{
+       K_2(\lambda_i-r_i,\lambda_j-r_j)}{\lambda_k}
+       +\frac{\mathbf1_{\boldsymbol r=\boldsymbol0}}
+                    {\lambda_1\lambda_2\lambda_3}\bigg\}.
+ \label{cub:Lr}
+\end{align}
+Together with \eqref{cub:subset-numerator}, this is a finite
+Tornheim--zeta coefficient formula for every cubic Stieltjes moment,
+at arbitrary Stieltjes and argument-derivative orders.
+\end{proposition}
+
+\begin{proof}
+For $\Re\lambda_i>1$, the nonzero Fourier coefficient of
+$\zeta(1-\lambda_i,x)$ at $n$ is
+\[
+ \Gamma(\lambda_i)(2\pi|n|)^{-\lambda_i}
+              e^{-\pi i\lambda_i\operatorname{sgn}(n)/2}.
+\]
+The Fourier series are absolutely convergent.  Integrating their
+product keeps $n_1+n_2+n_3=0$, with all $n_i\ne0$.
+There are three choices of the negative frequency and their three
+sign reversals.  On each positive cone the negative magnitude is
+$m+n$, giving exactly \eqref{cub:K3}.  The two-factor calculation
+gives \eqref{cub:K2}; it is the classical Hurwitz product formula
+\cite{EM2002}.  Finite endpoint Taylor subtraction supplies
+meromorphic continuation of the original integrals, and uniqueness
+extends these identities.  Finally,
+$\partial_x^r g=c_r\zeta(1+r-\lambda,x)$ for $r>0$, whereas
+$g=\zeta(1-\lambda,x)+1/\lambda$ for $r=0$.
+Expand the three factors.  Integrals with just one Hurwitz factor
+vanish by meromorphic continuation of
+$\int_0^1\zeta(s,x)\,dx=0$.  The other terms give \eqref{cub:Lr}.
+\end{proof}
+
+For undifferentiated factors set
+$h(\lambda)=\zeta(1-\lambda)+1/\lambda$.  Formula
+\eqref{cub:completion} becomes particularly short:
+\begin{align}
+ \mathcal F_{\boldsymbol0}={}&K_3+
+   \sum_{k=1}^3\frac{K_2(\lambda_i,\lambda_j)}{\lambda_k}
+   +\frac{1}{\lambda_1\lambda_2\lambda_3}
+   -\sum_{i=1}^3\frac{h(\lambda_j)h(\lambda_k)}{\lambda_i}
+       \notag\\
+ &+\sum_{k=1}^3\frac{(1-\lambda_k)\zeta(2-\lambda_k)}
+                              {\lambda_i+\lambda_j}.
+ \label{cub:Fexplicit}
+\end{align}
+The last line is necessary.  It is the pair-subset correction absent
+from the separated-singularity triple formula.  Neither it nor the
+singleton correction can be suppressed before restricting spectral
+directions.
+
+\subsection{The stated cubic digamma target}
+
+Let
+\[
+ \omega(t)=T(t,t,t),\quad L=\log(2\pi),\quad
+ E(t)=\Gamma(1+t)e^{-Lt},\quad
+ \gamma=\gamma_0(1).
+\]
+The symbol $\omega^{(j)}(0)$ means a derivative of this specified
+one-variable continuation.  It does not mean a derivative of a
+jointly holomorphic $T$ at $(0,0,0)$.
+
+\begin{theorem}[Diagonal second derivative and cubic digamma moment]
+\label{cub:diagonal}
+The diagonal continuation is holomorphic at zero and satisfies
+\begin{equation}\label{cub:omega-jets}
+ \omega(0)=\frac13,\qquad \omega'(0)=L,
+ \qquad \boxed{\omega''(0)=L^2-4\zeta''(0)}.
+\end{equation}
+The first two values are classical \cite{BorweinDilcher}.
+The coordinate-normalized cubic moment is
+\begin{align}
+ \boxed{\displaystyle\FP\int_0^1\psi(x)^3\,dx}
+ ={}&-\omega'''(0)-8\zeta'''(0)
+       -12(\gamma+L)\zeta''(0)-L^3-6\gamma L^2
+       \notag\\
+ &+5\gamma^3+6\gamma\gamma_1
+       -\frac32\gamma\zeta(2)
+       +\frac32\bigl(\zeta(2)+\zeta'(2)\bigr).
+ \label{cub:psi-cube}
+\end{align}
+Thus the requested cubic finite part is exactly reduced to one third
+derivative of the diagonal Tornheim function and ordinary zeta and
+Stieltjes constants.  No reduction of $\omega'''(0)$ to ordinary zeta
+constants is asserted.
+\end{theorem}
+
+\begin{proof}
+On the diagonal, \eqref{cub:Fexplicit} reads
+\begin{align}
+ F(t):=\mathcal F_{\boldsymbol0}(t,t,t)
+ ={}&\frac{6E(t)^3\cos(\pi t/2)\omega(t)
+              +6E(t)^2\zeta(2t)+1}{t^3}
+       \notag\\
+ &-\frac{3h(t)^2}{t}
+       +\frac{3(1-t)\zeta(2-t)}{2t}.
+ \label{cub:Fdiagonal}
+\end{align}
+The left side is holomorphic by
+Theorem~\ref{cub:general-completion}.  Solving this identity for
+$\omega(t)$ proves its holomorphy at zero, since $E(0)=1$ and
+$\cos0=1$.  Write
+\[
+ E(t)=\exp\left[-(\gamma+L)t+
+                 \frac{\zeta(2)}2t^2-\frac{\zeta(3)}3t^3+O(t^4)\right].
+\]
+Cancellation of the coefficients of $t^{-3}$ and $t^{-2}$ gives the
+first two values of \eqref{cub:omega-jets}, using
+$\zeta(0)=-1/2$ and $\zeta'(0)=-L/2$.
+The numerator coefficient at $t^2$ is
+\[
+ 3\omega''(0)+3\gamma^2-3L^2-\tfrac32\zeta(2)+12\zeta''(0).
+\]
+The other two terms of \eqref{cub:Fdiagonal} contribute
+$-3\gamma^2+3\zeta(2)/2$ to the coefficient of $t^{-1}$.
+This proves the second-derivative formula.
+
+The numerator coefficient at $t^3$, after those substitutions, is
+\[
+ \omega'''(0)+8\zeta'''(0)+12(\gamma+L)\zeta''(0)
+ +L^3+6\gamma L^2-5\gamma^3+\tfrac32\gamma\zeta(2).
+\]
+The remaining constant terms are
+$-6\gamma\gamma_1-3(\zeta(2)+\zeta'(2))/2$.
+Finally $F(0)=\FP\int\gamma_0(x)^3dx=-\FP\int\psi(x)^3dx$,
+which proves \eqref{cub:psi-cube}.
+\end{proof}
+
+A direct, convergent integral gives an independent way to evaluate
+the same left side.  The expansion
+$\psi(x)=-x^{-1}-\gamma+\zeta(2)x-\zeta(3)x^2+\cdots$ gives
+\begin{align}
+ \FP\int_0^1\psi(x)^3\,dx
+ ={}&\int_0^1\left[\psi(x)^3+\frac1{x^3}
+       +\frac{3\gamma}{x^2}
+       -\frac{3\zeta(2)-3\gamma^2}{x}\right]dx
+       +\frac12+3\gamma.
+ \label{cub:direct-cube}
+\end{align}
+The integrand has a finite limit at zero.  Independent truncated
+Mellin-series evaluation of $\omega'''(0)$ and local-series quadrature
+of \eqref{cub:direct-cube} agree to more than thirty decimal places:
+\begin{align}
+ \omega''(0)&=11.403217934867761113621595961662\ldots,\notag\\
+ \omega'''(0)&=86.657866601100073652903276858762\ldots,\notag\\
+ \FP\int_0^1\psi(x)^3dx
+   &=1.966262734391534340664375338411\ldots.
+ \label{cub:numerics}
+\end{align}
+These are numerical diagnostics accompanying the analytic proof;
+the implementation does not claim interval-certified final digits.
+
+\begin{corollary}[A cubic derivative specialization]
+\label{cub:cubic-derivative}
+In the same coordinate convention,
+\begin{equation}\label{cub:psi-square-prime}
+ \FP\int_0^1\psi(x)^2\psi'(x)\,dx
+             =\zeta(3)-2\gamma\zeta(2).
+\end{equation}
+\end{corollary}
+\begin{proof}
+Take the constant term of
+$\int_\epsilon^1\psi^2\psi'=(\psi(1)^3-\psi(\epsilon)^3)/3$.
+The constant coefficient of $\psi(\epsilon)^3$ is
+$-\gamma^3+6\gamma\zeta(2)-3\zeta(3)$.
+\end{proof}
+
+More generally, a finite-part integral of a derivative of a product
+equals its upper-endpoint value minus the constant term of its local
+expansion.  This supplies a terminating family of relations between
+the cubic moments in \eqref{cub:all-moments}; it does not impose a
+spurious independent value on the remaining primitive cubic moment.
+
+\subsection{Why a spectral direction must be recorded}
+
+The reduction at fixed $A=B=0$ gives
+\begin{equation}\label{cub:C-axis}
+ T(0,0,C)=\zeta(C-1)-\zeta(C).
+\end{equation}
+Indeed, $m+n=N$ has $N-1$ positive solutions.  Continuing this
+one-variable identity gives $5/12$ at $C=0$, whereas
+\eqref{cub:omega-jets} gives $1/3$ on the diagonal.
+This direction dependence is already explicit in
+Borwein and Dilcher \cite[Theorem~2.7]{BorweinDilcher}.
+It is not an inconsistency.  The multivariable function is meromorphic
+at intersecting polar hyperplanes, and its restrictions carry different
+finite information.  The completed function
+$\mathcal F_{\boldsymbol r}$ is genuinely holomorphic; the uncompleted
+$T$ generally is not.  Section~\ref{sp:sec:rays} computes the first two
+derivatives along an arbitrary transverse ray.

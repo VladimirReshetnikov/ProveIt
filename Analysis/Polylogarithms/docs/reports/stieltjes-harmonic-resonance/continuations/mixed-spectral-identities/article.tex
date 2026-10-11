@@ -1,0 +1,102 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{microtype,booktabs,longtable,array,enumitem,xcolor,xurl}
+\usepackage{fancyhdr}
+\definecolor{ink}{HTML}{18334A}
+\definecolor{accent}{HTML}{176C73}
+\usepackage[colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent]{hyperref}
+\usepackage{bookmark}
+\hypersetup{pdftitle={Mixed Spectral Identities: Harmonic Newton Series, Dougall Jets, Unequal Twists, and Stieltjes Collisions},pdfauthor={ProveIt research continuation, prepared with OpenAI}}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{question}{Question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\FP}{FP}
+\DeclareMathOperator{\CT}{CT}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\PV}{PV}
+\DeclareMathOperator{\Log}{Log}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\T}{\mathbb T}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\fall}[2]{#1^{\underline{#2}}}
+\newcommand{\stir}[2]{\genfrac{\{} {\}}{0pt}{}{#1}{#2}}
+\newcommand{\coeff}[1]{\left[#1\right]}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\newcommand{\zetad}[2]{\zeta^{[#1]}(#2)}
+\setlist{itemsep=3pt,topsep=5pt}
+\setcounter{tocdepth}{2}
+\emergencystretch=2em
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Mixed spectral identities}
+\fancyhead[R]{\small ProveIt continuation}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{18mm}
+{\large\color{accent}PROVEIT RESEARCH CONTINUATION\par}
+\vspace{11mm}
+{\LARGE\bfseries\color{ink}Mixed Spectral Identities\par}
+\vspace{7mm}
+{\Large Harmonic Newton Series, Dougall Jets,\\[4pt]
+Unequal Twists, and Stieltjes Collisions\par}
+\vspace{13mm}
+{\large Detailed proofs and reproducible computations\par}
+\vspace{5mm}
+{10 October 2026\par}
+\vspace{13mm}
+\begin{minipage}{0.88\textwidth}
+\input{sections/abstract}
+\end{minipage}
+\vfill
+\begin{minipage}{0.88\textwidth}\small
+Prepared with OpenAI for the ProveIt research programme.\\[4pt]
+Repository snapshot:
+\src{dcd95baeb7c0e914b138bddef6829c5b1d52b726}.\\[4pt]
+Ordinary mathematical proofs are distinguished from exact finite
+computations and numerical diagnostics. No proof-assistant
+formalization or arithmetic-independence claim is made.
+\end{minipage}
+\end{titlepage}
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+\input{sections/01_scope}
+\clearpage
+\input{sections/02_harmonic}
+\clearpage
+\input{sections/03_dougall}
+\clearpage
+\input{sections/04_twists}
+\clearpage
+\input{sections/05_collisions}
+\clearpage
+\input{sections/06_audit_research}
+\clearpage
+\input{references}
+\end{document}

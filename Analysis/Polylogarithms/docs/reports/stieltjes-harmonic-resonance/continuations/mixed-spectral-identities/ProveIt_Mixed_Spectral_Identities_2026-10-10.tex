@@ -1,0 +1,2999 @@
+% Standalone source generated from article.tex and its local inputs.
+% Regenerate with: python code/build_standalone.py
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{microtype,booktabs,longtable,array,enumitem,xcolor,xurl}
+\usepackage{fancyhdr}
+\definecolor{ink}{HTML}{18334A}
+\definecolor{accent}{HTML}{176C73}
+\usepackage[colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent]{hyperref}
+\usepackage{bookmark}
+\hypersetup{pdftitle={Mixed Spectral Identities: Harmonic Newton Series, Dougall Jets, Unequal Twists, and Stieltjes Collisions},pdfauthor={ProveIt research continuation, prepared with OpenAI}}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{question}{Question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\FP}{FP}
+\DeclareMathOperator{\CT}{CT}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\PV}{PV}
+\DeclareMathOperator{\Log}{Log}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\T}{\mathbb T}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\fall}[2]{#1^{\underline{#2}}}
+\newcommand{\stir}[2]{\genfrac{\{} {\}}{0pt}{}{#1}{#2}}
+\newcommand{\coeff}[1]{\left[#1\right]}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\newcommand{\zetad}[2]{\zeta^{[#1]}(#2)}
+\setlist{itemsep=3pt,topsep=5pt}
+\setcounter{tocdepth}{2}
+\emergencystretch=2em
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Mixed spectral identities}
+\fancyhead[R]{\small ProveIt continuation}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{18mm}
+{\large\color{accent}PROVEIT RESEARCH CONTINUATION\par}
+\vspace{11mm}
+{\LARGE\bfseries\color{ink}Mixed Spectral Identities\par}
+\vspace{7mm}
+{\Large Harmonic Newton Series, Dougall Jets,\\[4pt]
+Unequal Twists, and Stieltjes Collisions\par}
+\vspace{13mm}
+{\large Detailed proofs and reproducible computations\par}
+\vspace{5mm}
+{10 October 2026\par}
+\vspace{13mm}
+\begin{minipage}{0.88\textwidth}
+% BEGIN INLINED SOURCE: sections/abstract.tex
+\textbf{Abstract.}
+We continue four specific research directions in the ProveIt manuscript
+and its six incoming reports at the pinned repository snapshot.
+A normally convergent Newton expansion determines every spectral
+derivative of the entire harmonic remainder, including at nonpositive
+integers. Its shift jets are identified with classical multiple
+Arakawa--Kaneko functions, and a two-shift boundary yields generalized
+Stieltjes constants with finite repeated antiderivatives.
+
+At the double residue zero of the centered Dougall family, we prove
+termwise polynomial collapse, a divided generating identity, and an
+all-order mixed-parameter table. Consequences include a weighted
+trigamma square and harmonic squares equal to
+$\zeta(2)\pm\zeta(3)$ and $3\zeta(4)-\zeta(5)$.
+An additional spectral variable generates every Stieltjes order.
+For unequal twists, we give a normally convergent Lerch expansion,
+all-index finite-part convolutions, exact finite reductions, and
+covariant antiderivatives.
+
+For colliding Stieltjes products, we prove an all-factor
+resonant-subset completion theorem and exhibit a finite anomaly:
+the geometric triple collision with rates $(0,1,2)$ differs from
+the merged finite part by $\tfrac12\zeta(2)\log2$.
+We distinguish geometric collision limits, spectral restrictions,
+and iterated Laurent constants. The article includes detailed
+proofs, source corrections, reproducible diagnostics, and a focused
+research agenda. The retained Gaussian $S_6$ and $S_8$ conjectures
+are not resolved here.
+
+% END INLINED SOURCE: sections/abstract.tex
+\end{minipage}
+\vfill
+\begin{minipage}{0.88\textwidth}\small
+Prepared with OpenAI for the ProveIt research programme.\\[4pt]
+Repository snapshot:
+\src{dcd95baeb7c0e914b138bddef6829c5b1d52b726}.\\[4pt]
+Ordinary mathematical proofs are distinguished from exact finite
+computations and numerical diagnostics. No proof-assistant
+formalization or arithmetic-independence claim is made.
+\end{minipage}
+\end{titlepage}
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+% BEGIN INLINED SOURCE: sections/01_scope.tex
+\section{Scope, conventions, and source status}
+\label{scope:sec}
+
+\subsection{What this continuation establishes}
+
+The task is to extend the exact-identity programme in the ProveIt
+polylogarithm manuscript, not to reproduce results already supplied
+by its incoming research reports. We inspected the canonical
+manuscript and the six archives present in \src{docs/incoming}
+at commit \src{dcd95baeb7c0e914b138bddef6829c5b1d52b726}
+\cite{RepoMain,RepoEndpoint,RepoDougall,RepoTransport,RepoExact,
+RepoCoincident,RepoTwisted}.
+The mathematical work concentrates on four gaps explicitly left
+by those sources. The following table records the resulting status.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.26\textwidth}>{\raggedright\arraybackslash}p{0.64\textwidth}@{}}
+\toprule
+Source target & Result and its precise scope\\
+\midrule
+\endhead
+Higher spectral derivatives of the entire harmonic difference
+\cite{RepoExact}
+& Theorem~\ref{hn:thm:newton} and Corollary~\ref{hn:cor:jets}
+give convergent formulas at every order. Theorem~\ref{hn:thm:AKbridge}
+identifies all shift jets with classical multiple Arakawa--Kaneko
+functions. A finite reduction of every general spectral derivative
+to ordinary zeta derivatives is not asserted.\\[6pt]
+Mixed Dougall jets at $b=c=1$, Question~3 of \cite{RepoTransport}
+& Proposition~\ref{dg:polynomial} proves termwise collapse on the
+integer residue grid. Theorems~\ref{dg:generator} and
+\ref{dg:spectral} give every mixed parameter row and every
+mixed spectral--Stieltjes derivative.\\[6pt]
+Genuinely unequal twists, the first research question in \cite{RepoTwisted}
+& Theorem~\ref{tw:tailtheorem} gives a convergent normal form at
+arbitrary orders. The all-index formula \eqref{tw:alljets}
+and finite scalar reductions retain the phase and endpoint
+normalizations. The scalar classification is not an arithmetic
+independence theorem for Fourier samples.\\[6pt]
+Mixed triple collisions, Question~1 of \cite{RepoExact}
+& Theorems~\ref{cl:collision} and \ref{cl:allfactor} give an
+explicit triple collision expansion and the local completion for
+any finite number of factors. Unqualified equality of the geometric
+collision constant and the merged finite part is false. Theorem~\ref{cl:total-derivative} also resolves the one-derivative cancellation target.\\
+\bottomrule
+\end{longtable}
+
+The results are proved below as analytic identities with specified
+domains and normalizations. Exact finite calculations are supporting
+certificates for selected algebraic steps. Numerical comparisons
+test implementations and signs; they do not supply the infinite
+identities or establish arithmetic independence. The supplied proofs
+have not been formalized in a proof assistant.
+
+\subsection{Classical antecedents and attribution}
+
+The basic functions and summations are established mathematics.
+We use the Hurwitz-zeta shift and derivative formulas, the
+polygamma series, the Lerch transcendent, Euler's hypergeometric
+transformation, and the Rogers--Dougall ${}_5F_4(1)$ summation
+\cite{DLMFHurwitz,DLMFPolygamma,DLMFLerch,DLMFHypergeom,DLMFDougall}.
+The multiple Arakawa--Kaneko functions were already defined in
+\cite{AK1999}; related multiple and Hurwitz extensions are treated
+in \cite{KT2018,CC2010}. The Hurwitz--Tornheim relation used in the
+collision section has the antecedent \cite{EspinosaMoll}.
+The centered resonance theorem and the entire harmonic subtraction
+are results of the supplied reports. Where needed, their analytic
+mechanisms are reproduced to make the new deductions reviewable
+without reconstructing an entire earlier archive.
+
+The contribution claimed here is the collection of deductions,
+normal forms, convergence arguments, and corrections relative to
+that inspected source set. We make no exhaustive priority claim
+over the full special-functions literature. In particular, a
+recognition of a classical Arakawa--Kaneko function is recorded as
+an identification, not as the invention of a new special function.
+
+\subsection{Notation and the meaning of finite part}
+
+Write $(a)_n=\Gamma(a+n)/\Gamma(a)$ for a rising factorial,
+$(a)^{\underline n}=a(a-1)\cdots(a-n+1)$ for a falling factorial,
+and $[u^r]$ for coefficient extraction. The symbols
+$\left\{\begin{smallmatrix}m\\j\end{smallmatrix}\right\}$ and
+$\left[\begin{smallmatrix}m\\j\end{smallmatrix}\right]$ denote
+Stirling numbers of the second kind and unsigned Stirling numbers
+of the first kind, respectively. Empty products are $1$.
+The ordinary generalized harmonic numbers are
+\[
+ H_n^{(r)}=\sum_{k=1}^n k^{-r},\qquad H_0^{(r)}=0,
+ \qquad H_n=H_n^{(1)}.
+\]
+General shifts are defined explicitly in the relevant sections.
+The letters $a,b,u$ are local parameters and are reintroduced
+when their role changes.
+
+We set $\psi=\Gamma'/\Gamma$, and $\psi^{(r)}$ denotes an
+argument derivative. For zeta functions, $\zeta^{(k)}(s,x)$
+denotes a derivative in the first, spectral variable; derivatives
+in $x$ are written $\partial_x$. The generalized Stieltjes
+constants use the convention
+\begin{equation}\label{scope:stieltjes}
+ \zeta(1+z,x)=\frac1z+
+       \sum_{m=0}^{\infty}\frac{(-1)^m}{m!}\gamma_m(x)z^m,
+ \qquad \gamma_m=\gamma_m(1),\quad \gamma=\gamma_0.
+\end{equation}
+In particular $\gamma_0(x)=-\psi(x)$.
+Principal logarithms are used for powers in the right half-plane.
+The phases for two-sided Fourier powers are fixed separately
+in \eqref{tw:log}. A square at a complex shift is an algebraic
+square, not an absolute-value square.
+
+A series is \emph{normally convergent} on a parameter domain when
+it converges absolutely and uniformly on each compact subset.
+This is the hypothesis used for holomorphic differentiation of
+infinite sums. The distribution-valued version means normal
+convergence after pairing with each smooth test function, together
+with the displayed uniform growth estimates on Fourier coefficients.
+
+For a cutoff expansion in a positive ambient distance $\eta$,
+$\FP$ retains the coefficient of $\eta^0(\log\eta)^0$ after
+the divergent local terms are removed. At each singular grid
+point in Section~\ref{cl:sec}, the cutoff is on the right in
+the ambient coordinate $x$. This specifies a value; a change of
+coordinate can change it. The symbol $\CT_\epsilon$ has the
+analogous meaning for a geometric collision parameter $\epsilon$.
+For multivariate meromorphic functions with poles on sums of
+variables, an unqualified rectangular Laurent constant is not a
+definition. A chamber, a spectral restriction, or the holomorphic
+completion must first be specified.
+
+\subsection{Reading the four proof mechanisms}
+
+The harmonic argument first proves a compact-uniform estimate for
+finite differences, then identifies their Mellin transform. This
+order prevents the invalid differentiation of a formula known only
+at discrete spectral values. The Dougall argument keeps the Gamma
+ratios and the finite small-index terms intact until after the
+subtractions have been differentiated. The unequal-twist argument
+isolates finitely many modes before applying a binomial expansion,
+so that the logarithm branches agree on the remaining tail.
+The collision argument works with the complete local numerator of
+each resonant subset, retaining finite terms as well as residues.
+These are the analytic steps on which the extensions depend.
+
+% END INLINED SOURCE: sections/01_scope.tex
+\clearpage
+% BEGIN INLINED SOURCE: sections/02_harmonic.tex
+\section{A Newton expansion for the entire harmonic difference}
+\label{hn:sec:newton}
+
+The exact-identities report \cite{RepoExact} leaves open the explicit evaluation of the
+higher spectral derivatives of its entire common-shift remainder.
+Its finite Stirling formula has an infinite, normally convergent
+extension. This extension gives every spectral derivative, continues
+the shift farther as harmonic depth increases, and identifies all shift
+jets at the unshifted base point with multiple Arakawa--Kaneko functions.
+Those functions are classical; the contribution here is their precise
+connection with the repository's entire difference and the convergent
+spectral-derivative formula. No literature-wide priority is asserted.
+
+\subsection{Definitions and the known entire remainder}
+
+For $\Re a>0$, use principal powers and put
+\[
+ \begin{gathered}
+ F_a(s,u)=\sum_{n\ge0}\frac{(a+u)_n}{(a)_n(n+a)^s},\qquad
+ K_a(u)=\frac{\Gamma(a)\Gamma(1+u)}{\Gamma(a+u)},\\[3pt]
+ D(s,u;a)=F_a(s,u)-K_a(u)F_1(s,u).
+ \end{gathered}
+\]
+The first series initially converges for $\Re s>1+\Re u$.
+The source proves that $D$ is entire in $s$, locally near $u=0$.
+If
+\[
+ e_r(n;a)=[u^r]\prod_{\nu=0}^{n-1}\left(1+\frac{u}{a+\nu}\right),
+ \qquad M_r(s;a)=\sum_{n\ge0}e_r(n;a)(n+a)^{-s},
+\]
+then its depth coefficients are
+\[
+ D_r(s;a)=[u^r]D(s,u;a)
+ =M_r(s;a)-\sum_{j=0}^r[u^j]K_a(u)\,M_{r-j}(s;1).
+\]
+In particular $D_0(s;a)=\zeta(s,a)-\zeta(s)$, with its removable
+singularity at $s=1$ understood. Each $D_r$ is entire in $s$.
+
+We use the source's exact Mellin remainder
+\begin{align}
+ R_a(t,u)
+ &=-\frac{a-1}{1+u}e^{-at}
+       {}_2F_1(1,a+u;2+u;1-e^{-t}),\label{hn:eq:R}\\
+ D(s,u;a)&=\frac1{\Gamma(s)}\int_0^\infty
+                         t^{s-1}R_a(t,u)\,dt,\qquad \Re s>0.
+ \label{hn:eq:mellin}
+\end{align}
+To check the normalization directly, the geometric generating function is
+\[
+ \sum_{n\ge0}\frac{(a+u)_n}{(a)_n}e^{-(n+a)t}
+ =e^{-at}{}_2F_1(1,a+u;a;e^{-t})
+ =K_a(u)\frac{e^{-t}}{(1-e^{-t})^{1+u}}+R_a(t,u).
+\]
+The Gauss connection formula about $z=1$ gives the last equality:
+the regular coefficient is $-(a-1)/(1+u)$ and the singular
+coefficient is $K_a(u)$; the remaining singular Gauss factor reduces
+to $e^{(a-1)t}$ before multiplication by $e^{-at}$.
+This initially holds for generic parameters, then throughout the
+stated germ by continuation \cite{DLMFHypergeom}.
+The kernel $R_a$ is analytic at zero and decays exponentially at infinity.
+Taking Mellin transforms proves \eqref{hn:eq:mellin} first in the
+original common half-plane and then for $\Re s>0$ by continuation. Taylor subtraction at
+zero proves the entire continuation in $s$.
+
+Define the finite exponential polynomial
+\begin{equation}\label{hn:eq:Aj}
+ A_j(s)=\sum_{\ell=1}^j(-1)^{j-\ell}\binom j\ell\ell^{1-s},
+ \qquad j\ge1.
+\end{equation}
+It is entire in $s$. At a nonpositive integer,
+\begin{equation}\label{hn:eq:Stirling}
+ A_j(-m)=j!\left\{\begin{matrix}m+1\\j\end{matrix}\right\},
+ \qquad m\ge0,
+\end{equation}
+and therefore it vanishes for $j>m+1$.
+
+\subsection{Normal convergence, including at nonpositive integers}
+
+\begin{lemma}[Finite-difference Mellin estimate]\label{hn:lem:Aj}
+For $\Re s>1-j$,
+\begin{equation}\label{hn:eq:Aintegral}
+ A_j(s)=\frac{(-1)^{j-1}j}{\Gamma(s)}
+       \int_0^\infty t^{s-1}e^{-t}(1-e^{-t})^{j-1}\,dt.
+\end{equation}
+At zeros of $1/\Gamma(s)$ this is its analytic product with the
+convergent integral. For every compact $S\subset\mathbb C$ there
+are constants $C,P$ such that
+\begin{equation}\label{hn:eq:Abound}
+ \sup_{s\in S}|A_j(s)|\le C(1+\log(j+1))^P\qquad(j\ge1).
+\end{equation}
+Every fixed spectral derivative obeys a bound of the same form,
+with constants depending on its order and $S$.
+\end{lemma}
+
+\begin{proof}
+For $\Re s>0$, expand the finite binomial power and use
+$j\binom{j-1}{\ell-1}=\ell\binom j\ell$.
+Termwise Laplace integration gives \eqref{hn:eq:Aintegral}.
+The integrand at zero is $O(t^{\Re s+j-2})$, so its integral is
+holomorphic on $\Re s>1-j$. Analytic continuation gives the formula
+on that larger half-plane. Thus it holds near any prescribed
+nonpositive integer as soon as $j$ is sufficiently large.
+
+Write $\sigma_-=\min_{s\in S}\Re s$ and
+$\sigma_+=\max_{s\in S}\Re s$. Choose an integer $N$ such that
+$\sigma_-+N-1>0$, and consider $j\ge N$. Put $q=1-e^{-1}<1$.
+On $0<t\le1$,
+\[
+ (1-e^{-t})^{j-1}\le t^{N-1}q^{j-N},
+\]
+so the integral on this interval, including its factor $j$, is at
+most $j q^{j-N}/(\sigma_-+N-1)$. This is exponentially small.
+On $t\ge1$, put $P=\max(0,\sigma_+-1)$. The function
+\[
+                 p_j(t)=je^{-t}(1-e^{-t})^{j-1}
+\]
+is a probability density on $(0,\infty)$. With
+$L_j=1+2\log(j+1)$, the integral on $[1,L_j]$ is bounded by $L_j^P$.
+On $[L_j,\infty)$ use $p_j(t)\le je^{-t}$ and
+\[
+ j\int_{L_j}^\infty t^Pe^{-t}\,dt
+ \le C_Pje^{-L_j}(1+L_j)^P
+ \le C'_P(1+\log(j+1))^P.
+\]
+The reciprocal gamma function is bounded on $S$. The finitely many
+remaining entire functions $A_j$ are harmless. Cauchy's estimate
+on a slightly enlarged compact proves the derivative assertion.
+\end{proof}
+
+\begin{lemma}[Uniform binomial estimate]\label{hn:lem:binomial}
+For a compact set $A\subset\mathbb C$,
+\[
+ \left|\binom{a-1}{j}\right|\le C_A j^{-\Re a}
+ \qquad(a\in A,\ j\ge1).
+\]
+\end{lemma}
+\begin{proof}
+Use $(-1)^j\binom{a-1}{j}=\prod_{\nu=1}^j(1-a/\nu)$.
+For $\nu>2\max_{a\in A}|a|$,
+$\log|1-a/\nu|=-\Re a/\nu+O_A(\nu^{-2})$, uniformly.
+Summing and bounding the initial finite factors proves the claim,
+including when $a$ passes through a positive integer.
+\end{proof}
+
+\begin{theorem}[Normally convergent Newton expansion]\label{hn:thm:newton}
+For $\Re a>0$ and $u\notin\{-1,-2,\ldots\}$,
+\begin{equation}\label{hn:eq:newton}
+ \boxed{\displaystyle
+ D(s,u;a)=-\sum_{j=1}^\infty
+                \binom{a-1}{j}\frac{A_j(s)}{u+j}.}
+\end{equation}
+The series converges normally on compact subsets of the indicated
+domain with $s\in\mathbb C$. It extends the depth germ to a
+meromorphic function of $u$, with at most simple poles at negative
+integers, and
+\begin{equation}\label{hn:eq:uresidue}
+ \mathop{\rm Res}_{u=-j}D(s,u;a)=-\binom{a-1}{j}A_j(s).
+\end{equation}
+These poles are removable when the indicated residues vanish.
+
+For every $r\ge0$,
+\begin{equation}\label{hn:eq:depthnewton}
+ \boxed{\displaystyle
+ D_r(s;a)=(-1)^{r+1}\sum_{j=1}^\infty
+          \binom{a-1}{j}\frac{A_j(s)}{j^{r+1}}.}
+\end{equation}
+This depth series converges normally on
+\begin{equation}\label{hn:eq:shift-domain}
+                  s\in\mathbb C,\qquad \Re a>-r,
+\end{equation}
+and supplies a jointly holomorphic continuation there.
+\end{theorem}
+
+\begin{proof}
+On a compact $u$-set avoiding the negative integers,
+$|u+j|^{-1}\le C/j$. The lemmas bound the summands by
+$Cj^{-1-\delta}(1+\log(j+1))^P$, where
+$\delta=\min\Re a>0$. In the depth series the same proof uses
+$\delta=\min(\Re a+r)>0$. This proves normal convergence and
+permits arbitrary fixed derivatives in $s$ and $a$.
+
+To identify the sum, put $w=1-e^{-t}$. Euler's hypergeometric
+transformation \cite{DLMFHypergeom} and then its series give
+\begin{align*}
+ R_a(t,u)
+ &=-\frac{a-1}{1+u}e^{-t}
+       {}_2F_1(2-a,1+u;2+u;w)\\
+ &=e^{-t}\sum_{j=1}^\infty
+        (-1)^j\binom{a-1}{j}\frac{j}{u+j}w^{j-1}.
+\end{align*}
+Initially $u$ is near zero and $0<w<1$. For $\Re s>0$ this
+series can be integrated absolutely against $t^{s-1}\,dt$:
+apply \eqref{hn:eq:Aintegral} with $s$ replaced by $\Re s$,
+and the estimates already proved. Its Mellin transform is
+\[
+ \frac1{\Gamma(s)}\int_0^\infty t^{s-1}R_a(t,u)\,dt
+ =-\sum_{j\ge1}\binom{a-1}{j}\frac{A_j(s)}{u+j}.
+\]
+It equals $D$ in a common domain; both sides are entire in $s$.
+The normal convergence gives the continuation and residues in $u$.
+Expand $(u+j)^{-1}$ on $|u|<1$ and extract depth coefficients.
+The enlarged shift domain follows from direct normal convergence,
+not interpolation from integer shifts.
+\end{proof}
+
+\subsection{All spectral derivatives}
+
+\begin{corollary}[Logarithmic finite-difference formula]\label{hn:cor:jets}
+For $m,k,r\ge0$,
+\begin{align}
+ \partial_s^kD(-m,u;a)
+ &=(-1)^{k+1}\sum_{j\ge1}\frac{\binom{a-1}{j}}{u+j}
+       \sum_{\ell=1}^j(-1)^{j-\ell}\binom j\ell
+                     \ell^{m+1}(\log\ell)^k,
+ \label{hn:eq:spectral-full}\\
+ \partial_s^kD_r(-m;a)
+ &=(-1)^{r+k+1}\sum_{j\ge1}\frac{\binom{a-1}{j}}{j^{r+1}}
+       \sum_{\ell=1}^j(-1)^{j-\ell}\binom j\ell
+                     \ell^{m+1}(\log\ell)^k.
+ \label{hn:eq:spectral-depth}
+\end{align}
+The first formula is normally convergent for $\Re a>0$, $u$ away
+from the negative integers; the second for $\Re a>-r$.
+At $k=0$ use $(\log1)^0=1$.
+\end{corollary}
+\begin{proof}
+Differentiate the normally convergent series using the compact
+spectral-derivative estimates.
+\end{proof}
+
+At $k=0$ this is exactly the source's finite Stirling formula,
+\[
+ D(-m,u;a)=-\sum_{j=1}^{m+1}
+       \left\{\begin{matrix}m+1\\j\end{matrix}\right\}
+       \frac{(a-1)^{\underline j}}{u+j}.
+\]
+For $k\ge1$ the finite difference generally no longer vanishes at
+large $j$. The answer is an absolutely convergent infinite identity;
+no finite reduction to polygamma functions at arbitrary depth is
+claimed. A finite value formula valid only at discrete values
+of $s$ cannot itself be differentiated in $s$.
+
+For clarity, if $[\epsilon^k]$ denotes a Laurent coefficient at
+$s=-m$, the identity defining $D_r$ gives, for $k\ge0$,
+\begin{align}
+ [\epsilon^k]M_r(-m+\epsilon;a)
+ ={}&\sum_{j=0}^r[u^j]K_a(u)\,
+                 [\epsilon^k]M_{r-j}(-m+\epsilon;1)\notag\\
+ &+\frac1{k!}\partial_s^kD_r(-m;a).
+ \label{hn:eq:regular-reconstruction}
+\end{align}
+Thus the theorem determines every coefficient of the entire
+shift correction. It does not by itself reduce the unshifted
+height-one Laurent coefficients, or the entire outer-shift family
+of the earlier report, to a finite basis of ordinary zeta derivatives.
+
+
+Depth-zero special cases give useful independent checks:
+\begin{align}
+ \log\Gamma(a)
+ &=\sum_{j\ge1}\frac{\binom{a-1}{j}}j
+      \sum_{\ell=1}^j(-1)^{j-\ell}\binom j\ell\ell\log\ell,
+ \label{hn:eq:loggamma}\\
+ \gamma_k(a)-\gamma_k(1)
+ &=-\sum_{j\ge1}\frac{\binom{a-1}{j}}j
+      \sum_{\ell=1}^j(-1)^{j-\ell}\binom j\ell(\log\ell)^k.
+ \label{hn:eq:Stieltjes-Newton}
+\end{align}
+The Stieltjes convention is
+$\zeta(1+z,a)=z^{-1}+\sum_{k\ge0}(-1)^k\gamma_k(a)z^k/k!$.
+The first identity follows from Lerch's formula \cite{DLMFHurwitz} and the second
+from the regular expansion of $D_0$ at $s=1$. These are
+specializations of a Newton/Hasse type calculus, with no claim
+that the classical log-gamma or Stieltjes expansions are new.
+
+There is a finite reduction at every nonnegative integer
+\emph{depth-generating parameter} $u=q$. For $q\ge1$ and initially $\Re a>0$,
+\begin{equation}\label{hn:eq:integeru}
+ D(s,q;a)=\frac1{(a)_q}\sum_{\ell=1}^q
+      \left[\begin{matrix}q\\\ell\end{matrix}\right]
+            \{\zeta(s-\ell,a)-\zeta(s-\ell)\},
+\end{equation}
+where brackets denote unsigned Stirling numbers of the first kind.
+Indeed $(a+q)_n/(a)_n=(n+a)_q/(a)_q$, and expand the rising
+factorial polynomial for both $F_a$ and $K_aF_1$.
+All spectral derivatives follow by replacing each zeta by its
+order derivative. In particular
+\[
+ \partial_s^kD(-m,1;a)
+   =\frac{\zeta^{(k)}(-m-1,a)-\zeta^{(k)}(-m-1)}a.
+\]
+Every zeta difference in \eqref{hn:eq:integeru} is entire,
+including at its removable principal pole.
+
+\subsection{The Arakawa--Kaneko boundary and every shift jet}
+
+For a positive integer multi-index
+$\boldsymbol{k}=(k_1,\ldots,k_p)$ use the descending-index convention
+\[
+ \operatorname{Li}_{\boldsymbol{k}}(z)
+ =\sum_{n_1>\cdots>n_p\ge1}
+       \frac{z^{n_1}}{n_1^{k_1}\cdots n_p^{k_p}}.
+\]
+Define the classical multiple Arakawa--Kaneko function by
+\begin{equation}\label{hn:eq:AK}
+ \Xi(\boldsymbol{k};s)=\frac1{\Gamma(s)}\int_0^\infty
+       \frac{t^{s-1}}{e^t-1}
+              \operatorname{Li}_{\boldsymbol{k}}(1-e^{-t})\,dt,
+ \qquad \Re s>0.
+\end{equation}
+Write $\Xi_r(s)=\Xi((r);s)$ for $r\ge1$.
+Arakawa--Kaneko \cite{AK1999} already define the multiple function.
+They use ascending summation indices, so
+$\Xi(r+1,\{1\}^{p-1};s)$ here corresponds to their
+$\xi(1,\ldots,1,r+1;s)$; the vector is reversed.
+At depth one there is no reversal ambiguity, and
+\[
+                         \Xi_1(s)=s\zeta(s+1),
+\]
+with a removable singularity at $s=0$.
+
+For completeness all functions in \eqref{hn:eq:AK} are entire in $s$.
+The polylogarithm is analytic at $z=0$ and begins at degree $p$,
+so its kernel is analytic at $t=0$, beginning at order $p-1$.
+At infinity its growth before multiplication by $(e^t-1)^{-1}$
+is at most polynomial: since all indices are positive, its
+positive terms are bounded by those of
+$\operatorname{Li}_{1,\ldots,1}(1-e^{-t})=t^p/p!$.
+Taylor subtraction at zero, followed by the zeros of $1/\Gamma(s)$,
+therefore proves entireness. This is also the continuation in
+the classical theory \cite{AK1999,KT2018}.
+
+\begin{theorem}[Boundary values and mixed shift jets]\label{hn:thm:AKbridge}
+For $r\ge1$, the continuation in \eqref{hn:eq:shift-domain} gives
+\begin{equation}\label{hn:eq:a0}
+                      D_r(s;0)=(-1)^r\Xi_r(s).
+\end{equation}
+For every $r\ge0$ and $p\ge1$,
+\begin{equation}\label{hn:eq:a1-jets}
+ \boxed{\displaystyle
+ \left.\partial_a^pD_r(s;a)\right|_{a=1}
+  =(-1)^{r+p}p!\,
+          \Xi(r+1,\underbrace{1,\ldots,1}_{p-1};s).}
+\end{equation}
+The identities hold for every $s\in\mathbb C$, and arbitrary
+fixed spectral derivatives can be applied to both sides.
+Consequently
+\begin{equation}\label{hn:eq:AK-Taylor}
+ D_r(s;a)=(-1)^r\sum_{p=1}^\infty
+       (1-a)^p\Xi(r+1,\{1\}^{p-1};s),
+ \qquad |a-1|<r+1.
+\end{equation}
+The series is locally normal jointly with $s$.
+\end{theorem}
+
+\begin{proof}
+For $a=0$, $\binom{-1}{j}=(-1)^j$. Substitute into the normally
+convergent depth series and apply \eqref{hn:eq:Aintegral}:
+\[
+ D_r(s;0)=\frac{(-1)^r}{\Gamma(s)}\int_0^\infty
+     t^{s-1}e^{-t}\sum_{j\ge1}\frac{(1-e^{-t})^{j-1}}{j^r}\,dt.
+\]
+For $\Re s>0$, termwise integration is justified absolutely.
+The sum is $\operatorname{Li}_r(w)/w$, where $w=1-e^{-t}$,
+giving \eqref{hn:eq:a0}. Continue in $s$.
+
+For the shift jets let $e_j(N)$ be the elementary symmetric
+polynomial of degree $j$ in $1,1/2,\ldots,1/N$, with $e_0(N)=1$
+and $e_j(N)=0$ for $j>N$. The finite product
+\[
+ \binom{a-1}{n}=\frac{(-1)^{n-1}(a-1)}n
+          \prod_{\nu=1}^{n-1}\left(1-\frac{a-1}{\nu}\right)
+\]
+gives
+\[
+ \left.\partial_a^p\binom{a-1}{n}\right|_{a=1}
+      =\frac{(-1)^{n-p}p!}{n}e_{p-1}(n-1).
+\]
+Normal convergence permits insertion into
+\eqref{hn:eq:depthnewton}. The Mellin integral then contains
+\[
+ \sum_{n\ge1}\frac{w^{n-1}}{n^{r+1}}e_{p-1}(n-1)
+ =\frac1w\operatorname{Li}_{r+1,\{1\}^{p-1}}(w),
+\]
+with overall sign $(-1)^{r+p}p!$. Absolute integration follows
+from positive coefficients and the logarithmic growth
+$e_{p-1}(n-1)=O((1+\log n)^{p-1})$.
+This proves \eqref{hn:eq:a1-jets} on $\Re s>0$, then everywhere.
+
+Finally $D_r(s;1)=0$, and $D_r$ is holomorphic for $\Re a>-r$.
+Its Taylor series centered at $1$ therefore converges throughout
+$|a-1|<r+1$. Cauchy estimates on compact $s$-sets prove joint
+local normality.
+\end{proof}
+
+The depth-zero case of \eqref{hn:eq:a1-jets} reduces to
+\[
+ \Xi(\underbrace{1,\ldots,1}_{p};s)
+        =\frac{(s)_p}{p!}\zeta(s+p).
+\]
+The boundary formula \eqref{hn:eq:a0}, however, excludes $r=0$.
+The original domain does not include $a=0$, and
+\[
+ D_0(s;a)=a^{-s}+\zeta(s,a+1)-\zeta(s)
+\]
+has no jointly holomorphic extension there for general $s$.
+A fictitious $\Xi_0$ with a nondecaying Mellin kernel cannot
+remove this obstruction.
+
+Some exact examples, with $\gamma_k=\gamma_k(1)$, are
+\begin{align*}
+ D_1(s;0)&=-s\zeta(s+1),\\
+ D_1(0;0)&=-1,&
+ \partial_sD_1(0;0)&=-\gamma,&
+ \partial_s^2D_1(0;0)&=2\gamma_1,\\
+ \partial_s^kD_1(0;0)&=(-1)^k k\gamma_{k-1}\quad(k\ge1),\\
+ \partial_sD_1(-1;0)&=\frac12-\frac12\log(2\pi),\\
+ \partial_sD_1(-2;0)&=\frac1{12}+2\zeta'(-1),\\
+ \partial_aD_1(s;1)&=\Xi_2(s),&
+ \partial_a^2D_1(s;1)&=-2\Xi(2,1;s).
+\end{align*}
+They are identities for the continued remainder, rather than
+ordinary sums of its divergent defining series.
+
+More generally, for an integer $N\ge0$ and depth $r\ge N+1$,
+\begin{equation}\label{hn:eq:negative-shifts}
+ D_r(s;-N)=\frac{(-1)^r}{N!}\sum_{h=0}^N
+     \left[\begin{matrix}N+1\\h+1\end{matrix}\right]\Xi_{r-h}(s).
+\end{equation}
+Indeed $\binom{-N-1}{j}=(-1)^j\binom{N+j}{N}$ and
+\[
+ \binom{N+j}{N}=\frac1{N!}\prod_{\nu=1}^N(j+\nu)
+   =\frac1{N!}\sum_{h=0}^N
+       \left[\begin{matrix}N+1\\h+1\end{matrix}\right]j^h.
+\]
+Insert this polynomial into the convergent Mellin series. The
+condition $r>N$ makes all polylogarithm indices positive and
+places the shift inside $\Re a>-r$. For example
+\[
+                   D_2(s;-1)=\Xi_2(s)+s\zeta(s+1).
+\]
+
+Specializing the convergent Taylor expansion to $a=0$ also gives
+$\Xi_r(s)=\sum_{p\ge1}\Xi(r+1,\{1\}^{p-1};s)$ for $r\ge1$,
+normally on compact $s$-sets. Its elementary polylogarithmic
+explanation is $\sum_{p\ge1}e_{p-1}(n-1)=n$.
+This is recorded as a consequence of the shift identification,
+with no new-priority assertion for the height-one summation itself.
+
+\subsection{A boundary corollary for generalized Stieltjes constants}
+
+The two-shift bridge in the source admits the same proof. Write
+$v=b-a$, $c=1+v$, and initially assume $\Re a,\Re b,\Re c>0$.
+Define
+\[
+ D_{a,b}(s,u)=\sum_{n\ge0}\frac{(a+u)_n}{(a)_n(n+b)^s}
+   -K_a(u)\sum_{n\ge0}\frac{(1+u)_n}{n!(n+c)^s},
+ \qquad D_{a,b,r}(s)=[u^r]D_{a,b}(s,u).
+\]
+Its entire Mellin remainder is $e^{-vt}R_a(t,u)$.
+Put
+\[
+ A_j(s;v)=\sum_{\ell=1}^j(-1)^{j-\ell}\binom j\ell
+                     \ell(\ell+v)^{-s},\qquad \Re v>-1.
+\]
+The Laplace calculation gives
+\[
+ A_j(s;v)=\frac{(-1)^{j-1}j}{\Gamma(s)}
+       \int_0^\infty t^{s-1}e^{-(1+v)t}(1-e^{-t})^{j-1}\,dt,
+ \qquad \Re s>1-j.
+\]
+Then
+\begin{equation}\label{hn:eq:twodepth}
+ D_{a,b,r}(s)=(-1)^{r+1}\sum_{j\ge1}\binom{a-1}{j}
+                           \frac{A_j(s;b-a)}{j^{r+1}},
+\end{equation}
+normally on the connected domain
+\begin{equation}\label{hn:eq:two-domain}
+              \Re(1+b-a)>0,\qquad \Re b>-r,\qquad s\in\mathbb C.
+\end{equation}
+This supplies a continuation without a restriction on $\Re a$.
+
+Here is the convergence detail needed for this enlarged domain.
+On compact $s,v$ sets with $\Re v>-1$, and $0<\epsilon<\min\Re(1+v)$ sufficiently small, the modified Mellin estimate is
+$|A_j(s;v)|\le C_\epsilon j^{-\Re v+\epsilon}$.
+On $(0,1)$ the previous proof is unchanged; on $t\ge1$ absorb
+the necessary power of $t$ into $C_\epsilon e^{\epsilon t}$ and use
+\[
+ j\int_0^\infty e^{-(1+\Re v-\epsilon)t}
+                  (1-e^{-t})^{j-1}\,dt
+ =jB(1+\Re v-\epsilon,j)
+ \le C_\epsilon j^{-\Re v+\epsilon}.
+\]
+The last bound follows directly by bounding
+$(1-x)^{j-1}$ by $e^{-(j-1)x}$ in the beta integral.
+Since $a+v=b$, choose $\epsilon$ below half of
+$\min(\Re b+r)$ on the compact under consideration. The series
+is then bounded by a summable power
+$Cj^{-1-(\Re b+r)+\epsilon}$. Identification uses the same
+kernel expansion as before. All fixed spectral derivatives are
+allowed by normal convergence.
+
+For $r\ge1$, $\Re x>0$, define the classical Hurwitz extension
+\[
+ \Xi_r(s,x)=\frac1{\Gamma(s)}\int_0^\infty
+       \frac{e^{-xt}}{1-e^{-t}}t^{s-1}
+                        \operatorname{Li}_r(1-e^{-t})\,dt.
+\]
+This convention agrees with Coppo--Candelpergher \cite{CC2010}, and
+$\Xi_r(s,1)=\Xi_r(s)$. It is entire in $s$ by the same Taylor
+subtraction argument. The point $a=0$, $b=x-1$ lies in
+\eqref{hn:eq:two-domain} for $r\ge1$, so
+\begin{equation}\label{hn:eq:generalized-boundary}
+                  D_{0,x-1,r}(s)=(-1)^r\Xi_r(s,x).
+\end{equation}
+At depth one, $\operatorname{Li}_1(1-e^{-t})=t$ gives
+\begin{equation}\label{hn:eq:Hurwitz-boundary}
+ D_{0,x-1,1}(s)=-s\zeta(s+1,x)=\partial_x\zeta(s,x).
+\end{equation}
+The right side is entire in $s$, including at zero.
+
+\begin{corollary}[Generalized Stieltjes boundary jets]\label{hn:cor:Stieltjes}
+For $\Re x>0$ and $k\ge1$,
+\begin{equation}\label{hn:eq:generalized-Stieltjes}
+ \boxed{\displaystyle
+ \left.\partial_s^kD_{0,x-1,1}(s)\right|_{s=0}
+      =(-1)^k k\,\gamma_{k-1}(x).}
+\end{equation}
+The zeroth derivative is $-1$. For $m\ge1$,
+\[
+ \left.\partial_s^kD_{0,x-1,1}(s)\right|_{s=-m}
+ =m\zeta^{(k)}(1-m,x)-k\zeta^{(k-1)}(1-m,x),
+\]
+with the last term omitted when $k=0$.
+At $k=1,m=0$ the boundary function is $\psi(x)$, and its
+antiderivative is $\log\Gamma(x)$.
+\end{corollary}
+\begin{proof}
+Insert the defining Laurent expansion of the Hurwitz zeta
+function in \eqref{hn:eq:Hurwitz-boundary}. The factor $s$
+removes its pole before coefficient extraction.
+\end{proof}
+
+Every one of these boundary jets also has a finite repeated
+antiderivative. For $m,k\ge0$ and $q\ge1$, define coefficients by
+\[
+ \prod_{\nu=1}^{q-1}\left(1-\frac z{m+\nu}\right)^{-1}
+     =\sum_{h\ge0}h_h^{[m,q-1]}z^h
+\]
+(the product is $1$ at $q=1$). Then
+\begin{equation}\label{hn:eq:boundary-primitives}
+ \mathcal P_{m,k}^{(q)}(x)=\frac{k!}{(m+1)_{q-1}}
+       \sum_{j=0}^k\frac{h_{k-j}^{[m,q-1]}}{j!}
+                    \zeta^{(j)}(1-m-q,x)
+\end{equation}
+satisfies
+\[
+ \frac{d^q}{dx^q}\mathcal P_{m,k}^{(q)}(x)
+       =\left.\partial_s^kD_{0,x-1,1}(s)\right|_{s=-m}.
+\]
+Indeed a $q$-fold primitive of $-s\zeta(s+1,x)$ is
+$\zeta(s-q+1,x)/(1-s)_{q-1}$. Its denominator is nonzero near
+$s=-m$, and differentiating $k$ times in $s$ proves the formula.
+The coefficients are complete homogeneous symmetric polynomials
+in $1/(m+1),\ldots,1/(m+q-1)$, equivalently Bell polynomials in
+generalized harmonic-number differences. Other $q$-fold
+primitives differ by a polynomial of degree less than $q$.
+
+\subsection{Scope and further questions}
+
+No substantive error was found in the inspected fully-shifted
+and outer-shift harmonic arguments. Their restriction of the
+finite coefficient rule to the principal part and finite part
+is correct. The new formulas identify the missing analytic
+information in higher spectral derivatives. Three extension
+requirements are explicit: a discrete finite value formula
+cannot be differentiated in $s$; depth and spectral manipulations
+must use the already entire remainder instead of disregarding
+the moving polar divisors of $F_a$; and the common-shift $a=0$
+Arakawa--Kaneko formula requires positive depth.
+
+Further questions include identifying finite combinations of
+spectral jets that reduce to ordinary Hurwitz-zeta derivatives;
+determining the exact shift singularities on $\Re a=-r$;
+developing stable evaluation of the finite differences, since
+naive binomial summation loses precision; comparing the present
+shift deformation systematically with existing generalized
+Arakawa--Kaneko families; and seeking multiple-zeta or
+iterated-integral identities for mixed spectral and shift
+derivatives beyond the standard integer specializations.
+
+
+% END INLINED SOURCE: sections/02_harmonic.tex
+\clearpage
+% BEGIN INLINED SOURCE: sections/03_dougall.tex
+\section{Mixed Dougall derivatives at a double residue zero}
+\label{dg:section}
+
+The centered resonance theorem already evaluates the minimal
+subtraction at every nonpositive integer excess parameter. Its
+residue-zero loci contain further identities: after restriction to
+some loci the remainder vanishes term by term, while derivatives
+transverse to those loci produce nonzero sums. We make this statement
+precise, give a finite formula at every mixed order, and evaluate a
+weighted square of trigamma differences for an arbitrary positive
+shift. An additional spectral variable gives an all-order generating
+function for generalized Stieltjes constants.
+
+The underlying summation is the classical Rogers--Dougall
+${}_5F_4(1)$ formula, DLMF 16.4.9~\cite{DLMFDougall}. The summation itself and the
+centered subtraction theorem are antecedents, not novelty claims~\cite{RepoDougall,RepoTransport}.
+The formulas below resolve the explicit mixed-parameter target
+at $b=c=1$ in the incoming coordinate-transport report. No claim of
+global literature priority is required for these deductions.
+
+\subsection{Exact polynomial collapse on the integer grid}
+
+Use the centered notation
+\[
+ \eta=a/2,\quad x_n=n+\eta,\quad d_0=1+a-b-c,
+\]
+and
+\[
+ r_n(u)=x_n\frac{\Gamma(n+a)\Gamma(n+b)\Gamma(n+c)
+                     \Gamma(n+d_0-u)}
+ {\Gamma(n+1)\Gamma(n+1+a-b)\Gamma(n+1+a-c)
+                     \Gamma(n+b+c+u)}.
+\]
+Reciprocal Gamma factors are interpreted as entire functions, including
+at their zeros. Put
+\[
+ (\alpha_1,\alpha_2,\alpha_3,\alpha_4)
+       =(a/2,b-a/2,c-a/2,d_0-u-a/2),
+\]
+and define finite polynomial data by
+\begin{align}
+ h_j(u)&=-\frac{\sum_{i=1}^4B_{2j+1}(\alpha_i)}{j(2j+1)},\qquad j\geq1,
+       \notag\\
+ C_0(u)&=1,\qquad
+ jC_j(u)=\sum_{k=1}^jkh_k(u)C_{j-k}(u).
+ \label{dg:centered-recurrence}
+\end{align}
+Here $B_j(z)$ denotes the Bernoulli polynomial with $B_1(z)=z-1/2$.
+These are exactly the centered asymptotic coefficients:
+\[
+ r_n(u)\sim x_n^{-1-2u}\sum_{j\geq0}C_j(u)x_n^{-2j},\qquad C_0=1.
+\]
+At $u=-N$, $N\geq1$, define the normally convergent bracket
+\[
+ F_{N,n}(a,b,c)=r_n(-N)-\sum_{j=0}^N C_j(-N)x_n^{2N-1-2j}.
+\]
+
+\begin{lemma}[Centered summation and residue transport: antecedent]
+\label{dg:antecedent}
+Suppose $a,b,c>0$ and $d_0>0$. For $K\geq1$ and
+$-K<\Re u<d_0$, the normally convergent series
+\begin{align}
+ R_K(u)&=\sum_{n\geq0}\left\{r_n(u)-
+       \sum_{j=0}^{K-1}C_j(u)x_n^{-1-2u-2j}\right\}\notag\\
+ &=G(u)-\sum_{j=0}^{K-1}C_j(u)\zeta(1+2u+2j,a/2),\notag\\
+ G(u)&=\frac{\Gamma(b)\Gamma(c)\Gamma(d_0-u)\Gamma(u)}
+          {2\Gamma(d_0)\Gamma(b+u)\Gamma(c+u)}.
+ \label{dg:antecedent-master}
+\end{align}
+The combined right side is holomorphic throughout this strip.
+For $N\geq0$, let
+\[
+ \rho_N=\frac{(-1)^N}{N!}(d_0)_N(1-b)_N(1-c)_N.
+\]
+Then
+\begin{align}
+ C_N(-N)&=\rho_N,\notag\\
+ R_{N+1}(-N)&=\rho_N\left\{\psi(a/2)+
+ \frac{\psi(N+1)-\psi(b)-\psi(c)-\psi(d_0+N)}2\right\}.
+ \label{dg:antecedent-closed}
+\end{align}
+All fixed spectral and parameter derivatives may be taken in the
+single bracket in \eqref{dg:antecedent-master}.
+\end{lemma}
+\begin{proof}
+At $x_n=n+a/2$, the denominator shifts are $1-\alpha_i$, so
+\[
+ r_n(u)=x_n\prod_{i=1}^4
+                   \frac{\Gamma(x_n+\alpha_i)}{\Gamma(x_n+1-\alpha_i)}.
+\]
+The finite Stirling--Bernoulli expansion~\cite{DLMFGammaAsymptotic} and Bernoulli reflection
+give, uniformly on compact parameter sets,
+\[
+ r_n(u)=x_n^{-1-2u}\left\{\sum_{j=0}^{K-1}C_j(u)x_n^{-2j}
+                                     +O(n^{-2K})\right\}.
+\]
+Only even inverse powers occur; exponentiating the finite logarithmic
+expansion gives \eqref{dg:centered-recurrence}. Thus the bracket is
+summable throughout $-K<\Re u<d_0$. Cauchy's formula on a slightly
+larger compact set proves the same for each derivative, with fixed
+logarithmic powers allowed. In $0<\Re u<d_0$, the classical
+Rogers--Dougall formula~\cite{DLMFDougall} sums $r_n(u)$ to $G(u)$:
+the upper parameters are $a,1+a/2,b,c,d_0-u$, the lower parameters
+are $a/2,1+a-b,1+a-c,b+c+u$, and the conventional excess is $2u$.
+Separate summation of the counterterms gives
+\eqref{dg:antecedent-master} there. Holomorphic continuation proves
+the full-strip identity and removability of its apparent poles.
+
+At $u=-N$ its Gamma residue is $\rho_N/2$. The only polar Hurwitz
+counterterm has index $N$ and residue $C_N(-N)/2$. Equality of
+residues gives $C_N(-N)=\rho_N$; since these are polynomial
+coefficients, this equality extends through every residue zero.
+
+For the constant term use
+\[
+ V=2\partial_a+\partial_b+\partial_c-\partial_u,
+ \qquad W=\partial_a+\tfrac12\partial_b+\tfrac12\partial_c.
+\]
+One has $V\alpha_1=1$ and $V\alpha_i=0$ for $i=2,3,4$.
+Consequently
+\[
+ Vh_k(u)=-\frac{B_{2k}(a/2)}k=2\zeta(1-2k,a/2),
+ \qquad VC_j(u)=2\sum_{k=1}^j\zeta(1-2k,a/2)C_{j-k}(u).
+\]
+The second formula follows by differentiating the formal exponential
+$\sum_jC_jy^j=\exp(\sum_kh_ky^k)$; every extracted coefficient is
+finite. At $u=-N$ it becomes
+\begin{equation}
+ \frac12C_N'(-N)+\sum_{j=0}^{N-1}
+ C_j(-N)\zeta(1-2N+2j,a/2)=W\rho_N.
+ \label{dg:residue-transport}
+\end{equation}
+For generic $b,c$, the Gamma term has constant coefficient
+\[
+ \frac{\rho_N}{2}
+ \{\psi(N+1)-\psi(d_0+N)-\psi(b-N)-\psi(c-N)\}.
+\]
+The resonant Hurwitz term has constant coefficient
+$C_N'(-N)/2-\rho_N\psi(a/2)$. Use
+\eqref{dg:residue-transport} to combine this derivative with all
+lower counterterms. Since $Wd_0=0$,
+\[
+ W\rho_N=\frac{\rho_N}{2}
+ \{\psi(b)-\psi(b-N)+\psi(c)-\psi(c-N)\}.
+\]
+The shifted digammas cancel and yield
+\eqref{dg:antecedent-closed}. Its final arguments are positive, so
+normal convergence and holomorphy extend it across all zeros of
+$\rho_N$. These antecedent formulas reproduce the needed part of
+the earlier resonance construction~\cite{RepoDougall,RepoTransport}.
+\end{proof}
+
+\begin{proposition}[Termwise collapse on every integer residue component]
+\label{dg:polynomial}
+Suppose $a,b,c>0$ and $d_0>0$. For $1\leq k\leq N$, at $c=k$,
+\begin{align}
+ r_n(-N)&=x_n
+  \prod_{r=1}^{k-1}\bigl(x_n^2-(\eta-r)^2\bigr)
+  \prod_{r=0}^{N-k-1}
+        \bigl(x_n^2-(\eta+1-b+r)^2\bigr).
+ \label{dg:grid-factor}
+\end{align}
+Consequently $F_{N,n}(a,b,k)=0$ for every $n$, and the same statement
+holds with $b$ and $c$ interchanged. Locally along any intersection
+$b=h$, $c=k$ with $h,k\in\{1,\ldots,N\}$, the holomorphic function
+$F_{N,n}$ is divisible by $(b-h)(c-k)$. Its quotient and every fixed
+derivative admit locally normally convergent sums. More globally, the
+quotient by $(1-b)_N(1-c)_N$ has a holomorphic extension throughout
+the stated parameter domain, and its sum is
+\begin{align}
+ &\sum_{n\geq0}\frac{F_{N,n}(a,b,c)}{(1-b)_N(1-c)_N}\notag\\
+ &\quad=\frac{(-1)^N(d_0)_N}{N!}
+ \left\{\psi(a/2)+
+ \frac{\psi(N+1)-\psi(b)-\psi(c)-\psi(d_0+N)}2\right\}.
+ \label{dg:divided-grid}
+\end{align}
+At a zero of either denominator factor, the summands in this formula
+mean their holomorphic extensions just described.
+\end{proposition}
+\begin{proof}
+The Gamma functional equation gives
+\[
+ r_n(-N)=x_n(n+1)_{k-1}(n+1+a-k)_{k-1}
+                 (n+1+a-b)_{N-k}(n+b+k-N)_{N-k}.
+\]
+Pair the factors symmetric about $x_n$ to obtain
+\eqref{dg:grid-factor}. This is an odd polynomial of degree
+$2N-1$ in $x_n$. Uniqueness of asymptotic coefficients shows that its
+centered coefficients are exactly $C_0(-N),\ldots,C_{N-1}(-N)$,
+whereas $C_N(-N)=0$ and every subsequent coefficient is zero.
+The identity includes the finitely many small indices where an
+individual reciprocal Gamma factor vanishes.
+
+For the divisibility statement, the holomorphic function vanishes
+when $b=h$ and when $c=k$. Successive one-variable Taylor expansions
+therefore factor $(b-h)(c-k)$. Cauchy's formula on a slightly larger
+parameter polydisc transfers the $O(n^{-3})$ uniform remainder bound
+to the divided function and to every prescribed derivative. This also
+proves normal convergence after division; a quotient cannot be justified
+merely by dividing two limiting sums at their common zero.
+Every zero of $(1-b)_N$ or $(1-c)_N$ is simple. The other local
+factors are units, so this establishes extension of the full divided
+sum. Its value follows from \eqref{dg:antecedent-closed} off the
+zero loci and then by holomorphy on them.
+\end{proof}
+
+The result is stronger than the vanishing of the residue polynomial
+or of the summed remainder. In particular, every derivative tangent
+to one of these components still has zero remainder termwise.
+Mixed transverse derivatives are the first potentially nonzero ones.
+For example, write
+\[
+ B_N(a,b,c)=\psi(a/2)+
+ \frac{\psi(N+1)-\psi(b)-\psi(c)-\psi(d_0+N)}2.
+\]
+At $b=h$, $c=k$ with $1\leq h,k\leq N$,
+\begin{align}
+ \sum_{n\geq0}\partial_b\partial_cF_{N,n}(a,h,k)
+ ={}&\frac{(-1)^{N+h+k}(d_0)_N}{N!}
+ (h-1)!(N-h)!(k-1)!(N-k)!\notag\\
+ &\times B_N(a,h,k),\qquad d_0=1+a-h-k.
+ \label{dg:grid-first-mixed}
+\end{align}
+This uses $\left.\partial_b(1-b)_N\right|_{b=h}
+=(-1)^h(h-1)!(N-h)!$ and keeps all finite-head terms.
+
+\subsection{A two-parameter generating identity for all positive shifts}
+
+Write $b=1+p$, $c=1+q$, $A=a-1$, and keep $u=-1$. Put
+\begin{align}
+ Q_n(a;p,q)
+ &=\frac{\Gamma(n+a)\Gamma(n+1+p)\Gamma(n+1+q)
+                         \Gamma(n+a-p-q)}
+ {\Gamma(n+1)\Gamma(n+a-p)\Gamma(n+a-q)
+                         \Gamma(n+1+p+q)},\label{dg:Q}\\
+ B_a(p,q)&=\psi(a/2)+\frac{\psi(2)-\psi(1+p)-\psi(1+q)
+                                      -\psi(a-p-q)}2.
+ \label{dg:B}
+\end{align}
+Thus $Q_n(a;p,0)=Q_n(a;0,q)=1$, and $r_n(-1)=x_nQ_n(a;p,q)$.
+
+\begin{theorem}[Double-zero generating function]
+\label{dg:generator}
+For every $a>0$ and sufficiently small complex $p,q$,
+\begin{align}
+ \sum_{n=0}^{\infty}\left\{
+ x_n\bigl(Q_n(a;p,q)-1\bigr)
+       +\frac{(A-p-q)pq}{x_n}\right\}
+ =-(A-p-q)pq\,B_a(p,q).
+ \label{dg:generator-eq}
+\end{align}
+The series is locally normally convergent in $(a,p,q)$ in a
+neighborhood of each point $(a,0,0)$ with $\Re a>0$. It may be
+differentiated at every fixed mixed order. Both sides are divisible
+by $pq$, and the divided identity also holds normally at $p=q=0$.
+\end{theorem}
+\begin{proof}
+For $a>1$ and small $p,q$, Lemma~\ref{dg:antecedent} applies with
+$N=1$. Its residue coefficient is
+\[
+ C_1(-1)=-(a-1-p-q)pq,
+\]
+and the closed resonance value is exactly the right side of
+\eqref{dg:generator-eq}. The centered expansion supplies
+\[
+ Q_n(a;p,q)=1-\frac{(A-p-q)pq}{x_n^2}+O(n^{-4})
+\]
+locally uniformly, so the displayed bracket is $O(n^{-3})$.
+All Gamma arguments in \eqref{dg:Q} lie in a pole-free
+neighborhood when $\Re a>0$ and $p,q$ are sufficiently small; the
+same centered expansion is uniform on compact subsets there.
+Thus the sum and the right side are holomorphic across $a=1$ and
+throughout this connected positive-half-plane germ. The identity
+theorem extends their equality from $a>1$ to all $a>0$.
+For any prescribed compact $a$-set one can choose a smaller common
+polydisc in $p,q$ and apply Cauchy's coefficient formula to the
+uniform remainder. This proves the derivative and division claims.
+\end{proof}
+
+The restriction $d_0>0$ was needed only in the original region from
+which continuation was proved. After the exact cancellation above,
+$a=1$ is a regular point, not an excluded parameter or a formal limit.
+
+\subsection{A finite Bell formula at every mixed order}
+
+For $k\geq2$, define
+\[
+ \Lambda_k(n;a)=(-1)^k\psi^{(k-1)}(n+a)
+                                -\psi^{(k-1)}(n+1).
+\]
+Taylor expansion of the four Gamma ratios gives the exact germ
+\begin{equation}
+ \log Q_n(a;p,q)=\sum_{r,s\geq1}
+       \Lambda_{r+s}(n;a)\frac{p^rq^s}{r!s!}.
+ \label{dg:logQ}
+\end{equation}
+Define a finite bivariate Bell polynomial by
+\[
+ \mathcal B_{rs}(n;a)=r!s![p^rq^s]
+ \exp\left(\sum_{i,j\geq1}
+       \Lambda_{i+j}(n;a)\frac{p^iq^j}{i!j!}\right).
+\]
+Only $i\leq r$, $j\leq s$, and powers at most $\min(r,s)$
+of the exponent are needed. In particular,
+\begin{align*}
+ \mathcal B_{11}&=\Lambda_2,&
+ \mathcal B_{21}&=\Lambda_3,&
+ \mathcal B_{31}&=\Lambda_4,\\
+ \mathcal B_{22}&=\Lambda_4+2\Lambda_2^2,&
+ \mathcal B_{32}&=\Lambda_5+6\Lambda_2\Lambda_3,\\
+ \mathcal B_{33}&=\Lambda_6+9\Lambda_2\Lambda_4
+                            +9\Lambda_3^2+6\Lambda_2^3.
+\end{align*}
+
+Set $B_{rs}=\partial_p^r\partial_q^sB_a(0,0)$, with
+\[
+ B_{00}=\psi(a/2)+\frac{1+\gamma-\psi(a)}2,
+\]
+and, for $r+s=k\geq1$,
+\begin{equation}
+ B_{rs}=-\frac12\left\{
+ \mathbf1_{s=0}\psi^{(r)}(1)+
+ \mathbf1_{r=0}\psi^{(s)}(1)+(-1)^k\psi^{(k)}(a)\right\}.
+ \label{dg:B-jets}
+\end{equation}
+Terms carrying a negative subscript below are omitted.
+
+\begin{corollary}[Complete mixed parameter table]
+\label{dg:all-parameter}
+For $r,s\geq1$, the single bracketed series
+\begin{align}
+ S_{rs}(a)=\sum_{n\geq0}\left\{
+ x_n\mathcal B_{rs}(n;a)
+ +\frac{A\mathbf1_{r=s=1}
+  -2\mathbf1_{(r,s)=(2,1)}-2\mathbf1_{(r,s)=(1,2)}}{x_n}
+ \right\}
+ \label{dg:S}
+\end{align}
+converges absolutely, and
+\begin{equation}
+ S_{rs}(a)=-rs\left\{
+ A B_{r-1,s-1}-(r-1)B_{r-2,s-1}-(s-1)B_{r-1,s-2}
+ \right\}.
+ \label{dg:all-parameter-eq}
+\end{equation}
+For every $r+s\geq4$, no counterterm is needed: the original
+polygamma polynomial $x_n\mathcal B_{rs}(n;a)$ is summable by itself.
+\end{corollary}
+\begin{proof}
+Differentiate \eqref{dg:generator-eq} and use
+\eqref{dg:logQ}. The counterterm is a polynomial of total
+degree three in $p,q$, which explains its exact disappearance at
+total derivative order four. Leibniz's rule gives
+\eqref{dg:all-parameter-eq}; normal convergence was proved
+before differentiation, including the small indices.
+\end{proof}
+
+For example, at $a=2$ the first rows are
+\[
+\begin{array}{c|c|c}
+ (r,s)&\mathcal B_{rs}&S_{rs}(2)\\\hline
+ (1,1)&\Lambda_2&0\\
+ (2,1)&\Lambda_3&1\\
+ (3,1)&\Lambda_4&-6\zeta(3)\\
+ (2,2)&\Lambda_4+2\Lambda_2^2&-4\zeta(3)\\
+ (3,2)&\Lambda_5+6\Lambda_2\Lambda_3&24\zeta(3)-18\zeta(4)\\
+ (3,3)&\Lambda_6+9\Lambda_2\Lambda_4+9\Lambda_3^2+6\Lambda_2^3
+                                    &108(\zeta(4)-\zeta(5)).
+\end{array}
+\]
+The first two rows use the counterterms in \eqref{dg:S}.
+Every later row is an ordinary convergent sum without subtraction.
+
+\subsection{A closed square of trigamma differences}
+
+\begin{theorem}[Weighted trigamma square]
+\label{dg:square}
+For every real $a>0$,
+\begin{align}
+ &\sum_{n=0}^{\infty}\left(n+\frac a2\right)
+       \bigl(\psi'(n+a)-\psi'(n+1)\bigr)^2\notag\\
+ &\qquad=\frac{a-1}{4}\psi''(a)
+     +\frac{\psi'(a)-\zeta(2)}2
+     +\frac{3(a-1)}2\zeta(3).
+ \label{dg:square-eq}
+\end{align}
+The series converges locally normally for $\Re a>0$, with an
+ordinary algebraic square in that complex extension.
+\end{theorem}
+\begin{proof}
+The $(2,2)$ and $(3,1)$ rows give respectively
+\begin{align*}
+ \sum_nx_n(\Lambda_4+2\Lambda_2^2)
+   &=2A\psi''(a)+4\psi'(a)-4\zeta(2),\\
+ \sum_nx_n\Lambda_4
+   &=\frac{3A}{2}\{\psi''(1)+\psi''(a)\}
+                                  +3\{\psi'(a)-\zeta(2)\}.
+\end{align*}
+Subtract and divide by two, using $\psi''(1)=-2\zeta(3)$.
+Every series used in the subtraction is absolutely convergent.
+Independently, the polygamma asymptotic or its convergent series
+shows $\Lambda_2(n;a)=O(n^{-2})$ uniformly on compact subsets of
+$\Re a>0$. Thus the weighted square is $O(n^{-3})$; this also
+directly verifies the domain and regularity at $a=1$.
+\end{proof}
+
+At $a=3/2$, the functional equation and duplication formula~\cite{DLMFPolygamma} give
+\[
+ \psi'(3/2)=3\zeta(2)-4,\qquad
+ \psi''(3/2)=-14\zeta(3)+16.
+\]
+The right side of \eqref{dg:square-eq} becomes
+\[
+ \frac18(-14\zeta(3)+16)
+ +\frac12(2\zeta(2)-4)+\frac34\zeta(3)
+ =\zeta(2)-\zeta(3).
+\]
+For $H_n^{(r)}=\sum_{k=1}^nk^{-r}$, $H_0^{(r)}=0$,
+\[
+ \psi'(n+1)-\psi'(n+3/2)
+ =2\{2H_{2n+1}^{(2)}-H_n^{(2)}-\zeta(2)\}.
+\]
+Therefore
+\begin{equation}
+ \boxed{\sum_{n=0}^{\infty}(4n+3)
+ \{2H_{2n+1}^{(2)}-H_n^{(2)}-\zeta(2)\}^{2}
+ =\zeta(2)-\zeta(3).}
+ \label{dg:half-harmonic-square}
+\end{equation}
+No regularized interpretation is involved in this positive series.
+
+The continuation to $a=1/2$ gives a companion identity,
+\begin{equation}
+ \sum_{n=0}^{\infty}(4n+1)
+ \{\zeta(2)-2H_{2n}^{(2)}+H_n^{(2)}\}^{2}
+ =\zeta(2)+\zeta(3).
+ \label{dg:other-half-harmonic-square}
+\end{equation}
+Here $\psi'(1/2)=3\zeta(2)$ and
+$\psi''(1/2)=-14\zeta(3)$. At $a=2$, the square formula reduces to
+$\sum_{k\geq1}k^{-3}=\zeta(3)$, a useful elementary normalization.
+
+The $(3,3)$ row also supplies a higher harmonic example. At $a=2$,
+writing $k=n+1$,
+\[
+ \Lambda_2=-k^{-2},\quad \Lambda_4=-6k^{-4},\quad
+ \Lambda_6=-120k^{-6},\quad
+ \Lambda_3=2\{2(\zeta(3)-H_{k-1}^{(3)})-k^{-3}\}.
+\]
+Substitution gives
+\begin{equation}
+ \boxed{\sum_{k=1}^{\infty}k
+ \{2(\zeta(3)-H_{k-1}^{(3)})-k^{-3}\}^2
+ =3\zeta(4)-\zeta(5).}
+ \label{dg:cubic-tail-square}
+\end{equation}
+
+\subsection{Every resonant polynomial moment from the same germ}
+
+For $N\geq1$, $s=p+q$, set
+\[
+ P_{N-1}(x;s)=\prod_{r=0}^{N-2}\{x^2-(a/2-s+r)^2\},\qquad P_0=1.
+\]
+The exact Gamma functional equation gives
+\begin{equation}
+ r_n(-N)=x_nP_{N-1}(x_n;p+q)Q_n(a;p,q).
+ \label{dg:N-transport}
+\end{equation}
+It retains every finite-head zero as a factor before derivatives are
+taken. This identity and the two-variable Bell germ generate the
+summands at every resonance without singular logarithmic derivatives.
+
+More explicitly, write
+\[
+ P_{N-1}(x;s)=\sum_{k=0}^{N-1}P_k(s)x^{2N-2-2k},\qquad
+ Q_n(a;p,q)\sim\sum_{j\geq0}D_j(p,q)x_n^{-2j}.
+\]
+Here $D_0=1$ and every $D_j$, $j\geq1$, is divisible by $pq$.
+The counterterms are the finite convolution
+\begin{equation}
+ C_j(-N)=\sum_{k=0}^{\min(j,N-1)}P_k(p+q)D_{j-k}(p,q).
+ \label{dg:N-coefficients}
+\end{equation}
+Equation~\eqref{dg:antecedent-closed} becomes
+\begin{align}
+ \sum_{n\geq0}F_{N,n}(a,1+p,1+q)
+ &=\frac{(-1)^N}{N!}(a-1-p-q)_N(-p)_N(-q)_N\notag\\
+ &\quad\times B_N(a,1+p,1+q).
+ \label{dg:N-all}
+\end{align}
+This holds as a normally convergent germ for every $a>0$, by the
+same continuation argument as Theorem~\ref{dg:generator}.
+Taking any prescribed $[p^rq^s]$ is a finite exact algorithm involving
+only the coefficients in \eqref{dg:N-coefficients}, polygamma
+values, and finite generalized harmonic numbers from the Pochhammer
+factors. Formula \eqref{dg:N-all} is a representation theorem;
+it does not assert that all possible products of polygamma functions
+can be separated individually by these mixed derivatives.
+
+\subsection{A mixed spectral germ containing every Stieltjes order}
+
+We now keep one derivative in each parameter direction and permit
+the spectral parameter to move: $u=-1+t$. For $a>0$, let
+\begin{align}
+ R_n(a;t)&=x_n\frac{\Gamma(n+1)\Gamma(n+a-t)}
+                       {\Gamma(n+a)\Gamma(n+1+t)},\notag\\
+ L_n(a;t)&=\psi(n+1)-\psi(n+a-t)+\psi(n+a)-\psi(n+1+t),\notag\\
+ K_n(a;t)&=\psi'(n+a-t)-\psi'(n+1+t).
+ \label{dg:spectral-summands}
+\end{align}
+At $p=q=0$, these satisfy
+\[
+ \partial_p\partial_q r_n(-1+t)
+                 =R_n(a;t)\{L_n(a;t)^2+K_n(a;t)\}.
+\]
+The identity uses the unspecialized summand before derivatives.
+
+To state the endpoint without a division by $a-1$, define
+\begin{align}
+ F_a(t)&=\frac{\Gamma(a-t)}{\Gamma(a)\Gamma(1+t)(1-t)},\notag\\
+ V_a(t)&=\psi(1)-\psi(a-t)+\psi(a)-\psi(1+t),\notag\\
+ W_a(t)&=\psi'(a-t)-\psi'(a),\notag\\
+ D_a(t)&=F_a(t)\left\{2t(1+tV_a(t))
+ -(a-1)\bigl[(1+tV_a(t))^2+t^2W_a(t)\bigr]\right\}.
+ \label{dg:D}
+\end{align}
+All of these are holomorphic near $t=0$ for every $a>0$, including
+$a=1$, and $D_a(0)=-(a-1)$.
+
+\begin{theorem}[Complete mixed spectral--Stieltjes germ]
+\label{dg:spectral}
+For $a>0$ and sufficiently small complex $t$, the series
+\begin{equation}
+ M_a(t)=\sum_{n=0}^{\infty}\left\{
+ R_n(a;t)\bigl(L_n(a;t)^2+K_n(a;t)\bigr)
+ +(a-1-2t)x_n^{-1-2t}\right\}
+ \label{dg:M}
+\end{equation}
+converges locally normally and equals
+\begin{equation}
+ M_a(t)=\frac{D_a(t)}{2t}
+             +(a-1-2t)\zeta(1+2t,a/2).
+ \label{dg:M-eq}
+\end{equation}
+The apparent singularity at $t=0$ is removable. Define $\gamma_m(v)$
+by the Laurent expansion at the simple Hurwitz pole~\cite{DLMFHurwitz}:
+\[
+ \zeta(1+z,v)=z^{-1}+\sum_{m\geq0}\frac{(-1)^m}{m!}\gamma_m(v)z^m.
+\]
+Then every fixed derivative has the explicit expression
+\begin{equation}
+ M_a^{(m)}(0)=\frac{D_a^{(m+1)}(0)}{2(m+1)}
+ -\mathbf1_{m=0}
+ +(-2)^m\{(a-1)\gamma_m(a/2)+m\gamma_{m-1}(a/2)\}.
+ \label{dg:all-Stieltjes}
+\end{equation}
+The $m\gamma_{m-1}$ term is omitted when $m=0$. Every derivative
+on the left can be taken in the single convergent bracket
+\eqref{dg:M}.
+\end{theorem}
+\begin{proof}
+For $a>1$, differentiate \eqref{dg:antecedent-master} with $K=2$
+once in $p$ and once in $q$. The lower counterterm $C_0=1$ is
+parameter independent. Direct differentiation of the cubic Bernoulli
+coefficient gives
+\[
+ \left.\partial_p\partial_qC_1(-1+t)\right|_{p=q=0}=-(a-1)+2t.
+\]
+The Gamma term is $E_1(t;p,q)/(2t)$, where
+\[
+ E_1(t;p,q)=
+ \frac{\Gamma(1+p)\Gamma(1+q)\Gamma(a-p-q-t)\Gamma(1+t)}
+ {\Gamma(a-1-p-q)\Gamma(1+p+t)\Gamma(1+q+t)}
+                  \frac{(p+t)(q+t)}{t-1}.
+\]
+The factors $(p+t)(q+t)$ must be retained: setting $p=q=0$
+before differentiating would erase the mixed derivative.
+Twice applying the product rule and using
+\[
+ \Gamma(a)=(a-1)\Gamma(a-1),\quad
+ \psi(a-1)=\psi(a)-(a-1)^{-1},\quad
+ \psi'(a-1)=\psi'(a)+(a-1)^{-2}
+\]
+shows that $\partial_p\partial_qE_1(t;0,0)=D_a(t)$.
+The resulting expression \eqref{dg:D} contains no singular
+factor at $a=1$. This proves \eqref{dg:M-eq} for $a>1$.
+Uniform Stirling remainders on a slightly enlarged parameter
+neighborhood give a bound
+$O(n^{-3-2\Re t}(1+\log^j n))$ for every fixed $t$-derivative of
+the bracket. The displayed functions are holomorphic for $\Re a>0$
+near $t=0$, so continuation gives all $a>0$ as before.
+
+Finally subtract the pole explicitly:
+\[
+ M_a(t)=\frac{D_a(t)+(a-1)-2t}{2t}
+ +(a-1-2t)\sum_{h\geq0}\frac{(-2)^h}{h!}\gamma_h(a/2)t^h.
+\]
+Taylor coefficient extraction yields
+\eqref{dg:all-Stieltjes}, including the constant $-1$ at
+$m=0$. The formula is for derivatives rather than divided Taylor
+coefficients; its factor $1/(m+1)$ is therefore essential.
+\end{proof}
+
+For an explicit first spectral derivative, write
+\[
+ \ell=1+\gamma-\psi(a),\quad
+ d=\psi'(a)-\zeta(2),\quad
+ \mu_n=-\psi(n+a)-\psi(n+1).
+\]
+Then \eqref{dg:all-Stieltjes} gives the ordinary identity
+\begin{align}
+ &\sum_{n=0}^{\infty}\left\{
+ x_n\bigl[\Lambda_3(n;a)+\mu_n\Lambda_2(n;a)\bigr]
+       -\frac{2+2(a-1)\log x_n}{x_n}\right\}\notag\\
+ &\quad=2\psi(a/2)+\ell
+       -\frac{a-1}{4}\bigl(\ell^2+5d+1\bigr)
+       -2(a-1)\gamma_1(a/2).
+ \label{dg:first-spectral}
+\end{align}
+Indeed the coefficient of $t^2$ in $D_a(t)$ is
+$2\ell-(a-1)(\ell^2+5d+1)/2$.
+At $a=2$, the right side reduces to
+$1-\gamma^2-2\gamma_1$. Writing $k=n+1$, this is equivalently
+\begin{align}
+ \sum_{k=1}^{\infty}\left\{
+ 4k(\zeta(3)-H_{k-1}^{(3)})-\frac1{k^2}-\frac2k
+ +\frac{2(H_{k-1}-\gamma-\log k)}k\right\}
+ =1-\gamma^2-2\gamma_1.
+ \label{dg:harmonic-Stieltjes}
+\end{align}
+The divergent-looking pieces in this last formula are one bracket;
+the proof supplies absolute convergence of their combination.
+
+\subsection{Further questions suggested by the mixed normal form}
+
+The arbitrary-order formulas above solve the requested first
+two-parameter table at $b=c=1$ and provide its spectral extension.
+Several sharper questions remain. First, at a fixed homogeneous
+order, which individual polygamma-product moments are recoverable
+from the finitely many mixed Bell combinations? Their number need
+not match the number of all possible products, so the all-order
+generating theorem alone does not prove complete separation.
+Second, the polynomial formula on $b=h$, $c=k$ supplies starting
+points at every residue-grid intersection; compact explicit tables
+away from $(1,1)$ should retain their finite-head zeros and avoid
+singular logarithmic derivative notation. Third, at rational $a$,
+the Stieltjes germ can be expressed in finite residue-class or
+Dirichlet-character coordinates; it is natural to determine which
+sectors cancel in particular mixed orders. Finally, primitive or
+generating-variable versions of the mixed identities can be tested
+for reductions to colored polylogarithms, with the function class
+and endpoint normalization stated before any claimed reduction.
+
+% END INLINED SOURCE: sections/03_dougall.tex
+\clearpage
+% BEGIN INLINED SOURCE: sections/04_twists.tex
+\section{Unequal twists: an exact normal form and its finite reductions}
+\label{tw:sec}
+
+The incoming twisted-Stieltjes report asks for a normal form when two
+frequency shifts are genuinely different
+\cite[research question on unequal twists]{RepoTwisted}.
+An equal-twist Gamma quotient cannot by itself answer that question.
+We give three complementary answers: a convergent expansion in ordinary
+Lerch families, an all-index convolution formula with one bounded
+correction kernel, and a precise finite-reduction criterion for the
+underlying scalar functions. The last criterion concerns functional
+identities; it makes no inference about independence of sampled periods.
+
+\subsection{Fourier conventions and the entire family}
+
+Write $\T=\R/\Z$, $e_n(x)=e^{2\pi\ii nx}$, and
+$\widehat U(n)=\langle U,e_{-n}\rangle$. Let $\theta,\eta$ be real
+nonintegers, with $\theta\ne\eta$, and set
+\begin{align}
+ \lambda_{n,\theta}&=2\pi\ii(n+\theta),\\
+ L_{n,\theta}&=\log(2\pi|n+\theta|)
+                +\frac{\pi\ii}{2}\sgn(n+\theta).
+ \label{tw:log}
+\end{align}
+Powers of $\lambda_{n,\theta}$ use this logarithm. The normalized
+single-twist family and the mixed family are defined by
+\begin{align}
+ \widehat W_s^\theta(n)&=\lambda_{n,\theta}^{s-1},\label{tw:W}\\
+ \widehat{\mathcal K_{\alpha,\beta}^{\theta,\eta}}(n)
+   &=\lambda_{n,\theta}^{\alpha}\lambda_{n,\eta}^{\beta}.
+ \label{tw:K}
+\end{align}
+Both are entire with values in periodic distributions, jointly in all
+displayed spectral variables. Indeed their Fourier coefficients and every
+fixed number of order derivatives have polynomial growth, uniformly on
+compact spectral sets. Pairing with a smooth test function therefore gives
+a normally convergent series. In particular,
+\begin{equation}
+ \mathcal K_{\alpha,\beta}^{\theta,\eta}
+   =W_{1+\alpha}^{\theta}*W_{1+\beta}^{\eta}.
+ \label{tw:Kconv}
+\end{equation}
+For $\Re(\alpha+\beta)<-1$, the Fourier series itself is absolutely
+and uniformly convergent. The distributional definition supplies all
+other spectral orders without assigning an ordinary value to a singular
+endpoint.
+
+For $0<\theta<1$, the standard Lerch family gives, on $0<x<1$,
+\begin{equation}
+ W_s^\theta(x)=\frac{e^{-2\pi\ii\theta x}}{\Gamma(1-s)}
+       \Phi(e^{-2\pi\ii\theta},s,x).
+ \label{tw:lerch}
+\end{equation}
+This identity is understood through analytic continuation when necessary.
+It follows initially by unfolding the Fourier coefficient of
+$\sum_{m\ge0}e^{-(\varepsilon+2\pi\ii\theta)(m+x)}(m+x)^{-s}$
+and then letting $\varepsilon\downarrow0$. This is also the
+normalization established in the incoming report. The Lerch function,
+its relation $\Li_s(z)=z\Phi(z,s,1)$, and its analytic continuation
+are classical \cite{DLMFLerch}. Other real twists follow by integer
+modulation, $W_s^{\theta+k}=e_{-k}W_s^\theta$.
+
+\subsection{A convergent Lerch expansion for arbitrary orders}
+
+Put $d=\theta-\eta$ and $h=2\pi\ii d$. Choose a finite set
+$F\subset\Z$ such that, for some $\rho<1$,
+\begin{equation}
+ \left|\frac{d}{n+\eta}\right|\le\rho\qquad(n\notin F).
+ \label{tw:Fcondition}
+\end{equation}
+For example, all modes with $|n+\eta|\le2|d|$ may be put in $F$.
+Let $\Pi_FU=\sum_{n\in F}\widehat U(n)e_n$.
+
+\begin{theorem}[Normal convergence in single-twist Lerch coordinates]
+\label{tw:tailtheorem}
+For all $\alpha,\beta\in\C$,
+\begin{align}
+ \mathcal K_{\alpha,\beta}^{\theta,\eta}
+ ={}&\sum_{n\in F}
+        \lambda_{n,\theta}^{\alpha}\lambda_{n,\eta}^{\beta}e_n
+       \notag\\
+ &+\sum_{k=0}^{\infty}\binom\alpha k h^k
+       (I-\Pi_F)W_{1+\alpha+\beta-k}^{\eta}.
+ \label{tw:tailseries}
+\end{align}
+The series converges normally after pairing with any smooth test
+function, locally uniformly in $(\alpha,\beta)$. Every fixed order
+derivative in either spectral variable may be taken termwise. After
+finitely many initial terms are removed, it converges normally in any
+prescribed $C^q$ norm, locally on spectral parameter sets.
+\end{theorem}
+
+\begin{proof}
+For $n\notin F$, condition \eqref{tw:Fcondition} implies that
+$n+\theta$ and $n+\eta$ have the same sign. Therefore there is no
+branch correction in
+\[
+ L_{n,\theta}=L_{n,\eta}
+             +\log\left(1+\frac{d}{n+\eta}\right).
+\]
+The ordinary binomial theorem proves the equality of every Fourier
+coefficient in \eqref{tw:tailseries}. On a compact set of $\alpha$,
+$|\binom\alpha k|\le C(1+k)^M$ for suitable $C,M$. This elementary
+bound follows either from the finite product or by Cauchy's formula
+applied to $(1+z)^\alpha$ on a disc of radius between $\rho$ and
+$1$; the latter also gives a geometric bound sufficient here.
+Each summand is consequently bounded by a polynomial in $|n|$
+times a summable geometric sequence in $k$. The test-function Fourier
+coefficients absorb the polynomial. Cauchy's formula on a slightly
+larger compact spectral set justifies all order derivatives.
+
+For the $C^q$ assertion, take $k_0$ larger than
+$q+1+\sup\Re(\alpha+\beta)$. Factor
+$|\lambda_{n,\eta}|^{\Re(\alpha+\beta)-k_0}$ from the terms
+with $k\ge k_0$. The remaining ratios are at most a fixed geometric
+sequence, while the $q$ derivatives in $x$ still leave an absolutely
+summable series over $n$. This proves the stated normal convergence.
+\end{proof}
+
+The finitely many removed modes are essential when the twists lie in
+different integer intervals. Omitting them can change both the phase and
+the value of the result. The theorem gives a convergently evaluable
+normal form at every spectral order, including all Lerch order jets.
+
+\subsection{One bounded kernel controls every mixed Stieltjes jet}
+
+Let $P_\theta$ have Fourier coefficient
+$\gamma+L_{n,\theta}$, and define
+\begin{equation}
+ B_\theta(u)=\Gamma(1-u)W_{1+u}^{\theta}
+   =\delta_0+\sum_{m\ge0}\frac{(-1)^{m+1}}{m!}
+                         U_m^\theta u^{m+1}.
+ \label{tw:B}
+\end{equation}
+Thus $P_\theta=-U_0^\theta$. This agrees with the incoming
+finite-part Lerch normalization. Introduce the difference
+\begin{equation}
+ A_{\theta,\eta}=P_\theta-P_\eta,
+ \qquad\widehat A_{\theta,\eta}(n)=L_{n,\theta}-L_{n,\eta}.
+ \label{tw:A}
+\end{equation}
+
+\begin{lemma}[The difference is an ordinary bounded kernel]
+\label{tw:bounded}
+If $\theta,\eta$ belong to the same open interval between consecutive
+integers, then
+\begin{equation}
+ A_{\theta,\eta}(x)=2\pi\ii\int_\eta^\theta
+       \frac{e^{-2\pi\ii t x}}{1-e^{-2\pi\ii t}}\dd t,
+       \qquad 0<x<1.
+ \label{tw:Aintegral}
+\end{equation}
+This function extends smoothly to each closed side of the endpoint,
+is bounded, and has jump
+\begin{equation}
+ A_{\theta,\eta}(0+)-A_{\theta,\eta}(1-)
+                    =2\pi\ii(\theta-\eta).
+ \label{tw:Ajump}
+\end{equation}
+For arbitrary real noninteger endpoints, the same formula holds with
+the path indented below the intervening integers. Equivalently, for
+$\eta<\theta$, it is the Cauchy principal value of the real integral
+plus $\pi\ii\sum_{k\in\Z\cap(\eta,\theta)}e_{-k}(x)$.
+\end{lemma}
+
+\begin{proof}
+The Green kernel
+\begin{equation}
+ G_t(x)=\frac{e^{-2\pi\ii t x}}{1-e^{-2\pi\ii t}}
+ \label{tw:G}
+\end{equation}
+has Fourier coefficient $1/(2\pi\ii(n+t))$. Integrating that
+coefficient gives the logarithmic difference in \eqref{tw:A} if
+no zero is crossed. Smoothness in $x$ up to each side follows by
+differentiating the compact $t$-integral. Subtracting the endpoint
+values gives \eqref{tw:Ajump}.
+
+When $t$ crosses $-n$, continuation below the pole adds $+\pi\ii$
+to the logarithmic difference, precisely the principal-logarithm phase
+change from $-\pi/2$ to $+\pi/2$ in \eqref{tw:log}.
+The residue of $2\pi\ii G_t(x)$ at an integer $k$ is $e_{-k}(x)$.
+Subtracting those finitely many simple poles defines an ordinary bounded
+function plus a finite Fourier polynomial. Its Fourier coefficients
+are again exactly \eqref{tw:A}. Reversing orientation covers
+$\theta<\eta$.
+\end{proof}
+
+For $0<\theta,\eta<1$, an alternative useful expression is
+\begin{equation}
+ A_{\theta,\eta}(x)
+ =e^{-2\pi\ii\eta x}\Phi(e^{-2\pi\ii\eta},1,x)
+  -e^{-2\pi\ii\theta x}\Phi(e^{-2\pi\ii\theta},1,x).
+ \label{tw:ALerch}
+\end{equation}
+The two $1/x$ singularities cancel. If $\theta=p/q\in(0,1)$,
+the corresponding term reduces to ordinary rational-shift digammas:
+\begin{equation}
+ e^{-2\pi\ii px/q}\Phi(e^{-2\pi\ii p/q},1,x)
+ =-\frac{e^{-2\pi\ii px/q}}q
+      \sum_{j=0}^{q-1}e^{-2\pi\ii pj/q}
+                          \psi\left(\frac{x+j}{q}\right).
+ \label{tw:rational}
+\end{equation}
+To prove it, split the Lerch defining sum into residue classes:
+\[
+ \Phi(e^{-2\pi\ii p/q},s,x)
+   =q^{-s}\sum_{j=0}^{q-1}e^{-2\pi\ii pj/q}
+                          \zeta\left(s,\frac{x+j}{q}\right).
+\]
+Continue this identity to $s=1$. The Hurwitz poles cancel because the finite character sum is
+zero; $\gamma_0(a)=-\psi(a)$ gives the formula.
+
+Write $\exp_*(uA)=\delta_0+\sum_{r\ge1}u^r A^{*r}/r!$.
+Since $A$ is bounded and belongs to $L^1(\T)$, this exponential is
+entire with values in $\delta_0+L^1(\T)$, by the usual convolution
+norm estimate. Put
+\begin{equation}
+ C(u,v)=\frac{\Gamma(1-u)\Gamma(1-v)}{\Gamma(1-u-v)}.
+ \label{tw:C}
+\end{equation}
+
+\begin{theorem}[All-index unequal-twist formula]
+\label{tw:jets}
+As analytic germs of periodic distributions,
+\begin{equation}
+ B_\theta(u)*B_\eta(v)
+       =C(u,v)B_\eta(u+v)*\exp_*(uA_{\theta,\eta}).
+ \label{tw:mixedB}
+\end{equation}
+Consequently every mixed finite-part product is the finite coefficient
+formula
+\begin{equation}
+ U_m^\theta*U_n^\eta
+  =(-1)^{m+n}m!n!\,[u^{m+1}v^{n+1}]
+       C(u,v)B_\eta(u+v)*\exp_*(uA_{\theta,\eta}).
+ \label{tw:alljets}
+\end{equation}
+Only powers $A^{*r}$ with $0\le r\le m+1$ occur. The $r=0$
+part is the known equal-twist Gamma table; the other terms have Fourier
+coefficients tending to zero and introduce no new point-supported
+counterterm.
+\end{theorem}
+
+\begin{proof}
+At a Fourier mode, the right side of \eqref{tw:mixedB} is
+\[
+ \Gamma(1-u)\Gamma(1-v)
+      e^{(u+v)L_{n,\eta}}
+      e^{u(L_{n,\theta}-L_{n,\eta})},
+\]
+which is exactly the left side. This proves the analytic identity by
+normal convergence after testing. Taking the indicated coefficients
+proves \eqref{tw:alljets}. For $r\ge1$, the Fourier coefficient of
+$A^{*r}$ is $O(|n|^{-r})$, whereas a fixed spectral jet of
+$B_\eta$ grows only as a fixed polynomial in $\log|n|$. Thus their
+product tends to zero. A nonzero distribution supported at one point
+is a finite sum of derivatives of its Dirac mass and has polynomial
+Fourier coefficients; none can be added while preserving these
+coefficients. This statement refers to the displayed canonical
+decomposition, not to an arbitrary splitting of a distribution into
+summands.
+\end{proof}
+
+The first symmetric identity is particularly compact:
+\begin{equation}
+ \boxed{\quad
+ U_0^\theta*U_0^\eta
+   =U_1^\theta+U_1^\eta-\zeta(2)\delta_0
+                     -\frac12 A_{\theta,\eta}^{*2}.
+ \quad}
+ \label{tw:firstmixed}
+\end{equation}
+Indeed $2U_1^\theta=P_\theta^{*2}+\zeta(2)\delta_0$,
+and polarization gives the result. Here $A^{*2}$ is an ordinary
+continuous function, since its Fourier coefficients are $O(n^{-2})$.
+The new term is therefore an explicitly evaluable ordinary convolution
+of bounded Lerch differences, while the contact coefficient remains
+fixed. An equal-twist formula with the correction omitted is false:
+at mode $n$ it misses $\tfrac12(L_{n,\theta}-L_{n,\eta})^2$.
+
+\subsection{Finite reductions and their precise boundary}
+
+\begin{proposition}[Integer resolvent products]
+\label{tw:partial}
+For positive integers $p,q$, with $h=2\pi\ii(\theta-\eta)$,
+\begin{align}
+ \mathcal K_{-p,-q}^{\theta,\eta}
+ ={}&\sum_{j=1}^p
+  \frac{(-1)^q\binom{p+q-j-1}{p-j}}{h^{p+q-j}}
+                  W_{1-j}^\theta\notag\\
+ &+\sum_{j=1}^q
+  \frac{(-1)^{q-j}\binom{p+q-j-1}{q-j}}{h^{p+q-j}}
+                  W_{1-j}^\eta.
+ \label{tw:partialformula}
+\end{align}
+If one of $\alpha,\beta$ is a nonnegative integer, there is likewise
+a finite binomial reduction at the other twist. All integer pairs
+therefore reduce to finitely many single-twist families. In particular,
+\begin{equation}
+ G_\theta*G_\eta=\frac{G_\eta-G_\theta}{2\pi\ii(\theta-\eta)}.
+ \label{tw:resolvent}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Expand $(A-h)^{-q}$ at $A=0$ and $(B+h)^{-p}$ at $B=0$, with
+$A-B=h$. The displayed coefficients are exactly the principal parts
+of $1/(A^pB^q)$ at its two poles. Their difference from that rational
+function is an entire rational function vanishing at infinity and is
+therefore zero. Substitute $A=\lambda_{n,\theta}$ and
+$B=\lambda_{n,\eta}$. The polynomial cases follow by the finite
+binomial theorem. Equation \eqref{tw:resolvent} is $p=q=1$.
+\end{proof}
+
+For positive integer $j$, the terms in \eqref{tw:partialformula}
+are elementary on the interval:
+\begin{equation}
+ W_{1-j}^\theta(x)
+  =\frac{(-1)^{j-1}}{(j-1)!(2\pi\ii)^{j-1}}
+      \partial_\theta^{j-1}
+      \frac{e^{-2\pi\ii\theta x}}{1-e^{-2\pi\ii\theta}}.
+ \label{tw:elementary}
+\end{equation}
+The combined right side has its usual confluent limit
+$W_{1-p-q}^{\theta}$ as $\eta\to\theta$, although individual
+partial-fraction coefficients diverge. For example,
+\begin{align}
+ G_{1/4}*G_{3/4}(x)
+  &=\frac{\ii}{2\pi}
+    \left((1+\ii)e^{-3\pi\ii x/2}
+                   -(1-\ii)e^{-\pi\ii x/2}\right),\label{tw:quarters}\\
+ G_{1/2}^{*2}(x)&=e^{-\pi\ii x}
+                         \left(\frac{x}{2}-\frac14\right).
+ \label{tw:half}
+\end{align}
+
+\begin{theorem}[Finite scalar reduction criterion]
+\label{tw:classification}
+Fix distinct complex numbers $a,b$ and coherent branches on a simply
+connected domain avoiding $-a,-b$. Consider
+$f(z)=(z+a)^\alpha(z+b)^\beta$. It is a finite linear combination
+of single-centre powers and order jets
+\[
+ (z+a)^r\Log^k(z+a),\qquad (z+b)^t\Log^\ell(z+b),
+ \qquad k,\ell\in\N\cup\{0\},
+\]
+with arbitrary complex exponents and constant coefficients, if and only if
+\begin{equation}
+ \alpha\in\Z_{\ge0},\qquad\text{or}\qquad
+ \beta\in\Z_{\ge0},\qquad\text{or}\qquad
+ \alpha,\beta\in\Z.
+ \label{tw:criterion}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Sufficiency follows from the binomial theorem and rational partial
+fractions. For necessity, suppose first $\alpha\notin\Z$ and
+$\beta\notin\Z_{\ge0}$. Near $z=-a$, write $w=z+a$ and
+$c=b-a\ne0$. Then
+\[
+ f(z)=w^\alpha\sum_{j\ge0}\binom\beta j c^{\beta-j}w^j.
+\]
+All infinitely many coefficients are nonzero. Terms based at $-b$
+are holomorphic near $-a$. Apply analytic continuation once around
+$w=0$ and subtract the original expression. On the left this
+multiplies the displayed infinite series by
+$e^{2\pi\ii\alpha}-1\ne0$; on the proposed right it removes every
+term holomorphic there and leaves only finitely many powers times
+polynomials in $\Log w$. Let $E=w\,d/dw$. A nonzero polynomial $P(E)$ annihilates that
+finite expression: for each occurring $w^r\Log^k w$, include the
+factor $(E-r)^{k+1}$. Applied to the left, it gives a nonzero constant
+multiple of
+\[
+ w^\alpha\sum_{j\ge0}P(\alpha+j)
+                    \binom\beta j c^{\beta-j}w^j.
+\]
+Vanishing would force $P(\alpha+j)=0$ for every $j\ge0$, contrary
+to $P$ being a nonzero polynomial. This is a contradiction.
+
+Interchanging the two centres proves the same conclusion if
+$\beta\notin\Z$ and $\alpha\notin\Z_{\ge0}$. Unless
+\eqref{tw:criterion} holds, at least one of these two cases occurs.
+\end{proof}
+
+The qualification ``scalar'' matters. Equality on the discrete set of
+Fourier modes is weaker than equality of the underlying holomorphic
+functions; the theorem does not promote the former to the latter.
+It explains exactly when the elementary functional mechanism behind
+\eqref{tw:partialformula} can terminate. Arbitrary orders still have
+the normally convergent expansion \eqref{tw:tailseries}.
+
+\subsection{Argument derivatives and canonical primitives}
+
+Let $D_\theta=d/dx+2\pi\ii\theta$. Fourier multiplication gives
+the exact contiguous and differential laws
+\begin{align}
+ D_\theta\mathcal K_{\alpha,\beta}^{\theta,\eta}
+   &=\mathcal K_{\alpha+1,\beta}^{\theta,\eta},&
+ D_\eta\mathcal K_{\alpha,\beta}^{\theta,\eta}
+   &=\mathcal K_{\alpha,\beta+1}^{\theta,\eta},\label{tw:diff}\\
+ \mathcal K_{\alpha+1,\beta}^{\theta,\eta}
+  -\mathcal K_{\alpha,\beta+1}^{\theta,\eta}
+   &=h\mathcal K_{\alpha,\beta}^{\theta,\eta}.
+ \label{tw:contiguous}
+\end{align}
+Since neither twist is integral, $D_\theta$ and $D_\eta$ are
+invertible on periodic distributions. Their inverses lower the
+corresponding spectral exponent. These statements remain valid after
+any order derivatives in $\alpha,\beta$.
+
+For an ordinary integrable $f$, the unique periodic covariant primitive
+has the explicit form
+\begin{equation}
+ (D_\eta^{-1}f)(x)=e^{-2\pi\ii\eta x}
+ \left\{\int_0^x e^{2\pi\ii\eta t}f(t)\dd t
+   +\frac{e^{-2\pi\ii\eta}}{1-e^{-2\pi\ii\eta}}
+          \int_0^1e^{2\pi\ii\eta t}f(t)\dd t\right\}.
+ \label{tw:primitive}
+\end{equation}
+Differentiation proves $D_\eta U=f$, and the displayed constant is
+forced by $U(1)=U(0)$. This supplies ordinary quadratures for every
+bounded correction in \eqref{tw:alljets}, while the singular
+single-twist part retains its canonical distributional primitive.
+
+
+% END INLINED SOURCE: sections/04_twists.tex
+\clearpage
+% BEGIN INLINED SOURCE: sections/05_collisions.tex
+\section{Simultaneous Stieltjes collisions and their finite anomalies}
+\label{cl:sec}
+
+The incoming separated-triple theorem assumes pairwise disjoint singular
+grids. Its first further question asks whether simultaneous collision
+constants agree with a directly merged ambient finite part
+\cite[Question~1]{RepoExact}. The bilinear coincidence report supplies
+such a comparison for two factors \cite{RepoCoincident}. The triple
+problem contains an additional phenomenon: two singular factors can
+multiply a resonant Taylor coefficient of a third regular factor.
+We prove an explicit finite discrepancy, identify its dependence on the
+collision rates, and then give an all-factor local completion theorem.
+The distinction between cutoff and spectral prescriptions also appears
+in the different endpoint setting of \cite{RepoEndpoint}; here the
+collision parameter moves singularities in the real argument.
+
+\subsection{Fixed coordinates and the geometric collision theorem}
+\label{cl:geometric}
+
+Put $f(x)=\gamma_0(x)=-\psi(x)$ and $\gamma=\gamma_0(1)$. For
+$0<a<b$ and $0<\epsilon<1/b$, let
+\[
+ C_{a,b}(\epsilon)=\operatorname{FP}_x\int_0^1
+ f(x)f(\{x+a\epsilon\})f(\{x+b\epsilon\})\,dx.
+\]
+At each of the three distinct grid points $0$, $1-b\epsilon$, and
+$1-a\epsilon$, the finite part deletes a right interval of ambient
+length $\eta$ and takes the coefficient independent of $\eta$.
+The three cutoff variables can also be independent. Define the merged
+moment in the same coordinate by
+\begin{equation}\label{cl:merged}
+ Q=\operatorname{FP}_x\int_0^1f(x)^3\,dx.
+\end{equation}
+This has the ordinary convergent representation
+\begin{equation}\label{cl:merged-convergent}
+ Q=\int_0^1\left[f(x)^3-\frac1{x^3}-\frac{3\gamma}{x^2}
+       -\frac{3(\gamma^2-\zeta(2))}{x}\right]dx-\frac12-3\gamma.
+\end{equation}
+
+\begin{theorem}[Triple collision constant, with its rate dependence]
+\label{cl:collision}
+With $L=\log\epsilon$, define
+\begin{align*}
+ P_{-2}(a,b;L)&=\frac{L}{ab}
+    +\frac{\log a}{a(b-a)}-\frac{\log b}{b(b-a)},\\
+ P_{-1}(a,b;L)&=\gamma\left[
+    \frac{L+\log a}{a}+\frac{L+\log b}{b}
+    +\frac{L+\log(b-a)}{b-a}\right],\\
+ P_0(a,b;L)&=\zeta(2)\left[
+    \frac{a-b}{a}(L+\log a)
+    +\frac{b-a}{b}(L+\log b)
+    +\frac b{b-a}(L+\log(b-a))\right].
+\end{align*}
+Then
+\begin{equation}\label{cl:rate-expansion}
+ C_{a,b}(\epsilon)=\epsilon^{-2}P_{-2}(a,b;L)
+    +\epsilon^{-1}P_{-1}(a,b;L)+P_0(a,b;L)+Q
+    +O(\epsilon|\log\epsilon|).
+\end{equation}
+Consequently its coefficient independent of $\epsilon$ and $\log\epsilon$
+is $Q+\zeta(2)D(a,b)$, where
+\[
+ D(a,b)=\frac{a-b}{a}\log a+\frac{b-a}{b}\log b
+               +\frac b{b-a}\log(b-a).
+\]
+In particular,
+\begin{align}
+ C_{1,2}(\epsilon)
+ ={}&\frac{L-\log2}{2\epsilon^2}
+   +\frac{\gamma(5L+\log2)}{2\epsilon}
+   +\frac{\zeta(2)}2(3L+\log2)+Q
+   +O(\epsilon|\log\epsilon|),\label{cl:equally-spaced}\\
+ \operatorname{CT}_{\epsilon}C_{1,2}(\epsilon)
+ ={}&Q+\frac{\zeta(2)}2\log2\ne Q.\label{cl:finite-anomaly}
+\end{align}
+Here $\operatorname{CT}_{\epsilon}$ removes divergent powers and all
+nonconstant logarithmic terms; it does not remove finite constants
+inside a chosen collision counterterm. Removing the complete $P_0$,
+including its finite part, does recover $Q$.
+\end{theorem}
+
+\begin{proof}
+Choose a fixed small $\delta>0$ and work in the circle coordinate
+$x\in(-\delta,\delta)$ around the merged point. The Hurwitz shift
+identity \cite[Equation~25.11.3]{DLMFHurwitz} gives the exact local representation
+\[
+ f(\{x\})=\frac{\mathbf 1_{x>0}}x+h(x),\qquad
+ h(x)=f(1+x)=\gamma-\zeta(2)x+x^2R(x),
+\]
+where $R$ is analytic near zero. For the three rates $(0,a,b)$ write
+$S_c(x)=\mathbf 1_{x+c\epsilon>0}/(x+c\epsilon)$ and
+$H_c(x)=h(x+c\epsilon)$. Expand the product of the three $S_c+H_c$.
+The all-regular term and the three terms with exactly one $S_c$ are
+analytic in $\epsilon$ after the prescribed one-sided finite parts
+are taken. Their limits are their merged counterparts. The integral
+outside this neighborhood is also analytic for small $\epsilon$.
+
+For a term with two singular factors, let their rates be $c<d$ and
+let the remaining regular factor have rate $e$. Set
+$t=x+c\epsilon$, $\Delta=d-c$, $\rho=e-c$ and $\ell=\delta+c\epsilon$.
+Its local integral is
+\[
+ \operatorname{FP}\int_0^\ell
+     \frac{h(t+\rho\epsilon)}{t(t+\Delta\epsilon)}\,dt.
+\]
+The two necessary elementary primitives are
+\begin{align*}
+ A_0&=\operatorname{FP}\int_0^\ell\frac{dt}{t(t+\Delta\epsilon)}
+ =\frac{\log\ell-\log(\ell+\Delta\epsilon)
+                  +\log(\Delta\epsilon)}{\Delta\epsilon},\\
+ A_1&=\int_0^\ell\frac{dt}{t+\Delta\epsilon}
+ =\log(\ell+\Delta\epsilon)-\log(\Delta\epsilon).
+\end{align*}
+The constant and linear parts of $h$ contribute
+$\gamma A_0-\zeta(2)(A_1+\rho\epsilon A_0)$. As $\epsilon\downarrow0$,
+this equals
+\[
+ \frac{\gamma\log(\Delta\epsilon)}{\Delta\epsilon}
+ +\zeta(2)\frac{d-e}{d-c}\log(\Delta\epsilon)
+ -\frac\gamma\delta-\zeta(2)\log\delta+O(\epsilon|\log\epsilon|).
+\]
+The last two displayed constants are exactly the merged finite parts
+of $\gamma x^{-2}-\zeta(2)x^{-1}$ on $(0,\delta)$.
+The analytic quadratic remainder converges to its merged ordinary
+integral. More precisely, use
+\[
+ \frac{(t+\rho\epsilon)^2}{t(t+\Delta\epsilon)}
+ =1+\frac{(2\rho-\Delta)\epsilon}{t+\Delta\epsilon}
+       +\frac{\rho^2\epsilon^2}{t(t+\Delta\epsilon)}
+\]
+and the analytic, locally bounded function $R$ to obtain an error
+$O(\epsilon|\log\epsilon|)$. Thus the three pairs give exactly
+$\epsilon^{-1}P_{-1}+P_0$ beyond their merged values.
+
+The three-singular term is supported on $x>0$. Partial fractions give
+\[
+ \frac1{x(x+a\epsilon)(x+b\epsilon)}
+ =\frac1{ab\epsilon^2x}
+  -\frac1{a(b-a)\epsilon^2(x+a\epsilon)}
+  +\frac1{b(b-a)\epsilon^2(x+b\epsilon)}.
+\]
+Its lower-end contribution is exactly $\epsilon^{-2}P_{-2}$. The
+upper-end expression tends to $-1/(2\delta^2)$, which is precisely
+$\operatorname{FP}\int_0^\delta x^{-3}\,dx$; its remaining error is
+$O(\epsilon)$. Summing all eight terms and the nonsingular exterior
+integral proves the formula. Only simple logarithms occur because the
+zero-index singular pieces are rational functions with simple linear
+factors; no $\log^2\epsilon$ term has been suppressed.
+\end{proof}
+
+The rate dependence can be isolated without an unevaluated merged
+constant:
+\begin{equation}\label{cl:rate-difference}
+ \operatorname{CT}_{\epsilon}C_{1,3}(\epsilon)
+ -\operatorname{CT}_{\epsilon}C_{1,2}(\epsilon)
+ =\zeta(2)\left(\log2+\frac23\log3\right).
+\end{equation}
+These are positive shifts, exactly as in the definition of $C_{a,b}$.
+For three digamma factors all displayed correlations change sign.
+
+\subsection{Resonant subsets and a holomorphic completion}
+\label{cl:subsets}
+
+This section supplies an all-index explanation of the new phenomenon.
+Put
+\[
+ G(z,x)=\zeta(1-z,x)+\frac1z
+     =\sum_{m\ge0}\gamma_m(x)\frac{z^m}{m!},\qquad
+ c_r(z)=(-1)^r(1-z)_r,
+\]
+and write
+\[
+ g_r(z,x)=\partial_x^rG(z,x),\qquad h_r(z)=g_r(z,1).
+\]
+In particular $h_0(z)=\zeta(1-z)+1/z$ and
+$h_r(z)=c_r(z)\zeta(r+1-z)$ for $r\ge1$. All these functions are
+holomorphic near $z=0$.
+
+Let there be $d\ge1$ factors, positive integer frequencies $p_i$, real
+shifts $a_i$, and nonnegative derivative orders $r_i$. Let
+$\mathcal B$ be the finite union of their singular grids on the circle,
+and define the collision set at $b\in\mathcal B$ by
+\[
+ C_b=\{i:p_i b+a_i\in\mathbb Z\}.
+\]
+For $t=x-b>0$ put
+\[
+ H_{b,j}(z_j,t)=
+ \begin{cases}
+ g_{r_j}(z_j,1+p_jt),&j\in C_b,\\
+ g_{r_j}(z_j,\{p_jb+a_j\}+p_jt),&j\notin C_b.
+ \end{cases}
+\]
+For every nonempty subset $S\subseteq C_b$ set
+\[
+ \Lambda_S=\sum_{i\in S}z_i,\qquad
+ k_S=\sum_{i\in S}(r_i+1)-1,
+\]
+and define the complete resonant numerator
+\[
+ A_{b,S}(\boldsymbol z)=
+ \left(\prod_{i\in S}c_{r_i}(z_i)p_i^{z_i-r_i-1}\right)
+ [t^{k_S}]\prod_{j\notin S}H_{b,j}(z_j,t).
+\]
+Empty products are one. For $d\ge2$, the term with
+$S=\{1,\dots,d\}$ vanishes because $k_S>0$.
+
+\begin{theorem}[All-factor local completion]
+\label{cl:allfactor}
+Let $I_{\boldsymbol r}(\boldsymbol z)$ be the meromorphic continuation
+of the ordinary integral
+\[
+ \int_0^1\prod_{i=1}^d
+      g_{r_i}(z_i,\{p_i x+a_i\})\,dx,
+\]
+initially defined, for example, by $\Re z_i>r_i+1$ for every $i$.
+Then
+\begin{equation}\label{cl:completion}
+ J_{\boldsymbol r}(\boldsymbol z)
+ =I_{\boldsymbol r}(\boldsymbol z)
+       -\sum_{b\in\mathcal B}\ \sum_{\varnothing\ne S\subseteq C_b}
+              \frac{A_{b,S}(\boldsymbol z)}{\Lambda_S}
+\end{equation}
+is holomorphic near the origin. Its coefficient
+\[
+ \left(\prod_i m_i!\right)[z_1^{m_1}\cdots z_d^{m_d}]
+              J_{\boldsymbol r}(\boldsymbol z)
+\]
+is exactly the ambient-coordinate finite part of the corresponding
+product of $\gamma_{m_i}^{(r_i)}$. The theorem permits arbitrary partial
+and complete collisions.
+\end{theorem}
+
+\begin{proof}
+The exact Hurwitz shift gives each local factor as
+\[
+ g_{r_i}(z_i,\{p_ix+a_i\})
+ =c_{r_i}(z_i)p_i^{z_i-r_i-1}t^{z_i-r_i-1}
+       +H_{b,i}(z_i,t)\quad(i\in C_b).
+\]
+Expand the finite product by its nonempty subsets of singular pieces.
+For $S$, expand its regular complement through degree $k_S$. The
+Taylor coefficient of degree $j$ integrates meromorphically with
+denominator $\Lambda_S+j-k_S$. All $j<k_S$ have denominator nonzero
+near the origin and already generate their coordinate finite parts.
+At $j=k_S$ the term is $A_{b,S}t^{\Lambda_S-1}$.
+Its meromorphic integral on $(0,\ell)$ is
+$A_{b,S}\ell^{\Lambda_S}/\Lambda_S$, while its coefficientwise
+coordinate finite-part generator is
+$A_{b,S}(\ell^{\Lambda_S}-1)/\Lambda_S$. Their difference is the
+complete numerator $A_{b,S}/\Lambda_S$, not a residue with its
+parameter dependence deleted. The Taylor remainder has exponent
+$\Lambda_S$ and is integrable uniformly on a sufficiently small
+spectral polydisc; all fixed spectral derivatives add only logarithmic
+powers. Finite summation over grid points proves holomorphy and the
+coefficient interpretation, and also constructs the local meromorphic
+continuation uniquely from the initial convergent integral.
+\end{proof}
+
+For two coincident factors, a product of both singular pieces has no
+regular complement of the positive degree needed for resonance. Hence
+the only polar divisors through the origin are $z_i=0$. For three
+coincident factors, pairs of singular pieces have one regular
+complement, so $z_i+z_j=0$ contributes for the first time. This is the
+structural difference behind the triple collision anomaly.
+
+\subsection{The explicit same-point triple generator}
+\label{cl:triple}
+
+\begin{corollary}[Every coincident triple Stieltjes jet]
+\label{cl:triple-completion}
+At unit frequencies and a common endpoint, put $R=r_1+r_2+r_3$.
+The complete generator is
+\begin{align}
+ J_{\boldsymbol r}(\boldsymbol z)=I_{\boldsymbol r}(\boldsymbol z)
+ &-\sum_{i=1}^3\frac{c_{r_i}(z_i)}{z_i}
+     \sum_{u+v=r_i}\frac{h_{r_j+u}(z_j)h_{r_k+v}(z_k)}{u!v!}\notag\\
+ &-\sum_{i<j}\frac{c_{r_i}(z_i)c_{r_j}(z_j)h_{R+1}(z_k)}
+          {(r_i+r_j+1)!(z_i+z_j)}.\label{cl:triple-generator}
+\end{align}
+In each summand $\{i,j,k\}=\{1,2,3\}$.
+For $r_i=0$ this is particularly short:
+\begin{equation}\label{cl:triple-zero}
+ J_{\boldsymbol0}=I_{\boldsymbol0}
+ -\sum_i\frac{h_0(z_j)h_0(z_k)}{z_i}
+ -\sum_{i<j}\frac{h_1(z_k)}{z_i+z_j}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+For a singleton $S=\{i\}$, its resonant Taylor degree is $r_i$,
+and Leibniz's formula gives the inner sum in the first line.
+For a pair $S=\{i,j\}$, the resonant degree is $r_i+r_j+1$.
+The remaining factor has derivative order $r_k$, so its Taylor
+coefficient is $h_{R+1}(z_k)/(r_i+r_j+1)!$. The three-singular
+subset has no regular complement and makes no resonant contribution.
+Theorem~\ref{cl:allfactor} now gives both formulas.
+\end{proof}
+The last sum is indispensable: $h_1(0)=-\zeta(2)\ne0$.
+
+\subsubsection{A completely specified Tornheim realization}
+\label{cl:tornheim}
+
+The classical Tornheim function is initially
+\[
+ T(A,B,C)=\sum_{m,n\ge1}\frac1{m^A n^B(m+n)^C}.
+\]
+Let $\alpha_i=z_i-r_i$ and define
+\begin{align*}
+ K_3(\boldsymbol\alpha)
+ &=\frac{2\prod_i\Gamma(\alpha_i)}{(2\pi)^{\sum_i\alpha_i}}
+   \sum_{k=1}^3
+   \cos\!\left(\frac\pi2(\alpha_i+\alpha_j-\alpha_k)\right)
+        T(\alpha_i,\alpha_j,\alpha_k),\\
+ K_2(A,B)&=\frac{2\Gamma(A)\Gamma(B)}{(2\pi)^{A+B}}
+          \cos\!\left(\frac\pi2(A-B)\right)\zeta(A+B).
+\end{align*}
+The classical Fourier calculation \cite{EspinosaMoll} gives these as the integrals of,
+respectively, three or two factors $\zeta(1-\alpha,x)$ in an initial
+absolute-convergence domain. Its six sign cones explain the three
+cosines. For the regularized Stieltjes generators one has the exact
+meromorphic identity
+\[
+ I_{\boldsymbol r}(\boldsymbol z)
+ =\left(\prod_i c_{r_i}(z_i)\right)K_3(\boldsymbol\alpha)
+  +\sum_{k:r_k=0}\frac{c_{r_i}(z_i)c_{r_j}(z_j)}{z_k}
+                  K_2(\alpha_i,\alpha_j)
+  +\frac{\mathbf 1_{\boldsymbol r=\boldsymbol0}}{z_1z_2z_3}.
+\]
+Terms with two scalar $1/z_i$ factors vanish because the remaining
+Hurwitz factor has mean zero in the initial domain. This combined
+formula, followed by the complete local subtraction above, is a
+finite all-index coefficient rule. No arithmetic reduction of the
+Tornheim jets to single-zeta coordinates is asserted.
+
+Meromorphic continuation of $T$ near the required nonpositive integer
+orders can be proved directly from
+\[
+ T(A,B,C)=\frac1{\Gamma(C)}\int_0^\infty
+ t^{C-1}\operatorname{Li}_A(e^{-t})\operatorname{Li}_B(e^{-t})\,dt.
+\]
+On a small interval insert the classical local expansion \cite[Equation~25.12.12]{DLMFPolylog}
+\[
+ \operatorname{Li}_A(e^{-t})
+ =\Gamma(1-A)t^{A-1}
+       +\sum_{j\ge0}\zeta(A-j)\frac{(-t)^j}{j!},
+\]
+which is uniform on compact parameter neighborhoods avoiding positive
+integer $A$. Finite subtraction and termwise integration give explicit
+linear polar divisors; the remaining Mellin integral is holomorphic.
+The same argument handles the colored kernels with one or both twists
+equal to one. Thus an entire-order claim valid for two nontrivial
+twists must be weakened to meromorphic continuation when collisions
+force trivial twists. The incoming separated-grid theorem is valid
+on its stated hypotheses; it is its unrestricted extrapolation that
+would be incorrect.
+
+\subsection{Spectral rays and Laurent expansion chambers}
+\label{cl:spectral}
+
+\begin{proposition}[Exact cubic spectral-ray correction]
+\label{cl:rays}
+Take $r_i=0$ and $z_i=c_i t$, where $c_i\ne0$ and $c_i+c_j\ne0$.
+Since the completed $J$ is holomorphic, its constant is always $Q$.
+The uncompleted meromorphic integral instead has constant
+\begin{align}
+ \operatorname{CT}_{t}I_{\boldsymbol0}(c_1t,c_2t,c_3t)
+ ={}&Q+\gamma\gamma_1\sum_i\frac{c_j+c_k}{c_i}\notag\\
+       &+(\zeta(2)+\zeta'(2))\sum_{i<j}\frac{c_k}{c_i+c_j}.
+       \label{cl:ray-constant}
+\end{align}
+Here $\gamma_1$ is the ordinary first Stieltjes constant and $\zeta'$
+is the spectral derivative. On the diagonal the discrepancy is
+\[
+ 6\gamma\gamma_1+\frac32\bigl(\zeta(2)+\zeta'(2)\bigr).
+\]
+\end{proposition}
+\begin{proof}
+Use \eqref{cl:triple-zero} and the expansions
+$h_0(z)=\gamma+\gamma_1z+O(z^2)$ and
+$h_1(z)=-\zeta(2)+(\zeta(2)+\zeta'(2))z+O(z^2)$.
+After division by $c_it$ or $(c_i+c_j)t$, precisely the linear
+numerator coefficient contributes to the constant. The holomorphic
+remainder contributes $J_{\boldsymbol0}(0,0,0)=Q$. For the diagonal,
+set $c_1=c_2=c_3=1$.
+\end{proof}
+This operation concerns spectral rays and is distinct from the
+geometric collision $\epsilon\to0$ proved earlier. Mixed poles also
+mean that a rectangular Laurent expansion is no longer a canonical
+operation unless an expansion chamber or an iterated prescription is
+specified. The holomorphic completion avoids either choice.
+
+\begin{proposition}[Three chamber constants for one derivative moment]
+\label{cl:chambers}
+For $\boldsymbol r=(1,0,0)$ one has
+\begin{equation}\label{cl:derivative-moment}
+ J_{1,0,0}(0,0,0)
+ =\operatorname{FP}\int_0^1\gamma_0'(x)\gamma_0(x)^2\,dx
+ =2\gamma\zeta(2)-\zeta(3).
+\end{equation}
+In an iterated Laurent
+chamber ordering the three moduli, the raw constant is instead
+\begin{equation}\label{cl:chamber-values}
+ \operatorname{CT}_{\rm chamber}I_{1,0,0}
+ =\begin{cases}
+ \zeta(3),& |z_1|\text{ is largest},\\
+ 0,& |z_1|\text{ is intermediate},\\
+ -\zeta(3),& |z_1|\text{ is smallest}.
+ \end{cases}
+\end{equation}
+On the spectral diagonal the same raw integral is identically zero:
+$I_{1,0,0}(t,t,t)=0$ as a meromorphic function.
+\end{proposition}
+\begin{proof}
+The local expansion is
+\[
+ \gamma_0(x)=x^{-1}+\gamma-\zeta(2)x+\zeta(3)x^2+O(x^3).
+\]
+Consequently the coefficient of $x^0$ in $\gamma_0(x)^3$ is
+$\gamma^3-6\gamma\zeta(2)+3\zeta(3)$. Integrate the exact derivative
+$(\gamma_0^3)'/3$ from the cutoff to $1$ and retain its constant.
+This proves \eqref{cl:derivative-moment} directly, without a spectral
+regularization.
+
+For clarity, write $I_{1,0,0}-J_{1,0,0}=S+P$, separating singleton
+and pair terms in \eqref{cl:triple-generator}. Since $c_1(z_1)=z_1-1$,
+these are
+\begin{align*}
+ S={}&\frac{z_1-1}{z_1}
+       \bigl[h_1(z_2)h_0(z_3)+h_0(z_2)h_1(z_3)\bigr]\\
+   &+\frac{h_1(z_1)h_0(z_3)}{z_2}
+     +\frac{h_1(z_1)h_0(z_2)}{z_3},\\
+ P={}&\frac{(z_1-1)h_2(z_3)}{2(z_1+z_2)}
+     +\frac{(z_1-1)h_2(z_2)}{2(z_1+z_3)}
+     +\frac{h_2(z_1)}{z_2+z_3}.
+\end{align*}
+The singleton constant is $-2\gamma\zeta(2)$ in every chamber.
+Using $h_2(0)=2\zeta(3)$, the only pair terms contributing to a
+constant are
+\[
+ \zeta(3)\frac{z_1}{z_1+z_2}
+       +\zeta(3)\frac{z_1}{z_1+z_3}.
+\]
+In a chamber with $|z_j|<|z_1|$, expand
+$z_1/(z_1+z_j)=\sum_{k\ge0}(-z_j/z_1)^k$; its constant is one.
+In the reversed chamber its expansion starts with $z_1/z_j$ and
+has constant zero. Thus $P$ contributes $N\zeta(3)$, where
+$N$ is the number of other variables dominated by $z_1$.
+Adding the holomorphic constant in \eqref{cl:derivative-moment} gives
+$(N-1)\zeta(3)$, proving all three cases.
+
+Finally, for $\Re t>2$, the function $G(t,x)$ has equal endpoint
+values and a continuous first derivative on the period. Therefore
+\[
+ I_{1,0,0}(t,t,t)=\int_0^1
+       \partial_xG(t,x)G(t,x)^2\,dx
+       =\frac{G(t,1)^3-G(t,0)^3}{3}=0.
+\]
+Meromorphic continuation preserves this identity. In particular,
+its spectral diagonal constant is zero even though its coordinate
+finite part is \eqref{cl:derivative-moment}.
+\end{proof}
+
+In contrast, for $\boldsymbol r=\boldsymbol0$ and unit frequencies,
+the polar numerators do not depend on the variables in their own
+denominator. Their nonnegative rectangular coefficients vanish in
+every standard chamber. Thus the general mixed-pole warning should
+not be misread as asserting chamber dependence of the raw constant
+in that special zero-derivative case; its spectral-ray constants still
+differ, as shown above.
+
+\subsection{An exact cancellation at every number of factors}
+
+The incoming question on odd derivative order identifies equal Stieltjes
+indices and one total argument derivative as its first target
+\cite[Question~3]{RepoExact}. That case has a complete local answer.
+The mechanism is the elementary fundamental theorem of calculus, applied
+before taking the cutoff constant; keeping its endpoint term gives the
+following more general identity.
+
+\begin{theorem}[The all-factor total-derivative projection]
+\label{cl:total-derivative}
+Let $d\ge1$, $m_1,\ldots,m_d\ge0$, and put
+$Z_0=\{i:m_i=0\}$ and $g_i(t)=\gamma_{m_i}(1+t)$. Then
+\begin{align}
+ &\FP\int_0^1\sum_{i=1}^d\gamma_{m_i}'(x)
+                   \prod_{j\ne i}\gamma_{m_j}(x)\,dx\notag\\
+ &\qquad=-\sum_{\varnothing\ne S\subseteq Z_0}
+              [t^{|S|}]\prod_{j\notin S}g_j(t).
+ \label{cl:total-projection}
+\end{align}
+The sum on the right is empty when all $m_i>0$. Each surviving
+coefficient is a finite expression in ordinary Stieltjes constants and
+argument derivatives of Stieltjes functions at $1$.
+\end{theorem}
+\begin{proof}
+For every fixed cutoff, the integrand is the ordinary derivative of
+$\prod_i\gamma_{m_i}(x)$. Hence its finite-part integral is
+\[
+ \prod_i\gamma_{m_i}(1)
+       -\CT_{x\downarrow0}\prod_i\gamma_{m_i}(x).
+\]
+Use the exact shift
+$\gamma_{m_i}(x)=x^{-1}\log^{m_i}x+g_i(x)$ and expand by the
+subset $S$ of singular pieces. The empty subset contributes exactly
+$\prod_i\gamma_{m_i}(1)$, canceling the upper endpoint.
+A nonempty subset contributes
+$x^{-|S|}\log^{\sum_{i\in S}m_i}x\prod_{j\notin S}g_j(x)$.
+It has a constant in both $x$ and $\log x$ precisely from the
+Taylor degree $|S|$ and only when $S\subseteq Z_0$.
+This proves \eqref{cl:total-projection}. All individual finite parts
+exist by the same finite local power--log expansion, so taking the
+constant after the finite sum introduces no interchange issue.
+\end{proof}
+
+For equal positive indices the theorem gives the requested cancellation
+at every number of factors:
+\begin{equation}\label{cl:equal-index-cancellation}
+ \boxed{\quad
+ \FP\int_0^1\gamma_m'(x)\gamma_m(x)^{d-1}\,dx=0,
+       \qquad d\ge1,\quad m\ge1.
+ \quad}
+\end{equation}
+For the zero index, with $h(t)=\gamma_0(1+t)$ as above, the complete
+remaining local value is
+\begin{equation}\label{cl:zero-index-projection}
+ \FP\int_0^1\gamma_0'(x)\gamma_0(x)^{d-1}\,dx
+ =-\frac1d\sum_{k=1}^d\binom dk[t^k]h(t)^{d-k}.
+\end{equation}
+This is a finite zeta polynomial because
+$h(t)=\gamma+\sum_{j\ge1}(-1)^j\zeta(j+1)t^j$ near zero.
+For $d=3$ it recovers \eqref{cl:derivative-moment}; for $d=4$ it gives
+\[
+ \FP\int_0^1\gamma_0'(x)\gamma_0(x)^3\,dx
+ =3\gamma^2\zeta(2)-3\gamma\zeta(3)-\frac{11}{4}\zeta(4).
+\]
+Thus the symmetric projection removes the multiple spectral terms
+entirely in this one-derivative case, leaving its explicitly specified
+local endpoint contribution. Higher odd derivative projections remain
+a separate question.
+
+\subsection{Repository scope and independent numerical diagnostics}
+\label{cl:numerics}
+
+The inspected snapshot is
+\texttt{dcd95baeb7c0e914b138bddef6829c5b1d52b726}.
+The incoming \src{Exact_Identities} report, section
+\texttt{triple\_dilation.tex}, assumes pairwise disjoint grids throughout.
+Its \texttt{audit\_research.tex}, Question~1, asks to remove that
+restriction and compare simultaneous collision constants with merged
+finite parts. The subset theorem completes its fixed-collision local
+subtraction question, and the explicit $(0,\epsilon,2\epsilon)$
+calculation shows that its suggested matching is not valid for plain
+geometric constant extraction. A finite rate-dependent correction
+is necessary. The preceding bilinear coincidence results are not
+contradicted.
+
+The supplied script \src{code/verify_collisions.py} computes the
+separated moments by three independent convergent interval integrals.
+For an interval of length $\ell$ starting at the singular point of one
+factor, with the other two arguments $\eta_1+t,\eta_2+t$, it uses
+\[
+ \int_0^\ell\left[
+ \frac{f(\eta_1+t)f(\eta_2+t)-f(\eta_1)f(\eta_2)}{t}
+ +h(t)f(\eta_1+t)f(\eta_2+t)\right]dt
+ +f(\eta_1)f(\eta_2)\log\ell.
+\]
+This is exactly the ambient finite part with the simple pole visibly
+removed. It does not implement the collision expansion or the
+Tornheim representation. The merged moment is evaluated by a local
+digamma Laurent series plus ordinary quadrature, with two independent
+split points. At 70-digit working precision the computed values are
+\[
+ Q=-1.9662627343915343406643753384116314238258689764917\ldots,
+\]
+and
+\[
+ \frac12\zeta(2)\log2=0.5700907053214263787372899294961746726083149206823\ldots.
+\]
+Numerical residuals tend to zero at the proved
+$O(\epsilon|\log\epsilon|)$ rate for $(a,b)=(1,2),(1,3),(2,5)$.
+For the equally spaced example, the residual means
+$C_{1,2}(\epsilon)-\epsilon^{-2}P_{-2}
+ -\epsilon^{-1}P_{-1}-P_0-Q$; the complete finite term in $P_0$
+is included in this diagnostic:
+\begin{center}
+\begin{tabular}{@{}rr@{}}
+\toprule
+$\epsilon$ & Numerical residual\\
+\midrule
+$10^{-6}$ & $-9.332630963\times10^{-5}$\\
+$10^{-8}$ & $-1.237723998\times10^{-6}$\\
+$10^{-10}$ & $-1.542186195\times10^{-8}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Omitting the finite term would instead leave a limit
+$\zeta(2)\log2/2$. The full record contains seventeen collision
+diagnostics, the two-split merged calculation, working precision,
+and the finite correction. It is reproduced from the package root by
+\begin{verbatim}
+python code/verify_collisions.py --output results/collisions.json
+\end{verbatim}
+These are floating-point diagnostics, not certified interval enclosures;
+the proof is the exact local decomposition above.
+
+The classical inputs are the Hurwitz shift, argument-derivative and
+Fourier formulas \cite{DLMFHurwitz}, the local polylogarithm expansion
+\cite{DLMFPolylog}, and the Hurwitz--Tornheim product relation
+\cite{EspinosaMoll}. The contributions here are the complete
+coordinate-normalized subtraction, the finite geometric collision
+anomaly, and their exact comparison with the specified spectral
+prescriptions. The statements do not claim a reduction of every
+Tornheim derivative to ordinary zeta values.
+
+% END INLINED SOURCE: sections/05_collisions.tex
+\clearpage
+% BEGIN INLINED SOURCE: sections/06_audit_research.tex
+\section{Source corrections, verification, and further research}
+\label{audit:sec}
+
+\subsection{Corrections proposed against the pinned manuscript}
+
+The inspection was targeted: the relevant harmonic, Dougall, twist,
+collision, and Gaussian-status material was checked, rather than every
+chapter and every archived computational receipt. The following two
+edits are proposed for \src{chapters/03-algebraic.tex} in the
+canonical manuscript \cite{RepoMain}. They concern the exact snapshot
+specified in Section~\ref{scope:sec}. The package contains a small
+unified patch; the repository itself has not been changed.
+
+\paragraph{A real logarithm on the negative branch.}
+In the equation labeled \src{cleo:eq:lintanh}, put
+$\theta=\arcsin\lambda$ for real $|\lambda|<1$. The formula valid
+on both sides of zero is
+\begin{equation}\label{audit:real-atanh}
+ \int_0^{\pi/2}\operatorname{arctanh}(\lambda\sin x)\,dx
+ =\theta\log\left|\tan\frac\theta2\right|
+       +2\operatorname{Cl}_2(\theta)
+       -\frac12\operatorname{Cl}_2(2\theta).
+\end{equation}
+Here $\operatorname{Cl}_2(\theta)=\sum_{n\ge1}\sin(n\theta)/n^2$.
+The value at $\theta=0$ is understood by continuity. The original
+display omits the absolute value. For negative $\lambda$, the
+real logarithm of $\tan(\theta/2)$ is not defined, whereas the
+integral is real. Taking a principal complex logarithm would add
+an unwanted imaginary term. This is a carry-forward correction
+already identified in the incoming audit material, retained here
+because the pinned canonical display still needs it.
+
+For a direct verification, differentiate the left side after
+$\lambda=\sin\theta$ to obtain $\theta/\sin\theta$.
+The derivative identity
+$\operatorname{Cl}_2'(\theta)=-\log|2\sin(\theta/2)|$
+shows that the three logarithmic terms in the derivative of the
+right side cancel, leaving the same $\theta/\sin\theta$.
+Both sides tend to zero at the origin. This proves
+\eqref{audit:real-atanh} on the two intervals and through their
+continuous joining point.
+
+\paragraph{Remove an unsupported non-elementarity assertion.}
+The same chapter describes the $(1,1)$ diagonal as the
+``simplest non-elementary diagonal.'' Its exact evaluation
+\[
+ \int_0^{\pi/2}\arctan^2(\sin x)\,dx
+       =\pi\chi_2(3-2\sqrt2)
+\]
+where $\chi_2(z)=\sum_{n\ge0}z^{2n+1}/(2n+1)^2$,
+does not prove non-elementarity or minimality in any specified
+constant field. The chapter's later paragraph correctly says that
+these properties remain unproved. We propose the neutral wording
+``For the $(1,1)$ diagonal, the formula gives \dots''.
+The value is unchanged. A finite unsuccessful relation search
+cannot justify a stronger assertion.
+
+\subsection{A corrected collision expectation, not a failed source theorem}
+
+The separated-grid theorem in \cite{RepoExact} assumes disjoint
+singular supports and is not contradicted by this continuation.
+Nor is the proved bilinear coincidence comparison invalidated.
+What fails is an unqualified extension of the positive matching
+expectation in its Question~1 to geometric triple collisions.
+The exact counterexample is \eqref{cl:finite-anomaly}.
+A corrected research statement is:
+
+\begin{quote}
+For a specified collision path and ambient cutoff, determine the
+complete local collision expression, including its finite
+rate-dependent term. Subtract that expression before comparing
+the limit with the merged ambient finite part.
+\end{quote}
+
+For the zero-index triple with arbitrary fixed rates $0<a<b$,
+Theorem~\ref{cl:collision} proves precisely this statement, with
+the complete expression
+$\epsilon^{-2}P_{-2}+\epsilon^{-1}P_{-1}+P_0$.
+The all-factor theorem fixes the local meromorphic completion at
+a prescribed collision configuration; it does not by itself
+compute every geometric collision expansion for arbitrary
+Stieltjes indices and rates depending on different powers of
+$\epsilon$. Those extensions are questions below.
+
+\subsection{Statements that must retain their current status}
+
+The source's $S_2$ and $S_4$ reductions already have proofs.
+The current $S_6$ candidate is labeled
+\src{cycloquot:conj:S6} in
+\src{chapters/04-cyclotomic-quotients.tex}; the retained $S_8$
+candidate is labeled \src{s8new:conj:S8} in
+\src{chapters/04-S8-candidate.tex} \cite{RepoMain}.
+Both remain conjectural here. The later $S_8$ vector must not
+be confused with the different older vector that the manuscript
+rigorously rejected. Exact equivalence of two candidate coordinate
+vectors proves equivalence, not vanishing of either residual.
+Likewise, an interval containing zero proves proximity only.
+No new Gaussian integer relation was fitted in this work.
+
+The harmonic Newton theorem solves the explicit-representation
+problem for the entire remainder. It leaves the finite-basis
+reduction question open at general depth and spectral order.
+The Dougall Bell generator evaluates all its mixed combinations;
+it does not show that those combinations span every conceivable
+polygamma product. The unequal-twist scalar theorem concerns
+identities of functions with two distinct branch centers;
+it does not prove independence of their values on the integer
+Fourier lattice. These qualifications are part of the results.
+
+\subsection{Reproducibility and the role of computation}
+
+The analytic proofs supply the infinite summations, domains,
+continuations, and interchanges of limits. Four scripts implement
+independent checks or exact finite algebra. Their JSON records
+are included in \src{results/}; they contain the actual inputs,
+working precision, and residuals. The scripts need Python,
+\src{mpmath}, and \src{sympy}. The exact environment versions
+and commands are recorded in the package's \src{README.txt}.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.28\textwidth}>{\raggedright\arraybackslash}p{0.63\textwidth}@{}}
+\toprule
+Artifact & Checks and interpretation\\
+\midrule
+\endhead
+\src{verify_harmonic.py}
+& Twenty-six numerical checks: twelve truncated Newton spectral
+derivatives against Hurwitz derivatives, one complex-parameter
+Mellin comparison, nine finite integer-shift specializations,
+and four repeated antiderivatives. The Newton series uses
+$240$ terms and $180$ working digits; its observed discrepancies
+are about $10^{-18}$ to $10^{-15}$, set by truncation rather
+than the working precision.\\[6pt]
+\src{verify_dougall.py}
+& Thirteen numerical comparisons of the trigamma square,
+two-parameter Gamma identity, mixed spectral generator, and first
+spectral derivative. Six exact Bell-polynomial checks and
+twenty-one exact residue-grid factorizations use rational
+symbolic arithmetic. The numerical residuals are below
+$5.4\times10^{-46}$ in the supplied run.\\[6pt]
+\src{verify_twists.py}
+& Forty-nine exact partial-fraction checks through $p,q=7$,
+one deliberately corrupted-sign rejection, and the exact
+lowest-jet polarization identity. Eighteen numerical comparisons
+cover ordinary Green convolutions, confluent twists, the bounded
+logarithm difference, rational digamma conversion, branch
+crossings, Fourier coefficients, and complex-order tail modes.\\[6pt]
+\src{verify_collisions.py}
+& Seventeen separated-collision diagnostics at $70$ working
+digits, plus a two-split evaluation of the merged integral.
+The independent interval quadratures visibly subtract each
+simple pole. Their residuals test the predicted asymptotic
+expansion; they are not exact-zero tests.\\
+\bottomrule
+\end{longtable}
+
+The finite symbolic checks do not formalize the analytic proofs.
+The floating-point comparisons are not interval enclosures.
+In particular, an estimated asymptotic tail term is not a
+certified error bound for the Gamma-ratio computations.
+The harmonic finite differences can lose many digits through
+cancellation; a larger working precision alone does not remove
+the separate Newton truncation error. These are concrete
+limitations of the supplied calculations, not qualifications
+of the proved normal-convergence theorems.
+
+\subsection{Further questions with concrete first targets}
+
+The following are proposals for additional exact research. They
+are not included in the proved theorem list.
+
+\begin{question}[Which individual polygamma moments can be separated?]
+At a fixed total order $w=r+s$, determine the exact span of the
+mixed Bell polynomials $\mathcal B_{rs}$, allowing the elementary
+linear polygamma rows and explicit parameter symmetries. The
+square identity used the difference of two rows at $w=4$.
+At $w=6$ and $w=8$, give exact rational elimination matrices and
+identify which individual moments remain outside that span.
+An absence from this specified span should be reported as such,
+not as an impossibility of evaluation by other identities.
+\end{question}
+
+\begin{question}[Compact formulas at every integer residue intersection]
+Use \eqref{dg:grid-first-mixed} to produce short explicit
+tables at $(b,c)=(1,2)$ and $(2,2)$ for $N=2,3$.
+Can central factorial polynomials organize the subtraction
+coefficients without expanding large Bernoulli polynomials?
+A useful certificate would retain the finite small-index
+zeros and replay the mixed derivative using only exact
+polynomial operations before evaluating polygamma endpoints.
+\end{question}
+
+\begin{question}[Finite reductions of regular harmonic spectral jets]
+The Newton formula supplies an exact convergent representation;
+classify parameter configurations at which it reduces to finitely
+many ordinary Hurwitz-zeta order derivatives. Positive integral
+$a$ and nonnegative integral $u$ give starting cases. For
+positive depth and nonintegral rational $a$, first examine the
+first two derivatives at $s=0,-1$. State the permitted function
+class before asking whether a multiple Arakawa--Kaneko order
+derivative is needed.
+\end{question}
+
+\begin{question}[The exact boundary of shift continuation]
+The proved depth domain is $\Re a>-r$, and the Taylor series
+about $a=1$ converges at least for $|a-1|<r+1$.
+Determine the actual singular germ at $a=-r$ for generic complex
+$s$ and compare it with the exceptional nonpositive integral
+$s$, where the finite Stirling formula is polynomial in $a$.
+This should distinguish a sufficient convergence domain from
+a maximal analytic continuation and explain any exceptional
+cancellation of the first shift singularity.
+\end{question}
+
+\begin{question}[Rational-shift character cancellations]
+For rational $a$, transform the full mixed spectral germ
+\eqref{dg:all-Stieltjes} into finite residue-class or
+Dirichlet-character coordinates. The first target is $a=1/2$,
+where $\gamma_m(a/2)=\gamma_m(1/4)$ appears. At each prescribed
+order, compute an exact reduction matrix including every
+conductor logarithm. Which parameter symmetries cancel a
+whole character sector before numerical evaluation?
+\end{question}
+
+\begin{question}[Unequal twists approaching an integer resonance]
+The finite-mode decomposition in \eqref{tw:tailseries} gives
+the exact modes that change phase. Let one or both twists
+approach an integer while the spectral orders are also
+differentiated. After isolating the resonant Fourier modes,
+determine a holomorphic completed germ and its endpoint contact
+terms. The first target is a simultaneous pair approaching
+zero at distinct fixed rates. The normalization should be
+compared with the already known single-twist degeneration.
+\end{question}
+
+\begin{question}[From scalar functional reduction to sampled identities]
+The finite scalar criterion proved here uses local monodromy.
+Which additional hypotheses would let one infer a scalar
+identity from equality on every integer Fourier mode in the
+same finite power--logarithm class? An exact asymptotic uniqueness
+theorem at infinity is one possible route. Conversely, seek
+explicit sampled identities that do not extend as scalar
+functional identities. This is distinct from any question of
+arithmetic independence of individual special values.
+\end{question}
+
+\begin{question}[A complete geometric collision calculus]
+Extend Theorem~\ref{cl:collision} to arbitrary Stieltjes indices
+and argument-derivative orders, first for three unit-frequency
+factors. The singular pieces are explicit derivatives of
+$x^{-1}\log^m x$, so finite partial fractions and order
+derivatives suggest an algorithm. It should output every
+power--logarithm term and the finite rate-dependent term, with
+an integrable uniform remainder. The desired result is an
+identity for a specified normalization, not a sharper bound.
+\end{question}
+
+\begin{question}[Hierarchical collisions and composition]
+Compare the paths $(0,\epsilon,\epsilon+\epsilon^2)$ and
+$(0,\epsilon,2\epsilon)$ with iterated merging of a selected
+pair followed by the third point. Can the finite corrections
+be organized by nested subsets so that renormalized collision
+composition is associative? The rate dependence already proved
+shows why plain constant extraction is insufficient. Specify
+the intermediate coordinate and subtraction at every stage.
+\end{question}
+
+\begin{question}[Permutation cancellations beyond total derivatives]
+The completed generators distinguish global Tornheim data from
+local endpoint data. Determine which nontrivial permutation
+or character projections remove the global part for four
+factors, after the elementary total-derivative identities have
+been accounted for. A concrete target is total argument order
+three with equal Stieltjes indices, retaining the complete
+resonant-subset numerators. Produce either an exact cancellation
+or a precise surviving multiple-sum kernel.
+\end{question}
+
+\begin{question}[Finite global kernels for four colliding grids]
+Theorem~\ref{cl:allfactor} solves the local completion for any
+number of factors. Construct a useful global spectral realization
+for four frequencies on the rank-three lattice
+$\sum_i p_i n_i=0$, with a finite sign-region and character
+decomposition. The first target is $(p_1,p_2,p_3,p_4)=(1,1,2,3)$.
+Local existence alone should not be presented as a minimal
+finite reduction of the global multiple Tornheim kernels.
+\end{question}
+
+\begin{question}[The frozen Gaussian candidates]
+Retain the exact source vectors for $S_6$ and the current $S_8$.
+Seek an additional functional or iterated-integral relation
+beyond the projection mechanisms that already prove $S_4$.
+A successful proof should provide a finite exact row certificate
+and an analytic justification for every generating row,
+including its endpoint evaluation. An exclusion from a chosen
+finite relation space would identify a missing mechanism,
+not disprove the numerical identity.
+\end{question}
+
+\subsection{Recommended integration order}
+
+The four mathematical sections can be integrated independently after
+their cited antecedents. Preserve the stated domains, branches, and
+normalizations, and review the two source edits separately.
+The accompanying integration notes map labels and source targets
+while preserving the existing conjecture status.
+
+% END INLINED SOURCE: sections/06_audit_research.tex
+\clearpage
+% BEGIN INLINED SOURCE: references.tex
+\begin{thebibliography}{99}
+\raggedright
+\addcontentsline{toc}{section}{References}
+
+\bibitem{RepoMain}
+V. Reshetnikov (repository maintainer),
+\emph{ProveIt: Analysis/Polylogarithms/docs/manuscript}.
+Snapshot \src{dcd95baeb7c0e914b138bddef6829c5b1d52b726},
+10 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/dcd95baeb7c0e914b138bddef6829c5b1d52b726/Analysis/Polylogarithms/docs/manuscript}.
+
+\bibitem{RepoEndpoint}
+ProveIt incoming research archive,
+\src{ProveIt_Endpoint_Regularization_2026-10-10.zip},
+especially \src{article/endpoint_regularization.tex}.
+In \src{docs/incoming} at the snapshot in \cite{RepoMain}.
+
+\bibitem{RepoDougall}
+ProveIt incoming research archive,
+\src{ProveIt_Dougall_Resonance_2026-10-10.zip},
+centered Gamma-ratio resonance and spectral derivatives.
+In \src{docs/incoming} at the snapshot in \cite{RepoMain}.
+
+\bibitem{RepoTransport}
+ProveIt incoming research archive,
+\src{ProveIt_Resonance_Coordinate_Transport_2026-10-10.zip},
+especially \src{sections/01_dougall.tex},
+\src{sections/02_dougall_jets.tex}, and
+\src{sections/08_research_questions.tex}, Question~3.
+In \src{docs/incoming} at the snapshot in \cite{RepoMain}.
+
+\bibitem{RepoExact}
+ProveIt incoming research archive,
+\src{ProveIt_Exact_Identities_2026-10-10.zip},
+especially \src{sections/fully_shifted_height_one.tex},
+\src{sections/collision.tex}, \src{sections/triple_dilation.tex},
+and \src{sections/audit_research.tex}.
+In \src{docs/incoming} at the snapshot in \cite{RepoMain}.
+
+\bibitem{RepoCoincident}
+ProveIt incoming research archive,
+\src{ProveIt_Coincident_Stieltjes_2026-10-10.zip},
+especially \src{article/article.tex}.
+In \src{docs/incoming} at the snapshot in \cite{RepoMain}.
+
+\bibitem{RepoTwisted}
+ProveIt incoming research archive,
+\src{ProveIt_Twisted_Stieltjes_Harmonic_Laurent_2026-10-10.zip},
+especially \src{sections/03_twisted.tex},
+\src{sections/04_harmonic_laurent.tex}, and
+\src{sections/07_verification_questions.tex}.
+In \src{docs/incoming} at the snapshot in \cite{RepoMain}.
+The incoming directory is
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/dcd95baeb7c0e914b138bddef6829c5b1d52b726/docs/incoming}.
+
+\bibitem{DLMFDougall}
+NIST Digital Library of Mathematical Functions,
+\S16.4, especially equation 16.4.9, Rogers--Dougall summation.
+\url{https://dlmf.nist.gov/16.4}.
+
+\bibitem{DLMFGammaAsymptotic}
+NIST Digital Library of Mathematical Functions,
+\S5.11, especially equations 5.11.8 and 5.11.14,
+Stirling--Bernoulli expansions and centered Gamma ratios.
+\url{https://dlmf.nist.gov/5.11}.
+
+\bibitem{DLMFPolygamma}
+NIST Digital Library of Mathematical Functions,
+\S5.15, polygamma functions.
+\url{https://dlmf.nist.gov/5.15}.
+
+\bibitem{DLMFHurwitz}
+NIST Digital Library of Mathematical Functions,
+\S25.11, Hurwitz zeta function.
+\url{https://dlmf.nist.gov/25.11}.
+
+\bibitem{DLMFPolylog}
+NIST Digital Library of Mathematical Functions,
+\S25.12, polylogarithms, especially equation 25.12.12.
+\url{https://dlmf.nist.gov/25.12}.
+
+\bibitem{DLMFLerch}
+NIST Digital Library of Mathematical Functions,
+\S25.14, Lerch transcendent.
+\url{https://dlmf.nist.gov/25.14}.
+
+\bibitem{DLMFHypergeom}
+NIST Digital Library of Mathematical Functions,
+\S15.8, transformations of the Gauss hypergeometric function.
+\url{https://dlmf.nist.gov/15.8}.
+
+\bibitem{AK1999}
+T. Arakawa and M. Kaneko,
+Multiple zeta values, poly-Bernoulli numbers, and related zeta functions,
+\emph{Nagoya Mathematical Journal} \textbf{153} (1999), 189--209.
+\href{https://doi.org/10.1017/S0027763000006954}{doi:10.1017/S0027763000006954}.
+Author-hosted text:
+\url{https://www2.math.kyushu-u.ac.jp/~mkaneko/papers/18MZV_pB_Nagoya.pdf}.
+
+\bibitem{KT2018}
+M. Kaneko and H. Tsumura,
+Multi-poly-Bernoulli numbers and related zeta functions,
+\emph{Nagoya Mathematical Journal} \textbf{232} (2018), 19--54.
+Author-hosted text:
+\url{https://www2.math.kyushu-u.ac.jp/~mkaneko/papers/56Kaneko_Tsumura.pdf}.
+
+\bibitem{CC2010}
+M.-A. Coppo and B. Candelpergher,
+The Arakawa--Kaneko zeta function,
+\emph{The Ramanujan Journal} \textbf{22} (2010), 153--162.
+\href{https://doi.org/10.1007/s11139-009-9205-x}{doi:10.1007/s11139-009-9205-x}.
+The exact Hurwitz normalization is on p.~154.
+Author-hosted text:
+\url{https://math.univ-cotedazur.fr/u/coppo/RamanujanJ(2010).pdf}.
+
+\bibitem{EspinosaMoll}
+O. Espinosa and V. H. Moll,
+The evaluation of Tornheim double sums. Part~1,
+\emph{Journal of Number Theory} \textbf{116} (2006), 200--229.
+Preprint \src{arXiv:math/0505647}.
+\url{https://arxiv.org/abs/math/0505647}.
+
+\end{thebibliography}
+
+% END INLINED SOURCE: references.tex
+\end{document}

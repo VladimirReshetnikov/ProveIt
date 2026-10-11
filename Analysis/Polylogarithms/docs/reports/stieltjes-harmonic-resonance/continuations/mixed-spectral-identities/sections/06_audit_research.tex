@@ -1,0 +1,305 @@
+\section{Source corrections, verification, and further research}
+\label{audit:sec}
+
+\subsection{Corrections proposed against the pinned manuscript}
+
+The inspection was targeted: the relevant harmonic, Dougall, twist,
+collision, and Gaussian-status material was checked, rather than every
+chapter and every archived computational receipt. The following two
+edits are proposed for \src{chapters/03-algebraic.tex} in the
+canonical manuscript \cite{RepoMain}. They concern the exact snapshot
+specified in Section~\ref{scope:sec}. The package contains a small
+unified patch; the repository itself has not been changed.
+
+\paragraph{A real logarithm on the negative branch.}
+In the equation labeled \src{cleo:eq:lintanh}, put
+$\theta=\arcsin\lambda$ for real $|\lambda|<1$. The formula valid
+on both sides of zero is
+\begin{equation}\label{audit:real-atanh}
+ \int_0^{\pi/2}\operatorname{arctanh}(\lambda\sin x)\,dx
+ =\theta\log\left|\tan\frac\theta2\right|
+       +2\operatorname{Cl}_2(\theta)
+       -\frac12\operatorname{Cl}_2(2\theta).
+\end{equation}
+Here $\operatorname{Cl}_2(\theta)=\sum_{n\ge1}\sin(n\theta)/n^2$.
+The value at $\theta=0$ is understood by continuity. The original
+display omits the absolute value. For negative $\lambda$, the
+real logarithm of $\tan(\theta/2)$ is not defined, whereas the
+integral is real. Taking a principal complex logarithm would add
+an unwanted imaginary term. This is a carry-forward correction
+already identified in the incoming audit material, retained here
+because the pinned canonical display still needs it.
+
+For a direct verification, differentiate the left side after
+$\lambda=\sin\theta$ to obtain $\theta/\sin\theta$.
+The derivative identity
+$\operatorname{Cl}_2'(\theta)=-\log|2\sin(\theta/2)|$
+shows that the three logarithmic terms in the derivative of the
+right side cancel, leaving the same $\theta/\sin\theta$.
+Both sides tend to zero at the origin. This proves
+\eqref{audit:real-atanh} on the two intervals and through their
+continuous joining point.
+
+\paragraph{Remove an unsupported non-elementarity assertion.}
+The same chapter describes the $(1,1)$ diagonal as the
+``simplest non-elementary diagonal.'' Its exact evaluation
+\[
+ \int_0^{\pi/2}\arctan^2(\sin x)\,dx
+       =\pi\chi_2(3-2\sqrt2)
+\]
+where $\chi_2(z)=\sum_{n\ge0}z^{2n+1}/(2n+1)^2$,
+does not prove non-elementarity or minimality in any specified
+constant field. The chapter's later paragraph correctly says that
+these properties remain unproved. We propose the neutral wording
+``For the $(1,1)$ diagonal, the formula gives \dots''.
+The value is unchanged. A finite unsuccessful relation search
+cannot justify a stronger assertion.
+
+\subsection{A corrected collision expectation, not a failed source theorem}
+
+The separated-grid theorem in \cite{RepoExact} assumes disjoint
+singular supports and is not contradicted by this continuation.
+Nor is the proved bilinear coincidence comparison invalidated.
+What fails is an unqualified extension of the positive matching
+expectation in its Question~1 to geometric triple collisions.
+The exact counterexample is \eqref{cl:finite-anomaly}.
+A corrected research statement is:
+
+\begin{quote}
+For a specified collision path and ambient cutoff, determine the
+complete local collision expression, including its finite
+rate-dependent term. Subtract that expression before comparing
+the limit with the merged ambient finite part.
+\end{quote}
+
+For the zero-index triple with arbitrary fixed rates $0<a<b$,
+Theorem~\ref{cl:collision} proves precisely this statement, with
+the complete expression
+$\epsilon^{-2}P_{-2}+\epsilon^{-1}P_{-1}+P_0$.
+The all-factor theorem fixes the local meromorphic completion at
+a prescribed collision configuration; it does not by itself
+compute every geometric collision expansion for arbitrary
+Stieltjes indices and rates depending on different powers of
+$\epsilon$. Those extensions are questions below.
+
+\subsection{Statements that must retain their current status}
+
+The source's $S_2$ and $S_4$ reductions already have proofs.
+The current $S_6$ candidate is labeled
+\src{cycloquot:conj:S6} in
+\src{chapters/04-cyclotomic-quotients.tex}; the retained $S_8$
+candidate is labeled \src{s8new:conj:S8} in
+\src{chapters/04-S8-candidate.tex} \cite{RepoMain}.
+Both remain conjectural here. The later $S_8$ vector must not
+be confused with the different older vector that the manuscript
+rigorously rejected. Exact equivalence of two candidate coordinate
+vectors proves equivalence, not vanishing of either residual.
+Likewise, an interval containing zero proves proximity only.
+No new Gaussian integer relation was fitted in this work.
+
+The harmonic Newton theorem solves the explicit-representation
+problem for the entire remainder. It leaves the finite-basis
+reduction question open at general depth and spectral order.
+The Dougall Bell generator evaluates all its mixed combinations;
+it does not show that those combinations span every conceivable
+polygamma product. The unequal-twist scalar theorem concerns
+identities of functions with two distinct branch centers;
+it does not prove independence of their values on the integer
+Fourier lattice. These qualifications are part of the results.
+
+\subsection{Reproducibility and the role of computation}
+
+The analytic proofs supply the infinite summations, domains,
+continuations, and interchanges of limits. Four scripts implement
+independent checks or exact finite algebra. Their JSON records
+are included in \src{results/}; they contain the actual inputs,
+working precision, and residuals. The scripts need Python,
+\src{mpmath}, and \src{sympy}. The exact environment versions
+and commands are recorded in the package's \src{README.txt}.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.28\textwidth}>{\raggedright\arraybackslash}p{0.63\textwidth}@{}}
+\toprule
+Artifact & Checks and interpretation\\
+\midrule
+\endhead
+\src{verify_harmonic.py}
+& Twenty-six numerical checks: twelve truncated Newton spectral
+derivatives against Hurwitz derivatives, one complex-parameter
+Mellin comparison, nine finite integer-shift specializations,
+and four repeated antiderivatives. The Newton series uses
+$240$ terms and $180$ working digits; its observed discrepancies
+are about $10^{-18}$ to $10^{-15}$, set by truncation rather
+than the working precision.\\[6pt]
+\src{verify_dougall.py}
+& Thirteen numerical comparisons of the trigamma square,
+two-parameter Gamma identity, mixed spectral generator, and first
+spectral derivative. Six exact Bell-polynomial checks and
+twenty-one exact residue-grid factorizations use rational
+symbolic arithmetic. The numerical residuals are below
+$5.4\times10^{-46}$ in the supplied run.\\[6pt]
+\src{verify_twists.py}
+& Forty-nine exact partial-fraction checks through $p,q=7$,
+one deliberately corrupted-sign rejection, and the exact
+lowest-jet polarization identity. Eighteen numerical comparisons
+cover ordinary Green convolutions, confluent twists, the bounded
+logarithm difference, rational digamma conversion, branch
+crossings, Fourier coefficients, and complex-order tail modes.\\[6pt]
+\src{verify_collisions.py}
+& Seventeen separated-collision diagnostics at $70$ working
+digits, plus a two-split evaluation of the merged integral.
+The independent interval quadratures visibly subtract each
+simple pole. Their residuals test the predicted asymptotic
+expansion; they are not exact-zero tests.\\
+\bottomrule
+\end{longtable}
+
+The finite symbolic checks do not formalize the analytic proofs.
+The floating-point comparisons are not interval enclosures.
+In particular, an estimated asymptotic tail term is not a
+certified error bound for the Gamma-ratio computations.
+The harmonic finite differences can lose many digits through
+cancellation; a larger working precision alone does not remove
+the separate Newton truncation error. These are concrete
+limitations of the supplied calculations, not qualifications
+of the proved normal-convergence theorems.
+
+\subsection{Further questions with concrete first targets}
+
+The following are proposals for additional exact research. They
+are not included in the proved theorem list.
+
+\begin{question}[Which individual polygamma moments can be separated?]
+At a fixed total order $w=r+s$, determine the exact span of the
+mixed Bell polynomials $\mathcal B_{rs}$, allowing the elementary
+linear polygamma rows and explicit parameter symmetries. The
+square identity used the difference of two rows at $w=4$.
+At $w=6$ and $w=8$, give exact rational elimination matrices and
+identify which individual moments remain outside that span.
+An absence from this specified span should be reported as such,
+not as an impossibility of evaluation by other identities.
+\end{question}
+
+\begin{question}[Compact formulas at every integer residue intersection]
+Use \eqref{dg:grid-first-mixed} to produce short explicit
+tables at $(b,c)=(1,2)$ and $(2,2)$ for $N=2,3$.
+Can central factorial polynomials organize the subtraction
+coefficients without expanding large Bernoulli polynomials?
+A useful certificate would retain the finite small-index
+zeros and replay the mixed derivative using only exact
+polynomial operations before evaluating polygamma endpoints.
+\end{question}
+
+\begin{question}[Finite reductions of regular harmonic spectral jets]
+The Newton formula supplies an exact convergent representation;
+classify parameter configurations at which it reduces to finitely
+many ordinary Hurwitz-zeta order derivatives. Positive integral
+$a$ and nonnegative integral $u$ give starting cases. For
+positive depth and nonintegral rational $a$, first examine the
+first two derivatives at $s=0,-1$. State the permitted function
+class before asking whether a multiple Arakawa--Kaneko order
+derivative is needed.
+\end{question}
+
+\begin{question}[The exact boundary of shift continuation]
+The proved depth domain is $\Re a>-r$, and the Taylor series
+about $a=1$ converges at least for $|a-1|<r+1$.
+Determine the actual singular germ at $a=-r$ for generic complex
+$s$ and compare it with the exceptional nonpositive integral
+$s$, where the finite Stirling formula is polynomial in $a$.
+This should distinguish a sufficient convergence domain from
+a maximal analytic continuation and explain any exceptional
+cancellation of the first shift singularity.
+\end{question}
+
+\begin{question}[Rational-shift character cancellations]
+For rational $a$, transform the full mixed spectral germ
+\eqref{dg:all-Stieltjes} into finite residue-class or
+Dirichlet-character coordinates. The first target is $a=1/2$,
+where $\gamma_m(a/2)=\gamma_m(1/4)$ appears. At each prescribed
+order, compute an exact reduction matrix including every
+conductor logarithm. Which parameter symmetries cancel a
+whole character sector before numerical evaluation?
+\end{question}
+
+\begin{question}[Unequal twists approaching an integer resonance]
+The finite-mode decomposition in \eqref{tw:tailseries} gives
+the exact modes that change phase. Let one or both twists
+approach an integer while the spectral orders are also
+differentiated. After isolating the resonant Fourier modes,
+determine a holomorphic completed germ and its endpoint contact
+terms. The first target is a simultaneous pair approaching
+zero at distinct fixed rates. The normalization should be
+compared with the already known single-twist degeneration.
+\end{question}
+
+\begin{question}[From scalar functional reduction to sampled identities]
+The finite scalar criterion proved here uses local monodromy.
+Which additional hypotheses would let one infer a scalar
+identity from equality on every integer Fourier mode in the
+same finite power--logarithm class? An exact asymptotic uniqueness
+theorem at infinity is one possible route. Conversely, seek
+explicit sampled identities that do not extend as scalar
+functional identities. This is distinct from any question of
+arithmetic independence of individual special values.
+\end{question}
+
+\begin{question}[A complete geometric collision calculus]
+Extend Theorem~\ref{cl:collision} to arbitrary Stieltjes indices
+and argument-derivative orders, first for three unit-frequency
+factors. The singular pieces are explicit derivatives of
+$x^{-1}\log^m x$, so finite partial fractions and order
+derivatives suggest an algorithm. It should output every
+power--logarithm term and the finite rate-dependent term, with
+an integrable uniform remainder. The desired result is an
+identity for a specified normalization, not a sharper bound.
+\end{question}
+
+\begin{question}[Hierarchical collisions and composition]
+Compare the paths $(0,\epsilon,\epsilon+\epsilon^2)$ and
+$(0,\epsilon,2\epsilon)$ with iterated merging of a selected
+pair followed by the third point. Can the finite corrections
+be organized by nested subsets so that renormalized collision
+composition is associative? The rate dependence already proved
+shows why plain constant extraction is insufficient. Specify
+the intermediate coordinate and subtraction at every stage.
+\end{question}
+
+\begin{question}[Permutation cancellations beyond total derivatives]
+The completed generators distinguish global Tornheim data from
+local endpoint data. Determine which nontrivial permutation
+or character projections remove the global part for four
+factors, after the elementary total-derivative identities have
+been accounted for. A concrete target is total argument order
+three with equal Stieltjes indices, retaining the complete
+resonant-subset numerators. Produce either an exact cancellation
+or a precise surviving multiple-sum kernel.
+\end{question}
+
+\begin{question}[Finite global kernels for four colliding grids]
+Theorem~\ref{cl:allfactor} solves the local completion for any
+number of factors. Construct a useful global spectral realization
+for four frequencies on the rank-three lattice
+$\sum_i p_i n_i=0$, with a finite sign-region and character
+decomposition. The first target is $(p_1,p_2,p_3,p_4)=(1,1,2,3)$.
+Local existence alone should not be presented as a minimal
+finite reduction of the global multiple Tornheim kernels.
+\end{question}
+
+\begin{question}[The frozen Gaussian candidates]
+Retain the exact source vectors for $S_6$ and the current $S_8$.
+Seek an additional functional or iterated-integral relation
+beyond the projection mechanisms that already prove $S_4$.
+A successful proof should provide a finite exact row certificate
+and an analytic justification for every generating row,
+including its endpoint evaluation. An exclusion from a chosen
+finite relation space would identify a missing mechanism,
+not disprove the numerical identity.
+\end{question}
+
+\subsection{Recommended integration order}
+
+The four mathematical sections can be integrated independently after
+their cited antecedents. Preserve the stated domains, branches, and
+normalizations, and review the two source edits separately.
+The accompanying integration notes map labels and source targets
+while preserving the existing conjecture status.

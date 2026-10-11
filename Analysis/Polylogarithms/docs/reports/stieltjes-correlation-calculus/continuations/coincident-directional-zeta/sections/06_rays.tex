@@ -1,0 +1,196 @@
+\section{The first two jets on every admissible ray through the origin}
+\label{sp:sec:rays}
+
+The uncolored Tornheim function is not jointly holomorphic at the
+origin.  Consequently $\mathcal T(0,0,0;1,1)$ is not a value that can
+be assigned independently of a restriction convention.  Borwein and
+Dilcher established this explicitly for the family
+$\mathcal T(t,t,\tau t;1,1)$ and evaluated its first derivative
+\cite[Theorems 2.7 and 3.1]{BorweinDilcher}.  The diagonal value $1/3$ is also
+recorded by Romik \cite[Theorem 1.3]{sp:Romik}, who credits the simple
+diagonal derivative to Borwein and Dilcher.
+
+We give the asymmetric first jet and an exact second-jet formula for
+every ray avoiding the two polar directions.  Let
+\[
+ \mathcal T(A,B,C)=\mathcal T(A,B,C;1,1),\qquad L=\log(2\pi),
+ \qquad W_{a,b,c}(t)=\mathcal T(at,bt,ct).
+\]
+Each restriction is formed away from the polar set and then continued
+as a one-variable function.  It is not the evaluation of a nonexistent
+joint Taylor series at $(0,0,0)$.
+
+\begin{theorem}[Asymmetric ray values and quadratic jets]
+\label{sp:raytheorem}
+Let $a,b,c\in\mathbb C$ satisfy $(a+c)(b+c)\ne0$, and define
+\begin{equation}\label{sp:rayB}
+ \mathcal B(a,b,c)
+ =\frac{c(c^2+ab-a^2-b^2)}{(a+c)(b+c)}.
+\end{equation}
+Then $W_{a,b,c}$ has a removable singularity at $t=0$, and
+\begin{align}
+ W_{a,b,c}(0)
+   &=\frac14+\frac{c}{12(a+c)}+\frac{c}{12(b+c)},
+       \label{sp:ray0}\\
+ W_{a,b,c}'(0)
+   &=\frac{a+b+2c}{4}L+\mathcal B(a,b,c)\zeta'(-1),
+       \label{sp:ray1}\\
+ W_{a,b,c}''(0)
+   &=\frac{2ab+c(a+b)}4L^2
+      -\frac{a^2+b^2+2c(a+b)+2c^2}{2}\zeta''(0)\notag\\
+   &\hspace{13mm}+(a+b+c)\mathcal B(a,b,c)\zeta''(-1).
+       \label{sp:ray2}
+\end{align}
+\end{theorem}
+
+The equal-inner-order specialization is especially compact:
+\begin{align}
+ W_{1,1,\tau}(0)&=\frac{5\tau+3}{12(\tau+1)},\notag\\
+ W_{1,1,\tau}'(0)&=\frac{\tau+1}{2}L
+             +\frac{\tau(\tau-1)}{\tau+1}\zeta'(-1),\notag\\
+ W_{1,1,\tau}''(0)&=\frac{\tau+1}{2}L^2
+             -(\tau+1)^2\zeta''(0)
+             +\frac{\tau(\tau-1)(\tau+2)}{\tau+1}\zeta''(-1).
+ \label{sp:equalray}
+\end{align}
+The first two lines recover the cited classical result; the third is
+the quadratic extension proved here.  In particular,
+\begin{equation}\label{sp:diagonal2}
+ \left.\frac{d^2}{dt^2}\mathcal T(t,t,t)\right|_{t=0}
+    =\log^2(2\pi)-4\zeta''(0).
+\end{equation}
+
+\subsection{A local meromorphic decomposition}
+
+Put $F(A,B;x)=\operatorname{Li}_A(e^{-x})
+                         \operatorname{Li}_B(e^{-x})$.
+Jonqui\`ere's convergent expansion for $0<x<2\pi$ gives
+\[
+ \operatorname{Li}_A(e^{-x})
+  =\Gamma(1-A)x^{A-1}
+    +\sum_{j\geq0}\zeta(A-j)\frac{(-x)^j}{j!}
+\]
+for $A$ near zero; all powers of $x$ use its real logarithm.
+Subtract the following six terms:
+\begin{align}\label{sp:localsix}
+ S(A,B;x)={}&\Gamma(1-A)\Gamma(1-B)x^{A+B-2}
+   +\Gamma(1-A)\zeta(B)x^{A-1}\notag\\
+ &+\Gamma(1-B)\zeta(A)x^{B-1}
+   -\Gamma(1-A)\zeta(B-1)x^A\notag\\
+ &-\Gamma(1-B)\zeta(A-1)x^B+\zeta(A)\zeta(B).
+\end{align}
+On a sufficiently small parameter polydisc the remainder and each
+fixed parameter derivative are $O(x^{1-\delta}(1+|\log x|^N))$ for
+some $\delta<1$.  Consequently the function
+\begin{align}\label{sp:Hdef}
+ H(A,B,C)={}&\int_0^1 x^{C-1}\{F(A,B;x)-S(A,B;x)\}\,dx
+            +\int_1^\infty x^{C-1}F(A,B;x)\,dx\notag\\
+ &+\frac{\Gamma(1-A)\Gamma(1-B)}{A+B+C-2}
+   +\frac{\Gamma(1-A)\zeta(B)}{A+C-1}
+   +\frac{\Gamma(1-B)\zeta(A)}{B+C-1}
+\end{align}
+is jointly holomorphic near $(0,0,0)$ and symmetric in $A,B$.
+The Mellin formula now gives the exact meromorphic decomposition
+\begin{align}\label{sp:meromorphicH}
+ \mathcal T(A,B,C)=\frac1{\Gamma(1+C)}\biggl\{
+  &\zeta(A)\zeta(B)
+   -\frac{C\Gamma(1-A)\zeta(B-1)}{A+C}\notag\\
+  &-\frac{C\Gamma(1-B)\zeta(A-1)}{B+C}
+   +C H(A,B,C)\biggr\}.
+\end{align}
+To justify it, integrate each term of \eqref{sp:localsix} explicitly
+in a common Mellin convergence region, and then continue; the
+subtracted integrals in \eqref{sp:Hdef} supply the required local
+continuation.  The only polar hyperplanes meeting the origin are now
+displayed.  On an admissible ray, their quotients are constants, so
+the apparent one-variable singularity is removable.
+
+\subsection{The diagonal input}
+
+The diagonal identity \eqref{sp:diagonal2} has already been proved in
+Theorem~\ref{cub:diagonal} by comparing the local cubic residue with
+its Hurwitz Fourier representation. That comparison uses only the
+coefficient of the simple pole: the unknown cubic finite part first
+enters one order later. There is therefore no dependence on a numerical
+value of the cubic integral in the argument below.
+
+\subsection{Completing the asymmetric calculation}
+
+The exact restriction
+\begin{equation}\label{sp:axis}
+ \mathcal T(0,0,C)=\zeta(C-1)-\zeta(C)
+\end{equation}
+follows by counting the $k-1$ positive pairs summing to $k$ in its
+absolute-convergence half-plane.  Restricting
+\eqref{sp:meromorphicH} to this axis gives
+\[
+ \Gamma(1+C)\{\zeta(C-1)-\zeta(C)\}
+       =\frac5{12}+C H(0,0,C).
+\]
+Hence, writing all partial derivatives of $H$ below at the origin,
+\begin{align}
+ H(0,0,0)
+   &=\zeta'(-1)+\frac L2-\frac{5\gamma}{12},\label{sp:H0}\\
+ H_C
+   &=\frac{\zeta''(-1)-\zeta''(0)}2
+       -\gamma\left(\zeta'(-1)+\frac L2\right)
+       +\frac5{24}\{\gamma^2+\zeta(2)\}.
+       \label{sp:HC}
+\end{align}
+The symmetry $H_A=H_B$, together with \eqref{sp:diagonal2} in
+\eqref{sp:meromorphicH}, then gives
+\begin{equation}\label{sp:HA}
+ H_A=H_B=\frac{L^2}{8}-\frac{\zeta''(0)}2
+         +\gamma\zeta'(-1)-\frac{\gamma L}{4}
+         -\frac{\gamma^2+\zeta(2)}{24}.
+\end{equation}
+These equations determine the entire constant and linear Taylor
+polynomial of the jointly holomorphic remainder.
+
+To prove Theorem~\ref{sp:raytheorem}, substitute
+$A=at,B=bt,C=ct$ in \eqref{sp:meromorphicH}, use
+\eqref{sp:H0}--\eqref{sp:HA}, and expand to second order.  The
+constant is \eqref{sp:ray0}.  The coefficient of $\zeta'(-1)$ in
+the first derivative is
+\[
+ c-\frac{bc}{a+c}-\frac{ac}{b+c}
+       =\mathcal B(a,b,c),
+\]
+and all Euler-constant terms cancel, proving \eqref{sp:ray1}.
+In the second derivative, the surviving coefficients of
+$L^2,\zeta''(0),\zeta''(-1)$ are respectively
+\[
+ \frac{2ab+c(a+b)}4,\qquad
+ -\frac{a^2+b^2+2c(a+b)+2c^2}{2},\qquad
+ (a+b+c)\mathcal B(a,b,c).
+\]
+The coefficients of $\gamma^2$, $\zeta(2)$,
+$\gamma\zeta'(-1)$ and $\gamma L$ cancel identically.  This proves
+\eqref{sp:ray2} and completes the theorem.
+
+For example, the diagonal and the third-order-parameter axis give
+\[
+ W_{1,1,1}(0)=\frac13,\qquad W_{0,0,1}(0)=\frac5{12}.
+\]
+For the asymmetric ray $(a,b,c)=(1,2,3)$ one obtains
+\begin{align*}
+ W_{1,2,3}(0)&=\frac{29}{80},\\
+ W_{1,2,3}'(0)&=\frac94L+\frac9{10}\zeta'(-1),\\
+ W_{1,2,3}''(0)&=\frac{13}{4}L^2-\frac{41}{2}\zeta''(0)
+                             +\frac{27}{5}\zeta''(-1).
+\end{align*}
+These are explicit directional identities, and also a concrete audit
+test for any routine that substitutes integer orders before
+differentiating.  A routine returning the same value for the first
+two restrictions has erased the specified limiting direction.
+
+\paragraph{Independent numerical check.}
+The accompanying \texttt{verify\_rays.py} integrates the convergent
+Jonqui\`ere series on $(0,1)$ and an incomplete-Gamma double series on
+$(1,\infty)$.  It does not evaluate a cubic finite-part formula.
+At 65-digit working precision, seven successive symmetric step sizes
+and polynomial extrapolation reproduce the first two derivatives on
+the rays $(1,1,1)$, $(1,2,3)$, $(2,3,1)$, and $(1,-2,3)$.
+The largest reported absolute discrepancy is below $2.6\times10^{-37}$.
+These are diagnostics of the analytic proof, with truncation and
+floating-point errors not certified by interval arithmetic.

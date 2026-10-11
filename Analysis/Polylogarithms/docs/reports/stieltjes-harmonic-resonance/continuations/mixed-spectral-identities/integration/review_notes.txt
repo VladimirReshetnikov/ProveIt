@@ -1,0 +1,58 @@
+REVIEW NOTES
+
+Mathematical checking
+
+The four proof sections were developed from the pinned sources, then
+cross-checked within this assistant session. The harmonic and Dougall
+sections were checked in both directions by separate parallel reviewers.
+The collision section received a separate audit of its subset numerators,
+geometric constants, and Laurent chambers. The unequal-twist scalar
+classification, branch crossings, tail convergence, and contact terms
+were separately reviewed. The final authoring pass checked all sections.
+This is internal mathematical checking, not external peer review or a
+proof-assistant formalization.
+
+Particular proof issues checked
+
+1. The finite-difference Mellin integral holds on Re s>1-j, so sufficiently
+   large j covers any prescribed compact spectral set. Its logarithmic
+   growth bound combines with the uniform binomial bound to give Re a>-r.
+2. The multiple Arakawa--Kaneko shift jets have the sign (-1)^(r+p) and
+   factor p!, with the source index convention reversed explicitly.
+3. The generalized boundary has the sign -s*zeta(s+1,x). Its Stieltjes
+   coefficient and repeated antiderivative denominator were checked.
+4. Dougall's finite-head zeros remain in the Gamma quotient before mixed
+   differentiation. The divided remainder is justified by holomorphic
+   factorization and Cauchy bounds, not by dividing two zero-valued sums.
+5. The all-order spectral formula has the factor 1/[2(m+1)], the isolated
+   constant -1, and the correct (-2)^m Stieltjes signs.
+6. The unequal-twist tail removes every mode that could cross a logarithm
+   branch. A below-pole left-to-right indentation contributes +pi*i.
+7. The finite scalar classification uses monodromy and an Euler-operator
+   annihilator. Its scope is a functional identity, not sampled arithmetic.
+8. The resonant-subset completion removes the whole numerator A/Lambda.
+   The Taylor remainder has an integrable exponent near the origin.
+9. The triple collision's finite term is zeta(2)*log(2)/2 for rates(0,1,2).
+   It comes from two singular factors times a linear regular factor.
+10. The one-argument-derivative chamber constants are +zeta(3), 0, -zeta(3).
+    The zero-derivative special case has no analogous rectangular constant
+    dependence; spectral-ray constants are a separate operation.
+11. The total-derivative projection follows from the exact endpoint
+    primitive. Equal positive Stieltjes indices give zero at every number
+    of factors under the stated ambient finite-part prescription.
+
+Reproducibility and layout
+
+The scripts in code/ were replayed from the final package structure.
+results/replay_summary.json records their successful exit codes and actual
+runtime. Exact finite assertions are separate from numerical comparisons.
+No floating calculation is asserted to be an interval certificate.
+
+The TeX source was compiled with latexmk. The final log has no undefined
+references or citations, no duplicate labels, and no overfull/underfull
+boxes. All 40 rendered pages were visually checked; changed pages were
+rechecked after final clarity edits. The standalone source was compiled
+separately and its extracted PDF text compared with the modular build.
+
+The two proposed source edits were checked with git apply --check against
+the pinned repository snapshot. The patch was not applied to the repo.

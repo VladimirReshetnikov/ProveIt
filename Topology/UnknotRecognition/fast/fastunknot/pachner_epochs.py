@@ -16,28 +16,33 @@ from .normal_surface_geometry import NormalOrbitError
 from .normal_transport_verify import verify_transport_disk_certificate,_callback_safe_call
 from .pachner_cover_search import find_pachner_descent
 from .pachner_cover_verify import inspect_pachner_descent
+from .cocycle_gauge import optimize_cocycle_gauge
 
 
 def pachner_epoch_seed_decide(diagram,*,max_upward_per_epoch=1,max_epochs=None,
                              max_nodes=1000,max_work=2000000,max_cycles=None,
-                             shellings=False,optimize=False,check=lambda:None):
+                             shellings=False,optimize=False,regauge_interval=0,check=lambda:None):
     return _callback_safe_call(_decide,check,diagram,max_upward_per_epoch=max_upward_per_epoch,
         max_epochs=max_epochs,max_nodes=max_nodes,max_work=max_work,max_cycles=max_cycles,
-        shellings=shellings,optimize=optimize)
+        shellings=shellings,optimize=optimize,regauge_interval=regauge_interval)
 
 
 def _decide(diagram,*,max_upward_per_epoch,max_epochs,max_nodes,max_work,max_cycles,
-            shellings,optimize,check):
+            shellings,optimize,regauge_interval,check):
     if type(shellings)is not bool or type(optimize)is not bool:
         raise ValueError('shellings and optimize must be bool')
     if type(max_upward_per_epoch)is not int or max_upward_per_epoch<0:
         raise ValueError('max_upward_per_epoch must be a nonnegative integer')
+    if type(regauge_interval)is not int or regauge_interval<0:
+        raise ValueError('regauge_interval must be a nonnegative integer')
     for name,value in (('max_epochs',max_epochs),('max_nodes',max_nodes),('max_cycles',max_cycles)):
         if value is not None and (type(value)is not int or value<0):
             raise ValueError(name+' must be a nonnegative integer or None')
     budget=_Budget(check,max_work)
-    stats=dict(epochs=0,nodes=0,upward_moves=0,downward_moves=0,disc_queries=0,epoch_records=[])
+    stats=dict(epochs=0,nodes=0,upward_moves=0,downward_moves=0,disc_queries=0,epoch_records=[],
+        gauge_queries=0,gauge_changes=0)
     scope=dict(max_upward_per_epoch=max_upward_per_epoch,max_epochs=max_epochs,
+        regauge_interval=regauge_interval,
         meaning='upward events are bounded per strictly descending epoch, not over the whole chain')
     def miss(reason,status='INCONCLUSIVE'):
         return dict(status='INCONCLUSIVE',method='native-pachner-epochs',reason=reason,
@@ -66,7 +71,7 @@ def _decide(diagram,*,max_upward_per_epoch,max_epochs,max_nodes,max_work,max_cyc
                 record_certificate=True,check=budget.tick);stats['disc_queries']+=1
             if query['status']!='COMPLETE':return miss(query.get('reason','component query did not complete'))
             if query['contains_compressing_disk']:
-                proof=dict(schema='diagram-transport-disc-v1',input_pd=[list(r)for r in source.pd],
+                proof=dict(schema='diagram-transport-disc-v2'if stats['gauge_changes']else'diagram-transport-disc-v1',input_pd=[list(r)for r in source.pd],
                     source_triangulation=original,shelling=shelling,source_heights=initial_h,
                     steps=steps,coordinates=coordinates,disc_certificate=query['certificate'])
                 if not verify_transport_disk_certificate(source,proof,check=budget.tick):
@@ -93,6 +98,10 @@ def _decide(diagram,*,max_upward_per_epoch,max_epochs,max_nodes,max_work,max_cyc
             stats['epoch_records'].append(dict(before=before,after=len(raw['tetrahedra']),
                 upward_moves=replay['upward_moves'],downward_moves=replay['downward_moves'],
                 search_stats=descent['stats']))
+            if regauge_interval and stats['epochs']%regauge_interval==0:
+                gauged=optimize_cocycle_gauge(raw,h,check=budget.tick);stats['gauge_queries']+=1
+                if gauged['changed']:
+                    h=gauged['heights'];steps.append(dict(gauge=gauged['certificate']));stats['gauge_changes']+=1
             if stats['epochs']>initial_t:raise ArithmeticError('strict descent restart bound failed')
     except (CocycleLimit,NormalOrbitError)as error:
         return miss(str(error))

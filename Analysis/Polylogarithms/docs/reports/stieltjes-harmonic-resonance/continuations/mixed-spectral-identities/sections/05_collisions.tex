@@ -1,0 +1,613 @@
+\section{Simultaneous Stieltjes collisions and their finite anomalies}
+\label{cl:sec}
+
+The incoming separated-triple theorem assumes pairwise disjoint singular
+grids. Its first further question asks whether simultaneous collision
+constants agree with a directly merged ambient finite part
+\cite[Question~1]{RepoExact}. The bilinear coincidence report supplies
+such a comparison for two factors \cite{RepoCoincident}. The triple
+problem contains an additional phenomenon: two singular factors can
+multiply a resonant Taylor coefficient of a third regular factor.
+We prove an explicit finite discrepancy, identify its dependence on the
+collision rates, and then give an all-factor local completion theorem.
+The distinction between cutoff and spectral prescriptions also appears
+in the different endpoint setting of \cite{RepoEndpoint}; here the
+collision parameter moves singularities in the real argument.
+
+\subsection{Fixed coordinates and the geometric collision theorem}
+\label{cl:geometric}
+
+Put $f(x)=\gamma_0(x)=-\psi(x)$ and $\gamma=\gamma_0(1)$. For
+$0<a<b$ and $0<\epsilon<1/b$, let
+\[
+ C_{a,b}(\epsilon)=\operatorname{FP}_x\int_0^1
+ f(x)f(\{x+a\epsilon\})f(\{x+b\epsilon\})\,dx.
+\]
+At each of the three distinct grid points $0$, $1-b\epsilon$, and
+$1-a\epsilon$, the finite part deletes a right interval of ambient
+length $\eta$ and takes the coefficient independent of $\eta$.
+The three cutoff variables can also be independent. Define the merged
+moment in the same coordinate by
+\begin{equation}\label{cl:merged}
+ Q=\operatorname{FP}_x\int_0^1f(x)^3\,dx.
+\end{equation}
+This has the ordinary convergent representation
+\begin{equation}\label{cl:merged-convergent}
+ Q=\int_0^1\left[f(x)^3-\frac1{x^3}-\frac{3\gamma}{x^2}
+       -\frac{3(\gamma^2-\zeta(2))}{x}\right]dx-\frac12-3\gamma.
+\end{equation}
+
+\begin{theorem}[Triple collision constant, with its rate dependence]
+\label{cl:collision}
+With $L=\log\epsilon$, define
+\begin{align*}
+ P_{-2}(a,b;L)&=\frac{L}{ab}
+    +\frac{\log a}{a(b-a)}-\frac{\log b}{b(b-a)},\\
+ P_{-1}(a,b;L)&=\gamma\left[
+    \frac{L+\log a}{a}+\frac{L+\log b}{b}
+    +\frac{L+\log(b-a)}{b-a}\right],\\
+ P_0(a,b;L)&=\zeta(2)\left[
+    \frac{a-b}{a}(L+\log a)
+    +\frac{b-a}{b}(L+\log b)
+    +\frac b{b-a}(L+\log(b-a))\right].
+\end{align*}
+Then
+\begin{equation}\label{cl:rate-expansion}
+ C_{a,b}(\epsilon)=\epsilon^{-2}P_{-2}(a,b;L)
+    +\epsilon^{-1}P_{-1}(a,b;L)+P_0(a,b;L)+Q
+    +O(\epsilon|\log\epsilon|).
+\end{equation}
+Consequently its coefficient independent of $\epsilon$ and $\log\epsilon$
+is $Q+\zeta(2)D(a,b)$, where
+\[
+ D(a,b)=\frac{a-b}{a}\log a+\frac{b-a}{b}\log b
+               +\frac b{b-a}\log(b-a).
+\]
+In particular,
+\begin{align}
+ C_{1,2}(\epsilon)
+ ={}&\frac{L-\log2}{2\epsilon^2}
+   +\frac{\gamma(5L+\log2)}{2\epsilon}
+   +\frac{\zeta(2)}2(3L+\log2)+Q
+   +O(\epsilon|\log\epsilon|),\label{cl:equally-spaced}\\
+ \operatorname{CT}_{\epsilon}C_{1,2}(\epsilon)
+ ={}&Q+\frac{\zeta(2)}2\log2\ne Q.\label{cl:finite-anomaly}
+\end{align}
+Here $\operatorname{CT}_{\epsilon}$ removes divergent powers and all
+nonconstant logarithmic terms; it does not remove finite constants
+inside a chosen collision counterterm. Removing the complete $P_0$,
+including its finite part, does recover $Q$.
+\end{theorem}
+
+\begin{proof}
+Choose a fixed small $\delta>0$ and work in the circle coordinate
+$x\in(-\delta,\delta)$ around the merged point. The Hurwitz shift
+identity \cite[Equation~25.11.3]{DLMFHurwitz} gives the exact local representation
+\[
+ f(\{x\})=\frac{\mathbf 1_{x>0}}x+h(x),\qquad
+ h(x)=f(1+x)=\gamma-\zeta(2)x+x^2R(x),
+\]
+where $R$ is analytic near zero. For the three rates $(0,a,b)$ write
+$S_c(x)=\mathbf 1_{x+c\epsilon>0}/(x+c\epsilon)$ and
+$H_c(x)=h(x+c\epsilon)$. Expand the product of the three $S_c+H_c$.
+The all-regular term and the three terms with exactly one $S_c$ are
+analytic in $\epsilon$ after the prescribed one-sided finite parts
+are taken. Their limits are their merged counterparts. The integral
+outside this neighborhood is also analytic for small $\epsilon$.
+
+For a term with two singular factors, let their rates be $c<d$ and
+let the remaining regular factor have rate $e$. Set
+$t=x+c\epsilon$, $\Delta=d-c$, $\rho=e-c$ and $\ell=\delta+c\epsilon$.
+Its local integral is
+\[
+ \operatorname{FP}\int_0^\ell
+     \frac{h(t+\rho\epsilon)}{t(t+\Delta\epsilon)}\,dt.
+\]
+The two necessary elementary primitives are
+\begin{align*}
+ A_0&=\operatorname{FP}\int_0^\ell\frac{dt}{t(t+\Delta\epsilon)}
+ =\frac{\log\ell-\log(\ell+\Delta\epsilon)
+                  +\log(\Delta\epsilon)}{\Delta\epsilon},\\
+ A_1&=\int_0^\ell\frac{dt}{t+\Delta\epsilon}
+ =\log(\ell+\Delta\epsilon)-\log(\Delta\epsilon).
+\end{align*}
+The constant and linear parts of $h$ contribute
+$\gamma A_0-\zeta(2)(A_1+\rho\epsilon A_0)$. As $\epsilon\downarrow0$,
+this equals
+\[
+ \frac{\gamma\log(\Delta\epsilon)}{\Delta\epsilon}
+ +\zeta(2)\frac{d-e}{d-c}\log(\Delta\epsilon)
+ -\frac\gamma\delta-\zeta(2)\log\delta+O(\epsilon|\log\epsilon|).
+\]
+The last two displayed constants are exactly the merged finite parts
+of $\gamma x^{-2}-\zeta(2)x^{-1}$ on $(0,\delta)$.
+The analytic quadratic remainder converges to its merged ordinary
+integral. More precisely, use
+\[
+ \frac{(t+\rho\epsilon)^2}{t(t+\Delta\epsilon)}
+ =1+\frac{(2\rho-\Delta)\epsilon}{t+\Delta\epsilon}
+       +\frac{\rho^2\epsilon^2}{t(t+\Delta\epsilon)}
+\]
+and the analytic, locally bounded function $R$ to obtain an error
+$O(\epsilon|\log\epsilon|)$. Thus the three pairs give exactly
+$\epsilon^{-1}P_{-1}+P_0$ beyond their merged values.
+
+The three-singular term is supported on $x>0$. Partial fractions give
+\[
+ \frac1{x(x+a\epsilon)(x+b\epsilon)}
+ =\frac1{ab\epsilon^2x}
+  -\frac1{a(b-a)\epsilon^2(x+a\epsilon)}
+  +\frac1{b(b-a)\epsilon^2(x+b\epsilon)}.
+\]
+Its lower-end contribution is exactly $\epsilon^{-2}P_{-2}$. The
+upper-end expression tends to $-1/(2\delta^2)$, which is precisely
+$\operatorname{FP}\int_0^\delta x^{-3}\,dx$; its remaining error is
+$O(\epsilon)$. Summing all eight terms and the nonsingular exterior
+integral proves the formula. Only simple logarithms occur because the
+zero-index singular pieces are rational functions with simple linear
+factors; no $\log^2\epsilon$ term has been suppressed.
+\end{proof}
+
+The rate dependence can be isolated without an unevaluated merged
+constant:
+\begin{equation}\label{cl:rate-difference}
+ \operatorname{CT}_{\epsilon}C_{1,3}(\epsilon)
+ -\operatorname{CT}_{\epsilon}C_{1,2}(\epsilon)
+ =\zeta(2)\left(\log2+\frac23\log3\right).
+\end{equation}
+These are positive shifts, exactly as in the definition of $C_{a,b}$.
+For three digamma factors all displayed correlations change sign.
+
+\subsection{Resonant subsets and a holomorphic completion}
+\label{cl:subsets}
+
+This section supplies an all-index explanation of the new phenomenon.
+Put
+\[
+ G(z,x)=\zeta(1-z,x)+\frac1z
+     =\sum_{m\ge0}\gamma_m(x)\frac{z^m}{m!},\qquad
+ c_r(z)=(-1)^r(1-z)_r,
+\]
+and write
+\[
+ g_r(z,x)=\partial_x^rG(z,x),\qquad h_r(z)=g_r(z,1).
+\]
+In particular $h_0(z)=\zeta(1-z)+1/z$ and
+$h_r(z)=c_r(z)\zeta(r+1-z)$ for $r\ge1$. All these functions are
+holomorphic near $z=0$.
+
+Let there be $d\ge1$ factors, positive integer frequencies $p_i$, real
+shifts $a_i$, and nonnegative derivative orders $r_i$. Let
+$\mathcal B$ be the finite union of their singular grids on the circle,
+and define the collision set at $b\in\mathcal B$ by
+\[
+ C_b=\{i:p_i b+a_i\in\mathbb Z\}.
+\]
+For $t=x-b>0$ put
+\[
+ H_{b,j}(z_j,t)=
+ \begin{cases}
+ g_{r_j}(z_j,1+p_jt),&j\in C_b,\\
+ g_{r_j}(z_j,\{p_jb+a_j\}+p_jt),&j\notin C_b.
+ \end{cases}
+\]
+For every nonempty subset $S\subseteq C_b$ set
+\[
+ \Lambda_S=\sum_{i\in S}z_i,\qquad
+ k_S=\sum_{i\in S}(r_i+1)-1,
+\]
+and define the complete resonant numerator
+\[
+ A_{b,S}(\boldsymbol z)=
+ \left(\prod_{i\in S}c_{r_i}(z_i)p_i^{z_i-r_i-1}\right)
+ [t^{k_S}]\prod_{j\notin S}H_{b,j}(z_j,t).
+\]
+Empty products are one. For $d\ge2$, the term with
+$S=\{1,\dots,d\}$ vanishes because $k_S>0$.
+
+\begin{theorem}[All-factor local completion]
+\label{cl:allfactor}
+Let $I_{\boldsymbol r}(\boldsymbol z)$ be the meromorphic continuation
+of the ordinary integral
+\[
+ \int_0^1\prod_{i=1}^d
+      g_{r_i}(z_i,\{p_i x+a_i\})\,dx,
+\]
+initially defined, for example, by $\Re z_i>r_i+1$ for every $i$.
+Then
+\begin{equation}\label{cl:completion}
+ J_{\boldsymbol r}(\boldsymbol z)
+ =I_{\boldsymbol r}(\boldsymbol z)
+       -\sum_{b\in\mathcal B}\ \sum_{\varnothing\ne S\subseteq C_b}
+              \frac{A_{b,S}(\boldsymbol z)}{\Lambda_S}
+\end{equation}
+is holomorphic near the origin. Its coefficient
+\[
+ \left(\prod_i m_i!\right)[z_1^{m_1}\cdots z_d^{m_d}]
+              J_{\boldsymbol r}(\boldsymbol z)
+\]
+is exactly the ambient-coordinate finite part of the corresponding
+product of $\gamma_{m_i}^{(r_i)}$. The theorem permits arbitrary partial
+and complete collisions.
+\end{theorem}
+
+\begin{proof}
+The exact Hurwitz shift gives each local factor as
+\[
+ g_{r_i}(z_i,\{p_ix+a_i\})
+ =c_{r_i}(z_i)p_i^{z_i-r_i-1}t^{z_i-r_i-1}
+       +H_{b,i}(z_i,t)\quad(i\in C_b).
+\]
+Expand the finite product by its nonempty subsets of singular pieces.
+For $S$, expand its regular complement through degree $k_S$. The
+Taylor coefficient of degree $j$ integrates meromorphically with
+denominator $\Lambda_S+j-k_S$. All $j<k_S$ have denominator nonzero
+near the origin and already generate their coordinate finite parts.
+At $j=k_S$ the term is $A_{b,S}t^{\Lambda_S-1}$.
+Its meromorphic integral on $(0,\ell)$ is
+$A_{b,S}\ell^{\Lambda_S}/\Lambda_S$, while its coefficientwise
+coordinate finite-part generator is
+$A_{b,S}(\ell^{\Lambda_S}-1)/\Lambda_S$. Their difference is the
+complete numerator $A_{b,S}/\Lambda_S$, not a residue with its
+parameter dependence deleted. The Taylor remainder has exponent
+$\Lambda_S$ and is integrable uniformly on a sufficiently small
+spectral polydisc; all fixed spectral derivatives add only logarithmic
+powers. Finite summation over grid points proves holomorphy and the
+coefficient interpretation, and also constructs the local meromorphic
+continuation uniquely from the initial convergent integral.
+\end{proof}
+
+For two coincident factors, a product of both singular pieces has no
+regular complement of the positive degree needed for resonance. Hence
+the only polar divisors through the origin are $z_i=0$. For three
+coincident factors, pairs of singular pieces have one regular
+complement, so $z_i+z_j=0$ contributes for the first time. This is the
+structural difference behind the triple collision anomaly.
+
+\subsection{The explicit same-point triple generator}
+\label{cl:triple}
+
+\begin{corollary}[Every coincident triple Stieltjes jet]
+\label{cl:triple-completion}
+At unit frequencies and a common endpoint, put $R=r_1+r_2+r_3$.
+The complete generator is
+\begin{align}
+ J_{\boldsymbol r}(\boldsymbol z)=I_{\boldsymbol r}(\boldsymbol z)
+ &-\sum_{i=1}^3\frac{c_{r_i}(z_i)}{z_i}
+     \sum_{u+v=r_i}\frac{h_{r_j+u}(z_j)h_{r_k+v}(z_k)}{u!v!}\notag\\
+ &-\sum_{i<j}\frac{c_{r_i}(z_i)c_{r_j}(z_j)h_{R+1}(z_k)}
+          {(r_i+r_j+1)!(z_i+z_j)}.\label{cl:triple-generator}
+\end{align}
+In each summand $\{i,j,k\}=\{1,2,3\}$.
+For $r_i=0$ this is particularly short:
+\begin{equation}\label{cl:triple-zero}
+ J_{\boldsymbol0}=I_{\boldsymbol0}
+ -\sum_i\frac{h_0(z_j)h_0(z_k)}{z_i}
+ -\sum_{i<j}\frac{h_1(z_k)}{z_i+z_j}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+For a singleton $S=\{i\}$, its resonant Taylor degree is $r_i$,
+and Leibniz's formula gives the inner sum in the first line.
+For a pair $S=\{i,j\}$, the resonant degree is $r_i+r_j+1$.
+The remaining factor has derivative order $r_k$, so its Taylor
+coefficient is $h_{R+1}(z_k)/(r_i+r_j+1)!$. The three-singular
+subset has no regular complement and makes no resonant contribution.
+Theorem~\ref{cl:allfactor} now gives both formulas.
+\end{proof}
+The last sum is indispensable: $h_1(0)=-\zeta(2)\ne0$.
+
+\subsubsection{A completely specified Tornheim realization}
+\label{cl:tornheim}
+
+The classical Tornheim function is initially
+\[
+ T(A,B,C)=\sum_{m,n\ge1}\frac1{m^A n^B(m+n)^C}.
+\]
+Let $\alpha_i=z_i-r_i$ and define
+\begin{align*}
+ K_3(\boldsymbol\alpha)
+ &=\frac{2\prod_i\Gamma(\alpha_i)}{(2\pi)^{\sum_i\alpha_i}}
+   \sum_{k=1}^3
+   \cos\!\left(\frac\pi2(\alpha_i+\alpha_j-\alpha_k)\right)
+        T(\alpha_i,\alpha_j,\alpha_k),\\
+ K_2(A,B)&=\frac{2\Gamma(A)\Gamma(B)}{(2\pi)^{A+B}}
+          \cos\!\left(\frac\pi2(A-B)\right)\zeta(A+B).
+\end{align*}
+The classical Fourier calculation \cite{EspinosaMoll} gives these as the integrals of,
+respectively, three or two factors $\zeta(1-\alpha,x)$ in an initial
+absolute-convergence domain. Its six sign cones explain the three
+cosines. For the regularized Stieltjes generators one has the exact
+meromorphic identity
+\[
+ I_{\boldsymbol r}(\boldsymbol z)
+ =\left(\prod_i c_{r_i}(z_i)\right)K_3(\boldsymbol\alpha)
+  +\sum_{k:r_k=0}\frac{c_{r_i}(z_i)c_{r_j}(z_j)}{z_k}
+                  K_2(\alpha_i,\alpha_j)
+  +\frac{\mathbf 1_{\boldsymbol r=\boldsymbol0}}{z_1z_2z_3}.
+\]
+Terms with two scalar $1/z_i$ factors vanish because the remaining
+Hurwitz factor has mean zero in the initial domain. This combined
+formula, followed by the complete local subtraction above, is a
+finite all-index coefficient rule. No arithmetic reduction of the
+Tornheim jets to single-zeta coordinates is asserted.
+
+Meromorphic continuation of $T$ near the required nonpositive integer
+orders can be proved directly from
+\[
+ T(A,B,C)=\frac1{\Gamma(C)}\int_0^\infty
+ t^{C-1}\operatorname{Li}_A(e^{-t})\operatorname{Li}_B(e^{-t})\,dt.
+\]
+On a small interval insert the classical local expansion \cite[Equation~25.12.12]{DLMFPolylog}
+\[
+ \operatorname{Li}_A(e^{-t})
+ =\Gamma(1-A)t^{A-1}
+       +\sum_{j\ge0}\zeta(A-j)\frac{(-t)^j}{j!},
+\]
+which is uniform on compact parameter neighborhoods avoiding positive
+integer $A$. Finite subtraction and termwise integration give explicit
+linear polar divisors; the remaining Mellin integral is holomorphic.
+The same argument handles the colored kernels with one or both twists
+equal to one. Thus an entire-order claim valid for two nontrivial
+twists must be weakened to meromorphic continuation when collisions
+force trivial twists. The incoming separated-grid theorem is valid
+on its stated hypotheses; it is its unrestricted extrapolation that
+would be incorrect.
+
+\subsection{Spectral rays and Laurent expansion chambers}
+\label{cl:spectral}
+
+\begin{proposition}[Exact cubic spectral-ray correction]
+\label{cl:rays}
+Take $r_i=0$ and $z_i=c_i t$, where $c_i\ne0$ and $c_i+c_j\ne0$.
+Since the completed $J$ is holomorphic, its constant is always $Q$.
+The uncompleted meromorphic integral instead has constant
+\begin{align}
+ \operatorname{CT}_{t}I_{\boldsymbol0}(c_1t,c_2t,c_3t)
+ ={}&Q+\gamma\gamma_1\sum_i\frac{c_j+c_k}{c_i}\notag\\
+       &+(\zeta(2)+\zeta'(2))\sum_{i<j}\frac{c_k}{c_i+c_j}.
+       \label{cl:ray-constant}
+\end{align}
+Here $\gamma_1$ is the ordinary first Stieltjes constant and $\zeta'$
+is the spectral derivative. On the diagonal the discrepancy is
+\[
+ 6\gamma\gamma_1+\frac32\bigl(\zeta(2)+\zeta'(2)\bigr).
+\]
+\end{proposition}
+\begin{proof}
+Use \eqref{cl:triple-zero} and the expansions
+$h_0(z)=\gamma+\gamma_1z+O(z^2)$ and
+$h_1(z)=-\zeta(2)+(\zeta(2)+\zeta'(2))z+O(z^2)$.
+After division by $c_it$ or $(c_i+c_j)t$, precisely the linear
+numerator coefficient contributes to the constant. The holomorphic
+remainder contributes $J_{\boldsymbol0}(0,0,0)=Q$. For the diagonal,
+set $c_1=c_2=c_3=1$.
+\end{proof}
+This operation concerns spectral rays and is distinct from the
+geometric collision $\epsilon\to0$ proved earlier. Mixed poles also
+mean that a rectangular Laurent expansion is no longer a canonical
+operation unless an expansion chamber or an iterated prescription is
+specified. The holomorphic completion avoids either choice.
+
+\begin{proposition}[Three chamber constants for one derivative moment]
+\label{cl:chambers}
+For $\boldsymbol r=(1,0,0)$ one has
+\begin{equation}\label{cl:derivative-moment}
+ J_{1,0,0}(0,0,0)
+ =\operatorname{FP}\int_0^1\gamma_0'(x)\gamma_0(x)^2\,dx
+ =2\gamma\zeta(2)-\zeta(3).
+\end{equation}
+In an iterated Laurent
+chamber ordering the three moduli, the raw constant is instead
+\begin{equation}\label{cl:chamber-values}
+ \operatorname{CT}_{\rm chamber}I_{1,0,0}
+ =\begin{cases}
+ \zeta(3),& |z_1|\text{ is largest},\\
+ 0,& |z_1|\text{ is intermediate},\\
+ -\zeta(3),& |z_1|\text{ is smallest}.
+ \end{cases}
+\end{equation}
+On the spectral diagonal the same raw integral is identically zero:
+$I_{1,0,0}(t,t,t)=0$ as a meromorphic function.
+\end{proposition}
+\begin{proof}
+The local expansion is
+\[
+ \gamma_0(x)=x^{-1}+\gamma-\zeta(2)x+\zeta(3)x^2+O(x^3).
+\]
+Consequently the coefficient of $x^0$ in $\gamma_0(x)^3$ is
+$\gamma^3-6\gamma\zeta(2)+3\zeta(3)$. Integrate the exact derivative
+$(\gamma_0^3)'/3$ from the cutoff to $1$ and retain its constant.
+This proves \eqref{cl:derivative-moment} directly, without a spectral
+regularization.
+
+For clarity, write $I_{1,0,0}-J_{1,0,0}=S+P$, separating singleton
+and pair terms in \eqref{cl:triple-generator}. Since $c_1(z_1)=z_1-1$,
+these are
+\begin{align*}
+ S={}&\frac{z_1-1}{z_1}
+       \bigl[h_1(z_2)h_0(z_3)+h_0(z_2)h_1(z_3)\bigr]\\
+   &+\frac{h_1(z_1)h_0(z_3)}{z_2}
+     +\frac{h_1(z_1)h_0(z_2)}{z_3},\\
+ P={}&\frac{(z_1-1)h_2(z_3)}{2(z_1+z_2)}
+     +\frac{(z_1-1)h_2(z_2)}{2(z_1+z_3)}
+     +\frac{h_2(z_1)}{z_2+z_3}.
+\end{align*}
+The singleton constant is $-2\gamma\zeta(2)$ in every chamber.
+Using $h_2(0)=2\zeta(3)$, the only pair terms contributing to a
+constant are
+\[
+ \zeta(3)\frac{z_1}{z_1+z_2}
+       +\zeta(3)\frac{z_1}{z_1+z_3}.
+\]
+In a chamber with $|z_j|<|z_1|$, expand
+$z_1/(z_1+z_j)=\sum_{k\ge0}(-z_j/z_1)^k$; its constant is one.
+In the reversed chamber its expansion starts with $z_1/z_j$ and
+has constant zero. Thus $P$ contributes $N\zeta(3)$, where
+$N$ is the number of other variables dominated by $z_1$.
+Adding the holomorphic constant in \eqref{cl:derivative-moment} gives
+$(N-1)\zeta(3)$, proving all three cases.
+
+Finally, for $\Re t>2$, the function $G(t,x)$ has equal endpoint
+values and a continuous first derivative on the period. Therefore
+\[
+ I_{1,0,0}(t,t,t)=\int_0^1
+       \partial_xG(t,x)G(t,x)^2\,dx
+       =\frac{G(t,1)^3-G(t,0)^3}{3}=0.
+\]
+Meromorphic continuation preserves this identity. In particular,
+its spectral diagonal constant is zero even though its coordinate
+finite part is \eqref{cl:derivative-moment}.
+\end{proof}
+
+In contrast, for $\boldsymbol r=\boldsymbol0$ and unit frequencies,
+the polar numerators do not depend on the variables in their own
+denominator. Their nonnegative rectangular coefficients vanish in
+every standard chamber. Thus the general mixed-pole warning should
+not be misread as asserting chamber dependence of the raw constant
+in that special zero-derivative case; its spectral-ray constants still
+differ, as shown above.
+
+\subsection{An exact cancellation at every number of factors}
+
+The incoming question on odd derivative order identifies equal Stieltjes
+indices and one total argument derivative as its first target
+\cite[Question~3]{RepoExact}. That case has a complete local answer.
+The mechanism is the elementary fundamental theorem of calculus, applied
+before taking the cutoff constant; keeping its endpoint term gives the
+following more general identity.
+
+\begin{theorem}[The all-factor total-derivative projection]
+\label{cl:total-derivative}
+Let $d\ge1$, $m_1,\ldots,m_d\ge0$, and put
+$Z_0=\{i:m_i=0\}$ and $g_i(t)=\gamma_{m_i}(1+t)$. Then
+\begin{align}
+ &\FP\int_0^1\sum_{i=1}^d\gamma_{m_i}'(x)
+                   \prod_{j\ne i}\gamma_{m_j}(x)\,dx\notag\\
+ &\qquad=-\sum_{\varnothing\ne S\subseteq Z_0}
+              [t^{|S|}]\prod_{j\notin S}g_j(t).
+ \label{cl:total-projection}
+\end{align}
+The sum on the right is empty when all $m_i>0$. Each surviving
+coefficient is a finite expression in ordinary Stieltjes constants and
+argument derivatives of Stieltjes functions at $1$.
+\end{theorem}
+\begin{proof}
+For every fixed cutoff, the integrand is the ordinary derivative of
+$\prod_i\gamma_{m_i}(x)$. Hence its finite-part integral is
+\[
+ \prod_i\gamma_{m_i}(1)
+       -\CT_{x\downarrow0}\prod_i\gamma_{m_i}(x).
+\]
+Use the exact shift
+$\gamma_{m_i}(x)=x^{-1}\log^{m_i}x+g_i(x)$ and expand by the
+subset $S$ of singular pieces. The empty subset contributes exactly
+$\prod_i\gamma_{m_i}(1)$, canceling the upper endpoint.
+A nonempty subset contributes
+$x^{-|S|}\log^{\sum_{i\in S}m_i}x\prod_{j\notin S}g_j(x)$.
+It has a constant in both $x$ and $\log x$ precisely from the
+Taylor degree $|S|$ and only when $S\subseteq Z_0$.
+This proves \eqref{cl:total-projection}. All individual finite parts
+exist by the same finite local power--log expansion, so taking the
+constant after the finite sum introduces no interchange issue.
+\end{proof}
+
+For equal positive indices the theorem gives the requested cancellation
+at every number of factors:
+\begin{equation}\label{cl:equal-index-cancellation}
+ \boxed{\quad
+ \FP\int_0^1\gamma_m'(x)\gamma_m(x)^{d-1}\,dx=0,
+       \qquad d\ge1,\quad m\ge1.
+ \quad}
+\end{equation}
+For the zero index, with $h(t)=\gamma_0(1+t)$ as above, the complete
+remaining local value is
+\begin{equation}\label{cl:zero-index-projection}
+ \FP\int_0^1\gamma_0'(x)\gamma_0(x)^{d-1}\,dx
+ =-\frac1d\sum_{k=1}^d\binom dk[t^k]h(t)^{d-k}.
+\end{equation}
+This is a finite zeta polynomial because
+$h(t)=\gamma+\sum_{j\ge1}(-1)^j\zeta(j+1)t^j$ near zero.
+For $d=3$ it recovers \eqref{cl:derivative-moment}; for $d=4$ it gives
+\[
+ \FP\int_0^1\gamma_0'(x)\gamma_0(x)^3\,dx
+ =3\gamma^2\zeta(2)-3\gamma\zeta(3)-\frac{11}{4}\zeta(4).
+\]
+Thus the symmetric projection removes the multiple spectral terms
+entirely in this one-derivative case, leaving its explicitly specified
+local endpoint contribution. Higher odd derivative projections remain
+a separate question.
+
+\subsection{Repository scope and independent numerical diagnostics}
+\label{cl:numerics}
+
+The inspected snapshot is
+\texttt{dcd95baeb7c0e914b138bddef6829c5b1d52b726}.
+The incoming \src{Exact_Identities} report, section
+\texttt{triple\_dilation.tex}, assumes pairwise disjoint grids throughout.
+Its \texttt{audit\_research.tex}, Question~1, asks to remove that
+restriction and compare simultaneous collision constants with merged
+finite parts. The subset theorem completes its fixed-collision local
+subtraction question, and the explicit $(0,\epsilon,2\epsilon)$
+calculation shows that its suggested matching is not valid for plain
+geometric constant extraction. A finite rate-dependent correction
+is necessary. The preceding bilinear coincidence results are not
+contradicted.
+
+The supplied script \src{code/verify_collisions.py} computes the
+separated moments by three independent convergent interval integrals.
+For an interval of length $\ell$ starting at the singular point of one
+factor, with the other two arguments $\eta_1+t,\eta_2+t$, it uses
+\[
+ \int_0^\ell\left[
+ \frac{f(\eta_1+t)f(\eta_2+t)-f(\eta_1)f(\eta_2)}{t}
+ +h(t)f(\eta_1+t)f(\eta_2+t)\right]dt
+ +f(\eta_1)f(\eta_2)\log\ell.
+\]
+This is exactly the ambient finite part with the simple pole visibly
+removed. It does not implement the collision expansion or the
+Tornheim representation. The merged moment is evaluated by a local
+digamma Laurent series plus ordinary quadrature, with two independent
+split points. At 70-digit working precision the computed values are
+\[
+ Q=-1.9662627343915343406643753384116314238258689764917\ldots,
+\]
+and
+\[
+ \frac12\zeta(2)\log2=0.5700907053214263787372899294961746726083149206823\ldots.
+\]
+Numerical residuals tend to zero at the proved
+$O(\epsilon|\log\epsilon|)$ rate for $(a,b)=(1,2),(1,3),(2,5)$.
+For the equally spaced example, the residual means
+$C_{1,2}(\epsilon)-\epsilon^{-2}P_{-2}
+ -\epsilon^{-1}P_{-1}-P_0-Q$; the complete finite term in $P_0$
+is included in this diagnostic:
+\begin{center}
+\begin{tabular}{@{}rr@{}}
+\toprule
+$\epsilon$ & Numerical residual\\
+\midrule
+$10^{-6}$ & $-9.332630963\times10^{-5}$\\
+$10^{-8}$ & $-1.237723998\times10^{-6}$\\
+$10^{-10}$ & $-1.542186195\times10^{-8}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Omitting the finite term would instead leave a limit
+$\zeta(2)\log2/2$. The full record contains seventeen collision
+diagnostics, the two-split merged calculation, working precision,
+and the finite correction. It is reproduced from the package root by
+\begin{verbatim}
+python code/verify_collisions.py --output results/collisions.json
+\end{verbatim}
+These are floating-point diagnostics, not certified interval enclosures;
+the proof is the exact local decomposition above.
+
+The classical inputs are the Hurwitz shift, argument-derivative and
+Fourier formulas \cite{DLMFHurwitz}, the local polylogarithm expansion
+\cite{DLMFPolylog}, and the Hurwitz--Tornheim product relation
+\cite{EspinosaMoll}. The contributions here are the complete
+coordinate-normalized subtraction, the finite geometric collision
+anomaly, and their exact comparison with the specified spectral
+prescriptions. The statements do not claim a reduction of every
+Tornheim derivative to ordinary zeta values.
