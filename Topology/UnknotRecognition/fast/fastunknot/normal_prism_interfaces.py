@@ -10,7 +10,7 @@ from .normal_surface_geometry import _prepare,_coordinates,_quad,_fingerprint
 from .weighted_orbits import weighted_orbit_histogram
 
 
-def _interface_system(prepared,rows,check):
+def _interface_system(prepared,rows,check,port_encoding='vector'):
     cells=[];layout=[];total=0
     for t,row in enumerate(rows):
         check();q=sum(row[4:]);typ=next((j for j in range(3)if row[4+j]),None)
@@ -77,21 +77,33 @@ def _interface_system(prepared,rows,check):
             for lo,hi,sa,oa,sb,ob in sorted(pieces):region(t,f,u,g,v,lo,hi,sa,oa,sb,ob)
     size=total-len(cells)
     if len(cells)>6*len(rows)or len(ports)>24*len(rows):raise ArithmeticError('core interface bound failed')
-    dimension=2+len(ports);weights=[]
+    bitset=port_encoding=='bitset'or(port_encoding=='auto'and len(ports)>1)
+    dimension=3 if bitset else 2+len(ports);weights=[]
     def unit(j):value=[0]*dimension;value[j]=1;return value
     if size:weights.append((0,size,unit(0)))
     for lo,hi in bands:check();weights.append((lo,hi,unit(1)))
     for port in ports:
-        check();p=port['prism_point'];weights.append((p,p+1,unit(2+port['id'])))
+        check();p=port['prism_point']
+        value=[0,0,1<<port['id']]if bitset else unit(2+port['id'])
+        weights.append((p,p+1,value))
     structure=dict(core_cells=cells,core_faces=core_faces,ports=ports,prism_points=size)
     return size,pairs,dimension,weights,structure
 
 
-def _profiles(histogram,ports,check):
+def _profiles(histogram,ports,check,port_encoding='vector'):
     attached=[];free=[];seen=[]
+    bitset=port_encoding=='bitset'or(port_encoding=='auto'and len(ports)>1)
     for row in histogram:
-        check();w=row['weight'];copies=row['orbits'];indices=[i for i,x in enumerate(w[2:])if x]
-        if w[0]<1 or w[1]<0 or any(x not in (0,1)for x in w[2:]):raise ArithmeticError('invalid ribbon weight')
+        check();w=row['weight'];copies=row['orbits']
+        if w[0]<1 or w[1]<0:raise ArithmeticError('invalid ribbon weight')
+        if bitset:
+            mask=w[2];indices=[]
+            if mask<0 or mask.bit_length()>len(ports):raise ArithmeticError('invalid port bitset')
+            while mask:
+                check();bit=mask&-mask;indices.append(bit.bit_length()-1);mask-=bit
+        else:
+            if any(x not in (0,1)for x in w[2:]):raise ArithmeticError('invalid ribbon weight')
+            indices=[i for i,x in enumerate(w[2:])if x]
         profile=dict(prism_cells=w[0],face_bands=w[1],ribbon_euler_characteristic=w[0]-w[1])
         if indices:
             if copies!=1:raise ArithmeticError('interface port cannot belong to repeated regions')
@@ -103,26 +115,32 @@ def _profiles(histogram,ports,check):
         face_attached_components=len(attached),unattached_components=sum(r['multiplicity']for r in free))
 
 
-def normal_prism_face_regions(triangulation,coordinates,*,max_cycles=None,record_certificate=False,check=lambda:None):
+def normal_prism_face_regions(triangulation,coordinates,*,max_cycles=None,record_certificate=False,
+        port_encoding='auto',check=lambda:None):
     """Recover exact core-face ports and weighted prism-region profiles.
 
     Ribbon Euler values omit edge/vertex handles; they are not the full base
     Euler values of a maximal parallelity bundle. Source geometry retains the
     existing finite orientable one-torus contract. Caps produce no structure.
+    Auto uses one exact additive bitset when there are more than one port;
+    vector retains the version-one proof format, bitset uses version two.
+    Port uniqueness in the owned source prevents binary carries.
     """
     check()
     if type(record_certificate)is not bool:raise ValueError('record_certificate must be bool')
+    if port_encoding not in ('auto','vector','bitset'):raise ValueError('invalid port_encoding')
     if max_cycles is not None and(type(max_cycles)is not int or max_cycles<0):raise ValueError('invalid max_cycles')
     prepared=_prepare(triangulation,check);analysed=_coordinates(prepared,coordinates,check)
-    size,pairs,d,weights,structure=_interface_system(prepared,analysed['rows'],check)
+    size,pairs,d,weights,structure=_interface_system(prepared,analysed['rows'],check,port_encoding)
     query=weighted_orbit_histogram(size,pairs,weights,dimension=d,max_cycles=max_cycles,check=check,record_certificate=record_certificate)
     result=dict(status=query['status'],tetrahedra=len(analysed['rows']),interval_pairings=len(pairs),weight_dimension=d,stats=query['stats'],
         trust='source-labelled prism face connectivity and 0/1-handle profiles; not a full parallelity bundle or knot verdict')
     if query['status']!='COMPLETE':return result
-    structure.update(_profiles(query['histogram'],structure['ports'],check))
+    structure.update(_profiles(query['histogram'],structure['ports'],check,port_encoding))
     result['structure']=structure
     if query['orbit_count']!=structure['face_attached_components']+structure['unattached_components']:
         raise ArithmeticError('prism region total disagrees')
-    if record_certificate:result['certificate']=dict(schema='normal-prism-interfaces-v1',
+    bitset=port_encoding=='bitset'or(port_encoding=='auto'and len(structure['ports'])>1)
+    if record_certificate:result['certificate']=dict(schema='normal-prism-interfaces-v2'if bitset else'normal-prism-interfaces-v1',
         input_sha256=_fingerprint(triangulation,analysed,check),structure=structure,weighted_certificate=query['certificate'])
     check();return result
