@@ -1,3 +1,44 @@
+# October 10-11: periodic contacts and mixed Gamma identity milestone
+
+The four volumes remain the primary publication: 128, 119, 184 and 83 pages;
+the combined snapshot is 479 pages. Authorship remains ProveIt Contributors.
+Two new shared chapter modules append results without renumbering old ones.
+Chapter 9 reconciles the independent periodic contact continuations and
+proves the all-index contact, weighted Hurwitz jets and Bernoulli primitives.
+Chapter 8 proves the first mixed Gamma resonance, all fixed mixed orders,
+the trigamma square and half-integer harmonic evaluations. Experimental
+Gamma derivatives suggest an all-orders tail identity; a separate positive-
+sum/partial-fraction argument proves it and the centered-tail square family.
+
+Five deliveries were preserved in cd0d94dfc8 and published via 921b58f109
+after main merges and a safely rejected push race. Their 174 members include
+172 tracked originals and ten original logs; two ignored manifests remain
+in arrival history. Their ZIPs were retired with the placement commit.
+All five complete suites pass on copies. Cumulative preservation is sixty
+archives and 2273 tracked originals, with 894 textual provenance documents.
+Seventeen later committed reports remain in incoming for their own intake.
+
+Independent audits compare 315 common exact contact formulas and reject two
+corruptions. The tail audit checks 31 partial fractions, 31 sparse reductions,
+two Bernoulli identities and ten numerical series cases. A machine-float
+reciprocal contaminated the first finite-head experiment; preserve its
+failure receipt and use arbitrary precision throughout the passing replay.
+Native double-Laplace quadrature passes four shifts with 64/96-node refinement
+and an analytic outer-tail bound. Adaptive cancellation and phase-evaluation
+precision attempts retain explicit failure/incompletion scopes. The corrected native suite passes all seventeen exact identities and ten
+60-digit Fourier/integral diagnostics. Successful
+experiments remain distinct from the written all-order proofs.
+
+All document builds, independent cold builds and static/link inspections
+pass. Current visual coverage uses twelve freshly reviewed Volume III sheets,
+22 full-size changed pages, three other bibliography pages and exact prior
+raster matches. The combined edition uses twenty exact matches to fresh
+Volume III review plus two freshly reviewed contents pages and 457 inherited
+scientific bodies. The remaining ordered, cubic, all-resonance and external-
+erratum audits remain active; S6 and S8 are not promoted to theorems.
+
+Earlier entries below are historical checkpoints with their own artifacts.
+
 # October 10: weighted identities and eleven-batch intake checkpoint
 
 The requested four-volume organization remains the primary publication:

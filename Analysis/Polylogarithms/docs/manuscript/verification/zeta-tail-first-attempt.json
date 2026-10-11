@@ -1,0 +1,9 @@
+{
+  "status": "failed and corrected",
+  "stage": "centered cubic-tail finite head",
+  "observed_residual": "1.49505795481718541816336691471966578745905019608798923045442244570701e-18",
+  "cause": "The running first attempt had compiled Python n**-3 on integer n, producing a machine float. The file was corrected while that process was already live; it therefore still executed its old compiled expression.",
+  "correction": "Use mp.mpf(n)**-3 at the working precision, and rerun the complete verifier.",
+  "preceding_numeric_cases_passed": 9,
+  "scope": "Historical failed implementation diagnostic; it does not refute the analytically proved identity."
+}

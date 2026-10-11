@@ -4059,3 +4059,34 @@ PYTHONPATH=. python -B -m normal_orbit_research.cut_complement benchmark --round
 
 The theory, independent construction and missing hierarchy geometry are in
 [cut_complement.tex](../synthesis/cut_complement.tex).
+
+### Wholly prismatic cut components and a bounded conservative core
+
+Pass `classify_prisms=True` to `normal_complement_components` to count components
+that avoid the quad-chain endpoints and innermost triangle chambers. There
+are at most six exceptional chambers per source tetrahedron. Every component
+avoiding them is an interval bundle over an embedded normal midsection;
+`prismatic_components` includes twisted bundles. `core_components` counts
+components touching exceptions and is at most `6*T`; those components may
+also be interval bundles. This is a sufficient classification, not a maximal
+parallelity-bundle decomposition or an extraction of core geometry.
+
+A second cone orbit query authenticates the classification. Both queries
+share the cycle allowance, and the independent version-two checker charges
+both traces against its replay operation limit. Default false preserves the
+previous scalar API and version-one certificates. The full patterned-cutting
+and recognition obligations remain open. The theory and published component
+algorithms are discussed in [cut_products.tex](../synthesis/cut_products.tex).
+
+The geometric pilot covers 5,241 cuts on 48 sources and 7,838 connected normal
+midsections with consistent Regina cut signatures. The integrated audit matches
+all classifications, all frozen disabled results and 157 legacy proofs. All
+1,555 tests and 15 focused tests pass. At 65,536 meridians, compressed
+classification is about 112 times faster than an explicit chamber-graph
+union-find baseline, including native proof replay; small inputs are slower.
+This is a classification task, not a full parallelity-bundle extraction.
+
+```sh
+PYTHONPATH=. python -B -m normal_orbit_research.cut_products audit --output ../synthesis/data/cut-products-audit.json
+PYTHONPATH=. python -B -m normal_orbit_research.cut_products benchmark --rounds 5 --output ../synthesis/data/cut-products-benchmark.json
+```

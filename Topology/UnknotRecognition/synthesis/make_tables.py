@@ -1783,3 +1783,7 @@ if os.path.exists('data/matching-pairs-benchmark.json'):
 if os.path.exists('data/cut-complement-benchmark.json'):
     import runpy
     runpy.run_path('data/cut_complement_tables.py')
+
+if os.path.exists('data/cut-products-benchmark.json'):
+    import runpy
+    runpy.run_path('data/cut_products_tables.py')

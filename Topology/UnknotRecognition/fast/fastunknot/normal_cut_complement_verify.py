@@ -59,6 +59,19 @@ def _reference_chambers(prepared,rows,check):
     return size,result
 
 
+def _reference_exceptional_chambers(rows,check):
+    points=[];start=0
+    for row in rows:
+        check();quad=sum(row[4:])
+        points.extend([start]if quad==0 else[start,start+quad])
+        start+=quad+1
+        for vertex in range(4):
+            check()
+            if row[vertex]>0:points.append(start)
+            start+=row[vertex]
+    return points
+
+
 def verify_normal_complement_certificate(triangulation,coordinates,certificate,*,
         max_operations=None,check=lambda:None):
     """Verify the supplied cut-component count without rerunning any search.
@@ -66,21 +79,44 @@ def verify_normal_complement_certificate(triangulation,coordinates,certificate,*
     Invalid source geometry raises NormalOrbitError, as in existing native
     topology checkers. Malformed certificates return False. Operation bounds
     are verification limits, never component or recognition conclusions.
+    Version two reconstructs exceptional chambers and replays the cone query;
+    max_operations charges the combined length of both traces.
     """
     check()
     if max_operations is not None and(type(max_operations)is not int or max_operations<0):
         raise ValueError('max_operations must be a nonnegative integer or None')
-    if(type(certificate)is not dict or set(certificate)!={'schema','input_sha256','cut_components','orbit_certificate'}
-            or certificate.get('schema')!='normal-cut-components-v1'):return False
+    if type(certificate)is not dict:return False
+    schema=certificate.get('schema')
+    if schema not in ('normal-cut-components-v1','normal-cut-components-v2'):return False
+    fields={'schema','input_sha256','cut_components','orbit_certificate'}
+    if schema=='normal-cut-components-v2':fields.update(('core_components','prismatic_components','core_cone_certificate'))
+    if set(certificate)!=fields:return False
     prepared=_prepare(triangulation,check);analysed=_coordinates(prepared,coordinates,check)
     if certificate['input_sha256']!=_fingerprint(triangulation,analysed,check):return False
     trace=certificate['orbit_certificate']
     if type(trace)is not dict or type(trace.get('operations'))is not list:return False
-    if max_operations is not None and len(trace['operations'])>max_operations:return False
+    operations=len(trace['operations'])
+    cone=None
+    if schema=='normal-cut-components-v2':
+        cone=certificate['core_cone_certificate']
+        if type(cone)is not dict or type(cone.get('operations'))is not list:return False
+        operations+=len(cone['operations'])
+    if max_operations is not None and operations>max_operations:return False
     try:
         claimed=encoded_integer(certificate['cut_components'])
         orbit_count=encoded_integer(trace.get('orbit_count'))
     except (ValueError,TypeError):return False
     if claimed<1 or claimed!=orbit_count:return False
     size,pairs=_reference_chambers(prepared,analysed['rows'],check)
-    return verify_orbit_certificate(size,pairs,trace,check=check)
+    if not verify_orbit_certificate(size,pairs,trace,check=check):return False
+    if cone is None:return True
+    marks=_reference_exceptional_chambers(analysed['rows'],check)
+    try:
+        core=encoded_integer(certificate['core_components'])
+        product=encoded_integer(certificate['prismatic_components'])
+        cone_count=encoded_integer(cone.get('orbit_count'))
+    except (ValueError,TypeError):return False
+    if not 1<=core<=len(marks)or product<0 or core+product!=claimed:return False
+    if cone_count!=claimed-core+1 or product!=cone_count-1:return False
+    coned=pairs+[[0,0,p,p,1]for p in marks[1:]]
+    return verify_orbit_certificate(size,coned,cone,check=check)

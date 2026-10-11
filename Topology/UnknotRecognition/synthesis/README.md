@@ -1585,3 +1585,37 @@ four pre-existing overflow warnings remain. Reproduce publication checks with
 They replay all 157 saved source proofs with producers disabled, check 658
 current source/evidence hashes and authenticate all oracle, test and timing
 records. The API counts components; full patterned cut geometry stays open.
+
+[cut_products.tex](cut_products.tex) proves the conservative `6*T` core bound,
+wholly prismatic interval-bundle structure, normal midsections and the
+`6*T+v+2*q <= 12*T` bound on distinct abstract unpatterned component types.
+It separates product and twisted bundles and preserves the distinction
+between a whole prismatic component and the full parallelity bundle attached
+inside a core. The article also corrects its overly broad statement about
+published cutting algorithms: Lackenby–Yazdi Theorems 8.2–8.6 supply important
+component constructions, which our hierarchy integration still lacks.
+
+All 1,555 maintained tests and 15 focused tests pass. The finite geometric
+pilot contains 5,241 cuts and 7,838 connected normal midsections with consistent
+Regina cut signatures. The integrated audit preserves exact disabled outputs
+and 157 old certificates; 55 new source proofs replay with producers disabled.
+Seven large binary cases include a 16,385-bit prismatic count. Eighty complete
+classification measurements and sixteen warmups expose both small-input
+regressions and the 112.287 ratio at 65,536 meridians against an explicit
+graph expansion baseline. The article preserves the output-cardinality
+limit: arbitrary parallel cuts cannot yield a universally linear explicit
+triangulation list. Published retriangulation statements need an applicable
+source/repetition contract rather than dropping multiplicity silently.
+
+The current [PDF](report.pdf) has 614 pages. Section 156 starts on page 606;
+the assessment is section 157 on page 609. Rendered pages 606–611 pass visual
+review, including both structural proofs, published-algorithm scope, exact
+classification contract, timing table, assessment continuation and references.
+The corrected early statement on page 33 and the new source citation on page
+614 were also inspected. All references resolve; only four pre-existing
+overflow warnings remain. Reproduce publication checks with
+`python -B data/cut_products_review.py --publication` from this directory.
+They authenticate 660 source/evidence hashes, 5,241 exact disabled/classified
+cases, the finite midsection evidence, timing outcomes and all 55 saved
+version-two proofs with producers disabled. Source PDF hashes and contract
+notes are retained in `data/cut-products-literature.json`.

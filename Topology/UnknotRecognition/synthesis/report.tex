@@ -435,8 +435,11 @@ crossings because the cubes cannot go further.
 \section{What is missing for \texorpdfstring{$\qp$}{n\^{}O(log n)}}
 \label{sec:missing}
 Consolidating the six audits with our own reading of the sources, an
-implementation with a proved $\qp$ bound would require the following, none
-of which exists in any archive or, to our knowledge, in print.
+implementation with a proved $\qp$ bound would require the following
+assembled executable obligations. Published algorithms supply some components,
+including cutting and parallelity bundles discussed in
+Section~\ref{sec:cut-products}; the complete source-authenticated integration
+and uniform complexity bounds below are not implemented here.
 
 \begin{enumerate}
 \item \textbf{A representation.} A layered handle structure of the knot
@@ -771,6 +774,7 @@ No general quasi-polynomial recognition bound is proved.
 \input{sector_integer_transport.tex}
 \input{matching_pairs.tex}
 \input{cut_complement.tex}
+\input{cut_products.tex}
 
 \section{Assessment and recommendations}
 
@@ -879,6 +883,9 @@ two further actual sectors while retaining the incomplete-support fallback.
 Section~\ref{sec:cut-complement} implements binary chamber connectivity
 of a normal-surface cut, with independently reconstructed geometric pairings.
 It counts cut-open pieces without constructing their full patterned geometry.
+Section~\ref{sec:cut-products} then bounds the conservative marked core and
+counts wholly prismatic interval-bundle components, preserving the distinction
+from the published full parallelity-bundle algorithms.
 
 \paragraph{Obstacles that remain.}
 The six items of Section \ref{sec:missing} remain obligations for a general
@@ -949,7 +956,7 @@ quasi-polynomial time}, YMSC Topology Seminar, 7 November 2024, abstract.
 \bibitem{abe} Tetsuya Abe, \emph{The Rasmussen invariant of a homogeneous knot}, Proc. Amer. Math. Soc. 139 (2011), 2647--2656. \url{https://arxiv.org/abs/1003.5392}.
 \bibitem{lobb} Andrew Lobb, \emph{Computable bounds for Rasmussen's concordance invariant}, Compositio Math. 147 (2011), 661--668. \url{https://arxiv.org/abs/0908.2745}.
 \bibitem{structural07} Report 07, \emph{Unknot recognition: structural certificates and compressed complexes}, delivered 7 October 2026; \code{reports/07/paper/unknot\_structural\_compression.tex}.\small
-\bibitem{lackenby-yazdi-genus} Marc Lackenby and Mehdi Yazdi, \emph{The computational complexity of knot genus in a fixed 3-manifold}, 23 May 2022 manuscript, Section 2.7. \url{https://people.maths.ox.ac.uk/lackenby/KnotGenusComplexity23May2022.pdf}.
+\bibitem{lackenby-yazdi-genus} Marc Lackenby and Mehdi Yazdi, \emph{The computational complexity of knot genus in a fixed 3-manifold}, 23 May 2022 manuscript, Sections 2.7 and 8. \url{https://people.maths.ox.ac.uk/lackenby/KnotGenusComplexity23May2022.pdf}.
 
 \bibitem{slides} Marc Lackenby, \emph{Unknot recognition in quasi-polynomial time}, slides, February 2021, 109 pages, supplied as \code{docs/quasipolynomial-talk.pdf}.
 \bibitem{lackenby2026} Marc Lackenby, \emph{Incompressible surfaces, hierarchies and unknot recognition}, arXiv:2607.23350v1, 25 July 2026, 54 pages. \url{https://arxiv.org/abs/2607.23350}.
@@ -1061,6 +1068,7 @@ Journal of Knot Theory and Its Ramifications 9 (2000), 1029--1036.
 Journal of Knot Theory and Its Ramifications 10 (2001), 529--535.
 \url{https://arxiv.org/abs/math/0005093v2}.
 \bibitem{regina-cut-along} Regina 7.4.1 Calculation Engine, \emph{NormalSurface::cutAlong API reference}. \url{https://regina-normal.github.io/engine-docs/classregina_1_1NormalSurface.html}.
+\bibitem{lackenby-parallelity} Marc Lackenby, \emph{The efficient certification of knottedness and Thurston norm}, author manuscript, Section 9.4, Theorem 9.3. \url{https://people.maths.ox.ac.uk/lackenby/knp02719.pdf}.
 \end{thebibliography}
 
 \appendix
