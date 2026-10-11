@@ -2,6 +2,7 @@
 import argparse
 from contextlib import contextmanager
 from hashlib import sha256
+import gc
 import json
 from pathlib import Path
 import platform
@@ -81,6 +82,7 @@ def main():
         rng.shuffle(tasks)
         for name, arm in tasks:
             repetitions = details[name]['repetitions']
+            gc.collect()
             start = perf_counter()
             results = [run(cases[name], arm) for _ in range(repetitions)]
             elapsed = (perf_counter() - start) / repetitions
@@ -91,6 +93,9 @@ def main():
             assert expected.setdefault(name, digest) == digest, (name, arm)
             samples.append(dict(case=name, arm=arm, round=round_number, warmup=round_number == 0,
                                 seconds=elapsed, result_sha256=digest))
+            # Release the preceding workload before the next arm's timer.
+            # Otherwise a tiny case can inherit disposal of 100,000 runs.
+            del results
         print('completed round', round_number, flush=True)
     for p in paths:
         assert sha256(p.read_bytes()).hexdigest() == pins[str(p.relative_to(REPO))]
@@ -113,7 +118,8 @@ def main():
                          'include fresh histogram allocation. Query cases include source preparation, '
                          'orbit discovery, weight transport, independent replay and JSON serialization. '
                          'Five shuffled paired rounds plus one warmup and an identical sorted control. '
-                         'Query cases force vector port encoding in every arm. Not full recognizer timings.',
+                         'Query cases force vector port encoding in every arm. Prior results are released '
+                         'and garbage is collected outside each timer. Not full recognizer timings.',
                   details=details, summary=summary, samples=samples)
     args.output.write_text(json.dumps(output, indent=2) + '\n')
     print(json.dumps(summary, indent=2))

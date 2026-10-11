@@ -115,14 +115,14 @@ def verify_normal_prism_interfaces(triangulation,coordinates,certificate,*,max_o
         if bitset:
             mask=w[2]
             if mask<0 or mask.bit_length()>len(expected['ports']):return False
-            # Separate decoding by right shifts, rather than the producer's
-            # least-set-bit extraction. Exact weighted replay binds each bit
-            # to one independently reconstructed source port.
-            ports=[];index=0
-            while mask:
+            # A separately materialized binary spelling avoids repeatedly
+            # shifting a P-bit integer through its zero digits. Its length is
+            # bounded by the source port count before conversion.
+            # Exact replay binds each digit to one independently owned port.
+            ports=[]
+            for index,digit in enumerate(format(mask,'b')[::-1]):
                 check()
-                if mask&1:ports.append(index)
-                mask>>=1;index+=1
+                if digit=='1':ports.append(index)
         else:
             if any(x not in (0,1)for x in w[2:]):return False
             ports=[i for i,x in enumerate(w[2:])if x]
