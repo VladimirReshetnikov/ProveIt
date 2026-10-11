@@ -1475,3 +1475,25 @@ with `python -B data/pachner_epochs_review.py --publication` from this directory
 They check 646 runtime pins, exact disabled/capped complete verdicts, all
 timing outcomes and all three saved original-source disc chains with
 epoch/move/transport producers disabled during replay.
+
+[epoch_gauge.tex](epoch_gauge.tex) authenticates periodic integral vertex
+coboundaries, mixed original-source move/gauge chains and their representation
+bounds. The checker trusts neither an optimizer nor its objective. The
+target actual diagram disc decreases from 33 to 24 epochs, 191 to 83 nodes
+and roughly 914,561 to 622,768 checkpoints, with three exact gauge steps.
+All 1,521 tests and 28 focused tests pass; all six tested verdicts and
+legacy proof behavior remain. Fresh Regina confirms all three returned
+discs. The full optimizer, replay and query costs are included in the paired
+measurements; the optional stage and interval remain disabled by default.
+Records are `data/epoch-gauge-*`. General recognition reach remains open.
+
+The current [PDF](report.pdf) has 599 pages. Section 151 starts on page 591;
+the assessment is section 152 on page 594. Rendered pages 591–596 pass visual
+review, including the complete theorem, representation bounds, actual audit,
+timing tables, assessment continuation and references. All references resolve;
+only the four existing overflow warnings remain. Reproduce publication checks
+with `python -B data/epoch_gauge_review.py --publication` from this directory.
+They check 650 runtime pins, all complete/capped outcomes and all three
+original-source disc proofs with epoch, gauge optimization, move/search and
+source producers disabled during replay. The actual three gauge records
+and 35-step target chain are checked explicitly.
