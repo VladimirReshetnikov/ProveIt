@@ -3273,6 +3273,37 @@ The length-six σ inherits that factor through `lsSigma3`. Further
 question: is the Section 13 loss intrinsic, or an artifact of the explicit
 iteration?
 
+### L.6a Correction to the degree budget, and the printed slack (2026-10-11)
+
+**The L.6 budget was wrong in one step.** Counts do not involve width
+exponents (P1 holds), but they *square* from one dimension to the next. The
+family cover samples `famPieceSamples ≈ Qr·n/ρ` slices. Here `Qr` is the
+remainder count, and the slice count `Pb` is the class count at
+`n·Samples` members. So `Pb ≈ (Samples)^dC ≈ base^(dC²·2^k)`: the
+dimension-three numbers, `321 ≈ 2·89 + 143`, already show the doubling. The
+honest recursion is `L_{k+1} ≈ 2L_k + t_k`, with `t_k = 2^(k+5)` from
+`θ₁(k)`. Then `L_k ≈ k·2^(k+5)`, which passes the bound `2^(k+8)` used in L.6
+near `k ≈ 8`.
+
+**The printed controls have far more room than L.6 used.** Theorem 16.2's
+count is `q(r⁻¹ρ)^r = c^(−M r)` with `r = γ⁻²·s(θ, γ, k)`. The comparison
+needs only `D ≤ M·r`, not `D ≤ M` (`printed_controls_of_le`). Since `u ≥ 2`,
+`r ≥ s ≥ 2^(2^(2^(k+6)))` (`printed_parameter_ge_tower`), so every degree
+`D ≤ 2^(2^(2^(k+6)))` fits. This gives `printed_controls_of_poly_tower`,
+`theorem162At_of_polyCover_tower` and `PowerUniformClass.theorem162At_tower`.
+Against `log₂ log₂ D ≈ k + 5 + log₂ k`, that allowance is enormous in every
+dimension.
+
+**Consequence for E5.** One symbolic degree per dimension suffices,
+`D_{k+1} ≤ poly(D_k)·2^(2^(k+c))`, with the invariant
+`D_k ≤ 2^(2^(2^(k+5)))`. That invariant is closed under the step, because
+`2·2^(2^(k+5)) + 2^(k+c) ≤ 2^(2^(k+6))`. Crude bounds are enough again,
+as they were at length six.
+
+**Interface change.** `PowerUniformClass` has a field `empty : U N θ γ ∅`,
+so families of class pieces can be padded with empty pieces, as in
+dimension three.
+
 ## F. Routes
 
 1. **Quantitative repair (research).**

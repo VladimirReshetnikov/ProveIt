@@ -15,7 +15,14 @@ Because `r ≥ 2W₀/θ`, the printed exponent is below `W^(-D)` for
 (`printed_controls_of_poly`). Hence:
 
   `theorem162At_of_polyCover`: `PolyCoverAt k Qb Eb` with
-  `Qb ≤ W^D` and `Eb ≥ W^(-D)` gives `Theorem162At k`. -/
+  `Qb ≤ W^D` and `Eb ≥ W^(-D)` gives `Theorem162At k`.
+
+The printed exponent is really `M·r`, not `M`: the proof needs only
+`D ≤ M·r` (`printed_controls_of_le`). Since `r ≥ s(θ, γ, k) ≥ 2^(2^(2^(k+6)))`
+(`printed_parameter_ge_tower`), any degree `D ≤ 2^(2^(2^(k+6)))` fits
+(`printed_controls_of_poly_tower`, `theorem162At_of_polyCover_tower`). This
+slack absorbs the squaring of degrees from one dimension to the next in
+route (II) (Notes L.6). -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -47,11 +54,13 @@ theorem printed_parameter_ge {k : Nat} {gamma theta W0 : Real} (hg : 0 < gamma) 
     _ ≤ multipleS theta gamma k := hS
     _ ≤ gamma ^ (-(2 : Int)) * multipleS theta gamma k := le_mul_of_one_le_left hSpos hg2
 
-/-- **Polynomial controls lie inside the printed controls.** -/
-theorem printed_controls_of_poly {k : Nat} {gamma theta rho W0 : Real} (hg : 0 < gamma)
+/-- **Polynomial controls lie inside the printed controls**, for any degree
+`D ≤ M·r`. -/
+theorem printed_controls_of_le {k : Nat} {gamma theta rho W0 : Real} (hg : 0 < gamma)
     (hg1 : gamma ≤ 1) (ht : 0 < theta) (ht1 : theta ≤ 1) (hr : 0 < rho) (hr1 : rho ≤ 1)
     (hW0 : 1 ≤ W0) (hW0' : W0 ≤ 2 ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 6)) - 1)) {D : Nat}
-    (hD : D ≤ (2 : Nat) ^ ((2 : Nat) ^ (k + 8))) :
+    (hDr : (D : Real) ≤ ((2 : Nat) ^ ((2 : Nat) ^ (k + 8)) : Nat) *
+      (gamma ^ (-(2 : Int)) * multipleS theta gamma k)) :
     (W0 * (2 / (gamma * theta * rho))) ^ D ≤
         (multipleQ ((gamma ^ (-(2 : Int)) * multipleS theta gamma k)⁻¹ * rho) gamma k) ^
           (gamma ^ (-(2 : Int)) * multipleS theta gamma k) ∧
@@ -90,10 +99,7 @@ theorem printed_controls_of_poly {k : Nat} {gamma theta rho W0 : Real} (hg : 0 <
       linarith
     nlinarith))
   -- `c^(M r) ≤ c^D ≤ W^(-D)`
-  have hMr : (D : Real) ≤ (M : Real) * r := by
-    have h1 : (D : Real) ≤ M := by exact_mod_cast hD
-    have h2 : (M : Real) ≤ M * r := le_mul_of_one_le_right (Nat.cast_nonneg _) hr1'
-    linarith
+  have hMr : (D : Real) ≤ (M : Real) * r := hDr
   have hpowC : multipleC (r⁻¹ * rho) gamma k ^ r = c ^ ((M : Real) * r) := by
     unfold multipleC
     rw [← hc, ← hM, ← Real.rpow_natCast, ← Real.rpow_mul hc0.le]
@@ -111,6 +117,67 @@ theorem printed_controls_of_poly {k : Nat} {gamma theta rho W0 : Real} (hg : 0 <
   have hpos : 0 < c ^ ((M : Real) * r) := Real.rpow_pos_of_pos hc0 _
   have := inv_anti₀ hpos hkey
   rwa [inv_inv] at this
+
+/-- **Polynomial controls lie inside the printed controls.** -/
+theorem printed_controls_of_poly {k : Nat} {gamma theta rho W0 : Real} (hg : 0 < gamma)
+    (hg1 : gamma ≤ 1) (ht : 0 < theta) (ht1 : theta ≤ 1) (hr : 0 < rho) (hr1 : rho ≤ 1)
+    (hW0 : 1 ≤ W0) (hW0' : W0 ≤ 2 ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 6)) - 1)) {D : Nat}
+    (hD : D ≤ (2 : Nat) ^ ((2 : Nat) ^ (k + 8))) :
+    (W0 * (2 / (gamma * theta * rho))) ^ D ≤
+        (multipleQ ((gamma ^ (-(2 : Int)) * multipleS theta gamma k)⁻¹ * rho) gamma k) ^
+          (gamma ^ (-(2 : Int)) * multipleS theta gamma k) ∧
+      (multipleC ((gamma ^ (-(2 : Int)) * multipleS theta gamma k)⁻¹ * rho) gamma k) ^
+          (gamma ^ (-(2 : Int)) * multipleS theta gamma k) ≤
+        ((W0 * (2 / (gamma * theta * rho))) ^ D)⁻¹ := by
+  refine printed_controls_of_le hg hg1 ht ht1 hr hr1 hW0 hW0' ?_
+  have hg2 : (1 : Real) ≤ gamma ^ (-(2 : Int)) := by
+    rw [zpow_neg, zpow_ofNat]
+    exact (one_le_inv₀ (pow_pos hg 2)).mpr (pow_le_one₀ hg.le hg1)
+  have hr1' : 1 ≤ gamma ^ (-(2 : Int)) * multipleS theta gamma k := by
+    have := one_le_multipleS k ht ht1 hg hg1
+    nlinarith
+  have h1 : (D : Real) ≤ ((2 : Nat) ^ ((2 : Nat) ^ (k + 8)) : Nat) := by exact_mod_cast hD
+  have h2 := le_mul_of_one_le_right (Nat.cast_nonneg ((2 : Nat) ^ ((2 : Nat) ^ (k + 8)))) hr1'
+  linarith
+
+/-- The printed parameter `r = γ⁻² s(θ, γ, k)` is at least `2^(2^(2^(k+6)))`. -/
+theorem printed_parameter_ge_tower {k : Nat} {gamma theta : Real} (hg : 0 < gamma)
+    (hg1 : gamma ≤ 1) (ht : 0 < theta) (ht1 : theta ≤ 1) :
+    (2 : Real) ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 6))) ≤
+      gamma ^ (-(2 : Int)) * multipleS theta gamma k := by
+  have htg : 0 < theta * gamma := mul_pos ht hg
+  have htg1 : theta * gamma ≤ 1 := mul_le_one₀ ht1 hg.le hg1
+  have hu2 : 2 ≤ 2 / (theta * gamma) := by rw [le_div_iff₀ htg]; linarith
+  have hg2 : (1 : Real) ≤ gamma ^ (-(2 : Int)) := by
+    rw [zpow_neg, zpow_ofNat]
+    exact (one_le_inv₀ (pow_pos hg 2)).mpr (pow_le_one₀ hg.le hg1)
+  have hs : (2 : Real) ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 6))) ≤ multipleS theta gamma k := by
+    unfold multipleS
+    exact pow_le_pow_left₀ (by norm_num) hu2 _
+  have hs0 : 0 ≤ multipleS theta gamma k := le_trans (by positivity) hs
+  exact hs.trans (le_mul_of_one_le_left hs0 hg2)
+
+/-- **Polynomial controls of tower-bounded degree lie inside the printed
+controls.** The printed exponent is `M·r` with `r ≥ 2^(2^(2^(k+6)))`. -/
+theorem printed_controls_of_poly_tower {k : Nat} {gamma theta rho W0 : Real} (hg : 0 < gamma)
+    (hg1 : gamma ≤ 1) (ht : 0 < theta) (ht1 : theta ≤ 1) (hr : 0 < rho) (hr1 : rho ≤ 1)
+    (hW0 : 1 ≤ W0) (hW0' : W0 ≤ 2 ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 6)) - 1)) {D : Nat}
+    (hD : D ≤ (2 : Nat) ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 6)))) :
+    (W0 * (2 / (gamma * theta * rho))) ^ D ≤
+        (multipleQ ((gamma ^ (-(2 : Int)) * multipleS theta gamma k)⁻¹ * rho) gamma k) ^
+          (gamma ^ (-(2 : Int)) * multipleS theta gamma k) ∧
+      (multipleC ((gamma ^ (-(2 : Int)) * multipleS theta gamma k)⁻¹ * rho) gamma k) ^
+          (gamma ^ (-(2 : Int)) * multipleS theta gamma k) ≤
+        ((W0 * (2 / (gamma * theta * rho))) ^ D)⁻¹ := by
+  refine printed_controls_of_le hg hg1 ht ht1 hr hr1 hW0 hW0' ?_
+  have hrt := printed_parameter_ge_tower (k := k) hg hg1 ht ht1
+  have h1 : (D : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 6))) := by
+    exact_mod_cast hD
+  have hM : (1 : Real) ≤ ((2 : Nat) ^ ((2 : Nat) ^ (k + 8)) : Nat) := by
+    exact_mod_cast Nat.one_le_two_pow
+  have hr0 : 0 ≤ gamma ^ (-(2 : Int)) * multipleS theta gamma k := le_trans (by positivity) hrt
+  calc (D : Real) ≤ gamma ^ (-(2 : Int)) * multipleS theta gamma k := h1.trans hrt
+    _ ≤ _ := le_mul_of_one_le_left hr0 hM
 
 /-- **Theorem 16.2 in dimension `k` from a polynomial global-to-local cover.** -/
 theorem theorem162At_of_polyCover {k : Nat} {Qb Eb : Real → Real → Real → Real}
@@ -143,6 +210,39 @@ theorem theorem162At_of_polyCover {k : Nat} {Qb Eb : Real → Real → Real → 
     exact Real.rpow_pos_of_pos (multipleC_pos k (by positivity) hg) _
   · intro rho hr hr1
     exact (printed_controls_of_poly hg hg1 ht ht1 hr hr1 hW0 hW0' hD).2.trans
+      (hE gamma theta rho hg hg1 ht ht1 hr hr1)
+
+/-- **Theorem 16.2 in dimension `k` from a cover of tower-bounded degree.** -/
+theorem theorem162At_of_polyCover_tower {k : Nat} {Qb Eb : Real → Real → Real → Real}
+    (hcov : PolyCoverAt k Qb Eb) {W0 : Real} (hW0 : 1 ≤ W0)
+    (hW0' : W0 ≤ 2 ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 6)) - 1)) {D : Nat}
+    (hD : D ≤ (2 : Nat) ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 6))))
+    (hQ : ∀ gamma theta rho : Real, 0 < gamma → gamma ≤ 1 → 0 < theta → theta ≤ 1 →
+      0 < rho → rho ≤ 1 → Qb gamma theta rho ≤ (W0 * (2 / (gamma * theta * rho))) ^ D)
+    (hE : ∀ gamma theta rho : Real, 0 < gamma → gamma ≤ 1 → 0 < theta → theta ≤ 1 →
+      0 < rho → rho ≤ 1 → ((W0 * (2 / (gamma * theta * rho))) ^ D)⁻¹ ≤ Eb gamma theta rho) :
+    Theorem162At k := by
+  intro gamma theta hg hg1 ht ht1
+  refine ⟨0, fun N _ _ _ Gamma hcard hprod => ?_⟩
+  obtain ⟨J, hJ, hML⟩ := hcov N gamma theta hg hg1 ht ht1 Gamma hcard hprod
+  refine ⟨J, hJ, ?_⟩
+  change MultiplyLinearWith
+    (fun rho => (multipleQ ((gamma ^ (-(2 : Int)) * multipleS theta gamma k)⁻¹ * rho) gamma k) ^
+      (gamma ^ (-(2 : Int)) * multipleS theta gamma k))
+    (fun rho => (multipleC ((gamma ^ (-(2 : Int)) * multipleS theta gamma k)⁻¹ * rho) gamma k) ^
+      (gamma ^ (-(2 : Int)) * multipleS theta gamma k)) (restrictRelation Gamma J)
+  refine hML.weaken ?_ ?_ ?_
+  · intro rho hr hr1
+    exact (hQ gamma theta rho hg hg1 ht ht1 hr hr1).trans
+      (printed_controls_of_poly_tower hg hg1 ht ht1 hr hr1 hW0 hW0' hD).1
+  · intro rho hr _
+    have hs : 0 < gamma ^ (-(2 : Int)) * multipleS theta gamma k := by
+      have := one_le_multipleS k ht ht1 hg hg1
+      have hg2 : (0 : Real) < gamma ^ (-(2 : Int)) := zpow_pos hg _
+      positivity
+    exact Real.rpow_pos_of_pos (multipleC_pos k (by positivity) hg) _
+  · intro rho hr hr1
+    exact (printed_controls_of_poly_tower hg hg1 ht ht1 hr hr1 hW0 hW0' hD).2.trans
       (hE gamma theta rho hg hg1 ht ht1 hr hr1)
 
 end LeanProofs.GowersSzemeredi

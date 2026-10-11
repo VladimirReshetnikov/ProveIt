@@ -5,7 +5,8 @@ import GowersSzemeredi.Proofs16PrintedControls
 dimension (Notes L.6, E1).
 
 A `PowerUniformClass k V dC dE dT` is a downward closed class `U` of
-`k`-dimensional relations, at each pair of parameters `(θ, γ)`, with:
+`k`-dimensional relations, containing `∅`, at each pair of parameters `(θ, γ)`,
+with:
 * `decomp`: above the threshold `(V·2/(γθ))^dT`, every product relation `Γ`
   of size `≤ γ⁻²N^k` has a good set `J`, with `|J| ≥ (1-θ)N^k`, on which
   `Γ` restricts to a member. `J` depends on `Γ` alone.
@@ -20,7 +21,8 @@ are symbolic, as the degree budget of Notes L.6 needs.
 * `PowerUniformClass.polyCoverAt`: a class gives `PolyCoverAt k` at degree
   `D ≥ dC, dE, dT + k + 1`. Small moduli are covered by singleton boxes.
 * `PowerUniformClass.theorem162At`: hence Theorem 16.2 in dimension `k`
-  whenever `D ≤ 2^(2^(k+8))` and `2V ≤ 2^(2^(2^(k+6)) - 1)`.
+  whenever `D ≤ 2^(2^(k+8))` and `2V ≤ 2^(2^(2^(k+6)) - 1)`;
+  `PowerUniformClass.theorem162At_tower` allows `D ≤ 2^(2^(2^(k+6)))`.
 * `powerUniformClass_two`: dimension two is a class at degrees
   `(2^89, 2^130, 2^45)`, for any `V` bounding the constants of the family
   Lemma 16.6 in dimension one. It uses the pieces `PolyPieceTwo` and the
@@ -40,6 +42,7 @@ structure PowerUniformClass (k : Nat) (V : Real) (dC dE dT : Nat) where
   U : (N : Nat) → [NeZero N] → Real → Real → Finset (Point N k × ZMod N) → Prop
   mono : ∀ (N : Nat) [NeZero N] (theta gamma : Real) (Gamma Gamma' : Finset (Point N k × ZMod N)),
     Gamma ⊆ Gamma' → U N theta gamma Gamma' → U N theta gamma Gamma
+  empty : ∀ (N : Nat) [NeZero N] (theta gamma : Real), U N theta gamma ∅
   decomp : ∀ (theta gamma : Real), 0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 →
     ∀ (N : Nat) [NeZero N] [Fact N.Prime], (V * (2 / (gamma * theta))) ^ dT ≤ (N : Real) →
     ∀ Gamma : Finset (Point N k × ZMod N),
@@ -248,6 +251,22 @@ theorem PowerUniformClass.theorem162At {k : Nat} {V : Real} {dC dE dT : Nat}
   · intro gamma theta rho _ _ _ _ _ _
     rw [hbase]
 
+/-- **Theorem 16.2 in dimension `k` from a uniform class of tower-bounded degree.** -/
+theorem PowerUniformClass.theorem162At_tower {k : Nat} {V : Real} {dC dE dT : Nat}
+    (C : PowerUniformClass k V dC dE dT) (hk : 0 < k) (hV : 1 ≤ V)
+    (hVb : 2 * V ≤ 2 ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 6)) - 1)) {D : Nat} (hDC : dC ≤ D)
+    (hDE : dE ≤ D) (hDT : dT + k + 1 ≤ D) (hD : D ≤ (2 : Nat) ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 6)))) :
+    Theorem162At k := by
+  have hbase : ∀ gamma theta rho : Real,
+      uniformBase V 1 theta gamma rho = 2 * V * (2 / (gamma * theta * rho)) := by
+    intro gamma theta rho; unfold uniformBase; push_cast; ring
+  refine theorem162At_of_polyCover_tower (C.polyCoverAt hk hV hDC hDE hDT) (W0 := 2 * V)
+    (by linarith) hVb hD ?_ ?_
+  · intro gamma theta rho _ _ _ _ _ _
+    rw [hbase]
+  · intro gamma theta rho _ _ _ _ _ _
+    rw [hbase]
+
 /-! ### Dimension two -/
 
 /-- A family of `n` relations, each in `polyTwoPieces γ θ` pieces, has at most
@@ -281,6 +300,8 @@ theorem powerUniformClass_two {K1 p1 : Nat} (hK1 : 1 ≤ K1) (hp1 : 0 < p1)
       ∃ P : Fin (polyTwoPieces gamma theta) → PolyPieceTwo N theta gamma,
         Gamma ⊆ polyPieceTwoGraphs P
     mono := fun N _ theta gamma Gamma Gamma' hsub ⟨P, hP⟩ => ⟨P, hsub.trans hP⟩
+    empty := fun N _ theta gamma =>
+      ⟨fun _ => PolyPieceTwoData.empty _ _ _ _ _, Finset.empty_subset _⟩
     decomp := ?_
     cover := ?_ }⟩
   · intro theta gamma ht ht1 hg hg1 N _ _ hN Gamma hsize hprod
