@@ -3867,6 +3867,40 @@ grows like `2^L`. Every length still needs the per-step cost to be
   A class constant of 67, the fixed point, would not reach them. Further
   progress needs the `O(2^k)` per-step cost of L.8.
 
+### L.11 What exactly would close 18.1, 18.2 and 18.7 (analysis, 2026-10-11)
+
+The envelope recursion (`envStep`, reproduced exactly by a Python model) was
+run with the cover degree `D` held **independent of the dimension**
+(`μD = log₂ D` constant), everything else as in the corpus (`μ₀ = 2^(k+6)+2`,
+`μK = 2^(k+5)`):
+
+| `log₂ D` | worst ratio for 18.2 (`(μ_{L−4} + 2L + 14)/2^(L+9)`) | worst ratio for 18.1 | `μ_k / 2^k` |
+|---|---|---|---|
+| 8 | 0.11 | 0.22 | 146 |
+| 200 | 0.11 | 0.22 | 530 |
+| 1000 | 0.28 | 0.56 | 2 130 |
+| 2000 | 0.54 | 1.07 (fails) | 4 130 |
+
+So `μ_k ≈ (2·log₂ D + 130)·2^k`. With `log₂ D ≤ 1983` Theorem 18.1 fits
+`2^(d+10)`, and with `log₂ D ≤ 4031` Theorem 18.2 fits `2^(L+9)`, for every
+`k` up to astronomically large values. Two requirements remain, and both are
+needed:
+1. **A dimension-independent cover degree.** Route (II) has
+   `log₂ D_l ≈ 67·2^l` (L.10b), because each class composes the previous
+   count at a precision divided by that count, so the degrees multiply.
+   This is L.8's precision dependence; a degree that grows like `O(l)`
+   would also suffice up to about length `2^12`.
+2. **A lossless lift.** `genC` has `t`-degree `D + 1 + k`, since every
+   `liftLastC` multiplies by `t`. Each nest level then costs at least
+   `log₂ k`, so `μ_k ≳ 2^k·log₂ k`, which exceeds `2^(k+13)` once
+   `log₂ k > 4000`. L.8's cylinder lift (density `(t − θ)/q`, with no
+   factor `t`) removes the `k`. Only with both does a single bound hold for
+   *every* length.
+
+Requirement 2 is engineering: a cylinder version of
+`vertex_localPieceFor_of_face`. Requirement 1 is the stackability problem.
+Neither is solved by grading (L.10) or by constants (L.10b).
+
 **Technique notes.**
 - `set k := P.k` changes only the hypotheses present at that moment.
   Lemmas obtained later still say `P.k`, and `omega` treats `rhoDegG P.k _`
